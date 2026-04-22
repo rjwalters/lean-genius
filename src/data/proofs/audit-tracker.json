@@ -24,10 +24,10 @@
   },
   "entries": {
     "No unclaimed targets available": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-03T16:57:29Z",
-      "result": "clean"
+      "lastAudited": "2026-04-22T21:58:44Z",
+      "result": "no-meta"
     },
     "abel-ruffini": {
       "auditCount": 6,
@@ -36,9 +36,9 @@
       "result": "clean"
     },
     "abel-ruffini-galois-extensions": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:39:10Z",
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "abel-ruffini-oq-04": {
@@ -66,9 +66,9 @@
       "result": "clean"
     },
     "abel-ruffini-oq-04-oq-02-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:39:43Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "abel-ruffini-oq-04-oq-03": {
@@ -114,10 +114,10 @@
       "result": "clean"
     },
     "amgm-inequality-oq-02-oq-01": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T15:41:21Z",
-      "result": "clean"
+      "lastAudited": "2026-04-22T21:59:00Z",
+      "result": "no-meta"
     },
     "amgm-inequality-oq-02-oq-01-oq-02": {
       "auditCount": 2,
@@ -162,9 +162,9 @@
       "result": "clean"
     },
     "amgm-inequality-oq-03-oq-02-oq-01-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T11:37:16Z",
+      "lastAudited": "2026-04-22T21:57:19Z",
       "result": "clean"
     },
     "amgm-inequality-oq-03-oq-02-oq-04": {
@@ -186,9 +186,9 @@
       "result": "clean"
     },
     "amgm-inequality-oq-03-oq-04": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T11:37:16Z",
+      "lastAudited": "2026-04-22T21:57:19Z",
       "result": "clean"
     },
     "amgm-inequality-oq-04": {
@@ -216,10 +216,10 @@
       "result": "clean"
     },
     "angle-trisection-cos-20-gal-oq-01-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T14:08:40Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T21:58:06Z",
+      "result": "clean"
     },
     "angle-trisection-cos-20-gal-oq-03": {
       "auditCount": 3,
@@ -228,14 +228,14 @@
       "result": "clean"
     },
     "angle-trisection-cos-20-gal-oq-03-oq-01": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T12:46:16Z",
+      "lastAudited": "2026-04-22T21:58:06Z",
       "result": "clean"
     },
     "angle-trisection-oq-01": {
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:37:48Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "angle-trisection-oq-02": {
@@ -263,9 +263,9 @@
       "result": "clean"
     },
     "angle-trisection-oq-02-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:42:01Z",
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "angle-trisection-oq-02-oq-03": {
@@ -349,9 +349,9 @@
       "result": "clean"
     },
     "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T12:07:57Z",
+      "lastAudited": "2026-04-22T21:58:06Z",
       "result": "clean"
     },
     "area-of-circle-oq-01-oq-02-oq-01-oq-03": {
@@ -379,23 +379,23 @@
       "result": "clean"
     },
     "area-of-circle-oq-01-oq-02-oq-03-oq-03": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T13:15:24Z",
+      "lastAudited": "2026-04-22T21:58:06Z",
       "result": "clean"
     },
     "area-of-circle-oq-01-oq-03": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [
         "https://github.com/rjwalters/lean-genius/pull/8651"
       ],
-      "lastAudited": "2026-04-21T14:38:37Z",
+      "lastAudited": "2026-04-22T21:58:06Z",
       "result": "clean"
     },
     "area-of-circle-oq-01-oq-03-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:42:01Z",
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "area-of-circle-oq-02": {
@@ -405,10 +405,10 @@
       "result": "clean"
     },
     "area-of-circle-oq-02-oq-01": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-04-21T12:03:58Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T21:58:06Z",
+      "result": "clean"
     },
     "area-of-circle-oq-02-oq-04": {
       "auditCount": 2,
@@ -423,8 +423,8 @@
       "result": "clean"
     },
     "area-of-circle-oq-03-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T15:37:35Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "area-of-circle-oq-03-oq-02": {
@@ -458,11 +458,11 @@
       "result": "clean"
     },
     "area-of-circle-oq-05": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [
         "sorries 1\u21920, status formalized\u2192verified, badge wip\u2192mathlib (sorry was completed)"
       ],
-      "lastAudited": "2026-04-21T15:42:01Z",
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "area-of-circle-oq-05-oq-01": {
@@ -496,9 +496,9 @@
       "result": "clean"
     },
     "arithmetic-series-oq-02-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:39:10Z",
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "arithmetic-series-oq-02-oq-01-oq-01": {
@@ -514,9 +514,9 @@
       "result": "clean"
     },
     "arithmetic-series-oq-02-oq-02-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:39:43Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "arithmetic-series-oq-02-oq-02-oq-03": {
@@ -560,12 +560,12 @@
       "result": "clean"
     },
     "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [
         "lineCount 122\u2192118 (corrected to match actual Lean file)"
       ],
-      "lastAudited": "2026-04-21T13:30:00Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T21:58:06Z",
+      "result": "clean"
     },
     "arithmetic-series-oq-04": {
       "auditCount": 3,
@@ -732,10 +732,10 @@
       "result": "clean"
     },
     "bertrands-postulate-oq-03-oq-04-oq-03": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T10:45:42Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T21:57:19Z",
+      "result": "clean"
     },
     "bezout-identity": {
       "auditCount": 3,
@@ -744,9 +744,9 @@
       "result": "clean"
     },
     "bezout-identity-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:40:52Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "bezout-identity-oq-02": {
@@ -842,9 +842,9 @@
       "result": "clean"
     },
     "bezout-identity-oq-03-oq-01-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:40:52Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "bezout-identity-oq-03-oq-04": {
@@ -872,10 +872,10 @@
       "result": "clean"
     },
     "bezout-identity-oq-04-oq-02": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T17:27:38Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T22:00:47Z",
+      "result": "clean"
     },
     "binary-gcd": {
       "auditCount": 3,
@@ -944,10 +944,10 @@
       "result": "clean"
     },
     "binomial-theorem-oq-02-oq-01-oq-03": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-04-21T15:13:46Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T21:58:06Z",
+      "result": "clean"
     },
     "binomial-theorem-oq-02-oq-02": {
       "auditCount": 3,
@@ -956,9 +956,9 @@
       "result": "clean"
     },
     "binomial-theorem-oq-02-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:41:21Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "binomial-theorem-oq-02-oq-04": {
@@ -992,9 +992,9 @@
       "result": "clean"
     },
     "binomial-theorem-oq-04-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:39:44Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "binomial-theorem-oq-04-oq-02": {
@@ -1063,9 +1063,9 @@
       "result": "clean"
     },
     "birthday-problem-oq-03-oq-01-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:42:01Z",
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "birthday-problem-oq-03-oq-01-oq-02": {
@@ -1355,10 +1355,10 @@
       "result": "clean"
     },
     "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T10:41:07Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T21:57:19Z",
+      "result": "clean"
     },
     "cantor-diagonalization-oq-02": {
       "auditCount": 7,
@@ -1373,9 +1373,9 @@
       "result": "clean"
     },
     "cantor-diagonalization-oq-02-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:39:44Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "cantor-diagonalization-oq-02-oq-03-oq-02": {
@@ -1397,9 +1397,9 @@
       "result": "clean"
     },
     "cantor-diagonalization-oq-03-oq-01-incomplete-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:42:01Z",
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "cantor-diagonalization-oq-03-oq-01-oq-01": {
@@ -1511,10 +1511,10 @@
       "result": "clean"
     },
     "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01": {
-      "auditCount": 7,
+      "auditCount": 8,
       "issues": [],
-      "lastAudited": "2026-04-21T11:53:37Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T21:58:06Z",
+      "result": "clean"
     },
     "cauchy-schwarz-integral-oq-01-oq-02": {
       "auditCount": 3,
@@ -1649,9 +1649,9 @@
       "result": "clean"
     },
     "cayley-hamilton-minpoly-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:39:44Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "cayley-hamilton-minpoly-oq-02": {
@@ -1691,14 +1691,14 @@
       "result": "clean"
     },
     "cayley-hamilton-minpoly-oq-03-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T10:43:49Z",
+      "lastAudited": "2026-04-22T21:57:19Z",
       "result": "clean"
     },
     "cayley-hamilton-minpoly-oq-04": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T15:37:25Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "cayley-hamilton-minpoly-oq-05": {
@@ -1744,15 +1744,15 @@
       "result": "clean"
     },
     "cayley-hamilton-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:39:11Z",
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "cayley-hamilton-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:39:12Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "cayley-hamilton-reduction": {
@@ -1768,9 +1768,9 @@
       "result": "clean"
     },
     "cayley-hamilton-reduction-oq-01-oq-02": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-04-21T12:51:34Z",
+      "lastAudited": "2026-04-22T21:58:06Z",
       "result": "clean"
     },
     "cayley-hamilton-reduction-oq-02": {
@@ -1865,8 +1865,8 @@
       "result": "clean"
     },
     "cevas-theorem-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T15:37:09Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "cevas-theorem-oq-02": {
@@ -1882,8 +1882,8 @@
       "result": "clean"
     },
     "cevas-theorem-oq-02-oq-01-oq-02": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T15:36:51Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "cevas-theorem-oq-02-oq-01-oq-03": {
@@ -1987,13 +1987,13 @@
       "result": "clean"
     },
     "chinese-remainder-non-coprime-oq-02": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T15:36:40Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "chinese-remainder-non-coprime-oq-03": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T12:40:09Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T21:58:06Z",
       "result": "clean"
     },
     "chinese-remainder-non-coprime-oq-03-oq-02": {
@@ -2033,9 +2033,9 @@
       "result": "clean"
     },
     "collatz-structured-oq-02-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:41:21Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "collatz-structured-oq-03": {
@@ -2051,8 +2051,8 @@
       "result": "clean"
     },
     "combinations-formula-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T15:36:29Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "combinations-formula-oq-02": {
@@ -2110,9 +2110,9 @@
       "result": "clean"
     },
     "cramers-rule-oq-01-oq-04": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:42:01Z",
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "cramers-rule-oq-02": {
@@ -2128,21 +2128,21 @@
       "result": "clean"
     },
     "cramers-rule-oq-04": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:39:11Z",
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "cube-root-2-irrational": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:39:11Z",
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "cube-root-3-irrational": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:40:52Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "cube-root-3-irrational-oq-02": {
@@ -2194,8 +2194,8 @@
       "result": "clean"
     },
     "denumerability-rationals-oq-02": {
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:39:10Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "denumerability-rationals-oq-02-oq-02": {
@@ -2375,12 +2375,12 @@
       "result": "clean"
     },
     "dirichlets-theorem-oq-03": {
-      "auditCount": 6,
+      "auditCount": 7,
       "issues": [
         "sorry mismatch corrected in meta.json"
       ],
-      "lastAudited": "2026-04-21T11:34:06Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T21:57:19Z",
+      "result": "clean"
     },
     "dissection-of-cubes": {
       "auditCount": 3,
@@ -2706,9 +2706,9 @@
       "result": "clean"
     },
     "erdos-1001-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:42:01Z",
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "erdos-1002": {
@@ -2971,10 +2971,10 @@
       "result": "clean"
     },
     "erdos-102": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T18:53:44Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T22:00:47Z",
+      "result": "clean"
     },
     "erdos-1020": {
       "auditCount": 5,
@@ -3013,9 +3013,9 @@
       "result": "clean"
     },
     "erdos-1023-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:40:52Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "erdos-1024": {
@@ -3055,10 +3055,10 @@
       "result": "clean"
     },
     "erdos-1028": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-04-21T18:53:44Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T22:00:47Z",
+      "result": "clean"
     },
     "erdos-1029": {
       "auditCount": 5,
@@ -3565,10 +3565,10 @@
       "result": "clean"
     },
     "erdos-109-oq-01": {
-      "auditCount": 8,
+      "auditCount": 9,
       "issues": [],
-      "lastAudited": "2026-04-21T11:03:29Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T21:57:19Z",
+      "result": "clean"
     },
     "erdos-1090": {
       "agentId": "auditor-cycle-20-batch",
@@ -3643,15 +3643,15 @@
       "result": "clean"
     },
     "erdos-1098-oq-01-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:41:21Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "erdos-1098-oq-04": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:42:00Z",
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "erdos-1099": {
@@ -3847,10 +3847,10 @@
       "result": "clean"
     },
     "erdos-1124": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T18:36:21Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T22:00:47Z",
+      "result": "clean"
     },
     "erdos-1124-oq-01": {
       "auditCount": 3,
@@ -3907,10 +3907,10 @@
       "result": "clean"
     },
     "erdos-1130": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T18:36:21Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T22:00:47Z",
+      "result": "clean"
     },
     "erdos-1131": {
       "auditCount": 3,
@@ -3925,16 +3925,16 @@
       "result": "clean"
     },
     "erdos-1132": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T18:36:21Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T22:00:47Z",
+      "result": "clean"
     },
     "erdos-1133": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T18:36:21Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T22:00:47Z",
+      "result": "clean"
     },
     "erdos-1134": {
       "auditCount": 4,
@@ -4129,10 +4129,10 @@
       "result": "clean"
     },
     "erdos-1158": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T18:36:21Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T22:00:47Z",
+      "result": "clean"
     },
     "erdos-1159": {
       "auditCount": 3,
@@ -4165,10 +4165,10 @@
       "result": "clean"
     },
     "erdos-1165": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T18:23:16Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T22:00:47Z",
+      "result": "clean"
     },
     "erdos-1166": {
       "agentId": "auditor-cycle-20-batch",
@@ -4238,8 +4238,8 @@
     },
     "erdos-1175": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-04-21T18:21:08Z",
+      "auditCount": 5,
+      "lastAudited": "2026-04-22T22:00:47Z",
       "result": "clean"
     },
     "erdos-1176": {
@@ -4250,8 +4250,8 @@
     },
     "erdos-1177": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T18:05:59Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:47Z",
       "result": "clean"
     },
     "erdos-1178": {
@@ -4279,9 +4279,9 @@
       "result": "clean"
     },
     "erdos-1181": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-04-21T18:05:18Z",
+      "lastAudited": "2026-04-22T22:00:47Z",
       "result": "clean"
     },
     "erdos-1182": {
@@ -4303,9 +4303,9 @@
       "result": "clean"
     },
     "erdos-1196": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T11:37:16Z",
+      "lastAudited": "2026-04-22T21:58:06Z",
       "result": "clean"
     },
     "erdos-12": {
@@ -4316,32 +4316,32 @@
     },
     "erdos-120": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T18:04:26Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:47Z",
       "result": "clean"
     },
     "erdos-1202": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T10:44:38Z",
+      "lastAudited": "2026-04-22T21:57:19Z",
       "result": "clean"
     },
     "erdos-1205": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T10:44:38Z",
+      "lastAudited": "2026-04-22T21:57:19Z",
       "result": "clean"
     },
     "erdos-1206": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T10:44:38Z",
+      "lastAudited": "2026-04-22T21:57:19Z",
       "result": "clean"
     },
     "erdos-1208": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T10:44:38Z",
+      "lastAudited": "2026-04-22T21:57:19Z",
       "result": "clean"
     },
     "erdos-121": {
@@ -4351,39 +4351,39 @@
       "result": "clean"
     },
     "erdos-1211": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T10:44:38Z",
+      "lastAudited": "2026-04-22T21:57:19Z",
       "result": "clean"
     },
     "erdos-1212": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T10:44:38Z",
+      "lastAudited": "2026-04-22T21:57:19Z",
       "result": "clean"
     },
     "erdos-1213": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T10:48:35Z",
+      "lastAudited": "2026-04-22T21:57:19Z",
       "result": "clean"
     },
     "erdos-1215": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T10:48:35Z",
+      "lastAudited": "2026-04-22T21:57:19Z",
       "result": "clean"
     },
     "erdos-1216": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T10:48:35Z",
+      "lastAudited": "2026-04-22T21:57:19Z",
       "result": "clean"
     },
     "erdos-1217": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T10:48:35Z",
+      "lastAudited": "2026-04-22T21:57:19Z",
       "result": "clean"
     },
     "erdos-122": {
@@ -4418,8 +4418,8 @@
     },
     "erdos-126": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T18:01:41Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:47Z",
       "result": "clean"
     },
     "erdos-127": {
@@ -4442,8 +4442,8 @@
     },
     "erdos-13": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:02:52Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:47Z",
       "result": "clean"
     },
     "erdos-130": {
@@ -4459,15 +4459,15 @@
       "result": "clean"
     },
     "erdos-131": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-04-21T16:03:36Z",
+      "lastAudited": "2026-04-22T22:00:47Z",
       "result": "clean"
     },
     "erdos-131-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:40:53Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "erdos-132": {
@@ -4527,9 +4527,9 @@
       "result": "clean"
     },
     "erdos-14-unique-sums": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:40:52Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "erdos-140": {
@@ -4569,9 +4569,9 @@
       "result": "issues-fixed"
     },
     "erdos-146": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T16:02:52Z",
+      "lastAudited": "2026-04-22T22:00:47Z",
       "result": "clean"
     },
     "erdos-147": {
@@ -4599,9 +4599,9 @@
       "result": "clean"
     },
     "erdos-150": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T16:02:52Z",
+      "lastAudited": "2026-04-22T22:00:47Z",
       "result": "clean"
     },
     "erdos-151": {
@@ -4635,9 +4635,9 @@
       "result": "issues-fixed"
     },
     "erdos-155": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T16:02:52Z",
+      "lastAudited": "2026-04-22T22:00:47Z",
       "result": "clean"
     },
     "erdos-156": {
@@ -4679,9 +4679,9 @@
       "result": "clean"
     },
     "erdos-161": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T16:02:34Z",
+      "lastAudited": "2026-04-22T22:00:47Z",
       "result": "clean"
     },
     "erdos-162": {
@@ -4709,9 +4709,9 @@
       "result": "clean"
     },
     "erdos-166": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T16:02:34Z",
+      "lastAudited": "2026-04-22T22:00:47Z",
       "result": "clean"
     },
     "erdos-167": {
@@ -4739,9 +4739,9 @@
       "result": "clean"
     },
     "erdos-170": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T16:02:34Z",
+      "lastAudited": "2026-04-22T22:00:47Z",
       "result": "clean"
     },
     "erdos-171": {
@@ -4763,9 +4763,9 @@
       "result": "clean"
     },
     "erdos-174": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T16:02:14Z",
+      "lastAudited": "2026-04-22T22:00:47Z",
       "result": "clean"
     },
     "erdos-175": {
@@ -4787,9 +4787,9 @@
       "result": "issues-fixed"
     },
     "erdos-177-oq-04": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:40:52Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "erdos-178": {
@@ -4836,8 +4836,8 @@
     },
     "erdos-183": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:02:13Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:47Z",
       "result": "clean"
     },
     "erdos-184": {
@@ -4854,14 +4854,14 @@
     },
     "erdos-186": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:02:12Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-187": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:02:12Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:47Z",
       "result": "clean"
     },
     "erdos-188": {
@@ -4914,8 +4914,8 @@
     },
     "erdos-194": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:01:52Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-195": {
@@ -5025,8 +5025,8 @@
     },
     "erdos-209": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:01:22Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-21": {
@@ -5037,8 +5037,8 @@
     },
     "erdos-210": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:01:22Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-211": {
@@ -5110,14 +5110,14 @@
     },
     "erdos-221": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:01:04Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-222": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:01:04Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-223": {
@@ -5158,8 +5158,8 @@
     },
     "erdos-229": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:01:03Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-23": {
@@ -5213,8 +5213,8 @@
     },
     "erdos-237": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:00:45Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-238": {
@@ -5225,8 +5225,8 @@
     },
     "erdos-239": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:00:46Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-24": {
@@ -5284,9 +5284,9 @@
       "result": "clean"
     },
     "erdos-247-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:40:52Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "erdos-248": {
@@ -5375,8 +5375,8 @@
     },
     "erdos-26": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:00:45Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-260": {
@@ -5411,8 +5411,8 @@
     },
     "erdos-265": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:00:45Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-266": {
@@ -5459,8 +5459,8 @@
     },
     "erdos-272": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:00:44Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-273": {
@@ -5512,8 +5512,8 @@
       "result": "clean"
     },
     "erdos-28-additive-bases": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T15:36:18Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "erdos-280": {
@@ -5542,8 +5542,8 @@
     },
     "erdos-284": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:00:32Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-285": {
@@ -5554,14 +5554,14 @@
     },
     "erdos-286": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:00:32Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-287": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:00:19Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-288": {
@@ -5594,8 +5594,8 @@
     },
     "erdos-290": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:00:19Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-291": {
@@ -5630,8 +5630,8 @@
     },
     "erdos-296": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:00:19Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-297": {
@@ -5703,8 +5703,8 @@
     },
     "erdos-306": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:00:18Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-307": {
@@ -5727,8 +5727,8 @@
     },
     "erdos-309": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:00:18Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-31": {
@@ -5739,8 +5739,8 @@
     },
     "erdos-310": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T16:00:18Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-311": {
@@ -5763,8 +5763,8 @@
     },
     "erdos-314": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:59:56Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-315": {
@@ -5865,8 +5865,8 @@
     },
     "erdos-328": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:59:55Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-329": {
@@ -5876,21 +5876,21 @@
       "result": "issues-fixed"
     },
     "erdos-33": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T15:59:42Z",
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-330": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:59:55Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-331": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:59:55Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:34Z",
       "result": "clean"
     },
     "erdos-332": {
@@ -5919,8 +5919,8 @@
     },
     "erdos-336": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:59:41Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-337": {
@@ -6118,8 +6118,8 @@
     },
     "erdos-365": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:59:41Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-366": {
@@ -6208,8 +6208,8 @@
     },
     "erdos-379": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:59:41Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-38": {
@@ -6292,8 +6292,8 @@
     },
     "erdos-391": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:59:28Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-392": {
@@ -6306,8 +6306,8 @@
     },
     "erdos-393": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:59:28Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-394": {
@@ -6330,8 +6330,8 @@
     },
     "erdos-396": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:59:28Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-397": {
@@ -6530,8 +6530,8 @@
     },
     "erdos-425": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:59:05Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-426": {
@@ -6572,8 +6572,8 @@
     },
     "erdos-431": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:59:04Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-432": {
@@ -6596,8 +6596,8 @@
     },
     "erdos-435": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:59:04Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-436": {
@@ -6656,8 +6656,8 @@
     },
     "erdos-444": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:58:51Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-445": {
@@ -6860,8 +6860,8 @@
     },
     "erdos-474": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:58:50Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-475": {
@@ -6872,9 +6872,9 @@
     },
     "erdos-476": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:58:12Z",
-      "result": "fixed"
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
+      "result": "clean"
     },
     "erdos-476-oq-05": {
       "auditCount": 4,
@@ -6900,14 +6900,14 @@
     },
     "erdos-479": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:56:32Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-48": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:56:32Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-480": {
@@ -6924,8 +6924,8 @@
     },
     "erdos-482": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:56:32Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-483": {
@@ -6990,8 +6990,8 @@
     },
     "erdos-490": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-04-21T15:56:31Z",
+      "auditCount": 5,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-490-oq-01": {
@@ -7026,8 +7026,8 @@
     },
     "erdos-495": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:56:16Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-496": {
@@ -7061,8 +7061,8 @@
       "result": "clean"
     },
     "erdos-5-prime-gaps": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T15:33:59Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "erdos-50": {
@@ -7085,8 +7085,8 @@
     },
     "erdos-502": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:56:16Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-503": {
@@ -7127,8 +7127,8 @@
     },
     "erdos-509": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:56:15Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-51": {
@@ -7151,8 +7151,8 @@
     },
     "erdos-512": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:56:15Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-513": {
@@ -7211,8 +7211,8 @@
     },
     "erdos-521": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:56:02Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-522": {
@@ -7235,8 +7235,8 @@
     },
     "erdos-525": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:56:02Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-525-oq-02": {
@@ -7349,8 +7349,8 @@
     },
     "erdos-541": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:55:44Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-542": {
@@ -7487,8 +7487,8 @@
     },
     "erdos-562": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:55:44Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-563": {
@@ -7499,8 +7499,8 @@
     },
     "erdos-564": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:55:44Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:21Z",
       "result": "clean"
     },
     "erdos-565": {
@@ -7529,8 +7529,8 @@
     },
     "erdos-569": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:55:43Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-57": {
@@ -7547,8 +7547,8 @@
     },
     "erdos-571": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:55:43Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-572": {
@@ -7607,8 +7607,8 @@
     },
     "erdos-580": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:55:27Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-581": {
@@ -7619,14 +7619,14 @@
     },
     "erdos-582": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:55:27Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-583": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:55:27Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-584": {
@@ -7861,8 +7861,8 @@
     },
     "erdos-616": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:53Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-617": {
@@ -7873,14 +7873,14 @@
     },
     "erdos-618": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:52Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-619": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:52Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-62": {
@@ -8001,8 +8001,8 @@
     },
     "erdos-636": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:52Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-637": {
@@ -8019,8 +8019,8 @@
     },
     "erdos-639": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:52Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-64": {
@@ -8043,8 +8043,8 @@
     },
     "erdos-642": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:52Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-643": {
@@ -8064,8 +8064,8 @@
     },
     "erdos-645": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:38Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-646": {
@@ -8124,8 +8124,8 @@
     },
     "erdos-653": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:37Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-654": {
@@ -8161,14 +8161,14 @@
     },
     "erdos-659": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:37Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-659-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:41:21Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "erdos-66": {
@@ -8209,14 +8209,14 @@
     },
     "erdos-665": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:37Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-666": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-04-21T15:54:37Z",
+      "auditCount": 5,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-667": {
@@ -8233,8 +8233,8 @@
     },
     "erdos-669": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:37Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-67": {
@@ -8282,8 +8282,8 @@
     },
     "erdos-676": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:19Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-677": {
@@ -8294,9 +8294,9 @@
     },
     "erdos-678": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 6,
-      "lastAudited": "2026-04-21T12:07:57Z",
-      "result": "issues-fixed"
+      "auditCount": 7,
+      "lastAudited": "2026-04-22T21:58:06Z",
+      "result": "clean"
     },
     "erdos-679": {
       "auditCount": 4,
@@ -8391,8 +8391,8 @@
     },
     "erdos-692": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:19Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-693": {
@@ -8422,14 +8422,14 @@
     },
     "erdos-697": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:19Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-698": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:19Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-699": {
@@ -8518,20 +8518,20 @@
     },
     "erdos-71": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:02Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-710": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:02Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-711": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:01Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-712": {
@@ -8542,14 +8542,14 @@
     },
     "erdos-713": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:01Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-714": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:01Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-715": {
@@ -8586,14 +8586,14 @@
     },
     "erdos-72": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:01Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-720": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:54:01Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T22:00:07Z",
       "result": "clean"
     },
     "erdos-721": {
@@ -8658,14 +8658,14 @@
     },
     "erdos-73": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-04-21T10:41:07Z",
-      "result": "issues-fixed"
+      "auditCount": 5,
+      "lastAudited": "2026-04-22T21:57:19Z",
+      "result": "clean"
     },
     "erdos-730": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:53:42Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-731": {
@@ -8688,14 +8688,14 @@
     },
     "erdos-734": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:53:41Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-735": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:53:42Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-736": {
@@ -8718,8 +8718,8 @@
     },
     "erdos-739": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:53:27Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-74": {
@@ -8736,26 +8736,26 @@
     },
     "erdos-741": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:53:27Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-742": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:53:27Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-743": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:53:27Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-744": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:53:27Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-745": {
@@ -8830,8 +8830,8 @@
     },
     "erdos-755": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-04-21T15:53:26Z",
+      "auditCount": 5,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-756": {
@@ -8866,8 +8866,8 @@
     },
     "erdos-760": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:53:12Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-761": {
@@ -8890,14 +8890,14 @@
     },
     "erdos-764": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:53:12Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-765": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:53:11Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-766": {
@@ -8908,8 +8908,8 @@
     },
     "erdos-767": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:53:11Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-768": {
@@ -8938,20 +8938,20 @@
     },
     "erdos-771": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:53:11Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-772": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:53:11Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-773": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:53:11Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-774": {
@@ -8975,14 +8975,14 @@
     },
     "erdos-777": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:52:57Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-778": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:52:57Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-779": {
@@ -9023,8 +9023,8 @@
     },
     "erdos-784": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:52:56Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-785": {
@@ -9047,14 +9047,14 @@
     },
     "erdos-788": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:52:56Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-789": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:52:42Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-79": {
@@ -9065,8 +9065,8 @@
     },
     "erdos-790": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:52:41Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-791": {
@@ -9101,8 +9101,8 @@
     },
     "erdos-796": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:52:41Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-797": {
@@ -9149,8 +9149,8 @@
     },
     "erdos-802": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:52:41Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:55Z",
       "result": "clean"
     },
     "erdos-803": {
@@ -9185,8 +9185,8 @@
     },
     "erdos-808": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:52:24Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-809": {
@@ -9209,14 +9209,14 @@
     },
     "erdos-811": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:52:23Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-812": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:52:23Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-813": {
@@ -9233,14 +9233,14 @@
     },
     "erdos-815": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:52:21Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-816": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:52:20Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-817": {
@@ -9257,14 +9257,14 @@
     },
     "erdos-819": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:52:19Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-82": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:51:41Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-820": {
@@ -9275,8 +9275,8 @@
     },
     "erdos-821": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:51:41Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-822": {
@@ -9287,8 +9287,8 @@
     },
     "erdos-823": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:51:40Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-824": {
@@ -9323,8 +9323,8 @@
     },
     "erdos-829": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:51:38Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-83": {
@@ -9365,8 +9365,8 @@
     },
     "erdos-835": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:51:37Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-836": {
@@ -9414,8 +9414,8 @@
     },
     "erdos-841": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:51:09Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-842": {
@@ -9426,8 +9426,8 @@
     },
     "erdos-843": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:51:09Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-844": {
@@ -9450,8 +9450,8 @@
     },
     "erdos-847": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:51:08Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-848": {
@@ -9510,8 +9510,8 @@
     },
     "erdos-855": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:51:08Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-856": {
@@ -9594,38 +9594,38 @@
     },
     "erdos-868": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:50:52Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-869": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:48:53Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-87": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:50:52Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-870": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:48:25Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-871": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:48:53Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-872": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:48:52Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-873": {
@@ -9642,8 +9642,8 @@
     },
     "erdos-875": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:48:52Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-876": {
@@ -9672,8 +9672,8 @@
     },
     "erdos-88": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:48:52Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-880": {
@@ -9702,8 +9702,8 @@
     },
     "erdos-884": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-04-21T15:48:52Z",
+      "auditCount": 5,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-885": {
@@ -9714,8 +9714,8 @@
     },
     "erdos-886": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:50:51Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:41Z",
       "result": "clean"
     },
     "erdos-887": {
@@ -9804,8 +9804,8 @@
     },
     "erdos-9": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:48:51Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-90": {
@@ -9834,20 +9834,20 @@
     },
     "erdos-903": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:48:01Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-904": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:48:01Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-905": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:48:01Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-906": {
@@ -9900,8 +9900,8 @@
     },
     "erdos-912": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:48:00Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-913": {
@@ -9930,14 +9930,14 @@
     },
     "erdos-917": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:48:00Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-918": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:48:00Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-919": {
@@ -9948,8 +9948,8 @@
     },
     "erdos-92": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:48:00Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-920": {
@@ -9960,14 +9960,14 @@
     },
     "erdos-921": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:47:14Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-922": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:47:13Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-923": {
@@ -9984,8 +9984,8 @@
     },
     "erdos-925": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:47:13Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-926": {
@@ -9996,8 +9996,8 @@
     },
     "erdos-927": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:47:12Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-928": {
@@ -10020,8 +10020,8 @@
     },
     "erdos-930": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:47:12Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-931": {
@@ -10038,14 +10038,14 @@
     },
     "erdos-933": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-04-21T15:47:12Z",
+      "auditCount": 5,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-934": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:46:29Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-935": {
@@ -10074,8 +10074,8 @@
     },
     "erdos-939": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:46:29Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-94": {
@@ -10085,9 +10085,9 @@
       "result": "clean"
     },
     "erdos-94-oq-02": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T15:46:29Z",
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-940": {
@@ -10134,8 +10134,8 @@
     },
     "erdos-947": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:46:29Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-948": {
@@ -10158,8 +10158,8 @@
     },
     "erdos-950": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:46:06Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-951": {
@@ -10194,8 +10194,8 @@
     },
     "erdos-956": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:46:06Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-957": {
@@ -10248,8 +10248,8 @@
     },
     "erdos-964": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:46:06Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-965": {
@@ -10260,8 +10260,8 @@
     },
     "erdos-966": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:46:05Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-967": {
@@ -10272,14 +10272,14 @@
     },
     "erdos-968": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:46:05Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:27Z",
       "result": "clean"
     },
     "erdos-969": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:46:04Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "erdos-97": {
@@ -10290,8 +10290,8 @@
     },
     "erdos-970": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:46:04Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "erdos-971": {
@@ -10339,8 +10339,8 @@
     },
     "erdos-978": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:42:49Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "erdos-979": {
@@ -10363,14 +10363,14 @@
     },
     "erdos-981": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:42:49Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "erdos-982": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:42:49Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "erdos-983": {
@@ -10387,8 +10387,8 @@
     },
     "erdos-985": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:42:49Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "erdos-986": {
@@ -10411,14 +10411,14 @@
     },
     "erdos-989": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:42:49Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "erdos-99": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:42:49Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "erdos-990": {
@@ -10429,26 +10429,26 @@
     },
     "erdos-991": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:42:26Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "erdos-992": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:42:27Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "erdos-993": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:42:26Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "erdos-994": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:42:26Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "erdos-995": {
@@ -10459,8 +10459,8 @@
     },
     "erdos-996": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:42:26Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "erdos-997": {
@@ -10482,8 +10482,8 @@
       "result": "clean"
     },
     "erdos-ko-rado": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T15:33:47Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "erdos-szekeres": {
@@ -10752,9 +10752,9 @@
       "result": "clean"
     },
     "fourier-series-oq-02-oq-01": {
-      "auditCount": 6,
+      "auditCount": 7,
       "issues": [],
-      "lastAudited": "2026-04-21T13:16:35Z",
+      "lastAudited": "2026-04-22T21:58:06Z",
       "result": "clean"
     },
     "fourier-series-oq-02-oq-03": {
@@ -10878,10 +10878,10 @@
       "result": "clean"
     },
     "gcd-algorithm-oq-01-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:41:21Z",
-      "result": "clean"
+      "lastAudited": "2026-04-22T21:59:00Z",
+      "result": "no-meta"
     },
     "gcd-algorithm-oq-02": {
       "auditCount": 3,
@@ -10890,9 +10890,9 @@
       "result": "clean"
     },
     "gcd-algorithm-oq-04": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T13:58:19Z",
+      "lastAudited": "2026-04-22T21:58:06Z",
       "result": "clean"
     },
     "gelfond-schneider": {
@@ -10944,9 +10944,9 @@
       "result": "clean"
     },
     "godel-first-incompleteness-oq01": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-04-21T13:17:20Z",
+      "lastAudited": "2026-04-22T21:58:06Z",
       "result": "clean"
     },
     "godel-incompleteness": {
@@ -10956,10 +10956,10 @@
       "result": "clean"
     },
     "godel-second-incompleteness-oq02": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T13:19:31Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T21:58:26Z",
+      "result": "clean"
     },
     "greens-theorem": {
       "agentId": "auditor-cycle-20-batch",
@@ -11274,9 +11274,9 @@
       "result": "clean"
     },
     "inclusion-exclusion-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:39:44Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "infinitude-primes": {
@@ -11286,15 +11286,15 @@
       "result": "clean"
     },
     "infinitude-primes-4k1": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:39:44Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "infinitude-primes-4k3": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:39:44Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "infinitude-primes-oq-03": {
@@ -11316,9 +11316,9 @@
       "result": "clean"
     },
     "intermediate-value-theorem-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:39:43Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "intermediate-value-theorem-oq-03": {
@@ -11374,9 +11374,9 @@
       "result": "clean"
     },
     "isosceles-triangle-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:41:21Z",
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "kepler-conjecture": {
@@ -11404,8 +11404,8 @@
       "result": "clean"
     },
     "konigsberg-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T15:33:33Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "konigsberg-oq-02": {
@@ -11481,8 +11481,8 @@
       "result": "clean"
     },
     "lagrange-four-squares-oq-02": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T15:33:25Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "lagrange-four-squares-oq-04": {
@@ -11534,9 +11534,9 @@
       "result": "clean"
     },
     "law-of-cosines-oq-01-oq-05": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-04-21T13:19:56Z",
+      "lastAudited": "2026-04-22T21:58:06Z",
       "result": "clean"
     },
     "law-of-cosines-oq-03": {
@@ -11556,12 +11556,12 @@
       "result": "clean"
     },
     "law-of-cosines-oq-06": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [
         "gallery entry renamed law-of-cosines-oq-06\u2192law-of-sines-oq-06; content was Law of Sines not Law of Cosines (fixed by PRs #10749, #10757)"
       ],
-      "lastAudited": "2026-04-21T00:00:00Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T21:58:44Z",
+      "result": "no-meta"
     },
     "law-of-sines-oq-06": {
       "auditCount": 3,
@@ -11684,9 +11684,9 @@
       "result": "clean"
     },
     "lhopital-oq-01": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-21T15:34:45Z",
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "lhopital-oq-02": {
@@ -11697,8 +11697,8 @@
     },
     "liouville-theorem": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-21T15:42:26Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "lovasz-local-lemma": {
@@ -11762,9 +11762,9 @@
       "result": "clean"
     },
     "minkowski-theorem-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:41:21Z",
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "morleys-theorem": {
@@ -12451,9 +12451,9 @@
       "result": "clean"
     },
     "sperner-ndim-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:41:21Z",
+      "lastAudited": "2026-04-22T21:59:14Z",
       "result": "clean"
     },
     "sperner-ndim-oq-03": {
@@ -12523,9 +12523,9 @@
       "result": "issues-found"
     },
     "sqrt2-plus-sqrt3-irrational": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T15:40:52Z",
+      "lastAudited": "2026-04-22T21:59:00Z",
       "result": "clean"
     },
     "sqrt2-plus-sqrt3-irrational-oq-03": {
@@ -12688,9 +12688,9 @@
       "result": "clean"
     },
     "szemeredi-hypergraph-core-oq-01-incomplete-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-21T15:31:06Z",
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "szemeredi-regularity": {
@@ -12838,8 +12838,8 @@
       "result": "clean"
     },
     "unit-distance-independence": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T15:33:12Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "vietas-formulas": {
@@ -12884,13 +12884,13 @@
       "result": "clean"
     },
     "wilsons-theorem-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T15:32:51Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "wilsons-theorem-oq-02": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T15:36:00Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T21:58:44Z",
       "result": "clean"
     },
     "wilsons-theorem-oq-03": {
@@ -12969,9 +12969,9 @@
       "result": "clean"
     },
     "yang-mills-lattice-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-21T12:01:35Z",
+      "lastAudited": "2026-04-22T21:58:06Z",
       "result": "clean"
     },
     "yang-mills-transfer-matrix": {
