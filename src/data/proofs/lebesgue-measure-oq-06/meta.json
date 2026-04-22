@@ -20,7 +20,7 @@
     "badge": "wip",
     "sorries": 5,
     "axiomCount": 5,
-    "lineCount": 287,
+    "lineCount": 295,
     "assumptions": "5 sorries encoding axiomatized results: hausdorff_free_subgroup (free subgroup of SO(3)), banach_tarski (main theorem), banach_tarski_pieces_nonmeasurable (non-measurability of pieces), int_amenable (ℤ amenability), free_group_not_amenable (F₂ non-amenability). The main proof requires ~800 lines via free subgroup of SO(3) — beyond this gallery entry's scope. Note: paradoxical_no_finite_measure is fully proved (no sorry).",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
@@ -191,7 +191,7 @@
   "leanFile": {
     "imports": ["Mathlib"],
     "namespace": "BanachTarski",
-    "lineCount": 287,
+    "lineCount": 295,
     "axiomCount": 5,
     "theoremCount": 7,
     "definitionCount": 5,
