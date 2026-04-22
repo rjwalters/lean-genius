@@ -112,6 +112,26 @@
     }
   ],
   "crossReferences": [
+    {
+      "targetId": "collatz-structured",
+      "relationship": "complementary",
+      "description": "Establishes convergence for structured families (powers of 2, specific small numbers like 27 which takes 111 steps). Together with this entry's cycle non-existence results, builds a fuller picture of Collatz dynamics."
+    },
+    {
+      "targetId": "collatz-cycles-oq-04",
+      "relationship": "extends",
+      "description": "Generalizes the j=1,2,3,4 halving constraints proved here to a unified algebraic proof for all j: the product identity ∏(3nᵢ+1) = 2^M·∏nᵢ forces 3^j < 2^M via cyclic permutation and product telescoping."
+    },
+    {
+      "targetId": "collatz-structured-oq-02",
+      "relationship": "sibling",
+      "description": "A parallel formalization of Collatz cycle non-existence with a different proof approach; the two entries together provide complementary structural constraints on hypothetical cycles."
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "technique",
+      "description": "The Collatz map sends odd n to 3n+1, making divisibility by 3 (and 4) central to cycle analysis. The mod-4 residue structure is used here to prove the 3/4 contraction theorem for n ≡ 1 mod 4."
+    }
   ],
   "mainTheorems": [
     {
