@@ -143,5 +143,37 @@
     "path": "Proofs/Erdos19OQ01Problem.lean",
     "sorries": 0
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-19",
+      "relationship": "foundational",
+      "description": "Parent entry: the EFL conjecture itself. This file is the open question extension — what is the explicit threshold N₀? The parent formalizes the conjecture statement; this file establishes the structural framework (threshold existence, finite reduction theorem) for determining N₀."
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "The Four Color Theorem is another major graph coloring result with a long proof history. Both four-coloring (planar graphs) and EFL (union of K_n copies) are chromatic number theorems resolved after decades. The proof methods differ fundamentally: 4CT used computer case checking; EFL used the absorbing method."
+    },
+    {
+      "targetId": "ramsey-r4k-extensions",
+      "relationship": "related",
+      "description": "Ramsey R(4,k) bounds: another Ramsey-type graph theory result using the probabilistic method. Like EFL, this involves clique structures and chromatic bounds. Both use extremal graph theory techniques (absorbing method for EFL, probabilistic method for R(4,k)) to establish existence results."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey's theorem: the foundational result that large enough graphs contain monochromatic cliques. The EFL conjecture is framed as a Ramsey-type result — given enough edge-disjoint cliques, the chromatic number is exactly n. Ramsey theory provides the conceptual framework for understanding why such structural guarantees exist."
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "Szemerédi's Regularity Lemma: a cornerstone of extremal graph theory. The absorbing method used by Kang et al. (2021) to prove EFL for large n is part of the same toolkit as the regularity lemma — both control graph structure probabilistically to enable clean combinatorial arguments."
+    },
+    {
+      "targetId": "szemeredi-hypergraph-core",
+      "relationship": "related",
+      "description": "Hypergraph Szemerédi theorems: EFL can be rephrased as a hypergraph coloring problem (color the hyperedges of a clique-hypergraph with n colors). The hypergraph regularity machinery (Szemerédi-type results for hypergraphs) is the technical foundation for the KKMO 2021 proof."
+    }
+  ],
   "sorries": 0
 }
