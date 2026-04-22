@@ -21,7 +21,7 @@
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
     "assumptions": "None. Fully verified with 0 sorries and 0 axioms.",
-    "lineCount": 65,
+    "lineCount": 79,
     "theoremCount": 1,
     "definitionCount": 0,
     "mathlibDependencies": [
@@ -59,7 +59,8 @@
       "Nat.prod_pow_factorization_centralBinom works over range(2n+1), not the factorization support — no hcb_ne needed",
       "Non-prime p have (centralBinom n).factorization p = 0, so p^0 = 1 — prod_filter_of_ne handles this",
       "The proof is 4 clean calc steps vs 6 steps with multiple helper lemmas in the original",
-      "Both proofs ultimately use Legendre's formula via pow_factorization_choose_le"
+      "Both proofs ultimately use Legendre's formula via pow_factorization_choose_le",
+      "Legendre's formula v_p(n!) = Σ_{k≥1} ⌊n/p^k⌋ implies v_p(C(2n,n)) ≤ log_p(2n), so each prime power contribution p^{v_p} ≤ 2n. This one-line bound (encoded in pow_factorization_choose_le) is the deepest number-theoretic content of the proof — everything else is algebraic manipulation of Finset products"
     ],
     "prerequisites": [
       "Nat.centralBinom: C(2n,n) defined in Mathlib.Data.Nat.Choose.Central",
@@ -107,11 +108,19 @@
     },
     {
       "id": "step2-prime-filter",
-      "title": "Steps 2–3: Prime Filter Collapse and Legendre Bound",
+      "title": "Step 2: Prime Filter Collapse",
       "startLine": 57,
+      "endLine": 64,
+      "summary": "Step 2 uses prod_filter_of_ne to collapse the full range(2n+1) product to primes only. Non-prime p have (centralBinom n).factorization p = 0, so p^0 = 1 contributes nothing. The by_contra h_nonprome argument formalizes the case split.",
+      "mathContext": "`Finset.prod_filter_of_ne`: a product over S equals the product over (S.filter (f ≠ 0)) when elements with f = 0 contribute multiplicative identity. `Nat.factorization_eq_zero_of_not_prime`: if p is not prime, p's valuation in any n is 0."
+    },
+    {
+      "id": "step3-legendre-bound",
+      "title": "Step 3: Legendre Bound per Prime",
+      "startLine": 65,
       "endLine": 71,
-      "summary": "Step 2 uses prod_filter_of_ne to collapse the range product to primes only (non-prime p have factorization p = 0, so p^0 = 1). Step 3 applies prod_le_prod + pow_factorization_choose_le (Legendre) to bound each p^(v_p) ≤ 2n.",
-      "mathContext": "Step 2: `Finset.prod_filter_of_ne` + `Nat.factorization_eq_zero_of_not_prime`. Step 3: `Finset.prod_le_prod` + `Nat.pow_factorization_choose_le` + `centralBinom_eq_two_mul_choose`. Legendre bound: $p^{v_p(\\binom{2n}{n})} \\le 2n$ for all primes $p$."
+      "summary": "Step 3 applies prod_le_prod to bound each p^(v_p(C(2n,n))) ≤ 2n via pow_factorization_choose_le (Legendre's formula). Uses centralBinom_eq_two_mul_choose to rewrite C(2n,n) in the form expected by the lemma.",
+      "mathContext": "`Nat.pow_factorization_choose_le`: p^(C(m+k,k).factorization p) ≤ m+k (Legendre bound). `centralBinom_eq_two_mul_choose`: centralBinom n = Nat.choose (2*n) n. `Finset.prod_le_prod`: pointwise bound implies product bound."
     },
     {
       "id": "step4-cardinality",
@@ -128,6 +137,7 @@
     "axiomCount": 0,
     "theoremCount": 1,
     "definitionCount": 0,
+    "lineCount": 79,
     "path": "Proofs/ChebyshevPNTBridgeOQ01OQ02.lean",
     "sorries": 0
   },

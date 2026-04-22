@@ -79,6 +79,14 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header: Testing Criterion and Algorithm Description",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Module docstring states the prime factor testing criterion: g is a primitive root mod p iff g^{(p-1)/q} ≢ 1 mod p for every prime q | (p-1). Explains why this works (orderOf g < p-1 implies ∃ prime q | p-1 with g^{(p-1)/q} = 1). Describes the O(k·log p) algorithm. Gives the expected search time O(log log p) via the Mertens-type bound φ(p-1)/(p-1) ≥ C/log log p. Imports Mathlib; enters PrimitiveRootsOQ02 namespace.",
+      "mathContext": "The criterion is a corollary of the structure theorem for cyclic groups: if H = ⟨g⟩ has order d < p-1, then d | (p-1)/q for some prime q | p-1 (since d is a proper divisor of p-1 and every proper divisor divides (p-1)/q for some prime factor q). Equivalently: g is a primitive root iff the order d = p-1 is not a proper multiple of any (p-1)/q."
+    },
+    {
       "id": "setup",
       "title": "Setup: Generators and Fermat's Little Theorem",
       "startLine": 55,

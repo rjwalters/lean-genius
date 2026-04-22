@@ -37,7 +37,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Vosper's theorem (1956) is the inverse result for Cauchy-Davenport (1813/1935): it characterizes WHEN the minimum |A+B| = |A|+|B|-1 is achieved. The Cauchy-Davenport theorem gives |A+B| ≥ min(p, |A|+|B|-1) for A,B ⊆ Z/pZ; Vosper showed the equality case (for non-trivial parameters) forces both A and B to be arithmetic progressions with the same step size. This is a cornerstone of additive combinatorics: the structure theorem dual to the counting theorem.",
+    "historicalContext": "The Cauchy-Davenport theorem was proved by Augustin-Louis Cauchy in 1813 for prime p and independently rediscovered by Harold Davenport in 1935. It gives the sharp lower bound |A+B| ≥ min(p, |A|+|B|-1) for subsets A, B of Z/pZ. Forty years later, A.G. Vosper (1956) asked: when is this bound tight? His answer — that equality forces both A and B to be arithmetic progressions with the same common difference — became the prototype for 'inverse problems' in additive combinatorics. The paradigm of asking 'what structure forces an extremal bound?' has since generated the Freiman-Ruzsa theorem, the Plünnecke-Ruzsa inequality, and the Green-Tao theorem on arithmetic progressions in the primes. Nathanson's 1996 monograph 'Additive Number Theory: Inverse Problems and the Geometry of Sumsets' gave an influential presentation of Vosper's result as §2.4, cementing its place as a textbook theorem in the subject.",
     "problemStatement": "Let p be prime, A,B ⊆ Z/pZ with |A|,|B| ≥ 2 and |A+B| = |A|+|B|-1 < p. Prove that there exists d ≠ 0 in Z/pZ and starting points a, b such that A = {a, a+d, ..., a+(|A|-1)d} and B = {b, b+d, ..., b+(|B|-1)d}.",
     "text": "The proof strategy uses the Cauchy-Davenport theorem from Mathlib (`ZMod.cauchy_davenport`) as a key tool. For 2-element A = {a, a+d}: the sumset decomposes as A+B = (a+B) ∪ (a+d+B), and equality |A+B| = |B|+1 forces |B ∩ (d+B)| = |B|-1, i.e., B and its d-shift differ in exactly one element. The key sublemma `ap_of_near_periodic` then shows this near-periodicity forces B to be an AP with difference d. The full induction on |A| removes elements one at a time, applying the base case, and then verifying that the removed element extends the AP structure.",
     "proofStrategy": "Infrastructure: define IsArithmeticProgression A a d := A = (range |A|).image (fun i => a + i*d). Key sublemma: |B \\ (B+d)| = 1 ⟹ B is AP (backward-shift argument: every b ≠ b_max satisfies b-d ∈ B, forcing B to be exhausted by the sequence b_max, b_max+d, ...). Base case |A|=2 uses inclusion-exclusion to compute |B ∩ (d+B)| from |A+B|. Full Vosper: induction on |A|+|B| using Cauchy-Davenport to ensure the reduced problem also achieves equality.",
@@ -79,25 +79,39 @@
   ],
   "sections": [
     {
-      "id": "imports-definition",
-      "title": "Imports and IsArithmeticProgression Definition",
+      "id": "header-imports",
+      "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 65,
-      "summary": "Imports CauchyDavenport and basic Finset machinery. Defines IsArithmeticProgression A a d as a finset image equation."
+      "endLine": 47,
+      "summary": "Proof strategy overview, references (Vosper 1956, Nathanson 1996, Mathlib), imports CauchyDavenport. Opens Finset, Function, Pointwise namespaces."
+    },
+    {
+      "id": "ap-definition",
+      "title": "IsArithmeticProgression Definition",
+      "startLine": 48,
+      "endLine": 58,
+      "summary": "Defines IsArithmeticProgression A a d as A = image of range(|A|) under i ↦ a + i·d. Image-of-range formulation avoids explicit size constraints."
     },
     {
       "id": "ap-infrastructure",
-      "title": "AP Infrastructure (4 lemmas proved)",
-      "startLine": 66,
-      "endLine": 120,
-      "summary": "isAP_singleton, isAP_pair, isAP_shift, shift_card_eq — all proved with 0 sorries. The pair lemma uses interval_cases for a 2-case analysis; shift uses Finset.image_image and ring."
+      "title": "AP Infrastructure: Four Proved Lemmas",
+      "startLine": 59,
+      "endLine": 105,
+      "summary": "shift_card_eq (|B+d| = |B|), isAP_singleton, isAP_pair (uses interval_cases), isAP_shift (uses Finset.image_image + ring). All 0 sorries."
+    },
+    {
+      "id": "near-periodic-lemma",
+      "title": "Key Sublemma: Near-Periodicity Forces AP",
+      "startLine": 106,
+      "endLine": 127,
+      "summary": "ap_of_near_periodic: |B \\ (B+d)| = 1 ∧ d≠0 ∧ |B|<p → B is AP with difference d. Sorry: backward-shift induction on |B| requires well-founded recursion."
     },
     {
       "id": "vosper-theorem",
-      "title": "Vosper's Theorem (3 sorries)",
-      "startLine": 121,
-      "endLine": 185,
-      "summary": "ap_of_near_periodic (key sublemma, 1 sorry), vosper_base (|A|=2 case, 1 sorry), vosper (full theorem, 1 sorry). All have detailed proof outlines in comments."
+      "title": "Vosper's Theorem: Base Case and Full Induction",
+      "startLine": 128,
+      "endLine": 165,
+      "summary": "vosper_base (|A|=2, inclusion-exclusion → ap_of_near_periodic, 1 sorry), vosper (strong induction on |A|, 1 sorry). Both contain complete proof outlines in comments."
     }
   ],
   "leanFile": {

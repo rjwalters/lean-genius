@@ -96,6 +96,14 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header: Open Problem Statement and Filter Algebra Strategy",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Module docstring poses the question: can the key filter algebra steps of the PNT density proof be cleanly isolated as standalone lemmas? Identifies two structural compositions: PNT rescaling (π((1+c)x)·log(x)/((1+c)x) → 1) and density-from-PNT ((π((1+c)x)-π(x))·log(x)/(cx) → 1). States the algebraic identity expressing density as a linear combination of two PNT evaluations. Imports Mathlib, PrimeNumberTheorem, BertrandsPostulateOQ03 and OQ04.",
+      "mathContext": "The density identity $(\\pi((1+c)x) - \\pi(x))/(cx) = (1+c)/c \\cdot \\pi((1+c)x)/((1+c)x) - 1/c \\cdot \\pi(x)/x$ rewrites the interval count as a difference of two densities. Both terms converge to $1/\\log(x)$ by PNT, so the combination gives $1/\\log(x)$ with coefficient $(1+c)/c - 1/c = 1$, proving density 1 after normalization."
+    },
+    {
       "id": "log-ratio",
       "title": "Log Ratio Lemma",
       "startLine": 51,

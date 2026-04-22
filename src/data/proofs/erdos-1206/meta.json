@@ -59,11 +59,19 @@
     },
     {
       "id": "placeholder-theorem",
-      "title": "Placeholder Theorem and Verification",
+      "title": "Placeholder Theorem: Sidon Cubes (Sorry)",
       "startLine": 18,
-      "endLine": 23,
-      "summary": "Stub `theorem erdos_1206 : True := by sorry` with `#check` verification. Awaiting formalization of the Sidon definition for cube sets and the short-interval Gabdullin-Konyagin argument.",
-      "mathContext": "The actual theorem to formalize: `∃ c > 0, ∀ N : ℕ, 0 < N → IsSidon (Finset.image (fun n => n^3) (Finset.Ico (N - Nat.sqrt N) N))`. This requires bounding the quadratic factor n² + nm + m² in a short interval, then showing distinct differences are distinct."
+      "endLine": 21,
+      "summary": "Stub `theorem erdos_1206 : True := by sorry`. The actual theorem to formalize: ∃ c > 0, ∀ N, IsSidon {n³ : N - c·N^(1/2) ≤ n ≤ N}, proved via the algebraic identity n³ - m³ = (n-m)(n²+nm+m²) showing all pairwise sums/differences are distinct in short intervals.",
+      "mathContext": "Target type: `∃ c : ℝ, 0 < c ∧ ∀ N : ℕ, 0 < N → (Finset.image (· ^ 3) (Finset.Ico (N - Nat.sqrt N) N)).card = (Finset.Ico (N - Nat.sqrt N) N).card`. The Sidon condition requires all pairwise sums $a^3 + b^3 = c^3 + d^3$ to imply $\\{a,b\\} = \\{c,d\\}$."
+    },
+    {
+      "id": "sorry-tracking",
+      "title": "Sorry Tracking via #check",
+      "startLine": 22,
+      "endLine": 24,
+      "summary": "Sorry marker comment and `#check erdos_1206` for Aristotle proof search system tracking. The sorry is tracked in the gallery's sorry count and awaits either manual proof or automated resolution.",
+      "mathContext": "`#check erdos_1206` outputs `erdos_1206 : True`, confirming the theorem is well-typed. `#print axioms erdos_1206` would show `axioms used: sorryAx`, indicating the sorry axiom dependency."
     }
   ],
   "conclusion": {

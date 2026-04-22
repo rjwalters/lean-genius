@@ -32,7 +32,17 @@
       "For 2-row SSYT, a filling is uniquely parameterized by k1 (1s in row 1), making the counting problem 1-dimensional",
       "The nontrivial zero sigma_2 * sigma_11 = 0 arises from conflicting constraints: column condition forces k2 = 0 but range forces k2 >= 1",
       "Gr(2,4) is multiplicity-free: all LR coefficients in {0,1}, verified by native_decide over 216 triples",
-      "The P vs #P gap for LR coefficients is one of the sharpest complexity separations in combinatorics"
+      "The P vs #P gap for LR coefficients is one of the sharpest complexity separations in combinatorics",
+      "Commutativity c^ν_{λ,μ} = c^ν_{μ,λ} is proved directly from the algorithmic definition by showing the five deciding conditions are symmetric under λ ↔ μ; the Pieri converse shows that c^ν_{(k,0),μ} = 1 characterizes exactly the horizontal strips"
+    ]
+  },
+  "conclusion": {
+    "summary": "This file provides a fully verified, decidable computation of Littlewood-Richardson coefficients for 2-row partitions, confirming all structure constants of the Chow ring A*(Gr(2,4)) and establishing the general multiplicity-free property for all Gr(2,n) via a structural proof that requires no enumeration.",
+    "implications": "The formalization demonstrates that the LR rule — while #P-complete in general — reduces to constant-time computation for the 2-row case: at most five decidable comparisons determine any coefficient. The Pieri formula, commutativity, and the full Gr(2,4) multiplication table are verified machine-checked theorems. The sharp P vs #P complexity dichotomy is documented with precise references to Knutson-Tao (1999) and Narayanan (2006), making this entry a self-contained reference for the computational complexity of Schubert calculus.",
+    "openQuestions": [
+      "Can the decidable 2-row LR computation be extended to 3-row partitions in Lean, and can Narayanan's #P-hardness reduction be formally verified once complexity theory is available in Mathlib?",
+      "Is there a Lean formalization of the Knutson-Tao honeycomb model that would upgrade lr_saturation_theorem from a vacuous placeholder to a genuine machine-checked theorem?",
+      "What is the minimal Mathlib extension needed to formally state and prove that LR positivity reduces to a polynomial-time linear program via Klyachko's horn inequalities?"
     ]
   },
   "sections": [
