@@ -1281,34 +1281,6 @@ private lemma row0_entry_range {m : ℕ} (T : StandardYoungTableau (twoRectYD m)
   have := T.entry_range (0, j) (mem_twoRectYD.mpr (Or.inl ⟨rfl, hj⟩))
   rw [twoRectYD_card] at this; exact this
 
-/-- The filter of row-0 indices ≤ i equals range(r) where r is the count.
-    Key: row-0 entries are sorted, so indices 0,...,r-1 are exactly those with entry ≤ i. -/
-private lemma row0_filter_is_range {m : ℕ} (T : StandardYoungTableau (twoRectYD m)) (i : ℕ) :
-    (Finset.range m).filter (fun j => T.entry (0, j) ≤ i) =
-    Finset.range ((Finset.range m).filter (fun j => T.entry (0, j) ≤ i)).card := by
-  set r := ((Finset.range m).filter (fun j => T.entry (0, j) ≤ i)).card with hr_def
-  apply Finset.eq_range_of_lt_iff
-  · -- card of filter = r
-    simp [hr_def]
-  · -- j < r ↔ j ∈ filter (i.e., T.entry(0,j) ≤ i) for j < m
-    intro j hj
-    simp only [Finset.mem_filter, Finset.mem_range]
-    constructor
-    · intro ⟨hjm, hle⟩
-      -- j ∈ filter means T.entry(0,j) ≤ i, so at least j+1 elements ≤ i
-      have : j + 1 ≤ ((Finset.range m).filter (fun j' => T.entry (0, j') ≤ i)).card := by
-        apply Finset.card_le_card
-        · intro k hk
-          simp only [Finset.mem_filter, Finset.mem_range] at hk ⊢
-          refine ⟨lt_trans hk.1 hjm, ?_⟩
-          exact lt_of_lt_of_le (row0_strict T hk.1 hjm hk.1) hle
-        · simp [Finset.card_range]
-        · sorry -- card {0,...,j} = j+1 ≤ card filter
-      omega
-    · intro hjr
-      -- j < r means T.entry(0,j) ≤ i
-      sorry -- If j were the r-th entry (> i), r ≤ j contradicts hjr
-
 /-- Dyck prefix condition: #{row-0 entries ≤ i} ≥ #{row-1 entries ≤ i}.
     Follows from column strictness: if T(1,r) ≤ i then T(0,r) < T(1,r) ≤ i,
     contradicting i < T(0,r) (since T(0,r) > i by definition of r = row-0 count). -/
@@ -1349,40 +1321,52 @@ private lemma sytToDyckList_count_U (m : ℕ) (T : StandardYoungTableau (twoRect
   -- card {k ∈ range (2m) : ∃ j < m, T.entry(0,j) = k+1} = m
   sorry
 
+/-- For any list of DyckStep, count U + count D = length. -/
+private lemma dyckStep_count_U_add_D (l : List DyckStep) :
+    l.count DyckStep.U + l.count DyckStep.D = l.length := by
+  induction l with
+  | nil => simp
+  | cons h t ih => cases h <;> simp [List.count_cons] <;> omega
+
 /-- count D = m. -/
 private lemma sytToDyckList_count_D (m : ℕ) (T : StandardYoungTableau (twoRectYD m)) :
     (sytToDyckList m T).count DyckStep.D = m := by
   have hlen := sytToDyckList_length m T
   have hU := sytToDyckList_count_U m T
-  have hUD : (sytToDyckList m T).count DyckStep.U +
-             (sytToDyckList m T).count DyckStep.D = 2 * m := by
-    rw [← hlen]
-    simp [List.count_add_count_compl]
-    simp [sytToDyckList, List.count_map]
-    sorry -- All steps are U or D, so count U + count D = length = 2m
+  have hUD := dyckStep_count_U_add_D (sytToDyckList m T)
   omega
 
 /-- The Dyck condition: at each prefix of length i, count D ≤ count U. -/
 private lemma sytToDyckList_dyck_cond (m : ℕ) (T : StandardYoungTableau (twoRectYD m))
     (i : ℕ) : ((sytToDyckList m T).take i).count DyckStep.D ≤
               ((sytToDyckList m T).take i).count DyckStep.U := by
-  -- The prefix of length i corresponds to entries {1,...,i} of {1,...,2m}
-  -- count U in prefix = #{j < m : T.entry(0,j) ≤ i} = |filter row0 ≤ i|
-  -- count D in prefix = #{j < m : T.entry(1,j) ≤ i} = |filter row1 ≤ i|
-  -- dyck_prefix_cond gives: |filter row1 ≤ i| ≤ |filter row0 ≤ i|
-  sorry
+  -- Strategy: show both counts equal Finset.filter.card, then apply dyck_prefix_cond.
+  -- count U in prefix i = #{j < m : T.entry(0,j) ≤ i}  [step at position k is U iff k+1 ∈ row-0]
+  -- count D in prefix i = #{j < m : T.entry(1,j) ≤ i}
+  -- dyck_prefix_cond: #{row-1 ≤ i} ≤ #{row-0 ≤ i} (column strictness → prefix condition)
+  suffices h : ((Finset.range m).filter (fun j => T.entry (1, j) ≤ i)).card ≤
+               ((Finset.range m).filter (fun j => T.entry (0, j) ≤ i)).card by
+    calc ((sytToDyckList m T).take i).count DyckStep.D
+        = ((Finset.range m).filter (fun j => T.entry (1, j) ≤ i)).card := by
+            -- [HARD: List prefix count = Finset filter card via row-1 entries]
+            sorry
+      _ ≤ ((Finset.range m).filter (fun j => T.entry (0, j) ≤ i)).card := h
+      _ = ((sytToDyckList m T).take i).count DyckStep.U := by
+            -- [HARD: Finset filter card = List prefix count via row-0 entries]
+            sorry
+  exact dyck_prefix_cond T i
 
 /-- Forward map: SYT(twoRectYD m) → DyckWord of semilength m -/
 private def sytToDyck (m : ℕ) (T : StandardYoungTableau (twoRectYD m)) :
     {p : DyckWord // p.semilength = m} :=
   ⟨{ toList := sytToDyckList m T
      count_U_eq_count_D := by
+       -- count U = m and count D = m, so count U = count D
        have hU := sytToDyckList_count_U m T
        have hD := sytToDyckList_count_D m T
-       simp only [DyckWord.semilength, List.count_eq_countP] at *
-       rw [← List.count_eq_countP, ← List.count_eq_countP]
        omega
      count_D_le_count_U := sytToDyckList_dyck_cond m T },
+   -- semilength = count U = m
    sytToDyckList_count_U m T⟩
 
 /-- List of 0-indexed U-positions in a DyckWord (sorted increasing). -/
