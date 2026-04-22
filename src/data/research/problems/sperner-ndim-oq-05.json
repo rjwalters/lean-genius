@@ -29,13 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (session 5): Proved gridAdj_ne in SpernerGrid.lean (6 → 5 sorries). gridAdj_symm and gridAdj_vertex remain (require involutivity proofs).",
+    "progressSummary": "PROGRESS: adjFn_symm optimized; boundary_doors_odd false for oriented gridComplex (see oq-02); Mathlib PR path clear for SpernerMathlib4+SpernerSimplicialInstance",
     "builtItems": [
       "SpernerMathlib4Opt.lean: optimized proof proposal for even_card_of_fpf_invol using sum_involution (research/problems/sperner-ndim-oq-05/lean/)",
       "even_card_of_fpf_invol: 53-line strongInduction proof replaced with 11-line sum_involution proof in SpernerMathlib4.lean",
       "boundaryFlip0.step_same: proved (SpernerGrid.lean:868-903, 2 sorries → 0)",
       "boundaryFlipLast.step_same: proved (SpernerGrid.lean:1011-1046, 2 sorries → 0)",
-      "gridAdj_ne: proved in SpernerGrid.lean (1 sorry removed, 6 → 5 remaining)"
+      "gridAdj_ne: proved in SpernerGrid.lean (1 sorry removed, 6 → 5 remaining)",
+      "Optimized adjFn_symm in SpernerSimplicialInstance.lean (line 745+)"
     ],
     "insights": [
       "All gallery files (SpernerMathlib4, SpernerSimplicialInstance, etc.) have 0 sorries — mathematical work complete",
@@ -58,7 +59,8 @@
       "SpernerGrid.lean: 11 → 6 sorries after proving all four step_same cases",
       "split_ifs auto-closes h:none=some contradictions — only 1 bullet needed per split_ifs in helper lemmas",
       "j_step.castSucc.val syntactically ≠ j_step.val even though equal — need simp [Fin.castSucc] before omega in hlv proofs",
-      "gridAdj_ne proved via 3-case split: boundary cases use verts_injective; interior case uses inc_injective + interiorFlip_incDir_kprev"
+      "gridAdj_ne proved via 3-case split: boundary cases use verts_injective; interior case uses inc_injective + interiorFlip_incDir_kprev",
+      "adjFn_symm h_idx_eq block reduced from 28→13 lines using vertexEnum_not_mem_faceOf_iff; vertexEnum_not_mem_faceOf_iff packages both cases eliminating manual case split"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -66,7 +68,10 @@
       "Test granular imports via Docker build for SpernerMathlib4.lean",
       "Profile SpernerSimplicialInstance.lean with set_option profiler true to find expensive proofs",
       "Reduce SpernerSimplicialInstance heartbeats to ≤ 800000 for Mathlib PR",
-      "Submit Part 1 (SpernerMathlib4) PR to mathlib4 as initial contribution, Part 2 as follow-up"
+      "Submit Part 1 (SpernerMathlib4) PR to mathlib4 as initial contribution, Part 2 as follow-up",
+      "Docker build to verify SpernerSimplicialInstance.lean optimization",
+      "Profile with set_option profiler true to find heartbeat bottleneck",
+      "USER ACTION: comment on mathlib4#25231 linking SpernerSimplicialInstance.lean as Part 2"
     ],
     "markdown": "# Knowledge Base: sperner-ndim-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

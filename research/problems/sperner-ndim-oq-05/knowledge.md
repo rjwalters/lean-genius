@@ -310,6 +310,78 @@ so avoids elaboration overhead.
 
 ---
 
+## Session 2026-04-22 (Session 6) - adjFn_symm heartbeat optimization
+
+**Mode**: REVISIT
+**Outcome**: PROGRESS — reduced `adjFn_symm`'s `h_idx_eq` block from 28 → 13 lines
+
+### Context
+
+Previous sessions (4-5) drifted into `SpernerGrid.lean` work (now tracked under oq-02).
+The oq-02 session (commit 607406a498) proved `gridAdj_symm` and `gridAdj_vertex`, and
+discovered that `boundary_verts_on_face` and `boundary_doors_odd` are **FALSE as stated**
+for the oriented `GridSimplex`. This is **not blocking** the oq-05 Mathlib contribution
+(which concerns `SpernerMathlib4.lean` + `SpernerSimplicialInstance.lean`).
+
+**Key discovery (from oq-02 session)**: `boundary_doors_odd` is false for `gridComplex`
+because oriented simplices appear twice (once per miss direction). The Mathlib contribution
+(`SpernerMathlib4.lean`) and the abstract `Triangulation` struct (in `SpernerSimplicialInstance.lean`)
+are still correct and Mathlib-ready.
+
+### What I Did
+
+1. Read the full state of `SpernerSimplicialInstance.lean` (1019 lines, 0 sorries,
+   `maxHeartbeats 1600000`)
+2. Analyzed the expensive proofs: `adjFn_symm` (87 lines) and `adjFn_vertex` (47 lines)
+3. Identified that `adjFn_symm`'s `h_idx_eq` block has redundant steps:
+   - The manual `cases h_nmem_f with | inl h => | inr h =>` logic is subsumed by
+     `vertexEnum_not_mem_faceOf_iff` (already in the file at line 489)
+   - The `h_mem_s` step is not needed when using the iff directly
+4. Optimized `adjFn_symm`: replaced 28-line `h_idx_eq` proof with 13-line version
+   using `vertexEnum_not_mem_faceOf_iff s hs idx k` directly
+
+### Key Optimization
+
+**Before** (28 lines): Used manual case split + `absurd` to derive `vertexEnum ... = vertexEnum s hs k`
+**After** (13 lines): Use `vertexEnum_not_mem_faceOf_iff` which packages both cases:
+```lean
+have hve : D.vertexEnum hne_erase.choose ht' idx = D.vertexEnum s hs idx := by
+  simp [AbstractSimplicialData.vertexEnum, ht_eq_s]
+have h_nmem : D.vertexEnum s hs idx ∉ D.faceOf s hs k := by
+  have := D.vertexEnum_findOppositeIdx_not_mem hne_erase.choose ht' _ hf' hfc'
+  rwa [hface_eq, hve] at this
+exact (D.vertexEnum_not_mem_faceOf_iff s hs idx k).mp h_nmem
+```
+
+The `vertexEnum_not_mem_faceOf_iff` lemma already knows: `vertexEnum s hs j ∉ faceOf s hs k ↔ j = k`,
+handling both the "equal to k" and "not in s" cases internally.
+
+### Files Modified
+
+- `proofs/Proofs/SpernerSimplicialInstance.lean` (adjFn_symm h_idx_eq: 28 → 13 lines)
+  Note: Needs Docker build to verify heartbeat reduction
+
+### Current State
+
+- `SpernerMathlib4.lean`: 0 sorries, `maxHeartbeats 400000` ✅ Mathlib-ready
+- `SpernerSimplicialInstance.lean`: 0 sorries, `maxHeartbeats 1600000` (edited but unverified)
+  - The `adjFn_vertex` proof (47 lines) might also be optimizable, but is less clear
+  - The `iadj_vertex'` proof (57 lines for interval triangulation) might also contribute
+
+### Next Steps
+
+1. **[DOCKER BUILD NEEDED]** Verify `SpernerSimplicialInstance.lean` compiles after optimization
+   ```bash
+   ./proofs/scripts/docker-build.sh Proofs.SpernerSimplicialInstance
+   ```
+2. **[DOCKER BUILD NEEDED]** Profile to identify the actual heartbeat bottleneck:
+   Add `set_option profiler true` to `adjFn_symm` or `adjFn_vertex`
+3. **[DOCKER BUILD NEEDED]** Test granular imports for `SpernerMathlib4.lean`
+4. **[USER ACTION NEEDED]** Comment on mathlib4#25231 pointing to `SpernerSimplicialInstance.lean`
+5. If heartbeats ≤ 800000, prepare Mathlib PR (Option A: Part 1 only, or Option B: both)
+
+---
+
 ## Dead Ends
 
 - `FixedPointFree.lean` (GroupTheory) — about group automorphisms, not Finsets
