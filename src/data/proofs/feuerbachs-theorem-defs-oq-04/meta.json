@@ -41,8 +41,9 @@
     "keyInsights": [
       "The `toEuclidean` bridge is essentially the identity map — `EuclideanSpace ℝ (Fin 2)` is definitionally `Fin 2 → ℝ`, and `![P.1, P.2]` creates the corresponding function. The bridge lemma makes this explicit.",
       "`EuclideanSpace.norm_eq` expresses the norm as `Real.sqrt (∑ i, ‖x i‖²)`. For ℝ-valued components, `‖x i‖ = |x i|` and `|x i|² = x i²`, giving the standard Euclidean norm formula.",
-      "All nine reformulated theorems are immediate corollaries of the bridge lemma — their proofs are 3-line reductions to the existing coordinate-based proofs.",
-      "`Metric.sphere center r = {x | dist x center = r}` is the standard abstract sphere. The nine-point circle theorem in this form is directly compatible with Mathlib's geometry API for potential future Mathlib contribution."
+      "All nine reformulated theorems are immediate corollaries of the bridge lemma — their proofs are 3-line reductions to the existing coordinate-based proofs. This is the power of a well-placed abstraction: `mem_sphere_iff_dist2` eliminates all boilerplate at once.",
+      "`Metric.sphere center r = {x | dist x center = r}` is the standard abstract sphere. The nine-point circle theorem in this form is directly compatible with Mathlib's geometry API for potential future Mathlib contribution.",
+      "The nine-point circle connects three historically distinct sets of points: the side midpoints (known to Euler c. 1765), the altitude feet (orthic triangle, 18th century), and the orthocenter midpoints (discovered together with the full theorem by Feuerbach 1822). All three groups appear uniformly in Part II, reflecting the underlying symmetry of the nine-point center construction."
     ],
     "prerequisites": [
       "FeuerbachsTheoremDefs.lean — coordinate-based nine-point circle proofs",

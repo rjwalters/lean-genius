@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-setup",
+    "proofId": "feuerbachs-theorem-defs-oq-04",
+    "range": { "startLine": 1, "endLine": 56 },
+    "type": "context",
+    "title": "Motivation and Setup: Bridging Two Geometric APIs",
+    "content": "The file opens with a detailed docstring explaining the core challenge: the gallery's coordinate-based Feuerbach proofs use a custom API (Point = ℝ×ℝ, dist2), while Mathlib's geometry infrastructure works with EuclideanSpace ℝ (Fin 2) and Metric.sphere. This mismatch is common when formalizing mathematics against a rapidly evolving library — proofs written before Mathlib had robust geometry infrastructure must be translated to use the preferred types.\n\nThe imports bring in all of Mathlib and the existing FeuerbachsTheoremDefs module. Setting `linter.unusedVariables false` is pragmatic: the bridge proofs reference all variables even if Lean's syntactic analysis would flag some as unused. The `noncomputable section` reflects that real-number calculations involving square roots and field divisions are inherently non-computable in Lean's type theory.",
+    "mathContext": "The file bridges two representations of $\\mathbb{R}^2$: the product type $\\mathbb{R} \\times \\mathbb{R}$ with custom distance $d_2(P,Q) = \\sqrt{(Q_x - P_x)^2 + (Q_y - P_y)^2}$, and Mathlib's $\\text{EuclideanSpace}~\\mathbb{R}~(\\text{Fin}~2)$ with standard metric space distance $\\text{dist}$.",
+    "significance": "context",
+    "relatedConcepts": ["EuclideanSpace", "Metric.sphere", "noncomputable", "API bridging", "Mathlib geometry"],
+    "prerequisites": ["Lean 4 type system", "Mathlib import system", "noncomputable definitions in real analysis"]
+  },
+  {
+    "id": "ann-to-euclidean-def",
+    "proofId": "feuerbachs-theorem-defs-oq-04",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "definition",
+    "title": "toEuclidean: The Embedding Map",
+    "content": "This one-line definition is the cornerstone of the entire file. It embeds the gallery's coordinate `Point` type into Mathlib's `EuclideanSpace ℝ (Fin 2)` by sending `(x, y)` to the vector `![x, y]`. The notation `![x, y]` creates a `Fin 2 → ℝ` function, which is the underlying representation of `EuclideanSpace ℝ (Fin 2)` after unfolding the type alias.\n\nThis is an injective (in fact, isometric) embedding — the bridge lemma `toEuclidean_dist` will verify it preserves distances. The embedding is definitionally simple but mathematically complete: it establishes that the gallery's coordinate plane and Mathlib's abstract 2D Euclidean space are the same structure.",
+    "mathContext": "$\\text{toEuclidean} : \\mathbb{R}^2 \\to \\text{EuclideanSpace}~\\mathbb{R}~(\\text{Fin}~2)$, defined as $(x, y) \\mapsto \\begin{pmatrix} x \\\\ y \\end{pmatrix}$. Since $\\text{EuclideanSpace}~\\mathbb{R}~(\\text{Fin}~2) \\cong (\\text{Fin}~2 \\to \\mathbb{R})$, the vector $![x, y]$ represents $i \\mapsto \\{x \\text{ if } i=0,\\ y \\text{ if } i=1\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["EuclideanSpace", "Fin 2", "Matrix.cons notation", "type embedding", "isometric embedding"],
+    "prerequisites": ["Lean 4 structure projections", "Fin type", "EuclideanSpace definition", "vector notation ![...]"]
+  },
+  {
+    "id": "ann-bridge-lemma",
+    "proofId": "feuerbachs-theorem-defs-oq-04",
+    "range": { "startLine": 66, "endLine": 80 },
+    "type": "technique",
+    "title": "Bridge Lemma: Matching Two Distance Functions",
+    "content": "The bridge lemma `toEuclidean_dist` proves that the Mathlib distance on EuclideanSpace agrees with the custom `dist2` function. The proof is a controlled chain of rewrites, each peeling back one layer of abstraction:\n\n1. `rw [dist_eq_norm, EuclideanSpace.norm_eq, dist2]`: Expands Mathlib `dist` to `‖·‖`, then uses `EuclideanSpace.norm_eq` to write the norm as `Real.sqrt (∑ i, ‖...‖²)`, and unfolds `dist2` to `Real.sqrt (...)`. Both sides are now `sqrt` of something.\n2. `congr 1`: Reduces the goal to showing the two arguments to `sqrt` are equal.\n3. `rw [Fin.sum_univ_two]`: Expands the sum over `Fin 2` to two explicit terms.\n4. `simp only [...]`: Reduces `Pi.sub_apply` (subtraction in function types), `Real.norm_eq_abs` (‖r‖ = |r| for reals), `sq_abs` (|r|² = r²), and `Matrix.cons_val_zero/one` (extracting components of `![x, y]`).\n5. `ring`: Closes the goal by noting `(P.1 - Q.1)² = (Q.1 - P.1)²` and similarly for the second component.\n\nThis proof pattern — unfold via type-specific norm lemmas, split finite sums, reduce component access, close with ring — is the standard technique for bridging concrete coordinate representations with abstract Euclidean spaces in Mathlib.",
+    "mathContext": "$\\text{dist}(\\text{toEuclidean}~P, \\text{toEuclidean}~Q) = \\left\\| ![P_x, P_y] - ![Q_x, Q_y] \\right\\|_{\\text{Eucl}} = \\sqrt{\\sum_{i < 2} (P_i - Q_i)^2} = \\sqrt{(P_x - Q_x)^2 + (P_y - Q_y)^2} = d_2(P, Q)$",
+    "significance": "key",
+    "relatedConcepts": ["dist_eq_norm", "EuclideanSpace.norm_eq", "Fin.sum_univ_two", "Pi.sub_apply", "Matrix.cons_val", "ring tactic"],
+    "prerequisites": ["Mathlib metric space API", "EuclideanSpace norm formula", "Fin type arithmetic", "matrix/vector lemmas in Mathlib"]
+  },
+  {
+    "id": "ann-mem-sphere-iff",
+    "proofId": "feuerbachs-theorem-defs-oq-04",
+    "range": { "startLine": 82, "endLine": 87 },
+    "type": "technique",
+    "title": "Membership Characterization: Circle ↔ Sphere",
+    "content": "This corollary packages the bridge lemma into the most useful form for the rest of the file. It reformulates circle membership (`dist2 C P = r`) as Mathlib sphere membership (`toEuclidean P ∈ Metric.sphere (toEuclidean C) r`). The proof is a single `simp` call using `Metric.mem_sphere` (the definition of sphere membership as `dist x center = r`), `dist_comm` (to reorder the distance), and `toEuclidean_dist` (the bridge lemma).\n\nBy separating this as its own lemma, all nine membership reformulations in Part II become trivial two-line proofs: rewrite with `mem_sphere_iff_dist2`, then cite the existing coordinate-based proof.",
+    "mathContext": "$\\text{toEuclidean}~P \\in \\text{Metric.sphere}(\\text{toEuclidean}~C,~r) \\iff \\text{dist}(\\text{toEuclidean}~P, \\text{toEuclidean}~C) = r \\iff d_2(C, P) = r$",
+    "significance": "supporting",
+    "relatedConcepts": ["Metric.mem_sphere", "Metric.sphere", "dist_comm", "simp lemma", "iff reformulation"],
+    "prerequisites": ["Metric.sphere definition", "bridge lemma toEuclidean_dist", "simp tactic"]
+  },
+  {
+    "id": "ann-side-midpoints",
+    "proofId": "feuerbachs-theorem-defs-oq-04",
+    "range": { "startLine": 93, "endLine": 112 },
+    "type": "insight",
+    "title": "Three Side Midpoints on the Nine-Point Sphere",
+    "content": "The three theorems `midpoint_a_on_sphere`, `midpoint_b_on_sphere`, `midpoint_c_on_sphere` reformulate the first three of the nine special points in Mathlib terms. These points — the midpoints of sides BC, CA, AB — were historically the first discovered to lie on a common circle (by Euler and others in the 18th century, before the full nine-point circle was identified).\n\nIn this Lean file, each proof is a canonical two-liner: `rw [mem_sphere_iff_dist2]` converts sphere membership to the coordinate condition, then `exact midpoint_X_on_ninePointCircle T` delegates to the already-proved result in `FeuerbachsTheoremDefs`. The modularity is elegant — all the mathematical content is in the base file; this file is pure API translation.",
+    "mathContext": "For triangle $T$ with vertices $A, B, C$: $M_a = \\frac{B+C}{2}$, $M_b = \\frac{C+A}{2}$, $M_c = \\frac{A+B}{2}$. Each satisfies $d_2(N_9, M_i) = R_9 = R/2$, where $N_9$ is the nine-point center and $R$ the circumradius.",
+    "significance": "supporting",
+    "relatedConcepts": ["midpoint", "nine-point circle", "side midpoints", "Euler's circle", "ninePointCenter", "ninePointRadius"],
+    "prerequisites": ["FeuerbachsTheoremDefs.lean", "mem_sphere_iff_dist2", "Triangle structure definition"]
+  },
+  {
+    "id": "ann-orthocenter-midpoints",
+    "proofId": "feuerbachs-theorem-defs-oq-04",
+    "range": { "startLine": 114, "endLine": 133 },
+    "type": "insight",
+    "title": "Three Orthocenter Midpoints on the Nine-Point Sphere",
+    "content": "The midpoints of the segments from each vertex to the orthocenter (AH, BH, CH) form the second group of three special points. These points were discovered later than the side midpoints and are less geometrically obvious. Their presence on the nine-point circle follows from the fact that the nine-point center is the midpoint of the circumcenter O and orthocenter H — a deep relationship that ties together the principal triangle centers.\n\nIn the Lean proof, `midpoint_AH_on_sphere`, `midpoint_BH_on_sphere`, `midpoint_CH_on_sphere` all have identical proof structure, reflecting that the underlying coordinate proofs in FeuerbachsTheoremDefs treat all nine points uniformly.",
+    "mathContext": "For a triangle with orthocenter $H$: the midpoints $M_{AH} = \\frac{A+H}{2}$, $M_{BH} = \\frac{B+H}{2}$, $M_{CH} = \\frac{C+H}{2}$ all lie on the nine-point circle. This follows from $N_9 = \\frac{O + H}{2}$ (nine-point center as Euler line midpoint): $|N_9 - M_{AH}|^2 = |\\frac{O+H}{2} - \\frac{A+H}{2}|^2 = |\\frac{O-A}{2}|^2 = (R/2)^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["orthocenter", "Euler line", "nine-point center", "circumcenter", "midpoint of AH/BH/CH"],
+    "prerequisites": ["Triangle orthocenter definition", "nine-point center as midpoint of O and H", "FeuerbachsTheoremDefs.lean"]
+  },
+  {
+    "id": "ann-altitude-feet",
+    "proofId": "feuerbachs-theorem-defs-oq-04",
+    "range": { "startLine": 135, "endLine": 154 },
+    "type": "insight",
+    "title": "Three Altitude Feet on the Nine-Point Sphere",
+    "content": "The feet of the three altitudes complete the nine special points. These are the projections of each vertex onto the opposite side, forming the orthic triangle. The orthic triangle has remarkable properties: in an acute triangle, it is the solution to Fagnano's problem (the inscribed triangle of minimum perimeter), and the incircle of the orthic triangle is the nine-point circle of the original triangle — directly connecting to Feuerbach's theorem.\n\nThe proofs `foot_a_on_sphere`, `foot_b_on_sphere`, `foot_c_on_sphere` again use the two-line bridge pattern, illustrating how the `mem_sphere_iff_dist2` corollary eliminates all boilerplate.",
+    "mathContext": "For triangle $T$: the altitude foot $H_a$ is the orthogonal projection of $A$ onto $BC$, satisfying $\\overrightarrow{BH_a} \\cdot \\overrightarrow{BC} = 0$ (in the altitude direction). All three feet lie on the nine-point circle: $d_2(N_9, H_a) = d_2(N_9, H_b) = d_2(N_9, H_c) = R/2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["altitude foot", "orthic triangle", "Fagnano problem", "projection", "orthogonal projection", "nine-point circle"],
+    "prerequisites": ["Triangle altitude definition", "orthic triangle", "FeuerbachsTheoremDefs foot definitions"]
+  },
+  {
+    "id": "ann-combined-theorem",
+    "proofId": "feuerbachs-theorem-defs-oq-04",
+    "range": { "startLine": 160, "endLine": 187 },
+    "type": "insight",
+    "title": "Nine-Point Circle Theorem (Mathlib Formulation)",
+    "content": "The culminating theorem `ninePoints_all_on_sphere` unifies all nine membership results into a single statement: for any triangle T, all nine special points lie on the Mathlib Metric.sphere centered at `toEuclidean T.ninePointCenter` with radius `T.ninePointRadius`.\n\nThe proof uses `intro p hp` to introduce an arbitrary element `p` of the list, then `simp only [List.mem_cons, ...]` to unfold list membership into a disjunction of equalities, and finally `rcases hp with rfl | rfl | ... | rfl` (9-way case split) to discharge each case by calling the corresponding individual theorem.\n\nThis formulation is directly aligned with how Mathlib would state the nine-point circle theorem — as a set-membership result for `Metric.sphere`. The closeness to Mathlib idioms is what makes this entry a natural candidate for a future Mathlib contribution.",
+    "mathContext": "The nine-point circle theorem: $\\{M_a, M_b, M_c, H_a, H_b, H_c, M_{AH}, M_{BH}, M_{CH}\\} \\subset \\text{Metric.sphere}(N_9, R/2)$, where $N_9 = \\frac{O+H}{2}$ is the nine-point center and $R$ the circumradius. This file restates this as: $\\forall p \\in [\\text{toEuclidean}~M_a, \\ldots],\\ p \\in \\text{Metric.sphere}(\\text{toEuclidean}~N_9, R/2)$.",
+    "significance": "key",
+    "relatedConcepts": ["nine-point circle theorem", "Metric.sphere", "List.mem_cons", "rcases", "nine-point center", "circumradius", "Mathlib contribution"],
+    "prerequisites": ["individual membership theorems (Parts I-II)", "List membership in Lean 4", "rcases tactic", "Metric.sphere"]
+  }
+]
