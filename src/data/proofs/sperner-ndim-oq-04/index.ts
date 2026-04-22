@@ -28,7 +28,7 @@ export const proof: Proof = {
   crossReferences: meta.crossReferences || [],
 }
 
-export const annotations: Annotation[] = (annotationsJson as unknown as { annotations: Annotation[] }).annotations || []
+export const annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const proofData: ProofData = {
   proof,
