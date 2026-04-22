@@ -227,31 +227,31 @@
       "id": "gal-order",
       "title": "Parts V(a)-(f): Galois Group Order |Gal| = 120 (Theorem)",
       "startLine": 268,
-      "endLine": 1480,
+      "endLine": 1377,
       "summary": "The largest section (~1200 lines): proves $|\\text{Gal}| = 120$ via systematic case elimination. (a) Lines 268-299: polynomial evaluations showing 3 sign changes. (b) Lines 301-393: `closure_cycle_swap_eq_top` — 5-cycle + transposition generates $S_5$ [vestigial]. (c) Lines 394-439: `galToPerm5` injection from $\\text{Gal}$ to $S_5$. (d) Lines 440-609: Sylow elimination of orders 15 and 30. (e) Lines 610-908: Vandermonde machinery, discriminant sign, and `gal_has_odd_perm`. (e2) Lines 909-1341: complex conjugation gives transposition, Sylow elimination of non-3-divisible orders. (f) Lines 1348-1480: case elimination and `gal_card_eq_120`. Fully proved with 0 axioms.",
       "mathContext": "Theorem: $|\\text{Gal}(x^5-4x+2/\\mathbb{Q})| = 120$. From $5 \\mid |G|$, $3 \\mid |G|$, $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15 (Sylow), not 30 ($A_5$ simple), not 60 ($\\text{Gal} \\not\\subset A_5$ by discriminant sign). All steps fully proved."
     },
     {
       "id": "gal-iso",
       "title": "Part VI: Gal(p/ℚ) ≅ S₅",
-      "startLine": 1481,
-      "endLine": 1515,
+      "startLine": 1378,
+      "endLine": 1412,
       "summary": "Proves `gal_iso_s5`: $\\text{Gal} \\cong S_5$ via galActionHom bijectivity. Injective (Mathlib's `galActionHom_injective`) + $|\\text{Gal}| = |\\text{Perm}(\\text{rootSet})| = 120$ from `gal_card_eq_120`. Bijectivity via `Fintype.bijective_iff_injective_and_card`. Transfer from $\\text{Perm}(\\text{rootSet})$ to $\\text{Perm}(\\text{Fin}\\;5)$ via `Equiv.permCongr`.",
       "mathContext": "$\\text{galActionHom}$ injective + $|\\text{Gal}| = |S_5| = 120$ $\\Rightarrow$ bijective $\\Rightarrow$ $\\text{Gal}(p/\\mathbb{Q}) \\cong S_5$."
     },
     {
       "id": "not-solvable",
       "title": "Part VII: Non-Solvability",
-      "startLine": 1516,
-      "endLine": 1534,
+      "startLine": 1413,
+      "endLine": 1431,
       "summary": "`s5_not_solvable`: $S_5$ not solvable via `Equiv.Perm.not_solvable` with $5 \\leq |\\text{Fin}\\;5|$. `gal_not_solvable`: transfers non-solvability from $S_5$ to $\\text{Gal}$ via the surjective `MulEquiv` from Part VI using `solvable_of_surjective`.",
       "mathContext": "$S_5$ not solvable (derived series stalls at $A_5$). $\\text{Gal} \\cong S_5 \\Rightarrow \\text{Gal}$ not solvable."
     },
     {
       "id": "abel-ruffini-conclusion",
       "title": "Part VIII: Abel-Ruffini Conclusion",
-      "startLine": 1535,
-      "endLine": 1569,
+      "startLine": 1432,
+      "endLine": 1466,
       "summary": "Main theorem `roots_not_solvable_by_rad`: for any root $\\alpha$ of $x^5 - 4x + 2$, $\\alpha \\notin \\text{solvableByRad}(\\mathbb{Q})$. Proof: assume $\\alpha$ solvable by radicals; by `solvableByRad.isSolvable'` with `p_irreducible` and `hroot`, $\\text{Gal}(p)$ is solvable — contradicting `gal_not_solvable`.",
       "mathContext": "$\\alpha \\in \\text{Rad}(\\mathbb{Q}) \\Rightarrow \\text{Gal}(p/\\mathbb{Q})$ solvable $\\Rightarrow S_5$ solvable $\\Rightarrow \\bot$."
     },
@@ -275,16 +275,16 @@
       "id": "gal-card-120",
       "title": "Part V(f): |Gal(p/ℚ)| = 120 (Case Elimination)",
       "startLine": 1348,
-      "endLine": 1480,
+      "endLine": 1377,
       "summary": "Proves `gal_card_eq_120`: $|\\text{Gal}| = 120$ by combining $15 \\mid |\\text{Gal}|$ (from `five_dvd_gal_card` and `three_dvd_gal_card`) with elimination of orders 15 (Sylow), 30 ($A_5$ simplicity), and 60 (odd permutation). Only 120 remains.",
       "mathContext": "$15 \\mid |G|$, $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15, 30, 60 $\\Rightarrow |G| = 120$."
     },
     {
       "id": "realizability",
       "title": "Part IX: $S_5$ Realizability and Verification",
-      "startLine": 1570,
+      "startLine": 1467,
       "endLine": 1498,
-      "summary": "`s5_realizable`: $S_5$ is realizable as a Galois group over $\\mathbb{Q}$, witnessed by the splitting field of $x^5 - 4x + 2$. Lines 1583-1591: `#check` verification of all 9 key theorems.",
+      "summary": "`s5_realizable`: $S_5$ is realizable as a Galois group over $\\mathbb{Q}$, witnessed by the splitting field of $x^5 - 4x + 2$. Lines 1485-1498: `#check` verification of all 9 key theorems.",
       "mathContext": "$\\exists K/\\mathbb{Q}$ Galois: $\\text{Gal}(K/\\mathbb{Q}) \\cong S_5$. Witness: $K = $ splitting field of $x^5 - 4x + 2$."
     }
   ],
