@@ -43,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Nash existence proved for MultilinearGame via Nashs Brouwer argument. 1 sorry (multilinear reindexing), 1 axiom (product simplex Brouwer). Eliminates need for Berge theorem vs OQ01.",
+    "progressSummary": "COMPLETE: 0 sorries, 1 axiom. mixedUtility_linear_in_i proved via Finset.sum_comm. Nash equilibrium existence formalized.",
     "builtItems": [
       "MultilinearGame structure with explicit payoff sums",
       "MultilinearGame.mixedUtility: multilinear extension (polynomial in sigma)",
@@ -53,7 +53,10 @@
       "nashMap_continuous: proved phi is continuous",
       "fixed_point_is_nash: proved any fixed point is a Nash equilibrium (1 sorry for EU linearity)",
       "brouwer_product_simplex: axiom for Brouwer FPT on product simplex",
-      "nash_existence_multilinear: Nash equilibrium existence (1 sorry + 1 axiom)"
+      "nash_existence_multilinear: Nash equilibrium existence (1 sorry + 1 axiom)",
+      "mixedUtility_linear_in_i proved in BrouwerFixedPointOQ04OQ02.lean (lines 153-209) via product splitting + indicator sum",
+      "Fixed Function.update semireducibility issue using Function.update_self + congr_fun",
+      "Fixed Finset.sum_comm double-sum pattern using simp_rw [Finset.mul_sum] first"
     ],
     "insights": [
       "Mixed strategy simplex Δ(Sᵢ) is compact and convex; product Δ = ∏ Δ(Sᵢ) also compact+convex",
