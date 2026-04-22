@@ -24,6 +24,18 @@
     "prerequisites": ["basic real arithmetic", "ℕ recursion in Lean 4"]
   },
   {
+    "id": "ann-algcount-oq02-oq02-02b",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-02",
+    "range": { "startLine": 81, "endLine": 92 },
+    "type": "technique",
+    "title": "Base Case Simp Lemmas: Unfolding the Recursion",
+    "content": "Three `@[simp]` lemmas (`nested_zero`, `a_zero`, `b_zero`) establish the base case values: the initial interval is [0, 1], so the first left endpoint is 0 and the first right endpoint is 1. These lemmas are tagged `@[simp]` so that Lean's `simp` tactic can automatically unfold the initial state during inductive proofs.\n\nThis design choice — starting with [0, 1] rather than an arbitrary [a, b] — simplifies the Lean formalization: all bound proofs only need to handle a fixed upper bound of 1 (rather than a general b₀). The `width_pos` lemma at line 94 then bootstraps from these base cases to prove that the interval width stays positive throughout the construction.",
+    "mathContext": "Base case: $[a_0, b_0] = [0, 1]$, so $\\text{width}_0 = 1 - 0 = 1 > 0$. The `@[simp]` attribute lets `simp` close base cases automatically in inductive steps: `simp [width]` reduces to $1 - 0 = 1 > 0$.",
+    "significance": "technical",
+    "relatedConcepts": ["@[simp] lemma", "definitional unfolding", "base case of induction", "interval [0,1]"],
+    "prerequisites": ["nested def", "a def", "b def", "Lean 4 simp attribute"]
+  },
+  {
     "id": "ann-algcount-oq02-oq02-03",
     "proofId": "algebraic-numbers-countable-oq-02-oq-02",
     "range": { "startLine": 93, "endLine": 162 },
@@ -46,6 +58,18 @@
     "significance": "key",
     "relatedConcepts": ["exclusion boundary case", "weak vs strict inequality", "limit_gt_a", "linarith combination"],
     "prerequisites": ["a_strict_mono", "width_pos", "real arithmetic"]
+  },
+  {
+    "id": "ann-algcount-oq02-oq02-04b",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-02",
+    "range": { "startLine": 163, "endLine": 182 },
+    "type": "technique",
+    "title": "Bridge Lemmas: Global Monotonicity and Cross-Index Bounds",
+    "content": "Five bridge lemmas elevate the pointwise successor properties into globally usable forms:\n\n1. **`a_strictMono`** (line 157): Converts `a_strict_mono` (which says `a(n+1) > a(n)` for each `n`) into `StrictMono (a f)` (which applies to any pair `m < n`). Uses `strictMono_nat_of_lt_succ` from Mathlib.\n\n2. **`b_antitone`** (line 161): Similarly converts `b_mono` into `Antitone (b f)` via `antitone_nat_of_succ_le`.\n\n3. **`b_le_one`** (line 165): Proves right endpoints ≤ 1 by induction, using `b_mono` to propagate from the base case b(0) = 1.\n\n4. **`a_le_b_all`** (line 171): The critical cross-index lemma: any left endpoint a(m) ≤ any right endpoint b(n), even for *different* indices m ≠ n. The proof splits on `m ≤ n` vs `m > n`, using monotonicity of `a` and antitone of `b` respectively.\n\n5. **`a_bdd_above`** (line 180): Follows from `a_le_b_all` with n=0: every a(m) ≤ b(0) = 1.\n\nThe `a_le_b_all` lemma is mathematically the most subtle: in a standard nested interval argument the bound 'all left endpoints ≤ all right endpoints' is obvious from nestedness, but in Lean it requires a formal case analysis on the relative ordering of the indices.",
+    "mathContext": "Cross-index bound: for all $m, n \\in \\mathbb{N}$, $a_m \\leq b_n$. If $m \\leq n$: $a_m \\leq a_n < b_n$ (monotone $a$). If $m > n$: $a_m < b_m \\leq b_n$ (antitone $b$). In both cases $a_m \\leq b_n$. This implies $\\{a_m : m \\in \\mathbb{N}\\}$ is bounded above by any $b_n$, enabling `csSup_le` in `limit_le_b`.",
+    "significance": "supporting",
+    "relatedConcepts": ["StrictMono", "Antitone", "strictMono_nat_of_lt_succ", "antitone_nat_of_succ_le", "cross-index bound", "BddAbove"],
+    "prerequisites": ["a_strict_mono", "b_mono", "a_lt_b", "Mathlib.Order.Monotone.Basic"]
   },
   {
     "id": "ann-algcount-oq02-oq02-05",

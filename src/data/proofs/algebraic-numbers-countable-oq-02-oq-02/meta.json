@@ -133,6 +133,11 @@
       "id": "algebraic-numbers-countable",
       "relationship": "ancestor",
       "description": "Proves algebraic numbers are countable. Combined with ℝ uncountable (proved here), this establishes that transcendental numbers are uncountable."
+    },
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "alternative",
+      "description": "Cantor's 1891 diagonal argument proving the same ℝ uncountability result via a fundamentally different technique — constructing a real not in any enumeration by flipping digits on the diagonal. Comparing the two proofs illustrates how different constructive witness strategies (nested intervals vs. diagonalization) can achieve the same mathematical conclusion."
     }
   ],
   "leanFile": {
