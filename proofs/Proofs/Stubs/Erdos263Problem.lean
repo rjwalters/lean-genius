@@ -534,7 +534,11 @@ private lemma doubleExp_sum_summable :
     Note: each term is positive; Aristotle candidate (tsum_pos API varies by Mathlib version). -/
 private lemma doubleExp_tail_pos (N : ℕ) :
     0 < ∑' k : ℕ, (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + N + 1)) := by
-  sorry
+  have hsum : Summable (fun k : ℕ => (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + N + 1))) := by
+    have h : Summable (fun k : ℕ => (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + (N + 1)))) :=
+      (summable_nat_add_iff (N + 1)).mpr doubleExp_sum_summable
+    exact h.congr (fun k => by congr 1; congr 1; omega)
+  exact tsum_pos hsum (fun k => by positivity) 0 (by positivity)
 
 /-- D * (finite sum) is a natural number: 2^{2^N} * Σ_{k<N} 1/2^{2^k} ∈ ℕ.
     Each term: 2^{2^N} * (1/2^{2^k}) = 2^{2^N - 2^k} ∈ ℕ (since 2^k ≤ 2^N for k ≤ N). -/
@@ -553,17 +557,85 @@ private lemma doubleExp_fin_mul_nat (N : ℕ) :
   rw [div_eq_mul_inv, ← pow_sub₀ (2 : ℝ) (by norm_num : (2 : ℝ) ≠ 0) hle]
 
 /-- Tail bound: 2^{2^N} * Σ_{k≥N+1} 1/2^{2^k} < 1 / (2^{2^N} - 1).
-    Proof sketch: D * T = Σ_{j≥0} 1/D^{2^{j+1}-1}. Each term ≤ (1/D)^j
-    (since 2^{j+1}-1 ≥ j for j ≥ 0). So D*T < Σ_{j≥0} (1/D)^j = D/(D-1)·1/D... -/
+    Strategy: set D = 2^{2^N}, r = 1/D². Each term 1/D^{2^{k+1}} ≤ r^{k+1}
+    (since 2*(k+1) ≤ 2^{k+1}), so D*T ≤ D/(D²-1) < 1/(D-1). -/
 private lemma doubleExp_tail_bound (N : ℕ) :
     (2 : ℝ) ^ (2 ^ N) * ∑' k : ℕ, (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + N + 1)) <
     1 / ((2 : ℝ) ^ (2 ^ N) - 1) := by
-  sorry
+  set D := (2 : ℝ) ^ (2 ^ N) with hD_def
+  have hD_pos : (0 : ℝ) < D := by positivity
+  have hD_ge2 : (2 : ℝ) ≤ D := by
+    have h1 : 1 ≤ 2 ^ N := Nat.one_le_pow N 2 (by norm_num)
+    calc (2 : ℝ) = 2 ^ 1 := by norm_num
+      _ ≤ 2 ^ (2 ^ N) := pow_le_pow_right (by norm_num) (by exact_mod_cast h1)
+  have hD_ge1 : (1 : ℝ) ≤ D := by linarith
+  have hD1_pos : (0 : ℝ) < D - 1 := by linarith
+  have hD2_pos : (0 : ℝ) < D ^ 2 - 1 := by nlinarith
+  -- Geometric ratio r = 1/D², with 0 ≤ r < 1
+  set r := (1 : ℝ) / D ^ 2 with hr_def
+  have hr_nn : (0 : ℝ) ≤ r := by positivity
+  have hr_lt1 : r < 1 := by
+    unfold_let r; rw [div_lt_one (by positivity)]; nlinarith
+  -- Rewrite each term: 1/2^{2^{k+N+1}} = 1/D^{2^{k+1}}
+  have hterm : ∀ k : ℕ, (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + N + 1)) = 1 / D ^ (2 ^ (k + 1)) := by
+    intro k; congr 1; rw [hD_def, ← pow_mul]; congr 1
+    have : k + N + 1 = N + (k + 1) := by omega
+    rw [this, pow_add]
+  -- Key arithmetic: 2*(k+1) ≤ 2^{k+1}, proved via k+1 ≤ 2^k
+  have key_arith : ∀ k : ℕ, 2 * (k + 1) ≤ 2 ^ (k + 1) := by
+    intro k
+    have h : k + 1 ≤ 2 ^ k := by
+      induction k with
+      | zero => norm_num
+      | succ m ih =>
+        calc m + 1 + 1 ≤ 2 ^ m + 1 := by linarith
+          _ ≤ 2 ^ m + 2 ^ m := by linarith [Nat.one_le_pow m 2 (by norm_num)]
+          _ = 2 ^ (m + 1) := by ring
+    calc 2 * (k + 1) ≤ 2 * 2 ^ k := by linarith
+      _ = 2 ^ (k + 1) := by ring
+  -- Term bound: 1/D^{2^{k+1}} ≤ r^{k+1} = (1/D²)^{k+1}
+  have hterm_bound : ∀ k : ℕ, (1 : ℝ) / D ^ (2 ^ (k + 1)) ≤ r ^ (k + 1) := by
+    intro k
+    calc (1 : ℝ) / D ^ (2 ^ (k + 1))
+        ≤ 1 / D ^ (2 * (k + 1)) :=
+            one_div_le_one_div_of_le (by positivity) (pow_le_pow_right hD_ge1 (key_arith k))
+      _ = r ^ (k + 1) := by
+            unfold_let r; rw [div_pow, one_pow, ← pow_mul]
+  -- Summability
+  have hTsumm : Summable (fun k : ℕ => r ^ (k + 1)) :=
+    (summable_nat_add_iff 1).mpr (summable_geometric_of_lt_one hr_nn hr_lt1)
+  have hTsumm' : Summable (fun k : ℕ => (1 : ℝ) / D ^ (2 ^ (k + 1))) :=
+    hTsumm.of_nonneg_of_le (fun k => by positivity) hterm_bound
+  -- Geometric series: ∑ r^{k+1} = r/(1-r) = 1/(D²-1)
+  have hgeo : ∑' k : ℕ, r ^ (k + 1) = 1 / (D ^ 2 - 1) := by
+    rw [show (fun k : ℕ => r ^ (k + 1)) = (fun k => r * r ^ k) from funext (fun k => by ring)]
+    rw [tsum_mul_left, tsum_geometric_of_lt_one hr_nn hr_lt1]
+    unfold_let r
+    have hD2_ne : D ^ 2 ≠ 0 := by positivity
+    have h1r_pos : (0 : ℝ) < 1 - 1 / D ^ 2 := by
+      rw [sub_pos, div_lt_one (by positivity)]; nlinarith
+    field_simp [hD2_ne, h1r_pos.ne']
+    ring
+  -- Rewrite tsum in goal using hterm, then bound
+  rw [show (fun k : ℕ => (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + N + 1))) =
+          (fun k => 1 / D ^ (2 ^ (k + 1))) from funext hterm]
+  have hT_le : ∑' k : ℕ, (1 : ℝ) / D ^ (2 ^ (k + 1)) ≤ 1 / (D ^ 2 - 1) := by
+    rw [← hgeo]; exact tsum_le_tsum hterm_bound hTsumm' hTsumm
+  calc D * ∑' k : ℕ, (1 : ℝ) / D ^ (2 ^ (k + 1))
+      ≤ D * (1 / (D ^ 2 - 1)) := mul_le_mul_of_nonneg_left hT_le hD_pos.le
+    _ = D / (D ^ 2 - 1) := by ring
+    _ < 1 / (D - 1) := by
+          rw [div_lt_div_iff hD2_pos hD1_pos]; nlinarith
 
 /-- Split: ∑' n, f n = ∑ n ∈ range N, f n + f N + ∑' n, f (n + N + 1). -/
 private lemma tsum_split_at (f : ℕ → ℝ) (hf : Summable f) (N : ℕ) :
     ∑' n, f n = (∑ n ∈ Finset.range N, f n) + f N + ∑' n, f (n + N + 1) := by
-  sorry
+  have hfN : Summable (fun n => f (n + N)) := (summable_nat_add_iff N).mpr hf
+  have htail : ∑' n, f (n + N) = f N + ∑' n, f (n + N + 1) := by
+    rw [hfN.tsum_eq_zero_add]
+    simp only [Nat.zero_add]
+    congr 1; apply tsum_congr; intro n; congr 1; omega
+  rw [← hf.sum_add_tsum_nat_add N, htail]; ring
 
 /-- The sum Σ_{n=0}^∞ 1/2^{2^n} is irrational.
 
@@ -632,6 +704,10 @@ end Erdos263
   - `factorial_no_folklore_growth`: (n!)^{1/2^n} ≤ 2 (bounded, cannot → ∞)
   - `factorial_has_kovac_tao_condition`: (n+2)!/((n+1)!)² → 0 (satisfies KT condition)
   - `connection_262_proved`: Every irrationality sequence has irrational reciprocal sum
+  - `doubleExp_fin_mul_nat`: D * (finite sum) ∈ ℕ via pow_sub₀
+  - `doubleExp_tail_pos`: tail ∑ 1/2^{2^{k+N+1}} > 0 via tsum_pos
+  - `doubleExp_tail_bound`: D * tail < 1/(D-1) via geometric comparison
+  - `tsum_split_at`: ∑ f = (range sum) + f N + (shifted tail) via sum_add_tsum_nat_add
 
   **Key sorries** (5 remaining):
   Deep (require non-Mathlib mathematics):
@@ -639,7 +715,7 @@ end Erdos263
   - `kovac_tao_not_irrationality`: The Kovač-Tao 2024 negative result (Egyptian fractions)
   - `positive_condition_irrationality`: liminf a_{n+1}/a_n^{2+ε} > 0 ⟹ irrationality seq
   - `truncation_insufficient`: ∀N, irrationality status requires infinite information
-  Hard (known proof, needs tsum formalization — Aristotle candidate):
+  Hard (all helper lemmas now proved — only the integer-gap assembly remains):
   - `doubleExp_sum_irrational`: Σ 1/2^{2^n} is irrational (integer-gap argument)
 
   **Position of key sequences relative to KT threshold**:
