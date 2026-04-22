@@ -95,9 +95,9 @@
       "result": "clean"
     },
     "angle-trisection": {
-      "auditCount": 8,
+      "auditCount": 9,
       "issues": [],
-      "lastAudited": "2026-04-04T03:13:06Z",
+      "lastAudited": "2026-04-22T12:38:08Z",
       "result": "clean"
     },
     "angle-trisection-oq-01": {
@@ -769,9 +769,9 @@
       "result": "clean"
     },
     "buffons-needle-oq-02-oq-02": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-04-04T01:56:47Z",
+      "lastAudited": "2026-04-22T12:37:02Z",
       "result": "clean"
     },
     "burnside-counting": {
@@ -2801,10 +2801,10 @@
       "result": "clean"
     },
     "erdos-1131-oq-01": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-04-04T06:09:00Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T12:38:08Z",
+      "result": "clean"
     },
     "erdos-1132": {
       "auditCount": 3,
@@ -3433,12 +3433,12 @@
       "result": "clean"
     },
     "erdos-157": {
-      "auditCount": 6,
+      "auditCount": 7,
       "issues": [
         "sorry mismatch corrected in meta.json"
       ],
-      "lastAudited": "2026-04-04T06:09:00Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T12:38:08Z",
+      "result": "clean"
     },
     "erdos-158": {
       "auditCount": 4,
@@ -4345,13 +4345,13 @@
       "result": "clean"
     },
     "erdos-29-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [
         "https://github.com/rjwalters/lean-genius/issues/8636",
         "True stubs (counterexample_satisfies_correct_bound, why_original_was_wrong) converted to comments; closed #8636"
       ],
-      "lastAudited": "2026-04-04T00:00:00Z",
-      "result": "issues-fixed",
+      "lastAudited": "2026-04-22T12:37:02Z",
+      "result": "clean",
       "agentId": "lean-mechanic"
     },
     "erdos-290": {
@@ -5843,8 +5843,8 @@
     },
     "erdos-504": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 5,
-      "lastAudited": "2026-04-04T01:56:48Z",
+      "auditCount": 6,
+      "lastAudited": "2026-04-22T12:37:02Z",
       "result": "clean"
     },
     "erdos-505": {
@@ -6010,9 +6010,9 @@
       "result": "clean"
     },
     "erdos-529": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-04-04T01:56:47Z",
+      "lastAudited": "2026-04-22T12:37:02Z",
       "result": "clean"
     },
     "erdos-53": {
@@ -7557,9 +7557,9 @@
       "result": "clean"
     },
     "erdos-756": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-04-04T01:56:47Z",
+      "lastAudited": "2026-04-22T12:37:02Z",
       "result": "clean"
     },
     "erdos-757": {
@@ -7805,8 +7805,8 @@
     },
     "erdos-793": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-04T09:27:51Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T12:38:08Z",
       "result": "clean"
     },
     "erdos-794": {
@@ -8927,9 +8927,9 @@
       "result": "clean"
     },
     "erdos-96": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-04-04T01:56:47Z",
+      "lastAudited": "2026-04-22T12:37:02Z",
       "result": "clean"
     },
     "erdos-960": {
@@ -9103,9 +9103,9 @@
     },
     "erdos-986": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-04T01:13:02Z",
-      "result": "issues-fixed"
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T12:37:02Z",
+      "result": "clean"
     },
     "erdos-987": {
       "agentId": "auditor-cycle-20-batch",
@@ -9367,9 +9367,9 @@
       "result": "clean"
     },
     "four-color-theorem-oq-02": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-04-04T12:02:26Z",
+      "lastAudited": "2026-04-22T12:38:31Z",
       "result": "clean"
     },
     "fourier-series": {
@@ -9839,13 +9839,13 @@
       "result": "clean"
     },
     "intermediate-value-theorem-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [
         "https://github.com/rjwalters/lean-genius/issues/8637",
         "True stubs (ivt_from_brouwer_sketch, dimensional_summary) converted to comments; closed #8637"
       ],
-      "lastAudited": "2026-04-04T00:00:00Z",
-      "result": "issues-fixed",
+      "lastAudited": "2026-04-22T12:37:02Z",
+      "result": "clean",
       "agentId": "lean-mechanic"
     },
     "inverse-galois": {
@@ -9861,10 +9861,10 @@
       "result": "clean"
     },
     "inverse-galois-oq-02": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-04-04T03:13:06Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T12:38:08Z",
+      "result": "clean"
     },
     "inverse-galois-oq-06": {
       "auditCount": 2,
@@ -10049,9 +10049,9 @@
       "result": "clean"
     },
     "lebesgue-measure-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T08:56:36Z",
+      "lastAudited": "2026-04-22T12:38:08Z",
       "result": "clean"
     },
     "legendre-partial": {
@@ -10169,9 +10169,9 @@
       "result": "clean"
     },
     "navier-stokes-existence": {
-      "auditCount": 7,
+      "auditCount": 8,
       "issues": [],
-      "lastAudited": "2026-04-04T03:13:06Z",
+      "lastAudited": "2026-04-22T12:38:08Z",
       "result": "clean"
     },
     "navier-stokes-oq-01": {
@@ -10193,10 +10193,10 @@
       "result": "clean"
     },
     "newton-inductive-step-oq-01": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-04T09:56:58Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T12:38:08Z",
+      "result": "clean"
     },
     "nth-root-irrational": {
       "agentId": "auditor-cycle-20-batch",
@@ -10442,9 +10442,9 @@
       "result": "clean"
     },
     "pythagorean-triples-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T14:19:53Z",
+      "lastAudited": "2026-04-22T12:39:16Z",
       "result": "clean"
     },
     "quadratic-reciprocity": {
@@ -10460,9 +10460,9 @@
       "result": "clean"
     },
     "quadratic-reciprocity-algorithm-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T14:19:35Z",
+      "lastAudited": "2026-04-22T12:39:16Z",
       "result": "clean"
     },
     "ramanujan-sum-fallacy": {
@@ -10472,9 +10472,9 @@
       "result": "clean"
     },
     "ramsey-r4k-extensions": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T14:18:57Z",
+      "lastAudited": "2026-04-22T12:39:16Z",
       "result": "clean"
     },
     "ramseys-theorem": {
@@ -10502,15 +10502,15 @@
       "result": "clean"
     },
     "randomized-maxcut-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T14:18:29Z",
+      "lastAudited": "2026-04-22T12:39:16Z",
       "result": "clean"
     },
     "rh-consequences": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T14:18:16Z",
+      "lastAudited": "2026-04-22T12:38:51Z",
       "result": "clean"
     },
     "riemann-hypothesis": {
@@ -10538,9 +10538,9 @@
       "result": "clean"
     },
     "roth-theorem-k3-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T14:17:58Z",
+      "lastAudited": "2026-04-22T12:38:51Z",
       "result": "clean"
     },
     "russell-1-plus-1": {
@@ -10562,9 +10562,9 @@
       "result": "clean"
     },
     "schauder-fixed-point-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T14:17:45Z",
+      "lastAudited": "2026-04-22T12:38:51Z",
       "result": "clean"
     },
     "schroeder-bernstein": {
@@ -10574,9 +10574,9 @@
       "result": "clean"
     },
     "schroeder-bernstein-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T14:17:18Z",
+      "lastAudited": "2026-04-22T12:38:51Z",
       "result": "clean"
     },
     "schroeder-bernstein-oq-04": {
@@ -10592,10 +10592,10 @@
       "result": "clean"
     },
     "shannon-channel-coding-oq-02": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-04-04T10:58:44Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T12:38:31Z",
+      "result": "clean"
     },
     "shannon-channel-coding-oq-04": {
       "auditCount": 4,
@@ -10610,9 +10610,9 @@
       "result": "clean"
     },
     "shannon-entropy-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T14:16:48Z",
+      "lastAudited": "2026-04-22T12:38:51Z",
       "result": "clean"
     },
     "shannon-entropy-oq-03": {
@@ -10628,9 +10628,9 @@
       "result": "clean"
     },
     "shannon-source-coding-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T14:16:36Z",
+      "lastAudited": "2026-04-22T12:38:51Z",
       "result": "clean"
     },
     "shannon-source-coding-oq-02": {
@@ -10694,9 +10694,9 @@
       "result": "clean"
     },
     "sperner-ndim-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T14:15:41Z",
+      "lastAudited": "2026-04-22T12:38:51Z",
       "result": "clean"
     },
     "sqrt2-examples": {
@@ -10706,9 +10706,9 @@
       "result": "clean"
     },
     "sqrt2-examples-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T14:16:05Z",
+      "lastAudited": "2026-04-22T12:38:51Z",
       "result": "clean"
     },
     "sqrt2-from-axioms": {
@@ -10742,9 +10742,9 @@
       "result": "clean"
     },
     "stirling-formula-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T13:02:24Z",
+      "lastAudited": "2026-04-22T12:38:31Z",
       "result": "clean"
     },
     "subset-count": {
@@ -10754,15 +10754,15 @@
       "result": "clean"
     },
     "subset-count-multiset": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T14:13:50Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T12:38:51Z",
+      "result": "clean"
     },
     "subset-count-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T14:14:41Z",
+      "lastAudited": "2026-04-22T12:38:51Z",
       "result": "clean"
     },
     "sum-of-kth-powers": {
@@ -10802,9 +10802,9 @@
       "result": "clean"
     },
     "sylow-theorems-oq-04": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T13:02:24Z",
+      "lastAudited": "2026-04-22T12:38:31Z",
       "result": "clean"
     },
     "szemeredi-core": {
@@ -10826,9 +10826,9 @@
       "result": "clean"
     },
     "szemeredi-hypergraph-core": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T13:02:08Z",
+      "lastAudited": "2026-04-22T12:38:31Z",
       "result": "clean"
     },
     "szemeredi-regularity": {
@@ -10972,9 +10972,9 @@
       "result": "clean"
     },
     "wilsons-theorem-oq-04": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T13:02:08Z",
+      "lastAudited": "2026-04-22T12:38:31Z",
       "result": "clean"
     },
     "wolstenholme-theorem": {
@@ -11011,15 +11011,15 @@
       "result": "clean"
     },
     "yang-mills-2d-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-04T12:39:42Z",
+      "lastAudited": "2026-04-22T12:38:31Z",
       "result": "clean"
     },
     "yang-mills-2d-oq-02": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-04T13:01:27Z",
+      "lastAudited": "2026-04-22T12:38:31Z",
       "result": "clean"
     },
     "yang-mills-lattice": {
@@ -11227,15 +11227,15 @@
       "issues": []
     },
     "erdos-10-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-04T13:13:52Z",
-      "result": "issues-fixed",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T12:38:31Z",
+      "result": "clean",
       "issues": []
     },
     "erdos-1021-oq-01": {
-      "auditCount": 4,
-      "lastAudited": "2026-04-04T03:13:06Z",
-      "result": "issues-fixed",
+      "auditCount": 5,
+      "lastAudited": "2026-04-22T12:38:08Z",
+      "result": "clean",
       "issues": []
     },
     "gcd-algorithm-oq-01-oq-03": {
@@ -11437,14 +11437,14 @@
       "issues": []
     },
     "burnside-counting-oq-03": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-04T16:34:52Z",
-      "result": "issues-fixed",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T12:39:16Z",
+      "result": "clean",
       "issues": []
     },
     "cevas-theorem-oq-02-oq-01-oq-03": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-04T09:29:49Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T12:38:08Z",
       "result": "clean",
       "issues": []
     },
@@ -11455,8 +11455,8 @@
       "issues": []
     },
     "area-of-circle-oq-01-oq-02-oq-03": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-04T12:08:34Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T12:38:31Z",
       "result": "clean",
       "issues": []
     },
@@ -11467,32 +11467,32 @@
       "issues": []
     },
     "erdos-1059-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-04T15:05:47Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T12:39:16Z",
       "result": "clean",
       "issues": []
     },
     "binomial-theorem-oq-02-oq-01-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-04T16:25:33Z",
-      "result": "issues-fixed",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T12:39:16Z",
+      "result": "clean",
       "issues": []
     },
     "cantor-diagonalization-oq-03-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-04T16:58:24Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T12:39:16Z",
       "result": "clean",
       "issues": []
     },
     "bezout-identity-oq-03-oq-04-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-04T18:04:51Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T12:39:16Z",
       "result": "clean",
       "issues": []
     },
     "konigsberg-oq-03-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-04T18:04:52Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T12:39:16Z",
       "result": "clean",
       "issues": []
     },
@@ -11755,9 +11755,9 @@
       "issues": []
     },
     "divisibility-rules-oq-01-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-04T00:00:00Z",
-      "result": "issues-fixed",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T12:37:02Z",
+      "result": "clean",
       "issues": [
         "missing Lean file DivisibilityRulesOQ01OQ01.lean created; closed #9647"
       ],
@@ -11791,9 +11791,9 @@
       "issues": []
     },
     "euler-identity-oq-01-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-04T00:00:00Z",
-      "result": "issues-fixed",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T12:37:02Z",
+      "result": "clean",
       "issues": [
         "missing Lean file EulerIdentityOQ01OQ01.lean created; closed #9687"
       ],
