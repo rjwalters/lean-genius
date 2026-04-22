@@ -36,6 +36,18 @@
     "prerequisites": ["nested def", "a def", "b def", "Lean 4 simp attribute"]
   },
   {
+    "id": "ann-algcount-oq02-oq02-02c",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-02",
+    "range": { "startLine": 110, "endLine": 112 },
+    "type": "technique",
+    "title": "Interval Nonemptiness: From Width Positivity to a < b",
+    "content": "The `a_lt_b` theorem derives interval nonemptiness directly from `width_pos`: since `width f n = b f n - a f n > 0`, we get `a f n < b f n` by linarith. This one-line proof is a key bridge lemma — everything that needs interval nonemptiness (including `a_le_b_all` and the `sSup` boundedness argument) goes through `a_lt_b`, not through `width_pos` directly. The indirection is a good design choice: callers express what they need (nonemptiness as `a < b`) rather than referring to the width definition.",
+    "mathContext": "$\\text{width}(n) = b_n - a_n > 0 \\implies a_n < b_n$ by linarith. Used in `a_le_b_all`: $a_m < b_m$ (from `a_lt_b f m`) provides one branch of the cross-index bound $a_m \\leq b_n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["width_pos", "a_le_b_all", "interval nonemptiness", "linarith"],
+    "prerequisites": ["width_pos", "width def: b f n - a f n"]
+  },
+  {
     "id": "ann-algcount-oq02-oq02-03",
     "proofId": "algebraic-numbers-countable-oq-02-oq-02",
     "range": { "startLine": 93, "endLine": 162 },
@@ -70,6 +82,18 @@
     "significance": "supporting",
     "relatedConcepts": ["StrictMono", "Antitone", "strictMono_nat_of_lt_succ", "antitone_nat_of_succ_le", "cross-index bound", "BddAbove"],
     "prerequisites": ["a_strict_mono", "b_mono", "a_lt_b", "Mathlib.Order.Monotone.Basic"]
+  },
+  {
+    "id": "ann-algcount-oq02-oq02-05a",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-02",
+    "range": { "startLine": 190, "endLine": 199 },
+    "type": "technique",
+    "title": "Invoking Completeness: BddAbove Enables sSup",
+    "content": "`a_range_bddAbove` establishes that `Set.range (a f)` has an upper bound (specifically 1), by unpacking the range using `a_bdd_above`. This is the technical prerequisite for `sSup` to be meaningful: Lean's `sSup` on a nonempty bounded set in a `ConditionallyCompleteLinearOrder` gives a finite real value. Without `a_range_bddAbove`, `sSup (Set.range (a f))` could be interpreted as `⊤ = +∞`, which would break `le_csSup` and `csSup_le`.\n\nThe `limitPoint` definition then simply names `sSup (Set.range (a f))`. Separating — first prove `BddAbove`, then define `limitPoint` — is cleaner than combining them, because `a_range_bddAbove` is also needed independently in `limit_le_b`, where `csSup_le` requires a `BddAbove` hypothesis.",
+    "mathContext": "In a `ConditionallyCompleteLinearOrder`: `sSup S` is well-defined and finite when $S$ is nonempty and bounded above. Here $S = \\{a_n : n \\in \\mathbb{N}\\}$, nonempty (contains $a_0 = 0$) and bounded above by 1 (from `a_bdd_above`). The API lemmas `le_csSup` and `csSup_le` both require `BddAbove S` as an explicit hypothesis.",
+    "significance": "technical",
+    "relatedConcepts": ["BddAbove", "sSup", "ConditionallyCompleteLinearOrder", "le_csSup", "csSup_le", "a_bdd_above"],
+    "prerequisites": ["a_bdd_above", "Mathlib.Order.ConditionallyCompleteLattice.Basic"]
   },
   {
     "id": "ann-algcount-oq02-oq02-05",
