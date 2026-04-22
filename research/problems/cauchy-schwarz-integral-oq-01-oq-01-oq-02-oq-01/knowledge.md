@@ -2,9 +2,56 @@
 
 **Problem**: Can Mathlib's RN machinery (SignedMeasure.rnDeriv) prove that every φ ∈ (Lp)* is represented by integration against some g ∈ Lq?
 
-**Status**: PROGRESS — 1 critical sorry remaining (holder_extremizer_lq_bound); indicator_lp_hasSum proved
+**Status**: PROGRESS — holder_extremizer_lq_bound restructured with 3 focused sub-sorries; proof structure complete
 
 **Lean file**: `Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean`
+
+---
+
+## Session 2026-04-22 (Session 6) — holder_extremizer_lq_bound structured proof
+
+**Mode**: REVISIT
+**Outcome**: progress
+
+### What I Did
+
+1. **Fixed `riesz_lp_surjective_from_rn`** — removed `set g := ν.rnDeriv μ` let-binding that caused elaboration issues; changed to `refine ⟨ν.rnDeriv μ, ?_, ?_⟩` with explicit sub-proofs. This eliminates the build error at line 806.
+
+2. **Restructured `holder_extremizer_lq_bound`** from 1 opaque sorry to explicit structured proof:
+   - **Proved**: gₙ bounded by n (abs_le case analysis)
+   - **Proved**: gₙ ∈ L1 (Memℒp.of_bound + finite measure)
+   - **Proved**: hₙ = sign(gₙ)|gₙ|^{q-1} is measurable
+   - **Proved**: hₙ bounded by n^{q-1} (abs_sign bound + rpow monotone)
+   - **Proved**: hₙ ∈ Lp (Memℒp.of_bound)
+   - **Proved**: hₙ(a)·g(a) ≥ hₙ(a)·gₙ(a) pointwise (3-case: g>n, g<-n, |g|≤n)
+   - **Proved**: ∫ hₙ gₙ ≤ ∫ hₙ g (integral_mono)
+   - **SORRY A**: φ(hₙ as Lp) = ∫ hₙ·g (DCT + simple function approx)
+   - **SORRY B**: ∫ hₙ gₙ = (eLpNorm gₙ q μ ^ q.toReal).toReal (sign × |x|^{q-1} × x = |x|^q)
+   - **SORRY C**: chain → eLpNorm gₙ q μ ≤ ENNReal.ofReal ‖φ‖ (ENNReal rpow algebra)
+
+### Key Findings
+
+- The circular dependency is unavoidable: φ(hₙ) = ∫ hₙ g needs g ∈ L1 (not g ∈ Lq) for bounded hₙ, via simple function approximation + DCT
+- `SimpleFunc.tendsto_approxOn_Lp_eLpNorm` and `tendsto_integral_of_dominated_convergence` are the key tools for SORRY A
+- `Integrable.mul_bdd` gives: if f ∈ L1 and g bounded, then f·g ∈ L1 (crucial for DCT bound in SORRY A)
+- Pointwise inequality hₙ·g ≥ hₙ·gₙ requires 3-case analysis on sign of g vs n
+
+### Files Modified
+
+- `proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean` (holder_extremizer_lq_bound: 1 opaque sorry → structured proof with 3 focused sorries; riesz_lp_surjective_from_rn: set-binding issue fixed)
+
+### Remaining Sorries (4 total: 1 dead path + 3 focused)
+
+1. `truncated_rn_deriv_lq_bound` (line 209) — DEAD PATH, MARKED FALSE, not on critical path
+2. `hphi_hn` in holder: φ(hₙ as Lp) = ∫ hₙ·g via SimpleFunc.approxOn + CLM continuity + DCT
+3. `hint_hn_gn` in holder: ∫ hₙ gₙ = ‖gₙ‖_q^q (sign × |x|^{q-1} × x = |x|^q algebraic identity)
+4. Final chain sorry in holder: from ‖gₙ‖_q^q ≤ ‖φ‖·‖gₙ‖_q^{q/p} → ‖gₙ‖_q ≤ ‖φ‖ (ENNReal rpow arithmetic)
+
+### Next Steps
+
+1. Prove SORRY B (`hint_hn_gn`): Show hₙ(a)·gₙ(a) = |gₙ(a)|^q via 3-case analysis on sign, then use eLpNorm unpacking
+2. Prove SORRY A (`hphi_hn`): Use `MemLp.induction_dense` or direct `SimpleFunc.approxOn` sequence
+3. Prove SORRY C (chain): Requires `eLpNorm h_n p μ ^ p.toReal = eLpNorm g_n q μ ^ q.toReal` then ENNReal rpow division
 
 ---
 
