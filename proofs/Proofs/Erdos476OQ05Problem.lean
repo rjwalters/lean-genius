@@ -82,6 +82,89 @@ lemma isAP_shift (A : Finset (ZMod p)) (a d c : ZMod p)
   intro i _
   simp only [Function.comp_apply]; ring
 
+/-! ### AP Sum Infrastructure -/
+
+/-- If A is an AP with diff d and has ≥ 2 elements, then d ≠ 0. -/
+private lemma d_ne_zero_of_isAP {A : Finset (ZMod p)} {a d : ZMod p}
+    (hA : IsArithmeticProgression A a d) (hcard : 2 ≤ A.card) : d ≠ 0 := by
+  intro hd
+  have hAcard : A.card ≤ 1 := by
+    rw [Finset.card_le_one]
+    intro x hx y hy
+    rw [IsArithmeticProgression, hd] at hA
+    simp only [mul_zero, add_zero] at hA
+    rw [hA] at hx hy
+    simp only [Finset.mem_image, Finset.mem_range] at hx hy
+    obtain ⟨_, _, rfl⟩ := hx
+    obtain ⟨_, _, rfl⟩ := hy
+    rfl
+  omega
+
+/-- The pointwise sum of two AP-sets equals the expected range image. -/
+private lemma add_isAP_eq {A B : Finset (ZMod p)} {a b d : ZMod p}
+    (hA : IsArithmeticProgression A a d) (hB : IsArithmeticProgression B b d)
+    (hApos : 0 < A.card) (hBpos : 0 < B.card) :
+    A + B = (Finset.range (A.card + B.card - 1)).image (fun (k : ℕ) => (a + b) + (k : ZMod p) * d) := by
+  apply Finset.Subset.antisymm
+  · -- Forward: A + B ⊆ range.image
+    intro x hx
+    simp only [Finset.mem_add] at hx
+    obtain ⟨xa, hxaA, xb, hxbB, rfl⟩ := hx
+    rw [hA] at hxaA; rw [hB] at hxbB
+    simp only [Finset.mem_image, Finset.mem_range] at hxaA hxbB
+    obtain ⟨i, hi, rfl⟩ := hxaA
+    obtain ⟨j, hj, rfl⟩ := hxbB
+    simp only [Finset.mem_image, Finset.mem_range]
+    refine ⟨i + j, by omega, ?_⟩
+    simp only [Nat.cast_add]; ring
+  · -- Reverse: range.image ⊆ A + B
+    intro x hx
+    simp only [Finset.mem_image, Finset.mem_range] at hx
+    obtain ⟨k, hk, rfl⟩ := hx
+    let i := min k (A.card - 1)
+    let j := k - i
+    have hi : i < A.card := Nat.lt_of_le_of_lt (Nat.min_le_right _ _) (Nat.sub_lt hApos Nat.one_pos)
+    have hj : j < B.card := by
+      simp only [i, j]
+      rcases le_or_gt k (A.card - 1) with h | h
+      · simp [Nat.min_eq_left h]; exact Finset.card_pos.mp hBpos
+      · have : min k (A.card - 1) = A.card - 1 := Nat.min_eq_right (by omega)
+        simp [this]; omega
+    have h_ij : i + j = k := Nat.min_add_sub_cancel' (by omega)
+    simp only [Finset.mem_add]
+    refine ⟨a + (i : ZMod p) * d, ?_, b + (j : ZMod p) * d, ?_, ?_⟩
+    · rw [hA]; simp only [Finset.mem_image, Finset.mem_range]; exact ⟨i, hi, rfl⟩
+    · rw [hB]; simp only [Finset.mem_image, Finset.mem_range]; exact ⟨j, hj, rfl⟩
+    · have hk : (k : ZMod p) = (i : ZMod p) + j := by
+        have h := congrArg (Nat.cast (R := ZMod p)) h_ij.symm
+        rwa [Nat.cast_add] at h
+      rw [hk]; ring
+
+/-- Sum of two APs with same diff is an AP, given CD equality. -/
+private lemma isAP_sum {A B : Finset (ZMod p)} {a b d : ZMod p}
+    (hA : IsArithmeticProgression A a d) (hB : IsArithmeticProgression B b d)
+    (hApos : 0 < A.card) (hBpos : 0 < B.card)
+    (hABcard : (A + B).card = A.card + B.card - 1) :
+    IsArithmeticProgression (A + B) (a + b) d := by
+  unfold IsArithmeticProgression
+  rw [hABcard]
+  exact add_isAP_eq hA hB hApos hBpos
+
+/-- **AP Sdiff Card**: Given IH gives A' = A.erase a₀ and B are APs with same diff d,
+    the set A has exactly 1 element with no d-predecessor in A. -/
+private lemma vosper_ap_sdiff_card
+    (A : Finset (ZMod p)) (a₀ a₁ b₀ d : ZMod p) (B : Finset (ZMod p))
+    (ha₀A : a₀ ∈ A)
+    (hA3 : 2 < A.card)
+    (hB : 2 ≤ B.card)
+    (hlt : A.card + B.card - 1 < p)
+    (hAB : (A + B).card = A.card + B.card - 1)
+    (hcase1 : ((A.erase a₀) + B).card = A.card + B.card - 2)
+    (hAP_A' : IsArithmeticProgression (A.erase a₀) a₁ d)
+    (hAP_B : IsArithmeticProgression B b₀ d) :
+    (A \ A.image (· + d)).card = 1 := by
+  sorry -- Key step: position analysis forces |A \ A.image(·+d)| = 1
+
 /-! ### The Key "Near-Periodic" Lemma -/
 
 /-- The map k ↦ x₀ + k * d : Fin p → ZMod p is injective when d ≠ 0 (ZMod p is a field) -/
@@ -338,7 +421,11 @@ theorem vosper (A B : Finset (ZMod p)) (hA : 2 ≤ A.card) (hB : 2 ≤ B.card)
     --        |{a₀}+B \ A'+B| = 1 forces the missing element to be an endpoint.
     --        Endpoint missing ↔ a₀ = a₁-d (predecessor) or a₀ = a₁+|A'|·d (successor).
     have hAP_A : ∃ start : ZMod p, IsArithmeticProgression A start d := by
-      sorry -- [SORRY 2/2] AP extension: a₀ adjacent to A' → A is AP with diff d
+      have hd : d ≠ 0 := d_ne_zero_of_isAP hAP_A' hA'2
+      have hA_lt_p : A.card < p := by omega
+      have hsdiff : (A \ A.image (· + d)).card = 1 :=
+        vosper_ap_sdiff_card A a₀ a₁ b₀ d B ha₀A hA3 hB hlt h hcase1 hAP_A' hAP_B
+      exact ap_of_near_periodic hd hA_lt_p hsdiff
     obtain ⟨start_A, hAP_A_start⟩ := hAP_A
     exact ⟨d, start_A, b₀, hAP_A_start, hAP_B⟩
   · -- |A| = 2: base case
