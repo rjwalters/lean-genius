@@ -51,11 +51,13 @@
   },
   "conclusion": {
     "summary": "Complete solvability classification: S_n solvable ↔ n ≤ 4. A_n solvable ↔ n ≤ 4. Non-commutativity witnesses. Group order verifications up to S₈. 57 theorems, 534 lines, 0 axioms.",
-    "implications": "The solvability threshold is the theoretical explanation for why cubics and quartics have explicit formulas (Cardano/Ferrari) but quintics do not. This is a cornerstone of Galois theory and the bridge from classical algebra to modern group theory.",
+    "implications": "1. **Closure of a 300-year quest**: The biconditional $S_n$ solvable $\\iff n \\leq 4$ definitively explains why Cardano's cubic and Ferrari's quartic formulas exist but no analogous quintic formula can exist — the Galois groups $S_3, S_4$ have composition series with abelian factors, while $S_5$ does not because $A_5$ is simple and non-abelian.\n\n2. **Entry point to the classification of finite simple groups**: $A_5$ (order 60) is the smallest non-abelian simple group and the first entry in the monumental Classification of Finite Simple Groups (CFSG, completed 2004, ~10,000 pages). The solvability boundary at $n = 4$ is precisely where the first non-abelian simple quotient appears — $A_5$ emerges as $A_5 \\cong S_5/A_5$'s complement in the non-solvable extension.\n\n3. **Differential Galois theory (Picard-Vessiot)**: The identical solvability obstruction governs linear ODEs with rational coefficients. A homogeneous linear ODE $L(y) = 0$ is solvable by quadrature (iterated integration, exponential, algebraic operations) if and only if its differential Galois group — a linear algebraic group — is solvable. This Picard-Vessiot theory is the ODE analogue of classical Galois theory.\n\n4. **Feit-Thompson theorem connection**: Every finite group of odd order is solvable (Feit-Thompson 1963, 255 pages — the largest single theorem in group theory at the time). This is consistent with $A_5$ being non-solvable only when $|A_5| = 60$ is even; all odd-order symmetric groups ($n \\leq 2$, orders 1 and 2) are trivially solvable. Feit-Thompson thus implies no odd-order group can contain $A_5$ as a composition factor.\n\n5. **Algorithmic Galois theory**: Given $f \\in \\mathbb{Q}[x]$, computing $\\text{Gal}(f/\\mathbb{Q})$ as a permutation group is now algorithmic — implemented in GAP, Magma, and PARI/GP. This transforms Abel-Ruffini from a theoretical impossibility to a decidable criterion: a polynomial is solvable by radicals iff its computed Galois group is solvable (verifiable by computing the derived series).\n\n6. **Shafarevich's theorem on solvable Galois groups**: Every finite solvable group occurs as $\\text{Gal}(K/\\mathbb{Q})$ for some number field $K$ (Shafarevich 1954). This perfectly complements the Abel-Ruffini classification: for the solvable side ($n \\leq 4$), every $S_n$ and $A_n$ is realizable over $\\mathbb{Q}$ by the Hilbert irreducibility theorem; for the non-solvable side, $S_n$ ($n \\geq 5$) still occurs over $\\mathbb{Q}$ but cannot be the Galois group of any radical extension.\n\n7. **Lean formalization efficiency**: 57 theorems in 534 lines with 0 axioms demonstrates how Mathlib's `IsSolvable` typeclass infrastructure makes the main biconditional nearly mechanical — the forward direction requires only `interval_cases n <;> infer_instance` (5 lines) once the base cases are established. This is a benchmark for how good foundational library investment pays off for algebraic formalization.",
     "openQuestions": [
       "Formalize the explicit quintic unsolvability: construct a specific degree-5 polynomial with Galois group S₅",
-      "Prove the Galois correspondence theorem (subfields ↔ subgroups)",
-      "Formalize that A_n is simple for n ≥ 5 directly from the triple transposition argument"
+      "Prove the Galois correspondence theorem (subfields ↔ subgroups) — the bijection between intermediate fields of a Galois extension and subgroups of the Galois group",
+      "Formalize that A_n is simple for n ≥ 5 directly from the triple transposition argument (any normal subgroup containing a 3-cycle must equal A_n)",
+      "State and prove the Jordan-Hölder uniqueness theorem in Lean: the composition factors of any finite group are unique up to permutation and isomorphism — this would make the $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$ chain provably the unique solvability witness",
+      "Can Shafarevich's theorem (every finite solvable group is a Galois group over $\\mathbb{Q}$) be stated in Lean as a companion to this file's classification? The statement would require formalizing algebraic number fields and the Galois correspondence"
     ]
   },
   "leanFile": {
@@ -92,6 +94,21 @@
       "targetId": "sylow-theorems",
       "relationship": "related",
       "description": "Sylow theory provides the structural decomposition of groups used in solvability proofs. A group is solvable iff its Sylow subgroups satisfy certain conditions — the p-group components in the composition series are exactly the Sylow subgroups"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "sibling",
+      "description": "Abel-Ruffini proof chain: $A_5$ simple → $S_n$ not solvable for $n \\geq 5$ — the step-by-step chain this file packages into the complete biconditional $S_n$ solvable $\\iff n \\leq 4$"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02",
+      "relationship": "sibling",
+      "description": "S₂, S₃, S₄ solvability classification — a dedicated entry for the positive half of the biconditional, complementary to this file's complete classification including $n \\geq 5$"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-01",
+      "relationship": "sibling",
+      "description": "Concrete Abel-Ruffini: proves $\\text{Gal}(x^5 - 4x + 2) \\cong S_5$ and derives unsolvability for this specific polynomial — the explicit instantiation of the non-solvability theorem this file formalizes for all $n \\geq 5$"
     }
   ],
   "references": [
