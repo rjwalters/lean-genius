@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (session 7): Formalized integer-gap proof structure as 6 helper lemmas. Proved doubleExp_term_eq + doubleExp_sum_summable (no sorry). Added 4 Aristotle-ready helper sorrys (tail_pos, fin_mul_nat, tail_bound, tsum_split_at). Main theorem still sorry but now has complete proof strategy in code. 7 sorries total (4 deep + 3 hard helpers + 1 main).",
+    "progressSummary": "PROGRESS (session 9): Proved doubleExp_sum_irrational via integer-gap argument. 4 deep sorries remain (folklore, kovac-tao, positive-condition, truncation). No more HARD sorries.",
     "builtItems": [
       "doubleExp_not_folklore_growth: ¬HasFolkloreGrowth doubleExp — proved in proofs/Proofs/Stubs/Erdos263Problem.lean:89",
       "two_pow_ge_sq: ∀ n ≥ 4, n^2 ≤ 2^n — private lemma in Erdos263Problem.lean:202",
@@ -46,7 +46,8 @@
       "doubleExp_tail_pos: 0 < ∑ 1/2^{2^{k+N+1}} (Erdos263Problem.lean:533, sorry — Aristotle candidate)",
       "doubleExp_fin_mul_nat: ∃ m:ℕ, 2^{2^N} * finsum = m (Erdos263Problem.lean:546, attempted via pow_sub₀)",
       "doubleExp_tail_bound: 2^{2^N} * tail < 1/(2^{2^N}-1) (Erdos263Problem.lean:562, sorry — key tail estimate)",
-      "tsum_split_at: tsum split at N into finsum + f(N) + tail (Erdos263Problem.lean:568, sorry)"
+      "tsum_split_at: tsum split at N into finsum + f(N) + tail (Erdos263Problem.lean:568, sorry)",
+      "doubleExp_sum_irrational: Irrational(Σ 1/2^{2^n}) — proved via integer-gap argument (session 9, Erdos263Problem.lean:655-720)"
     ],
     "insights": [
       "(2^{2^n})^{1/2^n} = 2^{(2^n)*(1/2^n)} = 2^1 = 2 — the function is constantly 2, so doubleExp does NOT satisfy the folklore condition",
@@ -75,11 +76,9 @@
       "kovac_tao_not_irrationality requires Kovač-Tao 2024 construction — not in Mathlib"
     ],
     "nextSteps": [
-      "Submit doubleExp_tail_pos to Aristotle: positivity of tail tsum",
-      "Submit doubleExp_fin_mul_nat to Aristotle: integer-valuedness of D*finsum via pow_sub₀",
-      "Submit doubleExp_tail_bound to Aristotle: geometric tail bound D*T < 1/(D-1)",
-      "Submit tsum_split_at to Aristotle: tsum split lemma using sum_add_tsum_nat_add",
-      "Once helpers compile: connect main theorem using hkey algebraic identity"
+      "All remaining 4 sorries require non-Mathlib mathematics: Mahler criterion, Kovac-Tao 2024 Egyptian fraction construction, liminf analysis",
+      "Problem is effectively BLOCKED on deep sorries until Mathlib analytic number theory expands",
+      "Consider updating problem phase to BLOCKED since no more tractable work remains"
     ]
   },
   "tags": [

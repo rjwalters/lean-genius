@@ -17,13 +17,13 @@
       "analysis"
     ],
     "badge": "wip",
-    "sorries": 5,
+    "sorries": 4,
     "erdosNumber": 263,
     "erdosUrl": "https://erdosproblems.com/263",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "lineCount": 726,
-    "assumptions": "No axioms. 5 sorry(s) remain: folklore_irrationality (Mahler-type criterion needed), kovac_tao_not_irrationality (Egyptian fraction construction needed), positive_condition_irrationality (liminf analysis beyond Mathlib), truncation_insufficient (requires exhibiting a known irrationality sequence), doubleExp_sum_irrational (HARD — integer-gap argument fully outlined, awaits helper lemma compilation). Proved (no sorry): doubleExp_term_eq (term rewrite), doubleExp_sum_summable (summability), doubleExp_not_folklore_growth, doubleExp_square_growth, doubleExp_strictly_increasing, doubleExp_convergent, doubleExp_superexponential, doubleExp_not_kovac_tao, factorial_no_folklore_growth, factorial_has_kovac_tao_condition, characterization_gap, connection_262_proved, doubleExp_fin_mul_nat (D*finsum ∈ ℕ via pow_sub₀), doubleExp_tail_pos (tail positivity — proved in Aristotle companion), doubleExp_tail_bound (geometric tail bound — proved in Aristotle companion), tsum_split_at (tsum splitting lemma — proved in Aristotle companion).",
+    "lineCount": 792,
+    "assumptions": "No axioms. 4 sorry(s) remain (all deep — require non-Mathlib mathematics): folklore_irrationality (Mahler-type criterion), kovac_tao_not_irrationality (Egyptian fraction construction), positive_condition_irrationality (liminf analysis), truncation_insufficient (requires known irrationality sequence witness). Proved (no sorry): doubleExp_strictly_increasing, doubleExp_square_growth, doubleExp_not_folklore_growth, doubleExp_convergent, doubleExp_superexponential, doubleExp_not_kovac_tao, characterization_gap, factorial_no_folklore_growth, factorial_has_kovac_tao_condition, connection_262_proved, doubleExp_term_eq, doubleExp_sum_summable, doubleExp_fin_mul_nat, doubleExp_tail_pos, doubleExp_tail_bound, tsum_split_at, doubleExp_sum_irrational (integer-gap argument, session 9).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -159,12 +159,12 @@
       "Real"
     ],
     "namespace": "Erdos263",
-    "lineCount": 726,
+    "lineCount": 792,
     "axiomCount": 0,
     "theoremCount": 19,
     "definitionCount": 19,
     "path": "Proofs/Stubs/Erdos263Problem.lean",
-    "sorries": 5
+    "sorries": 4
   },
   "crossReferences": [
     {
@@ -226,5 +226,5 @@
       "note": "Growth lower bounds for irrationality sequences, connected to Problem #262"
     }
   ],
-  "sorries": 5
+  "sorries": 4
 }

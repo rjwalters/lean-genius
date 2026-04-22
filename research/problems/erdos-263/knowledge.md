@@ -1,5 +1,42 @@
 # Knowledge Base: Erdős #263 - Irrationality Sequences
 
+## Session 2026-04-22 (Session 9) — Prove doubleExp_sum_irrational (5→4 sorries)
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: progress — proved doubleExp_sum_irrational via integer-gap argument
+
+### What I Did
+
+All 4 helper lemmas (fin_mul_nat, tail_pos, tail_bound, tsum_split_at) were proved in prior
+sessions. This session assembles them into the full proof of `doubleExp_sum_irrational`:
+
+**Proof structure** (integer-gap argument):
+1. Assume S = ∑ 1/2^{2^n} = q (rational), using Lean's `Irrational` intro pattern
+2. Set N = q.den, D = 2^{2^N}. Show N+1 ≤ D via induction + nat_le_two_pow
+3. hS_eq: S = q.num/N (via Rat.cast_def + push_cast)
+4. hSplit: S = finsum + 1/D + tail (via tsum_split_at)
+5. hmf: D * finsum = mf ∈ ℕ (via doubleExp_fin_mul_nat)
+6. hkey: N*D*tail = q.num*D - N*mf - N (algebraic identity from hS_eq ∧ hmf)
+7. hgap_pos: 0 < N*D*tail (from htail_pos, hN_pos, hD_pos)
+8. hgap_lt1: N*D*tail < 1 (from htail_bound: D*T < 1/(D-1), N ≤ D-1)
+9. hgap_int: ∃ z : ℤ, (z : ℝ) = N*D*tail (integer arithmetic witness)
+10. Contradiction: nonzero integer z with |z| < 1 is impossible (hz_pos + hz_lt1 + linarith)
+
+### Current State
+- 4 sorries remain (ALL deep — require non-Mathlib mathematics):
+  1. `folklore_irrationality`: Mahler-type criterion (not in Mathlib)
+  2. `kovac_tao_not_irrationality`: Kovač-Tao 2024 Egyptian fraction construction
+  3. `positive_condition_irrationality`: liminf analysis (requires folklore_irrationality)
+  4. `truncation_insufficient`: needs witnessing an irrationality sequence
+- 0 hard sorries remain (doubleExp_sum_irrational now proved)
+
+### Files Modified
+- `proofs/Proofs/Stubs/Erdos263Problem.lean` (726 → 792 lines, 5 → 4 sorries)
+- `src/data/proofs/erdos-263/meta.json` (lineCount, sorries updated)
+- `src/data/research/problems/erdos-263.json` (knowledge updated)
+
+---
+
 ## Session 2026-04-22 (Session 8) — Prove 3 Helper Lemmas (8→5 sorries)
 
 **Mode**: REVISIT (RICH knowledge tier)
