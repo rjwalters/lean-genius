@@ -294,13 +294,57 @@ lemma vosper_base (A B : Finset (ZMod p)) (hA : A.card = 2) (hB : 2 ≤ B.card)
   exact ⟨b - a, a, b₀, isAP_pair a b hab, hB_ap⟩
 
 /-- **Vosper's Theorem** (1956): equality case of Cauchy-Davenport.
-    Proof by strong induction on |A|. Base |A|=2 handled by vosper_base.
-    Inductive step (1 sorry): Remove a ∈ A, apply IH to A' = A\{a};
-    CD equality for A' + B holds by monotonicity; then show a is adjacent to A'. -/
+    Proof by strong induction on |A| (via recursive call + termination_by).
+
+    Inductive step strategy:
+    1. Find non-redundant a₀ ∈ A (Case 1): |(A\{a₀})+B| = |A|+|B|-2.
+       Existence: if every a ∈ A were "redundant" (Case 2), the Cauchy-Davenport
+       lower bound Σ |(A\{a})+B| ≥ |A|·(|A|+|B|-2) combined with the equality
+       Σ |(A\{a})+B| = |A|·(|A+B|) gives |A|·|B| ≥ 2(|A|+|B|-1), which fails
+       for |A|·|B| < 2(|A|+|B|-1) (e.g., |A|=3,|B|=2 gives 6 ≥ 8, contradiction).
+    2. Apply IH (recursive): A' = A\{a₀} and B are APs with common diff d.
+    3. Extend (AP extension sorry): a₀ is predecessor/successor of A' in the AP.
+       Proof sketch: Both A'+B and {a₀}+B are APs with diff d. Since |A+B| = |A'+B|+1,
+       exactly 1 element of {a₀}+B is outside A'+B, which must be an endpoint.
+       This forces a₀ = a₁-d or a₀ = a₁+|A'|·d, making A an AP with diff d. -/
 theorem vosper (A B : Finset (ZMod p)) (hA : 2 ≤ A.card) (hB : 2 ≤ B.card)
     (h : (A + B).card = A.card + B.card - 1) (hlt : A.card + B.card - 1 < p) :
     ∃ (d a₀ b₀ : ZMod p),
       IsArithmeticProgression A a₀ d ∧ IsArithmeticProgression B b₀ d := by
-  sorry
+  rcases Nat.lt_or_eq_of_le hA with hA3 | hA2
+  · -- |A| ≥ 3: inductive step
+    -- Step 1: Find non-redundant a₀ ∈ A.
+    -- For each a ∈ A: CD gives |(A.erase a)+B| ≥ |A|+|B|-2.
+    --                 Inclusion gives |(A.erase a)+B| ≤ |A+B| = |A|+|B|-1.
+    -- If ALL a are redundant (Case 2 for all), a counting argument fails. So ∃ Case 1.
+    obtain ⟨a₀, ha₀A, hcase1⟩ : ∃ a₀ ∈ A, ((A.erase a₀) + B).card = A.card + B.card - 2 := by
+      -- Proof by contradiction: assume all a ∈ A give Case 2 (|(A.erase a)+B| = |A|+|B|-1).
+      -- Then |A|·|B| ≥ 2(|A|+|B|-1), which fails for small |A|,|B| and small p values.
+      -- For the general case, the iterative removal argument gives the contradiction.
+      sorry -- [SORRY 1/2] Case 1 existence: counting argument or iterative removal
+    -- Step 2: Apply IH recursively to A' = A.erase a₀ and B.
+    have hA'card : (A.erase a₀).card = A.card - 1 := Finset.card_erase_of_mem ha₀A
+    have hA'2 : 2 ≤ (A.erase a₀).card := by omega
+    -- Restate hcase1 using A'.card instead of A.card
+    have hcase1' : ((A.erase a₀) + B).card = (A.erase a₀).card + B.card - 1 := by
+      rw [hA'card]; omega
+    have hcase1_lt_p : (A.erase a₀).card + B.card - 1 < p := by omega
+    obtain ⟨d, a₁, b₀, hAP_A', hAP_B⟩ :=
+      vosper (A.erase a₀) B hA'2 hB hcase1' hcase1_lt_p
+    -- Step 3: Extend the AP from A' to A.
+    -- We have: IsAP(A', a₁, d) and IsAP(B, b₀, d).
+    -- Claim: A is also AP with diff d (a₀ is adjacent to A' in the AP order).
+    -- Proof: A'+B is AP with diff d of length |A'|+|B|-1. {a₀}+B is AP with diff d.
+    --        |{a₀}+B \ A'+B| = 1 forces the missing element to be an endpoint.
+    --        Endpoint missing ↔ a₀ = a₁-d (predecessor) or a₀ = a₁+|A'|·d (successor).
+    have hAP_A : ∃ start : ZMod p, IsArithmeticProgression A start d := by
+      sorry -- [SORRY 2/2] AP extension: a₀ adjacent to A' → A is AP with diff d
+    obtain ⟨start_A, hAP_A_start⟩ := hAP_A
+    exact ⟨d, start_A, b₀, hAP_A_start, hAP_B⟩
+  · -- |A| = 2: base case
+    exact vosper_base A B hA2.symm hB h hlt
+termination_by A.card
+decreasing_by
+  simp only [Finset.card_erase_of_mem ha₀A]; omega
 
 end Erdos476OQ05

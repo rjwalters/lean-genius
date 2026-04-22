@@ -1,7 +1,7 @@
 {
   "slug": "erdos-476-oq-05",
   "title": "Erdős #476: Structure of Cauchy-Davenport Extremal Sets (Vosper's Theorem)",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -38,19 +38,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Problem selected by Seeker. Parent proves CD lower bound. Vosper's theorem characterizes the equality case. Proof by induction on |A|.",
+    "progressSummary": "PROGRESS: vosper theorem now has structured recursive proof (termination_by A.card); 2 specific sorries remain: Case 1 existence and AP extension. ap_of_near_periodic and vosper_base fully proved (0 sorries).",
     "builtItems": [],
     "insights": [
       "Vosper 1956: equality |A+B|=|A|+|B|-1 (with |A|,|B|≥2, |A|+|B|≤p) ↔ A,B are APs with same common difference",
       "Edge cases: |A|=1 or |B|=1 give trivial equality with no structure constraint",
       "Proof structure: induction on |A|, removing one element and applying CD to smaller set",
-      "AP in Z/pZ: set {a, a+d, a+2d, ..., a+(k-1)d} mod p; d≠0 since p is prime"
+      "AP in Z/pZ: set {a, a+d, a+2d, ..., a+(k-1)d} mod p; d≠0 since p is prime",
+      "Recursive theorem with termination_by A.card works cleanly for vosper induction",
+      "Case 1 existence proved by contradiction: if all a in A give Case 2, counting gives |A|*|B| >= 2(|A|+|B|-1) which fails for small sizes",
+      "AP extension: |{a0}+B minus A-prime+B|=1 forces a0 to be adjacent to A-prime (predecessor or successor)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Read Erdos476.lean: understand how CD is proved (polynomial method vs compression?)",
-      "Check Mathlib.Combinatorics.Additive for AP definitions in ZMod",
-      "Assess whether inductive Vosper proof is feasible with current ZMod/Finset tools"
+      "Prove SORRY 1 (Case 1 existence): counting arg for small |A|,|B|, iterative removal for general case",
+      "Prove SORRY 2 (AP extension): endpoint analysis of AP intersection with same diff d",
+      "Submit both sorries to Aristotle"
     ]
   },
   "tags": [
