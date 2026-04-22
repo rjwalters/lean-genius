@@ -9,12 +9,14 @@
     "type": "concept",
     "title": "The Theorem That Took 124 Years",
     "content": "The Four Color Theorem has a remarkable history. Posed in 1852, it resisted proof for over a century, defeating many brilliant mathematicians. Its eventual 1976 proof required something unprecedented: a computer checking thousands of cases no human could verify.\n\nThe theorem states that any map can be colored with at most four colors such that no two adjacent regions share a color. While easy to state and seemingly simple, the proof revealed deep connections between graph theory, combinatorics, and computation.\n\nThis formalization presents the conceptual structure. The complete proof (Appel-Haken 1976, Gonthier 2005) requires computer verification of 1,936 configurations.",
+    "mathContext": "$\\chi(G) \\leq 4$ for all planar graphs $G$, where $\\chi(G) = \\min\\{k : G \\text{ is } k\\text{-colorable}\\}$. First major theorem with essential computer assistance: Appel-Haken (1976) verified 1,936 reducible configurations; Robertson et al. (1997) reduced to 633. Formalized by Gonthier in Coq (2005), reducing trust to the Coq kernel.",
     "significance": "key",
     "relatedConcepts": [
       "graph theory",
       "computer-assisted proof",
       "planar graphs"
-    ]
+    ],
+    "prerequisites": ["graph theory basics", "map-graph duality", "chromatic number"]
   },
   {
     "id": "ann-graph-structure",
@@ -26,12 +28,14 @@
     "type": "definition",
     "title": "Graphs and Their Structure",
     "content": "We model maps as graphs where vertices represent regions and edges connect adjacent regions. This transforms the map coloring problem into a graph coloring problem.\n\nA graph $G = (V, E)$ consists of:\n- A set $V$ of vertices (the regions)\n- A set $E$ of edges (adjacency relations)\n- Edges are symmetric: if region A borders B, then B borders A\n\nThis abstraction lets us apply graph-theoretic tools to a geometric problem.",
+    "mathContext": "$G = (V, E)$ with $E \\subseteq \\binom{V}{2}$ (simple undirected graph). The dual of a planar map: countries $\\mapsto$ vertices, shared borders $\\mapsto$ edges. A planar map is 4-colorable iff its dual graph satisfies $\\chi \\leq 4$. The dual is always planar, so the map and graph versions are equivalent.",
     "significance": "key",
     "relatedConcepts": [
       "vertex",
       "edge",
       "adjacency"
-    ]
+    ],
+    "prerequisites": ["set theory", "equivalence relations", "map-graph duality"]
   },
   {
     "id": "ann-coloring",
@@ -43,13 +47,14 @@
     "type": "definition",
     "title": "Graph Coloring",
     "content": "A **proper k-coloring** assigns one of k colors to each vertex such that adjacent vertices receive different colors. The **chromatic number** $\\chi(G)$ is the minimum k for which a proper k-coloring exists.\n\nThe Four Color Theorem states: $\\chi(G) \\leq 4$ for all planar graphs G.\n\nNote that we need $k \\geq 4$ for some graphs (like the complete graph $K_4$, where every vertex connects to every other). The theorem says 4 always suffices for planar graphs.",
-    "mathContext": "$\\chi(G) = \\min\\{k : G \\text{ is } k\\text{-colorable}\\}$",
+    "mathContext": "$\\chi(G) = \\min\\{k : G \\text{ is } k\\text{-colorable}\\}$. A proper $k$-coloring is $c: V \\to \\{1,\\ldots,k\\}$ with $c(u) \\neq c(v)$ for all $\\{u,v\\} \\in E$. The complete graph $K_4$ requires $\\chi(K_4) = 4$; $K_4$ is planar, so the bound 4 is tight. The theorem asserts $\\chi(G) \\leq 4$ for ALL planar $G$.",
     "significance": "key",
     "relatedConcepts": [
       "chromatic number",
       "proper coloring",
       "k-colorable"
-    ]
+    ],
+    "prerequisites": ["graph definition", "function coloring", "chromatic number"]
   },
   {
     "id": "ann-planar",
@@ -61,12 +66,14 @@
     "type": "definition",
     "title": "Planar Graphs",
     "content": "A graph is **planar** if it can be drawn in the plane with no edge crossings. Equivalently, it can be embedded on a sphere.\n\nNot all graphs are planar! The complete graph $K_5$ (5 vertices, all connected) and the complete bipartite graph $K_{3,3}$ are the 'forbidden minors'—every non-planar graph contains one of these as a substructure.\n\nPlanarity is essential to the theorem. Non-planar graphs can require arbitrarily many colors.",
+    "mathContext": "A graph $G$ is planar iff it contains no subdivision of $K_5$ or $K_{3,3}$ as a subgraph (Kuratowski 1930). Equivalently: no $K_5$ or $K_{3,3}$ as a topological minor (Wagner 1937). For planar $G$ with $|V| \\geq 3$: $|E| \\leq 3|V| - 6$ (from Euler's formula + $|F| \\geq |E|/3$ since every face has $\\geq 3$ boundary edges). The complete graph $K_5$ violates this: $|E|=10 > 3 \\cdot 5 - 6 = 9$.",
     "significance": "key",
     "relatedConcepts": [
       "planar embedding",
       "Kuratowski's theorem",
       "forbidden minors"
-    ]
+    ],
+    "prerequisites": ["graph embeddings", "Euler's formula", "Kuratowski's theorem"]
   },
   {
     "id": "ann-euler",
@@ -78,7 +85,7 @@
     "type": "theorem",
     "title": "Euler's Formula: The Fundamental Constraint",
     "content": "For any connected planar graph embedded in the plane:\n\n$$V - E + F = 2$$\n\nwhere V = vertices, E = edges, F = faces (including the unbounded outer face).\n\nThis remarkable formula constrains planar graph structure. Combined with the handshaking lemma (sum of degrees = 2E), it implies every planar graph has a vertex of degree at most 5.\n\nThis 'low-degree vertex' existence is the entry point for inductive proofs of coloring theorems.",
-    "mathContext": "$V - E + F = 2$ for connected planar graphs",
+    "mathContext": "$V - E + F = 2$ for connected planar graphs. Since each face is bounded by $\\geq 3$ edges and each edge bounds $\\leq 2$ faces: $3F \\leq 2E$, so $F \\leq 2E/3$. Substituting: $V - E + 2E/3 \\geq 2$, giving $E \\leq 3V - 6$. The handshaking lemma $\\sum_v \\deg(v) = 2E \\leq 6V - 12$ gives average degree $< 6$, so some vertex has $\\deg \\leq 5$.",
     "significance": "key",
     "prerequisites": [
       "ann-planar"
@@ -99,7 +106,7 @@
     "type": "theorem",
     "title": "Every Planar Graph Has a Low-Degree Vertex",
     "content": "Every planar graph with at least one vertex has a vertex of degree at most 5.\n\n**Proof sketch:** By Euler's formula and handshaking, the average degree in a planar graph is less than 6. Therefore, some vertex must have degree at most 5.\n\nThis result is crucial: it guarantees we can always find a 'removable' vertex for inductive arguments. It's why the Five Color Theorem is easy (6 colors would be trivial, 5 requires one trick, 4 requires computer assistance).",
-    "mathContext": "$\\forall G$ planar, $\\exists v \\in V(G)$ with $\\deg(v) \\leq 5$",
+    "mathContext": "$\\forall G$ planar, $\\exists v \\in V(G)$ with $\\deg(v) \\leq 5$. Proof: $\\sum_v \\deg(v) = 2|E| \\leq 6|V| - 12 < 6|V|$, so average degree $< 6$, so minimum degree $\\leq 5$. The bound 5 is tight: the icosahedron graph has minimum degree exactly 5. For 4-coloring, the key cases are $\\deg(v) \\leq 4$ (easy) and $\\deg(v) = 5$ (requires Kempe chains).",
     "significance": "key",
     "prerequisites": [
       "ann-euler"
@@ -119,7 +126,7 @@
     "type": "theorem",
     "title": "The Five Color Theorem",
     "content": "Every planar graph is 5-colorable. This is much easier than Four Color!\n\n**Proof by induction:**\n1. Find a vertex v of degree ≤ 5\n2. Remove v to get smaller graph G'\n3. By induction, G' is 5-colorable\n4. Restore v: it has ≤ 5 neighbors using ≤ 5 colors\n5. If all 5 colors appear among neighbors, use Kempe chains to free one\n6. Color v with the freed color\n\nThe key insight: with 5 colors and ≤ 5 neighbors, we can always make room. With 4 colors, this argument fails—hence the difficulty of the Four Color Theorem.",
-    "mathContext": "$\\chi(G) \\leq 5$ for all planar graphs G",
+    "mathContext": "$\\chi(G) \\leq 5$ for all planar $G$. The Heawood 1890 proof: if $\\deg(v) = 5$ and neighbors use all 5 colors, pick non-adjacent neighbors $u_1$ (color 1) and $u_3$ (color 3). If they're in the same Kempe $(1,3)$-chain, try $(2,4)$-chain swap on neighbor $u_2$. At least one of these swaps frees a color for $v$. With 4 colors and $\\deg(v) = 5$: two non-adjacent neighbors might share the same Kempe chain, blocking both swaps simultaneously — this is the gap Kempe's 1879 proof failed to handle.",
     "significance": "key",
     "prerequisites": [
       "ann-low-degree"
@@ -139,12 +146,14 @@
     "type": "concept",
     "title": "Kempe Chains: The Color-Swapping Trick",
     "content": "A **Kempe chain** for colors a and b starting at vertex v is the maximal connected subgraph of vertices colored a or b containing v.\n\nThe crucial property: swapping colors a ↔ b on a Kempe chain produces another valid coloring! Adjacent vertices still have different colors because:\n- Vertices outside the chain keep their colors\n- Inside the chain, neighbors alternate between a and b\n\nKempe invented this for his 1879 'proof' of Four Colors. His argument was flawed, but the technique is correct and essential. The flaw was in handling cases where multiple Kempe chains interact.",
+    "mathContext": "The Kempe $(a,b)$-chain at $v$: the connected component of $v$ in $G[\\{u \\in V : c(u) \\in \\{a,b\\}\\}]$. Swapping $a \\leftrightarrow b$ on this chain produces a valid coloring: for edge $\\{u,w\\}$ with both in the chain, $c(u) \\neq c(w)$ since they are $a$ and $b$ in some order; for one endpoint inside and one outside, the outside keeps its color $\\notin \\{a,b\\}$, still different. Kempe's error: two chains can become connected after a swap, making a second swap invalid.",
     "significance": "key",
     "relatedConcepts": [
       "color swapping",
       "connected component",
       "Kempe's fallacy"
-    ]
+    ],
+    "prerequisites": ["proper coloring", "connected components in subgraphs", "graph-induced subgraph"]
   },
   {
     "id": "ann-kempe-swap",
@@ -156,7 +165,8 @@
     "type": "theorem",
     "title": "Kempe Chain Swapping Preserves Validity",
     "content": "If we have a proper coloring and swap colors along a Kempe chain, the result is still a proper coloring.\n\n**Why it works:**\n- Any edge with both endpoints in the chain: before, one was color a, one was b; after, they're swapped but still different\n- Any edge with one endpoint in, one out: the outside endpoint keeps its original color (not a or b), so still different from the inside endpoint\n- Any edge with both endpoints outside: unchanged\n\nThis lets us 'free up' a color at a specific vertex by pushing conflicting colors elsewhere.",
-    "mathContext": "Swapping on Kempe chain preserves $\\forall(u,v) \\in E: c(u) \\neq c(v)$",
+    "mathContext": "Swapping on Kempe chain preserves $\\forall(u,v) \\in E: c(u) \\neq c(v)$. Formal verification: partition edges into 3 types — both in chain (colors swap, remain $a \\neq b$), one inside/one outside (outside color $\\notin \\{a,b\\}$, still different), both outside (unchanged). Case analysis closes the proof. In Lean: follows by `simp` on the structural characterization of the Kempe component.",
+    "mathContext": "Formally: let $K$ = Kempe $(a,b)$-chain, $c': V \\to \\{1,2,3,4\\}$ with $c'(v) = \\overline{c(v)}^{a \\leftrightarrow b}$ if $v \\in K$, else $c'(v) = c(v)$. Claim: $c'$ is a proper coloring. For $\\{u,w\\} \\in E$: if both $u,w \\in K$ then $c'(u) \\neq c'(w)$ (both swapped, were $a,b$); if $u \\in K, w \\notin K$ then $c(w) \\notin \\{a,b\\}$ (else $w$ would be in $K$), so $c'(w) = c(w) \\neq c(u) \\in \\{a,b\\}$.",
     "significance": "key",
     "prerequisites": [
       "ann-kempe-chains"
@@ -176,12 +186,14 @@
     "type": "concept",
     "title": "Reducibility: Configurations That Can't Block Coloring",
     "content": "A configuration C is **reducible** if it cannot appear in a minimal counterexample to Four Color. That is: if a planar graph G contains C, then G is 4-colorable (or G can be simplified to a smaller graph that's 4-colorable).\n\nProving reducibility requires showing that any 4-coloring of the graph minus the configuration can be extended to include it. This involves analyzing all possible colorings of the boundary and showing Kempe chains can always make room.\n\nFor many configurations, this case analysis is astronomically complex—too many cases for human verification. This is where computers become essential.",
+    "mathContext": "Configuration $C$ is reducible if: for any planar graph $G \\supseteq C$, a 4-coloring of $G \\setminus \\text{int}(C)$ extends to a 4-coloring of $G$. The boundary $\\partial C$ has $k \\leq 14$ vertices (for the Appel-Haken set), giving at most $4^{14} \\approx 2.7 \\times 10^8$ boundary colorings to check. Computer reduces via Kempe recoloring: for each boundary coloring, determine if the interior can be consistently 4-colored. Appel-Haken: all 1,936 configurations are reducible.",
     "significance": "key",
     "relatedConcepts": [
       "minimal counterexample",
       "configuration",
       "extendability"
-    ]
+    ],
+    "prerequisites": ["minimal counterexample method", "Kempe chain recoloring", "boundary coloring extension"]
   },
   {
     "id": "ann-computer-verification",
@@ -193,12 +205,14 @@
     "type": "concept",
     "title": "Computer-Assisted Proof",
     "content": "The Appel-Haken proof (1976) required:\n- 1,200 hours of computer time\n- Verification of 1,936 configurations\n- 400+ pages of hand-written supporting proofs\n\nInitial reception was skeptical. How can we trust a proof no human can check? What if there's a bug in the program?\n\nGeorges Gonthier's 2005 Coq formalization addressed these concerns by reducing trust to a small, verified proof-checking kernel. The proof certificate is machine-checkable, and the checker itself is tiny enough to be human-verified.\n\nThis paradigm shift—from 'trust the program' to 'trust the proof checker'—has become foundational in formal methods.",
+    "mathContext": "The unavoidable set $\\mathcal{R}$: every planar graph must contain at least one member. For each $C \\in \\mathcal{R}$ (boundary size $|\\partial C| \\leq 14$): enumerate all $4^{|\\partial C|}$ boundary colorings, verify each is extendable (or reducible by Kempe). Appel-Haken: $|\\mathcal{R}| = 1{,}936$. Robertson et al. (1997): $|\\mathcal{R}| = 633$ with improved discharging. Gonthier (2005): the Coq proof kernel is $\\approx 10{,}000$ lines of OCaml — small enough for human audit, unlike the application code.",
     "significance": "key",
     "relatedConcepts": [
       "Coq",
       "formal verification",
       "proof assistant"
-    ]
+    ],
+    "prerequisites": ["unavoidable set", "reducible configurations", "discharging method", "Coq proof assistant"]
   },
   {
     "id": "ann-gonthier",
@@ -210,11 +224,13 @@
     "type": "insight",
     "title": "Gonthier's Coq Formalization",
     "content": "In 2005, Georges Gonthier completed a full formalization of the Four Color Theorem in Coq. This was a landmark achievement:\n\n- **Complete verification:** Every step machine-checked, including all 1,936 configurations\n- **Independent verification:** The Coq proof is a certificate anyone can verify using the proof checker\n- **Trust reduction:** We no longer trust Appel-Haken's program; we trust Coq's small kernel\n\nThe formalization took several person-years but provided certainty that the theorem is correct. It demonstrated that even massive computational proofs can be made rigorous through formal methods.",
+    "mathContext": "Gonthier built on Robertson et al.'s 633-configuration set using SSReflect (a Coq extension for boolean reflection). The proof term inhabits the type `four_color_theorem : ∀ G : planarGraph, 4_colorable G` in CIC (Calculus of Inductive Constructions). Trust hierarchy: theorem $\\leftarrow$ Coq kernel ($\\approx 10^4$ lines OCaml) $\\leftarrow$ CIC type theory (consistency relative to large cardinals). This is a foundational improvement over trusting $\\approx 10^6$ lines of Fortran/C in the Appel-Haken check.",
     "significance": "key",
     "relatedConcepts": [
       "Coq proof assistant",
       "SSReflect",
       "proof certificate"
-    ]
+    ],
+    "prerequisites": ["Coq proof assistant", "SSReflect tactics", "type theory (CIC)", "boolean reflection"]
   }
 ]
