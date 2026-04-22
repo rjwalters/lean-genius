@@ -126,8 +126,8 @@ lemma sidon_distinct_sums (A : Finset ℕ) (hS : IsSidon' A)
     Proof: the map (a,b) ↦ {a,b} bijects strict pairs with 2-element subsets,
     and there are A.card.choose 2 such subsets by Finset.card_powersetLen.
     This is a standard combinatorial identity. -/
-axiom unordered_pairs_card (A : Finset ℕ) :
-    ((A ×ˢ A).filter fun p => p.1 < p.2).card = A.card.choose 2
+theorem unordered_pairs_card (A : Finset ℕ) :
+    ((A ×ˢ A).filter fun p => p.1 < p.2).card = A.card.choose 2 := by sorry
 
 /-- Sumset is nonempty when A is nonempty -/
 lemma sumset_nonempty (A : Finset ℕ) (hA : A.Nonempty) : (sumset' A).Nonempty := by
@@ -186,8 +186,8 @@ lemma two_div_sqrt3_gt_one : 2 / Real.sqrt 3 > 1 := by
 
     Note: the original statement sqrt(N) + 1 is incorrect for large N;
     the correct bound from the differences argument is sqrt(2*N) + 1. -/
-axiom sidon_card_le_sqrt (A : Finset ℕ) (N : ℕ) (hN : N ≥ 1)
+theorem sidon_card_le_sqrt (A : Finset ℕ) (N : ℕ) (hN : N ≥ 1)
     (hA : ∀ a ∈ A, a ≤ N) (hS : IsSidon' A) :
-    (A.card : ℝ) ≤ Real.sqrt (2 * N) + 1
+    (A.card : ℝ) ≤ Real.sqrt (2 * N) + 1 := by sorry
 
 end Erdos840.Aristotle
