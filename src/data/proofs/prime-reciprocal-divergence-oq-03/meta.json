@@ -16,7 +16,7 @@
       "erdos",
       "elementary"
     ],
-    "badge": "mathlib",
+    "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -50,7 +50,7 @@
       "lineCount": 388,
       "structures": 0,
       "axioms": 0,
-      "theorems": 12,
+      "theorems": 13,
       "definitions": 7,
       "instances": 0
     },
@@ -73,7 +73,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erd\u0151s's combinatorial proof of infinitely many primes formalized with 0 sorries. Squarefree decomposition injection gives smooth count \u2264 \u221an \u00b7 2^{\u03c0(N)}, yielding contradiction for n = (2^{\u03c0(N)+1})\u00b2 + 1. 12 theorems, 7 definitions, 0 axioms, 388 lines.",
+    "summary": "Erd\u0151s's combinatorial proof of infinitely many primes formalized with 0 sorries. Squarefree decomposition injection gives smooth count \u2264 \u221an \u00b7 2^{\u03c0(N)}, yielding contradiction for n = (2^{\u03c0(N)+1})\u00b2 + 1. 5 public theorems, 8 private lemmas, 7 definitions, 0 axioms, 388 lines.",
     "implications": "The combinatorial core of Erd\u0151s's \u03a31/p divergence proof can be formalized without analytic machinery. The squarefree decomposition and smooth number counting are templates for sieve theory and integer factorization algorithms. This file stands alone as a complete elementary proof of infinitely many primes, complementing both Euclid's classical argument and Mathlib's analytic approach.",
     "openQuestions": [
       "Formalize the full Erd\u0151s proof of \u03a31/p = \u221e using the smooth/rough dichotomy and real-valued sums",
