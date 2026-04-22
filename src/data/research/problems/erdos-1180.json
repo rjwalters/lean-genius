@@ -1,13 +1,13 @@
 {
   "slug": "erdos-1180",
-  "title": "Erdős #1180",
+  "title": "Erd\u0151s #1180",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
+    "plain": "Let $\\epsilon>0$. Does there exist a constant $C_\\epsilon$ such that, for all primes $p$, every residue modulo $p$ is the sum of at most $C_\\epsilon$ many elements of\n$$\\{ n^{-1} : 1\\leq n\\leq p^\\epsilon\\}$$\nwhere $n^{-1}$ denotes the inverse of $n$ modulo $p$?",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "OBSERVE",
     "since": "2026-01-15T17:01:06.709Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -34,7 +34,7 @@
     "insights": [],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #1180 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erd\u0151s #1180 - Knowledge Base\n\n## Problem Statement\n\nLet $\\epsilon>0$. Does there exist a constant $C_\\epsilon$ such that, for all primes $p$, every residue modulo $p$ is the sum of at most $C_\\epsilon$ many elements of\n$$\\{ n^{-1} : 1\\leq n\\leq p^\\epsilon\\}$$\nwhere $n^{-1}$ denotes the inverse of $n$ modulo $p$?\n\n## Status\n\n**Erd\u0151s Database Status**: SOLVED\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
