@@ -19,11 +19,11 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-04",
-    "axiomCount": 1,
+    "axiomCount": 2,
     "lineCount": 341,
     "theoremCount": 9,
     "definitionCount": 0,
-    "assumptions": "1 axiom: schanuel_for_e_pi (e and π are algebraically independent, following from Schanuel's Conjecture applied with z₁=1, z₂=iπ).",
+    "assumptions": "2 axioms: (1) nesterenko_algebraic_independence (imported from ETranscendentalOQ01: π, e^π, Γ(1/4) are algebraically independent over ℚ, Nesterenko 1996); (2) schanuel_for_e_pi (e and π are algebraically independent, following from Schanuel's Conjecture applied with z₁=1, z₂=iπ).",
     "originalContributions": [
       "First formal proof that e^π is transcendental in this codebase, derived from Nesterenko's theorem",
       "Formal proof that Γ(1/4) is transcendental from Nesterenko's algebraic independence",
@@ -115,7 +115,7 @@
   "leanFile": {
     "namespace": "Real (open)",
     "lineCount": 341,
-    "axiomCount": 1,
+    "axiomCount": 2,
     "theoremCount": 9,
     "definitionCount": 0,
     "path": "Proofs/ETranscendentalOQ01OQ01.lean",
