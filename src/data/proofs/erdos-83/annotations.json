@@ -50,7 +50,7 @@
     "id": "ann-83-ground-set",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 44,
+      "startLine": 45,
       "endLine": 49
     },
     "type": "definition",
@@ -72,7 +72,7 @@
     "id": "ann-83-k-uniform",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 50,
+      "startLine": 51,
       "endLine": 56
     },
     "type": "definition",
@@ -94,7 +94,7 @@
     "id": "ann-83-t-intersecting",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 57,
+      "startLine": 58,
       "endLine": 63
     },
     "type": "definition",
@@ -118,7 +118,7 @@
     "id": "ann-83-classical-intersecting",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 64,
+      "startLine": 65,
       "endLine": 70
     },
     "type": "definition",
@@ -140,7 +140,7 @@
     "id": "ann-83-ekr-bound",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 75,
+      "startLine": 76,
       "endLine": 83
     },
     "type": "concept",
@@ -164,7 +164,7 @@
     "id": "ann-83-star-family",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 84,
+      "startLine": 85,
       "endLine": 97
     },
     "type": "definition",
@@ -188,7 +188,7 @@
     "id": "ann-83-params",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 98,
+      "startLine": 103,
       "endLine": 114
     },
     "type": "definition",
@@ -210,7 +210,7 @@
     "id": "ann-83-bound",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 115,
+      "startLine": 120,
       "endLine": 132
     },
     "type": "definition",
@@ -234,7 +234,7 @@
     "id": "ann-83-extremal",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 134,
+      "startLine": 139,
       "endLine": 160
     },
     "type": "definition",
@@ -258,7 +258,7 @@
     "id": "ann-83-critical-ratio",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 161,
+      "startLine": 166,
       "endLine": 181
     },
     "type": "definition",
@@ -282,7 +282,7 @@
     "id": "ann-83-ak-theorem",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 182,
+      "startLine": 183,
       "endLine": 194
     },
     "type": "concept",
@@ -307,7 +307,7 @@
     "id": "ann-83-special-case",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 195,
+      "startLine": 200,
       "endLine": 221
     },
     "type": "technique",
@@ -330,7 +330,7 @@
     "id": "ann-83-small-cases",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 222,
+      "startLine": 227,
       "endLine": 244
     },
     "type": "concept",
@@ -349,33 +349,10 @@
     ]
   },
   {
-    "id": "ann-83-implications",
-    "proofId": "erdos-83",
-    "range": {
-      "startLine": 246,
-      "endLine": 268
-    },
-    "type": "insight",
-    "title": "Implications: Phase Transitions and Connections",
-    "content": "Four commented sections outline broader implications: (1) **Phase transitions** \u2014 the optimal family structure changes discontinuously at critical $r$ values, analogous to phase transitions in statistical physics. (2) **Coding theory** \u2014 $t$-intersecting families correspond to constant-weight codes with minimum distance constraints. (3) **Probabilistic extensions** \u2014 random $k$-subsets have specific intersection distributions. (4) **Multipartite extensions** \u2014 the theorem generalizes to product ground sets. These connections make the AK theorem a cornerstone of extremal combinatorics.",
-    "mathContext": "Code connection: $t$-intersecting $k$-uniform family on $[m]$ $\\leftrightarrow$ binary code of length $m$, constant weight $k$, minimum 'agreement' $t$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "phase transition",
-      "constant-weight code",
-      "minimum distance",
-      "probabilistic method"
-    ],
-    "prerequisites": [
-      "ahlswede_khachatrian_theorem",
-      "coding theory basics"
-    ]
-  },
-  {
     "id": "ann-83-summary",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 278,
+      "startLine": 281,
       "endLine": 296
     },
     "type": "technique",

@@ -104,22 +104,18 @@
     "type": "concept",
     "title": "Part II: The Galois-Theoretic Bridge",
     "content": "This docstring introduces the central insight of the formalization: the connection between radical solvability (a field-theoretic property) and group solvability (a group-theoretic property). Galois's 1831 memoir established that these two notions correspond precisely.\n\nThe bridge is one-directional for the impossibility proof: solvable by radicals $\\Rightarrow$ solvable Galois group. The converse (solvable Galois group $\\Rightarrow$ solvable by radicals) also holds but is not needed here — only the contrapositive of the forward direction is used in `not_solvable_by_rad_of_not_solvable_gal`.\n\nNotably, this Galois-theoretic approach differs from Abel's original 1824 proof. Abel worked directly with the structure of radical expressions: he showed that any radical solution of a degree-$n$ polynomial can be written as a sum $x = p_0 + p_1 R^{1/m} + p_2 R^{2/m} + \\cdots + p_{m-1} R^{(m-1)/m}$ where the $p_i$ and $R$ involve nested radicals, and that the resulting permutation symmetries force inconsistencies for $n \\geq 5$. Abel never formulated the notion of a 'group' — that was Galois's contribution, which made the argument conceptually transparent and generalizable to characterize solvability for *any* polynomial, not just the generic one.",
-    "mathContext": "Galois's correspondence: $\\text{IsSolvableByRad}\\,F\\,\\alpha \\Leftrightarrow \\text{IsSolvable}(\\text{Gal}(\\text{minpoly}_F(\\alpha)))$. The forward direction ($\\Rightarrow$) is `solvableByRad.isSolvable'`; the backward direction ($\\Leftarrow$) uses the primitive element theorem and Galois's constructive procedure for extracting radicals from a solvable tower of normal subgroups.\n\nThe Kummer-theoretic mechanism behind the forward direction: if $K_{i+1} = K_i(\\sqrt[n]{a})$ for $a \\in K_i$, then $K_{i+1}/K_i$ is a Kummer extension with Galois group $\\text{Gal}(K_{i+1}/K_i) \\cong \\mathbb{Z}/d\\mathbb{Z}$ where $d \\mid n$ — cyclic, hence abelian. A group with a subnormal series whose quotients are all abelian is solvable by definition. Each radical step contributes one abelian (in fact cyclic) layer to the derived series of the total Galois group, so the composition of all radical steps yields a solvable group. This is why radical towers produce exactly the class of solvable Galois groups: the two structures (radical tower vs. composition series with abelian quotients) are in bijection via Kummer theory.",
+    "mathContext": "Galois's correspondence: $\\text{IsSolvableByRad}\\,F\\,\\alpha \\Leftrightarrow \\text{IsSolvable}(\\text{Gal}(\\text{minpoly}_F(\\alpha)))$. The forward direction ($\\Rightarrow$) is `solvableByRad.isSolvable'`; the backward direction ($\\Leftarrow$) uses the primitive element theorem and Galois's constructive procedure for extracting radicals from a solvable tower of normal subgroups.",
     "significance": "key",
     "prerequisites": [
       "Galois theory",
       "solvable groups",
-      "radical extensions",
-      "Kummer theory",
-      "primitive element theorem"
+      "radical extensions"
     ],
     "relatedConcepts": [
       "Galois correspondence",
       "contrapositive reasoning",
       "fundamental theorem of Galois theory",
-      "Abel's original proof",
-      "Kummer extension",
-      "cyclotomic field"
+      "Abel's original proof"
     ]
   },
   {
