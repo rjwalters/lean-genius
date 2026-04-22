@@ -56,7 +56,7 @@ interval example with fully proved axioms.
 Sperner, simplicial complex, triangulation, cell complex, bridge
 -/
 
-set_option maxHeartbeats 1600000
+set_option maxHeartbeats 400000
 
 open Finset
 
@@ -238,7 +238,7 @@ theorem boundary_doors_odd (T : Triangulation V n)
       change c (T.vertex s i) = _ at hi_color
       -- castSucc ⟨faceIdx.val, hlt⟩ = faceIdx since faceIdx.val < n < n+1
       have hcast : (⟨faceIdx.val, hlt⟩ : Fin n).castSucc = faceIdx :=
-        Fin.ext (by simp [Fin.castSucc])
+        Fin.ext rfl
       rw [hcast] at hi_color
       exact hSperner_i hi_color
     · -- faceIdx.val ≥ n, and faceIdx : Fin (n+1) so faceIdx.val ≤ n
@@ -450,7 +450,7 @@ lemma AbstractSimplicialData.vertexEnum_image_univ
     obtain ⟨idx, hidx_lt, hidx_eq⟩ := hv_sort
     have hidx_lt' : idx < n + 1 := by
       rwa [Finset.length_sort, D.card_eq s hs] at hidx_lt
-    exact ⟨⟨idx, hidx_lt'⟩, by simp [vertexEnum, List.get_eq_getElem, hidx_eq]⟩
+    exact ⟨⟨idx, hidx_lt'⟩, by show (s.sort (· ≤ ·)).get _ = v; simp only [List.get_eq_getElem]; exact hidx_eq⟩
 
 /-- Image of `univ.erase k` under vertexEnum equals faceOf. -/
 lemma AbstractSimplicialData.vertexEnum_image_erase
@@ -473,9 +473,9 @@ lemma AbstractSimplicialData.vertexEnum_image_erase
     · intro heq
       apply hne
       have : D.vertexEnum s hs ⟨idx, hidx_lt'⟩ = v := by
-        simp [vertexEnum, List.get_eq_getElem, hidx_eq]
+        show (s.sort (· ≤ ·)).get _ = v; simp only [List.get_eq_getElem]; exact hidx_eq
       rw [← this, heq]
-    · simp [vertexEnum, List.get_eq_getElem, hidx_eq]
+    · show (s.sort (· ≤ ·)).get _ = v; simp only [List.get_eq_getElem]; exact hidx_eq
 
 /-- Unfold faceOf. -/
 lemma AbstractSimplicialData.faceOf_eq
@@ -489,7 +489,7 @@ The backward direction: vertexEnum k ∉ s.erase(vertexEnum k) by Finset.not_mem
 lemma AbstractSimplicialData.vertexEnum_not_mem_faceOf_iff
     (s : Finset V) (hs : s ∈ D.topSimplices) (j k : Fin (n+1)) :
     D.vertexEnum s hs j ∉ D.faceOf s hs k ↔ j = k := by
-  simp only [faceOf, Finset.mem_erase, not_and_or, not_not, not_ne_iff]
+  simp only [faceOf, Finset.mem_erase, not_and_or, not_not]
   constructor
   · intro h
     cases h with
@@ -623,7 +623,6 @@ lemma AbstractSimplicialData.containersOf_card_eq_two_of_adjFn
   split_ifs at hadj with hc hne
   · have hcard := D.containersOf_card_one_or_two s hs k
     omega
-  all_goals simp at hadj
 
 /-- When adjFn returns some, the neighbor s' is in containersOf f. -/
 lemma AbstractSimplicialData.adjFn_s'_mem_containers
@@ -648,7 +647,6 @@ lemma AbstractSimplicialData.adjFn_s'_mem_containers
       Finset.mem_of_mem_erase ht_mem_erase
     rw [hs'_val]
     exact (Finset.mem_filter.mp ht_mem_cs).2
-  all_goals simp at hadj
 
 /-- When adjFn returns some, s' != s (as Finset values). -/
 lemma AbstractSimplicialData.adjFn_ne
@@ -670,7 +668,6 @@ lemma AbstractSimplicialData.adjFn_ne
     have ht_ne_s : hne.choose ≠ s := (Finset.mem_erase.mp ht_mem_erase).1
     rw [hs'_val]
     exact ht_ne_s
-  all_goals simp at hadj
 
 /-- When adjFn returns some, faceOf s' hs' k' = faceOf s hs k. -/
 lemma AbstractSimplicialData.adjFn_face_eq
@@ -874,7 +871,7 @@ private lemma iadj_cases {s s' : Fin m}
         by have := congr_arg Fin.val hs'_eq; simp at this; omega,
         by have := congr_arg Fin.val hk'_eq; simp at this; omega,
         h⟩
-    · rw [dif_neg h] at hadj; simp at hadj
+    · rw [dif_neg h] at hadj; exact Option.noConfusion hadj
   · -- k.val ≠ 0
     rw [dif_neg hk] at hadj
     by_cases h : (0 : ℕ) < s.val
@@ -886,7 +883,7 @@ private lemma iadj_cases {s s' : Fin m}
         by have := congr_arg Fin.val hs'_eq; simp at this; omega,
         by have := congr_arg Fin.val hk'_eq; simp at this; omega,
         h⟩
-    · rw [dif_neg h] at hadj; simp at hadj
+    · rw [dif_neg h] at hadj; exact Option.noConfusion hadj
 
 private lemma iadj_symm' {s s' : Fin m}
     {k k' : Fin 2}
@@ -941,7 +938,7 @@ private lemma iadj_vertex' {hm : 0 < m} {s s' : Fin m}
       rw [mem_erase] at ha_mem
       have ha1 : a.val = 1 := by have := a.isLt; omega
       refine ⟨⟨0, by omega⟩,
-        mem_erase.mpr ⟨by intro h; simp at h, mem_univ _⟩, ?_⟩
+        mem_erase.mpr ⟨by omega, mem_univ _⟩, ?_⟩
       rw [show a = ⟨1, by omega⟩ from Fin.ext ha1] at ha_eq
       simp [ivtx] at ha_eq ⊢; omega
     · intro hv
@@ -950,7 +947,7 @@ private lemma iadj_vertex' {hm : 0 < m} {s s' : Fin m}
       rw [mem_erase] at ha_mem
       have ha0 : a.val = 0 := by have := a.isLt; omega
       refine ⟨⟨1, by omega⟩,
-        mem_erase.mpr ⟨by intro h; simp at h, mem_univ _⟩, ?_⟩
+        mem_erase.mpr ⟨by omega, mem_univ _⟩, ?_⟩
       rw [show a = ⟨0, by omega⟩ from Fin.ext ha0] at ha_eq
       simp [ivtx] at ha_eq ⊢; omega
   · -- k.val≠0 (so k.val=1), s'=s-1, k'.val=0
@@ -965,7 +962,7 @@ private lemma iadj_vertex' {hm : 0 < m} {s s' : Fin m}
       rw [mem_erase] at ha_mem
       have ha0 : a.val = 0 := by have := a.isLt; omega
       refine ⟨⟨1, by omega⟩,
-        mem_erase.mpr ⟨by intro h; simp at h, mem_univ _⟩, ?_⟩
+        mem_erase.mpr ⟨by omega, mem_univ _⟩, ?_⟩
       rw [show a = ⟨0, by omega⟩ from Fin.ext ha0] at ha_eq
       simp [ivtx] at ha_eq ⊢; omega
     · intro hv
@@ -974,7 +971,7 @@ private lemma iadj_vertex' {hm : 0 < m} {s s' : Fin m}
       rw [mem_erase] at ha_mem
       have ha1 : a.val = 1 := by have := a.isLt; omega
       refine ⟨⟨0, by omega⟩,
-        mem_erase.mpr ⟨by intro h; simp at h, mem_univ _⟩, ?_⟩
+        mem_erase.mpr ⟨by omega, mem_univ _⟩, ?_⟩
       rw [show a = ⟨1, by omega⟩ from Fin.ext ha1] at ha_eq
       simp [ivtx] at ha_eq ⊢; omega
 
