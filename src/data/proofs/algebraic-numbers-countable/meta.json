@@ -111,7 +111,23 @@
       "description": "Section 6: `card_algebraic_eq_card_rat` proves |{x : \u211d // IsAlgebraic \u211a x}| = |\u211a| by rewriting both via aleph0 (card_algebraic_reals_eq_aleph0 and Cardinal.mk_denumerable). `card_algebraic_eq_card_nat` proves the same equals |\u2115|. Both illustrate the 'paradox' that a proper superset has the same cardinality. Section 7: `algebraic_reals_eq_iUnion_bounded` proves {x : \u211d | IsAlgebraic \u211a x} = \u22c3 d, algebraicRealsOfBoundedDegree d, using d = natDegree(minpoly x) and le_refl. This is the bounded-degree version of the exact-degree stratification. Ends with end AlgebraicNumbersCountable."
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "algebraic-numbers-countable-oq-02",
+      "relationship": "companion",
+      "description": "Proves ℝ is uncountable via Cantor's diagonal argument — the complementary result from Cantor's 1874 paper. Together these two results establish: algebraic numbers are countable (ℵ₀) while reals are uncountable (2^ℵ₀), implying almost all real numbers are transcendental."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Cantor's diagonal argument that ℝ is uncountable — the other half of the 1874 paper. The countability of algebraic numbers and uncountability of ℝ together imply transcendental numbers are 'most' real numbers."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "related",
+      "description": "The Cayley-Hamilton theorem and minimal polynomial theory (minpoly) are central to both proofs. algebraic-numbers-countable uses minpoly ℚ x extensively for the degree stratification; Cayley-Hamilton proves A satisfies its own minpoly in a matrix algebra context."
+    }
+  ],
   "leanFile": {
     "lineCount": 254,
     "path": "Proofs/AlgebraicNumbersCountable.lean",
