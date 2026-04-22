@@ -1,8 +1,8 @@
 {
   "slug": "ballot-problem-oq-01-oq-04",
   "title": "Can the cycle lemma be applied to prove the Chung-Feller theorem: the number ...",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "COMPLETED",
     "since": "2026-03-26T20:00:24.431Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 6,
+    "focus": "Proof complete: chung_feller_uniform proved via explicit bijection using cycle lemma.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Completed. BallotProblemOQ01OQ04OQ01.lean has 0 sorries.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,9 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Rich infrastructure exists. Cycle lemma proved in OQ01. Catalan numbers (Cn) defined and proved in OQ03. Chung-Feller theorem is a direct application of the cycle lemma.",
+    "progressSummary": "COMPLETE: chung_feller_uniform proved in BallotProblemOQ01OQ04OQ01.lean with 0 sorries via explicit bijection using cycle lemma. BallotProblemOQ03.lean pre-existing build failures also fixed (0 sorries, 0 errors).",
     "builtItems": [
-      "Survey: identified existing infrastructure in BallotProblemOQ01.lean and BallotProblemOQ03.lean"
+      "Survey: identified existing infrastructure in BallotProblemOQ01.lean and BallotProblemOQ03.lean",
+      "BallotProblemOQ01OQ04OQ01.lean: chungFellerRot, chungFellerMap, chung_feller_bijection_exists (0 sorries)",
+      "chung_feller_uniform: proved via Set.ncard_congr + explicit bijection from type-j to type-k balanced paths",
+      "BallotProblemOQ03.lean: fixed all pre-existing build failures (omega, List.take_left, Prod.ext, nat subtraction)"
     ],
     "insights": [
       "cycle_lemma proved in BallotProblemOQ01.lean:764 (Dvoretzky-Motzkin)",
@@ -39,15 +42,12 @@
       "catalan_formula (Cn n * (n+1) = C(2n,n)) proved in BallotProblemOQ03.lean:523",
       "catalan_eq_ballot proved in BallotProblemOQ03.lean:1097",
       "Chung-Feller theorem: paths from (0,0) to (2n,0) with k upsteps above x-axis = C_n, independent of k",
-      "Proof strategy: cycle lemma gives uniform distribution of good rotations, yielding Chung-Feller"
+      "Proof strategy: cycle lemma gives uniform distribution of good rotations, yielding Chung-Feller",
+      "Key insight: chungFellerRot applied to type-j path gives type-k path via cyclic rotation count",
+      "BallotProblemOQ03 fixes: nat subtraction h_n1=n2+a2-a1 needs omega not rw; List.take_left needs explicit args"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Create BallotProblemOQ01OQ04.lean with Chung-Feller theorem formalization",
-      "Import cycle_lemma from OQ01 and Cn from OQ03",
-      "Define upsteps_above_axis count for lattice paths",
-      "Prove Chung-Feller: #{paths with k upsteps above axis} = C_n using cycle lemma"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "seeker-selected",
@@ -73,7 +73,7 @@
     "mathlib": []
   },
   "started": "2026-03-26T20:00:24.430Z",
-  "lastUpdate": "2026-03-29T03:55:00.000Z",
+  "lastUpdate": "2026-04-22T12:45:00.000Z",
   "significance": 5,
   "tractability": 6,
   "leanFiles": [
@@ -179,11 +179,11 @@
     {
       "path": "Proofs/BallotProblemOQ01OQ04OQ01.lean",
       "filename": "BallotProblemOQ01OQ04OQ01.lean",
-      "lineCount": 1102,
-      "theoremCount": 12,
+      "lineCount": 1164,
+      "theoremCount": 20,
       "axiomCount": 0,
       "defCount": 3,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04OQ01.lean"
     },
@@ -212,7 +212,7 @@
     {
       "path": "Proofs/BallotProblemOQ03.lean",
       "filename": "BallotProblemOQ03.lean",
-      "lineCount": 2879,
+      "lineCount": 2898,
       "theoremCount": 119,
       "axiomCount": 0,
       "defCount": 31,
