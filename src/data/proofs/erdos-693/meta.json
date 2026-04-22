@@ -16,12 +16,12 @@
       "density",
       "open-problem"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 693,
     "erdosUrl": "https://erdosproblems.com/693",
     "erdosProblemStatus": "open",
-    "axiomCount": 1,
+    "axiomCount": 0,
     "prerequisites": [
       "Elementary number theory (divisibility, divisor functions)",
       "Finite set theory and cardinality (Finset, Set.Finite)",
@@ -29,7 +29,7 @@
       "Sieve methods and density estimates (Ford 2008)"
     ],
     "lineCount": 432,
-    "assumptions": "1 axiom: divisor_density_ford (Ford's 2008 density theorem, deep analytic number theory). All other results fully proved.",
+    "assumptions": "0 axioms, 0 sorries. divisor_density_ford was planned as an axiom but is referenced only in comments — no actual axiom declaration exists in the Lean file. 31+ infrastructure theorems fully proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -169,7 +169,7 @@
     ],
     "namespace": "Erdos693",
     "lineCount": 432,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 33,
     "definitionCount": 13,
     "path": "Proofs/Erdos693Problem.lean",
