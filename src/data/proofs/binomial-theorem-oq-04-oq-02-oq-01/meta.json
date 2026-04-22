@@ -16,7 +16,7 @@
       "research"
     ],
     "proofRepoPath": "Proofs/BinomialTheoremOQ04OQ02OQ01.lean",
-    "badge": "research",
+    "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -30,13 +30,13 @@
       "gaussBinom_eq_zero_of_lt: vanishing property [n choose k]_q = 0 when k > n",
       "gaussBinom_self: [n choose n]_q = 1 for all n",
       "gaussBinom_one: classical limit — [n choose k]_1 = C(n,k)",
-      "q_vandermonde: main identity — fully proved via q-Pascal split and per-term identity lemma",
+      "q_vandermonde: main identity [m+n choose r]_q = Σ_k [m choose k]_q · [n choose r-k]_q · q^(k·(n+k-r)), fully proved by induction on n",
       "vandermonde_from_q: classical Vandermonde as corollary via q=1 specialization"
     ],
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "lineCount": 154,
-    "assumptions": "0 sorries. All 6 theorems fully proved including q_vandermonde (inductive step completed via per-term identity lemma and Finset.sum manipulation).",
+    "lineCount": 224,
+    "assumptions": "No assumptions. All 6 theorems fully proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -92,7 +92,7 @@
     {
       "id": "q-vandermonde",
       "title": "q-Vandermonde Identity",
-      "summary": "Main result: [m+n choose r]_q = Σ_{k=0}^r [m choose k]_q · [n choose r-k]_q · q^(k·(n+k-r)). Proof by induction on n; inductive step completed via per-term identity lemma (q_vand_step_term) and Finset.sum manipulation. 0 sorries.",
+      "summary": "Main result: [m+n choose r]_q = Σ_{k=0}^r [m choose k]_q · [n choose r-k]_q · q^(k·(n+k-r)). Proof by induction on n; inductive step uses q_vand_step_term helper lemma and boundary term calculations, fully proved.",
       "startLine": 108,
       "endLine": 130,
       "mathContext": "Base ($n=0$): the sum collapses to the $k=r$ term since $\\binom{0}{r-k}_q = 0$ for $k < r$. Inductive step: apply the q-Pascal rule to $\\binom{m+n+1}{r}_q$, use IH on both components, and match exponents. The exponent arithmetic: $q^{(k)(n+1+k-r)} = q^{k(n+k-r)} \\cdot q^k$ on the LHS contribution vs. $q^{k(n+k-(r-1))} = q^{k(n+k-r+1)} = q^{k(n+k-r)} \\cdot q^k$ on the RHS — they match after reindexing."
@@ -107,7 +107,7 @@
     }
   ],
   "conclusion": {
-    "summary": "6 theorems fully proved (0 sorries). The Gaussian binomial infrastructure is new to this gallery: definition, vanishing, self-choice, classical limit, q-Vandermonde identity, and classical Vandermonde corollary are all machine-verified. The q_vandermonde inductive step was completed via a per-term identity lemma and Finset.sum manipulation.",
+    "summary": "6 theorems proved (all without sorry). The Gaussian binomial infrastructure and q-Vandermonde identity are fully machine-verified.",
     "implications": "**Theoretical Significance**: Gaussian binomials [n choose k]_q are ubiquitous in combinatorics and representation theory. This formalization provides a foundation for q-analogs of other binomial identities: the q-binomial theorem, the q-Chu-Vandermonde identity, and generating functions for set-valued tableaux.\n\n**Practical**: The gaussBinom definition can serve as infrastructure for formalizing quantum group representations, counting formulas in algebraic combinatorics, and the theory of basic hypergeometric series in Lean 4.",
     "openQuestions": [
       "Can the inductive step of q_vandermonde be completed by proving the q-Pascal identity in its P2 form and then using Finset.sum_range_succ manipulations?",
@@ -139,7 +139,7 @@
       "Finset"
     ],
     "namespace": "BinomialTheoremOQ04OQ02OQ01",
-    "lineCount": 154,
+    "lineCount": 224,
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 1,
