@@ -32,7 +32,7 @@
     "hilbertNumber": 11,
     "axiomCount": 5,
     "lineCount": 494,
-    "assumptions": "5 axioms: diagonalForm, sylvester_law_of_inertia, hasse_minkowski_alt, rational_classification_complete, selmer_curve_no_rational_points. See Lean source for complete statements.",
+    "assumptions": "5 axiom declarations: diagonalForm, sylvester_law_of_inertia, hasse_minkowski_alt, rational_classification_complete, selmer_curve_no_rational_points. Additionally, 5 theorem-stubs with vacuous True conclusions (proved by trivial, not genuine proofs): weak_hasse_principle, ternary_representation, witt_cancellation, dimension_five_always_isotropic, hilbert_reciprocity. Three definitions use True as a placeholder body (RepresentsZeroOverReals, RepresentsZeroOverPadic, HasseMinkowskiNumberField), so hasse_minkowski_alt reduces to IsIsotropic Q ↔ True — a vacuous axiom. HilbertSymbol is hardcoded to 1 as a placeholder. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
