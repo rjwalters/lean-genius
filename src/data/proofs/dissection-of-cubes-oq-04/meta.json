@@ -140,9 +140,37 @@
   ],
   "conclusion": {
     "summary": "Among the five Platonic solids, the cube is uniquely characterized by having zero Dehn invariant. This extends Hilbert's Third Problem from the single pair (cube, tetrahedron) to the complete classification of all Platonic solids under scissors congruence.",
+    "implications": "**Geometric consequences**: The cube cannot be obtained from any other Platonic solid by cutting and rearranging — not just the tetrahedron (Dehn's original 1900 result) but also the octahedron, dodecahedron, and icosahedron. The Dehn invariant serves as a complete scissors-congruence invariant, distinguishing the cube's class from all others among the Platonic solids.\n\n**New irrationality results**: The proof introduces `arccos(3/5)/π ∉ ℚ` and `arccos(1/√5)/π ∉ ℚ` as new formalized theorems, proved by the same Chebyshev sequence method that Niven used for `arccos(1/3)/π`. This demonstrates that the Chebyshev technique is a general engine for proving irrationality of arccos of algebraic numbers.\n\n**Axiom accountability**: The file makes explicit that two facts remain axiomatized: (1) ℝ flat over ℤ (needed for the tensor product Dehn invariant to detect nonzero elements) and (2) `arccos(-√5/3)/π ∉ ℚ` (icosahedron's dihedral angle). The flatness axiom is a standard algebraic fact about ℝ as a torsion-free ℤ-module and is expected to be provable from Mathlib's `Module.Flat` infrastructure.\n\n**Hilbert problems context**: Hilbert's Third Problem (1900) was the first of the 23 Hilbert problems to be solved — resolved by Dehn in the same year using his invariant. This entry extends the resolution from one pair to the full Platonic solid classification, showing the Dehn invariant completely separates all five solid classes (subject to the two axioms above).",
     "openQuestions": [
       "Can the remaining axiom (tmul_infinite_order_ne_zero — flatness of ℝ over ℤ) be proved using Mathlib's Module.Flat infrastructure?",
       "Can icoAngle_irrational be proved by extending the Chebyshev argument to ℤ[√5], completing the proof for all five Platonic solids with 0 axioms?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "dissection-of-cubes",
+      "relationship": "extends",
+      "description": "The parent entry establishing Dehn's original 1900 impossibility: the cube and regular tetrahedron are not scissors congruent. This file extends that single pair to the complete classification of all five Platonic solids"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-02",
+      "relationship": "extends",
+      "description": "Proves arccos(1/3)/π is irrational (tetrahedron dihedral angle) via Niven's Chebyshev sequence. This file applies the same technique to arccos(3/5)/π and arccos(1/√5)/π for the dodecahedron"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-02-oq-02",
+      "relationship": "uses-infrastructure",
+      "description": "Provides the Dehn-Sydler tensor product infrastructure (ℝ ⊗_ℤ (ℝ/πℤ)), the tmul_infinite_order_ne_zero axiom, and the cube/tetrahedron/octahedron Dehn invariant results. This file imports and extends that infrastructure for the dodecahedron and icosahedron"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-01",
+      "relationship": "related",
+      "description": "Explores explicit scissors-congruence constructions, providing the positive side: how polyhedra with equal Dehn invariants can be decomposed into common pieces"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "analogous",
+      "description": "Both are impossibility results proved via irrationality: angle trisection shows 20° ∉ cos⁻¹(ℚ)·π, while Dehn's theorem shows the other Platonic dihedral angles are irrational multiples of π. Both use Galois/algebraic methods to prove geometric operations cannot be performed"
+    }
+  ]
 }
