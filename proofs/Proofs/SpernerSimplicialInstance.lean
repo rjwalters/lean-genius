@@ -56,7 +56,7 @@ interval example with fully proved axioms.
 Sperner, simplicial complex, triangulation, cell complex, bridge
 -/
 
-set_option maxHeartbeats 400000
+set_option maxHeartbeats 200000
 
 open Finset
 
