@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-favorable-game-def",
+    "proofId": "fair-games-theorem-oq-02-oq-04",
+    "range": { "startLine": 44, "endLine": 68 },
+    "type": "definition",
+    "title": "Favorable Game: p = 2/3, Concrete Win Probability",
+    "content": "Defines a concrete BiasedGamblersRuin instance with p = 2/3 (a favorable game), starting wealth k = 2, and barrier N = 4. The odds ratio r = q/p = (1/3)/(2/3) = 1/2 < 1 confirms the gambler's edge. The win probability is computed exactly: P(win) = (1 − (1/2)²) / (1 − (1/2)⁴) = (3/4) / (15/16) = 4/5. The proof closes by norm_num, which evaluates all rational arithmetic automatically.",
+    "mathContext": "$r = \\frac{q}{p} = \\frac{1/3}{2/3} = \\frac{1}{2}$, $\\quad P(\\text{win}) = \\frac{1 - r^k}{1 - r^N} = \\frac{1 - (1/2)^2}{1 - (1/2)^4} = \\frac{3/4}{15/16} = \\frac{4}{5}$",
+    "significance": "key",
+    "relatedConcepts": ["gambler's ruin", "geometric series", "odds ratio", "favorable game"],
+    "prerequisites": ["BiasedGamblersRuin structure", "biasedRuinProbWin definition", "norm_num tactic"]
+  },
+  {
+    "id": "ann-unfavorable-duality",
+    "proofId": "fair-games-theorem-oq-02-oq-04",
+    "range": { "startLine": 77, "endLine": 108 },
+    "type": "concept",
+    "title": "Unfavorable Game and Complementarity",
+    "content": "Defines the complementary game with p = 1/3 (house advantage), giving r = q/p = 2 > 1 and P(win) = 1/5. The duality theorem dual_games_sum_to_one asserts that swapping p ↔ q for k = N/2 yields complementary probabilities summing to 1. This reflects the combinatorial symmetry: under the substitution (p, k) ↦ (q, N−k), the win probability maps to 1 − P(win). Here k = 2 = N − k, so both games share the same starting position and exhibit exact complementarity.",
+    "mathContext": "$P(\\text{win} \\mid p) + P(\\text{win} \\mid 1-p) = \\frac{1 - r^k}{1 - r^N} + \\frac{1 - s^k}{1 - s^N} = 1$ when $r = q/p$, $s = p/q$, $k = N-k$",
+    "significance": "supporting",
+    "relatedConcepts": ["duality in probability", "complementary events", "symmetric random walk", "p ↔ q symmetry"],
+    "prerequisites": ["biasedRuinProbWin definition", "favorableGame_win_prob", "unfavorableGame_win_prob"]
+  },
+  {
+    "id": "ann-interval-bounds",
+    "proofId": "fair-games-theorem-oq-02-oq-04",
+    "range": { "startLine": 114, "endLine": 141 },
+    "type": "technique",
+    "title": "Win Probability is Strictly in (0, 1)",
+    "content": "Proves that for any favorable game (r < 1), the win probability lies strictly between 0 and 1. The positivity biasedRuinProbWin_pos follows from div_pos: both numerator 1 − rᵏ > 0 and denominator 1 − rᴺ > 0 when r ∈ (0,1). The upper bound biasedRuinProbWin_lt_one uses div_lt_one and the fact that rᴺ < rᵏ for k < N (larger exponent → smaller value). The key step writes rᴺ = rᵏ · r^(N−k) and invokes mul_lt_mul_of_pos_left with r^(N−k) < 1.",
+    "mathContext": "$0 < \\frac{1 - r^k}{1 - r^N} < 1 \\iff 0 < 1 - r^k < 1 - r^N \\iff r^N < r^k$ (holds since $r < 1$, $k < N$)",
+    "significance": "key",
+    "relatedConcepts": ["div_pos", "pow_lt_one₀", "pow ordering for r < 1", "ruin probability bounds"],
+    "prerequisites": ["r_pos (B.r > 0)", "pow_lt_one₀ for r ∈ (0,1)", "mul_lt_mul_of_pos_left"]
+  },
+  {
+    "id": "ann-monotonicity",
+    "proofId": "fair-games-theorem-oq-02-oq-04",
+    "range": { "startLine": 151, "endLine": 166 },
+    "type": "technique",
+    "title": "Strict Monotonicity in Starting Wealth",
+    "content": "biasedRuinProbWin_strictMono shows that, for fixed r < 1 and N, the win probability (1 − rᵏ)/(1 − rᴺ) is strictly increasing in k. The shared denominator simplifies the comparison to showing rᵏ² < rᵏ¹ for k₁ < k₂. The proof writes rᵏ² = rᵏ¹ · r^(k₂−k₁) and uses r^(k₂−k₁) < 1 (since k₂ − k₁ ≥ 1), then mul_lt_mul_of_pos_right to conclude. Structure field projections B.hN and B.hk_lt are not visible to omega; they must be introduced via 'have := B.hN; omega'.",
+    "mathContext": "$k_1 < k_2 \\Rightarrow r^{k_2} < r^{k_1}$ (for $r \\in (0,1)$) $\\Rightarrow 1 - r^{k_1} < 1 - r^{k_2} \\Rightarrow \\frac{1 - r^{k_1}}{1 - r^N} < \\frac{1 - r^{k_2}}{1 - r^N}$",
+    "significance": "key",
+    "relatedConcepts": ["pow_lt_pow_right₀", "strict monotonicity", "div_lt_div", "wealth effect in gambling"],
+    "prerequisites": ["div_lt_div_iff₀", "pow_le_pow_of_le_one", "mul_lt_mul_of_pos_left"]
+  },
+  {
+    "id": "ann-key-sum-ineq",
+    "proofId": "fair-games-theorem-oq-02-oq-04",
+    "range": { "startLine": 183, "endLine": 243 },
+    "type": "technique",
+    "title": "Key Sum Inequality: Average of First k Powers Dominates",
+    "content": "The private lemma key_sum_ineq establishes k · ∑_{i<N} rⁱ < N · ∑_{i<k} rⁱ for r ∈ (0,1) and 0 < k < N. This is equivalent to saying the average of the first k powers of r exceeds the average of all N powers. The proof splits ∑_{i<N} rⁱ = ∑_{i<k} rⁱ + ∑_{j ∈ Ico k N} rʲ (via sum_range_add_sum_Ico), bounds the prefix sum below by k · r^(k−1) and the tail sum above by (N−k) · rᵏ, then uses the strict comparison rᵏ < r^(k−1) to chain the inequalities via calc. The calc block is a masterclass in combining sum_le_sum, mul_le_mul, and ring steps.",
+    "mathContext": "$k \\cdot \\sum_{i=0}^{N-1} r^i < N \\cdot \\sum_{i=0}^{k-1} r^i$ for $r \\in (0,1)$, $0 < k < N$. Proof: $\\sum_{i<k} r^i \\geq k r^{k-1}$ and $\\sum_{j=k}^{N-1} r^j \\leq (N-k) r^k < (N-k) r^{k-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["geometric series comparison", "prefix/tail sum bounds", "Finset.sum_range_add_sum_Ico", "pow_le_pow_of_le_one"],
+    "prerequisites": ["Finset.sum_le_sum", "sum_const", "nsmul_eq_mul", "Nat.card_Ico", "ring tactic"]
+  },
+  {
+    "id": "ann-favorable-beats-fair",
+    "proofId": "fair-games-theorem-oq-02-oq-04",
+    "range": { "startLine": 248, "endLine": 271 },
+    "type": "insight",
+    "title": "Favorable Game Strictly Beats the Fair Benchmark",
+    "content": "favorable_beats_fair proves k/N < biasedRuinProbWin B whenever p > 1/2. The proof strategy: factor the numerator and denominator using the geometric sum identity 1 − rᵐ = (1−r) · ∑_{i<m} rⁱ (from mul_neg_geom_sum in FairGamesTheoremOQ01), cancel the common factor (1−r) > 0, and apply key_sum_ineq. The calc block linearizes the non-obvious step: N · ∑_{i<k} rⁱ = k · ∑_{i<k} rⁱ + (N−k) · ∑_{i<k} rⁱ, which follows from ring after re-expressing N = k + (N−k).",
+    "mathContext": "$\\frac{k}{N} < \\frac{1 - r^k}{1 - r^N}$ iff $k(1 - r^N) < N(1 - r^k)$ iff $k \\cdot \\sum_{i<N} r^i < N \\cdot \\sum_{i<k} r^i$ (after factoring $1-r$)",
+    "significance": "key",
+    "relatedConcepts": ["mul_neg_geom_sum", "favorable_game_r_lt_one", "key_sum_ineq", "edge in biased random walk"],
+    "prerequisites": ["favorable_game_r_lt_one from FairGamesTheoremOQ01", "mul_neg_geom_sum identity", "div_lt_div_iff₀"]
+  },
+  {
+    "id": "ann-alt-formula",
+    "proofId": "fair-games-theorem-oq-02-oq-04",
+    "range": { "startLine": 298, "endLine": 342 },
+    "type": "insight",
+    "title": "Alternative Ruin Formula via Reciprocal Odds Ratio",
+    "content": "biasedRuinProbLose_alt_formula proves that P(lose) = ((p/q)^(N−k) − 1) / ((p/q)^N − 1) — a form symmetric to the standard formula but using s = p/q = r⁻¹, the gambler's perspective rather than the house's. The algebraic proof: since r = q/p, we have p/q = r⁻¹, so (p/q)^n = (r^n)⁻¹. After rw [hpq_eq] and simp only [inv_pow], field_simp with the correct non-zero witnesses (hrk_ne, hrm_ne, hab_ne_one) closes the goal. The condition r ≠ 1 (i.e., p ≠ 1/2) is needed because at r = 1 the formula is 0/0.",
+    "mathContext": "$s = p/q = r^{-1}$: $\\frac{s^{N-k} - 1}{s^N - 1} = \\frac{(r^{N-k})^{-1} - 1}{(r^N)^{-1} - 1} = \\frac{r^k - r^N}{1 - r^N} = P(\\text{lose})$",
+    "significance": "key",
+    "relatedConcepts": ["inv_pow", "field_simp", "biasedRuinProbLose definition", "log-odds parameterization"],
+    "prerequisites": ["biasedRuinProbLose from FairGamesTheoremOQ01", "p_add_q identity", "hp_pos and hq_pos"]
+  }
+]
