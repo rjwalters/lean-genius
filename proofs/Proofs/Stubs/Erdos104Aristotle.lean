@@ -34,29 +34,29 @@ def OnCircle (p : Point) (c : UnitCircle) : Prop := dist' p c.center = 1
 
 -- Routine: dist' is nonneg.
 -- The norm of any vector is nonneg.
-theorem dist_nonneg (p q : Point) : dist' p q ≥ 0 := by
-  sorry
+theorem dist_nonneg (p q : Point) : dist' p q ≥ 0 :=
+  norm_nonneg _
 
 -- Routine: dist' to self is 0.
 -- ‖p - p‖ = ‖0‖ = 0.
 theorem dist_self (p : Point) : dist' p p = 0 := by
-  sorry
+  simp [dist', sub_self]
 
 -- Routine: dist' is symmetric.
 -- ‖p - q‖ = ‖-(q - p)‖ = ‖q - p‖.
 theorem dist_comm (p q : Point) : dist' p q = dist' q p := by
-  sorry
+  simp [dist', norm_sub_rev]
 
 -- Routine: 0 points on any circle (trivially).
 -- 0 ≤ card of any filter.
 theorem circle_contains_zero (c : UnitCircle) (P : Finset Point) :
-    0 ≤ (P.filter fun p => dist' p c.center = 1).card := by
-  sorry
+    0 ≤ (P.filter fun p => dist' p c.center = 1).card :=
+  Nat.zero_le _
 
 -- Routine: filter count is at most total count.
 -- Finset.card_filter_le.
 theorem filter_le_card (P : Finset Point) (c : UnitCircle) :
-    (P.filter fun p => dist' p c.center = 1).card ≤ P.card := by
-  sorry
+    (P.filter fun p => dist' p c.center = 1).card ≤ P.card :=
+  Finset.card_filter_le _ _
 
 end Erdos104Aristotle
