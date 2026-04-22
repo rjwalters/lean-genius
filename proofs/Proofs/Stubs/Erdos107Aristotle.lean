@@ -44,27 +44,33 @@ def CardSet (n : ℕ) : Set ℕ :=
 -- Routine: IsConvexNGon implies card = n.
 -- By definition of IsConvexNGon.
 theorem isConvexNGon_card (n : ℕ) (S : Finset Point) (h : IsConvexNGon n S) :
-    S.card = n := by
-  sorry
+    S.card = n :=
+  h.1
 
 -- Routine: HasConvexNGon is upward-closed.
 -- If T ⊆ S has an n-gon and S ⊆ U, then U has an n-gon too.
 theorem hasConvexNGon_of_superset (n : ℕ) (S T : Finset Point)
     (hST : S ⊆ T) (hS : HasConvexNGon n S) : HasConvexNGon n T := by
-  sorry
+  obtain ⟨T', hT'S, hT'⟩ := hS
+  exact ⟨T', hT'S.trans hST, hT'⟩
 
 -- Routine: InGeneralPosition is hereditary.
 -- A subset of a general position set is in general position.
 theorem inGeneralPosition_subset (S T : Finset Point)
     (hST : S ⊆ T) (hT : InGeneralPosition (T : Set Point)) :
-    InGeneralPosition (S : Set Point) := by
-  sorry
+    InGeneralPosition (S : Set Point) :=
+  fun p q r hp hq hr hpq hqr hpr h =>
+    hT p q r (hST hp) (hST hq) (hST hr) hpq hqr hpr h
 
 -- Routine: HasConvexNGon 1 holds for any nonempty Finset.
 -- A single point is trivially a 1-gon.
 theorem hasConvexNGon_one (S : Finset Point) (hS : S.Nonempty) :
     HasConvexNGon 1 S := by
-  sorry
+  obtain ⟨p, hp⟩ := hS
+  refine ⟨{p}, Finset.singleton_subset_iff.mpr hp, Finset.card_singleton p, ?_⟩
+  intro q hq
+  rw [Finset.mem_singleton] at hq; subst hq
+  simp [convexHull_empty]
 
 -- Routine: HasConvexNGon is monotone in n downward.
 -- If S contains an n-gon and m ≤ n, it contains an m-gon.
