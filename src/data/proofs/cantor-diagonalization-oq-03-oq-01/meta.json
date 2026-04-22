@@ -56,9 +56,11 @@
       "**The categorical bridge**: lawvere_categorical is proved by adding e_pt : Pt A → Pt (exp A B) as a parameter (the Yoneda-level action of the morphism e : A → B^A on global elements) and constructing EvalStructure with Ob = Pt A, Val = Pt B, eval a x = apply (e_pt a) x. The proof then reduces to lawvere_abstract in one line. This is the minimal categorical data needed: e_pt is exactly what a 'point-surjective morphism' provides at the global-element level."
     ],
     "prerequisites": [
-      "Lawvere fixed-point theorem from CantorDiagonalizationOQ03",
-      "Diagonal argument and Cantor's theorem",
-      "Basic category theory: cartesian closed categories, exponentials"
+      "Lawvere fixed-point theorem in type theory (CantorDiagonalizationOQ03.lean)",
+      "Diagonal argument and Cantor's theorem: no surjection A → A → Prop",
+      "Basic category theory: cartesian closed categories (CCCs), exponential objects B^A, global elements 1 → B",
+      "Lean 4 type universe: Type u, Prop as subobject classifier, function types A → B as exponential hom-sets",
+      "Mathlib.Logic.Function.Basic: Function.Surjective, Function.Injective, funext/congr_fun for function extensionality"
     ]
   },
   "sections": [
@@ -139,24 +141,34 @@
   },
   "crossReferences": [
     {
-      "id": "cantor-diagonalization-oq-03",
+      "targetId": "cantor-diagonalization-oq-03",
       "relationship": "extends",
-      "description": "Parent: type-theoretic Lawvere FPT in the Lean type system. This file generalizes to abstract evaluation structures and the categorical setting."
-    },
-    {
-      "id": "schauder-fixed-point-oq-03",
-      "relationship": "related",
-      "description": "Kakutani fixed-point theorem — another fixed-point theorem in the gallery, topological rather than diagonal in nature, with different hypotheses and proof structure"
+      "description": "Parent: type-theoretic Lawvere FPT in the Lean type system (CantorDiagonalizationOQ03.lean). This file generalizes to abstract EvalStructure and the categorical CCC setting, proving lawvere_categorical by adding e_pt : Pt A → Pt (exp A B) as a global-element action parameter and reducing to lawvere_abstract."
     },
     {
       "targetId": "cantor-diagonalization",
       "relationship": "related",
-      "description": "The root entry for Cantor's diagonalization argument. This categorical generalization shows Cantor's theorem is a special case of Lawvere's abstract fixed-point theorem with Val=Prop and f=Not."
+      "description": "The root entry for Cantor's diagonalization argument. This categorical generalization shows Cantor's theorem (no surjection A → P(A)) is a special case of Lawvere's abstract fixed-point theorem with Val=Prop and f=Not — the `cantor_instance` and `cantor_recovery` theorems make this connection explicit."
     },
     {
       "targetId": "godel-incompleteness",
       "relationship": "related",
-      "description": "Gödel's incompleteness theorem uses a diagonal construction (the diagonalization lemma) that is a Lawvere instance with Val=sentences and f=negation-of-provability. This file's abstract theorem unifies both results."
+      "description": "Gödel's incompleteness theorem uses a diagonal construction (the diagonalization lemma) that is a Lawvere instance with Val=sentences and f=negation-of-provability. This file's abstract EvalStructure unifies Cantor and Gödel as instances of a single 2-line diagonal argument. An open question here asks for the Gödel derivation to be formalized explicitly as a Lawvere instance."
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "Turing's halting problem undecidability is a Lawvere instance: Val = {halt, loop}, f = 'swap' (no fixed point), and the 'universal evaluator' gives a point-surjective map if the halting problem were decidable. The abstract `no_surjection_abstract` theorem in this entry is the categorical statement of why no such universal evaluator can exist. Cantor, Gödel, and Turing are all recovered from the same 2-line diagonal proof."
+    },
+    {
+      "targetId": "schauder-fixed-point-oq-03",
+      "relationship": "related",
+      "description": "Kakutani Fixed-Point Theorem — a topological fixed-point theorem in contrast to the diagonal fixed-point theorem here. Kakutani requires convexity and continuity of a set-valued map; Lawvere requires only a point-surjective evaluation structure. The contrast illustrates that 'fixed-point theorem' is a vast umbrella: topological (Brouwer, Schauder, Kakutani), algebraic (Banach), and diagonal (Lawvere) results all guarantee fixed points via completely different mechanisms."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-03-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling OQ in the Lawvere chain — extends the categorical framework in a different direction. Together these siblings explore the full scope of the Lawvere OQ chain, each taking the abstract evaluation structure in a distinct direction."
     }
   ],
   "leanFile": {
