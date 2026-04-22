@@ -85,6 +85,14 @@
       "endLine": 287,
       "summary": "Defines amenable groups (admit a finitely-additive left-invariant probability measure on all subsets). States that ℤ is amenable (via Cesàro means) and F₂ is not (via paradoxical decomposition).",
       "mathContext": "A group $G$ is amenable iff $\\exists \\mu: 2^G \\to [0,\\infty]$ with $\\mu(G)=1$, $\\mu(A \\cup B) = \\mu(A) + \\mu(B)$ for disjoint $A, B$, and $\\mu(gA) = \\mu(A)$ for all $g \\in G$. Abelian groups are amenable (via Markov-Kakutani fixed point theorem). $F_2$ is not amenable: the partition $F_2 = W(a) \\sqcup aW(a^{-1})$ with $F_2 = W(a) \\sqcup W(a^{-1}) \\sqcup \\cdots$ forces $\\mu(F_2) = \\infty$ or $0$."
+    },
+    {
+      "id": "nonmeasurable-corollary",
+      "title": "Corollary: Non-Measurability of the Banach-Tarski Pieces",
+      "startLine": 228,
+      "endLine": 248,
+      "summary": "States as a corollary that the pieces produced by the Banach-Tarski decomposition are necessarily non-Lebesgue-measurable. If all pieces were measurable, isometry-invariance of Lebesgue measure together with both reassemblies would force lambda(B3) = 2*lambda(B3), contradicting lambda(B3) = 4pi/3 > 0.",
+      "mathContext": "Suppose all pieces $P_i$ are Lebesgue-measurable. Since each $g_i^{(j)}$ is an isometry, $\\lambda(g_i^{(j)}(P_i)) = \\lambda(P_i)$. From the first reassembly: $\\lambda(B^3) = \\sum_i \\lambda(P_i)$. From the second: $\\lambda(B^3) = \\sum_i \\lambda(P_i)$ again. This gives $2\\lambda(B^3) = \\lambda(B^3)$, forcing $\\lambda(B^3) \\in \\{0, \\infty\\}$, contradicting $\\lambda(B^3) = \\frac{4\\pi}{3}$. Therefore at least one $P_i$ is not Lebesgue-measurable — the paradox does not violate conservation of volume because volume is undefined on the pieces."
     }
   ],
   "conclusion": {
