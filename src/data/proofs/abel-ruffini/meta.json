@@ -54,12 +54,24 @@
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries. All nine theorems are proved from Mathlib (solvableByRad.isSolvable', Equiv.Perm.not_solvable, alternatingGroup.isSimpleGroup_five) with no custom axioms, no structure-encoded assumptions, and no definition sorries. The file's original contributions (galois_bridge, symmetric_group_not_solvable, not_solvable_by_rad_of_not_solvable_gal) are pedagogical wrappers composing Mathlib lemmas.",
     "relatedProblems": [
       {
+        "id": "abel-ruffini-galois-extensions",
+        "relationship": "Complete solvability classification for all symmetric groups — Sₙ solvable iff n ≤ 4"
+      },
+      {
         "id": "abel-ruffini-oq-04",
         "relationship": "Sub-entry exposing the complete proof chain from A₅ simplicity through S₅ non-solvability to Abel-Ruffini"
       },
       {
         "id": "abel-ruffini-oq-04-oq-01",
         "relationship": "Concrete witness: proves Gal(x⁵ − 4x + 2/ℚ) ≅ S₅ via Eisenstein irreducibility and galActionHom bijectivity, completing the Abel-Ruffini proof chain with a specific unsolvable quintic"
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-02",
+        "relationship": "Proves S₂, S₃, S₄ solvable (filling Mathlib gap) and full bidirectional Sₙ classification"
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-03",
+        "relationship": "Bring-Jerrard reduction and the Bring radical — the beyond-radicals quintic solution"
       }
     ],
     "lineCount": 185,
@@ -151,7 +163,7 @@
     "implications": "**Theoretical Significance**: Galois theory has far-reaching consequences:\n\n1. CONSTRUCTIBILITY: Similar techniques prove that angle trisection and cube doubling are impossible with compass and straightedge — both reduce to showing that the relevant Galois group is not a 2-group.\n\n2. INVERSE GALOIS PROBLEM: Which groups appear as Galois groups over $\\mathbb{Q}$? This remains open for many groups. Shafarevich proved every solvable group is a Galois group over $\\mathbb{Q}$, but the general case is wide open.\n\n3. ALGEBRAIC NUMBER THEORY: Galois groups of field extensions are central to understanding number fields and their arithmetic. Class field theory classifies abelian extensions via Artin reciprocity.\n\n4. MODERN ALGEBRA: Galois's ideas pioneered the abstract study of groups, fields, and their relationships — the foundation of modern algebra.\n\n5. SPECIFIC SOLUTIONS: While the general quintic is unsolvable, specific quintics may be solvable. Galois theory tells us exactly which ones: a polynomial is solvable by radicals if and only if its Galois group is solvable.\n\n6. DIFFERENTIAL GALOIS THEORY: Picard-Vessiot theory extends Galois's framework from polynomial equations to linear differential equations. Just as Abel-Ruffini shows certain algebraic equations cannot be solved by radicals (because $S_5$ is not solvable), Liouville's theorem in differential algebra shows certain integrals — such as $\\int e^{-x^2}\\,dx$ — cannot be expressed in elementary functions, proved by analyzing the differential Galois group of the associated equation. The parallel is precise: 'solvable by radicals' becomes 'expressible in elementary functions', and 'solvable Galois group' becomes 'solvable differential Galois group'.\n\n**Broader Connections**:\n\n7. IMPOSSIBILITY PARADIGM: Abel-Ruffini inaugurated a tradition of impossibility proofs that extends through Lindemann's transcendence of $e$ and $\\pi$ (1882), Cantor's diagonal argument proving the uncountability of $\\mathbb{R}$ (1891), Gödel's incompleteness (1931), Turing's halting problem (1936), and Matiyasevich's negative resolution of Hilbert's tenth problem (1970). Each shows that some natural class of problems admits no universal solution within a given formal framework. Cantor's diagonal method, in particular, became the template for both Gödel's and Turing's proofs.\n\n8. TRANSCENDENCE HIERARCHY: Abel-Ruffini's impossibility (roots not expressible by radicals) sits between irrationality ($\\sqrt{2} \\notin \\mathbb{Q}$, c. 500 BCE) and transcendence ($e, \\pi \\notin \\overline{\\mathbb{Q}}$, 1882) in a hierarchy of expressibility barriers.\n\n9. FEIT-THOMPSON AND THE ODD ORDER THEOREM: The Feit-Thompson theorem (1963) — every group of odd order is solvable — is the deepest generalization of the solvability concept central to Abel-Ruffini. It implies that any polynomial whose Galois group has odd order is solvable by radicals, and its 255-page proof launched the classification of finite simple groups. The formalization of Feit-Thompson in Coq (Gonthier et al., 2013) was a landmark in formal verification.\n\n10. CLASSIFICATION OF FINITE SIMPLE GROUPS: The simplicity of $A_5$, which drives Abel-Ruffini, was the first step in the classification of finite simple groups (CFSG) — completed c. 2004. The CFSG shows that every finite simple group is cyclic of prime order, alternating ($A_n$, $n \\geq 5$), a group of Lie type, or one of 26 sporadic groups. Abel-Ruffini's obstruction ($A_5$ is simple) is thus the first instance of the alternating family in the classification.\n\n11. TOPOLOGICAL PROOF VIA MONODROMY: V.I. Arnold (1963) discovered a purely topological proof of Abel-Ruffini that bypasses abstract algebra entirely. As the coefficients of a polynomial vary continuously along loops in coefficient space $\\mathbb{C}^n \\setminus \\Delta$ (where $\\Delta$ is the discriminant locus), the roots undergo continuous permutations — monodromy — forming a representation of the fundamental group $\\pi_1(\\mathbb{C}^n \\setminus \\Delta)$ into $S_n$. For the generic quintic, this monodromy representation is surjective onto $S_5$. Since each radical extraction $z \\mapsto z^{1/n}$ contributes only cyclic monodromy ($\\mathbb{Z}/n$), any radical expression has solvable monodromy group. The non-solvability of $S_5$ therefore obstructs radical expressibility — purely from continuity and the topology of branched coverings, with no mention of fields, extensions, or automorphisms. Arnold originally presented this proof to Moscow high school students in 1963, demonstrating that the impossibility of the quintic can be understood with minimal algebraic prerequisites.",
     "openQuestions": [
       "**Constructive direction of the Galois bridge**: `galois_bridge` proves the forward implication — solvability by radicals implies solvable Galois group — and the proof uses this direction contrapositively. The converse is equally important and more constructive: given a composition series $\\{e\\} = G_k \\trianglelefteq \\cdots \\trianglelefteq G_0 = \\text{Gal}(q)$ with cyclic quotients $G_{i}/G_{i+1} \\cong \\mathbb{Z}/n_i$, Galois's original argument constructs a radical tower via Kummer theory at each step — the cyclic extension corresponds to adjoining an $n_i$th root. Can Lean formalize this constructive direction explicitly for a specific solvable polynomial — for example, exhibiting the complete radical tower for $x^4 - 2$ over $\\mathbb{Q}$ (Galois group $D_4$, solvable derived series $D_4 \\supset \\mathbb{Z}/4 \\supset \\mathbb{Z}/2 \\supset \\{e\\}$, corresponding radical tower $\\mathbb{Q} \\subset \\mathbb{Q}(\\sqrt{2}) \\subset \\mathbb{Q}(\\sqrt[4]{2}) \\subset \\mathbb{Q}(\\sqrt[4]{2}, i)$) — making the path from solvable group to radical tower machine-verified and completing the bidirectional Galois correspondence for a concrete case?",
-      "Mathlib notes that `IsSolvable` instances for $S_2, S_3, S_4$ were not available at time of writing. Can these be added and `s2_solvable`, `s3_solvable`, `s4_solvable` proved by `inferInstance`, completing the full picture of which $S_n$ are solvable?",
+      "**[Addressed in `abel-ruffini-oq-04-oq-02`]** Mathlib instances for $S_2, S_3, S_4$ were missing at time of writing. The sub-entry `abel-ruffini-oq-04-oq-02` fills this gap: it proves $S_2, S_3, S_4$ are solvable via explicit derived series arguments and establishes the bidirectional theorem $S_n$ is solvable iff $n \\leq 4$. The alternating-group analogue ($A_n$ solvable iff $n \\leq 4$) is proved in `abel-ruffini-oq-04-oq-02-oq-02`.",
       "The Inverse Galois Problem — every finite group appears as a Galois group over $\\mathbb{Q}$ — is a deep open problem. Can partial results (e.g., every abelian group is a Galois group over $\\mathbb{Q}$ by Kronecker-Weber) be formalized in Lean?",
       "The file relies on `Equiv.Perm.not_solvable` and `solvableByRad.isSolvable'` as black boxes. Can we expose the full proof chain — derived series, composition factors, simplicity of $A_5$ — as individual Lean lemmas for a pedagogically complete formalization?",
       "Charles Hermite (1858) showed that the general quintic *can* be solved using elliptic modular functions — bypassing the radical barrier by expanding the class of allowed operations. The Bring radical $\\text{BR}(a)$, the unique real root of $x^5 + x + a$, suffices to solve any quintic after Tschirnhaus transformation. Can this 'elliptic solution of the quintic' be formalized in Lean, showing that Abel-Ruffini's impossibility is specific to radicals and not to all closed-form expressions?",
@@ -198,6 +210,11 @@
   },
   "crossReferences": [
     {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "extended-by",
+      "description": "Provides the complete solvability classification for symmetric groups: S₀–S₄ are solvable (proved explicitly), Sₙ solvable iff n ≤ 4 (bidirectional theorem), A₅ simple. Directly fills the gap noted in this entry where S₂, S₃, S₄ lacked Mathlib instances"
+    },
+    {
       "targetId": "abel-ruffini-oq-04",
       "relationship": "extended-by",
       "description": "OQ-04 exposes the internal proof chain from A₅ simplicity to Abel-Ruffini as individually named theorems with pedagogical documentation"
@@ -206,6 +223,16 @@
       "targetId": "abel-ruffini-oq-04-oq-01",
       "relationship": "extended-by",
       "description": "Provides the concrete witness this entry's main theorem lacks: proves $\\text{Gal}(x^5 - 4x + 2/\\mathbb{Q}) \\cong S_5$ via Eisenstein irreducibility at $p = 2$ and galActionHom bijectivity, then applies the contrapositive to show the roots are not expressible by radicals. Now fully verified with 0 axioms and 0 sorries — all former axioms (disc < 0, Vandermonde identity, Dedekind at p=13) have been eliminated"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02",
+      "relationship": "extended-by",
+      "description": "Proves that S₂, S₃, S₄ are solvable (filling the Mathlib gap noted in this entry's open questions) and establishes the bidirectional theorem: Sₙ is solvable if and only if n ≤ 4. The explicit derived series for S₃ (via A₃ ≅ ℤ/3) and S₄ (via the Klein four-group V₄) complete the full classification"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-03",
+      "relationship": "extended-by",
+      "description": "Formalizes the Bring-Jerrard reduction (Tschirnhaus substitution y = x + a₄/5 eliminates the x⁴ term) and the Bring radical BR(t) — the unique real root of x⁵ + x + t. This provides the 'beyond radicals' solution to the quintic via elliptic modular functions, showing Abel-Ruffini's impossibility is specific to the four basic radical operations"
     },
     {
       "targetId": "general-quartic",
