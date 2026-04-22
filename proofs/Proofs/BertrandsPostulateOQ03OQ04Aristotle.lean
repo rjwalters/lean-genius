@@ -9,9 +9,8 @@
   - Clean theorem statements with no definition sorries
   - No axiom declarations
 
-  Status: 2 sorries in long_interval_density_from_pnt:
-  (1) pnt_1c_logx_tendsto: Combining pnt_1c and log_ratio via Filter.Tendsto.mul + congr
-  (2) long_interval_density_from_pnt': Algebraic combination of step 1 and PNT via Tendsto.sub
+  Status: 0 sorries — all proofs complete.
+  Proofs mirror BertrandsPostulateOQ03OQ04OQ03.lean (pnt_at_scaled_point, pnt_density_long_interval).
 -/
 import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.Analysis.SpecificLimits.Basic
@@ -63,7 +62,24 @@ lemma log_ratio_tendsto_one (c : ℝ) (hc : c > 0) :
 lemma pnt_1c_logx_tendsto (c : ℝ) (hc : c > 0) :
     Tendsto (fun x : ℝ =>
       (primePi ((1 + c) * x) : ℝ) * Real.log x / ((1 + c) * x)) atTop (𝓝 1) := by
-  sorry
+  have h1c_pos : (0 : ℝ) < 1 + c := by linarith
+  -- PNT at (1+c)x via composition with scaling x ↦ (1+c)x
+  have pnt_1c : Tendsto (fun x : ℝ =>
+      (primePi ((1 + c) * x) : ℝ) * Real.log ((1 + c) * x) / ((1 + c) * x)) atTop (𝓝 1) :=
+    primeNumberTheorem.comp (Filter.Tendsto.const_mul_atTop h1c_pos tendsto_id)
+  -- log(x)/log((1+c)x) → 1
+  have hlog_ratio := log_ratio_tendsto_one c hc
+  -- Product: [π·log(y)/y] · [log(x)/log(y)] → 1·1 = 1, then log(y) cancels
+  have hmul := pnt_1c.mul hlog_ratio
+  rw [mul_one] at hmul
+  refine hmul.congr' ?_
+  filter_upwards [eventually_gt_atTop (1 : ℝ)] with x hx
+  have hx_pos : (0 : ℝ) < x := by linarith
+  have h1cx_pos : (0 : ℝ) < (1 + c) * x := mul_pos h1c_pos hx_pos
+  have hlog1cx_ne : Real.log ((1 + c) * x) ≠ 0 :=
+    ne_of_gt (Real.log_pos (by nlinarith))
+  field_simp
+  ring
 
 /-- Aristotle target: Density asymptotic for intervals of length cx from PNT.
 
@@ -76,7 +92,32 @@ lemma long_interval_density_from_pnt' (c : ℝ) (hc : c > 0) :
     Tendsto (fun x : ℝ =>
       ((primePi ((1 + c) * x) : ℝ) - (primePi x : ℝ)) * Real.log x / (c * x))
       atTop (𝓝 1) := by
-  sorry
+  have h1c_pos : (0 : ℝ) < 1 + c := by linarith
+  have hc_ne : c ≠ 0 := ne_of_gt hc
+  -- π((1+c)x)·log(x)/((1+c)x) → 1
+  have pnt_1c_logx := pnt_1c_logx_tendsto c hc
+  -- π(x)·log(x)/x → 1 (PNT)
+  have pnt_x := primeNumberTheorem
+  -- Scale pnt_1c_logx by (1+c)/c
+  have h1 : Tendsto (fun x : ℝ =>
+      (1 + c) / c * ((primePi ((1 + c) * x) : ℝ) * Real.log x / ((1 + c) * x)))
+      atTop (𝓝 ((1 + c) / c * 1)) :=
+    pnt_1c_logx.const_mul ((1 + c) / c)
+  -- Scale pnt_x by 1/c
+  have h2 : Tendsto (fun x : ℝ =>
+      1 / c * ((primePi x : ℝ) * Real.log x / x))
+      atTop (𝓝 (1 / c * 1)) :=
+    pnt_x.const_mul (1 / c)
+  -- Subtract: (1+c)/c·1 - 1/c·1 = 1
+  have h3 := h1.sub h2
+  rw [show (1 + c) / c * 1 - 1 / c * 1 = (1 : ℝ) by field_simp; ring] at h3
+  refine h3.congr' ?_
+  filter_upwards [eventually_gt_atTop (0 : ℝ)] with x hx
+  have hx_ne : x ≠ 0 := ne_of_gt hx
+  have hcx_ne : c * x ≠ 0 := mul_ne_zero hc_ne hx_ne
+  have h1cx_ne : (1 + c) * x ≠ 0 := mul_ne_zero (ne_of_gt h1c_pos) hx_ne
+  field_simp
+  ring
 
 end
 
