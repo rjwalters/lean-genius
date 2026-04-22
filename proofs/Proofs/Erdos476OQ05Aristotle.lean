@@ -32,13 +32,13 @@ namespace Erdos476OQ05Aristotle
 
 variable {p : ℕ} [hp : Fact p.Prime]
 
-/-! ### Definitions (matching Erdos476OQ05Problem.lean) -/
+/- ###Definitions (matching Erdos476OQ05Problem.lean) -/
 
 /-- An arithmetic progression in ZMod p starting at `a` with difference `d` -/
 def IsArithmeticProgression (A : Finset (ZMod p)) (a d : ZMod p) : Prop :=
   A = (Finset.range A.card).image (fun (i : ℕ) => a + (i : ZMod p) * d)
 
-/-! ### Helper lemmas (proved in Erdos476OQ05Problem.lean, restated here for Aristotle) -/
+/- ###Helper lemmas (proved in Erdos476OQ05Problem.lean, restated here for Aristotle) -/
 
 lemma shift_card_eq (B : Finset (ZMod p)) (d : ZMod p) :
     (B.image (· + d)).card = B.card := by
@@ -121,7 +121,7 @@ lemma isAP_sum {A B : Finset (ZMod p)} {a b d : ZMod p}
   rw [hABcard]
   exact add_isAP_eq hA hB hApos hBpos
 
-/-! ### SORRY 1: Case 1 existence (key lemma for Vosper inductive step) -/
+/- ###SORRY 1: Case 1 existence (key lemma for Vosper inductive step) -/
 
 /-- **Vosper Case 1 Existence**: In the inductive step of Vosper's theorem,
     there exists a₀ ∈ A such that removing a₀ gives CD equality for A\{a₀}+B.
@@ -139,7 +139,7 @@ theorem vosper_case1_exists (A B : Finset (ZMod p))
     ∃ a₀ ∈ A, ((A.erase a₀) + B).card = A.card + B.card - 2 := by
   sorry
 
-/-! ### SORRY 2: AP sdiff cardinality (key lemma for Vosper AP extension) -/
+/- ###SORRY 2: AP sdiff cardinality (key lemma for Vosper AP extension) -/
 
 /-- **Vosper AP Sdiff Card**: Given IsAP(A\{a₀}, a₁, d) and IsAP(B, b₀, d),
     the set A has exactly 1 element with no d-predecessor in A.
