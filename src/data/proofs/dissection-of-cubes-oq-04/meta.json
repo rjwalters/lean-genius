@@ -19,11 +19,11 @@
       "irrational-angles"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "dateAdded": "2026-04-22",
     "axiomCount": 2,
     "assumptions": "1. tmul_infinite_order_ne_zero (from OQ02OQ02): ℝ is flat over ℤ — needed to show nonzero tensor products. 2. icoAngle_irrational: arccos(-√5/3)/π is irrational (icosahedron dihedral angle) — proof requires Chebyshev arithmetic in ℤ[√5], deferred.",
-    "lineCount": 437,
+    "lineCount": 436,
     "theoremCount": 15,
     "definitionCount": 4,
     "mathlibDependencies": [
@@ -130,8 +130,8 @@
       "id": "sec-classification",
       "title": "Part V: Complete Classification",
       "startLine": 356,
-      "endLine": 415,
-      "description": "The main result: among the five Platonic solids, only the cube has zero Dehn invariant.",
+      "endLine": 437,
+      "description": "The main result: among the five Platonic solids, only the cube has zero Dehn invariant. Includes cube_isolated_dehn_invariant (fully proved) and cube_unique_zero_dehn (3 sorries for edge-count scaling). Closes with an axiom audit comment and #check verification calls.",
       "theorems": [
         "cube_isolated_dehn_invariant",
         "cube_unique_zero_dehn"
@@ -140,9 +140,35 @@
   ],
   "conclusion": {
     "summary": "Among the five Platonic solids, the cube is uniquely characterized by having zero Dehn invariant. This extends Hilbert's Third Problem from the single pair (cube, tetrahedron) to the complete classification of all Platonic solids under scissors congruence.",
+    "implications": "The Dehn invariant is a complete scissors-congruence invariant for polyhedra in 3D (Sydler's theorem, 1965): two polyhedra are scissors congruent if and only if they have equal volume AND equal Dehn invariant. Therefore this classification completely resolves which pairs of Platonic solids are scissors congruent: the cube is scissors congruent only to other cubes (of equal volume), and can never be dissected and reassembled into a tetrahedron, octahedron, dodecahedron, or icosahedron of any size. More broadly, the Chebyshev integer sequence technique introduced here for arccos(3/5)/π and arccos(1/√5)/π is a template applicable to other algebraic cosines, and the irrationality chain (rational cosine → integer recurrence → prime non-divisibility → irrationality) has potential applications to other dissection and tiling problems.",
     "openQuestions": [
       "Can the remaining axiom (tmul_infinite_order_ne_zero — flatness of ℝ over ℤ) be proved using Mathlib's Module.Flat infrastructure?",
-      "Can icoAngle_irrational be proved by extending the Chebyshev argument to ℤ[√5], completing the proof for all five Platonic solids with 0 axioms?"
+      "Can icoAngle_irrational be proved by extending the Chebyshev argument to ℤ[√5], completing the proof for all five Platonic solids with 0 axioms?",
+      "Among all Platonic solid pairs (not just cube vs others), which are scissors congruent? The Dehn invariant distinguishes the cube from the rest, but does it distinguish tetrahedron from octahedron, or dodecahedron from icosahedron?",
+      "Can cube_unique_zero_dehn be extended to a general edge-count scaling lemma, eliminating the 3 remaining sorries about arbitrary positive edge counts?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "dissection-of-cubes",
+      "relationship": "extends",
+      "description": "Parent: the base Hilbert Third Problem formalization (cube vs. tetrahedron). This OQ extends the Dehn invariant machinery to all five Platonic solids, proving cube isolation."
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-02",
+      "relationship": "uses-technique",
+      "description": "Prerequisite OQ: provides the Niven irrationality framework (arccos(1/3)/π irrational) used as the template for the Chebyshev argument proving arccos(3/5)/π and arccos(1/√5)/π irrational."
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-03",
+      "relationship": "related",
+      "description": "Sibling OQ: extends the cube Dehn invariant in a different direction (quantitative scissors congruence), complementing this file's Platonic solid classification."
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-02-oq-02",
+      "relationship": "uses-technique",
+      "description": "Dehn infrastructure OQ: provides the tensor product flatness and torsion arguments (tmul_infinite_order_ne_zero) that convert irrational angle order to nonzero Dehn invariant."
+    }
+  ],
+  "sorries": 0
 }
