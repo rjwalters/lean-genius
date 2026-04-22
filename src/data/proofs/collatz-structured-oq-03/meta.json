@@ -28,6 +28,13 @@
     "historicalContext": "The Collatz conjecture (1937, attributed to Lothar Collatz) asks whether every positive integer eventually reaches 1 under the iteration $n \\mapsto n/2$ (n even) or $n \\mapsto 3n+1$ (n odd). Despite its elementary statement, it remains unsolved. The *stopping time* $\\sigma(n)$ — the number of steps to reach 1 — varies wildly: $\\sigma(27) = 111$ while $\\sigma(28) = 18$. Terras (1976) proved the first density result: $\\sigma(n) < \\infty$ for a set of integers of density 1, meaning almost all $n$ eventually reach 1 even without knowing the conjecture is fully true. Krasikov and Lagarias (2003) strengthened this to: the number of $n \\leq N$ with $\\sigma(n) < \\infty$ is at least $N^{0.84}$. The *average* stopping time $S(N) = \\frac{1}{N}\\sum_{n=1}^N \\sigma(n)$ is predicted by the probabilistic heuristic to grow as $c \\cdot \\log N$ where $c = 1/\\log_2(4/3) \\approx 6.95$. This heuristic treats Collatz as a random walk: each step either halves $n$ (prob. 1/2) or multiplies by $3/2$ (prob. 1/2), giving a geometric decay in the expected value of $\\log n$. Whether $S(N)/\\log N$ converges to $c$ remains open.",
     "problemStatement": "Let $\\sigma(n)$ be the stopping time of $n$ under Collatz iteration (0 if $n$ does not reach 1). Define $S(N) = \\frac{1}{N}\\sum_{n=1}^N \\sigma(n)$. (1) Does $S(N) \\sim c \\cdot \\log N$ as $N \\to \\infty$ for some constant $c > 0$? (2) Is the constant $c = 1/\\log_2(4/3) \\approx 6.95$ (the heuristic prediction)? (3) Can Terras's density-1 result be used to establish logarithmic upper or lower bounds on $S(N)$?",
     "proofStrategy": "The Lean formalization takes a definitional approach: formalize all relevant objects (`collatz`, `stoppingTime`, `avgStoppingTime`, `heuristicConstant`) and state the open question as a Lean `Prop` (`avgStoppingTimeAsymptotic`). Two concrete values are proved (`stoppingTime_one`, `stoppingTime_two`) using `Nat.find` and `interval_cases`. The Terras density result is axiomatized as `terras_density`. The open conjecture and its refinement (`exactConstant`) are left as unproved `def`s — Lean statements of what it would mean to resolve the question.",
+    "prerequisites": [
+      "Collatz conjecture and iteration",
+      "Real analysis (limits, asymptotic notation)",
+      "Lean 4 noncomputable definitions and Nat.find",
+      "Probability theory (random walks, Galton-Watson processes)",
+      "2-adic analysis (for Terras's proof)"
+    ],
     "keyInsights": [
       "The stopping time `stoppingTime n` is defined via `Nat.find` (classical choice of the minimum witness): `stoppingTime n = if h : reachesOne n then Nat.find h else 0`. This requires `reachesOne n` as a decidability hypothesis, which in turn requires termination. Since the Collatz conjecture is unknown, `reachesOne n` is not decidable in general — the `noncomputable` tag is essential and the `else 0` branch handles the (possibly empty) case where the iteration diverges.",
       "The heuristic constant $c = 1/\\log_2(4/3)$ arises from a Galton-Watson branching process model. Under the Collatz map, an odd number $n$ becomes $(3n+1)/2^k$ where $k$ is the 2-adic valuation of $3n+1$. The expected log-decrease per step is $\\log(4/3)/\\log 2 \\approx 0.415$ bits. The reciprocal $1/\\log_2(4/3) \\approx 2.41$ gives the expected number of *odd* steps; including even steps yields the ≈6.95 factor for total iterations.",
@@ -166,6 +173,16 @@
       "targetId": "collatz-cycles-oq-04",
       "relationship": "related",
       "description": "Formalizes the algebraic cycle equation for general j-step Collatz cycles: $3^j < 2^M$ for all $j \\geq 1$. The halving exponent $M$ in this inequality is precisely related to the $\\log(4/3)$ constant in the heuristic stopping-time formula — the fact that 2-adic valuations dominate 3-adic growth is what makes orbits terminate in $O(\\log n)$ steps on average"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "The heuristic derivation of the stopping-time constant $c = 1/\\log_2(4/3)$ models each Collatz step as an independent Bernoulli trial and applies the law of large numbers: the average log-decrease per step converges to $\\log(4/3)/2$. The Central Limit Theorem would further predict the fluctuation distribution of $\\sigma(n) - c \\log_2 n$ — a Gaussian with variance $O(\\log n)$ — though neither the law of large numbers nor CLT has been proved for Collatz stopping times"
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "The `stoppingTime` function is `noncomputable` in Lean because deciding `reachesOne n` — whether a Collatz orbit terminates — is not uniformly decidable. If the Collatz conjecture is false, there exists $n$ for which no algorithm can verify $\\sigma(n) < \\infty$ without running forever. The Halting Problem proof technique (diagonalization) was used by Conway (1987) to show that generalized Collatz-type problems are computationally undecidable in general, even though the specific $3n+1$ problem may be decidable"
     }
   ],
   "references": [
