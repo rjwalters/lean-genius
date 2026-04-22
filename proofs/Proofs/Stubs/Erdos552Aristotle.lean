@@ -38,29 +38,39 @@ def complement {V : Type*} (G : SimpleGraph V) : SimpleGraph V where
 
 -- Routine: C4 is 2-regular: every vertex in the 4-cycle has degree 2.
 theorem C4_is_2_regular : ∀ v : Fin 4, (C4.neighborFinset v).card = 2 := by
-  sorry
+  decide
 
 -- Routine: The center of S_n has degree n.
 -- Vertex 0 is adjacent to all n leaf vertices 1, ..., n.
 theorem starGraph_center_degree (n : ℕ) :
     ((starGraph n).neighborFinset ⟨0, Nat.zero_lt_succ n⟩).card = n := by
-  sorry
+  have h : (starGraph n).neighborFinset ⟨0, Nat.zero_lt_succ n⟩ =
+           Finset.univ.erase ⟨0, Nat.zero_lt_succ n⟩ := by
+    ext j
+    simp [SimpleGraph.mem_neighborFinset, starGraph, Fin.ext_iff]
+    omega
+  rw [h, Finset.card_erase_of_mem (Finset.mem_univ _), Fintype.card_fin]
+  omega
 
 -- Routine: Each leaf of S_n has degree 1.
 -- Each non-center vertex is adjacent only to vertex 0.
 theorem starGraph_leaf_degree (n : ℕ) (i : Fin (n + 1)) (hi : i.val ≠ 0) :
     ((starGraph n).neighborFinset i).card = 1 := by
-  sorry
+  have h : (starGraph n).neighborFinset i = {⟨0, Nat.zero_lt_succ n⟩} := by
+    ext j
+    simp [SimpleGraph.mem_neighborFinset, starGraph, Fin.ext_iff]
+    omega
+  rw [h, Finset.card_singleton]
 
 -- Routine: The complement graph is symmetric.
 -- If u ≠ v and G.Adj u v is false, then v ≠ u and G.Adj v u is false.
 theorem complement_symm {V : Type*} (G : SimpleGraph V) (u v : V)
-    (h : (complement G).Adj u v) : (complement G).Adj v u := by
-  sorry
+    (h : (complement G).Adj u v) : (complement G).Adj v u :=
+  (complement G).symm h
 
 -- Routine: Cyclegraph on n ≥ 1 vertices is nonempty (has at least one vertex).
 -- Fin n is nonempty when n ≥ 1.
-theorem cycleGraph_nonempty (n : ℕ) (hn : n ≥ 1) : Nonempty (Fin n) := by
-  sorry
+theorem cycleGraph_nonempty (n : ℕ) (hn : n ≥ 1) : Nonempty (Fin n) :=
+  ⟨⟨0, hn⟩⟩
 
 end Erdos552Aristotle
