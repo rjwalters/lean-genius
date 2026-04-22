@@ -673,4 +673,417 @@ example : (6 : ℕ).factorial / (4 * 3 * 2 * 3 * 2 * 1) = 5 := by norm_num
     f^λ = 8!/2880 = 14 = Catalan(4). -/
 example : Nat.factorial 8 / 2880 = 14 := by norm_num
 
+-- ============================================================
+-- PART VIII: Hook-Shape Young Diagrams (m+1, 1)
+-- ============================================================
+/-
+  The "hook-shape" (m+1, 1) has m+2 cells: row 0 length m+1, row 1 length 1.
+  Hook lengths: h(0,0)=m+2, h(0,j)=m+1-j for j=1,...,m, h(1,0)=1.
+  hookProd = (m+2) × m!
+  card(SYT(m+1,1)) = m+1  (entry(1,0) can be any of {2,...,m+2})
+  Hook formula: (m+1) × (m+2) × m! = (m+2)!
+-/
+
+/-- The hook-shape Young diagram with row 0 of length m+1 and row 1 of length 1. -/
+def hookShapeYD (m : ℕ) : YoungDiagram :=
+  YoungDiagram.ofRowLens [m + 1, 1] (by
+    simp only [List.SortedGE, List.Sorted, List.pairwise_cons, List.mem_singleton,
+               forall_eq, List.Pairwise.nil, and_true]
+    omega)
+
+lemma mem_hookShapeYD {m i j : ℕ} :
+    (i, j) ∈ hookShapeYD m ↔ (i = 0 ∧ j < m + 1) ∨ (i = 1 ∧ j = 0) := by
+  simp only [hookShapeYD, YoungDiagram.mem_ofRowLens,
+    List.length_cons, List.length_singleton]
+  constructor
+  · rintro ⟨hi, hj⟩
+    interval_cases i
+    · left; exact ⟨rfl, by simpa [List.getElem_cons_zero] using hj⟩
+    · right; exact ⟨rfl, by have := hj; simp at this; omega⟩
+    · omega
+  · rintro (⟨rfl, hj⟩ | ⟨rfl, rfl⟩)
+    · exact ⟨by omega, by simpa [List.getElem_cons_zero] using hj⟩
+    · exact ⟨by omega, by simp⟩
+
+private lemma hookShapeYD_cells_eq (m : ℕ) :
+    (hookShapeYD m).cells =
+    (Finset.range (m + 1)).image (Prod.mk 0) ∪ {(1, 0)} := by
+  ext ⟨i, j⟩
+  simp only [YoungDiagram.mem_cells, mem_hookShapeYD, Finset.mem_union,
+    Finset.mem_image, Finset.mem_range, Finset.mem_singleton, Prod.mk.injEq]
+  constructor
+  · rintro (⟨rfl, hj⟩ | ⟨rfl, rfl⟩)
+    · left; exact ⟨j, hj, rfl, rfl⟩
+    · right; exact ⟨rfl, rfl⟩
+  · rintro (⟨k, hk, rfl, rfl⟩ | ⟨rfl, rfl⟩)
+    · left; exact ⟨rfl, hk⟩; · right; exact ⟨rfl, rfl⟩
+
+private lemma hookShapeYD_cells_disj (m : ℕ) :
+    Disjoint ((Finset.range (m + 1)).image (Prod.mk 0)) ({(1, 0)} : Finset (ℕ × ℕ)) :=
+  Finset.disjoint_left.mpr (by simp [Finset.mem_image, Prod.mk.injEq])
+
+lemma hookShapeYD_card (m : ℕ) : (hookShapeYD m).card = m + 2 := by
+  unfold YoungDiagram.card
+  rw [hookShapeYD_cells_eq, Finset.card_union_of_disjoint (hookShapeYD_cells_disj m),
+      Finset.card_image_of_injective _ (fun a b h => (Prod.mk.inj h).2),
+      Finset.card_range, Finset.card_singleton]
+
+lemma rowLen_hookShapeYD_zero (m : ℕ) : (hookShapeYD m).rowLen 0 = m + 1 := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]; simp [mem_hookShapeYD]
+  · have := YoungDiagram.mem_iff_lt_rowLen.mp
+        (mem_hookShapeYD.mpr (Or.inl ⟨rfl, Nat.lt_succ_self m⟩)); omega
+
+lemma rowLen_hookShapeYD_one (m : ℕ) : (hookShapeYD m).rowLen 1 = 1 := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]; simp [mem_hookShapeYD]
+  · have := YoungDiagram.mem_iff_lt_rowLen.mp
+        (mem_hookShapeYD.mpr (Or.inr ⟨rfl, rfl⟩)); omega
+
+lemma colLen_hookShapeYD_zero (m : ℕ) : (hookShapeYD m).colLen 0 = 2 := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]; simp [mem_hookShapeYD]
+  · have h0 := YoungDiagram.mem_iff_lt_colLen.mp
+        (mem_hookShapeYD.mpr (Or.inl ⟨rfl, Nat.zero_lt_succ m⟩))
+    have h1 := YoungDiagram.mem_iff_lt_colLen.mp
+        (mem_hookShapeYD.mpr (Or.inr ⟨rfl, rfl⟩)); omega
+
+lemma colLen_hookShapeYD_succ {m j : ℕ} (hj : 1 ≤ j) (hj' : j < m + 1) :
+    (hookShapeYD m).colLen j = 1 := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]
+    simp [mem_hookShapeYD]; omega
+  · have := YoungDiagram.mem_iff_lt_colLen.mp
+        (mem_hookShapeYD.mpr (Or.inl ⟨rfl, hj'⟩)); omega
+
+lemma hookLength_hookShapeYD_zero_zero (m : ℕ) :
+    hookLength (hookShapeYD m) 0 0 = m + 2 := by
+  have heq := hookLength_add_eq (hookShapeYD m)
+      (mem_hookShapeYD.mpr (Or.inl ⟨rfl, Nat.zero_lt_succ m⟩))
+  rw [rowLen_hookShapeYD_zero, colLen_hookShapeYD_zero] at heq; omega
+
+lemma hookLength_hookShapeYD_zero_succ {m j : ℕ} (hj : j < m) :
+    hookLength (hookShapeYD m) 0 (j + 1) = m - j := by
+  have heq := hookLength_add_eq (hookShapeYD m)
+      (mem_hookShapeYD.mpr (Or.inl ⟨rfl, by omega⟩))
+  rw [rowLen_hookShapeYD_zero, colLen_hookShapeYD_succ (by omega) (by omega)] at heq; omega
+
+lemma hookLength_hookShapeYD_one_zero (m : ℕ) :
+    hookLength (hookShapeYD m) 1 0 = 1 := by
+  have heq := hookLength_add_eq (hookShapeYD m)
+      (mem_hookShapeYD.mpr (Or.inr ⟨rfl, rfl⟩))
+  rw [rowLen_hookShapeYD_one, colLen_hookShapeYD_zero] at heq; omega
+
+/-- hookProd(hookShapeYD m) = (m+2) × m!. -/
+theorem hookProd_hookShapeYD (m : ℕ) :
+    hookProd (hookShapeYD m) = (m + 2) * m.factorial := by
+  unfold hookProd
+  rw [hookShapeYD_cells_eq, Finset.prod_union (hookShapeYD_cells_disj m),
+      Finset.prod_singleton, hookLength_hookShapeYD_one_zero, mul_one,
+      Finset.prod_image (fun a _ b _ h => (Prod.mk.inj h).2)]
+  show ∏ j ∈ Finset.range (m + 1), hookLength (hookShapeYD m) 0 j = (m + 2) * m.factorial
+  -- Peel j=0 from the front via insert decomposition
+  have hsplit : Finset.range (m + 1) = insert 0 ((Finset.range m).image (· + 1)) := by
+    ext j; simp only [Finset.mem_insert, Finset.mem_image, Finset.mem_range]
+    constructor
+    · intro hj; rcases Nat.eq_zero_or_pos j with rfl | hpos
+      · exact Or.inl rfl
+      · exact Or.inr ⟨j - 1, by omega, by omega⟩
+    · rintro (rfl | ⟨k, hk, rfl⟩) <;> omega
+  rw [hsplit, Finset.prod_insert (by simp [Finset.mem_image]),
+      hookLength_hookShapeYD_zero_zero,
+      Finset.prod_image (fun a _ b _ h => by omega),
+      Finset.prod_congr rfl (fun j hj =>
+        hookLength_hookShapeYD_zero_succ (Finset.mem_range.mp hj)),
+      ← Nat.descFactorial_eq_prod_range, Nat.descFactorial_self]
+
+-- ============================================================
+-- PART VIIIb: SYT of Hook-Shape — Explicit Construction
+-- ============================================================
+
+/-
+  Each SYT of hookShapeYD m is determined by where the "arm" entry sits in row 1.
+  Entry(0,0) = 1 always. Entry(1,0) ∈ {2,...,m+2} freely.
+  Given entry(1,0) = k+2 for k ∈ {0,...,m}:
+    entry(0,j) = j+1  for j ≤ k   (values before the arm entry)
+    entry(0,j) = j+2  for j > k   (values after the arm entry, skipping k+2)
+    entry(1,0) = k+2
+-/
+
+/-- The k-th SYT of hookShapeYD m: entry(1,0) = k+2, row 0 fills {1,...,m+2}\{k+2}. -/
+private def hookSYT (m : ℕ) (k : Fin (m + 1)) : StandardYoungTableau (hookShapeYD m) where
+  entry := fun ⟨i, j⟩ =>
+    if i = 0 ∧ j < m + 1 then
+      if j ≤ k.val then j + 1 else j + 2
+    else if i = 1 ∧ j = 0 then k.val + 2
+    else 0
+  entry_zero := fun ⟨i, j⟩ hc => by
+    have h0 : ¬(i = 0 ∧ j < m + 1) := fun ⟨hi, hj⟩ =>
+      hc (mem_hookShapeYD.mpr (Or.inl ⟨hi, hj⟩))
+    have h1 : ¬(i = 1 ∧ j = 0) := fun ⟨hi, hj⟩ =>
+      hc (mem_hookShapeYD.mpr (Or.inr ⟨hi, hj⟩))
+    simp only [if_neg h0, if_neg h1]
+  entry_range := fun ⟨i, j⟩ hc => by
+    simp only [hookShapeYD_card]
+    rcases mem_hookShapeYD.mp hc with ⟨rfl, hj⟩ | ⟨rfl, rfl⟩
+    · simp only [if_pos ⟨rfl, hj⟩]
+      split_ifs with h
+      · exact ⟨by omega, by omega⟩
+      · exact ⟨by omega, by push_neg at h; omega⟩
+    · simp only [show ¬(1 = 0 ∧ 0 < m + 1) from by omega, if_false,
+                 if_pos ⟨rfl, rfl⟩]
+      exact ⟨by omega, by have := k.isLt; omega⟩
+  entry_injOn := fun ⟨i₁, j₁⟩ hc₁ ⟨i₂, j₂⟩ hc₂ heq => by
+    rcases mem_hookShapeYD.mp hc₁ with ⟨rfl, hj₁⟩ | ⟨rfl, rfl⟩
+    · rcases mem_hookShapeYD.mp hc₂ with ⟨rfl, hj₂⟩ | ⟨rfl, rfl⟩
+      · -- both in row 0
+        simp only [if_pos ⟨rfl, hj₁⟩, if_pos ⟨rfl, hj₂⟩] at heq
+        congr 1
+        split_ifs at heq with h1 h2 <;> omega
+      · -- c₁ in row 0, c₂ = (1,0)
+        simp only [if_pos ⟨rfl, hj₁⟩,
+          show ¬(1 = 0 ∧ 0 < m + 1) from by omega, if_false,
+          if_pos ⟨rfl, rfl⟩] at heq
+        split_ifs at heq with h <;> omega
+    · rcases mem_hookShapeYD.mp hc₂ with ⟨rfl, hj₂⟩ | ⟨rfl, rfl⟩
+      · -- c₁ = (1,0), c₂ in row 0
+        simp only [show ¬(1 = 0 ∧ 0 < m + 1) from by omega, if_false,
+          if_pos ⟨rfl, rfl⟩, if_pos ⟨rfl, hj₂⟩] at heq
+        split_ifs at heq with h <;> omega
+      · rfl
+  row_strict := fun i j₁ j₂ hc₁ hc₂ hjlt => by
+    rcases mem_hookShapeYD.mp hc₁ with ⟨rfl, hj₁⟩ | ⟨h₁, _⟩
+    · have hj₂ := (mem_hookShapeYD.mp hc₂).resolve_right (by simp)
+      simp only [if_pos ⟨rfl, hj₁⟩, if_pos ⟨rfl, hj₂.2⟩]
+      split_ifs <;> omega
+    · -- row 1 only has j=0, so j₁ < j₂ is impossible
+      have := (mem_hookShapeYD.mp hc₁).resolve_left (by simp [h₁])
+      have := (mem_hookShapeYD.mp hc₂).resolve_left (by intro ⟨h, _⟩; omega)
+      omega
+  col_strict := fun i₁ i₂ j hc₁ hc₂ hilt => by
+    -- i₁ < i₂ with cells in hookShapeYD: must be i₁=0, i₂=1, j=0
+    have h1 : i₁ = 0 ∧ j < m + 1 := by
+      rcases mem_hookShapeYD.mp hc₁ with ⟨h, hj⟩ | ⟨h, _⟩
+      · exact ⟨h, hj⟩
+      · exact absurd h (by omega)
+    have h2 : i₂ = 1 ∧ j = 0 := by
+      rcases mem_hookShapeYD.mp hc₂ with ⟨h, _⟩ | ⟨h, hj⟩
+      · exact absurd h (by omega)
+      · exact ⟨h, hj⟩
+    obtain ⟨rfl, hj⟩ := h1; obtain ⟨rfl, rfl⟩ := h2
+    simp only [if_pos ⟨rfl, hj⟩,
+      show ¬(1 = 0 ∧ (0 : ℕ) < m + 1) from by omega, if_false,
+      if_pos ⟨rfl, rfl⟩]
+    split_ifs with h
+    · omega  -- j=0 ≤ k, entry(0,0) = 1 < k+2
+    · push_neg at h; omega  -- j=0 > k impossible since k ≥ 0
+
+/-- Entry at (0,0) in any SYT of hookShapeYD m is 1. -/
+private lemma hookSYT_entry_zero_zero_eq_one {m : ℕ}
+    (T : StandardYoungTableau (hookShapeYD m)) : T.entry (0, 0) = 1 := by
+  have hmem : ∀ j < m + 1, (0, j) ∈ hookShapeYD m :=
+    fun j hj => mem_hookShapeYD.mpr (Or.inl ⟨rfl, hj⟩)
+  have hmem10 : (1, 0) ∈ hookShapeYD m := mem_hookShapeYD.mpr (Or.inr ⟨rfl, rfl⟩)
+  -- entry(0,0) ≥ 1
+  have hlb : 1 ≤ T.entry (0, 0) :=
+    (T.entry_range (0, 0) (hmem 0 (Nat.zero_lt_succ m))).1
+  suffices hle : T.entry (0, 0) ≤ 1 by omega
+  -- Row chain: T.entry(0,j) ≥ T.entry(0,0) + j  (by row_strict induction)
+  have hrow_lb : ∀ j < m + 1, T.entry (0, 0) + j ≤ T.entry (0, j) := by
+    intro j hj
+    induction j with
+    | zero => simp
+    | succ j ih =>
+      have hstep : T.entry (0, j) < T.entry (0, j + 1) :=
+        T.row_strict 0 j (j + 1) (hmem j (by omega)) (hmem (j + 1) hj)
+          (Nat.lt_succ_self j)
+      linarith [ih (by omega)]
+  -- T.entry(0,m) ≤ m+2 (entry_range with card = m+2)
+  have hub_m : T.entry (0, m) ≤ m + 2 := by
+    have := (T.entry_range (0, m) (hmem m (Nat.lt_succ_self m))).2
+    rwa [hookShapeYD_card] at this
+  -- So T.entry(0,0) + m ≤ T.entry(0,m) ≤ m+2 → T.entry(0,0) ≤ 2
+  have hub00 : T.entry (0, 0) ≤ 2 := by linarith [hrow_lb m (Nat.lt_succ_self m)]
+  -- if T.entry(0,0) = 2, derive contradiction via injectivity
+  by_contra h
+  push_neg at h
+  have heq00 : T.entry (0, 0) = 2 := by omega
+  -- Upward chain: T.entry(0,j) + (m-j) ≤ T.entry(0,m)
+  have hrow_ub_m : ∀ j k, j + k < m + 1 → T.entry (0, j) + k ≤ T.entry (0, j + k) := by
+    intro j k hjk
+    induction k with
+    | zero => simp
+    | succ k ih =>
+      have hstep : T.entry (0, j + k) < T.entry (0, j + k + 1) :=
+        T.row_strict 0 (j + k) (j + k + 1)
+          (hmem (j + k) (by omega)) (hmem (j + k + 1) (by omega))
+          (Nat.lt_succ_self _)
+      linarith [ih (by omega)]
+  -- T.entry(0,j) = j+2 for all j = 0,...,m
+  have heq_row : ∀ j < m + 1, T.entry (0, j) = j + 2 := by
+    intro j hj
+    have hlb_j : 2 + j ≤ T.entry (0, j) := by
+      have := hrow_lb j hj; rw [heq00] at this; linarith
+    have hub_j : T.entry (0, j) ≤ j + 2 := by
+      have hup := hrow_ub_m j (m - j) (by omega)
+      rw [Nat.add_sub_cancel' (Nat.le_of_lt_succ hj)] at hup
+      linarith
+    omega
+  -- T.entry(1,0) > T.entry(0,0) = 2 and ≤ m+2
+  have hcol : T.entry (0, 0) < T.entry (1, 0) :=
+    T.col_strict 0 1 0 (hmem 0 (Nat.zero_lt_succ m)) hmem10 Nat.zero_lt_one
+  have hub10 : T.entry (1, 0) ≤ m + 2 := by
+    have := (T.entry_range (1, 0) hmem10).2; rwa [hookShapeYD_card] at this
+  have hv_lt : T.entry (1, 0) - 2 < m + 1 := by omega
+  -- T.entry(0, T.entry(1,0)-2) = T.entry(1,0) (by heq_row)
+  have hmatch : T.entry (0, T.entry (1, 0) - 2) = T.entry (1, 0) := by
+    rw [heq_row (T.entry (1, 0) - 2) hv_lt]; omega
+  -- But entry_injOn says they must be the same cell
+  have hne : (0, T.entry (1, 0) - 2) ≠ (1, 0) := by simp
+  exact hne (T.entry_injOn (0, T.entry (1, 0) - 2) (hmem _ hv_lt) hmem10 hmatch)
+
+/-- Every SYT of hookShapeYD m equals hookSYT m k for k = T.entry(1,0) - 2. -/
+private lemma hookSYT_unique {m : ℕ} (T : StandardYoungTableau (hookShapeYD m)) :
+    ∃ k : Fin (m + 1), T = hookSYT m k := by
+  have hmem : ∀ j < m + 1, (0, j) ∈ hookShapeYD m :=
+    fun j hj => mem_hookShapeYD.mpr (Or.inl ⟨rfl, hj⟩)
+  have hmem10 : (1, 0) ∈ hookShapeYD m := mem_hookShapeYD.mpr (Or.inr ⟨rfl, rfl⟩)
+  have h00 : T.entry (0, 0) = 1 := hookSYT_entry_zero_zero_eq_one T
+  -- Row bounds: j+1 ≤ entry(0,j) ≤ j+2
+  have hlb : ∀ j < m + 1, j + 1 ≤ T.entry (0, j) := by
+    intro j hj
+    induction j with
+    | zero => simp [h00]
+    | succ j ih =>
+      have := T.row_strict 0 j (j + 1) (hmem j (by omega)) (hmem (j + 1) hj) (Nat.lt_succ_self j)
+      linarith [ih (by omega)]
+  have hub : ∀ j < m + 1, T.entry (0, j) ≤ j + 2 := by
+    intro j hj
+    have hchain : ∀ k, j + k < m + 1 → T.entry (0, j) + k ≤ T.entry (0, j + k) := by
+      intro k hjk
+      induction k with
+      | zero => simp
+      | succ k ih =>
+        have := T.row_strict 0 (j + k) (j + k + 1)
+            (hmem (j + k) (by omega)) (hmem (j + k + 1) (by omega)) (Nat.lt_succ_self _)
+        linarith [ih (by omega)]
+    have hend : T.entry (0, m) ≤ m + 2 := by
+      have := (T.entry_range (0, m) (hmem m (Nat.lt_succ_self m))).2
+      rwa [hookShapeYD_card] at this
+    have := hchain (m - j) (by omega)
+    rw [Nat.add_sub_cancel' (Nat.le_of_lt_succ hj)] at this
+    linarith
+  -- Define k := T.entry(1,0) - 2
+  have hcol : T.entry (0, 0) < T.entry (1, 0) :=
+    T.col_strict 0 1 0 (hmem 0 (Nat.zero_lt_succ m)) hmem10 Nat.zero_lt_one
+  have hub10 : T.entry (1, 0) ≤ m + 2 := by
+    have := (T.entry_range (1, 0) hmem10).2; rwa [hookShapeYD_card] at this
+  have hk_bound : T.entry (1, 0) - 2 < m + 1 := by linarith [h00]
+  refine ⟨⟨T.entry (1, 0) - 2, hk_bound⟩, ?_⟩
+  apply StandardYoungTableau.ext; intro ⟨i, j⟩
+  by_cases hc : (i, j) ∈ hookShapeYD m
+  · rcases mem_hookShapeYD.mp hc with ⟨rfl, hj⟩ | ⟨rfl, rfl⟩
+    · -- Cell (0,j): show T.entry(0,j) = hookSYT entry
+      simp only [hookSYT, if_pos ⟨rfl, hj⟩, Fin.val]
+      have hne : T.entry (0, j) ≠ T.entry (1, 0) := fun h =>
+        absurd (T.entry_injOn (0, j) hc hmem10 h) (by simp)
+      split_ifs with hjk
+      · -- j ≤ k: show T.entry(0,j) = j+1 (rule out j+2)
+        have hrange : T.entry (0, j) = j + 1 ∨ T.entry (0, j) = j + 2 := by
+          have := hlb j hj; have := hub j hj; omega
+        rcases hrange with h | h
+        · exact h
+        · -- T.entry(0,j) = j+2. Chain up: entry(0,k) ≥ T.entry(1,0)
+          exfalso
+          have hchain_up : ∀ j', j ≤ j' → j' < m + 1 →
+              T.entry (0, j) + (j' - j) ≤ T.entry (0, j') := by
+            intro j' hjj' hj'
+            have : ∀ n, j + n ≤ j' → j + n < m + 1 → T.entry (0, j) + n ≤ T.entry (0, j + n) := by
+              intro n hn1 hn2
+              induction n with
+              | zero => simp
+              | succ n ih =>
+                have := T.row_strict 0 (j + n) (j + n + 1)
+                    (hmem (j + n) (by omega)) (hmem (j + n + 1) hn2) (Nat.lt_succ_self _)
+                linarith [ih (by omega) (by omega)]
+            have := this (j' - j) (by omega) (by omega)
+            rwa [Nat.add_sub_cancel' hjj'] at this
+          have hkm : T.entry (1, 0) - 2 < m + 1 := hk_bound
+          have hup := hchain_up (T.entry (1, 0) - 2) (by omega) hkm
+          rw [h] at hup
+          have hsimp : j + 2 + (T.entry (1, 0) - 2 - j) = T.entry (1, 0) := by omega
+          rw [hsimp] at hup
+          have hub_k := hub (T.entry (1, 0) - 2) hkm
+          have heq : T.entry (0, T.entry (1, 0) - 2) = T.entry (1, 0) := by omega
+          exact absurd (T.entry_injOn (0, T.entry (1, 0) - 2) (hmem _ hkm) hmem10 heq)
+            (by simp)
+      · -- j > k: show T.entry(0,j) = j+2 (rule out j+1)
+        push_neg at hjk
+        have hrange : T.entry (0, j) = j + 1 ∨ T.entry (0, j) = j + 2 := by
+          have := hlb j hj; have := hub j hj; omega
+        rcases hrange with h | h
+        · -- T.entry(0,j) = j+1. Chain: entry(0,k+1) ≤ T.entry(1,0)
+          exfalso
+          have hchain_dn : ∀ j', j' ≤ j → j' < m + 1 →
+              T.entry (0, j') + (j - j') ≤ T.entry (0, j) := by
+            intro j' hj'j hj'
+            have : ∀ n, j' + n ≤ j → j' + n < m + 1 → T.entry (0, j') + n ≤ T.entry (0, j' + n) := by
+              intro n hn1 hn2
+              induction n with
+              | zero => simp
+              | succ n ih =>
+                have := T.row_strict 0 (j' + n) (j' + n + 1)
+                    (hmem (j' + n) (by omega)) (hmem (j' + n + 1) hn2) (Nat.lt_succ_self _)
+                linarith [ih (by omega) (by omega)]
+            have := this (j - j') (by omega) (by omega)
+            rwa [Nat.add_sub_cancel' hj'j] at this
+          have hk1 := hchain_dn (T.entry (1, 0) - 1) (by omega) (by omega)
+          rw [h] at hk1
+          have hlb_k1 := hlb (T.entry (1, 0) - 1) (by omega)
+          have heq : T.entry (0, T.entry (1, 0) - 1) = T.entry (1, 0) := by omega
+          exact absurd (T.entry_injOn (0, T.entry (1, 0) - 1) (hmem _ (by omega)) hmem10 heq)
+            (by simp)
+        · exact h
+    · -- Cell (1,0): T.entry(1,0) = k+2
+      simp only [hookSYT, show ¬(1 = 0 ∧ (0 : ℕ) < m + 1) from by omega, if_false,
+                 if_pos ⟨rfl, rfl⟩, Fin.val]
+      omega
+  · -- Not in μ: both are 0
+    rw [T.entry_zero _ hc]
+    simp only [hookSYT, show ¬(i = 0 ∧ j < m + 1) from fun ⟨hi, hj⟩ =>
+      hc (mem_hookShapeYD.mpr (Or.inl ⟨hi, hj⟩)),
+      show ¬(i = 1 ∧ j = 0) from fun ⟨hi, hj⟩ =>
+      hc (mem_hookShapeYD.mpr (Or.inr ⟨hi, hj⟩)), if_false]
+
+/-- The explicit SYTs hookSYT m k are pairwise distinct. -/
+private lemma hookSYT_injective (m : ℕ) : Function.Injective (hookSYT m) := by
+  intro k₁ k₂ h
+  have : (hookSYT m k₁).entry (1, 0) = (hookSYT m k₂).entry (1, 0) :=
+    congr_fun (congrArg StandardYoungTableau.entry h) (1, 0)
+  simp only [hookSYT, show ¬(1 = 0 ∧ (0 : ℕ) < m + 1) from by omega, if_false,
+             if_pos ⟨rfl, rfl⟩] at this
+  exact Fin.ext (by omega)
+
+/-- card(SYT(hookShapeYD m)) = m+1.
+    Proof: hookSYT m is a bijection Fin(m+1) → SYT(hookShapeYD m). -/
+theorem card_SYT_hookShapeYD (m : ℕ) :
+    Fintype.card (StandardYoungTableau (hookShapeYD m)) = m + 1 := by
+  have hbij : Function.Bijective (hookSYT m) :=
+    ⟨hookSYT_injective m, fun T =>
+      let ⟨k, hk⟩ := hookSYT_unique T; ⟨k, hk.symm⟩⟩
+  have h := Fintype.card_congr (Equiv.ofBijective (hookSYT m) hbij)
+  rw [Fintype.card_fin] at h
+  exact h.symm
+
+/-- **Hook-length formula for hook-shape Young diagrams.**
+    card(SYT(hookShapeYD m)) × hookProd(hookShapeYD m) = (m+2)!
+    Proved: hookProd = (m+2)×m!, card(SYT) = m+1, and (m+1)×(m+2)×m! = (m+2)! -/
+theorem hook_length_formula_hook_shape (m : ℕ) :
+    Fintype.card (StandardYoungTableau (hookShapeYD m)) * hookProd (hookShapeYD m) =
+    (hookShapeYD m).card.factorial := by
+  rw [hookShapeYD_card, card_SYT_hookShapeYD, hookProd_hookShapeYD]
+  rw [show (m + 2).factorial = (m + 2) * (m + 1) * m.factorial by
+        rw [Nat.factorial_succ, Nat.factorial_succ]; ring]
+  ring
+
 end HookLengthFormula
