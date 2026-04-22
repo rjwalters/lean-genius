@@ -136,8 +136,14 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Real", "Filter", "Topology"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Filter",
+      "Topology"
+    ],
     "namespace": "LHopitalFailure",
     "lineCount": 142,
     "axiomCount": 0,
@@ -161,5 +167,6 @@
       "venue": "Paris",
       "note": "First calculus textbook; the rule was actually discovered by Bernoulli"
     }
-  ]
+  ],
+  "sorries": 0
 }
