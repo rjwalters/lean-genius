@@ -117,7 +117,33 @@
       "description": "Comment-only documentation (no compiled code) of the Gamma function and Riemann Zeta function connections: \u03b3 = \u2212\u0393'(1), \u0393'(n+1) = n!(\u2212\u03b3 + H_n), \u0393'(1/2) = \u2212\u221a\u03c0(\u03b3 + 2 ln 2), and lim_{s\u21921}(\u03b6(s) \u2212 1/(s\u22121)) = \u03b3. These import from `GammaDeriv` and `ZetaAsymp` which consume >32GB during `lake build` and are excluded from production builds. Their signatures are documented here to connect \u03b3 to its deepest mathematical context."
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "extends",
+      "description": "The parent entry proves harmonic series divergence (Σ 1/n = ∞) and establishes basic harmonic number properties. This OQ-01 entry extends to the defining constant γ = lim(H_n − log n), bounds, rational exclusion, and Theisinger's theorem"
+    },
+    {
+      "targetId": "harmonic-divergence-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling entry exploring further aspects of harmonic series and related analysis beyond the Euler-Mascheroni constant"
+    },
+    {
+      "targetId": "harmonic-divergence-oq-04",
+      "relationship": "sibling",
+      "description": "Sibling entry on additional harmonic divergence properties and extensions"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel problem ζ(2) = π²/6 is the p=2 case of the p-series. This entry establishes the p-series boundary (Σ 1/n^p summable iff p > 1), of which the Basel problem is the first non-trivial summable case. The Riemann zeta function ζ(s) connects both: γ is the Laurent coefficient of ζ at s=1"
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "The Riemann Hypothesis concerns zeros of ζ(s); this entry documents (as comments) that γ = lim_{s→1}(ζ(s) − 1/(s−1)) — the constant term in the Laurent expansion. The connection γ → ζ → RH places γ at the heart of one of the Millennium Prize Problems"
+    }
+  ],
   "leanFile": {
     "lineCount": 253,
     "path": "Proofs/HarmonicDivergenceOQ01.lean",
