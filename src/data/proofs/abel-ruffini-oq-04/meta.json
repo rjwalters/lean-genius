@@ -111,6 +111,21 @@
       "targetId": "inverse-galois-oq-01",
       "relationship": "related",
       "description": "Proves $S_n$ and $A_n$ solvable iff $n \\leq 4$, and $[S_5, S_5] = A_5$ — the full bidirectional threshold"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02",
+      "relationship": "extended-by",
+      "description": "Completes the solvable side of the classification: explicitly proves $S_2, S_3, S_4$ solvable via derived series ($\\{e\\} \\triangleleft S_2$, $\\{e\\} \\triangleleft A_3 \\triangleleft S_3$, $\\{e\\} \\triangleleft V_4 \\triangleleft A_4 \\triangleleft S_4$) and the bidirectional theorem $S_n$ solvable $\\iff n \\leq 4$"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-03",
+      "relationship": "extended-by",
+      "description": "Formalizes the Galois bridge (Step 4 of the proof chain): a polynomial is solvable by radicals iff its Galois group is solvable. Forward direction proved via Mathlib; reverse direction axiomatized pending Kummer theory"
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "related",
+      "description": "Sister file providing the complete solvability classification of symmetric groups ($S_0$–$S_4$ solvable, $S_n$ solvable $\\iff n \\leq 4$), plus non-commutativity witnesses for $S_3, S_4, S_5, A_4, A_5$ and group order verifications"
     }
   ],
   "overview": {
@@ -198,8 +213,8 @@
     "implications": "**Theoretical Significance**: This file serves as a pedagogical bridge between abstract group theory and classical algebra. By making the proof chain explicit — with each step named and independently checkable — it demonstrates that the Abel-Ruffini theorem follows from a single deep fact (A₅ simplicity) through a short chain of elementary implications. The file also highlights the role of Mathlib's typeclass system in automating solvability proofs for small groups.\n\nMore broadly, the chain illustrates a general pattern in Galois theory: structural properties of groups (simplicity, solvability) translate into concrete impossibility results about algebraic equations. This paradigm extends to other areas — for example, the impossibility of angle trisection and cube doubling by compass and straightedge follow from analogous Galois-theoretic arguments about field extension degrees. The formalization also connects to modern computational algebra: algorithms for computing Galois groups over ℚ (e.g., Stauduhar's method, van der Waerden's approach, and modern p-adic methods) can decide radical solvability of any specific polynomial, transforming Abel-Ruffini's negative result into a positive algorithmic criterion via its contrapositive. The same group-theoretic paradigm extends to differential Galois theory (Picard-Vessiot theory): a linear ODE is 'solvable by quadratures' iff its differential Galois group has solvable identity component, with Kovacic's algorithm (1986) making this decidable for second-order equations — a direct analogue of how Galois group computation decides radical solvability for polynomials.",
     "openQuestions": [
       "Formalize the Galois group computation for the generic quintic: Gal(x⁵ + a₁x⁴ + ··· + a₅ / ℚ(a₁,...,a₅)) = S₅",
-      "Prove S₂, S₃, S₄ solvable explicitly (not just S₀, S₁) to complete the degree-by-degree picture",
-      "Formalize Galois's criterion: a polynomial is solvable by radicals iff its Galois group is solvable",
+      "Formalized in abel-ruffini-oq-04-oq-02: S₂, S₃, S₄ are now proved solvable with explicit derived series and the full bidirectional theorem $S_n$ solvable $\\iff n \\leq 4$. Remaining: exhibit the same derived series argument using quotient group API (e.g., $S_4/A_4 \\cong \\mathbb{Z}/2\\mathbb{Z}$) for a fully algebraic presentation",
+      "Partially formalized in abel-ruffini-oq-04-oq-03: the forward direction (solvable by radicals $\\Rightarrow$ solvable Galois group) is proved via Mathlib. Remaining: the reverse direction requires Kummer theory (cyclic extensions via primitive roots of unity) and a full formalization of the Galois correspondence for splitting fields",
       "Exhibit specific solvable quintics (e.g., x⁵ - 1 with cyclic Galois group) to illustrate the generic/specific distinction — note that the companion entry abel-ruffini-oq-04-oq-01 already provides a concrete *unsolvable* quintic (x⁵ - 4x + 2 with Gal = S₅), so the solvable counterpart would complete the picture",
       "Formalize the effective decision procedure: given a polynomial f ∈ ℚ[x], compute Gal(f/ℚ) as a transitive subgroup of Sₙ and check its solvability — connecting Abel-Ruffini's impossibility to a constructive algorithm",
       "Formalize the Jordan-Hölder theorem applied to Sₙ: show that the composition factors of S₅ are {ℤ/2ℤ, A₅} and prove that a group is solvable iff all its composition factors are cyclic of prime order — giving an alternative proof path for Abel-Ruffini",
