@@ -70,6 +70,10 @@ noncomputable def powerSumRatio (k n : ℕ) : ℚ :=
     Proof strategy: decompose p = X^d + q where deg(q) < d, then
     p(n)/n^d = 1 + q(n)/n^d. Each term of q(n)/n^d has the form c/n^m
     for m ≥ 1, which → 0 by inv_tendsto_atTop. -/
+axiom monic_poly_ratio_tendsto (p : Polynomial ℚ) (d : ℕ)
+    (hd_deg : p.natDegree = d) (hlc : p.leadingCoeff = 1) (hd : 0 < d) :
+    Filter.Tendsto (fun n : ℕ => p.eval (↑n : ℚ) / (↑n : ℚ) ^ d)
+      Filter.atTop (nhds 1)
 
 /- **Main theorem**: The ratio ∑_{i=0}^{n-1} i^k / n^{k+1} → 1/(k+1) as n → ∞.
 
