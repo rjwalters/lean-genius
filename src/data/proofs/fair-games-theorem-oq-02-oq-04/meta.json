@@ -39,7 +39,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The gambler's ruin problem has roots in the 17th century correspondence between Pascal and Fermat. For the biased case (p ≠ 1/2), the formula was known to Huygens (1657) and analyzed systematically by Montmort (1708). The odds-ratio form r = q/p was introduced as a natural parameterization because the formula (r^k - r^N)/(1 - r^N) has a clean geometric structure. The equivalent form using s = p/q = r^{-1} — P(lose) = (s^{N-k} - 1)/(s^N - 1) — appears in modern probability texts and financial mathematics texts because it highlights the gambler's perspective (s > 1 for favorable games) symmetrically with the house's r > 1 perspective.",
+    "historicalContext": "The gambler's ruin problem has roots in the 17th century correspondence between Pascal and Fermat (1654), where they debated how to split stakes in an interrupted game. Christiaan Huygens formalized the biased case in *De Ratiociniis in Ludo Aleae* (1657), computing exact win probabilities via iterated expectations — essentially deriving the formula P(win) = (1-r^k)/(1-r^N) implicitly through Problem XIII. Pierre Rémond de Montmort's *Essay d'Analyse sur les Jeux de Hazard* (1708) gave the first systematic geometric-series treatment, recognizing r = q/p as the natural parameterization that reduces the formula to a ratio of finite geometric sums.\n\nThe odds-ratio form r = q/p cleanly separates the geometric structure: for favorable games (p > 1/2), r < 1 and the formula (1-r^k)/(1-r^N) has numerator and denominator of the same sign; for unfavorable games (p < 1/2), r > 1 and the formula evaluates via (r^k - r^N)/(r^N - 1), canceling the minus signs. The alternative form using s = p/q = r^{-1} — giving P(lose) = (s^{N-k}-1)/(s^N-1) — was popularized in modern probability texts (Feller Vol. I, Chapter XIV) and financial mathematics because it highlights the gambler's perspective: s > 1 exactly when the gambler has the edge, making the positivity of numerator and denominator immediate.\n\nThe strict monotonicity in starting wealth (more capital → higher win probability) was noted by Huygens but first proved rigorously in the context of random walk theory by Laplace in *Théorie Analytique des Probabilités* (1812). The result that favorable games beat the fair benchmark k/N was formalized in the martingale framework by Doob (1953): the fair game corresponds to an unbiased random walk whose expected value is conserved (the optional stopping theorem gives E[X_τ] = E[X_0] = k, and at stopping time τ, X_τ = 0 with probability (N-k)/N or X_τ = N with probability k/N — giving E[X_τ] = N·P(win) = k, so P(win) = k/N). A biased walk with p > 1/2 corresponds to a submartingale, for which E[X_τ] ≥ E[X_0] = k, giving N·P(win) ≥ k, i.e., P(win) ≥ k/N. The strict inequality proven here requires the additional argument of Part V.",
     "problemStatement": "For the biased gambler's ruin with P(step up) = p ≠ 1/2, prove: (1) the win probability formula gives values in (0,1); (2) win probability is strictly monotone in starting wealth; (3) a favorable game (p > 1/2) beats the fair benchmark; (4) the losing probability has an equivalent form using s = p/q.",
     "proofStrategy": "Parts (1)-(3) use geometric series bounds and the substitution r = q/p ∈ (0,1) for p > 1/2. The monotonicity proof uses a key sum inequality: for r ∈ (0,1) and 0 < k < N, the average of the first k powers of r exceeds the average of all N powers. This is proved by bounding the prefix sum below by k*r^{k-1} and the tail sum above by (N-k)*r^k, then using r^k < r^{k-1}. The alternative formula (Part 5) uses the algebraic identity p/q = r^{-1}, so (p/q)^n = (r^n)^{-1}; substituting into the standard formula and clearing denominators via field_simp gives the result.",
     "keyInsights": [
@@ -47,7 +47,9 @@
       "The prefix sum lower bound (Σ_{i<k} rⁱ ≥ k * r^{k-1}) uses pow_le_pow_of_le_one: for i ≤ k-1 and r < 1, r^i ≥ r^{k-1}.",
       "The tail sum upper bound (Σ_{j ∈ Ico k N} rʲ ≤ (N-k) * r^k) is the reverse: for j ≥ k and r < 1, r^j ≤ r^k.",
       "The alternative formula proof: p/q = (q/p)^{-1} = r^{-1}. Then (p/q)^n = (r^n)^{-1}. After inv_pow and field_simp, the algebra closes automatically.",
-      "Structure field projections (B.hN, B.hk_lt) are not visible to omega; must introduce them into the local context via 'have := B.hN; omega'."
+      "Structure field projections (B.hN, B.hk_lt) are not visible to omega; must introduce them into the local context via 'have := B.hN; omega'.",
+      "The duality P(win | p, k, N) + P(win | 1-p, N-k, N) = 1 reflects a symmetry of the random walk: swapping the roles of the two players (gambler wins ↔ house wins) and simultaneously reflecting the starting position (k → N-k) gives a complementary game whose win/loss outcomes are exchanged.",
+      "The alternative formula P(lose) = (s^{N-k} - 1)/(s^N - 1) (s = p/q) connects to discrete barrier option pricing: if p/q equals the discounted risk-neutral up/down factor, P(lose) is the risk-neutral probability that the underlying asset reaches the lower barrier before the upper one — the core computation in barrier option hedging."
     ],
     "prerequisites": [
       "Biased Gambler's Ruin: BiasedGamblersRuin structure, biasedRuinProbWin, biasedRuinProbLose (FairGamesTheoremOQ01)",
@@ -116,7 +118,22 @@
     {
       "targetId": "fair-games-theorem-oq-02",
       "relationship": "sibling",
-      "description": "Addresses OQ-02 (martingale connection); this file addresses OQ-04 (structural properties and alternative formulas)."
+      "description": "Addresses OQ-02 (martingale connection and concrete OST examples); this file addresses OQ-04 (structural properties and alternative formulas for the biased case)."
+    },
+    {
+      "targetId": "fair-games-theorem",
+      "relationship": "foundational",
+      "description": "The base Optional Stopping Theorem (Wiedijk #62): for a martingale and bounded stopping times $\\tau \\leq \\pi$, $E[X_\\tau] = E[X_\\pi]$. The fair-game benchmark $k/N$ in `favorable_beats_fair` is the OST prediction for the unbiased random walk."
+    },
+    {
+      "targetId": "fair-games-theorem-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Standalone formalization of Doob's OST using Mathlib's probability library; proves the submartingale inequality ($E[X_\\tau] \\geq E[X_0]$ for submartingales) which underlies why biased games beat the fair benchmark."
+    },
+    {
+      "targetId": "fair-games-theorem-oq-03",
+      "relationship": "related",
+      "description": "Substantive application proofs for the OST: gambler's ruin probability, martingale time-invariance, betting systems fail — the parent results that motivate the structural refinements proved here."
     }
   ],
   "references": [
