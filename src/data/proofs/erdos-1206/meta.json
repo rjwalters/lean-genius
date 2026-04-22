@@ -83,5 +83,27 @@
       "Does the extremal conjecture g_k(A) ≥ g_k({1,...,N}) hold for k ≥ 3?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-530",
+      "relationship": "related",
+      "description": "Linear Sidon analogue explicitly cited in the problem: #530 asks for the maximum Sidon subset of {1,...,N} (size ~ N^{1/2}), the k=1 case of Erdős's g_k formulation."
+    },
+    {
+      "targetId": "erdos-773",
+      "relationship": "related",
+      "description": "Squares analogue explicitly cited in the problem: #773 asks for the maximum Sidon subset of {1²,...,N²}, the k=2 case paralleling the k=3 (cubes) question here."
+    },
+    {
+      "targetId": "erdos-340-greedy-sidon",
+      "relationship": "uses-technique",
+      "description": "Sidon infrastructure: provides IsSidon predicate, difference-injectivity lemmas, and the counting bound |diffSet| = n(n-1)/2 used in any formal Sidon argument."
+    },
+    {
+      "targetId": "erdos-1208",
+      "relationship": "related",
+      "description": "Neighbor in 1200s cluster: #1208 (largest subset with distinct pairwise distances) shares the combinatorial flavor — both ask for large subsets with pairwise distinctness conditions."
+    }
+  ],
   "sorries": 1
 }
