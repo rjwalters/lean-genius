@@ -201,3 +201,180 @@ theorem constant_bounds :
 /- **Connection to Additive Combinatorics**: The minimum overlap
     problem is a fundamental question about the structure of
     equal partitions and difference sets. -/
+
+-- ============================================================================
+-- Part VIII: Elementary Pigeonhole Lower Bound (No Axioms Required)
+-- ============================================================================
+
+/-- For a, b ∈ {1, …, 2N}, the difference a − b lies in {−(2N−1), …, 2N−1}.
+    Proof: straightforward from the bounds 1 ≤ a, b ≤ 2N. -/
+private lemma diff_mem_range (N : ℕ) (a b : ℤ)
+    (ha : a ∈ Finset.Icc 1 (2 * (N : ℤ)))
+    (hb : b ∈ Finset.Icc 1 (2 * (N : ℤ))) :
+    a - b ∈ Finset.Icc (-(2 * (N : ℤ) - 1)) (2 * N - 1) := by
+  simp only [Finset.mem_Icc] at *
+  omega
+
+/-- If k is not achieved as a difference a − b for any (a, b) ∈ A × B,
+    then `overlap A B k = 0`. -/
+private lemma overlap_zero_not_image (A B : Finset ℤ) (k : ℤ)
+    (hk : k ∉ (A ×ˢ B).image (fun p : ℤ × ℤ => p.1 - p.2)) :
+    overlap A B k = 0 := by
+  unfold overlap
+  apply Finset.card_eq_zero.mpr
+  ext ⟨a, b⟩
+  simp only [Finset.mem_filter, Finset.mem_product, Finset.not_mem_empty, iff_false, not_and]
+  intro ⟨ha, hb⟩ heq
+  exact hk (Finset.mem_image.mpr ⟨(a, b), Finset.mem_product.mpr ⟨ha, hb⟩, heq.symm⟩)
+
+/-- Every individual overlap value is bounded above by `maxOverlap`. -/
+private lemma overlap_le_max (A B : Finset ℤ) (k : ℤ) :
+    overlap A B k ≤ maxOverlap A B := by
+  unfold maxOverlap
+  by_cases h : k ∈ (A ×ˢ B).image (fun p : ℤ × ℤ => p.1 - p.2)
+  · exact Finset.le_sup h
+  · simp [overlap_zero_not_image A B k h]
+
+/-- **Fiber sum identity**: the sum of `overlap A B k` over all differences k in
+    {−(2N−1), …, 2N−1} equals |A| · |B|.
+
+    Proof: the fiber sets form a disjoint partition of A × B, so by
+    `Finset.card_biUnion`, their cardinalities sum to |A × B| = |A| · |B|. -/
+private lemma sum_overlap_eq_prod (N : ℕ) (A B : Finset ℤ)
+    (hA : A ⊆ interval N) (hB : B ⊆ interval N) :
+    ∑ k ∈ Finset.Icc (-(2 * (N : ℤ) - 1)) (2 * N - 1), overlap A B k =
+    A.card * B.card := by
+  -- Every pair (a, b) ∈ A × B has difference in range
+  have hrange : ∀ p ∈ A ×ˢ B,
+      p.1 - p.2 ∈ Finset.Icc (-(2 * (N : ℤ) - 1)) (2 * N - 1) := by
+    intro ⟨a, b⟩ hp
+    simp only [Finset.mem_product] at hp
+    exact diff_mem_range N a b (hA hp.1) (hB hp.2)
+  -- The fiber filters are pairwise disjoint
+  have hdisj : ∀ i ∈ Finset.Icc (-(2 * (N : ℤ) - 1)) (2 * N - 1),
+      ∀ j ∈ Finset.Icc (-(2 * (N : ℤ) - 1)) (2 * N - 1), i ≠ j →
+      Disjoint ((A ×ˢ B).filter fun p : ℤ × ℤ => p.1 - p.2 = i)
+               ((A ×ˢ B).filter fun p : ℤ × ℤ => p.1 - p.2 = j) := by
+    intro i _ j _ hij
+    rw [Finset.disjoint_left]
+    intro p h1 h2
+    simp only [Finset.mem_filter] at h1 h2
+    exact hij (h1.2.symm.trans h2.2)
+  -- The biUnion of fibers equals A × B
+  have hcover : (A ×ˢ B) =
+      (Finset.Icc (-(2 * (N : ℤ) - 1)) (2 * N - 1)).biUnion
+        (fun k => (A ×ˢ B).filter fun p : ℤ × ℤ => p.1 - p.2 = k) := by
+    ext p
+    simp only [Finset.mem_biUnion, Finset.mem_filter, Finset.mem_product]
+    constructor
+    · intro ⟨ha, hb⟩
+      exact ⟨p.1 - p.2, hrange p (Finset.mem_product.mpr ⟨ha, hb⟩), ⟨ha, hb⟩, rfl⟩
+    · rintro ⟨_, _, ⟨ha, hb⟩, _⟩
+      exact ⟨ha, hb⟩
+  -- Chain: ∑ overlap = ∑ fiber cards = biUnion card = |A × B| = |A| · |B|
+  calc ∑ k ∈ Finset.Icc (-(2 * (N : ℤ) - 1)) (2 * N - 1), overlap A B k
+      = ∑ k ∈ Finset.Icc (-(2 * (N : ℤ) - 1)) (2 * N - 1),
+          ((A ×ˢ B).filter fun p : ℤ × ℤ => p.1 - p.2 = k).card := rfl
+    _ = ((Finset.Icc (-(2 * (N : ℤ) - 1)) (2 * N - 1)).biUnion
+            (fun k => (A ×ˢ B).filter fun p : ℤ × ℤ => p.1 - p.2 = k)).card :=
+          (Finset.card_biUnion hdisj).symm
+    _ = (A ×ˢ B).card := by rw [← hcover]
+    _ = A.card * B.card := Finset.card_product A B
+
+/-- The difference range {−(2N−1), …, 2N−1} has cardinality 4N − 1. -/
+private lemma diff_range_card (N : ℕ) (hN : 1 ≤ N) :
+    (Finset.Icc (-(2 * (N : ℤ) - 1)) (2 * N - 1)).card = 4 * N - 1 := by
+  rw [Int.card_Icc]
+  have h : 2 * (N : ℤ) - 1 + 1 - -(2 * ↑N - 1) = ↑(4 * N - 1) := by
+    have h1 : 1 ≤ 4 * N := by omega
+    rw [Nat.cast_sub h1, Nat.cast_mul, Nat.cast_ofNat]
+    push_cast; ring
+  rw [h, Int.toNat_natCast]
+
+/-- {1, …, 2N} has exactly 2N elements. -/
+private lemma interval_card (N : ℕ) : (interval N).card = 2 * N := by
+  simp only [interval, Int.card_Icc,
+    show 2 * (N : ℤ) + 1 - 1 = ↑(2 * N) from by push_cast; ring,
+    Int.toNat_natCast]
+
+/-- **Pigeonhole lower bound**: for any equal bipartition A, B of a subset of
+    {1, …, 2N} with |A| = |B| = N, we have (4N − 1) · maxOverlap(A, B) ≥ N².
+
+    Proof: N² pairs in A × B spread across at most 4N − 1 differences,
+    so the maximum fiber has size ≥ N²/(4N−1). -/
+theorem pigeonhole_maxOverlap (N : ℕ) (hN : 1 ≤ N)
+    (A B : Finset ℤ)
+    (hA : A ⊆ interval N) (hB : B ⊆ interval N)
+    (hAcard : A.card = N) (hBcard : B.card = N) :
+    N ^ 2 ≤ (4 * N - 1) * maxOverlap A B := by
+  set S := Finset.Icc (-(2 * (N : ℤ) - 1)) (2 * N - 1) with hS_def
+  -- Sum of overlaps over S equals N²
+  have hsum : ∑ k ∈ S, overlap A B k = N ^ 2 := by
+    rw [sum_overlap_eq_prod N A B hA hB, hAcard, hBcard]; ring
+  -- Each term ≤ maxOverlap
+  have hle : ∀ k ∈ S, overlap A B k ≤ maxOverlap A B :=
+    fun k _ => overlap_le_max A B k
+  -- N² = ∑ ≤ S.card · maxOverlap = (4N−1) · maxOverlap
+  calc N ^ 2 = ∑ k ∈ S, overlap A B k := hsum.symm
+    _ ≤ S.card * maxOverlap A B := by
+        have := Finset.sum_le_card_nsmul S (overlap A B) (maxOverlap A B) hle
+        simpa [smul_eq_mul] using this
+    _ = (4 * N - 1) * maxOverlap A B := by rw [diff_range_card N hN]
+
+/-- **M(N) pigeonhole bound**: (4N − 1) · M(N) ≥ N² for all N ≥ 1.
+
+    Proof: M(N) is achieved by some partition A₀; apply `pigeonhole_maxOverlap`. -/
+theorem M_lower_pigeonhole (N : ℕ) (hN : 1 ≤ N) :
+    N ^ 2 ≤ (4 * N - 1) * M N := by
+  -- overlapValues N is nonempty (partitions N is nonempty for N ≥ 1)
+  have hparts_ne : (partitions N).Nonempty := by
+    obtain ⟨A, hA_sub, hA_card⟩ := Finset.exists_subset_card_le
+      (show N ≤ (interval N).card by rw [interval_card]; omega)
+    exact ⟨A, Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr hA_sub, hA_card⟩⟩
+  have hoverlap_ne : (overlapValues N).Nonempty := hparts_ne.image _
+  -- M N is the min' of overlapValues, hence a member of overlapValues N
+  have hM_mem : M N ∈ overlapValues N := by
+    unfold M
+    rw [dif_pos hoverlap_ne]
+    exact Finset.min'_mem _ hoverlap_ne
+  -- Extract the partition A₀ achieving M N
+  obtain ⟨A₀, hA₀_part, hA₀_eq⟩ := Finset.mem_image.mp hM_mem
+  -- A₀ ∈ partitions N means A₀ ⊆ interval N and A₀.card = N
+  have hA₀_in_parts := Finset.mem_filter.mp hA₀_part
+  have hA₀_sub : A₀ ⊆ interval N := Finset.mem_powerset.mp hA₀_in_parts.1
+  have hA₀_card : A₀.card = N := hA₀_in_parts.2
+  -- B₀ = interval N \ A₀ also has size N and is a subset of interval N
+  have hB₀_sub : interval N \ A₀ ⊆ interval N := Finset.sdiff_subset
+  have hB₀_card : (interval N \ A₀).card = N := by
+    rw [Finset.card_sdiff hA₀_sub, interval_card, hA₀_card]; omega
+  -- Apply pigeonhole to A₀ and B₀
+  rw [← hA₀_eq]
+  exact pigeonhole_maxOverlap N hN A₀ (interval N \ A₀) hA₀_sub hB₀_sub hA₀_card hB₀_card
+
+/-- **Elementary lower bound (axiom-free)**: M(N)/N > 1/4 for all N ≥ 1,
+    proved purely by pigeonhole counting — no axioms required.
+
+    This shows c ≥ 1/4 without relying on the axiomatized `white_lower`. -/
+theorem trivial_lower_bound (N : ℕ) (hN : 1 ≤ N) :
+    (1 : ℝ) / 4 < (M N : ℝ) / N := by
+  have hpig := M_lower_pigeonhole N hN
+  have hN_pos : (0 : ℝ) < N := by exact_mod_cast (show 0 < N by omega)
+  have h4N_pos : (0 : ℝ) < 4 * N - 1 := by
+    have : (1 : ℝ) ≤ N := by exact_mod_cast hN
+    nlinarith
+  -- Cast pigeonhole bound to ℝ: N² ≤ (4N-1)·MN in ℕ lifts to ℝ
+  have hineq_R : (4 * (N : ℝ) - 1) * (M N : ℝ) ≥ (N : ℝ) ^ 2 := by
+    have h4 : 1 ≤ 4 * N := by omega
+    have hpig' : (N : ℝ) ^ 2 ≤ ((4 * N - 1 : ℕ) : ℝ) * (M N : ℝ) :=
+      by exact_mod_cast hpig
+    rw [Nat.cast_sub h4] at hpig'
+    push_cast at hpig'
+    linarith
+  -- (4N−1) · (N/4) < N² strictly (since 4N − 1 < 4N)
+  have hstrict : (4 * (N : ℝ) - 1) * (N / 4) < (N : ℝ) ^ 2 := by nlinarith
+  -- Therefore N/4 < M N
+  have hMN_gt : (N : ℝ) / 4 < (M N : ℝ) :=
+    (mul_lt_mul_left h4N_pos).mp (lt_of_lt_of_le hstrict hineq_R)
+  -- M N / N > 1/4
+  rw [div_lt_div_iff (by norm_num : (0:ℝ) < 4) hN_pos]
+  linarith
