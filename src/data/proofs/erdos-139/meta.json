@@ -30,7 +30,7 @@
       "Szemerédi regularity lemma (for understanding the proof chain)",
       "Roth's theorem and the corners theorem (k=3 case)"
     ],
-    "lineCount": 260,
+    "lineCount": 261,
     "assumptions": "4 axioms: kelley_meka_bound (r₃(N) ≤ N·exp(−c(log N)^(1/12)), Kelley-Meka 2023), gowers_bound (r_k(N) ≤ N/(log log N)^c for k≥4, Gowers 2001), behrend_lower_bound (r₃(N) ≥ N·exp(−c√(log N)), Behrend 1946), szemeredi_theorem (sets with positive density contain k-APs for all k). 1 sorry: main density-to-zero proof.",
     "mathlib_version": "4.26.0"
   },
@@ -113,7 +113,7 @@
       "Topology"
     ],
     "namespace": "Erdos139",
-    "lineCount": 260,
+    "lineCount": 261,
     "axiomCount": 4,
     "theoremCount": 8,
     "definitionCount": 5,
