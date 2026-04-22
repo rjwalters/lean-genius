@@ -869,8 +869,31 @@ noncomputable def GridSimplex.boundaryFlip0
             intro j_step j hj_inc hj_miss
             simp only [new_incDir] at hj_inc
             by_cases hj_mid : j_step.val + 1 < d
-            · sorry -- Middle + Last step_same for boundaryFlip0
-            · sorry
+            · -- Middle case: both verts are interior, delegate to s.step_same
+              simp only [hj_mid, dite_true] at hj_inc
+              have hcs_lt : j_step.castSucc.val < d := by simp [Fin.castSucc]
+              have hss_lt : j_step.succ.val < d := by simp [Fin.succ]; omega
+              simp only [show (j_step.castSucc.val < d) = True from eq_true hcs_lt,
+                         show (j_step.succ.val < d) = True from eq_true hss_lt,
+                         dite_true]
+              have h := s.step_same ⟨j_step.val + 1, hj_mid⟩ j hj_inc hj_miss
+              have : (⟨j_step.val + 1, hj_mid⟩ : Fin d).succ =
+                (⟨j_step.val + 2, by omega⟩ : Fin (d + 1)) := by ext; simp [Fin.succ]
+              have : (⟨j_step.val + 1, hj_mid⟩ : Fin d).castSucc =
+                (⟨j_step.val + 1, by omega⟩ : Fin (d + 1)) := by ext; simp [Fin.castSucc]
+              simp_all
+            · -- Last case: succ gives new_v, castSucc gives last_v; use transfer_coords_other
+              simp only [hj_mid, dite_false] at hj_inc
+              have hcs_lt : j_step.castSucc.val < d := j_step.isLt
+              have hss_not_lt : ¬(j_step.succ.val < d) := by simp [Fin.succ]; omega
+              simp only [show (j_step.castSucc.val < d) = True from eq_true hcs_lt,
+                         show (j_step.succ.val < d) = False from eq_false hss_not_lt,
+                         dite_true, dite_false]
+              have h_key : j_step.castSucc.val + 1 = d := by simp [Fin.castSucc]; omega
+              have h_eq : s.verts ⟨j_step.castSucc.val + 1, by omega⟩ = last_v := by
+                congr 1; ext; simp [Fin.castSucc]; omega
+              rw [h_eq]
+              exact BaryPoint.transfer_coords_other last_v inc0 s.miss h_ne h_pos j hj_inc hj_miss
           inc_injective := by
             intro a b hab
             simp only [new_incDir] at hab
@@ -989,8 +1012,32 @@ noncomputable def GridSimplex.boundaryFlipLast
             intro j_step j hj_inc hj_miss
             simp only [new_incDir] at hj_inc
             by_cases hj0 : j_step.val = 0
-            · sorry -- First + later step_same for boundaryFlipLast
-            · sorry
+            · -- First case: castSucc gives new_v, succ gives v0; use transfer_coords_other
+              simp only [hj0, ite_true] at hj_inc
+              have hcs_zero : j_step.castSucc.val = 0 := by simp [Fin.castSucc]; exact hj0
+              have hss_nz : ¬(j_step.succ.val = 0) := by simp [Fin.succ]
+              simp only [show (j_step.castSucc.val = 0) = True from eq_true hcs_zero,
+                         show (j_step.succ.val = 0) = False from eq_false hss_nz,
+                         ite_true, ite_false]
+              have h_eq : s.verts ⟨j_step.succ.val - 1, by simp [Fin.succ]; omega⟩ = v0 := by
+                congr 1; ext; simp [Fin.succ]; omega
+              rw [h_eq]
+              symm
+              exact BaryPoint.transfer_coords_other v0 s.miss last_inc (Ne.symm h_ne) h_pos j hj_miss hj_inc
+            · -- Later case: both verts interior, delegate to s.step_same
+              simp only [hj0, ite_false] at hj_inc
+              have hcs_nz : ¬(j_step.castSucc.val = 0) := by simp [Fin.castSucc]; exact hj0
+              have hss_nz : ¬(j_step.succ.val = 0) := by simp [Fin.succ]
+              simp only [show (j_step.castSucc.val = 0) = False from eq_false hcs_nz,
+                         show (j_step.succ.val = 0) = False from eq_false hss_nz,
+                         ite_false]
+              have hjd : j_step.val - 1 < d := by omega
+              have h := s.step_same ⟨j_step.val - 1, hjd⟩ j hj_inc hj_miss
+              have : (⟨j_step.val - 1, hjd⟩ : Fin d).succ =
+                (⟨j_step.val, by omega⟩ : Fin (d + 1)) := by ext; simp; omega
+              have : (⟨j_step.val - 1, hjd⟩ : Fin d).castSucc =
+                (⟨j_step.val - 1, by omega⟩ : Fin (d + 1)) := by ext; simp [Fin.castSucc]
+              simp_all
           inc_injective := by
             intro a b hab
             simp only [new_incDir] at hab
