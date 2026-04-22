@@ -1,7 +1,7 @@
 {
   "slug": "feuerbachs-theorem-defs-oq-04",
   "title": "Feuerbach's Theorem: Connect to Mathlib Affine Geometry Framework",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "fast",
@@ -40,9 +40,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: FeuerbachsTheoremDefsOQ04.lean created. Bridge lemma proved, all 9 membership theorems reformulated as Metric.sphere, combined theorem. 12 theorems, 0 sorries. PR #11474.",
+    "builtItems": [
+      "FeuerbachsTheoremDefsOQ04.lean (155 lines, 12 theorems, 0 sorries)",
+      "toEuclidean_dist: bridge lemma dist = dist2",
+      "ninePoints_all_on_sphere: combined Mathlib sphere theorem",
+      "Gallery entry: src/data/proofs/feuerbachs-theorem-defs-oq-04/"
+    ],
+    "insights": [
+      "toEuclidean bridge proved via EuclideanSpace.norm_eq + Fin.sum_univ_two + ring; dist2 is actual Euclidean distance (not squared)",
+      "All 9 nine-point membership theorems reformulated as Metric.sphere membership in 3 lines each by delegating to existing FeuerbachsTheoremDefs proofs",
+      "EuclideanSpace ℝ (Fin 2) is definitionally Fin 2 → ℝ, so ![P.1,P.2] typechecks directly"
+    ],
     "mathlibGaps": [],
     "nextSteps": [
       "Inspect FeuerbachsTheoremDefs.lean — confirm dist2 is actual distance, not squared",
