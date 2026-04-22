@@ -71,7 +71,19 @@
       },
       {
         "id": "abel-ruffini-oq-04-oq-03",
-        "relationship": "Bring-Jerrard reduction and the Bring radical — the beyond-radicals quintic solution"
+        "relationship": "Full bidirectional Galois criterion: α solvable by radicals ↔ Gal(q) solvable — completes the bridge this entry uses contrapositively"
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-07",
+        "relationship": "Bring-Jerrard reduction and the Bring radical BR(t) — the beyond-radicals quintic solution"
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-02-oq-02",
+        "relationship": "Alternating groups: Aₙ solvable iff n ≤ 4 — the A-group analogue of the S-group threshold"
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-02-oq-03",
+        "relationship": "All finite groups of order < 60 are solvable — A₅ (order 60) is the minimal non-solvable group"
       }
     ],
     "lineCount": 185,
@@ -166,7 +178,7 @@
       "**[Addressed in `abel-ruffini-oq-04-oq-02`]** Mathlib instances for $S_2, S_3, S_4$ were missing at time of writing. The sub-entry `abel-ruffini-oq-04-oq-02` fills this gap: it proves $S_2, S_3, S_4$ are solvable via explicit derived series arguments and establishes the bidirectional theorem $S_n$ is solvable iff $n \\leq 4$. The alternating-group analogue ($A_n$ solvable iff $n \\leq 4$) is proved in `abel-ruffini-oq-04-oq-02-oq-02`.",
       "The Inverse Galois Problem — every finite group appears as a Galois group over $\\mathbb{Q}$ — is a deep open problem. Can partial results (e.g., every abelian group is a Galois group over $\\mathbb{Q}$ by Kronecker-Weber) be formalized in Lean?",
       "The file relies on `Equiv.Perm.not_solvable` and `solvableByRad.isSolvable'` as black boxes. Can we expose the full proof chain — derived series, composition factors, simplicity of $A_5$ — as individual Lean lemmas for a pedagogically complete formalization?",
-      "Charles Hermite (1858) showed that the general quintic *can* be solved using elliptic modular functions — bypassing the radical barrier by expanding the class of allowed operations. The Bring radical $\\text{BR}(a)$, the unique real root of $x^5 + x + a$, suffices to solve any quintic after Tschirnhaus transformation. Can this 'elliptic solution of the quintic' be formalized in Lean, showing that Abel-Ruffini's impossibility is specific to radicals and not to all closed-form expressions?",
+      "**[Partially addressed in `abel-ruffini-oq-04-oq-07`]** Charles Hermite (1858) showed that the general quintic *can* be solved using elliptic modular functions — bypassing the radical barrier by expanding the class of allowed operations. The sub-entry `abel-ruffini-oq-04-oq-07` formalizes the Bring-Jerrard reduction (Tschirnhaus substitution eliminating the $x^4$ term) and proves the Bring radical $\\text{BR}(t)$ — the unique real root of $x^5 + x + t = 0$ — exists and is strictly anti-monotone. The full elliptic modular solution (connecting $\\text{BR}(t)$ to $j(\\tau)$ via hypergeometric functions) remains to be formalized.",
       "In positive characteristic $p > 0$, the Abel-Ruffini picture changes dramatically: the Abhyankar conjecture (proved by Raynaud 1994, Harbater 1994) characterizes which finite groups occur as Galois groups of covers of $\\mathbb{A}^1$ over algebraically closed fields of characteristic $p$ — every group whose $p$-Sylow subgroup is a $p$-group appears. Unlike characteristic 0, where $S_5$'s non-solvability creates an absolute barrier, in characteristic 5 the Galois theory of polynomial equations behaves quite differently because Artin-Schreier extensions replace radical extensions. Can Lean formalize how the Abel-Ruffini impossibility is characteristic-dependent?"
     ]
   },
@@ -232,7 +244,22 @@
     {
       "targetId": "abel-ruffini-oq-04-oq-03",
       "relationship": "extended-by",
-      "description": "Formalizes the Bring-Jerrard reduction (Tschirnhaus substitution y = x + a₄/5 eliminates the x⁴ term) and the Bring radical BR(t) — the unique real root of x⁵ + x + t. This provides the 'beyond radicals' solution to the quintic via elliptic modular functions, showing Abel-Ruffini's impossibility is specific to the four basic radical operations"
+      "description": "Proves the full bidirectional Galois criterion: $\\alpha$ is solvable by radicals iff $\\text{Gal}(\\text{minpoly}(\\alpha))$ is solvable. The forward direction is Mathlib's `solvableByRad.isSolvable'`; the reverse direction (solvable Galois group $\\Rightarrow$ expressible by radicals, via Kummer theory at each composition factor) is axiomatized pending complete formalization. Completes the conceptual picture this entry uses contrapositively"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-07",
+      "relationship": "extended-by",
+      "description": "Formalizes the Bring-Jerrard reduction (linear Tschirnhaus substitution $y = x + a_4/5$ eliminates the $x^4$ term from any monic quintic, proved as a polynomial identity via `linear_combination`) and the Bring radical $\\text{BR}(t)$ — the unique real root of $x^5 + x + t = 0$, proved via IVT and strict monotonicity of $x \\mapsto x^5 + x$ (`Odd.strictMono_pow`). Provides the 'beyond-radicals' closed-form solution, showing Abel-Ruffini's impossibility is specific to the four basic radical operations"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-02",
+      "relationship": "extended-by",
+      "description": "Proves the alternating-group analogue of the solvability threshold: $A_n$ is solvable iff $n \\leq 4$, with the same obstruction — $A_5$ is the smallest non-abelian simple group. Completes the full solvability picture for both symmetric and alternating groups at every degree"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
+      "relationship": "extended-by",
+      "description": "Proves all finite groups of order $< 60$ are solvable — $A_5$ (order 60) is the minimal non-solvable group. Establishes the p-group solvability chain ($\\text{IsPGroup} \\Rightarrow \\text{IsNilpotent} \\Rightarrow \\text{IsSolvable}$) and verifies groups of order covered by Burnside's theorem ($p^a q^b$). Contextualizes why the Abel-Ruffini obstruction at $|A_5| = 60$ is structurally minimal"
     },
     {
       "targetId": "general-quartic",
