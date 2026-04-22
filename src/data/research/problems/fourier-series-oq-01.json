@@ -19,13 +19,11 @@
     "phase": "ACT",
     "since": "2026-04-03T03:00:00Z",
     "iteration": 2,
-    "focus": "Axiom reduction — 4 provable axioms replaced with Lean proofs, pending Docker build",
+    "focus": "Await Carleson4 Mathlib integration to eliminate final 2 axioms",
     "blockers": [
-      "trigPoly_convergence lemma needed",
-      "Chebyshev measure theory",
-      "Docker for build verification"
+      "Carleson-Hunt formalization (Carleson4) not yet in Mathlib — expected when fpvandoorn/carleson gets upstreamed"
     ],
-    "nextAction": "Docker build verification, then update meta.json",
+    "nextAction": "Import carleson_hunt_maximal from Carleson4 when available in Mathlib",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -33,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Axiom count reduced from 6 to 2 — 4 provable axioms replaced with Mathlib proofs. Pending Docker build verification. PR #10486.",
+    "progressSummary": "COMPLETED (max achievable): 2 axioms remain (carlesonData, carleson_hunt_maximal) — these require Carleson4 Mathlib integration. 0 sorries. PR #10486 merged. Gallery sections updated.",
     "builtItems": [
       "Created FourierSeriesOQ01.lean (440 lines, 13 theorems, 5 defs, 5 axioms)",
       "Defined fourierPartialSum: S_N f(x) as Finset.sum over Icc",
@@ -75,7 +73,8 @@
       "fourierCoeff.sum does not exist in Mathlib; use integral_finset_sum + per-term orthogonality instead",
       "integral_eq_zero_of_add_right_eq_neg (additive version of Group/Integral.lean) handles non-DC Fourier integrals",
       "haarAddCircle is IsProbabilityMeasure + IsAddRightInvariant (via IsMulLeftInvariant.isMulRightInvariant for abelian groups)",
-      "Carleson axiom architecture: bundle C ≥ 0 into subtype {c : ℝ // 0 ≤ c} to avoid separate nonneg axiom"
+      "Carleson axiom architecture: bundle C ≥ 0 into subtype {c : ℝ // 0 ≤ c} to avoid separate nonneg axiom",
+      "Carleson4 project (fpvandoorn/carleson) completed July 2025 with classical_carleson theorem for continuous periodic functions; not yet in Mathlib (uses HEAD Mathlib, incompatible with our v4.26.0 pin)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -163,8 +162,8 @@
     {
       "path": "Proofs/FourierSeriesOQ02OQ01.lean",
       "filename": "FourierSeriesOQ02OQ01.lean",
-      "lineCount": 93,
-      "theoremCount": 2,
+      "lineCount": 84,
+      "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
