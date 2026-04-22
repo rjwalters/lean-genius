@@ -18,9 +18,9 @@
       "research",
       "open-question"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 21,
     "defCount": 31,
     "lineCount": 232,
@@ -41,7 +41,7 @@
       "Soccer ball (truncated icosahedron) identified as Archimedean"
     ],
     "dateAdded": "2026-03-28",
-    "assumptions": "1 axiom: archimedean_classification — currently a True-stub placeholder (asserts ∀ vt, True). The full classification statement requires geometric definitions not yet formalized. Effective assumption count is 0; all 21 proved theorems are genuine. No sorries.",
+    "assumptions": "0 axioms, 0 sorries. archimedean_classification is a True-stub theorem (∀ vt, True := fun _ => trivial), not an axiom declaration — the full classification statement requires geometric definitions not yet formalized. All 21 other proved theorems are genuine.",
     "prerequisites": [
       "Euler's polyhedral formula V - E + F = 2",
       "Interior angles of regular polygons",
@@ -126,7 +126,7 @@
     "opens": [],
     "namespace": "ArchimedeanSolids",
     "lineCount": 232,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 21,
     "definitionCount": 31,
     "path": "Proofs/PlatonicSolidsOQ02.lean",
