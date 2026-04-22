@@ -201,7 +201,27 @@ theorem harmonicPointSet_nonempty (d : ℕ) :
 /-- X is path-connected. -/
 theorem harmonicPointSet_path_connected (d : ℕ) :
     IsPathConnected (harmonicPointSet d) := by
-  sorry
+  induction d with
+  | zero =>
+    -- d=0: Fin 0 → ℝ is a subsingleton (the unique empty function),
+    -- so harmonicPointSet 0 is a singleton set, which is path-connected.
+    obtain ⟨p, hp⟩ := harmonicPointSet_nonempty 0
+    have hsingle : harmonicPointSet 0 = {p} := by
+      ext x
+      simp only [Set.mem_singleton_iff]
+      constructor
+      · intro _; exact funext (fun i => absurd i.isLt (by omega))
+      · intro h; subst h; exact hp
+    rw [hsingle]
+    exact isPathConnected_singleton p
+  | succ d _ih =>
+    -- d ≥ 1: Requires showing X ⊆ ℝ^d is path-connected.
+    -- For d=1: Every positive real is achievable (harmonicPointSet 1 = Set.Ioi 0),
+    --   so convexity of (0, ∞) gives path-connectedness via Convex.isPathConnected.
+    --   Key: any s ∈ (0,∞) equals Σ_{k≥n} 1/(k(k+1)) = 1/n for some n,
+    --   and rational s is achievable via Egyptian fraction decomposition.
+    -- For d ≥ 2: Requires the full Kovač-Tao (2024) structure.
+    sorry
 
 /-- X contains a nonempty open set (i.e., X has nonempty interior). -/
 theorem harmonicPointSet_dense_somewhere (d : ℕ) :
@@ -335,6 +355,77 @@ theorem powers_convergent : HasConvergentHarmonicSubseries powersOf2Set := by
     Σ 1/2^k = 1, so first coordinate is 1. -/
 noncomputable def powers2Point (d : ℕ) : Fin d → ℝ :=
   harmonicPoint d powersOf2Set
+
+/- ## Part XI: Unit Fraction Infrastructure (for d=1 path-connectedness) -/
+
+/-- The set of products of consecutive naturals starting at n:
+    consecutiveProductsSet n = {k·(k+1) | k ≥ n}.
+    Key property: Σ_{m∈A} 1/m = 1/n via telescoping 1/(k(k+1)) = 1/k - 1/(k+1). -/
+def consecutiveProductsSet (n : ℕ) : Set ℕ :=
+  {m | ∃ k : ℕ, n ≤ k ∧ m = k * (k + 1)}
+
+/-- Partial sum formula: Σ_{k=0}^{N-1} 1/((k+n)(k+n+1)) = 1/n - 1/(n+N).
+    Proof by induction using partial fractions 1/(k(k+1)) = 1/k - 1/(k+1).
+    The inductive step uses: 1/n - 1/(n+N) + 1/((N+n)(N+n+1)) = 1/n - 1/(n+N+1),
+    which simplifies to 1/((N+n)(N+n+1)) = 1/(N+n) - 1/(N+n+1) (partial fractions). -/
+lemma partial_sum_consec (N n : ℕ) (hn : 0 < n) :
+    (∑ k ∈ Finset.range N, (1 : ℝ) / (↑(k + n) * (↑(k + n) + 1))) =
+    (1 : ℝ) / n - 1 / (n + N) := by
+  induction N with
+  | zero => simp
+  | succ N ih =>
+    rw [Finset.sum_range_succ, ih]
+    push_cast
+    -- Goal: 1/n - 1/(n+N) + 1/((N+n)(N+n+1)) = 1/n - 1/(n+N+1)
+    -- Equivalently: 1/((N+n)(N+n+1)) = 1/(N+n) - 1/(N+n+1)  [partial fractions]
+    have hn' : (n : ℝ) > 0 := Nat.cast_pos.mpr hn
+    have h1 : (n : ℝ) + N > 0 := by
+      have := @Nat.cast_nonneg ℝ _ N; linarith
+    have h2 : (n : ℝ) + N + 1 > 0 := by linarith
+    field_simp [hn'.ne', h1.ne', h2.ne']
+    ring
+
+/-- The consecutive products set is infinite: it contains {n(n+1), (n+1)(n+2), ...}. -/
+theorem consecutiveProductsSet_infinite (n : ℕ) :
+    (consecutiveProductsSet n).Infinite := by
+  -- The map k ↦ (n+k)*(n+k+1) is injective: (n+a)*(n+a+1) = (n+b)*(n+b+1) → a = b
+  -- because k ↦ k*(k+1) is strictly monotone.
+  have hinj : Function.Injective (fun k : ℕ => (n + k) * (n + k + 1)) := by
+    intro a b h
+    -- Cast to ℤ; factorize (n+a-(n+b))*(n+a+n+b+1) = 0 and use positivity of second factor
+    have h' : ((n : ℤ) + a) * (n + a + 1) = (n + b) * (n + b + 1) := by exact_mod_cast h
+    have hfact : ((n : ℤ) + a - (n + b)) * ((n + a) + (n + b) + 1) = 0 := by linarith [show ((n : ℤ) + a - (n + b)) * ((n + a) + (n + b) + 1) = (n + a) * (n + a + 1) - (n + b) * (n + b + 1) from by ring]
+    have hpos : (0 : ℤ) < (n + a) + (n + b) + 1 := by positivity
+    have hzero : (n : ℤ) + a = n + b := by
+      rcases mul_eq_zero.mp hfact with h1 | h2
+      · linarith
+      · linarith
+    exact_mod_cast (show (a : ℤ) = b by linarith)
+  exact (Set.infinite_range_of_injective hinj).mono
+    (fun m ⟨k, hk⟩ => ⟨n + k, Nat.le_add_right n k, hk.symm⟩)
+
+/-
+  **Next Steps for d=1 path-connectedness** (future sessions):
+
+  Using the infrastructure above, the proof plan for d=1 is:
+
+  Step 1: Show consecutiveProductsSet n has convergent harmonic sum (dominated by 1/k²):
+    `theorem consecutiveProductsSet_convergent (n : ℕ) (hn : 0 < n) :
+        HasConvergentHarmonicSubseries (consecutiveProductsSet n)`
+
+  Step 2: Show the harmonic sum = 1/n (use partial_sum_consec + hasSum_iff_tendsto_nat):
+    `theorem consecutiveProductsSet_sum (n : ℕ) (hn : 0 < n) :
+        harmonicSubseriesSum (consecutiveProductsSet n) = 1 / n`
+
+  Step 3: Every positive rational p/q is achievable (Egyptian fraction + Step 2):
+    `theorem rational_fraction_achievable (p q : ℕ) (hp : 0 < p) (hq : 0 < q) :
+        ∃ A : Set ℕ, A.Infinite ∧ HasConvergentHarmonicSubseries A ∧
+          harmonicSubseriesSum A = p / q`
+
+  Step 4: Show harmonicPointSet 1 = Set.Ioi 0 (closure/density argument).
+
+  Step 5: Apply Convex.isPathConnected to Set.Ioi 0 (convex_Ioi 0).
+-/
 
 end Erdos268
 
