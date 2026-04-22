@@ -1,5 +1,33 @@
 # Knowledge: fair-games-theorem-oq-02-oq-04
 
+## Session 2026-04-22 (Session 1) — COMPLETED
+
+**Mode**: FRESH
+**Outcome**: completed (0 sorries, 0 axioms)
+
+### What I Did
+- Claimed problem, read parent OQ01 and OQ02 proofs for API/structure context
+- Wrote `FairGamesTheoremOQ02OQ04.lean` (345 lines) with concrete examples, structural properties, and new alternative formula theorem
+- Fixed API differences between main repo and worktree Lean (pow_lt_one → pow_lt_one₀, explicit struct-field omega)
+- Built successfully with docker-build.sh; 0 sorries, 0 axioms
+- Created gallery entry meta.json, committed, pushed, opened PR rjwalters/lean-genius#11322
+
+### Key Findings
+- `BiasedGamblersRuin` is defined in FairGamesTheoremOQ01.lean with `r = q/p`, `p + q = 1`
+- `pow_lt_one₀` (not `pow_lt_one`) is the correct Mathlib 4.26 lemma name in this worktree
+- Omega cannot see struct field projections like `B.hN`; must use `have := B.hN; omega`
+- `div_lt_div_right` exists but `div_lt_div_iff₀` + `mul_lt_mul_of_pos_right` is more reliable
+- `field_simp` with nonzero witnesses closes the alt-formula algebraic identity completely
+- `rw [show favorableGame.k = 2 from rfl, ...]` needed for norm_num on concrete games
+
+### Files Modified
+- `proofs/Proofs/FairGamesTheoremOQ02OQ04.lean` (new)
+- `src/data/proofs/fair-games-theorem-oq-02-oq-04/meta.json` (new)
+- `src/data/research/problems/fair-games-theorem-oq-02-oq-04.json`
+
+### Next Steps
+- None; problem completed and PR submitted
+
 ## Key Facts
 
 ### Parent Results (fair-games-theorem-oq-02)
