@@ -1,133 +1,215 @@
 [
   {
     "id": "ann-chebyshev-overview",
-    "line": 1,
-    "endLine": 44,
+    "proofId": "chebyshev-bounds",
+    "range": {
+      "startLine": 1,
+      "endLine": 44
+    },
     "type": "context",
     "title": "Chebyshev 1852: Elementary Bounds That Almost Proved the Prime Number Theorem",
-    "body": "This module formalizes Pafnuty Chebyshev's 1852 approach to bounding π(n). Working 44 years before Hadamard and de la Vallée Poussin proved the Prime Number Theorem (1896), Chebyshev established that π(n) lies between two constant multiples of n/log(n). The two main tools are:\n1. **Central binomial coefficient** C(2n,n): every prime in (n, 2n] divides it exactly once, while C(2n,n) ≤ 4^n — giving an upper bound on the prime product\n2. **Bertrand's postulate** (also proved by Chebyshev in 1852): there is always a prime in (n, 2n] — giving lower bounds by telescoping\n\nThe file defines three structures: `chebyshevTheta` (θ function), `prodPrimesInInterval` (∏_{n < p ≤ 2n} p), and `numPrimesInInterval` (= π(2n) − π(n)).",
-    "mathContext": "Chebyshev actually proved the tighter bounds 0.92 < θ(x)/x < 1.11 for large x, but the log(4) ≈ 1.386 upper bound proved here is what follows directly from the primorial inequality. The key consequence: if π(x) ∼ cx/log(x) for some constant c, then c must equal 1 (the PNT). Chebyshev's bounds show 0.92 ≤ c ≤ 1.11 if the limit exists.",
-    "significance": "supporting",
+    "content": "This module formalizes Pafnuty Chebyshev's 1852 approach to bounding π(n). Working 44 years before Hadamard and de la Vallée Poussin proved the Prime Number Theorem (1896), Chebyshev established that π(n) lies between two constant multiples of n/log(n). The two main tools are:\n1. **Central binomial coefficient** C(2n,n): every prime in (n, 2n] divides it exactly once, while C(2n,n) ≤ 4^n — giving an upper bound on the prime product\n2. **Bertrand's postulate** (also proved by Chebyshev in 1852): there is always a prime in (n, 2n] — giving lower bounds by telescoping\n\nThe file defines three structures: `chebyshevTheta` (θ function), `prodPrimesInInterval` (∏_{n < p ≤ 2n} p), and `numPrimesInInterval` (= π(2n) − π(n)). The 18 theorems span upper bounds on θ and π, divisibility of C(2n,n) by primes in the interval, and lower bounds from Bertrand's postulate.",
+    "mathContext": "Chebyshev actually proved the tighter bounds $0.92 < \\theta(x)/x < 1.11$ for large $x$, but the $\\log(4) \\approx 1.386$ upper bound proved here is what follows directly from the primorial inequality. The key consequence: if $\\pi(x) \\sim cx/\\log(x)$ for some constant $c$, then $c$ must equal 1 (the PNT). Chebyshev's bounds show $0.92 \\leq c \\leq 1.11$ if the limit exists.",
+    "significance": "key",
     "relatedConcepts": [
       "prime-number-theorem",
-      "Bertrand-postulate",
+      "Bertrand's postulate",
       "primorial",
-      "central-binomial-coefficient",
-      "Chebyshev-functions"
+      "central binomial coefficient",
+      "Chebyshev functions theta and psi"
     ],
     "prerequisites": [
       "primorial_le_4_pow from Mathlib.NumberTheory.Primorial",
       "Nat.exists_prime_lt_and_le_two_mul from Mathlib.NumberTheory.Bertrand"
-    ],
-    "content": "Chebyshev's method is still one of the most elegant elementary proofs in analytic number theory. The central binomial trick — exploiting that primes in (n,2n] contribute exactly once to C(2n,n) — is a beautiful combinatorial insight that connects divisibility with prime distribution.",
+    ]
+  },
+  {
+    "id": "ann-chebyshev-theta-def",
     "proofId": "chebyshev-bounds",
     "range": {
-      "startLine": 1,
-      "endLine": 53
-    }
+      "startLine": 46,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Definition: The First Chebyshev Function θ(n)",
+    "content": "`chebyshevTheta n` = Σ_{p ≤ n, p prime} log p is Chebyshev's first function, sometimes denoted θ in analytic number theory. The definition as a `noncomputable def` reflects its use of `Real.log`.\n\n`chebyshevTheta_nonneg` proves θ(n) ≥ 0: since primes satisfy p ≥ 2, log p ≥ log 1 = 0, so each summand is non-negative. The proof uses `Finset.sum_nonneg` with the fact that `Real.log_nonneg (h : 1 ≤ x) : 0 ≤ Real.log x`.\n\nThe related `ψ` function (second Chebyshev function) is ψ(n) = Σ_{p^k ≤ n} log p, summing over prime powers. This formalization works only with θ, which is more tractable for elementary bounds. The PNT is equivalent to θ(x) ∼ x.",
+    "mathContext": "The relationship between the two Chebyshev functions: $\\theta(x) = \\sum_{p \\leq x} \\log p$ and $\\psi(x) = \\sum_{p^k \\leq x} \\log p = \\sum_{p \\leq x} \\lfloor \\log_p x \\rfloor \\log p$. Clearly $\\theta(x) \\leq \\psi(x)$. The PNT ($\\pi(x) \\sim x/\\log x$) is equivalent to $\\theta(x) \\sim x$ and to $\\psi(x) \\sim x$. Chebyshev's upper bound $\\theta(n) \\leq n \\log 4$ is a factor of $\\log 4 \\approx 1.386$ from the asymptotic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime counting function pi",
+      "second Chebyshev function psi",
+      "Mangoldt function",
+      "noncomputable definition in Lean",
+      "Real.log_nonneg"
+    ],
+    "prerequisites": [
+      "Real.log and its properties",
+      "Finset.sum_nonneg"
+    ]
   },
   {
     "id": "ann-chebyshev-theta-upper",
-    "line": 75,
-    "endLine": 108,
-    "type": "concept",
+    "proofId": "chebyshev-bounds",
+    "range": {
+      "startLine": 75,
+      "endLine": 109
+    },
+    "type": "theorem",
     "title": "θ(n) ≤ n·log(4): Primorial Inequality via log_prod",
-    "body": "The proof of `chebyshevTheta_le` is a chain of three reductions:\n1. **From θ to primorial**: θ(n) = Σ_{p ≤ n} log p = log(∏_{p ≤ n} p) = log(n#). This uses `Real.log_prod` with the non-vanishing condition `hprime.ne_zero`.\n2. **From primorial to 4^n**: `primorial_le_4_pow n` gives n# ≤ 4^n, then `Real.log_le_log` gives log(n#) ≤ log(4^n).\n3. **Simplify log(4^n)**: `Real.log_pow` gives log(4^n) = n·log(4).\n\nThe n=0 case requires separate handling: filter Prime (range 1) = ∅ (since 0 is not prime), so the sum is 0 ≤ 0 = 0·log(4). The `interval_cases` tactic dispatches `∀ x < 1, ¬Prime x`.",
-    "mathContext": "The inequality n# ≤ 4^n follows from the binomial theorem: n# | C(2n, n) ≤ Σ_k C(2n,k) = 4^n (this is a weak version; the tight proof shows n# | C(2n,n) and C(2n,n) ≤ 4^n). Mathlib's `primorial_le_4_pow` encodes this. Taking log: θ(n) ≤ n·log(4) ≈ 1.386n, versus the PNT value θ(n) ≈ n.",
-    "significance": "supporting",
+    "content": "The proof of `chebyshevTheta_le` is a chain of three reductions:\n1. **From θ to primorial**: θ(n) = Σ_{p ≤ n} log p = log(∏_{p ≤ n} p) = log(n#). This uses `Real.log_prod` with the non-vanishing condition `hprime.ne_zero`.\n2. **From primorial to 4^n**: `primorial_le_4_pow n` gives n# ≤ 4^n, then `Real.log_le_log` gives log(n#) ≤ log(4^n).\n3. **Simplify log(4^n)**: `Real.log_pow` gives log(4^n) = n·log(4).\n\nThe n=0 case requires separate handling: filter Prime (range 1) = ∅ (since 0 is not prime), so the sum is 0 ≤ 0 = 0·log(4). The `interval_cases` tactic dispatches `∀ x < 1, ¬Prime x`.",
+    "mathContext": "The inequality $n\\# \\leq 4^n$ follows from the binomial theorem: $n\\# \\mid \\binom{2n}{n} \\leq \\sum_k \\binom{2n}{k} = 4^n$ (a weak version). Mathlib's `primorial_le_4_pow` encodes this. Taking log: $\\theta(n) \\leq n \\cdot \\log(4) \\approx 1.386n$, versus the PNT value $\\theta(n) \\approx n$. The gap of factor $\\log 4$ represents the imprecision of the primorial bound; Chebyshev's sharper $0.92 < \\theta(x)/x < 1.11$ uses more refined counting.",
+    "significance": "key",
     "relatedConcepts": [
       "primorial_le_4_pow",
       "Real.log_prod",
-      "chebyshevTheta-definition",
-      "primorial"
+      "Real.log_le_log",
+      "primorial n#"
     ],
     "prerequisites": [
       "primorial_le_4_pow from Mathlib.NumberTheory.Primorial",
       "Real.log_prod and Real.log_le_log"
-    ],
-    "content": "The `Real.log_prod` lemma — converting log of a product to sum of logs — is the key algebraic step connecting the primorial product to the θ function sum. Without this, the primorial inequality and the θ definition would not connect directly.",
+    ]
+  },
+  {
+    "id": "ann-chebyshev-central-binom-upper",
     "proofId": "chebyshev-bounds",
     "range": {
-      "startLine": 75,
-      "endLine": 75
-    }
+      "startLine": 110,
+      "endLine": 133
+    },
+    "type": "theorem",
+    "title": "C(2n,n) ≤ 4^n: The Binomial Bound",
+    "content": "`centralBinom_le_four_pow` proves C(2n,n) ≤ 4^n via the calc chain:\n1. C(2n,n) ≤ Σ_{k=0}^{2n} C(2n,k) — a single term is ≤ the whole sum (`single_le_sum`)\n2. Σ_{k=0}^{2n} C(2n,k) = 2^{2n} — the binomial theorem (`sum_range_choose 2n`)\n3. 2^{2n} = (2^2)^n = 4^n — algebraic simplification\n\nThis bound is central to Chebyshev's argument: it implies that the product ∏_{n < p ≤ 2n} p (which divides C(2n,n)) is at most 4^n. Since each such prime exceeds n, the product ≥ n^{#{primes in (n,2n]}}, giving n^{π(2n)-π(n)} ≤ 4^n.",
+    "mathContext": "$\\binom{2n}{n} \\leq 4^n$ follows immediately from the binomial theorem $(1+1)^{2n} = \\sum_{k=0}^{2n} \\binom{2n}{k} \\geq \\binom{2n}{n}$. The central binomial coefficient $\\binom{2n}{n} \\approx 4^n/\\sqrt{\\pi n}$ by Stirling, so the bound is off by a polynomial factor $\\sqrt{\\pi n}$. The complementary lower bound $4^n \\leq (2n+1) \\binom{2n}{n}$ (proved later) shows the central binomial coefficient is within a linear factor of $4^n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binomial theorem",
+      "sum_range_choose",
+      "single_le_sum",
+      "Stirling's approximation",
+      "central binomial coefficient"
+    ],
+    "prerequisites": [
+      "Nat.centralBinom and its definition",
+      "sum_range_choose from Mathlib.Data.Nat.Choose.Sum"
+    ]
   },
   {
     "id": "ann-chebyshev-dvd-lemma",
-    "line": 134,
-    "endLine": 166,
-    "type": "concept",
-    "title": "prime_in_interval_dvd_centralBinom: The Core Divisibility Lemma",
-    "body": "The key lemma `prime_in_interval_dvd_centralBinom` proves: if p prime with n < p ≤ 2n, then p | C(2n, n). The proof uses `hp.dvd_choose_add hlo hlo hle` where:\n- `hlo : n < p` (both arguments to `dvd_choose_add` are n, which must be < p)\n- `hle : p ≤ n + n = 2n` (required upper bound)\n\nThe Mathlib lemma `Nat.Prime.dvd_choose_add`: if a < p and b < p and p ≤ a + b, then p | C(a+b, a). Here a = b = n: since n < p and p ≤ 2n = n + n, the conditions are exactly satisfied. The proof rewrites C(2n, n) = C(n+n, n) and applies the lemma.\n\n`prodPrimesInInterval_dvd_centralBinom` lifts this to the product: `Finset.prod_primes_dvd` applies the individual divisibilities (with distinct primes) to get the product divides C(2n,n).",
-    "mathContext": "The multiplicity argument: for n < p ≤ 2n, the Legendre formula gives v_p(C(2n,n)) = Σ_k (⌊2n/p^k⌋ − 2⌊n/p^k⌋). For k=1: ⌊2n/p⌋ = 1 (since p > n so 2n/p < 2) and ⌊n/p⌋ = 0 (since p > n). So v_p = 1. For k ≥ 2: p^2 > 4n² > 2n, so ⌊2n/p^k⌋ = 0. Total: v_p(C(2n,n)) = 1 > 0, confirming p | C(2n,n).",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Nat.Prime.dvd_choose_add",
-      "Finset.prod_primes_dvd",
-      "Legendre-formula",
-      "centralBinom"
-    ],
-    "prerequisites": [
-      "Nat.Prime.dvd_choose_add from Mathlib.Data.Nat.Choose.Factorization"
-    ],
-    "content": "This lemma is the combinatorial heart of Chebyshev's method. It explains why C(2n,n) is the right 'oracle' for primes in (n,2n]: those primes contribute exactly a first-power factor, making the divisibility argument clean.",
     "proofId": "chebyshev-bounds",
     "range": {
       "startLine": 134,
-      "endLine": 134
-    }
+      "endLine": 167
+    },
+    "type": "theorem",
+    "title": "prime_in_interval_dvd_centralBinom: The Core Divisibility Lemma",
+    "content": "The key lemma `prime_in_interval_dvd_centralBinom` proves: if p prime with n < p ≤ 2n, then p | C(2n, n). The proof uses `hp.dvd_choose_add hlo hlo hle` where:\n- `hlo : n < p` (both arguments to `dvd_choose_add` are n, which must be < p)\n- `hle : p ≤ n + n = 2n` (required upper bound)\n\nThe Mathlib lemma `Nat.Prime.dvd_choose_add`: if a < p and b < p and p ≤ a + b, then p | C(a+b, a). Here a = b = n: since n < p and p ≤ 2n = n + n, the conditions are exactly satisfied. The proof rewrites C(2n, n) = C(n+n, n) and applies the lemma.\n\n`prodPrimesInInterval_dvd_centralBinom` lifts this to the product: `Finset.prod_primes_dvd` applies the individual divisibilities (with distinct primes) to get the product divides C(2n,n).",
+    "mathContext": "The multiplicity argument: for $n < p \\leq 2n$, the Legendre formula gives $v_p\\binom{2n}{n} = \\sum_k (\\lfloor 2n/p^k \\rfloor - 2\\lfloor n/p^k \\rfloor)$. For $k=1$: $\\lfloor 2n/p \\rfloor = 1$ (since $p > n$ so $2n/p < 2$) and $\\lfloor n/p \\rfloor = 0$ (since $p > n$). So $v_p = 1$. For $k \\geq 2$: $p^2 > n^2 > 2n$ for $p > n \\geq 2$, so $\\lfloor 2n/p^k \\rfloor = 0$. Total: $v_p\\binom{2n}{n} = 1 > 0$, confirming $p \\mid \\binom{2n}{n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.Prime.dvd_choose_add",
+      "Finset.prod_primes_dvd",
+      "Legendre's formula for prime factorials",
+      "valuation of binomial coefficients"
+    ],
+    "prerequisites": [
+      "Nat.Prime.dvd_choose_add from Mathlib.Data.Nat.Choose.Factorization"
+    ]
+  },
+  {
+    "id": "ann-chebyshev-power-bound",
+    "proofId": "chebyshev-bounds",
+    "range": {
+      "startLine": 168,
+      "endLine": 237
+    },
+    "type": "theorem",
+    "title": "n^{π(2n)−π(n)} ≤ 4^n: The Prime Density Upper Bound",
+    "content": "The section establishes the main upper bound on prime density in doubling intervals. The key steps:\n\n1. **`pow_le_of_prod_primes_dvd`** (generic lemma): If a set S of primes each exceeding n has their product dividing M, then n^|S| ≤ M. Proof: n^|S| = ∏_{s∈S} n ≤ ∏_{s∈S} s (each prime > n) ≤ M (divisor ≤ divided).\n\n2. **`pow_numPrimesInInterval_le`**: n^{numPrimesInInterval(n)} ≤ 4^n. Apply the generic lemma with S = primes in (n, 2n], M = C(2n,n), using `prodPrimesInInterval_dvd_centralBinom` and `centralBinom_le_four_pow`.\n\n3. **`numPrimesInInterval_eq`**: Shows numPrimesInInterval(n) = π(2n) − π(n). Uses `count_eq_card_filter_range` and partition of range(2n+1) into range(n+1) ∪ Ico(n+1, 2n+1).\n\n4. **`pow_primeCounting_diff_le`**: Combines steps 2-3 to get n^{π(2n)−π(n)} ≤ 4^n.\n\nTaking logarithms: (π(2n) − π(n)) · log n ≤ n · log 4, giving a Chebyshev-type upper bound on prime density.",
+    "mathContext": "Taking $\\log$ of $n^{\\pi(2n) - \\pi(n)} \\leq 4^n$: $(\\pi(2n) - \\pi(n)) \\log n \\leq n \\log 4$. If $\\pi(x) \\sim x/\\log x$, then $\\pi(2n) - \\pi(n) \\sim n/\\log n$ and $(n/\\log n) \\log n = n \\leq n \\log 4$ — consistent but not tight (the PNT gives $c = 1$ in the bound, while $\\log 4 \\approx 1.386$). The density bound says: the interval $(n, 2n]$ has at most $n \\log 4 / \\log n \\approx 1.386 n/\\log n$ primes, vs the PNT prediction of $\\sim n/\\log n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime counting function pi",
+      "prime density in intervals",
+      "interval prime gaps",
+      "prime number theorem for intervals"
+    ],
+    "prerequisites": [
+      "prodPrimesInInterval_dvd_centralBinom",
+      "centralBinom_le_four_pow",
+      "Nat.primeCounting",
+      "count_eq_card_filter_range"
+    ]
   },
   {
     "id": "ann-chebyshev-bertrand-lower",
-    "line": 286,
-    "endLine": 318,
-    "type": "concept",
+    "proofId": "chebyshev-bounds",
+    "range": {
+      "startLine": 238,
+      "endLine": 363
+    },
+    "type": "theorem",
     "title": "π(n) ≥ log₂(n): Telescoping Bertrand's Postulate",
-    "body": "The lower bound chain has three steps:\n\n**Step 1** (`primeCounting_doubling_ge_one`): π(2n) − π(n) ≥ 1 for n ≥ 1. Get Bertrand's prime p ∈ (n, 2n] via `Nat.exists_prime_lt_and_le_two_mul`. Show π increases at p: `Nat.count_succ` gives π(p) = π(p−1) + 1 (since p is prime). Since π(n) ≤ π(p−1) (monotonicity with n ≤ p−1) and π(p) ≤ π(2n) (monotonicity with p ≤ 2n), we get π(2n) ≥ π(n) + 1.\n\n**Step 2** (`primeCounting_pow_two_ge`): π(2^k) ≥ k by induction. Base: `decide` (π(2) = 1 ≥ 1). Step: π(2^{k+1}) = π(2·2^k) ≥ π(2^k) + 1 ≥ k + 1 by Bertrand + inductive hypothesis.\n\n**Step 3** (`primeCounting_ge_log`): for n ≥ 2, let k = ⌊log₂(n)⌋. Then 2^k ≤ n and k ≥ 1. So π(n) ≥ π(2^k) ≥ k = ⌊log₂(n)⌋.",
-    "mathContext": "The bound π(n) ≥ log₂(n) is quite weak — the PNT gives π(n) ≈ n/log(n), which is much larger. But it's the strongest bound that follows elementarily from just Bertrand's postulate without any counting argument. The key `Nat.pow_log_le_self 2` gives 2^{⌊log₂(n)⌋} ≤ n, enabling the monotonicity chain.",
+    "content": "The lower bound chain has four steps:\n\n**Step 1** (`primeCounting_doubling_ge_one`): π(2n) − π(n) ≥ 1 for n ≥ 1. Get Bertrand's prime p ∈ (n, 2n] via `Nat.exists_prime_lt_and_le_two_mul`. Show π increases at p: `Nat.count_succ` gives π(p) = π(p−1) + 1 (since p is prime). Since π(n) ≤ π(p−1) (monotonicity with n ≤ p−1) and π(p) ≤ π(2n) (monotonicity with p ≤ 2n), we get π(2n) ≥ π(n) + 1.\n\n**Step 2** (`primeCounting_pow_two_ge`): π(2^k) ≥ k by induction. Base: `decide` (π(2) = 1 ≥ 1). Step: π(2^{k+1}) = π(2·2^k) ≥ π(2^k) + 1 ≥ k + 1 by Bertrand + inductive hypothesis.\n\n**Step 3** (`primeCounting_ge_log`): For n ≥ 2, let k = ⌊log₂(n)⌋. Then 2^k ≤ n and k ≥ 1. So π(n) ≥ π(2^k) ≥ k = ⌊log₂(n)⌋.\n\n**Step 4** (`chebyshevTheta_doubling_ge`): θ(2n) − θ(n) ≥ log(n+1) for n ≥ 1. The Bertrand prime p with n < p ≤ 2n satisfies log p ≥ log(n+1), and p's log contribution to θ(2n) is captured by `single_le_sum`.",
+    "mathContext": "The bound $\\pi(n) \\geq \\log_2 n$ is far from the PNT value $\\pi(n) \\approx n/\\log n$, but it is the strongest bound derivable from Bertrand's postulate alone without counting arguments. For context: $\\log_2(100) \\approx 6.6$ while $\\pi(100) = 25$. The θ lower bound $\\theta(2n) - \\theta(n) \\geq \\log(n+1)$ is similarly weak but elementary: the PNT predicts $\\theta(2n) - \\theta(n) \\approx n$.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Bertrand-postulate",
+      "Bertrand's postulate",
       "Nat.exists_prime_lt_and_le_two_mul",
       "Nat.count_succ",
-      "Nat.monotone_primeCounting"
+      "Nat.monotone_primeCounting",
+      "telescoping induction"
     ],
     "prerequisites": [
       "Nat.exists_prime_lt_and_le_two_mul",
       "Nat.pow_log_le_self",
       "primeCounting_doubling_ge_one"
-    ],
-    "content": "This proof illustrates a beautiful self-similarity: applying Bertrand's postulate to the geometric sequence 2, 4, 8, 16, … telescopes into a lower bound on π. Each doubling contributes at least one new prime, giving the logarithmic count.",
-    "proofId": "chebyshev-bounds",
-    "range": {
-      "startLine": 286,
-      "endLine": 286
-    }
+    ]
   },
   {
     "id": "ann-chebyshev-binom-sandwich",
-    "line": 382,
-    "endLine": 419,
-    "type": "concept",
+    "proofId": "chebyshev-bounds",
+    "range": {
+      "startLine": 372,
+      "endLine": 414
+    },
+    "type": "theorem",
     "title": "Central Binomial Sandwich: 4^n/(2n+1) ≤ C(2n,n) ≤ 4^n",
-    "body": "Two complementary bounds on C(2n,n):\n\n**Upper**: `centralBinom_le_four_pow` uses the calc chain C(2n,n) ≤ Σ_k C(2n,k) = 2^{2n} = 4^n. The key step `single_le_sum` says a single term ≤ the whole sum; `sum_range_choose (2n)` gives Σ_k C(2n,k) = 2^{2n}.\n\n**Lower**: `centralBinom_ge_four_pow_div` proves 4^n ≤ (2n+1)·C(2n,n). The argument: 4^n = Σ_k C(2n,k) ≤ Σ_k C(2n,n) = (2n+1)·C(2n,n). The crucial step is `Nat.choose_le_middle k (2*n)`: the central binomial coefficient C(2n,n) is the maximum element of the row, since n = 2n/2 is the middle index.\n\n**Log corollary** `log_centralBinom_ge`: n·log(4) − log(2n+1) ≤ log(C(2n,n)), from 4^n/(2n+1) ≤ C(2n,n) by taking logs. This gives the asymptotic: log(C(2n,n)) ≈ n·log(4) − O(log n) ≈ 2n·log(2).",
-    "mathContext": "The central binomial coefficient C(2n,n) ≈ 4^n/√(πn) by Stirling's formula. The lower bound 4^n/(2n+1) ≈ 4^n/(2n) is within a poly(n) factor of the truth. This sandwich is used in Chebyshev's approach to bound both the number of primes (from the prime factor argument) and the density of the central binomial coefficient.",
+    "content": "Two complementary bounds on C(2n,n):\n\n**Upper**: `centralBinom_le_four_pow` uses the calc chain C(2n,n) ≤ Σ_k C(2n,k) = 2^{2n} = 4^n. The key step `single_le_sum` says a single term ≤ the whole sum; `sum_range_choose (2n)` gives Σ_k C(2n,k) = 2^{2n}.\n\n**Lower**: `centralBinom_ge_four_pow_div` proves 4^n ≤ (2n+1)·C(2n,n). The argument: 4^n = Σ_k C(2n,k) ≤ Σ_k C(2n,n) = (2n+1)·C(2n,n). The crucial step is `Nat.choose_le_middle k (2*n)`: the central binomial coefficient C(2n,n) is the maximum element of the row, since n = 2n/2 is the middle index.\n\n**Log corollary** `log_centralBinom_ge`: n·log(4) − log(2n+1) ≤ log(C(2n,n)), from 4^n/(2n+1) ≤ C(2n,n) by taking logs. This gives the asymptotic: log(C(2n,n)) ≈ n·log(4) − O(log n) ≈ 2n·log(2).",
+    "mathContext": "The central binomial coefficient $\\binom{2n}{n} \\approx 4^n/\\sqrt{\\pi n}$ by Stirling's formula. The lower bound $4^n/(2n+1) \\approx 4^n/(2n)$ is within a polynomial factor of the truth. This sandwich is used in Chebyshev's approach: the upper bound limits the prime product (upper bounds on $\\theta$ and $\\pi$), while the lower bound gives $\\log\\binom{2n}{n} \\geq n\\log 4 - O(\\log n)$ — useful for lower bounds on $\\theta$ by other methods.",
     "significance": "supporting",
     "relatedConcepts": [
       "Nat.choose_le_middle",
       "single_le_sum",
       "sum_range_choose",
-      "Stirling-approximation"
+      "Stirling's approximation",
+      "Wallis product formula"
     ],
     "prerequisites": [
       "Nat.choose_le_middle for the maximality of C(2n,n)",
       "single_le_sum for the upper bound"
-    ],
-    "content": "The sandwich 4^n/(2n+1) ≤ C(2n,n) ≤ 4^n provides both the upper bound (for the prime product argument) and a lower bound (from which the log corollary follows). Together they show log(C(2n,n)) ∈ [n·log(4) − log(2n+1), n·log(4)], an interval of width O(log n).",
+    ]
+  },
+  {
+    "id": "ann-chebyshev-summary",
     "proofId": "chebyshev-bounds",
     "range": {
-      "startLine": 382,
-      "endLine": 401
-    }
+      "startLine": 415,
+      "endLine": 439
+    },
+    "type": "insight",
+    "title": "Summary: Chebyshev's Bounds as a Complete System",
+    "content": "The eight results form a coherent system: upper bounds from the primorial/central binomial inequality (used contrapositively — a large prime count would require a large product, but C(2n,n) caps it); lower bounds from Bertrand's postulate (repeated doubling gives at least one prime per interval).\n\nThe asymptotic meaning: taken together, these bounds show π(x) = Θ(x/log x) and θ(x) = Θ(x), establishing that the prime counting functions grow at the right rate. The constants are off (log 4 ≈ 1.386 instead of 1 for θ, log₂(n) instead of n/log n for π), but the growth rate is correctly identified.\n\nThe `#check` statements verify that the theorems are correctly typed and accessible. The module closes with `end ChebyshevBounds`, making all results available as `ChebyshevBounds.chebyshevTheta_le`, etc.",
+    "mathContext": "Summary of the eight main bounds:\n- Upper: $\\theta(n) \\leq n \\log 4$, $n^{\\pi(2n)-\\pi(n)} \\leq 4^n$\n- Lower: $\\pi(2n) - \\pi(n) \\geq 1$, $\\pi(2^k) \\geq k$, $\\pi(n) \\geq \\log_2 n$, $\\theta(2n)-\\theta(n) \\geq \\log(n+1)$\n- Central binomial: $\\binom{2n}{n} \\leq 4^n$, $4^n \\leq (2n+1)\\binom{2n}{n}$\n\nThe `chebyshev-pnt-bridge` entry extends this work toward the full Prime Number Theorem.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "order notation Theta",
+      "prime number theorem",
+      "Chebyshev's contribution to PNT",
+      "chebyshev-pnt-bridge"
+    ],
+    "prerequisites": [
+      "All prior theorems in this file"
+    ]
   }
 ]
