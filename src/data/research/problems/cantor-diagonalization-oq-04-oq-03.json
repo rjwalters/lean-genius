@@ -34,11 +34,12 @@
       "CantorDiagonalizationOQ04OQ03.lean: 150 lines, 0 axioms, 0 sorries",
       "yCombinator: explicit Y combinator from CodesEndomorphisms",
       "knaster_tarski: from Mathlib OrderHom.lfp",
-      "structural_parallel: unified theorem"
+      "structural_parallel: unified theorem",
+      "omega_continuous_monotone_ari: \u03c9-continuous functions are monotone \u2014 proved in CantorDiagonalizationOQ04OQ03Aristotle.lean (0 sorries, 2026-04-22)"
     ],
     "insights": [
       "Y combinator = Lawvere construction: Y(f) = g(encode(g))",
-      "Lawvere needs coding, Tarski needs order — dual approaches",
+      "Lawvere needs coding, Tarski needs order \u2014 dual approaches",
       "Domain theory bridges categorical and order-theoretic FPTs",
       "OrderHom.lfp from Mathlib gives Knaster-Tarski directly"
     ],
