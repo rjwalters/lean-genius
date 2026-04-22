@@ -159,6 +159,28 @@
       "tractability": "challenging"
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1155-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent: the r=3 triangle removal exact asymptotics (BFL n^{3/2+o(1)}) that this file generalizes to arbitrary r-cliques via kRemovalExponent = 2-2/(r+1)."
+    },
+    {
+      "targetId": "erdos-1155",
+      "relationship": "extends",
+      "description": "Grandparent: the original Erdős #1155 triangle removal problem statement whose f(n) ≍ n^{3/2} conjecture is the r=3 instance of the general conjecture formalized here."
+    },
+    {
+      "targetId": "erdos-1155-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling OQ: studies whether f(n)/n^{3/2} → L for the r=3 triangle case — the r=3 analogue of the limit_implies_conjecture_r theorem proved here for general r."
+    },
+    {
+      "targetId": "erdos-1155-oq-01-oq-06",
+      "relationship": "related",
+      "description": "Sibling OQ: analyzes the terminal graph Turán ratio f(n)/(n²/4) for r=3, paralleling the turan_removal_gap result proved here (gap = 2/(r+1)) for general r."
+    }
+  ],
   "leanFile": {
     "axiomCount": 3,
     "lineCount": 355,
