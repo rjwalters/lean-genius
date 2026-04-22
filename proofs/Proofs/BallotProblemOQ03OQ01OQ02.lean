@@ -1086,4 +1086,174 @@ theorem hook_length_formula_hook_shape (m : ℕ) :
         rw [Nat.factorial_succ, Nat.factorial_succ]; ring]
   ring
 
+-- ============================================================
+-- PART IX: Hook-Length Formula for 2-Row Rectangular Diagrams
+-- ============================================================
+
+/-
+  The 2-row rectangular Young diagram twoRectYD m has 2 rows each of length m
+  (total 2m cells).
+    hookLength(0,j) = m - j + 1  (for j < m)
+    hookLength(1,j) = m - j      (for j < m)
+    hookProd        = (m+1)! × m!   [proved]
+    card(SYT(m,m))  = C_m           [sorry: RSK bijection with ballot sequences]
+  Hook formula: C_m × (m+1)! × m! = (2m)!
+  (The numerical identity is LGVCorollaries.hook_length_formula_two_row.)
+-/
+
+/-- The 2-row rectangular Young diagram: 2 rows each of length m. -/
+def twoRectYD (m : ℕ) : YoungDiagram :=
+  YoungDiagram.ofRowLens [m, m] (by
+    simp only [List.SortedGE, List.Sorted, List.pairwise_cons, List.mem_singleton,
+               forall_eq, List.Pairwise.nil, and_true])
+
+/-- (i,j) ∈ twoRectYD m ↔ (i = 0 ∨ i = 1) ∧ j < m -/
+lemma mem_twoRectYD {m i j : ℕ} :
+    (i, j) ∈ twoRectYD m ↔ (i = 0 ∧ j < m) ∨ (i = 1 ∧ j < m) := by
+  simp only [twoRectYD, YoungDiagram.mem_ofRowLens, List.length_cons, List.length_singleton]
+  constructor
+  · rintro ⟨hi, hj⟩
+    interval_cases i
+    · left; exact ⟨rfl, by simpa [List.getElem_cons_zero] using hj⟩
+    · right; exact ⟨rfl, by simpa [List.getElem_cons_succ, List.getElem_cons_zero] using hj⟩
+    · omega
+  · rintro (⟨rfl, hj⟩ | ⟨rfl, hj⟩)
+    · exact ⟨by omega, by simpa [List.getElem_cons_zero] using hj⟩
+    · exact ⟨by omega, by simpa [List.getElem_cons_succ, List.getElem_cons_zero] using hj⟩
+
+/-- twoRectYD has 2m cells. -/
+lemma twoRectYD_card (m : ℕ) : (twoRectYD m).card = 2 * m := by
+  have hcells : (twoRectYD m).cells =
+      (Finset.range m).image (Prod.mk 0) ∪ (Finset.range m).image (Prod.mk 1) := by
+    ext ⟨i, j⟩
+    simp only [YoungDiagram.mem_cells, mem_twoRectYD, Finset.mem_union, Finset.mem_image,
+      Finset.mem_range, Prod.mk.injEq]
+    constructor
+    · rintro (⟨rfl, hj⟩ | ⟨rfl, hj⟩)
+      · left; exact ⟨j, hj, rfl, rfl⟩
+      · right; exact ⟨j, hj, rfl, rfl⟩
+    · rintro (⟨k, hk, rfl, rfl⟩ | ⟨k, hk, rfl, rfl⟩)
+      · left; exact ⟨rfl, hk⟩; · right; exact ⟨rfl, hk⟩
+  unfold YoungDiagram.card
+  rw [hcells, Finset.card_union_of_disjoint (Finset.disjoint_left.mpr (by
+    simp [Finset.mem_image, Prod.mk.injEq])),
+    Finset.card_image_of_injective _ (fun a b h => (Prod.mk.inj h).2),
+    Finset.card_image_of_injective _ (fun a b h => (Prod.mk.inj h).2),
+    Finset.card_range, Finset.card_range]
+
+private lemma twoRectYD_cells_eq (m : ℕ) :
+    (twoRectYD m).cells =
+    (Finset.range m).image (Prod.mk 0) ∪ (Finset.range m).image (Prod.mk 1) := by
+  ext ⟨i, j⟩
+  simp only [YoungDiagram.mem_cells, mem_twoRectYD, Finset.mem_union, Finset.mem_image,
+    Finset.mem_range, Prod.mk.injEq]
+  constructor
+  · rintro (⟨rfl, hj⟩ | ⟨rfl, hj⟩)
+    · left; exact ⟨j, hj, rfl, rfl⟩
+    · right; exact ⟨j, hj, rfl, rfl⟩
+  · rintro (⟨k, hk, rfl, rfl⟩ | ⟨k, hk, rfl, rfl⟩)
+    · left; exact ⟨rfl, hk⟩; · right; exact ⟨rfl, hk⟩
+
+private lemma twoRectYD_cells_disj (m : ℕ) :
+    Disjoint ((Finset.range m).image (Prod.mk 0)) ((Finset.range m).image (Prod.mk 1)) :=
+  Finset.disjoint_left.mpr (by simp [Finset.mem_image, Prod.mk.injEq])
+
+lemma rowLen_twoRectYD_zero (m : ℕ) : (twoRectYD m).rowLen 0 = m := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]; simp [mem_twoRectYD]
+  · cases m with
+    | zero => simp
+    | succ m =>
+      have h := YoungDiagram.mem_iff_lt_rowLen.mp (mem_twoRectYD.mpr (Or.inl ⟨rfl, m.lt_succ_self⟩))
+      omega
+
+lemma rowLen_twoRectYD_one (m : ℕ) : (twoRectYD m).rowLen 1 = m := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]; simp [mem_twoRectYD]
+  · cases m with
+    | zero => simp
+    | succ m =>
+      have h := YoungDiagram.mem_iff_lt_rowLen.mp (mem_twoRectYD.mpr (Or.inr ⟨rfl, m.lt_succ_self⟩))
+      omega
+
+lemma colLen_twoRectYD {m j : ℕ} (hj : j < m) : (twoRectYD m).colLen j = 2 := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]; simp [mem_twoRectYD]
+  · have h0 := YoungDiagram.mem_iff_lt_colLen.mp (mem_twoRectYD.mpr (Or.inl ⟨rfl, hj⟩))
+    have h1 := YoungDiagram.mem_iff_lt_colLen.mp (mem_twoRectYD.mpr (Or.inr ⟨rfl, hj⟩))
+    omega
+
+/-- hookLength(0,j) = m - j + 1 (arm = m-j-1, leg = 1) -/
+lemma hookLength_twoRectYD_row0 {m j : ℕ} (hj : j < m) :
+    hookLength (twoRectYD m) 0 j = m - j + 1 := by
+  have heq := hookLength_add_eq (twoRectYD m) (mem_twoRectYD.mpr (Or.inl ⟨rfl, hj⟩))
+  rw [rowLen_twoRectYD_zero, colLen_twoRectYD hj] at heq
+  omega
+
+/-- hookLength(1,j) = m - j (arm = m-j-1, leg = 0) -/
+lemma hookLength_twoRectYD_row1 {m j : ℕ} (hj : j < m) :
+    hookLength (twoRectYD m) 1 j = m - j := by
+  have heq := hookLength_add_eq (twoRectYD m) (mem_twoRectYD.mpr (Or.inr ⟨rfl, hj⟩))
+  rw [rowLen_twoRectYD_one, colLen_twoRectYD hj] at heq
+  omega
+
+/-- hookProd(twoRectYD m) = (m+1)! × m!
+    Row 0: ∏_{j<m} (m-j+1) = (m+1)!  (product 2·3·...·(m+1))
+    Row 1: ∏_{j<m} (m-j)   = m!      (product 1·2·...·m) -/
+theorem hookProd_twoRectYD (m : ℕ) :
+    hookProd (twoRectYD m) = (m + 1).factorial * m.factorial := by
+  unfold hookProd
+  rw [twoRectYD_cells_eq, Finset.prod_union (twoRectYD_cells_disj m),
+      Finset.prod_image (fun a _ b _ h => (Prod.mk.inj h).2),
+      Finset.prod_image (fun a _ b _ h => (Prod.mk.inj h).2)]
+  show (∏ j ∈ Finset.range m, hookLength (twoRectYD m) 0 j) *
+       (∏ j ∈ Finset.range m, hookLength (twoRectYD m) 1 j) =
+       (m + 1).factorial * m.factorial
+  -- Row 0: ∏_{j<m} (m-j+1) = (m+1)!
+  have hrow0 : ∏ j ∈ Finset.range m, hookLength (twoRectYD m) 0 j = (m + 1).factorial := by
+    rw [Finset.prod_congr rfl (fun j hj => hookLength_twoRectYD_row0 (Finset.mem_range.mp hj)),
+        Finset.prod_congr rfl (fun j hj => show m - j + 1 = (m + 1) - j from by
+          have := Finset.mem_range.mp hj; omega),
+        ← Nat.descFactorial_eq_prod_range]
+    -- (m+1).descFactorial m = (m+1)!
+    have hstep := Nat.descFactorial_succ (m + 1) m
+    have hone : (m + 1) - m = 1 := by omega
+    rw [hone, Nat.mul_one, Nat.descFactorial_self] at hstep
+    exact hstep.symm
+  -- Row 1: ∏_{j<m} (m-j) = m!
+  have hrow1 : ∏ j ∈ Finset.range m, hookLength (twoRectYD m) 1 j = m.factorial := by
+    rw [Finset.prod_congr rfl (fun j hj => hookLength_twoRectYD_row1 (Finset.mem_range.mp hj)),
+        ← Nat.descFactorial_eq_prod_range, Nat.descFactorial_self]
+  rw [hrow0, hrow1]
+
+/-- card(SYT(twoRectYD m)) = C_m (the m-th Catalan number).
+
+    Proof sketch (not yet formalized):
+    A SYT T of shape (m,m) is determined by its row-0 entry set
+    S = {T.entry(0,j) - 1 : j < m} ⊆ Fin(2m).
+    S has cardinality m, and column-strictness (entry(0,j) < entry(1,j) for all j)
+    is equivalent to: for each k < m, the k-th element of S (sorted) is less than
+    the k-th element of its complement — the "ballot condition" on S.
+    The number of such subsets is C(2m,m) - C(2m,m+1) = C_m by the reflection principle.
+
+    This requires ~200 lines formalizing the bijection using Finset.orderIsoOfFin.
+    [HARD: known result, needs formalization; Aristotle-eligible once set up] -/
+theorem card_SYT_twoRectYD (m : ℕ) :
+    Fintype.card (StandardYoungTableau (twoRectYD m)) = LatticePathLGV.Cn m := by
+  sorry
+
+/-- **Hook-length formula for 2-row rectangular Young diagrams.**
+    card(SYT(twoRectYD m)) × hookProd(twoRectYD m) = (2m)!
+    Proof: C_m × (m+1)! × m! = (2m)! (LGVCorollaries.hook_length_formula_two_row). -/
+theorem hook_length_formula_two_rect (m : ℕ) :
+    Fintype.card (StandardYoungTableau (twoRectYD m)) * hookProd (twoRectYD m) =
+    (twoRectYD m).card.factorial := by
+  rw [twoRectYD_card, hookProd_twoRectYD, card_SYT_twoRectYD]
+  exact LGVCorollaries.hook_length_formula_two_row m
+
+-- Numerical verification
+example : LatticePathLGV.Cn 1 * (2 * 1) = 2 := by native_decide
+example : LatticePathLGV.Cn 2 * (6 * 2) = 24 := by native_decide
+example : LatticePathLGV.Cn 3 * (24 * 6) = 720 := by native_decide
+
 end HookLengthFormula
