@@ -241,7 +241,9 @@
       "Can we prove a larger proportion of zeros are on the critical line?",
       "What is the best unconditional zero-free region?",
       "Are there connections to random matrix theory that could prove RH?",
-      "Can we prove RH for specific L-functions (like Dirichlet L-functions)?"
+      "Can we prove RH for specific L-functions (like Dirichlet L-functions)?",
+      "Can the de Bruijn-Newman constant Lambda = 0 be formally stated as equivalent to RH in Lean? Rodgers-Tao (2020) proved Lambda >= 0, and the conjecture Lambda = 0 is equivalent to RH. Formalizing this equivalence would require the theory of entire functions of order 1/2 and the phase transition at Lambda = 0.",
+      "Can the 91 pairwise equivalences formalized in this file be organized into a Lean typeclass hierarchy? The K10 network of 14 equivalent formulations (BSY, Riesz, Volchkov integral criteria, Backlund, Robin/Lagarias, Mertens bounds, etc.) could be structured as a typeclass with provable instances in each direction, making the equivalence web machine-verifiable."
     ]
   },
   "crossReferences": [
@@ -304,6 +306,16 @@
       "targetId": "p-vs-np",
       "relationship": "related",
       "description": "Fellow Millennium Prize Problem. If GRH is true, Miller's primality test runs in deterministic polynomial time, providing one of the few known connections between the Riemann Hypothesis and computational complexity. Both problems are among the seven Clay Prize problems"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "foundational",
+      "description": "FTA proves every polynomial splits over C; the Hadamard product formula for entire functions generalizes this to the Riemann zeta function, expressing zeta(s) as a product over its non-trivial zeros — the zeros that RH asks about living on the critical line Re(s)=1/2"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "strengthens",
+      "description": "PNT gives pi(x) ~ x/ln(x); RH would sharpen the error term to the optimal O(sqrt(x) * log(x)), connecting the distribution of primes to the positions of zeta zeros on the critical line"
     }
   ],
   "leanFile": {
