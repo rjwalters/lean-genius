@@ -201,26 +201,57 @@ theorem harmonicPointSet_nonempty (d : ℕ) :
 /-- X is path-connected. -/
 theorem harmonicPointSet_path_connected (d : ℕ) :
     IsPathConnected (harmonicPointSet d) := by
-  induction d with
-  | zero =>
-    -- d=0: Fin 0 → ℝ is a subsingleton (the unique empty function),
-    -- so harmonicPointSet 0 is a singleton set, which is path-connected.
-    obtain ⟨p, hp⟩ := harmonicPointSet_nonempty 0
-    have hsingle : harmonicPointSet 0 = {p} := by
-      ext x
+  -- We prove this by cases on d.
+  -- For d = 0: Fin 0 → ℝ has a unique element; X₀ is a singleton.
+  -- For d = 1: X₁ = {x : Fin 1 → ℝ | x 0 > 0}, which is convex.
+  -- For d ≥ 2: Requires Kovač-Tao structural analysis (deferred).
+  rcases d with _ | _ | d
+  · -- d = 0: Fin 0 → ℝ has a unique element (the empty function)
+    -- so harmonicPointSet 0 is a singleton.
+    obtain ⟨x₀, hx₀⟩ := harmonicPointSet_nonempty 0
+    have heq : harmonicPointSet 0 = {x₀} := by
+      ext y
       simp only [Set.mem_singleton_iff]
-      constructor
-      · intro _; exact funext (fun i => absurd i.isLt (by omega))
-      · intro h; subst h; exact hp
-    rw [hsingle]
-    exact isPathConnected_singleton p
-  | succ d _ih =>
-    -- d ≥ 1: Requires showing X ⊆ ℝ^d is path-connected.
-    -- For d=1: Every positive real is achievable (harmonicPointSet 1 = Set.Ioi 0),
-    --   so convexity of (0, ∞) gives path-connectedness via Convex.isPathConnected.
-    --   Key: any s ∈ (0,∞) equals Σ_{k≥n} 1/(k(k+1)) = 1/n for some n,
-    --   and rational s is achievable via Egyptian fraction decomposition.
-    -- For d ≥ 2: Requires the full Kovač-Tao (2024) structure.
+      exact ⟨fun _ => funext (fun i => Fin.elim0 i), fun h => h ▸ hx₀⟩
+    rw [heq]
+    exact isPathConnected_singleton x₀
+  · -- d = 1: X₁ = {x : Fin 1 → ℝ | 0 < x 0}, which is convex
+    suffices heq : harmonicPointSet 1 = {x : Fin 1 → ℝ | 0 < x 0} by
+      rw [heq]
+      apply Convex.isPathConnected
+      · -- {x : Fin 1 → ℝ | 0 < x 0} is convex in ℝ^1
+        intro x hx y hy a b ha hb hab
+        simp only [Set.mem_setOf_eq, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at *
+        -- a * x 0 + b * y 0 ≥ (a+b) * min(x 0)(y 0) = min(x 0)(y 0) > 0
+        have hm : 0 < min (x 0) (y 0) := lt_min hx hy
+        have h1 : a * min (x 0) (y 0) ≤ a * x 0 :=
+          mul_le_mul_of_nonneg_left (min_le_left _ _) ha
+        have h2 : b * min (x 0) (y 0) ≤ b * y 0 :=
+          mul_le_mul_of_nonneg_left (min_le_right _ _) hb
+        linarith [show a * min (x 0) (y 0) + b * min (x 0) (y 0) = min (x 0) (y 0) from
+          by rw [← add_mul, hab, one_mul]]
+      · -- Nonempty: the constant function 1 is in the set
+        exact ⟨fun _ => 1, one_pos⟩
+    -- Prove harmonicPointSet 1 = {x : Fin 1 → ℝ | 0 < x 0}
+    ext x
+    simp only [harmonicPointSet, Set.mem_setOf_eq]
+    constructor
+    · -- ⊆: any harmonic subseries sum for infinite A is positive
+      rintro ⟨A, hAinf, hAconv, rfl⟩
+      exact all_coordinates_positive 1 A hAinf.nonempty hAconv 0
+    · -- ⊇: for any s > 0, find an infinite A with Σ_{n∈A} 1/n = s
+      -- Proof strategy (greedy harmonic series algorithm):
+      --   Given s = x 0 > 0, define A greedily: include n if 1/n ≤ remaining budget.
+      --   Key facts: (i) partial sums are ≤ s, (ii) remaining → 0 since
+      --   the harmonic series diverges, (iii) A is infinite (the budget is never
+      --   exhausted in finitely many steps).
+      -- Formalizing requires Cauchy sequence arguments and careful limit analysis.
+      intro hx
+      sorry
+  · -- d ≥ 2: path-connectedness of harmonicPointSet (d+2) requires controlling
+    -- d+2 coordinate sums simultaneously along a continuous path.
+    -- The Kovač-Tao 2024 structural analysis provides the mathematical foundation
+    -- but formalizing it requires substantial additional Lean infrastructure.
     sorry
 
 /-- X contains a nonempty open set (i.e., X has nonempty interior). -/

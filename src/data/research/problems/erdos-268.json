@@ -1,8 +1,8 @@
 {
   "slug": "erdos-268",
   "title": "Erdős #268: Path-Connectedness of Harmonic Subseries Points",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "ACT",
+  "status": "in-progress",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -41,17 +41,31 @@
   },
   "knowledge": {
     "progressSummary": "Prior survey (session 1) classified main sorry as HARD for general d but identified d=0,1 as tractable. 1 axiom (erdos_268_solved) and 1 sorry (harmonicPointSet_path_connected) remain.",
-    "builtItems": [],
+    "builtItems": [
+      "harmonicPointSet_path_connected d=0 case (complete)",
+      "harmonicPointSet_path_connected d=1 framework (1 sorry: greedy construction)",
+      "all_coordinates_positive rewritten with A.Infinite + correct tsum_pos API",
+      "coordinate_decreasing rewritten with tsum_lt_tsum method + explicit witness",
+      "squares_convergent bijection proof fixed (surjectivity lambda + Nat.succ_injective)",
+      "powers_convergent rintro fix"
+    ],
     "insights": [
       "d=1 tractable: harmonicPointSet 1 = Set.Ioi 0 via greedy construction",
       "d=0 trivial: empty product space is subsingleton → isPathConnected_singleton",
-      "d≥2 hard: requires controlling d coordinate sums along continuous path"
+      "d≥2 hard: requires controlling d coordinate sums along continuous path",
+      "d=0 fully proved via isPathConnected_singleton + subsingleton argument",
+      "d=1 framework: X₁ = {x | x 0 > 0} is convex (proved); needs greedy harmonic construction for surjection (1 sorry)",
+      "d≥2: deferred, requires Kovač-Tao structural analysis",
+      "Mathlib API: tsum_pos and tsum_lt_tsum are methods on Summable for ℝ, not standalone (only standalone for ℝ≥0)",
+      "positivity tactic handles sums of Nat casts where Nat.cast_nonneg fails",
+      "Nat.succ_injective avoids coercion issues vs omega in Function.Injective proofs"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove harmonicPointSet_zero case (trivial subsingleton)",
-      "Prove harmonicPointSet_one_eq_Ioi via greedy construction",
-      "Apply isPathConnected_Ioi for d=1 conclusion"
+      "Formalize greedy harmonic construction: given s>0, build infinite A with Σ_{n∈A} 1/n = s",
+      "Define greedyHarmonicSet and prove it is infinite with exact harmonic sum",
+      "Try aristotle_submit on greedy construction sorry",
+      "For d=2: explore if X₂ is star-shaped or contains convex subset connecting all points"
     ],
     "markdown": ""
   },
