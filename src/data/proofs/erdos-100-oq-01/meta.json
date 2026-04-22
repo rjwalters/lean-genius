@@ -27,7 +27,14 @@
     "historicalContext": "Erdős Problem #100 asks whether the diameter of an n-point integer distance set in ℝ² must grow at least linearly in n. The Anning–Erdős theorem (1945) first showed that infinite non-collinear integer distance sets are impossible, making the finite case the central question. Erdős (1986) conjectured a linear lower bound diam ≥ cn. The best confirmed lower bound comes from the Guth–Katz distinct distances theorem (2015, Annals of Mathematics): any n-point set in the plane determines at least cn/log n distinct distances, which via a geometric bridge gives diam ≥ cn/log n for integer distance sets. The gap between the known cn/log n bound and the conjectured cn bound is a multiplicative factor of log n, which grows without bound. Piepmeyer constructed a 9-point non-collinear integer distance set with small diameter, showing the diameter can be modest for moderate n. The minimum diameter for small n is tabulated in OEIS A186704. Closing the log n gap requires exploiting the arithmetic structure of integer distances — a constraint absent in the general distinct distances problem.",
     "problemStatement": "**Question**: Is the diameter of n-point integer distance sets Θ(n) or Θ(n/log n)?",
     "text": "Formalizes the growth rate gap between known and conjectured bounds for integer distance set diameters.",
-    "proofStrategy": "See the overview summary for the proof approach.",
+    "proofStrategy": "The file proceeds in four stages: (1) **Gap analysis** — prove Real.log diverges (`log_tendsto_atTop` via `Real.tendsto_log_atTop`), prove $1/\\log n \\to 0$ (`n_over_log_sublinear`), and prove $\\log n > 1$ for $n \\geq 3$ (`log_gt_one` via $\\log(e^1) \\leq \\log(3) \\leq \\log(n)$). (2) **Conjecture formalization** — define `linearDiameterConjecture` and `sublinearBound` as `∀ᶠ n` Filter statements, prove `linear_implies_known` via `div_le_self` since $cn \\geq cn/\\log n$ for $\\log n \\geq 1$. (3) **Piepmeyer's witness** — state the existence of a 9-point non-collinear integer distance configuration with diameter $\\leq 4$ using squared-distance form to avoid Real.sqrt (1 sorry awaiting coordinate verification). (4) **Anning–Erdős** — state the finiteness theorem: for any bound $d$, only finitely many non-collinear $n$-point integer distance sets with distances $\\leq d$ exist, proved via integer hyperbola intersection counting (1 sorry).",
+    "prerequisites": [
+      "Discrete geometry: integer distance sets in ℝ², diameter = max pairwise distance, collinearity condition",
+      "Real analysis: Real.log divergence, Filter.atTop, Filter.Tendsto, little-o notation",
+      "Guth-Katz distinct distances theorem (2015): ≥ cn/log n distinct distances for any n-point planar set",
+      "Anning-Erdős theorem (1945): infinite non-collinear integer distance sets are impossible",
+      "Lean 4 Filter API: ∀ᶠ notation, Filter.atTop, Filter.Tendsto.div for asymptotic bounds"
+    ],
     "keyInsights": [
       "The Guth-Katz theorem (2015, Annals of Mathematics) resolved Erdős's distinct distances conjecture: any $n$ points in the plane determine at least $cn/\\log n$ distinct distances. This was a 65-year-old problem. For *integer distance sets* — where all pairwise distances are integers — the conjecture is stronger: the diameter (maximum distance) should grow linearly, $\\Omega(n)$, rather than sublinearly. The gap between the known $\\Omega(n/\\log n)$ and conjectured $\\Omega(n)$ is exactly a factor of $\\log n$.",
       "`log_tendsto_atTop` and `n_over_log_sublinear` formalize the asymptotic gap: `Real.log` diverges to $+\\infty$ (using `Real.tendsto_log_atTop`), and $n/\\log n = o(n)$ (i.e., $(n/\\log n)/n = 1/\\log n \\to 0$). Together they prove the gap factor $\\log n$ is not a bounded constant but grows without bound — meaning the two bounds are genuinely different asymptotically.",
@@ -92,7 +99,22 @@
     {
       "targetId": "erdos-100",
       "relationship": "extends",
-      "description": "Parent: Erdős #100 integer distance sets"
+      "description": "Parent: Erdős #100 integer distance sets — asks whether n-point integer distance sets in the plane must have diameter at least linear in n. This file analyzes the log n gap between the known Guth-Katz bound and the conjectured linear bound."
+    },
+    {
+      "targetId": "erdos-100-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling OQ on Erdős #100 — explores complementary aspects of the distance set diameter question. Together OQ-01 (gap analysis, Piepmeyer, Anning-Erdős) and OQ-02 analyze the problem from different angles."
+    },
+    {
+      "targetId": "szemeredi-core",
+      "relationship": "related",
+      "description": "Szemerédi Regularity Lemma — the foundational combinatorial tool behind many incidence geometry results. The Guth-Katz proof that is the basis for this entry's sublinear bound uses polynomial method techniques related to the algebraic approach to Szemerédi-type problems. Both entries live in the tradition of 'structure from density' in combinatorics."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey Theory — shares the theme of forced structure in large combinatorial configurations. Both Ramsey theory (monochromatic cliques in colorings) and integer distance sets (large diameter forced by integer arithmetic) ask: what structure is unavoidable in large configurations? The Anning-Erdős theorem (no infinite non-collinear integer distance sets) is a Ramsey-type finiteness result for planar geometry."
     }
   ],
   "references": [
