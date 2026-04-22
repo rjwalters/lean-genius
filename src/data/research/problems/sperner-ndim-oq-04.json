@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-04-22T13:03:46.382Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,11 +29,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Kuhn algorithm formalized. fc_door_count_eq_one, nonfc_door_count_zero_or_two, nonfc_with_door_has_unique_exit fully proved. 3 sorries remain for path termination (non-revisiting invariant).",
+    "builtItems": [
+      "doorDegree def: SpernerNDimOQ04.lean:60",
+      "IsKuhnCompatible def: SpernerNDimOQ04.lean:65",
+      "door_degree_parity lemma: PROVED",
+      "fc_door_count_eq_one theorem: PROVED via omega",
+      "nonfc_door_count_zero_or_two theorem: PROVED via omega",
+      "nonfc_with_door_has_unique_exit theorem: PROVED via Finset.card_eq_two",
+      "KuhnState structure: defined",
+      "kuhnWalk function: fuel-based recursion defined",
+      "kuhnPathStart def: algorithm entry point defined"
+    ],
+    "insights": [
+      "IsKuhnCompatible (door degree ≤ 2) combined with abstract_door_parity gives exact door counts: 1 for FC, 0 or 2 for non-FC",
+      "nonfc_with_door_has_unique_exit proved via Finset.card_eq_two extraction - formal determinism of Kuhn algorithm",
+      "Non-revisiting invariant is the hard open part: door graph component containing a boundary vertex is a path (not a cycle)",
+      "Fuel-based recursion for kuhnWalk avoids well-founded termination obligations",
+      "door_degree_parity proved via simp only [h2] + convert h using 2 pattern (same as per_simplex_door_parity in SpernerNDim)"
+    ],
+    "mathlibGaps": [
+      "No Mathlib theorem for path-following algorithm termination with non-revisiting invariant",
+      "Mathlib lacks abstract door graph connectivity lemmas for non-revisiting proof"
+    ],
+    "nextSteps": [
+      "Prove non-revisiting invariant: kuhnWalk never revisits simplices (key blocker)",
+      "Verify Freudenthal triangulation satisfies IsKuhnCompatible",
+      "Submit kuhn_walk_reaches_fc to Aristotle as HARD"
+    ]
   },
   "tags": [
     "combinatorics",
@@ -51,7 +74,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.382Z",
-  "lastUpdate": "2026-04-22T13:03:46.382Z",
+  "lastUpdate": "2026-04-22T00:00:00.000Z",
   "significance": 8,
   "tractability": 6
 }

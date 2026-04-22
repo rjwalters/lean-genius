@@ -1,0 +1,46 @@
+{
+  "annotations": [
+    {
+      "id": "ann-kuhn-compatible-def",
+      "type": "insight",
+      "title": "Kuhn Compatibility Axiom",
+      "content": "A Sperner triangulation is Kuhn-compatible if each simplex has door degree ≤ 2. This is the key axiom that makes the path-following algorithm deterministic: each simplex has at most 2 doors, so entering through one uniquely determines the exit.",
+      "tags": ["kuhn", "door-graph", "axiom"]
+    },
+    {
+      "id": "ann-door-degree-parity",
+      "type": "technique",
+      "title": "Door Degree Parity from Abstract Theorem",
+      "content": "The door degree of a simplex satisfies: FC simplices have odd degree, non-FC simplices have even degree. Under Kuhn compatibility (degree ≤ 2), this gives exact counts: FC = 1 door, non-FC = 0 or 2 doors.",
+      "tags": ["door-parity", "abstract-door-parity", "fc-characterization"]
+    },
+    {
+      "id": "ann-unique-exit",
+      "type": "result",
+      "title": "Unique Exit Door (existsUnique)",
+      "content": "The formal statement that Kuhn's algorithm is deterministic: any non-FC simplex with an entry door k_in has a UNIQUE other door k_out ≠ k_in. Proved using Finset.card_eq_two to extract both elements of the 2-element door set.",
+      "tags": ["unique-exit", "determinism", "finset-card"]
+    },
+    {
+      "id": "ann-fuel-recursion",
+      "type": "technique",
+      "title": "Fuel-Based Recursion for Path Definition",
+      "content": "The kuhnWalk definition uses a fuel parameter (maximum steps) to avoid well-founded recursion obligations. With fuel = Fintype.card K.Simplex, sufficient fuel is guaranteed by the non-revisiting invariant (each step visits a new simplex).",
+      "tags": ["termination", "fuel-recursion", "well-founded"]
+    },
+    {
+      "id": "ann-non-revisiting",
+      "type": "insight",
+      "title": "Non-Revisiting Invariant (Key Open Problem)",
+      "content": "The hard part of formalizing Kuhn's algorithm is proving the non-revisiting invariant: the walk never visits a simplex twice. This follows from the door graph structure: the component containing a boundary door is a path (not a cycle), because the boundary door is a degree-1 vertex with no return path.",
+      "tags": ["non-revisiting", "open-problem", "door-graph-cycles"]
+    },
+    {
+      "id": "ann-door-preservation",
+      "type": "technique",
+      "title": "Door Property Preservation Across Steps",
+      "content": "The door_transfer lemma from SpernerNDim ensures: if K.adj s k = some (s', k') and isDoorAt c K s k, then isDoorAt c K s' k'. This allows the algorithm to maintain its invariants across each step.",
+      "tags": ["door-transfer", "invariant-preservation"]
+    }
+  ]
+}
