@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-cos20-preamble",
+    "proofId": "angle-trisection-cos-20-gal",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "context",
+    "title": "Motivation: Eliminating the cos20_gal_order Axiom",
+    "content": "The module-level comment sets out the entire proof strategy in compact form before any Lean code appears. It explains three things: (1) the polynomial p = 8X³-6X-1 arises from cos(3·20°) = 1/2 via the triple-angle formula, giving the three roots cos(20°), cos(100°), cos(220°); (2) the key algebraic identities showing β = 2α²-α-1 and γ = 1-2α² are roots when α is, allowing all roots to be expressed purely in terms of α; (3) how these identities imply [SplittingField:ℚ] = 3, hence |Gal| = 3.\n\nCritically, the comment also states the proof's raison d'être: eliminating the `cos20_gal_order` axiom from `AngleTrisectionOQ02.lean`. That file had assumed |Gal| = 3 as an axiom (tagged `axiomatized`) — this file promotes the result to fully verified (`badge: original, sorries: 0, axiomCount: 0`).",
+    "mathContext": "Triple-angle formula: $\\cos(3\\theta) = 4\\cos^3\\theta - 3\\cos\\theta$. At $\\theta = 20°$: $4\\cos^3(20°) - 3\\cos(20°) = \\cos(60°) = \\frac{1}{2}$, so $\\cos(20°)$ satisfies $8x^3 - 6x - 1 = 0$. The three roots are $\\cos(20°), \\cos(100°), \\cos(220°)$, corresponding to the three solutions of $3\\theta \\equiv 60° \\pmod{360°}$.",
+    "significance": "context",
+    "relatedConcepts": ["triple-angle formula", "cos(3θ) = 4cos³θ - 3cosθ", "axiom elimination", "AngleTrisectionOQ02"],
+    "prerequisites": ["trigonometric identities", "Galois theory overview", "compass-and-straightedge constructibility"]
+  },
+  {
     "id": "ann-cos20-root-images",
     "proofId": "angle-trisection-cos-20-gal",
     "range": { "startLine": 40, "endLine": 62 },

@@ -41,7 +41,7 @@
       "Irreducibility transfers through the invertible substitution X \u21a6 (Y\u22122)/2 via composition with the inverse linear map",
       "The factored form 8a\u00b3\u22126a\u22121 = 8(a\u2212\u03b1)(a\u2212\u03b2)(a\u2212\u03b3) is a pure ring identity, holding in any commutative ring",
       "Since all roots of p lie in \u211a(\u03b1), the splitting field has degree exactly 3 over \u211a",
-      "From degree 3 splitting: |Gal| divides 3! = 6 (from permutation action on roots) and is divisible by 3 (since p is irreducible of prime degree), so |Gal| = 3"
+      "From degree 3 splitting: |Gal| divides 3! = 6 (from permutation action on roots) and is divisible by 3 (since p is irreducible of prime degree), so |Gal| = 3. Moreover, a group of prime order 3 must be cyclic (ℤ/3ℤ), which means the extension ℚ ⊂ ℚ(cos 20°) has no proper intermediate fields — ruling out any step-by-step compass-and-straightedge construction that would require a tower of degree-2 extensions."
     ],
     "prerequisites": [
       "Eisenstein's irreducibility criterion and Gauss's lemma",
@@ -55,9 +55,9 @@
     "summary": "This file provides a complete machine-verified proof that |Gal(8X\u00b3\u22126X\u22121/\u211a)| = 3. The proof proceeds entirely by algebra: Eisenstein criterion, linear substitution irreducibility transfer, explicit root expressions, and Mathlib's splitting field theory. No geometric or transcendental reasoning is used. The result eliminates the cos20_gal_order axiom from AngleTrisectionOQ02.",
     "implications": "The cyclic Galois group of order 3 confirms that the splitting field of the cos(20\u00b0) polynomial is a degree-3 extension of \u211a with Galois group \u2124/3\u2124. This is consistent with the impossibility of trisecting 60\u00b0 by compass and straightedge (degree not a power of 2) and with the possibility using a marked ruler (degree divides 2\u2070 \u00b7 3\u00b9). The proof technique \u2014 Eisenstein on a shifted polynomial, then transfer via invertible linear change of variables \u2014 is a useful pattern applicable to other cubics.",
     "openQuestions": [
-      "Can the same approach compute Galois groups of other trigonometric minimal polynomials, e.g., for cos(\u03c0/7) or cos(\u03c0/9)?",
-      "Can the splitting field degree formula be used to automatically verify the Galois groups of all degree-3 polynomials arising in angle-trisection problems?",
-      "How does the Galois group structure change for the generalizations to other classical construction problems?"
+      "The gallery siblings angle-trisection-cos-20-gal-oq-01 and oq-03 prove |Gal| = 3 for cos(\u03c0/7) and cos(40\u00b0) using the same Eisenstein-shift technique. Can a unified Lean 4 proof handle all cos(2\u03c0/p) minimal polynomials for prime p \u2265 3 with a single parametric theorem, using Chebyshev polynomial structure?",
+      "Is there a Mathlib path to the Kronecker-Weber theorem that would let one classify all abelian extensions of \u211a and prove, as a corollary, that [Q(cos(2\u03c0/n)):Q] = \u03c6(n)/2 for all n \u2265 3?",
+      "The proof establishes |Gal| = 3 via cardinality, but does not exhibit an explicit automorphism \u03c3: Q(\u03b1) \u2192 Q(\u03b1) with \u03c3(\u03b1) = \u03b2 = 2\u03b1\u00b2-\u03b1-1 and \u03c3\u00b3 = id. Formalizing this generator would make the abelian structure of Gal(8X\u00b3-6X-1/Q) \u2245 Z/3Z explicit in Lean."
     ]
   },
   "sections": [
@@ -102,6 +102,21 @@
       "targetId": "angle-trisection",
       "relationship": "extends",
       "description": "Parent formalization; this entry eliminates an axiom used there"
+    },
+    {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "dependency",
+      "description": "OQ-02 proves the constructibility characterization and used to assume cos20_gal_order as an axiom; this file provides the verified proof that eliminates that assumption"
+    },
+    {
+      "targetId": "angle-trisection-cos-20-gal-oq-01",
+      "relationship": "sibling",
+      "description": "Applies the same Eisenstein-shift technique to prove |Gal(8X\u00b3-4X\u00b2-4X+1/Q)| = 3, the minimal polynomial of cos(\u03c0/7)"
+    },
+    {
+      "targetId": "angle-trisection-cos-20-gal-oq-03",
+      "relationship": "sibling",
+      "description": "Proves |Gal(8X\u00b3-6X+1/Q)| = 3 for the minimal polynomial of cos(40\u00b0), a sign-flip variant of the same polynomial family"
     },
     {
       "targetId": "angle-trisection-oq-04",
