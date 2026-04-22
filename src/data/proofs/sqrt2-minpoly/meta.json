@@ -1,0 +1,146 @@
+{
+  "id": "sqrt2-minpoly",
+  "title": "Minimal Polynomial of √2 over ℚ",
+  "slug": "sqrt2-minpoly",
+  "description": "Proves that the minimal polynomial of √2 over ℚ is X² − 2, using the Eisenstein irreducibility criterion at p = 2 and Gauss's lemma to transfer ℤ-irreducibility to ℚ. Derives consequences: the algebraic degree [ℚ(√2) : ℚ] = 2 and irrationality of √2. 8 theorems, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-22",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Sqrt2Minpoly.lean",
+    "tags": [
+      "algebraic-number-theory",
+      "minimal-polynomial",
+      "irreducibility",
+      "eisenstein",
+      "field-extensions"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-22",
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "lineCount": 141,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "originalContributions": [
+      "irred_X_sq_sub_two: X² − 2 is irreducible over ℚ via Eisenstein at p=2 and Gauss's lemma",
+      "minpoly_sqrt_two: the minimal polynomial of √2 over ℚ equals X² − 2",
+      "adjoin_sqrt_two_finrank: the degree [ℚ(√2) : ℚ] = 2",
+      "End-to-end proof connecting Eisenstein → Gauss → root witness → minpoly characterization"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The concept of a minimal polynomial was developed in the 19th century alongside the theory of algebraic numbers. Leopold Kronecker (1823–1891) and Ernst Kummer (1810–1893) laid the groundwork for treating roots of polynomials algebraically, while Richard Dedekind (1831–1916) and Heinrich Weber (1842–1913) formalized the notion of an algebraic number field.\n\nFor $\\sqrt{2}$ specifically, its irrationality has been known since ancient Greece (c. 500 BCE), but the minimal polynomial perspective is more modern: it situates $\\sqrt{2}$ within the hierarchy of algebraic numbers by specifying the unique irreducible polynomial that annihilates it. The Eisenstein criterion (Ferdinand Gotthold Max Eisenstein, 1850) provides an elegant and powerful sufficient condition for irreducibility that can be applied here directly.\n\nThe result $\\text{minpoly}(\\mathbb{Q}, \\sqrt{2}) = X^2 - 2$ is a fundamental example in algebraic number theory, showing that $\\sqrt{2}$ generates a degree-2 extension $\\mathbb{Q}(\\sqrt{2})/\\mathbb{Q}$, the simplest possible quadratic extension of $\\mathbb{Q}$.",
+    "problemStatement": "For $\\alpha = \\sqrt{2} \\in \\mathbb{R}$, viewed as an element of $\\mathbb{C}$ over the base field $\\mathbb{Q}$:\n\nThe **minimal polynomial** of $\\alpha$ over $K$ is the unique monic polynomial $p \\in K[X]$ of minimal degree such that $p(\\alpha) = 0$.\n\nClaim: $\\text{minpoly}(\\mathbb{Q}, \\sqrt{2}) = X^2 - 2$.\n\nEquivalently:\n- $X^2 - 2$ is irreducible over $\\mathbb{Q}$ (cannot factor as a product of lower-degree rational polynomials)\n- $(\\sqrt{2})^2 - 2 = 0$ (root witness)\n- The extension degree $[\\mathbb{Q}(\\sqrt{2}) : \\mathbb{Q}] = 2$",
+    "text": "A 141-line formalization proving the minimal polynomial of √2 over ℚ is X² − 2. The proof uses the Eisenstein irreducibility criterion at the prime p = 2: the polynomial X² − 2 over ℤ satisfies 2 ∣ (−2) but 4 ∤ (−2), and 2 ∤ 1 (leading coefficient), confirming irreducibility over ℤ. Gauss's lemma (via `IsPrimitive.Int.irreducible_iff_irreducible_map_cast`) transfers this to irreducibility over ℚ. The root witness follows from (√2)² = 2. The characterization theorem `minpoly.eq_of_irreducible_of_monic` then identifies X² − 2 as the minimal polynomial. Consequences include the field extension degree [ℚ(√2) : ℚ] = 2 (via `IntermediateField.adjoin.finrank`) and irrationality of √2.",
+    "proofStrategy": "Three-part strategy:\n1. **Eisenstein criterion** (Part I): X² − 2 is irreducible over ℤ at prime 2. The leading coefficient (1) is not divisible by 2; the constant term (−2) is divisible by 2 but not 4; degree ≥ 2. Then Gauss's lemma lifts to ℚ.\n2. **Root witness** (Part II): `(Real.sqrt 2)^2 = 2` gives `aeval (Real.sqrt 2) (X^2 - C 2) = 0`. IsIntegral follows from exhibiting the monic polynomial X² − 2 with this root.\n3. **Minimal polynomial characterization** (Part III): `minpoly.eq_of_irreducible_of_monic` states that a monic irreducible polynomial with α as a root must be the minimal polynomial. The three ingredients (irreducible, root, monic) are in hand.",
+    "keyInsights": [
+      "The **Eisenstein criterion** at prime $p$ applies to $f = a_n X^n + \\cdots + a_0 \\in \\mathbb{Z}[X]$ when: $p \\nmid a_n$, $p \\mid a_i$ for all $i < n$, and $p^2 \\nmid a_0$. For $X^2 - 2$ at $p = 2$: $2 \\nmid 1$ (leading), $2 \\mid (-2)$ (constant), $4 \\nmid (-2)$ (constant not divisible by $p^2$). Criterion satisfied.",
+      "**Gauss's lemma** states that a primitive polynomial over $\\mathbb{Z}$ is irreducible over $\\mathbb{Z}$ if and only if it is irreducible over $\\mathbb{Q}$. Since $X^2 - 2$ is monic (hence primitive), irreducibility over $\\mathbb{Z}$ (from Eisenstein) transfers directly to irreducibility over $\\mathbb{Q}$.",
+      "The **minimal polynomial characterization**: over a field $K$, a monic irreducible polynomial $f \\in K[X]$ with $f(\\alpha) = 0$ must equal $\\text{minpoly}(K, \\alpha)$. This is because the minimal polynomial divides any polynomial vanishing at $\\alpha$; if $f$ is irreducible, the only monic divisors of $f$ are $1$ and $f$ itself; since the minimal polynomial has positive degree, it must equal $f$.",
+      "The **field extension degree** $[\\mathbb{Q}(\\sqrt{2}):\\mathbb{Q}] = \\deg(\\text{minpoly}(\\mathbb{Q},\\sqrt{2})) = 2$ follows from the general fact that the degree of a simple algebraic extension equals the degree of the minimal polynomial. Lean's `IntermediateField.adjoin.finrank` gives this directly.",
+      "**Connection to irrationality**: $\\sqrt{2} \\notin \\mathbb{Q}$ follows immediately because if $\\sqrt{2} \\in \\mathbb{Q}$, its minimal polynomial would have degree 1; but $\\deg(X^2-2) = 2 > 1$. The proof uses `irrational_sqrt_two` directly as a one-liner."
+    ],
+    "prerequisites": [
+      "Polynomial ring basics: monic, degree, coeff, aeval",
+      "Eisenstein irreducibility criterion over ℤ",
+      "Gauss's lemma: primitive + irreducible/ℤ ↔ irreducible/ℚ",
+      "Minimal polynomial theory: minpoly.eq_of_irreducible_of_monic",
+      "Field extensions: IntermediateField.adjoin.finrank",
+      "Real.sqrt: sq_sqrt"
+    ]
+  },
+  "sections": [
+    {
+      "id": "irreducibility",
+      "title": "Part I: Irreducibility via Eisenstein",
+      "startLine": 41,
+      "endLine": 78,
+      "summary": "X² − 2 is irreducible over ℤ by Eisenstein at p=2, then transferred to ℚ by Gauss's lemma.",
+      "mathContext": "`irred_X_sq_sub_two_int` applies `Polynomial.irreducible_of_eisenstein_criterion` with the prime ideal $(2)$ in ℤ. The four Eisenstein conditions are verified: (1) $(2)$ is a prime ideal — from `Int.prime_iff_natAbs_prime` and `native_decide`; (2) leading coefficient $1 \\notin (2)$; (3) all lower coefficients $\\in (2)$, checked by `interval_cases k`; (4) degree is positive; and (5) constant term $-2 \\notin (4) = (2)^2$ — checked by `norm_num`. Then `irred_X_sq_sub_two` uses `IsPrimitive.Int.irreducible_iff_irreducible_map_cast` (Gauss's lemma) to transfer to ℚ."
+    },
+    {
+      "id": "root-witness",
+      "title": "Part II: Root Witness and Integrality",
+      "startLine": 80,
+      "endLine": 93,
+      "summary": "√2 is a root of X² − 2 and is algebraic (integral) over ℚ.",
+      "mathContext": "`aeval_sqrt_two_eq_zero` computes: `map_sub, map_pow, aeval_X, aeval_C` reduce to `(Real.sqrt 2)^2 - 2 = 0`, which follows from `Real.sq_sqrt (by norm_num : 0 ≤ 2)`. `sqrt_two_isIntegral` packages this as `IsIntegral ℚ (Real.sqrt 2)` by exhibiting the monic witness $X^2 - 2$."
+    },
+    {
+      "id": "minimal-polynomial",
+      "title": "Part III: The Minimal Polynomial",
+      "startLine": 95,
+      "endLine": 110,
+      "summary": "The main theorem: minpoly ℚ (Real.sqrt 2) = X² − 2.",
+      "mathContext": "`minpoly_sqrt_two` applies `minpoly.eq_of_irreducible_of_monic` with three arguments: `irred_X_sq_sub_two` (irreducible over ℚ), `aeval_sqrt_two_eq_zero` (root witness), and `monic_X_pow_sub_C 2 (show 2 ≠ 0 ...)` (monic). The theorem concludes `X^2 - C 2 = minpoly ℚ (Real.sqrt 2)`; taking `.symm` gives the stated form."
+    },
+    {
+      "id": "consequences",
+      "title": "Part IV: Consequences",
+      "startLine": 112,
+      "endLine": 141,
+      "summary": "Degree = 2, [ℚ(√2):ℚ] = 2, irrationality of √2.",
+      "mathContext": "`sqrt_two_minpoly_natDegree` rewrites via `minpoly_sqrt_two` then computes: `natDegree_sub_eq_left_of_natDegree_lt` handles that $\\deg(X^2) = 2 > \\deg(C\\,2) = 0$, then `natDegree_pow, natDegree_X` give $\\deg(X^2) = 2$. `adjoin_sqrt_two_finrank` uses `IntermediateField.adjoin.finrank sqrt_two_isIntegral` and the degree result. `sqrt_two_irrational` is immediate from Mathlib's `irrational_sqrt_two`."
+    }
+  ],
+  "conclusion": {
+    "summary": "The minimal polynomial of √2 over ℚ is X² − 2: proved via the Eisenstein criterion at p=2, Gauss's lemma, and the minimal polynomial characterization theorem. The proof is 141 lines, 8 theorems, 0 axioms, 0 sorries.",
+    "implications": "**Extension Degree**: The most important consequence is $[\\mathbb{Q}(\\sqrt{2}):\\mathbb{Q}] = 2$. This is the simplest non-trivial algebraic extension of $\\mathbb{Q}$. The element $\\{1, \\sqrt{2}\\}$ forms a $\\mathbb{Q}$-basis for $\\mathbb{Q}(\\sqrt{2})$, and every element has the form $a + b\\sqrt{2}$ with $a, b \\in \\mathbb{Q}$.\n\n**Constructibility**: $\\sqrt{2}$ is constructible with compass and straightedge (it is the diagonal of a unit square) precisely because $[\\mathbb{Q}(\\sqrt{2}):\\mathbb{Q}] = 2 = 2^1$ is a power of 2. Wantzel's theorem (1837) characterizes constructible numbers as those in extensions of degree $2^n$.\n\n**Quadratic Extensions**: $\\mathbb{Q}(\\sqrt{2})$ is the prototype quadratic extension. Every quadratic extension of $\\mathbb{Q}$ has the form $\\mathbb{Q}(\\sqrt{d})$ for some squarefree integer $d$, with minimal polynomial $X^2 - d$.",
+    "openQuestions": [
+      "Generalize: prove that for any squarefree $d > 1$, the minimal polynomial of $\\sqrt{d}$ over $\\mathbb{Q}$ is $X^2 - d$ (using Eisenstein at any prime $p \\mid d$).",
+      "Prove the minimal polynomial of $\\sqrt[n]{2}$ over $\\mathbb{Q}$ is $X^n - 2$ (Eisenstein at $p=2$, degree-$n$ extension).",
+      "Compute the minimal polynomial of $\\sqrt{2} + \\sqrt{3}$ over $\\mathbb{Q}$: show it is $X^4 - 10X^2 + 1$ (degree 4, irreducible). This proves $[\\mathbb{Q}(\\sqrt{2}, \\sqrt{3}):\\mathbb{Q}] = 4$."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "specializes",
+      "description": "irrationality of √2 is an immediate corollary: the minimal polynomial has degree 2 > 1, so √2 ∉ ℚ"
+    },
+    {
+      "targetId": "sqrt2-plus-sqrt3-irrational",
+      "relationship": "related",
+      "description": "irrationality of √2 + √3 can be approached via the minimal polynomial X⁴ − 10X² + 1, a degree-4 analogue of this proof"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "foundational",
+      "description": "constructibility theory: [ℚ(α):ℚ] = 2^n is needed; minpoly degree determines constructibility"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Polynomial", "IntermediateField"],
+    "namespace": "Sqrt2Minpoly",
+    "lineCount": 141,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/Sqrt2Minpoly.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "minpoly_sqrt_two",
+      "type": "core",
+      "description": "The minimal polynomial of √2 over ℚ is X² − 2",
+      "leanType": "minpoly ℚ (Real.sqrt 2) = X ^ 2 - C 2"
+    },
+    {
+      "name": "adjoin_sqrt_two_finrank",
+      "type": "corollary",
+      "description": "The extension degree [ℚ(√2) : ℚ] = 2",
+      "leanType": "Module.finrank ℚ ℚ⟮Real.sqrt 2⟯ = 2"
+    },
+    {
+      "name": "irred_X_sq_sub_two",
+      "type": "lemma",
+      "description": "X² − 2 is irreducible over ℚ",
+      "leanType": "Irreducible (X ^ 2 - C (2 : ℚ) : ℚ[X])"
+    }
+  ],
+  "sorries": 0
+}
