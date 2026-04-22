@@ -51,10 +51,10 @@
     "id": "ann-tractatus-objects",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 72,
+      "startLine": 76,
       "endLine": 85
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Objects: The Simple (TLP 2.02)",
     "content": "TLP 2.02: 'The object is simple.' We model Tractarian objects as a `variable` type parameter — Lean knows nothing about its inhabitants except that the type exists. This captures Wittgenstein's insistence that objects have no analyzable internal structure.\n\n**[Interpretive choice]** Using a bare type parameter captures *simplicity* (no structure) but not the Tractarian claim that an object's *form* determines which states of affairs it can enter (TLP 2.0141). A dependent-type encoding — where each object carries a type constraining its combinatorial possibilities — would better capture 2.0141 but at the cost of specifying structure Wittgenstein deliberately leaves open. We opt for the lighter encoding.",
     "mathContext": "In Lean, `variable (TractObject : Type)` introduces a universe-polymorphic type parameter. Any theorem or definition mentioning `TractObject` is implicitly universally quantified over all types — so our results hold regardless of what objects 'are.'",
@@ -77,10 +77,10 @@
     "id": "ann-tractatus-sachverhalt",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 87,
+      "startLine": 91,
       "endLine": 102
     },
-    "type": "definition",
+    "type": "concept",
     "title": "States of Affairs: Sachverhalte (TLP 2.01)",
     "content": "TLP 2.01: 'An atomic fact is a combination of objects.' A state of affairs (*Sachverhalt*) is a possible way objects might combine. We model this as an abstract type parameter, just like objects.\n\n**[Interpretive choice]** We do *not* encode states of affairs as sets of objects or as predicates over objects. The Tractatus arguably intends something more structural — the *way* objects hang together, not merely *which* objects are involved (the 'form' of TLP 2.032). By keeping Sachverhalt abstract, we preserve this openness. The cost is that we cannot express *within* the formalization how objects compose into states of affairs.",
     "mathContext": "The choice to keep `Sachverhalt` abstract rather than defining it as `Set TractObject -> Prop` or `List TractObject` is deliberate. An extensional encoding would commit us to saying that states of affairs with the same objects are identical — which conflicts with 'aRb' and 'bRa' being distinct states of affairs involving the same objects.",
@@ -103,7 +103,7 @@
     "id": "ann-tractatus-world",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 104,
+      "startLine": 118,
       "endLine": 118
     },
     "type": "definition",
@@ -130,10 +130,10 @@
     "id": "ann-tractatus-propositions",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 146,
+      "startLine": 158,
       "endLine": 161
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Propositions: The Inductive Grammar (TLP 4.21, 5)",
     "content": "TLP 4.21: 'The simplest proposition, the elementary proposition, asserts the existence of an atomic fact.' TLP 5: 'The proposition is a truth-function of elementary propositions.'\n\nWe define propositions as an inductive type with three constructors: `elementary` (asserts a state of affairs), `neg` (negation), and `conj` (conjunction). Every proposition is a finite tree built from these constructors.\n\nTLP 5.101 tells us that all truth-functions arise from successive applications of negation and conjunction. The other connectives — disjunction, implication, biconditional — are defined, not primitive.",
     "mathContext": "The `inductive` keyword in Lean defines a freely generated type. `Proposition S` is parametric in a type `S` of states of affairs. The three constructors give us a complete basis for propositional logic: $\\{\\neg, \\land\\}$ is functionally complete (any Boolean function can be expressed using only negation and conjunction).",
@@ -157,7 +157,7 @@
     "id": "ann-tractatus-derived",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 163,
+      "startLine": 175,
       "endLine": 189
     },
     "type": "definition",
@@ -184,7 +184,7 @@
     "id": "ann-tractatus-eval",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 191,
+      "startLine": 206,
       "endLine": 211
     },
     "type": "definition",
@@ -236,7 +236,7 @@
     "id": "ann-tractatus-taut-contra",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 229,
+      "startLine": 241,
       "endLine": 252
     },
     "type": "definition",
@@ -263,7 +263,7 @@
     "id": "ann-tractatus-worldmodel",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 253,
+      "startLine": 277,
       "endLine": 341
     },
     "type": "definition",
@@ -292,7 +292,7 @@
     "id": "ann-main-result-compositionality-gen",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 314,
+      "startLine": 319,
       "endLine": 331
     },
     "type": "theorem",
@@ -318,7 +318,7 @@
     "id": "ann-tractatus-thm1",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 347,
+      "startLine": 359,
       "endLine": 361
     },
     "type": "theorem",
@@ -342,7 +342,7 @@
     "id": "ann-tractatus-thm2",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 363,
+      "startLine": 372,
       "endLine": 374
     },
     "type": "theorem",
@@ -364,7 +364,7 @@
     "id": "ann-tractatus-thm3",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 376,
+      "startLine": 389,
       "endLine": 391
     },
     "type": "theorem",
@@ -390,7 +390,7 @@
     "id": "ann-tractatus-thm4",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 393,
+      "startLine": 412,
       "endLine": 420
     },
     "type": "theorem",
@@ -416,8 +416,8 @@
     "id": "ann-tractatus-thm5",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 422,
-      "endLine": 438
+      "startLine": 437,
+      "endLine": 439
     },
     "type": "theorem",
     "title": "Logical Independence (TLP 2.061, 2.062)",
@@ -442,7 +442,7 @@
     "id": "ann-tractatus-thm6",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 441,
+      "startLine": 450,
       "endLine": 452
     },
     "type": "theorem",
@@ -466,7 +466,7 @@
     "id": "ann-tractatus-thm7",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 454,
+      "startLine": 463,
       "endLine": 471
     },
     "type": "theorem",
@@ -491,7 +491,7 @@
     "id": "ann-tractatus-thm8",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 473,
+      "startLine": 481,
       "endLine": 486
     },
     "type": "theorem",
@@ -517,7 +517,7 @@
     "id": "ann-tractatus-thm9",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 488,
+      "startLine": 495,
       "endLine": 499
     },
     "type": "theorem",
@@ -540,7 +540,7 @@
     "id": "ann-tractatus-thm10-11",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 501,
+      "startLine": 508,
       "endLine": 522
     },
     "type": "theorem",
@@ -564,7 +564,7 @@
     "id": "ann-tractatus-thm12",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 524,
+      "startLine": 534,
       "endLine": 538
     },
     "type": "theorem",
@@ -590,7 +590,7 @@
     "id": "ann-tractatus-thm13",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 540,
+      "startLine": 550,
       "endLine": 558
     },
     "type": "theorem",
@@ -617,7 +617,7 @@
     "id": "ann-main-result-constrained",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 589,
+      "startLine": 594,
       "endLine": 605
     },
     "type": "theorem",
@@ -643,7 +643,7 @@
     "id": "ann-tractatus-weathermodel",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 607,
+      "startLine": 644,
       "endLine": 648
     },
     "type": "theorem",
@@ -670,7 +670,7 @@
     "id": "ann-tractatus-concrete-examples",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 650,
+      "startLine": 662,
       "endLine": 698
     },
     "type": "concept",
@@ -696,7 +696,7 @@
     "id": "ann-tractatus-formeq",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 700,
+      "startLine": 717,
       "endLine": 963
     },
     "type": "concept",
@@ -781,7 +781,7 @@
     "id": "ann-main-result-structeq",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 991,
+      "startLine": 997,
       "endLine": 1006
     },
     "type": "theorem",
@@ -808,8 +808,8 @@
     "id": "ann-tractatus-classification",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 1031,
-      "endLine": 1070
+      "startLine": 1079,
+      "endLine": 1081
     },
     "type": "insight",
     "title": "Analytical Decomposition: Invariance vs Dependence vs Limits",
@@ -840,7 +840,7 @@
     "id": "ann-tractatus-main-theorem",
     "proofId": "tractatus-ontology",
     "range": {
-      "startLine": 1071,
+      "startLine": 1106,
       "endLine": 1112
     },
     "type": "theorem",
