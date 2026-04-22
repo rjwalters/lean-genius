@@ -1,0 +1,198 @@
+{
+  "id": "sperner-ndim-oq-04",
+  "title": "n-Dimensional Sperner: Kuhn Path-Following Algorithm",
+  "slug": "sperner-ndim-oq-04",
+  "description": "Formalizes Kuhn's (1968) constructive proof of Sperner's lemma via path-following in the door adjacency graph. For Kuhn-compatible triangulations (door degree ≤ 2 per simplex), proves that FC simplices have exactly 1 door, non-FC simplices have 0 or 2 doors, and non-FC simplices with an entry door have a unique exit door. Defines the Kuhn walk algorithm and states the main termination theorem.",
+  "meta": {
+    "author": "Kuhn (1968); formalized by researcher-8",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sperner%27s_lemma#Constructive_proof",
+    "date": "1968",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/SpernerNDimOQ04.lean",
+    "tags": [
+      "combinatorics",
+      "topology",
+      "Sperner-lemma",
+      "algorithms",
+      "constructive-proof",
+      "path-following",
+      "kuhn-algorithm",
+      "door-graph",
+      "advanced"
+    ],
+    "badge": "wip",
+    "sorries": 3,
+    "originalContributions": [
+      "Definition of door degree and IsKuhnCompatible for abstract Sperner triangulations",
+      "Proof that FC simplices have exactly 1 door under Kuhn compatibility",
+      "Proof that non-FC simplices have 0 or 2 doors under Kuhn compatibility",
+      "Proof that non-FC simplex with entry door has a unique exit door (existsUnique)",
+      "Definition of KuhnState structure for path-following algorithm",
+      "Definition of kuhnWalk with fuel parameter (termination by fuel bound)",
+      "Definition of kuhnPathStart as entry point for boundary door",
+      "Preservation of door property across adjacency steps (door_transfer application)"
+    ],
+    "dateAdded": "2026-04-22",
+    "axiomCount": 0,
+    "lineCount": 389,
+    "assumptions": "3 sorries: (1) kuhn_path_terminates — main existence theorem (derived via sorry from sperner_ndim), (2) kuhn_walk_reaches_fc — walk correctness requires non-revisiting invariant, (3) kuhnPathStart_is_fc — top-level correctness. The non-sorry content (fc_door_count_eq_one, nonfc_door_count_zero_or_two, nonfc_with_door_has_unique_exit) is fully verified.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Harold Kuhn (1968) gave the first algorithmic proof of Sperner's lemma, showing that a fully-colored simplex can be found in polynomial time by path-following in the door graph. This constructive approach contrasts with the combinatorial parity argument (which proves existence without construction). Kuhn's algorithm is the foundation of many fixed-point computation methods and has connections to Lemke-Howson algorithm for Nash equilibria.",
+    "problemStatement": "For a Sperner-colored abstract triangulation satisfying the Kuhn compatibility axiom (door degree ≤ 2), starting from a boundary door, construct an explicit path through the door adjacency graph that terminates at a fully-colored simplex.",
+    "text": "Kuhn's algorithm provides a constructive proof of Sperner's lemma: follow the unique path in the door graph from a boundary door to reach a fully-colored simplex.",
+    "proofStrategy": "The proof has three layers:\n\n1. **Door degree analysis** (fully proved): Under the Kuhn compatibility axiom (degree ≤ 2) and the abstract door parity theorem:\n   - FC simplices have odd degree ≤ 2, so degree = 1\n   - Non-FC simplices have even degree ≤ 2, so degree = 0 or 2\n\n2. **Unique exit lemma** (fully proved): A non-FC simplex with an entry door has exactly one other door (existsUnique), proved via Finset.card_eq_two and membership analysis.\n\n3. **Path termination** (stated, sorry): The Kuhn walk starting from a boundary door terminates at an FC simplex. Requires the non-revisiting invariant: the door graph component containing a boundary vertex is a path (not a cycle), because cycles in the door graph would contradict the boundary structure.",
+    "keyInsights": [
+      "The abstract door parity theorem (FC ↔ odd door count) combined with the degree bound directly gives exact door counts: 1 for FC, 0 or 2 for non-FC",
+      "The unique exit lemma (existsUnique) is the formal statement that Kuhn's algorithm is deterministic: each step has a unique next state",
+      "The non-revisiting invariant (the hard part) follows from the door graph having no cycles containing boundary vertices — a consequence of the boundary door being a degree-1 vertex in the door graph",
+      "The door preservation lemma (door_transfer from SpernerNDim) ensures that moving through a door preserves the door property, so the algorithm maintains its invariants",
+      "Using a fuel parameter for kuhnWalk avoids well-founded recursion while still capturing the algorithm's structure"
+    ],
+    "prerequisites": [
+      "n-dimensional Sperner's lemma (SpernerNDim.lean)",
+      "Abstract door parity theorem (abstract_door_parity)",
+      "Door transfer lemma (door_transfer)",
+      "Kuhn compatibility axiom (IsKuhnCompatible)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "kuhn-compatible",
+      "title": "Door Degree and Kuhn Compatibility",
+      "startLine": 50,
+      "endLine": 68,
+      "summary": "Defines doorDegree (number of doors per simplex) and IsKuhnCompatible (degree ≤ 2 for all simplices).",
+      "mathContext": "The Kuhn compatibility axiom restricts the door graph to have maximum degree 2, making it a disjoint union of paths and cycles."
+    },
+    {
+      "id": "door-parity",
+      "title": "Per-Simplex Door Parity",
+      "startLine": 70,
+      "endLine": 90,
+      "summary": "Connects doorDegree to the abstract door parity theorem: FC simplices have odd degree, non-FC have even degree.",
+      "mathContext": "Re-derives per_simplex_door_parity using the public abstract_door_parity theorem."
+    },
+    {
+      "id": "door-counts",
+      "title": "Exact Door Counts",
+      "startLine": 92,
+      "endLine": 120,
+      "summary": "Under Kuhn compatibility: FC simplices have exactly 1 door, non-FC have 0 or 2.",
+      "mathContext": "Combines parity (odd/even) with the degree bound (≤ 2) via omega."
+    },
+    {
+      "id": "unique-exit",
+      "title": "Unique Exit Door",
+      "startLine": 122,
+      "endLine": 185,
+      "summary": "Non-FC simplex with entry door k_in has a unique exit door k_out ≠ k_in. Proved via Finset.card_eq_two.",
+      "mathContext": "The existsUnique statement captures the determinism of Kuhn's algorithm."
+    },
+    {
+      "id": "kuhn-step",
+      "title": "Kuhn Step Function",
+      "startLine": 187,
+      "endLine": 235,
+      "summary": "Defines kuhnStep (one algorithm step) and proves door preservation across adjacency.",
+      "mathContext": "Uses door_transfer from SpernerNDim to show the door property is maintained."
+    },
+    {
+      "id": "kuhn-walk",
+      "title": "Kuhn Walk Algorithm",
+      "startLine": 237,
+      "endLine": 270,
+      "summary": "Defines KuhnState structure and kuhnWalk with fuel parameter for termination.",
+      "mathContext": "Fuel-based recursion avoids well-founded termination obligations while capturing the algorithm."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 272,
+      "endLine": 280,
+      "summary": "States kuhnPathStart_is_fc: the simplex found by the Kuhn algorithm is fully colored.",
+      "mathContext": "Main correctness theorem, currently stated with sorry pending the non-revisiting invariant proof."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "fc_door_count_eq_one",
+      "type": "supporting",
+      "statement": "Under IsKuhnCompatible, FC simplices have exactly 1 door",
+      "significance": "Establishes that FC simplices are terminal vertices (degree 1) in the door graph under Kuhn compatibility"
+    },
+    {
+      "name": "nonfc_door_count_zero_or_two",
+      "type": "supporting",
+      "statement": "Under IsKuhnCompatible, non-FC simplices have 0 or 2 doors",
+      "significance": "Establishes that non-FC simplices are either isolated (degree 0) or pass-through (degree 2) in the door graph"
+    },
+    {
+      "name": "nonfc_with_door_has_unique_exit",
+      "type": "supporting",
+      "statement": "Non-FC simplex with entry door k_in has a unique exit door k_out ≠ k_in",
+      "significance": "Proves determinism of Kuhn's algorithm: each step has a unique next state"
+    },
+    {
+      "name": "kuhnPathStart_is_fc",
+      "type": "core",
+      "statement": "The simplex found by kuhnPathStart from a boundary door is fully colored",
+      "significance": "Main correctness theorem for Kuhn's algorithm (sorry pending non-revisiting invariant)"
+    }
+  ],
+  "relatedProofs": [
+    {
+      "id": "sperner-ndim",
+      "relationship": "Builds on abstract SpernerTriangulation and uses abstract_door_parity"
+    },
+    {
+      "id": "sperner-ndim-oq-01",
+      "relationship": "Freudenthal triangulation satisfies adjacency requirements; likely satisfies IsKuhnCompatible"
+    },
+    {
+      "id": "sperner-ndim-oq-03",
+      "relationship": "Displacement coloring uses similar door structure for Brouwer FPT"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Kuhn, H. W.",
+      "title": "Simplicial Approximation of Fixed Points",
+      "year": "1968",
+      "venue": "Proceedings of the National Academy of Sciences, 61(4), 1238-1242",
+      "note": "Original paper introducing the path-following algorithm for Sperner's lemma and fixed-point computation"
+    },
+    {
+      "authors": "Scarf, H. E.",
+      "title": "The Approximation of Fixed Points of a Continuous Mapping",
+      "year": "1967",
+      "venue": "SIAM Journal on Applied Mathematics, 15(5), 1328-1343",
+      "note": "Related constructive approach to fixed-point computation via primitive sets"
+    },
+    {
+      "authors": "Cohen, D. I. A.",
+      "title": "On the Sperner Lemma",
+      "year": "1967",
+      "venue": "Journal of Combinatorial Theory, 2(4), 585-587",
+      "note": "Elementary parity proof of Sperner's lemma using the door-counting argument"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.SpernerNDim"
+    ],
+    "opens": [
+      "SpernerNDim",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "SpernerNDimOQ04",
+    "lineCount": 389,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 5
+  },
+  "sorries": 3
+}
