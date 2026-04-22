@@ -109,6 +109,21 @@
       "targetId": "abel-ruffini-oq-04-oq-01",
       "relationship": "sibling",
       "description": "Concrete Abel-Ruffini: proves $\\text{Gal}(x^5 - 4x + 2) \\cong S_5$ and derives unsolvability for this specific polynomial — the explicit instantiation of the non-solvability theorem this file formalizes for all $n \\geq 5$"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-02",
+      "relationship": "sibling",
+      "description": "Alternating Groups: $A_n$ solvable $\\iff n \\leq 4$ — the direct alternating-group analogue of this file's symmetric group classification, proved independently. This file's `alternating_solvable_iff` and that entry's main theorem are equivalent statements from complementary perspectives."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
+      "relationship": "related",
+      "description": "Finite Groups of Order $< 60$ Are Solvable — $|A_5| = 60$ is the precise boundary: every finite group of order $< 60$ is solvable. This entry proves the p-group chain $\\text{IsPGroup} \\Rightarrow \\text{IsNilpotent} \\Rightarrow \\text{IsSolvable}$, establishing the order-60 threshold that makes $A_5$ the minimal non-solvable example."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-03",
+      "relationship": "related",
+      "description": "Galois's Solvability Criterion: a root is solvable by radicals $\\iff$ its Galois group is solvable. This entry proves the forward direction from Mathlib and axiomatizes the reverse (Kummer theory). Complementary to this file's `not_solvable_by_rad_of_not_solvable_galois` (contrapositive form) and the `galois_group_order` result."
     }
   ],
   "references": [
