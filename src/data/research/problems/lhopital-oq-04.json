@@ -1,0 +1,61 @@
+{
+  "slug": "lhopital-oq-04",
+  "title": "L'Hôpital's Rule — Relationship to Taylor Series",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\frac{f'(a)}{g'(a)}",
+    "plain": "L'Hôpital's rule and Taylor series are two sides of the same coin for $0/0$ indeterminate forms. The standard Lean proof of L'Hôpital uses the Mean Value Theorem. But there's a cleaner story: if both $f$ and $g$ vanish at $a$, then near $a$ they behave like their derivatives, because their Taylor expansions start at the linear term. This insight can be made precise and formalized.",
+    "whyMatters": [
+      "Pedagogical value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-22T15:01:13+02:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: lhopital-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "analysis",
+    "calculus",
+    "lhopital",
+    "taylor-series",
+    "formalization",
+    "mathlib"
+  ],
+  "relatedProofs": [
+    "lhopital"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T13:03:46.496Z",
+  "lastUpdate": "2026-04-22T13:03:46.532Z",
+  "significance": 7,
+  "tractability": 7
+}

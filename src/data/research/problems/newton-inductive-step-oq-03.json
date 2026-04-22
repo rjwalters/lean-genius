@@ -1,0 +1,93 @@
+{
+  "slug": "newton-inductive-step-oq-03",
+  "title": "Newton's Identity: Extension to q-Binomial and Log-Concavity",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Newton's Identity: Extension to q-Binomial and Log-Concavity.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-22T13:03:46.506Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "combinatorics",
+    "q-analogs",
+    "log-concavity",
+    "newton",
+    "symmetric-functions"
+  ],
+  "relatedProofs": [
+    "newton-inductive-step",
+    "newton-inductive-step-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T13:03:46.505Z",
+  "lastUpdate": "2026-04-22T13:03:46.505Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/NewtonInductiveStep.lean",
+      "filename": "NewtonInductiveStep.lean",
+      "lineCount": 153,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NewtonInductiveStep.lean"
+    },
+    {
+      "path": "Proofs/NewtonInductiveStepOQ01.lean",
+      "filename": "NewtonInductiveStepOQ01.lean",
+      "lineCount": 379,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NewtonInductiveStepOQ01.lean"
+    },
+    {
+      "path": "Proofs/NewtonInductiveStepOQ01Aristotle.lean",
+      "filename": "NewtonInductiveStepOQ01Aristotle.lean",
+      "lineCount": 46,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NewtonInductiveStepOQ01Aristotle.lean"
+    }
+  ]
+}

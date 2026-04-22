@@ -1,0 +1,69 @@
+{
+  "slug": "godel-incompleteness-oq-03",
+  "title": "Natural Mathematical Statements Independent of PA",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Natural Mathematical Statements Independent of PA.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-22T12:51:58.077Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "logic",
+    "incompleteness",
+    "independence",
+    "proof-theory"
+  ],
+  "relatedProofs": [
+    "godel-incompleteness"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T12:51:58.077Z",
+  "lastUpdate": "2026-04-22T12:51:58.077Z",
+  "significance": 8,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/GodelIncompleteness.lean",
+      "filename": "GodelIncompleteness.lean",
+      "lineCount": 438,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GodelIncompleteness.lean"
+    }
+  ]
+}

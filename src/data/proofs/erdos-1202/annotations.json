@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 20
     },
-    "type": "context",
+    "type": "concept",
     "title": "Source Corruption and Problem Reconstruction",
     "content": "The file header documents both the problem's solved status and the data quality issue: the LaTeX encoding was corrupted during scraping from erdosproblems.com. The recoverable fragments are: parameters ε, η > 0; a set of k primes p₁ < p₂ < ... < pₖ; a growth condition m > √(n log n); and the asymptotic bound k ≫_c m²/(n log n). The precise structural condition on the prime subset cannot be recovered, so the formalization is labeled as 'axiomatized' with explicit acknowledgment of this limitation.",
     "mathContext": "Legible fragments reconstruct to: $\\exists c > 0$, $\\forall k$ primes with $k \\gg_c m^2/(n \\log n)$ where $m > \\sqrt{n \\log n}$, $\\exists$ structured subset of size $\\gg c \\cdot m^2/(n \\log n)$. The asymptotic $\\gg_c$ means 'at least $c$ times' for an absolute constant $c > 0$ that does not depend on $m$ or $n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "erdosproblems.com archive",
       "LaTeX encoding",
@@ -76,7 +76,7 @@
       "startLine": 46,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Structural Lemmas: Positivity and Comparison for the Threshold",
     "content": "Two lemmas establish that `asympThreshold m n` is well-behaved under the problem's parameter constraints. `asympThreshold_pos` proves the threshold is strictly positive when m > 0 and n > 1, using that m² > 0 and n log n > 0. `asympThreshold_lt_m` proves the stronger bound: the threshold is strictly less than m when the growth condition holds, using the equivalence m²/(n log n) < m ↔ m < n log n. These lemmas are pedagogically useful: they confirm that the threshold m²/(n log n) sits strictly between 0 and m in the interesting regime.",
     "mathContext": "$\\mathtt{asympThreshold\\_pos}$: $m > 0, n > 1 \\Rightarrow m^2/(n \\log n) > 0$. Proof: $m^2 > 0$ by `pow_pos`; $n \\log n > 0$ by $n > 1 \\Rightarrow \\log n > 0$ (`Real.log_pos`). $\\mathtt{asympThreshold\\_lt\\_m}$: $m > 0, n > 1, m > \\sqrt{n \\log n} \\Rightarrow m^2/(n \\log n) < m$. Proof: equivalent to $m^2 < m \\cdot n \\log n$, i.e., $m < n \\log n$, which follows from $m^2 > n \\log n$ and $m^2 < (n \\log n)^2$ when $n \\log n > m$ — this requires $n \\log n > \\sqrt{n \\log n}$, i.e., $n \\log n > 1$.",
@@ -99,7 +99,7 @@
       "startLine": 74,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "theorem",
     "title": "Main Axiom: The Threshold Result (Axiomatized)",
     "content": "The axiom `erdos_1202_threshold` encodes the solved result of Erdős Problem #1202: there exists an absolute constant c > 0 such that for any prime set S with |S| ≥ m²/(n log n) (under the growth condition), a structured subset T ⊆ S of size ≥ c · m²/(n log n) must exist. The result is axiomatized for two reasons: (1) the precise structural property of T cannot be recovered from the corrupted source statement; (2) the proof requires deep analytic number theory (sieve methods, prime number theorem estimates) not currently available in Mathlib in the required form.",
     "mathContext": "Formally: $\\exists c > 0, \\forall n > 1, \\forall m$ with $m > \\sqrt{n \\log n}, \\forall S$ with $S$ a prime set and $|S| \\ge m^2/(n \\log n)$: $\\exists T \\subseteq S$ prime set with $|T| \\ge c \\cdot m^2/(n \\log n)$. The value $m^2/(n \\log n)$ appears naturally in sieve theory: by the prime number theorem, the number of primes up to $n$ is $\\sim n/\\log n$, so among $n$ random integers, approximately $m^2/(n \\log n)$ pairs fall within distance $m$ of each other in prime distribution contexts.",
@@ -146,7 +146,7 @@
       "startLine": 1,
       "endLine": 97
     },
-    "type": "context",
+    "type": "concept",
     "title": "Sieve Theory and the m²/(n log n) Threshold",
     "content": "The asymptotic m²/(n log n) is characteristic of second-moment arguments in sieve theory. To understand why: if we choose a random subset R of primes up to n by including each prime p with probability proportional to some weight, the expected size is a sum of weights. The condition k ≫ m²/(n log n) arises when we want the expected number of pairs from R satisfying some proximity condition to exceed m² — the factor n log n in the denominator comes from the prime number theorem density (primes have density 1/log n near n). This is the same scale appearing in Goldston-Pintz-Yıldırım's work on small prime gaps (2005): showing infinitely often pₙ₊₁ - pₙ = o(log pₙ) required counting prime pairs within o(log n) of each other.",
     "mathContext": "By PNT: $\\pi(n) \\sim n/\\log n$. For prime pairs $(p, p+m)$ with $p \\le n$: expected count $\\sim m \\cdot (n/\\log n) \\cdot (1/\\log n) = mn/\\log^2 n$. When $m \\sim \\sqrt{n \\log n}$: count $\\sim \\sqrt{n \\log n} \\cdot n / \\log^2 n = n^{3/2} / (\\log n)^{3/2}$. The threshold $m^2/(n \\log n) \\sim (n \\log n)/(n \\log n) = 1$ at $m = \\sqrt{n \\log n}$, confirming this is the natural scale boundary.",
