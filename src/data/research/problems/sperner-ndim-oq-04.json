@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "NEW",
     "since": "2026-04-22T13:03:46.382Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,52 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 7): Proved kuhn_walk_result_not_in_visited (0 sorries, 0 axioms). File is 424 lines with no sorry. Only remaining task is Docker build verification; proof logic is complete.",
-    "builtItems": [
-      "doorDegree def: SpernerNDimOQ04.lean:60",
-      "IsKuhnCompatible def: SpernerNDimOQ04.lean:65",
-      "door_degree_parity lemma: PROVED",
-      "fc_door_count_eq_one theorem: PROVED via omega",
-      "nonfc_door_count_zero_or_two theorem: PROVED via omega",
-      "nonfc_with_door_has_unique_exit theorem: PROVED via Finset.card_eq_two",
-      "KuhnState structure: defined",
-      "kuhnWalk function: fuel-based recursion defined",
-      "kuhnPathStart def: algorithm entry point defined",
-      "kuhn_path_terminates PROVED (not sorry): sperner_ndim c K hc hbdry_odd \u2014 SpernerNDimOQ04.lean:324",
-      "KuhnStateValid predicate (3-part path invariant) in SpernerNDimOQ04.lean:308",
-      "kuhnState_initial_valid lemma (initial state satisfies KuhnStateValid) in SpernerNDimOQ04.lean:319",
-      "guard_entry_case_impossible lemma (Case A non-revisiting via adj_symm) in SpernerNDimOQ04.lean:331",
-      "guard_current_impossible lemma (walk never steps to current via adj_ne) in SpernerNDimOQ04.lean:348",
-      "kuhn_walk_result_not_in_visited lemma: non-revisiting property, sorry is TRIVIAL for Aristotle (Session 6)",
-      "kuhn_walk_result_not_in_visited PROVED: structural induction on fuel, all branches close via current_not_visited or IH+subset monotonicity \u2014 SpernerNDimOQ04.lean:335"
-    ],
-    "insights": [
-      "IsKuhnCompatible (door degree \u2264 2) combined with abstract_door_parity gives exact door counts: 1 for FC, 0 or 2 for non-FC",
-      "nonfc_with_door_has_unique_exit proved via Finset.card_eq_two extraction - formal determinism of Kuhn algorithm",
-      "Non-revisiting invariant is the hard open part: door graph component containing a boundary vertex is a path (not a cycle)",
-      "Fuel-based recursion for kuhnWalk avoids well-founded termination obligations",
-      "door_degree_parity proved via simp only [h2] + convert h using 2 pattern (same as per_simplex_door_parity in SpernerNDim)",
-      "kuhn_path_terminates proved: given IsSperner c and odd boundary door count, FC existence follows from sperner_ndim directly (1-line proof). No walk argument needed for existence.",
-      "Case A of non-revisiting is proved: adj_symm closes the cycle when k prime equals entry door, giving contradiction via current_not_visited",
-      "adj_ne immediately rules out walking to current itself",
-      "Case B (k prime = exit door) requires per-simplex path history beyond the visited set \u2014 KuhnStateValid necessary but not sufficient",
-      "KuhnState needs prev field (previous simplex + exit door) to enable Case B contradiction",
-      "kuhn_walk_reaches_fc theorem is INCORRECT as stated: Case 4 (mid-walk boundary exit) is genuinely possible \u2014 a simplex on the outer boundary can have interior entry door and boundary exit door (k = Fin.last d), causing walk to terminate at non-FC",
-      "Even with IsSperner c and boundary_door_is_last_face, Case 4 fires after the first step: initial entry is boundary (Fin.last d), but subsequent entries are interior (\u2260 Fin.last d), so exit CAN be Fin.last d (boundary)",
-      "Correct theorem for kuhn_walk_reaches_fc: disjunction \"IsFC result \u2228 \u2203 k, isDoorAt c K result k \u2227 K.adj result k = none\" \u2014 needs separate parity argument to extract FC existence",
-      "kuhn_path_terminates fixed: restored non-constructive proof via sperner_ndim c K hc hbdry (adds hc : IsSperner c and hbdry : Odd (...).card as hypotheses) \u2014 0 sorries",
-      "kuhn_walk_result_not_in_visited (result not in visited) is TRUE by induction; kuhn_walk_reaches_fc (result is FC) is FALSE as stated due to mid-walk boundary exits"
-    ],
-    "mathlibGaps": [
-      "No Mathlib theorem for path-following algorithm termination with non-revisiting invariant",
-      "Mathlib lacks abstract door graph connectivity lemmas for non-revisiting proof",
-      "SpernerTriangulation lacks an adjacent-simplices-share-unique-facet axiom needed for the non-revisiting proof"
-    ],
-    "nextSteps": [
-      "Docker build verification needed (Docker not available during session 7)",
-      "Constructive FC termination: kuhnPathStart eventually reaches FC (needs FC-or-boundary-exit disjunction + parity count argument)",
-      "Consider SpernerNDimOQ05 architectural refactor: gridAdj semantics do not match boundary_face axiom"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
   "tags": [
     "combinatorics",
@@ -84,8 +43,7 @@
     "constructive"
   ],
   "relatedProofs": [
-    "sperner-ndim",
-    "sperner-ndim-oq-04"
+    "sperner-ndim"
   ],
   "references": {
     "papers": [],
@@ -93,7 +51,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.382Z",
-  "lastUpdate": "2026-04-22T00:00:00.000Z",
+  "lastUpdate": "2026-04-22T13:03:46.382Z",
   "significance": 8,
   "tractability": 6
 }

@@ -1,74 +1,82 @@
 {
   "slug": "triangle-angle-sum-oq-02",
   "title": "Triangle Angle Sum: Gauss-Bonnet Theorem Formalization in Lean",
-  "phase": "ACT",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in geometry: Triangle Angle Sum: Gauss-Bonnet Theorem Formalization in Lean.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-22T13:03:46.383Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
   "knowledge": {
-    "progressSummary": "COMPLETE: Gauss-Bonnet generalization formalized. TriangleAngleSumOQ02.lean proves Girard spherical excess, Lambert hyperbolic defect, discrete Gauss-Bonnet for triangulations. All 22 theorems proved from 3 structural axioms (gb_local, spherical, discrete_gb). 0 sorries.",
-    "builtItems": [
-      "GeodesicTriangle structure with gb_local axiom (angle excess = integrated curvature)",
-      "FlatTriangle: proves flat_angle_sum (K=0 \u2192 \u03b1+\u03b2+\u03b3=\u03c0, Euclid recovery)",
-      "SphericalTriangle: proves girard_theorem (\u03b1+\u03b2+\u03b3-\u03c0 = area/r\u00b2), spherical_angle_sum_gt_pi, unit_sphere_area_eq_excess",
-      "HyperbolicTriangle: proves lambert_theorem (\u03c0-\u03b1-\u03b2-\u03b3 = area), hyperbolic_angle_sum_lt_pi, hyperbolic_area_lt_pi",
-      "RiemannianTriangulation: discrete Gauss-Bonnet axiom, proves sphere/torus/genus-g total curvature",
-      "positive/negative_curvature_positive/negative_chi: curvature sign \u2192 Euler characteristic sign",
-      "flat_triangulation_chi_zero: flat triangulation has \u03c7=0",
-      "three_geometries_unified: all three classical geometries characterized by curvature sign",
-      "excess_classifies_curvature: angle excess \u2194 curvature sign",
-      "Mathlib example: angle_add_angle_add_angle_eq_pi as underlying flat case"
-    ],
-    "insights": [
-      "Local Gauss-Bonnet E(T) = \u222b_T K dA directly generalizes angle sum theorem: K=0 gives E=0 gives sum=\u03c0",
-      "Girard theorem (1629) is Gauss-Bonnet before Gauss-Bonnet: spherical area = r\u00b2\u00b7excess",
-      "Lambert defect (1761) is K=-1 Gauss-Bonnet: hyperbolic area = \u03c0 - angle_sum < \u03c0",
-      "Discrete Gauss-Bonnet recoverable as sum of local versions over all triangles",
-      "Curvature sign determines topology: K>0 globally \u2192 \u03c7>0 (sphere), K=0 \u2192 \u03c7=0 (torus), K<0 \u2192 \u03c7<0 (higher genus)",
-      "Lean formalization strategy: axiomatize GeodesicTriangle with gb_local as structure field, then derive all three classical geometries as special cases via sub-structures"
-    ],
-    "mathlibGaps": [
-      "Riemannian metrics and geodesic triangles not formalized in Mathlib (as of v4.26.0)",
-      "Integration on Riemannian manifolds not in Mathlib",
-      "Spherical excess formula not directly available (though Mathlib has EuclideanGeometry.angle)"
-    ],
-    "nextSteps": [
-      "Build TriangleAngleSumOQ02.lean in Docker to verify 0 sorry, 0 error compilation",
-      "Gallery integration: add to gallery index and link to EulerPolyhedralOQ02OQ01 as complementary",
-      "Update candidate pool to completed once PR merged"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
   "tags": [
     "geometry",
     "differential-geometry",
     "gauss-bonnet",
-    "curvature",
-    "euler-characteristic"
+    "formalization",
+    "curvature"
   ],
   "relatedProofs": [
     "triangle-angle-sum",
-    "triangle-angle-sum-oq-01",
-    "triangle-angle-sum-oq-03",
-    "euler-polyhedral-oq-02-oq-01"
+    "triangle-angle-sum-oq-01"
   ],
   "references": {
     "papers": [],
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-04-23T00:00:00Z",
+  "started": "2026-04-22T13:03:46.383Z",
+  "lastUpdate": "2026-04-22T13:03:46.383Z",
   "significance": 8,
+  "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/TriangleAngleSumOQ02.lean",
-      "filename": "TriangleAngleSumOQ02.lean",
-      "lineCount": 320,
-      "theoremCount": 22,
-      "axiomCount": 3,
-      "defCount": 5,
+      "path": "Proofs/TriangleAngleSum.lean",
+      "filename": "TriangleAngleSum.lean",
+      "lineCount": 158,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleAngleSumOQ02.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleAngleSum.lean"
+    },
+    {
+      "path": "Proofs/TriangleAngleSumOQ01.lean",
+      "filename": "TriangleAngleSumOQ01.lean",
+      "lineCount": 261,
+      "theoremCount": 5,
+      "axiomCount": 4,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleAngleSumOQ01.lean"
     }
   ]
 }
