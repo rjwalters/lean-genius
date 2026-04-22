@@ -52,14 +52,23 @@
       "Apply regularity: for any β₀ < κ, can find β > β₀ in ∆C_α using sequence construction"
     ]
   },
-  "tags": ["set-theory", "cardinal-arithmetic", "fodor-lemma", "club-stationary", "wip-completion"],
+  "tags": [
+    "set-theory",
+    "cardinal-arithmetic",
+    "fodor-lemma",
+    "club-stationary",
+    "wip-completion"
+  ],
   "relatedProofs": [
     "cantor-diagonalization",
     "cantor-diagonalization-oq-02",
-    "cantor-diagonalization-oq-02-oq-03"
+    "cantor-diagonalization-oq-02-oq-03",
+    "cantor-diagonalization-oq-02-oq-03-oq-02"
   ],
   "references": {
-    "papers": ["Fodor (1956) - Eine Bemerkung zur Theorie der regressiven Funktionen"],
+    "papers": [
+      "Fodor (1956) - Eine Bemerkung zur Theorie der regressiven Funktionen"
+    ],
     "urls": [],
     "mathlib": [
       "Mathlib.SetTheory.Ordinal.Basic",

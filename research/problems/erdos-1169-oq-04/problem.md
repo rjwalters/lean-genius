@@ -162,3 +162,6 @@ difficulty: high
 source: gallery-gap
 created: 2026-04-22T14:30:59+02:00
 ```
+
+**Significance**: 8/10
+**Tractability**: 5/10

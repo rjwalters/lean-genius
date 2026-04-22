@@ -83,7 +83,7 @@
       "startLine": 200,
       "endLine": 240
     },
-    "type": "concept",
+    "type": "tactic",
     "title": "Sym2 Induction",
     "content": "To prove something about an unordered pair $e$, we use `induction e using Sym2.ind` to get representatives $u, v$. The hypothesis `h : ¬e.IsDiag` ensures $u \\neq v$ (edges don't have both endpoints the same).",
     "significance": "supporting",
