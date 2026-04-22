@@ -52,7 +52,11 @@ theorem list_coloring_proper (G : SimpleGraph V) {C : Type*} [DecidableEq C]
 -- No adjacency constraints, so any color selection from non-empty lists works.
 theorem empty_graph_list_colorable (k : ℕ) (hk : 0 < k) :
     IsKChoosable' (⊥ : SimpleGraph V) k := by
-  sorry
+  intro C _ L hsize
+  have hne : ∀ v, (L v).Nonempty :=
+    fun v => Finset.card_pos.mp (Nat.lt_of_lt_of_le hk (hsize v))
+  exact ⟨fun v => (hne v).choose,
+         ⟨fun v => (hne v).choose_spec, fun v w h => by simp at h⟩⟩
 
 -- Routine: IsKChoosable' is monotone: k-choosable implies (k-1)-choosable.
 -- Lists of size ≥ k also satisfy ≥ k-1, so feasibility is preserved.
@@ -65,13 +69,14 @@ theorem choosable_mono (G : SimpleGraph V) (k m : ℕ) (hkm : m ≤ k)
 theorem list_assignment_union_nonempty {C : Type*} [DecidableEq C]
     (L : ListAssignment' V C) (v : V) (h : (L v).Nonempty) :
     (Finset.univ.biUnion L).Nonempty := by
-  sorry
+  obtain ⟨c, hc⟩ := h
+  exact ⟨c, Finset.mem_biUnion.mpr ⟨v, Finset.mem_univ v, hc⟩⟩
 
 -- Routine: In the empty graph ⊥, any function is a proper coloring.
 -- There are no edges, so the adjacency condition is vacuously satisfied.
 theorem bot_proper_coloring {C : Type*} (f : V → C) :
     ∀ v w : V, (⊥ : SimpleGraph V).Adj v w → f v ≠ f w := by
-  sorry
+  intro v w h; simp at h
 
 -- Routine: No vertex is adjacent to itself (SimpleGraph is loopless).
 -- This is part of the SimpleGraph definition.
@@ -85,18 +90,18 @@ theorem adj_symm (G : SimpleGraph V) (v w : V) (h : G.Adj v w) : G.Adj w v :=
 
 -- Routine: 0 < 2^k for all natural k.
 -- A positive base raised to any power is positive.
-theorem two_pow_pos (k : ℕ) : 0 < 2 ^ k := by
-  sorry
+theorem two_pow_pos (k : ℕ) : 0 < 2 ^ k :=
+  Nat.pos_pow_of_pos k (by norm_num)
 
 -- Routine: 1 ≤ 2^k for all natural k.
 -- Follows from two_pow_pos.
-theorem two_pow_ge_one (k : ℕ) : 1 ≤ 2 ^ k := by
-  sorry
+theorem two_pow_ge_one (k : ℕ) : 1 ≤ 2 ^ k :=
+  Nat.one_le_pow k 2 (by norm_num)
 
 -- Routine: 2^(k-1) ≤ 2^k for all natural k.
 -- Subtracting 1 from the exponent yields a smaller or equal power.
-theorem two_pow_pred_le (k : ℕ) : 2 ^ (k - 1) ≤ 2 ^ k := by
-  sorry
+theorem two_pow_pred_le (k : ℕ) : 2 ^ (k - 1) ≤ 2 ^ k :=
+  Nat.pow_le_pow_right (by norm_num) (Nat.sub_le k 1)
 
 -- Routine: Nat.clog 2 n + 1 > 0 for all n.
 -- Adding 1 to any natural number gives a positive result.
@@ -106,7 +111,9 @@ theorem clog_add_one_pos (n : ℕ) : 0 < Nat.clog 2 n + 1 := by
 -- Routine: For n ≥ 2, Nat.clog 2 n ≥ 1.
 -- The ceiling log base 2 of any number ≥ 2 is at least 1.
 theorem clog_ge_one (n : ℕ) (hn : 2 ≤ n) : 1 ≤ Nat.clog 2 n := by
-  sorry
+  have h0 : Nat.clog 2 n ≠ 0 := by
+    rw [Nat.clog_eq_zero_iff]; omega
+  omega
 
 -- Routine: Fintype.card V ≥ 0.
 -- Cardinality of a finite type is a natural number, hence ≥ 0.
