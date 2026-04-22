@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: hook_length_formula_one_row proved (0 sorries); LGV chain has 2 hard sorries",
+    "progressSummary": "PROGRESS: Proved hook-length formula for hook-shape Young diagrams (m+1,1) via explicit bijection; 3 pre-existing sorries remain for general case",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -53,7 +53,10 @@
       "oneRowYD, mem_oneRowYD, oneRowYD_card, rowLen_oneRowYD_zero, colLen_oneRowYD (PART VI infrastructure)",
       "hookLength_oneRowYD, hookProd_oneRowYD — hook computations for single-row shape",
       "oneRowSYT, entry_oneRow_eq, oneRowSYT_unique — SYT uniqueness machinery",
-      "hook_length_formula_one_row — verified instance of hook formula, 0 sorries"
+      "hook_length_formula_one_row — verified instance of hook formula, 0 sorries",
+      "hookProd_hookShapeYD: proved hookProd(m+1,1)=(m+2)*m! in BallotProblemOQ03OQ01OQ02.lean:775",
+      "card_SYT_hookShapeYD: proved |SYT(m+1,1)|=m+1 via Equiv.ofBijective hookSYT in BallotProblemOQ03OQ01OQ02.lean:1062",
+      "hook_length_formula_hook_shape: proved hook formula for hook shapes in BallotProblemOQ03OQ01OQ02.lean:1075"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -69,17 +72,20 @@
       "hookLength_add_eq: hookLength μ i j + 1 = rowLen i - j + colLen j — key computation lemma",
       "Nat.descFactorial_self n proves hookProd = n! via descFactorial_eq_prod_range",
       "SYT uniqueness: lower bound by IH on row_strict, upper bound by chain to last cell",
-      "if_neg (mt mem_oneRowYD.mpr hc) is the clean pattern for entry_zero proofs"
+      "if_neg (mt mem_oneRowYD.mpr hc) is the clean pattern for entry_zero proofs",
+      "Bijection technique: hookSYT maps Fin(m+1) to SYT(m+1,1) by k -> tableau with entry(1,0)=k+2; key lemma entry(0,0)=1 always holds via chain argument",
+      "hookProd insert decomposition: use Finset.prod_insert to isolate j=0 arm, then handle row arm via descFactorial_eq_prod_range",
+      "Hook-shape family fully formalized without LGV infrastructure - elementary bijection suffices",
+      "Pre-existing build failures in BallotProblemOQ03OQ02.lean (Bool.false_eq_false removed from Lean4) are blocking full build verification but do not affect Part VIII work"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
       "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux"
     ],
     "nextSteps": [
-      "Prove ni_count_eq_syt_count: RSK/Fomin growth diagram bijection SYT <-> NI-paths (~200 lines)",
-      "Prove lgv_det_factors_as_hook_quotient: det[C(m+sigma_j+j-i,m)] * hookProd = n! via Vandermonde-type identity",
-      "Encode YoungDiagram mu to specific (r, sigma, m) for youngLGVConfig — needed to close hook_length_formula",
-      "Submit ni_count_eq_syt_count to Aristotle if a simpler bijection approach is found"
+      "Fix BallotProblemOQ03OQ02.lean build failures (Bool.false_eq_false -> decide_true, omega failures in take_at_column_entry)",
+      "Extend hook formula to rectangular shapes (m x n) using determinant formula",
+      "Prove main hook_length_formula theorem by reducing to hook-shape case via induction"
     ]
   },
   "tags": [
