@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-header-context",
+    "proofId": "feuerbachs-theorem-defs-oq-04",
+    "range": { "startLine": 1, "endLine": 55 },
+    "type": "context",
+    "title": "Motivation: Bridging Two Geometry Formalisms",
+    "content": "This file addresses a formalization design question: the earlier `FeuerbachsTheoremDefs.lean` uses a bespoke coordinate API (`Point = ℝ × ℝ`, custom `dist2`), while Mathlib's geometry infrastructure uses `EuclideanSpace ℝ (Fin 2)` and `Metric.sphere`. The file is a bridge: it proves the two formalisms agree and restates all nine-point circle membership results in Mathlib-native terms. The `noncomputable section` is required because `EuclideanSpace` involves classical choice and real number computations.",
+    "mathContext": "Two equivalent formulations of circle membership: (1) gallery API: $\\text{dist2}(N, P) = r$ where $\\text{dist2}(P,Q) = \\sqrt{(Q_x-P_x)^2 + (Q_y-P_y)^2}$; (2) Mathlib: $\\text{toEuclidean}(P) \\in \\text{Metric.sphere}(\\text{toEuclidean}(N), r)$ where $\\text{Metric.sphere}(c,r) = \\{x \\mid \\text{dist}(x,c) = r\\}$.",
+    "significance": "context",
+    "relatedConcepts": ["EuclideanSpace", "Metric.sphere", "API bridge", "noncomputable", "gallery coordinate API"],
+    "prerequisites": ["metric space theory", "Euclidean geometry", "Mathlib geometry infrastructure"]
+  },
+  {
+    "id": "ann-toEuclidean-def",
+    "proofId": "feuerbachs-theorem-defs-oq-04",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "definition",
+    "title": "toEuclidean: Embedding into Mathlib's 2D Space",
+    "content": "The function `toEuclidean` maps a `Point = ℝ × ℝ` to `EuclideanSpace ℝ (Fin 2)` (which is definitionally `Fin 2 → ℝ`) via the vector notation `![P.1, P.2]`. This creates the vector $\\begin{pmatrix} P_x \\\\ P_y \\end{pmatrix}$. The map is essentially an identity: it just repackages coordinates into Mathlib's preferred representation. Being `def` (not `abbrev`), Lean treats it as an opaque definition, so the bridge lemma is needed to make the distance identity available.",
+    "mathContext": "`EuclideanSpace ℝ (Fin 2) = PiLp 2 (fun _ : Fin 2 => ℝ)`. The notation `![x, y] : Fin 2 → ℝ` creates the vector with `(![x,y]) 0 = x` and `(![x,y]) 1 = y`. The map $\\text{toEuclidean} : \\mathbb{R}^2 \\to \\text{EuclideanSpace}(\\mathbb{R}, \\text{Fin }2)$ is injective (in fact bijective).",
+    "significance": "key",
+    "relatedConcepts": ["EuclideanSpace", "PiLp", "Fin 2 → ℝ", "Matrix.cons notation", "coordinate embedding"],
+    "prerequisites": ["Lean 4 vector notation", "EuclideanSpace as PiLp", "Fin type"]
+  },
+  {
+    "id": "ann-bridge-lemma",
+    "proofId": "feuerbachs-theorem-defs-oq-04",
+    "range": { "startLine": 66, "endLine": 81 },
+    "type": "technique",
+    "title": "Bridge Lemma: Mathlib dist = Custom dist2",
+    "content": "The key theorem `toEuclidean_dist` proves that `dist (toEuclidean P) (toEuclidean Q) = dist2 P Q`. The proof chain is: (1) `dist_eq_norm` reduces `dist` to `‖·‖`; (2) `EuclideanSpace.norm_eq` expands `‖v‖` to `Real.sqrt (∑ i, ‖v i‖²)`; (3) `Fin.sum_univ_two` splits the sum over `Fin 2` into two terms; (4) `simp` with `Pi.sub_apply`, `Matrix.cons_val_zero/one` reduces vector subtractions to coordinate differences; (5) `ring` closes using `(a - b)² = (b - a)²` to match the dist2 formula's sign convention.",
+    "mathContext": "The EuclideanSpace norm: $\\|v\\|_{\\text{EuclideanSpace}} = \\sqrt{\\sum_{i < 2} |v_i|^2} = \\sqrt{|v_0|^2 + |v_1|^2}$. For $v = \\text{toEuclidean}(P) - \\text{toEuclidean}(Q) = ![P_x - Q_x, P_y - Q_y]$, this becomes $\\sqrt{(P_x - Q_x)^2 + (P_y - Q_y)^2} = \\text{dist2}(P, Q)$.",
+    "significance": "key",
+    "relatedConcepts": ["EuclideanSpace.norm_eq", "dist_eq_norm", "Fin.sum_univ_two", "Pi.sub_apply", "ring tactic"],
+    "prerequisites": ["metric spaces", "EuclideanSpace norm formula", "Finset.sum over Fin 2", "vector arithmetic"]
+  },
+  {
+    "id": "ann-mem-sphere-iff",
+    "proofId": "feuerbachs-theorem-defs-oq-04",
+    "range": { "startLine": 82, "endLine": 88 },
+    "type": "technique",
+    "title": "Membership Reformulation: Metric.sphere ↔ dist2 Condition",
+    "content": "The corollary `mem_sphere_iff_dist2` provides the main rewriting tool for all nine membership theorems. It states that `toEuclidean P ∈ Metric.sphere (toEuclidean C) r ↔ dist2 C P = r`. The proof: (1) `Metric.mem_sphere` unfolds sphere membership to `dist (toEuclidean P) (toEuclidean C) = r`; (2) `dist_comm` commutes the arguments; (3) `toEuclidean_dist` replaces the Mathlib dist with dist2. The `simp` tactic closes all three steps automatically.",
+    "mathContext": "$P \\in \\text{Metric.sphere}(C, r) \\iff \\text{dist}(P, C) = r \\iff \\text{dist2}(\\text{toEuclidean}^{-1}(C), \\text{toEuclidean}^{-1}(P)) = r$. This biconditional is the key interface: once it is proved, all nine circle membership results follow by rewriting.",
+    "significance": "key",
+    "relatedConcepts": ["Metric.mem_sphere", "dist_comm", "biconditional", "rewriting lemma"],
+    "prerequisites": ["Metric.sphere definition", "dist symmetry", "bridge lemma"]
+  },
+  {
+    "id": "ann-nine-point-memberships",
+    "proofId": "feuerbachs-theorem-defs-oq-04",
+    "range": { "startLine": 93, "endLine": 154 },
+    "type": "technique",
+    "title": "Nine Individual Membership Theorems (Uniform Pattern)",
+    "content": "The nine theorems `midpoint_a_on_sphere` through `foot_c_on_sphere` each state that one of the special points lies on `Metric.sphere (toEuclidean T.ninePointCenter) T.ninePointRadius`. Every proof follows an identical 2-line pattern:\n1. `rw [mem_sphere_iff_dist2]` — rewrite to the dist2 formulation\n2. `exact midpoint_X_on_ninePointCircle T` — apply the existing coordinate proof\n\nThis economy of expression demonstrates the power of the bridge lemma: the entire nine-point circle result transfers from the coordinate API to Mathlib's abstract types with zero new mathematical content.",
+    "mathContext": "The nine special points of triangle $T$: (1) $M_a = $ midpoint of $BC$; (2) $M_b = $ midpoint of $CA$; (3) $M_c = $ midpoint of $AB$; (4) $M_{AH} = $ midpoint of $A$ to orthocenter $H$; (5) $M_{BH} = $ midpoint of $B$ to $H$; (6) $M_{CH} = $ midpoint of $C$ to $H$; (7) $F_a = $ foot of altitude from $A$; (8) $F_b = $ foot of altitude from $B$; (9) $F_c = $ foot of altitude from $C$. All lie on the circle with center $N = \\frac{O+H}{2}$ (midpoint of circumcenter and orthocenter) and radius $R/2$ (half the circumradius).",
+    "significance": "supporting",
+    "relatedConcepts": ["nine-point circle", "midpoints", "altitude feet", "orthocenter", "FeuerbachsTheoremDefs"],
+    "prerequisites": ["nine-point circle theorem", "triangle geometry", "Feuerbach's theorem"]
+  },
+  {
+    "id": "ann-combined-theorem",
+    "proofId": "feuerbachs-theorem-defs-oq-04",
+    "range": { "startLine": 160, "endLine": 188 },
+    "type": "insight",
+    "title": "Combined Theorem: All Nine Points on Mathlib Sphere",
+    "content": "The capstone theorem `ninePoints_all_on_sphere` packages all nine membership results into a single universal statement: for every element of the nine-point list, it lies on the Mathlib `Metric.sphere`. The proof uses `simp only [List.mem_cons, List.mem_singleton, ...]` to turn the list membership hypothesis `hp` into a disjunction, then `rcases hp with rfl | rfl | ...` pattern-matches on each case (using `rfl` since equality holds), delegating to the corresponding individual membership theorem. The nine `| rfl` arms correspond exactly to the nine list elements.",
+    "mathContext": "The Lean list `[e₁, ..., e₉]` desugars to `e₁ :: e₂ :: ... :: e₉ :: []`. The `List.mem_cons` lemma states $x \\in a :: l \\iff x = a \\vee x \\in l$, and `List.mem_singleton` handles $x \\in [y] \\iff x = y$. The `rcases` tactic with nine `| rfl` branches performs a 9-way case split, one for each point.",
+    "significance": "key",
+    "relatedConcepts": ["List.mem_cons", "rcases", "universal statements", "case analysis", "nine-point circle"],
+    "prerequisites": ["Lean 4 list membership", "rcases tactic", "nine-point circle theorem"]
+  }
+]
