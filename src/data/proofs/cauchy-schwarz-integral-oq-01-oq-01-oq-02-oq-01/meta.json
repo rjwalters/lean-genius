@@ -17,7 +17,7 @@
     "sorries": 2,
     "axiomCount": 0,
     "lineCount": 810,
-    "assumptions": "2 remaining sorries: (1) truncated_rn_deriv_lq_bound — eLpNorm of truncated RN derivative bounded by M for finite measure; (2) holder_extremizer_lq_bound — eLpNorm of truncated RN derivative bounded by ‖φ‖. (indicator_lp_hasSum was proved in Session 6.) See Lean source for details.",
+    "assumptions": "2 remaining sorries: (1) truncated_rn_deriv_lq_bound — eLpNorm of truncated RN derivative bounded by M for finite measure (dead path, marked false in session 4); (2) holder_extremizer_lq_bound — eLpNorm of truncated RN derivative bounded by ‖φ‖ (the critical remaining sorry). indicator_lp_hasSum was proved in session 4 (2026-04-22). See Lean source for details.",
     "dateAdded": "2026-04-13"
   },
   "overview": {
