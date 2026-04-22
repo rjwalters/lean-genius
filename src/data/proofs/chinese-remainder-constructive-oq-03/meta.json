@@ -80,6 +80,38 @@
       "Can the RNS framework be extended to handle bases with 2 as a modulus \u2014 where the standard CRT requires extra care \u2014 for hardware implementations that use power-of-2 channels?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "foundational",
+      "description": "Parent entry: the constructive Chinese Remainder Theorem, which proves existence of the CRT isomorphism and the reconstruction algorithm. This file extends it with RNS for parallel hardware arithmetic — the applied computational perspective on CRT."
+    },
+    {
+      "targetId": "chinese-remainder-constructive-oq-04",
+      "relationship": "complementary",
+      "description": "Sibling: CRT for arbitrary-length moduli lists. Provides the general framework; this file focuses on the hardware-optimization aspect (efficient bases, dynamic range, Mersenne numbers) as a concrete application."
+    },
+    {
+      "targetId": "bezout-identity-oq-03",
+      "relationship": "foundational",
+      "description": "CRT via Bézout's identity for integers: the algebraic proof that CRT works via Bézout coefficients. This file assumes CRT as a black box and focuses on the computational efficiency of RNS representations built on top of it."
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Root Bézout's identity entry. The coprimality requirement for RNS bases (Nat.Coprime) is exactly the Bézout condition — pairwise coprimality ensures the CRT isomorphism holds and RNS arithmetic is injective."
+    },
+    {
+      "targetId": "divisibility-rules",
+      "relationship": "related",
+      "description": "Modular arithmetic and divisibility rules share the underlying ring structure of ℤ/mℤ. The RNS framework in this file is the computational dual of divisibility testing: while divisibility rules check a single modulus, RNS uses multiple moduli simultaneously for parallel computation."
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "related",
+      "description": "CRT for non-coprime moduli. Extends the coprimality requirement relaxed; contrasts with this file where pairwise coprimality is a hard requirement for RNS correctness. The non-coprime case requires additional structure (gcd conditions) that breaks the clean parallel arithmetic."
+    }
+  ],
   "leanFile": {
     "lineCount": 318,
     "path": "Proofs/ChineseRemainderConstructiveOQ03.lean",
