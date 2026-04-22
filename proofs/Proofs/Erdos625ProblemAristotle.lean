@@ -120,6 +120,12 @@ theorem singleton_is_cochromatic_ari (G : SimpleGraph V) (v : V) :
 /-- A cochromatic coloring with |V| colors always exists for any graph. -/
 theorem cochromatic_coloring_exists_ari (G : SimpleGraph V) :
     Nonempty (CochromaticColoring G (Fintype.card V)) := by
-  sorry
+  -- Assign each vertex a unique color via the canonical bijection V ≃ Fin (Fintype.card V).
+  -- Each color class is a singleton, so cochromatic vacuously (no two distinct elements).
+  refine ⟨⟨Fintype.equivFin V, fun c => ?_⟩⟩
+  right
+  intro u v hu hv huv
+  simp only [Set.mem_setOf_eq] at hu hv
+  exact absurd ((Fintype.equivFin V).injective (hu.trans hv.symm)) huv
 
 end Erdos625Aristotle
