@@ -9,14 +9,15 @@ Insights accumulated during research on this problem.
 **Goal**: Contribute `SpernerTriangulation` (abstract cell complex) and
 `sperner_parity` to Mathlib via mathlib4#25231.
 
-**Current state** (as of 2026-04-21):
+**Current state** (as of 2026-04-22):
 - All gallery Lean files have **0 sorries** — mathematical content is complete
-- `SpernerMathlib4.lean` (768 lines) is the main Mathlib contribution file
-- `SpernerSimplicialInstance.lean` (1019 lines) provides the bridge from
-  abstract simplicial data to the `CellComplex` typeclass
-- Mathlib fork branch `rjwalters/mathlib4:sperner-abstract-parity` pushed 2026-04-01
-- Blocked on external feedback from Dillies/SproutSeeds on mathlib4#25231
-- Main technical blocker: `maxHeartbeats 1600000` (8× default of 200,000)
+- `SpernerMathlib4.lean` (730 lines) — Part 1: abstract CellComplex + sperner_parity
+  - `maxHeartbeats 400000` (2× default) ✅ — Mathlib-acceptable
+- `SpernerSimplicialInstance.lean` (1019 lines) — Part 2: SimplicialComplex bridge
+  - `maxHeartbeats 1600000` (8× default) ⚠️ — needs reduction for Mathlib PR
+- mathlib4#25231 is an OPEN ISSUE (not a PR) — Dillies asked for Part 2 and hasn't received a response pointing to SpernerSimplicialInstance.lean
+- No Mathlib PR submitted yet — the issue is asking for a contributor
+- Granular imports (replace `import Mathlib`) needed for both files before PR submission
 
 ---
 
@@ -151,6 +152,68 @@ so avoids elaboration overhead.
 1. Update Mathlib fork branch `rjwalters/mathlib4:sperner-abstract-parity` with optimized proof
 2. Re-ping Dillies/SproutSeeds on mathlib4#25231 with heartbeat improvement
 3. Switch from `import Mathlib` to granular imports for the actual Mathlib PR file
+
+---
+
+---
+
+## Session 2026-04-22 (Session 3) - Issue Review + Granular Imports Analysis
+
+**Mode**: REVISIT
+**Outcome**: PROGRESS — issue status clarified; granular import set identified; PR strategy refined
+
+### What I Did
+
+1. Read full mathlib4#25231 issue comment thread
+2. Discovered: issue is OPEN (not a PR); `rjwalters` has posted but hasn't linked Part 2
+3. Verified: `SpernerSimplicialInstance.lean` is complete (0 sorries) as Part 2
+4. Verified: `SpernerMathlib4.lean` in main has `maxHeartbeats 400000` (not 1600000)
+5. Researched Mathlib module structure to identify granular imports
+6. Identified optimal 3-import set for `SpernerMathlib4.lean`
+7. Documented PR strategy options and heartbeat analysis for SimplicialInstance
+
+### Key Findings
+
+- **Part 2 exists but is unlaunched**: `SpernerSimplicialInstance.lean` (1019 lines, 0 sorries)
+  bridges unordered `AbstractSimplicialData` to the `Triangulation` → `CellComplex` chain.
+  YaelDillies asked "where is part 2?" on 2026-04-21. It's done and not yet pointed out.
+
+- **Granular import set for `SpernerMathlib4.lean`** (verified via Mathlib package structure):
+  ```lean
+  import Mathlib.Algebra.BigOperators.Group.Finset  -- sum_involution, card_biUnion
+  import Mathlib.Data.ZMod.Basic                    -- natCast_eq_zero_iff
+  import Mathlib.Data.Fintype.Card                  -- Finite.injective_iff_surjective, Fintype.card_fin
+  ```
+  All `Finset.Card.*` lemmas (card_pair, card_eq_one/two, etc.) are transitively
+  imported via `Fintype.Card → Finset.Card → Finset.Basic`.
+
+- **PR strategy**: Submit Part 1 only initially (smaller review surface). SproutSeeds
+  already proposed a "split approach" — our abstract CellComplex is a natural first PR.
+
+- **`SpernerSimplicialInstance.lean` heartbeat**: No obvious cheap fix analogous to
+  the `strongInduction → sum_involution` trick. The complex proofs are:
+  `adjFn_symm` (87 lines, `dite` + `choose` pattern), `adjFn_vertex` (62 lines,
+  `Finset.sort` image reasoning). Needs profiler to identify actual bottleneck.
+
+- **`SpernerSimplicialInstance.lean` extra import needed**:
+  ```lean
+  import Mathlib.Data.Finset.Sort  -- Finset.sort, length_sort, mem_sort
+  ```
+
+### Files Modified
+
+- `research/problems/sperner-ndim-oq-05/knowledge.md` (this file)
+- `research/problems/sperner-ndim-oq-05/lean/MathLibPR_GranularImports.md` (new analysis)
+
+### Next Steps
+
+1. **[USER ACTION NEEDED]** Comment on mathlib4#25231 pointing Dillies to
+   `SpernerSimplicialInstance.lean` as Part 2 (this is a public external action)
+2. Test granular imports for `SpernerMathlib4.lean` via Docker build
+3. Profile `SpernerSimplicialInstance.lean` with `set_option profiler true` to
+   identify expensive theorems
+4. If heartbeats reducible to ≤ 800000, submit the two-file Mathlib PR
+5. Alternatively, submit Part 1 only PR first (Option A from analysis doc)
 
 ---
 

@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-04-21T07:30:34-07:00",
     "iteration": 1,
-    "focus": "Heartbeat optimization: replace even_card_of_fpf_invol strongInduction with sum_involution (ZMod 2 approach)",
+    "focus": "Prepare Mathlib PR: granular imports + heartbeat reduction for SpernerSimplicialInstance",
     "blockers": [],
-    "nextAction": "Test optimized even_card_of_fpf_invol proof using Finset.sum_involution in Docker build",
+    "nextAction": "Test granular imports; profile SpernerSimplicialInstance heartbeats; submit PR to mathlib4",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: even_card_of_fpf_invol optimized (53→11 lines); heartbeat reduction pending build test",
+    "progressSummary": "PROGRESS: Part 1 (SpernerMathlib4, 400000 hb) + Part 2 (SpernerSimplicialInstance, 0 sorries) done; granular import set identified",
     "builtItems": [
       "SpernerMathlib4Opt.lean: optimized proof proposal for even_card_of_fpf_invol using sum_involution (research/problems/sperner-ndim-oq-05/lean/)",
       "even_card_of_fpf_invol: 53-line strongInduction proof replaced with 11-line sum_involution proof in SpernerMathlib4.lean"
@@ -45,15 +45,19 @@
       "ZMod.natCast_eq_zero_iff_even is the current lemma (natCast_zmod_eq_zero_iff_dvd deprecated 2025-06-30)",
       "nsmul_one: n • (1 : A) = n is @[simp] — simpa [Finset.sum_const] closes the sum-to-card step",
       "Finset.sum_involution is the additive version of prod_involution via @[to_additive]",
-      "Pre-compiled Mathlib strongInduction (in prod_involution) does not count against our file heartbeats"
+      "Pre-compiled Mathlib strongInduction (in prod_involution) does not count against our file heartbeats",
+      "mathlib4#25231 is an OPEN ISSUE not a PR — YaelDillies asked for Part 2 (SpernerSimplicialInstance.lean, 0 sorries) but it has not been pointed out yet",
+      "Granular imports for SpernerMathlib4: Mathlib.Algebra.BigOperators.Group.Finset + Mathlib.Data.ZMod.Basic + Mathlib.Data.Fintype.Card (3 imports replace import Mathlib)",
+      "SpernerSimplicialInstance adjFn_symm (87 lines, dite+choose) and adjFn_vertex (62 lines) are likely heartbeat bottlenecks; needs profiler",
+      "SpernerSimplicialInstance needs Mathlib.Data.Finset.Sort for Finset.sort"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Test sum_involution approach: does even_card_of_fpf_invol compile with new proof?",
-      "Profile SpernerMathlib4.lean with set_option profiler true to identify slowest theorems",
-      "Switch import Mathlib to granular imports in SpernerMathlib4.lean",
-      "If heartbeats <= 400000 after optimization, push to rjwalters/mathlib4:sperner-abstract-parity branch",
-      "Ping Dillies on mathlib4#25231 if no response by 2026-05-01"
+      "[USER ACTION] Post comment on mathlib4#25231 pointing Dillies to SpernerSimplicialInstance.lean as Part 2",
+      "Test granular imports via Docker build for SpernerMathlib4.lean",
+      "Profile SpernerSimplicialInstance.lean with set_option profiler true to find expensive proofs",
+      "Reduce SpernerSimplicialInstance heartbeats to ≤ 800000 for Mathlib PR",
+      "Submit Part 1 (SpernerMathlib4) PR to mathlib4 as initial contribution, Part 2 as follow-up"
     ],
     "markdown": "# Knowledge Base: sperner-ndim-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -75,7 +79,7 @@
     "mathlib": []
   },
   "started": "2026-04-14T21:25:05.895Z",
-  "lastUpdate": "2026-04-21T14:00:00-07:00",
+  "lastUpdate": "2026-04-22T09:00:00-07:00",
   "significance": 8,
   "tractability": 5
 }
