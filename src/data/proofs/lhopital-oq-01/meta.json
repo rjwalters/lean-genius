@@ -77,50 +77,51 @@
   "sections": [
     {
       "id": "file-header",
-      "title": "Module Header and Setup",
-      "summary": "Block comment (lines 1-24) documenting the counterexample (f = x + sin x, g = x), the three key results proved, and references. Lines 26-30: `import Mathlib`, namespace `LHopitalFailure`, and `open Real Filter Topology`. The opens make `cos`, `sin`, `Tendsto`, `atTop`, and `nhds` accessible without qualification throughout the proof.",
+      "title": "Module Header: Counterexample Statement and Proof Outline",
+      "summary": "Block comment (lines 1-30) documenting the counterexample f = x + sin x, g = x, the two claims (lim f/g = 1, lim f'/g' does not exist), and the two-part proof outline: (1) squeeze theorem for sin(x)/x; (2) subsequence argument for cos oscillation. Lines 33-38 give imports, namespace `LHopitalConverse`, and `open Real Filter Topology`.",
       "startLine": 1,
-      "endLine": 31,
-      "mathContext": "Setup: `open Real` gives `sin`, `cos`, `pi` without prefix; `open Filter` gives `Tendsto`, `atTop`, `atBot`, `nhds`; `open Topology` enables neighborhood notation. The namespace `LHopitalFailure` isolates the 11 theorems from potential conflicts in Mathlib."
+      "endLine": 38,
+      "mathContext": "`open Real` gives `sin`, `cos`, `pi`; `open Filter` gives `Tendsto`, `atTop`, `nhds`; `open Topology` enables neighborhood notation. The namespace `LHopitalConverse` isolates the 8 declarations. Note: the file name is `LHopitalOQ01.lean` but the namespace is `LHopitalConverse` — a mismatch that is inconsequential for Lean but worth noting for navigation."
     },
     {
-      "id": "derivatives",
-      "title": "Derivatives of f and g",
-      "summary": "f(x) = x + sin(x) has derivative 1 + cos(x) via (id + sin)'. g(x) = x has derivative 1.",
-      "startLine": 30,
-      "endLine": 50,
-      "mathContext": "$f'(x) = 1 + \\cos(x)$, $g'(x) = 1$, so $f'(x)/g'(x) = 1 + \\cos(x)$."
+      "id": "squeeze-lemma",
+      "title": "Part I — sin(x)/x → 0: Direct ε-N Squeeze Proof",
+      "summary": "Lemma `tendsto_sin_div_atTop`: sin(x)/x → 0 as x → ∞. Direct ε-N argument with witness N = 1/ε + 1. Uses `Metric.tendsto_atTop`, `Real.abs_sin_le_one`, `gcongr`, and arithmetic to show |sin x/x| ≤ 1/x < ε for x > N. Then `lim_ratio_eq_one`: (x + sin x)/x → 1 via rewriting as 1 + sin(x)/x and applying `Tendsto.add` with the sin/x lemma.",
+      "startLine": 40,
+      "endLine": 82,
+      "mathContext": "Key bound: $|\\sin(x)/x| = |\\sin x|/x \\leq 1/x$ for $x > 0$. Sum rule: $\\lim(1 + \\sin x/x) = 1 + 0 = 1$. The `filter_upwards` step rewrites the ratio to $1 + \\sin x/x$ only for $x > 0$ (using `eventually_gt_atTop`)."
     },
     {
-      "id": "limit-exists",
-      "title": "The Limit f/g → 1",
-      "summary": "Proves sin(x)/x → 0 by squeeze with x⁻¹, then (x + sin x)/x = 1 + sin x/x → 1 via Tendsto.congr'.",
-      "startLine": 53,
-      "endLine": 90,
-      "mathContext": "$|\\sin(x)/x| \\leq x^{-1} \\to 0$. For $x \\geq 1 \\neq 0$: $(x + \\sin x)/x = 1 + \\sin x/x \\to 1$."
+      "id": "subsequence-helpers",
+      "title": "Part II — Private Lemmas: Subsequence Infrastructure",
+      "summary": "Four private lemmas: `seq1_atTop` ($n \\cdot 2\\pi \\to \\infty$), `seq2_atTop` ($n \\cdot 2\\pi + \\pi \\to \\infty$), `val_on_seq1` ($1 + \\cos(n \\cdot 2\\pi) = 2$), `val_on_seq2` ($1 + \\cos(n \\cdot 2\\pi + \\pi) = 0$). These build the scaffolding for the two-subsequence contradiction in `deriv_ratio_no_limit`.",
+      "startLine": 84,
+      "endLine": 103,
+      "mathContext": "The `private` modifier hides these from the public API. `seq1_atTop` uses `tendsto_natCast_atTop_atTop.atTop_mul_const'`; `seq2_atTop` applies `tendsto_atTop_mono`; `val_on_seq1/2` use `Real.cos_nat_mul_two_pi` and `Real.cos_nat_mul_two_pi_add_pi`."
     },
     {
-      "id": "limit-nonexistent",
-      "title": "The Ratio of Derivatives Has No Limit",
-      "summary": "Proves 1 + cos(x) → (no limit) via two subsequences: at 2πn the value is 2; at π + 2πn the value is 0. tendsto_nhds_unique gives L = 2 and L = 0, contradiction.",
-      "startLine": 93,
-      "endLine": 160,
-      "mathContext": "$1 + \\cos(2\\pi n) = 2$ and $1 + \\cos(\\pi + 2\\pi n) = 0$. By uniqueness of limits, no $L$ satisfies $1 + \\cos(x) \\to L$."
+      "id": "oscillation-proof",
+      "title": "Part II — No Limit for 1 + cos(x): Two-Subsequence Argument",
+      "summary": "Theorem `deriv_ratio_no_limit`: ¬∃ L, Tendsto (1 + cos x) atTop (nhds L). Assumes L exists; composes with seq1_atTop to get L = 2, with seq2_atTop to get L = 0. `tendsto_nhds_unique` forces these values; `linarith` derives 2 = 0.",
+      "startLine": 105,
+      "endLine": 127,
+      "mathContext": "The Hausdorff property (from `Topology.Separation.Hausdorff`) is what makes limits unique in $\\mathbb{R}$: `tendsto_nhds_unique : T₂Space α → Tendsto f l (𝓝 a) → Tendsto f l (𝓝 b) → a = b`. Without $T_2$, two different subsequences could converge to different values in the same 'limit'."
     },
     {
-      "id": "failure-statement",
-      "title": "L'Hôpital Failure Theorem",
-      "summary": "Combined statement: f/g → 1 AND f'/g' has no limit. Shows L'Hôpital's rule is one-directional.",
-      "startLine": 163,
-      "endLine": 169,
-      "mathContext": "The conjunction proves both that the original ratio converges and that the derivative ratio does not."
+      "id": "main-theorem",
+      "title": "Part III — Combined Counterexample Theorem",
+      "summary": "Theorem `lhopital_converse_fails`: conjunction of lim_ratio_eq_one and negation of lim f'/g' existence. Uses `refine ⟨lim_ratio_eq_one, fun ⟨L, hL⟩ => deriv_ratio_no_limit ⟨L, ?_⟩⟩` and `simpa` to reduce (1 + cos x)/1 to 1 + cos x via div_one.",
+      "startLine": 129,
+      "endLine": 142,
+      "mathContext": "The theorem pairs: (1) $\\lim (x + \\sin x)/x = 1$ (proved) with (2) $\\nexists L, \\lim (1+\\cos x)/1 = L$ (proved). The `simpa` simplification is essential: the statement uses $(1 + \\cos x)/1$ (the derivative ratio), while `deriv_ratio_no_limit` uses $1 + \\cos x$; `div_one` makes these equal."
     }
   ],
   "conclusion": {
     "summary": "Fully verified (0 sorries, 0 axioms): 11 theorems proving that L'Hôpital's rule cannot be reversed. The counterexample f(x) = x + sin(x), g(x) = x demonstrates that the existence of lim f/g gives no information about lim f'/g'.",
     "implications": "**Pedagogical**: This counterexample is essential for students learning L'Hôpital's rule — it prevents the common error of 'running L'Hôpital's rule backwards.' The proof illustrates the squeeze theorem for sin(x)/x and the subsequence argument for oscillating limits.\n\n**Extension of LHopital.lean**: The parent proof establishes L'Hôpital's rule; this extension proves the boundary of the theorem's applicability.",
     "openQuestions": [
-      "Can the converse hold for monotone quotients? (e.g., if f/g is monotone and L'Hôpital applies, does lim f/g = lim f'/g'?)"
+      "Can the converse hold for monotone quotients? (e.g., if f/g is monotone and L'Hôpital applies, does lim f/g = lim f'/g'?)",
+      "Does the converse failure extend to finite limit points? The analogous counterexample at x → 0 is f(x) = x²·sin(1/x), g(x) = x: f/g = x·sin(1/x) → 0 but f'/g' = 2x·sin(1/x) - cos(1/x) oscillates with no limit. Can this be formalized using the same two-subsequence strategy (along 1/(nπ) → 0 and 1/(nπ + π/2) → 0)?"
     ]
   },
   "crossReferences": [
