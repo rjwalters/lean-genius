@@ -85,11 +85,9 @@
     "extension"
   ],
   "relatedProofs": [
-    "borsuk-ulam",
-    "cayley-hamilton-minpoly",
     "hurwitz-theorem",
-    "hurwitz-theorem-oq-03",
-    "hurwitz-theorem-oq-03-oq-01"
+    "cayley-hamilton-minpoly",
+    "borsuk-ulam"
   ],
   "references": {
     "papers": [
@@ -109,11 +107,11 @@
     {
       "path": "Proofs/HurwitzTheorem.lean",
       "filename": "HurwitzTheorem.lean",
-      "lineCount": 1974,
-      "theoremCount": 36,
+      "lineCount": 1973,
+      "theoremCount": 20,
       "axiomCount": 0,
-      "defCount": 15,
-      "sorryCount": 2,
+      "defCount": 8,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzTheorem.lean"
     }
