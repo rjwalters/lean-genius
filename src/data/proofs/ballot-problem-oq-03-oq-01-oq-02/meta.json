@@ -22,7 +22,7 @@
     "sorries": 4,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "Four open sorries: (1) hook_length_formula (main theorem, requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) card_SYT_twoRectYD (SYT count for 2-row rectangular = Catalan number C_m, requires RSK bijection with ballot sequences).",
+    "assumptions": "Four open sorries: (1) hook_length_formula (main theorem, requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence, ~200 lines), (3) lgv_det_factors_as_hook_quotient (Vandermonde-type det factorization identity, ~200 lines), (4) card_SYT_twoRectYD (SYT count for 2-row rectangular YD equals C_m via ballot path bijection).",
     "lineCount": 1274,
     "theoremCount": 12,
     "definitionCount": 5,
@@ -60,7 +60,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Hook-length formula infrastructure established: hookLength, hookProd, StandardYoungTableau defined; positivity and ext proved; LGV encoding described; formula verified numerically for 8 specific shapes. Main theorem stated with 4 sorries: hook_length_formula, ni_count_eq_syt_count, lgv_det_factors_as_hook_quotient (requiring SYT↔NI bijection and det factorization), and card_SYT_twoRectYD (SYT count for 2-row rectangular = C_m).",
+    "summary": "Hook-length formula infrastructure established: hookLength, hookProd, StandardYoungTableau defined; positivity and ext proved; LGV encoding described; formula verified numerically for 8 specific shapes. Main theorem stated with 4 open sorries: hook_length_formula (main theorem), ni_count_eq_syt_count (RSK/Fomin bijection, ~200 lines), lgv_det_factors_as_hook_quotient (det factorization identity, ~200 lines), and card_SYT_twoRectYD (SYT count for 2-row rectangular YD = C_m).",
     "implications": "A complete formalization would be the first Lean 4 proof of the hook-length formula, a milestone in formal combinatorics. The LGV approach connects our existing ballot problem proofs to representation theory via the Specht module dimension formula f^λ = dim S^λ.",
     "openQuestions": [
       "Formalize the SYT ↔ NI bijection via Fomin's growth diagrams or the RSK correspondence (~200 lines)",
