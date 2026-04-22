@@ -15,7 +15,7 @@
       "lattices",
       "convex-bodies"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
@@ -118,6 +118,13 @@
       "targetId": "lagrange-four-squares-oq-01",
       "relationship": "related",
       "description": "Computational aspects of Lagrange's four-squares theorem, which is an application of Minkowski's theorem"
+    }
+  ],
+  "mathlibDependencies": [
+    {
+      "theorem": "exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure",
+      "description": "Core Minkowski theorem: if volume(S) * 2^n > volume(fundamental domain), S contains a nonzero lattice point",
+      "module": "Mathlib.MeasureTheory.Group.GeometryOfNumbers"
     }
   ],
   "leanFile": {
