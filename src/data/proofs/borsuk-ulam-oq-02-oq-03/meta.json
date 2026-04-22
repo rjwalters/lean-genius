@@ -124,6 +124,33 @@
     ]
   },
   "openQuestions": [],
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam-oq-02",
+      "relationship": "parent-problem",
+      "description": "The parent open question on equivariant Borsuk-Ulam extensions that Dold's theorem helps resolve — Dold's cohomological index is the unified algebraic framework for equivariant maps on spheres"
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "generalizes",
+      "description": "Classical Borsuk-Ulam (every antipodal map S^n → S^n has odd degree) is the Z/2 case of Dold's index theorem; Dold's framework recovers it and extends to all cyclic groups Z/p"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-02-oq-02",
+      "relationship": "sibling",
+      "description": "OQ02-OQ02 extends equivariant Borsuk-Ulam to compact Lie groups via degree theory; Dold's theorem (this entry) achieves the same results via the cohomological index — two complementary approaches to the equivariant setting"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "OQ02-OQ01 introduced the buDim framework with 6 axioms; this entry shows buDim = doldIndex(G, d-1) and reduces to 5 axioms, unifying both frameworks and showing they are reparametrizations of each other"
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "Brouwer fixed-point and Borsuk-Ulam are cohomologically dual — both follow from the non-triviality of H^n(S^n). Dold's index theorem provides the cohomological machinery that grounds both results in the same algebraic framework"
+    }
+  ],
   "leanFile": {
     "axiomCount": 5,
     "lineCount": 251,

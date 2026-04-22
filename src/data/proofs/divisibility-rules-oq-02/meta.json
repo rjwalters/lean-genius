@@ -104,5 +104,22 @@
       "Extend to divisibility rules in bases other than 10 (e.g., hexadecimal: 16^k ≡ -1 (mod d) for which d?)."
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "divisibility-rules",
+      "relationship": "extends",
+      "description": "The parent entry collects classical divisibility rules (3, 9, 11); this entry extends to 7 and 13 via the alternating 3-digit block technique (b=1000 ≡ -1 mod 7,13)"
+    },
+    {
+      "targetId": "divisibility-rules-oq-01",
+      "relationship": "sibling",
+      "description": "OQ01 covers truncation and grouping rules (casting out nines, digit sums); OQ02 covers alternating block sums — together they span the main families of elementary divisibility tests"
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "complementary",
+      "description": "Divisibility by 3 uses the simpler 10 ≡ 1 (mod 3) → digit sum rule; divisibility by 7 uses the more complex 1000 ≡ -1 (mod 7) → alternating 3-block rule. Both are instances of the same modular arithmetic principle"
+    }
+  ],
   "sorries": 0
 }
