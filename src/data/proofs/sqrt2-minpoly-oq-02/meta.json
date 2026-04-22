@@ -1,0 +1,83 @@
+{
+  "id": "sqrt2-minpoly-oq-02",
+  "title": "Minimal Polynomial of k-th Roots: minpoly ℚ (n^(1/k)) = Xᵏ - n via Eisenstein",
+  "slug": "sqrt2-minpoly-oq-02",
+  "description": "A complete Lean 4 proof that the minimal polynomial of m^(1/n) over ℚ is Xⁿ - m, when m has a prime factor p with p | m but p² ∤ m. Includes algebraic degree and field extension degree theorems.",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "algebraic-number-theory",
+      "minimal-polynomial",
+      "eisenstein",
+      "radical-extensions",
+      "field-extensions"
+    ],
+    "mathlib_version": "4.26.0",
+    "proofRepoPath": "Proofs/CubeRoot2IrrationalOQ03.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 204,
+    "dateAdded": "2026-04-06",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.irreducible_of_eisenstein_criterion",
+        "description": "Eisenstein irreducibility criterion",
+        "module": "Mathlib.RingTheory.EisensteinCriterion"
+      },
+      {
+        "theorem": "IsPrimitive.Int.irreducible_iff_irreducible_map_cast",
+        "description": "Gauss's lemma: ℤ-irreducible primitive polynomial is ℚ-irreducible",
+        "module": "Mathlib.RingTheory.Polynomial.Gauss"
+      },
+      {
+        "theorem": "minpoly.eq_of_irreducible_of_monic",
+        "description": "Minimal polynomial characterization via irreducibility",
+        "module": "Mathlib.RingTheory.Algebraic.Basic"
+      }
+    ],
+    "originalContributions": [
+      "General Eisenstein irreducibility: Xⁿ - m is ℚ-irreducible when m has a squarefree prime factor",
+      "General minimal polynomial: minpoly ℚ (m^(1/n)) = Xⁿ - m for all n ≥ 2",
+      "Algebraic degree theorem: natDegree(minpoly ℚ (m^(1/n))) = n",
+      "Field extension degree: [ℚ(m^(1/n)) : ℚ] = n",
+      "Non-perfect-power criterion: p | m but p² ∤ m implies m is not a perfect n-th power",
+      "Concrete examples: ∛6, ∛10, ⁵√12, ∜30"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Eisenstein's irreducibility criterion (1850) is one of the most powerful tools in elementary algebraic number theory. For a polynomial Xⁿ - m, the criterion applies at any prime p with p | m but p² ∤ m, yielding irreducibility over ℤ. Gauss's lemma then transfers this to ℚ.\n\nThis result generalizes the fundamental examples (minpoly ℚ (√2) = X² - 2, minpoly ℚ (∛2) = X³ - 2) to all n-th roots of numbers with a squarefree prime factor.",
+    "problemStatement": "For n ≥ 2 and m > 0, when does `minpoly ℚ (m^(1/n)) = Xⁿ - m`?\n\n**Answer**: Whenever m has a prime factor p with p | m but p² ∤ m. This is equivalent to saying the p-adic valuation v_p(m) is odd for some prime p.",
+    "proofStrategy": "**Four steps**:\n1. **Eisenstein over ℤ**: Apply Eisenstein at p — 1 ∉ (p), all lower coefficients ∈ (p), constant term ∉ (p)²\n2. **Transfer to ℚ**: Gauss's lemma (primitive ℤ-polynomial is ℚ-irreducible iff ℤ-irreducible)\n3. **Root witness**: (m^(1/n))^n = m, so m^(1/n) is a root of Xⁿ - m\n4. **Minimal polynomial**: Apply `minpoly.eq_of_irreducible_of_monic`",
+    "keyInsights": [
+      "The Eisenstein condition at p (p | m but p² ∤ m) is equivalent to: m is not divisible by p to an even power at this prime",
+      "This condition implies m is NOT a perfect n-th power: if m = k^n then v_p(m) = n·v_p(k) ≥ 0 or ≥ n, never exactly 1",
+      "The proof works uniformly for all n ≥ 2, covering square, cube, fourth, fifth roots, etc.",
+      "The squarefree prime factor condition is NOT necessary — it's sufficient. X² - 8 is also irreducible but not Eisenstein."
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "CubeRoot2IrrationalOQ03.minpoly_nthRoot_eq",
+      "statement": "X ^ n - C (m : ℚ) = minpoly ℚ ((m : ℝ) ^ ((1 : ℝ) / n))",
+      "description": "Main theorem: minimal polynomial of m^(1/n) is Xⁿ - m"
+    },
+    {
+      "name": "CubeRoot2IrrationalOQ03.eisenstein_X_pow_sub_of_sqfree_factor",
+      "statement": "Irreducible (X ^ n - C (m : ℚ) : ℚ[X])",
+      "description": "Xⁿ - m is irreducible over ℚ when m has a squarefree prime factor"
+    },
+    {
+      "name": "CubeRoot2IrrationalOQ03.adjoin_nthRoot_finrank",
+      "statement": "Module.finrank ℚ ℚ⟮(m : ℝ) ^ ((1 : ℝ) / ↑n)⟯ = n",
+      "description": "Field extension degree [ℚ(m^(1/n)) : ℚ] = n"
+    },
+    {
+      "name": "CubeRoot2IrrationalOQ03.not_perfect_power_of_sqfree_factor",
+      "statement": "¬ ∃ k : ℕ, m = k ^ n",
+      "description": "m is not a perfect n-th power when it has a squarefree prime factor"
+    }
+  ],
+  "sorries": []
+}
