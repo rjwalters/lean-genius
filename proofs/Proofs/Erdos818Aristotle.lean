@@ -22,20 +22,20 @@ namespace Erdos818.Aristotle
 
 /-- log |A| ≥ log 2 for |A| ≥ 2 -/
 lemma log_card_ge_log2 (A : Finset ℤ) (hA : A.card ≥ 2) :
-    Real.log A.card ≥ Real.log 2 := by
-  sorry
+    Real.log A.card ≥ Real.log 2 :=
+  Real.log_le_log (by norm_num) (by exact_mod_cast hA)
 
 /-- log n > 0 for n ≥ 3 -/
-lemma log_pos_of_ge_three (n : ℕ) (hn : n ≥ 3) : Real.log n > 0 := by
-  sorry
+lemma log_pos_of_ge_three (n : ℕ) (hn : n ≥ 3) : Real.log n > 0 :=
+  Real.log_pos (by exact_mod_cast show 1 < n from by omega)
 
 /-- log n > 0 for n ≥ 2 -/
-lemma log_pos_of_ge_two (n : ℕ) (hn : n ≥ 2) : Real.log n > 0 := by
-  sorry
+lemma log_pos_of_ge_two (n : ℕ) (hn : n ≥ 2) : Real.log n > 0 :=
+  Real.log_pos (by exact_mod_cast show 1 < n from by omega)
 
 /-- n^2 / log n^1 = n^2 / log n -/
-lemma rpow_one_eq (x : ℝ) : x ^ (1 : ℝ) = x := by
-  sorry
+lemma rpow_one_eq (x : ℝ) : x ^ (1 : ℝ) = x :=
+  Real.rpow_one x
 
 /-- c * x / y ≥ x / y when c ≥ 1 and y > 0 -/
 lemma mul_div_ge_div (c x y : ℝ) (hc : c ≥ 1) (hy : y > 0) :
@@ -44,8 +44,8 @@ lemma mul_div_ge_div (c x y : ℝ) (hc : c ≥ 1) (hy : y > 0) :
 
 /-- c * x^2 / log n ≥ x^2 / log n when c ≥ 1 -/
 lemma const_sq_div_log_ge (c x : ℝ) (n : ℕ) (hc : c ≥ 1) (hlog : Real.log n > 0) :
-    c * x ^ 2 / Real.log n ≥ x ^ 2 / Real.log n := by
-  sorry
+    c * x ^ 2 / Real.log n ≥ x ^ 2 / Real.log n :=
+  (div_le_div_right hlog).mpr (by nlinarith [sq_nonneg x])
 
 /-
   ## Section 2: Sumset and productSet Properties
@@ -54,17 +54,24 @@ lemma const_sq_div_log_ge (c x : ℝ) (n : ℕ) (hc : c ≥ 1) (hlog : Real.log 
 /-- The sumset A + A is nonempty for nonempty A -/
 lemma sumset_nonempty (A : Finset ℤ) (hA : A.Nonempty) :
     (A + A : Finset ℤ).Nonempty := by
-  sorry
+  obtain ⟨a, ha⟩ := hA
+  exact ⟨a + a, Finset.mem_add.mpr ⟨a, ha, a, ha, rfl⟩⟩
 
 /-- |A + A| ≥ |A| (trivially: a + a ∈ A + A for a ∈ A) -/
 lemma sumset_card_ge (A : Finset ℤ) :
-    (A + A : Finset ℤ).card ≥ A.card := by
-  sorry
+    (A + A : Finset ℤ).card ≥ A.card :=
+  calc A.card = (A.image (fun a => a + a)).card :=
+        (Finset.card_image_of_injective A (fun a b h => by linarith)).symm
+    _ ≤ (A + A : Finset ℤ).card :=
+        Finset.card_le_card (fun x hx => by
+          obtain ⟨a, ha, rfl⟩ := Finset.mem_image.mp hx
+          exact Finset.mem_add.mpr ⟨a, ha, a, ha, rfl⟩)
 
 /-- |A * A| ≥ |A| (trivially: a * a ∈ A * A for a ∈ A) -/
 lemma productSet_card_ge (A : Finset ℤ) (hA : A.Nonempty) :
     (A * A : Finset ℤ).card ≥ 1 := by
-  sorry
+  obtain ⟨a, ha⟩ := hA
+  exact Finset.card_pos.mpr ⟨a * a, Finset.mem_mul.mpr ⟨a, ha, a, ha, rfl⟩⟩
 
 /-
   ## Section 3: Multiplicative Energy Helpers
@@ -88,16 +95,19 @@ lemma cauchy_schwarz_energy (A : Finset ℤ) (hA : A.card ≥ 2) :
 -/
 
 /-- (a / b)^2 = a^2 / b^2 for reals -/
-lemma div_sq (a b : ℝ) : (a / b) ^ 2 = a ^ 2 / b ^ 2 := by
-  sorry
+lemma div_sq (a b : ℝ) : (a / b) ^ 2 = a ^ 2 / b ^ 2 :=
+  div_pow a b 2
 
 /-- a^4 / a^2 = a^2 for positive a -/
 lemma pow4_div_pow2 (a : ℝ) (ha : a > 0) : a ^ 4 / a ^ 2 = a ^ 2 := by
-  sorry
+  have h : a ^ 2 > 0 := pow_pos ha 2
+  field_simp [h.ne']
+  ring
 
 /-- a^2 / (K * log n) = a^2 / K / log n -/
 lemma div_assoc_log (a K logn : ℝ) (hK : K > 0) (hl : logn > 0) :
     a ^ 2 / (K * logn) = a ^ 2 / K / logn := by
-  sorry
+  field_simp [hK.ne', hl.ne']
+  ring
 
 end Erdos818.Aristotle
