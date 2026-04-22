@@ -55,7 +55,7 @@
     "title": "ENNReal Helper: a + a = a implies a = 0 or ∞ (Proved)",
     "content": "This lemma is fully proved (no sorry). In ℝ≥0∞ (extended non-negative reals), if a + a = a then a must be 0 or ⊤ (infinity). The proof lifts a to ℝ≥0 using the finiteness assumption (a ≠ ⊤), then derives a = 0 from a + a = a by linarith. This captures the essential arithmetic of the paradox: 'measure doubled = original measure' forces extremal values.",
     "mathContext": "The proof uses: (1) push_neg to separate the ¬(a = 0 ∨ a = ⊤) into a ≠ 0 ∧ a ≠ ⊤; (2) lift a to ℝ≥0 using a ≠ ⊤; (3) cast the ENNReal equation to ℝ≥0 using ENNReal.coe_add and ENNReal.coe_inj; (4) linarith to conclude a = 0, contradicting a ≠ 0. The key coercion: ↑a + ↑a = ↑a in ℝ≥0 gives 2·a = a (in ℝ≥0), hence a = 0.",
-    "significance": "important",
+    "significance": "supporting",
     "relatedConcepts": ["ENNReal arithmetic", "extended reals", "measure paradoxes", "linarith in ℝ≥0"],
     "prerequisites": ["ENNReal.coe_add", "ENNReal.coe_inj", "NNReal.eq_zero_of_add_eq_self"]
   },
@@ -78,8 +78,8 @@
     "type": "definition",
     "title": "Amenable Groups: The Group-Theoretic Obstruction",
     "content": "IsAmenable G defines amenability: the group G admits a finitely-additive left-invariant probability measure on ALL subsets of G. Amenable groups include ℤ (via Cesàro means, stated as int_amenable with sorry) and all finite groups, but NOT F₂ (free group on 2 generators, stated as free_group_not_amenable with sorry). The non-amenability of F₂ is the group-theoretic root cause of Banach-Tarski: F₂ ↪ SO(3) → SO(3) not amenable → unit ball paradoxical.",
-    "mathContext": "Day's theorem (1949): a group $G$ is amenable iff every $G$-set has no paradoxical subset. Equivalently (Tarski), every $G$-set admits a $G$-invariant finitely-additive probability measure. The free group $F_2$ has a paradoxical decomposition: $F_2 = W(a) \\sqcup aW(a^{-1})$ where $F_2 \\sim W(a)$ (via $a$) and $F_2 \\sim aW(a^{-1})$ directly. The Cesàro mean construction for ℤ: $\\mu(A) = \\lim_{N \\to \\infty} |A \\cap [-N, N]| / (2N+1)$ (when the limit exists; extend via Banach limits).",
-    "significance": "important",
+    "mathContext": "Tarski's theorem (1938): a group $G$ is amenable (admits a finitely-additive left-invariant probability measure $\\mu : 2^G \\to [0,1]$) if and only if no $G$-set is paradoxical. Day (1949) named this property 'amenable.' The class of amenable groups includes: all finite groups, all abelian groups, all solvable groups, and is closed under subgroups, quotients, extensions, and direct limits. The free group $F_2$ has a paradoxical self-decomposition: letting $W(x)$ denote words starting with generator $x$, we have $F_2 = W(a) \\sqcup aW(a^{-1})$ and $F_2 = W(b) \\sqcup bW(b^{-1})$, two disjoint pairs each covering $F_2$.\n\nThe Cesàro mean for ℤ: $\\mu(A) = \\lim_{N \\to \\infty} |A \\cap \\{-N,\\ldots,N\\}| / (2N+1)$ is translation-invariant wherever the limit exists. A Banach limit (constructed via Hahn-Banach applied to the Cesàro mean functional on $\\ell^\\infty(\\mathbb{Z})$) extends this to all subsets — giving a full amenability witness for ℤ. Mathlib has Hahn-Banach, making a formal proof of `int_amenable` potentially within reach.",
+    "significance": "key",
     "relatedConcepts": ["Day's theorem", "Tarski's theorem", "Cesaro mean", "Banach limit", "free group paradox"],
     "prerequisites": ["FreeGroup", "Group action", "finitely-additive measure", "left-invariant measure"]
   }

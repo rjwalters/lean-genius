@@ -16350,11 +16350,11 @@
     },
     {
       "slug": "ptolemys-theorem-oq-01-incomplete-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "fast",
       "started": "2026-04-13T22:43:37.486Z",
       "status": "graduated",
-      "lastUpdate": "2026-04-22T19:43:19+02:00",
+      "lastUpdate": "2026-04-14T20:51:02.132Z",
       "completed": "2026-04-14T20:51:02.132Z"
     },
     {
@@ -17178,12 +17178,11 @@
     },
     {
       "slug": "sperner-ndim-oq-04",
-      "phase": "ACT",
+      "phase": "OBSERVE",
       "path": "full",
       "started": "2026-04-22T13:25:38.670Z",
       "status": "active",
-      "lastUpdate": "2026-04-22T18:33:24.148203+00:00",
-      "seekerSelected": "2026-04-22T18:33:24.148443+00:00"
+      "lastUpdate": "2026-04-22T17:25:48.961Z"
     },
     {
       "slug": "szemeredi-counting-oq-02",
@@ -17211,11 +17210,11 @@
     },
     {
       "slug": "szemeredi-regularity-oq-02",
-      "phase": "OBSERVE",
+      "phase": "NEW",
       "path": "full",
       "started": "2026-04-22T13:25:38.671Z",
       "status": "active",
-      "lastUpdate": "2026-04-22T20:00:00.000Z"
+      "lastUpdate": "2026-04-22T13:25:38.671Z"
     },
     {
       "slug": "triangle-angle-sum-oq-02",
@@ -17371,11 +17370,11 @@
     },
     {
       "slug": "dissection-of-cubes-oq-04",
-      "phase": "NEW",
+      "phase": "OBSERVE",
       "path": "full",
       "started": "2026-04-22T13:25:40.571Z",
       "status": "active",
-      "lastUpdate": "2026-04-22T13:25:40.571Z"
+      "lastUpdate": "2026-04-22T15:26:56.412Z"
     },
     {
       "slug": "divisibility-truncation-general-oq-03",
@@ -17411,11 +17410,11 @@
     },
     {
       "slug": "napoleons-theorem-oq-02",
-      "phase": "OBSERVE",
+      "phase": "NEW",
       "path": "full",
       "started": "2026-04-22T13:25:40.573Z",
       "status": "active",
-      "lastUpdate": "2026-04-22T21:17:05+02:00"
+      "lastUpdate": "2026-04-22T13:25:40.573Z"
     },
     {
       "slug": "newton-inductive-step-oq-03",
@@ -17451,11 +17450,11 @@
     },
     {
       "slug": "triangle-angle-sum-oq-03",
-      "phase": "OBSERVE",
+      "phase": "NEW",
       "path": "fast",
       "started": "2026-04-22T13:25:40.575Z",
       "status": "active",
-      "lastUpdate": "2026-04-22T20:50:25+02:00"
+      "lastUpdate": "2026-04-22T13:25:40.575Z"
     },
     {
       "slug": "ptolemys-theorem-oq-01-oq-02",
@@ -17498,30 +17497,6 @@
       "path": "full",
       "started": "2026-04-22T19:23:25+02:00",
       "status": "active"
-    },
-    {
-      "slug": "lebesgue-measure-oq-06",
-      "phase": "OBSERVE",
-      "path": "research",
-      "started": "2026-04-22T20:15:00+02:00",
-      "status": "available",
-      "tier": "A",
-      "significance": 8,
-      "tractability": 6
-    },
-    {
-      "id": "shapley-folkman-oq-03",
-      "title": "Shapley-Folkman Theorem: Economic Application Formalization",
-      "tier": "B",
-      "significance": 7,
-      "tractability": 6,
-      "status": "available",
-      "tags": [
-        "convex-analysis",
-        "mathematical-economics",
-        "minkowski-sum"
-      ],
-      "source": "gallery-gap"
     }
   ],
   "config": {
@@ -17529,5 +17504,5 @@
     "oodaTimeoutMinutes": 60,
     "attemptsBeforePivot": 5
   },
-  "lastUpdated": "2026-04-22T18:17:36.942223+00:00"
+  "lastUpdated": "2026-04-21T20:43:04.330807Z"
 }
