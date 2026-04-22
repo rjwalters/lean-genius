@@ -1,0 +1,141 @@
+{
+  "id": "lebesgue-measure-oq-06",
+  "title": "Banach-Tarski Paradox",
+  "slug": "lebesgue-measure-oq-06",
+  "description": "Formalizes the Banach-Tarski paradox: the unit ball in ℝ³ can be decomposed into finitely many pieces and reassembled into two copies of the ball using rotations and translations. Introduces equidecomposability, paradoxical sets, and their connection to non-amenable groups.",
+  "meta": {
+    "author": "Banach, S. and Tarski, A. (1924)",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/LebesgueMeasureOQ06.lean",
+    "tags": [
+      "measure-theory",
+      "banach-tarski",
+      "paradox",
+      "equidecomposable",
+      "amenability",
+      "axiom-of-choice",
+      "research"
+    ],
+    "badge": "wip",
+    "sorries": 6,
+    "axiomCount": 6,
+    "lineCount": 287,
+    "assumptions": "6 sorries encoding axiomatized results: banach_tarski (main theorem), hausdorff_free_subgroup (free subgroup of SO(3)), banach_tarski_pieces_nonmeasurable (non-measurability of pieces), free_group_not_amenable (F₂ non-amenability), int_amenable (ℤ amenability), and one auxiliary sorry in paradoxical_no_finite_measure. The main proof requires ~800 lines via free subgroup of SO(3) — beyond this gallery entry's scope.",
+    "dateAdded": "2026-04-22",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Equidecomposable (G-equidecomposability definition, with group action)",
+      "IsParadoxical (paradoxical set definition)",
+      "IsAmenable (amenable group definition)",
+      "ENNReal.eq_zero_or_top_of_add_eq_self (proved: a + a = a → a = 0 or a = ⊤)",
+      "equidecomposable_refl (proved: every set is self-equidecomposable)",
+      "Framework: paradoxical sets have no finite invariant measure (structure proved, one sorry for B∪C=A covering)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Banach-Tarski paradox (1924) is one of the most counterintuitive results in mathematics: the unit ball in ℝ³ can be decomposed into finitely many pieces (5 suffice) and those pieces reassembled — using only rotations and translations — into two complete copies of the original ball. This appears to contradict conservation of volume, but the pieces are non-measurable sets (constructed using the Axiom of Choice) to which Lebesgue measure cannot be assigned. Hausdorff (1914) established the key algebraic ingredient: a free subgroup of rank 2 in SO(3). The connection to amenability was clarified by Tarski: a group G is amenable if and only if no G-set is paradoxical. The paradox explains why Lebesgue measure cannot be extended to ALL subsets of ℝ³ as a finitely-additive invariant measure.",
+    "problemStatement": "**Banach-Tarski Paradox**: The closed unit ball $B^3 \\subset \\mathbb{R}^3$ can be partitioned into finitely many pieces $P_1, \\ldots, P_n$ such that there exist rigid motions $g_1, \\ldots, g_n$ and $h_1, \\ldots, h_n$ with $B^3 = \\bigsqcup_i g_i(P_i)$ and $B^3 = \\bigsqcup_i h_i(P_i)$. The pieces are necessarily non-Lebesgue-measurable.\n\n**Key ingredients**:\n1. $\\text{SO}(3)$ contains a free subgroup $F_2 \\cong \\langle \\varphi, \\psi \\rangle$ (Hausdorff 1914, where $\\varphi, \\psi$ are rotations by $\\arccos(1/3)$)\n2. $F_2$ admits a paradoxical decomposition: $F_2 \\cong B_1 \\sqcup B_2$ where $F_2 \\sim B_1$ and $F_2 \\sim B_2$\n3. This lifts to a paradoxical decomposition of $S^2$ (removing a countable set), then to $B^3$",
+    "text": "Formalizes the abstract framework of equidecomposability and paradoxical sets. Proves that paradoxical sets admit no finitely-additive invariant measure (the core measure-theoretic consequence). States the main theorem and key ingredients: Hausdorff's free subgroup of SO(3), non-amenability of F₂, and non-measurability of the Banach-Tarski pieces.",
+    "proofStrategy": "The full proof (800+ lines) proceeds:\n1. **Hausdorff free subgroup**: Explicit 3×3 rotation matrices for φ (rotation by arccos(1/3) about z-axis) and ψ (rotation by arccos(1/3) about x-axis). Freeness proved by a number-theoretic argument showing nontrivial words produce irrational components.\n2. **F₂ paradoxical decomposition**: Partition F₂ into W(a) ∪ W(a⁻¹) ∪ W(b) ∪ W(b⁻¹) ∪ {e}, then show F₂ ≃ W(a) ∪ aW(a⁻¹) and F₂ ≃ W(b) ∪ bW(b⁻¹).\n3. **Lift to S²**: Use the free group action on S² to obtain a paradoxical decomposition of S² minus a countable F₂-orbit.\n4. **Handle exceptional set**: The countable exceptional set is equidecomposable with S² via a rotation argument (Hilbert hotel).\n5. **Extend to B³**: Cone over the sphere, plus a separate argument for the center point.",
+    "keyInsights": [
+      "Equidecomposability is NOT about measure — it's purely about group-orbit structure. Two sets equidecomposable under a group G have the same 'G-combinatorial type'. For measure-preserving groups, equidecomposable sets must have equal measure if measured.",
+      "The paradox requires the Axiom of Choice in an essential way: the pieces are constructed by choosing representatives from uncountably many cosets (analogous to Vitali sets). In ZF without AC, the Banach-Tarski paradox is not provable.",
+      "The group-theoretic essence: SO(3) is non-amenable because it contains F₂ as a subgroup. Amenability (existence of a finitely-additive left-invariant probability measure) is exactly the obstruction to paradoxical decompositions (Tarski's theorem).",
+      "In contrast, the isometry group of ℝ² IS amenable (since SO(2) is abelian and abelian groups are amenable). This is why no 2D Banach-Tarski paradox exists for bounded sets — Dehn (1900) showed a 2D analogue fails.",
+      "The pieces are 5 in number (Straus-von Neumann optimal count). A 1994 result (Laczkovich) showed the circle can be squared using translations only, but this requires infinitely many pieces and is not a paradox."
+    ],
+    "prerequisites": [
+      "Group theory (free groups, group actions)",
+      "Euclidean geometry (rotations in SO(3))",
+      "Measure theory (Lebesgue measure, σ-algebras)",
+      "Axiom of Choice (required for the construction)",
+      "Non-amenable groups (F₂ as the prototypical example)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "equidecomposable",
+      "title": "§I: Equidecomposable Sets",
+      "startLine": 40,
+      "endLine": 83,
+      "summary": "Defines G-equidecomposability of sets A and B: A can be partitioned into finitely many pieces, each moved by a group element so the images partition B. Proves reflexivity (every set is equidecomposable to itself). Defines IsParadoxical: a set equidecomposable to two disjoint subsets.",
+      "mathContext": "Definition: $A \\sim_G B$ iff $\\exists n \\in \\mathbb{N}$, pieces $P_i \\subseteq A$ partitioning $A$, and $g_i \\in G$ such that $\\bigsqcup_i g_i(P_i) = B$. Reflexivity: use $n=1$, $P_0 = A$, $g_0 = e$ (identity). Paradoxical: $A$ is $G$-paradoxical iff $\\exists B, C \\subseteq A$ disjoint with $A \\sim_G B$ and $A \\sim_G C$."
+    },
+    {
+      "id": "no-measure",
+      "title": "§II: Paradoxical Sets Cannot Be Measured",
+      "startLine": 85,
+      "endLine": 144,
+      "summary": "Proves that if A is G-paradoxical, any G-invariant finitely-additive measure must assign A measure 0 or ∞. The key lemma: a + a = a implies a = 0 or a = ⊤ in ℝ≥0∞ (proved).",
+      "mathContext": "If $A \\sim B$, $A \\sim C$, $B \\cap C = \\emptyset$, $B,C \\subseteq A$, and $\\mu$ is $G$-invariant and finitely additive: $\\mu(A) = \\mu(B) + \\mu(C) = \\mu(A) + \\mu(A)$. So $\\mu(A) + \\mu(A) = \\mu(A)$, which in $\\mathbb{R}_{\\geq 0}^\\infty$ implies $\\mu(A) = 0$ or $\\mu(A) = \\infty$."
+    },
+    {
+      "id": "main-statement",
+      "title": "§III–V: Banach-Tarski Statement and Hausdorff Free Subgroup",
+      "startLine": 146,
+      "endLine": 226,
+      "summary": "States the main Banach-Tarski paradox for the unit ball in ℝ³ as a theorem with sorry. Includes the type RigidMotion3 (isometries of ℝ³), definitions of unitBall3 and unitSphere3. States Hausdorff's theorem: SO(3) contains a free subgroup of rank 2.",
+      "mathContext": "The full statement: $\\exists n, \\{P_i\\}_{i<n}, g_1^{(i)}, g_2^{(i)}$ such that $\\{P_i\\}$ partitions $B^3$, $B^3 = \\bigsqcup_i g_1^{(i)}(P_i)$, and $B^3 + 2e_1 = \\bigsqcup_i g_2^{(i)}(P_i)$. Hausdorff's rotation matrices have entries involving $\\sqrt{1 - 1/9} = 2\\sqrt{2}/3$, producing algebraically independent column vectors."
+    },
+    {
+      "id": "amenability",
+      "title": "§VI: Amenability and the Group-Theoretic Source",
+      "startLine": 249,
+      "endLine": 287,
+      "summary": "Defines amenable groups (admit a finitely-additive left-invariant probability measure on all subsets). States that ℤ is amenable (via Cesàro means) and F₂ is not (via paradoxical decomposition).",
+      "mathContext": "A group $G$ is amenable iff $\\exists \\mu: 2^G \\to [0,\\infty]$ with $\\mu(G)=1$, $\\mu(A \\cup B) = \\mu(A) + \\mu(B)$ for disjoint $A, B$, and $\\mu(gA) = \\mu(A)$ for all $g \\in G$. Abelian groups are amenable (via Markov-Kakutani fixed point theorem). $F_2$ is not amenable: the partition $F_2 = W(a) \\sqcup aW(a^{-1})$ with $F_2 = W(a) \\sqcup W(a^{-1}) \\sqcup \\cdots$ forces $\\mu(F_2) = \\infty$ or $0$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Banach-Tarski paradox is formalized at the statement level with abstract equidecomposability and paradoxical set framework fully defined. The key measure-theoretic consequence (paradoxical sets admit no finite invariant measure) is structurally proved. The main theorem and ingredient lemmas are stated as axiomatized sorries, representing the current boundary of this gallery entry's formalization.",
+    "openQuestions": [
+      "Can Hausdorff's free subgroup theorem be fully formalized in Lean? The proof requires showing that explicit 3×3 rotation matrices generate a free group — the algebraic argument involves showing nontrivial words produce vectors with irrational coordinates via a number-theoretic argument.",
+      "Can the full Banach-Tarski proof be formalized in Lean 4? The most likely path: build the free group paradoxical decomposition first (purely algebraic), then lift to S² (measure-theoretic), then to B³ (geometric extension). Estimated scope: 800-1200 lines."
+    ],
+    "implications": "The Banach-Tarski paradox shows that Lebesgue measure cannot be extended to all subsets of ℝ³ as a finitely-additive rigid-motion-invariant measure. It demonstrates that the Axiom of Choice produces sets with no reasonable notion of volume. The connection to amenability shows that this phenomenon is fundamentally group-theoretic: the non-amenability of SO(3) (via its free subgroup) is the root cause."
+  },
+  "crossReferences": [
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "parent-problem",
+      "description": "The Banach-Tarski paradox is a consequence of the existence of non-measurable sets"
+    },
+    {
+      "targetId": "lebesgue-measure-oq-03",
+      "relationship": "sibling",
+      "description": "Both show fundamental limitations of Lebesgue measure — infinite-dimensional impossibility and 3D paradox"
+    }
+  ],
+  "references": [
+    {
+      "author": "Banach, S. and Tarski, A.",
+      "title": "Sur la décomposition des ensembles de points en parties respectivement congruentes",
+      "year": 1924,
+      "note": "Original paper introducing the paradox"
+    },
+    {
+      "author": "Hausdorff, F.",
+      "title": "Grundzüge der Mengenlehre",
+      "year": 1914,
+      "note": "Proved the free subgroup F₂ ↪ SO(3) that is the algebraic engine of the paradox"
+    },
+    {
+      "author": "Wagon, S.",
+      "title": "The Banach-Tarski Paradox",
+      "year": 1985,
+      "note": "Standard modern reference with complete proof"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "namespace": "BanachTarski",
+    "lineCount": 287,
+    "axiomCount": 6,
+    "theoremCount": 7,
+    "definitionCount": 5,
+    "path": "Proofs/LebesgueMeasureOQ06.lean",
+    "sorries": 6
+  },
+  "sorries": 6
+}
