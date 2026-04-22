@@ -48,16 +48,40 @@
     "prerequisites": ["Metric.sphere definition", "dist symmetry", "bridge lemma"]
   },
   {
-    "id": "ann-nine-point-memberships",
+    "id": "ann-side-midpoints",
     "proofId": "feuerbachs-theorem-defs-oq-04",
-    "range": { "startLine": 93, "endLine": 154 },
-    "type": "technique",
-    "title": "Nine Individual Membership Theorems (Uniform Pattern)",
-    "content": "The nine theorems `midpoint_a_on_sphere` through `foot_c_on_sphere` each state that one of the special points lies on `Metric.sphere (toEuclidean T.ninePointCenter) T.ninePointRadius`. Every proof follows an identical 2-line pattern:\n1. `rw [mem_sphere_iff_dist2]` — rewrite to the dist2 formulation\n2. `exact midpoint_X_on_ninePointCircle T` — apply the existing coordinate proof\n\nThis economy of expression demonstrates the power of the bridge lemma: the entire nine-point circle result transfers from the coordinate API to Mathlib's abstract types with zero new mathematical content.",
-    "mathContext": "The nine special points of triangle $T$: (1) $M_a = $ midpoint of $BC$; (2) $M_b = $ midpoint of $CA$; (3) $M_c = $ midpoint of $AB$; (4) $M_{AH} = $ midpoint of $A$ to orthocenter $H$; (5) $M_{BH} = $ midpoint of $B$ to $H$; (6) $M_{CH} = $ midpoint of $C$ to $H$; (7) $F_a = $ foot of altitude from $A$; (8) $F_b = $ foot of altitude from $B$; (9) $F_c = $ foot of altitude from $C$. All lie on the circle with center $N = \\frac{O+H}{2}$ (midpoint of circumcenter and orthocenter) and radius $R/2$ (half the circumradius).",
+    "range": { "startLine": 93, "endLine": 112 },
+    "type": "theorem",
+    "title": "Side Midpoints on the Nine-Point Sphere",
+    "content": "The first three of the nine special points are the midpoints of the triangle's sides: `midpoint_a` (midpoint of $BC$), `midpoint_b` (midpoint of $CA$), `midpoint_c` (midpoint of $AB$). Each proof is the same two-line pattern:\n```lean\nrw [mem_sphere_iff_dist2]   -- translate sphere ∈ to dist2 condition\nexact midpoint_X_on_ninePointCircle T  -- invoke coordinate proof\n```\nOnce `mem_sphere_iff_dist2` is available, the reformulation is entirely mechanical — no new mathematics is needed.",
+    "mathContext": "Euler (1765) first described these three points as lying on a circle. In coordinates, $M_a = \\frac{B+C}{2}$, $M_b = \\frac{C+A}{2}$, $M_c = \\frac{A+B}{2}$. The nine-point center is $N = \\frac{O+H}{2}$ (midpoint of circumcenter $O$ and orthocenter $H$) and the radius is $R_9 = R/2$ where $R$ is the circumradius.",
     "significance": "supporting",
-    "relatedConcepts": ["nine-point circle", "midpoints", "altitude feet", "orthocenter", "FeuerbachsTheoremDefs"],
-    "prerequisites": ["nine-point circle theorem", "triangle geometry", "Feuerbach's theorem"]
+    "relatedConcepts": ["nine-point circle", "side midpoints", "Euler's nine-point circle", "FeuerbachsTheoremDefs"],
+    "prerequisites": ["midpoint definition", "nine-point circle theorem", "triangle geometry"]
+  },
+  {
+    "id": "ann-orthocenter-midpoints",
+    "proofId": "feuerbachs-theorem-defs-oq-04",
+    "range": { "startLine": 114, "endLine": 133 },
+    "type": "theorem",
+    "title": "Orthocenter Midpoints on the Nine-Point Sphere",
+    "content": "The next three special points are the midpoints of segments from each vertex to the orthocenter $H$: `midpoint_AH`, `midpoint_BH`, `midpoint_CH`. These are sometimes called the **Euler midpoints**.\n\nHistorically, these three points were discovered by Brianchon and Poncelet (1820) as part of their independent rediscovery of the nine-point circle — two years before Feuerbach's tangency result (1822). The same two-line proof pattern applies: `rw [mem_sphere_iff_dist2]; exact midpoint_XH_on_ninePointCircle T`.",
+    "mathContext": "The midpoints $M_{AH} = \\frac{A+H}{2}$, $M_{BH} = \\frac{B+H}{2}$, $M_{CH} = \\frac{C+H}{2}$ satisfy: reflecting $H$ across the nine-point center $N$ gives the circumcenter $O$, and reflecting each vertex across $N$ gives the corresponding side midpoint. This symmetry about $N$ is why all nine points are equidistant from $N$.",
+    "significance": "supporting",
+    "relatedConcepts": ["orthocenter", "Brianchon-Poncelet theorem", "nine-point circle", "Euler midpoints"],
+    "prerequisites": ["orthocenter definition", "nine-point circle theorem", "reflection symmetry"]
+  },
+  {
+    "id": "ann-altitude-feet",
+    "proofId": "feuerbachs-theorem-defs-oq-04",
+    "range": { "startLine": 135, "endLine": 154 },
+    "type": "theorem",
+    "title": "Altitude Feet on the Nine-Point Sphere",
+    "content": "The final three of the nine special points are the feet of the altitudes: `foot_a` (foot from $A$ to $BC$), `foot_b` (foot from $B$ to $CA$), `foot_c` (foot from $C$ to $AB$). These are the points where the three altitudes meet the opposite sides.\n\nThe nine-point circle is also called the **Feuerbach circle** because Feuerbach (1822) proved that this circle is internally tangent to the incircle — the result formalised elsewhere in this gallery. The altitude feet have a key role: the orthocentric system $(A, B, C, H)$ means each vertex is the orthocenter of the triangle formed by the other three.",
+    "mathContext": "The altitude foot $F_a$ is the orthogonal projection of $A$ onto line $BC$: $F_a = B + \\frac{(A-B)\\cdot(C-B)}{|C-B|^2}(C-B)$. Equivalently, $\\angle AF_aC = 90°$ and $F_a \\in BC$. The nine-point circle passes through all three altitude feet because $\\angle F_aF_bF_c$ is the orthic triangle, and the nine-point circle is the circumcircle of the orthic triangle.",
+    "significance": "supporting",
+    "relatedConcepts": ["altitude", "orthogonal projection", "orthic triangle", "Feuerbach's theorem", "incircle tangency"],
+    "prerequisites": ["altitude definition", "orthic triangle", "nine-point circle as circumcircle of orthic triangle"]
   },
   {
     "id": "ann-combined-theorem",
