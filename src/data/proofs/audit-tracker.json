@@ -1815,10 +1815,10 @@
       "result": "clean"
     },
     "erdos-1008": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-04-05T17:37:19Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T08:26:41Z",
+      "result": "clean"
     },
     "erdos-1008-oq-01": {
       "auditCount": 2,
@@ -1846,9 +1846,9 @@
     },
     "erdos-1010-oq-02": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T08:26:41Z",
+      "result": "clean"
     },
     "erdos-1011": {
       "agentId": "auditor-cycle-20-batch",
@@ -2076,9 +2076,9 @@
     },
     "erdos-1037": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T08:26:40Z",
+      "result": "clean"
     },
     "erdos-1038": {
       "agentId": "auditor-cycle-20-batch",
@@ -2159,10 +2159,10 @@
       "result": "clean"
     },
     "erdos-105": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T08:26:40Z",
+      "result": "clean"
     },
     "erdos-105-oq-05": {
       "auditCount": 3,
@@ -2406,9 +2406,9 @@
     },
     "erdos-1080": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T08:26:40Z",
+      "result": "clean"
     },
     "erdos-1081": {
       "agentId": "auditor-cycle-20-batch",
@@ -2604,9 +2604,9 @@
     },
     "erdos-1105": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T08:25:38Z",
+      "result": "clean"
     },
     "erdos-1106": {
       "agentId": "auditor-cycle-20-batch",
@@ -2628,15 +2628,15 @@
     },
     "erdos-1109": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T08:25:38Z",
+      "result": "clean"
     },
     "erdos-111": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T08:25:37Z",
+      "result": "clean"
     },
     "erdos-1110": {
       "agentId": "auditor-cycle-20-batch",
@@ -2646,9 +2646,9 @@
     },
     "erdos-1111": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T08:25:37Z",
+      "result": "clean"
     },
     "erdos-1112": {
       "agentId": "auditor-cycle-20-batch",
@@ -2699,10 +2699,10 @@
       "result": "clean"
     },
     "erdos-1119": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T08:25:37Z",
+      "result": "clean"
     },
     "erdos-112": {
       "auditCount": 3,
@@ -2729,10 +2729,10 @@
       "result": "issues-fixed"
     },
     "erdos-1123": {
-      "auditCount": 2,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T08:23:29Z",
+      "result": "clean"
     },
     "erdos-1124": {
       "auditCount": 3,
@@ -12872,11 +12872,11 @@
       "result": "clean"
     },
     "brouwer-fixed-point-oq-04-oq-02": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T19:38:07Z",
+      "auditCount": 4,
+      "lastAudited": "2026-04-22T08:32:31Z",
       "result": "clean",
       "issues": [
-        "NOTE: Lean file missing \u2014 active research WIP (OBSERVE phase 2026-04-21); gallery data untracked; not in listings.json; sorry mismatch is expected until researcher creates the file"
+        "NOTE: Researcher has fixed the sorry in working tree (uncommitted); HEAD has 1 sorry matching meta.json; meta.json update needed after researcher commits and proof compiles"
       ]
     },
     "area-of-circle-oq-05-oq-02": {
