@@ -98,13 +98,25 @@
   {
     "id": "ann-main-theorems",
     "proofId": "sperner-ndim-oq-04",
-    "range": { "startLine": 299, "endLine": 389 },
+    "range": { "startLine": 298, "endLine": 343 },
     "type": "insight",
-    "title": "Main Theorems and the Non-Revisiting Invariant",
-    "content": "The three sorry-using theorems represent what remains to be proved:\n\n1. `kuhn_path_terminates`: Existence of an FC simplex, derived from the boundary door assumption and sperner_ndim. Currently sorry'd; could be filled by applying sperner_ndim directly (parity of boundary door count implies FC existence).\n\n2. `kuhn_walk_reaches_fc`: The walk with sufficient fuel actually reaches an FC simplex. This requires the non-revisiting invariant: the door graph path from a boundary vertex has no cycles. This is the core open sorry.\n\n3. `kuhnPathStart_is_fc`: The top-level correctness theorem combining the start condition and the walk result.\n\nThe non-revisiting invariant is why Kuhn's algorithm works: the door graph component containing a boundary door is a path (not a cycle), because any cycle would require an even number of boundary vertices, but each path component has exactly 2 endpoints and the boundary door provides only 1.",
-    "mathContext": "The door graph G has: interior edges (from K.adj), boundary half-edges (from K.adj = none). Each vertex has degree ≤ 2 under IsKuhnCompatible. The boundary vertex (K.adj s₀ k₀ = none) has degree 1 in G. In a graph with max degree 2, components are paths and cycles; degree-1 vertices force the component to be a path. The path starts at the boundary door and ends at either another boundary door or an FC simplex (degree 1). Since only one boundary door was given as a starting point, the path terminus must be an FC simplex.",
+    "title": "Termination and Walk Correctness: The Non-Revisiting Invariant",
+    "content": "Two sorry-using theorems capture what remains formally unproved:\n\n1. `kuhn_path_terminates`: An FC simplex exists. Currently sorry'd but could be filled by applying sperner_ndim directly — the parity of boundary doors implies FC existence without any algorithm argument.\n\n2. `kuhn_walk_reaches_fc`: The kuhnWalk with sufficient fuel actually reaches an FC simplex. This requires the **non-revisiting invariant**: the door graph path from a boundary vertex has no cycles. This is the core open sorry.\n\nThe non-revisiting invariant is why Kuhn's algorithm works: the door graph component containing a boundary door is a path (not a cycle). Any cycle would require an even number of boundary vertices; but each path component has exactly 2 endpoints and the boundary door provides only 1, forcing the other endpoint to be an FC simplex.",
+    "mathContext": "Door graph G: interior edges from K.adj, boundary half-edges from K.adj = none. Under IsKuhnCompatible, max degree ≤ 2, so G is a disjoint union of paths and cycles. Boundary vertex (K.adj s₀ k₀ = none) has degree 1 in G, forcing its component to be a path (not a cycle). Both endpoints of a path in G have degree 1: either FC simplices (degree 1 by fc_door_count_eq_one) or boundary doors. Since the path starts at a boundary door, the other endpoint is an FC simplex.",
     "significance": "main-result",
     "relatedConcepts": ["non-revisiting invariant", "path-cycle decomposition", "door graph components", "Sperner's lemma"],
     "prerequisites": ["kuhnWalk", "IsKuhnCompatible", "sperner_ndim (existence)", "door graph structure"]
+  },
+  {
+    "id": "ann-kuhn-path-start",
+    "proofId": "sperner-ndim-oq-04",
+    "range": { "startLine": 344, "endLine": 389 },
+    "type": "definition",
+    "title": "kuhnPathStart: The Public API for Kuhn's Algorithm",
+    "content": "Section IX packages the algorithm into its final public-facing form. `kuhnPathStart` wraps kuhnWalk with:\n- An initial KuhnState from the boundary door (s₀, k₀) with empty visited set\n- Fuel = Fintype.card K.Simplex (at most as many steps as there are simplices)\n\nThe initial state invariant `current_not_visited` holds trivially: s₀ ∉ ∅. The fuel bound is correct because a non-revisiting walk of length n visits n+1 distinct simplices, so Fintype.card K.Simplex steps suffice.\n\n`kuhnPathStart_is_fc` is the top-level correctness theorem: it states that the simplex returned by the algorithm is fully colored. Currently sorry'd, pending formalization of the non-revisiting invariant that would chain kuhn_walk_reaches_fc to the initial boundary door condition.",
+    "mathContext": "The choice fuel = Fintype.card K.Simplex is sharp: in a triangulation with N simplices, the worst-case path visits all N simplices before reaching FC. The invariant chain: hbdry₀ (K.adj s₀ k₀ = none) ⟹ (s₀, k₀) is a boundary door ⟹ kuhnWalk path from (s₀, k₀) is non-revisiting ⟹ terminates at FC within N steps.",
+    "significance": "key",
+    "relatedConcepts": ["public API", "fuel bound", "Fintype.card", "KuhnState", "boundary door"],
+    "prerequisites": ["kuhnWalk", "KuhnState", "kuhn_walk_reaches_fc", "Fintype.card"]
   }
 ]

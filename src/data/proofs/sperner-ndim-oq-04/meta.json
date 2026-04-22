@@ -78,41 +78,57 @@
       "id": "door-counts",
       "title": "Exact Door Counts",
       "startLine": 92,
-      "endLine": 120,
+      "endLine": 114,
       "summary": "Under Kuhn compatibility: FC simplices have exactly 1 door, non-FC have 0 or 2.",
       "mathContext": "Combines parity (odd/even) with the degree bound (≤ 2) via omega."
     },
     {
       "id": "unique-exit",
       "title": "Unique Exit Door",
-      "startLine": 122,
-      "endLine": 185,
+      "startLine": 115,
+      "endLine": 178,
       "summary": "Non-FC simplex with entry door k_in has a unique exit door k_out ≠ k_in. Proved via Finset.card_eq_two.",
       "mathContext": "The existsUnique statement captures the determinism of Kuhn's algorithm."
     },
     {
+      "id": "door-transfer",
+      "title": "Door Transfer Lemma",
+      "startLine": 179,
+      "endLine": 202,
+      "summary": "Proves the door property is symmetric under adjacency: isDoorAt c K s k ↔ isDoorAt c K s' k' when K.adj s k = some (s', k').",
+      "mathContext": "K.adj_vertices guarantees the d-vertex images of (s,k) and (s',k') are equal, so the same color set is available at both ends of any door edge."
+    },
+    {
       "id": "kuhn-step",
       "title": "Kuhn Step Function",
-      "startLine": 187,
-      "endLine": 235,
+      "startLine": 203,
+      "endLine": 245,
       "summary": "Defines kuhnStep (one algorithm step) and proves door preservation across adjacency.",
-      "mathContext": "Uses door_transfer from SpernerNDim to show the door property is maintained."
+      "mathContext": "Uses door_transfer to show the door property is maintained across each step."
     },
     {
       "id": "kuhn-walk",
       "title": "Kuhn Walk Algorithm",
-      "startLine": 237,
-      "endLine": 270,
+      "startLine": 246,
+      "endLine": 297,
       "summary": "Defines KuhnState structure and kuhnWalk with fuel parameter for termination.",
-      "mathContext": "Fuel-based recursion avoids well-founded termination obligations while capturing the algorithm."
+      "mathContext": "Fuel-based recursion avoids well-founded termination obligations while capturing the algorithm. With fuel = Fintype.card K.Simplex, sufficient fuel is guaranteed when the walk is non-revisiting."
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem",
-      "startLine": 272,
-      "endLine": 280,
-      "summary": "States kuhnPathStart_is_fc: the simplex found by the Kuhn algorithm is fully colored.",
-      "mathContext": "Main correctness theorem, currently stated with sorry pending the non-revisiting invariant proof."
+      "title": "Termination and Walk Correctness Theorems",
+      "startLine": 298,
+      "endLine": 343,
+      "summary": "States kuhn_path_terminates (FC existence from boundary door) and kuhn_walk_reaches_fc (walk correctness). Both use sorry pending the non-revisiting invariant.",
+      "mathContext": "kuhn_path_terminates can be derived from sperner_ndim (parity of boundary doors implies FC existence). kuhn_walk_reaches_fc requires the door graph path invariant: components containing boundary vertices are paths, not cycles."
+    },
+    {
+      "id": "kuhn-path-start",
+      "title": "Kuhn Path from Boundary Door",
+      "startLine": 344,
+      "endLine": 389,
+      "summary": "Defines kuhnPathStart (top-level entry point) and states kuhnPathStart_is_fc (main correctness theorem). The starting state uses the boundary door as the initial entry with an empty visited set.",
+      "mathContext": "kuhnPathStart wraps kuhnWalk with fuel = Fintype.card K.Simplex, ensuring sufficient steps. kuhnPathStart_is_fc combines the walk result with the boundary door invariant to conclude the output is FC."
     }
   ],
   "mainTheorems": [
