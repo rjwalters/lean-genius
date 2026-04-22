@@ -24,12 +24,7 @@
 - Continuous single-valued map avoids all UHC machinery
 
 ### Remaining Open Issues
-1. `mixedUtility_linear_in_i` (sorry): EU_i(σ) = Σₖ σᵢ(k)·EU_i(eₖ, σ)
-   - Follows from multilinear structure by regrouping the sum by s_i value
-   - Formally: `Finset.sum` reindexing over dependent types (σ_i component)
-   - Doable ~40 lines via `Finset.sum_comm` + splitting ∏_j over i vs j≠i
-   
-2. `brouwer_product_simplex` (axiom): Brouwer FPT on ∏ᵢ Δᵢ
+1. `brouwer_product_simplex` (axiom): Brouwer FPT on ∏ᵢ Δᵢ
    - Follows from `kakutani_fixed_point_axiom` + `Fin.append` embedding
    - ∏ᵢ (Fin(G.strategies i) → ℝ) ≅ Fin(Σᵢ G.strategies i) → ℝ via concatenation
    - This embedding is routine topology (homeomorphism of finite-dim vector spaces)
@@ -76,6 +71,38 @@
 
 ### Next Steps
 
-1. Prove `mixedUtility_linear_in_i` via `Finset.sum_comm` + splitting product
-2. Derive `brouwer_product_simplex` from `kakutani_fixed_point_axiom` via `Fin.append`
-3. If both proved: file has 0 sorries + 0 axioms beyond Kakutani (inherited)
+1. Derive `brouwer_product_simplex` from `kakutani_fixed_point_axiom` via `Fin.append`
+2. If proved: file has 0 sorries + 0 axioms beyond Kakutani (inherited)
+
+---
+
+## Session 2026-04-22 (Session 2) — mixedUtility_linear_in_i Proved
+
+**Mode**: REVISIT
+**Outcome**: completed — 0 sorries, 1 axiom (brouwer_product_simplex)
+
+### What I Did
+
+1. Fixed 5 compilation errors from Session 1:
+   - `mixedUtility_continuous_in_i`: `subst hij` was eliminating `i` (outer param); fixed with `rw [hij]` + `congr_fun (Function.update_self i τ σ) (s i)` via `simp_rw [key]`
+   - `hprod_upd.hi`: `show pureStrat...` failed (Function.update semireducible); fixed with `.trans` using `Function.update_self`
+   - `hprod_upd.hne`: `Function.update_of_ne` couldn't infer implicit `f`; fixed with `(f := σ)` annotation
+   - `mixedUtility_linear_in_i` (sum_comm): needed `simp_rw [Finset.mul_sum]` to push `σ i k *` inside the inner sum before `rw [Finset.sum_comm]`
+   - `nashExcess_continuous`: same `subst h` issue; fixed same way as continuous_in_i
+2. Fixed `hind` proof (indicator sum): `simp_rw [mul_ite, ...]` silently failed; replaced with `trans ∑ k, if s i = k then σ i k else 0 / congr 1; ext k; split_ifs <;> ring / simp [Finset.sum_ite_eq']`
+
+### Key Technical Findings
+
+- **`Function.update` is `@[semireducible]`**: `show` tactic fails to unfold it; must use `Function.update_self` term proof with `congr_fun`
+- **`subst h : j = i`** when both `j` and `i` are free variables: Lean 4 may eliminate `i` (outer param) instead of `j` (intro'd var); safer to use `rw [h]`
+- **`Function.update_of_ne` implicit `f`**: when `hj : j ≠ i` and value are given, `f = σ` may not be inferred; use `(f := σ)` named argument
+- **Double sum pattern for `Finset.sum_comm`**: requires `∑ a ∈ s, ∑ b ∈ t, f a b`; must first use `simp_rw [Finset.mul_sum]` to pull scalar inside before swapping
+
+### Files Modified
+
+- `proofs/Proofs/BrouwerFixedPointOQ04OQ02.lean` (multiple fixes, ~490 lines, 0 sorries, 1 axiom)
+- `research/problems/brouwer-fixed-point-oq-04-oq-02/knowledge.md` (this file)
+
+### Next Steps
+
+Remaining axiom `brouwer_product_simplex` — could attempt via `Fin.appendEquiv` homeomorphism + `kakutani_fixed_point_axiom` singleton correspondence. Low priority since 1-axiom Nash existence is already a strong result.
