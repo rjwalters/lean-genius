@@ -90,7 +90,8 @@ Three sorries that Aristotle should be able to prove using Mathlib's trig API.
                 Real.sin_nat_mul_pi (= 0), Real.sin_pi_div_two (= 1). -/
 theorem cos_odd_half_pi (k : ℕ) :
     Real.cos ((2 * k + 1 : ℝ) * Real.pi / 2) = 0 := by
-  sorry
+  have h : (2 * (k : ℝ) + 1) * Real.pi / 2 = k * Real.pi + Real.pi / 2 := by ring
+  rw [h, Real.cos_add, Real.cos_pi_div_two, mul_zero, Real.sin_nat_mul_pi, zero_mul, sub_zero]
 
 /-- The k-th Chebyshev node is a root of T_n (n-th Chebyshev polynomial).
 
@@ -101,7 +102,15 @@ theorem cos_odd_half_pi (k : ℕ) :
     4. cos((2k+1)π/2) = 0                    [cos_odd_half_pi]. -/
 theorem chebyshevNode_is_root (n : ℕ) (hn : 0 < n) (k : Fin n) :
     (Polynomial.Chebyshev.T ℝ (n : ℤ)).eval (chebyshevNode n k) = 0 := by
-  sorry
+  simp only [chebyshevNode, chebyshev_T_at_cos]
+  have hmul : (n : ℤ) * ((2 * ↑k.val + 1 : ℝ) * Real.pi / (2 * ↑n)) =
+      (2 * k.val + 1 : ℝ) * Real.pi / 2 := by
+    push_cast
+    have : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+    field_simp
+    ring
+  rw [hmul]
+  exact cos_odd_half_pi k.val
 
 /-- The Chebyshev nodes are pairwise distinct.
 
@@ -113,6 +122,19 @@ theorem chebyshevNode_is_root (n : ℕ) (hn : 0 < n) (k : Fin n) :
     5. Therefore distinct k give distinct cosines. -/
 theorem chebyshevNode_injective (n : ℕ) (hn : 0 < n) :
     Function.Injective (chebyshevNode n) := by
-  sorry
+  intro i j heq
+  simp only [chebyshevNode] at heq
+  have hi := chebyshevAngle_mem_Ioo n hn i
+  have hj := chebyshevAngle_mem_Ioo n hn j
+  have hangle_eq := Real.strictAntiOn_cos.injOn
+    (Set.Ioo_subset_Icc_self hi) (Set.Ioo_subset_Icc_self hj) heq
+  apply Fin.ext
+  have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+  have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
+  have heq2 : (2 * (i.val : ℝ) + 1) = 2 * j.val + 1 := by
+    have := hangle_eq
+    field_simp [hn', hpi] at this
+    linarith
+  exact_mod_cast (show (i.val : ℝ) = j.val by linarith)
 
 end Erdos1151OQ04Aristotle
