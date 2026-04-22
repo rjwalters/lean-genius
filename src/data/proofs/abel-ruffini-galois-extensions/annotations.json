@@ -192,6 +192,18 @@
     "prerequisites": ["native_decide tactic", "Fintype.card", "factorial function", "symmetric group", "alternating group", "integer division in Nat"]
   },
   {
+    "id": "arg-chain-properties",
+    "proofId": "abel-ruffini-galois-extensions",
+    "range": { "startLine": 407, "endLine": 429 },
+    "type": "technique",
+    "title": "Chain Properties: Commutator Solvability and Joint S_n/A_n Packaging",
+    "content": "Three theorems closing the structural loop. (1) `commutator_solvable` (413-416): the derived subgroup (commutator) of a solvable group is solvable — proved by `inferInstance`, since Mathlib's `IsSolvable` typeclass automatically makes `commutator G` an instance when `G` is solvable. (2) `sign_kernel_is_alternating` (418-422): the formal identity `ker(sign) = A_n`, proved by `simp [MonoidHom.mem_ker, Equiv.Perm.mem_alternatingGroup]`. (3) `solvable_small_has_abelian_factors` (424-427): packages the joint solvability of $S_n$ and $A_n$ for $n \\leq 4$ as a conjunction, serving as a single-import summary theorem for the two biconditionals.",
+    "mathContext": "The derived subgroup (commutator) $[G, G] = \\langle [a, b] : a, b \\in G \\rangle$ is the kernel of the abelianization $G \\to G/[G,G]$. For a solvable group, $G^{(0)} = G \\supseteq G^{(1)} = [G,G] \\supseteq \\cdots \\supseteq G^{(k)} = \\{e\\}$, so $[G,G] = G^{(1)}$ has the shorter derived series $G^{(1)} \\supseteq \\cdots \\supseteq \\{e\\}$ — hence solvable. In Lean, `IsSolvable (commutator G)` is derived automatically because `commutator G ≤ G` (as a subgroup) and Mathlib's `Subgroup.solvable_of_le` instance fires.",
+    "significance": "supporting",
+    "relatedConcepts": ["commutator subgroup", "derived series", "sign_kernel_is_alternating", "solvable_small_has_abelian_factors", "IsSolvable typeclass", "inferInstance"],
+    "prerequisites": ["derived subgroup", "IsSolvable typeclass", "Equiv.Perm.mem_alternatingGroup", "MonoidHom.mem_ker"]
+  },
+  {
     "id": "arg-summary-closing",
     "proofId": "abel-ruffini-galois-extensions",
     "range": { "startLine": 517, "endLine": 534 },

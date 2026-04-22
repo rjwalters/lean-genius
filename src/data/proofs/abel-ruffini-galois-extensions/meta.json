@@ -173,10 +173,10 @@
     },
     {
       "id": "solvability-infrastructure",
-      "title": "Solvability Infrastructure",
+      "title": "Solvability Infrastructure (Parts VI–X): Subgroups, A_n Classification, Cardinalities, Preservation",
       "startLine": 237,
       "endLine": 365,
-      "summary": "Proves solvability of $A_n$ for $n \\leq 4$ and non-solvability for $n \\geq 5$ (complete $A_n$ classification). Group cardinalities from $|S_2|=2$ to $|S_6|=720$. Solvability preservation: subgroups, quotients, isomorphisms. Specific non-solvability of $S_5, S_6, S_7, S_8$ and $A_6, A_7$."
+      "summary": "Five sub-parts. **Part VI** (237-248): `subgroup_solvable_of_solvable` — subgroups of solvable groups are solvable (proved by `inferInstance`). **Part VII** (250-287): complete A_n classification — `alternating_not_solvable_of_five_le` (A_n not solvable for n ≥ 5, via exact sequence contradicting symmetric non-solvability), `alternating_solvable_of_le_four` (A_n solvable for n ≤ 4 by subgroup of S_n), `alternating_solvable_iff` (biconditional). **Part VIII** (289-328): cardinalities via `decide`/`native_decide`: $|S_2|=2$ through $|A_6|=360$, plus $|A_0|=|A_1|=|A_2|=1$. **Part IX** (330-347): `quotient_solvable_of_solvable`, `solvable_of_mul_equiv` (isomorphism invariance via `solvable_of_surjective`). **Part X** (349-365): `card_s0=1`, `card_s1=1`, and `a5_not_solvable` (A₅ not solvable as direct corollary)."
     },
     {
       "id": "specific-non-solvable",
@@ -198,6 +198,14 @@
       "startLine": 431,
       "endLine": 516,
       "summary": "Proves $S_3, S_4, S_5, A_4, A_5$ non-commutative via `decide`/`native_decide`. Verifies $|S_7|=5040, |S_8|=40320, |A_7|=2520, |A_8|=20160$. Confirms $|S_n| = n!$ and $|A_n| = n!/2$ computationally for small $n$."
+    },
+    {
+      "id": "module-summary",
+      "title": "Module Summary Docstring",
+      "startLine": 517,
+      "endLine": 534,
+      "summary": "Closing docstring (lines 517-532) provides a structured inventory of the file's theorems and instances across 15 sections: Small Groups Solvable ($S_0$–$S_4$, $A_0$–$A_4$), Non-Solvable ($S_n, A_n$ for $n \\geq 5$), Complete Biconditionals, A₅ structure, cardinalities, sign kernel identity, non-commutativity witnesses, Galois theory results. Line 534: `end AbelRuffiniGaloisExtensions` closes the namespace.",
+      "mathContext": "The summary counts '55+ theorems/instances, 0 sorries, 0 axioms'. The discrepancy with leanFile.theoremCount (59) arises from how Lean instances vs. theorem declarations are counted — `instance` declarations (e.g., `instance perm_fin_0_solvable`) count as instances, not theorems, in Lean's elaborator, but both appear in `#check` output and are usable as proof terms."
     }
   ],
   "sorries": 0
