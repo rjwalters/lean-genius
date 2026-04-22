@@ -3,12 +3,14 @@
   Routine supporting lemmas for automated proof search.
   See Erdos437Problem.lean for the main formalization.
 
-  These lemmas provide building blocks for partial product square counting:
-  - IsSquare and squareCount basic properties
-  - Division arithmetic for L(x)/x bound proofs
-  - Powers-of-four square counting
-  - u(x) = sqrt(log x * log log x) basic properties
-  - Real.exp inequalities for growth rate comparisons
+  13 of 15 sorries proved manually:
+  - IsSquare helpers (4): ⟨2^k, ring⟩, obtain + ring, ring, Nat.one_le_pow
+  - Division arithmetic (4): le_div_iff/div_le_iff + linarith, Nat.cast_pos, div_le_one_of_le
+  - u/exp/sqrt helpers (5): sqrt_nonneg, exp_le_exp.mpr, exp_lt_one_iff.mpr, sqrt_pos_of_pos, div_lt_iff + ring
+
+  2 sorries remain for Aristotle:
+  - partial_product_cons: complex List.foldl identity (non-trivial associativity)
+  - pow_four_range_product: complex inductive list product formula
 -/
 import Mathlib
 
@@ -21,20 +23,20 @@ namespace Erdos437.Aristotle
 -/
 
 /-- 4^k is a perfect square (= (2^k)^2) -/
-lemma isSquare_pow_four (k : ℕ) : IsSquare (4 ^ k) := by
-  sorry
+lemma isSquare_pow_four (k : ℕ) : IsSquare (4 ^ k) :=
+  ⟨2 ^ k, by ring⟩
 
 /-- Product of two squares is a square -/
 lemma isSquare_mul (a b : ℕ) (ha : IsSquare a) (hb : IsSquare b) : IsSquare (a * b) := by
-  sorry
+  obtain ⟨m, hm⟩ := ha; obtain ⟨n, hn⟩ := hb
+  exact ⟨m * n, by rw [hm, hn]; ring⟩
 
 /-- 4^i * 4^j = 4^(i+j) -/
-lemma pow_four_mul (i j : ℕ) : 4 ^ i * 4 ^ j = 4 ^ (i + j) := by
-  sorry
+lemma pow_four_mul (i j : ℕ) : 4 ^ i * 4 ^ j = 4 ^ (i + j) := by ring
 
 /-- 4^k ≥ 1 for all k -/
-lemma pow_four_pos (k : ℕ) : 4 ^ k ≥ 1 := by
-  sorry
+lemma pow_four_pos (k : ℕ) : 4 ^ k ≥ 1 :=
+  Nat.one_le_pow k 4 (by norm_num)
 
 /-
   ## Section 2: List Partial Products
@@ -56,20 +58,20 @@ lemma pow_four_range_product (k : ℕ) :
 -/
 
 /-- If a ≥ x * c and x > 0, then a / x ≥ c for reals -/
-lemma div_ge_of_ge_mul (a x c : ℝ) (hx : x > 0) (h : a ≥ x * c) : a / x ≥ c := by
-  sorry
+lemma div_ge_of_ge_mul (a x c : ℝ) (hx : x > 0) (h : a ≥ x * c) : a / x ≥ c :=
+  (le_div_iff hx).mpr (by linarith)
 
 /-- If a ≤ x * c and x > 0, then a / x ≤ c for reals -/
-lemma div_le_of_le_mul (a x c : ℝ) (hx : x > 0) (h : a ≤ x * c) : a / x ≤ c := by
-  sorry
+lemma div_le_of_le_mul (a x c : ℝ) (hx : x > 0) (h : a ≤ x * c) : a / x ≤ c :=
+  (div_le_iff hx).mpr (by linarith)
 
 /-- x > 0 as real when x ≥ 1 as natural -/
-lemma cast_pos_of_ge_one (x : ℕ) (hx : x ≥ 1) : (x : ℝ) > 0 := by
-  sorry
+lemma cast_pos_of_ge_one (x : ℕ) (hx : x ≥ 1) : (x : ℝ) > 0 :=
+  Nat.cast_pos.mpr (by omega)
 
 /-- (L x : ℝ) / x is in [0, 1] when L x ≤ x -/
-lemma div_L_le_one (L x : ℕ) (h : L ≤ x) (hx : x ≥ 1) : (L : ℝ) / x ≤ 1 := by
-  sorry
+lemma div_L_le_one (L x : ℕ) (h : L ≤ x) (hx : x ≥ 1) : (L : ℝ) / x ≤ 1 :=
+  div_le_one_of_le (by exact_mod_cast h) (by exact_mod_cast (show 0 ≤ x from by omega))
 
 /-
   ## Section 4: u(x) = sqrt(log x * log log x) Properties
@@ -77,23 +79,25 @@ lemma div_L_le_one (L x : ℕ) (h : L ≤ x) (hx : x ≥ 1) : (L : ℝ) / x ≤ 
 
 /-- u(x) ≥ 0 for x ≥ 2 -/
 lemma u_nonneg (x : ℕ) (hx : x ≥ 2) :
-    Real.sqrt (Real.log x * Real.log (Real.log x)) ≥ 0 := by
-  sorry
+    Real.sqrt (Real.log x * Real.log (Real.log x)) ≥ 0 :=
+  Real.sqrt_nonneg _
 
 /-- Real.exp is monotone -/
-lemma exp_mono (a b : ℝ) (h : a ≤ b) : Real.exp a ≤ Real.exp b := by
-  sorry
+lemma exp_mono (a b : ℝ) (h : a ≤ b) : Real.exp a ≤ Real.exp b :=
+  Real.exp_le_exp.mpr h
 
 /-- For c > 0 and u > 0, exp(-c * u) < 1 -/
-lemma exp_neg_lt_one (c u : ℝ) (hc : c > 0) (hu : u > 0) : Real.exp (-(c * u)) < 1 := by
-  sorry
+lemma exp_neg_lt_one (c u : ℝ) (hc : c > 0) (hu : u > 0) : Real.exp (-(c * u)) < 1 :=
+  Real.exp_lt_one_iff.mpr (by nlinarith [mul_pos hc hu])
 
 /-- sqrt 2 > 0 -/
-lemma sqrt_two_pos : Real.sqrt 2 > 0 := by
-  sorry
+lemma sqrt_two_pos : Real.sqrt 2 > 0 :=
+  Real.sqrt_pos_of_pos (by norm_num)
 
 /-- 1 / sqrt 2 < sqrt 2 -/
 lemma inv_sqrt_two_lt_sqrt_two : 1 / Real.sqrt 2 < Real.sqrt 2 := by
-  sorry
+  have hpos : Real.sqrt 2 > 0 := Real.sqrt_pos_of_pos (by norm_num)
+  have h2 : Real.sqrt 2 * Real.sqrt 2 = 2 := Real.mul_self_sqrt (by norm_num)
+  rw [div_lt_iff hpos, h2]; norm_num
 
 end Erdos437.Aristotle
