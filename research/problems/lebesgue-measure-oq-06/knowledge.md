@@ -1,56 +1,81 @@
-# Lebesgue Measure OQ-06: Banach-Tarski Paradox Formalization
+# Knowledge Base: lebesgue-measure-oq-06
 
-## Problem Summary
+Insights accumulated during research on this problem.
 
-Formal statement and investigation of the Banach-Tarski paradox in Lean 4. The
-abstract framework (equidecomposability, paradoxical sets, amenability) is fully
-defined and the core measure-theoretic consequence is fully proved.
+---
 
-**Current state**: `src/data/proofs/lebesgue-measure-oq-06/` gallery entry exists.
-Lean file: `proofs/Proofs/LebesgueMeasureOQ06.lean` (295 lines, 5 sorries).
+## Problem Understanding
 
-**Remaining sorries** (all axiomatized — full proof requires 800+ lines):
-1. `hausdorff_free_subgroup` — free subgroup F₂ ↪ SO(3) [Hausdorff 1914]
-2. `banach_tarski` — main paradox for unit ball in ℝ³
-3. `banach_tarski_pieces_nonmeasurable` — pieces are non-measurable
-4. `free_group_not_amenable` — F₂ is not amenable
-5. `int_amenable` — ℤ is amenable via Cesàro mean
+The Banach-Tarski paradox (1924) is the statement that the unit ball B³ ⊂ ℝ³ can be
+decomposed into finitely many disjoint pieces that reassemble into two unit balls under
+rigid motions. The paradox relies on non-measurable sets (hence is not a contradiction
+of Lebesgue measure) and the Axiom of Choice.
 
-## Session 2026-04-22 (Session 1) — Fix paradoxical_no_finite_measure
+**Research goal**: Formally state the theorem in Lean 4 and identify exactly what Mathlib
+infrastructure is needed. A statement-level formalization (with key lemmas sorry'd) is
+achievable; a complete proof would require the Hausdorff paradox.
 
-**Mode**: FRESH
-**Outcome**: progress — eliminated 1 sorry
+---
 
-### What I Did
+## Key Mathematical Facts
 
-- Proved the sorry in `paradoxical_no_finite_measure` using the monotonicity argument:
-  - Split A = (B ∪ C) ∪ (A \ (B ∪ C)) using `Set.union_sdiff_of_subset`
-  - Applied `hμ_add` to get `μ(A) = μ(B ∪ C) + μ(A \ (B ∪ C))`
-  - Derived `μ(B ∪ C) ≤ μ(A)` (monotonicity from finite additivity)
-  - Combined with `μ(A) + μ(A) = μ(B ∪ C)` to get `μ(A) + μ(A) ≤ μ(A)`
-  - Used `le_antisymm` with `le_add_right` to conclude `μ(A) + μ(A) = μ(A)`
-  - Applied existing `ENNReal.eq_zero_or_top_of_add_eq_self` to finish
+### The Proof Strategy (Hausdorff → Banach-Tarski)
 
-### Key Findings
+1. **Hausdorff paradox** (1914): The unit sphere S² can be partitioned into four sets
+   A, B, C, D where D is countable and {A, B, C} is a "paradoxical triplet":
+   - A and B∪C are congruent (under some rotation)
+   - B and C are congruent (under some rotation)
+   This follows from the free subgroup of SO(3).
 
-- The `paradoxical_no_finite_measure` sorry was resolvable with pure ENNReal
-  monotonicity reasoning — no additional hypotheses needed
-- The core insight: `μ(B ∪ C) ≤ μ(A)` follows from B ∪ C ⊆ A and finite
-  additivity (splitting A and using non-negativity)
-- The 5 remaining sorries represent genuinely hard formalization (all require
-  extensive Lean infrastructure beyond the current 295 lines)
+2. **Free subgroup of SO(3)**: The rotations
+   - φ = rotation by arccos(1/3) around the z-axis
+   - ψ = rotation by arccos(1/3) around the x-axis
+   generate a free group F₂ inside SO(3). This is the algebraic heart of the paradox.
 
-### Files Modified
+3. **Paradoxical decomposition of F₂**: The free group on 2 generators {a, b} satisfies:
+   F₂ = F₂·a ⊔ F₂·b ⊔ {e} (as sets, via a Cayley graph argument).
+   From this one constructs a decomposition of S² into 3 pieces each congruent to the whole.
 
-- `proofs/Proofs/LebesgueMeasureOQ06.lean` (288 → 295 lines, 6 → 5 sorries)
-- `src/data/proofs/lebesgue-measure-oq-06/meta.json` (sorries 6→5)
+4. **Extension to B³**: By adding the origin and using a "expanding sphere" argument,
+   the S² paradox extends to B³.
 
-### Next Steps
+### Tarski's Equivalence Theorem
+The Banach-Tarski paradox is equivalent (via Tarski's theorem) to the statement:
+- B³ is **paradoxically decomposable** with respect to the isometry group of ℝ³
+- Equivalently: there is no finitely additive, isometry-invariant measure on all subsets of ℝ³
+  that agrees with Lebesgue measure on measurable sets.
 
-- `free_group_not_amenable`: Provable via explicit partition F₂ = W(a) ∪ a·W(a⁻¹)
-  (disjoint) and F₂ = W(b) ∪ b·W(b⁻¹) (disjoint), giving contradiction with
-  amenability. Requires FreeGroup.toWord API for word-start definitions. ~150 lines.
-- `banach_tarski_pieces_nonmeasurable`: Could use Vitali non-measurable set from
-  Mathlib as an alternative if `MeasureTheory.exists_not_measurableSet` exists.
-- `hausdorff_free_subgroup`: Requires explicit rotation matrices and number-theoretic
-  freeness argument. Estimate 300+ lines.
+---
+
+## Mathlib Status
+
+### What Mathlib Has
+
+- `Matrix.SpecialOrthogonalGroup ℝ (Fin 3)`: The SO(3) group
+- `Isometry`, `IsometryEquiv`: Isometries of metric spaces
+- `EuclideanSpace ℝ (Fin 3)`: ℝ³ as a Euclidean space
+- `MeasureTheory.Measure.Lebesgue.Basic`: Lebesgue measure
+- `MeasureTheory.Measure.NullMeasurableSet`: Non-measurable set concept
+- `FreeGroup`: Free groups in Mathlib
+- `Subgroup.IsFreeGroup`: Free subgroups
+
+### What's Missing / Needs Investigation
+
+- **Free subgroup of SO(3)**: Does Mathlib have the fact that SO(3) contains F₂?
+  Check: `Mathlib.GroupTheory.FreeProduct`, free subgroups of Lie groups.
+- **Hausdorff paradox**: No known Lean 4 formalization found yet.
+- **Paradoxical decomposability**: The `IsParadoxicallyDecomposable` predicate needs
+  to be defined (not in Mathlib).
+- **Rigid motions = SE(3)**: The semidirect product SO(3) ⋊ ℝ³ may need to be set up.
+
+---
+
+## Insights
+
+[Insights from research attempts will be accumulated here]
+
+---
+
+## Dead Ends
+
+[Approaches known not to work will be documented here]
