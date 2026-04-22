@@ -6,7 +6,7 @@
   "tier": "A",
   "path": "full",
   "knowledge": {
-    "progressSummary": "PROGRESS: Case A of new_mem_convexHull proved. Case B (pos-index minimizer) still sorry — requires joint ε and WF induction on Carathéodory rank per Starr 1969",
+    "progressSummary": "PROGRESS: Joint ε eliminates Case B sorry; single sorry remains in hnew_point_av requiring WF Carathéodory descent",
     "insights": [
       "reduce_excess_by_one is the mathematical core — requires: (1) linear dependence of d+1 direction vectors via finrank, (2) perturbation ε construction from boundary distances, (3) verification that new points remain in convex hulls",
       "sum_close_to_convexHull needs convexHull(∑ Sᵢ) = ∑ convexHull(Sᵢ) from Mathlib (check Mathlib.Analysis.Convex.Combination for sum identity)",
@@ -21,7 +21,10 @@
       "hD_subset is trivially true: D.excessIndices subset holds because emb maps INTO D.excessIndices (by hemb_mem), so all perturbed excess indices were already excess",
       "hemb_inj proved using List.nodup_iff_injective_get on D.excessIndices.val.toList (nodup by Finset.nodup_val)",
       "ε₀ from neg_indices only is insufficient for new_mem_convexHull: need joint min over neg AND pos coefficient bounds for pos-coeff perturbed points to stay in conv(S)",
-      "Case A of new_mem_convexHull proved: when ε₀ satisfies all pos-index bounds, three-way c-trichotomy (neg/zero/pos) covers all cases via convex_convexHull ℝ (S i)"
+      "Case A of new_mem_convexHull proved: when ε₀ satisfies all pos-index bounds, three-way c-trichotomy (neg/zero/pos) covers all cases via convex_convexHull ℝ (S i)",
+      "Joint minimum ε = min(ε₀, pos_ratios) eliminates Case B sorry in new_mem_convexHull: hε_le_neg and hε_le_pos ensure all convex weights ≥ 0",
+      "Single remaining sorry precisely located: hnew_point_av needs ε = ε₀, which holds when neg-index l_min achieves joint minimum",
+      "When pos-index achieves joint minimum: a-weight → 0, new_point = bv ∈ convexHull but not S; excess does not decrease — WF descent on Carathéodory count needed"
     ],
     "builtItems": [
       "binary_repr_of_mem_convexHull_not_mem private lemma (ShapleyFolkman.lean:220)",
@@ -33,12 +36,16 @@
       "hD_subset: D.excessIndices subset proof (trivial via hemb_mem)",
       "hnew_point_av: new_point(emb l_min) = av(emb l_min) ∈ S (algebraic proof)",
       "ε₀ perturbation construction with neg-coefficient minimum",
-      "Case A proof of new_mem_convexHull via by_cases hCaseA + c-trichotomy (ShapleyFolkman.lean ~50 lines at lines 543-590)"
+      "Case A proof of new_mem_convexHull via by_cases hCaseA + c-trichotomy (ShapleyFolkman.lean ~50 lines at lines 543-590)",
+      "new_mem_convexHull: proved sorry-free using joint ε (ShapleyFolkman.lean:576)",
+      "new_sum: updated to use ε consistently (ShapleyFolkman.lean:522)"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "WF descent on Carathéodory vertex count: needed to handle case where pos-index achieves joint minimum ε"
+    ],
     "nextSteps": [
-      "Prove Case B of new_mem_convexHull: joint ε = min(ε₀, pos-index bounds); WF on Carathéodory vertex count (Starr 1969)",
-      "Submit Case B sorry to Aristotle as HARD sorry"
+      "Add case split in hnew_point_av: if ε = ε₀ (neg achieves joint min) use current proof; else WF induction",
+      "Formalize Carathéodory-based WF argument: when pos achieves min, Carathéodory count at that index decreases (a-weight → 0)"
     ],
     "phase": "ACT"
   },

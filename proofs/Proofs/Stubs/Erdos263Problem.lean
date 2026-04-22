@@ -517,8 +517,53 @@ theorem connection_262_proved : connection_262 := by
         have heq : (((a n : ℕ) : ℤ) : ℝ) = ((a n : ℕ+) : ℝ) := by norm_cast
         rw [heq, div_self hpos.ne']
       simp_rw [hratio]; exact tendsto_const_nhds)
-    (fun n => by exact_mod_cast (a n).pos)
+    (fun n => by positivity)
   simpa only [reciprocalSum, Int.cast_natCast] using hirr
+
+/-- Each term 1/(doubleExp n) equals 1/2^{2^n} as a real. -/
+private lemma doubleExp_term_eq (n : ℕ) :
+    (1 : ℝ) / ((doubleExp n : ℕ) : ℝ) = 1 / (2 : ℝ) ^ (2 ^ n) := by
+  simp [doubleExp]
+
+/-- Summability of 1/2^{2^n}, rewritten from doubleExp_convergent. -/
+private lemma doubleExp_sum_summable :
+    Summable (fun n : ℕ => (1 : ℝ) / (2 : ℝ) ^ (2 ^ n)) :=
+  doubleExp_convergent.congr (fun n => doubleExp_term_eq n)
+
+/-- The tail ∑' k, 1/2^{2^(k+N+1)} is positive.
+    Note: each term is positive; Aristotle candidate (tsum_pos API varies by Mathlib version). -/
+private lemma doubleExp_tail_pos (N : ℕ) :
+    0 < ∑' k : ℕ, (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + N + 1)) := by
+  sorry
+
+/-- D * (finite sum) is a natural number: 2^{2^N} * Σ_{k<N} 1/2^{2^k} ∈ ℕ.
+    Each term: 2^{2^N} * (1/2^{2^k}) = 2^{2^N - 2^k} ∈ ℕ (since 2^k ≤ 2^N for k ≤ N). -/
+private lemma doubleExp_fin_mul_nat (N : ℕ) :
+    ∃ m : ℕ, (2 : ℝ) ^ (2 ^ N) * ∑ k ∈ Finset.range N, (1 : ℝ) / (2 : ℝ) ^ (2 ^ k) =
+    (m : ℝ) := by
+  refine ⟨∑ k ∈ Finset.range N, (2 : ℕ) ^ (2 ^ N - 2 ^ k), ?_⟩
+  simp_rw [Finset.mul_sum, mul_one_div]
+  push_cast
+  apply Finset.sum_congr rfl
+  intro k hk
+  rw [Finset.mem_range] at hk
+  have hle : 2 ^ k ≤ 2 ^ N := Nat.pow_le_pow_right (by norm_num) hk.le
+  -- Goal: (2:ℝ)^(2^N) / (2:ℝ)^(2^k) = (2:ℝ)^(2^N - 2^k)
+  -- Use: pow_sub₀ says a^(m-n) = a^m * (a^n)⁻¹, so a^m/a^n = a^(m-n)
+  rw [div_eq_mul_inv, ← pow_sub₀ (2 : ℝ) (by norm_num : (2 : ℝ) ≠ 0) hle]
+
+/-- Tail bound: 2^{2^N} * Σ_{k≥N+1} 1/2^{2^k} < 1 / (2^{2^N} - 1).
+    Proof sketch: D * T = Σ_{j≥0} 1/D^{2^{j+1}-1}. Each term ≤ (1/D)^j
+    (since 2^{j+1}-1 ≥ j for j ≥ 0). So D*T < Σ_{j≥0} (1/D)^j = D/(D-1)·1/D... -/
+private lemma doubleExp_tail_bound (N : ℕ) :
+    (2 : ℝ) ^ (2 ^ N) * ∑' k : ℕ, (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + N + 1)) <
+    1 / ((2 : ℝ) ^ (2 ^ N) - 1) := by
+  sorry
+
+/-- Split: ∑' n, f n = ∑ n ∈ range N, f n + f N + ∑' n, f (n + N + 1). -/
+private lemma tsum_split_at (f : ℕ → ℝ) (hf : Summable f) (N : ℕ) :
+    ∑' n, f n = (∑ n ∈ Finset.range N, f n) + f N + ∑' n, f (n + N + 1) := by
+  sorry
 
 /-- The sum Σ_{n=0}^∞ 1/2^{2^n} is irrational.
 
@@ -529,20 +574,19 @@ theorem connection_262_proved : connection_262 := by
     Note: `doubleExp_not_folklore_growth` shows folklore_irrationality does NOT
     apply here. The proof uses a direct integer-gap argument instead.
 
-    PROOF OUTLINE (integer-gap argument, for Aristotle):
-    Suppose S = m/n (rational, n > 0). Let D_N = 2^{2^N}.
-
-    Split at N: D_N · S = A_N + R_N  where
-      A_N = Σ_{k<N} 2^{2^N - 2^k} ∈ ℕ  (since 2^N ≥ 2^k for k < N)
-      R_N = D_N · Σ_{k≥N} 1/2^{2^k} = 1 + ε_N
-
-    Bound: ε_N = Σ_{k>N} 1/2^{2^k - 2^N} < 1/(2^{2^N} - 1) < 2/2^{2^N}
-
-    For N with 2^{2^N} > 2n:  n · ε_N < 1.
-    Then: m · D_N = n · A_N + n + n · ε_N  where n · ε_N ∈ (0, 1).
-    But m · D_N - n · A_N - n ∈ ℤ and n · ε_N ∈ (0,1). Contradiction. -/
+    PROOF: Integer-gap argument. Suppose S = p/q (rational, q ≠ 0). Let D = 2^{2^N}
+    where N = |q|+1 (so D > |q|). Split S = A + 1/D + T where:
+      A = Σ_{k<N} 1/2^{2^k} (finite sum), T = Σ_{k>N} 1/2^{2^k} (tail).
+    Then q·D·T = p·D - q·(D·A) - q ∈ ℤ (since D·A ∈ ℕ by doubleExp_fin_mul_nat).
+    But |q·D·T| ≤ |q|·D·T < |q|/(D-1) ≤ (D-1)/(D-1) = 1 (by doubleExp_tail_bound).
+    And q·D·T ≠ 0 (since q≠0, D>0, T>0). A nonzero integer with |·|<1 is impossible. -/
 theorem doubleExp_sum_irrational :
     Irrational (∑' n, (1 : ℝ) / (doubleExp n : ℕ)) := by
+  simp_rw [doubleExp_term_eq]
+  -- Integer-gap argument using the helper lemmas above.
+  -- Structure: assume S = p/q rational (q ≠ 0). Choose N = |q|+1, D = 2^{2^N} > |q|.
+  -- Split S = finsum + 1/D + T. Then q·D·T = p·D - q·(D·finsum) - q ∈ ℤ.
+  -- But |q|·D·T < |q|/(D-1) ≤ 1 and q·D·T ≠ 0. No nonzero integer has |.| < 1.
   sorry
 
 end Erdos263

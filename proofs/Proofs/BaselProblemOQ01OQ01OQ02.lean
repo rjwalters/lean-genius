@@ -654,111 +654,13 @@ theorem apery_theorem : Irrational (zetaValue 3) := by
     have hlcm : (lcmUpTo n : ℝ) ≤ (3 : ℝ) ^ n := by exact_mod_cast lcm_hanson_bound n
     calc (lcmUpTo n : ℝ) ^ 3 * |linearForm n|
         ≤ ((3 : ℝ) ^ n) ^ 3 * (C * (17 - 12 * Real.sqrt 2) ^ n) :=
-          mul_le_mul (pow_le_pow_left (Nat.cast_nonneg _) hlcm 3)
+          mul_le_mul (pow_le_pow_left₀ (Nat.cast_nonneg _) hlcm 3)
             (hC n) (abs_nonneg _) (by positivity)
       _ = C * r ^ n := by rw [h27, hr_def, mul_pow]; ring
       _ < ε := hN n hn
   · exact apery_linearForm_nonzero
   · exact denominator_control
 
--- ============================================================================
--- Part XIV: Additional Divisibility Infrastructure (proved without axioms)
--- ============================================================================
-
-/-- lcmUpTo is monotone for divisibility: if m ≤ n then lcmUpTo m ∣ lcmUpTo n.
-    Proof: any element k ∈ range m is also in range n (since k < m ≤ n),
-    so (k+1) divides the larger lcm. -/
-theorem lcmUpTo_dvd_of_le {m n : ℕ} (h : m ≤ n) : lcmUpTo m ∣ lcmUpTo n := by
-  unfold lcmUpTo
-  apply Finset.lcm_dvd
-  intro a ha
-  apply Finset.dvd_lcm
-  exact Finset.mem_range.mpr ((Finset.mem_range.mp ha).trans_le h)
-
-/-- lcm(1,...,3) = 6. -/
-theorem lcmUpTo_three : lcmUpTo 3 = 6 := by native_decide
-
-/-- lcm(1,...,4) = 12. -/
-theorem lcmUpTo_four : lcmUpTo 4 = 12 := by native_decide
-
-/-- **Factorial Denominator Control**: (n!)³ · aₙ ∈ ℤ for all n.
-
-    Proved by 2-step induction on the Apéry recurrence:
-    - n=0: (0!)³ · 0 = 0 ∈ ℤ
-    - n=1: (1!)³ · 6 = 6 ∈ ℤ
-    - n+2: from the recurrence
-        (n+2)³ · a_{n+2} = c_{n+1} · a_{n+1} - (n+1)³ · a_n
-      and the factorial identity (n+2)!/  (n+2) = (n+1)!, we get:
-        ((n+2)!)³ · a_{n+2} = ((n+1)!)³ · (c_{n+1} · a_{n+1} - (n+1)³ · a_n)
-                             = c_{n+1} · m₁ - (n+1)³ · ((n+1)!)³ · a_n
-      Since ((n+1)!) = (n+1) · n!:
-        (n+1)³ · ((n+1)!)³ · a_n = (n+1)⁶ · (n!)³ · a_n = (n+1)⁶ · m₀ ∈ ℤ
-      So ((n+2)!)³ · a_{n+2} = c_{n+1} · m₁ - (n+1)⁶ · m₀ ∈ ℤ. □
-
-    Note: This is weaker than denominator_control (which uses lcmUpTo, not n!),
-    but is completely proved from first principles. Since lcmUpTo n ≤ n!, the
-    denominator of aₙ divides n!³ but may not divide lcmUpTo(n)³. -/
-theorem denominator_control_factorial : ∀ n : ℕ,
-    ∃ m : ℤ, ((n.factorial : ℚ)) ^ 3 * aperyA n = ↑m
-  | 0 => ⟨0, by simp [aperyA]⟩
-  | 1 => ⟨6, by norm_num [aperyA]⟩
-  | (n + 2) => by
-    obtain ⟨m₀, hm₀⟩ := denominator_control_factorial n
-    obtain ⟨m₁, hm₁⟩ := denominator_control_factorial (n + 1)
-    -- Target: ((n+2)!)³ · a_{n+2} = ↑(c_{n+1} · m₁ - (n+1)⁶ · m₀)
-    use aperyRecCoeff (n + 1) * m₁ - (n + 1 : ℤ) ^ 6 * m₀
-    -- Factorial identities: (n+2)! = (n+2)·(n+1)! and (n+1)! = (n+1)·n!
-    have hfact1 : ((n + 2).factorial : ℚ) = (↑(n + 2) : ℚ) * ((n + 1).factorial : ℚ) :=
-      by exact_mod_cast Nat.factorial_succ (n + 1)
-    have hfact2 : ((n + 1).factorial : ℚ) = (↑(n + 1) : ℚ) * ((n : ℕ).factorial : ℚ) :=
-      by exact_mod_cast Nat.factorial_succ n
-    -- The recurrence: (n+2)³ · a_{n+2} = c_{n+1} · a_{n+1} - (n+1)³ · a_n
-    have hrec : (↑(n + 2) : ℚ) ^ 3 * aperyA (n + 2) =
-        (aperyRecCoeff (n + 1) : ℚ) * aperyA (n + 1) - (↑(n + 1) : ℚ) ^ 3 * aperyA n := by
-      have hdef : aperyA (n + 2) =
-          ((aperyRecCoeff (n + 1) : ℚ) * aperyA (n + 1) - (↑(n + 1) : ℚ) ^ 3 * aperyA n) /
-          (↑(n + 2) : ℚ) ^ 3 := by
-        simp only [aperyA, aperyRecCoeff]
-        push_cast
-        ring
-      rw [hdef]
-      have hn2 : (↑(n + 2) : ℚ) ^ 3 ≠ 0 := by positivity
-      field_simp [hn2]
-    -- Second term: (n+1)³ · ((n+1)!)³ · a_n = (n+1)⁶ · m₀
-    have hterm2 : (↑(n + 1) : ℚ) ^ 3 * ((n + 1).factorial : ℚ) ^ 3 * aperyA n =
-                  (↑(n + 1) : ℚ) ^ 6 * ↑m₀ := by
-      rw [hfact2]
-      have : ((↑(n + 1) : ℚ) * ((n : ℕ).factorial : ℚ)) ^ 3 =
-             (↑(n + 1) : ℚ) ^ 3 * ((n : ℕ).factorial : ℚ) ^ 3 := by ring
-      rw [this]
-      have : (↑(n + 1) : ℚ) ^ 3 * ((↑(n + 1) : ℚ) ^ 3 * ((n : ℕ).factorial : ℚ) ^ 3) *
-             aperyA n = (↑(n + 1) : ℚ) ^ 6 * (((n : ℕ).factorial : ℚ) ^ 3 * aperyA n) := by ring
-      rw [this, hm₀]
-      push_cast; ring
-    -- Main calculation
-    have hmain : ((n + 2).factorial : ℚ) ^ 3 * aperyA (n + 2) =
-        (aperyRecCoeff (n + 1) : ℚ) * ↑m₁ - (↑(n + 1) : ℚ) ^ 6 * ↑m₀ := by
-      -- Step 1: Factor out (n+2)^3 from factorial
-      have hfact_eq : ((n + 2).factorial : ℚ) ^ 3 =
-                      ((n + 1).factorial : ℚ) ^ 3 * (↑(n + 2) : ℚ) ^ 3 := by
-        rw [hfact1]; ring
-      -- Step 2: Reduce to (n+1)!^3 · ((n+2)^3 · a_{n+2})
-      have hkey : ((n + 2).factorial : ℚ) ^ 3 * aperyA (n + 2) =
-          ((n + 1).factorial : ℚ) ^ 3 *
-          ((aperyRecCoeff (n + 1) : ℚ) * aperyA (n + 1) - (↑(n + 1) : ℚ) ^ 3 * aperyA n) := by
-        rw [hfact_eq, mul_assoc]
-        congr 1
-        exact hrec
-      -- Step 3: Distribute and substitute IH
-      rw [hkey, mul_sub,
-          show ((n + 1).factorial : ℚ) ^ 3 * ((aperyRecCoeff (n + 1) : ℚ) * aperyA (n + 1)) =
-               (aperyRecCoeff (n + 1) : ℚ) * (((n + 1).factorial : ℚ) ^ 3 * aperyA (n + 1)) by ring,
-          hm₁,
-          show ((n + 1).factorial : ℚ) ^ 3 * ((↑(n + 1) : ℚ) ^ 3 * aperyA n) =
-               (↑(n + 1) : ℚ) ^ 3 * ((n + 1).factorial : ℚ) ^ 3 * aperyA n by ring,
-          hterm2]
-    rw [hmain]
-    push_cast; ring
 
 -- ============================================================================
 -- Part XV: Lower Bound on ζ(3) — Concrete Nonzero Base Case
@@ -771,7 +673,7 @@ theorem zetaValue_three_gt_6_5 : (6 : ℝ) / 5 < zetaValue 3 := by
   have hsum : Summable (fun n : ℕ => (1 : ℝ) / (n : ℝ) ^ 3) := summable_zetaValue 3 (by norm_num)
   have hle : ∑ n ∈ Finset.range 17, (1 : ℝ) / (n : ℝ) ^ 3 ≤ zetaValue 3 := by
     unfold zetaValue
-    exact sum_le_tsum (Finset.range 17) (fun n _ => by positivity) hsum
+    exact sum_le_hasSum (Finset.range 17) (fun n _ => by positivity) hsum.hasSum
   have hbound : (6 : ℝ) / 5 < ∑ n ∈ Finset.range 17, (1 : ℝ) / (n : ℝ) ^ 3 := by
     norm_num [Finset.sum_range_succ, Finset.sum_range_zero]
   linarith
@@ -787,5 +689,84 @@ theorem linearForm_one_pos : 0 < linearForm 1 := by
   have ha : (aperyA 1 : ℝ) = 6 := by exact_mod_cast aperyA_one
   rw [hb, ha]
   linarith [zetaValue_three_gt_6_5]
+
+-- ============================================================================
+-- Part XVI: Tail Lower Bound — ζ(3) ≥ S_N + 1/(2N²) for N ≥ 1
+-- ============================================================================
+
+/-- Algebraic inequality: 1/(2x²) - 1/(2(x+1)²) ≤ 1/x³ for x ≥ 1.
+    Proof: Cross-multiply: (2(x+1)² - 2x²)·x³ ≤ 4x²(x+1)², i.e. (4x+2)x³ ≤ 4x²(x+1)². -/
+private lemma cube_inv_ge_telescoping' (x : ℝ) (hx : 1 ≤ x) :
+    (1 : ℝ) / (2 * x ^ 2) - 1 / (2 * (x + 1) ^ 2) ≤ 1 / x ^ 3 := by
+  have hxpos : (0 : ℝ) < x := by linarith
+  rw [div_sub_div _ _ (by positivity) (by positivity)]
+  rw [div_le_div_iff₀ (by positivity) (by positivity)]
+  nlinarith [sq_nonneg x, pow_pos hxpos 2]
+
+/-- Telescoping partial sum: ∑_{k=0}^{M-1} [1/(2(k+N)²) - 1/(2(k+N+1)²)] = 1/(2N²) - 1/(2(M+N)²). -/
+private lemma telescope_sum_eq (N M : ℕ) :
+    ∑ k ∈ Finset.range M, ((1 : ℝ) / (2 * ((k : ℝ) + N) ^ 2) - 1 / (2 * ((k : ℝ) + N + 1) ^ 2)) =
+    1 / (2 * (N : ℝ) ^ 2) - 1 / (2 * ((M : ℝ) + N) ^ 2) := by
+  induction M with
+  | zero => simp
+  | succ m ih =>
+    rw [Finset.sum_range_succ, ih]
+    push_cast; ring
+
+/-- **Quantitative lower bound on ζ(3)**:
+    For any N ≥ 1, the N-term partial sum plus 1/(2N²) is a lower bound for ζ(3).
+
+    Proof: The tail ∑_{k≥N} 1/k³ telescopes as:
+      ∑_{k≥N} 1/k³ ≥ ∑_{k≥N} [1/(2k²) - 1/(2(k+1)²)] = 1/(2N²).
+
+    This gives ζ(3) = S_N + tail ≥ S_N + 1/(2N²). -/
+theorem zetaValue_three_tail_lb (N : ℕ) (hN : 1 ≤ N) :
+    ∑ k ∈ Finset.range N, (1 : ℝ) / (k : ℝ) ^ 3 + 1 / (2 * (N : ℝ) ^ 2) ≤ zetaValue 3 := by
+  have hsum : Summable (fun n : ℕ => (1 : ℝ) / (n : ℝ) ^ 3) := summable_zetaValue 3 (by norm_num)
+  -- Split ζ(3) = S_N + tail
+  have hsplit : zetaValue 3 = ∑ k ∈ Finset.range N, (1 : ℝ) / (k : ℝ) ^ 3 +
+      ∑' k : ℕ, (1 : ℝ) / ((k : ℝ) + N) ^ 3 := by
+    unfold zetaValue
+    rw [← hsum.sum_add_tsum_nat_add N]
+    congr 1; apply tsum_congr; intro k; push_cast; ring
+  rw [hsplit]
+  -- Suffices to show 1/(2N²) ≤ tail
+  suffices h : (1 : ℝ) / (2 * (N : ℝ) ^ 2) ≤ ∑' k : ℕ, (1 : ℝ) / ((k : ℝ) + N) ^ 3 by linarith
+  -- The shifted series is summable
+  have hshifted : Summable (fun k : ℕ => (1 : ℝ) / ((k : ℝ) + N) ^ 3) := by
+    have h1 : Summable (fun k : ℕ => (1 : ℝ) / ((k + N : ℕ) : ℝ) ^ 3) :=
+      (summable_nat_add_iff N).mpr hsum
+    convert h1 using 1; ext k; push_cast; ring
+  -- For every M, 1/(2N²) - 1/(2(M+N)²) ≤ tail
+  have hN' : (1 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN
+  have hle : ∀ M : ℕ, (1 : ℝ) / (2 * (N : ℝ) ^ 2) - 1 / (2 * ((M : ℝ) + N) ^ 2) ≤
+      ∑' k : ℕ, (1 : ℝ) / ((k : ℝ) + N) ^ 3 := fun M =>
+    calc (1 : ℝ) / (2 * (N : ℝ) ^ 2) - 1 / (2 * ((M : ℝ) + N) ^ 2)
+        = ∑ k ∈ Finset.range M, (1 / (2 * ((k : ℝ) + N) ^ 2) - 1 / (2 * ((k : ℝ) + N + 1) ^ 2)) :=
+          (telescope_sum_eq N M).symm
+      _ ≤ ∑ k ∈ Finset.range M, (1 : ℝ) / ((k : ℝ) + N) ^ 3 :=
+          Finset.sum_le_sum fun k _ => cube_inv_ge_telescoping' ((k : ℝ) + N) (by
+            have : (1 : ℝ) ≤ N := hN'
+            have : (0 : ℝ) ≤ k := Nat.cast_nonneg k
+            linarith)
+      _ ≤ ∑' k : ℕ, (1 : ℝ) / ((k : ℝ) + N) ^ 3 :=
+          sum_le_hasSum _ (fun k _ => by positivity) hshifted.hasSum
+  -- Take limit: 1/(2*(M+N)²) → 0 as M → ∞
+  have h0 : Filter.Tendsto (fun M : ℕ => (1 : ℝ) / (2 * ((M : ℝ) + N) ^ 2))
+      Filter.atTop (nhds 0) := by
+    apply squeeze_zero (fun M => by positivity) _
+      (tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ))
+    intro M
+    have hM1 : (0 : ℝ) < (M : ℝ) + 1 := by positivity
+    have h2MN : (0 : ℝ) < 2 * ((M : ℝ) + N) ^ 2 := by positivity
+    rw [div_le_div_iff₀ h2MN hM1]
+    nlinarith [Nat.cast_nonneg M, hN', sq_nonneg ((M : ℝ) + N),
+               mul_nonneg (Nat.cast_nonneg M) (Nat.cast_nonneg M)]
+  -- Conclude: 1/(2N²) ≤ tail via limit: f(M) = 1/(2N²) - 1/(2(M+N)²) → 1/(2N²)
+  have h1 : Filter.Tendsto (fun _ : ℕ => (1 : ℝ) / (2 * (N : ℝ) ^ 2))
+      Filter.atTop (nhds (1 / (2 * (N : ℝ) ^ 2))) := tendsto_const_nhds
+  have h2 := h1.sub h0
+  simp only [sub_zero] at h2
+  exact le_of_tendsto' h2 hle
 
 end AperyZetaThree

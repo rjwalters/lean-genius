@@ -409,29 +409,61 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
     apply div_pos
     · exact (hrepr (emb l) (hemb_mem l)).2.2.1  -- 0 < sv(emb l)
     · exact hl.2
-  -- Step 6d: Define ε as the minimum over all candidate ratios.
-  -- Build a combined Finset of all ratios.
+  -- Step 6d: Define ε as the JOINT minimum over all candidate ratios.
+  -- Build a combined Finset of all ratios from both neg and pos indices.
   -- ε = min of { ratio_neg l : l ∈ neg_indices } ∪ { ratio_pos l : l ∈ pos_indices }
-  -- We use the negated-coefficient ratios only (Case A proof):
-  let ε₀ : ℝ := (neg_indices.image (fun l => (1 - sv (emb l)) / (-c' l))).min'
-    (Finset.image_nonempty.mpr neg_indices_ne)
-  -- ε₀ is achieved at some l_min ∈ neg_indices (Case A minimizer candidate):
-  have hε₀_mem : ε₀ ∈ neg_indices.image (fun l => (1 - sv (emb l)) / (-c' l)) :=
-    Finset.min'_mem _ _
-  obtain ⟨l_min, hl_min_neg, hl_min_eq⟩ :=
-    Finset.mem_image.mp hε₀_mem
+  --
+  -- Architecture note: Using JOINT minimum ensures new_mem_convexHull is proved in Case A only
+  -- (no Case B needed). The minimizer might be a neg-index (c' < 0) or pos-index (c' > 0).
+  -- When minimizer is neg (b-weight → 0): new_point = av ∈ S → emb l_min exits excess ✓
+  -- When minimizer is pos (a-weight → 0): new_point = bv ∈ convexHull(S) → l_min stays excess,
+  --   but its Carathéodory complexity decreases. Full proof requires WF on Carathéodory count.
+  let neg_ratios : Finset ℝ := neg_indices.image (fun l => (1 - sv (emb l)) / (-c' l))
+  have neg_ratios_ne : neg_ratios.Nonempty := Finset.image_nonempty.mpr neg_indices_ne
+  let ε₀ : ℝ := neg_ratios.min' neg_ratios_ne
+  -- ε₀ is achieved at some l_min ∈ neg_indices:
+  have hε₀_mem : ε₀ ∈ neg_ratios := Finset.min'_mem _ _
+  obtain ⟨l_min, hl_min_neg, hl_min_eq⟩ := Finset.mem_image.mp hε₀_mem
   -- ε₀ > 0:
   have hε₀_pos : 0 < ε₀ := by
-    rw [← hl_min_eq]
-    exact ratio_neg_pos l_min hl_min_neg
+    rw [← hl_min_eq]; exact ratio_neg_pos l_min hl_min_neg
   -- ε₀ ≤ ratio_neg l for all l ∈ neg_indices:
-  have hε₀_le_neg : ∀ l ∈ neg_indices, ε₀ ≤ (1 - sv (emb l)) / (-c' l) := by
-    intro l hl
-    exact Finset.min'_le _ _ (Finset.mem_image.mpr ⟨l, hl, rfl⟩)
-  -- Step 6e: Check that ε₀ also respects positive-coefficient bounds.
-  -- For the construction to work with positive indices, we need:
-  --   ε₀ ≤ sv(emb l) / c' l  for all l ∈ pos_indices
-  -- This is NOT guaranteed by the definition of ε₀ above!
+  have hε₀_le_neg : ∀ l ∈ neg_indices, ε₀ ≤ (1 - sv (emb l)) / (-c' l) :=
+    fun l hl => Finset.min'_le _ _ (Finset.mem_image.mpr ⟨l, hl, rfl⟩)
+  -- Joint ε: also take minimum over pos_indices if nonempty.
+  -- This ensures ∀ l ∈ pos_indices, ε ≤ sv(emb l)/c'(l), so a-weights ≥ 0.
+  let ε : ℝ := if h : pos_indices.Nonempty then
+    min ε₀ ((pos_indices.image (fun l => sv (emb l) / c' l)).min' (Finset.image_nonempty.mpr h))
+    else ε₀
+  -- ε > 0 (min of positive quantities):
+  have hε_pos : 0 < ε := by
+    simp only [ε]
+    split_ifs with h
+    · apply lt_min hε₀_pos
+      apply Finset.min'_pos (Finset.image_nonempty.mpr h)
+      intro x hx
+      obtain ⟨l, hl, rfl⟩ := Finset.mem_image.mp hx
+      exact ratio_pos_pos l hl
+    · exact hε₀_pos
+  -- ε ≤ ε₀ (joint min ≤ neg-only min):
+  have hε_le_ε₀ : ε ≤ ε₀ := by
+    simp only [ε]; split_ifs with h
+    · exact min_le_left _ _
+    · exact le_refl _
+  -- ε ≤ ratio_neg l for all l ∈ neg_indices:
+  have hε_le_neg : ∀ l ∈ neg_indices, ε ≤ (1 - sv (emb l)) / (-c' l) :=
+    fun l hl => le_trans hε_le_ε₀ (hε₀_le_neg l hl)
+  -- ε ≤ ratio_pos l for all l ∈ pos_indices:
+  have hε_le_pos : ∀ l ∈ pos_indices, ε ≤ sv (emb l) / c' l := by
+    simp only [ε]
+    split_ifs with h
+    · intro l hl
+      apply le_trans (min_le_right _ _)
+      exact Finset.min'_le _ _ (Finset.mem_image.mpr ⟨l, hl, rfl⟩)
+    · intro l hl
+      exact absurd ⟨l, hl⟩ (Finset.not_nonempty_iff_eq_empty.mp (by push_neg at h; exact h))
+  -- Step 6e: The joint ε satisfies ALL coefficient bounds (no Case B needed!).
+  -- The check that ε₀ respects pos bounds is now replaced by the joint minimum construction.
   -- If pos_indices is nonempty, we must additionally take the minimum over pos_indices.
   -- We define ε as the true joint minimum.
   --
@@ -444,34 +476,27 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
   -- HOWEVER: if the joint minimum is achieved at a pos_index l', then Case B applies at l',
   -- and the minimizer may shift. We accept this and use a sorry for Case B.
   --
-  -- For now: implement using ε₀ from neg_indices only (Case A scenario),
-  -- together with a sorry for the general case.
-  --
-  -- Step 6f: Construct the perturbed point function.
-  -- For i ∈ image(emb): new_point(emb l) = point(emb l) + ε₀ · c'_l · δ_l
+  -- Step 6f: Construct the perturbed point function using joint ε.
+  -- For i ∈ image(emb): new_point(emb l) = point(emb l) + ε · c'_l · δ_l
   -- For i ∉ image(emb): new_point i = D.point i
   --
-  -- But emb : Fin(d+1) → ι may not be injective, so image(emb) is a Finset.
-  -- We handle this by defining the perturbation in terms of the SUM over all l with emb l = i.
-  -- Actually, since the indices are from D.excessIndices (a Finset, so no duplicates in the
-  -- list L), emb IS injective.
+  -- Since emb is injective (indices from D.excessIndices, a Finset), at most one l satisfies
+  -- emb l = i. We use ε (joint minimum) so that all convex combination weights are non-negative.
+  --
   -- Step 6g: Define the new decomposition.
-  -- new_point i =
-  --   if i = emb l for some l: D.point i + ε₀ · (∑ l with emb l = i, c' l • δ l)
-  --   else: D.point i
-  -- Since emb is injective, at most one l satisfies emb l = i.
-  -- Equivalently:
-  -- new_point (emb l) = D.point (emb l) + ε₀ • (c' l • δ l)
+  -- new_point (emb l) = D.point (emb l) + ε • (c' l • δ l)
   -- new_point i = D.point i   for i ∉ range(emb)
+  -- The single remaining sorry is in hnew_point_av: we need ε = ε₀ when neg-index achieves
+  -- the joint minimum. The full proof requires WF descent on Carathéodory vertex count.
   let new_point : ι → E := fun i =>
     if h : ∃ l : Fin (d + 1), emb l = i then
       let l := h.choose
-      D.point i + ε₀ • (c' l • δ l)
+      D.point i + ε • (c' l • δ l)
     else
       D.point i
   -- Step 6h: Verify new_point is well-defined (choice of l is canonical via injectivity):
   have new_point_emb : ∀ l : Fin (d + 1),
-      new_point (emb l) = D.point (emb l) + ε₀ • (c' l • δ l) := by
+      new_point (emb l) = D.point (emb l) + ε • (c' l • δ l) := by
     intro l
     simp only [new_point, dif_pos ⟨l, rfl⟩]
     congr 1
@@ -485,37 +510,37 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
     intro i hi
     simp only [new_point, dif_neg (not_exists.mpr hi)]
   -- Step 6i: Verify the sum is preserved.
-  -- Σ_{i ∈ t} new_point i = Σ_{i ∈ t} D.point i + ε₀ · Σ_l c' l · δ l
-  -- = x + ε₀ · 0 = x.
+  -- Σ_{i ∈ t} new_point i = Σ_{i ∈ t} D.point i + ε · Σ_l c' l · δ l
+  -- = x + ε · 0 = x.
   have new_sum : ∑ i in t, new_point i = x := by
     -- Split the sum over t by whether i is in range(emb) or not.
     -- The perturbation terms telescope via Σ c'_l · δ_l = 0.
     conv_lhs =>
       arg 2; ext i
       rw [show new_point i = D.point i +
-            if h : ∃ l : Fin (d + 1), emb l = i then ε₀ • (c' h.choose • δ h.choose) else 0
+            if h : ∃ l : Fin (d + 1), emb l = i then ε • (c' h.choose • δ h.choose) else 0
           from by
             split_ifs with h
             · simp only [new_point, dif_pos h]
             · simp only [new_point, dif_neg h, add_zero]]
     rw [Finset.sum_add_distrib, D.sum_eq]
     suffices h : ∑ i in t, (if h : ∃ l : Fin (d + 1), emb l = i then
-        ε₀ • (c' h.choose • δ h.choose) else 0) = 0 by
+        ε • (c' h.choose • δ h.choose) else 0) = 0 by
       simp [h]
     -- Rewrite the sum: only excess indices contribute (others have D.point zero outside t,
     -- but emb maps into D.excessIndices ⊆ t).
-    -- ∑_{i ∈ t} [if ∃ l, emb l = i then ε₀ · c' l · δ l else 0]
-    -- = ∑_l ε₀ · c' l · δ l  (since emb is injective and image(emb) ⊆ t)
+    -- ∑_{i ∈ t} [if ∃ l, emb l = i then ε · c' l · δ l else 0]
+    -- = ∑_l ε · c' l · δ l  (since emb is injective and image(emb) ⊆ t)
     have hemb_in_t : ∀ l : Fin (d + 1), emb l ∈ t := fun l =>
       Finset.mem_of_mem_filter _ (hemb_mem l)
     rw [show ∑ i in t, (if h : ∃ l : Fin (d + 1), emb l = i then
-          ε₀ • (c' h.choose • δ h.choose) else 0) =
-        ∑ l : Fin (d + 1), ε₀ • (c' l • δ l) from by
-      rw [← Finset.sum_finset_coe (fun l => ε₀ • (c' l • δ l)) Finset.univ]
+          ε • (c' h.choose • δ h.choose) else 0) =
+        ∑ l : Fin (d + 1), ε • (c' l • δ l) from by
+      rw [← Finset.sum_finset_coe (fun l => ε • (c' l • δ l)) Finset.univ]
       rw [Finset.univ_eq_attach]
       simp only [Finset.sum_attach]
-      rw [← Finset.sum_image (f := fun l => ε₀ • (c' l • δ l))
-            (g := fun i => if h : ∃ l : Fin (d+1), emb l = i then ε₀ • (c' h.choose • δ h.choose) else 0)]
+      rw [← Finset.sum_image (f := fun l => ε • (c' l • δ l))
+            (g := fun i => if h : ∃ l : Fin (d+1), emb l = i then ε • (c' h.choose • δ h.choose) else 0)]
       · apply Finset.sum_congr
         · apply Finset.image_subset_iff.mpr
           intro l _; exact hemb_in_t l
@@ -536,55 +561,49 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
   --                        = (1-sv(lneg)) - ε₀·(-c'(lneg)) ≥ 0  (by definition of ε₀) ✓
   --   At l_min: b-weight = 0 exactly.
   --
-  -- For c'_l > 0: ε₀ from neg_indices only, so a-weight sv_l - ε₀·c'_l may be < 0!
-  -- We case-split: Case A (ε₀ ≤ sv(emb l)/c'(l) for all pos l) is fully proved.
-  -- Case B (some pos-index gives smaller ratio) requires joint ε and WF on Carathéodory count.
-  --
+  -- With joint ε: all coefficient bounds satisfied for both neg and pos indices.
+  -- new_mem_convexHull requires no case split — hε_le_neg and hε_le_pos handle all cases.
   -- Claim: new_point i ∈ convexHull ℝ (S i) for all i ∈ t.
   have new_mem_convexHull : ∀ i ∈ t, new_point i ∈ convexHull ℝ (S i) := by
-    -- Case A: ε₀ satisfies all pos-index constraints.
-    -- Case B: some pos l has sv(emb l)/c'(l) < ε₀; needs joint ε (sorry).
-    by_cases hCaseA : ∀ l ∈ pos_indices, ε₀ ≤ sv (emb l) / c' l
-    · intro i hi
-      by_cases h : ∃ l : Fin (d + 1), emb l = i
-      · obtain ⟨l, rfl⟩ := h
-        rw [new_point_emb l]
-        obtain ⟨hav_mem, hbv_mem, hsv_pos, hsv_lt1, hpoint_eq⟩ :=
-          hrepr (emb l) (hemb_mem l)
-        -- Rewrite as convex combination: (sv - ε₀c')•av + (1-sv+ε₀c')•bv
-        have hrw : D.point (emb l) + ε₀ • (c' l • δ l) =
-            (sv (emb l) - ε₀ * c' l) • av (emb l) +
-            (1 - sv (emb l) + ε₀ * c' l) • bv (emb l) := by
-          rw [hpoint_eq]; simp only [δ, smul_sub, smul_smul, add_smul, sub_smul]; ring
-        rw [hrw]
-        have hsum : (sv (emb l) - ε₀ * c' l) + (1 - sv (emb l) + ε₀ * c' l) = 1 := by ring
-        rcases lt_trichotomy (c' l) 0 with hneg | hzero | hpos
-        · -- c'_l < 0: neg-index bound gives b-coeff ≥ 0; a-coeff ≥ 0 since sv + ε₀(-c') > 0
-          have ha_pos : 0 ≤ sv (emb l) - ε₀ * c' l :=
-            by nlinarith [le_of_lt hsv_pos, le_of_lt hε₀_pos, neg_pos.mpr hneg]
-          have hb_pos : 0 ≤ 1 - sv (emb l) + ε₀ * c' l := by
-            have hle := hε₀_le_neg l (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hneg⟩)
-            rw [div_le_iff (neg_pos.mpr hneg)] at hle; nlinarith
-          exact convex_convexHull ℝ (S (emb l))
-            (subset_convexHull ℝ _ hav_mem) hbv_mem ha_pos hb_pos hsum
-        · -- c'_l = 0: expression equals D.point (emb l)
-          have heq : (sv (emb l) - ε₀ * c' l) • av (emb l) +
-              (1 - sv (emb l) + ε₀ * c' l) • bv (emb l) = D.point (emb l) := by
-            rw [hzero, mul_zero, sub_zero, add_zero, hpoint_eq]
-          rw [heq]; exact D.mem_convexHull (emb l) (Finset.mem_of_mem_filter _ (hemb_mem l))
-        · -- c'_l > 0: hCaseA gives ε₀ ≤ sv/c', so a-coeff ≥ 0; b-coeff > 0 since 1-sv > 0
-          have ha_pos : 0 ≤ sv (emb l) - ε₀ * c' l := by
-            have hle := hCaseA l (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hpos⟩)
-            rw [le_div_iff hpos] at hle; linarith
-          have hb_pos : 0 ≤ 1 - sv (emb l) + ε₀ * c' l :=
-            by nlinarith [le_of_lt hε₀_pos, le_of_lt hpos, hsv_lt1]
-          exact convex_convexHull ℝ (S (emb l))
-            (subset_convexHull ℝ _ hav_mem) hbv_mem ha_pos hb_pos hsum
-      · rw [new_point_not_emb i (not_exists.mp h)]
-        exact D.mem_convexHull i hi
-    · -- Case B: some l ∈ pos_indices has sv(emb l)/c'(l) < ε₀.
-      -- Correct approach: joint ε = min(ε₀, min over pos_indices) + WF on Carathéodory count.
-      sorry -- Case B: requires joint ε; full proof by WF induction on Carathéodory vertex count.
+    -- Joint ε satisfies all coefficient bounds (both neg and pos indices).
+    -- No case split needed: hε_le_neg and hε_le_pos cover all cases.
+    intro i hi
+    by_cases h : ∃ l : Fin (d + 1), emb l = i
+    · obtain ⟨l, rfl⟩ := h
+      rw [new_point_emb l]
+      obtain ⟨hav_mem, hbv_mem, hsv_pos, hsv_lt1, hpoint_eq⟩ :=
+        hrepr (emb l) (hemb_mem l)
+      -- Rewrite as convex combination: (sv - ε·c')•av + (1-sv+ε·c')•bv
+      have hrw : D.point (emb l) + ε • (c' l • δ l) =
+          (sv (emb l) - ε * c' l) • av (emb l) +
+          (1 - sv (emb l) + ε * c' l) • bv (emb l) := by
+        rw [hpoint_eq]; simp only [δ, smul_sub, smul_smul, add_smul, sub_smul]; ring
+      rw [hrw]
+      have hsum : (sv (emb l) - ε * c' l) + (1 - sv (emb l) + ε * c' l) = 1 := by ring
+      rcases lt_trichotomy (c' l) 0 with hneg | hzero | hpos
+      · -- c'_l < 0: neg-index; hε_le_neg gives b-coeff ≥ 0; a-coeff ≥ 0 since ε > 0, -c' > 0
+        have ha_pos : 0 ≤ sv (emb l) - ε * c' l :=
+          by nlinarith [le_of_lt hsv_pos, le_of_lt hε_pos, neg_pos.mpr hneg]
+        have hb_pos : 0 ≤ 1 - sv (emb l) + ε * c' l := by
+          have hle := hε_le_neg l (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hneg⟩)
+          rw [div_le_iff (neg_pos.mpr hneg)] at hle; nlinarith
+        exact convex_convexHull ℝ (S (emb l))
+          (subset_convexHull ℝ _ hav_mem) hbv_mem ha_pos hb_pos hsum
+      · -- c'_l = 0: expression equals D.point (emb l)
+        have heq : (sv (emb l) - ε * c' l) • av (emb l) +
+            (1 - sv (emb l) + ε * c' l) • bv (emb l) = D.point (emb l) := by
+          rw [hzero, mul_zero, sub_zero, add_zero, hpoint_eq]
+        rw [heq]; exact D.mem_convexHull (emb l) (Finset.mem_of_mem_filter _ (hemb_mem l))
+      · -- c'_l > 0: pos-index; hε_le_pos gives a-coeff ≥ 0; b-coeff ≥ 0 since 1-sv > 0
+        have ha_pos : 0 ≤ sv (emb l) - ε * c' l := by
+          have hle := hε_le_pos l (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hpos⟩)
+          rw [le_div_iff hpos] at hle; linarith
+        have hb_pos : 0 ≤ 1 - sv (emb l) + ε * c' l :=
+          by nlinarith [le_of_lt hε_pos, le_of_lt hpos, hsv_lt1]
+        exact convex_convexHull ℝ (S (emb l))
+          (subset_convexHull ℝ _ hav_mem) hbv_mem ha_pos hb_pos hsum
+    · rw [new_point_not_emb i (not_exists.mp h)]
+      exact D.mem_convexHull i hi
   -- Step 6k: new_point is zero outside t.
   have new_zero : ∀ i, i ∉ t → new_point i = 0 := by
     intro i hi
@@ -623,36 +642,31 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
   -- new_point(emb l_min) = av(emb l_min) ∈ S(emb l_min):
   have hnew_point_av : new_point (emb l_min) = av (emb l_min) := by
     rw [new_point_emb l_min]
-    -- Goal: D.point(emb l_min) + ε₀ • (c' l_min • δ l_min) = av (emb l_min)
-    -- Expand D.point using binary repr: D.point = sv·av + (1-sv)·bv
-    -- Expand δ = bv - av.
-    -- So: sv·av + (1-sv)·bv + ε₀·c'·(bv-av)
-    --   = (sv - ε₀·c')·av + (1-sv+ε₀·c')·bv
-    --   = 1·av + 0·bv = av  (since b-weight = 0 at l_min by ε₀ definition)
+    -- Goal: D.point(emb l_min) + ε • (c' l_min • δ l_min) = av (emb l_min)
+    -- This requires ε = ε₀ at l_min, which holds when the neg-index l_min achieves
+    -- the joint minimum (i.e., the pos-index ratios don't beat ε₀).
+    -- If the joint minimum is achieved by a pos-index l', then new_point(emb l') = bv(emb l')
+    -- (a-weight → 0), and l' may remain excess; a WF descent on Carathéodory count is needed.
+    have hε_eq : ε = ε₀ := by
+      sorry -- Holds when neg-index l_min achieves joint minimum; WF descent needed otherwise.
+    rw [hε_eq]
+    -- Expand D.point using binary repr: D.point = sv·av + (1-sv)·bv; δ = bv - av.
+    -- So: sv·av + (1-sv)·bv + ε₀·c'·(bv-av) = (sv-ε₀·c')·av + (1-sv+ε₀·c')·bv = 1·av + 0·bv
     have hε₀_eq : ε₀ = (1 - sv (emb l_min)) / (-c' l_min) := hl_min_eq.symm
     have hcneg : -c' l_min > 0 := neg_pos.mpr hcl_min_neg
     have hb_weight_zero : (1 - sv (emb l_min)) + ε₀ * c' l_min = 0 := by
-      rw [hε₀_eq]
-      field_simp [ne_of_gt hcneg]
-      ring
+      rw [hε₀_eq]; field_simp [ne_of_gt hcneg]; ring
     have ha_weight_one : sv (emb l_min) + ε₀ * (-c' l_min) = 1 := by linarith [hb_weight_zero]
-    rw [hpoint_eq]
-    simp only [δ]
-    -- Goal: sv • av + (1-sv) • bv + ε₀ • (c' l_min • (bv - av)) = av
-    -- We need: (sv - ε₀·c') • av + ((1-sv) + ε₀·c') • bv = 1·av + 0·bv = av
-    -- where sv - ε₀·c' = 1 and (1-sv) + ε₀·c' = 0 (from hb_weight_zero, ha_weight_one).
+    rw [hpoint_eq]; simp only [δ]
     have hcoeff_av : sv (emb l_min) - ε₀ * c' l_min = 1 := by linarith [hb_weight_zero]
     have hcoeff_bv : (1 - sv (emb l_min)) + ε₀ * c' l_min = 0 := hb_weight_zero
-    -- Algebraic identity: sv·av + (1-sv)·bv + ε₀·(c'·(bv-av))
-    --                   = (sv - ε₀·c')·av + ((1-sv)+ε₀·c')·bv = av
     have key : sv (emb l_min) • av (emb l_min) + (1 - sv (emb l_min)) • bv (emb l_min) +
                ε₀ • (c' l_min • (bv (emb l_min) - av (emb l_min))) = av (emb l_min) := by
       have : sv (emb l_min) • av (emb l_min) + (1 - sv (emb l_min)) • bv (emb l_min) +
              ε₀ • (c' l_min • (bv (emb l_min) - av (emb l_min))) =
              (sv (emb l_min) - ε₀ * c' l_min) • av (emb l_min) +
              ((1 - sv (emb l_min)) + ε₀ * c' l_min) • bv (emb l_min) := by
-        simp only [smul_sub, smul_smul, add_smul, sub_smul]
-        ring
+        simp only [smul_sub, smul_smul, add_smul, sub_smul]; ring
       rw [this, hcoeff_av, hcoeff_bv, one_smul, zero_smul, add_zero]
     exact key
   -- D'.excessIndices does NOT contain emb l_min (since new_point(emb l_min) = av ∈ S):

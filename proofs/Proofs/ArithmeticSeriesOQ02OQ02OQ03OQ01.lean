@@ -52,6 +52,7 @@ import Mathlib.Tactic
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Nat.Totient
+import Proofs.BurnsideCountingOQ03
 import Mathlib.GroupTheory.GroupAction.Quotient
 set_option maxHeartbeats 400000
 
@@ -309,17 +310,158 @@ theorem polya_C6_divisibility : 6 ∣ (2^6 + 2^3 + 2 * 2^2 + 2 * 2^1) := by norm
     This follows from Burnside's lemma applied to the ZMod n action,
     using the cycle structure: rotation by r has gcd(r.val, n) cycles
     each of length n/gcd(r.val, n). -/
+-- Bridge: (r +ᵥ c) i = c (i - r) by cyclicAction.vadd definition.
+-- Used to make the vadd reduction explicit for the elaborator.
+private lemma vadd_apply (n k : ℕ) [NeZero n] (r : ZMod n) (c : ZColoring n k) (i : ZMod n) :
+    (r +ᵥ c) i = c (i - r) := rfl
+
+-- Helper: |fixedBy (ZMod n → Fin k) (ofAdd r)| = k^gcd(n, r.val).
+-- Proof: substitute n = n'+1 so ZMod (n'+1) = Fin (n'+1) definitionally, then
+-- apply polya_cyclic_fixed_count. The fixedBy predicate (ofAdd r) • c = c
+-- kernel-reduces (via cyclicAction) to ∀ i, c(i-r) = c(i) = IsFixed n k r c.
+private lemma fixedBy_card_eq_polya (n k : ℕ) [NeZero n] (r : ZMod n) :
+    Fintype.card (MulAction.fixedBy (ZMod n → Fin k) (Multiplicative.ofAdd r)) =
+    k ^ Nat.gcd n r.val := by
+  -- Unfold n = n'+1 so ZMod (n'+1) = Fin (n'+1) definitionally (by ZMod definition)
+  obtain ⟨n', rfl⟩ : ∃ n', n = n' + 1 := ⟨n - 1, by have := NeZero.pos n; omega⟩
+  -- Step 1a: fixedBy (smul) ≃ {c // IsRotFixed (vadd)}.
+  -- cyclicMulAction = Multiplicative.mulAction, so (ofAdd r) • c = r +ᵥ c = IsRotFixed.
+  -- Identity equiv: predicates are definitionally equal ((ofAdd r) • c = r +ᵥ c via mulAction.smul).
+  have hstep1 : Fintype.card (MulAction.fixedBy (ZMod (n'+1) → Fin k) (Multiplicative.ofAdd r)) =
+      Fintype.card {c : ZMod (n'+1) → Fin k // IsRotFixed (n'+1) k r c} :=
+    Fintype.card_congr {
+      toFun := fun ⟨c, hc⟩ => ⟨c, hc⟩
+      invFun := fun ⟨c, hc⟩ => ⟨c, hc⟩
+      left_inv := fun _ => Subtype.ext rfl
+      right_inv := fun _ => Subtype.ext rfl
+    }
+  -- Step 1b: {c // IsRotFixed (r +ᵥ c = c)} ≃ {c // IsFixed (∀ i, c i = c(i-r))}.
+  -- IsRotFixed c = (r +ᵥ c = c); cyclicAction.vadd r c i := c (i - r) definitionally.
+  -- congrFun hc i : (r +ᵥ c) i = c i reduces to c (i - r) = c i; .symm gives IsFixed.
+  -- ZMod (n'+1) = Fin (n'+1) definitionally, but the elaborator can't unify predicates automatically.
+  -- Bridge explicitly: toFun converts ZMod-domain c to Fin-domain c' = fun i => c ⟨i.val, i.isLt⟩.
+  -- Predicate proof uses vadd_apply + proof irrelevance for the membership proof in ⟨...⟩.
+  have hstep2 : Fintype.card {c : ZMod (n'+1) → Fin k // IsRotFixed (n'+1) k r c} =
+      Fintype.card {c : Fin (n'+1) → Fin k // BurnsideCountingOQ03.IsFixed (n'+1) k r c} :=
+    Fintype.card_congr {
+      toFun := fun ⟨c, hc⟩ =>
+        ⟨fun (i : Fin (n'+1)) => c ⟨i.val, i.isLt⟩,
+         fun i => by
+           have hi := (congrFun hc (⟨i.val, i.isLt⟩ : ZMod (n'+1))).symm
+           rw [vadd_apply (n'+1) k r c ⟨i.val, i.isLt⟩] at hi
+           -- hi : c ⟨i.val, i.isLt⟩ = c (⟨i.val, i.isLt⟩ - r)
+           -- goal : c ⟨i.val, i.isLt⟩ = c ⟨(↑i + (n'+1) - ↑r) % (n'+1), _⟩
+           -- (⟨i.val, i.isLt⟩ - r : ZMod (n'+1)) has .val = (i.val + (n'+1) - r.val) % (n'+1)
+           -- so they're Fin.ext-equal; proof irrelevance handles the membership proof
+           exact hi.trans (congrArg c (Fin.ext (by
+             -- Goal: (⟨i.val,_⟩ - r : ZMod (n'+1)).val = (i.val + (n'+1) - r.val) % (n'+1)
+             change (⟨i.val, i.isLt⟩ - r : ZMod (n'+1)).val = (i.val + (n'+1) - r.val) % (n'+1)
+             have hr : r.val < n' + 1 := ZMod.val_lt r
+             have hval : (⟨i.val, i.isLt⟩ - r : ZMod (n'+1)).val =
+                 ((n' + 1 - r.val) + i.val) % (n' + 1) := Fin.coe_sub ⟨i.val, i.isLt⟩ r
+             rw [hval]; congr 1; omega)))⟩
+      invFun := fun ⟨c, hc⟩ =>
+        ⟨fun (i : ZMod (n'+1)) => c ⟨i.val, ZMod.val_lt i⟩,
+         funext (fun (i : ZMod (n'+1)) => by
+           rw [vadd_apply (n'+1) k r (fun j => c ⟨j.val, ZMod.val_lt j⟩) i]
+           -- goal : c ⟨(i - r).val, _⟩ = c ⟨i.val, _⟩
+           -- hc ⟨i.val, _⟩ : c ⟨i.val, _⟩ = c ⟨(i.val + (n'+1) - r.val) % (n'+1), _⟩
+           have h := (hc ⟨i.val, ZMod.val_lt i⟩).symm
+           -- h : c ⟨(i.val + (n'+1) - r.val) % (n'+1), _⟩ = c ⟨i.val, _⟩
+           -- Prove ⟨(i-r).val, _⟩ = ⟨(i.val+(n'+1)-r.val)%(n'+1), _⟩ as Fin (n'+1)
+           -- using Fin.val_sub: (i-r).val = ((n'+1-r.val)+i.val)%(n'+1), then omega.
+           have heq : (⟨(i - r).val, ZMod.val_lt (i - r)⟩ : Fin (n'+1)) =
+               ⟨(i.val + (n'+1) - r.val) % (n'+1), Nat.mod_lt _ (Nat.succ_pos n')⟩ :=
+             Fin.ext (by
+               -- Normalize to (i - r : ZMod (n'+1)).val = (i.val + (n'+1) - r.val) % (n'+1)
+               change (i - r : ZMod (n'+1)).val = (i.val + (n'+1) - r.val) % (n'+1)
+               have hr : r.val < n' + 1 := ZMod.val_lt r
+               have hval : (i - r : ZMod (n'+1)).val =
+                   ((n' + 1 - r.val) + i.val) % (n' + 1) := Fin.coe_sub i r
+               rw [hval]; congr 1; omega)
+           exact (congrArg c heq).trans h)⟩
+      left_inv := fun ⟨c, _⟩ => Subtype.ext (funext fun i => congrArg c (Fin.ext rfl))
+      right_inv := fun ⟨c, _⟩ => Subtype.ext (funext fun i => congrArg c (Fin.ext rfl))
+    }
+  -- Step 2: polya_cyclic_fixed_count gives card({...}) = k^gcd(r.val, n'+1), then gcd_comm.
+  rw [hstep1, hstep2, Nat.gcd_comm]
+  exact BurnsideCountingOQ03.polya_cyclic_fixed_count (n' + 1) k r
+
 theorem polya_enumeration_theorem_CN (n k : ℕ) [NeZero n] [NeZero k] :
     n * necklaceCount n k =
       ∑ d ∈ Nat.divisors n, Nat.totient d * k ^ (n / d) := by
-  -- The proof connects:
-  -- 1. Burnside's lemma: n * |Orbits| = Σ_{r : ZMod n} |Fix(r)|
-  -- 2. Cycle structure: |Fix(r)| = k^(gcd(r.val, n))
-  -- 3. Grouping: Σ_{r : ZMod n} k^(gcd(r.val, n)) = Σ_{d|n} φ(n/d) · k^d
-  --                                                  = Σ_{d|n} φ(d) · k^(n/d)
-  -- Full formalization requires Mathlib's Nat.totient sum formula and
-  -- the cycle structure theorem for cyclic group actions.
-  sorry
+  have hn : 0 < n := NeZero.pos n
+  -- Burnside's lemma: ∑ g, |Fix(g)| = necklaceCount * |G|
+  have hburnside := MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group
+    (Multiplicative (ZMod n)) (ZMod n → Fin k)
+  have hGcard : Fintype.card (Multiplicative (ZMod n)) = n := by
+    simp [Fintype.card_multiplicative, ZMod.card]
+  -- Step 2: n * necklaceCount = ∑ r : ZMod n, k^gcd(n, r.val)
+  -- Avoid rw [← hGcard] which has a motive issue (n appears in NeZero n).
+  -- Build the sum equivalence directly and chain via linarith.
+  have step2 : n * necklaceCount n k = ∑ r : ZMod n, k ^ Nat.gcd n r.val := by
+    unfold necklaceCount
+    -- ∑ r : ZMod n, k^gcd(n,r.val) = ∑ g : Mult(ZMod n), |Fix g|
+    have sum_eq : ∑ r : ZMod n, k ^ Nat.gcd n r.val =
+        ∑ g : Multiplicative (ZMod n), Fintype.card (MulAction.fixedBy (ZMod n → Fin k) g) :=
+      Fintype.sum_equiv
+        (⟨Multiplicative.ofAdd, Multiplicative.toAdd, fun _ => rfl, fun _ => rfl⟩ :
+          ZMod n ≃ Multiplicative (ZMod n))
+        (fun r => k ^ Nat.gcd n r.val)
+        (fun g => Fintype.card (MulAction.fixedBy (ZMod n → Fin k) g))
+        (fun r => (fixedBy_card_eq_polya n k r).symm)
+    -- Chain: ∑ r, k^gcd = ∑ g, |Fix g| = |orbits| * |G| = |orbits| * n
+    have h := sum_eq.trans hburnside
+    rw [hGcard] at h
+    linarith [mul_comm n (Fintype.card (orbitRel.Quotient (Multiplicative (ZMod n)) (ZMod n → Fin k)))]
+  -- Step 3: ∑ r : ZMod n, k^gcd(n, r.val) = ∑ d | n, φ(n/d) · k^d
+  -- polya_sum_identity uses Fin n with gcd(r.val, n); need explicit equiv ZMod n ≃ Fin n
+  -- (Fintype instances differ even though ZMod n = Fin n definitionally).
+  have step3 : ∑ r : ZMod n, k ^ Nat.gcd n r.val =
+      ∑ d ∈ Nat.divisors n, Nat.totient (n / d) * k ^ d := by
+    have h := BurnsideCountingOQ03.polya_sum_identity n k hn
+    -- h : ∑ r : Fin n, k^gcd(r.val, n) = ∑ d | n, φ(n/d) · k^d
+    -- Build equiv ZMod n ≃ Fin n: toFun r = ⟨r.val, val_lt r⟩, invFun i = (i.val : ZMod n)
+    calc ∑ r : ZMod n, k ^ Nat.gcd n r.val
+        = ∑ r : ZMod n, k ^ Nat.gcd r.val n :=
+          Finset.sum_congr rfl (fun r _ => congr_arg (k ^ ·) (Nat.gcd_comm n r.val))
+      _ = ∑ r : Fin n, k ^ Nat.gcd r.val n := by
+          apply Fintype.sum_equiv
+            (⟨fun r => ⟨r.val, ZMod.val_lt r⟩, fun i => (i.val : ZMod n),
+              fun r => by simp [ZMod.natCast_val],
+              fun i => Fin.ext (by simp [ZMod.val_natCast, Nat.mod_eq_of_lt i.isLt])⟩ :
+              ZMod n ≃ Fin n)
+          intro r
+          rfl
+      _ = ∑ d ∈ Nat.divisors n, Nat.totient (n / d) * k ^ d := h
+  -- Step 4: Reindex d ↦ n/d (involution on divisors): ∑ d | n, φ(n/d)·k^d = ∑ d | n, φ(d)·k^(n/d)
+  have step4 : ∑ d ∈ Nat.divisors n, Nat.totient (n / d) * k ^ d =
+      ∑ d ∈ Nat.divisors n, Nat.totient d * k ^ (n / d) := by
+    apply Finset.sum_nbij (fun d => n / d)
+    · -- n/d is a divisor of n when d | n
+      intro d hd
+      simp only [Nat.mem_divisors] at hd ⊢
+      exact ⟨Nat.div_dvd_of_dvd hd.1, hd.2⟩
+    · -- n/d is injective: n/d₁ = n/d₂ → d₁ = d₂, using n/(n/d) = d
+      -- heq comes as (fun d => n/d) d₁ = (fun d => n/d) d₂ (un-beta-reduced); use have to reduce
+      intro d₁ hd₁ d₂ hd₂ heq
+      simp only [Finset.mem_coe, Nat.mem_divisors] at hd₁ hd₂
+      have heq' : n / d₁ = n / d₂ := heq  -- beta-reduce the lambda
+      calc d₁ = n / (n / d₁) := (Nat.div_div_self hd₁.1 hd₁.2).symm
+        _ = n / (n / d₂) := by rw [heq']
+        _ = d₂ := Nat.div_div_self hd₂.1 hd₂.2
+    · -- Surjective: goal is d ∈ (fun d => n/d) '' ↑(Nat.divisors n) (set-image form)
+      intro d hd
+      -- hd : d ∈ ↑(Nat.divisors n) as set membership; convert to Finset membership first
+      have hd' := Nat.mem_divisors.mp (Finset.mem_coe.mp hd)
+      refine ⟨n / d, ?_, Nat.div_div_self hd'.1 hd'.2⟩
+      simp only [Finset.mem_coe, Nat.mem_divisors]
+      exact ⟨Nat.div_dvd_of_dvd hd'.1, hd'.2⟩
+    · -- Value equality: φ(n/d)·k^d = φ(d)·k^(n/d) since n/(n/d) = d
+      intro d hd
+      simp only [Nat.mem_divisors] at hd
+      simp [Nat.div_div_self hd.1 hd.2]
+  exact step2.trans (step3.trans step4)
 
 end GeneralStatement
 
