@@ -134,15 +134,15 @@ theorem spacing1_implies_main
   obtain ⟨rfl, rfl⟩ := heq
   exact ⟨by omega, hn⟩
 
-/- ## Heuristic Argument -/
+/- ## Heuristic Argument
 
-/-- Heuristic: the prime divisor set of C(2n, n) is determined by primes
-    up to 2n. For consecutive n, n+1, the sets of primes in (n, 2n] and
-    (n+1, 2(n+1)] differ by at most one prime at each boundary.
-    So the prime divisor sets are "close" for consecutive central binomials. -/
-theorem prime_set_stability :
-    ∀ n : ℕ, n ≥ 1 →
-      -- The symmetric difference of prime divisor sets for consecutive
-      -- central binomials is small relative to the sets themselves
-      True := by
-  intro; trivial
+Heuristic: the prime divisor set of C(2n, n) is determined by primes up to 2n.
+For consecutive n, n+1, the intervals (n, 2n] and (n+1, 2(n+1)] differ by
+at most one prime at each boundary (by PNT, expected O(1/log n) primes enter/leave).
+The symmetric difference of prime divisor sets for consecutive central binomials
+is therefore small relative to the sets themselves, strongly suggesting matches
+occur with positive density.
+
+This heuristic is not yet formalized: a rigorous version would require controlling
+carry-pattern correlations across different prime bases simultaneously.
+-/
