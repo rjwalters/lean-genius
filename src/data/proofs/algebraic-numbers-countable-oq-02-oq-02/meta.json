@@ -100,12 +100,20 @@
       "mathContext": "Given $[a_n, b_n]$ with $d = b_n - a_n$, choose $[a_n + d/3, a_n + 2d/3]$ (middle) or $[a_n + 2d/3, b_n]$ (right) to exclude $f(n)$."
     },
     {
-      "id": "properties",
-      "title": "Core Properties",
-      "summary": "Proves width positivity, strict monotonicity of left endpoints, non-increase of right endpoints, and the exclusion property.",
+      "id": "pointwise-properties",
+      "title": "Pointwise Inductive Properties",
+      "summary": "Proves four core properties by induction with three-way case analysis on the if-then-else branches: width_pos (interval width stays positive), a_lt_b (intervals remain nonempty), a_strict_mono (left endpoints strictly increase at each step), b_mono (right endpoints non-increase), and exclusion (f(n) ≤ a(n+1) or f(n) > b(n+1)).",
       "startLine": 82,
-      "endLine": 180,
-      "mathContext": "$a_{n+1} > a_n$ always (key property). $f(n) \\leq a_{n+1}$ or $f(n) > b_{n+1}$ at each step."
+      "endLine": 154,
+      "mathContext": "$a_{n+1} \\in \\{a_n + d/3, a_n + 2d/3\\}$, so $a_{n+1} > a_n$ since $d > 0$. Exclusion: $f(n) \\leq a_{n+1}$ or $f(n) > b_{n+1}$ by case-splitting on where $f(n)$ falls in the three thirds."
+    },
+    {
+      "id": "global-properties",
+      "title": "Global Monotonicity and Bridge Lemmas",
+      "summary": "Elevates pointwise successor inequalities to global StrictMono/Antitone forms and proves the cross-index bound: any left endpoint a(m) ≤ any right endpoint b(n), even for different indices. This cross-index bound is the key auxiliary enabling the sSup argument.",
+      "startLine": 155,
+      "endLine": 181,
+      "mathContext": "Cross-index: for all $m, n$, $a_m \\leq b_n$. If $m \\leq n$: $a_m \\leq a_n < b_n$ (monotone $a$). If $m > n$: $a_m < b_m \\leq b_n$ (antitone $b$). Enables `csSup_le` to show $\\sup_m a_m \\leq b_n$ for any $n$."
     },
     {
       "id": "limit",
