@@ -2,12 +2,12 @@
   "id": "area-of-circle-oq-05-oq-02",
   "title": "Multivariate Gaussian Integral via Matrix Diagonalization",
   "slug": "area-of-circle-oq-05-oq-02",
-  "description": "Proves the multivariate Gaussian integral ∫ exp(-xᵀAx) = √(πⁿ/det A) for positive-definite A. The diagonal case is proved via Fubini and the scalar Gaussian from Mathlib. The general case is proved via the spectral theorem and a measure-preserving orthogonal change of variables (0 sorries). Derived from Mathlib's scalar Gaussian integral.",
+  "description": "Proves the multivariate Gaussian integral ∫ exp(-xᵀAx) = √(πⁿ/det A) for positive-definite A. The diagonal case is proved via Fubini and the scalar Gaussian from Mathlib. The general case (spectral change of variables) has 1 sorry remaining. Derived from Mathlib's scalar Gaussian integral.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_integral#n-dimensional_and_functional_generalization",
     "date": "Classical result, formalized 2026",
-    "status": "verified",
+    "status": "formalized",
     "tags": [
       "analysis",
       "integration",
@@ -20,13 +20,13 @@
     ],
     "proofRepoPath": "Proofs/AreaOfCircleOQ05OQ02.lean",
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "axiomCount": 0,
-    "assumptions": "Core scalar Gaussian ∫ exp(-bx²) = √(π/b) is derived from Mathlib's `integral_gaussian` via the parent proof's `scaled_gaussian`. All three theorems (prod_sqrt_eq_sqrt_prod, diagonal_gaussian, multivariate_gaussian_integral) are proved with 0 sorries.",
+    "assumptions": "Core scalar Gaussian ∫ exp(-bx²) = √(π/b) is derived from Mathlib's `integral_gaussian` via the parent proof's `scaled_gaussian`. Two of three theorems (prod_sqrt_eq_sqrt_prod, diagonal_gaussian) are proved with 0 sorries. multivariate_gaussian_integral has 1 sorry remaining for the spectral change of variables.",
     "originalContributions": [
       "prod_sqrt_eq_sqrt_prod: proved by induction that ∏ √(fᵢ) = √(∏ fᵢ) for nonneg fᵢ using Fin.prod_univ_castSucc and Real.sqrt_mul",
       "diagonal_gaussian: complete proof that ∫ exp(-∑ bᵢxᵢ²) = √(πⁿ/∏bᵢ) using Real.exp_sum + integral_fintype_prod_volume_eq_prod (Fubini) + scaled_gaussian from parent",
-      "multivariate_gaussian_integral: complete proof via spectral decomposition (A = UDUᵀ), quadratic form reduction (xᵀAx = ∑ λᵢ(Uᵀx)ᵢ²), and measure-preserving orthogonal change of variables (|det Uᵀ| = 1 via map_linearMap_volume_pi_eq_smul_volume_pi + integral_map)"
+      "multivariate_gaussian_integral: partial proof (1 sorry remaining) — quadratic form reduction sketched; spectral decomposition + orthogonal change of variables (map_linearMap_volume_pi_eq_smul_volume_pi) not yet fully formalized"
     ],
     "dateAdded": "2026-04-21",
     "lineCount": 138,
@@ -36,8 +36,8 @@
   },
   "overview": {
     "historicalContext": "The multivariate Gaussian integral ∫_{ℝⁿ} exp(-xᵀAx) dx = √(πⁿ/det A) for positive-definite A is a cornerstone of probability theory (multivariate normal distribution), statistics, quantum mechanics (path integrals), and algebraic geometry (Siegel modular forms). It generalizes the classical Poisson-Laplace formula ∫_{ℝ} exp(-x²) = √π proved by Poisson (1812) and Laplace. The general positive-definite form requires the spectral theorem for real symmetric matrices, which was developed by Cauchy (1829) and Jacobi — the same diagonalization theory that makes the Gaussian integral tractable.\n\nThe formula is central to Bayesian statistics (Laplace approximation, Gaussian process covariance), statistical mechanics (partition functions for harmonic systems), and quantum field theory (functional integrals). The Lean 4 formalization here is notable for building on Mathlib's Fubini infrastructure (`integral_fintype_prod_volume_eq_prod`), which allows the multivariate case to reduce cleanly to a product of scalar Gaussians.",
-    "problemStatement": "**Open Question (OQ-02 from OQ-05)**: Can the multivariate Gaussian integral be formalized in Lean 4?\n\n**Answer**: YES (fully, 0 sorries). The diagonal case is proved via Fubini + Mathlib's scalar Gaussian. The general case is proved via spectral decomposition and a measure-preserving orthogonal change of variables using `map_linearMap_volume_pi_eq_smul_volume_pi`. Derived from Mathlib's `integral_gaussian`.",
-    "text": "A 200-line formalization with three theorems (all proved, 0 sorries): (1) `prod_sqrt_eq_sqrt_prod`: ∏ √(fᵢ) = √(∏ fᵢ) by induction. (2) `diagonal_gaussian`: ∫_{ℝⁿ} exp(-∑ bᵢxᵢ²) = √(πⁿ/∏bᵢ) via exp_sum + Fubini + Mathlib's scalar Gaussian. (3) `multivariate_gaussian_integral`: ∫ exp(-xᵀAx) = √(πⁿ/det A) via spectral decomposition (A = UDUᵀ), quadratic form reduction, and measure-preserving orthogonal change of variables (|det Uᵀ| = 1). Derived from Mathlib's `integral_gaussian`.",
+    "problemStatement": "**Open Question (OQ-02 from OQ-05)**: Can the multivariate Gaussian integral be formalized in Lean 4?\n\n**Answer**: Partially. The diagonal case is proved via Fubini + Mathlib's scalar Gaussian (0 sorries). The general case (`multivariate_gaussian_integral`) has 1 sorry remaining for the spectral change of variables (`map_linearMap_volume_pi_eq_smul_volume_pi`). Derived from Mathlib's `integral_gaussian`.",
+    "text": "A 138-line formalization with three theorems (2 proved, 1 sorry): (1) `prod_sqrt_eq_sqrt_prod`: ∏ √(fᵢ) = √(∏ fᵢ) by induction (proved). (2) `diagonal_gaussian`: ∫_{ℝⁿ} exp(-∑ bᵢxᵢ²) = √(πⁿ/∏bᵢ) via exp_sum + Fubini + Mathlib's scalar Gaussian (proved). (3) `multivariate_gaussian_integral`: ∫ exp(-xᵀAx) = √(πⁿ/det A) via spectral decomposition — 1 sorry remaining for the orthogonal change of variables step. Derived from Mathlib's `integral_gaussian`.",
     "proofStrategy": "**Part 1** (prod_sqrt_eq_sqrt_prod): Induction on n. Base case: ∏_{Fin 0} = 1 = √1. Inductive step: split using Fin.prod_univ_castSucc, apply IH to prefix, then combine √a * √b = √(a*b) via Real.sqrt_mul.\n\n**Part 2** (diagonal_gaussian): (i) Rewrite exp(-∑ bᵢxᵢ²) = ∏ exp(-bᵢxᵢ²) via ← Finset.sum_neg_distrib then Real.exp_sum. (ii) Apply integral_fintype_prod_volume_eq_prod (Fubini for product spaces). (iii) Each factor ∫ exp(-bᵢxᵢ²) = √(π/bᵢ) by scaled_gaussian from AreaOfCircleOQ05 (Mathlib bridge). (iv) Simplify ∏ √(π/bᵢ) = √(πⁿ/∏bᵢ) via prod_sqrt_eq_sqrt_prod + prod_div_distrib + prod_const.\n\n**Part 3** (multivariate_gaussian_integral): (i) Spectral theorem: A = U * diag(λ) * Uᵀ (eigenvectorUnitary). (ii) Quadratic form: xᵀAx = ∑ λᵢ(Uᵀx)ᵢ² via dotProduct_mulVec + vecMul_transpose. (iii) Show |det Uᵀ| = 1 from unitary membership (det U * det U = 1). (iv) Apply map_linearMap_volume_pi_eq_smul_volume_pi + integral_map to change variables y = Uᵀx. (v) Apply diagonal_gaussian. (vi) det A = ∏ λᵢ by det_eq_prod_eigenvalues.",
     "keyInsights": [
       "**Fubini as the Core Tool**: integral_fintype_prod_volume_eq_prod from MeasureTheory.Integral.Pi factors ∫_{ℝⁿ} ∏ f(xᵢ) as ∏ ∫_{ℝ} f(xᵢ), making the multivariate integral reduce to a product of scalar integrals. This is the key mathematical step.",
@@ -101,20 +101,20 @@
     },
     {
       "id": "sec-main",
-      "title": "Multivariate Gaussian Integral (proved, 0 sorries)",
+      "title": "Multivariate Gaussian Integral (1 sorry remaining)",
       "startLine": 115,
-      "endLine": 200,
-      "summary": "Main theorem: ∫ exp(-xᵀAx) = √(πⁿ/det A) for positive-definite A — fully proved via map_linearMap_volume_pi_eq_smul_volume_pi + integral_map for the orthogonal change of variables"
+      "endLine": 138,
+      "summary": "Main theorem: ∫ exp(-xᵀAx) = √(πⁿ/det A) for positive-definite A — 1 sorry remaining for the spectral change of variables (map_linearMap_volume_pi_eq_smul_volume_pi + MeasurableEquiv from orthogonal map)"
     }
   ],
   "conclusion": {
-    "summary": "This entry formalizes the multivariate Gaussian integral in Lean 4 (0 sorries, derived from Mathlib's scalar Gaussian). All three theorems are proved: `prod_sqrt_eq_sqrt_prod` by induction, `diagonal_gaussian` via Fubini + Mathlib's `integral_gaussian`, and `multivariate_gaussian_integral` via spectral decomposition (A = UDUᵀ) and a measure-preserving orthogonal change of variables.",
-    "implications": "The complete formalization combines `Real.exp_sum`, Fubini for `Fin n → ℝ` product spaces, spectral decomposition, and `map_linearMap_volume_pi_eq_smul_volume_pi` with `integral_map`. The key insight is that `|det Uᵀ| = 1` follows from unitary membership (det U * det U = 1 with TrivialStar), making `Measure.map ⇑L volume = volume`. This formalization demonstrates the modular structure of the Lean Genius gallery: `AreaOfCircleOQ05 → AreaOfCircleOQ05OQ02` via the `scaled_gaussian` import. The core scalar Gaussian is derived from Mathlib's `integral_gaussian`.",
+    "summary": "This entry partially formalizes the multivariate Gaussian integral in Lean 4 (1 sorry remaining, derived from Mathlib's scalar Gaussian). Two of three theorems are fully proved: `prod_sqrt_eq_sqrt_prod` by induction, `diagonal_gaussian` via Fubini + Mathlib's `integral_gaussian`. The main theorem `multivariate_gaussian_integral` has 1 sorry for the spectral change of variables.",
+    "implications": "The partial formalization establishes `Real.exp_sum`, Fubini for `Fin n → ℝ` product spaces, and the diagonal case. The remaining step requires constructing a MeasurableEquiv from the orthogonal map U and proving measure preservation via `map_linearMap_volume_pi_eq_smul_volume_pi` with |det Uᵀ| = 1. This formalization demonstrates the modular structure of the Lean Genius gallery: `AreaOfCircleOQ05 → AreaOfCircleOQ05OQ02` via the `scaled_gaussian` import. The core scalar Gaussian is derived from Mathlib's `integral_gaussian`.",
     "openQuestions": [
       "Can the result be extended to the complex case (Hermitian positive-definite matrices over ℂ)?",
       "Can `prod_sqrt_eq_sqrt_prod` be contributed to Mathlib as a missing lemma?",
       "Can the proof be simplified using `MeasurePreserving.integral_comp'` instead of `integral_map` + `hmap`?"
     ]
   },
-  "sorries": 0
+  "sorries": 1
 }
