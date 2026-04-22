@@ -54,10 +54,23 @@
       "Plan approximate selection construction from partition of unity"
     ]
   },
-  "tags": ["topology", "functional-analysis", "kakutani", "fixed-point", "brouwer", "wip-completion"],
-  "relatedProofs": ["schauder-fixed-point", "schauder-fixed-point-oq-03"],
+  "tags": [
+    "topology",
+    "functional-analysis",
+    "kakutani",
+    "fixed-point",
+    "brouwer",
+    "wip-completion"
+  ],
+  "relatedProofs": [
+    "schauder-fixed-point",
+    "schauder-fixed-point-oq-03",
+    "schauder-fixed-point-oq-03-oq-01"
+  ],
   "references": {
-    "papers": ["Kakutani (1941) - A generalization of Brouwer's fixed point theorem"],
+    "papers": [
+      "Kakutani (1941) - A generalization of Brouwer's fixed point theorem"
+    ],
     "urls": [],
     "mathlib": [
       "Mathlib.Topology.PartitionOfUnity",

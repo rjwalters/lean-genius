@@ -139,17 +139,19 @@ theorem contains_open_ball (d : ℕ) :
 
 /- ## Part IV: The 2-Dimensional Case (Erdős-Straus) -/
 
-/-- **Erdős-Straus Theorem**
+/-
+  **Erdős-Straus Theorem**
 
-    The 2-dimensional version: X ⊆ ℝ² has nonempty interior.
-    This was the first case solved, before the general result.
+  The 2-dimensional version: X ⊆ ℝ² has nonempty interior.
+  This was the first case solved, before the general result.
 -/
+
 /-- In dimension 2, the point is (Σ 1/n, Σ 1/(n+1)). -/
 theorem dim2_point_form (A : Set ℕ) (hA : A.Infinite)
     (hconv : HasConvergentHarmonicSubseries A) :
     harmonicPoint 2 A = ![harmonicSubseriesSum A, shiftedHarmonicSum A 1] := by
   ext ⟨i, hi⟩
-  fin_cases ⟨i, hi⟩
+  fin_cases hi
   · -- i = 0: harmonicPoint 2 A 0 = harmonicSubseriesSum A
     simp only [harmonicPoint, harmonicSubseriesSum, shiftedHarmonicSum,
       Fin.val_mk, Matrix.cons_val_zero]
@@ -160,30 +162,33 @@ theorem dim2_point_form (A : Set ℕ) (hA : A.Infinite)
 
 /- ## Part V: The 3-Dimensional Case (Kovač 2024) -/
 
-/-- **Kovač's Theorem (2024)**
+/-
+  **Kovač's Theorem (2024)**
 
-    The 3-dimensional case with explicit open ball construction.
-    Kovač gave a constructive proof finding an explicit center and radius.
+  The 3-dimensional case with explicit open ball construction.
+  Kovač gave a constructive proof finding an explicit center and radius.
 -/
+
 /-- Kovač's explicit construction gives a specific open ball. -/
 def kovacBallCenter : Fin 3 → ℝ := ![1.5, 1.2, 1.0]  -- Placeholder values
 
 def kovacBallRadius : ℝ := 0.01  -- Placeholder value
 
-/-- The constructed ball is inside X (axiomatized). -/
 /- ## Part VI: General Dimension (Kovač-Tao 2024) -/
 
-/-- **Kovač-Tao Theorem (2024)**
+/-
+  **Kovač-Tao Theorem (2024)**
 
-    For all dimensions d ≥ 1, the set X has nonempty interior.
-    The proof uses techniques from Ahmes series analysis.
+  For all dimensions d ≥ 1, the set X has nonempty interior.
+  The proof uses techniques from Ahmes series analysis.
 -/
+
 theorem kovac_tao_general (d : ℕ) (hd : d ≥ 1) :
     (interior (harmonicPointSet d)).Nonempty :=
   erdos_268_solved d
 
 /-- The Ahmes series connection. -/
-def AhmesSeries (A : Set ℕ) : ℝ := harmonicSubseriesSum A
+noncomputable def AhmesSeries (A : Set ℕ) : ℝ := harmonicSubseriesSum A
 
 /- ## Part VIb: Greedy Harmonic Construction
 
@@ -429,20 +434,308 @@ private lemma greedySet_sum (s : ℝ) (hs : 0 < s) :
     rw [abs_neg, abs_of_nonneg (greedyBudget_nonneg s hs.le N')]
     exact hM N' (by omega)
 
-/-- The greedy set is infinite.
-    Note: greedySet may be finite when s is a "finite harmonic sum" (rare exact case).
-    In that case, we use Sylvester splitting to extend to an infinite set.
-    For the general case (irrational s), greedySet is always infinite.
-    This sorry represents the extension for the finite case. -/
-private lemma greedySet_infinite (s : ℝ) (hs : 0 < s) : (greedySet s).Infinite := by
-  -- If greedySet s is finite, its elements sum exactly to s (budget hits 0).
-  -- We can extend by replacing the largest element with its Sylvester expansion.
-  -- The Sylvester expansion of 1/M gives an infinite series summing to 1/M with all
-  -- terms > M, so the resulting set is infinite and sums to s.
-  -- For now, we leave this as a sorry pending the Sylvester expansion formalization.
-  sorry
+
+/- ## Part XI: Unit Fraction Infrastructure (for d=1 path-connectedness) -/
+
+/-- The set of products of consecutive naturals starting at n:
+    consecutiveProductsSet n = {k·(k+1) | k ≥ n}.
+    Key property: Σ_{m∈A} 1/m = 1/n via telescoping 1/(k(k+1)) = 1/k - 1/(k+1). -/
+def consecutiveProductsSet (n : ℕ) : Set ℕ :=
+  {m | ∃ k : ℕ, n ≤ k ∧ m = k * (k + 1)}
+
+/-- Partial sum formula: Σ_{k=0}^{N-1} 1/((k+n)(k+n+1)) = 1/n - 1/(n+N).
+    Proof by induction using partial fractions 1/(k(k+1)) = 1/k - 1/(k+1).
+    The inductive step uses: 1/n - 1/(n+N) + 1/((N+n)(N+n+1)) = 1/n - 1/(n+N+1),
+    which simplifies to 1/((N+n)(N+n+1)) = 1/(N+n) - 1/(N+n+1) (partial fractions). -/
+lemma partial_sum_consec (N n : ℕ) (hn : 0 < n) :
+    (∑ k ∈ Finset.range N, (1 : ℝ) / (↑(k + n) * (↑(k + n) + 1))) =
+    (1 : ℝ) / n - 1 / (n + N) := by
+  induction N with
+  | zero => simp
+  | succ N ih =>
+    rw [Finset.sum_range_succ, ih]
+    push_cast
+    -- Goal: 1/n - 1/(n+N) + 1/((N+n)(N+n+1)) = 1/n - 1/(n+N+1)
+    -- Equivalently: 1/((N+n)(N+n+1)) = 1/(N+n) - 1/(N+n+1)  [partial fractions]
+    have hn' : (n : ℝ) > 0 := Nat.cast_pos.mpr hn
+    have h1 : (n : ℝ) + N > 0 := add_pos_of_pos_of_nonneg hn' (by positivity)
+    have h2 : (n : ℝ) + N + 1 > 0 := by linarith
+    field_simp [hn'.ne', h1.ne', h2.ne']
+    ring
+
+/-- The consecutive products set is infinite: it contains {n(n+1), (n+1)(n+2), ...}. -/
+theorem consecutiveProductsSet_infinite (n : ℕ) :
+    (consecutiveProductsSet n).Infinite := by
+  -- The map k ↦ (n+k)*(n+k+1) is injective: (n+a)*(n+a+1) = (n+b)*(n+b+1) → a = b
+  -- because k ↦ k*(k+1) is strictly monotone.
+  have hinj : Function.Injective (fun k : ℕ => (n + k) * (n + k + 1)) := by
+    intro a b h
+    -- Cast to ℤ; factorize (n+a-(n+b))*(n+a+n+b+1) = 0 and use positivity of second factor
+    have h' : ((n : ℤ) + a) * (n + a + 1) = (n + b) * (n + b + 1) := by exact_mod_cast h
+    have hfact : ((n : ℤ) + a - (n + b)) * ((n + a) + (n + b) + 1) = 0 := by linarith [show ((n : ℤ) + a - (n + b)) * ((n + a) + (n + b) + 1) = (n + a) * (n + a + 1) - (n + b) * (n + b + 1) from by ring]
+    have hpos : (0 : ℤ) < (n + a) + (n + b) + 1 := by positivity
+    have hzero : (n : ℤ) + a = n + b := by
+      rcases mul_eq_zero.mp hfact with h1 | h2
+      · linarith
+      · linarith
+    exact_mod_cast (show (a : ℤ) = b by linarith)
+  exact (Set.infinite_range_of_injective hinj).mono
+    (fun m hm => let ⟨k, hk⟩ := hm; ⟨n + k, Nat.le_add_right n k, hk.symm⟩)
+
+/-- Every element of greedySet is ≥ 1 (by definition). -/
+private lemma greedySet_mem_ge_one (s : ℝ) (n : ℕ) (hn : n ∈ greedySet s) : 1 ≤ n :=
+  hn.1
+
+/-- The greedy set is nonempty for any positive target s. -/
+private lemma greedySet_nonempty (s : ℝ) (hs : 0 < s) : (greedySet s).Nonempty := by
+  by_contra hempty
+  rw [Set.not_nonempty_iff_eq_empty] at hempty
+  -- If greedySet s = ∅, nothing is ever included, so greedyBudget stays at s.
+  have hconst : ∀ n, greedyBudget s n = s := by
+    intro n; induction n with
+    | zero => exact greedyBudget_zero s
+    | succ n ih =>
+      have hnotin : n + 1 ∉ greedySet s := hempty ▸ Set.not_mem_empty _
+      simp only [greedySet, Set.mem_setOf_eq, not_and, Nat.succ_pos, forall_true_left,
+                 not_le, Nat.add_sub_cancel] at hnotin
+      rw [ih] at hnotin
+      rw [greedyBudget_succ_skip s n (not_le.mpr hnotin), ih]
+  -- So 1/n > s for all n ≥ 1.
+  have hbig : ∀ n : ℕ, 0 < n → s < (1 : ℝ) / n := by
+    intro n hn
+    have hnotin : n ∉ greedySet s := hempty ▸ Set.not_mem_empty _
+    simp only [greedySet, Set.mem_setOf_eq, not_and, not_le] at hnotin
+    have h := hnotin hn
+    rw [hconst (n - 1)] at h
+    exact h
+  -- But 1/(N+1) → 0 < s; find N with 1/(N+1) < s/2 < s.
+  have htend : Filter.Tendsto (fun k : ℕ => (1 : ℝ) / (k + 1)) Filter.atTop (nhds 0) := by
+    apply (tendsto_const_nhds (x := (1 : ℝ))).div_atTop
+    exact tendsto_atTop_atTop.mpr (fun b => ⟨⌈b⌉₊, fun N hN => by
+      push_cast; linarith [Nat.le_ceil b, Nat.cast_le.mpr hN]⟩)
+  rw [Metric.tendsto_atTop] at htend
+  obtain ⟨N, hN⟩ := htend (s / 2) (by linarith)
+  have hsmall : (1 : ℝ) / (N + 1) < s := by
+    have h := hN N le_rfl
+    rw [Real.dist_eq, sub_zero, abs_of_nonneg (by positivity)] at h
+    linarith
+  have key := hbig (N + 1) (Nat.succ_pos N)
+  push_cast at key
+  linarith
+
+/-- The consecutive products set has a convergent harmonic subseries.
+    Via bijection k ↦ (n+k)·(n+k+1), reduces to HasSum of telescoping sum = 1/n. -/
+theorem consecutiveProductsSet_convergent (n : ℕ) (hn : 0 < n) :
+    HasConvergentHarmonicSubseries (consecutiveProductsSet n) := by
+  unfold HasConvergentHarmonicSubseries
+  -- Bijection e : ℕ ≃ consecutiveProductsSet n via k ↦ (n+k)·(n+k+1)
+  let e : ℕ → consecutiveProductsSet n := fun j =>
+    ⟨(n + j) * (n + j + 1), ⟨n + j, Nat.le_add_right n j, rfl⟩⟩
+  have hinj : Function.Injective e := by
+    intro a b h
+    simp only [e, Subtype.ext_iff] at h
+    have h' : ((n : ℤ) + a) * (n + a + 1) = (n + b) * (n + b + 1) := by exact_mod_cast h
+    have hfact : ((n : ℤ) + a - (n + b)) * ((n + a) + (n + b) + 1) = 0 := by
+      linarith [show ((n : ℤ) + a - (n + b)) * ((n + a) + (n + b) + 1) =
+        (n + a) * (n + a + 1) - (n + b) * (n + b + 1) from by ring]
+    have hpos : (0 : ℤ) < (n + a) + (n + b) + 1 := by positivity
+    have heq : (n : ℤ) + a = n + b := by
+      rcases mul_eq_zero.mp hfact with h1 | h2
+      · linarith
+      · linarith
+    exact_mod_cast (show (a : ℤ) = b by linarith)
+  have hsurj : Function.Surjective e := by
+    rintro ⟨m, k, hk, rfl⟩
+    refine ⟨k - n, ?_⟩
+    simp only [e, Subtype.ext_iff]
+    rw [Nat.add_sub_cancel' hk]
+  let φ := Equiv.ofBijective e ⟨hinj, hsurj⟩
+  rw [← φ.summable_iff]
+  -- φ j = e j definitionally, so ↑↑(φ j) = (n+j)*(n+j+1) as ℕ cast to ℝ
+  change Summable (fun j : ℕ => (1:ℝ) / ↑((n + j) * (n + j + 1)))
+  -- After reindexing: Summable (fun j : ℕ => 1/↑((n+j)·(n+j+1)))
+  -- HasSum (→ Summable) via partial sums = partial_sum_consec
+  apply HasSum.summable
+  rw [hasSum_iff_tendsto_nat_of_nonneg (fun j => by
+    apply div_nonneg one_nonneg
+    exact Nat.cast_nonneg _)]
+  -- The partial sums equal partial_sum_consec and → 1/n
+  have hpsum : ∀ N, ∑ j ∈ Finset.range N,
+      (1 : ℝ) / ↑((n + j) * (n + j + 1)) = 1 / ↑n - 1 / (↑n + ↑N) := by
+    intro N
+    rw [show ∑ j ∈ Finset.range N, (1:ℝ) / ↑((n + j) * (n + j + 1)) =
+          ∑ k ∈ Finset.range N, (1:ℝ) / (↑(k + n) * (↑(k + n) + 1)) from by
+      congr 1; ext j; push_cast; ring]
+    exact partial_sum_consec N n hn
+  simp_rw [hpsum]
+  have h0 : Filter.Tendsto (fun N : ℕ => (1 : ℝ) / ((n : ℝ) + N)) Filter.atTop (nhds 0) :=
+    (tendsto_const_nhds (x := (1 : ℝ))).div_atTop (tendsto_atTop_atTop.mpr (fun b =>
+      ⟨⌈b⌉₊, fun N hN => by push_cast
+                              linarith [Nat.le_of_ceil_le (Nat.cast_le.mpr hN),
+                                        Nat.cast_nonneg (n := n)]⟩))
+  simpa [sub_zero] using (tendsto_const_nhds (x := 1 / (n : ℝ))).sub h0
+
+/-- The harmonic subseries sum of consecutiveProductsSet n equals 1/n.
+    Key: Σ_{k≥n} 1/(k·(k+1)) = 1/n via telescoping. -/
+theorem consecutiveProductsSet_sum (n : ℕ) (hn : 0 < n) :
+    harmonicSubseriesSum (consecutiveProductsSet n) = 1 / n := by
+  have hconv := consecutiveProductsSet_convergent n hn
+  unfold harmonicSubseriesSum
+  -- Same bijection and HasSum proof as convergent
+  let e : ℕ → consecutiveProductsSet n := fun j =>
+    ⟨(n + j) * (n + j + 1), ⟨n + j, Nat.le_add_right n j, rfl⟩⟩
+  have hinj : Function.Injective e := by
+    intro a b h
+    simp only [e, Subtype.ext_iff] at h
+    have h' : ((n : ℤ) + a) * (n + a + 1) = (n + b) * (n + b + 1) := by exact_mod_cast h
+    have hfact : ((n : ℤ) + a - (n + b)) * ((n + a) + (n + b) + 1) = 0 := by
+      linarith [show ((n : ℤ) + a - (n + b)) * ((n + a) + (n + b) + 1) =
+        (n + a) * (n + a + 1) - (n + b) * (n + b + 1) from by ring]
+    have hpos : (0 : ℤ) < (n + a) + (n + b) + 1 := by positivity
+    have heq : (n : ℤ) + a = n + b := by
+      rcases mul_eq_zero.mp hfact with h1 | h2 <;> linarith
+    exact_mod_cast (show (a : ℤ) = b by linarith)
+  have hsurj : Function.Surjective e := by
+    rintro ⟨m, k, hk, rfl⟩
+    refine ⟨k - n, ?_⟩
+    simp only [e, Subtype.ext_iff]
+    rw [Nat.add_sub_cancel' hk]
+  let φ := Equiv.ofBijective e ⟨hinj, hsurj⟩
+  have hhas : HasSum (fun m : consecutiveProductsSet n => (1 : ℝ) / ↑↑m) (1 / n) := by
+    rw [← φ.hasSum_iff]
+    -- φ j = e j definitionally, so ↑↑(φ j) = (n+j)*(n+j+1) as ℕ cast to ℝ
+    change HasSum (fun j : ℕ => (1:ℝ) / ↑((n + j) * (n + j + 1))) (1 / n)
+    rw [hasSum_iff_tendsto_nat_of_nonneg (fun j => by
+      apply div_nonneg one_nonneg
+      exact Nat.cast_nonneg _)]
+    have hpsum : ∀ N, ∑ j ∈ Finset.range N,
+        (1 : ℝ) / ↑((n + j) * (n + j + 1)) = 1 / ↑n - 1 / (↑n + ↑N) := by
+      intro N
+      rw [show ∑ j ∈ Finset.range N, (1:ℝ) / ↑((n + j) * (n + j + 1)) =
+            ∑ k ∈ Finset.range N, (1:ℝ) / (↑(k + n) * (↑(k + n) + 1)) from by
+        congr 1; ext j; push_cast; ring]
+      exact partial_sum_consec N n hn
+    simp_rw [hpsum]
+    have h0 : Filter.Tendsto (fun N : ℕ => (1 : ℝ) / ((n : ℝ) + N)) Filter.atTop (nhds 0) :=
+      (tendsto_const_nhds (x := (1 : ℝ))).div_atTop (tendsto_atTop_atTop.mpr (fun b =>
+        ⟨⌈b⌉₊, fun N hN => by push_cast; linarith [Nat.le_ceil b, Nat.cast_le.mpr hN]⟩))
+    simpa [sub_zero] using (tendsto_const_nhds (x := 1 / (n : ℝ))).sub h0
+  exact hhas.tsum_eq
+
+/-- For any s > 0, there exists an INFINITE A ⊆ ℕ with convergent harmonic subseries
+    summing to exactly s. This handles both the "greedy terminates" and "greedy infinite" cases.
+    When greedySet s is finite (exact Egyptian fraction), we replace its max element M with
+    the infinite consecutiveProductsSet M, which sums to 1/M (same sum). -/
+private lemma exists_infinite_harmonic_set (s : ℝ) (hs : 0 < s) :
+    ∃ A : Set ℕ, A.Infinite ∧ HasConvergentHarmonicSubseries A ∧
+      harmonicSubseriesSum A = s := by
+  by_cases hinf : (greedySet s).Infinite
+  · -- Case 1: greedy set is already infinite
+    exact ⟨greedySet s, hinf, greedySet_summable s hs, greedySet_sum s hs⟩
+  · -- Case 2: greedySet s is finite — replace max element M with consecutiveProductsSet M.
+    -- consecutiveProductsSet M is infinite and sums to 1/M (same as M's contribution).
+    have hfin : (greedySet s).Finite := Set.not_infinite.mp hinf
+    have hne_g : (greedySet s).Nonempty := greedySet_nonempty s hs
+    have hne_fin : hfin.toFinset.Nonempty := hfin.toFinset_nonempty.mpr hne_g
+    -- Pick maximum element M
+    let M := hfin.toFinset.max' hne_fin
+    have hMg : M ∈ greedySet s := hfin.mem_toFinset.mp (hfin.toFinset.max'_mem hne_fin)
+    have hM1 : 1 ≤ M := greedySet_mem_ge_one s M hMg
+    have hM_pos : 0 < M := by omega
+    have hMmax : ∀ m ∈ greedySet s, m ≤ M := fun m hm =>
+      Finset.le_max' hfin.toFinset m (hfin.mem_toFinset.mpr hm)
+    -- Replacement: A' = (greedySet s \ {M}) ∪ consecutiveProductsSet M
+    let A' : Set ℕ := greedySet s \ {M} ∪ consecutiveProductsSet M
+    -- Each piece has convergent harmonic subseries
+    have hconv_diff : HasConvergentHarmonicSubseries (greedySet s \ {M}) :=
+      finite_has_convergent _ (hfin.subset Set.diff_subset)
+    have hconv_consec : HasConvergentHarmonicSubseries (consecutiveProductsSet M) :=
+      consecutiveProductsSet_convergent M hM_pos
+    -- Disjointness: consec elements ≥ M*(M+1) > M ≥ all elements in diff
+    have hdisj : Disjoint (greedySet s \ {M}) (consecutiveProductsSet M) := by
+      rw [Set.disjoint_left]
+      intro x hxdiff hxconsec
+      obtain ⟨hxg, _⟩ := hxdiff
+      obtain ⟨k, hk, hm⟩ := hxconsec
+      have hxleM : x ≤ M := hMmax x hxg
+      subst hm
+      nlinarith [hk, hM1]
+    -- A' is infinite
+    have hAinf : A'.Infinite := (consecutiveProductsSet_infinite M).mono Set.subset_union_right
+    -- A' has convergent harmonic subseries:
+    -- A' = (greedySet s \ {M}) ∪ consecutiveProductsSet M (disjoint)
+    -- The finite piece is summable, the consecutive piece is summable.
+    -- By disjoint union summability, A' is summable.
+    have hAconv : HasConvergentHarmonicSubseries A' := by
+      unfold HasConvergentHarmonicSubseries A'
+      -- TODO: use Set.summable_union_disjoint or equivalent Lean 4 API
+      -- Mathematically: finite + summable = summable over disjoint union
+      sorry
+    -- Sum computations
+    -- Step 1: greedySet s = (greedySet s \ {M}) ∪ {M}, disjoint
+    have hdisjM : Disjoint (greedySet s \ {M}) {M} := Set.disjoint_sdiff_self_left
+    have hconv_M : HasConvergentHarmonicSubseries {M} :=
+      finite_has_convergent _ (Set.finite_singleton M)
+    have hunion_g : greedySet s = greedySet s \ {M} ∪ {M} :=
+      (Set.diff_union_of_subset (Set.singleton_subset_iff.mpr hMg)).symm
+    -- Step 2: harmonicSubseriesSum splits over greedySet s
+    have hg_split : harmonicSubseriesSum (greedySet s) =
+        harmonicSubseriesSum (greedySet s \ {M}) + harmonicSubseriesSum {M} := by
+      have h := Summable.tsum_union_disjoint hdisjM hconv_diff hconv_M
+      simp only [harmonicSubseriesSum, hunion_g, h]
+    -- Step 3: sum of singleton {M}
+    have hM_sum : harmonicSubseriesSum {M} = 1 / M := by
+      simp [harmonicSubseriesSum, tsum_singleton]
+    -- Step 4: sum of consecutiveProductsSet M
+    have hconsec_sum : harmonicSubseriesSum (consecutiveProductsSet M) = 1 / M :=
+      consecutiveProductsSet_sum M hM_pos
+    -- Step 5: sum of diff piece
+    have hdiff_sum : harmonicSubseriesSum (greedySet s \ {M}) = s - 1 / M := by
+      linarith [greedySet_sum s hs, hg_split, hM_sum]
+    -- Step 6: sum of A'
+    have hAsum : harmonicSubseriesSum A' = s := by
+      have h := Summable.tsum_union_disjoint hdisj hconv_diff hconv_consec
+      simp only [harmonicSubseriesSum, A', h]
+      linarith [hdiff_sum, hconsec_sum]
+    exact ⟨A', hAinf, hAconv, hAsum⟩
+
 
 /- ## Part VII: Properties of the Point Set -/
+
+/- Forward definitions needed by Part VII theorems -/
+
+/-- Geometric sequences {1, 2, 4, 8, ...} have convergent sum. -/
+def powersOf2Set : Set ℕ := {n | ∃ k : ℕ, n = 2 ^ k}
+
+theorem powers_convergent : HasConvergentHarmonicSubseries powersOf2Set := by
+  unfold HasConvergentHarmonicSubseries
+  let e : ℕ → powersOf2Set := fun k => ⟨2 ^ k, k, rfl⟩
+  have hinj : Function.Injective e := by
+    intro a b h
+    simp only [e, Subtype.ext_iff] at h
+    exact Nat.pow_right_injective (by norm_num) h
+  have hsurj : Function.Surjective e := by
+    intro ⟨n, k, hk⟩
+    exact ⟨k, by simp only [e, Subtype.ext_iff]; exact hk.symm⟩
+  rw [← (Equiv.ofBijective e ⟨hinj, hsurj⟩).summable_iff]
+  have heq : (fun n : powersOf2Set => (1 : ℝ) / ↑↑n) ∘
+      (Equiv.ofBijective e ⟨hinj, hsurj⟩) = fun k => ((1 : ℝ) / 2) ^ k := by
+    ext k
+    simp only [Function.comp, Equiv.ofBijective_apply, e, Subtype.coe_mk]
+    rw [Nat.cast_pow, Nat.cast_ofNat, div_pow, one_pow]
+  rw [heq]
+  exact summable_geometric_of_lt_one (by positivity) (by norm_num)
+
+/-- All coordinates are positive (for non-empty A). -/
+theorem all_coordinates_positive (d : ℕ) (A : Set ℕ)
+    (hA : A.Nonempty) (hconv : HasConvergentHarmonicSubseries A)
+    (i : Fin d) :
+    (harmonicPoint d A) i > 0 := by
+  simp only [harmonicPoint, shiftedHarmonicSum]
+  obtain ⟨n, hn⟩ := hA
+  apply tsum_pos (shifted_summable A i.val hconv)
+    (fun m => div_nonneg one_nonneg (Nat.cast_nonneg' _))
+  exact ⟨⟨n, hn⟩, div_pos one_pos (Nat.cast_pos.mpr (by omega))⟩
 
 /-- X is non-empty (take any convergent subseries). -/
 theorem harmonicPointSet_nonempty (d : ℕ) :
@@ -497,22 +790,21 @@ theorem harmonicPointSet_path_connected (d : ℕ) :
       rintro ⟨A, hAinf, hAconv, rfl⟩
       exact all_coordinates_positive 1 A hAinf.nonempty hAconv 0
     · -- ⊇: for any s > 0, find an infinite A with Σ_{n∈A} 1/n = s
-      -- Strategy: use the greedy harmonic set construction.
+      -- Strategy: use exists_infinite_harmonic_set (handles both infinite and finite greedy cases).
       intro hx
-      -- Let s = x 0 and use the greedy construction
+      -- Let s = x 0 and obtain an infinite A with harmonicSubseriesSum A = s
       set s := x 0 with hs_def
-      -- The greedy set has the required properties
-      refine ⟨greedySet s, greedySet_infinite s hx, greedySet_summable s hx, ?_⟩
-      -- harmonicPoint 1 (greedySet s) = x means the 0-th coordinate equals x 0
+      obtain ⟨A, hAinf, hAconv, hAsum⟩ := exists_infinite_harmonic_set s hx
+      refine ⟨A, hAinf, hAconv, ?_⟩
+      -- harmonicPoint 1 A = x means the 0-th coordinate equals x 0 = s
       funext ⟨i, hi⟩
       fin_cases hi
-      -- i = 0: show shiftedHarmonicSum (greedySet s) 0 = x 0
+      -- i = 0: show shiftedHarmonicSum A 0 = x 0
       simp only [harmonicPoint, shiftedHarmonicSum, Fin.val_mk]
-      -- shiftedHarmonicSum A 0 = ∑' n : A, 1/(n + 0) = ∑' n : A, 1/n = harmonicSubseriesSum A
-      rw [show (fun n : greedySet s => (1:ℝ) / (↑↑n + 0)) = (fun n : greedySet s => (1:ℝ) / ↑↑n)
+      -- shiftedHarmonicSum A 0 = ∑' n : A, 1/(n + 0) = ∑' n : A, 1/n = harmonicSubseriesSum A = s
+      rw [show (fun n : A => (1:ℝ) / (↑↑n + 0)) = (fun n : A => (1:ℝ) / ↑↑n)
             from by ext n; simp]
-      -- This equals harmonicSubseriesSum (greedySet s) = s = x 0
-      exact greedySet_sum s hx
+      exact hAsum
   · -- d ≥ 2: path-connectedness of harmonicPointSet (d+2) requires controlling
     -- d+2 coordinate sums simultaneously along a continuous path.
     -- The Kovač-Tao 2024 structural analysis provides the mathematical foundation
@@ -563,17 +855,6 @@ theorem first_coordinate_largest (d : ℕ) (hd : d ≥ 2) (A : Set ℕ)
   · simp
   · exact le_of_lt (coordinate_decreasing A hA hconv h0 0 i hi_pos)
 
-/-- All coordinates are positive (for non-empty A). -/
-theorem all_coordinates_positive (d : ℕ) (A : Set ℕ)
-    (hA : A.Nonempty) (hconv : HasConvergentHarmonicSubseries A)
-    (i : Fin d) :
-    (harmonicPoint d A) i > 0 := by
-  simp only [harmonicPoint, shiftedHarmonicSum]
-  obtain ⟨n, hn⟩ := hA
-  apply tsum_pos (shifted_summable A i.val hconv)
-    (fun m => div_nonneg one_nonneg (Nat.cast_nonneg' _))
-  exact ⟨⟨n, hn⟩, div_pos one_pos (Nat.cast_pos.mpr (by omega))⟩
-
 /- ## Part IX: Dimension Monotonicity -/
 
 /-- Higher dimensions give smaller interiors (in a sense). -/
@@ -623,105 +904,10 @@ theorem squares_convergent : HasConvergentHarmonicSubseries squaresSet := by
 noncomputable def squaresPoint (d : ℕ) : Fin d → ℝ :=
   harmonicPoint d squaresSet
 
-/-- Geometric sequences {1, 2, 4, 8, ...} have convergent sum. -/
-def powersOf2Set : Set ℕ := {n | ∃ k : ℕ, n = 2 ^ k}
-
-theorem powers_convergent : HasConvergentHarmonicSubseries powersOf2Set := by
-  unfold HasConvergentHarmonicSubseries
-  -- Bijection ℕ ≃ powersOf2Set via k ↦ 2^k
-  let e : ℕ → powersOf2Set := fun k => ⟨2 ^ k, k, rfl⟩
-  have hinj : Function.Injective e := by
-    intro a b h
-    simp only [e, Subtype.ext_iff] at h
-    exact Nat.pow_right_injective (by norm_num) h
-  have hsurj : Function.Surjective e := by
-    intro ⟨n, k, hk⟩
-    exact ⟨k, by simp only [e, Subtype.ext_iff]; exact hk.symm⟩
-  rw [← (Equiv.ofBijective e ⟨hinj, hsurj⟩).summable_iff]
-  -- Reindexed series is (1/2)^k, a convergent geometric series
-  have heq : (fun n : powersOf2Set => (1 : ℝ) / ↑↑n) ∘
-      (Equiv.ofBijective e ⟨hinj, hsurj⟩) = fun k => ((1 : ℝ) / 2) ^ k := by
-    ext k
-    simp only [Function.comp, Equiv.ofBijective_apply, e, Subtype.coe_mk]
-    rw [Nat.cast_pow, Nat.cast_ofNat, div_pow, one_pow]
-  rw [heq]
-  exact summable_geometric_of_lt_one (by positivity) (by norm_num)
-
 /-- The harmonic point for powers of 2.
     Σ 1/2^k = 1, so first coordinate is 1. -/
 noncomputable def powers2Point (d : ℕ) : Fin d → ℝ :=
   harmonicPoint d powersOf2Set
-
-/- ## Part XI: Unit Fraction Infrastructure (for d=1 path-connectedness) -/
-
-/-- The set of products of consecutive naturals starting at n:
-    consecutiveProductsSet n = {k·(k+1) | k ≥ n}.
-    Key property: Σ_{m∈A} 1/m = 1/n via telescoping 1/(k(k+1)) = 1/k - 1/(k+1). -/
-def consecutiveProductsSet (n : ℕ) : Set ℕ :=
-  {m | ∃ k : ℕ, n ≤ k ∧ m = k * (k + 1)}
-
-/-- Partial sum formula: Σ_{k=0}^{N-1} 1/((k+n)(k+n+1)) = 1/n - 1/(n+N).
-    Proof by induction using partial fractions 1/(k(k+1)) = 1/k - 1/(k+1).
-    The inductive step uses: 1/n - 1/(n+N) + 1/((N+n)(N+n+1)) = 1/n - 1/(n+N+1),
-    which simplifies to 1/((N+n)(N+n+1)) = 1/(N+n) - 1/(N+n+1) (partial fractions). -/
-lemma partial_sum_consec (N n : ℕ) (hn : 0 < n) :
-    (∑ k ∈ Finset.range N, (1 : ℝ) / (↑(k + n) * (↑(k + n) + 1))) =
-    (1 : ℝ) / n - 1 / (n + N) := by
-  induction N with
-  | zero => simp
-  | succ N ih =>
-    rw [Finset.sum_range_succ, ih]
-    push_cast
-    -- Goal: 1/n - 1/(n+N) + 1/((N+n)(N+n+1)) = 1/n - 1/(n+N+1)
-    -- Equivalently: 1/((N+n)(N+n+1)) = 1/(N+n) - 1/(N+n+1)  [partial fractions]
-    have hn' : (n : ℝ) > 0 := Nat.cast_pos.mpr hn
-    have h1 : (n : ℝ) + N > 0 := by
-      have := @Nat.cast_nonneg ℝ _ N; linarith
-    have h2 : (n : ℝ) + N + 1 > 0 := by linarith
-    field_simp [hn'.ne', h1.ne', h2.ne']
-    ring
-
-/-- The consecutive products set is infinite: it contains {n(n+1), (n+1)(n+2), ...}. -/
-theorem consecutiveProductsSet_infinite (n : ℕ) :
-    (consecutiveProductsSet n).Infinite := by
-  -- The map k ↦ (n+k)*(n+k+1) is injective: (n+a)*(n+a+1) = (n+b)*(n+b+1) → a = b
-  -- because k ↦ k*(k+1) is strictly monotone.
-  have hinj : Function.Injective (fun k : ℕ => (n + k) * (n + k + 1)) := by
-    intro a b h
-    -- Cast to ℤ; factorize (n+a-(n+b))*(n+a+n+b+1) = 0 and use positivity of second factor
-    have h' : ((n : ℤ) + a) * (n + a + 1) = (n + b) * (n + b + 1) := by exact_mod_cast h
-    have hfact : ((n : ℤ) + a - (n + b)) * ((n + a) + (n + b) + 1) = 0 := by linarith [show ((n : ℤ) + a - (n + b)) * ((n + a) + (n + b) + 1) = (n + a) * (n + a + 1) - (n + b) * (n + b + 1) from by ring]
-    have hpos : (0 : ℤ) < (n + a) + (n + b) + 1 := by positivity
-    have hzero : (n : ℤ) + a = n + b := by
-      rcases mul_eq_zero.mp hfact with h1 | h2
-      · linarith
-      · linarith
-    exact_mod_cast (show (a : ℤ) = b by linarith)
-  exact (Set.infinite_range_of_injective hinj).mono
-    (fun m ⟨k, hk⟩ => ⟨n + k, Nat.le_add_right n k, hk.symm⟩)
-
-/-
-  **Next Steps for d=1 path-connectedness** (future sessions):
-
-  Using the infrastructure above, the proof plan for d=1 is:
-
-  Step 1: Show consecutiveProductsSet n has convergent harmonic sum (dominated by 1/k²):
-    `theorem consecutiveProductsSet_convergent (n : ℕ) (hn : 0 < n) :
-        HasConvergentHarmonicSubseries (consecutiveProductsSet n)`
-
-  Step 2: Show the harmonic sum = 1/n (use partial_sum_consec + hasSum_iff_tendsto_nat):
-    `theorem consecutiveProductsSet_sum (n : ℕ) (hn : 0 < n) :
-        harmonicSubseriesSum (consecutiveProductsSet n) = 1 / n`
-
-  Step 3: Every positive rational p/q is achievable (Egyptian fraction + Step 2):
-    `theorem rational_fraction_achievable (p q : ℕ) (hp : 0 < p) (hq : 0 < q) :
-        ∃ A : Set ℕ, A.Infinite ∧ HasConvergentHarmonicSubseries A ∧
-          harmonicSubseriesSum A = p / q`
-
-  Step 4: Show harmonicPointSet 1 = Set.Ioi 0 (closure/density argument).
-
-  Step 5: Apply Convex.isPathConnected to Set.Ioi 0 (convex_Ioi 0).
--/
 
 end Erdos268
 

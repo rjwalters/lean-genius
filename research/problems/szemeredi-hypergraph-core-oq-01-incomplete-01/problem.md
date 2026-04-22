@@ -108,3 +108,6 @@ related_proofs:
 source: gallery-gap
 created: 2026-04-21
 ```
+
+**Significance**: 9/10
+**Tractability**: 5/10

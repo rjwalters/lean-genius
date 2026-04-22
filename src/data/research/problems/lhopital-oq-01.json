@@ -8,11 +8,20 @@
   "problemStatement": {
     "formal": "\\exists f, g,\\, \\lim_{x\\to\\infty}\\frac{f(x)}{g(x)} = 1 \\land \\nexists L,\\, \\lim_{x\\to\\infty}\\frac{f'(x)}{g'(x)} = L",
     "plain": "Construct a Lean proof that L'Hopital's rule can fail: f(x)=x+sin x, g(x)=x gives lim f/g = 1 but lim f'/g' = lim(1+cos x) does not exist. Extension of LHopital.lean (Wiedijk #65).",
-    "whyMatters": ["Clarifies the necessity of L'Hopital's hypotheses", "Pedagogically important counterexample", "Extends Wiedijk #65 gallery entry with tightness result"]
+    "whyMatters": [
+      "Clarifies the necessity of L'Hopital's hypotheses",
+      "Pedagogically important counterexample",
+      "Extends Wiedijk #65 gallery entry with tightness result"
+    ]
   },
   "knownResults": {
-    "proven": ["LHopital.lean: rule holds when lim f'/g' exists", "LHopitalOQ02.lean and LHopitalOQ03.lean extend the rule"],
-    "open": ["Formalize: lim(1+cos x) as x→∞ does not exist"],
+    "proven": [
+      "LHopital.lean: rule holds when lim f'/g' exists",
+      "LHopitalOQ02.lean and LHopitalOQ03.lean extend the rule"
+    ],
+    "open": [
+      "Formalize: lim(1+cos x) as x→∞ does not exist"
+    ],
     "goal": ""
   },
   "currentState": {
@@ -45,7 +54,8 @@
     "counterexample"
   ],
   "relatedProofs": [
-    "lhopital"
+    "lhopital",
+    "lhopital-oq-01"
   ],
   "references": {
     "papers": [],

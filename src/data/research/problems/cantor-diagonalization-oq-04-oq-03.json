@@ -35,11 +35,11 @@
       "yCombinator: explicit Y combinator from CodesEndomorphisms",
       "knaster_tarski: from Mathlib OrderHom.lfp",
       "structural_parallel: unified theorem",
-      "omega_continuous_monotone_ari: \u03c9-continuous functions are monotone \u2014 proved in CantorDiagonalizationOQ04OQ03Aristotle.lean (0 sorries, 2026-04-22)"
+      "omega_continuous_monotone_ari: ω-continuous functions are monotone — proved in CantorDiagonalizationOQ04OQ03Aristotle.lean (0 sorries, 2026-04-22)"
     ],
     "insights": [
       "Y combinator = Lawvere construction: Y(f) = g(encode(g))",
-      "Lawvere needs coding, Tarski needs order \u2014 dual approaches",
+      "Lawvere needs coding, Tarski needs order — dual approaches",
       "Domain theory bridges categorical and order-theoretic FPTs",
       "OrderHom.lfp from Mathlib gives Knaster-Tarski directly"
     ],
@@ -172,11 +172,11 @@
     {
       "path": "Proofs/CantorDiagonalizationOQ02OQ03OQ02.lean",
       "filename": "CantorDiagonalizationOQ02OQ03OQ02.lean",
-      "lineCount": 315,
+      "lineCount": 381,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 6,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02OQ03OQ02.lean"
     },
@@ -271,11 +271,11 @@
     {
       "path": "Proofs/CantorDiagonalizationOQ04OQ03Aristotle.lean",
       "filename": "CantorDiagonalizationOQ04OQ03Aristotle.lean",
-      "lineCount": 49,
+      "lineCount": 65,
       "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ04OQ03Aristotle.lean"
     }

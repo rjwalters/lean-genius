@@ -53,14 +53,25 @@
       "Apply: #orbits = n / orbit_size = n / (n/gcd) = gcd"
     ]
   },
-  "tags": ["combinatorics", "polya-enumeration", "group-actions", "zmod", "number-theory", "wip-completion"],
+  "tags": [
+    "combinatorics",
+    "polya-enumeration",
+    "group-actions",
+    "zmod",
+    "number-theory",
+    "wip-completion"
+  ],
   "relatedProofs": [
+    "arithmetic-series",
     "arithmetic-series-oq-02",
     "arithmetic-series-oq-02-oq-02",
-    "arithmetic-series-oq-02-oq-02-oq-03"
+    "arithmetic-series-oq-02-oq-02-oq-03",
+    "arithmetic-series-oq-02-oq-02-oq-03-oq-01"
   ],
   "references": {
-    "papers": ["Pólya (1937) - Kombinatorische Anzahlbestimmungen für Gruppen, Graphen und chemische Verbindungen"],
+    "papers": [
+      "Pólya (1937) - Kombinatorische Anzahlbestimmungen für Gruppen, Graphen und chemische Verbindungen"
+    ],
     "urls": [],
     "mathlib": [
       "Mathlib.Data.ZMod.Basic",
