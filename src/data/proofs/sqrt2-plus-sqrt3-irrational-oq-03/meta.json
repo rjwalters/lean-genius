@@ -16,10 +16,10 @@
       "square-roots"
     ],
     "badge": "original",
-    "sorries": 2,
+    "sorries": 1,
     "dateAdded": "2026-04-22",
     "axiomCount": 0,
-    "assumptions": "None. Two sorries remain: irreducibility of X⁴−10X²+1 over ℚ (mathematically clear via rational root + quadratic factor analysis) and the irrationality consequence.",
+    "assumptions": "None. One sorry remains: irreducibility of X⁴−10X²+1 over ℚ (mathematically clear via rational root theorem + quadratic factor case analysis).",
     "lineCount": 147,
     "theoremCount": 5,
     "definitionCount": 0,
@@ -51,7 +51,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Proves minpoly ℚ (√2+√3) = X⁴−10X²+1 and [ℚ(√2+√3):ℚ]=4. Root check is fully formal; irreducibility has 2 sorries (mathematically complete arguments documented). 5 theorems, 147 lines.",
+    "summary": "Proves minpoly ℚ (√2+√3) = X⁴−10X²+1 and [ℚ(√2+√3):ℚ]=4. Root check and irrationality are fully formal; irreducibility has 1 sorry (mathematically complete argument documented). 5 theorems, ~160 lines.",
     "implications": "The degree-4 result shows √2+√3 is a primitive element of the biquadratic extension ℚ(√2,√3)/ℚ. Combined with the explicit minimal polynomial, this enables computation of the full Galois group (Klein 4-group) and explains why the polynomial factors mod every prime despite being irreducible over ℚ.",
     "openQuestions": [
       "Complete the irreducibility sorry: formalize the quadratic factor case analysis showing discriminant 96 and required a² ∈ {8,12} are non-squares.",
@@ -67,7 +67,7 @@
     "theoremCount": 5,
     "definitionCount": 0,
     "path": "Proofs/Sqrt2PlusSqrt3IrrationalOQ03.lean",
-    "sorries": 2
+    "sorries": 1
   },
   "crossReferences": [
     {
@@ -120,8 +120,8 @@
       "title": "Field Extension Degree and Irrationality",
       "startLine": 133,
       "endLine": 147,
-      "summary": "adjoin_sqrt2_plus_sqrt3_finrank: [ℚ(√2+√3):ℚ]=4 via adjoin.finrank and natDegree computation. sqrt2_plus_sqrt3_irrational: irrationality from minpoly (sorry — requires extracting from rational minpoly being degree 1)."
+      "summary": "adjoin_sqrt2_plus_sqrt3_finrank: [ℚ(√2+√3):ℚ]=4 via adjoin.finrank and natDegree computation. sqrt2_plus_sqrt3_irrational: fully proved by direct algebra — if √2+√3=q then (q²-5)/2=√6, contradicting irrationality of √6."
     }
   ],
-  "sorries": 2
+  "sorries": 1
 }
