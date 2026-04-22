@@ -2,12 +2,11 @@
   "id": "angle-trisection-cos-20-gal-oq-01-oq-01",
   "title": "Unifying cos(20°) and cos(π/7): Irreducibility via Eisenstein-Shift Pattern",
   "slug": "angle-trisection-cos-20-gal-oq-01-oq-01",
-  "description": "Creates a parameterized framework unifying the irreducibility and Galois group results for cos(20°) and cos(π/7) via a `CyclicCubicData` structure and case-split delegation. Defines `trisectionPoly` and `eisensteinCubic` parameterized by prime p ∈ {3, 7}, delegates core irreducibility and Galois order results to the parent proofs `AngleTrisectionCos20Gal` and `AngleTrisectionCos20GalOQ01`, and proves the substitution connection `eisensteinCubic(p).comp(2X + C shift) = trisectionPoly(p)` by `ring`.",
+  "description": "Proves a general abstract lemma — irreducibility is preserved under invertible linear substitution — and applies it to unify the irreducibility proofs for 8X³−6X−1 (cos(20°)) and 8X³−4X²−4X+1 (cos(π/7)). Both cases use the same linear shift ℓ = 2X+2, with Eisenstein applied at p=3 and p=7 respectively.",
   "meta": {
     "author": "researcher-5",
     "sourceUrl": "https://en.wikipedia.org/wiki/Eisenstein%27s_criterion",
     "date": "2026",
-    "dateAdded": "2026-04-21",
     "status": "verified",
     "proofRepoPath": "Proofs/AngleTrisectionCos20GalOQ01OQ01.lean",
     "tags": [
@@ -23,31 +22,18 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 182,
-    "theoremCount": 11,
-    "definitionCount": 4,
-    "assumptions": "No axioms, no sorries. Core irreducibility results are delegated to AngleTrisectionCos20Gal.trisection_poly_irreducible and AngleTrisectionCos20GalOQ01.cos_pi_7_poly_irreducible. Key tools: CyclicCubicData structure, ring tactic for substitution verification.",
-    "mathlib_version": "4.26.0",
-    "originalContributions": [
-      "trisectionPoly: parameterized minimal polynomial family for p ∈ {3, 7} (if-then-else, with @[simp] evaluation lemmas)",
-      "eisensteinCubic: parameterized Eisenstein cubic family for p ∈ {3, 7}",
-      "CyclicCubicData: certificate structure bundling irreducibility + splitting degree + Galois order for a cubic extension",
-      "trisection_cyclic_cubic_data: both cos(20°) and cos(π/7) satisfy CyclicCubicData, proved by rcases delegation",
-      "eisensteinCubic_coeff_pattern: machine-verified Eisenstein divisibility condition p ∣ const term, p² ∤ const term",
-      "eisenstein_cubic_to_trisection: ring-verified substitution identity r_p(2X + shift) = trisectionPoly(p)",
-      "both_trisection_gal_order_3: conjunction of all four Galois/irreducibility facts in a single statement"
-    ]
+    "lineCount": 240,
+    "assumptions": "No axioms, no sorries. The abstract lemma irreducible_of_comp_linear uses [Infinite K] (satisfied by ℚ). Key tools: Polynomial.irreducible_of_eisenstein_criterion, IsPrimitive.Int.irreducible_iff_irreducible_map_cast (Gauss's lemma), Polynomial.Gal.prime_degree_dvd_card.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The impossibility of trisecting a general angle with compass and straightedge was one of the three classical Greek problems, open for over 2000 years. Pierre Wantzel settled it in 1837 by proving that a length is constructible iff its minimal polynomial over ℚ has degree a power of 2. Since $\\cos(20°)$ has minimal polynomial $8X^3-6X-1$ (degree 3, irreducible), $\\cos(20°)$ is not constructible, and 60° cannot be trisected. The Eisenstein criterion (due to Theodor Schönemann 1846, popularized by Gotthold Eisenstein 1850) gives a prime-based irreducibility test over UFDs: if $p$ divides all but the leading coefficient, and $p^2$ does not divide the constant term, the polynomial is irreducible over ℤ, hence over ℚ (by Gauss's lemma). Both $\\cos(20°)$ and $\\cos(\\pi/7)$ have minimal polynomials related to Eisenstein cubics via the substitution $X \\mapsto 2X+\\text{shift}$, revealing a shared algebraic pattern that this file formalizes as a parameterized proof.",
+    "historicalContext": "The Eisenstein criterion is a classical irreducibility test for polynomials over UFDs. When an irreducible polynomial is related to another via a linear substitution X ↦ aX+b, irreducibility is preserved — this is because the substitution map is an automorphism of the polynomial ring (over an infinite field). Both cos(20°) = cos(π/9) and cos(π/7) have minimal polynomials that are related via the shift X ↦ 2X+2 to Eisenstein-at-p polynomials (p=3 and p=7 respectively). This common structure enables a unified proof.",
     "problemStatement": "Can the irreducibility proofs for 8X³−6X−1 (minimal polynomial of cos(20°)) and 8X³−4X²−4X+1 (minimal polynomial of cos(π/7)) be unified into a single theorem parameterized by the Eisenstein prime? Both polynomials arise as q_p(2X+2) where q_p is Eisenstein at prime p.",
-    "proofStrategy": "Parameterized case-split delegation: define `trisectionPoly p` and `eisensteinCubic p` for prime p ∈ {3, 7}, with simp lemmas evaluating each at p=3 and p=7. Bundle irreducibility, degree, and Galois order data into a `CyclicCubicData` structure. For parameterized theorems (irreducibility, Galois divisibility, degree), perform a `rcases hp with rfl | rfl` case split and delegate each case to the corresponding parent proof (`AngleTrisectionCos20Gal` for p=3, `AngleTrisectionCos20GalOQ01` for p=7). The substitution connection `eisensteinCubic(p).comp(2X + C shift) = trisectionPoly(p)` is discharged by `ring`.",
+    "proofStrategy": "Three-phase proof: (1) Prove the abstract lemma irreducible_of_comp_linear: if q ∈ K[X] is irreducible (K infinite field) and a ≠ 0, then q.comp(aX+b) is irreducible. Proof uses the compositional inverse ℓ_inv = a⁻¹X − a⁻¹b to pull back any factorization. (2) For each case, prove the Eisenstein polynomial (q₃ or r₇) is irreducible over ℤ via irreducible_of_eisenstein_criterion, then lift to ℚ via Gauss's lemma. (3) Apply the abstract lemma with a=2, b=2 to derive irreducibility of p_cos20 and p_cos_pi7.",
     "keyInsights": [
-      "The `CyclicCubicData` structure is the key original contribution of this file: it bundles an irreducibility proof, a degree fact, and a Galois order divisibility fact into a single type, allowing parameterized theorems to be stated and proved uniformly for p ∈ {3, 7} without case-splitting at every call site.",
-      "All hard mathematical content — Eisenstein criterion, Gauss's lemma, Galois group cardinality — lives in the parent proofs. This file contributes only the parameterized abstraction layer and the `ring`-verified identity `eisensteinCubic(p).comp(2X + C shift) = trisectionPoly(p)`, confirming the two polynomial families are related by a uniform linear substitution.",
-      "The Galois group bound follows automatically: irreducible polynomials of prime degree over ℚ have the prime dividing |Gal| (Polynomial.Gal.prime_degree_dvd_card). For degree 3, this gives 3 | |Gal| in both cases, delegated to the parent results.",
-      "The Wantzel connection: an angle θ is constructible iff $\\cos θ$ is constructible, which requires its minimal polynomial to have degree a power of 2. Since both $\\cos(20°)$ and $\\cos(π/7)$ have irreducible degree-3 minimal polynomials (this file's core result), neither is constructible — 60° cannot be trisected and π/7 radians cannot be trisected.",
-      "The Eisenstein-shift pattern (X ↦ 2X + shift) generalizes to the full family of angles 2π/p for primes p ≡ 1 (mod 3): the minimal polynomial of $\\cos(2\\pi/p)$ has degree $(p-1)/2$ and is related by a linear substitution to an Eisenstein polynomial at $p$. This file's unification at p ∈ {3, 7} is the degree-3 base case of a general family, suggesting that `CyclicCubicData` instances extend to $\\cos(2\\pi/p)$ for all $p \\equiv 1 \\pmod{3}$."
+      "The abstract key: composition by an invertible linear polynomial is an automorphism of K[X] (over infinite K). Automorphisms preserve irreducibility. The pullback argument makes this concrete: if f = g.comp(ℓ) factors nontrivially, then g = (g.comp ℓ).comp ℓ_inv = f.comp ℓ_inv factors nontrivially, contradicting irreducibility of g.",
+      "Both cos(20°) and cos(π/7) cases use the same shift ℓ = 2X+2 — the 'Eisenstein prime parameter' is p=3 vs p=7, not the shift. This is the core of the unification: one abstract lemma, different Eisenstein primes.",
+      "The Galois group bound follows automatically: irreducible polynomials of prime degree p over ℚ have p | |Gal| (Polynomial.Gal.prime_degree_dvd_card). For degree 3, this gives 3 | |Gal| in both cases."
     ],
     "prerequisites": [
       "angle-trisection-cos-20-gal: Galois group of 8X³−6X−1 (cos(20°) case)",
@@ -57,103 +43,12 @@
       "Polynomial.Gal.prime_degree_dvd_card"
     ]
   },
-  "sections": [
-    {
-      "id": "preamble",
-      "title": "Module Documentation: Unified Galois Group Problem",
-      "startLine": 1,
-      "endLine": 44,
-      "summary": "Module docstring framing the unification question: can the cos(20°) and cos(π/7) Galois group results be unified into a single theorem parameterized by Eisenstein prime p? The answer is YES. A table records the two cases (p=3: 8X³−6X−1, p=7: 8X³−4X²−4X+1) and their shared algebraic pattern. Lists the four main unified theorems and imports from the parent files AngleTrisectionCos20Gal and AngleTrisectionCos20GalOQ01.",
-      "mathContext": "Both minimal polynomials arise from Eisenstein cubics via the substitution $X \\mapsto 2X + \\text{shift}$: $r_3(2X+1) = 8X^3-6X-1$ and $r_7(2X+2) = 8X^3-4X^2-4X+1$, where $r_p(X) = X^3 - pX^2 + p(p-1)/2 \\cdot X - (p-1)(p-2)/6$ is Eisenstein at $p$. The imports `Proofs.AngleTrisectionCos20Gal` and `Proofs.AngleTrisectionCos20GalOQ01` provide the concrete Galois computations; this file adds only the parameterized abstraction layer."
-    },
-    {
-      "id": "parameterized-defs",
-      "title": "Parameterized Polynomial Definitions",
-      "startLine": 46,
-      "endLine": 79,
-      "summary": "Defines trisectionPoly(p) and eisensteinCubic(p) as if-then-else functions for p ∈ {3, 7}. Four @[simp] evaluation lemmas (trisectionPoly_3, trisectionPoly_7, eisensteinCubic_3, eisensteinCubic_7) reduce each to its concrete polynomial form, enabling the rcases proof pattern in all downstream theorems.",
-      "mathContext": "trisectionPoly(3) = 8X³−6X−1; trisectionPoly(7) = 8X³−4X²−4X+1. eisensteinCubic(3) = X³−6X²+9X−3; eisensteinCubic(7) = X³−7X²+14X−7. The if-then-else fallback of 1 makes the definitions total functions on ℕ."
-    },
-    {
-      "id": "core-unification",
-      "title": "Core Unified Theorems: Galois Order, Irreducibility, Splitting Degree",
-      "startLine": 80,
-      "endLine": 108,
-      "summary": "Three parameterized theorems proved by rcases case-splitting: trisection_gal_order_3 (|Gal| = 3), trisection_poly_irreducible (irreducible over ℚ), trisection_splitting_degree (splitting field degree 3). Each proof follows the pattern: rcases hp with rfl | rfl → simp lemma → exact parent result.",
-      "mathContext": "For p ∈ {3, 7}: |Gal(trisectionPoly(p))| = 3, Irred(trisectionPoly(p)), [ℚ(α):ℚ] = 3. Delegation targets: cos20_gal_card, trisection_poly_irreducible, splitting_finrank (p=3) and cos_pi_7_gal_card, cos_pi_7_poly_irreducible, splitting_finrank (p=7)."
-    },
-    {
-      "id": "cyclic-cubic-data",
-      "title": "CyclicCubicData Structure and Instances",
-      "startLine": 109,
-      "endLine": 138,
-      "summary": "Defines the CyclicCubicData structure with three fields: irred, degree_3, gal_order. Constructs two concrete instances (cos20Data, cosPi7Data) and the parameterized theorem trisection_cyclic_cubic_data. This certificate pattern enables downstream proofs to consume a single CyclicCubicData argument instead of three separate hypotheses.",
-      "mathContext": "CyclicCubicData(f) certifies: Irred(f), finrank(SplittingField(f)) = 3, |Gal(f)| = 3. For irreducible Galois cubics these are equivalent, but Lean requires all three as separate fields without additional automation."
-    },
-    {
-      "id": "eisenstein-connection",
-      "title": "Eisenstein Connection: Divisibility Condition and Substitution Identity",
-      "startLine": 139,
-      "endLine": 162,
-      "summary": "Two theorems machine-verify the Eisenstein structure. eisensteinCubic_coeff_pattern: p ∣ coeff(eisensteinCubic(p), 0) and p² ∤ coeff(..., 0), proved by norm_num after simp. eisenstein_cubic_to_trisection: eisensteinCubic(p).comp(2X + C shift) = trisectionPoly(p), proved by ring after case split.",
-      "mathContext": "Eisenstein condition for constant terms: 3 ∣ −3 and 9 ∤ −3 (p=3); 7 ∣ −7 and 49 ∤ −7 (p=7). Substitution: r₃(2X+1) = 8X³−6X−1 and r₇(2X+2) = 8X³−4X²−4X+1, both verified by ring."
-    },
-    {
-      "id": "joint-summary",
-      "title": "Joint Summary Theorem: both_trisection_gal_order_3",
-      "startLine": 163,
-      "endLine": 182,
-      "summary": "The final theorem both_trisection_gal_order_3 is a four-tuple conjunction: |Gal(8X³−6X−1)| = 3, |Gal(8X³−4X²−4X+1)| = 3, Irred(8X³−6X−1), Irred(8X³−4X²−4X+1). Proved by a one-line anonymous constructor ⟨cos20_gal_card, cos_pi_7_gal_card, trisection_poly_irreducible, cos_pi_7_poly_irreducible⟩ packaging all four parent results.",
-      "mathContext": "|Gal(8X³−6X−1/ℚ)| = 3 ∧ |Gal(8X³−4X²−4X+1/ℚ)| = 3 ∧ Irred(8X³−6X−1) ∧ Irred(8X³−4X²−4X+1). The conjunction represents the complete unification of two previously separate Galois computations."
-    }
-  ],
-  "mainTheorems": [
-    {
-      "name": "trisection_gal_order_3",
-      "type": "core",
-      "description": "For Eisenstein prime p ∈ {3, 7}, the Galois group of trisectionPoly(p) has order 3",
-      "leanType": "∀ (p : ℕ), p = 3 ∨ p = 7 → Fintype.card (trisectionPoly p).Gal = 3"
-    },
-    {
-      "name": "trisection_poly_irreducible",
-      "type": "core",
-      "description": "For Eisenstein prime p ∈ {3, 7}, the trisection polynomial is irreducible over ℚ",
-      "leanType": "∀ (p : ℕ), p = 3 ∨ p = 7 → Irreducible (trisectionPoly p)"
-    },
-    {
-      "name": "trisection_cyclic_cubic_data",
-      "type": "core",
-      "description": "Both trisection polynomials admit a CyclicCubicData certificate",
-      "leanType": "∀ (p : ℕ), p = 3 ∨ p = 7 → CyclicCubicData (trisectionPoly p)"
-    },
-    {
-      "name": "eisenstein_cubic_to_trisection",
-      "type": "supporting",
-      "description": "The substitution identity r_p(2X + shift) = trisectionPoly(p) verified by ring",
-      "leanType": "∀ (p : ℕ), p = 3 ∨ p = 7 → (eisensteinCubic p).comp (2 * X + C (shift : ℚ)) = trisectionPoly p"
-    },
-    {
-      "name": "both_trisection_gal_order_3",
-      "type": "summary",
-      "description": "Joint theorem: both angle-trisection polynomials are irreducible with Galois group of order 3",
-      "leanType": "Fintype.card (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]).Gal = 3 ∧ Fintype.card (8 * X ^ 3 - 4 * X ^ 2 - 4 * X + C 1 : ℚ[X]).Gal = 3 ∧ Irreducible (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]) ∧ Irreducible (8 * X ^ 3 - 4 * X ^ 2 - 4 * X + C 1 : ℚ[X])"
-    }
-  ],
-  "conclusion": {
-    "summary": "The cos(20°) and cos(π/7) Galois group results are unified into a single parameterized theorem framework: both polynomials arise from Eisenstein cubics via linear substitution, both have irreducible minimal polynomials of degree 3, and both generate cyclic Galois extensions of order 3 over ℚ. The CyclicCubicData structure provides a reusable certificate type for cyclic cubic extensions.",
-    "implications": "The CyclicCubicData pattern generalizes: any irreducible cubic whose Galois group has order 3 (a cyclic cubic) admits such a certificate. The rcases delegation technique — define parameterized families with if-then-else, provide @[simp] lemmas, then case-split — is a reusable pattern for unifying finitely-many similar Lean 4 proofs into a single parameterized theorem. The machine-verified substitution identity confirms that the Eisenstein-shift pattern is not just a heuristic but a precise algebraic relationship.",
-    "openQuestions": [
-      "Can the framework extend to other angles whose cosines have degree-3 minimal polynomials (e.g., cos(2π/9) and other cyclotomic cosines)?",
-      "Is there a CyclicCubicData instance for every cyclic cubic extension of ℚ via Eisenstein-at-p cubics, parameterized over all primes p ≡ 1 (mod 3)?",
-      "Can the ring-verified substitution identity be used to lift the irreducibility proof itself to the parameterized setting, eliminating the need to delegate to parent files?"
-    ]
-  },
   "leanFile": {
-    "imports": ["Proofs.AngleTrisectionCos20Gal", "Proofs.AngleTrisectionCos20GalOQ01"],
-    "namespace": "AngleTrisectionCos20GalOQ01OQ01",
-    "lineCount": 182,
+    "imports": ["Mathlib"],
+    "namespace": "AngleTrisectionEisensteinUnification",
+    "lineCount": 240,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 9,
     "definitionCount": 4,
     "path": "Proofs/AngleTrisectionCos20GalOQ01OQ01.lean",
     "sorries": 0
@@ -163,12 +58,12 @@
     {
       "targetId": "angle-trisection-cos-20-gal",
       "relationship": "unifies",
-      "description": "The cos(20°) case (p=3): core irreducibility and Galois results from this parent are delegated to via `AngleTrisectionCos20Gal.trisection_poly_irreducible` inside the parameterized `CyclicCubicData` framework."
+      "description": "The cos(20°) irreducibility proof (using Eisenstein at 3) is a special case of the abstract irreducible_of_comp_linear lemma proved here."
     },
     {
       "targetId": "angle-trisection-cos-20-gal-oq-01",
       "relationship": "unifies",
-      "description": "The cos(π/7) case (p=7): core irreducibility and Galois results from this parent are delegated to via `AngleTrisectionCos20GalOQ01.cos_pi_7_poly_irreducible` inside the same parameterized framework."
+      "description": "The cos(π/7) irreducibility proof (using Eisenstein at 7) is the second special case of the same abstract lemma."
     }
   ],
   "references": [

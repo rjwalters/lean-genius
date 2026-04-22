@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: pascal_std_conic fully proved (0 sorries). Only remaining gap: Sylvester law (1 sorry). All projection infrastructure proved. Next: fill Sylvester sorry to eliminate the axiom.",
+    "progressSummary": "PROGRESS: All bridge lemmas proved (conicQF_eq_mathlibQF, mathlibQF_separatingLeft). proof_sketch has correct hypotheses. 1 HARD sorry remains: matrix extraction from IsometryEquiv + 6-case weight analysis (~100 lines).",
     "builtItems": [
       "stdConicPoint — rational parametrization of standard conic",
       "stdConic — the matrix diag(1,1,-1)",
@@ -51,7 +51,12 @@
       "crossProduct_projTransform — cross(M·u,M·v) = adj(M)ᵀ·cross(u,v) using adjugate_fin_three+ring",
       "projTransform_valid_of_det_ne_zero — valid points preserved by invertible projective transforms",
       "pascal_std_conic_normalized — routes 64 vertex-classification cases to proved lemmas (early-stop dispatch)",
-      "pascal_std_conic — Pascal constraint holds for ALL valid hexagons on stdConic (fully proved, 0 sorries)"
+      "pascal_std_conic — Pascal constraint holds for ALL valid hexagons on stdConic (fully proved, 0 sorries)",
+      "conicQF_eq_dotProduct lemma (Part 20a): conicQuadraticForm C p = p ⬝ᵥ (C *ᵥ p) via sum expansion",
+      "mathlibQF_eq_dotProduct lemma (Part 20a): Matrix.toQuadraticMap C p = p ⬝ᵥ (C *ᵥ p) via toLinearMap₂ apply",
+      "conicQF_eq_mathlibQF lemma (Part 20a): bridge between our conicQuadraticForm and Mathlib Matrix.toQuadraticMap",
+      "mathlibQF_separatingLeft lemma (Part 20a): for symmetric non-degenerate C, (associated toQuadraticMap C).SeparatingLeft",
+      "proof_sketch_conic_implies_pascal updated: added hC_sym and hC_nd hypotheses; sorry has detailed proof plan"
     ],
     "insights": [
       "The axiom conic_implies_pascal_constraint cannot be proved from Mathlib algebraic geometry (no Bezout/Cayley-Bacharach). Must use direct algebraic proof.",
@@ -76,16 +81,20 @@
       "Updated roadmap: 7 of ~10 steps completed, remaining are Sylvester law + infinity case + assembly",
       "For point at infinity case: apply a rotation R mapping (1,0,-1) to finite point, use projective invariance",
       "Assembly pattern: obtain coverage decomposition, funext to rewrite, apply scale invariance, then parametric/infinity theorem",
-      "Multi-infinity case: if 2+ vertices at stdConicInfinity, they coincide projectively → degenerate hexagon → det=0. Cleanest fix: rotation R(θ) preserving conic moves infinity to finite."
+      "Multi-infinity case: if 2+ vertices at stdConicInfinity, they coincide projectively → degenerate hexagon → det=0. Cleanest fix: rotation R(θ) preserving conic moves infinity to finite.",
+      "Bridge: conicQuadraticForm C p = Matrix.toQuadraticMap C p (both are p dotprod C mulVec p). Key for Sylvester path.",
+      "Sylvester sorry needs: (1) Module.finrank coercion, (2) extract M1 via toMatrix mulVec, (3) det nonzero via Units.ne_zero, (4) 6-case weights: (1,1,-1)->I, (1,-1,1)->P12, (-1,1,1)->P02, (-1,-1,1)->I, (-1,1,-1)->P12, (1,-1,-1)->P02",
+      "proof_sketch requires hC_sym and hC_nd — without these the claim is false for degenerate/asymmetric conics",
+      "associated_left_inverse connects toQuadraticMap back to toLinearMap2 using C symmetry"
     ],
     "mathlibGaps": [
       "No Bezout theorem for projective curves in Mathlib",
       "No Cayley-Bacharach theorem in Mathlib"
     ],
     "nextSteps": [
-      "Prove Sylvester law for 3×3 real symmetric matrices via Mathlib QuadraticForm.equivalent_one_neg_one_weighted_sum_squared",
-      "Assemble proof_sketch_conic_implies_pascal by filling Sylvester sorry",
-      "Derive conic_implies_pascal_constraint theorem from proof_sketch, eliminating the axiom"
+      "Fill Sylvester sorry: simp [Module.finrank_pi] for n=3; hrank subst to coerce phi; M1 = LinearMap.toMatrix phi; 6 weight cases with identity/swap matrices",
+      "Add import Mathlib.LinearAlgebra.Matrix.ToLin if needed for toMatrix_mulVec",
+      "After Sylvester: eliminate conic_implies_pascal_constraint axiom by calling proof_sketch with hC_sym/hC_nd"
     ],
     "markdown": "# Knowledge Base: pascals-hexagon-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -103,11 +112,11 @@
     {
       "path": "Proofs/PascalsHexagon.lean",
       "filename": "PascalsHexagon.lean",
-      "lineCount": 1166,
+      "lineCount": 1278,
       "theoremCount": 25,
       "axiomCount": 1,
       "defCount": 24,
-      "sorryCount": 2,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PascalsHexagon.lean"
     }
