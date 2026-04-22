@@ -15,7 +15,12 @@
       "Polynomial.derivative in Mathlib",
       "Recursive definitions in Lean 4"
     ],
-    "content": "iterDeriv is restated here (rather than imported from OQ-02) because the proof scaffold is self-contained. In a full implementation, this would be imported directly from OQ-02's namespace."
+    "content": "iterDeriv is restated here (rather than imported from OQ-02) because the proof scaffold is self-contained. In a full implementation, this would be imported directly from OQ-02's namespace.",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-01",
+    "range": {
+      "startLine": 53,
+      "endLine": 56
+    }
   },
   {
     "lineStart": 62,
@@ -32,7 +37,12 @@
       "Polynomial.natDegree in Mathlib",
       "eq_C_of_natDegree_eq_zero"
     ],
-    "content": "This is the base case for the Budan bound induction: a constant nonzero polynomial has 0 roots, and V_p(a) - V_p(b) ≥ 0, so the bound trivially holds."
+    "content": "This is the base case for the Budan bound induction: a constant nonzero polynomial has 0 roots, and V_p(a) - V_p(b) ≥ 0, so the bound trivially holds.",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-01",
+    "range": {
+      "startLine": 62,
+      "endLine": 70
+    }
   },
   {
     "lineStart": 72,
@@ -51,7 +61,12 @@
       "Multiset.toFinset and its cardinality",
       "Set.ncard for infinite types"
     ],
-    "content": "This is the degree-1 base case for the Budan induction. The proof elegantly avoids polynomial division and coefficient extraction, working instead at the level of root counting — which is what the Budan bound is about."
+    "content": "This is the degree-1 base case for the Budan induction. The proof elegantly avoids polynomial division and coefficient extraction, working instead at the level of root counting — which is what the Budan bound is about.",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-01",
+    "range": {
+      "startLine": 72,
+      "endLine": 95
+    }
   },
   {
     "lineStart": 100,
@@ -70,7 +85,12 @@
       "Polynomial.continuous (all polynomials are continuous)",
       "deriv vs Polynomial.derivative"
     ],
-    "content": "Rolle's theorem is the engine of the Budan induction: between consecutive roots r₁ < r₂ of p lies a root of p'. This interleaving of roots of p and p' is what gives the derivative enough roots to 'pay for' the sign variations."
+    "content": "Rolle's theorem is the engine of the Budan induction: between consecutive roots r₁ < r₂ of p lies a root of p'. This interleaving of roots of p and p' is what gives the derivative enough roots to 'pay for' the sign variations.",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-01",
+    "range": {
+      "startLine": 100,
+      "endLine": 107
+    }
   },
   {
     "lineStart": 115,
@@ -89,7 +109,12 @@
       "Polynomial.continuous",
       "linarith for order arithmetic"
     ],
-    "content": "This is an IVT-based existence theorem: sign change implies root. In the Budan induction, this would be used to show that when V_p(x) decreases, it corresponds to a real root (not just a sign-change artifact)."
+    "content": "This is an IVT-based existence theorem: sign change implies root. In the Budan induction, this would be used to show that when V_p(x) decreases, it corresponds to a real root (not just a sign-change artifact).",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-01",
+    "range": {
+      "startLine": 115,
+      "endLine": 134
+    }
   },
   {
     "lineStart": 139,
@@ -108,6 +133,11 @@
       "Strong induction in Lean 4",
       "Polynomial factorization theorems"
     ],
-    "content": "The proof roadmap in § 4 (lines 170-204) identifies the remaining 240-410 lines needed: sign-change accounting (80-120 lines) is the hardest and most novel part; the rest follows from combining the proved building blocks. This file serves as a research survey identifying the open subproblems."
+    "content": "The proof roadmap in § 4 (lines 170-204) identifies the remaining 240-410 lines needed: sign-change accounting (80-120 lines) is the hardest and most novel part; the rest follows from combining the proved building blocks. This file serves as a research survey identifying the open subproblems.",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-01",
+    "range": {
+      "startLine": 139,
+      "endLine": 164
+    }
   }
 ]

@@ -28,7 +28,7 @@
       "startLine": 34,
       "endLine": 48
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "X3_sub_3_irred: Eisenstein at p=3",
     "content": "Proves X³−3 is irreducible over ℚ as a one-line instance of eisenstein_X_pow_sub_of_sqfree_factor 3 3 3. The five norm_num conditions: (1) 2≤3, (2) Nat.Prime 3, (3) 3∣3, (4) ¬9∣3, (5) 3≠0. This establishes the algebraic foundation for the no-rational-roots argument.",
     "mathContext": "$X^3 - 3 \\in \\mathbb{Q}[X]$ is irreducible by Eisenstein at $p = 3$: $3 \\mid -3$ (constant term), $9 \\nmid -3$, $3 \\nmid 1$ (leading). By Gauss's lemma, ℤ-irreducible + primitive = ℚ-irreducible.",
@@ -49,7 +49,7 @@
       "startLine": 52,
       "endLine": 72
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "X3_sub_3_no_rat_root: Irreducibility → No Rational Roots",
     "content": "Proves ∀ q:ℚ, eval q (X³−3) ≠ 0. If q is a root, then (X−Cq)∣(X³−3). By X3_sub_3_irred.isUnit_or_isUnit, either (X−Cq) or R is a unit. Case inl: natDegree_eq_zero_of_isUnit gives degree 0, but natDegree(X−Cq)=1, omega. Case inr: degree 3 = 1+0 = 1 (natDegree_mul + natDegree_X_sub_C), norm_num gives contradiction.",
     "mathContext": "The formal statement of 'irreducible → no roots': if $p \\in \\mathbb{Q}[X]$ is irreducible with $\\deg p > 1$, and $p(q) = 0$ for $q \\in \\mathbb{Q}$, then $(X-q) \\mid p$. Write $p = (X-q) \\cdot R$; irreducibility forces one factor to be a unit, but a unit has degree 0 while $X-q$ has degree 1, giving degree contradiction.",

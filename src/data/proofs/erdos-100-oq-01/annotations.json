@@ -18,7 +18,12 @@
       "Filter.atTop",
       "Tendsto API"
     ],
-    "content": "Confirms that the Guth-Katz bound and the Erdős conjecture are genuinely different — the gap is not a bounded constant but grows without bound. This justifies the difficulty of closing the gap and the importance of Problem #100."
+    "content": "Confirms that the Guth-Katz bound and the Erdős conjecture are genuinely different — the gap is not a bounded constant but grows without bound. This justifies the difficulty of closing the gap and the importance of Problem #100.",
+    "proofId": "erdos-100-oq-01",
+    "range": {
+      "startLine": 54,
+      "endLine": 59
+    }
   },
   {
     "id": "linear-diameter-conjecture",
@@ -39,7 +44,12 @@
       "integer distance sets",
       "Prop formalization"
     ],
-    "content": "The central open question of the file, formalized as a machine-checkable Lean statement. The formalization is valuable even without a proof: it fixes the precise mathematical meaning and allows future proof attempts to target a specific formal goal."
+    "content": "The central open question of the file, formalized as a machine-checkable Lean statement. The formalization is valuable even without a proof: it fixes the precise mathematical meaning and allows future proof attempts to target a specific formal goal.",
+    "proofId": "erdos-100-oq-01",
+    "range": {
+      "startLine": 92,
+      "endLine": 98
+    }
   },
   {
     "id": "linear-implies-known",
@@ -60,7 +70,12 @@
       "sublinearBound definition",
       "log_gt_one"
     ],
-    "content": "Logical consistency check: confirms that the open conjecture and the known bound point in the same direction. Also a template for how to derive `sublinearBound` from any stronger diameter lower bound that might be proved in the future."
+    "content": "Logical consistency check: confirms that the open conjecture and the known bound point in the same direction. Also a template for how to derive `sublinearBound` from any stronger diameter lower bound that might be proved in the future.",
+    "proofId": "erdos-100-oq-01",
+    "range": {
+      "startLine": 105,
+      "endLine": 122
+    }
   },
   {
     "id": "anning-erdos-finiteness",
@@ -81,7 +96,12 @@
       "Finset.card",
       "collinearity in Lean"
     ],
-    "content": "The fundamental constraint on integer distance sets: you cannot have infinitely many non-collinear integer-distance points. This is why the diameter question is interesting: the Anning-Erdős theorem forces any large integer distance set to be nearly collinear or have large diameter."
+    "content": "The fundamental constraint on integer distance sets: you cannot have infinitely many non-collinear integer-distance points. This is why the diameter question is interesting: the Anning-Erdős theorem forces any large integer distance set to be nearly collinear or have large diameter.",
+    "proofId": "erdos-100-oq-01",
+    "range": {
+      "startLine": 142,
+      "endLine": 165
+    }
   },
   {
     "id": "piepmeyer-small-case",
@@ -102,6 +122,11 @@
       "integer distances formalization",
       "norm_num for coordinate verification"
     ],
-    "content": "Demonstrates that small-$n$ configurations achieving near-optimal diameter ratios exist explicitly. These extremal cases are important calibration points: the lower bound conjecture must be consistent with such constructions. Piepmeyer's configuration is a key data point suggesting the true constant $c$ in the linear conjecture is small."
+    "content": "Demonstrates that small-$n$ configurations achieving near-optimal diameter ratios exist explicitly. These extremal cases are important calibration points: the lower bound conjecture must be consistent with such constructions. Piepmeyer's configuration is a key data point suggesting the true constant $c$ in the linear conjecture is small.",
+    "proofId": "erdos-100-oq-01",
+    "range": {
+      "startLine": 123,
+      "endLine": 141
+    }
   }
 ]

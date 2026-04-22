@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-bp3-asymp-threshold-def",
-    "type": "explanation",
+    "type": "concept",
     "title": "asympThreshold: The k=3 Birthday Threshold Formula",
     "content": "asympThreshold d = (6d² ln 2)^{1/3} is the leading-order approximation to the k=3 birthday threshold: the number of people needed for a 50% chance of a triple birthday coincidence among d possible days. Derivation: E(n,d) = C(n,3)/d² ≈ n³/(6d²). Setting E = ln 2 gives n³ = 6d² ln 2, so n = (6d² ln 2)^{1/3}. By Poisson approximation, E(n,d) = ln 2 implies P(≥1 triple) ≈ 1 - e^{-ln 2} = 1/2. For d=365: asympThreshold(365) ≈ 82.8, while the exact threshold is 88 (a ~7% error from higher-order Poisson terms).",
     "range": {

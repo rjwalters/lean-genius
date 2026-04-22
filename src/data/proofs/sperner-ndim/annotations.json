@@ -6,7 +6,7 @@
       "startLine": 49,
       "endLine": 68
     },
-    "type": "structure",
+    "type": "concept",
     "title": "Vertex: Grid Points of the Standard d-Simplex",
     "content": "**Vertex d N** represents grid points in the standard $d$-simplex subdivided with parameter $N$. A grid point has $d$ explicit Cartesian coordinates $x_0, \\ldots, x_{d-1} \\in \\mathbb{N}$ satisfying $\\sum_{i} x_i \\leq N$. The implicit $d$-th barycentric coordinate is $x_d = N - \\sum x_i \\geq 0$. The `@[ext]` attribute enables extensionality: two vertices are equal iff their coordinate arrays agree.",
     "mathContext": "The standard $d$-simplex $\\Delta^d$ is parameterized as $\\{(\\lambda_0, \\ldots, \\lambda_d) \\in \\mathbb{R}^{d+1} : \\lambda_i \\geq 0, \\sum \\lambda_i = 1\\}$. The grid with parameter $N$ is $\\{(n_0, \\ldots, n_d) : n_i \\in \\mathbb{N}_0, \\sum n_i = N\\}$, giving $\\binom{N+d}{d}$ grid points. Here the last coordinate is implicit: $n_d = N - \\sum_{i=0}^{d-1} n_i$. The `Fintype` instance (lines 59–68) constructs an equivalence with $\\{f : \\text{Fin}(d) \\to \\text{Fin}(N+1) : \\sum (f\\ i) \\leq N\\}$, making `Vertex d N` a finite type for all $(d, N)$.",
@@ -31,7 +31,7 @@
       "startLine": 99,
       "endLine": 115
     },
-    "type": "structure",
+    "type": "concept",
     "title": "SpernerTriangulation: Abstract Triangulation with Adjacency Axioms",
     "content": "**SpernerTriangulation d N** is the abstract triangulation type capturing exactly the combinatorial structure needed for the door-counting proof. A simplex type `Simplex` (with `DecidableEq` and `Fintype` instances) comes with a vertex assignment `vertices : Simplex → Fin(d+1) → Vertex d N` (injective per simplex) and an adjacency map `adj : Simplex → Fin(d+1) → Option(Simplex × Fin(d+1))`. The four axioms — **adj_symm** (symmetric), **adj_vertices** (shared vertex image), **adj_ne** (distinct simplices), **boundary_face** (unmatched facets on boundary) — are precisely what the proof needs, and nothing more.",
     "mathContext": "Each simplex has $d+1$ vertices; facets are $(d-1)$-faces identified by the dropped vertex index $k \\in \\{0,\\ldots,d\\}$. Interior facets pair up: $\\text{adj}(s,k) = (s',k')$ iff $(s,k)$ and $(s',k')$ share the same $(d-1)$-face. **adj_symm**: $\\text{adj}(s,k) = (s',k') \\Rightarrow \\text{adj}(s',k') = (s,k)$. **adj_vertices**: $\\{v_s(j) : j \\neq k\\} = \\{v_{s'}(j) : j \\neq k'\\}$ (the shared $(d-1)$-face has the same vertex set from both sides). **adj_ne**: $s \\neq s'$ (no self-adjacency). **boundary_face**: if $\\text{adj}(s,k) = \\text{none}$, all non-$k$ vertices of $s$ lie on face $k$ of the simplex. The abstract approach means the proof applies to any concrete triangulation satisfying these axioms: Freudenthal, Kuhn, or a future Mathlib standard.",

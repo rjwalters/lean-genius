@@ -95,7 +95,7 @@
       "startLine": 130,
       "endLine": 148
     },
-    "type": "application",
+    "type": "concept",
     "title": "The Economic Application",
     "content": "The corollary `repeated_sum_nearly_convex` is the form most used in economics. For $n$ copies of a set $S$ (representing $n$ identical agents), the fraction of agents needing 'convexified' allocations is at most $d/n$, which vanishes as $n \\to \\infty$.\n\nThis is why **large economies are nearly convex**: even with indivisible goods ($d$ commodities), in a market with $n \\gg d$ agents, at most $d$ agents need fractional allocations. The aggregate demand is essentially convex.\n\nStartr (1969) used this to prove existence of $\\epsilon$-equilibria with $\\epsilon \\to 0$ as the economy grows. Anderson (1978) used it for core convergence. The result remains central to general equilibrium theory.",
     "mathContext": "For $S \\subseteq \\mathbb{R}^d$ and $x \\in \\text{conv}(nS)$: $\\exists f_1, \\ldots, f_n$ with $f_i \\in \\text{conv}(S)$, $\\sum f_i = x$, and at most $d$ of the $f_i$ not in $S$. The 'convexification ratio' $d/n \\to 0$ as $n \\to \\infty$.",

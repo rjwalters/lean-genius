@@ -19,7 +19,12 @@
       "modular arithmetic",
       "coprimality"
     ],
-    "content": "This is the cleanest possible CRT formula. The name `crtDirect` reflects that it directly computes a solution without any intermediate modular operations. In contrast, the textbook formula requires computing modular inverses (which themselves use extended GCD). The directness also makes the Lean proofs shorter: no mod operations need to be reasoned about."
+    "content": "This is the cleanest possible CRT formula. The name `crtDirect` reflects that it directly computes a solution without any intermediate modular operations. In contrast, the textbook formula requires computing modular inverses (which themselves use extended GCD). The directness also makes the Lean proofs shorter: no mod operations need to be reasoned about.",
+    "proofId": "bezout-identity-oq-03-oq-04",
+    "range": {
+      "startLine": 45,
+      "endLine": 48
+    }
   },
   {
     "id": "ann-correctness-m",
@@ -42,7 +47,12 @@
       "linarith",
       "Bézout coefficients"
     ],
-    "content": "This proof is a template for divisibility arguments in Lean: (1) algebraically rewrite the expression to isolate the divisor as a factor, (2) provide the quotient as the witness. The `by ring` tactic closes the final verification. The proof requires no heavy machinery — just the Bézout identity and integer ring arithmetic."
+    "content": "This proof is a template for divisibility arguments in Lean: (1) algebraically rewrite the expression to isolate the divisor as a factor, (2) provide the quotient as the witness. The `by ring` tactic closes the final verification. The proof requires no heavy machinery — just the Bézout identity and integer ring arithmetic.",
+    "proofId": "bezout-identity-oq-03-oq-04",
+    "range": {
+      "startLine": 49,
+      "endLine": 59
+    }
   },
   {
     "id": "ann-uniqueness",
@@ -65,7 +75,12 @@
       "exact_mod_cast",
       "Mathlib.Data.Int.GCD"
     ],
-    "content": "This one-line proof is a prime example of why Mathlib matters: uniqueness of CRT solutions is a foundational number theory result, and Mathlib provides it directly. The time saved (compared to proving it from scratch) lets the formalization focus on the structural content — the direct Bézout construction — rather than auxiliary lemmas."
+    "content": "This one-line proof is a prime example of why Mathlib matters: uniqueness of CRT solutions is a foundational number theory result, and Mathlib provides it directly. The time saved (compared to proving it from scratch) lets the formalization focus on the structural content — the direct Bézout construction — rather than auxiliary lemmas.",
+    "proofId": "bezout-identity-oq-03-oq-04",
+    "range": {
+      "startLine": 74,
+      "endLine": 92
+    }
   },
   {
     "id": "ann-extended-gcd",
@@ -87,7 +102,12 @@
       "extended GCD",
       "Lean #check command"
     ],
-    "content": "Mathlib's extended GCD implementation (`Int.gcdA`, `Int.gcdB`) is a practical tool for number theory formalizations. By using these directly, the formalization avoids re-implementing the extended Euclidean algorithm in Lean. The `#check` lines at the end of the file serve as lightweight documentation — they confirm the identifiers are valid and have the expected types."
+    "content": "Mathlib's extended GCD implementation (`Int.gcdA`, `Int.gcdB`) is a practical tool for number theory formalizations. By using these directly, the formalization avoids re-implementing the extended Euclidean algorithm in Lean. The `#check` lines at the end of the file serve as lightweight documentation — they confirm the identifiers are valid and have the expected types.",
+    "proofId": "bezout-identity-oq-03-oq-04",
+    "range": {
+      "startLine": 93,
+      "endLine": 97
+    }
   },
   {
     "id": "ann-folding",
@@ -110,7 +130,12 @@
       "IsCoprime",
       "pairwise coprime moduli"
     ],
-    "content": "This theorem enables a verified fold-based CRT for any number of pairwise coprime moduli. Without it, the formalization would only cover the two-moduli case. The inductive structure (base: gcd(m₁, m₂) = 1; step: gcd(m₁·...·mₖ, mₖ₊₁) = 1 from pairwise coprimality) is encapsulated here for the three-moduli case, which generalizes straightforwardly."
+    "content": "This theorem enables a verified fold-based CRT for any number of pairwise coprime moduli. Without it, the formalization would only cover the two-moduli case. The inductive structure (base: gcd(m₁, m₂) = 1; step: gcd(m₁·...·mₖ, mₖ₊₁) = 1 from pairwise coprimality) is encapsulated here for the three-moduli case, which generalizes straightforwardly.",
+    "proofId": "bezout-identity-oq-03-oq-04",
+    "range": {
+      "startLine": 113,
+      "endLine": 142
+    }
   },
   {
     "id": "ann-efficiency-insight",
@@ -133,6 +158,11 @@
       "Int.gcd",
       "ZMod"
     ],
-    "content": "Targeted imports (three specific modules rather than `import Mathlib`) represent good Lean library practice: they make dependencies explicit, speed up incremental builds, and document what the proof actually uses. This proof only needs the integer GCD library and ZMod types — it doesn't need real analysis, topology, or group theory."
+    "content": "Targeted imports (three specific modules rather than `import Mathlib`) represent good Lean library practice: they make dependencies explicit, speed up incremental builds, and document what the proof actually uses. This proof only needs the integer GCD library and ZMod types — it doesn't need real analysis, topology, or group theory.",
+    "proofId": "bezout-identity-oq-03-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 44
+    }
   }
 ]

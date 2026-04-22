@@ -16,7 +16,11 @@
       "Finset",
       "Fintype",
       "Real"
-    ]
+    ],
+    "range": {
+      "startLine": 1,
+      "endLine": 36
+    }
   },
   {
     "id": "ann-1022-setfamily",
@@ -34,7 +38,11 @@
     "prerequisites": [
       "Finset",
       "DecidableEq"
-    ]
+    ],
+    "range": {
+      "startLine": 161,
+      "endLine": 175
+    }
   },
   {
     "id": "ann-1022-propertyb",
@@ -52,7 +60,11 @@
     "prerequisites": [
       "Bool",
       "Finset membership"
-    ]
+    ],
+    "range": {
+      "startLine": 45,
+      "endLine": 48
+    }
   },
   {
     "id": "ann-1022-chromatic",
@@ -70,7 +82,11 @@
     "prerequisites": [
       "Fin",
       "Nat.find"
-    ]
+    ],
+    "range": {
+      "startLine": 388,
+      "endLine": 438
+    }
   },
   {
     "id": "ann-1022-sparseness",
@@ -88,7 +104,11 @@
     "prerequisites": [
       "Finset.filter",
       "Real coercion"
-    ]
+    ],
+    "range": {
+      "startLine": 141,
+      "endLine": 162
+    }
   },
   {
     "id": "ann-1022-conjecture",
@@ -107,7 +127,11 @@
       "ThresholdFunction",
       "tendsToInfinity",
       "hasPropertyB"
-    ]
+    ],
+    "range": {
+      "startLine": 77,
+      "endLine": 87
+    }
   },
   {
     "id": "ann-1022-lovasz",
@@ -126,7 +150,11 @@
       "hasPropertyB",
       "isSparse",
       "c2"
-    ]
+    ],
+    "range": {
+      "startLine": 186,
+      "endLine": 202
+    }
   },
   {
     "id": "ann-1022-hypergraph",
@@ -144,7 +172,11 @@
     "prerequisites": [
       "SetFamily",
       "chromaticNumber"
-    ]
+    ],
+    "range": {
+      "startLine": 214,
+      "endLine": 237
+    }
   },
   {
     "id": "ann-1022-necessary",
@@ -162,7 +194,11 @@
     "prerequisites": [
       "tendsToInfinity",
       "subsetCount"
-    ]
+    ],
+    "range": {
+      "startLine": 53,
+      "endLine": 61
+    }
   },
   {
     "id": "ann-1022-probabilistic",
@@ -180,7 +216,11 @@
     "prerequisites": [
       "expectedMonochromatic",
       "isSparse"
-    ]
+    ],
+    "range": {
+      "startLine": 268,
+      "endLine": 292
+    }
   },
   {
     "id": "ann-1022-coverfree",
@@ -198,6 +238,10 @@
     "prerequisites": [
       "Finset.sup",
       "isSparse"
-    ]
+    ],
+    "range": {
+      "startLine": 293,
+      "endLine": 327
+    }
   }
 ]

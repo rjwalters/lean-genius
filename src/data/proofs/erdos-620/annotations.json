@@ -185,7 +185,7 @@
       "startLine": 117,
       "endLine": 126
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Trivial Lower Bound",
     "content": "Every $K_4$-free graph on $n$ vertices has an independent set of size $\\Omega(\\sqrt{n})$. Since independent sets are triangle-free, $f(n) \\ge c\\sqrt{n}$. This follows from the Ramsey bound $R(4, k) = O(k^3)$: a $K_4$-free graph with $n$ vertices has independence number $\\alpha(G) = \\Omega(n^{1/3})$, but the direct triangle-free subgraph approach gives $\\sqrt{n}$.",
     "mathContext": "The axiom states $\\exists c > 0,\\, \\forall n \\ge 1,\\, f(n) \\ge c\\sqrt{n}$. The $\\sqrt{n}$ baseline means all improvements measure the logarithmic correction factor.",
@@ -207,7 +207,7 @@
       "startLine": 127,
       "endLine": 134
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Shearer's Lower Bound",
     "content": "$f(n) \\gg \\sqrt{n} \\cdot \\sqrt{\\log n}/\\log\\log n$. This improves the trivial $\\sqrt{n}$ bound by a factor of $\\sqrt{\\log n}/\\log\\log n$. Shearer's method uses entropy and the **Lovász Local Lemma** to find large triangle-free subsets in $K_4$-free graphs, exploiting local structure constraints.",
     "mathContext": "The axiom states $\\exists c > 0,\\, \\forall n \\ge 16,\\, f(n) \\ge c \\cdot \\sqrt{n} \\cdot \\sqrt{\\log n} / \\log\\log n$. The condition $n \\ge 16$ ensures $\\log\\log n > 0$. The bound uses iterated dependent random choice: sample a random vertex, condition on its neighborhood, and recurse.",
@@ -230,7 +230,7 @@
       "startLine": 135,
       "endLine": 142
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Bollobás-Hind (1991)",
     "content": "The first non-trivial upper bound: $f(n) \\ll n^{7/10 + o(1)}$. Béla Bollobás and Hugh Hind constructed $K_4$-free graphs where every large induced subgraph contains a triangle, using algebraic and probabilistic methods. The exponent $7/10$ was the starting point for three decades of improvements.",
     "mathContext": "The axiom states $\\forall \\varepsilon > 0,\\, \\exists C > 0,\\, \\forall n \\ge 1,\\, f(n) \\le C \\cdot n^{7/10 + \\varepsilon}$. The $o(1)$ in the exponent is formalized by quantifying over all $\\varepsilon > 0$. The construction uses random $K_4$-free graph models with pervasive triangles.",
@@ -252,7 +252,7 @@
       "startLine": 143,
       "endLine": 150
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Krivelevich (1994)",
     "content": "Improved upper bound to $f(n) \\ll n^{2/3}(\\log n)^{1/3}$. Michael Krivelevich brought the exponent from $7/10 = 0.7$ to $2/3 \\approx 0.667$, a significant step. The construction uses carefully balanced random bipartite graphs within the $K_4$-free constraint.",
     "mathContext": "The axiom states $\\exists C > 0,\\, \\forall n \\ge 2,\\, f(n) \\le C \\cdot n^{2/3} \\cdot (\\log n)^{1/3}$. This is a clean bound without the $o(1)$ exponent correction. The logarithmic factor $(\\log n)^{1/3}$ foreshadows the eventual $\\log n$ factor.",
@@ -272,7 +272,7 @@
       "startLine": 151,
       "endLine": 158
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Wolfovitz (2013)",
     "content": "Further improved to $f(n) \\ll \\sqrt{n} \\cdot (\\log n)^{120}$. Wolfovitz was the first to achieve the **optimal base exponent** $1/2$, matching the lower bound's $\\sqrt{n}$ factor. However, the enormous logarithmic factor $(\\log n)^{120}$ left a huge gap — 120 was an artifact of iterated regularity lemma applications.",
     "mathContext": "The axiom states $\\exists C > 0,\\, \\forall n \\ge 2,\\, f(n) \\le C \\cdot \\sqrt{n} \\cdot (\\log n)^{120}$. The exponent 120 arises from iterated Szemerédi regularity applications. This showed the base exponent is $1/2$ but left open the logarithmic correction.",
@@ -294,7 +294,7 @@
       "startLine": 159,
       "endLine": 168
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Mubayi-Verstraete (2024)",
     "content": "Current best upper bound: $f(n) \\ll \\sqrt{n} \\cdot \\log n$. Dhruv Mubayi and Jacques Verstraëte dramatically reduced Wolfovitz's $(\\log n)^{120}$ to just $\\log n$, a breakthrough. Their construction uses a novel **graph blowup technique** applied to carefully chosen base graphs, avoiding the regularity lemma entirely.",
     "mathContext": "The axiom states $\\exists C > 0,\\, \\forall n \\ge 2,\\, f(n) \\le C \\cdot \\sqrt{n} \\cdot \\log n$. Combined with Shearer's lower bound, the gap is now $\\sqrt{\\log n} \\cdot \\log\\log n$ — a remarkable narrowing from the original $n^{1/5}$ gap between $\\sqrt{n}$ and $n^{7/10}$.",
@@ -404,7 +404,7 @@
       "startLine": 226,
       "endLine": 243
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Probabilistic Methods",
     "content": "Both upper and lower bounds rely on probabilistic techniques. The axiom `probabilistic_upper_bound` shows for any $\\varepsilon > 0$ and large $n$, $K_4$-free graphs exist with max triangle-free induced subgraph $\\le (1+\\varepsilon)\\sqrt{n}\\log n$. The `dependent_random_choice_lower` gives the $c\\sqrt{n}$ baseline via randomized vertex selection.",
     "mathContext": "The upper bound axiom asserts $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall n \\ge N,\\, \\exists G$ $K_4$-free with $\\text{maxTF}(G) \\le (1+\\varepsilon)\\sqrt{n}\\log n$. This near-tight construction shows the Mubayi-Verstraëte bound is essentially achieved. The dependent random choice technique (Alon-Fox-Zhao) underlies the lower bound.",

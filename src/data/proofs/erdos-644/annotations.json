@@ -17,7 +17,11 @@
       "Finset",
       "Finset.card"
     ],
-    "significance": "key"
+    "significance": "key",
+    "range": {
+      "startLine": 40,
+      "endLine": 44
+    }
   },
   {
     "id": "ann-644-pair-intersects",
@@ -36,7 +40,11 @@
     "prerequisites": [
       "Finset.mem"
     ],
-    "significance": "key"
+    "significance": "key",
+    "range": {
+      "startLine": 45,
+      "endLine": 48
+    }
   },
   {
     "id": "ann-644-rwise",
@@ -56,7 +64,11 @@
       "PairIntersects",
       "Finset"
     ],
-    "significance": "key"
+    "significance": "key",
+    "range": {
+      "startLine": 53,
+      "endLine": 57
+    }
   },
   {
     "id": "ann-644-covering",
@@ -76,7 +88,11 @@
       "Finset",
       "set intersection"
     ],
-    "significance": "key"
+    "significance": "key",
+    "range": {
+      "startLine": 58,
+      "endLine": 61
+    }
   },
   {
     "id": "ann-644-f",
@@ -97,7 +113,11 @@
       "HasRWisePairProperty",
       "IsCoveringSet"
     ],
-    "significance": "key"
+    "significance": "key",
+    "range": {
+      "startLine": 68,
+      "endLine": 72
+    }
   },
   {
     "id": "ann-644-known-values",
@@ -117,7 +137,11 @@
       "f(k,r)",
       "KFamily"
     ],
-    "significance": "key"
+    "significance": "key",
+    "range": {
+      "startLine": 68,
+      "endLine": 72
+    }
   },
   {
     "id": "ann-644-coeff",
@@ -136,7 +160,11 @@
     "prerequisites": [
       "f(k,r)"
     ],
-    "significance": "key"
+    "significance": "key",
+    "range": {
+      "startLine": 97,
+      "endLine": 104
+    }
   },
   {
     "id": "ann-644-q1",
@@ -156,7 +184,11 @@
       "f(k,r)",
       "coefficientSequence"
     ],
-    "significance": "key"
+    "significance": "key",
+    "range": {
+      "startLine": 123,
+      "endLine": 127
+    }
   },
   {
     "id": "ann-644-q2",
@@ -176,7 +208,11 @@
       "f(k,r)",
       "coefficientSequence"
     ],
-    "significance": "key"
+    "significance": "key",
+    "range": {
+      "startLine": 123,
+      "endLine": 127
+    }
   },
   {
     "id": "ann-644-extremal",
@@ -196,7 +232,11 @@
       "f(k,r)",
       "IsCoveringSet"
     ],
-    "significance": "key"
+    "significance": "key",
+    "range": {
+      "startLine": 68,
+      "endLine": 72
+    }
   },
   {
     "id": "ann-644-mono",
@@ -215,7 +255,11 @@
       "f(k,r)",
       "HasRWisePairProperty"
     ],
-    "significance": "key"
+    "significance": "key",
+    "range": {
+      "startLine": 175,
+      "endLine": 178
+    }
   },
   {
     "id": "ann-644-sunflower",
@@ -236,7 +280,11 @@
       "HasRWisePairProperty",
       "KFamily"
     ],
-    "significance": "key"
+    "significance": "key",
+    "range": {
+      "startLine": 196,
+      "endLine": 203
+    }
   },
   {
     "id": "ann-644-main",
@@ -256,6 +304,10 @@
       "Question1_fk7",
       "Question2_general_asymptotics"
     ],
-    "significance": "key"
+    "significance": "key",
+    "range": {
+      "startLine": 232,
+      "endLine": 235
+    }
   }
 ]

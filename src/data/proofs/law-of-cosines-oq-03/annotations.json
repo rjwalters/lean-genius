@@ -17,13 +17,18 @@
       "Structure field as proposition: storing a proof as a field value",
       "Axiom integrity: structure-encoded axioms count toward axiomCount"
     ],
-    "content": "Structure-encoded axioms are a common pattern in Lean 4 for axiomatizing geometric theories without committing to a specific model. The alternative — proving the law from the Poincaré disk — requires formalizing the hyperbolic metric, geodesics, and triangle congruence. The structure-field approach allows the mathematical content (Pythagorean theorem, angle defect) to be formalized while deferring the model-theoretic grounding. The CLAUDE.md axiom integrity policy requires this pattern to be reflected in axiomCount (3 structure-encoded assumptions in this file)."
+    "content": "Structure-encoded axioms are a common pattern in Lean 4 for axiomatizing geometric theories without committing to a specific model. The alternative — proving the law from the Poincaré disk — requires formalizing the hyperbolic metric, geodesics, and triangle congruence. The structure-field approach allows the mathematical content (Pythagorean theorem, angle defect) to be formalized while deferring the model-theoretic grounding. The CLAUDE.md axiom integrity policy requires this pattern to be reflected in axiomCount (3 structure-encoded assumptions in this file).",
+    "proofId": "law-of-cosines-oq-03",
+    "range": {
+      "startLine": 77,
+      "endLine": 94
+    }
   },
   {
     "id": "annotation-hyperbolic-pythagorean",
     "lineStart": 120,
     "lineEnd": 131,
-    "type": "key-theorem",
+    "type": "concept",
     "mathContext": "The hyperbolic Pythagorean theorem: when $C = \\pi/2$, $\\cosh c = \\cosh a \\cosh b$. The proof: `rw [hC, Real.cos_pi_div_two] at h` transforms $t.\\text{law}$ to $\\cosh c = \\cosh a \\cosh b - \\sinh a \\sinh b \\cdot 0$, then `linarith`. The Euclidean analogue is $c^2 = a^2 + b^2$. The substitution $x^2 \\to \\cosh x$ is an approximation: $\\cosh x \\approx 1 + x^2/2$ for small $x$ gives $(1+c^2/2) \\approx (1+a^2/2)(1+b^2/2) \\approx 1 + (a^2+b^2)/2$, recovering $c^2 \\approx a^2+b^2$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -37,7 +42,12 @@
       "Hyperbolic law as starting point (extracted from structure)",
       "linarith after rewrite"
     ],
-    "content": "The hyperbolic Pythagorean theorem is simpler than the general law (no cos C correction) but differs fundamentally from the Euclidean version. Since cosh is superadditive and cosh(a)·cosh(b) > cosh(a+b) only for large values, the relationship between c and a,b is nontrivial. Geometrically: in hyperbolic geometry, right triangles are 'more spread out' than Euclidean right triangles of the same leg lengths."
+    "content": "The hyperbolic Pythagorean theorem is simpler than the general law (no cos C correction) but differs fundamentally from the Euclidean version. Since cosh is superadditive and cosh(a)·cosh(b) > cosh(a+b) only for large values, the relationship between c and a,b is nontrivial. Geometrically: in hyperbolic geometry, right triangles are 'more spread out' than Euclidean right triangles of the same leg lengths.",
+    "proofId": "law-of-cosines-oq-03",
+    "range": {
+      "startLine": 120,
+      "endLine": 131
+    }
   },
   {
     "id": "annotation-second-law-no-euclidean-analogue",
@@ -57,7 +67,12 @@
       "Curvature K = -1: breaks scale invariance",
       "Second law as structure field law2"
     ],
-    "content": "The non-existence of similar (non-congruent) triangles is one of the most striking features of hyperbolic geometry. It means that AAA is a congruence criterion in hyperbolic geometry (unlike in Euclidean geometry where it only gives similarity). The second law formalizes this rigidity: given three angles summing to less than π, the triangle is uniquely determined up to congruence. This has no Euclidean analogue precisely because Euclidean geometry admits scale transformations."
+    "content": "The non-existence of similar (non-congruent) triangles is one of the most striking features of hyperbolic geometry. It means that AAA is a congruence criterion in hyperbolic geometry (unlike in Euclidean geometry where it only gives similarity). The second law formalizes this rigidity: given three angles summing to less than π, the triangle is uniquely determined up to congruence. This has no Euclidean analogue precisely because Euclidean geometry admits scale transformations.",
+    "proofId": "law-of-cosines-oq-03",
+    "range": {
+      "startLine": 136,
+      "endLine": 167
+    }
   },
   {
     "id": "annotation-angular-defect",
@@ -77,7 +92,12 @@
       "Ideal triangles: vertices at ∂H², A=B=C=0, Area=π",
       "linarith from defect_pos > 0"
     ],
-    "content": "The area-angle identity is a profound consequence of hyperbolic geometry. It means there is a natural upper bound on triangle areas, and that 'large' hyperbolic triangles are characterized by their angles approaching 0. For the sphere (K=+1), the spherical excess A+B+C-π equals the area — both positive and negative curvature encode geometry in the angle sum."
+    "content": "The area-angle identity is a profound consequence of hyperbolic geometry. It means there is a natural upper bound on triangle areas, and that 'large' hyperbolic triangles are characterized by their angles approaching 0. For the sphere (K=+1), the spherical excess A+B+C-π equals the area — both positive and negative curvature encode geometry in the angle sum.",
+    "proofId": "law-of-cosines-oq-03",
+    "range": {
+      "startLine": 168,
+      "endLine": 178
+    }
   },
   {
     "id": "annotation-cosh-sinh-identities",
@@ -97,6 +117,11 @@
       "sq_nonneg: x^2 ≥ 0 for any real x",
       "nlinarith: nonlinear arithmetic tactic for polynomial inequalities"
     ],
-    "content": "These identities form the algebraic backbone for all computations in the file. cosh²x - sinh²x = 1 is the hyperbolic analogue of cos²x + sin²x = 1. cosh ≥ 1 reflects that cosh x is a distance function (always at least the minimum value 1, attained at x=0). The parity theorems (sinh odd, cosh even) are analogues of sin odd, cos even. Setting up these identities as named local theorems (rather than inline Mathlib calls) documents the mathematical structure clearly."
+    "content": "These identities form the algebraic backbone for all computations in the file. cosh²x - sinh²x = 1 is the hyperbolic analogue of cos²x + sin²x = 1. cosh ≥ 1 reflects that cosh x is a distance function (always at least the minimum value 1, attained at x=0). The parity theorems (sinh odd, cosh even) are analogues of sin odd, cos even. Setting up these identities as named local theorems (rather than inline Mathlib calls) documents the mathematical structure clearly.",
+    "proofId": "law-of-cosines-oq-03",
+    "range": {
+      "startLine": 46,
+      "endLine": 72
+    }
   }
 ]

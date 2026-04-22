@@ -20,12 +20,17 @@
       "K_n complete graph",
       "edge-disjointness"
     ],
-    "content": "Using a `structure` rather than a `def` or `theorem` to encode EFLFamily allows Lean to automatically generate field accessors (`F.cliques`, `F.clique_size`, `F.pairwise_intersection`). This makes downstream proofs cleaner — `F.clique_size i` directly gives the cardinality, and `F.pairwise_intersection i j hne` gives the intersection bound. The structure encoding is the canonical Lean 4 way to bundle data with invariants."
+    "content": "Using a `structure` rather than a `def` or `theorem` to encode EFLFamily allows Lean to automatically generate field accessors (`F.cliques`, `F.clique_size`, `F.pairwise_intersection`). This makes downstream proofs cleaner — `F.clique_size i` directly gives the cardinality, and `F.pairwise_intersection i j hne` gives the intersection bound. The structure encoding is the canonical Lean 4 way to bundle data with invariants.",
+    "proofId": "erdos-19-oq-01",
+    "range": {
+      "startLine": 48,
+      "endLine": 57
+    }
   },
   {
     "id": "ann-kkmo-axiom",
     "line": 91,
-    "type": "axiom",
+    "type": "concept",
     "title": "The KKMO 2021 Result: EFL for Sufficiently Large n",
     "body": "The axiom `kang_kelly_kuhn_methuku_osthus_asymptotic : ∃ N : ℕ, ∀ n ≥ N, EFLHoldsAt n` encodes the 2021 breakthrough by Kang, Kelly, Kühn, Methuku, and Osthus. This is the deepest mathematical fact in the file — a tour de force of the absorbing method applied to hypergraph coloring. The axiom's existential quantifier is immediately fed to `Nat.find` to extract the minimal such N (the threshold), with `Nat.find_spec` and `Nat.find_min` providing the threshold's defining and minimality properties.",
     "mathContext": "Kang et al. (2021) proved: for all sufficiently large $n$, if $G$ is the union of $n$ edge-disjoint $K_n$ copies, then $\\chi(G) = n$. Their proof uses the absorbing method (ensuring a 'rainbow' matching can absorb leftover vertices after a greedy fractional coloring), combined with a random process to construct the initial coloring. The paper does not state an explicit $N$, only that $N$ exists. This existential form is precisely what `∃ N : ℕ, ∀ n ≥ N, EFLHoldsAt n` captures.",
@@ -42,7 +47,12 @@
       "Nat.find",
       "absorbing method in combinatorics"
     ],
-    "content": "This axiom represents one of the most significant recent results in combinatorics (it resolved a $500 Erdős problem). By axiomatizing it rather than proving it from scratch, the formalization correctly prioritizes: the structural framework for the threshold question is fully verified, while the deep analytic content (absorbing method, fractional relaxations) is acknowledged as a black-box assumption. Future work could replace this axiom with a complete Lean proof of the KKMO theorem."
+    "content": "This axiom represents one of the most significant recent results in combinatorics (it resolved a $500 Erdős problem). By axiomatizing it rather than proving it from scratch, the formalization correctly prioritizes: the structural framework for the threshold question is fully verified, while the deep analytic content (absorbing method, fractional relaxations) is acknowledged as a black-box assumption. Future work could replace this axiom with a complete Lean proof of the KKMO theorem.",
+    "proofId": "erdos-19-oq-01",
+    "range": {
+      "startLine": 91,
+      "endLine": 95
+    }
   },
   {
     "id": "ann-threshold",
@@ -66,7 +76,12 @@
       "Nat.find_spec",
       "Nat.find_min"
     ],
-    "content": "Using `Nat.find` to define the threshold is a Lean idiom for converting 'there exists' to 'there is a minimal one'. This is the classical minimum principle. The `noncomputable` tag signals that while the threshold mathematically exists and is unique, we cannot compute it (we only know it's finite). This is conceptually important: the open question is precisely to compute or bound this noncomputable-from-axioms value."
+    "content": "Using `Nat.find` to define the threshold is a Lean idiom for converting 'there exists' to 'there is a minimal one'. This is the classical minimum principle. The `noncomputable` tag signals that while the threshold mathematically exists and is unique, we cannot compute it (we only know it's finite). This is conceptually important: the open question is precisely to compute or bound this noncomputable-from-axioms value.",
+    "proofId": "erdos-19-oq-01",
+    "range": {
+      "startLine": 96,
+      "endLine": 99
+    }
   },
   {
     "id": "ann-finite-reduction",
@@ -90,7 +105,12 @@
       "by_cases",
       "push_neg"
     ],
-    "content": "This theorem turns an infinite open problem into a finite decision problem. If the KKMO bound N₀ can be explicitly computed (even as a large number), then one could in principle check all n ∈ [10, N₀) and close the conjecture. The formal statement makes precise what 'checking the gap' means and why it suffices. In particular, proving N₀ ≤ 10 (via `efl_from_small_threshold`) would reduce the gap to empty and immediately resolve EFL."
+    "content": "This theorem turns an infinite open problem into a finite decision problem. If the KKMO bound N₀ can be explicitly computed (even as a large number), then one could in principle check all n ∈ [10, N₀) and close the conjecture. The formal statement makes precise what 'checking the gap' means and why it suffices. In particular, proving N₀ ≤ 10 (via `efl_from_small_threshold`) would reduce the gap to empty and immediately resolve EFL.",
+    "proofId": "erdos-19-oq-01",
+    "range": {
+      "startLine": 146,
+      "endLine": 160
+    }
   },
   {
     "id": "ann-holds-one",
@@ -113,7 +133,12 @@
       "GraphCore.IsKColorable",
       "Fin.elim0"
     ],
-    "content": "This proof demonstrates that n=1 can be verified definitionally, without appealing to Hindman's axiom (which covers n ∈ [1,9]). The proof is more elementary: it goes directly from the structure definition. This 'axiom-free island' at n=1 is mathematically trivial but formally important — it means the formalization of small cases is not entirely dependent on the Hindman axiom, and future extensions could shrink the axiom's role further."
+    "content": "This proof demonstrates that n=1 can be verified definitionally, without appealing to Hindman's axiom (which covers n ∈ [1,9]). The proof is more elementary: it goes directly from the structure definition. This 'axiom-free island' at n=1 is mathematically trivial but formally important — it means the formalization of small cases is not entirely dependent on the Hindman axiom, and future extensions could shrink the axiom's role further.",
+    "proofId": "erdos-19-oq-01",
+    "range": {
+      "startLine": 295,
+      "endLine": 310
+    }
   },
   {
     "id": "ann-gap-enumeration",
@@ -136,6 +161,11 @@
       "efl_finite_reduction",
       "EFLConjecture"
     ],
-    "content": "This is the most computationally-oriented theorem in the file. It points toward a potential proof strategy: enumerate Finset.Ico 10 eflThreshold, prove EFLHoldsAt by decidable computation or case analysis for each element, and apply this lemma. The theorem makes the connection between the abstract 'gap condition' and a concrete Lean `decide` or `native_decide` call — if N₀ is small enough and EFLHoldsAt is decidable, this becomes a one-liner."
+    "content": "This is the most computationally-oriented theorem in the file. It points toward a potential proof strategy: enumerate Finset.Ico 10 eflThreshold, prove EFLHoldsAt by decidable computation or case analysis for each element, and apply this lemma. The theorem makes the connection between the abstract 'gap condition' and a concrete Lean `decide` or `native_decide` call — if N₀ is small enough and EFLHoldsAt is decidable, this becomes a one-liner.",
+    "proofId": "erdos-19-oq-01",
+    "range": {
+      "startLine": 364,
+      "endLine": 394
+    }
   }
 ]

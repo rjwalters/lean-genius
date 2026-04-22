@@ -16,7 +16,11 @@
       "Finset",
       "Fintype",
       "Powerset"
-    ]
+    ],
+    "range": {
+      "startLine": 36,
+      "endLine": 66
+    }
   },
   {
     "id": "ann-1027-setfamily",
@@ -34,7 +38,11 @@
     "prerequisites": [
       "Finset",
       "DecidableEq"
-    ]
+    ],
+    "range": {
+      "startLine": 38,
+      "endLine": 40
+    }
   },
   {
     "id": "ann-1027-goodset",
@@ -52,7 +60,11 @@
     "prerequisites": [
       "Finset.inter",
       "Finset.Nonempty"
-    ]
+    ],
+    "range": {
+      "startLine": 61,
+      "endLine": 64
+    }
   },
   {
     "id": "ann-1027-propertyb",
@@ -70,7 +82,11 @@
     "prerequisites": [
       "Bool",
       "Finset membership"
-    ]
+    ],
+    "range": {
+      "startLine": 82,
+      "endLine": 96
+    }
   },
   {
     "id": "ann-1027-conjecture",
@@ -88,7 +104,11 @@
     "prerequisites": [
       "goodSetCount",
       "IsNUniform"
-    ]
+    ],
+    "range": {
+      "startLine": 177,
+      "endLine": 187
+    }
   },
   {
     "id": "ann-1027-solution",
@@ -105,7 +125,11 @@
     ],
     "prerequisites": [
       "Erdos1027Statement"
-    ]
+    ],
+    "range": {
+      "startLine": 188,
+      "endLine": 190
+    }
   },
   {
     "id": "ann-1027-abundance",
@@ -123,7 +147,11 @@
     "prerequisites": [
       "HasPropertyB",
       "goodSetCount"
-    ]
+    ],
+    "range": {
+      "startLine": 200,
+      "endLine": 213
+    }
   },
   {
     "id": "ann-1027-classical",
@@ -143,6 +171,10 @@
       "Finset.biUnion",
       "Fintype.card_fun",
       "Finset.card_compl"
-    ]
+    ],
+    "range": {
+      "startLine": 214,
+      "endLine": 222
+    }
   }
 ]

@@ -6,7 +6,7 @@
       "startLine": 45,
       "endLine": 48
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "weierstrass_sin_product: The Central Axiom — Product Formula for sin(πx)/(πx)",
     "content": "**weierstrass_sin_product** axiomatizes the Weierstrass product: for $x \\neq 0$, $$\\frac{\\sin(\\pi x)}{\\pi x} = \\prod_{n=1}^{\\infty} \\left(1 - \\frac{x^2}{n^2}\\right).$$ This is the key step in Euler's original 1734 proof that is **not yet formalized in Mathlib** (as of 4.26.0). It follows from the Weierstrass factorization theorem applied to the entire function $\\sin(\\pi z)/(\\pi z)$, which has simple zeros exactly at the integers $z = \\pm 1, \\pm 2, \\pm 3, \\ldots$",
     "mathContext": "The **Weierstrass factorization theorem** (1876): every entire function $f$ can be written as $f(z) = e^{g(z)} \\prod_n E_p(z/a_n)$ where $a_n$ are the zeros and $E_p$ are elementary factors. For $f(z) = \\sin(\\pi z)/(\\pi z)$, the zeros are at $z = \\pm n$ for $n \\geq 1$ and the genus-1 canonical product gives exactly $\\prod_{n=1}^\\infty (1 - z^2/n^2)$ (the $e^{z/n}$ factors cancel between $+n$ and $-n$). In Lean, the product is expressed as `∏' (n : ℕ), if n = 0 then 1 else (1 - x² / n²)`, using `tsum` with the $n=0$ special case returning 1 (the unit). The axiom is the **single mathematical gap** in this formalization; all other steps are rigorous.",

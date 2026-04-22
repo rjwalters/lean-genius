@@ -29,7 +29,7 @@
       "startLine": 162,
       "endLine": 163
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "van Kampen-Flores Theorem: K_{2r+1}^(r) is Not Embeddable",
     "content": "vanKampen_Flores axiomatizes the van Kampen-Flores theorem (proved independently by van Kampen and Flores, both 1933): for r ≥ 2, the complete r-uniform hypergraph on 2r+1 vertices cannot be embedded in R^(2(r-1)) as a simplicial complex. This is the direct generalization of K₅ being non-planar (r=2: K₅ not in R²). The proof uses the Borsuk-Ulam theorem via Z/2-equivariant topology: the deleted product construction of K_{2r+1}^(r) has a non-trivial Z/2-map to S^{2(r-1)-1}, which by Borsuk-Ulam cannot exist for an embeddable complex.",
     "mathContext": "$$K_{2r+1}^{(r)} \\not\\hookrightarrow \\mathbb{R}^{2(r-1)}$$ for $r \\geq 2$, where the embedding is as an $(r-1)$-dimensional simplicial complex. Special cases: $K_5 \\not\\hookrightarrow \\mathbb{R}^2$ (Kuratowski), $K_7^{(3)} \\not\\hookrightarrow \\mathbb{R}^4$.",
@@ -127,7 +127,7 @@
       "startLine": 276,
       "endLine": 278
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Super-Linear Density Exceeds All Turán Numbers",
     "content": "density_exceeds_turan axiomatizes the key comparison: for r ≥ 2, t > r, and ε > 0, the super-linear density n^{r-1+ε} eventually exceeds the Turán number ex(n, K_t^(r)) for any fixed t. This connects the edge density threshold n^{r-1+ε} to the Turán extremal framework: when a hypergraph is too dense to be K_t^(r)-free (for some bounded t), it must contain complete sub-hypergraphs, which are candidates for the non-embeddable sub-hypergraphs. The turanNumber function is defined with sorry (the exact Turán numbers for r ≥ 3 are largely unknown — the Turán density problem for K₄^(3) is one of the most famous open problems in combinatorics).",
     "mathContext": "$$\\forall t > r,\\; \\forall \\varepsilon > 0:\\; n^{r-1+\\varepsilon} > \\text{ex}(n, K_t^{(r)}) \\text{ for large } n$$ where $\\text{ex}(n, K_t^{(r)})$ is the maximum edges in an $r$-uniform $K_t^{(r)}$-free hypergraph on $n$ vertices.",

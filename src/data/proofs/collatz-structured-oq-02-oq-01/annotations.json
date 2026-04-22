@@ -147,7 +147,7 @@
       "startLine": 176,
       "endLine": 178
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Eliahou (1993): Non-Trivial Cycles Have Period > 17 Billion",
     "content": "Axiomatizes Eliahou's 1993 theorem: for any natural number n ≥ 1 that is periodic under the Collatz map with period k ≥ 1, either n = 1 (the trivial cycle) or k > 17×10^9. This completely supersedes case analysis for all finite k ≤ 17 billion. Eliahou's proof uses algebraic sum bounds on the 2^M_i and 3^j contributions from each orbit element, avoiding the exponential parity case explosion.",
     "mathContext": "**Eliahou (1993)**: $\\forall n \\geq 1, \\forall k \\geq 1$: if $n$ is $k$-periodic under the Collatz map, then $n = 1$ or $k > 1.7 \\times 10^{10}$.\n\nThe key idea: summing the Collatz equations over one full cycle gives $\\sum_{i} 3^{j_i} n_i \\cdot 2^{-M_i} = \\sum n_i$, from which contradictions arise for small $k$ via careful bounds.",

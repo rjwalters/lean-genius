@@ -17,7 +17,12 @@
       "let bindings in def bodies",
       "real number division in Lean 4"
     ],
-    "content": "Defining these as named functions rather than inline expressions enables the algebraic symmetry theorems to state their results cleanly (e.g., `brahmaguptaProduct a b c d = brahmaguptaProduct b c d a`). The Brahmagupta product is the key quantity: its square root gives the area of a cyclic quadrilateral, and its non-negativity ensures the area formula is well-defined."
+    "content": "Defining these as named functions rather than inline expressions enables the algebraic symmetry theorems to state their results cleanly (e.g., `brahmaguptaProduct a b c d = brahmaguptaProduct b c d a`). The Brahmagupta product is the key quantity: its square root gives the area of a cyclic quadrilateral, and its non-negativity ensures the area formula is well-defined.",
+    "proofId": "herons-formula-oq-01",
+    "range": {
+      "startLine": 34,
+      "endLine": 40
+    }
   },
   {
     "id": "ann-dihedral-symmetry",
@@ -37,7 +42,12 @@
       "cyclic vs dihedral group actions",
       "unfold for definitional unfolding"
     ],
-    "content": "These symmetries reflect the geometric fact that a cyclic quadrilateral has no intrinsic 'starting vertex' or orientation: relabeling the sides cyclically or reversing the direction gives the same figure. The `ring` tactic works here because the symmetry is purely algebraic — it doesn't require geometric reasoning about the inscribed circle."
+    "content": "These symmetries reflect the geometric fact that a cyclic quadrilateral has no intrinsic 'starting vertex' or orientation: relabeling the sides cyclically or reversing the direction gives the same figure. The `ring` tactic works here because the symmetry is purely algebraic — it doesn't require geometric reasoning about the inscribed circle.",
+    "proofId": "herons-formula-oq-01",
+    "range": {
+      "startLine": 56,
+      "endLine": 64
+    }
   },
   {
     "id": "ann-heron-reduction",
@@ -57,7 +67,12 @@
       "ring identity d=0 substitution",
       "semiperimeter continuity in d"
     ],
-    "content": "This reduction confirms that Brahmagupta's formula is a genuine generalization of Heron's formula, not merely an analogy. The zero side length case is the cleanest possible specialization: no limiting argument needed, just algebraic substitution. This is why the two formulas have the same mathematical structure — the triangle is a degenerate quadrilateral with one side collapsed."
+    "content": "This reduction confirms that Brahmagupta's formula is a genuine generalization of Heron's formula, not merely an analogy. The zero side length case is the cleanest possible specialization: no limiting argument needed, just algebraic substitution. This is why the two formulas have the same mathematical structure — the triangle is a degenerate quadrilateral with one side collapsed.",
+    "proofId": "herons-formula-oq-01",
+    "range": {
+      "startLine": 81,
+      "endLine": 84
+    }
   },
   {
     "id": "ann-nonneg",
@@ -77,7 +92,12 @@
       "div_nonneg for the /16 factor",
       "linarith for linear arithmetic"
     ],
-    "content": "Non-negativity is essential for the square root in Brahmagupta's formula to be well-defined (and real). The proof structure `apply mul_nonneg; apply mul_nonneg; apply mul_nonneg <;> linarith; linarith; linarith` shows how `mul_nonneg` reduces the 4-factor non-negativity to individual factor non-negativity, each of which follows from `linarith` on the side length inequalities."
+    "content": "Non-negativity is essential for the square root in Brahmagupta's formula to be well-defined (and real). The proof structure `apply mul_nonneg; apply mul_nonneg; apply mul_nonneg <;> linarith; linarith; linarith` shows how `mul_nonneg` reduces the 4-factor non-negativity to individual factor non-negativity, each of which follows from `linarith` on the side length inequalities.",
+    "proofId": "herons-formula-oq-01",
+    "range": {
+      "startLine": 93,
+      "endLine": 104
+    }
   },
   {
     "id": "ann-isoperimetric",
@@ -97,7 +117,12 @@
       "mul_le_mul for monotone inequality chaining",
       "sq_nonneg as nlinarith hint"
     ],
-    "content": "The `set sa := ... with hsa_def` tactic introduces abbreviations $s_a = s - a$ etc., making the calc block readable. Each `nlinarith [sq_nonneg (sa - sb)]` proves the 2-variable AM-GM by certifying `(sa-sb)^2 ≥ 0 → sasb ≤ ((sa+sb)/2)²`. The final `calc` chain assembles all three steps cleanly. The sum identity `sa + sb + sc + sd = a + b + c + d` (each $s - x_i$ sums to the perimeter) enables the final rewrite."
+    "content": "The `set sa := ... with hsa_def` tactic introduces abbreviations $s_a = s - a$ etc., making the calc block readable. Each `nlinarith [sq_nonneg (sa - sb)]` proves the 2-variable AM-GM by certifying `(sa-sb)^2 ≥ 0 → sasb ≤ ((sa+sb)/2)²`. The final `calc` chain assembles all three steps cleanly. The sum identity `sa + sb + sc + sd = a + b + c + d` (each $s - x_i$ sums to the perimeter) enables the final rewrite.",
+    "proofId": "herons-formula-oq-01",
+    "range": {
+      "startLine": 142,
+      "endLine": 181
+    }
   },
   {
     "id": "ann-axiom",
@@ -117,7 +142,12 @@
       "axiom as explicit gap marker in Lean 4",
       "opposite angles of cyclic quadrilateral summing to π"
     ],
-    "content": "The `hcyclic : True` placeholder is an honest admission: it shows exactly which hypothesis is missing and that the formula currently holds vacuously for any quadrilateral. This design choice — making the gap visible in the type — is preferable to hiding it with a sorry. All the algebraic infrastructure (dihedral symmetry, non-negativity, Heron reduction, AM-GM) is proved correctly; only the geometric bridge between the formula and the inscribed circle definition is axiomatized."
+    "content": "The `hcyclic : True` placeholder is an honest admission: it shows exactly which hypothesis is missing and that the formula currently holds vacuously for any quadrilateral. This design choice — making the gap visible in the type — is preferable to hiding it with a sorry. All the algebraic infrastructure (dihedral symmetry, non-negativity, Heron reduction, AM-GM) is proved correctly; only the geometric bridge between the formula and the inscribed circle definition is axiomatized.",
+    "proofId": "herons-formula-oq-01",
+    "range": {
+      "startLine": 199,
+      "endLine": 202
+    }
   },
   {
     "id": "ann-examples",
@@ -137,6 +167,11 @@
       "unfold for definitional expansion",
       "Pythagorean triple (3,4,5) area calculation"
     ],
-    "content": "These examples serve as sanity checks that the definitions are correct. The 3-4-5 triangle (right triangle, area $= \\frac{1}{2} \\cdot 3 \\cdot 4 = 6$) and $2 \\times 3$ rectangle both give product $= 36$, while the unit square gives product $= 1$ — each independently verifiable by hand. The `norm_num` tactic handles all the arithmetic automatically once the definitions are unfolded."
+    "content": "These examples serve as sanity checks that the definitions are correct. The 3-4-5 triangle (right triangle, area $= \\frac{1}{2} \\cdot 3 \\cdot 4 = 6$) and $2 \\times 3$ rectangle both give product $= 36$, while the unit square gives product $= 1$ — each independently verifiable by hand. The `norm_num` tactic handles all the arithmetic automatically once the definitions are unfolded.",
+    "proofId": "herons-formula-oq-01",
+    "range": {
+      "startLine": 211,
+      "endLine": 222
+    }
   }
 ]

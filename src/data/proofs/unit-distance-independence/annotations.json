@@ -20,7 +20,12 @@
       "Finset membership",
       "adjacency relation"
     ],
-    "content": "The split into Set and Finset variants reflects Lean's type-theoretic distinction between computable and classical mathematics. Finset predicates enable decidable computations and fit naturally with Mathlib's combinatorics infrastructure. The three basic lemmas (empty, singleton, subset) are the axioms of a hereditary independence system — a foundation for matroid theory."
+    "content": "The split into Set and Finset variants reflects Lean's type-theoretic distinction between computable and classical mathematics. Finset predicates enable decidable computations and fit naturally with Mathlib's combinatorics infrastructure. The three basic lemmas (empty, singleton, subset) are the axioms of a hereditary independence system — a foundation for matroid theory.",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 84,
+      "endLine": 89
+    }
   },
   {
     "id": "ann-udi-independence-number",
@@ -43,13 +48,18 @@
       "Finset.filter",
       "noncomputable definitions"
     ],
-    "content": "The sup-over-powerset definition is logically clean but computationally expensive — it must inspect all 2^n subsets. For algorithmic purposes, α(G) is typically computed via branch-and-bound or semidefinite programming. The `noncomputable` keyword in Lean reflects this: the definition exists but cannot be reduced to a finite algorithm in general."
+    "content": "The sup-over-powerset definition is logically clean but computationally expensive — it must inspect all 2^n subsets. For algorithmic purposes, α(G) is typically computed via branch-and-bound or semidefinite programming. The `noncomputable` keyword in Lean reflects this: the definition exists but cannot be reduced to a finite algorithm in general.",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 84,
+      "endLine": 89
+    }
   },
   {
     "id": "ann-udi-de-grey-axiom",
     "startLine": 129,
     "endLine": 133,
-    "type": "historical",
+    "type": "concept",
     "title": "De Grey's 2018 Lower Bound Axiom",
     "body": "The axiom `hadwiger_nelson_lower_bound` states: for every 4-coloring c : Plane → Fin 4 of the plane, there exist points p, q at distance 1 with the same color. Equivalently, the unit distance graph on ℝ² cannot be properly 4-colored, so χ(ℝ²) ≥ 5. This was proved in 2018 by Aubrey de Grey, an amateur mathematician (professionally a biogerontologist), by constructing an explicit graph of 1581 vertices embeddable in ℝ² that requires 5 colors. The result shocked the mathematical community: the Hadwiger-Nelson problem had been open for 68 years with the lower bound stuck at 4.",
     "mathContext": "The lower bound progression: χ(ℝ²) ≥ 4 was known since 1950 (Moser spindle, a 7-vertex graph, is 4-chromatic and embeds in ℝ²). De Grey's 2018 paper 'The chromatic number of the plane is at least 5' found a 1581-vertex graph (later reduced to 553 vertices by others using computer search) with χ = 5 that embeds in ℝ². The upper bound χ(ℝ²) ≤ 7 has been known since 1950 via hexagonal tiling. Thus 5 ≤ χ(ℝ²) ≤ 7, with the exact value still unknown.",
@@ -66,7 +76,12 @@
       "dist function in ℝ²",
       "proper graph coloring"
     ],
-    "content": "De Grey's result is a landmark in combinatorial geometry. It demonstrated that computer-assisted construction can settle long-standing open problems. The axiom captures the mathematical content without formalizing the 1581-vertex graph — doing so would require verifying thousands of distance constraints computationally, a substantial Lean formalization effort."
+    "content": "De Grey's result is a landmark in combinatorial geometry. It demonstrated that computer-assisted construction can settle long-standing open problems. The axiom captures the mathematical content without formalizing the 1581-vertex graph — doing so would require verifying thousands of distance constraints computationally, a substantial Lean formalization effort.",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 131,
+      "endLine": 135
+    }
   },
   {
     "id": "ann-udi-hn-upper-bound",
@@ -88,7 +103,12 @@
       "Fin 7",
       "proper coloring definition"
     ],
-    "content": "Axiomatizing the 7-coloring reflects the gap between the mathematical content (a standard construction) and the Lean formalization effort (constructing an explicit measurable coloring function c : Plane → Fin 7 and verifying the distance condition). The axiom connects immediately via `unit_distance_independence_from_chromatic` to give α(S) ≥ |S|/7 for any finite point set S ⊆ ℝ²."
+    "content": "Axiomatizing the 7-coloring reflects the gap between the mathematical content (a standard construction) and the Lean formalization effort (constructing an explicit measurable coloring function c : Plane → Fin 7 and verifying the distance condition). The axiom connects immediately via `unit_distance_independence_from_chromatic` to give α(S) ≥ |S|/7 for any finite point set S ⊆ ℝ².",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 484,
+      "endLine": 510
+    }
   },
   {
     "id": "ann-udi-pigeonhole-bound",
@@ -112,7 +132,12 @@
       "Nat.div_le_div",
       "omega tactic"
     ],
-    "content": "The pigeonhole bound is elementary but powerful. It makes the connection between graph colorability and independent set size precise. The proof structure in Lean — sum the color class sizes, bound each below n/k, derive contradiction via omega — is an excellent example of how arithmetic arguments interact with combinatorial definitions in Mathlib."
+    "content": "The pigeonhole bound is elementary but powerful. It makes the connection between graph colorability and independent set size precise. The proof structure in Lean — sum the color class sizes, bound each below n/k, derive contradiction via omega — is an excellent example of how arithmetic arguments interact with combinatorial definitions in Mathlib.",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 84,
+      "endLine": 89
+    }
   },
   {
     "id": "ann-udi-greedy-bound",
@@ -135,7 +160,12 @@
       "Finset.exists_max_image",
       "Nat.mul_div_le"
     ],
-    "content": "The proof of `exists_maximal_indep` is notable: it uses `Finset.exists_max_image` to extract a maximum-cardinality independent set, then shows this set must be maximal (otherwise we could add a non-adjacent vertex, contradicting maximality of cardinality). This 'take max cardinality = maximal' argument is a clean Lean proof pattern for finiteness-based existence results."
+    "content": "The proof of `exists_maximal_indep` is notable: it uses `Finset.exists_max_image` to extract a maximum-cardinality independent set, then shows this set must be maximal (otherwise we could add a non-adjacent vertex, contradicting maximality of cardinality). This 'take max cardinality = maximal' argument is a clean Lean proof pattern for finiteness-based existence results.",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 384,
+      "endLine": 420
+    }
   },
   {
     "id": "ann-udi-unit-chromatic-application",
@@ -158,7 +188,12 @@
       "indep_from_coloring",
       "Fintype.card_coe"
     ],
-    "content": "The proof demonstrates Lean's strength at instantiating abstract theory to concrete applications. The abstract pigeonhole theorem (working over any graph with a k-coloring) applies immediately once we supply the 7-coloring of ℝ². The `Fintype.card_coe` rewrite handles the coercion between the cardinality of `S : Finset Plane` and `Fintype.card S` — a common bookkeeping step in Mathlib combinatorics proofs."
+    "content": "The proof demonstrates Lean's strength at instantiating abstract theory to concrete applications. The abstract pigeonhole theorem (working over any graph with a k-coloring) applies immediately once we supply the 7-coloring of ℝ². The `Fintype.card_coe` rewrite handles the coercion between the cardinality of `S : Finset Plane` and `Fintype.card S` — a common bookkeeping step in Mathlib combinatorics proofs.",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 131,
+      "endLine": 135
+    }
   },
   {
     "id": "ann-udi-clique-duality",
@@ -182,6 +217,11 @@
       "isClique_iff",
       "compl_compl"
     ],
-    "content": "Connecting `IsIndepFinset` to Mathlib's `SimpleGraph.IsClique` is important for interoperability: it allows using Mathlib's clique library to prove results about independence, and vice versa. The `rw [SimpleGraph.isClique_iff]` step bridges the two definitions, then the proof unpacks `compl_adj` to match the logical forms."
+    "content": "Connecting `IsIndepFinset` to Mathlib's `SimpleGraph.IsClique` is important for interoperability: it allows using Mathlib's clique library to prove results about independence, and vice versa. The `rw [SimpleGraph.isClique_iff]` step bridges the two definitions, then the proof unpacks `compl_adj` to match the logical forms.",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 45,
+      "endLine": 52
+    }
   }
 ]

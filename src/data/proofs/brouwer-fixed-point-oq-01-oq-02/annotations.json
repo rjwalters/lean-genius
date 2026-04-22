@@ -127,7 +127,7 @@
       "startLine": 128,
       "endLine": 171
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Singular Homology Axiom: The Topological Content",
     "content": "`singular_homology_retraction_split` is the single axiom encoding all of singular homology. Given a retraction `r : Retraction n` (with `n ≥ 1`), it produces `φ : ℤ →+ Unit` and `ψ : Unit →+ ℤ` with `ψ ∘ φ = id`. This concisely packages: (1) $H_{n-1}(S^{n-1}) \\cong \\mathbb{Z}$ (sphere homology, computed via Mayer-Vietoris and excision), (2) $H_{n-1}(B^n) = 0$ (ball contractibility), and (3) functoriality ($r \\circ i = \\mathrm{id}$ implies $r_* \\circ i_* = \\mathrm{id}_*$). The doc-comment enumerates the four Mathlib gaps blocking a constructive proof.",
     "mathContext": "The Lean model uses $\\mathbb{Z}$ for $H_{n-1}(S^{n-1})$ and `Unit` for $H_{n-1}(B^n) = 0$. Functoriality of $H_{n-1}$ means: if $r \\circ i = \\mathrm{id}_{S^{n-1}}$, then $(r_*)_* \\circ (i_*)_* = \\mathrm{id}_{H_{n-1}(S^{n-1})}$, giving the split $\\psi \\circ \\phi = \\mathrm{id}: \\mathbb{Z} \\to \\mathrm{Unit} \\to \\mathbb{Z}$. This is precisely the axiom's conclusion.",

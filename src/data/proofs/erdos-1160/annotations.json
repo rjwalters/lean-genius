@@ -117,7 +117,7 @@
       "startLine": 75,
       "endLine": 81
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "Erdős Problem #1160: Powers of 2 Maximize g(n)",
     "content": "The conjecture states that for any $n \\leq 2^m$, the number of groups of order $n$ is at most the number of groups of order $2^m$. Intuitively, 2-groups are by far the most numerous among groups of comparable size. This is because $p$-groups (for $p = 2$) have the most flexible internal structure: every possible pattern of commutativity relations gives a distinct group.",
     "mathContext": "$\\texttt{erdos\\_1160} :\\equiv \\forall m\\, n \\in \\mathbb{N},\\; n \\leq 2^m \\implies g(n) \\leq g(2^m)$",
@@ -162,7 +162,7 @@
       "startLine": 101,
       "endLine": 106
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "BNV07 Stronger Conjecture",
     "content": "Blackburn, Neumann, and Venkataraman (2007) proposed the dramatically stronger conjecture that the total number of groups of ALL orders below $2^m$ is still at most $g(2^m)$. Not just each individual $g(n)$, but their entire sum is dominated by $g(2^m)$. The sum is expected to be dominated for $m \\geq 7$, reflecting the overwhelming dominance of 2-groups in finite group theory.",
     "mathContext": "$\\exists M,\\; \\forall m \\geq M:\\; \\sum_{n=0}^{2^m - 1} g(n) \\leq g(2^m)$",

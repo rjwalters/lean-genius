@@ -16,7 +16,11 @@
       "SimpleGraph",
       "Finset",
       "Fintype"
-    ]
+    ],
+    "range": {
+      "startLine": 68,
+      "endLine": 78
+    }
   },
   {
     "id": "ann-1017-edgecount",
@@ -34,7 +38,11 @@
     "prerequisites": [
       "SimpleGraph.edgeFinset",
       "Fintype"
-    ]
+    ],
+    "range": {
+      "startLine": 260,
+      "endLine": 296
+    }
   },
   {
     "id": "ann-1017-isclique",
@@ -52,7 +60,11 @@
     "prerequisites": [
       "Finset",
       "SimpleGraph.Adj"
-    ]
+    ],
+    "range": {
+      "startLine": 68,
+      "endLine": 78
+    }
   },
   {
     "id": "ann-1017-completeon",
@@ -70,7 +82,11 @@
     "prerequisites": [
       "SimpleGraph",
       "Finset membership"
-    ]
+    ],
+    "range": {
+      "startLine": 169,
+      "endLine": 176
+    }
   },
   {
     "id": "ann-1017-edgedisjoint",
@@ -87,7 +103,11 @@
     ],
     "prerequisites": [
       "SimpleGraph.Adj"
-    ]
+    ],
+    "range": {
+      "startLine": 68,
+      "endLine": 78
+    }
   },
   {
     "id": "ann-1017-pairwise",
@@ -104,7 +124,11 @@
     "prerequisites": [
       "edgeDisjoint",
       "List.get"
-    ]
+    ],
+    "range": {
+      "startLine": 68,
+      "endLine": 78
+    }
   },
   {
     "id": "ann-1017-cliqueunion",
@@ -122,7 +146,11 @@
     "prerequisites": [
       "List",
       "SimpleGraph constructor"
-    ]
+    ],
+    "range": {
+      "startLine": 68,
+      "endLine": 78
+    }
   },
   {
     "id": "ann-1017-partition",
@@ -140,7 +168,11 @@
     "prerequisites": [
       "isPairwiseEdgeDisjoint",
       "cliqueUnion"
-    ]
+    ],
+    "range": {
+      "startLine": 68,
+      "endLine": 78
+    }
   },
   {
     "id": "ann-1017-canpartition",
@@ -158,7 +190,11 @@
     "prerequisites": [
       "canPartitionInto",
       "Nat.find"
-    ]
+    ],
+    "range": {
+      "startLine": 68,
+      "endLine": 78
+    }
   },
   {
     "id": "ann-1017-edgestriangles",
@@ -175,7 +211,11 @@
     ],
     "prerequisites": [
       "Finset.card"
-    ]
+    ],
+    "range": {
+      "startLine": 84,
+      "endLine": 94
+    }
   },
   {
     "id": "ann-1017-egp",
@@ -193,7 +233,11 @@
     "prerequisites": [
       "isCliquePartition",
       "usesOnlyEdgesAndTriangles"
-    ]
+    ],
+    "range": {
+      "startLine": 79,
+      "endLine": 83
+    }
   },
   {
     "id": "ann-1017-bipartite",
@@ -212,7 +256,11 @@
       "SimpleGraph",
       "Disjoint",
       "Finset"
-    ]
+    ],
+    "range": {
+      "startLine": 169,
+      "endLine": 176
+    }
   },
   {
     "id": "ann-1017-openproblem",
@@ -230,7 +278,11 @@
     "prerequisites": [
       "cliquePartitionNumber",
       "canPartitionInto"
-    ]
+    ],
+    "range": {
+      "startLine": 465,
+      "endLine": 469
+    }
   },
   {
     "id": "ann-1017-lovasz",
@@ -249,7 +301,11 @@
       "Nat.choose",
       "Nat.sqrt",
       "cliqueUnion"
-    ]
+    ],
+    "range": {
+      "startLine": 574,
+      "endLine": 586
+    }
   },
   {
     "id": "ann-1017-k4free",
@@ -268,7 +324,11 @@
       "isK4Free",
       "isClique",
       "isPairwiseEdgeDisjoint"
-    ]
+    ],
+    "range": {
+      "startLine": 533,
+      "endLine": 539
+    }
   },
   {
     "id": "ann-1017-harder",
@@ -286,6 +346,10 @@
     "prerequisites": [
       "Nat.choose",
       "isCliquePartition"
-    ]
+    ],
+    "range": {
+      "startLine": 601,
+      "endLine": 696
+    }
   }
 ]

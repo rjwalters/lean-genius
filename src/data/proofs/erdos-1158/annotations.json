@@ -192,7 +192,7 @@
       "startLine": 168,
       "endLine": 180
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "Erdős Problem #1158: The ε-Formulation",
     "content": "The conjecture is formalized using the standard $\\varepsilon$-formulation of $o(1)$ bounds: for every $\\varepsilon > 0$, there exists $c > 0$ and $N_0$ such that $\\mathrm{ex}_t(n, K_t(r)) \\geq c \\cdot n^{t - r^{1-t} - \\varepsilon}$ for all $n \\geq N_0$. This is the precise statement that the upper bound exponent $t - r^{1-t}$ is tight up to sub-polynomial factors.",
     "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists c > 0,\\; \\exists N_0 \\in \\mathbb{N},\\; \\forall n \\geq N_0: \\quad \\mathrm{ex}_t(n, K_t(r)) \\geq c \\cdot n^{t - r^{1-t} - \\varepsilon}$. Equivalently, $\\mathrm{ex}_t(n, K_t(r)) = n^{t - r^{1-t} - o(1)}$.",

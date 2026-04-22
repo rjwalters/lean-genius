@@ -79,7 +79,7 @@
       "startLine": 48,
       "endLine": 67
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The g_k(n) Function and Well-Definedness",
     "content": "**g and g_well_defined:**\n\n$g_k(n)$ measures the maximum achievable girth among $n$-vertex $k$-chromatic graphs. It is defined noncomputably (via supremum) and axiomatized as well-defined for $k \\ge 4$ and $n$ large enough.\n\nWell-definedness means such graphs exist — a non-trivial claim that follows from Erdős's 1959 probabilistic construction. The constraint $k \\ge 4$ avoids degenerate cases ($k \\le 3$ have special behavior).\n\n**Growth:** Both bounds show $g_k(n) = \\Theta(\\log n)$, so the girth of optimal $k$-chromatic graphs grows logarithmically in the number of vertices. This logarithmic growth is characteristic of probabilistic constructions.",
     "mathContext": "$g_k(n) = \\sup\\{m : \\exists G \\text{ on } n \\text{ vertices},\\; \\chi(G) = k,\\; \\text{girth}(G) > m\\}$. Well-defined for $k \\ge 4$, $n \\ge N_k$.",
