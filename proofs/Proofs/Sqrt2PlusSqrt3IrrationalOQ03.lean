@@ -31,7 +31,7 @@ Equivalently:
 3. **Minimal polynomial**: Since f is monic, irreducible, and vanishes at α,
    apply `minpoly.eq_of_irreducible_of_monic`.
 
-## Status: 3 sorries (irreducibility and consequences)
+## Status: 1 sorry (irreducibility of X⁴ − 10X² + 1 over ℚ)
 -/
 
 namespace Sqrt2PlusSqrt3IrrationalOQ03
@@ -135,13 +135,20 @@ theorem adjoin_sqrt2_plus_sqrt3_finrank :
     _ = 4 := h2
 
 /-- **Irrationality**: √2+√3 is not rational.
-    The degree-4 minimal polynomial certifies this: rational elements have
-    minimal polynomials of degree 1. -/
+    If √2+√3 = q ∈ ℚ, squaring gives (q²−5)/2 = √6, contradicting irrationality of √6. -/
 theorem sqrt2_plus_sqrt3_irrational : Irrational (Real.sqrt 2 + Real.sqrt 3) := by
+  have h2 : (0 : ℝ) ≤ 2 := by norm_num
+  have h3 : (0 : ℝ) ≤ 3 := by norm_num
+  have h6mult : sqrt 2 * sqrt 3 = sqrt 6 := by rw [← sqrt_mul h2]; norm_num
+  have hsix : Irrational (sqrt 6) :=
+    irrational_sqrt_natCast_iff.mpr (by native_decide)
   intro ⟨q, hq⟩
-  have := minpoly_sqrt2_plus_sqrt3
-  rw [show (Real.sqrt 2 + Real.sqrt 3) = (q : ℝ) from hq.symm] at this
-  simp [minpoly.eq_X_sub_C_of_algebraMap_inj] at this
-  sorry
+  have hsq : (q : ℝ) ^ 2 = 5 + 2 * sqrt 6 := by
+    have : (sqrt 2 + sqrt 3) ^ 2 = 5 + 2 * sqrt 6 := by
+      have : (sqrt 2 + sqrt 3) ^ 2 = sqrt 2 ^ 2 + 2 * (sqrt 2 * sqrt 3) + sqrt 3 ^ 2 := by ring
+      rw [this, sq_sqrt h2, sq_sqrt h3, h6mult]; ring
+    rw [hq]; exact this
+  have h6eq : sqrt 6 = ((q : ℝ) ^ 2 - 5) / 2 := by linarith
+  exact hsix ⟨(q ^ 2 - 5) / 2, by push_cast; linarith⟩
 
 end Sqrt2PlusSqrt3IrrationalOQ03
