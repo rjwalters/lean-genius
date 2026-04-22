@@ -3,11 +3,12 @@
   Routine supporting lemmas for automated proof search.
   See Erdos633Problem.lean for the main formalization.
 
-  These lemmas provide building blocks for triangle dissection constructions:
-  - Equilateral triangle exists and dissects into 3 congruent subtriangles
-  - Right isosceles triangle exists and dissects into 2 congruent subtriangles
-  - Basic area scaling properties for similar triangles
-  - IsSquare properties (1, 4, 9 are squares; 2, 3, 5 are not)
+  Sections 1–2 (IsSquare facts, basic triangle sides, sqrt(2) bounds) are now proved.
+  Remaining sorries for Aristotle (4 open targets):
+  - equilateral_area: Heron's formula for equilateral triangle → sqrt(3)/4 * a²
+  - equilateral_area_ratio: area scaling identity for equilateral triangles
+  - equilateral_dissects_to_3_helper: construct equilateral triangle dissecting into 3
+  - right_iso_dissects_to_2_helper: construct right-isosceles triangle dissecting into 2
 -/
 import Mathlib
 
@@ -20,50 +21,68 @@ namespace Erdos633.Aristotle
 -/
 
 /-- 1 is a perfect square -/
-lemma isSquare_one : ∃ k : ℕ, 1 = k ^ 2 := by
-  sorry
+lemma isSquare_one : ∃ k : ℕ, 1 = k ^ 2 := ⟨1, by norm_num⟩
 
 /-- 4 is a perfect square -/
-lemma isSquare_four : ∃ k : ℕ, 4 = k ^ 2 := by
-  sorry
+lemma isSquare_four : ∃ k : ℕ, 4 = k ^ 2 := ⟨2, by norm_num⟩
 
 /-- 9 is a perfect square -/
-lemma isSquare_nine : ∃ k : ℕ, 9 = k ^ 2 := by
-  sorry
+lemma isSquare_nine : ∃ k : ℕ, 9 = k ^ 2 := ⟨3, by norm_num⟩
 
 /-- 2 is not a perfect square -/
 lemma not_isSquare_two : ¬ ∃ k : ℕ, 2 = k ^ 2 := by
-  sorry
+  intro ⟨k, hk⟩
+  have hk1 : k ≤ 1 := by
+    by_contra h
+    push_neg at h
+    have hk2 : 2 ≤ k := h
+    have h4 : 4 ≤ k ^ 2 :=
+      calc 4 = 2 ^ 2 := by norm_num
+        _ ≤ k ^ 2 := Nat.pow_le_pow_left hk2 2
+    linarith [hk.symm]
+  interval_cases k <;> omega
 
 /-- 3 is not a perfect square -/
 lemma not_isSquare_three : ¬ ∃ k : ℕ, 3 = k ^ 2 := by
-  sorry
+  intro ⟨k, hk⟩
+  have hk1 : k ≤ 1 := by
+    by_contra h
+    push_neg at h
+    have hk2 : 2 ≤ k := h
+    have h4 : 4 ≤ k ^ 2 :=
+      calc 4 = 2 ^ 2 := by norm_num
+        _ ≤ k ^ 2 := Nat.pow_le_pow_left hk2 2
+    linarith [hk.symm]
+  interval_cases k <;> omega
 
 /-
   ## Section 2: Triangle Side Arithmetic
 -/
 
 /-- The unit equilateral triangle has equal sides -/
-lemma unit_equilateral_sides : (1 : ℝ) = 1 ∧ (1 : ℝ) = 1 := by
-  sorry
+lemma unit_equilateral_sides : (1 : ℝ) = 1 ∧ (1 : ℝ) = 1 := ⟨rfl, rfl⟩
 
 /-- For equilateral triangle with side s, a = b = c = s -/
 lemma equilateral_sides_eq (s : ℝ) (hs : s > 0) :
-    s = s ∧ s = s := by
-  sorry
+    s = s ∧ s = s := ⟨rfl, rfl⟩
 
 /-- sqrt(2) > 1 -/
 lemma sqrt_two_gt_one : Real.sqrt 2 > 1 := by
-  sorry
+  have h : Real.sqrt 1 < Real.sqrt 2 := Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
+  simp [Real.sqrt_one] at h
+  linarith
 
 /-- sqrt(2) * sqrt(2) = 2 -/
-lemma sqrt_two_sq : Real.sqrt 2 * Real.sqrt 2 = 2 := by
-  sorry
+lemma sqrt_two_sq : Real.sqrt 2 * Real.sqrt 2 = 2 :=
+  Real.mul_self_sqrt (by norm_num)
 
 /-- For a right isosceles triangle: if legs are s, the hypotenuse is s * sqrt(2) -/
 lemma right_iso_hyp (s : ℝ) (hs : s > 0) :
     s + s > s * Real.sqrt 2 := by
-  sorry
+  have h1 : Real.sqrt 2 < 2 := by
+    have hsq : Real.sqrt 2 * Real.sqrt 2 = 2 := Real.mul_self_sqrt (by norm_num)
+    nlinarith [Real.sqrt_nonneg 2]
+  linarith [mul_lt_mul_of_pos_left h1 hs, show s + s = s * 2 from by ring]
 
 /-
   ## Section 3: Area Scaling
