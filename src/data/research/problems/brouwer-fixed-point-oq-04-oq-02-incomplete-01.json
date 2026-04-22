@@ -1,0 +1,52 @@
+{
+  "slug": "brouwer-fixed-point-oq-04-oq-02-incomplete-01",
+  "title": "Complete Nash Equilibrium Existence via Nash's Brouwer Argument",
+  "tier": "B",
+  "significance": 7,
+  "tractability": 7,
+  "status": "available",
+  "phase": "OBSERVE",
+  "path": "full",
+  "started": "2026-04-22",
+  "tags": [
+    "topology",
+    "game-theory",
+    "nash-equilibrium",
+    "brouwer",
+    "incomplete",
+    "fixed-point"
+  ],
+  "problemStatement": "Prove `brouwer_product_simplex`: for any continuous self-map of the ProductSimplex ∏ᵢ Δᵢ, there exists a fixed point. This eliminates the sole remaining axiom in the Nash equilibrium existence proof (brouwer-fixed-point-oq-04-oq-02).",
+  "relatedProofs": [
+    "brouwer-fixed-point",
+    "brouwer-fixed-point-oq-04",
+    "brouwer-fixed-point-oq-04-oq-02"
+  ],
+  "knownResults": [
+    "Nash (1950): Nash equilibrium exists for finite games via Brouwer FPT on product simplex",
+    "ProductSimplex is compact and convex (finite product of standard simplices)",
+    "The parent proof (OQ-04-OQ-02) has 0 sorries, 15 proved theorems, 1 axiom remaining"
+  ],
+  "significance_note": "Completing this gives a fully axiom-free machine-verified proof of Nash equilibrium existence (Nobel Prize 1994).",
+  "references": [
+    "Nash (1950) - Equilibrium points in N-person games, PNAS",
+    "BrouwerFixedPointOQ04OQ02.lean - Parent proof file"
+  ],
+  "currentState": {
+    "phase": "OBSERVE",
+    "sorries": 1,
+    "axioms": 1,
+    "progress": "Initial selection. Workspace initialized. Mathlib search pending."
+  },
+  "knowledge": {
+    "progressSummary": "Selected for research 2026-04-22. Axiom: brouwer_product_simplex for ProductSimplex G.",
+    "insights": [],
+    "builtItems": [],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Search Mathlib for Brouwer FPT on compact convex sets",
+      "Check if ProductSimplex G is IsCompact and Convex in Lean 4",
+      "Explore Fin.appendEquiv for embedding approach"
+    ]
+  }
+}
