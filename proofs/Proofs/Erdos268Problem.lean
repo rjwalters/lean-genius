@@ -666,11 +666,10 @@ private lemma exists_infinite_harmonic_set (s : ℝ) (hs : 0 < s) :
     -- A' = (greedySet s \ {M}) ∪ consecutiveProductsSet M (disjoint)
     -- The finite piece is summable, the consecutive piece is summable.
     -- By disjoint union summability, A' is summable.
-    have hAconv : HasConvergentHarmonicSubseries A' := by
-      unfold HasConvergentHarmonicSubseries A'
-      -- TODO: use Set.summable_union_disjoint or equivalent Lean 4 API
-      -- Mathematically: finite + summable = summable over disjoint union
-      sorry
+    have hAconv : HasConvergentHarmonicSubseries A' :=
+      -- HasSum.add_disjoint: combining two HasSum witnesses over disjoint sets
+      -- gives HasSum over the union; .summable converts to Summable
+      (hconv_diff.hasSum.add_disjoint hdisj hconv_consec.hasSum).summable
     -- Sum computations
     -- Step 1: greedySet s = (greedySet s \ {M}) ∪ {M}, disjoint
     have hdisjM : Disjoint (greedySet s \ {M}) {M} := Set.disjoint_sdiff_self_left
@@ -828,27 +827,28 @@ theorem coordinate_decreasing (A : Set ℕ) (hA : A.Infinite)
     (i j : ℕ) (hij : i < j) :
     shiftedHarmonicSum A j < shiftedHarmonicSum A i := by
   unfold shiftedHarmonicSum
-  apply tsum_lt_tsum
-  · -- Pointwise: 1/(n+j) ≤ 1/(n+i) since j > i and n ≥ 1
+  obtain ⟨n₀, hn₀⟩ := hA.nonempty
+  have hn₀_pos : 0 < n₀ := Nat.pos_of_ne_zero (fun h => h0 (h ▸ hn₀))
+  -- Use Summable.tsum_lt_tsum: functions over A, strict witness at n₀
+  apply (shifted_summable A j hconv).tsum_lt_tsum (i := ⟨n₀, hn₀⟩)
+  · -- h : pointwise ≤ (1/(n+j) ≤ 1/(n+i) since j > i)
     intro ⟨n, hn⟩
     have hn_pos : 0 < n := Nat.pos_of_ne_zero (fun h => h0 (h ▸ hn))
     apply one_div_le_one_div_of_le
-    · exact_mod_cast Nat.add_pos_left hn_pos i
-    · exact_mod_cast Nat.add_le_add_left (Nat.le_of_lt hij) n
-  · -- Strict at some point
-    obtain ⟨n, hn⟩ := hA.nonempty
-    have hn_pos : 0 < n := Nat.pos_of_ne_zero (fun h => h0 (h ▸ hn))
-    exact ⟨⟨n, hn⟩, by
-      apply one_div_lt_one_div_of_lt
-      · exact_mod_cast Nat.add_pos_left hn_pos i
-      · exact_mod_cast Nat.add_lt_add_left hij n⟩
+    · simp only [Subtype.coe_mk]; exact_mod_cast Nat.add_pos_left hn_pos i
+    · simp only [Subtype.coe_mk]; exact_mod_cast Nat.add_le_add_left (Nat.le_of_lt hij) n
+  · -- hi : strict at n₀
+    simp only [Subtype.coe_mk]
+    apply one_div_lt_one_div_of_lt
+    · exact_mod_cast Nat.add_pos_left hn₀_pos i
+    · exact_mod_cast Nat.add_lt_add_left hij n₀
   · exact shifted_summable A i hconv
 
 /-- The first coordinate is always the largest (for positive-element sets). -/
 theorem first_coordinate_largest (d : ℕ) (hd : d ≥ 2) (A : Set ℕ)
     (hA : A.Infinite) (hconv : HasConvergentHarmonicSubseries A)
     (h0 : (0 : ℕ) ∉ A) :
-    ∀ i : Fin d, (harmonicPoint d A) 0 ≥ (harmonicPoint d A) i := by
+    ∀ i : Fin d, (harmonicPoint d A) ⟨0, by omega⟩ ≥ (harmonicPoint d A) i := by
   intro ⟨i, hi⟩
   simp only [harmonicPoint]
   rcases Nat.eq_zero_or_pos i with rfl | hi_pos
@@ -864,7 +864,7 @@ def projectionMap (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) : (Fin d₂ → ℝ) →
 /-- Projection of X_{d₂} lands in X_{d₁} for d₁ ≤ d₂. -/
 theorem projection_preserves (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) :
     projectionMap d₁ d₂ h '' harmonicPointSet d₂ ⊆ harmonicPointSet d₁ := by
-  intro x ⟨y, hy, rfl⟩
+  rintro x ⟨y, hy, rfl⟩
   obtain ⟨A, hAinf, hAconv, rfl⟩ := hy
   exact ⟨A, hAinf, hAconv, rfl⟩
 
@@ -883,22 +883,17 @@ theorem squares_convergent : HasConvergentHarmonicSubseries squaresSet := by
     simp only [e, Subtype.ext_iff] at h
     nlinarith [Nat.succ_pos a, Nat.succ_pos b]
   have hsurj : Function.Surjective e := by
-    intro ⟨n, k, hk, hkn⟩
-    refine ⟨k - 1, ?_⟩
-    simp only [e, Subtype.ext_iff]
-    omega
+    rintro ⟨n, k, hk, hkn⟩
+    exact ⟨k - 1, Subtype.ext (by simp only [e]; rw [Nat.sub_add_cancel hk, hkn])⟩
   rw [← (Equiv.ofBijective e ⟨hinj, hsurj⟩).summable_iff]
-  -- Dominated by p-series Σ 1/n² (p = 2 > 1)
-  have hpseries : Summable (fun n : ℕ => ((n : ℝ) ^ (2 : ℝ))⁻¹) :=
-    Real.summable_nat_rpow_inv.mpr (by norm_num : (1 : ℝ) < 2)
-  apply Summable.of_nonneg_of_le
-  · intro k; positivity
-  · intro k
-    show (1 : ℝ) / ↑((k + 1) ^ 2) ≤ ((↑(k + 1) : ℝ) ^ (2 : ℝ))⁻¹
-    rw [Nat.cast_pow, one_div]
-    congr 1
-    push_cast; ring
-  · exact hpseries.comp_injective (fun a b h => by omega : Function.Injective (· + 1))
+  -- After bijection: Summable (fun k : ℕ => 1/↑↑(e k)) = Summable (fun k => 1/(k+1)²)
+  -- This is the Basel nat-pow series (p=2) shifted by 1
+  apply (summable_nat_pow_inv.mpr (by norm_num : 1 < 2) |>.comp_injective
+      (show Function.Injective (· + 1 : ℕ → ℕ) from fun a b h => add_right_cancel h)).congr
+  intro k
+  simp only [Function.comp, Equiv.ofBijective_apply, e, Subtype.coe_mk]
+  push_cast
+  rw [one_div]
 
 /-- The harmonic point for the squares set. -/
 noncomputable def squaresPoint (d : ℕ) : Fin d → ℝ :=

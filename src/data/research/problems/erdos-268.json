@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: d=1 ⊇ direction implemented via exists_infinite_harmonic_set; 1 Lean API sorry remains (hAconv)",
+    "progressSummary": "PROGRESS: d=0 and d=1 fully proved; 1 sorry remains: d≥2 path-connectedness (Kovač-Tao structural analysis)",
     "builtItems": [
       "harmonicPointSet_path_connected d=0 case (complete)",
       "harmonicPointSet_path_connected d=1 framework (1 sorry: greedy construction)",
@@ -60,7 +60,8 @@
       "consecutiveProductsSet_convergent: HasSum via bijection + partial_sum_consec (Erdos268Problem.lean:527)",
       "consecutiveProductsSet_sum: harmonicSubseriesSum = 1/n via telescoping (Erdos268Problem.lean:578)",
       "greedySet_nonempty: non-empty for s>0 by harmonic divergence contradiction (Erdos268Problem.lean:491)",
-      "exists_infinite_harmonic_set: for any s>0, ∃ infinite A with convergent sum = s (Erdos268Problem.lean:628)"
+      "exists_infinite_harmonic_set: for any s>0, ∃ infinite A with convergent sum = s (Erdos268Problem.lean:628)",
+      "Session 5: exists_infinite_harmonic_set fully proved — hAconv sorry resolved via (hconv_diff.hasSum.add_disjoint hdisj hconv_consec.hasSum).summable"
     ],
     "insights": [
       "d=1 tractable: harmonicPointSet 1 = Set.Ioi 0 via greedy construction",
@@ -76,13 +77,15 @@
       "greedySet_sum proved without sorry via Finset.sum_filter + hasSum_iff_tendsto_nat_of_nonneg",
       "greedySet_infinite is FALSE for rational s that is a finite harmonic sum (e.g., s=1/2={2})",
       "Fix for greedySet_infinite: replace max element with consecutiveProductsSet (infinite, same sum)",
-      "exists_infinite_harmonic_set: handles both infinite (direct) and finite (replace max M with consecutiveProductsSet M) greedy cases"
+      "exists_infinite_harmonic_set: handles both infinite (direct) and finite (replace max M with consecutiveProductsSet M) greedy cases",
+      "HasSum.add_disjoint (from @[to_additive] of HasProd.mul_disjoint) is the right API for combining two HasSum witnesses over disjoint sets into a HasSum over the union",
+      "coordinate_decreasing requires tsum_lt_tsum via method form; standalone tsum_lt_tsum only exists for ℝ≥0/ℝ≥0∞"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Find Lean 4 API for Set.summable_union_disjoint to close hAconv sorry in exists_infinite_harmonic_set",
-      "Once hAconv closed, d=1 case is complete",
-      "Address d>=2 via Kovač-Tao 2024 structural analysis (long-term)"
+      "Resolve d≥2 path-connectedness sorry — would require formalizing Kovač-Tao continuous path construction",
+      "Consider alternative: show X_d path-connected via its convex hull or star-shapedness",
+      "Potential: for d=2, check if path can be constructed via parameterized greedy sets"
     ],
     "markdown": ""
   },
