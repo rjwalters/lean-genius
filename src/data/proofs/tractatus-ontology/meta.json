@@ -346,5 +346,27 @@
       "leanType": "∃ (p q : Proposition S), Proposition.semEq p q ∧ ¬ Proposition.structEq p q"
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Expressibility limits as a theme: Gödel's incompleteness (limits of formal provability) and the Tractatus's 'showing vs. saying' distinction (limits of propositional expressibility) are parallel results about what formal systems cannot express — both made rigorous here via Lean."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-03-oq-01-oq-03",
+      "relationship": "related",
+      "description": "Categorical diagonal argument: Gödel as Lawvere instance (OQ-03) and the Tractatus constrained_independence_fails theorem both formalize philosophical limits of self-reference and expressibility in model-theoretic terms."
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "Decidability limits: Turing's undecidability and Wittgenstein's 'whereof one cannot speak' both express fundamental boundaries on what can be computed/expressed — the Tractatus formalized here is the philosophical precursor to formal undecidability results."
+    },
+    {
+      "targetId": "russell-1-plus-1",
+      "relationship": "related",
+      "description": "Logical foundations connection: Russell's Principia Mathematica (1+1=2 from type theory) and Wittgenstein's Tractatus were written in direct dialogue — both attempt to ground mathematics/logic in formal systems, reaching opposite conclusions about the limits of formalism."
+    }
+  ],
   "sorries": 0
 }
