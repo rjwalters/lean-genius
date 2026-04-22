@@ -1,0 +1,80 @@
+{
+  "id": "sqrt2-minpoly-oq-01",
+  "title": "Minimal Polynomial of √n over ℚ: Eisenstein Generalization",
+  "slug": "sqrt2-minpoly-oq-01",
+  "description": "A complete Lean 4 proof that minpoly ℚ (√n) = X² - n for any natural number n with a squarefree prime factor, generalizing the √2 case via the Eisenstein criterion.",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "algebraic-number-theory",
+      "minimal-polynomial",
+      "eisenstein",
+      "squarefree",
+      "field-extensions",
+      "sqrt"
+    ],
+    "mathlib_version": "4.26.0",
+    "proofRepoPath": "Proofs/Sqrt2MinpolyOQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 130,
+    "dateAdded": "2026-04-23",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt_eq_rpow",
+        "description": "√x = x ^ (1/2) bridging sqrt and rpow representations",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "CubeRoot2IrrationalOQ03.minpoly_nthRoot_eq",
+        "description": "General nth-root minimal polynomial theorem: minpoly ℚ (m^(1/n)) = X^n - m",
+        "module": "Proofs.CubeRoot2IrrationalOQ03"
+      },
+      {
+        "theorem": "Nat.squarefree_iff_prime_squarefree",
+        "description": "n is squarefree iff no prime p satisfies p^2 | n",
+        "module": "Mathlib.RingTheory.Squarefree.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Bridge between Real.sqrt and rpow representation via Real.sqrt_eq_rpow",
+      "General theorem: minpoly ℚ (√n) = X² - n for n with squarefree prime factor",
+      "Squarefree corollary: all squarefree n ≥ 2 covered uniformly",
+      "Algebraic degree theorem: natDegree(minpoly ℚ √n) = 2",
+      "Field extension degree: [ℚ(√n) : ℚ] = 2",
+      "Non-perfect-square corollary: squarefree prime factor implies not a perfect square",
+      "Concrete examples: √2, √3, √5, √6, √7, √10, √12, √20"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Eisenstein irreducibility criterion (1850) and Gauss's lemma provide a powerful toolkit for proving that polynomials of the form X^n - m are irreducible over ℚ. The case n=2, m=2 gives the classical result that minpoly ℚ (√2) = X² - 2, which is the prototype for all quadratic extensions.\n\nThis generalization shows that the same Eisenstein argument works for minpoly ℚ (√n) = X² - n whenever n has a prime factor p with p | n but p² ∤ n. This covers all squarefree n ≥ 2 and many composite numbers like 12, 20, 45, etc.",
+    "problemStatement": "For which natural numbers n does `minpoly ℚ (Real.sqrt n) = X² - n`?\n\n**Answer**: Whenever n has a prime factor p with p | n but p² ∤ n (the Eisenstein condition at p). This includes:\n- All squarefree n ≥ 2\n- Numbers like n = 12 (p=3), n = 20 (p=5), n = 45 (p=5), ...",
+    "proofStrategy": "1. **Bridge representations**: `Real.sqrt n = n ^ (1/2 : ℝ)` via `Real.sqrt_eq_rpow`.\n2. **Apply general theorem**: `CubeRoot2IrrationalOQ03.minpoly_nthRoot_eq 2 n p` gives `X² - n = minpoly ℚ (n^(1/2))` when p | n and p² ∤ n.\n3. **Squarefree case**: Extract a squarefree prime factor via `Nat.squarefree_iff_prime_squarefree` and `Nat.exists_prime_and_dvd`.",
+    "keyInsights": [
+      "Real.sqrt_eq_rpow bridges the gap between Mathlib's Real.sqrt API and the general rpow-based nth-root theory",
+      "The Eisenstein condition (p | n but p² ∤ n) is equivalent to n having an odd prime factor valuation, which covers all non-perfect-squares with squarefree part",
+      "Squarefree n ≥ 2 automatically satisfies the Eisenstein condition at any prime factor",
+      "The proof reuses CubeRoot2IrrationalOQ03's general infrastructure, specializing to degree 2"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "Sqrt2MinpolyOQ01.minpoly_sqrt_of_sqfree_factor",
+      "statement": "minpoly ℚ (Real.sqrt n) = X ^ 2 - C (n : ℚ)",
+      "description": "Main result: minimal polynomial of √n when n has a squarefree prime factor"
+    },
+    {
+      "name": "Sqrt2MinpolyOQ01.minpoly_sqrt_of_squarefree",
+      "statement": "minpoly ℚ (Real.sqrt n) = X ^ 2 - C (n : ℚ) for squarefree n ≥ 2",
+      "description": "Corollary for squarefree n"
+    },
+    {
+      "name": "Sqrt2MinpolyOQ01.adjoin_sqrt_finrank",
+      "statement": "Module.finrank ℚ ℚ⟮Real.sqrt n⟯ = 2",
+      "description": "Field extension degree [ℚ(√n) : ℚ] = 2"
+    }
+  ],
+  "sorries": []
+}
