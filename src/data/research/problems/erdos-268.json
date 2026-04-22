@@ -40,14 +40,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Prior survey (session 1) classified main sorry as HARD for general d but identified d=0,1 as tractable. 1 axiom (erdos_268_solved) and 1 sorry (harmonicPointSet_path_connected) remain.",
+    "progressSummary": "PROGRESS: greedySet_sum proved; 2 sorries remain (greedySet_infinite edge case + d>=2)",
     "builtItems": [
       "harmonicPointSet_path_connected d=0 case (complete)",
       "harmonicPointSet_path_connected d=1 framework (1 sorry: greedy construction)",
       "all_coordinates_positive rewritten with A.Infinite + correct tsum_pos API",
       "coordinate_decreasing rewritten with tsum_lt_tsum method + explicit witness",
       "squares_convergent bijection proof fixed (surjectivity lambda + Nat.succ_injective)",
-      "powers_convergent rintro fix"
+      "powers_convergent rintro fix",
+      "greedyBudget: primitive recursion for harmonic budget tracking (Part VIb)",
+      "greedySet: set of naturals selected by greedy algorithm",
+      "greedyBudget_eq_s_sub_sum: key identity proved by induction",
+      "greedyBudget_tendsto_zero: harmonic tail divergence argument",
+      "greedySet_summable: convergent via partial sum bound",
+      "greedySet_sum: harmonicSubseriesSum (greedySet s) = s (PROVED, no sorry)",
+      "consecutiveProductsSet n: {k(k+1) | k>=n} with partial_sum_consec telescope identity",
+      "consecutiveProductsSet_infinite: proved via injectivity"
     ],
     "insights": [
       "d=1 tractable: harmonicPointSet 1 = Set.Ioi 0 via greedy construction",
@@ -58,14 +66,18 @@
       "d≥2: deferred, requires Kovač-Tao structural analysis",
       "Mathlib API: tsum_pos and tsum_lt_tsum are methods on Summable for ℝ, not standalone (only standalone for ℝ≥0)",
       "positivity tactic handles sums of Nat casts where Nat.cast_nonneg fails",
-      "Nat.succ_injective avoids coercion issues vs omega in Function.Injective proofs"
+      "Nat.succ_injective avoids coercion issues vs omega in Function.Injective proofs",
+      "greedyBudget_tendsto_zero proved: if inf L > 0, harmonic tail divergence forces budget < 0",
+      "greedySet_sum proved without sorry via Finset.sum_filter + hasSum_iff_tendsto_nat_of_nonneg",
+      "greedySet_infinite is FALSE for rational s that is a finite harmonic sum (e.g., s=1/2={2})",
+      "Fix for greedySet_infinite: replace max element with consecutiveProductsSet (infinite, same sum)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Formalize greedy harmonic construction: given s>0, build infinite A with Σ_{n∈A} 1/n = s",
-      "Define greedyHarmonicSet and prove it is infinite with exact harmonic sum",
-      "Try aristotle_submit on greedy construction sorry",
-      "For d=2: explore if X₂ is star-shaped or contains convex subset connecting all points"
+      "Prove consecutiveProductsSet_sum: harmonicSubseriesSum (consecutiveProductsSet n) = 1/n",
+      "Fix greedySet_infinite via union: (greedySet s \\ {M}) union consecutiveProductsSet M",
+      "Submit greedySet_infinite to Aristotle as HARD sorry",
+      "Address d>=2 case via Kovac-Tao structural analysis"
     ],
     "markdown": ""
   },
@@ -78,6 +90,8 @@
     "completion"
   ],
   "relatedProofs": [
+    "erdos-2",
+    "erdos-26",
     "erdos-268",
     "harmonic-series"
   ],
@@ -92,5 +106,40 @@
       "Mathlib.Analysis.SpecificLimits.Basic"
     ]
   },
-  "started": "2026-04-21"
+  "started": "2026-04-21",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos268Aristotle.lean",
+      "filename": "Erdos268Aristotle.lean",
+      "lineCount": 143,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos268Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos268Problem.lean",
+      "filename": "Erdos268Problem.lean",
+      "lineCount": 498,
+      "theoremCount": 17,
+      "axiomCount": 1,
+      "defCount": 15,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos268Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos268ProblemAristotle.lean",
+      "filename": "Erdos268ProblemAristotle.lean",
+      "lineCount": 140,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 5,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos268ProblemAristotle.lean"
+    }
+  ]
 }
