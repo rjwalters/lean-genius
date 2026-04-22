@@ -179,6 +179,13 @@
       "summary": "Proves solvability of $A_n$ for $n \\leq 4$ and non-solvability for $n \\geq 5$ (complete $A_n$ classification). Group cardinalities from $|S_2|=2$ to $|S_6|=720$. Solvability preservation: subgroups, quotients, isomorphisms. Specific non-solvability of $S_5, S_6, S_7, S_8$ and $A_6, A_7$."
     },
     {
+      "id": "specific-non-solvable",
+      "title": "Specific Non-Solvability: S₅–S₈ and A₅–A₇",
+      "startLine": 366,
+      "endLine": 406,
+      "summary": "Concrete non-solvability witnesses for S₅, S₆, S₇, S₈ and A₅, A₆, A₇ — each a one-liner applying `symmetric_not_solvable_of_five_le` or `alternating_not_solvable_of_five_le`. Includes `symmetric_not_solvable_of_alternating`: if $A_n$ is not solvable then $S_n$ is not solvable (contrapositive of subgroup solvability, proved immediately by `inferInstance`)."
+    },
+    {
       "id": "chain-properties",
       "title": "Chain Properties and Sign Kernel Identity",
       "startLine": 407,
