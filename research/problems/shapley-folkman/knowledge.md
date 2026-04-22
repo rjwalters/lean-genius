@@ -15,6 +15,43 @@ all proved (0 sorries). `reduce_excess_by_one` has 1 sorry remaining (Step 6 per
 
 ---
 
+## Session 2026-04-22 (Session 8) — Case A Sorry-Free; Case B WF Documented
+
+**Mode**: REVISIT
+**Outcome**: Progress — Case A of reduce_excess_by_one now sorry-free; Case B precisely isolated
+
+### What I Did
+
+- Restructured `reduce_excess_by_one` end with `by_cases hcase_A : ε = ε₀`
+- **Case A** (ε = ε₀, neg-index l_min achieves joint min): fully proved, NO sorry
+  - Moved `hD'_subset` proof before the case split (it applies to both cases)
+  - `hnew_point_av`: proved via `rw [hcase_A]` then algebraic calculation: b-weight = 0 exactly
+  - `hD'_not_excess`, `hD'_ssub`: proved from hnew_point_av → `exact ⟨D', ...⟩` ✓
+- **Case B** (ε < ε₀, pos-index achieves joint min): single `sorry` with full proof sketch
+  - Documented: joint minimizer l' has new_point(emb l') = bv(emb l') ∈ convexHull(S)
+  - If bv ∈ S: l' exits excess directly (Carathéodory count = 2 case)
+  - Otherwise: WF descent on N = Σ (Carathéodory vertex count) terminates (Starr 1969)
+  - Full proof requires `DecoratedDecomp` structure tracking vertex/weight data per index
+
+### Key Findings
+
+- Case A is now mathematically complete in the Lean formalization
+- Case B requires adding `DecoratedDecomp` structure (~150-200 lines) with WF recursion
+- The case split is `by_cases hcase_A : ε = ε₀` where ε is the joint min and ε₀ is neg-only min
+- Case B occurs when ∃ l' ∈ pos_indices with sv(emb l')/c'(l') < ε₀
+- In practice: Case A always occurs when all excess indices have Carathéodory count = 2
+
+### Files Modified
+- `proofs/Proofs/ShapleyFolkman.lean`: restructured lines 638-704; Case A is sorry-free
+
+### Sorrys Remaining
+1. `reduce_excess_by_one` Case B (line 704) — WF Carathéodory descent needed
+
+### Next Steps
+1. Define `DecoratedDecomp` carrying per-index Carathéodory data (n_j vertices, positive weights)
+2. Define WF measure N = Σ n_j and prove it decreases: Case A (n_{l_min} removed), Case B (n_{l'} → n_{l'}-1)
+3. Replace Case B sorry with WF recursion on N
+
 ## Session 2026-04-22 (Session 7) — Joint ε Eliminates Case B Sorry
 
 **Mode**: REVISIT

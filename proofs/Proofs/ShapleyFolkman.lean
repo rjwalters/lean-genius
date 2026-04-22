@@ -18,7 +18,7 @@ Mathlib dependencies:
   - Mathlib.LinearAlgebra.AffineSpace.Independent (AffineIndependent)
   - Mathlib.LinearAlgebra.Dimension.Finrank (Module.finrank)
 
-Status: formalized (main theorem stated, proof has sorries for Aristotle)
+Status: formalized — 1 sorry remains in reduce_excess_by_one Case B (WF Carathéodory descent)
 -/
 import Mathlib.Analysis.Convex.Caratheodory
 import Mathlib.Analysis.Convex.Combination
@@ -639,65 +639,69 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
   obtain ⟨hav_mem, _, hsv_pos, hsv_lt1, hpoint_eq⟩ := hl_min_data
   have hcl_min_neg : c' l_min < 0 := by
     simp only [neg_indices, Finset.mem_filter] at hl_min_neg; exact hl_min_neg.2
-  -- new_point(emb l_min) = av(emb l_min) ∈ S(emb l_min):
-  have hnew_point_av : new_point (emb l_min) = av (emb l_min) := by
-    rw [new_point_emb l_min]
-    -- Goal: D.point(emb l_min) + ε • (c' l_min • δ l_min) = av (emb l_min)
-    -- This requires ε = ε₀ at l_min, which holds when the neg-index l_min achieves
-    -- the joint minimum (i.e., the pos-index ratios don't beat ε₀).
-    -- If the joint minimum is achieved by a pos-index l', then new_point(emb l') = bv(emb l')
-    -- (a-weight → 0), and l' may remain excess; a WF descent on Carathéodory count is needed.
-    have hε_eq : ε = ε₀ := by
-      sorry -- Holds when neg-index l_min achieves joint minimum; WF descent needed otherwise.
-    rw [hε_eq]
-    -- Expand D.point using binary repr: D.point = sv·av + (1-sv)·bv; δ = bv - av.
-    -- So: sv·av + (1-sv)·bv + ε₀·c'·(bv-av) = (sv-ε₀·c')·av + (1-sv+ε₀·c')·bv = 1·av + 0·bv
-    have hε₀_eq : ε₀ = (1 - sv (emb l_min)) / (-c' l_min) := hl_min_eq.symm
-    have hcneg : -c' l_min > 0 := neg_pos.mpr hcl_min_neg
-    have hb_weight_zero : (1 - sv (emb l_min)) + ε₀ * c' l_min = 0 := by
-      rw [hε₀_eq]; field_simp [ne_of_gt hcneg]; ring
-    have ha_weight_one : sv (emb l_min) + ε₀ * (-c' l_min) = 1 := by linarith [hb_weight_zero]
-    rw [hpoint_eq]; simp only [δ]
-    have hcoeff_av : sv (emb l_min) - ε₀ * c' l_min = 1 := by linarith [hb_weight_zero]
-    have hcoeff_bv : (1 - sv (emb l_min)) + ε₀ * c' l_min = 0 := hb_weight_zero
-    have key : sv (emb l_min) • av (emb l_min) + (1 - sv (emb l_min)) • bv (emb l_min) +
-               ε₀ • (c' l_min • (bv (emb l_min) - av (emb l_min))) = av (emb l_min) := by
-      have : sv (emb l_min) • av (emb l_min) + (1 - sv (emb l_min)) • bv (emb l_min) +
-             ε₀ • (c' l_min • (bv (emb l_min) - av (emb l_min))) =
-             (sv (emb l_min) - ε₀ * c' l_min) • av (emb l_min) +
-             ((1 - sv (emb l_min)) + ε₀ * c' l_min) • bv (emb l_min) := by
-        simp only [smul_sub, smul_smul, add_smul, sub_smul]; ring
-      rw [this, hcoeff_av, hcoeff_bv, one_smul, zero_smul, add_zero]
-    exact key
-  -- D'.excessIndices does NOT contain emb l_min (since new_point(emb l_min) = av ∈ S):
-  have hD'_not_excess : emb l_min ∉ D'.excessIndices := by
-    simp only [Decomposition.excessIndices, Finset.mem_filter, D']
-    intro ⟨_, hnot⟩
-    exact hnot (hnew_point_av ▸ hav_mem)
-  -- emb l_min IS in D.excessIndices:
-  have hD_excess : emb l_min ∈ D.excessIndices := hemb_mem l_min
-  -- D'.excessIndices ⊆ D.excessIndices (perturbation may reduce, not increase, excess):
-  -- (We leave this as sorry — proving this requires checking all perturbed points carefully)
+  -- D'.excessIndices ⊆ D.excessIndices: all perturbed excess indices were already excess.
+  -- Proof: emb maps into D.excessIndices; non-emb indices have unchanged points.
   have hD'_subset : D'.excessIndices ⊆ D.excessIndices := by
     intro i hi
     simp only [Decomposition.excessIndices, Finset.mem_filter, D'] at hi ⊢
     obtain ⟨hi_t, hi_new⟩ := hi
     refine ⟨hi_t, ?_⟩
     by_cases h : ∃ l : Fin (d + 1), emb l = i
-    · -- i = emb l for some l; emb l ∈ D.excessIndices by hemb_mem
-      obtain ⟨l, rfl⟩ := h
+    · obtain ⟨l, rfl⟩ := h
       simp only [Decomposition.excessIndices, Finset.mem_filter] at hemb_mem
       exact (hemb_mem l).2
-    · -- i ∉ range(emb), so new_point i = D.point i
-      rw [new_point_not_emb i (not_exists.mp h)] at hi_new
+    · rw [new_point_not_emb i (not_exists.mp h)] at hi_new
       exact hi_new
-  -- From subset and strict removal: card strictly decreases.
-  -- D'.excessIndices ⊊ D.excessIndices: subset but not equal (emb l_min is in D but not D').
-  have hD'_ssub : D'.excessIndices ⊂ D.excessIndices := by
-    rw [Finset.ssubset_iff_subset_ne]
-    refine ⟨hD'_subset, fun heq => ?_⟩
-    exact hD'_not_excess (heq ▸ hD_excess)
-  exact ⟨D', Finset.card_lt_card hD'_ssub⟩
+  -- Case split: does the neg-index minimizer l_min achieve the JOINT minimum?
+  --
+  -- Case A (ε = ε₀): neg-index l_min achieves the joint min.
+  --   b-weight at l_min hits 0 exactly → new_point(emb l_min) = av(emb l_min) ∈ S → exits excess.
+  --
+  -- Case B (ε < ε₀): some pos-index l' achieves the joint min (ε = sv(emb l') / c'(l')).
+  --   a-weight at l' hits 0 → new_point(emb l') = bv(emb l') ∈ convexHull(S(emb l')).
+  --   If bv(emb l') ∈ S(emb l'): l' exits excess directly (e.g., when Carathéodory count = 2).
+  --   Otherwise: WF descent on total Carathéodory vertex count (Starr 1969) terminates in Case A.
+  --   Full proof requires a DecoratedDecomp structure tracking vertex counts per excess index.
+  by_cases hcase_A : ε = ε₀
+  · -- Case A: ε = ε₀ (neg-index l_min achieves joint minimum).
+    -- new_point(emb l_min) = av(emb l_min) ∈ S(emb l_min):
+    have hnew_point_av : new_point (emb l_min) = av (emb l_min) := by
+      rw [new_point_emb l_min, hcase_A]
+      -- Expand: sv·av + (1-sv)·bv + ε₀·c'·(bv-av)
+      --        = (sv - ε₀·c')·av + (1-sv+ε₀·c')·bv = 1·av + 0·bv = av
+      rw [hpoint_eq]; simp only [δ]
+      have hcneg : -c' l_min > 0 := neg_pos.mpr hcl_min_neg
+      have hb_weight_zero : (1 - sv (emb l_min)) + ε₀ * c' l_min = 0 := by
+        rw [hl_min_eq]; field_simp [ne_of_gt hcneg]; ring
+      have hcoeff_av : sv (emb l_min) - ε₀ * c' l_min = 1 := by linarith [hb_weight_zero]
+      have hcoeff_bv : (1 - sv (emb l_min)) + ε₀ * c' l_min = 0 := hb_weight_zero
+      have key : sv (emb l_min) • av (emb l_min) + (1 - sv (emb l_min)) • bv (emb l_min) +
+                 ε₀ • (c' l_min • (bv (emb l_min) - av (emb l_min))) = av (emb l_min) := by
+        have : sv (emb l_min) • av (emb l_min) + (1 - sv (emb l_min)) • bv (emb l_min) +
+               ε₀ • (c' l_min • (bv (emb l_min) - av (emb l_min))) =
+               (sv (emb l_min) - ε₀ * c' l_min) • av (emb l_min) +
+               ((1 - sv (emb l_min)) + ε₀ * c' l_min) • bv (emb l_min) := by
+          simp only [smul_sub, smul_smul, add_smul, sub_smul]; ring
+        rw [this, hcoeff_av, hcoeff_bv, one_smul, zero_smul, add_zero]
+      exact key
+    have hD'_not_excess : emb l_min ∉ D'.excessIndices := by
+      simp only [Decomposition.excessIndices, Finset.mem_filter, D']
+      intro ⟨_, hnot⟩
+      exact hnot (hnew_point_av ▸ hav_mem)
+    have hD_excess : emb l_min ∈ D.excessIndices := hemb_mem l_min
+    have hD'_ssub : D'.excessIndices ⊂ D.excessIndices :=
+      Finset.ssubset_iff_subset_ne.mpr ⟨hD'_subset,
+        fun heq => hD'_not_excess (heq ▸ hD_excess)⟩
+    exact ⟨D', Finset.card_lt_card hD'_ssub⟩
+  · -- Case B: ε < ε₀ (a pos-index achieves the joint minimum; WF descent needed).
+    -- The joint minimizer l' ∈ pos_indices satisfies ε = sv(emb l') / c'(l'), so:
+    --   new_point(emb l') = bv(emb l') ∈ convexHull(S(emb l'))  [from new_mem_convexHull]
+    -- When bv(emb l') ∈ S(emb l') (e.g., binary Carathéodory count = 2): l' exits excess.
+    -- When bv(emb l') ∉ S(emb l'): bv has n-1 Carathéodory vertices (Starr 1969 WF).
+    -- Full proof: WF induction on N = Σ_{j excess} (Carathéodory vertex count of D.point j),
+    --   using a DecoratedDecomp structure that carries explicit vertex/weight data per index.
+    --   Each perturbation step: Case A exits excess; Case B decreases N by 1. N ≥ 2*(d+1).
+    sorry
 
 /-
 Part 5: Main Theorem Proof (from reduction step)
