@@ -107,6 +107,28 @@
       "Are there dimension-stable spaces with additional regularity properties (e.g., Hausdorff, first-countable) for all $n \\geq 2$? Or does dimension-stability at $n \\geq 2$ necessarily require separation axiom violations?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-909",
+      "relationship": "extends",
+      "description": "Parent: the Erdős #909 dimension product inequality (dim(X×Y) ≤ dim(X)+dim(Y)). This OQ focuses on the equality case — dimension-stable spaces where dim(S×S) = dim(S)."
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "related",
+      "description": "Related topology: Borsuk-Ulam uses covering dimension of spheres (dim(Sⁿ) = n). Dimension-stability of Sⁿ (dim(Sⁿ×Sⁿ) = 2n ≠ n) contrasts with the pathological dimension-stable spaces studied here."
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "Related: Brouwer's theorem uses topological dimension via simplicial homology on dim-n disks. Dimension-stability of contractible spaces is an open question directly relevant to both problems."
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "related",
+      "description": "Foundational: IVT characterizes covering dimension 1 (connected spaces where removing a point disconnects). The general covering dimension axiomatized here extends this characterization to all topological dimensions."
+    }
+  ],
   "leanFile": {
     "axiomCount": 2,
     "lineCount": 255,

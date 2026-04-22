@@ -120,5 +120,27 @@
       "Can the `EuclideanSpace ℝ (Fin d)` formalization in Mathlib support a Lean proof of the greedy lower bound $F_d(n) \\geq \\Omega(n^{2/(d+1)})$, at least for small fixed $d$?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1206",
+      "relationship": "related",
+      "description": "Sibling problem on pairwise distinctness: #1206 (Sidon sets in cube numbers) and #1208 (distinct pairwise distances) both ask for large subsets with pairwise distinctness conditions — sums vs. distances."
+    },
+    {
+      "targetId": "erdos-1211",
+      "relationship": "related",
+      "description": "Neighbor in the Erdős 1200s cluster: both involve quantitative extremal questions about structured subsets with density/size constraints from the same era of Erdős's work."
+    },
+    {
+      "targetId": "erdos-530",
+      "relationship": "related",
+      "description": "Structural parallel: #530 (max Sidon subset of {1,...,N}) and #1208 (max distance-Sidon subset of n points in ℝᵈ) both ask for the largest subset with a pairwise distinctness property in different settings."
+    },
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "related",
+      "description": "Geometric measurement companion: isoperimetric inequalities in ℝᵈ provide the geometric framework for counting distances, relevant to the greedy construction and unit-distance bounds used in F_d(n) estimates."
+    }
+  ],
   "sorries": 1
 }
