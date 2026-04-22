@@ -54,9 +54,81 @@
       "The Eisenstein condition at p (p | m but p² ∤ m) is equivalent to: m is not divisible by p to an even power at this prime",
       "This condition implies m is NOT a perfect n-th power: if m = k^n then v_p(m) = n·v_p(k) ≥ 0 or ≥ n, never exactly 1",
       "The proof works uniformly for all n ≥ 2, covering square, cube, fourth, fifth roots, etc.",
-      "The squarefree prime factor condition is NOT necessary — it's sufficient. X² - 8 is also irreducible but not Eisenstein."
+      "The squarefree prime factor condition is NOT necessary — it's sufficient. X² - 8 is also irreducible but not Eisenstein.",
+      "The proof architecture — Eisenstein (ℤ) → Gauss → minimal polynomial → field degree — is a reusable template for any irreducibility argument in algebraic number theory."
     ]
   },
+  "sections": [
+    {
+      "id": "eisenstein-int",
+      "title": "Part I: Eisenstein Criterion for X^n - m",
+      "startLine": 41,
+      "endLine": 95,
+      "summary": "Proves X^n - m is ℤ-irreducible (private) then ℚ-irreducible (public) using Eisenstein at a squarefree prime factor, transferred to ℚ by Gauss's lemma.",
+      "mathContext": "Eisenstein criterion at prime ideal $(p)$: leading coefficient $1 \\notin (p)$, all lower coefficients in $(p)$ (since $p \\mid m$), constant term $\\notin (p)^2$ (since $p^2 \\nmid m$). Gauss's lemma: primitive ℤ-irreducible implies ℚ-irreducible."
+    },
+    {
+      "id": "root-integral",
+      "title": "Part II: Root Identity and Integrality",
+      "startLine": 96,
+      "endLine": 111,
+      "summary": "Proves (m^(1/n))^n = m (root identity) and that m^(1/n) is integral over ℚ (needed for minimal polynomial theory).",
+      "mathContext": "$(m^{1/n})^n = m$ via `Real.rpow_mul`. Integrality: $m^{1/n}$ satisfies the monic polynomial $X^n - m \\in \\mathbb{Q}[X]$."
+    },
+    {
+      "id": "minpoly",
+      "title": "Part III: Minimal Polynomial Identification",
+      "startLine": 113,
+      "endLine": 131,
+      "summary": "Identifies minpoly ℚ (m^(1/n)) = X^n - m using the irreducibility + monic + root-witness characterization.",
+      "mathContext": "`minpoly.eq_of_irreducible_of_monic`: an irreducible monic polynomial with $\\alpha$ as a root equals $\\mathrm{minpoly}(F, \\alpha)$."
+    },
+    {
+      "id": "degree",
+      "title": "Part IV: Algebraic and Field Extension Degrees",
+      "startLine": 133,
+      "endLine": 153,
+      "summary": "Derives natDegree(minpoly) = n and the field extension degree [ℚ(m^(1/n)) : ℚ] = n.",
+      "mathContext": "`IntermediateField.adjoin.finrank`: for integral $\\alpha$, $[F(\\alpha) : F] = \\deg(\\mathrm{minpoly}(F, \\alpha))$."
+    },
+    {
+      "id": "nonperfect",
+      "title": "Part V: Non-Perfect-Power Criterion",
+      "startLine": 155,
+      "endLine": 173,
+      "summary": "Proves m is not a perfect n-th power when m has a squarefree prime factor, via a clean p-divisibility argument.",
+      "mathContext": "If $m = k^n$ and $p \\mid m$, then $p \\mid k$, so $p^2 \\mid k^2 \\mid k^n = m$, contradicting $p^2 \\nmid m$."
+    },
+    {
+      "id": "examples",
+      "title": "Part VI: Concrete Applications",
+      "startLine": 174,
+      "endLine": 204,
+      "summary": "Four example applications: ∛6, ∛10, ⁵√12, ∜30, each proved in 2 lines via norm_num witnesses.",
+      "mathContext": "All four use `adjoin_nthRoot_finrank` with explicit numerical prime witnesses verified by `norm_num`."
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete formalization of the general Eisenstein minimal polynomial theorem: for any $n \\geq 2$ and $m > 0$ with a squarefree prime factor $p$, the minimal polynomial of $m^{1/n}$ over $\\mathbb{Q}$ is exactly $X^n - m$. This yields the field extension degree $[\\mathbb{Q}(m^{1/n}) : \\mathbb{Q}] = n$ and confirms $m^{1/n}$ is irrational (in fact of algebraic degree $n$) as a corollary. The proof is 204 lines, 0 sorries, 0 axioms, applying Eisenstein → Gauss → minimal polynomial → field degree in a clean pipeline.",
+    "implications": "**Irrational roots**: Any $m^{1/n}$ with $m$ satisfying the squarefree condition is irrational — it has algebraic degree $n \\geq 2$ over $\\mathbb{Q}$, so it is not rational (degree 1).\n\n**Reusable template**: The proof architecture (Eisenstein over ℤ, Gauss's lemma, `minpoly.eq_of_irreducible_of_monic`, `adjoin.finrank`) is the standard approach in algebraic number theory for proving degree bounds on radical extensions. This formalization serves as a reference implementation.\n\n**Galois theory connection**: These radical extensions $\\mathbb{Q}(m^{1/n})/\\mathbb{Q}$ have Galois group $\\mathbb{Z}/n\\mathbb{Z}$ when $\\mathbb{Q}$ contains the $n$-th roots of unity, and $S_n$-subgroups otherwise. The degree computation here is the first step toward understanding the Galois structure.",
+    "openQuestions": [
+      "Prove the converse direction: if $X^n - m$ is irreducible over $\\mathbb{Q}$, does $m$ always have a squarefree prime factor? (The answer is yes by a p-adic valuation argument, but requires a complete characterization of Eisenstein-type irreducibility.)",
+      "Formalize the case $n = 2$, $m = 8$: $X^2 - 8$ is irreducible (since $\\sqrt{8} = 2\\sqrt{2} \\notin \\mathbb{Q}$) but the standard Eisenstein criterion at $p=2$ fails ($4 \\mid 8$). A substitution $X \\mapsto X+1$ makes it Eisenstein, or use a different approach.",
+      "Extend to splitting fields: prove that the splitting field of $X^n - m$ over $\\mathbb{Q}$ has degree $n \\cdot \\phi(n)$ over $\\mathbb{Q}$ (where $\\phi$ is Euler's totient), generalizing the degree theorem to include the cyclotomic part."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cube-root-2-irrational",
+      "relationship": "generalizes",
+      "description": "The cube root 2 irrationality result (minpoly ℚ (∛2) = X³ - 2) is the n=3, m=2 special case of this general theorem"
+    },
+    {
+      "targetId": "sqrt2-minpoly",
+      "relationship": "generalizes",
+      "description": "The square root 2 minimal polynomial (X² - 2) is the n=2, m=2 special case"
+    }
+  ],
   "mainTheorems": [
     {
       "name": "CubeRoot2IrrationalOQ03.minpoly_nthRoot_eq",
