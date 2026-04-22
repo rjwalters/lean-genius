@@ -81,7 +81,8 @@
       "**Weak exclusion + strict monotonicity = strict separation**: The exclusion property gives f(n) ≤ a(n+1) (weak ≤, not <), but limit_gt_a gives x > a(n+1) (strict). The combination f(n) ≤ a(n+1) < x yields f(n) < x — a strict inequality from weak hypotheses.",
       "**Completeness of ℝ via sSup**: The proof uses sSup (conditional supremum) from ℝ's conditionally complete lattice structure. This is the *only* use of completeness — the rest is constructive real arithmetic.",
       "**Cross-index monotonicity (a_le_b_all)**: The crucial auxiliary that any left endpoint a(m) ≤ any right endpoint b(n), even for different indices. Without this, the bound limit_le_b fails. The proof splits into m ≤ n (use strictMono a) and m > n (use antitone b) cases.",
-      "**Constructive witness**: Unlike the diagonal argument, the nested interval proof provides an explicit real number not in the range of f — the supremum sSup(range(a f)). This constructive character makes the argument well-suited for potential extraction of computational content."
+      "**Constructive witness**: Unlike the diagonal argument, the nested interval proof provides an explicit real number not in the range of f — the supremum sSup(range(a f)). This constructive character makes the argument well-suited for potential extraction of computational content.",
+      "**Baire Category Theorem precursor**: The nested interval construction here is the template for the Baire Category Theorem proof that any nonempty complete metric space without isolated points is uncountable. BCT shows each singleton {f(n)} is nowhere dense, so the countable union ⋃{f(n)} cannot cover the space. The thirds-based nested selection corresponds exactly to choosing balls avoiding each f(n) in the abstract BCT proof — making this formalization a concrete instance of a deep topological phenomenon that applies to all perfect Polish spaces."
     ],
     "prerequisites": [
       "Completeness of ℝ as a conditionally complete lattice",
@@ -138,6 +139,11 @@
       "id": "cantor-diagonalization",
       "relationship": "alternative",
       "description": "Cantor's 1891 diagonal argument proving the same ℝ uncountability result via a fundamentally different technique — constructing a real not in any enumeration by flipping digits on the diagonal. Comparing the two proofs illustrates how different constructive witness strategies (nested intervals vs. diagonalization) can achieve the same mathematical conclusion."
+    },
+    {
+      "id": "cantors-theorem",
+      "relationship": "generalization",
+      "description": "Cantor's general theorem |X| < |P(X)| applied to X = ℕ gives |ℕ| < |P(ℕ)| ≅ |ℝ|, furnishing the cardinality-theoretic explanation for why ℝ is uncountable. The nested interval proof here provides an explicit constructive witness; Cantor's theorem provides the abstract size comparison underlying all such results."
     }
   ],
   "leanFile": {
@@ -179,7 +185,8 @@
     "openQuestions": [
       "Can the nested interval construction be made fully constructive (avoiding Classical.choice in the supremum)?",
       "What is the computational content of the limit point — can it be extracted as a Cauchy sequence?",
-      "Can the construction be generalized to prove uncountability of other complete metric spaces?"
+      "Can the construction be generalized to prove uncountability of other complete metric spaces?",
+      "What is the minimal axiom system needed to formalize this proof — does it require excluded middle, or can it be done in constructive type theory with a suitable notion of supremum?"
     ]
   },
   "references": [
