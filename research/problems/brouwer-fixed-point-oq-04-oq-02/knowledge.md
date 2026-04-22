@@ -79,3 +79,33 @@
 1. Prove `mixedUtility_linear_in_i` via `Finset.sum_comm` + splitting product
 2. Derive `brouwer_product_simplex` from `kakutani_fixed_point_axiom` via `Fin.append`
 3. If both proved: file has 0 sorries + 0 axioms beyond Kakutani (inherited)
+
+## Session 2026-04-22 (Session 3) - Proved mixedUtility_linear_in_i
+
+**Mode**: REVISIT (continuing prior session)
+**Outcome**: completed
+
+### What I Did
+- Fixed import path (`Mathlib.Algebra.BigOperators.Group.Finset.Basic`)
+- Proved `mixedUtility_continuous_in_i` by factoring product: `∏_j (update σ i τ) j (s j) = τ(s i) * ∏_{j≠i} σ_j(s_j)` (avoids `subst` issue where `subst hij : j = i` was eliminating `i` instead of `j`)
+- Proved `mixedUtility_linear_in_i`:
+  - Define `Q s = ∏_{j≠i} σ_j(s_j)` via `Finset.univ.erase i`
+  - LHS factoring: `∏_j σ_j(s_j) = σ_i(s_i) * Q s` via `← Finset.mul_prod_erase`
+  - RHS product with pure strategy: `∏_j (update σ i pure_k) j (s_j) = (if s_i = k then 1 else 0) * Q s`
+  - Sum collapse: `∑_k σ_i(k) * (if s_i = k then 1 else 0) = σ_i(s_i)` via `Finset.sum_ite_eq'`
+  - Final equality by `ring` after factoring out `G.payoff i s * Q s` using `← Finset.mul_sum`
+- Fixed multiple pre-existing bugs: `nashDenom_pos`, `nashExcess_continuous`, `fixed_point_is_nash`
+- **Build: succeeded. 0 sorries, 1 axiom (brouwer_product_simplex)**
+
+### Key Findings
+- `subst h : j = i` in Lean 4 can eliminate `i` (the RIGHT side) instead of `j` when both are free variables; use product-factoring approach instead of case-split on `j = i`
+- `simp only [Finset.sum_ite_eq']` doesn't fire as a simp lemma; use `simpa using Finset.sum_ite_eq' Finset.univ (s i) (σ i)` instead
+- `Finset.mul_prod_erase` is the key lemma for extracting one factor from a product over `Finset.univ`
+
+### Files Modified
+- `proofs/Proofs/BrouwerFixedPointOQ04OQ02.lean` (0 sorries, 1 axiom)
+- `src/data/proofs/brouwer-fixed-point-oq-04-oq-02/meta.json` (sorries: 0)
+- `src/data/research/problems/brouwer-fixed-point-oq-04-oq-02.json`
+
+### Next Steps
+- Attempt to prove `brouwer_product_simplex` from `kakutani_fixed_point_axiom`

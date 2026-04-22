@@ -49,7 +49,7 @@ import Mathlib.Topology.Basic
 import Mathlib.Topology.Compactness.Compact
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Convex.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Proofs.BrouwerFixedPointOQ04
 
 open KakutaniFPT Finset Set
@@ -128,14 +128,19 @@ lemma mixedUtility_continuous_in_i {N : ℕ} (G : MultilinearGame N)
   apply continuous_finset_sum
   intro s _
   apply Continuous.mul continuous_const
-  apply continuous_finset_prod
-  intro j _
-  by_cases hij : j = i
-  · subst hij
-    simp [Function.update_self]
-    exact continuous_apply (s i)
-  · simp [Function.update_of_ne hij]
-    exact continuous_const
+  -- Factor: only the i-th component of the product depends on τ
+  have hfact : (fun τ : Fin (G.strategies i) → ℝ =>
+      ∏ j : Fin N, (Function.update σ i τ) j (s j)) =
+      fun τ => τ (s i) * ∏ j ∈ Finset.univ.erase i, σ j (s j) := by
+    ext τ
+    rw [← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i)]
+    congr 1
+    · simp [Function.update_self]
+    · apply Finset.prod_congr rfl
+      intro j hj
+      rw [Function.update_of_ne (Finset.mem_erase.mp hj).1]
+  rw [hfact]
+  exact (continuous_apply (s i)).mul continuous_const
 
 -- ============================================================
 -- PART 3: Linearity of Mixed Utility in Player i's Strategy
@@ -149,14 +154,43 @@ lemma mixedUtility_continuous_in_i {N : ℕ} (G : MultilinearGame N)
     by grouping pure strategy profiles by the value s i = k, and noting
     ∏_j σ j (s j) = σ i (s i) * ∏_{j ≠ i} σ j (s j).
 
-    Lean formalization requires reindexing the finite sum via Finset.sum_product'
-    and splitting the product; included as sorry pending the algebra. -/
+    Lean formalization: factor ∏_j into σ i (s i) and the opponent product Q s,
+    then collapse the k-sum via Finset.sum_ite_eq'. -/
 lemma mixedUtility_linear_in_i {N : ℕ} (G : MultilinearGame N) (i : Fin N)
     (σ : MixedProfile N G) :
     G.mixedUtility i σ =
     ∑ k : Fin (G.strategies i),
       σ i k * G.mixedUtility i (Function.update σ i (pureStrat G i k)) := by
-  sorry
+  simp only [MultilinearGame.mixedUtility]
+  -- Q s = ∏_{j ≠ i} σ j (s j): opponent product
+  set Q := fun (s : ∀ j : Fin N, Fin (G.strategies j)) =>
+    ∏ j ∈ Finset.univ.erase i, σ j (s j)
+  -- Factor LHS: ∏_j σ j (s j) = σ i (s i) * Q s
+  have lhs_eq : ∀ s, ∏ j : Fin N, σ j (s j) = σ i (s i) * Q s := fun s => by
+    rw [← Finset.mul_prod_erase Finset.univ (fun j => σ j (s j)) (Finset.mem_univ i)]
+  -- Factor RHS product: ∏_j (update σ i pure_k) j (s j) = (if s i = k then 1 else 0) * Q s
+  have rhs_prod_eq : ∀ s k,
+      ∏ j : Fin N, (Function.update σ i (pureStrat G i k)) j (s j) =
+      (if s i = k then 1 else 0) * Q s := fun s k => by
+    rw [← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i)]
+    simp only [Function.update_self, pureStrat]
+    congr 1
+    apply Finset.prod_congr rfl
+    intro j hj
+    rw [Function.update_of_ne (Finset.mem_erase.mp hj).1]
+  simp_rw [lhs_eq]
+  simp_rw [rhs_prod_eq, Finset.mul_sum]
+  rw [Finset.sum_comm]
+  congr 1; ext s
+  -- Collapse ∑ k σ i k * (if s i = k then 1 else 0) = σ i (s i)
+  have key : ∑ k : Fin (G.strategies i), σ i k * (if s i = k then (1:ℝ) else 0) = σ i (s i) := by
+    simp only [mul_ite, mul_one, mul_zero]
+    simpa using Finset.sum_ite_eq' Finset.univ (s i) (σ i)
+  -- Goal: payoff * (σ i (s i) * Q s) = ∑ k, σ i k * (payoff * ((if s i = k then 1 else 0) * Q s))
+  simp_rw [show ∀ k, σ i k * (G.payoff i s * ((if s i = k then 1 else 0) * Q s)) =
+      G.payoff i s * Q s * (σ i k * (if s i = k then 1 else 0)) from fun k => by ring]
+  rw [← Finset.mul_sum, key]
+  ring
 
 -- ============================================================
 -- PART 4: Nash's Deviation Map
@@ -181,7 +215,9 @@ def nashDenom {N : ℕ} (G : MultilinearGame N) (i : Fin N)
 lemma nashDenom_pos {N : ℕ} (G : MultilinearGame N) (i : Fin N)
     (σ : MixedProfile N G) : 0 < nashDenom G i σ := by
   unfold nashDenom
-  linarith [Finset.sum_nonneg (fun k _ => nashExcess_nonneg G i k σ)]
+  have h : 0 ≤ ∑ k : Fin (G.strategies i), nashExcess G i k σ :=
+    Finset.sum_nonneg fun k _ => nashExcess_nonneg G i k σ
+  linarith
 
 /-- Nash map component for player i: shift weight toward better pure strategies -/
 def nashMapComp {N : ℕ} (G : MultilinearGame N) (i : Fin N)
@@ -244,10 +280,14 @@ lemma nashExcess_continuous {N : ℕ} (G : MultilinearGame N) (i : Fin N)
     apply Continuous.mul continuous_const
     apply continuous_finset_prod
     intro j _
-    simp only [Function.update_apply]
-    split_ifs with h
-    · subst h; simp [pureStrat]; exact continuous_const
-    · exact (continuous_apply (s j)).comp (continuous_apply j)
+    by_cases hji : j = i
+    · subst hji
+      simp only [Function.update_self]
+      exact continuous_const
+    · have heq : (fun σ : MixedProfile N G => (Function.update σ i (pureStrat G i k)) j (s j)) =
+          fun σ => σ j (s j) := by
+        ext σ; rw [Function.update_of_ne hji]
+      rw [heq]; exact (continuous_apply (s j)).comp (continuous_apply j)
   · exact mixedUtility_continuous G i
 
 theorem nashMap_continuous {N : ℕ} (G : MultilinearGame N) :
@@ -293,11 +333,11 @@ theorem fixed_point_is_nash {N : ℕ} (G : MultilinearGame N)
   -- Step 1: Extract the fixed-point equation for player i, pure strategy k
   have hfp_ik : nashMapComp G i σ k = σ i k := by
     have := congr_fun (congr_fun hfp i) k
-    simp [nashMap] at this; exact this.symm
+    simp [nashMap] at this; exact this
   -- Step 2: Set Ci = total excess for player i; extract excess_ik = σ i k * Ci
   set Ci := ∑ l : Fin (G.strategies i), nashExcess G i l σ with hCi_def
   have hCi_nonneg : 0 ≤ Ci :=
-    Finset.sum_nonneg (fun l _ => nashExcess_nonneg G i l σ)
+    Finset.sum_nonneg fun l _ => nashExcess_nonneg G i l σ
   -- From fixed point: (σ i k + excess_ik) / (1 + Ci) = σ i k
   have hex_eq : nashExcess G i k σ = σ i k * Ci := by
     unfold nashMapComp nashDenom at hfp_ik
@@ -334,7 +374,7 @@ theorem fixed_point_is_nash {N : ℕ} (G : MultilinearGame N)
     have hex_l_pos : 0 < nashExcess G i l σ := by
       have hfp_il : nashMapComp G i σ l = σ i l := by
         have := congr_fun (congr_fun hfp i) l
-        simp [nashMap] at this; exact this.symm
+        simp [nashMap] at this; exact this
       unfold nashMapComp nashDenom at hfp_il
       have hd_pos : 0 < 1 + Ci := by linarith
       rw [div_eq_iff (ne_of_gt hd_pos)] at hfp_il

@@ -15,7 +15,7 @@
       "convex-analysis"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axioms": 1,
     "dateAdded": "2026-04-21",
     "dateUpdated": "2026-04-21",
@@ -27,14 +27,14 @@
       "Proved nashMap maps ProductSimplex to itself (components are valid probability distributions)",
       "Proved nashMap is continuous (finite composition of continuous operations)",
       "Proved fixed_point_is_nash: any fixed point of Nash's map is a Nash equilibrium",
-      "Reduced Nash existence from 2 axioms (OQ-01) to 1 axiom + 1 sorry"
+      "Reduced Nash existence from 2 axioms (OQ-01) to 1 axiom (0 sorries): fully proved mixedUtility_linear_in_i via Finset product factoring"
     ],
     "historicalContext": "John Nash's 1950 proof of equilibrium existence in his landmark 2-page paper used Brouwer's fixed point theorem directly — not Kakutani's generalization, which Nash also used in his 1951 Annals paper. The original argument defines a deviation map on the product simplex: each player shifts weight toward pure strategies that give higher expected utility, then normalizes. Continuous self-maps of compact convex sets have fixed points by Brouwer, and at any fixed point the deviation vanishes — meaning no player can unilaterally improve. This formalization implements this original argument for multilinear games.",
     "problemStatement": "For a finite N-player game where expected utility is the multilinear extension of pure strategy payoffs (the standard definition for matrix games), does there exist a Nash equilibrium in mixed strategies? Nash (1950) proved yes, using Brouwer FPT applied to an explicit single-valued continuous self-map of the product simplex.",
     "proofStrategy": "Define Nash's deviation map: for each player i and pure strategy k, compute the excess payoff from deviating to pure strategy k; shift weight toward strategies with positive excess, then normalize. This map is continuous (polynomial in strategy profiles) and maps the product simplex to itself. Brouwer FPT gives a fixed point, and the algebra of the fixed-point equation shows all excesses are zero — i.e., no player can improve by deviating.",
-    "assumptions": "1 axiom: brouwer_product_simplex (Brouwer FPT for the product simplex — the topological embedding of ∏ᵢ Δᵢ into ℝⁿ for appropriate n). 1 sorry: mixedUtility_linear_in_i (multilinear factoring: reindexing a finite sum over all pure strategy profiles by one player's strategy value).",
+    "assumptions": "1 axiom: brouwer_product_simplex (Brouwer FPT for the product simplex — the topological embedding of ∏ᵢ Δᵢ into ℝⁿ for appropriate n). Previously 1 sorry for mixedUtility_linear_in_i — now formally proved via Finset.mul_prod_erase and Finset.sum_ite_eq' factoring.",
     "axiomCount": 1,
-    "lineCount": 280,
+    "lineCount": 476,
     "theoremCount": 15,
     "definitionCount": 8
   },
@@ -61,7 +61,6 @@
     "summary": "Formalizes Nash's original 1950 proof of equilibrium existence via Brouwer FPT. Main contributions: MultilinearGame structure, joint continuity of mixedUtility, Nash's deviation map, and the algebraic proof that fixed points are Nash equilibria. 1 sorry (multilinear reindexing), 1 axiom (product simplex Brouwer). Reduces OQ-01's 2 axioms to 1 by eliminating the need for Berge's maximum theorem.",
     "implications": "Demonstrates that Nash equilibrium existence follows from the topological minimum (Brouwer FPT), without requiring the more subtle upper hemicontinuity theory of set-valued maps. The key obstacle (Berge's theorem) is replaced by elementary polynomial continuity.",
     "openQuestions": [
-      "Can mixedUtility_linear_in_i be proved formally by Finset sum reindexing?",
       "Can brouwer_product_simplex be derived from kakutani_fixed_point_axiom via the Fin.append embedding?",
       "Does the Nash map approach extend to games with infinite strategy sets (e.g., compact metric spaces)?"
     ]
@@ -88,7 +87,7 @@
       "title": "Multilinear Factoring and Continuity (1 sorry)",
       "startLine": 101,
       "endLine": 140,
-      "summary": "mixedUtility_linear_in_i: EU_i(eₖ, σ₋ᵢ) = Σ_{s₋ᵢ} ∏_{j≠i} σ_j(s_j) · payoff(k, s₋ᵢ). The 1 sorry: separating a Finset.sum over product types by factoring out one player's coordinate.",
+      "summary": "mixedUtility_linear_in_i: EU_i(σᵢ, σ₋ᵢ) = Σₖ σᵢ(k) · EU_i(eₖ, σ₋ᵢ). Proved by factoring ∏_j σ_j(s_j) into σ_i(s_i) * ∏_{j≠i} σ_j(s_j) via Finset.mul_prod_erase, then collapsing Σ_k σ_i(k)·(if s_i=k then 1 else 0) = σ_i(s_i) via Finset.sum_ite_eq'. No sorries.",
       "mathContext": "EU_i(eₖ) = Σ_{s₋ᵢ} ∏_{j≠i} σ_j(s_j) · u_i(k, s₋ᵢ). Requires Finset.sum_product' to factor the sum over ∏_j Fin(mⱼ) by the i-th coordinate."
     },
     {
@@ -148,8 +147,8 @@
     "namespace": "NashBrouwer",
     "lineCount": 280,
     "axiomCount": 1,
-    "sorries": 1,
+    "sorries": 0,
     "path": "Proofs/BrouwerFixedPointOQ04OQ02.lean"
   },
-  "sorries": 1
+  "sorries": 0
 }
