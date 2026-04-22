@@ -29,12 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (session 4): Proved 4 step_same sorries in SpernerGrid.lean (11→6 remaining). Next: gridAdj_symm, gridAdj_vertex, gridAdj_ne, or Mathlib PR submission.",
+    "progressSummary": "PROGRESS (session 5): Proved gridAdj_ne in SpernerGrid.lean (6 → 5 sorries). gridAdj_symm and gridAdj_vertex remain (require involutivity proofs).",
     "builtItems": [
       "SpernerMathlib4Opt.lean: optimized proof proposal for even_card_of_fpf_invol using sum_involution (research/problems/sperner-ndim-oq-05/lean/)",
       "even_card_of_fpf_invol: 53-line strongInduction proof replaced with 11-line sum_involution proof in SpernerMathlib4.lean",
       "boundaryFlip0.step_same: proved (SpernerGrid.lean:868-903, 2 sorries → 0)",
-      "boundaryFlipLast.step_same: proved (SpernerGrid.lean:1011-1046, 2 sorries → 0)"
+      "boundaryFlipLast.step_same: proved (SpernerGrid.lean:1011-1046, 2 sorries → 0)",
+      "gridAdj_ne: proved in SpernerGrid.lean (1 sorry removed, 6 → 5 remaining)"
     ],
     "insights": [
       "All gallery files (SpernerMathlib4, SpernerSimplicialInstance, etc.) have 0 sorries — mathematical work complete",
@@ -54,7 +55,10 @@
       "SpernerSimplicialInstance needs Mathlib.Data.Finset.Sort for Finset.sort",
       "boundaryFlip0.step_same middle: simp [hj_mid, dite_true] at hj_inc to get j ≠ s.incDir, then delegate to s.step_same; same pattern as step_inc/step_dec",
       "boundaryFlip*.step_same boundary case: BaryPoint.transfer_coords_other is the key lemma when j ≠ inc and j ≠ dec",
-      "SpernerGrid.lean: 11 → 6 sorries after proving all four step_same cases"
+      "SpernerGrid.lean: 11 → 6 sorries after proving all four step_same cases",
+      "split_ifs auto-closes h:none=some contradictions — only 1 bullet needed per split_ifs in helper lemmas",
+      "j_step.castSucc.val syntactically ≠ j_step.val even though equal — need simp [Fin.castSucc] before omega in hlv proofs",
+      "gridAdj_ne proved via 3-case split: boundary cases use verts_injective; interior case uses inc_injective + interiorFlip_incDir_kprev"
     ],
     "mathlibGaps": [],
     "nextSteps": [
