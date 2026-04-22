@@ -67,29 +67,29 @@
       "id": "part-ii-redei-infrastructure",
       "title": "Part II.C: List-Based Path Infrastructure (Rédei)",
       "startLine": 134,
-      "endLine": 284,
-      "summary": "Defines IsDirectedPathList (list-based directed path). Proves tournament_path_insert (insert new vertex into existing Hamiltonian path), tournament_full_path_list (build full Hamiltonian path by induction), and list_path_to_hamiltonian (convert list path to Equiv-based definition)."
+      "endLine": 333,
+      "summary": "Defines IsDirectedPathList (list-based directed path). Proves tournament_path_insert (insert new vertex into existing Hamiltonian path), tournament_full_path_list (build full Hamiltonian path by induction), and list_path_to_hamiltonian (convert list path to Equiv-based definition). Also defines IsDirectedCycleList and proves list_cycle_to_hamiltonian (cycle list → Equiv), bridging to Part III."
     },
     {
       "id": "part-iii-ghouila-houri",
       "title": "Part III: Ghouila-Houri Theorem",
-      "startLine": 285,
-      "endLine": 758,
-      "summary": "Fully proves ghouila_houri: strongly connected digraph with δ⁺(v), δ⁻(v) ≥ n/2 for all v has a Hamiltonian cycle. Includes sc_degree_has_cycle (greedy path + back-arc), ghouila_houri_cycle_extendable (cycle extension under GH conditions), and grow_cycle_gh (well-founded recursion)."
+      "startLine": 334,
+      "endLine": 945,
+      "summary": "Fully proves ghouila_houri: strongly connected digraph with δ⁺(v), δ⁻(v) ≥ n/2 for all v has a Hamiltonian cycle. Includes sc_degree_has_cycle (greedy path + back-arc), ghouila_houri_cycle_extendable (cycle extension under GH conditions), grow_cycle_gh (well-founded recursion), and GH sorry stubs (sc_digraph_has_directed_cycle, exists_longest_directed_cycle, gh_insertion_point, insertNth_directed_cycle)."
     },
     {
       "id": "part-iv-moon-moser",
       "title": "Part IV: Moon-Moser Theorem and Infrastructure",
-      "startLine": 302,
-      "endLine": 941,
-      "summary": "Extensive infrastructure: IsDirectedCycleList (list-based cycle definition), sc_tournament_has_cycle (fully proved: Hamiltonian path + SC walk gives initial cycle), tournament_cycle_non_insertable (S⁺/S⁻ partition dichotomy when no insertion point exists), tournament_cycle_extendable (fully proved: SC contradiction forces cycle extension), list_cycle_to_hamiltonian (cycle list → Equiv), grow_cycle_to_hamiltonian (well-founded induction growing any cycle to Hamiltonian), moon_moser theorem (FULLY PROVED: no sorries). Ends with Rédei's theorem: fully proved by induction."
+      "startLine": 946,
+      "endLine": 1538,
+      "summary": "Extensive infrastructure: sc_tournament_has_cycle (fully proved: Hamiltonian path + SC walk gives initial cycle), tournament_cycle_non_insertable (S⁺/S⁻ partition dichotomy when no insertion point exists), tournament_cycle_extendable (fully proved: SC contradiction forces cycle extension), grow_cycle_to_hamiltonian (well-founded induction growing any cycle to Hamiltonian), moon_moser theorem (FULLY PROVED: no sorries). Ends with Rédei's theorem: fully proved by induction."
     },
     {
       "id": "part-v-threshold",
-      "title": "Part V: Edge Threshold + Proof Roadmap",
-      "startLine": 943,
-      "endLine": 991,
-      "summary": "Defines arcCount. Proves directed_hamiltonian_threshold: (n-1)² < arcCount ∧ strongly connected → Hamiltonian cycle via probabilistic counting (hamiltonian_of_few_missing_arcs, perm_arc_bad_card_le). Closes with #check commands verifying all four main theorems."
+      "title": "Part V: Arc Threshold + Verification",
+      "startLine": 1539,
+      "endLine": 1827,
+      "summary": "Defines arcCount. Proves directed_hamiltonian_threshold: (n-1)² < arcCount ∧ strongly connected → Hamiltonian cycle via probabilistic counting (hamiltonian_of_few_missing_arcs, perm_arc_bad_card_le, missing_arcs_le). Closes with #check commands verifying all four main theorems."
     }
   ],
   "conclusion": {
