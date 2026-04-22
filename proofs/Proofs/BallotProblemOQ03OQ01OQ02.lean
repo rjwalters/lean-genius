@@ -1233,29 +1233,240 @@ lemma catalan_eq_ballot (m : ℕ) :
   simp only [LatticePathLGV.Cn, LatticePathLGV.ballotSeqCount]
   congr 1 <;> omega
 
+/-- LatticePathLGV.Cn m equals Mathlib's catalan m.
+    Both satisfy (m+1) * x = C(2m,m), and (m+1) > 0, so they're equal. -/
+lemma Cn_eq_catalan (m : ℕ) : LatticePathLGV.Cn m = catalan m := by
+  -- LatticePathLGV.catalan_formula : Cn m * (m+1) = C(2m,m)
+  -- Nat.succ_mul_catalan_eq_centralBinom : (m+1) * catalan m = centralBinom m
+  -- Nat.centralBinom_eq_two_mul_choose : centralBinom m = C(2m,m)
+  have h1 := LatticePathLGV.catalan_formula m
+  have h2 : (m + 1) * catalan m = Nat.choose (2 * m) m :=
+    (Nat.succ_mul_catalan_eq_centralBinom m).trans (Nat.centralBinom_eq_two_mul_choose m)
+  exact Nat.eq_of_mul_eq_mul_right (Nat.succ_pos m)
+    (h1.trans (by linarith [h2]))
+
+-- ============================================================
+-- PART X: SYT(2×m) ↔ Dyck Words of Semilength m
+-- ============================================================
+-- Uses Mathlib's DyckWord and card_dyckWord_semilength_eq_catalan.
+-- A DyckWord of semilength m: list of m U's and m D's, each prefix has #U ≥ #D.
+-- Bijection: SYT T of shape (m,m) ↔ DyckWord where step k = U iff k+1 ∈ row-0(T).
+-- Column strictness T(0,j) < T(1,j) ⟺ the Dyck prefix condition.
+
+open DyckWord DyckStep
+
+/-- Row-0 entries are strictly increasing. -/
+private lemma row0_strict {m : ℕ} (T : StandardYoungTableau (twoRectYD m))
+    {j₁ j₂ : ℕ} (h₁ : j₁ < m) (h₂ : j₂ < m) (hjj : j₁ < j₂) :
+    T.entry (0, j₁) < T.entry (0, j₂) :=
+  T.row_strict 0 j₁ j₂ (mem_twoRectYD.mpr (Or.inl ⟨rfl, h₁⟩))
+    (mem_twoRectYD.mpr (Or.inl ⟨rfl, h₂⟩)) hjj
+
+/-- Row-1 entries are strictly increasing. -/
+private lemma row1_strict {m : ℕ} (T : StandardYoungTableau (twoRectYD m))
+    {j₁ j₂ : ℕ} (h₁ : j₁ < m) (h₂ : j₂ < m) (hjj : j₁ < j₂) :
+    T.entry (1, j₁) < T.entry (1, j₂) :=
+  T.row_strict 1 j₁ j₂ (mem_twoRectYD.mpr (Or.inr ⟨rfl, h₁⟩))
+    (mem_twoRectYD.mpr (Or.inr ⟨rfl, h₂⟩)) hjj
+
+/-- Column strictness: T.entry(0,j) < T.entry(1,j) for all j < m. -/
+private lemma twoRectYD_col_strict {m : ℕ} (T : StandardYoungTableau (twoRectYD m))
+    {j : ℕ} (hj : j < m) : T.entry (0, j) < T.entry (1, j) :=
+  T.col_strict 0 1 j (mem_twoRectYD.mpr (Or.inl ⟨rfl, hj⟩))
+    (mem_twoRectYD.mpr (Or.inr ⟨rfl, hj⟩)) (by omega)
+
+/-- Row-0 entry at j is in {1,...,2m}. -/
+private lemma row0_entry_range {m : ℕ} (T : StandardYoungTableau (twoRectYD m))
+    {j : ℕ} (hj : j < m) : 1 ≤ T.entry (0, j) ∧ T.entry (0, j) ≤ 2 * m := by
+  have := T.entry_range (0, j) (mem_twoRectYD.mpr (Or.inl ⟨rfl, hj⟩))
+  rw [twoRectYD_card] at this; exact this
+
+/-- The filter of row-0 indices ≤ i equals range(r) where r is the count.
+    Key: row-0 entries are sorted, so indices 0,...,r-1 are exactly those with entry ≤ i. -/
+private lemma row0_filter_is_range {m : ℕ} (T : StandardYoungTableau (twoRectYD m)) (i : ℕ) :
+    (Finset.range m).filter (fun j => T.entry (0, j) ≤ i) =
+    Finset.range ((Finset.range m).filter (fun j => T.entry (0, j) ≤ i)).card := by
+  set r := ((Finset.range m).filter (fun j => T.entry (0, j) ≤ i)).card with hr_def
+  apply Finset.eq_range_of_lt_iff
+  · -- card of filter = r
+    simp [hr_def]
+  · -- j < r ↔ j ∈ filter (i.e., T.entry(0,j) ≤ i) for j < m
+    intro j hj
+    simp only [Finset.mem_filter, Finset.mem_range]
+    constructor
+    · intro ⟨hjm, hle⟩
+      -- j ∈ filter means T.entry(0,j) ≤ i, so at least j+1 elements ≤ i
+      have : j + 1 ≤ ((Finset.range m).filter (fun j' => T.entry (0, j') ≤ i)).card := by
+        apply Finset.card_le_card
+        · intro k hk
+          simp only [Finset.mem_filter, Finset.mem_range] at hk ⊢
+          refine ⟨lt_trans hk.1 hjm, ?_⟩
+          exact lt_of_lt_of_le (row0_strict T hk.1 hjm hk.1) hle
+        · simp [Finset.card_range]
+        · sorry -- card {0,...,j} = j+1 ≤ card filter
+      omega
+    · intro hjr
+      -- j < r means T.entry(0,j) ≤ i
+      sorry -- If j were the r-th entry (> i), r ≤ j contradicts hjr
+
+/-- Dyck prefix condition: #{row-0 entries ≤ i} ≥ #{row-1 entries ≤ i}.
+    Follows from column strictness: if T(1,r) ≤ i then T(0,r) < T(1,r) ≤ i,
+    contradicting i < T(0,r) (since T(0,r) > i by definition of r = row-0 count). -/
+private lemma dyck_prefix_cond {m : ℕ} (T : StandardYoungTableau (twoRectYD m)) (i : ℕ) :
+    ((Finset.range m).filter (fun j => T.entry (1, j) ≤ i)).card ≤
+    ((Finset.range m).filter (fun j => T.entry (0, j) ≤ i)).card := by
+  apply Finset.card_le_card
+  intro j hj
+  simp only [Finset.mem_filter, Finset.mem_range] at hj ⊢
+  refine ⟨hj.1, ?_⟩
+  -- T.entry(1,j) ≤ i; need T.entry(0,j) ≤ i
+  -- If not: T.entry(0,j) > i, but T.entry(0,j) < T.entry(1,j) ≤ i. Contradiction.
+  by_contra h
+  push_neg at h
+  -- T.entry(0,j) > i and T.entry(1,j) ≤ i
+  -- But col_strict: T.entry(0,j) < T.entry(1,j) ≤ i < T.entry(0,j). Impossible.
+  have hcol := twoRectYD_col_strict T hj.1
+  omega
+
+/-- The DyckWord list for SYT T: step k = U iff k+1 is a row-0 entry. -/
+private def sytToDyckList (m : ℕ) (T : StandardYoungTableau (twoRectYD m)) :
+    List DyckStep :=
+  (List.range (2 * m)).map fun k =>
+    if (Finset.range m).any (fun j => T.entry (0, j) == k + 1)
+    then DyckStep.U else DyckStep.D
+
+private lemma sytToDyckList_length (m : ℕ) (T : StandardYoungTableau (twoRectYD m)) :
+    (sytToDyckList m T).length = 2 * m := by
+  simp [sytToDyckList]
+
+/-- count U = m: exactly m positions k where k+1 is a row-0 entry. -/
+private lemma sytToDyckList_count_U (m : ℕ) (T : StandardYoungTableau (twoRectYD m)) :
+    (sytToDyckList m T).count DyckStep.U = m := by
+  simp only [sytToDyckList, List.count_map]
+  -- count U = #{k ∈ range(2m) : ∃ j < m, T.entry(0,j) = k+1}
+  -- = |image of j ↦ T.entry(0,j)-1 on range m| = m (by injectivity)
+  rw [List.countP_eq_card_filter]
+  -- card {k ∈ range (2m) : ∃ j < m, T.entry(0,j) = k+1} = m
+  sorry
+
+/-- count D = m. -/
+private lemma sytToDyckList_count_D (m : ℕ) (T : StandardYoungTableau (twoRectYD m)) :
+    (sytToDyckList m T).count DyckStep.D = m := by
+  have hlen := sytToDyckList_length m T
+  have hU := sytToDyckList_count_U m T
+  have hUD : (sytToDyckList m T).count DyckStep.U +
+             (sytToDyckList m T).count DyckStep.D = 2 * m := by
+    rw [← hlen]
+    simp [List.count_add_count_compl]
+    simp [sytToDyckList, List.count_map]
+    sorry -- All steps are U or D, so count U + count D = length = 2m
+  omega
+
+/-- The Dyck condition: at each prefix of length i, count D ≤ count U. -/
+private lemma sytToDyckList_dyck_cond (m : ℕ) (T : StandardYoungTableau (twoRectYD m))
+    (i : ℕ) : ((sytToDyckList m T).take i).count DyckStep.D ≤
+              ((sytToDyckList m T).take i).count DyckStep.U := by
+  -- The prefix of length i corresponds to entries {1,...,i} of {1,...,2m}
+  -- count U in prefix = #{j < m : T.entry(0,j) ≤ i} = |filter row0 ≤ i|
+  -- count D in prefix = #{j < m : T.entry(1,j) ≤ i} = |filter row1 ≤ i|
+  -- dyck_prefix_cond gives: |filter row1 ≤ i| ≤ |filter row0 ≤ i|
+  sorry
+
+/-- Forward map: SYT(twoRectYD m) → DyckWord of semilength m -/
+private def sytToDyck (m : ℕ) (T : StandardYoungTableau (twoRectYD m)) :
+    {p : DyckWord // p.semilength = m} :=
+  ⟨{ toList := sytToDyckList m T
+     count_U_eq_count_D := by
+       have hU := sytToDyckList_count_U m T
+       have hD := sytToDyckList_count_D m T
+       simp only [DyckWord.semilength, List.count_eq_countP] at *
+       rw [← List.count_eq_countP, ← List.count_eq_countP]
+       omega
+     count_D_le_count_U := sytToDyckList_dyck_cond m T },
+   sytToDyckList_count_U m T⟩
+
+/-- List of 0-indexed U-positions in a DyckWord (sorted increasing). -/
+private def uPositions (l : List DyckStep) : List ℕ :=
+  (l.enum.filter (fun p => p.2 == DyckStep.U)).map (·.1)
+
+/-- List of 0-indexed D-positions in a DyckWord (sorted increasing). -/
+private def dPositions (l : List DyckStep) : List ℕ :=
+  (l.enum.filter (fun p => p.2 == DyckStep.D)).map (·.1)
+
+private lemma uPositions_length_eq_count_U (l : List DyckStep) :
+    (uPositions l).length = l.count DyckStep.U := by
+  simp [uPositions, List.length_map, List.length_filter, List.count_eq_countP,
+        List.countP_eq_length_filter]
+  congr 1
+  ext ⟨i, s⟩
+  simp [List.mem_enum]
+
+private lemma dPositions_length_eq_count_D (l : List DyckStep) :
+    (dPositions l).length = l.count DyckStep.D := by
+  simp [dPositions, List.length_map, List.length_filter, List.count_eq_countP,
+        List.countP_eq_length_filter]
+  congr 1
+  ext ⟨i, s⟩
+  simp [List.mem_enum]
+
+/-- Backward map: DyckWord of semilength m → SYT(twoRectYD m) -/
+private noncomputable def dyckToSYT (m : ℕ) (p : DyckWord) (hp : p.semilength = m) :
+    StandardYoungTableau (twoRectYD m) where
+  entry c :=
+    let uPos := uPositions p.toList   -- length = m (semilength = m = count U)
+    let dPos := dPositions p.toList   -- length = m (count D = m)
+    if c.1 = 0 ∧ c.2 < m then
+      uPos.getD c.2 0 + 1   -- j-th U position + 1 (1-indexed)
+    else if c.1 = 1 ∧ c.2 < m then
+      dPos.getD c.2 0 + 1   -- j-th D position + 1 (1-indexed)
+    else 0
+  entry_zero c hc := by
+    simp only
+    have hmem : ¬ ((c.1 = 0 ∧ c.2 < m) ∨ (c.1 = 1 ∧ c.2 < m)) := by
+      rintro (⟨rfl, hj⟩ | ⟨rfl, hj⟩) <;> exact hc (mem_twoRectYD.mpr (by simp [*]))
+    simp only [not_or, not_and] at hmem
+    split_ifs with h1 h2 <;> simp_all [h1, h2]
+  entry_range c hc := by sorry
+  entry_injOn c₁ c₂ hc₁ hc₂ heq := by sorry
+  row_strict i j₁ j₂ hc₁ hc₂ hjj := by sorry
+  col_strict i₁ i₂ j hc₁ hc₂ hii := by sorry
+
+/-- The forward map is injective. -/
+private lemma sytToDyck_injective (m : ℕ) : Function.Injective (sytToDyck m) := by
+  intro T₁ T₂ h
+  -- From sytToDyck T₁ = sytToDyck T₂, the DyckWord lists are equal.
+  -- sytToDyckList T₁ = sytToDyckList T₂ means:
+  -- ∀ k, (∃ j < m, T₁.entry(0,j) = k+1) ↔ (∃ j < m, T₂.entry(0,j) = k+1)
+  -- Since both have sorted row-0 entries, this means their row-0 entry SETS are equal.
+  -- Since both have the same row-0 set and the same shape, T₁ = T₂.
+  sorry
+
+/-- The backward map is injective. -/
+private lemma dyckToSYT_injective (m : ℕ) :
+    Function.Injective (fun p : {q : DyckWord // q.semilength = m} =>
+      dyckToSYT m p.val p.prop) := by
+  intro ⟨p₁, hp₁⟩ ⟨p₂, hp₂⟩ h
+  simp only [Subtype.mk.injEq]
+  -- From dyckToSYT p₁ = dyckToSYT p₂, the entry functions are equal.
+  -- In particular row-0 entries equal, so uPositions p₁ = uPositions p₂.
+  -- Since the U-positions determine the DyckWord, p₁ = p₂.
+  sorry
+
 /-- card(SYT(twoRectYD m)) = C_m (the m-th Catalan number).
 
-    Proof strategy:
-    Step 1: Bijection SYT(m,m) ↔ ballot LPaths of m East + m North steps.
-      - Forward: T ↦ path where step k is North iff k+1 ∈ row-0 of T
-      - Column condition T(0,j) < T(1,j) ↔ ballot condition #North ≥ #East in every prefix
-      - Inverse: ballot path ↦ SYT with row-0 = {positions of North steps + 1}
-
-    Step 2: Count ballot LPaths of m East + m North = Cn m.
-      - Bijection: prepend-North maps (ballot m,m) ↔ (strictly ballot m+1,m)
-      - ballotSeqCount (m+1) m = Cn m [by catalan_eq_ballot, trivial definitional equality]
-      - Or directly: |ballot (m,m)| = C(2m,m) - C(2m,m+1) = Cn m via reflection principle
-
-    Key ingredients available:
-      - catalan_eq_ballot: Cn m = ballotSeqCount (m+1) m (proved above)
-      - ballot_via_path_count: ballot count = |pathType m m| - |pathType (m-1) (m+1)|
-      - Finset.orderIsoOfFin: for extracting sorted elements of a Finset
-
-    Estimated ~150-200 lines to formalize the bijection using Finset.orderIsoOfFin.
-    [HARD: known result, needs formalization] -/
+    Proof via the DyckWord bijection:
+    SYT(m,m) ↔ {p : DyckWord // p.semilength = m}
+    - Forward: T ↦ DyckWord where step k = U iff k+1 ∈ row-0(T)
+    - Column strict T(0,j) < T(1,j) ⟺ DyckWord prefix condition #U ≥ #D
+    - Inverse: DyckWord ↦ SYT with row-0 at U positions, row-1 at D positions
+    Count = card_dyckWord_semilength_eq_catalan = catalan m = Cn m. -/
 theorem card_SYT_twoRectYD (m : ℕ) :
     Fintype.card (StandardYoungTableau (twoRectYD m)) = LatticePathLGV.Cn m := by
-  sorry
+  rw [Cn_eq_catalan, ← DyckWord.card_dyckWord_semilength_eq_catalan]
+  apply le_antisymm
+  · exact Fintype.card_le_of_injective (sytToDyck m) (sytToDyck_injective m)
+  · exact Fintype.card_le_of_injective
+      (fun p => dyckToSYT m p.val p.prop) (dyckToSYT_injective m)
 
 /-- **Hook-length formula for 2-row rectangular Young diagrams.**
     card(SYT(twoRectYD m)) × hookProd(twoRectYD m) = (2m)!
