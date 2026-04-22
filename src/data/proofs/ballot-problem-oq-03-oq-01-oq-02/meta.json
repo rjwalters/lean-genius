@@ -22,7 +22,7 @@
     "sorries": 4,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "Four open sorries: (1) hook_length_formula (main theorem, requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence, ~200 lines), (3) lgv_det_factors_as_hook_quotient (Vandermonde-type det factorization identity, ~200 lines), (4) card_SYT_twoRectYD (SYT count for 2-row rectangular YD equals C_m via ballot path bijection).",
+    "assumptions": "Four open sorries: (1) hook_length_formula (requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) card_SYT_twoRectYD (SYT count for 2-row rectangular = Catalan number C_m via ballot bijection). StandardYoungTableau.ext is now fully proved (funext).",
     "lineCount": 1274,
     "theoremCount": 12,
     "definitionCount": 5,
