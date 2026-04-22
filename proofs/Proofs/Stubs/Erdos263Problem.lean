@@ -655,11 +655,77 @@ private lemma tsum_split_at (f : ℕ → ℝ) (hf : Summable f) (N : ℕ) :
 theorem doubleExp_sum_irrational :
     Irrational (∑' n, (1 : ℝ) / (doubleExp n : ℕ)) := by
   simp_rw [doubleExp_term_eq]
-  -- Integer-gap argument using the helper lemmas above.
-  -- Structure: assume S = p/q rational (q ≠ 0). Choose N = |q|+1, D = 2^{2^N} > |q|.
-  -- Split S = finsum + 1/D + T. Then q·D·T = p·D - q·(D·finsum) - q ∈ ℤ.
-  -- But |q|·D·T < |q|/(D-1) ≤ 1 and q·D·T ≠ 0. No nonzero integer has |.| < 1.
-  sorry
+  -- Proof by contradiction: assume S = ∑ 1/2^{2^n} is rational
+  intro ⟨q, hq⟩
+  -- q : ℚ, hq : ↑q = ∑' n, 1/2^{2^n}
+  -- Use N = q.den (positive denominator), D = 2^{2^N}
+  set N := q.den
+  have hN_pos : 0 < N := q.pos
+  have hN_ne : (N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hN_pos.ne'
+  set D := (2 : ℝ) ^ (2 ^ N) with hD_def
+  have hD_pos : (0 : ℝ) < D := by positivity
+  have hD_ne : D ≠ 0 := hD_pos.ne'
+  -- The sum equals q.num / N as reals (since (q : ℝ) = q.num / q.den)
+  have hS_eq : ∑' n : ℕ, (1 : ℝ) / (2 : ℝ) ^ (2 ^ n) = (q.num : ℝ) / N := by
+    rw [← hq]; push_cast; rw [Rat.cast_def]
+  -- D ≥ N + 1 (so N ≤ D - 1), proved via N + 1 ≤ 2^N ≤ 2^{2^N} = D
+  have hN1_le_D : (N : ℝ) + 1 ≤ D := by
+    have h1 : N + 1 ≤ 2 ^ N := by
+      induction N with
+      | zero => norm_num
+      | succ m ih =>
+        calc m + 1 + 1 ≤ 2 ^ m + 1 := by linarith [nat_le_two_pow m]
+          _ ≤ 2 ^ m + 2 ^ m := by linarith [Nat.one_le_pow m 2 (by norm_num)]
+          _ = 2 ^ (m + 1) := by ring
+    have h2 : (2 : ℕ) ^ N ≤ (2 : ℕ) ^ (2 ^ N) :=
+      Nat.pow_le_pow_right (by norm_num) (nat_le_two_pow N)
+    calc (N : ℝ) + 1 ≤ (2 : ℝ) ^ N := by exact_mod_cast h1
+      _ ≤ D := by exact_mod_cast h2
+  have hN_le_D1 : (N : ℝ) ≤ D - 1 := by linarith
+  have hD1_pos : (0 : ℝ) < D - 1 := by linarith
+  -- Abbreviations for finite sum and tail
+  set finsum := ∑ k ∈ Finset.range N, (1 : ℝ) / (2 : ℝ) ^ (2 ^ k)
+  set tail := ∑' k : ℕ, (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + N + 1))
+  -- Split S = finsum + 1/D + tail
+  have hSplit : ∑' n : ℕ, (1 : ℝ) / (2 : ℝ) ^ (2 ^ n) = finsum + 1 / D + tail := by
+    rw [tsum_split_at _ doubleExp_sum_summable N]
+    simp only [hD_def]
+  -- D * finsum is a natural number
+  obtain ⟨mf, hmf⟩ := doubleExp_fin_mul_nat N
+  -- hmf : D * finsum = mf (as reals, mf : ℕ)
+  -- Tail is positive and bounded
+  have htail_pos : 0 < tail := doubleExp_tail_pos N
+  have htail_bound : D * tail < 1 / (D - 1) := doubleExp_tail_bound N
+  -- Key identity: N * D * tail = q.num * D - N * mf - N
+  -- Derived from: q.num / N = finsum + 1/D + tail and D * finsum = mf
+  have hkey : (N : ℝ) * D * tail = q.num * D - N * mf - N := by
+    have hrat : (q.num : ℝ) / N = finsum + 1 / D + tail :=
+      hS_eq.symm.trans hSplit
+    have hmul : (q.num : ℝ) = N * finsum + N / D + N * tail := by
+      have := congr_arg (· * N) hrat.symm
+      simp only [div_mul_cancel₀ _ hN_ne] at this
+      linarith [show N * (finsum + 1 / D + tail) = N * finsum + N / D + N * tail from by ring]
+    have := congr_arg (· * D) hmul
+    simp only [mul_comm D finsum, ← hmf] at this
+    linarith [show (N : ℝ) * finsum * D = N * (D * finsum) from by ring,
+              show (N : ℝ) / D * D = N from by field_simp]
+  -- N * D * tail is in (0, 1)
+  have hgap_pos : 0 < (N : ℝ) * D * tail :=
+    mul_pos (mul_pos (Nat.cast_pos.mpr hN_pos) hD_pos) htail_pos
+  have hgap_lt1 : (N : ℝ) * D * tail < 1 :=
+    calc (N : ℝ) * D * tail = N * (D * tail) := by ring
+      _ < N * (1 / (D - 1)) := mul_lt_mul_of_pos_left htail_bound (Nat.cast_pos.mpr hN_pos)
+      _ = N / (D - 1) := by ring
+      _ ≤ 1 := by rw [div_le_one hD1_pos]; exact hN_le_D1
+  -- N * D * tail is an integer (= q.num * D - N * mf - N)
+  have hgap_int : ∃ z : ℤ, (z : ℝ) = (N : ℝ) * D * tail := by
+    exact ⟨(q.num * ((2 : ℕ) ^ (2 ^ N) : ℕ) : ℤ) - (N : ℤ) * (mf : ℤ) - (N : ℤ),
+      by push_cast; linarith⟩
+  -- Contradiction: no positive integer is < 1
+  obtain ⟨z, hz⟩ := hgap_int
+  have hz_pos : 0 < z := by exact_mod_cast hz ▸ hgap_pos
+  have hz_lt1 : (z : ℝ) < 1 := hz ▸ hgap_lt1
+  linarith [show (1 : ℝ) ≤ z from by exact_mod_cast hz_pos]
 
 end Erdos263
 
