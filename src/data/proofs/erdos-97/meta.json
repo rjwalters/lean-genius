@@ -8,7 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/97",
     "date": "1946",
     "status": "axiomatized",
-    "proofRepoPath": "Proofs/Stubs/Erdos97Problem.lean",
+    "proofRepoPath": "Proofs/Erdos97Problem.lean",
     "tags": [
       "erdos",
       "convex-polygon",
@@ -17,7 +17,7 @@
       "conjecture"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 97,
     "erdosUrl": "https://erdosproblems.com/97",
     "erdosProblemStatus": "open",
@@ -52,8 +52,8 @@
       "Connection to unit distance bounds"
     ],
     "axiomCount": 4,
-    "lineCount": 222,
-    "assumptions": "4 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "lineCount": 155,
+    "assumptions": "4 axioms: danzer_counterexample, fishburn_reeds_example, fishburn_reeds_minimal, no_bound_without_convexity. 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős originally conjectured (1946) that every convex polygon has a vertex with no other 3 vertices equidistant from it. Danzer disproved this with a 9-point counterexample where every vertex has exactly 3 vertices equidistant from it.\n\nThe problem was then raised for k = 4: does every convex polygon have a vertex with no other 4 vertices equidistant? This remains open.\n\nFishburn and Reeds (1992) found an even stronger example: a convex 20-gon where every vertex has 3 vertices at UNIT distance (not just equidistant at varying radii). They also proved 20 is minimal for this property.",
@@ -77,50 +77,43 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 26,
-      "summary": "Module documentation and namespace setup."
-    },
-    {
-      "id": "background",
-      "title": "Background",
-      "startLine": 27,
-      "endLine": 38,
-      "summary": "Context on equidistance in convex polygons."
+      "endLine": 35,
+      "summary": "Module documentation, Mathlib imports, ℝ² abbreviation, and namespace setup."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 39,
-      "endLine": 81,
-      "summary": "Definitions of equidistance, unit distance, and convex position."
+      "startLine": 37,
+      "endLine": 59,
+      "summary": "Definitions of HasNEquidistantPointsAt, HasNEquidistantProperty, and HasNUnitDistanceProperty."
     },
     {
       "id": "main-question",
-      "title": "The Main Question",
-      "startLine": 82,
-      "endLine": 101,
-      "summary": "Erdos97Question for k = 4."
+      "title": "Main Conjecture",
+      "startLine": 60,
+      "endLine": 75,
+      "summary": "Erdos97Conjecture: every convex polygon fails the 4-equidistant property (OPEN)."
     },
     {
       "id": "danzer",
       "title": "Danzer's Counterexample",
-      "startLine": 102,
-      "endLine": 129,
-      "summary": "The 9-point counterexample for k = 3."
+      "startLine": 76,
+      "endLine": 113,
+      "summary": "Axiom for Danzer's 9-point counterexample (k = 3 FALSE) and formal proof that the k = 3 conjecture fails."
     },
     {
       "id": "fishburn-reeds",
-      "title": "Fishburn-Reeds Result",
-      "startLine": 130,
-      "endLine": 156,
-      "summary": "The 20-point unit distance example."
+      "title": "Fishburn-Reeds Results",
+      "startLine": 115,
+      "endLine": 133,
+      "summary": "Axioms for the Fishburn-Reeds 20-gon (3 unit-distance neighbors) and its minimality."
     },
     {
       "id": "general-k",
-      "title": "General k Question",
-      "startLine": 157,
-      "endLine": 222,
-      "summary": "The open question for any k, connections, and non-convex case."
+      "title": "General k Conjecture",
+      "startLine": 134,
+      "endLine": 163,
+      "summary": "GeneralKConjecture, main_implies_general theorem, and no_bound_without_convexity axiom."
     }
   ],
   "conclusion": {
@@ -142,12 +135,12 @@
       "EuclideanGeometry"
     ],
     "namespace": "Erdos97",
-    "lineCount": 222,
+    "lineCount": 163,
     "axiomCount": 4,
-    "theoremCount": 1,
-    "definitionCount": 9,
-    "path": "Proofs/Stubs/Erdos97Problem.lean",
-    "sorries": 2
+    "theoremCount": 2,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos97Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {
