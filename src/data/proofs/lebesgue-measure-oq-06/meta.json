@@ -91,7 +91,8 @@
     "summary": "The Banach-Tarski paradox is formalized at the statement level with abstract equidecomposability and paradoxical set framework fully defined. The key measure-theoretic consequence (paradoxical sets admit no finite invariant measure) is structurally proved. The main theorem and ingredient lemmas are stated as axiomatized sorries, representing the current boundary of this gallery entry's formalization.",
     "openQuestions": [
       "Can Hausdorff's free subgroup theorem be fully formalized in Lean? The proof requires showing that explicit 3×3 rotation matrices generate a free group — the algebraic argument involves showing nontrivial words produce vectors with irrational coordinates via a number-theoretic argument.",
-      "Can the full Banach-Tarski proof be formalized in Lean 4? The most likely path: build the free group paradoxical decomposition first (purely algebraic), then lift to S² (measure-theoretic), then to B³ (geometric extension). Estimated scope: 800-1200 lines."
+      "Can the full Banach-Tarski proof be formalized in Lean 4? The most likely path: build the free group paradoxical decomposition first (purely algebraic), then lift to S² (measure-theoretic), then to B³ (geometric extension). Estimated scope: 800-1200 lines.",
+      "Can Tarski's theorem (a G-set admits a G-invariant finitely-additive probability measure if and only if it is not G-paradoxical) be formalized in Lean? This requires formalizing the theory of means, the ultrafilter proof of the forward direction, and the Hahn-Banach theorem in the amenable case — a major measure-theoretic formalization project connecting this entry's `IsAmenable` definition to its full characterization."
     ],
     "implications": "The Banach-Tarski paradox shows that Lebesgue measure cannot be extended to all subsets of ℝ³ as a finitely-additive rigid-motion-invariant measure. It demonstrates that the Axiom of Choice produces sets with no reasonable notion of volume. The connection to amenability shows that this phenomenon is fundamentally group-theoretic: the non-amenability of SO(3) (via its free subgroup) is the root cause."
   },
@@ -105,6 +106,11 @@
       "targetId": "lebesgue-measure-oq-03",
       "relationship": "sibling",
       "description": "Both show fundamental limitations of Lebesgue measure — infinite-dimensional impossibility and 3D paradox"
+    },
+    {
+      "targetId": "lebesgue-measure-oq-03-oq-01",
+      "relationship": "related",
+      "description": "No Translation-Invariant Measure in Infinite Dimensions — complementary impossibility result: in infinite-dimensional spaces, no nonzero $\\sigma$-finite translation-invariant Borel measure exists. Banach-Tarski shows the same impossibility for finitely-additive rigid-motion-invariant measures on $\\mathbb{R}^3$, but the obstructions differ: infinite dimensionality vs. non-amenability of SO(3)."
     }
   ],
   "references": [
