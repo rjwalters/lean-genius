@@ -4,7 +4,7 @@
     "proofId": "erdos-83",
     "range": {
       "startLine": 1,
-      "endLine": 27
+      "endLine": 30
     },
     "type": "context",
     "title": "Problem Overview: Complete Intersection Theorem",
@@ -27,8 +27,8 @@
     "id": "ann-83-imports",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 29,
-      "endLine": 37
+      "startLine": 32,
+      "endLine": 39
     },
     "type": "context",
     "title": "Imports and Setup",
@@ -50,8 +50,8 @@
     "id": "ann-83-ground-set",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 43,
-      "endLine": 47
+      "startLine": 44,
+      "endLine": 49
     },
     "type": "definition",
     "title": "Ground Set [m]",
@@ -72,8 +72,8 @@
     "id": "ann-83-k-uniform",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 49,
-      "endLine": 54
+      "startLine": 50,
+      "endLine": 56
     },
     "type": "definition",
     "title": "k-Uniform Family",
@@ -94,8 +94,8 @@
     "id": "ann-83-t-intersecting",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 56,
-      "endLine": 61
+      "startLine": 57,
+      "endLine": 63
     },
     "type": "definition",
     "title": "t-Intersecting Family",
@@ -118,8 +118,8 @@
     "id": "ann-83-classical-intersecting",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 63,
-      "endLine": 68
+      "startLine": 64,
+      "endLine": 70
     },
     "type": "definition",
     "title": "Classical Intersecting (t = 1)",
@@ -140,8 +140,8 @@
     "id": "ann-83-ekr-bound",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 74,
-      "endLine": 81
+      "startLine": 75,
+      "endLine": 83
     },
     "type": "concept",
     "title": "Erd\u0151s-Ko-Rado Bound",
@@ -164,8 +164,8 @@
     "id": "ann-83-star-family",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 83,
-      "endLine": 95
+      "startLine": 84,
+      "endLine": 97
     },
     "type": "definition",
     "title": "EKR Star Family and Tightness",
@@ -188,8 +188,8 @@
     "id": "ann-83-params",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 97,
-      "endLine": 112
+      "startLine": 98,
+      "endLine": 114
     },
     "type": "definition",
     "title": "Problem Parameters and Valid Families",
@@ -210,8 +210,8 @@
     "id": "ann-83-bound",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 114,
-      "endLine": 131
+      "startLine": 115,
+      "endLine": 132
     },
     "type": "definition",
     "title": "The Conjectured Bound and Formal Problem",
@@ -234,8 +234,8 @@
     "id": "ann-83-extremal",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 133,
-      "endLine": 156
+      "startLine": 134,
+      "endLine": 160
     },
     "type": "definition",
     "title": "Star-Like Extremal Construction",
@@ -258,8 +258,8 @@
     "id": "ann-83-critical-ratio",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 158,
-      "endLine": 178
+      "startLine": 161,
+      "endLine": 181
     },
     "type": "definition",
     "title": "Critical Ratio and AK-Family",
@@ -282,8 +282,8 @@
     "id": "ann-83-ak-theorem",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 179,
-      "endLine": 188
+      "startLine": 182,
+      "endLine": 194
     },
     "type": "concept",
     "title": "Complete Intersection Theorem (Ahlswede-Khachatrian 1997)",
@@ -307,8 +307,8 @@
     "id": "ann-83-special-case",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 190,
-      "endLine": 213
+      "startLine": 195,
+      "endLine": 221
     },
     "type": "technique",
     "title": "Resolution: Erd\u0151s #83 from AK Theorem",
@@ -330,12 +330,12 @@
     "id": "ann-83-small-cases",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 215,
-      "endLine": 233
+      "startLine": 222,
+      "endLine": 244
     },
     "type": "concept",
     "title": "Small Cases and Asymptotics",
-    "content": "`erdos83_bound_n1` gives the $n = 1$ case (bound = 0): $2$-subsets of $[4]$ with pairwise $2$-intersection forces $A = B$, so only singleton families are valid. `erdos83_bound_n2` gives $n = 2$ (bound = 20). `erdos83_bound_asymptotic` shows the bound is approximately $\\frac{1}{2}\\binom{4n}{2n}$ for large $n$, since $\\binom{2n}{n}^2 / \\binom{4n}{2n} \\to 0$ by central binomial coefficient asymptotics ($\\binom{2n}{n} \\sim 4^n / \\sqrt{\\pi n}$).",
+    "content": "`erdos83_bound_n1` gives the $n = 1$ case (bound = 1): for $2$-subsets of $[4]$ with pairwise $2$-intersection, the maximum family has $\\frac{1}{2}(\\binom{4}{2} - \\binom{2}{1}^2) = \\frac{1}{2}(6 - 4) = 1$. `erdos83_bound_n2` gives $n = 2$ (bound = 17): $\\frac{1}{2}(\\binom{8}{4} - \\binom{4}{2}^2) = \\frac{1}{2}(70 - 36) = 17$. `erdos83_bound_asymptotic` shows the bound is approximately $\\frac{1}{2}\\binom{4n}{2n}$ for large $n$, since $\\binom{2n}{n}^2 / \\binom{4n}{2n} \\to 0$ by central binomial coefficient asymptotics ($\\binom{2n}{n} \\sim 4^n / \\sqrt{\\pi n}$).",
     "mathContext": "$\\text{erdos83Bound}(n) \\sim \\frac{1}{2}\\binom{4n}{2n} \\sim \\frac{16^n}{2\\sqrt{2\\pi n}}$ as $n \\to \\infty$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -352,8 +352,8 @@
     "id": "ann-83-implications",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 235,
-      "endLine": 258
+      "startLine": 246,
+      "endLine": 268
     },
     "type": "insight",
     "title": "Implications: Phase Transitions and Connections",
@@ -375,8 +375,8 @@
     "id": "ann-83-summary",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 263,
-      "endLine": 273
+      "startLine": 278,
+      "endLine": 296
     },
     "type": "technique",
     "title": "Summary: Both Directions",
@@ -397,8 +397,8 @@
     "id": "ann-83-main",
     "proofId": "erdos-83",
     "range": {
-      "startLine": 275,
-      "endLine": 289
+      "startLine": 297,
+      "endLine": 307
     },
     "type": "technique",
     "title": "Main Theorem: Erd\u0151s Problem #83 Solved",
