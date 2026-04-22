@@ -1226,18 +1226,33 @@ theorem hookProd_twoRectYD (m : ℕ) :
         ← Nat.descFactorial_eq_prod_range, Nat.descFactorial_self]
   rw [hrow0, hrow1]
 
+/-- The Catalan number Cn m equals ballotSeqCount (m+1) m.
+    Both definitions unfold to C(2m,m) - C(2m,m+1) after arithmetic simplification. -/
+lemma catalan_eq_ballot (m : ℕ) :
+    LatticePathLGV.Cn m = LatticePathLGV.ballotSeqCount (m + 1) m := by
+  simp only [LatticePathLGV.Cn, LatticePathLGV.ballotSeqCount]
+  congr 1 <;> omega
+
 /-- card(SYT(twoRectYD m)) = C_m (the m-th Catalan number).
 
-    Proof sketch (not yet formalized):
-    A SYT T of shape (m,m) is determined by its row-0 entry set
-    S = {T.entry(0,j) - 1 : j < m} ⊆ Fin(2m).
-    S has cardinality m, and column-strictness (entry(0,j) < entry(1,j) for all j)
-    is equivalent to: for each k < m, the k-th element of S (sorted) is less than
-    the k-th element of its complement — the "ballot condition" on S.
-    The number of such subsets is C(2m,m) - C(2m,m+1) = C_m by the reflection principle.
+    Proof strategy:
+    Step 1: Bijection SYT(m,m) ↔ ballot LPaths of m East + m North steps.
+      - Forward: T ↦ path where step k is North iff k+1 ∈ row-0 of T
+      - Column condition T(0,j) < T(1,j) ↔ ballot condition #North ≥ #East in every prefix
+      - Inverse: ballot path ↦ SYT with row-0 = {positions of North steps + 1}
 
-    This requires ~200 lines formalizing the bijection using Finset.orderIsoOfFin.
-    [HARD: known result, needs formalization; Aristotle-eligible once set up] -/
+    Step 2: Count ballot LPaths of m East + m North = Cn m.
+      - Bijection: prepend-North maps (ballot m,m) ↔ (strictly ballot m+1,m)
+      - ballotSeqCount (m+1) m = Cn m [by catalan_eq_ballot, trivial definitional equality]
+      - Or directly: |ballot (m,m)| = C(2m,m) - C(2m,m+1) = Cn m via reflection principle
+
+    Key ingredients available:
+      - catalan_eq_ballot: Cn m = ballotSeqCount (m+1) m (proved above)
+      - ballot_via_path_count: ballot count = |pathType m m| - |pathType (m-1) (m+1)|
+      - Finset.orderIsoOfFin: for extracting sorted elements of a Finset
+
+    Estimated ~150-200 lines to formalize the bijection using Finset.orderIsoOfFin.
+    [HARD: known result, needs formalization] -/
 theorem card_SYT_twoRectYD (m : ℕ) :
     Fintype.card (StandardYoungTableau (twoRectYD m)) = LatticePathLGV.Cn m := by
   sorry
