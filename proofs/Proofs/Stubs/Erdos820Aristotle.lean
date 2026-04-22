@@ -112,8 +112,7 @@ theorem prime_dvd_gcd_pow_cong_left {p k l n : ℕ} (hp : p.Prime) (hk : k ≥ 1
     k^n ≡ 1 [MOD p] := by
   have hkn : k^n ≥ 1 := Nat.one_le_pow _ _ hk
   have hdvd : p ∣ k^n - 1 := dvd_trans h (Nat.gcd_dvd_left _ _)
-  rwa [Nat.ModEq, Nat.mod_eq_of_lt, Nat.mod_eq_of_lt] at *
-  sorry
+  exact (Nat.modEq_iff_dvd' hkn).mpr hdvd
 
 -- If p is prime and p | gcd(k^n - 1, l^n - 1), then l^n ≡ 1 (mod p)
 theorem prime_dvd_gcd_pow_cong_right {p k l n : ℕ} (hp : p.Prime) (hl : l ≥ 1)
@@ -121,8 +120,7 @@ theorem prime_dvd_gcd_pow_cong_right {p k l n : ℕ} (hp : p.Prime) (hl : l ≥ 
     l^n ≡ 1 [MOD p] := by
   have hln : l^n ≥ 1 := Nat.one_le_pow _ _ hl
   have hdvd : p ∣ l^n - 1 := dvd_trans h (Nat.gcd_dvd_right _ _)
-  rwa [Nat.ModEq, Nat.mod_eq_of_lt, Nat.mod_eq_of_lt] at *
-  sorry
+  exact (Nat.modEq_iff_dvd' hln).mpr hdvd
 
 /-
   ## Section 4: Concrete GCD Computations for Small n
@@ -173,8 +171,8 @@ theorem pow_sub_one_pos (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ 1) : k^n - 1 ≥ 
   omega
 
 -- k^n is strictly increasing in n for k ≥ 2
-theorem pow_strict_mono (k n m : ℕ) (hk : k ≥ 2) (h : n < m) : k^n < k^m := by
-  sorry
+theorem pow_strict_mono (k n m : ℕ) (hk : k ≥ 2) (h : n < m) : k^n < k^m :=
+  Nat.pow_lt_pow_right (by omega) h
 
 -- gcd(k^n - 1, l^n - 1) = 0 iff k = 1 and l = 1 (since both = 0)
 theorem gcd_pow_zero_iff (k l n : ℕ) (hn : n ≥ 1) :
