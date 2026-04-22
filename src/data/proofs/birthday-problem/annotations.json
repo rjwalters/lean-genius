@@ -148,5 +148,101 @@
       "base case",
       "complement probability"
     ]
+  },
+  {
+    "id": "ann-setting",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 76,
+      "endLine": 87
+    },
+    "type": "definition",
+    "title": "The Model: Days as Fin 365, Assignments as Functions",
+    "content": "The setting section establishes the mathematical model:\n\n- `numDays : ℕ := 365` — the number of possible birthdays (ignoring leap years)\n- `Day := Fin numDays` — a birthday is an element of {0, 1, ..., 364}\n- `total_assignments n`: the total number of birthday assignments for $n$ people is $365^n$\n\nThe key modeling choice: a birthday assignment for $n$ people is a function `Fin n → Day`, where `Fin n = {0, 1, ..., n-1}` indexes the people. All possible assignments (without any distinctness constraint) form the type `(Fin n → Day)`, and `Fintype.card (Fin n → Day) = numDays^n` is proved by `Fintype.card_fun`.\n\nThis function-based model cleanly separates the sample space (all functions) from the event of interest (injective functions = distinct birthdays), setting up the probability computation as a ratio of two Fintype cardinalities.",
+    "mathContext": "`Fintype.card (Fin n → Day) = Fintype.card Day ^ Fintype.card (Fin n) = 365^n`. In Lean: `Fintype.card_fun` states that for finite types `α` and `β`, `Fintype.card (α → β) = Fintype.card β ^ Fintype.card α`. Since `Fintype.card (Fin n) = n` and `Fintype.card Day = numDays = 365`, the result follows. `Fin n` is Lean's built-in type for `{0, ..., n-1}` — using it to index people ensures all computations over people are over a finite, well-ordered type.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fin n",
+      "Fintype.card_fun",
+      "function type",
+      "sample space"
+    ],
+    "prerequisites": [
+      "Fin n as a Fintype",
+      "Fintype.card_fun from Mathlib",
+      "descFactorial for the injective count"
+    ]
+  },
+  {
+    "id": "ann-combinatorics",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 258,
+      "endLine": 286
+    },
+    "type": "theorem",
+    "title": "Combinatorial Restatement and Unit Interval Bound",
+    "content": "`birthday_as_counting` rewrites the probability in terms of Lean's `Fintype.card` rather than the concrete formula:\n```lean\nprob_shared_birthday n =\n  1 - (Fintype.card (Fin n ↪ Day) : ℚ) / (Fintype.card (Fin n → Day) : ℚ)\n```\nThis is the 'abstract' form: probability = 1 - (injective assignments) / (all assignments), proved by rewriting with `distinct_assignments` and `total_assignments` and simplifying.\n\n`prob_in_unit_interval` proves that `0 ≤ prob_shared_birthday n ≤ 1` for `n ≤ 365`. This is a sanity check — the formula should output a valid probability. The proof establishes `prob_all_distinct n ≤ 1` (using `Nat.descFactorial_le_pow`) and `prob_all_distinct n ≥ 0` (by `positivity`), then derives the bounds on `prob_shared_birthday = 1 - prob_all_distinct`.\n\nThe verification examples (lines 290-302) use `native_decide` to confirm `descFactorial 365 2 = 132860` and `365^2 = 133225`, then `norm_num` to verify `1 - 132860/133225 = 1/365`.",
+    "mathContext": "`Fintype.card (Fin n ↪ Day)` counts injective functions from $n$-element index set to 365-day set: this equals `Nat.descFactorial 365 n` (proved in `distinct_assignments`). The ratio gives `prob_all_distinct n = descFactorial(365,n) / 365^n`. The unit interval bound: `descFactorial m n ≤ m^n` (Mathlib lemma `Nat.descFactorial_le_pow`) because each factor in the descFactorial is at most the corresponding power of $m$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fintype.card",
+      "embedding type (↪)",
+      "Nat.descFactorial_le_pow",
+      "native_decide"
+    ],
+    "prerequisites": [
+      "distinct_assignments",
+      "total_assignments",
+      "prob_all_distinct definition"
+    ]
+  },
+  {
+    "id": "ann-expected-pairs",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 317,
+      "endLine": 356
+    },
+    "type": "insight",
+    "title": "Expected Shared Pairs: Linearity of Expectation and the Poisson Approximation",
+    "content": "`expected_shared_pairs n = C(n,2) / 365` is the expected number of pairs sharing a birthday, derived via **linearity of expectation**: for each of the $\\binom{n}{2}$ pairs of people, the indicator $\\mathbb{1}[\\text{pair shares}]$ has expectation $1/365$, so the total expected shared pairs is $\\binom{n}{2} / 365$.\n\nKey results:\n- `expected_pairs_23`: For $n = 23$, $E = 253/365 \\approx 0.693 \\approx \\ln 2$\n- `expected_pairs_28_gt_one`: For $n = 28$, $E > 1$ (we expect at least one shared pair on average)\n- `expected_pairs_27_lt_one`: For $n = 27$, $E < 1$\n\n**Poisson approximation connection**: The expected pairs value for $n = 23$ is approximately $\\ln 2 \\approx 0.693$. This is not a coincidence: the Poisson distribution with rate $\\lambda$ has $P(\\text{no events}) = e^{-\\lambda}$. Setting $\\lambda = \\ln 2$ gives $P(\\text{no shared pairs}) \\approx e^{-\\ln 2} = 0.5$, which matches $P(23) \\approx 0.5073$. This explains why 23 is the threshold: the expected number of shared pairs crosses $\\ln 2$ at exactly $n = 23$.",
+    "mathContext": "`n.choose 2 = n*(n-1)/2` (proved by `Nat.choose_two_right`). For $n = 23$: $\\binom{23}{2} = 253$, so $E = 253/365 \\approx 0.6932 \\approx \\ln 2$. Poisson approximation: treating birthday collisions as independent events with rate $\\lambda = \\binom{n}{2}/365$, $P(\\text{collision}) \\approx 1 - e^{-\\lambda}$. This gives $P(23) \\approx 1 - e^{-0.693} = 1 - 0.5 = 0.5$, matching the exact computation closely. The approximation improves as $n \\to \\infty$ with $n^2/365$ bounded.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linearity of expectation",
+      "Poisson approximation",
+      "Nat.choose",
+      "C(n,2)"
+    ],
+    "prerequisites": [
+      "Nat.choose_two_right",
+      "expected_shared_pairs definition",
+      "linearity of expectation"
+    ]
+  },
+  {
+    "id": "ann-99-threshold",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 373,
+      "endLine": 402
+    },
+    "type": "theorem",
+    "title": "The 99% Threshold: 57 People via native_decide",
+    "content": "The proof that P(57) > 99% and P(56) < 99% establishes 57 as the exact threshold for 99% probability. Both proofs use `native_decide` to verify the core arithmetic inequality:\n- `birthday_57_exceeds_99_percent`: `100 * descFactorial 365 57 < 365^57` (verified by `native_decide`)\n- `birthday_56_below_99_percent`: `100 * descFactorial 365 56 > 365^56` (verified by `native_decide`)\n\nThe strategy reduces the probability inequality to an integer inequality: $P(n) > 99/100 \\iff 1 - \\text{desc}/\\text{total} > 99/100 \\iff \\text{desc}/\\text{total} < 1/100 \\iff 100 \\cdot \\text{desc} < \\text{total}$. This turns the rational arithmetic into a pure integer comparison that `native_decide` can verify by running native code.\n\n**`native_decide` vs `decide`**: Regular `decide` runs in the kernel; `native_decide` compiles to native Lean code for efficiency. For these large computations ($365^{57}$ has ~148 digits), `native_decide` is essential — `decide` would time out.",
+    "mathContext": "$P(57) = 1 - 365^{\\underline{57}}/365^{57}$. The inequality $P(57) > 99/100$ is equivalent to $100 \\cdot 365^{\\underline{57}} < 365^{57}$. Since $365^{\\underline{57}} = 365 \\cdot 364 \\cdots 309$ and $365^{57}$ are both integers, this is a pure integer comparison. `Nat.descFactorial 365 57` computes as an exact integer; `native_decide` verifies the inequality by running compiled Lean code rather than kernel reduction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide",
+      "integer arithmetic",
+      "probability threshold",
+      "decidability"
+    ],
+    "prerequisites": [
+      "birthday_problem_formula",
+      "prob_shared_birthday definition",
+      "native_decide tactic"
+    ]
   }
 ]
