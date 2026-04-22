@@ -266,6 +266,50 @@ so avoids elaboration overhead.
 
 ---
 
+## Session 2026-04-22 (Session 5) - Prove gridAdj_ne
+
+**Mode**: REVISIT
+**Outcome**: PROGRESS — proved `gridAdj_ne` (6 → 5 sorries remaining)
+
+### What I Did
+
+1. Recovered from context overflow — reconstructed all edits from previous sessions
+2. Fixed pre-existing errors in `boundaryFlip0.step_inc/step_dec` and `boundaryFlipLast.step_dec`:
+   - `hlv` lemma used `j_step.val + 1` but goal had `j_step.castSucc.val + 1` (syntactically different)
+   - Fix: rewrite `hlv` with `castSucc.val` and add `simp [Fin.castSucc]` before omega
+3. Fixed `boundaryFlipLast.step_dec` first step: added `simp [Fin.val_succ]` before omega
+4. Added helper lemmas:
+   - `interiorFlip_incDir_kprev`: interior flip swaps incDir at k-1 ↔ incDir at k
+   - `interiorFlip_verts_other`: non-flipped vertices preserved
+   - `boundaryFlip0_verts_zero`: if flip succeeds, d≠0 and s'.verts[0] = s.verts[1]
+   - `boundaryFlipLast_verts_one`: if flip succeeds, d≠0 and s'.verts[1] = s.verts[0]
+5. Proved `gridAdj_ne` by case split on k:
+   - k=0: use `boundaryFlip0_verts_zero` + `verts_injective` → distinct
+   - k=d: use `boundaryFlipLast_verts_one` + `verts_injective` → distinct
+   - interior: use `interiorFlip_incDir_kprev` + `inc_injective` → incDir differs → distinct
+6. Fixed `sperner_grid` term-mode parser error (convert to `by exact ...`)
+
+### Key Technical Insights
+
+- `split_ifs` auto-closes `h : none = some(...)` goals — only 1 bullet needed per `split_ifs`
+- When `split_ifs at h with h_pos hd`, goal order: interesting case FIRST (h_pos=T, hd=F)
+- `simp [Fin.castSucc]` needed to unfold `j_step.castSucc.val = j_step.val` for omega
+
+### Files Modified
+
+- `proofs/Proofs/SpernerGrid.lean` (1 sorry removed: gridAdj_ne, 6 → 5 remaining)
+
+### Next Steps
+
+1. Prove `gridAdj_symm` — involutivity of flip operations (each flip is its own inverse)
+   - `boundaryFlip0(s) = some(s', k')` → `boundaryFlipLast(s') = some(s, 0)` (case k=0)
+   - `boundaryFlipLast(s) = some(s', k')` → `boundaryFlip0(s') = some(s, d)` (case k=d)
+   - `interiorFlip(s, step) = (s', k')` → `interiorFlip(s', step) = (s, k)` (interior)
+2. Prove `gridAdj_vertex` — shared codimension-1 face property
+3. **[USER ACTION NEEDED]** Comment on mathlib4#25231 pointing to `SpernerSimplicialInstance.lean`
+
+---
+
 ## Dead Ends
 
 - `FixedPointFree.lean` (GroupTheory) — about group automorphisms, not Finsets

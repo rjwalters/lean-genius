@@ -640,7 +640,7 @@ noncomputable def GridSimplex.interiorFlip
           -- new_v.coords miss = v_prev.coords miss - 1
           have h_new : new_v.coords s.miss = v_prev.coords s.miss - 1 :=
             BaryPoint.transfer_coords_dec v_prev (s.incDir k) s.miss h_ne h_miss_pos
-          rw [h_new]; omega
+          omega
         · by_cases hjk : j_step = k
           · -- Case j_step = k
             have hcs_eq : (j_step.castSucc : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
@@ -837,8 +837,13 @@ noncomputable def GridSimplex.boundaryFlip0
               -- Goal: new_v.coords inc0 = (s.verts ⟨j_step.val+1,_⟩).coords inc0 + 1
               -- where j_step.val + 1 = d, so s.verts ⟨d,_⟩ = last_v
               -- s.verts ⟨j_step.val+1,_⟩ = last_v since j_step.val+1=d
-              convert BaryPoint.transfer_coords_inc last_v inc0 s.miss h_ne h_pos using 1
-              congr 1; ext; simp; omega
+              have hval : j_step.val = d - 1 := by omega
+              have hlv : s.verts ⟨j_step.castSucc.val + 1, by omega⟩ = last_v := by
+                show s.verts ⟨j_step.castSucc.val + 1, by omega⟩ =
+                  s.verts ⟨d, Nat.lt_succ_iff.mpr le_rfl⟩
+                congr 1; ext; simp [Fin.castSucc]; omega
+              rw [hlv]
+              exact BaryPoint.transfer_coords_inc last_v inc0 s.miss h_ne h_pos
           step_dec := by
             intro j_step
             by_cases hj_mid : j_step.val + 1 < d
@@ -862,9 +867,12 @@ noncomputable def GridSimplex.boundaryFlip0
                          dite_true, dite_false]
               have h_new : new_v.coords s.miss = last_v.coords s.miss - 1 :=
                 BaryPoint.transfer_coords_dec last_v inc0 s.miss h_ne h_pos
-              convert_to last_v.coords s.miss = new_v.coords s.miss + 1
-              · congr 1; ext; simp; omega
-              · rw [h_new]; have := h_pos; omega
+              have hlv : s.verts ⟨j_step.castSucc.val + 1, by omega⟩ = last_v := by
+                show s.verts ⟨j_step.castSucc.val + 1, by omega⟩ =
+                  s.verts ⟨d, Nat.lt_succ_iff.mpr le_rfl⟩
+                congr 1; ext; simp [Fin.castSucc]; omega
+              rw [hlv]
+              omega
           step_same := by
             intro j_step j hj_inc hj_miss
             simp only [new_incDir] at hj_inc
@@ -964,9 +972,11 @@ noncomputable def GridSimplex.boundaryFlipLast
               -- Goal: v0.coords last_inc = new_v.coords last_inc + 1
               have h_new : new_v.coords last_inc = v0.coords last_inc - 1 :=
                 BaryPoint.transfer_coords_dec v0 s.miss last_inc (Ne.symm h_ne) h_pos
-              convert_to v0.coords last_inc = new_v.coords last_inc + 1
-              · congr 1; ext; simp; omega
-              · rw [h_new]; have := h_pos; omega
+              have hv0 : s.verts ⟨j_step.succ.val - 1, by omega⟩ = v0 := by
+                show s.verts ⟨j_step.succ.val - 1, by omega⟩ = s.verts 0
+                congr 1; ext; simp [Fin.val_succ]; omega
+              rw [hv0]
+              omega
             · -- Later step
               simp only [hj0, ite_false]
               have hcs_nz : ¬(j_step.castSucc.val = 0) := by simp [Fin.castSucc]; exact hj0
@@ -992,9 +1002,11 @@ noncomputable def GridSimplex.boundaryFlipLast
                          ite_true, ite_false]
               have h_new : new_v.coords s.miss = v0.coords s.miss + 1 :=
                 BaryPoint.transfer_coords_inc v0 s.miss last_inc (Ne.symm h_ne) h_pos
-              convert_to new_v.coords s.miss = v0.coords s.miss + 1
-              · congr 1; ext; simp; omega
-              · exact h_new
+              have hv0eq : s.verts ⟨j_step.succ.val - 1, by omega⟩ = v0 := by
+                show s.verts ⟨j_step.succ.val - 1, by omega⟩ = s.verts 0
+                congr 1; ext; simp [Fin.val_succ]; omega
+              rw [hv0eq]
+              exact h_new
             · -- Later step
               have hcs_nz : ¬(j_step.castSucc.val = 0) := by simp [Fin.castSucc]; exact hj0
               have hss_nz : ¬(j_step.succ.val = 0) := by simp [Fin.succ]
@@ -1082,6 +1094,52 @@ noncomputable def gridAdj (d N : ℕ)
     let step : Fin d := ⟨k.val, hk_lt_d⟩
     some (s.interiorFlip step (by simp [step]; exact hk_pos))
 
+-- Helper lemmas for Section VII
+
+/-- The incDir at position k_prev = k-1 in the interior flip equals the
+original incDir at k. Used to detect that s ≠ s' after interiorFlip. -/
+private lemma interiorFlip_incDir_kprev (s : GridSimplex d N)
+    (k : Fin d) (hk : 0 < k.val) :
+    (s.interiorFlip k hk).1.incDir ⟨k.val - 1, by omega⟩ = s.incDir k := by
+  simp [GridSimplex.interiorFlip, Fin.ext_iff]
+
+/-- In the interiorFlip, all vertices except index k are preserved. -/
+private lemma interiorFlip_verts_other (s : GridSimplex d N)
+    (k : Fin d) (hk : 0 < k.val)
+    (j : Fin (d + 1)) (hj : j.val ≠ k.val) :
+    (s.interiorFlip k hk).1.verts j = s.verts j := by
+  simp [GridSimplex.interiorFlip, Fin.ext_iff, hj]
+
+/-- If boundaryFlip0 succeeds and returns (s', k'), then d ≠ 0 and
+s' maps vertex 0 to s.verts 1 (the cyclic shift property). -/
+private lemma boundaryFlip0_verts_zero (s : GridSimplex d N)
+    (s' : GridSimplex d N) (k' : Fin (d + 1))
+    (h : s.boundaryFlip0 = some (s', k')) :
+    ∃ hd : d ≠ 0, s'.verts ⟨0, by omega⟩ = s.verts ⟨1, by omega⟩ := by
+  simp only [GridSimplex.boundaryFlip0] at h
+  split_ifs at h with h_pos hd
+  · simp only [Option.some.injEq, Prod.mk.injEq] at h
+    obtain ⟨hs', _⟩ := h
+    refine ⟨hd, ?_⟩
+    have := congr_fun (congr_arg GridSimplex.verts hs') (⟨0, by omega⟩ : Fin (d + 1))
+    simp [Nat.pos_of_ne_zero hd] at this
+    exact this.symm
+
+/-- If boundaryFlipLast succeeds and returns (s', k'), then d ≠ 0 and
+s' maps vertex 1 to s.verts 0 (the cyclic shift property). -/
+private lemma boundaryFlipLast_verts_one (s : GridSimplex d N)
+    (s' : GridSimplex d N) (k' : Fin (d + 1))
+    (h : s.boundaryFlipLast = some (s', k')) :
+    ∃ hd : d ≠ 0, s'.verts ⟨1, by omega⟩ = s.verts ⟨0, by omega⟩ := by
+  simp only [GridSimplex.boundaryFlipLast] at h
+  split_ifs at h with hd h_pos
+  · simp only [Option.some.injEq, Prod.mk.injEq] at h
+    obtain ⟨hs', _⟩ := h
+    refine ⟨hd, ?_⟩
+    have := congr_fun (congr_arg GridSimplex.verts hs') (⟨1, by omega⟩ : Fin (d + 1))
+    simp at this
+    exact this.symm
+
 -- ============================================================
 -- SECTION VII: CellComplex Instance
 -- ============================================================
@@ -1110,7 +1168,43 @@ theorem gridAdj_ne (s : GridSimplex d N)
     (k' : Fin (d + 1))
     (h : gridAdj d N s k = some (s', k')) :
     s ≠ s' := by
-  sorry
+  simp only [gridAdj] at h
+  split_ifs at h with hk0 hkd
+  · -- k.val = 0: uses boundaryFlip0; vertex 0 maps to vertex 1
+    obtain ⟨hd, hv⟩ := boundaryFlip0_verts_zero s s' k' h
+    intro heq
+    rw [← heq] at hv
+    have hinj := s.verts_injective hv
+    simp [Fin.ext_iff] at hinj
+  · -- k.val = d: uses boundaryFlipLast; vertex 1 maps to vertex 0
+    obtain ⟨hd, hv⟩ := boundaryFlipLast_verts_one s s' k' h
+    intro heq
+    rw [← heq] at hv
+    have hinj := s.verts_injective hv
+    simp [Fin.ext_iff] at hinj
+  · -- Interior: the incDir at k-1 changes in s' but not s
+    simp only [Option.some.injEq] at h
+    have hklt : k.val < d := by omega
+    have hkpos : 0 < k.val := by omega
+    let step : Fin d := ⟨k.val, hklt⟩
+    let kp : Fin d := ⟨k.val - 1, by omega⟩
+    -- Extract s' = (s.interiorFlip step hkpos).1
+    have hs' : (s.interiorFlip step hkpos).1 = s' := by
+      simpa using (Prod.ext_iff.mp h).1
+    -- In s, incDir(kp) ≠ incDir(step) by injectivity
+    have hkpne : kp ≠ step := by
+      simp only [kp, step, ne_eq, Fin.mk.injEq]; omega
+    have h_ne : s.incDir kp ≠ s.incDir step :=
+      fun heq => hkpne (s.inc_injective heq)
+    -- If s = s', then s.incDir kp = s'.incDir kp
+    -- But s'.incDir kp = s.incDir step (by interiorFlip_incDir_kprev)
+    -- Contradiction with h_ne
+    intro heq
+    apply h_ne
+    have h1 : s.incDir kp = s'.incDir kp :=
+      congr_fun (congr_arg GridSimplex.incDir heq) kp
+    rw [h1, ← hs']
+    exact interiorFlip_incDir_kprev s step hkpos
 
 /-- The grid CellComplex: the standard triangulation of Δ_N
 satisfies the abstract adjacency axioms. -/
@@ -1211,8 +1305,8 @@ theorem sperner_grid (d N : ℕ) (hN : 0 < N)
     (hc : IsSperner c) :
     ∃ s : (gridComplex d N).Cell,
       CellComplex.IsPanchromatic c
-        (gridComplex d N) s :=
-  CellComplex.sperner c (gridComplex d N)
+        (gridComplex d N) s := by
+  exact CellComplex.sperner c (gridComplex d N)
     (boundary_doors_odd d N hN c hc)
 
 end SpernerGrid
