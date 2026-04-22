@@ -163,6 +163,21 @@
       "targetId": "abel-ruffini-oq-04-oq-03",
       "relationship": "related",
       "description": "Sibling: another open question from the parent OQ-04 on symmetric group solvability."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Alternating Groups: $A_n$ solvable $\\iff n \\leq 4$ — the direct analogue for alternating groups. Since $A_n = [S_n, S_n]$ (the commutator subgroup), the solvability of $A_n$ is the interior of $S_n$'s solvability; this entry's derived series for $S_3$ and $S_4$ passes through $A_3$ and $A_4$ respectively."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "related",
+      "description": "Abel-Ruffini Galois Theory Extensions — the comprehensive companion formalizing both $S_n$ solvable $\\iff n \\leq 4$ and $A_n$ solvable $\\iff n \\leq 4$ in a single 534-line file, with additional results on $A_5$ simplicity, Galois group order, and non-commutativity witnesses. Extends this entry's classification theorem to the full picture."
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "Sylow's theorems provide the p-group structure underlying the solvability proofs: the Sylow 2- and 3-subgroups of $S_3$ and $S_4$ are exactly the composition factors $\\mathbb{Z}/2\\mathbb{Z}$ and $\\mathbb{Z}/3\\mathbb{Z}$ that appear in the derived series."
     }
   ],
   "references": [
@@ -172,6 +187,20 @@
       "year": "1974",
       "venue": "Graduate Texts in Mathematics, Springer",
       "note": "Section II.8: solvability of symmetric groups, derived series computation for S₃ and S₄"
+    },
+    {
+      "authors": "Rotman, Joseph J.",
+      "title": "An Introduction to the Theory of Groups",
+      "year": "1995",
+      "venue": "Graduate Texts in Mathematics 148, Springer, 4th edition",
+      "note": "Chapter 5 (Solvable Groups): detailed proof of the derived series for S₃ and S₄, including the Klein four-group as the key ingredient for S₄ solvability"
+    },
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Graduate Texts in Mathematics 211, Springer, 3rd revised edition",
+      "note": "Chapter VI (Galois Theory), Theorem 9.1: Sₙ not solvable for n ≥ 5 via simplicity of Aₙ; Chapter I.6: composition series and the Jordan-Hölder theorem"
     }
   ],
   "sorries": 0
