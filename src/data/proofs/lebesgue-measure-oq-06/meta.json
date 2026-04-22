@@ -18,10 +18,10 @@
       "research"
     ],
     "badge": "wip",
-    "sorries": 6,
-    "axiomCount": 6,
+    "sorries": 5,
+    "axiomCount": 5,
     "lineCount": 287,
-    "assumptions": "6 sorries encoding axiomatized results: banach_tarski (main theorem), hausdorff_free_subgroup (free subgroup of SO(3)), banach_tarski_pieces_nonmeasurable (non-measurability of pieces), free_group_not_amenable (F₂ non-amenability), int_amenable (ℤ amenability), and one auxiliary sorry in paradoxical_no_finite_measure. The main proof requires ~800 lines via free subgroup of SO(3) — beyond this gallery entry's scope.",
+    "assumptions": "5 sorries encoding axiomatized results: hausdorff_free_subgroup (free subgroup of SO(3)), banach_tarski (main theorem), banach_tarski_pieces_nonmeasurable (non-measurability of pieces), int_amenable (ℤ amenability), free_group_not_amenable (F₂ non-amenability). The main proof requires ~800 lines via free subgroup of SO(3) — beyond this gallery entry's scope. Note: paradoxical_no_finite_measure is fully proved (no sorry).",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -30,7 +30,7 @@
       "IsAmenable (amenable group definition)",
       "ENNReal.eq_zero_or_top_of_add_eq_self (proved: a + a = a → a = 0 or a = ⊤)",
       "equidecomposable_refl (proved: every set is self-equidecomposable)",
-      "Framework: paradoxical sets have no finite invariant measure (structure proved, one sorry for B∪C=A covering)"
+      "Framework: paradoxical sets have no finite invariant measure (fully proved, no sorry)"
     ]
   },
   "overview": {
@@ -184,11 +184,11 @@
     "imports": ["Mathlib"],
     "namespace": "BanachTarski",
     "lineCount": 287,
-    "axiomCount": 6,
+    "axiomCount": 5,
     "theoremCount": 7,
     "definitionCount": 5,
     "path": "Proofs/LebesgueMeasureOQ06.lean",
-    "sorries": 6
+    "sorries": 5
   },
-  "sorries": 6
+  "sorries": 5
 }
