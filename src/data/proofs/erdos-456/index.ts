@@ -9,7 +9,7 @@ const meta = metaJson as {
   crossReferences?: CrossReference[]
 }
 
-const leanSource = () => import('../../../../proofs/Proofs/Stubs/Erdos456Problem.lean?raw')
+const leanSource = () => import('../../../../proofs/Proofs/Erdos456Problem.lean?raw')
 
 export const proof: Proof = {
   id: meta.id, title: meta.title, slug: meta.slug,
