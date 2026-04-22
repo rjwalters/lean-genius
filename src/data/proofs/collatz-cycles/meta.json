@@ -135,6 +135,28 @@
       "description": "All n ∈ [1,20] reach 1 under iteration, verified by native_decide"
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "collatz-structured",
+      "relationship": "related",
+      "description": "Complementary: proves structural properties of the Collatz sequence (stopping time bounds, parity patterns) that underpin the cycle-existence constraints formalized here."
+    },
+    {
+      "targetId": "collatz-cycles-oq-04",
+      "relationship": "extends",
+      "description": "Extension OQ: formalizes the j=1..4 halving constraints on Collatz cycles, building directly on the j·log₂(3) halving lower bound proved here."
+    },
+    {
+      "targetId": "collatz-structured-oq-02",
+      "relationship": "related",
+      "description": "Sibling OQ: studies the structured stopping time distribution, sharing the parity analysis and mod-4 residue techniques used in the cycle non-existence proofs here."
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "uses-technique",
+      "description": "Shared technique: the mod-4 residue structure for Collatz cycles mirrors the modular divisibility analysis that characterizes the digit-sum rules, both using ℤ/nℤ arithmetic in Lean."
+    }
+  ],
   "leanFile": {
     "lineCount": 256,
     "path": "Proofs/CollatzCycles.lean",

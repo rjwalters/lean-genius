@@ -105,6 +105,16 @@
       "targetId": "lebesgue-measure-oq-03",
       "relationship": "sibling",
       "description": "Both show fundamental limitations of Lebesgue measure — infinite-dimensional impossibility and 3D paradox"
+    },
+    {
+      "targetId": "lebesgue-measure-oq-01",
+      "relationship": "related",
+      "description": "Sibling OQ: establishes foundational measure axioms (σ-additivity, regularity) that the non-measurability corollary here (paradoxical pieces have no finite measure) directly contradicts."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Both invoke a form of non-constructive choice (Axiom of Choice for paradoxical decompositions; diagonalization for uncountability) to exhibit sets with pathological properties — the two deepest uses of set-theoretic axioms in the gallery."
     }
   ],
   "references": [

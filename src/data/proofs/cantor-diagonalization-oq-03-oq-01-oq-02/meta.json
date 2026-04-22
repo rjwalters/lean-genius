@@ -105,5 +105,27 @@
     "path": "Proofs/CantorDiagonalizationOQ03OQ01OQ02.lean",
     "sorries": 0
   },
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent: proves the Lawvere fixed-point theorem (lawvere_fpt) and EvalStructure framework. This file is the Bool instantiation — abstract_rice follows immediately from lawvere_fpt + Bool.not having no fixed point."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-03",
+      "relationship": "extends",
+      "description": "Grandparent in the Cantor/Lawvere chain: the base diagonal argument for Prop-valued functions. The full chain Cantor(Prop, neg) → Rice(Bool, not) → Gödel(sentences, ¬provable) is completed here."
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "Sibling: the halting problem is the canonical Rice instance (no_halting_model), showing Turing's undecidability as a direct corollary of the abstract Bool Lawvere argument."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-03-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling OQ: extends the Lawvere framework in a different direction, complementing this file's Rice/computability application with further abstract fixed-point consequences."
+    }
+  ],
   "sorries": 0
 }

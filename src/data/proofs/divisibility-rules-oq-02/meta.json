@@ -104,5 +104,22 @@
       "Extend to divisibility rules in bases other than 10 (e.g., hexadecimal: 16^k ≡ -1 (mod d) for which d?)."
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "divisibility-rules",
+      "relationship": "extends",
+      "description": "Parent: provides the altDigitSum function and modEq_alternating_digits_sum lemma. This OQ instantiates those for the specific cases b=10 (11-rule), b=100 (101-rule), b=1000 (7- and 13-rules)."
+    },
+    {
+      "targetId": "divisibility-rules-oq-01",
+      "relationship": "related",
+      "description": "Sibling OQ: studies digit-grouping and truncation divisibility rules, complementing the alternating-block rules formalized here."
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "related",
+      "description": "Complementary: the digit-sum rule for 3 and 9 (b≡+1 mod d) contrasts with the alternating-sum rules here (b≡-1 mod d), together covering the two fundamental patterns of block divisibility."
+    }
+  ],
   "sorries": 0
 }
