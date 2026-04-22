@@ -1,0 +1,100 @@
+[
+  {
+    "id": "ann-e1156-header",
+    "proofId": "erdos-1156",
+    "range": {
+      "startLine": 1,
+      "endLine": 47
+    },
+    "type": "concept",
+    "title": "Problem Overview: Chromatic Number Concentration",
+    "content": "**Erdos Problem #1156: Chromatic Number Concentration in Random Graphs**\n\nLet G(n, 1/2) be the Erdos-Renyi random graph on n vertices where each edge appears independently with probability 1/2.\n\n**Q1 (Constant concentration):** Does there exist a constant C such that chi(G) is a.s. concentrated within at most C values?\n\n**Q2 (Anti-concentration):** For any slowly growing omega(n) -> infinity, does there exist f(n) such that Pr[|chi(G) - f(n)| < omega(n)] < 1/2?\n\n**Known results:**\n- Bollobas (1988): chi ~ n/(2 log_2 n)\n- Shamir-Spencer (1987): O(n^{1/2}) concentration\n- Alon-Krivelevich (1997): O(n^{1/2}/log n) concentration\n- Heckel (2021): Two-value concentration for at least half of all n",
+    "mathContext": "The chromatic number chi(G) is the minimum number of colors needed for a proper vertex coloring. For G(n,1/2), chi ~ n/(2 log_2 n) a.s.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chromatic number",
+      "Erdos-Renyi random graph",
+      "Concentration of measure",
+      "Graph coloring"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e1156-chromatic",
+    "proofId": "erdos-1156",
+    "range": {
+      "startLine": 55,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Chromatic Number Definition",
+    "content": "**IsKColorable' and chromaticNumber'**\n\nA graph G on vertex type V is k-colorable if there exists a proper coloring f : V -> Fin k such that adjacent vertices receive different colors.\n\nThe chromatic number chi(G) is the infimum of the set of k for which G is k-colorable. Returns 0 if no finite coloring exists.\n\nThese are self-contained definitions (not imported from Mathlib) to avoid dependency issues.",
+    "mathContext": "chi(G) = inf{k : G is k-colorable}. A k-coloring is proper iff f(v) != f(w) whenever v ~ w.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Proper coloring",
+      "Chromatic number",
+      "Graph homomorphism to K_k"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e1156-random-graph",
+    "proofId": "erdos-1156",
+    "range": {
+      "startLine": 67,
+      "endLine": 79
+    },
+    "type": "concept",
+    "title": "Axiomatized Random Graph Model",
+    "content": "**erdosRenyi and chromaticNumberRV axioms**\n\nThe Erdos-Renyi random graph G(n, 1/2) is axiomatized as a type `erdosRenyi n`, representing a probability distribution over simple graphs on n labeled vertices. The chromatic number of a random graph instance is given by `chromaticNumberRV n : erdosRenyi n -> Nat`.\n\nThese are axioms because a full formalization would require MeasureTheory.Measure on SimpleGraph (Fin n), which is not yet available in Mathlib.",
+    "mathContext": "G(n, 1/2) is a probability space over graphs on {1, ..., n} with P(edge {i,j}) = 1/2 independently.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdos-Renyi model",
+      "Probability space",
+      "Random variable",
+      "Measure theory"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e1156-basic-facts",
+    "proofId": "erdos-1156",
+    "range": {
+      "startLine": 81,
+      "endLine": 96
+    },
+    "type": "technique",
+    "title": "Basic Coloring Theorems",
+    "content": "**isKColorable_card:** Every graph on n vertices is n-colorable. The proof uses the identity coloring f = id : Fin n -> Fin n, which is trivially proper since distinct vertices get distinct colors.\n\n**isKColorable_zero_iff:** A graph G is 0-colorable if and only if G has no edges. In one direction, a coloring f : V -> Fin 0 is impossible for any vertex (Fin 0 is empty), unless V is also empty. In the other direction, the empty function witnesses 0-colorability of an edgeless graph.",
+    "mathContext": "For n-vertex graphs: chi(G) <= n (trivially). chi(G) = 0 iff G has no edges and no vertices.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Identity coloring",
+      "Edgeless graph",
+      "Upper bound on chromatic number"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e1156-q1",
+    "proofId": "erdos-1156",
+    "range": {
+      "startLine": 98,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "The Main Open Conjecture (Q1)",
+    "content": "**erdos_1156_q1_conjecture:**\n\nThe central open question: there exists a constant C such that for all n, there exists m(n) with chi(G(n,1/2)) concentrated within C of m(n) almost surely.\n\nFormally: for all G in the support of G(n,1/2), |chromaticNumberRV(G) - m| <= C.\n\nThis is axiomatized because the answer is unknown. The best partial result is Heckel (2021): for at least half of all n, concentration holds with C = 1 (two consecutive values).",
+    "mathContext": "Conjecture: There exists C in N such that for all n, there exists m(n) with Pr[|chi(G(n,1/2)) - m(n)| > C] -> 0 as n -> infinity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Concentration inequality",
+      "Heckel two-value theorem",
+      "Shamir-Spencer bound",
+      "Alon-Krivelevich bound"
+    ],
+    "prerequisites": []
+  }
+]
