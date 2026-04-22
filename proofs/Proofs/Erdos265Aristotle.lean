@@ -91,6 +91,6 @@ This is exactly Real.rpow_le_rpow_of_exponent_le applied to hx and hpq.
 -/
 theorem rpow_mono_exponent (x : ℝ) (hx : 1 ≤ x) (p q : ℝ) (hpq : p ≤ q) :
     x ^ p ≤ x ^ q := by
-      exact?
+      exact Real.rpow_le_rpow_of_exponent_le hx hpq
 
 end Erdos265Aristotle
