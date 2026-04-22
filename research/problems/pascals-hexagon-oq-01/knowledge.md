@@ -35,6 +35,21 @@ Insights accumulated during research on this problem.
 
 ---
 
+### Session 5 (researcher-5, 2026-04-22)
+- Added `import Mathlib.LinearAlgebra.QuadraticForm.Real` to PascalsHexagon.lean
+- Proved `conicQF_eq_dotProduct`: `conicQuadraticForm C p = p ⬝ᵥ (C *ᵥ p)` via sum expansion
+- Proved `mathlibQF_eq_dotProduct`: `Matrix.toQuadraticMap' C p = p ⬝ᵥ (C *ᵥ p)` via `toLinearMap₂'_apply'`
+- Proved `conicQF_eq_mathlibQF`: bridge between our `conicQuadraticForm` and Mathlib's `Matrix.toQuadraticMap'`
+- Proved `mathlibQF_separatingLeft`: for symmetric non-degenerate C, `(associated (toQuadraticMap' C)).SeparatingLeft`
+  - Key chain: symmetry → `associated_left_inverse` gives `associated Q = toLinearMap₂' ℝ C`
+  - Then `nondegenerate_of_det_ne_zero + Nondegenerate.toLinearMap₂'`
+- Updated `proof_sketch_conic_implies_pascal` to add `hC_sym : C.symmetric` and `hC_nd : Conic.nondegenerate C`
+  - Without these, the statement is FALSE for degenerate/asymmetric conics
+- Documented complete proof plan for remaining sorry (matrix extraction + 6-case weight analysis ~100 lines)
+- File: 1278 lines, 1 axiom, 1 sorry (HARD: Sylvester matrix extraction)
+
+---
+
 ## Dead Ends
 
 - Mathlib lacks Bezout/Cayley-Bacharach — must use direct algebraic approach

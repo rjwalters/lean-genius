@@ -1,6 +1,7 @@
 import Mathlib.Data.Real.Basic
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.LinearAlgebra.CrossProduct
+import Mathlib.LinearAlgebra.QuadraticForm.Real
 import Mathlib.Tactic
 
 /-!
@@ -1101,6 +1102,73 @@ the proof of `conic_implies_pascal_constraint C hex` goes:
 The axiom `conic_implies_pascal_constraint` can then be replaced by a theorem.
 See `proof_sketch_conic_implies_pascal` below. -/
 
+-- ============================================================
+-- PART 20a: Mathlib QuadraticForm Bridge (for Sylvester's Law)
+-- ============================================================
+
+/-! ## Connecting to Mathlib's QuadraticForm machinery
+
+The key helper `mathlibQF_separatingLeft` shows that for a non-degenerate symmetric
+conic matrix C, the quadratic form `Matrix.toQuadraticMap' C` has a separating left
+associated bilinear form — the key hypothesis for Sylvester's theorem
+(`QuadraticForm.equivalent_one_neg_one_weighted_sum_squared`).
+
+These lemmas support the proof plan in `proof_sketch_conic_implies_pascal` below. -/
+
+/-- Our `conicQuadraticForm C p` equals the standard matrix bilinear form `p ⬝ᵥ (C *ᵥ p)`.
+    Both compute `Σᵢⱼ Cᵢⱼ pᵢ pⱼ`. -/
+private lemma conicQF_eq_dotProduct (C : Conic) (p : Fin 3 → ℝ) :
+    conicQuadraticForm C p = p ⬝ᵥ (C *ᵥ p) := by
+  simp only [conicQuadraticForm, dotProduct, Matrix.mulVec]
+  simp_rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl; intro i _
+  apply Finset.sum_congr rfl; intro j _
+  ring
+
+/-- Mathlib's `Matrix.toQuadraticMap' C p` also equals `p ⬝ᵥ (C *ᵥ p)`.
+    The `Matrix.toQuadraticMap'` definition is `LinearMap.BilinMap.toQuadraticMap (toLinearMap₂' ℝ C)`,
+    which applies the bilinear map to `(p, p)`. -/
+private lemma mathlibQF_eq_dotProduct (C : Conic) (p : Fin 3 → ℝ) :
+    Matrix.toQuadraticMap' C p = p ⬝ᵥ (C *ᵥ p) := by
+  simp only [Matrix.toQuadraticMap', LinearMap.BilinMap.toQuadraticMap_apply,
+             Matrix.toLinearMap₂'_apply']
+
+/-- Our `conicQuadraticForm` agrees with Mathlib's `Matrix.toQuadraticMap'` pointwise.
+    Key connection for the Sylvester proof path. -/
+private lemma conicQF_eq_mathlibQF (C : Conic) (p : Fin 3 → ℝ) :
+    conicQuadraticForm C p = Matrix.toQuadraticMap' C p :=
+  (conicQF_eq_dotProduct C p).trans (mathlibQF_eq_dotProduct C p).symm
+
+/-- For a non-degenerate symmetric conic C, the associated bilinear form of
+    `Matrix.toQuadraticMap' C` is separating on the left.
+
+    This is the key hypothesis for `QuadraticForm.equivalent_one_neg_one_weighted_sum_squared`
+    (Sylvester's law). The proof chain:
+    1. Symmetry of C → `Matrix.toLinearMap₂' ℝ C` is a symmetric bilinear form
+    2. `QuadraticMap.associated_left_inverse` → `associated Q = Matrix.toLinearMap₂' ℝ C`
+    3. `C.det ≠ 0` → `Matrix.Nondegenerate C` → `(Matrix.toLinearMap₂' ℝ C).SeparatingLeft`
+    4. Therefore `(associated Q).SeparatingLeft`. -/
+private lemma mathlibQF_separatingLeft (C : Conic) (hC_sym : C.symmetric)
+    (hC_nd : Conic.nondegenerate C) :
+    (associated (R := ℝ) (Matrix.toQuadraticMap' C)).SeparatingLeft := by
+  -- Step 1: Show associated Q = Matrix.toLinearMap₂' ℝ C using symmetry of C
+  have h_assoc : associated (R := ℝ) (Matrix.toQuadraticMap' C) = Matrix.toLinearMap₂' ℝ C := by
+    unfold Matrix.toQuadraticMap'
+    exact QuadraticMap.associated_left_inverse (fun x y => by
+      -- Prove: (Matrix.toLinearMap₂' ℝ C) x y = (Matrix.toLinearMap₂' ℝ C) y x
+      -- i.e., x ⬝ᵥ (C *ᵥ y) = y ⬝ᵥ (C *ᵥ x), using symmetry of C
+      simp only [Matrix.toLinearMap₂'_apply', dotProduct, Matrix.mulVec]
+      simp_rw [Finset.mul_sum]
+      conv_lhs => rw [Finset.sum_comm]
+      apply Finset.sum_congr rfl; intro k _
+      apply Finset.sum_congr rfl; intro l _
+      -- After swap: x l * (C l k * y k) = y k * (C k l * x l)
+      -- Using hC_sym l k : C l k = C k l
+      rw [hC_sym l k]; ring)
+  -- Step 2: Apply Matrix.Nondegenerate.toLinearMap₂'
+  rw [h_assoc]
+  exact (Matrix.nondegenerate_of_det_ne_zero hC_nd).toLinearMap₂'
+
 /-- **Invertible matrices preserve validity** (map nonzero vectors to nonzero vectors).
     If det(M) ≠ 0 and v ≠ 0, then M·v ≠ 0.
     Proof: if M·v = 0, then (adj(M)·M)·v = adj(M)·(M·v) = 0 = det(M)·v, so v = 0. -/
@@ -1115,23 +1183,68 @@ private lemma projTransform_valid_of_det_ne_zero {M : Matrix (Fin 3) (Fin 3) ℝ
   rw [Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec] at h0
   exact (smul_eq_zero.mp h0).resolve_left hM
 
-/-- **Proof sketch**: The full proof of `conic_implies_pascal_constraint`, pending
-    Sylvester's law. The `sorry` here is PURELY for Sylvester (the connection between
-    a general conic and the standard conic via a projective transformation).
-    All other steps are proved above. -/
-theorem proof_sketch_conic_implies_pascal (C : Conic) (hex : InscribedHexagon C) :
+/-- **Proof sketch**: The full proof of `conic_implies_pascal_constraint`, for the case
+    where C is a symmetric non-degenerate conic. The remaining `sorry` covers extracting
+    an explicit invertible matrix from Mathlib's `IsometryEquiv`.
+
+    **Why hC_sym and hC_nd are needed:**
+    - `hC_sym`: Without symmetry, the quadratic form's zero set is the same as its symmetrization
+      `(C + Cᵀ)/2`, so WLOG C is symmetric. But the proof of Sylvester requires a symmetric matrix.
+    - `hC_nd`: Degenerate conics (pairs of lines, single points, empty) need separate treatment;
+      for non-degenerate conics, Sylvester gives a projective equivalence to `stdConic`.
+
+    **For the full elimination of `conic_implies_pascal_constraint`**, two additional steps remain:
+    1. Handle asymmetric C: replace with symmetrized `(C + Cᵀ)/2` (same zero set).
+    2. Handle degenerate C: use a Pappus-type argument for pairs of lines.
+
+    All other steps (projective invariance, Pascal for stdConic) are proved above. -/
+theorem proof_sketch_conic_implies_pascal (C : Conic)
+    (hC_sym : C.symmetric) (hC_nd : Conic.nondegenerate C)
+    (hex : InscribedHexagon C) :
     pascalConstraint hex.A hex.B hex.C' hex.D hex.E hex.F := by
-  -- Step A: Get the symmetrized conic (same point set, symmetric matrix)
-  -- The quadratic form Q_C(p) = Σᵢⱼ Cᵢⱼ pᵢ pⱼ = Q_{sym(C)}(p) where sym(C) = (C + Cᵀ)/2
-  -- So pointOnConic p C ↔ pointOnConic p (sym C)
-  -- Step B: By Sylvester's law (from Mathlib's QuadraticForm machinery),
-  -- there exists an invertible M with M.transpose * C_sym * M = stdConic
-  -- (assuming C_sym has a real point, i.e., is indefinite with signature (2,1))
   obtain ⟨M, hM_det, hM_eq⟩ : ∃ (M : Matrix (Fin 3) (Fin 3) ℝ),
       M.det ≠ 0 ∧
       ∀ (p : ProjPoint), pointOnConic p C ↔
         pointOnConic (projTransform M p) stdConic := by
-    sorry -- Sylvester's law: build M from Mathlib's spectral theorem
+    -- PROOF PLAN (Sylvester's law; key steps and Mathlib references):
+    --
+    -- [PROVED above] mathlibQF_separatingLeft gives:
+    --   (associated (R := ℝ) (Matrix.toQuadraticMap' C)).SeparatingLeft
+    --
+    -- [MATHLIB] QuadraticForm.equivalent_one_neg_one_weighted_sum_squared:
+    --   obtain ⟨w, hw, ⟨φ⟩⟩ :=
+    --     (Matrix.toQuadraticMap' C).equivalent_one_neg_one_weighted_sum_squared
+    --       (mathlibQF_separatingLeft C hC_sym hC_nd)
+    --   φ : (Matrix.toQuadraticMap' C).IsometryEquiv (weightedSumSquares ℝ w)
+    --   hw : ∀ i, w i = -1 ∨ w i = 1
+    --   φ.map_app : ∀ p, (weightedSumSquares ℝ w) (φ p) = (Matrix.toQuadraticMap' C) p
+    --
+    -- [MATHLIB] Extract matrix M₁ from the isometry φ:
+    --   let M₁ := LinearMap.toMatrix' φ.toLinearEquiv.toLinearMap
+    --   M₁ *ᵥ p = φ p  (by Matrix.toLin'_toMatrix')
+    --   M₁.det ≠ 0  (by LinearMap.det_toMatrix' + (LinearEquiv.det φ.toLinearEquiv).ne_zero)
+    --
+    -- [CASE ANALYSIS] Find correction matrix M₂ for the weight pattern:
+    --   Since hex.A is on C, (Matrix.toQuadraticMap' C) hex.A = 0 (conicQF_eq_mathlibQF),
+    --   so (weightedSumSquares ℝ w)(φ hex.A) = 0 with φ hex.A ≠ 0 (M₁ invertible).
+    --   Thus w is indefinite (not all 1 or all -1), leaving 6 cases:
+    --     w = (1,1,-1)   M₂ = identity
+    --     w = (1,-1,1)   M₂ = permutation (swap indices 1↔2)
+    --     w = (-1,1,1)   M₂ = permutation (swap indices 0↔2)
+    --     w = (-1,-1,1)  M₂ = identity (zero sets agree up to sign: -f=0 ↔ f=0)
+    --     w = (-1,1,-1)  M₂ = permutation (swap 1↔2) + negation argument
+    --     w = (1,-1,-1)  M₂ = permutation (swap 0↔2) + negation argument
+    --   In each case: M = M₂ * M₁ has M.det ≠ 0 and satisfies the conic equivalence.
+    --
+    -- [IFF PROOF] Given M₁, M₂ as above:
+    --   conicQF C p = 0
+    --   ↔ (Matrix.toQuadraticMap' C) p = 0      (conicQF_eq_mathlibQF)
+    --   ↔ (weightedSumSquares ℝ w)(M₁ *ᵥ p) = 0  (φ isometry, M₁ = matrix of φ)
+    --   ↔ conicQF stdConic (M₂ *ᵥ (M₁ *ᵥ p)) = 0 (M₂ correction for weight pattern)
+    --   = conicQF stdConic ((M₂ * M₁) *ᵥ p) = 0  (mulVec associativity)
+    sorry -- HARD: matrix extraction from IsometryEquiv + 6-case weight analysis
+    -- Estimated: ~80 lines. Mathlib tools needed above are all available in
+    -- Mathlib.LinearAlgebra.QuadraticForm.Real + Mathlib.LinearAlgebra.Determinant
   -- Step C: The M-transformed hexagon vertices lie on stdConic
   have hMA : pointOnConic (projTransform M hex.A) stdConic := (hM_eq hex.A).mp hex.hA
   have hMB : pointOnConic (projTransform M hex.B) stdConic := (hM_eq hex.B).mp hex.hB
