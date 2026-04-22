@@ -33,6 +33,13 @@
     ]
   },
   "overview": {
+    "prerequisites": [
+      "Quadratic reciprocity and the Legendre symbol (ℤ/pℤ for prime p)",
+      "Jacobi symbol J(a,n) as product of Legendre symbols over prime factors of n",
+      "Euclidean algorithm structure and termination via Nat.mod_lt",
+      "Lean 4 certified computation: native_decide, computable definitions",
+      "Mathlib JacobiSymbol API: jacobiSym.mod_left, jacobiSym.mul_left, jacobiSym.quadratic_reciprocity"
+    ],
     "historicalContext": "Carl Gustav Jacob Jacobi introduced the generalized symbol $\\left(\\frac{a}{n}\\right)$ for composite odd $n$ in 1837 as a tool for studying quadratic forms. The key computational insight — that quadratic reciprocity and the two supplements extend to Jacobi symbols, enabling an efficient Euclidean-style algorithm — was developed throughout the 19th century. The algorithm mirrors the Euclidean GCD: reduce $a$ mod $n$, extract factors of 2 (using the second supplement $\\left(\\frac{2}{n}\\right) = (-1)^{(n^2-1)/8}$), apply reciprocity to swap $a$ and $n$ (with sign correction), and repeat. This Euclidean reduction runs in $O(\\log^2 n)$ steps, analogous to the Euclidean algorithm for GCD. Modern applications include the Solovay-Strassen primality test (1977), where the Jacobi symbol provides a probabilistic compositeness witness: if $a^{(n-1)/2} \\not\\equiv \\left(\\frac{a}{n}\\right) \\pmod{n}$, then $n$ is composite. Efficient Jacobi computation is also used in the BPSW probable prime test and in Lenstra's elliptic curve factorization.",
     "problemStatement": "Can the verified Euclidean reduction steps from the parent proof be assembled into a certified computation function in Lean 4?",
     "text": "We show that YES: the reduction, extraction, reciprocity, and supplement steps compose into a certified O(log² n) computation algorithm for the Jacobi symbol.",
@@ -69,6 +76,21 @@
       "targetId": "elementary-quadratic-reciprocity-oq-03",
       "relationship": "extends",
       "description": "Answers the original question about Jacobi symbol reciprocity proof completion"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "The Kronecker Symbol: Extending Jacobi to All Integer Moduli — directly answers this entry's open question about generalizing the Euclidean Jacobi algorithm to even moduli. The Kronecker symbol χ(a,n) extends J(a,n) to all n (including powers of 2), enabling a complete certified computation algorithm without the odd-modulus restriction."
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "related",
+      "description": "Greatest Common Divisor (Euclidean algorithm) — the Euclidean Jacobi algorithm is structurally a variant of the Euclidean GCD algorithm: both alternate between reduction mod the bottom argument and a swap step, both terminate because the bottom argument strictly decreases (Nat.mod_lt), and both run in O(log² n) steps (bounded by Fibonacci sequence). The `one_step_decreasing` theorem in this entry is the direct analogue of GCD termination."
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "foundational",
+      "description": "Quadratic Reciprocity (root theorem) — the foundational result that this entry applies computationally. The `reciprocity_step` lemma in this entry wraps the main QR theorem (J(a,n)·J(n,a) = (-1)^((a-1)/2·(n-1)/2)) into an algorithmic step, turning a theoretical result into a certified computation primitive."
     }
   ],
   "sections": [
