@@ -1,208 +1,59 @@
 [
   {
-    "id": "ann-qvand-docblock",
-    "proofId": "binomial-theorem-oq-04-oq-02-oq-01",
-    "range": { "startLine": 1, "endLine": 20 },
-    "type": "context",
-    "title": "Framing: q-Analogs of Classical Combinatorics",
-    "content": "The module docblock frames the problem as a q-analog question: given that classical Vandermonde's identity $\\binom{m+n}{r} = \\sum_k \\binom{m}{k}\\binom{n}{r-k}$ holds, can we replace classical binomials with Gaussian binomials and recover a deformed identity? The answer is yes, at the cost of an extra $q$-weight $q^{k(n+k-r)}$ recording positional information. At $q=1$ all weights collapse to 1 and we recover the classical identity, confirming the q-analog philosophy: deformation should be invisible at the specialization point.",
-    "mathContext": "The q-Vandermonde identity: $\\binom{m+n}{r}_q = \\sum_{k=0}^{r} \\binom{m}{k}_q \\cdot \\binom{n}{r-k}_q \\cdot q^{k(n+k-r)}$. The combinatorial interpretation: $\\binom{n}{k}_q$ counts $k$-dimensional subspaces of $\\mathbb{F}_q^n$; the $q$-weight encodes the relative position of the subspaces chosen from each factor.",
-    "significance": "context",
-    "relatedConcepts": [
-      "q-analog",
-      "Gaussian binomial coefficient",
-      "Vandermonde identity",
-      "q-deformation"
-    ],
-    "prerequisites": [
-      "classical Vandermonde identity",
-      "combinatorics of subspaces over finite fields"
-    ]
+    "id": "ann-qvand-overview",
+    "title": "q-Analog Infrastructure: Gaussian Binomials from Scratch",
+    "type": "overview",
+    "startLine": 1,
+    "endLine": 30,
+    "mathContext": "Gaussian binomial coefficients [n choose k]_q count k-dimensional subspaces of 𝔽_q^n. As polynomials in q, they interpolate between 0 (when k > n) and C(n,k) (at q=1). Mathlib 4 has no gaussBinom — this file builds the theory from scratch using the q-Pascal recurrence [n+1 choose k+1]_q = q^(k+1)·[n choose k+1]_q + [n choose k]_q. The key structural choice: define by structural recursion rather than a closed form, making inductive proofs natural.",
+    "significance": "This formalization fills a Mathlib gap. Gaussian binomials appear throughout combinatorics (q-analogs of Vandermonde, Kummer, Lucas), representation theory (quantum group characters), and combinatorics of set partitions. The choice to work over an arbitrary CommRing R (not just ℤ[q]) allows applications to specializations like q = root of unity or q = -1."
   },
   {
-    "id": "ann-qvand-imports",
-    "proofId": "binomial-theorem-oq-04-oq-02-oq-01",
-    "range": { "startLine": 22, "endLine": 33 },
-    "type": "technique",
-    "title": "Infrastructure: CommRing with BigOperators",
-    "content": "The four Mathlib imports provide exactly the necessary infrastructure: `BigOperators` enables the $\\sum$ notation over `Finset`, `Ring.Basic` gives the `CommRing` typeclass with distributivity, `Choose.Basic` provides `Nat.choose_succ_succ` (Pascal's rule) for the classical limit proof, and `Tactic` enables `omega`, `ring`, `simp`, and `induction` automation. Working over a general `CommRing R` rather than $\\mathbb{Z}$ or $\\mathbb{Q}$ makes the results immediately applicable to polynomial rings, $p$-adic integers, and quantum group algebras.",
-    "mathContext": "The variable `{R : Type*} [CommRing R]` abstracts over all commutative rings simultaneously. Since $\\binom{n}{k}_q \\in \\mathbb{Z}[q]$ (the coefficients are non-negative integers), the results hold when $q$ is any element of any commutative ring.",
-    "significance": "technical",
-    "relatedConcepts": [
-      "commutative ring",
-      "BigOperators",
-      "Finset",
-      "typeclass polymorphism"
-    ],
-    "prerequisites": [
-      "abstract algebra",
-      "Lean 4 typeclasses",
-      "Mathlib BigOperators"
-    ]
-  },
-  {
-    "id": "ann-qvand-definition",
-    "proofId": "binomial-theorem-oq-04-oq-02-oq-01",
-    "range": { "startLine": 39, "endLine": 51 },
+    "id": "ann-gauss-defn",
+    "title": "gaussBinom: Definition via q-Pascal Recurrence",
     "type": "definition",
-    "title": "gaussBinom: Recursive Definition via q-Pascal Rule",
-    "content": "The Gaussian binomial $\\binom{n}{k}_q$ is defined by structural recursion on the pair $(n, k)$. The three cases are: (1) $\\binom{n}{0}_q = 1$ — there is exactly one 0-dimensional subspace (the zero subspace) in any $\\mathbb{F}_q^n$; (2) $\\binom{0}{k+1}_q = 0$ — no $(k+1)$-dimensional subspace of $\\{0\\}$; (3) the q-Pascal rule $\\binom{n+1}{k+1}_q = q^{k+1}\\binom{n}{k+1}_q + \\binom{n}{k}_q$, which counts $k$-spaces in $\\mathbb{F}_q^{n+1}$ by conditioning on whether the last standard basis vector $e_{n+1}$ is in the chosen subspace. The `noncomputable` annotation is required because the function takes values in a general ring $R$ which may not have decidable equality.",
-    "mathContext": "The q-Pascal rule (P1 form): $\\binom{n+1}{k+1}_q = q^{k+1}\\binom{n}{k+1}_q + \\binom{n}{k}_q$. Geometrically: subspaces of $\\mathbb{F}_q^{n+1}$ are either those that project to $k$-spaces in the first $n$ coordinates (weighted by $q^{k+1}$ for the position of the new direction), or lifts of $(k-1)$-spaces supplemented by $e_{n+1}$. This gives $\\binom{n+1}{k+1}_q = q^k \\binom{n}{k}_q + \\binom{n}{k-1}_q$ in Gaussian notation (after index shift).",
-    "significance": "key",
-    "relatedConcepts": [
-      "q-Pascal recurrence",
-      "structural recursion",
-      "subspace counting",
-      "Gaussian binomial coefficient",
-      "noncomputable"
-    ],
-    "prerequisites": [
-      "linear algebra over finite fields",
-      "Lean 4 structural recursion",
-      "commutative ring"
-    ]
+    "startLine": 40,
+    "endLine": 55,
+    "mathContext": "The q-Pascal recurrence (P1 form): [n+1 choose k+1]_q = q^(k+1)·[n choose k+1]_q + [n choose k]_q. This is the 'right' form — incrementing both n and k by 1. The 'left' form (P2) is [n+1 choose k]_q = q^k·[n choose k]_q + [n choose k-1]_q. Both follow from each other via q-symmetry [n choose k]_q = [n choose n-k]_q, but only P1 is made definitional here. The base cases [n choose 0] = 1 and [0 choose k+1] = 0 uniquely determine the polynomial.",
+    "significance": "The recursive definition makes inductive proofs straightforward: gaussBinom_eq_zero_of_lt, gaussBinom_self, gaussBinom_one all follow by structural induction with one case split. A closed-form definition (product formula) would make induction harder but evaluation faster.",
+    "relatedConcepts": ["q-Pascal recurrence", "Gaussian polynomial", "q-binomial coefficient", "Gaussian binomial"]
   },
   {
-    "id": "ann-qvand-base-cases",
-    "proofId": "binomial-theorem-oq-04-oq-02-oq-01",
-    "range": { "startLine": 57, "endLine": 67 },
-    "type": "technique",
-    "title": "Simp Lemmas for Base Cases and Recurrence",
-    "content": "The three `@[simp]`-tagged base case lemmas serve double duty: they are proved by `rfl` (definitional equality) and also annotate the definition for the Lean `simp` tactic so that downstream proofs can unfold the recurrence automatically. The pattern `cases n <;> rfl` for `gaussBinom_zero_right` handles both `n = 0` and `n + 1` in one shot. Tagging `gaussBinom_succ_succ` as a named lemma — even though it is definitional — makes it available for `rw` in the inductive steps without manually unfolding the definition.",
-    "mathContext": "$\\binom{n}{0}_q = 1$ for all $n \\geq 0$; $\\binom{0}{k+1}_q = 0$ for all $k \\geq 0$; the recurrence $\\binom{n+1}{k+1}_q = q^{k+1}\\binom{n}{k+1}_q + \\binom{n}{k}_q$ as a named equation.",
-    "significance": "technical",
-    "relatedConcepts": [
-      "simp lemma",
-      "definitional equality",
-      "rfl",
-      "tactic automation"
-    ],
-    "prerequisites": [
-      "Lean 4 `@[simp]` attribute",
-      "pattern matching"
-    ]
+    "id": "ann-vanishing",
+    "title": "Vanishing and Self-Choice Lemmas",
+    "type": "theorem",
+    "startLine": 63,
+    "endLine": 84,
+    "mathContext": "gaussBinom_eq_zero_of_lt: [n choose k]_q = 0 when k > n. Proof by induction on n: at n=0, k ≥ 1 gives 0 directly. At n+1: if k > n+1, then k = m+1 with m > n, so both [n choose m+1] and [n choose m] vanish by IH. gaussBinom_self: [n choose n]_q = 1 by induction using vanishing on the first summand of gaussBinom_succ_succ (since (n+1) < (n+1) is false). Key: gaussBinom_eq_zero_of_lt (by omega) is the workhorse for boundary cases throughout.",
+    "significance": "These lemmas are essential infrastructure for q_vandermonde: the base case n=0 requires [0 choose r-k] = 0 for k < r, and the inductive step requires [n choose s+1] = 0 when s+1 > n to handle the n+k < s case. Without these, the sum manipulations wouldn't typecheck.",
+    "relatedConcepts": ["vanishing coefficients", "boundary conditions", "structural induction"]
   },
   {
-    "id": "ann-qvand-vanishing",
-    "proofId": "binomial-theorem-oq-04-oq-02-oq-01",
-    "range": { "startLine": 69, "endLine": 78 },
-    "type": "concept",
-    "title": "Vanishing Lemma: [n choose k]_q = 0 for k > n",
-    "content": "This is the q-analog of the classical fact $\\binom{n}{k} = 0$ for $k > n$. The proof is by induction on $n$: in the base case ($n = 0$), any $k \\geq 1$ satisfies $\\binom{0}{k}_q = 0$ by definition. In the inductive step, both arguments to the q-Pascal rule satisfy $n < k$ and $n < k+1$ (since $k+1 > n+1$ implies $k \\geq n+1 > n$), so both recursive calls vanish by the induction hypothesis. The `obtain` pattern extracts a predecessor $m$ from the hypothesis $0 < k$ (since $n < k$ implies $k \\geq 1$). The `omega` tactic handles the linear arithmetic automatically.",
-    "mathContext": "Claim: $k > n \\implies \\binom{n}{k}_q = 0$. This is essential for the q-Vandermonde identity: the Finset.range sum includes terms $k > r$ or with $r - k > n$, and the vanishing lemma ensures these contribute zero, so the effective sum is over $0 \\leq k \\leq \\min(r, m)$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "vanishing binomial",
-      "Finset.range truncation",
-      "induction on natural numbers",
-      "omega tactic"
-    ],
-    "prerequisites": [
-      "structural induction on ℕ",
-      "linear arithmetic"
-    ]
+    "id": "ann-q1-limit",
+    "title": "Classical Limit: gaussBinom_one",
+    "type": "theorem",
+    "startLine": 88,
+    "endLine": 106,
+    "mathContext": "gaussBinom_one : ∀ n k, gaussBinom (1:R) n k = Nat.choose n k. Proof by induction on n. Base cases are trivial. Inductive step: gaussBinom_succ_succ at q=1 gives [n+1 choose k+1]_1 = 1^(k+1)·C(n,k+1) + C(n,k) = C(n,k+1) + C(n,k) = C(n+1,k+1) by Nat.choose_succ_succ. The 1^(k+1) term requires one_pow. The cast from ℕ to R uses Nat.cast_add.",
+    "significance": "This is the consistency check: gaussBinom is a genuine q-analog of Nat.choose. It's also the key lemma for vandermonde_from_q: setting q=1 in q_vandermonde and applying gaussBinom_one recovers classical Vandermonde. Without this, the q-analog would be a standalone definition without the classical connection."
   },
   {
-    "id": "ann-qvand-self",
-    "proofId": "binomial-theorem-oq-04-oq-02-oq-01",
-    "range": { "startLine": 79, "endLine": 84 },
-    "type": "concept",
-    "title": "Self-Choice: [n choose n]_q = 1",
-    "content": "The fact $\\binom{n}{n}_q = 1$ reflects that there is exactly one $n$-dimensional subspace of $\\mathbb{F}_q^n$: the whole space itself. The proof proceeds by induction: the q-Pascal rule gives $\\binom{n+1}{n+1}_q = q^{n+1}\\binom{n}{n+1}_q + \\binom{n}{n}_q$. The first term vanishes (since $n+1 > n$) by `gaussBinom_eq_zero_of_lt`, and the second term equals $1$ by the induction hypothesis. The proof is a single `rw` followed by `simp`-normalized arithmetic.",
-    "mathContext": "$\\binom{n}{n}_q = 1$. Combinatorially: the $q$-weight of the unique $n$-chain of nested subspaces $0 \\subset V_1 \\subset \\cdots \\subset V_n = \\mathbb{F}_q^n$ is $q^0 = 1$. Algebraically: $\\binom{n}{n}_q = \\frac{(q^n-1)(q^{n-1}-1)\\cdots(q-1)}{(q^n-1)(q^{n-1}-1)\\cdots(q-1)} = 1$ via the closed form.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "self-choice",
-      "complete subspace",
-      "induction on ℕ"
-    ],
-    "prerequisites": [
-      "gaussBinom_eq_zero_of_lt",
-      "q-Pascal rule"
-    ]
+    "id": "ann-q-vandermonde",
+    "title": "q-Vandermonde Identity: Inductive Proof",
+    "type": "theorem",
+    "startLine": 108,
+    "endLine": 194,
+    "mathContext": "The proof proceeds by revert r followed by induction on n. Base (n=0): Finset.sum_eq_single r shows only k=r contributes — all k<r terms have [0 choose r-k] = [0 choose j+1] = 0. Inductive step (n+1, r=s+1): (1) hlhs applies gaussBinom_succ_succ to get [m+n+1 choose s+1] = q^(s+1)·[m+n choose s+1] + [m+n choose s]. (2) h_term proves term-by-term: [m choose k]·[n+1 choose s+1-k]·q^{k(n+1+k-s-1)} = [m choose k]·[n choose s-k]·q^{k(n+k-s)} + q^(s+1)·([m choose k]·[n choose s+1-k]·q^{k(n+k-s-1)}). Key: expand [n+1 choose s+1-k] = q^{s-k+1}·[n choose s+1-k] + [n choose s-k] via gaussBinom_succ_succ; then pow_add gives q^{s-k+1+k(n+k-s)} = q^{(s+1)+k(n+k-s-1)}. (3) Reassembly: sum_congr + sum_add_distrib + ← mul_sum + sum_range_succ closes the boundary.",
+    "significance": "This is the mathematically non-trivial heart of the file. The key insight is the term-by-term proof (h_term): instead of manipulating double sums, the exponent arithmetic pow_add reduces the comparison to a single ring identity. The case split on n+k ≥ s handles the boundary where gaussBinom_eq_zero_of_lt zeroes out the n+k < s terms. The proof demonstrates that q-analog identities, while algebraically richer than classical ones, follow the same inductive structure — just with more careful exponent bookkeeping.",
+    "relatedConcepts": ["q-Pascal recurrence", "Finset.sum_congr", "sum_add_distrib", "pow_add", "Finset.sum_range_succ"]
   },
   {
-    "id": "ann-qvand-classical-limit",
-    "proofId": "binomial-theorem-oq-04-oq-02-oq-01",
-    "range": { "startLine": 90, "endLine": 106 },
-    "type": "insight",
-    "title": "Classical Limit: gaussBinom 1 n k = C(n,k)",
-    "content": "This theorem confirms that `gaussBinom` is a genuine q-analog of `Nat.choose`. At $q = 1$ the q-Pascal rule becomes $\\binom{n+1}{k+1}_1 = 1^{k+1} \\cdot \\binom{n}{k+1}_1 + \\binom{n}{k}_1 = \\binom{n}{k+1}_1 + \\binom{n}{k}_1 = \\binom{n+1}{k+1}$, which is exactly Pascal's rule for classical binomials. The proof uses `Nat.choose_succ_succ` (Pascal's rule in Mathlib) and `Nat.cast_add` to bridge between `ℕ` and the ring $R$. The outer induction on $n$ matches the structural recursion of `gaussBinom`.",
-    "mathContext": "$\\binom{n}{k}_1 = C(n,k)$ for all $n, k \\in \\mathbb{N}$, where the LHS is in $R$ (via `Nat.cast`) and the identity holds in any commutative ring. Equivalently: the polynomial $\\binom{n}{k}_q \\in \\mathbb{Z}[q]$ evaluated at $q = 1$ equals $C(n, k) \\in \\mathbb{Z}$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "q=1 specialization",
-      "Pascal's rule",
-      "Nat.cast",
-      "q-analog verification"
-    ],
-    "prerequisites": [
-      "Nat.choose_succ_succ",
-      "Nat.cast homomorphism",
-      "induction on ℕ"
-    ]
-  },
-  {
-    "id": "ann-qvand-main-theorem",
-    "proofId": "binomial-theorem-oq-04-oq-02-oq-01",
-    "range": { "startLine": 112, "endLine": 133 },
-    "type": "insight",
-    "title": "q-Vandermonde Identity: Statement and Inductive Structure",
-    "content": "The main theorem states the q-Vandermonde identity over any commutative ring. The use of `Finset.range (r + 1)` (indices $0, 1, \\ldots, r$) as the summation domain is intentional: terms with $k > m$ or $r - k > n$ automatically vanish by `gaussBinom_eq_zero_of_lt`, so the formal sum over all of `range (r+1)` equals the effective sum. The `sorry` marks the inductive step where the q-Pascal rule applied to $\\binom{m+n+1}{r}_q$ produces two sums that must be combined via a `Finset.sum` reindexing ($k \\mapsto k - 1$) — a technically correct but combinatorially finicky manipulation in Lean 4.",
-    "mathContext": "The q-Vandermonde identity: $\\binom{m+n}{r}_q = \\sum_{k=0}^{r} \\binom{m}{k}_q \\cdot \\binom{n}{r-k}_q \\cdot q^{k(n+k-r)}$. The $q$-weight $q^{k(n+k-r)}$ encodes the relative position of the chosen $k$-space in the $m$-factor and the $(r-k)$-space in the $n$-factor when embedded into $\\mathbb{F}_q^{m+n}$. Combinatorially: it counts flags by a position statistic called the Lehmer code.",
-    "significance": "key",
-    "relatedConcepts": [
-      "q-Vandermonde identity",
-      "Finset.range sum",
-      "inductive proof",
-      "Lehmer code",
-      "subspace flags"
-    ],
-    "prerequisites": [
-      "Gaussian binomial coefficient",
-      "Finset.sum manipulation in Lean 4",
-      "q-Pascal rule"
-    ]
-  },
-  {
-    "id": "ann-qvand-exponent-safety",
-    "proofId": "binomial-theorem-oq-04-oq-02-oq-01",
-    "range": { "startLine": 118, "endLine": 127 },
-    "type": "technique",
-    "title": "Natural Number Subtraction Safety in the Exponent",
-    "content": "The exponent $k \\cdot (n + k - r)$ uses Lean's natural number subtraction, which truncates to 0 when $n + k < r$. This could be a correctness concern: if $k^* \\cdot (n + k^* - r)$ silently becomes $k^* \\cdot 0 = 0$ for some active term, the identity would be wrong. But the docstring carefully explains why this is safe: whenever $n + k < r$, we have $r - k > n$, so $\\binom{n}{r-k}_q = 0$ by `gaussBinom_eq_zero_of_lt`. The potentially wrong term has zero coefficient, so the value of the exponent is irrelevant — the $q^{\\ldots}$ is multiplied by zero. This pattern of 'safe underflow via vanishing coefficients' is a recurring technique in Lean formalizations of combinatorial identities.",
-    "mathContext": "For $n + k < r$: $n < r - k$, so $\\binom{n}{r-k}_q = 0$. Thus the $k$-th term $\\binom{m}{k}_q \\cdot \\binom{n}{r-k}_q \\cdot q^{k(n+k-r)} = \\binom{m}{k}_q \\cdot 0 \\cdot q^{k \\cdot 0} = 0$, regardless of the exponent's truncated value.",
-    "significance": "technical",
-    "relatedConcepts": [
-      "natural number subtraction",
-      "truncated subtraction",
-      "safe underflow",
-      "vanishing term argument"
-    ],
-    "prerequisites": [
-      "Lean 4 ℕ subtraction semantics",
-      "gaussBinom_eq_zero_of_lt"
-    ]
-  },
-  {
-    "id": "ann-qvand-corollary",
-    "proofId": "binomial-theorem-oq-04-oq-02-oq-01",
-    "range": { "startLine": 139, "endLine": 152 },
-    "type": "concept",
-    "title": "Recovering Classical Vandermonde at q = 1",
-    "content": "The corollary `vandermonde_from_q` derives the classical Vandermonde identity $C(m+n, r) = \\sum_k C(m,k) C(n, r-k)$ as a specialization of the q-analog at $q = 1$. The proof applies `gaussBinom_one` (which converts each `gaussBinom 1 · ·` to a `Nat.choose`), notes that $1^{k(n+k-r)} = 1$, and uses `ring` to confirm the resulting arithmetic. The `convert ... using 1; congr 1; ext k; ring` pattern handles the ring normalization of the $q^{\\ldots}$ factor.",
-    "mathContext": "Setting $q = 1$: $q^{k(n+k-r)} = 1^{k(n+k-r)} = 1$, and $\\binom{n}{k}_1 = C(n,k)$, so the q-Vandermonde identity reduces to $C(m+n,r) = \\sum_k C(m,k) C(n,r-k)$. This is the classical Vandermonde convolution, proved here as a corollary of a more general q-analog statement.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "classical Vandermonde identity",
-      "specialization",
-      "ring normalization",
-      "corollary structure"
-    ],
-    "prerequisites": [
-      "gaussBinom_one",
-      "q_vandermonde",
-      "Nat.cast ring homomorphism"
-    ]
+    "id": "ann-classical-vandermonde",
+    "title": "Classical Vandermonde as Corollary",
+    "type": "theorem",
+    "startLine": 196,
+    "endLine": 213,
+    "mathContext": "vandermonde_from_q derives C(m+n,r) = Σ_k C(m,k)·C(n,r-k) from q_vandermonde at q=1 and gaussBinom_one. At q=1, the weight q^{k(n+k-r)} = 1^{...} = 1. The proof uses have := q_vandermonde (1:R) m n r; simp [gaussBinom_one] at this to rewrite gaussBinom 1 to Nat.choose casts; then ring to clear the trivial 1-powers.",
+    "significance": "This is the theoretical payoff: the q-Vandermonde identity is strictly stronger than classical Vandermonde — it carries the extra q-weight encoding subspace position. Setting q=1 in a fully proved q-result gives a free classical corollary. This pattern (prove the q-analog first, specialize to get the classical result) is standard in combinatorics but unusual in formal proofs — typically classical results are proved first."
   }
 ]
