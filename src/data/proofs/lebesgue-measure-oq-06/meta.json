@@ -79,6 +79,13 @@
       "mathContext": "The full statement: $\\exists n, \\{P_i\\}_{i<n}, g_1^{(i)}, g_2^{(i)}$ such that $\\{P_i\\}$ partitions $B^3$, $B^3 = \\bigsqcup_i g_1^{(i)}(P_i)$, and $B^3 + 2e_1 = \\bigsqcup_i g_2^{(i)}(P_i)$. Hausdorff's rotation matrices have entries involving $\\sqrt{1 - 1/9} = 2\\sqrt{2}/3$, producing algebraically independent column vectors."
     },
     {
+      "id": "nonmeasurability-corollary",
+      "title": "§V-Corollary: Pieces Must Be Non-Measurable",
+      "startLine": 228,
+      "endLine": 248,
+      "summary": "States that the Banach-Tarski pieces must be non-Lebesgue-measurable (axiomatized sorry). The contradiction: if all pieces were measurable, isometry-invariance of Lebesgue measure and finite additivity would force λ(B³) = λ(B³) + λ(B³), contradicting the known value 4π/3 ∈ (0,∞). This corollary explains why Banach-Tarski does not violate conservation of volume — the pieces simply have no measurable volume to conserve."
+    },
+    {
       "id": "amenability",
       "title": "§VI: Amenability and the Group-Theoretic Source",
       "startLine": 249,
@@ -91,7 +98,8 @@
     "summary": "The Banach-Tarski paradox is formalized at the statement level with abstract equidecomposability and paradoxical set framework fully defined. The key measure-theoretic consequence (paradoxical sets admit no finite invariant measure) is structurally proved. The main theorem and ingredient lemmas are stated as axiomatized sorries, representing the current boundary of this gallery entry's formalization.",
     "openQuestions": [
       "Can Hausdorff's free subgroup theorem be fully formalized in Lean? The proof requires showing that explicit 3×3 rotation matrices generate a free group — the algebraic argument involves showing nontrivial words produce vectors with irrational coordinates via a number-theoretic argument.",
-      "Can the full Banach-Tarski proof be formalized in Lean 4? The most likely path: build the free group paradoxical decomposition first (purely algebraic), then lift to S² (measure-theoretic), then to B³ (geometric extension). Estimated scope: 800-1200 lines."
+      "Can the full Banach-Tarski proof be formalized in Lean 4? The most likely path: build the free group paradoxical decomposition first (purely algebraic), then lift to S² (measure-theoretic), then to B³ (geometric extension). Estimated scope: 800-1200 lines.",
+      "Is Tarski's theorem (a G-set X is G-paradoxical iff it admits no G-invariant finitely-additive probability measure) fully formalizable in Mathlib? The 'only if' direction is proved here; the 'if' direction requires Zorn's lemma applied to extend invariant functionals and connects to the Hahn-Banach theorem."
     ],
     "implications": "The Banach-Tarski paradox shows that Lebesgue measure cannot be extended to all subsets of ℝ³ as a finitely-additive rigid-motion-invariant measure. It demonstrates that the Axiom of Choice produces sets with no reasonable notion of volume. The connection to amenability shows that this phenomenon is fundamentally group-theoretic: the non-amenability of SO(3) (via its free subgroup) is the root cause."
   },

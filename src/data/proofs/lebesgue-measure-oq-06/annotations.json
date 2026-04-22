@@ -72,18 +72,6 @@
     "prerequisites": ["Euclidean space in Lean", "isometric equivalences", "group homomorphism", "FreeGroup", "MeasureTheory"]
   },
   {
-    "id": "ann-nonmeasurability",
-    "proofId": "lebesgue-measure-oq-06",
-    "range": { "startLine": 228, "endLine": 248 },
-    "type": "theorem",
-    "title": "Corollary: Banach-Tarski Pieces Are Non-Measurable",
-    "content": "This corollary (stated as a sorry) captures the essential measure-theoretic obstruction: the pieces in any Banach-Tarski decomposition of the unit ball must be non-Lebesgue-measurable. The argument is by contradiction: if all pieces $\\{P_i\\}$ were measurable, then since isometries preserve Lebesgue measure, $\\lambda(g_j^{(i)}(P_i)) = \\lambda(P_i)$ for each $i$. Finite additivity over the two reassemblies gives $\\lambda(B^3) = \\sum_i \\lambda(P_i) = \\lambda(B^3) + \\lambda(B^3) = 2\\lambda(B^3)$. Since $\\lambda(B^3) = 4\\pi/3 \\in (0, \\infty)$, this is a contradiction. Thus the Axiom of Choice is not just used for the construction — it is genuinely necessary; without non-measurable sets, the paradox cannot occur.",
-    "mathContext": "Quantitative contradiction: $\\lambda(B^3) = \\frac{4}{3}\\pi$ (volume of unit ball in $\\mathbb{R}^3$). If all $n$ pieces have well-defined measure: $\\sum_{i=1}^n \\lambda(P_i) = \\lambda(B^3) = \\frac{4\\pi}{3}$ (partition). Two equidecomposable copies: $2 \\cdot \\frac{4\\pi}{3} = \\frac{4\\pi}{3}$. Contradiction. The non-measurability is analogous to the Vitali set: choosing one representative from each $\\mathbb{Q}$-coset of $\\mathbb{R}/\\mathbb{Z}$ yields a non-measurable set.",
-    "significance": "key",
-    "relatedConcepts": ["Lebesgue measure", "isometry preserves measure", "non-measurable set", "Vitali set", "Axiom of Choice", "MeasurableSet"],
-    "prerequisites": ["MeasureTheory.Measure.isometry_invariant", "Lebesgue measure on ℝ³", "MeasurableSet", "finitely-additive measure"]
-  },
-  {
     "id": "ann-banach-tarski",
     "proofId": "lebesgue-measure-oq-06",
     "range": { "startLine": 192, "endLine": 226 },
@@ -115,7 +103,7 @@
     "title": "Amenable Groups: The Group-Theoretic Obstruction",
     "content": "IsAmenable G defines amenability: the group G admits a finitely-additive left-invariant probability measure on ALL subsets of G. Amenable groups include ℤ (via Cesàro means, stated as int_amenable with sorry) and all finite groups, but NOT F₂ (free group on 2 generators, stated as free_group_not_amenable with sorry). The non-amenability of F₂ is the group-theoretic root cause of Banach-Tarski: F₂ ↪ SO(3) → SO(3) not amenable → unit ball paradoxical.",
     "mathContext": "Day's theorem (1949): a group $G$ is amenable iff every $G$-set has no paradoxical subset. Equivalently (Tarski), every $G$-set admits a $G$-invariant finitely-additive probability measure. The free group $F_2$ has a paradoxical decomposition: $F_2 = W(a) \\sqcup aW(a^{-1})$ where $F_2 \\sim W(a)$ (via $a$) and $F_2 \\sim aW(a^{-1})$ directly. The Cesàro mean construction for ℤ: $\\mu(A) = \\lim_{N \\to \\infty} |A \\cap [-N, N]| / (2N+1)$ (when the limit exists; extend via Banach limits).",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["Day's theorem", "Tarski's theorem", "Cesaro mean", "Banach limit", "free group paradox"],
     "prerequisites": ["FreeGroup", "Group action", "finitely-additive measure", "left-invariant measure"]
   }
