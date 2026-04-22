@@ -775,14 +775,14 @@ end Erdos263
   - `doubleExp_tail_bound`: D * tail < 1/(D-1) via geometric comparison
   - `tsum_split_at`: ∑ f = (range sum) + f N + (shifted tail) via sum_add_tsum_nat_add
 
-  **Key sorries** (5 remaining):
-  Deep (require non-Mathlib mathematics):
+  **Key sorries** (4 remaining, all deep — require non-Mathlib mathematics):
   - `folklore_irrationality`: a_n^{1/2^n} → ∞ ⟹ Σ 1/a_n irrational (Mahler-type)
   - `kovac_tao_not_irrationality`: The Kovač-Tao 2024 negative result (Egyptian fractions)
   - `positive_condition_irrationality`: liminf a_{n+1}/a_n^{2+ε} > 0 ⟹ irrationality seq
   - `truncation_insufficient`: ∀N, irrationality status requires infinite information
-  Hard (all helper lemmas now proved — only the integer-gap assembly remains):
-  - `doubleExp_sum_irrational`: Σ 1/2^{2^n} is irrational (integer-gap argument)
+
+  **Proved in sessions 1–9** (no sorry):
+  - `doubleExp_sum_irrational`: Σ 1/2^{2^n} is irrational (session 9, integer-gap argument)
 
   **Position of key sequences relative to KT threshold**:
   - doubleExp (2^{2^n}): ratio = 1 exactly (AT boundary, KT does NOT exclude it)

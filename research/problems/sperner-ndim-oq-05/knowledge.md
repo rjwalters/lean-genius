@@ -217,6 +217,55 @@ so avoids elaboration overhead.
 
 ---
 
+## Session 2026-04-22 (Session 4) - Prove boundaryFlip step_same sorries
+
+**Mode**: REVISIT
+**Outcome**: PROGRESS — proved 4 sorries in SpernerGrid.lean (11 → 6 remaining)
+
+### What I Did
+
+1. Analyzed `boundaryFlip0.step_same` proof structure (middle + last cases)
+2. Analyzed `boundaryFlipLast.step_same` proof structure (first + later cases)
+3. Proved all four `step_same` sorries following the pattern of existing `step_inc`/`step_dec` proofs
+
+### Key Findings
+
+- **`boundaryFlip0.step_same` middle case**: delegates to `s.step_same ⟨j_step.val+1, hj_mid⟩`.
+  After `simp only [hj_mid, dite_true] at hj_inc`, the direction condition `hj_inc` becomes
+  `j ≠ s.incDir ⟨j_step.val+1, hj_mid⟩`, exactly matching the needed hypothesis.
+  Pattern: simp verts, apply s.step_same, prove cast equalities, simp_all.
+
+- **`boundaryFlip0.step_same` last case**: `j_step.succ` lands on `new_v`,
+  `j_step.castSucc` lands on `last_v = s.verts ⟨d⟩`. After resolving `hj_inc → j ≠ inc0`
+  and proving `j_step.castSucc.val + 1 = d`, use `BaryPoint.transfer_coords_other`.
+
+- **`boundaryFlipLast.step_same` first case** (j_step.val=0): `j_step.castSucc` → new_v,
+  `j_step.succ` → v0. After `h_eq : s.verts ⟨succ.val-1, _⟩ = v0`, use
+  `BaryPoint.transfer_coords_other v0 s.miss last_inc (Ne.symm h_ne) h_pos j hj_miss hj_inc`.
+
+- **`boundaryFlipLast.step_same` later case**: delegates to `s.step_same ⟨j_step.val-1, hjd⟩`.
+  After `simp only [hj0, ite_false] at hj_inc`, hj_inc becomes `j ≠ s.incDir ⟨j_step.val-1⟩`.
+  Pattern mirrors the step_inc/step_dec later cases exactly.
+
+- **`BaryPoint.transfer_coords_other` is the key lemma** for boundary flip step_same proofs:
+  when `j ≠ inc` and `j ≠ dec`, the transferred BaryPoint has the same `j`-coordinate.
+
+### Files Modified
+
+- `proofs/Proofs/SpernerGrid.lean` (4 sorries removed, 11 → 6 remaining)
+  - `GridSimplex.boundaryFlip0.step_same` (lines 868-903)
+  - `GridSimplex.boundaryFlipLast.step_same` (lines 1011-1046)
+
+### Next Steps
+
+1. **[USER ACTION NEEDED]** Comment on mathlib4#25231 pointing Dillies to
+   `SpernerSimplicialInstance.lean` as Part 2 (this is a public external action)
+2. Test granular imports for `SpernerMathlib4.lean` via Docker build
+3. Attempt `gridAdj_symm`, `gridAdj_vertex`, `gridAdj_ne` sorries (lines 1096-1113)
+4. Profile `SpernerSimplicialInstance.lean` with `set_option profiler true`
+
+---
+
 ## Dead Ends
 
 - `FixedPointFree.lean` (GroupTheory) — about group automorphisms, not Finsets
