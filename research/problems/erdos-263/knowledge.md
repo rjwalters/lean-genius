@@ -1,5 +1,40 @@
 # Knowledge Base: Erdős #263 - Irrationality Sequences
 
+## Session 2026-04-22 (Session 8) — Prove 3 Helper Lemmas (8→5 sorries)
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: progress — proved doubleExp_tail_pos, doubleExp_tail_bound, tsum_split_at
+
+### What I Did
+
+Proved the 3 remaining "Aristotle candidate" helper lemmas for the integer-gap argument:
+
+1. **`tsum_split_at`** (proved): `∑' f = (range sum) + f N + (shifted tail)`
+   - Used `Summable.sum_add_tsum_nat_add` to split off the finite prefix
+   - Used `Summable.tsum_eq_zero_add` to peel off the single term at N
+   - Index arithmetic `n+1+N = n+N+1` handled by `omega` inside `tsum_congr`
+
+2. **`doubleExp_tail_pos`** (proved): `0 < ∑' k, 1/2^{2^{k+N+1}}`
+   - Summability: `(summable_nat_add_iff (N+1)).mpr doubleExp_sum_summable` + `.congr`
+   - Positivity: `tsum_pos hsum (fun k => by positivity) 0 (by positivity)`
+
+3. **`doubleExp_tail_bound`** (proved): `D * T < 1/(D-1)` where `D = 2^{2^N}`
+   - Set `r = 1/D²`. Key arithmetic: `k+1 ≤ 2^k` ⟹ `2(k+1) ≤ 2^{k+1}`
+   - Term bound: `1/D^{2^{k+1}} ≤ 1/D^{2(k+1)} = r^{k+1}` via `one_div_le_one_div_of_le`
+   - Geometric series: `∑ r^{k+1} = 1/(D²-1)` via `tsum_mul_left + tsum_geometric_of_lt_one`
+   - Final: `D/(D²-1) < 1/(D-1)` since `D·(D-1) < D²-1` via `nlinarith`
+
+### Current State
+- 5 sorries remain: 4 deep (folklore, kovac-tao, positive-condition, truncation) + 1 hard (doubleExp_sum_irrational)
+- All 4 helpers for the main theorem are proved (fin_mul_nat in session 7, the 3 above now)
+- Next: attempt `doubleExp_sum_irrational` directly using the helper lemmas
+
+### Files Modified
+- `proofs/Proofs/Stubs/Erdos263Problem.lean` (650 → 726 lines, 8 → 5 sorries)
+- `src/data/proofs/erdos-263/meta.json`
+
+---
+
 ## Problem Summary
 
 **Erdős #263**: A sequence (aₙ) of positive integers is an *irrationality sequence* if for every
