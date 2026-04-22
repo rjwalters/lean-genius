@@ -42,7 +42,8 @@
       "The `toEuclidean` bridge is essentially the identity map — `EuclideanSpace ℝ (Fin 2)` is definitionally `Fin 2 → ℝ`, and `![P.1, P.2]` creates the corresponding function. The bridge lemma makes this explicit.",
       "`EuclideanSpace.norm_eq` expresses the norm as `Real.sqrt (∑ i, ‖x i‖²)`. For ℝ-valued components, `‖x i‖ = |x i|` and `|x i|² = x i²`, giving the standard Euclidean norm formula.",
       "All nine reformulated theorems are immediate corollaries of the bridge lemma — their proofs are 3-line reductions to the existing coordinate-based proofs.",
-      "`Metric.sphere center r = {x | dist x center = r}` is the standard abstract sphere. The nine-point circle theorem in this form is directly compatible with Mathlib's geometry API for potential future Mathlib contribution."
+      "`Metric.sphere center r = {x | dist x center = r}` is the standard abstract sphere. The nine-point circle theorem in this form is directly compatible with Mathlib's geometry API for potential future Mathlib contribution.",
+      "The `noncomputable section` is required because `EuclideanSpace ℝ (Fin 2)` involves classical real-number operations. The bridge pattern is entirely definitional — `toEuclidean` is `noncomputable def`, but the proof terms themselves are classical propositions verified by `ring` and `simp`."
     ],
     "prerequisites": [
       "FeuerbachsTheoremDefs.lean — coordinate-based nine-point circle proofs",
@@ -53,6 +54,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Namespace Setup",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring explaining the API bridge purpose, imports Mathlib and FeuerbachsTheoremDefs, opens relevant namespaces, and marks the section as noncomputable.",
+      "mathContext": "The `noncomputable section` is required because `EuclideanSpace ℝ (Fin 2)` involves classical real analysis (norms, sqrt). The `open FeuerbachsTheorem` brings in the `Triangle` type and coordinate-based theorems from the parent file."
+    },
     {
       "id": "bridge",
       "title": "Part I: Bridge Infrastructure",
@@ -76,6 +85,14 @@
       "endLine": 155,
       "summary": "All 9 points lie on the Mathlib sphere simultaneously.",
       "mathContext": "`ninePoints_all_on_sphere` proves the conjunction via `List.mem_cons` case analysis, delegating each case to the individual membership theorems."
+    },
+    {
+      "id": "namespace-end",
+      "title": "Namespace Close",
+      "startLine": 157,
+      "endLine": 191,
+      "summary": "End of the FeuerbachsTheoremDefsOQ04 namespace and the noncomputable section.",
+      "mathContext": "The `end FeuerbachsTheoremDefsOQ04` and `end` close the namespace and noncomputable section, making all 12 theorems available under the `FeuerbachsTheoremDefsOQ04` prefix for import by downstream proofs."
     }
   ],
   "conclusion": {

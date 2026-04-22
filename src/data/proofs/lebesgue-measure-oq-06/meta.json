@@ -57,6 +57,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Imports, Setup, and Core Definitions",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Imports Mathlib, defines unitBall3 (the closed unit ball in ℝ³), and presents the module docstring describing the Banach-Tarski paradox, Hausdorff's 1914 free subgroup, and the proof strategy.",
+      "mathContext": "The unit ball $B^3 = \\{x \\in \\mathbb{R}^3 : \\|x\\| \\leq 1\\}$ is defined as `Set.closedBall 0 1` in `EuclideanSpace ℝ (Fin 3)`. The ambient type uses Mathlib's `EuclideanSpace` infrastructure, which provides the necessary metric and group action structure for the Banach-Tarski formalization."
+    },
+    {
       "id": "equidecomposable",
       "title": "§I: Equidecomposable Sets",
       "startLine": 40,
