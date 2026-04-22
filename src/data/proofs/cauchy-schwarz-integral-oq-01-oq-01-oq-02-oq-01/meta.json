@@ -14,10 +14,10 @@
       "measure-theory"
     ],
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 2,
     "axiomCount": 0,
     "lineCount": 810,
-    "assumptions": "3 remaining sorries: (1) truncated_rn_deriv_lq_bound — eLpNorm of truncated RN derivative bounded by M for finite measure; (2) indicator_lp_hasSum — indicator functions form a HasSum in Lp for countably disjoint sets; (3) holder_extremizer_lq_bound — eLpNorm of truncated RN derivative bounded by ‖φ‖. See Lean source for details.",
+    "assumptions": "2 remaining sorries: (1) truncated_rn_deriv_lq_bound — eLpNorm of truncated RN derivative bounded by M for finite measure; (2) holder_extremizer_lq_bound — eLpNorm of truncated RN derivative bounded by ‖φ‖. (indicator_lp_hasSum was proved in Session 6.) See Lean source for details.",
     "dateAdded": "2026-04-13"
   },
   "overview": {
@@ -133,7 +133,7 @@
       }
     ],
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
-    "sorries": 3
+    "sorries": 2
   },
-  "sorries": 3
+  "sorries": 2
 }
