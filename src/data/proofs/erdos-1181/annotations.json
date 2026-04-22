@@ -105,7 +105,7 @@
     "title": "Tao's Heuristic Bound",
     "content": "**Tao's heuristic:** q(n, log n) ≪ (log log n / log log log n) · log n.\n\nThis probabilistic prediction, if true, would be dramatically stronger than the (1-c)(log n)² conjecture, since (log log n / log log log n) · log n grows much slower than (log n)².\n\nThe tao_implies_erdos1181 theorem demonstrates this implication (with a sorry for the asymptotic comparison).",
     "mathContext": "The heuristic comes from modeling the divisibility of consecutive products by random model arguments.",
-    "significance": "notable",
+    "significance": "key",
     "relatedConcepts": [
       "Probabilistic number theory",
       "Random models"
@@ -123,7 +123,7 @@
     "title": "Chebyshev Theta Function",
     "content": "**θ(x) = ∑_{p ≤ x, p prime} log p**\n\nThe Chebyshev theta function sums log p over all primes up to x. By the Prime Number Theorem, θ(x)/x → 1 as x → ∞.\n\nThis function connects primorials to the consecutive product: log(primorial(q)) = θ(q), and θ(q) ~ q by PNT.",
     "mathContext": "Defined using Finset.Icc 2 ⌊x⌋₊ filtered by primality, summing Real.log.",
-    "significance": "notable",
+    "significance": "key",
     "relatedConcepts": [
       "Prime Number Theorem",
       "Primorial"

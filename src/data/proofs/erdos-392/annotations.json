@@ -86,7 +86,7 @@
     "title": "Main Result: A(n, n²)",
     "content": "**erdos_392_main** (axiomatized): With factor bound n², we have\n\nA(n, n²) = n/2 - n/(2 log n) + o(n/log n)\n\nThe error term o(n/log n) means the difference grows slower than n/log n as n → ∞.\n\n**Proof outline**:\n- Upper bound: Use the variant with bound n, then pair factors (Cambie's observation)\n- Lower bound: Stirling's approximation gives the n/2 leading term",
     "mathContext": "The `=o[atTop]` notation means the left side is little-o of the right side, i.e., the ratio converges to 0 as n → ∞. Written out: (A(n,n²) - n/2 + n/(2 log n)) / (n/log n) → 0.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "little-o",
       "asymptotics",

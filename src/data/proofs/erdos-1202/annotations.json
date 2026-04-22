@@ -103,7 +103,7 @@
     "title": "Main Axiom: The Threshold Result (Axiomatized)",
     "content": "The axiom `erdos_1202_threshold` encodes the solved result of Erdős Problem #1202: there exists an absolute constant c > 0 such that for any prime set S with |S| ≥ m²/(n log n) (under the growth condition), a structured subset T ⊆ S of size ≥ c · m²/(n log n) must exist. The result is axiomatized for two reasons: (1) the precise structural property of T cannot be recovered from the corrupted source statement; (2) the proof requires deep analytic number theory (sieve methods, prime number theorem estimates) not currently available in Mathlib in the required form.",
     "mathContext": "Formally: $\\exists c > 0, \\forall n > 1, \\forall m$ with $m > \\sqrt{n \\log n}, \\forall S$ with $S$ a prime set and $|S| \\ge m^2/(n \\log n)$: $\\exists T \\subseteq S$ prime set with $|T| \\ge c \\cdot m^2/(n \\log n)$. The value $m^2/(n \\log n)$ appears naturally in sieve theory: by the prime number theorem, the number of primes up to $n$ is $\\sim n/\\log n$, so among $n$ random integers, approximately $m^2/(n \\log n)$ pairs fall within distance $m$ of each other in prime distribution contexts.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "Selberg sieve",
       "large sieve inequality",
@@ -127,7 +127,7 @@
     "title": "Theorem erdos_1202: The Prime Set Threshold",
     "content": "The main theorem `erdos_1202` follows directly from the axiom by identity: the theorem statement is exactly `erdos_1202_threshold`. In this proof architecture, the axiom does the mathematical heavy lifting while the named theorem provides a clean top-level reference point. The proof term is simply `erdos_1202_threshold` — the theorem is literally the axiom. This pattern (axiom + immediate restatement as theorem) is standard in the gallery for results where the mathematical content is known but the Lean proof requires more infrastructure than currently available in Mathlib.",
     "mathContext": "The Lean proof term `theorem erdos_1202 ... := erdos_1202_threshold` is a definitional equality: both have the same type. The type expresses: $\\exists c > 0$, the prime set threshold property holds for all valid $(m, n, S)$. Under the growth condition, $c \\cdot m^2/(n \\log n)$ is both a lower bound on $|T|$ and strictly positive (by `asympThreshold_pos`), confirming T is non-empty.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "theorem vs axiom",
       "proof term identity",

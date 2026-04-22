@@ -2,7 +2,10 @@
   {
     "id": "ann-spn-vertex",
     "proofId": "sperner-ndim",
-    "range": { "startLine": 49, "endLine": 68 },
+    "range": {
+      "startLine": 49,
+      "endLine": 68
+    },
     "type": "structure",
     "title": "Vertex: Grid Points of the Standard d-Simplex",
     "content": "**Vertex d N** represents grid points in the standard $d$-simplex subdivided with parameter $N$. A grid point has $d$ explicit Cartesian coordinates $x_0, \\ldots, x_{d-1} \\in \\mathbb{N}$ satisfying $\\sum_{i} x_i \\leq N$. The implicit $d$-th barycentric coordinate is $x_d = N - \\sum x_i \\geq 0$. The `@[ext]` attribute enables extensionality: two vertices are equal iff their coordinate arrays agree.",
@@ -24,7 +27,10 @@
   {
     "id": "ann-spn-triangulation",
     "proofId": "sperner-ndim",
-    "range": { "startLine": 99, "endLine": 115 },
+    "range": {
+      "startLine": 99,
+      "endLine": 115
+    },
     "type": "structure",
     "title": "SpernerTriangulation: Abstract Triangulation with Adjacency Axioms",
     "content": "**SpernerTriangulation d N** is the abstract triangulation type capturing exactly the combinatorial structure needed for the door-counting proof. A simplex type `Simplex` (with `DecidableEq` and `Fintype` instances) comes with a vertex assignment `vertices : Simplex → Fin(d+1) → Vertex d N` (injective per simplex) and an adjacency map `adj : Simplex → Fin(d+1) → Option(Simplex × Fin(d+1))`. The four axioms — **adj_symm** (symmetric), **adj_vertices** (shared vertex image), **adj_ne** (distinct simplices), **boundary_face** (unmatched facets on boundary) — are precisely what the proof needs, and nothing more.",
@@ -47,7 +53,10 @@
   {
     "id": "ann-spn-isfc-door",
     "proofId": "sperner-ndim",
-    "range": { "startLine": 124, "endLine": 141 },
+    "range": {
+      "startLine": 124,
+      "endLine": 141
+    },
     "type": "definition",
     "title": "IsFC and isDoorAt: The Counting Units for the Parity Argument",
     "content": "**IsFC c K s** (fully colored): the coloring is surjective on simplex $s$'s vertices — $c \\circ \\text{vertices}_s : \\text{Fin}(d+1) \\to \\text{Fin}(d+1)$ is surjective, meaning all $d+1$ colors appear. **isDoorAt c K s k** (door at position $k$): removing vertex $k$, the remaining $d$ vertices carry all colors $\\{0, \\ldots, d-1\\}$. Formally, $\\forall j < d, \\exists i \\neq k : c(v_{s,i}) = j$. Both predicates are decidable, enabling `Finset.filter` over all simplices and positions.",
@@ -69,7 +78,10 @@
   {
     "id": "ann-spn-invol-parity",
     "proofId": "sperner-ndim",
-    "range": { "startLine": 147, "endLine": 193 },
+    "range": {
+      "startLine": 147,
+      "endLine": 193
+    },
     "type": "theorem",
     "title": "even_card_fpf_invol: Fixed-Point-Free Involutions Yield Even Sets",
     "content": "**even_card_fpf_invol**: If $f : S \\to S$ is a fixed-point-free involution on a finite set $S$ (i.e., $f(f(x)) = x$, $f(x) \\in S$, $f(x) \\neq x$ for all $x \\in S$), then $|S|$ is even. Proved by **strong induction** on $|S|$: pick $x \\in S$, pair with $y = f(x) \\neq x$, remove both to get $S' = S \\setminus \\{x, y\\}$, verify $f$ restricts to a fixed-point-free involution on $S'$, apply induction, and conclude $|S| = |S'| + 2$.",
@@ -91,7 +103,10 @@
   {
     "id": "ann-spn-abstract-door",
     "proofId": "sperner-ndim",
-    "range": { "startLine": 317, "endLine": 388 },
+    "range": {
+      "startLine": 317,
+      "endLine": 388
+    },
     "type": "theorem",
     "title": "abstract_door_parity: Per-Simplex Door Count Has Same Parity as Surjectivity",
     "content": "**abstract_door_parity**: For any $f : \\{0,\\ldots,d\\} \\to \\{0,\\ldots,d\\}$, the number of door positions $k$ (where removing index $k$, remaining values cover $\\{0,\\ldots,d-1\\}$) has parity 1 if $f$ is surjective, 0 otherwise. This is the fundamental per-simplex fact: **FC simplices contribute 1 door (odd), non-FC simplices contribute 0 or 2 doors (even)**.",
@@ -113,7 +128,10 @@
   {
     "id": "ann-spn-interior-even",
     "proofId": "sperner-ndim",
-    "range": { "startLine": 423, "endLine": 464 },
+    "range": {
+      "startLine": 423,
+      "endLine": 464
+    },
     "type": "theorem",
     "title": "interior_doors_even: Interior Doors Pair Up Under the Adjacency Involution",
     "content": "**interior_doors_even**: The number of interior door pairs $(s, k)$ — those satisfying `isDoorAt` AND $\\text{adj}(s,k) \\neq \\text{none}$ — is even. The proof shows `adjMap` (which maps $(s,k)$ to its adjacent $(s', k')$ when interior) is a **fixed-point-free involution** on the set of interior doors, then applies `even_card_fpf_invol`.",
@@ -135,7 +153,10 @@
   {
     "id": "ann-spn-no-bdry-doors",
     "proofId": "sperner-ndim",
-    "range": { "startLine": 473, "endLine": 500 },
+    "range": {
+      "startLine": 473,
+      "endLine": 500
+    },
     "type": "theorem",
     "title": "no_boundary_doors_face_lt: Sperner Kills All Non-Face-d Boundary Doors",
     "content": "**no_boundary_doors_face_lt**: For a Sperner coloring $c$ and a boundary facet on face $k < d$ (i.e., $\\text{adj}(s,k) = \\text{none}$), there is no door at position $k$. The proof: a door at $k < d$ requires color $k$ to appear among the non-$k$ vertices. But `boundary_face` says all non-$k$ vertices lie on face $k$ of the simplex, and the Sperner condition forbids color $k$ on face $k$. Contradiction. **Corollary** (boundary_door_is_last_face, line 491): every boundary door has $k = d$.",
@@ -157,12 +178,15 @@
   {
     "id": "ann-spn-parity-theorem",
     "proofId": "sperner-ndim",
-    "range": { "startLine": 595, "endLine": 635 },
+    "range": {
+      "startLine": 595,
+      "endLine": 635
+    },
     "type": "theorem",
     "title": "sperner_parity: The Sperner Parity Theorem",
     "content": "**sperner_parity**: The number of fully-colored simplices has the same parity as the number of boundary doors on face $d$: $$|FC| \\equiv |\\{(s,k) : \\text{door}(s,k) \\wedge \\text{adj}=\\text{none} \\wedge k = d\\}| \\pmod{2}.$$ This is the **main quantitative result** of the file — Sperner's lemma (existence of an FC simplex) follows when the boundary count is odd.",
     "mathContext": "The `calc` proof chain (lines 620–635): $$|FC| \\equiv \\sum_s |\\text{doors}(s)| \\equiv |\\text{all doors}| \\equiv |\\text{interior}| + |\\text{boundary}| \\equiv |\\text{boundary on face }d| \\pmod{2}$$ Step (1): `per_simplex_door_parity` (each FC contributes 1, non-FC contributes even). Step (2): `card_doors_eq_sum` (product counting: total doors = sum of per-simplex doors). Step (3): `doors_partition` (interior $\\cup$ boundary, disjoint). Step (4): $|\\text{interior}|$ even from `interior_doors_even`, using `hm` to write $|\\text{interior}| = m + m$. Step (5): `boundary_doors_eq_face_d` (Sperner kills all boundary doors except on face $d$). The `sum_mod_congr` helper (line 527) handles the sum-mod manipulation in step (1).",
-    "significance": "core",
+    "significance": "key",
     "relatedConcepts": [
       "door counting double-counting parity",
       "per_simplex_door_parity",
@@ -179,12 +203,15 @@
   {
     "id": "ann-spn-main",
     "proofId": "sperner-ndim",
-    "range": { "startLine": 648, "endLine": 662 },
+    "range": {
+      "startLine": 648,
+      "endLine": 662
+    },
     "type": "theorem",
     "title": "sperner_ndim: n-Dimensional Sperner's Lemma",
     "content": "**sperner_ndim**: For any abstract triangulation $K$ and Sperner coloring $c$, if the number of boundary doors on face $d$ is odd, then a fully-colored simplex exists. The proof is three lines: odd boundary doors $\\Rightarrow |FC| \\equiv 1 \\pmod{2}$ (by `sperner_parity`) $\\Rightarrow |FC| \\geq 1$ $\\Rightarrow$ FC simplex exists. The **boundary-odd hypothesis** is the inductive input: for concrete triangulations, dischargeable by induction on $d$ (base case $d=0$: trivially FC).",
     "mathContext": "The theorem takes `hbdry : Odd (|boundary doors on face d|)` as a hypothesis rather than proving it, cleanly separating the abstract parity proof from the triangulation-specific inductive argument. In practice: for the Freudenthal triangulation, the boundary face $d$ restriction is a lower-dimensional Freudenthal triangulation, and boundary door oddness follows by induction. The abstraction is suitable for **Mathlib contribution** (mathlib4#25231): any library that constructs a `SpernerTriangulation` instance immediately inherits the Sperner parity theorem for free. **Kuhn's path-following (1960)** makes the proof constructive: starting at any boundary door on face $d$, follow the unique opposite door inside each simplex to reach an FC simplex. In Lean, `Finset.card_pos` converts the odd (hence nonzero) cardinality to nonemptiness.",
-    "significance": "core",
+    "significance": "key",
     "relatedConcepts": [
       "Sperner's lemma n-dimensional",
       "boundary-door-oddness inductive hypothesis",

@@ -2,61 +2,116 @@
   {
     "id": "ann-cbrt3oq02-imports",
     "proofId": "cube-root-3-irrational-oq-02",
-    "range": { "startLine": 1, "endLine": 25 },
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
     "type": "context",
     "title": "Module Header: Eisenstein Irrationality Strategy",
     "content": "This file answers OQ-02 from cube-root-3-irrational: prove ∛3 is irrational via Eisenstein's irreducibility criterion. Strategy: (1) X³−3 irreducible (Eisenstein at p=3), (2) irreducible degree-3 polynomial has no rational roots, (3) if ∛3=q∈ℚ then q³=3 makes q a rational root, contradiction. Imports CubeRoot2IrrationalOQ03 for the general Eisenstein theorem `eisenstein_X_pow_sub_of_sqfree_factor`.",
     "mathContext": "Eisenstein criterion: polynomial $a_n X^n + \\cdots + a_0$ is irreducible over $\\mathbb{Z}$ if prime $p$ divides $a_0, \\ldots, a_{n-1}$, $p$ does not divide $a_n$, and $p^2$ does not divide $a_0$. For $X^3 - 3$: $p = 3$, $a_3 = 1$, $a_0 = -3$.",
     "significance": "context",
-    "relatedConcepts": ["Eisenstein criterion", "polynomial irreducibility", "rational root theorem"],
-    "prerequisites": ["CubeRoot2IrrationalOQ03.lean", "Polynomial.irreducible_of_eisenstein_criterion"]
+    "relatedConcepts": [
+      "Eisenstein criterion",
+      "polynomial irreducibility",
+      "rational root theorem"
+    ],
+    "prerequisites": [
+      "CubeRoot2IrrationalOQ03.lean",
+      "Polynomial.irreducible_of_eisenstein_criterion"
+    ]
   },
   {
     "id": "ann-cbrt3oq02-irred",
     "proofId": "cube-root-3-irrational-oq-02",
-    "range": { "startLine": 34, "endLine": 48 },
+    "range": {
+      "startLine": 34,
+      "endLine": 48
+    },
     "type": "lemma",
     "title": "X3_sub_3_irred: Eisenstein at p=3",
     "content": "Proves X³−3 is irreducible over ℚ as a one-line instance of eisenstein_X_pow_sub_of_sqfree_factor 3 3 3. The five norm_num conditions: (1) 2≤3, (2) Nat.Prime 3, (3) 3∣3, (4) ¬9∣3, (5) 3≠0. This establishes the algebraic foundation for the no-rational-roots argument.",
     "mathContext": "$X^3 - 3 \\in \\mathbb{Q}[X]$ is irreducible by Eisenstein at $p = 3$: $3 \\mid -3$ (constant term), $9 \\nmid -3$, $3 \\nmid 1$ (leading). By Gauss's lemma, ℤ-irreducible + primitive = ℚ-irreducible.",
     "significance": "key",
-    "relatedConcepts": ["Eisenstein criterion", "Gauss lemma", "eisenstein_X_pow_sub_of_sqfree_factor"],
-    "prerequisites": ["CubeRoot2IrrationalOQ03.eisenstein_X_pow_sub_of_sqfree_factor"]
+    "relatedConcepts": [
+      "Eisenstein criterion",
+      "Gauss lemma",
+      "eisenstein_X_pow_sub_of_sqfree_factor"
+    ],
+    "prerequisites": [
+      "CubeRoot2IrrationalOQ03.eisenstein_X_pow_sub_of_sqfree_factor"
+    ]
   },
   {
     "id": "ann-cbrt3oq02-no-rat-root",
     "proofId": "cube-root-3-irrational-oq-02",
-    "range": { "startLine": 52, "endLine": 72 },
+    "range": {
+      "startLine": 52,
+      "endLine": 72
+    },
     "type": "lemma",
     "title": "X3_sub_3_no_rat_root: Irreducibility → No Rational Roots",
     "content": "Proves ∀ q:ℚ, eval q (X³−3) ≠ 0. If q is a root, then (X−Cq)∣(X³−3). By X3_sub_3_irred.isUnit_or_isUnit, either (X−Cq) or R is a unit. Case inl: natDegree_eq_zero_of_isUnit gives degree 0, but natDegree(X−Cq)=1, omega. Case inr: degree 3 = 1+0 = 1 (natDegree_mul + natDegree_X_sub_C), norm_num gives contradiction.",
     "mathContext": "The formal statement of 'irreducible → no roots': if $p \\in \\mathbb{Q}[X]$ is irreducible with $\\deg p > 1$, and $p(q) = 0$ for $q \\in \\mathbb{Q}$, then $(X-q) \\mid p$. Write $p = (X-q) \\cdot R$; irreducibility forces one factor to be a unit, but a unit has degree 0 while $X-q$ has degree 1, giving degree contradiction.",
     "significance": "key",
-    "relatedConcepts": ["natDegree_eq_zero_of_isUnit", "dvd_iff_isRoot", "Irreducible.isUnit_or_isUnit", "natDegree_mul"],
-    "prerequisites": ["X3_sub_3_irred", "Polynomial.dvd_iff_isRoot", "Polynomial.natDegree_eq_zero_of_isUnit"]
+    "relatedConcepts": [
+      "natDegree_eq_zero_of_isUnit",
+      "dvd_iff_isRoot",
+      "Irreducible.isUnit_or_isUnit",
+      "natDegree_mul"
+    ],
+    "prerequisites": [
+      "X3_sub_3_irred",
+      "Polynomial.dvd_iff_isRoot",
+      "Polynomial.natDegree_eq_zero_of_isUnit"
+    ]
   },
   {
     "id": "ann-cbrt3oq02-irrational",
     "proofId": "cube-root-3-irrational-oq-02",
-    "range": { "startLine": 89, "endLine": 123 },
+    "range": {
+      "startLine": 89,
+      "endLine": 123
+    },
     "type": "theorem",
     "title": "cbrt3_irrational_via_eisenstein: Main Result",
     "content": "Proves Irrational ((3:ℝ)^(1/3:ℝ)) by contradiction. From hq : (↑q:ℝ) = ∛3, derives (q:ℝ)^3 = 3 via Real.rpow_mul, then q^3 = 3 : ℚ by exact_mod_cast. The eval computation shows q is a root of X³−3 via simp+hq3. Applies X3_sub_3_no_rat_root for contradiction.",
     "mathContext": "The core rpow arithmetic: $((3)^{1/3})^3 = 3^{(1/3) \\cdot 3} = 3^1 = 3$ using `Real.rpow_mul` (requires $3 \\geq 0$). The cast: $(q : \\mathbb{R})^3 = 3 \\Rightarrow q^3 = 3 : \\mathbb{Q}$ by injectivity of $\\mathbb{Q} \\hookrightarrow \\mathbb{R}$ (via `exact_mod_cast`).",
     "significance": "key",
-    "relatedConcepts": ["Irrational", "Real.rpow_mul", "exact_mod_cast", "X3_sub_3_no_rat_root"],
-    "prerequisites": ["X3_sub_3_no_rat_root", "Real.rpow_mul", "Real.rpow_natCast"]
+    "relatedConcepts": [
+      "Irrational",
+      "Real.rpow_mul",
+      "exact_mod_cast",
+      "X3_sub_3_no_rat_root"
+    ],
+    "prerequisites": [
+      "X3_sub_3_no_rat_root",
+      "Real.rpow_mul",
+      "Real.rpow_natCast"
+    ]
   },
   {
     "id": "ann-cbrt3oq02-case-analysis",
     "proofId": "cube-root-3-irrational-oq-02",
-    "range": { "startLine": 72, "endLine": 88 },
+    "range": {
+      "startLine": 72,
+      "endLine": 88
+    },
     "type": "technique",
     "title": "Universal Pattern: isUnit_or_isUnit for Irreducibility → No Roots",
     "content": "`cases X3_sub_3_irred.isUnit_or_isUnit hR` generates two cases that both yield degree contradictions:\n\n**Case `inl h`** — X − Cq is a unit:\n```lean\nhave hd := Polynomial.natDegree_eq_zero_of_isUnit h  -- hd : (X-Cq).natDegree = 0\nhave hd1 : (X - C q : ℚ[X]).natDegree = 1 := natDegree_X_sub_C q\nomega  -- 0 = 1, contradiction\n```\n\n**Case `inr h`** — cofactor R is a unit:\n```lean\nhave hR_deg : R.natDegree = 0 := Polynomial.natDegree_eq_zero_of_isUnit h\n-- natDegree((X-Cq) * R) = natDegree(X-Cq) + natDegree(R) = 1 + 0 = 1\n-- But natDegree(X³-3) = 3 (proved in setup), so 3 = 1. norm_num.\n```\n\nThis pattern — splitting on `Irreducible.isUnit_or_isUnit` and deriving degree contradictions — works for any irreducible polynomial of degree ≥ 2 over any field. The key lemmas `natDegree_eq_zero_of_isUnit` and `natDegree_mul` are the workhorses.",
     "mathContext": "General fact: if $p \\in F[X]$ is irreducible with $\\deg p \\geq 2$ and $p(\\alpha) = 0$ for $\\alpha \\in F$, then $(X-\\alpha) \\mid p$, say $p = (X-\\alpha) \\cdot R$. Since $p$ is irreducible, one factor is a unit. Units in $F[X]$ are nonzero constants, so $\\deg = 0$. But $\\deg(X-\\alpha) = 1 > 0$ and $\\deg p = \\deg(X-\\alpha) + \\deg R \\geq 1 + 0 \\neq \\deg p$ in the other case. Contradiction.",
-    "significance": "technique",
-    "relatedConcepts": ["Irreducible.isUnit_or_isUnit", "natDegree_eq_zero_of_isUnit", "natDegree_mul", "natDegree_X_sub_C"],
-    "prerequisites": ["X3_sub_3_irred", "Polynomial.natDegree_eq_zero_of_isUnit", "Polynomial.natDegree_mul"]
+    "significance": "technical",
+    "relatedConcepts": [
+      "Irreducible.isUnit_or_isUnit",
+      "natDegree_eq_zero_of_isUnit",
+      "natDegree_mul",
+      "natDegree_X_sub_C"
+    ],
+    "prerequisites": [
+      "X3_sub_3_irred",
+      "Polynomial.natDegree_eq_zero_of_isUnit",
+      "Polynomial.natDegree_mul"
+    ]
   }
 ]

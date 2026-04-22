@@ -33,7 +33,7 @@
     "title": "Decomposition Structure",
     "content": "The `Decomposition` structure records a decomposition $x = \\sum x_i$ where each $x_i \\in \\text{conv}(S_i)$. The `excessIndices` function identifies which indices $i$ have $x_i \\notin S_i$.\n\nThis structure is the combinatorial bookkeeping for the proof: we want to find a decomposition that *minimizes* the number of excess indices, and the Shapley-Folkman lemma says this minimum is $\\leq d$.",
     "mathContext": "A decomposition consists of: (1) points $x_i$ for each index, (2) proof each $x_i \\in \\text{conv}(S_i)$, (3) proof $\\sum x_i = x$. The excess set is $\\{i : x_i \\notin S_i\\}$.",
-    "significance": "standard",
+    "significance": "supporting",
     "prerequisites": [
       "convex hull membership",
       "Lean structures"
