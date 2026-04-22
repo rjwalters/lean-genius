@@ -266,14 +266,37 @@ theorem erdos_1941_divergence_from_growth (p q : ℕ) (hp : Odd p) (hq : Odd q)
     simplify to cos(kπ + π/2) = 0 using Real.cos_add + cos_pi_div_two + sin_int_mul_pi. -/
 theorem chebyshevNode_is_root (n : ℕ) (hn : 0 < n) (k : Fin n) :
     (Polynomial.Chebyshev.T ℝ (n : ℤ)).eval (chebyshevNode n k) = 0 := by
-  sorry  -- Aristotle candidate: routine trig computation via T_real_cos
+  simp only [chebyshevNode, chebyshev_T_at_cos]
+  have hmul : (n : ℤ) * ((2 * ↑k.val + 1 : ℝ) * Real.pi / (2 * ↑n)) =
+      (2 * k.val + 1 : ℝ) * Real.pi / 2 := by
+    push_cast
+    have : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+    field_simp; ring
+  rw [hmul]
+  -- cos((2k+1)π/2) = 0: rewrite as cos(kπ + π/2) and use cos_add
+  have h : (2 * (k.val : ℝ) + 1) * Real.pi / 2 = k.val * Real.pi + Real.pi / 2 := by ring
+  rw [h, Real.cos_add, Real.cos_pi_div_two, mul_zero, Real.sin_nat_mul_pi, zero_mul, sub_zero]
 
 /-- The Chebyshev nodes are distinct.
     Proof sketch: angles (2k+1)π/(2n) ∈ (0,π) are distinct (linear in k),
     and Real.cos_injOn_Icc gives injectivity of cos on [0,π]. -/
 theorem chebyshevNode_injective (n : ℕ) (hn : 0 < n) :
     Function.Injective (chebyshevNode n) := by
-  sorry  -- Aristotle candidate: injectivity of cos on [0,π] + linear ordering of nodes
+  intro i j heq
+  simp only [chebyshevNode] at heq
+  have hi : (2 * (i.val : ℝ) + 1) * Real.pi / (2 * n) ∈ Set.Icc (0 : ℝ) Real.pi :=
+    ⟨le_of_lt (div_pos (mul_pos (by positivity) Real.pi_pos) (by positivity)),
+     le_of_lt (by rw [div_lt_iff (by positivity)]; nlinarith [i.isLt, Real.pi_pos])⟩
+  have hj : (2 * (j.val : ℝ) + 1) * Real.pi / (2 * n) ∈ Set.Icc (0 : ℝ) Real.pi :=
+    ⟨le_of_lt (div_pos (mul_pos (by positivity) Real.pi_pos) (by positivity)),
+     le_of_lt (by rw [div_lt_iff (by positivity)]; nlinarith [j.isLt, Real.pi_pos])⟩
+  have hangle_eq := Real.strictAntiOn_cos.injOn hi hj heq
+  apply Fin.ext
+  have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+  have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
+  have : (2 * (i.val : ℝ) + 1) = 2 * j.val + 1 := by
+    field_simp [hn', hpi] at hangle_eq; linarith
+  exact_mod_cast (show (i.val : ℝ) = j.val by linarith)
 
 /-- The Chebyshev nodes are contained in [-1, 1]. -/
 theorem chebyshevNode_mem_Icc (n : ℕ) (k : Fin n) :
