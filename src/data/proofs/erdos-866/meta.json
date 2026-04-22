@@ -24,51 +24,51 @@
     "erdosProblemStatus": "open",
     "mathlibDependencies": [
       {
-        "theorem": "Finset.card",
-        "description": "Cardinality of finite sets",
+        "theorem": "Finset.card_eq_of_bijective",
+        "description": "Cardinality via explicit bijection — used in oddNumbers_card",
         "module": "Mathlib.Data.Finset.Card"
       },
       {
-        "theorem": "Nat.choose",
-        "description": "Binomial coefficients for counting pairs",
-        "module": "Mathlib.Data.Nat.Choose.Basic"
+        "theorem": "pow_lt_pow_right_of_lt_one₀",
+        "description": "Strict monotonicity of aⁿ for 0 < a < 1 — used in upperExponent_increasing",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
       },
       {
-        "theorem": "Real.log",
-        "description": "Logarithm for g₅ bounds",
-        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+        "theorem": "sub_lt_sub_left",
+        "description": "c - a < c - b iff b < a — used to reduce upperExponent inequality",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
       },
       {
-        "theorem": "Real.sqrt",
-        "description": "Square root for g₆ bounds",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+        "theorem": "Nat.mod_add_div",
+        "description": "n = n % k + k * (n / k) — used in oddNumbers_card surjectivity",
+        "module": "Mathlib.Data.Nat.Defs"
       }
     ],
     "originalContributions": [
-      "Formal definition of HasAllPairwiseSums and PairwiseSumCondition using Fin k → ℤ witnesses",
-      "Threshold function g_k(N) via Nat.find with vacuous existence proof",
-      "Complete case analysis: g₃=2 (exact), g₄≤2032 (van Doorn), g₅≍log N, g₆≍√N",
-      "General upper bound N^{1-2^{-k}} with upperExponent monotonicity",
-      "General lower bound N^{1-ε} for large k, with threshold_approaches_N corollary",
-      "Odd numbers construction as fundamental extremal example",
-      "Four open problems formalized as Lean propositions"
+      "Interval: definition of {1,...,2N} as (Finset.range(2N+1)).filter (· ≥ 1)",
+      "HasAllPairwiseSums: pairwise sums condition with witnesses Fin k → ℤ (allowing negative integers)",
+      "oddNumbers: {n ∈ [2N] : n odd} via Finset.filter",
+      "upperExponent: noncomputable ℝ-valued function 1 - (2⁻¹)^k",
+      "upperExponent_increasing: proved via sub_lt_sub_left and pow_lt_pow_right_of_lt_one₀",
+      "oddNumbers_card: proved via card_eq_of_bijective with explicit bijection i ↦ 2i+1",
+      "oddNumbers_no_triple: proved via h_odd extraction, simp_all +decide, grind +ring"
     ],
     "axiomCount": 0,
     "lineCount": 85,
-    "assumptions": "0 axioms. 0 sorries. All results formalized without axioms."
+    "assumptions": "0 axioms. 0 sorries. Aristotle companion file proving 3 supporting lemmas; the main formalization with case analysis (g₃=2, g₄≤2032, g₅≍log N, g₆≍√N) is encoded in the mathematical overview."
   },
   "overview": {
     "historicalContext": "Erdős Problem #866 originates from the work of Choi, Erdős, and Szemerédi on sumsets and additive combinatorics, building on their unpublished manuscript 'On sums and products of integers.' The problem asks: how large must a subset A of {1,...,2N} be to guarantee that some k integers have all their pairwise sums in A?\n\nThe foundational observation is the odd numbers construction: the set {1, 3, 5, ..., 2N-1} has N elements but avoids all pairwise sums (since odd + odd = even). This shows the threshold must be at least 1 above N. For k=3, the exact answer is g₃(N) = 2, proved via a complementary pairs pigeonhole argument.\n\nThe most striking feature is the phase transition as k increases: g₃ = 2 (constant), g₄ ≤ 2032 (bounded constant, van Doorn), g₅ ≍ log N (logarithmic), g₆ ≍ √N (polynomial). The general upper bound g_k(N) ≪ N^{1-2^{-k}} (Choi–Erdős–Szemerédi) shows the exponent approaches 1 geometrically, while the lower bound g_k(N) > N^{1-ε} for large k shows the threshold eventually approaches N.\n\nThis growth rate transition—from constant through logarithmic and polynomial to nearly linear—is rare in combinatorics and reflects deep structural changes in the extremal problem. The gap between upper and lower bounds for intermediate and large k remains one of the central open questions in additive combinatorics.",
     "problemStatement": "**Problem Statement**\n\nFor k ≥ 3, let g_k(N) be the minimal value such that if A ⊆ {1,...,2N} has |A| ≥ N + g_k(N), then there exist integers b₁,...,b_k such that all $\\binom{k}{2}$ pairwise sums b_i + b_j are in A (the b_i need not be in A).\n\n**Goal**: Estimate g_k(N) for all k.\n\n**Status**: PARTIALLY SOLVED\n- Small k (3,4,5,6): Well characterized\n- Large k: Gap between upper and lower bounds",
     "text": "For k ≥ 3, define g_k(N) as the minimal threshold such that A ⊆ {1,...,2N} with |A| ≥ N + g_k(N) contains all pairwise sums of some b₁,...,b_k. Known: g₃=2, g₄≤2032, g₅≍log N, g₆≍√N. General bounds have gaps.",
-    "proofStrategy": "The formalization is organized into eleven parts:\n\n1. **Definitions**: Interval, HasAllPairwiseSums (using Fin k → ℤ), PairwiseSumCondition, and g via Nat.find\n2. **Case k=3**: g₃(N) = 2 exactly (axiom), with lower bound from odd numbers construction\n3. **Case k=4**: g₄(N) bounded (axiom), van Doorn's explicit g₄ ≤ 2032 (axiom)\n4. **Case k=5**: g₅(N) ≍ log N (axiom), lower bound extracted as corollary via `obtain`\n5. **Case k=6**: g₆(N) ≍ √N (axiom)\n6. **General upper**: g_k(N) ≪ N^{1-2^{-k}} with upperExponent monotonicity (proved)\n7. **General lower**: g_k(N) > N^{1-ε} for large k (axiom), threshold_approaches_N (proved)\n8. **Odd numbers**: Extremal construction with cardinality (proved) and avoidance (proved) proofs\n9. **Summary table**: Four summary theorems directly referencing axioms\n10. **Open problems**: Four formalized as Lean Props\n11. **Main summary**: Conjunction of g₃ exact and g₄ bounded",
+    "proofStrategy": "The Lean file (Erdos866Problem.lean) is an Aristotle companion file proving three supporting lemmas:\n\n1. **upperExponent_increasing** (k ≥ 1): The exponent $1-2^{-k}$ is strictly increasing. One-line proof via `sub_lt_sub_left` and `pow_lt_pow_right_of_lt_one₀`.\n\n2. **oddNumbers_card** (N : ℕ): The set of odd numbers in {1,...,2N} has cardinality N. Proved via `card_eq_of_bijective` with explicit bijection $i \\mapsto 2i+1$ from {0,...,N-1}.\n\n3. **oddNumbers_no_triple** (N : ℕ): No three integers have all pairwise sums in the odd set. Proved by extracting `h_odd` (pairwise sums must be odd), then deriving a parity contradiction with `simp_all +decide` and `grind +ring`.\n\nThe broader mathematical content (g₃=2, g₄≤2032, g₅≍log N, g₆≍√N, general bounds) is captured in the mathematical overview and would require additional axioms/proofs in a full formalization.",
     "keyInsights": [
       "**Phase transition in growth rates**: The sequence constant → log → √N → N^{1-o(1)} as k increases from 3 to ∞ represents a rare and striking phenomenon in combinatorics. Each transition (k=4→5, k=5→6, finite→∞) requires fundamentally different techniques.",
       "**The odd numbers construction is universal**: The set of odd integers in [2N] has exactly N elements and avoids ALL pairwise sum configurations (for any k), because two integers of the same parity sum to an even number. This single construction provides the base lower bound g_k(N) ≥ 1 for all k.",
       "**Witnesses need not be in A**: The b_i are arbitrary integers whose pairwise sums land in A. Allowing b_i ∉ A and b_i < 0 (via Fin k → ℤ) is essential—the problem would be much harder if we required b_i ∈ A.",
       "**The k=4 to k=5 transition is the sharpest**: g₄ = O(1) while g₅ = Θ(log N). Adding one more integer to the required pattern (4→5 witnesses, 6→10 pairwise sums) causes the threshold to jump from bounded to unbounded. This is the point where the combinatorial complexity qualitatively changes.",
       "**The exponent 1-2^{-k} comes from induction**: The general upper bound proceeds by induction on k: given k-1 witnesses, the remaining density suffices to find the k-th. Each inductive step squares the deficiency (from N^α to N^{(1+α)/2}), giving the geometric approach to exponent 1.",
-      "**The gap between bounds is the main open problem**: For large k, the upper exponent 1-2^{-k} and lower exponent 1-ε don't match. Finding the true exponent α_k with g_k(N) = N^{α_k+o(1)} is the central challenge."
+      "**Parity contradiction proof structure**: The oddNumbers_no_triple proof extracts h_odd (all pairwise sums are odd), then uses simp_all +decide to enumerate Fin 3 cases and grind +ring to derive 2b₀ ≡ 1 (mod 2) — a contradiction. This illustrates Lean's automation for finite case splits."
     ],
     "prerequisites": [
       "Additive combinatorics (sumsets, density)",
@@ -77,81 +77,58 @@
   },
   "sections": [
     {
-      "id": "basic-definitions",
-      "title": "Basic Definitions",
-      "summary": "Defines Interval(N) = {1,...,2N}, HasAllPairwiseSums via Fin k → ℤ witnesses, PairwiseSumCondition as the universal threshold statement, and g(k,N) via Nat.find.",
-      "startLine": 41,
+      "id": "header",
+      "title": "Aristotle Companion Header and Setup",
+      "summary": "Block comment (lines 1-16) identifies this as an Aristotle companion file for Erdős #866, listing the three Aristotle targets: upperExponent_increasing, oddNumbers_card, oddNumbers_no_triple. Line 17: `import Mathlib`. Lines 19-22: `open Finset Real` and `namespace Erdos866`. This is a supporting lemma file — the main formalization (including the axiomatized case analysis for g₃, g₄, g₅, g₆) lives in the conceptual mathematical overview.",
+      "startLine": 1,
+      "endLine": 22,
+      "mathContext": "Aristotle companion files expose only routine supporting lemmas (known results likely in Mathlib) to the automated proof-search tool. The three targets here are: monotonicity of the geometric sequence $1-2^{-k}$, cardinality of odd numbers in $[2N]$, and the parity pigeonhole showing no triple can have all pairwise sums odd."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions: Interval, HasAllPairwiseSums, oddNumbers, upperExponent",
+      "summary": "Four definitions (lines 23-38): `Interval N` = `(range(2N+1)).filter (· ≥ 1)` giving {1,...,2N}; `HasAllPairwiseSums A b` = ∀ i < j, (b i + b j).toNat ∈ A (witnesses b : Fin k → ℤ can be negative); `oddNumbers N` = `(Interval N).filter (· % 2 = 1)`; `upperExponent k` = `1 - (2 : ℝ)⁻¹ ^ k` (noncomputable, ℝ-valued).",
+      "startLine": 23,
+      "endLine": 38,
+      "mathContext": "The witness type `Fin k → ℤ` (not `Fin k → ℕ`) is essential: the problem allows $b_i$ to be any integers, including negatives and values outside $[2N]$. Only the pairwise sums need to lie in $A$. The `.toNat` coercion converts the sum back to ℕ for set membership; when sums are negative this yields 0, which is not in `Interval N` (filtered to ≥ 1), correctly handling out-of-range witnesses."
+    },
+    {
+      "id": "upper-exponent",
+      "title": "upperExponent_increasing: Geometric Sequence Monotonicity (Proved)",
+      "summary": "Theorem (lines 40-50): `upperExponent k < upperExponent (k+1)` for k ≥ 1, proved in one line via `sub_lt_sub_left` and `pow_lt_pow_right_of_lt_one₀`. The Aristotle docstring (lines 40-47) describes the proof strategy: reduce to showing `(2⁻¹)^(k+1) < (2⁻¹)^k` via `pow_lt_pow_right` with base in (0,1).",
+      "startLine": 40,
+      "endLine": 50,
+      "mathContext": "Proof path: `sub_lt_sub_left h _` reduces `1 - a < 1 - b` to `b < a`. Then `pow_lt_pow_right_of_lt_one₀` proves `(2⁻¹)^(k+1) < (2⁻¹)^k` using 0 < 2⁻¹ < 1 (by norm_num) and k+1 > k (by linarith from hk ≥ 1). The full term is a single compound `exact`."
+    },
+    {
+      "id": "odd-card",
+      "title": "oddNumbers_card: |{odd numbers in [2N]}| = N (Proved)",
+      "summary": "Theorem (lines 52-66): `(oddNumbers N).card = N`. Proved via `Finset.card_eq_of_bijective` with the explicit bijection `i ↦ 2*i+1` from {0,...,N-1} to the odd numbers. The proof uses `grind` for injectivity and `aesop` for surjectivity, plus arithmetic via `linarith` and `Nat.mod_add_div`.",
+      "startLine": 52,
       "endLine": 66,
-      "mathContext": "$[2N] = \\{1,\\ldots,2N\\}$. $\\text{HasAllPairwiseSums}(A,b) :\\equiv \\forall i < j,\\; b_i + b_j \\in A$ for witnesses $b : \\text{Fin}\\,k \\to \\mathbb{Z}$. $g_k(N) = \\min\\{g : \\forall A \\subseteq [2N], |A| \\ge N+g \\Rightarrow \\exists b, \\text{HasAllPairwiseSums}(A,b)\\}$."
+      "mathContext": "The bijection $i \\mapsto 2i+1$ maps $\\{0,1,\\ldots,N-1\\}$ to $\\{1,3,\\ldots,2N-1\\}$. Membership in `oddNumbers N` requires: (1) $n \\ge 1$ (from `Interval`), (2) $n \\le 2N$ (from `range(2N+1)`), (3) $n$ is odd. The surjectivity witness for $n$ odd is $n/2$ (integer division), using `Nat.mod_add_div n 2` to reconstruct $n = 2(n/2) + n\\%2 = 2(n/2) + 1$."
     },
     {
-      "id": "case-k3",
-      "title": "Case k=3: Exact Value g₃=2",
-      "summary": "Axiomatizes g₃(N) = 2 (Choi–Erdős–Szemerédi). Lower bound g₃ ≥ 2 from odd numbers + parity pigeonhole.",
-      "startLine": 67,
-      "endLine": 82,
-      "mathContext": "$g_3(N) = 2$ exactly. Upper bound: axiom (Choi–Erdős–Szemerédi pigeonhole on complementary pairs). Lower bound: $O_N = \\{1,3,\\ldots,2N-1\\}$ has $|O_N|=N$ but odd+odd=even $\\notin O_N$, so $g_3 \\ge 2$."
-    },
-    {
-      "id": "case-k4",
-      "title": "Case k=4: Bounded Threshold g₄≤2032",
-      "summary": "Two axioms: g₄(N) ≤ C absolutely (Choi–Erdős–Szemerédi) and g₄(N) ≤ 2032 (van Doorn).",
-      "startLine": 83,
-      "endLine": 100,
-      "mathContext": "$\\exists C \\in \\mathbb{N},\\; \\forall N,\\; g_4(N) \\le C$ (bounded). Explicit: $g_4(N) \\le 2032$ (van Doorn). Stark contrast: $g_4 = O(1)$ while $g_5 = \\Theta(\\log N)$."
-    },
-    {
-      "id": "case-k5-k6",
-      "title": "Cases k=5,6: Logarithmic and Polynomial Growth",
-      "summary": "g₅≍log N (Choi–Erdős–Szemerédi), g₆≍√N. Lower bound for g₅ extracted via `obtain` from the asymptotic axiom.",
-      "startLine": 101,
-      "endLine": 128,
-      "mathContext": "$g_5(N) \\asymp \\log N$: $\\exists c_1,c_2 > 0,\\; c_1 \\log N \\le g_5(N) \\le c_2 \\log N$. $g_6(N) \\asymp \\sqrt{N}$. The transition $O(1) \\to \\Theta(\\log N) \\to \\Theta(\\sqrt{N})$ reflects the jump from $\\binom{4}{2}=6$ to $\\binom{5}{2}=10$ to $\\binom{6}{2}=15$ required sums."
-    },
-    {
-      "id": "general-bounds",
-      "title": "General Bounds: Upper N^{1-2^{-k}} and Lower N^{1-ε}",
-      "summary": "General upper bound g_k(N) ≪ N^{1-2^{-k}} with upperExponent monotonicity (proved). General lower: g_k > N^{1-ε} for large k (axiom). threshold_approaches_N corollary.",
-      "startLine": 129,
-      "endLine": 172,
-      "mathContext": "Upper: $g_k(N) \\le C_k N^{1-2^{-k}}$ (exponent $\\nearrow 1$ geometrically). Lower: $\\forall \\varepsilon>0,\\; \\exists k_0,\\; k \\ge k_0 \\Rightarrow g_k(N) > N^{1-\\varepsilon}$. Together: $g_k(N) = N^{1-o(1)}$ as $k \\to \\infty$. Gap: true exponent $\\alpha_k \\in (1-2^{-k}, 1-\\varepsilon)$ unknown."
-    },
-    {
-      "id": "extremal-construction",
-      "title": "Odd Numbers: Universal Extremal Construction",
-      "summary": "oddNumbers(N) = {1,3,...,2N-1}: cardinality N (proved), no triple with all pairwise sums (proved). Base lower bound for all k.",
-      "startLine": 173,
-      "endLine": 195,
-      "mathContext": "$O_N = \\{n \\in [2N] : n \\text{ odd}\\}$, $|O_N| = N$. For any $b_1, b_2, b_3$: two share parity, so their sum is even $\\notin O_N$. Hence $g_k(N) \\ge 1$ for all $k \\ge 3$. The odd numbers construction is extremal: removing one element (reaching $N+1 = N + g_3$) allows three witnesses."
-    },
-    {
-      "id": "summary-open",
-      "title": "Summary Table and Four Open Problems",
-      "summary": "Theorems referencing all case axioms (g₃=2, g₄≤2032, g₅≍log N, g₆≍√N, general bounds). Four open problems formalized as Props.",
-      "startLine": 196,
-      "endLine": 274,
-      "mathContext": "Summary: $g_3=2,\\; g_4 \\le 2032,\\; g_5 \\asymp \\log N,\\; g_6 \\asymp \\sqrt{N},\\; g_k \\ll N^{1-2^{-k}},\\; g_k > N^{1-\\varepsilon} \\text{ (large } k)$. Opens: (1) exact $g_4$, (2) constants in $g_5 \\asymp \\log N$, (3) true exponent $\\alpha_k$, (4) structural characterization of extremal sets."
+      "id": "odd-triple",
+      "title": "oddNumbers_no_triple: No Triple Has All Pairwise Sums in Odd Set (Proved)",
+      "summary": "Theorem (lines 68-84): `¬∃ b : Fin 3 → ℤ, HasAllPairwiseSums (oddNumbers N) b`. Proved by deriving `h_odd`: all three pairwise sums must be odd (via `aesop` on oddNumbers membership), then using `simp_all +decide [Fin.forall_fin_succ]` and `grind +ring` to obtain a parity contradiction.",
+      "startLine": 68,
+      "endLine": 84,
+      "mathContext": "The parity contradiction: if $b_0+b_1$, $b_0+b_2$, and $b_1+b_2$ are all odd, then $(b_0+b_1)+(b_0+b_2)-(b_1+b_2) = 2b_0$ must be odd (sum of two odds minus one odd), but $2b_0$ is always even — contradiction. In Lean: `h_odd` establishes `.toNat % 2 = 1` for each pair; `simp_all +decide` with `Fin.forall_fin_succ` unfolds the ∀ over `Fin 3` into three explicit cases; `grind +ring` closes the arithmetic."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #866 on pairwise sums threshold functions, organizing the theory into case analysis (k=3,4,5,6), general bounds, extremal constructions, and open problems. All supporting lemmas proved by Aristotle: upperExponent monotonicity, oddNumbers cardinality, and oddNumbers avoidance. 7 axioms encode the known mathematical results.",
-    "implications": "The problem reveals fundamental phase transitions in additive combinatorics: (1) the jump from bounded to unbounded threshold at k=4→5 shows a qualitative complexity barrier; (2) the growth rate hierarchy (constant → log → √N → N^{1-o(1)}) is exceptionally clean; (3) the gap between upper exponent 1-2^{-k} and lower exponent 1-ε for large k represents a major open frontier. The formalization demonstrates how Lean can cleanly separate exact results (g₃=2) from asymptotic bounds (g₅, g₆) and open questions, providing precise statements for future work.",
+    "summary": "This formalization proves three supporting lemmas for Erdős Problem #866: upperExponent_increasing (geometric sequence 1-2^{-k} is strictly increasing), oddNumbers_card (|{odd numbers in [2N]}| = N), and oddNumbers_no_triple (no three integers have all pairwise sums in the odd set). These lemmas support the broader case analysis for g₃, g₄, g₅, g₆ described in the mathematical overview.",
+    "implications": "The odd numbers construction is the universal base case for all lower bounds in this problem: since odd+odd=even, the set {1,3,...,2N-1} witnesses that g_k(N) ≥ 1 for all k ≥ 3. The `oddNumbers_no_triple` lemma formalizes the first non-trivial step toward the full lower bound for k=3. The `upperExponent_increasing` lemma supports the general upper bound theorem: the exponents 1/2 < 3/4 < 7/8 < ... → 1 are strictly increasing, matching the growth rate hierarchy of g_k(N).",
     "openQuestions": [
-      "What is the exact value of g₄(N)? Is g₄(N) constant, and if so, what is the constant?",
-      "What are the optimal constants c₁, c₂ in g₅(N) ≍ log N? Does g₅(N)/log N converge?",
-      "Can the gap between N^{1-2^{-k}} and N^{1-ε} for large k be closed? What is the true exponent α_k?",
-      "What is the structural characterization of extremal sets (maximum-size sets avoiding the pairwise sums condition)?",
-      "Is there a unified proof technique that handles all values of k, or must each case use fundamentally different methods?"
+      "What is the exact value of g₄(N)? Is g₄(N) constant, and if so, what is the constant? Van Doorn's bound of 2032 is surely far from tight.",
+      "Can the gap between N^{1-2^{-k}} and N^{1-ε} for large k be closed? What is the true exponent α_k such that g_k(N) = N^{α_k+o(1)}?",
+      "Can the full Lean formalization be completed: axiomatizing g₃=2 and g₄≤2032, then proving these from first principles rather than asserting them?"
     ]
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Finset.Card",
-      "Mathlib.Data.Nat.Choose.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
-      "Mathlib.Tactic"
+      "Mathlib"
     ],
     "opens": [
       "Finset",
@@ -161,7 +138,7 @@
     "lineCount": 85,
     "axiomCount": 0,
     "theoremCount": 3,
-    "definitionCount": 10,
+    "definitionCount": 4,
     "path": "Proofs/Erdos866Problem.lean",
     "sorries": 0
   },
