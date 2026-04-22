@@ -17490,6 +17490,23 @@
       "path": "full",
       "started": "2026-04-22T19:03:06+02:00",
       "status": "active"
+    },
+    {
+      "slug": "sqrt2-minpoly",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-22T19:23:25+02:00",
+      "status": "active"
+    },
+    {
+      "slug": "lebesgue-measure-oq-06",
+      "phase": "OBSERVE",
+      "path": "research",
+      "started": "2026-04-22T20:15:00+02:00",
+      "status": "available",
+      "tier": "A",
+      "significance": 8,
+      "tractability": 6
     }
   ],
   "config": {
@@ -17497,5 +17514,5 @@
     "oodaTimeoutMinutes": 60,
     "attemptsBeforePivot": 5
   },
-  "lastUpdated": "2026-04-21T20:43:04.330807Z"
+  "lastUpdated": "2026-04-22T18:17:36.942223+00:00"
 }
