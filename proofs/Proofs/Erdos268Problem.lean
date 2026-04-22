@@ -201,7 +201,58 @@ theorem harmonicPointSet_nonempty (d : ℕ) :
 /-- X is path-connected. -/
 theorem harmonicPointSet_path_connected (d : ℕ) :
     IsPathConnected (harmonicPointSet d) := by
-  sorry
+  -- We prove this by cases on d.
+  -- For d = 0: Fin 0 → ℝ has a unique element; X₀ is a singleton.
+  -- For d = 1: X₁ = {x : Fin 1 → ℝ | x 0 > 0}, which is convex.
+  -- For d ≥ 2: Requires Kovač-Tao structural analysis (deferred).
+  rcases d with _ | _ | d
+  · -- d = 0: Fin 0 → ℝ has a unique element (the empty function)
+    -- so harmonicPointSet 0 is a singleton.
+    obtain ⟨x₀, hx₀⟩ := harmonicPointSet_nonempty 0
+    have heq : harmonicPointSet 0 = {x₀} := by
+      ext y
+      simp only [Set.mem_singleton_iff]
+      exact ⟨fun _ => funext (fun i => Fin.elim0 i), fun h => h ▸ hx₀⟩
+    rw [heq]
+    exact isPathConnected_singleton x₀
+  · -- d = 1: X₁ = {x : Fin 1 → ℝ | 0 < x 0}, which is convex
+    suffices heq : harmonicPointSet 1 = {x : Fin 1 → ℝ | 0 < x 0} by
+      rw [heq]
+      apply Convex.isPathConnected
+      · -- {x : Fin 1 → ℝ | 0 < x 0} is convex in ℝ^1
+        intro x hx y hy a b ha hb hab
+        simp only [Set.mem_setOf_eq, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at *
+        -- a * x 0 + b * y 0 ≥ (a+b) * min(x 0)(y 0) = min(x 0)(y 0) > 0
+        have hm : 0 < min (x 0) (y 0) := lt_min hx hy
+        have h1 : a * min (x 0) (y 0) ≤ a * x 0 :=
+          mul_le_mul_of_nonneg_left (min_le_left _ _) ha
+        have h2 : b * min (x 0) (y 0) ≤ b * y 0 :=
+          mul_le_mul_of_nonneg_left (min_le_right _ _) hb
+        linarith [show a * min (x 0) (y 0) + b * min (x 0) (y 0) = min (x 0) (y 0) from
+          by rw [← add_mul, hab, one_mul]]
+      · -- Nonempty: the constant function 1 is in the set
+        exact ⟨fun _ => 1, one_pos⟩
+    -- Prove harmonicPointSet 1 = {x : Fin 1 → ℝ | 0 < x 0}
+    ext x
+    simp only [harmonicPointSet, Set.mem_setOf_eq]
+    constructor
+    · -- ⊆: any harmonic subseries sum for infinite A is positive
+      rintro ⟨A, hAinf, hAconv, rfl⟩
+      exact all_coordinates_positive 1 A hAinf hAconv 0
+    · -- ⊇: for any s > 0, find an infinite A with Σ_{n∈A} 1/n = s
+      -- Proof strategy (greedy harmonic series algorithm):
+      --   Given s = x 0 > 0, define A greedily: include n if 1/n ≤ remaining budget.
+      --   Key facts: (i) partial sums are ≤ s, (ii) remaining → 0 since
+      --   the harmonic series diverges, (iii) A is infinite (the budget is never
+      --   exhausted in finitely many steps).
+      -- Formalizing requires Cauchy sequence arguments and careful limit analysis.
+      intro hx
+      sorry
+  · -- d ≥ 2: path-connectedness of harmonicPointSet (d+2) requires controlling
+    -- d+2 coordinate sums simultaneously along a continuous path.
+    -- The Kovač-Tao 2024 structural analysis provides the mathematical foundation
+    -- but formalizing it requires substantial additional Lean infrastructure.
+    sorry
 
 /-- X contains a nonempty open set (i.e., X has nonempty interior). -/
 theorem harmonicPointSet_dense_somewhere (d : ℕ) :
@@ -220,20 +271,21 @@ theorem coordinate_decreasing (A : Set ℕ) (hA : A.Infinite)
     (i j : ℕ) (hij : i < j) :
     shiftedHarmonicSum A j < shiftedHarmonicSum A i := by
   unfold shiftedHarmonicSum
-  apply tsum_lt_tsum
-  · -- Pointwise: 1/(n+j) ≤ 1/(n+i) since j > i and n ≥ 1
-    intro ⟨n, hn⟩
-    have hn_pos : 0 < n := Nat.pos_of_ne_zero (fun h => h0 (h ▸ hn))
+  -- Pick witness element for strict inequality
+  obtain ⟨n, hn⟩ := hA.nonempty
+  have hn_pos : 0 < n := Nat.pos_of_ne_zero (fun h => h0 (h ▸ hn))
+  -- Apply Summable.tsum_lt_tsum: j-shifted < i-shifted termwise, strict at witness n
+  apply (shifted_summable A j hconv).tsum_lt_tsum (i := ⟨n, hn⟩)
+  · -- Pointwise: 1/(m+j) ≤ 1/(m+i) for all m ∈ A (since j > i and m ≥ 1)
+    intro ⟨m, hm⟩
+    have hm_pos : 0 < m := Nat.pos_of_ne_zero (fun h => h0 (h ▸ hm))
     apply one_div_le_one_div_of_le
+    · exact_mod_cast Nat.add_pos_left hm_pos i
+    · exact_mod_cast Nat.add_le_add_left (Nat.le_of_lt hij) m
+  · -- Strict at witness n: 1/(n+j) < 1/(n+i)
+    apply one_div_lt_one_div_of_lt
     · exact_mod_cast Nat.add_pos_left hn_pos i
-    · exact_mod_cast Nat.add_le_add_left (Nat.le_of_lt hij) n
-  · -- Strict at some point
-    obtain ⟨n, hn⟩ := hA.nonempty
-    have hn_pos : 0 < n := Nat.pos_of_ne_zero (fun h => h0 (h ▸ hn))
-    exact ⟨⟨n, hn⟩, by
-      apply one_div_lt_one_div_of_lt
-      · exact_mod_cast Nat.add_pos_left hn_pos i
-      · exact_mod_cast Nat.add_lt_add_left hij n⟩
+    · exact_mod_cast Nat.add_lt_add_left hij n
   · exact shifted_summable A i hconv
 
 /-- The first coordinate is always the largest (for positive-element sets). -/
@@ -247,16 +299,29 @@ theorem first_coordinate_largest (d : ℕ) (hd : d ≥ 2) (A : Set ℕ)
   · simp
   · exact le_of_lt (coordinate_decreasing A hA hconv h0 0 i hi_pos)
 
-/-- All coordinates are positive (for non-empty A). -/
+/-- All coordinates are positive (for infinite A with convergent harmonic subseries). -/
 theorem all_coordinates_positive (d : ℕ) (A : Set ℕ)
-    (hA : A.Nonempty) (hconv : HasConvergentHarmonicSubseries A)
+    (hA : A.Infinite) (hconv : HasConvergentHarmonicSubseries A)
     (i : Fin d) :
     (harmonicPoint d A) i > 0 := by
   simp only [harmonicPoint, shiftedHarmonicSum]
-  obtain ⟨n, hn⟩ := hA
-  apply tsum_pos (shifted_summable A i.val hconv)
-    (fun m => div_nonneg one_nonneg (Nat.cast_nonneg' _))
-  exact ⟨⟨n, hn⟩, div_pos one_pos (Nat.cast_pos.mpr (by omega))⟩
+  -- Find n ∈ A with n + i.val > 0 (positive contribution)
+  -- If i.val > 0: any element works. If i.val = 0: need n > 0, guaranteed by A infinite.
+  have ⟨n, hn, hn_pos⟩ : ∃ n ∈ A, 0 < n + i.val := by
+    rcases Nat.eq_zero_or_pos i.val with hi | hi
+    · -- i.val = 0: A infinite ⟹ A ⊄ {0} ⟹ ∃ n ∈ A, n ≠ 0
+      have hnsub : ¬(A ⊆ {0}) :=
+        fun h => hA.not_finite (Set.finite_singleton 0 |>.subset h)
+      simp only [Set.not_subset, Set.mem_singleton_iff] at hnsub
+      obtain ⟨n, hn, hn_ne⟩ := hnsub
+      exact ⟨n, hn, by omega⟩
+    · obtain ⟨n, hn⟩ := hA.nonempty
+      exact ⟨n, hn, Nat.add_pos_right n hi⟩
+  -- Use Summable.tsum_pos: summable + all terms nonneg + one term positive ⟹ sum positive
+  exact (shifted_summable A i.val hconv).tsum_pos
+    (fun m => by positivity)
+    ⟨n, hn⟩
+    (div_pos one_pos (by exact_mod_cast hn_pos))
 
 /- ## Part IX: Dimension Monotonicity -/
 
@@ -267,7 +332,7 @@ def projectionMap (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) : (Fin d₂ → ℝ) →
 /-- Projection of X_{d₂} lands in X_{d₁} for d₁ ≤ d₂. -/
 theorem projection_preserves (d₁ d₂ : ℕ) (h : d₁ ≤ d₂) :
     projectionMap d₁ d₂ h '' harmonicPointSet d₂ ⊆ harmonicPointSet d₁ := by
-  intro x ⟨y, hy, rfl⟩
+  rintro x ⟨y, hy, rfl⟩
   obtain ⟨A, hAinf, hAconv, rfl⟩ := hy
   exact ⟨A, hAinf, hAconv, rfl⟩
 
@@ -285,23 +350,17 @@ theorem squares_convergent : HasConvergentHarmonicSubseries squaresSet := by
     intro a b h
     simp only [e, Subtype.ext_iff] at h
     nlinarith [Nat.succ_pos a, Nat.succ_pos b]
-  have hsurj : Function.Surjective e := by
-    intro ⟨n, k, hk, hkn⟩
-    refine ⟨k - 1, ?_⟩
-    simp only [e, Subtype.ext_iff]
-    omega
+  have hsurj : Function.Surjective e := fun ⟨_, k, hk, rfl⟩ =>
+    ⟨k - 1, Subtype.ext (by show (k - 1 + 1) ^ 2 = k ^ 2; rw [Nat.sub_add_cancel hk])⟩
   rw [← (Equiv.ofBijective e ⟨hinj, hsurj⟩).summable_iff]
-  -- Dominated by p-series Σ 1/n² (p = 2 > 1)
-  have hpseries : Summable (fun n : ℕ => ((n : ℝ) ^ (2 : ℝ))⁻¹) :=
+  -- After reindexing: Σ_{k:ℕ} 1/(k+1)² converges (shifted Basel series, p=2>1)
+  -- Basel: Σ 1/n^p converges for p>1; compose with Nat.succ to get shifted series
+  have hbasel : Summable (fun n : ℕ => ((n : ℝ) ^ (2 : ℝ))⁻¹) :=
     Real.summable_nat_rpow_inv.mpr (by norm_num : (1 : ℝ) < 2)
-  apply Summable.of_nonneg_of_le
-  · intro k; positivity
-  · intro k
-    show (1 : ℝ) / ↑((k + 1) ^ 2) ≤ ((↑(k + 1) : ℝ) ^ (2 : ℝ))⁻¹
-    rw [Nat.cast_pow, one_div]
-    congr 1
-    push_cast; ring
-  · exact hpseries.comp_injective (fun a b h => by omega : Function.Injective (· + 1))
+  apply (hbasel.comp_injective Nat.succ Nat.succ_injective).congr
+  intro k
+  simp only [Function.comp, Nat.succ_eq_add_one, Equiv.ofBijective_apply, e,
+             Subtype.coe_mk, Nat.cast_pow, Real.rpow_natCast, one_div]
 
 /-- The harmonic point for the squares set. -/
 noncomputable def squaresPoint (d : ℕ) : Fin d → ℝ :=
@@ -319,7 +378,7 @@ theorem powers_convergent : HasConvergentHarmonicSubseries powersOf2Set := by
     simp only [e, Subtype.ext_iff] at h
     exact Nat.pow_right_injective (by norm_num) h
   have hsurj : Function.Surjective e := by
-    intro ⟨n, k, hk⟩
+    rintro ⟨n, k, hk⟩
     exact ⟨k, by simp only [e, Subtype.ext_iff]; exact hk.symm⟩
   rw [← (Equiv.ofBijective e ⟨hinj, hsurj⟩).summable_iff]
   -- Reindexed series is (1/2)^k, a convergent geometric series
