@@ -29,8 +29,8 @@
     "id": "ann-abeloq04oq01-polynomial",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 140,
-      "endLine": 143
+      "startLine": 104,
+      "endLine": 108
     },
     "type": "definition",
     "title": "The Polynomial p = X^5 - 4X + 2",
@@ -77,8 +77,8 @@
     "id": "ann-abeloq04oq01-gauss",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 211,
-      "endLine": 219
+      "startLine": 171,
+      "endLine": 183
     },
     "type": "technique",
     "title": "Transfer to Q-Irreducibility via Gauss's Lemma",
@@ -430,8 +430,8 @@
     "id": "ann-abeloq04oq01-gal-card-ne60",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 1452,
-      "endLine": 1480
+      "startLine": 1285,
+      "endLine": 1347
     },
     "type": "technique",
     "title": "|Gal| ≠ 60: Excluding A₅ via Odd Permutation",
@@ -455,8 +455,8 @@
     "id": "ann-abeloq04oq01-gal-card-theorem",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 1452,
-      "endLine": 1480
+      "startLine": 1343,
+      "endLine": 1376
     },
     "type": "theorem",
     "title": "Main Theorem: |Gal| = 120 (Fully Proved)",
@@ -474,6 +474,32 @@
       "gal_has_odd_perm",
       "no_subgroup_order_15",
       "gal_card_ne_30"
+    ]
+  },
+  {
+    "id": "ann-abeloq04oq01-sq-val",
+    "proofId": "abel-ruffini-oq-04-oq-01",
+    "range": {
+      "startLine": 723,
+      "endLine": 756
+    },
+    "type": "technique",
+    "title": "The Discriminant Computation: Δ² = -212144 (Tour de Force)",
+    "content": "`vandermondeProduct_sq_val` proves that the Vandermonde product squared equals $-212144$ in the splitting field. This is the quantitative heart of the whole proof — a ~100-line computation that establishes $\\Delta^2 < 0$, which forces the discriminant sign argument.\n\nThe proof uses the **derivative product identity**: for a separable polynomial $f$ with roots $\\alpha_0, \\ldots, \\alpha_{n-1}$, we have $\\prod_i f'(\\alpha_i) = (-1)^{n(n-1)/2} \\text{disc}(f)$ (up to sign). More precisely:\n\n1. **Factorization** (`p_SF_eq_prod_linear`): In the splitting field, $p_{SF} = \\prod_{i<5}(X - \\alpha_i)$.\n2. **Derivative evaluation** (`eval_deriv_at_root`): $p'(\\alpha_i) = \\prod_{j \\neq i}(\\alpha_i - \\alpha_j)$.\n3. **Vandermonde-derivative identity** (`vp_sq_eq_ordered_diff`): $\\Delta^2 = \\prod_i p'(\\alpha_i)$.\n4. **Vieta product** (`prod_roots_val`): $\\prod_i \\alpha_i = -2$ (from constant term of $p$).\n5. **Key identity** (`vp_sq_times_prod`): $\\Delta^2 \\cdot (-2) = \\prod_i(16\\alpha_i - 10)$.\n6. **Clever substitution**: $16\\alpha_i - 10 = -(16)(\\frac{5}{8} - \\alpha_i)$, so $\\prod_i(16\\alpha_i - 10) = (-16)^5 \\cdot p(\\frac{5}{8})$.\n7. **Arithmetic** (`p_eval_5_8'`): $p(\\frac{5}{8}) = -\\frac{13259}{32768}$, giving $(-16)^5 \\cdot p(\\frac{5}{8}) = 424288$.\n8. **Solve for Δ²**: $\\Delta^2 \\cdot (-2) = 424288 \\Rightarrow \\Delta^2 = -212144$.\n\nThe evaluation at $x = \\frac{5}{8}$ is the magic trick: it converts a product over all roots into a polynomial evaluation, bypassing the need to compute any root explicitly. The entire argument is purely algebraic — no numerical computation of roots needed.",
+    "mathContext": "$\\Delta^2 = \\prod_i p'(\\alpha_i) = \\prod_i \\prod_{j \\neq i}(\\alpha_i - \\alpha_j)$ (derivative identity). Then $\\Delta^2 \\cdot \\prod(\\alpha_i) = \\prod(16\\alpha_i - 10) = (-16)^5 \\cdot p(5/8) = (-1048576) \\cdot (-13259/32768) = 424288$. Since $\\prod(\\alpha_i) = -2$: $\\Delta^2 = 424288/(-2) = -212144 < 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "discriminant",
+      "Vandermonde determinant",
+      "derivative product identity",
+      "Vieta's formulas",
+      "polynomial evaluation trick"
+    ],
+    "prerequisites": [
+      "p_SF_eq_prod_linear",
+      "vp_sq_eq_ordered_diff",
+      "prod_roots_val",
+      "Vieta's formulas"
     ]
   },
   {
@@ -507,8 +533,8 @@
     "id": "ann-abeloq04oq01-case-elim",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 1353,
-      "endLine": 1451
+      "startLine": 1249,
+      "endLine": 1347
     },
     "type": "technique",
     "title": "Case Elimination: |Gal| ≠ 15 and |Gal| ≠ 30",
