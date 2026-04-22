@@ -18,8 +18,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 12,
-    "assumptions": "1 explicit axiom (gaugeTransform from YangMills/Classical.lean) plus 11 structure-encoded assumptions typed as True in peripheral illustrative structures: (1) SlavnovTaylorIdentity.ward_identity_holds (line 2454), (2) RegulatorProperties.suppresses_ir (line 12746), (3) RegulatorProperties.grows_at_uv (line 12748), (4) GaugeInvariantObs.gaugeInvariant (line 15986), (5) FradkinShenker.analytic (line 16035), (6) CMHypotheses.finiteSpectrum (line 16760), (7) CMHypotheses.nontrivialScattering (line 16762), (8) CMHypotheses.analyticity (line 16764), (9) BRSTChargeCohom.conservation (line 17248), (10) BRSTChargeCohom.nilpotent (line 17250), (11) AsymptoticSafety.beta_vanishes (line 17606). Note: the core mass gap proof (finite_volume_gap_positive) depends only on the TransferMatrix, LatticeTransferMatrix, and PerronFrobeniusData structures, not on these peripheral illustrative structures. The True-typed fields represent simplified placeholders for advanced QFT hypotheses not involved in the main mass gap proof path.",
+    "axiomCount": 1,
+    "assumptions": "1 explicit axiom: gaugeTransform (YangMills/Classical.lean line 126). Additionally, 11 structure fields typed as ': True' in peripheral illustrative structures (SlavnovTaylorIdentity, RegulatorProperties, GaugeInvariantObs, FradkinShenker, CMHypotheses, BRSTChargeCohom, AsymptoticSafety) — these are trivially satisfied placeholders (provable by 'trivial') that carry no mathematical content and do not constitute real assumptions. The core mass gap proof (finite_volume_gap_positive) depends only on TransferMatrix, LatticeTransferMatrix, and PerronFrobeniusData structures, none of which use True-typed fields.",
     "lineCount": 28075,
     "mathlibDependencies": [
       {
