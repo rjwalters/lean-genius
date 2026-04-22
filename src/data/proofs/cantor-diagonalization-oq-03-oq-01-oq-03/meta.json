@@ -104,6 +104,28 @@
       "summary": "Proves lawvere_chain_godel summarizing the unified perspective: Cantor and Rice use Lawvere where the endomorphism has NO fixed point (making surjectivity impossible), while Gödel uses Lawvere where the endomorphism DOES have a fixed point (the Gödel sentence) — but that fixed point is unprovable by consistency. Same categorical mechanism, different logical consequence."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent: proves lawvere_fpt (in any point-surjective evaluation structure, every endomorphism has a fixed point). This file instantiates it with the sentence evaluation structure and ¬Pr as the endomorphism to get the Gödel sentence."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-03-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling: Rice's theorem as Lawvere instance (Bool.not, no fixed point → undecidability). Together, OQ-02 (Rice, no fixed point) and OQ-03 (Gödel, fixed point exists but unprovable) complete the Lawvere chain."
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Classical version: the traditional Gödel incompleteness proof (via diagonal lemma and Rosser's trick). This OQ provides the categorical Lawvere framing as an alternative, more abstract proof."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-03-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling: the categorical Lawvere FPT (global element / Yoneda approach). The three siblings OQ-01/02/03 together formalize the complete Cantor → Rice → Gödel diagonal argument chain."
+    }
+  ],
   "leanFile": {
     "namespace": "CantorDiagonalizationOQ03OQ01OQ03",
     "lineCount": 256,

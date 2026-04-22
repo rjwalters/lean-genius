@@ -139,6 +139,28 @@
       "Can the smooth-number approach (Erd\u0151s's original suggestion) be formalized as a third independent route?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1059",
+      "relationship": "extends",
+      "description": "Grandparent: the base Erdős #1059 problem. This OQ provides the Selberg sieve route: selberg_density_axiom → there exist infinitely many qualifying primes."
+    },
+    {
+      "targetId": "erdos-1059-oq-01",
+      "relationship": "extends",
+      "description": "Parent: the density-one conjecture OQ. This file provides an independent proof path via Selberg sieve framework rather than the density_one route in OQ-01."
+    },
+    {
+      "targetId": "erdos-1059-oq-04",
+      "relationship": "related",
+      "description": "Sibling: the density_one_conjecture → ErdosProblem1059 route. OQ-02 (Selberg sieve) and OQ-04 (density counting) are two independent conditional proofs of the same conclusion."
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "uses-technique",
+      "description": "Related sieve methodology: Zhang-Maynard bounded prime gaps use variants of the Selberg sieve structure (primorial interval analysis) also central to this file's proof framework."
+    }
+  ],
   "leanFile": {
     "lineCount": 231,
     "path": "Proofs/Erdos1059OQ02.lean",

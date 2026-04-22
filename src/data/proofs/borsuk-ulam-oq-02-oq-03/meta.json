@@ -124,6 +124,33 @@
     ]
   },
   "openQuestions": [],
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam-oq-02",
+      "relationship": "extends",
+      "description": "Direct parent: the Borsuk-Ulam OQ-02 framework whose buDim invariant this file unifies with the Dold cohomological index, showing they are reparametrizations of each other."
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "extends",
+      "description": "Grandparent: the classical Borsuk-Ulam theorem (Z/2 case) that Dold's theorem generalizes to arbitrary finite groups G — classical BU is the special case G = Z/2 in the Dold index."
+    },
+    {
+      "targetId": "borsuk-ulam-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Sibling: the compact Lie group extension of Borsuk-Ulam, complementing this file's finite group G=Z/p focus with the continuous group setting."
+    },
+    {
+      "targetId": "borsuk-ulam-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Sibling: the buDim unification OQ whose framework is proved equivalent to the Dold index here, providing the formal bridge between the two formulations."
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "Cohomologically dual: Brouwer's fixed-point theorem and Borsuk-Ulam both follow from non-existence of equivariant retractions — they are dual manifestations of the same cohomological obstruction."
+    }
+  ],
   "leanFile": {
     "axiomCount": 5,
     "lineCount": 251,

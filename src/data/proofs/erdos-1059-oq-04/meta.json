@@ -142,5 +142,27 @@
       "Does the proof strategy extend to quantitative lower bounds on C(x)/π(x), not just the eventual limit?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1059",
+      "relationship": "extends",
+      "description": "Grandparent: the base Erdős #1059 problem (infinitely many primes p with all p-k! composite). This OQ provides a second conditional proof via density_one_conjecture → ErdosProblem1059."
+    },
+    {
+      "targetId": "erdos-1059-oq-01",
+      "relationship": "extends",
+      "description": "Parent: provides density_one_conjecture (the axiom imported by this file). The full proof chain here is: density_one_conjecture → primeCount_unbounded → contradiction (bounded qualifying primes) → infinitely many."
+    },
+    {
+      "targetId": "erdos-1059-oq-02",
+      "relationship": "related",
+      "description": "Sibling: provides an independent conditional proof via selberg_density_axiom → ErdosProblem1059. Together OQ-02 and OQ-04 give two distinct analytic routes to the same conclusion."
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "uses-technique",
+      "description": "primeCount_unbounded (the key Mathlib lemma) is a consequence of PNT; the proof here uses π(x) → ∞ to derive the contradiction when qualifying primes are bounded."
+    }
+  ],
   "sorries": 0
 }

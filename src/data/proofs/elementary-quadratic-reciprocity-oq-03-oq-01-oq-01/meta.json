@@ -109,6 +109,27 @@
       "Mathlib has `ZMod.kroneckerSym` or similar? If so, can this formalization be compared or unified with the Mathlib version?"
     ]
   },
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent: the Jacobi symbol complete multiplicativity structure. This OQ extends Jacobi (odd positive moduli only) to the full Kronecker symbol (all integer moduli, including 0, -1, 2, and composite even n)."
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-03",
+      "relationship": "extends",
+      "description": "Grandparent: the Jacobi symbol and QR for composite moduli. The Kronecker extension here is the natural completion that enables quadratic reciprocity for all discriminants."
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling: the certified Jacobi computation via Euclidean reduction. Both extend the Jacobi infrastructure — this file for the number-theoretic symbol, the sibling for algorithmic computation."
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "extends",
+      "description": "Root: the classical quadratic reciprocity theorem (Legendre symbol). The Kronecker symbol defined here is the most general extension, enabling QR statements for all integer moduli and fundamental discriminants."
+    }
+  ],
   "sorries": 0
 }
