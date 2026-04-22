@@ -1695,6 +1695,96 @@ theorem no_three_square_identity : ∀ f : NSquareIdentity 3, False := by
   extends this to all n ∉ {1, 2, 4, 8}.
 -/
 
+private lemma innerProd_stdBasis_eq {n : ℕ} (i j : Fin n) :
+    innerProd (stdBasis i : Fin n → ℝ) (stdBasis j) = if i = j then 1 else 0 := by
+  simp only [innerProd, stdBasis]
+  -- stdBasis i k = if i = k then 1 else 0, so condition order is i = k
+  have step : ∀ k : Fin n, (if i = k then (1:ℝ) else 0) * (if j = k then 1 else 0) =
+                            if i = k then (if i = j then 1 else 0) else 0 := fun k => by
+    rcases eq_or_ne i k with h | h
+    · -- i = k: first factor is 1; second factor (if j=k) matches (if i=j)
+      rw [if_pos h, if_pos h, one_mul]
+      rcases eq_or_ne j k with h2 | h2
+      · rw [if_pos h2, if_pos (h.trans h2.symm)]
+      · rw [if_neg h2, if_neg (fun hij => h2 (hij.symm.trans h))]
+    · -- i ≠ k: first factor and RHS both 0
+      rw [if_neg h, if_neg h, zero_mul]
+  simp_rw [step, Finset.sum_ite_eq, Finset.mem_univ, if_true]
+
+/-- Any odd n > 1 admits no NSquareIdentity.
+    Proof: define M₀, M₁ (matrices of left-multiplication columns), show S = M₀ᵀ M₁ is
+    skew-symmetric and orthogonal, hence S² = -I, so det(S)² = (-1)^n = -1 for odd n,
+    contradicting det(S)² ≥ 0. -/
+private lemma odd_no_nsquare_identity {n : ℕ} (hn : n > 0) (hodd : Odd n) (h1 : n ≠ 1)
+    (nsi : NSquareIdentity n) : False := by
+  have hn3 : 3 ≤ n := by obtain ⟨k, hk⟩ := hodd; omega
+  haveI : NeZero n := ⟨by omega⟩
+  let e₀ : Fin n → ℝ := stdBasis ⟨0, by omega⟩
+  let e₁ : Fin n → ℝ := stdBasis ⟨1, by omega⟩
+  have he₀ : normSq e₀ = 1 := normSq_stdBasis ⟨0, by omega⟩
+  have he₁ : normSq e₁ = 1 := normSq_stdBasis ⟨1, by omega⟩
+  have h01 : innerProd e₀ e₁ = 0 := by
+    have := innerProd_stdBasis_eq (n := n) ⟨0, by omega⟩ ⟨1, by omega⟩
+    simp only [Fin.mk.injEq, Nat.zero_ne_one, ↓reduceIte] at this
+    exact this
+  -- M₀ (resp. M₁): matrix whose j-th column is nsi.mul(e₀, eⱼ) (resp. nsi.mul(e₁, eⱼ))
+  let M₀ : Matrix (Fin n) (Fin n) ℝ := Matrix.of (fun i j => (nsi.mul e₀ (stdBasis j)) i)
+  let M₁ : Matrix (Fin n) (Fin n) ℝ := Matrix.of (fun i j => (nsi.mul e₁ (stdBasis j)) i)
+  -- M₀ᵀ M₀ = I (from right_polarization with normSq e₀ = 1)
+  have hM0TM0 : M₀.transpose * M₀ = 1 := by
+    ext i j
+    simp only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, Matrix.one_apply]
+    have hrp := right_polarization nsi e₀ (stdBasis i) (stdBasis j)
+    rw [he₀, one_mul, innerProd_stdBasis_eq] at hrp
+    simp only [innerProd] at hrp
+    exact hrp
+  -- M₁ᵀ M₁ = I (from right_polarization with normSq e₁ = 1)
+  have hM1TM1 : M₁.transpose * M₁ = 1 := by
+    ext i j
+    simp only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, Matrix.one_apply]
+    have hrp := right_polarization nsi e₁ (stdBasis i) (stdBasis j)
+    rw [he₁, one_mul, innerProd_stdBasis_eq] at hrp
+    simp only [innerProd] at hrp
+    exact hrp
+  -- M₀ M₀ᵀ = I (square matrix with left inverse has right inverse)
+  have hM0_inv : M₀ * M₀.transpose = 1 := Matrix.mul_eq_one_comm.mp hM0TM0
+  -- S = M₀ᵀ M₁ is skew-symmetric: S + Sᵀ = 0 (from cross_polarization with ⟨e₀,e₁⟩ = 0)
+  have hS_add : M₀.transpose * M₁ + (M₀.transpose * M₁).transpose = 0 := by
+    ext i j
+    simp only [Matrix.add_apply, Matrix.mul_apply, Matrix.transpose_apply,
+               Matrix.of_apply, Matrix.zero_apply]
+    have hcp := cross_polarization nsi e₀ e₁ (stdBasis i) (stdBasis j)
+    simp only [h01, mul_zero, zero_mul] at hcp
+    simp only [innerProd] at hcp
+    exact hcp
+  have hS_skew : (M₀.transpose * M₁).transpose = -(M₀.transpose * M₁) :=
+    eq_neg_of_add_eq_zero_right hS_add
+  -- Sᵀ S = I (since Sᵀ S = M₁ᵀ (M₀ M₀ᵀ) M₁ = M₁ᵀ M₁ = I)
+  have hSTS : (M₀.transpose * M₁).transpose * (M₀.transpose * M₁) = 1 := by
+    rw [Matrix.transpose_mul, Matrix.transpose_transpose]
+    calc M₁.transpose * M₀ * (M₀.transpose * M₁)
+        = M₁.transpose * (M₀ * (M₀.transpose * M₁)) := by rw [Matrix.mul_assoc]
+      _ = M₁.transpose * (M₀ * M₀.transpose * M₁) := by rw [← Matrix.mul_assoc M₀]
+      _ = M₁.transpose * (1 * M₁) := by rw [hM0_inv]
+      _ = M₁.transpose * M₁ := by rw [Matrix.one_mul]
+      _ = 1 := hM1TM1
+  -- S² = -I (since S = -Sᵀ implies S·S = -Sᵀ·S = -(Sᵀ S) = -I)
+  have hS2 : M₀.transpose * M₁ * (M₀.transpose * M₁) = -1 := by
+    have hS_neg : M₀.transpose * M₁ = -(M₀.transpose * M₁).transpose := by
+      rw [hS_skew, neg_neg]
+    nth_rw 1 [hS_neg]
+    rw [neg_mul, hSTS]
+  -- det(S)² = (-1)^n (from S² = -I and det multiplicativity)
+  have hdet_sq : (M₀.transpose * M₁).det ^ 2 = (-1 : ℝ) ^ n := by
+    have h := congr_arg Matrix.det hS2
+    rw [Matrix.det_mul, ← sq] at h
+    have hdetNeg : (-1 : Matrix (Fin n) (Fin n) ℝ).det = (-1 : ℝ) ^ n := by
+      rw [show (-1 : Matrix (Fin n) (Fin n) ℝ) = (-1 : ℝ) • 1 from by simp]
+      rw [Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]
+    rw [hdetNeg] at h; exact h
+  -- For odd n: (-1)^n = -1, so det(S)² = -1, contradicting det(S)² ≥ 0
+  linarith [sq_nonneg (M₀.transpose * M₁).det, hdet_sq.trans (Odd.neg_one_pow hodd)]
+
 /-- The set of dimensions admitting n-square identities -/
 def admissibleDimensions : Set ℕ := {1, 2, 4, 8}
 
@@ -1723,21 +1813,22 @@ theorem hurwitz_only_if (n : ℕ) (hn : n > 0) (nsi : NSquareIdentity n) :
     n ∈ admissibleDimensions := by
   simp only [admissibleDimensions, Set.mem_insert_iff, Set.mem_singleton_iff]
   -- Handle the four admissible cases directly
-  rcases Nat.eq_or_ne n 1 with rfl | h1; · simp
-  rcases Nat.eq_or_ne n 2 with rfl | h2; · simp
-  rcases Nat.eq_or_ne n 4 with rfl | h4; · simp
-  rcases Nat.eq_or_ne n 8 with rfl | h8; · simp
+  rcases eq_or_ne n 1 with rfl | h1; · simp
+  rcases eq_or_ne n 2 with rfl | h2; · simp
+  rcases eq_or_ne n 4 with rfl | h4; · simp
+  rcases eq_or_ne n 8 with rfl | h8; · simp
   -- n ∉ {1, 2, 4, 8}: must derive contradiction from nsi
   exfalso
-  rcases Nat.eq_or_ne n 3 with rfl | h3
-  · -- n = 3: proved via overdetermined orthogonality (no_three_square_identity)
-    exact no_three_square_identity nsi
-  · -- n ∈ {5, 6, 7} or n > 8: requires Clifford/Radon-Hurwitz argument.
-    -- Key tool: `cross_polarization` gives the Pfister identity
-    -- ⟨mul(x,a), mul(y,b)⟩ + ⟨mul(x,b), mul(y,a)⟩ = 2⟨x,y⟩⟨a,b⟩
-    -- which encodes the Clifford anticommutation relation for the maps
-    -- Jᵢ : x ↦ nsi.mul(eᵢ, x). The Radon-Hurwitz theorem then forces n ∈ {1,2,4,8}.
+  rcases Nat.even_or_odd n with heven | hodd
+  · -- n is even, n ∉ {2, 4, 8}: requires Clifford/Radon-Hurwitz argument.
+    -- The cross_polarization identity encodes Clifford anticommutation relations
+    -- for the maps Jᵢ : x ↦ nsi.mul(eᵢ, x). The Radon-Hurwitz theorem then forces
+    -- n ∈ {1,2,4,8}, giving a contradiction.
     sorry
+  · -- n is odd, n ≠ 1: proved by matrix determinant argument.
+    -- S = M₀ᵀ M₁ is skew-symmetric and orthogonal ⟹ S² = -I
+    -- ⟹ det(S)² = (-1)^n = -1 for odd n ⟹ contradiction (det(S)² ≥ 0).
+    exact odd_no_nsquare_identity hn hodd h1 nsi
 
 /-- Hurwitz's Theorem: n-square identities exist only for n ∈ {1, 2, 4, 8} -/
 theorem hurwitz_theorem (n : ℕ) (hn : n > 0) :
