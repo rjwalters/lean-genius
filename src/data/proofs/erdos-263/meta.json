@@ -17,13 +17,13 @@
       "analysis"
     ],
     "badge": "wip",
-    "sorries": 7,
+    "sorries": 8,
     "erdosNumber": 263,
     "erdosUrl": "https://erdosproblems.com/263",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "lineCount": 654,
-    "assumptions": "No axioms. 7 sorry(s) remain: folklore_irrationality (Mahler-type criterion needed), kovac_tao_not_irrationality (Egyptian fraction construction needed), positive_condition_irrationality (liminf analysis beyond Mathlib), truncation_insufficient (requires exhibiting a known irrationality sequence), doubleExp_tail_bound (geometric tail bound — Aristotle candidate), tsum_split_at (tsum splitting lemma — Aristotle candidate), doubleExp_sum_irrational (HARD — integer-gap argument fully outlined, awaits helper lemma compilation). Proved (no sorry): doubleExp_term_eq (term rewrite), doubleExp_sum_summable (summability), doubleExp_not_folklore_growth, doubleExp_square_growth, doubleExp_strictly_increasing, doubleExp_convergent, doubleExp_superexponential, doubleExp_not_kovac_tao, factorial_no_folklore_growth, factorial_has_kovac_tao_condition, characterization_gap, connection_262_proved. In-progress (with proof attempt): doubleExp_tail_pos (tail positivity, Aristotle candidate), doubleExp_fin_mul_nat (D*finsum ∈ ℕ via pow_sub₀).",
+    "lineCount": 650,
+    "assumptions": "No axioms. 8 sorry(s) remain: folklore_irrationality (Mahler-type criterion needed), kovac_tao_not_irrationality (Egyptian fraction construction needed), positive_condition_irrationality (liminf analysis beyond Mathlib), truncation_insufficient (requires exhibiting a known irrationality sequence), doubleExp_tail_pos (tail positivity — Aristotle candidate), doubleExp_tail_bound (geometric tail bound — Aristotle candidate), tsum_split_at (tsum splitting lemma — Aristotle candidate), doubleExp_sum_irrational (HARD — integer-gap argument fully outlined, awaits helper lemma compilation). Proved (no sorry): doubleExp_term_eq (term rewrite), doubleExp_sum_summable (summability), doubleExp_not_folklore_growth, doubleExp_square_growth, doubleExp_strictly_increasing, doubleExp_convergent, doubleExp_superexponential, doubleExp_not_kovac_tao, factorial_no_folklore_growth, factorial_has_kovac_tao_condition, characterization_gap, connection_262_proved, doubleExp_fin_mul_nat (D*finsum ∈ ℕ via pow_sub₀).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -159,12 +159,12 @@
       "Real"
     ],
     "namespace": "Erdos263",
-    "lineCount": 606,
+    "lineCount": 650,
     "axiomCount": 0,
     "theoremCount": 19,
     "definitionCount": 19,
     "path": "Proofs/Stubs/Erdos263Problem.lean",
-    "sorries": 5
+    "sorries": 8
   },
   "crossReferences": [
     {
@@ -226,5 +226,5 @@
       "note": "Growth lower bounds for irrationality sequences, connected to Problem #262"
     }
   ],
-  "sorries": 5
+  "sorries": 8
 }
