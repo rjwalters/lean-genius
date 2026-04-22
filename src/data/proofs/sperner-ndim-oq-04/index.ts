@@ -15,7 +15,7 @@ const meta = metaJson as {
   crossReferences?: CrossReference[]
 }
 
-export const spernerNdimOq04Proof: Proof = {
+export const proof: Proof = {
   id: meta.id,
   title: meta.title,
   slug: meta.slug,
@@ -26,7 +26,13 @@ export const spernerNdimOq04Proof: Proof = {
   overview: meta.overview,
   conclusion: meta.conclusion,
   crossReferences: meta.crossReferences || [],
-  annotations: (annotationsJson as { annotations: Annotation[] }).annotations || [],
 }
 
-export default spernerNdimOq04Proof
+export const annotations: Annotation[] = (annotationsJson as unknown as { annotations: Annotation[] }).annotations || []
+
+export const proofData: ProofData = {
+  proof,
+  annotations,
+}
+
+export default proofData
