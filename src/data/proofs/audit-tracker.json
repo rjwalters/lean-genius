@@ -1107,10 +1107,10 @@
       "result": "clean"
     },
     "cayley-hamilton-reduction-oq-02-oq-01": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-05T12:39:26Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-22T17:42:22Z",
+      "result": "clean"
     },
     "central-limit-theorem": {
       "agentId": "auditor-cycle-20-batch",
@@ -3766,9 +3766,9 @@
     },
     "erdos-204": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 5,
-      "lastAudited": "2026-04-05T12:29:12Z",
-      "result": "issues-fixed",
+      "auditCount": 6,
+      "lastAudited": "2026-04-22T17:42:10Z",
+      "result": "clean",
       "issues": [
         "sorries field was 0 but file has 1 sorry (MaxCoverableDensity def); proofStrategy said 253-line but file is 189 lines; examples section listed non-existent n6_fails/n12_fails axioms"
       ]
@@ -10085,9 +10085,9 @@
       "result": "clean"
     },
     "lhopital-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-05T12:44:33Z",
+      "lastAudited": "2026-04-22T17:42:30Z",
       "result": "clean"
     },
     "liouville-theorem": {
@@ -10115,9 +10115,9 @@
       "result": "clean"
     },
     "mean-value-theorem-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-05T12:44:33Z",
+      "lastAudited": "2026-04-22T17:42:28Z",
       "result": "clean"
     },
     "mean-value-theorem-oq-03": {
@@ -10139,9 +10139,9 @@
       "result": "clean"
     },
     "morleys-theorem-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-05T12:44:33Z",
+      "lastAudited": "2026-04-22T17:42:25Z",
       "result": "clean"
     },
     "motivic-flag-maps": {
@@ -10157,9 +10157,9 @@
       "result": "clean"
     },
     "napoleons-theorem": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-05T07:51:38Z",
+      "lastAudited": "2026-04-22T17:42:06Z",
       "result": "clean"
     },
     "navier-stokes": {
@@ -11806,15 +11806,15 @@
       "issues": []
     },
     "binary-gcd-oq-01-oq-04": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T08:13:26Z",
-      "result": "issues-fixed",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T17:42:07Z",
+      "result": "clean",
       "issues": []
     },
     "borsuk-ulam-oq-02-oq-01-oq-03": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-05T12:04:47Z",
-      "result": "issues-fixed",
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T17:42:08Z",
+      "result": "clean",
       "issues": []
     },
     "arithmetic-series-oq-02-oq-02-oq-03-oq-01": {
@@ -11828,8 +11828,8 @@
       ]
     },
     "basel-problem-oq-01-oq-03": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T12:31:17Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T17:42:21Z",
       "result": "clean",
       "issues": []
     },
@@ -11840,63 +11840,63 @@
       "issues": []
     },
     "bezout-identity-oq-02-oq-01-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T12:31:17Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T17:42:19Z",
       "result": "clean",
       "issues": []
     },
     "bezout-identity-oq-02-oq-01-oq-02-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T12:31:17Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T17:42:18Z",
       "result": "clean",
       "issues": []
     },
     "binomial-theorem-oq-03-oq-02-oq-03": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T12:31:17Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T17:42:17Z",
       "result": "clean",
       "issues": []
     },
     "birch-swinnerton-dyer-oq-06": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T12:31:17Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T17:42:16Z",
       "result": "clean",
       "issues": []
     },
     "borsuk-ulam-oq-02-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T12:31:17Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T17:42:15Z",
       "result": "clean",
       "issues": []
     },
     "herons-formula-oq-04": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T12:31:17Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T17:42:14Z",
       "result": "clean",
       "issues": []
     },
     "laws-of-large-numbers-oq-04": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T12:31:17Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T17:42:13Z",
       "result": "clean",
       "issues": []
     },
     "spherical-law-of-sines": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T12:31:17Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T17:42:12Z",
       "result": "clean",
       "issues": []
     },
     "triangle-inequality-oq-04": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T12:31:17Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T17:42:11Z",
       "result": "clean",
       "issues": []
     },
     "birthday-problem-oq-03-oq-01-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T12:39:26Z",
-      "result": "issues-fixed",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T17:42:23Z",
+      "result": "clean",
       "issues": []
     },
     "algebraic-numbers-countable-oq-02": {
@@ -11924,8 +11924,8 @@
       "issues": []
     },
     "brouwer-fixed-point-oq-01-oq-03": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T12:41:33Z",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T17:42:24Z",
       "result": "clean",
       "issues": []
     },
