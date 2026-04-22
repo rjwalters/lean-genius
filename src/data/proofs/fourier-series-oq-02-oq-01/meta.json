@@ -33,8 +33,33 @@
       },
       {
         "theorem": "MemLp.coeFn_toLp",
-        "description": "The Lp representative equals the original function a.e.",
+        "description": "The Lp representative equals the original function a.e. — used to transfer fourierCoeff from ⇑f_Lp to f via integral_congr_ae",
         "module": "Mathlib.MeasureTheory.Function.LpSpace"
+      },
+      {
+        "theorem": "HolderWith.continuous",
+        "description": "Hölder condition with positive exponent implies continuity — Step 1 of the proof chain",
+        "module": "Mathlib.Topology.MetricSpace.Holder"
+      },
+      {
+        "theorem": "MeasureTheory.memLp_const",
+        "description": "Constant functions are in Lp for any finite measure — used as the comparison function in MemLp.mono'",
+        "module": "Mathlib.MeasureTheory.Function.LpSpace"
+      },
+      {
+        "theorem": "MeasureTheory.MemLp.mono'",
+        "description": "If g ∈ Lp and ‖f(x)‖ ≤ ‖g(x)‖ a.e., then f ∈ Lp — used to prove f ∈ L² via the constant sup-norm bound",
+        "module": "Mathlib.MeasureTheory.Function.LpSpace"
+      },
+      {
+        "theorem": "IsCompact.bddAbove",
+        "description": "The image of a continuous function on a compact space is bounded above — provides BddAbove for le_csSup",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      },
+      {
+        "theorem": "MeasureTheory.integral_congr_ae",
+        "description": "Integrals are equal for a.e.-equal functions — transfers fourierCoeff (⇑f_Lp) n = fourierCoeff f n",
+        "module": "Mathlib.MeasureTheory.Integral.SetIntegral"
       }
     ],
     "originalContributions": [
@@ -43,6 +68,8 @@
     ],
     "dateAdded": "2026-04-21",
     "lineCount": 83,
+    "assumptions": "0 sorries, 0 axioms. Fully machine-verified.",
+    "mathlib_version": "4.26.0",
     "prerequisites": [
       "FourierSeries.lean: fourierCoeff_tendsto_zero for L² functions",
       "Mathlib HolderWith: holder_continuous, MemLp for continuous functions on compact spaces",
@@ -112,20 +139,52 @@
     "summary": "The Riemann-Lebesgue lemma for Hölder functions can be proved in ~15 lines using the Parseval/L² path, vs ~90 lines via explicit quantitative decay bounds.",
     "implications": "**Proof economy**: The L² approach separates the qualitative result (ĉ_n → 0) from the quantitative one (‖ĉ_n‖ ≤ (C/2)(T/2|n|)^α). The former needs only L²-membership; the latter needs Hölder structure.\n\n**Generality**: The proof actually shows something stronger — any continuous function on AddCircle T (not just Hölder) has Fourier coefficients tending to zero via L².",
     "openQuestions": [
-      "Can the same L² approach prove RL for all L¹ functions on AddCircle T (density argument)?"
+      "Can the same L² approach prove RL for all L¹ functions on AddCircle T via a density argument (L¹ ⊃ L² closure)?",
+      "Does the proof generalize to vector-valued functions (f : AddCircle T → E for Banach E) using MemLp for Bochner integrals?",
+      "Can `MemLp.mono'` be replaced by a direct `Continuous.memLp` lemma? Mathlib may have this for finite-measure compact spaces."
     ]
   },
   "crossReferences": [
     {
       "targetId": "fourier-series-oq-02",
       "relationship": "parent",
-      "description": "Parent proof: quantitative Hölder decay ‖ĉ_n‖ ≤ (C/2)(T/2|n|)^α"
+      "description": "Parent proof: quantitative Hölder decay ‖ĉ_n‖ ≤ (C/2)(T/2|n|)^α — this entry proves the same conclusion with a shorter qualitative argument"
     },
     {
       "targetId": "fourier-series",
       "relationship": "sibling",
-      "description": "FourierSeries.lean provides fourierCoeff_tendsto_zero (L² Parseval-based RL)"
+      "description": "FourierSeries.lean provides fourierCoeff_tendsto_zero (L² Parseval-based RL) — the engine that drives this proof"
+    },
+    {
+      "targetId": "fourier-series-oq-01",
+      "relationship": "sibling",
+      "description": "FourierSeriesOQ01 studies pointwise convergence of Fourier series; this entry studies coefficient decay"
     }
   ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Fourier.AddCircle",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.l2Space",
+      "Mathlib.MeasureTheory.Function.L2Space",
+      "Mathlib.Topology.MetricSpace.Holder",
+      "Mathlib.Tactic",
+      "Proofs.FourierSeries"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Complex",
+      "Topology",
+      "Filter",
+      "AddCircle"
+    ],
+    "namespace": "FourierHolderL2RL",
+    "lineCount": 83,
+    "axiomCount": 0,
+    "theoremCount": 1,
+    "definitionCount": 0,
+    "path": "Proofs/FourierSeriesOQ02OQ01.lean",
+    "sorries": 0
+  },
   "sorries": 0
 }

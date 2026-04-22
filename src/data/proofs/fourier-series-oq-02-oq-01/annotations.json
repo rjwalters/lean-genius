@@ -2,11 +2,11 @@
   {
     "id": "ann-fourier-oq02-oq01-01",
     "proofId": "fourier-series-oq-02-oq-01",
-    "range": { "startLine": 1, "endLine": 41 },
+    "range": { "startLine": 9, "endLine": 34 },
     "type": "context",
-    "title": "Two Proofs, One Result: L² vs Quantitative",
-    "content": "This file answers an open question from FourierSeriesOQ02: can the Riemann-Lebesgue property for Hölder functions be proved via the L² route rather than explicit decay bounds?\n\n**The parent proof** (FourierSeriesOQ02) proceeds via:\n  ‖ĉ_n‖ ≤ (C/2)·(T/2|n|)^α → 0 as |n| → ∞\nThis is quantitative but requires ~90 lines of proof.\n\n**This proof** proceeds via:\n  Hölder → Continuous → MemLp 2 → Parseval → ĉ_n → 0\nThis is qualitative (~15 lines) and reveals the deeper structure.",
-    "mathContext": "Both proofs establish Tendsto (fun n => fourierCoeff f n) cofinite (𝓝 0). They differ in technique: the quantitative proof uses Hölder decay explicitly; the L² proof uses Parseval's identity.",
+    "title": "Two Proofs, One Result: L² vs Quantitative (Module Overview)",
+    "content": "The block comment (lines 9-34) frames the open question and its answer. **Question**: Can `riemannLebesgue_of_holder` be proved via the Parseval/L² route rather than the explicit quantitative bound ‖ĉ_n‖ ≤ (C/2)(T/2|n|)^α? **Answer**: Yes, in ~15 lines.\n\nThe comparison crystallizes two levels of analysis:\n- **Quantitative** (OQ-02, ~90 lines): pinpoints the exact decay rate ‖ĉ_n‖ = O(|n|^{-α}); uses Hölder structure explicitly throughout\n- **Qualitative** (this file, ~15 lines): only needs ĉ_n → 0; uses only L²-membership (which follows from continuity on compact space)\n\nThe five-step chain documented in the comment — Hölder → Continuous → MemLp 2 → toLp → Parseval — exactly mirrors the code structure at lines 57-78, making this comment a precise roadmap for the proof.",
+    "mathContext": "Both proofs establish `Tendsto (fun n : ℤ => fourierCoeff f n) cofinite (𝓝 0)`. The qualitative proof relies on Parseval: $\\sum_n \\|\\hat{c}_n(f)\\|^2 = \\|f\\|_{L^2}^2 < \\infty$ implies $\\hat{c}_n \\to 0$ (summable implies tendsto zero). This avoids all Hölder decay computations after step 1.",
     "significance": "supporting",
     "relatedConcepts": ["Riemann-Lebesgue lemma", "Parseval's identity", "L² Fourier theory"],
     "prerequisites": ["Hölder continuity", "L² spaces", "AddCircle Haar measure"]
@@ -14,12 +14,12 @@
   {
     "id": "ann-fourier-oq02-oq01-02",
     "proofId": "fourier-series-oq-02-oq-01",
-    "range": { "startLine": 49, "endLine": 73 },
-    "type": "theorem",
+    "range": { "startLine": 47, "endLine": 78 },
+    "type": "insight",
     "title": "riemannLebesgue_of_holder_via_L2: The Core Proof",
     "content": "The complete alternative proof in 5 steps:\n\n1. **Hölder → Continuous**: `hf.continuous hα` — Mathlib's `HolderWith.continuous` (α > 0 implies continuity).\n\n2. **Continuous → MemLp 2**: The key step. `AddCircle T` is compact (hence f is bounded), and the Haar measure is finite, so f ∈ L².\n   ```\n   (memLp_const supNorm).mono' (bounded above by sup norm)\n   ```\n\n3. **Lift to L²**: `hf_memLp.toLp f` creates `f_Lp : Lp ℂ 2 haarAddCircle`.\n\n4. **Coefficient equality**: Since `⇑f_Lp =ᵐ f` (a.e.), the integrals that define fourierCoeff agree pointwise.\n\n5. **Apply Parseval RL**: `FourierSeries.fourierCoeff_tendsto_zero f_Lp` gives the result.",
     "mathContext": "The MemLp argument uses: (1) continuous → aestronglyMeasurable, (2) compact range → bounded above by sSup, (3) mono' compares with the constant function supNorm which is in Lp.",
-    "significance": "main",
+    "significance": "key",
     "relatedConcepts": ["MemLp.toLp", "coeFn_toLp", "hasSum_sq_fourierCoeff", "Parseval"],
     "prerequisites": ["compact spaces", "Haar measure", "Lp spaces", "Parseval's identity"]
   },
@@ -46,6 +46,18 @@
     "significance": "supporting",
     "relatedConcepts": ["maxHeartbeats", "noncomputable section", "Fact typeclass", "AddCircle", "Filter.cofinite"],
     "prerequisites": ["Lean 4 section system", "noncomputable types", "Mathlib typeclass Fact"]
+  },
+  {
+    "id": "ann-fourier-oq02-oq01-06",
+    "proofId": "fourier-series-oq-02-oq-01",
+    "range": { "startLine": 70, "endLine": 74 },
+    "type": "technique",
+    "title": "integral_congr_ae: Transferring Fourier Coefficients via A.E. Equality",
+    "content": "Lines 70-74 handle the subtle step of transferring fourierCoeff from `⇑f_Lp` (the L² representative) to `f` (the original function). The proof uses `integral_congr_ae`: if two functions agree almost everywhere (`=ᵐ`), their integrals with respect to any integrand are equal.\n\nThe key chain:\n1. `hf_memLp.coeFn_toLp : ⇑f_Lp =ᵐ[haarAddCircle] f` — the coercion of the Lp element back to a function equals f a.e. (by construction of the quotient Lp space)\n2. `.mono fun x hx => by simp only [smul_eq_mul]; rw [hx]` — lifts the a.e. equality to the integrand `fourierChar [-↑n] x • ⇑f_Lp x = fourierChar [-↑n] x • f x`\n3. `integral_congr_ae ...` — concludes the integrals are equal, hence `fourierCoeff (⇑f_Lp) n = fourierCoeff f n`\n\nThis pattern — lift Lp element, use coeFn_toLp a.e.-equality, apply integral_congr_ae — is the standard Lean 4 recipe for moving between Lp representatives and original functions.",
+    "mathContext": "The `fourierCoeff f n = (1/T) ∫ fourierChar [-n] x • f x ∂haarAddCircle` is an integral. If `g =ᵐ f` (a.e.), then `∫ h x • g x = ∫ h x • f x` by `integral_congr_ae`. The a.e. equality `coeFn_toLp : ⇑(MemLp.toLp f) =ᵐ f` is the defining property of the Lp quotient: `toLp f` is the equivalence class of `f`, and `⇑` picks any representative which agrees a.e. with `f`.",
+    "significance": "technical",
+    "relatedConcepts": ["integral_congr_ae", "MemLp.coeFn_toLp", "a.e. equality", "Filter.Eventually", "Lp quotient space"],
+    "prerequisites": ["MeasureTheory.integral_congr_ae", "Lp quotient construction", "Filter.Eventually.mono"]
   },
   {
     "id": "ann-fourier-oq02-oq01-05",
