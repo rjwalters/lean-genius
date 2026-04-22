@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3 new proved theorems (cube_succ_inv_le_telescoping, zetaValue_three_tail_ub, linearForm_two_pos). 11 pre-existing build errors fixed. Total: 5 axioms, 0 sorries, ~25 proved theorems. All 5 axioms still blocked on WZ/PNT/integral infrastructure.",
+    "progressSummary": "PROGRESS: File builds clean (0 errors). 7 proved theorems beyond session 7 baseline. All 5 axioms still blocked (WZ, Chebyshev, integrals).",
     "builtItems": [
       "Created proofs/Proofs/BaselProblemOQ01OQ01OQ02.lean (199 lines)",
       "Defined aperyB: ℕ → ℕ (Apéry number sequence)",
@@ -60,7 +60,9 @@
       "Fixed 11 pre-existing build errors from Mathlib API changes (harmonicNumber_nonneg, harmonicNumber_mono sum_le_sum_of_subset_of_nonneg, lcmUpTo decide, parser fixes, apery_bterm_int calc rewrite)",
       "cube_succ_inv_le_telescoping: 1/(x+1)³ ≤ 1/(2x²) - 1/(2(x+1)²) for x≥1 (proved via polynomial identity nlinarith hint)",
       "zetaValue_three_tail_ub N (hN : 1≤N): ζ(3) ≤ S_{N+1} + 1/(2N²) — upper companion to tail_lb (proved via telescope + le_of_tendsto')",
-      "linearForm_two_pos: 0 < linearForm 2 = 73ζ(3) - 351/4 (proved via native_decide ℚ computation, N=100 terms)"
+      "linearForm_two_pos: 0 < linearForm 2 = 73ζ(3) - 351/4 (proved via native_decide ℚ computation, N=100 terms)",
+      "aperyA_three: a₃=62531/36 proved via simp;norm_num after fixing aperyA definition",
+      "linearForm_three_pos: 0<L₃=1445ζ(3)-62531/36 proved via native_decide N=1000 bound"
     ],
     "insights": [
       "Apéry numbers bₙ = ∑ C(n,k)²C(n+k,k)² computable as ℕ in Lean via Finset.sum",
@@ -90,7 +92,10 @@
       "Must run worktree's own docker-build.sh (not main repo's) to mount worktree files in Docker",
       "native_decide over ℚ bypasses heartbeat limits for large rational sum comparisons (N=100 terms for L₂>0 requires N≥63 minimum, norm_num times out)",
       "cube_succ_inv_le_telescoping proof key: polynomial identity 2(2x+1)(x+1)³ - 4x²(x+1)² = (x+1)²(6x+2) ≥ 0 as nlinarith hint",
-      "zetaValue_three_tail_lb + zetaValue_three_tail_ub together give rigorous rational interval arithmetic for ζ(3) — useful for proving linearForm_n_pos for any concrete n"
+      "zetaValue_three_tail_lb + zetaValue_three_tail_ub together give rigorous rational interval arithmetic for ζ(3) — useful for proving linearForm_n_pos for any concrete n",
+      "aperyA definition had ℤ/ℚ type mixing without coercions — produces sorry when unfolded; need explicit (coeff:ℚ) casts",
+      "rw [← Rat.num_div_den r] rewrites r inside r.den — use ring identity d*r=num approach instead",
+      "Finset.lcm_eq_zero_iff is the correct tool for lcmUpTo_pos; ¬1∣0 approach is logically wrong"
     ],
     "mathlibGaps": [
       "Mathlib has primorial_le_four_pow (primorial ≤ 4^n) but NOT lcmUpTo ≤ 4^n directly",

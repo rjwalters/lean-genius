@@ -416,3 +416,60 @@ For `linearForm_two_pos`, N=100 suffices. For larger n, larger N needed but alwa
 3. Wait for WZ theory / Mathlib Chebyshev improvements to unblock 5 axioms
 4. The `zetaValue_three_tail_ub` + `zetaValue_three_tail_lb` together provide
    rigorous interval arithmetic for ζ(3) — useful for other gallery entries
+
+---
+
+## Session 2026-04-23 (Session 9) — Fix All Build Errors + Add linearForm_three_pos
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: progress — file now builds clean (0 errors), added aperyA_three and linearForm_three_pos
+
+### What I Did
+
+Discovered the file had accumulated ~20 build errors. Fixed all of them:
+
+**Pre-existing errors fixed**:
+1. `aperyA` definition — mixed ℤ/ℚ types without coercions caused `sorry N` on unfold.
+   Fix: add explicit `(coeff : ℚ)`, `((n+1 : ℤ) : ℚ)`, `((n+2 : ℤ) : ℚ)` casts.
+2. `aperyB_two/three` — `simp;norm_num` didn't prove these. Fix: `native_decide`.
+3. `aperyB_pos` — `choose_pos` got wrong argument (`k ≤ n+1` vs `k ≤ n`).
+   Fix: use `Nat.lt_succ_iff.mp` to convert `k < n+1` → `k ≤ n` before `choose_pos`.
+4. `zetaValue_pos` — `tsum_pos` renamed to `Summable.tsum_pos` in Mathlib.
+5. `Int.coe_nat_nonneg` → `Int.natCast_nonneg` (deprecated).
+6. `mul_le_mul_left` — no longer an Iff; fix: `le_of_mul_le_mul_left h_combined hcube_pos`.
+7. `harmonicNumber_nonneg/mono` — `exact_mod_cast Nat.succ_pos k` fails for `0 ≤ k+1`.
+   Fix: `by positivity`.
+8. `lcmUpTo_pos` — proof logic was wrong (tried to derive ¬1∣0, which is FALSE).
+   Fix: use `Finset.lcm_eq_zero_iff` + `Nat.succ_ne_zero`.
+9. `apery_bterm_int` calc block — `rw [← Rat.num_div_den r]; ring` rewrites inside r.den.
+   Fix: use ring identity `(d*q)^3 * b * r = q^3 * d^2 * b * (d*r)` then `Rat.num_div_den`.
+10. Floating `/--` docstrings (no attached declaration) — converted to `/-`.
+11. `aperyRecCoeff_one/aperyB_one` — `simp` already closes; removed stale `norm_num`.
+
+**New Proved Theorems (Parts XIX)**:
+- `aperyA_three`: a₃ = 62531/36 (via `simp only [aperyA]; norm_num`)
+- `linearForm_three_pos`: 0 < linearForm 3 = 1445·ζ(3) - 62531/36
+  - Proof: ζ(3) > 62531/52020 verified via `zetaValue_three_tail_lb 1000` + `native_decide`
+  - Gap: ζ(3) − 62531/52020 ≈ 1.97×10⁻⁹; bound error 5×10⁻⁷ (N=1000 sufficient)
+  - ha cast: `rw [aperyA_three]; push_cast; ring` (avoids `exact_mod_cast` failure on ℤ/ℚ)
+
+### Key Technical Lessons
+
+- `exact_mod_cast` fails for `(aperyA n : ℝ) = p/q` when `p/q : ℚ` — the cast
+  normalizes the ℚ and the `ℤ` numerator/denominator don't align. Use `rw [aperyA_n]; push_cast; ring`.
+- The `← Rat.num_div_den r` rewrite substitutes `r` EVERYWHERE including inside `r.den`.
+  Alternative: extract the needed identity `r.den * r = r.num` separately, then use a ring identity.
+- `Finset.lcm_eq_zero_iff` is the right tool for proving `lcmUpTo n ≠ 0`.
+- `positivity` handles `0 ≤ (k : ℚ) + 1` directly; no need for `exact_mod_cast Nat.succ_pos`.
+
+### PR
+
+rjwalters/lean-genius#11534 (research/basel-session9)
+
+### Files Modified
+- `proofs/Proofs/BaselProblemOQ01OQ01OQ02.lean` (~860 → 909 lines, builds clean)
+
+### Next Steps
+1. Same blockers as before (WZ, Chebyshev, integrals)
+2. The `linearForm_n_pos` technique is replicable for n=4,5,... with larger N
+3. Could extend to prove `linearForm_nonzero` for all n ≤ some cutoff via automation
