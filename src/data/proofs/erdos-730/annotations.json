@@ -339,12 +339,12 @@
     "id": "erdos-730-ann-heuristic",
     "proofId": "erdos-730",
     "range": {
-      "startLine": 114,
-      "endLine": 118
+      "startLine": 137,
+      "endLine": 148
     },
     "type": "concept",
     "title": "Prime Set Stability Heuristic",
-    "content": "Heuristic axiom (trivially True): for consecutive $n$, the intervals $(n, 2n]$ and $(n+1, 2(n+1)]$ differ by at most one prime at each boundary. So the 'middle prime' contributions to the divisor set change slowly, making matches plausible.",
+    "content": "Informal heuristic: for consecutive $n$, the intervals $(n, 2n]$ and $(n+1, 2(n+1)]$ differ by at most one prime at each boundary. By PNT, $O(1/\\log n)$ primes enter or leave on average, so the middle-prime contributions to the divisor set change slowly, making matches plausible.",
     "significance": "supporting",
     "mathContext": "The interval $(n, 2n]$ shifts to $(n+1, 2n+2]$. The prime $n+1$ (if prime) leaves and the prime $2n+1$ or $2n+2$ (if prime) may enter. By the prime number theorem, the expected number of primes in $(n, n+1]$ and $(2n, 2n+2]$ is $O(1/\\log n)$, so most increments change no middle primes. The small primes $p \\le n$ change via carry patterns, which are also locally stable.",
     "relatedConcepts": [
