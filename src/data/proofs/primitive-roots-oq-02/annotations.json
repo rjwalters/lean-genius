@@ -137,7 +137,7 @@
       "startLine": 179,
       "endLine": 224
     },
-    "type": "verification",
+    "type": "concept",
     "title": "Concrete: How Many Tests Are Needed?",
     "content": "The `native_decide` examples demonstrate the efficiency concretely:\n\n| Prime p | p-1 | primeFactors(p-1) | Tests needed |\n|---------|-----|-------------------|-------------|\n| 5 | 4 = 2² | {2} | 1 |\n| 7 | 6 = 2·3 | {2, 3} | 2 |\n| 11 | 10 = 2·5 | {2, 5} | 2 |\n| 13 | 12 = 2²·3 | {2, 3} | 2 |\n| 23 | 22 = 2·11 | {2, 11} | 2 |\n| 1000003 | 1000002 = 2·3·166667 | {2, 3, 166667} | 3 |\n\nFor p = 1000003 (a 7-digit prime), only 3 modular exponentiations are needed per candidate — regardless of the candidate value. The naive approach would require up to 1000002 multiplications.",
     "mathContext": "For $p = 1000003$: $p - 1 = 2 \\cdot 3 \\cdot 166667$, only 3 tests needed per candidate",

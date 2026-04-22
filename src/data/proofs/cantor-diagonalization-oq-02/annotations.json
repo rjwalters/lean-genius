@@ -19,7 +19,11 @@
       "ordinal arithmetic",
       "cardinal arithmetic",
       "Mathlib Cardinal.Ordinal"
-    ]
+    ],
+    "range": {
+      "startLine": 61,
+      "endLine": 68
+    }
   },
   {
     "id": "annotation-card-ord",
@@ -40,7 +44,11 @@
     "prerequisites": [
       "cardinal arithmetic",
       "Mathlib Cardinal.Ordinal API"
-    ]
+    ],
+    "range": {
+      "startLine": 66,
+      "endLine": 68
+    }
   },
   {
     "id": "annotation-aleph-succ",
@@ -61,7 +69,11 @@
     "prerequisites": [
       "ordinal indexing of aleph numbers",
       "Mathlib Cardinal.Aleph"
-    ]
+    ],
+    "range": {
+      "startLine": 75,
+      "endLine": 80
+    }
   },
   {
     "id": "annotation-lt-aleph1-iff",
@@ -83,7 +95,11 @@
       "successor cardinals",
       "Order.lt_succ_iff",
       "aleph numbers"
-    ]
+    ],
+    "range": {
+      "startLine": 82,
+      "endLine": 89
+    }
   },
   {
     "id": "annotation-diagonal-core",
@@ -106,7 +122,11 @@
       "conditionally complete linear orders",
       "ordinal cofinality",
       "Mathlib Order"
-    ]
+    ],
+    "range": {
+      "startLine": 168,
+      "endLine": 179
+    }
   },
   {
     "id": "annotation-le-csSup",
@@ -128,7 +148,11 @@
       "conditionally complete linear orders",
       "Set.range",
       "Mathlib Order.ConditionallyCompleteLattice"
-    ]
+    ],
+    "range": {
+      "startLine": 185,
+      "endLine": 204
+    }
   },
   {
     "id": "annotation-clipping",
@@ -150,6 +174,10 @@
       "function composition",
       "ordinal comparison",
       "conditional expression in Lean 4"
-    ]
+    ],
+    "range": {
+      "startLine": 205,
+      "endLine": 224
+    }
   }
 ]

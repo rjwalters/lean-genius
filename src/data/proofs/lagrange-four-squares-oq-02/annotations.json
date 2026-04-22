@@ -17,7 +17,12 @@
       "Sign factor 2^k: k nonzero entries each contribute ±1",
       "Sorted representation: a₁ ≤ a₂ ≤ a₃ ≤ a₄ gives canonical form"
     ],
-    "content": "The RepType structure is the key abstraction: it separates the combinatorial type (equality/zero pattern) from the specific values. This makes it possible to prove general theorems ('for all k > 0, trivialType k has contribution 8') rather than only specific instances. The sorted constraint ensures canonical representation — each unordered set of four squares corresponds to exactly one sorted RepType."
+    "content": "The RepType structure is the key abstraction: it separates the combinatorial type (equality/zero pattern) from the specific values. This makes it possible to prove general theorems ('for all k > 0, trivialType k has contribution 8') rather than only specific instances. The sorted constraint ensures canonical representation — each unordered set of four squares corresponds to exactly one sorted RepType.",
+    "proofId": "lagrange-four-squares-oq-02",
+    "range": {
+      "startLine": 51,
+      "endLine": 81
+    }
   },
   {
     "id": "annotation-general-type-proof-technique",
@@ -37,7 +42,12 @@
       "List.count: count occurrences of an element",
       "congr 1: reduce goal to subgoal about argument equality"
     ],
-    "content": "This proof technique — native_decide for a canonical instance + congr/simp for the parametric equality — avoids induction on k and works because permutations depend only on the equality pattern (which values are equal to which), not the actual values. The key insight: [0,0,0,k].dedup for k≠0 always gives a list with count structure [3,1], regardless of k. This is the formal version of 'the orbit size depends only on the symmetry type, not the representative'."
+    "content": "This proof technique — native_decide for a canonical instance + congr/simp for the parametric equality — avoids induction on k and works because permutations depend only on the equality pattern (which values are equal to which), not the actual values. The key insight: [0,0,0,k].dedup for k≠0 always gives a list with count structure [3,1], regardless of k. This is the formal version of 'the orbit size depends only on the symmetry type, not the representative'.",
+    "proofId": "lagrange-four-squares-oq-02",
+    "range": {
+      "startLine": 188,
+      "endLine": 230
+    }
   },
   {
     "id": "annotation-contribution-table",
@@ -57,7 +67,12 @@
       "Multinomial coefficient for permutations of multisets",
       "Orbit-stabilizer: |orbit| = |G|/|Stab| = 384/|Stab|"
     ],
-    "content": "This table is the combinatorial heart of Jacobi's formula. The 10 contribution values partition the $r_4(n)$ count across all sorted types of $n$. The fact that all values are divisors of 384 reflects the orbit-stabilizer theorem: each orbit size divides $|G| = 384$. The table was verified computationally by checking specific instances by `native_decide` and then using the general type theorems for universality."
+    "content": "This table is the combinatorial heart of Jacobi's formula. The 10 contribution values partition the $r_4(n)$ count across all sorted types of $n$. The fact that all values are divisors of 384 reflects the orbit-stabilizer theorem: each orbit size divides $|G| = 384$. The table was verified computationally by checking specific instances by `native_decide` and then using the general type theorems for universality.",
+    "proofId": "lagrange-four-squares-oq-02",
+    "range": {
+      "startLine": 543,
+      "endLine": 588
+    }
   },
   {
     "id": "annotation-enum-types-decidable",
@@ -77,13 +92,18 @@
       "guard: filter in list monad (guard p returns [] or [()])",
       "List.range: generates [0, 1, ..., n-1]"
     ],
-    "content": "The decidable enumeration makes the type classification algorithmic: for any concrete n, one can compute all sorted types and their contributions mechanically. This provides a checkable bridge between the abstract combinatorial theory and specific numerical values of r₄(n). The list monad notation makes the nested-loop enumeration concise and idiomatic in Lean 4."
+    "content": "The decidable enumeration makes the type classification algorithmic: for any concrete n, one can compute all sorted types and their contributions mechanically. This provides a checkable bridge between the abstract combinatorial theory and specific numerical values of r₄(n). The list monad notation makes the nested-loop enumeration concise and idiomatic in Lean 4.",
+    "proofId": "lagrange-four-squares-oq-02",
+    "range": {
+      "startLine": 88,
+      "endLine": 115
+    }
   },
   {
     "id": "annotation-orbit-stabilizer",
     "lineStart": 595,
     "lineEnd": 616,
-    "type": "key-theorem",
+    "type": "concept",
     "mathContext": "The orbit-stabilizer theorems prove `384 / (trivialType k).contribution = 48` (for $k > 0$), `384 / (allEqualType k).contribution = 24`, etc. The stabilizer sizes correspond to the subgroup of $S_4 \\times (\\mathbb{Z}/2)^4$ fixing the sorted type: trivial $(0,0,0,k)$: $S_3 \\times (\\mathbb{Z}/2)^3$ fixes (permutes the three zeros, flips the zero signs) = $6 \\times 8 = 48$; all-equal $(k,k,k,k)$: $S_4$ fixes (any permutation), sign flips of nonzero entries are NOT stabilizers = $24$; all-distinct nonzero: only identity = $1$, orbit $= 384$. `stabilizer_product_trivial: 48 = 3! × 2^3` and `stabilizer_product_allEqual: 24 = 4!` formalize these group-theoretic decompositions.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -97,6 +117,11 @@
       "S₄ action on 4-tuples: permutation group",
       "(ℤ/2)⁴ action on 4-tuples: independent sign flips"
     ],
-    "content": "These theorems connect the number-theoretic orbit computation (contribution = permutations × sign_factor) to the group-theoretic stabilizer formula (|orbit| = |G|/|Stab|). This is a formal verification that the combinatorial formula for contributions is consistent with the abstract orbit-stabilizer theorem. The stabilizer sizes 48, 24, 12, 4, 16, 8 for the six type families are all proved to equal 384 divided by the respective contributions."
+    "content": "These theorems connect the number-theoretic orbit computation (contribution = permutations × sign_factor) to the group-theoretic stabilizer formula (|orbit| = |G|/|Stab|). This is a formal verification that the combinatorial formula for contributions is consistent with the abstract orbit-stabilizer theorem. The stabilizer sizes 48, 24, 12, 4, 16, 8 for the six type families are all proved to equal 384 divided by the respective contributions.",
+    "proofId": "lagrange-four-squares-oq-02",
+    "range": {
+      "startLine": 595,
+      "endLine": 616
+    }
   }
 ]

@@ -15,7 +15,11 @@
     "prerequisites": [
       "Lean 4 basics",
       "Mathlib library"
-    ]
+    ],
+    "range": {
+      "startLine": 34,
+      "endLine": 36
+    }
   },
   {
     "id": "ann-1004-phi-def",
@@ -34,7 +38,11 @@
     "prerequisites": [
       "coprimality",
       "prime factorization"
-    ]
+    ],
+    "range": {
+      "startLine": 34,
+      "endLine": 36
+    }
   },
   {
     "id": "ann-1004-phi-prime",
@@ -51,7 +59,11 @@
     "prerequisites": [
       "prime definition",
       "coprimality with primes"
-    ]
+    ],
+    "range": {
+      "startLine": 40,
+      "endLine": 43
+    }
   },
   {
     "id": "ann-1004-phi-bounds",
@@ -68,7 +80,11 @@
     "prerequisites": [
       "totient definition",
       "coprimality"
-    ]
+    ],
+    "range": {
+      "startLine": 34,
+      "endLine": 36
+    }
   },
   {
     "id": "ann-1004-distinct-run",
@@ -86,7 +102,11 @@
     "prerequisites": [
       "function injectivity",
       "universal quantification"
-    ]
+    ],
+    "range": {
+      "startLine": 64,
+      "endLine": 67
+    }
   },
   {
     "id": "ann-1004-max-length",
@@ -104,7 +124,11 @@
     "prerequisites": [
       "sSup in natural numbers",
       "existential witnesses"
-    ]
+    ],
+    "range": {
+      "startLine": 98,
+      "endLine": 101
+    }
   },
   {
     "id": "ann-1004-eps87",
@@ -124,7 +148,11 @@
       "analytic number theory",
       "exponential estimates",
       "Filter.Tendsto"
-    ]
+    ],
+    "range": {
+      "startLine": 124,
+      "endLine": 126
+    }
   },
   {
     "id": "ann-1004-conjecture",
@@ -143,7 +171,11 @@
       "real analysis",
       "floor function",
       "Filter.atTop"
-    ]
+    ],
+    "range": {
+      "startLine": 212,
+      "endLine": 223
+    }
   },
   {
     "id": "ann-1004-examples",
@@ -160,7 +192,11 @@
     "prerequisites": [
       "totient computation",
       "decidable equality"
-    ]
+    ],
+    "range": {
+      "startLine": 64,
+      "endLine": 67
+    }
   },
   {
     "id": "ann-1004-collisions",
@@ -178,7 +214,11 @@
     "prerequisites": [
       "totient computation",
       "proof by contradiction"
-    ]
+    ],
+    "range": {
+      "startLine": 264,
+      "endLine": 272
+    }
   },
   {
     "id": "ann-1004-divisor",
@@ -196,7 +236,11 @@
     "prerequisites": [
       "divisor counting",
       "Finset.divisors"
-    ]
+    ],
+    "range": {
+      "startLine": 276,
+      "endLine": 280
+    }
   },
   {
     "id": "ann-1004-birthday",
@@ -214,7 +258,11 @@
     "prerequisites": [
       "probability heuristics",
       "asymptotic analysis"
-    ]
+    ],
+    "range": {
+      "startLine": 296,
+      "endLine": 302
+    }
   },
   {
     "id": "ann-1004-special",
@@ -232,6 +280,10 @@
     "prerequisites": [
       "totient computation",
       "finite enumeration"
-    ]
+    ],
+    "range": {
+      "startLine": 64,
+      "endLine": 67
+    }
   }
 ]

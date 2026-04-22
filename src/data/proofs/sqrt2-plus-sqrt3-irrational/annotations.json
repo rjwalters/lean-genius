@@ -17,7 +17,12 @@
       "IsSquare n: ∃ k, n = k * k (for natural n)",
       "irrational_sqrt_natCast_iff: Irrational √n ↔ ¬IsSquare n"
     ],
-    "content": "irrational_sqrt_natCast_iff is the key bridge between computational primality/squareness and analytical irrationality. The decidability of IsSquare for natural numbers (it suffices to check k ≤ √n) makes native_decide applicable. This pattern — verify a finite condition computationally to prove an analytic property — is characteristic of Lean 4 irrationality proofs."
+    "content": "irrational_sqrt_natCast_iff is the key bridge between computational primality/squareness and analytical irrationality. The decidability of IsSquare for natural numbers (it suffices to check k ≤ √n) makes native_decide applicable. This pattern — verify a finite condition computationally to prove an analytic property — is characteristic of Lean 4 irrationality proofs.",
+    "proofId": "sqrt2-plus-sqrt3-irrational",
+    "range": {
+      "startLine": 19,
+      "endLine": 22
+    }
   },
   {
     "id": "annotation-sqrt-mul-identity",
@@ -37,13 +42,18 @@
       "Real.sq_sqrt: √a² = a requires a ≥ 0",
       "ring_nf: expand and normalize polynomial/ring expressions"
     ],
-    "content": "The proof demonstrates the standard Lean 4 approach to sqrt algebra: ring_nf handles polynomial expansion, but sqrt-specific facts (sq_sqrt and sqrt_mul) require explicit rewrites. The non-negativity hypotheses (h2, h3) are required by Lean's Real.sqrt definition (which returns 0 for negative arguments), even though they are obviously true here. This is a common pattern in Lean 4: obvious conditions still need to be spelled out for sqrt rewrites."
+    "content": "The proof demonstrates the standard Lean 4 approach to sqrt algebra: ring_nf handles polynomial expansion, but sqrt-specific facts (sq_sqrt and sqrt_mul) require explicit rewrites. The non-negativity hypotheses (h2, h3) are required by Lean's Real.sqrt definition (which returns 0 for negative arguments), even though they are obviously true here. This is a common pattern in Lean 4: obvious conditions still need to be spelled out for sqrt rewrites.",
+    "proofId": "sqrt2-plus-sqrt3-irrational",
+    "range": {
+      "startLine": 24,
+      "endLine": 35
+    }
   },
   {
     "id": "annotation-main-proof-structure",
     "lineStart": 36,
     "lineEnd": 53,
-    "type": "key-theorem",
+    "type": "concept",
     "mathContext": "The main proof `irrational_sqrt2_plus_sqrt3 : Irrational (sqrt 2 + sqrt 3)` unfolds `Irrational` and takes `intro ⟨r, hr⟩` to get `r : ℚ` and `hr : (r : ℝ) = sqrt 2 + sqrt 3`. The chain: `rw [hr, sqrt2_plus_sqrt3_sq]` gives `hsq : (r:ℝ)^2 = 5 + 2*sqrt 6`; `linarith` gives `h6 : sqrt 6 = ((r:ℝ)^2 - 5)/2`; construct `q : ℚ` as `(r^2 - 5)/2` with `simp [Rat.cast_div, Rat.cast_sub, Rat.cast_pow, Rat.cast_natCast]` to align the cast; `exact irrational_sqrt_six ⟨q, ...⟩` closes by contradiction.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -57,7 +67,12 @@
       "Rat.cast_pow: (↑(r^n) : ℝ) = (↑r)^n",
       "intro ⟨r, hr⟩: destructs ∃ r : ℚ, (r:ℝ) = x into witnesses"
     ],
-    "content": "The proof is an elegant three-step reduction: (1) if √2+√3=r∈ℚ then (2) √6=(r²-5)/2∈ℚ then (3) contradiction with irrational_sqrt_six. The cast arithmetic (Rat.cast_div, etc.) is the most technical part — converting between ℚ-level arithmetic and ℝ-level arithmetic requires explicit cast lemmas. In modern Lean 4 with norm_cast or push_cast, this can often be automated."
+    "content": "The proof is an elegant three-step reduction: (1) if √2+√3=r∈ℚ then (2) √6=(r²-5)/2∈ℚ then (3) contradiction with irrational_sqrt_six. The cast arithmetic (Rat.cast_div, etc.) is the most technical part — converting between ℚ-level arithmetic and ℝ-level arithmetic requires explicit cast lemmas. In modern Lean 4 with norm_cast or push_cast, this can often be automated.",
+    "proofId": "sqrt2-plus-sqrt3-irrational",
+    "range": {
+      "startLine": 36,
+      "endLine": 53
+    }
   },
   {
     "id": "annotation-squaring-trick-generalization",
@@ -77,7 +92,12 @@
       "Squarefree n: n = 1 or n is not divisible by any perfect square > 1",
       "Linear independence of {1, √a₁, ..., √aₙ} over ℚ (Besicovitch)"
     ],
-    "content": "The generalization shows that the file's approach is essentially tight: the reduction to √6 is not just a convenient trick but a necessary consequence. If √6 were rational, then since √2 is irrational, we couldn't have √2+√3=r. The proof can be extended: for distinct squarefree integers a,b, √a+√b is always irrational (since √(ab) is irrational when ab is squarefree)."
+    "content": "The generalization shows that the file's approach is essentially tight: the reduction to √6 is not just a convenient trick but a necessary consequence. If √6 were rational, then since √2 is irrational, we couldn't have √2+√3=r. The proof can be extended: for distinct squarefree integers a,b, √a+√b is always irrational (since √(ab) is irrational when ab is squarefree).",
+    "proofId": "sqrt2-plus-sqrt3-irrational",
+    "range": {
+      "startLine": 36,
+      "endLine": 53
+    }
   },
   {
     "id": "annotation-minimal-polynomial",
@@ -97,6 +117,11 @@
       "Rational root theorem: rational roots of monic integer poly are ±divisors of constant term",
       "[ℚ(α):ℚ] = deg(min_poly(α))"
     ],
-    "content": "The minimal polynomial perspective gives a stronger result: not only is √2+√3 irrational, but it generates a degree-4 extension of ℚ. The file's squaring trick essentially derives the key relation α²-5=2√6 → (α²-5)²=24, which is exactly computing the minimal polynomial. Formalizing the full irreducibility argument would require polynomial arithmetic over ℚ and the rational root theorem."
+    "content": "The minimal polynomial perspective gives a stronger result: not only is √2+√3 irrational, but it generates a degree-4 extension of ℚ. The file's squaring trick essentially derives the key relation α²-5=2√6 → (α²-5)²=24, which is exactly computing the minimal polynomial. Formalizing the full irreducibility argument would require polynomial arithmetic over ℚ and the rational root theorem.",
+    "proofId": "sqrt2-plus-sqrt3-irrational",
+    "range": {
+      "startLine": 24,
+      "endLine": 35
+    }
   }
 ]

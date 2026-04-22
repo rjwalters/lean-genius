@@ -18,7 +18,11 @@
       "finset-fold",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [],
+    "range": {
+      "startLine": 40,
+      "endLine": 95
+    }
   },
   {
     "id": "ann-e678-interval-lcm-alt",
@@ -37,7 +41,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [],
+    "range": {
+      "startLine": 40,
+      "endLine": 95
+    }
   },
   {
     "id": "ann-e678-zero-one",
@@ -56,7 +64,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [],
+    "range": {
+      "startLine": 40,
+      "endLine": 95
+    }
   },
   {
     "id": "ann-e678-monotonicity",
@@ -80,7 +92,11 @@
       "lcm",
       "monotonicity",
       "finset-extension"
-    ]
+    ],
+    "range": {
+      "startLine": 97,
+      "endLine": 128
+    }
   },
   {
     "id": "ann-e678-comparison-def",
@@ -100,7 +116,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [],
+    "range": {
+      "startLine": 97,
+      "endLine": 128
+    }
   },
   {
     "id": "ann-e678-selfridge-1",
@@ -120,7 +140,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [],
+    "range": {
+      "startLine": 97,
+      "endLine": 128
+    }
   },
   {
     "id": "ann-e678-selfridge-2",
@@ -139,7 +163,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [],
+    "range": {
+      "startLine": 129,
+      "endLine": 167
+    }
   },
   {
     "id": "ann-e678-computed-values",
@@ -159,7 +187,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [],
+    "range": {
+      "startLine": 129,
+      "endLine": 167
+    }
   },
   {
     "id": "ann-e678-infinitely-many",
@@ -183,7 +215,11 @@
       "erdos-problem",
       "lcm",
       "existential-quantifier"
-    ]
+    ],
+    "range": {
+      "startLine": 129,
+      "endLine": 167
+    }
   },
   {
     "id": "ann-e678-cambie",
@@ -203,7 +239,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [],
+    "range": {
+      "startLine": 169,
+      "endLine": 187
+    }
   },
   {
     "id": "ann-e678-prime-power",
@@ -223,7 +263,11 @@
       "number-theory"
     ],
     "mathContext": "See annotation content for formal details of prime power divisibility",
-    "prerequisites": []
+    "prerequisites": [],
+    "range": {
+      "startLine": 169,
+      "endLine": 187
+    }
   },
   {
     "id": "ann-e678-skip",
@@ -243,7 +287,11 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [],
+    "range": {
+      "startLine": 169,
+      "endLine": 187
+    }
   },
   {
     "id": "ann-e678-growth",
@@ -262,7 +310,11 @@
       "prime-number-theorem"
     ],
     "mathContext": "See annotation content for formal details of lcm growth bounds",
-    "prerequisites": []
+    "prerequisites": [],
+    "range": {
+      "startLine": 126,
+      "endLine": 187
+    }
   },
   {
     "id": "ann-e678-minimal-n",
@@ -282,7 +334,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [],
+    "range": {
+      "startLine": 126,
+      "endLine": 187
+    }
   },
   {
     "id": "ann-e678-final",
@@ -306,6 +362,10 @@
       "constructive-witness",
       "erdos-problem",
       "lcm"
-    ]
+    ],
+    "range": {
+      "startLine": 126,
+      "endLine": 187
+    }
   }
 ]

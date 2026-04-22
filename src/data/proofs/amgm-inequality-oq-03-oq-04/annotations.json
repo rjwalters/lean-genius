@@ -51,7 +51,7 @@
       "startLine": 77,
       "endLine": 90
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Key Algebraic Identity: Σ pᵢ·pᵢ^(α-1) = Σ pᵢ^α",
     "content": "The private lemma `mul_rpow_pred` proves x·x^(α-1) = x^α for x > 0 by rewriting x = x^1 and applying `Real.rpow_add` to get x^1 · x^(α-1) = x^(1+(α-1)) = x^α.\n\nThe theorem `renyi_sum_eq_powerMean_sum` lifts this pointwise identity to Finset sums via `Finset.sum_congr`. This is the algebraic bridge between the selfPowerMean sum (Σ pᵢ·pᵢ^(α-1)) and the renyiEntropy sum (Σ pᵢ^α).",
     "mathContext": "$x \\cdot x^{\\alpha-1} = x^{1+(\\alpha-1)} = x^\\alpha$ by `Real.rpow_add` (valid for $x > 0$). This requires positivity — the identity fails for $x = 0$ when $\\alpha - 1 < 0$.",
@@ -163,7 +163,7 @@
       "startLine": 210,
       "endLine": 232
     },
-    "type": "corollary",
+    "type": "concept",
     "title": "Collision Entropy: H_2(p) = −log(Σ pᵢ²)",
     "content": "Two corollaries apply the main identity to α = 2:\n\n`renyi_two_eq_neg_log_collision`: H_2(p) = −log(Σ pᵢ²). The sum Σ pᵢ² is the collision probability — the probability that two independent samples from p agree. So H_2 measures the log-information content of collision events.\n\n`renyi_two_eq_neg_log_self_mean`: H_2(p) = −log(M_1(p,p)) — the negative log of the arithmetic self-mean. This follows directly from `renyi_eq_neg_log_powerMean` with α = 2.",
     "mathContext": "At $\\alpha = 2$: $H_2(p) = \\frac{1}{1-2}\\log\\sum p_i^2 = -\\log\\sum p_i^2$. Since $M_{2-1}(p,p) = M_1(p,p) = \\sum_i p_i \\cdot p_i^1 = \\sum_i p_i^2$ (arithmetic self-mean), we get $H_2 = -\\log M_1(p,p)$.",

@@ -154,7 +154,7 @@
       "startLine": 157,
       "endLine": 169
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Reduction to Primes",
     "content": "If FLT holds for exponent $n$, it holds for all multiples of $n$. Why? If $a^{nm} + b^{nm} = c^{nm}$, then $(a^m)^n + (b^m)^n = (c^m)^n$, contradicting FLT for $n$.",
     "mathContext": "This means we only need to prove FLT for n=4 and all odd primes. Since every n ≥ 3 is divisible by 4 or an odd prime, this covers everything.",

@@ -53,7 +53,7 @@
       "startLine": 73,
       "endLine": 75
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Monic Polynomial Ratio Tends to 1",
     "content": "monic_poly_ratio_tendsto is the single remaining axiom: for any monic polynomial p of degree d ≥ 1 over ℚ, the ratio p(n)/n^d converges to 1 as n → ∞. The comment describes the proof strategy: write p = X^d + q with deg(q) < d, so p(n)/n^d = 1 + q(n)/n^d. Each term of q(n)/n^d has the form c/n^m with m ≥ 1, which tends to 0. The obstacle to proving this in Lean is the need to manipulate polynomial evaluation of lower-degree terms in the filter limit API — a nontrivial analytic argument not currently automated in Mathlib.",
     "mathContext": "$$\\frac{p(n)}{n^d} \\xrightarrow{n\\to\\infty} 1 \\quad \\text{for monic } p \\text{ of degree } d \\geq 1$$ since $p(n) = n^d + a_{d-1}n^{d-1} + \\cdots + a_0 = n^d\\left(1 + \\frac{a_{d-1}}{n} + \\cdots + \\frac{a_0}{n^d}\\right) \\to n^d \\cdot 1$.",

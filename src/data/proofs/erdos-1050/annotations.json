@@ -16,7 +16,11 @@
     "prerequisites": [
       "convergence of geometric series",
       "irrationality criterion"
-    ]
+    ],
+    "range": {
+      "startLine": 26,
+      "endLine": 45
+    }
   },
   {
     "id": "ann-1050-T-def",
@@ -34,7 +38,11 @@
     "prerequisites": [
       "definition of infinite series",
       "absolute convergence"
-    ]
+    ],
+    "range": {
+      "startLine": 33,
+      "endLine": 36
+    }
   },
   {
     "id": "ann-1050-S-def",
@@ -50,7 +58,11 @@
     ],
     "prerequisites": [
       "T(q,r) series definition"
-    ]
+    ],
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    }
   },
   {
     "id": "ann-1050-alt",
@@ -66,7 +78,11 @@
     ],
     "prerequisites": [
       "Mathlib tsum definition"
-    ]
+    ],
+    "range": {
+      "startLine": 26,
+      "endLine": 45
+    }
   },
   {
     "id": "ann-1050-summable",
@@ -84,7 +100,11 @@
     "prerequisites": [
       "geometric series formula",
       "absolute convergence criterion"
-    ]
+    ],
+    "range": {
+      "startLine": 47,
+      "endLine": 69
+    }
   },
   {
     "id": "ann-1050-S-summable",
@@ -101,7 +121,11 @@
     "prerequisites": [
       "T_summable",
       "3 is not a power of 2"
-    ]
+    ],
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    }
   },
   {
     "id": "ann-1050-denom",
@@ -117,7 +141,11 @@
     ],
     "prerequisites": [
       "basic properties of powers of 2"
-    ]
+    ],
+    "range": {
+      "startLine": 47,
+      "endLine": 69
+    }
   },
   {
     "id": "ann-1050-first",
@@ -133,7 +161,11 @@
     ],
     "prerequisites": [
       "arithmetic of powers of 2"
-    ]
+    ],
+    "range": {
+      "startLine": 136,
+      "endLine": 145
+    }
   },
   {
     "id": "ann-1050-term1",
@@ -146,7 +178,11 @@
     "relatedConcepts": [
       "denominator sign analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [],
+    "range": {
+      "startLine": 146,
+      "endLine": 148
+    }
   },
   {
     "id": "ann-1050-term2",
@@ -160,7 +196,11 @@
       "telescoping",
       "exact cancellation"
     ],
-    "prerequisites": []
+    "prerequisites": [],
+    "range": {
+      "startLine": 149,
+      "endLine": 151
+    }
   },
   {
     "id": "ann-1050-term3",
@@ -173,7 +213,11 @@
     "relatedConcepts": [
       "monotone decreasing terms"
     ],
-    "prerequisites": []
+    "prerequisites": [],
+    "range": {
+      "startLine": 152,
+      "endLine": 154
+    }
   },
   {
     "id": "ann-1050-first-terms",
@@ -189,7 +233,11 @@
     ],
     "prerequisites": [
       "term computations term_1 through term_3"
-    ]
+    ],
+    "range": {
+      "startLine": 98,
+      "endLine": 139
+    }
   },
   {
     "id": "ann-1050-borwein",
@@ -208,7 +256,11 @@
     "prerequisites": [
       "convergence of T(q,r)",
       "rational approximation theory"
-    ]
+    ],
+    "range": {
+      "startLine": 98,
+      "endLine": 139
+    }
   },
   {
     "id": "ann-1050-S-irr",
@@ -226,7 +278,11 @@
       "borwein_irrationality",
       "S_summable",
       "3 is not a power of 2"
-    ]
+    ],
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    }
   },
   {
     "id": "ann-1050-2n-1",
@@ -244,7 +300,11 @@
     "prerequisites": [
       "borwein_irrationality",
       "1 is not a power of 2"
-    ]
+    ],
+    "range": {
+      "startLine": 141,
+      "endLine": 205
+    }
   },
   {
     "id": "ann-1050-2n+1",
@@ -260,7 +320,11 @@
     ],
     "prerequisites": [
       "borwein_irrationality"
-    ]
+    ],
+    "range": {
+      "startLine": 141,
+      "endLine": 205
+    }
   },
   {
     "id": "ann-1050-3n-1",
@@ -276,7 +340,11 @@
     ],
     "prerequisites": [
       "borwein_irrationality"
-    ]
+    ],
+    "range": {
+      "startLine": 141,
+      "endLine": 205
+    }
   },
   {
     "id": "ann-1050-general",
@@ -293,7 +361,11 @@
     "prerequisites": [
       "borwein_irrationality",
       "T_summable"
-    ]
+    ],
+    "range": {
+      "startLine": 141,
+      "endLine": 205
+    }
   },
   {
     "id": "ann-1050-trans-conj",
@@ -312,7 +384,11 @@
     "prerequisites": [
       "definition of transcendental number",
       "Borwein's irrationality result"
-    ]
+    ],
+    "range": {
+      "startLine": 207,
+      "endLine": 236
+    }
   },
   {
     "id": "ann-1050-gen-trans",
@@ -329,7 +405,11 @@
     ],
     "prerequisites": [
       "definition of transcendental number"
-    ]
+    ],
+    "range": {
+      "startLine": 207,
+      "endLine": 236
+    }
   },
   {
     "id": "ann-1050-trans-implies",
@@ -345,7 +425,11 @@
     ],
     "prerequisites": [
       "definition of transcendental and irrational"
-    ]
+    ],
+    "range": {
+      "startLine": 336,
+      "endLine": 353
+    }
   },
   {
     "id": "ann-1050-status",
@@ -358,7 +442,11 @@
     "relatedConcepts": [
       "open problems in transcendence theory"
     ],
-    "prerequisites": []
+    "prerequisites": [],
+    "range": {
+      "startLine": 237,
+      "endLine": 257
+    }
   },
   {
     "id": "ann-1050-S1049",
@@ -375,7 +463,11 @@
     "prerequisites": [
       "T(q,r) definition",
       "Problem #1049 series"
-    ]
+    ],
+    "range": {
+      "startLine": 237,
+      "endLine": 257
+    }
   },
   {
     "id": "ann-1050-T-eq-S1049",
@@ -392,7 +484,11 @@
     "prerequisites": [
       "T(q,r) definition",
       "S_1049 definition"
-    ]
+    ],
+    "range": {
+      "startLine": 237,
+      "endLine": 257
+    }
   },
   {
     "id": "ann-1050-related",
@@ -408,7 +504,11 @@
     "prerequisites": [
       "borwein_irrationality",
       "T_eq_S_1049"
-    ]
+    ],
+    "range": {
+      "startLine": 377,
+      "endLine": 391
+    }
   },
   {
     "id": "ann-1050-approx",
@@ -425,7 +525,11 @@
     "prerequisites": [
       "S_summable",
       "first terms computation"
-    ]
+    ],
+    "range": {
+      "startLine": 258,
+      "endLine": 283
+    }
   },
   {
     "id": "ann-1050-positive",
@@ -441,7 +545,11 @@
     ],
     "prerequisites": [
       "S_first_terms"
-    ]
+    ],
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    }
   },
   {
     "id": "ann-1050-lt-one",
@@ -458,7 +566,11 @@
     "prerequisites": [
       "S_positive",
       "comparison with geometric series"
-    ]
+    ],
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    }
   },
   {
     "id": "ann-1050-partial",
@@ -475,7 +587,11 @@
     ],
     "prerequisites": [
       "S_summable"
-    ]
+    ],
+    "range": {
+      "startLine": 284,
+      "endLine": 303
+    }
   },
   {
     "id": "ann-1050-oeis",
@@ -490,7 +606,11 @@
       "Mersenne numbers",
       "shifted exponential sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [],
+    "range": {
+      "startLine": 284,
+      "endLine": 303
+    }
   },
   {
     "id": "ann-1050-denom-seq",
@@ -505,7 +625,11 @@
     ],
     "prerequisites": [
       "oeis_A331372 definition"
-    ]
+    ],
+    "range": {
+      "startLine": 284,
+      "endLine": 303
+    }
   },
   {
     "id": "ann-1050-growth",
@@ -522,7 +646,11 @@
     ],
     "prerequisites": [
       "basic properties of 2^n"
-    ]
+    ],
+    "range": {
+      "startLine": 284,
+      "endLine": 303
+    }
   },
   {
     "id": "ann-1050-main",
@@ -539,7 +667,11 @@
     "prerequisites": [
       "S_irrational",
       "borwein_irrationality"
-    ]
+    ],
+    "range": {
+      "startLine": 305,
+      "endLine": 340
+    }
   },
   {
     "id": "ann-1050-answer",
@@ -554,7 +686,11 @@
     ],
     "prerequisites": [
       "erdos_1050"
-    ]
+    ],
+    "range": {
+      "startLine": 305,
+      "endLine": 340
+    }
   },
   {
     "id": "ann-1050-borwein-thm",
@@ -570,6 +706,10 @@
     ],
     "prerequisites": [
       "borwein_irrationality"
-    ]
+    ],
+    "range": {
+      "startLine": 305,
+      "endLine": 340
+    }
   }
 ]

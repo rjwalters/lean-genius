@@ -17,7 +17,11 @@
       "convex hull",
       "extreme points",
       "Euclidean distance"
-    ]
+    ],
+    "range": {
+      "startLine": 39,
+      "endLine": 70
+    }
   },
   {
     "id": "ann-660-altman",
@@ -35,7 +39,11 @@
     "prerequisites": [
       "convex hull in 2D",
       "floor function"
-    ]
+    ],
+    "range": {
+      "startLine": 39,
+      "endLine": 70
+    }
   },
   {
     "id": "ann-660-context",
@@ -54,7 +62,11 @@
     "prerequisites": [
       "combinatorial geometry",
       "asymptotic notation"
-    ]
+    ],
+    "range": {
+      "startLine": 39,
+      "endLine": 70
+    }
   },
   {
     "id": "ann-660-point3d",
@@ -71,7 +83,11 @@
     ],
     "prerequisites": [
       "Mathlib.Analysis.InnerProductSpace"
-    ]
+    ],
+    "range": {
+      "startLine": 39,
+      "endLine": 70
+    }
   },
   {
     "id": "ann-660-dist",
@@ -89,7 +105,11 @@
     "prerequisites": [
       "dist function",
       "EuclideanSpace"
-    ]
+    ],
+    "range": {
+      "startLine": 65,
+      "endLine": 95
+    }
   },
   {
     "id": "ann-660-polyhedron",
@@ -109,7 +129,11 @@
       "convexity",
       "convex hull",
       "extreme point characterization"
-    ]
+    ],
+    "range": {
+      "startLine": 65,
+      "endLine": 95
+    }
   },
   {
     "id": "ann-660-pairwise",
@@ -127,7 +151,11 @@
     "prerequisites": [
       "Cartesian product",
       "image of finite set"
-    ]
+    ],
+    "range": {
+      "startLine": 65,
+      "endLine": 95
+    }
   },
   {
     "id": "ann-660-distinct",
@@ -145,7 +173,11 @@
     "prerequisites": [
       "distance set",
       "filtering"
-    ]
+    ],
+    "range": {
+      "startLine": 94,
+      "endLine": 130
+    }
   },
   {
     "id": "ann-660-altman-thm",
@@ -163,7 +195,11 @@
     "prerequisites": [
       "convex polygon definition",
       "floor function"
-    ]
+    ],
+    "range": {
+      "startLine": 94,
+      "endLine": 130
+    }
   },
   {
     "id": "ann-660-littleo",
@@ -181,7 +217,11 @@
     "prerequisites": [
       "limits",
       "epsilon-N definition"
-    ]
+    ],
+    "range": {
+      "startLine": 94,
+      "endLine": 130
+    }
   },
   {
     "id": "ann-660-conjecture",
@@ -200,7 +240,11 @@
       "convex polyhedron vertices",
       "little-o notation",
       "distinct distances"
-    ]
+    ],
+    "range": {
+      "startLine": 117,
+      "endLine": 160
+    }
   },
   {
     "id": "ann-660-trivial",
@@ -217,7 +261,11 @@
     ],
     "prerequisites": [
       "distance positivity"
-    ]
+    ],
+    "range": {
+      "startLine": 117,
+      "endLine": 124
+    }
   },
   {
     "id": "ann-660-tetrahedron",
@@ -235,7 +283,11 @@
     "prerequisites": [
       "regular tetrahedron",
       "edge-transitive"
-    ]
+    ],
+    "range": {
+      "startLine": 117,
+      "endLine": 160
+    }
   },
   {
     "id": "ann-660-cube",
@@ -254,7 +306,11 @@
     "prerequisites": [
       "Platonic solids",
       "Pythagorean theorem in 3D"
-    ]
+    ],
+    "range": {
+      "startLine": 160,
+      "endLine": 179
+    }
   },
   {
     "id": "ann-660-octahedron",
@@ -272,7 +328,11 @@
     "prerequisites": [
       "Platonic solids",
       "vertex coordinates"
-    ]
+    ],
+    "range": {
+      "startLine": 160,
+      "endLine": 179
+    }
   },
   {
     "id": "ann-660-guthkatz",
@@ -290,6 +350,10 @@
     "prerequisites": [
       "distinct distances problem",
       "polynomial method"
-    ]
+    ],
+    "range": {
+      "startLine": 160,
+      "endLine": 179
+    }
   }
 ]

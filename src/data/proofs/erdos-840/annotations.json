@@ -17,7 +17,11 @@
       "Sidon sets",
       "sumsets",
       "little-o notation"
-    ]
+    ],
+    "range": {
+      "startLine": 227,
+      "endLine": 237
+    }
   },
   {
     "id": "ann-840-sumset",
@@ -36,7 +40,11 @@
     "prerequisites": [
       "Finset operations",
       "set addition"
-    ]
+    ],
+    "range": {
+      "startLine": 46,
+      "endLine": 50
+    }
   },
   {
     "id": "ann-840-sidon",
@@ -55,7 +63,11 @@
     "prerequisites": [
       "sumset",
       "pairwise sum distinctness"
-    ]
+    ],
+    "range": {
+      "startLine": 51,
+      "endLine": 59
+    }
   },
   {
     "id": "ann-840-quasi",
@@ -75,7 +87,11 @@
       "Sidon sets",
       "sumset",
       "asymptotic notation"
-    ]
+    ],
+    "range": {
+      "startLine": 89,
+      "endLine": 92
+    }
   },
   {
     "id": "ann-840-f-function",
@@ -93,7 +109,11 @@
     "prerequisites": [
       "quasi-Sidon definition",
       "interval set"
-    ]
+    ],
+    "range": {
+      "startLine": 89,
+      "endLine": 92
+    }
   },
   {
     "id": "ann-840-lower",
@@ -111,7 +131,11 @@
     "prerequisites": [
       "Sidon sets",
       "interval arithmetic"
-    ]
+    ],
+    "range": {
+      "startLine": 89,
+      "endLine": 92
+    }
   },
   {
     "id": "ann-840-construction",
@@ -129,7 +153,11 @@
     "prerequisites": [
       "Sidon set in interval",
       "sumset range"
-    ]
+    ],
+    "range": {
+      "startLine": 115,
+      "endLine": 121
+    }
   },
   {
     "id": "ann-840-upper-ef",
@@ -147,7 +175,11 @@
     "prerequisites": [
       "sumset in interval",
       "binomial bound"
-    ]
+    ],
+    "range": {
+      "startLine": 89,
+      "endLine": 92
+    }
   },
   {
     "id": "ann-840-pikhurko",
@@ -167,7 +199,11 @@
       "quasi-Sidon definition",
       "graph labeling",
       "Fourier methods"
-    ]
+    ],
+    "range": {
+      "startLine": 137,
+      "endLine": 144
+    }
   },
   {
     "id": "ann-840-constant",
@@ -185,7 +221,11 @@
     "prerequisites": [
       "Pikhurko's theorem",
       "trigonometric sums"
-    ]
+    ],
+    "range": {
+      "startLine": 108,
+      "endLine": 114
+    }
   },
   {
     "id": "ann-840-question",
@@ -203,7 +243,11 @@
     "prerequisites": [
       "f(N) definition",
       "known bounds"
-    ]
+    ],
+    "range": {
+      "startLine": 157,
+      "endLine": 165
+    }
   },
   {
     "id": "ann-840-diffset",
@@ -221,7 +265,11 @@
     "prerequisites": [
       "quasi-Sidon for differences",
       "A - A"
-    ]
+    ],
+    "range": {
+      "startLine": 166,
+      "endLine": 169
+    }
   },
   {
     "id": "ann-840-sidon-bound",
@@ -239,7 +287,11 @@
     "prerequisites": [
       "Sidon sets",
       "projective plane construction"
-    ]
+    ],
+    "range": {
+      "startLine": 102,
+      "endLine": 107
+    }
   },
   {
     "id": "ann-840-gap",
@@ -257,6 +309,10 @@
     "prerequisites": [
       "Erdős–Freud lower bound",
       "Pikhurko upper bound"
-    ]
+    ],
+    "range": {
+      "startLine": 207,
+      "endLine": 229
+    }
   }
 ]

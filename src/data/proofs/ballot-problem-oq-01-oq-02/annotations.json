@@ -5,7 +5,7 @@
       "start": 1,
       "end": 50
     },
-    "type": "overview",
+    "type": "concept",
     "title": "Multi-Candidate Ballot Problem: The Projection Reduction Strategy",
     "content": "The classical Bertrand ballot problem (1887, Mathlib Wiedijk #30) asks: if candidate A gets a votes and B gets b votes (a>b), the probability A leads throughout is (a-b)/(a+b). This file extends to m≥2 candidates via a projection argument: map multi-candidate sequences to ±1 sequences. The key insight: 'candidate 0 leads all opponents combined' depends only on the ±1 pattern, not on how opponent votes are distributed among specific candidates. Uniform fibers (equal number of multi-candidate preimages for each ±1 pattern) then preserve conditional probability, reducing to Mathlib's Ballot.ballot_problem.",
     "mathContext": "Let a be candidate 0's vote count and b = total opponent votes. For any ±1 sequence t with count(+1)=a and count(-1)=b, the set of multi-candidate sequences projecting to t has the same size: b!/(a₁!·...·aₘ₋₁!) (the multinomial coefficient for how opponent votes distribute). Since all fibers have equal size, uniformOn(multiCountedSequence)({stays positive}) = uniformOn(countedSequence a b)(staysPositive) = (a-b)/(a+b) by Ballot.ballot_problem.",
@@ -21,7 +21,8 @@
       "Classical ballot problem and the (a-b)/(a+b) formula",
       "Conditional probability via uniform distributions",
       "Mathlib: Archive.Wiedijk100Theorems.BallotProblem"
-    ]
+    ],
+    "proofId": "ballot-problem-oq-01-oq-02"
   },
   {
     "id": "ballot-oq02-projection",
@@ -45,7 +46,8 @@
       "DecidableEq for if-then-else on list elements",
       "List.map_take from Mathlib",
       "The ±1 convention in Ballot.countedSequence"
-    ]
+    ],
+    "proofId": "ballot-problem-oq-01-oq-02"
   },
   {
     "id": "ballot-oq02-prefix-sums",
@@ -70,7 +72,8 @@
       "project_take and project_sum_eq",
       "List.length_take_of_le",
       "push_cast for ℕ → ℤ coercions"
-    ]
+    ],
+    "proofId": "ballot-problem-oq-01-oq-02"
   },
   {
     "id": "ballot-oq02-invariance",
@@ -94,7 +97,8 @@
       "project_take and prefixSum definition",
       "List.map_map and congr for extensionality",
       "Fin m arithmetic"
-    ]
+    ],
+    "proofId": "ballot-problem-oq-01-oq-02"
   },
   {
     "id": "ballot-oq02-classical-bridge",
@@ -118,7 +122,8 @@
       "Ballot.countedSequence structure in Mathlib",
       "List.count induction proofs",
       "div_nonneg and div_le_one for ℚ bounds"
-    ]
+    ],
+    "proofId": "ballot-problem-oq-01-oq-02"
   },
   {
     "id": "ballot-oq02-fiber-analysis",
@@ -126,7 +131,7 @@
       "start": 314,
       "end": 504
     },
-    "type": "proof",
+    "type": "concept",
     "title": "Fiber Analysis and the Main Theorem",
     "content": "The projectionFiber of a ±1 target is the set of multi-candidate sequences projecting to it. fiber_same_length and fiber_same_leader_positions: sequences in the same fiber have the same length and agree on which positions have leader votes (proved by extracting from the projection). fiber_stays_iff_target: if s is in the fiber over target, then s ∈ multiStaysPositive ↔ target ∈ Ballot.staysPositive (proved by substituting project leader s = target). positive_fiber_dichotomy: each fiber is entirely inside or entirely outside multiStaysPositive. uniformOn_fiber_transfer (axiom): the uniform measure over multiCountedSequence transfers to countedSequence under projection. multi_candidate_ballot (main theorem): proved by applying the axiom then Ballot.ballot_problem.",
     "mathContext": "multiCountedSequence m hm a b := {s : FinSequence m | s.count (leader m hm) = a ∧ s.length = a + b}. multiStaysPositive := {s | project leader s ∈ Ballot.staysPositive}. positive_fiber_dichotomy: if target ∈ staysPositive, multiPositiveFiber = multiProjectionFiber; if target ∉ staysPositive, multiPositiveFiber = ∅. multi_candidate_ballot proof: rw [uniformOn_fiber_transfer]; exact Ballot.ballot_problem b a hab — a 2-line proof once the axiom is in place.",
@@ -143,7 +148,8 @@
       "fiber_stays_iff_target for the dichotomy",
       "uniformOn_fiber_transfer axiom",
       "Ballot.ballot_problem from Mathlib"
-    ]
+    ],
+    "proofId": "ballot-problem-oq-01-oq-02"
   },
   {
     "id": "ballot-oq02-fiber-bijection",
@@ -151,7 +157,7 @@
       "start": 506,
       "end": 758
     },
-    "type": "proof",
+    "type": "concept",
     "title": "Fiber Bijection: Eliminating the Fiber Cardinality Axiom",
     "content": "Part VIII-B constructs an explicit bijection between fibers. extractOpponents s target: extracts non-leader values from s at positions where target = -1. reconstructSeq target ops: rebuilds a sequence using leader at target=1 positions and consuming ops at target=-1 positions. fiberSwap t1 t2 s: extract opponents from s (using t1), then reconstruct using t2 pattern. Cancellation: reconstruct_extract_cancel (reconstruct ∘ extract = id on fibers), extract_reconstruct_cancel (extract ∘ reconstruct = id on opponent lists), fiberSwap_cancel (swap-swap = id when fiber members).",
     "mathContext": "extractOpponents s target := (s.zip target).filterMap (if ·.2 = -1 then some ·.1 else none). reconstructSeq t ops: case split on t head being 1 (emit leader, recur on ops) or -1 (consume ops head, recur). reconstruct_extract_cancel proved by induction on s, case splitting on x = leader or x ≠ leader, using project_cons to determine the target head. fiberSwap_cancel requires: extractOpponents_nonleader (ops are non-leader), extractOpponents_count (ops length = target.count(-1)), and matching -1 counts between t1 and t2.",
@@ -167,7 +173,8 @@
       "List.zip, List.filterMap",
       "Induction on lists with cons case splitting",
       "extractOpponents_cons_neg and extractOpponents_cons_one lemmas"
-    ]
+    ],
+    "proofId": "ballot-problem-oq-01-oq-02"
   },
   {
     "id": "ballot-oq02-fiber-cardinality",
@@ -191,7 +198,8 @@
       "Set.ncard and Set.Finite in Mathlib",
       "Set.ncard_le_ncard_of_injOn for bijection-based cardinality",
       "Set.finite_range for bounded function spaces"
-    ]
+    ],
+    "proofId": "ballot-problem-oq-01-oq-02"
   },
   {
     "id": "ballot-oq02-concrete-examples",
@@ -199,7 +207,7 @@
       "start": 879,
       "end": 906
     },
-    "type": "application",
+    "type": "concept",
     "title": "Concrete Examples and Reference to Classical Theorem",
     "content": "Four concrete verifications using norm_num: (1) 3 candidates with votes (3,1,1): P = (3-2)/(3+2) = 1/5; (2) 4 candidates with votes (5,2,1,1): P = (5-4)/(5+4) = 1/9; (3) Unanimous (5,0,0): P = 1; (4) Close race (4,3): P = 1/7. A reference to Ballot.ballot_problem (Wiedijk #30) is included via #check. These examples demonstrate the formula's universality: the number of candidates m doesn't affect the answer, only the total votes a and b matter.",
     "mathContext": "All examples are ℚ arithmetic: (3 - 2 : ℚ)/(3 + 2) = 1/5, etc., proved by norm_num. The reference #check @Ballot.ballot_problem shows the Mathlib type: uniformOn (countedSequence p q) staysPositive = (↑p - ↑q)/(↑p + ↑q). Note: the argument order in Ballot.ballot_problem is (b a hab) where hab : b < a, not (a b), which is why the proof has exact Ballot.ballot_problem b a hab.",
@@ -213,7 +221,8 @@
     "prerequisites": [
       "ℚ arithmetic (norm_num)",
       "Ballot.ballot_problem argument ordering (b a hab not a b hab)"
-    ]
+    ],
+    "proofId": "ballot-problem-oq-01-oq-02"
   },
   {
     "id": "ballot-oq02-open-problem",
@@ -221,7 +230,7 @@
       "start": 907,
       "end": 934
     },
-    "type": "connection",
+    "type": "concept",
     "title": "Open Challenge: Full Ordering via Lindström-Gessel-Viennot",
     "content": "The harder multi-candidate question: given m candidates with votes a₁ > a₂ > ... > aₘ, what is the probability that the ordering is maintained at EVERY step? This involves non-intersecting lattice paths and the Lindström-Gessel-Viennot (LGV) lemma. The answer is the determinant of pairwise ballot ratios: det||(aᵢ-aⱼ)/(aᵢ+aⱼ)||. The file defines pairwiseRatio and threeCandidateProduct (for 3 candidates) and verifies threeCandidateProduct 4 2 1 = 1/15 via norm_num.",
     "mathContext": "For the full ordering problem, the LGV lemma relates the probability of m non-intersecting lattice paths to a determinant of individual path probabilities. In the ballot context: each lattice path from (0,0) to (aᵢ+aⱼ, aᵢ-aⱼ) staying above the x-axis has probability (aᵢ-aⱼ)/(aᵢ+aⱼ). The determinant det||(aᵢ-aⱼ)/(aᵢ+aⱼ)||_{i,j} counts non-intersecting path configurations. threeCandidateProduct 4 2 1 = (2/6)·(1/3)·(3/5) = 1/15.",
@@ -237,6 +246,7 @@
       "LGV lemma (not yet in Mathlib)",
       "Lattice paths and ballot problems",
       "Determinant as counting non-intersecting paths"
-    ]
+    ],
+    "proofId": "ballot-problem-oq-01-oq-02"
   }
 ]

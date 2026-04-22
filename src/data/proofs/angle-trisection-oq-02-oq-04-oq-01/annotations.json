@@ -16,7 +16,12 @@
       "Mathlib.FieldTheory.IntermediateField.Basic",
       "Mathlib.LinearAlgebra.FiniteDimensional.Basic"
     ],
-    "content": "The inductive type QuadraticTower replaces the flawed alias with a mathematically precise definition. The distinction matters: a degree-2^n extension could be a degree-2^n Galois extension without being a tower of degree-2 steps (e.g., ℚ(ζ₈) has degree 4 but is not a tower of real quadratic extensions)."
+    "content": "The inductive type QuadraticTower replaces the flawed alias with a mathematically precise definition. The distinction matters: a degree-2^n extension could be a degree-2^n Galois extension without being a tower of degree-2 steps (e.g., ℚ(ζ₈) has degree 4 but is not a tower of real quadratic extensions).",
+    "proofId": "angle-trisection-oq-02-oq-04-oq-01",
+    "range": {
+      "startLine": 49,
+      "endLine": 71
+    }
   },
   {
     "startLine": 80,
@@ -34,7 +39,12 @@
       "tower law for field extensions",
       "Lean 4 dependent induction on inductive types"
     ],
-    "content": "This is one of three fully proved results in the file (no sorry). The proof demonstrates how Lean 4's dependent induction on `ht : QuadraticTower ℚ ℝ K n` mirrors the mathematical induction on the tower length, with the inductive step directly reflecting the tower law."
+    "content": "This is one of three fully proved results in the file (no sorry). The proof demonstrates how Lean 4's dependent induction on `ht : QuadraticTower ℚ ℝ K n` mirrors the mathematical induction on the tower length, with the inductive step directly reflecting the tower law.",
+    "proofId": "angle-trisection-oq-02-oq-04-oq-01",
+    "range": {
+      "startLine": 80,
+      "endLine": 81
+    }
   },
   {
     "startLine": 113,
@@ -54,7 +64,12 @@
       "IsPGroup from Mathlib",
       "Nat.card_eq_fintype_card"
     ],
-    "content": "This is the second key proved result (no sorry). The Sylow-based proof is more elementary than using the class equation directly, and the `Fact (Nat.Prime 2)` typeclass injection is a clean Lean 4 pattern for passing primality to Sylow theory."
+    "content": "This is the second key proved result (no sorry). The Sylow-based proof is more elementary than using the class equation directly, and the `Fact (Nat.Prime 2)` typeclass injection is a clean Lean 4 pattern for passing primality to Sylow theory.",
+    "proofId": "angle-trisection-oq-02-oq-04-oq-01",
+    "range": {
+      "startLine": 113,
+      "endLine": 115
+    }
   },
   {
     "startLine": 177,
@@ -74,7 +89,12 @@
       "Mathlib Galois theory",
       "IsGalois"
     ],
-    "content": "This sorry represents the main open gap: ~500 lines of Mathlib API glue are needed, not new mathematics. The feasibility assessment (Part 7 of the file) identifies three specific missing connections: Polynomial.Gal ↔ IntermediateField.fixingSubgroup, index-degree relation API, and iterative tower construction from induction on group order."
+    "content": "This sorry represents the main open gap: ~500 lines of Mathlib API glue are needed, not new mathematics. The feasibility assessment (Part 7 of the file) identifies three specific missing connections: Polynomial.Gal ↔ IntermediateField.fixingSubgroup, index-degree relation API, and iterative tower construction from induction on group order.",
+    "proofId": "angle-trisection-oq-02-oq-04-oq-01",
+    "range": {
+      "startLine": 177,
+      "endLine": 189
+    }
   },
   {
     "startLine": 222,
@@ -94,6 +114,11 @@
       "IsPGroup",
       "QuadraticTower definition"
     ],
-    "content": "The modular assembly of a theorem from two sorry-bearing sub-theorems is a valid Lean strategy for stating the full result while documenting what remains to prove. The #check commands at the end confirm the types typecheck correctly, providing confidence in the formalization's structure even before the sorries are filled."
+    "content": "The modular assembly of a theorem from two sorry-bearing sub-theorems is a valid Lean strategy for stating the full result while documenting what remains to prove. The #check commands at the end confirm the types typecheck correctly, providing confidence in the formalization's structure even before the sorries are filled.",
+    "proofId": "angle-trisection-oq-02-oq-04-oq-01",
+    "range": {
+      "startLine": 222,
+      "endLine": 230
+    }
   }
 ]

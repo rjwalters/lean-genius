@@ -100,7 +100,7 @@
       "startLine": 108,
       "endLine": 125
     },
-    "type": "warning",
+    "type": "concept",
     "title": "Axiom: Berry-Esseen Anticoncentration (Probabilistic Frontier)",
     "content": "`anticoncentration_bound` axiomatizes the Berry–Esseen step: if $A$ has distinct subset sums and $|A| > 0$, then $2^{|A|} \\leq \\sqrt{2/\\pi} \\cdot (\\sum A + 1) \\cdot 2 / \\sqrt{\\sum a^2}$. This is the only `axiom` declaration in the file and represents the current frontier of Lean formalization. The Berry–Esseen theorem for sums of bounded independent random variables gives a quantitative normal approximation; the anticoncentration of the normal distribution then bounds how many distinct values can fit in $[0, S]$ for a distribution with variance $V$.",
     "mathContext": "The Berry–Esseen theorem: for i.i.d. zero-mean variance-1 variables $X_i$ with $\\mathbb{E}[|X_i|^3] = \\rho < \\infty$, $\\sup_x |F_n(x) - \\Phi(x)| \\leq C\\rho/\\sqrt{n}$. For subset sums $X = \\sum \\varepsilon_i a_i$ with $\\varepsilon_i \\sim \\text{Bernoulli}(1/2)$: variance $V = \\sum a_i^2/4$. Anticoncentration of $\\mathcal{N}(S/2, V)$: at most $1/\\sqrt{2\\pi V}$ probability mass at any single point, so at most $S \\cdot \\sqrt{2/\\pi V} = S\\sqrt{2/\\pi}/\\sqrt{\\sum a_i^2/4} = 2S\\sqrt{2/\\pi}/\\sqrt{\\sum a_i^2}$ points can each receive positive probability. Mathlib's `ProbabilityTheory.CLT` has the building blocks but lacks the precise quantitative form needed here.",

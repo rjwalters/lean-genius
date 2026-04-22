@@ -12,7 +12,12 @@
       "ContinuousOn.sub for continuity of g = f - id",
       "Cauchy-Bolzano theorem as prototype"
     ],
-    "content": "This illustrates a general principle in formal verification: provide both a 'trusted library' proof (short, using existing Mathlib results) and an 'explanatory' proof (longer, but pedagogically clear). Both are verified by Lean, so they serve different audiences — the library proof ensures correctness against Mathlib's standard; the IVT proof shows that IVT alone suffices, which is the key insight for the OQ (open question). The unit interval specialization `brouwer_1d_unit_interval` is then a trivial corollary."
+    "content": "This illustrates a general principle in formal verification: provide both a 'trusted library' proof (short, using existing Mathlib results) and an 'explanatory' proof (longer, but pedagogically clear). Both are verified by Lean, so they serve different audiences — the library proof ensures correctness against Mathlib's standard; the IVT proof shows that IVT alone suffices, which is the key insight for the OQ (open question). The unit interval specialization `brouwer_1d_unit_interval` is then a trivial corollary.",
+    "proofId": "brouwer-fixed-point-oq-01",
+    "range": {
+      "startLine": 64,
+      "endLine": 117
+    }
   },
   {
     "lineStart": 119,
@@ -27,7 +32,12 @@
       "connected vs discrete image",
       "Brouwer FPT ↔ No-Retraction equivalence"
     ],
-    "content": "The 1D No-Retraction theorem is classically equivalent to the 1D Brouwer Fixed Point Theorem (each implies the other). The Lean proof shows the IVT → No-Retraction direction directly. The equivalence IVT ↔ Brouwer ↔ No-Retraction in 1D is a foundational example of how topological facts in low dimensions reduce to purely analytic results, while higher dimensions require genuinely topological tools."
+    "content": "The 1D No-Retraction theorem is classically equivalent to the 1D Brouwer Fixed Point Theorem (each implies the other). The Lean proof shows the IVT → No-Retraction direction directly. The equivalence IVT ↔ Brouwer ↔ No-Retraction in 1D is a foundational example of how topological facts in low dimensions reduce to purely analytic results, while higher dimensions require genuinely topological tools.",
+    "proofId": "brouwer-fixed-point-oq-01",
+    "range": {
+      "startLine": 119,
+      "endLine": 159
+    }
   },
   {
     "lineStart": 161,
@@ -42,7 +52,12 @@
       "antipodal points on S^n",
       "antisymmetric function g(-x) = -g(x)"
     ],
-    "content": "Borsuk-Ulam has applications from antipodal weather (two points on Earth with equal temperature and pressure) to the ham-sandwich theorem (any n measurable sets in ℝⁿ can be bisected by a single hyperplane). The 1D proof requires only IVT, showing that the 1D case is entirely elementary. The Lean case analysis (g(-1) = 0, g(-1) < 0, g(-1) > 0) is minimal: any continuous proof needs to handle the boundary case where IVT cannot be applied without extra work."
+    "content": "Borsuk-Ulam has applications from antipodal weather (two points on Earth with equal temperature and pressure) to the ham-sandwich theorem (any n measurable sets in ℝⁿ can be bisected by a single hyperplane). The 1D proof requires only IVT, showing that the 1D case is entirely elementary. The Lean case analysis (g(-1) = 0, g(-1) < 0, g(-1) > 0) is minimal: any continuous proof needs to handle the boundary case where IVT cannot be applied without extra work.",
+    "proofId": "brouwer-fixed-point-oq-01",
+    "range": {
+      "startLine": 161,
+      "endLine": 229
+    }
   },
   {
     "lineStart": 231,
@@ -57,7 +72,12 @@
       "NNReal for nonneg Lipschitz constants",
       "Picard iteration for ODEs as application"
     ],
-    "content": "Banach contraction is strictly stronger than Brouwer: it requires f to be a contraction (Lipschitz < 1) rather than just continuous, but in return gives uniqueness and algorithmic constructibility (the iteration converges). The follow-up theorem `banach_implies_brouwer_1d` uses `LipschitzWith.continuous` to extract continuity from the Lipschitz bound and applies `brouwer_1d_unit_interval`, showing the implication Banach → Brouwer in 1D. This Lean proof makes the strict logical implication (Banach ⊂ hypotheses of Brouwer) formally precise."
+    "content": "Banach contraction is strictly stronger than Brouwer: it requires f to be a contraction (Lipschitz < 1) rather than just continuous, but in return gives uniqueness and algorithmic constructibility (the iteration converges). The follow-up theorem `banach_implies_brouwer_1d` uses `LipschitzWith.continuous` to extract continuity from the Lipschitz bound and applies `brouwer_1d_unit_interval`, showing the implication Banach → Brouwer in 1D. This Lean proof makes the strict logical implication (Banach ⊂ hypotheses of Brouwer) formally precise.",
+    "proofId": "brouwer-fixed-point-oq-01",
+    "range": {
+      "startLine": 231,
+      "endLine": 278
+    }
   },
   {
     "lineStart": 280,
@@ -72,7 +92,12 @@
       "existence vs uniqueness in fixed point theory",
       "existsUnique (∃! x) in Lean 4"
     ],
-    "content": "These examples serve a pedagogical purpose: they make precise why Brouwer's theorem is weaker than Banach's. Students often incorrectly assume fixed point theorems give unique fixed points. The Lean proofs are minimal — `brouwer_nonunique` takes 3 lines and `constant_map_fixed_point` takes 2 lines — because the examples are the simplest possible witnesses. This minimality is itself a form of mathematical elegance: the theorem is proved by exhibiting the most obvious counterexample."
+    "content": "These examples serve a pedagogical purpose: they make precise why Brouwer's theorem is weaker than Banach's. Students often incorrectly assume fixed point theorems give unique fixed points. The Lean proofs are minimal — `brouwer_nonunique` takes 3 lines and `constant_map_fixed_point` takes 2 lines — because the examples are the simplest possible witnesses. This minimality is itself a form of mathematical elegance: the theorem is proved by exhibiting the most obvious counterexample.",
+    "proofId": "brouwer-fixed-point-oq-01",
+    "range": {
+      "startLine": 280,
+      "endLine": 310
+    }
   },
   {
     "lineStart": 355,
@@ -87,6 +112,11 @@
       "BrouwerFixedPoint.lean axiomatized companion",
       "Mathlib gap: Brouwer FPT not in Mathlib 4.26"
     ],
-    "content": "The dimensional gap illustrates a profound phenomenon in mathematics: problems that are elementary in low dimensions can require sophisticated machinery in higher dimensions. The file's acknowledgment that '2D Brouwer via Sperner's Lemma' is an open challenge in the project directly references the companion file BrouwerFixedPoint.lean and the Mathlib gap (Brouwer FPT not in Mathlib as of 2026). This honest documentation of the state of the art — what's proved, what's axiomatized, what's missing from Mathlib — is a strength of the Lean formalization approach."
+    "content": "The dimensional gap illustrates a profound phenomenon in mathematics: problems that are elementary in low dimensions can require sophisticated machinery in higher dimensions. The file's acknowledgment that '2D Brouwer via Sperner's Lemma' is an open challenge in the project directly references the companion file BrouwerFixedPoint.lean and the Mathlib gap (Brouwer FPT not in Mathlib as of 2026). This honest documentation of the state of the art — what's proved, what's axiomatized, what's missing from Mathlib — is a strength of the Lean formalization approach.",
+    "proofId": "brouwer-fixed-point-oq-01",
+    "range": {
+      "startLine": 355,
+      "endLine": 392
+    }
   }
 ]

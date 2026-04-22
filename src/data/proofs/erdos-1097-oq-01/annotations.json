@@ -19,7 +19,11 @@
       "Finset.mem_filter",
       "Set.mem_image",
       "Nat.lt_succ_of_lt"
-    ]
+    ],
+    "range": {
+      "startLine": 34,
+      "endLine": 35
+    }
   },
   {
     "id": "commondiffk-anti",
@@ -41,7 +45,11 @@
       "isKAP_of_succ",
       "Finset.mem_filter",
       "Set.mem_sep_iff"
-    ]
+    ],
+    "range": {
+      "startLine": 76,
+      "endLine": 79
+    }
   },
   {
     "id": "neg-mem-symmetry",
@@ -65,7 +73,11 @@
       "Int.coe_nat_sub",
       "IsKAP",
       "neg_mul"
-    ]
+    ],
+    "range": {
+      "startLine": 99,
+      "endLine": 107
+    }
   },
   {
     "id": "quadratic-upper-bound",
@@ -88,7 +100,11 @@
       "Finset.card_image_le",
       "Finset.card_product",
       "commonDiffK_subset_diff"
-    ]
+    ],
+    "range": {
+      "startLine": 131,
+      "endLine": 138
+    }
   },
   {
     "id": "iskap-three-iff",
@@ -110,7 +126,11 @@
       "interval_cases",
       "IsKAP",
       "Nat.lt_succ_of_lt"
-    ]
+    ],
+    "range": {
+      "startLine": 160,
+      "endLine": 169
+    }
   },
   {
     "id": "kap-growth-question",
@@ -132,7 +152,11 @@
       "numCommonDiffK",
       "Finset.card",
       "Real.rpow"
-    ]
+    ],
+    "range": {
+      "startLine": 180,
+      "endLine": 183
+    }
   },
   {
     "id": "kap-growth-mono",
@@ -154,6 +178,10 @@
       "numCommonDiffK_anti",
       "Finset.card_le_card",
       "commonDiffKFinset_anti"
-    ]
+    ],
+    "range": {
+      "startLine": 191,
+      "endLine": 199
+    }
   }
 ]

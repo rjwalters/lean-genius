@@ -76,7 +76,7 @@
       "startLine": 50,
       "endLine": 71
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Step 3: Legendre's Formula Bounds Each Prime Power",
     "content": "Step 3 bounds each prime power factor by 2n:\n\n```\n∏ p ∈ primes ≤ 2n, p^(v_p(C(2n,n))) ≤ ∏ p ∈ primes ≤ 2n, (2n)\n```\n\nThe proof uses `Finset.prod_le_prod` with two arguments: (1) each factor is nonneg (`Nat.zero_le`), (2) for each prime p in the filter, `p^(centralBinom n).factorization p ≤ 2n`.\n\nThe bound comes from `Nat.pow_factorization_choose_le`, which embodies Legendre's formula: v_p(C(2n,n)) ≤ log(2n)/log(p), so p^(v_p(C(2n,n))) ≤ p^(log(2n)/log(p)) = 2n. The rewrite `centralBinom_eq_two_mul_choose` converts centralBinom to the standard binomial coefficient form expected by `pow_factorization_choose_le`.",
     "mathContext": "`Nat.pow_factorization_choose_le : ∀ {n : ℕ} (p : ℕ), 1 ≤ n → p ^ (Nat.choose (2*n) n).factorization p ≤ 2*n`. Legendre (1808): $v_p(\\binom{m}{k}) = \\frac{s_p(k) + s_p(m-k) - s_p(m)}{p-1}$ where $s_p(n)$ is the sum of base-p digits; equivalently, $v_p(\\binom{2n}{n}) \\le \\lfloor\\log_p(2n)\\rfloor$, giving $p^{v_p} \\le 2n$.",

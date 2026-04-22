@@ -17,7 +17,12 @@
       "Lean structures vs classes",
       "Finset.sum for finite sums"
     ],
-    "content": "The multi-index representation is the algebraically clean way to encode differential operators in Lean: a `Fin n → ℕ` encodes the exponent tuple $(\\alpha_1, \\ldots, \\alpha_n)$, and the coefficient map `coeff : MultiIndex n → (Fin n → ℝ) → ℂ` compactly packages all the variable-coefficient data. The `order_bound` field enforces the crucial constraint that $P$ has finite order."
+    "content": "The multi-index representation is the algebraically clean way to encode differential operators in Lean: a `Fin n → ℕ` encodes the exponent tuple $(\\alpha_1, \\ldots, \\alpha_n)$, and the coefficient map `coeff : MultiIndex n → (Fin n → ℝ) → ℂ` compactly packages all the variable-coefficient data. The `order_bound` field enforces the crucial constraint that $P$ has finite order.",
+    "proofId": "hilbert-20-oq-01",
+    "range": {
+      "startLine": 61,
+      "endLine": 68
+    }
   },
   {
     "id": "ann-principal-symbol",
@@ -37,7 +42,12 @@
       "MultiIndex.order definition",
       "Finset.univ.sum for polynomial evaluation"
     ],
-    "content": "The principal symbol is the key invariant for the qualitative theory of PDEs: ellipticity, hyperbolicity, and local solvability are all determined by $p_m$ rather than the lower-order terms. By filtering to `MultiIndex.order α = m` via an `if-then-else` inside `Finset.univ.sum`, Lean correctly extracts the homogeneous part and converts real $\\xi$ components to complex via the cast `(ξ i : ℂ)`."
+    "content": "The principal symbol is the key invariant for the qualitative theory of PDEs: ellipticity, hyperbolicity, and local solvability are all determined by $p_m$ rather than the lower-order terms. By filtering to `MultiIndex.order α = m` via an `if-then-else` inside `Finset.univ.sum`, Lean correctly extracts the homogeneous part and converts real $\\xi$ components to complex via the cast `(ξ i : ℂ)`.",
+    "proofId": "hilbert-20-oq-01",
+    "range": {
+      "startLine": 69,
+      "endLine": 82
+    }
   },
   {
     "id": "ann-local-solvability-axiom",
@@ -57,7 +67,12 @@
       "distribution theory (D'(Ω))",
       "smooth functions C^∞"
     ],
-    "content": "This axiom captures the central obstacle in formalizing PDE theory: Schwartz distributions $\\mathcal{D}'$ (the dual of test functions $C_c^\\infty$) are not yet in Mathlib. Rather than embedding a long distribution theory digression, the `axiom` pattern explicitly names the gap. The rest of the file axiomatizes what Hörmander and Dencker proved *about* local solvability, deferring only the foundational definition."
+    "content": "This axiom captures the central obstacle in formalizing PDE theory: Schwartz distributions $\\mathcal{D}'$ (the dual of test functions $C_c^\\infty$) are not yet in Mathlib. Rather than embedding a long distribution theory digression, the `axiom` pattern explicitly names the gap. The rest of the file axiomatizes what Hörmander and Dencker proved *about* local solvability, deferring only the foundational definition.",
+    "proofId": "hilbert-20-oq-01",
+    "range": {
+      "startLine": 83,
+      "endLine": 87
+    }
   },
   {
     "id": "ann-bicharacteristic-curve",
@@ -77,7 +92,12 @@
       "Hamilton equations",
       "Lean 4 structures with hypotheses as fields"
     ],
-    "content": "Encoding bicharacteristics as a `structure` rather than an `axiom` is a key design choice: it enables Lean to construct concrete bicharacteristic objects and reason about them in proved theorems (like `elliptic_satisfies_psi`). The omission of the Hamilton flow makes `ConditionPsi` stronger than the classical definition (more curves to check), so the deep axioms remain conservative — a deliberate over-approximation that preserves soundness."
+    "content": "Encoding bicharacteristics as a `structure` rather than an `axiom` is a key design choice: it enables Lean to construct concrete bicharacteristic objects and reason about them in proved theorems (like `elliptic_satisfies_psi`). The omission of the Hamilton flow makes `ConditionPsi` stronger than the classical definition (more curves to check), so the deep axioms remain conservative — a deliberate over-approximation that preserves soundness.",
+    "proofId": "hilbert-20-oq-01",
+    "range": {
+      "startLine": 196,
+      "endLine": 203
+    }
   },
   {
     "id": "ann-condition-psi",
@@ -97,7 +117,12 @@
       "imSymbolAlongCurve definition",
       "sign conditions in analysis"
     ],
-    "content": "This sign condition — proposed by Nirenberg and Treves in 1963 and proved necessary and sufficient by Dencker in 2006 — is the precise obstruction to local solvability. The asymmetry ($- \\to +$ is forbidden, but $+ \\to -$ is allowed) reflects the oriented structure of the bicharacteristic flow. The Lean encoding as `¬(imSymbolAlongCurve γ t₂ > 0)` directly captures the forbidden $+$ arrival."
+    "content": "This sign condition — proposed by Nirenberg and Treves in 1963 and proved necessary and sufficient by Dencker in 2006 — is the precise obstruction to local solvability. The asymmetry ($- \\to +$ is forbidden, but $+ \\to -$ is allowed) reflects the oriented structure of the bicharacteristic flow. The Lean encoding as `¬(imSymbolAlongCurve γ t₂ > 0)` directly captures the forbidden $+$ arrival.",
+    "proofId": "hilbert-20-oq-01",
+    "range": {
+      "startLine": 136,
+      "endLine": 146
+    }
   },
   {
     "id": "ann-nt-theorem",
@@ -117,7 +142,12 @@
       "Hörmander's microlocal analysis (1960)",
       "Dencker's resolution (2006)"
     ],
-    "content": "The proof is four lines of Lean because the deep mathematical content is captured by the two axioms `hormander_necessity` and `dencker_sufficiency`. This is the honest structure of the formalization: the logical skeleton of the equivalence is checked mechanically, while the two halves — each representing decades of hard analysis — are explicitly named as assumptions awaiting full formalization. The iff construction `⟨forward, backward⟩` is standard Lean for biconditionals."
+    "content": "The proof is four lines of Lean because the deep mathematical content is captured by the two axioms `hormander_necessity` and `dencker_sufficiency`. This is the honest structure of the formalization: the logical skeleton of the equivalence is checked mechanically, while the two halves — each representing decades of hard analysis — are explicitly named as assumptions awaiting full formalization. The iff construction `⟨forward, backward⟩` is standard Lean for biconditionals.",
+    "proofId": "hilbert-20-oq-01",
+    "range": {
+      "startLine": 147,
+      "endLine": 155
+    }
   },
   {
     "id": "ann-elliptic-psi",
@@ -137,6 +167,11 @@
       "BicharacteristicCurve.symbol_vanishes field",
       "IsElliptic definition"
     ],
-    "content": "This single-line proof `exact absurd (γ.symbol_vanishes 0) (hell (γ.x 0) (γ.ξ 0) (γ.ξ_ne_zero 0))` elegantly demonstrates how Lean handles vacuous quantifiers: rather than case analysis, the absurdity is derived directly by feeding the conflicting fields of `γ` to `hell`. It also explains why classical elliptic theory (Laplacian, Cauchy-Riemann) never encounters local nonsolvability — ellipticity precludes bicharacteristics entirely."
+    "content": "This single-line proof `exact absurd (γ.symbol_vanishes 0) (hell (γ.x 0) (γ.ξ 0) (γ.ξ_ne_zero 0))` elegantly demonstrates how Lean handles vacuous quantifiers: rather than case analysis, the absurdity is derived directly by feeding the conflicting fields of `γ` to `hell`. It also explains why classical elliptic theory (Laplacian, Cauchy-Riemann) never encounters local nonsolvability — ellipticity precludes bicharacteristics entirely.",
+    "proofId": "hilbert-20-oq-01",
+    "range": {
+      "startLine": 196,
+      "endLine": 203
+    }
   }
 ]

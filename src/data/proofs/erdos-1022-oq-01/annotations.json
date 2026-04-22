@@ -17,7 +17,12 @@
       "Finset membership and Nonempty",
       "existential + universal quantifier nesting in Lean"
     ],
-    "content": "This formulation avoids specifying the chromatic number of each set; it just requires that no member is monochromatic. This is equivalent to: the hyperchromaticity $\\chi(H) \\leq k$ where monochromaticity is the 'bad' event. The Lean type `∃ χ : α → Fin k, ∀ f ∈ F, f.Nonempty → ∃ a b, ...` cleanly encodes the existential (there exists a good coloring) and universal (every nonempty set avoids monochromaticity) quantifiers."
+    "content": "This formulation avoids specifying the chromatic number of each set; it just requires that no member is monochromatic. This is equivalent to: the hyperchromaticity $\\chi(H) \\leq k$ where monochromaticity is the 'bad' event. The Lean type `∃ χ : α → Fin k, ∀ f ∈ F, f.Nonempty → ∃ a b, ...` cleanly encodes the existential (there exists a good coloring) and universal (every nonempty set avoids monochromaticity) quantifiers.",
+    "proofId": "erdos-1022-oq-01",
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    }
   },
   {
     "id": "ann-singleton",
@@ -37,7 +42,12 @@
       "Fin.mk with bound proof via omega",
       "simp [hba] for if-then-else goals"
     ],
-    "content": "The `if x = a then 0 else ⟨1, by omega⟩` uses a dependent omega proof to validate `1 < k` (since `2 ≤ k`). The `Finset.erase` approach for picking a second distinct element is standard: `Finset.card_erase_of_mem` shows `|f \\ {a}| = |f| - 1 ≥ 1`, proving non-emptiness of the remaining set."
+    "content": "The `if x = a then 0 else ⟨1, by omega⟩` uses a dependent omega proof to validate `1 < k` (since `2 ≤ k`). The `Finset.erase` approach for picking a second distinct element is standard: `Finset.card_erase_of_mem` shows `|f \\ {a}| = |f| - 1 ≥ 1`, proving non-emptiness of the remaining set.",
+    "proofId": "erdos-1022-oq-01",
+    "range": {
+      "startLine": 54,
+      "endLine": 69
+    }
   },
   {
     "id": "ann-mono",
@@ -57,7 +67,12 @@
       "Fin.castSucc_injective",
       "induction on Nat.le (refl/step cases)"
     ],
-    "content": "The proof is elegant: `Fin.castSucc_injective _ h` converts an equality on castSucc values back to the original, then applies `hab` for contradiction. This demonstrates that Lean's type-theoretic representation of finite types automatically gives the correct injectivity property. The `general monotonicity` version (`hasPropertyBK_mono_gen`) uses `induction hkm` on the `≤` proof."
+    "content": "The proof is elegant: `Fin.castSucc_injective _ h` converts an equality on castSucc values back to the original, then applies `hab` for contradiction. This demonstrates that Lean's type-theoretic representation of finite types automatically gives the correct injectivity property. The `general monotonicity` version (`hasPropertyBK_mono_gen`) uses `induction hkm` on the `≤` proof.",
+    "proofId": "erdos-1022-oq-01",
+    "range": {
+      "startLine": 76,
+      "endLine": 82
+    }
   },
   {
     "id": "ann-propertyb-def",
@@ -76,7 +91,12 @@
       "Finset intersection and set difference",
       "the splitting characterization of 2-colorings"
     ],
-    "content": "Property B is sometimes called '2-colorability without monochromaticity' or 'independence system coloring'. The Lean definition directly captures the splitting condition via `f ∩ S` (elements in $S$, color 0) and `f \\ S` (elements not in $S$, color 1). The equivalence with `HasPropertyBK F 2` is the content of `propertyB_iff_propertyBK_two`."
+    "content": "Property B is sometimes called '2-colorability without monochromaticity' or 'independence system coloring'. The Lean definition directly captures the splitting condition via `f ∩ S` (elements in $S$, color 0) and `f \\ S` (elements not in $S$, color 1). The equivalence with `HasPropertyBK F 2` is the content of `propertyB_iff_propertyBK_two`.",
+    "proofId": "erdos-1022-oq-01",
+    "range": {
+      "startLine": 94,
+      "endLine": 95
+    }
   },
   {
     "id": "ann-b-iff-b2",
@@ -96,7 +116,12 @@
       "by_cases tactic for case splits",
       "fin_cases for exhaustive Fin 2 analysis"
     ],
-    "content": "The backward direction uses `fin_cases (χ a) <;> fin_cases (χ b) <;> simp_all` to handle the four cases $\\chi(a), \\chi(b) \\in \\{0, 1\\}$ — exhaustive case analysis on `Fin 2`. The `by_cases h0 : χ a = 0` splits on which element has color 0. This proof is a model of the classical 'set-coloring bijection' argument formalized in Lean."
+    "content": "The backward direction uses `fin_cases (χ a) <;> fin_cases (χ b) <;> simp_all` to handle the four cases $\\chi(a), \\chi(b) \\in \\{0, 1\\}$ — exhaustive case analysis on `Fin 2`. The `by_cases h0 : χ a = 0` splits on which element has color 0. This proof is a model of the classical 'set-coloring bijection' argument formalized in Lean.",
+    "proofId": "erdos-1022-oq-01",
+    "range": {
+      "startLine": 99,
+      "endLine": 128
+    }
   },
   {
     "id": "ann-first-moment",
@@ -116,6 +141,11 @@
       "Nat.pow for k^(t-1)",
       "Finset.card bound on |F|"
     ],
-    "content": "This is defined as a `Prop` (not proved) — it encodes the generalized threshold as an open question. For $k = 2$: the condition becomes $|F| < 2^{t-1}$, recovering Erdős's original bound. The Lean encoding `F.card * (k - 1) < k ^ (t - 1)` avoids division by using natural number arithmetic. The proof requires the probabilistic method, which is available in Mathlib but not yet applied here."
+    "content": "This is defined as a `Prop` (not proved) — it encodes the generalized threshold as an open question. For $k = 2$: the condition becomes $|F| < 2^{t-1}$, recovering Erdős's original bound. The Lean encoding `F.card * (k - 1) < k ^ (t - 1)` avoids division by using natural number arithmetic. The proof requires the probabilistic method, which is available in Mathlib but not yet applied here.",
+    "proofId": "erdos-1022-oq-01",
+    "range": {
+      "startLine": 149,
+      "endLine": 153
+    }
   }
 ]

@@ -246,7 +246,7 @@
       "startLine": 242,
       "endLine": 295
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Square Root Ratio Limit (Verified)",
     "content": "**theorem tendsto_sqrt_inv** ✓\n\n(√N + 1)/N → 0 as N → ∞\n\n**Proof strategy**: Squeeze theorem\n- Upper bound: (√N + 1)/N ≤ 2/√N → 0\n- Key: √N ≤ N (for N ≥ 1)\n\nUses `tendsto_rpow_atTop` for √N → ∞.",
     "mathContext": "This is the analytic lemma for squares. The proof bounds (√N + 1)/N by 2/√N and shows that tends to 0.",
@@ -366,7 +366,7 @@
       "startLine": 366,
       "endLine": 396
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Optimal B-Density is Zero (Verified)",
     "content": "**OptimalBDensity A** = inf{d : ∃ B with density d covering cofinitely}\n\n**theorem optimal_B_density_zero** ✓:\nFor infinite A, OptimalBDensity A = 0\n\n**Proof**:\n- sInf ≤ 0: Lorentz gives B with density 0\n- 0 ≤ sInf: Densities are ≥ 0 (non-negative)",
     "mathContext": "This theorem uses real analysis (csInf, le_antisymm) to show that 0 is not just achievable but optimal.",

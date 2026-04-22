@@ -17,7 +17,12 @@
       "ZMod and its field structure for prime moduli",
       "IsSquare predicate"
     ],
-    "content": "This theorem establishes the semantic meaning of legendreSym. It is the bridge between the computational definition (via Euler criterion or Gauss's lemma) and the geometric meaning (quadratic residuosity). The Hilbert symbol (a,p)_p reduces to this for the special case a=a, b=p."
+    "content": "This theorem establishes the semantic meaning of legendreSym. It is the bridge between the computational definition (via Euler criterion or Gauss's lemma) and the geometric meaning (quadratic residuosity). The Hilbert symbol (a,p)_p reduces to this for the special case a=a, b=p.",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-03",
+    "range": {
+      "startLine": 36,
+      "endLine": 39
+    }
   },
   {
     "lineStart": 48,
@@ -36,7 +41,12 @@
       "Natural number division for odd primes",
       "Modular arithmetic mod 4"
     ],
-    "content": "This is the deep law that Gauss called 'the gem of arithmetic'. Its formulation here as a one-line application of Mathlib demonstrates that Mathlib's QR proof is complete and accessible. The connection to the Hilbert product formula: (p/q)·(q/p) = (-1)^((p-1)/2·(q-1)/2) is equivalent to (p,q)_∞ · ∏_{primes ℓ} (p,q)_ℓ = 1 where (p,q)_∞ = sign(-1)^... and almost all factors are 1."
+    "content": "This is the deep law that Gauss called 'the gem of arithmetic'. Its formulation here as a one-line application of Mathlib demonstrates that Mathlib's QR proof is complete and accessible. The connection to the Hilbert product formula: (p/q)·(q/p) = (-1)^((p-1)/2·(q-1)/2) is equivalent to (p,q)_∞ · ∏_{primes ℓ} (p,q)_ℓ = 1 where (p,q)_∞ = sign(-1)^... and almost all factors are 1.",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-03",
+    "range": {
+      "startLine": 48,
+      "endLine": 52
+    }
   },
   {
     "lineStart": 54,
@@ -56,7 +66,12 @@
       "Natural number division and parity",
       "Wilson's theorem (background)"
     ],
-    "content": "The first supplement, together with the second supplement (2/p) = (-1)^((p²-1)/8), determines the behavior of (a/p) for all a via prime factorization. Together with QR, these three theorems (proved in this file) give a complete algorithm for computing any Legendre symbol."
+    "content": "The first supplement, together with the second supplement (2/p) = (-1)^((p²-1)/8), determines the behavior of (a/p) for all a via prime factorization. Together with QR, these three theorems (proved in this file) give a complete algorithm for computing any Legendre symbol.",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-03",
+    "range": {
+      "startLine": 54,
+      "endLine": 57
+    }
   },
   {
     "lineStart": 63,
@@ -76,7 +91,12 @@
       "Quadratic forms and discriminants",
       "Completions of Q at prime places"
     ],
-    "content": "Axiomatizing the Hilbert symbol is mathematically honest: the definition exists (it's well-known), but the Lean formalization of Q_p and quadratic forms over Q_p is incomplete. This axiom is the placeholder that would be replaced when Mathlib's p-adic Hilbert symbol theory is developed. The fact that only 1 `axiom` keyword appears in the file suggests the `axiomCount: 3` in meta.json may reflect an earlier version of the file."
+    "content": "Axiomatizing the Hilbert symbol is mathematically honest: the definition exists (it's well-known), but the Lean formalization of Q_p and quadratic forms over Q_p is incomplete. This axiom is the placeholder that would be replaced when Mathlib's p-adic Hilbert symbol theory is developed. The fact that only 1 `axiom` keyword appears in the file suggests the `axiomCount: 3` in meta.json may reflect an earlier version of the file.",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-03",
+    "range": {
+      "startLine": 63,
+      "endLine": 77
+    }
   },
   {
     "lineStart": 78,
@@ -96,6 +116,11 @@
       "Idèles and adèles in algebraic number theory",
       "Galois theory of abelian extensions"
     ],
-    "content": "This commentary section honestly documents the gap between what's formalized and what remains open. The /-! syntax creates a Lean module docstring (different from /- comments). Note: per CLAUDE.md, /-! blocks can cause Aristotle parser incompatibility, but they are valid Lean 4 syntax for module-level documentation."
+    "content": "This commentary section honestly documents the gap between what's formalized and what remains open. The /-! syntax creates a Lean module docstring (different from /- comments). Note: per CLAUDE.md, /-! blocks can cause Aristotle parser incompatibility, but they are valid Lean 4 syntax for module-level documentation.",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-03",
+    "range": {
+      "startLine": 78,
+      "endLine": 100
+    }
   }
 ]

@@ -73,7 +73,7 @@
       "startLine": 70,
       "endLine": 74
     },
-    "type": "proof",
+    "type": "concept",
     "title": "Gap Positivity",
     "content": "**Verified**: Every prime gap $d_n \\geq 1$. The proof unfolds the definition and applies `omega` to the strict inequality $p_n < p_{n+1}$ (from `StrictMono`). This is the weakest useful lower bound — the parity argument later improves it to $d_n \\geq 2$ for $n \\geq 1$.",
     "mathContext": "$p_{n+1} > p_n \\Rightarrow p_{n+1} - p_n \\geq 1$",
@@ -94,7 +94,7 @@
       "startLine": 119,
       "endLine": 123
     },
-    "type": "proof",
+    "type": "concept",
     "title": "Prime Gap Parity",
     "content": "**Verified**: For $n \\geq 1$, the prime gap $d_n$ is even. The proof uses `Nat.even_sub` to reduce to showing both $p_n$ and $p_{n+1}$ have the same parity, then shows both are odd (not even) via `iff_of_false`. A prime $p \\geq 3$ cannot be even: if $2 \\mid p$ then $p = 1$ or $p = 2$ by `eq_one_or_self_of_dvd`, contradicting $p \\geq 3$.",
     "mathContext": "$n \\geq 1 \\Rightarrow p_n, p_{n+1} \\geq 3$ are both odd, so $d_n = p_{n+1} - p_n$ is even",
@@ -140,7 +140,7 @@
       "startLine": 172,
       "endLine": 190
     },
-    "type": "conjecture",
+    "type": "concept",
     "title": "Main Conjecture (Axiom)",
     "content": "**Axiom (OPEN)**: The ratio $\\max_{n<x} d_n d_{n-1} / (\\max_{n<x} d_n)^2 \\to 0$ as $x \\to \\infty$. Stated using `Filter.Tendsto` with target `𝓝 0`. This is the central claim of the problem: record-breaking prime gaps should not appear in consecutive pairs. The conjecture is consistent with the Cramér–Granville probabilistic model of prime distribution and supported by extensive computation.",
     "mathContext": "$\\text{Tendsto}\\left(x \\mapsto \\frac{\\sup_{n<x} d_n d_{n-1}}{(\\sup_{n<x} d_n)^2}\\right)\\; \\text{atTop}\\; (\\mathcal{N}(0))$",

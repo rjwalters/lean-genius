@@ -123,7 +123,7 @@
       "startLine": 124,
       "endLine": 153
     },
-    "type": "connection",
+    "type": "concept",
     "title": "Pointwise Ordering: Thomae ≤ Dirichlet",
     "content": "The standard Dirichlet function is the indicator 1_ℚ (returns 1 for rationals, 0 for irrationals). Thomae refines this: at rational p/q it returns 1/q ≤ 1. The theorem `thomae_le_dirichlet` captures this pointwise inequality, and `dirichlet_integral_zero` shows both integrate to 0. The comparison reinforces that the integral vanishes independently for each function by the same measure-zero argument.",
     "mathContext": "Define the standard Dirichlet function $D(x) = \\mathbf{1}_{\\mathbb{Q}}(x)$. Then:\n$$f(x) = \\frac{1}{q} \\leq 1 = D(x) \\quad \\text{for } x = p/q,$$\n$$f(x) = 0 = D(x) \\quad \\text{for } x \\in \\mathbb{R} \\setminus \\mathbb{Q}.$$\nSo $f \\leq D$ pointwise. Both satisfy $\\int f = \\int D = 0$ since $\\lambda(\\mathbb{Q}) = 0$.",

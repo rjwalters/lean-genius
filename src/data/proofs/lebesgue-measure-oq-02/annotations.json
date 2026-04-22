@@ -15,7 +15,11 @@
     "prerequisites": [
       "Real.HolderConjugate"
     ],
-    "proofId": "lebesgue-measure-oq-02"
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 29,
+      "endLine": 50
+    }
   },
   {
     "id": "ann-conjugate-general",
@@ -32,7 +36,11 @@
     "prerequisites": [
       "Real.HolderConjugate.conjExponent"
     ],
-    "proofId": "lebesgue-measure-oq-02"
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 29,
+      "endLine": 50
+    }
   },
   {
     "id": "ann-young",
@@ -51,7 +59,11 @@
       "Real.HolderConjugate",
       "ENNReal.young_inequality"
     ],
-    "proofId": "lebesgue-measure-oq-02"
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 67,
+      "endLine": 93
+    }
   },
   {
     "id": "ann-holder-lintegral",
@@ -71,7 +83,11 @@
       "AEMeasurable",
       "ENNReal.lintegral_mul_le_Lp_mul_Lq"
     ],
-    "proofId": "lebesgue-measure-oq-02"
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 94,
+      "endLine": 102
+    }
   },
   {
     "id": "ann-holder-lebesgue",
@@ -90,7 +106,11 @@
       "holder_lintegral",
       "volume (Lebesgue measure on ℝ)"
     ],
-    "proofId": "lebesgue-measure-oq-02"
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 103,
+      "endLine": 123
+    }
   },
   {
     "id": "ann-cauchy-schwarz",
@@ -110,7 +130,11 @@
       "holder_lintegral",
       "holderConj_two_two"
     ],
-    "proofId": "lebesgue-measure-oq-02"
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 94,
+      "endLine": 102
+    }
   },
   {
     "id": "ann-minkowski",
@@ -130,7 +154,11 @@
       "norm_add_le",
       "MeasureTheory.Lp"
     ],
-    "proofId": "lebesgue-measure-oq-02"
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 151,
+      "endLine": 162
+    }
   },
   {
     "id": "ann-proper-holder",
@@ -148,7 +176,11 @@
       "ENNReal.lintegral_mul_le_Lp_mul_Lq",
       "Real.HolderConjugate"
     ],
-    "proofId": "lebesgue-measure-oq-02"
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 67,
+      "endLine": 93
+    }
   },
   {
     "id": "ann-l2-inner-product",
@@ -169,7 +201,11 @@
       "InnerProductSpace",
       "cauchy_schwarz_lintegral"
     ],
-    "proofId": "lebesgue-measure-oq-02"
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 199,
+      "endLine": 224
+    }
   },
   {
     "id": "ann-lp-norm-nonneg",
@@ -188,6 +224,10 @@
       "MeasureTheory.Lp",
       "norm_nonneg"
     ],
-    "proofId": "lebesgue-measure-oq-02"
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 219,
+      "endLine": 224
+    }
   }
 ]

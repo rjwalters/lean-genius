@@ -139,7 +139,7 @@
       "startLine": 217,
       "endLine": 249
     },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete Examples: Efficiency Gains and Solutions",
     "content": "Three concrete examples verified by native_decide and decide:\n\n1. kLCM({4,6,10}) = 60 < 240 = 4*6*10 (efficiency gain of 4)\n2. Solution x = 21 satisfies 21 ≡ 1 [4], 21 ≡ 3 [6], 21 ≡ 1 [10] with verified compatibility conditions\n3. kLCM({6,10,15}) = 30 < 900 = 6*10*15 (efficiency gain of 30)\n4. kLCM({2,3,5}) = 30 = 2*3*5 (coprime case: no efficiency gain)",
     "mathContext": "$\\text{lcm}(4,6,10) = 60$, $\\text{lcm}(6,10,15) = 30$. The solution $x = 21$ satisfies $21 \\equiv 1 \\pmod{4}$, $21 \\equiv 3 \\pmod{6}$, $21 \\equiv 1 \\pmod{10}$.",

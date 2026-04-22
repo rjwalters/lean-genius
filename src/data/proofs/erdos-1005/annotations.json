@@ -15,7 +15,11 @@
     "prerequisites": [
       "Lean 4 basics",
       "Mathlib library structure"
-    ]
+    ],
+    "range": {
+      "startLine": 1,
+      "endLine": 36
+    }
   },
   {
     "id": "ann-1005-fareyfrac",
@@ -35,7 +39,11 @@
       "coprimality",
       "natural number arithmetic",
       "Lean 4 structures"
-    ]
+    ],
+    "range": {
+      "startLine": 1,
+      "endLine": 36
+    }
   },
   {
     "id": "ann-1005-fareyseq",
@@ -53,7 +61,11 @@
     "prerequisites": [
       "finite set construction",
       "total ordering on rationals"
-    ]
+    ],
+    "range": {
+      "startLine": 1,
+      "endLine": 36
+    }
   },
   {
     "id": "ann-1005-count",
@@ -72,7 +84,11 @@
     "prerequisites": [
       "analytic number theory basics",
       "totient summation"
-    ]
+    ],
+    "range": {
+      "startLine": 1,
+      "endLine": 36
+    }
   },
   {
     "id": "ann-1005-simord",
@@ -91,7 +107,11 @@
     "prerequisites": [
       "integer arithmetic",
       "partial orders"
-    ]
+    ],
+    "range": {
+      "startLine": 38,
+      "endLine": 59
+    }
   },
   {
     "id": "ann-1005-symm",
@@ -108,7 +128,11 @@
     ],
     "prerequisites": [
       "integer inequality manipulation"
-    ]
+    ],
+    "range": {
+      "startLine": 38,
+      "endLine": 59
+    }
   },
   {
     "id": "ann-1005-issimord",
@@ -126,7 +150,11 @@
     "prerequisites": [
       "universal quantification over pairs",
       "list indexing"
-    ]
+    ],
+    "range": {
+      "startLine": 38,
+      "endLine": 59
+    }
   },
   {
     "id": "ann-1005-mayerf",
@@ -144,7 +172,11 @@
     "prerequisites": [
       "supremum in natural numbers",
       "existential quantification"
-    ]
+    ],
+    "range": {
+      "startLine": 60,
+      "endLine": 70
+    }
   },
   {
     "id": "ann-1005-mayer",
@@ -162,7 +194,11 @@
     "prerequisites": [
       "topological filters",
       "limit to infinity"
-    ]
+    ],
+    "range": {
+      "startLine": 60,
+      "endLine": 70
+    }
   },
   {
     "id": "ann-1005-erdos43",
@@ -180,7 +216,11 @@
     "prerequisites": [
       "Erdős's 1943 paper",
       "asymptotic analysis"
-    ]
+    ],
+    "range": {
+      "startLine": 60,
+      "endLine": 70
+    }
   },
   {
     "id": "ann-1005-vdlower",
@@ -198,7 +238,11 @@
     "prerequisites": [
       "constructive combinatorics",
       "Farey fraction ordering"
-    ]
+    ],
+    "range": {
+      "startLine": 71,
+      "endLine": 93
+    }
   },
   {
     "id": "ann-1005-vdupper",
@@ -216,7 +260,11 @@
     "prerequisites": [
       "Farey adjacent property",
       "mediant properties"
-    ]
+    ],
+    "range": {
+      "startLine": 71,
+      "endLine": 93
+    }
   },
   {
     "id": "ann-1005-combined",
@@ -233,7 +281,11 @@
     "prerequisites": [
       "van Doorn lower bound",
       "van Doorn upper bound"
-    ]
+    ],
+    "range": {
+      "startLine": 71,
+      "endLine": 93
+    }
   },
   {
     "id": "ann-1005-hasconst",
@@ -251,7 +303,11 @@
     "prerequisites": [
       "real analysis limits",
       "asymptotic notation"
-    ]
+    ],
+    "range": {
+      "startLine": 95,
+      "endLine": 112
+    }
   },
   {
     "id": "ann-1005-vdconj",
@@ -269,7 +325,11 @@
     "prerequisites": [
       "van Doorn bounds",
       "asymptotic limits"
-    ]
+    ],
+    "range": {
+      "startLine": 95,
+      "endLine": 112
+    }
   },
   {
     "id": "ann-1005-mediant",
@@ -287,7 +347,11 @@
     "prerequisites": [
       "fraction arithmetic",
       "Farey adjacency"
-    ]
+    ],
+    "range": {
+      "startLine": 95,
+      "endLine": 112
+    }
   },
   {
     "id": "ann-1005-adjacent",
@@ -306,7 +370,11 @@
     "prerequisites": [
       "determinants",
       "Farey sequence theory"
-    ]
+    ],
+    "range": {
+      "startLine": 114,
+      "endLine": 136
+    }
   },
   {
     "id": "ann-1005-monotone",
@@ -326,7 +394,11 @@
       "partial orders",
       "lattice point interpretation",
       "omega tactic"
-    ]
+    ],
+    "range": {
+      "startLine": 114,
+      "endLine": 136
+    }
   },
   {
     "id": "ann-1005-gap",
@@ -344,6 +416,10 @@
     "prerequisites": [
       "rational arithmetic",
       "field_simp tactic"
-    ]
+    ],
+    "range": {
+      "startLine": 114,
+      "endLine": 136
+    }
   }
 ]

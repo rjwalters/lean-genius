@@ -60,7 +60,7 @@
       "startLine": 100,
       "endLine": 115
     },
-    "type": "gap",
+    "type": "concept",
     "title": "Three Measure-Theoretic Axioms",
     "content": "The three axioms handle measure theory: convexity (S is an intersection of two halfplanes, each defined by a linear inequality on a continuous functional), measurability (S is open hence Borel measurable), and volume (= 4(Q+1)/Q via Fubini or the shear map). These are mathematically routine but require Mathlib's measure theory machinery to formalize.",
     "mathContext": "Convexity: the function (v: Fin 2 → ℝ) ↦ |α·v 0 − v 1| is convex (it's a norm of a linear functional), so its sublevel set is convex. Volume: formally this requires Fubini's theorem (inner integral = 2/Q for each x with |x| < Q+1, outer integral = 2(Q+1)) or the change-of-variables formula for linear maps.",
@@ -97,7 +97,7 @@
       "startLine": 138,
       "endLine": 161
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Integer Coordinates from ℤ²-Membership",
     "content": "The lemma stdLattice2_coords extracts integer coordinates from a point x in stdLattice 2 = Submodule.span ℤ {e₀,e₁}. By mem_span_range_iff_exists_fun, x = ∑ᵢ cᵢ•eᵢ for integers cᵢ. After converting ℤ-smul to ℝ-smul via zsmul_eq_smul_cast, evaluation gives x.val 0 = c₀ and x.val 1 = c₁.",
     "mathContext": "This connects Mathlib's abstract ℤ-module structure to the concrete arithmetic that the proof needs. The ℤ-span of the standard basis {e₀=(1,0), e₁=(0,1)} is exactly ℤ² — the integer lattice points.",
@@ -116,7 +116,7 @@
       "startLine": 195,
       "endLine": 214
     },
-    "type": "proof-technique",
+    "type": "concept",
     "title": "The q ≠ 0 Argument",
     "content": "The key parity argument: suppose a = 0 (first coordinate zero). Then the second condition becomes |α·0 − b| = |b| < 1/Q. Since Q ≥ 1, we have 1/Q ≤ 1, so |b| < 1. But b is an integer, so |b| < 1 forces b = 0 (proved by omega after casting to ℤ). This means (a,b) = (0,0), contradicting x ≠ 0 in ℤ². Therefore a ≠ 0.",
     "mathContext": "The bound 1/Q ≤ 1 uses Q ≥ 1: since Q is a positive natural number, Q ≥ 1, so 1/Q ≤ 1/1 = 1. The integer argument uses: b < 1 and −1 < b (from |b| < 1) with b ∈ ℤ implies b = 0, proved by omega.",
@@ -134,7 +134,7 @@
       "startLine": 215,
       "endLine": 234
     },
-    "type": "proof-technique",
+    "type": "concept",
     "title": "Sign Normalization to Get Positive q",
     "content": "Since a ≠ 0 is an integer, |a| ≥ 1. The set S is symmetric, so if (a,b) ∈ S then (−a,−b) ∈ S. Setting q = |a| and p = b (if a>0) or p = −b (if a<0), the condition |α·q−p| < 1/Q is preserved: if a>0, q=a and p=b; if a<0, q=−a and α·(−a)−(−b) = −(αa−b), same absolute value.",
     "mathContext": "The sign case split: if a > 0 then |a|=a and the bound is directly hab_approx. If a < 0 then |a|=−a (Int.abs_of_neg) and α·(−a)−(−b) = −(α·a−b) by ring, so |α·(−a)−(−b)| = |−(α·a−b)| = |α·a−b| by abs_neg.",

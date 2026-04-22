@@ -31,7 +31,7 @@
       "startLine": 100,
       "endLine": 104
     },
-    "type": "structure",
+    "type": "concept",
     "title": "3D Polygonal Path",
     "content": "Defines a polygonal path in ℝ³ as a finite collection of n segments, each with a nonneg length. The segment directions are not stored — only lengths matter for the Buffon formula, reflecting the shape-independence principle. This matches the fully verified theory in BuffonsNeedleOQ02.lean: E[crossings] = totalLength/(2d) depends only on the sum of segment lengths, not their orientations.",
     "mathContext": "A 3D polygonal path with $n$ segments stores: segment lengths $L_1, \\ldots, L_n \\geq 0$. Expected crossings = $\\sum_i L_i / (2d)$ by linearity of expectation applied to individual segments, each contributing $L_i \\cdot E_{S^2}[|\\cos\\varphi|]/(2d) = L_i/(2 \\cdot 2d)$... wait, more precisely:\n$$E[\\text{crossings}] = \\frac{\\sum_i L_i}{2d}$$",
@@ -55,7 +55,7 @@
       "startLine": 137,
       "endLine": 137
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Smooth 3D Expected Crossings Primitive",
     "content": "Axiomatizes the expected number of crossings of a smooth C¹ curve with parallel planes as a noncomputable function. This is the primitive notion that smooth3D_buffon_eq constrains. The need for axiomatization reflects the Mathlib gap: computing this quantity formally requires the kinematic measure on the Grassmannian Gr(2,3) ≅ S², which is not yet in Mathlib.",
     "mathContext": "$$\\text{smooth3DExpectedCrossings}(\\gamma, a, b, d) \\in \\mathbb{R}$$\nThis represents $E_\\mu[\\#(\\gamma([a,b]) \\cap H)]$ where the expectation is over random parallel planes $H$ (spacing $d$) with respect to the translational-equivariant measure $\\mu$.",
@@ -79,7 +79,7 @@
       "startLine": 155,
       "endLine": 158
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "Buffon-Barbier Theorem (Smooth 3D Case)",
     "content": "The central axiom: for a C¹ curve γ of arc length L on [a,b] dropped on parallel planes with spacing d > 0, the expected number of crossings equals L/(2d). The crossing factor 1/2 = α₃ = E_{S²}[|cos φ|] was proved in BuffonsNeedleOQ02.lean for polygonal paths; here it is axiomatized for the smooth limit. The full proof requires arc length approximation by polygonal paths and continuity of the crossing functional.",
     "mathContext": "$$E[\\text{crossings}] = \\frac{L}{2d} = \\frac{\\text{arcLength3D}(\\gamma, a, b)}{2d}$$\nwhere $L = \\int_a^b \\sqrt{x'^2+y'^2+z'^2}\\,dt$.\n\nProof sketch (axiomatized): $\\gamma$ is approximated by polygonal paths $P_k$ with $|P_k| \\to L$. By BuffonsNeedleOQ02: $E[\\text{crossings}(P_k)] = |P_k|/(2d) \\to L/(2d)$.",

@@ -18,7 +18,12 @@
       "Finset.range",
       "Finset.sum"
     ],
-    "content": "By encoding the $k$-dimensional sum as a list recursion (peeling off one variable at a time), the proof of `multi_hockey_stick` becomes a standard list induction. No special handling of multi-index sets is needed. Each recursive call reduces the dimension by 1 and the bound by $j$, matching the simplex slicing exactly."
+    "content": "By encoding the $k$-dimensional sum as a list recursion (peeling off one variable at a time), the proof of `multi_hockey_stick` becomes a standard list induction. No special handling of multi-index sets is needed. Each recursive call reduces the dimension by 1 and the bound by $j$, matching the simplex slicing exactly.",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-01",
+    "range": {
+      "startLine": 44,
+      "endLine": 44
+    }
   },
   {
     "id": "multi-hockey-stick-proof",
@@ -41,7 +46,12 @@
       "List.sum_cons",
       "List.length_cons"
     ],
-    "content": "The `parallel_vandermonde` identity ($\\sum_j C(j+a,a) C(n-j+b,b) = C(n+a+b+1,a+b+1)$) is used at every induction step as the folding operation. Each application reduces a $k$-dimensional sum to a $(k-1)$-dimensional one. The `omega` handles the arithmetic $a + b + 1 = (a::as').\\text{sum} + (a::as').\\text{length}$ — trivial but required for definiteness."
+    "content": "The `parallel_vandermonde` identity ($\\sum_j C(j+a,a) C(n-j+b,b) = C(n+a+b+1,a+b+1)$) is used at every induction step as the folding operation. Each application reduces a $k$-dimensional sum to a $(k-1)$-dimensional one. The `omega` handles the arithmetic $a + b + 1 = (a::as').\\text{sum} + (a::as').\\text{length}$ — trivial but required for definiteness.",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-01",
+    "range": {
+      "startLine": 56,
+      "endLine": 61
+    }
   },
   {
     "id": "special-cases",
@@ -63,7 +73,12 @@
       "List.sum_cons",
       "List.length_cons"
     ],
-    "content": "These provide human-readable, citable instances of the general theorem. The 1D case recovers the classical identity from Pascal's *Traité* (1654). The 2D case is useful in double-sum combinatorics. All three are immediate corollaries of `multi_hockey_stick` — they demonstrate that the general list induction subsumes the specific dimensional cases."
+    "content": "These provide human-readable, citable instances of the general theorem. The 1D case recovers the classical identity from Pascal's *Traité* (1654). The 2D case is useful in double-sum combinatorics. All three are immediate corollaries of `multi_hockey_stick` — they demonstrate that the general list induction subsumes the specific dimensional cases.",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-01",
+    "range": {
+      "startLine": 90,
+      "endLine": 92
+    }
   },
   {
     "id": "concrete-checks",
@@ -84,7 +99,12 @@
       "native_decide",
       "multiHockeySum definition"
     ],
-    "content": "The `native_decide` tactic evaluates the recursive definition by computation, providing a sanity check independent of the abstract induction proof. If the definition had a bug (wrong base case, off-by-one in `range`), these checks would catch it. The 3D case is particularly illuminating: it confirms that 10 lattice points in the tetrahedron equals $C(5,3)$, consistent with stars-and-bars (placing 2 objects into 4 bins)."
+    "content": "The `native_decide` tactic evaluates the recursive definition by computation, providing a sanity check independent of the abstract induction proof. If the definition had a bug (wrong base case, off-by-one in `range`), these checks would catch it. The 3D case is particularly illuminating: it confirms that 10 lattice points in the tetrahedron equals $C(5,3)$, consistent with stars-and-bars (placing 2 objects into 4 bins).",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-01",
+    "range": {
+      "startLine": 112,
+      "endLine": 113
+    }
   },
   {
     "id": "monotonicity-positivity",
@@ -106,6 +126,11 @@
       "Nat.choose_pos",
       "omega"
     ],
-    "content": "Both proofs are one-liners after the `multi_hockey_stick` rewrite — demonstrating the leverage of the main identity. Properties about the complex recursive sum reduce immediately to simple facts about binomial coefficients. This 'reduce via the main theorem' pattern is the standard way to derive structural properties in this file."
+    "content": "Both proofs are one-liners after the `multi_hockey_stick` rewrite — demonstrating the leverage of the main identity. Properties about the complex recursive sum reduce immediately to simple facts about binomial coefficients. This 'reduce via the main theorem' pattern is the standard way to derive structural properties in this file.",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-01",
+    "range": {
+      "startLine": 133,
+      "endLine": 165
+    }
   }
 ]

@@ -43,7 +43,12 @@
       "trigonometry",
       "regular polygon geometry"
     ],
-    "content": "This is the foundation of Archimedes' method of exhaustion: approximate the circle by inscribed regular polygons and take the limit. As $n \\to \\infty$, $n\\sin(2\\pi/n) \\to 2\\pi$ (since $\\sin(x)/x \\to 1$), so $A_n(r) \\to \\pi r^2$. The rest of the file proves the quantitative rate $O(1/n^2)$ for this convergence."
+    "content": "This is the foundation of Archimedes' method of exhaustion: approximate the circle by inscribed regular polygons and take the limit. As $n \\to \\infty$, $n\\sin(2\\pi/n) \\to 2\\pi$ (since $\\sin(x)/x \\to 1$), so $A_n(r) \\to \\pi r^2$. The rest of the file proves the quantitative rate $O(1/n^2)$ for this convergence.",
+    "proofId": "area-of-circle-oq-03-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 55
+    }
   },
   {
     "id": "sin-sq-cos-chain",
@@ -65,7 +70,12 @@
       "abs_sin_le_one",
       "cos_sq_half_angle"
     ],
-    "content": "The half-angle identity $\\cos x = 1 - 2\\sin^2(x/2)$ is the crucial bridge: it converts a bound on $\\sin^2$ into an additive lower bound on $\\cos$. This two-step chain is more elementary than citing the Taylor remainder formula — it works from first principles using only `Real.sin_lt` and `abs_sin_le_one`."
+    "content": "The half-angle identity $\\cos x = 1 - 2\\sin^2(x/2)$ is the crucial bridge: it converts a bound on $\\sin^2$ into an additive lower bound on $\\cos$. This two-step chain is more elementary than citing the Taylor remainder formula — it works from first principles using only `Real.sin_lt` and `abs_sin_le_one`.",
+    "proofId": "area-of-circle-oq-03-oq-01",
+    "range": {
+      "startLine": 62,
+      "endLine": 81
+    }
   },
   {
     "id": "sin-lb-mvt",
@@ -88,7 +98,12 @@
       "HasDerivAt.add",
       "hasDerivAt_pow"
     ],
-    "content": "This is the **MVT-as-bootstrapping** technique: use a derivative bound to establish a function bound, without the explicit Taylor remainder formula. The pattern: define $g = f - \\text{(approximation)}$, show $g' \\geq 0$ (using a previously proved bound), apply MVT to get $g(x) \\geq g(0) = 0$. This is the classical technique for converting derivative bounds into function bounds."
+    "content": "This is the **MVT-as-bootstrapping** technique: use a derivative bound to establish a function bound, without the explicit Taylor remainder formula. The pattern: define $g = f - \\text{(approximation)}$, show $g' \\geq 0$ (using a previously proved bound), apply MVT to get $g(x) \\geq g(0) = 0$. This is the classical technique for converting derivative bounds into function bounds.",
+    "proofId": "area-of-circle-oq-03-oq-01",
+    "range": {
+      "startLine": 99,
+      "endLine": 109
+    }
   },
   {
     "id": "rate-bound",
@@ -110,7 +125,12 @@
       "inscribed_area_upper",
       "Real.sin_lt"
     ],
-    "content": "The explicit constant $2\\pi^3/3 \\approx 20.67$ makes this a **computable convergence rate**. The cubic term $u^3/6$ combined with the $n$ factor and $u = 2\\pi/n$: $n \\cdot u^3 = n \\cdot (2\\pi/n)^3 = 8\\pi^3/n^2$. The cubic cancels one power of $n$, leaving $1/n^2$. For Archimedes' 96-gon: bound $\\leq 2\\pi^3/(3 \\cdot 9216) \\approx 0.00225$ (relative error $< 0.072\\%$). Doubling $n$ reduces error by factor 4."
+    "content": "The explicit constant $2\\pi^3/3 \\approx 20.67$ makes this a **computable convergence rate**. The cubic term $u^3/6$ combined with the $n$ factor and $u = 2\\pi/n$: $n \\cdot u^3 = n \\cdot (2\\pi/n)^3 = 8\\pi^3/n^2$. The cubic cancels one power of $n$, leaving $1/n^2$. For Archimedes' 96-gon: bound $\\leq 2\\pi^3/(3 \\cdot 9216) \\approx 0.00225$ (relative error $< 0.072\\%$). Doubling $n$ reduces error by factor 4.",
+    "proofId": "area-of-circle-oq-03-oq-01",
+    "range": {
+      "startLine": 143,
+      "endLine": 162
+    }
   },
   {
     "id": "error-positive",
@@ -132,6 +152,11 @@
       "inscribed_area_convergence_rate",
       "n ≥ 3 condition"
     ],
-    "content": "Strict positivity confirms that **inscribed polygons always underestimate** the circle area. Geometrically this is obvious (an inscribed polygon is contained in the circle), but the Lean proof makes it formal via `Real.sin_lt`. The $n \\geq 3$ condition marks the first genuine polygon (equilateral triangle). Combined with the upper bound, this gives a **two-sided squeeze**: the inscribed area is neither zero nor the full circle area, and is within $2\\pi^3r^2/(3n^2)$ of $\\pi r^2$."
+    "content": "Strict positivity confirms that **inscribed polygons always underestimate** the circle area. Geometrically this is obvious (an inscribed polygon is contained in the circle), but the Lean proof makes it formal via `Real.sin_lt`. The $n \\geq 3$ condition marks the first genuine polygon (equilateral triangle). Combined with the upper bound, this gives a **two-sided squeeze**: the inscribed area is neither zero nor the full circle area, and is within $2\\pi^3r^2/(3n^2)$ of $\\pi r^2$.",
+    "proofId": "area-of-circle-oq-03-oq-01",
+    "range": {
+      "startLine": 204,
+      "endLine": 215
+    }
   }
 ]

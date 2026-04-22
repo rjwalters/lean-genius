@@ -2,7 +2,7 @@
   {
     "id": "ann-schubert-overview",
     "title": "Schubert Calculus on Gr(2,4): Explicit Computation Approach",
-    "type": "overview",
+    "type": "concept",
     "startLine": 64,
     "endLine": 71,
     "mathContext": "The Chow ring A*(Gr(2,4)) is a graded Z-algebra with rank 6 over Z. Basis: σ_∅ (degree 0), σ₁ (degree 1), σ₂, σ₁₁ (degree 2), σ₂₁ (degree 3), σ₂₂ (degree 4). The four-lines computation: σ₁² = σ₂ + σ₁₁ → σ₁³ = 2σ₂₁ → σ₁⁴ = 2σ₂₂, proving that exactly 2 lines meet 4 general lines in P³. All 22 theorems proved by native_decide from the explicit LR multiplication table, 0 axioms.",
@@ -14,12 +14,17 @@
       "Chow ring",
       "intersection theory"
     ],
-    "content": "This file directly answers Hilbert's 15th problem (1900) for the case Gr(2,4): Schubert's enumerative calculus is fully rigorous because the Chow ring is an explicit finitely-presented Z-algebra with decidable multiplication. The key insight — encode the ring as a struct with 6 integer fields and the LR table as a pattern-matching function — makes all enumerative geometry into verified finite computation."
+    "content": "This file directly answers Hilbert's 15th problem (1900) for the case Gr(2,4): Schubert's enumerative calculus is fully rigorous because the Chow ring is an explicit finitely-presented Z-algebra with decidable multiplication. The key insight — encode the ring as a struct with 6 integer fields and the LR table as a pattern-matching function — makes all enumerative geometry into verified finite computation.",
+    "proofId": "hilbert-15-oq-01",
+    "range": {
+      "startLine": 64,
+      "endLine": 71
+    }
   },
   {
     "id": "ann-chow-ring-structure",
     "title": "ChowGr24: The Chow Ring as a Z-Linear Structure",
-    "type": "structure",
+    "type": "concept",
     "startLine": 74,
     "endLine": 101,
     "mathContext": "ChowGr24 is a structure with 6 integer fields (c0, c1, c2, c11, c21, c22) representing coefficients of the Schubert basis (σ_∅, σ₁, σ₂, σ₁₁, σ₂₁, σ₂₂). Derives DecidableEq and Repr, enabling decide/native_decide for all ring equations. Ring instances: Zero (all zeros), One (c0=1), Add (componentwise), Neg (componentwise), SMul Z (componentwise scalar). Grading: degrees 0+0=0, 1+1=2, 2+2=4 (the multiplication maps degree k × degree l to degree k+l, annihilating beyond degree 4).",
@@ -31,7 +36,12 @@
       "Z-module",
       "Schubert class"
     ],
-    "content": "The DecidableEq derivation is what makes native_decide work throughout the file. Every theorem of the form 'σ_λ · σ_μ = X' is proved by native_decide, which runs a compiled decision procedure. This is the fundamental trick: encode the ring concretely enough that all equations become decidable propositions. The structure encoding respects the grading implicitly through the multiplication table."
+    "content": "The DecidableEq derivation is what makes native_decide work throughout the file. Every theorem of the form 'σ_λ · σ_μ = X' is proved by native_decide, which runs a compiled decision procedure. This is the fundamental trick: encode the ring concretely enough that all equations become decidable propositions. The structure encoding respects the grading implicitly through the multiplication table.",
+    "proofId": "hilbert-15-oq-01",
+    "range": {
+      "startLine": 74,
+      "endLine": 101
+    }
   },
   {
     "id": "ann-schubert-basis",
@@ -48,7 +58,12 @@
       "degree map",
       "flag variety"
     ],
-    "content": "Each Schubert class σ_λ corresponds geometrically to the cycle of lines satisfying a Schubert condition: meeting a flag in a specific way. σ₂₂ is the point class — its coefficient in a product gives the intersection number. The six classes σ_∅, σ₁, σ₂, σ₁₁, σ₂₁, σ₂₂ exhaust the partitions fitting in the 2×2 box (k=2, n-k=2 box for Gr(2,4))."
+    "content": "Each Schubert class σ_λ corresponds geometrically to the cycle of lines satisfying a Schubert condition: meeting a flag in a specific way. σ₂₂ is the point class — its coefficient in a product gives the intersection number. The six classes σ_∅, σ₁, σ₂, σ₁₁, σ₂₁, σ₂₂ exhaust the partitions fitting in the 2×2 box (k=2, n-k=2 box for Gr(2,4)).",
+    "proofId": "hilbert-15-oq-01",
+    "range": {
+      "startLine": 105,
+      "endLine": 120
+    }
   },
   {
     "id": "ann-multiplication-table",
@@ -65,7 +80,12 @@
       "Young tableau",
       "bilinear extension"
     ],
-    "content": "The entry (2,3)↦0 (σ₂·σ₁₁ = 0) is the key nontrivial fact from Schubert calculus. The LR rule says c^{22}_{2,11} = 0 because no semistandard Young tableau with content (2,11) and shape 22 satisfies the lattice word condition. This vanishing encodes a genuine geometric fact: in P³, the Schubert varieties for σ₂ (lines in a plane) and σ₁₁ (lines through a point) in general position do not intersect in any line that also lies in a fixed plane through a fixed point."
+    "content": "The entry (2,3)↦0 (σ₂·σ₁₁ = 0) is the key nontrivial fact from Schubert calculus. The LR rule says c^{22}_{2,11} = 0 because no semistandard Young tableau with content (2,11) and shape 22 satisfies the lattice word condition. This vanishing encodes a genuine geometric fact: in P³, the Schubert varieties for σ₂ (lines in a plane) and σ₁₁ (lines through a point) in general position do not intersect in any line that also lies in a fixed plane through a fixed point.",
+    "proofId": "hilbert-15-oq-01",
+    "range": {
+      "startLine": 140,
+      "endLine": 203
+    }
   },
   {
     "id": "ann-four-lines-theorem",
@@ -82,7 +102,12 @@
       "intersection number",
       "P³ lines"
     ],
-    "content": "The four lines theorem — exactly 2 lines meet 4 general lines in P³ — is one of the oldest results in enumerative geometry, conjectured by Schubert in 1879. Here it is reduced to a computation: native_decide runs a compiled checker that verifies σ₁*σ₁*σ₁*σ₁ = ⟨0,0,0,0,0,2⟩ by evaluating the bilinear extension of basisMul. The result is kernel-verified, not just proof-checked."
+    "content": "The four lines theorem — exactly 2 lines meet 4 general lines in P³ — is one of the oldest results in enumerative geometry, conjectured by Schubert in 1879. Here it is reduced to a computation: native_decide runs a compiled checker that verifies σ₁*σ₁*σ₁*σ₁ = ⟨0,0,0,0,0,2⟩ by evaluating the bilinear extension of basisMul. The result is kernel-verified, not just proof-checked.",
+    "proofId": "hilbert-15-oq-01",
+    "range": {
+      "startLine": 210,
+      "endLine": 255
+    }
   },
   {
     "id": "ann-poincare-giambelli",
@@ -99,7 +124,12 @@
       "Schur polynomial",
       "ring generators"
     ],
-    "content": "Self-duality of σ₂ and σ₁₁ reflects the symmetric geometry of Gr(2,4): the dual partition of (2) under the 2×2 complement is (2-0, 2-2) = (2,0) = (2) itself, and similarly for (1,1). Giambelli's formula shows that σ₁₁ is determined by σ₁ and σ₂ — the special Schubert classes generate the full ring. All proved by native_decide: these classical theorems become trivially decidable once the ring is explicit."
+    "content": "Self-duality of σ₂ and σ₁₁ reflects the symmetric geometry of Gr(2,4): the dual partition of (2) under the 2×2 complement is (2-0, 2-2) = (2,0) = (2) itself, and similarly for (1,1). Giambelli's formula shows that σ₁₁ is determined by σ₁ and σ₂ — the special Schubert classes generate the full ring. All proved by native_decide: these classical theorems become trivially decidable once the ring is explicit.",
+    "proofId": "hilbert-15-oq-01",
+    "range": {
+      "startLine": 267,
+      "endLine": 301
+    }
   },
   {
     "id": "ann-enumerative-applications",
@@ -116,6 +146,11 @@
       "commutativity",
       "classical Schubert problems"
     ],
-    "content": "These corollaries demonstrate the power of the Chow ring formalism: classical enumerative problems become arithmetic in A*(Gr(2,4)), computable by native_decide. The overdetermination result (degree 0) is geometrically meaningful: 3 linear conditions (meeting 3 lines) + 1 point condition would require a 4-dimensional solution space, but Gr(2,4) has complex dimension 4 = 2(4-2), so generically no solution exists."
+    "content": "These corollaries demonstrate the power of the Chow ring formalism: classical enumerative problems become arithmetic in A*(Gr(2,4)), computable by native_decide. The overdetermination result (degree 0) is geometrically meaningful: 3 linear conditions (meeting 3 lines) + 1 point condition would require a 4-dimensional solution space, but Gr(2,4) has complex dimension 4 = 2(4-2), so generically no solution exists.",
+    "proofId": "hilbert-15-oq-01",
+    "range": {
+      "startLine": 311,
+      "endLine": 335
+    }
   }
 ]
