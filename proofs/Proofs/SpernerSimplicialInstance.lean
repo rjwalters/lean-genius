@@ -742,37 +742,24 @@ lemma AbstractSimplicialData.adjFn_symm
   -- Strategy: the vertex at the chosen index is not in the face.
   -- Since hne_erase.choose = s and face = faceOf s hs k, use List-level
   -- reasoning to show the index must be k.
+  -- Fin component: findOppositeIdx hne_erase.choose ht' (faceOf s' hs' k') hf' hfc' = k
+  -- Since hne_erase.choose = s and faceOf s' hs' k' = faceOf s hs k,
+  -- the vertex at the result index is not in faceOf s hs k, so by
+  -- vertexEnum_not_mem_faceOf_iff it must equal k.
   have h_idx_eq : ∀ (ht' : hne_erase.choose ∈ D.topSimplices)
       (hf' : D.faceOf s' hs' k' ⊆ hne_erase.choose)
       (hfc' : (D.faceOf s' hs' k').card = n),
       D.findOppositeIdx hne_erase.choose ht' (D.faceOf s' hs' k') hf' hfc' = k := by
     intro ht' hf' hfc'
     set idx := D.findOppositeIdx hne_erase.choose ht' (D.faceOf s' hs' k') hf' hfc'
-    -- The vertex at idx is not in the face
-    have h_nmem := D.vertexEnum_findOppositeIdx_not_mem hne_erase.choose ht'
-      (D.faceOf s' hs' k') hf' hfc'
-    -- Transport: face = faceOf s' hs' k' = faceOf s hs k = s.erase (vertexEnum s hs k)
-    have h_nmem_f : D.vertexEnum hne_erase.choose ht' idx ∉ f := hface_eq ▸ h_nmem
-    -- The vertex IS in hne_erase.choose = s
-    have h_mem_s : D.vertexEnum hne_erase.choose ht' idx ∈ s :=
-      ht_eq_s ▸ D.vertexEnum_mem hne_erase.choose ht' idx
-    -- f = faceOf s hs k = s.erase (vertexEnum s hs k), so vertex = vertexEnum s hs k
-    have h_eq_vk : D.vertexEnum hne_erase.choose ht' idx = D.vertexEnum s hs k := by
-      -- Unfold f to s.erase (vertexEnum s hs k)
-      rw [show f = s.erase (D.vertexEnum s hs k) from rfl] at h_nmem_f
-      rw [Finset.mem_erase, not_and_or] at h_nmem_f
-      cases h_nmem_f with
-      | inl h => exact not_not.mp h
-      | inr h => exact absurd h_mem_s h
-    -- Show vertexEnum hne_erase.choose ht' k = vertexEnum s hs k
-    -- Both sort the same Finset (since hne_erase.choose = s) and pick the same index k
-    have h_veq : D.vertexEnum hne_erase.choose ht' k = D.vertexEnum s hs k := by
-      unfold AbstractSimplicialData.vertexEnum
-      simp only [List.get_eq_getElem, ht_eq_s]
-      rfl
-    -- Now: vertexEnum hne_erase.choose ht' idx = vertexEnum hne_erase.choose ht' k
-    rw [← h_veq] at h_eq_vk
-    exact D.vertexEnum_injective hne_erase.choose ht' h_eq_vk
+    -- vertexEnum is determined by the Finset sort, not the membership proof
+    have hve : D.vertexEnum hne_erase.choose ht' idx = D.vertexEnum s hs idx := by
+      simp [AbstractSimplicialData.vertexEnum, ht_eq_s]
+    -- Vertex at idx is not in faceOf s' hs' k' = faceOf s hs k
+    have h_nmem : D.vertexEnum s hs idx ∉ D.faceOf s hs k := by
+      have := D.vertexEnum_findOppositeIdx_not_mem hne_erase.choose ht' _ hf' hfc'
+      rwa [hface_eq, hve] at this
+    exact (D.vertexEnum_not_mem_faceOf_iff s hs idx k).mp h_nmem
   exact h_idx_eq _ _ _
 
 /-- Construct a `Triangulation` from `AbstractSimplicialData`.
