@@ -48,7 +48,7 @@ total doors ≡ panchromatic cells (mod 2).
 Sperner, combinatorics, parity, triangulation, door-counting
 -/
 
-set_option maxHeartbeats 400000
+set_option maxHeartbeats 200000
 
 open Finset
 
@@ -235,12 +235,14 @@ private lemma even_card_doors_of_surjective (d : ℕ)
           (fun i : Fin (d + 1) => f i = f k) :=
         mem_filter.mpr ⟨mem_univ i, hi_eq⟩
       rw [ha] at hk_in hi_in
-      simp at hk_in hi_in
+      rw [Finset.mem_singleton] at hk_in hi_in
       exact hi_ne (hk_in ▸ hi_in)
     have hk_mem : k ∈ univ.filter
         (fun i : Fin (d + 1) => f i = c₀) :=
       mem_filter.mpr ⟨mem_univ k, hfk⟩
-    rw [hpair] at hk_mem; simp at hk_mem; exact hk_mem
+    rw [hpair] at hk_mem
+    rw [mem_insert, mem_singleton] at hk_mem
+    exact hk_mem
   · intro hk j
     obtain ⟨i₀, hi₀⟩ := hcov j
     by_cases hik : i₀ = k
@@ -288,16 +290,15 @@ private lemma door_count_of_surj (d : ℕ)
       have := (f k).isLt; omega
     obtain ⟨i, hi_ne, hi_eq⟩ :=
       hk ⟨(f k).val, hfk_lt⟩
-    have hval : (f i).val = (f k).val := by
-      have h1 := congr_arg Fin.val hi_eq
-      simp at h1; exact h1
-    exact hi_ne (hinj (Fin.ext hval))
+    have hval : f i = f k :=
+      Fin.ext (Fin.ext_iff.mp hi_eq)
+    exact hi_ne (hinj hval)
   · intro hk; subst hk; intro ⟨j, hj⟩
     obtain ⟨i, hi⟩ := hsurj ⟨j, by omega⟩
     exact ⟨i,
       fun hik => by
         subst hik; rw [hk₀] at hi
-        exact absurd hi (by simp; omega),
+        simp only [Fin.mk.injEq] at hi; omega,
       by rw [hi]⟩
 
 /-- A non-surjection `Fin (d+1) → Fin (d+1)` has an even
@@ -352,13 +353,13 @@ private lemma door_count_even_of_not_surj (d : ℕ)
       simp only [mem_filter, mem_univ, true_and]
       constructor <;> intro h j
       · obtain ⟨i, hi, hfi⟩ := h j
-        exact ⟨i, hi, Fin.ext (by
-          simp [g]
-          exact congr_arg Fin.val hfi)⟩
+        refine ⟨i, hi, Fin.ext ?_⟩
+        change (f i).val = j.val
+        exact congr_arg Fin.val hfi
       · obtain ⟨i, hi, hgi⟩ := h j
-        exact ⟨i, hi, Fin.ext (by
-          have := congr_arg Fin.val hgi
-          simp [g] at this; exact this)⟩
+        refine ⟨i, hi, Fin.ext ?_⟩
+        change (f i).val = j.val
+        exact congr_arg Fin.val hgi
     · -- g not surjective: some lower color missing. No doors.
       have ⟨j₀, hj₀⟩ :
           ∃ j : Fin d, ¬∃ i, g i = j := by
@@ -372,9 +373,9 @@ private lemma door_count_even_of_not_surj (d : ℕ)
       rw [Finset.card_eq_zero, filter_eq_empty_iff]
       intro k _; push_neg
       exact ⟨j₀, fun i _ h =>
-        hj₀ ⟨i, Fin.ext (by
-          have := congr_arg Fin.val h
-          simp at this; exact this)⟩⟩
+        hj₀ ⟨i, Fin.ext (show (g i).val = j₀.val by
+          change (f i).val = j₀.val
+          exact congr_arg Fin.val h)⟩⟩
 
 /-- **Door count parity**: the number of door positions of a
 coloring `f : Fin (d+1) → Fin (d+1)` has parity equal to 1
@@ -570,11 +571,8 @@ private lemma per_cell_door_parity
           ⟨j.val, by omega⟩)) := by
     ext k
     simp only [mem_filter, mem_univ, true_and]; rfl
-  rw [h1]
-  have h2 : IsPanchromatic c K s ↔
-      Function.Surjective (c ∘ K.vertex s) := Iff.rfl
-  simp only [h2]
-  convert h using 2
+  rw [h1, h]
+  exact if_congr Iff.rfl rfl rfl
 
 private lemma sum_mod_congr {ι : Type*}
     (S : Finset ι) (a b : ι → ℕ)
@@ -582,7 +580,7 @@ private lemma sum_mod_congr {ι : Type*}
     (∑ i ∈ S, a i) % 2 =
     (∑ i ∈ S, b i) % 2 := by
   induction S using Finset.cons_induction with
-  | empty => simp
+  | empty => rfl
   | cons x s hx ih =>
     rw [sum_cons, sum_cons]
     have hx_eq :=
@@ -664,7 +662,8 @@ theorem sperner_parity (c : V → Fin (d + 1))
         if IsPanchromatic c K s
         then 1 else 0) % 2 :=
     sum_mod_congr univ _ _ (fun s _ => by
-      rw [hper s]; split <;> simp)
+      rw [hper s]
+      split_ifs <;> omega)
   have hfc_sum :
       (∑ s : K.Cell,
         if IsPanchromatic c K s
