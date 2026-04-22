@@ -1,0 +1,69 @@
+{
+  "slug": "kroneckers-jugendtraum-oq-02",
+  "title": "Stark Units: Effective Computation for Specific Number Fields",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Stark Units: Effective Computation for Specific Number Fields.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-22T12:51:58.077Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "algebraic-number-theory",
+    "stark-units",
+    "hilbert-12",
+    "class-field-theory"
+  ],
+  "relatedProofs": [
+    "kroneckers-jugendtraum"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T12:51:58.077Z",
+  "lastUpdate": "2026-04-22T12:51:58.077Z",
+  "significance": 8,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/KroneckersJugendtraum.lean",
+      "filename": "KroneckersJugendtraum.lean",
+      "lineCount": 388,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KroneckersJugendtraum.lean"
+    }
+  ]
+}

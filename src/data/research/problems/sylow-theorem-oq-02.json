@@ -1,0 +1,109 @@
+{
+  "slug": "sylow-theorem-oq-02",
+  "title": "Sylow Theorem: Complexity of Finding All Sylow p-Subgroups",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in algebra: Sylow Theorem: Complexity of Finding All Sylow p-Subgroups.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-22T13:03:46.506Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "algebra",
+    "group-theory",
+    "sylow",
+    "computational-complexity",
+    "algorithms"
+  ],
+  "relatedProofs": [
+    "sylow-theorem",
+    "sylow-theorem-oq-01",
+    "sylow-theorem-oq-04",
+    "sylow-theorems",
+    "sylow-theorems-oq-01",
+    "sylow-theorems-oq-02",
+    "sylow-theorems-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T13:03:46.506Z",
+  "lastUpdate": "2026-04-22T13:03:46.506Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/SylowTheorem.lean",
+      "filename": "SylowTheorem.lean",
+      "lineCount": 247,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheorem.lean"
+    },
+    {
+      "path": "Proofs/SylowTheoremOQ01.lean",
+      "filename": "SylowTheoremOQ01.lean",
+      "lineCount": 388,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/SylowTheoremOQ02.lean",
+      "filename": "SylowTheoremOQ02.lean",
+      "lineCount": 394,
+      "theoremCount": 9,
+      "axiomCount": 5,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/SylowTheoremOQ04.lean",
+      "filename": "SylowTheoremOQ04.lean",
+      "lineCount": 277,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremOQ04.lean"
+    }
+  ]
+}
