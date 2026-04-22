@@ -48,7 +48,7 @@ total doors ≡ panchromatic cells (mod 2).
 Sperner, combinatorics, parity, triangulation, door-counting
 -/
 
-set_option maxHeartbeats 1600000
+set_option maxHeartbeats 400000
 
 open Finset
 
