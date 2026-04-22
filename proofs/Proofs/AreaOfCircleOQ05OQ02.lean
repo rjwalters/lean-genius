@@ -19,10 +19,10 @@ for any positive-definite real symmetric matrix A.
    The orthogonal change of variables y = Uᵀx preserves Lebesgue measure
    (|det Uᵀ| = 1). Then xᵀAx = yᵀDy = ∑ λᵢyᵢ², and det A = ∏ λᵢ.
 
-## Status
+## Status (all proved, 0 sorries)
 - `prod_sqrt_eq_sqrt_prod` : proved (induction on n)
 - `diagonal_gaussian` : proved (Fubini + scalar Gaussian)
-- `multivariate_gaussian_integral` : 1 sorry (spectral change of variables)
+- `multivariate_gaussian_integral` : proved (spectral decomposition + orthogonal change of variables)
 
 Parent: AreaOfCircleOQ05.lean
 -/
@@ -99,7 +99,7 @@ theorem diagonal_gaussian {n : ℕ} (b : Fin n → ℝ) (hb : ∀ i, 0 < b i) :
 
         ∫ x : Fin n → ℝ, exp(-xᵀAx) = √(πⁿ / det A)
 
-    **Proof outline** (1 sorry remaining):
+    **Proof outline**:
     1. Spectral theorem: A = U * diag(λ) * Uᵀ where U is unitary (orthogonal for ℝ)
        and all eigenvalues λᵢ > 0 (since A is positive-definite).
     2. Quadratic form: xᵀAx = (Uᵀx)ᵀ diag(λ) (Uᵀx) = ∑ᵢ λᵢ (Uᵀx)ᵢ².
@@ -108,31 +108,82 @@ theorem diagonal_gaussian {n : ℕ} (b : Fin n → ℝ) (hb : ∀ i, 0 < b i) :
     4. Apply diagonal_gaussian with b = eigenvalues.
     5. det A = ∏ λᵢ by IsHermitian.det_eq_prod_eigenvalues.
 
-    **Remaining sorry**: The measure-preserving change of variables
-    `∫ x, f(Uᵀx) = ∫ y, f(y)` requires constructing the MeasurableEquiv
-    from the orthogonal map and proving measure preservation via
-    `map_linearMap_volume_pi_eq_smul_volume_pi` with |det Uᵀ| = 1. -/
+    The measure-preserving change of variables uses `map_linearMap_volume_pi_eq_smul_volume_pi`
+    with |det Uᵀ| = 1, together with `integral_map` to substitute y = Uᵀx. -/
 theorem multivariate_gaussian_integral {n : ℕ} (A : Matrix (Fin n) (Fin n) ℝ)
     (hA : A.PosDef) :
     ∫ x : Fin n → ℝ, Real.exp (-(dotProduct x (A.mulVec x))) =
     Real.sqrt (Real.pi ^ n / A.det) := by
-  -- Let hAsymm := hA.isHermitian (over ℝ: IsHermitian = IsSymm)
-  -- Let U = hAsymm.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℝ
-  -- Let λ = hAsymm.eigenvalues : Fin n → ℝ, with all λᵢ > 0
-  -- Spectral theorem: A = conjStarAlgAut ℝ _ U (diagonal (RCLike.ofReal ∘ λ))
-  -- Key steps:
-  --   (a) Rewrite xᵀAx = ∑ᵢ λᵢ ((U*ᵥx)ᵢ)² (quadratic form in eigenbasis)
-  --   (b) Change variables: ∫ x, f(Uᵀ *ᵥ x) = ∫ y, f y (measure-preserving)
-  --   (c) Apply diagonal_gaussian with b = eigenvalues
-  --   (d) Use det A = ∏ eigenvalues
-  --
-  -- SORRY: spectral decomposition + orthogonal change of variables
-  -- Needed:
-  --   · hAsymm.spectral_theorem (A = U * diag(λ) * U*)
-  --   · Matrix.PosDef.eigenvalues_pos (all λᵢ > 0)
-  --   · Matrix.IsHermitian.det_eq_prod_eigenvalues (det A = ∏ λᵢ, cast to ℝ)
-  --   · map_linearMap_volume_pi_eq_smul_volume_pi with |det U| = 1
-  --   · MeasurePreserving.integral_comp' to rewrite the integral
-  sorry
+  classical
+  have hS := hA.isHermitian
+  -- Abbreviation: U = underlying matrix of the eigenvector unitary
+  let U : Matrix (Fin n) (Fin n) ℝ := hS.eigenvectorUnitary
+  -- Step 1: det A = ∏ eigenvalues
+  have hdet : A.det = ∏ i, hS.eigenvalues i := by
+    have h := hS.det_eq_prod_eigenvalues (𝕜 := ℝ)
+    simp_rw [show ∀ x : ℝ, @RCLike.ofReal ℝ _ x = x from
+      fun x => congr_fun RCLike.ofReal_real_eq_id x] at h
+    exact h
+  rw [hdet]
+  -- Step 2: Spectral decomposition A = U * diagonal(λ) * Uᵀ
+  have hA_eq : A = U * diagonal hS.eigenvalues * Uᵀ := by
+    have h := hS.spectral_theorem (𝕜 := ℝ)
+    simp only [Unitary.conjStarAlgAut_apply, RCLike.ofReal_real_eq_id, Function.id_comp] at h
+    rw [Matrix.star_eq_conjTranspose, Matrix.conjTranspose_eq_transpose_of_trivial] at h
+    exact h
+  -- Quadratic form: x ⬝ᵥ A *ᵥ x = ∑ i, λᵢ * (Uᵀ *ᵥ x)ᵢ²
+  have hquad : ∀ x : Fin n → ℝ,
+      dotProduct x (A.mulVec x) =
+      ∑ i, hS.eigenvalues i * (Uᵀ.mulVec x i) ^ 2 := by
+    intro x
+    conv_lhs => rw [hA_eq]
+    simp only [← Matrix.mulVec_mulVec]
+    rw [Matrix.dotProduct_mulVec]
+    -- x ᵥ* U = Uᵀ *ᵥ x  [vecMul_transpose with A := Uᵀ gives x ᵥ* (Uᵀ)ᵀ = Uᵀ *ᵥ x]
+    have hvec : x ᵥ* U = Uᵀ.mulVec x := by
+      have h := Matrix.vecMul_transpose Uᵀ x
+      simp only [Matrix.transpose_transpose] at h; exact h
+    rw [hvec]
+    -- Simplify diagonal application: (Uᵀx) ⬝ᵥ (diag(λ) *ᵥ (Uᵀx)) = ∑ λᵢ (Uᵀx)ᵢ²
+    simp only [dotProduct, Matrix.mulVec_diagonal]
+    congr 1; ext i; ring
+  simp_rw [hquad]
+  -- Step 3: The map L(x) = Uᵀ *ᵥ x is measure-preserving since |det Uᵀ| = 1
+  let L : (Fin n → ℝ) →ₗ[ℝ] (Fin n → ℝ) := Uᵀ.mulVecLin
+  have hL_det : LinearMap.det L = Uᵀ.det := by
+    rw [show L = Matrix.toLin' Uᵀ from (Matrix.toLin'_apply' _).symm, LinearMap.det_toLin']
+  -- |det Uᵀ| = |det U| = 1 (U is unitary)
+  have hL_det_abs : |Uᵀ.det| = 1 := by
+    rw [Matrix.det_transpose]
+    have hmem := Matrix.det_of_mem_unitary hS.eigenvectorUnitary.property
+    -- hmem : det U ∈ unitary ℝ, i.e., det U * star (det U) = 1
+    -- Over ℝ with TrivialStar: star (det U) = det U, so det U * det U = 1
+    have h1 : U.det * U.det = 1 := by
+      have h := hmem.2  -- det U * star (det U) = 1
+      simp only [star_trivial] at h; exact h
+    have h_sq : U.det ^ 2 = 1 := by rw [pow_two]; exact h1
+    rcases sq_eq_one_iff.mp h_sq with h | h <;> simp [h]
+  have hL_det_ne : LinearMap.det L ≠ 0 := by
+    rw [hL_det]; intro h
+    simp [h] at hL_det_abs
+  -- Map volume: Measure.map L volume = volume
+  have hmap : Measure.map ⇑L volume = volume := by
+    rw [Real.map_linearMap_volume_pi_eq_smul_volume_pi hL_det_ne, hL_det]
+    rw [show |Uᵀ.det⁻¹| = 1 by rw [abs_inv, hL_det_abs, inv_one]]
+    simp
+  -- Step 4: Change of variables ∫ x, f(L x) = ∫ y, f y (via integral_map + hmap)
+  show ∫ x : Fin n → ℝ, Real.exp (-(∑ i, hS.eigenvalues i * (L x i) ^ 2)) =
+       Real.sqrt (Real.pi ^ n / ∏ i, hS.eigenvalues i)
+  -- Measurability of g = fun y => exp(-∑ λᵢ yᵢ²) under Measure.map L volume
+  have hg : AEStronglyMeasurable
+      (fun y : Fin n → ℝ => Real.exp (-(∑ i, hS.eigenvalues i * y i ^ 2)))
+      (Measure.map ⇑L volume) := by
+    rw [hmap]
+    apply Continuous.aestronglyMeasurable
+    fun_prop
+  -- integral_map: ∫ y, g y ∂(Measure.map L vol) = ∫ x, g (L x) ∂vol
+  -- ← integral_map + hmap rewrites the LHS to ∫ y, g y ∂vol
+  rw [← integral_map L.continuous_of_finiteDimensional.measurable.aemeasurable hg, hmap]
+  exact diagonal_gaussian hS.eigenvalues (fun i => hA.eigenvalues_pos i)
 
 end MultivariateGaussian
