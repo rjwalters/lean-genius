@@ -43,6 +43,22 @@ So: f b = ⨆ n, f(c n) ≥ f(c 0) = f a.
     Proof: use the step chain c(0)=a, c(n+1)=b with sup=b and apply ω-continuity. -/
 theorem omega_continuous_monotone_ari {α : Type*} [CompleteLattice α] {f : α → α}
     (hf : OmegaContinuous f) : Monotone f := by
-  sorry
+  intro a b hab
+  -- Build the step chain c(0) = a, c(n+1) = b
+  have hc_asc : ∀ n : ℕ, (fun n => if n = 0 then a else b) n ≤
+                           (fun n => if n = 0 then a else b) (n + 1) := fun n => by
+    rcases n with _ | n <;> simp [hab]
+  -- The supremum of this chain is b
+  have hc_sup : ⨆ n : ℕ, (if n = 0 then a else b) = b := by
+    apply le_antisymm
+    · exact iSup_le fun n => by rcases n with _ | n <;> simp [hab]
+    · exact le_iSup_of_le 1 (by simp)
+  -- Apply ω-continuity: f(⨆ c) = ⨆ f(c)
+  have h := hf _ hc_asc
+  rw [hc_sup] at h
+  -- f a = f(c 0) ≤ ⨆ f(c) = f b
+  calc f a = f (if (0 : ℕ) = 0 then a else b) := by simp
+       _ ≤ ⨆ n, f (if n = 0 then a else b) := le_iSup _ 0
+       _ = f b := h.symm
 
 end CantorDiagonalizationOQ04OQ03Aristotle
