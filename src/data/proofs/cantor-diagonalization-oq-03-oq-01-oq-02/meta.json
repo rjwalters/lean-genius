@@ -96,6 +96,38 @@
       "summary": "ClassicalRiceModel axiomatizes Kleene's recursion theorem. classical_rice_abstract proves: semantic + non-trivial P leads to contradiction via the flipper code transformer and Kleene's semantic fixed point."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-03-oq-01",
+      "relationship": "foundational",
+      "description": "Parent entry proving the Lawvere fixed-point theorem (lawvere_fpt). This file is the direct instantiation: EvalStructure + Bool.not (no fixed point) immediately yields abstract_rice. Every theorem here invokes lawvere_fpt from the parent."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-03-oq-01-oq-03",
+      "relationship": "complementary",
+      "description": "Sibling entry deriving Gödel incompleteness as the third Lawvere instance. Together they complete the Lawvere chain: Cantor (Prop/negation) → Rice (Bool/not) → Gödel (sentences/unprovability). Both files share the same EvalStructure framework and proof pattern."
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "Turing's halting problem undecidability is derived here in one line as no_halting_model — a direct corollary of abstract_rice. HaltingModel's universal field is definitionally IsPointSurjective, so abstract_rice forbids any decidable halting predicate."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-03-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Categorical Lawvere FPT entry that closes the global-element bridge via the e_pt morphism parameter. Completes the abstract categorical framework (cartesian closed categories) that this file instantiates with Type* and Bool."
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Gödel's incompleteness theorems are the third application in the Lawvere chain formalized here. The conclusion references Gödel as the next step: extend EvalStructure to formal proof systems where the fixed-point endomorphism is negation of provability."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "foundational",
+      "description": "Root diagonal argument entry. Rice's theorem and Turing's halting undecidability both trace to Cantor's original diagonal construction — here abstracted through Lawvere into a single lawvere_fpt theorem that captures all three simultaneously."
+    }
+  ],
   "leanFile": {
     "namespace": "CantorDiagonalizationOQ03OQ01OQ02",
     "lineCount": 275,

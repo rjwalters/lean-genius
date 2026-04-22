@@ -60,6 +60,18 @@
     "prerequisites": ["abstract_rice", "EvalStructure.IsPointSurjective", "HaltingModel structure"]
   },
   {
+    "id": "ann-rice-classical-rice-model",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-oq-02",
+    "range": { "startLine": 210, "endLine": 222 },
+    "type": "definition",
+    "title": "ClassicalRiceModel: Axiomatizing Kleene's Recursion Theorem",
+    "content": "ClassicalRiceModel is a structure encoding the minimal infrastructure for the classical Rice theorem: programs (Code), behaviors (Behavior), a semantics map, a compile function (h_compile: every behavior has a code), and crucially kleene_rec — Kleene's recursion theorem. kleene_rec axiomatizes that every code transformer f : Code → Code has a 'semantic fixed point': a code e* such that semantics(f(e*)) = semantics(e*). This is precisely the Lawvere fixed-point theorem applied to the evaluation structure (Code, Behavior, semantics) — if semantics were point-surjective in the type-theoretic sense, kleene_rec would follow. By packaging it as a structure field rather than a global axiom, all five theorems in Section II remain axiom-free; only classical_rice_abstract inherits the 2 assumptions via the M : ClassicalRiceModel parameter.",
+    "mathContext": "**Kleene's recursion theorem**: Given any computable function $f: \\mathbb{N} \\to \\mathbb{N}$ (code transformer), there exists a code $e^*$ such that $\\varphi_{f(e^*)} = \\varphi_{e^*}$ (the programs $f(e^*)$ and $e^*$ compute the same partial function). This follows from the s-m-n theorem + diagonal construction: define $e^* = \\varphi_d(d)$ where $d$ encodes the transformer $n \\mapsto f(\\varphi_n(n))$. The structure field `kleene_rec` is a direct Lean 4 encoding of this universality without committing to any specific computation model.",
+    "significance": "key",
+    "relatedConcepts": ["Kleene's recursion theorem", "s-m-n theorem", "structure fields as axioms", "behavioral equivalence", "code transformer"],
+    "prerequisites": ["ClassicalRiceModel structure", "Lean 4 structure syntax", "Type* for universe polymorphism"]
+  },
+  {
     "id": "ann-rice-classical",
     "proofId": "cantor-diagonalization-oq-03-oq-01-oq-02",
     "range": { "startLine": 237, "endLine": 262 },
