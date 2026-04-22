@@ -1,8 +1,8 @@
 {
   "slug": "area-of-circle-oq-05-oq-02",
   "title": "Multivariate Gaussian Integral via Matrix Diagonalization",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -17,43 +17,44 @@
   "knownResults": {
     "proven": [
       "gaussian_integral_eq_sqrt_pi: ∫_{ℝ} e^{-x²} dx = √π (parent proof)",
-      "Matrix.PosDef: positive-definite matrices in Mathlib",
-      "MeasureTheory.integral_prod: Fubini for product measures"
+      "prod_sqrt_eq_sqrt_prod: ∏ √(f i) = √(∏ f i) for nonneg f (induction on n)",
+      "diagonal_gaussian: ∫ exp(-∑ bᵢxᵢ²) = √(πⁿ/∏bᵢ) for positive b (Fubini + scalar)",
+      "multivariate_gaussian_integral: ∫ exp(-xᵀAx) = √(πⁿ/det A) for pos-def A (spectral + orthogonal change of vars)"
     ],
-    "open": [
-      "Spectral theorem change of variables for orthogonal Q",
-      "Multivariate Gaussian integral formula"
-    ],
-    "goal": "Prove multivariate Gaussian integral via spectral decomposition + Fubini"
+    "open": [],
+    "goal": "Proved: multivariate Gaussian integral via spectral decomposition + Fubini"
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-21",
-    "iteration": 1,
-    "focus": "Read AreaOfCircleOQ05.lean and assess Mathlib spectral theorem API",
+    "phase": "COMPLETED",
+    "since": "2026-04-22",
+    "iteration": 2,
+    "focus": "Proof complete — 0 sorries",
     "blockers": [],
-    "nextAction": "Read proofs/Proofs/AreaOfCircleOQ05.lean, search Matrix.IsHermitian spectral theorem",
+    "nextAction": "Commit and create PR",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Problem selected by Seeker. Parent has scalar Gaussian. Key approach: diagonalize A = Q^T D Q, use Fubini and scalar case per eigenvalue.",
-    "builtItems": [],
+    "progressSummary": "COMPLETE: Full proof of multivariate_gaussian_integral with 0 sorries. Spectral theorem + orthogonal change of variables via map_linearMap_volume_pi_eq_smul_volume_pi + integral_map.",
+    "builtItems": [
+      "prod_sqrt_eq_sqrt_prod (proved): induction on n, uses Real.sqrt_mul — AreaOfCircleOQ05OQ02.lean:48",
+      "diagonal_gaussian (proved): exp_sum + Fubini (integral_fintype_prod_volume_eq_prod) + scalar Gaussian — AreaOfCircleOQ05OQ02.lean:73",
+      "multivariate_gaussian_integral (proved): spectral decomp + quadratic form rewrite + orthogonal CoV + diagonal_gaussian — AreaOfCircleOQ05OQ02.lean:115"
+    ],
     "insights": [
-      "Spectral theorem: symmetric positive-definite A = Q^T D Q, Q orthogonal",
-      "Change of variables y = Qx has Jacobian 1 (orthogonal Q)",
-      "Fubini separates: ∫ e^{-Σ λᵢyᵢ²} = ∏ ∫ e^{-λᵢyᵢ²} = ∏ √(π/λᵢ)",
-      "Product of √(π/λᵢ) = √(πⁿ/det A) via det A = ∏ λᵢ"
+      "Key API: Real.map_linearMap_volume_pi_eq_smul_volume_pi — for L: ι→ℝ →ₗ[ℝ] ι→ℝ with det L ≠ 0: map L volume = |det L|⁻¹ • volume",
+      "integral_map: ∫ y, g y ∂(Measure.map L μ) = ∫ x, g (L x) ∂μ — use ← direction with hmap to convert to ∫ over volume",
+      "Unitary det over ℝ: det_of_mem_unitary gives det U * star (det U) = 1; TrivialStar gives star = id, so det²=1, hence |det|=1 via sq_eq_one_iff",
+      "mulVecLin vs toLin': Matrix.toLin'_apply' M : Matrix.toLin' M = M.mulVecLin — needed to connect mulVecLin (used in L) to det_toLin'",
+      "RCLike.ofReal_real_eq_id: @ofReal ℝ _ = id — essential for reducing RCLike.ofReal ∘ eigenvalues = eigenvalues over ℝ",
+      "vecMul_transpose: for any M and x, x ᵥ* M = Mᵀ.mulVec x — used with M:=Uᵀ to get x ᵥ* U = Uᵀ.mulVec x",
+      "quadratic form: xᵀAx where A=UDUᵀ simplifies to (Uᵀx)ᵀ D (Uᵀx) = ∑ λᵢ (Uᵀx)ᵢ² via dotProduct_mulVec + mulVec_diagonal"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Read AreaOfCircleOQ05.lean fully",
-      "Check Matrix.IsHermitian.eigenvectorMatrix in Mathlib",
-      "Search MeasureTheory for orthogonal change of variables"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "analysis",
@@ -71,26 +72,29 @@
     "papers": [],
     "urls": [],
     "mathlib": [
-      "Mathlib.LinearAlgebra.Matrix.PosDef",
-      "Mathlib.MeasureTheory.Integral.Bochner",
-      "Mathlib.MeasureTheory.Measure.Haar.Basic"
+      "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "Mathlib.Analysis.Matrix.Spectrum",
+      "Mathlib.Analysis.Matrix.PosDef",
+      "Mathlib.MeasureTheory.Integral.Pi",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.LinearAlgebra.Determinant"
     ]
   },
   "started": "2026-04-21T19:30:00.000Z",
-  "lastUpdate": "2026-04-21T19:30:00.000Z",
+  "lastUpdate": "2026-04-22T17:46:00.000Z",
   "significance": 7,
   "tractability": 7,
   "leanFiles": [
     {
-      "path": "Proofs/AreaOfCircleOQ05.lean",
-      "filename": "AreaOfCircleOQ05.lean",
-      "lineCount": 0,
-      "theoremCount": 0,
+      "path": "Proofs/AreaOfCircleOQ05OQ02.lean",
+      "filename": "AreaOfCircleOQ05OQ02.lean",
+      "lineCount": 202,
+      "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05OQ02.lean"
     }
   ]
 }
