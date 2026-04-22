@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: greedySet_sum proved; 2 sorries remain (greedySet_infinite edge case + d>=2)",
+    "progressSummary": "PROGRESS: d=1 ⊇ direction implemented via exists_infinite_harmonic_set; 1 Lean API sorry remains (hAconv)",
     "builtItems": [
       "harmonicPointSet_path_connected d=0 case (complete)",
       "harmonicPointSet_path_connected d=1 framework (1 sorry: greedy construction)",
@@ -55,7 +55,12 @@
       "greedySet_summable: convergent via partial sum bound",
       "greedySet_sum: harmonicSubseriesSum (greedySet s) = s (PROVED, no sorry)",
       "consecutiveProductsSet n: {k(k+1) | k>=n} with partial_sum_consec telescope identity",
-      "consecutiveProductsSet_infinite: proved via injectivity"
+      "consecutiveProductsSet_infinite: proved via injectivity",
+      "consecutiveProductsSet_infinite: proved via injective map k→(n+k)(n+k+1)",
+      "consecutiveProductsSet_convergent: HasSum via bijection + partial_sum_consec (Erdos268Problem.lean:527)",
+      "consecutiveProductsSet_sum: harmonicSubseriesSum = 1/n via telescoping (Erdos268Problem.lean:578)",
+      "greedySet_nonempty: non-empty for s>0 by harmonic divergence contradiction (Erdos268Problem.lean:491)",
+      "exists_infinite_harmonic_set: for any s>0, ∃ infinite A with convergent sum = s (Erdos268Problem.lean:628)"
     ],
     "insights": [
       "d=1 tractable: harmonicPointSet 1 = Set.Ioi 0 via greedy construction",
@@ -70,14 +75,14 @@
       "greedyBudget_tendsto_zero proved: if inf L > 0, harmonic tail divergence forces budget < 0",
       "greedySet_sum proved without sorry via Finset.sum_filter + hasSum_iff_tendsto_nat_of_nonneg",
       "greedySet_infinite is FALSE for rational s that is a finite harmonic sum (e.g., s=1/2={2})",
-      "Fix for greedySet_infinite: replace max element with consecutiveProductsSet (infinite, same sum)"
+      "Fix for greedySet_infinite: replace max element with consecutiveProductsSet (infinite, same sum)",
+      "exists_infinite_harmonic_set: handles both infinite (direct) and finite (replace max M with consecutiveProductsSet M) greedy cases"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove consecutiveProductsSet_sum: harmonicSubseriesSum (consecutiveProductsSet n) = 1/n",
-      "Fix greedySet_infinite via union: (greedySet s \\ {M}) union consecutiveProductsSet M",
-      "Submit greedySet_infinite to Aristotle as HARD sorry",
-      "Address d>=2 case via Kovac-Tao structural analysis"
+      "Find Lean 4 API for Set.summable_union_disjoint to close hAconv sorry in exists_infinite_harmonic_set",
+      "Once hAconv closed, d=1 case is complete",
+      "Address d>=2 via Kovač-Tao 2024 structural analysis (long-term)"
     ],
     "markdown": ""
   },
