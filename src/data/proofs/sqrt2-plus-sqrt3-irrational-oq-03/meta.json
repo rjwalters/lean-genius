@@ -71,19 +71,19 @@
   },
   "crossReferences": [
     {
-      "id": "sqrt2-plus-sqrt3-irrational",
-      "relationship": "parent",
+      "targetId": "sqrt2-plus-sqrt3-irrational",
+      "relationship": "extends",
       "description": "Parent proof establishing √2+√3 ∉ ℚ via the squaring trick. This proof gives the stronger result: √2+√3 has degree exactly 4 over ℚ."
     },
     {
-      "id": "sqrt2-minpoly",
+      "targetId": "sqrt2-minpoly",
       "relationship": "related",
       "description": "Minimal polynomial of √2 over ℚ is X²−2 (degree 2). The techniques are similar: Eisenstein for X²−2, rational root + quadratic factor analysis for X⁴−10X²+1."
     },
     {
-      "id": "algebraic-numbers",
+      "targetId": "algebraic-numbers-countable",
       "relationship": "related",
-      "description": "Algebraic numbers over ℚ: √2+√3 has degree 4, minimal polynomial X⁴−10X²+1, and generates the biquadratic extension ℚ(√2,√3)."
+      "description": "Algebraic numbers over ℚ are countable: √2+√3 has degree 4, minimal polynomial X⁴−10X²+1, and generates the biquadratic extension ℚ(√2,√3)."
     }
   ],
   "sections": [
