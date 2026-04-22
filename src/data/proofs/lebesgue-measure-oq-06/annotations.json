@@ -96,6 +96,18 @@
     "prerequisites": ["IsometryEquiv", "Metric.closedBall", "EuclideanSpace", "Set.image"]
   },
   {
+    "id": "ann-nonmeasurable-corollary",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": { "startLine": 228, "endLine": 248 },
+    "type": "theorem",
+    "title": "Corollary: Banach-Tarski Pieces Are Non-Measurable (Axiomatized)",
+    "content": "This corollary states that the pieces in the Banach-Tarski decomposition are necessarily non-Lebesgue-measurable. The docstring gives the contradiction argument: if all pieces P_i were measurable, then Lebesgue measure λ would satisfy λ(B³) = Σᵢ λ(Pᵢ) = λ(B³) + λ(B³), contradicting 0 < λ(B³) = (4/3)π < ∞. Therefore at least one piece must be non-measurable. This is a direct measure-theoretic application of the paradox: it explains WHY Banach-Tarski does not contradict conservation of volume — the pieces lie outside the domain of Lebesgue measure.",
+    "mathContext": "If pieces $P_0, \\ldots, P_{n-1}$ partition $B^3$ and are all $\\mathcal{L}^3$-measurable, then finite additivity gives $\\lambda(B^3) = \\sum_i \\lambda(P_i)$. Isometries preserve $\\lambda$: $\\lambda(g_j(P_i)) = \\lambda(P_i)$. First copy: $\\lambda(B^3) = \\sum_i \\lambda(g_1(i)(P_i)) = \\sum_i \\lambda(P_i)$. Second copy: $\\lambda(B^3) = \\sum_i \\lambda(g_2(i)(P_i)) = \\sum_i \\lambda(P_i)$. So $2\\lambda(B^3) = 2\\sum_i \\lambda(P_i) = \\lambda(B^3) + \\lambda(B^3)$, but also $\\lambda(B^3) = \\lambda(B^3)$. Actually the contradiction is: $\\lambda(B^3) + \\lambda(B^3) = \\lambda(B^3)$, so $\\lambda(B^3) = 0$ or $\\infty$, contradicting $\\lambda(B^3) = 4\\pi/3$.",
+    "significance": "key",
+    "relatedConcepts": ["non-measurable set", "Vitali set", "Lebesgue measure", "σ-additivity", "axiom of choice"],
+    "prerequisites": ["banach_tarski", "MeasurableSet", "MeasureTheory.Measure.closedBall"]
+  },
+  {
     "id": "ann-amenability",
     "proofId": "lebesgue-measure-oq-06",
     "range": { "startLine": 249, "endLine": 287 },
