@@ -14,10 +14,10 @@
       "measure-theory"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 4,
     "axiomCount": 0,
-    "lineCount": 810,
-    "assumptions": "2 remaining sorries: (1) truncated_rn_deriv_lq_bound — eLpNorm of truncated RN derivative bounded by M for finite measure (dead path, marked false in session 4); (2) holder_extremizer_lq_bound — eLpNorm of truncated RN derivative bounded by ‖φ‖ (the critical remaining sorry). indicator_lp_hasSum was proved in session 4 (2026-04-22). See Lean source for details.",
+    "lineCount": 980,
+    "assumptions": "4 remaining sorries: (1) truncated_rn_deriv_lq_bound (line 209) — dead path, marked false; (2–4) holder_extremizer_lq_bound (lines 861, 866, 871) — three sub-sorries in the Hölder extremizer bound. indicator_lp_hasSum was proved in session 4 (2026-04-22). See Lean source for details.",
     "dateAdded": "2026-04-13"
   },
   "overview": {
@@ -106,7 +106,7 @@
     "imports": [
       "Mathlib"
     ],
-    "lineCount": 810,
+    "lineCount": 980,
     "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 2,
@@ -133,7 +133,7 @@
       }
     ],
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
-    "sorries": 2
+    "sorries": 4
   },
-  "sorries": 2
+  "sorries": 4
 }
