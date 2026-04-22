@@ -859,7 +859,7 @@ private lemma take_at_column_entry (l : LPath) (x : ℕ)
           | zero => rfl
           | succ _ => rfl
         rw [hce, show x' + 1 + colEntry l' x' = (x' + colEntry l' x') + 1 from by omega]
-        simp only [List.take_succ_cons, List.countP_cons, Bool.false_eq_false, decide_true]
+        simp only [List.take_succ_cons, List.countP_cons, decide_true]
         rw [ih x' hx']
     | true =>
       -- l = true :: l'; the first element is a North step
@@ -874,8 +874,7 @@ private lemma take_at_column_entry (l : LPath) (x : ℕ)
           simp [colEntry, northBeforeEast]
         rw [hce, show x' + 1 + (1 + colEntry l' (x' + 1)) =
             ((x' + 1) + colEntry l' (x' + 1)) + 1 from by omega]
-        simp only [List.take_succ_cons, List.countP_cons, Bool.true_eq_false, decide_false,
-          Bool.false_eq_true]
+        simp only [List.take_succ_cons, List.countP_cons, decide_false]
         exact ih (x' + 1) hx'
 
 /-- Between the x-th and (x+1)-th East steps, all list elements are North (true).
@@ -916,7 +915,7 @@ private lemma take_east_count_within_column (l : LPath) (x h : ℕ)
           simp [List.countP_cons] at hx; omega
         -- take(false :: l', (x'+1) + h) = false :: take(l', x' + h)
         rw [show x' + 1 + h = (x' + h) + 1 from by omega]
-        simp only [List.take_succ_cons, List.countP_cons, Bool.false_eq_false, decide_true]
+        simp only [List.take_succ_cons, List.countP_cons, decide_true]
         rw [ih x' h hx' hlow hhigh]
     | true =>
       cases x with
@@ -929,8 +928,7 @@ private lemma take_east_count_within_column (l : LPath) (x h : ℕ)
         | zero => simp [List.take]
         | succ h' =>
           -- take(true :: l', h'+1) = true :: take(l', h')
-          simp only [List.take_succ_cons, List.countP_cons, Bool.true_eq_false, decide_false,
-            Bool.false_eq_true]
+          simp only [List.take_succ_cons, List.countP_cons, decide_false]
           -- Need: take(l', h').countP(false) = 0
           -- colEntry(true::l', 0) = 0, colEntry(true::l', 1) = 1 + colEntry l' 1
           -- So 0 ≤ h'+1 ≤ 1 + colEntry l' 1, meaning h' ≤ colEntry l' 1
@@ -955,8 +953,7 @@ private lemma take_east_count_within_column (l : LPath) (x h : ℕ)
         have hh_pos : h ≥ 1 := by omega
         -- take(true :: l', (x'+1) + h) = true :: take(l', x' + h)
         rw [show x' + 1 + h = (x' + (h - 1)) + 1 + 1 from by omega]
-        simp only [List.take_succ_cons, List.countP_cons, Bool.true_eq_false, decide_false,
-          Bool.false_eq_true]
+        simp only [List.take_succ_cons, List.countP_cons, decide_false]
         rw [show x' + (h - 1) + 1 = x' + 1 + (h - 1) from by omega]
         exact ih (x' + 1) (h - 1) hx' (by omega) (by omega)
 
@@ -1642,12 +1639,12 @@ private lemma colEntry_at_end {m n : ℕ} (P : PathMN m n) :
       cases k with
       | zero => simp [List.countP_cons] at hk
       | succ k' =>
-        simp only [northBeforeEast, List.countP_cons, Bool.false_eq_true, decide_false,
+        simp only [northBeforeEast, List.countP_cons, decide_false,
           Nat.add_zero] at hk ⊢
         exact ih k' (by omega)
     | true =>
-      simp only [northBeforeEast, List.countP_cons, Bool.true_eq_true, decide_true,
-        Bool.true_eq_false, decide_false, Nat.add_zero] at hk ⊢
+      simp only [northBeforeEast, List.countP_cons, decide_true,
+        decide_false, Nat.add_zero] at hk ⊢
       rw [ih k (by omega)]
 
 /-- The shared y-value is within path i's y-range at the canonical crossing column. -/
