@@ -16,7 +16,7 @@
       "permutations",
       "arithmetic-series"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
@@ -120,6 +120,23 @@
       "targetId": "combinations-formula",
       "relationship": "related",
       "description": "C(n,k) counts unordered subsets; C(n,k)*k! counts ordered selections"
+    }
+  ],
+  "mathlibDependencies": [
+    {
+      "theorem": "Nat.descFactorial_eq_factorial_mul_choose",
+      "description": "Core identity: n.descFactorial k = k! * C(n,k) — main theorem is the commuted form of this",
+      "module": "Mathlib.Data.Nat.Factorial.Basic"
+    },
+    {
+      "theorem": "Nat.descFactorial_eq_prod_range",
+      "description": "Product expansion: n.descFactorial k = ∏ i in range k, (n - i)",
+      "module": "Mathlib.Data.Nat.Factorial.BigOperators"
+    },
+    {
+      "theorem": "Nat.factorial_mul_descFactorial",
+      "description": "Full factorial identity: (n-k)! * n.descFactorial k = n!",
+      "module": "Mathlib.Data.Nat.Factorial.Basic"
     }
   ],
   "leanFile": {
