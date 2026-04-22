@@ -773,6 +773,101 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
     (n : ℕ) :
     eLpNorm (fun a => max (min (ν.rnDeriv μ a) (n : ℝ)) (-(n : ℝ))) q μ ≤
       ENNReal.ofReal ‖φ‖ := by
+  haveI hp1' : Fact (1 ≤ p) := ⟨le_of_lt hp1⟩
+  -- Setup: g = ν.rnDeriv μ, gₙ = clamp(g, -n, n)
+  set g := ν.rnDeriv μ
+  set g_n := fun a => max (min (g a) (n : ℝ)) (-(n : ℝ))
+  have hg_int : Integrable g μ := rnDeriv_integrable_of_finite ν hac
+  have hg_meas : Measurable g := ν.measurable_rnDeriv μ
+  have hq_pos : 0 < q.toReal := hpq.symm.pos
+  have hqne_top : q ≠ ⊤ := by
+    intro hq; rw [hq, ENNReal.top_toReal] at hpq; linarith [hpq.symm.one_lt_of_lt hp1]
+  -- gₙ is bounded: |gₙ(a)| ≤ n for all a
+  have hgn_bound : ∀ a, |g_n a| ≤ (n : ℝ) := fun a => by
+    simp only [g_n, abs_le]
+    constructor
+    · linarith [le_max_right (min (g a) (n : ℝ)) (-(n : ℝ))]
+    · exact max_le.mpr ⟨min_le_right _ _, neg_le_self (Nat.cast_nonneg n)⟩
+  -- gₙ is integrable (bounded × finite measure)
+  have hgn_int : Integrable g_n μ := by
+    rw [← memℒp_one_iff_integrable]
+    exact Memℒp.of_bound (n : ℝ)
+      (((hg_meas.min measurable_const).max measurable_const).aestronglyMeasurable)
+      (ae_of_all μ fun a => by simpa [Real.norm_eq_abs] using hgn_bound a)
+  -- Extremizer: hₙ = sign(gₙ) · |gₙ|^{q-1}
+  let h_n := fun a => Real.sign (g_n a) * |g_n a| ^ (q.toReal - 1)
+  -- hₙ is measurable
+  have hhn_meas : Measurable h_n :=
+    (((hg_meas.min measurable_const).max measurable_const).sign).mul
+      (((hg_meas.min measurable_const).max measurable_const).abs.pow_const _)
+  -- hₙ is bounded: ‖hₙ(a)‖ ≤ n^{q-1}
+  have hhn_bound : ∀ᵐ a ∂μ, ‖h_n a‖ ≤ (n : ℝ) ^ (q.toReal - 1) :=
+    ae_of_all μ fun a => by
+      simp only [h_n, Real.norm_eq_abs, abs_mul]
+      calc |Real.sign (g_n a)| * |g_n a| ^ (q.toReal - 1)
+          ≤ 1 * |g_n a| ^ (q.toReal - 1) := by
+            apply mul_le_mul_of_nonneg_right (Real.abs_sign_le_one _) (by positivity)
+        _ = |g_n a| ^ (q.toReal - 1) := one_mul _
+        _ ≤ (n : ℝ) ^ (q.toReal - 1) :=
+            Real.rpow_le_rpow (abs_nonneg _) (hgn_bound a)
+              (by linarith [hpq.symm.one_lt_of_lt hp1])
+  -- hₙ ∈ Lp (bounded on finite measure space)
+  have hhn_memLp : Memℒp h_n p μ :=
+    Memℒp.of_bound ((n : ℝ) ^ (q.toReal - 1)) hhn_meas.aestronglyMeasurable hhn_bound
+  -- Pointwise: hₙ(a) · g(a) ≥ hₙ(a) · gₙ(a) (sign(hₙ) matches sign of g - gₙ)
+  have hpw : ∀ a, h_n a * g_n a ≤ h_n a * g a := fun a => by
+    suffices h : 0 ≤ h_n a * (g a - g_n a) by linarith [mul_sub (h_n a) (g a) (g_n a)]
+    simp only [h_n, g_n]
+    rcases le_or_lt (g a) (-(n : ℝ)) with h1 | h1
+    · -- g(a) ≤ -n: g_n = -n, sign(g_n) = -1 < 0, g - g_n = g + n ≤ 0, product ≥ 0
+      have hgn_val : max (min (g a) (n : ℝ)) (-(n : ℝ)) = -(n : ℝ) :=
+        max_eq_right (le_trans (min_le_left _ _) h1)
+      rw [hgn_val]
+      rcases Nat.eq_zero_or_pos n with rfl | hn
+      · simp
+      · have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+        rw [Real.sign_neg (neg_pos.mpr hn_pos)]
+        have : g a - -(n : ℝ) ≤ 0 := by linarith
+        exact mul_nonneg_of_neg_of_nonpos (mul_neg_of_neg_of_pos (by norm_num) (by positivity))
+          this
+    rcases le_or_lt (n : ℝ) (g a) with h2 | h2
+    · -- g(a) ≥ n: g_n = n, sign(g_n) = 1 > 0, g - g_n ≥ 0, product ≥ 0
+      have hgn_val : max (min (g a) (n : ℝ)) (-(n : ℝ)) = (n : ℝ) := by
+        rw [min_eq_right h2, max_eq_left (neg_le_self (Nat.cast_nonneg n))]
+      rw [hgn_val]
+      rcases Nat.eq_zero_or_pos n with rfl | hn
+      · simp
+      · have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+        rw [Real.sign_pos hn_pos]
+        exact mul_nonneg (mul_nonneg one_nonneg (by positivity)) (by linarith)
+    · -- -n < g(a) < n: g_n = g(a), product = 0
+      have hgn_val : max (min (g a) (n : ℝ)) (-(n : ℝ)) = g a := by
+        rw [min_eq_left h2.le, max_eq_left (le_of_lt h1)]
+      rw [hgn_val, sub_self, mul_zero]
+  -- Integrability of hₙ · gₙ and hₙ · g
+  have hint_hgn : Integrable (fun a => h_n a * g_n a) μ :=
+    (hgn_int.mul_bdd hhn_meas.aestronglyMeasurable hhn_bound).congr
+      (ae_of_all μ fun a => mul_comm (g_n a) (h_n a))
+  have hint_hg : Integrable (fun a => h_n a * g a) μ :=
+    hg_int.mul_bdd hhn_meas.aestronglyMeasurable hhn_bound
+  -- Integral inequality: ∫ hₙ gₙ ≤ ∫ hₙ g
+  have hint_ineq : ∫ a, h_n a * g_n a ∂μ ≤ ∫ a, h_n a * g a ∂μ :=
+    integral_mono hint_hgn hint_hg (fun a => hpw a)
+  -- SORRY A: φ(hₙ as Lp) = ∫ hₙ · g dμ
+  -- Proof sketch: approxOn hₙ k → hₙ in Lp (bounded, finite measure);
+  --   φ(approxOn k) = ∫ approxOn k · g by SimpleFunc.induction + linearity (hν_eq + rnDeriv_integral_eq);
+  --   CLM continuity + DCT (bound: n^{q-1}·|g| ∈ L1) gives the limit.
+  have hphi_hn : φ (hhn_memLp.toLp _) = ∫ a, h_n a * g a ∂μ := by
+    sorry
+  -- SORRY B: ∫ hₙ gₙ dμ = (eLpNorm gₙ q μ ^ q.toReal).toReal
+  -- Proof: hₙ(a) · gₙ(a) = sign(gₙ a) · |gₙ a|^{q-1} · gₙ(a) = |gₙ a|^q;
+  --   ∫ |gₙ|^q = (∫⁻ ‖gₙ‖₊^q).toReal = (eLpNorm gₙ q μ ^ q.toReal).toReal.
+  have hint_hn_gn : ∫ a, h_n a * g_n a ∂μ = (eLpNorm g_n q μ ^ q.toReal).toReal := by
+    sorry
+  -- SORRY C: the chain gives eLpNorm gₙ q μ ≤ ENNReal.ofReal ‖φ‖
+  -- From: ‖gₙ‖_q^q = ∫ hₙ gₙ ≤ ∫ hₙ g = φ(hₙ) ≤ ‖φ‖·‖hₙ‖_p and ‖hₙ‖_p^p = ‖gₙ‖_q^q
+  -- → ‖gₙ‖_q^q ≤ ‖φ‖·‖gₙ‖_q^{q/p} → ‖gₙ‖_q^{q-q/p} ≤ ‖φ‖ → ‖gₙ‖_q ≤ ‖φ‖ (q-q/p=1).
+  -- (Uses: ENNReal rpow arithmetic, HolderConjugate.toReal_add_inv, ‖h‖_p = (eLpNorm h p μ).toReal.)
   sorry
 
 /-
@@ -813,23 +908,26 @@ theorem riesz_lp_surjective_from_rn (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p 
   have hν_eq : ∀ (E : Set α) (hE : MeasurableSet E),
       ν E = φ ((indicator_memLp hE (measure_ne_top μ E) p (le_of_lt hp1) hptop).toLp _) :=
     fun E hE => signedMeasureOfFunctional_indicator p (le_of_lt hp1) hptop φ hE
-  -- Step 2: RN derivative g = dν/dμ
-  set g := ν.rnDeriv μ with hg_def
-  have hg_meas : Measurable g := ν.measurable_rnDeriv μ
+  -- Step 2: RN derivative g = ν.rnDeriv μ (used directly without set to avoid let-binding issues)
   -- Step 3: Agreement on indicators φ(1_E) = ∫_E g dμ
   have hagree : ∀ (E : Set α), MeasurableSet E → μ E ≠ ⊤ →
       φ ((indicator_memLp (p := p) ‹_› ‹_› p (le_of_lt hp1) hptop).toLp _) =
-      ∫ a in E, g a ∂μ := by
-    intro E hE hfin  -- hfin : μ E ≠ ⊤ (needed for ‹μ E ≠ ⊤› in indicator_memLp)
-    -- φ(1_E) = ν E (from hν_eq) = ∫_E g (from rnDeriv_integral_eq)
+      ∫ a in E, ν.rnDeriv μ a ∂μ := by
+    intro E hE _hfin
     rw [← hν_eq E hE]
     exact rnDeriv_integral_eq ν hac hE
   -- Step 4: g ∈ Lq via Hölder extremizer + rn_deriv_memLq_from_trunc
-  have hg_Lq : Memℒp g q μ :=
-    rn_deriv_memLq_from_trunc p q hp1 hptop hpq g hg_meas ‖φ‖
-      (fun n => holder_extremizer_lq_bound p q hp1 hptop hpq φ ν hac hν_eq n)
-  -- Step 5: Full representation via integral_representation (Lp.induction)
-  exact ⟨g, hg_Lq, integral_representation p q hp1 hptop hpq φ g hg_Lq hagree⟩
+  refine ⟨ν.rnDeriv μ, ?_, ?_⟩
+  · -- Lq membership
+    exact rn_deriv_memLq_from_trunc p q hp1 hptop hpq (ν.rnDeriv μ)
+        (ν.measurable_rnDeriv μ) ‖φ‖
+        (fun n => holder_extremizer_lq_bound p q hp1 hptop hpq φ ν hac hν_eq n)
+  · -- Step 5: Full representation via integral_representation (Lp.induction)
+    exact integral_representation p q hp1 hptop hpq φ (ν.rnDeriv μ)
+        (rn_deriv_memLq_from_trunc p q hp1 hptop hpq (ν.rnDeriv μ)
+          (ν.measurable_rnDeriv μ) ‖φ‖
+          (fun n => holder_extremizer_lq_bound p q hp1 hptop hpq φ ν hac hν_eq n))
+        hagree
 
 /-
 ## Assessment Summary (Updated 2026-04-22)
