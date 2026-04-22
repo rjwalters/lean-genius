@@ -118,3 +118,70 @@ over infinite A ⊆ ℕ with convergent harmonic subseries.
 1. Attempt greedy harmonic construction for d=1 (the primary remaining sorry)
 2. Try `aristotle_submit` on the greedy construction sorry
 3. Verify compilation once build resources allow
+
+---
+
+## Session 2026-04-22 (Session 3) — Greedy Harmonic Construction Implemented
+
+**Mode**: REVISIT (continuing Session 2 work)
+**Outcome**: progress — full greedy construction added; `greedySet_sum` proved without sorry;
+  `greedySet_infinite` remains as sorry (finite harmonic sum edge case)
+
+### What I Did
+
+1. Designed and implemented Part VIb (Greedy Harmonic Construction, ~250 lines)
+2. Defined `greedyBudget s : ℕ → ℝ` by primitive recursion; `greedySet s : Set ℕ`
+3. Proved `greedyBudget_eq_s_sub_sum`: key identity by induction over n (budget + partial sum = s)
+4. Proved `greedyBudget_tendsto_zero` via harmonic tail divergence contradiction:
+   - If inf L > 0: all k ≥ N₀ included → budget drops by Σ 1/(N₀+k+1) → ∞ → budget < 0
+   - Used `Real.tendsto_sum_range_one_div_nat_succ_atTop` + shift identity H(N₀+K) - H(N₀)
+5. Proved `greedySet_summable`: partial sums ≤ s via Finset max argument
+6. Proved `greedySet_sum` (no sorry): harmonic sum = s via
+   - `tsum_subtype` to lift to ℕ indicator function g
+   - `Finset.sum_filter` to connect filter sum to g-sum
+   - `hasSum_iff_tendsto_nat_of_nonneg` + `greedyBudget_tendsto_zero` for convergence
+7. Discovered `greedySet_infinite` is FALSE for some s (e.g., s=1/2 gives {2}, finite)
+8. Added Part XI: `consecutiveProductsSet n` infrastructure with `partial_sum_consec` (telescoping)
+
+### Key Findings
+
+- **greedyBudget_tendsto_zero**: The proof uses harmonic divergence as a contradiction engine.
+  If the budget has infimum L > 0, then for large k, budget ≥ L > L/2 ≥ 1/k, so every k is
+  included, making the budget drop by a divergent series. This forces budget < 0, contradiction.
+
+- **Finite termination edge case**: The greedy algorithm can terminate with budget = 0 when s
+  is an exact finite sum of distinct unit fractions (e.g., s=1={1}, s=1/2={2}, s=3/4={1,4}).
+  This is a set of measure 0 in ℝ but is countably infinite. `greedySet_infinite` is thus FALSE
+  for these s values.
+
+- **Fix needed**: Replace `greedySet` with a construction that guarantees infiniteness. Options:
+  (A) Detect finite case and apply Sylvester expansion (1/M = 1/(M+1) + 1/(M(M+1)))
+  (B) Use `consecutiveProductsSet` for remainder after initial greedy steps
+  (C) Prove `consecutiveProductsSet_sum` and use union: (greedySet \ {max}) ∪ consecProds(max)
+
+- **Mathlib APIs used**: `tendsto_atTop_ciInf`, `Finset.sum_filter`, `Classical.decPred`,
+  `hasSum_iff_tendsto_nat_of_nonneg`, `tsum_subtype`
+
+### Files Modified
+
+- `proofs/Proofs/Erdos268Problem.lean`:
+  - Added lines ~170-440: entire Part VIb (greedy construction) + Part XI (consecutiveProducts)
+  - Branch: `research/erdos-268-greedy`
+  - PR: rjwalters/lean-genius#11304
+
+### Sorry Status
+
+**2 remaining sorries**:
+1. `greedySet_infinite s hs` (line ~443): finite harmonic sum edge case; needs Sylvester expansion
+   or union with `consecutiveProductsSet`
+2. `d ≥ 2` case of `harmonicPointSet_path_connected` (line ~520): needs Kovač-Tao
+
+### Next Steps
+
+1. Prove `consecutiveProductsSet_sum n hn : harmonicSubseriesSum (consecutiveProductsSet n) = 1/n`
+   (follows from `partial_sum_consec` + limit 1/(n+N) → 0)
+2. Use union construction to fix `greedySet_infinite`:
+   If `greedySet s` is finite with max element M, let A = (greedySet s \ {M}) ∪ consecutiveProductsSet M
+   Then A is infinite, has same sum s (since 1/M = sum of consecutiveProductsSet M)
+3. Or: submit `greedySet_infinite` to Aristotle (HARD sorry — classical analysis)
+4. Once d=1 is complete, address d=2 via Kovač-Tao structural analysis
