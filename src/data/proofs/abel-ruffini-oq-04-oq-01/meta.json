@@ -85,6 +85,18 @@
       {
         "id": "inverse-galois",
         "relationship": "Contributes: realizes S₅ as a Galois group over ℚ"
+      },
+      {
+        "id": "inverse-galois-oq-06",
+        "relationship": "Complementary: the sister computation realizing A₅ as a Galois group over ℚ, using the same Eisenstein + Sylow toolkit"
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-02",
+        "relationship": "Complementary: proves S₂, S₃, S₄ ARE solvable — the positive half of the solvability boundary that this entry's S₅ non-solvability defines"
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-03",
+        "relationship": "Foundational: formalizes Galois's full solvability criterion, of which this entry uses the forward direction (solvable by radicals ⇒ solvable Galois group)"
       }
     ]
   },
@@ -158,6 +170,26 @@
       "targetId": "kummer-theorem",
       "relationship": "foundational",
       "description": "Kummer theory provides the mechanism underlying the Galois bridge used in `roots_not_solvable_by_rad`: each radical extraction $K \\to K(\\sqrt[n]{a})$ creates a Kummer extension with cyclic Galois group. The impossibility arises because $S_5$ cannot be decomposed into such cyclic layers — exactly what the contrapositive of `solvableByRad.isSolvable'` captures"
+    },
+    {
+      "targetId": "inverse-galois-oq-06",
+      "relationship": "complementary",
+      "description": "The sister computation to this entry's $S_5$ realization: while this entry proves $\\text{Gal}(x^5-4x+2/\\mathbb{Q}) \\cong S_5$ via Eisenstein at $p=2$ and Sylow elimination, `inverse-galois-oq-06` proves $A_5 \\cong \\text{Gal}(x^5-5x^4+10x^3-10x^2+25x-5/\\mathbb{Q})$ via Eisenstein at $p=5$ and Sylow theory. Together they realize the two non-solvable groups that appear in $S_5$'s composition series as Galois groups of explicit quintics over $\\mathbb{Q}$. Both entries invoke `not_solvable_by_rad_of_not_solvable_gal` to conclude unsolvability by radicals."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02",
+      "relationship": "complementary",
+      "description": "Proves the positive half of the solvability boundary: $S_2, S_3, S_4$ ARE solvable, with the bidirectional theorem $S_n$ solvable $\\iff n \\leq 4$. This entry proves $\\text{Gal}(x^5-4x+2/\\mathbb{Q}) \\cong S_5$ implies unsolvability; `abel-ruffini-oq-04-oq-02` proves that every polynomial of degree $\\leq 4$ with Galois group $\\leq S_4$ IS solvable, completing the sharp degree-4/5 boundary. The `derived_series_solvable_of_solvable` path through $S_4 \\supset V_4 \\supset \\mathbb{Z}/2 \\supset \\{e\\}$ directly contrasts with the stalled derived series $S_5 \\supset A_5 \\supset A_5$."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-03",
+      "relationship": "foundational",
+      "description": "Galois's solvability criterion: a root is solvable by radicals if and only if its Galois group is solvable. This entry uses only the forward direction (`solvableByRad.isSolvable'`: solvable by radicals $\\Rightarrow$ solvable Galois group) as a contrapositive; `abel-ruffini-oq-04-oq-03` formalizes the full Galois correspondence including the reverse direction (solvable Galois group $\\Rightarrow$ solvable by radicals, relying on Kummer theory). Together they give the complete biconditional that elevates Abel-Ruffini from a computational fact about $x^5-4x+2$ to a structural theorem about quintics generally."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "foundational",
+      "description": "Houses the extended solvability classification and non-commutativity witnesses used implicitly throughout this proof: $S_0$–$S_4$ solvable, $S_n$ solvable $\\iff n \\leq 4$, $A_5$ simple, and non-commutativity witnesses for $S_3, S_4, S_5, A_4, A_5$. This entry's `s5_not_solvable` relies on `Equiv.Perm.not_solvable`, whose proof in turn rests on $A_5$'s simplicity — the same infrastructure that `abel-ruffini-galois-extensions` develops systematically with 57 theorems. The `solvable_of_surjective` transfer that propagates non-solvability from $S_5$ to $\\text{Gal}(p/\\mathbb{Q})$ also mirrors the solvability transfer lemmas proved there."
     }
   ],
   "overview": {
