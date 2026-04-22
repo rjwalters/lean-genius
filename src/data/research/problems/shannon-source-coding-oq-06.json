@@ -44,7 +44,8 @@
   "relatedProofs": [
     "shannon-source-coding",
     "shannon-source-coding-oq-01",
-    "shannon-source-coding-oq-02"
+    "shannon-source-coding-oq-02",
+    "shannon-source-coding-oq-04"
   ],
   "references": {
     "papers": [],
@@ -86,6 +87,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ02.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingOQ04.lean",
+      "filename": "ShannonSourceCodingOQ04.lean",
+      "lineCount": 248,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ04.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingOQ04Aristotle.lean",
+      "filename": "ShannonSourceCodingOQ04Aristotle.lean",
+      "lineCount": 156,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ04Aristotle.lean"
     }
   ]
 }

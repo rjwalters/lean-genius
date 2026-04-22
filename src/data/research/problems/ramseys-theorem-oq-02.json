@@ -8,11 +8,22 @@
   "problemStatement": {
     "formal": "R(3,3) = 6 \\text{ exactly, or } R(r,s) \\leq f(r,s) < \\binom{r+s-2}{r-1}",
     "plain": "Extend RamseysTheorem.lean with either: (1) exact value R(3,3)=6 via finite case check, or (2) improve the standard upper bound R(r,s)≤C(r+s-2,r-1). R(3,3)=6 is feasible via Lean's decide tactic.",
-    "whyMatters": ["Adds exact value to existing gallery Ramsey proof", "R(3,3)=6 is the dinner party problem, widely known", "Demonstrates Lean's decide for finite graph verification"]
+    "whyMatters": [
+      "Adds exact value to existing gallery Ramsey proof",
+      "R(3,3)=6 is the dinner party problem, widely known",
+      "Demonstrates Lean's decide for finite graph verification"
+    ]
   },
   "knownResults": {
-    "proven": ["RamseysTheorem.lean: existence R(r,s)≤C(r+s-2,r-1)", "RamseyR4k.lean: R(4,k) bounds", "ramsey-lower-bounds (completed): R(3,3)>5 via explicit K_5 2-coloring"],
-    "open": ["Upper bound R(3,3)≤6 in Lean", "Combination gives R(3,3)=6 exactly"],
+    "proven": [
+      "RamseysTheorem.lean: existence R(r,s)≤C(r+s-2,r-1)",
+      "RamseyR4k.lean: R(4,k) bounds",
+      "ramsey-lower-bounds (completed): R(3,3)>5 via explicit K_5 2-coloring"
+    ],
+    "open": [
+      "Upper bound R(3,3)≤6 in Lean",
+      "Combination gives R(3,3)=6 exactly"
+    ],
     "goal": "Prove R(3,3)=6 by combining existing lower bound with upper bound via decide or case analysis"
   },
   "currentState": {
@@ -65,6 +76,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseysTheorem.lean"
+    },
+    {
+      "path": "Proofs/RamseysTheoremOQ02.lean",
+      "filename": "RamseysTheoremOQ02.lean",
+      "lineCount": 187,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseysTheoremOQ02.lean"
     },
     {
       "path": "Proofs/RamseysTheoremOQ04.lean",

@@ -185,3 +185,67 @@ over infinite A ⊆ ℕ with convergent harmonic subseries.
    Then A is infinite, has same sum s (since 1/M = sum of consecutiveProductsSet M)
 3. Or: submit `greedySet_infinite` to Aristotle (HARD sorry — classical analysis)
 4. Once d=1 is complete, address d=2 via Kovač-Tao structural analysis
+
+---
+
+## Session 2026-04-22 (Session 4) — Fix greedySet_infinite via consecutiveProducts union
+
+**Mode**: REVISIT (continuing Session 3 work)
+**Outcome**: progress — removed false `greedySet_infinite`, implemented `exists_infinite_harmonic_set`
+  with both infinite and finite greedy cases handled; all Part XI code compiles.
+
+### What I Did
+
+1. Removed the false `greedySet_infinite` sorry
+2. Added complete proof infrastructure in Part XI:
+   - `consecutiveProductsSet_infinite`: proved via injective map k ↦ (n+k)(n+k+1)
+   - `greedySet_nonempty`: for s > 0, greedy set is non-empty (by harmonic divergence contradiction)
+   - `consecutiveProductsSet_convergent`: HasConvergentHarmonicSubseries via bijection + partial_sum_consec
+   - `consecutiveProductsSet_sum`: harmonicSubseriesSum = 1/n via HasSum.tsum_eq
+   - `exists_infinite_harmonic_set`: for any s > 0, ∃ infinite A with sum s (handles both cases)
+3. Updated d=1 ⊇ direction to use `exists_infinite_harmonic_set` instead of false lemma
+4. Fixed forward references: moved `powersOf2Set`, `powers_convergent`, `all_coordinates_positive`
+   to before Part VII to resolve identifier-not-found errors
+5. Fixed ~10 tactical errors (Nat.cast_nonneg, omega for subtraction, rfl→change, etc.)
+6. Build: Part XI now compiles with only 1 sorry (hAconv, needs summable_union_disjoint API)
+7. PR: rjwalters/lean-genius#11460
+
+### Key Findings
+
+- **exists_infinite_harmonic_set proof**: Two cases:
+  - Infinite greedy: use greedySet directly
+  - Finite greedy: replace max M with consecutiveProductsSet M = {k·(k+1) | k ≥ M}
+    - consecutiveProductsSet M is infinite and sums to 1/M (telescoping)
+    - Disjointness: elements ≥ M(M+1) > M (so no overlap with greedySet \ {M})
+    - The union (greedySet s \ {M}) ∪ consecutiveProductsSet M sums to same s
+
+- **hAconv sorry**: `HasConvergentHarmonicSubseries A'` where A' is a disjoint union of a finite
+  set and a summable set. Needs `Set.summable_union_disjoint` or similar Lean 4 API that doesn't
+  seem to exist with that exact name. Submitted for Aristotle investigation.
+  Alternative: prove via bound on partial sums (summable_of_sum_le).
+
+- **`change` vs `rw [show ... from rfl]`**: After `Equiv.ofBijective_apply`, the goal type
+  changes elaboration context; `change` (definitional equality) works where `rw` fails.
+
+- **`Nat.add_sub_cancel'`**: Essential for `n + (k - n) = k` when `n ≤ k` in natural numbers;
+  `push_cast; omega` can't handle this (nonlinear in ℤ).
+
+### Files Modified
+
+- `proofs/Proofs/Erdos268Problem.lean`: Part XI (~250 lines new), forward reference fixes
+- Branch: `research/erdos-268-session4`
+
+### Sorry Status
+
+**2 remaining sorries**:
+1. `hAconv` in `exists_infinite_harmonic_set`: needs `Set.summable_union_disjoint` API
+   — finite ∪ summable = summable for disjoint sets. This is a Lean formalization detail.
+2. `d ≥ 2` case of `harmonicPointSet_path_connected`: needs Kovač-Tao structural analysis.
+
+### Next Steps
+
+1. Find correct Lean 4 API for disjoint union summability:
+   - Search Mathlib4 for `summable_union_disjoint`, `hasSum_union_disjoint`
+   - Or prove via partial sum bound: `summable_of_sum_le` with bound = s
+2. Once hAconv is resolved, d=1 direction is fully proved
+3. Address d≥2 via Kovač-Tao (long-term)

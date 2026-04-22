@@ -96,3 +96,6 @@ difficulty: medium
 source: gallery-open-question
 created: 2026-04-21
 ```
+
+**Significance**: 7/10
+**Tractability**: 4/10

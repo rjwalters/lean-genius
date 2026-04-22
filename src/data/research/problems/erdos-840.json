@@ -90,7 +90,11 @@
     "sumsets",
     "analytic-number-theory"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-8",
+    "erdos-84",
+    "erdos-840"
+  ],
   "references": {
     "papers": [
       "Erdős-Freud (1991): On sums of a Sidon-sequence",
@@ -112,26 +116,26 @@
   "tractability": 4,
   "leanFiles": [
     {
-      "path": "Proofs/Erdos840Problem.lean",
-      "filename": "Erdos840Problem.lean",
-      "lineCount": 193,
-      "theoremCount": 13,
-      "axiomCount": 2,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos840Problem.lean"
-    },
-    {
       "path": "Proofs/Erdos840Aristotle.lean",
       "filename": "Erdos840Aristotle.lean",
-      "lineCount": 237,
+      "lineCount": 194,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos840Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos840Problem.lean",
+      "filename": "Erdos840Problem.lean",
+      "lineCount": 238,
       "theoremCount": 4,
       "axiomCount": 8,
       "defCount": 11,
       "sorryCount": 0,
-      "isAristotle": true,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos840Aristotle.lean"
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos840Problem.lean"
     }
   ]
 }
