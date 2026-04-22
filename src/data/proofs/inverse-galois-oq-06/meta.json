@@ -36,6 +36,20 @@
       "a5_is_galois_group: Gal(q/ℚ) ≅ A₅ — the main theorem",
       "inverse_galois_a5: A₅ is a Galois group over ℚ (corollary)",
       "Supporting group theory: orders in S₅, Sylow subgroup arguments, no_order_15, no_order_30"
+    ],
+    "relatedProblems": [
+      {
+        "id": "abel-ruffini-oq-04-oq-01",
+        "relationship": "Complementary: the sister S₅ computation using the same Eisenstein+Sylow toolkit over the same field"
+      },
+      {
+        "id": "inverse-galois",
+        "relationship": "Extends: base inverse Galois problem being addressed"
+      },
+      {
+        "id": "inverse-galois-oq-01",
+        "relationship": "Sibling: D₄ and F₂₀ realizations in the same problem family"
+      }
     ]
   },
   "overview": {
@@ -93,6 +107,26 @@
       "targetId": "abel-ruffini",
       "relationship": "related",
       "description": "Abel-Ruffini theorem shows degree-5 polynomials need non-solvable Galois groups; A₅ is the example"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-01",
+      "relationship": "complementary",
+      "description": "The sister computation realizing $S_5$ as a Galois group: while this entry proves $A_5 \\cong \\text{Gal}(q/\\mathbb{Q})$ for $q = x^5-5x^4+10x^3-10x^2+25x-5$ (Eisenstein at $p=5$, discriminant a perfect square forcing $\\text{Gal} \\leq A_5$), `abel-ruffini-oq-04-oq-01` proves $S_5 \\cong \\text{Gal}(x^5-4x+2/\\mathbb{Q})$ (Eisenstein at $p=2$, negative discriminant forcing an odd permutation). Together they realize the two non-solvable groups arising in $S_5$'s composition series as concrete quintic Galois groups over $\\mathbb{Q}$."
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "Sylow theory is the primary tool for the order-elimination argument: `no_subgroup_order_15` uses the Sylow theorems to show unique $P_3$ and $P_5$ would force elements of those orders to commute (contradicted by `native_decide` over all pairs in $S_5$), while `no_subgroup_order_30` uses $A_5$'s simplicity (itself a consequence of Sylow analysis). The full conclusion $|\\text{Gal}(q/\\mathbb{Q})| = 60$ rests on Sylow elimination of every proper divisor."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "foundational",
+      "description": "The abstract framework: $A_5$ is not solvable (it is simple and non-abelian), so any polynomial with Galois group $A_5$ has roots not expressible by radicals. This entry provides a concrete witness for that framework, and the proof reuses the same Sylow infrastructure (`no_subgroup_order_15`, `no_subgroup_order_30`) that appears in the parent proof chain."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "foundational",
+      "description": "Houses the systematic solvability classification and $A_5$ simplicity results that underpin this proof: the theorem that $S_n$ is solvable iff $n \\leq 4$ (making $A_5$ non-solvable), non-commutativity witnesses for $A_5$, and the group order verifications. The `gal_card_dvd_60` step in this proof (showing $\\text{Gal}(q) \\leq A_5$ because the discriminant is a perfect square) implicitly relies on $A_5$ being the unique index-2 subgroup of $S_5$ — a fact that `abel-ruffini-galois-extensions` formalizes."
     }
   ],
   "sections": [
