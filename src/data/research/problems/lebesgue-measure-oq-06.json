@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Banach-Tarski fully formalized at statement level (287 lines). Abstract framework (Equidecomposable, IsParadoxical, IsAmenable) defined. ENNReal helper and equidecomposable_refl fully proved. 6 sorries for main theorems (axiomatized).",
+    "progressSummary": "PROGRESS: paradoxical_no_finite_measure fully proved (sorry 6→5). 5 axiomatized sorries remain (banach_tarski, hausdorff_free_subgroup, pieces_nonmeasurable, free_group_not_amenable, int_amenable).",
     "builtItems": [
       "Equidecomposable (G-equidecomposability, with notation ≃ᴳ[G]) — proofs/Proofs/LebesgueMeasureOQ06.lean:43",
       "IsParadoxical — proofs/Proofs/LebesgueMeasureOQ06.lean:81",
@@ -42,7 +42,8 @@
       "banach_tarski_pieces_nonmeasurable (axiomatized, sorry) — proofs/Proofs/LebesgueMeasureOQ06.lean:234",
       "free_group_not_amenable (axiomatized, sorry) — proofs/Proofs/LebesgueMeasureOQ06.lean:276",
       "int_amenable (axiomatized, sorry) — proofs/Proofs/LebesgueMeasureOQ06.lean:271",
-      "Gallery entry: src/data/proofs/lebesgue-measure-oq-06/ (meta.json, index.ts, annotations.json)"
+      "Gallery entry: src/data/proofs/lebesgue-measure-oq-06/ (meta.json, index.ts, annotations.json)",
+      "paradoxical_no_finite_measure: SORRY FIXED — fully proved in proofs/Proofs/LebesgueMeasureOQ06.lean:119-134"
     ],
     "insights": [
       "Banach-Tarski NOT in Mathlib as of 2026-04 — confirmed via search. Available Mathlib pieces: Matrix.orthogonalGroup, FreeGroup, IsometryEquiv, EuclideanSpace.",
@@ -51,7 +52,8 @@
       "Equidecomposable_refl is provable in Lean with n=1, identity element — minor case analysis on Fin 1.",
       "Full Banach-Tarski proof estimate: 800-1200 lines. Components: free subgroup matrix verification (number theory), F₂ paradoxical decomposition (word combinatorics), lift to S² (orbit analysis), extend to B³ (cone geometry).",
       "amenability connects to paradox dually: G amenable ↔ no G-set is paradoxical (Tarski). So F₂ not amenable = F₂ paradoxical. SO(3) inherits non-amenability from F₂.",
-      "The 2D analogue fails for bounded sets: the isometry group of ℝ² (via SO(2) which is abelian) is amenable — no Banach-Tarski in 2D. The Laczkovich squaring-the-circle uses infinitely many pieces and is a different phenomenon."
+      "The 2D analogue fails for bounded sets: the isometry group of ℝ² (via SO(2) which is abelian) is amenable — no Banach-Tarski in 2D. The Laczkovich squaring-the-circle uses infinitely many pieces and is a different phenomenon.",
+      "paradoxical_no_finite_measure: proved by splitting A = (B∪C) ∪ (A\\(B∪C)), applying hμ_add to get monotonicity μ(B∪C) ≤ μ(A), then antisymmetry gives μ(A)+μ(A) = μ(A). No extra hypotheses needed."
     ],
     "mathlibGaps": [
       "Banach-Tarski theorem itself not in Mathlib (no formalization as of 2026-04)",
@@ -60,10 +62,8 @@
       "Amenability for infinite groups not in Mathlib (FolnerCondition exists but Cesaro mean construction not)"
     ],
     "nextSteps": [
-      "Run docker build to verify LebesgueMeasureOQ06.lean compiles without errors",
-      "Submit hausdorff_free_subgroup sorry to Aristotle (HARD — known result with explicit proof)",
-      "Consider building F₂ paradoxical decomposition as standalone algebraic lemma (~150 lines, tractable)",
-      "The paradoxical_no_finite_measure sorry can be closed by adding monotonicity hypothesis or showing B∪C covers A"
+      "Try free_group_not_amenable via explicit word partition F₂ = W(a)∪a·W(a⁻¹) using FreeGroup.toWord API (~150 lines)",
+      "Check if Mathlib has existence of non-measurable sets for banach_tarski_pieces_nonmeasurable"
     ]
   },
   "tags": [

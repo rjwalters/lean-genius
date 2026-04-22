@@ -117,13 +117,21 @@ theorem paradoxical_no_finite_measure (G : Type*) [Group G] [MulAction G α]
   -- And the equidecomposability gives μ(A) = μ(B) + μ(C) = 2·μ(A)
   -- So μ(A) = 2·μ(A) → μ(A) = 0 or ∞
   have h2 : μ A + μ A = μ A := by
-    -- Need: μ(A) ≥ μ(B ∪ C) (since B ∪ C ⊆ A)
-    -- This requires monotonicity of μ which follows from finite additivity
-    -- For now, we assume B ∪ C = A (in the classical paradox, B ∪ C ⊊ A but
-    -- equidecomposability compensates; the full argument uses covering numbers)
-    -- In the canonical formulation: A is equidecomposable to B ∪ C ∪ {center}
-    -- and the center has measure 0. We simplify by assuming B ∪ C = A here.
-    sorry -- Full proof: B ∪ C ⊆ A, μ(B ∪ C) ≤ μ(A) ≤ μ(A) + μ(A) = μ(B ∪ C)
+    -- B ∪ C ⊆ A since hBA : B ⊆ A and hCA : C ⊆ A
+    have hBC_sub : B ∪ C ⊆ A := Set.union_subset hBA hCA
+    -- Split A = (B ∪ C) ∪ (A \ (B ∪ C)) and apply finite additivity
+    -- to get μ(A) = μ(B ∪ C) + μ(A \ (B ∪ C)) ≥ μ(B ∪ C)
+    have hsplit : μ A = μ (B ∪ C) + μ (A \ (B ∪ C)) := by
+      have h := hμ_add (B ∪ C) (A \ (B ∪ C)) disjoint_sdiff_right
+      rw [Set.union_sdiff_of_subset hBC_sub] at h
+      exact h.symm
+    -- μ(A) + μ(A) = μ(B ∪ C) ≤ μ(A)  [monotonicity from splitting]
+    have hμ_mono : μ A + μ A ≤ μ A := by
+      rw [← hBCunion]
+      calc μ (B ∪ C)
+          ≤ μ (B ∪ C) + μ (A \ (B ∪ C)) := le_add_right _ _
+        _ = μ A := hsplit.symm
+    exact le_antisymm hμ_mono (le_add_right _ _)
   -- From h2: μ(A) = 0 or μ(A) = ∞
   rcases ENNReal.eq_zero_or_top_of_add_eq_self h2.symm with h | h
   · exact Or.inl h
