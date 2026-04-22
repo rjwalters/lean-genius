@@ -8,7 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/1095",
     "date": "1974",
     "status": "axiomatized",
-    "proofRepoPath": "Proofs/Erdos1095OQ01Problem.lean",
+    "proofRepoPath": "Proofs/Erdos1095Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -17,14 +17,14 @@
       "smooth-numbers",
       "open-problem"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1095,
     "erdosUrl": "https://erdosproblems.com/1095",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. gFunc_exists is a proved theorem (not axiom). Concrete values g(2)=6, g(3)=7, g(4)=7, g(5)=23 proved. Badge updated from 'axiom' to 'wip' (open conjecture for all k).",
-    "lineCount": 475,
+    "axiomCount": 7,
+    "assumptions": "7 axioms: g (function), g_gt, g_spec, g_minimal, ees_lower_bound, ees_upper_bound, konyagin_lower_bound. 0 sorries. Concrete values g(2)=6, g(3)=7, g(4)=7, g(5)=23 are proved theorems.",
+    "lineCount": 180,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -48,44 +48,51 @@
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Module documentation, Mathlib imports, and namespace setup."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 51,
-      "endLine": 61,
-      "summary": "Defines $k$-roughness (`isKRough`) and `binomIsKRough` — all prime factors of $\\binom{n}{k}$ exceed $k$.",
+      "startLine": 34,
+      "endLine": 43,
+      "summary": "Defines `isKRough` ($k$-roughness) and `binomIsKRough` — all prime factors of $\\binom{n}{k}$ exceed $k$.",
       "mathContext": "$k$-rough: all prime factors of $n$ exceed $k$."
     },
     {
       "id": "g-definition",
       "title": "The Erdős-Selfridge Function — Axiomatized",
-      "startLine": 63,
-      "endLine": 80,
-      "summary": "Axiomatizes $g(k)$ with four axioms: function, $g(k) > k+1$, $k$-roughness of $\\binom{g(k)}{k}$, and minimality.",
-      "mathContext": "$g(k) = \\min\\{n > k+1 : P^-(\\binom{n}{k}) > k\\}$."
+      "startLine": 44,
+      "endLine": 65,
+      "summary": "Axiomatizes $g(k)$ with four axioms (function, $g(k) > k+1$, $k$-roughness spec, minimality) and proves $g(k) \\ge k+2$.",
+      "mathContext": "$g(k) = \\min\\{n > k+1 : \\binom{n}{k} \\text{ is }k\\text{-rough}\\}$."
     },
     {
       "id": "concrete-values",
-      "title": "Concrete Values — Proved from Axioms",
-      "startLine": 82,
-      "endLine": 168,
-      "summary": "Machine-checked proofs of $g(2)=6$, $g(3)=7$, $g(4)=7$, $g(5)=23$. Each proved by exhibiting a $k$-rough witness and ruling out all smaller candidates.",
-      "mathContext": "$g(2)=6$, $g(3)=g(4)=7$, $g(5)=23$. All values verified by prime factor checks."
+      "title": "Concrete Values — Machine-Checked",
+      "startLine": 66,
+      "endLine": 140,
+      "summary": "Machine-verified proofs of $g(2)=6$, $g(3)=7$, $g(4)=7$, $g(5)=23$.",
+      "mathContext": "$g(2)=6$, $g(3)=g(4)=7$, $g(5)=23$. Each verified by witness + candidate elimination."
     },
     {
       "id": "bounds",
-      "title": "Known Bounds",
-      "startLine": 175,
-      "endLine": 193,
-      "summary": "EES (1974): $k^{1+c} < g(k) \\le e^{(1+o(1))k}$. Konyagin (1999): $g(k) \\gg \\exp(c(\\log k)^2)$.",
-      "mathContext": "$\\exp(c(\\log k)^2) \\ll g(k) \\leq \\exp((1+o(1))k)$."
+      "title": "Known Analytic Bounds",
+      "startLine": 141,
+      "endLine": 156,
+      "summary": "EES (1974): $k^{1+c} < g(k) \\le \\exp((1+o(1))k)$. Konyagin (1999): $g(k) \\gg \\exp(c(\\log k)^2)$.",
+      "mathContext": "$\\exp(c(\\log k)^2) \\ll g(k) \\le \\exp((1+o(1))k)$. 50-year gap remains open."
     },
     {
       "id": "conjectures",
       "title": "Conjectures and Open Problem",
-      "startLine": 195,
-      "endLine": 256,
-      "summary": "LCM conjecture, ratio conjectures, heuristic $\\log g(k) \\sim ck/\\log k$, and the main open problem.",
-      "mathContext": "Conjectured: $\\log g(k) \\sim c \\cdot k/\\log k$. Wide open."
+      "startLine": 157,
+      "endLine": 179,
+      "summary": "LCM conjecture ($g(k) < L_k$), ELS lower conjecture, and heuristic $\\log g(k) \\sim ck/\\log k$.",
+      "mathContext": "Conjectured: $\\log g(k) \\sim c \\cdot k/\\log k$ via Mertens' theorem heuristic."
     }
   ],
   "conclusion": {
@@ -178,11 +185,11 @@
       "BigOperators"
     ],
     "namespace": "Erdos1095",
-    "lineCount": 475,
-    "axiomCount": 0,
-    "theoremCount": 37,
-    "definitionCount": 8,
-    "path": "Proofs/Erdos1095OQ01Problem.lean",
+    "lineCount": 180,
+    "axiomCount": 7,
+    "theoremCount": 6,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos1095Problem.lean",
     "sorries": 0
   },
   "mainTheorems": [
