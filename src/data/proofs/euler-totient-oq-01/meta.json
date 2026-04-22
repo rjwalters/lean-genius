@@ -56,6 +56,13 @@
     ]
   },
   "overview": {
+    "prerequisites": [
+      "Group theory: finite abelian groups, exponent (LCM of element orders), Lagrange's theorem",
+      "Number theory: Euler's totient φ(n), multiplicative group (ℤ/nℤ)*, units and coprimality",
+      "Primitive root theorem (Gauss): (ℤ/pℤ)* is cyclic for prime p",
+      "Lean 4 typeclasses: IsCyclic, Monoid.exponent, ZMod API",
+      "Mathlib group theory library: GroupTheory.Exponent, SpecificGroups.Cyclic"
+    ],
     "historicalContext": "Euler's theorem (1763) states $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a, n) = 1$, where $\\varphi(n) = |({\\mathbb{Z}}/n{\\mathbb{Z}})^*|$ is Euler's totient. Robert D. Carmichael (1910) observed that Euler's exponent $\\varphi(n)$ is often far from optimal: for instance, $\\varphi(8) = 4$ but $a^2 \\equiv 1 \\pmod{8}$ for all odd $a$. Carmichael defined $\\lambda(n)$ as the smallest universal exponent, now known as Carmichael's function or the reduced totient. He showed $\\lambda(n) \\mid \\varphi(n)$ and computed when equality holds: $(\\mathbb{Z}/n\\mathbb{Z})^*$ is cyclic — equivalently $\\lambda(n) = \\varphi(n)$ — precisely when $n \\in \\{1, 2, 4, p^k, 2p^k\\}$ for odd primes $p$. This characterization was already implicit in Gauss's Disquisitiones Arithmeticae (1801), where the primitive root theorem establishes cyclicity for prime moduli. Carmichael's function has since become essential in cryptography: the RSA private key exponent $d$ satisfies $ed \\equiv 1 \\pmod{\\lambda(n)}$ (not merely $\\pmod{\\varphi(n)}$), giving a smaller and therefore more efficient $d$.",
     "problemStatement": "Define Carmichael's function $\\lambda(n)$ as the exponent of the multiplicative group $(\\mathbb{Z}/n\\mathbb{Z})^*$ (the LCM of the orders of all elements). Prove: (1) $a^{\\lambda(n)} \\equiv 1 \\pmod{n}$ for all $a$ coprime to $n$; (2) $\\lambda(n) \\mid \\varphi(n)$; (3) $\\lambda(n)$ is minimal: if $a^e \\equiv 1 \\pmod{n}$ for all coprime $a$, then $\\lambda(n) \\mid e$; (4) special values $\\lambda(p) = p-1$ for primes $p$, $\\lambda(1) = \\lambda(2) = 1$.",
     "proofStrategy": "All results follow from Mathlib's `Monoid.exponent` API. `carmichael n` is defined as `Monoid.exponent (ZMod n)ˣ`. The three core properties — `pow_exponent_eq_one`, `exponent_dvd_card`, and `exponent_dvd_of_forall_pow_eq_one` — are pre-proved in Mathlib's group theory library and require no additional argument. For `carmichael_prime`, the key ingredient is `IsCyclic.exponent_eq_card`: for a cyclic group, the exponent equals the group order (since a generator has order = group order = LCM of all orders).",
@@ -136,9 +143,19 @@
       "description": "Wilson theorem (p-1)! = -1 (mod p) — both concern the multiplicative structure of (Z/nZ)*"
     },
     {
-      "targetId": "lagranges-theorem",
+      "targetId": "lagrange-theorem",
       "relationship": "uses",
       "description": "Lagrange's theorem (exponent divides group order) is the key lemma in carmichael_dvd_totient via Monoid.exponent_dvd_card"
+    },
+    {
+      "targetId": "euler-totient-oq-02",
+      "relationship": "sibling",
+      "description": "Multiplicativity of Euler's Totient: φ(mn) = φ(m)·φ(n) for gcd(m,n)=1. The multiplicativity of φ is equivalent to the Chinese Remainder Theorem isomorphism (ℤ/mnℤ)* ≅ (ℤ/mℤ)* × (ℤ/nℤ)*, which in turn gives the product formula λ(mn) = lcm(λ(m), λ(n)) for the Carmichael function — the multiplicative structure that this entry's formalization inherits via Monoid.exponent."
+    },
+    {
+      "targetId": "euler-totient-oq-03",
+      "relationship": "sibling",
+      "description": "Structural Properties of φ: parity, divisibility, and the product formula φ(n) = n·∏_{p|n}(1-1/p). These structural results, combined with λ(n) | φ(n) proved here, determine when Carmichael's function equals Euler's totient: λ(n) = φ(n) iff (ℤ/nℤ)* is cyclic, which can be detected from n's prime factorization structure."
     }
   ],
   "leanFile": {
