@@ -1709,35 +1709,170 @@ theorem identities_exist_for_admissible :
   · exact ⟨fourSquareIdentity⟩
   · exact ⟨eight_square_identity_exists⟩
 
-/-- **Axiom:** n-square identities do not exist for n ∉ {1, 2, 4, 8}.
+-- ============================================================
+-- PART 8b: ODD N IMPOSSIBILITY (Skew-Symmetric Orthogonal Matrix)
+-- ============================================================
 
-    This captures the full negative direction of Hurwitz's theorem:
-    - n = 3: Contradiction from overdetermined orthonormality (proven via no_three_square_identity)
-    - n = 5, 6, 7: Similar overdetermined systems lead to contradictions
-    - n > 8: The Cayley-Dickson construction fails to produce normed algebras beyond octonions
+/-
+  For odd n ≥ 3 (with n ∉ {1,4,8}), we prove NSquareIdentity n → False.
 
-    The proof for n = 3 is formalized above. The cases n = 5, 6, 7 and n > 8
-    require the `cross_polarization` identity and a Clifford algebra representation
-    argument (Radon-Hurwitz numbers). -/
+  Key idea: Define M_{jk} = ⟨m_{j,j₁}, m_{k,j₂}⟩ for distinct j₁ ≠ j₂ in Fin n,
+  where m_{j,l} = nsi.mul (stdBasis j) (stdBasis l).
+
+  - M is skew-symmetric (j≠k: from cross_polarization with ⟨eⱼ,eₖ⟩=0;
+                         j=k: from orthogonality_constraint_right with j₁≠j₂)
+  - M is orthogonal: M^T M = I (column orthonormality gives A^T A = I for A = colMat nsi j₀)
+  - Combined: M² = -I → det(M)² = (-1)^n < 0 for odd n, but det(M)² ≥ 0. Contradiction!
+-/
+
+/-- General inner product symmetry: ⟨v, w⟩ = ⟨w, v⟩ for Fin n → ℝ -/
+private lemma innerProd_symm {n : ℕ} (v w : Fin n → ℝ) : innerProd v w = innerProd w v := by
+  simp only [innerProd]
+  apply Finset.sum_congr rfl
+  intros; ring
+
+/-- Inner product of standard basis vectors: ⟨eᵢ, eⱼ⟩ = δᵢⱼ -/
+private lemma innerProd_stdBasis {n : ℕ} (i j : Fin n) :
+    innerProd (stdBasis i) (stdBasis j) = if i = j then 1 else 0 := by
+  simp only [innerProd, stdBasis]
+  rw [Finset.sum_eq_single i (fun k _ hki => by simp [Ne.symm hki])
+      (fun h => absurd (Finset.mem_univ i) h)]
+  simp [eq_comm]
+
+/-- The matrix with (i, k)-entry = (nsi.mul (eₖ) (eⱼ₀))ᵢ -/
+private def colMat (nsi : NSquareIdentity n) (j₀ : Fin n) : Matrix (Fin n) (Fin n) ℝ :=
+  fun i k => (nsi.mul (stdBasis k) (stdBasis j₀)) i
+
+/-- colMat^T * colMat = I: column vectors of colMat are orthonormal -/
+private lemma colMat_transMul {n : ℕ} [NeZero n] (nsi : NSquareIdentity n) (j₀ : Fin n) :
+    (colMat nsi j₀).transpose * (colMat nsi j₀) = 1 := by
+  ext j k
+  simp only [Matrix.mul_apply, Matrix.transpose_apply, colMat, Matrix.one_apply]
+  -- Goal: Σᵢ (nsi.mul (eⱼ) (eⱼ₀))ᵢ * (nsi.mul (eₖ) (eⱼ₀))ᵢ = if j=k then 1 else 0
+  -- This sum equals innerProd (nsi.mul (eⱼ) (eⱼ₀)) (nsi.mul (eₖ) (eⱼ₀))
+  have hgoal : ∑ i, (nsi.mul (stdBasis j) (stdBasis j₀)) i * (nsi.mul (stdBasis k) (stdBasis j₀)) i =
+      innerProd (nsi.mul (stdBasis j) (stdBasis j₀)) (nsi.mul (stdBasis k) (stdBasis j₀)) := rfl
+  rw [hgoal]
+  rcases eq_or_ne j k with rfl | hjk
+  · -- j=k: innerProd = normSq = 1
+    simp only [if_true]
+    rw [← normSq_eq_innerProd, ← nsi.norm_mul (stdBasis j) (stdBasis j₀),
+        normSq_stdBasis, normSq_stdBasis]
+    ring
+  · -- j≠k: orthogonality_constraint
+    simp only [hjk, if_false]
+    exact orthogonality_constraint nsi (stdBasis j) (stdBasis k) (stdBasis j₀)
+      (normSq_stdBasis j) (normSq_stdBasis k) (normSq_stdBasis j₀)
+      (by rw [innerProd_stdBasis]; simp [hjk])
+
+/-- colMat * colMat^T = I -/
+private lemma colMat_mulTrans {n : ℕ} [NeZero n] (nsi : NSquareIdentity n) (j₀ : Fin n) :
+    (colMat nsi j₀) * (colMat nsi j₀).transpose = 1 :=
+  Matrix.mul_eq_one_comm.mpr (colMat_transMul nsi j₀)
+
+/-- The cross matrix M_{jk} = ⟨nsi.mul(eⱼ, eⱼ₁), nsi.mul(eₖ, eⱼ₂)⟩ = (A^T B)_{jk} -/
+private def crossMat (nsi : NSquareIdentity n) (j₁ j₂ : Fin n) : Matrix (Fin n) (Fin n) ℝ :=
+  (colMat nsi j₁).transpose * (colMat nsi j₂)
+
+/-- crossMat^T * crossMat = I -/
+private lemma crossMat_transMul {n : ℕ} [NeZero n] (nsi : NSquareIdentity n) (j₁ j₂ : Fin n) :
+    (crossMat nsi j₁ j₂).transpose * (crossMat nsi j₁ j₂) = 1 := by
+  simp only [crossMat, Matrix.transpose_mul, Matrix.transpose_transpose]
+  -- Goal: (colMat j₂)^T * (colMat j₁) * ((colMat j₁)^T * (colMat j₂)) = 1
+  rw [Matrix.mul_assoc, ← Matrix.mul_assoc (colMat nsi j₁), colMat_mulTrans nsi j₁,
+      Matrix.one_mul]
+  exact colMat_transMul nsi j₂
+
+/-- crossMat is skew-symmetric when j₁ ≠ j₂: M^T = -M -/
+private lemma crossMat_skewSym {n : ℕ} [NeZero n] (nsi : NSquareIdentity n)
+    (j₁ j₂ : Fin n) (hj₁j₂ : j₁ ≠ j₂) :
+    (crossMat nsi j₁ j₂).transpose = -(crossMat nsi j₁ j₂) := by
+  ext j k
+  simp only [crossMat, Matrix.transpose_mul, Matrix.transpose_transpose,
+             Matrix.mul_apply, Matrix.transpose_apply, Matrix.neg_apply, colMat]
+  -- LHS: ((colMat j₂)^T * (colMat j₁))_{jk} = Σᵢ (nsi.mul eⱼ eⱼ₂)ᵢ * (nsi.mul eₖ eⱼ₁)ᵢ
+  --    = innerProd (nsi.mul eⱼ eⱼ₂) (nsi.mul eₖ eⱼ₁)
+  -- RHS: -(crossMat j₁ j₂)_{jk} = -innerProd (nsi.mul eⱼ eⱼ₁) (nsi.mul eₖ eⱼ₂)
+  -- Need: ⟨m_{j,j₂}, m_{k,j₁}⟩ = -⟨m_{j,j₁}, m_{k,j₂}⟩
+  have hLHS : ∑ i, (nsi.mul (stdBasis j) (stdBasis j₂)) i * (nsi.mul (stdBasis k) (stdBasis j₁)) i =
+      innerProd (nsi.mul (stdBasis j) (stdBasis j₂)) (nsi.mul (stdBasis k) (stdBasis j₁)) := rfl
+  have hRHS : -(∑ i, (nsi.mul (stdBasis j) (stdBasis j₁)) i * (nsi.mul (stdBasis k) (stdBasis j₂)) i) =
+      -(innerProd (nsi.mul (stdBasis j) (stdBasis j₁)) (nsi.mul (stdBasis k) (stdBasis j₂))) := rfl
+  rw [hLHS, hRHS]
+  rcases eq_or_ne j k with rfl | hjk
+  · -- j=k: both sides 0 from row orthogonality (j₁ ≠ j₂)
+    have h := orthogonality_constraint_right nsi (stdBasis j) (stdBasis j₁) (stdBasis j₂)
+      (normSq_stdBasis j) (normSq_stdBasis j₁) (normSq_stdBasis j₂)
+      (by rw [innerProd_stdBasis]; simp [hj₁j₂])
+    rw [innerProd_symm (nsi.mul (stdBasis j) (stdBasis j₂)) (nsi.mul (stdBasis j) (stdBasis j₁))]
+    linarith
+  · -- j≠k: cross_polarization with ⟨eⱼ,eₖ⟩=0 gives M_{jk} + M_{kj}' = 0
+    have hcp := cross_polarization nsi (stdBasis k) (stdBasis j) (stdBasis j₂) (stdBasis j₁)
+    -- hcp: ⟨m_{k,j₂}, m_{j,j₁}⟩ + ⟨m_{k,j₁}, m_{j,j₂}⟩ = 2⟨eₖ,eⱼ⟩⟨eⱼ₂,eⱼ₁⟩ = 0
+    rw [innerProd_stdBasis, if_neg (Ne.symm hjk), mul_zero] at hcp
+    -- hcp: ⟨m_{k,j₂}, m_{j,j₁}⟩ + ⟨m_{k,j₁}, m_{j,j₂}⟩ = 0
+    -- = ⟨m_{j,j₁}, m_{k,j₂}⟩ + ⟨m_{k,j₁}, m_{j,j₂}⟩ = 0  (using innerProd_symm on first term)
+    -- Wait: we want ⟨m_{j,j₂}, m_{k,j₁}⟩ = -⟨m_{j,j₁}, m_{k,j₂}⟩
+    -- From hcp: innerProd(m_{k,j₂}, m_{j,j₁}) + innerProd(m_{k,j₁}, m_{j,j₂}) = 0
+    rw [innerProd_symm (nsi.mul (stdBasis k) (stdBasis j₂)) (nsi.mul (stdBasis j) (stdBasis j₁)),
+        innerProd_symm (nsi.mul (stdBasis k) (stdBasis j₁)) (nsi.mul (stdBasis j) (stdBasis j₂))] at hcp
+    -- hcp: ⟨m_{j,j₁}, m_{k,j₂}⟩ + ⟨m_{j,j₂}, m_{k,j₁}⟩ = 0 -- hmm, not exactly what we want
+    -- We want: ⟨m_{j,j₂}, m_{k,j₁}⟩ = -⟨m_{j,j₁}, m_{k,j₂}⟩
+    linarith
+
+/-- For odd n, NSquareIdentity n is impossible (matrix det argument) -/
+private lemma no_odd_nsquare {n : ℕ} [NeZero n] (hodd : Odd n) (hn3 : 3 ≤ n)
+    (nsi : NSquareIdentity n) : False := by
+  -- Pick two distinct column indices
+  have hn2 : 2 ≤ n := by omega
+  let j₁ : Fin n := ⟨0, by omega⟩
+  let j₂ : Fin n := ⟨1, by omega⟩
+  have hj₁j₂ : j₁ ≠ j₂ := by
+    intro heq; exact absurd (congrArg Fin.val heq) (by simp [j₁, j₂])
+  -- Set up the cross matrix M
+  let M := crossMat nsi j₁ j₂
+  have hMTM : M.transpose * M = 1 := crossMat_transMul nsi j₁ j₂
+  have hskew : M.transpose = -M := crossMat_skewSym nsi j₁ j₂ hj₁j₂
+  -- M is skew + orthogonal → M² = -I
+  have hMsq : M * M = -1 := by
+    have h1 : (-M) * M = 1 := by rw [← hskew]; exact hMTM
+    have h2 : -(M * M) = 1 := by rw [show -(M * M) = (-M) * M from by ring]; exact h1
+    exact neg_eq_iff_eq_neg.mp h2
+  -- det(M)² = det(M²) = det(-I) = (-1)^n = -1 for odd n
+  have hdet_sq : M.det ^ 2 = (-1 : ℝ) ^ n := by
+    rw [sq, ← Matrix.det_mul, hMsq]
+    rw [show (-1 : Matrix (Fin n) (Fin n) ℝ) = -(1 : Matrix (Fin n) (Fin n) ℝ) from rfl]
+    rw [Matrix.det_neg, Matrix.det_one, Fintype.card_fin, mul_one]
+  -- Contradiction: det(M)² ≥ 0 but (-1)^n = -1 < 0
+  have hodd_neg : (-1 : ℝ) ^ n = -1 := hodd.neg_one_pow
+  have hcontra : M.det ^ 2 = -1 := hdet_sq.trans hodd_neg
+  linarith [sq_nonneg M.det]
+
+/-- n-square identities do not exist for n ∉ {1, 2, 4, 8}. -/
 theorem hurwitz_only_if (n : ℕ) (hn : n > 0) (nsi : NSquareIdentity n) :
     n ∈ admissibleDimensions := by
   simp only [admissibleDimensions, Set.mem_insert_iff, Set.mem_singleton_iff]
-  -- Handle the four admissible cases directly
   rcases Nat.eq_or_ne n 1 with rfl | h1; · simp
   rcases Nat.eq_or_ne n 2 with rfl | h2; · simp
   rcases Nat.eq_or_ne n 4 with rfl | h4; · simp
   rcases Nat.eq_or_ne n 8 with rfl | h8; · simp
-  -- n ∉ {1, 2, 4, 8}: must derive contradiction from nsi
   exfalso
   rcases Nat.eq_or_ne n 3 with rfl | h3
-  · -- n = 3: proved via overdetermined orthogonality (no_three_square_identity)
-    exact no_three_square_identity nsi
-  · -- n ∈ {5, 6, 7} or n > 8: requires Clifford/Radon-Hurwitz argument.
-    -- Key tool: `cross_polarization` gives the Pfister identity
-    -- ⟨mul(x,a), mul(y,b)⟩ + ⟨mul(x,b), mul(y,a)⟩ = 2⟨x,y⟩⟨a,b⟩
-    -- which encodes the Clifford anticommutation relation for the maps
-    -- Jᵢ : x ↦ nsi.mul(eᵢ, x). The Radon-Hurwitz theorem then forces n ∈ {1,2,4,8}.
-    sorry
+  · exact no_three_square_identity nsi
+  · -- n ∉ {1,2,3,4,8}, n ≥ 1
+    -- Split on parity of n
+    rcases Nat.even_or_odd n with ⟨k, rfl⟩ | hodd
+    · -- n = 2k: even non-admissible (n ∈ {6,10,12,...})
+      -- Requires Clifford algebra classification (even case)
+      -- Key: 2k anticommuting isometries on ℝ^{2k} → Clifford algebra constraint
+      sorry -- HARD: even non-admissible case (n=6 and n=10,12,...); needs Clifford/Radon-Hurwitz
+    · -- n is odd: n ∉ {1,3} (handled above), so n ≥ 5 odd
+      have hn3 : 3 ≤ n := by
+        have hodd' := hodd
+        rcases hodd' with ⟨k, rfl⟩
+        omega
+      haveI : NeZero n := ⟨by omega⟩
+      exact no_odd_nsquare hodd hn3 nsi
 
 /-- Hurwitz's Theorem: n-square identities exist only for n ∈ {1, 2, 4, 8} -/
 theorem hurwitz_theorem (n : ℕ) (hn : n > 0) :

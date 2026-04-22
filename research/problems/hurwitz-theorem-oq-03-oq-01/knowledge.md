@@ -72,3 +72,52 @@
 1. Consider proving n=5 impossibility directly (similar to n=3 but with 5-frame constraints)
 2. Search for Mathlib Clifford algebra representations (to get Radon-Hurwitz without building from scratch)
 3. Check if Adams' theorem on vector fields on spheres is accessible in Lean 4
+
+---
+
+## Session 2026-04-22 (Session 2) — Odd n Impossibility Proved via Matrix Det Argument
+
+**Mode**: REVISIT (continuing claimed problem)
+**Outcome**: PROGRESS — proved `no_odd_nsquare` covering all odd n ≥ 3 (except n=3 already done)
+
+### What I Did
+
+1. Developed matrix-determinant argument for odd n impossibility
+2. Built infrastructure lemmas (`colMat`, `crossMat`, orthogonality proofs)
+3. Proved `no_odd_nsquare`: odd n ≥ 3 → NSquareIdentity n → False
+4. Updated `hurwitz_only_if` to dispatch odd n case to `no_odd_nsquare`
+
+### Key Findings
+
+**Matrix det argument**: 
+- `colMat(nsi, j₀)`: the j₀-th "column multiplication matrix" — (i,k) entry = (nsi.mul eₖ e_{j₀})ᵢ
+- `colMat(j₀)ᵀ × colMat(j₀) = I`: orthogonality_constraint gives column orthonormality
+- `crossMat(j₁,j₂) = colMat(j₁)ᵀ × colMat(j₂)`: for j₁ ≠ j₂:
+  - **Orthogonal**: crossMat^T × crossMat = I (proved via Matrix.mul_assoc + colMat_mulTrans)
+  - **Skew-symmetric**: crossMat^T = -crossMat (proved via cross_polarization for off-diagonal, row ortho for diagonal)
+- **Key contradiction**: M skew+orthogonal → M² = M^T×M after sign flip = -I → det(M)² = (-1)^n = -1 < 0
+
+**Matrix.mul_eq_one_comm**: For square matrices over commutative ring, A×B=1 ↔ B×A=1.
+Used to convert `colMat_transMul` (Mᵀ×M=I) to `colMat_mulTrans` (M×Mᵀ=I).
+
+**Odd.neg_one_pow**: `(-1:R)^n = -1` for Odd n — key final step.
+
+**Tactic `haveI : NeZero n := ⟨by omega⟩`**: needed to instantiate type class for Fin.card arithmetic.
+
+### Current sorry count: 1
+
+The remaining sorry covers **even non-admissible n** (n = 6, 10, 12, 14, 16, ...):
+- n=6: no 6-square identity (needs Clifford Cl(5) rep theory)
+- n=10, 12, ...: same Clifford algebra constraint
+- **Mathematical obstacle**: need Radon-Hurwitz number ρ(n) < n for even n ∉ {2,4,8}
+
+### Files Modified
+
+- `proofs/Proofs/HurwitzTheorem.lean` (+153 lines: colMat, crossMat lemmas, no_odd_nsquare, updated hurwitz_only_if)
+- `src/data/research/problems/hurwitz-theorem-oq-03-oq-01.json`
+
+### Next Steps
+
+1. **Even n approach**: For even n, the halving argument: if n-sq identity exists, then (n/2)-sq identity exists. Use this recursively: 6→3 (impossible!), 10→5 (odd, impossible), 12→6→3, etc. May handle all even non-admissible n without Clifford algebra.
+2. **Submit current sorry to Aristotle** (likely HARD, not OPEN — mathematical argument exists via halving or Clifford)
+3. If halving argument works, `hurwitz_only_if` could be fully proved.
