@@ -84,6 +84,10 @@
       {
         "id": "abel-ruffini-oq-04-oq-02-oq-03",
         "relationship": "All finite groups of order < 60 are solvable — A₅ (order 60) is the minimal non-solvable group"
+      },
+      {
+        "id": "inverse-galois-oq-06",
+        "relationship": "Proves A₅ ≅ Gal(x⁵-5x⁴+10x³-10x²+25x-5/ℚ) — an alternative concrete non-radical quintic witness via A₅ realizability, complementing the S₅ witness in abel-ruffini-oq-04-oq-01"
       }
     ],
     "lineCount": 185,
@@ -345,6 +349,11 @@
       "targetId": "lagrange-theorem-oq-03",
       "relationship": "complementary",
       "description": "Hall's theorem (1928) characterizes solvable groups positively: a finite group is solvable iff it has Hall subgroups of every coprime order. This provides a structural 'positive test' for solvability complementing the impossibility at degree 5 — S₅ has no subgroup of order 15 (max element order is 6), so S₅ fails Hall's criterion"
+    },
+    {
+      "targetId": "inverse-galois-oq-06",
+      "relationship": "complementary",
+      "description": "Proves A₅ ≅ Gal(x⁵-5x⁴+10x³-10x²+25x-5/ℚ) via Eisenstein at $p=5$ and Sylow theory. Since A₅ is not solvable (the simplicity of A₅ is the key obstruction in Abel-Ruffini), applying `not_solvable_by_rad_of_not_solvable_gal` yields a concrete quintic whose roots are not expressible by radicals. Provides an alternative concrete witness to `abel-ruffini-oq-04-oq-01`'s S₅-based example, completing the picture: both A₅ and S₅ appear as Galois groups over ℚ and both obstruct radical solvability"
     }
   ],
   "references": [
