@@ -1,0 +1,81 @@
+{
+  "slug": "minkowski-theorem-oq-03",
+  "title": "Minkowski Bound on Ideal Norms: Geometry of Numbers Connection",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Minkowski Bound on Ideal Norms: Geometry of Numbers Connection.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-22T12:51:58.296Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "number-theory",
+    "algebraic-number-theory",
+    "minkowski",
+    "ideals"
+  ],
+  "relatedProofs": [
+    "minkowski-theorem",
+    "minkowski-theorem-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T12:51:58.295Z",
+  "lastUpdate": "2026-04-22T12:51:58.295Z",
+  "significance": 8,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/MinkowskiTheoremOQ02.lean",
+      "filename": "MinkowskiTheoremOQ02.lean",
+      "lineCount": 285,
+      "theoremCount": 6,
+      "axiomCount": 3,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiTheoremOQ02OQ01.lean",
+      "filename": "MinkowskiTheoremOQ02OQ01.lean",
+      "lineCount": 268,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ02OQ01.lean"
+    }
+  ]
+}

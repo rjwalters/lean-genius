@@ -1,0 +1,71 @@
+{
+  "slug": "hurwitz-theorem-oq-04",
+  "title": "Hurwitz Theorem: Connection to Exceptional Lie Groups",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in algebra: Hurwitz Theorem: Connection to Exceptional Lie Groups.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-22T13:03:46.381Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "algebra",
+    "lie-groups",
+    "hurwitz",
+    "composition-algebras",
+    "exceptional"
+  ],
+  "relatedProofs": [
+    "hurwitz-theorem",
+    "hurwitz-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T13:03:46.381Z",
+  "lastUpdate": "2026-04-22T13:03:46.381Z",
+  "significance": 7,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/HurwitzTheorem.lean",
+      "filename": "HurwitzTheorem.lean",
+      "lineCount": 1839,
+      "theoremCount": 36,
+      "axiomCount": 0,
+      "defCount": 15,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzTheorem.lean"
+    }
+  ]
+}

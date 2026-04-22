@@ -1,0 +1,140 @@
+{
+  "slug": "geometric-series-oq-04",
+  "title": "q-Analog Geometric Series: Quantum Integer Formalization",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in algebra: q-Analog Geometric Series: Quantum Integer Formalization.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-22T12:51:58.294Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "algebra",
+    "q-analogs",
+    "quantum",
+    "combinatorics"
+  ],
+  "relatedProofs": [
+    "geometric-series",
+    "geometric-series-oq-01",
+    "geometric-series-oq-02",
+    "geometric-series-oq-02-oq-03",
+    "geometric-series-oq-02-oq-05",
+    "geometric-series-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T12:51:58.294Z",
+  "lastUpdate": "2026-04-22T12:51:58.294Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/GeometricSeries.lean",
+      "filename": "GeometricSeries.lean",
+      "lineCount": 172,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeries.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ01.lean",
+      "filename": "GeometricSeriesOQ01.lean",
+      "lineCount": 251,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ01.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ01Neumann.lean",
+      "filename": "GeometricSeriesOQ01Neumann.lean",
+      "lineCount": 92,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ01Neumann.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ02.lean",
+      "filename": "GeometricSeriesOQ02.lean",
+      "lineCount": 238,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ02.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ02OQ03.lean",
+      "filename": "GeometricSeriesOQ02OQ03.lean",
+      "lineCount": 165,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ02OQ05.lean",
+      "filename": "GeometricSeriesOQ02OQ05.lean",
+      "lineCount": 251,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ02OQ05.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ03.lean",
+      "filename": "GeometricSeriesOQ03.lean",
+      "lineCount": 216,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ03.lean"
+    }
+  ]
+}

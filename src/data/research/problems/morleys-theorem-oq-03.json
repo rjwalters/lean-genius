@@ -1,0 +1,81 @@
+{
+  "slug": "morleys-theorem-oq-03",
+  "title": "Morley's Theorem: Mathlib Contribution for Cosine-Rule Identity",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in geometry: Morley's Theorem: Mathlib Contribution for Cosine-Rule Identity.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-22T12:51:58.296Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "geometry",
+    "mathlib",
+    "formalization",
+    "morley"
+  ],
+  "relatedProofs": [
+    "morleys-theorem",
+    "morleys-theorem-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T12:51:58.296Z",
+  "lastUpdate": "2026-04-22T12:51:58.296Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/MorleysTheorem.lean",
+      "filename": "MorleysTheorem.lean",
+      "lineCount": 533,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MorleysTheorem.lean"
+    },
+    {
+      "path": "Proofs/MorleysTheoremOQ01.lean",
+      "filename": "MorleysTheoremOQ01.lean",
+      "lineCount": 293,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MorleysTheoremOQ01.lean"
+    }
+  ]
+}

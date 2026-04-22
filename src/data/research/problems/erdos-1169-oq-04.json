@@ -1,0 +1,76 @@
+{
+  "slug": "erdos-1169-oq-04",
+  "title": "Ordinal Partition Relation Formalization in Lean 4",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\omega_1^2 \\to (\\omega_1^2, 3)^2",
+    "plain": "The parent gallery entry `erdos-1169` uses three axioms to encode:",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-22T14:30:59+02:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-1169-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n**Goal**: Replace axioms in `Proofs/Erdos1169Problem.lean` with proved theorems.\nThe gallery entry `erdos-1169` uses 3 axioms for Hajnal's CH-conditional result.\nOQ-04 asks whether Lean 4 + Mathlib can verify at least the countable case\n`ω → (ω, 3)²` without axioms.\n\n**Formal definition in `Proofs/Erdos1169Problem.lean`**:\n```lean\ndef ordinalPartitionRel (α β : Ordinal) (k : ℕ) : Prop :=\n  ∀ c : Ordinal → Ordinal → Fin 2,\n    (∃ f : Ordinal → Ordinal, StrictMono f ∧ (∀ i, i < β → f i < α) ∧\n      ∀ i j, i < j → j < β → c (f i) (f j) = 0) ∨\n    (∃ g : Fin k → Ordinal, StrictMono g ∧ (∀ i, g i < α) ∧\n      ∀ i j : Fin k, i < j → c (g i) (g j) = 1)\n```\n\n**Key axiom to replace**:\n```lean\naxiom hajnal_ch_implies_partition (h : CH) (k : ℕ) (hk : 2 ≤ k) :\n  ordinalPartitionRel omega1Sq omega1Sq k\n```\n\n**Tractability**: Countable Ramsey (ω → (ω,3)²) is Medium. Full CH result is High.\n\n---\n\n## Insights\n\n### Seeker Selection Rationale (2026-04-22)\n- Selected as Tier A (sig=8, tract=5) with EMPTY knowledge\n- Composite score: 58 (EMPTY tier priority)\n- No prior research workspace existed\n- Parent `erdos-1169` is axiomatized; this OQ targets replacing axioms\n- Mathlib has finite Ramsey (`Mathlib.Combinatorics.Ramsey`) — investigate\n  if infinite case exists\n\n### Recommended OBSERVE Phase Steps\n1. Search Mathlib for `Ramsey`, `infinite`, `ordinal partition` API\n2. Check `Mathlib.Combinatorics.Ramsey` for infinite coloring theorems\n3. Read `Proofs/Erdos1169Problem.lean` in full — understand all 3 axioms\n4. Test whether `omega → (omega, 3)²` can be stated and proved from Mathlib\n\n---\n\n## Dead Ends\n\n[None yet — problem is freshly selected]\n"
+  },
+  "tags": [
+    "set-theory",
+    "ramsey-theory",
+    "ordinals",
+    "combinatorics",
+    "erdos",
+    "formalization"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-116",
+    "erdos-1169"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-13T00:54:20.757Z",
+  "lastUpdate": "2026-04-13T22:43:37.319Z",
+  "completed": "2026-04-13T22:43:37.319Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1169Problem.lean",
+      "filename": "Erdos1169Problem.lean",
+      "lineCount": 226,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1169Problem.lean"
+    }
+  ]
+}

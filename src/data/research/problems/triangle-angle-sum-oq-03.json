@@ -1,0 +1,82 @@
+{
+  "slug": "triangle-angle-sum-oq-03",
+  "title": "Triangle Angle Sum: Mathlib Angle Function Degenerate Cases",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in geometry: Triangle Angle Sum: Mathlib Angle Function Degenerate Cases.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-22T13:03:46.506Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "geometry",
+    "mathlib",
+    "angle-function",
+    "degenerate-cases",
+    "formalization"
+  ],
+  "relatedProofs": [
+    "triangle-angle-sum",
+    "triangle-angle-sum-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T13:03:46.506Z",
+  "lastUpdate": "2026-04-22T13:03:46.506Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/TriangleAngleSum.lean",
+      "filename": "TriangleAngleSum.lean",
+      "lineCount": 158,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleAngleSum.lean"
+    },
+    {
+      "path": "Proofs/TriangleAngleSumOQ01.lean",
+      "filename": "TriangleAngleSumOQ01.lean",
+      "lineCount": 261,
+      "theoremCount": 5,
+      "axiomCount": 4,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleAngleSumOQ01.lean"
+    }
+  ]
+}
