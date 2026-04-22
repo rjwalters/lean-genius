@@ -43,31 +43,39 @@ noncomputable def boundGap (n : ℕ) : ℝ :=
 -- Since ∨ is commutative, ↔ H₁.Adj ∨ H₂.Adj is equivalent to ↔ H₂.Adj ∨ H₁.Adj.
 theorem is_union_of_comm (G H₁ H₂ : SimpleGraph V) (h : IsUnionOf G H₁ H₂) :
     IsUnionOf G H₂ H₁ := by
-  sorry
+  intro v w
+  rw [h v w]
+  exact or_comm
 
 -- Routine: The left component is a subgraph when G = H₁ ∪ H₂.
 -- H₁.Adj v w → G.Adj v w via Or.inl and the biconditional.
 theorem union_le_left (G H₁ H₂ : SimpleGraph V) (h : IsUnionOf G H₁ H₂) :
     H₁ ≤ G := by
-  sorry
+  intro v w hadj
+  exact (h v w).mpr (Or.inl hadj)
 
 -- Routine: The right component is a subgraph when G = H₁ ∪ H₂.
 -- H₂.Adj v w → G.Adj v w via Or.inr and the biconditional.
 theorem union_le_right (G H₁ H₂ : SimpleGraph V) (h : IsUnionOf G H₁ H₂) :
     H₂ ≤ G := by
-  sorry
+  intro v w hadj
+  exact (h v w).mpr (Or.inr hadj)
 
 -- Routine: The bottom graph has degree 0 everywhere.
 -- ⊥ has no edges so every vertex has degree 0.
 theorem bot_degree_zero (v : V) : (⊥ : SimpleGraph V).degree v = 0 := by
-  sorry
+  rw [SimpleGraph.degree, Finset.card_eq_zero]
+  ext w
+  simp [SimpleGraph.mem_neighborFinset]
 
 -- Routine: A bipartite graph trivially decomposes (H₁ = G, H₂ = ⊥).
 -- If G itself is bipartite, decompose with an empty bounded-degree component.
 -- Since degree in ⊥ is 0 < n for any n ≥ 1, this works.
 theorem bipartite_has_decomposition (G : SimpleGraph V) (n : ℕ) (hn : n ≥ 1)
     (hb : G.IsBipartite) : HasDecomposition G n := by
-  sorry
+  refine ⟨G, ⊥, ?_, hb, ?_⟩
+  · intro v w; simp [SimpleGraph.bot_adj]
+  · intro v; rw [bot_degree_zero]; exact hn
 
 -- Routine: criticalEdgeCount is positive for n ≥ 2.
 -- For n = 2: C(5,2) - C(2,2) - 1 = 10 - 1 - 1 = 8 > 0.
@@ -79,7 +87,13 @@ theorem criticalEdgeCount_pos (n : ℕ) (hn : n ≥ 2) : 0 < criticalEdgeCount n
 -- (√2 - 0.577) > 0 and n^(3/2) ≥ 1 > 0, so the first term is positive,
 -- and we add a positive n term.
 theorem boundGap_pos (n : ℕ) (hn : n ≥ 1) : 0 < boundGap n := by
-  sorry
+  simp only [boundGap]
+  have hn_pos : (0 : ℝ) < n := by exact_mod_cast Nat.pos_of_ne_zero (by omega)
+  have hrpow : (0 : ℝ) < (n : ℝ) ^ (3 / 2 : ℝ) := Real.rpow_pos_of_pos hn_pos _
+  have h14 : (1.41 : ℝ) ≤ Real.sqrt 2 := by
+    calc (1.41 : ℝ) = Real.sqrt (1.41 ^ 2) := (Real.sqrt_sq (by norm_num)).symm
+      _ ≤ Real.sqrt 2 := Real.sqrt_le_sqrt (by norm_num)
+  linarith [mul_pos (by linarith : (0 : ℝ) < Real.sqrt 2 - 0.577) hrpow]
 
 -- Routine: boundGap grows as Θ(n^{3/2}).
 -- Lower bound: take c₁ = √2 - 0.577 > 0; then c₁ * n^(3/2) ≤ boundGap n trivially.
