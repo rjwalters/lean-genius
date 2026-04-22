@@ -122,6 +122,18 @@
       "mathContext": "The achievable set is exactly $\\{0, 1, \\ldots, M\\}$. This follows from downward-monotonicity (achievable below $M$) and non-achievability above $M$ (from the exact max definition). The gap narrowing theorem provides a framework for improving bounds."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-2",
+      "relationship": "extends",
+      "description": "Parent: the base Erdős #2 covering systems formalization whose achievability predicate, Owens lower bound (42), and Balister upper bound (616,000) this OQ builds on to prove exact max M exists in [42, 616000]."
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Adjacent Erdős problem: #1 (covering system density) and #2 (minimum modulus) are the two foundational covering system problems, both about what configurations of congruence classes can cover ℤ."
+    }
+  ],
   "leanFile": {
     "lineCount": 232,
     "path": "Proofs/Erdos2OQ01.lean",

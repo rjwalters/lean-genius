@@ -107,6 +107,28 @@
       "The Neumann series gives the upper bound $\\|B^{-1}\\| \\le (1 - \\|1-B\\|)^{-1}$; can a matching lower bound $\\|B^{-1}\\| \\ge (1 + \\|1-B\\|)^{-1}$ be formalized, establishing the precise norm asymptotics of perturbed inverses?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-02",
+      "relationship": "extends",
+      "description": "Direct parent: the Neumann series convergence theorem (invertible_near_one, inverse_near_one) whose corollaries — unit group openness and norm bounds — are proved here."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "extends",
+      "description": "Scalar prototype: the geometric series 1/(1-r) = Σrⁿ for |r|<1 is the commutative special case of the operator Neumann series. The norm bound ‖B⁻¹‖ ≤ (1-‖1-B‖)⁻¹ mirrors 1/(1-r)."
+    },
+    {
+      "targetId": "geometric-series-oq-02-oq-05",
+      "relationship": "related",
+      "description": "The resolvent and holomorphic functional calculus OQ that builds directly on the unit group openness proved here: the resolvent set is open because units form an open set."
+    },
+    {
+      "targetId": "geometric-series-oq-01",
+      "relationship": "related",
+      "description": "Complementary analytic extension OQ: while this file establishes algebraic/topological properties of invertibility, OQ-01 studies analytic properties of the series as a function of its parameter."
+    }
+  ],
   "leanFile": {
     "lineCount": 164,
     "path": "Proofs/GeometricSeriesOQ02OQ03.lean",

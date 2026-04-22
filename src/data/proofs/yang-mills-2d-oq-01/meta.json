@@ -82,6 +82,28 @@
       "The 4D Yang-Mills mass gap problem asks to prove that the quantum field theory defined by the Yang-Mills Lagrangian has a strictly positive lowest energy excitation above the vacuum. What would a Lean formalization of even the problem statement require, and what intermediate results from the 2D theory could be recycled?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "yang-mills-2d",
+      "relationship": "extends",
+      "description": "Parent: the base 2D Yang-Mills formalization whose heat kernel infrastructure and Wilson loop framework this OQ extends with string tension calculations and partition function bounds."
+    },
+    {
+      "targetId": "yang-mills",
+      "relationship": "related",
+      "description": "The 4D Yang-Mills Millennium Prize problem: the exact 2D results here (area law, string tension, mass gap) are the only rigorously proved instances of phenomena conjectured in 4D."
+    },
+    {
+      "targetId": "yang-mills-lattice",
+      "relationship": "related",
+      "description": "Complementary approach: lattice Yang-Mills provides discrete approximations to the continuum results proved here, connecting the exact 2D heat kernel formula to numerical simulation."
+    },
+    {
+      "targetId": "navier-stokes",
+      "relationship": "related",
+      "description": "Peer Millennium Prize problem: both Yang-Mills (mass gap) and Navier-Stokes (regularity) are Clay problems requiring rigorous QFT/PDE foundations that the 2D results here help establish."
+    }
+  ],
   "leanFile": {
     "lineCount": 308,
     "path": "Proofs/YangMills2DOQ01.lean",

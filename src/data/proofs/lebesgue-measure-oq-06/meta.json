@@ -85,22 +85,13 @@
       "endLine": 287,
       "summary": "Defines amenable groups (admit a finitely-additive left-invariant probability measure on all subsets). States that ℤ is amenable (via Cesàro means) and F₂ is not (via paradoxical decomposition).",
       "mathContext": "A group $G$ is amenable iff $\\exists \\mu: 2^G \\to [0,\\infty]$ with $\\mu(G)=1$, $\\mu(A \\cup B) = \\mu(A) + \\mu(B)$ for disjoint $A, B$, and $\\mu(gA) = \\mu(A)$ for all $g \\in G$. Abelian groups are amenable (via Markov-Kakutani fixed point theorem). $F_2$ is not amenable: the partition $F_2 = W(a) \\sqcup aW(a^{-1})$ with $F_2 = W(a) \\sqcup W(a^{-1}) \\sqcup \\cdots$ forces $\\mu(F_2) = \\infty$ or $0$."
-    },
-    {
-      "id": "nonmeasurable-corollary",
-      "title": "Corollary: Non-Measurability of the Banach-Tarski Pieces",
-      "startLine": 228,
-      "endLine": 248,
-      "summary": "States as a corollary that the pieces produced by the Banach-Tarski decomposition are necessarily non-Lebesgue-measurable. If all pieces were measurable, isometry-invariance of Lebesgue measure together with both reassemblies would force lambda(B3) = 2*lambda(B3), contradicting lambda(B3) = 4pi/3 > 0.",
-      "mathContext": "Suppose all pieces $P_i$ are Lebesgue-measurable. Since each $g_i^{(j)}$ is an isometry, $\\lambda(g_i^{(j)}(P_i)) = \\lambda(P_i)$. From the first reassembly: $\\lambda(B^3) = \\sum_i \\lambda(P_i)$. From the second: $\\lambda(B^3) = \\sum_i \\lambda(P_i)$ again. This gives $2\\lambda(B^3) = \\lambda(B^3)$, forcing $\\lambda(B^3) \\in \\{0, \\infty\\}$, contradicting $\\lambda(B^3) = \\frac{4\\pi}{3}$. Therefore at least one $P_i$ is not Lebesgue-measurable — the paradox does not violate conservation of volume because volume is undefined on the pieces."
     }
   ],
   "conclusion": {
     "summary": "The Banach-Tarski paradox is formalized at the statement level with abstract equidecomposability and paradoxical set framework fully defined. The key measure-theoretic consequence (paradoxical sets admit no finite invariant measure) is structurally proved. The main theorem and ingredient lemmas are stated as axiomatized sorries, representing the current boundary of this gallery entry's formalization.",
     "openQuestions": [
       "Can Hausdorff's free subgroup theorem be fully formalized in Lean? The proof requires showing that explicit 3×3 rotation matrices generate a free group — the algebraic argument involves showing nontrivial words produce vectors with irrational coordinates via a number-theoretic argument.",
-      "Can the full Banach-Tarski proof be formalized in Lean 4? The most likely path: build the free group paradoxical decomposition first (purely algebraic), then lift to S² (measure-theoretic), then to B³ (geometric extension). Estimated scope: 800-1200 lines.",
-      "Can Tarski's theorem (a G-set admits a G-invariant finitely-additive probability measure if and only if it is not G-paradoxical) be formalized in Lean? This requires formalizing the theory of means, the ultrafilter proof of the forward direction, and the Hahn-Banach theorem in the amenable case — a major measure-theoretic formalization project connecting this entry's `IsAmenable` definition to its full characterization."
+      "Can the full Banach-Tarski proof be formalized in Lean 4? The most likely path: build the free group paradoxical decomposition first (purely algebraic), then lift to S² (measure-theoretic), then to B³ (geometric extension). Estimated scope: 800-1200 lines."
     ],
     "implications": "The Banach-Tarski paradox shows that Lebesgue measure cannot be extended to all subsets of ℝ³ as a finitely-additive rigid-motion-invariant measure. It demonstrates that the Axiom of Choice produces sets with no reasonable notion of volume. The connection to amenability shows that this phenomenon is fundamentally group-theoretic: the non-amenability of SO(3) (via its free subgroup) is the root cause."
   },
@@ -116,9 +107,14 @@
       "description": "Both show fundamental limitations of Lebesgue measure — infinite-dimensional impossibility and 3D paradox"
     },
     {
-      "targetId": "lebesgue-measure-oq-03-oq-01",
+      "targetId": "lebesgue-measure-oq-01",
       "relationship": "related",
-      "description": "No Translation-Invariant Measure in Infinite Dimensions — complementary impossibility result: in infinite-dimensional spaces, no nonzero $\\sigma$-finite translation-invariant Borel measure exists. Banach-Tarski shows the same impossibility for finitely-additive rigid-motion-invariant measures on $\\mathbb{R}^3$, but the obstructions differ: infinite dimensionality vs. non-amenability of SO(3)."
+      "description": "Sibling OQ: establishes foundational measure axioms (σ-additivity, regularity) that the non-measurability corollary here (paradoxical pieces have no finite measure) directly contradicts."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Both invoke a form of non-constructive choice (Axiom of Choice for paradoxical decompositions; diagonalization for uncountability) to exhibit sets with pathological properties — the two deepest uses of set-theoretic axioms in the gallery."
     }
   ],
   "references": [
