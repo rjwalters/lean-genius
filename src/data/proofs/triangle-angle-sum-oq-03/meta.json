@@ -1,0 +1,87 @@
+{
+  "id": "triangle-angle-sum-oq-03",
+  "title": "Triangle Angle Sum: Degenerate Cases and the Redundant Hypothesis",
+  "slug": "triangle-angle-sum-oq-03",
+  "description": "Proves what happens to the Mathlib angle sum formula when the non-degeneracy hypotheses fail. Surprising result: the formula holds for ALL configurations except when all three named points coincide. Reveals that the standard `triangle_angle_sum` carried an unnecessary hypothesis.",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "euclidean",
+      "angle-sum",
+      "degenerate-cases",
+      "mathlib-conventions"
+    ],
+    "mathlib_version": "4.26.0",
+    "proofRepoPath": "Proofs/TriangleAngleSumOQ03.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 140,
+    "dateAdded": "2026-04-23",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanGeometry.angle_add_angle_add_angle_eq_pi",
+        "description": "Angle sum theorem: only requires p₂ ≠ p₁, works for any p₃",
+        "module": "Mathlib.Geometry.Euclidean.Triangle"
+      },
+      {
+        "theorem": "EuclideanGeometry.angle_self_left",
+        "description": "When first arg = vertex: angle equals π/2",
+        "module": "Mathlib.Geometry.Euclidean.Angle.Unoriented.Affine"
+      },
+      {
+        "theorem": "EuclideanGeometry.angle_self_right",
+        "description": "When third arg = vertex: angle equals π/2",
+        "module": "Mathlib.Geometry.Euclidean.Angle.Unoriented.Affine"
+      },
+      {
+        "theorem": "EuclideanGeometry.angle_self_of_ne",
+        "description": "When first = third ≠ vertex: angle equals 0",
+        "module": "Mathlib.Geometry.Euclidean.Angle.Unoriented.Affine"
+      }
+    ],
+    "originalContributions": [
+      "Complete characterization: angle sum = π iff not both p₂ = p₁ and p₃ = p₁",
+      "Proof that the hypothesis h₃ : p₃ ≠ p₁ in the gallery's triangle_angle_sum is redundant",
+      "Degenerate case: when p₂ = p₁ and p₃ ≠ p₁, angles are π/2, 0, π/2 summing to π",
+      "Fully degenerate case: when p₁ = p₂ = p₃, sum = 3π/2 (unique exceptional configuration)",
+      "Unconditional formula using Classical.em (no DecidableEq hypothesis needed)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Euclidean angle function `EuclideanGeometry.angle p₁ p₂ p₃` measures the angle at vertex p₂ between directions to p₁ and p₃. It is defined via `InnerProductGeometry.angle`, which uses `arccos(⟨u,v⟩/(‖u‖·‖v‖))`. When a direction vector is zero (i.e., when a non-vertex arg equals the vertex), the inner product ratio is 0/0 = 0 by Lean's convention, so `arccos(0) = π/2`.\n\nThis convention was chosen by Mathlib for analytic cleanliness — the function is defined everywhere without case analysis. The consequence is a beautiful and somewhat surprising theorem: the angle sum formula extends far beyond its original non-degenerate domain.",
+    "problemStatement": "**OQ-03**: What happens to the triangle angle sum formula `∠ p₁ p₂ p₃ + ∠ p₂ p₃ p₁ + ∠ p₃ p₁ p₂ = π` when the non-degeneracy conditions `p₂ ≠ p₁` and `p₃ ≠ p₁` fail?\n\n**Surprising answer**: The formula holds unless ALL THREE points are equal.\n\nFurther: the Mathlib theorem `angle_add_angle_add_angle_eq_pi` only requires `p₂ ≠ p₁` — the hypothesis `p₃ ≠ p₁` was never needed.",
+    "proofStrategy": "**Key insight**: `EuclideanGeometry.angle_add_angle_add_angle_eq_pi` has signature `(p₃ : P) (h : p₂ ≠ p₁)` — only ONE non-degeneracy condition.\n\n**Case split**: The only truly exceptional case is `p₂ = p₁` (not covered by Mathlib):\n1. If `p₃ ≠ p₁`: use `angle_self_left/right/of_ne` to compute angles as π/2, 0, π/2 → sum = π\n2. If `p₃ = p₁` (all three equal): all angles = π/2 → sum = 3π/2\n\n**Main theorem**: `angle sum = π ↔ ¬(p₂ = p₁ ∧ p₃ = p₁)`",
+    "keyInsights": [
+      "The Mathlib angle sum theorem requires ONLY p₂ ≠ p₁, making h₃ : p₃ ≠ p₁ redundant in the standard gallery proof",
+      "Mathlib convention: angle(0, v) = arccos(0/0) = arccos(0) = π/2 (degenerate direction → right angle)",
+      "The exceptional configuration (all three points equal) gives sum = 3π/2 = three right angles",
+      "The formula fails ONLY when both non-degeneracy conditions fail simultaneously, not when one fails"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "TriangleAngleSumOQ03.triangle_angle_sum_one_cond",
+      "statement": "p₂ ≠ p₁ → ∀ p₃, ∠ p₁ p₂ p₃ + ∠ p₂ p₃ p₁ + ∠ p₃ p₁ p₂ = π",
+      "description": "The Mathlib theorem: only p₂ ≠ p₁ needed, p₃ is unrestricted"
+    },
+    {
+      "name": "TriangleAngleSumOQ03.triangle_angle_sum_p2_eq_p1",
+      "statement": "p₂ = p₁ → p₃ ≠ p₁ → ∠ p₁ p₂ p₃ + ∠ p₂ p₃ p₁ + ∠ p₃ p₁ p₂ = π",
+      "description": "Degenerate case: p₂ = p₁ but p₃ ≠ p₁ still gives angle sum = π"
+    },
+    {
+      "name": "TriangleAngleSumOQ03.triangle_angle_sum_fully_degenerate",
+      "statement": "p₂ = p₁ → p₃ = p₁ → ∠ p₁ p₂ p₃ + ∠ p₂ p₃ p₁ + ∠ p₃ p₁ p₂ = 3 * π / 2",
+      "description": "All three coincident: sum = 3π/2, the unique exception to the π formula"
+    },
+    {
+      "name": "TriangleAngleSumOQ03.triangle_angle_sum_iff_not_fully_degenerate",
+      "statement": "∠ p₁ p₂ p₃ + ∠ p₂ p₃ p₁ + ∠ p₃ p₁ p₂ = π ↔ ¬(p₂ = p₁ ∧ p₃ = p₁)",
+      "description": "Complete biconditional characterization of when the angle sum formula holds"
+    }
+  ],
+  "sorries": []
+}
