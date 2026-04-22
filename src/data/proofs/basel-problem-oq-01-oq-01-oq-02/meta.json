@@ -180,12 +180,13 @@
       "Nat"
     ],
     "namespace": "AperyZetaThree",
-    "lineCount": 791,
+    "lineCount": 851,
     "axiomCount": 5,
-    "theoremCount": 22,
+    "theoremCount": 25,
     "definitionCount": 4,
     "path": "Proofs/BaselProblemOQ01OQ01OQ02.lean",
-    "sorries": 0
+    "sorries": 0,
+    "notes": "11 pre-existing build errors fixed (Mathlib API changes: sum_le_sum_of_subset removed, Finset.lcm normalization, dcstring parser incompatibilities). Parts XVII-XVIII added: telescoping upper bound for ζ(3) tail + L₂ > 0 via native_decide."
   },
   "references": [
     {

@@ -310,14 +310,15 @@ theorem harmonicNumber_nonneg (n : ℕ) : 0 ≤ harmonicNumber n := by
   unfold harmonicNumber
   apply Finset.sum_nonneg
   intro k _
-  positivity
+  exact div_nonneg (by norm_num) (by exact_mod_cast Nat.succ_pos k)
 
 /-- Harmonic numbers are monotone increasing. -/
 theorem harmonicNumber_mono (m n : ℕ) (hmn : m ≤ n) :
     harmonicNumber m ≤ harmonicNumber n := by
   unfold harmonicNumber
-  apply Finset.sum_le_sum_of_subset
-  exact Finset.range_mono hmn
+  apply Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_mono hmn)
+  intro k _ _
+  exact div_nonneg (by norm_num) (by exact_mod_cast Nat.succ_pos k)
 
 /-- The generalized harmonic number H_n^{(s)} = ∑_{k=1}^{n} 1/k^s. -/
 noncomputable def genHarmonicNumber (n : ℕ) (s : ℕ) : ℚ :=
@@ -340,16 +341,14 @@ theorem lcmUpTo_one : lcmUpTo 1 = 1 := by
   simp [lcmUpTo, Finset.lcm]
 
 /-- lcm(1, 2) = 2. -/
-theorem lcmUpTo_two : lcmUpTo 2 = 2 := by
-  simp [lcmUpTo, Finset.sum_range_succ, Finset.lcm]
-  norm_num
+theorem lcmUpTo_two : lcmUpTo 2 = 2 := by decide
 
 /-- lcm(1, 2, ..., n) is positive for n ≥ 1. -/
 theorem lcmUpTo_pos (n : ℕ) (hn : 1 ≤ n) : 0 < lcmUpTo n := by
   unfold lcmUpTo
   apply Nat.pos_of_ne_zero
   intro h
-  have h1 : 1 ∣ (Finset.range n).lcm (· + 1) := Finset.dvd_lcm (Finset.mem_range.mpr (by omega))
+  have h1 : 1 ∣ (Finset.range n).lcm (· + 1) := Finset.dvd_lcm (Finset.mem_range.mpr hn)
   rw [h] at h1
   exact absurd h1 (by omega)
 
@@ -363,14 +362,10 @@ theorem lcmUpTo_dvd_of_le {n m : ℕ} (h : n ≤ m) : lcmUpTo n ∣ lcmUpTo m :=
   exact Finset.dvd_lcm (Finset.mem_range.mpr (Nat.lt_of_lt_of_le (Finset.mem_range.mp hi) h))
 
 /-- lcm(1,...,3) = 6. -/
-theorem lcmUpTo_three : lcmUpTo 3 = 6 := by
-  simp [lcmUpTo, Finset.sum_range_succ, Finset.lcm]
-  norm_num
+theorem lcmUpTo_three : lcmUpTo 3 = 6 := by decide
 
 /-- lcm(1,...,4) = 12. -/
-theorem lcmUpTo_four : lcmUpTo 4 = 12 := by
-  simp [lcmUpTo, Finset.sum_range_succ, Finset.lcm]
-  norm_num
+theorem lcmUpTo_four : lcmUpTo 4 = 12 := by decide
 
 -- ============================================================================
 -- Part IX: The Linear Form bₙ·ζ(3) - aₙ
@@ -381,7 +376,7 @@ theorem lcmUpTo_four : lcmUpTo 4 = 12 := by
 noncomputable def linearForm (n : ℕ) : ℝ :=
   (aperyB n : ℝ) * zetaValue 3 - (aperyA n : ℝ)
 
-/-- The linear form is nonzero for n ≥ 1 (assuming ζ(3) is irrational,
+/- The linear form is nonzero for n ≥ 1 (assuming ζ(3) is irrational,
     which is what we're trying to prove — so this must be established
     independently, e.g., from the explicit formula for Lₙ). -/
 
@@ -448,23 +443,26 @@ theorem rat_den_dvd_lcmUpTo (r : ℚ) {n : ℕ} (hn : r.den ≤ n) :
     Explicitly: (q·r.den)³ · b · (r.num/r.den) = q³ · r.den² · b · r.num ∈ ℤ. -/
 theorem apery_bterm_int (r : ℚ) (n : ℕ) (hn : r.den ≤ n) :
     ∃ m : ℤ, (lcmUpTo n : ℚ) ^ 3 * (aperyB n : ℚ) * r = m := by
-  -- Get lcmUpTo n = q * r.den
+  -- Get lcmUpTo n = r.den * q
   obtain ⟨q, hq⟩ := rat_den_dvd_lcmUpTo r hn
   -- The result is q^3 * r.den^2 * aperyB n * r.num
   use (q : ℤ) ^ 3 * (r.den : ℤ) ^ 2 * (aperyB n : ℤ) * r.num
-  have hq_cast : (lcmUpTo n : ℚ) = (q : ℚ) * (r.den : ℚ) := by exact_mod_cast hq
+  have hq_cast : (lcmUpTo n : ℚ) = (r.den : ℚ) * q := by exact_mod_cast hq
   have hrd : (r.den : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr r.pos.ne'
   -- Rewrite lcmUpTo n and expand r = r.num / r.den
-  rw [hq_cast, ← Rat.num_div_den r]
-  push_cast
-  field_simp
-  ring
+  rw [hq_cast]
+  calc ((r.den : ℚ) * q) ^ 3 * (aperyB n : ℚ) * r
+      = (q : ℚ) ^ 3 * (r.den : ℚ) ^ 3 * (aperyB n : ℚ) * ((r.num : ℚ) / r.den) := by
+          rw [← Rat.num_div_den r]; ring
+    _ = (q : ℚ) ^ 3 * (r.den : ℚ) ^ 2 * (aperyB n : ℚ) * r.num := by
+          field_simp [hrd]; ring
+    _ = ↑((q : ℤ) ^ 3 * (r.den : ℤ) ^ 2 * (aperyB n : ℤ) * r.num) := by push_cast; ring
 
 -- ============================================================================
 -- Part XII: Conditional Irrationality Theorem
 -- ============================================================================
 
-/-!
+/-
 ## The Core Irrationality Argument
 
 This theorem formalizes the logical heart of Apéry's 1978 proof. It shows that
@@ -495,7 +493,7 @@ theorem rationalLinearForm_cast {r : ℚ} {n : ℕ}
     (hr : (r : ℝ) = zetaValue 3) :
     (rationalLinearForm r n : ℝ) = linearForm n := by
   simp only [rationalLinearForm, linearForm]
-  push_cast [hr]
+  push_cast [hr]; ring
 
 /-- **Conditional Irrationality of ζ(3)** — core of Apéry's 1978 proof.
 
@@ -533,7 +531,7 @@ theorem apery_irrationality_conditional
   -- -----------------------------------------------------------------------
   -- Connection between rational and real linear forms
   have hQ_cast : (rationalLinearForm r N₀ : ℝ) = linearForm N₀ :=
-    rationalLinearForm_cast hr.symm
+    rationalLinearForm_cast hr
   -- d_{N₀} · Q_{N₀} is an integer
   obtain ⟨m_a, hm_a⟩ := h_denom N₀
   obtain ⟨m_b, hm_b⟩ := apery_bterm_int r N₀ hN₀_den
@@ -541,7 +539,7 @@ theorem apery_irrationality_conditional
   obtain ⟨M, hM⟩ : ∃ m : ℤ, (lcmUpTo N₀ : ℚ) ^ 3 * rationalLinearForm r N₀ = m :=
     ⟨m_b - m_a, by
       simp only [rationalLinearForm, mul_sub]
-      rw [← mul_assoc, hm_b, ← hm_a]
+      rw [← mul_assoc, hm_b, hm_a]
       push_cast; ring⟩
   -- -----------------------------------------------------------------------
   -- M ≠ 0: because L_{N₀} ≠ 0 (by h_nonzero) and d_{N₀} > 0
@@ -760,13 +758,94 @@ theorem zetaValue_three_tail_lb (N : ℕ) (hN : 1 ≤ N) :
     have hM1 : (0 : ℝ) < (M : ℝ) + 1 := by positivity
     have h2MN : (0 : ℝ) < 2 * ((M : ℝ) + N) ^ 2 := by positivity
     rw [div_le_div_iff₀ h2MN hM1]
-    nlinarith [Nat.cast_nonneg M, hN', sq_nonneg ((M : ℝ) + N),
-               mul_nonneg (Nat.cast_nonneg M) (Nat.cast_nonneg M)]
+    have hMnn : (0 : ℝ) ≤ (M : ℝ) := Nat.cast_nonneg M
+    nlinarith [hMnn, hN', sq_nonneg ((M : ℝ) + N), mul_nonneg hMnn hMnn]
   -- Conclude: 1/(2N²) ≤ tail via limit: f(M) = 1/(2N²) - 1/(2(M+N)²) → 1/(2N²)
   have h1 : Filter.Tendsto (fun _ : ℕ => (1 : ℝ) / (2 * (N : ℝ) ^ 2))
       Filter.atTop (nhds (1 / (2 * (N : ℝ) ^ 2))) := tendsto_const_nhds
   have h2 := h1.sub h0
   simp only [sub_zero] at h2
   exact le_of_tendsto' h2 hle
+
+-- ============================================================================
+-- Part XVII: Tail Upper Bound — ζ(3) ≤ S_{N+1} + 1/(2N²) for N ≥ 1
+-- ============================================================================
+
+/-- Algebraic inequality: 1/(x+1)³ ≤ 1/(2x²) - 1/(2(x+1)²) for x ≥ 1.
+    Equivalently: (x+1)·(2x+1) ≥ 2x², i.e. 3x+1 ≥ 0. -/
+private lemma cube_succ_inv_le_telescoping (x : ℝ) (hx : 1 ≤ x) :
+    (1 : ℝ) / (x + 1) ^ 3 ≤ 1 / (2 * x ^ 2) - 1 / (2 * (x + 1) ^ 2) := by
+  have hxpos : (0 : ℝ) < x := by linarith
+  have hx1pos : (0 : ℝ) < x + 1 := by linarith
+  rw [div_sub_div _ _ (by positivity) (by positivity),
+      div_le_div_iff₀ (by positivity) (by positivity)]
+  have hpoly : 2 * (2 * x + 1) * (x + 1) ^ 3 - 4 * x ^ 2 * (x + 1) ^ 2 =
+      (x + 1) ^ 2 * (6 * x + 2) := by ring
+  nlinarith [pow_nonneg hx1pos.le 2, sq_nonneg (x + 1), hpoly]
+
+/-- **Quantitative upper bound on ζ(3)**:
+    For any N ≥ 1, the (N+1)-term partial sum plus 1/(2N²) is an upper bound for ζ(3).
+
+    Proof: The tail ∑_{k≥N+1} 1/k³ telescopes as:
+      ∑_{k≥N+1} 1/k³ ≤ ∑_{k≥N} [1/(2k²) - 1/(2(k+1)²)] = 1/(2N²).
+
+    This gives ζ(3) = S_{N+1} + tail ≤ S_{N+1} + 1/(2N²). -/
+theorem zetaValue_three_tail_ub (N : ℕ) (hN : 1 ≤ N) :
+    zetaValue 3 ≤ ∑ k ∈ Finset.range (N + 1), (1 : ℝ) / (k : ℝ) ^ 3 + 1 / (2 * (N : ℝ) ^ 2) := by
+  have hsum : Summable (fun n : ℕ => (1 : ℝ) / (n : ℝ) ^ 3) := summable_zetaValue 3 (by norm_num)
+  -- Split ζ(3) = S_{N+1} + tail_{N+1}
+  have hsplit : zetaValue 3 = ∑ k ∈ Finset.range (N + 1), (1 : ℝ) / (k : ℝ) ^ 3 +
+      ∑' k : ℕ, (1 : ℝ) / ((k : ℝ) + (N + 1)) ^ 3 := by
+    unfold zetaValue
+    rw [← hsum.sum_add_tsum_nat_add (N + 1)]
+    congr 1; apply tsum_congr; intro k; push_cast; ring
+  rw [hsplit]
+  -- Suffices to show tail_{N+1} ≤ 1/(2N²)
+  suffices h : ∑' k : ℕ, (1 : ℝ) / ((k : ℝ) + (N + 1)) ^ 3 ≤ 1 / (2 * (N : ℝ) ^ 2) by linarith
+  -- The shifted series is summable
+  have hshifted : Summable (fun k : ℕ => (1 : ℝ) / ((k : ℝ) + (N + 1)) ^ 3) := by
+    apply Summable.congr ((summable_nat_add_iff (N + 1)).mpr hsum)
+    intro k; push_cast; ring
+  have hN' : (1 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN
+  -- For every M, the M-term partial sum of the tail is ≤ 1/(2N²)
+  have hle_ub : ∀ M : ℕ, ∑ k ∈ Finset.range M, (1 : ℝ) / ((k : ℝ) + (N + 1)) ^ 3 ≤
+      1 / (2 * (N : ℝ) ^ 2) := fun M =>
+    calc ∑ k ∈ Finset.range M, (1 : ℝ) / ((k : ℝ) + (N + 1)) ^ 3
+        ≤ ∑ k ∈ Finset.range M,
+            ((1 : ℝ) / (2 * ((k : ℝ) + N) ^ 2) - 1 / (2 * ((k : ℝ) + N + 1) ^ 2)) :=
+          Finset.sum_le_sum fun k _ => cube_succ_inv_le_telescoping ((k : ℝ) + N) (by
+            have : (0 : ℝ) ≤ k := Nat.cast_nonneg k; linarith)
+      _ = 1 / (2 * (N : ℝ) ^ 2) - 1 / (2 * ((M : ℝ) + N) ^ 2) :=
+          telescope_sum_eq N M
+      _ ≤ 1 / (2 * (N : ℝ) ^ 2) := sub_le_self _ (by positivity)
+  -- tail = limit of partial sums ≤ 1/(2N²)
+  exact le_of_tendsto' hshifted.hasSum.tendsto_sum_nat hle_ub
+
+-- ============================================================================
+-- Part XVIII: Second Concrete Nonzero Base Case
+-- ============================================================================
+
+/-- The linear form L₂ = b₂·ζ(3) - a₂ = 73·ζ(3) - 351/4 is strictly positive.
+
+    This is a second concrete proved instance of the nonzero property for n = 2.
+    Since 73·ζ(3) - 351/4 > 0 iff ζ(3) > 351/292 ≈ 1.20205479,
+    we verify this from the quantitative lower bound with N = 200 terms. -/
+theorem linearForm_two_pos : 0 < linearForm 2 := by
+  unfold linearForm
+  have hb : (aperyB 2 : ℝ) = 73 := by exact_mod_cast aperyB_two
+  have ha : (aperyA 2 : ℝ) = 351 / 4 := by norm_cast; exact aperyA_two
+  rw [hb, ha]
+  -- Suffices: ζ(3) > 351/292 ≈ 1.20205479
+  suffices h : (351 : ℝ) / 292 < zetaValue 3 by linarith
+  -- Lower bound: ζ(3) ≥ S₁₀₀ + 1/(2·100²). Need N ≥ 63 for S_N + 1/(2N²) > 351/292.
+  -- Use native_decide over ℚ (fast native OCaml computation) then cast to ℝ.
+  have hlb := zetaValue_three_tail_lb 100 (by norm_num)
+  have hbound : (351 : ℝ) / 292 <
+      ∑ k ∈ Finset.range 100, (1 : ℝ) / (k : ℝ) ^ 3 + 1 / (2 * (100 : ℝ) ^ 2) := by
+    have h : (351 : ℚ) / 292 <
+        ∑ k ∈ Finset.range 100, (1 : ℚ) / (k : ℚ) ^ 3 + 1 / (2 * (100 : ℚ) ^ 2) := by
+      native_decide
+    exact_mod_cast h
+  linarith
 
 end AperyZetaThree
