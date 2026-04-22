@@ -39,7 +39,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Harold Kuhn (1968) gave the first algorithmic proof of Sperner's lemma, showing that a fully-colored simplex can be found in polynomial time by path-following in the door graph. This constructive approach contrasts with the combinatorial parity argument (which proves existence without construction). The timing was no coincidence: Kuhn's 1968 result appeared alongside Scarf's (1967) work on computing Brouwer fixed points via primitive sets, both motivated by the desire to compute Nash equilibria and competitive equilibria in economics. These algorithms launched the field of fixed-point computation. The Lemke-Howson algorithm (1964) for Nash equilibria uses a similar path-following scheme in a complementarity pivoting framework. Kuhn's algorithm also connects to the theory of linear complementarity problems (LCP) and, through Scarf, to the computation of market equilibria in exchange economies. The abstract 'door graph path-following' structure formalized here — enter through one door, exit through the unique other — recurs throughout combinatorial optimization.",
+    "historicalContext": "Harold Kuhn (1968) gave the first algorithmic proof of Sperner's lemma, showing that a fully-colored simplex can be found in polynomial time by path-following in the door graph. This constructive approach contrasts with the combinatorial parity argument (which proves existence without construction). The timing was no coincidence: Kuhn's 1968 result appeared alongside Scarf's (1967) work on computing Brouwer fixed points via primitive sets, both motivated by the desire to compute Nash equilibria and competitive equilibria in economics. These algorithms launched the field of fixed-point computation. The Lemke-Howson algorithm (1964) for Nash equilibria uses a similar path-following scheme in a complementarity pivoting framework. Kuhn's algorithm also connects to the theory of linear complementarity problems (LCP) and, through Scarf, to the computation of market equilibria in exchange economies. The abstract 'door graph path-following' structure formalized here — enter through one door, exit through the unique other — recurs throughout combinatorial optimization. In 1994, Papadimitriou identified the abstract pattern behind Kuhn's algorithm as the defining feature of the complexity class PPAD (Polynomial Parity Argument on Directed graphs): finding an end-of-path in a directed graph where every node has in-degree and out-degree at most 1. Sperner's lemma is PPAD-complete, meaning every PPAD problem reduces to the FC-finding problem that Kuhn's algorithm solves. This connected the 1968 algorithmic result to the modern theory of total search problems and the complexity of finding Nash equilibria.",
     "problemStatement": "For a Sperner-colored abstract triangulation satisfying the Kuhn compatibility axiom (door degree ≤ 2), starting from a boundary door, construct an explicit path through the door adjacency graph that terminates at a fully-colored simplex.",
     "text": "Kuhn's algorithm provides a constructive proof of Sperner's lemma: follow the unique path in the door graph from a boundary door to reach a fully-colored simplex.",
     "proofStrategy": "The proof has three layers:\n\n1. **Door degree analysis** (fully proved): Under the Kuhn compatibility axiom (degree ≤ 2) and the abstract door parity theorem:\n   - FC simplices have odd degree ≤ 2, so degree = 1\n   - Non-FC simplices have even degree ≤ 2, so degree = 0 or 2\n\n2. **Unique exit lemma** (fully proved): A non-FC simplex with an entry door has exactly one other door (existsUnique), proved via Finset.card_eq_two and membership analysis.\n\n3. **Path termination** (stated, sorry): The Kuhn walk starting from a boundary door terminates at an FC simplex. Requires the non-revisiting invariant: the door graph component containing a boundary vertex is a path (not a cycle), because cycles in the door graph would contradict the boundary structure.",
@@ -48,7 +48,8 @@
       "The unique exit lemma (existsUnique) is the formal statement that Kuhn's algorithm is deterministic: each step has a unique next state",
       "The non-revisiting invariant (the hard part) follows from the door graph having no cycles containing boundary vertices — a consequence of the boundary door being a degree-1 vertex in the door graph",
       "The door preservation lemma (door_transfer from SpernerNDim) ensures that moving through a door preserves the door property, so the algorithm maintains its invariants",
-      "Using a fuel parameter for kuhnWalk avoids well-founded recursion while still capturing the algorithm's structure"
+      "Using a fuel parameter for kuhnWalk avoids well-founded recursion while still capturing the algorithm's structure",
+      "Kuhn's algorithm is a PPAD algorithm: the door graph with boundary entry is precisely the directed-graph structure defining PPAD (Polynomial Parity Argument on Directed graphs). Sperner's lemma is PPAD-complete, meaning all PPAD problems reduce to the FC-finding problem this algorithm solves"
     ],
     "prerequisites": [
       "n-dimensional Sperner's lemma (SpernerNDim.lean)",
@@ -166,11 +167,12 @@
   ],
   "conclusion": {
     "summary": "This formalization establishes the door-counting infrastructure for Kuhn's constructive proof of n-dimensional Sperner's lemma. The fully-proved results (fc_door_count_eq_one, nonfc_door_count_zero_or_two, nonfc_with_door_has_unique_exit) rigorously verify that Kuhn's algorithm is well-defined and deterministic. Three sorries remain for the termination/correctness theorems, pending formalization of the non-revisiting invariant.",
-    "implications": "Kuhn's 1968 result is historically significant as the first polynomial-time algorithm for finding a fully-colored simplex. Path-following algorithms descended from Kuhn's work underlie Scarf's algorithm for computing approximate fixed points and (through Lemke-Howson) Nash equilibrium computation. The abstract formulation using IsKuhnCompatible applies to any Sperner triangulation satisfying the degree bound, including Freudenthal triangulations and simplicial complexes arising in topological data analysis.",
+    "implications": "Kuhn's 1968 result is historically significant as the first polynomial-time algorithm for finding a fully-colored simplex. Path-following algorithms descended from Kuhn's work underlie Scarf's algorithm for computing approximate fixed points and (through Lemke-Howson) Nash equilibrium computation. The abstract formulation using IsKuhnCompatible applies to any Sperner triangulation satisfying the degree bound, including Freudenthal triangulations and simplicial complexes arising in topological data analysis. The PPAD complexity connection (Papadimitriou 1994) situates this work in modern computational complexity: the door graph formalized here — a directed graph where every node has in-degree and out-degree at most 1, with a distinguished source — is exactly the End-of-Line problem that defines PPAD. The non-revisiting invariant (the hard remaining sorry) is equivalent to showing the door graph component is a directed path, not a cycle. Fully-colored simplices also appear in topological data analysis as birth-death pairs in persistent homology, making the abstract FC-finding framework relevant to TDA algorithms.",
     "openQuestions": [
       "Can the non-revisiting invariant (the door graph component containing a boundary door is a path) be proved in Lean 4 using graph theory from Mathlib?",
       "Does the Freudenthal triangulation from sperner-ndim-oq-01 satisfy IsKuhnCompatible, allowing Kuhn's algorithm to apply concretely in dimension d?",
-      "Can kuhn_path_terminates be derived directly from sperner_ndim (existence of FC simplex) without the full non-revisiting argument?"
+      "Can kuhn_path_terminates be derived directly from sperner_ndim (existence of FC simplex) without the full non-revisiting argument?",
+      "Can PPAD-hardness of Sperner's lemma be formalized in Lean 4 via an End-of-Line reduction using this door graph framework? Such a formalization would establish a machine-verified lower bound for the computational complexity of finding fully-colored simplices."
     ]
   },
   "crossReferences": [
@@ -188,6 +190,11 @@
       "targetId": "sperner-ndim-oq-03",
       "relationship": "related",
       "description": "Displacement coloring uses similar door structure for Brouwer fixed-point theorem; both entries work within the abstract SpernerTriangulation framework"
+    },
+    {
+      "targetId": "sperner-ndim-oq-03-oq-01",
+      "relationship": "related",
+      "description": "1D Brouwer fixed-point theorem via IVT is the simplest instance of the topological consequence that Kuhn's algorithm ultimately computes; path-following generalizes the 1D bisection method to arbitrary dimension"
     }
   ],
   "references": [
@@ -211,6 +218,20 @@
       "year": "1967",
       "venue": "Journal of Combinatorial Theory, 2(4), 585-587",
       "note": "Elementary parity proof of Sperner's lemma using the door-counting argument"
+    },
+    {
+      "authors": "Lemke, C. E.; Howson, J. T.",
+      "title": "Equilibrium Points of Bimatrix Games",
+      "year": "1964",
+      "venue": "Journal of the Society for Industrial and Applied Mathematics, 12(2), 413-423",
+      "note": "Complementary pivoting algorithm for Nash equilibria; uses the same path-following structure as Kuhn's door graph algorithm, anticipating PPAD by three decades"
+    },
+    {
+      "authors": "Papadimitriou, C. H.",
+      "title": "On the Complexity of the Parity Argument and Other Inefficient Proofs of Existence",
+      "year": "1994",
+      "venue": "Journal of Computer and System Sciences, 48(3), 498-532",
+      "note": "Defines the complexity class PPAD (Polynomial Parity Argument on Directed graphs) and proves Sperner's lemma is PPAD-complete, situating Kuhn's 1968 algorithm in modern computational complexity theory"
     }
   ],
   "leanFile": {
