@@ -11806,10 +11806,14 @@
       "issues": []
     },
     "arithmetic-series-oq-02-oq-02-oq-03-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T12:31:16Z",
-      "result": "clean",
-      "issues": []
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T12:00:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "sorries 1->0 (general Polya theorem now fully proved)",
+        "status formalized->verified, badge wip->verified",
+        "lineCount 365->507"
+      ]
     },
     "basel-problem-oq-01-oq-03": {
       "auditCount": 1,
@@ -12832,9 +12836,9 @@
       "issues": []
     },
     "ballot-problem-oq-03-oq-01-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-21T16:05:40Z",
-      "result": "fixed",
+      "auditCount": 2,
+      "lastAudited": "2026-04-22T12:00:00Z",
+      "result": "clean",
       "issues": []
     },
     "bezout-identity-oq-04-oq-02": {
@@ -12882,10 +12886,14 @@
       "issues": []
     },
     "erdos-476-oq-05": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-21T20:00:58Z",
-      "result": "clean",
-      "issues": []
+      "auditCount": 3,
+      "lastAudited": "2026-04-22T12:00:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "sorries 3->1 (ap_of_near_periodic and vosper_base now fully proved)",
+        "lineCount 194->306",
+        "theoremCount 7->8"
+      ]
     },
     "ptolemys-theorem-oq-01-oq-01": {
       "auditCount": 1,
