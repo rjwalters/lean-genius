@@ -1,5 +1,17 @@
 [
   {
+    "id": "arg-module-header",
+    "proofId": "abel-ruffini-galois-extensions",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "concept",
+    "title": "Module Header: Imports and Proof Architecture",
+    "content": "The module imports five Mathlib modules that together provide the complete group-theoretic and field-theoretic infrastructure:\n\n- `Mathlib.FieldTheory.AbelRuffini`: `IsSolvableByRad` and `solvableByRad.isSolvable'` — the bridge from radical solvability to group solvability\n- `Mathlib.GroupTheory.Solvable`: `IsSolvable`, `solvable_of_ker_le_range` — the core solvability predicate and exact-sequence theorem\n- `Mathlib.GroupTheory.SpecificGroups.Alternating`: `alternatingGroup`, `alternatingGroup.isSimpleGroup_five` — the A₅ simplicity theorem\n- `Mathlib.FieldTheory.Galois.Basic`: `IsGalois`, `card_aut_eq_finrank` — Galois extensions and the fundamental theorem\n- `Mathlib.GroupTheory.Perm.Sign`: `Equiv.Perm.sign` — the sign homomorphism $S_n \\to \\mathbb{Z}^\\times$ whose kernel is $A_n$\n\nThe module docstring outlines a 15-section structure across 534 lines, providing the complete solvability classification absent from the simpler `AbelRuffini.lean` (185 lines). The `open Equiv Polynomial` declaration avoids namespace prefixes throughout.\n\nThis file is the **complement** to `AbelRuffini.lean`: where that file uses the non-solvability of $S_5$ as a black box from Mathlib, this file proves the complete theorem $S_n$ solvable $\\iff n \\leq 4$ from scratch, explicitly handling each degree and the small-$n$ cases that Mathlib did not provide instances for.",
+    "mathContext": "The five imports form a hierarchy: `AbelRuffini` sits at the top (field theory + group theory interface), built on `Solvable` (group theory predicate), `Alternating` (specific groups), `Galois.Basic` (field theory), and `Perm.Sign` (the sign homomorphism $\\text{sgn}: S_n \\to \\{\\pm 1\\}$). The sign homomorphism is the keystone: its kernel $\\ker(\\text{sgn}) = A_n$ connects the abstract alternating group to the exact sequences used throughout.",
+    "significance": "supporting",
+    "relatedConcepts": ["IsSolvableByRad", "solvable_of_ker_le_range", "alternatingGroup.isSimpleGroup_five", "Equiv.Perm.sign", "IsGalois"],
+    "prerequisites": ["Mathlib import system", "Lean 4 namespaces", "group theory API", "field theory API"]
+  },
+  {
     "id": "arg-trivial-abelian-cases",
     "proofId": "abel-ruffini-galois-extensions",
     "range": { "startLine": 49, "endLine": 93 },
@@ -58,6 +70,18 @@
     "significance": "key",
     "relatedConcepts": ["Klein four-group", "A₄", "normal subgroup", "composition series", "solvability series", "native_decide"],
     "prerequisites": ["alternating group A₄", "normal subgroups", "group quotients", "Klein four-group"]
+  },
+  {
+    "id": "arg-s4-solvable",
+    "proofId": "abel-ruffini-galois-extensions",
+    "range": { "startLine": 143, "endLine": 158 },
+    "type": "technique",
+    "title": "S₄ Solvability via Exact Sequence 1 → A₄ → S₄ → ℤˣ → 1",
+    "content": "`perm_fin_4_solvable` is proved by `solvable_of_ker_le_range` applied to the sign homomorphism: the kernel inclusion $A_4 \\hookrightarrow S_4$ witnesses that every element in the kernel of $\\text{sign}: S_4 \\to \\mathbb{Z}^\\times$ lies in $A_4$, and $A_4$ is solvable (via the Klein four-group, proved in the preceding lemmas). The proof converts `MonoidHom.mem_ker` evidence directly to membership in the alternating group via `Equiv.Perm.mem_alternatingGroup`. This exact sequence argument is the fourth and most technically involved of the small-group solvability proofs — the `intro x hx; rw [...] ; exact ⟨⟨x, ...⟩, rfl⟩` pattern establishes the kernel containment.\n\nTogether with the preceding 12 lemmas (S₀–S₃ and A₀–A₄ solvability), this completes the `SmallSymmetricGroups` section at line 152, establishing all the base cases for the bidirectional solvability theorem.",
+    "mathContext": "Exact sequence: $1 \\to A_4 \\xrightarrow{\\iota} S_4 \\xrightarrow{\\text{sign}} \\mathbb{Z}^\\times \\to 1$. Solvability extension: $A_4$ solvable + $\\mathbb{Z}^\\times$ solvable $\\Rightarrow S_4$ solvable. The `solvable_of_ker_le_range` lemma encodes this: if $\\ker(\\phi) \\leq \\text{range}(\\psi)$, $\\ker(\\phi)$ is solvable, and the codomain of $\\phi$ is solvable, then the domain of $\\phi$ is solvable. This is applied with $\\psi = A_4 \\hookrightarrow S_4$ (kernel inclusion) and $\\phi = \\text{sign}: S_4 \\to \\mathbb{Z}^\\times$.",
+    "significance": "key",
+    "relatedConcepts": ["solvable_of_ker_le_range", "sign homomorphism", "alternating group", "group extension", "exact sequence", "perm_fin_4_solvable"],
+    "prerequisites": ["solvable_of_ker_le_range", "alternating_fin_4_solvable", "Equiv.Perm.mem_alternatingGroup", "group extensions"]
   },
   {
     "id": "arg-sharp-threshold",
@@ -166,5 +190,17 @@
     "significance": "technical",
     "relatedConcepts": ["native_decide", "Fintype.card", "Nat.factorial", "symmetric group order", "alternating group order", "exceptional group isomorphisms"],
     "prerequisites": ["native_decide tactic", "Fintype.card", "factorial function", "symmetric group", "alternating group", "integer division in Nat"]
+  },
+  {
+    "id": "arg-summary-closing",
+    "proofId": "abel-ruffini-galois-extensions",
+    "range": { "startLine": 517, "endLine": 534 },
+    "type": "context",
+    "title": "Module Summary and Closing",
+    "content": "The closing docstring provides a structured inventory of the file's 55+ theorems and instances across 15 sections:\n\n- **Small Groups Solvable**: $S_0, S_1, S_2, A_3, S_3, A_4, S_4$ — the positive half of the classification\n- **Non-Solvable**: $S_n$ and $A_n$ for $n \\geq 5$ — the negative half via $A_5$'s simplicity\n- **Complete Iff**: $S_n$ solvable $\\iff n \\leq 4$; $A_n$ solvable $\\iff n \\leq 4$ — the two biconditionals\n- **Structural Results**: $A_5$ simple, group cardinalities, sign kernel = $A_n$\n- **Non-Commutativity**: $S_3, S_4, S_5, A_4, A_5$ non-commutative via `decide`\n- **Galois Theory**: contrapositive, Galois order = extension degree\n- **Preservation**: subgroup, quotient, isomorphism solvability\n\nThe `end AbelRuffiniGaloisExtensions` at line 534 closes the namespace, making all results accessible as `AbelRuffiniGaloisExtensions.solvable_iff_le_four`, etc. This file is the most comprehensive treatment of symmetric group solvability in the gallery and serves as the reference implementation for the classification theorem cited by `abel-ruffini-oq-04` and the main `abel-ruffini` entry.",
+    "mathContext": "The 15-section organization (lines 49–516) maps directly to the mathematical structure:\n1. Small groups (49–152)\n2. Sharp threshold (154–183)\n3. Alternating groups (185–199)\n4. Radical solvability (201–219)\n5. Galois properties (221–235)\n6. Subgroup solvability (237–248)\n7. Alternating non-solvable (250–287)\n8. Cardinalities (289–328)\n9. Solvability preservation (330–347)\n10. Index theorems (349–365)\n11. Specific non-solvable (367–405)\n12. Chain properties (407–429)\n13. Non-commutativity (431–462)\n14. Higher cardinalities (464–494)\n15. Factorial identities (496–516)\n\nThe summary confirms 0 sorries and 0 axioms across all 534 lines — a fully verified formalization.",
+    "significance": "context",
+    "relatedConcepts": ["AbelRuffiniGaloisExtensions namespace", "solvable_iff_le_four", "alternating_solvable_iff", "module summary"],
+    "prerequisites": ["all preceding sections"]
   }
 ]
