@@ -4,7 +4,7 @@
   "slug": "basel-problem-oq-02",
   "description": "Formalizes the open question: are all odd zeta values ζ(2k+1) transcendental? Proves even zeta transcendence (ζ(2), ζ(4)) from Lindemann axiom, axiomatizes Apéry's theorem (ζ(3) irrational), and establishes structural implications: transcendence conjecture ⟹ irrationality conjecture ⟹ known results.",
   "meta": {
-    "author": "Open (Lindemann 1882, Apéry 1978, Rivoal 2000, Zudilin 2001)",
+    "author": "Open (Lindemann 1882, Apéry 1978, Rivoal 2000, Zudilin 2001, Fischler–Sprang–Zudilin 2019)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Riemann_zeta_function",
     "date": "2000",
     "status": "axiomatized",
@@ -51,9 +51,9 @@
       "Proved conjecture_implies_all_known: transcendence conjecture recovers all known results (sorry-free)"
     ],
     "dateAdded": "2026-03-24",
-    "axiomCount": 4,
-    "lineCount": 331,
-    "assumptions": "4 axiom(s): Lindemann (π transcendental), Apéry (ζ(3) irrational), Rivoal (infinitely many odd ζ irrational), Zudilin (one of ζ(5,7,9,11) irrational). Even-zeta transcendence (ζ(2), ζ(4)) fully proved from Lindemann axiom. Structural implications proved sorry-free. 0 sorries.",
+    "axiomCount": 5,
+    "lineCount": 348,
+    "assumptions": "5 axiom(s): Lindemann (π transcendental), Apéry (ζ(3) irrational), Rivoal (infinitely many odd ζ irrational), Zudilin (one of ζ(5,7,9,11) irrational), Fischler-Sprang-Zudilin 2019 (quantitative: ≥(1-ε)·log(s)/(1+log 2) irrational odd ζ values among first s). Even-zeta transcendence (ζ(2), ζ(4)) fully proved from Lindemann axiom. Structural implications proved sorry-free. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -243,8 +243,8 @@
       "Polynomial"
     ],
     "namespace": "BaselProblemOQ02",
-    "lineCount": 331,
-    "axiomCount": 4,
+    "lineCount": 348,
+    "axiomCount": 5,
     "theoremCount": 20,
     "definitionCount": 6,
     "path": "Proofs/BaselProblemOQ02.lean",

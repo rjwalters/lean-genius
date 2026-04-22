@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Restored Rivoal/Zudilin axioms and structural implications lost in refactoring. File now has 4 axioms, 20 theorems, 0 sorries.",
+    "progressSummary": "COMPLETE: 5 axioms (Lindemann, Apery, Rivoal, Zudilin, FSZ-2019), 20 theorems, 0 sorries. Added Fischler-Sprang-Zudilin 2019 quantitative axiom completing state-of-the-art coverage.",
     "builtItems": [
       "Created proofs/Proofs/BaselProblemOQ02.lean (109 lines)",
       "Proved zetaValue_two and zetaValue_four from Mathlib",
@@ -54,7 +54,8 @@
       "Restored axiom zudilin_theorem (4-way disjunction: one of ζ(5,7,9,11) irrational)",
       "Restored conjecture_implies_rivoal (sorry-free proof)",
       "Restored conjecture_implies_zudilin (sorry-free proof)",
-      "Restored conjecture_implies_all_known (sorry-free summary theorem)"
+      "Restored conjecture_implies_all_known (sorry-free summary theorem)",
+      "Added axiom fischler_sprang_zudilin_2019: quantitative Rivoal bound in Lean (BaselProblemOQ02.lean:238-258)"
     ],
     "insights": [
       "Stark even/odd divide: ζ(2k) = rational × π^(2k) (fully understood since Euler 1734), but ζ(2k+1) has no closed form",
@@ -69,7 +70,8 @@
       "IsAlgebraic.mul + isAlgebraic_algebraMap gives clean transcendence proofs without explicit polynomial construction",
       "Polynomial.natDegree_comp enables comp_ne_zero_of_pos_natDegree via case analysis on constant vs positive-degree polynomials",
       "algebraMap ℚ ℝ is definitionally Rat.cast; push_cast handles the conversion cleanly",
-      "Rivoal/Zudilin axioms and structural implications were lost in refactoring commit 39fb3769a8, restored from 1499a0b513"
+      "Rivoal/Zudilin axioms and structural implications were lost in refactoring commit 39fb3769a8, restored from 1499a0b513",
+      "Fischler-Sprang-Zudilin 2019 (Compositio Math) gives quantitative Rivoal: ≥(1-ε)log(s)/(1+log2) of ζ(3),...,ζ(2s+1) are irrational; axiomatized as fischler_sprang_zudilin_2019 in Lean file"
     ],
     "mathlibGaps": [],
     "nextSteps": []
