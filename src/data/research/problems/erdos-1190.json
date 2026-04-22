@@ -1,13 +1,13 @@
 {
   "slug": "erdos-1190",
-  "title": "Erdős #1190",
+  "title": "Erd\u0151s #1190",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
+    "plain": "Let\n$$\\epsilon_m=\\max \\sum \\frac{1}{n_i}$$\nwhere the maximum is taken over all finite sequences $m<n_1<\\cdots<n_k$ for which there exist congruences $a_i\\pmod{n_i}$ such that no integer satisfies two such congruences. \n\nEstimate $\\epsilon_m$.",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "OBSERVE",
     "since": "2026-01-16T08:44:15.248Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -34,7 +34,7 @@
     "insights": [],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #1190 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-16*\n"
+    "markdown": "# Erd\u0151s #1190 - Knowledge Base\n\n## Problem Statement\n\nLet\n$$\\epsilon_m=\\max \\sum \\frac{1}{n_i}$$\nwhere the maximum is taken over all finite sequences $m<n_1<\\cdots<n_k$ for which there exist congruences $a_i\\pmod{n_i}$ such that no integer satisfies two such congruences. \n\nEstimate $\\epsilon_m$.\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-16*\n"
   },
   "tags": [
     "erdos"

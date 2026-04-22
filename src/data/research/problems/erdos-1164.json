@@ -1,13 +1,13 @@
 {
   "slug": "erdos-1164",
-  "title": "Erdős #1164",
+  "title": "Erd\u0151s #1164",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
+    "plain": "Let $R_n$ be the maximal integer such that almost every random walk from the origin in $\\mathbb{Z}^2$ visits every $x\\in\\mathbb{Z}^2$ with $\\| x\\|\\leq R_n$ in at most $n$ steps.\n\nIs it true that\n$$\\log R_n \\asymp \\sqrt{\\log n}?$$",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "OBSERVE",
     "since": "2026-01-15T16:53:51.157Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -39,7 +39,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #1164 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erd\u0151s #1164 - Knowledge Base\n\n## Problem Statement\n\nLet $R_n$ be the maximal integer such that almost every random walk from the origin in $\\mathbb{Z}^2$ visits every $x\\in\\mathbb{Z}^2$ with $\\| x\\|\\leq R_n$ in at most $n$ steps.\n\nIs it true that\n$$\\log R_n \\asymp \\sqrt{\\log n}?$$\n\n## Status\n\n**Erd\u0151s Database Status**: SOLVED\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
