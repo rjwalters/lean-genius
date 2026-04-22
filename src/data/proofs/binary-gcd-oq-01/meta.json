@@ -124,6 +124,21 @@
       "targetId": "binary-gcd",
       "relationship": "extends",
       "description": "Extends the parent Binary GCD correctness proof with step count analysis"
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "related",
+      "description": "The Euclidean algorithm being compared: Lamé's theorem (steps ≤ 5·log₁₀(min(a,b))) provides the Euclidean baseline; Binary GCD's O(log a + log b) bound is proved here as the comparison."
+    },
+    {
+      "targetId": "gcd-algorithm-oq-01",
+      "relationship": "related",
+      "description": "Sibling complexity analysis: average-case Euclidean algorithm steps (Porter's constant) complements this worst-case Binary GCD step bound, covering different aspects of GCD algorithm performance."
+    },
+    {
+      "targetId": "binary-gcd-oq-01-oq-04",
+      "relationship": "related",
+      "description": "Extension: the tight lower bound family (1, 2ⁿ-1) showing O(log n) steps is unavoidable for Binary GCD — proves the bound here is asymptotically optimal."
     }
   ],
   "references": [

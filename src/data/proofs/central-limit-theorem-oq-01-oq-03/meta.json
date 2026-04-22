@@ -99,7 +99,22 @@
     {
       "targetId": "central-limit-theorem-oq-01",
       "relationship": "extends",
-      "description": "Free probability analog of CLT"
+      "description": "Parent OQ: the characteristic function and CLT generalization infrastructure; this OQ applies the free probability framework to stable distributions as a non-classical CLT."
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "extends",
+      "description": "Grandparent: the classical CLT (i.i.d. → Gaussian). Free probability's stable distributions are the non-classical analogue where classical independence is replaced by free independence."
+    },
+    {
+      "targetId": "central-limit-theorem-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling: Lévy-Khintchine representation and infinitely divisible distributions — the classical characteristic function framework that parallels the free R-transform theory in this file."
+    },
+    {
+      "targetId": "central-limit-theorem-oq-02",
+      "relationship": "related",
+      "description": "Sibling: CLT for dependent random variables. Together with this file's free probability approach, they cover the two main non-classical extensions of the CLT: dependence and non-commutativity."
     }
   ],
   "sorries": 0

@@ -74,6 +74,21 @@
       "targetId": "cayley-hamilton",
       "relationship": "extends",
       "description": "Cayley-Hamilton theorem (charpoly annihilates M); this file proves minimal polynomial gives tighter reduction"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "related",
+      "description": "Sibling: the minimal polynomial reduction and annihilator theory from the cayley-hamilton-minpoly family, providing the algebraic infrastructure (Polynomial.aeval, minpoly.dvd) used here."
+    },
+    {
+      "targetId": "cayley-hamilton-reduction",
+      "relationship": "related",
+      "description": "Sibling: matrix function reduction via Cayley-Hamilton, showing how any matrix polynomial f(M) reduces modulo the characteristic polynomial — this file sharpens that to modulo minpoly."
+    },
+    {
+      "targetId": "cayley-hamilton-oq-02",
+      "relationship": "related",
+      "description": "Sibling OQ: extends the Cayley-Hamilton family in a complementary direction, together with OQ-01 covering the full algebraic theory of matrix annihilators and polynomial reduction."
     }
   ],
   "sections": [

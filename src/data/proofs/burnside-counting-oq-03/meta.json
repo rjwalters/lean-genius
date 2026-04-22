@@ -145,6 +145,21 @@
       "targetId": "burnside-counting",
       "relationship": "extends",
       "description": "Generalizes the axiomatized binary 4-necklace computation to the full P\u00f3lya formula; removes axioms by computing fixed-point counts directly."
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "uses-technique",
+      "description": "The Pólya fixed-point formula uses gcd(r,n): the number of colorings fixed by rotation r on n positions is k^gcd(r,n). Nat.gcd from the GCD algorithm infrastructure provides this core computation."
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "related",
+      "description": "Combinatorics connection: Pólya enumeration and binomial coefficients are the two fundamental counting tools for symmetric enumeration — Pólya counts under group action, binomial counts subsets."
+    },
+    {
+      "targetId": "euler-totient-oq-01",
+      "relationship": "uses-technique",
+      "description": "Euler's totient function φ(n/d) appears in the Pólya necklace formula: Σ_{d|n} φ(n/d)·k^d. The totient counts primitive rotations at each divisor, linking group-theoretic enumeration to number theory."
     }
   ],
   "leanFile": {

@@ -126,9 +126,24 @@
   },
   "crossReferences": [
     {
-      "proofId": "basel-problem",
-      "relationship": "parent",
-      "description": "Parent: the Basel sum ∑ 1/n² = π²/6"
+      "targetId": "basel-problem",
+      "relationship": "extends",
+      "description": "Parent: the Basel sum ∑ 1/n² = π²/6. This OQ connects it to prime numbers via the Euler product ∏_p (1-p⁻²)⁻¹ = π²/6, showing the deep link between the zeta function and the prime distribution."
+    },
+    {
+      "targetId": "basel-problem-oq-01",
+      "relationship": "related",
+      "description": "Sibling OQ: ζ(5) irrationality — while this file uses the Euler product connection to primes, OQ-01 asks about transcendence of other zeta values, together spanning the analytic and arithmetic aspects of ζ."
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Companion prime product: Euler also proved ∏_p (1-p⁻¹)⁻¹ = ∑ 1/n (divergent), the s=1 analogue of the product here. Both formulas reflect the same Euler product identity ζ(s) = ∏_p (1-p⁻ˢ)⁻¹."
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's broader program: the Basel product formula and Euler's identity e^{iπ}+1=0 are both products of Euler's extraordinary insight connecting analysis, complex numbers, and number theory in a single equation."
     }
   ],
   "sorries": 0

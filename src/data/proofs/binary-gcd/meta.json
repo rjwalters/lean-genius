@@ -87,6 +87,21 @@
       "targetId": "gcd-algorithm",
       "relationship": "extends",
       "description": "Alternative GCD algorithm using bit operations instead of Euclidean division"
+    },
+    {
+      "targetId": "binary-gcd-oq-01",
+      "relationship": "related",
+      "description": "Step count comparison OQ: formally compares Binary GCD's O(log a + log b) step bound against Euclidean's Lamé bound, quantifying the trade-off between simpler operations and potentially more steps."
+    },
+    {
+      "targetId": "binary-gcd-oq-03",
+      "relationship": "related",
+      "description": "Hybrid algorithm extension: the Lehmer-Schönhage algorithm combines Euclidean and Binary GCD into a sub-quadratic variant, extending the binary approach to large-integer arithmetic."
+    },
+    {
+      "targetId": "gcd-algorithm-oq-01",
+      "relationship": "related",
+      "description": "Average-case complexity sibling: while this file proves worst-case step bounds, OQ-01 analyzes the Euclidean algorithm's average-case behavior — together they characterize GCD algorithm performance."
     }
   ],
   "conclusion": {
