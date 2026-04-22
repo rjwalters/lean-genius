@@ -113,5 +113,27 @@
       "Is the constant c in the threshold absolute (independent of ε, η) or does it depend on the parameters? The notation k ≫_c suggests c may be absolute."
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "uses-technique",
+      "description": "The asymptotic threshold m²/(n log n) derives from PNT: the number of primes up to n is ~n/log n, so prime pair counting at scale m gives m²/(n log n) as the natural density."
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Complementary prime density result: divergence of Σ1/p underpins sieve-theoretic arguments that bound prime set sizes, the same framework as the large sieve inequality used in #1202."
+    },
+    {
+      "targetId": "erdos-1205",
+      "relationship": "related",
+      "description": "Neighbor in the Erdős 1200s cluster: #1205 (congruence class multi-covering) involves modular structure of prime sets — both are solved analytic/quantitative prime problems from the same era."
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Related prime distribution result: the bounded prime gaps (Zhang/Maynard) technique of controlling prime pairs in short intervals underlies the m²/(n log n) threshold regime."
+    }
+  ],
   "sorries": 0
 }

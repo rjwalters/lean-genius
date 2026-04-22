@@ -121,5 +121,27 @@
       "mathContext": "Badly approximable numbers (also called numbers of bounded type) are those for which the continued fraction expansion has bounded partial quotients, equivalently ‖qα‖ ≥ C/q for all q ≥ 1. The log bound for S(α,n) is classical and essential for Kesten's 1960 central limit theorem for the inner sum."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1002-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent OQ: proves the Cauchy CDF and periodic sum axioms used by this file's weyl_equidist_continuous and weyl_fract_average_zero theorems."
+    },
+    {
+      "targetId": "erdos-1002",
+      "relationship": "extends",
+      "description": "Grandparent: the Kesten Cauchy distribution result (S(α,n)/log n → Cauchy) that the log bound axiom in this file underpins."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "uses-technique",
+      "description": "Weyl's criterion bridges equidistribution to Fourier analysis: the trig polynomial density argument (Stone-Weierstrass) in weyl_equidist_continuous uses the same Fourier infrastructure."
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "uses-technique",
+      "description": "The irrational_exp_ne_one proof mirrors the irrationality technique: exp(2πikα) = 1 would force α ∈ ℚ, the same contradiction structure as the classical √2 argument."
+    }
+  ],
   "sorries": 1
 }
