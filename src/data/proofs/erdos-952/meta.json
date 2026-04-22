@@ -7,7 +7,7 @@
     "author": "Motzkin, Gordon, et al. (1963) - misattributed to Erdős",
     "sourceUrl": "https://erdosproblems.com/952",
     "status": "axiomatized",
-    "proofRepoPath": "Proofs/Stubs/Erdos952Problem.lean",
+    "proofRepoPath": "Proofs/Erdos952Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -42,24 +42,24 @@
     "originalContributions": [
       "IsGaussianPrime definition: Prime in ℤ[i]",
       "GaussianPrimes definition: set of Gaussian primes",
-      "IsNorm2Prime, IsInertPrime, IsSplitPrime: classification of Gaussian primes",
-      "gaussian_prime_classification theorem: complete classification (both directions proved)",
-      "IsInfiniteGaussianPrimeWalk definition: injective prime sequence",
+      "IsNorm2Prime, IsInertPrime, IsSplitPrime: three types of Gaussian primes",
+      "gaussian_prime_classification: axiom encoding complete classification",
+      "Concrete examples: norm_one_plus_i, norm_two_plus_i, norm_three_gaussian (via decide)",
+      "one_plus_i/two_plus_i/three_is_gaussian_prime: proved from classification axiom",
+      "IsInfiniteGaussianPrimeWalk definition: injective sequence of Gaussian primes",
       "HasBoundedGaps definition: consecutive norm differences bounded",
-      "GaussianMoatConjecture definition: existence of bounded walk",
+      "CanEscapeMoat and GaussianMoatConjecture definitions",
       "jordan_rabung theorem: no walk with steps ≤ 2 (proved from tsuchimura)",
-      "tsuchimura axiom: no walk with steps ≤ √26 (only remaining axiom)",
-      "GaussianPrimeTheorem: asymptotic density stated as Prop def (not axiomatized)",
+      "tsuchimura axiom: no walk with steps ≤ √26 (computational verification)",
       "gethner_et_al theorem: step size 4 insufficient (proved from tsuchimura)",
-      "CanEscapeMoat definition: moat escapability",
-      "criticalMoatWidth definition: smallest non-escapable moat",
-      "gaussianPrimeCount definition: counting function",
-      "GaussianPrimeTheorem def: asymptotic density (Prop, not axiomatized)",
-      "primes_mod_4_connection theorem: proved via factorial construction (arbitrarily long prime-free intervals)"
+      "not_canEscapeMoat_small: general subsumption by tsuchimura bound",
+      "canEscapeMoat_mono: monotonicity of escape",
+      "conjecture_iff_canEscape and strongNegation_iff_not_conjecture: structural equivalences",
+      "strongNegation_implies_prime_free_windows: factorial construction proof"
     ],
-    "axiomCount": 1,
-    "lineCount": 529,
-    "assumptions": "1 axiom: tsuchimura (computational verification — no walk ≤ √26). GaussianPrimeTheorem stated as Prop def (not axiomatized). gaussian_prime_classification proved (both directions). primes_mod_4_connection proved via factorial construction. jordan_rabung and gethner_et_al proved from tsuchimura."
+    "axiomCount": 2,
+    "lineCount": 348,
+    "assumptions": "2 axioms: (1) gaussian_prime_classification (the full characterization of Gaussian primes via norm type), (2) tsuchimura (computational verification — no walk ≤ √26). All other results proved from these axioms or from Mathlib."
   },
   "overview": {
     "historicalContext": "This problem is notably NOT actually an Erdős problem. According to Erdős himself, the conjecture originated with Theodore Motzkin, Basil Gordon, and others at a 1963 Pasadena number theory meeting. Erdős popularized it by sharing it widely, and the attribution was eventually forgotten.\n\nThe 'Gaussian moat' refers to prime-free regions in ℤ[i]. The question asks whether one can 'walk' from 0 to infinity on Gaussian primes with bounded step size.\n\nKnown results:\n- Jordan and Rabung (1970): No walk with steps ≤ 2\n- Tsuchimura (2005): No walk with steps ≤ √26\n- Gethner et al.: Step size 4 insufficient\n\nTerence Tao has indicated this problem appears quite difficult.",
@@ -82,74 +82,58 @@
     {
       "id": "gaussian-primes",
       "title": "Gaussian Integers and Primes",
-      "summary": "IsGaussianPrime, GaussianPrimes using Mathlib",
-      "startLine": 39,
-      "endLine": 53,
-      "mathContext": "Mathematical content: IsGaussianPrime, GaussianPrimes using Mathlib"
+      "summary": "IsGaussianPrime, GaussianPrimes, classification types (IsNorm2Prime, IsInertPrime, IsSplitPrime)",
+      "startLine": 47,
+      "endLine": 80,
+      "mathContext": "Gaussian integers ℤ[i] form a UFD. Prime elements have norms of 3 types: 2, p² (p ≡ 3 mod 4), or p (p ≡ 1 mod 4)."
     },
     {
-      "id": "classification",
-      "title": "Gaussian Prime Classification",
-      "summary": "IsNorm2Prime, IsInertPrime, IsSplitPrime, gaussian_prime_classification",
-      "startLine": 54,
-      "endLine": 76,
-      "mathContext": "Mathematical content: IsNorm2Prime, IsInertPrime, IsSplitPrime, gaussian_prime_classification"
+      "id": "examples",
+      "title": "Concrete Examples",
+      "summary": "Norm calculations and prime verification for 1+i, 2+i, 3",
+      "startLine": 83,
+      "endLine": 120,
+      "mathContext": "1+i (norm 2, Type 1), 2+i (norm 5, Type 3 split), 3 (norm 9=3², Type 2 inert). Proved via classification axiom."
     },
     {
       "id": "moat-problem",
       "title": "The Moat Problem",
-      "summary": "IsInfiniteGaussianPrimeWalk, HasBoundedGaps, GaussianMoatConjecture",
-      "startLine": 77,
-      "endLine": 98,
-      "mathContext": "Bound: IsInfiniteGaussianPrimeWalk, HasBoundedGaps, GaussianMoatConjecture"
+      "summary": "IsInfiniteGaussianPrimeWalk, HasBoundedGaps, CanEscapeMoat, GaussianMoatConjecture",
+      "startLine": 123,
+      "endLine": 148,
+      "mathContext": "An infinite walk on Gaussian primes with bounded step size (bounded norm of differences). The moat conjecture asks if such a walk exists."
     },
     {
       "id": "known-results",
       "title": "Known Negative Results",
-      "summary": "jordan_rabung, tsuchimura, gethner_et_al, CurrentBestBound",
-      "startLine": 99,
-      "endLine": 119,
-      "mathContext": "Bound: jordan_rabung, tsuchimura, gethner_et_al, CurrentBestBound"
+      "summary": "tsuchimura axiom, jordan_rabung, gethner_et_al, not_canEscapeMoat_small, canEscapeMoat_mono",
+      "startLine": 151,
+      "endLine": 185,
+      "mathContext": "Tsuchimura (2005): no walk with norm < 27. Jordan-Rabung and Gethner et al. are weaker results following from Tsuchimura."
     },
     {
-      "id": "moat-width",
-      "title": "The Moat Width",
-      "summary": "CanEscapeMoat, criticalMoatWidth, StrongNegation",
-      "startLine": 120,
-      "endLine": 136,
-      "mathContext": "Mathematical content: CanEscapeMoat, criticalMoatWidth, StrongNegation"
-    },
-    {
-      "id": "density",
-      "title": "Density of Gaussian Primes",
-      "summary": "gaussianPrimeCount, gaussian_prime_theorem",
-      "startLine": 137,
-      "endLine": 152,
-      "mathContext": "Verified: gaussianPrimeCount, gaussian_prime_theorem"
+      "id": "structural",
+      "title": "Structural Equivalences",
+      "summary": "conjecture_iff_canEscape, strongNegation_iff_not_conjecture, erdos_952_statement",
+      "startLine": 200,
+      "endLine": 235,
+      "mathContext": "Logical reformulations showing the conjecture is equivalent to escaping for some finite step size."
     },
     {
       "id": "connections",
-      "title": "Connections to Rational Primes",
-      "summary": "splitPrime, primes_mod_4_connection",
-      "startLine": 153,
-      "endLine": 170,
-      "mathContext": "Mathematical content: splitPrime, primes_mod_4_connection"
+      "title": "Connection to Rational Primes",
+      "summary": "strongNegation_implies_prime_free_windows via factorial construction",
+      "startLine": 238,
+      "endLine": 295,
+      "mathContext": "If no escape is possible, then there exist arbitrarily long gaps in primes ≡ 1 (mod 4). Proved unconditionally via k!+j is composite for 2 ≤ j ≤ k."
     },
     {
       "id": "variants",
-      "title": "Variants",
-      "summary": "EisensteinMoatProblem, RationalPrimeMoat",
-      "startLine": 184,
-      "endLine": 198,
-      "mathContext": "Mathematical content: EisensteinMoatProblem, RationalPrimeMoat"
-    },
-    {
-      "id": "status",
-      "title": "Problem Status",
-      "summary": "erdos_952_status, attribution_note, erdos_952_statement",
-      "startLine": 199,
-      "endLine": 239,
-      "mathContext": "Mathematical content: erdos_952_status, attribution_note, erdos_952_statement"
+      "title": "Variants and Status",
+      "summary": "EisensteinMoatProblem, erdos_952_status, attribution_note",
+      "startLine": 297,
+      "endLine": 348,
+      "mathContext": "The analogous problem for Eisenstein primes. Status: OPEN. Attribution: Motzkin, Gordon et al. (1963)."
     }
   ],
   "conclusion": {
@@ -171,11 +155,11 @@
       "GaussianInt"
     ],
     "namespace": "Erdos952",
-    "lineCount": 529,
-    "axiomCount": 1,
-    "theoremCount": 16,
-    "definitionCount": 20,
-    "path": "Proofs/Stubs/Erdos952Problem.lean",
+    "lineCount": 348,
+    "axiomCount": 2,
+    "theoremCount": 18,
+    "definitionCount": 12,
+    "path": "Proofs/Erdos952Problem.lean",
     "sorries": 0
   },
   "crossReferences": [
