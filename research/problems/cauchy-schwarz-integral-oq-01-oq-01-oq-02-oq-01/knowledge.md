@@ -2,9 +2,64 @@
 
 **Problem**: Can Mathlib's RN machinery (SignedMeasure.rnDeriv) prove that every φ ∈ (Lp)* is represented by integration against some g ∈ Lq?
 
-**Status**: PROGRESS — main theorem riesz_lp_surjective_from_rn has 0 sorries; 3 focused helper sorries remain
+**Status**: PROGRESS — 1 critical sorry remaining (holder_extremizer_lq_bound); indicator_lp_hasSum proved
 
 **Lean file**: `Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean`
+
+---
+
+## Session 2026-04-22 (Session 5) — indicator_lp_hasSum proved
+
+**Mode**: REVISIT
+**Outcome**: progress
+
+### What I Did
+
+1. **Proved `indicator_lp_hasSum`** (~80 lines) — the σ-additivity step for the Lp signed measure construction.
+
+   The proof uses:
+   - Identify each Lp term as `indicatorConstLp` via `Lp.ext` + `indicatorConstLp_coeFn`
+   - Prove partial Lp sums = `indicatorConstLp` of biUnion via `Finset.indicator_biUnion_apply` (additive version of `Finset.mulIndicator_biUnion_apply`)
+   - Convert `HasSum` to `Tendsto atTop` via definitional equality (from `@[simps] def unconditional : SummationFilter β where filter := atTop`)
+   - Apply `tendsto_indicatorConstLp_set` to reduce to measure of symmetric differences
+   - Use `symmDiff_of_le` + `Set.iUnion_subtype` + `measure_iUnion` to compute μ(symmDiff)
+   - Close with `ENNReal.tendsto_tsum_compl_atTop_zero` for tail measure convergence
+
+2. **Confirmed**: `rnDeriv_integrable_of_finite` is already proved at line 740 via `SignedMeasure.integrable_rnDeriv ν μ` (one-liner — no sorry).
+
+3. **Updated assessment**: 2 sorries remain total:
+   - `truncated_rn_deriv_lq_bound` (not on critical path, MARKED FALSE)
+   - `holder_extremizer_lq_bound` (1 critical sorry)
+
+### Key Findings
+
+- `HasSum` is definitionally `Tendsto (fun S => ∑ i ∈ S, f i) atTop (nhds a)` because `(unconditional β).filter = atTop` by `@[simps]` definition. Use `show Tendsto ... atTop ...` to expose this.
+- `Finset.indicator_biUnion_apply` is the additive analogue of `Finset.mulIndicator_biUnion_apply` — for pairwise disjoint sets, the indicator of a union = sum of indicators.
+- `symmDiff_of_le` (in `Order/SymmDiff.lean:125`) says `a ∆ b = b \ a` when `a ≤ b` (i.e., a ⊆ b). Key for computing `symmDiff (⋃ i ∈ S, f i) (⋃ i, f i) = ⋃ i ∉ S, f i`.
+- `Set.iUnion_subtype` rewrites `⋃ i : {x // P x}, t i = ⋃ x, ⋃ hx : P x, t ⟨x, hx⟩` — needed to convert `⋃ i ∉ S, f i` to a form where `measure_iUnion` applies.
+
+### Remaining Sorry
+
+**`holder_extremizer_lq_bound`** (1 critical sorry):
+- Goal: `eLpNorm (clamp(ν.rnDeriv μ, -n, n)) q μ ≤ ENNReal.ofReal ‖φ‖`
+- Mathematical approach: extremizer h = sign(gₙ)|gₙ|^{q-1} in Lp (bounded, finite measure)
+  - ‖gₙ‖_q^q = ∫ h·gₙ ≤ ∫ h·g = φ(h) ≤ ‖φ‖·‖h‖_p = ‖φ‖·‖gₙ‖_q^{q/p}
+  - → ‖gₙ‖_q ≤ ‖φ‖ (algebra using q - q/p = 1)
+- Hard step: proving φ(h) = ∫ h·g for bounded h (need simple-fn approx + DCT)
+  - Tools: `SimpleFunc.approxOn`, `SimpleFunc.tendsto_approxOn` (pointwise), `tendsto_approxOn_Lp_eLpNorm` (Lp), `tendsto_integral_of_dominated_convergence` (DCT with bound n^{q-1}·|g| ∈ L1)
+  - Simple function case: φ(∑ cᵢ 1_{Eᵢ}) = ∑ cᵢ φ(1_{Eᵢ}) = ∑ cᵢ ∫_{Eᵢ} g (by hν_eq + rnDeriv_integral_eq)
+
+### Files Modified
+
+- `proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean` (indicator_lp_hasSum sorry→proof; assessment updated)
+
+### Next Steps
+
+1. Prove `holder_extremizer_lq_bound`:
+   - Build h_n = sign(gₙ)|gₙ|^{q-1} as Lp element (Memℒp.of_bound)
+   - Prove φ(s) = ∫ s·g for simple functions s (SimpleFunc.induction + hν_eq + rnDeriv_integral_eq)
+   - Extend to bounded h via DCT (tendsto_integral_of_dominated_convergence)
+   - Chain: ‖gₙ‖_q^q ≤ ‖φ‖·‖gₙ‖_q^{q/p} → ‖gₙ‖_q ≤ ‖φ‖ (ENNReal rpow arithmetic)
 
 ---
 

@@ -589,11 +589,85 @@ private theorem indicator_lp_hasSum [IsFiniteMeasure μ]
     HasSum
       (fun i => (indicator_memLp (hf_meas i) (measure_ne_top μ _) p hp hptop).toLp _)
       ((indicator_memLp (MeasurableSet.iUnion hf_meas) (measure_ne_top μ _) p hp hptop).toLp _) := by
-  -- Key: the Lp tail norm μ(⋃_{i≥N} f i)^{1/p} → 0 since μ is finite and ∑ μ(f i) < ∞.
-  -- Proof: show eLpNorm (1_{⋃ f} - ∑_{i<N} 1_{f i}) p μ = μ(⋃_{i≥N} f i)^{1/p} → 0.
-  -- The partial Lp sums converge ↔ the Lp tail norms → 0
-  -- (using disjointness: 1_{⋃ f} - ∑_{i<N} 1_{f i} = 1_{⋃_{i≥N} f i} a.e.).
-  sorry
+  haveI hpfact : Fact (1 ≤ p) := ⟨hp⟩
+  -- Identify each term with indicatorConstLp (the canonical Lp indicator)
+  have hg_eq : ∀ i, (indicator_memLp (hf_meas i) (measure_ne_top μ _) p hp hptop).toLp _ =
+      indicatorConstLp p (hf_meas i) (measure_ne_top μ _) (1 : ℝ) := fun i =>
+    Lp.ext (by
+      filter_upwards [(indicator_memLp (hf_meas i) (measure_ne_top μ _) p hp hptop).coeFn_toLp,
+                      indicatorConstLp_coeFn (hs := hf_meas i) (hμs := measure_ne_top μ _)]
+        with x h1 h2; exact h1.trans h2.symm)
+  have hg∞_eq :
+      (indicator_memLp (MeasurableSet.iUnion hf_meas) (measure_ne_top μ _) p hp hptop).toLp _ =
+      indicatorConstLp p (MeasurableSet.iUnion hf_meas) (measure_ne_top μ _) (1 : ℝ) :=
+    Lp.ext (by
+      filter_upwards
+          [(indicator_memLp (MeasurableSet.iUnion hf_meas) (measure_ne_top μ _) p hp hptop).coeFn_toLp,
+           indicatorConstLp_coeFn (hs := MeasurableSet.iUnion hf_meas)
+             (hμs := measure_ne_top μ _)]
+        with x h1 h2; exact h1.trans h2.symm)
+  simp_rw [hg_eq, hg∞_eq]
+  -- Total measure of the disjoint union is finite
+  have hμ_fin : ∑' i, μ (f i) ≠ ∞ :=
+    (measure_iUnion hf_disj hf_meas).symm ▸ measure_ne_top μ _
+  -- Step 1: coercion of Lp partial sum = pointwise sum of indicators (a.e.)
+  have hcoe_sum : ∀ S : Finset ℕ,
+      ⇑(∑ i ∈ S, indicatorConstLp p (hf_meas i) (measure_ne_top μ _) (1 : ℝ)) =ᵐ[μ]
+      fun x => ∑ i ∈ S, (f i).indicator (fun _ => (1 : ℝ)) x := by
+    intro S
+    induction S using Finset.induction_on with
+    | empty =>
+      filter_upwards [Lp.coeFn_zero (E := ℝ) p μ] with x hx
+      simp only [Finset.sum_empty, hx, Pi.zero_apply]
+    | insert ha ih =>
+      simp only [Finset.sum_insert ha]
+      filter_upwards [Lp.coeFn_add
+                        (indicatorConstLp p (hf_meas _) (measure_ne_top μ _) (1 : ℝ))
+                        (∑ i ∈ _, indicatorConstLp p (hf_meas i) (measure_ne_top μ _) (1 : ℝ)),
+                      indicatorConstLp_coeFn (hs := hf_meas _) (hμs := measure_ne_top μ _), ih]
+        with x hadd h1 hS
+      simp only [Pi.add_apply]
+      rw [hadd, h1, hS]
+  -- Step 2: partial Lp sums equal indicatorConstLp of partial biUnion
+  have hsum_eq : ∀ S : Finset ℕ,
+      ∑ i ∈ S, indicatorConstLp p (hf_meas i) (measure_ne_top μ _) (1 : ℝ) =
+      indicatorConstLp p (S.measurableSet_biUnion (fun i _ => hf_meas i))
+        (measure_ne_top μ _) (1 : ℝ) := fun S =>
+    Lp.ext (by
+      filter_upwards [hcoe_sum S, indicatorConstLp_coeFn
+          (hs := S.measurableSet_biUnion (fun i _ => hf_meas i)) (hμs := measure_ne_top μ _)]
+        with x hS hU
+      rw [hS, hU]
+      exact (Finset.indicator_biUnion_apply S f (fun i _ j _ hij => hf_disj hij) x).symm)
+  -- Step 3: HasSum reduces to Tendsto atTop (definitional unfolding)
+  show Tendsto (fun S : Finset ℕ =>
+    ∑ i ∈ S, indicatorConstLp p (hf_meas i) (measure_ne_top μ _) (1 : ℝ))
+    atTop (nhds (indicatorConstLp p (MeasurableSet.iUnion hf_meas) (measure_ne_top μ _) (1 : ℝ)))
+  -- Rewrite partial sums using hsum_eq, then apply tendsto_indicatorConstLp_set
+  simp_rw [hsum_eq]
+  apply tendsto_indicatorConstLp_set hptop
+  -- Goal: Tendsto (fun S => μ (symmDiff (⋃ i ∈ S, f i) (⋃ i, f i))) atTop (nhds 0)
+  -- Key equality: symmDiff (⋃ i ∈ S, f i) (⋃ i, f i) = ⋃ i ∉ S, f i
+  have key : ∀ S : Finset ℕ,
+      μ (symmDiff (⋃ i ∈ S, f i) (⋃ i, f i)) = ∑' b : {x // x ∉ S}, μ (f b) := fun S => by
+    rw [symmDiff_of_le (Set.iUnion₂_subset (fun i _ => Set.subset_iUnion f i))]
+    -- Now: μ ((⋃ i, f i) \ (⋃ i ∈ S, f i)) = ∑' b : {x // x ∉ S}, μ (f b)
+    have hdiff_eq : (⋃ i, f i) \ (⋃ i ∈ S, f i) = ⋃ b : {x // x ∉ S}, f b.val := by
+      rw [← Set.iUnion_subtype (fun i => i ∉ S)]
+      ext x
+      simp only [Set.mem_diff, Set.mem_iUnion, exists_prop, Set.mem_setOf_eq,
+                 not_exists, not_and]
+      constructor
+      · rintro ⟨⟨i, hi⟩, hnotS⟩
+        exact ⟨i, fun hiS => hnotS ⟨i, hiS, hi⟩, hi⟩
+      · rintro ⟨i, hinotS, hi⟩
+        exact ⟨⟨i, hi⟩, fun ⟨j, hjS, hj⟩ =>
+          absurd hj (Set.disjoint_left.mp (hf_disj (fun h => hinotS (h ▸ hjS))) hi)⟩
+    rw [hdiff_eq]
+    exact measure_iUnion (fun ⟨i, _⟩ ⟨j, _⟩ hij => hf_disj (Subtype.val_injective.ne hij))
+      (fun ⟨i, _⟩ => hf_meas i)
+  simp_rw [key]
+  exact ENNReal.tendsto_tsum_compl_atTop_zero hμ_fin
 
 /-- **σ-additivity** of the set function E ↦ φ(1_E).
     Follows from `indicator_lp_hasSum` by applying φ (a CLM, hence continuous). -/
@@ -758,7 +832,7 @@ theorem riesz_lp_surjective_from_rn (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p 
   exact ⟨g, hg_Lq, integral_representation p q hp1 hptop hpq φ g hg_Lq hagree⟩
 
 /-
-## Assessment Summary (Updated 2026-04-21)
+## Assessment Summary (Updated 2026-04-22)
 
 ### What This File Proves (no sorry)
 1. Indicator functions are in Lp for finite-measure sets
@@ -766,43 +840,41 @@ theorem riesz_lp_surjective_from_rn (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p 
 3. RN reconstruction: withDensityᵥ (rnDeriv) = s for AC measures
 4. Truncated RN derivative is in Lq for finite measures (Sub-goal 5a)
 5. **MCT for truncations**: ∫⁻ ‖g‖₊^q = ⨆_n ∫⁻ ‖gₙ‖₊^q (proved via lintegral_iSup)
-6. **rn_deriv_memLq** (modulo `truncated_rn_deriv_lq_bound` sorry — MARKED FALSE)
+6. **rn_deriv_memLq** (modulo `truncated_rn_deriv_lq_bound` sorry — MARKED FALSE, dead path)
 7. **rn_deriv_memLq_from_trunc**: COMPLETE sorry-free Lq membership from truncation bounds
 8. **Integral representation** via Lp.induction (all 3 cases proved)
 9. lintegral Hölder, Bochner integrability from Lp×Lq, integrationCLM
-10. **signedMeasureOfFunctional**: signed measure construction from φ (modulo indicator_lp_hasSum)
+10. **signedMeasureOfFunctional**: signed measure construction from φ (COMPLETE — no sorry)
 11. **signedMeasureOfFunctional_ac**: absolute continuity (complete, no sorry)
-12. **rnDeriv_integral_eq**: ν E = ∫_E g (modulo rnDeriv_integrable_of_finite)
-13. **riesz_lp_surjective_from_rn**: PROOF STRUCTURE COMPLETE (modulo 3 focused sorries)
+12. **rnDeriv_integral_eq**: ν E = ∫_E g (complete, no sorry)
+13. **rnDeriv_integrable_of_finite**: g = ν.rnDeriv μ ∈ L1 (complete via SignedMeasure.integrable_rnDeriv)
+14. **indicator_lp_hasSum**: HasSum of Lp indicator functions (PROVED in session 4)
+15. **riesz_lp_surjective_from_rn**: PROOF STRUCTURE COMPLETE (1 remaining sorry)
 
-### Focused Sorries (4 total, 3 on critical path)
-1. `truncated_rn_deriv_lq_bound` — MARKED FALSE (set function bound insufficient; dead end)
-2. `indicator_lp_hasSum` — Lp convergence of indicator partial sums (~60 lines)
-   Proof: tail Lp norm = μ(⋃_{i≥N} f i)^{1/p} → 0 (finite measure + disjoint)
-3. `rnDeriv_integrable_of_finite` — ν.rnDeriv μ ∈ L1 (~20 lines)
-   Proof: Jordan decomp + Measure.integrable_rnDeriv for each finite part
-4. `holder_extremizer_lq_bound` — ‖gₙ‖_q ≤ ‖φ‖ uniformly (~50 lines)
+### Focused Sorries (2 total, 1 on critical path)
+1. `truncated_rn_deriv_lq_bound` — MARKED FALSE (set function bound approach; dead path)
+2. `holder_extremizer_lq_bound` — ‖gₙ‖_q ≤ ‖φ‖ uniformly (~100 lines)
    Proof: extremizer h = sign(gₙ)|gₙ|^{q-1}, ‖gₙ‖_q^q ≤ ∫ h·g = φ(h) ≤ ‖φ‖·‖gₙ‖_q^{q/p}
+   Hard step: extend φ(1_E) = ∫_E g to bounded functions via SimpleFunc.approxOn + DCT
+   Tools needed: SimpleFunc.tendsto_approxOn, tendsto_integral_of_dominated_convergence
 
-### Key Progress (2026-04-21 Session 3)
-- Structured the main proof: riesz_lp_surjective_from_rn now assembles 5 clean steps
-- Proved signedMeasureOfFunctional_ac (no sorry: uses functionalSetFn_null directly)
-- Proved rnDeriv_integral_eq structure (relies on rnDeriv_integrable_of_finite sorry)
-- Proved functional_hasSum_parts (reduces to indicator_lp_hasSum + CLM continuity)
-- 5-step proof structure: ν construction → g=dν/dμ → hagree → g∈Lq → integral_representation
+### Key Progress (2026-04-22 Session 4) — indicator_lp_hasSum PROVED
+- Proved indicator_lp_hasSum (the σ-additivity step): ~80 lines
+  Uses: indicatorConstLp_coeFn, Lp.ext, Finset.indicator_biUnion_apply (additive),
+        tendsto_indicatorConstLp_set, symmDiff_of_le, Set.iUnion_subtype,
+        measure_iUnion, ENNReal.tendsto_tsum_compl_atTop_zero
+- Key insight: HasSum is definitionally Tendsto atTop (via @[simps] def unconditional)
+  so `show Tendsto ... atTop ...` works after `simp_rw [hsum_eq]`
 
-### Path to Completion (3 focused sorries, estimated ~130 lines total)
-1. `indicator_lp_hasSum` (~60 lines): Show Lp partial sums of 1_{f i} → 1_{⋃ f i} in norm
-   - HasSum ↔ tail Lp norm → 0
-   - Tail norm = μ(⋃_{i≥N} f i)^{1/p}; finite measure + disjoint → μ-tail → 0
-2. `rnDeriv_integrable_of_finite` (~20 lines):
-   - simp [SignedMeasure.rnDeriv]; apply Integrable.sub
-   - Each Jordan part: Measure.integrable_rnDeriv needs [IsFiniteMeasure ν] [SigmaFinite μ]
-3. `holder_extremizer_lq_bound` (~50 lines):
-   - Build h_n = sign(gₙ)|gₙ|^{q-1} ∈ Lp (bounded, finite measure)
-   - Extend φ(1_E) = ∫_E g to bounded functions via simple-fn approximation + DCT
-   - ‖gₙ‖_q^q = ∫ h_n·gₙ ≤ ∫ h_n·g = φ(h_n) ≤ ‖φ‖·‖h_n‖_p = ‖φ‖·‖gₙ‖_q^{q/p}
-   - Algebra: ‖gₙ‖_q ≤ ‖φ‖ (using q - q/p = 1 from 1/p + 1/q = 1)
+### Path to Completion (1 remaining critical sorry)
+`holder_extremizer_lq_bound` (~100 lines):
+1. Build hn = sign(gₙ)|gₙ|^{q-1} ∈ Lp (bounded by n^{q-1}, finite measure)
+2. Simple function agreement: for sₙ → hn via SimpleFunc.approxOn:
+   φ(sₙ) = ∫ sₙ·g (by indicator linearity + hν_eq + rnDeriv_integral_eq)
+   ∫ sₙ·g → ∫ hn·g (by tendsto_integral_of_dominated_convergence with bound n^{q-1}·|g| ∈ L1)
+   φ(hn) = ∫ hn·g by continuity of φ
+3. Chain: ‖gₙ‖_q^q = ∫ hn·gₙ ≤ ∫ hn·g = φ(hn) ≤ ‖φ‖·‖hn‖_p = ‖φ‖·‖gₙ‖_q^{q/p}
+4. Algebra: ‖gₙ‖_q ≤ ‖φ‖ (q - q/p = 1 from 1/p + 1/q = 1)
 -/
 
 end RieszLpSurjectivity
