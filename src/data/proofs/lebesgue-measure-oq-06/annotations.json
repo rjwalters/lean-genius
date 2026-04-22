@@ -55,9 +55,33 @@
     "title": "ENNReal Helper: a + a = a implies a = 0 or ∞ (Proved)",
     "content": "This lemma is fully proved (no sorry). In ℝ≥0∞ (extended non-negative reals), if a + a = a then a must be 0 or ⊤ (infinity). The proof lifts a to ℝ≥0 using the finiteness assumption (a ≠ ⊤), then derives a = 0 from a + a = a by linarith. This captures the essential arithmetic of the paradox: 'measure doubled = original measure' forces extremal values.",
     "mathContext": "The proof uses: (1) push_neg to separate the ¬(a = 0 ∨ a = ⊤) into a ≠ 0 ∧ a ≠ ⊤; (2) lift a to ℝ≥0 using a ≠ ⊤; (3) cast the ENNReal equation to ℝ≥0 using ENNReal.coe_add and ENNReal.coe_inj; (4) linarith to conclude a = 0, contradicting a ≠ 0. The key coercion: ↑a + ↑a = ↑a in ℝ≥0 gives 2·a = a (in ℝ≥0), hence a = 0.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["ENNReal arithmetic", "extended reals", "measure paradoxes", "linarith in ℝ≥0"],
     "prerequisites": ["ENNReal.coe_add", "ENNReal.coe_inj", "NNReal.eq_zero_of_add_eq_self"]
+  },
+  {
+    "id": "ann-geometric-setup",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": { "startLine": 150, "endLine": 191 },
+    "type": "definition",
+    "title": "Geometric Setup: RigidMotion3, Unit Ball/Sphere, and Hausdorff's Free Subgroup",
+    "content": "Section III defines the geometric arena for the paradox. `RigidMotion3` is defined as `EuclideanSpace ℝ (Fin 3) ≃ᵢ EuclideanSpace ℝ (Fin 3)` — isometric equivalences of ℝ³ — which forms a group under composition representing all rigid motions (rotations and translations; the actual group is SE(3), the Special Euclidean group). `unitBall3` is `Metric.closedBall 0 1` (the closed ball of radius 1 centered at the origin), and `unitSphere3` is `Metric.sphere 0 1` (its boundary).\n\nSection IV states Hausdorff's theorem: the rotation group SO(3) contains a free subgroup of rank 2. Specifically, the rotations $\\varphi$ (by $\\arccos(1/3)$ around the $z$-axis) and $\\psi$ (by $\\arccos(1/3)$ around the $x$-axis) generate a free group $F_2 = \\langle \\varphi, \\psi \\rangle$. The theorem is stated as a sorry: an injective group homomorphism from `FreeGroup Bool` into the isometry group. Freeness is proved by showing nontrivial words $w(\\varphi, \\psi)$ applied to $e_1 = (1,0,0)$ yield vectors with irrational $\\sqrt{2}/3$ components that cannot equal $e_1$, using a number-theoretic induction on word length.",
+    "mathContext": "The Hausdorff rotation matrices use $\\cos\\theta = 1/3$, $\\sin\\theta = 2\\sqrt{2}/3$ where $\\theta = \\arccos(1/3)$: $\\varphi = \\begin{pmatrix} 1/3 & -2\\sqrt{2}/3 & 0 \\\\ 2\\sqrt{2}/3 & 1/3 & 0 \\\\ 0 & 0 & 1 \\end{pmatrix}$ (rotation around $z$). Freeness: a nontrivial word $w(\\varphi, \\psi)$ in $F_2$ always moves $e_1$ — proved by tracking the form $p + q\\sqrt{2}$ of coordinates under alternating rotations, showing they cannot return to $(1,0,0)$.",
+    "significance": "key",
+    "relatedConcepts": ["SO(3) rotation group", "free group", "FreeGroup Bool", "IsometryEquiv", "Metric.closedBall", "Hausdorff paradox"],
+    "prerequisites": ["Euclidean space in Lean", "isometric equivalences", "group homomorphism", "FreeGroup", "MeasureTheory"]
+  },
+  {
+    "id": "ann-nonmeasurability",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": { "startLine": 228, "endLine": 248 },
+    "type": "theorem",
+    "title": "Corollary: Banach-Tarski Pieces Are Non-Measurable",
+    "content": "This corollary (stated as a sorry) captures the essential measure-theoretic obstruction: the pieces in any Banach-Tarski decomposition of the unit ball must be non-Lebesgue-measurable. The argument is by contradiction: if all pieces $\\{P_i\\}$ were measurable, then since isometries preserve Lebesgue measure, $\\lambda(g_j^{(i)}(P_i)) = \\lambda(P_i)$ for each $i$. Finite additivity over the two reassemblies gives $\\lambda(B^3) = \\sum_i \\lambda(P_i) = \\lambda(B^3) + \\lambda(B^3) = 2\\lambda(B^3)$. Since $\\lambda(B^3) = 4\\pi/3 \\in (0, \\infty)$, this is a contradiction. Thus the Axiom of Choice is not just used for the construction — it is genuinely necessary; without non-measurable sets, the paradox cannot occur.",
+    "mathContext": "Quantitative contradiction: $\\lambda(B^3) = \\frac{4}{3}\\pi$ (volume of unit ball in $\\mathbb{R}^3$). If all $n$ pieces have well-defined measure: $\\sum_{i=1}^n \\lambda(P_i) = \\lambda(B^3) = \\frac{4\\pi}{3}$ (partition). Two equidecomposable copies: $2 \\cdot \\frac{4\\pi}{3} = \\frac{4\\pi}{3}$. Contradiction. The non-measurability is analogous to the Vitali set: choosing one representative from each $\\mathbb{Q}$-coset of $\\mathbb{R}/\\mathbb{Z}$ yields a non-measurable set.",
+    "significance": "key",
+    "relatedConcepts": ["Lebesgue measure", "isometry preserves measure", "non-measurable set", "Vitali set", "Axiom of Choice", "MeasurableSet"],
+    "prerequisites": ["MeasureTheory.Measure.isometry_invariant", "Lebesgue measure on ℝ³", "MeasurableSet", "finitely-additive measure"]
   },
   {
     "id": "ann-banach-tarski",
