@@ -8,7 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/138",
     "date": "1980",
     "status": "axiomatized",
-    "proofRepoPath": "Proofs/Stubs/Erdos138Problem.lean",
+    "proofRepoPath": "Proofs/Erdos138Problem.lean",
     "tags": [
       "erdos",
       "ramsey-theory",
@@ -37,14 +37,14 @@
       "Proof schema: main conjecture implies ExponentialDiverges"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 1,
     "erdosNumber": 138,
     "erdosUrl": "https://erdosproblems.com/138",
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$500",
     "axiomCount": 8,
-    "lineCount": 176,
-    "assumptions": "8 axiom(s) and 5 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs.",
+    "lineCount": 196,
+    "assumptions": "8 axiom(s) and 1 sorry(s). Axioms: van_der_waerden_theorem, berlekamp_lower_bound, gowers_upper_bound, kozik_shabanov_lower_bound (bounds), and W_three=9, W_four=35, W_five=178, W_six=1132 (exact small values). The sorry marks an incomplete filter-limit implication proof.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -68,43 +68,51 @@
   "sections": [
     {
       "id": "definitions",
-      "title": "Van der Waerden Numbers",
-      "startLine": 36,
-      "endLine": 68,
-      "summary": "Core definitions: colorings, monochromatic arithmetic progressions, and the van der Waerden function W(k)",
+      "title": "Colorings and Arithmetic Progressions",
+      "startLine": 33,
+      "endLine": 55,
+      "summary": "Core definitions: colorings of {1,...,N}, monochromatic k-term APs",
+      "mathContext": "A coloring is a function $c : \\{1,\\ldots,N\\} \\to [r]$; a mono AP has $c(a+id) = \\text{col}$ for all $i$"
+    },
+    {
+      "id": "vdw-theorem",
+      "title": "Van der Waerden's Theorem and W(k)",
+      "startLine": 57,
+      "endLine": 93,
+      "summary": "Van der Waerden's theorem (axiomatized), guarantee set, and the van der Waerden numbers W(r,k)",
       "mathContext": "$W(r,k) = \\inf\\{N : \\forall c : \\{1,\\ldots,N\\} \\to [r],\\; \\exists \\text{ mono } k\\text{-AP}\\}$"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "startLine": 69,
-      "endLine": 86,
-      "summary": "Axiomatized bounds: Berlekamp (1968), Gowers (2001), Kozik-Shabanov (2016)",
+      "startLine": 95,
+      "endLine": 133,
+      "summary": "Axiomatized bounds: Berlekamp (1968), Gowers (2001), Kozik–Shabanov (2016)",
       "mathContext": "$p \\cdot 2^p \\leq W(p+1)$ for prime $p$; $W(k) \\leq 2^{2^{2^{2^{2^{k+9}}}}}$; $W(k) \\geq c \\cdot 2^k$"
     },
     {
       "id": "small-values",
-      "title": "Computed Values",
-      "startLine": 87,
-      "endLine": 108,
-      "summary": "Known exact values: W(3)=9, W(4)=35, W(5)=178, W(6)=1132",
-      "mathContext": "$W(3)=9$, $W(4)=35$, $W(5)=178$, $W(6)=1132$. Growth ratios: $3.9\\times$, $5.1\\times$, $6.4\\times$."
+      "title": "Exact Values for Small k",
+      "startLine": 135,
+      "endLine": 155,
+      "summary": "Known exact values W(3)=9, W(4)=35, W(5)=178, W(6)=1132 and their growth ratios",
+      "mathContext": "W(3)=9, W(4)=35, W(5)=178, W(6)=1132; ratios $\\approx 3.9\\times, 5.1\\times, 6.4\\times$"
     },
     {
       "id": "main-conjecture",
-      "title": "The Main Conjecture",
-      "startLine": 109,
-      "endLine": 119,
-      "summary": "Erdős Problem #138: Does W(k)^{1/k} → ∞?",
-      "mathContext": "$\\lim_{k \\to \\infty} W(k)^{1/k} = \\infty$ via `Filter.Tendsto atTop atTop`"
+      "title": "The Main Conjecture (OPEN)",
+      "startLine": 157,
+      "endLine": 172,
+      "summary": "Erdős Problem #138: Does W(k)^{1/k} → ∞? Formalized via Filter.Tendsto atTop atTop",
+      "mathContext": "$\\lim_{k \\to \\infty} W(k)^{1/k} = \\infty$"
     },
     {
       "id": "related-questions",
       "title": "Related Questions and Implications",
-      "startLine": 120,
-      "endLine": 176,
-      "summary": "Additional questions from Erdős (1980-1981) about growth rates, plus the implication chain: main conjecture → ExponentialDiverges",
-      "mathContext": "$W(k)^{1/k} \\to \\infty \\implies W(k)/2^k \\to \\infty \\implies W(k+1)/W(k) \\to \\infty$"
+      "startLine": 174,
+      "endLine": 196,
+      "summary": "Related divergence questions from Erdős (1980–1981) and implication chain",
+      "mathContext": "$W(k)^{1/k} \\to \\infty \\implies W(k)/2^k \\to \\infty$"
     }
   ],
   "conclusion": {
@@ -128,12 +136,12 @@
       "Finset"
     ],
     "namespace": "Erdos138",
-    "lineCount": 176,
-    "axiomCount": 8,
-    "theoremCount": 3,
-    "definitionCount": 8,
-    "path": "Proofs/Stubs/Erdos138Problem.lean",
-    "sorries": 5
+    "lineCount": 196,
+    "axiomCount": 7,
+    "theoremCount": 6,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos138Problem.lean",
+    "sorries": 1
   },
   "references": [
     {
@@ -182,5 +190,5 @@
       "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, van-der-waerden"
     }
   ],
-  "sorries": 5
+  "sorries": 1
 }
