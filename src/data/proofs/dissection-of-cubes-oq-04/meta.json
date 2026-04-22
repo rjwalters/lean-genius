@@ -22,8 +22,8 @@
     "sorries": 3,
     "dateAdded": "2026-04-22",
     "axiomCount": 2,
-    "assumptions": "2 axioms: (1) tmul_infinite_order_ne_zero (from OQ02OQ02): ℝ is flat over ℤ — needed to show nonzero tensor products. (2) icoAngle_irrational: arccos(-√5/3)/π is irrational (icosahedron dihedral angle) — proof requires Chebyshev arithmetic in ℤ[√5], deferred. 3 sorries: edge count scaling arguments for oct_dehn_ne_zero, dod_dehn_ne_zero, and ico_dehn_ne_zero sub-proofs (general edge count scaling for the three remaining Platonic solids).",
-    "lineCount": 436,
+    "assumptions": "1. tmul_infinite_order_ne_zero (from OQ02OQ02): ℝ is flat over ℤ — needed to show nonzero tensor products. 2. icoAngle_irrational: arccos(-√5/3)/π is irrational (icosahedron dihedral angle) — proof requires Chebyshev arithmetic in ℤ[√5], deferred.",
+    "lineCount": 437,
     "theoremCount": 15,
     "definitionCount": 4,
     "mathlibDependencies": [
@@ -140,11 +140,9 @@
   ],
   "conclusion": {
     "summary": "Among the five Platonic solids, the cube is uniquely characterized by having zero Dehn invariant. This extends Hilbert's Third Problem from the single pair (cube, tetrahedron) to the complete classification of all Platonic solids under scissors congruence.",
-    "implications": "The classification is complete and sharp: every pair of distinct Platonic solids involving the cube is provably non-scissors-congruent, not just the original Hilbert-Dehn pair (cube, tetrahedron). The Chebyshev integer sequence technique generalizes to any algebraic cosine: for cos θ = p/q with gcd(p,q) = 1 and |q| > 1, the sequence d_n = q^n · 2cos(nθ) ∈ ℤ satisfies a prime-non-divisibility argument that establishes arccos(p/q)/π ∉ ℚ. The proof architecture (Chebyshev sequence → mod-p non-divisibility → irrationality → infinite order in ℝ/πℤ → nonzero tensor product) is a reusable template for showing algebraic angle classes obstruct scissors congruence. This formalization confirms the Dehn invariant completely classifies all five Platonic solids under scissors congruence, answering a natural extension of Hilbert's 1900 question.",
     "openQuestions": [
       "Can the remaining axiom (tmul_infinite_order_ne_zero — flatness of ℝ over ℤ) be proved using Mathlib's Module.Flat infrastructure?",
-      "Can icoAngle_irrational be proved by extending the Chebyshev argument to ℤ[√5], completing the proof for all five Platonic solids with 0 axioms?",
-      "Are any two of the four non-cube Platonic solids scissors congruent to each other? Their Dehn invariants are all nonzero, but they may still differ — this requires comparing the angle classes [arccos(1/3)], [arccos(-1/3)], [arccos(-1/√5)], [arccos(-√5/3)] in ℝ/πℤ, which reduces to algebraic independence questions."
+      "Can icoAngle_irrational be proved by extending the Chebyshev argument to ℤ[√5], completing the proof for all five Platonic solids with 0 axioms?"
     ]
   }
 }

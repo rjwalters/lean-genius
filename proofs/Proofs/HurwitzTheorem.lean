@@ -1789,6 +1789,7 @@ private lemma crossMat_skewSym {n : ℕ} [NeZero n] (nsi : NSquareIdentity n)
     (j₁ j₂ : Fin n) (hj₁j₂ : j₁ ≠ j₂) :
     (crossMat nsi j₁ j₂).transpose = -(crossMat nsi j₁ j₂) := by
   ext j k
+<<<<<<< HEAD
   simp only [crossMat, Matrix.transpose_mul, Matrix.mul_apply, Matrix.transpose_apply,
              Matrix.neg_apply, colMat]
   -- After simp: goal is
@@ -1797,10 +1798,21 @@ private lemma crossMat_skewSym {n : ℕ} [NeZero n] (nsi : NSquareIdentity n)
   -- i.e., innerProd(mul k j₁, mul j j₂) = -innerProd(mul j j₁, mul k j₂)
   have hLHS : ∑ i, (nsi.mul (stdBasis k) (stdBasis j₁)) i * (nsi.mul (stdBasis j) (stdBasis j₂)) i =
       innerProd (nsi.mul (stdBasis k) (stdBasis j₁)) (nsi.mul (stdBasis j) (stdBasis j₂)) := rfl
+=======
+  simp only [crossMat, Matrix.transpose_mul, Matrix.transpose_transpose,
+             Matrix.mul_apply, Matrix.transpose_apply, Matrix.neg_apply, colMat]
+  -- LHS: ((colMat j₂)^T * (colMat j₁))_{jk} = Σᵢ (nsi.mul eⱼ eⱼ₂)ᵢ * (nsi.mul eₖ eⱼ₁)ᵢ
+  --    = innerProd (nsi.mul eⱼ eⱼ₂) (nsi.mul eₖ eⱼ₁)
+  -- RHS: -(crossMat j₁ j₂)_{jk} = -innerProd (nsi.mul eⱼ eⱼ₁) (nsi.mul eₖ eⱼ₂)
+  -- Need: ⟨m_{j,j₂}, m_{k,j₁}⟩ = -⟨m_{j,j₁}, m_{k,j₂}⟩
+  have hLHS : ∑ i, (nsi.mul (stdBasis j) (stdBasis j₂)) i * (nsi.mul (stdBasis k) (stdBasis j₁)) i =
+      innerProd (nsi.mul (stdBasis j) (stdBasis j₂)) (nsi.mul (stdBasis k) (stdBasis j₁)) := rfl
+>>>>>>> 5c9e907293 (chore: audit tracker — batch clean pass 3 (2026-04-22) (#11390))
   have hRHS : -(∑ i, (nsi.mul (stdBasis j) (stdBasis j₁)) i * (nsi.mul (stdBasis k) (stdBasis j₂)) i) =
       -(innerProd (nsi.mul (stdBasis j) (stdBasis j₁)) (nsi.mul (stdBasis k) (stdBasis j₂))) := rfl
   rw [hLHS, hRHS]
   rcases eq_or_ne j k with rfl | hjk
+<<<<<<< HEAD
   · -- j=k: innerProd(mul k j₁, mul k j₂) = 0 from row orthogonality (j₁ ≠ j₂)
     have h := orthogonality_constraint_right nsi (stdBasis j) (stdBasis j₁) (stdBasis j₂)
       (normSq_stdBasis j) (normSq_stdBasis j₁) (normSq_stdBasis j₂)
@@ -1877,6 +1889,28 @@ private lemma crossMat_sq_neg_one {n : ℕ} [NeZero n] (nsi : NSquareIdentity n)
   have h2 : -(crossMat nsi j₁ j₂ * crossMat nsi j₁ j₂) = 1 := by rw [← neg_mul]; exact h1
   exact neg_eq_iff_eq_neg.mp h2
 
+=======
+  · -- j=k: both sides 0 from row orthogonality (j₁ ≠ j₂)
+    have h := orthogonality_constraint_right nsi (stdBasis j) (stdBasis j₁) (stdBasis j₂)
+      (normSq_stdBasis j) (normSq_stdBasis j₁) (normSq_stdBasis j₂)
+      (by rw [innerProd_stdBasis]; simp [hj₁j₂])
+    rw [innerProd_symm (nsi.mul (stdBasis j) (stdBasis j₂)) (nsi.mul (stdBasis j) (stdBasis j₁))]
+    linarith
+  · -- j≠k: cross_polarization with ⟨eⱼ,eₖ⟩=0 gives M_{jk} + M_{kj}' = 0
+    have hcp := cross_polarization nsi (stdBasis k) (stdBasis j) (stdBasis j₂) (stdBasis j₁)
+    -- hcp: ⟨m_{k,j₂}, m_{j,j₁}⟩ + ⟨m_{k,j₁}, m_{j,j₂}⟩ = 2⟨eₖ,eⱼ⟩⟨eⱼ₂,eⱼ₁⟩ = 0
+    rw [innerProd_stdBasis, if_neg (Ne.symm hjk), mul_zero] at hcp
+    -- hcp: ⟨m_{k,j₂}, m_{j,j₁}⟩ + ⟨m_{k,j₁}, m_{j,j₂}⟩ = 0
+    -- = ⟨m_{j,j₁}, m_{k,j₂}⟩ + ⟨m_{k,j₁}, m_{j,j₂}⟩ = 0  (using innerProd_symm on first term)
+    -- Wait: we want ⟨m_{j,j₂}, m_{k,j₁}⟩ = -⟨m_{j,j₁}, m_{k,j₂}⟩
+    -- From hcp: innerProd(m_{k,j₂}, m_{j,j₁}) + innerProd(m_{k,j₁}, m_{j,j₂}) = 0
+    rw [innerProd_symm (nsi.mul (stdBasis k) (stdBasis j₂)) (nsi.mul (stdBasis j) (stdBasis j₁)),
+        innerProd_symm (nsi.mul (stdBasis k) (stdBasis j₁)) (nsi.mul (stdBasis j) (stdBasis j₂))] at hcp
+    -- hcp: ⟨m_{j,j₁}, m_{k,j₂}⟩ + ⟨m_{j,j₂}, m_{k,j₁}⟩ = 0 -- hmm, not exactly what we want
+    -- We want: ⟨m_{j,j₂}, m_{k,j₁}⟩ = -⟨m_{j,j₁}, m_{k,j₂}⟩
+    linarith
+
+>>>>>>> 5c9e907293 (chore: audit tracker — batch clean pass 3 (2026-04-22) (#11390))
 /-- For odd n, NSquareIdentity n is impossible (matrix det argument) -/
 private lemma no_odd_nsquare {n : ℕ} [NeZero n] (hodd : Odd n) (hn3 : 3 ≤ n)
     (nsi : NSquareIdentity n) : False := by
@@ -1886,10 +1920,22 @@ private lemma no_odd_nsquare {n : ℕ} [NeZero n] (hodd : Odd n) (hn3 : 3 ≤ n)
   let j₂ : Fin n := ⟨1, by omega⟩
   have hj₁j₂ : j₁ ≠ j₂ := by
     intro heq; exact absurd (congrArg Fin.val heq) (by simp [j₁, j₂])
+<<<<<<< HEAD
   -- Set up the cross matrix M = crossMat(j₁,j₂), which satisfies M² = -I
   let M := crossMat nsi j₁ j₂
   -- M² = -I (from crossMat_sq_neg_one)
   have hMsq : M * M = -1 := crossMat_sq_neg_one nsi j₁ j₂ hj₁j₂
+=======
+  -- Set up the cross matrix M
+  let M := crossMat nsi j₁ j₂
+  have hMTM : M.transpose * M = 1 := crossMat_transMul nsi j₁ j₂
+  have hskew : M.transpose = -M := crossMat_skewSym nsi j₁ j₂ hj₁j₂
+  -- M is skew + orthogonal → M² = -I
+  have hMsq : M * M = -1 := by
+    have h1 : (-M) * M = 1 := by rw [← hskew]; exact hMTM
+    have h2 : -(M * M) = 1 := by rw [show -(M * M) = (-M) * M from by ring]; exact h1
+    exact neg_eq_iff_eq_neg.mp h2
+>>>>>>> 5c9e907293 (chore: audit tracker — batch clean pass 3 (2026-04-22) (#11390))
   -- det(M)² = det(M²) = det(-I) = (-1)^n = -1 for odd n
   have hdet_sq : M.det ^ 2 = (-1 : ℝ) ^ n := by
     rw [sq, ← Matrix.det_mul, hMsq]
@@ -1904,17 +1950,27 @@ private lemma no_odd_nsquare {n : ℕ} [NeZero n] (hodd : Odd n) (hn3 : 3 ≤ n)
 theorem hurwitz_only_if (n : ℕ) (hn : n > 0) (nsi : NSquareIdentity n) :
     n ∈ admissibleDimensions := by
   simp only [admissibleDimensions, Set.mem_insert_iff, Set.mem_singleton_iff]
+<<<<<<< HEAD
   rcases eq_or_ne n 1 with rfl | h1; · simp
   rcases eq_or_ne n 2 with rfl | h2; · simp
   rcases eq_or_ne n 4 with rfl | h4; · simp
   rcases eq_or_ne n 8 with rfl | h8; · simp
   exfalso
   rcases eq_or_ne n 3 with rfl | h3
+=======
+  rcases Nat.eq_or_ne n 1 with rfl | h1; · simp
+  rcases Nat.eq_or_ne n 2 with rfl | h2; · simp
+  rcases Nat.eq_or_ne n 4 with rfl | h4; · simp
+  rcases Nat.eq_or_ne n 8 with rfl | h8; · simp
+  exfalso
+  rcases Nat.eq_or_ne n 3 with rfl | h3
+>>>>>>> 5c9e907293 (chore: audit tracker — batch clean pass 3 (2026-04-22) (#11390))
   · exact no_three_square_identity nsi
   · -- n ∉ {1,2,3,4,8}, n ≥ 1
     -- Split on parity of n
     rcases Nat.even_or_odd n with ⟨k, rfl⟩ | hodd
     · -- n = 2k: even non-admissible (n ∈ {6,10,12,...})
+<<<<<<< HEAD
       -- PROVED INFRASTRUCTURE:
       -- 1. For j ∈ {1,...,n-1}: M_j = crossMat nsi ⟨0,...⟩ ⟨j,...⟩ satisfies:
       --    (a) M_j^T = -M_j           [crossMat_skewSym]
@@ -1935,6 +1991,11 @@ theorem hurwitz_only_if (n : ℕ) (hn : n > 0) (nsi : NSquareIdentity n) :
       --   • Artin-Wedderburn theorem for real semisimple algebras
       -- None of these are in Mathlib as of April 2026.
       sorry -- BLOCKED: needs Clifford algebra structure theorem (Bott periodicity + Artin-Wedderburn)
+=======
+      -- Requires Clifford algebra classification (even case)
+      -- Key: 2k anticommuting isometries on ℝ^{2k} → Clifford algebra constraint
+      sorry -- HARD: even non-admissible case (n=6 and n=10,12,...); needs Clifford/Radon-Hurwitz
+>>>>>>> 5c9e907293 (chore: audit tracker — batch clean pass 3 (2026-04-22) (#11390))
     · -- n is odd: n ∉ {1,3} (handled above), so n ≥ 5 odd
       have hn3 : 3 ≤ n := by
         have hodd' := hodd
