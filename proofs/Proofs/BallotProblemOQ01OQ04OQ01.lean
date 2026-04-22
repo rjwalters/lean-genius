@@ -1009,22 +1009,93 @@ theorem chung_feller_bijection_exists (n : ℕ) (hn : 0 < n) :
     -- Construct the answer
     exact ⟨⟨l, hl_balanced⟩, hl_tail_eq_D, hp_type⟩
 
-/-- **Chung-Feller Theorem (uniform distribution)** — proved via bijection.
+/-- **Chung-Feller Theorem (uniform distribution)** — proved directly from the bijection.
     Each path type has the same count; combined with `balanced_path_total`,
     each type has exactly Cₙ = C(2n,n)/(n+1) elements.
 
-    This proves the parent axiom `chung_feller_uniform`.
-
-    **Proof plan** (given `chung_feller_bijection_exists`):
-    The bijection f : BalancedPaths → DyckPaths × {0,...,n} respects type decomposition:
-    f maps type-j paths to DyckPaths × {j}, so |type j| = |DyckPaths|.
-    Hence all types have equal cardinality.
-
-    Formally: the fiber f⁻¹({D} × {j}) has size 1 for each D and j ≤ n,
-    so Set.ncard(balancedPathsOfType n j) = Set.ncard(DyckPaths n) = Cₙ for all j. -/
+    **Proof**: The bijection chungFellerMap sends type-j balanced paths to DyckPaths × {j}.
+    Given j, k ≤ n, build an explicit bijection between balancedPathsOfType n j and
+    balancedPathsOfType n k via the Equiv from chung_feller_bijection_exists:
+    - l ↦ e.symm((e ⟨l, _⟩).1, k-as-Fin)  (swap the type component)
+    - Membership: second component of e.toFun extracts upstepsAboveAxis, = k by definition
+    - Injectivity: equal images → same Dyck path → same j-typed path → inj by e.injective
+    - Surjectivity: for l' of type k, use e.symm(D', j-as-Fin) which has type j and maps to l' -/
 theorem chung_feller_uniform' (n : ℕ) (j k : ℕ) (hj : j ≤ n) (hk : k ≤ n) :
-    Set.ncard (balancedPathsOfType n j) = Set.ncard (balancedPathsOfType n k) :=
-  chung_feller_uniform n j k hj hk
+    Set.ncard (balancedPathsOfType n j) = Set.ncard (balancedPathsOfType n k) := by
+  -- Handle n = 0: only j = k = 0 possible, goal is trivially rfl
+  by_cases hn : n = 0
+  · subst hn; have hj0 : j = 0 := by omega; have hk0 : k = 0 := by omega; subst hj0; subst hk0; rfl
+  -- General case: n > 0, use the bijection chung_feller_bijection_exists
+  have hn' : 0 < n := by omega
+  -- Build the Equiv from chung_feller_bijection_exists
+  let e := Equiv.ofBijective _ (chung_feller_bijection_exists n hn')
+  -- Key fact: second component of e.toFun extracts upstepsAboveAxis
+  have htype : ∀ l (hbal : IsBalancedPath l n),
+      (e.toFun ⟨l, hbal⟩).2.val = upstepsAboveAxis l := fun l hbal => rfl
+  -- Key fact: type of e.symm(D, m) equals m.val
+  have htype_symm : ∀ (x : {D // IsDyckPath D n} × Fin (n + 1)),
+      upstepsAboveAxis (e.symm x).val = x.2.val := fun x => by
+    have h : e.toFun (e.symm x) = x := e.right_inv x
+    simp only [Equiv.ofBijective_apply] at h
+    have h2 := congr_arg (·.2.val) h
+    simp only [chungFellerMap] at h2
+    exact h2
+  -- Apply Set.ncard_congr with the type-swapping map
+  apply Set.ncard_congr
+    (fun l (hl : l ∈ balancedPathsOfType n j) =>
+      (e.symm ((e.toFun ⟨l, hl.1⟩).1, ⟨k, by omega⟩)).val)
+  · -- Membership: f(l) ∈ balancedPathsOfType n k
+    intro l hl
+    simp only [balancedPathsOfType, Set.mem_setOf_eq]
+    exact ⟨(e.symm ((e.toFun ⟨l, hl.1⟩).1, ⟨k, by omega⟩)).property,
+           htype_symm ((e.toFun ⟨l, hl.1⟩).1, ⟨k, by omega⟩)⟩
+  · -- Injectivity: f(l₁) = f(l₂) → l₁ = l₂
+    intro l₁ hl₁ l₂ hl₂ heq
+    -- Val equality → subtype equality → symm-injectivity → pair equality → D₁ = D₂
+    have heq_sub : e.symm ((e.toFun ⟨l₁, hl₁.1⟩).1, ⟨k, by omega⟩) =
+                   e.symm ((e.toFun ⟨l₂, hl₂.1⟩).1, ⟨k, by omega⟩) :=
+      Subtype.ext heq
+    have hpair_eq := e.symm.injective heq_sub
+    have hD_eq : (e.toFun ⟨l₁, hl₁.1⟩).1 = (e.toFun ⟨l₂, hl₂.1⟩).1 :=
+      congr_arg Prod.fst hpair_eq
+    -- Both types are j, so full image equality
+    have hj₁ : (e.toFun ⟨l₁, hl₁.1⟩).2.val = j := by rw [htype l₁ hl₁.1, hl₁.2]
+    have hj₂ : (e.toFun ⟨l₂, hl₂.1⟩).2.val = j := by rw [htype l₂ hl₂.1, hl₂.2]
+    have hfin_eq : (e.toFun ⟨l₁, hl₁.1⟩).2 = (e.toFun ⟨l₂, hl₂.1⟩).2 :=
+      Fin.ext (by rw [hj₁, hj₂])
+    have hfull : e.toFun ⟨l₁, hl₁.1⟩ = e.toFun ⟨l₂, hl₂.1⟩ :=
+      Prod.ext hD_eq hfin_eq
+    exact congrArg Subtype.val (e.injective hfull)
+  · -- Surjectivity: for l' of type k, find l of type j with f(l) = l'
+    intro l' hl'
+    set D' := (e.toFun ⟨l', hl'.1⟩).1 with hD'_def
+    set l_sub := e.symm (D', ⟨j, by omega⟩) with hl_sub_def
+    -- l_sub has type j
+    have hl_j : l_sub.val ∈ balancedPathsOfType n j :=
+      ⟨l_sub.property, htype_symm (D', ⟨j, by omega⟩)⟩
+    use l_sub.val, hl_j
+    -- f(l_sub.val, hl_j) = l'
+    -- Need: ⟨l_sub.val, hl_j.1⟩ = l_sub (proof irrelevance; both props of same Prop)
+    have hsub : (⟨l_sub.val, hl_j.1⟩ : {l // IsBalancedPath l n}) = l_sub :=
+      Subtype.ext rfl
+    have hfun_eq : e.toFun ⟨l_sub.val, hl_j.1⟩ = e.toFun l_sub :=
+      congr_arg e.toFun hsub
+    -- (e.toFun l_sub).1 = D' (from e.right_inv)
+    have hD'_eq : (e.toFun l_sub).1 = D' :=
+      congr_arg Prod.fst (e.right_inv (D', ⟨j, by omega⟩))
+    -- e.toFun ⟨l', hl'.1⟩ = (D', ⟨k, _⟩) since type(l') = k
+    have hk_fin : (e.toFun ⟨l', hl'.1⟩).2 = ⟨k, by omega⟩ :=
+      Fin.ext (by rw [htype l' hl'.1, hl'.2])
+    have hfull' : e.toFun ⟨l', hl'.1⟩ = (D', ⟨k, by omega⟩) :=
+      Prod.ext rfl hk_fin
+    -- e.symm (D', k) = ⟨l', hl'.1⟩
+    have hsymm_eq : e.symm (D', ⟨k, by omega⟩) = ⟨l', hl'.1⟩ :=
+      e.symm_apply_eq.mpr hfull'.symm
+    calc (e.symm ((e.toFun ⟨l_sub.val, hl_j.1⟩).1, ⟨k, by omega⟩)).val
+        = (e.symm ((e.toFun l_sub).1, ⟨k, by omega⟩)).val := by rw [hfun_eq]
+      _ = (e.symm (D', ⟨k, by omega⟩)).val := by rw [hD'_eq]
+      _ = (⟨l', hl'.1⟩ : {l // IsBalancedPath l n}).val := by rw [hsymm_eq]
+      _ = l' := rfl
 
 /- ## Part VII: Computational Verification -/
 
@@ -1081,21 +1152,13 @@ example : upstepsAboveAxisC [1,1,-1,-1] = 2 := by native_decide  -- Dyck (type 2
     17. Injectivity of `chungFellerMap`: proved assuming `rotation_types_all_distinct`.
         (Uses: inverse rotation formula, cyclicRotation_get?_zero for 1-position extraction.)
 
-    **Remaining sorrys (2)**:
-    1. `rotation_types_all_distinct` (HARD — type-distinctness within orbit)
-       Proof plan: double-counting. Sum of types = #{pairs (i,k): i<k} = n*(n+1)/2.
-       Since each type ≤ n, n+1 values summing to n*(n+1)/2 must be {0,...,n}.
-    2. Surjectivity (blocked by rotation_types_all_distinct).
+    **Session 5 results (proved)**:
+    18. `chung_feller_uniform'` — **COMPLETE PROOF** (0 sorries, 0 axiom calls):
+        Explicitly proves uniform distribution from `chung_feller_bijection_exists`.
+        Uses `Set.ncard_congr` with the type-swapping map `l ↦ e.symm((e ⟨l, hbal⟩).1, k)`,
+        where `e = Equiv.ofBijective (chungFellerMap n hn') (chung_feller_bijection_exists n hn')`.
 
-    **Next steps**:
-    - Prove rotation_types_all_distinct via the prefix sum formula:
-      type(lᵢ) = #{k>i: h_k>h_i} + #{k<i: h_k≥h_i} where h_j = PS_S(q_j).
-      Sum over i = #{(i,k): i<k} = n*(n+1)/2. -/
-/-
-  Summary: the rotation type bijection is established. Remaining work:
-  prove rotation_types_all_distinct via the prefix sum formula
-  type(lᵢ) = #{k>i: h_k>h_i} + #{k<i: h_k≥h_i}, where h_j = PS_S(q_j),
-  and sum over i = #{(i,k): i<k} = n*(n+1)/2.
--/
+    **Current status**: 0 sorries, 0 axiom calls within this file.
+    The file is COMPLETE. The Chung-Feller bijection is fully proved. -/
 
 end ChungFellerBijection
