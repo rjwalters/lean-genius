@@ -1,7 +1,7 @@
 {
   "slug": "hurwitz-theorem-oq-03-oq-01",
   "title": "Hurwitz Only-If: Clifford Algebra Proof",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -27,35 +27,51 @@
     "goal": "Prove hurwitz_only_if, or at minimum prove the n=3 impossibility as a first step"
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-21",
-    "iteration": 1,
-    "focus": "Read HurwitzTheorem.lean, assess Clifford algebra library coverage in Mathlib",
+    "phase": "ACT",
+    "since": "2026-04-22",
+    "iteration": 2,
+    "focus": "Proved odd n impossibility; even non-admissible n (6,10,12,...) remains",
     "blockers": [],
-    "nextAction": "Read proofs/Proofs/HurwitzTheorem.lean, check Mathlib CliffordAlgebra for representation theory",
+    "nextAction": "Submit even-n sorry to Aristotle; assess Clifford algebra approach for even n",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Problem freshly selected. High significance (8/10) but lower tractability (5/10) due to Clifford algebra library requirements. Parent hurwitz-theorem-oq-03 is complete.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Proved odd n impossibility (no_odd_nsquare) via skew-symmetric det argument. hurwitz_only_if now handles n∉{1,2,4,8}: n=3 exact, n=odd≥5 via no_odd_nsquare, n=even≥6 sorry. 1 sorry remains for even non-admissible case.",
+    "builtItems": [
+      "colMat(nsi, j₀): orthogonal matrix from j₀-th column of multiplication table (HurwitzTheorem.lean)",
+      "crossMat(nsi, j₁, j₂) = colMat(j₁)ᵀ × colMat(j₂): skew-symmetric AND orthogonal (HurwitzTheorem.lean)",
+      "no_odd_nsquare: odd n ≥ 3 → NSquareIdentity n → False, via det(M)² = (-1)^n = -1 < 0 (HurwitzTheorem.lean)",
+      "hurwitz_only_if: handles n∈{1,2,3,4,8} exactly; odd n≥5 via no_odd_nsquare; 1 sorry for even n≥6"
+    ],
     "insights": [
       "Radon-Hurwitz numbers ρ(n): {1,2,2,4,4,4,4,8,9,...} — forces n∈{1,2,4,8}",
       "Key: left-multiplication L_x for unit x gives isometric linear map → Clifford representation",
-      "n=3 impossibility: may be more direct (no full Radon-Hurwitz needed)"
+      "n=3 impossibility: may be more direct (no full Radon-Hurwitz needed)",
+      "colMat(j₀) encodes left-multiplication by e_{j₀}: (j₀-th basis) acts on (k-th basis) → i-th component",
+      "orthogonality_constraint (column ortho) and orthogonality_constraint_right (row ortho) are key lemmas in HurwitzTheorem.lean",
+      "cross_polarization (Pfister identity) gives ⟨m(x,a),m(y,b)⟩+⟨m(x,b),m(y,a)⟩=2⟨x,y⟩⟨a,b⟩",
+      "crossMat is skew-symmetric because col ortho kills diagonal (j₁≠j₂) and cross_polarization gives M_{jk}+M_{kj}=0",
+      "crossMat is orthogonal: Mᵀ×M = colMat(j₁)×colMat(j₁)ᵀ×colMat(j₂)ᵀ×colMat(j₂) by pulling apart",
+      "Wait - correction: crossMat transMul uses: (Mᵀ×M)ᵀ = (col2ᵀ×col1×col1ᵀ×col2) = I using mul_eq_one_comm",
+      "Matrix.mul_eq_one_comm: for square matrices over commutative ring, A*B=1 ↔ B*A=1",
+      "Odd.neg_one_pow: (-1:R)^n = -1 for Odd n — used in det contradiction",
+      "Even n case (n=6,10,12,...) requires: Clifford algebra Cl(n-1) has no real representation of dim n — needs Radon-Hurwitz theory"
     ],
     "mathlibGaps": [
       "Radon-Hurwitz numbers not in Mathlib (as of 2026-04)",
-      "CliffordAlgebra representation theory: partial"
+      "CliffordAlgebra representation theory: partial — Cl(n-1) periodicity not formalized",
+      "No formalized Bott periodicity for Clifford algebras in Lean 4"
     ],
     "nextSteps": [
-      "Read HurwitzTheorem.lean",
-      "Check Mathlib CliffordAlgebra namespace",
-      "Determine if n=3 impossibility has a more direct proof",
-      "Scope decision: full proof vs. sub-lemma"
+      "Submit even-n sorry to Aristotle (likely cannot prove, but worth trying omega/decide for small n first)",
+      "For even n≥6: assess Clifford algebra approach — key lemma is Cl(n-1) rep theory",
+      "Alternative for even n: recursion argument — if 2k-square identity exists, get 2^a-square identity",
+      "Check if parity/2-adic argument suffices: n-sq identity → n/2-sq identity (halving argument)",
+      "Consider flagging even-n case as HARD blocker and documenting the mathematical obstacle"
     ],
     "markdown": ""
   },
@@ -87,5 +103,18 @@
     ]
   },
   "started": "2026-04-21",
-  "leanFiles": []
+  "leanFiles": [
+    {
+      "path": "Proofs/HurwitzTheorem.lean",
+      "filename": "HurwitzTheorem.lean",
+      "lineCount": 1973,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzTheorem.lean"
+    }
+  ],
+  "lastUpdate": "2026-04-22T00:00:00.000Z"
 }
