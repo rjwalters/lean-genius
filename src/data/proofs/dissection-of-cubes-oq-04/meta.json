@@ -140,9 +140,11 @@
   ],
   "conclusion": {
     "summary": "Among the five Platonic solids, the cube is uniquely characterized by having zero Dehn invariant. This extends Hilbert's Third Problem from the single pair (cube, tetrahedron) to the complete classification of all Platonic solids under scissors congruence.",
+    "implications": "The classification shows that the cube's geometric simplicity (all right-angle dihedral angles) is a complete invariant distinguishing it from the other Platonic solids under the equivalence relation of scissors congruence. The Chebyshev technique introduced here (integer sequences d_n = p^n · 2cos(n·arccos(a/b)) with prime p) is a template reusable for any rational cosine value — a new irrationality proof method for arccos(3/5)/π that stands alongside Niven's original result for arccos(1/3)/π. The full classification also establishes that no two Platonic solids from {tetrahedron, octahedron, dodecahedron, icosahedron} are scissors congruent to the cube, though whether pairs among those four are scissors congruent remains open (their Dehn invariants are all nonzero but potentially equal).",
     "openQuestions": [
       "Can the remaining axiom (tmul_infinite_order_ne_zero — flatness of ℝ over ℤ) be proved using Mathlib's Module.Flat infrastructure?",
-      "Can icoAngle_irrational be proved by extending the Chebyshev argument to ℤ[√5], completing the proof for all five Platonic solids with 0 axioms?"
+      "Can icoAngle_irrational be proved by extending the Chebyshev argument to ℤ[√5], completing the proof for all five Platonic solids with 0 axioms?",
+      "Are any two of {tetrahedron, octahedron, dodecahedron, icosahedron} scissors congruent to each other? The Dehn invariant does not distinguish them (all are nonzero), and Sydler (1965) showed the Dehn invariant is complete, so the question reduces to: do these solids have the same Dehn invariant?"
     ]
   }
 }
