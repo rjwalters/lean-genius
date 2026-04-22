@@ -117,8 +117,8 @@
     {
       "id": "partial-sums",
       "title": "Fourier Partial Sums",
-      "startLine": 76,
-      "endLine": 100,
+      "startLine": 84,
+      "endLine": 102,
       "summary": "Defines $S_N f(x) = \\sum_{n=-N}^{N} \\hat{f}(n) e_n(x)$ and proves basic properties: the $N=0$ case and continuity of partial sums.",
       "mathContext": "The Fourier partial sum $S_N$ is the orthogonal projection of $f$ onto the span of $\\{e_{-N}, \\ldots, e_N\\}$. It is always continuous since it is a finite sum of continuous functions."
     },
@@ -126,49 +126,57 @@
       "id": "maximal-operator",
       "title": "Carleson Maximal Operator",
       "startLine": 108,
-      "endLine": 137,
+      "endLine": 132,
       "summary": "Defines the Carleson maximal operator $S^*f(x) = \\sup_N |S_N f(x)|$ valued in $\\mathbb{R}_{\\geq 0}^{\\infty}$. Proves it dominates each individual partial sum.",
       "mathContext": "The maximal operator $S^*$ measures the worst-case behavior of all partial sums. Defined as an $\\mathbb{R}_{\\geq 0}^{\\infty}$-valued supremum to handle potentially infinite values. The key property $\\|S_N f(x)\\| \\leq S^*f(x)$ connects individual partial sums to the supremum."
     },
     {
       "id": "carleson-hunt",
       "title": "Carleson-Hunt Maximal Inequality (Axiomatized)",
-      "startLine": 143,
-      "endLine": 181,
+      "startLine": 136,
+      "endLine": 182,
       "summary": "Axiomatizes the Carleson-Hunt weak-type (2,2) bound: $\\mu(\\{S^*f > \\lambda\\}) \\leq (C/\\lambda)^2 \\|f\\|_{L^2}^2$. This is the deep analytic content that requires time-frequency analysis.",
-      "mathContext": "The weak-type (2,2) bound is: for all $\\lambda > 0$, $\\mu(\\{x : S^*f(x) > \\lambda\\}) \\leq C^2 \\lambda^{-2} \\|f\\|_{L^2}^2$. The strong form $\\|S^*f\\|_{L^2} \\leq C\\|f\\|_{L^2}$ implies this by Chebyshev. Carleson proved this using a sophisticated decomposition of the time-frequency plane."
+      "mathContext": "The weak-type (2,2) bound is: for all $\\lambda > 0$, $\\mu(\\{x : S^*f(x) > \\lambda\\}) \\leq C^2 \\lambda^{-2} \\|f\\|_{L^2}^2$. The strong form $\\|S^*f\\|_{L^2} \\leq C\\|f\\|_{L^2}$ implies this by Chebyshev. Carleson proved this using a sophisticated decomposition of the time-frequency plane. The fpvandoorn/carleson project completed formalization of the Carleson-Hunt bound in July 2025; it is not yet merged to Mathlib."
     },
     {
       "id": "trigpoly-convergence",
       "title": "Trigonometric Polynomial Convergence",
-      "startLine": 188,
-      "endLine": 229,
-      "summary": "Defines trigonometric polynomials and axiomatizes that their Fourier partial sums eventually reproduce them exactly. Also axiomatizes density in $L^2$.",
+      "startLine": 186,
+      "endLine": 327,
+      "summary": "Defines trigonometric polynomials and proves (without axioms) that their Fourier partial sums eventually reproduce them exactly, via Fourier orthogonality. Also proves they are in L². Density in L² is proved separately in Part V (density section).",
       "mathContext": "A trigonometric polynomial of degree $M$ satisfies $\\hat{g}(n) = 0$ for $|n| > M$. Then $S_N g = g$ for $N \\geq M$ since all nonzero coefficients are captured. Density follows from Mathlib's `span_fourier_closure_eq_top` (Stone-Weierstrass)."
+    },
+    {
+      "id": "density",
+      "title": "Density of Trigonometric Polynomials in L²",
+      "startLine": 329,
+      "endLine": 462,
+      "summary": "Proves that trigonometric polynomials are dense in L²(T) using hasSum_fourier_series_L2. For any f in L² and ε > 0, finds a trig poly g with ∫‖f-g‖² < ε². Proved from Mathlib without axioms.",
+      "mathContext": "Uses hasSum_fourier_series_L2 (Hilbert basis convergence in L²). Key private lemmas: Lp2_norm_sq_eq_integral (connecting ‖h‖² to ∫‖h‖² via the L² inner product) and Lp_fourier_sum_coeFn (connecting Lp addition/smul to pointwise operations)."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Lemmas",
+      "startLine": 465,
+      "endLine": 513,
+      "summary": "Proves linearity of partial sums: $S_N(f+g) = S_N f + S_N g$ and $S_N(cf) = c \\cdot S_N f$. These are used in the density argument decomposition.",
+      "mathContext": "Linearity of $S_N$ follows from linearity of Fourier coefficients: $\\widehat{f+g}(n) = \\hat{f}(n) + \\hat{g}(n)$ and $\\widehat{cf}(n) = c\\hat{f}(n)$. Combined with linearity of the summation."
     },
     {
       "id": "reduction",
       "title": "Maximal Inequality to a.e. Convergence",
-      "startLine": 236,
-      "endLine": 310,
+      "startLine": 514,
+      "endLine": 803,
       "summary": "The key reduction: defines the divergence set and proves Carleson's theorem assuming the maximal inequality. The density argument decomposes $f = g + h$ where $g$ is a trig poly and $\\|h\\|_{L^2}$ is small.",
       "mathContext": "The divergence set $D_\\delta = \\{x : \\limsup |S_N f(x) - f(x)| > \\delta\\}$ is shown to have measure 0 for each $\\delta > 0$. The full divergence set $\\bigcup_k D_{1/(k+1)}$ is a countable union of null sets, hence null. This is a standard 'Banach principle' or 'Cotlar' type argument."
     },
     {
       "id": "corollaries",
       "title": "Consequences and Corollaries",
-      "startLine": 316,
-      "endLine": 360,
+      "startLine": 805,
+      "endLine": 841,
       "summary": "Proves Carleson for continuous functions (via $C \\subseteq L^2$ on compact spaces) and states the joint result combining $L^2$ convergence with pointwise a.e. convergence.",
       "mathContext": "Continuous functions on the compact circle $\\mathbb{R}/T\\mathbb{Z}$ are automatically in $L^2$. Carleson's theorem then gives a.e. convergence, complementing the already-proved $L^2$ convergence (Parseval/Hilbert basis)."
-    },
-    {
-      "id": "structural",
-      "title": "Structural Lemmas",
-      "startLine": 367,
-      "endLine": 419,
-      "summary": "Proves linearity of partial sums: $S_N(f+g) = S_N f + S_N g$ and $S_N(cf) = c \\cdot S_N f$. These are used in the density argument decomposition.",
-      "mathContext": "Linearity of $S_N$ follows from linearity of Fourier coefficients: $\\widehat{f+g}(n) = \\hat{f}(n) + \\hat{g}(n)$ and $\\widehat{cf}(n) = c\\hat{f}(n)$. Combined with linearity of the summation."
     }
   ],
   "crossReferences": [
@@ -192,9 +200,8 @@
     "summary": "Formalizes Carleson's theorem (1966) — the pointwise a.e. convergence of Fourier partial sums for L² functions. The deep Carleson-Hunt maximal inequality is axiomatized, while the reduction from maximal bounds to a.e. convergence is proved via the standard density argument.",
     "implications": "Carleson's theorem bridges the gap between L² convergence (easy, from Hilbert space theory) and pointwise convergence (hard, requires time-frequency analysis). It shows that Fourier series are not just norm-approximations but actual pointwise representations for a.e. point. The failure for L¹ (Kolmogorov) shows the L² threshold is sharp.",
     "openQuestions": [
-      "Can the Carleson-Hunt maximal inequality itself be proved in Lean? (The Carleson4 project is working on this.)",
-      "Can the axiom trigPoly_dense_L2 be replaced with a proof from Mathlib's span_fourier_closure_eq_top?",
-      "Can Hunt's extension to Lp (p > 1) be formalized using the same maximal operator framework?"
+      "Can the Carleson-Hunt maximal inequality itself be proved in Lean? (The fpvandoorn/carleson project completed this formalization in July 2025; it is not yet merged to Mathlib. When integrated, both remaining axioms can be eliminated.)",
+      "Can Hunt's extension to Lp (p > 1) be formalized using the same maximal operator framework? The density argument generalizes; only the maximal inequality needs extension."
     ]
   },
   "references": [
