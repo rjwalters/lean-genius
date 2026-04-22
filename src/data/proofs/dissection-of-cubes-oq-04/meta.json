@@ -128,10 +128,10 @@
     },
     {
       "id": "sec-classification",
-      "title": "Part V: Complete Classification",
+      "title": "Part V–VI: Complete Classification and Axiom Audit",
       "startLine": 356,
-      "endLine": 415,
-      "description": "The main result: among the five Platonic solids, only the cube has zero Dehn invariant.",
+      "endLine": 437,
+      "description": "The main result: among the five Platonic solids, only the cube has zero Dehn invariant. Part VI documents the axiom budget: 1 new axiom (icoAngle_irrational) plus 1 inherited from OQ02OQ02 (tmul_infinite_order_ne_zero), plus 11 fully proved new theorems.",
       "theorems": [
         "cube_isolated_dehn_invariant",
         "cube_unique_zero_dehn"
@@ -140,9 +140,27 @@
   ],
   "conclusion": {
     "summary": "Among the five Platonic solids, the cube is uniquely characterized by having zero Dehn invariant. This extends Hilbert's Third Problem from the single pair (cube, tetrahedron) to the complete classification of all Platonic solids under scissors congruence.",
+    "implications": "This classification shows that scissors congruence is not purely determined by volume for Platonic solids — the Dehn invariant provides a finer invariant that separates the cube from all others. Since the Dehn–Sydler theorem (1965) shows the Dehn invariant completely classifies scissors congruence in ℝ³ (together with volume), the result here is sharp: the cube has a unique scissors-congruence class among Platonic solids. The irrationality results for arccos(3/5)/π and arccos(-1/√5)/π are new contributions from this gallery entry.",
     "openQuestions": [
       "Can the remaining axiom (tmul_infinite_order_ne_zero — flatness of ℝ over ℤ) be proved using Mathlib's Module.Flat infrastructure?",
       "Can icoAngle_irrational be proved by extending the Chebyshev argument to ℤ[√5], completing the proof for all five Platonic solids with 0 axioms?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "dissection-of-cubes",
+      "relationship": "parent-problem",
+      "description": "The parent Hilbert's Third Problem entry; this file resolves the full Platonic solid classification"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-02",
+      "relationship": "extends",
+      "description": "Borrows the Niven/Chebyshev technique for arccos(1/3)/π irrationality and applies it to arccos(3/5)/π"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-02-oq-02",
+      "relationship": "depends",
+      "description": "Inherits the Dehn invariant group ℝ ⊗_ℤ (ℝ/πℤ) infrastructure and the tmul_infinite_order_ne_zero flatness axiom"
+    }
+  ]
 }

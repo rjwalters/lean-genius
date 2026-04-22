@@ -24,6 +24,18 @@
     "prerequisites": ["Prime.dvd_or_dvd", "Int.Prime"]
   },
   {
+    "id": "ann-irrationality-proof",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": { "startLine": 109, "endLine": 177 },
+    "type": "technique",
+    "title": "Irrationality Proof: Cos Relation and Rationality Contradiction",
+    "content": "Two theorems complete the arccos(3/5)/π irrationality argument:\n\n**cosThreeFifthsSeq_eq_cos** (lines 112-136): Proves d_n = 5^n · 2cos(n·arccos(3/5)) by strong induction. The base cases use `cos_zero` and `Real.cos_arccos` to evaluate d_0 = 2 and d_1 = 6/5 · 5 = 6. The inductive step applies `cos_step` (Chebyshev addition formula) and the recurrence: d_{n+2} = 6d_{n+1} − 25d_n on the real-cast side.\n\n**arccos_three_fifths_irrational** (lines 142-177): The classic Niven-style argument. If arccos(3/5)/π = p/q ∈ ℚ, then q·arccos(3/5) = p·π, so cos(q·arccos(3/5)) = cos(pπ) = (−1)^p = ±1. The cos relation gives d_q = 5^q · 2·(±1) = ±2·5^q. But then 5^1 | d_q (since q ≥ 1), contradicting five_ndvd_cosThreeFifthsSeq.",
+    "mathContext": "The formal computation: cos(q·arccos(3/5)) = (−1)^{|p|} uses `cos_int_mul_pi`. The case split on (−1)^{|p|} = 1 or −1 handles both parities. In each case, casting the cos relation to ℤ gives d_q = ±2·5^q (via push_cast + ring). The divisibility conclusion: dvd_mul_of_dvd_right (dvd_pow_self 5 hden_ne) (±2) shows 5 | d_q, contradicting five_ndvd_cosThreeFifthsSeq q.den.",
+    "significance": "key",
+    "relatedConcepts": ["Niven's theorem", "cos_int_mul_pi", "Chebyshev recurrence", "rationality contradiction"],
+    "prerequisites": ["five_ndvd_cosThreeFifthsSeq", "cosThreeFifthsSeq_eq_cos", "cos_int_mul_pi"]
+  },
+  {
     "id": "ann-half-angle-identity",
     "proofId": "dissection-of-cubes-oq-04",
     "range": { "startLine": 196, "endLine": 228 },
@@ -46,6 +58,18 @@
     "significance": "key",
     "relatedConcepts": ["arccos_neg", "irrationality propagation", "rational arithmetic"],
     "prerequisites": ["arccos_three_fifths_irrational", "two_arccos_sqrt5_eq", "Real.arccos_neg"]
+  },
+  {
+    "id": "ann-dehn-nonzero",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": { "startLine": 249, "endLine": 320 },
+    "type": "technique",
+    "title": "Dehn Invariant Non-Zero: Angle Class + Flatness Axiom",
+    "content": "Parts III and IV follow a uniform two-step pattern for each Platonic solid:\n\n1. **Infinite order** (`dodAngle_infinite_order`, `icoAngle_infinite_order`): If n•[θ] = 0 in ℝ/πℤ, then θ = (m/n)π ∈ ℚ·π, contradicting irrationality of θ/π. Uses `zsmul_eq_zero_iff` to extract the rational multiple.\n\n2. **Non-zero Dehn term** (`dod_dehn_ne_zero`, `ico_dehn_ne_zero`): Applies `tmul_infinite_order_ne_zero` (the flatness axiom) with: edge length 30a > 0 and angle class of infinite order. The axiom states: in ℝ ⊗_ℤ (ℝ/πℤ), if r > 0 and v has infinite order, then r ⊗ v ≠ 0.\n\nThe icosahedron's angle icoAngle_irrational is an axiom (not proved); the rest of the icosahedron results flow from it identically to the dodecahedron case.",
+    "mathContext": "For the dodecahedron: edgeTerm (30a) dodAngle = (30a) ⊗ [arccos(-1/√5)] where [·] is the class in ℝ/πℤ. Since arccos(-1/√5)/π ∉ ℚ, [arccos(-1/√5)] has infinite order (no positive integer n has n·[θ] = 0). By tmul_infinite_order_ne_zero (ℝ flat over ℤ): 30a ⊗ [θ] ≠ 0 for 30a > 0. Similarly for icosahedron (icoAngle, 30 edges).",
+    "significance": "supporting",
+    "relatedConcepts": ["tensor product over ℤ", "infinite order elements", "Module.Flat", "angle class"],
+    "prerequisites": ["dodAngle_irrational", "icoAngle_irrational", "tmul_infinite_order_ne_zero", "zsmul_eq_zero_iff"]
   },
   {
     "id": "ann-classification-table",
