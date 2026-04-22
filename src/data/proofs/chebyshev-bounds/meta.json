@@ -42,7 +42,8 @@
       "Chebyshev's method gives θ(n) within a factor of log(4) ≈ 1.386 of the true asymptotic n — a constant factor from the PNT; the upper bound follows from the primorial inequality n# ≤ 4^n by taking logarithms",
       "The logarithmic lower bound π(n) ≥ log₂(n) is a direct consequence of Bertrand's postulate by telescoping: π(2^{k+1}) ≥ π(2^k) + 1 by Bertrand, and π(2^k) ≥ k ≥ ⌊log₂(n)⌋ for 2^k ≤ n",
       "The primorial n# = ∏_{p ≤ n} p satisfies n# ≤ 4^n (from Mathlib's `primorial_le_4_pow`), which directly encodes the upper bound on θ: log(n#) = θ(n) ≤ log(4^n) = n·log(4)",
-      "The central binomial sandwich 4^n/(2n+1) ≤ C(2n,n) ≤ 4^n is proved by: upper from C(2n,n) ≤ sum of all C(2n,k) = 4^n; lower from C(2n,n) being the maximum term in a (2n+1)-term sum equaling 4^n, proved via `Nat.choose_le_middle`"
+      "The central binomial sandwich 4^n/(2n+1) ≤ C(2n,n) ≤ 4^n is proved by: upper from C(2n,n) ≤ sum of all C(2n,k) = 4^n; lower from C(2n,n) being the maximum term in a (2n+1)-term sum equaling 4^n, proved via `Nat.choose_le_middle`",
+      "**Chebyshev's strategic role in PNT history:** Chebyshev's 1852 bounds did not just estimate π(x) — they established a conditional uniqueness: IF π(x) ~ cx/log(x) for some constant c, THEN c = 1. This is because his bounds give 0.92 ≤ c ≤ 1.11, narrowing the only possible asymptotic constant. Hadamard and de la Vallée Poussin (1896) proved the PNT by different means (complex analysis of ζ(s)), but Chebyshev's argument shows that the elementary method predicts the right constant — it just couldn't prove the limit exists."
     ],
     "prerequisites": [
       "Number theory (primes, divisibility, prime counting function)",
@@ -54,9 +55,10 @@
     "summary": "This formalization proves both upper and lower Chebyshev bounds on θ(n) and π(n), demonstrating that the prime counting function grows like n/log(n) up to constants. The upper bounds use the primorial inequality and central binomial coefficient analysis; the lower bounds follow from iterated applications of Bertrand's postulate.",
     "implications": "Chebyshev's bounds established that if the prime counting function has an asymptotic, it must be x/log(x). The Prime Number Theorem (proved 1896) confirmed this. These bounds remain important: they are elementary, unconditional, and tight up to a constant factor of log(4) ≈ 1.386.",
     "openQuestions": [
-      "Formalize the full Prime Number Theorem π(x) ~ x/log(x) in Lean 4",
-      "Prove the tighter Chebyshev bounds: 0.92129 < θ(x)/x < 1.10555 for all large x",
-      "Formalize the connection between ψ(x) and π(x): ψ(x) = Σ_p Σ_k [p^k ≤ x] log p ≈ x"
+      "Formalize the full Prime Number Theorem π(x) ~ x/log(x) in Lean 4 — the `chebyshev-pnt-bridge` entry works toward this",
+      "Prove the tighter Chebyshev bounds: 0.92129 < θ(x)/x < 1.10555 for all large x; Chebyshev's 1852 paper used a 6-term auxiliary function Σ aₖ log(⌊x/k⌋)! to achieve these",
+      "Formalize the second Chebyshev function ψ(x) = Σ_{p^k ≤ x} log p and show ψ(x) ∼ x ↔ π(x) ∼ x/log(x) via partial summation",
+      "Prove the explicit formula ψ(x) = x − Σ_ρ x^ρ/ρ − log(2π) (Riemann's explicit formula) connecting ψ to zeros of the Riemann zeta function"
     ]
   },
   "sections": [
@@ -107,7 +109,27 @@
     {
       "targetId": "bertrands-postulate",
       "relationship": "foundational",
-      "description": "Bertrand's postulate (also proved by Chebyshev 1852) provides the lower bounds in this formalization via the guarantee of a prime in every interval (n, 2n]"
+      "description": "Bertrand's postulate (also proved by Chebyshev 1852) provides the lower bounds in this formalization via `Nat.exists_prime_lt_and_le_two_mul`: the guarantee of a prime in every interval (n, 2n] enables telescoping arguments for π(n) ≥ log₂(n)"
+    },
+    {
+      "targetId": "chebyshev-pnt-bridge",
+      "relationship": "extended-by",
+      "description": "The PNT Bridge builds directly on ChebyshevBounds to connect these elementary estimates toward the full Prime Number Theorem π(x) ∼ x/log(x), using the upper bound θ(n) ≤ n·log(4) as input"
+    },
+    {
+      "targetId": "chebyshev-pnt-bridge-oq-01",
+      "relationship": "extended-by",
+      "description": "Extends the Chebyshev bounds with refined estimates and additional connections to the zero-free region argument for PNT"
+    },
+    {
+      "targetId": "chebyshev-pnt-bridge-oq-02",
+      "relationship": "extended-by",
+      "description": "Further extension connecting Chebyshev's elementary bounds to the analytic machinery of the Riemann zeta function"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "prerequisite-for",
+      "description": "The Prime Number Theorem π(x) ∼ x/log(x) is the asymptotic theorem whose existence Chebyshev's bounds predict: they show that if the limit exists, it must satisfy 0.92 ≤ c ≤ 1.11, presaging the PNT value c = 1"
     }
   ],
   "leanFile": {
