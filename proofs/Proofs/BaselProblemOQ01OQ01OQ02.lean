@@ -27,6 +27,7 @@ growth of the denominators forces irrationality.
 - Conditional irrationality theorem PROVED (integer-squeeze argument)
 - Growth bound bₙ ≤ 34^n PROVED from recurrence
 - Quantitative bound 27·(17-12√2) < 1 PROVED
+- denominator_control_factorial — (n!)³·aₙ ∈ ℤ PROVED (axiom-free, Part XIX)
 
 ## Axioms: 5
 ## Sorries: 0
@@ -63,8 +64,9 @@ theorem summable_zetaValue (s : ℕ) (hs : 2 ≤ s) :
 /-- ζ(s) > 0 for s ≥ 2. -/
 theorem zetaValue_pos (s : ℕ) (hs : 2 ≤ s) : 0 < zetaValue s := by
   unfold zetaValue
-  apply tsum_pos (summable_zetaValue s hs) (fun n => by positivity) 1
-  simp
+  have h := (summable_zetaValue s hs).sum_le_tsum ({1} : Finset ℕ) (fun n _ => by positivity)
+  simp only [Finset.sum_singleton, Nat.cast_one, one_pow, div_one] at h
+  linarith
 
 -- ============================================================================
 -- Part II: The Apéry Sequence bₙ
@@ -85,17 +87,12 @@ theorem aperyB_zero : aperyB 0 = 1 := by
 /-- b₁ = 5 (terms: k=0 gives 1·1=1, k=1 gives 1·4=4, total 5). -/
 theorem aperyB_one : aperyB 1 = 5 := by
   simp [aperyB, Finset.sum_range_succ]
-  norm_num
 
 /-- b₂ = 73 (six terms summing to 73). -/
-theorem aperyB_two : aperyB 2 = 73 := by
-  simp [aperyB, Finset.sum_range_succ]
-  norm_num
+theorem aperyB_two : aperyB 2 = 73 := by native_decide
 
 /-- b₃ = 1445. -/
-theorem aperyB_three : aperyB 3 = 1445 := by
-  simp [aperyB, Finset.sum_range_succ]
-  norm_num
+theorem aperyB_three : aperyB 3 = 1445 := by native_decide
 
 /-- All Apéry numbers are positive. -/
 theorem aperyB_pos (n : ℕ) : 0 < aperyB n := by
@@ -103,7 +100,7 @@ theorem aperyB_pos (n : ℕ) : 0 < aperyB n := by
   apply Finset.sum_pos
   · intro k hk
     apply Nat.mul_pos
-    · exact Nat.pos_of_ne_zero (pow_ne_zero 2 (Nat.choose_pos (Finset.mem_range.mp hk |>.le) |>.ne'))
+    · exact Nat.pos_of_ne_zero (pow_ne_zero 2 (Nat.choose_pos (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)) |>.ne'))
     · exact Nat.pos_of_ne_zero (pow_ne_zero 2 (Nat.choose_pos (Nat.le_add_left k n) |>.ne'))
   · exact ⟨0, Finset.mem_range.mpr (by omega)⟩
 
@@ -124,7 +121,6 @@ theorem aperyRecCoeff_zero : aperyRecCoeff 0 = 5 := by
 /-- The recurrence coefficient at n=1 is 117. -/
 theorem aperyRecCoeff_one : aperyRecCoeff 1 = 117 := by
   simp [aperyRecCoeff]
-  norm_num
 
 /-- The Apéry b-sequence satisfies the 3-term recurrence:
     (n+1)³ bₙ₊₁ = aperyRecCoeff(n) · bₙ - n³ · bₙ₋₁
@@ -150,7 +146,7 @@ theorem aperyB_rec_check_2 : 27 * 1445 = 535 * 73 - 8 * 5 := by norm_num
 theorem aperyRecCoeff_le_34_mul_cubeSucc (n : ℕ) :
     aperyRecCoeff n ≤ 34 * ((n : ℤ) + 1) ^ 3 := by
   unfold aperyRecCoeff
-  have hn : (0 : ℤ) ≤ n := Int.coe_nat_nonneg n
+  have hn : (0 : ℤ) ≤ n := Int.natCast_nonneg n
   nlinarith [sq_nonneg (n : ℤ)]
 
 -- ============================================================================
@@ -185,7 +181,7 @@ private theorem aperyB_le_34_mul_pred (m : ℕ) (hm : 0 < m) :
   have h_combined : ((m : ℤ) + 1) ^ 3 * ↑(aperyB (m + 1)) ≤
       ((m : ℤ) + 1) ^ 3 * (34 * ↑(aperyB m)) := by linarith
   -- Step 5: Cancel (m+1)³ > 0
-  exact (mul_le_mul_left hcube_pos).mp h_combined
+  exact le_of_mul_le_mul_left h_combined hcube_pos
 
 /-- Auxiliary: bₙ₊₁ ≤ 34^{n+1} by induction using the step bound. -/
 private theorem aperyB_growth_upper_aux :
@@ -220,12 +216,14 @@ theorem aperyB_growth_upper (n : ℕ) (hn : 0 < n) :
   | zero => omega
   | succ k => exact aperyB_growth_upper_aux k
 
-/-- The linear form bₙ·ζ(3) - aₙ decays geometrically:
+/-
+The linear form bₙ·ζ(3) - aₙ decays geometrically:
     |bₙ·ζ(3) - aₙ| ≤ C · (√2 - 1)^{4n}
 
     where (√2-1)⁴ = 17 - 12√2 ≈ 0.0294 is the smaller root of
     the characteristic polynomial. The fast decay (exponential with
-    base < 1) is the engine of the irrationality proof. -/
+    base < 1) is the engine of the irrationality proof.
+-/
 
 /-- The characteristic polynomial of the Apéry recurrence: t² - 34t + 1.
     Roots: (1+√2)⁴ = 17+12√2 ≈ 33.97 and (√2-1)⁴ = 17-12√2 ≈ 0.029. -/
@@ -236,7 +234,8 @@ theorem apery_char_poly_discriminant :
 -- Part V: The Irrationality Argument
 -- ============================================================================
 
-/-- **Main Theorem (Apéry 1978)**: ζ(3) is irrational.
+/-
+**Main Theorem (Apéry 1978)**: ζ(3) is irrational.
 
     Proof sketch:
     1. Construct sequences aₙ ∈ ℚ and bₙ ∈ ℤ>₀ with bₙ·ζ(3) - aₙ ≠ 0
@@ -244,7 +243,8 @@ theorem apery_char_poly_discriminant :
     3. Show lcm(1,...,n)³·aₙ ∈ ℤ (denominator control)
     4. By the prime number theorem, lcm(1,...,n)³ ~ e^{3n}
     5. So 2·lcm(1,...,n)³·bₙ·|bₙ·ζ(3) - aₙ| → 0
-    6. But this quantity is a nonzero integer if ζ(3) = p/q, contradiction -/
+    6. But this quantity is a nonzero integer if ζ(3) = p/q, contradiction
+-/
 -- Apéry 1978; proved in Part XIII from decay + nonzero + denominator axioms
 -- theorem apery_theorem : Irrational (zetaValue 3)  ← see Part XIII below
 
@@ -262,10 +262,8 @@ noncomputable def aperyA : ℕ → ℚ
   | 0 => 0
   | 1 => 6
   | (n + 2) =>
-    let coeff := (2 * (n + 1 : ℤ) + 1) * (17 * (n + 1 : ℤ) ^ 2 + 17 * (n + 1) + 5)
-    let prev := aperyA (n + 1)
-    let pprev := aperyA n
-    (coeff * prev - (n + 1 : ℤ) ^ 3 * pprev) / (n + 2 : ℤ) ^ 3
+    ((aperyRecCoeff (n + 1) : ℚ) * aperyA (n + 1) - ((n + 1 : ℕ) : ℚ) ^ 3 * aperyA n) /
+    ((n + 2 : ℕ) : ℚ) ^ 3
 
 /-- a₀ = 0. -/
 theorem aperyA_zero : aperyA 0 = 0 := rfl
@@ -276,7 +274,7 @@ theorem aperyA_one : aperyA 1 = 6 := rfl
 /-- a₂ = 351/4. Verified by direct computation from the recurrence:
     a₂ = (3 · 39 · 6 - 1 · 0) / 8 = 702/8 = 351/4. -/
 theorem aperyA_two : aperyA 2 = 351 / 4 := by
-  simp only [aperyA]
+  simp only [aperyA, aperyRecCoeff]
   norm_num
 
 -- ============================================================================
@@ -310,7 +308,7 @@ theorem harmonicNumber_nonneg (n : ℕ) : 0 ≤ harmonicNumber n := by
   unfold harmonicNumber
   apply Finset.sum_nonneg
   intro k _
-  exact div_nonneg (by norm_num) (by exact_mod_cast Nat.succ_pos k)
+  exact div_nonneg (by norm_num) (by exact_mod_cast (Nat.succ_pos k).le)
 
 /-- Harmonic numbers are monotone increasing. -/
 theorem harmonicNumber_mono (m n : ℕ) (hmn : m ≤ n) :
@@ -318,7 +316,7 @@ theorem harmonicNumber_mono (m n : ℕ) (hmn : m ≤ n) :
   unfold harmonicNumber
   apply Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_mono hmn)
   intro k _ _
-  exact div_nonneg (by norm_num) (by exact_mod_cast Nat.succ_pos k)
+  exact div_nonneg (by norm_num) (by exact_mod_cast (Nat.succ_pos k).le)
 
 /-- The generalized harmonic number H_n^{(s)} = ∑_{k=1}^{n} 1/k^s. -/
 noncomputable def genHarmonicNumber (n : ℕ) (s : ℕ) : ℚ :=
@@ -347,10 +345,9 @@ theorem lcmUpTo_two : lcmUpTo 2 = 2 := by decide
 theorem lcmUpTo_pos (n : ℕ) (hn : 1 ≤ n) : 0 < lcmUpTo n := by
   unfold lcmUpTo
   apply Nat.pos_of_ne_zero
-  intro h
-  have h1 : 1 ∣ (Finset.range n).lcm (· + 1) := Finset.dvd_lcm (Finset.mem_range.mpr hn)
-  rw [h] at h1
-  exact absurd h1 (by omega)
+  rw [Finset.lcm_ne_zero_iff]
+  intro k _
+  exact Nat.succ_ne_zero k
 
 /-- lcm(1,...,n) is monotone: if n ≤ m then lcmUpTo n divides lcmUpTo m.
     Proof: Finset.range n ⊆ Finset.range m, so the lcm over the smaller set
@@ -450,12 +447,12 @@ theorem apery_bterm_int (r : ℚ) (n : ℕ) (hn : r.den ≤ n) :
   have hq_cast : (lcmUpTo n : ℚ) = (r.den : ℚ) * q := by exact_mod_cast hq
   have hrd : (r.den : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr r.pos.ne'
   -- Rewrite lcmUpTo n and expand r = r.num / r.den
+  have hrnd : r * (r.den : ℚ) = (r.num : ℚ) :=
+    ((div_eq_iff hrd).mp (Rat.num_div_den r)).symm
   rw [hq_cast]
   calc ((r.den : ℚ) * q) ^ 3 * (aperyB n : ℚ) * r
-      = (q : ℚ) ^ 3 * (r.den : ℚ) ^ 3 * (aperyB n : ℚ) * ((r.num : ℚ) / r.den) := by
-          rw [← Rat.num_div_den r]; ring
-    _ = (q : ℚ) ^ 3 * (r.den : ℚ) ^ 2 * (aperyB n : ℚ) * r.num := by
-          field_simp [hrd]; ring
+      = (q : ℚ) ^ 3 * (r.den : ℚ) ^ 2 * (aperyB n : ℚ) * (r * r.den) := by ring
+    _ = (q : ℚ) ^ 3 * (r.den : ℚ) ^ 2 * (aperyB n : ℚ) * r.num := by rw [hrnd]
     _ = ↑((q : ℤ) ^ 3 * (r.den : ℤ) ^ 2 * (aperyB n : ℤ) * r.num) := by push_cast; ring
 
 -- ============================================================================
@@ -813,8 +810,10 @@ theorem zetaValue_three_tail_ub (N : ℕ) (hN : 1 ≤ N) :
     calc ∑ k ∈ Finset.range M, (1 : ℝ) / ((k : ℝ) + (N + 1)) ^ 3
         ≤ ∑ k ∈ Finset.range M,
             ((1 : ℝ) / (2 * ((k : ℝ) + N) ^ 2) - 1 / (2 * ((k : ℝ) + N + 1) ^ 2)) :=
-          Finset.sum_le_sum fun k _ => cube_succ_inv_le_telescoping ((k : ℝ) + N) (by
-            have : (0 : ℝ) ≤ k := Nat.cast_nonneg k; linarith)
+          Finset.sum_le_sum fun k _ => by
+            have h := cube_succ_inv_le_telescoping ((k : ℝ) + N)
+              (by have : (0 : ℝ) ≤ k := Nat.cast_nonneg k; linarith)
+            convert h using 2; push_cast; ring
       _ = 1 / (2 * (N : ℝ) ^ 2) - 1 / (2 * ((M : ℝ) + N) ^ 2) :=
           telescope_sum_eq N M
       _ ≤ 1 / (2 * (N : ℝ) ^ 2) := sub_le_self _ (by positivity)
@@ -833,7 +832,7 @@ theorem zetaValue_three_tail_ub (N : ℕ) (hN : 1 ≤ N) :
 theorem linearForm_two_pos : 0 < linearForm 2 := by
   unfold linearForm
   have hb : (aperyB 2 : ℝ) = 73 := by exact_mod_cast aperyB_two
-  have ha : (aperyA 2 : ℝ) = 351 / 4 := by norm_cast; exact aperyA_two
+  have ha : (aperyA 2 : ℝ) = 351 / 4 := by rw [aperyA_two]; norm_num
   rw [hb, ha]
   -- Suffices: ζ(3) > 351/292 ≈ 1.20205479
   suffices h : (351 : ℝ) / 292 < zetaValue 3 by linarith
@@ -845,7 +844,81 @@ theorem linearForm_two_pos : 0 < linearForm 2 := by
     have h : (351 : ℚ) / 292 <
         ∑ k ∈ Finset.range 100, (1 : ℚ) / (k : ℚ) ^ 3 + 1 / (2 * (100 : ℚ) ^ 2) := by
       native_decide
-    exact_mod_cast h
+    have h2 : ((351 : ℚ) / 292 : ℝ) <
+        ((∑ k ∈ Finset.range 100, (1 : ℚ) / (k : ℚ) ^ 3 +
+          1 / (2 * (100 : ℚ) ^ 2) : ℚ) : ℝ) := by exact_mod_cast h
+    push_cast at h2
+    linarith
   linarith
+
+-- ============================================================================
+-- Part XIX: Factorial Denominator Control (Axiom-Free)
+-- ============================================================================
+
+/-- a₃ = 62531/36. From the recurrence:
+    a₃ = (aperyRecCoeff(2) · a₂ - 2³ · a₁) / 3³ = (535·351/4 - 48) / 27. -/
+theorem aperyA_three : aperyA 3 = 62531 / 36 := by
+  simp only [aperyA, aperyRecCoeff]
+  norm_num
+
+/-- The key recurrence for factorial denominator control:
+    (n+2)!³ · a_{n+2} = coeff(n+1) · (n+1)!³ · a_{n+1} - (n+1)⁶ · n!³ · a_n
+
+    Proof: From the definition, (n+2)³ · a_{n+2} = c · a_{n+1} - (n+1)³ · a_n.
+    Multiplying by (n+1)!³ and using (n+2)! = (n+2) · (n+1)!. -/
+private lemma aperyA_factorial_step (n : ℕ) :
+    ((n + 2).factorial : ℚ) ^ 3 * aperyA (n + 2) =
+    ↑(aperyRecCoeff (n + 1)) * ((n + 1).factorial : ℚ) ^ 3 * aperyA (n + 1) -
+    ((n + 1 : ℕ) : ℚ) ^ 6 * (n.factorial : ℚ) ^ 3 * aperyA n := by
+  have hn2 : ((n + 2 : ℕ) : ℚ) ≠ 0 := by positivity
+  -- Unfold aperyA (n+2) directly from its recursive definition
+  have hunf : aperyA (n + 2) =
+      (↑(aperyRecCoeff (n + 1)) * aperyA (n + 1) - ((n + 1 : ℕ) : ℚ) ^ 3 * aperyA n) /
+      ((n + 2 : ℕ) : ℚ) ^ 3 := by
+    simp only [aperyA]
+  have hf2 : ((n + 2).factorial : ℚ) ^ 3 =
+      ((n + 2 : ℕ) : ℚ) ^ 3 * ((n + 1).factorial : ℚ) ^ 3 := by
+    rw [Nat.factorial_succ]; push_cast; ring
+  have hf1 : ((n + 1).factorial : ℚ) ^ 3 =
+      ((n + 1 : ℕ) : ℚ) ^ 3 * (n.factorial : ℚ) ^ 3 := by
+    rw [Nat.factorial_succ]; push_cast; ring
+  -- Combine: (n+2)!³ = (n+2)³*(n+1)!³, then cancel (n+2)³ vs denominator
+  rw [hunf, hf2]
+  field_simp
+  rw [hf1]
+  push_cast; ring
+
+/-- **Factorial denominator control (axiom-free)**:
+    (n!)³ · aₙ ∈ ℤ for all n, proved by 2-step induction on the Apéry recurrence.
+
+    This is a weaker form of `denominator_control` (which requires lcm instead of n!)
+    but is completely free of axioms. The difference matters because lcm(1,...,n) ~ eⁿ
+    while n! ~ (n/e)ⁿ — factorial grows faster, making it easier to prove integrality.
+
+    The proof key: `aperyA_factorial_step` gives a recurrence for (k!)³·aₖ that
+    preserves integrality, so induction closes the argument. -/
+theorem denominator_control_factorial (n : ℕ) :
+    ∃ m : ℤ, (n.factorial : ℚ) ^ 3 * aperyA n = m := by
+  -- Prove by 2-step induction: package both n and n+1 together
+  suffices h : ∀ k : ℕ,
+      (∃ m : ℤ, (k.factorial : ℚ) ^ 3 * aperyA k = m) ∧
+      (∃ m : ℤ, ((k + 1).factorial : ℚ) ^ 3 * aperyA (k + 1) = m) from (h n).1
+  intro k
+  induction k with
+  | zero =>
+    refine ⟨⟨0, ?_⟩, ⟨6, ?_⟩⟩
+    · norm_num [aperyA_zero, Nat.factorial_zero]
+    · norm_num [aperyA_one, Nat.factorial_zero, Nat.factorial_succ]
+  | succ n ih =>
+    obtain ⟨⟨m₁, hm₁⟩, ⟨m₂, hm₂⟩⟩ := ih
+    refine ⟨⟨m₂, hm₂⟩, ?_⟩
+    -- Prove ((n+2)!)³ · a_{n+2} ∈ ℤ
+    -- By aperyA_factorial_step: = coeff * m₂ - (n+1)^6 * m₁
+    use aperyRecCoeff (n + 1) * m₂ - (n + 1 : ℤ) ^ 6 * m₁
+    have := aperyA_factorial_step n
+    rw [this]
+    push_cast
+    linear_combination (↑(aperyRecCoeff (n + 1)) : ℚ) * hm₂ -
+      ((n : ℚ) + 1) ^ 6 * hm₁
 
 end AperyZetaThree
