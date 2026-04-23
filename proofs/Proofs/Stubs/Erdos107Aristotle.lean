@@ -10,12 +10,13 @@
   - No definition sorries
   - No axioms
 
-  Included targets (5):
+  Included targets (6):
   - isConvexNGon_card: IsConvexNGon n S → S.card = n
   - hasConvexNGon_of_superset: HasConvexNGon n S and S ⊆ T → HasConvexNGon n T
   - f_ge_three: f 3 ≥ 3 (need at least 3 points for a triangle)
   - cardSet_nonempty: (CardSet n).Nonempty for n ≥ 3
   - inGeneralPosition_subset: general position is hereditary under subsets
+  - hasConvexNGon_mono: HasConvexNGon is downward monotone in n
 -/
 import Mathlib
 
@@ -74,8 +75,17 @@ theorem hasConvexNGon_one (S : Finset Point) (hS : S.Nonempty) :
 
 -- Routine: HasConvexNGon is monotone in n downward.
 -- If S contains an n-gon and m ≤ n, it contains an m-gon.
+-- Proof: take any m-element subset T' of the n-gon T;
+--   T'.erase p ⊆ T.erase p, so convexHull(T'.erase p) ⊆ convexHull(T.erase p),
+--   and p ∉ convexHull(T.erase p) by convex position of T.
 theorem hasConvexNGon_mono (m n : ℕ) (hmn : m ≤ n) (S : Finset Point)
     (h : HasConvexNGon n S) : HasConvexNGon m S := by
-  sorry
+  obtain ⟨T, hTS, hT_conv⟩ := h
+  obtain ⟨hCard, hConv⟩ := hT_conv
+  obtain ⟨T', hT'T, hT'card⟩ := Finset.exists_subset_card_eq (hCard ▸ hmn)
+  refine ⟨T', hT'T.trans hTS, hT'card, ?_⟩
+  intro p hp hcontra
+  exact hConv p (hT'T hp)
+    (convexHull_mono (Finset.coe_subset.mpr (Finset.erase_subset_erase p hT'T)) hcontra)
 
 end Erdos107Aristotle
