@@ -81,7 +81,7 @@
     "summary": "The answer to the open question is YES: the multinomial distribution and its MGF are naturally formalized via the multinomial theorem. The normalization proof is just the multinomial theorem evaluated at sum p(i) = 1, and the MGF is the theorem applied to weighted variables.",
     "implications": "This formalization reveals the deep structural connection between combinatorial algebra and probability theory: the multinomial theorem simultaneously serves as the algebraic expansion formula, the normalization proof, and the MGF derivation.",
     "openQuestions": [
-      "RESOLVED: Multinomial PMF integrated with Mathlib PMF framework in BinomialTheoremOQ02OQ01OQ01.lean \u2014 construction via Composition type + ENNReal normalization",
+      "RESOLVED: Multinomial PMF integrated with Mathlib PMF framework in BinomialTheoremOQ02OQ01OQ01.lean — construction via Composition type + ENNReal normalization",
       "Can marginal distributions be formally derived as binomials?",
       "Can the variance-covariance matrix Cov(Xi, Xj) = -n*pi*pj be proved?"
     ]
@@ -101,7 +101,8 @@
     "lineCount": 222,
     "axiomCount": 0,
     "theoremCount": 12,
-    "definitionCount": 1
+    "definitionCount": 1,
+    "path": "Proofs/BinomialTheoremOQ02OQ01.lean"
   },
   "crossReferences": [
     {
