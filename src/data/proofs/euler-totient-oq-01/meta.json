@@ -146,22 +146,22 @@
     },
     {
       "targetId": "lagrange-theorem",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Lagrange's theorem (exponent divides group order) is the key lemma in carmichael_dvd_totient via Monoid.exponent_dvd_card"
     },
     {
       "targetId": "euler-totient-oq-02",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Multiplicativity of Euler's Totient: φ(mn) = φ(m)·φ(n) for gcd(m,n)=1. The multiplicativity of φ is equivalent to the Chinese Remainder Theorem isomorphism (ℤ/mnℤ)* ≅ (ℤ/mℤ)* × (ℤ/nℤ)*, which in turn gives the product formula λ(mn) = lcm(λ(m), λ(n)) for the Carmichael function — the multiplicative structure that this entry's formalization inherits via Monoid.exponent."
     },
     {
       "targetId": "euler-totient-oq-03",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Structural Properties of φ: parity, divisibility, and the product formula φ(n) = n·∏_{p|n}(1-1/p). These structural results, combined with λ(n) | φ(n) proved here, determine when Carmichael's function equals Euler's totient: λ(n) = φ(n) iff (ℤ/nℤ)* is cyclic, which can be detected from n's prime factorization structure."
     },
     {
       "targetId": "fermat-little-theorem",
-      "relationship": "generalization-of",
+      "relationship": "extends",
       "description": "Fermat's Little Theorem: a^(p-1) ≡ 1 (mod p) for prime p and gcd(a,p)=1. This is the special case λ(p) = p-1, proved here as carmichael_prime. The Carmichael function unifies Fermat's little theorem (prime case), Euler's theorem (λ(n) | φ(n)), and the exact minimal exponent — all as consequences of the group exponent Monoid.exponent."
     },
     {
