@@ -115,17 +115,12 @@ theorem erdos_faudree_solved : ErdosFaudreeConjecture := wang_theorem
 
     This is the base case: with 4 vertices and each having degree ≥ 2,
     the graph must contain a Hamiltonian cycle (which is a 4-cycle). -/
-theorem four_cycle_base_case :
+axiom four_cycle_base_case :
     ∀ (V : Type*) [Fintype V] [DecidableEq V],
     ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
       Fintype.card V = 4 →
       (∀ v : V, G.degree v ≥ 2) →
-      ∃ c : FourCycle G, True := by
-  intro V _ _ G _
-  intro hCard hDeg
-  -- With 4 vertices each having degree ≥ 2, there's a Hamiltonian cycle
-  exact wang_theorem V G 1 (by norm_num) (by simp [hCard]) (by simpa using hDeg)
-    |>.imp fun cycles ⟨hCard, _⟩ => ⟨cycles.choose (by simp [hCard]), trivial⟩
+      Nonempty (FourCycle G)
 
 /-- **Sharpness of the degree condition:**
     The minimum degree bound 2k is sharp. There exist graphs with

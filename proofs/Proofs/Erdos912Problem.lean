@@ -207,14 +207,11 @@ their multiplicative structure.
 **State of knowledge:**
 -/
 theorem erdos_912_summary :
-    -- The asymptotic order is known
-    (∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
+    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
       ∃ N₀ : ℕ, ∀ n ≥ N₀,
         c₁ * Real.sqrt (n / Real.log n) ≤ (h n : ℝ) ∧
-        (h n : ℝ) ≤ c₂ * Real.sqrt (n / Real.log n)) ∧
-    -- The exact constant is open
-    True := by
-  exact ⟨erdos_selfridge_asymptotic, trivial⟩
+        (h n : ℝ) ≤ c₂ * Real.sqrt (n / Real.log n) :=
+  erdos_selfridge_asymptotic
 
 /--
 **The constant gap:**

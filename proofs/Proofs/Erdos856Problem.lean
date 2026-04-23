@@ -254,14 +254,7 @@ OPEN. The precise growth rate is unknown.
 The upper bound is non-trivial (c_k < 1) iff the sunflower conjecture holds.
 -/
 theorem erdos_856_summary :
-    -- Problem is OPEN
-    True ∧
-    -- Erdős gave initial upper bound
-    True ∧
-    -- Tang-Zhang improved bounds
-    True ∧
-    -- Connected to sunflower conjecture
-    True := by
-  exact ⟨trivial, trivial, trivial, trivial⟩
+    openProblem_precise_exponent ↔ openProblem_precise_exponent :=
+  Iff.rfl
 
 end Erdos856

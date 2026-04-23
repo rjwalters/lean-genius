@@ -163,12 +163,9 @@ Each part of Chung's partition has ~1/4 of all edges but no C₆.
 -/
 theorem chung_counterexample (n : ℕ) (hn : n ≥ 3) :
     ∃ H : SimpleGraph (Fin (2^n)), ∃ _ : DecidableRel H.Adj,
-      -- H has about 1/4 of the edges
-      True ∧
-      -- H has no C₆
       ¬HasC6 H := by
   obtain ⟨H₁, _, _, _, _, hNoC6, _, _, _⟩ := chung_1992 n hn
-  exact ⟨H₁, inferInstance, trivial, hNoC6⟩
+  exact ⟨H₁, inferInstance, hNoC6⟩
 
 /-
 ## Part VI: Brouwer-Dejter-Thomassen (1993)
@@ -255,16 +252,12 @@ This remains open.
 theorem erdos_666_summary :
     -- The conjecture is false
     ¬ErdosConjecture ∧
-    -- Chung's 4-partition exists
-    (∀ n : ℕ, n ≥ 3 → ∃ H : SimpleGraph (Fin (2^n)),
-      True ∧ ¬HasC6 H) ∧
-    -- Generalized question remains open
-    True := by
+    -- Chung's construction: C₆-free graphs on 2ⁿ vertices exist
+    (∀ n : ℕ, n ≥ 3 → ∃ H : SimpleGraph (Fin (2^n)), ¬HasC6 H) := by
   constructor
   · exact erdos_conjecture_false
-  constructor
   · intro n hn
-    exact chung_counterexample n hn
-  · trivial
+    obtain ⟨H, _, hH⟩ := chung_counterexample n hn
+    exact ⟨H, hH⟩
 
 end Erdos666

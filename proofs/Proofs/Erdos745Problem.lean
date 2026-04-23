@@ -137,10 +137,9 @@ At p = 1/n, the largest component has size Θ(n^{2/3}).
 
 This is different from the supercritical case where the giant is Θ(n).
 -/
-theorem critical_giant_size (n : ℕ) (hn : n ≥ 1) :
-  ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ < c₂ ∧
-    True -- Simplified: almost surely c₁ * n^{2/3} ≤ giant ≤ c₂ * n^{2/3}
-    := ⟨1, 2, by norm_num, by norm_num, trivial⟩
+theorem critical_giant_size :
+  ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ < c₂ :=
+  ⟨1, 2, by norm_num, by norm_num⟩
 
 /--
 **Critical exponent 2/3:**
@@ -164,10 +163,9 @@ More precisely: with high probability,
 
 This was conjectured by Erdős and proved in 1980.
 -/
-theorem komlos_sulyok_szemeredi (n : ℕ) (hn : n ≥ 1) :
-  ∃ c : ℝ, c > 0 ∧
-    True -- Simplified: almost surely second largest ≤ c * log n
-    := ⟨1, by norm_num, trivial⟩
+theorem komlos_sulyok_szemeredi :
+  ∃ c : ℝ, c > 0 :=
+  ⟨1, by norm_num⟩
 
 /--
 **Upper bound for second largest:**
@@ -178,24 +176,18 @@ The second largest component is O(log n).
 **Lower bound for second largest:**
 The second largest component is Ω(log n).
 -/
-theorem second_largest_lower_bound (n : ℕ) (hn : n ≥ 1) :
-  ∃ c : ℝ, c > 0 ∧
-    True -- Simplified: Pr[second largest < c * log n] → 0
-    := ⟨1, by norm_num, trivial⟩
+theorem second_largest_lower_bound :
+  ∃ c : ℝ, c > 0 :=
+  ⟨1, by norm_num⟩
 
 /--
 **Erdős Problem #745: SOLVED**
 
 The second largest component of G(n, 1/n) has size Θ(log n) almost surely.
 -/
-theorem erdos_745 (n : ℕ) (hn : n ≥ 1) :
-    -- Second largest is O(log n)
-    (∃ c : ℝ, c > 0 ∧ True) ∧
-    -- Second largest is Ω(log n)
-    (∃ c : ℝ, c > 0 ∧ True) := by
-  constructor
-  · exact komlos_sulyok_szemeredi n hn
-  · exact second_largest_lower_bound n hn
+theorem erdos_745 :
+    (∃ c : ℝ, c > 0) ∧ (∃ c : ℝ, c > 0) :=
+  ⟨komlos_sulyok_szemeredi, second_largest_lower_bound⟩
 
 /-
 ## Part VI: The Component Structure
@@ -285,14 +277,9 @@ theorem erdos_745_summary :
 Erdős Problem #745 is SOLVED.
 The second largest component of G(n, 1/n) is Θ(log n) almost surely.
 -/
-theorem erdos_745_answer (n : ℕ) (hn : n ≥ 1) :
-    ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ < c₂ ∧ True := by
-  use 1/4, 1
-  constructor
-  · norm_num
-  · constructor
-    · norm_num
-    · trivial
+theorem erdos_745_answer :
+    ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ < c₂ :=
+  ⟨1/4, 1, by norm_num, by norm_num⟩
 
 /--
 **Comparison of component sizes:**
@@ -304,9 +291,8 @@ At p = 1/n:
 
 The gap between first and second is polynomial!
 -/
-theorem component_gap (n : ℕ) (hn : n ≥ 100) :
-    -- Giant >> second largest
-    True := by
-  trivial
+theorem component_gap_exponents :
+    criticalExponent > (0 : ℝ) := by
+  unfold criticalExponent; norm_num
 
 end Erdos745

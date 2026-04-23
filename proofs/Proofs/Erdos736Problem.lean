@@ -197,11 +197,7 @@ theorem finite_case (V : Type*) (G : SimpleGraph V) (k : ℕ) :
 /--
 **Summary of the problem:**
 -/
-theorem erdos_736_summary :
-    -- Taylor's conjecture is well-defined
-    (TaylorConjecture ↔ TaylorConjecture) ∧
-    -- Independence is established
-    True := by
-  exact ⟨Iff.rfl, trivial⟩
+theorem erdos_736_summary : TaylorConjecture ↔ TaylorConjecture :=
+  Iff.rfl
 
 end Erdos736

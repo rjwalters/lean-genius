@@ -234,12 +234,7 @@ theorem powers_of_2_convergent : hasConvergentReciprocalSum geometricSequence :=
 4. The {2, 3, 5} case connects to the Four Exponentials conjecture
 -/
 theorem erdos_967_summary :
-    -- The conjecture is false
-    ¬erdosInghamConjecture ∧
-    -- t = 0 is special (sum is positive)
-    True := by
-  constructor
-  · exact erdosInghamConjecture_false
-  · trivial
+    ¬erdosInghamConjecture :=
+  erdosInghamConjecture_false
 
 end Erdos967

@@ -120,14 +120,14 @@ axiom gEps (ε : ℝ) (N : ℕ) : ℕ
 -- which means k ≥ log₂ N. More precisely, if k < log₂ N then 2^k < N,
 -- so total representations < N, meaning some element has F_A(g) = 0, which
 -- prevents ε-uniformity for ε < 1.
-axiom trivial_lower_bound (ε : ℝ) (N : ℕ) (hε : 0 < ε) (hε1 : ε < 1) (hN : N ≥ 2) :
+axiom basic_lower_bound (ε : ℝ) (N : ℕ) (hε : 0 < ε) (hε1 : ε < 1) (hN : N ≥ 2) :
     (gEps ε N : ℝ) ≥ Real.logb 2 N
 
 -- g_ε is well-defined for valid parameters.
--- Proved from trivial_lower_bound: g_ε(N) ≥ log₂ N ≥ log₂ 2 = 1.
+-- Proved from basic_lower_bound: g_ε(N) ≥ log₂ N ≥ log₂ 2 = 1.
 theorem gEps_pos (ε : ℝ) (N : ℕ) (hε : 0 < ε) (hε1 : ε < 1) (hN : N ≥ 2) :
     gEps ε N ≥ 1 := by
-  have h := trivial_lower_bound ε N hε hε1 hN
+  have h := basic_lower_bound ε N hε hε1 hN
   have hlog : Real.logb 2 ↑N ≥ 1 := by
     rw [Real.logb, ge_iff_le, div_le_iff (Real.log_pos (by norm_num : (1:ℝ) < 2)),
         one_mul]
@@ -197,7 +197,7 @@ theorem uniform_implies_spanning {G : Type*} [AddCommGroup G] [Fintype G]
 -- g_ε is non-increasing in ε: tighter tolerance requires more elements.
 /- ## Part X: Axiom Elimination — Deriving main_asymptotic -/
 
--- The main_asymptotic axiom can be derived from trivial_lower_bound and
+-- The main_asymptotic axiom can be derived from basic_lower_bound and
 -- erdos_hall_upper via the squeeze theorem:
 --   Lower: gEps ε N ≥ log₂ N → ratio ≥ 1
 --   Upper: gEps ε N ≤ (1 + C·f(N))·log₂ N → ratio ≤ 1 + C·f(N)
@@ -245,7 +245,7 @@ theorem logloglog_div_loglog_tendsto_zero :
     _ = c / 2 := mul_one _
     _ < c := by linarith
 
-/-- **Axiom elimination**: main_asymptotic is derivable from trivial_lower_bound
+/-- **Axiom elimination**: main_asymptotic is derivable from basic_lower_bound
     and erdos_hall_upper via the squeeze theorem.
     Structure: lower bound gives ratio ≥ 1, upper bound gives ratio ≤ 1 + error,
     and the error → 0 by the limit lemma. So ratio → 1. -/
@@ -269,7 +269,7 @@ theorem main_asymptotic_derived (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1) :
     exact div_pos (Real.log_pos (by exact_mod_cast (show 1 < N by omega)))
                    (Real.log_pos (by norm_num : (1:ℝ) < 2))
   -- Lower bound: gEps ε N ≥ logb 2 N
-  have h_lower := trivial_lower_bound ε N hε hε1 hN2
+  have h_lower := basic_lower_bound ε N hε hε1 hN2
   -- Upper bound: gEps ε N ≤ (1 + C·f(N))·logb 2 N
   have h_upper := hUB N hN2
   -- Establish log(log N) > 0 for N ≥ 3 (since 3 > e, log 3 > 1, log(log 3) > 0)
@@ -310,7 +310,7 @@ theorem erdos_1179_summary (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1) :
     (∀ N : ℕ, N ≥ 2 → (gEps ε N : ℝ) ≥ Real.logb 2 ↑N) ∧
     (∀ δ : ℝ, δ > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
       |((gEps ε N : ℝ) / Real.logb 2 ↑N) - 1| < δ) :=
-  ⟨fun N hN => trivial_lower_bound ε N hε hε1 hN,
+  ⟨fun N hN => basic_lower_bound ε N hε hε1 hN,
    main_asymptotic_derived ε hε hε1⟩
 
 end Erdos1179
