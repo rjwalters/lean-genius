@@ -172,25 +172,5 @@
       "constant-bound"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e85-kst",
-    "proofId": "erdos-85",
-    "range": {
-      "startLine": 188,
-      "endLine": 195
-    },
-    "type": "technique",
-    "title": "Kővári-Sós-Turán Theorem",
-    "content": "**kovariSosTuran** gives an upper bound on C₄-free graphs: at most n²/4 + n/2 edges.\n\nThis is a fundamental result in extremal graph theory. It implies that dense graphs must contain 4-cycles.\n\n**Why an axiom?** The proof is well-known but not yet formalized in Mathlib.",
-    "mathContext": "The bound O(n^{3/2}) on edges translates to O(√n) on average/minimum degree—connecting to f(n) ~ √n.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "axiom",
-      "extremal",
-      "kovari-sos-turan",
-      "edge-bound"
-    ],
-    "prerequisites": []
   }
 ]

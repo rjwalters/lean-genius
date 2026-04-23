@@ -245,26 +245,5 @@
       "countingFunction",
       "Irrational"
     ]
-  },
-  {
-    "id": "ann-998-summary",
-    "proofId": "erdos-998",
-    "range": {
-      "startLine": 199,
-      "endLine": 203
-    },
-    "type": "concept",
-    "title": "erdos_998_summary",
-    "content": "erdos_998_summary restates the complete characterization in universal form: for all intervals [u,v) in [0,1) and irrational alpha, O(1) discrepancy holds iff both endpoints are orbit points. Proved by exact application of erdos_szusz_characterization.",
-    "mathContext": "This theorem packages the full result in a clean, referenceable form. The universal quantification over u, v makes it directly applicable as a black-box tool: given any interval and any irrational rotation, the discrepancy classification is immediate.",
-    "significance": "key",
-    "relatedConcepts": [
-      "summary theorem",
-      "universal quantification",
-      "Erdos Problem #998"
-    ],
-    "prerequisites": [
-      "erdos_szusz_characterization"
-    ]
   }
 ]

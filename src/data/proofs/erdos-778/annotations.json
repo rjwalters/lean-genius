@@ -212,24 +212,5 @@
       "Perfect information"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e778-summary",
-    "proofId": "erdos-778",
-    "range": {
-      "startLine": 221,
-      "endLine": 230
-    },
-    "type": "technique",
-    "title": "Summary: Periodicity Theorem",
-    "content": "**erdos_778_periodicity:** This summary theorem packages the main proved result — that Alice cannot win 4 consecutive values — as a clean statement.\n\nThe proof is simply `alice_no_four_consecutive`, directly referencing the earlier theorem. This serves as the entry point for understanding what has been formalized about Problem #778.\n\n**Status:** The full conjecture (Bob wins for ALL n ≥ 3) remains OPEN. What we have formalized is the strongest structural constraint derivable from the Malekshahian-Spiro results.",
-    "mathContext": "Summary theorems serve as formal certificates of the state of knowledge. Here, the formalization captures not just the conjecture but also the partial progress toward it.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Summary theorems",
-      "Partial results",
-      "Open problems"
-    ],
-    "prerequisites": []
   }
 ]

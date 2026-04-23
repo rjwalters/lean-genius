@@ -393,27 +393,5 @@
       "Algebraic geometry basics",
       "Ramsey-chromatic connection"
     ]
-  },
-  {
-    "id": "ann-e920-summary",
-    "proofId": "erdos-920",
-    "range": {
-      "startLine": 213,
-      "endLine": 235
-    },
-    "type": "technique",
-    "title": "Summary Theorem: Erdős #920 OPEN",
-    "content": "**erdos_920_summary**: The only non-axiom theorem in the file. Combines two axiomatized results into a conjunction:\n1. The general lower bound: $\\forall k \\geq 3, g_k(n) \\gg n^{1-2/(k+1)}/(\\log n)^c$\n2. The $k=4$ breakthrough: $g_4(n) \\gg n^{2/3}/(\\log n)^{4/3}$\n\nProved by pairing `general_lower_bound` and `mattheus_verstraete_2023` as `⟨general_lower_bound, mattheus_verstraete_2023⟩`. The conjecture remains OPEN for $k \\geq 5$.",
-    "mathContext": "The summary asserts $\\left(\\forall k \\geq 3, \\exists c > 0, \\forall n \\geq 2: g_k(n) \\geq c \\cdot n^{1-2/(k+1)}/(\\log n)^c\\right) \\wedge \\left(\\exists c > 0, \\forall n \\geq 2: g_4(n) \\geq c \\cdot n^{2/3}/(\\log n)^{4/3}\\right)$. The anonymous constructor $\\langle \\cdot, \\cdot \\rangle$ builds the conjunction from the two axioms.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Conjunction introduction",
-      "Axiom instantiation",
-      "Summary theorems"
-    ],
-    "prerequisites": [
-      "All preceding axioms",
-      "Lean anonymous constructor syntax"
-    ]
   }
 ]

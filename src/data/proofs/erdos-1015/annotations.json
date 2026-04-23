@@ -280,26 +280,5 @@
       "limits",
       "Ramsey number growth"
     ]
-  },
-  {
-    "id": "ann-1015-notlinear",
-    "proofId": "erdos-1015",
-    "range": {
-      "startLine": 151,
-      "endLine": 152
-    },
-    "type": "concept",
-    "title": "Not Linear Growth",
-    "content": "$f(t)$ is NOT $O(t)$: since $f(t) \\ge R(t, t-1) \\ge 2^{t/2}$ (by the Erdős probabilistic lower bound on Ramsey numbers), no linear function $Ct$ can dominate $f(t)$. This answers Erdős's second question—the leftover grows exponentially in the clique size $t$.",
-    "mathContext": "$\\neg\\exists C: \\forall t, f(t) \\le Ct$; since $f(t) \\ge 2^{\\Omega(t)}$",
-    "significance": "key",
-    "relatedConcepts": [
-      "exponential lower bound",
-      "Ramsey lower bounds",
-      "non-linear growth"
-    ],
-    "prerequisites": [
-      "Erdős probabilistic lower bound for Ramsey numbers"
-    ]
   }
 ]

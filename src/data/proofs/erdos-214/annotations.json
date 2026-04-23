@@ -221,48 +221,5 @@
       "integer solutions",
       "distance formula"
     ]
-  },
-  {
-    "id": "ann-214-related",
-    "proofId": "erdos-214",
-    "range": {
-      "startLine": 200,
-      "endLine": 241
-    },
-    "type": "insight",
-    "title": "Related Problems",
-    "content": "Three related problems axiomatized as True: (1) Nelson-Hadwiger problem: χ(ℝ²) ∈ {5,...,7}. (2) Erdős unit distance problem: max pairs at distance 1 among n points is Θ(n^{1+c/log log n}). (3) Moser's worm problem: smallest convex set containing every curve of length 1.",
-    "mathContext": "The Hadwiger-Nelson problem asks $\\chi(\\mathbb{R}^2) = ?$, where each color class is unit-distance-free. Since Juhász's theorem applies to each class, a $\\chi(\\mathbb{R}^2)$-coloring produces $\\chi(\\mathbb{R}^2)$ independent sets whose complements all contain every 4-point configuration. De Grey (2018) proved $\\chi(\\mathbb{R}^2) \\geq 5$ using a 1581-vertex unit distance graph with chromatic number 5. The upper bound 7 comes from a hexagonal tiling coloring.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Hadwiger-Nelson problem",
-      "unit distance problem",
-      "Moser's worm problem"
-    ],
-    "prerequisites": [
-      "graph coloring",
-      "extremal geometry"
-    ]
-  },
-  {
-    "id": "ann-214-summary",
-    "proofId": "erdos-214",
-    "range": {
-      "startLine": 243,
-      "endLine": 279
-    },
-    "type": "technique",
-    "title": "Summary: erdos_214_summary (Fully Proved from Axioms)",
-    "content": "The summary theorem packages both results: Erdos214Statement ∧ JuhaszStrongerTheorem, proved by applying juhasz_1979 and juhasz_stronger. Problem #214 is SOLVED. The 5-point case remains open.",
-    "mathContext": "The packaging theorem $\\texttt{erdos\\_214\\_summary} : \\texttt{Erdos214Statement} \\wedge \\texttt{JuhaszStrongerTheorem}$ is proved by $\\langle\\texttt{juhasz\\_1979}, \\texttt{juhasz\\_stronger}\\rangle$. Also includes $\\texttt{erdos\\_214\\_status\\_str}$ as a human-readable summary string.",
-    "significance": "key",
-    "relatedConcepts": [
-      "conjunction",
-      "theorem packaging"
-    ],
-    "prerequisites": [
-      "juhasz_1979",
-      "juhasz_stronger"
-    ]
   }
 ]

@@ -188,27 +188,5 @@
       "limit definitions",
       "high-dimensional analysis"
     ]
-  },
-  {
-    "id": "ann-1088-9",
-    "proofId": "erdos-1088",
-    "range": {
-      "startLine": 90,
-      "endLine": 99
-    },
-    "type": "technique",
-    "title": "Main Theorem: Erdős Problem #1088",
-    "content": "The main theorem restates the Erdős-Straus exponential upper bound as the established result for this open problem. The proof is by direct application of `erdos_straus_upper_bound`. The formalization cleanly separates the proven bound ($f_d(n) \\leq c_n^d$) from the open conjecture ($f_d(n) = 2^{o(d)}$), following the standard gallery approach for open problems.",
-    "mathContext": "$\\exists\\, c > 1$: $f_d(n) \\leq c^d$ for all $d \\geq 1$, proved by `erdos_straus_upper_bound n hn`.",
-    "significance": "key",
-    "relatedConcepts": [
-      "open problems",
-      "established bounds",
-      "Ramsey-type results"
-    ],
-    "prerequisites": [
-      "Erdős-Straus bound",
-      "axiom application"
-    ]
   }
 ]

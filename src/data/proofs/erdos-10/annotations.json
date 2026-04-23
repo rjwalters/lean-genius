@@ -205,50 +205,5 @@
       "sumPrimeAndTwoPows",
       "covering system construction"
     ]
-  },
-  {
-    "id": "erdos-10-ann-exceptions-k3",
-    "proofId": "erdos-10",
-    "range": {
-      "startLine": 96,
-      "endLine": 101
-    },
-    "type": "technique",
-    "title": "Conjectured Exceptions for k = 3",
-    "content": "It is conjectured that infinitely many even integers are not the sum of a prime and at most 3 powers of 2. Motivated by Grechuk's counterexample and the covering congruence argument for $k = 2$. If true, this combined with the Granville-Soundararajan odd conjecture would show the parity barrier is real: even integers are fundamentally harder than odd ones for this representation.",
-    "mathContext": "$\\{n \\in \\mathbb{N} : n \\text{ even}\\} \\setminus S_3$ is infinite (conjectured).",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "parity barrier",
-      "heuristic arguments",
-      "Grechuk counterexample"
-    ],
-    "prerequisites": [
-      "Set.Infinite",
-      "sumPrimeAndTwoPows"
-    ]
-  },
-  {
-    "id": "erdos-10-ann-romanoff",
-    "proofId": "erdos-10",
-    "range": {
-      "startLine": 104,
-      "endLine": 109
-    },
-    "type": "technique",
-    "title": "Romanoff's Theorem",
-    "content": "Romanoff (1934) proved that the set of integers expressible as $p + 2^a$ (prime plus one power of 2) has positive lower density. This was one of the first results on additive bases formed by primes and lacunary sequences. The proof uses sieve methods and the fact that powers of 2 form a Sidon-like set. The exact density is not known, but it is bounded below by a positive constant.",
-    "mathContext": "$\\underline{d}(S_1) > 0$. Romanoff's original bound: $\\underline{d}(S_1) \\geq c$ for an explicit $c > 0$ (later improved by various authors).",
-    "significance": "key",
-    "relatedConcepts": [
-      "Romanoff's theorem 1934",
-      "lacunary bases",
-      "prime plus power of 2",
-      "sieve methods"
-    ],
-    "prerequisites": [
-      "Set.lowerDensity",
-      "sumPrimeAndTwoPows"
-    ]
   }
 ]

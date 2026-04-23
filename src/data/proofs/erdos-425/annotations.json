@@ -256,27 +256,5 @@
       "norm_num",
       "simp"
     ]
-  },
-  {
-    "id": "ann-425-summary",
-    "proofId": "erdos-425",
-    "type": "concept",
-    "range": {
-      "startLine": 274,
-      "endLine": 285
-    },
-    "title": "Summary Theorem",
-    "content": "`erdos_425_summary`: combines Erdős's bounds and Alexander's construction into a single theorem. Proved by the anonymous constructor pairing both axioms.",
-    "significance": "key",
-    "mathContext": "The summary theorem captures both main results: (1) $F(n) = \\pi(n) + \\Theta(n^{3/4}(\\log n)^{-3/2})$ determines the order of magnitude, and (2) Alexander's counterexample shows the real version allows linear-sized sets $|A| \\ge cx$. Together these resolve the integer version up to constants and completely settle the real version.",
-    "relatedConcepts": [
-      "anonymous constructor",
-      "axiom composition",
-      "theorem packaging"
-    ],
-    "prerequisites": [
-      "erdos_bounds",
-      "alexander_construction"
-    ]
   }
 ]

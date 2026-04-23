@@ -219,23 +219,5 @@
       "polynomial theory"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e80-summary",
-    "proofId": "erdos-80",
-    "range": {
-      "startLine": 233,
-      "endLine": 255
-    },
-    "type": "technique",
-    "title": "Main Results Summary",
-    "content": "**erdos_80_summary:** Complete characterization of what is known:\n\n1. f_c(n) → ∞ for all c > 0 (regularity)\n2. f_c(n) ≥ n/6 for c > 1/4 (linear)\n3. f_c(n) ≤ n^{O(1/log log n)} for c < 1/4 (Fox-Loh)\n4. Polynomial growth DISPROVED for c < 1/4\n5. Logarithmic growth OPEN\n\n**The Gap:** For c < 1/4, the true growth rate lies between 'tending to infinity' and n^{o(1)}.\n\nThe summary theorem is proved directly from the axiomatized results.",
-    "significance": "key",
-    "mathContext": "See annotation content for formal details of main results summary",
-    "relatedConcepts": [
-      "proof technique",
-      "polynomial theory"
-    ],
-    "prerequisites": []
   }
 ]

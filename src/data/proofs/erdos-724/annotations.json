@@ -292,23 +292,5 @@
     ],
     "mathContext": "See annotation content for formal details of summary of known results",
     "prerequisites": []
-  },
-  {
-    "id": "ann-e724-exponent-gap",
-    "proofId": "erdos-724",
-    "range": {
-      "startLine": 320,
-      "endLine": 326
-    },
-    "type": "technique",
-    "title": "The Exponent Gap",
-    "content": "**exponent_gap:**\n\nA simple verification that the best known exponent is far from the conjectured one.\n\n```lean\ntheorem exponent_gap :\n    (1 : ℝ) / 14.8 < (1 : ℝ) / 2 := by norm_num\n```\n\n**Numerical values:**\n- Best known: 1/14.8 ≈ 0.068\n- Conjectured: 1/2 = 0.5\n- Gap: about 7× difference\n\nThis gap has remained open for over 40 years since Beth's 1983 result.",
-    "mathContext": "Closing this gap would require fundamentally new techniques, as the current sieve-based methods seem to have reached their limits.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Open gaps",
-      "Research frontiers"
-    ],
-    "prerequisites": []
   }
 ]

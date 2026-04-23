@@ -289,23 +289,5 @@
     ],
     "mathContext": "See annotation content for formal details of summary",
     "prerequisites": []
-  },
-  {
-    "id": "ann-e448-answer",
-    "proofId": "erdos-448",
-    "range": {
-      "startLine": 319,
-      "endLine": 331
-    },
-    "type": "technique",
-    "title": "The Final Answer",
-    "content": "**erdos_448_answer:**\n\n```lean\ntheorem erdos_448_answer : ∃ (counterexampleDensity : ℝ → ℝ),\n    ∀ ε, 0 < ε → ε < 1/2 →\n      counterexampleDensity ε > 0\n```\n\n**Conclusion:**\nFor any ε > 0, a positive proportion of integers n satisfy τ⁺(n) ≥ ε·τ(n).\n\nThe conjecture that divisors concentrate is definitively FALSE.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Final answer",
-      "Disproved conjectures"
-    ],
-    "mathContext": "See annotation content for formal details of the final answer",
-    "prerequisites": []
   }
 ]

@@ -213,29 +213,5 @@
       "counting functions",
       "Finset.card"
     ]
-  },
-  {
-    "id": "ann-e486-besicovitch",
-    "proofId": "erdos-486",
-    "range": {
-      "startLine": 111,
-      "endLine": 118
-    },
-    "type": "technique",
-    "title": "Besicovitch Counterexample (1934)",
-    "content": "**Besicovitch showed** that natural density can fail to exist even for simple zero-avoidance sets. This is why logarithmic density is the right notion for these problems.\n\nThe counterexample constructs a set A of primes with rapidly growing gaps such that the counting function of the zero-avoidance set oscillates between two values. This demonstrates that requiring natural density would make the Davenport-Erdős theorem false, justifying the weaker logarithmic formulation.",
-    "mathContext": "$\\exists A \\subseteq \\mathbb{N}$ such that $\\text{zeroAvoidanceSet}(A)$ has logarithmic density but NOT natural density. Specifically, $\\liminf \\frac{|B \\cap [1,n]|}{n} < \\limsup \\frac{|B \\cap [1,n]|}{n}$, so the limit does not exist.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "counterexample",
-      "liminf vs limsup",
-      "oscillation of density",
-      "separation of density notions"
-    ],
-    "prerequisites": [
-      "natural density",
-      "logarithmic density",
-      "liminf and limsup"
-    ]
   }
 ]

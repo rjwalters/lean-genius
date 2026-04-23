@@ -78,49 +78,6 @@
     "prerequisites": []
   },
   {
-    "id": "ann-e497-bounds",
-    "proofId": "erdos-497",
-    "range": {
-      "startLine": 60,
-      "endLine": 65
-    },
-    "type": "insight",
-    "title": "Trivial Upper Bound",
-    "content": "**trivial_upper_bound:** antichainCount(n) ≤ 2^{C(n, ⌊n/2⌋)}.\n\nEvery antichain is a subset of the middle layer's 'neighbourhood,' giving at most 2^{C(n,n/2)} choices.\n\nThis bound is tight in the logarithmic sense: log₂(antichainCount(n)) ~ C(n, n/2).",
-    "mathContext": "The key insight is that most antichains consist primarily of sets near the middle layer. Sets far from the middle layer contribute negligibly to the count.",
-    "significance": "key",
-    "relatedConcepts": [
-      "upper bound",
-      "middle layer",
-      "exponential counting"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e497-kleitman",
-    "proofId": "erdos-497",
-    "range": {
-      "startLine": 67,
-      "endLine": 87
-    },
-    "type": "technique",
-    "title": "Kleitman's Theorem (Erdős Problem 497 — SOLVED)",
-    "content": "**kleitman_lower + kleitman_upper:**\n\nFor every ε > 0 and large enough n:\n(1−ε) · C(n,n/2) ≤ log₂(antichainCount(n)) ≤ (1+ε) · C(n,n/2)\n\nEquivalently: antichainCount(n) = 2^{(1+o(1)) · C(n, ⌊n/2⌋)}.\n\n**ErdosProblem497** formalises this as the conjunction of lower and upper asymptotic bounds.\n\nKleitman's proof (1969) uses a delicate entropy argument and correlation inequalities.",
-    "mathContext": "This determines the logarithmic order of the Dedekind numbers: log₂ D(n) ~ C(n, ⌊n/2⌋) ~ 2^n · √(2/(πn)). The exact constant in front remains an open question.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Kleitman",
-      "Dedekind numbers",
-      "entropy method",
-      "correlation inequality"
-    ],
-    "prerequisites": [
-      "Kleitman's lower bound",
-      "Sperner's theorem",
-      "entropy method"
-    ]
-  },
-  {
     "id": "ann-e497-imports",
     "proofId": "erdos-497",
     "type": "context",
@@ -140,31 +97,6 @@
     "prerequisites": [
       "Lean 4 import system",
       "Finset API"
-    ]
-  },
-  {
-    "id": "ann-e497-concentration",
-    "proofId": "erdos-497",
-    "type": "insight",
-    "range": {
-      "startLine": 67,
-      "endLine": 79
-    },
-    "title": "Antichain Concentration Near the Middle",
-    "content": "The deeper insight behind Kleitman's theorem is that antichains in $\\mathcal{P}([n])$ exhibit a strong **concentration phenomenon**: almost all antichains are composed primarily of sets near size $n/2$. This is because:\n\n1. **Layer counting**: The layer $\\binom{[n]}{k}$ has $\\binom{n}{k}$ sets, maximized at $k = \\lfloor n/2 \\rfloor$.\n2. **Width vs depth**: An antichain can contain at most one set from each chain in $\\mathcal{P}([n])$. Dilworth's theorem shows the minimum number of chains needed to cover $\\mathcal{P}([n])$ is $\\binom{n}{\\lfloor n/2 \\rfloor}$.\n3. **Entropy bound**: A random antichain (chosen uniformly from all antichains) has each element concentrated near the middle layer with variance $O(n)$.\n\nKleitman's correlation inequality shows that the events 'set $A$ is in the antichain' and 'set $B$ is in the antichain' are negatively correlated when $A \\subset B$, providing the key technical tool.",
-    "mathContext": "Kleitman's correlation inequality: for monotone events $A, B$ in the Boolean lattice, $\\Pr[A \\cap B] \\leq \\Pr[A] \\cdot \\Pr[B]$. This negative correlation drives the concentration of antichains near the middle layer.",
-    "significance": "key",
-    "relatedConcepts": [
-      "concentration phenomenon",
-      "Dilworth's theorem",
-      "correlation inequality",
-      "entropy method",
-      "layer structure"
-    ],
-    "prerequisites": [
-      "Sperner's theorem",
-      "LYM inequality",
-      "probabilistic arguments"
     ]
   }
 ]

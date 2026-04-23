@@ -55,7 +55,7 @@
     },
     "type": "technique",
     "title": "Base Cases: Empty, Singleton, Pair",
-    "content": "Proves three foundational base cases:\n\n- `isSidon_empty`: The empty set is trivially Sidon (vacuous truth \u2014 no elements means no collisions possible).\n- `isSidon_singleton`: Any singleton $\\{n\\}$ is Sidon. The only sum is $n + n = 2n$, which cannot collide.\n- `isSidon_pair`: For $a < b$, the pair $\\{a, b\\}$ is Sidon. The three possible sums $2a, a+b, 2b$ are all distinct when $a \\neq b$. Proved by exhaustive case analysis using `rcases` on which elements of $\\{a, b\\}$ each variable equals, then `omega` resolves all cases.\n\nThe pair case is the first non-trivial Sidon verification, establishing that the Sidon property begins to constrain set structure only at cardinality 3.",
+    "content": "Proves three foundational base cases:\n\n- `isSidon_empty`: The empty set is trivially Sidon (vacuous truth — no elements means no collisions possible).\n- `isSidon_singleton`: Any singleton $\\{n\\}$ is Sidon. The only sum is $n + n = 2n$, which cannot collide.\n- `isSidon_pair`: For $a < b$, the pair $\\{a, b\\}$ is Sidon. The three possible sums $2a, a+b, 2b$ are all distinct when $a \\neq b$. Proved by exhaustive case analysis using `rcases` on which elements of $\\{a, b\\}$ each variable equals, then `omega` resolves all cases.\n\nThe pair case is the first non-trivial Sidon verification, establishing that the Sidon property begins to constrain set structure only at cardinality 3.",
     "mathContext": "$\\emptyset$, $\\{n\\}$, and $\\{a, b\\}$ (with $a < b$) are all Sidon. For the pair: $2a < a + b < 2b$, so all three sums are distinct.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -76,7 +76,7 @@
     },
     "type": "concept",
     "title": "Sidon Property Closed Under Subsets",
-    "content": "Proves that subsets of Sidon sets are Sidon: if $A$ is Sidon and $B \\subseteq A$, then $B$ is Sidon. The proof simply passes all membership proofs through the subset inclusion. This hereditary property is fundamental \u2014 it means 'being Sidon' is a monotone decreasing property under inclusion, analogous to how independent sets in matroids are closed under subsets.\n\nThis fact is used heavily in the greedy construction: at each step, we only need to check that adding the new element preserves the Sidon property, since the existing elements already form a Sidon set.",
+    "content": "Proves that subsets of Sidon sets are Sidon: if $A$ is Sidon and $B \\subseteq A$, then $B$ is Sidon. The proof simply passes all membership proofs through the subset inclusion. This hereditary property is fundamental — it means 'being Sidon' is a monotone decreasing property under inclusion, analogous to how independent sets in matroids are closed under subsets.\n\nThis fact is used heavily in the greedy construction: at each step, we only need to check that adding the new element preserves the Sidon property, since the existing elements already form a Sidon set.",
     "mathContext": "$B \\subseteq A$ and $\\text{IsSidon}(A) \\Rightarrow \\text{IsSidon}(B)$. The Sidon property is hereditary (monotone decreasing under inclusion).",
     "significance": "key",
     "relatedConcepts": [
@@ -241,7 +241,7 @@
     },
     "type": "concept",
     "title": "Greedy Sidon Sequence Axiomatization",
-    "content": "Axiomatizes the greedy (Mian-Chowla) Sidon sequence and its key properties:\n\n- **`greedySidonSeq`**: The sequence function $\\mathbb{N} \\to \\mathbb{N}$.\n- **`greedySidonSeq_zero`**: $a_0 = 1$.\n- **`greedySidonSeq_strictMono`**: The sequence is strictly increasing.\n- **`greedySidonSeq_isSidon`**: The first $n+1$ terms always form a Sidon set.\n- **`greedySidonSeq_greedy`**: The greedy property \u2014 $a_{n+1}$ is the *smallest* value exceeding $a_n$ that maintains Sidon. No value between $a_n$ and $a_{n+1}$ could be added.\n- **Values** (`greedySidon_0` through `greedySidon_10`): First 11 terms: 1, 2, 4, 8, 13, 21, 31, 45, 66, 81, 97 (OEIS A005282).\n\nThe axiomatization is necessary because defining the sequence constructively would require well-founded recursion on a complex predicate (minimality over the Sidon-preserving candidates). The values match the OEIS A005282 entry.\n\n**Why greedy is interesting:** Despite its simplicity, the greedy algorithm produces a remarkably dense Sidon set. The $n$-th term grows roughly as $n^3$ (based on the $N^{1/3}$ counting bound), but Erdos conjectured the true growth is nearly $n^2$ (from $N^{1/2-\\varepsilon}$).",
+    "content": "Axiomatizes the greedy (Mian-Chowla) Sidon sequence and its key properties:\n\n- **`greedySidonSeq`**: The sequence function $\\mathbb{N} \\to \\mathbb{N}$.\n- **`greedySidonSeq_zero`**: $a_0 = 1$.\n- **`greedySidonSeq_strictMono`**: The sequence is strictly increasing.\n- **`greedySidonSeq_isSidon`**: The first $n+1$ terms always form a Sidon set.\n- **`greedySidonSeq_greedy`**: The greedy property — $a_{n+1}$ is the *smallest* value exceeding $a_n$ that maintains Sidon. No value between $a_n$ and $a_{n+1}$ could be added.\n- **Values** (`greedySidon_0` through `greedySidon_10`): First 11 terms: 1, 2, 4, 8, 13, 21, 31, 45, 66, 81, 97 (OEIS A005282).\n\nThe axiomatization is necessary because defining the sequence constructively would require well-founded recursion on a complex predicate (minimality over the Sidon-preserving candidates). The values match the OEIS A005282 entry.\n\n**Why greedy is interesting:** Despite its simplicity, the greedy algorithm produces a remarkably dense Sidon set. The $n$-th term grows roughly as $n^3$ (based on the $N^{1/3}$ counting bound), but Erdos conjectured the true growth is nearly $n^2$ (from $N^{1/2-\\varepsilon}$).",
     "mathContext": "Greedy Sidon sequence: $a_0 = 1$, $a_{n+1} = \\min\\{m > a_n : \\{a_0, \\ldots, a_n, m\\}$ is Sidon$\\}$. First terms: $1, 2, 4, 8, 13, 21, 31, 45, 66, 81, 97$.",
     "significance": "key",
     "relatedConcepts": [
@@ -281,29 +281,6 @@
       "greedy Sidon sequence",
       "asymptotic analysis",
       "Filter.atTop"
-    ]
-  },
-  {
-    "id": "ann-difference-set-props",
-    "proofId": "erdos-340-greedy-sidon",
-    "range": {
-      "startLine": 508,
-      "endLine": 537
-    },
-    "type": "context",
-    "title": "Difference Set of the Greedy Sequence",
-    "content": "Defines `greedySidonDiffSet`, the set of all integer differences $a - b$ where $a, b$ belong to the greedy Sidon sequence. For a Sidon set with $n$ elements, the difference set $A - A$ has exactly $|A|^2 - |A| + 1$ elements (counting both positive and negative differences, plus 0).\n\nTwo specific membership facts are axiomatized:\n- `_22_mem_diffSet`: 22 is a difference (from $204 - 182$, i.e., $a_{14} - a_{13}$).\n- `_33_mem_diffSet_iff`: 33's membership is axiomatized as equivalent to True (placeholder).\n\nUnderstanding the density and distribution of differences in the greedy sequence is a key open direction: if one could show the difference set avoids unexpectedly many small values, this could improve the $N^{1/3}$ growth bound.",
-    "mathContext": "$A - A = \\{a - b : a, b \\in A\\}$. For Sidon $A$: $|A - A| = |A|^2 - |A| + 1$. Each non-zero difference appears exactly once (by difference injectivity).",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "difference set",
-      "Set.range",
-      "specific computations",
-      "OEIS A005282"
-    ],
-    "prerequisites": [
-      "greedy Sidon sequence",
-      "integer differences"
     ]
   }
 ]

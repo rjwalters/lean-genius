@@ -167,29 +167,5 @@
       "Finset.mem_singleton",
       "reciprocalSum"
     ]
-  },
-  {
-    "id": "ann-542-solves",
-    "proofId": "erdos-542",
-    "type": "technique",
-    "range": {
-      "startLine": 108,
-      "endLine": 109
-    },
-    "title": "Schinzel-Szekeres Solves Erdos #542",
-    "content": "`schinzel_szekeres_solves_542 : ErdosProblem542` axiomatizes the full Schinzel-Szekeres theorem: the reciprocal sum bound $31/30$ holds for all valid sets. This is the definitive answer to Problem #542.",
-    "significance": "key",
-    "mathContext": "The axiomatization reflects that the full Schinzel-Szekeres proof involves delicate case analysis on the prime factorizations of elements in $A$ and is beyond current Lean formalization efforts. The proof proceeds by: (1) showing that if $A$ contains an element $a \\ge 6$, then $\\sum 1/a \\le 1/6 + \\text{(bound for remaining)}$; (2) analyzing all possible subsets of $\\{1,2,3,4,5\\}$ satisfying the LCM condition; (3) verifying that $\\{2,3,5\\}$ achieves the maximum. The original 1959 proof used only elementary number theory but required careful bookkeeping.",
-    "relatedConcepts": [
-      "complete resolution",
-      "axiomatization",
-      "Schinzel-Szekeres proof",
-      "case analysis"
-    ],
-    "prerequisites": [
-      "ErdosProblem542",
-      "PairwiseLCMExceeds",
-      "reciprocalSum"
-    ]
   }
 ]

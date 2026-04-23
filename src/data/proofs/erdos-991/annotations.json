@@ -306,24 +306,5 @@
       "Lean 4 formalization"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e991-summary",
-    "proofId": "erdos-991",
-    "range": {
-      "startLine": 337,
-      "endLine": 359
-    },
-    "type": "technique",
-    "title": "Summary: Erdős #991 SOLVED",
-    "content": "**erdos_991_summary:**\n\nCombines the main results into one theorem:\n1. Qualitative: optimal points have o(n) discrepancy (erdos_991)\n2. Quantitative: the bound is O(n^{2/3}) (marzo_mas_bound)\n\nThe answer to Erdős Problem #991 is **YES**: optimal logarithmic energy point configurations on S² distribute uniformly in the limit, with quantitative bounds of O(n^{2/3}).",
-    "significance": "key",
-    "mathContext": "See annotation content for formal details of summary: erdős #991 solved",
-    "relatedConcepts": [
-      "proof technique",
-      "limits",
-      "combinatorics"
-    ],
-    "prerequisites": []
   }
 ]

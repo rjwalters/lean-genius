@@ -188,28 +188,5 @@
       "Filter.atTop",
       "nhds"
     ]
-  },
-  {
-    "id": "ann-e416-three",
-    "proofId": "erdos-416",
-    "range": {
-      "startLine": 154,
-      "endLine": 154
-    },
-    "type": "concept",
-    "title": "3 is Not a Totient Value",
-    "content": "Axiomatized: $\\nexists\\, m,\\; \\varphi(m) = 3$. Since $\\varphi(m)$ is even for all $m > 2$, the only odd totient value is 1 ($= \\varphi(1) = \\varphi(2)$). This illustrates the parity obstruction that eliminates half of all positive integers from the totient range.",
-    "mathContext": "For $m > 2$: if $p | m$ is an odd prime, then $(p-1) | \\varphi(m)$, making $\\varphi(m)$ even. If $m = 2^k$ for $k \\ge 2$, then $\\varphi(m) = 2^{k-1}$ is even. Only $\\varphi(1) = \\varphi(2) = 1$ is odd. So $3 \\notin \\operatorname{Im}(\\varphi)$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "non-totient",
-      "parity of totient",
-      "Carmichael's conjecture"
-    ],
-    "prerequisites": [
-      "Nat.totient",
-      "prime factorization",
-      "exhaustive checking"
-    ]
   }
 ]

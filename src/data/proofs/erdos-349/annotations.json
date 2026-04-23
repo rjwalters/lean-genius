@@ -227,29 +227,5 @@
       "Waring's problem basics",
       "additive number theory"
     ]
-  },
-  {
-    "id": "fibonacci-threshold",
-    "proofId": "erdos-349",
-    "range": {
-      "startLine": 85,
-      "endLine": 88
-    },
-    "type": "concept",
-    "title": "Fibonacci Threshold Significance",
-    "content": "The golden ratio $\\varphi = (1+\\sqrt{5})/2 \\approx 1.618$ is the growth rate of the Fibonacci sequence. By **Zeckendorf's theorem** (1939/1972), every positive integer has a unique representation as a sum of non-consecutive Fibonacci numbers, making the Fibonacci sequence the canonical complete sequence. The conjecture suggests $\\varphi$ is the critical growth rate threshold for completeness.",
-    "mathContext": "The Fibonacci sequence satisfies $F_{n+2} = F_{n+1} + F_n$ with $F_n \\sim \\varphi^n / \\sqrt{5}$. Zeckendorf's theorem implies $\\{F_n\\}$ is complete. For $\\alpha > \\varphi$, the sequence $\\lfloor t\\alpha^n \\rfloor$ grows too fast: eventually $a_{n+1} > 2a_n$, and such lacunary sequences cannot be complete (the gap exceeds the sum of all prior terms).",
-    "significance": "key",
-    "relatedConcepts": [
-      "Zeckendorf's theorem",
-      "Fibonacci numbers",
-      "lacunary sequences",
-      "gap condition for completeness"
-    ],
-    "prerequisites": [
-      "Fibonacci sequence",
-      "golden ratio",
-      "Zeckendorf representation"
-    ]
   }
 ]

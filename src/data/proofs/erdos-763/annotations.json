@@ -347,23 +347,5 @@
       "combinatorics"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e763-answer",
-    "proofId": "erdos-763",
-    "range": {
-      "startLine": 277,
-      "endLine": 285
-    },
-    "type": "technique",
-    "title": "The Final Answer",
-    "content": "**erdos_763_answer:**\n\nThe answer to the Erdos-Turan question is definitively NO.\n\n```lean\ntheorem erdos_763_answer : exists (proof : not exists (A : Set N) (c : R),\n    A.Infinite and c > 0 and HasLinearGrowthBounded (truncate A) c),\n    True := by\n  exact (erdos_763, trivial)\n```\n\nNo infinite set A can have R_A(N) = cN + O(1) for any c > 0.",
-    "significance": "key",
-    "mathContext": "See annotation content for formal details of the final answer",
-    "relatedConcepts": [
-      "proof technique",
-      "Lean 4 formalization"
-    ],
-    "prerequisites": []
   }
 ]

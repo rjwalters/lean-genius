@@ -313,26 +313,5 @@
       "Dirichlet's theorem",
       "primeSquares3mod4_divisibility_free"
     ]
-  },
-  {
-    "id": "ann-e12-main-problem",
-    "proofId": "erdos-12",
-    "range": {
-      "startLine": 289,
-      "endLine": 296
-    },
-    "type": "definition",
-    "title": "Erdos12Problem — Combined Statement",
-    "content": "The combined problem packages all three questions as a disjunction/conjunction. The logical hierarchy is: Q3 (convergent sum) ⟹ Q2 (sparse i.o.) ⟹ ¬Q1 (no √N density). All three remain OPEN.",
-    "mathContext": "The problem is stated as $\\texttt{Erdos12Question1} \\lor (\\neg\\texttt{Erdos12Question1} \\land \\texttt{Erdos12Question2} \\land \\texttt{Erdos12Question3})$. This disjunction is trivially true (law of excluded middle), so the real content is in the individual questions. The expected answer: Q1 is false (no $\\sqrt{N}$ density achievable), Q2 is true (forced sparseness i.o.), Q3 is true (convergent reciprocal sum).",
-    "significance": "key",
-    "relatedConcepts": [
-      "open problem",
-      "question hierarchy",
-      "law of excluded middle"
-    ],
-    "prerequisites": [
-      "all three questions"
-    ]
   }
 ]

@@ -235,50 +235,5 @@
       "hypergraphRamsey",
       "twr"
     ]
-  },
-  {
-    "id": "ann-562-conjecture",
-    "proofId": "erdos-562",
-    "range": {
-      "startLine": 95,
-      "endLine": 98
-    },
-    "type": "concept",
-    "title": "Erdős Problem #562: Tower Growth Conjecture",
-    "content": "**Conjecture (Erdős-Hajnal-Rado, 1965)**: For $r \\geq 3$, $R_r(n) = \\mathrm{twr}_{r-1}(\\Theta(n))$. Formally: there exist $c_1, c_2 > 0$ such that $\\mathrm{twr}_{r-1}(c_1 n) \\leq R_r(n) \\leq \\mathrm{twr}_{r-1}(c_2 n)$. The conjecture asks whether the quadratic penalty in the stepping-up lemma can be reduced to linear.",
-    "significance": "key",
-    "mathContext": "This is one of the most fundamental open problems in combinatorics. The conjecture amounts to asking whether the Erdős-Rado stepping-up lemma is optimal (it would not be, if the conjecture is true). For $r=3$, the answer is known to be $\\Theta(n^2)$ rather than $\\Theta(n)$, so the conjecture in its strongest form is false. The problem remains open for $r \\geq 4$ in the sense of determining the exact polynomial in the tower argument.",
-    "relatedConcepts": [
-      "Erdős-Hajnal-Rado conjecture",
-      "stepping-up optimality",
-      "open problem"
-    ],
-    "prerequisites": [
-      "hypergraphRamsey",
-      "twr",
-      "erdos_rado_stepping_up",
-      "general_lower_bound"
-    ]
-  },
-  {
-    "id": "ann-562-r3-4",
-    "proofId": "erdos-562",
-    "range": {
-      "startLine": 103,
-      "endLine": 103
-    },
-    "type": "concept",
-    "title": "Exact Value: R₃(4) = 13",
-    "content": "The exact value $R_3(4) = 13$: every 2-coloring of the 3-element subsets of $\\{1, \\ldots, 13\\}$ contains a monochromatic complete 3-uniform hypergraph on 4 vertices. This is one of very few known exact values for hypergraph Ramsey numbers.",
-    "significance": "supporting",
-    "mathContext": "Exact computation of hypergraph Ramsey numbers is extraordinarily difficult. Even $R_3(5)$ is unknown (best bounds: $43 \\leq R_3(5) \\leq 48$). The value $R_3(4) = 13$ was established by exhaustive computer search and clever case analysis. It provides a concrete data point for the tower growth conjecture.",
-    "relatedConcepts": [
-      "exact Ramsey computation",
-      "small cases",
-      "computer-aided proof"
-    ],
-    "prerequisites": [
-      "hypergraphRamsey"
-    ]
   }
 ]

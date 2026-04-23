@@ -406,33 +406,5 @@
       "Series criteria"
     ],
     "mathContext": "See annotation content for formal details of computational examples"
-  },
-  {
-    "id": "ann-526-main",
-    "proofId": "erdos-526",
-    "range": {
-      "startLine": 255,
-      "endLine": 264
-    },
-    "type": "technique",
-    "title": "Main Theorem Statement",
-    "content": "**erdos_526_statement:**\n\nThe complete answer to Erdős Problem #526:\n\n```lean\ntheorem erdos_526_statement :\n    (∀ seq : ArcSequence, CoversWithProbOne seq ↔ SheppCriterion seq.a) ∧\n    CoversWithProbOne criticalSeq ∧\n    True\n```\n\n**Components:**\n1. Shepp's characterization: coverage ↔ Σ exp(S_n)/n² = ∞\n2. Critical case covers: a_n = 1/n succeeds\n3. Problem status: SOLVED\n\nThis combines all the key results into a single theorem.",
-    "mathContext": "Erdős Problem #526 was solved by Shepp in 1972, 16 years after Dvoretzky posed it. The solution reveals a beautiful phase transition at a_n = 1/n.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Dvoretzky covering",
-      "Shepp criterion",
-      "Phase transitions"
-    ],
-    "tags": [
-      "main-theorem",
-      "shepp-criterion",
-      "critical-boundary",
-      "complete-characterization"
-    ],
-    "prerequisites": [
-      "Probability theory",
-      "Real analysis"
-    ]
   }
 ]

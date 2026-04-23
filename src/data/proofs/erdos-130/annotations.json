@@ -201,51 +201,5 @@
       "AreCollinear",
       "Set.Infinite"
     ]
-  },
-  {
-    "id": "erdos-130-diameter-bound",
-    "proofId": "erdos-130",
-    "type": "concept",
-    "range": {
-      "startLine": 114,
-      "endLine": 119
-    },
-    "title": "Erdős–Anning Diameter Bound",
-    "content": "Any finite set of non-collinear points with all pairwise distances integers has cardinality bounded by a function of the diameter. This quantitative refinement of Anning–Erdős gives explicit bounds on clique sizes.",
-    "mathContext": "erdos_anning_diameter_bound: for $S$ a finite set with all pairwise integer distances and no three collinear, $|S| \\leq D$ for some $D$ depending on the diameter. The original bound is $|S| \\leq 4 \\cdot \\text{diam}(S)^2 + 1$ (Erdős 1945).",
-    "significance": "key",
-    "relatedConcepts": [
-      "diameter bound",
-      "finite integer distance sets",
-      "quantitative Anning–Erdős"
-    ],
-    "prerequisites": [
-      "IsIntegerDist",
-      "AreCollinear",
-      "Finset"
-    ]
-  },
-  {
-    "id": "erdos-130-observations",
-    "proofId": "erdos-130",
-    "type": "concept",
-    "range": {
-      "startLine": 121,
-      "endLine": 128
-    },
-    "title": "Chromatic–Clique Gap and Related Problems",
-    "content": "Even though $\\omega(G(A))$ is finite, $\\chi(G(A))$ could be infinite — for geometric distance graphs, there is no general $\\chi \\leq f(\\omega)$ bound. Related Problem #213 considers integer distances without the cocircularity restriction.",
-    "mathContext": "In finite graph theory, $\\chi(G) \\geq \\omega(G)$ always holds, but $\\chi$ can far exceed $\\omega$ (Mycielski graphs). For geometric distance graphs, the gap is potentially even more extreme: triangle-free unit distance graphs can have arbitrarily large $\\chi$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Mycielski construction",
-      "triangle-free chromatic bounds",
-      "Erdős Problem 213",
-      "unit distance problem"
-    ],
-    "prerequisites": [
-      "chromatic number vs clique number",
-      "geometric graph theory"
-    ]
   }
 ]

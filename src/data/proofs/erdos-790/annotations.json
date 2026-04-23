@@ -150,24 +150,5 @@
       "state-of-art"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e790-summary",
-    "proofId": "erdos-790",
-    "range": {
-      "startLine": 135,
-      "endLine": 142
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_790_summary** proves that both of Erdős's main questions have affirmative answers: l(n)/√n → ∞ (Question 1) and l(n) < n^{1-c} for some c > 0 (Question 2). The proof pairs the two axioms question1_affirmative and question2_answered. Despite these answers, the CKS conjecture l(n) ≥ n^{1-o(1)} remains the central open problem.",
-    "mathContext": "This theorem encapsulates what is known: the qualitative behavior of l(n) is understood (superpolynomial in √n, sublinear), but the exact growth rate remains mysterious after 50+ years.",
-    "significance": "key",
-    "relatedConcepts": [
-      "summary-theorem",
-      "open-problem",
-      "qualitative-resolution"
-    ],
-    "prerequisites": []
   }
 ]

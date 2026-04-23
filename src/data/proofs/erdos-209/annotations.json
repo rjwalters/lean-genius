@@ -216,24 +216,5 @@
     ],
     "mathContext": "See annotation content for formal details of main theorem",
     "prerequisites": []
-  },
-  {
-    "id": "ann-e209-summary",
-    "proofId": "erdos-209",
-    "range": {
-      "startLine": 248,
-      "endLine": 275
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_209_summary:**\n\nThe summary theorem restates the complete disproof: for every d ≥ 4, there exists a d-line arrangement with no parallels, no 4-concurrent points, and no Gallai triangle. This is proved as a direct consequence of Escudero's 2016 construction.\n\n**Key takeaway:** While Sylvester-Gallai guarantees ordinary points exist, three such points need not form a triangle. The counterexamples use algebraic configurations where 3-rich points block every potential Gallai triangle.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Main result",
-      "Complete disproof",
-      "Blocking configurations"
-    ],
-    "mathContext": "See annotation content for formal details of summary theorem",
-    "prerequisites": []
   }
 ]

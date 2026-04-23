@@ -131,42 +131,5 @@
       "convex position"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-838-growth",
-    "proofId": "erdos-838",
-    "range": {
-      "startLine": 156,
-      "endLine": 165
-    },
-    "type": "concept",
-    "title": "Growth Rate Properties",
-    "content": "**f_superpolynomial:** For any k, f(n) > n^k for large n. The quasi-polynomial growth eventually dominates any fixed polynomial.\n\n**f_subexponential:** For any c > 1, f(n) < c^n for large n. The growth is strictly slower than exponential.\n\nTogether these characterize f(n) as having intermediate (quasi-polynomial) growth.",
-    "significance": "key",
-    "relatedConcepts": [
-      "superpolynomial growth",
-      "subexponential growth",
-      "quasi-polynomial"
-    ],
-    "mathContext": "See annotation content for formal details of growth rate properties",
-    "prerequisites": []
-  },
-  {
-    "id": "ann-838-summary",
-    "proofId": "erdos-838",
-    "range": {
-      "startLine": 170,
-      "endLine": 183
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_838_summary (PROVED):** Packages the main results:\n1. Erdos bounds: n^{c_1 log n} < f(n) < n^{c_2 log n}\n2. Superpolynomial growth: f(n) > n^k for any k and large n\n\nProof: exact <erdos_bounds, f_superpolynomial>.\n\nThe full problem (existence and value of the limit constant c) remains OPEN.",
-    "mathContext": "The summary combines the quantitative bounds with the qualitative growth characterization, giving a complete picture of what is known about f(n).",
-    "significance": "key",
-    "relatedConcepts": [
-      "summary theorem",
-      "open problem formalization"
-    ],
-    "prerequisites": []
   }
 ]

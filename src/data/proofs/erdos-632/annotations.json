@@ -613,50 +613,5 @@
       "Fintype",
       "edgeFinset"
     ]
-  },
-  {
-    "id": "ann-632-ohba",
-    "proofId": "erdos-632",
-    "range": {
-      "startLine": 280,
-      "endLine": 330
-    },
-    "type": "technique",
-    "title": "Ohba's Theorem (Noel–Reed–Wu)",
-    "content": "**ohba_noel_reed_wu**: $\\chi_L(G) = \\chi(G)$ when $|V| \\leq 2\\chi(G) + 1$.\n\nConjectured by Ohba (2002), proved by Noel, Reed, and Wu (2015). Graphs with few vertices relative to their chromatic number are chromatic-choosable — their list and ordinary chromatic numbers coincide.",
-    "mathContext": "$|V(G)| \\leq 2\\chi(G) + 1 \\implies \\chi_L(G) = \\chi(G)$. This gives a sufficient condition for the list coloring gap to vanish. The bound $2\\chi + 1$ is tight.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "chromatic-choosable",
-      "Ohba's conjecture",
-      "Noel–Reed–Wu proof"
-    ],
-    "prerequisites": [
-      "listChromaticNumber",
-      "chromaticNumber",
-      "Fintype.card"
-    ]
-  },
-  {
-    "id": "ann-632-final",
-    "proofId": "erdos-632",
-    "range": {
-      "startLine": 331,
-      "endLine": 346
-    },
-    "type": "concept",
-    "title": "Final Result and Verification",
-    "content": "**erdos_632_disproved**: $\\neg\\text{ERT\\_Conjecture}$\n\n**Summary**: The $(a,b)$-choosability scaling conjecture is FALSE. The answer and counterexample strings record the result. The `#check` commands verify that the disproof, the main theorem, and the DHS counterexample all typecheck correctly.",
-    "mathContext": "The complete formal statement: $\\neg(\\forall G, a, b, m \\geq 1,\\; \\text{IsChoosable}(G, a, b) \\implies \\text{IsChoosable}(G, am, bm))$, witnessed by the DHS graph with $(a, b, m) = (4, 1, 2)$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "formal verification",
-      "theorem checking",
-      "Erdős problem resolution"
-    ],
-    "prerequisites": [
-      "ert_conjecture_false",
-      "dhs_counterexample"
-    ]
   }
 ]

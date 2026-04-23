@@ -612,48 +612,5 @@
       "random graph theory",
       "probabilistic method"
     ]
-  },
-  {
-    "id": "ann-641-robust",
-    "proofId": "erdos-641",
-    "range": {
-      "startLine": 246,
-      "endLine": 251
-    },
-    "type": "technique",
-    "title": "Chromatic Robustness",
-    "content": "**chromatic_robust_to_edge_removal**: Removing few edges preserves high χ.\n\nRemoving an ε fraction of edges decreases χ by at most O(ε · χ).",
-    "significance": "key",
-    "mathContext": "This robustness lemma is key to the JSS argument: if $G$ has $\\chi \\geq k$ and we remove at most $\\varepsilon |E(G)|$ edges, then $\\chi(G') \\geq k - O(\\varepsilon k)$. This ensures the edge removal step (destroying 4-regular subgraphs) does not reduce $\\chi$ too much. The axiomatization uses `True` as a placeholder for the quantitative bound.",
-    "relatedConcepts": [
-      "stability of chromatic number",
-      "edge removal",
-      "graph perturbation"
-    ],
-    "prerequisites": [
-      "chromaticNumber",
-      "edge count"
-    ]
-  },
-  {
-    "id": "ann-641-final",
-    "proofId": "erdos-641",
-    "range": {
-      "startLine": 259,
-      "endLine": 277
-    },
-    "type": "technique",
-    "title": "Final Result",
-    "content": "**erdos_641_disproved**: ¬ErdosHajnalConjecture\n\n**Summary**: High chromatic number does NOT guarantee k edge-disjoint cycles on the same vertex set, even for k = 2.\n\nJanzer-Steiner-Sudakov (2024) constructed the counterexample.",
-    "significance": "key",
-    "mathContext": "The final named theorem, identical to `erdos_641` and `erdos_hajnal_false`, serving as the comprehensive concluding statement. Accompanied by string definitions `erdos_641_answer` and `erdos_641_bound` that record the result in human-readable form.",
-    "relatedConcepts": [
-      "Erdős problem #641",
-      "conjecture disproof",
-      "chromatic number limitations"
-    ],
-    "prerequisites": [
-      "erdos_hajnal_false"
-    ]
   }
 ]

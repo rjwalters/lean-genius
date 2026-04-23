@@ -63,7 +63,7 @@
       "independence number",
       "regular graphs",
       "greedy algorithms",
-      "Tur\u00e1n's theorem"
+      "Turán's theorem"
     ],
     "prerequisites": [
       "graph theory basics",
@@ -80,13 +80,13 @@
     },
     "type": "concept",
     "title": "Property B of Hypergraphs (Placeholder)",
-    "content": "Property B, introduced by Miller (1937) and extensively studied by Erd\u0151s, asks whether a hypergraph's vertices can be 2-colored so that no edge is monochromatic. The alteration argument: randomly 2-color all vertices, then for each monochromatic edge, recolor one vertex. If the expected number of monochromatic edges is less than the number of vertices we can sacrifice, the alteration succeeds.\n\nThis formalization is currently a placeholder (`True`) because Lean 4/Mathlib lacks a standard hypergraph type. The mathematical content is captured in the bound: a $k$-uniform hypergraph with $m < 2^{k-1}$ edges has Property B.",
+    "content": "Property B, introduced by Miller (1937) and extensively studied by Erdős, asks whether a hypergraph's vertices can be 2-colored so that no edge is monochromatic. The alteration argument: randomly 2-color all vertices, then for each monochromatic edge, recolor one vertex. If the expected number of monochromatic edges is less than the number of vertices we can sacrifice, the alteration succeeds.\n\nThis formalization is currently a placeholder (`True`) because Lean 4/Mathlib lacks a standard hypergraph type. The mathematical content is captured in the bound: a $k$-uniform hypergraph with $m < 2^{k-1}$ edges has Property B.",
     "mathContext": "For a $k$-uniform hypergraph $\\mathcal{H}$ with $m$ edges, randomly 2-color vertices. Each edge is monochromatic with probability $2 \\cdot (1/2)^k = 2^{1-k}$. By linearity, $\\mathbb{E}[\\text{monochromatic edges}] = m \\cdot 2^{1-k}$. If $m < 2^{k-1}$, then $\\mathbb{E}[\\text{mono}] < 1$, so some 2-coloring has zero monochromatic edges.",
     "significance": "key",
     "relatedConcepts": [
       "hypergraph coloring",
       "Property B",
-      "Erd\u0151s-Hajnal conjecture",
+      "Erdős-Hajnal conjecture",
       "set system coloring"
     ],
     "prerequisites": [
@@ -105,7 +105,7 @@
     "type": "context",
     "title": "Namespace Organization",
     "content": "The proof is organized under `ProbMethod.Alteration`, following a hierarchical convention shared with `ProbMethod.Expectation`, `ProbMethod.LovaszLocal`, etc. This structure mirrors the textbook organization of the probabilistic method, where the alteration method is typically Chapter 3 after the first and second moment methods.",
-    "mathContext": "The probabilistic method family: first moment (expectation), second moment (variance), alteration (deletion), and Lov\u00e1sz Local Lemma form an increasing hierarchy of sophistication for proving existence results.",
+    "mathContext": "The probabilistic method family: first moment (expectation), second moment (variance), alteration (deletion), and Lovász Local Lemma form an increasing hierarchy of sophistication for proving existence results.",
     "significance": "supporting",
     "relatedConcepts": [
       "probabilistic method hierarchy",
@@ -181,27 +181,6 @@
     "prerequisites": [
       "hypergraph definitions",
       "random coloring"
-    ]
-  },
-  {
-    "id": "ann-end-namespace",
-    "proofId": "prob-method-alteration",
-    "range": {
-      "startLine": 61,
-      "endLine": 61
-    },
-    "type": "context",
-    "title": "Namespace Closure",
-    "content": "Closes the `ProbMethod.Alteration` namespace. The three theorems — `alteration_principle`, `independent_set_bound`, and `property_b_bound` — are now accessible as `ProbMethod.Alteration.alteration_principle` etc. when imported via `import Proofs.ProbMethodAlteration`. The file provides the deletion method component of the probabilistic method library alongside `ProbMethodExpectation` (first moment), `ProbMethodSecondMoment` (variance), and `ProbMethodLovaszLocal` (LLL).",
-    "mathContext": "The probabilistic method library hierarchy: expectation $\\subset$ alteration $\\subset$ second moment $\\subset$ Lov\\u00e1sz Local Lemma, ordered by increasing sophistication of the probabilistic argument required.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Lean 4 namespaces",
-      "module organization",
-      "probabilistic method hierarchy"
-    ],
-    "prerequisites": [
-      "Lean 4 module system"
     ]
   }
 ]

@@ -466,45 +466,5 @@
       "delta",
       "ksss_theorem"
     ]
-  },
-  {
-    "id": "ann-88-main",
-    "proofId": "erdos-88",
-    "range": {
-      "startLine": 270,
-      "endLine": 283
-    },
-    "type": "technique",
-    "title": "Main Result",
-    "content": "**Erdős Problem #88: SOLVED**\n\nThe Erdős-McKay conjecture is TRUE.\n\nFor ε > 0, every ε-Ramsey graph has induced subgraphs with all edge counts up to δn².\n\n**Prize**: $100 (awarded to KSSS 2022).",
-    "mathContext": "The main theorem `erdos_88 : ErdosMcKayConjecture := ksss_theorem` is a one-line proof that aliases the KSSS axiom. This file achieves 0 sorries because all complex results (KSSS, Erdős–Szemerédi, Erdős–McKay weak, anticoncentration, Ramsey existence) are axiomatized, while the structural theorems (`delta_pos`, `erdos_88`) are fully proved from these axioms. The formalization cleanly separates the deep mathematical content (axioms) from the logical framework (definitions and derived theorems).",
-    "significance": "key",
-    "relatedConcepts": [
-      "axiom-based-formalization",
-      "KSSS-theorem",
-      "solved-Erdős-problem"
-    ],
-    "prerequisites": [
-      "ksss_theorem",
-      "ErdosMcKayConjecture"
-    ]
-  },
-  {
-    "id": "ann-88-answer",
-    "proofId": "erdos-88",
-    "range": {
-      "startLine": 285,
-      "endLine": 290
-    },
-    "type": "concept",
-    "title": "The Answer",
-    "content": "**Answer**: YES\n\nThe Erdős-McKay conjecture is TRUE (KSSS 2022).",
-    "mathContext": "The answer string and prize value ($100) are recorded as Lean definitions for documentation. The `#check` commands at lines 294–296 verify that all key definitions (`erdos_88`, `ksss_theorem`, `delta`) are well-formed. This is a fully solved Erdős problem with a clean, sorry-free formalization.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Erdős-problem-solutions",
-      "prize-problems"
-    ],
-    "prerequisites": []
   }
 ]

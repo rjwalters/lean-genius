@@ -2,14 +2,25 @@
   {
     "id": "erdos-510-ann-header",
     "proofId": "erdos-510",
-    "range": { "startLine": 1, "endLine": 22 },
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
     "type": "context",
     "title": "Chowla's Cosine Problem",
     "content": "Erdős Problem #510 (Chowla's cosine problem): for a finite set $A \\subset \\mathbb{N}$ of size $N$, does there exist an absolute constant $c > 0$ such that $\\min_\\theta \\sum_{n \\in A} \\cos(n\\theta) < -c\\sqrt{N}$?\n\nThe Sidon set construction $A = B - B$ shows the $\\sqrt{N}$ bound is best possible. Bedert (2025) proved a $-cN^{1/7}$ lower bound, but the gap between $N^{1/7}$ and $N^{1/2}$ remains open. This is a problem in **exponential sums** and **harmonic analysis** with connections to additive combinatorics.",
     "mathContext": "$\\min_\\theta \\sum_{n \\in A} \\cos(n\\theta) \\stackrel{?}{\\leq} -c\\sqrt{|A|}$. Best known: $-c|A|^{1/7}$ (Bedert 2025). Optimal: $-c\\sqrt{|A|}$ (Sidon set example).",
     "significance": "supporting",
-    "prerequisites": ["trigonometric sums", "Sidon sets", "exponential sum bounds"],
-    "relatedConcepts": ["Chowla's conjecture", "exponential sums", "additive combinatorics"]
+    "prerequisites": [
+      "trigonometric sums",
+      "Sidon sets",
+      "exponential sum bounds"
+    ],
+    "relatedConcepts": [
+      "Chowla's conjecture",
+      "exponential sums",
+      "additive combinatorics"
+    ]
   },
   {
     "id": "erdos-510-ann-cosineSum",
@@ -145,26 +156,5 @@
       "cosineSum",
       "Real.sqrt"
     ]
-  },
-  {
-    "id": "erdos-510-ann-connection",
-    "proofId": "erdos-510",
-    "range": {
-      "startLine": 68,
-      "endLine": 80
-    },
-    "type": "concept",
-    "title": "Additive Combinatorics Connection and 2025 Progress",
-    "content": "The cosine problem connects deeply to **additive combinatorics**: sets with small negative cosine sums must have restricted additive structure (few representation as differences). The 2025 polynomial breakthroughs by Bedert and by Jin-Milojević-Tomon-Zhang represent the first qualitative improvement since Bourgain's 1986 work.",
-    "significance": "key",
-    "mathContext": "The link to additive combinatorics is through the identity cosineSum(A, θ) = Re(∑_{n ∈ A} e^{inθ}). If A has small additive energy E(A) = |{(a,b,c,d) ∈ A⁴ : a+b = c+d}|, then by the **Wiener-Khintchine theorem**, ∫|f_A|⁴ = E(A), which constrains how 'spread out' |f_A|² can be, forcing large negative values of Re(f_A). Conversely, sets with large additive energy (like arithmetic progressions) have f_A concentrated at a few angles, making it easier to achieve large negative cosine sums. The problem thus reduces to understanding the **extremal additive structure** of sets minimizing max|Re(f_A)|. This appears as **Problem 81** on Green's list and is related to **Problem #256** on Erdős's list. The 2025 polynomial breakthroughs confirm that the exponent must be positive — sub-polynomial bounds are not sharp.",
-    "relatedConcepts": [
-      "additive energy E(A)",
-      "Wiener-Khintchine theorem",
-      "additive structure of extremal sets",
-      "Green's Problem 81",
-      "Erdős Problem #256"
-    ],
-    "prerequisites": []
   }
 ]

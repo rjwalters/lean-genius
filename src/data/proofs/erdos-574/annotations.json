@@ -188,54 +188,5 @@
       "graph density",
       "cycle detection"
     ]
-  },
-  {
-    "id": "case-k2",
-    "proofId": "erdos-574",
-    "range": {
-      "startLine": 79,
-      "endLine": 84
-    },
-    "type": "context",
-    "title": "Special Case k = 2 (Problem #573)",
-    "content": "The case $k = 2$ asks for $\\text{ex}(n; \\{C_3, C_4\\})$, the maximum edges in a triangle-free, $C_4$-free graph. This is Problem #573, studied independently. The extremal graphs are related to polarity graphs of projective planes, which are $C_4$-free by construction and can be made triangle-free. The conjectured answer is $(n/2)^{3/2}$, matching the exponent $1 + 1/2 = 3/2$.",
-    "mathContext": "$\\text{ex}(n; \\{C_3, C_4\\}) \\le c \\cdot n^{3/2}$, conjectured to be $\\sim (n/2)^{3/2}$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "triangle-free graph",
-      "polarity graph",
-      "projective plane",
-      "Erdős Problem #573"
-    ],
-    "prerequisites": [
-      "incidence geometry",
-      "Turán number",
-      "bipartite graph"
-    ]
-  },
-  {
-    "id": "algebraic",
-    "proofId": "erdos-574",
-    "range": {
-      "startLine": 86,
-      "endLine": 95
-    },
-    "type": "insight",
-    "title": "Algebraic Constructions and Bipartiteness",
-    "content": "For $k = 2, 3, 5$, algebraic constructions from finite geometry yield $C_{2k}$-free graphs with $\\sim (n/2)^{1+1/k}$ edges. These are incidence graphs of generalized $k$-gons (projective planes for $k = 2$, generalized hexagons for $k = 3$, generalized decagons for $k = 5$), which exist by the Feit–Higman theorem only for these values. Crucially, incidence graphs are always bipartite (points vs. lines), so they have infinite odd girth and automatically avoid $C_{2k-1}$. This bipartiteness is the key structural reason the conjecture is expected to hold.",
-    "mathContext": "Incidence graphs of generalized $k$-gons: bipartite, $C_{2k}$-free, $\\sim q^{1+1/k}$ edges, automatically $C_{2k-1}$-free",
-    "significance": "key",
-    "relatedConcepts": [
-      "generalized polygon",
-      "Feit–Higman theorem",
-      "incidence graph",
-      "bipartite graph",
-      "finite field"
-    ],
-    "prerequisites": [
-      "finite geometry",
-      "generalized polygons",
-      "bipartite graph theory"
-    ]
   }
 ]

@@ -312,41 +312,5 @@
       "factorial function"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e646-summary",
-    "proofId": "erdos-646",
-    "range": {
-      "startLine": 351,
-      "endLine": 355
-    },
-    "type": "concept",
-    "title": "Summary Theorem",
-    "content": "**erdos_646_summary:**\n\nCombines the two main results:\n1. ErdosConjecture646 is TRUE\n2. The sequence has bounded gaps for any prime set\n\n```lean\ntheorem erdos_646_summary :\n  ErdosConjecture646 ∧\n  (∀ S : Finset ℕ, (∀ p ∈ S, p.Prime) →\n    ∃ B : ℕ, ∀ n : ℕ, ∃ m : ℕ, n ≤ m ∧ m ≤ n + B ∧ hasAllEvenValuations S m)\n```",
-    "significance": "key",
-    "mathContext": "See annotation content for formal details of summary theorem",
-    "relatedConcepts": [
-      "prime numbers",
-      "combinatorics"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e646-answer",
-    "proofId": "erdos-646",
-    "range": {
-      "startLine": 357,
-      "endLine": 384
-    },
-    "type": "technique",
-    "title": "Answer: YES",
-    "content": "**erdos_646_answer:**\n\nFor any prime set S, there exist n < m with both having all even valuations.\n\n**Proof approach:**\n1. Use berend_existence to get first n\n2. The set minus {n} is still infinite\n3. Use bounded gaps to find m > n\n\nThis constructively demonstrates the infinitude.",
-    "significance": "key",
-    "mathContext": "See annotation content for formal details of answer: yes",
-    "relatedConcepts": [
-      "proof technique",
-      "prime numbers"
-    ],
-    "prerequisites": []
   }
 ]

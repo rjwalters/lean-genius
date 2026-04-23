@@ -303,43 +303,5 @@
       "Projective planes"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "erdos-934-main-theorem",
-    "proofId": "erdos-934",
-    "type": "concept",
-    "range": {
-      "startLine": 241,
-      "endLine": 253
-    },
-    "title": "Main Theorem",
-    "content": "**erdos_934:**\n\nComplete status of Problem #934:\n\n1. h_1(d) = d + 1 (solved, trivial)\n2. h_2(d) = ⌊5d²/4⌋ + 1 (solved, CGTT 1990)\n3. h_3(3) = 23 (Cambie et al. 2022)\n4. General: h_t(d) ≤ (3/2)d^t + 1\n\nThe problem has elegant solutions for small t and good bounds for general t.",
-    "mathContext": "Combining all results gives a fairly complete picture of h_t(d), fulfilling Erdős's desire for 'nice expressions' in key cases.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Problem resolution",
-      "Combined results",
-      "Main theorem"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "erdos-934-summary",
-    "proofId": "erdos-934",
-    "type": "concept",
-    "range": {
-      "startLine": 255,
-      "endLine": 261
-    },
-    "title": "Summary",
-    "content": "**Erdős Problem #934: Status**\n\n**Solved:** t = 1 (trivial), t = 2 (CGTT 1990)\n**Partial:** t = 3 (h_3(3) = 23, conjecture for general d)\n**Bounds:** (1-o(1))d^t ≤ h_t(d) ≤ (3/2)d^t + 1\n\n**Open:** Exact formula for t ≥ 3; proving asymptotic conjecture.",
-    "mathContext": "The problem exemplifies how extremal graph theory progresses: solve small cases, establish bounds, conjecture general formulas.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Problem status",
-      "Open questions",
-      "Research directions"
-    ],
-    "prerequisites": []
   }
 ]

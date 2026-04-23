@@ -219,23 +219,5 @@
       "Lean 4 formalization"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-199-summary",
-    "proofId": "erdos-199",
-    "range": {
-      "startLine": 178,
-      "endLine": 183
-    },
-    "type": "concept",
-    "title": "Summary Theorem",
-    "content": "**erdos_199_summary:**\n\nCombines all the main results:\n1. Erdős's conjecture is FALSE\n2. A counterexample EXISTS (via Baumgartner)\n\nThe problem is fully resolved.",
-    "significance": "key",
-    "mathContext": "See annotation content for formal details of summary theorem",
-    "relatedConcepts": [
-      "combinatorics",
-      "Lean 4 formalization"
-    ],
-    "prerequisites": []
   }
 ]

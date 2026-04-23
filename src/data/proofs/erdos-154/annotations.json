@@ -157,27 +157,5 @@
       "basic combinatorics",
       "modular arithmetic"
     ]
-  },
-  {
-    "id": "ann-154-main",
-    "proofId": "erdos-154",
-    "range": {
-      "startLine": 100,
-      "endLine": 104
-    },
-    "type": "concept",
-    "title": "Main Result: erdos_154",
-    "content": "**Erdős Problem #154: SOLVED.**\n\nThe main theorem states that for any Sidon set $A \\subset \\{1, \\ldots, N\\}$, any modulus $m \\geq 2$, and any $\\varepsilon > 0$, the sumset $A + A$ is $\\varepsilon$-well-distributed mod $m$ for sufficiently large $N$. Proved directly via `sumset_distribution A N hA hN`, packaging the axiomatized result.\n\nThis closes the problem posed by Erdős about the regularity properties of Sidon set sumsets.",
-    "significance": "key",
-    "mathContext": "The theorem: $\\forall A \\subset \\{1,\\ldots,N\\}$ Sidon, $\\forall m \\geq 2$, $\\forall \\varepsilon > 0$, $\\exists N_0$ such that $N \\geq N_0 \\implies$ $A+A$ is $\\varepsilon$-well-distributed mod $m$. This combines Lindström's distribution of $A$ with the unique representation property of Sidon sumsets.",
-    "relatedConcepts": [
-      "Sidon set",
-      "well-distribution",
-      "sumset",
-      "asymptotic result"
-    ],
-    "prerequisites": [
-      "all preceding definitions and theorems"
-    ]
   }
 ]

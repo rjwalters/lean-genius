@@ -253,43 +253,5 @@
     ],
     "mathContext": "See annotation content for formal details of clique cover number",
     "prerequisites": []
-  },
-  {
-    "id": "ann-e807-probabilistic-method",
-    "proofId": "erdos-807",
-    "range": {
-      "startLine": 240,
-      "endLine": 248
-    },
-    "type": "concept",
-    "title": "Probabilistic Method",
-    "content": "**The Probabilistic Method:**\n\nAlon's proof uses the probabilistic method, pioneered by Erdos himself.\n\n**Key idea:** Show that a random bipartite subgraph covers many edges in expectation, then use this to construct an efficient decomposition.\n\nThis is a powerful technique where existence is proved by showing a random object has the desired property with positive probability.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Random graphs",
-      "Expectation",
-      "Erdos"
-    ],
-    "mathContext": "See annotation content for formal details of probabilistic method",
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e807-concentration",
-    "proofId": "erdos-807",
-    "range": {
-      "startLine": 250,
-      "endLine": 258
-    },
-    "type": "concept",
-    "title": "Concentration Inequalities",
-    "content": "**Concentration Inequalities:**\n\nThe \"almost surely\" statements use concentration inequalities:\n\n- Chernoff bounds for sums of independent random variables\n- Azuma-Hoeffding for martingales\n- Talagrand's inequality for complex dependencies\n\nThese show that random variables are close to their expectation with high probability.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Probability theory",
-      "Random graphs",
-      "Tail bounds"
-    ],
-    "mathContext": "See annotation content for formal details of concentration inequalities",
-    "prerequisites": []
   }
 ]

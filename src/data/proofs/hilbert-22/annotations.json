@@ -131,43 +131,5 @@
       "elliptic curves"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-belyi",
-    "proofId": "hilbert-22",
-    "range": {
-      "startLine": 309,
-      "endLine": 309
-    },
-    "type": "concept",
-    "title": "Belyi's Theorem",
-    "content": "**Belyi's Theorem** (1979) provides a remarkable connection between uniformization and arithmetic:\n\nA compact Riemann surface is defined over $\\bar{\\mathbb{Q}}$ (algebraic numbers) if and only if it admits a meromorphic function to $\\mathbb{P}^1$ ramified over at most three points.\n\nThis connects complex geometry to Galois theory and dessins d'enfants.",
-    "mathContext": "$S$ defined over $\\bar{\\mathbb{Q}}$ $\\iff$ $\\exists f: S \\to \\mathbb{P}^1$ with ramification $\\subseteq \\{0, 1, \\infty\\}$",
-    "significance": "key",
-    "relatedConcepts": [
-      "dessins d'enfants",
-      "Grothendieck's esquisse",
-      "arithmetic geometry"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-status",
-    "proofId": "hilbert-22",
-    "range": {
-      "startLine": 337,
-      "endLine": 342
-    },
-    "type": "technique",
-    "title": "Complete Resolution",
-    "content": "Hilbert's twenty-second problem is **completely solved** by the Uniformization Theorem.\n\nUnlike some of Hilbert's problems that remain open or are independence results, this problem has a definitive affirmative answer: every Riemann surface can be uniformized by automorphic functions.\n\nThe theorem was proven independently by Koebe and Poincare in 1907, just seven years after Hilbert posed the problem.",
-    "mathContext": "Status: SOLVED (1907)\n\nKoebe and Poincare: Two independent proofs\nModern proofs: Perron method, potential theory",
-    "significance": "key",
-    "relatedConcepts": [
-      "Hilbert's problems",
-      "complex analysis history",
-      "20th century mathematics"
-    ],
-    "prerequisites": []
   }
 ]

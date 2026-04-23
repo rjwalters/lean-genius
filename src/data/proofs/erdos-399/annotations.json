@@ -222,23 +222,5 @@
       "gap"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e399-factored",
-    "proofId": "erdos-399",
-    "range": {
-      "startLine": 127,
-      "endLine": 134
-    },
-    "type": "technique",
-    "title": "Algebraic Factorization",
-    "content": "48^4 - 36^4 = 12^4 * (4^4 - 3^4) = 12^4 * 175 = 20736 * 175 = 3,628,800. This reveals the structure of the counterexample.",
-    "mathContext": "Since 48 = 12 * 4 and 36 = 12 * 3, we have 48^4 - 36^4 = (12 * 4)^4 - (12 * 3)^4 = 12^4 * (4^4 - 3^4). And 4^4 - 3^4 = 256 - 81 = 175.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "factorization",
-      "algebraic-structure"
-    ],
-    "prerequisites": []
   }
 ]

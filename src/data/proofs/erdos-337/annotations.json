@@ -425,25 +425,5 @@
       "ruzsa_turjanyi_generalization",
       "scaled_conjecture_open"
     ]
-  },
-  {
-    "id": "ann-337-main",
-    "proofId": "erdos-337",
-    "range": {
-      "startLine": 303,
-      "endLine": 303
-    },
-    "type": "concept",
-    "title": "erdos_337 (Main Theorem)",
-    "content": "**erdos_337**: $\\neg$ `erdosConjecture`\n\nThe main theorem of the file: Erdős's conjecture about sumset growth for sparse additive bases is FALSE.\n\nDefined as `erdos_conjecture_false`.",
-    "mathContext": "This is the 'headline' result. The proof chain: Turjányi's counterexample (axiom) → contradiction argument (Lean proof) → negation of the universal claim.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Main theorem",
-      "Disproof"
-    ],
-    "prerequisites": [
-      "erdos_conjecture_false"
-    ]
   }
 ]

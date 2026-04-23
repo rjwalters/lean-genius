@@ -255,28 +255,5 @@
       "sum-free definition",
       "Sidon set definition"
     ]
-  },
-  {
-    "id": "ann-876-12",
-    "proofId": "erdos-876",
-    "range": {
-      "startLine": 285,
-      "endLine": 297
-    },
-    "type": "concept",
-    "title": "Summary Theorem",
-    "content": "`erdos_876_summary` combines Graham's result (near-linear gaps achievable for any $\\varepsilon > 0$) with the statement that the linear gap question is open (represented as `True`). The proof extracts the sum-free set and gap bound from `graham_result` and closes the trivial conjunct. The `True` placeholder for the open question is an honest formalization — the linear gap problem is neither proved nor disproved.",
-    "mathContext": "$\\texttt{erdos\\_876\\_summary} : (\\forall \\varepsilon > 0,\\; \\exists a \\text{ sum-free with gaps } < n^{1+\\varepsilon}) \\wedge \\text{True}$. The second conjunct encodes that the linear gap question ($\\varepsilon = 0$) is open — neither provable nor disprovable from current knowledge.",
-    "significance": "key",
-    "relatedConcepts": [
-      "theorem synthesis",
-      "open problem encoding",
-      "conjunction"
-    ],
-    "prerequisites": [
-      "graham_result",
-      "IsSumFreeErdos",
-      "gap definition"
-    ]
   }
 ]

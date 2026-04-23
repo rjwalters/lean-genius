@@ -237,23 +237,5 @@
     ],
     "mathContext": "See annotation content for formal details of main theorem",
     "prerequisites": []
-  },
-  {
-    "id": "ann-e1087-summary",
-    "proofId": "erdos-1087",
-    "range": {
-      "startLine": 319,
-      "endLine": 330
-    },
-    "type": "technique",
-    "title": "Summary",
-    "content": "**erdos_1087_summary:**\n\nThe exponent alpha in f(n) ~ n^alpha satisfies 3 <= alpha <= 3.5.\n\n```lean\ntheorem erdos_1087_summary :\n    exists alpha beta : R, 3 <= alpha and beta <= 3.5 and\n    (forall n : N, n >= 4 -> (f n : R) >= n^alpha) and\n    (forall n : N, n >= 4 -> (f n : R) <= n^beta)\n```\n\n**Open Question:** Is alpha = 3 (with possible log corrections)? This is Erdos Problem #1087.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Summary",
-      "Open problems"
-    ],
-    "mathContext": "See annotation content for formal details of summary",
-    "prerequisites": []
   }
 ]

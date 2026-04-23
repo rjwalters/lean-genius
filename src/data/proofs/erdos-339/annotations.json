@@ -215,23 +215,5 @@
     ],
     "mathContext": "See annotation content for formal details of related: sidon sets and bₕ sets",
     "prerequisites": []
-  },
-  {
-    "id": "ann-e339-summary",
-    "proofId": "erdos-339",
-    "range": {
-      "startLine": 238,
-      "endLine": 251
-    },
-    "type": "technique",
-    "title": "Summary: Erdős Problem #339 SOLVED",
-    "content": "**erdos_339_solved and erdos_339_summary:**\n\nBoth Erdős conjectures are TRUE (HHP 2003):\n\n1. **Basis → Positive Density:** If A is basis of order r, then r distinct sums have positive lower density.\n\n2. **Density Preservation:** If r-sums have positive upper density, then r distinct sums do too.\n\n**Key Insight:** The perturbation argument shows representations transfer from general to distinct.\n\n**The surprise:** Fewer sums, same density!",
-    "significance": "key",
-    "relatedConcepts": [
-      "Solved problems",
-      "Additive combinatorics"
-    ],
-    "mathContext": "See annotation content for formal details of summary: erdős problem #339 solved",
-    "prerequisites": []
   }
 ]

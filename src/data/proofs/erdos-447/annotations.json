@@ -284,27 +284,5 @@
       "Finset.erase",
       "Finset.card"
     ]
-  },
-  {
-    "id": "erdos-447-summary",
-    "proofId": "erdos-447",
-    "type": "concept",
-    "range": {
-      "startLine": 158,
-      "endLine": 163
-    },
-    "title": "Summary Theorem",
-    "content": "**erdos_447_summary**: Combines the two main results into a conjunction: (1) Kleitman's upper bound $\\text{AsymptoticUpperBound}\\;\\text{maxUnionFreeSize}\\;\\text{middleBinomial}$, and (2) the lower bound $\\forall n,\\; \\text{maxUnionFreeSize}(n) \\geq \\text{middleBinomial}(n)$. Proved by `exact \\langle\\text{kleitman\\_theorem}, \\text{lower\\_bound}\\rangle`.\n\nThis is the only non-axiom theorem about the extremal problem: it packages the axiomatized results into a single statement that $\\text{maxUnionFreeSize}(n) = (1 \\pm o(1)) \\cdot \\binom{n}{\\lfloor n/2 \\rfloor}$.",
-    "mathContext": "Proof: `exact \\langle kleitman\\_theorem, lower\\_bound \\rangle` uses the anonymous constructor to build the conjunction from two axioms. This theorem certifies that Erdos Problem #447 is SOLVED: the maximum union-free family size is asymptotically $\\binom{n}{\\lfloor n/2 \\rfloor}$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "conjunction introduction",
-      "anonymous constructor",
-      "erdos_447_summary"
-    ],
-    "prerequisites": [
-      "kleitman_theorem",
-      "lower_bound"
-    ]
   }
 ]

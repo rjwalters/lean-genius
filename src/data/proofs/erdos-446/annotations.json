@@ -170,24 +170,5 @@
       "omega-tactic"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e446-summary",
-    "proofId": "erdos-446",
-    "range": {
-      "startLine": 143,
-      "endLine": 163
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_446_summary** combines Ford's two main results into a single conjunction: (1) the lower bound from the exact asymptotic, and (2) the disproof of δ₁ = o(δ). The proof extracts the lower bound from ford_2008_main and uses ford_2008_disproof directly. This theorem encapsulates the complete resolution of both parts of Erdős Problem #446.",
-    "mathContext": "The proof uses Lean 4 pattern matching (obtain) to destructure the existential and conjunction in ford_2008_main, then pairs the results. This is the culmination of 74 years of work on the problem.",
-    "significance": "key",
-    "relatedConcepts": [
-      "summary-theorem",
-      "complete-resolution",
-      "ford-2008"
-    ],
-    "prerequisites": []
   }
 ]

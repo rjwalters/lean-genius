@@ -252,27 +252,5 @@
     "prerequisites": [
       "h"
     ]
-  },
-  {
-    "id": "ann-e912-summary",
-    "proofId": "erdos-912",
-    "range": {
-      "startLine": 229,
-      "endLine": 247
-    },
-    "type": "concept",
-    "title": "Summary and Constants",
-    "content": "**erdos_912_summary**: Packages the asymptotic bound as `⟨erdos_selfridge_asymptotic, trivial⟩`. The `True` conjunct is a placeholder for the open conjecture.\n\n**constant_gap**: Axiomatizes that √(2π) ≈ 2.506 (between 2.5 and 2.51). This numerical bound verifies Tao's constant is well-defined and reasonable.",
-    "mathContext": "The summary captures the current state: $h(n) \\asymp \\sqrt{n/\\log n}$ is proved (Erdős-Selfridge), $h(n) \\sim c\\sqrt{n/\\log n}$ with $c = \\sqrt{2\\pi}$ is conjectured (Tao). The gap between 'asymptotic order' and 'exact constant' is a common challenge in analytic number theory, analogous to knowing $\\pi(x) \\sim x/\\log x$ vs proving $\\pi(x) = \\text{Li}(x) + O(\\cdot)$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "summary",
-      "open-problem",
-      "asymptotic-constant"
-    ],
-    "prerequisites": [
-      "erdos_selfridge_asymptotic",
-      "taoConstant"
-    ]
   }
 ]

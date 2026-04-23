@@ -415,30 +415,5 @@
       "sieve-theory"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "erdos-784-summary",
-    "proofId": "erdos-784",
-    "type": "technique",
-    "range": {
-      "startLine": 264,
-      "endLine": 278
-    },
-    "title": "Summary Theorem",
-    "content": "**erdos_784_summary:**\n\nConcise summary of the key dichotomy:\n\n```lean\ntheorem erdos_784_summary :\n    (HasPolynomialLogBound 1) ∧\n    (∀ C : ℝ, C > 1 → ¬HasPolynomialLogBound C)\n```\n\nC = 1 has the bound (with c = 1); C > 1 has no such bound.\n\n**The answer to Erdős Problem #784: SOLVED (YES for C ≤ 1, NO for C > 1)**",
-    "mathContext": "The summary emphasizes the phase transition at C = 1 as the key mathematical phenomenon.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Summary",
-      "Solved problems",
-      "Phase transitions"
-    ],
-    "tags": [
-      "summary",
-      "solved-problem",
-      "phase-transition",
-      "dichotomy"
-    ],
-    "prerequisites": []
   }
 ]

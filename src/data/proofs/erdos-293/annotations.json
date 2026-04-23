@@ -112,24 +112,5 @@
       "Erdős conjectures"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e293-summary",
-    "proofId": "erdos-293",
-    "range": {
-      "startLine": 134,
-      "endLine": 146
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_293_summary** packages both bounds:\n\n1. Lower: ∃ c > 0, ∀ k > 0, v(k) ≥ e^{ck²} (van Doorn-Tang)\n2. Upper: ∀ k > 0, v(k) ≤ k · c₀^{2^k} (elementary)\n\nProved by `⟨vanDoorn_Tang_lower_bound, elementary_upper_bound⟩`.\n\nThe theorem captures the current state of knowledge: v(k) lies between singly exponential in k² and doubly exponential in k. Closing this gap is the open problem.",
-    "mathContext": "This is a rare case where the best known bounds differ by more than an exponential factor. Most extremal problems in combinatorics have much tighter bounds.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Summary theorem",
-      "Open problem",
-      "Bounds gap"
-    ],
-    "prerequisites": []
   }
 ]

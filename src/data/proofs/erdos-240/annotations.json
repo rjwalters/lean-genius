@@ -326,31 +326,6 @@
     "prerequisites": []
   },
   {
-    "id": "ann-e240-main",
-    "proofId": "erdos-240",
-    "range": {
-      "startLine": 279,
-      "endLine": 288
-    },
-    "type": "technique",
-    "title": "Main Result: erdos_240",
-    "content": "**theorem erdos_240 : erdos240Question**\n\n**Statement**: There exists an infinite set of primes P such that gaps between consecutive P-smooth numbers tend to infinity.\n\n**Proof**: Follows immediately from erdos240_answer, which applies Tijdeman's theorem.\n\n**Status**: SOLVED by Tijdeman (1973)",
-    "mathContext": "This is the formal statement that the answer to Erdős Problem #240 is YES. The theorem is the culmination of all the machinery developed above.",
-    "significance": "key",
-    "relatedConcepts": [
-      "main-theorem",
-      "erdos-240",
-      "solved"
-    ],
-    "tags": [
-      "main-result",
-      "erdos-problems",
-      "solved-problems",
-      "smooth-numbers"
-    ],
-    "prerequisites": []
-  },
-  {
     "id": "ann-e240-intuition",
     "proofId": "erdos-240",
     "range": {

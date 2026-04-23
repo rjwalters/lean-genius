@@ -533,26 +533,5 @@
       "conlon_fox_sudakov_bound",
       "rodl_upper_construction"
     ]
-  },
-  {
-    "id": "ann-e191-answer",
-    "proofId": "erdos-191",
-    "range": {
-      "startLine": 366,
-      "endLine": 369
-    },
-    "type": "technique",
-    "title": "The Answer",
-    "content": "**erdos_191_answer:**\n\nThe answer to Erdős Problem #191 is **YES**.\n\nFor any target sum C > 0, if n is large enough, any 2-coloring of K({2,...,n}) contains a monochromatic subset X with Σ(1/log x) ≥ C.",
-    "significance": "key",
-    "mathContext": "The final answer: Erdős Problem #191 is solved affirmatively. The maximum achievable $\\sum_{x \\in X} 1/\\log x$ over all monochromatic $X$ in any 2-coloring of $K(\\{2,\\ldots,n\\})$ is $\\Theta(\\log\\log\\log n)$ as $n \\to \\infty$.",
-    "relatedConcepts": [
-      "Erdős problems",
-      "Solved conjectures",
-      "Asymptotic characterization"
-    ],
-    "prerequisites": [
-      "erdos_191_summary"
-    ]
   }
 ]

@@ -396,26 +396,5 @@
       "T_n_0",
       "mainQuestion"
     ]
-  },
-  {
-    "id": "ann-703-clean",
-    "proofId": "erdos-703",
-    "type": "concept",
-    "title": "Clean Statement: erdos_703",
-    "content": "The clean one-line resolution: mainQuestion follows directly from frankl_rodl_1987. This is the final statement that Erdős Problem #703 is solved.",
-    "range": {
-      "startLine": 271,
-      "endLine": 271
-    },
-    "significance": "key",
-    "mathContext": "The clean statement `theorem erdos_703 : mainQuestion := frankl_rodl_1987` is a direct application of the axiomatized Frankl-Rödl theorem. This pattern — axiomatizing deep results and using them to resolve the problem statement — is standard for formalizing solved Erdős problems where the full proof machinery exceeds current Mathlib capabilities.",
-    "relatedConcepts": [
-      "axiomatic formalization",
-      "problem resolution pattern"
-    ],
-    "prerequisites": [
-      "frankl_rodl_1987",
-      "mainQuestion"
-    ]
   }
 ]

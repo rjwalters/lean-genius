@@ -381,27 +381,5 @@
     "prerequisites": [
       "alon_construction"
     ]
-  },
-  {
-    "id": "ann-664-main",
-    "proofId": "erdos-664",
-    "range": {
-      "startLine": 261,
-      "endLine": 279
-    },
-    "type": "concept",
-    "title": "Main Results",
-    "content": "Three equivalent formulations of the main result: erdos_664, erdos_664_main, and erdos_664_disproved all state ¬ErdosQuestion664. The constructive version erdos_664_constructive provides the explicit counterexample for each large prime q.",
-    "significance": "key",
-    "mathContext": "The main theorem $\\texttt{erdos\\_664} : \\neg\\text{ErdosQuestion664}$ follows directly from $\\texttt{alon\\_disproof}$. The constructive version provides, for each prime $q \\geq 100$, an explicit family on $n = q^2+q+1$ elements witnessing the failure. The redundant formulations ($\\texttt{erdos\\_664\\_main}$, $\\texttt{erdos\\_664\\_disproved}$) provide semantic aliases for different contexts.",
-    "relatedConcepts": [
-      "constructive disproof",
-      "explicit counterexample",
-      "infinitely many counterexamples"
-    ],
-    "prerequisites": [
-      "alon_disproof",
-      "alon_construction"
-    ]
   }
 ]

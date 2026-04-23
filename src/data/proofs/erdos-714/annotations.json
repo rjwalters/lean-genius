@@ -393,27 +393,5 @@
       "erdos_714_r2 theorem",
       "erdos_714_r3 theorem"
     ]
-  },
-  {
-    "id": "ann-e714-status",
-    "proofId": "erdos-714",
-    "range": {
-      "startLine": 265,
-      "endLine": 285
-    },
-    "type": "concept",
-    "title": "Zarankiewicz Problem Status",
-    "content": "**zarankiewicz_status:**\n\nCombines all results:\n1. KST upper bound for all r >= 2\n2. Lower bound matching upper bound for r=2,3\n3. Gap remains for r >= 4\n\nOne of the most famous open problems in extremal combinatorics.",
-    "significance": "key",
-    "mathContext": "The combined theorem states: $(\\forall\\,r \\ge 2,\\; \\mathrm{ex}(n;K_{r,r}) \\le c\\,n^{2-1/r}) \\;\\wedge\\; (\\texttt{erdosConjectureLowerBound}\\;2 \\wedge \\texttt{erdosConjectureLowerBound}\\;3)$. Uses $\\texttt{kovari\\_sos\\_turan}$ for the upper bound and $\\texttt{erdos\\_714\\_summary}$ for the lower bounds.",
-    "relatedConcepts": [
-      "Extremal graph theory survey results",
-      "Upper and lower bound synthesis",
-      "Open problem classification"
-    ],
-    "prerequisites": [
-      "kovari_sos_turan axiom",
-      "erdos_714_summary theorem"
-    ]
   }
 ]

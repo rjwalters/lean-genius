@@ -187,24 +187,5 @@
       "density"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e1101-prime-squares",
-    "proofId": "erdos-1101",
-    "range": {
-      "startLine": 131,
-      "endLine": 137
-    },
-    "type": "definition",
-    "title": "Connection to Problem #208",
-    "content": "**Problem #208** (strong form) asks whether the sequence of prime squares uᵢ = pᵢ² is good.\n\nSince pₙ ~ n log n, we have pₙ² ~ n² log² n, which is polynomial growth. If prime squares form a good sequence, **Conjecture 1 is FALSE**. This makes Problem #208 a key test case.",
-    "significance": "key",
-    "relatedConcepts": [
-      "prime squares",
-      "Problem #208",
-      "test case"
-    ],
-    "mathContext": "See annotation content for formal details of connection to problem #208",
-    "prerequisites": []
   }
 ]

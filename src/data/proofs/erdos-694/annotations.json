@@ -169,24 +169,5 @@
       "norm_num"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e694-summary",
-    "proofId": "erdos-694",
-    "range": {
-      "startLine": 191,
-      "endLine": 205
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_694_summary** packages the proved results: neither 1 nor 2 is a Carmichael totient. These are the first two totient values.",
-    "mathContext": "This is a genuine proved theorem (not axiom). While we can't check all totient values computationally, we verify the smallest ones aren't Carmichael.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "summary",
-      "proved",
-      "small cases"
-    ],
-    "prerequisites": []
   }
 ]

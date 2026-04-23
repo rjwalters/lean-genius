@@ -245,27 +245,5 @@
     "prerequisites": [
       "CoveringSystem"
     ]
-  },
-  {
-    "id": "ann-e947-summary",
-    "proofId": "erdos-947",
-    "range": {
-      "startLine": 201,
-      "endLine": 206
-    },
-    "type": "concept",
-    "title": "Summary: Impossibility and Existence",
-    "content": "**erdos_947_summary**: *Proved*: the conjunction of (1) $\\neg\\exists C, \\text{hasDistinctModuli}(C) \\wedge \\text{isExact}(C)$ from `no_exact_covering_system` and (2) $\\exists C, \\text{hasDistinctModuli}(C)$ extracted from `covering_systems_exist`. The proof uses `⟨no_exact_covering_system, let ⟨C, hD, _⟩ := covering_systems_exist; ⟨C, hD⟩⟩` to combine both results.",
-    "mathContext": "$(\\neg\\exists C : \\text{exact with distinct moduli}) \\wedge (\\exists C : \\text{covering with distinct moduli})$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "no_exact_covering_system",
-      "covering_systems_exist",
-      "conjunction"
-    ],
-    "prerequisites": [
-      "no_exact_covering_system",
-      "covering_systems_exist"
-    ]
   }
 ]

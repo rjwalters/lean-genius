@@ -127,45 +127,5 @@
     ],
     "mathContext": "See annotation content for formal details of complete resolution",
     "prerequisites": []
-  },
-  {
-    "id": "ann-e570-ceiling",
-    "proofId": "erdos-570",
-    "range": {
-      "startLine": 158,
-      "endLine": 164
-    },
-    "type": "technique",
-    "title": "Ceiling Formula (Proved)",
-    "content": "**ceiling_formula**: One of two fully proved (non-axiom) results in the file. Proves $\\lceil(k-1)/2\\rceil = k/2$ for even $k$ and $(k+1)/2$ for odd $k$, using natural number division and case analysis on parity. The `omega` tactic handles the arithmetic. This is notable as it is constructive — unlike the Ramsey bounds which are axiomatized from external results.",
-    "mathContext": "$\\lceil(k-1)/2\\rceil$ equals $\\lfloor k/2 \\rfloor$ — for even $k=2j$ it gives $j$, for odd $k=2j+1$ it gives $j+1$. This additive term in the bound $2m + \\lceil(k-1)/2\\rceil$ captures the 'cycle correction' beyond the linear $2m$ term.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Natural number ceiling",
-      "Parity case analysis",
-      "omega tactic"
-    ],
-    "prerequisites": [
-      "Nat.div",
-      "Even/Odd predicates"
-    ]
-  },
-  {
-    "id": "ann-e570-summary",
-    "proofId": "erdos-570",
-    "range": {
-      "startLine": 166,
-      "endLine": 178
-    },
-    "type": "insight",
-    "title": "Summary Theorem",
-    "content": "**erdos_570_summary:** Erdos570Conjecture\n\nThe summary theorem directly equals erdos_570_resolved, confirming the conjecture is fully proved.\n\n**Timeline:**\n- 1993: EFRS (even k) and Sidorenko (k=3)\n- 1999: Jayawardene (k=5)\n- 2024: CFMPP (odd k≥7)\n\n**Status:** FULLY RESOLVED after 30+ years.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Summary",
-      "Historical timeline"
-    ],
-    "mathContext": "See annotation content for formal details of summary theorem",
-    "prerequisites": []
   }
 ]

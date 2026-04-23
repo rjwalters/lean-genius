@@ -667,27 +667,5 @@
       "seven_not_dissectable",
       "eleven_not_dissectable"
     ]
-  },
-  {
-    "id": "ann-634-final",
-    "proofId": "erdos-634",
-    "range": {
-      "startLine": 301,
-      "endLine": 313
-    },
-    "type": "concept",
-    "title": "Problem Status and Verification",
-    "content": "**Erdős Problem #634: OPEN**\n\n$25 prize remains unclaimed. The answer string and status string summarize the current state. The `#check` commands verify that the main theorem and key axioms typecheck correctly in the Lean kernel.",
-    "mathContext": "The complete characterization of $\\{n : \\text{IsDissectable}(n)\\}$ remains unknown. The formalization captures all proven results but the full answer to Erdős's question is still open.",
-    "significance": "key",
-    "relatedConcepts": [
-      "open problem",
-      "Erdős prize",
-      "formal verification"
-    ],
-    "prerequisites": [
-      "erdos_634_partial",
-      "soifer_theorem"
-    ]
   }
 ]

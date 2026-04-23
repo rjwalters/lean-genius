@@ -106,32 +106,6 @@
     ]
   },
   {
-    "id": "ann-converse",
-    "proofId": "shannon-source-coding",
-    "range": {
-      "startLine": 36,
-      "endLine": 44
-    },
-    "type": "technique",
-    "title": "Source Coding Converse",
-    "content": "The converse shows rates below entropy are impossible: any code with rate $R < H(X)$ has error probability bounded away from 0 (in fact, tending to 1). The proof is a counting/pigeonhole argument: a rate-$R$ code can distinguish at most $2^{nR}$ sequences, but the typical set has at least $(1-\\varepsilon)2^{n(H-\\varepsilon)}$ elements. When $R < H$, the code cannot represent all typical sequences, so most sequences are decoded incorrectly.\n\nThis converse is information-theoretically tight: the achievability shows $H + \\varepsilon$ is achievable, and the converse shows $H - \\varepsilon$ is not, together pinpointing $H$ as the exact threshold. The proof does not require any sophisticated tools beyond the AEP — it is a direct counting argument, in contrast to the converse of the channel coding theorem (Fano's inequality).\n\nThe `end InformationTheory.SourceCoding` on line 44 closes the namespace, completing the four-theorem development.",
-    "mathContext": "For rate $R < H(X)$: let $S \\subset \\mathcal{X}^n$ be the set of sequences the code can represent ($|S| \\leq 2^{nR}$). Then:\n\n$P_e = \\Pr[X^n \\notin S] \\geq \\Pr[X^n \\in A_\\varepsilon^{(n)}] - \\Pr[X^n \\in S \\cap A_\\varepsilon^{(n)}]$\n$\\geq (1-\\varepsilon) - |S \\cap A_\\varepsilon^{(n)}| \\cdot 2^{-n(H-\\varepsilon)}$\n$\\geq (1-\\varepsilon) - 2^{nR} \\cdot 2^{-n(H-\\varepsilon)}$\n$= (1-\\varepsilon) - 2^{-n(H-\\varepsilon-R)} \\to 1-\\varepsilon$\n\nsince $H - \\varepsilon - R > 0$ for small enough $\\varepsilon$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "counting argument",
-      "pigeonhole principle",
-      "entropy as compression limit",
-      "converse bound",
-      "Fano's inequality"
-    ],
-    "prerequisites": [
-      "typical set lower bound",
-      "rate vs typical set size",
-      "AEP",
-      "probability complement"
-    ]
-  },
-  {
     "id": "ann-type-signature-pattern",
     "proofId": "shannon-source-coding",
     "range": {

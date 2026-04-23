@@ -206,23 +206,5 @@
       "case analysis"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e930-product-example",
-    "proofId": "erdos-930",
-    "range": {
-      "startLine": 160,
-      "endLine": 164
-    },
-    "type": "technique",
-    "title": "Product 2·3 = 6 Example",
-    "content": "We verify that the product of consecutive integers 2·3 = 6 is not a perfect power.\n\nThis is a concrete instance of the Erdős-Selfridge theorem with n=1, k=2: the product (1+1)(1+2) = 2·3 = 6 is not a perfect power.",
-    "mathContext": "The proof computes the product using native_decide and applies six_not_isPower.",
-    "significance": "key",
-    "relatedConcepts": [
-      "concrete example",
-      "Erdős-Selfridge instance"
-    ],
-    "prerequisites": []
   }
 ]

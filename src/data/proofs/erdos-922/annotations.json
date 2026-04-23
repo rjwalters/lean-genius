@@ -290,23 +290,5 @@
       "graph theory"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e922-summary",
-    "proofId": "erdos-922",
-    "range": {
-      "startLine": 225,
-      "endLine": 235
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_922_summary:**\n\nCombines the main results:\n1. Folkman's theorem: property with k → χ ≤ k+2\n2. Tightness: bound is achieved for all k\n3. Special case: k=0 gives bipartiteness\n\nThe answer to Erdős Problem #922 is YES.",
-    "significance": "key",
-    "mathContext": "See annotation content for formal details of summary theorem",
-    "relatedConcepts": [
-      "proof technique",
-      "combinatorics"
-    ],
-    "prerequisites": []
   }
 ]

@@ -196,28 +196,5 @@
       "graph-properties"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "erdos-883-inclusion-exclusion",
-    "proofId": "erdos-883",
-    "type": "concept",
-    "range": {
-      "startLine": 224,
-      "endLine": 238
-    },
-    "title": "Threshold Formula and Asymptotics",
-    "content": "threshold_by_inclusion_exclusion (proved): threshold n = n/2 + n/3 - n/6 by rfl. threshold_asymptotic (axiom): for n >= 6, threshold(n) at most 2n/3 + 1.",
-    "mathContext": "The rfl proof confirms the definition. Asymptotically the threshold is approximately 2/3 of n.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "inclusion-exclusion",
-      "asymptotic bounds"
-    ],
-    "tags": [
-      "inclusion-exclusion",
-      "asymptotic-bounds",
-      "threshold-formula"
-    ],
-    "prerequisites": []
   }
 ]

@@ -199,26 +199,5 @@
       "graph constructions",
       "chromatic number"
     ]
-  },
-  {
-    "id": "erdos-1104-summary",
-    "proofId": "erdos-1104",
-    "type": "context",
-    "range": {
-      "startLine": 203,
-      "endLine": 213
-    },
-    "title": "Bounds Summary Theorem",
-    "content": "The bounds_summary theorem combines the lower and upper bounds into a single conjunction, confirming (1−ε)√(n/log n) ≤ f(n) ≤ (2+ε)√(n/log n) for large n. This cleanly states the current state of knowledge: the order of magnitude is settled, but the exact constant remains the key open question.",
-    "mathContext": "$$\\forall\\, \\varepsilon > 0,\\; \\exists\\, N_0 :\\; \\forall\\, n \\geq N_0,\\quad (1-\\varepsilon)\\sqrt{\\frac{n}{\\log n}} \\leq f(n) \\leq (2+\\varepsilon)\\sqrt{\\frac{n}{\\log n}}$$",
-    "significance": "key",
-    "relatedConcepts": [
-      "asymptotic sandwich",
-      "Theta notation",
-      "state of the art"
-    ],
-    "prerequisites": [
-      "Erdős Problem 1104 bounds"
-    ]
   }
 ]

@@ -125,23 +125,5 @@
       "Extremal constructions"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e669-summary",
-    "proofId": "erdos-669",
-    "range": {
-      "startLine": 132,
-      "endLine": 146
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_669_summary:**\n\n```lean\ntheorem erdos_669_summary :\n    (Filter.Tendsto (fun n => (f_k 3 n : ℝ) / n^2) Filter.atTop (nhds (1/6))) ∧\n    (Filter.Tendsto (fun n => (F_k 3 n : ℝ) / n^2) Filter.atTop (nhds (1/6)))\n```\n\nThis theorem captures what is known:\n- f_3(n)/n² → 1/6 as n → ∞\n- F_3(n)/n² → 1/6 as n → ∞\n\nThe proof directly invokes k3_limit. For general k, the analogous statement remains conjectural.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Summary",
-      "Proved results"
-    ],
-    "mathContext": "See annotation content for formal details of summary theorem",
-    "prerequisites": []
   }
 ]

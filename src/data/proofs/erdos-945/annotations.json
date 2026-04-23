@@ -169,43 +169,5 @@
       "gap"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e945-beker",
-    "proofId": "erdos-945",
-    "range": {
-      "startLine": 150,
-      "endLine": 153
-    },
-    "type": "concept",
-    "title": "Beker's Improvement",
-    "content": "**F(x) ≪ exp(O((log x)^{1/3 + o(1)}))**\n\nBeker improved the Erdős-Mirsky upper bound from exponent 1/2 to 1/3 (plus o(1)). This is currently the best known upper bound.\n\nStill exponential, still far from the conjectured polynomial bound.",
-    "mathContext": "Improvement from exp((log x)^{1/2}) to exp((log x)^{1/3}). The exponent dropped from 0.5 to ~0.33.",
-    "significance": "key",
-    "relatedConcepts": [
-      "beker",
-      "improvement",
-      "current-best"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e945-cramer",
-    "proofId": "erdos-945",
-    "range": {
-      "startLine": 161,
-      "endLine": 168
-    },
-    "type": "technique",
-    "title": "Conditional on Cramér",
-    "content": "**If Cramér's conjecture holds, then F(x) ≪ (log x)²**\n\nCramér's conjecture says prime gaps are ≤ (log p)². If true, it implies the main conjecture with C = 2!\n\nThis connection shows the problem relates to deep questions about prime distribution.",
-    "mathContext": "Cramér's conjecture: p_{n+1} - p_n = O((log p_n)²). This would give F(x) = O((log x)²).",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "cramer",
-      "prime-gaps",
-      "conditional"
-    ],
-    "prerequisites": []
   }
 ]

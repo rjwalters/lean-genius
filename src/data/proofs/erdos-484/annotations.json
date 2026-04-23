@@ -274,28 +274,5 @@
       "Set.Infinite",
       "Finset.sum"
     ]
-  },
-  {
-    "id": "ann-e484-summary",
-    "proofId": "erdos-484",
-    "range": {
-      "startLine": 267,
-      "endLine": 322
-    },
-    "type": "technique",
-    "title": "Complete Solution: erdos_484",
-    "content": "**erdos_484**: The main theorem combining all three components — (1) Roth's conjecture is true, (2) two-coloring case has O(log N) error, (3) the O(log N) bound is tight. Proved by `⟨roth_conjecture_true, ESS_two_coloring, two_coloring_optimal⟩`.",
-    "significance": "key",
-    "mathContext": "The final theorem packages the complete solution to Problem #484 as a conjunction of three axiomatized results. In Lean 4, this is expressed as a product type (∧ is definitional sugar for And, constructed by ⟨·, ·, ·⟩). The proof term `⟨roth_conjecture_true, ESS_two_coloring, two_coloring_optimal⟩` directly provides all three components. The intermediate theorems `erdos_484_status` and `power_of_two_obstruction` are also proved (not axiomatized), extracting individual components from the axioms. This file has **0 sorries** — all deep results are axiomatized (the ESS proof is analytic/Fourier-theoretic and far beyond current Lean capabilities), while structural consequences are proved.",
-    "relatedConcepts": [
-      "proof term construction",
-      "conjunction introduction ⟨·,·,·⟩",
-      "axiom packaging"
-    ],
-    "prerequisites": [
-      "roth_conjecture_true",
-      "ESS_two_coloring",
-      "two_coloring_optimal"
-    ]
   }
 ]

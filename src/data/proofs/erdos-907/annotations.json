@@ -478,27 +478,5 @@
       "hasContinuousDifferences",
       "continuity"
     ]
-  },
-  {
-    "id": "ann-e907-summary",
-    "proofId": "erdos-907",
-    "range": {
-      "startLine": 262,
-      "endLine": 270
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "Erdős Problem #907 is completely solved. The summary combines three results: (1) De Bruijn's theorem: continuous differences imply decomposition, (2) continuous functions have continuous differences, (3) additive functions have constant differences.",
-    "mathContext": "The summary theorem `erdos_907_summary` packages three key results as a conjunction: (1) $\\forall f,\\, \\text{hasContinuousDifferences}\\, f \\implies \\text{hasDeBruijnDecomposition}\\, f$ (de Bruijn), (2) $\\forall f,\\, f \\in C(\\mathbb{R}) \\implies \\text{hasContinuousDifferences}\\, f$ (trivial direction), (3) $\\forall \\varphi \\text{ additive},\\, \\Delta_h \\varphi = \\varphi(h)$ (additive functions are invisible to $\\Delta_h$). Together these give a complete picture: the continuous differences condition characterizes exactly $C(\\mathbb{R}) + \\text{Additive}$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "characterization-theorem",
-      "necessary-and-sufficient"
-    ],
-    "prerequisites": [
-      "de_bruijn_theorem",
-      "continuous_has_continuous_differences",
-      "additive_difference_const"
-    ]
   }
 ]

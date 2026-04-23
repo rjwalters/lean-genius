@@ -112,23 +112,5 @@
       "bipartite-coloring"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e569-summary",
-    "proofId": "erdos-569",
-    "range": {
-      "startLine": 169,
-      "endLine": 199
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_569_summary** combines the two central known results: (1) the EFRS93 general bound R(C_{2k+1}, H) ≤ c·k·m for some absolute constant c, and (2) the triangle case LinearRamseyBound 1 3. The proof is `⟨efrs_upper_bound, triangle_constant_bound⟩`.\n\nThis replaces previous placeholder content (`True := trivial` and `String` defs) with a genuine mathematical summary.",
-    "mathContext": "The conjunction packages the best general upper bound with the best specific case (k=1), giving a concrete picture of what is known.",
-    "significance": "key",
-    "relatedConcepts": [
-      "efrs_upper_bound",
-      "triangle_constant_bound"
-    ],
-    "prerequisites": []
   }
 ]

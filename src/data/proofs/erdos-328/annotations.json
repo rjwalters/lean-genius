@@ -409,49 +409,5 @@
     "prerequisites": [
       "hasUniqueSums"
     ]
-  },
-  {
-    "id": "ann-328-density",
-    "proofId": "erdos-328",
-    "range": {
-      "startLine": 211,
-      "endLine": 214
-    },
-    "type": "concept",
-    "title": "density_bound",
-    "content": "**density_bound**: For $A \\subseteq [1,N]$ with $r_A(n) \\leq C$ for all $n$:\n$$|A \\cap [1,N]| \\leq C\\sqrt{N} + 1$$\n\nThe counterexamples in the Nešetřil-Rödl theorem achieve this density order.",
-    "mathContext": "This is a counting argument: $\\sum_n r_A(n) = |A|^2$ (since each ordered pair $(a,b)$ contributes to exactly one $n = a+b$), and if $r_A(n) \\leq C$ then $|A|^2 \\leq C \\cdot 2N$, giving $|A| \\leq \\sqrt{2CN}$. The $C\\sqrt{N}+1$ bound is a refined version. For Sidon sets ($C=2$), this recovers the Erdős-Turán bound.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Counting argument",
-      "Erdős-Turán bound",
-      "Density of Sidon sets"
-    ],
-    "prerequisites": [
-      "rA",
-      "Finset.filter",
-      "Nat.sqrt"
-    ]
-  },
-  {
-    "id": "ann-328-summary",
-    "proofId": "erdos-328",
-    "range": {
-      "startLine": 235,
-      "endLine": 245
-    },
-    "type": "concept",
-    "title": "erdos_328_summary",
-    "content": "**erdos_328_summary**: The complete resolution of Problem #328, proved as a conjunction:\n1. **Nešetřil-Rödl**: $\\forall C \\geq 1$, $\\exists$ bad set $A$ with no valid partition\n2. **Disproof**: $\\neg$ `erdos_newman_question`\n\nProved by `⟨nesetril_rodl_theorem, erdos_newman_disproved⟩`.",
-    "mathContext": "The summary theorem packages both the constructive statement (counterexamples exist for every $C$) and the logical negation of the original conjecture. This is a clean formalization pattern: state the answer both constructively and as a negation of the question.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Summary theorem pattern",
-      "Constructive vs. negation"
-    ],
-    "prerequisites": [
-      "nesetril_rodl_theorem",
-      "erdos_newman_disproved"
-    ]
   }
 ]

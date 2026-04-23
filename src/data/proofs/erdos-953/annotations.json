@@ -480,50 +480,5 @@
       "trivial_upper_bound",
       "kovac_lower_bound"
     ]
-  },
-  {
-    "id": "erdos-953-main-axiom",
-    "proofId": "erdos-953",
-    "type": "concept",
-    "range": {
-      "startLine": 301,
-      "endLine": 304
-    },
-    "title": "The Main Open Question as Axiom",
-    "content": "Axiomatizes the strongest form of the conjecture: there exists a function $f(r)$ such that $M(r) = f(r)$ (the supremum is attained or described exactly) and $f(r) \\sim r^{\\alpha}$ for some $\\alpha \\in (0,1]$ in the sense that $f(r)/r^{\\alpha} \\to 1$.",
-    "mathContext": "$\\exists f : \\mathbb{R} \\to \\mathbb{R},\\; \\exists \\alpha \\in (0,1]:\\; M(r) = f(r) \\;\\wedge\\; \\lim_{r \\to \\infty} \\frac{f(r)}{r^{\\alpha}} = 1$",
-    "significance": "key",
-    "relatedConcepts": [
-      "asymptotic equivalence",
-      "limiting behavior",
-      "exact asymptotics"
-    ],
-    "prerequisites": [
-      "maxMeasure",
-      "erdos_953_asymptotic",
-      "real analysis"
-    ]
-  },
-  {
-    "id": "erdos-953-summary-thm",
-    "proofId": "erdos-953",
-    "type": "insight",
-    "range": {
-      "startLine": 292,
-      "endLine": 296
-    },
-    "title": "Summary: Combined Upper and Lower Bounds",
-    "content": "The `erdos_953_summary` theorem states both bounds in one statement: (1) for all $r > 0$, $M(r) \\leq Cr$ for some $C > 0$, and (2) there exist $\\alpha, C > 0$ with $M(r) \\geq Cr^{\\alpha}$ for $r \\geq 1$. Proved by pairing `trivial_upper_bound` and `kovac_lower_bound`—one of the few proved (non-axiom) results in the file.",
-    "mathContext": "$C_1 r^{0.26} \\leq M(r) \\leq C_2 r$ encapsulates the current state of knowledge on Erdős Problem #953",
-    "significance": "key",
-    "relatedConcepts": [
-      "summary theorem",
-      "state of the art",
-      "proved from axioms"
-    ],
-    "prerequisites": [
-      "trivial_upper_bound",
-      "kovac_lower_bound"
-    ]
   }
 ]

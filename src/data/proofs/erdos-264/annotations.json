@@ -207,24 +207,5 @@
       "computation"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e264-factorial-ratio",
-    "proofId": "erdos-264",
-    "range": {
-      "startLine": 146,
-      "endLine": 150
-    },
-    "type": "technique",
-    "title": "Factorial Growth Rate",
-    "content": "Factorial has ratio (n+1)!/n! = n+1, which grows but only polynomially. This puts n! exactly at the boundary of the criteria.",
-    "mathContext": "By definition, (n+1)! = (n+1) · n!, so the ratio is n+1. This grows to infinity (good for positive criterion) but polynomially (not captured by 'ratio → ∞' in the sense needed).",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "factorial",
-      "polynomial-ratio",
-      "borderline"
-    ],
-    "prerequisites": []
   }
 ]
