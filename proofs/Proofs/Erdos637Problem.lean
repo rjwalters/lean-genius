@@ -182,16 +182,16 @@ theorem ramsey_not_too_regular (G : SimpleGraph V) (hRamsey : IsRamseyGraph G)
 
 /- ## Part X: Connections to Ramsey Theory -/
 
-/-- Ramsey number R(k,k) ≥ 2^{k/2}. -/
-theorem ramsey_lower_bound (k : ℕ) (hk : k ≥ 3) :
-    True := by  -- Standard probabilistic bound
-  trivial
+/-- Ramsey number R(k,k) ≥ 2^{k/2}: there exist R(k,k)-vertex graphs
+    with no k-clique and no k-independent set (probabilistic lower bound). -/
+axiom ramsey_lower_bound (k : ℕ) (hk : k ≥ 3) :
+    ∃ R : ℕ, R ≥ 2 ^ (k / 2) ∧
+    ∃ G : SimpleGraph (Fin R), cliqueNumber G < k ∧ independenceNumber G < k
 
-/-- If ω(G), α(G) ≤ k, then n ≤ R(k+1, k+1). -/
-theorem vertex_bound_from_ramsey (G : SimpleGraph V) (k : ℕ)
+/-- If ω(G), α(G) ≤ k, then the vertex count is bounded by R(k+1,k+1). -/
+axiom vertex_bound_from_ramsey (G : SimpleGraph V) (k : ℕ)
     (hω : cliqueNumber G ≤ k) (hα : independenceNumber G ≤ k) :
-    True := by  -- n bounded by Ramsey number
-  trivial
+    ∃ R : ℕ, Fintype.card V ≤ R
 
 /- ## Part XI: Algorithmic Aspects -/
 

@@ -165,11 +165,8 @@ theorem konig_lemma {V : Type*} (T : SimpleGraph V) (root : V)
     HasInfinitePath T := by
   sorry
 
-/-- Ramsey for ordinals: Partition regular for large ordinals. -/
-theorem ordinal_ramsey (α : Ordinal) (hα : α ≥ ω) :
-    ∀ G : OrdinalGraph α, True := by
-  intro G
-  trivial
+/-- Ramsey for ordinals: large ordinals satisfy PropertyP. -/
+axiom ordinal_ramsey (α : Ordinal) (hα : α ≥ ω) : PropertyP α
 
 /- ## Part X: Independence Number -/
 

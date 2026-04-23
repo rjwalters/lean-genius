@@ -264,9 +264,8 @@ theorem erdos_763_summary :
 /--
 The answer to the Erdős-Turán question is definitively NO.
 -/
-theorem erdos_763_answer : ∃ (proof : ¬∃ (A : Set ℕ) (c : ℝ),
-    A.Infinite ∧ c > 0 ∧ HasLinearGrowthBounded (truncate A) c),
-    True := by
-  exact ⟨erdos_763, trivial⟩
+theorem erdos_763_answer : ¬∃ (A : Set ℕ) (c : ℝ),
+    A.Infinite ∧ c > 0 ∧ HasLinearGrowthBounded (truncate A) c :=
+  erdos_763
 
 end Erdos763

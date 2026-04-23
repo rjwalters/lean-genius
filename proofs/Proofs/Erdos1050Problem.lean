@@ -350,10 +350,11 @@ theorem transcendence_implies_irrationality :
   exact ⟨Polynomial.X - Polynomial.C rat, Polynomial.X_sub_C_ne_zero rat, by
     simp [Polynomial.aeval_sub, Polynomial.aeval_X, Polynomial.aeval_C, ← hrat]⟩
 
-/-- The transcendence conjecture status: OPEN. -/
-theorem transcendence_conjecture_status :
-    -- The transcendence conjecture remains open
-    True := trivial
+/-- The general transcendence conjecture implies the Erdős transcendence conjecture. -/
+theorem general_implies_erdos_transcendence :
+    GeneralTranscendenceConjecture → ErdosTranscendenceConjecture := by
+  intro h q hq
+  exact h q 1 hq (by norm_num)
 
 /-!
 ## Part VII: Connection to Erdős Problem #1049

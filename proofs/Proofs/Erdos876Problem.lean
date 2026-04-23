@@ -248,16 +248,10 @@ Sum-free sets are a type of B_h sequence for h = infinity.
 4. Gap bound: aₙ₊₁ - aₙ < n^{1+o(1)} achievable (Graham)
 -/
 theorem erdos_876_summary :
-    -- Graham's result: gaps < n^{1+ε} for any ε
-    (∀ ε : ℝ, ε > 0 → ∃ (a : ℕ → ℕ), IsSumFreeErdos (Set.range a) ∧
-      ∃ N : ℕ, ∀ n ≥ N, (gap a n : ℝ) < (n : ℝ)^(1 + ε)) ∧
-    -- The main question (linear gaps) is OPEN
-    True := by
-  constructor
-  · intro ε hε
-    obtain ⟨a, hincr, hsum, N, hgap⟩ := graham_result ε hε
-    use a, hsum, N
-    exact hgap
-  · trivial
+    ∀ ε : ℝ, ε > 0 → ∃ (a : ℕ → ℕ), IsSumFreeErdos (Set.range a) ∧
+      ∃ N : ℕ, ∀ n ≥ N, (gap a n : ℝ) < (n : ℝ)^(1 + ε) := by
+  intro ε hε
+  obtain ⟨a, hincr, hsum, N, hgap⟩ := graham_result ε hε
+  exact ⟨a, hsum, N, hgap⟩
 
 end Erdos876

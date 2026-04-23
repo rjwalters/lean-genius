@@ -455,8 +455,10 @@ theorem bipartite_no_triangle (n : ℕ) :
     Fintype.card V = n →
     ∀ G : SimpleGraph V, (∃ (A B : Finset V), A ∪ B = univ ∧ A ∩ B = ∅ ∧
       ∀ x y : V, G.Adj x y ↔ (x ∈ A ∧ y ∈ B) ∨ (x ∈ B ∧ y ∈ A)) →
-    ¬∃ T : Triangle G, True := by
-  intro V _ _ _ G ⟨A, B, hAB, hABdisj, hadj⟩ ⟨T, _⟩
+    IsEmpty (Triangle G) := by
+  intro V _ _ _ G ⟨A, B, hAB, hABdisj, hadj⟩
+  rw [isEmpty_iff]
+  intro T
   -- In a bipartite graph, any edge connects A and B.
   -- A triangle has 3 edges: v1-v2, v2-v3, v1-v3.
   -- By pigeonhole, at least 2 of {v1,v2,v3} are in the same part.

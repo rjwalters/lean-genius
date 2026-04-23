@@ -231,9 +231,9 @@ theorem turanThreshold_mono {m n : ℕ} (h : m ≤ n) :
 /-- Every graph exceeding Turán bound contains a triangle -/
 theorem exceeds_turan_has_triangle (G : SimpleGraph V) [DecidableRel G.Adj]
     (h : numEdges G > turanThreshold (numVertices G)) :
-    ∃ T : Triangle G, True := by
+    Nonempty (Triangle G) := by
   by_contra hno
   push_neg at hno
   have := turan_extremal V _ _ G _
   · omega
-  · intro T; exact hno T trivial
+  · intro T; exact hno ⟨T⟩

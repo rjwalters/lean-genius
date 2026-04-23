@@ -116,7 +116,7 @@ theorem dense_graph_has_C4_large_n (ε : ℝ) (hε : ε > 0) :
     ∃ N₀ : ℕ, ∀ (n : ℕ) (hn : N₀ ≤ n)
       (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
       (hd : ε * (n : ℝ) ^ 2 ≤ (G.edgeFinset.card : ℝ)),
-    ∃ _C4 : CycleFour G, True := by
+    Nonempty (CycleFour G) := by
   -- From KST: ∃ C > 0, C₄-free ⟹ |E| ≤ C·n^{3/2}
   -- For n > (C/ε)²: ε·n² > C·n^{3/2}, so a graph with ≥ εn² edges
   -- cannot be C₄-free. The N₀ depends on C and ε.
@@ -125,7 +125,7 @@ theorem dense_graph_has_C4_large_n (ε : ℝ) (hε : ε > 0) :
   refine ⟨Nat.ceil ((C / ε) ^ 2) + 2, fun n hn G _ hd => ?_⟩
   -- By contradiction: suppose G has no C₄
   by_contra h_no
-  simp only [not_exists, not_true_eq_false] at h_no
+  rw [not_nonempty_iff] at h_no
   -- h_no : ∀ C4 : CycleFour G, False  (G is C₄-free)
   have hn1 : 1 ≤ n := by omega
   have hE := hKST n hn1 G h_no  -- |E| ≤ C·n^{3/2}
@@ -189,7 +189,7 @@ theorem witness_must_contain_C4 (ε : ℝ) (hε : ε > 0) :
       (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
       (hd : ε * (n : ℝ) ^ 2 ≤ (G.edgeFinset.card : ℝ))
       (_χ : EdgeColoringN G) (_hR : IsRainbowC4Coloring G _χ),
-    ∃ _C4 : CycleFour G, True := by
+    Nonempty (CycleFour G) := by
   obtain ⟨N₀, hN⟩ := dense_graph_has_C4_large_n ε hε
   exact ⟨N₀, fun n hn G _ hd _ _ => hN n hn G hd⟩
 

@@ -236,9 +236,7 @@ theorem erdos_789_statement :
       (h n : ℝ) ≥ c * (n * Real.log n) ^ (1/3 : ℝ)) ∧
     -- Upper bound
     (∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-      (h n : ℝ) ≤ C * Real.sqrt n) ∧
-    -- Problem is open
-    True := by
-  exact ⟨erdos_choi_1974_lower, straus_1966_upper, trivial⟩
+      (h n : ℝ) ≤ C * Real.sqrt n) := by
+  exact ⟨erdos_choi_1974_lower, straus_1966_upper⟩
 
 end Erdos789

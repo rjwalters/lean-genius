@@ -486,31 +486,31 @@ We define the set of congruence classes {(0, N), (1, N), ..., (N-1, N)}.
 -/
 instance : DecidableEq CongruenceClass := Classical.decEq _
 
-def trivialSystemClasses (N : ℕ) (h : N > 0) : Finset CongruenceClass :=
+def baseSystemClasses (N : ℕ) (h : N > 0) : Finset CongruenceClass :=
   (Finset.range N).image (fun (i : ℕ) => { residue := (i : ℤ), modulus := N, modulus_pos := h })
 
 /-
 The size of the trivial system is N.
 -/
-lemma trivialSystemClasses_card (N : ℕ) (h : N > 0) : (trivialSystemClasses N h).card = N := by
-  rw [ Erdos202.trivialSystemClasses, Finset.card_image_of_injective ] <;> aesop_cat
+lemma baseSystemClasses_card (N : ℕ) (h : N > 0) : (baseSystemClasses N h).card = N := by
+  rw [ Erdos202.baseSystemClasses, Finset.card_image_of_injective ] <;> aesop_cat
 
 /-
 The moduli of the classes in the trivial system are bounded by N.
 -/
-lemma trivialSystemClasses_boundedBy (N : ℕ) (h : N > 0) :
-    ∀ c ∈ trivialSystemClasses N h, c.modulus ≤ N := by
+lemma baseSystemClasses_boundedBy (N : ℕ) (h : N > 0) :
+    ∀ c ∈ baseSystemClasses N h, c.modulus ≤ N := by
   intro c hc
-  simp [trivialSystemClasses] at hc
+  simp [baseSystemClasses] at hc
   obtain ⟨i, _, rfl⟩ := hc
   exact le_rfl
 
 /-
 The classes in the trivial system are pairwise disjoint.
 -/
-lemma trivialSystemClasses_disjoint (N : ℕ) (h : N > 0) :
-    ∀ c₁ ∈ trivialSystemClasses N h, ∀ c₂ ∈ trivialSystemClasses N h, c₁ ≠ c₂ → AreDisjoint c₁ c₂ := by
-      unfold Erdos202.trivialSystemClasses;
+lemma baseSystemClasses_disjoint (N : ℕ) (h : N > 0) :
+    ∀ c₁ ∈ baseSystemClasses N h, ∀ c₂ ∈ baseSystemClasses N h, c₁ ≠ c₂ → AreDisjoint c₁ c₂ := by
+      unfold Erdos202.baseSystemClasses;
       simp +zetaDelta at *;
       intro a ha b hb hab x hx; have := hx.1.symm.dvd; have := hx.2.symm.dvd; simp_all +decide [ ← ZMod.intCast_zmod_eq_zero_iff_dvd ] ;
       simp_all +decide [ sub_eq_iff_eq_add ];
@@ -519,9 +519,9 @@ lemma trivialSystemClasses_disjoint (N : ℕ) (h : N > 0) :
 /-
 The trivial disjoint system consisting of all residue classes modulo N.
 -/
-def trivialSystem (N : ℕ) (h : N > 0) : DisjointSystem :=
-  { classes := trivialSystemClasses N h,
-    pairwise_disjoint := trivialSystemClasses_disjoint N h }
+def baseSystem (N : ℕ) (h : N > 0) : DisjointSystem :=
+  { classes := baseSystemClasses N h,
+    pairwise_disjoint := baseSystemClasses_disjoint N h }
 
 /-
 The map taking a class to its canonical form is injective on a disjoint system.
@@ -569,13 +569,13 @@ lemma disjoint_system_size_le_N (S : DisjointSystem) (N : ℕ) (h : S.boundedBy 
 f(N) >= N.
 -/
 theorem f_ge_N (N : ℕ) (h : N > 0) : f N ≥ N := by
-  let S := trivialSystem N h
+  let S := baseSystem N h
   let sizes := {r : ℕ | ∃ S : DisjointSystem, S.boundedBy N ∧ S.size = r}
   have h_mem : N ∈ sizes := by
     use S
     constructor
-    · exact trivialSystemClasses_boundedBy N h
-    · exact trivialSystemClasses_card N h
+    · exact baseSystemClasses_boundedBy N h
+    · exact baseSystemClasses_card N h
   have h_bdd : BddAbove sizes := by
     use N
     intro r hr

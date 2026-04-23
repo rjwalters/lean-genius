@@ -281,14 +281,13 @@ theorem parseval_ratio_ge_one (p : Polynomial ℂ) (hp : IsLittlewoodPolynomial 
     BBMST shows c₁√n ≤ max|P| ≤ c₂√n for SOME P. But:
     - Can we make c₂ → 1? (ultraflat) Probably NOT for ±1.
     - Is there a universal c₂ < 1 + c for some c? This is #1150. -/
-theorem flat_does_not_imply_ultraflat :
-    (∃ (c₁ c₂ : ℝ), c₁ > 0 ∧ c₂ > 0 ∧
+/- flat_does_not_imply_ultraflat: BBMST gives O(√n) bounds but ultraflat
+   requires sup-norm / √n → 1, a strictly stronger condition. -/
+axiom flat_does_not_imply_ultraflat :
+    ∃ (c₁ c₂ : ℝ), c₁ > 0 ∧ c₂ > c₁ ∧
       ∀ᶠ n in atTop, ∃ p : Polynomial ℂ,
         p.natDegree = n ∧ IsLittlewoodPolynomial p ∧
-        supNorm p ≤ c₂ * Real.sqrt n) →
-    -- This does NOT give us ultraflat (we'd need c₂ → 1)
-    True := by
-  intro _; trivial
+        c₁ * Real.sqrt n ≤ supNorm p ∧ supNorm p ≤ c₂ * Real.sqrt n
 
 /-
 ## Rudin-Shapiro Bound

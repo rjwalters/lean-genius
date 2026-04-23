@@ -1,23 +1,73 @@
 /-
-  Erdős Problem #1213
+Erdős Problem #1213: Repeated Interval Sums in Bounded-Gap Sequences
 
-  Source: https://erdosproblems.com/1213
-  Status: SOLVED
-  
+Source: https://erdosproblems.com/1213
+Status: SOLVED (Hegyvári 1986)
 
-  Statement:
-  Let $a,K\geq 1$. Does there exist $f(a,K)$ such that if\[a=a_1 f(a,K)$ and with bounded gaps $a_{i+1}-a_i\leq K$ then there are two distinct intervals $I$ and $J$ such that\[\sum_{i\in I}a_i=\sum_{j\in J}a_j?\] Hegyvári [He86] has proved the answer is yes, and gives an explicit bound of the shape\[f(a,K) \ll ae^{O(K)}.\]Hegyvári believes that the exponential dependence on $K$ here is not best possible. 
+Statement:
+Let a ≥ 1, K ≥ 1. Does there exist f(a,K) such that if
+  a = a₁ < a₂ < ... < aₙ with aᵢ₊₁ - aᵢ ≤ K and n > f(a,K),
+then two distinct intervals I, J ⊆ {1,...,n} have equal sums
+  Σᵢ∈I aᵢ = Σⱼ∈J aⱼ ?
 
-  Tags: 
+Answer: YES. Hegyvári proved f(a,K) ≪ a·exp(O(K)).
 
-  TODO: Implement proof
+Reference:
+- [He86] Hegyvári, 1986
 -/
 
-import Mathlib
+import Mathlib.Data.Finset.Basic
+import Mathlib.Algebra.BigOperators.Group.Finset
 
--- Placeholder theorem
--- Replace with actual statement and proof
-theorem erdos_1213 : True := by sorry
+open Finset BigOperators
 
--- sorry marker for tracking
-#check erdos_1213
+namespace Erdos1213
+
+/--
+**Bounded-gap sequence:**
+An increasing sequence where consecutive gaps are at most K.
+-/
+def IsBoundedGapSeq (a : ℕ → ℕ) (K : ℕ) : Prop :=
+  StrictMono a ∧ ∀ i, a (i + 1) - a i ≤ K
+
+/--
+**Repeated interval sums:**
+Two distinct index intervals with equal sequence sums.
+-/
+def HasRepeatedIntervalSum (a : ℕ → ℕ) (n : ℕ) : Prop :=
+  ∃ (I J : Finset ℕ), I ≠ J ∧ (∀ i ∈ I, i < n) ∧ (∀ j ∈ J, j < n) ∧
+    (∑ i ∈ I, a i) = (∑ j ∈ J, a j) ∧ I.Nonempty
+
+/--
+**Hegyvári's Theorem (1986):**
+For any a ≥ 1 and K ≥ 1, there exists f(a,K) such that any
+bounded-gap sequence starting at a with more than f(a,K) terms
+contains two distinct intervals with equal sums.
+-/
+axiom hegyv_ari_1986 :
+    ∀ (a₀ K : ℕ), a₀ ≥ 1 → K ≥ 1 →
+      ∃ f : ℕ, ∀ (a : ℕ → ℕ) (n : ℕ),
+        a 0 = a₀ → IsBoundedGapSeq a K → n > f →
+        HasRepeatedIntervalSum a n
+
+/--
+**Exponential bound:**
+The function f(a,K) satisfies f(a,K) ≤ C · a · exp(c · K) for constants C, c.
+-/
+axiom hegyv_ari_bound :
+    ∃ (C c : ℝ), C > 0 ∧ c > 0 ∧
+      ∀ (a₀ K : ℕ), a₀ ≥ 1 → K ≥ 1 →
+        ∃ f : ℕ, (f : ℝ) ≤ C * a₀ * Real.exp (c * K) ∧
+          ∀ (a : ℕ → ℕ) (n : ℕ),
+            a 0 = a₀ → IsBoundedGapSeq a K → n > f →
+            HasRepeatedIntervalSum a n
+
+/-- **Erdős Problem #1213: SOLVED** -/
+theorem erdos_1213 :
+    ∀ (a₀ K : ℕ), a₀ ≥ 1 → K ≥ 1 →
+      ∃ f : ℕ, ∀ (a : ℕ → ℕ) (n : ℕ),
+        a 0 = a₀ → IsBoundedGapSeq a K → n > f →
+        HasRepeatedIntervalSum a n :=
+  hegyv_ari_1986
+
+end Erdos1213
