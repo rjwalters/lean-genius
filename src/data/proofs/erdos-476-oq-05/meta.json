@@ -22,7 +22,7 @@
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
     "assumptions": "1 sorry remains: vosper Case 1 existence — find non-redundant a₀ ∈ A via counting argument or iterative removal (by contradiction: if all a ∈ A are redundant, a counting argument fails for small |A|,|B|). vosper_ap_sdiff_card (position analysis: a₀ is predecessor/successor of A' in the AP) is now fully proved via linear_combination. ap_of_near_periodic (backward-shift induction), vosper_base (|A|=2 case), and all infrastructure are proved with 0 sorries.",
-    "lineCount": 784,
+    "lineCount": 853,
     "theoremCount": 13,
     "definitionCount": 1,
     "originalContributions": [
@@ -124,7 +124,7 @@
   ],
   "leanFile": {
     "namespace": "Erdos476OQ05",
-    "lineCount": 784,
+    "lineCount": 853,
     "axiomCount": 0,
     "theoremCount": 13,
     "definitionCount": 1,
