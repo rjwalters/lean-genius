@@ -2,7 +2,7 @@
 
 **Date**: 2026-04-23
 **Mode**: SELECT
-**Pool Status**: 28 available, 561 in-progress, 1403 completed, 9 graduated, 3 blocked
+**Pool Status**: 30 available, 555 in-progress, 1408 completed, 7 graduated, 4 blocked
 
 ## Selected Problem
 
@@ -16,23 +16,24 @@
 
 ## Selection Rationale
 
-1. **Highest composite score among all unclaimed candidates**: Composite score 77 (tractability 7 × 10 + significance 7) — no other unclaimed candidate with EMPTY knowledge scored higher.
-2. **Concrete, bounded scope**: The problem is not about proving new mathematics but analysing and comparing two Lean formalization APIs. The parent proof (`minkowski-fundamental-theorem`) is complete at 662 lines with 0 sorries and 0 axioms, giving the researcher a solid base to work from.
-3. **Domain diversity**: Recent 2026-04-23 seeker batches covered info theory, probability, group theory, discrete geometry, combinatorics, logic, set theory, graph theory, algebra, and analysis. Geometric number theory / Mathlib lattice API is a distinct subdomain.
+1. **Highest composite score among all unclaimed candidates**: Composite score 77 (tractability 7 × 10 + significance 7) — the only Tier B problem with both tractability 7 and significance 7 and EMPTY knowledge.
+2. **Concrete, bounded scope**: Not about proving new mathematics but analysing two Lean formalization APIs. The parent proof (`minkowski-fundamental-theorem`) is complete at 662 lines with 0 sorries and 0 axioms, giving the researcher a solid base.
+3. **Domain diversity**: Recent seeker selections covered geometry (triangle-angle-sum), analysis (Erdős #268), exponential sums (Erdős #512), graph theory (Königsberg), and combinatorics (Szemerédi regularity). Geometric number theory / Mathlib lattice API is a distinct subdomain not recently represented.
 4. **Mathlib alignment value**: ZLattice-native reformulations benefit the Mathlib community directly. This is a recurring design question (custom types vs canonical Mathlib structures) that produces reusable insights.
 5. **Low-medium difficulty with clear entry points**: Can begin with a pure survey of `Mathlib.Algebra.Module.ZLattice.*` before any proof attempt.
 
 ## Rejection Summary
 
-- **Candidates considered**: 28 available in pool
+- **Candidates considered**: 30 available in pool
 - **Candidates rejected**:
-  - `lebesgue-measure-oq-06`, `triangle-angle-sum-oq-02`: RICH/MODERATE knowledge — deprioritized by algorithm
-  - `shapley-folkman-oq-03`: MODERATE knowledge (12 items)
-  - `szemeredi-*` (4 problems): Szemerédi domain overrepresented in today's selections
-  - `weak-goldbach-oq-01`, `twin-primes-special-oq-01`, `sophie-germain-oq-01`: tractability=2 (barely tractable open conjectures)
-  - `ballot-problem-oq-03-oq-01-oq-04`: CLAIMED
-  - `cauchy-schwarz-integral-oq-01-oq-03-oq-01` (composite 76): second-best, functional analysis — good candidate but yields to minkowski on composite
-- **Confidence**: high — clear 1-point score gap at top, distinct domain, no disqualifying factors
+  - `sperner-ndim-oq-04`: RICH knowledge (248 kb_lines) — deprioritized by algorithm
+  - `szemeredi-*` (4 problems, composite 38–58): Szemerédi domain overrepresented in recent selections — diversity penalty
+  - `erdos-512-incomplete-01`, `szemeredi-regularity-oq-02`: WEAK knowledge but recently selected
+  - `triangle-angle-sum-oq-03`: Just selected (most recent seeker commit)
+  - `cauchy-schwarz-integral-oq-01-oq-03-oq-01` (composite 76): Previously selected in prior run — already queued
+  - `ballot-problem-oq-03-oq-01-oq-04` (composite 76): Active researcher claim
+  - `weak-goldbach-oq-01`, `twin-primes-special-oq-01`, `sophie-germain-oq-01`: tractability ≤ 2 — barely tractable open conjectures
+- **Confidence**: high — clear score separation at top, distinct domain, no disqualifying factors
 
 ## Related Gallery Proofs
 
@@ -50,16 +51,16 @@
 
 | Status | Count |
 |--------|-------|
-| Available | 28 |
-| In Progress | 561 |
-| Completed | 1403 |
-| Graduated | 9 |
-| Blocked | 3 |
+| Available | 30 |
+| In Progress | 555 |
+| Completed | 1408 |
+| Graduated | 7 |
+| Blocked | 4 |
 | **Total** | **2004** |
 
 ## Candidate Pool Health
 
-Pool is healthy — 28 available (threshold: 15), with majority having EMPTY knowledge scores.
+Pool is healthy — 30 available (threshold: 15), all initialized workspaces.
 
 - **Pool depth**: adequate (28 ≥ 15)
 - **Recommendation**: Pool healthy; no replenishment needed this cycle
@@ -72,6 +73,6 @@ Pool is healthy — 28 available (threshold: 15), with majority having EMPTY kno
 - [x] state.md initialized (OBSERVE, iteration 1)
 - [x] knowledge.md initialized
 - [x] literature/README.md initialized
-- [x] Database entry verified (`available`)
+- [x] Database entry verified (`available`, tier B, sig 7, tract 7)
 - [x] candidate-pool.json synced
 - [ ] Ready for /researcher
