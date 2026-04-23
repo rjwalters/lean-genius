@@ -4,7 +4,7 @@
     "proofId": "erdos-866",
     "range": {
       "startLine": 1,
-      "endLine": 28
+      "endLine": 16
     },
     "type": "concept",
     "title": "Problem Overview",
@@ -28,13 +28,13 @@
     "id": "ann-866-2",
     "proofId": "erdos-866",
     "range": {
-      "startLine": 30,
-      "endLine": 39
+      "startLine": 17,
+      "endLine": 21
     },
     "type": "technique",
-    "title": "Imports",
-    "content": "The formalization imports Finset cardinality for counting, binomial coefficients for the $\\binom{k}{2}$ pairwise sums count, real logarithms for the g₅ bounds, and real square roots/powers for the g₆ and general bounds. The `Tactic` import provides automation tools like `ring_nf`, `linarith`, and `sorry`.",
-    "mathContext": "Key Mathlib types: `Finset ℕ` for finite subsets, `ℝ` for bounds, `Real.log` for $\\log N$, `Real.sqrt` for $\\sqrt{N}$, `Real.rpow` for $N^{1-2^{-k}}$.",
+    "title": "Imports and Namespace",
+    "content": "The formalization imports all of Mathlib (import Mathlib) for convenience in this Aristotle companion file. The opens bring Finset and Real into scope, allowing unqualified use of Finset operations (filter, range, card) and real-valued functions (log, sqrt, rpow). The namespace Erdos866 groups all definitions and theorems for the problem.",
+    "mathContext": "Key Mathlib types: `Finset ℕ` for finite subsets, `ℝ` for real-valued bounds, `Real.log` for $\\log N$, `Real.sqrt` for $\\sqrt{N}$, `Real.rpow` for $N^{1-2^{-k}}$. The `open Finset Real` directives shorten code significantly throughout.",
     "significance": "supporting",
     "relatedConcepts": [
       "Finset",
@@ -51,13 +51,13 @@
     "id": "ann-866-3",
     "proofId": "erdos-866",
     "range": {
-      "startLine": 43,
-      "endLine": 45
+      "startLine": 23,
+      "endLine": 25
     },
     "type": "definition",
-    "title": "The Interval",
-    "content": "The interval {1, 2, ..., 2N} is the ambient set. Defined as `Finset.range(2N+1)` filtered to exclude 0, giving exactly the integers from 1 to 2N. This set has cardinality 2N, so requiring |A| ≥ N + g means A contains more than half the interval.",
-    "mathContext": "$[2N] = \\{1, 2, \\ldots, 2N\\}$, so $|[2N]| = 2N$. The condition $|A| \\ge N + g$ means $A$ contains at least $\\frac{1}{2} + \\frac{g}{2N}$ fraction of $[2N]$.",
+    "title": "The Ambient Interval",
+    "content": "The interval {1, 2, ..., 2N} is the ambient set for all subset problems. Defined as `Finset.range (2*N+1)` filtered to exclude 0, giving exactly the integers from 1 to 2N. This set has cardinality 2N, so requiring |A| ≥ N + g means A contains more than half the interval.",
+    "mathContext": "$[2N] = \\{1, 2, \\ldots, 2N\\} = \\{n \\in \\mathbb{N} : 1 \\le n \\le 2N\\}$, so $|[2N]| = 2N$. The condition $|A| \\ge N + g$ means $A$ contains at least $\\frac{1}{2} + \\frac{g}{2N}$ fraction of $[2N]$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Finset.range",
@@ -72,13 +72,13 @@
     "id": "ann-866-4",
     "proofId": "erdos-866",
     "range": {
-      "startLine": 47,
-      "endLine": 50
+      "startLine": 27,
+      "endLine": 30
     },
     "type": "definition",
     "title": "Pairwise Sums Condition",
-    "content": "HasAllPairwiseSums A b requires that for all $i < j \\in \\{1,\\ldots,k\\}$, the sum $b_i + b_j$ lies in A. There are $\\binom{k}{2}$ such sums. Crucially, the $b_i$ are integers (not necessarily in A or even positive)—they are 'witnesses' whose pairwise sums land in A. Using `Fin k → ℤ` allows negative witnesses, which is essential for the problem's generality.",
-    "mathContext": "$\\mathrm{HasAllPairwiseSums}(A, b) :\\equiv \\forall i < j \\le k,\\; b_i + b_j \\in A$. The $\\binom{k}{2} = \\frac{k(k-1)}{2}$ conditions must all hold simultaneously. For $k = 3$: 3 conditions; for $k = 6$: 15 conditions.",
+    "content": "HasAllPairwiseSums A b requires that for all i < j in {0,...,k-1}, the sum b_i + b_j lies in A. There are $\\binom{k}{2}$ such sums. Crucially, the b_i are integers (not necessarily in A or even positive)—they are 'witnesses' whose pairwise sums land in A. Using `Fin k → ℤ` allows negative witnesses, which is essential for the problem's generality. The `.toNat` conversion handles the embedding from ℤ to ℕ membership.",
+    "mathContext": "$\\mathrm{HasAllPairwiseSums}(A, b) :\\equiv \\forall i < j \\in \\mathrm{Fin}\\,k,\\; (b_i + b_j).\\mathrm{toNat} \\in A$. The $\\binom{k}{2} = \\frac{k(k-1)}{2}$ conditions must all hold simultaneously. For $k = 3$: 3 conditions; for $k = 6$: 15 conditions.",
     "significance": "key",
     "relatedConcepts": [
       "pairwise sums",
@@ -96,112 +96,98 @@
     "id": "ann-866-5",
     "proofId": "erdos-866",
     "range": {
-      "startLine": 52,
-      "endLine": 56
+      "startLine": 32,
+      "endLine": 38
     },
     "type": "definition",
-    "title": "Threshold Condition",
-    "content": "PairwiseSumCondition k N g states: every A ⊆ {1,...,2N} with |A| ≥ N + g contains pairwise sums of some k integers. This is a universally quantified statement over all subsets A of the interval meeting the cardinality threshold. The function g_k(N) is the minimal such g.",
-    "mathContext": "$P(k, N, g) :\\equiv \\forall A \\subseteq [2N],\\; |A| \\ge N + g \\Rightarrow \\exists b_1,\\ldots,b_k \\in \\mathbb{Z},\\; \\{b_i + b_j\\}_{i<j} \\subseteq A$.",
+    "title": "Extremal Construction and Exponent Function",
+    "content": "Two companion definitions support the key theorems. `oddNumbers N` is the set of odd integers in {1,...,2N}—the fundamental extremal construction that witnesses the lower bound g_k ≥ 1 for all k (since odd + odd = even, no pair of sums of same-parity integers can land in this set). `upperExponent k` defines the exponent 1 - 2^{-k} appearing in the general upper bound g_k(N) ≪ N^{1-2^{-k}}. As k → ∞, this exponent approaches 1, so g_k(N) approaches a linear function of N.",
+    "mathContext": "$\\mathrm{oddNumbers}(N) = \\{n \\in [2N] : n \\equiv 1 \\pmod{2}\\} = \\{1, 3, 5, \\ldots, 2N-1\\}$ with $|\\mathrm{oddNumbers}(N)| = N$. $\\mathrm{upperExponent}(k) = 1 - 2^{-k} \\in [0,1)$, strictly increasing in $k$ with $\\lim_{k\\to\\infty}(1 - 2^{-k}) = 1$.",
     "significance": "key",
     "relatedConcepts": [
-      "extremal combinatorics",
-      "Turán-type problems",
-      "threshold phenomena"
+      "odd numbers",
+      "parity",
+      "extremal set",
+      "geometric sequence",
+      "upper bound exponent"
     ],
     "prerequisites": [
-      "universal quantification",
-      "Finset subset",
-      "cardinality bounds"
+      "parity arguments",
+      "real exponentiation",
+      "Finset.filter"
     ]
   },
   {
     "id": "ann-866-6",
     "proofId": "erdos-866",
     "range": {
-      "startLine": 58,
-      "endLine": 65
+      "startLine": 40,
+      "endLine": 50
     },
-    "type": "definition",
-    "title": "The Threshold Function g",
-    "content": "g(k, N) is the minimal g for which PairwiseSumCondition holds, extracted via `Nat.find`. The existence proof (sorry) argues that g = 2N works vacuously since no A ⊆ {1,...,2N} can have |A| ≥ N + 2N = 3N > 2N elements. The `noncomputable` annotation reflects that `Nat.find` uses classical logic.",
-    "mathContext": "$g_k(N) = \\min\\{g \\in \\mathbb{N} : P(k, N, g)\\}$. Well-defined since $P(k, N, 2N)$ holds vacuously: $|A| \\le 2N < 3N = N + 2N$.",
+    "type": "technique",
+    "title": "Exponent Monotonicity Proof",
+    "content": "The theorem `upperExponent_increasing` establishes that the upper bound exponent 1 - 2^{-k} is strictly increasing in k (for k ≥ 1). This is needed to assert that the threshold g_k(N) becomes harder (closer to N) as k grows. The proof uses `sub_lt_sub_left` to reduce to showing 2^{-(k+1)} < 2^{-k}, then applies `pow_lt_pow_right_of_lt_one₀` since 2^{-1} ∈ (0,1). The Aristotle companion comment provides the proof strategy that was used.",
+    "mathContext": "$\\mathrm{upperExponent}(k) < \\mathrm{upperExponent}(k+1) \\iff 1 - 2^{-k} < 1 - 2^{-(k+1)} \\iff 2^{-(k+1)} < 2^{-k}$. Since $2^{-1} \\in (0,1)$, raising to a higher power gives a smaller value: $x^{k+1} < x^k$ for $x \\in (0,1)$ and $k \\ge 1$.",
     "significance": "key",
     "relatedConcepts": [
-      "Nat.find",
-      "well-ordering principle",
-      "noncomputable definitions"
+      "geometric sequence monotonicity",
+      "sub_lt_sub_left",
+      "pow_lt_pow_right_of_lt_one₀",
+      "real exponentiation"
     ],
     "prerequisites": [
-      "Nat.find",
-      "classical logic",
-      "vacuous truth"
+      "real arithmetic",
+      "geometric sequences",
+      "Lean tactic proofs"
     ]
   },
   {
     "id": "ann-866-7",
     "proofId": "erdos-866",
     "range": {
-      "startLine": 69,
-      "endLine": 74
+      "startLine": 52,
+      "endLine": 66
     },
-    "type": "concept",
-    "title": "g₃ Exact Value",
-    "content": "Choi–Erdős–Szemerédi proved $g_3(N) = 2$ exactly. If A ⊆ {1,...,2N} has |A| ≥ N+2, then three integers b₁, b₂, b₃ exist with all three pairwise sums in A. The proof uses a pigeonhole argument on complementary pairs: with N+2 elements in a range of 2N, there are enough collisions in complementary pairs to force three mutually compatible sums.",
-    "mathContext": "$g_3(N) = 2$ for all $N \\ge 1$. The upper bound: if $|A| \\ge N+2$, consider complementary pairs $(a, 2N+1-a)$. By pigeonhole, $A$ contains both elements of some pair, giving a structured starting point for finding the triple.",
+    "type": "technique",
+    "title": "Odd Numbers Cardinality Proof",
+    "content": "The theorem `oddNumbers_card` establishes that the set of odd numbers in {1,...,2N} has exactly N elements. This is a fundamental fact used in the lower bound argument: if |oddNumbers(N)| = N, and no triple of integers has all pairwise sums in oddNumbers (proved separately), then g_k(N) ≥ 1 for all k. The proof uses `Finset.card_eq_of_bijective` with the bijection i ↦ 2i+1 from {0,...,N-1} to the odd numbers. The Aristotle companion comment describes the approach: image via (fun k => 2k+1), then card_image_of_injective and card_range.",
+    "mathContext": "$|\\mathrm{oddNumbers}(N)| = N$. Proof: the map $i \\mapsto 2i+1$ is a bijection from $\\{0,1,\\ldots,N-1\\}$ to $\\{1,3,5,\\ldots,2N-1\\}$. Injectivity: $2i+1 = 2j+1 \\Rightarrow i=j$ (by omega). Surjectivity: given $2j-1 \\in \\mathrm{oddNumbers}(N)$, use $i = j-1$.",
     "significance": "key",
     "relatedConcepts": [
-      "pigeonhole principle",
-      "complementary pairs",
-      "exact threshold"
+      "Finset.card_eq_of_bijective",
+      "bijection",
+      "odd integers",
+      "cardinality counting"
     ],
     "prerequisites": [
-      "pigeonhole principle",
-      "sumset structure"
+      "bijection arguments",
+      "Finset.card",
+      "injectivity via omega"
     ]
   },
   {
     "id": "ann-866-8",
     "proofId": "erdos-866",
     "range": {
-      "startLine": 76,
-      "endLine": 81
+      "startLine": 68,
+      "endLine": 83
     },
     "type": "technique",
-    "title": "g₃ Lower Bound",
-    "content": "The lower bound $g_3(N) \\ge 2$ comes from the odd numbers construction: the set $\\{1, 3, 5, \\ldots, 2N-1\\}$ has exactly N elements but cannot contain three pairwise sums. For any three integers b₁, b₂, b₃, at least two share the same parity (by pigeonhole), so their sum is even—but all elements of the odd set are odd. Hence no triple works, showing N elements are not enough.",
-    "mathContext": "Let $O_N = \\{2j-1 : 1 \\le j \\le N\\}$. Then $|O_N| = N$ and for any $b_1, b_2, b_3 \\in \\mathbb{Z}$, $\\exists i \\neq j : b_i \\equiv b_j \\pmod{2}$, so $b_i + b_j \\equiv 0 \\pmod{2} \\notin O_N$. Hence $P(3, N, 1)$ fails, giving $g_3(N) \\ge 2$.",
+    "title": "Parity Pigeonhole: No Triple in Odd Numbers",
+    "content": "The theorem `oddNumbers_no_triple` proves that no three integers b₀, b₁, b₂ can have all three pairwise sums in the odd numbers. Among any three integers, by pigeonhole, at least two share the same parity. Their sum is therefore even (even + even or odd + odd = even), but every element of oddNumbers is odd. This contradiction shows the odd numbers construction witnesses g_k(N) ≥ 1 for k ≥ 3. The proof uses `rintro` to destructure the existential, establishes that all pairwise sums must be odd via membership in oddNumbers, then derives a contradiction using `simp_all +decide [Fin.forall_fin_succ]` and `grind +ring` on the parity constraints.",
+    "mathContext": "$\\neg\\exists b : \\mathrm{Fin}\\,3 \\to \\mathbb{Z},\\; \\mathrm{HasAllPairwiseSums}(\\mathrm{oddNumbers}(N), b)$. Proof: if such $b$ exists, then $(b_0+b_1).\\mathrm{toNat}$, $(b_0+b_2).\\mathrm{toNat}$, $(b_1+b_2).\\mathrm{toNat}$ are all odd. But among $b_0, b_1, b_2$: by pigeonhole $\\exists i \\ne j,\\; b_i \\equiv b_j \\pmod{2}$, so $b_i + b_j$ is even — contradiction.",
     "significance": "key",
     "relatedConcepts": [
       "parity argument",
       "pigeonhole principle",
-      "extremal construction"
+      "extremal construction",
+      "rintro tactic",
+      "Fin.forall_fin_succ"
     ],
     "prerequisites": [
       "parity",
-      "pigeonhole among 3 elements"
-    ]
-  },
-  {
-    "id": "ann-866-9",
-    "proofId": "erdos-866",
-    "range": {
-      "startLine": 85,
-      "endLine": 89
-    },
-    "type": "concept",
-    "title": "g₄ Bounded",
-    "content": "$g_4(N)$ is bounded by an absolute constant C independent of N. This is surprising: no matter how large N is, adding a fixed constant beyond N elements always forces four integers with all $\\binom{4}{2} = 6$ pairwise sums in A. The proof uses a more sophisticated pigeonhole argument than the k=3 case, exploiting the arithmetic structure of {1,...,2N}.",
-    "mathContext": "$\\exists C \\in \\mathbb{N},\\; \\forall N \\ge 1,\\; g_4(N) \\le C$. The constant $C$ is independent of $N$—a striking contrast with $g_5(N) \\to \\infty$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "bounded threshold",
-      "constant vs growing",
-      "arithmetic regularity"
-    ],
-    "prerequisites": [
-      "threshold function behavior",
-      "extremal combinatorics"
+      "pigeonhole among 3 elements",
+      "Lean simp and grind tactics"
     ]
   }
 ]
