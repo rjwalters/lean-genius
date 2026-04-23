@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-module-header",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": { "startLine": 1, "endLine": 59 },
+    "type": "context",
+    "title": "Module Header: Dehn Invariant Architecture and Classification Table",
+    "content": "The module imports DissectionOfCubesOQ02 (Niven's arccos(1/3)/π irrationality via nivenSeq) and DissectionOfCubesOQ02OQ02 (Dehn-Sydler tensor product infrastructure: edgeTerm, cube_dehn_zero, tet_dehn_ne_zero, oct_dehn_ne_zero, tmul_infinite_order_ne_zero). The docstring presents the complete classification table for all five Platonic solids, announces 2 axioms total (tmul_infinite_order_ne_zero from OQ02OQ02 + icoAngle_irrational, new), and previews the Chebyshev sequence technique used to prove arccos(-1/√5)/π irrational — the key new result for the dodecahedron.\n\nThe core question from Hilbert's Third Problem (1900): two polyhedra with the same volume — can one always be cut and reassembled into the other? Dehn's negative answer used D(P) = Σ_e len(e) ⊗ [θ(e)] ∈ ℝ ⊗_ℤ (ℝ/πℤ). The cube has D = 0 (all angles π/2 = rational·π), while any Platonic solid with an irrational dihedral angle has D ≠ 0.",
+    "mathContext": "Dehn invariant: $D(P) = \\sum_e \\ell(e) \\otimes [\\theta(e)] \\in \\mathbb{R} \\otimes_\\mathbb{Z} (\\mathbb{R}/\\pi\\mathbb{Z})$. Cube: 12 edges at $\\pi/2$, so $[\\pi/2] = 0$ in $\\mathbb{R}/\\pi\\mathbb{Z}$, giving $D = 0$. The five Platonic dihedral angles: $\\pi/2$ (cube), $\\arccos(1/3)$ (tet), $\\arccos(-1/3)$ (oct), $\\arccos(-1/\\sqrt{5})$ (dod), $\\arccos(-\\sqrt{5}/3)$ (ico). All non-cube angles are irrational multiples of $\\pi$.",
+    "significance": "context",
+    "relatedConcepts": ["Hilbert's Third Problem", "Dehn invariant", "scissors congruence", "edgeTerm", "tmul_infinite_order_ne_zero"],
+    "prerequisites": ["tensor product ℝ ⊗_ℤ (ℝ/πℤ)", "DissectionOfCubesOQ02", "DissectionOfCubesOQ02OQ02"]
+  },
+  {
     "id": "ann-chebyshev-sequence-design",
     "proofId": "dissection-of-cubes-oq-04",
     "range": { "startLine": 60, "endLine": 82 },
@@ -34,6 +46,18 @@
     "significance": "key",
     "relatedConcepts": ["proof by contradiction", "Niven's theorem", "Chebyshev sequence", "cos_int_mul_pi", "rationality assumption"],
     "prerequisites": ["cosThreeFifthsSeq_eq_cos", "five_ndvd_cosThreeFifthsSeq", "Real.cos_int_mul_pi", "Rat.den"]
+  },
+  {
+    "id": "ann-dod-angle-def",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": { "startLine": 178, "endLine": 195 },
+    "type": "definition",
+    "title": "dodAngle Definition and Domain Helper Lemmas",
+    "content": "Part II opens by defining `dodAngle = arccos(-1/√5)` — the dihedral angle of a regular dodecahedron (12 pentagonal faces, 30 edges, ≈116.57°). Two private helper lemmas establish domain bounds: `one_div_sqrt5_nonneg` proves 0 ≤ 1/√5 via `positivity`; `one_div_sqrt5_le_one` proves 1/√5 ≤ 1 via `Real.one_le_sqrt`. These bounds are required for the subsequent `Real.arccos_cos` and `Real.arccos_le_pi_div_two` applications in the half-angle identity proof: `arccos_cos(h₁)(h₂)` requires `0 ≤ angle` and `angle ≤ π`, which come from `arccos(1/√5) ≤ π/2` (from `1/√5 ≥ 0`) doubling to `2·arccos(1/√5) ≤ π`.",
+    "mathContext": "$\\arccos: [-1, 1] \\to [0, \\pi]$. For $x \\geq 0$: $\\arccos(x) \\leq \\pi/2$. The dodecahedron dihedral: $\\text{dodAngle} = \\arccos(-1/\\sqrt{5}) = \\pi - \\arccos(1/\\sqrt{5}) \\approx 116.57°$. Domain: $0 \\leq 1/\\sqrt{5} \\leq 1 \\iff 1 \\leq \\sqrt{5}$ (from $1 \\leq 5 = (\\sqrt{5})^2$). `Real.one_le_sqrt`: $1 \\leq \\sqrt{x} \\iff 1 \\leq x$ (for $x \\geq 0$).",
+    "significance": "supporting",
+    "relatedConcepts": ["dodAngle", "arccos domain", "Real.arccos_le_pi_div_two", "Real.one_le_sqrt", "positivity tactic"],
+    "prerequisites": ["Real.arccos definition", "Real.sqrt_pos", "Real.one_le_sqrt"]
   },
   {
     "id": "ann-half-angle-identity",
@@ -82,5 +106,17 @@
     "significance": "main-result",
     "relatedConcepts": ["Platonic solids", "Dehn invariant", "scissors congruence", "Hilbert's third problem"],
     "prerequisites": ["cube_dehn_zero", "tet_dehn_ne_zero", "oct_dehn_ne_zero", "dod_dehn_ne_zero", "ico_dehn_ne_zero"]
+  },
+  {
+    "id": "ann-cube-unique-axiom-audit",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": { "startLine": 365, "endLine": 437 },
+    "type": "insight",
+    "title": "cube_unique_zero_dehn (Partial) and Axiom Audit",
+    "content": "cube_unique_zero_dehn (lines 367-396) attempts the stronger statement: for ANY positive integer n and any non-cube Platonic dihedral angle x, the edge term n·a ⊗ [x] is nonzero. This requires a general scaling lemma: if a ⊗ [θ] ≠ 0 and c > 0, then ca ⊗ [θ] ≠ 0. The three sorries (lines 390, 393, 396) are exactly this step for octahedron, dodecahedron, and icosahedron angles. The main theorem cube_isolated_dehn_invariant (fully proved) already captures the key mathematical content; cube_unique_zero_dehn is a generalization in progress.\n\nThe axiom audit (lines 398-429) formally inventories both axioms with justifications: `icoAngle_irrational` (new to this file; the deferred ℤ[√5] Chebyshev argument) and `tmul_infinite_order_ne_zero` (inherited from OQ02OQ02; flatness of ℝ over ℤ). The `#check` lines (431-435) provide Lean elaboration verification.",
+    "mathContext": "Scaling lemma: $(c\\ell) \\otimes [\\theta] = c \\cdot (\\ell \\otimes [\\theta])$ (bilinearity of tensor product). Since $\\mathbb{R} \\otimes_\\mathbb{Z} (\\mathbb{R}/\\pi\\mathbb{Z})$ is a $\\mathbb{Q}$-vector space (via the $\\mathbb{Q}$-algebra structure of $\\mathbb{R}$), it is torsion-free: $c \\cdot x = 0$ with $c > 0$ implies $x = 0$. The sorries are about formalizing this bilinearity scaling in Lean's `TensorProduct` API rather than a mathematical gap.",
+    "significance": "technical",
+    "relatedConcepts": ["cube_unique_zero_dehn", "TensorProduct.smul_tmul", "bilinearity", "axiom budget", "DissectionOfCubesOQ04 namespace"],
+    "prerequisites": ["cube_isolated_dehn_invariant", "TensorProduct bilinearity", "Module.Flat", "sorry in Lean"]
   }
 ]
