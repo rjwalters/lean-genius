@@ -29,14 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: adjFn_symm optimized; boundary_doors_odd false for oriented gridComplex (see oq-02); Mathlib PR path clear for SpernerMathlib4+SpernerSimplicialInstance",
+    "progressSummary": "PROGRESS: Granular imports verified for SpernerMathlib4.lean (Docker build: 9.6s success); PR #11625 created",
     "builtItems": [
       "SpernerMathlib4Opt.lean: optimized proof proposal for even_card_of_fpf_invol using sum_involution (research/problems/sperner-ndim-oq-05/lean/)",
       "even_card_of_fpf_invol: 53-line strongInduction proof replaced with 11-line sum_involution proof in SpernerMathlib4.lean",
       "boundaryFlip0.step_same: proved (SpernerGrid.lean:868-903, 2 sorries → 0)",
       "boundaryFlipLast.step_same: proved (SpernerGrid.lean:1011-1046, 2 sorries → 0)",
       "gridAdj_ne: proved in SpernerGrid.lean (1 sorry removed, 6 → 5 remaining)",
-      "Optimized adjFn_symm in SpernerSimplicialInstance.lean (line 745+)"
+      "Optimized adjFn_symm in SpernerSimplicialInstance.lean (line 745+)",
+      "Granular import set for SpernerMathlib4.lean verified: Algebra.Order.BigOperators.Group.Finset + Algebra.Ring.Parity + Data.Fintype.BigOperators + Data.ZMod.Basic (Docker build: 9.6s, 1093 jobs, success 2026-04-23)"
     ],
     "insights": [
       "All gallery files (SpernerMathlib4, SpernerSimplicialInstance, etc.) have 0 sorries — mathematical work complete",
@@ -60,18 +61,17 @@
       "split_ifs auto-closes h:none=some contradictions — only 1 bullet needed per split_ifs in helper lemmas",
       "j_step.castSucc.val syntactically ≠ j_step.val even though equal — need simp [Fin.castSucc] before omega in hlv proofs",
       "gridAdj_ne proved via 3-case split: boundary cases use verts_injective; interior case uses inc_injective + interiorFlip_incDir_kprev",
-      "adjFn_symm h_idx_eq block reduced from 28→13 lines using vertexEnum_not_mem_faceOf_iff; vertexEnum_not_mem_faceOf_iff packages both cases eliminating manual case split"
+      "adjFn_symm h_idx_eq block reduced from 28→13 lines using vertexEnum_not_mem_faceOf_iff; vertexEnum_not_mem_faceOf_iff packages both cases eliminating manual case split",
+      "Mathlib.Algebra.BigOperators.Group.Finset has no Finset.lean entry point — correct import is Mathlib.Algebra.Order.BigOperators.Group.Finset (which transitively imports Basic + Fintype.Card)",
+      "Minimal granular import set for SpernerMathlib4.lean: (1) Algebra.Order.BigOperators.Group.Finset, (2) Algebra.Ring.Parity, (3) Data.Fintype.BigOperators, (4) Data.ZMod.Basic",
+      "Nat.odd_iff is in namespace Nat section of Mathlib.Algebra.Ring.Parity (line 210)",
+      "Finset.sum_involution is @[to_additive] version of prod_involution in BigOperators.Group.Finset.Basic"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "[USER ACTION] Post comment on mathlib4#25231 pointing Dillies to SpernerSimplicialInstance.lean as Part 2",
-      "Test granular imports via Docker build for SpernerMathlib4.lean",
-      "Profile SpernerSimplicialInstance.lean with set_option profiler true to find expensive proofs",
-      "Reduce SpernerSimplicialInstance heartbeats to ≤ 800000 for Mathlib PR",
-      "Submit Part 1 (SpernerMathlib4) PR to mathlib4 as initial contribution, Part 2 as follow-up",
-      "Docker build to verify SpernerSimplicialInstance.lean optimization",
-      "Profile with set_option profiler true to find heartbeat bottleneck",
-      "USER ACTION: comment on mathlib4#25231 linking SpernerSimplicialInstance.lean as Part 2"
+      "[USER ACTION] Post comment on mathlib4#25231 linking SpernerSimplicialInstance.lean as Part 2",
+      "Profile SpernerSimplicialInstance.lean with set_option profiler true to find heartbeat bottleneck",
+      "Prepare Mathlib PR: fork mathlib4, copy SpernerMathlib4.lean to Mathlib/Combinatorics/Sperner.lean"
     ],
     "markdown": "# Knowledge Base: sperner-ndim-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
