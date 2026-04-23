@@ -21,7 +21,7 @@
     "sorries": 0,
     "dateAdded": "2026-04-12",
     "axiomCount": 5,
-    "lineCount": 924,
+    "lineCount": 949,
     "assumptions": "5 axioms: aperyB_recurrence (WZ recurrence), denominator_control (lcm^3*a_n is integer), lcm_hanson_bound (3^n Hanson bound), apery_linearForm_decay (geometric decay), apery_linearForm_nonzero (L_n != 0 for n>=1). Removed unused nair_lcm_bound. Main theorem apery_theorem PROVED from these 5 axioms.",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -129,6 +129,14 @@
       "endLine": 791,
       "summary": "Proves zetaValue_three_gt_6_5 (ζ(3) > 6/5) via a 16-term partial sum computed by norm_num. Then proves linearForm_one_pos (L₁ = 5ζ(3) - 6 > 0) as a concrete axiom-free instance of the nonzero property.",
       "mathContext": "$\\sum_{n=1}^{16} 1/n^3 > 6/5$ by direct computation (`norm_num`). Since $\\zeta(3) \\geq \\sum_{n=1}^{16} 1/n^3$ (partial sums bound the series from below by `sum_le_tsum`), we get $\\zeta(3) > 6/5$. Then $L_1 = 5\\zeta(3) - 6 > 5 \\cdot 6/5 - 6 = 0$."
+    },
+    {
+      "id": "concrete-l3-positive",
+      "title": "Part XIX: Third Concrete Nonzero Base Case",
+      "startLine": 853,
+      "endLine": 886,
+      "summary": "Proves aperyA_three (a₃ = 62531/36 by recurrence computation) and linearForm_three_pos (L₃ = 1445ζ(3) - 62531/36 > 0) via the N=350 quantitative lower bound.",
+      "mathContext": "L₃ > 0 iff ζ(3) > a₃/b₃ = 62531/52020 ≈ 1.202056903. The gap ζ(3) - 62531/52020 ≈ 3×10⁻⁸ requires N≥325 terms in the telescoping lower bound (error ≈ 1/N³). native_decide over ℚ verifies ∑_{k=0}^{349} 1/k³ + 1/(2·350²) > 62531/52020."
     }
   ],
   "conclusion": {
@@ -180,13 +188,13 @@
       "Nat"
     ],
     "namespace": "AperyZetaThree",
-    "lineCount": 924,
+    "lineCount": 949,
     "axiomCount": 5,
-    "theoremCount": 25,
+    "theoremCount": 27,
     "definitionCount": 4,
     "path": "Proofs/BaselProblemOQ01OQ01OQ02.lean",
     "sorries": 0,
-    "notes": "11 pre-existing build errors fixed (Mathlib API changes: sum_le_sum_of_subset removed, Finset.lcm normalization, dcstring parser incompatibilities). Parts XVII-XVIII added: telescoping upper bound for ζ(3) tail + L₂ > 0 via native_decide."
+    "notes": "11 pre-existing build errors fixed (Mathlib API changes). Parts XVII-XVIII added: telescoping upper bound for ζ(3) tail + L₂ > 0 via native_decide. Part XIX added: aperyA_three (a₃=62531/36) and linearForm_three_pos (L₃ = 1445ζ(3) - 62531/36 > 0 via N=350 native_decide bound; gap ≈ 3×10⁻⁸ requires N≥325)."
   },
   "references": [
     {
