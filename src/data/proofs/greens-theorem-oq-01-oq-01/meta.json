@@ -167,5 +167,25 @@
       "note": "Section 2.5: Fubini-Tonelli theorem and its applications to iterated integrals"
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "intervalIntegral_swap",
+      "statement": "∀ {f a b c d} (hab : a ≤ b) (hcd : c ≤ d) (hf_meas : Measurable f) (hf_int : Integrable f ...), ∫ y in c..d, ∫ x in a..b, f x y = ∫ x in a..b, ∫ y in c..d, f x y",
+      "significance": "The core Fubini theorem for iterated interval integrals: proves the swap identity under measurability and integrability on the product rectangle.",
+      "lineNumber": 42
+    },
+    {
+      "name": "greens_fubini_eliminated",
+      "statement": "∀ dPdy a b c d (hab hcd) (hf_meas hf_int), ∫ y in c..d, ∫ x in a..b, dPdy (x,y) = ∫ x in a..b, ∫ y in c..d, dPdy (x,y)",
+      "significance": "Eliminates the hFubini hypothesis from Green's theorem: for any measurable integrable dPdy, the Fubini condition holds without extra axioms.",
+      "lineNumber": 91
+    },
+    {
+      "name": "fubini_of_continuous",
+      "statement": "∀ {f} a b c d (hab hcd) (hf : Continuous f), ∫ y in c..d, ∫ x in a..b, f (x,y) = ∫ x in a..b, ∫ y in c..d, f (x,y)",
+      "significance": "For continuous functions on rectangles, Fubini is automatic — no explicit integrability hypothesis needed.",
+      "lineNumber": 107
+    }
+  ],
   "sorries": 0
 }

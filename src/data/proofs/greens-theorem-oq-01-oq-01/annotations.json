@@ -1,12 +1,35 @@
 [
   {
+    "id": "ann-module-header",
+    "proofId": "greens-theorem-oq-01-oq-01",
+    "range": { "startLine": 19, "endLine": 41 },
+    "type": "concept",
+    "title": "Module Header: Fubini Bridge from Measure Theory to Interval Integrals",
+    "content": "This file (`GreensTheoremOQ01OQ01.lean`) proves the `hFubini` hypothesis from the parent Green's theorem formalization (`GreensTheoremOQ01.lean`). The hypothesis states that for a rectangle `[a,b] × [c,d]`, the iterated integral `∫ y in c..d, ∫ x in a..b, f(x,y)` equals `∫ x in a..b, ∫ y in c..d, f(x,y)`.\n\nThe key bridge (listed at lines 11-14): (1) `integral_integral_swap` — Mathlib's abstract Fubini theorem for Lebesgue integrals on product spaces; (2) `integral_of_le` — converts interval notation `∫ x in a..b` to set integral notation `∫ x ∂(vol.restrict (Ioc a b))`; (3) `prod_restrict` — connects the product of restricted measures to the restricted product measure.\n\nThe main theorem `intervalIntegral_swap` (lines 42-71) takes hypotheses `hab : a ≤ b`, `hcd : c ≤ d`, `hf_meas : Measurable f`, and `hf_int : Integrable f (vol|_{Icc a b} × vol|_{Icc c d})`. The proof converts both sides to set integrals, transfers integrability from Icc to Ioc, and applies `integral_integral_swap`.",
+    "mathContext": "Fubini's theorem (measure-theoretic): for $\\sigma$-finite measures $\\mu, \\nu$ and $f \\in L^1(\\mu \\otimes \\nu)$: $\\int_X \\int_Y f(x,y)\\,d\\nu\\,d\\mu = \\int_Y \\int_X f(x,y)\\,d\\mu\\,d\\nu$. The interval integral $\\int_a^b f\\,dx$ (Mathlib `intervalIntegral`) is signed: $\\int_a^b f\\,dx = -\\int_b^a f\\,dx$. For $a \\le b$, it equals the set integral over $(a,b]$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fubini-Tonelli theorem",
+      "iterated interval integrals",
+      "intervalIntegral vs set integral",
+      "Lebesgue product measure",
+      "Green's theorem OQ-01",
+      "hFubini hypothesis elimination"
+    ],
+    "prerequisites": [
+      "GreensTheoremOQ01.lean (parent file with hFubini hypothesis)",
+      "MeasureTheory.integral_integral_swap",
+      "intervalIntegral.integral_of_le"
+    ]
+  },
+  {
     "id": "ann-fubini-interval-swap-signature",
     "proofId": "greens-theorem-oq-01-oq-01",
     "range": {
       "startLine": 42,
-      "endLine": 46
+      "endLine": 47
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "intervalIntegral_swap: Fubini for Rectangles",
     "content": "This theorem establishes that iterated interval integrals over a rectangle can be swapped, provided the integrand is measurable and integrable on the product region. The hypotheses encode the non-degeneracy of the rectangle (a ≤ b, c ≤ d) and the integrability conditions required for Fubini's theorem. This is the core technical engine behind the analytic content of Green's theorem in this formalization.",
     "mathContext": "For $f : [a,b] \\times [c,d] \\to \\mathbb{R}$, the theorem establishes $\\int_c^d \\int_a^b f(x,y)\\,dx\\,dy = \\int_a^b \\int_c^d f(x,y)\\,dy\\,dx$ under measurability of $(x,y) \\mapsto f(x,y)$ and integrability on $[a,b] \\times [c,d]$ with the product of restricted Lebesgue measures.",
@@ -29,11 +52,11 @@
     "proofId": "greens-theorem-oq-01-oq-01",
     "range": {
       "startLine": 48,
-      "endLine": 53
+      "endLine": 60
     },
     "type": "tactic",
     "title": "Reducing Interval Integrals to Set Integrals via integral_of_le",
-    "content": "The proof bridges Mathlib's `intervalIntegral` API and its set integral API using `integral_of_le`, which converts an oriented interval integral `∫ x in a..b` into a set integral over `Ioc a b = (a,b]` when `a ≤ b`. The rw/simp_rw calls systematically push this conversion from the outermost to innermost integrals on both sides. This reduction is necessary because the Fubini machinery (`integral_integral_swap`) operates on Bochner integrals against product measures, not syntactic interval notation.",
+    "content": "The proof bridges Mathlib's `intervalIntegral` API and its set integral API using `integral_of_le`, which converts an oriented interval integral `∫ x in a..b` into a set integral over `Ioc a b = (a,b]` when `a ≤ b`. The rw/simp_rw calls systematically push this conversion from the outermost to innermost integrals on both sides. This reduction is necessary because the Fubini machinery (`integral_integral_swap`) operates on Bochner integrals against product measures, not syntactic interval notation.\n\nLines 54-60 (inline proof comments) explain the intermediate state: both sides become set integrals over `Ioc c d` and `Ioc a b`, written as `∫ y ∂(vol.restrict (Ioc c d)), ∫ x ∂(vol.restrict (Ioc a b)), f x y` — the form required by `integral_integral_swap`.",
     "mathContext": "When $a \\le b$: $\\int_a^b f\\,dx = \\int_{(a,b]} f\\,d\\mu$ where $\\mu$ is Lebesgue measure restricted to $(a,b] = \\mathrm{Ioc}(a,b)$. The signed interval integral $\\int_a^b$ differs from $\\int_b^a$ by a sign, but for $a \\le b$ it agrees with the set integral.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -55,7 +78,7 @@
       "startLine": 61,
       "endLine": 65
     },
-    "type": "lemma",
+    "type": "technique",
     "title": "Transferring Icc Integrability to Ioc via Measure Monotonicity",
     "content": "Integrability on the closed rectangle `Icc a b × Icc c d` is transferred to the half-open rectangle `Ioc a b × Ioc c d` by exploiting measure monotonicity: `Ioc ⊆ Icc` implies the restricted measure is smaller, and `Integrable.mono_measure` propagates integrability to smaller measures. The `Measure.prod_mono` lemma applies monotonicity componentwise to the product measure. The two boundary points added/removed have measure zero, so this step is measure-theoretically trivial but syntactically necessary.",
     "mathContext": "Since $(a,b] \\subseteq [a,b]$, we have $\\mu|_{(a,b]} \\le \\mu|_{[a,b]}$ as measures, so $f \\in L^1(\\mu|_{[a,b]} \\otimes \\mu|_{[c,d]})$ implies $f \\in L^1(\\mu|_{(a,b]} \\otimes \\mu|_{(c,d]})$ via $\\|f\\|_{L^1(\\text{small})} \\le \\|f\\|_{L^1(\\text{large})}$.",
@@ -77,11 +100,11 @@
     "proofId": "greens-theorem-oq-01-oq-01",
     "range": {
       "startLine": 66,
-      "endLine": 71
+      "endLine": 90
     },
     "type": "insight",
     "title": "Fubini Applied: integral_integral_swap Closes the Goal",
-    "content": "All prior steps were scaffolding to reach this line: a single call to Mathlib's `MeasureTheory.integral_integral_swap`, which encapsulates Fubini's theorem for Bochner integrals on product measures. The `.symm` reverses the conclusion from LHS = RHS to RHS = LHS to match the goal orientation. Every conversion done above (interval → set integral, Icc → Ioc measure transfer) was precisely to put the goal in the form expected by this one lemma.",
+    "content": "Lines 66-71: the proof culminates in a single call to `MeasureTheory.integral_integral_swap`, which encapsulates Fubini's theorem for Bochner integrals on product measures. The `.symm` reverses the conclusion from LHS = RHS to RHS = LHS to match the goal orientation. Every conversion done above (interval → set integral, Icc → Ioc measure transfer) was precisely to put the goal in the form expected by this one lemma.\n\nLines 73-90: Part II section header and the docstring for `greens_fubini_eliminated`. The theorem (lines 91-98) connects `intervalIntegral_swap` to the specific Green's theorem setting: it specializes the abstract swap to `dPdy : ℝ × ℝ → ℝ` (the partial derivative ∂P/∂y appearing in Green's theorem), making the Fubini hypothesis explicitly eliminable under measurability + integrability.",
     "mathContext": "`integral_integral_swap` states: for integrable $f$ on $(X \\times Y, \\mu \\otimes \\nu)$, $\\int_X \\int_Y f(x,y)\\,d\\nu\\,d\\mu = \\int_Y \\int_X f(x,y)\\,d\\mu\\,d\\nu$. This is the abstract measure-theoretic Fubini theorem — the entire proof reduces to verifying its hypotheses.",
     "significance": "key",
     "relatedConcepts": [
@@ -98,11 +121,33 @@
     ]
   },
   {
+    "id": "ann-greens-fubini-eliminated",
+    "proofId": "greens-theorem-oq-01-oq-01",
+    "range": { "startLine": 91, "endLine": 106 },
+    "type": "theorem",
+    "title": "greens_fubini_eliminated: Fubini Hypothesis Removed from Green's Theorem",
+    "content": "`greens_fubini_eliminated` (lines 91-98) is the key result linking this file to the parent Green's theorem proof. It specializes `intervalIntegral_swap` to the concrete `dPdy : ℝ × ℝ → ℝ` function (the partial derivative ∂P/∂y in Green's theorem), under the same measurability + integrability hypotheses. The proof is a single application: `intervalIntegral_swap a b c d hab hcd hf_meas hf_int`.\n\nSignificance: the parent file `GreensTheoremOQ01.lean` had `hFubini` as an explicit axiom/hypothesis. `greens_fubini_eliminated` shows this hypothesis is provable from standard measurability and integrability assumptions — so Green's theorem holds with *no* special `hFubini` axiom, just the standard analytic regularity conditions.\n\nLines 100-106 (Part III section separator + `fubini_of_continuous` docstring): sets up the third section showing that for *continuous* functions (which automatically satisfy measurability and integrability on compact rectangles), the Fubini condition is automatic.",
+    "mathContext": "The `hFubini` hypothesis in `greens_theorem_concrete` states $\\int_c^d \\int_a^b \\frac{\\partial P}{\\partial y}(x,y)\\,dx\\,dy = \\int_a^b \\int_c^d \\frac{\\partial P}{\\partial y}(x,y)\\,dy\\,dx$. This theorem proves it holds whenever $\\frac{\\partial P}{\\partial y}$ is measurable and integrable on $[a,b] \\times [c,d]$. For $C^1$ vector fields (standard Green's theorem regularity), both conditions are automatic.",
+    "significance": "main-result",
+    "relatedConcepts": [
+      "hFubini hypothesis elimination",
+      "Green's theorem OQ-01",
+      "measurability of partial derivatives",
+      "integrability on rectangles",
+      "C¹ regularity implies Fubini"
+    ],
+    "prerequisites": [
+      "intervalIntegral_swap (proved above)",
+      "Measurable predicate in Lean",
+      "Integrable on product measure"
+    ]
+  },
+  {
     "id": "ann-fubini-compact-integrability",
     "proofId": "greens-theorem-oq-01-oq-01",
     "range": {
       "startLine": 107,
-      "endLine": 120
+      "endLine": 121
     },
     "type": "concept",
     "title": "Continuous Functions on Compact Rectangles Are Automatically Integrable",
@@ -127,19 +172,20 @@
     "proofId": "greens-theorem-oq-01-oq-01",
     "range": {
       "startLine": 122,
-      "endLine": 129
+      "endLine": 149
     },
     "type": "concept",
-    "title": "Green's Theorem Fubini Step: The C¹ Corollary",
-    "content": "The `greens_fubini_for_C1` lemma is a one-line wrapper that packages the Fubini exchange for the C¹ setting of Green's theorem. In the proof of Green's theorem, switching the order of integration is precisely what converts a double integral of ∂Q/∂x − ∂P/∂y over a rectangle into iterated integrals that telescope to boundary values. This lemma isolates and names that exchange step, making its role in the Green's theorem proof explicit and reusable.",
-    "mathContext": "Green's theorem: $\\oint_{\\partial D} P\\,dx + Q\\,dy = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)dA$. The Fubini exchange on $\\frac{\\partial P}{\\partial y}$ allows $\\int_a^b \\int_c^d \\frac{\\partial P}{\\partial y}\\,dy\\,dx = \\int_c^d \\int_a^b \\frac{\\partial P}{\\partial y}\\,dx\\,dy$, enabling the inner integral to be evaluated by the fundamental theorem of calculus.",
+    "title": "Green's Theorem Fubini Step: The C¹ Corollary and Research Outcome",
+    "content": "`greens_fubini_for_C1` (lines 122-129): a one-line wrapper packaging the Fubini exchange for the C¹ setting of Green's theorem. For C¹ vector fields (P, Q), the hypothesis `hPdy_cont : Continuous dPdy` is natural. This lemma isolates and names the exchange step, making its role in the Green's theorem proof explicit and reusable.\n\nIn the proof of Green's theorem, switching the order of integration converts a double integral of ∂Q/∂x − ∂P/∂y into iterated integrals that telescope to boundary values via the fundamental theorem of calculus.\n\n**Summary** (lines 131-147): The file confirms that the `hFubini` hypothesis in Green's theorem (OQ-01) CAN be eliminated. The key tool is `MeasureTheory.integral_integral_swap` (Fubini for Lebesgue integrals), combined with `intervalIntegral.integral_of_le`. For C¹ vector fields (standard regularity for Green's theorem), measurability and integrability are automatic via `Continuous.measurable` and `ContinuousOn.integrableOn_compact`. Result: 0 axioms, 0 sorries.",
+    "mathContext": "Green's theorem: $\\oint_{\\partial D} P\\,dx + Q\\,dy = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)dA$. The Fubini exchange on $\\frac{\\partial P}{\\partial y}$ allows $\\int_a^b \\int_c^d \\frac{\\partial P}{\\partial y}\\,dy\\,dx = \\int_c^d \\int_a^b \\frac{\\partial P}{\\partial y}\\,dx\\,dy$, enabling the inner integral to be evaluated by FTC. Proof outcome: Green's theorem holds under C¹ regularity alone, with no additional `hFubini` hypothesis.",
     "significance": "supporting",
     "relatedConcepts": [
       "Green's theorem",
       "Stokes' theorem",
       "C¹ regularity",
       "partial derivatives",
-      "fundamental theorem of calculus"
+      "fundamental theorem of calculus",
+      "hFubini elimination"
     ],
     "prerequisites": [
       "multivariable calculus",
