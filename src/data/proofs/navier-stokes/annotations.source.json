@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Faber-Krahn Constant",
     "content": "The Faber-Krahn constant $c_{FK} = (1 - e^{-2})\\pi^2/4 \\approx 2.11$ arises from optimal concentration estimates. It measures how efficiently vorticity can concentrate in small regions before dissipation dominates.",
+    "mathContext": "The **Faber-Krahn inequality** (1923/1925) states that among all domains of fixed volume, the ball minimizes the first Dirichlet eigenvalue: $\\lambda_1(\\Omega) \\geq \\lambda_1(B_{r^*})$ where $|B_{r^*}| = |\\Omega|$. In the NS regularity context, the constant $c_{FK} = (1-e^{-2})\\pi^2/4$ quantifies the vorticity concentration bound: the fraction of total enstrophy that can reside in a ball of diffusion radius $R_{\\text{diff}} = \\sqrt{\\nu/\\Omega}$ is bounded above by $c_{FK}$. This bound comes from an $L^2$ concentration inequality on the torus: $\\|\\omega\\|_{L^2(B_R)}^2 \\leq c_{FK} \\cdot E$ when $R = R_{\\text{diff}}$.",
     "significance": "key",
     "relatedConcepts": [
       "isoperimetric inequality",
@@ -85,6 +86,7 @@
     "type": "lemma",
     "title": "Bernoulli's Inequality",
     "content": "The classical Bernoulli inequality $(1+x)^n \\geq 1 + nx$ for $x \\geq -1$ is proved by induction. This elementary result becomes surprisingly powerful when applied to backward-time energy growth, establishing that solutions cannot remain bounded while growing at a positive rate.",
+    "mathContext": "**Bernoulli's inequality**: For $x \\geq -1$ and $n \\in \\mathbb{N}$, $(1+x)^n \\geq 1 + nx$. Proof by induction: base $n=0$ trivial; step uses $(1+x)^{n+1} = (1+x)^n(1+x) \\geq (1+nx)(1+x) = 1+(n+1)x+nx^2 \\geq 1+(n+1)x$. In the enstrophy argument: starting from $E_0 > 0$ with discrete growth step $h = 1/(\\lambda_1)$, after $n$ steps $E_n = E_0(1+\\lambda_1 h)^n = E_0 \\cdot 2^n$. Bernoulli gives $E_n \\geq E_0(1+n)$, providing the linear lower bound needed to show $E_n \\to \\infty$.",
     "significance": "supporting",
     "relatedConcepts": [
       "induction",
@@ -208,6 +210,7 @@
     "type": "concept",
     "title": "BKM Blowup Criterion",
     "content": "The Beale-Kato-Majda criterion (1984): blowup occurs if and only if $\\int_0^T \\|\\omega\\|_\\infty \\, dt = \\infty$. Equivalently, bounded enstrophy implies bounded max vorticity, which prevents blowup. This is the bridge from energy estimates to regularity.",
+    "mathContext": "**Beale-Kato-Majda (1984)**: The solution $u$ of 3D NS blows up at time $T < \\infty$ if and only if $\\int_0^T \\|\\omega(\\cdot,t)\\|_{L^\\infty} \\, dt = \\infty$. The proof uses Gagliardo-Nirenberg-Sobolev interpolation and the **Agmon inequality** $\\|f\\|_{L^\\infty} \\leq C \\|f\\|_{H^1}^{1/2}\\|f\\|_{H^2}^{1/2}$. In this formalization, the BKM criterion is axiomatized as: bounded enstrophy $E = \\int|\\omega|^2 dx \\leq M$ implies bounded max vorticity $\\Omega = \\|\\omega\\|_{L^\\infty} \\leq C\\sqrt{M}$ (via Sobolev embedding on $\\mathbb{T}^3$), so $\\int_0^T \\Omega \\, dt < \\infty$, ruling out blowup.",
     "significance": "key",
     "relatedConcepts": [
       "Beale-Kato-Majda",
