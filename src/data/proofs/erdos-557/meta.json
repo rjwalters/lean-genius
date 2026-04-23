@@ -125,17 +125,22 @@
     {
       "targetId": "erdos-1014",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory"
+      "description": "Ramsey number ratio convergence — companion asymptotic question asking whether R(n+1,n+1)/R(n,n) converges, related to the linear-vs-exponential growth tension underlying the multicolor tree Ramsey conjecture"
     },
     {
       "targetId": "erdos-1105",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory"
+      "description": "Anti-Ramsey numbers for cycles and paths — extremal colorings avoiding rainbow subgraphs, a dual perspective on the monochromatic-copy problem central to multicolor tree Ramsey numbers"
     },
     {
-      "targetId": "erdos-1169",
+      "targetId": "erdos-552",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory"
+      "description": "R(C₄, Sₙ) Ramsey numbers for stars and cycles — shares the star graph $K_{1,n-1}$ as central object; the star lower bound $R(S_n; k) \\geq k(n-1)+1$ from Problem #557 is directly analogous to star-graph Ramsey bounds studied here"
+    },
+    {
+      "targetId": "erdos-812",
+      "relationship": "related",
+      "description": "Growth of consecutive Ramsey numbers R(n+1,n+1)/R(n,n) — the multicolor case k≥3 in Problem #557 asks whether tree Ramsey numbers stay linear in both n and k simultaneously, a similar linear-vs-exponential question"
     }
   ],
   "sorries": 0
