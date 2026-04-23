@@ -382,6 +382,63 @@ handling both the "equal to k" and "not in s" cases internally.
 
 ---
 
+## Session 2026-04-23 (Session 7) - Granular Imports for Mathlib PR
+
+**Mode**: REVISIT
+**Outcome**: PROGRESS — switched `SpernerMathlib4.lean` from `import Mathlib` to 4 granular imports; Docker build running
+
+### What I Did
+
+1. Read all prior sessions to understand state: 0 sorries in both files, `maxHeartbeats 200000` (default) for both
+2. Analyzed Mathlib package structure to identify the correct granular import set for `SpernerMathlib4.lean`
+3. Traced transitive import chains in installed Mathlib:
+   - `Finset.sum_involution` → `Algebra.BigOperators.Group.Finset.Basic` (via `prod_involution` + `@[to_additive]`)
+   - `Finset.card_biUnion` → `Algebra.BigOperators.Group.Finset.Basic` (line 959)
+   - `Finset.single_le_sum` → `Algebra.Order.BigOperators.Group.Finset` (line 192)
+   - `Fintype.sum_prod_type'` → `Data.Fintype.BigOperators` (line 263)
+   - `ZMod.natCast_eq_zero_iff` → `Data.ZMod.Basic` (line 508)
+   - `Nat.even_iff` → `Algebra.Group.Nat.Even` (line 27) — transitively via `Algebra.Ring.Parity`
+   - `Nat.odd_iff` → `Algebra.Ring.Parity` (namespace Nat, line 210)
+   - `Finite.injective_iff_surjective` → `Data.Fintype.Card` (line 319) — transitively via `Algebra.Order.BigOperators.Group.Finset`
+   - `Fintype.card_fin` → `Data.Fintype.Card` (line 485) — same transitive path
+4. Confirmed correct import path: `Mathlib.Algebra.BigOperators.Group.Finset.Basic` (NOT `Mathlib.Algebra.BigOperators.Group.Finset` — there's no directory entry point)
+5. Confirmed that `Mathlib.Algebra.Order.BigOperators.Group.Finset` subsumes `BigOperators.Group.Finset.Basic` and `Data.Fintype.Card` transitively (via `BigOperators.Group.Finset.Sigma`)
+6. Applied edit: replaced `import Mathlib` with 4 granular imports in worktree `SpernerMathlib4.lean`
+7. Started Docker build to verify
+
+### Key Technical Finding: Import Path Error in Previous Sessions
+
+Previous sessions recorded the import as `Mathlib.Algebra.BigOperators.Group.Finset` but there is NO `Finset.lean` file at that path. The correct import is:
+- `Mathlib.Algebra.Algebra.Order.BigOperators.Group.Finset` (the ordering module that imports the basic one)
+- OR `Mathlib.Algebra.BigOperators.Group.Finset.Basic` directly
+
+The ordering module is preferred as it subsumes Basic + adds single_le_sum.
+
+### Proposed Granular Import Set (Applied to SpernerMathlib4.lean)
+
+```lean
+import Mathlib.Algebra.Order.BigOperators.Group.Finset  -- single_le_sum; ⊇ BigOperators.Basic + Fintype.Card
+import Mathlib.Algebra.Ring.Parity                      -- Nat.odd_iff; ⊇ Nat.even_iff (Group.Nat.Even)
+import Mathlib.Data.Fintype.BigOperators                -- Fintype.sum_prod_type'
+import Mathlib.Data.ZMod.Basic                          -- ZMod.natCast_eq_zero_iff
+```
+
+**Uncertain**: `Nat.mod_mod_of_dvd` (used line 707) — appears to be in Lean core, not Mathlib. If it's missing, we may need `Mathlib.Data.Nat.ModEq` or similar.
+
+### Files Modified
+
+- `proofs/Proofs/SpernerMathlib4.lean` (line 6: `import Mathlib` → 4 granular imports)
+- Docker build running: `./proofs/scripts/docker-build.sh Proofs.SpernerMathlib4`
+
+### Next Steps
+
+1. **[AWAITING]** Docker build result — determines if import set is correct
+2. **If build succeeds**: Commit + PR; note heartbeats as 200000 (default) ✅
+3. **If build fails**: Add missing imports based on error messages; re-run Docker build
+4. **[USER ACTION]** Comment on mathlib4#25231 pointing to `SpernerSimplicialInstance.lean` as Part 2
+
+---
+
 ## Dead Ends
 
 - `FixedPointFree.lean` (GroupTheory) — about group automorphisms, not Finsets

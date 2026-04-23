@@ -3,7 +3,10 @@ Copyright (c) 2026 RJ Walters. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: RJ Walters
 -/
-import Mathlib
+import Mathlib.Algebra.Order.BigOperators.Group.Finset
+import Mathlib.Algebra.Ring.Parity
+import Mathlib.Data.Fintype.BigOperators
+import Mathlib.Data.ZMod.Basic
 
 /-!
 # Abstract Sperner's Lemma
