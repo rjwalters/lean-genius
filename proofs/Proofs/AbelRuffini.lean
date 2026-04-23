@@ -15,10 +15,10 @@ Galois group, and that S₅ (and A₅) are not solvable.
 - **Foundation (from Mathlib):** Mathlib provides the complete Galois theory
   infrastructure including `IsSolvableByRad`, `solvableByRad.isSolvable'`,
   and the non-solvability of alternating groups.
-- **Original Contributions:** Explicit proofs of S₅ not solvable, A₅ simple,
-  the Galois-theoretic bridge between solvability by radicals and group
-  solvability, the contrapositive form of Abel-Ruffini, and solvability of
-  trivial symmetric groups.
+- **Original Contributions:** Pedagogical wrappers composing Mathlib's solvability
+  theory into an accessible walkthrough: the Galois-theoretic bridge, contrapositive
+  form of Abel-Ruffini, S₅/A₅ non-solvability, and solvability of small symmetric
+  groups (all mathematical weight carried by Mathlib).
 
 ## Mathlib Dependencies
 - `IsSolvableByRad` : Definition of solvable by radicals
