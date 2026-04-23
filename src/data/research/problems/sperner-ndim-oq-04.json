@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Non-revisiting infrastructure added (Case A proved). 1 sorry remains (kuhn_walk_reaches_fc, Case B blocker).",
+    "progressSummary": "BLOCKED: kuhn_walk_reaches_fc is mathematically incorrect (Case 4 can fire mid-walk). kuhn_path_terminates restored to non-constructive proof via sperner_ndim. kuhnPathStart_is_fc depends on sorry (constructive path blocked). 1 sorry total.",
     "builtItems": [
       "doorDegree def: SpernerNDimOQ04.lean:60",
       "IsKuhnCompatible def: SpernerNDimOQ04.lean:65",
@@ -56,7 +56,11 @@
       "Case A of non-revisiting is proved: adj_symm closes the cycle when k prime equals entry door, giving contradiction via current_not_visited",
       "adj_ne immediately rules out walking to current itself",
       "Case B (k prime = exit door) requires per-simplex path history beyond the visited set — KuhnStateValid necessary but not sufficient",
-      "KuhnState needs prev field (previous simplex + exit door) to enable Case B contradiction"
+      "KuhnState needs prev field (previous simplex + exit door) to enable Case B contradiction",
+      "kuhn_walk_reaches_fc theorem is INCORRECT as stated: Case 4 (mid-walk boundary exit) is genuinely possible — a simplex on the outer boundary can have interior entry door and boundary exit door (k = Fin.last d), causing walk to terminate at non-FC",
+      "Even with IsSperner c and boundary_door_is_last_face, Case 4 fires after the first step: initial entry is boundary (Fin.last d), but subsequent entries are interior (≠ Fin.last d), so exit CAN be Fin.last d (boundary)",
+      "Correct theorem for kuhn_walk_reaches_fc: disjunction \"IsFC result ∨ ∃ k, isDoorAt c K result k ∧ K.adj result k = none\" — needs separate parity argument to extract FC existence",
+      "kuhn_path_terminates fixed: restored non-constructive proof via sperner_ndim c K hc hbdry (adds hc : IsSperner c and hbdry : Odd (...).card as hypotheses) — 0 sorries"
     ],
     "mathlibGaps": [
       "No Mathlib theorem for path-following algorithm termination with non-revisiting invariant",
@@ -64,10 +68,10 @@
       "SpernerTriangulation lacks an adjacent-simplices-share-unique-facet axiom needed for the non-revisiting proof"
     ],
     "nextSteps": [
-      "Extend KuhnState with prev : Option (K.Simplex x Fin (d+1)) field",
-      "Add prev_leads_to_current invariant to KuhnStateValid",
-      "Prove Case B of non-revisiting using prev field",
-      "Add boundary door uniqueness axiom to SpernerTriangulation"
+      "Reformulate kuhn_walk_reaches_fc as FC-or-boundary-exit theorem",
+      "Prove the reformulated disjunction using KuhnStateValid and boundary_door_is_last_face + IsSperner",
+      "Use the disjunction + boundary parity to derive FC existence (pairing boundary-to-boundary walks)",
+      "This requires tracking ALL boundary walks simultaneously, not just one — likely needs a separate global argument"
     ]
   },
   "tags": [
