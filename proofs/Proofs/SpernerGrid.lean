@@ -61,12 +61,14 @@ B. A direct inductive proof bypassing the boundary-door parity.
 The `gridComplex d N` is a well-formed `CellComplex` (all adjacency axioms
 proved), but `CellComplex.sperner` cannot be applied due to the above.
 
-## Sorry classification (3 remaining)
+## Sorry classification (4 remaining)
 
 1. `CellComplex.sperner` — proved in SpernerMathlib4.lean,
    duplicated here for self-containment. INTENTIONALLY sorry.
 2. `boundary_verts_on_face` — FALSE as stated (see counterexample above).
 3. `boundary_doors_odd` — FALSE as stated (boundary doors always even).
+4. `sperner_grid` d≥2 case — blocked; needs unoriented SpernerTriangulation.
+   d=0 and d=1 cases are now proved (d=1 via discrete IVT, Session 6).
 
 ## References
 
@@ -1776,6 +1778,105 @@ theorem boundary_doors_odd (d N : ℕ) (hN : 0 < N)
 -- SECTION VIII: Concrete Sperner's Lemma
 -- ============================================================
 
+/-- d=1 case of sperner_grid: proved directly via discrete IVT.
+The path v(k) = (N-k, k) for k=0..N has c(v(0))=0 and c(v(N))=1
+by Sperner, so the transition edge at k*=max{k | c(v(k))=0} is
+panchromatic. -/
+private lemma sperner_grid_one {N : ℕ} (hN : 0 < N)
+    (c : BaryPoint 1 N → Fin 2)
+    (hc : IsSperner c) :
+    ∃ s : (gridComplex 1 N).Cell,
+      CellComplex.IsPanchromatic c (gridComplex 1 N) s := by
+  -- Path v(k) = (N-k, k) through the 1-simplex
+  let v : Fin (N + 1) → BaryPoint 1 N := fun k =>
+    ⟨fun i => if i.val = 0 then N - k.val else k.val,
+     by
+       simp [Fin.sum_univ_two]
+       have hk : k.val ≤ N := Nat.lt_succ_iff.mp k.isLt
+       omega⟩
+  -- v(0) lies on face 1 (coords(1) = 0), so c(v(0)) ≠ 1, hence = 0
+  have hv0 : c (v ⟨0, Nat.zero_lt_succ N⟩) = 0 := by
+    have honface : (v ⟨0, Nat.zero_lt_succ N⟩).onFace ⟨1, by omega⟩ := by
+      show (v ⟨0, _⟩).coords ⟨1, by omega⟩ = 0; simp [v]
+    have hne := hc (v ⟨0, _⟩) ⟨1, by omega⟩ honface
+    fin_cases h : c (v ⟨0, Nat.zero_lt_succ N⟩)
+    · rfl
+    · exact absurd h hne
+  -- v(N) lies on face 0 (coords(0) = N-N = 0), so c(v(N)) ≠ 0, hence = 1
+  have hvN : c (v ⟨N, Nat.lt_succ_self N⟩) = 1 := by
+    have honface : (v ⟨N, Nat.lt_succ_self N⟩).onFace ⟨0, by omega⟩ := by
+      show (v ⟨N, _⟩).coords ⟨0, by omega⟩ = 0; simp [v]; omega
+    have hne := hc (v ⟨N, _⟩) ⟨0, by omega⟩ honface
+    fin_cases h : c (v ⟨N, Nat.lt_succ_self N⟩)
+    · exact absurd h hne
+    · rfl
+  -- S = {k | c(v(k)) = 0}, find maximum k*
+  let S := Finset.univ.filter (fun k : Fin (N + 1) => c (v k) = 0)
+  have hS_ne : S.Nonempty :=
+    ⟨⟨0, Nat.zero_lt_succ N⟩,
+     Finset.mem_filter.mpr ⟨Finset.mem_univ _, hv0⟩⟩
+  have hN_not : (⟨N, Nat.lt_succ_self N⟩ : Fin (N + 1)) ∉ S := by
+    intro hmem
+    have hc := (Finset.mem_filter.mp hmem).2
+    -- hc : c (v ⟨N, _⟩) = 0, but hvN : c (v ⟨N, _⟩) = 1. Contradiction.
+    exact absurd (hc.symm.trans hvN) (by decide)
+  let k_star := S.max' hS_ne
+  have hks_mem : k_star ∈ S := Finset.max'_mem S hS_ne
+  have hks_color : c (v k_star) = 0 := (Finset.mem_filter.mp hks_mem).2
+  -- k* < N (cannot be N since N ∉ S)
+  have hks_lt : k_star.val < N := by
+    by_contra hge
+    push_neg at hge
+    have heq : k_star = ⟨N, Nat.lt_succ_self N⟩ := by apply Fin.ext; omega
+    exact hN_not (heq ▸ hks_mem)
+  -- k*+1 ∉ S by maximality, so c(v(k*+1)) ≠ 0, hence = 1
+  have hks1_color : c (v ⟨k_star.val + 1, by omega⟩) = 1 := by
+    have hns : (⟨k_star.val + 1, by omega⟩ : Fin (N + 1)) ∉ S := by
+      intro hmem
+      have hle := Finset.le_max' S hS_ne hmem
+      -- Fin le is definitionally Nat le, so extract as Nat inequality
+      have h_nat : k_star.val + 1 ≤ k_star.val := hle
+      omega
+    have hne : c (v ⟨k_star.val + 1, by omega⟩) ≠ 0 := by
+      intro h
+      exact hns (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩)
+    fin_cases h : c (v ⟨k_star.val + 1, by omega⟩)
+    · exact absurd h hne
+    · rfl
+  -- The edge [v(k*), v(k*+1)] is a GridSimplex with incDir=1, miss=0
+  refine ⟨{
+    verts := fun i => if i.val = 0 then v k_star
+                      else v ⟨k_star.val + 1, by omega⟩
+    incDir := fun _ => ⟨1, by omega⟩
+    miss := ⟨0, by omega⟩
+    miss_ne_inc := fun _ => by decide
+    step_inc := fun k => by
+      fin_cases k
+      show (v ⟨k_star.val + 1, by omega⟩).coords ⟨1, by omega⟩ =
+           (v k_star).coords ⟨1, by omega⟩ + 1
+      simp [v]
+    step_dec := fun k => by
+      fin_cases k
+      show (v k_star).coords ⟨0, by omega⟩ =
+           (v ⟨k_star.val + 1, by omega⟩).coords ⟨0, by omega⟩ + 1
+      simp [v]
+      omega
+    step_same := fun k j hj1 hj2 => by
+      fin_cases k
+      fin_cases j
+      · exact absurd rfl hj2  -- j = miss = 0, contradiction
+      · exact absurd rfl hj1  -- j = incDir k = 1, contradiction
+    inc_injective := fun a _b _h => Subsingleton.elim a _ }, ?_⟩
+  -- Panchromatic: color 0 at v(k*), color 1 at v(k*+1)
+  intro col
+  fin_cases col
+  · exact ⟨⟨0, by omega⟩, by
+      show c (v k_star) = 0
+      exact hks_color⟩
+  · exact ⟨⟨1, by omega⟩, by
+      show c (v ⟨k_star.val + 1, by omega⟩) = 1
+      exact hks1_color⟩
+
 /-- **Concrete Sperner's Lemma on the Grid** (sorry'd — blocked on architecture).
 
 For any Sperner coloring of the grid triangulation of the d-simplex with
@@ -1805,9 +1906,25 @@ theorem sperner_grid (d N : ℕ) (hN : 0 < N)
     ∃ s : (gridComplex d N).Cell,
       CellComplex.IsPanchromatic c
         (gridComplex d N) s := by
-  -- Architecture blocked: boundary_doors_odd is false for oriented gridComplex.
-  -- Need unoriented SpernerTriangulation instance. See docstring.
-  exact CellComplex.sperner c (gridComplex d N)
-    (boundary_doors_odd d N hN c hc)
+  match d with
+  | 0 =>
+    -- d=0: only one color (Fin 1), every cell is panchromatic
+    refine ⟨{
+      verts := fun _ => ⟨fun _ => N, by simp [Fin.sum_univ_one]⟩
+      incDir := fun k => k.elim0
+      miss := ⟨0, by omega⟩
+      miss_ne_inc := fun k => k.elim0
+      step_inc := fun k => k.elim0
+      step_dec := fun k => k.elim0
+      step_same := fun k _j _h1 _h2 => k.elim0
+      inc_injective := fun a _b _h => a.elim0 }, ?_⟩
+    intro col
+    exact ⟨⟨0, by omega⟩, Subsingleton.elim _ _⟩
+  | 1 =>
+    -- d=1: proved by discrete IVT via sperner_grid_one
+    exact sperner_grid_one hN c hc
+  | d + 2 =>
+    -- d≥2: architecture blocked; unoriented SpernerTriangulation needed
+    sorry
 
 end SpernerGrid
