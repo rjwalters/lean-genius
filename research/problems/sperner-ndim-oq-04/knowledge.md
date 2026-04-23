@@ -156,3 +156,48 @@ Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following
 2. **Add prev_leads_to_current invariant**: `prev = some (s_prev, k_prev) → K.adj s_prev k_prev = some (current, entry)`
 3. **Prove Case B with prev field**: When s' ∈ visited and k' = s''s exit door, use prev to derive current ∈ visited → contradiction
 4. **Boundary door uniqueness**: Add axiom that only one boundary door exists per walk component (needed to rule out case (4) in kuhn_walk_reaches_fc)
+
+---
+
+## Session 2026-04-23 (Session 4) — Theorem Statement Analysis: Case 4 Blocker
+
+**Mode**: REVISIT
+**Outcome**: blocked — theorem statement is mathematically flawed, cannot be proved as stated
+
+### What I Did
+
+1. Re-examined `kuhn_walk_reaches_fc` — the remaining sorry — in detail
+2. Analyzed all 4 termination cases in the `kuhnStep` function:
+   - Case 1: `state.visited` is empty → impossible (at least initial simplex is there)
+   - Case 2: exit door `k_out` leads to an FC simplex → done ✓
+   - Case 3: exit door leads to a non-FC simplex → continue walk ✓
+   - Case 4: `K.adj state.current k_out = none` → boundary exit (walk terminates at boundary without finding FC)
+3. Discovered that Case 4 can legitimately occur mid-walk:
+   - `boundary_door_is_last_face` only says the boundary door is at face `Fin.last d`
+   - It does NOT prevent boundary exits from occurring at non-initial steps
+   - The walk could legitimately reach a boundary door that is not the starting boundary door
+4. Concluded: the theorem `kuhn_walk_reaches_fc` is stated too strongly
+
+### Key Findings
+
+- **Theorem is wrong as stated**: The claim "kuhnWalk always reaches FC" is false without additional axioms banning mid-walk boundary exits.
+- **What IS provable**: A weaker theorem: "kuhnWalk terminates at either FC or a boundary door (not the entry boundary door)."
+- **The parity argument requires the weaker form**: Standard Sperner parity counts boundary FC faces at the entry boundary plus all FC simplices. The boundary exit would contribute another boundary FC face, making the count of boundary exits even (parity is preserved). So the parity argument works but only in the weaker form.
+- **Reformulation options**:
+  1. Add axiom: "the triangulation has no boundary doors except at the initial face" (very restrictive)
+  2. Prove "walk reaches FC or boundary exit" and derive FC existence via parity separately
+  3. Track all boundary doors and use parity to show the count of FC-or-boundary is odd
+
+### Files Modified
+
+- None — analysis only. Lean file unchanged.
+
+### Remaining Sorry (1)
+
+- `kuhn_walk_reaches_fc` — **BLOCKED**: theorem statement is too strong. Needs reformulation.
+
+### Next Steps
+
+1. **Reformulate the theorem**: Change `kuhn_walk_reaches_fc` to conclude "FC or boundary exit"
+2. **Prove parity externally**: Show that the set of FC-or-boundary-exit endpoints has odd cardinality (using the Sperner parity argument), deriving FC existence
+3. **Update `kuhnPathStart_is_fc`**: Use the weaker walk theorem + parity argument to conclude FC exists constructively
