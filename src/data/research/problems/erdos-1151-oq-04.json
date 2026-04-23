@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: chebyshev_lebesgue_growth proved, 2 sorries remain (lb analytic bound + Banach-Steinhaus gap)",
+    "progressSummary": "PROGRESS: chebyshev_lebesgue_lb proved modulo chebyshev_trig_sum_lb; 2 sorries remain (harmonic sum lb + Banach-Steinhaus gap)",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -52,9 +52,10 @@
       "x_not_chebyshev_node: parity lemma, cos(pi*p/q) != chebyshevNode n k for all n when p,q odd — Erdos1151OQ04.lean:534",
       "chebyshev_lebesgue_eq_all_n: Lebesgue formula for all n when p,q odd — Erdos1151OQ04.lean:601",
       "chebyshev_lebesgue_growth: proved (Filter.tendsto_atTop_mono + C·log(n+1) → ∞)",
-      "chebyshev_lebesgue_lb: sorry — harmonic sum lower bound Λₙ(x) ≥ C·log(n+1)",
       "cos_rational_pi_pos_min: ∃ δ > 0 s.t. |cos(nπp/q)| ≥ δ for all n (parity argument)",
-      "x_not_chebyshev_node: cos(πp/q) ≠ chebyshevNode n k for all n,k when p,q odd"
+      "x_not_chebyshev_node: cos(πp/q) ≠ chebyshevNode n k for all n,k when p,q odd",
+      "chebyshev_trig_sum_lb: sorry (isolated harmonic sum lower bound: S_n ≥ C₂·n·log(n+1))",
+      "chebyshev_lebesgue_lb: proved modulo chebyshev_trig_sum_lb via mul_le_mul chain (δ/n · C₂·n·log(n+1) ≤ |cos(nθ)|/n · S_n)"
     ],
     "insights": [
       "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
@@ -108,8 +109,8 @@
     {
       "path": "Proofs/Erdos1151OQ04.lean",
       "filename": "Erdos1151OQ04.lean",
-      "lineCount": 656,
-      "theoremCount": 26,
+      "lineCount": 854,
+      "theoremCount": 31,
       "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 2,
