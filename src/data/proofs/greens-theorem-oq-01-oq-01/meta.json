@@ -66,18 +66,19 @@
   "sections": [
     {
       "id": "fubini-interval",
-      "title": "Part I: Fubini for Interval Integrals",
+      "title": "Part I: Fubini for Interval Integrals — Imports and Strategy",
       "startLine": 1,
       "endLine": 28,
-      "summary": "Proves intervalIntegral_swap: swap iterated interval integrals under measurability + integrability via Mathlib's integral_integral_swap.",
-      "mathContext": "$\\int_c^d \\int_a^b f(x,y)\\,dx\\,dy = \\int_a^b \\int_c^d f(x,y)\\,dy\\,dx$"
+      "summary": "Module imports (Mathlib) and namespace setup (GreensTheoremOQ01OQ01). Opens MeasureTheory, intervalIntegral, Set, Filter, Topology. Module docstring describes the three-step bridge: interval integral → set integral → Fubini → back.",
+      "mathContext": "The file imports all of Mathlib for access to `MeasureTheory.integral_integral_swap` (abstract Fubini), `intervalIntegral.integral_of_le` (converting $\\int_a^b$ to $\\int_{(a,b]}$), and `ContinuousOn.integrableOn_compact` (automatic integrability on compact rectangles)."
     },
     {
-      "id": "section-29",
-      "title": "Part I: Fubini for Interval Integrals (continued)",
+      "id": "fubini-interval-proof",
+      "title": "Part I: intervalIntegral_swap — Signature and Proof Body",
       "startLine": 29,
       "endLine": 55,
-      "summary": "Continuation of Part I: Fubini for Interval Integrals."
+      "summary": "Theorem signature for intervalIntegral_swap (hypotheses: a ≤ b, c ≤ d, measurability, integrability on Icc×Icc product measure). Proof begins: simp_rw with integral_of_le converts both sides from interval notation to set integrals over Ioc intervals, setting up the call to integral_integral_swap.",
+      "mathContext": "Step 1: `integral_of_le` (applied via `simp_rw`) converts $\\int_a^b = \\int_{(a,b]}$ and $\\int_c^d = \\int_{(c,d]}$ on both sides simultaneously. This puts the goal in terms of `∫ x in Ioc a b, ∫ y in Ioc c d, f x y` which matches the form expected by `integral_integral_swap` operating on product measures $\\mu|_{(a,b]} \\otimes \\mu|_{(c,d]}$."
     },
     {
       "id": "application",
