@@ -1,8 +1,8 @@
 # Selection Report: konigsberg-oq-02-oq-01
 
 **Date**: 2026-04-23
-**Seeker Batch**: seeker/batch-selections-2026-04-23
-**Pool Status**: 71 available, 2 in-progress (seeker worktree)
+**Seeker Session**: 2026-04-23
+**Pool Status**: 32 available, 556 in-progress, 1405 completed
 
 ## Selected Problem
 
@@ -16,47 +16,56 @@
 
 ## Selection Rationale
 
-1. **Domain diversity**: Recent selections covered Analysis (L'Hôpital), Economics/Combinatorics (Shapley-Folkman), Number Theory (√2 minpoly), Geometry (Minkowski). Graph Theory is unrepresented — this fills that gap.
-2. **EMPTY knowledge tier**: No previous research done; OBSERVE phase starts fresh with high discovery potential.
-3. **Tractable extension of gallery work**: `konigsberg` (undirected case) is already in the gallery, providing technique templates and infrastructure.
-4. **Concrete construction**: Hierholzer's algorithm is constructive and maps naturally to Lean 4's functional style.
+1. **Top composite score after diversity adjustment**: Composite 67 (EMPTY tier × -0 penalty + tractability 6×10 + significance 7). `triangle-angle-sum-oq-03` scored higher at 76 but was penalized: geometry domain recently selected (Minkowski), and degenerate angle API cases are shallow technical work rather than deep mathematics.
+2. **Domain diversity**: Recent selections: Szemerédi regularity (combinatorics), Hölder/Cauchy-Schwarz (analysis), Minkowski (geometry). Graph theory/algorithms is a fresh domain — no recency penalty applies.
+3. **EMPTY knowledge tier**: No prior research; OBSERVE phase starts with full discovery potential.
+4. **Constructive proof with clear structure**: Hierholzer's algorithm has a well-defined termination argument (induction on remaining edges) that maps naturally to Lean 4's functional style.
+5. **Gallery foundation available**: `konigsberg` (undirected case) is already in the gallery, providing `SimpleGraph`, degree theory, and walk infrastructure as templates.
 
 ## Rejection Summary
 
-- **Candidates considered**: 71 available in pool
-- **Domain skew corrected**: Pool had heavy Number Theory/Geometry bias; Graph Theory selected to diversify
-- **Rejected moonshots**: twin-primes, Goldbach, Sophie Germain (tractability 2/10)
-- **Confidence**: high (clear domain gap, tractable algorithm proof)
+- **Candidates considered**: 32 available
+- **Rejected (moonshots, tract≤2)**: twin-primes-special-oq-01, weak-goldbach-oq-01, sophie-germain-oq-01
+- **Rejected (low tractability, tract=3)**: szemeredi-full-oq-02
+- **Rejected (diversity penalty — geometry)**: triangle-angle-sum-oq-03 (highest raw score 76, penalized — geometry domain, recent Minkowski selection)
+- **Rejected (recently selected)**: szemeredi-regularity-oq-02, cauchy-schwarz-integral-oq-01-oq-03-oq-01
+- **Runners-up** (composite 67 each): erdos-268-incomplete-01 (number theory), erdos-476-oq-05-wip-01 (additive combinatorics), newton-inductive-step-oq-03 (algebra)
+- **Tie-breaking**: Among equal-scoring candidates, graph theory/algorithms selected for maximal domain diversity relative to recent pipeline
+- **Confidence**: high (clear domain gap, constructive algorithm, existing gallery infrastructure)
 
 ## Related Gallery Proofs
 
-- `konigsberg`: Undirected Eulerian circuit — direct predecessor proof
-- `konigsberg-oq-02`: Directed graph degree characterization (sister problem)
+- `konigsberg`: Undirected Eulerian circuit — direct predecessor proof, provides SimpleGraph walk infrastructure
+- `konigsberg-oq-02`: Directed graph degree characterization — sister problem
 
 ## Suggested First Steps
 
-1. **OBSERVE**: Check `Mathlib.Combinatorics.SimpleGraph.Euler` for existing directed graph Eulerian lemmas
-2. **ORIENT**: Study the `konigsberg` gallery proof structure and adapt for directed graphs
-3. **DECIDE**: Choose between Hierholzer constructive proof vs. induction on edge count
+1. **OBSERVE**: Survey `Mathlib.Combinatorics.SimpleGraph.Euler` and check for any directed graph Eulerian lemmas; inspect `Quiver` API for directed graph support
+2. **ORIENT**: Study `konigsberg` gallery proof structure; identify which undirected lemmas transfer vs. need directed equivalents
+3. **DECIDE**: Choose approach — constructive Hierholzer algorithm (greedy cycle extension + merge) vs. induction on edge count; assess Mathlib directed graph types
 
 ## Pool Summary After Selection
 
 | Status | Count |
 |--------|-------|
-| Available | 71 |
-| In Progress | 2 |
-| Graduated | 661 |
+| Available | 32 |
+| In Progress | 556 |
+| Completed | 1405 |
+| Graduated | 8 |
+| Blocked | 3 |
 
 ## Candidate Pool Health
 
-- Pool depth: adequate (71 available >> 15 threshold)
-- Domain diversity improved with Graph Theory addition
+- Pool depth: **adequate** (32 available >> 15 threshold)
+- Domain distribution: good coverage across algebra, analysis, combinatorics, graph theory, number theory
 - Next refresh recommended: 30 minutes (standard interval)
 
 ## Initialized
 
 - [x] Research workspace created: `research/problems/konigsberg-oq-02-oq-01/`
-- [x] problem.md populated with mathematical context
+- [x] problem.md populated with mathematical context and proof approaches
+- [x] knowledge.md initialized
+- [x] state.md set to OBSERVE phase
 - [x] Registered in database with status 'available'
-- [x] Pool synced (research/candidate-pool.json → .lean/state/candidate-pool.json)
+- [x] Pool synced
 - [ ] Ready for /researcher
