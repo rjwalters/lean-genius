@@ -171,6 +171,13 @@
   ],
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header: Imports and Proof Architecture",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Five Mathlib imports form a dependency hierarchy: `AbelRuffini` (field theory + radical solvability), `Solvable` (IsSolvable predicate and solvable_of_ker_le_range), `Alternating` (alternating groups and A₅ simplicity), `Galois.Basic` (IsGalois and card_aut_eq_finrank), and `Perm.Sign` (sign homomorphism). The module docstring announces a 15-section structure proving S_n solvable ↔ n ≤ 4 from first principles, extending the simpler AbelRuffini.lean."
+    },
+    {
       "id": "small-symmetric-groups",
       "title": "Small Symmetric Groups: S₀–S₄ Solvable",
       "startLine": 49,
@@ -218,6 +225,13 @@
       "startLine": 431,
       "endLine": 516,
       "summary": "Proves $S_3, S_4, S_5, A_4, A_5$ non-commutative via `decide`/`native_decide`. Verifies $|S_7|=5040, |S_8|=40320, |A_7|=2520, |A_8|=20160$. Confirms $|S_n| = n!$ and $|A_n| = n!/2$ computationally for small $n$."
+    },
+    {
+      "id": "module-summary",
+      "title": "Module Summary and Theorem Inventory",
+      "startLine": 517,
+      "endLine": 534,
+      "summary": "Closing docstring inventories 55+ theorems across the 15 sections: solvable small groups ($S_0$–$S_4$, $A_3$–$A_4$), non-solvable large groups ($S_n$, $A_n$ for $n \\geq 5$), the two complete biconditionals ($S_n$ solvable $\\iff n \\leq 4$; $A_n$ solvable $\\iff n \\leq 4$), structural results ($A_5$ simple, $\\ker(\\text{sign}) = A_n$, cardinalities), non-commutativity witnesses, and preservation theorems. Closes the `AbelRuffiniGaloisExtensions` namespace at line 534, making all results accessible for import."
     }
   ],
   "sorries": 0
