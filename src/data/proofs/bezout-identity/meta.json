@@ -2,7 +2,7 @@
   "id": "bezout-identity",
   "title": "Bezout's Identity",
   "slug": "bezout-identity",
-  "description": "For any integers a, b, there exist x, y such that ax + by = gcd(a,b). Fundamental to number theory.",
+  "description": "A pedagogical formalization of Bézout's identity (Wiedijk #60) that wraps Mathlib's gcd_eq_gcd_ab for accessibility, then builds three substantive corollaries: a full coprimality characterization (gcd = 1 iff linear combination equals 1), modular inverse existence via Bézout coefficients, and a complete Diophantine solvability criterion (ax + by = c iff gcd | c), all with 0 sorries.",
   "meta": {
     "author": "Bezout (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity",
