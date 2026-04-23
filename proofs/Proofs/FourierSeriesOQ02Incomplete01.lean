@@ -24,6 +24,7 @@ import Mathlib.Analysis.Normed.Group.AddCircle
 import Mathlib.MeasureTheory.Group.Integral
 import Mathlib.Topology.MetricSpace.Holder
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
+import Mathlib.Analysis.PSeries
 import Mathlib.Tactic
 
 set_option maxHeartbeats 800000
@@ -118,17 +119,17 @@ theorem summable_norm_fourierCoeff_of_decay (f : AddCircle T → ℂ) (C_decay :
   -- (Lean convention: C/0^β = C/0 = 0, so the bound fails only at n=0)
   -- Step 1: The ℕ p-series C/n^β converges since β > 1
   have h_pnat : Summable (fun n : ℕ => (C_decay : ℝ) / (↑n : ℝ) ^ β) := by
-    simp_rw [div_eq_mul_inv]; exact (summable_nat_rpow_inv.mpr hβ).const_smul _
+    simp_rw [div_eq_mul_inv]; exact (Real.summable_nat_rpow_inv.2 hβ).mul_left _
   -- Step 2: Lift to ℤ using positive/negative decomposition
   have h_pseries : Summable (fun n : ℤ => (C_decay : ℝ) / |↑n| ^ β) := by
     rw [summable_int_iff_summable_nat_and_neg]
     constructor
     · -- Positive: |↑(↑n : ℤ)| = ↑n for n : ℕ
       convert h_pnat using 1; ext n; congr 1; congr 1
-      simp [Int.cast_natCast, abs_of_nonneg (Nat.cast_nonneg n)]
+      rw [Int.cast_natCast]; exact abs_of_nonneg (Nat.cast_nonneg' n)
     · -- Negative: |-(↑n : ℤ)| = ↑n for n : ℕ
       convert h_pnat using 1; ext n; congr 1; congr 1
-      simp [Int.cast_neg, Int.cast_natCast, abs_neg, abs_of_nonneg (Nat.cast_nonneg n)]
+      rw [Int.cast_neg, Int.cast_natCast, abs_neg]; exact abs_of_nonneg (Nat.cast_nonneg' n)
   -- Step 3: Comparison test — bound holds for all n ≠ 0 (cofinitely many)
   refine h_pseries.of_norm_bounded_eventually ?_
   apply Filter.eventually_cofinite.mpr
@@ -294,7 +295,7 @@ theorem decay_implies_regularity' (β α : ℝ) (hβα : α + 1 < β) (hα : 0 <
     rw [summable_int_iff_summable_nat_and_neg]
     have hcomp : Summable (fun m : ℕ =>
         (C_decay : ℝ) * (2 * Real.pi / T) ^ α * ((m : ℝ) ^ (β - α))⁻¹) :=
-      (summable_nat_rpow_inv.mpr hβα1).mul_left _
+      (Real.summable_nat_rpow_inv.2 hβα1).mul_left _
     -- Helper: algebra for the comparison step (n ≠ 0 case)
     have halg : ∀ m : ℕ, m ≠ 0 →
         ∀ sgn_val : ℝ, sgn_val = (m : ℝ) →
