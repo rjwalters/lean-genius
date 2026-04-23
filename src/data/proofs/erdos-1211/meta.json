@@ -7,7 +7,7 @@
     "author": "Unknown",
     "sourceUrl": "https://erdosproblems.com/1211",
     "date": "",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1211Problem.lean",
     "tags": [
       "erdos",
@@ -16,9 +16,9 @@
       "density",
       "subset-sums"
     ],
-    "lineCount": 23,
-    "badge": "wip",
-    "sorries": 1,
+    "lineCount": 54,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1211,
     "erdosUrl": "https://erdosproblems.com/1211",
     "erdosProblemStatus": "solved",
@@ -109,18 +109,18 @@
       "description": "Sibling in sum-set theory: #530 (maximum Sidon subset of a finite set) and #1211 (logarithmic density of partition sum sets) are both extremal problems about structured subsets, sharing the combinatorial density framework."
     }
   ],
-  "sorries": 1,
+  "sorries": 0,
   "leanFile": {
     "imports": [
       "Mathlib"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 23,
-    "axiomCount": 0,
+    "lineCount": 54,
+    "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 0,
-    "sorries": 1,
+    "sorries": 0,
     "path": "Proofs/Erdos1211Problem.lean"
   }
 }

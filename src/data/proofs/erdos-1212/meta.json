@@ -7,7 +7,7 @@
     "author": "Unknown",
     "sourceUrl": "https://erdosproblems.com/1212",
     "date": "",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1212Problem.lean",
     "tags": [
       "erdos",
@@ -17,9 +17,9 @@
       "prime-numbers",
       "lattice-graphs"
     ],
-    "lineCount": 23,
-    "badge": "wip",
-    "sorries": 1,
+    "lineCount": 61,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1212,
     "erdosUrl": "https://erdosproblems.com/1212",
     "erdosProblemStatus": "solved",
@@ -128,18 +128,18 @@
       "description": "Erdős #1213 is the neighboring problem: both #1212 and #1213 are Erdős combinatorial problems marked as solved, both involve sequences with arithmetic constraints (coprimality/bounded gaps), and both have Lean stubs awaiting formalization. They share the same file structure and enrichment context."
     }
   ],
-  "sorries": 1,
+  "sorries": 0,
   "leanFile": {
     "imports": [
       "Mathlib"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 23,
-    "axiomCount": 0,
+    "lineCount": 61,
+    "axiomCount": 1,
     "theoremCount": 1,
     "definitionCount": 0,
-    "sorries": 1,
+    "sorries": 0,
     "path": "Proofs/Erdos1212Problem.lean"
   }
 }

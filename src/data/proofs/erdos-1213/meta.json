@@ -7,7 +7,7 @@
     "author": "Unknown",
     "sourceUrl": "https://erdosproblems.com/1213",
     "date": "",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1213Problem.lean",
     "tags": [
       "erdos",
@@ -16,9 +16,9 @@
       "sequences",
       "pigeonhole"
     ],
-    "lineCount": 23,
-    "badge": "wip",
-    "sorries": 1,
+    "lineCount": 74,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1213,
     "erdosUrl": "https://erdosproblems.com/1213",
     "erdosProblemStatus": "solved",
@@ -109,18 +109,18 @@
       "description": "Erdős #1211 studies logarithmic density of sumsets in a partition ℕ = A ∪ B; like #1213, it concerns how arithmetic constraints on a sequence force global additive structure (equal sums). Both probe the boundary between 'sparse' and 'structured' sequences."
     }
   ],
-  "sorries": 1,
+  "sorries": 0,
   "leanFile": {
     "imports": [
       "Mathlib"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 23,
-    "axiomCount": 0,
+    "lineCount": 74,
+    "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 0,
-    "sorries": 1,
+    "sorries": 0,
     "path": "Proofs/Erdos1213Problem.lean"
   }
 }
