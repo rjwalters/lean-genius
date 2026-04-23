@@ -19,7 +19,14 @@
     "lineCount": 154,
     "assumptions": "None. All results proved from Mathlib.",
     "theoremCount": 10,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      "Polynomial.IsAlgClosed.degree_eq_card_roots",
+      "Polynomial.aeval_conj",
+      "Complex.conj_ofReal",
+      "Polynomial.eval_map",
+      "Complex.normSq_apply"
+    ]
   },
   "overview": {
     "problemStatement": "Can the Descartes parity result — that positive real roots and sign variations have the same parity — be proved in Lean using complex conjugate root theory, as an alternative to the existing factoring approach?",
@@ -108,6 +115,21 @@
       "targetId": "descartes-rule-of-signs-oq-01",
       "relationship": "extends",
       "description": "Alternative proof approach for the parity result"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "foundational",
+      "description": "FTA guarantees n complex roots for degree-n polynomials — the starting point for the conjugate pair argument"
+    },
+    {
+      "targetId": "descartes-rule-of-signs",
+      "relationship": "foundational",
+      "description": "The classical Descartes rule of signs — parent of the OQ chain studied here"
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "related",
+      "description": "Vieta's formulas relate root counts to coefficient relationships, complementing the parity result"
     }
   ],
   "sorries": 0
