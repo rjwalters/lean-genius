@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-e340-header",
+    "proofId": "erdos-340",
+    "range": { "startLine": 1, "endLine": 16 },
+    "type": "context",
+    "title": "The Greedy Sidon Sequence (Mian–Chowla) and Erdős's Growth Conjecture",
+    "content": "The Mian–Chowla sequence (OEIS A005282) is the greedy Sidon set: $A = \\{1, 2, 4, 8, 13, 21, 31, 45, 66, 81, 97, \\ldots\\}$. A Sidon set (B₂ set) has the property that all pairwise sums $a + b$ (with $a \\leq b$) are distinct. The greedy construction is deterministic — at each step, add the smallest integer that preserves this property.\n\nErdős conjectured the count $|A \\cap [1,N]| \\gg N^{1/2-\\varepsilon}$ for all $\\varepsilon > 0$. The trivial lower bound is $\\Omega(N^{1/3})$ from the greedy selection rate. Whether the true growth rate is $N^{1/2}$ (the maximum possible for any Sidon set by counting argument) is a central open question. Erdős and Graham also asked whether the difference set $A - A = \\{a - b : a > b, a,b \\in A\\}$ has positive natural density in $\\mathbb{N}$.",
+    "mathContext": "Sidon set: $\\forall a \\leq b, c \\leq d \\in A: a+b = c+d \\Rightarrow a=c, b=d$. Maximum Sidon set in $[N]$ has $\\sim \\sqrt{N}$ elements. Greedy gives $|A \\cap [N]| = \\Omega(N^{1/3})$. Conjecture: $\\Omega(N^{1/2-\\varepsilon})$.",
+    "significance": "key",
+    "relatedConcepts": ["Sidon sets", "B₂ sets", "Mian-Chowla sequence", "greedy algorithm", "OEIS A005282", "additive combinatorics"],
+    "prerequisites": ["additive combinatorics", "pairwise sums", "greedy algorithms", "asymptotic notation"]
+  },
+  {
     "id": "sidon-set",
     "proofId": "erdos-340",
     "range": {
