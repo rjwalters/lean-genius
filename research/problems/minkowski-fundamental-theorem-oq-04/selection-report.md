@@ -1,8 +1,8 @@
 # Problem Selection Report
 
-**Date**: 2026-04-22
+**Date**: 2026-04-23 (re-confirmed)
 **Mode**: SELECT
-**Pool Status**: 30 available, 561 in-progress, 1404 completed, 3 graduated
+**Pool Status**: 26 available, 560 in-progress, 1404 completed, 3 graduated, 3 blocked
 
 ## Selected Problem
 
