@@ -113,7 +113,7 @@
     "title": "RH Implies Mertens Bound, Li's Criterion, and Density Hypothesis",
     "content": "The theorem `rh_triple_equivalence` packages three results: (1) RH ⟹ |M(n)| = O(√n) (Mertens bound), (2) RH ⟺ all Li constants ≥ 0 (Li's criterion), and (3) RH ⟹ Density Hypothesis. The Density Hypothesis states that N(σ,T) ≪ T^{2(1-σ)+ε} where N(σ,T) counts zeros with Re(ρ) ≥ σ — this is a quantitative strengthening of RH. The proof is immediate: just apply the three previously-stated axioms. The theorem documents that these diverse characterizations of RH all follow from a single hypothesis — illustrating how RH is a central organizing principle of analytic number theory.",
     "mathContext": "Density Hypothesis (DH): $N(\\sigma, T) \\ll T^{2(1-\\sigma)+\\epsilon}$ for all $\\sigma \\geq 1/2$. RH $\\Rightarrow$ DH: under RH, $N(\\sigma, T) = 0$ for $\\sigma > 1/2$ (no zeros off the critical line), which vacuously satisfies DH. Li: RH $\\Leftrightarrow$ $\\lambda_n \\geq 0$. Mertens: RH $\\Rightarrow$ $|M(n)| = O(\\sqrt{n})$. All packaged in one theorem as evidence that RH unifies analytic number theory.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Density Hypothesis",
       "zero-free regions",

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 29
     },
-    "type": "context",
+    "type": "concept",
     "title": "Complete Multiplicativity Structure",
     "content": "This file answers the open question from OQ-03: can the Jacobi symbol reciprocity proof be completed by finding the right Mathlib API calls? The answer is definitively YES. Mathlib's jacobiSym module provides complete multiplicativity in both arguments, periodicity, power laws, coprimality characterization, and special reciprocity forms. This file catalogs and connects all these properties, showing they form a complete system for computing any Jacobi symbol value.",
     "mathContext": "The Jacobi symbol $J(\\cdot, n)$ is a completely multiplicative function $\\mathbb{Z} \\to \\{-1, 0, 1\\}$ that factors through $\\mathbb{Z}/n\\mathbb{Z}$.",
@@ -48,7 +48,7 @@
       "startLine": 57,
       "endLine": 60
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Periodicity: The Key Reduction Step",
     "content": "J(a, n) = J(a mod n, n) is the single most important computational property. It means the Jacobi symbol factors through Z/nZ, so we never need to work with integers larger than n. Combined with QR (which swaps the arguments), this creates a Euclidean-like descent: reduce a mod n, swap via QR, reduce again. Each step shrinks the problem, guaranteeing termination.",
     "mathContext": "$J(a, n) = J(a \\bmod n, n)$. The symbol depends only on the residue class $a + n\\mathbb{Z}$.",
@@ -112,7 +112,7 @@
       "startLine": 126,
       "endLine": 137
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Special Reciprocity: Simplified Cases",
     "content": "When a ≡ 1 (mod 4), the sign factor (-1)^((a-1)/2 * (n-1)/2) equals 1 (since (a-1)/2 is even), giving the clean identity J(a,n) = J(n,a). When both a,n ≡ 3 (mod 4), the sign factor is -1, giving J(a,n) = -J(n,a). These simplifications accelerate the Euclidean algorithm — about half of all reciprocity flips are sign-free.",
     "mathContext": "If $a \\equiv 1 \\pmod{4}$: $J(a, n) = J(n, a)$. If $a \\equiv n \\equiv 3 \\pmod{4}$: $J(a, n) = -J(n, a)$.",
@@ -133,7 +133,7 @@
       "startLine": 160,
       "endLine": 195
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Euclidean Reduction Algorithm",
     "content": "The three formalized reduction steps — (1) reduce top mod bottom, (2) extract factors of 2, (3) apply QR to swap — constitute the Jacobi symbol computation algorithm. Each iteration reduces the problem size (like the Euclidean algorithm for GCD), guaranteeing termination. The supplements J(-1,n) = chi_4(n) and J(2,n) = chi_8(n) handle the base cases after all reductions. This algorithm runs in O(log^2 n) time, matching GCD computation complexity.",
     "mathContext": "Algorithm: $J(a,n) \\xrightarrow{\\text{mod}} J(a', n) \\xrightarrow{\\text{factor 2}} J(2,n)^k \\cdot J(a'', n) \\xrightarrow{\\text{QR}} \\pm J(n, a'') \\to \\cdots$",

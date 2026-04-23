@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 51
     },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős #1021: Extremal Numbers for Bipartite Pair Graphs G_k",
     "content": "**Erdős Problem #1021** asks: for every $k \\geq 3$, does there exist $c_k > 0$ such that $\\text{ex}(n, G_k) \\ll n^{3/2-c_k}$? **OQ-01** focuses on the weaker form: for any fixed $k \\geq 4$, is $\\text{ex}(n, G_k) = o(n^{3/2})$? The bipartite pair graph $G_k$ has $k$ primary vertices $\\{y_1,\\ldots,y_k\\}$ and $\\binom{k}{2}$ pair vertices, each adjacent to exactly one pair $\\{y_a, y_b\\}$.",
     "mathContext": "The **extremal number** $\\text{ex}(n, H) = $ max edges in an $n$-vertex $H$-free graph. For $G_k$: the **KST theorem** gives $\\text{ex}(n, G_k) = O(n^{3/2})$ since $G_k \\supseteq K_{2, \\binom{k}{2}}$. The probabilistic lower bound is $\\text{ex}(n, G_k) \\geq c \\cdot n^{3/2-1/(k-1)}$. The **Zarankiewicz problem** $z(n; s, t) = \\text{ex}(n, K_{s,t})$ is the bipartite case. The key open question: can the exponent $3/2$ be beaten for $G_k$-free graphs?",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "extremal graph theory",
       "Turán-type problems",
@@ -156,11 +156,11 @@
       "startLine": 171,
       "endLine": 191
     },
-    "type": "context",
+    "type": "concept",
     "title": "Complete Status: Survey and Infrastructure",
     "content": "The file provides: 2 proved results (`big_O_not_implies_little_o`, `lower_bound_exponent_approach`), 2 axioms (`kst_trivial_bound`, `probabilistic_lower_bound`), 3 sorries (uniformity of o→O, k3 weak from parent, exponent tendsto). This is a **survey and infrastructure** file — it formally documents the state of the problem, the known tools, and the precise gap between what is known ($O(n^{3/2})$) and what is conjectured ($o(n^{3/2})$).",
     "mathContext": "The complete status table: (1) $k = 3$: SOLVED (Bondy-Simonovits, $\\text{ex}(n, C_6) \\ll n^{7/6}$, exponent $= 7/6 < 3/2$); (2) $k \\geq 4$: OPEN for **both** the strong ($c_k > 0$) and weak ($o(n^{3/2})$) forms; (3) Lower bound: $c \\cdot n^{3/2-1/(k-1)}$, exponent $\\to 3/2$; (4) Upper bound: $O(n^{3/2})$ from KST. The $\\Omega(n^{3/2-1/(k-1)})$ lower bound means the gap shrinks as $k$ grows, making the problem **harder for larger k**.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "survey formalization",
       "open problem infrastructure",

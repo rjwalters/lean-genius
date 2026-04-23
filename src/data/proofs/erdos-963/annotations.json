@@ -74,7 +74,7 @@
       "startLine": 45,
       "endLine": 47
     },
-    "type": "technique",
+    "type": "concept",
     "title": "2^k Distinct Subset Sums",
     "content": "A dissociated set of size $k$ has exactly $2^k$ distinct subset sums. This follows directly from the injectivity of the subset-sum map on the power set, which has $2^k$ elements. The axiom formalizes this as: the image of `B.powerset` under the sum map has cardinality $2^{|B|}$.",
     "mathContext": "$|\\{\\sum_{b \\in S} b : S \\subseteq B\\}| = |\\mathcal{P}(B)| = 2^{|B|}$ when $B$ is dissociated. This is the key identity: injectivity of $\\sigma$ on a set of size $2^k$ produces $2^k$ distinct images.",
@@ -142,7 +142,7 @@
       "startLine": 72,
       "endLine": 73
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Upper Bound: ⌊log₂ n⌋ + 1",
     "content": "If $B \\subseteq A$ is dissociated with $|B| = k$, then $B$ has $2^k$ distinct subset sums. These sums are values in $\\mathbb{R}$, but they must be realizable as sums of elements from $A$ (which has $n$ elements). A counting argument via the pigeonhole principle gives $2^k \\le n + 1$ (including the empty sum 0), hence $k \\le \\lfloor\\log_2(n+1)\\rfloor \\le \\lfloor\\log_2 n\\rfloor + 1$.",
     "mathContext": "$|B| = k \\Rightarrow 2^k = |\\{\\sigma(S) : S \\subseteq B\\}| \\le n + 1 \\Rightarrow k \\le \\log_2(n+1) \\le \\lfloor\\log_2 n\\rfloor + 1$.",
@@ -164,7 +164,7 @@
       "startLine": 78,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Empty Set is Dissociated",
     "content": "The empty set is trivially dissociated in any ambient set $A$: vacuous truth gives $\\emptyset \\subseteq A$, and the only subsets $S, T \\subseteq \\emptyset$ are both empty, so subset-sum equality holds trivially. This is the base case for inductive constructions of dissociated subsets.",
     "mathContext": "$\\emptyset$ is dissociated: $\\forall S,T \\subseteq \\emptyset,\\, \\sigma(S) = \\sigma(T) \\Rightarrow S = T$ holds vacuously since $S = T = \\emptyset$.",
@@ -186,7 +186,7 @@
       "startLine": 86,
       "endLine": 123
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Singleton Sets are Dissociated",
     "content": "Any singleton $\\{a\\} \\subseteq A$ is dissociated: the only subsets of $\\{a\\}$ are $\\emptyset$ and $\\{a\\}$ with sums $0$ and $a$ respectively. If $a \\ne 0$, these are distinct; if $a = 0$, the proof handles both cases by showing $S = T$ via case analysis on `Finset.subset_singleton_iff`. The proof is notably detailed because Lean requires explicit handling of both directions of the `ext` goal.",
     "mathContext": "For $B = \\{a\\}$: $\\mathcal{P}(B) = \\{\\emptyset, \\{a\\}\\}$ with $\\sigma(\\emptyset) = 0$ and $\\sigma(\\{a\\}) = a$. Injectivity of $\\sigma$ follows since $0 = a$ would make both subsets map to the same value, but then $S = T$ anyway.",
@@ -209,7 +209,7 @@
       "startLine": 126,
       "endLine": 129
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Powers of 2 are Dissociated",
     "content": "The set $\\{2^0, 2^1, \\ldots, 2^{k-1}\\}$ is dissociated because every non-negative integer has a unique binary representation. If two subsets $S, T \\subseteq \\{0, \\ldots, k-1\\}$ yield equal sums $\\sum_{i \\in S} 2^i = \\sum_{i \\in T} 2^i$, then $S = T$ by uniqueness of binary expansion. This is the canonical extremal example: it achieves $|B| = k$ with $2^k$ distinct sums from $k$ elements.",
     "mathContext": "$\\sum_{i \\in S} 2^i = \\sum_{i \\in T} 2^i \\Rightarrow S = T$ by uniqueness of binary representation. The set $\\{1, 2, 4, \\ldots, 2^{k-1}\\}$ is a dissociated set of size $k$ inside any $A \\supseteq \\{1, \\ldots, 2^{k-1}\\}$.",
@@ -232,7 +232,7 @@
       "startLine": 132,
       "endLine": 133
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Monotonicity of f",
     "content": "The function $f$ is non-decreasing: if $m \\le n$, then $f(m) \\le f(n)$. This follows because any $n$-element set contains $m$-element subsets, so a guarantee for $n$-element sets is at least as strong. Monotonicity is a basic structural property that validates using $f$ as an extremal function.",
     "mathContext": "$m \\le n \\Rightarrow f(m) \\le f(n)$: if every $n$-element set has a dissociated subset of size $\\ge k$, then so does every $m$-element set (embed it in an $n$-element superset).",
@@ -254,7 +254,7 @@
       "startLine": 136,
       "endLine": 137
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Log-Base Gap: log₃ n ≤ log₂ n",
     "content": "For $n \\ge 2$, $\\lfloor\\log_3 n\\rfloor \\le \\lfloor\\log_2 n\\rfloor$, quantifying the gap between the proven lower bound and the conjectured one. Since $\\log_3 n = \\log_2 n / \\log_2 3 \\approx 0.631 \\cdot \\log_2 n$, the greedy bound captures about 63% of the conjectured value. Closing this gap is the essence of Problem #963.",
     "mathContext": "$\\lfloor\\log_3 n\\rfloor \\le \\lfloor\\log_2 n\\rfloor$ since $\\log_3 n = \\frac{\\log_2 n}{\\log_2 3}$ and $\\log_2 3 \\approx 1.585 > 1$. The ratio $1/\\log_2 3 \\approx 0.631$ measures how far the greedy bound is from the conjecture.",

@@ -3,7 +3,7 @@
     "id": "ann-etrans-oq01-oq01-header",
     "line": 1,
     "endLine": 34,
-    "type": "context",
+    "type": "concept",
     "title": "Module Overview: Nesterenko's 1996 Theorem Gives Five New Transcendence Results",
     "body": "This module proves six theorems extending the transcendence hierarchy around π, e, and Γ(1/4). The central tool is Nesterenko's 1996 theorem that {π, e^π, Γ(1/4)} are algebraically independent over ℚ (axiomatized in the parent file). From this single deep result, the polynomial lifting technique derives transcendence of each individual constant (π, e^π, Γ(1/4)) and of their product π·e^π. Separately, Schanuel's Conjecture is axiomatized to give conditional proofs of e+π and e·π transcendence. The module imports from `ETranscendentalOQ01` which provides `nesterenko_algebraic_independence`, `gammaQuarter`, and the conditional parent lemmas.",
     "mathContext": "Algebraic independence of {α₁,…,αₙ} over ℚ means no nonzero polynomial P ∈ ℚ[X₁,…,Xₙ] satisfies P(α₁,…,αₙ) = 0. In Lean this is formalized via `MvPolynomial.aeval`. Transcendence of a single α is the special case n=1. The Nesterenko triple (π, e^π, Γ(1/4)) gives the richest known algebraic independence result involving π.",

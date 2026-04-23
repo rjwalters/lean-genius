@@ -2,7 +2,7 @@
   {
     "id": "ann-e655-imports",
     "proofId": "erdos-655",
-    "type": "context",
+    "type": "concept",
     "title": "Euclidean Geometry and Finset Imports",
     "content": "Imports Mathlib's InnerProductSpace for EuclideanSpace ℝ (Fin 2), Finset for combinatorial counting, and tactics.",
     "mathContext": "The formalization works in $\\mathbb{R}^2$ modeled as `EuclideanSpace ℝ (Fin 2)`, Mathlib's standard finite-dimensional Euclidean space with the `dist` metric from `MetricSpace`. The `Finset` library provides the combinatorial infrastructure for counting distinct distances and bounding fiber sizes. The `InnerProductSpace.Basic` import brings in the full metric space hierarchy.",

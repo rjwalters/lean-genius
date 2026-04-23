@@ -118,7 +118,7 @@
       "startLine": 117,
       "endLine": 128
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #491: Main Theorems",
     "content": "**erdos_491** is the main entry point: additive + bounded differences implies f = c'·log + O(1). It is a direct application of wirsing_theorem.\n\n**erdos_491_explicit** unpacks the existential to make the bound M explicit: ∃ c' M, M > 0 ∧ ∀ n ≥ 1, |f(n) - c'·log(n)| ≤ M.",
     "significance": "key",

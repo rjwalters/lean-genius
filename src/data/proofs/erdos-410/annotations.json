@@ -195,7 +195,7 @@
       "startLine": 205,
       "endLine": 212
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Multiplicativity",
     "content": "Two key structural results: σ is multiplicative (σ(mn) = σ(m)σ(n) when gcd(m,n) = 1), and σ has an explicit formula at prime powers: σ(p^k) = (p^{k+1} - 1)/(p - 1) = 1 + p + p² + ··· + p^k (a geometric series). Together with unique factorization, these determine σ completely: σ(n) = ∏_{p^a || n} σ(p^a). The multiplicativity makes σ_k(n) hard to analyze because σ of a composite number requires refactoring the iterand at each step.",
     "mathContext": "$\\sigma(mn) = \\sigma(m)\\sigma(n)$ for $\\gcd(m,n) = 1$. $\\sigma(p^k) = \\frac{p^{k+1}-1}{p-1} = 1 + p + p^2 + \\cdots + p^k$. Determines $\\sigma$ completely via $\\sigma(n) = \\prod_{p^a \\| n} \\sigma(p^a)$.",

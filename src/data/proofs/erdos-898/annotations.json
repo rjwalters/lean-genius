@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 28
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Header, Imports, and Namespace",
     "content": "File header documenting the Erdos-Mordell inequality: for any interior point $P$ of triangle $ABC$, $PA + PB + PC \\ge 2(PX + PY + PZ)$. Imports all of Mathlib (`import Mathlib`), providing `EuclideanSpace`, `Collinear`, norms, and tactics. Declares namespace `Erdos898`.",
     "mathContext": "The Erdos-Mordell inequality: $PA + PB + PC \\ge 2(PX + PY + PZ)$ where $X, Y, Z$ are perpendicular feet from $P$ to the sides.",

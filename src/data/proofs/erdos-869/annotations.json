@@ -205,7 +205,7 @@
       "startLine": 159,
       "endLine": 173
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Union of Disjoint Bases is a Basis",
     "content": "**union_of_bases:**\n\nIf A₁, A₂ are disjoint bases, then A = A₁ ∪ A₂ is also a basis.\n\n```lean\ntheorem union_of_bases (A₁ A₂ : Set ℕ)\n    (h : areDisjointBases A₁ A₂) :\n    isAdditiveBasis2 (A₁ ∪ A₂)\n```\n\n**Why?**\n- A + A ⊇ A₁ + A₁ (which is already cofinite)\n- Plus extra cross-terms A₁ + A₂\n\nSo the union is \"at least as good\" as each piece.",
     "significance": "key",
@@ -223,7 +223,7 @@
       "startLine": 179,
       "endLine": 190
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basis Monotonicity",
     "content": "**basis_monotone:**\n\nIf A is a basis and A ⊆ B, then B is also a basis.\n\n```lean\ntheorem basis_monotone {A B : Set ℕ}\n    (hA : isAdditiveBasis2 A) (hAB : A ⊆ B) :\n    isAdditiveBasis2 B\n```\n\n**Intuition:**\nAdding elements can only add more sums, never lose them.\nSo supersets of bases are bases.",
     "significance": "supporting",

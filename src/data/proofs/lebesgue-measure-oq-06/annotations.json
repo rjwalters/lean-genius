@@ -2,97 +2,210 @@
   {
     "id": "ann-preamble",
     "proofId": "lebesgue-measure-oq-06",
-    "range": { "startLine": 1, "endLine": 38 },
-    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 38
+    },
+    "type": "concept",
     "title": "The Banach-Tarski Paradox: Duplicating a Ball",
     "content": "The module docstring frames the paradox: the closed unit ball in ℝ³ can be cut into finitely many pieces (5 suffice) and those pieces rearranged — using only rotations and translations — into two complete copies of the original ball. This violates naive conservation of volume, but the pieces are non-measurable (constructed via Axiom of Choice) so Lebesgue measure cannot be assigned to them. The key ingredients are listed: the free subgroup F₂ in SO(3) (Hausdorff 1914), the paradoxical decomposition of F₂, extension to S², and extension to B³.",
     "mathContext": "Banach-Tarski is a theorem of ZFC (Zermelo-Fraenkel set theory with Axiom of Choice). In ZF alone, it is independent. The pieces are constructed as coset representatives of the free group $F_2 = \\langle \\varphi, \\psi \\rangle \\subset \\mathrm{SO}(3)$ acting on $S^2$, requiring an uncountable choice function. The minimum number of pieces is 5 (Straus–von Neumann, 1929), achievable using 2 pieces for one copy and 3 for the other. Compare with Vitali sets: both are non-measurable constructions requiring AC, but Vitali sets only show $\\mathbb{R}/\\mathbb{Q}$ cosets have no measure, while Banach-Tarski shows a bounded set can be duplicated.",
-    "significance": "context",
-    "relatedConcepts": ["Axiom of Choice", "non-measurable set", "free group", "SO(3)", "equidecomposability", "Vitali sets"],
-    "prerequisites": ["Group actions on sets", "Lebesgue measure", "Free groups"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Axiom of Choice",
+      "non-measurable set",
+      "free group",
+      "SO(3)",
+      "equidecomposability",
+      "Vitali sets"
+    ],
+    "prerequisites": [
+      "Group actions on sets",
+      "Lebesgue measure",
+      "Free groups"
+    ]
   },
   {
     "id": "ann-equidecomposable",
     "proofId": "lebesgue-measure-oq-06",
-    "range": { "startLine": 42, "endLine": 73 },
+    "range": {
+      "startLine": 42,
+      "endLine": 73
+    },
     "type": "definition",
     "title": "G-Equidecomposability: The Abstract Framework",
     "content": "The definition captures 'cutting and rearranging using group elements' precisely: A and B are G-equidecomposable if A can be partitioned into n pieces, each piece moved by a group element g_i, so the images form a partition of B. The group G represents the allowed moves (rotations, translations, etc.). The notation A ≃ᴳ[G] B is introduced. Reflexivity is proved: every set A is G-equidecomposable to itself via 1 piece and the identity element.",
     "mathContext": "$A \\sim_G B$ iff $\\exists n \\in \\mathbb{N}$, $(P_i)_{i < n}$ with each $P_i \\subseteq A$, pairwise disjoint, $A = \\bigsqcup_i P_i$, and $(g_i)_{i < n}$ in $G$ with $B = \\bigsqcup_i g_i P_i$. This is an equivalence relation on subsets of any $G$-set: reflexivity (proved here via $n=1$, $g_0 = e$), symmetry (use $g_i^{-1}$ on the reassembled pieces), and transitivity (compose decompositions, total pieces $= n_1 \\cdot n_2$). Equidecomposability preserves Haar measure when $G$ is measure-preserving, so paradoxical sets violate measure theory.",
     "significance": "key",
-    "relatedConcepts": ["group action", "set partition", "Hausdorff paradox", "Tarski's theorem", "Haar measure"],
-    "prerequisites": ["Group (Lean typeclass)", "MulAction", "Set.Disjoint", "Set.iUnion"]
+    "relatedConcepts": [
+      "group action",
+      "set partition",
+      "Hausdorff paradox",
+      "Tarski's theorem",
+      "Haar measure"
+    ],
+    "prerequisites": [
+      "Group (Lean typeclass)",
+      "MulAction",
+      "Set.Disjoint",
+      "Set.iUnion"
+    ]
   },
   {
     "id": "ann-paradoxical",
     "proofId": "lebesgue-measure-oq-06",
-    "range": { "startLine": 75, "endLine": 83 },
+    "range": {
+      "startLine": 75,
+      "endLine": 83
+    },
     "type": "definition",
     "title": "Paradoxical Sets: Duplication via Group Action",
     "content": "A set A is G-paradoxical if it can be partitioned into two disjoint subsets B and C (each a subset of A) such that A is equidecomposable to B alone AND to C alone. This means A can be 'duplicated': two disjoint proper subsets each individually recapture all of A via rearrangement. This is the formal definition that makes Banach-Tarski precise.",
     "mathContext": "IsParadoxical $G$ $A$: $\\exists B, C \\subseteq A$ with $B \\cap C = \\emptyset$, $A \\sim_G B$, $A \\sim_G C$. Tarski's theorem (1938): a $G$-set $X$ admits no $G$-invariant finitely-additive probability measure $\\Leftrightarrow$ $X$ is $G$-paradoxical. This equivalence makes amenability (existence of such a measure on $G$ itself) the exact algebraic dual to the Banach-Tarski phenomenon. The free group $F_2$ is paradoxical under its own left-multiplication action, witnessed by the partition $F_2 = W(a) \\cup W(a^{-1}) \\cup W(b) \\cup W(b^{-1}) \\cup \\{e\\}$ and the two covers $F_2 = W(a) \\cup aW(a^{-1})$ and $F_2 = W(b) \\cup bW(b^{-1})$.",
     "significance": "key",
-    "relatedConcepts": ["Tarski's theorem", "amenability", "invariant measure", "Hausdorff paradox", "free group action"],
-    "prerequisites": ["Equidecomposable", "Set.Disjoint", "Set.Subset"]
+    "relatedConcepts": [
+      "Tarski's theorem",
+      "amenability",
+      "invariant measure",
+      "Hausdorff paradox",
+      "free group action"
+    ],
+    "prerequisites": [
+      "Equidecomposable",
+      "Set.Disjoint",
+      "Set.Subset"
+    ]
   },
   {
     "id": "ann-no-measure",
     "proofId": "lebesgue-measure-oq-06",
-    "range": { "startLine": 89, "endLine": 144 },
+    "range": {
+      "startLine": 89,
+      "endLine": 144
+    },
     "type": "theorem",
     "title": "Paradoxical Sets Have No Finite Invariant Measure",
     "content": "This theorem proves the key measure-theoretic consequence: if A is G-paradoxical, any G-invariant finitely-additive measure μ must assign A measure 0 or ∞. The proof structure: equidecomposability forces μ(A) = μ(B) and μ(A) = μ(C), then finite additivity of disjoint subsets gives μ(A) ≥ μ(B) + μ(C) = 2μ(A), so μ(A) + μ(A) = μ(A). The helper lemma ENNReal.eq_zero_or_top_of_add_eq_self (fully proved) then gives the result.",
     "mathContext": "In $\\mathbb{R}_{\\geq 0}^\\infty$: $a + a = a$ implies $a = 0$ or $a = \\top$ (infinity). Proof: lift $a$ to $\\mathbb{R}_{\\geq 0}$ (using finiteness), then $a + a = a$ in $\\mathbb{R}_{\\geq 0}$ gives $a = 0$ by linarith. The main argument has one sorry: showing $\\mu(A) + \\mu(A) = \\mu(A)$ requires knowing $\\mu(B \\cup C) = \\mu(A)$ (not just $B \\cup C \\subseteq A$). The full argument uses the covering from the equidecomposability of $A$ with $B \\cup C$ (plus possibly extra pieces), handled by monotonicity: $\\mu(B \\cup C) \\leq \\mu(A)$ and $\\mu(A) = \\mu(B) + \\mu(C) = \\mu(B \\cup C)$ (since $B, C$ disjoint and equidecomposable to $A$).",
     "significance": "key",
-    "relatedConcepts": ["finitely-additive measure", "invariant measure", "ENNReal", "monotonicity", "Tarski's theorem"],
-    "prerequisites": ["IsParadoxical", "ENNReal.eq_zero_or_top_of_add_eq_self", "Equidecomposable"]
+    "relatedConcepts": [
+      "finitely-additive measure",
+      "invariant measure",
+      "ENNReal",
+      "monotonicity",
+      "Tarski's theorem"
+    ],
+    "prerequisites": [
+      "IsParadoxical",
+      "ENNReal.eq_zero_or_top_of_add_eq_self",
+      "Equidecomposable"
+    ]
   },
   {
     "id": "ann-ennreal-lemma",
     "proofId": "lebesgue-measure-oq-06",
-    "range": { "startLine": 132, "endLine": 144 },
-    "type": "technique",
+    "range": {
+      "startLine": 132,
+      "endLine": 144
+    },
+    "type": "concept",
     "title": "ENNReal Helper: a + a = a implies a = 0 or ∞ (Proved)",
     "content": "This lemma is fully proved (no sorry). In ℝ≥0∞ (extended non-negative reals), if a + a = a then a must be 0 or ⊤ (infinity). The proof lifts a to ℝ≥0 using the finiteness assumption (a ≠ ⊤), then derives a = 0 from a + a = a by linarith. This captures the essential arithmetic of the paradox: 'measure doubled = original measure' forces extremal values.",
     "mathContext": "The proof uses: (1) `push_neg` to separate $\\lnot(a = 0 \\lor a = \\top)$ into $a \\neq 0 \\land a \\neq \\top$; (2) `lift a to \\mathbb{R}_{\\geq 0}` using $a \\neq \\top$; (3) cast the ENNReal equation to $\\mathbb{R}_{\\geq 0}$ using `ENNReal.coe_add` and `ENNReal.coe_inj`; (4) `linarith` to conclude $a = 0$, contradicting $a \\neq 0$. The key coercion: $\\uparrow a + \\uparrow a = \\uparrow a$ in $\\mathbb{R}_{\\geq 0}$ gives $2a = a$ in $\\mathbb{R}_{\\geq 0}$, hence $a = 0$. This is an instance of the general fact that in any cancellative additive monoid, $a + a = a \\Rightarrow a = 0$.",
     "significance": "supporting",
-    "relatedConcepts": ["ENNReal arithmetic", "extended reals", "measure paradoxes", "linarith in ℝ≥0"],
-    "prerequisites": ["ENNReal.coe_add", "ENNReal.coe_inj", "NNReal.eq_zero_of_add_eq_self"]
+    "relatedConcepts": [
+      "ENNReal arithmetic",
+      "extended reals",
+      "measure paradoxes",
+      "linarith in ℝ≥0"
+    ],
+    "prerequisites": [
+      "ENNReal.coe_add",
+      "ENNReal.coe_inj",
+      "NNReal.eq_zero_of_add_eq_self"
+    ]
   },
   {
     "id": "ann-hausdorff-free-subgroup",
     "proofId": "lebesgue-measure-oq-06",
-    "range": { "startLine": 164, "endLine": 187 },
+    "range": {
+      "startLine": 164,
+      "endLine": 187
+    },
     "type": "theorem",
     "title": "Hausdorff Free Subgroup of SO(3): The Algebraic Engine (Axiomatized)",
     "content": "Hausdorff's theorem (1914) provides the algebraic ingredient making Banach-Tarski possible: SO(3) contains a free subgroup of rank 2. The specific construction uses two rotations φ and ψ, both by arccos(1/3), around the z-axis and x-axis respectively. Freeness means no nontrivial word in φ, ψ, φ⁻¹, ψ⁻¹ equals the identity — proved via a number-theoretic argument showing that any nontrivial word produces a vector with algebraically independent (irrational) components. In Lean, freeness is expressed as injectivity of the FreeGroup.lift map from the free group on two generators into the linear isometry group.",
     "mathContext": "The rotation by $\\theta = \\arccos(1/3)$ around the $z$-axis has matrix $R_z(\\theta) = \\begin{pmatrix} 1/3 & -2\\sqrt{2}/3 & 0 \\\\ 2\\sqrt{2}/3 & 1/3 & 0 \\\\ 0 & 0 & 1 \\end{pmatrix}$ (since $\\cos\\theta = 1/3$, $\\sin\\theta = 2\\sqrt{2}/3$). Similarly for $R_x(\\theta)$. Freeness: if $w(\\varphi, \\psi) = \\mathrm{id}$, then $w(R_z, R_x) \\cdot e_1 = e_1$. Writing $e_1$ in a Gaussian integer ring $\\mathbb{Z}[i\\sqrt{2}]^3/3^n$ and tracking how each generator acts shows the entry becomes non-integer, giving a contradiction.",
     "significance": "key",
-    "relatedConcepts": ["free group", "SO(3)", "rotation matrix", "arccos(1/3)", "Hausdorff paradox", "algebraic independence"],
-    "prerequisites": ["LinearIsometryEquiv", "FreeGroup.lift", "EuclideanSpace ℝ (Fin 3)", "hausdorff_free_subgroup"]
+    "relatedConcepts": [
+      "free group",
+      "SO(3)",
+      "rotation matrix",
+      "arccos(1/3)",
+      "Hausdorff paradox",
+      "algebraic independence"
+    ],
+    "prerequisites": [
+      "LinearIsometryEquiv",
+      "FreeGroup.lift",
+      "EuclideanSpace ℝ (Fin 3)",
+      "hausdorff_free_subgroup"
+    ]
   },
   {
     "id": "ann-banach-tarski",
     "proofId": "lebesgue-measure-oq-06",
-    "range": { "startLine": 192, "endLine": 244 },
+    "range": {
+      "startLine": 192,
+      "endLine": 244
+    },
     "type": "theorem",
     "title": "Banach-Tarski: Main Theorem and Non-Measurability Corollary (Axiomatized)",
     "content": "The main theorem states: the unit ball B³ in ℝ³ can be partitioned into n pieces, moved by isometries g₁ and g₂, to form two copies of B³ (the second copy translated by 2·e₁). The non-measurability corollary follows immediately: if all pieces were measurable, Lebesgue measure would satisfy λ(B³) = Σᵢ λ(pᵢ) (partition) = Σᵢ λ(g₁(pᵢ)) (isometries preserve measure) = λ(B³) + λ(B³) = 2λ(B³), contradicting λ(B³) = 4π/3 > 0. Both are stated with sorry; the full proof requires ~800 lines via the Hausdorff free subgroup, F₂ paradoxical decomposition, lift to S², and cone extension to B³.",
     "mathContext": "The statement uses `IsometryEquiv` for rigid motions and translates the second copy by $2e_1 = 2(1,0,0)$ to place the two copies disjointly. Lebesgue measure satisfies $\\lambda(B^3) = \\frac{4}{3}\\pi r^3 = \\frac{4}{3}\\pi$ for the unit ball. The five-piece decomposition (Straus–von Neumann optimal): let $F_2$ act on $S^2$ with fixed points removed; $S^2 = W(a)^* \\sqcup W(a^{-1})^* \\sqcup W(b)^* \\sqcup W(b^{-1})^*$ (punctured orbit sets). The two reassemblies use groups $\\{e, a\\}$ and $\\{e, b\\}$ acting on these four sets, giving 2+3=5 pieces (one set is split for technical reasons).",
     "significance": "key",
-    "relatedConcepts": ["isometry", "unit ball", "finitely many pieces", "Axiom of Choice", "non-measurable sets", "Lebesgue measure"],
-    "prerequisites": ["IsometryEquiv", "Metric.closedBall", "EuclideanSpace", "Set.image", "hausdorff_free_subgroup"]
+    "relatedConcepts": [
+      "isometry",
+      "unit ball",
+      "finitely many pieces",
+      "Axiom of Choice",
+      "non-measurable sets",
+      "Lebesgue measure"
+    ],
+    "prerequisites": [
+      "IsometryEquiv",
+      "Metric.closedBall",
+      "EuclideanSpace",
+      "Set.image",
+      "hausdorff_free_subgroup"
+    ]
   },
   {
     "id": "ann-amenability",
     "proofId": "lebesgue-measure-oq-06",
-    "range": { "startLine": 249, "endLine": 287 },
+    "range": {
+      "startLine": 249,
+      "endLine": 287
+    },
     "type": "definition",
     "title": "Amenable Groups: The Group-Theoretic Obstruction",
     "content": "IsAmenable G defines amenability: the group G admits a finitely-additive left-invariant probability measure on ALL subsets of G. Amenable groups include ℤ (via Cesàro means, stated as int_amenable with sorry) and all finite groups, but NOT F₂ (free group on 2 generators, stated as free_group_not_amenable with sorry). The non-amenability of F₂ is the group-theoretic root cause of Banach-Tarski: F₂ ↪ SO(3) → SO(3) not amenable → unit ball paradoxical.",
     "mathContext": "Day's theorem (1949): a countable group $G$ is amenable $\\Leftrightarrow$ every $G$-set has no paradoxical subset. The Cesàro mean for $\\mathbb{Z}$: define $\\mu(A) = \\lim_{N\\to\\infty} |A \\cap [-N,N]| / (2N+1)$ when the limit exists, then extend via a Banach limit (a linear functional on $\\ell^\\infty(\\mathbb{Z})$ extending the limit, constructed using Hahn-Banach / Axiom of Choice). For $F_2$: the partition $F_2 = W(a) \\sqcup aW(a^{-1})$ with $|W(a)| = |F_2|$ and $|aW(a^{-1})| = |F_2|$ forces $\\mu(F_2) = \\mu(W(a)) + \\mu(aW(a^{-1})) = \\mu(W(a)) + \\mu(W(a^{-1}))$. But $F_2 = W(a) \\sqcup W(a^{-1}) \\sqcup \\cdots$, so $\\mu$ cannot be a probability measure. The Markov-Kakutani fixed-point theorem gives amenability for abelian groups: any commuting family of continuous affine maps on a compact convex set has a common fixed point.",
     "significance": "key",
-    "relatedConcepts": ["Day's theorem", "Tarski's theorem", "Cesaro mean", "Banach limit", "free group paradox", "Markov-Kakutani"],
-    "prerequisites": ["FreeGroup", "Group action", "finitely-additive measure", "left-invariant measure", "IsAmenable"]
+    "relatedConcepts": [
+      "Day's theorem",
+      "Tarski's theorem",
+      "Cesaro mean",
+      "Banach limit",
+      "free group paradox",
+      "Markov-Kakutani"
+    ],
+    "prerequisites": [
+      "FreeGroup",
+      "Group action",
+      "finitely-additive measure",
+      "left-invariant measure",
+      "IsAmenable"
+    ]
   }
 ]

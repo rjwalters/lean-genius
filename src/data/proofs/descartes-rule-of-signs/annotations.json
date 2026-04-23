@@ -144,7 +144,7 @@
       "startLine": 255,
       "endLine": 290
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Special Cases",
     "content": "**All Positive Coefficients**:\n\nIf all $a_i \\geq 0$ with some $a_i > 0$:\n- No sign changes → 0 positive roots\n- For $x > 0$: $p(x) = \\sum a_i x^i > 0$\n\n```lean\ntheorem no_positive_roots_if_positive_coeffs (p : ℝ[X])\n    (hpos : ∀ i, 0 ≤ p.coeff i) (hsome : ∃ i, 0 < p.coeff i) :\n    countPositiveRoots p = 0\n```\n\n**Alternating Signs**:\n\nIf coefficients strictly alternate signs:\n- $n$ sign changes for degree $n$ polynomial\n- Bound is **achieved**: exactly $n$ positive roots\n\n```lean\ntheorem alternating_signs_max_roots (p : ℝ[X])\n    (halt : ∀ i, (Even i → 0 < coeff i) ∧ (Odd i → coeff i < 0)) :\n    countPositiveRoots p = p.natDegree\n```",
     "mathContext": "all positive ⟹ no pos roots; alternating ⟹ max roots",
@@ -190,7 +190,7 @@
       "startLine": 326,
       "endLine": 344
     },
-    "type": "context",
+    "type": "concept",
     "title": "Applications and Significance",
     "content": "**Why Descartes' Rule Matters**:\n\n1. **Root Bounds**: Upper bound on positive/negative roots without solving\n\n2. **Existence Tests**:\n   - Sign changes = 1 → exactly 1 positive root\n   - Sign changes = 0 → no positive roots\n\n3. **Historical**: Predates Fundamental Theorem of Algebra; early general root result\n\n4. **Algorithms**: Foundation for:\n   - Sturm's theorem (exact root counting)\n   - Vincent's theorem (root isolation)\n   - Real root computation\n\n5. **Education**: Beautiful connection between algebraic (coefficients) and analytic (roots) properties",
     "significance": "supporting",

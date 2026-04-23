@@ -153,7 +153,7 @@
       "startLine": 202,
       "endLine": 214
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Van der Waerden Implies Erdős #499",
     "content": "**vanDerWaerden_implies_erdos499:** The permanent bound implies the diagonal bound.\n\n**Proof idea (pigeonhole):**\n- Permanent = sum of n! diagonal products\n- If sum ≥ n^{-n} · n!, then average ≥ n^{-n}\n- So at least one diagonal product ≥ n^{-n}\n\nThis shows Erdős #499 is a weaker statement than van der Waerden.",
     "significance": "key",
@@ -171,7 +171,7 @@
       "startLine": 222,
       "endLine": 237
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The 2×2 Case",
     "content": "**two_by_two_erdos499:** For n = 2, verification is elementary.\n\nA 2×2 doubly stochastic matrix has form:\n$$\\begin{pmatrix} a & 1-a \\\\ 1-a & a \\end{pmatrix}$$\n\nThe two diagonal products are a² and (1-a)².\n\n**Claim:** max(a², (1-a)²) ≥ 1/4 always.\n\n**Proof:** If a ≤ 1/2, then 1-a ≥ 1/2, so (1-a)² ≥ 1/4. Similar if a ≥ 1/2.",
     "significance": "key",
@@ -208,7 +208,7 @@
       "startLine": 268,
       "endLine": 288
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Problem Summary",
     "content": "**erdos_499_summary:** Complete status of Erdős Problem #499.\n\n**Solved Results:**\n1. marcus_minc_theorem: Product bound (1962) = Erdős #499\n2. van_der_waerden: Stronger permanent bound (1981)\n\n**Supporting Results:**\n- marcus_ree_theorem: Weaker sum bound (1959)\n- birkhoff_von_neumann: Structural characterization\n- 2×2 case: Elementary verification\n\n**Answer:** YES, every doubly stochastic matrix has a diagonal with product ≥ n^{-n}.",
     "significance": "key",

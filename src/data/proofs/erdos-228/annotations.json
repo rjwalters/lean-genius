@@ -82,7 +82,7 @@
       "startLine": 64,
       "endLine": 75
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Why √n is Expected",
     "content": "**Intuition**: For a random Littlewood polynomial evaluated at z on the unit circle, |P(z)|² is a sum of n terms with random signs. By the central limit theorem, the magnitude behaves like √n.",
     "mathContext": "expected_magnitude_heuristic proves √n > 0 for n ≥ 1 using Real.sqrt_pos. This basic fact underlies the whole problem—we need a positive target magnitude.",
@@ -120,7 +120,7 @@
       "startLine": 97,
       "endLine": 98
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Answer",
     "content": "The answer to Erdős Problem #228 is **YES**: flat Littlewood polynomials exist for all n ≥ 2.",
     "mathContext": "theorem erdos_228_answer : Erdos228Question := bbmst_theorem. This directly invokes the axiomatized BBMST theorem.",
@@ -176,7 +176,7 @@
       "startLine": 146,
       "endLine": 159
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "The summary combines our main results: the BBMST theorem holds (axiomatized), and √n > 0 for all n ≥ 1 (proved as the basic magnitude target).",
     "mathContext": "summary_erdos_228 : Erdos228Question ∧ (∀ n ≥ 1, √n > 0). The conjunction packages the key verified facts for export.",

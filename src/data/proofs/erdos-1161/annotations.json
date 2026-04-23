@@ -142,7 +142,7 @@
       "startLine": 103,
       "endLine": 108
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Beker's Characterization",
     "content": "**beker_characterization**: For $n \\geq 100$, if $f_k(n) \\geq (n-1)!$ then $\\mathrm{lcm}(1, \\ldots, n-k)$ divides $k$.\n\nThis is the necessary condition: any order $k$ achieving near-maximum count must satisfy an arithmetic divisibility condition involving the lcm function. The condition $\\mathrm{lcm}(1,\\ldots,n-k) \\mid k$ severely restricts which $k$ can be maximizers, since lcmRange grows exponentially.",
     "mathContext": "$f_k(n) \\geq (n-1)! \\Rightarrow \\mathrm{lcm}(1, \\ldots, n-k) \\mid k$ for $n \\geq 100$",
@@ -231,7 +231,7 @@
       "startLine": 139,
       "endLine": 143
     },
-    "type": "technique",
+    "type": "concept",
     "title": "n-Cycles Count",
     "content": "**permCountByOrder_n_eq_subfactorial_pred**: The number of $n$-cycles in $S_n$ is $(n-1)!$.\n\nA permutation of order $n$ on $[n]$ must be a single $n$-cycle. There are $(n-1)!$ such cycles (fix position 1, permute the remaining $n-1$ elements). This is the key structural fact explaining why $\\max_k f_k(n) \\sim (n-1)!$.",
     "mathContext": "$f_n(n) = |\\{n\\text{-cycles in } S_n\\}| = (n-1)!$",

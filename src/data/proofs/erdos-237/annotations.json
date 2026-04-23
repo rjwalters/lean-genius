@@ -187,7 +187,7 @@
       "startLine": 127,
       "endLine": 141
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Original Conjecture is True",
     "content": "The original Erdős conjecture follows from the Chen-Ding theorem via a simple logical reduction: a set with logarithmic density is infinite (if it were finite, $|A \\cap [1,N]|$ would be bounded, contradicting $|A \\cap [1,N]| \\ge c \\log N \\to \\infty$). The proof has one sorry for the finite-set-can't-have-log-density technicality, which would require showing that a finite subset of $\\mathbb{N}$ is bounded above.",
     "mathContext": "$\\text{HasLogDensity}(A) \\implies |A| = \\infty \\implies \\limsup f_A(n) = \\infty$. The first implication uses $c \\log N \\to \\infty$; the second is Chen-Ding.",
@@ -234,7 +234,7 @@
       "startLine": 173,
       "endLine": 180
     },
-    "type": "context",
+    "type": "concept",
     "title": "Squares Example",
     "content": "The set of perfect squares $A = \\{1, 4, 9, 16, \\ldots\\}$ is infinite, so by Chen-Ding, $\\limsup f_A(n) = \\infty$. Concretely, $f_A(n) = |\\{k \\ge 1 : n - k^2 \\text{ is prime}\\}|$. The squares have density $\\sim \\sqrt{N}$ in $[1, N]$, far exceeding logarithmic density.",
     "mathContext": "$A = \\{k^2 : k \\ge 1\\}$, $|A \\cap [1, N]| = \\lfloor \\sqrt{N} \\rfloor$. Then $f_A(n) = |\\{k : 1 \\le k^2 < n,\\; n - k^2 \\text{ prime}\\}|$.",
@@ -256,7 +256,7 @@
       "startLine": 182,
       "endLine": 189
     },
-    "type": "context",
+    "type": "concept",
     "title": "Prime Powers Example",
     "content": "The set of prime powers $A = \\{p^k : p \\text{ prime},\\; k \\ge 1\\}$ is infinite. By Chen-Ding, it has unbounded representation count. This connects to questions about expressing integers as sums of a prime and a prime power, studied in analytic number theory via the Hardy-Littlewood circle method.",
     "mathContext": "$A = \\{p^k : p \\text{ prime},\\; k \\ge 1\\}$. By PNT, $|A \\cap [1, N]| = \\pi(N) + \\pi(N^{1/2}) + \\cdots \\sim N/\\log N$.",
@@ -301,7 +301,7 @@
       "startLine": 221,
       "endLine": 235
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #237 SOLVED",
     "content": "The main theorem `erdos_237` states that the original conjecture is true: $\\text{ErdosConjecture}$ holds. It is defined as an alias for `erdos_conjecture_true`, which reduces to Chen-Ding via the log-density-implies-infinite argument. The answer to Problem #237 is YES.",
     "mathContext": "$\\text{ErdosConjecture} = \\forall A,\\; \\text{HasLogDensity}(A) \\implies \\limsup f_A(n) = \\infty$. Proved via $\\text{StrongerVersion}$.",

@@ -6,7 +6,7 @@
       "startLine": 3,
       "endLine": 31
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Documentation: k-Way Birthday Coincidences",
     "content": "The module documentation outlines the four main results of this formalization: (1) the generalized pigeonhole bound — $n > (k-1)d$ forces a k-way coincidence; (2) classical recovery — the $k=2$ case is equivalent to non-injectivity; (3) monotonicity — stronger coincidences imply weaker ones; (4) probability = 1 when the pigeonhole bound is exceeded. The approach uses Mathlib's `Finset.card_eq_sum_card_fiberwise` for fiber decomposition and `Finset.sum_le_sum` for bounding.\n\nThe historical note records the scaling of thresholds: for $d = 365$ days, $k=2$ needs ~23 people (the classical surprise), $k=3$ needs ~88, and $k=4$ needs ~187. The general scaling is $d^{(k-1)/k} \\cdot (k!)^{1/k}$.",
     "mathContext": "Threshold for $>50\\%$ probability of a k-way coincidence among $d$ equally likely outcomes: $n \\approx d^{(k-1)/k} \\cdot (k!)^{1/k}$. For $d=365$: $n_2 \\approx 23$, $n_3 \\approx 88$, $n_4 \\approx 187$.",

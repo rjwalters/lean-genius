@@ -44,7 +44,7 @@
       "startLine": 118,
       "endLine": 166
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kolmogorov-Arnold Theorem",
     "content": "**THE MAIN THEOREM (1956-57)**:\n\nEvery continuous f: [0,1]ⁿ → ℝ can be written as:\n\n$$f(x) = \\sum_{q} \\Phi_q\\left(\\sum_{p} \\lambda_{pq} \\cdot \\varphi_p(x_p)\\right)$$\n\nwith continuous Φ_q, φ_p.\n\n**Key Points**:\n- The φ_p are **universal** (work for all f)\n- Only Φ_q depend on the specific f\n- This DISPROVES Hilbert's conjecture!\n\nKolmogorov proved existence; Arnold showed universality of inner functions.",
     "mathContext": "n variables → 1 variable",
@@ -82,7 +82,7 @@
       "startLine": 204,
       "endLine": 257
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Vitushkin: The Smooth Case",
     "content": "**BUT for smooth functions, Hilbert was RIGHT!**\n\n**Vitushkin's Theorem (1954-77)**:\n\nSome C² functions of 3 variables CANNOT be represented using smooth functions of fewer variables.\n\n**The key distinction**:\n- **Continuous**: Kolmogorov-Arnold works — any f reduces to 1D\n- **Smooth (C^k)**: Obstructions exist — some f genuinely need 3+ variables\n\nThis vindicates Hilbert's intuition for algebraic/analytic functions!",
     "mathContext": "Smooth ≠ Continuous",
@@ -101,7 +101,7 @@
       "startLine": 258,
       "endLine": 289
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Arnold's Universal Functions",
     "content": "**Arnold's Refinement (1957)**:\n\nThe inner functions φ₁, ..., φₙ can be chosen ONCE AND FOR ALL.\n\nThey work for every continuous f!\n\n**Construction**: The φ_p are highly irregular (like space-filling curves) to \"separate points\" sufficiently.\n\nOnly the outer functions Φ_q need to change for different f.",
     "mathContext": "φ_p independent of f",

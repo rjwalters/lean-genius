@@ -10,7 +10,7 @@
     "title": "Hypergraph Structure: Uniform Simplicial Complex",
     "content": "The Hypergraph structure captures an r-uniform hypergraph: a collection of edges (Finset of Finsets) where every edge has exactly r vertices. The uniformity field `uniform : ∀ e ∈ edges, e.card = r` is a proof-valued field encoding the mathematical constraint directly in the type. This models an r-uniform hypergraph as an (r-1)-dimensional simplicial complex: each edge is an (r-1)-simplex, and the uniformity constraint ensures the complex is pure. The formalization uses Finset (Finset V) rather than Finset (Fin r → V) to make the edge-as-subset perspective natural.",
     "mathContext": "$$H = (V, E) \\text{ with } E \\subseteq \\binom{V}{r}$$, i.e., $\\forall e \\in E, |e| = r$. As a simplicial complex: $H$ is the pure $(r-1)$-dimensional complex with $(r-1)$-simplices given by $E$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "simplicial complex",
       "r-uniform hypergraph",
@@ -82,7 +82,7 @@
     "title": "hypergraph_kostochka_pyber: The Generalized Open Conjecture",
     "content": "hypergraph_kostochka_pyber formalizes the open conjecture: for every r ≥ 2 and ε > 0, there exists a constant C = C_{r,ε} such that every r-uniform hypergraph on sufficiently many vertices (n ≥ N) with ≥ n^{r-1+ε} edges contains a sub-hypergraph on ≤ C vertices that is not embeddable in R^{2(r-1)}. The nested quantifiers capture: universality over uniformity r, a ε-threshold, existence of a bounded-size obstruction C and a threshold N, then universality over all large enough vertex sets and dense enough hypergraphs. This is an OPEN problem for r ≥ 3.",
     "mathContext": "$$\\forall r \\geq 2, \\forall \\varepsilon > 0, \\exists C, N:\\; \\forall H \\text{ r-uniform on } n \\geq N \\text{ vertices},\\; |E(H)| \\geq n^{r-1+\\varepsilon} \\implies \\exists S \\subseteq V(H),\\; |S| \\leq C,\\; K_{2r+1}^{(r)} \\hookrightarrow H[S] \\text{ non-embeddably}$$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Kostochka-Pyber theorem",
       "topological Ramsey theory",

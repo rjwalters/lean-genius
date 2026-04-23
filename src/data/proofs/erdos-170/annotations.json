@@ -61,7 +61,7 @@
       "startLine": 44,
       "endLine": 59
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Ruler",
     "content": "The **trivial ruler** {0, 1, 2, ..., N} with all N+1 marks is always a perfect ruler. Every k is simply k - 0.",
     "mathContext": "trivial_is_perfect : IsRestrictedPerfectRuler N (range(N+1)). This gives the trivial upper bound F(N) ≤ N+1.",
@@ -97,7 +97,7 @@
       "startLine": 75,
       "endLine": 82
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Upper Bound",
     "content": "**Proved**: F(N) ≤ N + 1. The trivial ruler achieves this bound.",
     "mathContext": "F_upper_trivial : F N ≤ N + 1. The proof uses that trivialRuler has exactly N+1 elements.",
@@ -168,7 +168,7 @@
       "startLine": 103,
       "endLine": 105
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Limit Interval",
     "content": "The limit is in **[1.56, √3]**. The gap shows we don't know the exact value, though √3 is conjectured.",
     "mathContext": "limit_in_interval : 1.56 ≤ limitValue ∧ limitValue ≤ √3. Computational evidence suggests √3 is optimal.",

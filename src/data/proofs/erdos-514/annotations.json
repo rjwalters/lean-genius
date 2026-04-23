@@ -140,7 +140,7 @@
       "startLine": 146,
       "endLine": 152
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős #514 Part 1: SOLVED",
     "content": "**erdos_514_part1:**\n\n```lean\ntheorem erdos_514_part1 (f : ℂ → ℂ) (hf : IsTranscendental f) :\n    ∃ γ : ℝ → ℂ, IsPathToInfinity γ ∧ HasSuperPolynomialGrowth f γ :=\n  boas_existence f hf\n```\n\nThe answer to Part 1 is YES: such a path always exists.",
     "significance": "key",

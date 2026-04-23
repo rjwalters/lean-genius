@@ -138,7 +138,7 @@
       "startLine": 74,
       "endLine": 81
     },
-    "type": "technique",
+    "type": "concept",
     "title": "LCM of Consecutive Naturals",
     "content": "**lcm_consecutive:**\n\nlcm(n, n+1) = n(n+1) because gcd(n, n+1) = 1.\n\n**Proof:** Uses Mathlib's `Nat.coprime_self_add_one` which proves that consecutive integers are coprime. Since lcm(a,b) = a*b/gcd(a,b), coprimality gives lcm = product.\n\nThis is the fundamental fact making A = ℕ the extremal sequence: every consecutive pair contributes, but lcm grows as n².",
     "mathContext": "$\\gcd(n, n+1) = 1$ (consecutive integers are coprime) implies $\\mathrm{lcm}(n, n+1) = n(n+1)$. Since $n(n+1) \\leq x \\iff n \\lesssim \\sqrt{x}$, the naturals have $A(x) \\approx \\sqrt{x}$.",
@@ -326,7 +326,7 @@
       "startLine": 155,
       "endLine": 169
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Szemerédi Summary",
     "content": "**erdos_szemeredi_summary:**\n\nCombines the two main results:\n1. A(x) = O(√x) for every sequence (from tao_elementary_proof)\n2. The sharp constant is c ≈ 1.86 (from van_doorn_sharp_bound)\n\nProved by pairing both axioms into a conjunction.",
     "mathContext": "The theorem states: $\\forall A, A(x) = O(\\sqrt{x})$ AND $\\exists$ sharp constant $c \\approx 1.86$. This is a conjunction of `bounded_by_sqrt` (for all sequences) and the van Doorn sharp bound, proved with `And.intro`.",
@@ -379,7 +379,7 @@
       "startLine": 189,
       "endLine": 209
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: Problem #440 Solved",
     "content": "**erdos_440_solved:**\n\nThe capstone theorem: for every infinite increasing sequence A, A(x) = O(√x).\n\nProved directly from tao_elementary_proof. This answers the first question of Problem #440 affirmatively.\n\nCombined with the liminf bound (erdos_szemeredi_liminf_bound) and the naturals achieving equality (naturals_liminf_eq_one), this completely resolves the problem.",
     "mathContext": "`erdos_440_solved` proves $\\forall A : \\text{IncreasingSeq}, \\text{bounded\\_by\\_sqrt}(A)$, directly from `tao_elementary_proof`. Together with $\\liminf = 1$ for naturals and $\\liminf \\leq 1$ for all sequences, the problem is fully resolved.",

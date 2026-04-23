@@ -189,7 +189,7 @@
       "startLine": 147,
       "endLine": 152
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kostochka-Pyber Theorem (1988)",
     "content": "The main result axiomatized: for epsilon > 0, dense graphs contain K5 subdivisions on O_epsilon(1) vertices. This is stronger than the original question—it finds not just any non-planar subgraph, but specifically a K5 subdivision. The proof in the original paper uses probabilistic methods to find high-degree vertices connected through short paths.",
     "mathContext": "**Kostochka-Pyber (1988)**: $\\forall \\varepsilon > 0,\\; \\exists C, N$ such that every $G$ on $n \\ge N$ vertices with $|E| \\ge n^{1+\\varepsilon}$ contains a $K_5$ subdivision on $\\le C$ vertices. The proof uses the **probabilistic method**: random vertex sampling preserves density while reducing to manageable size, then extremal arguments find the subdivision.",
@@ -236,7 +236,7 @@
       "startLine": 174,
       "endLine": 184
     },
-    "type": "technique",
+    "type": "concept",
     "title": "C_epsilon Grows as epsilon -> 0",
     "content": "As epsilon approaches 0, the required bounding constant C_epsilon must grow without bound. Intuitively: when the density barely exceeds linear, non-planarity is 'spread out' across many vertices and cannot be concentrated in a small subgraph. The axiom states this formally; the sorry-ed theorem attempts to derive it from first principles.",
     "mathContext": "$\\forall M \\in \\mathbb{N},\\; \\exists \\varepsilon_0 > 0,\\; \\forall \\varepsilon < \\varepsilon_0,\\; C_\\varepsilon \\ge M$. This means $\\lim_{\\varepsilon \\to 0^+} C_\\varepsilon = \\infty$. **Proof idea**: for small $\\varepsilon$, construct graphs with $n^{1+\\varepsilon}$ edges where all non-planar subgraphs use $\\ge M$ vertices (e.g., sparse random graphs).",
@@ -258,7 +258,7 @@
       "startLine": 192,
       "endLine": 203
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Planar Linear Bound and Super-Linear Forces Non-Planarity",
     "content": "Two fundamental results: (1) Euler's formula implies planar graphs have at most 3n-6 edges—this is the linear threshold below which planarity is possible. (2) Super-linear edge count n^(1+epsilon) eventually exceeds 3n-6, forcing the graph itself to be non-planar. This is weaker than Kostochka-Pyber (which finds non-planarity in a SMALL subgraph).",
     "mathContext": "**Euler's formula**: planar $G$ on $n \\ge 3$ vertices has $|E| \\le 3n - 6$. **Consequence**: for $\\varepsilon > 0$, $n^{1+\\varepsilon} > 3n - 6$ for large $n$ (since $n^\\varepsilon \\to \\infty$), so dense graphs are non-planar. But this only shows the **whole** graph is non-planar, not that a **small** subgraph is.",

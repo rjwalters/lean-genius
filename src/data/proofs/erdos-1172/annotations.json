@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 23
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview and Background",
     "content": "Header documentation for Erdős Problem #1172, an open problem from the Erdős-Hajnal partition calculus program. The problem asks about four specific unbalanced ordinal partition relations under GCH and CH, referencing Väänänen 1999 (Va99, §7.87).",
     "mathContext": "The arrow notation $\\alpha \\to (\\beta, \\gamma)^2$ means: for every 2-coloring $f : [\\alpha]^2 \\to \\{0,1\\}$ of the pairs from $\\alpha$, there exists either a homogeneous set of order type $\\beta$ in color 0 or order type $\\gamma$ in color 1. The four questions ask about: (1) $\\omega_3 \\to (\\omega_2, \\omega_1 + 2)^2$ under GCH, (2) $\\omega_3 \\to (\\omega_2 + \\omega_1, \\omega_2 + \\omega)^2$ under GCH, (3) $\\omega_2 \\to (\\omega_1^{\\omega+2} + 2, \\omega_1 + 2)^2$ under GCH, and (4) $\\omega_2 \\to (\\omega_1 + \\omega)_2^2$ under CH.",
@@ -126,7 +126,7 @@
       "startLine": 82,
       "endLine": 115
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Ordinal Arithmetic Lemmas",
     "content": "Establishes the strict ordering $\\omega < \\omega_1 < \\omega_2 < \\omega_3$ and positivity of all three uncountable ordinals. These are proved constructively using Mathlib's `aleph_lt_aleph` and `ord_lt_ord` lemmas, providing the foundational inequalities needed for monotonicity arguments later.",
     "mathContext": "The chain $\\omega < \\omega_1 < \\omega_2 < \\omega_3$ follows from $\\aleph_0 < \\aleph_1 < \\aleph_2 < \\aleph_3$ via the order-preserving map $\\kappa \\mapsto \\mathrm{ord}(\\kappa)$. Positivity ($0 < \\omega_i$) follows by transitivity from $0 < \\omega$.",
@@ -148,7 +148,7 @@
       "startLine": 116,
       "endLine": 123
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Monotonicity of Partition Relations",
     "content": "States two fundamental monotonicity principles for ordinal partition relations as axioms. Source monotonicity says increasing the source ordinal preserves the relation. Target monotonicity says decreasing either target ordinal preserves it. These are essential tools for deriving weak consequences from known results.",
     "mathContext": "Source monotonicity: if $\\alpha \\to (\\beta, \\gamma)^2$ and $\\alpha \\le \\alpha'$, then $\\alpha' \\to (\\beta, \\gamma)^2$. Target monotonicity: if $\\alpha \\to (\\beta, \\gamma)^2$, $\\beta' \\le \\beta$, and $\\gamma' \\le \\gamma$, then $\\alpha \\to (\\beta', \\gamma')^2$. Both follow immediately from the definition.",
@@ -194,7 +194,7 @@
       "startLine": 135,
       "endLine": 172
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Derived Partition Relations",
     "content": "Proves six consequences of the classical results using monotonicity. Key results include: $\\omega_3 \\to (\\omega_3, \\omega)^2$ and $\\omega_2 \\to (\\omega_2, \\omega)^2$ by Erdős-Dushnik-Miller; a weak form of Q1 giving $\\omega_3 \\to (\\omega_2, \\omega)^2$ by weakening the first target; and implications showing how Q1 and Q2 simplify under target weakening. Also shows Q4's balanced form unfolds to the standard unbalanced definition.",
     "mathContext": "From EDM: $\\omega_3 \\to (\\omega_3, \\omega)^2$ and $\\omega_2 \\to (\\omega_2, \\omega)^2$. By target monotonicity ($\\omega_2 < \\omega_3$): $\\omega_3 \\to (\\omega_2, \\omega)^2$, a weak form of Q1. The gap between this and the full Q1 ($\\omega_3 \\to (\\omega_2, \\omega_1 + 2)^2$) is bridging from $\\omega$ to $\\omega_1 + 2$ in the second target.",
@@ -217,7 +217,7 @@
       "startLine": 173,
       "endLine": 178
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Stepping-Up Lemma (Negative Form)",
     "content": "States the negative stepping-up lemma as an axiom: if a partition relation $\\kappa \\to (\\alpha, \\beta)^2$ fails, then there exist targets $\\alpha', \\beta'$ such that $\\kappa + 1 \\to (\\alpha', \\beta')^2$ also fails. This is a contrapositive of the classical stepping-up technique used to transfer positive partition results from $\\kappa$ to $\\kappa^+$.",
     "mathContext": "The stepping-up lemma (Erdős-Hajnal-Rado) lifts partition relations: from $\\kappa \\to (\\alpha, \\beta)^r$ one can sometimes derive $\\kappa^+ \\to (\\alpha', \\beta')^r$ for suitably larger targets. The negative form stated here: $\\neg \\kappa \\to (\\alpha, \\beta)^2 \\implies \\exists \\alpha', \\beta',\\; \\neg (\\kappa + 1) \\to (\\alpha', \\beta')^2$.",
@@ -265,7 +265,7 @@
       "startLine": 195,
       "endLine": 205
     },
-    "type": "context",
+    "type": "concept",
     "title": "Summary and Auxiliary Facts",
     "content": "Collects the four open questions into a single conjunction and states auxiliary bounds: $\\omega_1 < \\omega_1^{\\omega+2} + 2$ (showing Q3's first target exceeds $\\omega_1$) and the fact that both targets in Q2 are less than $\\omega_3$ (so the source ordinal is large enough for the question to be non-trivial).",
     "mathContext": "The auxiliary facts verify internal consistency: $\\omega_1 < \\omega_1^{\\omega+2} + 2$ ensures the first target in Q3 is genuinely larger than $\\omega_1$, and $\\omega_2 + \\omega_1 < \\omega_3$, $\\omega_2 + \\omega < \\omega_3$ confirm Q2's targets are bounded by the source.",

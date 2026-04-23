@@ -32,7 +32,7 @@
     "title": "Linear Diameter Conjecture (Formal Statement)",
     "body": "`linearDiameterConjecture` formalizes Erdős's conjecture: $\\exists c > 0$ such that for all sufficiently large $n$, every $n$-point integer distance set has diameter $\\geq cn$. The `∀ᶠ n in Filter.atTop` quantifier captures 'for all sufficiently large $n$'. The inner `∀ (diam : ℝ)` with `c * n ≤ diam` states the diameter bound. This is a Lean `def` of type `Prop` — a formal statement of the open question.",
     "mathContext": "An *integer distance set* in $\\mathbb{R}^2$ is a finite set where all pairwise Euclidean distances are positive integers. The diameter is $\\max_{p, q \\in S} |pq|$. Erdős conjectured (1986) that the minimum diameter of an $n$-point integer distance set grows linearly: $\\text{diam}(S) \\geq cn$ for some absolute constant $c > 0$. The best known result (Guth-Katz) only gives $cn/\\log n$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "sublinearBound",
       "linear_implies_known",

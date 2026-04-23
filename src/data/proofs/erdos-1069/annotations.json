@@ -63,7 +63,7 @@
       "startLine": 99,
       "endLine": 144
     },
-    "type": "context",
+    "type": "concept",
     "title": "Szemerédi-Trotter Theorem and k-Rich Bound",
     "content": "**The Main Theorems**\n\n**Szemerédi-Trotter (1983):** For n points and m lines in ℝ², the number of incidences satisfies:\n  I(P,L) ≤ C · (n^{2/3} · m^{2/3} + n + m)\nfor some absolute constant C. The exponent 2/3 is optimal.\n\n**k-Rich Lines Bound (Erdős #1069):** The number of k-rich lines is O(n²/k³) when k ≤ √n.\n\n**Derivation:** If m lines each have ≥ k incidences, then mk ≤ I(P, {k-rich lines}) ≤ C(n^{2/3}m^{2/3} + n + m). Rearranging and using k² ≤ n gives m ≤ O(n²/k³).\n\nThe theorem erdos_1069 is proved directly from the kRich_bound axiom.",
     "mathContext": "I(P,L) ≤ C(n^{2/3}m^{2/3} + n + m) ⟹ #{k-rich lines} ≤ O(n²/k³)",

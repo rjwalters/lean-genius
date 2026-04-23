@@ -78,7 +78,7 @@
       "startLine": 61,
       "endLine": 65
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Membership Characterization",
     "content": "The membership characterization $n \\in D_t \\iff \\exists s \\subseteq \\mathrm{divisors}(n),\\; t = \\sum_{i \\in s} i$ is proved by `rfl`, since it directly unfolds the set definition. This illustrates Lean's definitional equality—the set membership is *by definition* the existential statement.",
     "mathContext": "$n \\in D_t \\iff \\exists s \\subseteq \\mathrm{div}(n),\\; t = \\sum_{d \\in s} d$",
@@ -169,7 +169,7 @@
       "startLine": 82,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: t = 0",
     "content": "DivisorSumSet 0 = ℕ because every n can represent 0 as the empty sum ($\\sum \\emptyset = 0$). The proof uses `ext` to reduce to pointwise equality, then `simp` with the witness `∅`. Thus $d_0 = 1$. The density_zero corollary has a sorry for the limit computation showing $\\delta(\\mathbb{N}) = 1$.",
     "mathContext": "$D_0 = \\mathbb{N}$ since $\\emptyset \\subseteq \\mathrm{div}(n)$ and $\\sum_{d \\in \\emptyset} d = 0$ for all $n$. Hence $d_0 = \\delta(\\mathbb{N}) = 1$.",
@@ -191,7 +191,7 @@
       "startLine": 97,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: t = 1",
     "content": "Every $n \\ge 1$ can represent 1 using the singleton subset $\\{1\\}$, since 1 divides all positive integers. The proof constructs the witness `{1}`, shows $1 \\in \\mathrm{divisors}(n)$ via `Nat.one_mem_divisors`, and verifies the sum. Thus $d_1 = 1$ (density of positive integers).",
     "mathContext": "For $n \\ge 1$: $1 \\mid n$, so $\\{1\\} \\subseteq \\mathrm{div}(n)$ and $\\sum_{d \\in \\{1\\}} d = 1$. Hence $n \\in D_1$ for all $n \\ge 1$, giving $d_1 = 1$.",
@@ -326,7 +326,7 @@
       "startLine": 157,
       "endLine": 158
     },
-    "type": "context",
+    "type": "concept",
     "title": "Status: Open",
     "content": "The problem remains OPEN as of 2024. No one has established or refuted the existence of a precise asymptotic formula. Progress has been made on tightening the constants $c_3, c_4$ in Erdős's bounds, but closing the gap to a single exponent $c_2$ remains elusive. The difficulty lies in understanding the fine structure of how divisor subset sums distribute across integers.",
     "mathContext": "The best known bounds remain of the form $(\\log t)^{-c_3} < d_t < (\\log t)^{-c_4}$ with $c_3 \\neq c_4$.",
@@ -390,7 +390,7 @@
       "startLine": 170,
       "endLine": 174
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Subset Count",
     "content": "There are $2^{\\tau(n)}$ subsets of $\\mathrm{div}(n)$, giving at most $2^{\\tau(n)}$ possible sums. The proof uses `Finset.card_powerset`. For highly composite $n$ (large $\\tau(n)$), the set of representable sums becomes dense in $[0, \\sigma(n)]$, explaining why such $n$ contribute to many $D_t$.",
     "mathContext": "$|\\mathcal{P}(\\mathrm{div}(n))| = 2^{\\tau(n)}$. For $n = 12$: $2^6 = 64$ subsets yield sums in $\\{0, 1, \\ldots, 28\\}$. Not all 29 values are achieved (e.g., 27 = 28 - 1 requires omitting exactly the divisor 1 from the full sum, giving 27—actually this works). The 'coverage ratio' $|\\{\\text{achievable sums}\\}|/(\\sigma(n)+1)$ approaches 1 for practical numbers.",
@@ -412,7 +412,7 @@
       "startLine": 176,
       "endLine": 182
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Multiplicative Structure",
     "content": "If $\\gcd(m,n) = 1$, then $\\tau(mn) = \\tau(m) \\cdot \\tau(n)$. More importantly, $\\mathrm{div}(mn) = \\{ab : a \\mid m, b \\mid n\\}$, so subset sums factor: the achievable sums for $mn$ are sums of achievable sums for $m$ and $n$ separately. This factorization is the engine behind Erdős's density existence proof.",
     "mathContext": "For $\\gcd(m,n) = 1$: $\\mathrm{div}(mn) \\cong \\mathrm{div}(m) \\times \\mathrm{div}(n)$ via $(a,b) \\mapsto ab$. The subset sum set factors: $\\{\\sum_{d \\in S} d : S \\subseteq \\mathrm{div}(mn)\\}$ relates to the convolution of the subset sum sets for $m$ and $n$.",
@@ -435,7 +435,7 @@
       "startLine": 184,
       "endLine": 189
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Prime Power Divisors",
     "content": "Divisors of $p^a$ form a geometric sequence $\\{1, p, p^2, \\ldots, p^a\\}$. Subset sums of geometric sequences have a particularly rigid structure: in base $p$, each 'digit' is 0 or $p^i$, so representable values are constrained. For $p = 2$: divisors of $2^a$ are $\\{1, 2, 4, \\ldots, 2^a\\}$, and every integer in $[0, 2^{a+1}-1]$ is representable (binary representation).",
     "mathContext": "$\\mathrm{div}(p^a) = \\{p^0, p^1, \\ldots, p^a\\}$. Subset sums: $\\sum_{i \\in S} p^i$ for $S \\subseteq \\{0,\\ldots,a\\}$. For $p = 2$, these are exactly $\\{0, 1, \\ldots, 2^{a+1}-1\\}$ (binary). For $p \\ge 3$, the representable set is sparser.",
@@ -683,7 +683,7 @@
       "startLine": 280,
       "endLine": 308
     },
-    "type": "context",
+    "type": "concept",
     "title": "Summary and Historical Note",
     "content": "This formalization captures Erdős Problem #859 on divisor sum representations. The 1970 bounds remain the best known general result. The problem exemplifies Erdős's approach: identify a natural quantity ($d_t$), prove it has interesting properties (existence, positivity, bounds), then ask for the precise behavior. The connection to practical numbers, subset sums, and multiplicative number theory makes this a rich intersection of several mathematical threads.",
     "mathContext": "The formalization contains 7 sorries: 2 in basic examples (density of $\\mathbb{N}$, characterization of $D_2$), 3 in structural results (coprime divisors, prime power divisors, density comparison), and 2 in density behavior (density eventually $< 1$).",

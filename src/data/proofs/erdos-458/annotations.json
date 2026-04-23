@@ -54,7 +54,7 @@
       "startLine": 46,
       "endLine": 75
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Properties and Small Values",
     "content": "A suite of foundational results about `lcm_upto`:\n\n1. **`lcm_upto_one`**: $\\text{lcm}(1) = 1$, proved by `simp`.\n2. **`lcm_upto_pos`**: $\\text{lcm\\_upto}(n) > 0$ for all $n$. The proof unfolds the definition, then uses `Finset.lcm_eq_zero_iff` — the LCM of a set is zero iff some element maps to zero. Since `id` maps $\\{1, \\ldots, n\\}$ to positive numbers, the LCM is positive.\n3. **Small values** via `native_decide`: $\\text{lcm}(1,2) = 2$, $\\text{lcm}(1,2,3) = 6$, $\\text{lcm}(1,\\ldots,4) = 12$, $\\text{lcm}(1,\\ldots,5) = 60$, $\\text{lcm}(1,\\ldots,6) = 60$.\n\nThe last two values being equal illustrates a key property: adding $6 = 2 \\cdot 3$ to the set doesn't change the LCM because $6$'s prime factors are already present at sufficient powers.",
     "mathContext": "The sequence $\\text{lcm\\_upto}(n)$ for $n = 1, 2, \\ldots, 10$ is: $1, 2, 6, 12, 60, 60, 420, 840, 2520, 2520$. The LCM stays constant when crossing a composite number whose prime factorization is already covered, and jumps when crossing a prime or a new prime power.",
@@ -78,7 +78,7 @@
       "startLine": 77,
       "endLine": 91
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Growth Properties: Monotonicity and Prime Steps",
     "content": "Three results about how `lcm_upto` grows:\n\n1. **`lcm_upto_dvd_mono`**: If $m \\leq n$, then $\\text{lcm\\_upto}(m) \\mid \\text{lcm\\_upto}(n)$. This uses `Finset.lcm_mono` and `Finset.Icc_subset_Icc` — a larger interval's LCM is divisible by a smaller interval's LCM.\n\n2. **`lcm_upto_prime_step`** (axiom): Between consecutive primes, the LCM doesn't change: $\\text{lcm\\_upto}(n) = \\text{lcm\\_upto}(p - 1)$ when $n$ lies between $p$ and the next prime. This captures the fact that composite numbers don't introduce new prime factors.\n\n3. **`lcm_upto_at_prime`** (axiom): Crossing a prime multiplies the LCM by that prime: $\\text{lcm\\_upto}(p) = p \\cdot \\text{lcm\\_upto}(p - 1)$. This is the key structural fact — primes are exactly the numbers that increase the LCM.\n\nThe two axioms formalize the fundamental relationship between primes and LCM growth. They could be proved from Mathlib's `Finset.lcm` lemmas but are stated as axioms in this formalization.",
     "mathContext": "$\\text{lcm\\_upto}(n)$ changes only at prime powers: $\\text{lcm\\_upto}(p^a) = p \\cdot \\text{lcm\\_upto}(p^a - 1)$ when $p^a$ is the highest power of $p$ not exceeding $n$. For the first occurrence of each prime $p$: $\\text{lcm\\_upto}(p) = p \\cdot \\text{lcm\\_upto}(p-1)$.\n\nThis gives the product formula: $\\text{lcm\\_upto}(n) = \\prod_{p \\leq n} p^{\\lfloor \\log_p n \\rfloor}$.",

@@ -64,7 +64,7 @@
       "startLine": 76,
       "endLine": 132
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Examples",
     "content": "**Concrete powerful number examples:**\n\n- **one_is_powerful:** 1 is powerful (vacuously, no prime divisors)\n- **four_is_powerful:** 4 = 2² is powerful\n- **eight_is_powerful:** 8 = 2³ is powerful\n- **nine_is_powerful:** 9 = 3² is powerful\n- **seventytwo_is_powerful:** 72 = 2³ · 3² is powerful\n\n**Key theorem:**\n```lean\ntheorem square_is_powerful (n : ℕ) (hn : n ≥ 1) : IsPowerful (n^2)\n```\n\nEvery perfect square is powerful.",
     "significance": "key",
@@ -211,7 +211,7 @@
       "startLine": 314,
       "endLine": 323
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: Erdős #937 Solved",
     "content": "**erdos_937:**\n\n```lean\ntheorem erdos_937 : coprimePowerfulFourTermAPs.Infinite :=\n  bajpai_bennett_chan_four_term\n```\n\n**Answer: YES**\n\nThere are infinitely many four-term arithmetic progressions of pairwise coprime powerful numbers.\n\nProved by Bajpai, Bennett, and Chan in 2024.",
     "significance": "key",

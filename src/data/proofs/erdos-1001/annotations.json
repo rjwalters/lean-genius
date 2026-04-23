@@ -122,7 +122,7 @@
       "startLine": 57,
       "endLine": 70
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Properties of S",
     "content": "**Basic Properties:**\n\n1. S(N, A, c) ∈ [0, 1] for valid parameters\n2. S is monotone increasing in A (larger A ⟹ more approximable points)\n3. S is monotone increasing in c (larger c ⟹ wider denominator range)",
     "significance": "key",
@@ -265,7 +265,7 @@
       "startLine": 114,
       "endLine": 116
     },
-    "type": "context",
+    "type": "concept",
     "title": "EST Boundedness",
     "content": "**Axiom est_boundedness:**\n\nIf min(A, c) > 10, then S(N, A, c) stays bounded away from both 0 and 1:\n\n∃ ε > 0, ∀ N ≥ 1: ε < S(N, A, c) < 1 - ε\n\nThe approximation set is neither too sparse nor too dense.",
     "mathContext": "This uniform bound is important for applications. When parameters are large enough, the measure stabilizes within a proper subinterval of [0, 1].",
@@ -294,7 +294,7 @@
       "startLine": 125,
       "endLine": 139
     },
-    "type": "context",
+    "type": "concept",
     "title": "Kesten-Sós Theorem (1966)",
     "content": "**Axiom kesten_sos:**\n\nFor all valid parameters A > 0, c > 1, the limit exists:\n\n∃ L : ℝ, lim_{N→∞} S(N, A, c) = L\n\nThis was a major generalization: the limit exists even outside the EST regime where no explicit formula is known.",
     "mathContext": "Kesten and Sós used ergodic theory and equidistribution results. Their method doesn't compute the limit explicitly but proves its existence via compactness arguments.",
@@ -410,7 +410,7 @@
       "startLine": 169,
       "endLine": 171
     },
-    "type": "context",
+    "type": "concept",
     "title": "Farey Asymptotics",
     "content": "**Axiom farey_count_asymptotic:**\n\n|F_n| / n² → 3/π² as n → ∞\n\nThis explains why π² appears in the EST formula. The constant 3/π² ≈ 0.304.",
     "mathContext": "The count of Farey fractions is related to Euler's totient function: |F_n| = 1 + Σ_{k=1}^n φ(k). The sum Σφ(k)/k² converges to 3/π².",
@@ -469,7 +469,7 @@
       "startLine": 176,
       "endLine": 205
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary: Problem #1001 is SOLVED",
     "content": "**Problem #1001 Summary:**\n\n1. **Question:** Does lim S(N, A, c) exist?\n2. **Answer:** YES (Kesten-Sós 1966)\n3. **Explicit Formula:** f(A, c) = 12A log(c)/π² in EST regime\n4. **Key Connection:** π² comes from Farey fraction asymptotics\n5. **Multiple Proofs:** EST (1958), Kesten-Sós (1966), Boca (2008), Xiong-Zaharescu (2006)\n\nThe main theorem erdos_1001 states: for all A > 0 and c > 1, the limit exists.",
     "mathContext": "erdos_1001 : ∀ A c, A > 0 → c > 1 → limitExists A c",

@@ -30,7 +30,7 @@
       "startLine": 59,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Construction: Two Equivalences → Relative Identity (Consensus)",
     "content": "The `stereoToRelative` construction uses the simplest possible encoding: Id(x,y,z) := E₁(y,z) ∧ E₂(y,z). The viewpoint x is ignored — this is the 'consensus' view where y and z are considered identical only if both equivalence relations agree. The three RelativeIdentity axioms follow immediately from the corresponding equivalence axioms applied component-wise to the pair. This definition is `noncomputable` because it constructs a proof object from propositions. The consensus encoding is strong (requires both to agree) but loses viewpoint sensitivity.",
     "mathContext": "$\\mathrm{stereoToRelative}(E_1, E_2)(x,y,z) := E_1(y,z) \\wedge E_2(y,z)$",
@@ -52,7 +52,7 @@
       "startLine": 84,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Extraction: Relative Identity → Two Equivalences (Viewpoint Fixation)",
     "content": "The reverse direction `relativeToStereo` fixes two viewpoints a, b ∈ U and extracts E₁(y,z) := Id(a,y,z) and E₂(y,z) := Id(b,y,z). Since Id(a,−,−) and Id(b,−,−) are already equivalence relations (by the RelativeIdentity axioms), the proof immediately packs these into the StereoEquality structure. This construction is 'computable' and depends on the choice of a and b: different choices of viewpoints give different stereo pairs. The extraction shows that relative identity is at least as expressive as stereo equality.",
     "mathContext": "$E_1(y,z) := \\mathrm{Id}(a,y,z)$, $E_2(y,z) := \\mathrm{Id}(b,y,z)$ — the $a$-view and $b$-view of the relative identity",

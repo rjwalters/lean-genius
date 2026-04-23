@@ -102,7 +102,7 @@
       "startLine": 52,
       "endLine": 56
     },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős Probabilistic Bound (1947)",
     "content": "Erdős's landmark 1947 result: $R(k) > k \\cdot 2^{k/2} / e$, proved by showing a random graph on $n < \\sqrt{2}^k$ vertices has no $k$-clique or $k$-independent set with positive probability. This was the birth of the probabilistic method in combinatorics. The bound is non-constructive: it proves existence without giving an explicit construction. The formalization axiomatizes both the exponential form ($\\exists C > 1, C^k \\le R(k)$) and the asymptotic $\\sqrt{2}$ constant.",
     "mathContext": "$R(k) \\ge k \\cdot 2^{k/2}/e \\approx (\\sqrt{2})^k$. Proof: $\\Pr[\\text{random } G \\text{ has } k\\text{-clique}] \\le \\binom{n}{k} 2^{-\\binom{k}{2}} < 1$ when $n < \\sqrt{2}^k$",

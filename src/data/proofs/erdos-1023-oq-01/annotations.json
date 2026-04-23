@@ -204,7 +204,7 @@
     "title": "Symmetric Difference-Free: Bridge to Additive Combinatorics",
     "content": "symmDiff A B = (A \\ B) ∪ (B \\ A) is the standard symmetric difference. isSymmDiffFree requires that no member equals the symmetric difference of two other distinct members. Unlike union-free and intersection-free, this is NOT automatically satisfied by antichains — an antichain {A, B, A△B} would fail isSymmDiffFree. This section only defines the predicate; the extremal theory is open and connects to cap-set bounds.",
     "mathContext": "The symmetric difference makes $(2^{[n]}, \\triangle)$ an elementary abelian 2-group isomorphic to $(\\mathbb{F}_2^n, +)$. A symmetric-difference-free family is a **sum-free set** in $(\\mathbb{F}_2^n, +)$: no $A = B + C$ with distinct $B, C \\in \\mathcal{F}$. The maximum sum-free subset of $\\mathbb{F}_2^n$ has size $2^{n-1}$ (all sets of even or odd cardinality), but cap-free bounds give tighter constraints for cap-set-type questions.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "F_2 vector space",
       "sum-free sets",

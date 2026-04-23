@@ -196,7 +196,7 @@
       "startLine": 172,
       "endLine": 185
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Values: u(0), u(1), u(2)",
     "content": "We compute the first three values of the normalized sequence:\n\n- **u_zero**: u(0) = 2/1 = 2\n- **u_one**: u(1) = 3/2 = 1.5\n- **u_two**: u(2) = 5/3 = 1.667\n\nNotice: 2 > 1.5 < 1.667, so the sequence **decreases then increases** at the start.",
     "mathContext": "The proofs use simp to unfold the definition, apply the prime axioms, and then norm_num to verify the arithmetic. The results are exact rational values.",
@@ -215,7 +215,7 @@
       "startLine": 187,
       "endLine": 201
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Classification of First Steps",
     "content": "**first_step_decreasing**: u(0) > u(1), so 0 is in decreasingSteps\n\n**second_step_increasing**: u(1) < u(2), so 1 is in increasingSteps\n\nThis shows both step types occur early! The sequence starts: 2 -> 1.5 -> 1.667 -> ...\n\nThe first step is decreasing because 2 > 1.5. The second step is increasing because 1.5 < 1.667.",
     "mathContext": "The proofs use the computed values u_zero, u_one, u_two and then norm_num to verify the inequalities 2 > 3/2 and 3/2 < 5/3.",
@@ -234,7 +234,7 @@
       "startLine": 220,
       "endLine": 222
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Increasing Steps and Prime Gaps",
     "content": "**increasing_iff_gap_large**: n in increasingSteps iff u(n) < u(n+1)\n\nThis is definitionally true (Iff.rfl). The deeper insight in the comments:\n\nu_{n+1} > u_n iff p_{n+1}/(n+1) > p_n/n iff prime gap > u_n ~ log n\n\nSo **increasing steps happen when prime gaps exceed the expected log n**.",
     "mathContext": "The equivalence p_{n+1}/(n+1) > p_n/n can be rearranged to (n+1)*p_n < n*p_{n+1}, which gives p_{n+1} - p_n > p_n/n = u_n. Since u_n ~ log n, large gaps cause increases.",

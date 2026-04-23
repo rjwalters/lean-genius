@@ -56,7 +56,7 @@
       "startLine": 1,
       "endLine": 14
     },
-    "type": "context",
+    "type": "concept",
     "title": "Recent Breakthroughs: Gabdullin–Konyagin 2024, Garaev–Garayev–Konyagin 2026",
     "content": "The problem has seen significant recent progress. Gabdullin and Konyagin (2024) proved that for some constant c > 0, the set {n³ : N - cN^(1/2) ≤ n ≤ N} is a Sidon set. This gives a Sidon subset of {n³ : n ≤ N} of size ≫ N^(1/2). In 2026, Garaev, Garayev, and Konyagin improved the exponent: the 1/2 can be raised to 4/7 - o(1) for infinitely many N. For fourth powers (n⁴ instead of n³), they achieve exponent 3/5 for all N. These results push toward the full ≫ N Sidon set the problem asks for.",
     "mathContext": "GaKo24: $\\{n^3 : N - cN^{1/2} \\leq n \\leq N\\}$ is Sidon — a set of size $\\approx cN^{1/2}$. GGK26: exponent improves to $4/7 - o(1)$, meaning size $\\gg N^{4/7}$, for infinitely many $N$; and $3/5$ for all $N$ with 4th powers. The open question: can the exponent reach $1$ (i.e., size $\\gg N$)?",
@@ -132,7 +132,7 @@
     "title": "Lean Stub: Formalization Roadmap for Sidon Cubes",
     "content": "The current content is `theorem erdos_1206 : True := by sorry`. Formalizing this problem in Lean 4 with Mathlib would require: (1) using `Finset.IsSidon` or a local definition of Sidon property; (2) constructing a Finset of the form {n³ : N - cN^(1/2) ≤ n ≤ N} using `Finset.image`; (3) proving the Sidon property using the factoring n³ - m³ = (n-m)(n²+nm+m²) and properties of the quadratic factor. Mathlib has `Nat.Coprime`, `Finset.image`, and polynomial arithmetic; the main gap is the quantitative estimation of the quadratic factor over short intervals.",
     "mathContext": "In Lean 4: `def IsSidon (s : Finset ℤ) : Prop := ∀ a b c d ∈ s, a + b = c + d → (a = c ∧ b = d) ∨ (a = d ∧ b = c)`. The set: `(Finset.Ico (N - c * N.sqrt) N).image (fun n => n^3)`. Proving Sidon requires: `n₁^3 - n₂^3 ≠ n₃^3 - n₄^3` when `n₁ - n₂ ≠ n₃ - n₄`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib Finset.image",
       "IsSidon predicate",

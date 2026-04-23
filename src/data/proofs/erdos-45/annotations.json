@@ -185,7 +185,7 @@
       "startLine": 107,
       "endLine": 110
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Divisor Reciprocal Sum = σ_{-1}(n)",
     "content": "**divisor_reciprocal_sum**: The reciprocal sum of all divisors of n equals σ_{-1}(n) = Σ_{d|n} 1/d. This is a multiplicative function: σ_{-1}(n) = Π_{p^a || n} (1 + 1/p + ... + 1/p^a).",
     "significance": "supporting",
@@ -230,7 +230,7 @@
       "startLine": 123,
       "endLine": 124
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Case k = 2: n = 120",
     "content": "**case_k_2**: 120 has the 2-Egyptian property. The number 120 = 2³·3·5 has 14 proper divisors with reciprocal sum ≈ 2.4, enough to force a monochromatic Egyptian subset under any 2-coloring.",
     "significance": "supporting",

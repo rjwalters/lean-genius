@@ -101,7 +101,7 @@
       "startLine": 55,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Cardinality Bounds",
     "content": "**Two foundational results** (fully proved in Lean):\n\n1. **`card_powerset_eq`**: $|\\mathcal{P}(Y)| = 2^{|Y|}$\n   - Proved from Mathlib's `Finset.card_powerset`\n\n2. **`subsetImage_card_le`**: $|\\text{subsetImage}\\, f\\, Y| \\leq 2^{|Y|}$\n   - Proof: image of a set has at most as many elements as the set itself (`Finset.card_image_le`), composed with the powerset cardinality\n\nThese are the building blocks for the lower bound: if $\\text{subsetImage}\\, f\\, Y = X$, then $|X| \\leq 2^{|Y|}$.",
     "mathContext": "|Y.powerset| = 2^|Y|; |subsetImage f Y| ≤ 2^|Y|",

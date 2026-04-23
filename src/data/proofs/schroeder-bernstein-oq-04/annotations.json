@@ -75,7 +75,7 @@
       "startLine": 138,
       "endLine": 167
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Reachable Set Is a Fixed Point of expand",
     "content": "The central technical result: expand(reachableSet) = reachableSet. The proof chains together: (1) the cardinality sequence stabilizes by pigeonhole at some k ≤ |α|; (2) equal cardinality + subset implies set equality; (3) iterate_stable_forever propagates the equality from k to |α| and |α|+1. The fixed-point property is what makes the bijection well-defined — it ensures the reachable set is closed under the forward orbit operation.",
     "mathContext": "$(g \\circ f)''(S) \\subseteq S$ (the reachable set $S$ is closed under $g \\circ f$), equivalently $\\text{expand}(S) = S$.",
@@ -99,7 +99,7 @@
       "startLine": 169,
       "endLine": 219
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Closure and Decomposition Properties",
     "content": "Three structural lemmas about the reachable set: (1) reachable_closed: if a is reachable, so is g(f(a)) — the set is closed under the forward orbit; (2) not_reachable_in_range: elements outside the reachable set must be in range(g) — they can't be chain heads; (3) reachable_decomp: every reachable element is either a chain head (in baseSet) or equals g(f(a')) for a reachable a'. The decomposition drives the surjectivity proof.",
     "mathContext": "For $a \\in S$: $g(f(a)) \\in S$ (closure). For $a \\notin S$: $a \\in \\text{range}(g)$ (not a chain head). For $a \\in S$: $a \\in A_0 \\lor \\exists a' \\in S, g(f(a')) = a$ (decomposition).",

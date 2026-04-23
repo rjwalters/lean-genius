@@ -32,7 +32,7 @@
       "startLine": 59,
       "endLine": 81
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sum of Squares Zero Characterization",
     "content": "A sum of squares over a Finset is zero iff each term is zero: $\\sum h_i^2 = 0 \\iff \\forall i,\\; h_i = 0$. Uses Mathlib's Finset.sum_eq_zero_iff_of_nonneg. Extended to double sums by first extracting the outer sum, then the inner. This is the key 'sum of non-negatives = 0' principle that recurs in the Young deficit argument for Hölder equality and again in the measure-theoretic integral formulation.",
     "mathContext": "$\\sum_{i \\in s} h_i^2 = 0 \\iff \\forall i \\in s,\\; h_i = 0$. This follows from: each $h_i^2 \\geq 0$, so if the sum vanishes, each summand must vanish individually.",
@@ -55,7 +55,7 @@
       "startLine": 83,
       "endLine": 113
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cauchy-Schwarz Equality: Full Iff Characterization",
     "content": "Full iff characterization of Cauchy-Schwarz equality for finite sums: $(\\sum f_ig_i)^2 = (\\sum f_i^2)(\\sum g_i^2)$ iff all cross-terms vanish ($f_ig_j = f_jg_i$ for all $i,j$). Forward: equality means the Lagrange RHS $= 0$, so all cross-terms are zero. Backward: all cross-terms zero means the double sum $= 0$, so the Lagrange RHS $= 0$. The cross-term condition is equivalent to saying all $2 \\times 2$ minors of the matrix $(f|g)$ vanish, i.e., $\\text{rank}(f|g) \\le 1$.",
     "mathContext": "$(\\sum f_i g_i)^2 = (\\sum f_i^2)(\\sum g_i^2) \\;\\Longleftrightarrow\\; \\forall i,j \\in s,\\; f_i g_j = f_j g_i$",

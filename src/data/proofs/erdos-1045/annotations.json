@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 34
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Documentation and Imports",
     "content": "Documents Erdős Problem #1045 on maximizing the product of pairwise distances among n complex points with diameter at most 2. Imports Mathlib for complex analysis, exponentials, and finset products.",
     "significance": "key",
@@ -53,7 +53,7 @@
       "startLine": 53,
       "endLine": 70
     },
-    "type": "context",
+    "type": "concept",
     "title": "Regular Polygon and Its Delta Values",
     "content": "Defines RegularPolygon as nth roots of unity scaled to diameter 2. Axiomatizes delta_regular_even (Δ = n^n for even n) and delta_regular_odd (Δ = cos(π/2n)^{-n(n-1)} · n^n for odd n). The even-n formula comes from cyclotomic polynomial evaluation.",
     "significance": "key",
@@ -76,7 +76,7 @@
       "startLine": 72,
       "endLine": 85
     },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős–Herzog–Piranian Bound (1958)",
     "content": "Defines polynomialFromRoots and ConnectedSublevelSet. Axiomatizes EHP_1958: if the sublevel set {w : |f(w)| < 1} is connected, then Δ < n^n.",
     "significance": "key",
@@ -98,7 +98,7 @@
       "startLine": 87,
       "endLine": 92
     },
-    "type": "context",
+    "type": "concept",
     "title": "Pommerenke's Upper Bound (1961)",
     "content": "Axiomatizes Pommerenke's result: Δ ≤ 2^{Cn} · n^n for some universal constant C > 0, for any diameter-≤-2 configuration.",
     "significance": "key",
@@ -121,7 +121,7 @@
       "startLine": 94,
       "endLine": 109
     },
-    "type": "context",
+    "type": "concept",
     "title": "Counterexamples: Regular Polygon Not Optimal for Even n",
     "content": "Axiomatizes Hu–Tang counterexamples for n = 4 and n = 6, and Cambie's generalization to all even n ≥ 4: there exist configurations with Δ strictly exceeding the regular polygon value.",
     "significance": "key",
@@ -144,7 +144,7 @@
       "startLine": 111,
       "endLine": 130
     },
-    "type": "context",
+    "type": "concept",
     "title": "Quantitative Lower Bounds: How Much Better Than Regular?",
     "content": "Defines MaxDelta(n) = sup{Δ(z) : diam ≤ 2}. Axiomatizes three bounds: Sothanaphan (2025) gives liminf ≥ 1.0378 for even n; Cambie–Dong–Tang give ≥ 1.304 when 6|n and ≥ 1.269 for all even n.",
     "significance": "key",

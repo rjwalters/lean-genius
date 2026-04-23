@@ -76,7 +76,7 @@
       "startLine": 110,
       "endLine": 135
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Lower Bound via Small Fractions",
     "content": "**The trivial lower bound** comes from a simple observation: if we only include integers n > e ≈ 2.718, then every unit fraction 1/n < 1/e. It can be shown that no subset of such small fractions sums to exactly 1. Since about (1 - 1/e) ≈ 63.2% of integers in {1,...,N} exceed e, this immediately gives A(N) ≥ (1 - 1/e + o(1))N.",
     "mathContext": "The construction smallUnitFractionSet(N) filters {1,...,N} to include only n with n > exp(1). The axiom small_fractions_safe asserts this set is unit sum-free. The density (1 - 1/e) follows from counting: approximately N/e integers lie in {1,2} = {n : n ≤ e}.",
@@ -99,7 +99,7 @@
       "startLine": 141,
       "endLine": 185
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Liu-Sawhney Theorem: Exact Asymptotic",
     "content": "**Liu and Sawhney (2024)** proved A(N)/N → 1 - 1/e, showing the trivial lower bound is asymptotically optimal. The theorem asymptotic_formula combines the lower bound (erdos_300_lower_bound) and upper bound (liu_sawhney_upper) into a sandwich: (1 - 1/e - ε)N ≤ A(N) ≤ (1 - 1/e + ε)N for all large N. This is the definitive resolution after 44 years.",
     "mathContext": "The combined theorem uses Filter.Eventually.and via filter_upwards to merge two asymptotic bounds. The optimal density 1 - 1/e ≈ 0.6321 is defined as a noncomputable real. The proof of asymptotic_formula is fully constructive from the axioms — it's one of the few proved (non-axiom) results in this formalization.",
@@ -145,7 +145,7 @@
       "startLine": 246,
       "endLine": 280
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: erdos_300",
     "content": "**The main theorem erdos_300** directly states A(N)/N → 1 - 1/e, resolving the problem completely. The summary theorem erdos_300_summary packages both the Liu-Sawhney asymptotic and Croot's disproof of the original conjecture. Together they tell the full story: the conjecture was wrong, and the answer is 1 - 1/e.",
     "mathContext": "erdos_300_summary is proved by exact ⟨liu_sawhney_theorem, croot_theorem⟩, directly combining the two key axioms. erdos_300 is simply liu_sawhney_theorem itself. This clean structure shows how the formalization captures the complete resolution of the 44-year-old problem.",

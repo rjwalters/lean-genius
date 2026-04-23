@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 31
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Documentation: Erdos Problem #1049",
     "content": "Header documentation establishing the problem context: for rational t > 1, is the series S(t) = sum 1/(t^n - 1) irrational? The key identity S(t) = sum tau(n)/t^n connects the series to the divisor function. Erdos (1948) proved irrationality for integer t >= 2; Chowla's conjecture for all rationals remains open.",
     "mathContext": "The series $S(t) = \\sum_{n=1}^{\\infty} \\frac{1}{t^n - 1}$ equals $\\sum_{n=1}^{\\infty} \\frac{\\tau(n)}{t^n}$ where $\\tau(n) = |\\{d : d \\mid n\\}|$ is the divisor counting function.",
@@ -51,7 +51,7 @@
       "startLine": 38,
       "endLine": 41
     },
-    "type": "technique",
+    "type": "concept",
     "title": "tau_one: tau(1) = 1",
     "content": "Proves tau(1) = 1 by simp, since the only divisor of 1 is 1 itself. This is a base case for inductive arguments involving the divisor function.",
     "mathContext": "$\\tau(1) = |\\{1\\}| = 1$. The simplest value of the divisor function.",
@@ -72,7 +72,7 @@
       "startLine": 42,
       "endLine": 49
     },
-    "type": "technique",
+    "type": "concept",
     "title": "tau_prime: tau(p) = 2 for Primes",
     "content": "States that primes have exactly two divisors: 1 and p. This is essentially a restatement of the definition of primality in terms of divisor count. Sorry'd proof that would use Nat.Prime.divisors.",
     "mathContext": "For prime $p$: $\\tau(p) = |\\{1, p\\}| = 2$. More generally, $n$ is prime iff $\\tau(n) = 2$.",
@@ -161,7 +161,7 @@
       "startLine": 93,
       "endLine": 108
     },
-    "type": "technique",
+    "type": "concept",
     "title": "S_eq_D: The Classical Identity",
     "content": "States the fundamental identity S(t) = D(t): sum 1/(t^n - 1) = sum tau(n)/t^n. The proof idea is: expand 1/(t^d-1) as geometric series sum_m 1/t^{dm}, then interchange summation order; grouping by n = dm collects exactly tau(n) terms for each n. This double-sum interchange is the key structural insight of the problem. Sorry'd.",
     "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{1}{t^n - 1} = \\sum_{n=1}^{\\infty} \\frac{\\tau(n)}{t^n}$. Proof: $\\sum_d \\frac{1}{t^d - 1} = \\sum_d \\sum_m \\frac{1}{t^{dm}} = \\sum_n \\frac{|\\{(d,m): dm=n\\}|}{t^n} = \\sum_n \\frac{\\tau(n)}{t^n}$.",
@@ -316,7 +316,7 @@
       "startLine": 159,
       "endLine": 161
     },
-    "type": "context",
+    "type": "concept",
     "title": "S_at_2_approx: Numerical Bounds on S(2)",
     "content": "Axiomatizes that 1.606 < S(2) < 1.607, providing the first few decimal digits of the Erdos-Borwein constant. More precise computation gives S(2) = 1.606695152415291763..., known to hundreds of digits by direct summation of the rapidly converging series.",
     "mathContext": "$1.606 < S(2) < 1.607$. More precisely, $S(2) = 1.606695152415291763\\ldots$ The series converges rapidly since terms decay like $1/2^n$.",
@@ -380,7 +380,7 @@
       "startLine": 191,
       "endLine": 204
     },
-    "type": "technique",
+    "type": "concept",
     "title": "transcendental_implies_chowla",
     "content": "Proves that TranscendentalConjecture implies ChowlaConjecture. The logical chain is: if S(t) is transcendental for algebraic t > 1, then since every rational number is algebraic, S(t) must be transcendental (hence irrational) for all rational t > 1. Sorry'd but the proof direction is clear.",
     "mathContext": "Transcendental $\\implies$ irrational, so if $S(t) \\notin \\overline{\\mathbb{Q}}$ for algebraic $t > 1$, then $S(t) \\notin \\mathbb{Q}$ for rational $t > 1$ (since $\\mathbb{Q} \\subset \\overline{\\mathbb{Q}}$).",
@@ -426,7 +426,7 @@
       "startLine": 210,
       "endLine": 234
     },
-    "type": "technique",
+    "type": "concept",
     "title": "S_as_lambert: S(t) as Lambert Series",
     "content": "States that S(t) = isLambertSeries (fun _ => 1) (1/t), recasting the original series as a Lambert series with constant coefficients a_n = 1 and nome q = 1/t. This places the problem in the broader framework of Lambert series irrationality. Sorry'd.",
     "mathContext": "$S(t) = \\sum_{n=1}^{\\infty} \\frac{(1/t)^n}{1 - (1/t)^n} = \\sum_{n=1}^{\\infty} \\frac{1}{t^n - 1}$, the Lambert series with $a_n \\equiv 1$ and $q = 1/t$.",
@@ -448,7 +448,7 @@
       "startLine": 235,
       "endLine": 255
     },
-    "type": "technique",
+    "type": "concept",
     "title": "S_bounds: Asymptotic Bounds",
     "content": "States that 1/(t-1) <= S(t) <= t/(t-1)^2 for t > 1. The lower bound comes from the first term alone: 1/(t-1) = 1/(t^1 - 1) <= S(t). The upper bound uses comparison with sum n/t^n = t/(t-1)^2 since tau(n) <= n. These bounds give S(2) between 1 and 2, consistent with the known value ~1.607. Sorry'd.",
     "mathContext": "$\\frac{1}{t-1} \\le S(t) \\le \\frac{t}{(t-1)^2}$ for $t > 1$. Lower: first term. Upper: $\\frac{1}{t^n - 1} \\le \\frac{1}{t^n(1 - 1/t)} = \\frac{t}{t-1} \\cdot \\frac{1}{t^n}$, then sum the geometric series.",
@@ -471,7 +471,7 @@
       "startLine": 256,
       "endLine": 271
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_1049_partial: Main Known Result",
     "content": "Restates the main theorem for Problem #1049: for integer t >= 2, S(t) is irrational. This is a direct application of erdos_integer_irrational. The full problem (all rational t > 1) remains open.",
     "mathContext": "Main result: $\\forall\\, t \\in \\mathbb{Z},\\; t \\ge 2 \\implies \\sum_{n=1}^{\\infty} \\frac{1}{t^n - 1} \\notin \\mathbb{Q}$ (Erdős 1948).",

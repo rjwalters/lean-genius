@@ -143,7 +143,7 @@
       "startLine": 139,
       "endLine": 155
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Roots of Unity as Extremal Candidates",
     "content": "**rootsOfUnitySequence(n):** The n-th roots of unity e^{2πik/n} for k = 0, ..., n-1.\n\n**roots_on_circle** (PROVED): The roots of unity satisfy AllOnUnitCircle. Proof uses Complex.abs_exp and simplification.\n\n**roots_power_sum** (axiom): For n-th roots of unity, the k-th power sum equals n when n | k and 0 otherwise. This is the classical orthogonality relation for roots of unity.",
     "mathContext": "Roots of unity are natural test sequences because their power sums have a clean closed form. However, they are not optimal for the power sum problem since powerSum = n when n | k, giving maxPowerSum = n (which grows rather than decays).",
@@ -162,7 +162,7 @@
       "startLine": 171,
       "endLine": 201
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorems",
     "content": "**erdos_973_unit_disk** (PROVED): Derives the unit disk existence result from erdos_unit_disk_construction by extracting C and the existential.\n\n**erdos_973_turan_constrained** (PROVED): The Turán lower bound, definitionally equal to turan_lower_bound.\n\n**erdos_973** (PROVED): The main summary theorem proving AnswerSummary by combining:\n1. erdos_unit_disk_construction → unit disk result\n2. l_erdos_1992_bounds → unit circle bounds\n3. turan_lower_bound → exterior constraint\n\nThis packages all known results into a single theorem.",
     "mathContext": "The summary theorem demonstrates the logical structure: three independent axioms (one per regime) combine to give a complete picture of what is known about Erdős Problem #973.",

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 24
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Statement and Known Results",
     "content": "**Erdős Problem #1141**: Are there infinitely many $n$ such that $n - k^2$ is prime for all $k$ with $\\gcd(n, k) = 1$ and $k^2 < n$?\n\nThe known values form **OEIS A214583**: 3, 4, 6, 8, 12, 14, 18, 20, 24, 30, 32, ..., 930, 1722. There are exactly 41 known terms, and an exhaustive search found no further terms below $10^{10}$.\n\n**Key observation**: All known good values are **even** (except 3). This is because odd $n > 3$ tends to fail: taking $k$ even with $\\gcd(n,k) = 1$, we need $n - k^2$ prime, but the many coprime $k$ values create too many primality constraints.\n\nChatGPT-Tang proved the count of good values in $[1, N]$ is $O(N^{1/2+o(1)})$, giving a density bound that is consistent with finiteness but does not settle the question.",
     "mathContext": "$\\{n \\in \\mathbb{N} : \\forall k,\\; \\gcd(n,k)=1 \\wedge k^2 < n \\Rightarrow (n-k^2) \\text{ prime}\\}$",
@@ -69,7 +69,7 @@
       "startLine": 48,
       "endLine": 69
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Good Values (3–20)",
     "content": "Eight small values verified by the `decide` tactic: $n = 3, 4, 6, 8, 12, 14, 18, 20$.\n\n**Why these work**:\n- $n = 3$: Only $k = 1$ is coprime with $1^2 < 3$, and $3 - 1 = 2$ is prime\n- $n = 4$: $k = 1$ gives $4 - 1 = 3$ (prime); $k = 3$ gives $3^2 = 9 > 4$ so excluded\n- $n = 12$: Coprime $k$ with $k^2 < 12$: $k \\in \\{1, 5, 7, 11\\}$ but $5^2, 7^2, 11^2 > 12$, so only $k = 1$ giving $12 - 1 = 11$ (prime)\n\n**Pattern**: Highly composite numbers (12, 18, 20) have few coprime $k$ values with $k^2 < n$, making it easier to satisfy all the primality conditions simultaneously.\n\nAll proved by `decide`, which exhaustively checks every $k \\in \\{0, \\ldots, n-1\\}$.",
     "mathContext": "`IsErdos1141Good n` verified for $n \\in \\{3, 4, 6, 8, 12, 14, 18, 20\\}$ by `decide`",
@@ -90,7 +90,7 @@
       "startLine": 74,
       "endLine": 86
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Non-Good Values",
     "content": "Five values shown to fail the property: $n = 5, 7, 9, 10, 16$.\n\n**Why these fail**:\n- $n = 5$: $k = 2$, $\\gcd(5,2) = 1$, $5 - 4 = 1$ is not prime\n- $n = 7$: $k = 2$, $\\gcd(7,2) = 1$, $7 - 4 = 3$ is prime, but checking further values reveals a failure\n- $n = 16$: $k = 1$, $\\gcd(16,1) = 1$, $16 - 1 = 15 = 3 \\times 5$ is not prime\n\n**General pattern**: Numbers with many small coprime residues (like odd primes and prime powers) tend to fail because they create many independent primality conditions that are hard to satisfy simultaneously.\n\nAll proved by `decide`, which finds a witnessing $k$ that violates the property.",
     "mathContext": "$\\neg$`IsErdos1141Good n` for $n \\in \\{5, 7, 9, 10, 16\\}$",
@@ -176,7 +176,7 @@
       "startLine": 130,
       "endLine": 154
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Larger Verified Examples (24–1722)",
     "content": "Nine larger values verified using `native_decide`: $n = 24, 30, 60, 90, 110, 198, 252, 570, 1722$.\n\nThese use `native_decide` instead of `decide` because the kernel-level decision procedure becomes too slow for larger $n$. `native_decide` compiles the decision procedure to native code, enabling verification of $n = 1722$ (checking all $k \\in \\{0, \\ldots, 1721\\}$ with $k^2 < 1722$ and $\\gcd(1722, k) = 1$).\n\n**$n = 1722$** is the **largest known** good value (as of $10^{10}$ search). Its factorization $1722 = 2 \\times 3 \\times 7 \\times 41$ makes it highly composite, with $\\phi(1722) = 432$ coprime residues. Of these, $\\lfloor\\sqrt{1722}\\rfloor = 41$ satisfy $k \\le \\sqrt{n}$, but the coprimality filter reduces the constraints.",
     "mathContext": "`IsErdos1141Good n` verified for $n \\in \\{24, 30, 60, 90, 110, 198, 252, 570, 1722\\}$ by `native_decide`",

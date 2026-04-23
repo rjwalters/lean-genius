@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 25
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Preamble and Imports",
     "content": "Module documentation describing the failure of unique factorization in Z[sqrt(-5)], with the key identity 6 = 2*3 = (1+sqrt(-5))(1-sqrt(-5)). Imports Mathlib's Zsqrtd for the ring Z[sqrt(d)] and standard tactics.",
     "mathContext": "The ring $\\mathbb{Z}[\\sqrt{-5}]$ consists of elements $a + b\\sqrt{-5}$ with $a, b \\in \\mathbb{Z}$. It is the standard example of a ring of algebraic integers where unique factorization fails.",

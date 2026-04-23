@@ -6,7 +6,7 @@
       "startLine": 34,
       "endLine": 37
     },
-    "type": "context",
+    "type": "concept",
     "title": "Critical Mathlib Imports",
     "content": "The import of `Mathlib.Combinatorics.Additive.AP.Three.Defs` provides the `ThreeAPFree` predicate, while `Mathlib.Combinatorics.Additive.Corner.Roth` brings in the full proof chain: Szemerédi Regularity Lemma → Triangle Removal → Corners Theorem → Roth's Theorem. This chain, formalized by Yaël Dillies and Bhavik Mehta (ITP 2022), is one of the deepest results in Mathlib's combinatorics library.",
     "mathContext": "The chain proves: for $\\varepsilon > 0$ and large $N$, any $A \\subseteq [N]$ with $|A| \\geq \\varepsilon N$ and $A$ being 3-AP-free leads to a contradiction.",
@@ -251,7 +251,7 @@
       "startLine": 328,
       "endLine": 333
     },
-    "type": "context",
+    "type": "concept",
     "title": "Corollary: Restatement for Readability",
     "content": "This corollary `dense_set_has_long_ap` is a direct definitional unfolding of `szemeredi_theorem`, provided as a more readable entry point. The name emphasizes the qualitative content: density alone forces long arithmetic progressions. This naming convention follows the Mathlib style of providing human-readable theorem names alongside the more formal statement names.",
     "mathContext": "For all $k \\geq 1$ and $\\delta > 0$: sufficiently large $\\delta$-dense sets contain $k$-APs.",

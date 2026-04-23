@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 31
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Statement and Known Results",
     "content": "**Erdős Problem #1148**: Can every sufficiently large integer $n$ be written as $n = x^2 + y^2 - z^2$ where $\\max(x^2, y^2, z^2) \\le n$?\n\nThe bound constraint means $x, y, z \\le \\lfloor\\sqrt{n}\\rfloor$. Without this bound, every integer has such a representation (e.g., $n = ((n+1)/2)^2 - ((n-1)/2)^2$ for odd $n$). The difficulty is keeping the components small.\n\n**Known results**:\n- The largest known non-representable integer is **6563**\n- With the relaxed bound $\\max(x^2, y^2, z^2) \\le n + 2\\sqrt{n}$, representation always exists\n- Reference: Vaughan [Va99, §1.25]\n\nThe problem sits at the intersection of additive number theory and the geometry of numbers.",
     "mathContext": "$n = x^2 + y^2 - z^2$ with $x, y, z \\le \\lfloor\\sqrt{n}\\rfloor$, equivalently $x^2 + y^2 = n + z^2$ with bounded components",
@@ -90,7 +90,7 @@
       "startLine": 113,
       "endLine": 137
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Small Cases: Explicit Representations",
     "content": "Explicit representations for small values:\n\n| $n$ | Representation | Triple $(x,y,z)$ |\n|-----|---------------|-------------------|\n| 2 | $1^2 + 1^2 - 0^2$ | (1, 1, 0) |\n| 4 | $2^2 + 0^2 - 0^2$ | (2, 0, 0) |\n| 5 | $2^2 + 1^2 - 0^2$ | (2, 1, 0) |\n| 8 | $2^2 + 2^2 - 0^2$ | (2, 2, 0) |\n| 9 | $3^2 + 0^2 - 0^2$ | (3, 0, 0) |\n\nNote: **3 is NOT representable** (proved separately). With bound 3, we need $x, y, z \\le 1$, giving maximum $x^2 + y^2 = 2 < 3 = z^2 + 3$.\n\nAll proved by explicit witnesses with `norm_num`.",
     "mathContext": "Explicit $(x,y,z)$ triples for $n \\in \\{2, 4, 5, 8, 9\\}$",
@@ -154,7 +154,7 @@
       "startLine": 205,
       "endLine": 229
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Structural Bounds on Representations",
     "content": "Four structural results about any valid representation:\n\n1. **Component bounds** (`repr_components_bounded`): $x, y, z \\le \\lfloor\\sqrt{n}\\rfloor$, since $x^2 \\le n$ implies $x \\le \\sqrt{n}$. Uses `Nat.le_sqrt`.\n\n2. **Candidate count** (`candidate_count`): The number of candidate triples is $(\\lfloor\\sqrt{n}\\rfloor + 1)^3 = O(n^{3/2})$. This makes brute-force search feasible for moderate $n$.\n\n3. **Triangle inequality** (`repr_z_le_xy`): $z^2 \\le x^2 + y^2$ since $z^2 = x^2 + y^2 - n$ and $n \\ge 0$.\n\n4. **Sum of squares bound** (`repr_sum_sq_le`): $x^2 + y^2 \\le 2n$, since $x^2 + y^2 = z^2 + n \\le n + n$.",
     "mathContext": "$x, y, z \\le \\lfloor\\sqrt{n}\\rfloor$; candidate count $O(n^{3/2})$; $z^2 \\le x^2 + y^2$; $x^2 + y^2 \\le 2n$",
@@ -176,7 +176,7 @@
       "startLine": 243,
       "endLine": 251
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Reduction to Sum of Two Squares",
     "content": "**Key structural insight**: $n = x^2 + y^2 - z^2$ is equivalent to $x^2 + y^2 = n + z^2$.\n\nSo the problem reduces to: for which $n$ can we find $z \\le \\sqrt{n}$ such that $n + z^2$ is a **sum of two bounded squares**?\n\nBy Fermat's theorem on sums of two squares, $m$ is a sum of two squares iff every prime $p \\equiv 3 \\pmod{4}$ appears to an even power in the factorization of $m$. So we need some $n + z^2$ (with $z^2 \\le n$) to satisfy this condition with the additional bound $x^2, y^2 \\le n$.\n\nThe iff is proved by direct construction in both directions, rearranging the equation between the two forms.",
     "mathContext": "`IsRepresentable n ↔ ∃ z, z² ≤ n ∧ ∃ x y, x² + y² = n + z² ∧ x² ≤ n ∧ y² ≤ n`",

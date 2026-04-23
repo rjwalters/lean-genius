@@ -82,7 +82,7 @@
       "startLine": 68,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lower Bound: n + φ(n) ≥ n",
     "content": "Since φ(n) ≥ 0, we always have n + φ(n) ≥ n. This trivial observation is proved by unfolding the definition and using omega.",
     "mathContext": "The `omega` tactic handles this linear arithmetic automatically.",
@@ -157,7 +157,7 @@
       "startLine": 110,
       "endLine": 118
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_822_summary** combines the two main results: (1) the positive density axiom, and (2) the trivial lower bound n + φ(n) ≥ n. The proof is simply `⟨nPlusTotientValues_hasPosDensity, nPlusTotient_ge⟩`.",
     "significance": "key",

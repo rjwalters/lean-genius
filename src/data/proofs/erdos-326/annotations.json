@@ -101,7 +101,7 @@
       "startLine": 101,
       "endLine": 116
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem (Open Problem)",
     "content": "**Erdős Problem #326**: Given any order 2 basis A, must there exist a sub-basis B with non-convergent growth ratio? This is stated as a disjunction: either YES for all A, or NO for some A.",
     "mathContext": "We use `axiom` because the answer is unknown. The disjunction P ∨ ¬P is always true, so this captures the mathematical question without assuming an answer. A proof of either disjunct would resolve the problem.",
@@ -120,7 +120,7 @@
       "startLine": 126,
       "endLine": 136
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cassels' Theorem (1957)",
     "content": "**Cassels disproved Erdős's original conjecture** by constructing an order 2 basis A where the growth ratio aₖ/k² converges to a positive limit. This shows 'nice' bases exist.",
     "mathContext": "The existential statement guarantees a basis with `0 < x` and `HasGrowthLimit a x`. Cassels' construction is explicit but technical. This answered the A=B version negatively.",

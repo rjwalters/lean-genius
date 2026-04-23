@@ -193,7 +193,7 @@
       "startLine": 238,
       "endLine": 253
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Gap",
     "content": "**The Gap Between Bounds:**\n\nboundGap = 1/2 - 3/8 = 1/8\n\nThe gap is 12.5% of N. Finding the true asymptotic constant somewhere in [0.375, 0.5] is the core **OPEN** question.\n\nVerified computationally: `gap_is_eighth : boundGap = 1 / 8`",
     "mathContext": "The gap theorem is proved by unfolding definitions and using norm_num. This is one of the few fully verified results in this formalization.",
@@ -211,7 +211,7 @@
       "startLine": 255,
       "endLine": 289
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_819_summary (proved):**\n\nCombines the lower and upper bounds into a single theorem:\n\n1. **Lower:** ∀ ε > 0, ∃ N₀, ∀ N ≥ N₀: f(N) ≥ (3/8 - ε)N\n2. **Upper:** ∀ ε > 0, ∃ N₀, ∀ N ≥ N₀: f(N) ≤ (1/2 + ε)N\n\nProved by exact application of the two Erdős-Freud axioms.\n\nErdős Problem #819 is **OPEN** - the gap remains.",
     "mathContext": "The summary theorem packages both bounds as a conjunction, proved by pairing the two axioms.",

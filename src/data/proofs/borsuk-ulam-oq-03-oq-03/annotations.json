@@ -31,7 +31,7 @@
       "startLine": 74,
       "endLine": 118
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Dominant Component Labeling",
     "content": "Defines and verifies the dominant component labeling, the key bridge between continuous functions and Tucker's combinatorial framework. Given a nonzero vector $v \\in \\mathbb{R}^2$, the label is determined by which coordinate has the larger absolute value and its sign: if $|v_1| \\geq |v_2|$, the label is $\\pm 1$ (based on the sign of $v_1$); otherwise $\\pm 2$ (based on the sign of $v_2$). The theorem `dominantComponentLabel_antipodal` proves this labeling is automatically antipodal for odd functions: if $g(-x) = -g(x)$, then $L(-x) = -L(x)$.",
     "mathContext": "For $v \\neq 0$ in $\\mathbb{R}^2$, define $L(v) = \\operatorname{sgn}(v_k) \\cdot k$ where $k = \\arg\\max_i |v_i|$. If $g(-x) = -g(x)$, then $L(g(-x)) = L(-g(x)) = -L(g(x))$, satisfying Tucker's antipodal boundary condition.",
@@ -78,7 +78,7 @@
       "startLine": 155,
       "endLine": 177
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Antisymmetric Difference (Odd-ification)",
     "content": "Defines the antisymmetric difference $g(x) = f(x) - f(-x)$ for a function $f : \\mathbb{R}^2 \\to \\mathbb{R}^2$. This 'odd-ification' automatically satisfies $g(-x) = -g(x)$ for any $f$, making it compatible with Tucker's antipodal condition. Continuity of $g$ follows from continuity of $f$ via `fun_prop`. The construction is the standard reduction from Borsuk-Ulam to finding zeros of odd functions: $f(x) = f(-x)$ if and only if $g(x) = 0$.",
     "mathContext": "Given $f : \\mathbb{R}^2 \\to \\mathbb{R}^2$, set $g(x) = f(x) - f(-x)$. Then $g(-x) = f(-x) - f(x) = -g(x)$ (odd), and $g(x) = 0 \\iff f(x) = f(-x)$ (antipodal pair). Finding a zero of the odd function $g$ is equivalent to finding an antipodal pair for $f$.",
@@ -124,7 +124,7 @@
       "startLine": 688,
       "endLine": 912
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hemisphere Projection: Disk-to-Sphere Lift",
     "content": "Defines the hemisphere projection $(u,v) \\mapsto (u, v, \\sqrt{1 - u^2 - v^2})$ lifting the closed disk $\\bar{D}^2$ to the upper hemisphere of $S^2$. The crucial property is that on the boundary $\\partial D^2$ (where $u^2 + v^2 = 1$, corresponding to the equator of $S^2$), negating the disk point produces the antipodal sphere point: $\\text{lift}(-u,-v) = -\\text{lift}(u,v)$. This ensures that an odd function on $S^2$ induces an antipodal labeling on the disk boundary, making Tucker's lemma directly applicable.",
     "mathContext": "Hemisphere projection: $\\phi(u,v) = (u, v, \\sqrt{1 - u^2 - v^2})$. On $\\partial D^2$ (equator, $z = 0$): $\\phi(-u,-v) = (-u, -v, 0) = -\\phi(u,v)$. For odd $g : S^2 \\to \\mathbb{R}^2$ with $g(-x) = -g(x)$, the composed function $\\tilde{g} = g \\circ \\phi$ satisfies $\\tilde{g}(-p) = -\\tilde{g}(p)$ on $\\partial D^2$.",
@@ -148,7 +148,7 @@
       "startLine": 791,
       "endLine": 826
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Approximate and Exact 2D Borsuk-Ulam",
     "content": "The culminating theorems of the formalization. `approx_borsuk_ulam_2d_corrected` shows that for any continuous $f : \\mathbb{R}^3 \\to \\mathbb{R}^2$ and any $\\varepsilon > 0$, there exists $x \\in S^2$ with $\\|f(x) - f(-x)\\| < \\varepsilon$. The proof composes Tucker on the disk with hemisphere projection. `borsuk_ulam_2d_corrected` then derives the exact result $f(x) = f(-x)$ by minimizing $d(x) = \\text{dist}(f(x), f(-x))$ over compact $S^2$; the minimum must be zero since approximate solutions exist for all $\\varepsilon > 0$.",
     "mathContext": "Approximate BU: $\\forall \\varepsilon > 0, \\exists x \\in S^2, \\|f(x) - f(-x)\\| < \\varepsilon$. Exact BU: The distance function $d(x) = \\|f(x) - f(-x)\\|$ is continuous on compact $S^2$, so attains its minimum. If $\\min d > 0$, choosing $\\varepsilon = \\min d$ gives a contradiction with the approximate result.",
@@ -221,7 +221,7 @@
       "startLine": 530,
       "endLine": 572
     },
-    "type": "context",
+    "type": "concept",
     "title": "Constructive-Classical Bridge and PPAD Membership",
     "content": "The proof highlights a fundamental dichotomy in the Tucker approach to Borsuk-Ulam. The combinatorial core (Tucker's lemma, dominant component labeling, grid construction) is fully constructive and yields polynomial-time approximate solutions -- placing the problem in the PPAD complexity class. The only non-constructive step is the compactness/limiting argument that converts arbitrarily good approximations into an exact solution. This contrasts with the standard algebraic topology proof via degree theory, which is non-constructive from the outset (contradiction argument, homology or integration).",
     "mathContext": "The Tucker approach gives PPAD membership: for any $\\varepsilon > 0$, an $\\varepsilon$-approximate antipodal pair can be found in time polynomial in $1/\\varepsilon$ via path-following in the Tucker labeling. The exact solution requires: $\\forall \\varepsilon > 0, \\exists x_\\varepsilon \\in S^2$ with $\\|g(x_\\varepsilon)\\| < \\varepsilon$ $\\implies$ $\\exists x^* \\in S^2$ with $g(x^*) = 0$ (by compactness of $S^2$).",

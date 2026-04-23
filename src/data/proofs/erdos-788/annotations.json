@@ -122,7 +122,7 @@
       "startLine": 123,
       "endLine": 144
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Interval Arithmetic",
     "content": "**interval_sum_range** is proved constructively: for c₁, c₂ ∈ (n, 2n) with c₁ ≠ c₂, their sum is either in (2n, 4n), ≤ 2n, or ≥ 4n. The proof uses by_cases on membership in upperInterval, with simp and omega handling the arithmetic. **sums_in_upper_interval** axiomatizes the stronger statement that the sum always lands in (2n, 4n), which requires the strict inequalities n < c₁, c₂ < 2n.",
     "mathContext": "The interval constraint is what makes the problem natural: if n < c₁ < 2n and n < c₂ < 2n with c₁ ≠ c₂, then 2n < c₁ + c₂ < 4n. This means every pairwise sum from C lands in the same interval as B.",
@@ -141,7 +141,7 @@
       "startLine": 146,
       "endLine": 164
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_788_summary** combines the two main bounds: (1) the lower bound f(n) ≫ n^{1/2} (Adenwalla), and (2) the upper bound f(n) ≪ (n log n)^{2/3} (BSS 2000). The proof is constructive: `exact ⟨adenwalla_lower_bound, bss_bound⟩`. This captures the complete state of knowledge: the exponent of f(n) lies between 1/2 and 2/3, with Choi's conjecture predicting 1/2.",
     "mathContext": "The conjunction captures the best known bounds without asserting which is tight. The gap between 1/2 and 2/3 is the central open question. Closing it in either direction would be a significant advance in additive combinatorics.",

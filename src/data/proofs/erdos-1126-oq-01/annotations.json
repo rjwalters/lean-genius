@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 28
     },
-    "type": "context",
+    "type": "concept",
     "title": "Extending de Bruijn-Jurkat to Other Functional Equations",
     "content": "The de Bruijn-Jurkat theorem (1965-66) says that if $f(x+y) = f(x) + f(y)$ holds for almost all pairs $(x,y)$, then $f$ agrees a.e. with a truly additive function. This open question asks: does the same stability phenomenon hold for other functional equations — multiplicative ($f(xy) = f(x)f(y)$), Jensen ($f((x+y)/2) = (f(x)+f(y))/2$), and Leibniz/derivation ($d(xy) = xd(y) + yd(x)$)?",
     "mathContext": "De Bruijn-Jurkat: $f(x+y) = f(x) + f(y)$ a.e. $\\implies \\exists g$ additive with $f = g$ a.e. Question: does the same hold for $f(xy) = f(x)f(y)$, $f(\\frac{x+y}{2}) = \\frac{f(x)+f(y)}{2}$, and $d(xy) = xd(y) + yd(x)$?",
@@ -34,7 +34,7 @@
     "title": "Cauchy's Additive Functional Equation",
     "content": "Cauchy's equation $f(x+y) = f(x) + f(y)$ for all $x, y \\in \\mathbb{R}$. Solutions include $f(x) = cx$ (linear) but also pathological non-measurable solutions constructed using the axiom of choice and a Hamel basis for $\\mathbb{R}$ over $\\mathbb{Q}$. The de Bruijn-Jurkat theorem concerns the a.e. version of this equation.",
     "mathContext": "$\\text{IsAdditive}(f) \\iff \\forall x, y \\in \\mathbb{R},\\; f(x+y) = f(x) + f(y)$. Continuous solutions: $f(x) = cx$. Discontinuous solutions require AC.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Cauchy equation",
       "Hamel basis",

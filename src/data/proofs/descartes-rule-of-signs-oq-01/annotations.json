@@ -6,7 +6,7 @@
       "startLine": 7,
       "endLine": 51
     },
-    "type": "context",
+    "type": "concept",
     "title": "Descartes' Rule: From Classical Theorem to Mathlib API",
     "content": "The module preamble establishes the full scope of the formalization. The main result — upper bound on positive roots by sign variation count — is proved directly from Mathlib's Polynomial.signVariations API with 0 axioms. Mathlib uses List.destutter on SignType.sign applied to nonzero coefficients to count sign changes. The preamble identifies six new contributions: the Mathlib bridge, sign variation arithmetic (root insertion, negation, scaling), special polynomial families, the negSubst negative-root framework, the linear polynomial case, and the parity challenge. The open parity result (sign variations ≡ positive root count mod 2) requires FTA plus conjugate-pair analysis — not yet in Mathlib.",
     "mathContext": "Mathlib API: `Polynomial.signVariations p` counts sign changes via `List.destutter (·≠·)` on `List.map SignType.sign p.coeffList.filter(·≠0)`. Main theorem: `p.roots_countP_pos_le_signVariations : p.roots.countP (0<·) ≤ p.signVariations` (Wiedijk #100).",
@@ -31,7 +31,7 @@
       "startLine": 56,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: Positive Root Count ≤ Sign Variations (0 Axioms)",
     "content": "descartes_upper_bound proves p.roots.countP (0<·) ≤ p.signVariations in a single line via p.roots_countP_pos_le_signVariations — a complete proof with 0 axioms and 0 sorries. Supporting theorems in this section prove the symmetries of signVariations: signVariations_zero_poly (sv=0 for the zero polynomial via signVariations_zero), signVariations_monomial' (sv=0 for monomials via signVariations_monomial), signVariations_increase_by_pos_root (multiplying by (X-r) with r>0 adds ≥1 sv via succ_signVariations_le_X_sub_C_mul), signVariations_neg_poly (negation preserves sv via signVariations_neg), and signVariations_const_mul (scaling by nonzero constant preserves sv via signVariations_C_mul).",
     "mathContext": "One-line proof: `p.roots_countP_pos_le_signVariations`. Symmetries: `(-p).signVariations = p.signVariations`, `(C c * p).signVariations = p.signVariations` for `c ≠ 0`, `(signVariations p) + 1 ≤ ((X - C r) * p).signVariations` for `r > 0, p ≠ 0`.",
@@ -135,7 +135,7 @@
       "startLine": 359,
       "endLine": 445
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Parity Result: Open Challenge with Classical Proof Sketch",
     "content": "descartes_parity is axiomatized: for p≠0, ∃k, countP(0<·, roots p) + 2k = sv(p). The parity result says the difference between sign variations and positive root count is always even. The file includes a detailed proof sketch: (1) factor p over ℂ via FTA, (2) conjugate pairs (a±bi) contribute even amounts to sv and 0 to positive roots, (3) negative-root linear factors (X+r) contribute 0 to both (since nonneg coefficients give sv=0), (4) positive-root factors (X-r) contribute +1 to both. Using descartes_parity, the file derives one_sign_variation_one_positive_root (sv=1 → exactly 1 positive root via omega on parity + upper bound), descartes_mul_bound (roots(p*q).countP ≤ sv(p)+sv(q) via roots_mul + Nat.add_le_add), and other consequences.",
     "mathContext": "Parity axiom: `∃k, p.roots.countP(0<·) + 2k = p.signVariations`. Consequence via omega: `sv=1 → countP=1` (from `countP + 2k = 1 → countP=1, k=0`). Strategy: FTA factoring shows sv ≡ (# pos real roots) [MOD 2], needing ~200 lines of new Mathlib infrastructure.",

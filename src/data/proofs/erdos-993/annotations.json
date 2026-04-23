@@ -83,7 +83,7 @@
       "startLine": 83,
       "endLine": 106
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Main Theorem",
     "content": "**tree_unimodal** (axiom): For any tree T, HasUnimodalIndepSequence T. This is the core result of Erdős Problem #993.\n\n**forest_unimodal** (axiom): For any forest F, HasUnimodalIndepSequence F. This extends the tree result using the fact that the independence polynomial of a disjoint union is the product of individual polynomials, and products of real-rooted polynomials are real-rooted.\n\n**erdos_993_main** (proved theorem): Combines both results into a single conjunction, proved directly from the axioms using pattern matching on the quantified variables.",
     "mathContext": "The proof of tree_unimodal goes: (1) compute I(T,x) recursively, (2) show all roots are real using interlacing arguments, (3) apply Newton's theorem. This is a non-trivial argument that cannot currently be formalized in Lean/Mathlib.",

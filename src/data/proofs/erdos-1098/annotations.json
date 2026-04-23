@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 38
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Header and Imports",
     "content": "The file imports `Mathlib.Data.Nat.Basic`, `Mathlib.GroupTheory.Subgroup.Basic` (for `Subgroup`, `Subgroup.center`, `mem_center_iff`), and `Mathlib.GroupTheory.Index` (for `Subgroup.index`). Opens `Subgroup` namespace for direct access to center and index.",
     "significance": "supporting",
@@ -157,7 +157,7 @@
       "startLine": 141,
       "endLine": 171
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Neumann's Theorem (1976)",
     "content": "**neumann_theorem** (axiom): `noInfiniteClique G ↔ centerHasFiniteIndex G` — the key equivalence. **neumann_bound** (axiom): if [G : Z(G)] = n, every clique has size ≤ n. **erdos_question_answered** combines these: from `noInfiniteClique`, rewrite via `neumann_theorem` to get `centerHasFiniteIndex`, then apply the finite-clique implication.",
     "significance": "key",
@@ -182,7 +182,7 @@
       "startLine": 175,
       "endLine": 199
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Coset Structure Argument",
     "content": "**same_coset_commute** (sorry): If g and h differ by a central element (g * z = h for z ∈ Z(G)), they commute. **clique_different_cosets** (sorry): Distinct clique members map to distinct elements in the quotient G/Z(G). **clique_size_bound** (sorry): |S| ≤ [G : Z(G)] for any clique S. This is the heart of the proof.",
     "significance": "key",
@@ -207,7 +207,7 @@
       "startLine": 204,
       "endLine": 214
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Abelian Groups Have No Edges",
     "content": "**abelian_no_edges**: If Z(G) = G (i.e., `Subgroup.center G = ⊤`), then no pair of elements is non-commuting. Proved by showing every g is central via `simp [habel]`, then applying `Subgroup.mem_center_iff` to get commutativity.",
     "significance": "key",

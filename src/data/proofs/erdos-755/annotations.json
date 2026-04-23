@@ -116,7 +116,7 @@
       "startLine": 163,
       "endLine": 184
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Corollaries",
     "content": "**erdos_conjecture_unit_true:**\n\nThe unit triangles conjecture follows from the any-size result since T₆ᵘ(n) ≤ T₆(n).\n\n**erdos_conjecture_any_size_true:**\n\nThe any-size conjecture follows directly from cdl_2025_main.\n\nThe key implication: |T₆(n) - n³/27| ≤ εn³ implies T₆(n) ≤ (1/27 + ε)n³.",
     "significance": "key",
@@ -188,7 +188,7 @@
       "startLine": 250,
       "endLine": 278
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Problem Summary",
     "content": "**erdos_755_summary:**\n\nThe complete answer to Erdős Problem #755.\n\n**Results:**\n1. erdos_conjecture_unit (unit triangles): TRUE\n2. erdos_conjecture_any_size (any-size): TRUE\n3. The answer is YES\n\n**Key Insight:**\nThe Lenz construction with three orthogonal circles achieves the optimal constant 1/27 = 1/3³.",
     "significance": "key",

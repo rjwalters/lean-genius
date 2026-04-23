@@ -54,7 +54,7 @@
       "startLine": 117,
       "endLine": 127
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Evaluating D_N(0) via Fourier Monomial Triviality",
     "content": "The proof that D_N(0) = 2N+1 exploits the fact that every Fourier monomial evaluates to 1 at the origin: fourier n 0 = 1. This reduces the sum to counting terms via the cardinality of Icc(-N, N). The auxiliary lemma fourier_at_zero is proved using Mathlib's fourier_apply, smul_zero, and AddCircle.toCircle_zero. This value is essential for the normalization argument in the localization lemma.",
     "mathContext": "$D_N(0) = \\sum_{n=-N}^{N} e_n(0) = \\sum_{n=-N}^{N} 1 = 2N + 1$.",

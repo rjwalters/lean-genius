@@ -137,7 +137,7 @@
       "startLine": 114,
       "endLine": 124
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdos Problem #763: DISPROVED",
     "content": "**erdos_763:**\n\nThe answer to the Erdos-Turan question is NO.\n\n```lean\ntheorem erdos_763 :\n    not exists (A : Set N) (c : R), A.Infinite and c > 0 and\n      HasLinearGrowthBounded (truncate A) c := by\n  push_neg\n  intro A c hInf hc\n  exact erdos_fuchs_theorem A hInf c hc\n```\n\nThe proof uses push_neg to negate the existential, then applies the axiom.",
     "significance": "key",
@@ -301,7 +301,7 @@
       "startLine": 219,
       "endLine": 226
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sidon Sets Cannot Achieve Bounded Error",
     "content": "**sidon_not_bounded:**\n\nEven Sidon sets cannot achieve linear growth with bounded error.\n\n```lean\ntheorem sidon_not_bounded :\n    forall (A : Set N), IsSidonSet A -> A.Infinite ->\n    forall (c : R), c > 0 -> not HasLinearGrowthBounded (truncate A) c :=\n  fun A _ hInf c hc => erdos_fuchs_theorem A hInf c hc\n```\n\nDespite having r(n) <= 2, Sidon sets still exhibit the N^{1/4} error.",
     "significance": "key",
@@ -337,7 +337,7 @@
       "startLine": 258,
       "endLine": 276
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_763_summary:**\n\nCombines the main results:\n\n```lean\ntheorem erdos_763_summary :\n    (not exists (A : Set N) (c : R), A.Infinite and c > 0 and\n      HasLinearGrowthBounded (truncate A) c) and\n    (forall N : N, cumulativeRepCount (truncate perfectSquares N) N <= N)\n```\n\n1. The main impossibility theorem\n2. Squares have sublinear representation count",
     "significance": "key",

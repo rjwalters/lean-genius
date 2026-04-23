@@ -24,7 +24,7 @@
     "type": "definition",
     "content": "**nonCommuting**: g and h are non-commuting if gh ≠ hg. The companion `commuting` predicate (gh = hg) makes `nonCommuting g h ↔ ¬commuting g h` (theorem nonCommuting_iff). Both are defined pointwise rather than via the quotient G/Z(G).",
     "mathContext": "The **commutator** of $g$ and $h$ is $[g,h] = g^{-1}h^{-1}gh$. Then $\\text{nonCommuting}(g,h) \\iff [g,h] \\neq 1 \\iff g \\notin C_G(h)$ (centralizer). The commuting predicate $gh = hg$ is equivalent to $g \\in C_G(h)$, which is equivalent to $h \\in C_G(g)$ (centralization is symmetric).",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "commutator",
       "centralizer C_G(h)",
@@ -62,7 +62,7 @@
     "type": "definition",
     "content": "**IsClique**: A Finset S is a clique in Γ(G) if every two distinct elements of S are non-commuting. Formally: ∀ g h ∈ S, g ≠ h → nonCommuting g h. This is a finite clique (using Finset rather than Set) to enable cardinality reasoning.",
     "mathContext": "A **clique** in a graph is a set of pairwise adjacent vertices. In $\\Gamma(G)$, adjacency = non-commuting. The clique number is $\\omega(\\Gamma(G)) = \\sup\\{|S| : S \\text{ is a clique}\\}$. Using `Finset G` (vs `Set G`) allows `Finset.card` to count the clique size and `Finset.one_lt_card` to extract distinct elements from a set of cardinality ≥ 2.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Finset",
       "Finset.card",

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 53
     },
-    "type": "context",
+    "type": "concept",
     "title": "Equivariant Borsuk-Ulam: From Antipodal Pairs to Group Actions",
     "content": "The classical Borsuk-Ulam theorem (1933) states every continuous f: Sⁿ → ℝⁿ sends some antipodal pair to the same point. The equivariant reformulation makes the structure transparent: the 'difference' g(x) = f(x) - f(-x) is an odd function (g(-x) = -g(x)), and oddness is precisely ℤ/2-equivariance when ℝⁿ carries the negation action. The theorem becomes: every ℤ/2-equivariant continuous map Sⁿ → ℝⁿ must vanish.\n\nThis reformulation opens equivariant generalizations: replace ℤ/2 with a group G, replace Sⁿ with a G-space X. Three milestones:\n- Yang (1954): ℤ/p prime acts freely on S^(2n-1) via coordinate rotation; equivariant maps to ℝ^(2n) must vanish.\n- Dold (1983): Cohomological index theory gives a universal obstruction for free G-space maps.\n- Open: For non-prime group orders, non-free actions, and compact Lie groups (SO(n), U(n)), optimal vanishing dimensions are unknown.\n\nThe file organizes this landscape into 7 parts: general equivariant framework, the ℤ/2 case, the ℤ/p case with explicit rotation action, Dold's obstruction, open cases, the summary theorem, and bonus equivariance lemmas.",
     "mathContext": "Classical BU: $\\forall f: S^n \\to \\mathbb{R}^n$ continuous, $\\exists x \\in S^n: f(x) = f(-x)$. Equivariant form: $f$ odd ($f(-x) = -f(x)$) $\\Rightarrow \\exists x: f(x) = 0$. Yang-Borsuk: $G = \\mathbb{Z}/p$, $X = S^{2n-1}$, any $G$-equivariant continuous $f$ vanishes. Dold: $G$ finite, free action on $(n-1)$-connected $X$, $\\dim Y < n$ $\\Rightarrow$ no $G$-equivariant $f: X \\to Y$.",
@@ -62,7 +62,7 @@
       "startLine": 93,
       "endLine": 149
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Odd Functions = ℤ/2-Equivariant Maps: Deriving Classical Borsuk-Ulam",
     "content": "`z2ActionEuclidean` (line 101): the explicit SMul instance where ZMod 2 acts on Euclidean space by 0 ↦ id and 1 ↦ negation.\n\n`odd_iff_z2_equivariant` (line 105): f(-x) = -f(x) for all x iff f is ℤ/2-equivariant. Proof uses `fin_cases g` to split on the two elements of ZMod 2; each case reduces to unfolding the SMul instance.\n\n`z2_equivariant_borsuk_ulam` (line 130, axiom): any odd continuous f: Sⁿ → ℝⁿ has a zero on Sⁿ. This is the equivariant form — its full proof requires covering space theory or homology.\n\n`classical_borsuk_ulam_from_equivariant` (line 136): derives the standard form from the axiom. Strategy: given continuous f, define g(x) := f(x) - f(-x). Then g is odd (g(-x) = f(-x) - f(x) = -(f(x) - f(-x)) = -g(x)) and continuous (hcont.sub (hcont.comp continuous_neg)). The axiom gives x₀ ∈ Sⁿ with g(x₀) = 0, i.e., f(x₀) - f(-x₀) = 0, so f(x₀) = f(-x₀).",
     "mathContext": "$\\mathbb{Z}/2$ action: $0 \\cdot x = x$, $1 \\cdot x = -x$. Equivalence: $f(-x) = -f(x) \\Leftrightarrow f(1 \\cdot x) = 1 \\cdot f(x)$ for all $x$. Derivation: $g(x) := f(x) - f(-x)$ is odd, $\\exists x_0 \\in S^n: g(x_0) = 0$, i.e., $f(x_0) = f(-x_0)$.",
@@ -90,7 +90,7 @@
       "startLine": 164,
       "endLine": 215
     },
-    "type": "technique",
+    "type": "concept",
     "title": "ℤ/p Rotation: Isometry via Pythagorean Identity and Yang-Borsuk Axiom",
     "content": "`zp_rotation` (line 165): rotation on ℝ² by angle θ = 2π/p defined coordinate-wise:\n  R_θ(x, y) = (x·cos θ - y·sin θ, x·sin θ + y·cos θ)\nMarked `noncomputable` because Real.cos/sin are noncomputable.\n\n`zp_rotation_isometry` (line 178): ‖R_θ v‖ = ‖v‖. The key algebraic identity:\n  (x·cos θ - y·sin θ)² + (x·sin θ + y·cos θ)² = (x² + y²)(cos²θ + sin²θ) = x² + y²\nIn Lean: `linear_combination (x² + y²) * Real.cos_sq_add_sin_sq θ` closes the arithmetic goal. Coordinates extracted via `h0`, `h1` (using `EuclideanSpace.equiv_symm_pi_lp_apply`), norms via `EuclideanSpace.norm_eq` and `Fin.sum_univ_two`.\n\n`yang_borsuk_theorem` (line 201, axiom): for prime p and free ℤ/p action on S^(2n-1), any equivariant continuous f must vanish. Actions are passed explicitly as functions to avoid SMul synthesis difficulties.",
     "mathContext": "$R_\\theta = \\begin{pmatrix}\\cos\\theta & -\\sin\\theta \\\\ \\sin\\theta & \\cos\\theta\\end{pmatrix}$, $\\theta = 2\\pi/p$. Isometry: $\\|R_\\theta v\\|^2 = (x^2+y^2)(\\cos^2\\theta+\\sin^2\\theta) = \\|v\\|^2$. Yang-Borsuk: $\\mathbb{Z}/p$ prime acts freely on $S^{2n-1}$, $f: S^{2n-1} \\to \\mathbb{R}^{2n}$ equivariant continuous $\\Rightarrow \\exists x \\in S^{2n-1}: f(x) = 0$.",

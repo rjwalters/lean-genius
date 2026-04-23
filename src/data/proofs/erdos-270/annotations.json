@@ -116,7 +116,7 @@
       "startLine": 143,
       "endLine": 154
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conjecture Disproved",
     "content": "**erdos_270_disproved:**\n\n```lean\ntheorem erdos_270_disproved : ¬ErdosGrahamConjecture\n```\n\nProof idea: Take α = 1 (a rational). By Crmarić-Kovač, there exists f with sum = 1. But the conjecture says the sum must be irrational. Contradiction!",
     "significance": "key",
@@ -208,7 +208,7 @@
       "startLine": 249,
       "endLine": 272
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "**erdos_270_summary:**\n\n**Question:** For f(n) → ∞, is Σ 1/((n+1)⋯(n+f(n))) always irrational?\n\n**Answer:** NO (Crmarić-Kovač, 2025)\n- Any α > 0 is achievable\n- The conjecture is completely false\n\n**Special case:** f(n) = n gives 1/3 + 2π/3^(5/2) (transcendental)\n\n**Open:** Is the sum irrational when f is non-decreasing?",
     "significance": "key",

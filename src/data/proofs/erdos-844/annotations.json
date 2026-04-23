@@ -61,7 +61,7 @@
       "startLine": 71,
       "endLine": 82
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Even Products Not Squarefree",
     "content": "**even_product_not_squarefree:**\n\nIf 2|a and 2|b and ab > 0, then ¬Squarefree(ab).\n\nReason: ab is divisible by 2·2 = 4, so has a repeated prime factor.",
     "mathContext": "This is why even × even works. Products are divisible by 4 = 2².",
@@ -79,7 +79,7 @@
       "startLine": 84,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Non-Squarefree Inheritance",
     "content": "**nonsquarefree_product:**\n\nIf ¬Squarefree(a) and b > 0, then ¬Squarefree(ab).\n\nReason: If p²|a, then p²|ab.",
     "mathContext": "This is why including all non-squarefree numbers is safe - they 'infect' any product.",

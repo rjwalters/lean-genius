@@ -44,7 +44,7 @@
       "startLine": 52,
       "endLine": 57
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Singleton is Dissociated",
     "content": "**singleton_one_dissociated**: The singleton {1} is trivially dissociated. Its only subsets are ∅ (sum 0) and {1} (sum 1), which are distinct.",
     "mathContext": "This is proved by case analysis on subsets. A singleton {a} has only two subsets with sums 0 and a, always distinct for positive a.",
@@ -139,7 +139,7 @@
       "startLine": 114,
       "endLine": 118
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Subset Closure",
     "content": "**dissociated_subset**: Any subset of a dissociated set is also dissociated. This is a basic closure property.",
     "mathContext": "Proof: If X, Y ⊆ B ⊆ A and X ≠ Y, then X, Y ⊆ A and by A being dissociated, ΣX ≠ ΣY. Hence B is dissociated.",
@@ -177,7 +177,7 @@
       "startLine": 138,
       "endLine": 146
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Numerical Examples",
     "content": "Concrete computations verified by **norm_num**: 1 + 1/2 = 3/2 < 2, and 1 + 1/2 + 1/4 + 1/8 = 15/8 < 2.",
     "mathContext": "These examples show the bound in action. For powers of 2 up to 2^k, the sum is 2 - 2^{-k}, always strictly less than 2.",
@@ -196,7 +196,7 @@
       "startLine": 156,
       "endLine": 168
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_350_summary** packages the key verified results: {1, 2} is dissociated, and 1 + 1/2 + 1/4 + 1/8 < 2.",
     "mathContext": "This summary demonstrates the formalization captures both the definition (dissociated sets) and the bound (sum of reciprocals < 2).",

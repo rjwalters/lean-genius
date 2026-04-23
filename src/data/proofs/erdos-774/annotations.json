@@ -62,7 +62,7 @@
       "startLine": 56,
       "endLine": 69
     },
-    "type": "technique",
+    "type": "concept",
     "title": "dissociated_iff_unique_sums",
     "content": "**Equivalence Theorem:**\n\nDissociated sets are characterized by unique subset sums:\n\n- **IsDissociated A:** distinct subsets have different sums\n- **HasUniqueSubsetSums A:** equal sums imply equal subsets\n\n```lean\ntheorem dissociated_iff_unique_sums (A : Finset ℕ) :\n    IsDissociated A ↔ HasUniqueSubsetSums A\n```\n\nThis is a direct logical equivalence: IsDissociated is the contrapositive of HasUniqueSubsetSums.",
     "mathContext": "The unique subset sum property is equivalent to saying the sumset of A with itself has no 'collisions' beyond the trivial ones.",
@@ -137,7 +137,7 @@
       "startLine": 108,
       "endLine": 122
     },
-    "type": "technique",
+    "type": "concept",
     "title": "dissociated_is_proportionately",
     "content": "**Trivial Direction:**\n\nEvery dissociated set is proportionately dissociated with constant c = 1.\n\n```lean\ntheorem dissociated_is_proportionately (A : Set ℕ) :\n    IsDissociatedSet A → IsProportionatelyDissociated A\n```\n\n**Proof:** If A is dissociated, every subset B is also dissociated. Take D = B itself, giving |D| = |B| = 1 · |B|.\n\nThe converse is the content of Erdős Problem #774.",
     "mathContext": "The question is whether proportionate dissociation implies a decomposition into finitely many truly dissociated sets.",
@@ -174,7 +174,7 @@
       "startLine": 137,
       "endLine": 140
     },
-    "type": "technique",
+    "type": "concept",
     "title": "pisier_theorem",
     "content": "**Pisier's Theorem (1983):**\n\nThe following are equivalent for infinite A ⊂ ℕ:\n1. A is proportionately dissociated\n2. A is a Sidon set (harmonic analysis)\n\n```lean\naxiom pisier_theorem (A : Set ℕ) :\n    IsProportionatelyDissociated A ↔ IsSidonHarmonic A\n```\n\nThis is a deep theorem connecting combinatorics to harmonic analysis. Pisier won the 2017 Shaw Prize partly for this work.",
     "mathContext": "Pisier's theorem shows that the combinatorial notion of 'locally having unique sums' is exactly the harmonic analysis notion of Sidon sets.",
@@ -212,7 +212,7 @@
       "startLine": 152,
       "endLine": 154
     },
-    "type": "technique",
+    "type": "concept",
     "title": "sidon_implies_dissociated",
     "content": "**Sidon ⟹ Dissociated:**\n\nEvery Sidon set (additive) is dissociated, but not conversely.\n\n```lean\naxiom sidon_implies_dissociated (A : Finset ℕ) :\n    IsSidonAdditive A → IsDissociated A\n```\n\n**Why?** If A is Sidon, pairwise sums are unique. This forces all subset sums to be unique (stronger condition).\n\n**Counterexample:** {1, 2, 3} is dissociated (unique subset sums) but not Sidon (1+3 = 2+2 is impossible since 2 appears once).",
     "mathContext": "The hierarchy is: Sidon (additive) ⊂ Dissociated ⊂ Proportionately Dissociated = Sidon (harmonic).",
@@ -268,7 +268,7 @@
       "startLine": 183,
       "endLine": 184
     },
-    "type": "technique",
+    "type": "concept",
     "title": "alon_erdos_conjecture",
     "content": "**Alon-Erdős Conjecture (1985):**\n\nNoga Alon and Paul Erdős conjectured that the answer to Problem #774 is NO.\n\n```lean\naxiom alon_erdos_conjecture : ¬ErdosConjecture774\n```\n\nThey wrote: 'it seems unlikely that [proportionate dissociation] is sufficient' for finite union decomposition.\n\nThis remains unproved as of 2025.",
     "mathContext": "Alon and Erdős introduced this problem in their 1985 paper 'An application of graph theory to additive number theory.'",
@@ -324,7 +324,7 @@
       "startLine": 211,
       "endLine": 220
     },
-    "type": "technique",
+    "type": "concept",
     "title": "nesetril_rodl_sales_theorem",
     "content": "**Nešetřil-Rödl-Sales Theorem (2024):**\n\nThe Sidon analogue is FALSE. There exists a proportionately Sidon set that is NOT a finite union of Sidon sets.\n\n```lean\naxiom nesetril_rodl_sales_theorem : ¬SidonAnalogue\n\naxiom nrs_construction :\n    ∃ A : Set ℕ, A.Infinite ∧ IsProportionatelySidon A ∧\n      ¬IsFiniteUnionSidon A\n```\n\n**Method:** Probabilistic construction using random methods.\n\n**Significance:** This provides strong evidence that Erdős #774 also has a negative answer.",
     "mathContext": "The counterexample uses Ramsey-theoretic and probabilistic techniques. Published in 2024 in 'On Pisier type theorems.'",

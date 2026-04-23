@@ -2,7 +2,7 @@
   {
     "id": "erdos-563-preamble",
     "proofId": "erdos-563",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 1,
       "endLine": 20
@@ -10,14 +10,23 @@
     "title": "Problem Overview: Balanced 2-Colorings with Logarithmic Threshold",
     "content": "**Erdős Problem #563**: Let $F(n, \\alpha)$ be the smallest $m$ such that there exists a 2-coloring of $K_n$ where every subset $X$ with $|X| \\geq m$ has $> \\alpha \\cdot \\binom{|X|}{2}$ edges of each color.\n\n**Key results** (lines 9-12):\n- **Conjecture**: $F(n, \\alpha) \\sim c_\\alpha \\cdot \\log n$ for $0 \\leq \\alpha < 1/2$\n- **Known**: $F(n, \\alpha) = \\Theta_\\alpha(\\log n)$ by the probabilistic method\n- **$\\alpha = 0$**: reduces to classical Ramsey theory (no monochromatic clique of size $m$)\n- **$\\alpha = 1/2$**: impossible (some color must have $\\leq$ half the edges by pigeonhole)\n\nReference: Erdős [Er90b, p. 21]; see also Problem #161 (hypergraph generalization).",
     "mathContext": "$F(n, \\alpha)$ measures how 'balanced' a coloring must be when restricted to large subsets. For $\\alpha = 0$: $F(n, 0)$ relates to Ramsey numbers. For $0 < \\alpha < 1/2$: $F(n, \\alpha) = \\Theta(\\log n)$ by probabilistic method. The conjecture asks for the precise constant $c_\\alpha$.",
-    "significance": "context",
-    "relatedConcepts": ["balanced colorings", "Ramsey theory", "probabilistic method", "Erdős #161"],
-    "prerequisites": ["complete graph K_n", "edge density", "Ramsey theory basics"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "balanced colorings",
+      "Ramsey theory",
+      "probabilistic method",
+      "Erdős #161"
+    ],
+    "prerequisites": [
+      "complete graph K_n",
+      "edge density",
+      "Ramsey theory basics"
+    ]
   },
   {
     "id": "erdos-563-imports",
     "proofId": "erdos-563",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 21,
       "endLine": 27
@@ -26,8 +35,15 @@
     "content": "Lines 21-23: imports `SimpleGraph.Basic`, `Finset.Basic`, and `Tactic`. Line 25: `open Finset` brings `filter`, `card`, `×ˢ` notation into scope. Line 27: `/-## Core Definitions -/` section header.",
     "mathContext": "`open Finset` allows writing `filter` and `card` instead of `Finset.filter` and `Finset.card`. The `×ˢ` notation for `Finset.product` is used in edge-counting expressions like `(X ×ˢ X).filter (fun p => p.1 < p.2)`.",
     "significance": "supporting",
-    "relatedConcepts": ["Finset.filter", "Finset.card", "open Finset"],
-    "prerequisites": ["Lean 4 basics", "Mathlib Finset"]
+    "relatedConcepts": [
+      "Finset.filter",
+      "Finset.card",
+      "open Finset"
+    ],
+    "prerequisites": [
+      "Lean 4 basics",
+      "Mathlib Finset"
+    ]
   },
   {
     "id": "erdos-563-coloring-edges",
@@ -41,8 +57,16 @@
     "content": "`EdgeColoring n = Fin n → Fin n → Bool`: a red/blue coloring of $K_n$ edges. The pair $(i,j)$ with $i < j$ encodes each edge exactly once.\n\n`edgeCount n X = ((X ×ˢ X).filter (p.1 < p.2)).card`: counts $\\binom{|X|}{2}$ edges in subset $X$.\n\n`redEdgeCount n c X` and `blueEdgeCount n c X`: count edges of each color using the same $i < j$ ordering convention.",
     "mathContext": "$\\text{edgeCount}(X) = |\\{(i,j) \\in X^2 : i < j\\}| = \\binom{|X|}{2}$. `redEdgeCount(X) + blueEdgeCount(X) = edgeCount(X)` (partition of edges by color). The $i < j$ constraint uses the natural order on `Fin n`.",
     "significance": "key",
-    "relatedConcepts": ["edge density", "Finset.filter", "graph coloring"],
-    "prerequisites": ["Fin n", "Finset.product ×ˢ", "Bool"]
+    "relatedConcepts": [
+      "edge density",
+      "Finset.filter",
+      "graph coloring"
+    ],
+    "prerequisites": [
+      "Fin n",
+      "Finset.product ×ˢ",
+      "Bool"
+    ]
   },
   {
     "id": "erdos-563-balanced",
@@ -56,13 +80,23 @@
     "content": "`IsBalanced n c m α`: every subset $X$ of size $\\geq m$ has strictly more than $\\alpha$ fraction of its edges in each color. Uses `ℚ` for $\\alpha$ to avoid real number complications.\n\n`balancedThreshold n α = F(n, \\alpha)`: the smallest $m$ admitting an $(m, \\alpha)$-balanced coloring, via `Nat.find`. Returns 0 if none exists (e.g., $\\alpha \\geq 1/2$).\n\nStrict inequality `>` is natural and avoids edge cases at equality.",
     "mathContext": "$\\text{IsBalanced}(c, m, \\alpha) \\iff \\forall X : |X| \\geq m \\Rightarrow \\text{red}(X)/\\binom{|X|}{2} > \\alpha \\wedge \\text{blue}(X)/\\binom{|X|}{2} > \\alpha$. `balancedThreshold` uses `Nat.find h` where `h : ∃ m, ∃ c, IsBalanced n c m α`. The `if h : ∃ ...` pattern makes this `noncomputable`.",
     "significance": "key",
-    "relatedConcepts": ["discrepancy theory", "balanced colorings", "Nat.find", "noncomputable def"],
-    "prerequisites": ["edgeCount", "redEdgeCount", "blueEdgeCount", "ℚ"]
+    "relatedConcepts": [
+      "discrepancy theory",
+      "balanced colorings",
+      "Nat.find",
+      "noncomputable def"
+    ],
+    "prerequisites": [
+      "edgeCount",
+      "redEdgeCount",
+      "blueEdgeCount",
+      "ℚ"
+    ]
   },
   {
     "id": "erdos-563-stubs",
     "proofId": "erdos-563",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 59,
       "endLine": 65
@@ -70,8 +104,16 @@
     "title": "Section Stubs: Conjecture, Bounds, Special Cases, Monotonicity",
     "content": "Lines 59-65 contain four section header stubs with no Lean declarations:\n\n- **Line 59**: `/- ## Main Conjecture -/` — stub for $F(n, \\alpha) \\sim c_\\alpha \\log n$\n- **Line 61**: `/- ## Known Bounds -/` — stub for $F(n, \\alpha) = \\Theta(\\log n)$ (probabilistic method)\n- **Line 63**: `/- ## Special Cases -/` — stub for $\\alpha=0$ (Ramsey) and $\\alpha=1/2$ (impossible)\n- **Line 65**: `/- ## Monotonicity -/` — stub for $\\alpha_1 < \\alpha_2 \\Rightarrow F(n,\\alpha_1) \\leq F(n,\\alpha_2)$\n\nThe mathematical content is described in the module docstring (lines 1-19). The core definitions are fully formalized; the open problem and supporting results are planned but not yet implemented.",
     "mathContext": "**Known**: $F(n, \\alpha) = \\Theta(\\log n)$ by probabilistic method. **Special cases**: $F(n, 0)$ relates to Ramsey bounds; $F(n, 1/2)$ is impossible since $\\text{red}(X) + \\text{blue}(X) = \\text{edge}(X)$. **Monotonicity**: $\\alpha_1 < \\alpha_2 \\Rightarrow F(n, \\alpha_1) \\leq F(n, \\alpha_2)$ (stricter balance is harder).",
-    "significance": "context",
-    "relatedConcepts": ["probabilistic method", "Ramsey theory", "discrepancy theory", "monotonicity"],
-    "prerequisites": ["balancedThreshold", "IsBalanced"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "probabilistic method",
+      "Ramsey theory",
+      "discrepancy theory",
+      "monotonicity"
+    ],
+    "prerequisites": [
+      "balancedThreshold",
+      "IsBalanced"
+    ]
   }
 ]

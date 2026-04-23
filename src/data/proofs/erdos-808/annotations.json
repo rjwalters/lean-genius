@@ -51,7 +51,7 @@
       "startLine": 87,
       "endLine": 99
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Original (False) Conjecture",
     "content": "Erdős-Szemerédi conjectured: if G has ≥ n^{1+c} edges on a set of size n, then max(|A +_G A|, |A ·_G A|) ≥ n^{1+c-ε}. This says edge density transfers to output diversity.",
     "mathContext": "|G| ≥ n^{1+c} ⟹ max(|A +_G A|, |A ·_G A|) ≥ n^{1+c-ε}",
@@ -75,7 +75,7 @@
       "startLine": 110,
       "endLine": 124
     },
-    "type": "technique",
+    "type": "concept",
     "title": "ARS Counterexample",
     "content": "Alon, Ruzsa, and Solymosi (2020) constructed sets A with n^{5/3} edges whose sumset and product set are only n^{4/3} in size. The gap of 1/3 in the exponent refutes the conjecture.",
     "mathContext": "∃A,G: |G| ≈ n^{5/3}, max(|A +_G A|, |A ·_G A|) ≈ n^{4/3}",
@@ -98,7 +98,7 @@
       "startLine": 126,
       "endLine": 133
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Exponent Gap",
     "content": "With n^{5/3} edges, the conjecture predicts n^{5/3-ε} outputs. The construction only gives n^{4/3}. The gap: 5/3 - 4/3 = 1/3 is substantial, showing the conjecture fails badly.",
     "mathContext": "Gap = 5/3 - 4/3 = 1/3",
@@ -120,7 +120,7 @@
       "startLine": 139,
       "endLine": 150
     },
-    "type": "technique",
+    "type": "concept",
     "title": "ARS Positive Bound",
     "content": "Despite disproving the conjecture, ARS proved: max(|A +_G A|, |A ·_G A|) ≥ c · m^{3/2} · n^{-7/4}, where m = number of edges. This is a genuine lower bound.",
     "mathContext": "max ≥ c · m^{3/2} · n^{-7/4}",

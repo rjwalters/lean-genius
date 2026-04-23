@@ -63,7 +63,7 @@
       "startLine": 53,
       "endLine": 62
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Log⁺ Properties",
     "content": "**logPlus_ge_one**: log⁺(x) ≥ 1 for all x. This is immediate from the max definition.\n\n**logPlus_eq_log**: For x ≥ e, we have log⁺(x) = log(x). The proof shows log(x) ≥ 1 when x ≥ e, so the max equals log(x).",
     "significance": "supporting",
@@ -214,7 +214,7 @@
       "startLine": 187,
       "endLine": 206
     },
-    "type": "technique",
+    "type": "concept",
     "title": "LCM-GCD Identity",
     "content": "**lcm_gcd_identity**: lcm(a,b) · gcd(a,b) = a · b.\n\nThis fundamental identity connects LCM and GCD. It follows from unique factorization: for each prime p, max(vₚ(a), vₚ(b)) + min(vₚ(a), vₚ(b)) = vₚ(a) + vₚ(b).\n\n**lcm_coprime**: For coprime a,b, lcm(a,b) = a·b (since gcd = 1).\n\n**one_div_lcm**: 1/lcm(a,b) = gcd(a,b)/(a·b), connecting reciprocal LCM to GCD.",
     "mathContext": "This identity is key to understanding when 1/lcm is small: when gcd is small (elements coprime), 1/lcm ≈ 1/(a·b). When gcd is large (shared factors), 1/lcm > 1/(a·b).",
@@ -233,7 +233,7 @@
       "startLine": 208,
       "endLine": 217
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Examples",
     "content": "We verify LCM computations:\n- **lcm(6, 10) = 30**: 6 = 2·3, 10 = 2·5, so lcm = 2·3·5 = 30\n- **gcd(6, 10) = 2**: The shared factor\n- **lcm(3, 5) = 15**: Coprime case, lcm = product\n\nThese are checked by `native_decide`, which computes the values.",
     "significance": "supporting",
@@ -251,7 +251,7 @@
       "startLine": 219,
       "endLine": 242
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_442_summary** combines the main results:\n1. ¬ Erdos442Conjecture — the conjecture is false\n2. ∃ A with bounded normalizedLcmSum — Tao's counterexample exists\n\nThe proof uses `tao_counterexample` and extracts the bounded set from `tao_construction`.",
     "mathContext": "This formalizes: 'Erdős Problem #442 is resolved in the negative, with an explicit (axiomatized) counterexample.'",

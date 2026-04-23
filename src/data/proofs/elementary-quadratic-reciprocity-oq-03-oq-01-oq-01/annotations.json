@@ -60,7 +60,7 @@
     "title": "factorTwos: 2-Adic Valuation via Structural Recursion",
     "body": "The `factorTwos` function extracts `(v₂(n), odd_part(n))` by repeatedly halving `n` until it is odd, counting how many times 2 divides. The termination annotation `termination_by n => n` tells Lean to use `n` as the decreasing measure — each recursive call passes `(n+1)/2 < n+1`. The case split `| 0 => (0, 0)` handles zero specially (it has infinite 2-adic valuation, but the definition returns 0). The companion theorem `factorTwos_odd_eq` is the linchpin: for odd `n > 0`, `factorTwos n = (0, n)`, which is used directly to prove the extension theorem.",
     "mathContext": "For $n \\geq 1$, the 2-adic valuation $v_2(n)$ is the largest $v$ such that $2^v \\mid n$. The odd part is $n / 2^{v_2(n)}$. So $n = 2^{v_2(n)} \\cdot \\text{odd\\_part}(n)$. For odd $n$: $v_2(n) = 0$ and $\\text{odd\\_part}(n) = n$, which is exactly what `factorTwos_odd_eq` states: $\\text{factorTwos}(n) = (0, n)$ when $n > 0$ and $n \\% 2 = 1$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "2-adic valuation",
       "p-adic valuation",
@@ -87,7 +87,7 @@
     "title": "kroneckerSym: Assembling the Full Kronecker Symbol",
     "body": "The `noncomputable` qualifier is required because `jacobiSym` involves classical logic (or decidability instances that aren't computable by default in Lean). The definition `kroneckerSym a n` handles `n = 0` separately, then assembles three factors for `n ≠ 0`: (1) a sign factor `kroneckerNegOne a` if `n < 0`, else 1; (2) a two-adic factor `kroneckerTwo a ^ v` where `(v, m) = factorTwos |n|`; (3) a Jacobi factor `jacobiSym a m` for the odd part `m`. The multiplication of these three factors is the formal content of Kronecker's extension.",
     "mathContext": "For $n = \\varepsilon \\cdot 2^v \\cdot m$ with $\\varepsilon = \\pm 1$, $m$ odd positive, the Kronecker symbol is: $\\chi(a, n) = \\chi(a, \\varepsilon) \\cdot \\chi(a, 2)^v \\cdot J(a, m)$. This multiplicativity-in-$n$ is the definition, not a theorem: the Kronecker symbol is defined to be multiplicative. The non-trivial content is showing this extends Jacobi — that for odd positive $n$, the assembly recovers exactly $J(a, n)$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "multiplicative function",
       "Dirichlet character",

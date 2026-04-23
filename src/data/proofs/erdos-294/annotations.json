@@ -155,7 +155,7 @@
       "startLine": 116,
       "endLine": 130
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Small Values of t(N)",
     "content": "**t_2 and t_6_lower:**\n\n- t(2) = 2: Only {2} available, sum = 1/2 ≠ 1\n- t(6) > 2: {2, 3, 6} gives 1/2 + 1/3 + 1/6 = 1\n\nComputed values: t(2)=2, t(3)=2, t(4)=2, t(5)=2, t(6)=3.",
     "mathContext": "For small $N$: $t(2)=2$ since $\\frac{1}{2} < 1$ (can't represent $1$ from $[2,2]$). $t(6)\\geq 3$ since $\\{2,3,6\\}$ succeeds for $t=2$. More generally, $t(N) = 2$ when $N < 6$ because the harmonic tail $\\sum_{k=2}^{N}\\frac{1}{k} < 1$ for $N \\leq 4$, and $= 1$ fails exactly at $N=5$.",
@@ -256,7 +256,7 @@
       "startLine": 191,
       "endLine": 202
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem",
     "content": "**erdos_294:**\n\nt(N) ≍ N/((log N)(log log N)^O(1)).\n\n```lean\ntheorem erdos_294 : liuSawhneyTheorem :=\n  liu_sawhney_2024\n```\n\nThe Liu-Sawhney theorem resolves Problem #294.",
     "mathContext": "The main result combines both bounds: $\\frac{cN}{(\\log N)(\\log\\log N)^3(\\log\\log\\log N)^{O(1)}} \\leq t(N) \\leq \\frac{CN}{\\log N}$. This shows $t(N) \\asymp N/(\\log N \\cdot (\\log\\log N)^{O(1)})$, resolving the 44-year-old problem of Erdős and Graham up to polylogarithmic factors.",
@@ -281,7 +281,7 @@
       "startLine": 203,
       "endLine": 253
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Density Interpretation",
     "content": "**almost_all_work:**\n\nAlmost all t ∈ [1, N] allow representations.\n\n```lean\ndef densityInterpretation : Prop :=\n  ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,\n    (N - t_func N : ℝ) / N > 1 - ε\n```\n\nThe 'bad' starting points form a sparse set of density ≈ log(N)/N.",
     "mathContext": "Since $t(N) \\asymp N/\\log N$, the fraction of 'good' starting points (those $t \\in [1, N]$ with a representation) is $(N - t(N))/N \\approx 1 - 1/\\log N \\to 1$. In other words, the proportion of starting points that fail has density $\\approx 1/\\log N \\to 0$. This is why the problem says 'almost all' starting points admit Egyptian representations of $1$.",
@@ -331,7 +331,7 @@
       "startLine": 297,
       "endLine": 316
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_294_summary:**\n\n```lean\ntheorem erdos_294_summary :\n    erdosGrahamUpperBound ∧\n    liuSawhneyLowerBound := by\n  exact liu_sawhney_2024\n```\n\nCombines both bounds into the complete solution.",
     "mathContext": "The summary theorem $\\texttt{erdos\\_294\\_summary}$ packages both directions: (1) $\\exists C>0: t(N) \\leq CN/\\log N$ (Erdős-Graham 1980) and (2) $\\exists c>0: t(N) \\geq cN/((\\log N)(\\log\\log N)^{O(1)})$ (Liu-Sawhney 2024). Together these give the asymptotic $t(N) \\asymp N/(\\log N \\cdot (\\log\\log N)^{O(1)})$.",

@@ -177,7 +177,7 @@
       "startLine": 217,
       "endLine": 237
     },
-    "type": "context",
+    "type": "concept",
     "title": "Modular Arithmetic Examples",
     "content": "We verify properties underlying the reciprocity law:\n\n**Residue classes mod 4**: $5 \\equiv 1$, $3 \\equiv 3 \\pmod{4}$\n\n**Residue classes mod 8**: $7 \\equiv 7$, $5 \\equiv 5 \\pmod{8}$\n\n**Sign computation**: For $p=3, q=7$:\n$(p-1)/2 \\cdot (q-1)/2 = 1 \\cdot 3 = 3$ (odd)\n\nSo $(3/7)(7/3) = -1$ by the main reciprocity law.",
     "mathContext": "The sign factor $(-1)^{(p-1)/2 \\cdot (q-1)/2}$ determines whether the Legendre symbols are equal or opposite.",

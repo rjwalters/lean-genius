@@ -122,7 +122,7 @@
       "startLine": 172,
       "endLine": 199
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_262_summary** combines the two central results: (1) 2^{2^n} IS an irrationality sequence (Erdős 1975), and (2) n! is NOT. The proof is `⟨erdos_1975, factorial_not_irrationality⟩`, directly pairing the two axioms.\n\nThis replaces a previous version that included a trivial `∧ True` conjunct. The theorem now carries only genuine mathematical content.",
     "mathContext": "The conjunction is proved by the anonymous constructor ⟨·, ·⟩. Together with Hančl's theorem, this gives a complete picture: doubly exponential growth is both sufficient and necessary.",

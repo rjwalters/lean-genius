@@ -45,7 +45,7 @@
       "startLine": 65,
       "endLine": 123
     },
-    "type": "technique",
+    "type": "concept",
     "title": "FTC-Based Integral Evaluation",
     "content": "The integral is evaluated using the Fundamental Theorem of Calculus with the explicit antiderivative $F(x) = x^7/7 - 2x^6/3 + x^5 - 4x^3/3 + 4x - 4\\arctan(x)$. The derivative $F'(x)$ is computed term-by-term using `hasDerivAt_pow` for polynomial terms and `hasDerivAt_arctan` for the arctangent term. Then $\\int_0^1 g = F(1) - F(0)$, where $F(1) = 22/7 - \\pi$ (using $\\arctan(1) = \\pi/4$) and $F(0) = 0$.",
     "mathContext": "$\\int_0^1 g(x)\\,dx = F(1) - F(0) = \\left(\\frac{1}{7} - \\frac{2}{3} + 1 - \\frac{4}{3} + 4 - \\pi\\right) - 0 = \\frac{22}{7} - \\pi$",

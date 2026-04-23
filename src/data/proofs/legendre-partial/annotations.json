@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 16
     },
-    "type": "context",
+    "type": "concept",
     "title": "Introduction and Imports",
     "content": "The file opens with a module docstring introducing Legendre's conjecture (1798): for every positive integer $n$, there exists a prime $p$ with $n^2 < p < (n+1)^2$. This is one of the oldest open problems in number theory, now over 225 years old. The file takes a computational verification approach, confirming the conjecture for $n = 1$ through $20$ using explicit prime witnesses checked by `native_decide`.\n\nThe single import `Mathlib.Tactic` provides `native_decide` (kernel-level decision procedure for decidable propositions), `Nat.Prime` (primality predicate), and basic arithmetic lemmas. No heavy Mathlib infrastructure is needed because the proofs are purely computational — each case reduces to checking three decidable conditions: primality, lower bound, upper bound.",
     "mathContext": "Legendre's conjecture: $\\forall n \\geq 1, \\exists p \\in \\mathbb{P}: n^2 < p < (n+1)^2$. The interval $(n^2, (n+1)^2)$ has length $2n$, which grows without bound, making the conjecture plausible by the Prime Number Theorem: the expected number of primes in the interval is approximately $\\frac{2n}{\\ln(n^2)} = \\frac{n}{\\ln n} \\to \\infty$.",
@@ -56,7 +56,7 @@
       "startLine": 37,
       "endLine": 44
     },
-    "type": "context",
+    "type": "concept",
     "title": "Verified Cases: Methodology",
     "content": "The section docstring explains the verification methodology: for each $n$ from 1 to 20, we provide an explicit prime witness $p$ and verify three conditions via `native_decide`:\n1. $p$ is prime (`Nat.Prime p`)\n2. $n^2 < p$ (lower bound)\n3. $p < (n+1)^2$ (upper bound)\n\n`native_decide` compiles the proposition to native code and evaluates it, making primality testing and arithmetic comparisons essentially free for these small numbers. This is vastly faster than `decide` (which interprets in the kernel) for numbers of this size.",
     "mathContext": "The proof term `⟨p, by native_decide⟩` constructs an existential witness: the anonymous constructor `⟨p, proof⟩` provides the witness $p$ and `native_decide` discharges the conjunction $\\text{Prime}(p) \\land n^2 < p \\land p < (n+1)^2$ by computation. Lean's kernel accepts `native_decide` proofs by reducing to `Decidable` instances.",
@@ -127,7 +127,7 @@
       "startLine": 107,
       "endLine": 136
     },
-    "type": "context",
+    "type": "concept",
     "title": "Summary Table and Additional Properties",
     "content": "A doc comment presents the complete witness table for all 20 verified cases, providing a bird's-eye view of the verification. The table reveals a pattern: the smallest prime witness in $(n^2, (n+1)^2)$ tends to be close to $n^2$ — typically within $n$ of the left endpoint. This is consistent with Cramér's conjecture (1936): the largest prime gap below $x$ is $O((\\log x)^2)$, which for $x = n^2$ gives gaps of $O((\\log n)^2) \\ll n = $ half the interval length.\n\nThe 'Additional Properties' section header introduces the gap formula theorem that follows.",
     "mathContext": "Cramér's conjecture (1936): $\\limsup_{n \\to \\infty} \\frac{p_{n+1} - p_n}{(\\log p_n)^2} = 1$, where $p_n$ is the $n$-th prime. If true, the largest gap near $n^2$ is $O((\\log n^2)^2) = O(4(\\log n)^2)$, which is much smaller than the interval length $2n$. This explains why the witnesses are always found quickly near the left endpoint. Granville (1995) conjectured a refined version with constant $2e^{-\\gamma} \\approx 1.1229$ instead of 1.",
@@ -150,7 +150,7 @@
       "startLine": 138,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gap Formula: Linear Growth of Interval Length",
     "content": "**`square_gap_linear`**: $(n+1)^2 = n^2 + 2n + 1$, proved by `ring`. This identity shows that the gap between consecutive perfect squares grows linearly: the interval $(n^2, (n+1)^2)$ has length exactly $2n$.\n\nThis linear growth is key to understanding why Legendre's conjecture is weaker than Bertrand's postulate: Bertrand guarantees a prime in $(n, 2n)$ (interval length $n$), while Legendre asks for a prime in $(n^2, (n+1)^2)$ (interval length $2n$). Near $x = n^2$, the Legendre interval has length $2\\sqrt{x}$, while the Bertrand interval starting at $x$ has length $x$. So Legendre asks for primes in a much shorter interval relative to the numbers involved.",
     "mathContext": "$(n+1)^2 - n^2 = 2n + 1 - 1 = 2n$ (open interval length). Relative to $n^2$: the interval has relative length $\\frac{2n}{n^2} = \\frac{2}{n} \\to 0$. By the Prime Number Theorem, the prime density near $n^2$ is $\\frac{1}{\\ln(n^2)} = \\frac{1}{2\\ln n}$. Expected primes in $(n^2, (n+1)^2) \\approx \\frac{2n}{2\\ln n} = \\frac{n}{\\ln n} \\to \\infty$, so heuristically the conjecture should hold.\n\nThe `ring` tactic proves the identity by normalizing both sides to the same polynomial normal form — no axioms or external lemmas needed.",

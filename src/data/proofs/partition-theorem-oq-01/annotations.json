@@ -121,7 +121,7 @@
       "startLine": 131,
       "endLine": 147
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gap >= 2 Implies Pairwise Strict Inequality",
     "content": "This private lemma is the technical heart of the structural results. It proves that if a list has minimum gap 2 between consecutive elements, then all elements are pairwise strictly decreasing. The proof proceeds by induction on the list, using pattern matching to handle the base cases (empty and singleton lists). For the inductive step, it shows that the head is greater than every element in the tail by combining the direct gap with the inductively established pairwise relation on the tail, using omega to discharge the arithmetic.",
     "mathContext": "If $a_i - a_{i+1} \\geq 2$ for all consecutive pairs in a decreasing list, then $a_i > a_j$ for all $i < j$, establishing $\\texttt{List.Pairwise}\\;(\\cdot > \\cdot)$.",
@@ -144,7 +144,7 @@
       "startLine": 149,
       "endLine": 161
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gap >= 2 Partitions Have Distinct Parts",
     "content": "This theorem establishes that every RR1 gap partition (consecutive parts differ by at least 2) is also a distinct partition. The proof chains the pairwise strict inequality lemma through ne_of_gt to get a Nodup property on the sorted list, then uses Multiset.sort_eq to transfer the Nodup back to the original multiset of parts. This is one of the key original contributions of the formalization, placing gap partitions in the correct containment hierarchy.",
     "mathContext": "If $\\lambda_i - \\lambda_{i+1} \\geq 2$ for all $i$, then all $\\lambda_i$ are distinct, i.e., $\\lambda \\in \\mathcal{D}(n)$ (the set of partitions into distinct parts).",
@@ -167,7 +167,7 @@
       "startLine": 163,
       "endLine": 169
     },
-    "type": "technique",
+    "type": "concept",
     "title": "RR2 Gap Partitions are a Subset of RR1 Gap Partitions",
     "content": "This theorem proves the natural containment: every RR2 gap partition is also an RR1 gap partition. Since RR2 partitions require both the gap-2 condition and a minimum part of 2, they form a strictly smaller class than RR1 partitions which only require the gap condition. The proof uses simp to unfold the filter definitions and tauto to dispatch the logical implication from a conjunction to one of its components.",
     "mathContext": "The containment hierarchy: $\\text{RR2\\_gap}(n) \\subseteq \\text{RR1\\_gap}(n) \\subseteq \\mathcal{D}(n) \\subseteq \\mathcal{P}(n)$ where $\\mathcal{D}(n)$ is distinct partitions and $\\mathcal{P}(n)$ is all partitions.",

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 26
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Statement and Background",
     "content": "Erdős Problem #907 asks: if f(x+h) - f(x) is continuous for every h > 0, can f be decomposed as g + φ for continuous g and additive φ? De Bruijn proved YES in 1951.",
     "mathContext": "The problem concerns functions $f : \\mathbb{R} \\to \\mathbb{R}$ whose **difference functions** $\\Delta_h f(x) = f(x+h) - f(x)$ are continuous for every $h > 0$. This is strictly weaker than $f$ being continuous—it only constrains the increments. De Bruijn (1951) proved that such $f$ decomposes as $f = g + \\varphi$ where $g$ is continuous and $\\varphi$ satisfies Cauchy's equation $\\varphi(x+y) = \\varphi(x) + \\varphi(y)$. The additive part $\\varphi$ may be discontinuous (and thus pathological via AC), but the continuous differences condition completely characterizes the structure.",
@@ -53,7 +53,7 @@
       "startLine": 51,
       "endLine": 55
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Additive Functions Vanish at Zero",
     "content": "If φ is additive, then φ(0) = 0. Proof: φ(0) = φ(0+0) = φ(0) + φ(0), so φ(0) = 0.",
     "mathContext": "From $\\varphi(0) = \\varphi(0 + 0) = \\varphi(0) + \\varphi(0)$ we get $\\varphi(0) = 0$. Fully proved in Lean via `linarith` after simplification. This is the base case for the inductive proof of $\\varphi(nx) = n\\varphi(x)$.",
@@ -73,7 +73,7 @@
       "startLine": 57,
       "endLine": 61
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Additive Functions and Negation",
     "content": "If φ is additive, then φ(-x) = -φ(x). Proof: φ(0) = φ(x + (-x)) = φ(x) + φ(-x) = 0.",
     "mathContext": "From $0 = \\varphi(0) = \\varphi(x + (-x)) = \\varphi(x) + \\varphi(-x)$, we get $\\varphi(-x) = -\\varphi(x)$. This shows additive functions are group homomorphisms $(\\mathbb{R}, +) \\to (\\mathbb{R}, +)$. Fully proved via `linarith` using `additive_zero`.",
@@ -94,7 +94,7 @@
       "startLine": 63,
       "endLine": 73
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Additive Functions and Natural Multiplication",
     "content": "If φ is additive, then φ(nx) = n·φ(x) for all natural numbers n. This follows by induction on n.",
     "mathContext": "By induction: $\\varphi(0 \\cdot x) = 0 = 0 \\cdot \\varphi(x)$ (base), and $\\varphi((n+1)x) = \\varphi(nx + x) = \\varphi(nx) + \\varphi(x) = n\\varphi(x) + \\varphi(x) = (n+1)\\varphi(x)$ (step). Fully proved in Lean using `induction n with | zero => ... | succ n ih => ...` and `ring`. Combined with `additive_neg`, this gives $\\varphi(nx) = n\\varphi(x)$ for all $n \\in \\mathbb{Z}$, establishing $\\mathbb{Z}$-homogeneity.",
@@ -161,7 +161,7 @@
       "startLine": 90,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Linear Functions are Additive",
     "content": "Every linear function φ(x) = cx is additive: c(x+y) = cx + cy. The converse requires continuity.",
     "mathContext": "If $\\varphi(x) = cx$, then $\\varphi(x+y) = c(x+y) = cx + cy = \\varphi(x) + \\varphi(y)$. Fully proved via `ring` after extracting the constant $c$. The converse (additive $\\implies$ linear) requires an additional regularity hypothesis: continuity, measurability, monotonicity, or even boundedness on an interval all suffice.",
@@ -316,7 +316,7 @@
       "startLine": 136,
       "endLine": 141
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Continuous Functions Have Continuous Differences",
     "content": "If f is continuous, then all its differences are continuous. This is straightforward: Δ_h f = f ∘ (+h) - f is a difference of continuous functions.",
     "mathContext": "If $f \\in C(\\mathbb{R})$, then $\\Delta_h f(x) = f(x+h) - f(x)$ is the difference of two continuous functions: $f \\circ (\\cdot + h)$ and $f$. Fully proved in Lean via `hf.sub (hf.comp (continuous_add_right h))`. This shows continuous functions satisfy the hypothesis of de Bruijn's theorem—the interesting case is when $f$ is *not* continuous but still has continuous differences.",
@@ -337,7 +337,7 @@
       "startLine": 143,
       "endLine": 149
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Additive Differences are Constant",
     "content": "If φ is additive, then Δ_h φ(x) = φ(h) for all x. The difference is constant because φ(x+h) - φ(x) = φ(h) by additivity.",
     "mathContext": "$\\Delta_h \\varphi(x) = \\varphi(x+h) - \\varphi(x) = \\varphi(x) + \\varphi(h) - \\varphi(x) = \\varphi(h)$, independent of $x$. Fully proved by unfolding `difference` and applying `hadd x h` then `ring`. This is the key observation: additive functions automatically have continuous differences (constant functions are continuous), so they are 'invisible' to the difference operator. De Bruijn's theorem says this is the *only* obstruction to continuity.",
@@ -403,7 +403,7 @@
       "startLine": 166,
       "endLine": 169
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #907 Statement",
     "content": "The formal statement of Erdős #907: hasContinuousDifferences f → hasDeBruijnDecomposition f. The answer is YES, via de Bruijn's theorem.",
     "mathContext": "The main theorem `erdos_907 (f : ℝ → ℝ) : hasContinuousDifferences f → hasDeBruijnDecomposition f := de_bruijn_theorem f` is a one-line proof applying the axiomatized de Bruijn theorem. This file achieves 0 sorries because de Bruijn's theorem and other deep results are axiomatized, while all structural consequences (properties of additive functions, difference operators, examples) are fully proved.",
@@ -444,7 +444,7 @@
       "startLine": 184,
       "endLine": 190
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Continuous Functions Decompose Trivially",
     "content": "If f is already continuous, it decomposes as f + 0 where the additive part is zero.",
     "mathContext": "For $f \\in C(\\mathbb{R})$: take $g = f$ and $\\varphi = 0$. The zero function is trivially additive ($0 + 0 = 0$) and $f = f + 0$. Fully proved in Lean via `refine ⟨f, fun _ => 0, hf, ?_, ?_, fun _ => rfl⟩` with `intro x y; ring` for additivity of zero.",
@@ -465,7 +465,7 @@
       "startLine": 205,
       "endLine": 213
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: x² Has Continuous Differences",
     "content": "The function f(x) = x² has continuous differences: Δ_h(x²) = (x+h)² - x² = 2hx + h², which is continuous in x.",
     "mathContext": "The difference $\\Delta_h(x^2) = (x+h)^2 - x^2 = 2hx + h^2$ is a polynomial in $x$ (for fixed $h$), hence continuous. Fully proved: the proof rewrites the difference as the polynomial $2hx + h^2$ using `ext x; ring`, then applies `continuity`. Since $x^2$ is already continuous, its decomposition is trivial ($g = x^2$, $\\varphi = 0$), demonstrated by the subsequent `example`.",

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 18
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview and Known Results",
     "content": "Header documenting Erdős Problem #128: a local-to-global triangle forcing conjecture. If every induced subgraph on at least $\\lfloor n/2 \\rfloor$ vertices has more than $n^2/50$ edges, must $G$ contain a triangle? The problem was posed by Erdős and Rousseau with a $250 prize. The constant $1/50$ is conjectured optimal, witnessed by blow-ups of $C_5$ and the Petersen graph.",
     "mathContext": "The conjecture asks: $\\forall G$ on $n$ vertices, if $\\forall S \\subseteq V(G)$ with $|S| \\geq \\lfloor n/2 \\rfloor$, $e(G[S]) > n^2/50$, then $G$ contains $K_3$. Known partial results replace $1/50$ by $1/16$ (EFRS), $27/1024$ (Razborov), or change the subgraph size threshold from $n/2$ to $3n/5$ (Krivelevich).",
@@ -30,7 +30,7 @@
       "startLine": 20,
       "endLine": 24
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports",
     "content": "Imports Mathlib's basic tactics, natural number and finset infrastructure, and `SimpleGraph.Basic` for the foundational graph theory API. The file defines its own `Graph` structure rather than using Mathlib's `SimpleGraph` directly, bundling adjacency with symmetry and irreflexivity proofs.",
     "mathContext": "Uses `Finset.univ.product` and `Finset.filter` for edge counting, and `Fin n` for vertex indexing. The custom `Graph n` structure packages a decidable adjacency relation on `Fin n`.",
@@ -98,7 +98,7 @@
       "startLine": 58,
       "endLine": 67
     },
-    "type": "context",
+    "type": "concept",
     "title": "C₅ Blow-up: Extremal Example",
     "content": "The balanced blow-up of $C_5$ partitions $n$ vertices into 5 parts of size $\\sim n/5$ and connects parts $i$ and $i+1 \\pmod{5}$. This graph is triangle-free (since $C_5$ has no $K_3$) and achieves subgraph edge density approaching $n^2/50$ in half-sized subgraphs, showing the constant $1/50$ in the conjecture cannot be improved. The axiom states the subgraph density is at most $n^2/50 + n$ (with a linear error term).",
     "mathContext": "The $C_5$ blow-up $G$ has $5 \\cdot (n/5)^2 = n^2/5$ total edges. For $S \\subseteq V$ with $|S| = n/2$, one can show $e(G[S]) \\leq n^2/50 + O(n)$. The Petersen graph (vertex-transitive, 3-regular, triangle-free) is the $n = 10$ case.",
@@ -121,7 +121,7 @@
       "startLine": 68,
       "endLine": 77
     },
-    "type": "technique",
+    "type": "concept",
     "title": "EFRS Theorem: Constant 16",
     "content": "Erdős, Faudree, Rousseau, and Schelp (1994) proved the conjecture with $50$ replaced by $16$: if every induced subgraph on $\\geq n/2$ vertices has $> n^2/16$ edges, then $G$ contains a triangle. More generally, for any $0 < \\alpha < 1$, if every set of $\\geq \\alpha n$ vertices induces $> \\alpha^3 n^2/2$ edges, then $G$ contains a triangle.",
     "mathContext": "$\\forall n,\\, \\forall G$ on $n$ vertices: $(\\forall S,\\, |S| \\geq n/2 \\implies e(G[S]) > n^2/16) \\implies K_3 \\subseteq G$. The general form replaces $1/16$ by $\\alpha^3/2$ for threshold $\\alpha n$, recovering $1/16 = (1/2)^3/2$ at $\\alpha = 1/2$.",
@@ -143,7 +143,7 @@
       "startLine": 78,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Krivelevich's Theorem: Subgraph Size 3n/5",
     "content": "Krivelevich (1995) proved a variant: if every induced subgraph on $\\geq 3n/5$ vertices has $> n^2/25$ edges, then $G$ contains a triangle. This trades a larger subgraph size threshold ($3n/5$ vs $n/2$) for a better constant ($25$ vs $50$), reflecting a different point on the trade-off curve between local density and subgraph size.",
     "mathContext": "$\\forall n,\\, \\forall G$ on $n$ vertices: $(\\forall S,\\, |S| \\geq 3n/5 \\implies e(G[S]) > n^2/25) \\implies K_3 \\subseteq G$. Note $1/25 > 1/50$, so the density requirement is weaker, but more vertices are required.",

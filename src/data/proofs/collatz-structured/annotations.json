@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 26
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Overview: Collatz for Structured Values",
     "content": "The Collatz conjecture — proposed by Lothar Collatz in 1937 and still unsolved — asks whether every positive integer eventually reaches 1 under the map $f(n) = n/2$ (even) or $3n+1$ (odd). Despite its elementary statement, the problem has resisted all proof attempts. Conway (1972) showed that generalizations are undecidable, and Tao (2019) proved the strongest partial result: almost all orbits attain almost bounded values.\n\nThis formalization proves the conjecture for an important infinite family: all numbers of the form $2^m \\cdot n$ where $n$ has been computationally verified. The approach separates the problem into (1) the trivial case of powers of 2 (pure halving), (2) closure under multiplication by powers of 2, and (3) computational verification of specific odd starting values via `native_decide`. The full conjecture is stated as an axiom.",
     "mathContext": "The Collatz conjecture: $\\forall n \\geq 1,\\, \\exists k \\in \\mathbb{N},\\, f^{(k)}(n) = 1$. Verified for all $n < 2^{68} \\approx 2.95 \\times 10^{20}$. The file proves $\\text{ReachesOne}(2^m \\cdot n)$ for each verified $n \\in \\{1, 3, 5, 6, 7, 9, 27\\}$ and all $m \\geq 0$.",
@@ -81,7 +81,7 @@
       "startLine": 77,
       "endLine": 110
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Powers of 2 Reach 1",
     "content": "The section proves that powers of 2 reach 1, starting with the base case `two_reaches_one` ($f(2) = 1$, proved by `simp`) and then the general `collatz_pow_two`: for $k \\geq 1$, $f^{(k)}(2^k) = 1$.\n\nThe proof of `collatz_pow_two` proceeds by induction on $k$:\n- **Base ($k = 1$)**: $f(2) = 1$ by `simp [collatz]`\n- **Step ($k = m + 2$)**: Write $2^{m+2} = 2 \\cdot 2^{m+1}$, so $f(2^{m+2}) = 2^{m+1}$ by `collatz_two_mul`. Then apply the induction hypothesis.\n\nThe corollary `pow_two_reaches_one` wraps this as a `ReachesOne` statement. The trajectory of any power of 2 is pure halving: $2^k \\to 2^{k-1} \\to \\cdots \\to 2 \\to 1$, making this the simplest infinite family for which the conjecture holds.",
     "mathContext": "`collatz_pow_two : (k : ℕ) → k ≥ 1 → collatzIter k (2^k) = 1`. The trajectory: $2^k \\xrightarrow{f} 2^{k-1} \\xrightarrow{f} \\cdots \\xrightarrow{f} 2 \\xrightarrow{f} 1$. Each step halves because $2^j$ is always even. Every Collatz trajectory that hits a power of 2 converges to 1 — the powers of 2 are the 'backbone' or 'attractor' of the Collatz dynamics.",
@@ -104,7 +104,7 @@
       "startLine": 111,
       "endLine": 134
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Closure Under Doubling",
     "content": "**Theorem**: If n reaches 1, then 2^m * n also reaches 1.\n\n**Proof**: If n reaches 1 in k steps, then:\n- 2n reaches 1 in k+1 steps (first step: 2n -> n)\n- 4n reaches 1 in k+2 steps\n- In general: 2^m * n reaches 1 in k+m steps\n\nThis means verifying odd numbers is sufficient!",
     "mathContext": "reaches_one_pow_two_mul: ReachesOne n -> ReachesOne (2^m * n)",
@@ -127,7 +127,7 @@
       "startLine": 135,
       "endLine": 152
     },
-    "type": "context",
+    "type": "concept",
     "title": "Computational Examples: Step-by-Step Verification",
     "content": "Four `example` declarations verify individual Collatz steps by `native_decide`: $f(3) = 10$ (odd: $3 \\times 3 + 1$), $f(10) = 5$ (even: $10/2$), $f(5) = 16$ (odd: $3 \\times 5 + 1$), $f(16) = 8$ (even: $16/2$). These trace the first four steps of the trajectory of 3.\n\nThis illustrates the 'hailstone' pattern: odd numbers jump up ($n \\to 3n+1$), then the even result falls ($\\to (3n+1)/2$ or further). The trajectory of 3 rises to 16, then cascades down via pure halving: $16 \\to 8 \\to 4 \\to 2 \\to 1$. The fact that $f(5) = 16 = 2^4$ is lucky — it hits a power of 2 early, triggering rapid convergence.",
     "mathContext": "$f(3) = 10,\\, f(10) = 5,\\, f(5) = 16,\\, f(16) = 8$. The trajectory of 3: $3 \\to 10 \\to 5 \\to 16 \\to 8 \\to 4 \\to 2 \\to 1$ (7 steps). The maximum value is 16 = $2^4$, reached at step 3.",
@@ -172,7 +172,7 @@
       "startLine": 178,
       "endLine": 181
     },
-    "type": "context",
+    "type": "concept",
     "title": "27 Reaches 1 (111 Steps)",
     "content": "27 is famous for its unexpectedly long trajectory.\n\nStarting from just 27, the sequence:\n- Grows to a maximum of 9232\n- Takes 111 steps to reach 1\n\nThis demonstrates how even small numbers can have dramatic orbits. Verified computationally in Lean.",
     "mathContext": "twentyseven_reaches_one: ReachesOne 27 := use 111; native_decide",

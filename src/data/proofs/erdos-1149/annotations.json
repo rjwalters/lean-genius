@@ -37,7 +37,7 @@
       "startLine": 50,
       "endLine": 81
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bergelson-Richter Theorem and Erdős #1149",
     "content": "bergelson_richter (axiom): For non-integer α > 0, the natural density of {n : gcd(n, ⌊n^α⌋) = 1} is 6/π². Axiomatized because the proof uses deep ergodic theory.\n\ndensity_equals_inv_zeta2: 6/π² = 1/(π²/6) by ring — connecting to ζ(2) = π²/6.\n\nerdos_1149_solved: Direct wrapper applying the axiom, marking the problem as SOLVED.",
     "mathContext": "Bergelson and Richter (2017) proved this using the theory of multiplicative functions along polynomial sequences: $\\frac{1}{N}\\sum_{n=1}^{N} f(n)g(\\lfloor n^\\alpha \\rfloor)$ converges for bounded multiplicative functions $f, g$. Setting $f = g = \\mu^2 \\cdot 1_{\\gcd=1}$ gives the coprime density.",
@@ -67,7 +67,7 @@
       "startLine": 83,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Density Bounds: 0 < 6/π² < 1",
     "content": "density_pos: 6/π² > 0 from π² > 0 (positivity of π).\n\ndensity_lt_one: 6/π² < 1 using π > 3 (from Real.pi_gt_three). Since π > 3, we get π² > 9 > 6, so 6/π² < 1. The proof uses nlinarith to conclude from the chain 6 < 9 = 3² < π².",
     "mathContext": "The density $6/\\pi^2 \\approx 0.6079$ lies strictly between 0 and 1. The bound $6/\\pi^2 < 1$ (equivalently $\\pi^2 > 6$, or $\\pi > \\sqrt{6} \\approx 2.449$) is much weaker than $\\pi > 3$, but the latter is available in Mathlib and gives a clean proof.",
@@ -203,7 +203,7 @@
       "startLine": 227,
       "endLine": 266
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Möbius Inversion: ∑_{d|n} μ(d) = [n=1]",
     "content": "`moebius_sum_divisors_eq` proves the Möbius inversion identity: $\\sum_{d \\mid n} \\mu(d) = 1$ if $n = 1$, else $0$. The proof strategy:\n\n1. Rewrite the sum over divisors as the Dirichlet convolution $(\\mu * \\zeta)(n)$\n2. Apply `ArithmeticFunction.moebius_mul_coe_zeta` to get $\\mu * \\zeta = \\varepsilon$\n3. Evaluate $\\varepsilon(n) = [n = 1]$ via `ArithmeticFunction.one_apply`\n\nThe middle step uses `Finset.sum_nbij` to establish a bijection between divisors and divisor-antidiagonal pairs, handling the zeta function's convention ($\\zeta(0) = 0$, $\\zeta(n) = 1$ for $n > 0$). This is the longest proof in the file (~35 lines) and the most technically demanding.",
     "mathContext": "In the Dirichlet convolution ring of arithmetic functions, $\\mu * \\zeta = \\varepsilon$ where $\\varepsilon(n) = [n=1]$ is the identity. This encodes: $\\sum_{d \\mid n} \\mu(d) \\cdot 1 = [n=1]$. The key application: $[\\gcd(a,b) = 1] = \\sum_{d \\mid \\gcd(a,b)} \\mu(d)$, which transforms coprime counting into a sum over divisors, enabling the formula $C(N) = \\sum_d \\mu(d) \\lfloor N/d \\rfloor^2$.",
@@ -229,7 +229,7 @@
       "startLine": 268,
       "endLine": 293
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Counting Multiples via Bijection",
     "content": "`card_multiples` proves $|\\{a \\in [1,N] : d \\mid a\\}| = \\lfloor N/d \\rfloor$ by constructing an explicit bijection: multiples $d, 2d, \\ldots, \\lfloor N/d \\rfloor \\cdot d$ in $[1,N]$ correspond to $\\{0, 1, \\ldots, \\lfloor N/d \\rfloor - 1\\}$ via $a \\mapsto a/d - 1$. The proof establishes:\n- Forward: any $a \\in [1,N]$ with $d \\mid a$ satisfies $a/d \\leq N/d$\n- Backward: $(j+1) \\cdot d \\in [1,N]$ for $j < N/d$\n- Injectivity: via `mul_right_cancel₀`\n\nThis fundamental counting lemma is a building block for the coprime pair formula.",
     "mathContext": "The identity $|\\{a \\in [1,N] : d \\mid a\\}| = \\lfloor N/d \\rfloor$ is elementary but essential: it converts the Möbius inversion formula $C(N) = \\sum_d \\mu(d) |\\{a : d \\mid a\\}|^2$ into $C(N) = \\sum_d \\mu(d) \\lfloor N/d \\rfloor^2$, making the asymptotic analysis tractable.",
@@ -253,7 +253,7 @@
       "startLine": 295,
       "endLine": 312
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pairs with Common Factor: Product Factoring",
     "content": "`pairs_with_common_factor` proves that $|\\{(a,b) \\in [1,N]^2 : p \\mid \\gcd(a,b)\\}| = \\lfloor N/p \\rfloor^2$ for prime $p$. The key step factors the filtered product into a Cartesian product:\n\n$\\{(a,b) : p \\mid \\gcd(a,b)\\} = \\{a : p \\mid a\\} \\times \\{b : p \\mid b\\}$\n\nThis uses $p \\mid \\gcd(a,b) \\Leftrightarrow p \\mid a \\wedge p \\mid b$ (since $p$ is prime), then applies `Finset.card_product` and `card_multiples` to get $\\lfloor N/p \\rfloor \\cdot \\lfloor N/p \\rfloor = \\lfloor N/p \\rfloor^2$.",
     "mathContext": "This factoring step is the heart of the inclusion-exclusion approach to coprime counting: the pairs sharing a common factor $d$ decompose as products of multiples of $d$. For composite $d$, one uses the multiplicativity of $\\mu$ and the Chinese Remainder Theorem to handle interactions between different primes.",

@@ -6,11 +6,11 @@
       "startLine": 26,
       "endLine": 31
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Namespace",
     "content": "The proof imports Mathlib's quadratic reciprocity module, which already contains legendreSym.quadratic_reciprocity — the central theorem all three pathways will invoke. The GaussSumPathway namespace isolates these definitions, and `open ZMod` brings ZMod's API into scope so that residue arithmetic is written cleanly without module prefixes.",
     "mathContext": "The Legendre symbol $\\left(\\frac{a}{p}\\right)$ is formalized as `legendreSym p a : ℤ`, taking values in $\\{-1, 0, 1\\}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Legendre symbol",
       "ZMod",
@@ -28,7 +28,7 @@
       "startLine": 40,
       "endLine": 47
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pathway 1: Eisenstein's Lattice Point Proof",
     "content": "Eisenstein's 1832 proof counts lattice points in the rectangle $\\{1,\\ldots,(p-1)/2\\} \\times \\{1,\\ldots,(q-1)/2\\}$ lying strictly below the line $pX = qY$ (call this $N_1$) and above it ($N_2$). By a parity argument, $N_1 + N_2 = (p-1)/2 \\cdot (q-1)/2$, and $(p/q)(q/p) = (-1)^{N_1+N_2}$. Mathlib's internal proof for legendreSym.quadratic_reciprocity follows this approach. The theorem signature requires distinct odd primes $p \\neq q$.",
     "mathContext": "$\\left(\\frac{q}{p}\\right)\\left(\\frac{p}{q}\\right) = (-1)^{\\frac{p-1}{2} \\cdot \\frac{q-1}{2}}$",
@@ -51,7 +51,7 @@
       "startLine": 49,
       "endLine": 54
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pathway 2: Zolotarev's Permutation Signature Proof",
     "content": "Zolotarev's 1872 proof reinterprets the Legendre symbol group-theoretically: $\\left(\\frac{a}{p}\\right)$ equals the sign of the permutation $x \\mapsto ax$ on $\\mathbb{Z}/p\\mathbb{Z}$. Quadratic reciprocity then follows from the fact that multiplication-by-$p$ on $\\mathbb{Z}/pq\\mathbb{Z}$ decomposes as a product of two permutations whose signs are related by the QR formula. This proof is logically independent of Eisenstein's — it uses abstract algebra rather than geometry — yet all three pathways reach the identical Lean conclusion.",
     "mathContext": "$\\left(\\frac{a}{p}\\right) = \\mathrm{sgn}(\\sigma_a)$ where $\\sigma_a : \\mathbb{Z}/p\\mathbb{Z} \\to \\mathbb{Z}/p\\mathbb{Z}$, $\\sigma_a(x) = ax$",
@@ -74,7 +74,7 @@
       "startLine": 56,
       "endLine": 64
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pathway 3: The Gauss Sum Proof Strategy",
     "content": "Gauss's fourth proof (ca. 1801, published 1818) and Eisenstein's simplification (1844) define the quadratic Gauss sum $\\tau_p = \\sum_{a=0}^{p-1} \\left(\\frac{a}{p}\\right) \\zeta_p^a$ where $\\zeta_p = e^{2\\pi i/p}$. The proof has two key steps: (1) $\\tau_p^2 = (-1)^{(p-1)/2} \\cdot p$ by character orthogonality, and (2) the Frobenius automorphism $\\phi_q$ acts as $\\phi_q(\\tau_p) = \\left(\\frac{p}{q}\\right) \\tau_p$ in $\\mathbb{Z}[\\zeta_p]/(q)$. Combining these gives QR. In this Lean file, the proof body is `legendreSym.quadratic_reciprocity` — the pathway annotation captures the conceptual architecture that would fully formalize it.",
     "mathContext": "$\\tau_p^q \\equiv \\left(\\frac{p}{q}\\right) \\tau_p \\pmod{q}$ and $\\tau_p^q = (\\tau_p^2)^{(q-1)/2} \\cdot \\tau_p = \\left(\\frac{-1}{p}\\right)^{(q-1)/2} p^{(q-1)/2} \\tau_p$",
@@ -198,7 +198,7 @@
     "title": "Prime Fact Instances for Decidable Verification",
     "content": "Lean 4 requires `[Fact p.Prime]` instances for any theorem involving primality of a specific numeral. These six `instance` declarations register 3, 5, 7, 11, 13, 17 as prime using `decide` (Lean's kernel-level decidable computation). This is necessary boilerplate enabling `native_decide` to verify concrete formulas involving the Legendre symbol for these primes in the subsequent `example` blocks.",
     "mathContext": "Each `Fact (Nat.Prime n)` is a typeclass instance wrapping the proposition $n \\text{ is prime}$, proved by kernel normalization",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lean typeclass system",
       "Fact typeclass",

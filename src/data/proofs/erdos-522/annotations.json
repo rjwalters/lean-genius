@@ -103,7 +103,7 @@
       "startLine": 74,
       "endLine": 106
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Points on the Unit Circle",
     "content": "**Verified membership**:\n- **one_on_unitCircle**: 1 ∈ unitCircle\n- **neg_one_on_unitCircle**: -1 ∈ unitCircle\n- **I_on_unitCircle**: i ∈ unitCircle\n- **neg_I_on_unitCircle**: -i ∈ unitCircle\n- **zero_in_unitDisk**: 0 ∈ unitDisk\n- **unitCircle_subset_unitDisk**: ∂D ⊆ D̄\n\nAll proofs are by simp with Mathlib's norm lemmas.",
     "mathContext": "The four points {1, -1, i, -i} are the fourth roots of unity. They form the vertices of a square inscribed in the unit circle.",
@@ -255,7 +255,7 @@
       "startLine": 241,
       "endLine": 255
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Examples",
     "content": "**Explicit polynomial evaluations**:\n- (X - 1).eval(1) = 0: z = 1 is a root of z - 1 ✓\n- (X + 1).eval(-1) = 0: z = -1 is a root of z + 1 ✓\n- **roots_of_z2_plus_1**: (X² + 1).eval(±i) = 0\n\nAll these roots are on the unit circle, demonstrating Littlewood polynomials with boundary roots.",
     "mathContext": "These are the simplest Littlewood polynomials. z² + 1 = (z - i)(z + i) factors over ℂ with roots at the fourth roots of unity.",
@@ -274,7 +274,7 @@
       "startLine": 257,
       "endLine": 281
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary and Conclusions",
     "content": "**unitCircle_summary**: Packages the key verified facts:\n- 1, -1, i, -i ∈ unitCircle\n\n**State of Knowledge**:\n1. Erdős-Offord (1956): ~(2/π) log n real roots (logarithmic, much less than n/2)\n2. Yakir (2021): R_n/(n/2) → 1 in probability (typical behavior)\n3. **OPEN**: Almost sure convergence (all sequences simultaneously)\n\n**The Gap**: 'Probability' says almost all polynomials. 'Almost sure' asks about almost all infinite sequences of polynomials.",
     "mathContext": "The probability vs. almost sure distinction is fundamental. Think: coin flips approach 50% in probability, but almost surely any specific sequence has runs of all heads.",

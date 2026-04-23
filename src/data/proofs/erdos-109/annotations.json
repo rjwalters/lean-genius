@@ -63,7 +63,7 @@
       "startLine": 68,
       "endLine": 108
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lower Density ≤ Upper Density",
     "content": "A **fully verified theorem**: lower density is always at most upper density. This follows from the general fact that liminf ≤ limsup for bounded sequences.",
     "mathContext": "The proof shows the density sequence is bounded in [0, 1], then applies the general filter inequality. This is non-trivial Lean code working with Filter.liminf_le_limsup.",
@@ -139,7 +139,7 @@
       "startLine": 162,
       "endLine": 197
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Consequences: Infinite Sumsets Force Infinity",
     "content": "**Key consequence**: If A contains an infinite sumset B + C, then A is infinite. Combined with the main theorem: sets of positive density are infinite (a non-trivial fact!).",
     "mathContext": "The proof shows B + C is infinite when B and C are (via the injection c ↦ b + c for fixed b), then A ⊇ B + C implies A infinite.",
@@ -158,7 +158,7 @@
       "startLine": 226,
       "endLine": 261
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified: ℕ Has Full Density",
     "content": "**Concrete verification**: The natural numbers have density 1 (the full set). This requires proving that |{1,...,N}|/N → 1, which we do using Filter.le_limsup_of_frequently_le.",
     "mathContext": "The proof computes |Icc 1 N| = N using ncard and Nat.card_Icc, then shows the ratio equals 1 for all N ≥ 1.",
@@ -177,7 +177,7 @@
       "startLine": 263,
       "endLine": 298
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Even Numbers Example",
     "content": "**Concrete example**: The even numbers have positive density (1/2) and satisfy the conjecture with B = C = evens. We prove evenNumbers_infinite and even + even ⊆ even.",
     "mathContext": "The sum of two even numbers is even: if b = 2k and c = 2j, then b + c = 2(k+j). This gives a complete worked example of the conjecture.",

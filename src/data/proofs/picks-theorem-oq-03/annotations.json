@@ -185,7 +185,7 @@
       "startLine": 636,
       "endLine": 655
     },
-    "type": "context",
+    "type": "concept",
     "title": "Dimensional Hierarchy and Pick's Consistency",
     "content": "The dimensional hierarchy section traces Ehrhart polynomials from d=0 (a point: L=1) through d=1 (a segment: L(t)=lt+1) to d=2 (Pick's theorem) and d=3 (no closed-form analog). Each dimension adds one polynomial coefficient, requiring one more piece of geometric data. The 1D case is verified concretely: a segment of length 5 has 6 lattice points at dilation 1 and 11 at dilation 2. The theorem picks_ehrhart_consistency closes the loop by showing Pick's formula is equivalent to the constraint that the total lattice point count matches the Ehrhart polynomial at t=1.",
     "mathContext": "In dimension $d$, $L_P(t)$ has $d+1$ coefficients. For $d=1$: $L(t) = \\ell t + 1$ where $\\ell$ is the length. For $d=2$: $L(t) = At^2 + (b/2)t + 1$. For $d \\geq 3$: the number of free coefficients exceeds the data from $i$ and $b$ alone.",

@@ -121,7 +121,7 @@
       "startLine": 173,
       "endLine": 201
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_509_summary** combines the two key known bounds into a single theorem: (1) Cartan's bound — every monic polynomial's sublevel set can be covered with total radius ≤ 2e, and (2) Pommerenke's bound — total radius ≤ 2.59 suffices. The proof is `⟨cartan_bound, pommerenke_bound⟩`, directly combining the two axioms.\n\nThis replaces a previous placeholder `True := trivial` with genuine mathematical content.",
     "mathContext": "The conjunction is proved by exact anonymous constructor syntax ⟨·, ·⟩. The theorem serves as a machine-checkable summary of the formalization's known results.",

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 18
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Documentation: Cyclic Vectors Have Full Measure",
     "content": "This module proves a measure-theoretic strengthening of the nonderogatory cyclic vector theorem. Over the reals, not only does a cyclic vector exist (OQ-05-OQ-01), but the set of non-cyclic vectors has Lebesgue measure zero. The proof combines the algebraic structure (cofactor kernels as proper subspaces) with Haar measure theory.",
     "mathContext": "For $M \\in M_n(\\mathbb{R})$ nonderogatory: $\\lambda(\\{v \\in \\mathbb{R}^n : v \\text{ not cyclic for } M\\}) = 0$ where $\\lambda$ is the Lebesgue measure.",
@@ -52,7 +52,7 @@
       "startLine": 144,
       "endLine": 211
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Non-Cyclic Containment via GCD/Bezout",
     "content": "The structural heart: if $v$ is not cyclic, find a witnessing polynomial $p$ with $p(M)v = 0$. The GCD $d = \\gcd(p, \\mu)$ inherits this annihilation via Bezout. Since $d$ properly divides $\\mu$, the quotient $\\mu/d$ has an irreducible factor $q$, and $v$ lies in $\\ker((\\mu/q)(M))$. This reuses the algebraic argument from the parent proof but extracts it as a standalone containment result.",
     "mathContext": "$\\neg\\text{cyclic}(v) \\implies \\exists q \\in \\text{irr.factors}(\\mu),\\; v \\in \\ker((\\mu/q)(M))$",
@@ -75,7 +75,7 @@
       "startLine": 220,
       "endLine": 223
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Haar Measure Kills Proper Submodules",
     "content": "The key measure-theoretic fact: `Measure.addHaar_submodule` from Mathlib states that any proper submodule of a finite-dimensional real vector space has zero Haar measure. Since the Lebesgue measure (`volume`) on $\\mathbb{R}^n$ is an additive Haar measure, this gives us that proper linear subspaces have Lebesgue measure zero — the bridge from algebra to analysis.",
     "mathContext": "For $S \\subsetneq \\mathbb{R}^n$ a linear subspace: $\\lambda(S) = 0$. This follows from the fact that $S$ is contained in a hyperplane, which has zero $n$-dimensional Lebesgue measure.",
@@ -98,7 +98,7 @@
       "startLine": 231,
       "endLine": 258
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Assembly: Containment + Null Subspaces + Finite Subadditivity",
     "content": "The main theorem assembles three ingredients: (1) non-cyclic vectors $\\subseteq \\bigcup_q \\ker((\\mu/q)(M))$, (2) each kernel has measure zero, (3) finite union of null sets is null. The calc chain uses `measure_mono` for containment, `measure_biUnion_finset_le` for finite subadditivity, and `simp` to collapse the sum of zeros.",
     "mathContext": "$\\lambda(\\text{non-cyclic}) \\leq \\lambda\\left(\\bigcup_{q} \\ker((\\mu/q)(M))\\right) \\leq \\sum_{q} \\lambda(\\ker((\\mu/q)(M))) = 0$",

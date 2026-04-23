@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 90
     },
-    "type": "context",
+    "type": "concept",
     "title": "Partition Theorem: Wiedijk #45",
     "content": "**Euler's Partition Identity (Wiedijk 100 Theorems #45)**:\n\nThe number of partitions of n into **distinct parts** equals the number of partitions into **odd parts**.\n\n**Example (n = 5):** Distinct: {5}, {4+1}, {3+2} = 3. Odd: {5}, {3+1+1}, {1+1+1+1+1} = 3.\n\nThe docstring explains three proof approaches: generating functions (Euler's original), Glaisher's bijection (combinatorial), and Mathlib's `Theorems100.partition_theorem` which provides the formal proof. The file imports from `Mathlib.Combinatorics.Enumerative.Partition` for `Nat.Partition` and `Mathlib.Tactic` for proof automation.",
     "mathContext": "For all $n \\in \\mathbb{N}$: $|\\{\\lambda \\vdash n : \\text{parts distinct}\\}| = |\\{\\lambda \\vdash n : \\text{parts odd}\\}|$. Euler proved this in 1748 by showing the generating function identity $\\prod_{k=1}^{\\infty}(1+x^k) = \\prod_{k=0}^{\\infty}\\frac{1}{1-x^{2k+1}}$.",
@@ -102,7 +102,7 @@
       "startLine": 133,
       "endLine": 152
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Partition Theorem (PROVED)",
     "content": "**partition_theorem (n : ℕ) : (distincts n).card = (odds n).card**\n\nThis is the main result — a FULLY PROVED theorem (no axioms or sorry!). The proof is a one-liner: `(Theorems100.partition_theorem n).symm`, which applies the Mathlib proof from the Wiedijk 100 Theorems archive and reverses the equality direction.\n\nThe Mathlib proof uses generating functions: it shows the formal power series ∏(1+xᵏ) and ∏1/(1-x^{2k+1}) are equal, then extracts the coefficient of xⁿ to get the partition count equality.",
     "mathContext": "The key generating function identity: $\\prod_{k=1}^{\\infty}(1+x^k) = \\prod_{k=0}^{\\infty}\\frac{1}{1-x^{2k+1}}$. This follows from $1+x^k = \\frac{1-x^{2k}}{1-x^k}$, so $\\prod(1+x^k) = \\prod\\frac{1-x^{2k}}{1-x^k}$. The numerator contains $(1-x^{2k})$ for all $k$, and the denominator $(1-x^k)$ for all $k$. Telescoping cancels all even factors, leaving $1/\\prod_{k \\text{ odd}}(1-x^k)$.",
@@ -126,7 +126,7 @@
       "startLine": 154,
       "endLine": 196
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Examples via native_decide",
     "content": "**Computational Verification for n = 0 through 8:**\n\nAll examples are proved by `native_decide`, which compiles the Lean expression to native code and evaluates it — a brute-force verification that the partition counts match.\n\n| n | Q(n) | Distinct partitions | Odd partitions |\n|---|------|--------------------|-----------------|\n| 0 | 1 | {} | {} |\n| 1 | 1 | {1} | {1} |\n| 2 | 1 | {2} | {1+1} |\n| 3 | 2 | {3}, {2+1} | {3}, {1+1+1} |\n| 4 | 2 | {4}, {3+1} | {3+1}, {1⁴} |\n| 5 | 3 | {5}, {4+1}, {3+2} | {5}, {3+1+1}, {1⁵} |\n| 8 | 6 | 6 partitions each | 6 partitions each |",
     "mathContext": "The `native_decide` tactic reduces decidable propositions to boolean computation. Since `Nat.Partition` is `DecidableEq` and the partitions of small $n$ are finitely enumerable, the tactic can evaluate $(\\text{distincts}\\ n).\\text{card}$ directly. This provides independent verification beyond the generating function proof.",

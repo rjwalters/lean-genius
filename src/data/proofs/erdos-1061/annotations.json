@@ -117,7 +117,7 @@
       "startLine": 121,
       "endLine": 145
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Solution (1, 2)",
     "content": "**solution_1_2:**\n\n(1, 2) satisfies sigma(1) + sigma(2) = sigma(3).\n\n**Verification:**\n- sigma(1) = 1\n- sigma(2) = 3\n- sigma(1) + sigma(2) = 4\n- sigma(3) = 4\n\nThis is one of the simplest known solutions!",
     "mathContext": "The pair (1, 2) shows the equation can be satisfied. By symmetry, (2, 1) also works.",
@@ -243,7 +243,7 @@
       "startLine": 310,
       "endLine": 330
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_1061_summary:**\n\nCombines the verified facts:\n1. (1, 2) is in additiveDivisorPairs\n2. (2, 1) is in additiveDivisorPairs\n3. 3 is in A110177\n\n```lean\ntheorem erdos_1061_summary :\n    (1, 2) in additiveDivisorPairs and\n    (2, 1) in additiveDivisorPairs and\n    3 in A110177\n```",
     "significance": "key",

@@ -265,7 +265,7 @@
       "startLine": 194,
       "endLine": 210
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Constant One Function",
     "content": "**constOne = 1 everywhere**\n\nThe trivial example:\n- Completely multiplicative (1 * 1 = 1)\n- Takes value 1 (which is in {-1, 1})\n- Mean value is exactly 1 for all N >= 1\n\nThis is the simplest multiplicative {-1, 1} function.",
     "significance": "supporting",
@@ -320,7 +320,7 @@
       "startLine": 262,
       "endLine": 287
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_239_summary:**\n\nCombines all main results:\n1. All multiplicative {-1,1} functions have convergent mean (main theorem)\n2. constOne is in MultPlusMinusOne (trivial example)\n3. liouville is in MultPlusMinusOne (nontrivial example with mean 0)\n\nThe summary demonstrates both the theorem and concrete examples.",
     "significance": "key",

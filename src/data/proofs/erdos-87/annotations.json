@@ -2,7 +2,7 @@
   {
     "id": "ann-e87-imports",
     "proofId": "erdos-87",
-    "type": "context",
+    "type": "concept",
     "title": "Graph Theory Imports",
     "content": "Imports SimpleGraph.Basic for graph infrastructure, Fin.Basic for finite vertex sets, Filter.Basic for asymptotic notation, and tactics.",
     "mathContext": "The formalization uses `SimpleGraph (Fin n)` to represent finite graphs on $n$ vertices, leveraging Mathlib's `SimpleGraph` infrastructure for the loopless, undirected graph structure. The `Fin n` vertex type makes the vertex count explicit in the type, allowing `chromaticNumber` and `graphRamsey` to carry the graph size. `Filter.Basic` is imported for potential asymptotic formulations.",

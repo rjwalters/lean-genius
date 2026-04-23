@@ -141,7 +141,6 @@
     "type": "example",
     "title": "Worked Examples",
     "content": "**Example 1**: Circle of radius 5, point P at distance 3 from center.\n- Power = $5^2 - 3^2 = 16$\n- For any chord: $PA \\cdot PB = 16$\n- If PA = 2, then PB = 8\n\n**Example 2**: If one chord gives segments 2 and 8:\n- Product = 16\n- Other chord: if PC = 4, then PD = 4\n- (The chord is bisected at P!)\n\n**Example 3**: Segments 1 and 12:\n- Product = 12\n- Other chord: segments could be 2 and 6, or 3 and 4",
-    "mathContext": "For circle radius $r$ and interior point $P$ at distance $d$ from center: $PA \\cdot PB = r^2 - d^2$. Ex 1: $r=5$, $d=3$: product $= 16$; segments $(2,8)$, $(4,4)$, or $(1,16)$ are all valid. When $PA = PB$: the chord is perpendicular to $OP$ and $PA = \\sqrt{r^2 - d^2}$. The product constraint $PA \\cdot PB = r^2 - d^2$ with $PA + PB$ free gives infinitely many valid chord lengths.",
     "significance": "supporting",
     "relatedConcepts": [
       "numerical verification",
@@ -158,7 +157,6 @@
     "type": "insight",
     "title": "From Euclid to Steiner",
     "content": "**Euclid (300 BCE)**: The theorem appears as Proposition 35 in Book III of the Elements. Euclid proved it using similar triangles formed by the chords.\n\n**Jakob Steiner (1826)**: Systematized the \"power of a point\" concept, unifying:\n- Intersecting chords (interior point)\n- Two secants (exterior point)\n- Secant and tangent\n- Two tangents\n\nAll are manifestations of the same invariant!",
-    "mathContext": "Euclid III.35: proved via similar triangles $\\triangle PAC \\sim \\triangle PDB$ (inscribed angles subtending the same arc give equal angles). Steiner's power of a point (1826): $\\text{pow}(P) = d^2 - r^2$ unifies four cases — interior chords, exterior secants, secant-tangent ($PA \\cdot PB = PT^2$), and two tangents. In Lean: proved via InnerProductSpace and parametric chord equations reducing to Vieta's product formula.",
     "significance": "supporting",
     "prerequisites": [
       "similar triangles",

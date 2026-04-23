@@ -83,7 +83,7 @@
       "startLine": 71,
       "endLine": 73
     },
-    "type": "technique",
+    "type": "concept",
     "title": "cototient(1) = 0",
     "content": "**cototient_one** shows 1 - phi(1) = 1 - 1 = 0. The only positive integer <= 1 is 1 itself, which is coprime to 1.",
     "mathContext": "phi(1) = 1 by convention (or because gcd(1,1) = 1).",
@@ -101,7 +101,7 @@
       "startLine": 75,
       "endLine": 77
     },
-    "type": "technique",
+    "type": "concept",
     "title": "cototient(2) = 1",
     "content": "**cototient_two** shows 2 - phi(2) = 2 - 1 = 1. Only 1 is coprime to 2, so one integer (2 itself) shares a factor.",
     "mathContext": "Verified by native_decide which computes phi(2) = 1 directly.",
@@ -119,7 +119,7 @@
       "startLine": 79,
       "endLine": 84
     },
-    "type": "technique",
+    "type": "concept",
     "title": "cototient(p) = 1 for Prime p",
     "content": "**cototient_prime** proves that for any prime p, cototient(p) = 1. Since phi(p) = p - 1, we get p - (p-1) = 1.",
     "mathContext": "Uses Nat.totient_prime and omega tactic. The only non-coprime integer in [1,p] is p itself.",
@@ -138,7 +138,7 @@
       "startLine": 100,
       "endLine": 113
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Small Cototient Values",
     "content": "**zero_is_cototient** through **four_is_cototient** verify that 0, 1, 2, 3, 4 are all cototient values with explicit witnesses.",
     "mathContext": "0 = cototient(1), 1 = cototient(2), 2 = cototient(4), 3 = cototient(9), 4 = cototient(8).",
@@ -271,7 +271,7 @@
       "startLine": 173,
       "endLine": 178
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Small Odd Cases",
     "content": "**small_odd_cototients** verifies 1, 3, 5 are cototients directly: 1 = cototient(2), 3 = cototient(9), 5 = cototient(25).",
     "mathContext": "These handle the base cases (m < 7) separately from the Goldbach-based argument.",

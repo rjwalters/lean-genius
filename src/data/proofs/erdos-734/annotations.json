@@ -175,7 +175,7 @@
       "startLine": 206,
       "endLine": 218
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem (Proved)",
     "content": "**erdos_734_summary (fully proved):**\n\nCombines two key results into a conjunction:\n1. de Bruijn-Erdős: ∀ n ≥ 2, all non-trivial PBDs have ≥ n blocks\n2. Projective planes exist for all prime orders q\n\nThe proof applies deBruijn_erdos directly for the first conjunct, and destructures projective_plane_exists for the second. No True placeholders remain.",
     "mathContext": "This replaces the original summary which included True ∧ True placeholders. The new version contains only meaningful mathematical content derived from axioms.",

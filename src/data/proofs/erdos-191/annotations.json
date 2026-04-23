@@ -161,7 +161,7 @@
       "startLine": 99,
       "endLine": 105
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Positivity of log x",
     "content": "**log_pos_of_ge_two:**\n\nFor x ≥ 2, log x > 0, so 1/log x is well-defined and positive:\n```lean\nlemma log_pos_of_ge_two (x : ℕ) (hx : x ≥ 2) : Real.log x > 0\n```\n\nThis is why we use {2, ..., n} instead of {1, ..., n}: log 1 = 0 would cause division by zero.",
     "significance": "supporting",
@@ -184,7 +184,7 @@
       "startLine": 107,
       "endLine": 115
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Non-negativity of Sum",
     "content": "**logInverseSum_nonneg:**\n\nThe sum is non-negative for sets of integers ≥ 2:\n```lean\nlemma logInverseSum_nonneg (X : Finset ℕ) (hX : ∀ x ∈ X, x ≥ 2) :\n    logInverseSum X ≥ 0\n```\n\nSince each term 1/log x > 0 for x ≥ 2, the sum over any such set is positive.",
     "significance": "supporting",
@@ -341,7 +341,7 @@
       "startLine": 191,
       "endLine": 194
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The CFS Constant",
     "content": "**cfs_constant:**\n\nThe constant 2^{-8} = 1/256:\n```lean\nlemma cfs_constant : (1 : ℝ) / 256 = 2^(-(8 : ℝ))\n```\n\nThis explicit constant from Conlon-Fox-Sudakov may not be optimal, but it gives the correct order of magnitude.",
     "significance": "supporting",
@@ -363,7 +363,7 @@
       "startLine": 205,
       "endLine": 223
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Derivation from CFS",
     "content": "**erdos_191_from_cfs:**\n\nThe main theorem follows from CFS bound + unboundedness of triple log:\n```lean\ntheorem erdos_191_from_cfs : erdos191Conjecture := by\n  intro C hC\n  obtain ⟨N₀, hN₀⟩ := tripleLog_unbounded (256 * C)\n  use max N₀ 16\n  ...\n```\n\n**Logic:** For any target C, we need (1/256) · tripleLog n ≥ C, i.e., tripleLog n ≥ 256C. Since tripleLog → ∞, such N exists.",
     "significance": "key",
@@ -496,7 +496,7 @@
       "startLine": 318,
       "endLine": 337
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tight Asymptotic Bounds",
     "content": "**tight_asymptotic:**\n\nThe optimal sum is Θ(log log log n):\n```lean\ntheorem tight_asymptotic :\n    (∃ c₁ > 0, ∀ n ≥ 16, ∀ coloring,\n      ∃ X, logInverseSum X ≥ c₁ * tripleLog n) ∧\n    (∃ c₂ > 0, ∀ n ≥ 16, ∃ coloring,\n      ∀ X, logInverseSum X ≤ c₂ * tripleLog n)\n```\n\n**Interpretation:** c₁ = 1/256 (CFS) and c₂ from Rödl's construction. The gap between these constants is the remaining open question.",
     "significance": "key",
@@ -518,7 +518,7 @@
       "startLine": 343,
       "endLine": 364
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_191_summary:**\n\nCombines all main results:\n```lean\ntheorem erdos_191_summary :\n    erdos191Conjecture ∧\n    (∃ c₁ > 0, ... lower bound ...) ∧\n    (∃ c₂ > 0, ... upper bound ...)\n```\n\n**Summary:**\n1. YES, arbitrarily large sums are achievable for large n\n2. Lower bound: Ω(log log log n) guaranteed\n3. Upper construction: O(log log log n) is best possible",
     "significance": "key",

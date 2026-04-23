@@ -201,7 +201,7 @@
       "startLine": 223,
       "endLine": 243
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem",
     "content": "**lcm_triple_in_dense_set:**\n\nIf A ⊆ ℕ has positive upper density, then A contains distinct a, b, c with lcm(a,b) = c.\n\n**infinitely_many_lcm_triples:**\n\nIn fact, there are infinitely many such triples.\n\nThese are the main results resolving Erdős Problem #487.",
     "significance": "key",
@@ -226,7 +226,7 @@
       "startLine": 245,
       "endLine": 264
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: Multiples of 6",
     "content": "**multiples_of_6_example:** IsLCMTriple 12 18 36\n\nA = {6, 12, 18, 24, ...} has density 1/6.\n\nlcm(12, 18) = 36 ∈ A gives an explicit LCM triple.\n\nVerified computationally with native_decide.",
     "significance": "supporting",
@@ -249,7 +249,7 @@
       "startLine": 266,
       "endLine": 295
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Counterexample: Powers of 2",
     "content": "**powers_of_2_no_lcm_triple:**\n\nA = {1, 2, 4, 8, 16, ...} has NO LCM triples.\n\nlcm(2^i, 2^j) = 2^(max i j), which equals either a or b.\n\nProved using Nat.Prime.pow_max_lcm and case analysis on max.\n\nBut this set has density 0, so the theorem doesn't apply.",
     "mathContext": "This shows density is necessary - sparse sets can avoid LCM triples.",
@@ -273,7 +273,7 @@
       "startLine": 296,
       "endLine": 310
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: Even Numbers",
     "content": "**even_numbers_example:** IsLCMTriple 4 6 12\n\nA = {2, 4, 6, 8, ...} has density 1/2.\n\nlcm(4, 6) = 12 ∈ A gives an explicit LCM triple.\n\nThe even numbers have many LCM triples due to their density.",
     "significance": "supporting",
@@ -320,7 +320,7 @@
       "startLine": 335,
       "endLine": 368
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_487_summary:**\n\nCombines both main results:\n\n1. Dense sets contain LCM triples (main result)\n2. Kleitman's bound on union-free collections (the tool)\n\n**Conclusion:** Erdős Problem #487 is SOLVED affirmatively.",
     "significance": "key",

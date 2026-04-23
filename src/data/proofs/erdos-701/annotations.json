@@ -57,7 +57,7 @@
       "startLine": 54,
       "endLine": 61
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Power Set Example",
     "content": "**powerset_hereditary:** The power set P(X) is hereditary.\n\nThis is the prototypical example - if A ⊆ X and B ⊆ A, then B ⊆ X.",
     "significance": "supporting",
@@ -80,7 +80,7 @@
       "startLine": 62,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bounded Cardinality Example",
     "content": "**bounded_card_hereditary:** {A : |A| ≤ k} is hereditary.\n\nSubsets of small sets are small. This is the independence system of a uniform matroid.",
     "significance": "supporting",
@@ -151,7 +151,7 @@
       "startLine": 112,
       "endLine": 120
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Stars are Intersecting",
     "content": "**star_intersecting:** Star F x is intersecting.\n\nAll sets in a star contain x, so any two sets intersect at least at x. This makes stars natural candidates for maximum intersecting subfamilies.",
     "significance": "key",
@@ -314,7 +314,7 @@
       "startLine": 240,
       "endLine": 265
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Uniform Not Hereditary",
     "content": "**uniform_not_hereditary:**\n\nFor k ≥ 2, the family of all k-subsets is NOT hereditary.\n\nProof: A k-set has (k-1)-subsets, which aren't in the k-uniform family.\n\nThis explains why Chvátal's conjecture is distinct from EKR.",
     "significance": "supporting",

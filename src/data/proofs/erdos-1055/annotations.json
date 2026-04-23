@@ -2,7 +2,7 @@
   {
     "id": "erdos-1055-header",
     "proofId": "erdos-1055",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 1,
       "endLine": 29
@@ -11,13 +11,20 @@
     "content": "Erdős Problem #1055: classify primes by the factorization depth of $p+1$. Class 1 primes have 3-smooth $p+1$. Class $r$ primes: all prime factors of $p+1$ are in class $\\leq r-1$, with at least one in class $r-1$. Key questions: infinitely many in each class? Growth of $p_r^{1/r}$ (Erdős: $\\to \\infty$; Selfridge: bounded). Known: $p_1=2, p_2=13, p_3=37, p_4=73, p_5=1021$ (OEIS A005113).",
     "mathContext": "$\\text{primeClass}(p) = 1 + \\max\\{\\text{primeClass}(q) : q \\mid (p+1),\\, q \\text{ prime}\\}$ with base case $\\text{primeClass}(2) = \\text{primeClass}(3) = 1$.",
     "significance": "supporting",
-    "relatedConcepts": ["smooth numbers", "prime factorization depth", "OEIS A005113"],
-    "prerequisites": ["Nat.Prime", "Nat.Factorization"]
+    "relatedConcepts": [
+      "smooth numbers",
+      "prime factorization depth",
+      "OEIS A005113"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Nat.Factorization"
+    ]
   },
   {
     "id": "erdos-1055-foldl-helpers",
     "proofId": "erdos-1055",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 113,
       "endLine": 130
@@ -26,8 +33,16 @@
     "content": "Two private helpers for `List.foldl max`: `foldl_max_ge_init` (fold $\\geq$ init) and `foldl_max_ge_of_mem` ($x \\in l \\Rightarrow$ fold $\\geq f(x)$). Both use term-mode structural induction. These establish correctness of the prime class computation via `foldl max` over prime factors.",
     "mathContext": "$\\text{foldl}(\\max, \\text{init}, l) \\geq \\text{init}$ and $x \\in l \\Rightarrow \\text{foldl}(\\max, \\text{init}, l) \\geq f(x)$.",
     "significance": "supporting",
-    "relatedConcepts": ["List.foldl", "structural induction", "maximum computation"],
-    "prerequisites": ["List.Mem", "le_max_left", "le_trans"]
+    "relatedConcepts": [
+      "List.foldl",
+      "structural induction",
+      "maximum computation"
+    ],
+    "prerequisites": [
+      "List.Mem",
+      "le_max_left",
+      "le_trans"
+    ]
   },
   {
     "id": "erdos-1055-termination",
@@ -36,7 +51,7 @@
       "startLine": 30,
       "endLine": 62
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Termination Lemma: nonSmooth_factor_lt",
     "content": "The key lemma enabling well-founded recursion for `primeClass`: any prime factor $q$ of $p+1$ with $q \\notin \\{2,3\\}$ satisfies $q < p$. The proof proceeds by contradiction: $q \\leq p+1$ (since $q \\mid p+1$), and $q = p$ is impossible (since $p \\mid p+1$ implies $p \\mid 1$), and $q = p+1$ is impossible (since $p+1$ being prime and even — because $p$ is odd — forces $p+1 = 2$, contradiction). This strict decrease $q < p$ is the termination argument: recursive calls to `primeClass q` always use a smaller input.",
     "mathContext": "If $p$ is prime and $q \\mid (p+1)$ with $q \\neq 2, 3$ and $q$ prime, then $q < p$. Proof: $q \\leq p+1$; if $q = p$ then $p \\mid (p+1)$ so $p \\mid 1$, impossible; if $q = p+1$ then $p+1$ is prime but $2 \\mid (p+1)$ (since $p$ is odd prime), so $p+1 = 2$, contradiction. Hence $q \\leq p-1 < p$.",
@@ -83,7 +98,7 @@
       "startLine": 81,
       "endLine": 100
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Class Values via native_decide",
     "content": "20 computationally verified class assignments using `native_decide`. Class 1 primes: 2, 3, 5, 7, 11, 17, 23, 31 (all have $p+1 = 2^a \\cdot 3^b$). Class 2: 13 ($14=2\\cdot7$), 19 ($20=2^2\\cdot5$), 29 ($30=2\\cdot3\\cdot5$), 41 ($42=2\\cdot3\\cdot7$), 43 ($44=2^2\\cdot11$). Class 3: 37 ($38=2\\cdot19$), 103 ($104=2^3\\cdot13$), 113 ($114=2\\cdot3\\cdot19$). Class 4: 73 ($74=2\\cdot37$). Class 5: 1021 ($1022=2\\cdot7\\cdot73$). Non-primes get class 0: verified for 4 and 6. All proofs are `by native_decide` — kernel computation of the recursive definition.",
     "significance": "supporting",
@@ -128,7 +143,7 @@
       "startLine": 131,
       "endLine": 200
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Structural Properties and Concrete Evidence",
     "content": "Proved structural theorems: `primeClass_pos_of_prime` (primes have class $\\geq 1$), `class_of_factor_lt` (if $q \\mid p+1$ and $q$ prime, then $c(q) < c(p)$), `class_one_iff_smooth` (class 1 $\\iff$ $p+1$ is 3-smooth). Also concrete evidence for infinitude: `many_class1_primes` ($\\geq 8$ class-1 primes below 50), `many_class2_primes` ($\\geq 8$ class-2 primes below 100), `many_class3_primes` ($\\geq 3$ class-3 primes below 200). These are verified by `native_decide`.",
     "significance": "key",

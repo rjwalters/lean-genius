@@ -211,7 +211,7 @@
       "startLine": 139,
       "endLine": 146
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Conjecture is FALSE",
     "content": "**erdos_333_false:**\n\nErdos Conjecture #333 is DISPROVED.\n\n```lean\ntheorem erdos_333_false : not ErdosConjecture333 := by\n  intro h\n  obtain <A, hA_density, hA_counter> := existence_of_counterexample\n  obtain <B, hcover, hsparse> := h A hA_density\n  exact hA_counter B hcover hsparse\n```\n\n**The proof:** Apply the counterexample to contradict the conjecture.",
     "significance": "key",
@@ -347,7 +347,7 @@
       "startLine": 274,
       "endLine": 314
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "**Erdos Problem #333: DISPROVED**\n\n**Question:** For any zero-density A, does there exist B with A <= B+B and |B| = o(sqrt(N))?\n\n**Answer: NO**\n\n**Positive cases:**\n- Squares (Erdos-Newman 1977)\n- Sets with polynomial gaps (alpha > 2)\n\n**Negative:** General zero-density sets may require |B| ~ sqrt(N).\n\n**Key insight:** Zero density alone is too weak - some sets are 'barely sparse'.",
     "significance": "key",

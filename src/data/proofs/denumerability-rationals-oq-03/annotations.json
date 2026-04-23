@@ -151,7 +151,7 @@
       "startLine": 418,
       "endLine": 488
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Injectivity (Proved)",
     "content": "Proves that different paths from the root produce different `(pathNum, pathDen)` pairs via structural induction with BST ordering. The proof (`eval_injective_gen`) uses induction on paths, showing that at each L/R step, the BST ordering invariants (`value_between_ancestors`) force different paths to yield different rational values. The base cases use `ra_pos_of_det` and `lb_pos_of_det` from the determinant infrastructure. `eval_injective` specializes to the root state.",
     "mathContext": "$\\text{evalPath}(p_1) = \\text{evalPath}(p_2) \\implies p_1 = p_2$. Proved by structural induction: if $p_1$ and $p_2$ first disagree at position $k$ (one goes L, the other R), then BST ordering gives $\\text{val}(p_1) < \\text{mediant} < \\text{val}(p_2)$, contradicting equality.",
@@ -176,7 +176,7 @@
       "startLine": 228,
       "endLine": 400
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Injectivity Infrastructure: Monotonicity and BST Invariants (Proved)",
     "content": "A suite of 10+ proved theorems establishing the monotonicity properties needed for injectivity. **Component monotonicity** (all proved): `ra_ge_eval`, `lb_ge_eval`, `rb_ge_eval`, `la_ge_eval` — each state component is non-decreasing along any path. **Post-step bounds**: `rb_ge_after_left`, `lb_ge_after_right`, `la_ge_after_right` — after going left, $rb$ increases by at least $lb$; after going right, $lb$ and $la$ increase similarly. **BST preservation** (proved via induction + `nlinarith`): `num_lt_den_preserved` and `num_gt_den_preserved` show that the ordering of numerator/denominator sums is preserved through all navigation, using the determinant to establish cross-product inequalities at each step.",
     "mathContext": "Component monotonicity: $s.ra \\leq (\\text{eval}\\, s\\, p).ra$, etc. BST preservation: if $\\det = 1$ and $la + ra < lb + rb$ at the root, then this inequality holds at every descendant. These are the technical lemmas needed to show the tree is a binary search tree on $\\mathbb{Q}^+$.",

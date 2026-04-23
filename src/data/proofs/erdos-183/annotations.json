@@ -234,7 +234,7 @@
       "startLine": 187,
       "endLine": 207
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bounds Summary Theorem",
     "content": "The bounds_summary theorem formally states what we know: R(3;k) ≥ c^k for some c > 3, and R(3;k) ≤ C·k! for some constant C. The proof combines the exponential lower and factorial upper bounds.",
     "mathContext": "The theorem uses calc mode to chain the inequalities. The lower bound constant comes from the Ageron et al. result.",
@@ -272,7 +272,7 @@
       "startLine": 228,
       "endLine": 250
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem",
     "content": "The erdos_183_main theorem combines three statements: (1) R(3;k) ≥ 3 for all k ≥ 1, (2) the factorial upper bound, and (3) the dichotomy that either the limit exists finitely or diverges to infinity.",
     "mathContext": "This is the formal statement of Problem #183. The proof uses the axiomatized bounds and classical logic for the dichotomy.",

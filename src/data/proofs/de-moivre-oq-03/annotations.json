@@ -51,7 +51,7 @@
       "startLine": 43,
       "endLine": 69
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Root Verification: ζ_k^q = z^p",
     "content": "Each candidate root satisfies $\\zeta_k^q = (e^{i\\theta})^p$. The proof uses $\\exp(n \\cdot z) = (\\exp z)^n$, cancels the $q$ denominator, and applies $e^{2\\pi i k} = 1$.",
     "mathContext": "$$\\zeta_k^q = \\exp\\left(\\frac{iq(p\\theta + 2\\pi k)}{q}\\right) = \\exp(ip\\theta) \\cdot \\underbrace{\\exp(2\\pi i k)}_{=1}$$",
@@ -97,7 +97,7 @@
       "startLine": 87,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Root Factorization via Roots of Unity",
     "content": "Every $q$-th root factors as $\\zeta_k = \\zeta_0 \\cdot \\omega_k$ where $\\omega_k = e^{2\\pi i k/q}$ is a $q$-th root of unity. This separates the principal root from the combinatorial structure, reflecting the coset decomposition of the roots.",
     "mathContext": "$$\\zeta_k = \\underbrace{\\exp\\!\\left(\\frac{ip\\theta}{q}\\right)}_{\\zeta_0} \\cdot \\underbrace{\\exp\\!\\left(\\frac{2\\pi i k}{q}\\right)}_{\\omega_k}$$",
@@ -120,7 +120,7 @@
       "startLine": 100,
       "endLine": 147
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Root Distinctness",
     "content": "Two roots with different indices $j \\neq k$ in $[0, q)$ are distinct. The proof uses `exp_eq_exp_iff_exists_int`: if $\\zeta_j = \\zeta_k$ then the exponents differ by $2\\pi m$, giving $j - k = mq$. Since $|j-k| < q$, we get $m = 0$, contradicting $j \\neq k$. This is the most technically involved proof in the file, requiring careful integer-real casting.",
     "mathContext": "$$\\zeta_j = \\zeta_k \\implies \\frac{p\\theta + 2\\pi j}{q} = \\frac{p\\theta + 2\\pi k}{q} + 2\\pi m \\implies j - k = mq$$",
@@ -143,7 +143,7 @@
       "startLine": 151,
       "endLine": 183
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Principal Value via cpow",
     "content": "For $\\theta$ in the principal range $(-\\pi, \\pi]$, Mathlib's `cpow` gives $e^{i\\theta \\cdot p/q} = \\exp(ip\\theta/q)$, which equals the $k=0$ root $\\zeta_0$. This uses `cpow_def_of_ne_zero` and `log_exp`. The trigonometric form theorem then expands via `exp_mul_I` to recover the classical $\\cos(p\\theta/q) + i\\sin(p\\theta/q)$.",
     "mathContext": "$$\\text{cpow}(e^{i\\theta}, p/q) = \\exp\\!\\left(\\frac{p}{q} \\cdot \\log(e^{i\\theta})\\right) = \\exp\\!\\left(\\frac{ip\\theta}{q}\\right) = \\zeta_0$$",
@@ -167,7 +167,7 @@
       "startLine": 187,
       "endLine": 199
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Consistency with Integer De Moivre",
     "content": "When $q = 1$, the fractional formula reduces to integer De Moivre via `div_one` and `cpow_intCast`. Also, $(z^{p/q})^q = z^p$, confirming the principal value is a genuine root. This second result bridges cpow (continuous branch) with the root verification (discrete enumeration).",
     "mathContext": "$$z^{p/1} = z^p, \\qquad \\left(z^{p/q}\\right)^q = z^p$$",

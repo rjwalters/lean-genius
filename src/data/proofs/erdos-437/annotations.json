@@ -346,7 +346,7 @@
       "startLine": 219,
       "endLine": 228
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Powers of Four Example",
     "content": "**powers_of_four_all_squares:**\n\nIf aᵢ = 4^i, then all partial products are squares:\n```lean\ntheorem powers_of_four_all_squares :\n  ∀ k ≥ 1, squareCount [4, 16, 64, ...] = k - 1\n```\n\n**Verification:**\n- 4 = 2²\n- 4·16 = 64 = 8²\n- 4·16·64 = 4096 = 64²\n\nThis shows we can get many squares with the right sequence.",
     "significance": "supporting",
@@ -369,7 +369,7 @@
       "startLine": 243,
       "endLine": 264
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Growth Rate",
     "content": "**L_growth_rate:**\n\nL(x)/x decays like exp(-Θ(√(log x · log log x))):\n```lean\ntheorem L_growth_rate :\n  ∀ ε > 0, ∃ N, ∀ x ≥ N,\n    exp(-(√2+ε)u(x)) ≤ L(x)/x ≤ exp(-(1/√2-ε)u(x))\n```\n\nThis is slower than any polynomial decay (x^(-ε)) but faster than logarithmic decay.",
     "significance": "key",
@@ -392,7 +392,7 @@
       "startLine": 265,
       "endLine": 272
     },
-    "type": "technique",
+    "type": "concept",
     "title": "L(x) Beats Any Power",
     "content": "**L_beats_power:**\n\nL(x) > x^(1-ε) for any ε:\n```lean\ntheorem L_beats_power (ε : ℝ) (hε : ε > 0) :\n  ∃ N, ∀ x ≥ N, (L x : ℝ) > (x : ℝ)^(1 - ε) :=\n  erdos_437 ε hε\n```\n\nThis is the main consequence: despite L(x) = o(x), it's still larger than any x^(1-ε).",
     "significance": "key",
@@ -414,7 +414,7 @@
       "startLine": 277,
       "endLine": 294
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "**erdos_437_summary:**\n\nCombines all main results:\n```lean\ntheorem erdos_437_summary :\n  erdos437Conjecture ∧\n  (∀ ε > 0, ∃ N, ∀ x ≥ N, L(x) < ε·x) ∧\n  (∀ ε > 0, ∃ N, ∀ x ≥ N, L(x) > x^(1-ε))\n```\n\n**Summary:**\n1. YES, we can have > x^(1-ε) square partial products\n2. But L(x) = o(x) (from Siegel)\n3. Precise rate: L(x) ≈ x·exp(-c·√(log x·log log x))",
     "significance": "key",

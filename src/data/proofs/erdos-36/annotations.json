@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 18
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Header: Problem Statement and Status",
     "content": "Documents Erdős Problem #36: partition $\\{1,\\ldots,2N\\}$ into equal halves $A, B$ and minimize the maximum overlap $\\max_k |\\{(a,b) : a-b=k\\}|$. The asymptotic constant $c = \\lim M(N)/N$ is pinned to $0.379005 < c < 0.380876$ but its exact value remains open. References erdosproblems.com and Wikipedia.",
     "mathContext": "$M(N) = \\min_{A \\sqcup B = [2N]} \\max_k r_{A-B}(k)$, $c = \\lim M(N)/N \\in (0.379005, 0.380876)$. Status: OPEN. The Wikipedia link confirms this is the 'minimum overlap problem' (also labeled C17 in Guy's *Unsolved Problems in Number Theory*).",
@@ -144,7 +144,7 @@
       "startLine": 49,
       "endLine": 54
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős (1955): Trivial Lower Bound c > 1/4",
     "content": "**erdos_lower_quarter**: $M(N)/N > 1/4$ for all $N \\geq 1$. Erdős's original 1955 lower bound via pigeonhole/double-counting. The section header `/- ## Known Bounds -/` at line 49 marks the start of the four progressively tighter bounds spanning 70 years of research.",
     "significance": "key",
@@ -165,7 +165,7 @@
       "startLine": 55,
       "endLine": 59
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Scherk (1955): Fourier Lower Bound 1 − 1/√2 ≈ 0.293",
     "content": "**scherk_lower**: $M(N)/N > 1 - 1/\\sqrt{2} \\approx 0.293$ for all $N \\geq 1$. Scherk's (1955) first non-trivial improvement over the $1/4$ bound, using Fourier analysis on the partition indicator function — the first application of harmonic analysis to this problem. The Lean statement uses `Real.sqrt 2⁻¹` for $1/\\sqrt{2}$.",
     "significance": "key",
@@ -188,7 +188,7 @@
       "startLine": 60,
       "endLine": 65
     },
-    "type": "technique",
+    "type": "concept",
     "title": "White (2022): Best Known Lower Bound c > 0.379005",
     "content": "**white_lower**: $M(N)/N > 0.379005$ for all $N \\geq 1$. White's 2022 breakthrough extended Scherk's Fourier approach into a systematic semidefinite programming (SDP) framework, proving $c > 0.379005$ — the first bound above $0.37$ and the best current lower bound. In Lean, the bound $0.379005$ is represented as `379005 / 1000000` (exact rational).",
     "significance": "key",
@@ -212,7 +212,7 @@
       "startLine": 66,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Upper Bound: Haugland (2016) and TTT-Discover (2026)",
     "content": "**upper_bound**: $M(N)/N < 0.380876$ for all $N \\geq 1$. Haugland (2016) originally proved $c < 0.380926$ via step-function partition constructions. TTT-Discover LLM (2026) refined the explicit construction to $c < 0.380876$, narrowing the gap to White's lower bound to less than $0.002$. The Lean bound `380876 / 1000000` is an exact rational representation.",
     "significance": "key",
@@ -234,7 +234,7 @@
       "startLine": 72,
       "endLine": 79
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Small Values M(1)–M(5) from Exhaustive Enumeration",
     "content": "**small_values**: $M(1) = 1$, $M(2) = 1$, $M(3) = 2$, $M(4) = 2$, $M(5) = 3$. These exact values were computed by exhaustive enumeration of all $\\binom{2N}{N}$ equal partitions. The section header `/- ## Small Values -/` at line 72 marks this section.",
     "significance": "supporting",
@@ -256,7 +256,7 @@
       "startLine": 80,
       "endLine": 81
     },
-    "type": "context",
+    "type": "concept",
     "title": "Observations Section Header",
     "content": "The `/- ## Observations -/` header at line 80 introduces three informal remarks (lines 82–91): Erdős's disproved $c = 1/2$ conjecture, White's Fourier analytic approach, and the connection to additive combinatorics. These comments are not axioms or definitions but serve as expository annotations within the Lean file itself.",
     "significance": "supporting",

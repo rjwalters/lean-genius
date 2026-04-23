@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 20
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Documentation: Nonderogatory Implies Cyclic Vector",
     "content": "This module proves the central theorem of rational canonical form theory: over an infinite field $K$, a nonderogatory matrix (minpoly = charpoly) has a cyclic vector. The proof uses three independent techniques — union avoidance over infinite fields, GCD annihilation via Bezout, and irreducible factorization from UniqueFactorizationMonoid — composed into a clean contradiction argument.\n\nThis resolves the sorry left in the backward direction of OQ-04/OQ-05, completing the equivalence: $M$ is nonderogatory $\\Leftrightarrow$ $M$ has a cyclic vector (over infinite fields). Module-theoretically, this says the $K[X]$-module $K^n$ (with $X$ acting as $M$) is cyclic iff it has a single invariant factor — the structure theorem for finitely generated modules over PIDs in its most concrete matrix incarnation.",
     "mathContext": "Nonderogatory: $\\mu_M = \\chi_M$ (minimal polynomial equals characteristic polynomial). Cyclic vector: $v \\in K^n$ such that $\\{v, Mv, M^2v, \\ldots, M^{n-1}v\\}$ spans $K^n$, equivalently no nonzero polynomial of degree $< n$ annihilates $v$ under $M$.",
@@ -104,7 +104,7 @@
       "startLine": 150,
       "endLine": 168
     },
-    "type": "context",
+    "type": "concept",
     "title": "Main Theorem Setup: Base Case and Degree Computation",
     "content": "The main theorem opens with two blocks: (1) the $n = 0$ base case, where `Fin.elim0` — the empty vector — is vacuously cyclic (no polynomial of degree $< 0$ exists), and (2) the setup phase, which extracts $\\mu = \\text{minpoly}(K, M)$, computes $\\deg(\\mu) = n$ from the nonderogatory hypothesis and `charpoly_natDegree_eq_dim`, verifies $\\mu$ is monic (`minpoly.monic`), not a unit (since $n > 0$), and converts `normalizedFactors(\\mu)` from a `Multiset` to a `Finset` for use with the `Finset.induction_on`-based union avoidance lemma. The `Nontrivial (Fin n → K)` instance is needed because union avoidance requires a nontrivial module.",
     "mathContext": "Base case: when $n = 0$, $M_0(K)$ is the trivial ring, and the only vector in $K^0$ is trivially cyclic. Setup: $\\mu = \\chi_M$ (nonderogatory), $\\deg(\\mu) = \\deg(\\chi_M) = n$, and $\\text{normalizedFactors}(\\mu)$ is a finite multiset of irreducible polynomials over $K$.",
@@ -178,7 +178,7 @@
       "startLine": 106,
       "endLine": 132
     },
-    "type": "technique",
+    "type": "concept",
     "title": "GCD Annihilation via Bezout's Identity",
     "content": "If $p(M)v = 0$, then $\\gcd(p, \\mu_M)(M)v = 0$. The proof uses Bezout's identity in the Euclidean domain $K[X]$: write $d = ap + b\\mu_M$, then $d(M)v = a(M) \\cdot p(M)v + b(M) \\cdot \\mu_M(M)v$. The first term vanishes by hypothesis ($p(M)v = 0$), the second vanishes because the minimal polynomial annihilates $M$ ($\\mu_M(M) = 0$ by Cayley-Hamilton). The key subtlety is the `mul_comm` rewriting: Bezout gives $d = p \\cdot a + \\mu \\cdot b$, but we need $a \\cdot p$ and $b \\cdot \\mu$ to apply `mulVec_mulVec` in the right order.",
     "mathContext": "$d = \\gcd(p, \\mu) = ap + b\\mu$ in $K[X]$. Then $d(M)v = a(M)p(M)v + b(M)\\mu(M)v = 0 + 0 = 0$ because polynomial evaluations at the same matrix commute.",
@@ -250,7 +250,7 @@
       "startLine": 150,
       "endLine": 266
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: Nonderogatory Has Cyclic Vector (Infinite Fields)",
     "content": "The proof has five phases:\n\n**Phase 1** (Setup): Extract $\\mu = \\text{minpoly}(M)$, verify $\\deg(\\mu) = n$, get irreducible factors via `normalizedFactors`.\n\n**Phase 2** (Proper subspaces): For each irreducible factor $q | \\mu$, the cofactor kernel $\\ker((\\mu/q)(M))$ is a proper subspace. Proof: $\\mu/q$ has degree $< n$, is nonzero, so $(\\mu/q)(M) \\neq 0$ by `aeval_ne_zero_of_ne_zero`.\n\n**Phase 3** (Union avoidance): Apply `not_union_proper_subspaces` to find $v$ outside all cofactor kernels.\n\n**Phase 4** (Cyclicity by contradiction): Suppose $v$ is not cyclic — some nonzero $p$ of degree $< n$ annihilates $v$. Then $d = \\gcd(p, \\mu)$ annihilates $v$ (Bezout), $d$ properly divides $\\mu$ (since $\\deg(d) \\leq \\deg(p) < n = \\deg(\\mu)$). Write $\\mu = ds$ with $\\deg(s) > 0$. Factor $s$: some irreducible $q_0 | s$. Find $q' \\in \\text{normalizedFactors}(\\mu)$ associated to $q_0$. Then $q' | s$, so $\\mu/q' = d \\cdot t$ for some $t$, and $(\\mu/q')(M)v = t(M)(d(M)v) = t(M) \\cdot 0 = 0$. But $v \\notin \\ker((\\mu/q')(M))$ by Phase 3 — contradiction.",
     "mathContext": "$v \\notin \\ker((\\mu/q)(M))$ for all irreducible $q | \\mu$. If $p(M)v = 0$ with $0 < \\deg(p) < n$, then $d = \\gcd(p,\\mu)$ gives $d(M)v = 0$ and $d | \\mu$ properly. Factor $\\mu/d$: find $q | (\\mu/d)$, so $q$ divides some normalized factor $q'$ of $\\mu$, giving $\\mu/q' = d \\cdot t$ and $(\\mu/q')(M)v = 0$ — contradicting $v \\notin \\ker((\\mu/q')(M))$.",

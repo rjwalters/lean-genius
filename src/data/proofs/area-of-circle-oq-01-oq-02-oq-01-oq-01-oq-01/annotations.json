@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 29
     },
-    "type": "context",
+    "type": "concept",
     "title": "Overview: Ball Volumes Shrink to Zero",
     "content": "The header explains the surprising fact that unit n-ball volumes ω_n → 0 as n → ∞. Despite the fact that R^n gets 'larger', the unit ball gets a vanishingly small fraction of space.\n\nThe proof strategy has three parts: (1) even formula ω_{2k} = π^k/k!, (2) odd bound ω_{2k+1} ≤ 2·ω_{2k}, and (3) squeeze via the exp series. The file imports the parent proof for ω, omega_pos, omega_recurrence.",
     "mathContext": "ω_n = π^{n/2}/Γ(n/2+1). Recurrence: ω_{n+2} = (2π/(n+2))·ω_n. The factor 2π/(n+2) < 1 for n ≥ 5, causing exponential decay.",

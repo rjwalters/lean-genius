@@ -32,7 +32,7 @@
       "startLine": 72,
       "endLine": 101
     },
-    "type": "technique",
+    "type": "concept",
     "title": "linear_combination Works in k[X]: The Field PID Case",
     "content": "`poly_euclids_lemma_field` and `poly_bezout_application` demonstrate that the `linear_combination` approach from the parent proof (bezout-identity-oq-02) scales directly to k[X] over a field. Over a field k, k[X] is a Euclidean domain (polynomial long division), hence a PID, hence a Bézout domain. The explicit proof: get Bézout coefficients `a, b` with `a*f + b*g = 1`, get quotient `m` with `g*h = f*m`, then `h = f*(a*h + b*m)` is proved by `linear_combination -h * hab + b * hm`.",
     "mathContext": "**Proof arithmetic**: Given $af + bg = 1$ and $gh = fm$, show $h = f(ah + bm)$: $$f(ah + bm) = afh + bfm = afh + b(gh) = (af + bg)h = 1 \\cdot h = h.$$ The `linear_combination` tactic automates: `lhs - rhs = h - f*(a*h + b*m)` and the certificate is $-h \\cdot (af+bg-1) + b \\cdot (gh-fm) = h - afh - bfm = h - (af+bg)h = 0$. This is identical in structure to the integer Euclid's lemma — k[X] is Bézout precisely because polynomial GCDs with Bézout coefficients exist via the division algorithm.",
@@ -83,7 +83,7 @@
       "startLine": 129,
       "endLine": 152
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Evaluation at 0: Witnessing the Non-Bézout Property",
     "content": "`two_X_not_coprime_in_ZX` proves ℤ[X] is not a Bézout domain by showing 2 and X have no Bézout identity. The elegant proof: assume `IsCoprime (2 : ℤ[X]) X`, get coefficients `a, b` with `a*2 + b*X = 1`. Evaluate both sides at `x = 0` using `Polynomial.eval 0`. The `X` term vanishes (`eval 0 X = 0`), leaving `(eval 0 a) * 2 = 1` in ℤ. But no integer times 2 equals 1 — `omega` closes this.",
     "mathContext": "**Why evaluation works**: $\\text{eval}_0(a \\cdot 2 + b \\cdot X) = a(0) \\cdot 2 + b(0) \\cdot 0 = 2 a(0)$. If this equals 1, then $2 \\mid 1$ in ℤ — impossible. This is the standard proof that $\\langle 2, X \\rangle \\neq \\langle 1 \\rangle = \\mathbb{Z}[X]$. **Key observation**: 2 and X ARE coprime in ℚ[X] (GCD = 1 there), but ℚ[X] ≠ ℤ[X]. The GCD of 2 and X in ℤ[X] is 1 (as polynomials), but 1 is not in the ideal ⟨2, X⟩ — this is the hallmark of a non-Bézout domain. `omega` handles the ℤ arithmetic contradiction after `simp` reduces the goal.",
@@ -106,13 +106,28 @@
   {
     "id": "ann-bezout-ring-hierarchy",
     "proofId": "bezout-identity-oq-02-oq-04",
-    "range": { "startLine": 154, "endLine": 170 },
-    "type": "context",
+    "range": {
+      "startLine": 154,
+      "endLine": 170
+    },
+    "type": "concept",
     "title": "The Ring Hierarchy: PID → Bézout → UFD and Proof Method Boundaries",
     "content": "The summary section presents a comparison table showing precisely where the `linear_combination` tactic applies. The key algebraic hierarchy is: Field ⊂ Euclidean Domain ⊂ PID ⊂ Bézout domain ⊂ UFD (not a total order—Bézout domains and UFDs are incomparable in general). For Euclid's lemma: (1) PIDs have Bézout identities, so `linear_combination` works directly; (2) UFDs have prime = irreducible, so `irreducible_iff_prime + Prime.dvd_or_dvd` works; (3) in both ℤ and k[X] (which are PIDs), both methods apply; (4) ℤ[X] is a UFD but not a PID, so only method (2) works. Gauss's lemma connects these: the theorem 'R UFD ⟹ R[X] UFD' (proved using content theory) is one of the deepest results in commutative algebra, generalizing from ℤ → ℤ[X] → ℤ[X₁,...,Xₙ].",
     "mathContext": "Ring hierarchy: Fields $\\subset$ Euclidean domains $\\subset$ PIDs $\\subset$ Bézout domains; PIDs $\\subset$ UFDs. Neither 'Bézout $\\subset$ UFD' nor 'UFD $\\subset$ Bézout' holds in general. $\\mathbb{Z}[X]$: UFD (by Gauss: $R$ UFD $\\Rightarrow R[X]$ UFD) but not Bézout ($\\langle 2, X\\rangle$ not principal). The `linear_combination` tactic boundary: works in Bézout domains (PIDs in practice), fails in UFD-not-PID rings like $\\mathbb{Z}[X]$.",
     "significance": "supporting",
-    "relatedConcepts": ["ring hierarchy: Field < ED < PID < Bézout < UFD", "R[X] UFD if R UFD (Gauss's theorem)", "UniqueFactorizationMonoid in Mathlib", "height-1 prime ideals", "Krull domain"],
-    "prerequisites": ["PID definition", "UFD definition", "Bézout domain definition", "Euclidean domain", "ring extension theorems"]
+    "relatedConcepts": [
+      "ring hierarchy: Field < ED < PID < Bézout < UFD",
+      "R[X] UFD if R UFD (Gauss's theorem)",
+      "UniqueFactorizationMonoid in Mathlib",
+      "height-1 prime ideals",
+      "Krull domain"
+    ],
+    "prerequisites": [
+      "PID definition",
+      "UFD definition",
+      "Bézout domain definition",
+      "Euclidean domain",
+      "ring extension theorems"
+    ]
   }
 ]

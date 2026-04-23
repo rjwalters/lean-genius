@@ -2,13 +2,13 @@
   {
     "id": "erdos-1093-header",
     "proofId": "erdos-1093",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 1,
       "endLine": 21
     },
     "title": "Problem Statement and Imports",
-    "content": "The docstring presents Erd\u0151s Problem #1093 on the deficiency of binomial coefficients: for $n \\geq 2k$, the deficiency counts how many of $n, n-1, \\ldots, n-k+1$ are $k$-smooth (all prime factors $\\leq k$), under the condition that $\\binom{n}{k}$ has no prime factor $\\leq k$. Erd\u0151s, Lacampagne, and Selfridge (1988, 1993) asked (i) whether infinitely many pairs have deficiency 1, and (ii) whether only finitely many have deficiency $> 1$. Imports include `Nat.Prime.Basic`, `Nat.Choose.Basic`, `Nat.Factorization.Basic`, `Finset.Card`, and `Real.Sqrt`.",
+    "content": "The docstring presents Erdős Problem #1093 on the deficiency of binomial coefficients: for $n \\geq 2k$, the deficiency counts how many of $n, n-1, \\ldots, n-k+1$ are $k$-smooth (all prime factors $\\leq k$), under the condition that $\\binom{n}{k}$ has no prime factor $\\leq k$. Erdős, Lacampagne, and Selfridge (1988, 1993) asked (i) whether infinitely many pairs have deficiency 1, and (ii) whether only finitely many have deficiency $> 1$. Imports include `Nat.Prime.Basic`, `Nat.Choose.Basic`, `Nat.Factorization.Basic`, `Finset.Card`, and `Real.Sqrt`.",
     "mathContext": "The binomial coefficient $\\binom{n}{k} = \\frac{n!}{k!(n-k)!} = \\frac{n(n-1)\\cdots(n-k+1)}{k!}$. The condition $\\text{NoSmallPrimeFactors}(n,k)$ requires every prime $p \\mid \\binom{n}{k}$ to satisfy $p > k$. This is a strong sieve condition: the 'small' primes in the falling factorial $n(n-1)\\cdots(n-k+1)$ must cancel exactly with $k!$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -138,14 +138,14 @@
   {
     "id": "erdos-1093-examples",
     "proofId": "erdos-1093",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 65,
       "endLine": 77
     },
     "title": "Known Examples and Computed Values",
-    "content": "Three axioms record specific deficiency computations. $\\binom{7}{3} = 35$: among $\\{7, 6, 5\\}$, only $6 = 2 \\times 3$ is 3-smooth, giving deficiency 1. $\\binom{13}{4} = 715$: deficiency 1. $\\binom{284}{28}$: deficiency 9, the highest known. The case $\\binom{284}{28}$ is remarkable\u2014among the 28 consecutive integers $284, 283, \\ldots, 257$, exactly 9 are 28-smooth while $\\binom{284}{28}$ has no prime factor $\\leq 28$. This extreme concentration of smooth numbers in a short interval is the phenomenon the conjecture seeks to bound.",
-    "mathContext": "For $\\binom{284}{28}$, the 28-smooth numbers among $\\{257, 258, \\ldots, 284\\}$ are those with all prime factors in $\\{2, 3, 5, 7, 11, 13, 17, 19, 23\\}$. Having 9 such numbers in an interval of length 28 is an unusually high density of smooth numbers\u2014Dickman's function predicts roughly $28 \\cdot \\rho(\\log 284 / \\log 28) \\approx 28 \\cdot \\rho(1.7) \\approx 28 \\times 0.45 \\approx 13$ smooth numbers, so 9 with the additional NoSmallPrimeFactors constraint is not implausible.",
+    "content": "Three axioms record specific deficiency computations. $\\binom{7}{3} = 35$: among $\\{7, 6, 5\\}$, only $6 = 2 \\times 3$ is 3-smooth, giving deficiency 1. $\\binom{13}{4} = 715$: deficiency 1. $\\binom{284}{28}$: deficiency 9, the highest known. The case $\\binom{284}{28}$ is remarkable—among the 28 consecutive integers $284, 283, \\ldots, 257$, exactly 9 are 28-smooth while $\\binom{284}{28}$ has no prime factor $\\leq 28$. This extreme concentration of smooth numbers in a short interval is the phenomenon the conjecture seeks to bound.",
+    "mathContext": "For $\\binom{284}{28}$, the 28-smooth numbers among $\\{257, 258, \\ldots, 284\\}$ are those with all prime factors in $\\{2, 3, 5, 7, 11, 13, 17, 19, 23\\}$. Having 9 such numbers in an interval of length 28 is an unusually high density of smooth numbers—Dickman's function predicts roughly $28 \\cdot \\rho(\\log 284 / \\log 28) \\approx 28 \\cdot \\rho(1.7) \\approx 28 \\times 0.45 \\approx 13$ smooth numbers, so 9 with the additional NoSmallPrimeFactors constraint is not implausible.",
     "significance": "supporting",
     "relatedConcepts": [
       "computational verification",
@@ -160,20 +160,20 @@
   {
     "id": "erdos-1093-els",
     "proofId": "erdos-1093",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 83,
       "endLine": 87
     },
     "title": "ELS Upper Bound: $n \\ll 2^k \\sqrt{k}$",
-    "content": "Erd\u0151s, Lacampagne, and Selfridge (1993) proved that if $(n, k)$ has positive deficiency and $n \\geq 2k$, then $n \\leq C \\cdot 2^k \\sqrt{k}$ for an absolute constant $C$. This exponential bound in $k$ means that for each fixed $k$, only finitely many $n$ can have positive deficiency\u2014but the bound grows exponentially with $k$, so it does not immediately resolve Part (ii). The proof uses sieve methods and estimates on the distribution of smooth numbers.",
+    "content": "Erdős, Lacampagne, and Selfridge (1993) proved that if $(n, k)$ has positive deficiency and $n \\geq 2k$, then $n \\leq C \\cdot 2^k \\sqrt{k}$ for an absolute constant $C$. This exponential bound in $k$ means that for each fixed $k$, only finitely many $n$ can have positive deficiency—but the bound grows exponentially with $k$, so it does not immediately resolve Part (ii). The proof uses sieve methods and estimates on the distribution of smooth numbers.",
     "mathContext": "$\\text{deficiency}(n, k) \\geq 1 \\implies n \\leq C \\cdot 2^k \\cdot k^{1/2}$. Since the falling factorial has $k$ terms in $[n-k+1, n]$, and at least one must be $k$-smooth, this constrains how large $n$ can be: if $n \\gg 2^k$, the terms $n - i$ are too large to be $k$-smooth (since $\\Psi(x, k) / x \\to 0$ as $x/k \\to \\infty$). The $\\sqrt{k}$ factor comes from refined sieve estimates.",
     "significance": "key",
     "relatedConcepts": [
       "sieve methods",
       "smooth number distribution",
       "exponential bounds",
-      "Erd\u0151s-Lacampagne-Selfridge"
+      "Erdős-Lacampagne-Selfridge"
     ],
     "prerequisites": [
       "analytic number theory",
@@ -183,13 +183,13 @@
   {
     "id": "erdos-1093-count",
     "proofId": "erdos-1093",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 89,
       "endLine": 93
     },
     "title": "Computational Census: At Least 58 Examples",
-    "content": "At least 58 pairs $(k, n)$ with deficiency 1 are known for $n \\leq 10^5$. This computational result supports Part (i) of the conjecture. The formalization uses a product of finite ranges `Finset.range 100 \u00d7\u02e2 Finset.range 100001` and filters for the deficiency-1 condition. The count of 58 provides evidence for infinitude but does not constitute a proof, since an arithmetic phenomenon can have many small examples and still be finite.",
+    "content": "At least 58 pairs $(k, n)$ with deficiency 1 are known for $n \\leq 10^5$. This computational result supports Part (i) of the conjecture. The formalization uses a product of finite ranges `Finset.range 100 ×ˢ Finset.range 100001` and filters for the deficiency-1 condition. The count of 58 provides evidence for infinitude but does not constitute a proof, since an arithmetic phenomenon can have many small examples and still be finite.",
     "mathContext": "$|\\{(k, n) : k < 100, n < 100001, 2k \\leq n, \\text{deficiency}(n, k) = 1\\}| \\geq 58$. For comparison, the twin prime counting function $\\pi_2(10^5) \\approx 1224$, so deficiency-1 pairs are much rarer than twin primes in the same range.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -205,7 +205,7 @@
   {
     "id": "erdos-1093-proved",
     "proofId": "erdos-1093",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 100,
       "endLine": 107

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 24
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdős Problem #404: Prime Power Divisibility of Factorial Sums**\n\nFor which (a, p) is f(a, p) finite, where f(a, p) = sup{k : p^k | some factorial sum starting at a}?\n\n**Known:** Lin (1976) proved f(2, 2) ≤ 254 — the only concrete upper bound.\n\n**Status:** OPEN. Both the main question and the secondary question about mₖ → ∞ remain unresolved.",
     "mathContext": "The problem asks whether $f(a,p) = \\sup\\{k : p^k \\mid a_1! + \\cdots + a_n!\\}$ is always finite. From Erdős-Graham (1980), it connects $p$-adic analysis with factorial combinatorics.",
@@ -99,7 +99,7 @@
       "startLine": 64,
       "endLine": 73
     },
-    "type": "technique",
+    "type": "concept",
     "title": "p-adic Analysis",
     "content": "**legendreSum n p:** Computes ∑_{i≥1} ⌊n/p^i⌋ — the exact p-adic valuation of n!.\n\n**legendre_formula:** padicValNat p n! = legendreSum n p (Legendre's formula).\n\n**padic_val_factorial_asymp:** v_p(n!)/n → 1/(p-1) as n → ∞. This governs the growth rate of factorial valuations.",
     "mathContext": "Legendre's formula $v_p(n!) = \\sum_{i=1}^{\\infty} \\lfloor n/p^i \\rfloor = (n - s_p(n))/(p-1)$ where $s_p(n)$ is the digit sum of $n$ in base $p$. The asymptotic $v_p(n!)/n \\to 1/(p-1)$ follows since $s_p(n) = O(\\log n)$.",
@@ -122,7 +122,7 @@
       "startLine": 75,
       "endLine": 87
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Structure and Examples",
     "content": "**factorial_sum_factored (PROVED):** a₁! + a₂! = a₁!(1 + a₂!/a₁!) for a₁ ≤ a₂. This is the only non-trivial proved theorem, using Nat.factorial_dvd_factorial and Nat.mul_div_cancel'.\n\n**Examples (proved by native_decide):**\n- 2³ | 2! + 3! = 8, so f(2,2) ≥ 3\n- 3 | 1! + 2! = 3\n- 3² | 1! + 2! + 3! = 9",
     "mathContext": "The factorization $a_1! + a_2! = a_1!(1 + a_2!/a_1!)$ is key because $v_p(\\text{sum}) = v_p(a_1!) + v_p(1 + \\prod_{j=a_1+1}^{a_2} j)$. The product $(a_1+1)(a_1+2)\\cdots a_2$ is a falling factorial, and its $p$-adic valuation depends on how many multiples of $p$ lie in $[a_1+1, a_2]$.",
@@ -145,7 +145,7 @@
       "startLine": 89,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_404_summary:** Proved conjunction of Lin's bounds:\n1. f 2 2 ≤ 254 (from lin_bound)\n2. ∀ s, ¬(2^255 | factorialSum s) (from lin_bound_meaning)\n\nThe proof is a direct anonymous constructor ⟨lin_bound, lin_bound_meaning⟩. The problem remains OPEN for general (a, p).",
     "mathContext": "The summary packages both formulations of Lin's result into a single theorem. The gap $3 \\leq f(2,2) \\leq 254$ remains wide, and nothing is known for other primes or starting values.",

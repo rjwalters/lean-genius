@@ -8,7 +8,7 @@
       "startColumn": 0,
       "endColumn": 0
     },
-    "type": "context",
+    "type": "concept",
     "title": "Free CLT: From Commutative to Non-Commutative Universality",
     "content": "This file answers a fundamental question: does the topological interpretation of the CLT — the Gaussian as a renormalization fixed point — extend beyond commutative probability? The answer is yes, and the extension is remarkably clean. Voiculescu's **free probability** (1985) replaces classical independence with **free independence**, convolution with **free convolution** $\\boxplus$, and the Gaussian with the **semicircle distribution**. The entire renormalization story carries over: the semicircle is the unique fixed point and global attractor of the free renormalization flow. The file also introduces `CLTStructure`, an abstract Lean 4 structure capturing the universal pattern shared by all five independence types classified by Muraki (2003).",
     "mathContext": "Classical CLT: $(X_1 + \\cdots + X_n)/\\sqrt{n} \\xrightarrow{d} \\mathcal{N}(0,1)$ for i.i.d. $X_i$ with mean 0, variance 1.\n\nFree CLT: $(a_1 + \\cdots + a_n)/\\sqrt{n} \\xrightarrow{d} w(0,1)$ for freely independent $a_i$ with mean 0, variance 1, where $w(0,1)$ is the Wigner semicircle distribution with density $\\rho(x) = \\frac{2}{\\pi}\\sqrt{1-x^2}$ on $[-1,1]$.\n\nThe R-transform $R_\\mu(z)$ linearizes free convolution just as the log-characteristic function linearizes classical convolution.",
@@ -143,7 +143,7 @@
       "startColumn": 0,
       "endColumn": 0
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Proved: Distribution Law for Convolution Powers",
     "content": "**Proved by induction.** Shows $\\mu^{\\boxplus(m+n)} = \\mu^{\\boxplus m} \\boxplus \\mu^{\\boxplus n}$ — the convolution power distributes over addition of exponents. The base case uses the right identity ($\\mu^{\\boxplus 0} = \\delta_0$), and the inductive step uses associativity of free convolution. This is the free analog of the classical fact that $\\mu^{*(m+n)} = \\mu^{*m} * \\mu^{*n}$.",
     "mathContext": "$\\mu^{\\boxplus(m+n)} = \\mu^{\\boxplus m} \\boxplus \\mu^{\\boxplus n}$ (proved by induction on $n$)",
@@ -169,7 +169,7 @@
       "startColumn": 0,
       "endColumn": 0
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Proved: Free Cumulant Scaling Under Convolution Powers",
     "content": "**Proved by induction.** The key computational result: $\\kappa_k(\\mu^{\\boxplus n}) = n \\cdot \\kappa_k(\\mu)$. The base case ($n = 0$) is the most subtle — it requires showing $\\kappa_k(\\delta_0) = 0$ for $k \\ge 1$, derived from the identity $\\delta_0 \\boxplus \\mu = \\mu$ and cumulant linearization: $\\kappa_k(\\delta_0) + \\kappa_k(\\mu) = \\kappa_k(\\mu)$, so $\\kappa_k(\\delta_0) = 0$. The inductive step follows directly from linearization. This theorem is the engine of the free CLT proof.",
     "mathContext": "$\\kappa_k(\\mu^{\\boxplus n}) = n \\cdot \\kappa_k(\\mu)$ for all $k \\ge 1$. Base case: $\\kappa_k(\\delta_0) = 0$ from $\\kappa_k(\\delta_0 \\boxplus \\mu) = \\kappa_k(\\delta_0) + \\kappa_k(\\mu) = \\kappa_k(\\mu)$.",
@@ -385,7 +385,7 @@
       "startColumn": 0,
       "endColumn": 0
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Proved: Structural Verification Theorems",
     "content": "Three theorems proved for any `CLTStructure S`: (1) `clt_structure_fixed_point_cumulant` shows the limit law's cumulants double under double convolution ($\\kappa_n(L \\star L) = 2\\kappa_n(L)$); (2) `clt_structure_double_variance` shows $\\kappa_2(L \\star L) = 2$; (3) `clt_structure_double_higher` shows $\\kappa_n(L \\star L) = 0$ for $n \\ge 3$. These verify the fixed-point structure at the abstract level — they hold for classical, free, Boolean, and all other CLT instances simultaneously.",
     "mathContext": "For any CLTStructure: $\\kappa_n(L \\star L) = 2\\kappa_n(L)$ (proved from linearization), $\\kappa_2(L \\star L) = 2$ (from $\\kappa_2(L) = 1$), $\\kappa_n(L \\star L) = 0$ for $n \\ge 3$ (from $\\kappa_n(L) = 0$).",

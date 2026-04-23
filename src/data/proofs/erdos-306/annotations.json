@@ -122,7 +122,7 @@
       "startLine": 147,
       "endLine": 163
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Computational Verification",
     "content": "**native_decide examples**: Verify that specific numbers satisfy the conditions:\n\n```lean\nexample : ArithmeticFunction.cardDistinctFactors 6 = 2 := by native_decide\nexample : ArithmeticFunction.cardFactors 6 = 2 := by native_decide\nexample : ArithmeticFunction.cardDistinctFactors 30 = 3 := by native_decide\n```\n\nThese confirm:\n- 6 = 2×3 has ω(6) = Ω(6) = 2 (product of 2 distinct primes)\n- 30 = 2×3×5 has ω(30) = 3 (product of 3 distinct primes)",
     "mathContext": "native_decide uses Lean's kernel to compute and verify arithmetic statements.",

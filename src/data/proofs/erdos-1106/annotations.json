@@ -117,7 +117,7 @@
       "startLine": 118,
       "endLine": 129
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hardy-Ramanujan Asymptotic Formula (1918)",
     "content": "The celebrated Hardy-Ramanujan formula gives $p(n) \\sim \\frac{1}{4n\\sqrt{3}} \\exp\\!\\left(\\pi\\sqrt{\\frac{2n}{3}}\\right)$. This was the first major application of the circle method in analytic number theory. The exponential growth of $p(n)$ is the key driver: it forces the partition product to have super-exponential growth, which in turn forces new prime factors to appear.",
     "mathContext": "$p(n) \\sim \\frac{1}{4n\\sqrt{3}}\\, e^{\\pi\\sqrt{2n/3}}$ as $n \\to \\infty$",
@@ -228,7 +228,7 @@
       "startLine": 177,
       "endLine": 192
     },
-    "type": "context",
+    "type": "concept",
     "title": "Small Values F(1) through F(4)",
     "content": "$F(1) = 0$ ($p(1) = 1$ has no prime factors), $F(2) = 1$ (product $= 2$), $F(3) = 2$ (product $= 6 = 2 \\cdot 3$), $F(4) = 3$ (product $= 30 = 2 \\cdot 3 \\cdot 5$). Each new partition number $p(k)$ can introduce new primes, but not always: $p(6) = 11$ is prime (adding one new factor), while $p(7) = 15 = 3 \\cdot 5$ introduces no new primes.",
     "mathContext": "$F(1) = 0,\\; F(2) = 1,\\; F(3) = 2,\\; F(4) = 3$",

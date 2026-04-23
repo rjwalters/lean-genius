@@ -157,7 +157,7 @@
       "startLine": 539,
       "endLine": 544
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Discrete IVT: Different Endpoints Imply Adjacent Change",
     "content": "discrete_ivt proves: if f: Fin(n+2) -> alpha has f(0) != f(last), then there exist adjacent i, i+1 with f(i) != f(i+1). Proof: contrapositive via fin_adjacent_eq_implies_const (if all adjacent agree, function is constant by Fin.induction).",
     "mathContext": "If $f(0) \\neq f(n+1)$ for $f : \\{0,\\ldots,n+1\\} \\to \\alpha$, then $\\exists i$ with $f(i) \\neq f(i+1)$.",
@@ -179,7 +179,7 @@
       "startLine": 571,
       "endLine": 586
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tucker's Lemma (1D) with Integer Labels",
     "content": "tucker_1d proves: given f: Fin(n+2) -> Z with values in {+-1} and f(0) = -f(last), there exists adjacent i with f(i)+f(i+1) = 0. Step 1: f(0) != f(last) since f(0) = -f(last) and f(last) in {+-1} means negation differs. Step 2: discrete_ivt gives adjacent pair with different values. Step 3: case split on all {+-1} combinations shows different implies sum zero.",
     "mathContext": "Tucker's 1D: $f(0) = -f(n+1)$ with $f(i) \\in \\{\\pm 1\\}$ $\\Rightarrow$ $\\exists i: f(i) + f(i+1) = 0$.",

@@ -6,7 +6,7 @@
       "startLine": 38,
       "endLine": 49
     },
-    "type": "context",
+    "type": "concept",
     "title": "Two Proof Paths for the Chebyshev Bound",
     "content": "The file header documents the key difference between this proof and the original in ChebyshevPNTBridge.lean. Both prove C(2n,n) ≤ (2n)^π(2n), but via different Mathlib entry points:\n\n**Original**: Uses `Nat.factorization_prod_pow_eq_self hcb_ne`, which requires a nonzero hypothesis `hcb_ne : centralBinom n ≠ 0`. Proceeds over `Finsupp.support` (only prime indices), needing `hprime_of_mem` and `hsub` helper lemmas.\n\n**This proof**: Uses `Nat.prod_pow_factorization_centralBinom n`, which works over the full `Finset.range (2*n+1)` — no nonzero hypothesis needed. Non-prime indices p contribute p^0 = 1 (since `.factorization p = 0` for non-prime p), and `prod_filter_of_ne` handles the collapse to primes cleanly.\n\nThe result is 4 clean calc steps vs 6 steps with helper lemmas — a meaningful simplification demonstrating the advantage of using the more specialized Mathlib lemma.",
     "mathContext": "`Nat.prod_pow_factorization_centralBinom n : centralBinom n = ∏ p ∈ Finset.range (2*n+1), p ^ (centralBinom n).factorization p`. Contrast with `Nat.factorization_prod_pow_eq_self : n ≠ 0 → n = ∏ p ∈ n.factorization.support, p ^ n.factorization p`, which works over `Finsupp.support` and requires `n ≠ 0`.",
@@ -29,7 +29,7 @@
       "startLine": 50,
       "endLine": 56
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Step 1: Factorization Identity for centralBinom",
     "content": "The first calc step applies `Nat.prod_pow_factorization_centralBinom n` in reverse (`.symm`) to write C(2n,n) as a product over all integers p in `Finset.range (2*n+1)`:\n\n```\ncentralBinom n = ∏ p ∈ range (2*n+1), p^((centralBinom n).factorization p)\n```\n\nThis is the Lean 4 expression of the fundamental theorem of arithmetic for centralBinom: every natural number equals the product of its prime power factors. The crucial advantage over `factorization_prod_pow_eq_self` is that the product runs over a full range rather than `Finsupp.support`, so no `centralBinom n ≠ 0` hypothesis is needed (Mathlib handles this internally). Non-prime indices will be collapsed in Step 2.",
     "mathContext": "`Nat.prod_pow_factorization_centralBinom : ∀ (n : ℕ), ∏ p ∈ Finset.range (2*n+1), p ^ (Nat.centralBinom n).factorization p = Nat.centralBinom n`. The `.symm` reversal gives equality in the ≥-direction needed for the calc chain. For non-prime p, `(centralBinom n).factorization p = 0` so `p^0 = 1` — these terms are present in the product but contribute nothing.",
@@ -52,7 +52,7 @@
       "startLine": 50,
       "endLine": 64
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Step 2: Non-Prime Vanishing via prod_filter_of_ne",
     "content": "Step 2 collapses the product over `Finset.range (2*n+1)` to only the prime indices:\n\n```\n∏ p ∈ range(2n+1), p^(factorization p) = ∏ p ∈ (range(2n+1)).filter Nat.Prime, p^(factorization p)\n```\n\nThe proof applies `(prod_filter_of_ne _).symm`, which requires showing that non-prime terms equal 1. For a non-prime p, `by_contra h_nonprome` + `simp [Nat.factorization_eq_zero_of_not_prime _ h_nonprome]` establishes that `p^(factorization p) = p^0 = 1`, so the hypothesis `hp : p^(factorization p) ≠ 1` leads to contradiction.\n\nThis step is where working over `Finset.range` (rather than `Finsupp.support`) pays off: the product naturally includes all integers in [0, 2n], and the prime filter handles the pruning cleanly.",
     "mathContext": "`Finset.prod_filter_of_ne : (∀ x ∈ s, f x = 1 → p x) → ∏ x ∈ s.filter p, f x = ∏ x ∈ s, f x`. Here f(p) = p^(factorization p), and the condition is: if p is not prime then f(p) = p^0 = 1. `Nat.factorization_eq_zero_of_not_prime : ¬ p.Prime → n.factorization p = 0`.",

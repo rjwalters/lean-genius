@@ -102,7 +102,7 @@
       "startLine": 142,
       "endLine": 173
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Goldbach Connection and Structural Constraints",
     "content": "**Relationship to Goldbach's Conjecture**\n\nGoldbach's conjecture states every even n > 2 is a sum of two primes. The theorem goldbach_implies_sumset formalizes: if Goldbach holds, then Primes + Primes ⊇ {even n > 2}. This is a PROVED theorem (not axiomatized) — the proof unfolds the definitions directly.\n\nThe axiom primes_sumset_not_primes states Primes + Primes ≠ Primes (mod finite). The reason: Primes + Primes contains all sufficiently large even numbers (by Goldbach), but primes are almost all odd. So the symmetric difference is infinite.\n\nThe structural constraint must_contain_small_elements axiomatizes that any hypothetical solution A, B must have small elements (1 or 2) in specific configurations.",
     "mathContext": "Goldbach ⟹ Primes + Primes ⊇ {even n > 2}; Primes + Primes ≠_{fin} Primes",
@@ -121,7 +121,7 @@
       "startLine": 175,
       "endLine": 219
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary: Problem #431 is OPEN",
     "content": "**Summary of Known Results**\n\nThe erdos_431_statement theorem bundles the key equivalence and results:\n1. InverseGoldbachConjecture ↔ ¬∃ infinite A, B with A + B =_{fin} Primes\n2. Any such A, B must satisfy Elsholtz-Harper growth bounds\n3. The three-set case is completely ruled out\n\nThe erdos_431_summary and erdos_431 theorems provide a clean conjunction of the three main known results: Elsholtz (2001) on triples, Elsholtz-Harper (2015) on growth bounds, and Tao-Ziegler (2023) on restricted sumsets. The two-set case remains one of the most important open problems in additive prime number theory.",
     "mathContext": "(¬∃ A B C triple) ∧ (∀ pair → bounds) ∧ (∃ restricted ⊆ primes)",

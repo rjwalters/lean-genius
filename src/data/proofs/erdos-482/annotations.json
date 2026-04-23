@@ -121,7 +121,7 @@
       "startLine": 128,
       "endLine": 159
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: erdos_482",
     "content": "**erdos_482_characterization** proves the recurrence satisfies a_{n+1} = ⌊√2(aₙ + 1/2)⌋ by definition (rfl) and digit-extraction by axiom. **erdos_482** packages the complete solution: Graham-Pollak for √2 and Stoll's generalization to all quadratic irrationals, proved via ⟨graham_pollak_theorem, stoll_general⟩.",
     "mathContext": "The characterization theorem uses rfl for the definitional equality and the axiom for the mathematical content. The main theorem is a conjunction combining the original result with the generalization requested by Erdős.",

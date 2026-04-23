@@ -74,7 +74,7 @@
       "startLine": 83,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Density Bounds (Proved by Aristotle)",
     "content": "Proves `schnirelmannDensity_mem_Icc`: $d_s(A) \\in [0,1]$ for all $A$. The lower bound uses `Real.iInf_nonneg` (infimum of non-negative terms). The upper bound shows each ratio $\\pi_A(n)/n \\le 1$ (since $|A \\cap [1,n]| \\le n$), then applies `ciInf_le_of_le`. This is one of four theorems proved automatically by Aristotle.",
     "mathContext": "$0 \\le d_s(A) \\le 1$. Proof: $\\pi_A(n) \\le n$ so each ratio $\\le 1$; $\\pi_A(n) \\ge 0$ so each ratio $\\ge 0$. The infimum preserves both bounds.",
@@ -164,7 +164,7 @@
       "startLine": 140,
       "endLine": 158
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Powers of 2 are Lacunary (Proved by Aristotle)",
     "content": "Proves `powersOfTwo_lacunary`: the set $\\{2^n : n \\in \\mathbb{N}\\} = \\{1, 2, 4, 8, 16, \\ldots\\}$ is lacunary with ratio $r = 2$. The proof constructs the enumeration $a(k) = 2^k$, verifies strict monotonicity via `Nat.pow_lt_pow_right`, the lacunary condition via `pow_succ` and `ring_nf`, and set equality by symmetrizing the existential.",
     "mathContext": "$\\{2^n\\}$ is lacunary with $r = 2$: $2^{n+1} = 2 \\cdot 2^n \\ge 2 \\cdot 2^n$. Counting: $|\\{2^n\\} \\cap [1,N]| = \\lfloor \\log_2 N \\rfloor + 1 = O(\\log N)$.",

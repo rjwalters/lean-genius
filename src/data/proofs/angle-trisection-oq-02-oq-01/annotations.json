@@ -56,7 +56,7 @@
       "startLine": 26,
       "endLine": 39
     },
-    "type": "technique",
+    "type": "concept",
     "title": "natDegree Divides |Gal| — Tower Law Argument",
     "content": "The central theorem of the file: for any irreducible polynomial $p$ over a CharZero field $F$, $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$. This generalizes Mathlib's `prime_degree_dvd_card` (which requires prime degree) to all degrees.\n\nThe proof uses the **tower law** on the chain $F \\subset F(\\alpha) \\subset \\text{SplittingField}(p)$, where $\\alpha$ is a root of $p$ in the splitting field. By Galois theory, $|\\text{Gal}(p)| = [\\text{SplittingField}(p) : F]$. The tower law gives $[\\text{SplittingField}(p) : F] = [\\text{SplittingField}(p) : F(\\alpha)] \\cdot [F(\\alpha) : F]$, and since $[F(\\alpha) : F] = \\deg(\\text{minpoly}(F, \\alpha)) = \\deg(p)$ (because $p$ is irreducible and $\\alpha$ is a root), we get $\\deg(p) \\mid |\\text{Gal}(p)|$.",
     "mathContext": "Tower law: $[L:F] = [L:K] \\cdot [K:F]$ for $F \\subseteq K \\subseteq L$. Here $L = \\text{SplittingField}(p)$, $K = F(\\alpha)$, so $|\\text{Gal}(p)| = [L:F] = [L:F(\\alpha)] \\cdot [F(\\alpha):F]$, giving $\\deg(p) = [F(\\alpha):F] \\mid |\\text{Gal}(p)|$. The key subtlety: showing $\\text{minpoly}(F, \\alpha) = p$ (up to associates) uses irreducibility of $p$ plus the fact that $\\text{minpoly}(F, \\alpha) \\mid p$ (since $\\alpha$ is a root of $p$).",
@@ -134,7 +134,7 @@
       "startLine": 59,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "concept",
     "title": "2-Group Gal → Degree Divides 2^n",
     "content": "Chains two results: (1) `natDegree_dvd_card_gal` gives $\\deg(\\text{minpoly}(\\mathbb{Q}, \\alpha)) \\mid |\\text{Gal}(\\text{minpoly}(\\mathbb{Q}, \\alpha))|$, and (2) `IsPGroup.iff_card` gives $|\\text{Gal}| = 2^n$ when Gal is a 2-group. Transitivity of divisibility yields $\\deg \\mid 2^n$. This theorem eliminates the axiom `galois_2group_implies_degree_pow2` from OQ-02, which was one of 6 axioms in the parent formalization.",
     "mathContext": "If $\\text{Gal}(\\text{minpoly}(\\mathbb{Q}, \\alpha))$ is a 2-group, then $|\\text{Gal}| = 2^n$ for some $n$. Combined with $\\deg(\\text{minpoly}) \\mid |\\text{Gal}|$, we get $\\deg(\\text{minpoly}) \\mid 2^n$. This is the divisibility form; the next theorem strengthens it to equality.",

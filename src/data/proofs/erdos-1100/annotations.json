@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 24
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdős Problem #1100: Coprime Consecutive Divisors**\n\nFor n with divisors 1 = d₁ < d₂ < ... < d_τ(n) = n, let τ⊥(n) count indices i where gcd(dᵢ, dᵢ₊₁) = 1.\n\n**Three Questions:**\n1. Does τ⊥(n)/ω(n) → ∞ for almost all n? (OPEN)\n2. Is τ⊥(n) < exp((log n)^o(1)) for all n? (OPEN)\n3. What is the growth of g(k) = max τ⊥(n) for squarefree n with k prime factors?",
     "mathContext": "This problem connects divisor theory with coprimality, exploring how the prime structure of $n$ constrains consecutive divisors. The divisor list of $n$ is a total ordering of the divisor lattice, and coprime transitions correspond to 'jumps' between elements sharing no common prime factor — a condition that imposes strong combinatorial constraints on which divisor orderings can produce many coprime pairs.",
@@ -31,7 +31,7 @@
       "startLine": 26,
       "endLine": 36
     },
-    "type": "context",
+    "type": "concept",
     "title": "Mathlib Imports and Namespace",
     "content": "Imports **Nat.Basic**, **Nat.Prime.Defs**, and **Nat.Factorization.Basic** for number-theoretic definitions (primes, prime factors). **Finset.Basic** provides finite set operations for filtering divisors. **Real.Basic**, **Log.Basic**, and **Pow.Real** supply the real analysis framework needed for the asymptotic statements involving $\\exp$, $\\log$, and real exponentiation.",
     "mathContext": "The `open Real Nat Finset` directive brings these namespaces into scope, avoiding the need for qualified names throughout the file. The interplay between $\\mathbb{N}$ (for divisor counts) and $\\mathbb{R}$ (for asymptotic bounds) requires explicit coercions via $(\\cdot : \\mathbb{R})$.",
@@ -369,7 +369,7 @@
       "startLine": 224,
       "endLine": 255
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Problem Summary Theorem",
     "content": "**erdos_1100_summary** combines the three known results into a single conjunction, proved directly from the axioms:\n1. $\\tau^{\\perp}(n) \\geq \\omega(n)$ for all $n > 0$\n2. Equality $\\tau^{\\perp}(n) = \\omega(n)$ holds for infinitely many $n$\n3. $\\max_{n < x} \\tau^{\\perp}(n) > \\exp((\\log \\log x)^{2-\\varepsilon})$ for large $x$ (Erdős–Hall)",
     "mathContext": "This summary theorem serves as a 'state of the art' snapshot: three results are proved, three questions remain open. The conjunction structure mirrors how Erdős typically presented his problems — listing what is known and what remains, inviting others to close the gaps. The proof is trivial (citing the axioms directly) but the organizational value is in collecting the results.",

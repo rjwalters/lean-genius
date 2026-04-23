@@ -30,7 +30,7 @@
       "startLine": 1,
       "endLine": 14
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pigeonhole Principle: More Intervals than Possible Sum Values",
     "content": "The core argument: a sequence of length n has n(n+1)/2 distinct intervals (pairs (l,r) with l ≤ r). Each interval sum lies in [a, (a+K(n-1))·n]. If n(n+1)/2 exceeds the number of distinct integers in this range, the pigeonhole principle guarantees two intervals with the same sum. This gives a crude bound of roughly f(a,K) ~ (Kn)^(1/2), but this is the wrong direction—we need n large so there are many intervals. The actual bound requires tracking both the number of intervals and the range of sums more carefully.",
     "mathContext": "Number of intervals: $\\binom{n+1}{2} = n(n+1)/2$. Range of sums: at most $M = (a + Kn) \\cdot n - a \\approx Kn^2$. Pigeonhole gives: if $n(n+1)/2 > M \\approx Kn^2$, a collision exists. But $n(n+1)/2 > Kn^2$ requires $n < 1/(2K) - 1$, which is only useful for small $K$. The Hegyvári bound $f(a,K) \\ll a \\cdot e^{O(K)}$ uses a more refined argument.",
@@ -54,7 +54,7 @@
       "startLine": 1,
       "endLine": 14
     },
-    "type": "context",
+    "type": "concept",
     "title": "Hegyvári's 1986 Result: f(a,K) ≪ a·e^{O(K)}",
     "content": "Hegyvári [He86] proved the existence of f(a,K) with the exponential bound f(a,K) ≪ a·e^{O(K)}. The exponential dependence on K likely arises from an inductive argument: for gap bound K+1, one builds on the case K by considering how additional gaps interact. The key difficulty is that interval sums grow faster when gaps are large. Hegyvári himself noted the exponential seems improvable—he 'believes that the exponential dependence on K here is not best possible', suggesting a polynomial bound f(a,K) ≪ a·K^C may hold.",
     "mathContext": "$f(a, K) \\ll a \\cdot e^{O(K)}$ (Hegyvári 1986). The implicit constant in $e^{O(K)}$ is unspecified. For fixed $K$, $f(a,K) = O(a)$—linear in $a$. The conjecture is $f(a,K) \\ll a \\cdot K^c$ for some constant $c > 0$.",
@@ -106,7 +106,7 @@
     "title": "Mathlib Import: Available Tools for Formalization",
     "content": "Importing all of Mathlib gives access to the complete toolkit for a future formalization: `StrictMono` for the strictly-increasing condition, `Finset.Ico l r` for contiguous index intervals, `Finset.sum` for interval sums, and crucially `Finset.exists_ne_map_eq_of_card_lt_of_maps_to` — Mathlib's finitary pigeonhole principle. The pigeonhole lemma states: if |s| > |t| and f maps s into t, there exist distinct x, y ∈ s with f(x) = f(y). Applied with s = set of index-intervals and f = interval-sum function, it yields two intervals with the same sum once the number of intervals exceeds the range of sums.",
     "mathContext": "Key Mathlib lemmas: `Finset.exists_ne_map_eq_of_card_lt_of_maps_to : s.card > t.card → (∀ x ∈ s, f x ∈ t) → ∃ x ∈ s, ∃ y ∈ s, x ≠ y ∧ f x = f y`. Also: `Finset.card_Ico : (Finset.Ico l r).card = r - l`, `Finset.sum_Ico_eq_sum_range`, `StrictMono.lt_iff_lt`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Finset.exists_ne_map_eq_of_card_lt_of_maps_to",
       "StrictMono",
@@ -127,11 +127,11 @@
       "startLine": 18,
       "endLine": 23
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lean Stub: Formalizing the Bounded-Gap Sequence Condition",
     "content": "The current Lean content is `erdos_1213 : True := by sorry`. A formalization would require: (1) a type for strictly increasing bounded-gap sequences, expressible as `(f : ℕ → ℕ) (hstrict : StrictMono f) (hgap : ∀ i, f (i+1) - f i ≤ K)`; (2) a definition of interval sum `intervalSum f l r = ∑ i in Finset.Ico l r, f i`; (3) a proof that for n > f(a,K), there exist l₁ ≤ r₁ and l₂ ≤ r₂ with (l₁,r₁) ≠ (l₂,r₂) and `intervalSum f l₁ r₁ = intervalSum f l₂ r₂`. Mathlib's `Finset.exists_ne_map_eq_of_card_lt_of_maps_to` (finitary pigeonhole) is the key lemma.",
     "mathContext": "Lean 4 sketch: `def BoundedGapSeq (a K : ℕ) (n : ℕ) : Type := {f : Fin n → ℕ // f 0 = a ∧ StrictMono f ∧ ∀ i, f i.succ - f i ≤ K}`. Interval sum: `def S (f : Fin n → ℕ) (l r : Fin n) := ∑ i in Finset.Ico l r, f i`. Pigeonhole: `Finset.exists_ne_map_eq_of_card_lt_of_maps_to`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "StrictMono in Mathlib",
       "Finset.Ico",

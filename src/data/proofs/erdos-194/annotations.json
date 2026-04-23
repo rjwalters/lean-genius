@@ -43,7 +43,7 @@
       "startLine": 53,
       "endLine": 64
     },
-    "type": "technique",
+    "type": "concept",
     "title": "AP Characterization",
     "content": "**ap3_iff_avg:**\n\nx, y, z form an AP if and only if 2y = x + z.\n\n**Proof:**\nFrom y - x = z - y, adding y to both sides gives 2y - x = z, hence 2y = x + z.\n\nThis equivalent form is often easier to check computationally.",
     "significance": "supporting",
@@ -239,7 +239,7 @@
       "startLine": 289,
       "endLine": 299
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_194_summary:**\n\nCombines the main results:\n1. Chaotic orderings exist for infinite sets\n2. The construction extends to all k >= 3\n\n**Historical Note:** This result disproves the natural conjecture that any enumeration of a dense set must contain monotone APs. The construction is counterintuitive and elegant.",
     "significance": "key",

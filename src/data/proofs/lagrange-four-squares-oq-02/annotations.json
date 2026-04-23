@@ -28,9 +28,9 @@
     "id": "annotation-general-type-proof-technique",
     "lineStart": 188,
     "lineEnd": 230,
-    "type": "technique",
+    "type": "concept",
     "mathContext": "The proof of `trivialType_contribution (k : ℕ) (hk : 0 < k) : contribution = 8` exemplifies the general pattern used for all 6 type families. Step 1: `have h1 : (trivialType 1).contribution = 8 := by native_decide` — verify the canonical instance. Step 2: `suffices hp : (trivialType k).permutations = (trivialType 1).permutations` — reduce to showing permutation counts match. Step 3: `unfold RepType.permutations trivialType; simp only; congr 1; simp [List.dedup, List.count, hne]` — show the dedup/count structure of $[0,0,0,k]$ matches $[0,0,0,1]$ since both have dedup $[0,v]$ with counts $[3,1]$ for any $v \\neq 0$. Step 4: The sign factor equality follows from `trivialType_nonzeroCount` (nonzero count = 1 for all $k > 0$) + `simp [RepType.signFactor]`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "List.dedup and List.count in Lean 4",
       "congr tactic for structural equality",

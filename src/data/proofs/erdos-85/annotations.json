@@ -122,7 +122,7 @@
       "startLine": 107,
       "endLine": 115
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Asymptotic Behavior",
     "content": "**minDegreeForC4_asymptotic** states that f(n)/√n → 1 as n → ∞.\n\nThis means f(n) = (1 + o(1))√n: the threshold grows like the square root of the number of vertices.\n\n**Why an axiom?** This is a known result from extremal graph theory, but formalizing the proof requires substantial machinery.",
     "mathContext": "Formally: `Tendsto (fun n => f(n)/√n) atTop (𝓝 1)` says the ratio converges to 1.",

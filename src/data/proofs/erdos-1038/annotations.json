@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 19
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Statement",
     "content": "**Erdős Problem #1038** asks: for monic polynomials f with all roots in [-1,1], what are the minimum and maximum possible measures of the set {x : |f(x)| < 1}?\n\nThis \"sublevel set\" is where the polynomial stays small (absolute value less than 1). The answer reveals deep connections between polynomial structure and measure theory.",
     "mathContext": "The problem was posed by Erdős, Herzog, and Piranian in 1958. They conjectured the supremum is 2√2, which Terence Tao proved in December 2025 using logarithmic potential theory.",
@@ -101,7 +101,7 @@
       "startLine": 55,
       "endLine": 63
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Supremum = 2√2 (Tao 2025)",
     "content": "**The main result**: the largest possible sublevel measure is exactly 2√2 ≈ 2.828.\n\nThis is achieved (in the limit) by polynomials approaching (x-1)(x+1) = x² - 1. For this polynomial, the sublevel set is (-√2, 0) ∪ (0, √2), which has measure 2√2.",
     "mathContext": "Tao's proof uses logarithmic potential theory and the connection between polynomial sublevel sets and equilibrium measures. The supremum is taken over all valid monic polynomials.",
@@ -120,7 +120,7 @@
       "startLine": 73,
       "endLine": 79
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Infimum Lower Bound",
     "content": "**The infimum is at least 2^(4/3) - 1 ≈ 1.519.**\n\nNo matter how you construct a valid polynomial, you cannot make the sublevel set smaller than this. The lower bound comes from potential-theoretic arguments.",
     "mathContext": "The formula 2^(4/3) - 1 ≈ 1.5198 arises from analyzing logarithmic potentials and equilibrium measures on [-1,1].",
@@ -139,7 +139,7 @@
       "startLine": 81,
       "endLine": 86
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Infimum Upper Bound",
     "content": "**The infimum is less than 1.835.**\n\nThis is witnessed by explicit polynomial constructions — specific polynomials that achieve sublevel measures close to this bound.",
     "mathContext": "The gap between 1.519 and 1.835 represents our current uncertainty about the exact infimum. Closing this gap remains an open problem.",

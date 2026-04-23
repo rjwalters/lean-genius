@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 50
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Continuum Hypothesis: Independence Framework",
     "content": "The file imports Mathlib's cardinal and ordinal infrastructure, plus a companion file `ContinuumHypothesis.lean` that formalizes the Gödel-Cohen independence results. The namespace `CantorDiagOQ01OQ01` opens `Cardinal` and `ContinuumHypothesis`. The doc-comment outlines two categories: (1) ZFC-provable facts (no axioms) including the CH ↔ no-intermediate equivalence and König's constraint, and (2) axiomatized facts (Easton's theorem, large cardinal connections) for which the full proofs require advanced forcing theory.",
     "mathContext": "The key definitions from `ContinuumHypothesis.lean`: `CH : Prop` (the Continuum Hypothesis $2^{\\aleph_0} = \\aleph_1$), `GCH : Prop` (the Generalized Continuum Hypothesis $2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$ for all $\\alpha$), `continuum := (2 : Cardinal) ^ \\aleph_0$, `aleph_one := Cardinal.aleph 1`. The independence results `ch_consistent_with_zfc` and `not_ch_consistent_with_zfc` are imported from the companion file.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Continuum Hypothesis",
       "ZFC set theory",
@@ -127,7 +127,7 @@
       "startLine": 172,
       "endLine": 198
     },
-    "type": "technique",
+    "type": "concept",
     "title": "König's Constraint: The Only ZFC-Provable Bound on 2^ℵ₀",
     "content": "`KonigConstraint` states that if $2^{\\aleph_0} = \\aleph_\\alpha$, then $\\mathrm{cf}(\\aleph_\\alpha) > \\aleph_0$: the continuum must have uncountable cofinality. This rules out $2^{\\aleph_0} = \\aleph_\\omega$ (since $\\mathrm{cf}(\\aleph_\\omega) = \\omega = \\aleph_0$). `easton_consistent_values` is a placeholder (trivially true) representing Easton's 1970 theorem: every regular uncountable cardinal is a consistent value for $2^{\\aleph_0}$. Together these give the complete ZFC picture: $2^{\\aleph_0}$ can be any regular uncountable cardinal, and König's constraint is the only restriction.",
     "mathContext": "König's theorem (1905): $\\mathrm{cf}(\\sum_i \\kappa_i) > \\sup_i \\kappa_i$ for any increasing sequence. Applied to $2^{\\aleph_0} = \\aleph_\\omega$: $\\aleph_\\omega = \\sum_{n < \\omega} \\aleph_n$, so $\\mathrm{cf}(\\aleph_\\omega) = \\omega$, but $2^{\\aleph_0} \\geq \\aleph_n^{\\aleph_0} \\geq \\aleph_n$ for all $n$ gives $\\mathrm{cf}(2^{\\aleph_0}) > \\omega$. Contradiction. Easton's complement: for regular $\\kappa \\geq \\aleph_1$, there's a class forcing model where $2^{\\aleph_0} = \\kappa$.",

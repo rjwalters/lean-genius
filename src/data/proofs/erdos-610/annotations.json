@@ -102,7 +102,7 @@
       "startLine": 68,
       "endLine": 91
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Properties",
     "content": "univ_is_transversal proves V is always a transversal (every clique contains some vertex). tau_le_card gives τ ≤ n (sorry). tau_empty asserts τ(⊥) = n for the empty graph (sorry): every singleton is maximal, so we need all n vertices. tau_complete asserts τ(⊤) = 1 (sorry): the whole vertex set is the unique maximal clique.",
     "mathContext": "The extreme cases reveal the range of $\\tau$: from $\\tau = 1$ (complete graph, one maximal clique) to $\\tau = n$ (empty graph, $n$ singleton maximal cliques). For the empty graph $\\bot$: $\\texttt{IsMaximalClique}(\\bot, \\{v\\})$ for each $v$ because $\\{v\\}$ has no edges (clique trivially) and any superset $\\{v, w\\}$ fails (no edge $v \\sim w$). For the complete graph $\\top$: $V$ is the unique maximal clique, so any single vertex hits it. The three sorry entries are structural lemmas that would follow from the definitions with some Finset manipulation.",
@@ -291,7 +291,7 @@
       "startLine": 203,
       "endLine": 223
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: erdos_610_known (OPEN)",
     "content": "erdos_610_known simply applies erdos_gallai_tuza to restate the known bound. erdos_610_open is a trivial tautology (Iff.rfl) recording that Question 1 remains open. The #check commands verify type-correctness of the key definitions.",
     "mathContext": "The main theorem $\\texttt{erdos\\_610\\_known}$ is just $\\texttt{erdos\\_gallai\\_tuza}$ restated. The 'proof' $\\texttt{erdos\\_610\\_open} : \\texttt{Question1} \\leftrightarrow \\texttt{Question1} = \\texttt{Iff.rfl}$ is a formal placeholder recording the open status — it carries no mathematical content. The file has 17 sorry entries: 1 definition sorry ($\\texttt{triangleFreeIndependence}$), 1 axiom sorry ($\\texttt{erdos\\_gallai\\_tuza}$), and 15 theorem sorries (basic properties, special cases, implications).",

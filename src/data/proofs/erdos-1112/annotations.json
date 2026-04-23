@@ -133,7 +133,7 @@
       "startLine": 160,
       "endLine": 168
     },
-    "type": "technique",
+    "type": "concept",
     "title": "r₃(2,3) Does Not Exist (Proved)",
     "content": "**r3_23_not_exists:**\n\n```lean\ntheorem r3_23_not_exists : ¬RkExists 3 2 3\n```\n\nThis theorem is fully proved from the BHJ axioms. The proof proceeds by contradiction: assume some r works, then use bhj_r_lacunary to get a counterexample B that defeats all A with [2,3] gaps, contradicting the avoidance assumption.\n\nThe proof uses the equivalence between ThreeFoldSumset and KFoldSumset 3.",
     "significance": "key",
@@ -187,7 +187,7 @@
       "startLine": 203,
       "endLine": 210
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: The Dichotomy",
     "content": "**erdos_1112:**\n\n```lean\ntheorem erdos_1112 :\n    (∀ a b : ℕ, a ≥ 1 → b > a → b ≠ 2 * a → RkExists 2 a b) ∧\n    (¬RkExists 3 2 3)\n```\n\nThis combines Chen's generalization (k=2 works broadly) with the BHJ impossibility (k=3 fails), capturing the essential phase transition of Erdős Problem #1112.",
     "significance": "key",

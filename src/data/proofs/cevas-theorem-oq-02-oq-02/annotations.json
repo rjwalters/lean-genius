@@ -52,7 +52,7 @@
       "startLine": 94,
       "endLine": 102
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Factoring the Product of Ratios via Finset.prod_div_distrib",
     "content": "The theorem ceva_product_eq_ratio applies Finset.prod_div_distrib to factor the product of individual ratios into a ratio of products. This Mathlib lemma states that the product of f(i)/g(i) equals (product of f(i))/(product of g(i)). This factoring is the critical algebraic step that transforms the componentwise ratio condition into a global balance condition on the weight products, enabling all subsequent results.",
     "mathContext": "\\prod_i \\frac{\\beta_i}{\\alpha_i} = \\frac{\\prod_i \\beta_i}{\\prod_i \\alpha_i}",
@@ -73,7 +73,7 @@
       "startLine": 104,
       "endLine": 123
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: Weight Balance Characterizes Concurrency",
     "content": "The polygon_ceva_weight_balance theorem establishes the biconditional: the Ceva product equals 1 if and only if the product of all alpha weights equals the product of all beta weights. The forward direction uses div_eq_one_iff_eq (valid since the alpha product is nonzero by positivity), while the reverse uses div_self. This dimension-independent criterion works uniformly for triangles, quadrilaterals, pentagons, and all higher polygons.",
     "mathContext": "\\prod_{i=0}^{n-1} \\frac{\\beta_i}{\\alpha_i} = 1 \\iff \\prod_{i=0}^{n-1} \\alpha_i = \\prod_{i=0}^{n-1} \\beta_i",
@@ -118,7 +118,7 @@
       "startLine": 145,
       "endLine": 161
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Novel Quadrilateral Ceva Theorem for Spherical Geometry",
     "content": "The quadrilateral_ceva theorem provides the n=4 specialization, yielding the condition alpha_0 * alpha_1 * alpha_2 * alpha_3 = beta_0 * beta_1 * beta_2 * beta_3. This is identified as a new result not commonly found in classical geometry textbooks, which typically stop at the triangle case. The proof applies Fin.prod_univ_four followed by ring_nf to normalize the product expression into canonical multiplicative form.",
     "mathContext": "\\alpha_0 \\cdot \\alpha_1 \\cdot \\alpha_2 \\cdot \\alpha_3 = \\beta_0 \\cdot \\beta_1 \\cdot \\beta_2 \\cdot \\beta_3",
@@ -209,7 +209,7 @@
       "startLine": 297,
       "endLine": 318
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Connecting Angle-Based and Weight-Based Formulations",
     "content": "The angle_product_from_weight_ratios theorem bridges the geometric (angle-based) and algebraic (weight-based) formulations of the polygon Ceva condition. Given any function sinRatio satisfying sinRatio(i) = beta_i/alpha_i (the sin-ratio formula from CevasTheoremOQ02OQ01), the product of sinRatio values equals 1 if and only if the weight balance holds. This abstraction avoids re-proving the sin-ratio formula and composes cleanly with the main theorem via equational substitution.",
     "mathContext": "\\prod_i \\frac{\\sin(\\angle P_i C Q_i)}{\\sin(\\angle Q_i C P_{i+1})} = 1 \\iff \\prod_i \\alpha_i = \\prod_i \\beta_i",

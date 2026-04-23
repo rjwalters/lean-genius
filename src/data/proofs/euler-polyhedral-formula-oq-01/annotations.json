@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 8
     },
-    "type": "context",
+    "type": "concept",
     "title": "Mathlib Graph Theory Imports",
     "content": "The file imports five Mathlib modules for graph theory. `SimpleGraph.Basic` provides the `SimpleGraph` type class, adjacency predicates, and basic graph operations. `SimpleGraph.Finite` adds finiteness infrastructure. `SimpleGraph.DegreeSum` provides the handshaking lemma `sum_degrees_eq_twice_card_edges`. `SimpleGraph.Coloring` supplies the `Colorable n` predicate and `Coloring.mk` constructor. `SimpleGraph.Connectivity.Connected` provides connectivity predicates. The `Int.Basic` import is needed for integer arithmetic in Euler's formula, since V - E + F = 2 requires working in the integers to avoid natural number subtraction pitfalls.",
     "mathContext": "The handshaking lemma: $\\sum_{v \\in V} \\deg(v) = 2|E|$. This is `G.sum_degrees_eq_twice_card_edges` in Mathlib, used to prove that $2|E| \\geq 6|V|$ when all degrees are $\\geq 6$, contradicting $|E| \\leq 3|V|-6$.",
@@ -30,7 +30,7 @@
       "startLine": 58,
       "endLine": 111
     },
-    "type": "technique",
+    "type": "concept",
     "title": "SpanningBuild: Inductive Proof of Euler's Formula",
     "content": "The `SpanningBuild` inductive type is the central innovation of this file. It models connected planar graph construction with three constructors: `single` (one vertex, no edges, one outer face), `addTreeEdge` (extend the spanning tree — adds a vertex and an edge, preserving face count), and `addCycleEdge` (add a non-tree edge — splits an existing face, so edges and faces each increase by 1). Euler's formula `eulerChar = 2` follows immediately by structural induction: each constructor preserves the invariant. The `single` case: 1 - 0 + 1 = 2. The `addTreeEdge` case: (V+1) - (E+1) + F = V - E + F = 2. The `addCycleEdge` case: V - (E+1) + (F+1) = V - E + F = 2. The proof requires only `push_cast` and `linarith`.",
     "mathContext": "The spanning tree approach to Euler's formula: start with a spanning tree ($T$ on $V$ vertices has $V-1$ edges, $F=1$). Each of the $E - (V-1)$ non-tree edges adds one face. Final face count: $F = 1 + (E - V + 1) = E - V + 2$. Thus $V - E + F = V - E + (E-V+2) = 2$.",
@@ -198,7 +198,7 @@
       "startLine": 725,
       "endLine": 767
     },
-    "type": "technique",
+    "type": "concept",
     "title": "LocalPlanarEmbedding: Self-Contained Planarity Structure",
     "content": "The `LocalPlanarEmbedding` structure provides a self-contained axiomatization of planarity for a specific graph, avoiding the need for a global planarity predicate or the `planarity_hereditary` axiom. It packages three fields: `faceCount : ℕ` (the number of faces in the embedding), `face_pos : 1 ≤ faceCount` (at least the outer face), and `euler` (Euler's formula as an equality). This structure-based approach means K₅ non-planarity, the edge bound, and the Six Color Theorem can all be derived from the structure's axiom, making the results self-contained within Part 11 of the file. The `local_edge_bound_planar` theorem derives $E \\leq 3V-6$ using `linarith [emb.euler]` together with the triangulation hypothesis.",
     "mathContext": "From `euler`: $|V| - |E| + F = 2$, so $F = |E| - |V| + 2$. From triangulation: $3F \\leq 2|E|$, substituting: $3(|E| - |V| + 2) \\leq 2|E|$, hence $|E| \\leq 3|V| - 6$. The `face_pos` field ensures $F \\geq 1$, consistent with connected graphs where $F \\geq 1$ always holds.",

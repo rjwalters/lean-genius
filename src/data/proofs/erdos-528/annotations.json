@@ -105,7 +105,7 @@
       "startLine": 91,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Submultiplicativity",
     "content": "`submultiplicativity`: $f(m+n, k) \\leq f(m, k) \\cdot f(n, k)$. An $(m+n)$-step SAW can be decomposed into an $m$-step prefix and an $n$-step suffix (translated to start at the origin), but the concatenation of two independent SAWs may self-intersect — hence the inequality.",
     "mathContext": "Submultiplicativity is the crucial structural property of SAW counts. It follows because: given an $(m+n)$-step SAW, its first $m$ steps form an $m$-step SAW and its last $n$ steps (translated) form an $n$-step SAW. The reverse fails because concatenating two SAWs may create self-intersections. Combined with Fekete's lemma, this implies $\\lim f(n,k)^{1/n}$ exists.",
@@ -125,7 +125,7 @@
       "startLine": 95,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hammersley-Morton (1954): Limit Exists",
     "content": "`limit_exists`: $\\exists C > 0$ such that $(f(n,k))^{1/n} \\to C$ as $n \\to \\infty$. This fundamental result follows from submultiplicativity via **Fekete's lemma**: if $\\{a_n\\}$ is submultiplicative ($a_{m+n} \\leq a_m \\cdot a_n$), then $\\lim a_n^{1/n} = \\inf a_n^{1/n}$.",
     "mathContext": "Fekete's lemma (1923) states that for a submultiplicative sequence, the limit of $n$-th roots equals the infimum. Applied to $a_n = f(n,k)$, this gives $C_k = \\inf_n f(n,k)^{1/n}$. The positivity $C > 0$ follows from $f(n,k) \\geq k^n$ (the lower bound). The `Tendsto` formulation uses Mathlib's filter-based limits.",
@@ -166,7 +166,7 @@
       "startLine": 120,
       "endLine": 123
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Bounds: k ≤ μ_k ≤ 2k-1",
     "content": "`trivial_bounds` is a **genuine theorem** (not an axiom): $(k : \\mathbb{R}) \\leq \\mu_k \\wedge \\mu_k \\leq 2k - 1$. The proof combines the axiomatized lower and upper bounds via anonymous constructor `⟨⟩`.",
     "mathContext": "**Lower bound:** At each step, a SAW in $\\mathbb{Z}^k$ can move in at least one new direction per axis pair, giving $f(n,k) \\geq k^n$ and thus $\\mu_k \\geq k$.\n**Upper bound:** After the first step, at most $2k-1$ of the $2k$ neighbors are available (you can't return), giving $f(n,k) \\leq 2k \\cdot (2k-1)^{n-1}$ and thus $\\mu_k \\leq 2k-1$.",
@@ -185,7 +185,7 @@
       "startLine": 130,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kesten's Asymptotic (1963)",
     "content": "`kesten_asymptotic`: $\\mu_k = 2k - 1 - \\frac{1}{2k} + R/k^2$ where $|R| \\leq 1$. The first-order version `kesten_first_order` gives $|\\mu_k - (2k-1)| \\leq 1/k$ for $k \\geq 2$.",
     "mathContext": "Kesten's result shows the trivial upper bound $2k-1$ is asymptotically sharp: $\\mu_k / (2k-1) \\to 1$ as $k \\to \\infty$. The correction $-1/(2k)$ comes from the probability that a SAW's immediate neighborhood blocks an extra direction. The remainder $R/k^2$ with $|R| \\leq 1$ is a rigorous error bound, not just big-O notation.",
@@ -205,7 +205,7 @@
       "startLine": 149,
       "endLine": 161
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Two-Dimensional Bounds and Computation",
     "content": "Rigorous bounds $2.62 \\leq \\mu_2 \\leq 2.696$ (Conway-Guttmann 1993, Alm 1993) and high-precision computation $|\\mu_2 - 2.6381585303279| < 10^{-12}$ (Jacobsen-Scullard-Guttmann 2016). The `two_d_bounds` theorem is a **genuine proof** combining the two bound axioms.",
     "mathContext": "The 2D connective constant $\\mu_2 \\approx 2.638$ has been computed to extraordinary precision but has no known closed form. The rigorous bounds use generating function analysis and transfer matrix methods. The Conway-Guttmann lower bound $2.62$ comes from analyzing specific SAW configurations, while Alm's upper bound $2.696$ uses pattern-avoidance arguments.",
@@ -225,7 +225,7 @@
       "startLine": 171,
       "endLine": 177
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Higher-Dimensional Asymptotics",
     "content": "`large_k_limit`: $\\mu_k / k \\to 2$ as $k \\to \\infty$, and `normalized_limit`: $\\mu_k / (2k-1) \\to 1$. These formalize that for high dimensions, the connective constant approaches the trivial upper bound.",
     "mathContext": "In high dimensions, SAWs are less constrained because the lattice has more room to avoid self-intersections. As $k \\to \\infty$, the probability that a random walk self-intersects approaches zero, so $\\mu_k$ approaches the unrestricted walk growth rate $(2k-1)$. The ratio $\\mu_k / k \\to 2$ follows from $\\mu_k \\approx 2k - 1 \\approx 2k$ for large $k$.",
@@ -245,7 +245,7 @@
       "startLine": 184,
       "endLine": 198
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Honeycomb Lattice: Exact Value √(2+√2)",
     "content": "`mu_honeycomb` = $\\sqrt{2 + \\sqrt{2}} \\approx 1.8478$ is the exact connective constant for the honeycomb (hexagonal) lattice. The `honeycomb_exact` axiom asserts this value exists with $0 < \\mu_{\\text{hex}} < 2$.",
     "mathContext": "Duminil-Copin and Smirnov (2012, contributing to Smirnov's Fields Medal) proved this using **discrete holomorphicity** and **parafermionic observables** — techniques from conformal field theory applied to combinatorics. This is the only lattice for which the connective constant has a known exact closed form. The honeycomb lattice has coordination number 3 (each vertex has 3 neighbors), lower than the square lattice's 4.",

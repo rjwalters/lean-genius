@@ -117,7 +117,7 @@
       "startLine": 171,
       "endLine": 198
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Quantitative Bounds",
     "content": "**Current Best Bounds:**\n\n**Lower Bound (Radziszowski-Xu 2007):**\nf(2,3,4) >= 19\n\n**Upper Bound (Dudek-Rodl 2008):**\nf(2,3,4) <= 941\n\n```lean\ntheorem folkman_bounds : 19 <= folkmanNumber_2_3_4 and folkmanNumber_2_3_4 <= 941\n```\n\n**Spencer's Bound (1988):**\nf(2,3,4) <= 3 x 10^9, which resolved Erdos's $100 challenge for < 10^10 vertices.",
     "mathContext": "The gap between 19 and 941 remains one of the intriguing open problems. Radziszowski-Xu conjecture the true value is <= 127.",
@@ -210,7 +210,7 @@
       "startLine": 307,
       "endLine": 320
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Results Summary",
     "content": "**erdos_582_summary:**\n\nCombines all main results:\n1. Such graphs exist (Folkman 1970)\n2. 19 <= f(2,3,4) <= 941 (current bounds)\n3. Conjecture: f(2,3,4) <= 127\n\n```lean\ntheorem erdos_582_summary :\n    (exists ... isFolkmanGraph G) and\n    19 <= folkmanNumber_2_3_4 and\n    folkmanNumber_2_3_4 <= 941\n```",
     "significance": "key",

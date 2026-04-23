@@ -80,7 +80,7 @@
       "startLine": 117,
       "endLine": 129
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Primitive Implies Condition",
     "content": "**primitive_satisfies_condition:**\n\nEvery primitive set satisfies the multiplicative condition.\n\n```lean\ntheorem primitive_satisfies_condition (A : Finset ℕ) (hA : IsPrimitive A) :\n    SatisfiesCondition A\n```\n\n**Proof idea:** If a | b in a primitive set, then a = b, so t = 1 (contradiction with t > 1).",
     "significance": "key",
@@ -210,7 +210,7 @@
       "startLine": 284,
       "endLine": 298
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #858: SOLVED",
     "content": "**erdos_858_solution:**\n\nThe maximum of (1/log N) Σ 1/n over sets satisfying the condition is o(1).\n\n```lean\ntheorem erdos_858_solution :\n    ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,\n    ∀ A : Finset ℕ, InRange A N → SatisfiesCondition A →\n    weightedSum A N < ε :=\n  alexander_1966\n```\n\nThe solution follows directly from Alexander's result.",
     "significance": "key",
@@ -228,7 +228,7 @@
       "startLine": 309,
       "endLine": 321
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Connection to Problem #143",
     "content": "**weaker_than_primitive:**\n\nProblem #858 is a weaker variant of the primitive set problem (#143).\n\n```lean\ntheorem weaker_than_primitive :\n    ∀ A : Finset ℕ, IsPrimitive A → SatisfiesCondition A :=\n  primitive_satisfies_condition\n```\n\nThe multiplicative condition allows some divisibility (with small prime factor multipliers).",
     "mathContext": "See also Erdős Problem #143 for the primitive set version.",
@@ -245,7 +245,7 @@
       "startLine": 327,
       "endLine": 349
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "**erdos_858_summary:**\n\nCombines the main results.\n\n```lean\ntheorem erdos_858_summary :\n    (∀ A, IsPrimitive A → SatisfiesCondition A) ∧\n    (∀ ε > 0, ∃ N₀, ∀ N ≥ N₀, ∀ A, InRange A N → SatisfiesCondition A →\n     weightedSum A N < ε)\n```\n\n**Key Results:**\n1. Primitive ⟹ Condition\n2. Maximum weighted sum is o(1)\n3. Behrend: O(1/√(log log N)) for primitive sets\n\n**Status:** SOLVED",
     "significance": "key",

@@ -79,7 +79,7 @@
       "startLine": 85,
       "endLine": 114
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Faudree Bounds",
     "content": "**trivial_upper_bound:** $f(n) \\le 2^{n-2}$ since $A \\subseteq \\{3,\\ldots,n\\}$ and $|\\{3,\\ldots,n\\}| = n-2$.\n\n**erdos_faudree_lower_bound:** $f(n) > 2^{n/2}$ for $n \\ge 6$. The construction uses graphs where roughly $n/2$ cycle lengths can be independently controlled: for each subset of these lengths, there exists a graph realizing exactly that subset plus possibly some forced lengths. This shows at least $2^{n/2}$ distinct cycle sets exist.\n\n**erdos_faudree_bounds:** The combination $2^{n/2} < f(n) \\le 2^{n-2}$, proved as a conjunction of the two axioms. This is the only proved theorem in this section, assembling the axiomatized bounds.",
     "mathContext": "$2^{\\lfloor n/2 \\rfloor} < f(n) \\le 2^{n-2}$. Taking $n$-th roots: $\\sqrt{2} < f(n)^{1/n} \\le 2^{(n-2)/n} \\to 2$. So the exponential growth rate $f(n)^{1/n}$ is between $\\sqrt{2} \\approx 1.414$ and $2$.",
@@ -246,7 +246,7 @@
       "startLine": 238,
       "endLine": 279
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorems",
     "content": "**erdos_84_summary:** Packages the two main established results:\n1. $f(n) = o(2^n)$ (Part 1, from `part1_solved`)\n2. Not all subsets are achievable (from `structural_constraint`)\n\nProved by `exact ⟨part1_solved, structural_constraint⟩`.\n\n**erdos_84:** A simplified alias stating just Part 1: $f = o(2^n)$. This is the headline result, directly from `part1_solved`.\n\nThe formalization captures the full state of knowledge: Part 1 solved with quantitative bounds (Verstraëte, Nenadov), Part 2 and the limit question both open, and structural constraints as the underlying mechanism.",
     "mathContext": "$f(n) = o(2^n)$ and $\\exists$ non-achievable cycle sets. Combined with the open Part 2, the complete picture is: $2^{n/2} < f(n) \\ll 2^{n - \\sqrt{n}}$, with the lower bound sharpness and limit existence both unknown.",

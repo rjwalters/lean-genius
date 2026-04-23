@@ -5,7 +5,7 @@
       "startLine": 9,
       "endLine": 55
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Moment Hierarchy: Why E[|X|] < ∞ Is the True Threshold",
     "mathContext": "The moment hierarchy for LLN: $$E[X^2] < \\infty \\;\\Rightarrow\\; E[|X|] < \\infty \\;\\Rightarrow\\; \\text{SLLN} \\;\\Rightarrow\\; \\text{WLLN}.$$ The first implication is strict: Pareto$(\\alpha, x_m)$ with $1 < \\alpha \\leq 2$ satisfies $E[X] = \\alpha x_m/(\\alpha-1) < \\infty$ but $E[X^2] = \\infty$. Cauchy$(0,1)$ has $E[|X|] = \\infty$ and the LLN fails: by $1$-stability, $(X_1 + \\cdots + X_n)/n \\sim \\text{Cauchy}(0,1)$ for all $n$, so the sample mean never concentrates.",
     "significance": "key",
@@ -32,7 +32,7 @@
       "startLine": 69,
       "endLine": 91
     },
-    "type": "technique",
+    "type": "concept",
     "title": "SLLN Under Finite Mean: One-Line Mathlib Application",
     "mathContext": "Kolmogorov's Strong Law (Mathlib): for $X: \\mathbb{N} \\to \\Omega \\to \\mathbb{R}$ i.i.d. and integrable, $$\\text{for a.e. }\\omega: \\quad \\frac{1}{n}\\sum_{i=0}^{n-1} X_i(\\omega) \\xrightarrow{n\\to\\infty} \\int X_0 \\, d\\mu.$$ `strong_law_ae` takes: `hint` (integrability), `hindep` (pairwise independence as `IndepFun`), `hident` (identical distribution as `IdentDistrib`). The `IdentDistrib` condition requires the pushforward measures $\\mu \\circ X_i^{-1}$ to coincide, which is stronger than just equal moments.",
     "significance": "key",
@@ -58,7 +58,7 @@
       "startLine": 97,
       "endLine": 116
     },
-    "type": "technique",
+    "type": "concept",
     "title": "WLLN from SLLN via Almost Sure Implies In-Measure Convergence",
     "mathContext": "Convergence hierarchy: $X_n \\to X$ a.s. $\\Rightarrow$ $X_n \\xrightarrow{\\mu} X$ (in measure) $\\Leftrightarrow$ $X_n \\xrightarrow{P} X$ (in probability, on prob. spaces). The reverse fails in general. `tendstoInMeasure_of_tendsto_ae` in Mathlib formalizes the forward direction: for $\\varepsilon > 0$, $\\mu(\\{\\omega : |S_n(\\omega)/n - \\mu| > \\varepsilon\\}) \\to 0$ follows from the a.s. convergence filter statement.",
     "significance": "key",
@@ -82,7 +82,7 @@
       "startLine": 137,
       "endLine": 152
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Necessity of Finite Mean: Kolmogorov's Converse as Axiom",
     "mathContext": "**Necessity argument** (Kolmogorov): if $E[|X_0|] = \\infty$, then $\\sum_n P(|X_n| > n) = \\infty$ (since $\\sum_n P(|X| > n) = E[|X|]$ by Fubini). By the second Borel-Cantelli lemma (independence), $|X_n| > n$ infinitely often a.s. But then $|X_n/n| > 1$ i.o., preventing Cesàro convergence. Formally: $n^{-1}|X_n| \\leq |S_n/n| + \\frac{n-1}{n}|S_{n-1}/(n-1)|$, so divergence of $|X_n/n|$ implies divergence of $|S_n/n|$.",
     "significance": "key",
@@ -131,7 +131,7 @@
       "startLine": 191,
       "endLine": 229
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kolmogorov's Complete Biconditional Characterization of SLLN",
     "mathContext": "The full Kolmogorov characterization: for i.i.d. $X_0, X_1, \\ldots$ on a probability space, $$E[|X_0|] < \\infty \\iff \\exists c \\in \\mathbb{R},\\; \\frac{1}{n}\\sum_{i=0}^{n-1} X_i \\xrightarrow{\\text{a.s.}} c.$$ Moreover, when the limit exists, $c = E[X_0]$ necessarily (by uniqueness of limits). The `∃ c` quantifier in the Lean statement reflects the necessity direction — it's enough to know *some* constant limit exists to conclude integrability.",
     "significance": "key",
@@ -156,7 +156,7 @@
       "startLine": 306,
       "endLine": 327
     },
-    "type": "technique",
+    "type": "concept",
     "title": "SLLN for f(Xᵢ): The Foundation of Monte Carlo Integration",
     "mathContext": "**Monte Carlo integration**: to estimate $\\int f \\, d\\mu$ (analytically intractable), draw i.i.d. $X_1, \\ldots, X_n \\sim \\mu$ and use $\\hat{\\mu}_n = n^{-1}\\sum_{i=1}^n f(X_i) \\xrightarrow{\\text{a.s.}} \\int f \\, d\\mu$ — requiring only $E[|f(X)|] < \\infty$, no smoothness. Also the **sample analog principle**: $n^{-1}\\sum g(X_i) \\to E[g(X)]$ as an estimator for $E[g(X)]$. The independence propagation `IndepFun.comp` works because measurable functions of independent random variables are independent.",
     "significance": "key",

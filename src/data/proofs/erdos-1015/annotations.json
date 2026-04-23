@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 43
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Documentation and References",
     "content": "The header documents Erdős Problem #1015 on partitioning 2-colored complete graphs into monochromatic cliques. Key references: Moon (1966) proved $f(3)=4$, and Burr-Erdős-Spencer (1975) gave the exact formula $f(t) = R(t,t-1) + x$ with $0 \\le x < t$. The problem sits at the intersection of Ramsey theory and graph partitioning—the leftover is controlled by an off-diagonal Ramsey number.",
     "mathContext": "$f(t) = \\sup_n \\max_c \\min_P |V(K_n) \\setminus \\bigcup P|$ where $c$ ranges over 2-colorings and $P$ over partitions into monochromatic $K_t$'s",

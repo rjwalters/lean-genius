@@ -140,7 +140,7 @@
       "startLine": 63,
       "endLine": 68
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Herzog–Piranian (1968): lim sup ν(r) = ∞",
     "content": "Fritz Herzog and George Piranian (1968) resolved Question 1 affirmatively: there exists a non-monomial entire function $f$ such that $\\limsup_{r \\to \\infty} \\nu(r) = \\infty$. The formalization states this as: for every $N \\in \\mathbb{N}$, there exists such an $f$ and arbitrarily large $r$ with $\\nu(r) \\ge N$. The construction uses a carefully chosen lacunary series where the dominant term rotates to create many near-maximum points.",
     "mathContext": "$\\exists f \\text{ entire, non-monomial}: \\limsup_{r \\to \\infty} \\nu(r) = \\infty$, i.e., $\\forall N,\\, \\forall R,\\, \\exists r > R : \\nu(r) \\ge N$.",

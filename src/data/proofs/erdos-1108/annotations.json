@@ -44,7 +44,7 @@
       "startLine": 50,
       "endLine": 68
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Factorial Sum Examples",
     "content": "We prove concrete membership: 0 (empty sum), 1 = 0!, 2 = 2!, 6 = 3!, 24 = 4! are all factorial sums.",
     "mathContext": "The first several factorial sums are: 0, 1, 2, 3 (=1!+2!), 6, 7 (=1!+3!), 8 (=2!+3!), 9 (=1!+2!+3!), 24, ...",
@@ -82,7 +82,7 @@
       "startLine": 83,
       "endLine": 86
     },
-    "type": "technique",
+    "type": "concept",
     "title": "1 is Powerful",
     "content": "**one_is_powerful**: 1 is vacuously powerful since no prime divides 1.",
     "mathContext": "The proof uses Nat.eq_one_of_dvd_one: if p | 1 then p = 1, but primes are > 1, contradiction.",

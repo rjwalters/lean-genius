@@ -126,7 +126,7 @@
   {
     "id": "erdos-1135-basic",
     "proofId": "erdos-1135",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 39,
       "endLine": 45
@@ -151,7 +151,7 @@
   {
     "id": "erdos-1135-tao",
     "proofId": "erdos-1135",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 49,
       "endLine": 57
@@ -234,7 +234,7 @@
       "startLine": 70,
       "endLine": 77
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Even Reduction and Orbit Transitivity",
     "content": "`collatz_even_lt`: for even $m > 0$, $f(m) = m/2 < m$, proved via `Nat.div_lt_self`. This guarantees progress on even steps — the conjecture's difficulty lies in the odd steps which can *increase* $m$.\n\n`reachesOne_of_collatz`: orbit transitivity — if $f(m)$ eventually reaches 1 in $k$ steps, then $m$ reaches 1 in $k + 1$ steps. Proved by unfolding `collatzIter_collatz`.",
     "mathContext": "Even step: $f(m) = m/2 < m$. Odd step: $f(m) = (3m+1)/2 > m$ for $m > 1$. The interplay between these two behaviors — deterministic halving vs. expansive odd steps — creates the unpredictable orbit structure that makes the conjecture intractable.",

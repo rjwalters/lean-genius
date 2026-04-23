@@ -28,7 +28,7 @@
       "startLine": 18,
       "endLine": 25
     },
-    "type": "context",
+    "type": "concept",
     "title": "Mathlib Imports and Setup",
     "content": "Imports the full Mathlib library and defines an abbreviation `divisorSum` for `ArithmeticFunction.sigma` to avoid naming conflicts. The `BigOperators` notation provides the $\\sum$ syntax, while `Nat` and `Real` open standard namespaces.",
     "mathContext": "Mathlib's `ArithmeticFunction.sigma k n` computes $\\sigma_k(n) = \\sum_{d|n} d^k$. The abbreviation `divisorSum` refers to this with $k$ as a parameter; we use $k=1$ throughout for the classical sum of divisors $\\sigma_1(n) = \\sigma(n)$.",
@@ -72,7 +72,7 @@
       "startLine": 53,
       "endLine": 69
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Computations of sigma(n)",
     "content": "Verified computations of $\\sigma(n)$ for small $n$ using Lean's `native_decide` tactic: $\\sigma(1) = 1$, $\\sigma(2) = 3$, $\\sigma(3) = 4$, $\\sigma(4) = 7$, $\\sigma(6) = 12$, $\\sigma(12) = 28$. Note that $\\sigma(6) = 2 \\cdot 6$ and $\\sigma(28) = 56 = 2 \\cdot 28$, confirming 6 and 28 are perfect numbers.",
     "mathContext": "The `native_decide` tactic compiles decidable propositions to native code for efficient verification. Since $\\sigma_k(n)$ is computable for any given $n$ and $k$, these are definitional equalities that Lean can verify by computation. This provides ground-truth checks that the Mathlib definition matches the mathematical one.",
@@ -184,7 +184,7 @@
       "startLine": 127,
       "endLine": 131
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: Erdos #250",
     "content": "**The answer to Erdos's question is YES.** The theorem `erdos_250` states that the sum of the sigma series is irrational. The proof is immediate from Nesterenko's axiomatized result -- it is literally the identity function applied to `nesterenko_irrationality`.",
     "mathContext": "The formal statement: $\\forall x \\in \\mathbb{R},\\; \\text{HasSum}(n \\mapsto \\sigma(n)/2^n, x) \\implies \\text{Irrational}(x)$. The `HasSum` predicate in Mathlib asserts that the partial sums converge to $x$ in the topology of $\\mathbb{R}$. Combined with `sigma_series_has_sum`, this gives: $\\exists x \\in \\mathbb{R},\\; \\sum \\sigma(n)/2^n = x \\wedge x \\notin \\mathbb{Q}$.",

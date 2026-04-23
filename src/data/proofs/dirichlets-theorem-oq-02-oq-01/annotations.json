@@ -10,7 +10,7 @@
     "title": "Critical Strip and Critical Line",
     "content": "The critical strip $\\{s \\in \\mathbb{C} : 0 < \\operatorname{Re}(s) < 1\\}$ and critical line $\\{s : \\operatorname{Re}(s) = 1/2\\}$ are the geometric loci central to GRH. The functional equation of $L(s, \\chi)$ maps $s \\mapsto 1-s$, reflecting the critical strip across the critical line. All known non-trivial zeros lie on the critical line.",
     "mathContext": "$\\text{criticalStrip} = \\{s \\in \\mathbb{C} : 0 < \\operatorname{Re}(s) < 1\\}, \\quad \\text{criticalLine} = \\{s : \\operatorname{Re}(s) = 1/2\\}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "critical strip",
       "critical line",
@@ -98,7 +98,7 @@
       "startLine": 119,
       "endLine": 154
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Zero-Free Regions: GRH vs Classical",
     "content": "Under GRH, the zero-free region is the entire half-plane $\\operatorname{Re}(s) > 1/2$ — a dramatic improvement over the classical zero-free region $\\operatorname{Re}(s) > 1 - c / \\log(q(|t|+2))$, which narrows as the modulus $q$ or height $t$ grows. The classical region approaches $\\operatorname{Re}(s) = 1$ logarithmically slowly; GRH gives a fixed boundary at $\\operatorname{Re}(s) = 1/2$. This gap is the source of all the quantitative improvements GRH provides.",
     "mathContext": "$\\text{GRH}: L(s,\\chi) \\neq 0 \\text{ for } \\operatorname{Re}(s) > 1/2$\n$\\text{Classical}: L(s,\\chi) \\neq 0 \\text{ for } \\operatorname{Re}(s) > 1 - \\frac{c}{\\log(q(|t|+2))}$",
@@ -124,7 +124,7 @@
     "title": "Prime Counting in Arithmetic Progressions",
     "content": "The function $\\pi(x; q, a)$ counts primes $p \\leq x$ with $p \\equiv a \\pmod{q}$. By Dirichlet's theorem, this grows to infinity when $\\gcd(a,q) = 1$. The PNT for APs gives the asymptotic: $\\pi(x; q, a) \\sim \\text{Li}(x)/\\varphi(q)$, showing primes distribute equally among the $\\varphi(q)$ coprime residue classes.",
     "mathContext": "$\\pi(x; q, a) = \\#\\{p \\leq x : p \\text{ prime},\\; p \\equiv a \\pmod{q}\\}$\n$\\pi(x; q, a) \\sim \\frac{\\text{Li}(x)}{\\varphi(q)} \\sim \\frac{x}{\\varphi(q) \\log x}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "prime counting function",
       "Euler totient",
@@ -166,7 +166,7 @@
       "startLine": 188,
       "endLine": 204
     },
-    "type": "technique",
+    "type": "concept",
     "title": "GRH Error is Sublinear",
     "content": "This theorem proves $\\sqrt{x} \\log x < x$ for $x > e^4$, confirming the GRH error term is genuinely sublinear. The proof strategy reduces to showing $\\log x < \\sqrt{x}$, using the identity $\\log x = 2 \\log \\sqrt{x}$ and the standard inequality $\\log u < u$. One technical real-analysis bound remains as a sorry.",
     "mathContext": "$\\sqrt{x} \\cdot \\log x < x \\quad \\text{for } x > e^4$\n$\\text{Key step: } \\log x < \\sqrt{x} \\text{ for large } x$",

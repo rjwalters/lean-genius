@@ -35,7 +35,7 @@
       "startLine": 51,
       "endLine": 104
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gamma Function Computations for ω_n",
     "content": "Computing ω_n for specific n requires evaluating the Gamma function at half-integer points. The key identities are Γ(1) = 1, Γ(1/2) = √π, and the recurrence Γ(x+1) = x·Γ(x). From these: Γ(3/2) = (1/2)·√π = √π/2 and Γ(5/2) = (3/2)·Γ(3/2) = 3√π/4.\n\nThe proofs are intricate because field_simp and ring must negotiate with square roots and divisions. The positivity of ω_n follows from π > 0 (rpow_pos_of_pos) and Γ > 0 for positive arguments (Gamma_pos_of_pos).",
     "mathContext": "The Gamma function $\\Gamma(x) = \\int_0^\\infty t^{x-1} e^{-t} dt$ satisfies $\\Gamma(n+1) = n!$ for integers and $\\Gamma(1/2) = \\sqrt{\\pi}$ (Euler's reflection formula). Computing $\\omega_1 = \\pi^{1/2}/\\Gamma(3/2) = \\sqrt{\\pi}/(\\sqrt{\\pi}/2) = 2$ requires careful manipulation of these identities in Lean.",
@@ -66,7 +66,7 @@
       "startLine": 106,
       "endLine": 131
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Key Derivative: d/dr[V_n(r)] = S_n(r)",
     "content": "The n-dimensional generalization of dA/dr = C = 2πr. Since V_n(r) = ω_n · r^n is polynomial in r, the derivative is S_n(r) = n · ω_n · r^(n-1) by the power rule. The constant ω_n multiplies through via HasDerivAt.const_mul.\n\nThis is the central structural insight: because V_n is a pure power function, the volume-surface duality is an instance of the power rule. Continuity of both V_n and S_n follows from the continuity of polynomial functions.",
     "mathContext": "The derivative relation $\\frac{d}{dr} V_n(r) = S_n(r)$ says that the rate of volume growth equals the surface area. Geometrically: adding an infinitesimal shell of thickness $dr$ to the $n$-ball of radius $r$ increases volume by $S_n(r) \\cdot dr$. This is the $n$-dimensional \"onion peeling\" principle.",
@@ -95,7 +95,7 @@
       "startLine": 133,
       "endLine": 165
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: V_n(r) = ∫₀ʳ S_n(ρ) dρ via FTC",
     "content": "The main result: V_n(r) = ∫₀ʳ S_n(ρ) dρ, proved via FTC Part 2 (integral_eq_sub_of_hasDerivAt). The proof uses three ingredients: (1) the derivative relation d/dr[V_n] = S_n at each point in [0,r]; (2) the interval integrability of S_n (from continuity); (3) the boundary condition V_n(0) = 0 (since r^n = 0 for n ≥ 1).\n\nThe companion result deriv_volume_integral recovers S_n from the integral via FTC Part 1 (integral_hasDerivAt_right), completing the circle: differentiation and integration are inverse operations on these smooth functions.",
     "mathContext": "FTC Part 2: if $F' = f$ on $[a,b]$ and $f$ is integrable, then $\\int_a^b f = F(b) - F(a)$. Here $F = V_n$, $f = S_n$, $a = 0$, $b = r$. Since $V_n(0) = \\omega_n \\cdot 0^n = 0$ for $n \\geq 1$: $\\int_0^r S_n(\\rho) \\, d\\rho = V_n(r) - 0 = V_n(r)$.",
@@ -154,7 +154,7 @@
       "startLine": 213,
       "endLine": 230
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Shell/Annulus Volume Generalization",
     "content": "Generalizes the integral formula to shells (annuli): ∫_{r₁}^{r₂} S_n(ρ) dρ = V_n(r₂) - V_n(r₁). This is the natural extension of FTC Part 2 without the V_n(0) = 0 simplification. The 3D case gives the volume of a spherical shell: ∫_{r₁}^{r₂} 4πρ² dρ = (4π/3)(r₂³ - r₁³).\n\nThe proof is identical to the main theorem but with arbitrary endpoints r₁, r₂ instead of 0 and r.",
     "mathContext": "The shell volume formula $V_n(r_2) - V_n(r_1) = \\omega_n(r_2^n - r_1^n)$ is the basis of the \"shell method\" in calculus. For thin shells ($r_2 = r_1 + dr$): $\\Delta V \\approx S_n(r_1) \\cdot dr$, recovering the derivative relation.",
@@ -183,7 +183,7 @@
       "startLine": 232,
       "endLine": 262
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Scaling Laws and Surface-to-Volume Ratio",
     "content": "Two scaling laws: V_n(cr) = c^n · V_n(r) and S_n(cr) = c^(n-1) · S_n(r). These reflect the dimensional analysis principle: volume scales as length^n and surface area as length^(n-1).\n\nThe surface-to-volume ratio S_n(r)/V_n(r) = n/r is proved by algebraic manipulation with field_simp and pow_sub₀. This ratio grows linearly with dimension n, which explains the concentration of measure phenomenon: in high dimensions, most of the ball's volume is concentrated near the boundary (within a thin shell of thickness ~r/n).",
     "mathContext": "The ratio $S_n/V_n = n/r$ has profound consequences in high-dimensional geometry. For $n = 100$ and $r = 1$: the shell of thickness $0.01$ (from $r = 0.99$ to $1$) contains fraction $1 - 0.99^{100} \\approx 63\\%$ of the total volume. This is the \"curse of dimensionality\" in a geometric guise.",

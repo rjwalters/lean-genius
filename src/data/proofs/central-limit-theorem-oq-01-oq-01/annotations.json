@@ -94,7 +94,7 @@
       "startLine": 174,
       "endLine": 257
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Domain of Attraction and the Gnedenko-Kolmogorov Theorem",
     "content": "The domain of attraction is defined via characteristic function convergence: $\\varphi$ is in $DA(\\alpha)$ if there exist normalizing sequences $a_n \\to \\infty$ and centering constants $b_n$ such that $\\varphi^n(t/a_n) \\cdot e^{-ib_n t/a_n} \\to e^{-|t|^\\alpha}$. The Gnedenko-Kolmogorov theorem (axiomatized in three parts) gives: (1) forward direction -- tail conditions imply domain of attraction membership, (2) Gaussian case -- finite variance implies $\\alpha = 2$, and (3) converse -- domain of attraction membership implies regularly varying tails. These axioms represent deep results requiring Levy's continuity theorem and Abelian-Tauberian theory.",
     "mathContext": "The full theorem: $X \\in DA(S_\\alpha) \\iff P(|X| > x) = x^{-\\alpha} L(x)$ with $L$ slowly varying, and the tail balance converges. For $\\alpha = 2$, finite variance suffices (classical CLT).",

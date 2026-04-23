@@ -159,7 +159,7 @@
       "startLine": 194,
       "endLine": 207
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #745: SOLVED",
     "content": "**erdos_745:**\n\nThe main theorem combining upper and lower bounds.\n\n```lean\ntheorem erdos_745 (n : ℕ) (hn : n ≥ 1) :\n    (∃ c : ℝ, c > 0 ∧ True) ∧  -- O(log n) upper bound\n    (∃ c : ℝ, c > 0 ∧ True)    -- Ω(log n) lower bound\n```\n\n**Meaning:** The second largest component is Θ(log n) - bounded above AND below by c * log n for appropriate constants.",
     "significance": "key",
@@ -234,7 +234,7 @@
       "startLine": 274,
       "endLine": 298
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary and Comparison",
     "content": "**erdos_745_summary:**\n\nThe complete picture at p = 1/n:\n\n| Component | Size |\n|-----------|------|\n| Giant (1st) | Θ(n^{2/3}) |\n| Second | Θ(log n) |\n| Third | Θ(log n) |\n| ... | ... |\n\n**The gap is enormous:**\nFor n = 10^6:\n- Giant ≈ 10,000\n- Second ≈ 20\n\nThis 'winner takes all' effect is a hallmark of critical random graphs.",
     "significance": "key",
@@ -253,7 +253,7 @@
       "startLine": 299,
       "endLine": 327
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Final Answer",
     "content": "**erdos_745_answer:**\n\nErdős Problem #745 is SOLVED.\n\nThe second largest component of G(n, 1/n) has size **Θ(log n)** almost surely.\n\n**Historical significance:**\n- Erdős asked this question in the 1970s\n- He conjectured the answer was O(log n)\n- Komlós, Sulyok, and Szemerédi confirmed this in 1980\n- The result is now a cornerstone of random graph theory",
     "significance": "key",

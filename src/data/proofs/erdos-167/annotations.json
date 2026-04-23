@@ -172,7 +172,7 @@
       "startLine": 178,
       "endLine": 203
     },
-    "type": "technique",
+    "type": "concept",
     "title": "K₄ Shows 2k is Tight (Aristotle)",
     "content": "**theorem k4_tight** ✓ (Aristotle)\n\n$\\exists\\, G : \\text{SimpleGraph}\\,(\\text{Fin}\\, 4)$: $\\nu(G) = 1 \\wedge \\tau(G) = 2$\n\n**Proof**: $G = \\top$ (complete graph $K_4$ on $\\text{Fin}\\, 4$)\n- $K_4$ has $\\binom{4}{3} = 4$ triangles, any two share an edge $\\Rightarrow \\nu = 1$\n- Any single edge lies in exactly 2 triangles $\\Rightarrow$ one edge doesn't suffice, two do $\\Rightarrow \\tau = 2$\n\nThe $\\tau = 2$ part uses `native_decide` for exhaustive search over all edge subsets of size $\\leq 1$.",
     "mathContext": "$K_4$ achieves $\\tau/\\nu = 2$ exactly. This is the smallest tight example for Tuza's conjecture. The proof that $\\nu(K_4) = 1$ is structural (any two triangles in $K_4$ share an edge), while $\\tau(K_4) = 2$ requires checking that no single edge deletion destroys all 4 triangles — automated by `native_decide` over the $\\binom{6}{1} = 6$ possible single-edge deletions.",
@@ -196,7 +196,7 @@
       "startLine": 205,
       "endLine": 238
     },
-    "type": "technique",
+    "type": "concept",
     "title": "K₅ Shows 2k is Tight (Aristotle)",
     "content": "**theorem k5_tight** ✓ (Aristotle)\n\n$\\exists\\, G : \\text{SimpleGraph}\\,(\\text{Fin}\\, 5)$: $\\nu(G) = 2 \\wedge \\tau(G) = 4$\n\n**Proof**: $G = \\top$ ($K_5$ on $\\text{Fin}\\, 5$)\n- $K_5$ has $\\binom{5}{3} = 10$ triangles; maximum 2 can be edge-disjoint\n- Need 4 edges to hit all 10 triangles\n\nUses `native_decide` for both the upper bound on $\\nu$ (no 3 pairwise edge-disjoint triangles exist) and the lower bound on $\\tau$ (no 3-edge deletion destroys all triangles).",
     "mathContext": "$K_5$ provides a second tight example with $\\tau/\\nu = 4/2 = 2$. The proof that $\\nu(K_5) \\leq 2$ uses the pigeonhole principle on the 10 edges: each triangle uses 3 edges, edge-disjoint triangles need disjoint edge sets, but $3 \\times 3 = 9 < 10$ edges means the third triangle would need to avoid 6 used edges from only 10 total — tight enough that `native_decide` settles it. Explicit witness: $\\{\\{0,1,2\\}, \\{0,3,4\\}\\}$ are edge-disjoint.",
@@ -220,7 +220,7 @@
       "startLine": 240,
       "endLine": 243
     },
-    "type": "context",
+    "type": "concept",
     "title": "Haxell-Kohayakawa Bound (1998)",
     "content": "**axiom haxell_kohayakawa**:\n\n$\\tau(G) \\leq (3 - 3/23) \\cdot \\nu(G) \\approx 2.87\\nu(G)$\n\nThis is the best known general bound, improving on the trivial $3\\nu$. The coefficient $3 - 3/23 \\approx 2.8696$ remains far from the conjectured 2.",
     "mathContext": "The Haxell-Kohayakawa proof uses probabilistic and structural arguments: randomly select a subset of triangles from a maximum packing and iteratively refine the cover. The rational coefficient $60/23$ arises from optimizing a parameter in the probabilistic deletion step. Cast over $\\mathbb{Q}$ in Lean: $(\\tau(G) : \\mathbb{Q}) \\leq (3 - 3/23) \\cdot (\\nu(G) : \\mathbb{Q})$.",
@@ -244,7 +244,7 @@
       "startLine": 245,
       "endLine": 254
     },
-    "type": "context",
+    "type": "concept",
     "title": "Special Graph Classes",
     "content": "**axiom tuza_for_k4_free**: Tuza holds for $K_4$-free graphs.\nIf $G$ has no $K_4$ subgraph, then $\\tau(G) \\leq 2\\nu(G)$.\n\n**axiom IsPlanar / tuza_for_planar**: Tuza holds for planar graphs.\n\nThese special cases are proven analytically, showing the conjecture holds for restricted graph families where triangle structure is more constrained.",
     "mathContext": "$K_4$-free graphs cannot contain the smallest tight example, which simplifies the covering argument. For planar graphs, Euler's formula $|E| \\leq 3|V| - 6$ bounds edge density, and the Four Color Theorem implies structural constraints on triangle arrangements. Planarity is axiomatized as an abstract predicate since Mathlib lacks a general planarity definition.",
@@ -268,7 +268,7 @@
       "startLine": 256,
       "endLine": 264
     },
-    "type": "context",
+    "type": "concept",
     "title": "Fractional Version is True",
     "content": "**axiom fractional_tuza**: The fractional relaxation of Tuza's conjecture IS true.\n\n$\\tau^*(G) \\leq 2 \\cdot \\nu^*(G)$\n\nwhere $\\tau^*$ and $\\nu^*$ are the fractional (LP relaxation) versions. This shows the integral conjecture would follow from rounding guarantees.",
     "mathContext": "In the fractional relaxation, edge weights $w(e) \\in [0,1]$ replace binary choices. The fractional packing LP: $\\max \\sum_T x_T$ s.t. $\\sum_{T \\ni e} x_T \\leq 1$ for each edge $e$, $x_T \\geq 0$. Its dual is the fractional cover LP. By LP duality, $\\tau^* = 2\\nu^*$ (not just $\\leq$). The integral gap — the ratio between integral and fractional optima — is the obstruction to proving Tuza's conjecture. Note: the axiom statement in Lean actually uses integral $\\tau$ and $\\nu$ cast to $\\mathbb{Q}$, which is slightly stronger than the fractional statement.",

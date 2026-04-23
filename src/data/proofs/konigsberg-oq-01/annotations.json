@@ -103,9 +103,9 @@
     "id": "annotation-native-decide-pattern",
     "lineStart": 86,
     "lineEnd": 92,
-    "type": "technique",
+    "type": "concept",
     "mathContext": "Throughout the file, `native_decide` verifies concrete finite computations: `sqCircuit_length : sqCircuit.edges.length = 4`, `sqCircuit_visits_all (v : SqVerts) : v \\in sqCircuit.support` (via `cases v <;> native_decide`), `k4_degree (v : K4Verts) : k4Graph.degree v = 3`, `k4_four_odd : Fintype.card \\{v \\mid \\text{Odd}(k4Graph.degree v)\\} = 4`, and the handshaking lemma verifications. These all reduce to decidable equality on small finite types. `native_decide` compiles Lean terms to native code — exponentially faster than kernel-level `decide` for computations over $\\leq 10$ vertex graphs. The pattern `cases v <;> native_decide` splits a universal statement over an inductive type into individual `native_decide` calls for each constructor.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "native_decide tactic",
       "Decidable instances",

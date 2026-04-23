@@ -101,7 +101,7 @@
       "startLine": 118,
       "endLine": 130
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Open Questions and Examples",
     "content": "**r3_open_question:** Whether the conjecture holds for r = 3 with sufficiently large k remains open.\n\n**Concrete computations** verified by norm_num:\n- 7 < C(5,3) = 10: Fano plane has fewer edges than predicted\n- (7/8)^4 < 0.6: Alon's factor gives ~41% reduction for r = 4",
     "significance": "key",
@@ -119,7 +119,7 @@
       "startLine": 132,
       "endLine": 155
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_832** packages two key results:\n1. Alon's disproof: ∃ C, for r ≥ C and k ≥ C·r, counterexample hypergraphs exist\n2. Cherkashin-Petrov: m(r,k)/k^r → c_r for each r ≥ 3\n\nProved by `⟨alon_disproof, cherkashin_petrov_limit⟩`.",
     "significance": "key",

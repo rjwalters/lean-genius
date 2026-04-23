@@ -82,11 +82,11 @@
       "startLine": 110,
       "endLine": 128
     },
-    "type": "context",
+    "type": "concept",
     "title": "Three Independent QR Proofs: Eisenstein, Zolotarev, Gauss Sums",
     "content": "The three_proofs_agree theorem formalizes that all three approaches yield the same QR law. (1) Eisenstein (1832): count lattice points in a p×q rectangle — geometric and elementary. File: ElementaryQuadraticReciprocity.lean. (2) Zolotarev (1872): (a/p) equals the sign of the permutation x ↦ ax on ℤ/pℤ — group-theoretic. File: ElementaryQuadraticReciprocityOQ01.lean. (3) Gauss sums (Gauss c. 1801): τ² = χ(−1)·p → Frobenius → QR — cyclotomic. All three delegate to legendreSym.quadratic_reciprocity.",
     "mathContext": "Gauss gave 8 proofs of QR starting with his June 1, 1796 diary entry (he was 19) and first publication in Disquisitiones Arithmeticae (1801), §§125–145. Today over 200 proofs are known. The three Lean 4 proofs span different mathematical worlds: Eisenstein's is purely combinatorial (lattice points), Zolotarev's connects to group theory (permutation signs = Legendre symbol), and the Gauss sum proof connects to analytic number theory and the Langlands program (automorphic L-functions generalize Gauss sums).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Eisenstein proof",
       "Zolotarev proof",
@@ -134,7 +134,7 @@
     "title": "Gauss Sum Absolute Value and Mathlib Interface",
     "content": "gauss_sum_abs restates gauss_sum_sq as a named theorem: |τ|² = p. The #check commands at lines 170–173 document the four Mathlib lemmas underlying this file: legendreSym.quadratic_reciprocity (QR), legendreSym.at_neg_one (first supplementary law), legendreSym.eq_pow (Euler's criterion), and legendreSym.mul (multiplicativity of Legendre symbol). These four cover the algebraic skeleton; only the Gauss sum evaluation itself is axiomatized.",
     "mathContext": "The absolute value result $|\\tau|^2 = p$ parallels the Riemann Hypothesis for function fields: Weil's theorem states that exponential sums $\\sum_{x \\in \\mathbb{F}_q} \\psi(f(x))$ have absolute value $\\leq (\\deg f - 1)\\sqrt{q}$. Gauss sums are the $\\deg f = 1$ case with exact absolute value $\\sqrt{p}$. The Weil conjectures (proved by Deligne 1974) vastly generalize this to character sums over varieties over finite fields.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Gauss sum absolute value",
       "Weil conjectures",

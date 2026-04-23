@@ -98,7 +98,7 @@
       "startLine": 70,
       "endLine": 77
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Equivalent Formulation",
     "content": "An equivalent statement: for any exact covering of a finite abelian group with k > 1 cosets, there exist distinct i, j with [G:Hᵢ] = [G:Hⱼ].\n\nThis is derived from Sun's axiom by negating the distinct indices condition.",
     "mathContext": "The `push_neg` tactic transforms ¬(∀i j, i≠j → n_i≠n_j) into ∃i j, i≠j ∧ n_i=n_j.",
@@ -133,7 +133,7 @@
       "startLine": 91,
       "endLine": 104
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: Abelian Case Solved",
     "content": "We prove that the Herzog-Schönheim conjecture holds for finite abelian groups using Sun's axiom.\n\nThis answers Erdős Problem #274 for the abelian case: NO, you cannot partition an abelian group by cosets with distinct indices.",
     "mathContext": "The proof is a direct application of sun_abelian_case.",
@@ -169,7 +169,7 @@
       "startLine": 121,
       "endLine": 138
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "erdos_274_summary: The abelian case of the Herzog-Schönheim conjecture is proved via Sun's theorem. The general case remains OPEN.",
     "significance": "key",

@@ -155,7 +155,7 @@
       "startLine": 125,
       "endLine": 145
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Even Cycles Corollary (Verified)",
     "content": "**theorem even_cycles_from_high_degree** ✓\n\n∃ c > 0, avgDegree G ≥ c → ∃ even k ≥ 4, cycle of length k\n\n**Proof**: Apply Bollobás with P = {4, 6, 8, ...} (a=4, d=2).\n- 4 is even, so containsEven holds\n- Any k ∈ P has form 4 + 2m, which is even and ≥ 4",
     "mathContext": "This is a direct application of the main theorem to the simplest progression of even numbers.",
@@ -272,7 +272,7 @@
       "startLine": 237,
       "endLine": 251
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Multiples of 4 (Verified)",
     "content": "**theorem multiples_of_four** ✓\n\n∃ c > 0, avgDegree G ≥ c → ∃ k divisible by 4, k ≥ 4, cycle of length k\n\n**Proof**: Apply Bollobás with P = {4, 8, 12, ...} (a=4, d=4).\n- 4 is even, so containsEven holds\n- Any k ∈ P has form 4 + 4m = 4(1+m), divisible by 4",
     "mathContext": "Another application showing the theorem works for sparser progressions (every 4th even number).",

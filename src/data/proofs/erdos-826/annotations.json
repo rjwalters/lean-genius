@@ -101,7 +101,7 @@
       "startLine": 144,
       "endLine": 164
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Relation to Problem #248",
     "content": "**erdos_826_implies_248:** Problem #826 implies the weaker Problem #248.\n\nProblem #248 concerns similar growth conditions on the divisor function along shifts, but with weaker requirements. Any solution to #826 automatically solves #248.\n\nThe proof is immediate since the conditions of #826 are strictly stronger.",
     "significance": "key",
@@ -196,7 +196,7 @@
       "startLine": 266,
       "endLine": 307
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Statement and Summary",
     "content": "**erdos_826_main** establishes two facts:\n\n1. **Well-definedness:** The conjecture is equivalent to ∃ C > 0, goodStartingPoints(C) is infinite.\n\n2. **Implication:** erdos_826_conjecture → erdos_248_weaker.\n\nThe problem remains **OPEN**. This formalization captures the mathematical framework surrounding the problem, including growth bounds, heuristic arguments, and the structural challenges that have prevented resolution.",
     "mathContext": "This is primarily a documentation formalization of an open problem. The axioms and definitions establish the framework without claiming to resolve the conjecture.",

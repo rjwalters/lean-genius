@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 44
     },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős Problem #165: History and Statement",
     "content": "Erdős Problem #165 asks for an asymptotic formula for R(3,k), the Ramsey number for triangles vs independent sets. The answer is R(3,k) = Θ(k²/log k).\n\n**The Prize**: Erdős offered $250 for resolving this. The asymptotic order was established by Kim (1995), claiming the prize. The exact constant c in R(3,k) ~ c · k²/log k remains open.\n\n**Timeline**: AKS (1980) first proved O(k²/log k). Shearer (1983) found the tight upper bound (1+o(1))k²/log k. Kim (1995) proved the matching lower bound order, then 30 years of work improved the constant: 1/162 → 1/4 (BK/PGM 2020-21) → 1/3 (CJMS 2025) → 1/2 (HHKP 2025).",
     "mathContext": "R(3,k) = min{n : any graph on n vertices contains K₃ or α(G) ≥ k}. Equivalently: R(3,k) - 1 is the maximum number of vertices in a triangle-free graph with independence number < k. The asymptotic R(3,k) = Θ(k²/log k) was the central result; the exact constant c with R(3,k) ~ c·k²/log k is the remaining open problem.",
@@ -191,7 +191,7 @@
       "startLine": 222,
       "endLine": 237
     },
-    "type": "context",
+    "type": "concept",
     "title": "Related Erdős Problems: #544 (Diagonal) and #986 (Off-Diagonal s≥4)",
     "content": "**Erdős #544**: Determine R(k,k). Known: 2^(k/2) ≤ R(k,k) ≤ 4^k. A 2023 breakthrough by Campos-Griffiths-Morris-Sahasrabudhe improved the upper bound to (4-ε)^k, the first exponential improvement in 90 years.\n\n**Erdős #986**: Determine R(s,k) for fixed s ≥ 4 and growing k. For s = 3 (Problem #165): Θ(k²/log k). Conjectured for s ≥ 4: R(s,k) = Θ(k^((s+1)/2) / (log k)^((s-1)/2)).\n\n**Triangle-free multiplicity**: How many triangles appear in a 2-coloring of K_n absent a triangle-free coloring? — a related extremal question.",
     "mathContext": "The general asymptotic $R(s,k) = \\Theta(k^{s-1}/(\\log k)^{s-2})$ generalizes $R(3,k) = \\Theta(k^2/\\log k)$ (case $s=3$). For $s=4$: $R(4,k) = \\Theta(k^3/\\log^2 k)$ is conjectured but unproved. The polynomial-in-$k$ behavior with log corrections is a general pattern in off-diagonal Ramsey theory. The diagonal case $R(k,k)$ has exponential behavior $2^{\\Theta(k)}$, a fundamentally different regime.",

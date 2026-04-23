@@ -51,7 +51,7 @@
       "startLine": 42,
       "endLine": 70
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Equivalence of Definitions",
     "content": "The two Sidon definitions (ordered and unordered) are equivalent. The forward direction deduces unordered equality from ordered equality by case-splitting on whether $a \\le b$ and $c \\le d$. The reverse applies the ordering constraints to eliminate the swapped case. This is fully proved without axioms.",
     "mathContext": "$\\text{IsSidonSet}(A) \\Leftrightarrow \\text{HasDistinctSums}(A)$. The proof handles four cases from the two independent orderings $(a \\le b \\text{ or } a > b)$ and $(c \\le d \\text{ or } c > d)$, using `omega` for arithmetic.",
@@ -96,7 +96,7 @@
       "startLine": 79,
       "endLine": 84
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sidon Sets Exist",
     "content": "A simple existence proof: the empty set is trivially a Sidon set since the condition is vacuously true. This ensures $h(N) \\ge 0$ and that the supremum in the definition of $h(N)$ is taken over a nonempty family.",
     "mathContext": "The proof witnesses $A = \\emptyset$, which satisfies $\\text{IsSidonSet}(\\emptyset)$ vacuously: there are no $a, b, c, d \\in \\emptyset$ to violate the condition.",
@@ -183,7 +183,7 @@
       "startLine": 109,
       "endLine": 112
     },
-    "type": "context",
+    "type": "concept",
     "title": "Lindström's Improvement (1969)",
     "content": "A minor refinement: $h(N) \\le N^{1/2} + N^{1/4} + 1/2$. Lindström improved the constant term by a more careful analysis of the Erdős-Turán counting argument, but the $N^{1/4}$ exponent remained unchanged.",
     "mathContext": "Lindström tightened the inequality to $s(s-1)/2 \\le N$ (instead of $2N-1$) by noting that both $a+b$ and $c+d$ must be in $\\{2, \\ldots, 2N\\}$ and using parity considerations.",
@@ -268,7 +268,7 @@
       "startLine": 136,
       "endLine": 138
     },
-    "type": "context",
+    "type": "concept",
     "title": "Explicit Lower Bound",
     "content": "For infinitely many $N$: $h(N) \\ge N^{1/2} - N^{0.525}$. This quantitative version of Singer's bound shows the error term on the lower side is smaller than $N^{1/4}$, though it only holds along a subsequence (where $N$ is near a prime-squared).",
     "mathContext": "The exponent $0.525$ in the error term comes from gaps between consecutive primes: if $p$ is the largest prime with $p^2 + p + 1 \\le N$, then $N - (p^2+p+1) = O(N^{0.525})$ by the Baker-Harman-Pintz bound on prime gaps.",
@@ -334,7 +334,7 @@
       "startLine": 174,
       "endLine": 176
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Perfect Difference Sets are Sidon",
     "content": "Every perfect difference set is automatically a Sidon set. If $a + b = c + d$ with $\\{a,b\\} \\ne \\{c,d\\}$, then $a - c = d - b \\ne 0$ and $a - d = c - b \\ne 0$ give two representations of the same nonzero difference, contradicting the 'exactly once' property.",
     "mathContext": "The uniqueness condition on differences implies the Sidon condition: $r_2(n) \\le 1$ for all $n$, where $r_2(n) = |\\{(a,b) \\in D^2 : a-b = n\\}|$. Since $a+b = c+d \\Leftrightarrow a-c = d-b$, having distinct representations of sums gives distinct representations of differences.",
@@ -356,7 +356,7 @@
       "startLine": 178,
       "endLine": 181
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Singer's Construction",
     "content": "For any prime power $q$, there exists a perfect difference set of size $q+1$ modulo $q^2 + q + 1$. This gives Sidon sets of size approximately $\\sqrt{N}$ for infinitely many $N$, establishing the lower bound $h(N) \\ge (1-o(1))\\sqrt{N}$.",
     "mathContext": "Singer (1938) showed: fix a generator $g$ of the cyclic group $(\\mathbb{F}_{q^3})^*/\\mathbb{F}_q^*$ of order $q^2+q+1$. The set $D = \\{i : g^i \\in \\text{some fixed line}\\}$ is a perfect difference set of size $q+1$.",
@@ -378,7 +378,7 @@
       "startLine": 185,
       "endLine": 194
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: {1, 2, 5, 10} is Sidon",
     "content": "A concrete verified example: $\\{1, 2, 5, 10\\}$ is a Sidon set with pairwise sums $3, 6, 7, 11, 12, 15$ — all distinct. The proof uses exhaustive case analysis with `omega` to verify all $\\binom{4}{2}^2 = 36$ equality conditions.",
     "mathContext": "The $\\binom{4+1}{2} = 10$ possible sums are $1+1=2, 1+2=3, 1+5=6, 1+10=11, 2+2=4, 2+5=7, 2+10=12, 5+5=10, 5+10=15, 10+10=20$. The six with $a < b$ are $3, 6, 7, 11, 12, 15$, all distinct.",

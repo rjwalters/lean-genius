@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 17
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview",
     "content": "**Strict Minkowski Inequality: Equality iff Proportional**\n\nThis file proves the equality characterization of the triangle inequality in real inner product spaces: $\\|f+g\\| = \\|f\\| + \\|g\\|$ if and only if $f$ and $g$ are non-negatively proportional ($\\|f\\| \\cdot g = \\|g\\| \\cdot f$). The proof chains through Cauchy-Schwarz equality as the key intermediate step.",
     "mathContext": "In any real inner product space $E$, the triangle inequality $\\|f+g\\| \\leq \\|f\\| + \\|g\\|$ holds. Equality holds precisely when $f$ and $g$ point in the 'same direction' — formalized as $\\|f\\| g = \\|g\\| f$, which avoids division by zero.",
@@ -36,7 +36,7 @@
       "startLine": 23,
       "endLine": 37
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Proportionality Implies CS Equality",
     "content": "**inner_eq_of_proportional:**\n\n```lean\ntheorem inner_eq_of_proportional (f g : E) (h : ‖f‖ • g = ‖g‖ • f) :\n    ⟪f, g⟫_ℝ = ‖f‖ * ‖g‖\n```\n\nIf $\\|f\\| g = \\|g\\| f$ then $\\langle f, g \\rangle = \\|f\\| \\cdot \\|g\\|$.\n\n**Proof technique:** Apply $\\langle f, \\cdot \\rangle$ to both sides of the proportionality equation. The left side gives $\\|f\\| \\langle f, g \\rangle$, the right gives $\\|g\\| \\cdot \\|f\\|^2$. Cancel $\\|f\\|$ (handling the $f = 0$ case separately).",
     "mathContext": "Taking the inner product with $f$: $\\|f\\| \\langle f, g \\rangle = \\|g\\| \\langle f, f \\rangle = \\|g\\| \\cdot \\|f\\|^2$. For $f \\neq 0$, dividing by $\\|f\\|$ gives $\\langle f, g \\rangle = \\|f\\| \\cdot \\|g\\|$.",
@@ -64,7 +64,7 @@
       "startLine": 39,
       "endLine": 56
     },
-    "type": "technique",
+    "type": "concept",
     "title": "CS Equality Implies Proportionality",
     "content": "**proportional_of_inner_eq:**\n\n```lean\ntheorem proportional_of_inner_eq (f g : E) (h : ⟪f, g⟫_ℝ = ‖f‖ * ‖g‖) :\n    ‖f‖ • g = ‖g‖ • f\n```\n\nIf $\\langle f, g \\rangle = \\|f\\| \\cdot \\|g\\|$ then $\\|f\\| g = \\|g\\| f$.\n\n**Proof technique:** Show $\\|\\|f\\| g - \\|g\\| f\\|^2 = 0$ by expanding via `norm_sub_sq_real`, simplifying norms of scalar multiples, and substituting the CS equality. The expansion yields $2\\|f\\|^2\\|g\\|^2 - 2\\|f\\|\\|g\\|\\langle f,g\\rangle = 0$, which follows from the hypothesis.",
     "mathContext": "$\\|\\|f\\| g - \\|g\\| f\\|^2 = \\|f\\|^2\\|g\\|^2 + \\|g\\|^2\\|f\\|^2 - 2\\|f\\|\\|g\\|\\langle g, f \\rangle = 2\\|f\\|^2\\|g\\|^2 - 2\\|f\\|\\|g\\| \\cdot \\langle f,g\\rangle = 0$",
@@ -183,7 +183,7 @@
       "startLine": 9,
       "endLine": 17
     },
-    "type": "context",
+    "type": "concept",
     "title": "Real Inner Product Space Setup",
     "content": "The proof imports the full Mathlib library and works in a generic real inner product space `E`. The type class constraints `[NormedAddCommGroup E] [InnerProductSpace ℝ E]` ensure `E` carries both a compatible norm and a real-valued inner product satisfying $\\langle x, x \\rangle = \\|x\\|^2$. This generality means the theorem applies simultaneously to $\\mathbb{R}^n$ (with the dot product), $L^2(\\mu)$ (with $\\int fg\\,d\\mu$), and any separable Hilbert space.",
     "mathContext": "The key compatibility axiom linking norm and inner product is $\\|x\\|^2 = \\langle x, x \\rangle_{\\mathbb{R}}$, which is `real_inner_self_eq_norm_sq` in Mathlib. The `set_option linter.unusedVariables false` suppresses warnings about universally quantified variables in intermediate steps.",

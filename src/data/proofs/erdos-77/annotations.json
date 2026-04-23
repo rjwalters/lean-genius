@@ -82,7 +82,7 @@
       "startLine": 103,
       "endLine": 117
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdos-Szekeres Upper Bound",
     "content": "**axiom erdos_upper_bound**: R(k) <= 4^{k-1}\n\n**theorem erdos_upper_bound'**: R(k) <= 4^k (verified!)\n\nFrom the recurrence R(s,t) <= R(s-1,t) + R(s,t-1).\n\nThis bound stood for ~90 YEARS before being improved in 2023!",
     "mathContext": "R(k,k) <= C(2k-2, k-1) < 4^{k-1} by the Erdos-Szekeres recurrence. One of the oldest bounds in combinatorics.",
@@ -158,7 +158,7 @@
       "startLine": 167,
       "endLine": 185
     },
-    "type": "technique",
+    "type": "concept",
     "title": "GNNW 2024 Improvement",
     "content": "**axiom gnnw_2024_bound**: R(k) <= (3.7993)^k eventually\n**axiom gnnw_2024_limsup**: limsup <= 3.7993\n\n**theorem current_best_bounds**: sqrt(2) <= liminf AND limsup <= 3.7993\n\nGupta, Ndiaye, Norin, Wei (2024) further improved the CGMS bound.",
     "mathContext": "The improvement from 3.992 to 3.7993 shows the techniques are still being refined.",

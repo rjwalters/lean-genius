@@ -165,7 +165,7 @@
       "startLine": 115,
       "endLine": 130
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lim-Steinerberger Theorem (2024)",
     "content": "**Main Result:**\n```lean\naxiom lim_steinerberger_theorem :\n  ∃ C > 0, ∀ᶠ n in Filter.atTop,\n    ∃ k : ℕ, k ≤ n ∧ k ≥ 1 ∧\n    (k : ℝ)^2 * epsilon k ≤ C * (Real.log (Real.log k) / Real.log k)^(1/2 : ℝ)\n```\n\n**In Words:**\nThere exist infinitely many n with:\nε(n)·n² ≪ (log log n / log n)^{1/2}\n\nSince (log log n / log n)^{1/2} → 0 as n → ∞, this proves:\nlim inf n²ε(n) = 0\n\n**Answer to Erdős:** YES!",
     "mathContext": "Published arXiv:2405.11354 (2024) by Lim and Steinerberger. The bound $(\\log\\log n / \\log n)^{1/2} \\to 0$ as $n \\to \\infty$, proving $\\liminf n^2 \\varepsilon(n) = 0$. The proof uses the three-distance theorem and Diophantine approximation.",
@@ -244,7 +244,7 @@
       "startLine": 158,
       "endLine": 182
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary: Problem SOLVED",
     "content": "**Erdős Problem #314: Summary**\n\n| Component | Statement |\n|-----------|-------|\n| Question | Is lim inf n²ε(n) = 0? |\n| Answer | YES (Lim-Steinerberger 2024) |\n| Explicit Bound | ε(n)n² ≪ (log log n / log n)^{1/2} i.o. |\n| Optimal Exponent | Conjectured: n^{2+δ}ε(n) → ∞ (OPEN) |\n\n```lean\ntheorem erdos_314_summary :\n    erdos_conjecture ∧\n    (∃ C > 0, ... Lim-Steinerberger bound ...) := ...\n```\n\n**Status:** SOLVED - The main conjecture is proven true.",
     "mathContext": "The Lim-Steinerberger theorem resolves Erdős Problem #314 by proving $\\liminf n^2 \\varepsilon(n) = 0$. The explicit bound $(\\log\\log n / \\log n)^{1/2} \\to 0$ gives a quantitative improvement over just knowing $\\varepsilon(n) \\leq 1/n$.",

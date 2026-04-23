@@ -136,7 +136,7 @@
       "startLine": 91,
       "endLine": 99
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conjecture Disproved",
     "content": "**erdos_199_disproved:**\n\nErdős's conjecture is false.\n\n**Logic:** Baumgartner gives a 3-AP-free set A whose complement has no infinite AP. This directly contradicts the conjecture.",
     "significance": "key",
@@ -154,7 +154,7 @@
       "startLine": 101,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result",
     "content": "**erdos_199:**\n\nThe answer to Erdős Problem #199 is NO.\n\nThere exists a set A that is 3-AP-free, yet its complement contains no infinite AP.",
     "significance": "key",
@@ -191,7 +191,7 @@
       "startLine": 127,
       "endLine": 138
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: ℕ Has 3-APs",
     "content": "**Example showing ℕ (embedded in ℝ) has many 3-APs:**\n\n**Verification:** 1, 2, 3 is a 3-term AP with a = 1, d = 1.\n\nThis shows that dense sets like ℕ definitely contain APs. The question is about sparse (3-AP-free) sets.",
     "significance": "supporting",
@@ -209,7 +209,7 @@
       "startLine": 140,
       "endLine": 150
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: ℚ Contains Infinite APs",
     "content": "**Example showing ℚ (embedded in ℝ) contains infinite APs:**\n\n**Verification:** The infinite AP {0, 1, 2, 3, ...} ⊆ ℚ.\n\nThis contrasts with Baumgartner's sets, which avoid all infinite APs.",
     "significance": "supporting",

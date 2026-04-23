@@ -101,7 +101,7 @@
       "startLine": 100,
       "endLine": 114
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Sárközy Theorem",
     "content": "**erdosSarkozy** states that for any A, the error |r_A(n) - log(n)| cannot shrink to o(√log n).\n\nIn other words: the representation function cannot approximate log(n) with error smaller than √log(n) eventually.\n\n**Why this matters**: Even if r_A(n) ~ log(n), the fluctuations must remain significant. You can't 'smooth out' the representation function to exactly match log(n).",
     "mathContext": "The statement says there is NO set A with `|r_A(n) - log n| / √(log n) → 0`. This is a universal negative—a strong constraint on all possible sets.",
@@ -177,7 +177,7 @@
       "startLine": 182,
       "endLine": 196
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Stronger Implies Original",
     "content": "**stronger_implies_original** proves that ErdosStrongerConjecture → ErdosConjecture66.\n\nThe proof: If r_A(n)/log(n) → c, then both limsup and liminf equal c, so their difference is 0. But the stronger conjecture says the difference is ≥ δ > 0. Contradiction!\n\nThis is a genuine Lean proof (no axiom), showing the logical relationship between the two conjectures.",
     "mathContext": "Uses `Tendsto.limsup_eq` and `Tendsto.liminf_eq` from Mathlib to show convergence implies equal limsup and liminf. Then `linarith` derives the contradiction from 0 ≥ δ > 0.",

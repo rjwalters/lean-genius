@@ -186,7 +186,7 @@
       "startLine": 152,
       "endLine": 160
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_question_disproved",
     "content": "Erdős' question is disproved: if the construction is not optimal for infinitely many N, then it cannot be optimal for ALL N. The proof is basic logic using omega.",
     "mathContext": "The proof extracts $N > 0$ from $\\texttt{ConstructionNotOptimal}$ with $g(N) > |\\text{Construction}(N)|$, obtains $g(N) = |\\text{Construction}(N)|$ from $\\texttt{ErdosQuestion}$, and derives a contradiction via `omega` ($x > y \\wedge x = y \\to \\bot$). This is one of the fully-proved theorems in the file.",

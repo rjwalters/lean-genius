@@ -86,7 +86,7 @@
       "startLine": 157,
       "endLine": 230
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Proved Bounds and Small Cases",
     "content": "**bigF_lower_bound_tree:** F(n) >= n - 1 for n >= 2.\n\nProof: n - 1 satisfies the defining condition of bigF_threshold. If G is connected with edgeCount(G) <= n - 1, then connected_min_edges gives edgeCount(G) >= n - 1, so edgeCount(G) = n - 1 exactly. Then G is a tree and chvatal_tree_ramsey applies.\n\n**f_val_2:** f(2) = 1. K_2 has 1 edge, R(K_3, K_2) = 3 = 2*2 - 1, and no graph on 2 vertices can have more than 1 edge.\n\n**bigF_val_2:** F(2) = 1. The only connected graph on 2 vertices is K_2 (1 edge), and it satisfies R(K_3, K_2) = 3.",
     "mathContext": "The proofs use sSup/sInf properties (le_csSup, csSup_le) with explicit boundedness witnesses.",

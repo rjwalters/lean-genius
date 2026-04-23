@@ -7,10 +7,10 @@
       "endLine": 18
     },
     "title": "Module Documentation: Answering the Minimal Period Question",
-    "type": "context",
+    "type": "concept",
     "content": "This module answers the open question from DivisibilityRulesOQ01OQ01: given that the digit-block rule holds at k = φ(d) (Euler's theorem gives existence), what is the *minimal* such k? The answer is orderOf(10 : ZMod d), the multiplicative order of 10 modulo d. The documentation summarizes the three-way equivalence at the heart of the proof: 10^k % d = 1, orderOf(10:ZMod d) ∣ k, and the digit-block rule holding at period k.",
     "mathContext": "The three-way equivalence $10^k \\equiv 1 \\pmod{d} \\iff \\mathrm{ord}_d(10) \\mid k \\iff$ (digit-block rule holds at period $k$) is the fundamental theorem of multiplicative orders, viewed as an instance of Lagrange's theorem: $a^k = 1$ in a group iff $|\\langle a \\rangle|$ divides $k$. In $\\mathbb{Z}/d\\mathbb{Z}$, the element $10$ generates a cyclic subgroup of $(\\mathbb{Z}/d\\mathbb{Z})^*$ of order $\\mathrm{ord}_d(10)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "multiplicative order",
       "Lagrange's theorem",
@@ -30,7 +30,7 @@
       "endLine": 52
     },
     "title": "ZMod Bridge: ℕ Modular Arithmetic ↔ ZMod Group Theory",
-    "type": "technique",
+    "type": "concept",
     "content": "The private lemma `pow_mod_one_iff_ZMod_pow_eq_one` is the critical bridge: `b^k % d = 1` (ℕ modular arithmetic) iff `(b : ZMod d)^k = 1` (ring/group theory in ZMod). This conversion unlocks Mathlib's entire group-theoretic apparatus for orderOf. The main theorem `period_iff_orderOf_dvd` is then a clean one-line composition: ZMod bridge ∘ `orderOf_dvd_iff_pow_eq_one`.",
     "mathContext": "The bridge uses `ZMod.natCast_eq_natCast_iff`: $(a : \\mathbb{Z}/d\\mathbb{Z}) = b \\iff a \\equiv b \\pmod{d}$. The `push_cast` tactic handles the coercion from $b^k : \\mathbb{N}$ to $(b : \\mathbb{Z}/d\\mathbb{Z})^k$. The `NeZero d` instance (required by ZMod API) is synthesized from `hd : 1 < d` via `omega`. Once in ZMod, `orderOf_dvd_iff_pow_eq_one` gives $(b : \\mathbb{Z}/d\\mathbb{Z})^k = 1 \\iff \\mathrm{orderOf}(b : \\mathbb{Z}/d\\mathbb{Z}) \\mid k$.",
     "significance": "key",
@@ -54,7 +54,7 @@
       "endLine": 76
     },
     "title": "Euler's Theorem and Positivity of orderOf",
-    "type": "technique",
+    "type": "concept",
     "content": "`pow_totient_eq_one` proves Euler's theorem via `ZMod.unitOfCoprime`: when gcd(d,b)=1, the element b in ZMod d corresponds to a unit, and `ZMod.pow_totient` gives unit^φ(d) = 1. This is coerced back to the ring element. `orderOf_pos_of_coprime` then derives positivity indirectly: orderOf(b:ZMod d) divides φ(d) (since b^φ(d) = 1 implies orderOf | φ(d)), and φ(d) > 0 for d > 1, so Nat.pos_of_dvd_of_pos gives orderOf > 0.",
     "mathContext": "The positivity argument avoids `IsOfFinOrder` and `orderOf_pos_iff` by exploiting the divisibility chain: $\\mathrm{orderOf}(b) \\mid \\varphi(d)$ (from Euler's theorem) and $\\varphi(d) > 0$ (since $d > 1$) give $\\mathrm{orderOf}(b) > 0$ via `Nat.pos_of_dvd_of_pos`. This is more direct than proving the element is of finite order, which would require the `IsOfFinOrder` typeclass predicate. The `ZMod.unitOfCoprime` construction lifts $b$ to a unit when $\\gcd(d,b)=1$, which is where the group structure is accessed.",
     "significance": "key",
@@ -127,7 +127,7 @@
       "endLine": 140
     },
     "title": "Generalization to Arbitrary Base b",
-    "type": "technique",
+    "type": "concept",
     "content": "The base-b versions replace 10 with b throughout. `period_iff_orderOf_dvd_base_b` is a direct one-line proof (same structure as the base-10 version). `digit_block_rule_base_b` and `orderOf_base_b_is_minimal_period` follow the same proof patterns. The condition gcd(d,b)=1 is needed for Euler's theorem (to ensure b is a unit in ZMod d), but the period characterization `period_iff_orderOf_dvd_base_b` holds without coprimality — orderOf is just 0 in degenerate cases.",
     "mathContext": "For base $b = 8$ and $d = 7$: $8 \\equiv 1 \\pmod{7}$ so $\\mathrm{ord}_7(8) = 1$, giving the rule '$7 \\mid n \\iff 7 \\mid \\text{digit-sum in base 8}$'. This is the base-8 analog of divisibility-by-9 in base 10. The generalization makes clear that the familiar decimal rules are accidents of the base — in base $b$, divisibility by any $d$ with $\\gcd(d,b)=1$ admits a digit-block rule with period $\\mathrm{ord}_d(b)$.",
     "significance": "supporting",

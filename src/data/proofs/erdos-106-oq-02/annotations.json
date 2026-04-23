@@ -6,7 +6,7 @@
       "startLine": 22,
       "endLine": 31
     },
-    "type": "context",
+    "type": "concept",
     "title": "Rotated vs Axis-Parallel: The Last Barrier",
     "content": "After BKU (2024) solved the axis-parallel case of Erdős #106, the remaining question is whether allowing rotation gives strictly better packings. This file formalizes the infrastructure to state and reason about this question.",
     "mathContext": "The axis-parallel problem: pack n unit squares in [0,1]² with sides parallel to the axes, maximize total side-length. BKU proved g(k²+1) = k. The rotated problem: same but squares may be rotated. f_rot(n) ≥ g(n) trivially; the question is whether strict inequality holds.",
@@ -34,7 +34,7 @@
     "title": "RotatedSquare: Parametrized by Center, Side, Angle",
     "content": "The RotatedSquare structure captures a square by its center, side length, and rotation angle. The interior is defined by rotating the test point back to the axis-parallel frame: p is inside iff rotating (p - center) by -θ lands in (-s/2, s/2)².",
     "mathContext": "RotatedSquare: center $(c_x, c_y) \\in \\mathbb{R}^2$, side $s > 0$, angle $\\theta \\in \\mathbb{R}$. Interior: $\\{p \\mid |r_x| < s/2 \\wedge |r_y| < s/2\\}$ where $(r_x, r_y) = R_{-\\theta}(p - c)$ and $R_{-\\theta}$ is rotation by $-\\theta$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "rotation matrix",
       "def RotatedSquare.interior",
@@ -58,7 +58,7 @@
     "title": "Interior via Inverse Rotation: Coordinate Formula",
     "content": "The interior formula rotates the displacement vector (dx, dy) = p - center by angle -θ via the 2×2 matrix: rx = dx·cos θ + dy·sin θ, ry = -dx·sin θ + dy·cos θ. These are the standard rotation-matrix components for angle -θ, verifiable by noting cos(-θ) = cos θ and sin(-θ) = -sin θ.",
     "mathContext": "$r_x = \\Delta x \\cos\\theta + \\Delta y \\sin\\theta$, $r_y = -\\Delta x \\sin\\theta + \\Delta y \\cos\\theta$. This is rotation by $-\\theta$: the point is in the interior iff $|r_x| < s/2$ and $|r_y| < s/2$, i.e., it lies in the $(-s/2, s/2)^2$ axis-aligned box.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Real.cos",
       "Real.sin",
@@ -82,7 +82,7 @@
     "title": "GeneralPacking and g(n)/f_rot(n) as Suprema",
     "content": "GeneralPacking is a Fin n-indexed family with containment (closure ⊆ [0,1]²) and pairwise disjoint interiors. AxisParallelPacking extends it with angle=0. The objective functions f_rot and g_ap are defined as suprema of achievable sum-sets — this is the standard real-analysis approach when explicit maxima may not be attained.",
     "mathContext": "$f_{\\text{rot}}(n) = \\sup\\{\\sum_i s_i \\mid (S_i) \\text{ is a GeneralPacking}\\}$, $g(n) = \\sup$ over AxisParallelPacking. The supremum is used rather than maximum since it's unclear whether the sup is attained (compactness arguments would be needed).",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "sSup",
       "BddAbove",
@@ -154,7 +154,7 @@
     "title": "The Open Question: rotationHelps vs rotationNeverHelps",
     "content": "rotationHelps := ∃ n, f_rot n > g_ap n (rotation strictly improves). rotationNeverHelps := ∀ n, f_rot n = g_ap n (rotation never helps). These are logically complementary (by excluded middle and the fact that g_ap ≤ f_rot). The Erdős problem is to determine which holds — no example of rotationHelps is known.",
     "mathContext": "We have $g(n) \\leq f_{\\text{rot}}(n)$ always (proved). rotationNeverHelps would mean equality everywhere. Since $f_{\\text{rot}}(k^2) = g(k^2) = k$ at perfect squares, any rotation advantage must occur at non-perfect-square n, with n=k²+1 being the most interesting case.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "def rotationHelps",
       "def rotationNeverHelps",

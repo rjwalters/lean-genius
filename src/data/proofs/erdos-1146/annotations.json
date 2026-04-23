@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 26
     },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős Problem #1146: Essential Component at the Threshold",
     "content": "Erdős Problem #1146 asks whether {2^m · 3^n : m, n ≥ 0} is an essential component — a set whose sumset with any positive-density set strictly increases the Schnirelmann density. Ruzsa (1987) proved essential components must have counting function ≥ (log N)^{1+c} for some c > 0. The 3-smooth numbers have counting function ~ C · (log N)², which is exactly at this threshold (c = 1). This places the problem at the boundary of known techniques: growth-based arguments cannot resolve it, nor can sparsity arguments. Ruzsa specifically posed this question in 1999. The problem is closely linked to Erdős #37 (lacunary sets are not essential components).",
     "mathContext": "Essential component: $A$ such that $d_S(A + B) > d_S(B)$ for all $B$ with $0 < d_S(B) < 1$. Ruzsa's threshold: $|A \\cap [N]| \\geq (\\log N)^{1+c}$. For $B = \\{2^m \\cdot 3^n\\}$: $|B \\cap [N]| \\sim \\frac{(\\log N)^2}{2 \\log 2 \\cdot \\log 3}$, satisfying the threshold with $c = 1$.",
@@ -31,7 +31,7 @@
       "startLine": 42,
       "endLine": 56
     },
-    "type": "context",
+    "type": "concept",
     "title": "Basic 3-Smooth Membership Witnesses",
     "content": "Explicit membership proofs for small 3-smooth numbers: 1 = 2^0·3^0, 2 = 2^1·3^0, 3 = 2^0·3^1, 6 = 2^1·3^1. These provide concrete witnesses for the existential in the smoothNumbers23 definition. The proofs are trivial (simp or norm_num after providing the exponent pair), but they verify the definition is correctly capturing the intended set. The sequence of 3-smooth numbers begins: 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, 27, 32, 36, ...",
     "mathContext": "The 3-smooth (or regular) numbers form Sloane's A003586. Their counting function $\\psi(x, 3) = |\\{n \\leq x : n = 2^a 3^b\\}|$ satisfies $\\psi(x, 3) \\sim \\frac{(\\log x)^2}{2 \\log 2 \\cdot \\log 3}$ by a standard lattice point counting argument in the $(a,b)$-plane.",
@@ -53,7 +53,7 @@
       "startLine": 77,
       "endLine": 87
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Positivity and Unboundedness of 3-Smooth Numbers",
     "content": "`smooth23_pos` proves every 3-smooth number is positive (from 2^m·3^k > 0 via `positivity`). `smooth23_unbounded` proves the set is unbounded: for any N, 2^(N+1) is 3-smooth and exceeds N. The witness uses the trivial observation that powers of 2 grow without bound. Unboundedness is necessary for meaningful density questions — a finite set has Schnirelmann density 0 and cannot be essential.",
     "mathContext": "$2^m \\cdot 3^k > 0$ for all $m, k \\in \\mathbb{N}$. For unboundedness: $2^{N+1} > N$ for all $N$, and $2^{N+1} = 2^{N+1} \\cdot 3^0 \\in \\text{smoothNumbers23}$.",
@@ -75,7 +75,7 @@
       "startLine": 98,
       "endLine": 130
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Non-Lacunarity and Growth Rate at Ruzsa's Threshold",
     "content": "Two key structural results. First, `smooth23_not_lacunary` (axiom) states the 3-smooth numbers are NOT lacunary — consecutive 3-smooth numbers can have ratios arbitrarily close to 1 (e.g., 2^a·3^b and 2^(a+1)·3^(b-1) differ by factor 2/3). This is because the lattice points (m, k) in the plane, projected to 2^m·3^k on the number line, create a dense pattern.\n\nSecond, `growth_satisfies_ruzsa_necessary` (sorry) aims to show the counting function exceeds (log N)^{3/2} for large N, confirming the growth rate satisfies Ruzsa's necessary condition with c = 1/2. This is the key quantitative fact that makes the problem non-trivial: the set is dense enough to potentially be essential, unlike lacunary sets which are too sparse.",
     "mathContext": "Non-lacunarity: the ratios $a_{n+1}/a_n$ for sorted 3-smooth numbers approach 1. Specifically, the Tijdeman-de Weger theorem (1992) gives gaps $a_{n+1} - a_n = O(a_n / (\\log a_n)^c)$ for some $c > 0$. Growth: $|\\{2^m 3^k \\leq N\\}| \\sim \\frac{(\\log N)^2}{2 \\log 2 \\cdot \\log 3} \\gg (\\log N)^{3/2}$.",
@@ -200,7 +200,7 @@
       "startLine": 222,
       "endLine": 242
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Single Prime Powers Are Not Essential",
     "content": "For any prime p, the set {p^n : n ≥ 0} is lacunary (with ratio p) and therefore not an essential component, by Erdős #37. This makes {2^m · 3^n} (using TWO primes) the simplest possible case that could be essential.",
     "mathContext": "The proof constructs the lacunary sequence enumeration explicitly (a_k = p^k, ratio = p) and applies erdos_37_disproved. The key insight: using a single prime gives exponential growth (lacunary), but two primes give polynomial-in-log growth, crossing Ruzsa's threshold.",

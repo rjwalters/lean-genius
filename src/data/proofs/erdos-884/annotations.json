@@ -121,7 +121,7 @@
       "startLine": 105,
       "endLine": 116
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Properties",
     "content": "**Both sums are non-negative** (axiomatized). **consecutivePairsSum_num_terms** proves the term count equals τ(n) - 1 using simp — one of two genuine proofs in the file.",
     "mathContext": "Nonnegativity follows from the fact that each term 1/(d_j - d_i) is positive. The term count simp proof: (Finset.range (τ(n) - 1)).card = τ(n) - 1.",
@@ -178,7 +178,7 @@
       "startLine": 144,
       "endLine": 155
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Connections and Verification",
     "content": "**divisorHarmonicSum**: σ_{-1}(n) = Σ_{d|n} 1/d, a related but distinct sum over divisors. **erdos_884_statement**: proved by rfl, confirming the formal definition matches the informal statement exactly.",
     "mathContext": "The rfl proof shows ErdosConjecture884 is definitionally equal to its expanded form. The harmonic divisor sum σ_{-1}(n) is related but different — it sums over divisor values, not divisor gaps.",

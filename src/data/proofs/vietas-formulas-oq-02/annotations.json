@@ -2,61 +2,106 @@
   {
     "id": "ann-definitions",
     "proofId": "vietas-formulas-oq-02",
-    "range": { "startLine": 32, "endLine": 64 },
+    "range": {
+      "startLine": 32,
+      "endLine": 64
+    },
     "type": "definition",
     "title": "Elementary Symmetric and Power Sum Polynomials",
     "content": "Defines the elementary symmetric polynomials e_k and power sums p_k explicitly for 2 and 3 variables. For 3 variables: e₁ = x+y+z, e₂ = xy+xz+yz, e₃ = xyz; p₁ = x+y+z, p₂ = x²+y²+z², p₃ = x³+y³+z³. Also defines the Vieta-Newton bridge p₂_vieta = e₁² - 2e₂, which the identity then proves equals p₂. These are explicit scalar definitions, not using Mathlib's MvPolynomial.esymm — trading generality for simplicity and ring-tactic provability.",
     "mathContext": "$e_k = \\sum_{|S|=k} \\prod_{i \\in S} x_i$, $p_k = \\sum_i x_i^k$. For 3 vars: $e_1 = x+y+z$, $e_2 = xy+xz+yz$, $e_3 = xyz$.",
     "significance": "supporting",
-    "relatedConcepts": ["elementary symmetric polynomial", "power sum", "symmetric function"],
-    "prerequisites": ["CommRing"]
+    "relatedConcepts": [
+      "elementary symmetric polynomial",
+      "power sum",
+      "symmetric function"
+    ],
+    "prerequisites": [
+      "CommRing"
+    ]
   },
   {
     "id": "ann-newton-2-vars",
     "proofId": "vietas-formulas-oq-02",
-    "range": { "startLine": 66, "endLine": 79 },
-    "type": "technique",
+    "range": {
+      "startLine": 66,
+      "endLine": 79
+    },
+    "type": "concept",
     "title": "Newton's Identities for 2 Variables",
     "content": "The 2-variable case: p₁ = e₁ (trivially, both are x+y) and p₂ = e₁·p₁ - 2·e₂ (equivalently, x²+y² = (x+y)² - 2xy). Both proved by the ring tactic. This is the simplest non-trivial Newton identity and captures the essential algebraic mechanism: expanding (Σxᵢ)² introduces cross-terms 2Σxᵢxⱼ = 2e₂ that must be subtracted to recover Σxᵢ².",
     "mathContext": "$p_2 = x^2 + y^2 = (x+y)^2 - 2xy = e_1^2 - 2e_2 = e_1 \\cdot p_1 - 2e_2$.",
     "significance": "supporting",
-    "relatedConcepts": ["Newton's identity", "ring tactic", "algebraic identity"],
-    "prerequisites": ["elem_sym_2", "power_sum_2"]
+    "relatedConcepts": [
+      "Newton's identity",
+      "ring tactic",
+      "algebraic identity"
+    ],
+    "prerequisites": [
+      "elem_sym_2",
+      "power_sum_2"
+    ]
   },
   {
     "id": "ann-newton-3-vars",
     "proofId": "vietas-formulas-oq-02",
-    "range": { "startLine": 81, "endLine": 103 },
+    "range": {
+      "startLine": 81,
+      "endLine": 103
+    },
     "type": "insight",
     "title": "Newton's Identities for 3 Variables: The Full Recurrence",
     "content": "Proves all three Newton identities for 3 variables: p₁ = e₁, p₂ = e₁·p₁ - 2·e₂, and p₃ = e₁·p₂ - e₂·p₁ + 3·e₃. The third identity is the most interesting: expanding and simplifying x³+y³+z³ in terms of e₁, e₂, e₃ reveals the alternating sign pattern (-1)^{k-1} that characterizes Newton's identities. All proved by ring — no induction needed for fixed variable count.",
     "mathContext": "Newton III: $p_3 = e_1 p_2 - e_2 p_1 + 3e_3$. General pattern: $p_k = \\sum_{i=1}^{k} (-1)^{i-1} e_i \\, p_{k-i}$ with $p_0 = n$.",
     "significance": "key",
-    "relatedConcepts": ["Newton's identity", "alternating signs", "symmetric function recurrence"],
-    "prerequisites": ["newton_identity_2_2_of_3", "newton_identity_3_2"]
+    "relatedConcepts": [
+      "Newton's identity",
+      "alternating signs",
+      "symmetric function recurrence"
+    ],
+    "prerequisites": [
+      "newton_identity_2_2_of_3",
+      "newton_identity_3_2"
+    ]
   },
   {
     "id": "ann-cube-sum",
     "proofId": "vietas-formulas-oq-02",
-    "range": { "startLine": 105, "endLine": 135 },
+    "range": {
+      "startLine": 105,
+      "endLine": 135
+    },
     "type": "insight",
     "title": "Cube Sum Factorization and the Sum-Zero Corollary",
     "content": "Two classical results derived from Newton's identities. First, cube_sum_factorization: x³+y³+z³ - 3xyz = (x+y+z)(x²+y²+z²-xy-xz-yz). Second, cube_sum_when_sum_zero: if x+y+z = 0 then x³+y³+z³ = 3xyz (the first factor vanishes). The sum-zero corollary connects to Fermat's equation: for FLT n=3, the constraint a³+b³+c³=0 with a+b+c≠0 forces structural constraints on the ring.",
     "mathContext": "$x^3 + y^3 + z^3 - 3xyz = (x+y+z)(x^2+y^2+z^2-xy-xz-yz)$. Corollary: $x+y+z=0 \\implies x^3+y^3+z^3 = 3xyz$.",
     "significance": "key",
-    "relatedConcepts": ["cube sum factorization", "Fermat's Last Theorem", "AM-GM inequality"],
-    "prerequisites": ["newton_identity_3_3"]
+    "relatedConcepts": [
+      "cube sum factorization",
+      "Fermat's Last Theorem",
+      "AM-GM inequality"
+    ],
+    "prerequisites": [
+      "newton_identity_3_3"
+    ]
   },
   {
     "id": "ann-numerical-examples",
     "proofId": "vietas-formulas-oq-02",
-    "range": { "startLine": 137, "endLine": 170 },
-    "type": "context",
+    "range": {
+      "startLine": 137,
+      "endLine": 170
+    },
+    "type": "concept",
     "title": "Numerical Verification: Roots {1,2,3} and {1,1,1}",
     "content": "Concrete numerical checks validating Newton's identities. For the roots of x³-6x²+11x-6 (roots 1,2,3): e₁=6, e₂=11, e₃=6, p₁=6, p₂=14, p₃=36. Newton III: 6·14 - 11·6 + 3·6 = 84 - 66 + 18 = 36 = p₃ ✓. For the triple root {1,1,1}: e₁=3, e₂=3, e₃=1, p₃=3. Newton III: 3·3 - 3·3 + 3·1 = 3 = p₃ ✓. All verified via norm_num/decide.",
     "mathContext": "For roots $\\{1,2,3\\}$: $e_1 = 6$, $e_2 = 11$, $e_3 = 6$, $p_3 = 1^3 + 2^3 + 3^3 = 36$. Check: $6 \\cdot 14 - 11 \\cdot 6 + 3 \\cdot 6 = 36$ ✓.",
-    "significance": "context",
-    "relatedConcepts": ["polynomial roots", "Vieta's formulas", "norm_num"],
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polynomial roots",
+      "Vieta's formulas",
+      "norm_num"
+    ],
     "prerequisites": []
   }
 ]

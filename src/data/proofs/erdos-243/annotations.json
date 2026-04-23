@@ -63,7 +63,7 @@
       "startLine": 43,
       "endLine": 52
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Sequence Values",
     "content": "We **computationally verify** the first five values of Sylvester's sequence: 2, 3, 7, 43, 1807. The `native_decide` tactic compiles these checks to native code for instant verification.",
     "mathContext": "These concrete values let us sanity-check the definition. Note how quickly the sequence grows: s₄ = 1807 already, and s₅ = 3263443. By s₆ we exceed 10 trillion.",
@@ -158,7 +158,7 @@
       "startLine": 107,
       "endLine": 114
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sylvester Terms Are Positive",
     "content": "We prove that every term of Sylvester's sequence is positive. This is needed to apply the conjecture to Sylvester's sequence itself (we need the hypotheses to hold).",
     "mathContext": "The proof uses induction: s₀ = 2 > 0, and sₙ₊₁ = sₙ² - sₙ + 1 = sₙ(sₙ-1) + 1 > 0 since sₙ ≥ 2 for all n.",
@@ -177,7 +177,7 @@
       "startLine": 116,
       "endLine": 126
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sum of Reciprocals Equals 1",
     "content": "The sum 1/2 + 1/3 + 1/7 + 1/43 + ... converges to exactly **1**. This is a classical result making Sylvester's sequence central to Egyptian fraction theory.",
     "mathContext": "The telescoping identity 1/sₙ = 1/(sₙ-1) - 1/(sₙ₊₁-1) gives: Σᵢ₌₀ⁿ (1/sᵢ) = 1 - 1/(sₙ₊₁-1) → 1 as n → ∞. We state this as an axiom since the full proof requires establishing the growth bound.",

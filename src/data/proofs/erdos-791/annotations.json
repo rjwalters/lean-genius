@@ -44,7 +44,7 @@
       "startLine": 60,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Properties and Trivial Basis",
     "content": "**Key properties of additive bases:**\n\n**basis_contains_zero** (axiom): 0 must be in any 2-basis, since 0 ∈ A+A with a, b ∈ ℕ forces a = b = 0.\n\n**trivial_basis** (proved): {0, 1, ..., n} is always a 2-basis for {0,...,n}. The proof is simple: for any k ≤ n, k = 0 + k with both 0, k in the range.\n\n**g_le_n_plus_one** (axiom): g(n) ≤ n + 1, since the trivial basis has n+1 elements. But optimal bases are much smaller — roughly √n elements.\n\n**g_pos** (axiom): g(n) ≥ 1, since we need at least {0}.",
     "mathContext": "The trivial_basis proof uses Finset.mem_range and the pair (0, k) to witness each target. The proof is constructive and doesn't require any axioms.",
@@ -118,7 +118,7 @@
       "startLine": 183,
       "endLine": 215
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Results",
     "content": "**Two key results resolving Problem #791:**\n\n**erdos_791** (proved): There exist constants C₁ ≥ 2 and C₂ ≤ 4 such that C₁·n ≤ g(n)² ≤ C₂·n for all n ≥ 1. The proof instantiates C₁ = 2, C₂ = 4 using Rohrbach's bounds.\n\n**erdos_791_answer** (axiom): The conjecture g(n) ~ 2√n is FALSE. Formalized as the negation of asymptotic equivalence. Axiomatized because the proof involves real analysis and limit arguments from Mrose's bound.\n\nTogether these completely resolve Erdős Problem #791: the conjecture is disproved, and we have explicit (though not tight) bounds on g(n).",
     "mathContext": "The erdos_791 theorem is proved constructively using omega for the constant bounds and exact application of the Rohrbach axioms. The answer theorem involves Filter.atTop and rational arithmetic.",

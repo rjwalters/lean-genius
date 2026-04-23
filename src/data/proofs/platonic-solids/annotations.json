@@ -94,7 +94,7 @@
       "startLine": 167,
       "endLine": 279
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Classification Theorem",
     "content": "**Main Classification**: For $p, q \\geq 3$, $(p-2)(q-2) < 4$ has exactly 5 solutions. Proved by systematic case analysis: $p = 3$ gives $q \\in \\{3,4,5\\}$; $p = 4$ gives $q = 3$; $p = 5$ gives $q = 3$; $p \\geq 6$ fails. Uses `omega` tactic.",
     "mathContext": "The biconditional $(p-2)(q-2) < 4 \\iff (p,q) \\in \\text{validPairs}$ is proved by exhaustive case split on $p$. For $p \\geq 6$: $(p-2) \\geq 4$ and $(q-2) \\geq 1$, so the product $\\geq 4$.",
@@ -117,7 +117,7 @@
       "startLine": 284,
       "endLine": 312
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: Exactly Five",
     "content": "**Wiedijk #50**: `validPairs.card = 5`, verified by `native_decide`. Also proved: all five are distinct (different $(p,q)$ tuples).",
     "mathContext": "$|\\text{validPairs}| = 5$ where $\\text{validPairs} = \\{(3,3),(4,3),(3,4),(5,3),(3,5)\\}$. Verified by `native_decide` (computable decision procedure).",
@@ -140,7 +140,7 @@
       "startLine": 318,
       "endLine": 369
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Geometric Properties (V, E, F)",
     "content": "**Vertices, Edges, Faces** computed from $\\{p,q\\}$ using $pF = 2E$, $qV = 2E$, $V - E + F = 2$. All five verified to satisfy Euler's formula.",
     "mathContext": "From $pF = 2E$ and $qV = 2E$: $F = \\frac{4q}{2p+2q-pq}$, $E = \\frac{2pq}{2p+2q-pq}$, $V = \\frac{4p}{2p+2q-pq}$. Euler: $V - E + F = 2$ verified for all five solids.",
@@ -161,7 +161,7 @@
       "startLine": 375,
       "endLine": 412
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Duality",
     "content": "**Dual Pairs**: Swapping $p \\leftrightarrow q$ gives the dual solid. Cube $\\leftrightarrow$ octahedron, dodecahedron $\\leftrightarrow$ icosahedron, tetrahedron is self-dual. Duality is an involution: $\\mathrm{dual}(\\mathrm{dual}(s)) = s$.",
     "mathContext": "$\\operatorname{dual}(\\{p,q\\}) = \\{q,p\\}$. Since $(p-2)(q-2) = (q-2)(p-2)$, duality preserves the regularity constraint. The involution property follows from commutativity of the swap.",

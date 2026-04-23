@@ -173,7 +173,7 @@
       "startLine": 122,
       "endLine": 136
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Known Exact Values",
     "content": "Several exact formulas are known for small $k$: $L(1,n) = n!$ (the first row can be any permutation). $L(2,n) = n! \\cdot D(n)$ where $D(n) = n! \\sum_{i=0}^{n} (-1)^i / i!$ counts derangements — the second row must be a derangement of the first. For Latin squares, $L(n,n) \\leq \\prod_{i=1}^{n} (i+1)!$. The OEIS sequence A001009 provides computed values like $L(3,4) = 3456$.",
     "mathContext": "The derangement connection for $L(2,n)$: after fixing the first row as the identity permutation (WLOG, by symmetry dividing by $n!$), the second row must avoid $\\sigma(j) = j$ for all $j$, i.e., be a derangement. The classical formula $D(n) = n! \\sum_{k=0}^{n} \\frac{(-1)^k}{k!} \\approx n!/e$ gives $L(2,n) \\approx (n!)^2/e$, consistent with $e^{-\\binom{2}{2}} (n!)^2 = (n!)^2/e$.",

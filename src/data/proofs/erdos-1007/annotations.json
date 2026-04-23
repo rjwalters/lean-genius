@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 43
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview",
     "content": "Erdős #1007 asks for the minimum edges in a 4-dimensional graph. Graph dimension, introduced by Erdős, Harary, and Tutte (1965), is the smallest $n$ such that the graph embeds in $\\mathbb{R}^n$ with all edges having unit length. The answer is 9 edges, achieved uniquely by $K_{3,3}$. Erdős posed this question to Alexander Soifer in January 1992.\n\nThe module docstring provides full context: the dimension ladder ($K_2 \\to 1$, $K_3 \\to 2$, $K_4 \\to 3$), the surprising break at dimension 4 (the minimum is $K_{3,3}$, not $K_5$), House's (2013) resolution, and Chaffee-Noble's (2016) dimension-5 extension.",
     "mathContext": "$\\dim(G) = \\min\\{d : G \\text{ embeds in } \\mathbb{R}^d \\text{ with all edges unit length}\\}$. The problem: find $e(4) = \\min\\{|E(G)| : \\dim(G) = 4\\}$. Answer: $e(4) = 9$, achieved uniquely by $K_{3,3}$.",
@@ -76,7 +76,7 @@
       "startLine": 89,
       "endLine": 100
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Known Dimensions",
     "content": "The complete graphs form a dimension ladder via regular simplex geometry: $K_3$ (equilateral triangle) embeds in $\\mathbb{R}^2$, $K_4$ (regular tetrahedron) in $\\mathbb{R}^3$. In general, the regular $n$-simplex has $n+1$ vertices at unit distance in $\\mathbb{R}^n$, so $\\dim(K_{n+1}) = n$.\n\n$K_{3,3}$ breaks this simplex pattern: it is not a complete graph, yet its dimension (4) exceeds what a 6-vertex complete graph $K_6$ would naively suggest ($\\dim(K_6) = 5$). The bipartite structure creates different distance constraints than the complete structure.",
     "mathContext": "$\\dim(K_3) = 2$, $\\dim(K_4) = 3$, $\\dim(K_{n+1}) = n$ via regular $n$-simplex. $\\dim(K_{3,3}) = 4$ despite $|V(K_{3,3})| = 6$ — the bipartite structure reduces edges ($9 < \\binom{6}{2} = 15$) while maintaining high dimension.",
@@ -99,7 +99,7 @@
       "startLine": 102,
       "endLine": 121
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: 9 Edges Minimum (House 2013)",
     "content": "House (2013) proved two results, both axiomatized here:\n\n1. **Lower bound** (`min_edges_dimension_4`): Every graph with $\\dim(G) = 4$ has $|E(G)| \\geq 9$. The proof shows that graphs with 8 or fewer edges have enough degrees of freedom to admit unit-distance embeddings in $\\mathbb{R}^3$.\n\n2. **Uniqueness** (`k33_unique_minimum`): If $\\dim(G) = 4$ and $|E(G)| = 9$, then $G \\cong K_{3,3}$. This is formalized as the existence of an equivalence $f : V \\simeq \\text{Fin}\\,3 \\oplus \\text{Fin}\\,3$ such that $\\text{adj}(u,v) \\iff \\text{completeBipartiteAdj}(f(u), f(v))$.\n\nThe proved theorem `k33_has_9_edges : 3 * 3 = 9` (by `norm_num`) verifies the edge count.",
     "mathContext": "Axiom 1: $\\dim(G) = 4 \\Rightarrow |\\{(u,v) : \\text{adj}(u,v) \\land u < v\\}| \\geq 9$. Axiom 2: $\\dim(G) = 4 \\land |E(G)| = 9 \\Rightarrow \\exists f : V \\simeq \\text{Fin}\\,3 \\oplus \\text{Fin}\\,3,\\, \\forall u\\,v,\\, \\text{adj}(u,v) \\iff \\text{completeBipartiteAdj}(f(u), f(v))$.",
@@ -122,7 +122,7 @@
       "startLine": 123,
       "endLine": 129
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Dimension 5 Extension (Chaffee-Noble 2016)",
     "content": "Chaffee and Noble (2016) extended the analysis to dimension 5: the minimum is 15 edges, achieved by both $K_6$ and the tripartite graph $K_{1,3,3}$. The axiom `min_edges_dimension_5` states the lower bound; the proved theorem `k6_has_15_edges : Nat.choose 6 2 = 15` (via `native_decide`) verifies the edge count of $K_6$.\n\nUnlike dimension 4, the minimizer at dimension 5 is not unique — two non-isomorphic graphs achieve it. This suggests the classification of minimum-edge $d$-dimensional graphs becomes increasingly complex with $d$.",
     "mathContext": "Axiom: $\\dim(G) = 5 \\Rightarrow |E(G)| \\geq 15$. $|E(K_6)| = \\binom{6}{2} = 15$. $|E(K_{1,3,3})| = 1 \\cdot 3 + 1 \\cdot 3 + 3 \\cdot 3 = 15$. Both $K_6$ and $K_{1,3,3}$ achieve $\\dim = 5$ with 15 edges.",

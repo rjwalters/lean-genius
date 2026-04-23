@@ -54,7 +54,7 @@
       "startLine": 44,
       "endLine": 56
     },
-    "type": "technique",
+    "type": "concept",
     "title": "1 is in A (Vacuous Truth)",
     "content": "Proves `one_in_setA`: $1 \\in A$ because 1 has no prime divisors, so the universal condition is vacuously true. The proof handles the positivity condition with `norm_num` and the universal condition by showing any prime $p$ dividing 1 leads to $p = 1$, contradicting primality via `Nat.Prime.ne_one`.",
     "mathContext": "$1 \\in A$ since $\\{p : p \\text{ prime}, p \\mid 1\\} = \\emptyset$. The universal quantifier over an empty set is vacuously true.",
@@ -76,7 +76,7 @@
       "startLine": 58,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Prime Powers are Not in A",
     "content": "States `prime_power_not_in_setA`: $p^k \\notin A$ for any prime $p$ and $k \\geq 1$. The key insight is that every divisor of $p^k$ has the form $p^j$, and $p^j \\equiv 0 \\pmod{p}$ for $j \\geq 1$. So no $d > 1$ with $d \\mid p^k$ can satisfy $d \\equiv 1 \\pmod{p}$. The proof extracts the witness from the $A$-membership hypothesis but the final step (showing divisors of $p^k$ are all $p$-powers) has a sorry.",
     "mathContext": "For $n = p^k$: $\\text{divisors}(p^k) = \\{1, p, p^2, \\ldots, p^k\\}$. For $j \\geq 1$: $p^j \\equiv 0 \\pmod{p} \\neq 1$. Only $d = 1$ satisfies $d \\equiv 1 \\pmod{p}$, but $d > 1$ is required. So $p^k \\notin A$.",
@@ -192,7 +192,7 @@
       "startLine": 196,
       "endLine": 205
     },
-    "type": "technique",
+    "type": "concept",
     "title": "6 is in A (Explicit Witness Construction)",
     "content": "Proves `six_in_setA`: $6 \\in A$ by explicit construction. The proof verifies positivity with `norm_num`, then for each prime $p$ dividing 6, uses `interval_cases p` to enumerate the cases $p = 2$ and $p = 3$. In both cases, $d = 3$ is provided as the witness: $3 > 1$, $3 \\mid 6$, and the modular conditions are verified by `norm_num`.",
     "mathContext": "$6 = 2 \\times 3 \\in A$. For $p = 2$: witness $d = 3$ ($3 > 1$, $3 \\mid 6$, $3 \\equiv 1 \\pmod{2}$). The `interval_cases` tactic enumerates all primes dividing 6, and `norm_num` verifies the arithmetic conditions.",

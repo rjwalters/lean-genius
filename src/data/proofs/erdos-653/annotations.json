@@ -141,7 +141,7 @@
       "startLine": 246,
       "endLine": 274
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorems",
     "content": "**erdos_653_summary** (PROVED): Combines three results:\n1. ∀ n ≥ 10, g(n) > 7n/10 (Csizmadia lower bound)\n2. ∀ n, g(n) ≤ n (trivial upper bound)\n3. ∃ c > 0, ∀ n ≥ 2, g(n) < n - cn^{2/3} (nontrivial upper gap)\n\n**erdos_653** (PROVED): Definitionally equal to erdos_653_summary.\n\nProof: Direct application of csizmadia_bound, g_le_n, and upper_bound axioms via ⟨_, _, _⟩.",
     "mathContext": "The summary packages all known quantitative results. The open conjecture (g(n)/n → 1) is stated separately as erdos653Conjecture but not included in the proved summary.",

@@ -63,7 +63,7 @@
       "startLine": 52,
       "endLine": 66
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Edge Cases",
     "content": "**solution_zero_zero** proves the empty multiset is the unique solution for n=0, k=0. **solution_zero_pos** states there's no solution for n=0 when k>=1.",
     "mathContext": "For k>=1, we need k positive primes summing to 0, which is impossible since all prime powers are positive. This is axiomatized due to proof complexity.",
@@ -196,7 +196,7 @@
       "startLine": 131,
       "endLine": 147
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bounds on Solutions",
     "content": "**no_solution_small** shows solutionSet n k = empty when n < 2^k. **smallest_k2** proves solutionSet 8 2 is nonempty (8 is the smallest n with a k=2 solution).",
     "mathContext": "Since 2 is the smallest prime, the minimum sum of k k-th powers of primes is k * 2^k. For k=2, this is 2*4 = 8. For k=3, it's 3*8 = 24.",
@@ -215,7 +215,7 @@
       "startLine": 149,
       "endLine": 167
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_979_summary** packages the verified examples: 8 = 2^2 + 2^2, 50 = 5^2 + 5^2, and 24 = 2^3 + 2^3 + 2^3.",
     "mathContext": "This confirms the definitions are correctly capturing the intended mathematical content. Each example satisfies all three conditions: correct count of primes, all primes, sum equals n.",

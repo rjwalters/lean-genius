@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 24
     },
-    "type": "context",
+    "type": "concept",
     "title": "Generalizing Partial Derangements to Arbitrary Finite Types",
     "content": "This file answers an open question from `derangements-oq-02`: can the partial derangement formula $S(n,k) = \\binom{n}{k} \\cdot D(n-k)$ be generalized from $\\text{Fin}\\,n$ to arbitrary finite types $\\alpha$?\n\nThe answer is yes, via **transport of structure**: any finite type $\\alpha$ with $|\\alpha| = n$ is equivalent to $\\text{Fin}\\,n$ via a bijection $e : \\alpha \\simeq \\text{Fin}\\,n$. Since `permCongr` transports permutations along such bijections while preserving the fixed-point count, the formula carries over directly.\n\nThe file imports the `Fin n` case from `Proofs.DerangementsOQ02` and opens `Finset`, `Fintype`, `Nat`, and `Equiv.Perm` namespaces.",
     "mathContext": "For any finite type $\\alpha$ with $|\\alpha| = n$: $|\\{\\sigma \\in \\text{Perm}(\\alpha) : |\\text{Fix}(\\sigma)| = k\\}| = \\binom{n}{k} \\cdot D(n-k)$.",
@@ -125,7 +125,7 @@
       "startLine": 111,
       "endLine": 123
     },
-    "type": "context",
+    "type": "concept",
     "title": "Transport Methodology: Fin n to Arbitrary Fintype",
     "content": "The proof's summary highlights a reusable pattern for Mathlib: prove a permutation-counting result for Fin n, then transport to arbitrary Fintype α via `Fintype.equivFin`. The key insight is that `permCongr` preserves the combinatorial invariant (here, fixed-point count), so the Fin n result lifts for free.\n\nThis three-step pattern — (1) prove invariance under permCongr, (2) establish filter bijection, (3) instantiate with equivFin — applies to any permutation statistic preserved by conjugation: cycle type, descent count, inversion number, etc.",
     "mathContext": "\\text{Perm}\\;\\alpha \\xrightarrow{\\text{permCongr}(e)} \\text{Perm}\\;(\\text{Fin}\\;|\\alpha|)",

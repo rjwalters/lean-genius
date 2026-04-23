@@ -83,7 +83,7 @@
       "startLine": 77,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Wantzel-Galois Theorem: Constructibility ↔ 2-Group Galois",
     "content": "`wantzel_galois_characterization` is the main axiom: `IsConstructibleFromQ α ↔ IsPGroup 2 (minpoly ℚ α).Gal`. The docstring explains both proof directions: (→) α in a degree-2 tower gives a splitting field K with [K:ℚ] = 2^m, so Gal(K/ℚ) is a 2-group, and Gal(minpoly) embeds as a subgroup. (←) A 2-group Galois group has a composition series with ℤ/2ℤ quotients — by the Galois correspondence, this gives a degree-2 extension tower, so α is constructible. Axiomatized because the full proof needs the Galois correspondence.\n\n**Hierarchy of expressibility:** Constructibility (2-group Galois) is strictly more restrictive than solvability by radicals (solvable Galois group, per Abel-Ruffini). Every 2-group is solvable (composition factors are ℤ/2ℤ, which is abelian), but not every solvable group is a 2-group. Example: Gal(x⁵-2/ℚ) ≅ F₂₀ (Frobenius group of order 20 = 4·5) is solvable (with derived series F₂₀ ▷ ℤ/5ℤ ▷ {e}), so ⁵√2 is solvable by radicals, but F₂₀ is not a 2-group, so ⁵√2 is NOT constructible.\n\n**Fermat prime connection:** For the celebrated regular polygon problem: cos(2π/p) is constructible iff Gal(ℚ(ζₚ)/ℚ) ≅ ℤ/(p-1)ℤ is a 2-group, i.e., p-1 = 2ⁿ, i.e., p is a Fermat prime. Only 5 Fermat primes are known (3, 5, 17, 257, 65537), and it remains open whether there are finitely or infinitely many.",
     "mathContext": "**Wantzel-Galois**: $\\alpha \\in \\mathbb{R}$ algebraic over $\\mathbb{Q}$ is constructible $\\iff$ $\\text{Gal}(\\text{minpoly}(\\mathbb{Q}, \\alpha)/\\mathbb{Q})$ is a 2-group. Proof sketch ($\\Leftarrow$): 2-groups are solvable; by Jordan-Hölder, composition factors are $\\mathbb{Z}/2\\mathbb{Z}$; by Galois correspondence, each factor corresponds to a degree-2 extension — exactly what compass-and-straightedge produces. The `.Gal` in `(minpoly ℚ α).Gal` is `Polynomial.Gal`: the Galois group of the splitting field of a polynomial over the base field.",
@@ -114,7 +114,7 @@
       "startLine": 95,
       "endLine": 141
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Non-Constructibility: Coprimality Proves Order 6 Is Not a 2-Power",
     "content": "Two coprimality lemmas prove that certain group orders cannot be 2-powers. `not_pow_two_of_eq_six` proves `6 ≠ 2^n` by contradiction: if `6 = 2^n`, then `Coprime 3 (2^n)` (since gcd(3,2)=1 implies gcd(3,2^n)=1 via `Nat.Coprime.pow_right`), but `3 ∣ 2^n` (since 3 ∣ 6 = 2^n) — a number coprime to 3 cannot be divisible by 3. `not_pow_two_of_eq_three` proves `3 ≠ 2^n` by bounding: `n ≤ 1` since `2^n ≥ 4` for `n ≥ 2`, then `interval_cases` eliminates `n = 0` and `n = 1`.\n\nThese drive the two non-constructibility results: `x_cube_sub_2_gal_not_2group` uses `|Gal(x³-2)| = 6` (from InverseGalois.lean) with `not_pow_two_of_eq_six`; `cos20_gal_not_2group` uses `|Gal(8x³-6x-1)| = 3` (from AngleTrisectionCos20Gal.lean) with `not_pow_two_of_eq_three`. Both follow the same pattern: assume `IsPGroup 2`, extract `Nat.card = 2^n` via `IsPGroup.iff_card.mp`, rewrite with the known cardinality, and derive a contradiction.",
     "mathContext": "Two distinct arguments:\n\n**Order 6** ($\\text{Gal}(x^3-2/\\mathbb{Q}) \\cong S_3$): Coprimality argument — $\\gcd(3, 2) = 1 \\Rightarrow \\gcd(3, 2^n) = 1$, but $3 \\mid 6$, so $6 \\neq 2^n$. In Lean 4: `Nat.Coprime.pow_right n (by norm_num : Nat.Coprime 3 2)` gives `Coprime 3 (2^n)`, then `Nat.dvd_gcd (dvd_refl 3) h3dvd` constructs the contradiction.\n\n**Order 3** ($\\text{Gal}(8x^3-6x-1/\\mathbb{Q}) \\cong \\mathbb{Z}/3\\mathbb{Z}$, the triple-angle formula polynomial for $\\cos(20°)$): Bounding argument — $2^n \\geq 4$ for $n \\geq 2$, so $3 = 2^n$ forces $n \\leq 1$; `interval_cases` eliminates both. The discriminant of $8x^3-6x-1$ is $\\Delta = 81 = 9^2$, a perfect square, so $\\text{Gal} \\subseteq A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (order 3, not $S_3$).",
@@ -199,7 +199,7 @@
       "startLine": 244,
       "endLine": 261
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Contrapositive Non-Constructibility: Two Routes",
     "content": "Part VII provides two contrapositive forms. `not_constructible_of_not_2group`: rewrites along `wantzel_galois_characterization` and applies `¬ IsPGroup 2 (minpoly ℚ α).Gal`. `not_constructible_of_degree`: a one-liner `fun hc => h _ (constructible_implies_degree_dvd_pow2 α hα hc)` — assumes constructibility, derives degree divisibility, applies the hypothesis that no n works. The Galois route requires knowing the Galois group structure; the degree route is weaker but easier when only the degree is known.",
     "mathContext": "Two contrapositive forms: 1. **Galois route**: $\\neg(\\text{Gal is 2-group}) \\Rightarrow \\neg\\alpha$ constructible. Direct from the iff. 2. **Degree route**: $(\\forall n, \\text{deg} \\nmid 2^n) \\Rightarrow \\neg\\alpha$ constructible. Follows from constructible $\\Rightarrow$ deg $\\mid 2^n$. Example uses: cos(20°) via Galois route (S₃, order 6); an odd-degree irreducible polynomial via degree route (degree 3 does not divide any $2^n$ since $2 \\nmid 3$).",

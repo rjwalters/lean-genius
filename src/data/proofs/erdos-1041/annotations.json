@@ -83,7 +83,7 @@
       "startLine": 52,
       "endLine": 66
     },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős-Herzog-Piranian Component Lemma (1958)",
     "content": "**Known Result**: For any monic polynomial f of degree ≥ 2 with roots in the unit disk, the sublevel set {z : |f(z)| < 1} has a connected component containing at least two roots.\n\nThis was proved in the 1958 paper 'Metric properties of polynomials.' The proof uses potential theory—specifically, properties of the logarithmic potential associated with the polynomial's roots.",
     "mathContext": "Connected components partition the sublevel set. At least one component must be 'rich' enough to contain multiple roots.",
@@ -102,7 +102,7 @@
       "startLine": 75,
       "endLine": 92
     },
-    "type": "context",
+    "type": "concept",
     "title": "Main Conjecture (OPEN)",
     "content": "**Erdős Problem #1041**: Under the same hypotheses, there exists a **path** of length less than 2 within the sublevel set connecting two roots.\n\nThis strengthens the Component Lemma from mere connectivity to a quantitative bound. While the Component Lemma says roots are connected, a winding path could be arbitrarily long. This conjecture demands a SHORT path.",
     "mathContext": "The path γ : [0,1] → ℂ must satisfy: γ(0), γ(1) are distinct roots, the image lies in the sublevel set, and μH[1](range γ) < 2.",
@@ -121,7 +121,7 @@
       "startLine": 98,
       "endLine": 106
     },
-    "type": "context",
+    "type": "concept",
     "title": "Diameter Bound",
     "content": "The diameter of the root set is less than 2. Since all roots lie in the open unit disk and the unit disk has diameter 2, no two roots can be 2 or more apart.\n\nThis gives hope that a short path exists—we just need to find one in the sublevel set.",
     "significance": "key",
@@ -139,7 +139,7 @@
       "startLine": 108,
       "endLine": 118
     },
-    "type": "context",
+    "type": "concept",
     "title": "Quadratic Case (Base Case)",
     "content": "For **degree 2** polynomials f(z) = (z - z₁)(z - z₂), the conjecture holds.\n\nThe straight line segment from z₁ to z₂ has length |z₁ - z₂| < 2, and one can show this segment lies entirely in the sublevel set.\n\nThis provides the base case for potential inductive approaches.",
     "mathContext": "For quadratics, the sublevel set {|f(z)| < 1} is the interior of a Cassini oval.",
@@ -158,7 +158,7 @@
       "startLine": 124,
       "endLine": 129
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sublevel Sets are Open",
     "content": "**sublevelSet_isOpen**: The sublevel set {z : |f(z)| < r} is an open subset of ℂ.\n\nProof: Polynomial evaluation `f.eval` is continuous, norm is continuous, and the preimage of (-∞, r) under a continuous function is open.",
     "mathContext": "This uses the continuity of aeval (algebra evaluation) which generalizes polynomial evaluation.",
@@ -177,7 +177,7 @@
       "startLine": 131,
       "endLine": 143
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Roots are in the Sublevel Set",
     "content": "**roots_in_sublevelSet**: If z is a root of f, then z ∈ sublevelSet f 1.\n\nProof: f(z) = 0 implies |f(z)| = 0 < 1.\n\n**roots_subset_sublevelSet**: All roots are contained in the sublevel set.",
     "mathContext": "This is the fundamental reason the problem makes sense—we're looking for paths in a set that contains the endpoints.",
@@ -196,7 +196,7 @@
       "startLine": 153,
       "endLine": 158
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Distance Bound in Unit Disk",
     "content": "**dist_in_unit_disk**: If |z₁| < 1 and |z₂| < 1, then |z₁ - z₂| < 2.\n\nProof by triangle inequality:\n`|z₁ - z₂| ≤ |z₁| + |z₂| < 1 + 1 = 2`\n\nThis is why 2 is the critical constant in the conjecture.",
     "significance": "supporting",

@@ -63,7 +63,7 @@
       "startLine": 46,
       "endLine": 53
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Main Conjecture",
     "content": "**Erdős Problem #172** (OPEN): For any k-coloring and any target size m, there exists a set A with |A| ≥ m that is sum-product monochromatic. In other words, arbitrarily large such sets exist regardless of the coloring.",
     "mathContext": "Formally: ∀ k ≥ 1, ∀ c : ℕ → Fin k, ∀ m, ∃ A with |A| ≥ m and ∃ c₀ such that all subset sums and products of A have color c₀.",
@@ -82,7 +82,7 @@
       "startLine": 61,
       "endLine": 69
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Moreira (2017)",
     "content": "**Joel Moreira's breakthrough**: In any finite coloring of ℕ, there exist x, y such that {x, x+y, xy} are all the same color. This was the first non-trivial case (|A| = 2) of the conjecture.",
     "mathContext": "Published in Annals of Mathematics, this resolved a long-standing question. The proof uses ergodic theory and the structure of ultrafilters on ℕ.",
@@ -120,7 +120,7 @@
       "startLine": 86,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hindman (1980) Counterexample",
     "content": "**The infinite version fails**: Hindman proved that with 7 colors, there exists a coloring of ℕ such that NO infinite set has all its sums and products monochromatic. This shows the finite requirement is essential.",
     "mathContext": "The counterexample uses 7 colors specifically. It's unknown whether 7 is optimal or if fewer colors suffice.",

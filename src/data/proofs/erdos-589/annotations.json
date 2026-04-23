@@ -79,7 +79,7 @@
       "startLine": 112,
       "endLine": 127
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős's Belief (Disproved)",
     "content": "**ErdosBelief, erdos_belief_false:**\n\nErdős originally thought g(n) = Ω(n) - linear growth.\n\nThis was DISPROVED. The density Hales-Jewett theorem implies g(n) = o(n).",
     "mathContext": "Erdős's intuition was wrong on this problem.",
@@ -169,7 +169,7 @@
       "startLine": 243,
       "endLine": 252
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Current Best Bounds",
     "content": "**current_bounds:**\n\nn^(1/2)·log n ≪ g(n) ≤ n^(5/6+o(1))\n\nThe gap between exponents 1/2 and 5/6 remains open.",
     "significance": "key",
@@ -223,7 +223,7 @@
       "startLine": 306,
       "endLine": 342
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Problem Summary",
     "content": "**erdos_589_summary:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | Estimate g(n) |\n| Erdős's belief | g(n) = Ω(n) (WRONG) |\n| Lower bound | c·√n·log n (Füredi) |\n| Upper bound | n^(5/6+o(1)) (Balogh-Solymosi) |\n| Key tools | DHJ, Container method |\n| Status | Partially resolved |",
     "significance": "key",

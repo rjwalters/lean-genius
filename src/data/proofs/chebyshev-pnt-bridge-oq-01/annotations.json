@@ -2,7 +2,10 @@
   {
     "id": "ann-legendre-formula",
     "proofId": "chebyshev-pnt-bridge-oq-01",
-    "range": { "startLine": 32, "endLine": 34 },
+    "range": {
+      "startLine": 32,
+      "endLine": 34
+    },
     "type": "theorem",
     "title": "Legendre's Formula for v_p(n!)",
     "content": "States Legendre's formula: the $p$-adic valuation of $n!$ is $v_p(n!) = \\sum_{i=1}^{n} \\lfloor n/p^i \\rfloor$. This is currently a `sorry` -- the connection between Mathlib's `Nat.factorization` API and the summation formula needs to be established.",
@@ -23,7 +26,10 @@
   {
     "id": "ann-carry-bound",
     "proofId": "chebyshev-pnt-bridge-oq-01",
-    "range": { "startLine": 41, "endLine": 45 },
+    "range": {
+      "startLine": 41,
+      "endLine": 45
+    },
     "type": "theorem",
     "title": "Carry Term Bound: Each Digit Contributes 0 or 1",
     "content": "Proves the fundamental carry bound: $\\lfloor 2n/p^i \\rfloor - 2\\lfloor n/p^i \\rfloor \\leq 1$ for all $i$. This is the combinatorial heart of the proof -- each position in the base-$p$ addition of $n + n$ generates at most one carry. The proof uses `omega` after establishing $2\\lfloor n/p^i \\rfloor \\leq \\lfloor 2n/p^i \\rfloor$.",
@@ -44,7 +50,10 @@
   {
     "id": "ann-carry-vanishing",
     "proofId": "chebyshev-pnt-bridge-oq-01",
-    "range": { "startLine": 49, "endLine": 52 },
+    "range": {
+      "startLine": 49,
+      "endLine": 52
+    },
     "type": "theorem",
     "title": "Carry Terms Vanish for Large Powers",
     "content": "When $p^i > 2n$, the carry term $\\lfloor 2n/p^i \\rfloor = 0$ since the dividend is less than the divisor. This ensures the sum $\\sum_i (\\lfloor 2n/p^i \\rfloor - 2\\lfloor n/p^i \\rfloor)$ has only finitely many nonzero terms.",
@@ -63,7 +72,10 @@
   {
     "id": "ann-digits-bound",
     "proofId": "chebyshev-pnt-bridge-oq-01",
-    "range": { "startLine": 55, "endLine": 68 },
+    "range": {
+      "startLine": 55,
+      "endLine": 68
+    },
     "type": "theorem",
     "title": "Existence of a Large Power of p",
     "content": "Proves that for any prime $p$ and $n \\geq 1$, there exists $k \\leq 2n$ such that $p^k > 2n$. The proof takes $k = 2n$ and shows $p^{2n} \\geq 2^{2n} > 2n$ by induction. This provides the truncation point for the carry sum, ensuring the valuation $v_p\\binom{2n}{n}$ is bounded by a computable quantity.",
@@ -84,7 +96,10 @@
   {
     "id": "ann-main-theorem",
     "proofId": "chebyshev-pnt-bridge-oq-01",
-    "range": { "startLine": 78, "endLine": 80 },
+    "range": {
+      "startLine": 78,
+      "endLine": 80
+    },
     "type": "theorem",
     "title": "Main Bound: p^{v_p(C(2n,n))} ≤ 2n",
     "content": "The **main theorem**: for any prime $p$ and $n \\geq 1$, $p^{v_p\\binom{2n}{n}} \\leq 2n$. Currently `sorry` -- requires connecting the carry infrastructure (proved) to Mathlib's `Nat.factorization` API. The proof sketch: $v_p\\binom{2n}{n} = \\sum_i \\text{carry}_i \\leq \\lfloor \\log_p(2n) \\rfloor$, so $p^{v_p} \\leq p^{\\log_p(2n)} = 2n$.",
@@ -106,7 +121,10 @@
   {
     "id": "ann-product-bound",
     "proofId": "chebyshev-pnt-bridge-oq-01",
-    "range": { "startLine": 84, "endLine": 86 },
+    "range": {
+      "startLine": 84,
+      "endLine": 86
+    },
     "type": "theorem",
     "title": "Product Bound via Prime Counting",
     "content": "Corollary: $\\binom{2n}{n} \\leq (2n)^{\\pi(2n)}$. Since $\\binom{2n}{n} = \\prod_{p \\text{ prime}} p^{v_p\\binom{2n}{n}}$ and each factor is $\\leq 2n$, and there are $\\pi(2n)$ primes $\\leq 2n$, the product is bounded by $(2n)^{\\pi(2n)}$. Currently `sorry`.",
@@ -127,7 +145,10 @@
   {
     "id": "ann-binomial-lower",
     "proofId": "chebyshev-pnt-bridge-oq-01",
-    "range": { "startLine": 94, "endLine": 96 },
+    "range": {
+      "startLine": 94,
+      "endLine": 96
+    },
     "type": "theorem",
     "title": "Central Binomial Lower Bound",
     "content": "States $(2n+1) \\cdot \\binom{2n}{n} \\geq 4^n$. This follows from the binomial theorem: $4^n = (1+1)^{2n} = \\sum_{k=0}^{2n} \\binom{2n}{k} \\leq (2n+1) \\binom{2n}{n}$ since $\\binom{2n}{n}$ is the maximum binomial coefficient. Currently `sorry`.",
@@ -148,7 +169,10 @@
   {
     "id": "ann-chebyshev-bound",
     "proofId": "chebyshev-pnt-bridge-oq-01",
-    "range": { "startLine": 101, "endLine": 103 },
+    "range": {
+      "startLine": 101,
+      "endLine": 103
+    },
     "type": "theorem",
     "title": "Chebyshev's Combined Inequality",
     "content": "The final synthesis: $4^n \\leq (2n+1) \\cdot (2n)^{\\pi(2n)}$. This combines the binomial lower bound with the product upper bound and yields, after taking logarithms: $\\pi(2n) \\geq (n \\ln 4 - \\ln(2n+1)) / \\ln(2n) \\sim n \\ln 4 / \\ln(2n)$. Currently `sorry`.",
@@ -169,12 +193,15 @@
   {
     "id": "ann-concrete-examples",
     "proofId": "chebyshev-pnt-bridge-oq-01",
-    "range": { "startLine": 111, "endLine": 117 },
-    "type": "technique",
+    "range": {
+      "startLine": 111,
+      "endLine": 117
+    },
+    "type": "concept",
     "title": "Concrete Computations via native_decide",
     "content": "Three `native_decide` proofs verify specific binomial coefficient values: $\\binom{6}{3} = 20$, $\\binom{10}{5} = 252$, $\\binom{20}{10} = 184756$. The `native_decide` tactic compiles the computation to native code and executes it, providing certified numerical results without manual proof.",
     "mathContext": "$\\binom{6}{3} = 20 = 2^2 \\cdot 5$ (check: $2^2 = 4 \\leq 6$, $5^1 = 5 \\leq 6$ -- bound holds). $\\binom{10}{5} = 252 = 2^2 \\cdot 3^2 \\cdot 7$ (check: $4 \\leq 10$, $9 \\leq 10$, $7 \\leq 10$). $\\binom{20}{10} = 184756 = 2^2 \\cdot 11 \\cdot 13 \\cdot 17 \\cdot 19$ (each prime power $\\leq 20$).",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": [
       "Nat.choose computation",
       "native_decide tactic"

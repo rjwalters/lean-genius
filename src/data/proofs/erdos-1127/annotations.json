@@ -138,7 +138,7 @@
       "startLine": 183,
       "endLine": 187
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kunen's Theorem (1987)",
     "content": "**kunen_theorem:**\n\nAssuming CH, ℝⁿ can be decomposed into countably many sets with distinct pairwise distances, for ALL dimensions n.\n\nThis completely solves the problem under CH.",
     "significance": "key",
@@ -156,7 +156,7 @@
       "startLine": 198,
       "endLine": 207
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Hajnal Necessity",
     "content": "**erdos_hajnal_necessity:**\n\nIf CH is FALSE, then for any finite partition of ℝ, there exist 4 points in one piece determining at most 4 distinct distances (instead of the required 6).\n\nThis shows CH is NECESSARY for the decomposition to work.",
     "mathContext": "¬CH → finite partitions fail the distinct distances property",

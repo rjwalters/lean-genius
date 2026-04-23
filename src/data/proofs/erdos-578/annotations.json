@@ -209,7 +209,7 @@
       "startLine": 143,
       "endLine": 158
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_578_summary:** Proved conjunction of:\n1. `erdos_bollobas_conjecture` (original problem: YES)\n2. `threshold_at_quarter` ($p_0 = 1/4$ is optimal)\n\nThe proof packages `erdos_bollobas_proved` and `threshold_at_quarter` into a single And-introduction via `⟨erdos_bollobas_proved, threshold_at_quarter⟩`.\n\nNote: The `by linarith` terms in the goal are resolved automatically from the existential witness in `threshold_at_quarter`.",
     "mathContext": "The summary captures the complete resolution: $G(2^d, 1/2) \\supseteq Q_d$ a.s. (answer: YES), and the threshold is $p_0 = 1/4$ (quantitative strengthening). The proof is a trivial conjunction of two axioms.",

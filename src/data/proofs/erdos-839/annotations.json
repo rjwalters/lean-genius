@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 22
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Header and Imports",
     "content": "The formalization imports Mathlib's natural number basics, finite sets, and filter theory. The header describes Problem #839 on sequences $1 \\leq a_1 < a_2 < \\cdots$ where no term equals a sum of consecutive earlier terms. Two open questions concern growth rate ($\\limsup a_n/n = \\infty$?) and logarithmic density (vanishing?). Known results include Freud's construction with upper density $19/36$, disproving Erdős's conjecture of $\\leq 1/2$.",
     "mathContext": "Imports: Finset, Filter.Basic, Nat.Basic for formalizing $\\sum_{k=i}^{j} a_k$, $\\limsup$, and sequence properties.",
@@ -141,7 +141,7 @@
       "startLine": 57,
       "endLine": 64
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Linear Lower Bound (Proved)",
     "content": "Every valid sequence satisfies $a_n \\geq n + 1$. The proof is by induction: $a_0 \\geq 1$ (positivity), and $a_{k+1} > a_k \\geq k + 1$ (strict monotonicity), so $a_{k+1} \\geq k + 2$. This is one of the fully proved results in the formalization (no sorry or axiom). It establishes that valid sequences grow at least linearly.",
     "mathContext": "$\\forall\\, n: a_n \\geq n + 1$ (by induction on $n$, using $a_0 > 0$ and $a_{k+1} > a_k$).",

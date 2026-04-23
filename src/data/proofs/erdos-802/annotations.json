@@ -6,9 +6,9 @@
       "startLine": 1,
       "endLine": 27
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview and References",
-    "content": "Erd\u0151s Problem #802 asks whether $K_r$-free graphs on $n$ vertices with average degree $t$ must contain an independent set of size $\\gg_r (\\log t / t) \\cdot n$. This is the AEKS conjecture (Ajtai-Erd\u0151s-Koml\u00f3s-Szemer\u00e9di, 1981). The header documents the resolution timeline: AKS (1980) proved the full bound for $r = 3$ (triangle-free graphs), AEKS (1981) proved a weaker $(\\log\\log t / t) \\cdot n$ bound for general $r$, Shearer (1995) improved to $(\\log t / (\\log\\log t \\cdot t)) \\cdot n$, and Alon (1996) proved the full bound under stronger local sparsity assumptions.",
+    "content": "Erdős Problem #802 asks whether $K_r$-free graphs on $n$ vertices with average degree $t$ must contain an independent set of size $\\gg_r (\\log t / t) \\cdot n$. This is the AEKS conjecture (Ajtai-Erdős-Komlós-Szemerédi, 1981). The header documents the resolution timeline: AKS (1980) proved the full bound for $r = 3$ (triangle-free graphs), AEKS (1981) proved a weaker $(\\log\\log t / t) \\cdot n$ bound for general $r$, Shearer (1995) improved to $(\\log t / (\\log\\log t \\cdot t)) \\cdot n$, and Alon (1996) proved the full bound under stronger local sparsity assumptions.",
     "mathContext": "$\\alpha(G) \\geq c_r \\cdot \\frac{\\log t}{t} \\cdot n$ for $K_r$-free graphs with average degree $t$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -31,11 +31,11 @@
       "startLine": 29,
       "endLine": 39
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Namespace",
     "content": "Imports Mathlib's simple graph and clique infrastructure, natural number and real number arithmetic, and the natural logarithm from `Analysis.SpecialFunctions.Log.Basic`. The `open SimpleGraph Real` brings graph notation and `Real.log` into scope.",
     "mathContext": "Uses `SimpleGraph.IsClique` for clique detection, `Real.log` for $\\ln$, and `Fintype.card` for $|V|$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib SimpleGraph",
       "natural logarithm",
@@ -61,7 +61,7 @@
     "relatedConcepts": [
       "average degree",
       "edge density",
-      "Tur\u00e1n's theorem",
+      "Turán's theorem",
       "triangle-free graph"
     ],
     "prerequisites": [
@@ -108,7 +108,7 @@
     "significance": "key",
     "relatedConcepts": [
       "Ramsey multiplicity",
-      "Tur\u00e1n density",
+      "Turán density",
       "probabilistic lower bounds",
       "extremal graph theory"
     ],
@@ -126,15 +126,15 @@
       "startLine": 86,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "AEKS (1981): First Bound with Double Logarithm",
-    "content": "Ajtai, Erd\u0151s, Koml\u00f3s, and Szemer\u00e9di (1981) proved $\\alpha(G) \\geq c \\cdot (\\log\\log(t+1) / t) \\cdot n$ for $K_r$-free graphs. This was the first bound showing that forbidding $K_r$ forces independence numbers significantly larger than the trivial $n/t$ (which follows from the greedy algorithm). The double-logarithm factor ($\\log\\log t$ vs $\\log t$) left a gap that would take 14 years to close.",
+    "content": "Ajtai, Erdős, Komlós, and Szemerédi (1981) proved $\\alpha(G) \\geq c \\cdot (\\log\\log(t+1) / t) \\cdot n$ for $K_r$-free graphs. This was the first bound showing that forbidding $K_r$ forces independence numbers significantly larger than the trivial $n/t$ (which follows from the greedy algorithm). The double-logarithm factor ($\\log\\log t$ vs $\\log t$) left a gap that would take 14 years to close.",
     "mathContext": "$\\alpha(G) \\geq c \\cdot \\frac{\\log\\log(t+1)}{t} \\cdot n$ for $K_r$-free $G$ with average degree $t$",
     "significance": "key",
     "relatedConcepts": [
       "greedy independent set",
       "double logarithm",
-      "sparse Tur\u00e1n theorem"
+      "sparse Turán theorem"
     ],
     "prerequisites": [
       "AEKS conjecture",
@@ -148,7 +148,7 @@
       "startLine": 97,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Shearer (1995): Improved Bound",
     "content": "Shearer (1995) improved the general bound to $\\alpha(G) \\geq c \\cdot \\frac{\\log t}{\\log\\log(t+1) \\cdot t} \\cdot n$. This is the best known bound for general $r$: it has the correct $\\log t$ in the numerator but retains an extra $\\log\\log t$ factor in the denominator. The proof uses a refined probabilistic argument with entropy-based analysis of random independent sets.",
     "mathContext": "$\\alpha(G) \\geq c \\cdot \\frac{\\log t}{\\log\\log(t+1) \\cdot t} \\cdot n$ for $K_r$-free $G$; best known for $r \\geq 4$",
@@ -170,9 +170,9 @@
       "startLine": 105,
       "endLine": 117
     },
-    "type": "technique",
+    "type": "concept",
     "title": "AKS (1980): Triangle-Free Case Solved",
-    "content": "Ajtai, Koml\u00f3s, and Szemer\u00e9di (1980) proved the full conjectured bound $\\alpha(G) \\geq c \\cdot (\\log t / t) \\cdot n$ for triangle-free graphs ($r = 3$). This was actually proved *before* the general conjecture was formally stated. The proof pioneered the use of the semi-random method in combinatorics. The derived theorem `conjecture_true_for_r3` shows that `AEKSConjecture 3` follows directly, with the proof simply unwrapping the triangle-free definition.",
+    "content": "Ajtai, Komlós, and Szemerédi (1980) proved the full conjectured bound $\\alpha(G) \\geq c \\cdot (\\log t / t) \\cdot n$ for triangle-free graphs ($r = 3$). This was actually proved *before* the general conjecture was formally stated. The proof pioneered the use of the semi-random method in combinatorics. The derived theorem `conjecture_true_for_r3` shows that `AEKSConjecture 3` follows directly, with the proof simply unwrapping the triangle-free definition.",
     "mathContext": "$G$ triangle-free with $\\bar{d}(G) = t \\Rightarrow \\alpha(G) \\geq c \\cdot \\frac{\\log t}{t} \\cdot n$; this proves $\\text{AEKS}_3$",
     "significance": "key",
     "relatedConcepts": [
@@ -241,7 +241,7 @@
       "startLine": 165,
       "endLine": 203
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: erdos_802",
     "content": "The main theorem `erdos_802` packages two results as a conjunction: (1) $\\text{AEKS}_3$ (the full conjecture for $r = 3$, proved via AKS 1980), and (2) Shearer's partial bound for all $r \\geq 3$. The proof constructs the pair by calling `conjecture_true_for_r3` for the first component and `shearer_1995` for the second. The file also includes string-valued status and answer summaries, and `#check` commands for verification.",
     "mathContext": "$\\text{AEKS}_3 \\wedge (\\forall r \\geq 3,\\; \\alpha(G) \\geq c \\cdot \\frac{\\log t}{\\log\\log(t+1) \\cdot t} \\cdot n \\text{ for } K_r\\text{-free } G)$",

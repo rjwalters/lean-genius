@@ -78,7 +78,7 @@
       "startLine": 163,
       "endLine": 268
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Fair Games Theorem",
     "content": "**Fair Games Theorem** (Wiedijk #62):\n\n```lean\ntheorem fair_games_theorem\n    (hf : Martingale f ℱ μ)\n    (hτ : IsStoppingTime ℱ τ) (hπ : IsStoppingTime ℱ π)\n    (hτπ : ∀ ω, τ ω ≤ π ω) (hπN : ∀ ω, π ω ≤ N) :\n    ∫ ω, f (τ ω) ω ∂μ = ∫ ω, f (π ω) ω ∂μ\n```\n\n**Proof Idea**:\n- Martingale is both sub- and supermartingale\n- Submartingale: $E[f_\\tau] \\leq E[f_\\pi]$\n- Supermartingale: $E[f_\\tau] \\geq E[f_\\pi]$\n- Together: $E[f_\\tau] = E[f_\\pi]$\n\n**Corollary**: $E[X_\\tau] = E[X_0]$ for any bounded $\\tau$.",
     "mathContext": "$E[f_\\tau] = E[f_\\pi]$ for $\\tau \\leq \\pi$ bounded; proved via submartingale inequality $E[f_\\tau] \\leq E[f_\\pi]$ and supermartingale inequality $E[f_\\tau] \\geq E[f_\\pi]$, then `le_antisymm`.",
@@ -102,7 +102,7 @@
       "startLine": 269,
       "endLine": 349
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Submartingale Characterization via Stopped Values",
     "content": "Part IV establishes a deep characterization: a process is a submartingale if and only if stopped expectations are monotone ($E[f_\\tau] \\leq E[f_\\pi]$ for all bounded $\\tau \\leq \\pi$). This connects the local conditional expectation property to a global stopping-time property.\n\n**Forward direction** (`submartingale_characterization`, $\\Rightarrow$): If $f$ is a submartingale, then $E[f_\\tau] \\leq E[f_\\pi]$ for all bounded $\\tau \\leq \\pi$. This comes directly from Mathlib's `expected_stoppedValue_mono`.\n\n**Converse direction** (`submartingale_of_stoppedValue_mono`, $\\Leftarrow$): This is the file's single axiom. It states that if stopped expectations are monotone for all bounded stopping times, then $f$ is a submartingale. The proof requires showing that global stopping-time monotonicity implies the local conditional expectation inequality $E[f_{n+1} | \\mathcal{F}_n] \\geq f_n$.\n\n**Martingale corollary** (`martingale_equality_characterization`): For martingales, both sub- and supermartingale inequalities hold, giving equality $E[f_\\tau] = E[f_\\pi]$ — this is just `fair_games_theorem` restated.",
     "mathContext": "$\\text{Submartingale}(f) \\Leftrightarrow \\forall \\tau \\leq \\pi \\leq N,\\; E[f_\\tau] \\leq E[f_\\pi]$.\n\nThe $\\Rightarrow$ direction is Mathlib's `expected_stoppedValue_mono`. The $\\Leftarrow$ direction (axiomatized) requires constructing specific stopping times that isolate the conditional expectation at each step.",
@@ -125,11 +125,11 @@
       "startLine": 350,
       "endLine": 428
     },
-    "type": "context",
+    "type": "concept",
     "title": "Applications Section (Placeholder Theorems)",
     "content": "**Note**: This section contains 5 placeholder theorems that prove `(1:ℕ)+1=2` with substantive docstrings discussing applications. The docstrings sketch gambler's ruin probabilities, betting system analysis, option pricing, and Doob's maximal inequality, but **none of these results are formalized** — the theorem bodies are trivial.\n\nThe mathematical content described in the docstrings is accurate and represents natural extensions of the Optional Stopping Theorem:\n- **Gambler's ruin**: $P(\\text{success}) = W_0/(W_0+a)$ follows from $E[W_\\tau] = W_0$\n- **Betting systems fail**: bounded stopping times force $E[\\text{final}] = E[\\text{initial}]$\n- **Option pricing**: arbitrage-free prices are martingales under risk-neutral measure\n- **Doob's inequality**: $P(\\max_{n\\leq N} f_n \\geq \\lambda) \\leq E[f_N]/\\lambda$\n\nThese represent future formalization targets, not current achievements.",
     "summary": "5 placeholder theorems (prove 1+1=2) with substantive docstrings about applications — not yet formalized.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "gambler's ruin",
       "betting systems",

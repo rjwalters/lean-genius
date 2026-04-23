@@ -199,7 +199,7 @@
       "startLine": 239,
       "endLine": 276
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Bounds (Proved)",
     "content": "**edgeDistUpperBound**: Any n-vertex graph has at most n(n-1)/2 edges, so edge distance to bipartite is at most this. Proved by showing we can delete all edges to get the empty (bipartite) graph.\n\n**bipartite_chromaticNumber_le_two**: Bipartite graphs have χ ≤ 2. Follows directly from the definition of IsBipartite.\n\n*Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>*",
     "mathContext": "The upper bound shows the problem is well-posed—edge distance is always finite for finite graphs.",

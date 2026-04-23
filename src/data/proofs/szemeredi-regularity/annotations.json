@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 30
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Setup: Imports, Re-exports, and Variables",
     "content": "The module imports Mathlib and SzemerediCore, then re-exports the core definitions (`edgeDensity`, `IsEpsilonRegular`, `IsRegularPartition`, `partitionEnergy` and their basic lemmas) so that downstream code referencing `Szemeredi.Regularity.edgeDensity` continues to compile. This re-export pattern is a common Lean 4 technique for maintaining backward-compatible module APIs when refactoring definitions into a shared module. Opens `Classical` for decidability and `Szemeredi.Core` for direct access to core definitions.",
     "mathContext": "Re-exports establish: $d(A,B)$, $\\varepsilon$-regularity, regular partitions, and partition energy $q(\\mathcal{P})$ are all accessible from this namespace.",
@@ -28,7 +28,7 @@
       "startLine": 36,
       "endLine": 53
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Helper: Edge Count Recovery from Density",
     "content": "Private helper proving $|A| \\cdot |B| \\cdot d(A,B) = |E(A,B)|$ — the edge count can be recovered by multiplying density by the product of set sizes. The proof handles two cases: when the denominator is zero (both sides are 0, by casework on which set is empty), and the non-zero case (cancellation via `mul_div_cancel₀`). This identity is used by `density_sq_convex` to convert between density-based and count-based reasoning.",
     "mathContext": "$|A| \\cdot |B| \\cdot d(A,B) = |\\{(a,b) \\in A \\times B : a \\sim b\\}|$. Proof: unfold $d$, cancel denominator.",
@@ -50,7 +50,7 @@
       "startLine": 55,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Edge Count Additivity for Disjoint Sets",
     "content": "Proves that for disjoint vertex sets $A_1, A_2$, the edge count from $A_1 \\cup A_2$ to $B$ equals the sum of individual counts. The proof shows $(A_1 \\cup A_2) \\times B = (A_1 \\times B) \\cup (A_2 \\times B)$ by extensionality, then uses `Finset.card_union_of_disjoint` after establishing disjointness of the filtered products (if $(a,b)$ is in both filtered products, then $a \\in A_1 \\cap A_2$, contradicting disjointness). This is the combinatorial foundation for the density convexity argument.",
     "mathContext": "For $A_1 \\cap A_2 = \\emptyset$: $|E(A_1 \\cup A_2, B)| = |E(A_1, B)| + |E(A_2, B)|$. Proof: product distributes over disjoint union, filter preserves disjointness.",
@@ -72,7 +72,7 @@
       "startLine": 82,
       "endLine": 147
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Density-Squared Convexity (Cauchy-Schwarz Ingredient)",
     "content": "The main technical lemma: splitting a vertex set $A$ into disjoint $A_1 \\cup A_2$ cannot decrease the weighted sum of squared densities. Formally: $|A_1| d(A_1,B)^2 + |A_2| d(A_2,B)^2 \\geq (|A_1|+|A_2|) d(A_1 \\cup A_2, B)^2$. The proof handles three cases: (1) $B$ empty — all terms zero; (2) $|A_1|+|A_2| = 0$ — both sets empty, zero; (3) main case — derives that $d(A,B)$ is the weighted average of $d_1, d_2$, rewrites the goal as $n_1 n_2 (d_1-d_2)^2/(n_1+n_2) \\geq 0$, and closes by non-negativity of squares and products.\n\nThis is the Cauchy-Schwarz inequality specialized to edge densities. It is the mathematical engine behind the energy increment argument: when an irregular pair is refined, the density-squared convexity ensures the energy cannot decrease.",
     "mathContext": "If $A = A_1 \\sqcup A_2$: $n_1 d_1^2 + n_2 d_2^2 - (n_1+n_2)\\bar{d}^2 = \\frac{n_1 n_2 (d_1-d_2)^2}{n_1+n_2} \\geq 0$ where $\\bar{d} = \\frac{n_1 d_1 + n_2 d_2}{n_1+n_2}$. This is the variance formula for the discrete distribution.",
@@ -97,7 +97,7 @@
       "startLine": 149,
       "endLine": 172
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Extracting an Irregular Pair",
     "content": "From a partition whose irregularity count exceeds $\\varepsilon k(k-1)$, extracts a specific irregular pair $(P, Q)$ with $P \\neq Q$ and $\\neg\\text{IsEpsilonRegular}(G, \\varepsilon, P, Q)$. The proof uses `Finset.nonempty_iff_ne_empty`: if the filtered set were empty, its cardinality would be 0, contradicting the assumption that it exceeds $\\varepsilon k(k-1) \\geq 0$. The extracted pair is then destructured from the `Nonempty` witness.",
     "mathContext": "If $|\\{(i,j) : (P_i, P_j)$ not $\\varepsilon$-regular$\\}| > \\varepsilon k(k-1)$, then $\\exists P, Q \\in \\mathcal{P}$ with $P \\neq Q$ and $(P,Q)$ not $\\varepsilon$-regular.",
@@ -119,7 +119,7 @@
       "startLine": 174,
       "endLine": 210
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Split Energy Identities and Quantitative Bounds",
     "content": "Three theorems formalizing the algebra of energy splitting:\n\n1. **split_energy_identity**: The exact formula $n_1 d_1^2 + n_2 d_2^2 - (n_1+n_2)\\bar{d}^2 = n_1 n_2 (d_1-d_2)^2/(n_1+n_2)$, proved by `field_simp; ring`.\n\n2. **split_energy_excess_nonneg**: Non-negativity of the excess (Cauchy-Schwarz), combining the identity with `sq_nonneg` and `mul_nonneg`.\n\n3. **split_energy_excess_bound**: Quantitative lower bound — if $|d_1-d_2| \\geq \\delta$, the excess is at least $n_1 n_2 \\delta^2/(n_1+n_2)$. Uses `sq_le_sq'` to convert the absolute value bound to a squared bound.\n\nThese identities are the algebraic core of the energy increment argument, stated as pure algebra (no graph theory) for maximum reusability.",
     "mathContext": "Split identity: $n_1 d_1^2 + n_2 d_2^2 - (n_1+n_2)\\left(\\frac{n_1 d_1 + n_2 d_2}{n_1+n_2}\\right)^2 = \\frac{n_1 n_2 (d_1-d_2)^2}{n_1+n_2}$. Quantitative: if $|d_1-d_2| \\geq \\delta$, excess $\\geq \\frac{n_1 n_2 \\delta^2}{n_1+n_2}$.",
@@ -144,7 +144,7 @@
       "startLine": 212,
       "endLine": 219
     },
-    "type": "context",
+    "type": "concept",
     "title": "Note on Energy Increment Deferral",
     "content": "An important design note explaining why the energy increment step (the most technically demanding part of the regularity proof) is deferred to Mathlib rather than proved from scratch. The issue is that our `partitionEnergy` uses $1/k^2$ normalization, under which refinement ($k \\to k+1$) dilutes the normalizer, potentially decreasing energy even as squared densities increase. Mathlib's `szemeredi_regularity` handles this via the size-weighted energy $\\sum (|P_i||P_j|/n^2) d_{ij}^2$, which avoids this normalization issue. The bridge theorems in Part III connect our definitions to Mathlib's.",
     "mathContext": "Technical subtlety: $E(\\mathcal{P}) = \\frac{1}{k^2}\\sum d_{ij}^2$ vs $q(\\mathcal{P}) = \\sum \\frac{|P_i||P_j|}{n^2} d_{ij}^2$. Refinement $k \\to k+1$ dilutes $1/k^2$ but preserves size-weights.",
@@ -165,7 +165,7 @@
       "startLine": 225,
       "endLine": 258
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Partition Energy Upper Bound: E(P) ≤ 1",
     "content": "Proves that partition energy is bounded by 1 for any valid partition (covering all vertices, pairwise disjoint parts). The key step: since $0 \\leq d \\leq 1$, we have $d^2 \\leq d \\leq 1$ for each density, so $\\sum d_{ij}^2 \\leq k^2$, and $(1/k^2) \\cdot k^2 = 1$. The proof uses `Finset.sum_le_sum` with the bound $d^2 \\leq d$ (from `sq` and `mul_le_of_le_one_right`), then `Finset.sum_const` and `Finset.card_product` to evaluate the constant sum.\n\nThis upper bound, combined with the $\\varepsilon^5$ energy increment per refinement step, yields the termination argument: at most $\\lfloor 1/\\varepsilon^5 \\rfloor$ refinements are possible before energy would exceed 1.",
     "mathContext": "$E(\\mathcal{P}) = \\frac{1}{k^2}\\sum_{i,j} d(V_i,V_j)^2 \\leq \\frac{1}{k^2} \\cdot k^2 = 1$ since $d^2 \\leq d \\leq 1$.",
@@ -232,7 +232,7 @@
       "startLine": 323,
       "endLine": 396
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bridge to Mathlib: Four Compatibility Theorems",
     "content": "Four theorems bridging our custom definitions to Mathlib's regularity infrastructure:\n\n1. **edgeDensity_eq_mathlib**: Our `edgeDensity` equals Mathlib's `SimpleGraph.edgeDensity` — they compute the same rational value. Proof: unfold both definitions and check they agree.\n\n2. **mathlib_uniform_imp_regular**: Mathlib's `IsUniform` (strict $<$) implies our `IsEpsilonRegular` ($\\leq$). Proof: apply Mathlib's uniformity, convert the $\\mathbb{R}$-valued strict inequality to a $\\mathbb{Q}$-valued non-strict one via `le_of_lt`.\n\n3. **equipartition_imp_equitable**: Mathlib's `IsEquipartition` implies our equitability condition ($|P_i| - |P_j| \\leq 1$). Proof: unfold `IsEquipartition` to `EquitableOn Finset.card`, then `omega`.\n\n4. **irregular_subset_nonuniform**: Our irregular pairs form a subset of Mathlib's non-uniform pairs. This ensures our irregularity count $\\leq$ Mathlib's, so Mathlib's uniformity bound transfers to our setting.\n\nThese bridges allow us to leverage Mathlib's complete regularity proof without re-proving the energy increment argument.",
     "mathContext": "Bridge: our $\\varepsilon$-regularity ($|d(A',B') - d(A,B)| \\leq \\varepsilon$) is implied by Mathlib's uniformity ($|d(A',B') - d(A,B)| < \\varepsilon$ in $\\mathbb{R}$). The $<$ vs $\\leq$ and $\\mathbb{R}$ vs $\\mathbb{Q}$ differences are handled by the bridge.",

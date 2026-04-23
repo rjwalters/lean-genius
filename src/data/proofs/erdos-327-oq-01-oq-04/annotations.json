@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 19
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Overview and Imports",
     "content": "Establishes context: OQ-01 parametrized all sum-divides-product pairs (a,b) with (a+b)|ab. This file proves a linear lower bound D(N) ≥ ⌊N/6⌋ using the explicit witness family {(3k, 6k)}. Imports the parent proof Erdos327OQ01 for the sumDvdProdPairs definition.",
     "mathContext": "$D(N) = |\\{(a,b) : 1 \\leq a < b \\leq N,\\ (a+b) \\mid ab\\}|$. The parametrization from OQ-01 shows these pairs arise from coprime factorizations. This file proves $D(N) \\geq \\lfloor N/6 \\rfloor$.",

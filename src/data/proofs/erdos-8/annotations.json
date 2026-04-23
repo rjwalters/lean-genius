@@ -81,7 +81,7 @@
       "startLine": 97,
       "endLine": 122
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hough's Minimum Modulus Bound",
     "content": "**Hough (2015)**: Every covering system with distinct moduli has minimum modulus ≤ 616,000. This is THE key structural result. Also includes the Balister et al. refinement (same bound formalized). The `minModulus` function uses `Finset.min'` on the moduli set.",
     "mathContext": "The minimum modulus problem was open since Erdős first posed it. Hough's proof uses probabilistic methods and the Lovász Local Lemma. This bound implies covering systems must 'start small' — they cannot avoid low moduli.",
@@ -100,7 +100,7 @@
       "startLine": 124,
       "endLine": 154
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Counterexample and Resolution",
     "content": "**Hough's Construction**: Color each n < 10^18 with a distinct color, all larger integers one additional color. Any covering system needs a small modulus (≤ 616,000), so its moduli span multiple colors — never monochromatic. `erdos_8_resolution` axiomatizes the disproof; `erdos_8_false` derives ¬erdos_graham_conjecture by contradiction.",
     "mathContext": "The gap 10^18 >> 616,000 ensures enough distinct colors. The proof of `erdos_8_false` is a clean 4-line tactic proof: assume the conjecture, extract the counterexample coloring, apply the conjecture to get a covering, then derive contradiction.",
@@ -119,7 +119,7 @@
       "startLine": 156,
       "endLine": 180
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Density Version (DISPROVED)",
     "content": "`HasLogDensityTail A`: the harmonic sum ∑_{a > N, a ∈ A} 1/a grows at least as fast as c·log N. `density_conjecture`: this tail density implies A contains covering moduli. `density_conjecture_false`: also DISPROVED by Hough.",
     "mathContext": "Erdős and Graham conjectured that sets with sufficiently thick harmonic tails must contain covering moduli. This would have generalized the coloring version. Hough's minimum modulus bound defeats both versions simultaneously.",

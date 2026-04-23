@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 24
     },
-    "type": "context",
+    "type": "concept",
     "title": "Higher-Dimensional Fourier Series: Key Differences from 1D",
     "content": "The module header identifies four key ways the n≥2 theory diverges from 1D: (1) pointwise convergence fails for L¹ functions under rectangular summation (Fefferman 1971); (2) rectangular partial sums can diverge even for smooth functions; (3) spherical summation requires separate analysis (Bochner-Riesz theory); (4) L² convergence still holds via Parseval. The critical open question is whether Carleson's 1D theorem (every L² function has a.e. convergent Fourier series) extends to n=2 under spherical summation.",
     "mathContext": "On the n-torus $\\mathbb{T}^n = (\\mathbb{R}/\\mathbb{Z})^n$, the Fourier series of $f \\in L^1(\\mathbb{T}^n)$ is $f \\sim \\sum_{k \\in \\mathbb{Z}^n} \\hat{f}(k) e^{2\\pi i k \\cdot x}$. Convergence depends critically on the summation method. In 1D: $S_N f(x) \\to f(x)$ a.e. for $f \\in L^2$ (Carleson 1966). In n≥2: this fails for rectangular sums (Fefferman 1971) and is open for spherical sums.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Fourier series",
       "n-torus",
@@ -36,7 +36,7 @@
     "title": "n-Torus, Multi-Index, and Fourier Coefficients",
     "content": "The formalization models the n-torus as `Fin n → ℝ` (a simplification—the actual torus is (ℝ/ℤ)ⁿ with periodic identification). Multi-indices are `Fin n → ℤ`. The `fourierCoeff` definition is a placeholder (returns 0) since the actual n-fold integral requires a Haar measure on the torus. The `dotProduct k x = ∑ᵢ kᵢ · xᵢ` is fully implemented as the inner product of the multi-index and the torus point, which appears in the exponential e^{2πi k·x} of each Fourier mode.",
     "mathContext": "The Fourier coefficient $\\hat{f}(k) = \\int_{\\mathbb{T}^n} f(x) e^{-2\\pi i k \\cdot x}\\, dx$ for $k \\in \\mathbb{Z}^n$, $x \\in \\mathbb{T}^n$, $k \\cdot x = \\sum_{j=1}^n k_j x_j$. The Fourier series converges in $L^2$ to $f$ by Parseval: $\\|f\\|_{L^2}^2 = \\sum_{k \\in \\mathbb{Z}^n} |\\hat{f}(k)|^2$.\n\nThe `Torus n = Fin n → ℝ` modeling: the actual $n$-torus is $(\\mathbb{R}/\\mathbb{Z})^n$ with periodic identification. Using `Fin n → ℝ` is a simplification that works for stating the formulas but requires careful treatment of periodicity in any actual computation. In Lean 4, the canonical way to handle the torus would be `AddCircle (1 : ℝ)` (from Mathlib), which is $\\mathbb{R}/\\mathbb{Z}$ as an additive group with Haar measure. For the n-torus, one would use `Fin n → AddCircle 1` with the product Haar measure from `MeasureTheory.Measure.Haar.Basic`.\n\nThe placeholder `fourierCoeff k f := 0` is necessary because the actual integral $\\int_{\\mathbb{T}^n} f(x) e^{-2\\pi i k \\cdot x}\\,dx$ requires: (1) Haar measure on `Fin n → AddCircle 1`; (2) complex exponential `Complex.exp (2πi * dotProduct k x)`; (3) `MeasureTheory.integral` of an $L^1$ function. None of these were available when the file was authored.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Haar measure on torus",
       "multi-index notation",

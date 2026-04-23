@@ -92,7 +92,7 @@
       "startLine": 118,
       "endLine": 137
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Complete Graph Bounds",
     "content": "**Complete graphs show tightness:**\n\nFor Kₘ: χ(Kₘ) = m but ζ(Kₘ) = O(log m) (group into doubling cliques).\n\nThis means subgraphs H can only achieve ζ(H) ~ m / log m at best, showing the AKS bound is optimal.",
     "significance": "key",

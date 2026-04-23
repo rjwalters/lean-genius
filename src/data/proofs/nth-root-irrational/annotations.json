@@ -126,7 +126,7 @@
       "startLine": 164,
       "endLine": 173
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Even Power Bounds: 2 is Not a Perfect Square",
     "content": "For even powers, we use `Int.natAbs_sq` to convert from $\\mathbb{Z}$ to $\\mathbb{N}$. Since $(|k|)^2 = k^2$ always, we get $(|k|)^2 = 2$ in $\\mathbb{N}$. Then: $|k| \\leq 1$ since $2^2 = 4 > 2$, and `interval_cases` checks $|k| \\in \\{0, 1\\}$.",
     "mathContext": "The key insight: for even powers, $k^n = |k|^n$, so we can work in $\\mathbb{N}$ where bounds are simpler. `Int.natAbs_sq` provides this bridge. The `interval_cases` tactic exhaustively checks all natural numbers in the bounded range.",
@@ -167,7 +167,7 @@
       "startLine": 277,
       "endLine": 293
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Converse: Perfect Powers Have Integer Roots",
     "content": "For completeness, we prove that if $m = k^n$, then $m^{1/n} = k$. Combined with the main theorem, this gives the full characterization: $m^{1/n} \\in \\mathbb{Q}$ if and only if $m$ is a perfect $n$-th power.",
     "mathContext": "The proof mirrors the forward direction: unfold, use `Nat.cast_pow` and `rpow_mul`, then simplify. The examples verify $\\sqrt{4} = 2$, $\\sqrt[3]{8} = 2$, $\\sqrt[3]{27} = 3$, $\\sqrt[4]{16} = 2$.",

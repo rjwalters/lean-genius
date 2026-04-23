@@ -49,7 +49,7 @@
   {
     "id": "cusick-theorem",
     "proofId": "erdos-261",
-    "type": "technique",
+    "type": "concept",
     "title": "Cusick's Infinitude Theorem",
     "content": "**Cusick (1989)**: For every $N$, there exists $n \\geq N$ that is representable.\n\n**Lean statement**: `∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧ IsRepresentable n` — this is the standard Lean idiom for 'infinitely many' using the Archimedean property. It says: no matter how large a bound $N$ you choose, there's a representable $n$ above it.\n\n**Proof idea** (not formalized): Cusick showed that the binary expansion of n/2^n, when n has a specific digit pattern in base 2, decomposes into a valid sum. The argument uses properties of binary carry propagation.\n\n**Role in the formalization**: This axiom directly proves `ErdosProblem261_infinitely_many` via `:= cusick_infinitely_many` — Part 1 of the problem is resolved.",
     "mathContext": "∀ N, ∃ n ≥ N, IsRepresentable(n)",
@@ -71,7 +71,7 @@
   {
     "id": "borwein-loring",
     "proofId": "erdos-261",
-    "type": "technique",
+    "type": "concept",
     "title": "Borwein–Loring Family",
     "content": "**Borwein–Loring**: For every $m \\geq 1$, the integer $n = 2^{m+1} - m - 2$ is representable using the consecutive block $\\{n+1, \\ldots, n+m\\}$.\n\n**Verification** (small cases):\n- $m = 2$: $n = 2^3 - 4 = 4$, block $\\{5, 6\\}$: $5/32 + 6/64 = 10/64 + 6/64 = 16/64 = 1/4 = 4/16$ ✓\n- $m = 3$: $n = 2^4 - 5 = 11$, block $\\{12, 13, 14\\}$\n\n**Why it works**: The sum $\\sum_{k=n+1}^{n+m} k/2^k$ telescopes when written as a difference of partial sums of the series $\\sum k x^k$. The specific choice $n = 2^{m+1} - m - 2$ makes the telescope collapse to exactly $n/2^n$.\n\n**Lean**: Uses `let n := 2 ^ (m + 1) - m - 2` with the hypothesis `1 ≤ m` to ensure $n$ is well-defined as a natural number.",
     "mathContext": "n = 2^{m+1} − m − 2, S = {n+1,...,n+m}",

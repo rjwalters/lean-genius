@@ -115,7 +115,7 @@
       "startLine": 56,
       "endLine": 68
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Graham's Conjecture",
     "content": "**The Main Result**: If all nonempty zero-sum subsets have the same cardinality, then at most 2 distinct residues appear in the sequence.\n\nIntuitively: the uniformity constraint is so strong that it forces the sequence to be 'almost constant'. With 3+ distinct values, one could construct zero-sum subsets of different sizes.\n\nMarked with `sorry` as the full proof is complex.",
     "mathContext": "$\\text{HasSomeUniqueZeroSumLength}(p, a) \\to \\text{distinctCount}(p, a) \\leq 2$",
@@ -182,7 +182,7 @@
       "startLine": 91,
       "endLine": 98
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Constant Sequence Example",
     "content": "**The trivial case**: if a₁ = a₂ = ... = aₚ = c (all the same), then distinctCount ≤ 1.\n\nFor constant sequences, Σᵢ∈S aᵢ = |S|·c ≡ 0 iff |S| ≡ 0 mod ord(c). All zero-sum subsets have cardinality divisible by the order of c.",
     "mathContext": "$\\text{distinctCount}(p, \\lambda\\_ \\mapsto c) = |\\{c\\}| = 1 \\leq 1$",
@@ -204,7 +204,7 @@
       "startLine": 100,
       "endLine": 118
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Two-Value Example",
     "content": "**Two distinct values also work**: alternating between c and d gives distinctCount ≤ 2.\n\nThe proof shows the range is contained in {c, d}, then uses Set.ncard properties to bound the cardinality.\n\nNote: this doesn't prove the sequence HAS the unique zero-sum length property, just that if it did, distinctCount ≤ 2 would hold.",
     "mathContext": "$\\text{range}(\\lambda i \\mapsto \\text{if } i\\%2=0 \\text{ then } c \\text{ else } d) \\subseteq \\{c,d\\} \\to \\text{ncard} \\leq 2$",
@@ -248,7 +248,7 @@
       "startLine": 134,
       "endLine": 141
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Zero-Sum Existence (Olson)",
     "content": "**Zero-sum subsequences always exist** in Z/pZ by the pigeonhole principle.\n\nConsider partial sums s₀=0, s₁=a₁, s₂=a₁+a₂, ..., sₚ=Σaᵢ. These p+1 values in Z/pZ (which has p elements) must have a collision: sᵢ = sⱼ for some i < j. Then Σₖ∈{i+1,...,j} aₖ = sⱼ - sᵢ = 0.\n\nMarked `sorry` as the detailed proof is nontrivial.",
     "mathContext": "$\\exists S \\subseteq \\text{Fin}(p),\\; S \\neq \\emptyset \\wedge \\sum_{i \\in S} a_i = 0$",

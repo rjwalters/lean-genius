@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 24
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview: Unit Vector Walks and Abelian Squares",
     "content": "Erdős Problem #192 asks: for which dimensions $d$ must every infinite unit vector walk in $\\mathbb{Z}^d$ contain a three-term arithmetic progression? The answer is $d \\leq 3$ (unavoidable) and $d \\geq 4$ (avoidable). The key insight is a reduction to combinatorics on words: recording which coordinate axis each step follows produces a string over a $d$-letter alphabet, and three equally-spaced positions correspond precisely to an **abelian square** (two consecutive blocks that are anagrams). Keränen (1992) constructed an infinite abelian-square-free word over 4 letters using a morphism with 85-letter images, resolving the problem. The formalization imports `Fin.VecNotation`, `Int.Basic`, and `Finset.Basic`.",
     "mathContext": "Walk $w : \\mathbb{N} \\to \\text{Fin}\\, d$ with position $\\text{pos}(n)_i = |\\{k < n : w(k) = i\\}|$. Three-term AP: $\\exists\\, i < j < k,\\, \\text{pos}(j) - \\text{pos}(i) = \\text{pos}(k) - \\text{pos}(j)$ coordinate-wise. Equivalent to abelian square in the word $w(0) w(1) w(2) \\cdots$.",
@@ -126,7 +126,7 @@
       "startLine": 87,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Complete Classification: erdos_192",
     "content": "The main theorem `erdos_192` states the conjunction: (1) every walk in $\\mathbb{Z}^3$ has a 3-term AP, AND (2) there exists a walk in $\\mathbb{Z}^4$ with no 3-term AP. Proved by `⟨three_term_ap_low_dim 3 (by omega), keranen_counterexample⟩`. The `omega` tactic discharges $3 \\leq 3$. This gives the complete characterization: $d = 3$ is the threshold dimension, below which APs are forced and above which they can be avoided. The file also names this threshold via the `Erdos192` namespace, connecting to the equivalence with Erdős Problem #231 on abelian squares directly.",
     "mathContext": "$\\text{erdos\\_192}: (\\forall w : \\text{Walk}\\, 3,\\, \\text{AP}(w)) \\wedge (\\exists w : \\text{Walk}\\, 4,\\, \\neg\\text{AP}(w))$. Proved: $\\langle \\text{three\\_term\\_ap\\_low\\_dim}\\, 3\\, (\\text{by omega}),\\, \\text{keranen\\_counterexample} \\rangle$.",

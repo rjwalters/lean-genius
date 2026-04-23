@@ -44,7 +44,7 @@
       "startLine": 87,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Dirichlet Existence Theorem",
     "content": "For a bounded domain with regular boundary and continuous boundary data, the Dirichlet problem **always has a unique solution**.\n\nThis positive result uses Perron's method (1923) with subharmonic functions or the direct method in calculus of variations.",
     "mathContext": "If $\\Omega$ is bounded with regular boundary and $f \\in C(\\partial\\Omega)$, then $\\exists! u \\in C(\\bar{\\Omega}) \\cap C^2(\\Omega)$ solving the Dirichlet problem.",
@@ -139,7 +139,7 @@
       "startLine": 216,
       "endLine": 224
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Poisson Equation Existence",
     "content": "The **Poisson equation** $-\\Delta u = f$ with $u = 0$ on $\\partial\\Omega$ has a unique weak solution for any $f \\in L^2(\\Omega)$.\n\nThis is a direct application of Lax-Milgram with $a(u,v) = \\int \\nabla u \\cdot \\nabla v$.",
     "mathContext": "Weak form: Find $u \\in H_0^1(\\Omega)$ such that\n$\\int_\\Omega \\nabla u \\cdot \\nabla v = \\int_\\Omega fv \\quad \\forall v \\in H_0^1(\\Omega)$",

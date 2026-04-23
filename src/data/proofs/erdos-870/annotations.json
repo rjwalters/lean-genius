@@ -313,7 +313,7 @@
       "startLine": 179,
       "endLine": 186
     },
-    "type": "technique",
+    "type": "concept",
     "title": "k = 2 Case Resolved",
     "content": "**k2_case_resolved:**\n\nThe conjecture is vacuously true for k = 2 (since it requires k >= 3).\n\nThe actual k = 2 result is erdos_nathanson_k2 which gives the positive answer.",
     "significance": "supporting",
@@ -382,7 +382,7 @@
       "startLine": 280,
       "endLine": 322
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "**Erdos Problem #870: OPEN**\n\n**Question:** For k >= 3, if A is an additive basis with r(n) >= c log n, must A contain a minimal basis?\n\n**Known Results:**\n1. k = 2: YES (Erdos-Nathanson 1979)\n2. Without log growth: NO (Hartter-Nathanson)\n3. k >= 3: UNKNOWN\n\n**Key Insight:** The log n threshold marks a boundary between 'sparse' bases (which may lack minimal substructures) and 'dense' bases (which might be forced to have them).",
     "significance": "key",

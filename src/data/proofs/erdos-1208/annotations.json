@@ -54,7 +54,7 @@
       "startLine": 1,
       "endLine": 14
     },
-    "type": "context",
+    "type": "concept",
     "title": "Guth-Katz 2015: Distinct Distances in the Plane",
     "content": "The Guth-Katz theorem (2015) resolved Erdős's 1946 distinct distances conjecture: any n points in the plane determine at least Ω(n/log n) distinct distances. This is a global result (about the total number of distinct distances in a point set), while Problem #1208 is a local/Ramsey result (about a subset with all pairwise distances distinct). The polynomial method used in Guth-Katz—analyzing incidences via algebraic varieties—informs approaches to Problem #1208, though the two questions have different difficulty profiles.",
     "mathContext": "Guth-Katz 2015: For $n$ points in $\\mathbb{R}^2$, $|\\{d(p,q) : p,q \\in P\\}| \\geq \\Omega(n/\\log n)$. Erdős's 1946 conjecture was the lower bound $n^{1-o(1)}$. The polynomial method: realizes point-line incidences via polynomials vanishing on algebraic curves, bounding the number of repeated distances via the number of lines through many points.",
@@ -78,7 +78,7 @@
       "startLine": 1,
       "endLine": 14
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Upper Bound: Regular Grids Force Distance Repetitions",
     "content": "An upper bound for F_d(n) comes from constructing point sets with many distance repetitions. The regular grid {1,...,N}^d (with n ≈ N^d points) has all pairwise distances of the form √(k₁² + ... + kd²) where kᵢ ∈ {0,...,N-1}. The number of distinct distances is at most O(N^2) ≈ O(n^(2/d)), while the maximum distance-Sidon subset size is bounded by the square root of the number of distinct distances: F_d(n) ≤ O(n^(1/d+ε)). For d=2, this gives F_2(n) ≤ O(n^(1/2+ε)).",
     "mathContext": "Grid $\\{1,\\ldots,N\\}^2$: $n = N^2$ points, $O(N^2)$ distinct distances (Gauss circle problem), maximum distance-Sidon subset has size $\\leq \\sqrt{\\text{distinct distances}} = O(N) = O(n^{1/2})$ (since a distance-Sidon set of size $k$ uses $\\binom{k}{2}$ distinct distances, so $\\binom{k}{2} \\leq O(N^2)$ gives $k = O(N)$).",
@@ -106,7 +106,7 @@
     "title": "Lean Formalization: Distance-Distinct Subsets in EuclideanSpace",
     "content": "The stub `erdos_1208 : True := by sorry` awaits formalization. Key Lean components needed: (1) `EuclideanSpace ℝ (Fin d)` for ℝ^d; (2) `dist` (from the metric space instance) for Euclidean distance; (3) a predicate `IsDistanceSidon : Finset (EuclideanSpace ℝ (Fin d)) → Prop` checking all pairwise distances are distinct; (4) `F_d (n : ℕ) : ℕ := inf over all n-point Finsets of (sup size of DistanceSidon subset)`. Lean's `Finset.sup` and `Finset.inf` can express this, but the quantifier over all n-point sets requires `setOf` or a Fintype hypothesis.",
     "mathContext": "Lean 4 sketch: `def isDistanceSidon (Q : Finset (EuclideanSpace ℝ (Fin d))) : Prop := ∀ p q r s ∈ Q, dist p q = dist r s → ({p,q} : Finset _) = {r,s}`. Then `F_d n d := ⨅ (P : Finset (EuclideanSpace ℝ (Fin d))) (_ : P.card = n), ⨆ (Q : Finset _) (_ : Q ⊆ P) (_ : isDistanceSidon Q), Q.card`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "EuclideanSpace in Mathlib",
       "MetricSpace.dist",

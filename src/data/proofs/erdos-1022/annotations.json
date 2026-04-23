@@ -2,7 +2,7 @@
   {
     "id": "ann-1022-header",
     "proofId": "erdos-1022",
-    "type": "context",
+    "type": "concept",
     "title": "Problem Documentation and Imports",
     "content": "The header documents Erdős Problem #1022 on property B for sparse set families. Property B asks when a family of sets can be 2-colored so that no set is monochromatic. The sparseness condition bounds how many family members can be subsets of any given set $X$. Imports Mathlib's `Finset`, `Fintype`, and `Real` modules.",
     "mathContext": "$\\exists c_t \\to \\infty: \\text{hasMinSize}(\\mathcal{F}, t) \\wedge \\text{isSparse}(\\mathcal{F}, c_t) \\Rightarrow \\text{hasPropertyB}(\\mathcal{F})$",
@@ -136,7 +136,7 @@
   {
     "id": "ann-1022-lovasz",
     "proofId": "erdos-1022",
-    "type": "technique",
+    "type": "concept",
     "title": "Lovász's Theorem (1968): $c_2 = 1$",
     "content": "The only solved case: for $t = 2$ (all sets have $\\ge 2$ elements), the threshold $c_2 = 1$ works. That is, if for every set $X$ fewer than $|X|$ family members are subsets of $X$, the family has property B. Axiomatized as `lovasz_theorem`. The derived `t2_case_solved` packages this as an existential witness ($c = 1 > 0$).",
     "mathContext": "$\\forall \\mathcal{F}: \\text{minSize} \\ge 2 \\wedge (\\forall X: |\\{A \\in \\mathcal{F}: A \\subseteq X\\}| < |X|) \\Rightarrow \\text{propertyB}(\\mathcal{F})$",
@@ -181,7 +181,7 @@
   {
     "id": "ann-1022-necessary",
     "proofId": "erdos-1022",
-    "type": "technique",
+    "type": "concept",
     "title": "Necessary Conditions and Subset Density",
     "content": "If $c_t$ exists and tends to infinity, it must be eventually positive (`threshold_positive`) and must grow unboundedly (`threshold_grows`). The `subsetDensity` function normalizes the count: $\\text{subsetDensity}(\\mathcal{F}, X) = |\\{A \\subseteq X\\}| / |X|$. The theorem `sparse_iff_low_density` shows sparseness is equivalent to low density for all nonempty $X$.",
     "mathContext": "$c_t \\to \\infty \\Rightarrow \\exists T: \\forall t \\ge T, c_t > 0$; $\\text{density}(\\mathcal{F}, X) = \\frac{|\\{A \\in \\mathcal{F}: A \\subseteq X\\}|}{|X|}$",

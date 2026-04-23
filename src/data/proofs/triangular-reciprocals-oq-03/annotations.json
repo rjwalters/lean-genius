@@ -142,7 +142,7 @@
       "startLine": 81,
       "endLine": 86
     },
-    "type": "context",
+    "type": "concept",
     "title": "tsum Formulation",
     "content": "The `tsum` (topological sum) version restates the result using Lean's $\\sum'$ notation, which returns a real number rather than a `HasSum` proposition. This is derived directly via `HasSum.tsum_eq`, which extracts the value from a `HasSum` proof. The `tsum` form is often more convenient for downstream computation.",
     "mathContext": "$\\texttt{tsum\\_eq}$ : if $\\texttt{HasSum}\\; f\\; s$ then $\\sum' f = s$",
@@ -189,7 +189,7 @@
     "title": "Summability Result",
     "content": "The summability of the alternating triangular reciprocal series follows directly from the existence of a `HasSum` proof via `HasSum.summable`. This is a standard Mathlib pattern: proving a concrete sum value is stronger than proving summability, so the latter comes for free.",
     "mathContext": "$\\texttt{HasSum}\\; f\\; s \\implies \\texttt{Summable}\\; f$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "summability",
       "HasSum implies Summable",

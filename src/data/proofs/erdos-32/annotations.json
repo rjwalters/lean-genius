@@ -234,7 +234,7 @@
       "startLine": 218,
       "endLine": 234
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Connection to Goldbach",
     "content": "**goldbach_gives_partial_complement**: If Goldbach's conjecture holds, every even n >= 4 can be written as p + (n-p) with both prime. This shows primes are 'almost' self-complementing.",
     "mathContext": "Goldbach says every even n is p + q. Setting a = q, we have n = p + a with a prime. For even numbers, the primes themselves serve as complement. Odd numbers need more work.",
@@ -253,7 +253,7 @@
       "startLine": 244,
       "endLine": 257
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_32_summary** combines the solved parts: (1) O((log N)^2) works, (2) O((log N)(log log N)) works, (3) liminf >= e^gamma * log N. The O(log N) question remains open.",
     "mathContext": "This theorem packages the complete known state of Problem #32. The upper bounds are existence results (proved via constructions); the lower bound applies to all complements.",

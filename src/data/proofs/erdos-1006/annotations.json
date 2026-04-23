@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 42
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview: Robust Acyclic Orientations",
     "content": "Erdős Problem #1006 (credited to Ore) asks whether high-girth graphs admit 'robustly acyclic' orientations — orientations that remain acyclic even after reversing any single edge. The answer is NO: Nešetřil and Rödl (1978) showed counterexamples exist for ALL girths g ≥ 3, not just small ones.",
     "mathContext": "The problem connects graph girth (shortest cycle length) to orientation stability. Every graph admits an acyclic orientation (direct edges according to any total order on vertices), but some orientations are fragile: reversing one edge creates a directed cycle. The question is whether avoiding short undirected cycles (high girth) prevents this fragility. The surprising answer is that chromatic number, not girth, is the key obstruction.",
@@ -128,7 +128,7 @@
       "startLine": 115,
       "endLine": 141
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Counterexamples and Disproof",
     "content": "Three key results: (1) the Grötzsch graph (girth 4, χ=4) has no robust orientation (axiom); (2) Nešetřil-Rödl theorem: for every g ≥ 3, counterexamples with girth g exist (axiom); (3) ores_conjecture_false is proved by applying Nešetřil-Rödl with g=5 to obtain a girth-5 graph contradicting the conjecture.",
     "mathContext": "The proof of ores_conjecture_false is a clean application of the Nešetřil-Rödl axiom: instantiate with g=5 (so girth ≥ 5, satisfying girth > 4) to get a graph G with no robust orientation. The conjecture would give G a robust orientation, yielding a contradiction. The Nešetřil-Rödl proof itself relies on Erdős's 1959 theorem that graphs with arbitrarily high girth and chromatic number exist — high chromatic number forces fragile edges in any acyclic orientation.",

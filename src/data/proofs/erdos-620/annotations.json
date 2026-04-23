@@ -316,7 +316,7 @@
       "startLine": 169,
       "endLine": 188
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Current Gap Analysis",
     "content": "The theorem `current_bounds` assembles both bounds and `gap_analysis` extracts explicit constants. The gap between $\\sqrt{n} \\cdot \\sqrt{\\log n}/\\log\\log n$ and $\\sqrt{n} \\cdot \\log n$ is a factor of $(\\log n)^{1/2} \\cdot \\log\\log n$. This slowly growing factor represents our uncertainty about extremal $K_4$-free graph structure.",
     "mathContext": "The theorem `gap_analysis` proves $\\exists c, C > 0$ such that $c\\sqrt{n}\\sqrt{\\log n}/\\log\\log n \\le f(n) \\le C\\sqrt{n}\\log n$ for $n \\ge 16$. The proof combines `shearer_lower_bound` and `mubayi_verstraete_upper`, using `omega` for the threshold. This is one of the file's complete proofs.",
@@ -338,7 +338,7 @@
       "startLine": 189,
       "endLine": 197
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sparse Graph Case",
     "content": "For very sparse $K_4$-free graphs with $|E(G)| \\le n$, a triangle-free induced subgraph of size $\\ge n/3$ exists. Sparse graphs have small average degree, so greedy or Turán-type arguments find large independent (hence triangle-free) sets. This is much larger than the general $\\sqrt{n}$ bound.",
     "mathContext": "The theorem states: for $G$ on $\\text{Fin}(n)$ with $|E| \\le n$ and $K_4$-free, $\\exists S$ with $|S| \\ge n/3$ and $G[S]$ triangle-free. A possible proof: by handshaking, average degree $\\le 2$, so a greedy algorithm finds an independent set of size $\\ge n/3$.",

@@ -28,7 +28,7 @@
       "startLine": 60,
       "endLine": 65
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Subgroup is Always Hall",
     "content": "The trivial subgroup {e} has order 1, which is coprime to every natural number. This makes it a Hall subgroup of any finite group. Though a degenerate case, it establishes the base case for the theory and confirms that the definition is non-vacuous. The proof reduces to the fact that gcd(1, n) = 1 for all n.",
     "mathContext": "\\gcd(1, [G:\\{e\\}]) = 1",
@@ -46,7 +46,7 @@
       "startLine": 73,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Product Formula: Lagrange's Core Identity",
     "content": "The identity |G| = |H| * [G:H] is the fundamental factorization underlying both Lagrange's theorem and Hall's theorem. It says the group order factors as the product of a subgroup's order and its index. For Hall theory, this factorization is meaningful because the two factors are coprime, giving a unique way to split |G| into the 'Hall part' and its complement.",
     "mathContext": "|G| = |H| \\times [G:H]",
@@ -90,7 +90,7 @@
       "startLine": 98,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hall's Existence Theorem (1928)",
     "content": "The central result: in a finite solvable group G, for every Hall divisor m of |G| (meaning m divides |G| and gcd(m, |G|/m) = 1), there exists a subgroup of order m. The proof by Philip Hall uses strong induction on |G|, exploiting the fact that solvable groups have non-trivial normal abelian subgroups obtained from the derived series. This is stated as an axiom here because the full inductive proof is beyond routine Mathlib formalization.",
     "mathContext": "G \\text{ solvable}, \\; m \\mid |G|, \\; \\gcd(m, |G|/m) = 1 \\implies \\exists H \\leq G, \\; |H| = m",
@@ -113,7 +113,7 @@
       "startLine": 109,
       "endLine": 118
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hall's Conjugacy Theorem: Uniqueness Up to Conjugation",
     "content": "Hall's theorem is actually stronger than mere existence: any two Hall subgroups of the same order in a solvable group are conjugate, meaning K = gHg^{-1} for some g in G. This parallels Sylow's second theorem (all Sylow p-subgroups are conjugate) and means Hall subgroups are unique up to inner automorphism. Combined with existence, this gives a complete structural characterization.",
     "mathContext": "|H| = |K|, \\; H,K \\text{ Hall} \\implies \\exists g \\in G, \\; K = gHg^{-1}",
@@ -135,7 +135,7 @@
       "startLine": 134,
       "endLine": 158
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Normal Hall Subgroups are Unique",
     "content": "When a Hall subgroup H is also normal, conjugacy forces uniqueness: any other Hall subgroup K of the same order satisfies K = gHg^{-1} = H (since normality means gHg^{-1} = H for all g). The proof carefully unfolds the conjugation map, using normality in both directions to show the map from H to itself is surjective. This is the group-theoretic analogue of how a normal Sylow subgroup is the unique Sylow p-subgroup.",
     "mathContext": "H \\trianglelefteq G, \\; H \\text{ Hall}, \\; |K| = |H| \\implies K = H",

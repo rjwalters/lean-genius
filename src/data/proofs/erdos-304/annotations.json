@@ -64,7 +64,7 @@
       "startLine": 81,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: N(2, 15) = 2",
     "content": "**Concrete Example**: 2/15 = 1/10 + 1/30\n\n**Why N(2, 15) = 2**:\n- 2/15 ≠ 1/n for any integer n > 1 (since 15/2 = 7.5 is not an integer)\n- Therefore N(2, 15) ≥ 2\n- The representation 1/10 + 1/30 = 3/30 + 1/30 = 4/30 = 2/15 achieves k = 2\n\n```lean\naxiom example_two_fifteen : (2 : ℚ) / 15 = 1 / 10 + 1 / 30\naxiom smallestCollection_two_fifteen : smallestCollection 2 15 = 2\n```",
     "mathContext": "This verifies the definition with a small concrete case where we can check optimality manually.",

@@ -159,7 +159,7 @@
       "startLine": 131,
       "endLine": 141
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Primes Avoid the Interval",
     "content": "**prime_no_divisor** is a constructively proved theorem: if p > 2n is prime, then p has no divisor in (n, 2n). The proof uses Nat.Prime.eq_one_or_self_of_dvd — a prime's only divisors are 1 and itself, and neither falls in (n, 2n) when p > 2n. This illustrates that primes are 'invisible' to the density δ(n) for large enough primes.",
     "mathContext": "This is one of the few fully proved results in the formalization. It uses omega for the arithmetic contradictions after case-splitting on the prime's divisors.",

@@ -6,9 +6,9 @@
       "startLine": 24,
       "endLine": 28
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Setup",
-    "content": "Imports Mathlib tactics, the natural number primality API, and logarithmic functions from real analysis. The `open Filter` command brings the filter namespace into scope, needed for expressing asymptotic statements via `atTop` and `\u2200\u1da0`.",
+    "content": "Imports Mathlib tactics, the natural number primality API, and logarithmic functions from real analysis. The `open Filter` command brings the filter namespace into scope, needed for expressing asymptotic statements via `atTop` and `∀ᶠ`.",
     "mathContext": "The filter $\\text{atTop}$ on $\\mathbb{N}$ captures the notion of \"for all sufficiently large $k$\", essential for asymptotic bounds like $S(k) \\geq k^{1-\\varepsilon}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -29,7 +29,7 @@
       "endLine": 34
     },
     "type": "definition",
-    "title": "IsSmooth \u2014 Smooth Number Definition",
+    "title": "IsSmooth — Smooth Number Definition",
     "content": "A natural number $n$ is $x$-smooth if all its prime factors are at most $x$. Smooth numbers are fundamental objects in analytic and computational number theory, appearing in integer factorization algorithms (the number field sieve), Dickman's function estimates, and the distribution of integers with restricted prime factors.",
     "mathContext": "An integer $n$ is $x$-smooth if $p \\mid n \\Rightarrow p \\leq x$ for every prime $p$. The count of $x$-smooth numbers up to $N$ is $\\Psi(N, x) \\sim N \\cdot \\rho(\\log N / \\log x)$ where $\\rho$ is the Dickman function.",
     "significance": "key",
@@ -52,7 +52,7 @@
       "endLine": 39
     },
     "type": "definition",
-    "title": "SmoothBlock \u2014 Consecutive Smooth Integers",
+    "title": "SmoothBlock — Consecutive Smooth Integers",
     "content": "A block of $k$ consecutive integers $n+1, n+2, \\ldots, n+k$ is $x$-smooth if every element in the block is $x$-smooth. Finding long runs of smooth consecutive integers is much harder than finding individual smooth numbers, because each integer in the block independently constrains the smoothness bound.",
     "mathContext": "$\\text{SmoothBlock}(n, k, x) \\iff \\forall\\, i \\in \\{1, \\ldots, k\\},\\; \\text{IsSmooth}(n+i, x)$. The probability that $k$ random integers near $N$ are all $x$-smooth is roughly $\\rho(u)^k$ where $u = \\log N / \\log x$.",
     "significance": "key",
@@ -74,7 +74,7 @@
       "endLine": 43
     },
     "type": "definition",
-    "title": "smoothBlockSet \u2014 The Density Set",
+    "title": "smoothBlockSet — The Density Set",
     "content": "The set of all starting points $n$ for which the block $n+1, \\ldots, n+k$ is $x$-smooth. The key question is whether this set has positive upper density, i.e., whether smooth blocks occur with positive frequency among all integers.",
     "mathContext": "$\\text{smoothBlockSet}(k, x) = \\{n \\in \\mathbb{N} \\mid \\text{SmoothBlock}(n, k, x)\\}$. This set has positive upper density precisely when the smoothness bound $x$ is large enough relative to $k$.",
     "significance": "supporting",
@@ -119,8 +119,8 @@
       "endLine": 56
     },
     "type": "definition",
-    "title": "smoothThreshold \u2014 S(k)",
-    "content": "The threshold function $S(k)$ is defined as the minimal $x$ such that the set of starting points for $x$-smooth blocks of length $k$ has positive upper density. This is the central quantity Erd\u0151s asks us to estimate. The definition uses Lean's `Nat.find` which requires an existence witness \u2014 here provided by the trivial bound $S(k) \\leq k+1$.",
+    "title": "smoothThreshold — S(k)",
+    "content": "The threshold function $S(k)$ is defined as the minimal $x$ such that the set of starting points for $x$-smooth blocks of length $k$ has positive upper density. This is the central quantity Erdős asks us to estimate. The definition uses Lean's `Nat.find` which requires an existence witness — here provided by the trivial bound $S(k) \\leq k+1$.",
     "mathContext": "$S(k) = \\min\\{x \\in \\mathbb{N} \\mid \\overline{d}(\\text{smoothBlockSet}(k, x)) > 0\\}$. The well-definedness requires showing that at least one such $x$ exists, which follows from the trivial upper bound.",
     "significance": "key",
     "relatedConcepts": [
@@ -141,8 +141,8 @@
       "endLine": 65
     },
     "type": "insight",
-    "title": "Erd\u0151s Conjecture: S(k) Is Nearly Linear",
-    "content": "The main conjecture asserts that $S(k) \\geq k^{1-\\varepsilon}$ for every $\\varepsilon > 0$ and all sufficiently large $k$. This is expressed using Lean's `\u2200\u1da0 ... in atTop` notation for \"eventually\" statements. If true, this would mean that the smoothness threshold grows nearly as fast as $k$ itself \u2014 finding long smooth blocks requires a smoothness bound nearly as large as the block length.",
+    "title": "Erdős Conjecture: S(k) Is Nearly Linear",
+    "content": "The main conjecture asserts that $S(k) \\geq k^{1-\\varepsilon}$ for every $\\varepsilon > 0$ and all sufficiently large $k$. This is expressed using Lean's `∀ᶠ ... in atTop` notation for \"eventually\" statements. If true, this would mean that the smoothness threshold grows nearly as fast as $k$ itself — finding long smooth blocks requires a smoothness bound nearly as large as the block length.",
     "mathContext": "$\\forall \\varepsilon > 0,\\; S(k) \\geq k^{1-\\varepsilon}$ for all sufficiently large $k$. Equivalently, $\\log S(k) / \\log k \\to 1$ as $k \\to \\infty$.",
     "significance": "key",
     "relatedConcepts": [
@@ -162,8 +162,8 @@
       "startLine": 69,
       "endLine": 72
     },
-    "type": "technique",
-    "title": "Trivial Upper Bound: S(k) \u2264 k+1",
+    "type": "concept",
+    "title": "Trivial Upper Bound: S(k) ≤ k+1",
     "content": "The trivial upper bound uses a modular arithmetic construction: if $n \\equiv -1 \\pmod{(k+1)!}$, then $n+i$ is divisible by $i$ for $i = 1, \\ldots, k$, making each $n+i$ at most $(k+1)$-smooth. Such $n$ form an arithmetic progression of positive density, establishing $S(k) \\leq k+1$.",
     "mathContext": "If $n \\equiv -1 \\pmod{(k+1)!}$ then $i \\mid (n+i)$ for $1 \\leq i \\leq k$, so each $n+i$ is $(k+1)$-smooth. The density of this AP is $1/(k+1)! > 0$.",
     "significance": "key",
@@ -184,14 +184,14 @@
       "startLine": 74,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Rosser's Sieve Lower Bound",
     "content": "Rosser's sieve (a refinement of Brun's combinatorial sieve) shows $S(k) \\geq k^{1/2 - \\varepsilon}$ for any $\\varepsilon > 0$ and large $k$. The idea is that among any $k$ consecutive integers, at least one must have a large prime factor, and sieve bounds quantify how large. This is the best unconditional lower bound known.",
-    "mathContext": "$S(k) \\geq k^{1/2 - \\varepsilon}$ for all $\\varepsilon > 0$ and $k \\geq k_0(\\varepsilon)$. The sieve of Rosser\u2013Iwaniec gives upper bounds on $\\Psi(x+y, z) - \\Psi(x, z)$ (smooth numbers in short intervals) that imply this.",
+    "mathContext": "$S(k) \\geq k^{1/2 - \\varepsilon}$ for all $\\varepsilon > 0$ and $k \\geq k_0(\\varepsilon)$. The sieve of Rosser–Iwaniec gives upper bounds on $\\Psi(x+y, z) - \\Psi(x, z)$ (smooth numbers in short intervals) that imply this.",
     "significance": "key",
     "relatedConcepts": [
       "Brun's sieve",
-      "Rosser\u2013Iwaniec sieve",
+      "Rosser–Iwaniec sieve",
       "sieve dimension",
       "Selberg sieve"
     ],
@@ -207,15 +207,15 @@
       "startLine": 80,
       "endLine": 88
     },
-    "type": "technique",
-    "title": "Ford\u2013Green\u2013Konyagin\u2013Maynard\u2013Tao Upper Bound",
+    "type": "concept",
+    "title": "Ford–Green–Konyagin–Maynard–Tao Upper Bound",
     "content": "The FGKMT breakthrough (2018) on large gaps between primes yields the best known upper bound on $S(k)$. Their result shows that there exist unusually long intervals free of primes, and these intervals contain smooth numbers in abundance. The iterated logarithm factors reflect the delicate balance between prime distribution and smooth number density.",
     "mathContext": "$S(k) \\ll k \\cdot \\frac{\\log\\log\\log k}{\\log\\log k \\cdot \\log\\log\\log\\log k}$. This follows from the FGKMT result that $\\limsup_{n \\to \\infty} \\frac{p_{n+1} - p_n}{\\log p_n \\cdot \\log\\log p_n \\cdot \\log\\log\\log\\log p_n / (\\log\\log\\log p_n)^2} > 0$.",
     "significance": "key",
     "relatedConcepts": [
-      "Maynard\u2013Tao sieve",
+      "Maynard–Tao sieve",
       "large prime gaps",
-      "Cram\u00e9r conjecture",
+      "Cramér conjecture",
       "GPY sieve"
     ],
     "prerequisites": [
@@ -255,12 +255,12 @@
     },
     "type": "insight",
     "title": "Exact Value: S(2) = 3",
-    "content": "The smallest nontrivial case: $S(2) = 3$. A positive density of integers $n$ have both $n+1$ and $n+2$ being 3-smooth (of the form $2^a \\cdot 3^b$). These are the St\u00f8rmer pairs \u2014 consecutive 3-smooth numbers. That $S(2) \\neq 2$ follows from the fact that pairs of consecutive 2-smooth numbers (powers of 2) have density zero.",
+    "content": "The smallest nontrivial case: $S(2) = 3$. A positive density of integers $n$ have both $n+1$ and $n+2$ being 3-smooth (of the form $2^a \\cdot 3^b$). These are the Størmer pairs — consecutive 3-smooth numbers. That $S(2) \\neq 2$ follows from the fact that pairs of consecutive 2-smooth numbers (powers of 2) have density zero.",
     "mathContext": "$S(2) = 3$: the 3-smooth numbers $\\{2^a 3^b : a, b \\geq 0\\}$ include infinitely many consecutive pairs (e.g., $2, 3$ and $3, 4$ and $8, 9$), and these occur with positive density. But 2-smooth numbers (powers of 2) have gaps growing exponentially.",
     "significance": "supporting",
     "relatedConcepts": [
       "3-smooth numbers",
-      "St\u00f8rmer's theorem",
+      "Størmer's theorem",
       "regular numbers",
       "Pillai's conjecture"
     ],

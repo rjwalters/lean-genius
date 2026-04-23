@@ -102,7 +102,7 @@
       "startLine": 121,
       "endLine": 134
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sharpness of the Linear Threshold",
     "content": "**linear_threshold_is_sharp** combines with erdos_343_solved to give the full picture: linear density is **exactly** the critical threshold.\n\n- Above linear (N^{1+ε}): always subcomplete (Folkman)\n- At linear (cN): always subcomplete (Szemerédi-Vu)\n- Below linear (N^{1-ε}): can fail (Folkman counterexample)",
     "mathContext": "The theorem is proved directly from folkman_counterexample. Together with szemeredi_vu_2006, this gives a complete phase transition at linear density.",
@@ -121,7 +121,7 @@
       "startLine": 136,
       "endLine": 158
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary: Erdős Problem #343 SOLVED",
     "content": "**erdos_343_answer** restates the main result: positive lower density implies subcompleteness.\n\n**Complete answer**: YES — linear density is sufficient (Szemerédi-Vu 2006) and necessary (Folkman 1966). The linear density threshold is the exact boundary for subcompleteness of sumsets.",
     "mathContext": "This is a clean restatement of szemeredi_vu_2006, providing a clear entry point for the resolved problem. The 40-year gap between Folkman's partial results and the full resolution highlights the difficulty of the linear case.",

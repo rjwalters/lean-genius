@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 37
     },
-    "type": "context",
+    "type": "concept",
     "title": "Mass Point Geometry: A Constructive Algebraic Certificate for Ceva's Theorem",
     "content": "This file formalizes the mass point geometry approach to Ceva's theorem, answering open question OQ-04 from the base cevas-theorem entry. Mass point geometry assigns positive real masses to triangle vertices, and the induced cevian ratios automatically satisfy the Ceva condition. The biconditional is proved constructively in both directions with 0 sorries.",
     "mathContext": "**Mass points**: assign $m_A, m_B, m_C > 0$ to vertices. **Induced ratios**: $d = m_C/(m_B + m_C)$, $e = m_A/(m_C + m_A)$, $f = m_B/(m_A + m_B)$. **Ceva condition**: $d \\cdot e \\cdot f = (1-d)(1-e)(1-f)$. The 'algebraic miracle' is that both products equal $m_A m_B m_C / ((m_B+m_C)(m_C+m_A)(m_A+m_B))$.",
@@ -59,7 +59,7 @@
     "title": "Positivity, Bounds, and Complement Lemmas",
     "content": "The ratios $r_D, r_E, r_F$ are shown to lie in $(0,1)$: positivity from div_pos, upper bound from the numerator being strictly less than the denominator. The complement lemmas express $1 - r_D = m_B/(m_B+m_C)$, $1 - r_E = m_C/(m_C+m_A)$, $1 - r_F = m_A/(m_A+m_B)$, proved by `field_simp` + `ring`. These complements are essential for the main Ceva identity.",
     "mathContext": "$0 < r_D < 1$ since $0 < m_C < m_B + m_C$. **Complements**: $1 - r_D = \\frac{m_B}{m_B + m_C}$, $1 - r_E = \\frac{m_C}{m_C + m_A}$, $1 - r_F = \\frac{m_A}{m_A + m_B}$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "positivity",
       "bounds",
@@ -103,7 +103,7 @@
       "startLine": 117,
       "endLine": 156
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Constructive Converse: Mass Assignment from Ceva Condition",
     "content": "Given $d, e, f \\in (0,1)$ satisfying $d \\cdot e \\cdot f = (1-d)(1-e)(1-f)$, an explicit mass assignment is constructed: $m_A = 1$, $m_C = (1-e)/e$, $m_B = (1-e)(1-d)/(ed)$. Verification that $r_D = d$ and $r_E = e$ follows by `field_simp` + `ring`; $r_F = f$ requires the Ceva condition and is proved via `nlinarith`.",
     "mathContext": "**Construction**: $m_A = 1$, $m_C = \\frac{1-e}{e}$, $m_B = \\frac{(1-e)(1-d)}{ed}$. **Verification**: $r_D = \\frac{m_C}{m_B + m_C} = d$ (by ring), $r_E = \\frac{m_A}{m_C + m_A} = e$ (by ring), $r_F = \\frac{m_B}{m_A + m_B} = f$ (requires $def = (1-d)(1-e)(1-f)$ via nlinarith).",
@@ -152,7 +152,7 @@
       "startLine": 212,
       "endLine": 243
     },
-    "type": "context",
+    "type": "concept",
     "title": "Centroid Example and Summary Theorem",
     "content": "Equal masses $m_A = m_B = m_C = 1$ yield $r_D = r_E = r_F = 1/2$, confirming that the centroid (intersection of medians) corresponds to equal mass distribution. The Ceva condition $(1/2)^3 = (1/2)^3$ is trivially satisfied. The summary theorem `ceva_mass_point_summary` packages all three main results: ceva_identity, mass_point_iff, and ceva_ratio_product_one.",
     "mathContext": "**Centroid**: $m_A = m_B = m_C \\Rightarrow d = e = f = 1/2$. Check: $(1/2)^3 = (1/2)^3$ $\\checkmark$. **Incenter**: $m_A = a$, $m_B = b$, $m_C = c$ (side lengths) gives cevian ratios for angle bisectors.",

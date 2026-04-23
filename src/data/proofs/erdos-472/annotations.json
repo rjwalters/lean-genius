@@ -2,7 +2,7 @@
   {
     "id": "ann-e472-imports",
     "proofId": "erdos-472",
-    "type": "context",
+    "type": "concept",
     "title": "Mathlib Prime and List Imports",
     "content": "Imports Nat.Prime.Basic for primality testing and List.Basic for sequence operations from Mathlib.",
     "mathContext": "The formalization models Ulam prime sequences as `ℕ → ℕ` functions with `List ℕ` seeds. Mathlib's `Nat.Prime` provides the primality predicate, while `List.Sorted` gives the monotonicity framework. The combination supports both the abstract specification and the `native_decide` computational verification.",
@@ -113,7 +113,7 @@
   {
     "id": "ann-e472-seed35-prime",
     "proofId": "erdos-472",
-    "type": "technique",
+    "type": "concept",
     "title": "Seed Primality Verification",
     "content": "Both elements of [3, 5] are prime, verified by decide tactic.",
     "mathContext": "The `decide` tactic works because `Nat.Prime` is decidable for concrete natural numbers. This is a prerequisite for the seed to be valid input to `ErdosProblem472`.",
@@ -134,7 +134,7 @@
   {
     "id": "ann-e472-seed35-sorted",
     "proofId": "erdos-472",
-    "type": "technique",
+    "type": "concept",
     "title": "Seed Sorted Verification",
     "content": "[3, 5] is sorted in increasing order, verified by decide.",
     "mathContext": "Required by `ErdosProblem472` which demands `List.Sorted (· < ·) seed`.",
@@ -154,7 +154,7 @@
   {
     "id": "ann-e472-seed35-length",
     "proofId": "erdos-472",
-    "type": "technique",
+    "type": "concept",
     "title": "Seed Length Verification",
     "content": "[3, 5] has at least 2 elements, verified by decide.",
     "mathContext": "Confirms the seed satisfies `seed.length ≥ 2`, the minimum length requirement.",
@@ -347,7 +347,7 @@
   {
     "id": "ann-e472-first-terms",
     "proofId": "erdos-472",
-    "type": "technique",
+    "type": "concept",
     "title": "First 6 Terms Verified",
     "content": "The sequence starting from [3, 5] matches [3, 5, 7, 11, 13, 17] after 4 extension steps.",
     "mathContext": "This composite verification theorem confirms the entire prefix $3, 5, 7, 11, 13, 17$ in one `native_decide` call. Notably, these are the first 6 primes $\\geq 3$ except for the gap at $p = 9$ (not prime). The sequence appears to contain all odd primes, motivating the stronger conjecture axiomatized later.",
@@ -433,7 +433,7 @@
   {
     "id": "ann-e472-extended-verification",
     "proofId": "erdos-472",
-    "type": "technique",
+    "type": "concept",
     "title": "Extended Sequence to 8 Terms",
     "content": "The sequence extends further: terms 6 and 7 are 19 and 23, giving [3, 5, 7, 11, 13, 17, 19, 23] after 6 steps.",
     "mathContext": "Extending the computational verification to 8 terms: $3, 5, 7, 11, 13, 17, 19, 23$. These are exactly the odd primes from $3$ to $23$, strongly supporting the conjecture that the $[3,5]$ sequence contains all odd primes. The gap at $9 = 3^2$ and $15 = 3 \\cdot 5$ (composites) is bridged because the greedy rule finds other candidates.",

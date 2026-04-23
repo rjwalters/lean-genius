@@ -82,7 +82,7 @@
       "startLine": 102,
       "endLine": 146
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Conjecture and Its Disproof",
     "content": "**LittleOConjecture** asks if the O(log log N) can be improved to o(log log N). **ErdosCounterConjecture** says it cannot: there exists ε > 0 with f(N) > log₂ N + ε · log log N for infinitely many N. The theorem **conjectures_complementary** proves these are logical negations using push_neg. The axiom **chatgpt_tang_disproof** asserts ErdosCounterConjecture holds, and **little_o_conjecture_false** derives ¬LittleOConjecture as a corollary.",
     "mathContext": "The logical equivalence LittleOConjecture ↔ ¬ErdosCounterConjecture is nontrivial to formalize because it involves quantifier manipulation (∀ε∃N₀∀N vs ∃ε∀N₀∃N). The push_neg tactic handles the quantifier negation cleanly. The disproof confirms that collision effects in finite fields of prime order create an inherent log log N barrier.",

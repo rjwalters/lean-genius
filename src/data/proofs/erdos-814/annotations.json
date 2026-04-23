@@ -25,7 +25,7 @@
       "startLine": 35,
       "endLine": 44
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Setup",
     "content": "**Mathlib Dependencies**\n\nThe formalization uses Mathlib's graph theory library:\n- `SimpleGraph.Basic`: Core simple graph definitions\n- `SimpleGraph.Subgraph`: Induced subgraph structures\n- `SimpleGraph.Finite`: Finiteness properties for graphs\n- `Finset.Card`: Cardinality of finite sets\n- `Nat.Choose.Basic`: Binomial coefficients for the edge threshold",
     "mathContext": "SimpleGraph V represents an undirected graph without self-loops or multi-edges on vertex type V. The degree of a vertex is the number of adjacent vertices.",
@@ -120,7 +120,7 @@
       "startLine": 126,
       "endLine": 167
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sauermann's Theorem and Main Result",
     "content": "**The Full Resolution (2019)**\n\nSauermann's theorem axiom states that for any graph exceeding the edge threshold, there exists a subgraph S with:\n1. |S| ≤ (1-c)n vertices (strictly smaller by a constant fraction)\n2. |S| ≥ k vertices (large enough to have meaningful degree)\n3. Every vertex in S has at least k neighbors within S\n\nThe erdos_814 theorem then packages this as the positive answer to Erdős's original question.",
     "mathContext": "The proof derives erdos_814 from sauermann_constant and sauermann_theorem. It shows the existence of the desired constant c for each k ≥ 2, then applies the structure theorem to any sufficiently dense graph.",
@@ -139,7 +139,7 @@
       "startLine": 175,
       "endLine": 182
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Edge Threshold for k=3",
     "content": "**The k=3 Case**\n\nFor k=3, the edge threshold simplifies to 2(n-1)+1 = 2n-1 edges.\n\nThis is proved by direct computation: (3-1)(n-3+2) + C(3-2,2) + 1 = 2(n-1) + 0 + 1 = 2n-1.\n\nThe case k=3 was the original problem studied by Erdős and Hajnal.",
     "mathContext": "The proof uses Lean's `omega` tactic for arithmetic after simplifying the binomial coefficient C(1,2) = 0.",
@@ -177,7 +177,7 @@
       "startLine": 212,
       "endLine": 239
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Hajnal k=3 Case",
     "content": "**The Original Problem**\n\nThe case k=3 was posed by Erdős and Hajnal before the general conjecture. It asks: does every graph with 2n-1 edges contain a small subgraph where every vertex has degree at least 3?\n\nThis theorem shows the k=3 case follows from the general result erdos_814.",
     "mathContext": "The proof instantiates erdos_814 with k=3, then uses edgeThreshold_three to convert between the simplified edge count 2(n-1)+1 and the general threshold formula.",
@@ -215,7 +215,7 @@
       "startLine": 255,
       "endLine": 273
     },
-    "type": "technique",
+    "type": "concept",
     "title": "High Degree Vertices Exist",
     "content": "**Degree Averaging Argument**\n\nIf a graph has at least kn/2 edges, then some vertex must have degree at least k. This follows from the handshaking lemma: if all degrees were less than k, the sum would be less than kn, contradicting the edge count.\n\nThis is a standard pigeonhole argument in extremal graph theory.",
     "mathContext": "The proof uses proof by contradiction: assuming all degrees are less than k leads to Σᵥ deg(v) < kn, but handshaking gives Σᵥ deg(v) = 2|E| ≥ kn, a contradiction.",
@@ -234,7 +234,7 @@
       "startLine": 279,
       "endLine": 319
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Results Summary",
     "content": "**Complete Answer to Erdős #814**\n\nThe final theorems summarize the complete resolution:\n\n- erdos_814_summary: For all k ≥ 2, the constant cₖ exists with the required properties\n- erdos_814_answer: Confirms the answer is YES for every k\n\nThis fully resolves the 1990 conjecture of Erdős, Faudree, Rousseau, and Schelp.",
     "mathContext": "The summary theorem combines all the key results: existence of cₖ, the asymptotic bound cₖ ≫ 1/k³, and the subgraph existence guarantee. This provides a complete formalization of the mathematical statement.",

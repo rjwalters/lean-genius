@@ -151,7 +151,7 @@
       "startLine": 104,
       "endLine": 113
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Small Cases",
     "content": "**Explicit Values:**\n\n- **F(1) = 1:** Any single element has exactly one subset sum (itself), trivially monochromatic\n- **F(2) = 3:** In {1,2,3}, any 2-coloring forces {a,b,a+b} monochromatic\n- **F(3) ≥ 11:** The 3-element case requires at least 11 elements\n\nEven F(3) is only known as a lower bound - exact computation is very hard.",
     "significance": "supporting",

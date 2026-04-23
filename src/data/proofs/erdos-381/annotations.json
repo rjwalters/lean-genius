@@ -79,7 +79,7 @@
       "startLine": 70,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "concept",
     "title": "1 is Highly Composite",
     "content": "**one_highly_composite:** 1 ∈ HC.\n\nτ(1) = 1, and there's no positive integer less than 1 to compare against.\n\nThis is the smallest highly composite number.",
     "significance": "supporting",
@@ -96,7 +96,7 @@
       "startLine": 111,
       "endLine": 119
     },
-    "type": "technique",
+    "type": "concept",
     "title": "12 is Highly Composite",
     "content": "**twelve_highly_composite:** 12 ∈ HC.\n\nτ(12) = 6, the first number with 6 divisors.\n\nDivisors of 12: {1, 2, 3, 4, 6, 12}.",
     "significance": "key",
@@ -114,7 +114,7 @@
       "startLine": 121,
       "endLine": 133
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Divisor Counts Verified",
     "content": "**Computational verification of τ values:**\n\nUsing `native_decide` to verify:\n- τ(1) = 1, τ(2) = 2, τ(3) = 2\n- τ(4) = 3, τ(5) = 2, τ(6) = 4\n- τ(12) = 6, τ(24) = 8, τ(36) = 9\n\nThese confirm which numbers are highly composite.",
     "significance": "supporting",
@@ -187,7 +187,7 @@
       "startLine": 207,
       "endLine": 218
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Conjecture is FALSE",
     "content": "**erdos_question_false:** ¬erdos_question.\n\nNicolas's upper bound contradicts the existence of arbitrarily fast growth.\n\nIf Q(x) ≤ K(log x)^C, then Q(x) cannot be ≥ c(log x)^k for k > C.",
     "significance": "key",
@@ -205,7 +205,7 @@
       "startLine": 222,
       "endLine": 232
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Combined Bounds",
     "content": "**Q_bounds:** (log x)^{1+c} ≪ Q(x) ≪ (log x)^C.\n\nErdős's lower bound and Nicolas's upper bound together pin down the growth rate:\n- Lower: Q(x) ≥ K₁(log x)^{1+c}\n- Upper: Q(x) ≤ K₂(log x)^C\n\nSo Q(x) ~ (log x)^α for some 1 + c ≤ α ≤ C.",
     "significance": "key",
@@ -295,7 +295,7 @@
       "startLine": 320,
       "endLine": 323
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: erdos_381",
     "content": "**erdos_381:** ¬erdos_question.\n\n```lean\ntheorem erdos_381 : ¬erdos_question := erdos_question_false\n```\n\n**The conjecture is FALSE** - Q(x) does NOT grow faster than every power of log x.",
     "significance": "key",

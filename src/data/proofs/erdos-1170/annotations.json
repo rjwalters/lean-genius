@@ -160,7 +160,7 @@
       "endColumn": 0
     },
     "content": "The main problem statement: `erdos1170_property` asserts $\\forall \\alpha < \\omega_2,\\; \\omega_2 \\to (\\alpha)^2_2$. This is the property whose *consistency* Erdos asked about. The formalization captures the property itself; the metamathematical question of whether it is consistent with ZFC is not expressible in Lean's object language.",
-    "type": "context",
+    "type": "concept",
     "importance": "high",
     "mathContext": "Erdos Problem #1170 asks: is it consistent with ZFC that $\\omega_2 \\to (\\alpha)^2_2$ for every $\\alpha < \\omega_2$? This would mean $\\omega_2$ has the maximal 2-color partition property for pairs below its own cardinality.",
     "significance": "key",
@@ -241,7 +241,7 @@
       "endColumn": 0
     },
     "content": "Two structural observations connecting the pieces: (1) `laver_gives_omega1Sq_partition` instantiates Laver's axiom at $\\alpha = \\omega_1$ to obtain $\\omega_2 \\to (\\omega_1^2 + 1, \\omega_1)^2$. (2) `erdos1170_implies_laver_special` shows the full balanced property implies the polarized property with equal targets for every $\\alpha < \\omega_2$, demonstrating that Erdos's question is strictly stronger than Laver's result.",
-    "type": "context",
+    "type": "concept",
     "importance": "medium",
     "mathContext": "From Laver's axiom at $\\alpha = \\omega_1$: $\\omega_2 \\to (\\omega_1^2 + 1, \\omega_1)^2$. Conversely, if $\\omega_2 \\to (\\alpha)^2_2$ for all $\\alpha < \\omega_2$, then in particular $\\omega_2 \\to (\\alpha, \\alpha)^2$ for all such $\\alpha$, which is a symmetric polarized relation.",
     "significance": "supporting",

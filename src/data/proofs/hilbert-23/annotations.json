@@ -63,7 +63,7 @@
       "startLine": 99,
       "endLine": 108
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Fundamental Lemma of Calculus of Variations",
     "content": "**Du Bois-Reymond Lemma (1879)**:\n\nIf f is continuous and $\\int_a^b f(x)\\eta(x) \\, dx = 0$ for all smooth test functions $\\eta$ vanishing at endpoints, then $f = 0$.\n\nThis 'localization lemma' converts integral conditions to pointwise conditions.",
     "mathContext": "$\\forall \\eta \\in C_0^\\infty : \\int f \\cdot \\eta = 0 \\Rightarrow f \\equiv 0$\n\nCrucial for deriving Euler-Lagrange from the variational condition.",
@@ -101,7 +101,7 @@
       "startLine": 172,
       "endLine": 182
     },
-    "type": "context",
+    "type": "concept",
     "title": "Geodesics: Shortest Paths",
     "content": "The **geodesic problem** asks for curves minimizing arc length:\n\n$J[y] = \\int \\sqrt{1 + (y')^2} \\, dx$\n\nEuler-Lagrange gives $y'' = 0$, so geodesics in Euclidean space are **straight lines**.",
     "mathContext": "$L = \\sqrt{1 + (y')^2}$ (arc length element)\n\nOn curved surfaces, geodesics are 'straightest possible' curves.",
@@ -158,7 +158,7 @@
       "startLine": 285,
       "endLine": 300
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pontryagin Maximum Principle",
     "content": "**Optimal Control** extends calculus of variations to systems with constraints.\n\nMinimize $\\int f_0(x,u) \\, dt$ subject to $\\dot{x} = f(x,u)$.\n\n**Pontryagin's Maximum Principle (1956)**: The optimal control maximizes the Hamiltonian $H = p \\cdot f - f_0$ where p is the costate.",
     "mathContext": "$H(x^*, u^*, p^*) = \\max_u H(x^*, u, p^*)$\n\nRevolutionized control engineering and aerospace.",

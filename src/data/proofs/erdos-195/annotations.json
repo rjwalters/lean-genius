@@ -121,7 +121,7 @@
       "startLine": 106,
       "endLine": 121
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Concrete Permutation Examples",
     "content": "**identityPerm / identity_is_perm:** The identity f(n) = n is a permutation, proved via Function.bijective_id. Every AP is trivially monotone under the identity, so this permutation has k-MAPs for all k.\n\n**negationPerm / negation_is_perm:** The negation f(n) = -n is a permutation. Injectivity follows from negation being cancellative; surjectivity from -(-b) = b. Under negation, an increasing AP becomes decreasing in position, so this permutation has different MAP structure than the identity.\n\nThese examples verify that the definitions are instantiatable and non-vacuous.",
     "mathContext": "The negation permutation proof is constructive: injectivity by simp on the negation, surjectivity by providing -b as the witness. These are the simplest non-trivial permutations and serve as sanity checks for the formalization.",
@@ -140,7 +140,7 @@
       "startLine": 123,
       "endLine": 134
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_195_summary:** Combines both bounds into a single proved statement:\n- Upper bound: ∃ f, IsPermutation f ∧ AvoidsMAP f 5 (from adenwalla_2022)\n- Lower bound: ∀ f, IsPermutation f → HasMAP f 3 (from trivial_lower_bound)\n\nThe proof is `exact ⟨adenwalla_2022, trivial_lower_bound⟩`, directly packaging the two axioms. This summary captures the complete state of knowledge: 3 ≤ k ≤ 4, with the exact value OPEN.",
     "mathContext": "Summary theorems serve as entry points for understanding the formalization. By combining bounds into a conjunction, we make explicit that both directions are established, with only the gap remaining.",

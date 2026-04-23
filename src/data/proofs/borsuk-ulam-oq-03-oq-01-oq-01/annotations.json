@@ -73,7 +73,7 @@
       "startLine": 71,
       "endLine": 81
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Exhaustive Classification of Complementary Pairs",
     "content": "Proves by exhaustive case analysis that the only complementary pairs from {±1, ±2} are (1,-1), (-1,1), (2,-2), (-2,2). The proof uses Lean's rcases tactic to split on all 4×4 = 16 combinations of label values and simp_all to discharge the arithmetic. This classification is used later to analyze the structure of complementary edges in triangles.",
     "mathContext": "From $\\{\\pm 1, \\pm 2\\}$: $a + b = 0 \\iff (a,b) \\in \\{(1,-1), (-1,1), (2,-2), (-2,2)\\}$. Proof by checking all $4 \\times 4 = 16$ cases.",
@@ -163,7 +163,7 @@
       "startLine": 168,
       "endLine": 186
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tucker 2D from Parity + 1D Tucker",
     "content": "Combines the parity principle with 1D Tucker on the boundary to obtain the full 2D Tucker lemma. The proof is a clean reduction: (1) 1D Tucker on the boundary gives an odd number of boundary complementary edges, (2) the parity principle then forces an interior complementary edge, (3) extract the specific vertices and their labels. The proof destructs the existential from tucker_parity_principle and packages it into the desired output format, demonstrating the modular architecture of the approach.",
     "mathContext": "Tucker 2D = (1D Tucker on $\\partial K$) + (parity principle on $K$). The 1D result gives $|E_{\\text{bdy}}|$ odd; the parity principle yields $\\exists t \\in K^{\\circ}$ with complementary edge.",

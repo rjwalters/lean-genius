@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 52
     },
-    "type": "context",
+    "type": "concept",
     "title": "Dirichlet via Minkowski: Overview and Proof Strategy",
     "content": "This file proves Dirichlet's approximation theorem as a direct application of Minkowski's fundamental theorem (geometry of numbers). The key idea: the parallelogram S = {|x| < Q+1, |αx−y| < 1/Q} has area 4(Q+1)/Q > 4 = 2², so by Minkowski it contains a nonzero integer point (q,p), which gives the desired approximation after a brief argument showing q ≠ 0.",
     "mathContext": "Dirichlet's theorem (1842): for any α ∈ ℝ and Q ∈ ℕ₊, ∃ p,q ∈ ℤ with 1 ≤ q ≤ Q and |qα−p| < 1/Q. Minkowski's proof method (1896) replaces the elementary pigeonhole argument with a geometric volume argument.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Dirichlet's approximation theorem",
       "Minkowski's lattice point theorem",
@@ -64,7 +64,7 @@
     "title": "Three Measure-Theoretic Axioms",
     "content": "The three axioms handle measure theory: convexity (S is an intersection of two halfplanes, each defined by a linear inequality on a continuous functional), measurability (S is open hence Borel measurable), and volume (= 4(Q+1)/Q via Fubini or the shear map). These are mathematically routine but require Mathlib's measure theory machinery to formalize.",
     "mathContext": "Convexity: the function (v: Fin 2 → ℝ) ↦ |α·v 0 − v 1| is convex (it's a norm of a linear functional), so its sublevel set is convex. Volume: formally this requires Fubini's theorem (inner integral = 2/Q for each x with |x| < Q+1, outer integral = 2(Q+1)) or the change-of-variables formula for linear maps.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lebesgue measure",
       "Fubini's theorem",
@@ -138,7 +138,7 @@
     "title": "Sign Normalization to Get Positive q",
     "content": "Since a ≠ 0 is an integer, |a| ≥ 1. The set S is symmetric, so if (a,b) ∈ S then (−a,−b) ∈ S. Setting q = |a| and p = b (if a>0) or p = −b (if a<0), the condition |α·q−p| < 1/Q is preserved: if a>0, q=a and p=b; if a<0, q=−a and α·(−a)−(−b) = −(αa−b), same absolute value.",
     "mathContext": "The sign case split: if a > 0 then |a|=a and the bound is directly hab_approx. If a < 0 then |a|=−a (Int.abs_of_neg) and α·(−a)−(−b) = −(α·a−b) by ring, so |α·(−a)−(−b)| = |−(α·a−b)| = |α·a−b| by abs_neg.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "absolute value",
       "sign argument",

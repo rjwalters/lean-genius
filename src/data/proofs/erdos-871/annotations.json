@@ -82,7 +82,7 @@
       "startLine": 58,
       "endLine": 86
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Equivalence of Definitions",
     "content": "The two definitions of order-2 basis are equivalent: (1) ∃N₀, ∀n ≥ N₀, n ∈ A + A, and (2) (A + A)ᶜ is finite. The proof uses BddAbove for the finite complement case.",
     "mathContext": "This equivalence is standard but the formal proof requires careful handling of the cases where the complement is empty vs nonempty.",
@@ -120,7 +120,7 @@
       "startLine": 98,
       "endLine": 115
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Growth Implication",
     "content": "If r_A(n) → ∞, then for any fixed t, r_A(n) ≥ t eventually. This shows the r_A(n) → ∞ condition is strictly stronger than having a fixed threshold.",
     "mathContext": "The proof uses the atTop filter characterization of limits. We extract the witness N₀ from the Tendsto definition.",

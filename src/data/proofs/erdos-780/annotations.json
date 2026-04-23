@@ -142,7 +142,7 @@
       "startLine": 84,
       "endLine": 101
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Alon-Frankl-Lovász Main Theorem (1986)",
     "content": "**`alon_frankl_lovasz_1986`** (axiom): For $n \\geq kr + (t-1)(k-1)$ with $r \\geq 1$, $k \\geq 2$, $t \\geq 1$, any $t$-coloring of $K_n^{(r)}$ contains a monochromatic $k$-matching.\n\n**`kneser_hypergraph_chromatic_number`** (axiom): Equivalent formulation as $\\chi(KG^r(n,k)) = \\lceil (n - r(k-1))/(k-1) \\rceil$.",
     "mathContext": "The AFL proof proceeds by: (1) reducing to a topological problem about the connectivity of the independence complex $\\text{Ind}(KG^r(n,k))$, (2) applying a generalized Borsuk-Ulam theorem to show this complex is sufficiently connected, (3) deducing the chromatic lower bound from the Lusternik-Schnirelmann category. The paper appeared in *Transactions AMS* 298 (1986), 359-370. The formula uses `Nat.ceil` of an integer division since $\\chi$ must be an integer.",
@@ -165,7 +165,7 @@
       "startLine": 95,
       "endLine": 122
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tightness Construction",
     "content": "**`tightBound k r t`** $= kr - 1 + (t-1)(k-1)$: one less than the threshold.\n\n**`tightness_construction`** (axiom): For $n = n_0 - 1$, there exists a $t$-coloring with no monochromatic $k$-matching. The construction partitions $[n] = X_1 \\cup X_2 \\cup \\cdots \\cup X_t$ with $|X_1| = kr - 1$ and $|X_i| = k - 1$ for $i \\geq 2$, coloring each edge by its first non-empty intersection.",
     "mathContext": "The tightness construction is the standard 'sunflower-avoiding' partition coloring. Each edge $e \\in \\binom{[n]}{r}$ receives color $i$ where $i$ is the smallest index with $e \\cap X_i \\neq \\emptyset$. Since $|X_1| = kr - 1$, any $k$ disjoint $r$-sets colored 1 would require $kr$ elements in $X_1$, a contradiction. For colors $i \\geq 2$, each $r$-set colored $i$ must contain an element of $X_i$, but $|X_i| = k-1$ limits the matching size to $k-1$.",
@@ -187,7 +187,7 @@
       "startLine": 123,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kneser's Conjecture ($k = 2$)",
     "content": "**`kneser_conjecture`** (axiom): $\\chi(KG(n,r)) = n - 2r + 2$ for $n \\geq 2r$. Conjectured by Kneser (1955), proved by Lovász (1978).\n\n**`KneserGraph n r`**: The Kneser graph with $r$-subsets of $[n]$ as vertices.\n\n**`kneserAdj`**: Two $r$-sets are adjacent iff disjoint.",
     "mathContext": "Lovász's 1978 proof in *J. Comb. Theory A* 25, 319-324 was the first application of algebraic topology (specifically the Borsuk-Ulam theorem) to combinatorics. He showed the neighborhood complex $\\mathcal{N}(KG(n,r))$ is $(n - 2r)$-connected, giving $\\chi(KG(n,r)) \\geq n - 2r + 2$. The upper bound follows from the coloring: assign color $\\min(e)$ if $\\min(e) \\leq n - 2r + 1$, else a final color. Schrijver (1978) strengthened this to the stable Kneser graph (vertex-critical subgraph).",
@@ -209,7 +209,7 @@
       "startLine": 140,
       "endLine": 159
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Small Cases",
     "content": "Four explicit chromatic number computations (all axiomatized):\n- **`petersen_chromatic`**: $\\chi(KG(5,2)) = 3$ — the **Petersen graph**, with vertices as 2-subsets of $\\{1,\\ldots,5\\}$, adjacent when disjoint.\n- **`kg_7_3_chromatic`**: $\\chi(KG(7,3)) = 2$\n- **`kg_2r_r_chromatic`**: $\\chi(KG(2r,r)) = 2$ — $KG(2r,r)$ is a perfect matching\n- **`kg_2r_plus_1_r`**: $\\chi(KG(2r+1,r)) = 3$",
     "mathContext": "For $KG(5,2)$: the 10 vertices are 2-subsets of $[5]$, with $\\binom{5}{2} = 10$ vertices and 15 edges. This is the Petersen graph, the smallest vertex-transitive non-Hamiltonian graph. For $KG(2r,r)$: every pair of complementary $r$-subsets forms the only matching, giving $\\alpha(KG(2r,r)) = \\binom{2r-1}{r-1}$ and $\\chi = 2$. For $KG(2r+1,r)$: the formula gives $\\chi = 2r+1-2r+2 = 3$; when $r = 1$ this is the odd cycle $C_{2r+1}$.",
@@ -231,7 +231,7 @@
       "startLine": 160,
       "endLine": 172
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Ko-Rado Connection",
     "content": "**`erdos_ko_rado`** (axiom): The maximum intersecting family of $r$-subsets of $[n]$ has size $\\binom{n-1}{r-1}$ for $n \\geq 2r$. This equals the independence number $\\alpha(KG(n,r))$, connecting Kneser chromatic number to intersecting families.",
     "mathContext": "The Erdős-Ko-Rado theorem (1961, *Quart. J. Math.*) shows that for $n \\geq 2r$, the maximum intersecting family $\\mathcal{F} \\subseteq \\binom{[n]}{r}$ with $|A \\cap B| \\geq 1$ for all $A, B \\in \\mathcal{F}$ satisfies $|\\mathcal{F}| \\leq \\binom{n-1}{r-1}$, achieved by fixing an element. An intersecting family is an independent set in $KG(n,r)$, so $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$. The fractional chromatic number is $\\chi_f(KG(n,r)) = n/r$.",
@@ -253,7 +253,7 @@
       "startLine": 173,
       "endLine": 187
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result Theorem",
     "content": "**`erdos_780_main`**: Restates the AFL theorem as a proved `theorem` (trivially from the axiom). For $n \\geq kr + (t-1)(k-1)$, any $t$-coloring contains a monochromatic $k$-matching.",
     "mathContext": "This is a thin wrapper: `erdos_780_main ... := alon_frankl_lovasz_1986 ...`. The distinction between `axiom` and `theorem` matters for Aristotle proof search: axioms are skipped, but this `theorem` is already proved (by invoking the axiom). The formalization pattern of axiomatizing deep results and wrapping them in proved theorems is standard for Lean formalizations of results not yet in Mathlib.",

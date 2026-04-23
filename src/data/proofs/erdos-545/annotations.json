@@ -2,7 +2,7 @@
   {
     "id": "erdos-545-imports",
     "proofId": "erdos-545",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 29,
       "endLine": 34
@@ -121,7 +121,7 @@
       "endLine": 124
     },
     "title": "Counterexamples and the Asymptotic Conjecture",
-    "content": "The conjecture fails for $m \\in \\{2, 3, 4, 5, 7, 8, 9\\}$ \u2014 for these edge counts, there exist graphs $G$ with $R(G) > R(H_m)$. Note the gap: $m = 6 = \\binom{4}{2}$ (a complete graph) is not a counterexample, consistent with the idea that 'complete-like' graphs are the hardest. The axiom counterexamples_exist formalizes this. The corrected asymptotic conjecture ErdosGrahamConjectureAsymptotic posits $\\exists M$ such that the inequality holds for all $m \\geq M$. This remains open \u2014 even the existence of such an $M$ is unknown.",
+    "content": "The conjecture fails for $m \\in \\{2, 3, 4, 5, 7, 8, 9\\}$ — for these edge counts, there exist graphs $G$ with $R(G) > R(H_m)$. Note the gap: $m = 6 = \\binom{4}{2}$ (a complete graph) is not a counterexample, consistent with the idea that 'complete-like' graphs are the hardest. The axiom counterexamples_exist formalizes this. The corrected asymptotic conjecture ErdosGrahamConjectureAsymptotic posits $\\exists M$ such that the inequality holds for all $m \\geq M$. This remains open — even the existence of such an $M$ is unknown.",
     "mathContext": "$\\forall m \\in \\{2,3,4,5,7,8,9\\},\\; \\exists G,\\; |E(G)| = m \\wedge R(G) > R(H_m)$; asymptotic: $\\exists M,\\; \\forall m \\geq M,\\; \\forall G,\\; R(G) \\leq R(H_m)$",
     "significance": "key",
     "relatedConcepts": [
@@ -159,13 +159,13 @@
   {
     "id": "erdos-545-classical",
     "proofId": "erdos-545",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 139,
       "endLine": 165
     },
     "title": "Classical Ramsey Numbers and Bounds",
-    "content": "The file records four classical Ramsey values: $R(1) = 1$ (trivial), $R(2) = 2$ (any edge is monochromatic), $R(3) = 6$ (the party problem \u2014 any 2-coloring of $K_6$ contains a monochromatic triangle), and $R(4) = 18$ (Greenwood-Gleason 1955). Two quantitative bounds follow: the probabilistic lower bound $R(k) \\geq 2^{k/2}$ (Erdos 1947, the first application of the probabilistic method) and the pigeonhole upper bound $R(k) \\leq 4^k$ (from the recurrence $R(k) \\leq 2R(k-1)$). All have sorries.",
+    "content": "The file records four classical Ramsey values: $R(1) = 1$ (trivial), $R(2) = 2$ (any edge is monochromatic), $R(3) = 6$ (the party problem — any 2-coloring of $K_6$ contains a monochromatic triangle), and $R(4) = 18$ (Greenwood-Gleason 1955). Two quantitative bounds follow: the probabilistic lower bound $R(k) \\geq 2^{k/2}$ (Erdos 1947, the first application of the probabilistic method) and the pigeonhole upper bound $R(k) \\leq 4^k$ (from the recurrence $R(k) \\leq 2R(k-1)$). All have sorries.",
     "mathContext": "$R(1) = 1$, $R(2) = 2$, $R(3) = 6$, $R(4) = 18$; $2^{k/2} \\leq R(k) \\leq 4^k$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -180,7 +180,7 @@
   {
     "id": "erdos-545-monotonicity",
     "proofId": "erdos-545",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 167,
       "endLine": 185

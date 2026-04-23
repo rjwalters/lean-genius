@@ -6,7 +6,7 @@
       "startLine": 8,
       "endLine": 47
     },
-    "type": "context",
+    "type": "concept",
     "title": "Archimedes' Method: Area as Integral of Circumference Rings",
     "content": "The header establishes the Archimedes 'sum of rings' derivation: a disk of radius r can be decomposed into thin annular rings of width dρ and circumference 2πρ, so total area = ∫₀ʳ 2πρ dρ = πr². The file formalizes this via the Fundamental Theorem of Calculus: if A'(r) = C(r) = 2πr, then A(r) = ∫₀ʳ C(ρ)dρ. Both FTC directions appear: Part 2 (integral of derivative = function difference) proves the main theorem, Part 1 (derivative of integral = integrand) closes the duality. The proof is complete (no sorries). Key imports: Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic for interval integrals and Mathlib.MeasureTheory.Integral.Bochner.FundThmCalculus for FTC.",
     "mathContext": "**Archimedes (~250 BC)**: the area of a circle equals the area of a right triangle with legs $r$ (radius) and $C = 2\\pi r$ (circumference): $A = \\frac{1}{2} r \\cdot 2\\pi r = \\pi r^2$. **FTC reformulation**: since $A(r) = \\pi r^2$, we have $A'(r) = 2\\pi r = C(r)$, so $A(r) = \\int_0^r C(\\rho)\\,d\\rho$ by FTC Part 2 (with $A(0) = 0$). **FTC Part 1**: conversely, $\\frac{d}{dr}\\int_0^r C(\\rho)\\,d\\rho = C(r)$, confirming the derivative of area is circumference.",

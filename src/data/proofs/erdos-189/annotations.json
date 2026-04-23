@@ -101,7 +101,7 @@
       "startLine": 72,
       "endLine": 87
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kovac's Counterexample (2023)",
     "content": "**Kovac's breakthrough**: There exists a 25-coloring of the plane such that NO color class contains rectangle vertices of area 1. This is axiomatized since the construction involves partitioning the plane into Jordan measurable regions with specific properties.",
     "mathContext": "The axiom states: $\\exists c : \\mathbb{R}^2 \\to \\text{Fin}\\,25\\, \\forall i < 25\\, \\neg\\exists$ rectangle with all 4 vertices in $c^{-1}(i)$ of area 1; the construction uses Jordan measurable color regions.",
@@ -120,7 +120,7 @@
       "startLine": 89,
       "endLine": 99
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: The Answer is NO",
     "content": "**erdos_189_is_false** proves that the Erdos statement is false. The proof is a clean derivation from Kovac's counterexample: if the statement were true, the 25-coloring would have some color with rectangles of every area, including area 1. But Kovac showed no color has area-1 rectangles. Contradiction!",
     "mathContext": "The proof uses the 25-coloring to instantiate the universal quantifiers, then applies Kovac's result for the contradiction; formally: assume Erdos189Statement, apply to the 25-coloring, get a color with area-1 rectangle, contradicting Kovac's axiom.",
@@ -139,7 +139,7 @@
       "startLine": 103,
       "endLine": 114
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Graham's Triangle Theorem",
     "content": "**Contrast with triangles**: Graham (1980) proved that for RIGHT-ANGLED TRIANGLES, the answer is YES - any finite coloring has a color class containing triangles of every area. This shows rectangles and triangles behave fundamentally differently in this Ramsey-type question.",
     "mathContext": "For triangles, the area formula uses (1/2) times base times height with a right angle at one vertex.",

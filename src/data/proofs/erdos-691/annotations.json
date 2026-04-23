@@ -2,7 +2,7 @@
   {
     "id": "ann-e691-imports",
     "proofId": "erdos-691",
-    "type": "context",
+    "type": "concept",
     "title": "Number Theory and Analysis Imports",
     "content": "Imports Nat.Basic, Set.Basic, Finset, Real.Basic, Filter.AtTopBot, and tactics from Mathlib.",
     "mathContext": "This formalization combines discrete combinatorics (`Finset`, `Nat`) with real analysis (`Real.Basic`, `Filter.AtTopBot`). The `limsup` and `liminf` from `Filter.AtTopBot` define upper and lower density, while `Filter.Tendsto` captures asymptotic density. The `open Finset Set Filter` declaration brings these namespaces into scope for cleaner notation.",

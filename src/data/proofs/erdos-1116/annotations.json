@@ -121,7 +121,7 @@
       "startLine": 153,
       "endLine": 159
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős #1116: SOLVED",
     "content": "**erdos_1116:**\n\n```lean\ntheorem erdos_1116 :\n    ∃ f : ℂ → ℂ, IsEntire f ∧ HasExtremeValueDistribution f :=\n  goldberg_toppila_existence\n```\n\nThe answer to Erdős's question is YES: such entire functions exist.",
     "significance": "key",

@@ -74,7 +74,7 @@
       "startLine": 38,
       "endLine": 51
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Strict Monotonicity: Helper and Main Theorem",
     "content": "This block contains two theorems. **`divisors_card_pos`** (private, lines 38–44): every n ≥ 1 has `n.divisors.card ≥ 1` because `1 ∈ n.divisors` and a non-empty finset has positive card. **`h_strictly_increasing`** (lines 46–51): h(n) > n for all n ≥ 1, proved by unfolding `h` and applying `divisors_card_pos`. Since τ(n) ≥ 1 for all positive n, each orbit step adds at least 1. Combined with the later `h_upper` (h(n) ≤ 2n), each step advances by between 1 and n positions.",
     "significance": "key",
@@ -98,7 +98,7 @@
       "startLine": 53,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Orbit Positivity, Monotonicity, and Upper Bound",
     "content": "This block contains three theorems. **`hOrbit_pos`** (private, lines 53–61): hOrbit n k ≥ 1 when n ≥ 1, proved by induction — the base case is n itself, and the inductive step uses `h_strictly_increasing` to show h applied to a positive value stays positive. **`orbit_strictly_increasing`** (lines 63–67): hOrbit n (k+1) > hOrbit n k for n ≥ 1, proved by applying `h_strictly_increasing` to `hOrbit_pos`. **`h_upper`** (lines 69–82): h(n) ≤ 2n for n ≥ 1, proved by showing divisors of n lie in [1,n] via `Finset.Icc 1 n` and counting. Together these give: n + k ≤ h^k(n) ≤ 2^k · n.",
     "significance": "supporting",
@@ -120,7 +120,7 @@
       "startLine": 84,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "concept",
     "title": "h at Primes: Minimum Step Size",
     "content": "**`h_prime`** (lines 84–87): For a prime p, h(p) = p + 2. The Lean proof uses `Nat.Prime.divisors hp` (which states `p.divisors = {1, p}`) and `Finset.card_pair (ne_of_lt hp.one_lt)` (the pair {1, p} has card 2 since 1 ≠ p). Primes advance by the minimum non-trivial step size 2. Highly composite numbers like 12 (τ = 6), 24 (τ = 8), 60 (τ = 12) advance much further, creating uneven orbit spacing.",
     "significance": "key",
@@ -142,7 +142,7 @@
       "startLine": 89,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Concrete Values: h(1)=2, h(2)=4, h(3)=5",
     "content": "Three concrete axioms: **h_one**: h(1) = 1 + τ(1) = 1 + 1 = 2, **h_two**: h(2) = 2 + τ(2) = 2 + 2 = 4, **h_three**: h(3) = 3 + τ(3) = 3 + 2 = 5. These are axiomatized but are trivially computable — they could be proved by `decide` or `native_decide` since `Nat.divisors.card` is decidable for specific values. The values establish the initial orbit segment 1 → 2 → 4 and the branching point 3 → 5 → 7 that merges with the main orbit.",
     "significance": "supporting",
@@ -207,7 +207,7 @@
       "startLine": 113,
       "endLine": 120
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Orbit of 1",
     "content": "**Orbit of 1**: 1 → 2 → 4 → 7 → 9 → 12 → 18 → 24 → 32 → 38 → 42 → 50 → ... The orbit accelerates when hitting highly composite numbers (12 → 18 jumps by 6) and decelerates near primes (7 → 9 advances by just 2).",
     "significance": "supporting",
@@ -272,7 +272,7 @@
       "startLine": 136,
       "endLine": 147
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Linear Lower Bound on Orbit Growth (Proved by Induction)",
     "content": "**`orbit_linear_lower`** (lines 136–146): hOrbit n k ≥ n + k for all n ≥ 1 and k ≥ 0. The Lean proof proceeds by induction on k. Base case (k = 0): hOrbit n 0 = n ≥ n + 0 by `simp [hOrbit]`. Inductive step: assume hOrbit n k ≥ n + k; then hOrbit n (k+1) = h(hOrbit n k) > hOrbit n k ≥ n + k, so hOrbit n (k+1) ≥ n + (k+1), closing via `omega`. The bound is tight: orbits from prime numbers advance by exactly 2 per prime-valued step, giving growth ≈ n + 2k when the trajectory passes through many primes.",
     "significance": "supporting",

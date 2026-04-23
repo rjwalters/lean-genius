@@ -77,7 +77,7 @@
       "startLine": 75,
       "endLine": 98
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Heath-Brown's Result and Kloosterman Sums",
     "content": "**KloostermanSum** (axiom): K(m,n;p) = Σₓ e^{2πi(mx + nx⁻¹)/p}, axiomatized since it requires exponential sum machinery. **weil_bound** (axiom): |K(m,n;p)| ≤ 2√p, Weil's deep estimate from algebraic geometry. **heath_brown_2000** (axiom): the conjecture holds for all c > 3/4. **heath_brown_threshold** (proved): witnesses c₀ = 3/4 with proof ⟨rfl, heath_brown_2000⟩.",
     "mathContext": "Heath-Brown's proof uses Kloosterman sums to count inverse pairs via Fourier analysis on $(\\mathbb{Z}/p\\mathbb{Z})^*$. The pair count $\\#\\{(a,b) \\in I \\times I : ab \\equiv 1\\}$ is expressed as $\\frac{|I|^2}{p} + \\frac{1}{p} \\sum_{m \\neq 0} |\\hat{1}_I(m)|^2 K(m,1;p)$ where $\\hat{1}_I$ is the Fourier transform of the interval indicator. The Weil bound $|K(m,1;p)| \\leq 2\\sqrt{p}$ — a consequence of the Riemann hypothesis for the curve $y^2 = (x-m)(x-1)$ over $\\mathbb{F}_p$ — provides the key square-root cancellation. The factor $3/4$ arises from balancing: $|\\hat{1}_I(m)|^2 \\sim |I|^2/m^2$ for $m \\ll p/|I|$, and the error sum $\\sim \\sqrt{p} \\cdot |I|^2 \\cdot \\log p / |I|$ must be $< |I|^2/p$.",
@@ -102,7 +102,7 @@
       "startLine": 100,
       "endLine": 116
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Open Range and Current Knowledge",
     "content": "**OpenRange** = Set.Ioc (1/2) (3/4), the gap where the conjecture is neither proved nor disproved. **current_knowledge** (proved): packages Heath-Brown's result together with the fact that OpenRange ⊆ (1/2, 1). The proof of the inclusion uses calc with hx.2 and norm_num.",
     "mathContext": "The open range $c \\in (1/2, 3/4]$ is the main challenge. The lower bound $1/2$ comes from the heuristic birthday-paradox counting argument ($p^{2c-1}$ expected pairs). The upper bound $3/4$ is Heath-Brown's threshold. The `current_knowledge` theorem packages both what is known (Heath-Brown for $c > 3/4$) and the structural fact ($\\text{OpenRange} \\subseteq (1/2, 1)$). The proof of the inclusion is a short `calc` chain: $x \\leq 3/4 < 1$. Closing the gap requires either better averaging of Kloosterman sum families (the Weil bound for individual sums is sharp) or entirely new approaches such as additive combinatorics.",
@@ -126,7 +126,7 @@
       "startLine": 118,
       "endLine": 141
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_445_summary** packages both known results as a proved conjunction: (1) Heilbronn's result — ∃ c₀ < 1 with the conjecture holding for c > c₀, and (2) Heath-Brown's c > 3/4 result. The proof is ⟨⟨heilbronn_threshold, heilbronn_unpublished.1, heilbronn_unpublished.2⟩, heath_brown_2000⟩.",
     "mathContext": "The two-part conjunction captures the complete known picture: an early existential result (Heilbronn: $\\exists c_0 < 1$) and a quantitative improvement (Heath-Brown: $c_0 \\leq 3/4$). Heath-Brown's result strictly improves Heilbronn's since $3/4 < c_0 \\leq 1$, but including both preserves the historical development and the fact that Heilbronn's method (character sums) differs from Heath-Brown's (Kloosterman sums). The proof is a direct anonymous constructor $\\langle \\langle \\ldots \\rangle, \\ldots \\rangle$ combining the axioms — a pattern common in Erdős formalizations that summarize partial results on open problems.",

@@ -6,7 +6,7 @@
       "startLine": 10,
       "endLine": 35
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Schauder Projection Lemma: Bridging Finite and Infinite Dimensions",
     "content": "The Schauder projection lemma is the technical engine behind the Schauder fixed point theorem. It answers a fundamental question: how can we approximate an infinite-dimensional compact set by something finite-dimensional? The lemma says that for any compact set K and any tolerance epsilon, we can build a continuous map that nearly preserves K while mapping it into a finite-dimensional convex hull. This finite-dimensional reduction is what allows the Brouwer fixed point theorem (which only works in finite dimensions) to be leveraged in Banach spaces and other infinite-dimensional settings.",
     "mathContext": "Given compact $K \\subseteq E$ and $\\varepsilon > 0$, $\\exists \\pi: E \\to E$ continuous with $\\pi(K) \\subseteq \\mathrm{conv}\\{x_1,\\ldots,x_n\\}$ and $\\|\\pi(x) - x\\| < \\varepsilon$ for all $x \\in K$.",
@@ -26,7 +26,7 @@
       "startLine": 50,
       "endLine": 60
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Convex Hull of Finite Sets: Closedness and Compactness",
     "content": "These two auxiliary results establish that convex hulls of finite sets in normed spaces behave well topologically. The closedness result follows from a deep fact in finite-dimensional analysis: convex hulls of compact (hence finite) sets in normed spaces are closed. The compactness result is even stronger, following from the Caratheodory representation theorem which shows the convex hull of a finite set is the continuous image of a compact simplex. Both results are applied as one-liners via Mathlib, demonstrating the power of the library's existing infrastructure.",
     "mathContext": "For finite $s \\subseteq E$: $\\mathrm{conv}(s)$ is closed; for $\\mathrm{pts}: \\mathrm{Fin}\\, n \\to E$: $\\mathrm{conv}(\\mathrm{range}(\\mathrm{pts}))$ is compact.",
@@ -87,7 +87,7 @@
       "startLine": 110,
       "endLine": 131
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sum of Bumps: Positivity via Finite Covering",
     "content": "The sum of bump functions S(x) = sum_i phi_i(x) is nonneg everywhere (sum of nonneg terms) and strictly positive on K (because the epsilon-balls cover K, so at least one bump is positive at each point). The positivity on K is essential: it ensures the Schauder projection pi(x) = (sum phi_i * x_i) / S(x) has a well-defined denominator. The proof uses Finset.single_le_sum to show that a single positive summand forces the entire sum to be positive, a clean use of Lean's finite sum API.",
     "mathContext": "$S(x) = \\sum_{i=1}^n \\varphi_i(x) > 0$ for all $x \\in K$, since $K \\subseteq \\bigcup_i B(x_i, \\varepsilon)$",
@@ -131,7 +131,7 @@
       "startLine": 146,
       "endLine": 157
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Continuity via ContinuousOn and Nonvanishing Denominator",
     "content": "The continuity proof uses ContinuousOn rather than global Continuous because the projection is only well-defined where S(x) > 0. The key step is ContinuousOn.inv_0, which requires showing the denominator never vanishes on the domain -- exactly the positivity result from Part 3. The numerator sum(phi_i(x) * x_i) is continuous by continuous_finset_sum, and the product of a continuous scalar function with a continuous vector function is continuous. This quotient-of-continuous-functions pattern is standard in partition-of-unity proofs.",
     "mathContext": "$\\pi$ is continuous on $U = \\{x : S(x) > 0\\} \\supseteq K$, since $S^{-1}$ and $\\sum \\varphi_i \\cdot x_i$ are both continuous on $U$.",

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 23
     },
-    "type": "context",
+    "type": "concept",
     "title": "Historical Background: The Parallel Postulate Problem",
     "content": "For over two millennia, mathematicians tried to prove Euclid's Fifth Postulate from the other four axioms. The breakthrough came in the 19th century when Bolyai and Lobachevsky independently developed hyperbolic geometry, and Beltrami (1868) proved its consistency by constructing concrete models within Euclidean geometry. This formalization uses the Beltrami-Klein disk model to give an explicit, coordinate-geometric proof of independence, replacing axiom-based arguments with direct computation.",
     "mathContext": "Euclid's Fifth Postulate (equivalent to Playfair's axiom): through any point not on a line, there exists exactly one parallel line. Independence means the postulate can neither be proved nor disproved from the remaining axioms.",
@@ -52,7 +52,7 @@
       "startLine": 60,
       "endLine": 90
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Explicit Witness Construction for Hyperbolic Parallels",
     "content": "The proof constructs specific objects: the x-axis chord (y = 0), point P = (0, 1/2), and two chords through P with equations x - 4y + 2 = 0 (slope 1/4) and x + 4y - 2 = 0 (slope -1/4). These chords have shallow slopes, so their extensions cross the x-axis at x = -2 and x = 2 respectively, both well outside the unit disk. This explicit construction avoids existential reasoning entirely.",
     "mathContext": "The chord $x - 4y + 2 = 0$ passes through $(0, 1/2)$ and meets $y = 0$ at $x = -2$. Since $(-2)^2 + 0^2 = 4 > 1$, this intersection lies outside the disk, making the chords BK-parallel.",
@@ -160,7 +160,7 @@
       "startLine": 257,
       "endLine": 261
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Independence Theorem: Two Models, Opposite Verdicts",
     "content": "The final independence theorem states that some incidence geometry satisfies Playfair's axiom (Euclidean, axiomatized) while another violates it (Beltrami-Klein, proved). This is the standard model-theoretic technique for independence: if an axiom holds in one model and fails in another, it is independent of the shared axioms. The BK side is fully proved; the Euclidean side is axiomatized as a standard result.",
     "mathContext": "Independence: $(\\exists G.\\; \\text{Playfair}(G)) \\;\\land\\; (\\exists G.\\; \\lnot\\text{Playfair}(G))$. The first witness is Euclidean geometry; the second is the Beltrami-Klein disk.",

@@ -146,7 +146,7 @@
       "startLine": 177,
       "endLine": 195
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Asymptotic Characterization",
     "content": "**ThetaBound** defines big-Theta notation: f(m) - m/2 = Θ(g(m)) means ∃ c₁, c₂ > 0 such that c₁·g(m) ≤ f(m) - m/2 ≤ c₂·g(m).\n\n**alon_main_theorem** proves ThetaBound f (fun m => m^{4/5}), combining both of Alon's bounds via linarith.",
     "mathContext": "This is the precise asymptotic characterization of the deviation from the trivial m/2 bound.",

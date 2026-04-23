@@ -8,7 +8,7 @@
     "title": "Vertex Type: Three Copies of Z/NZ",
     "content": "RSVertex N is defined as Fin 3 × ZMod N — three labeled copies of the cyclic group Z/NZ, called parts X (0), Y (1), and Z (2). The helper abbreviations xVert, yVert, zVert construct vertices in each part, forming the tripartite structure that will encode arithmetic progressions as triangles.",
     "mathContext": "$\\text{RSVertex}(N) = \\{0,1,2\\} \\times \\mathbb{Z}/N\\mathbb{Z}$, partitioned into $X = \\{0\\} \\times \\mathbb{Z}/N\\mathbb{Z}$, $Y = \\{1\\} \\times \\mathbb{Z}/N\\mathbb{Z}$, $Z = \\{2\\} \\times \\mathbb{Z}/N\\mathbb{Z}$, each of size $N$, total $3N$ vertices.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "tripartite graph",
       "ZMod",
@@ -53,13 +53,13 @@
   {
     "id": "rs-graph-props",
     "proofId": "roth-theorem-k3-oq-02",
-    "type": "technique",
+    "type": "concept",
     "startLine": 62,
     "endLine": 91,
     "title": "Graph Properties: Symmetry, Looplessness, SimpleGraph Construction",
     "content": "rsAdj_symm proves symmetry by case analysis on the six disjuncts — swapping the two orientations. rsAdj_loopless proves irreflexivity by showing a self-loop would require two distinct Fin 3 values to be equal (decided by `decide`). Together these discharge the SimpleGraph instance obligations, bundling rsAdj as a valid undirected graph.",
     "mathContext": "$G(A)$ is a well-defined undirected simple graph: $|V| = 3N$, adjacency $\\sim$ is symmetric and irreflexive. The tripartite structure guarantees no self-loops since $\\{0,1\\}, \\{1,2\\}, \\{0,2\\}$ are all distinct pairs in $\\text{Fin}\\, 3$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "SimpleGraph",
       "symmetric relation",

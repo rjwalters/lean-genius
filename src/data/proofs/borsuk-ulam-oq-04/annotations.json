@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 51
     },
-    "type": "context",
+    "type": "concept",
     "title": "Documentation and Imports",
     "content": "The module docstring lays out the classical covering space argument for Borsuk-Ulam in six steps: (1) an odd map $g: S^n \\to S^{n-1}$ descends to $\\bar{g}: \\mathbb{R}P^n \\to \\mathbb{R}P^{n-1}$, (2) $S^n \\to \\mathbb{R}P^n$ is a 2-sheeted covering, (3) $\\pi_1(\\mathbb{R}P^n) \\cong \\mathbb{Z}/2\\mathbb{Z}$, (4) $\\bar{g}$ induces a group homomorphism $\\mathbb{Z}/2\\mathbb{Z} \\to \\mathbb{Z}/2\\mathbb{Z}$, (5) lifting forces surjectivity, (6) geometric constraints force triviality -- contradiction.\n\nThe higher categorical perspective is then introduced: classical covering spaces correspond to functors $\\Pi_1(X) \\to \\mathbf{Set}$, while $n$-coverings use $\\Pi_{n+1}(X) \\to n\\text{-Type}$ and $\\infty$-coverings use $\\Pi_\\infty(X) \\to \\mathbf{Space}$ (local systems).\n\nSix Mathlib imports supply the infrastructure: `Topology.Basic` and `MetricSpace.Basic` for continuity and metric spheres, `InnerProductSpace.Basic` and `PiL2` for the Euclidean structure on $\\mathbb{R}^{n+1}$, `ZMod.Basic` for the cyclic group $\\mathbb{Z}/2\\mathbb{Z}$, and `Tactic` for automation.",
     "mathContext": "Classical coverings: functors $\\Pi_1(X) \\to \\mathbf{Set}$. Higher coverings: functors $\\Pi_{n+1}(X) \\to n\\text{-Type}$. Local systems: functors $\\Pi_\\infty(X) \\to \\mathbf{Space}$.",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": [
       "covering space theory",
       "fundamental groupoid",
@@ -56,7 +56,7 @@
       "startLine": 68,
       "endLine": 84
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Involution-Induced Equivalence Relation",
     "content": "Constructs the equivalence relation (Lean `Setoid`) induced by any involution: $x \\sim y \\iff x = y \\lor x = \\sigma(y)$. Two points are equivalent if they lie in the same orbit of the $\\mathbb{Z}/2\\mathbb{Z}$-action.\n\nThe three equivalence relation properties are proved by case analysis (`rcases`):\n- **Reflexivity**: $x = x$ gives $x \\sim x$.\n- **Symmetry**: If $x = \\sigma(y)$, then $y = \\sigma(\\sigma(y)) = \\sigma(x)$ using `\\sigma\\_\\sigma`.\n- **Transitivity**: The key case: if $x = \\sigma(y)$ and $y = \\sigma(z)$, then $x = \\sigma(\\sigma(z)) = z$ by involutivity.\n\nThis is a fully proved construction (no sorries), demonstrating that the orbit relation for any involution is well-formed. The quotient by this relation gives the orbit space $\\alpha / \\langle \\sigma \\rangle$.",
     "mathContext": "$x \\sim y \\iff x = y \\text{ or } x = \\sigma(y)$. Equivalently, $[x] = \\{x, \\sigma(x)\\}$ is the $\\mathbb{Z}/2\\mathbb{Z}$-orbit of $x$.",
@@ -128,7 +128,7 @@
       "startLine": 122,
       "endLine": 147
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Descent of Odd Maps to Projective Spaces",
     "content": "Three results constitute the descent machinery:\n\n1. **`odd_preserves_relation`**: If $f$ is odd and $x \\sim y$ (antipodally), then $f(x) \\sim f(y)$. Proof by case split: if $x = y$, trivial; if $x = -y$, then $f(x) = f(-y) = -f(y)$.\n\n2. **`descendOdd`**: Constructs the descended map $\\bar{f}: \\mathbb{R}P^n \\to \\mathbb{R}P^m$ using `Quotient.map`, which lifts a relation-preserving function to quotient spaces. This is the universal property of quotients applied to our setting.\n\n3. **`descendOdd_comm`**: Proves commutativity $\\bar{f}(\\pi(x)) = \\pi(f(x))$, i.e., the diagram\n$$\\begin{array}{ccc} \\mathbb{R}^{n+1} & \\xrightarrow{f} & \\mathbb{R}^{m+1} \\\\ \\pi \\downarrow & & \\downarrow \\pi \\\\ \\mathbb{R}P^n & \\xrightarrow{\\bar{f}} & \\mathbb{R}P^m \\end{array}$$\ncommutes. This is verified by `simp` with `Quotient.map_mk`.\n\nAll three are fully proved (no sorries). This descent is the crucial algebraic step in the Borsuk-Ulam argument and is independent of topology -- it is a purely algebraic consequence of equivariance.",
     "mathContext": "Descent: $f(-x) = -f(x) \\implies \\exists! \\bar{f}: \\mathbb{R}P^n \\to \\mathbb{R}P^m$ with $\\bar{f} \\circ \\pi = \\pi \\circ f$.",
@@ -205,7 +205,7 @@
       "startLine": 221,
       "endLine": 237
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Equivariant Maps Between Covering Types",
     "content": "Defines `EquivariantMap` between covering types as a pair of maps (on total and base spaces) satisfying:\n- **Commutativity**: $p_2 \\circ f_E = f_B \\circ p_1$ (the square of covering projections commutes)\n- **Equivariance**: $f_E \\circ \\tau_1 = \\tau_2 \\circ f_E$ (the total space map intertwines deck transformations)\n\nThe theorem `odd_gives_equivariant` proves that any odd map $f: \\mathbb{R}^{n+1} \\to \\mathbb{R}^{m+1}$ induces an equivariant map between the corresponding antipodal coverings. The total map is $f$ itself, the base map is $\\bar{f}$ from descent, commutativity is `descendOdd_comm`, and equivariance is exactly the oddness condition.\n\nThis is the categorical formulation: the Borsuk-Ulam argument operates in the category of covering spaces with equivariant maps as morphisms. In the higher categorical setting, this would be a morphism in the $\\infty$-category of $G$-bundles.",
     "mathContext": "An equivariant map $(f_E, f_B)$ between coverings $(E_1, B_1, p_1, \\tau_1)$ and $(E_2, B_2, p_2, \\tau_2)$: $p_2 \\circ f_E = f_B \\circ p_1$ and $f_E \\circ \\tau_1 = \\tau_2 \\circ f_E$.",
@@ -255,7 +255,7 @@
       "startLine": 266,
       "endLine": 289
     },
-    "type": "context",
+    "type": "concept",
     "title": "Open Questions and Research Directions",
     "content": "Four open questions frame the higher categorical research program:\n\n**Q1 ($\\mathbb{Z}/p$ generalization)**: Can the $\\mathbb{Z}/2$ obstruction extend to $\\mathbb{Z}/p$ for prime $p$? This connects to the Yang-Borsuk theorem, which replaces antipodal maps with $p$-fold cyclic symmetries. The covering $S^{2n-1} \\to L^{2n-1}(p)$ (lens space) replaces $S^n \\to \\mathbb{R}P^n$.\n\n**Q2 ($\\infty$-groupoid perspective)**: Using $\\Pi_\\infty(\\mathbb{R}P^n)$ captures all homotopy groups, not just $\\pi_1$. Since $\\pi_k(\\mathbb{R}P^n) \\cong \\pi_k(S^n)$ for $k \\geq 2$, the higher homotopy is rich.\n\n**Q3 ($\\infty$-topos formulation)**: Borsuk-Ulam as non-existence of sections: the $\\mathbb{Z}/2$-equivariant map $S^n \\to \\mathbb{R}^n$ question becomes a section problem in the slice $\\infty$-topos over $B\\mathbb{Z}/2$.\n\n**Q4 (new results from higher coverings)**: Do higher-dimensional fibers yield genuinely stronger topological obstructions?\n\nThese connect to active research in equivariant homotopy theory (Hill-Hopkins-Ravenel), $\\infty$-topos theory (Lurie's HTT/HA), and chromatic homotopy theory.",
     "mathContext": "Q1: $\\mathbb{Z}/p$-coverings via lens spaces $L^{2n-1}(p)$. Q3: Section problem in $\\mathcal{S}_{/B\\mathbb{Z}/2}$. Q2: $\\Pi_\\infty(\\mathbb{R}P^n) \\simeq B\\mathbb{Z}/2$ (for $n = \\infty$).",

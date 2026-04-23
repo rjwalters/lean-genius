@@ -63,7 +63,7 @@
       "startLine": 52,
       "endLine": 62
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified τ Values",
     "content": "We verify concrete τ values using `native_decide`, which computes the divisor count directly:\n\n- τ(1) = 1\n- τ(2) = 2 (prime)\n- τ(6) = 4 (1, 2, 3, 6)\n- τ(12) = 6 (highly composite)\n\nThese serve as sanity checks for the definition.",
     "mathContext": "native_decide evaluates the decidable proposition by computation, providing machine-checked verification.",
@@ -101,7 +101,7 @@
       "startLine": 88,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Main Conjecture",
     "content": "**Is F(x) ≤ (log x)^{O(1)}?**\n\nThis asks whether the longest run of consecutive integers with distinct divisor counts is bounded by a polynomial in log x. After 70+ years, this remains open.\n\nStated as an axiom since no proof exists.",
     "mathContext": "Erdos945Prop: ∃C>0, F(x) ≤ (log x)^C eventually. The O(1) means some constant exponent.",
@@ -139,7 +139,7 @@
       "startLine": 121,
       "endLine": 128
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Mirsky Lower Bound (1952)",
     "content": "**F(x) ≫ (log x)^{1/2} / log log x**\n\nThis says F(x) grows at least like a square root of log x (divided by log log x). Runs of distinct τ values can be at least this long.\n\nErdős claimed this could be improved to (log x)^{1-o(1)} 'with some more work'.",
     "mathContext": "The lower bound shows F is unbounded and grows at least polynomially in log x.",
@@ -158,7 +158,7 @@
       "startLine": 130,
       "endLine": 137
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Mirsky Upper Bound (1952)",
     "content": "**log F(x) ≪ (log x)^{1/2} / log log x**\n\nEquivalently: F(x) ≪ exp(O((log x)^{1/2} / log log x))\n\nThis is *exponential* in √log x, much larger than the polynomial lower bound. The gap between these bounds is the main open problem.",
     "mathContext": "Taking logs: log F(x) = O((log x)^{1/2}/log log x). The upper bound is exponential in a fractional power of log.",

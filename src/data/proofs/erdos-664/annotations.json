@@ -6,7 +6,7 @@
       "startLine": 31,
       "endLine": 38
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Setup",
     "content": "Imports Mathlib modules for natural numbers, finite sets with cardinality, real numbers with square root, big operators for summation, and opens the Finset, BigOperators, and Real namespaces.",
     "significance": "supporting",
@@ -210,7 +210,7 @@
       "startLine": 104,
       "endLine": 106
     },
-    "type": "technique",
+    "type": "concept",
     "title": "alon_disproof",
     "content": "Alon's theorem: the answer to Erdős's question is NO. Formalized as ¬ErdosQuestion664.",
     "significance": "key",
@@ -254,7 +254,7 @@
       "startLine": 116,
       "endLine": 131
     },
-    "type": "technique",
+    "type": "concept",
     "title": "alon_construction",
     "content": "Alon's explicit counterexample: for each large prime q, there exists a near-linear family on n = q² + q + 1 elements where every blocker has intersection ≥ (log n)/10 with some set.",
     "significance": "key",
@@ -277,7 +277,7 @@
       "startLine": 140,
       "endLine": 166
     },
-    "type": "context",
+    "type": "concept",
     "title": "Why the Counterexample Works",
     "content": "The counterexample relies on three properties of projective planes: each line has q+1 points, any two lines meet in exactly one point, and random thinning preserves these properties while forcing any blocker to have large intersection with some line.",
     "significance": "key",
@@ -300,7 +300,7 @@
       "startLine": 162,
       "endLine": 166
     },
-    "type": "technique",
+    "type": "concept",
     "title": "logarithmic_lower_bound",
     "content": "Any blocker B must satisfy |B ∩ Aⱼ| ≥ Ω(log n) for some j. This is the key quantitative content of Alon's disproof.",
     "significance": "key",
@@ -344,7 +344,7 @@
       "startLine": 187,
       "endLine": 205
     },
-    "type": "context",
+    "type": "concept",
     "title": "Finite Geometry Interpretation",
     "content": "The problem translates to: in a projective plane, can we find a blocking set that meets every line in O(1) points? Bruen's bound gives the minimum blocking set size as q + √q + 1.",
     "significance": "key",
@@ -367,7 +367,7 @@
       "startLine": 207,
       "endLine": 222
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Constant 2/5 and Other Constants",
     "content": "The constant 2/5 in Alon's construction comes from the random thinning probability. Any constant c < 1/2 yields a similar counterexample.",
     "significance": "supporting",

@@ -127,7 +127,7 @@
       "startLine": 123,
       "endLine": 140
     },
-    "type": "technique",
+    "type": "concept",
     "title": "First-Order for k = 3",
     "content": "**g3_first_order:** Derives $g_3(n) \\sim (\\log\\log n / \\log n) \\cdot n$ from erdos_1964_main with $k = 3$, $r = 2$.\n\nSince $2^1 = 2 < 3 \\le 4 = 2^2$, we have $r = 2$. Substituting: $(\\log\\log n)^{2-1} / (2-1)! = \\log\\log n / 1 = \\log\\log n$. The proof is a clean specialization: `norm_num` verifies $2 < 3 \\le 4$ and `simp` simplifies the factorial and power expressions.\n\nThis is the only fully proved theorem in the file -- all other results are axiomatized. It demonstrates that the $k = 3$ case follows mechanically from the general result.",
     "mathContext": "$g_3(n) \\sim \\frac{\\log\\log n}{\\log n} \\cdot n$. This says the largest subset of $[n]$ where no integer has $\\ge 3$ ordered factorizations from the set has size roughly $(\\log\\log n / \\log n) \\cdot n$, matching the count of semiprimes up to $n$.",
@@ -246,7 +246,7 @@
       "startLine": 219,
       "endLine": 241
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_796_summary:** A conjunction packaging the two main established results:\n\n1. **First-order asymptotics** (from `g3_first_order`): $g_3(n) \\sim (\\log\\log n / \\log n) \\cdot n$\n2. **Second-order bounds** (from `E3_bounded`): $c_1 \\cdot n/(\\log n)^2 \\le E_3(n) \\le c_2 \\cdot n/(\\log n)^2$\n\nProved directly by `exact ⟨g3_first_order, E3_bounded⟩`. The exact constant $c$ in the second-order term remains OPEN. This theorem serves as the formalization's 'executive summary,' bundling the known results and implicitly highlighting what remains unknown.",
     "mathContext": "$g_3(n) = \\frac{\\log\\log n}{\\log n} \\cdot n + \\Theta\\left(\\frac{n}{(\\log n)^2}\\right)$. The first term is proved (via Erdős 1964); the second is bounded but not pinned to a constant.",

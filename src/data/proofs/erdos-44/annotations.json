@@ -25,7 +25,7 @@
       "startLine": 32,
       "endLine": 46
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sidon Pair Verification",
     "content": "A helper lemma for verifying specific small sets are Sidon. Given four elements from {1,2,4,8,13} with a+b = c+d and the ordering constraints, we prove a=c and b=d by exhaustive case analysis on all 625 possible combinations.",
     "mathContext": "Uses `rcases` for destructuring membership proofs into 5 cases each, then `omega` or `trivial` for arithmetic verification.",
@@ -44,7 +44,7 @@
       "startLine": 48,
       "endLine": 62
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example Sidon Set",
     "content": "**Theorem**: The set {1, 2, 4, 8, 13} is a Sidon set. All 15 pairwise sums (including doubles) are distinct: 2,3,4,5,6,8,9,10,12,14,15,16,17,21,26.",
     "mathContext": "Proved by applying `sidon_check_pair` to all input quadruples. The proof is essentially computational verification.",
@@ -63,7 +63,7 @@
       "startLine": 79,
       "endLine": 84
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sidon Upper Bound",
     "content": "Any Sidon set A in {1,...,N} has at most sqrt(2N) + 1 elements. With n elements, the n(n+1)/2 distinct sums must fit in [2, 2N], giving n^2 < 4N, so n < 2sqrt(N).",
     "mathContext": "Uses `sidon_upper_bound_weak` from Erdos340. The tighter bound sqrt(N) + O(N^(1/4)) is known but harder to prove.",

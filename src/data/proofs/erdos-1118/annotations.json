@@ -125,7 +125,7 @@
       "startLine": 130,
       "endLine": 142
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Maximum Modulus Properties",
     "content": "Three properties of $M(r)$ are axiomatized: (1) $M(r) \\to \\infty$ for non-constant entire $f$ (consequence of Liouville's theorem: bounded entire functions are constant), (2) $M(r)$ is increasing for $r \\geq 0$ (from the maximum principle), (3) for polynomials of degree $d$, $M(r) \\leq Cr^d$ eventually. These properties are needed for the growth integral analysis and for understanding the examples.",
     "mathContext": "Non-constant entire $\\implies M(r) \\to \\infty$. $r_1 < r_2 \\implies M(r_1) \\leq M(r_2)$. Polynomial of degree $d$: $M(r) = O(r^d)$.",
@@ -170,7 +170,7 @@
       "startLine": 170,
       "endLine": 191
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Measure-Theoretic Properties (Proved)",
     "content": "Three theorems proved directly in Lean (no axioms): (1) `superlevel_nested`: $c_1 < c_2 \\implies E(c_2) \\subseteq E(c_1)$ by monotonicity of the inequality. (2) `finite_measure_monotone`: if $E(c_2)$ has finite measure and $c_1 > c_2$, then $E(c_1) \\subseteq E(c_2)$ has finite measure by `measure_mono`. (3) `threshold_is_upper_set`: $T(f)$ is upward closed. These are the constructive core of the formalization, connecting measure monotonicity to the threshold set structure.",
     "mathContext": "$c_1 < c_2 \\implies E(c_2) \\subseteq E(c_1) \\implies \\lambda(E(c_2)) \\leq \\lambda(E(c_1))$. If $c_1 \\in T(f)$ and $c_2 > c_1$, then $c_2 \\in T(f)$.",

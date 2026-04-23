@@ -6,7 +6,7 @@
       "startLine": 38,
       "endLine": 46
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Backward Direction via Inner Product Expansion",
     "content": "Proves that if $u = c \\cdot v$ then $\\|\\langle u, v\\rangle\\| = \\|u\\| \\cdot \\|v\\|$. The proof rewrites $\\langle c \\cdot v, v\\rangle = \\bar{c} \\cdot \\langle v, v\\rangle = \\bar{c} \\cdot \\|v\\|^2$ using `inner_smul_left` and `inner_self_eq_norm_sq_to_K`. Then $\\|\\bar{c} \\cdot \\|v\\|^2\\| = \\|c\\| \\cdot \\|v\\|^2 = \\|c \\cdot v\\| \\cdot \\|v\\|$. The `starRingEnd_apply` and `norm_star` handle the conjugation ($\\|\\bar{c}\\| = \\|c\\|$), and `ring` closes the algebraic identity.",
     "mathContext": "$\\|\\langle c v, v\\rangle\\| = |\\bar{c}| \\cdot \\|v\\|^2 = \\|c\\| \\cdot \\|v\\|^2 = \\|cv\\| \\cdot \\|v\\|$",
@@ -183,11 +183,11 @@
       "startLine": 146,
       "endLine": 156
     },
-    "type": "context",
+    "type": "concept",
     "title": "Edge Cases: Zero Vectors",
     "content": "When either vector is zero, both sides of the CS inequality equal zero, so equality holds trivially. These are proved by `simp` with the inner product's linearity in each argument (`inner_zero_right`, `inner_zero_left`). These edge cases complete the characterization: the main iff theorem requires $v \\neq 0$, but these lemmas cover the remaining case.",
     "mathContext": "$\\|\\langle u, 0\\rangle\\| = 0 = \\|u\\| \\cdot 0$ and $\\|\\langle 0, v\\rangle\\| = 0 = 0 \\cdot \\|v\\|$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "degenerate cases",
       "inner_zero_right",
@@ -204,7 +204,7 @@
       "startLine": 158,
       "endLine": 166
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Symmetric Version via Conjugate Symmetry",
     "content": "Proves the symmetric form: $\\|\\langle u, v\\rangle\\| = \\|u\\|\\|v\\| \\iff \\exists c, v = cu$ (for $u \\neq 0$). The key step uses $\\|\\langle u, v\\rangle\\| = \\|\\overline{\\langle u, v\\rangle}\\| = \\|\\langle v, u\\rangle\\|$ via `inner_conj_symm` and the fact that conjugation preserves norm. Then `mul_comm` swaps $\\|u\\|\\|v\\|$ to $\\|v\\|\\|u\\|$, reducing to the original characterization with roles exchanged.",
     "mathContext": "$\\|\\langle u, v\\rangle\\| = \\|\\overline{\\langle u, v\\rangle}\\| = \\|\\langle v, u\\rangle\\|$, so swap $u \\leftrightarrow v$",
@@ -226,7 +226,7 @@
       "startLine": 172,
       "endLine": 183
     },
-    "type": "context",
+    "type": "concept",
     "title": "Summary: Both ℂ and RCLike Versions",
     "content": "Packages the complex-specific and uniform RCLike results into a single conjunction, serving as a formal summary. The conjunction of universally quantified statements witnesses that the open question is fully resolved: CS equality characterization works for all scalar fields satisfying the `RCLike` interface. The proof is a direct pair of the two main theorems.",
     "mathContext": "$(\\forall_{\\mathbb{C}\\text{-IPS}}\\, \\text{CS-eq iff lin. dep.}) \\wedge (\\forall_{\\mathbb{K}\\text{-IPS}}\\, \\text{CS-eq iff lin. dep.})$",

@@ -2,7 +2,7 @@
   {
     "id": "ann-e579-imports",
     "proofId": "erdos-579",
-    "type": "context",
+    "type": "concept",
     "title": "Mathlib SimpleGraph Imports",
     "content": "Imports Mathlib's SimpleGraph, Clique, and Finset libraries for graph-theoretic definitions.",
     "mathContext": "This formalization uses Mathlib's built-in `SimpleGraph V` type rather than a custom graph structure. The `SimpleGraph.Clique` import provides access to clique-related predicates, while `Finset` supports edge counting and vertex subsets. The `DecidableRel G.Adj` instance enables `edgeFinset.card` for edge counting.",

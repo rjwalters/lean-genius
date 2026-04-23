@@ -63,7 +63,7 @@
       "startLine": 83,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Erdős-Hajnal Conjecture",
     "content": "**erdos_hajnal_conjecture formalizes the question:**\n\nFor every 2-coloring χ of A × B × C, there exist countably infinite subsets A₁, B₁, C₁ such that A₁ × B₁ × C₁ is monochromatic under χ.\n\nThis is the product version of a Ramsey-type property. In finite combinatorics, the Hales-Jewett theorem and related results guarantee such structures. At uncountable cardinals, Erdős and Hajnal asked whether the property extends — the answer turned out to be no.",
     "mathContext": "The conjecture is stated as a Prop, not a theorem, because it is false. The existential quantifies over all three subsets simultaneously, requiring them to be jointly monochromatic. This is the key 'cube' structure that distinguishes it from simpler partition problems.",
@@ -120,7 +120,7 @@
       "startLine": 150,
       "endLine": 177
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_1128_summary combines two results into a conjunction:**\n\n1. **The conjecture is false:** ¬erdos_hajnal_conjecture, directly from prikry_mills_disproof\n2. **A bad coloring exists:** ∃ χ such that no ℵ₀-cube is monochromatic, from exists_bad_coloring\n\nThe proof is the simple pair ⟨prikry_mills_disproof, exists_bad_coloring⟩.\n\nErdős Problem #1128 is completely RESOLVED. The answer is NO, with Erdős's $50 prize awarded for this negative result. The problem stands as a landmark in infinite Ramsey theory, showing that uncountable partition calculus is fundamentally different from its finite counterpart.",
     "mathContext": "The summary packages both the abstract negation and the concrete existential into a single result. This is the standard pattern for 'disproved' Erdős problems: state both the negation and its constructive interpretation.",

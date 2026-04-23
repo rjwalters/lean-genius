@@ -72,7 +72,7 @@
       "startLine": 95,
       "endLine": 118
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Caratheodory Reduction Technique",
     "content": "The key lemmas share the same proof technique used by Caratheodory in 1911:\n\n1. **Too many points $\\Rightarrow$ affine dependence**: In $\\mathbb{R}^d$, any $d + 2$ or more points are affinely dependent: there exist $\\lambda_i$ (not all zero) with $\\sum \\lambda_i = 0$ and $\\sum \\lambda_i p_i = 0$.\n\n2. **Dependence $\\Rightarrow$ reduction**: Given such a relation, shift the convex combination weights: $w_i \\mapsto w_i - t\\lambda_i$ for the largest $t > 0$ that keeps all weights non-negative. This zeroes out at least one weight, reducing the vertex count.\n\nShapley-Folkman applies this across multiple sets simultaneously, which is what makes the dimension bound apply globally.",
     "mathContext": "If $n > d$ points $f_1, \\ldots, f_n \\in \\mathbb{R}^d$, then $\\neg \\text{AffineIndependent}(\\mathbb{R}, f)$. Combined with the convex combination structure, this yields a strict reduction in total representation size.",

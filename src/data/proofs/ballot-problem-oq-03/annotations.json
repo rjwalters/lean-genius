@@ -36,7 +36,7 @@
       "startLine": 115,
       "endLine": 206
     },
-    "type": "technique",
+    "type": "concept",
     "title": "northBeforeEast: Column Entry Analysis",
     "content": "The function northBeforeEast l k counts North steps occurring before the k-th East step in a path. This captures the y-coordinate when the path enters column k+1. Key properties include monotonicity (later East steps see at least as many preceding North steps) and the bound northBeforeEast l k <= northSteps l. The companion function colEntry wraps this with colEntry l 0 = 0, making column-by-column analysis possible.",
     "mathContext": "For a path $l$ with $m$ East steps, $\\texttt{northBeforeEast}(l, k)$ gives the $y$-offset at the $k$-th East step. The derived $\\texttt{colEntry}(l, k) \\leq \\texttt{colEntry}(l, k+1)$ encodes that paths move monotonically upward within each column.",
@@ -94,7 +94,7 @@
       "startLine": 222,
       "endLine": 297
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The 2D Crossing Lemma (Fully Proved)",
     "content": "The central theorem of the file: if path P1 starts strictly below P2 (y1 < y2) but ends strictly above (y1+n1 > y2+n2), the paths must share a lattice point. The proof proceeds by column induction. The helper lemma nonIntersecting_entry_order shows that if NI paths have P1 entering column k below P2, then P1 also enters column k+1 below P2 (by a disjoint-interval argument). Iterating from column 0 to column m forces P1 to always enter below P2, contradicting the endpoint condition.",
     "mathContext": "If $y_1 < y_2$ and $y_2 + n_2 < y_1 + n_1$, then $\\neg\\text{NonIntersecting}(l_1, l_2, m, y_1, y_2)$. This is the 2D reflection principle: crossing path pairs always intersect, which is the foundation for the LGV determinant formula.",
@@ -124,7 +124,7 @@
       "startLine": 299,
       "endLine": 401
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Path Count Formula: |pathType m n| = C(m+n, m)",
     "content": "Proves that the number of lattice paths with m East and n North steps equals the binomial coefficient C(m+n, m). The proof uses the pathSplitEquiv bijection: a nonempty path either starts with East (reducing to pathType(m-1, n)) or North (reducing to pathType(m, n-1)). This gives Pascal's recurrence, and the base cases (all-East or all-North paths are unique) complete the induction. The bijection is constructed as an explicit Equiv, giving a clean card equality via Fintype.card_congr.",
     "mathContext": "$|\\texttt{pathType}\\, m\\, n| = \\binom{m+n}{m}$. The inductive step uses Pascal's identity: $\\binom{m+n+2}{m+1} = \\binom{m+n+1}{m} + \\binom{m+n+1}{m+1}$, corresponding to the first step being East or North.",
@@ -154,7 +154,7 @@
       "startLine": 403,
       "endLine": 567
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The 2x2 LGV Lemma",
     "content": "States and proves (modulo one axiomatized bijection) that the count of non-intersecting path pairs equals the LGV determinant: niPairCount = C(m+n1,m)*C(m+n2,m) - C(m+n1',m)*C(m+n2',m). The proof handles degenerate cases (same start or same end give 0) directly, then uses complement counting: NI = total - intersecting. The Lindstrom involution theorem (axiomatized as a sorry) provides the key equality |intersecting identity pairs| = |all crossing pairs|. The proof assembles these via natural number and integer arithmetic.",
     "mathContext": "The 2x2 LGV determinant is $\\det \\begin{pmatrix} \\binom{m+b_1-a_1}{m} & \\binom{m+b_2-a_1}{m} \\\\ \\binom{m+b_1-a_2}{m} & \\binom{m+b_2-a_2}{m} \\end{pmatrix}$. Under proper ordering $a_1 \\leq a_2 \\leq b_1 \\leq b_2$, this equals the non-intersecting path pair count.",
@@ -215,7 +215,7 @@
       "startLine": 1089,
       "endLine": 1162
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Path Transposition Bijection",
     "content": "Defines pathFlip as Boolean negation (swapping East and North steps) and constructs pathFlipEquiv: pathType m n is equivalent to pathType n m. This gives a purely combinatorial proof that C(m+n,m) = C(m+n,n) without any algebraic manipulation of binomial coefficients. The involutivity proof (pathFlip_involutive) shows that flipping twice is the identity, which makes the Equiv construction clean. This is a textbook example of a bijective proof in combinatorics.",
     "mathContext": "The map $l \\mapsto \\overline{l}$ (swap East $\\leftrightarrow$ North) gives $\\texttt{pathType}(m,n) \\simeq \\texttt{pathType}(n,m)$, proving $\\binom{m+n}{m} = \\binom{m+n}{n}$ combinatorially.",

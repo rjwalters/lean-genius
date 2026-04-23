@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 47
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Overview and Proof Strategy",
     "content": "Szemerédi's theorem (1975) is one of the crown jewels of combinatorics: any subset of the natural numbers with positive upper density contains arbitrarily long arithmetic progressions. This file formalizes the theorem with the $k = 3$ case (Roth's theorem, 1953) fully proved via Mathlib's corners theorem chain, and $k \\geq 4$ stated as an axiom pending hypergraph regularity in Mathlib.\n\nThe formalization imports `Mathlib.Combinatorics.Additive.Corner.Roth` (providing `roth_3ap_theorem_nat`), `Mathlib.Combinatorics.Additive.AP.Three.Defs` (for `ThreeAPFree`), and general tactics. The proof chain for $k = 3$ in Mathlib follows: Szemerédi Regularity Lemma $\\to$ Triangle Removal Lemma $\\to$ Corners Theorem $\\to$ Roth's Theorem. Each step is a deep result in its own right.",
     "mathContext": "Szemerédi (1975): $\\forall k \\geq 1, \\delta > 0, \\exists N_0: |S \\cap [N]| \\geq \\delta N \\Rightarrow S$ contains a $k$-AP. Roth (1953) proved $k = 3$; the full theorem requires the Szemerédi Regularity Lemma.",
@@ -55,7 +55,7 @@
       "startLine": 81,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Cases: k = 1 and k = 2",
     "content": "**$k = 1$** (`szemeredi_k1`): Any nonempty set contains a 1-AP (a single element). The proof extracts an element from `S.Nonempty` and constructs the degenerate AP $(a)$.\n\n**$k = 2$** (`szemeredi_k2`): Any set with $|S| \\geq 2$ contains a 2-AP. The proof takes two distinct elements $a \\neq b$ from $S$ (via `Finset.exists_ne_of_card_le_two_le`) and constructs the AP $(\\min(a,b), \\max(a,b))$ with $d = |b - a|$. The case split handles $a < b$ vs $b < a$.\n\nDensity versions (`szemeredi_k1_density`, `szemeredi_k2_density`) prove that for $N$ large enough relative to $\\delta$, any $\\delta$-dense subset has $|S| \\geq 1$ (resp. $\\geq 2$), reducing to the non-density versions. These handle the $k = 1, 2$ cases of the full Szemerédi statement.",
     "mathContext": "$k = 1$: $|S| \\geq 1 \\Rightarrow S$ has a 1-AP. $k = 2$: $|S| \\geq 2 \\Rightarrow S$ has a 2-AP (take any two distinct elements). Density version: $|S| \\geq \\delta N \\geq 2$ when $N \\geq 2/\\delta$.",
@@ -102,7 +102,7 @@
       "startLine": 127,
       "endLine": 186
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bridging ThreeAPFree and IsAPFree Definitions",
     "content": "A key engineering challenge: Mathlib defines 3-AP-freeness via `ThreeAPFree S`, which uses the condition $a + c = 2b \\Rightarrow a = b$ for $a, b, c \\in S$, while this file defines `IsAPFree S 3` as the negation of an explicit AP $\\{a, a+d, a+2d\\} \\subseteq S$ with $d > 0$. The equivalence `threeAPFree_iff_isAPFree` bridges the two.\n\nThe forward direction (`ThreeAPFree → IsAPFree`) is clean: given an AP $\\{a, a+d, a+2d\\}$, the condition $a + (a+2d) = 2(a+d)$ holds, so ThreeAPFree forces $a = a+d$, contradicting $d > 0$. The reverse direction is more subtle: from $a + c = 2b$ with $a \\neq b$, we must construct an AP. The proof cases on $a < b$ vs $b < a$, using the identity $b - a = c - b$ (from $a + c = 2b$) to establish the common difference.\n\nThis definition bridge pattern is common in Mathlib formalizations: existing library predicates often use different but equivalent formulations, and the equivalence must be proved explicitly before the library theorems can be applied.",
     "mathContext": "$\\text{ThreeAPFree}(S) \\iff \\text{IsAPFree}(S, 3)$. Forward: $\\{a, a+d, a+2d\\} \\subseteq S$ and $a + (a+2d) = 2(a+d)$ gives $a = a+d$ by ThreeAPFree, contradicting $d > 0$. Reverse: $a + c = 2b$, $a \\neq b \\Rightarrow d = |b - a| > 0$ and $\\{\\min(a,c), b, \\max(a,c)\\}$ is a 3-AP.",
@@ -125,7 +125,7 @@
       "startLine": 215,
       "endLine": 271
     },
-    "type": "technique",
+    "type": "concept",
     "title": "ThreeAPFree Equivalence and Roth via Mathlib",
     "content": "**`threeAPFree_iff_isAPFree`**: The key bridge lemma: Mathlib's `ThreeAPFree S` (defined via $a + c = 2b \\Rightarrow a = b$) is equivalent to `IsAPFree S 3` (no non-trivial 3-AP). The forward direction constructs an AP from the Mathlib counterexample; the reverse extracts a Mathlib-style triple from an AP.\n\n**`roth_theorem_via_mathlib`**: The fully proved $k = 3$ case. The proof applies `roth_3ap_theorem_nat` from Mathlib, which provides: for any $\\delta > 0$, there exists $N_0$ (specifically, `cornersTheoremBound(\\delta/3)`) such that any $\\delta$-dense subset of $[N]$ contains a 3-AP. The bound comes from the Szemerédi Regularity Lemma, which gives a tower-type dependence on $1/\\delta$.\n\nThe proof chain in Mathlib: the Regularity Lemma partitions a graph into 'regular' bipartite pairs; the Triangle Removal Lemma uses regularity to find triangles; the Corners Theorem lifts triangles in grid graphs to 3-APs in $[N]$; Roth's theorem follows. This is one of Mathlib's most sophisticated formalization achievements.",
     "mathContext": "Roth (1953): $\\forall \\delta > 0, \\exists N_0: |S \\cap [N]| \\geq \\delta N,\\, N \\geq N_0 \\Rightarrow S$ has a 3-AP. Mathlib proof chain: Regularity $\\to$ Triangle Removal $\\to$ Corners $\\to$ Roth. Bound: $N_0 \\leq \\text{cornersTheoremBound}(\\delta/3)$.",
@@ -150,7 +150,7 @@
       "startLine": 282,
       "endLine": 313
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Density Versions of Trivial Cases",
     "content": "The trivial cases $k = 1, 2$ need density wrappers to match the full Szemerédi statement (which quantifies over $\\delta$ and $N$). For $k = 1$: $\\delta N \\geq 1$ when $N \\geq 1$ and $\\delta > 0$, so the set is nonempty. For $k = 2$: $\\delta N \\geq 2$ when $N \\geq \\lceil 2/\\delta \\rceil$, so $|S| \\geq 2$.\n\nThe $k = 2$ case uses `Nat.le_ceil` to go from the real inequality $N \\geq 2/\\delta$ to the natural number bound, then `field_simp` and `nlinarith` handle the algebra $2 = \\delta \\cdot (2/\\delta) \\leq \\delta N \\leq |S|$. These density-to-cardinality reductions are a common pattern in combinatorial formalizations.",
     "mathContext": "$k = 1$: $|S| \\geq \\delta N \\geq \\delta \\cdot 1 > 0 \\Rightarrow |S| \\geq 1$. $k = 2$: $N \\geq \\lceil 2/\\delta \\rceil \\Rightarrow \\delta N \\geq 2 \\Rightarrow |S| \\geq 2$.",

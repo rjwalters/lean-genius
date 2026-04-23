@@ -6,7 +6,7 @@
       "startLine": 46,
       "endLine": 47
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Fourier Monomials Have Unit Norm",
     "content": "Proves that every Fourier monomial has unit norm: `fourier_norm_eq_one (n : Z) (x : AddCircle T) : ||fourier n x|| = 1`. Since `fourier n x = exp(2*pi*i*n*x/T)` lies on the unit circle, its complex modulus is 1. The proof reduces to `simp [fourier_apply]`, which unfolds the definition and applies Mathlib's norm lemma for unit-circle elements.",
     "mathContext": "$\\|e_n(x)\\| = |e^{2\\pi i n x / T}| = 1$ for all $n \\in \\mathbb{Z}$ and $x \\in \\mathbb{R}/T\\mathbb{Z}$. This is the foundational bound from which the trivial bound $\\|e_n(x) - e_n(y)\\| \\le 2$ follows by the triangle inequality.",
@@ -28,7 +28,7 @@
       "startLine": 50,
       "endLine": 55
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Bound: Fourier Mode Differences Bounded by 2",
     "content": "Proves `fourier_sub_norm_le_two`: the difference of two unit-norm complex exponentials has norm at most 2. The proof is a clean `calc` chain: apply `norm_sub_le` (triangle inequality), rewrite both norms to 1 via `fourier_norm_eq_one`, then close with `norm_num`. This bound is sharp (attained when `fourier n x` and `fourier n y` are antipodal) and is one of the two ingredients for the interpolation-based Holder bound.",
     "mathContext": "$\\|e_n(x) - e_n(y)\\| \\le \\|e_n(x)\\| + \\|e_n(y)\\| = 1 + 1 = 2$. This is the frequency-independent bound. Combined with the frequency-dependent Lipschitz bound $\\|e_n(x) - e_n(y)\\| \\le \\frac{2\\pi|n|}{T} d(x,y)$, the interpolation lemma yields the Holder bound.",
@@ -50,7 +50,7 @@
       "startLine": 57,
       "endLine": 64
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Zero Mode Is Constant",
     "content": "Two results: `fourier_zero_eq_one` proves that the zeroth Fourier monomial is the constant function 1 (since `exp(0) = 1`), and `fourier_zero_sub` proves its difference vanishes: `fourier 0 x - fourier 0 y = 0`. Both follow by `simp [fourier_apply]` and `sub_self`. The zero mode is special because it contributes nothing to the Holder bound, so the main theorem sums only over `n != 0`.",
     "mathContext": "$e_0(x) = e^{0} = 1$ for all $x$, so $e_0(x) - e_0(y) = 0$. This means the $n=0$ term in the Fourier series contributes a constant to $f$ and does not affect the Holder modulus of continuity.",
@@ -72,7 +72,7 @@
       "startLine": 76,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "concept",
     "title": "rpow_interpolation: The Key Analytic Tool",
     "content": "Proves the interpolation lemma: if `0 <= a <= A` and `0 <= a <= B`, then `a <= A^(1-t) * B^t` for `t in [0,1]`. The proof splits into two cases. When `a = 0`, the bound holds trivially since `rpow` of nonneg values is nonneg. When `a > 0`, the proof factors `a = a^(1-t) * a^t` (via `rpow_add` and `rpow_one`), then applies `Real.rpow_le_rpow` to each factor: `a^(1-t) <= A^(1-t)` from `a <= A` and `a^t <= B^t` from `a <= B`, combining via `mul_le_mul`.\n\nThis is the central analytic result of the file -- it converts a pair of bounds (trivial + Lipschitz) into a single Holder-type bound.",
     "mathContext": "If $0 \\le a \\le A$ and $0 \\le a \\le B$, then $a = a^{1-t} \\cdot a^t \\le A^{1-t} \\cdot B^t$ for $t \\in [0,1]$. Applied with $a = \\|e_n(x) - e_n(y)\\|$, $A = 2$ (trivial bound), $B = L_n \\cdot d(x,y)$ (Lipschitz bound), and $t = \\alpha$, this yields the Holder bound $\\|e_n(x) - e_n(y)\\| \\le 2^{1-\\alpha} \\cdot L_n^\\alpha \\cdot d(x,y)^\\alpha$.",
@@ -215,7 +215,7 @@
       "startLine": 207,
       "endLine": 240
     },
-    "type": "context",
+    "type": "concept",
     "title": "Proof Summary and Dependency Graph",
     "content": "The closing summary documents the decomposition of the monolithic sorry in FourierSeriesOQ02.lean (line 403) into 5 independent sub-goals. The dependency structure forms a DAG:\n\n- `fourier_lipschitz_bound` (independent, critical path)\n- `fourier_holder_bound` depends on `fourier_lipschitz_bound` + proved `rpow_interpolation` + proved `fourier_sub_norm_le_two`\n- `summable_norm_fourierCoeff_of_decay` (independent, needs Z p-series)\n- `holderWith_of_dist_bound` (independent, API plumbing)\n- `decay_implies_regularity'` depends on all four above + Fourier inversion\n\nResolving `fourier_lipschitz_bound` unblocks `fourier_holder_bound` and thereby `decay_implies_regularity'`, making it the critical path item.",
     "mathContext": "The DAG has depth 3: (level 0) proved lemmas `rpow_interpolation`, `fourier_sub_norm_le_two`; (level 1) independent sorries `fourier_lipschitz_bound`, `summable_norm_fourierCoeff_of_decay`, `holderWith_of_dist_bound`; (level 2) `fourier_holder_bound` depending on level 1; (level 3) `decay_implies_regularity'` assembling everything.",

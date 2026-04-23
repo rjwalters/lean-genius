@@ -31,7 +31,7 @@
       "startLine": 207,
       "endLine": 260
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pascal Triangle Bound: R(r,s) ≤ C(r+s-2,r-1) via Binomial Recursion",
     "content": "ramseyUpperBound_pascal proves the classical bound R(r,s) ≤ C(r+s-2,r-1) from the Pascal recursion R(r,s) ≤ R(r-1,s) + R(r,s-1). In terms of binomials: C(r+s-2,r-1) = C(r-1+s-2,r-2) + C(r+s-3,r-1) = C((r-1)+(s)-2,(r-1)-1) + C(r+(s-1)-2,r-1) = R(r-1,s) + R(r,s-1). The Lean proof uses Nat.choose_symm_diff and Nat.add_choose_eq. This is the Erdős-Szekeres 1935 bound (predating the probabilistic method), giving R(r,s) ≤ C(r+s-2,r-1) ≤ 2^{r+s-2}.",
     "mathContext": "$\\binom{r+s-2}{r-1} = \\binom{r+s-3}{r-2} + \\binom{r+s-3}{r-1}$; Erdős-Szekeres 1935: $R(r,s) \\leq \\binom{r+s-2}{r-1}$; $R(3,3)\\leq 6, R(4,4)\\leq 20, R(5,5)\\leq 70$",
@@ -81,7 +81,7 @@
       "startLine": 369,
       "endLine": 430
     },
-    "type": "technique",
+    "type": "concept",
     "title": "C_5 Construction: R(3,3) ≥ 6 via Pentagon 2-Coloring",
     "content": "r3_3_lower_bound proves R(3,3) ≥ 6 by exhibiting an explicit 2-coloring of K_5 with no monochromatic triangle. c5Color colors edge (i,j) based on whether |i-j| mod 5 ∈ {1,2} (the cyclic pentagonal distance). c5_no_red_K3 and c5_no_blue_K3 are verified by native_decide. The coloring is exactly the edges of C_5 (red) vs its complement (the Petersen-adjacent pairs, blue). This is the simplest non-trivial Ramsey construction, showing that the complete graph K_5 can be 2-colored monochromatically K_3-free.",
     "mathContext": "$c_5: \\text{Fin 5} \\to \\text{Fin 5} \\to \\text{Bool}$, $(i,j) \\mapsto |i-j|\\,\\text{mod}\\, 5 \\in \\{1,2\\}$; no red $K_3$, no blue $K_3$ (native_decide) $\\Rightarrow R(3,3)\\geq 6$",
@@ -129,7 +129,7 @@
       "startLine": 1075,
       "endLine": 1142
     },
-    "type": "context",
+    "type": "concept",
     "title": "Mattheus-Verstraete 2024: R(4,t) = Θ(t³/log² t)",
     "content": "mattheus_verstraete_r4t axiomatizes the 2024 breakthrough by Mattheus and Verstraete closing the R(4,t) gap: R(4,t) = Θ(t^3/log^2 t). Previously, the best lower bound was Ω(t^2/log t) (from the probabilistic method) and upper bound O(t^3/log t), a factor of t gap. Mattheus-Verstraete achieved a matching lower bound via an algebraic construction (finite geometry over ℤ/pℤ), resolving a 40-year gap in off-diagonal Ramsey theory. The Burr-Erdős conjecture (burr_erdos_conjecture axiom) and Ramsey multiplicity (ramsey_multiplicity axiom) are also axiomatized as additional frontier results. This is one of the most significant recent advances in extremal combinatorics.",
     "mathContext": "Mattheus-Verstraete 2024: $R(4,t) = \\Theta(t^3/\\log^2 t)$; closes $[\\Omega(t^2/\\log t), O(t^3/\\log t)]$ gap; algebraic lower bound via $\\mathbb{F}_p$ geometry",

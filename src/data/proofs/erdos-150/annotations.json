@@ -173,7 +173,7 @@
       "startLine": 180,
       "endLine": 190
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Alpha Less Than Two",
     "content": "**alpha_less_than_two:**\n\nalpha < 2\n\nThis answers Erdos's question affirmatively.\n\n**Proof outline:**\n1. alpha <= 2^{H(1/3)} (Bradac's upper bound)\n2. H(1/3) < 1, so 2^{H(1/3)} < 2\n3. Therefore alpha < 2\n\nThe proof uses one sorry for the numerical inequality H(1/3) < 1.",
     "significance": "key",
@@ -191,7 +191,7 @@
       "startLine": 198,
       "endLine": 213
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdos Problem #150: SOLVED",
     "content": "**erdos_150:**\n\nThe complete answer to Erdos's question.\n\n**Statement:**\n```lean\ntheorem erdos_150 :\n  exists alpha : R, alpha < 2 and\n    Filter.Tendsto (fun n => (c(n))^(1/n)) Filter.atTop (nhds alpha)\n```\n\n**Answer:** YES, c(n)^{1/n} converges to some alpha < 2.",
     "significance": "key",
@@ -209,7 +209,7 @@
       "startLine": 235,
       "endLine": 240
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Complete Bounds on Alpha",
     "content": "**alpha_bounds:**\n\n3^{1/3} <= alpha <= 2^{H(1/3)}\n\nNumerically: 1.442... <= alpha <= 1.890...\n\n**Sources:**\n- Lower bound: Seymour's construction\n- Upper bound: Bradac's theorem\n\nThe gap of about 0.45 remains to be closed.",
     "significance": "key",
@@ -245,7 +245,7 @@
       "startLine": 267,
       "endLine": 295
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Concrete Examples",
     "content": "**Seymour lower bounds for specific values:**\n\n- **c(5) >= 3:** m=1 gives c(5) >= 3^1 = 3\n- **c(8) >= 9:** m=2 gives c(8) >= 3^2 = 9  \n- **c(11) >= 27:** m=3 gives c(11) >= 3^3 = 27\n\nThese follow directly from Seymour's construction with m = 1, 2, 3 paths.",
     "significance": "supporting",
@@ -263,7 +263,7 @@
       "startLine": 301,
       "endLine": 323
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Complete Solution Summary",
     "content": "**erdos_150_summary:**\n\nComplete characterization of the solution:\n\n1. **Existence:** The limit alpha = lim c(n)^{1/n} exists\n2. **Upper bound:** alpha < 2 (answering the question)\n3. **Bounds:** 3^{1/3} <= alpha <= 2^{H(1/3)}\n4. **Convergence:** c(n)^{1/n} -> alpha\n\n**erdos_150_answer:** Confirms the answer is YES.",
     "significance": "key",

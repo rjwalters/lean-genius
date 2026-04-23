@@ -341,7 +341,7 @@
       "startLine": 151,
       "endLine": 157
     },
-    "type": "context",
+    "type": "concept",
     "title": "f(n) Bounds",
     "content": "**f_upper_bound**: $f(n) \\leq n^{4/3}$ (Spencer-Szemerédi-Trotter 1983). This remains the best known upper bound after 40+ years.\n\n**f_lower_bound**: $f(n) \\geq n^{1+c/2}$ for some $c > 0$. Erdős's 1946 construction using the integer lattice gives $f(n) \\geq n^{1+c/\\log\\log n}$.\n\nBoth are axiomatized since their proofs require deep analytic arguments.",
     "mathContext": "$f(n) = O(n^{4/3})$ and $f(n) = \\Omega(n^{1+c/\\log\\log n})$",
@@ -363,7 +363,7 @@
       "startLine": 165,
       "endLine": 170
     },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős-Pach Upper Bound",
     "content": "**erdos_pach_upper_bound (1990)**: $h(n) \\leq 2n^{4/3}$.\n\nThe best known upper bound for convex translates, proved by Erdős and Pach using a reduction to point-curve incidences. Each pair of translate boundaries at unit distance generates an incidence, and the Szemerédi-Trotter bound controls the total. The constant 2 is not optimal.",
     "mathContext": "$h(n) \\leq 2n^{4/3}$ for all $n \\geq 2$",
@@ -407,7 +407,7 @@
       "startLine": 193,
       "endLine": 202
     },
-    "type": "context",
+    "type": "concept",
     "title": "General Convex Bound",
     "content": "**erdos_pach_general**: $h_{\\text{gen}}(n) \\leq 2n^{7/5}$.\n\nFor non-translate convex sets, boundary curves are no longer translates of each other, so the Szemerédi-Trotter argument gives a weaker bound.\n\n**h_le_h_general**: $h(n) \\leq h_{\\text{gen}}(n)$ since translates are a special case.\n\n**general_exponent_larger**: $7/5 > 4/3$ (verified by `norm_num`), confirming the translate constraint improves the bound.",
     "mathContext": "$h(n) \\leq h_{\\text{gen}}(n) \\leq 2n^{7/5}$ and $\\frac{7}{5} = 1.4 > \\frac{4}{3} \\approx 1.333$",
@@ -473,7 +473,7 @@
       "startLine": 229,
       "endLine": 235
     },
-    "type": "context",
+    "type": "concept",
     "title": "Constructions",
     "content": "**lattice_construction**: Placing $n$ translates at integer lattice points gives $\\geq n-1$ unit distances (each point has up to 4 lattice neighbors at distance 1).\n\n**grid_construction**: Using a $\\sqrt{n} \\times \\sqrt{n}$ grid and exploiting the number-theoretic result that the number of representations of an integer as a sum of two squares is $\\Omega(\\log n / \\log\\log n)$, one obtains $h(n) \\geq \\Omega(n \\log n / \\log\\log n)$. This is the best known lower bound.",
     "mathContext": "$h(n) \\geq \\Omega\\left(\\frac{n \\log n}{\\log\\log n}\\right)$ via integer lattice constructions",
@@ -496,7 +496,7 @@
       "startLine": 243,
       "endLine": 251
     },
-    "type": "context",
+    "type": "concept",
     "title": "Incidence Geometry",
     "content": "**szemeredi_trotter**: The Szemerédi-Trotter theorem (1983): the number of incidences between $n$ points and $m$ lines in $\\mathbb{R}^2$ is $O(n^{2/3}m^{2/3} + n + m)$. This is tight.\n\n**upper_bound_uses_incidences**: The Erdős-Pach proof reduces each unit distance pair to an incidence between a point on one boundary and a unit circle centered on the other. The translate constraint ensures all boundary curves are congruent, enabling the $n^{4/3}$ bound.",
     "mathContext": "$I(P, L) = O(|P|^{2/3}|L|^{2/3} + |P| + |L|)$ for points $P$ and lines $L$",
@@ -563,7 +563,7 @@
       "startLine": 293,
       "endLine": 304
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Status",
     "content": "**erdos_956_answer**: Records the problem as OPEN with known bounds.\n\n**erdos_956_status**: \"OPEN - Erdős-Pach conjecture unresolved\".\n\n**bounds_gap**: Verifies $n^{4/3} > n \\log n / \\log\\log n$ for large $n$, confirming the gap between upper and lower bounds is genuine and not an artifact of the formalization.",
     "mathContext": "$n^{4/3} \\gg \\frac{n \\log n}{\\log\\log n}$ for large $n$",

@@ -118,7 +118,7 @@
       "startLine": 67,
       "endLine": 73
     },
-    "type": "technique",
+    "type": "concept",
     "title": "High Degree Implies Even Cycles",
     "content": "If $G$ has minimum degree $d \\geq 2$, then $G$ contains an even cycle of length at most $2d$. This is a weaker form of Bondy-Simonovits that suffices for many applications. The proof uses a longest path argument: starting from a longest path, the neighborhood of an endpoint within the path forces an even-length cycle.",
     "mathContext": "$\\delta(G) \\geq d \\geq 2 \\implies \\exists$ even $k$ with $4 \\leq k \\leq 2d$ and $C_k \\subseteq G$.",
@@ -140,7 +140,7 @@
       "startLine": 75,
       "endLine": 82
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bondy-Simonovits Theorem",
     "content": "The Bondy-Simonovits theorem guarantees that graphs with high minimum degree contain cycles of ALL even lengths in a range. Specifically, if $\\delta(G) \\geq d \\geq 2$, then $G$ contains $C_k$ for every even $k$ with $4 \\leq k \\leq 2d$. This is much stronger than just finding one even cycle, and is essential for ensuring that specific powers of 2 appear as cycle lengths.",
     "mathContext": "$\\delta(G) \\geq d \\geq 2 \\implies C_k \\subseteq G$ for every even $k$ with $4 \\leq k \\leq 2d$.",
@@ -185,7 +185,7 @@
       "startLine": 106,
       "endLine": 115
     },
-    "type": "technique",
+    "type": "concept",
     "title": "de Bruijn-Erdős Compactness Theorem",
     "content": "The de Bruijn-Erdős theorem (1951) is the key compactness principle: if an infinite graph has infinite chromatic number, then it contains finite subgraphs with arbitrarily high chromatic number. This reduces the infinite problem to finite combinatorics. The proof uses the compactness theorem for propositional logic (or equivalently, ultrafilter arguments). This is the first step in the Liu-Montgomery proof strategy.",
     "mathContext": "$\\chi(G) = \\infty \\implies \\forall k, \\exists$ finite $S \\subseteq V$ with $\\chi(G[S]) > k$.",
@@ -208,7 +208,7 @@
       "startLine": 119,
       "endLine": 127
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Liu-Montgomery Theorem (2020)",
     "content": "The breakthrough of Liu and Montgomery (2020): every graph with $\\chi(G) > k$ contains a subgraph with minimum degree $> k/2$. This was the missing ingredient that completed the proof of Erdős Problem #63. Combined with de Bruijn-Erdős, it gives: infinite $\\chi$ implies finite subgraphs with arbitrarily high minimum degree, which by Bondy-Simonovits contain cycles of all even lengths up to twice the minimum degree.",
     "mathContext": "$\\chi(G) > k \\implies \\exists H \\subseteq G$ with $\\delta(H) > k/2$.",
@@ -232,7 +232,7 @@
       "startLine": 130,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Hajnal for Uncountable χ",
     "content": "The Erdős-Hajnal theorem states that every graph with uncountable chromatic number contains arbitrarily large complete bipartite subgraphs $K_{m,m}$. Since $K_{m,m}$ contains cycles of all even lengths from 4 to $2m$, this immediately gives the result for uncountable chromatic number. This was Penman's observation, which preceded the full solution by Liu-Montgomery.",
     "mathContext": "$\\chi(G) > \\aleph_0 \\implies \\forall m, K_{m,m} \\subseteq G$.",
@@ -254,7 +254,7 @@
       "startLine": 152,
       "endLine": 161
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Powers of 2 are Even (and ≥ 4)",
     "content": "Two small lemmas proved in Lean: $2^n$ is even for $n \\geq 1$, and $2^n \\geq 4$ for $n \\geq 2$. These ensure that powers of 2 fall within the range guaranteed by Bondy-Simonovits (even numbers $\\geq 4$). Together they show that if minimum degree $d \\geq 2^{n-1}$, then $2^n \\leq 2d$ is an even number $\\geq 4$, so $C_{2^n} \\subseteq G$.",
     "mathContext": "$2^n$ is even for $n \\geq 1$, and $2^n \\geq 4$ for $n \\geq 2$.",
@@ -277,7 +277,7 @@
       "startLine": 163,
       "endLine": 186
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem 63 (SOLVED by Liu-Montgomery)",
     "content": "The main theorem: every graph with infinite chromatic number contains a cycle of length $2^n$ for infinitely many $n$. The proof chains three results: (1) de Bruijn-Erdős gives finite subgraphs with $\\chi > 2^{N+1}$, (2) Liu-Montgomery gives a subgraph with $\\delta > 2^N$, (3) Bondy-Simonovits gives $C_{2^n}$ for all $n \\leq N$. Since $N$ is arbitrary, infinitely many powers of 2 appear as cycle lengths.",
     "mathContext": "$\\chi(G) = \\infty \\implies \\forall N, \\exists n \\geq N$ with $C_{2^n} \\subseteq G$.",
@@ -321,7 +321,7 @@
       "startLine": 200,
       "endLine": 207
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Penman's Observation (Uncountable Case)",
     "content": "Penman observed that for graphs with uncountable chromatic number, the result follows immediately from the Erdős-Hajnal theorem: such graphs contain $K_{m,m}$ for all $m$, and $K_{m,m}$ contains all even cycles up to length $2m$. This handles the 'easy' case; the hard case of countably infinite chromatic number required Liu-Montgomery's breakthrough.",
     "mathContext": "$\\chi(G) > \\aleph_0 \\implies \\forall N, \\exists n \\geq N, C_{2^n} \\subseteq G$.",

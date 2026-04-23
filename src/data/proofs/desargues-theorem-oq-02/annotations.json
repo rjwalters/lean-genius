@@ -141,7 +141,7 @@
       "startLine": 151,
       "endLine": 178
     },
-    "type": "technique",
+    "type": "concept",
     "title": "All Three Intersection Points",
     "content": "Computes the three side-intersection points: $\\alpha = BC \\cap B'C' = (-3, 4)$, $\\beta = CA \\cap C'A' = (6/11, 38/11)$, and $\\gamma = AB \\cap A'B' = (-35, 8)$. Points $\\alpha$ and $\\gamma$ have $x \\leq 0$, so their intersections use the standard (unbent) part of the lines. Only $\\beta$ has $x > 0$, triggering the slope doubling.",
     "mathContext": "$\\alpha = (-3, 4)$: $BC$ bent at $x = -3 \\leq 0$, so $y = -2(-3) - 2 = 4$; $B'C'$ standard gives $y = -3 + 7 = 4$. $\\gamma = (-35, 8)$: $AB$ standard gives $y = 8$; $A'B'$ bent at $x = -35 \\leq 0$, so $y = -\\frac{2}{7}(-35) - 2 = 8$.",

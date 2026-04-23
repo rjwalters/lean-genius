@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 8
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Header and Imports",
     "content": "Documents the module's purpose: proving the key binomial coefficient inequality for Newton's log-concavity theorem. The inequality $bc^3 + adc^2 + ac^3 \\geq 2b^2cd + b^3d$ (where $a, b, c, d$ are four consecutive binomial coefficients) is the inductive step in the classical proof that the sequence $\\binom{m}{k}$ is log-concave.\n\nImports all of Mathlib via the single `import Mathlib` statement. The key dependency is `Mathlib.Data.Nat.Choose.Basic` for `Nat.choose_succ_right_eq` (the absorption identity).",
     "mathContext": "Key identity: $k^3(k+1)(r+1) \\cdot (\\text{LHS} - \\text{RHS}) = r(k+r)^2 b^4 \\geq 0$ where $r = m - k + 1$.",
@@ -28,7 +28,7 @@
       "startLine": 10,
       "endLine": 18
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Quadratic Non-Negativity Helper",
     "content": "Proves `quadratic_nonneg`: if $\\alpha, \\gamma \\geq 0$ and $4\\alpha\\gamma \\geq \\beta^2$, then $\\alpha t^2 + \\beta t + \\gamma \\geq 0$ for all $t \\geq 0$.\n\n**Proof:** Two cases. If $\\alpha = 0$, then the discriminant condition forces $\\beta = 0$ (from $0 \\geq \\beta^2$), and the expression reduces to $\\gamma \\geq 0$. If $\\alpha > 0$, the key insight is completing the square: $\\alpha(\\alpha t^2 + \\beta t + \\gamma) = (\\alpha t + \\beta/2)^2 + (\\alpha\\gamma - \\beta^2/4)$. Both terms are non-negative (the first as a square, the second from the discriminant condition), so the product is non-negative. Since $\\alpha > 0$, the original expression is non-negative. The `nlinarith` tactic verifies this from the hint `sq_nonneg (2*\\alpha*t + \\beta)`.\n\nThis lemma is a general tool for establishing non-negativity of quadratic expressions, used when the absorption identity approach produces a quadratic in some parameter.",
     "mathContext": "If $\\alpha, \\gamma \\geq 0$ and $4\\alpha\\gamma \\geq \\beta^2$ (non-positive discriminant), then $\\alpha t^2 + \\beta t + \\gamma \\geq 0$ for $t \\geq 0$. Standard completing-the-square argument.",

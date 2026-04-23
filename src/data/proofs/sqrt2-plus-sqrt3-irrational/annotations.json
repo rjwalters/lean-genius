@@ -28,9 +28,9 @@
     "id": "annotation-sqrt-mul-identity",
     "lineStart": 24,
     "lineEnd": 35,
-    "type": "technique",
+    "type": "concept",
     "mathContext": "The algebraic identity $(\\sqrt{2}+\\sqrt{3})^2 = 5 + 2\\sqrt{6}$ is proved in a structured way: first establish `h6 : sqrt 2 * sqrt 3 = sqrt 6` via `rw [← sqrt_mul h2 3]; norm_num`. Here `sqrt_mul h2 3 : sqrt 2 * sqrt 3 = sqrt (2 * 3)` requires the non-negativity hypothesis `h2 : (0:ℝ) ≤ 2`, and `norm_num` simplifies $\\sqrt{2 \\cdot 3} = \\sqrt{6}$. Then `ring_nf` expands $(\\sqrt{2}+\\sqrt{3})^2 = \\sqrt{2}^2 + 2\\sqrt{2}\\sqrt{3} + \\sqrt{3}^2$, `rw [sq_sqrt h2, sq_sqrt h3, h6]` substitutes $\\sqrt{2}^2 \\to 2$, $\\sqrt{3}^2 \\to 3$, $\\sqrt{2}\\sqrt{3} \\to \\sqrt{6}$, and `ring` finishes.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Real.sqrt_mul: sqrt a * sqrt b = sqrt (a * b) for a ≥ 0",
       "Real.sq_sqrt: sqrt a ^ 2 = a for a ≥ 0",

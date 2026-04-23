@@ -30,7 +30,7 @@
       "startLine": 96,
       "endLine": 176
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Degree Sum via Fiberwise Decomposition: Σ outdeg = Σ indeg = |E|",
     "content": "sum_outDegree_eq_arcCount is proved by a bijection: the arc set decomposes as a disjoint union over sources — each source u contributes its out-neighborhood. Formally: Finset.card_eq_sum_card_fiberwise (f := Prod.fst) decomposes the arc set by source, then Finset.card_nbij maps (v ↦ (u,v)) ∈ outNeighbors u → arcs. The in-degree analogue groups arcs by target. Corollary: Σ indeg = Σ outdeg. This is the directed handshaking lemma — the foundation for the Euler criterion.",
     "mathContext": "$\\sum_v \\deg^+(v) = |E|$ by fiberwise decomp: $\\{(u,v): \\text{adj}\\}= \\bigsqcup_u \\{u\\}\\times\\text{outNeigh}(u)$; $\\sum_v \\deg^-(v)=|E|$ symmetrically",

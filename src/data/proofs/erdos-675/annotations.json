@@ -2,7 +2,7 @@
   {
     "id": "ann-e675-imports",
     "proofId": "erdos-675",
-    "type": "context",
+    "type": "concept",
     "title": "Number Theory and Set Imports",
     "content": "Imports Nat.Basic, Set.Basic, Finset.Basic, and tactics from Mathlib.",
     "mathContext": "The formalization uses Mathlib's `Set ℕ` for number-theoretic sets (sums of two squares, squarefree integers, B-free sets) and `Finset` for finite counting. The `Nat.Basic` import provides `Nat.Prime`, divisibility, and coprimality. Unlike more advanced formalizations, this file avoids `Real.log` and works purely in the natural number/rational number setting.",

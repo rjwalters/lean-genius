@@ -29,7 +29,7 @@
       "startLine": 58,
       "endLine": 64
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Reflexivity and Symmetry of Scissors Congruence",
     "content": "Proves that scissors congruence is reflexive (any polyhedron is scissors congruent to itself via the trivial 1-piece decomposition) and symmetric (if P can be cut and reassembled into Q, then Q can be cut and reassembled into P by reversing the rigid motions). Transitivity also holds but is omitted here.",
     "mathContext": "Reflexivity: $P \\sim_{\\mathrm{sc}} P$ via the identity decomposition. Symmetry: if $P \\sim_{\\mathrm{sc}} Q$ via isometries $\\sigma_i$, then $Q \\sim_{\\mathrm{sc}} P$ via $\\sigma_i^{-1}$.",

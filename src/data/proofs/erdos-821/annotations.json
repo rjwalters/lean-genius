@@ -44,7 +44,7 @@
       "startLine": 58,
       "endLine": 74
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Classical Results: Pillai and Erdős",
     "content": "pillai_theorem (axiom): for any M, there exists n with g(n) > M, i.e., g(n) is unbounded. erdos_1935 (axiom): there exists c > 0 with g(n) > n^c infinitely often — the first power-law bound. erdos_explicit_bound: the same with a specific (placeholder) constant 0.1.",
     "mathContext": "Pillai's result was qualitative; Erdős's 1935 paper was the breakthrough showing quantitative power-law growth.",
@@ -63,7 +63,7 @@
       "startLine": 76,
       "endLine": 91
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lichtman's Theorem (2022): Current Best",
     "content": "lichtmanExponent = 0.71568: the current best exponent. lichtman_theorem (axiom): g(n) > n^{0.71568} infinitely often. lichtman_primes (axiom): there are ≥ cx/(log x)² primes p ≤ x with all prime factors of p-1 at most x^{0.2843}. This is the technical ingredient behind the improved exponent.",
     "mathContext": "Lichtman's 2022 result improved on Baker-Harman (1998) and represents the state of the art.",
@@ -120,7 +120,7 @@
       "startLine": 137,
       "endLine": 163
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "erdos_821 combines three partial results: (1) Lichtman's best known bound g(n) > n^{0.71568} infinitely often, (2) Erdős's 1935 power-law growth for some c > 0, and (3) the reduction showing the smooth primes condition implies the full conjecture. Proved by exact ⟨lichtman_theorem, erdos_1935, smooth_implies_conjecture⟩.",
     "significance": "key",

@@ -51,11 +51,11 @@
       "startLine": 78,
       "endLine": 82
     },
-    "type": "context",
+    "type": "concept",
     "title": "§ 2: Asymptotic Infrastructure",
     "content": "Section header for the axiomatization layer. This section declares the external mathematical infrastructure — the triangle removal function $f(n)$ and the Bohman-Frieze-Lubetzky bounds — as axioms. By axiomatizing these deep probabilistic results rather than proving them, the formalization cleanly separates the hard analysis (BFL's martingale concentration arguments, Wormald's ODE method) from the combinatorial-logical structure that can be independently verified in Lean.",
     "mathContext": "The axiomatization pattern: declare externally-established results as `axiom` declarations, then prove all structural consequences with 0 sorries. This yields a formalization where the *logical architecture* is fully machine-checked even though the *analytical core* remains external.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "axiomatization strategy",
       "separation of concerns",
@@ -193,7 +193,7 @@
       "startLine": 198,
       "endLine": 219
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conjecture Decomposition into Independent Bounds",
     "content": "`conjecture_iff_both_bounds`: $f(n) = \\Theta(n^{3/2})$ iff both $f(n) = O(n^{3/2})$ AND $f(n) = \\Omega(n^{3/2})$ hold independently. The forward direction is trivial (extract witnesses). The non-trivial reverse direction combines the bounds and proves $c_1 \\leq c_2$ by contradiction: assume $c > C$, then eventually $c \\cdot n^{3/2} \\leq f(n) \\leq C \\cdot n^{3/2}$, which for $n^{3/2} > 0$ implies $c \\leq C$ — contradicting the assumption.\n\nThis decomposition is strategically important: it means the $O$ and $\\Omega$ bounds can be attacked independently, and proving either constitutes concrete progress toward the full conjecture. Historically, many asymptotic conjectures in combinatorics have been resolved by first establishing the easier one-sided bound and then bootstrapping to the full result.",
     "mathContext": "$f(n) = \\Theta(n^{3/2}) \\iff f(n) = O(n^{3/2}) \\wedge f(n) = \\Omega(n^{3/2})$.\n\nThe reverse direction uses: $c > C$ and $c \\cdot n^{3/2} \\leq f(n) \\leq C \\cdot n^{3/2}$ implies $c \\cdot n^{3/2} \\leq C \\cdot n^{3/2}$, hence $c \\leq C$ (since $n^{3/2} > 0$ for $n \\geq 1$) — contradiction.",
@@ -263,7 +263,7 @@
       "startLine": 238,
       "endLine": 253
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lower Tightness: No Sub-3/2 Exponent Bound Holds",
     "content": "`bfl_lower_tight`: for $\\beta < 3/2$, $f(n) \\leq n^\\beta$ eventually is **false**. Proof by contradiction: if $f(n) \\leq n^\\beta$ eventually, combine with BFL lower bound $n^{3/2 - \\varepsilon'} \\leq f(n)$ where $\\varepsilon' = (3/2 - \\beta)/2$, yielding $n^{3/2 - \\varepsilon'} \\leq n^\\beta$ for large $n$. But $3/2 - \\varepsilon' > \\beta$ (since $\\varepsilon' < 3/2 - \\beta$), contradicting `rpow_lt_rpow_of_exponent_lt` for $n > 1$.\n\nTogether with `bfl_exponent_is_three_halves`, this establishes $3/2$ as the exact critical exponent: the infimum of exponents $\\alpha$ such that $f(n) = O(n^\\alpha)$.",
     "mathContext": "$f(n) \\neq O(n^\\beta)$ for $\\beta < 3/2$. Critical exponent: $\\inf\\{\\alpha : f(n) = O(n^\\alpha)\\} = 3/2$. The proof uses the intermediate exponent trick: $\\beta < 3/2 - \\varepsilon' < 3/2$, so $n^{3/2-\\varepsilon'} > n^\\beta$ for large $n$, contradicting the assumed bound.",
@@ -333,7 +333,7 @@
       "startLine": 330,
       "endLine": 355
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Limsup/Liminf Condition: Weaker Sufficient Criterion",
     "content": "`limsup_liminf_condition` defines: $\\exists C > 0$ with $f(n)/n^{3/2} \\leq C$ eventually, AND $\\exists c > 0$ with $c \\leq f(n)/n^{3/2}$ eventually. This is weaker than limit convergence — it only requires the ratio to be bounded, not convergent.\n\n`limsup_liminf_implies_conjecture` proves this condition implies the full conjecture. The proof extracts witnesses $c, C$ and shows $c \\leq C$ by contradiction (if $c > C$, then eventually $c \\leq f/n^{3/2} \\leq C < c$, impossible). This reveals the conjecture's topological core: it is equivalent to the ratio sequence $\\{f(n)/n^{3/2}\\}$ having a compact limit set in $(0, \\infty)$ — a Bolzano-Weierstrass-type condition where all subsequential limits lie in a bounded interval of positive reals.",
     "mathContext": "$\\text{limsup\\_liminf\\_condition} := (\\exists C > 0: f(n)/n^{3/2} \\leq C \\text{ eventually}) \\wedge (\\exists c > 0: c \\leq f(n)/n^{3/2} \\text{ eventually})$.\n\nImplication chain: limit convergence $\\Rightarrow$ limsup/liminf bounded $\\Rightarrow$ Erdős conjecture $\\Rightarrow$ BFL. The first two arrows are strict — the conjecture does not require the limit to exist, only that the ratio stays bounded.",

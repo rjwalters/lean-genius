@@ -9,7 +9,7 @@
     "title": "O(1) Closed-Form Digital Root Formula",
     "content": "The formula `digitalRootFormula n = 1 + (n - 1) % 9` computes the digital root in constant time, bypassing iterative digit summation entirely.",
     "mathContext": "The shift by -1 (before mod) and +1 (after mod) handles the boundary between 0 and 9: for multiples of 9, `n % 9 = 0` but `digitalRoot(n) = 9`. With the shift, `(9k - 1) % 9 = 8`, so the result is `1 + 8 = 9`. For `n = 9k + r` with `0 < r < 9`, the result is `r`. The formula is a bijection from {1,...,9} to itself.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "modular-arithmetic",
       "casting-out-nines",

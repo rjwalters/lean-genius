@@ -6,7 +6,7 @@
       "startLine": 43,
       "endLine": 69
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Primes Dividing Powers of 2 Must Equal 2",
     "content": "`prime_dvd_pow_two_eq_two` is the engine of all non-constructibility proofs: any prime p dividing 2^n satisfies p = 2. The proof is a three-line squeeze: p | 2^n → p | 2 (by `Nat.Prime.dvd_of_dvd_pow`), so p ≤ 2 (`Nat.le_of_dvd`), combined with p ≥ 2 (every prime is at least 2), giving p = 2 by `omega`.\n\nFrom this, `odd_prime_dvd_not_dvd_pow_two` derives that any d with an odd prime factor p | d cannot divide any 2^n: if d | 2^n then p | 2^n (transitivity), so p = 2, contradicting p ≠ 2. This is the direct logical path from 'odd prime factor' to 'non-constructible'.",
     "mathContext": "If $p$ is prime and $p \\mid 2^n$, then $p \\mid 2$, so $p \\leq 2$, and since $p \\geq 2$ (all primes), $p = 2$. Contrapositive: odd prime $p \\mid d \\Rightarrow d \\nmid 2^n$ for all $n$.",
@@ -30,7 +30,7 @@
       "startLine": 71,
       "endLine": 110
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Strong Induction: Divisors of 2^n are Powers of 2",
     "content": "`dvd_pow_two_is_pow_two` proves that every positive divisor of 2^n is a power of 2, using `Nat.strongRecOn` (strong induction). The induction is:\n- **Base**: d = 1 = 2^0, done.\n- **Step**: d > 1 has a prime factor p (by `Nat.exists_prime_and_dvd`). Since p | d | 2^n, we have p = 2. Write d = 2·m with m < d and m | 2^{n-1}. By strong IH, m = 2^j. So d = 2·2^j = 2^{j+1}.\n\nThe key sub-step: if 2m | 2^{n+1} = 2·2^n, then m | 2^n (cancel factor of 2 via `Nat.mul_dvd_mul_iff_left`). The zero case n = 0 requires a special check: 2m | 1 implies m = 0, contradicting m > 0, handled by `simp` + `omega`.",
     "mathContext": "$d \\mid 2^n$ and $d > 0 \\Rightarrow d = 2^k$ for some $k$. Proof by strong induction: if $d > 1$, let $p \\mid d$ prime, then $p = 2$ (previous lemma), write $d = 2m$, get $m \\mid 2^{n-1}$, apply IH to get $m = 2^j$, conclude $d = 2^{j+1}$.",
@@ -103,7 +103,7 @@
       "startLine": 190,
       "endLine": 317
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Regular Polygon Classification: n = 3..20 via Totient",
     "content": "`RegularNgonConstructible n` is defined as: n ≥ 3 and φ(n) is a power of 2. The proofs for n = 3..20 split into two patterns:\n\n**Constructible cases** (3, 4, 5, 6, 8, 10, 12, 15, 16, 17, 20): proved by `ngon_constructible_of_totient n hn k h` where k is the exponent and `h : Nat.totient n = 2^k` is verified by `native_decide`.\n\n**Non-constructible cases** (7, 9, 11, 13, 14, 18, 19): proved by contradiction — assume φ(n) = 2^k, compute φ(n) by `native_decide` to get the actual odd value (e.g., φ(7) = 6), deduce 3 | 2^k or 5 | 2^k, then apply `three_not_dvd_pow_two` or `five_not_dvd_pow_two`.\n\nThe complete classification `constructible_ngons_3_to_20` assembles all 18 individual results. Notably, n=15 = 3·5 is constructible because φ(15) = 8 = 2^3 — both 3 and 5 are Fermat primes, and the product of distinct Fermat primes times a power of 2 gives a constructible polygon.",
     "mathContext": "$\\phi(n)$ is a power of 2 iff $n = 2^a \\cdot p_1 \\cdots p_k$ with distinct Fermat primes $p_i$. Constructible $n \\leq 20$: $\\{3, 4, 5, 6, 8, 10, 12, 15, 16, 17, 20\\}$. Non-constructible: $\\{7, 9, 11, 13, 14, 18, 19\\}$.",

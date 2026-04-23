@@ -145,7 +145,7 @@
       "startLine": 88,
       "endLine": 92
     },
-    "type": "context",
+    "type": "concept",
     "title": "Lower Bounds (EGMRSS and Tsaturian)",
     "content": "Two axiomatized lower bounds: `lower_bound_5` (EGMRSS 1973, $k \\geq 5$) and `lower_bound_6` (Tsaturian 2017, $k \\geq 6$). The proofs construct explicit finite point configurations in $\\mathbb{R}^2$ where any red-independent coloring is forced to contain a long blue unit-step AP. Tsaturian's improvement required a more intricate configuration.",
     "mathContext": "$\\forall k \\in s,\\, k \\geq 6$. Tsaturian constructs a finite set $P \\subset \\mathbb{R}^2$ of unit-distance pairs such that in any 2-coloring with red independent, the blue points contain a 6-term unit-step AP. This combinatorial argument is axiomatized because it requires detailed case analysis on specific geometric configurations.",
@@ -169,7 +169,7 @@
       "startLine": 94,
       "endLine": 95
     },
-    "type": "context",
+    "type": "concept",
     "title": "Upper Bound (Erdős-Graham)",
     "content": "`upper_bound_exists` axiomatizes the Erdős-Graham result: there exists $k \\leq 10^7$ in the achievable set. The construction uses a stripe-based coloring where red bands of carefully chosen width alternate with blue regions, ensuring no red unit distance while limiting the length of blue unit-step APs.",
     "mathContext": "$\\exists k \\in s,\\, k \\leq 10{,}000{,}000$. The Erdős-Graham construction partitions $\\mathbb{R}^2$ into parallel strips. Points in thin strips (width chosen to avoid unit distances between strips) are colored red; the remaining blue points can contain APs of bounded length because the strip pattern breaks long collinear runs.",
@@ -192,7 +192,7 @@
       "startLine": 97,
       "endLine": 105
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Combined Bounds and Nonemptiness",
     "content": "Two proved theorems: `achievable_nonempty` derives $s \\neq \\emptyset$ from the upper bound axiom (extracting the witness $k$), and `erdos_188_bounds` combines both bounds into a single statement: $\\forall k \\in s,\\, 6 \\leq k$ and $\\exists k' \\in s,\\, k' \\leq 10^7$. These are straightforward consequences of the axioms.",
     "mathContext": "$s \\neq \\emptyset$ follows from $\\exists k \\in s,\\, k \\leq 10^7$ by projection. The combined bound theorem packages the interval $[6, 10^7]$ as the range containing $\\min s$.",

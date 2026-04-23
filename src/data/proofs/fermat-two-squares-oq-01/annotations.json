@@ -6,7 +6,7 @@
       "startLine": 30,
       "endLine": 43
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Euler's Four-Square Identity",
     "content": "The four-square identity states that the product of two sums of four squares is itself a sum of four squares. Euler discovered this in 1748, nearly a century before Hamilton invented quaternions. The identity is proved here over an arbitrary commutative ring using Lean's `ring` tactic, which verifies the polynomial equality automatically. The eight output terms are precisely the components of the Hamilton quaternion product $(a + bi + cj + dk)(x + yi + zj + wk)$.",
     "mathContext": "$(a^2+b^2+c^2+d^2)(x^2+y^2+z^2+w^2) = (ax-by-cz-dw)^2 + (ay+bx+cw-dz)^2 + (az-bw+cx+dy)^2 + (aw+bz-cy+dx)^2$",
@@ -166,11 +166,11 @@
       "startLine": 107,
       "endLine": 113
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Integer Coercion of Four Squares",
     "content": "Lifts the natural number four-squares result to integers via `push_cast`. This is a standard Lean technique: prove a result for natural numbers, then coerce to integers. The `push_cast` tactic moves the coercion inside arithmetic operations, enabling `ring` to close the goal.",
     "mathContext": "$\\forall n \\in \\mathbb{N}, \\exists a, b, c, d \\in \\mathbb{Z}: a^2 + b^2 + c^2 + d^2 = n$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "type coercion",
       "push_cast tactic",
@@ -233,7 +233,7 @@
       "startLine": 135,
       "endLine": 145
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Closure of Two-Square Sums Under Multiplication",
     "content": "Proves the existential form: if $m$ and $n$ are each sums of two squares, then so is $mn$. The proof extracts witnesses, applies the Brahmagupta-Fibonacci identity, and uses `natAbs` to convert back from integers to naturals. The `zify` tactic coerces to $\\mathbb{Z}$ where `sq_abs` and `ring` can work.",
     "mathContext": "If $m = a^2 + b^2$ and $n = c^2 + d^2$, then $mn = (ac+bd)^2 + (ad-bc)^2$",
@@ -254,7 +254,7 @@
       "startLine": 147,
       "endLine": 160
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Closure of Four-Square Sums Under Multiplication",
     "content": "The existential four-square closure theorem: if $m$ and $n$ are each sums of four squares, so is $mn$. This is the critical step in reducing Lagrange's theorem to primes. The proof constructs witnesses using quaternion multiplication components and simplifies via `sq_abs` and `ring`. Combined with the fact that 0 and 1 are trivially sums of four squares, this shows the set of four-square sums is a multiplicative submonoid of $\\mathbb{N}$.",
     "mathContext": "If $m = a^2+b^2+c^2+d^2$ and $n = x^2+y^2+z^2+w^2$, then $mn$ is also a sum of four squares",
@@ -276,7 +276,7 @@
       "startLine": 169,
       "endLine": 179
     },
-    "type": "context",
+    "type": "concept",
     "title": "Three-Squares Obstruction Examples",
     "content": "Demonstrates that certain numbers require all four squares. Legendre proved in 1798 that $n$ is a sum of three squares if and only if $n$ is NOT of the form $4^a(8b+7)$. The examples 7, 15, 23, 28 all satisfy this obstruction: $7 = 8 \\cdot 0 + 7$, $15 = 8 \\cdot 1 + 7$, $23 = 8 \\cdot 2 + 7$, $28 = 4 \\cdot 7$. Each is verified as a sum of four squares by `norm_num`.",
     "mathContext": "$n \\neq \\sum_{i=1}^{3} x_i^2 \\iff n = 4^a(8b+7)$ for some $a, b \\geq 0$ (Legendre, 1798)",
@@ -366,7 +366,7 @@
       "startLine": 224,
       "endLine": 234
     },
-    "type": "context",
+    "type": "concept",
     "title": "Verified Decomposition Examples",
     "content": "Concrete verified examples illustrating both two-square and four-square representations. $5 = 1^2 + 2^2$ and $13 = 2^2 + 3^2$ are sums of two squares (both primes $\\equiv 1 \\pmod{4}$). $100 = 6^2 + 8^2$ illustrates that composites can also be two-square sums ($100 = 4 \\cdot 25$, and both 4 and 25 are sums of two squares). $42 = 1^2 + 1^2 + 2^2 + 6^2$ requires at least three squares ($42 = 2 \\cdot 3 \\cdot 7$, and $7 \\equiv 3 \\pmod{4}$).",
     "mathContext": "$5 = 1^2 + 2^2$, $13 = 2^2 + 3^2$, $100 = 6^2 + 8^2$, $42 = 1^2 + 1^2 + 2^2 + 6^2$",

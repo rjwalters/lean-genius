@@ -72,7 +72,7 @@
       "startLine": 61,
       "endLine": 70
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sumset Size Bound",
     "content": "**sumset_card_bound:**\n\nThe sumset has at most |B|² elements (from |B|² possible pairs). In practice, |B + B| is often much smaller due to collisions (different pairs giving the same sum).",
     "mathContext": "$|B + B| \\leq |B|^2$ follows from $|B + B| = |\\mathrm{im}(B \\times B \\to \\mathbb{Z})| \\leq |B \\times B| = |B|^2$ via `Finset.card_image_le`. Equality holds only when all pairwise sums are distinct (i.e., $B$ is a Sidon set). For a basis $B$ covering $A$, we need $|A| \\leq |B + B| \\leq |B|^2$, so $|B| \\geq \\sqrt{|A|}$.",
@@ -160,7 +160,7 @@
       "startLine": 138,
       "endLine": 155
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tight Characterization",
     "content": "**optimal_basis_size:**\n\nCombining Erdős-Newman (lower) and Alon-Bukh-Sudakov (upper):\n$$|B|_{\\text{optimal}} = \\Theta\\left(\\frac{\\log \\log n}{\\log n} \\cdot \\sqrt{n}\\right)$$\n\nThis is a rare example of a tight result in additive combinatorics - both bounds match!",
     "mathContext": "The theorem is proved by `exact ⟨erdos_newman_lower_bound, alon_bukh_sudakov_upper_bound⟩`, packaging both bounds into a conjunction. The $\\Theta$ notation means the lower bound $\\Omega(f(n))$ and upper bound $O(f(n))$ share the same growth rate $f(n) = \\frac{\\log \\log n}{\\log n} \\cdot \\sqrt{n}$.",
@@ -205,7 +205,7 @@
       "startLine": 180,
       "endLine": 196
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Basis",
     "content": "**trivial_basis:**\n\nFor any A, the set B = A ∪ {0} is a basis, since a = a + 0 ∈ B + B for any a ∈ A.\n\nThis gives |B| = |A| + 1, which is NOT o(|A|). The non-trivial content of Erdős #806 is that we can do logarithmically better.",
     "mathContext": "The proof uses `a = a + 0` to show $a \\in (A \\cup \\{0\\}) + (A \\cup \\{0\\})$. Lean's proof proceeds by introducing the pair $(a, 0)$, showing both components are in $B = A \\cup \\{0\\}$, and concluding with `ring`. This is the only fully verified theorem in the file (no `sorry` or `axiom`).",

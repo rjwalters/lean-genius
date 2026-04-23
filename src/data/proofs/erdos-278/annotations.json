@@ -2,7 +2,7 @@
   {
     "id": "erdos-278-header",
     "proofId": "erdos-278",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 1,
       "endLine": 20
@@ -11,13 +11,20 @@
     "content": "The module docstring introduces Erdős Problem #278 on the maximum covering density of congruence systems. Given moduli $A = \\{n_1 < \\cdots < n_r\\}$, choose residues $a_1, \\ldots, a_r$ to maximize the density of integers $m$ satisfying $m \\equiv a_i \\pmod{n_i}$ for some $i$. Simpson (1986) settled the minimum density case: it is achieved when all residues are equal, yielding the inclusion-exclusion formula $\\sum 1/n_i - \\sum 1/\\text{lcm}(n_i, n_j) + \\cdots$. The maximum density question remains OPEN.",
     "mathContext": "Coverage density: $d(A, \\mathbf{a}) = \\lim_{N \\to \\infty} |\\{m \\in [0,N) : \\exists i,\\, m \\equiv a_i \\pmod{n_i}\\}|/N$. Min density = inclusion-exclusion sum (Simpson). Max density is open.",
     "significance": "supporting",
-    "relatedConcepts": ["covering systems", "inclusion-exclusion", "Simpson's theorem"],
-    "prerequisites": ["modular arithmetic", "asymptotic density"]
+    "relatedConcepts": [
+      "covering systems",
+      "inclusion-exclusion",
+      "Simpson's theorem"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "asymptotic density"
+    ]
   },
   {
     "id": "erdos-278-coprime-lcm-helpers",
     "proofId": "erdos-278",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 156,
       "endLine": 262
@@ -26,13 +33,21 @@
     "content": "Seven private helper lemmas building the coprime case machinery. `foldl_lcm_eq_foldl_mul`: for pairwise coprime elements, $\\text{lcm} = \\prod$. `lcm_eq_prod_of_coprime`: lifts to `Finset.lcm`. `complement_card_single_mod`: counts non-hits in $[0, nL)$. `complement_count_two_mod`: extends to two coprime moduli via CRT. `complement_eq_prod`: for pairwise coprime moduli, complement count = $\\prod(n_i - 1)$, giving coprime coverage $1 - \\prod(1 - 1/n_i)$.",
     "mathContext": "For pairwise coprime $\\{n_1, \\ldots, n_r\\}$: by CRT, $|\\{m \\in [0, \\prod n_i) : \\forall i,\\, m \\not\\equiv a_i \\pmod{n_i}\\}| = \\prod(n_i - 1)$. Coverage: $1 - \\prod(1 - 1/n_i)$.",
     "significance": "key",
-    "relatedConcepts": ["Chinese Remainder Theorem", "pairwise coprimality", "Finset induction"],
-    "prerequisites": ["Nat.Coprime", "Nat.Coprime.lcm_eq_mul", "Finset.lcm"]
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "pairwise coprimality",
+      "Finset induction"
+    ],
+    "prerequisites": [
+      "Nat.Coprime",
+      "Nat.Coprime.lcm_eq_mul",
+      "Finset.lcm"
+    ]
   },
   {
     "id": "erdos-278-shift-helpers",
     "proofId": "erdos-278",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 400,
       "endLine": 473
@@ -41,8 +56,16 @@
     "content": "Helpers proving coverage density is shift-invariant. `coverage_card_shift`: coverage for constant residue $a$ equals coverage for residue 0, via the cyclic shift $m \\mapsto (m+a) \\bmod L$ on $[0,L)$. Since each $n \\mid L$, the shift preserves residue classes. This establishes Simpson's result: minimum coverage density is at the constant-residue system.",
     "mathContext": "Shift bijection $\\phi_a(m) = (m+a) \\bmod L$ preserves residue classes mod any $n \\mid L$. Therefore coverage count is translation-invariant: $|\\{m : \\exists i, m \\equiv a \\pmod{n_i}\\}| = |\\{m : \\exists i, m \\equiv 0 \\pmod{n_i}\\}|$.",
     "significance": "key",
-    "relatedConcepts": ["cyclic group action", "bijective counting", "Simpson's theorem"],
-    "prerequisites": ["Nat.add_mod", "Finset.card_image_of_injective", "systemLCM"]
+    "relatedConcepts": [
+      "cyclic group action",
+      "bijective counting",
+      "Simpson's theorem"
+    ],
+    "prerequisites": [
+      "Nat.add_mod",
+      "Finset.card_image_of_injective",
+      "systemLCM"
+    ]
   },
   {
     "id": "erdos-278-imports",
@@ -203,7 +226,7 @@
   {
     "id": "erdos-278-density-bounds",
     "proofId": "erdos-278",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 126,
       "endLine": 145
@@ -248,7 +271,7 @@
   {
     "id": "erdos-278-simpson",
     "proofId": "erdos-278",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 397,
       "endLine": 399
@@ -317,7 +340,7 @@
   {
     "id": "erdos-278-single-modulus",
     "proofId": "erdos-278",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 584,
       "endLine": 646
@@ -348,8 +371,17 @@
     "content": "The file's largest proved result (~110 lines): for pairwise coprime moduli $n_1, \\ldots, n_k$, the number of integers in $[0, \\prod n_i)$ not covered by the congruence system with residues $a_i$ is exactly $\\prod(n_i - 1)$. The proof uses `Finset.induction` on the moduli set, with the inductive step establishing that each modulus $n$ contributes a factor of $(n-1)/n$ to the uncovered proportion via the CRT-based residue shift argument. This is the heart of the coprime density formula.",
     "mathContext": "For pairwise coprime $n_1, \\ldots, n_k$: $|\\{m \\in [0, \\prod n_i) : m \\not\\equiv a_i \\pmod{n_i} \\; \\forall i\\}| = \\prod_{i=1}^k (n_i - 1)$. Dividing by $\\prod n_i$: uncovered fraction $= \\prod(1 - 1/n_i)$, so coverage density $= 1 - \\prod(1 - 1/n_i)$.",
     "significance": "key",
-    "relatedConcepts": ["Chinese Remainder Theorem", "Finset.induction", "complement counting", "coprime moduli"],
-    "prerequisites": ["systemLCM_coprime_eq_prod", "coprime_residue_cover", "Finset.card_filter_eq"]
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "Finset.induction",
+      "complement counting",
+      "coprime moduli"
+    ],
+    "prerequisites": [
+      "systemLCM_coprime_eq_prod",
+      "coprime_residue_cover",
+      "Finset.card_filter_eq"
+    ]
   },
   {
     "id": "erdos-278-equal-residues",
@@ -363,8 +395,17 @@
     "content": "Proves that choosing all residues equal ($a_i = a$ for all $i$) minimizes the coverage density: `equal_residues_minimize` shows $\\delta(\\text{sys}_{\\text{all-}a}) \\leq \\delta(\\text{sys})$ for any system. This uses `simpson_theorem` (axiomatized): Simpson proved that the minimum density over all residue choices equals $1 - \\prod(1 - 1/n_i)$, achieved exactly when all residues are equal (maximizing overlaps between congruence classes).",
     "mathContext": "$\\delta_{\\min}(n_1, \\ldots, n_k) = 1 - \\prod_{i=1}^k (1 - 1/n_i)$, achieved by $a_1 = a_2 = \\cdots = a_k = a$ (any common $a$). Equal residues maximize overlaps between arithmetic progressions.",
     "significance": "key",
-    "relatedConcepts": ["Simpson's theorem", "minimum density", "overlapping progressions", "equal residues"],
-    "prerequisites": ["simpson_theorem", "coverageDensity", "Finset.card_filter"]
+    "relatedConcepts": [
+      "Simpson's theorem",
+      "minimum density",
+      "overlapping progressions",
+      "equal residues"
+    ],
+    "prerequisites": [
+      "simpson_theorem",
+      "coverageDensity",
+      "Finset.card_filter"
+    ]
   },
   {
     "id": "erdos-278-coprime-density",
@@ -378,8 +419,16 @@
     "content": "`coprime_density_formula`: for **pairwise coprime** moduli, every choice of residues gives the same coverage density $1 - \\prod(1 - 1/n_i)$. This is the CRT uniformity result: when moduli are coprime, the covering pattern is determined solely by the moduli (not the residues), because CRT gives a bijection between residue tuples and elements of $\\mathbb{Z}/\\prod n_i$. The proof uses `complement_count_coprime` to show uncovered count is $\\prod(n_i-1)$ regardless of residues.",
     "mathContext": "For coprime $n_1, \\ldots, n_k$: $\\delta(a_1, \\ldots, a_k) = 1 - \\prod(1 - 1/n_i)$ for ALL choices of $a_i$. Equivalently: $\\delta_{\\max} = \\delta_{\\min} = 1 - \\prod(1 - 1/n_i)$.",
     "significance": "key",
-    "relatedConcepts": ["CRT uniformity", "coprime moduli independence", "coverage invariance"],
-    "prerequisites": ["complement_count_coprime", "systemLCM_coprime_eq_prod", "density_bounds"]
+    "relatedConcepts": [
+      "CRT uniformity",
+      "coprime moduli independence",
+      "coverage invariance"
+    ],
+    "prerequisites": [
+      "complement_count_coprime",
+      "systemLCM_coprime_eq_prod",
+      "density_bounds"
+    ]
   },
   {
     "id": "erdos-278-coprime-max-min",
@@ -393,8 +442,16 @@
     "content": "`coprime_max_eq_min`: for pairwise coprime moduli, the maximum and minimum coverage densities coincide. This is a direct corollary of `coprime_density_formula` — if all residue choices give the same density, then the supremum and infimum over choices are trivially equal. This makes the non-coprime case the interesting one for Problem #278.",
     "mathContext": "Coprime $\\Rightarrow$ $\\delta_{\\max}(n_1, \\ldots, n_k) = \\delta_{\\min}(n_1, \\ldots, n_k) = 1 - \\prod(1 - 1/n_i)$. The gap $\\delta_{\\max} - \\delta_{\\min} > 0$ only occurs for non-coprime moduli.",
     "significance": "supporting",
-    "relatedConcepts": ["coprime density equality", "max-min gap", "non-coprime obstruction"],
-    "prerequisites": ["coprime_density_formula", "maxCoverageDensity", "minCoverageDensity"]
+    "relatedConcepts": [
+      "coprime density equality",
+      "max-min gap",
+      "non-coprime obstruction"
+    ],
+    "prerequisites": [
+      "coprime_density_formula",
+      "maxCoverageDensity",
+      "minCoverageDensity"
+    ]
   },
   {
     "id": "erdos-278-singleton-density",
@@ -408,7 +465,15 @@
     "content": "Three results for the simplest cases: `singleton_coverage_density` proves $\\delta(\\{n\\}, a) = 1/n$ for any modulus $n$ and residue $a$. `single_modulus_density` proves max = min = $1/n$ for a single modulus. These establish the base case from which the general coprime density formula builds by induction.",
     "mathContext": "For $k = 1$: $\\delta(\\{n\\}) = 1/n$, $\\delta_{\\max}(\\{n\\}) = \\delta_{\\min}(\\{n\\}) = 1/n$. The formula $1 - (1 - 1/n) = 1/n$ matches.",
     "significance": "supporting",
-    "relatedConcepts": ["base case", "singleton modulus", "arithmetic progression density"],
-    "prerequisites": ["coverageDensity", "systemLCM", "Finset.card_filter"]
+    "relatedConcepts": [
+      "base case",
+      "singleton modulus",
+      "arithmetic progression density"
+    ],
+    "prerequisites": [
+      "coverageDensity",
+      "systemLCM",
+      "Finset.card_filter"
+    ]
   }
 ]

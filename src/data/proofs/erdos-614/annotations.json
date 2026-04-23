@@ -215,7 +215,7 @@
       "startLine": 159,
       "endLine": 175
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_614_summary** combines two key results:\n1. **Existence:** f(n,k) is well-defined for n ≥ k+2 and k > 0\n2. **Upper bound:** The complete graph gives f(n,k) ≤ n(n-1)/2\n\nProved by ⟨erdos_614_existence, f_upper_bound⟩. The exact value remains the open question.",
     "mathContext": "This is the main proved theorem, packaging the well-definedness and trivial upper bound. The lower bound, special cases, and monotonicity are separate axioms.",

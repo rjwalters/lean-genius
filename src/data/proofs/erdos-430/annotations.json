@@ -230,7 +230,7 @@
       "startLine": 81,
       "endLine": 82
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Conjecture: Composites for Large $n$",
     "content": "The central open problem: for sufficiently large $n$, the greedy large-factor sequence must contain at least one composite number. Selfridge performed extensive computations supporting this conjecture but reported 'no proof is in sight.' The difficulty is that primes near $n$ are automatically admissible (by Bertrand's postulate, there is always a prime in $(n/2, n)$), so one must show that the greedy process cannot be sustained by primes alone.",
     "mathContext": "$\\exists N_0,\\; \\forall n \\geq N_0,\\; \\exists k,\\; a_k > 1 \\wedge a_k \\text{ is composite}$. Equivalently (by Adenwalla): $\\forall n \\geq N_0,\\; \\exists m < n$ composite with all prime factors $> n - m$.",
@@ -277,7 +277,7 @@
       "startLine": 92,
       "endLine": 125
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Admissibility Invariant for the Greedy Sequence",
     "content": "Two private lemmas establish the admissibility invariant:\n\n`greedyNext_admissible`: If `greedyNext n prev > 0`, the returned value is admissible. The proof uses `Finset.sup`/`max'` equivalence for nonempty natural-number Finsets: `sup S id > 0` implies `S` is nonempty, and `max'` (= `sup` for nonempty ℕ Finsets) is a member of `S`, so the filter condition `IsAdmissible` holds.\n\n`greedySeq_admissible`: Every positive element of the greedy sequence is admissible. Proved by induction on the step $k$. Base case ($k = 0$): $a_0 = n - 1$ has $n - a_0 = 1$, so any prime $p \\geq 2 > 1$ satisfies the bound. Inductive case: delegates to `greedyNext_admissible`.",
     "mathContext": "The invariant $\\forall k, a_k > 0 \\Rightarrow \\texttt{IsAdmissible}(n, a_k)$ ensures every non-terminal term satisfies the coprimality-distance condition. This is essential for the forward direction of `erdos_385_equivalence`: extracting an admissible composite from the greedy sequence.",

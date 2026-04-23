@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 4
     },
-    "type": "context",
+    "type": "concept",
     "title": "Mathlib Dependencies",
     "content": "The proof imports `Mathlib.Data.Int.GCD` for `Int.gcd`, `Int.gcdA`, `Int.gcdB`, and `Int.gcd_eq_gcd_ab` (Bézout's identity). `Mathlib.Data.Nat.GCD.Basic` provides the ℕ versions `Nat.gcd`, `Nat.gcdA`, `Nat.gcdB`, and `Nat.gcd_eq_gcd_ab`. `Mathlib.RingTheory.Coprime.Basic` provides `IsCoprime` and `isCoprime_zero_right`. `Mathlib.Tactic` gives `linear_combination`, `linarith`, and `omega`.",
     "mathContext": "The formalization operates in both ℤ (for Bézout coefficients and signed arithmetic) and ℕ (for gcd values and minimality). The key identity `Int.gcd_eq_gcd_ab : (Int.gcd a b : ℤ) = a * Int.gcdA a b + b * Int.gcdB a b` is the Lean formulation of Bézout's theorem.",

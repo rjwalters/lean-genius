@@ -103,7 +103,7 @@
       "startLine": 138,
       "endLine": 165
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Asymptotic Gap",
     "content": "**asymptoticRatio(n)** = f(n)/(n·2^n): The key quantity.\n\n**asymptotic_lower/upper**: c ≤ asymptoticRatio(n) ≤ C·n.\n\n**asymptotic_gap** (theorem): Combines both bounds, with C > 0 derived from the ratio being positive. The gap of a factor of n is the central open question.",
     "mathContext": "Whether the ratio is bounded (f(n) = Θ(n·2^n)) or grows (f(n) = Θ(n²·2^n)) is unknown. This determines whether the lower or upper bound is closer to truth.",

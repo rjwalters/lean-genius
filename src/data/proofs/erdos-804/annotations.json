@@ -63,7 +63,7 @@
       "startLine": 64,
       "endLine": 69
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Empty Set is Independent",
     "content": "**empty_is_independent:**\n\nThe empty set ∅ is independent in any graph G. This is vacuously true: the quantifier \"for all u ∈ ∅\" is vacuously satisfied.\n\nThe proof uses absurd to derive a contradiction from the assumption that u ∈ ∅.",
     "mathContext": "This is the base case for inductive arguments about independent sets. It establishes that the IsIndependent predicate is non-vacuous.",
@@ -196,7 +196,7 @@
       "startLine": 180,
       "endLine": 202
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem — Both Conjectures False",
     "content": "**erdos_804:**\n\nBoth original Erdős-Hajnal conjectures are FALSE:\n\n1. f((log n)², n) ≱ n^(1/2 - o(1))\n2. f((log n)³, n) ≯ (log n)³\n\nProved by exact ⟨conjecture_1_false, conjecture_2_false⟩ — a direct conjunction of the two disproof axioms.",
     "mathContext": "This is a fully proved Lean theorem, combining the two axioms via an anonymous constructor. The proof term is a pair of the two axiom applications.",
@@ -215,7 +215,7 @@
       "startLine": 208,
       "endLine": 242
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Full Resolution with Bounds",
     "content": "**erdos_804_resolution:**\n\nCombines the complete picture:\n1. Both conjectures are false (disproof)\n2. Upper bound: f((log n)², n) ≤ C(log n)² (counterexample exists)\n3. Lower bound: f((log n)², n) ≥ c(log n)²/log log n (universal guarantee)\n\nThis proved theorem packages all four results into a single 4-fold conjunction, giving the definitive answer to Problem #804.",
     "mathContext": "The proof applies all four axioms: erdos_hajnal_conjecture_1_false, erdos_hajnal_conjecture_2_false, alon_sudakov_upper_bound_1, alon_sudakov_lower_bound_1.",

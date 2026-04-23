@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 31
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview and Imports",
     "content": "**Erdős Problem #286**: Can 1 be expressed as a sum of k distinct unit fractions with denominators in an interval of width $(e-1+o(1))k$? Croot (2001) proved the answer is yes, and that the constant $e - 1 \\approx 1.718$ is asymptotically optimal.\n\nThe problem originates from the Erdős–Graham monograph *Old and New Problems and Results in Combinatorial Number Theory* (1980, p. 33). It sits at the intersection of Egyptian fraction theory (representing rationals as sums of distinct unit fractions) and additive combinatorics (controlling the denominator range). The file imports all of Mathlib and works in the `Erdos286` namespace with `Finset` and `BigOperators` open for sum notation.",
     "mathContext": "Given $k \\geq 2$, does there exist an interval $I$ of width $(e-1+o(1))k$ and integers $n_1 < \\cdots < n_k \\in I$ such that $\\frac{1}{n_1} + \\cdots + \\frac{1}{n_k} = 1$? Answer: YES for $k \\geq 3$ (Croot 2001).",
@@ -79,7 +79,7 @@
       "startLine": 73,
       "endLine": 110
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Examples: k = 3, k = 4, and k = 2 Impossibility",
     "content": "**k = 3**: $1 = \\frac{1}{2} + \\frac{1}{3} + \\frac{1}{6}$ using denominators in $[2, 6]$, width 4. This is the unique 3-term Egyptian fraction representation of 1 (up to reordering). The proof uses `native_decide` for the rational arithmetic check and `omega` for interval membership.\n\n**k = 4**: $1 = \\frac{1}{2} + \\frac{1}{4} + \\frac{1}{5} + \\frac{1}{20}$ in $[2, 20]$, width 18. The width 18 far exceeds the asymptotic bound $(e-1) \\cdot 4 \\approx 6.87$, showing that small cases may require disproportionately wide intervals.\n\n**k = 2 impossibility** (`no_k2_representation`): Stated as an axiom. The only solution to $1/a + 1/b = 1$ with $a, b > 0$ is $a = b = 2$, but `Finset` elements are distinct, so no 2-element representation exists. This could be proved from the identity $1/a + 1/b = 1 \\Rightarrow (a-1)(b-1) = 1$, forcing $a = b = 2$.\n\n**Proof technique**: The `native_decide` tactic evaluates the rational arithmetic computationally at kernel level, giving a certified decision procedure. The `omega` tactic handles the linear arithmetic for interval membership bounds. This combination of computational verification and linear arithmetic is a clean pattern for verifying small cases in combinatorial number theory.",
     "mathContext": "$\\frac{1}{2} + \\frac{1}{3} + \\frac{1}{6} = \\frac{3+2+1}{6} = 1$. For $k=2$: $\\frac{1}{a} + \\frac{1}{b} = 1 \\Rightarrow ab = a + b \\Rightarrow (a-1)(b-1) = 1$, so $a = b = 2$ (not distinct).",
@@ -105,7 +105,7 @@
       "startLine": 112,
       "endLine": 133
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Erdős–Graham Constant: e − 1",
     "content": "**`ErdosGrahamConstant = Real.exp 1 - 1`**: The asymptotically optimal width coefficient $e - 1 \\approx 1.71828$. The proof that $1.7 < e - 1 < 1.72$ uses Mathlib's tight bounds `Real.exp_one_gt_d9` ($e > 2.7182818283$) and `Real.exp_one_lt_d9` ($e < 2.7182818286$), which are computed to 10 decimal places.\n\n**Why $e - 1$?** The heuristic argument: if one places $k$ denominators uniformly in an interval $[N, N + w]$, the expected reciprocal sum is approximately $\\int_N^{N+w} \\frac{1}{x}\\,dx = \\ln(1 + w/N)$. Setting this equal to 1 gives $w/N = e - 1$. For an optimal interval starting at $N \\approx k$ (to get $k$ integers), this gives $w \\approx (e-1)k$. Croot's proof makes this heuristic rigorous.\n\n**The constant is `noncomputable`** because `Real.exp` is defined via Cauchy sequences and is not computationally evaluable in Lean's kernel. The bounds proof sidesteps this by using pre-computed decimal approximations from Mathlib.",
     "mathContext": "$e - 1 = \\int_1^e \\frac{dt}{t}$ viewed via $\\ln(e) = 1$. Heuristically: $\\sum_{n=N}^{N+w} \\frac{1}{n} \\approx \\ln\\left(\\frac{N+w}{N}\\right) = \\ln\\left(1 + \\frac{w}{N}\\right)$. Setting $\\approx 1$: $\\frac{w}{N} \\approx e - 1$. With $N \\approx k$: $w \\approx (e-1)k$.",
@@ -156,7 +156,7 @@
       "startLine": 165,
       "endLine": 197
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: erdos_286 and Asymptotic Optimality",
     "content": "**`erdos_286`**: The main theorem — for all $k \\geq 3$, a representation exists. The proof combines three ingredients:\n1. **Croot's theorem** for sufficiently large $k$ (via `erdos_286_large_k`)\n2. **Explicit examples** for $k = 3$ (base case)\n3. **Monotonicity** (`representation_monotone`) to inductively cover $3 \\leq k < K$\n\nThe proof structure is a case split on whether $k \\geq K$ (use Croot directly) or $k < K$ (induct from $k = 3$ using monotonicity). The induction uses `Nat.succ` recursion with `example_k3` as the base case and `representation_monotone` as the inductive step.\n\n**Asymptotic optimality** (`optimality`, axiom): The constant $e - 1$ cannot be improved — for any $\\varepsilon > 0$ and sufficiently large $k$, width $\\lfloor(e-1-\\varepsilon)k\\rfloor$ is NOT sufficient. Together with `croot_theorem`, this establishes that $e - 1$ is the sharp asymptotic constant. Croot proved this matching lower bound in the same 2001 paper.\n\n**The 5 axioms in this file**: `no_k2_representation`, `croot_theorem`, `representation_monotone`, `optimality`, and `greedy_algorithm_exists`. The first four are essential to the main result; the last is a classical fact about Egyptian fractions included for context.",
     "mathContext": "$\\forall k \\geq 3,\\, \\exists w,\\, \\text{HasShortIntervalRepresentation}(k, w)$. Optimality: $\\forall \\varepsilon > 0,\\, \\exists K,\\, \\forall k \\geq K: \\neg\\text{HasShortIntervalRepresentation}(k, \\lfloor(e-1-\\varepsilon)k\\rfloor)$.",
@@ -182,7 +182,7 @@
       "startLine": 198,
       "endLine": 245
     },
-    "type": "context",
+    "type": "concept",
     "title": "Egyptian Fractions and the Fibonacci–Sylvester Algorithm",
     "content": "**`IsEgyptianFraction`**: Defined identically to `IsUnitFractionSum` — the equivalence `egyptian_eq_unit_fraction` is proved by `Iff.rfl`, confirming the definitions are definitionally equal. The separate definition exists for conceptual clarity: 'Egyptian fraction' emphasizes the historical tradition while 'unit fraction sum' emphasizes the algebraic structure.\n\n**`greedy_algorithm_exists`** (axiom): The Fibonacci–Sylvester algorithm (also called the greedy algorithm for Egyptian fractions) produces a representation for any positive rational $q \\leq 1$. At each step, it selects the largest unit fraction $1/\\lceil 1/q \\rceil$ not exceeding $q$, subtracts it, and repeats. Fibonacci described this in *Liber Abaci* (1202), and Sylvester proved termination in 1880. The algorithm always terminates but does NOT minimize the number of terms or the interval width — Erdős #286 is specifically about the latter optimization.\n\n**Historical note**: Egyptian fractions date to the Rhind Papyrus (c. 1650 BCE), where rationals were expressed as sums of distinct unit fractions. The ancient Egyptians used a table of $2/n$ decompositions. The modern theory, initiated by Erdős and others in the 20th century, asks optimization questions: fewest terms, smallest denominators, shortest containing interval.",
     "mathContext": "$\\text{IsEgyptianFraction}(S, q) \\iff \\text{IsUnitFractionSum}(S, q)$ (definitional equality). Greedy algorithm: given $q > 0$, take $n = \\lceil 1/q \\rceil$, recurse on $q - 1/n$. Always terminates since $q - 1/n < 1/(n-1) - 1/n = 1/(n(n-1))$.",

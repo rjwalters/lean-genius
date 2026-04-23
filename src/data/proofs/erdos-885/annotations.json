@@ -222,7 +222,7 @@
       "startLine": 153,
       "endLine": 180
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Examples",
     "content": "**Explicit computations**:\n\n- 1 ∈ D(12) from 3 × 4\n- 4 ∈ D(12) from 2 × 6\n- 11 ∈ D(12) from 1 × 12\n- 1 ∈ D(6) from 2 × 3\n- 5 ∈ D(6) from 1 × 6\n\n**Intersection**: 1 ∈ D(6) ∩ D(12)\n\nThese are verified by Lean type-checking with explicit witnesses.",
     "mathContext": "Each membership is witnessed by a factorization (a, b) with n = a*b.",

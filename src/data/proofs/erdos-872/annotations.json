@@ -46,7 +46,7 @@
       "startLine": 67,
       "endLine": 77
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Equivalence of Antichain Definitions",
     "content": "**antichain_iff_primitive:**\n\nThe two definitions are logically equivalent — they are contrapositives.\n\n**Proof:**\n- Forward: If divisibility implies equality (antichain), then inequality implies no divisibility (primitive)\n- Backward: If inequality implies no divisibility (primitive), then divisibility implies equality (antichain)\n\nThis is a constructive proof using `by_contra` for the backward direction.",
     "mathContext": "The two formulations are useful in different contexts: the positive form (IsDivisibilityAntichain) is natural for proving elements equal, while the negative form (IsPrimitiveSet) is natural for proving non-divisibility.",
@@ -349,7 +349,7 @@
       "startLine": 282,
       "endLine": 299
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_872_summary:**\n\nCombines the two established results:\n1. Primes form antichains (proved constructively)\n2. Game value is bounded by $n/2$ (axiomatized)\n\n```lean\ntheorem erdos_872_summary :\n    (∀ P, (∀ p ∈ P, p.Prime) → IsDivisibilityAntichain P) ∧\n    (∀ n ≥ 2, gameValue n ≤ n / 2) :=\n  ⟨primes_antichain, gameValue_upper⟩\n```\n\nThis replaces the previous `True` component with the meaningful `gameValue_upper` bound.",
     "mathContext": "The summary theorem packages what we know for certain about Problem 872: primes give antichains (constructive), and no game can last more than n/2 moves (structural bound). Everything else — especially whether the game lasts Theta(n) moves — remains open.",

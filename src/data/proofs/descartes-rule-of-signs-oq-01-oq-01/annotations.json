@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 39
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Header: Parity via Conjugate Root Theory",
     "content": "The imports (lines 1-3) use:\n- `Mathlib.Analysis.SpecialFunctions.Complex.Analytic`: analytic properties of complex polynomials, includes conjugate roots of real polynomials\n- `Mathlib.FieldTheory.IsAlgClosed.Basic`: algebraic closure, fundamental theorem of algebra (FTA)\n- `Mathlib.Tactic`: proof automation\n\nThe docstring (lines 5-39) explains the alternative proof strategy for Descartes' parity result: instead of the inductive coefficient-factoring approach (OQ01), this file uses the **conjugate root theorem**:\n\n1. FTA: every degree-n real polynomial has exactly n complex roots (counting multiplicity)\n2. Conjugate pair theorem: if p ∈ ℝ[X] and p(z) = 0, then p(z̄) = 0\n3. Non-real roots come in pairs (z, z̄) — so the count of non-real roots is even\n4. Therefore: count(real roots) ≡ count(all roots) = degree (mod 2)",
     "mathContext": "The key Mathlib tool is `Polynomial.aeval_conj`: if f has real coefficients, then `aeval (conj z) f = conj (aeval z f)`. Setting `aeval z f = 0` gives `aeval (conj z) f = conj 0 = 0`, proving the conjugate is also a root. The parity arithmetic then follows from the partition of roots into real singletons and conjugate pairs.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "conjugate root theorem",
       "complex closure",
@@ -32,7 +32,7 @@
       "startLine": 41,
       "endLine": 56
     },
-    "type": "technique",
+    "type": "concept",
     "title": "eval_conj_eq_conj_eval: Polynomial Induction over h_add and h_monomial",
     "content": "eval_conj_eq_conj_eval proves p(z̄) = p̄(z) for any real polynomial p, using Polynomial.induction_on' with two cases. The h_add case is trivial: both sides distribute over addition. The h_monomial case is the key: the coefficient a ∈ ℝ satisfies starRingEnd ℂ (algebraMap ℝ ℂ a) = algebraMap ℝ ℂ a (by Complex.conj_ofReal), and starRingEnd ℂ (z^n) = (starRingEnd ℂ z)^n (by map_pow). The simp + congr 1 closing steps handle the remaining algebraic manipulation.",
     "mathContext": "For $p = a_0 + a_1 X + \\cdots + a_n X^n$ with $a_i \\in \\mathbb{R}$: $p(\\bar{z}) = \\sum a_i \\bar{z}^i = \\sum \\bar{a_i} \\bar{z}^i = \\overline{\\sum a_i z^i} = \\overline{p(z)}$. The key step: $\\bar{a} = a$ for real $a$ (conjugation fixes ℝ). In Lean: \\texttt{Complex.conj\\_ofReal} states \\texttt{starRingEnd ℂ (r : ℂ) = r} for \\texttt{r : ℝ} coerced to \\texttt{ℂ}.",
@@ -103,7 +103,7 @@
       "startLine": 92,
       "endLine": 115
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Parity Framework: omega Closes Natural Number Arithmetic",
     "content": "parity_of_real_roots and parity_diff are pure arithmetic lemmas: given n = r + c and c even (c = 2k), prove n and r have the same parity. The Lean proofs use omega after destructuring Even c to get c = 2k. The omega tactic handles all linear arithmetic over ℕ, including the subtraction in parity_diff (n - r = c when n = r + c). These lemmas are the abstract arithmetic backbone; the geometric content (why the non-real count is even) is provided by nonreal_roots_paired.",
     "mathContext": "$n = r + c$, $c = 2k$ $\\Rightarrow$ $n = r + 2k$. Then $n$ even $\\iff$ $r + 2k$ even $\\iff$ $r$ even (since $2k$ is always even). Lean: \\texttt{obtain ⟨k, hk⟩ := heven; rw [hk]; omega}. The omega tactic understands that adding an even number preserves parity. \\texttt{parity\\_diff} uses $n - r = c$ (when $n = r + c$ in ℕ) and similarly closes with omega.",

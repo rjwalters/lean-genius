@@ -49,11 +49,11 @@
       "startLine": 128,
       "endLine": 153
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Bound Parameter b in Nat.factorization_choose'",
     "content": "`Nat.factorization_choose'` requires a bound `b` with `Nat.log p (n + k) < b`. The bound doesn't affect the value — it just restricts the sum to `Ico 1 b`, and positions `i ≥ b` contribute 0 since `p^i > n+k` implies no carry.\n\nFor the multinomial theorem, we use `b = Nat.log p ks.sum + 1`. This is valid because:\n- Each pair `(acc, k)` in the scanl decomposition has `acc + k ≤ ks.sum`\n- By `Nat.log_mono_right`: `log p (acc + k) ≤ log p ks.sum`\n- So `log p (acc + k) < log p ks.sum + 1 = b`\n\nThe key helper `scanl_zip_tail_sum_le` proves `acc + k ≤ ks.sum` by induction on the list structure:\n- For `ks = k :: rest`, the tail pairs are in `(rest.scanl (·+·) k).zip rest`\n- By `scanl_zip_sum_le`: each such pair satisfies `acc + k ≤ k + rest.sum = ks.sum` ✓",
     "mathContext": "Given b = Nat.log p ks.sum + 1 and acc + k ≤ ks.sum (from scanl_zip_tail_sum_le), Nat.log_mono_right gives log_p(acc + k) ≤ log_p(ks.sum), so log_p(acc + k) < b. Positions i ≥ b satisfy p^i > n + k, making all carry indicators 0 — the bound is tight and does not change the sum.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.log_mono_right",
       "scanl_zip_tail_sum_le",
@@ -72,11 +72,11 @@
       "startLine": 68,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "scanl_zip_sum_le: Bounding Partial Sums in List.scanl",
     "content": "Two private lemmas prove that prefix sums in a `scanl (·+·)` decomposition stay bounded by the total. `scanl_zip_sum_le` shows that every pair `(acc, k)` in `(ks.scanl (·+·) init).zip ks` satisfies `acc + k ≤ init + ks.sum`. The proof is by induction on `ks`, with the cons case using `omega` for the base pair and applying the inductive hypothesis for tail pairs.\n\n`scanl_zip_tail_sum_le` specializes to `init = 0`, giving `acc + k ≤ ks.sum` for tail pairs (skipping the first pair, which trivially has acc=0). This bound is used in `multinomial_kummer` to establish `Nat.log p (acc+k) < b` for the bound parameter `b = Nat.log p ks.sum + 1`.",
     "mathContext": "For $ks = [k_1, k_2, \\ldots, k_m]$ and $acc_i = k_1 + \\cdots + k_{i-1}$: each pair $(acc_i, k_i)$ satisfies $acc_i + k_i \\leq k_1 + \\cdots + k_m = ks.\\text{sum}$. This is used to ensure $\\log_p(acc_i + k_i) \\leq \\log_p(ks.\\text{sum}) < b$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "List.scanl",
       "List.zip",
@@ -117,11 +117,11 @@
       "startLine": 48,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Inductive Proof that v_p Distributes Over List Products",
     "content": "`factorization_list_prod` proves `l.prod.factorization p = (l.map (·.factorization p)).sum` by induction:\n\n```lean\n| nil => simp\n| cons n rest ih =>\n    rw [Nat.factorization_mul hn hrest, Finsupp.add_apply]\n    congr 1\n    exact ih ...\n```\n\n`Nat.factorization_mul hn hrest : (n * rest.prod).factorization = n.factorization + rest.prod.factorization`\n\n`Finsupp.add_apply : (f + g) p = f p + g p`\n\nThen `congr 1` reduces to proving `rest.prod.factorization p = (rest.map ...).sum`, which is the inductive hypothesis.\n\nNote: `rest.prod ≠ 0` follows from `List.prod_ne_zero` applied to all elements satisfying the nonzero hypothesis.",
     "mathContext": "$v_p\\!\\left(\\prod_{i=1}^{n} a_i\\right) = \\sum_{i=1}^{n} v_p(a_i)$ for $a_i \\ne 0$, proved by induction using $v_p(mn) = v_p(m) + v_p(n)$ (\\texttt{Nat.factorization\\_mul}).",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.factorization_mul",
       "Finsupp.add_apply",

@@ -208,7 +208,7 @@
       "startLine": 232,
       "endLine": 253
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Results Summary",
     "content": "**Erdős Problem #1109: Complete Timeline**\n\n| Year | Authors | Lower Bound | Upper Bound |\n|------|---------|-------------|-------------|\n| 1987 | Erdős-Sárközy | log N | N^{3/4} log N |\n| 2001 | Gyarmati | log N (alt. proof) | — |\n| 2004 | Konyagin | (log log N)(log N)² | N^{11/15+o(1)} |\n\n**The Summary Theorem:**\n```lean\ntheorem erdos_1109_summary :\n    (∀ N ≥ 16, ∃ C > 0, f N ≥ C * Real.log (Real.log N) * (Real.log N)^2) ∧\n    (∀ N ≥ 2, ∃ C > 0, ∃ ε > 0, f N ≤ C * N^(11/15 + ε : ℝ)) := ...\n```\n\nThis combines Konyagin's lower and upper bounds into a single summary theorem.\n\n**Status:** OPEN. The gap between polylogarithmic and polynomial growth represents one of the fundamental open questions in additive combinatorics.",
     "significance": "key",

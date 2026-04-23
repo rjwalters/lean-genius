@@ -139,7 +139,7 @@
       "startLine": 148,
       "endLine": 163
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Totient Computations",
     "content": "Concrete examples verified by rfl: φ(1) = 1, φ(2) = 1, φ(3) = 2, φ(4) = 2, φ(6) = 2. These show 1 and 2 have multiple preimages.",
     "mathContext": "φ(n) counts integers up to n coprime to n. φ(1) = 1 trivially. φ(2) = 1 since only 1 is coprime to 2. φ(p) = p-1 for prime p.",
@@ -158,7 +158,7 @@
       "startLine": 165,
       "endLine": 189
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Non-Carmichael Proofs",
     "content": "**one_not_carmichael** and **two_not_carmichael**: We prove 1 and 2 are NOT Carmichael totients because they each have multiple preimages.",
     "mathContext": "Proof technique: Assume n is Carmichael, then get two preimages via huniq, deduce they're equal, get 1=2 or 3=4 contradiction.",

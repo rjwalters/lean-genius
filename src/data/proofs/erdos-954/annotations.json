@@ -94,7 +94,7 @@
       "startLine": 99,
       "endLine": 131
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Structural Properties (Proved)",
     "content": "Four theorems proved directly from the greedy definition (no sorry): (1) `repcount_below_at_elements`: $R_k(a_{k+1}) < a_{k+1}$ at each new element. (2) `repcount_above_between`: $R_k(m) \\geq m$ for $a_k < m < a_{k+1}$. (3) `rosen_strictMono`: strict monotonicity of the sequence. (4) `rosen_growth`: $a_k \\geq k$ by induction. These establish the basic structure of the greedy construction.",
     "significance": "key",
@@ -160,7 +160,7 @@
       "startLine": 174,
       "endLine": 187
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Representation Count Monotonicity in $k$ (Proved)",
     "content": "Proved in Lean: $R_k(n) \\leq R_{k+1}(n)$, i.e., adding more sequence elements can only increase the representation count. The proof uses `Finset.sum_le_sum_of_subset_of_nonneg` since $[1,k] \\subseteq [1,k+1]$. This is a fundamental monotonicity property of the greedy construction.",
     "significance": "supporting",

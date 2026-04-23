@@ -123,7 +123,7 @@
       "startLine": 105,
       "endLine": 121
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_317_summary:** A proved theorem combining the two known results:\n1. The weak inequality: |sum| ≥ 1/lcm for all nonzero signed sums\n2. The counterexample: equality is achievable at n = 4\n\nProved by `exact ⟨weak_inequality, counterexample_small_n⟩`. This captures the complete state of knowledge: the trivial lower bound holds, but the strict version (Q2) fails for small n and remains open for large n.",
     "mathContext": "The summary packages both sides of the known result: the lower bound is valid (weak form), but cannot be improved to strict for all n. Together they delineate exactly what is known and what remains open.",

@@ -154,7 +154,7 @@
       "startLine": 122,
       "endLine": 127
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Prime Totient Ratio",
     "content": "**prime_totient_ratio:**\n\nFor a prime p, φ(p) = p - 1, so:\n\n$$\\frac{p}{\\phi(p)} = \\frac{p}{p-1} \\approx 1$$\n\nThis means for prime n, the n/φ(n) factor contributes little to f(n). The complexity comes from composite n with many factors.",
     "significance": "supporting",
@@ -172,7 +172,7 @@
       "startLine": 135,
       "endLine": 152
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Small Cases",
     "content": "**Explicit Values:**\n\n- **f(2) = 1:** {1} is 2-sum-free (single element can't sum to 2)\n- **f(3) = 1:** {1,2} needs careful analysis - subsets are ∅, {1}, {2}, {1,2} with sums 0, 1, 2, 3\n- **f(4) = 2:** Need 2 classes because {1,3} sums to 4\n\nThese small cases illustrate the basic structure of the problem before asymptotic behavior dominates.",
     "significance": "supporting",
@@ -209,7 +209,7 @@
       "startLine": 166,
       "endLine": 185
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: Problem Solved",
     "content": "**erdos_360_solved:**\n\nThe theorem confirms that Problem #360 is resolved by showing:\n\n$$c_1 \\cdot \\frac{n^{1/3}}{(\\log n)^{1/3}} \\leq f(n) \\leq c_2 \\cdot \\frac{n^{1/3}}{(\\log n)^{1/3}}$$\n\nfor positive constants c₁, c₂ and sufficiently large n.\n\nThis follows from the Conlon-Fox-Pham result by observing that:\n- n/φ(n) ≥ 1 always\n- (log log n)^{2/3} grows slowly\n\nThe full characterization includes the n/φ(n) factor which captures arithmetic structure.",
     "mathContext": "The simplified bound omits the n/φ(n) and (log log n) factors for clarity, but the full result includes them.",

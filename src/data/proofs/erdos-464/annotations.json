@@ -2,14 +2,25 @@
   {
     "id": "ann-464-header",
     "proofId": "erdos-464",
-    "range": { "startLine": 1, "endLine": 23 },
-    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
     "title": "Lacunary Sequences and Irrational Multiples",
     "content": "Erdős Problem #464 (SOLVED): Given a lacunary sequence $A = \\{n_1 < n_2 < \\cdots\\}$ with $n_{k+1} \\geq (1+\\varepsilon)n_k$, must there exist an irrational $\\theta$ such that $\\{\\|\\theta n_k\\| : k \\geq 1\\}$ is not dense in $[0,1]$?\n\nAnswer: YES, proved independently by de Mathan (1980) and Pollington (1979), who showed $\\inf_k \\|\\theta n_k\\| > 0$ for some $\\theta$. Peres and Schlag improved the bound to $\\gg \\varepsilon/\\log(1/\\varepsilon)$. This connects **Diophantine approximation** (how well irrationals approximate rationals) to **lacunary analysis** (sequences with exponential gaps).",
     "mathContext": "Lacunary: $n_{k+1}/n_k \\geq 1 + \\varepsilon$. Result: $\\exists \\theta \\in \\mathbb{R} \\setminus \\mathbb{Q}$ with $\\inf_k \\|\\theta n_k\\| > 0$.",
     "significance": "supporting",
-    "prerequisites": ["lacunary sequences", "distance to nearest integer", "Diophantine approximation"],
-    "relatedConcepts": ["lacunary series", "Weyl's equidistribution", "metrical number theory"]
+    "prerequisites": [
+      "lacunary sequences",
+      "distance to nearest integer",
+      "Diophantine approximation"
+    ],
+    "relatedConcepts": [
+      "lacunary series",
+      "Weyl's equidistribution",
+      "metrical number theory"
+    ]
   },
   {
     "id": "ann-464-imports",

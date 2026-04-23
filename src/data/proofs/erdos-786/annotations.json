@@ -215,7 +215,7 @@
       "startLine": 144,
       "endLine": 156
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Examples",
     "content": "We verify concrete examples: 2 mod 4 = 2, 6 mod 4 = 2, 10 mod 4 = 2. Also 2 * 6 = 12, showing products can be computed.",
     "mathContext": "These are verified by native_decide, providing constructive evidence that the mod 4 set contains these elements.",
@@ -234,7 +234,7 @@
       "startLine": 160,
       "endLine": 173
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_786_summary** combines the known results: (1) mod 4 achieves density 1/4, (2) Selfridge achieves density 1/e - epsilon for any epsilon > 0.",
     "mathContext": "This is a proved theorem (not axiom) that packages the two existence axioms. It shows we have concrete constructions achieving known density bounds.",

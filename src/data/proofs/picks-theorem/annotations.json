@@ -76,7 +76,7 @@
       "startLine": 138,
       "endLine": 168
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pick's Theorem (Wiedijk #92)",
     "content": "**Pick's Theorem**: `picks_formula interior boundary := interior + boundary/2 - 1`. The axiom `picks_theorem` asserts $A(P) = i(P) + b(P)/2 - 1$. Three derived theorems give: (1) `picks_theorem_explicit` — unfolds `picks_formula`; (2) `interior_from_area_boundary` — solves for $i = A - b/2 + 1$; (3) `boundary_from_area_interior` — solves for $b = 2(A - i + 1)$. All proved by `linarith` from the main axiom.",
     "mathContext": "The formula $A = i + b/2 - 1$ can be rearranged to $2A = 2i + b - 2$, showing that $2A$ is always an integer for lattice polygons. This connects to the **Euler characteristic**: for a triangulated polygon, $V - E + F = 2$ (Euler's formula), and Pick's theorem can be derived from it by counting how vertices and edges contribute to interior/boundary/face counts.",

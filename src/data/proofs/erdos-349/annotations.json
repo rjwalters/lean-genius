@@ -96,7 +96,7 @@
       "startLine": 39,
       "endLine": 44
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #349: Characterization",
     "content": "The main open problem: characterize all pairs $(t, \\alpha)$ with $t > 0, \\alpha > 0$ for which $\\lfloor t\\alpha^n \\rfloor$ is a complete sequence. This is stated as an axiom since the problem remains open — the characterization set $S$ exists but its exact description is unknown.",
     "mathContext": "The axiom asserts $\\exists S \\subseteq \\mathbb{R}^2$ such that $\\forall t, \\alpha > 0$: $(t,\\alpha) \\in S \\iff \\lfloor t\\alpha^n \\rfloor$ is complete. The deep question is **what $S$ looks like** — whether it has a clean characterization or is inherently complex (as Graham's result suggests).",
@@ -190,7 +190,7 @@
       "startLine": 74,
       "endLine": 77
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Parity: ⌊(3/2)^n⌋ Even Infinitely Often",
     "content": "The companion open problem: is $\\lfloor (3/2)^n \\rfloor$ even for infinitely many $n$? Together with the odd case, these parity questions represent one of the most basic unsolved problems about exponential sequences. A negative answer to either would have dramatic consequences for our understanding of $\\{(3/2)^n\\}$ distribution.",
     "mathContext": "If $\\lfloor (3/2)^n \\rfloor$ were eventually always odd (or always even), it would imply the fractional parts $\\{(3/2)^n\\}$ eventually avoid either $[0, 1/2)$ or $[1/2, 1)$, contradicting the expected equidistribution. This connects to Vijayaraghavan's work on the distribution of $(3/2)^n \\pmod{1}$.",

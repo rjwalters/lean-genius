@@ -50,7 +50,7 @@
     "startLine": 74,
     "endLine": 96,
     "mathContext": "binaryGcd : ℕ → ℕ → ℕ is defined by structural pattern matching with 5 cases: (0,b)→b, (a,0)→a, both even → 2·binaryGcd(a/2, b/2), one even/one odd → drop the even factor, both odd → subtract smaller from larger and halve. The termination proof uses `termination_by a + b` with `decreasing_by all_goals omega`, verified by Lean's equation compiler. In each recursive call, a + b strictly decreases: halving reduces by at least half, and the odd-subtract case produces an even number (odd - odd = even), which is then halved.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "well-founded recursion",
       "termination_by",

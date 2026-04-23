@@ -170,7 +170,7 @@
       "startLine": 166,
       "endLine": 180
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Conjecture is FALSE",
     "content": "**erdos_615:**\n\nThe answer to the conjecture is NO.\n\n```lean\ntheorem erdos_615 : not erdos_615_conjecture := erdos_615_false\n```\n\n**Why?**\nFor l = n/log n, we have l = ne^(-log n).\nSince log n = o(sqrt(log n / log log n)), Fox-Loh-Zhao gives:\nrt(n; 4, n/log n) >= (1/8 - o(1))n^2\n\nSo no constant c > 0 can make rt < (1/8 - c)n^2.",
     "significance": "key",

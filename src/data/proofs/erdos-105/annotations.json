@@ -160,7 +160,7 @@
       "startLine": 92,
       "endLine": 109
     },
-    "type": "context",
+    "type": "concept",
     "title": "Xichuan's Counterexample",
     "content": "Xichuan (2024) found three explicit counterexamples: point configurations where $A$ has $n$ non-collinear points, $B$ has $n - 3$ points, yet every rich line of $A$ passes through some point of $B$. The constructions exploit configurations where $A$ has few rich lines relative to its size, so $n - 3$ obstacles suffice to block all of them. This disproved the Erdős-Purdy conjecture and earned the \\$50 prize.",
     "mathContext": "$\\exists A, B : |A| = n \\land |B| = n-3 \\land \\text{NonCollinear}(A) \\land \\forall \\ell,\\, |\\ell \\cap A| \\geq 2 \\implies \\ell \\cap B \\neq \\emptyset$",
@@ -181,7 +181,7 @@
       "startLine": 111,
       "endLine": 116
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Formal Disproof",
     "content": "Proves $\\neg\\text{ErdosPurdyConjecture}$ by contradiction: the conjecture would guarantee a rich unblocked line for Xichuan's counterexample, but that example was constructed so no such line exists. The proof destructures the counterexample axiom and derives the contradiction cleanly.",
     "mathContext": "$\\neg\\text{ErdosPurdyConjecture}$",
@@ -203,7 +203,7 @@
       "startLine": 120,
       "endLine": 130
     },
-    "type": "context",
+    "type": "concept",
     "title": "Hickerson's $n-2$ Construction",
     "content": "Before Xichuan, Hickerson showed that $n - 2$ obstacle points CAN block all rich lines of $n$ non-collinear points. This established that the 'critical case' was $n - 3$: either the boundary between blockable and non-blockable, or also blockable. Xichuan proved the latter, showing the transition happens at some lower threshold.",
     "mathContext": "$\\exists A, B : |A| = n \\land |B| = n-2 \\land \\text{NonCollinear}(A) \\land \\forall \\text{rich } \\ell,\\, \\ell \\cap B \\neq \\emptyset$",
@@ -225,7 +225,7 @@
       "startLine": 132,
       "endLine": 140
     },
-    "type": "context",
+    "type": "concept",
     "title": "Beck-Szemerédi-Trotter Positive Result",
     "content": "With only $cn$ obstacle points (for some small constant $c > 0$), at least one rich line must be unblocked. This follows from the Szemerédi-Trotter incidence bound: $n$ non-collinear points determine $\\Omega(n^2)$ rich lines, and $cn$ obstacles can block at most $O(cn \\cdot n) = O(cn^2)$ lines (each obstacle lies on $O(n)$ lines). For $c$ small enough, some rich line survives.",
     "mathContext": "$\\exists c > 0 : |B| \\leq cn \\implies \\exists \\text{ rich unblocked } \\ell$",
@@ -247,7 +247,7 @@
       "startLine": 144,
       "endLine": 157
     },
-    "type": "context",
+    "type": "concept",
     "title": "Szemerédi-Trotter Theorem",
     "content": "The Szemerédi-Trotter theorem (1983): the number of incidences between $m$ points and $n$ lines in $\\mathbb{R}^2$ is $O(m^{2/3}n^{2/3} + m + n)$. This is tight — matching constructions exist. The theorem is fundamental to discrete geometry and implies that $n$ points determine $\\Omega(n)$ rich lines (with $\\geq 2$ points each). The exponent $2/3$ is optimal by the Elekes-Rónyai construction.",
     "mathContext": "$I(P, L) = O(|P|^{2/3}|L|^{2/3} + |P| + |L|)$",

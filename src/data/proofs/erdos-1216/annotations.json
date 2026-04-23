@@ -31,7 +31,7 @@
       "startLine": 1,
       "endLine": 14
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Stearns' Greedy Algorithm: f(n) ≥ ⌊log₂ n⌋ + 1",
     "content": "Stearns (1959) proved the lower bound f(n) ≥ ⌊log₂ n⌋ + 1 by a greedy construction. Key observation: in any tournament T on n vertices, there exists a vertex with out-degree ≥ (n-1)/2 (since the average out-degree is (n-1)/2). Algorithm: (1) Pick any vertex v₁; its out-neighborhood N⁺(v₁) has |N⁺(v₁)| ≥ (n-1)/2; (2) Within the subtournament T[N⁺(v₁)], pick v₂ with the most out-edges; now {v₁,v₂} is transitive; (3) The out-neighborhood of v₂ within N⁺(v₁) has size ≥ (|N⁺(v₁)|-1)/2. Repeat. After k steps, the remaining set has size ≥ n/2^k - O(1), so we continue until n/2^k < 1, giving k ≤ ⌊log₂ n⌋ + 1 steps of a transitive chain.",
     "mathContext": "Greedy transitive chain: pick $v_1$ with $|N^+(v_1)| \\geq \\lceil (n-1)/2 \\rceil$. At step $i$, have $v_1 \\to v_2 \\to \\cdots \\to v_i$ transitive, remaining set $S_i \\subseteq N^+(v_{i-1}) \\cap S_{i-1}$ with $|S_i| \\geq |S_{i-1}|/2$. After $k = \\lfloor \\log_2 n \\rfloor + 1$ steps: $|S_k| \\geq n/2^k \\geq 1$, so the chain is length $k$.",
@@ -55,7 +55,7 @@
       "startLine": 1,
       "endLine": 14
     },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős-Moser Upper Bound and the Paley Tournament",
     "content": "Erdős and Moser (1964) proved the upper bound f(n) ≤ 2⌊log₂ n⌋ + 1, showing the true value of f(n) is between log₂ n and 2 log₂ n. The upper bound comes from constructing tournaments where the largest transitive subtournament has size ≤ 2 log₂ n + 1. The Paley tournament (defined for prime powers q ≡ 3 mod 4: vertex set = 𝔽_q, with u→v iff v-u is a non-zero square in 𝔽_q) is a well-studied example; its maximum transitive subtournament is O(log q). Also noted: f(7) = 3 (so 7 vertices suffice to force a 3-element transitive subtournament, consistent with ⌊log₂ 7⌋ + 1 = 3).",
     "mathContext": "Erdős-Moser: $f(n) \\leq 2\\lfloor \\log_2 n \\rfloor + 1$. Paley tournament: $q = p^k$ with $p \\equiv 3 \\pmod 4$, $V = \\mathbb{F}_q$, $u \\to v \\iff v - u \\in (\\mathbb{F}_q^*)^2$. The Paley tournament is well-behaved (self-complementary, with maximum transitive subtournament of size $O(\\log q)$). Erdős-Moser noted $f(7) = 3$.",
@@ -107,7 +107,7 @@
     "title": "Lean Formalization: Tournament Theory in Mathlib",
     "content": "The Stearns lower bound is the most accessible part of Problem #1216 for formalization. Mathlib has `SimpleGraph` but tournament-specific types (complete directed graphs) may need to be defined. Key components: (1) `Tournament V` as a type where for all u ≠ v, exactly one of `adj u v` or `adj v u` holds; (2) `outDegree T v = (T.neighborFinset v).card` for out-degree; (3) the greedy algorithm implemented as a recursive function picking vertices with maximum out-degree; (4) `Nat.log 2 n` for ⌊log₂ n⌋. The halving argument (out-neighborhood has size ≥ n/2) can be proved by averaging: ∑_v outDegree(v) = n(n-1)/2, so some vertex has out-degree ≥ (n-1)/2.",
     "mathContext": "Lean sketch: `structure Tournament (V : Type*) where adj : V → V → Prop; complete : ∀ u v, u ≠ v → adj u v ∨ adj v u; antisymm : ∀ u v, ¬(adj u v ∧ adj v u)`. Then `f : ℕ → ℕ` with `f n = Nat.log 2 n + 1` (Stearns lower bound, conjectured equality). The greedy proof: `∃ v, T.outDegree v ≥ (n-1)/2` by `Finset.exists_le_of_sum_le`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "SimpleGraph in Mathlib",
       "Finset.card",

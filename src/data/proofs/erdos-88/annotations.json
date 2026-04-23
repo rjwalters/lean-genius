@@ -453,7 +453,7 @@
       "startLine": 228,
       "endLine": 232
     },
-    "type": "technique",
+    "type": "concept",
     "title": "δ(ε) > 0",
     "content": "**Theorem**: δ(ε) > 0 for all ε > 0.\n\nThe function is well-defined and positive.",
     "mathContext": "The proof unfolds `delta`, simplifies the `dite` (if-then-else) using $\\varepsilon > 0$, and applies `Classical.choose_spec` to extract the positivity from the existential statement $\\exists \\delta > 0, \\ldots$ This is a fully proved theorem (0 sorries) that demonstrates the KSSS theorem provides a meaningful bound. The proof is: `unfold delta; simp [hε]; exact (Classical.choose_spec (ksss_theorem ε hε)).1`.",

@@ -228,7 +228,7 @@
       "startLine": 118,
       "endLine": 137
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cambie Example 2: P = {1,41}, Q = {2,3,7}",
     "content": "Second verified example: $\\sum_{\\{1,41\\}} = 42/41$ and $\\sum_{\\{2,3,7\\}} = 41/42$. Product $(42/41)(41/42) = 1$. Note that $42 = 2 \\times 3 \\times 7$, so $Q$ consists of the prime factors of 42.",
     "significance": "key",
@@ -250,7 +250,7 @@
       "startLine": 139,
       "endLine": 144
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Coprime Version Solved (Proved)",
     "content": "Proof of `ErdosProblem307Coprime` by exhibiting Cambie's first example as witness. Uses `cambieExample1P_coprime`, `cambieExample1Q_coprime`, and `cambieExample1_works` together with `decide` for cardinality checks.",
     "significance": "key",
@@ -294,7 +294,7 @@
       "startLine": 160,
       "endLine": 172
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Prime Sets Must Be Disjoint (sorry)",
     "content": "If $P, Q$ are prime sets with product 1, then $P \\cap Q = \\emptyset$. A shared prime $p$ would create $p^2$ in the denominator of the expanded product, preventing cancellation to 1.",
     "significance": "key",
@@ -317,7 +317,7 @@
       "startLine": 174,
       "endLine": 183
     },
-    "type": "technique",
+    "type": "concept",
     "title": "AM-GM Sum Lower Bound (sorry)",
     "content": "If $(\\sum_P 1/p)(\\sum_Q 1/q) = 1$ and $P \\cap Q = \\emptyset$, then $\\sum_{P \\cup Q} 1/p \\geq 2$. By AM-GM, $a + b \\geq 2\\sqrt{ab} = 2$ when $ab = 1$.",
     "significance": "key",
@@ -340,7 +340,7 @@
       "startLine": 185,
       "endLine": 194
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Size Bound: |P ∪ Q| ≥ 60 (sorry)",
     "content": "Since $\\sum_P + \\sum_Q \\geq 2$ and prime reciprocals grow as $\\sim \\ln\\ln n$, at least 60 primes are needed. The first 60 primes (up to 281) give $\\sum_{p \\leq 281} 1/p \\approx 2.009$.",
     "significance": "key",
@@ -496,7 +496,7 @@
       "startLine": 257,
       "endLine": 272
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Why 1 Helps Balance (sorry + proved)",
     "content": "Two results: `one_helps_balance` (sorry) shows $1 \\in P \\implies \\sum_P > 1$, and `pair_with_one` (proved by `field_simp; ring`) shows $\\sum_{\\{1,n\\}} = (n+1)/n$. Including 1 gives a clean fraction whose reciprocal is easy to match.",
     "significance": "key",
@@ -541,7 +541,7 @@
       "startLine": 284,
       "endLine": 291
     },
-    "type": "technique",
+    "type": "concept",
     "title": "LCD Connection (Axiom)",
     "content": "Axiomatized: the product equals 1 iff $\\prod P \\cdot \\prod Q = (\\sum_{S \\subseteq P} \\prod_{P \\setminus S} p)(\\sum_{T \\subseteq Q} \\prod_{Q \\setminus T} q)$. The clearing-of-denominators identity.",
     "significance": "supporting",
@@ -564,7 +564,7 @@
       "startLine": 295,
       "endLine": 304
     },
-    "type": "technique",
+    "type": "concept",
     "title": "No Size-2 Prime Solution (sorry)",
     "content": "If $|P| = |Q| = 2$, there's no prime solution. The cleared equation $(p_1 + p_2)(q_1 + q_2) = p_1 p_2 q_1 q_2$ has no solutions in primes.",
     "significance": "key",
@@ -587,7 +587,7 @@
       "startLine": 306,
       "endLine": 311
     },
-    "type": "technique",
+    "type": "concept",
     "title": "No (2,3) Prime Solution (sorry)",
     "content": "No prime solution with $|P| = 2$ and $|Q| = 3$. The cleared equation $(p_1 + p_2)(q_1 q_2 + q_1 q_3 + q_2 q_3) = p_1 p_2 q_1 q_2 q_3$ has no prime solutions.",
     "significance": "supporting",

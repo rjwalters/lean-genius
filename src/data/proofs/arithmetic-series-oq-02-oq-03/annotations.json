@@ -2,7 +2,10 @@
   {
     "id": "ann-face-count-def",
     "proofId": "arithmetic-series-oq-02-oq-03",
-    "range": { "startLine": 42, "endLine": 43 },
+    "range": {
+      "startLine": 42,
+      "endLine": 43
+    },
     "type": "definition",
     "title": "Face Count of the Standard Simplex",
     "content": "Defines `faceCount k j = Nat.choose (k+1) (j+1)`: the number of $j$-dimensional faces of the standard $k$-simplex $\\Delta^k$. Each $j$-face is determined by choosing $j+1$ vertices from the $k+1$ vertices of $\\Delta^k$.",
@@ -23,7 +26,10 @@
   {
     "id": "ann-special-cases",
     "proofId": "arithmetic-series-oq-02-oq-03",
-    "range": { "startLine": 46, "endLine": 59 },
+    "range": {
+      "startLine": 46,
+      "endLine": 59
+    },
     "type": "theorem",
     "title": "Special Cases of Face Counts",
     "content": "Four structural results: (1) $f_0 = k+1$ vertices, proved via `Nat.choose_one_right`. (2) $f_k = 1$ (the simplex itself), via `Nat.choose_self`. (3) $f_1 = k(k+1)/2$ edges, via `Nat.choose_two_middle`. (4) $f_j = 0$ for $j > k$, since $\\binom{k+1}{j+1} = 0$ when $j+1 > k+1$.",
@@ -43,7 +49,10 @@
   {
     "id": "ann-main-identity",
     "proofId": "arithmetic-series-oq-02-oq-03",
-    "range": { "startLine": 82, "endLine": 86 },
+    "range": {
+      "startLine": 82,
+      "endLine": 86
+    },
     "type": "theorem",
     "title": "Face Counts Equal Simplicial Numbers",
     "content": "The **main theorem**: for $j \\leq k$, $\\text{faceCount}(k, j) = \\text{simplicial}(j+1, k-j)$. Both sides equal $\\binom{k+1}{j+1}$: the face count by definition, and the simplicial number because $\\binom{(k-j)+(j+1)}{j+1} = \\binom{k+1}{j+1}$. The proof uses `congr 1; omega` to reduce to the arithmetic identity $(k-j) + (j+1) = k+1$.",
@@ -65,7 +74,10 @@
   {
     "id": "ann-total-faces",
     "proofId": "arithmetic-series-oq-02-oq-03",
-    "range": { "startLine": 98, "endLine": 108 },
+    "range": {
+      "startLine": 98,
+      "endLine": 108
+    },
     "type": "theorem",
     "title": "Total Face Count: 2^(k+1) - 1",
     "content": "The total number of proper faces of $\\Delta^k$ is $2^{k+1} - 1$. The proof reindexes using `Finset.sum_range_succ'` to shift from $\\sum_{j=0}^k \\binom{k+1}{j+1}$ to $\\sum_{i=1}^{k+1} \\binom{k+1}{i} = 2^{k+1} - \\binom{k+1}{0} = 2^{k+1} - 1$, applying Mathlib's `Nat.sum_range_choose` for the full binomial sum.",
@@ -86,7 +98,10 @@
   {
     "id": "ann-euler-char",
     "proofId": "arithmetic-series-oq-02-oq-03",
-    "range": { "startLine": 110, "endLine": 128 },
+    "range": {
+      "startLine": 110,
+      "endLine": 128
+    },
     "type": "theorem",
     "title": "Euler Characteristic of the Simplex (Fully Proved)",
     "content": "Proves χ(Δ^k) = ∑_{j=0}^k (−1)^j · f_j = 1, reflecting the contractibility of a simplex. The proof uses `Int.alternating_sum_range_choose_of_ne` (Mathlib's statement that ∑_{i=0}^n (−1)^i · C(n,i) = 0 for n ≥ 1), then splits off the i=0 term via `Finset.sum_range_succ'` to get: 1 + ∑_{j=0}^k (−1)^{j+1} · C(k+1,j+1) = 0. The shifted sum is shown to equal the negation of the target sum via `Finset.sum_congr` and the ring identity (−1)^{x+1} = −(−1)^x, and `linarith` closes the goal.",
@@ -108,12 +123,15 @@
   {
     "id": "ann-concrete-examples",
     "proofId": "arithmetic-series-oq-02-oq-03",
-    "range": { "startLine": 132, "endLine": 148 },
-    "type": "technique",
+    "range": {
+      "startLine": 132,
+      "endLine": 148
+    },
+    "type": "concept",
     "title": "Concrete Face Counts: Point to Tetrahedron",
     "content": "Verifies face counts for the first four simplices: $\\Delta^0$ (1 vertex), $\\Delta^1$ (2 vertices, 1 edge), $\\Delta^2$ (3 vertices, 3 edges, 1 triangle), $\\Delta^3$ (4 vertices, 6 edges, 4 triangles, 1 tetrahedron). Uses `simp` for simple cases and `native_decide` for computed values like $\\binom{4}{2} = 6$.",
     "mathContext": "f-vectors: $\\Delta^0: (1)$, $\\Delta^1: (2, 1)$, $\\Delta^2: (3, 3, 1)$, $\\Delta^3: (4, 6, 4, 1)$. These are rows of Pascal's triangle shifted by one position.",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": [
       "faceCount definition",
       "native_decide tactic",
@@ -128,7 +146,10 @@
   {
     "id": "ann-figurate-connections",
     "proofId": "arithmetic-series-oq-02-oq-03",
-    "range": { "startLine": 150, "endLine": 163 },
+    "range": {
+      "startLine": 150,
+      "endLine": 163
+    },
     "type": "insight",
     "title": "Figurate Numbers as Face Enumerators",
     "content": "Two elegant connections: (1) Triangular numbers count edges: $S_2(n) = \\binom{n+2}{2} = f_1(\\Delta^{n+1})$. The $n$-th triangular number is the number of edges of the $(n+1)$-simplex. (2) Tetrahedral numbers count triangular faces: $S_3(n) = \\binom{n+3}{3} = f_2(\\Delta^{n+2})$. Both proved by `simp [simplicial, faceCount]; ring_nf`.",

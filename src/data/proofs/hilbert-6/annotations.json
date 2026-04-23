@@ -25,7 +25,7 @@
       "startLine": 77,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kolmogorov Axiom 1: Normalization",
     "content": "The first Kolmogorov axiom states that the measure of the entire sample space is 1. This normalizes probabilities to lie in [0,1].\n\nIn Mathlib, this is captured by `IsProbabilityMeasure`, which requires `μ Set.univ = 1`.",
     "mathContext": "$P(\\Omega) = 1$\n\nThis represents certainty: something in the sample space must occur.",
@@ -63,7 +63,7 @@
       "startLine": 138,
       "endLine": 145
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bayes' Theorem",
     "content": "**Bayes' theorem** relates conditional probabilities in opposite directions:\n\n$P(A|B) \\cdot P(B) = P(B|A) \\cdot P(A)$\n\nThis is the foundation of Bayesian inference, allowing us to update beliefs given new evidence.",
     "mathContext": "$P(A|B) = \\frac{P(B|A) \\cdot P(A)}{P(B)}$\n\nThe 'posterior' equals the 'likelihood' times 'prior' divided by 'evidence'.",

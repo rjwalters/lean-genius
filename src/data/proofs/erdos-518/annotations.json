@@ -404,7 +404,7 @@
       "startLine": 214,
       "endLine": 229
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bound Tightness",
     "content": "**sqrt_bound_tight:**\n\nCombines the upper and lower bounds:\n\n1. **Upper bound:** √n paths always suffice (PVW 2024)\n2. **Lower bound:** √n - 1 paths may be necessary (EG 1995)\n\nThe proof pairs the two axioms: `⟨pokrovskiy_versteegen_williams, erdos_gyarfas_lower_bound⟩`\n\nThis establishes that √n is the correct answer up to lower-order terms.",
     "mathContext": "The bound is 'tight' meaning no asymptotically better bound is possible.",
@@ -431,7 +431,7 @@
       "startLine": 235,
       "endLine": 251
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Color Constraint Matters",
     "content": "**color_matters:**\n\nDemonstrates the dramatic difference between:\n\n1. **Mixed colors:** 2 paths suffice (Gerencsér-Gyárfás)\n2. **Same color:** √n paths needed (Erdős-Gyárfás, PVW)\n\nThe same-color constraint transforms a constant (2) problem into a √n problem!",
     "mathContext": "This highlights that the monochromatic constraint is not just a technicality - it fundamentally changes the problem's complexity.",
@@ -458,7 +458,7 @@
       "startLine": 257,
       "endLine": 281
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_518_summary:**\n\nCombines all results into a single theorem:\n\n1. **The conjecture is true:** ErdosGyarfasConjecture holds\n2. **Mixed colors:** 2 paths always suffice\n3. **Same color:** √n is essentially optimal (lower bound √n - 1)\n\n**Historical resolution:**\n- 1967: Gerencsér-Gyárfás (2 mixed paths)\n- 1995: Erdős-Gyárfás (2√n same-color, conjecture √n)\n- 2024: Pokrovskiy-Versteegen-Williams (√n confirmed)",
     "significance": "key",

@@ -254,7 +254,7 @@
       "startLine": 144,
       "endLine": 166
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bounds on f",
     "content": "**Basic Bounds:**\n\n**Lower:** f(n; k, l) ≥ 0 (trivial)\n\n**Upper:** f(n; k, l) ≤ n(n-1)/2 (complete graph)\n\nThe upper bound is axiomatized because it requires showing that the infimum over Turán numbers is bounded by the complete graph's edge count.\n\n**Trees (l = k-1):**\nf(n; k, k-1) ≥ (k-2)(n-1)/2\n\nFor paths, ex(n; P_k) is about this size.\n\n**Near Bipartite:**\nf(n; k, ⌊k²/4⌋) ≤ n²/4 + k\n\nThe bipartite Turán graph nearly achieves the bound.",
     "mathContext": "Bounds bracket f between trivial extremes and reveal behavior at special points.",

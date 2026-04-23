@@ -124,7 +124,7 @@
       "startLine": 162,
       "endLine": 174
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Primes are Admissible",
     "content": "**primes_admissible** is the main constructive result: the set of all primes below n is admissible. The proof is direct — given two distinct primes a and b in the filtered set, their coprimality follows from Prime.coprime_iff_not_dvd: prime a is coprime to b unless a divides b, but a prime b can only be divided by 1 or itself, so a = b, contradicting distinctness. This theorem establishes the baseline for the optimization: G(n) is at least as large as the sum of primes below n.",
     "mathContext": "The proof uses Nat.Prime.coprime_iff_not_dvd and Nat.Prime.eq_one_or_self_of_dvd from Mathlib. The omega tactic handles the arithmetic contradiction. This is a clean example of using Mathlib's prime API for a concrete combinatorial argument.",
@@ -143,7 +143,7 @@
       "startLine": 176,
       "endLine": 192
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_879_summary** combines the three main known results into a single conjunction: (1) the upper bound G(n) < H(n), (2) the lower bound G(n) > H(n) - c·n^{3/2}, and (3) the solved k=2 case of Question 2. The proof is constructive, using `exact ⟨G_upper_bound, fun n hn => G_lower_bound n hn, question2_k2⟩` to assemble the three axioms. This captures the complete state of knowledge for this open problem: tight asymptotic bounds on G(n) and partial structural information about optimal sets.",
     "mathContext": "The anonymous constructor ⟨...⟩ builds the conjunction directly from the axioms. The lambda `fun n hn => G_lower_bound n hn` wraps the universally quantified lower bound to match the conjunction's expected type.",

@@ -140,7 +140,7 @@
       "startLine": 252,
       "endLine": 279
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_836_summary** packages both main results as a conjunction: (1) ¬Question1 (vertex count is not O(r²)) and (2) the Erdős-Lovász intersection bound holds for all r ≥ 2. The proof is simply ⟨question1_false, erdos_lovasz_bound⟩, combining the two key axioms.",
     "mathContext": "The theorem type is a conjunction of the negation of Question1 and the universal statement of the Erdős-Lovász bound. The anonymous constructor ⟨·, ·⟩ packages both components cleanly.",

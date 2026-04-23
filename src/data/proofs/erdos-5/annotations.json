@@ -2,7 +2,7 @@
   {
     "id": "ann-e5-imports",
     "proofId": "erdos-5",
-    "type": "context",
+    "type": "concept",
     "title": "Mathlib Foundations",
     "content": "Imports Nat.Prime for primality, Real.Basic for ℝ and logarithm, and Topology.Basic for limit point concepts.",
     "mathContext": "The formalization works in $\\mathbb{R}$ using Mathlib's `Real.log` for the normalization $g(n) = (p_{n+1} - p_n)/\\log p_n$. The cast from $\\mathbb{Z}$ to $\\mathbb{R}$ handles the gap $p_{n+1} - p_n$ correctly even when formalized as a difference of natural numbers.",

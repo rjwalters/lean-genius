@@ -99,7 +99,7 @@
       "startLine": 158,
       "endLine": 194
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorems",
     "content": "**erdos_284_summary:** Combines the upper and lower bounds into a single conjunction:\n1. f(k) ≤ (1+ε)k/(e-1) for large k\n2. f(k) ≥ (1-ε)k/(e-1) for large k\n\nProved by ⟨f_upper_bound, f_lower_bound⟩.\n\n**erdos_284:** The main theorem, equal to erdos_284_summary. States that Erdős Problem #284 is SOLVED.",
     "mathContext": "The conjunction of upper and lower bounds is equivalent to f(k)/k → 1/(e-1), which is the asymptotic statement f(k) = (1+o(1))k/(e-1).",

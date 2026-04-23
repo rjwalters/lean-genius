@@ -139,7 +139,7 @@
       "startLine": 132,
       "endLine": 140
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kesten's Theorem (1960)",
     "content": "Harry Kesten (1960) proved that the two-parameter variant $f(\\alpha, \\beta, n)$ has an asymptotic Cauchy distribution when averaged over both $\\alpha$ and $\\beta$ uniformly on $(0,1)^2$. The proof uses the connection between continued fractions and the ergodic properties of the natural extension of the Gauss map. This landmark result in the metric theory of continued fractions remains one of the deepest applications of ergodic theory to number theory.",
     "mathContext": "$\\mu(\\{(\\alpha, \\beta) : f(\\alpha, \\beta, n) \\le c\\}) \\to \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$",
@@ -161,7 +161,7 @@
       "startLine": 149,
       "endLine": 152
     },
-    "type": "technique",
+    "type": "concept",
     "title": "One-Parameter as Special Case",
     "content": "The one-parameter function satisfies $f(\\alpha, n) = f(\\alpha, 0, n)$: it is the two-parameter variant with $\\beta = 0$. This relationship shows why Problem #1002 is a natural refinement of Kesten's theorem — but fixing $\\beta = 0$ eliminates the averaging that makes Kesten's proof work. The conditional distribution (given $\\beta = 0$) may differ from the unconditional Cauchy distribution.",
     "mathContext": "$f(\\alpha, n) = f(\\alpha, 0, n)$, i.e., the one-parameter case is $\\beta = 0$",
@@ -183,7 +183,7 @@
       "startLine": 176,
       "endLine": 179
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Weyl Equidistribution Theorem",
     "content": "Hermann Weyl's theorem (1916): for irrational $\\alpha$, the sequence $(\\{n\\alpha\\})_{n \\ge 1}$ is equidistributed modulo 1, meaning $\\frac{1}{N}\\#\\{1 \\le n \\le N : \\{n\\alpha\\} \\in [a,b)\\} \\to b - a$ as $N \\to \\infty$. This implies $\\frac{1}{n}\\sum_{k=1}^{n}(1/2 - \\{\\alpha k\\}) \\to 0$, so the inner sum grows sublinearly. The $\\log n$ normalization captures the precise growth rate.",
     "mathContext": "$\\frac{1}{N}\\#\\{n \\le N : \\{n\\alpha\\} \\in [a,b)\\} \\to b - a$ (Weyl 1916)",
@@ -204,7 +204,7 @@
       "startLine": 160,
       "endLine": 167
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Oscillation for Fixed alpha",
     "content": "For fixed irrational $\\alpha$, the function $n \\mapsto f(\\alpha, n)$ oscillates: it does not converge to a limit. This oscillation reflects the arithmetic structure of $\\alpha$'s continued fraction expansion — the partial quotients cause the sum to swing as denominators of convergents are reached. The distribution question asks about the statistical behavior over *all* $\\alpha$, not a single fixed one.",
     "mathContext": "For fixed irrational $\\alpha$, $f(\\alpha, n)$ does not converge as $n \\to \\infty$",
@@ -226,7 +226,7 @@
       "startLine": 160,
       "endLine": 167
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Boundedness and Continued Fraction Bound",
     "content": "Two partial results: (1) $f(\\alpha, n)$ is bounded for each $\\alpha \\in (0,1)$, ensuring no extreme outliers, and (2) $|S(\\alpha, n)| \\le C \\log n$ for irrational $\\alpha$, where $C$ depends on $\\alpha$'s continued fraction expansion. This bound follows from the classical estimate $|\\sum_{k=1}^{n} e^{2\\pi i k\\alpha}| \\le \\cot(\\pi \\|\\alpha\\|/2)$ and the three-distance theorem. These bounds justify the $\\log n$ normalization.",
     "mathContext": "$|f(\\alpha, n)| \\le C(\\alpha)$ and $|S(\\alpha, n)| \\le C(\\alpha) \\log n$",

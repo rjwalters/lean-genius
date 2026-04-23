@@ -2,7 +2,7 @@
   {
     "id": "ann-e533-imports",
     "proofId": "erdos-533",
-    "type": "context",
+    "type": "concept",
     "title": "Mathlib Foundations",
     "content": "Imports Finset, Nat, Real, and tactic libraries for finite graph definitions and edge counting.",
     "mathContext": "Graphs on $n$ vertices are modeled using `Fin n` for vertices and `Finset (Fin n)` for vertex subsets. The `Real` import supports the density parameter $\\delta$ and edge count comparisons like $\\delta n^2 \\leq |E(G)|$.",

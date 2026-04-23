@@ -115,7 +115,7 @@
       "startLine": 146,
       "endLine": 154
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #966: SOLVED",
     "content": "**erdos_966:**\n\n```lean\ntheorem erdos_966 (k r : ℕ) (hk : k ≥ 2) (hr : r ≥ 2) :\n    ∃ A : Set ℕ,\n      APFreeOfLength A (k + 1) ∧\n      forcesMonochromaticAP A r k :=\n  spencer_theorem k r hk hr\n```\n\n**The answer is YES** for all k, r ≥ 2. Such sets exist!",
     "significance": "key",
@@ -170,7 +170,7 @@
       "startLine": 214,
       "endLine": 228
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Specific Instantiations",
     "content": "**case_k2_r2:**\nThere exists A with no 3-AP, but every 2-coloring has a monochromatic 2-AP.\n(Note: Any 2 distinct elements form a \"2-AP\", so this is nearly trivial.)\n\n**case_k3_r2:**\nThere exists A with no 4-AP, but every 2-coloring has a monochromatic 3-AP.\nThis is more interesting - avoiding 4-APs while forcing 3-APs in any 2-coloring.",
     "significance": "supporting",
@@ -207,7 +207,7 @@
       "startLine": 260,
       "endLine": 269
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Singleton Sets are AP-Free",
     "content": "**singleton_AP_free:**\n\nAny singleton {n} is trivially k-AP-free for k ≥ 2.\n\n**Proof Idea:**\nA k-AP with d > 0 has at least 2 distinct elements: a and a+d. A singleton can't contain both.\n\nThis shows the base case: extreme AP-avoidance is easy (just use tiny sets).",
     "significance": "supporting",
@@ -225,7 +225,7 @@
       "startLine": 271,
       "endLine": 281
     },
-    "type": "technique",
+    "type": "concept",
     "title": "AP Cardinality",
     "content": "**AP_card:**\n\nAn arithmetic progression {a, a+d, ..., a+(k-1)d} with d > 0 has exactly k elements.\n\n**Proof:**\nThe map i ↦ a + i·d is injective when d > 0 (different i give different values). So the image of {0, ..., k-1} has cardinality k.",
     "significance": "supporting",
@@ -243,7 +243,7 @@
       "startLine": 287,
       "endLine": 308
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_966_summary:**\n\nCombines all main results:\n1. Existence of the required set A\n2. A is (k+1)-AP-free\n3. A forces monochromatic k-APs in any r-coloring\n4. A has zero upper density\n\nThis captures the complete solution to Erdős Problem #966.",
     "significance": "key",

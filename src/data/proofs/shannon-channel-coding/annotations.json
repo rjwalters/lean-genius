@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 10
     },
-    "type": "context",
+    "type": "concept",
     "title": "Shannon's 1948 Revolution",
     "content": "Claude Shannon's 1948 paper 'A Mathematical Theory of Communication' is one of the most influential scientific papers ever written. It established information theory as a mathematical discipline and answered the fundamental question of telecommunications: can we communicate reliably over a noisy channel? Shannon's surprising answer was yes — at any rate below channel capacity. This overturned the engineering intuition that noise forces arbitrarily slow communication. The paper introduced entropy, mutual information, and channel capacity as rigorous mathematical quantities.",
     "mathContext": "Shannon (1948): reliable communication is possible at rate $R$ iff $R < C = \\max_{p(x)} I(X;Y)$",

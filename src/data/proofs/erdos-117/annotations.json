@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 24
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Statement: Covering Groups by Abelian Subgroups",
     "content": "Erdős Problem #117 asks: let $h(n)$ be the minimum number of Abelian subgroups needed to cover any group $G$ with the property that every subset of size $> n$ contains two distinct commuting elements. Estimate $h(n)$.\n\nPyber (1987) proved $c_1^n < h(n) < c_2^n$ for constants $c_2 > c_1 > 1$, establishing exponential growth. The problem remains open — determining the optimal base of the exponential is unknown.",
     "mathContext": "$h(n)$: min Abelian subgroups to cover any $G$ with the $n$-commuting property. Known: $c_1^n < h(n) < c_2^n$ (Pyber 1987).",

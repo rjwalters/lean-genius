@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 98
     },
-    "type": "context",
+    "type": "concept",
     "title": "Proof Chain Overview and Mathematical Background",
     "content": "Documents the complete Abel-Ruffini proof chain as realized in this formalization. The chain proceeds: (1) $A_5$ is simple (Mathlib), (2) $S_n$ ($n \\geq 5$) is not solvable (parent OQ-04 file), (3) solvable by radicals $\\Rightarrow$ solvable Galois group (Mathlib's `solvableByRad.isSolvable'`), (4) $\\text{Gal}(x^5 - 4x + 2/\\mathbb{Q}) \\cong S_5$ (this file), (5) therefore roots of $x^5 - 4x + 2$ cannot be expressed by radicals. This is the final link: a concrete polynomial witness.\n\nLines 63-91 contain three computational lemmas proved by `native_decide` that must appear before `open scoped Classical` to remain decidable: `perm_fin5_order5_order3_not_commute` (no order-5 and order-3 elements commute in $S_5$, used in `no_subgroup_order_15`), `perm_fin5_order_dvd5_sign_one` (elements of $S_5$ whose order divides 5 are even), and `transposition_not_normalizing_5cycle` (no transposition normalizes any 5-cycle in $S_5$, used in the Sylow elimination of orders 10, 20, 40). These are not vestigial — all three feed into the main proof.",
     "mathContext": "The Abel-Ruffini theorem (1824/1832): there is no general algebraic solution in radicals for polynomial equations of degree $\\geq 5$. This file provides a concrete witness: $p(x) = x^5 - 4x + 2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Abel-Ruffini theorem",
       "Galois theory",
@@ -55,7 +55,7 @@
       "startLine": 145,
       "endLine": 170
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Eisenstein's Irreducibility Criterion at p = 2",
     "content": "Applies Eisenstein's criterion with the prime ideal $(2) \\subset \\mathbb{Z}$ to prove $p$ is irreducible over $\\mathbb{Z}$. The criterion requires: (1) leading coefficient $1 \\notin (2)$, (2) all lower coefficients $0, 0, 0, -4, 2 \\in (2)$, (3) constant term $2 \\notin (4) = (2)^2$, (4) positive degree. Lean's `Polynomial.irreducible_of_eisenstein_criterion` requires also that $p$ is primitive, which follows from monicity. The key tactic `interval_cases k` enumerates all coefficient indices $k < 5$ and `norm_num` discharges each divisibility check.",
     "mathContext": "Eisenstein at $(2)$: $2 \\nmid 1$ (leading), $2 \\mid 0, 0, 0, -4, 2$ (lower), $4 \\nmid 2$ (constant). Therefore $x^5 - 4x + 2$ is irreducible over $\\mathbb{Z}$.",
@@ -80,7 +80,7 @@
       "startLine": 171,
       "endLine": 183
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Transfer to Q-Irreducibility via Gauss's Lemma",
     "content": "Transfers irreducibility from $\\mathbb{Z}[X]$ to $\\mathbb{Q}[X]$ using Gauss's lemma: a primitive polynomial over $\\mathbb{Z}$ is irreducible over $\\mathbb{Z}$ if and only if it is irreducible over $\\mathbb{Q}$. Monicity implies primitivity (the GCD of coefficients divides the leading coefficient 1). The `convert` tactic handles the identification of $p \\in \\mathbb{Q}[X]$ with the image of $p_{\\text{int}} \\in \\mathbb{Z}[X]$ under the map $\\mathbb{Z} \\hookrightarrow \\mathbb{Q}$.",
     "mathContext": "Gauss's lemma: for primitive $f \\in \\mathbb{Z}[X]$, $f$ irreducible over $\\mathbb{Z} \\iff f$ irreducible over $\\mathbb{Q}$. Since $p$ is monic (hence primitive), $\\mathbb{Z}$-irreducibility gives $\\mathbb{Q}$-irreducibility.",
@@ -103,7 +103,7 @@
       "startLine": 184,
       "endLine": 207
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Structural Properties: Degree, Separability, Root Set",
     "content": "Establishes the key structural facts: $\\deg(p) = 5$ (by `compute_degree!`), $p$ is monic, $p$ is separable (automatic for irreducible polynomials over $\\mathbb{Q}$, since $\\text{char}(\\mathbb{Q}) = 0$), and $|\\text{rootSet}(p)| = 5$ (a separable polynomial of degree $n$ has exactly $n$ roots in its splitting field). The root set cardinality is critical: it establishes that $\\text{Gal}$ acts on a 5-element set, hence embeds into $S_5$.",
     "mathContext": "$\\deg(p) = 5$, $p$ monic, $p$ separable (char 0). $|\\{\\alpha \\in K : p(\\alpha) = 0\\}| = 5$ where $K$ is the splitting field. Therefore $\\text{Gal}(p/\\mathbb{Q}) \\hookrightarrow \\text{Perm}(\\text{rootSet}) \\cong S_5$.",
@@ -128,7 +128,7 @@
       "startLine": 208,
       "endLine": 231
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Galois Group Order Bounds: 5 | |Gal| and |Gal| | 120",
     "content": "Establishes tight bounds on $|\\text{Gal}|$. The lower bound $5 \\mid |\\text{Gal}|$ uses Mathlib's `Polynomial.Gal.prime_degree_dvd_card`: for an irreducible polynomial of prime degree $p$, the Galois group acts transitively on roots, so $p \\mid |\\text{Gal}|$ by the orbit-stabilizer theorem. The upper bound $|\\text{Gal}| \\mid 120$ uses the injective `galActionHom` embedding $\\text{Gal} \\hookrightarrow \\text{Perm}(\\text{rootSet})$: the image is a subgroup, so $|\\text{Gal}|$ divides $|S_5| = 5! = 120$. Together: $|\\text{Gal}| \\in \\{5, 10, 15, 20, 30, 40, 60, 120\\}$.",
     "mathContext": "$5 \\mid |\\text{Gal}|$ (orbit-stabilizer for transitive action on 5 roots) and $|\\text{Gal}| \\mid 5! = 120$ (embedding into $S_5$). Combined: $|\\text{Gal}| \\in \\{5, 10, 15, 20, 30, 40, 60, 120\\}$.",
@@ -152,7 +152,7 @@
       "startLine": 232,
       "endLine": 264
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Polynomial Evaluations: Sign Changes Locating 3 Real Roots",
     "content": "Formally computes $p(-2) = -22$, $p(-1) = 5$, $p(0) = 2$, $p(1) = -1$, $p(2) = 26$ using `unfold p; simp [...]; ring`. The three sign changes $(-22 \\to 5, 2 \\to -1, -1 \\to 26)$ locate real roots in $(-2,-1)$, $(0,1)$, and $(1,2)$ by the intermediate value theorem. Combined with the derivative $p'(x) = 5x^4 - 4$ having exactly 2 real critical points, $p$ has exactly 3 real roots and 2 complex conjugate roots. This is computational support for the theorem $|\\text{Gal}| = 120$: complex conjugation swaps the 2 non-real roots (a transposition), which together with the Sylow elimination argument establishes the full Galois group.",
     "mathContext": "$p(-2) = -22 < 0$, $p(-1) = 5 > 0$, $p(0) = 2 > 0$, $p(1) = -1 < 0$, $p(2) = 26 > 0$. Three sign changes $\\Rightarrow$ at least 3 real roots. $p'(x) = 5x^4 - 4$ has 2 real roots $\\Rightarrow$ at most 3 real roots. Therefore exactly 3 real, 2 complex conjugate roots.",
@@ -177,7 +177,7 @@
       "startLine": 265,
       "endLine": 290
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Part V(b): 5-Cycle c₅ and the Key Group Theory Claim",
     "content": "Part V(b) (lines 265-290) documents the classical group-theoretic fact: a transitive subgroup of $S_p$ ($p$ prime) containing a transposition equals $S_p$ (the Key Group Theory Lemma). The section defines `c5 : Equiv.Perm (Fin 5)` — the explicit 5-cycle $(0\\;1\\;2\\;3\\;4)$ constructed as the modular successor map $i \\mapsto (i+1) \\bmod 5$ with its inverse $i \\mapsto (i+4) \\bmod 5$.\n\nThe claim is: 5-cycle + transposition generates $S_5$, which would follow from: conjugating the transposition by powers of $c_5$ yields all adjacent transpositions $(k\\;k{+}1)$, then star transpositions $(0\\;k)$, then all transpositions $(a\\;b)$. Since the Galois group acts transitively on the 5 roots (by prime degree) and contains a transposition (from complex conjugation or the discriminant sign argument), this would imply $\\text{Gal} = S_5$ directly. The actual proof of $|\\text{Gal}| = 120$ instead uses Sylow elimination (Part V(d)-(f)), making the `c5` definition available but the generation theorem unused.",
     "mathContext": "$c_5: i \\mapsto (i+1) \\bmod 5$. Key claim (not formalized in this version): $\\langle c_5, (0\\;1) \\rangle = S_5$. Used for: if $\\text{Gal}$ acts transitively on 5 roots and contains a transposition, then $\\text{Gal} \\supseteq \\langle c_5, \\tau \\rangle = S_5$.",
@@ -201,7 +201,7 @@
       "startLine": 306,
       "endLine": 336
     },
-    "type": "technique",
+    "type": "concept",
     "title": "galToPerm5: Injection Infrastructure from Gal to S₅",
     "content": "Constructs the faithful injection `galToPerm5 : p.Gal →* Perm(Fin 5)` that embeds the Galois group into $S_5$. The construction is a two-stage composition: (1) `galPermHomAux` maps $\\text{Gal}$ to $\\text{Perm}(\\text{rootSet})$ using `galActionAux` (direct action, avoiding an instance diamond with `galAction` when the splitting field is the target), proved injective via `ext` on root images. (2) `Equiv.permCongr` transfers along the equivalence $\\text{rootSet} \\simeq \\text{Fin}\\;5$ (from `p_rootSet_card`). Also defines `galSign σ = \\text{sign}(\\text{galToPerm5}\\;σ)` for the discriminant argument.",
     "mathContext": "$\\text{galToPerm5}: \\text{Gal}(p/\\mathbb{Q}) \\hookrightarrow \\text{Perm}(\\text{Fin}\\;5) \\cong S_5$. Composition: $\\text{Gal} \\xrightarrow{\\text{galPermHomAux}} \\text{Perm}(\\text{rootSet}) \\xrightarrow{\\text{permCongr}} \\text{Perm}(\\text{Fin}\\;5)$.",
@@ -251,7 +251,7 @@
       "startLine": 508,
       "endLine": 634
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Vandermonde Product Infrastructure and Permutation Identity",
     "content": "Builds the Vandermonde machinery for the discriminant argument. **Root enumeration** (`rootEnum_p`): canonical bijection $\\text{Fin}\\;5 \\to \\text{rootSet}$ via `Fintype.equivOfCardEq`, with proofs that each image is a root (`rootEnum_p_is_root`) and the map is injective (`rootEnum_p_injective`, from separability). **Vandermonde product** (`vandermondeProduct_p`): $\\Delta = \\det(V(\\text{rootEnum\\_p})) = \\prod_{i<j}(\\alpha_j - \\alpha_i)$, proved nonzero since distinct roots give no zero differences. **Galois permutation** (`gal_permutes_roots_p`): $\\sigma(\\alpha_i) = \\alpha_{\\text{galToPerm5}(\\sigma)(i)}$. **Vandermonde permutation identity**: $\\det(V(v \\circ \\pi)) = \\text{sign}(\\pi) \\cdot \\det(V(v))$, proved via the matrix identity $V(v \\circ \\pi) = V(v)[\\pi, \\text{id}]$ and `Matrix.det_permute`.",
     "mathContext": "$\\Delta = \\det(V(\\alpha_0, \\ldots, \\alpha_4)) = \\prod_{i<j}(\\alpha_j - \\alpha_i) \\neq 0$. Key identity: $\\sigma(\\Delta) = \\det(V(\\sigma \\circ \\alpha)) = \\text{sign}(\\sigma) \\cdot \\Delta$.",
@@ -302,7 +302,7 @@
       "startLine": 1417,
       "endLine": 1431
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Non-Solvability: S_5 to Gal Transfer",
     "content": "Two-step argument: (1) $S_5$ is not solvable, proved by `Equiv.Perm.not_solvable` which requires $5 \\leq |\\text{Fin}\\;5|$ (since $S_n$ is non-solvable for $n \\geq 5$, because the derived series $S_n \\supset A_n \\supset \\{e\\}$ stabilizes at the simple group $A_n$). (2) Transfer to $\\text{Gal}$: if $\\text{Gal}$ were solvable, then $S_5$ would be solvable via the surjective image of the isomorphism (`solvable_of_surjective`), contradiction. The surjectivity is extracted from the `MulEquiv` using `iso.apply_symm_apply`.",
     "mathContext": "$S_5$ is not solvable since $A_5$ is simple and non-abelian. $\\text{Gal} \\cong S_5$ $\\Rightarrow$ $\\text{Gal}$ not solvable. Formally: $\\text{Gal}$ solvable $\\xrightarrow{\\text{surjection}}$ $S_5$ solvable, contradiction.",
@@ -377,7 +377,7 @@
       "startLine": 337,
       "endLine": 507
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sylow Theory: No Subgroups of Order 15 or 30 in S₅",
     "content": "`no_subgroup_order_15` and `no_subgroup_order_30` rule out $|\\text{Gal}| = 15$ and $|\\text{Gal}| = 30$. For order 15 = 3·5: both Sylow subgroups $P_5$ and $P_3$ are unique (hence normal), so elements of order 5 and order 3 commute. But `native_decide` verifies no order-5 and order-3 elements commute in $S_5$, contradiction. For order 30: a subgroup of order 30 in $S_5$ would have index 4, giving a homomorphism $S_5 \\to S_4$ whose kernel is a normal subgroup of $S_5$ contained in the order-30 subgroup — but $A_5$ is simple, so the kernel must be trivial or $A_5$, and neither works.",
     "mathContext": "Order 15: unique $P_5$ and $P_3$ (Sylow) $\\Rightarrow$ $P_5 P_3 \\cong \\mathbb{Z}/5 \\times \\mathbb{Z}/3 \\cong \\mathbb{Z}/15$ (cyclic, abelian). But $S_5$ has no cyclic subgroup of order 15 (`native_decide`). Order 30: $[S_5 : H] = 4$ gives $S_5 \\to S_4$ with kernel $K \\trianglelefteq S_5$, $K \\subseteq H$. Since $A_5$ is simple, $K \\in \\{\\{e\\}, A_5\\}$. $K = A_5$ impossible ($|A_5| = 60 > 30 = |H|$). $K = \\{e\\}$ gives $S_5 \\hookrightarrow S_4$, impossible by cardinality.",
@@ -430,7 +430,7 @@
       "startLine": 1285,
       "endLine": 1347
     },
-    "type": "technique",
+    "type": "concept",
     "title": "|Gal| ≠ 60: Excluding A₅ via Odd Permutation",
     "content": "The most intricate case elimination: $|\\text{Gal}| \\neq 60$. A subgroup of $S_5$ of order 60 must be contained in $A_5$ (the unique index-2 subgroup). Proof by contradiction: if some element of the Galois image lies outside $A_5$, then the sign homomorphism $\\text{signG}: \\text{Gal} \\to \\mathbb{Z}^\\times$ has a non-trivial kernel $K = \\text{Gal} \\cap A_5$ of index 2, hence $|K| = 30$. But `no_subgroup_order_30` shows $S_5$ has no subgroup of order 30 — contradiction. This forces all Galois elements into $A_5$, contradicting `gal_has_odd_perm`. The argument elegantly bootstraps the order-30 impossibility into the order-60 case.",
     "mathContext": "$|\\text{Gal}| = 60 \\Rightarrow \\text{Im}(\\text{galToPerm5}) \\leq A_5$ (unique order-60 subgroup). But $\\exists \\sigma \\in \\text{Gal}$ with $\\text{sign}(\\text{galToPerm5}(\\sigma)) = -1$ (`gal_has_odd_perm`), contradiction.",
@@ -480,7 +480,7 @@
       "startLine": 635,
       "endLine": 826
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Discriminant Computation: Δ² = -212144 (Tour de Force)",
     "content": "`vandermondeProduct_sq_val` proves that the Vandermonde product squared equals $-212144$ in the splitting field. This is the quantitative heart of the whole proof — a ~100-line computation that establishes $\\Delta^2 < 0$, which forces the discriminant sign argument.\n\nThe proof uses the **derivative product identity**: for a separable polynomial $f$ with roots $\\alpha_0, \\ldots, \\alpha_{n-1}$, we have $\\prod_i f'(\\alpha_i) = (-1)^{n(n-1)/2} \\text{disc}(f)$ (up to sign). More precisely:\n\n1. **Factorization** (`p_SF_eq_prod_linear`): In the splitting field, $p_{SF} = \\prod_{i<5}(X - \\alpha_i)$.\n2. **Derivative evaluation** (`eval_deriv_at_root`): $p'(\\alpha_i) = \\prod_{j \\neq i}(\\alpha_i - \\alpha_j)$.\n3. **Vandermonde-derivative identity** (`vp_sq_eq_ordered_diff`): $\\Delta^2 = \\prod_i p'(\\alpha_i)$.\n4. **Vieta product** (`prod_roots_val`): $\\prod_i \\alpha_i = -2$ (from constant term of $p$).\n5. **Key identity** (`vp_sq_times_prod`): $\\Delta^2 \\cdot (-2) = \\prod_i(16\\alpha_i - 10)$.\n6. **Clever substitution**: $16\\alpha_i - 10 = -(16)(\\frac{5}{8} - \\alpha_i)$, so $\\prod_i(16\\alpha_i - 10) = (-16)^5 \\cdot p(\\frac{5}{8})$.\n7. **Arithmetic** (`p_eval_5_8'`): $p(\\frac{5}{8}) = -\\frac{13259}{32768}$, giving $(-16)^5 \\cdot p(\\frac{5}{8}) = 424288$.\n8. **Solve for Δ²**: $\\Delta^2 \\cdot (-2) = 424288 \\Rightarrow \\Delta^2 = -212144$.\n\nThe evaluation at $x = \\frac{5}{8}$ is the magic trick: it converts a product over all roots into a polynomial evaluation, bypassing the need to compute any root explicitly. The entire argument is purely algebraic — no numerical computation of roots needed.",
     "mathContext": "$\\Delta^2 = \\prod_i p'(\\alpha_i) = \\prod_i \\prod_{j \\neq i}(\\alpha_i - \\alpha_j)$ (derivative identity). Then $\\Delta^2 \\cdot \\prod(\\alpha_i) = \\prod(16\\alpha_i - 10) = (-16)^5 \\cdot p(5/8) = (-1048576) \\cdot (-13259/32768) = 424288$. Since $\\prod(\\alpha_i) = -2$: $\\Delta^2 = 424288/(-2) = -212144 < 0$.",
@@ -506,7 +506,7 @@
       "startLine": 827,
       "endLine": 908
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Galois Group Contains an Odd Permutation (Discriminant Sign Argument)",
     "content": "The key theorem `gal_has_odd_perm` proves that the Galois group of $x^5-4x+2$ contains an odd permutation, meaning $\\text{Gal} \\not\\subset A_5$.\n\nThe proof is a beautiful application of the Fundamental Theorem of Galois Theory (FTGT): assume for contradiction that all $\\sigma \\in \\text{Gal}$ are even permutations ($\\text{sign}(\\sigma) = +1$). By `gal_acts_on_vandermondeProduct_p`, $\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta = \\Delta$ for all $\\sigma$. So the Vandermonde product $\\Delta$ is fixed by the entire Galois group. By the FTGT, $\\Delta \\in \\mathbb{Q}$ — it lies in the fixed field of $\\text{Gal}$, which is $\\mathbb{Q}$ since the extension is Galois. Thus $\\Delta = q$ for some $q \\in \\mathbb{Q}$, giving $\\Delta^2 = q^2 \\geq 0$. But `vandermonde_sq_eq_disc_p` gives $\\Delta^2 = \\text{disc}(p)$ and `disc_p_neg` gives $\\text{disc}(p) < 0$, contradicting $q^2 \\geq 0$.\n\nThis proof connects three mathematical threads: the Vandermonde determinant and alternating functions, the Fundamental Theorem of Galois Theory (fixed fields), and the sign criterion for discriminants. The discriminant $\\text{disc}(x^5-4x+2) = -212144 < 0$ is negative precisely because the polynomial has an odd number of pairs of complex conjugate roots (here, 1 pair), which makes $\\Delta$ purely imaginary rather than real.",
     "mathContext": "Theorem: $\\exists \\sigma \\in \\text{Gal}(p/\\mathbb{Q}),\\, \\text{sign}(\\sigma) = -1$. Proof by contradiction: if all signs are $+1$, then $\\sigma(\\Delta) = \\Delta$ for all $\\sigma$, so $\\Delta \\in \\mathbb{Q}$ (FTGT). Then $\\Delta^2 = q^2 \\geq 0$, contradicting $\\Delta^2 = \\text{disc}(p) = -212144 < 0$.",
@@ -533,7 +533,7 @@
       "startLine": 1249,
       "endLine": 1347
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Case Elimination: |Gal| ≠ 15 and |Gal| ≠ 30",
     "content": "`gal_card_ne_15` and `gal_card_ne_30` prove that the Galois group cannot have order 15 or 30, narrowing the candidates to $\\{60, 120\\}$. Both proofs follow the same pattern: construct the embedding $\\phi : \\text{Gal} \\hookrightarrow S_5$ via `galActionHom` composed with the root-set/Fin 5 equivalence, then show that the image subgroup has the given cardinality, and apply the previously proved `no_subgroup_order_15` or `no_subgroup_order_30` to derive a contradiction.\n\nThe order-15 elimination uses Sylow theory: a subgroup of order 15 = 3·5 would have unique Sylow 3- and 5-subgroups (by index constraints in $S_5$), forcing it to be cyclic — but $S_5$ has no element of order 15 (largest element order in $S_5$ is $\\text{lcm}(1,2,3,4,5) = 60$, but 15 = lcm(3,5) requires a permutation with a 3-cycle and a disjoint 5-cycle, impossible on 5 elements). The order-30 elimination uses the simplicity of $A_5$: a subgroup of order 30 = $|A_5|/2$ would be a normal subgroup of $A_5$ of index 2, contradicting $A_5$'s simplicity.",
     "mathContext": "$|G| \\neq 15$: no subgroup of $S_5$ has order 15 (Sylow theory — unique $P_3$, $P_5$ forces cyclic, but no element of order 15 in $S_5$). $|G| \\neq 30$: $A_5$ is simple with $|A_5| = 60$, so no index-2 subgroup exists in $A_5$.",
@@ -559,7 +559,7 @@
       "startLine": 909,
       "endLine": 996
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Complex Conjugation as Galois Automorphism: The Key Original Technique",
     "content": "The proof's most original contribution: constructing a Galois automorphism from complex conjugation, entirely avoiding Dedekind's theorem. The construction: (1) `IsAlgClosed.lift` embeds $SF \\hookrightarrow \\mathbb{C}$, (2) `starRingEnd \\mathbb{C}$ (complex conjugation) is packaged as a $\\mathbb{Q}$-algebra homomorphism, (3) the composition is restricted back to $SF$ via `AlgHom.restrictNormal'` yielding $\\sigma_{\\text{conj}} \\in \\text{Gal}(p)$, (4) the sign of $\\sigma_{\\text{conj}}$ is $-1$ by contradiction: if $+1$, then $\\sigma_{\\text{conj}}(\\Delta) = \\Delta$, so $\\text{sfEmb}(\\Delta) \\in \\mathbb{R}$ (conjugation-invariant), but $\\text{sfEmb}(\\Delta)^2 = -212144 < 0$ contradicts $r^2 \\geq 0$. The involutory property $\\sigma_{\\text{conj}}^2 = 1$ confirms it acts as a transposition.",
     "mathContext": "$SF \\xrightarrow{\\text{lift}} \\mathbb{C} \\xrightarrow{\\bar{z}} \\mathbb{C} \\xrightarrow{\\text{restrict}} SF$ gives $\\sigma_{\\text{conj}} \\in \\text{Gal}(p/\\mathbb{Q})$ with $\\sigma^2 = 1$, $\\text{sign}(\\sigma) = -1$.",
@@ -584,7 +584,7 @@
       "startLine": 998,
       "endLine": 1341
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sylow Elimination: Transposition vs Unique Normal Sylow 5-Subgroup",
     "content": "Proves $3 \\mid |\\text{Gal}|$ by eliminating non-3-divisible orders $\\{5, 10, 20, 40\\}$. The uniform argument: at each candidate order, the unique Sylow 5-subgroup is normal, so every element normalizes it — but `native_decide` verifies no transposition in $S_5$ normalizes any 5-cycle, contradicting `gal_has_transposition`. **Order 5**: 5-cycles are even, contradicting the odd transposition. **Orders 10, 20, 40**: The Frobenius group $F_{20} = \\text{Norm}_{S_5}(\\langle c_5 \\rangle)$ contains no transpositions. Unique Sylow 5-subgroup at these orders forces the transposition to normalize a 5-cycle — impossible. **Synthesis** (`three_dvd_gal_card`): $|\\text{Gal}| \\notin \\{5,10,20,40\\}$ with $|\\text{Gal}| \\mid 120$ and $5 \\mid |\\text{Gal}|$ gives $3 \\mid |\\text{Gal}|$.",
     "mathContext": "For $n \\in \\{5,10,20,40\\}$: $H \\leq S_5$, $|H| = n$, $5 \\mid |H|$ $\\Rightarrow$ unique $P_5 \\trianglelefteq H$. Transposition $\\tau \\in H$ must normalize $P_5$, but no $\\tau \\in S_5$ normalizes any 5-cycle. Therefore $|\\text{Gal}| \\notin \\{5,10,20,40\\}$.",

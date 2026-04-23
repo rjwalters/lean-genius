@@ -105,7 +105,7 @@
     "title": "Number of Parity Cases for a k-Cycle",
     "content": "Defines parityCases k = 2^k as the number of distinct parity sequences to check when ruling out k-cycles by direct case analysis. Each of the k orbit elements can independently be odd or even (though the Collatz structure constrains which sequences are valid), giving at most 2^k patterns to verify. The parity_cases_lower_bound theorem proves this grows at least linearly.",
     "mathContext": "$$\\text{parityCases}(k) = 2^k$$\nFor $k = 4$: 16 patterns; $k = 10$: 1024; $k = 20$: $\\sim 10^6$.\n\nIn practice, many patterns are impossible (e.g., if $n$ is odd then $n+1$ must be even), but even after filtering, the count grows exponentially — ruling out large $k$ by enumeration is infeasible.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "parity sequence",
       "exponential complexity",

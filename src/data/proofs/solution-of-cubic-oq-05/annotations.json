@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 49
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Header and Mathematical Context",
     "content": "The file imports `Mathlib`, `Proofs.SolutionOfCubic` (Cardano's formula, Wiedijk #37), and `Proofs.GeneralQuartic` (Ferrari's method, Wiedijk #46). The module header documents the full arithmetic derivation of the Tschirnhaus reduction: substituting $m = t - 5p/6$ into the resolvent cubic $8m^3 + 20pm^2 + (16p^2-8r)m + (4p^3-4pr-q^2) = 0$ eliminates the quadratic term (coefficient: $8(-3 \\cdot 5p/6) + 20p = 0$) and produces the coefficients $P_r = -p^2/12 - r$ and $Q_r = pr/3 - p^3/108 - q^2/8$.",
     "mathContext": "Ferrari's resolvent cubic arises from the depressed quartic $y^4 + py^2 + qy + r = 0$ via the substitution $y^2 + m = \\sqrt{\\ldots}$. The resolvent root $m_0$ enables completing-the-square twice to factor the quartic into two quadratics.",
@@ -98,7 +98,7 @@
       "startLine": 110,
       "endLine": 133
     },
-    "type": "technique",
+    "type": "concept",
     "title": "FTA Existence: Every Resolvent Cubic Has a Root",
     "content": "Two existence theorems proved via the Fundamental Theorem of Algebra:\n\n**`depressed_resolvent_has_root`**: The monic depressed cubic $t^3 + P_r t + Q_r$ has a root over $\\mathbb{C}$. The proof:\n1. Show the degree-3 coefficient is nonzero (`simp` + `norm_num` on the explicit coefficient formula)\n2. Deduce the degree is nonzero\n3. Apply `IsAlgClosed.exists_root` — valid because $\\mathbb{C}$ is algebraically closed\n\n**`resolvent_has_root_via_tschirnhaus`**: Immediately derives that the full resolvent cubic also has a root, by lifting the depressed root via $m = t_0 - 5p/6$.\n\nThis mirrors the pattern in `GeneralQuartic.resolvent_cubic_has_root` — a systematic technique for proving polynomial roots exist in $\\mathbb{C}$ without constructing them explicitly.",
     "mathContext": "$\\mathbb{C}$ is algebraically closed (this is the FTA). The instance `IsAlgClosed ℂ` in Mathlib provides `IsAlgClosed.exists_root : p.degree ≠ 0 → ∃ x, p.eval x = 0`. The degree-3 coefficient of `depressedCubic P_r Q_r` is the coefficient of $X^3$ in $X^3 + C P_r \\cdot X + C Q_r$, which equals 1.",
@@ -121,7 +121,7 @@
       "startLine": 143,
       "endLine": 183
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Numerical Parameter Verification",
     "content": "Five concrete verifications:\n\n1. **`params_p0_q2_r0`**: When $p=0$, the Tschirnhaus shift vanishes, $P_r = 0$, and $Q_r = -1/2$. The resolvent cubic is $8m^3 - 4 = 0$ (root $m = \\sqrt[3]{1/2}$) and the depressed form is $t^3 - 1/2 = 0$ — they agree since there's no shift.\n\n2. **`params_p_neg1_q0_r0`**: When $p=-1$, the shift is $-5/6$, $P_r = -1/12$, $Q_r = 1/108$.\n\n3. **`identity_at_t1_p0`**: Evaluates both sides at $t=1$, $p=0$, $q=2$, $r=0$ — both equal 4.\n\n4. **`identity_at_t2_p0_q60`**: Evaluates both sides at $t=2$, $p=0$, $q=60$, $r=0$ — both equal $-3536$.\n\nThese examples serve as sanity checks on the parameter formulas and the key identity, verified by `norm_num` and `ring`.",
     "mathContext": "For $p=0$: no Tschirnhaus shift, $8m^3 - q^2 = 0$, so $m^3 = q^2/8$. For the identity at $t=1$, $p=0$, $q=2$: LHS $= 8(1)^3 - (2)^2 = 4$; RHS $= 8(1^3 - 1/2) = 4$. ✓",

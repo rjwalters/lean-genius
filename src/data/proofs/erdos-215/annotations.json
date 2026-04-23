@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 30
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview: The Steinhaus Lattice Point Problem",
     "content": "Erdős Problem #215 is the Steinhaus lattice point problem: does there exist a set $S \\subseteq \\mathbb{R}^2$ such that every congruent copy of $S$ (under isometries: translations, rotations, reflections) contains exactly one point from the integer lattice $\\mathbb{Z}^2$? Erdős was 'almost certain that such a set does not exist.' Surprisingly, **Jackson and Mauldin (2002)** proved the answer is YES, but their construction fundamentally requires the **Axiom of Choice** via transfinite induction over the group of Euclidean isometries. No explicit construction is known. Published in *Proc. Natl. Acad. Sci. USA* 99 (2002), 15883–15887. The formalization imports `EuclideanDist`, `Isometry`, and `Set.Card`.",
     "mathContext": "Question: $\\exists S \\subseteq \\mathbb{R}^2$ such that $\\forall T \\cong S,\\, |T \\cap \\mathbb{Z}^2| = 1$? Answer: YES (Jackson-Mauldin 2002, using AC). Here $T \\cong S$ means $T = f(S)$ for some isometry $f : \\mathbb{R}^2 \\to \\mathbb{R}^2$.",

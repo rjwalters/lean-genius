@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 21
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Problem Overview",
     "content": "Module documentation describing Erdős Problem #1037 on degree diversity and Ramsey properties. Imports all of Mathlib. The problem asks whether graphs with many distinct degrees (each appearing at most twice) must contain large homogeneous subgraphs.",
     "mathContext": "Chen and Erdős conjectured: if $G$ on $n$ vertices has at most $2$ vertices of each degree and more than $(1/2 + \\varepsilon)n$ distinct degrees, must $\\max(\\omega(G), \\alpha(G)) \\gg \\log n$? Cambie-Chan-Hunter (2025) disproved this.",
@@ -325,7 +325,7 @@
       "startLine": 103,
       "endLine": 104
     },
-    "type": "context",
+    "type": "concept",
     "title": "chenErdos_false",
     "content": "Axiomatizes that the Chen-Erdős conjecture is false, as proved by Cambie-Chan-Hunter.",
     "mathContext": "$\\neg$ chenErdosConjecture: the conjecture fails. Degree diversity does not improve Ramsey bounds.",
@@ -363,7 +363,7 @@
       "startLine": 113,
       "endLine": 116
     },
-    "type": "technique",
+    "type": "concept",
     "title": "cambie_exceeds_half",
     "content": "Verification that 3/4 > 1/2, confirming the counterexample exceeds the conjecture's threshold.",
     "mathContext": "$3/4 > 1/2$, so the construction with $\\geq 3n/4$ distinct degrees satisfies hasManyDistinctDegrees for $\\varepsilon < 1/4$.",
@@ -382,7 +382,7 @@
       "startLine": 118,
       "endLine": 126
     },
-    "type": "context",
+    "type": "concept",
     "title": "Cambie-Chan-Hunter Construction",
     "content": "Axiomatizes the existence of the Cambie-Chan-Hunter counterexample: for every n ≥ 4, there exists a graph on n vertices with limited multiplicity (each degree ≤ 2 times), at least 3n/4 distinct degrees, and max trivial size O(log n).",
     "mathContext": "$\\forall n \\geq 4,\\; \\exists G$ on $n$ vertices: $\\text{mult}(d) \\leq 2$ for all $d$, $|D(G)| \\geq 3n/4$, and $\\text{maxTrivial}(G) \\leq C \\log n$ for some constant $C > 0$.",
@@ -404,7 +404,7 @@
       "startLine": 128,
       "endLine": 134
     },
-    "type": "technique",
+    "type": "concept",
     "title": "counterexample_works",
     "content": "The Cambie-Chan-Hunter construction disproves the conjecture for any ε < 1/4: there exist Chen-Erdős graphs with max trivial size only O(log n).",
     "mathContext": "For any $0 < \\varepsilon < 1/4$, the construction yields $G$ with isChenErdosGraph($\\varepsilon$) and $\\text{maxTrivial}(G) = O(\\log n)$, directly contradicting the conjecture.",

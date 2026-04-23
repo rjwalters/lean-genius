@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 22
     },
-    "type": "context",
+    "type": "concept",
     "title": "Chowla's Cosine Problem",
     "content": "Erdős Problem #510 (Chowla's cosine problem): for a finite set $A \\subset \\mathbb{N}$ of size $N$, does there exist an absolute constant $c > 0$ such that $\\min_\\theta \\sum_{n \\in A} \\cos(n\\theta) < -c\\sqrt{N}$?\n\nThe Sidon set construction $A = B - B$ shows the $\\sqrt{N}$ bound is best possible. Bedert (2025) proved a $-cN^{1/7}$ lower bound, but the gap between $N^{1/7}$ and $N^{1/2}$ remains open. This is a problem in **exponential sums** and **harmonic analysis** with connections to additive combinatorics.",
     "mathContext": "$\\min_\\theta \\sum_{n \\in A} \\cos(n\\theta) \\stackrel{?}{\\leq} -c\\sqrt{|A|}$. Best known: $-c|A|^{1/7}$ (Bedert 2025). Optimal: $-c\\sqrt{|A|}$ (Sidon set example).",
@@ -75,7 +75,7 @@
       "startLine": 35,
       "endLine": 41
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Chowla's Cosine Conjecture (Erdős #510)",
     "content": "**erdos_510_chowla**: ∃ c > 0 such that for all finite A ⊂ ℕ⁺ of size N > 0, ∃ θ with cosineSum(A, θ) < −c√N. The minimum cosine sum of any set of N positive integers is at most −Ω(√N).",
     "significance": "key",
@@ -98,7 +98,7 @@
       "startLine": 45,
       "endLine": 50
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bedert's Polynomial Bound (2025)",
     "content": "**bedert_bound**: ∃ c > 0 such that for all finite A ⊂ ℕ⁺ of size N, ∃ θ with cosineSum(A, θ) < −c · N^{1/7}. The first polynomial bound toward Chowla's conjecture.",
     "significance": "key",
@@ -141,7 +141,7 @@
       "startLine": 60,
       "endLine": 66
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sidon Set Optimality: √N Cannot Be Improved",
     "content": "**sidon_optimality**: For any ε > 0, there exists a finite A ⊂ ℕ⁺ with min_θ cosineSum(A, θ) > −(1+ε)√N. The conjectured exponent 1/2 is best possible.",
     "significance": "key",

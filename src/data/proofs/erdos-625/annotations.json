@@ -98,7 +98,7 @@
   {
     "id": "ann-625-proper-is-cochromatic",
     "proofId": "erdos-625",
-    "type": "technique",
+    "type": "concept",
     "title": "Proper ⊆ Cochromatic",
     "content": "**proper_is_cochromatic:**\n\nEvery proper k-coloring is also a cochromatic k-coloring.\n\n**Proof idea:** In a proper coloring, each color class is an independent set. An independent set is trivially cochromatic (the 'empty' case).",
     "mathContext": "This shows that cochromatic colorings are a strict relaxation of proper colorings.",
@@ -117,7 +117,7 @@
   {
     "id": "ann-625-le-chromatic",
     "proofId": "erdos-625",
-    "type": "technique",
+    "type": "concept",
     "title": "ζ(G) ≤ χ(G)",
     "content": "**cochromatic_le_chromatic:**\n\nThe cochromatic number is at most the chromatic number.\n\n**Proof:** Any proper χ(G)-coloring is also cochromatic, so ζ(G) ≤ χ(G).\n\nThis is why the question χ - ζ → ∞ is interesting: how much better can cochromatic colorings be?",
     "mathContext": "The gap χ - ζ measures how much we gain by allowing clique color classes.",
@@ -136,7 +136,7 @@
   {
     "id": "ann-625-complement-le",
     "proofId": "erdos-625",
-    "type": "technique",
+    "type": "concept",
     "title": "Complement Inequality",
     "content": "**cochromatic_complement:**\n\nζ(G) ≤ ζ(Gᶜ) for any graph G.\n\nThis follows from the symmetry of the cochromatic condition under swapping 'complete' and 'empty'.",
     "mathContext": "The complement graph Gᶜ has edges exactly where G doesn't.",
@@ -154,7 +154,7 @@
   {
     "id": "ann-625-complement-eq",
     "proofId": "erdos-625",
-    "type": "technique",
+    "type": "concept",
     "title": "ζ(G) = ζ(Gᶜ)",
     "content": "**cochromatic_eq_complement:**\n\nThe cochromatic number is invariant under graph complement!\n\n**Proof:** Apply cochromatic_complement in both directions.\n\nThis is a beautiful symmetry property that chromatic number lacks (χ(G) ≠ χ(Gᶜ) in general).",
     "mathContext": "For random G(n, 1/2), the graph and its complement have the same distribution, making this symmetry particularly relevant.",
@@ -211,7 +211,7 @@
   {
     "id": "ann-625-cochromatic-lower",
     "proofId": "erdos-625",
-    "type": "technique",
+    "type": "concept",
     "title": "Lower Bound on ζ",
     "content": "**cochromatic_lower_bound:**\n\nAlmost surely: ζ(G) ≥ n/(2 log₂ n).\n\nThis follows from bounds on clique and independence numbers: both ω(G) and α(G) are roughly 2 log₂ n a.s.",
     "mathContext": "The lower bound shows cochromatic colorings cannot be too efficient in random graphs.",
@@ -230,7 +230,7 @@
   {
     "id": "ann-625-bollobas",
     "proofId": "erdos-625",
-    "type": "technique",
+    "type": "concept",
     "title": "Bollobás Upper Bound (1988)",
     "content": "**bollobas_upper_bound:**\n\nAlmost surely: χ(G) ≤ (1+o(1))n/(2 log₂ n).\n\nBollobás proved this in 1988, showing the chromatic number of G(n, 1/2) is well-concentrated.\n\nCombined with the lower bound on ζ, this gives:\nn/(2 log₂ n) ≤ ζ(G) ≤ χ(G) ≤ (1+o(1))n/(2 log₂ n)",
     "mathContext": "Bollobás's result is a cornerstone of random graph coloring theory.",
@@ -249,7 +249,7 @@
   {
     "id": "ann-625-sandwich",
     "proofId": "erdos-625",
-    "type": "technique",
+    "type": "concept",
     "title": "The Sandwich Bound",
     "content": "**chromatic_cochromatic_sandwich:**\n\nAlmost surely: ζ(G) ≤ χ(G) ≤ 1.01 · n/(2 log₂ n).\n\nThis 'sandwiches' both χ and ζ in a narrow band. The main question asks: do they separate within this band?",
     "mathContext": "The sandwich suggests χ and ζ are both of order n/log n, but leaves room for a gap of order n/(log n)^k.",
@@ -323,7 +323,7 @@
   {
     "id": "ann-625-heckel-steiner",
     "proofId": "erdos-625",
-    "type": "technique",
+    "type": "concept",
     "title": "Heckel-Steiner Unboundedness (2024)",
     "content": "**heckel_steiner_unbounded:**\n\nFor all M: almost surely χ(G) - ζ(G) ≥ M.\n\nHeckel (2024) and independently Steiner (2024) proved the difference is unbounded with high probability.\n\nThis is a major breakthrough, but doesn't fully resolve the problem (needs χ - ζ → ∞ a.s., not just unbounded w.h.p.).",
     "mathContext": "The subtle difference between 'unbounded w.h.p.' and '→ ∞ a.s.' is important in probability theory.",
@@ -343,7 +343,7 @@
   {
     "id": "ann-625-difference-lower",
     "proofId": "erdos-625",
-    "type": "technique",
+    "type": "concept",
     "title": "Difference Lower Bound",
     "content": "**difference_lower_bound:**\n\nFor any ε > 0, along some subsequence:\nχ - ζ ≥ n^{1/2 - ε} almost surely.\n\nThis shows the difference can grow polynomially, not just logarithmically.",
     "mathContext": "Polynomial growth is much stronger than logarithmic growth, suggesting the difference is substantial.",
@@ -361,7 +361,7 @@
   {
     "id": "ann-625-density",
     "proofId": "erdos-625",
-    "type": "technique",
+    "type": "concept",
     "title": "Heckel Density Result (2024)",
     "content": "**heckel_density_result:**\n\nFor any ε > 0: χ - ζ ≥ n^{1-ε} for roughly 95% of all n.\n\nThis is remarkably strong - for most n, the difference grows almost linearly!",
     "mathContext": "The 95% density result shows the polynomial lower bound holds for 'generic' n, not just a sparse subsequence.",
@@ -399,7 +399,7 @@
   {
     "id": "ann-625-heckel-implies",
     "proofId": "erdos-625",
-    "type": "technique",
+    "type": "concept",
     "title": "Heckel ⟹ Main Question",
     "content": "**heckel_implies_main:**\n\nIf Heckel's conjecture holds, then the main question has answer YES.\n\nSince n/(log n)³ → ∞ as n → ∞, the conjecture implies χ - ζ → ∞ a.s.",
     "mathContext": "This shows Heckel's conjecture is a strengthening of the main question.",
@@ -455,7 +455,7 @@
   {
     "id": "ann-625-clique-independence-bound",
     "proofId": "erdos-625",
-    "type": "technique",
+    "type": "concept",
     "title": "Clique/Independence Bound",
     "content": "**clique_independence_bound:**\n\nAlmost surely: ω(G), α(G) ≤ 2.1 · log₂ n.\n\nThese bounds are tight: ω ≈ α ≈ 2 log₂ n.\n\nThis limits how much each color class can cover, giving the lower bound on ζ.",
     "mathContext": "The factor 2 in 2 log₂ n comes from the probability 1/2 in G(n, 1/2).",
@@ -474,7 +474,7 @@
   {
     "id": "ann-625-cochromatic-clique-independence",
     "proofId": "erdos-625",
-    "type": "technique",
+    "type": "concept",
     "title": "ζ ≥ n/(ω + α)",
     "content": "**cochromatic_clique_independence:**\n\nζ(G) · (ω(G) + α(G)) ≥ n.\n\nThus: ζ(G) ≥ n / (ω(G) + α(G)).\n\n**Proof idea:** Each color class has size at most max(ω, α) ≤ ω + α. So we need at least n/(ω + α) classes.",
     "mathContext": "This gives the lower bound ζ ≥ n/(4 log₂ n) since ω + α ≈ 4 log₂ n.",
@@ -492,7 +492,7 @@
   {
     "id": "ann-625-chromatic-concentration",
     "proofId": "erdos-625",
-    "type": "technique",
+    "type": "concept",
     "title": "Chromatic Concentration",
     "content": "**chromatic_concentration:**\n\nAlmost surely: χ(G) lies in an interval of width O(n/log²n) around its mean.\n\nThe chromatic number is concentrated, but the exact width of concentration is still being refined.",
     "mathContext": "Concentration inequalities are key tools in random graph theory. Tighter concentration would help resolve Problem #625.",
@@ -511,7 +511,7 @@
   {
     "id": "ann-625-cochromatic-concentration",
     "proofId": "erdos-625",
-    "type": "technique",
+    "type": "concept",
     "title": "Cochromatic Concentration",
     "content": "**cochromatic_concentration:**\n\nAlmost surely: ζ(G) lies in an interval of width O(n/log n) around its mean.\n\nLess is known about concentration of ζ than χ. Better bounds might help resolve the main question.",
     "mathContext": "The weaker concentration for ζ reflects that cochromatic colorings are less well-understood than proper colorings.",
@@ -529,7 +529,7 @@
   {
     "id": "ann-625-known-summary",
     "proofId": "erdos-625",
-    "type": "technique",
+    "type": "concept",
     "title": "Summary of Known Results",
     "content": "**known_summary:**\n\nCombines the two key structural properties:\n1. ζ(G) ≤ χ(G) for all G\n2. ζ(G) = ζ(Gᶜ) for all G\n\nThese are the foundational facts about the cochromatic number.",
     "mathContext": "This theorem bundles the essential properties that make the problem interesting.",
@@ -547,7 +547,7 @@
   {
     "id": "ann-625-problem-status",
     "proofId": "erdos-625",
-    "type": "technique",
+    "type": "concept",
     "title": "Problem Status",
     "content": "**problem_status:**\n\nThe Heckel-Steiner unboundedness result implies χ and ζ are not always equal.\n\nHowever, the main question (whether χ - ζ → ∞ a.s.) remains OPEN despite significant recent progress.",
     "mathContext": "The gap between 'not always equal' and 'difference tends to infinity' is the remaining open question.",

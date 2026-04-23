@@ -142,7 +142,7 @@
       "startLine": 180,
       "endLine": 201
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #712: Main Theorem",
     "content": "**erdos_712** is the main entry-point theorem, FULLY PROVEN from the axioms. It establishes two facts:\n\n1. The Turán density exists with 0 < π < 1 (using turan_density_positive and kruskal_katona_upper)\n2. The exact value is unknown (using erdos_712_open)\n\nThe proof of π < 1 uses the Kruskal-Katona bound and positivity of k. This is one of the few theorems with actual tactic proofs (calc, linarith, positivity).",
     "significance": "key",

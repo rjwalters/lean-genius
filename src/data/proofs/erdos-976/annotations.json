@@ -178,7 +178,7 @@
       "startLine": 135,
       "endLine": 161
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Computational Examples",
     "content": "**Greatest prime divisor examples** verified via native_decide:\n\n| n | P(n) | Factorization |\n|---|------|---------------|\n| 1 | 1 | (convention) |\n| 2 | 2 | 2 |\n| 6 | 3 | 2 · 3 |\n| 30 | 5 | 2 · 3 · 5 |\n| 60 | 5 | 2² · 3 · 5 |\n| 210 | 7 | 2 · 3 · 5 · 7 |\n| 100 | 5 | 2² · 5² |\n\nAlso: numerical comparison at n = 1000 showing the gap between n log n ≈ 7000 and n² = 1,000,000.",
     "mathContext": "The primorial numbers (2, 6, 30, 210, 2310, ...) are products of the first k primes. Their greatest prime factors are exactly the k-th prime, making them good test cases.",
@@ -197,7 +197,7 @@
       "startLine": 163,
       "endLine": 188
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_976_status** is a proved theorem establishing the current best bound: for all irreducible f of degree ≥ 2, F_f(n) ≫ n·exp((log n)^c).\n\nProof: direct application of tenenbaum_bound axiom via `exact tenenbaum_bound f h_irred h_deg`.\n\nThis captures the state of the art for Erdős Problem #976, packaging the Tenenbaum result into a clean theorem statement.",
     "mathContext": "Summary theorems are valuable for formalizations of open problems — they document what is currently known in a single, citable result.",

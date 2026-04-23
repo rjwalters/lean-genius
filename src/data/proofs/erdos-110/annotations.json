@@ -100,7 +100,7 @@
       "startLine": 141,
       "endLine": 178
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Shelah's Consistency and Lambie-Hanson's ZFC Disproof",
     "content": "**shelah_consistency (2005):** Consistent with ZFC that no F exists.\n\n**lambie_hanson_counterexample (2020):** Proved in ZFC—no extra assumptions. Constructed an ℵ₁-chromatic graph defeating every proposed bound F.\n\n**erdos_110_disproved:** Direct proof that ¬ErdosHajnalSzemerediConjecture by extracting the counterexample and deriving contradiction.",
     "mathContext": "Shelah's consistency result left open whether this was a ZFC theorem. Lambie-Hanson's construction settled this definitively.",
@@ -138,7 +138,7 @@
       "startLine": 236,
       "endLine": 261
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "**erdos_110:** ¬ErdosHajnalSzemerediConjecture (the conjecture is FALSE).\n\n**erdos_110_summary:** Combines the disproof with the existence of the counterexample graph:\n```lean\n⟨erdos_110_disproved, lambie_hanson_graph_exists⟩\n```\n\nThe answer to Problem #110 is NO: no uniform bound F(n) exists.",
     "mathContext": "A complete resolution via counterexample, answering a question that stood open for nearly 40 years (1982-2020).",

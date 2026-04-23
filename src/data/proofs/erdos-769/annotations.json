@@ -82,7 +82,7 @@
       "startLine": 72,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lower Bounds: Hadwiger and Connor-Marmorino",
     "content": "**Hadwiger's bound** (hadwiger_lower_bound): c(n) ≥ 2^n + 2^{n-1} = 3·2^{n-1}. The theorem hadwiger_explicit restates this as c(n) ≥ 3·2^{n-1}, proved via `omega`.\n\n**Connor-Marmorino (2018)** (connor_marmorino_lower): c(n) ≥ 2^{n+1} - 1 for n ≥ 3. This improves Hadwiger.\n\n**connor_vs_hadwiger** is a proved theorem showing 2^{n+1} - 1 > 2^n + 2^{n-1} for n ≥ 3, via `omega`.\n\nFor n = 10: Hadwiger gives c(10) ≥ 1536, Connor-Marmorino gives c(10) ≥ 2047.",
     "mathContext": "Both lower bounds are exponential in n. The Connor-Marmorino improvement roughly doubles the constant: from 3·2^{n-1} to 2^{n+1} - 1 ≈ 2·2^n. The proof uses refined geometric arguments about face-touching constraints in cube packings.",

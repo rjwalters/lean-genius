@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 22
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Documentation",
     "content": "The header documents Erdős Problem #1012: for $k \\ge 0$, what is the minimum $f(k)$ such that every graph on $n \\ge f(k)$ vertices with at least $\\binom{n-k-1}{2} + \\binom{k+2}{2} + 1$ edges contains an $(n-k)$-cycle? Woodall (1972) solved this completely, showing $f(k) \\le 2k+3$ with the bonus that such graphs are pancyclic from $3$ to $n-k$.",
     "mathContext": "$f(k) := \\min\\{n_0 : \\forall n \\ge n_0, |E(G)| \\ge \\binom{n-k-1}{2} + \\binom{k+2}{2} + 1 \\Rightarrow C_{n-k} \\subseteq G\\}$",
@@ -72,7 +72,7 @@
       "startLine": 55,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Threshold Computations and Simplifications",
     "content": "Machine-verified computations of $\\binom{m}{2}$ for small $m$ (0 through 3) using `decide`, plus threshold simplifications for $k=0$ and $k=1$. The $k=0$ case gives $\\binom{n-1}{2} + 2$, and the $k=1$ case gives $\\binom{n-2}{2} + 4$. Concrete values: $T(3,0)=3$, $T(4,0)=5$, $T(5,0)=8$, confirming the quadratic growth of the threshold.",
     "mathContext": "$T(n,0) = \\binom{n-1}{2} + 2$; $T(n,1) = \\binom{n-2}{2} + 4$; $T(3,0)=3, T(4,0)=5, T(5,0)=8$",
@@ -293,7 +293,7 @@
       "startLine": 175,
       "endLine": 219
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Proved Structural Theorems",
     "content": "A suite of consequences proved from the axioms: Ore gives the $k=0$ case ($n \\ge 1$), Bondy gives $k=1$ ($n \\ge 1$), Woodall settles all $k$ ($n \\ge 2k+3$). The proofs show that Ore and Bondy improve Woodall's bound for small $k$: Ore works from $n=1$ while Woodall only gives $n \\ge 3$ for $k=0$. Also proves pancyclicity implies long cycles (by taking $l = n-k$ in the pancyclic range).",
     "mathContext": "Ore: $f(0) = 1$; Bondy: $f(1) = 1$; Woodall: $f(k) \\le 2k+3$ for all $k \\ge 0$",
@@ -316,7 +316,7 @@
       "startLine": 225,
       "endLine": 325
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Threshold Analysis (29 Proved Theorems)",
     "content": "Extensive analysis of the edge threshold: the closed form $\\frac{(n-k-1)(n-k-2)}{2} + \\frac{(k+2)(k+1)}{2} + 1$, monotonicity of each binomial term (first decreasing in $k$, second increasing), positivity, lower bounds, and the symmetric boundary property. At $n = 2k+3$, both terms equal $\\binom{k+2}{2}$, giving $T(2k+3, k) = 2\\binom{k+2}{2} + 1$. Also shows Woodall-satisfying graphs contain triangles.",
     "mathContext": "$T(2k+3, k) = 2\\binom{k+2}{2} + 1$; $\\binom{n-k-1}{2} \\ge \\binom{k+2}{2}$ when $n \\ge 2k+3$; $T(n,k) \\ge 2\\binom{k+2}{2} + 1$",
@@ -339,7 +339,7 @@
       "startLine": 327,
       "endLine": 345
     },
-    "type": "context",
+    "type": "concept",
     "title": "File Summary",
     "content": "Summarizes the 345-line formalization: 5 axioms encoding the deep graph theory results (Ore, Bondy, Woodall cycle and pancyclic theorems, threshold tightness) and 29 proved theorems analyzing the threshold structure. Zero sorries—all unproved statements are correctly marked as axioms rather than using sorry. The file demonstrates the formal structure of an extremal graph theory result.",
     "mathContext": "5 axioms (Ore, Bondy, Woodall×2, tightness) + 29 proved theorems, 0 sorries",

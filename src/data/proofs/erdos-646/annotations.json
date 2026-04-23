@@ -115,7 +115,7 @@
       "startLine": 131,
       "endLine": 136
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: n=7 for p=2",
     "content": "**example_even_val_2_at_7:**\n\nn = 7 has even 2-valuation.\n\n**Computation:**\n- 7! = 5040 = 2⁴ · 3² · 5 · 7\n- v₂(7!) = 4 (even) ✓\n\nProved by native_decide.",
     "significance": "supporting",
@@ -205,7 +205,7 @@
       "startLine": 237,
       "endLine": 242
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: Conjecture TRUE",
     "content": "**erdos_646: ErdosConjecture646**\n\n**Proof:**\n```lean\ntheorem erdos_646 : ErdosConjecture646 := by\n  intro S hS\n  exact berend_existence S hS\n```\n\nThe conjecture follows directly from Berend's existence theorem.",
     "significance": "key",
@@ -266,7 +266,7 @@
       "startLine": 279,
       "endLine": 287
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Explicit Bound for {2,3}",
     "content": "**explicit_bound_2_3:**\n\n∃ n ≤ 100, hasAllEvenValuations {2, 3} n\n\n**Proof:**\nn = 31 works, and 31 ≤ 100.\n\nThis gives a concrete, computable witness.",
     "significance": "supporting",

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 21
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Context and Setup",
     "content": "Erdős Problem #866 studies threshold functions for pairwise sums in additive combinatorics. For k ≥ 3, define g_k(N) as the minimal value such that any A ⊆ {1,...,2N} with |A| ≥ N + g_k(N) must contain all $\\binom{k}{2}$ pairwise sums b_i + b_j for some integers b₁,...,b_k. This file is an Aristotle companion—it formalizes three supporting lemmas (exponent monotonicity, odd set cardinality, parity pigeonhole) that underpin the broader theory.",
     "mathContext": "For $k \\ge 3$, $g_k(N) = \\min\\{g : \\forall A \\subseteq [2N],\\; |A| \\ge N+g \\Rightarrow \\exists b_1,\\ldots,b_k \\in \\mathbb{Z},\\; \\{b_i + b_j : i < j\\} \\subseteq A\\}$. Known: $g_3 = 2$, $g_4 \\le 2032$, $g_5 \\asymp \\log N$, $g_6 \\asymp \\sqrt{N}$, $g_k \\ll N^{1-2^{-k}}$.",
@@ -121,7 +121,7 @@
       "startLine": 40,
       "endLine": 50
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Exponent Monotonicity Proof",
     "content": "upperExponent_increasing proves 1-2^{-k} < 1-2^{-(k+1)}, i.e., the exponent sequence is strictly increasing. This is needed to show the upper bounds N^{upperExponent(k)} are ordered—adding one more required sum (k→k+1) tightens the threshold. The Aristotle comment block describes the proof strategy: reduce to 2^{-(k+1)} < 2^{-k} via sub_lt_sub_left, then apply pow_lt_pow_right_of_lt_one₀.",
     "mathContext": "$1 - 2^{-(k+1)} > 1 - 2^{-k} \\iff 2^{-(k+1)} < 2^{-k} \\iff 2^{-1} \\cdot 2^{-k} < 2^{-k}$. Proved by `sub_lt_sub_left` (monotonicity of $x \\mapsto 1-x$) and `pow_lt_pow_right_of_lt_one₀` (strict monotonicity of $t^n$ for $0 < t < 1$ and larger n).",
@@ -144,7 +144,7 @@
       "startLine": 52,
       "endLine": 66
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Odd Numbers Cardinality Proof",
     "content": "oddNumbers_card proves |oddNumbers N| = N, establishing that the all-odd set exactly reaches the edge of the density threshold. The proof unfolds the definitions and applies `Finset.card_eq_of_bijective` with the explicit bijection i ↦ 2i+1 from {0,...,N-1} to the odd numbers. Injectivity follows by `omega` (linear arithmetic) and surjectivity by `aesop` (automated reasoning).",
     "mathContext": "$|\\{1, 3, \\ldots, 2N-1\\}| = N$. Bijection: $f : \\{0,\\ldots,N-1\\} \\to \\text{oddNumbers}(N)$, $f(i) = 2i+1$. Injectivity: $2i+1 = 2j+1 \\Rightarrow i = j$ (linear arithmetic). Surjectivity: any odd $n \\in [2N]$ equals $2\\cdot\\frac{n-1}{2}+1$ with $\\frac{n-1}{2} < N$.",
@@ -167,7 +167,7 @@
       "startLine": 68,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Parity Pigeonhole Proof",
     "content": "oddNumbers_no_triple proves that no Fin 3 → ℤ witness has all pairwise sums in oddNumbers N—a lower bound argument: |A| = N is not enough. The key step `h_odd` extracts from HasAllPairwiseSums that every pairwise sum is odd (since it lands in oddNumbers). Then `simp_all +decide [Fin.forall_fin_succ]` and `grind +ring` derive a parity contradiction: among the three residues mod 2 of b 0, b 1, b 2, two must match (pigeonhole), giving an even sum that cannot be odd.",
     "mathContext": "Among $b_0, b_1, b_2 \\in \\mathbb{Z}$, by pigeonhole two share parity $\\pmod{2}$. Say $b_i \\equiv b_j \\pmod{2}$; then $b_i + b_j \\equiv 0 \\pmod{2}$, so $(b_i + b_j)^+$ is even, contradicting membership in $\\text{oddNumbers}(N)$. This proves $g_k(N) \\ge 1$ for all $k \\ge 3$ and $N \\ge 1$, and is the foundation for the lower bound $g_3(N) \\ge 2$.",
@@ -195,7 +195,7 @@
     "title": "Phase Transition and Open Questions",
     "content": "The three proved lemmas support one of combinatorics' cleanest known phase transitions: g₃ = 2 (constant), g₄ ≤ 2032 (bounded), g₅ ≍ log N (logarithmic), g₆ ≍ √N (polynomial), g_k ≪ N^{1-2^{-k}} (general). The exponent monotonicity lemma confirms the upper bounds are ordered. The odd-set lemmas establish the universal lower bound. The gap between N^{1-2^{-k}} and N^{1-ε} for large k—the central open question—requires techniques far beyond what Lean can currently verify automatically.",
     "mathContext": "Open: (1) What is the exact $g_4(N)$—is it exactly 2032? (2) What are the optimal constants in $g_5(N) \\asymp \\log N$? (3) What is the true exponent $\\alpha_k$ with $g_k(N) = N^{\\alpha_k + o(1)}$? The upper bound gives $\\alpha_k \\le 1 - 2^{-k}$; the lower bound gives $\\alpha_k$ approaching 1 as $k \\to \\infty$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "phase transition",
       "asymptotic growth rates",

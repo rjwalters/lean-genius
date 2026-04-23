@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 28
     },
-    "type": "context",
+    "type": "concept",
     "title": "Jacobi Symbol Extension of QR",
     "content": "The file header introduces the central question: can quadratic reciprocity, classically stated for the Legendre symbol (prime moduli only), be extended to composite odd moduli via the Jacobi symbol? The Jacobi symbol J(a,n) is defined multiplicatively over the prime factorization of n, inheriting algebraic properties from the Legendre symbol while losing the direct connection to quadratic residuacity. This formalization imports Mathlib's JacobiSymbol and QuadraticReciprocity modules, which provide the foundational definitions and the prime-case QR law.",
     "mathContext": "The Jacobi symbol is defined as $J(a, n) = \\prod_{i=1}^{k} \\left(\\frac{a}{p_i}\\right)^{e_i}$ where $n = \\prod_{i=1}^{k} p_i^{e_i}$ is the prime factorization of odd $n$.",
@@ -29,7 +29,7 @@
       "startLine": 34,
       "endLine": 37
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Jacobi-Legendre Agreement for Primes",
     "content": "The first theorem establishes that the Jacobi symbol specializes to the Legendre symbol when the modulus is prime: jacobiSym a p = legendreSym p a. This is the bridge between the two symbol systems, proved directly via Mathlib's `jacobiSym.prime_eq_legendreSym`. The agreement is not just definitional — it confirms that the multiplicative extension of the Jacobi symbol is consistent with the original quadratic residue characterization for primes.",
     "mathContext": "For prime $p$ and integer $a$: $J(a, p) = \\left(\\frac{a}{p}\\right)$, where the right side is the Legendre symbol.",
@@ -95,7 +95,7 @@
       "startLine": 49,
       "endLine": 52
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Second Supplement: J(2, n)",
     "content": "The second supplement states J(2, n) = (-1)^((n²-1)/8) for odd n > 1. For prime p, this gives the classical result that 2 is a QR mod p if and only if p ≡ ±1 (mod 8). The exponent (n²-1)/8 is always an integer for odd n. This formula is computationally useful because it depends only on n mod 8, not on the factorization of n.",
     "mathContext": "$J(2, n) = (-1)^{(n^2-1)/8}$ for odd $n > 1$. Since $n^2 \\equiv 1 \\pmod{8}$ for all odd $n$, the exponent is always an integer. The result equals $1$ when $n \\equiv \\pm 1 \\pmod{8}$ and $-1$ when $n \\equiv \\pm 3 \\pmod{8}$.",

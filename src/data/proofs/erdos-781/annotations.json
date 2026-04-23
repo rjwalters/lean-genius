@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 25
     },
-    "type": "context",
+    "type": "concept",
     "title": "File Header: Problem Statement and Historical Context",
     "content": "The file header documents Erdos Problem #781 on descending waves in 2-colorings. It records the problem source (erdosproblems.com/781), the DISPROVED status, the formal statement of f(k), and the two key results: the Brown-Erdos-Freedman bounds (1990) and the Alon-Spencer disproof (1989). References to both papers are included for traceability.",
     "mathContext": "A descending wave $x_1 < x_2 < \\cdots < x_k$ satisfies $x_j \\geq (x_{j+1} + x_{j-1})/2$ for all interior points $j$. The function $f(k) = \\min\\{n : \\text{every 2-coloring of } \\{1,\\ldots,n\\} \\text{ has a monochromatic } k\\text{-wave}\\}$. Brown-Erdos-Freedman (1990) proved $k^2-k+1 \\leq f(k) \\leq (k^3-4k+9)/3$; Alon-Spencer (1989) proved $f(k) \\gg k^3$, disproving the conjecture $f(k) = k^2-k+1$.",
@@ -256,7 +256,7 @@
       "startLine": 91,
       "endLine": 100
     },
-    "type": "technique",
+    "type": "concept",
     "title": "f(k) is Well-Defined: Existence and Minimality",
     "content": "**f_exists (axiom):** Every 2-coloring of {1,...,f(k)} contains a monochromatic k-wave.\n\n**f_minimal (axiom):** For n < f(k), some 2-coloring of {1,...,n} avoids monochromatic k-waves.\n\n```lean\naxiom f_exists (k : ℕ) (hk : k ≥ 1) :\n    ∀ c : TwoColoring (f k), HasMonochromaticWave (f k) k c\naxiom f_minimal (k : ℕ) (hk : k ≥ 1) :\n    ∀ n < f k, ∃ c : TwoColoring n, ¬HasMonochromaticWave n k c\n```\n\nThese two axioms jointly encode f(k) as the Ramsey threshold.",
     "mathContext": "`f_exists`: Ramsey property — at $n = f(k)$, all colorings contain a wave. `f_minimal`: minimality — at $n < f(k)$, some coloring avoids waves. Together: $f(k) = \\min\\{n \\mid \\forall c, \\text{HasMonochromaticWave}(n,k,c)\\}$. These axioms compensate for the simplified `Nat.find` definition.",
@@ -307,7 +307,7 @@
       "startLine": 111,
       "endLine": 119
     },
-    "type": "technique",
+    "type": "concept",
     "title": "BEF Lower Bound (1990)",
     "content": "**Brown-Erdős-Freedman Lower Bound:** f(k) ≥ k² - k + 1.\n\nThe lower bound from the original conjecture IS correct — it's the upper bound that was too optimistic.\n\n```lean\naxiom BEF_lower_bound (k : ℕ) (hk : k ≥ 1) : f k ≥ k^2 - k + 1\n```",
     "mathContext": "`BEF_lower_bound`: $f(k) \\geq k^2 - k + 1$. Proved in BEF (1990) by constructing an explicit 2-coloring of $\\{1,\\ldots, k^2-k\\}$ with no monochromatic $k$-term descending wave. The construction partitions into $k-1$ intervals of length $k$, coloring to avoid waves. Combined with Alon-Spencer: $k^2 - k + 1 \\leq f(k) = \\Theta(k^3)$.",
@@ -333,7 +333,7 @@
       "startLine": 120,
       "endLine": 128
     },
-    "type": "technique",
+    "type": "concept",
     "title": "BEF Upper Bound (1990)",
     "content": "**Brown-Erdős-Freedman Upper Bound:** f(k) ≤ (k³ - 4k + 9)/3.\n\nNote the cast to ℚ for exact rational division.\n\n```lean\naxiom BEF_upper_bound (k : ℕ) (hk : k ≥ 1) :\n    (f k : ℚ) ≤ (k^3 - 4*k + 9) / 3\n```",
     "mathContext": "`BEF_upper_bound`: $f(k) \\leq \\frac{k^3 - 4k + 9}{3}$. Uses `ℚ` cast for division. Already indicates cubic growth $\\sim k^3/3$, consistent with Alon-Spencer's $\\Theta(k^3)$. BEF proved this via a greedy algorithm: sequentially build the longest monochromatic wave from each starting position.",
@@ -359,7 +359,7 @@
       "startLine": 129,
       "endLine": 138
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Alon-Spencer: Cubic Growth (1989)",
     "content": "**The Key Result:** f(k) ≫ k³.\n\nThere exists c > 0 such that f(k) ≥ c·k³ for all k ≥ 1. This DISPROVES the conjecture.\n\n```lean\naxiom alon_spencer_cubic (k : ℕ) (hk : k ≥ 1) :\n    ∃ c : ℝ, c > 0 ∧ (f k : ℝ) ≥ c * k^3\n```\n\nPublished in 'Ascending waves' (J. Combin. Theory, 1989).",
     "mathContext": "`alon_spencer_cubic`: $\\exists c > 0,\\ f(k) \\geq c \\cdot k^3$. Combined with BEF upper bound: $ck^3 \\leq f(k) \\leq k^3/3$, so $f(k) = \\Theta(k^3)$. The **probabilistic method**: a random 2-coloring avoids a specific $k$-wave with probability $2^{1-k}$. Number of potential waves in $\\{1,\\ldots,n\\}$ is $O(n^k)$. For $n = O(k^3)$: expected monochromatic waves $= O(n^k \\cdot 2^{1-k}) \\to 0$.",
@@ -386,7 +386,7 @@
       "startLine": 139,
       "endLine": 147
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Specific Value Axioms: f(1), f(2), f(3)",
     "content": "Three axioms encode the known small values of f(k):\n\n- `f_1 : f 1 = 1` -- any single element is a trivial 1-term wave\n- `f_2 : f 2 = 2` -- any two distinct elements form a 2-term wave (no interior points)\n- `f_3 : f 3 = 7` -- the k=3 case, matching the conjectured formula k^2 - k + 1 = 7\n\nCritically, f(2) = 2, not 3 as the conjecture predicts. This is the basis of the `conjecture_disproved` proof.",
     "mathContext": "$f(1) = 1$: trivial. $f(2) = 2$: any two elements $x_1 < x_2$ form a descending wave (no interior constraint). $f(3) = 7$: proven by exhaustive enumeration. The conjecture gives $1, 3, 7$ for $k = 1, 2, 3$ but $f(2) = 2 \\neq 3$, so it fails at $k = 2$. These axioms are used in `small_k_correct` and `conjecture_disproved`.",
@@ -411,7 +411,7 @@
       "startLine": 148,
       "endLine": 155
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Conjecture is Disproved",
     "content": "`conjecture_disproved` proves `¬ErdosConjecture781` completely (no sorry) via a simple k=2 argument:\n\n1. Assume the conjecture: f(k) = k² - k + 1 for all k ≥ 1\n2. Instantiate at k = 2: f(2) = 2² - 2 + 1 = 3\n3. But axiom f_2 says f(2) = 2\n4. Rewrite with f_2 to get 2 = 3, and `omega` closes the contradiction\n\nThis is a fully machine-checked proof with no sorry.",
     "mathContext": "`conjecture_disproved : ¬ErdosConjecture781`. The proof is complete: `intro h; have h2 := h 2 (by omega); rw [f_2] at h2; omega`. The conjecture claims $f(2) = 2^2 - 2 + 1 = 3$, but axiom `f_2` gives $f(2) = 2$. The rewrite produces $2 = 3$, which `omega` refutes. No appeal to Alon-Spencer or large-$k$ asymptotics is needed -- the conjecture fails at the smallest non-trivial case.",
@@ -437,7 +437,7 @@
       "startLine": 156,
       "endLine": 162
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Specific Values: f(1), f(2), f(3)",
     "content": "For k = 1, 2, 3, the specific values are:\n- f(1) = 1 (conjecture gives 1 ✓)\n- f(2) = 2 (conjecture gives 3 — FAILS even here!)\n- f(3) = 7 (conjecture gives 7 ✓)\n\n`small_k_correct : f 1 = 1 ∧ f 2 = 2 ∧ f 3 = 7`\n\nNote: f(2) = 2, not 3 — any 2 elements trivially form a 2-term wave!",
     "mathContext": "`f_1 : f 1 = 1`, `f_2 : f 2 = 2`, `f_3 : f 3 = 7`. Formula $k^2 - k + 1$ gives $1, 3, 7$ for $k = 1, 2, 3$. But $f(2) = 2 < 3$! Any 2 distinct elements $\\{x_1, x_2\\}$ trivially form a 2-term descending wave (no interior points needed). So $f(2) = 2$ — the minimum possible. The conjecture already fails for $k = 2$.",
@@ -465,7 +465,7 @@
       "startLine": 163,
       "endLine": 168
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Algebraic Identity for the Conjecture Formula",
     "content": "`conjecture_formula: k² - k + 1 = k*(k-1) + 1` — proved by `ring`.\n\n```lean\ntheorem conjecture_formula (k : ℕ) : k^2 - k + 1 = k * (k - 1) + 1 := by ring\n```\n\nThe factored form k(k-1)+1 highlights the combinatorial structure.",
     "mathContext": "`k^2 - k + 1 = k(k-1) + 1` proved by `ring`. The form $k(k-1) + 1$ counts $|\\{(i,j) : 1 \\leq i < j \\leq k\\}| \\cdot 2 + 1 = k(k-1) + 1$ — a combinatorial count reminiscent of Ramsey diagonal bound formulas. `ring` normalizes polynomial equalities in commutative (semi)rings, handling `Nat.sub` correctly via algebraic manipulation.",
@@ -490,7 +490,7 @@
       "startLine": 169,
       "endLine": 186
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Alon-Spencer Probabilistic Construction",
     "content": "**alon_spencer_construction (axiom):** For some c > 0 and all n ≤ c·k³, there exists a 2-coloring of {1,...,n} with no monochromatic k-term descending wave.\n\n```lean\naxiom alon_spencer_construction (k : ℕ) (hk : k ≥ 1) :\n    ∃ c : ℝ, c > 0 ∧\n    ∀ n : ℕ, (n : ℝ) ≤ c * k^3 →\n      ∃ coloring : TwoColoring n, ¬HasMonochromaticWave n k coloring\n```\n\nThe probabilistic construction is the core of the Alon-Spencer disproof.",
     "mathContext": "`alon_spencer_construction`: $\\exists c > 0,\\ \\forall n \\leq ck^3,\\ \\exists$ coloring avoiding $k$-waves. The **probabilistic method**: a uniformly random 2-coloring avoids a specific $k$-wave with probability $2^{1-k}$. Number of $k$-term descending waves in $\\{1,\\ldots,n\\}$ is $\\leq \\binom{n}{k}$. Expected monochromatic waves $\\leq \\binom{n}{k}/2^{k-1}$. For $n = O(k^3)$: $\\leq O(k^{3k}/k! \\cdot 2^{k}) \\to 0$. By expectation, some coloring works.",
@@ -570,7 +570,7 @@
       "startLine": 222,
       "endLine": 255
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary: BEF Bounds and Cubic Growth",
     "content": "`erdos_781_summary` combines three results:\n\n1. **Lower bound:** f(k) ≥ k² - k + 1 for all k ≥ 1\n2. **Cubic growth:** ∃c > 0, f(k) ≥ c·k³ for all k ≥ 1\n3. **Disproved:** ¬ErdosConjecture781\n\n```lean\ntheorem erdos_781_summary : ... :=\n  ⟨BEF_lower_bound, ⟨by use 1/10; sorry⟩, conjecture_disproved⟩\n```\n\nThe `1/10` guesses the Alon-Spencer constant; the actual value is not computed.",
     "mathContext": "The three-part conjunction: $(\\forall k \\geq 1,\\ f(k) \\geq k^2-k+1) \\wedge (\\exists c > 0,\\ \\forall k \\geq 1,\\ f(k) \\geq ck^3) \\wedge \\neg\\text{ErdosConjecture781}$. Proved by `⟨BEF_lower_bound, ⟨by use 1/10; sorry⟩, conjecture_disproved⟩`. The `use 1/10` guesses $c = 1/10$; the `sorry` then needs to prove $f(k) \\geq k^3/10$ for all $k \\geq 1$ using `alon_spencer_cubic`.",

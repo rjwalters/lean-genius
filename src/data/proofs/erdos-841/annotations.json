@@ -30,7 +30,7 @@
       "startLine": 29,
       "endLine": 39
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Namespace",
     "content": "Seven Mathlib imports: `Nat.Prime.Basic` and `Nat.Factorization.Basic` for prime factorization infrastructure, `Nat.Squarefree` for square-related definitions, `Finset.Basic` for subset combinatorics, `Data.Real.Basic` for real number bounds, and two `SpecialFunctions` imports for logarithms and real exponentiation needed in the asymptotic bounds.\n\nOpens `Nat`, `Real`, and `Finset` namespaces for convenience. The `Erdos841` namespace scopes the entire development.",
     "mathContext": "The import of `SpecialFunctions.Log.Basic` and `SpecialFunctions.Pow.Real` is needed specifically for the lower bound axiom $t_n \\geq C(\\log\\log n)^{6/5}/(\\log\\log\\log n)^{1/5}$ and the upper bound $t_n \\leq \\exp(O(\\sqrt{\\log n \\cdot \\log\\log n}))$, which involve iterated logarithms and real exponentiation.",
@@ -75,7 +75,7 @@
       "startLine": 70,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Computational Example: t_6 = 6",
     "content": "**example_t6_product**: `6 * 8 * 12 = 24 * 24` proved by `native_decide` — the only computationally verified statement in the entire file. This demonstrates that Lean can check concrete numerical claims automatically.\n\n**t6_equals_6**: `t 6 = 6` is axiomatized, not proved. To prove it would require showing both that $\\{8, 12\\} \\subset \\{7,\\ldots,12\\}$ gives a square product AND that no shorter interval suffices.",
     "mathContext": "$6 = 2^1 \\cdot 3^1$ has odd exponents for both primes. The subset $\\{8, 12\\} = \\{2^3, 2^2 \\cdot 3\\}$ gives $6 \\cdot 8 \\cdot 12 = 2^{1+3+2} \\cdot 3^{1+0+1} = 2^6 \\cdot 3^2 = (2^3 \\cdot 3)^2 = 24^2$. Crucially, $P(6) = 3$ and $\\sqrt{12} + 1 \\approx 4.46 > 3 = P(6)$, so 6 is smooth, placing it in the $t_n = O(\\sqrt{n})$ regime. Indeed $t_6 = 6 < C\\sqrt{6} \\approx 2.45C$ for reasonable $C$.",

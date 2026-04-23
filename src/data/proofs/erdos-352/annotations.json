@@ -82,7 +82,7 @@
       "startLine": 63,
       "endLine": 76
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cross Product Properties",
     "content": "**cross2D_antisymm** proves the cross product is antisymmetric: u x v = -(v x u). We also axiomatize that triangle area is invariant under cyclic permutation of vertices.",
     "mathContext": "Antisymmetry follows directly from the definition by algebraic manipulation. The permutation invariance of unsigned area follows from the absolute value, but we axiomatize it to avoid detailed casework.",
@@ -272,7 +272,7 @@
       "startLine": 217,
       "endLine": 240
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_352_summary** packages verified results: the conjectured constant is positive (by positivity), and our triangle area formula correctly computes area 1 for a specific example.",
     "mathContext": "The example triangle (0,0), (2,0), (1,1) has signed area cross2D(2,0)(1,1)/2 = (2*1 - 0*1)/2 = 1. This validates our definition.",

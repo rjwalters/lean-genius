@@ -2,7 +2,7 @@
   {
     "id": "erdos-1159-imports",
     "proofId": "erdos-1159",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 34,
       "endLine": 38
@@ -10,7 +10,7 @@
     "title": "Imports and Namespace",
     "content": "Imports the full Mathlib library and opens the Configuration namespace, which provides ProjectivePlane, pointCount, lineCount, and the order function. The Configuration module formalizes incidence geometry structures where points and lines interact via a Membership instance.",
     "mathContext": "The formalization uses Mathlib's $\\texttt{Configuration.ProjectivePlane}$ typeclass, which encodes the axioms: any two distinct points determine a unique line, any two distinct lines meet in a unique point, and there exist four points in general position.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Configuration.ProjectivePlane",
       "Membership",
@@ -153,7 +153,7 @@
   {
     "id": "erdos-1159-related",
     "proofId": "erdos-1159",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 139,
       "endLine": 145

@@ -75,7 +75,7 @@
       "startLine": 57,
       "endLine": 60
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #466 (Proved)",
     "content": "**erdos_466**: ∃ δ > 0 such that N(X, δ) → ∞ as X → ∞ (via `Filter.Tendsto ... Filter.atTop Filter.atTop`). The answer to Erdős's question is YES — arbitrarily large separated configurations exist.",
     "significance": "key",
@@ -97,7 +97,7 @@
       "startLine": 64,
       "endLine": 68
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Graham's Logarithmic Bound",
     "content": "**graham_logarithmic_bound**: For sufficiently large X, N(X, 1/10) ≥ (log X)/10. This was the first proof that N(X, δ) can grow without bound, answering Erdős's question.",
     "significance": "key",
@@ -121,7 +121,7 @@
       "startLine": 72,
       "endLine": 79
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sárközy's Polynomial Bound",
     "content": "**sarkozy_polynomial_bound**: ∃ δ₀ > 0 such that for all 0 < δ < δ₀ and sufficiently large X, N(X, δ) > X^{1/2 − δ^{1/7}}. For small δ, this gives nearly √X points — an exponential improvement over Graham.",
     "significance": "key",

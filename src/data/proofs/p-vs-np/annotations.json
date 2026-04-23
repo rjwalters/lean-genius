@@ -266,7 +266,7 @@
       "startLine": 660,
       "endLine": 666
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cook-Levin Theorem (1971)",
     "content": "**Cook-Levin Theorem**: SAT is NP-complete. The axiom `cook_levin_axiom` asserts that every NP problem poly-reduces to SAT. The theorem `cook_levin` then combines this with `SAT_in_NP_axiom` to establish NP-completeness. A full proof would require encoding Turing machine configurations as Boolean variables and transitions as CNF constraints (~5000+ lines).",
     "mathContext": "Cook's proof (1971) encodes the computation tableau of a nondeterministic TM as a Boolean formula: variables $x_{i,j,s}$ represent 'cell $(i,j)$ contains symbol $s$'. Transition constraints become CNF clauses. The formula has size $O(T(n)^2)$ where $T(n)$ is the NTM's time bound, so the reduction is polynomial. Levin independently proved the same result (1973) in the USSR.",
@@ -290,7 +290,7 @@
       "startLine": 672,
       "endLine": 755
     },
-    "type": "technique",
+    "type": "concept",
     "title": "NP-Complete Problems: 3-SAT, CLIQUE, SUBSET-SUM, HAMPATH",
     "content": "Several classic NP-complete problems are defined and their NP-completeness proved via reduction chains from SAT. Since all are modeled as the same abstract placeholder (`fun _ => false`), the reductions are identity functions. In the real theory: SAT $\\leq_p$ 3-SAT (clause splitting), 3-SAT $\\leq_p$ CLIQUE (gadget construction), 3-SAT $\\leq_p$ SUBSET-SUM (binary encoding), 3-SAT $\\leq_p$ HAMPATH (vertex gadgets).",
     "mathContext": "Karp (1972) established the first large catalog of NP-complete problems by showing reduction chains from SAT. The formalization uses helper theorems `always_false_inNP` and `eq_SAT_NPHard` to streamline the proofs, since all placeholder problems are the same constant function. The actual reductions (e.g., 3-SAT from SAT via clause-splitting into $O(k)$ 3-literal clauses) would each require hundreds of lines.",
@@ -339,7 +339,7 @@
       "startLine": 822,
       "endLine": 864
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The P ≠ NP Conjecture and Key Equivalences",
     "content": "The conjecture $P \\neq NP$ is formalized as `P_ne_NP_Conjecture := P ≠ NP`. The theorem `P_ne_NP_iff_exists` proves equivalence with $\\exists L \\in NP,\\, L \\notin P$. The central result `NPC_in_P_implies_P_eq_NP` shows: if **any** NP-complete problem is in $P$, then $P = NP$. This means the entire $P$ vs $NP$ question reduces to the tractability of a single NP-complete problem.",
     "mathContext": "The proof of `NPC_in_P_implies_P_eq_NP` uses the reduction chain: for any $A \\in NP$, NP-hardness of $L$ gives $A \\leq_p L$, and since $L \\in P$, `poly_reduce_P_preserved` yields $A \\in P$. Thus $NP \\subseteq P$, and combined with `P_subset_NP`, we get $P = NP$. The contrapositive is equally important: if $P \\neq NP$, then **no** NP-complete problem is in $P$.",
@@ -362,7 +362,7 @@
       "startLine": 874,
       "endLine": 887
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Time Hierarchy and P ≠ EXPTIME",
     "content": "Two separation results are stated as axioms: the **Time Hierarchy Theorem** ($\\text{DTIME}(n) \\subsetneq \\text{DTIME}(n^2)$, proved by diagonalization) and $P \\neq \\text{EXPTIME}$. These demonstrate that time-bounded complexity classes form a strict hierarchy, but the gap between $P$ and $NP$ — which lies between $P$ and $\\text{EXPTIME}$ — remains unresolved.",
     "mathContext": "The Time Hierarchy Theorem (Hartmanis-Stearns, 1965) uses a universal TM to diagonalize: construct a problem solvable in $O(n^2)$ steps but not in $O(n)$ steps. The separation $P \\neq \\text{EXPTIME}$ follows from $P \\subseteq \\text{DTIME}(n^k)$ for some $k$, and $\\text{DTIME}(n^k) \\subsetneq \\text{DTIME}(2^{n^k})$ by the hierarchy theorem. These are the strongest unconditional separations known for deterministic classes.",
@@ -386,7 +386,7 @@
       "startLine": 898,
       "endLine": 899
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ladner's Theorem (1975): NP-Intermediate Problems",
     "content": "**Ladner's Theorem**: If $P \\neq NP$, then there exist **NP-intermediate** problems — problems in $NP$ that are neither in $P$ nor NP-complete. This shows the NP landscape is rich, not a simple two-tier hierarchy. Candidate NP-intermediate problems include Graph Isomorphism (now known to be in quasi-polynomial time by Babai 2015) and Integer Factorization (basis of RSA cryptography).",
     "mathContext": "Ladner's proof constructs an artificial NP-intermediate problem by 'padding' SAT: define $L_H = \\{(\\varphi, 1^{H(|\\varphi|)}) \\mid \\varphi \\in \\text{SAT}\\}$ where $H$ grows slowly enough that $L_H \\notin P$ but fast enough that $L_H$ is not NP-hard. The construction uses a careful diagonalization against all polynomial-time algorithms and all polynomial-time reductions.",

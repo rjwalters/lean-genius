@@ -151,7 +151,7 @@
       "startLine": 122,
       "endLine": 150
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_534_summary**: Packages the three central results into a single conjunction: (1) the Erdős-Graham conjecture is false (`original_conjecture_false`), (2) a concrete counterexample exists (`counterexample_exists`), and (3) the correct Ahlswede-Khachatrian characterization holds for all $N > 1$ (`ahlswede_khachatrian_theorem`). The proof is a direct construction from the three axioms via `⟨_, _, _⟩`.",
     "mathContext": "erdos_534_summary : ¬OriginalConjecture ∧ (∃ N > 1, ...) ∧ (∀ N > 1, ∃ j primes, ...)\nProof: exact ⟨original_conjecture_false, counterexample_exists, ahlswede_khachatrian_theorem⟩",

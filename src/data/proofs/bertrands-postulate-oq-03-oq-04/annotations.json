@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 57
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports, Docstring, and Namespace: PNT Density in Short Intervals",
     "content": "Lines 1-8: 8 imports — Mathlib prime counting, asymptotics, log, limits, filters, tactics, plus parent modules `Proofs.PrimeNumberTheorem` (for `primePi`, `primeApprox`, RH axiom, PNT theorem) and `Proofs.BertrandsPostulateOQ03` (for `PrimeGapConjecture`, BHP axiom). Lines 10-48: module docstring with a density hierarchy table. Lines 50-56: `noncomputable section`, opens (`Filter`, `Topology`, `Real`, `Set`, `Asymptotics`, plus selective opens for `primePi`/`primeApprox` from `PrimeNumberTheorem` and `PrimeGapConjecture` from `BertrandsPostulateOQ03`).\n\nThe central distinction introduced here: **existence** (BHP: at least 1 prime in $[x, x+x^{0.525}]$) vs **density** (ShortIntervalPNT: approximately $x^\\theta/\\ln x$ primes in $[x, x+x^\\theta]$). This file formalizes the density concept and proves density implies existence.",
     "mathContext": "Hierarchy: $h = cx$ (density from PNT, fully proved) $\\supset$ $h = x^{1/2+\\varepsilon}$ (density under RH, axiomatized) $\\supset$ $h = x^{0.525}$ (existence only, BHP 2001) $\\supset$ $h = x$ (Bertrand). The `open PrimeNumberTheorem (primePi primeApprox)` selective open brings only two names in scope, avoiding namespace pollution.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Prime Number Theorem",
       "Bertrand's Postulate",
@@ -215,11 +215,11 @@
       "startLine": 329,
       "endLine": 357
     },
-    "type": "context",
+    "type": "concept",
     "title": "Summary Theorem: Four Known Results on Prime Distribution in Short Intervals",
     "content": "**Part 7** (lines 329-357). `prime_density_in_short_intervals_summary`: a 4-tuple proved by anonymous constructor:\n1. `PrimeGapConjecture 0.525` — BHP 2001 (existence)\n2. `PrimeGapConjecture 1` — Bertrand's Postulate (prime in $(x, 2x]$) via `BertrandsPostulateOQ03.density_question_status.2.1`\n3. `∃ θ < 1, PrimeGapConjecture θ` — witnessed by `⟨0.525, by norm_num, ...⟩`\n4. `ShortIntervalPNT 0.525 → ∀ᶠ x, ∃ prime in (x, x+x^0.525]` — density implies existence\n\nFollowed by `end BertrandsPostulateOQ03OQ04` and `end -- noncomputable section`.\n\nThe summary theorem is purely a convenience for future users — it bundles the key results into one named theorem, making it easy to cite all four at once via pattern matching.",
     "mathContext": "The 4-tuple packages: (existence at 0.525) ∧ (existence at 1) ∧ (sub-linear θ exists) ∧ (density → existence). The witness `⟨0.525, by norm_num, BertrandsPostulateOQ03.prime_gap_conjecture_bhp⟩` for (3) uses `norm_num` to prove `0.525 < 1` automatically. `density_question_status.2.1` accesses the second component's first element of a conjunction from the parent module.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "prime_density_in_short_intervals_summary",
       "BertrandsPostulateOQ03.density_question_status",

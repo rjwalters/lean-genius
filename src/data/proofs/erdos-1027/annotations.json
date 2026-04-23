@@ -2,7 +2,7 @@
   {
     "id": "ann-1027-header",
     "proofId": "erdos-1027",
-    "type": "context",
+    "type": "concept",
     "title": "Problem Documentation and Imports",
     "content": "The header documents Erdős Problem #1027 on the abundance of 'good' sets for bounded set families. Given a family $\\mathcal{F}$ of at most $c \\cdot 2^n$ sets of size $n$, the problem asks whether there exist $\\gg_c 2^{|X|}$ subsets $B \\subseteq X = \\bigcup \\mathcal{F}$ that intersect every set in $\\mathcal{F}$ but contain none. Koishi Chan proved the answer is YES. Imports Mathlib's `Finset`, `Fintype`, `Powerset`, and `Real` modules.",
     "mathContext": "$|\\mathcal{F}| \\le c \\cdot 2^n, \\; |A| = n \\; \\forall A \\in \\mathcal{F} \\;\\Rightarrow\\; |\\{B \\subseteq X : B \\cap A \\ne \\emptyset \\wedge A \\not\\subseteq B, \\; \\forall A \\in \\mathcal{F}\\}| \\gg_c 2^{|X|}$",
@@ -113,7 +113,7 @@
   {
     "id": "ann-1027-solution",
     "proofId": "erdos-1027",
-    "type": "technique",
+    "type": "concept",
     "title": "The Solution: Koishi Chan's Theorem",
     "content": "`erdos_1027_solution` axiomatizes the affirmative answer (proved by Koishi Chan): for every $c > 0$, the conjecture holds. `erdos_1027_solved` derives the explicit statement. This is the single axiom in the file, encoding the external mathematical result. This resolves Erdős's question: not only does property B hold for bounded families, but the number of witnesses is exponentially large.",
     "mathContext": "$\\forall c > 0: \\text{Erdos1027Statement}$ holds; i.e., a $\\delta(c)$-fraction of all subsets of $X$ are good",
@@ -134,7 +134,7 @@
   {
     "id": "ann-1027-abundance",
     "proofId": "erdos-1027",
-    "type": "technique",
+    "type": "concept",
     "title": "Abundance Implies Property B",
     "content": "`abundance_implies_propertyB` proves that if `goodSetCount F > 0`, then F has Property B. This bridges the quantitative result (abundance of good sets) to the qualitative one (existence of at least one). It connects Problem #1027 (exponential abundance) to Problem #901 (existence of Property B). Sorry-free.",
     "mathContext": "$|\\text{good sets}| > 0 \\Rightarrow \\text{HasPropertyB}(\\mathcal{F})$",
@@ -156,7 +156,7 @@
   {
     "id": "ann-1027-classical",
     "proofId": "erdos-1027",
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Classical Bound (1963) via the Probabilistic Method",
     "content": "The largest section. Defines `IsMonochromatic` (all elements of $A$ get the same color). Proves three results: (1) `card_constOn_le`: functions constant $b$ on $A$ number at most $2^{|\\alpha| - |A|}$, proved by injecting into complement functions $(A^c \\to \\text{Bool})$. (2) `card_monochromatic_le`: monochromatic colorings on $A$ bounded by $2 \\cdot 2^{|\\alpha| - |A|}$ (union of all-true and all-false). (3) `erdos_classical_bound`: if $|\\mathcal{F}| \\cdot 2 < 2^t$ and all sets have size $\\ge t$, then F is 2-colorable. The proof counts bad colorings via union bound: each set contributes $\\le 2 \\cdot 2^{|\\alpha| - t}$ bad colorings, total $< 2^{|\\alpha|}$, so a good coloring exists. All sorry-free.",
     "mathContext": "$|\\mathcal{F}| \\cdot 2 < 2^t, |A| \\ge t \\; \\forall A \\in \\mathcal{F} \\Rightarrow \\text{Is2Colorable}(\\mathcal{F})$. Proof: $|\\text{bad}| \\le \\sum_A 2 \\cdot 2^{|\\alpha| - |A|} \\le |\\mathcal{F}| \\cdot 2 \\cdot 2^{|\\alpha| - t} < 2^{|\\alpha|}$",

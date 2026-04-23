@@ -64,7 +64,7 @@
       "startLine": 69,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Continuum Hypothesis",
     "content": "**Continuum Hypothesis (CH)**:\n\n$$\\mathfrak{c} = 2^{\\aleph_0} = \\aleph_1$$\n\nEquivalently: there is no set with cardinality strictly between ℕ and ℝ.\n\nThis simple statement about infinity resisted proof for nearly a century until we discovered it cannot be proven or disproven from ZFC!",
     "mathContext": "$2^{\\aleph_0} = \\aleph_1$",
@@ -195,7 +195,7 @@
       "startLine": 205,
       "endLine": 220
     },
-    "type": "context",
+    "type": "concept",
     "title": "Why Forcing Is an Axiom Here",
     "content": "Formalizing Cohen forcing requires:\n\n1. Complete posets and dense sets\n2. Generic filters (via Rasiowa-Sikorski lemma)\n3. Names and interpretation\n4. Truth lemma and definability\n5. ~2000+ lines of machinery\n\nCohen's breakthrough was showing this construction preserves ZFC while changing the value of the continuum.",
     "significance": "supporting",
@@ -232,7 +232,7 @@
       "startLine": 232,
       "endLine": 241
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gödel's Consistency Result",
     "content": "**Theorem (Gödel, 1940)**:\n\n$$\\text{Con}(ZFC) \\Rightarrow \\text{Con}(ZFC + CH)$$\n\n**Proof**: The constructible universe L is a model of ZFC where CH holds. If ZFC is consistent (has any model), then L exists and satisfies ZFC + CH.\n\nThis showed CH is *not refutable* from ZFC.",
     "mathContext": "Con(ZFC) → Con(ZFC + CH)",
@@ -251,7 +251,7 @@
       "startLine": 243,
       "endLine": 253
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cohen's Consistency Result",
     "content": "**Theorem (Cohen, 1963)**:\n\n$$\\text{Con}(ZFC) \\Rightarrow \\text{Con}(ZFC + \\neg CH)$$\n\n**Proof**: Starting from any model M, forcing with P = Fn(ℵ₂ × ω, 2) produces M[G] where |ℝ| ≥ ℵ₂. Thus CH fails in M[G].\n\nThis showed CH is *not provable* from ZFC. Combined with Gödel: **CH is independent of ZFC**.",
     "mathContext": "Con(ZFC) → Con(ZFC + ¬CH)",
@@ -270,7 +270,7 @@
       "startLine": 255,
       "endLine": 278
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Independence of CH",
     "content": "**Main Theorem (Wiedijk #24 / Hilbert #1)**:\n\nThe Continuum Hypothesis is **independent** of ZFC:\n\n1. ∃ model M of ZFC where CH holds (Gödel's L)\n2. ∃ model M of ZFC where ¬CH holds (Cohen extension)\n\nTherefore ZFC ⊬ CH and ZFC ⊬ ¬CH.\n\n**Historical Impact**:\n- Answered Hilbert's first problem (unexpectedly!)\n- Revolutionized set theory with forcing\n- Raised philosophical questions about mathematical truth",
     "mathContext": "ZFC ⊬ CH and ZFC ⊬ ¬CH",
@@ -289,7 +289,7 @@
       "startLine": 284,
       "endLine": 288
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cantor's Theorem",
     "content": "**Cantor's Theorem**: For any set A,\n\n$$|A| < |\\mathcal{P}(A)|$$\n\nThis guarantees ℵ₀ < 2^ℵ₀. The continuum is strictly *larger* than countable infinity—we just can't determine *how much* larger within ZFC.\n\nMathlib provides this as `Cardinal.cantor`.",
     "mathContext": "|A| < |𝒫(A)|",

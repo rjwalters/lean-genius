@@ -57,7 +57,7 @@
       "startLine": 60,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "concept",
     "title": "1 is Always P-Smooth",
     "content": "**theorem one_isPSmooth**: 1 is P-smooth for any P.\n\n**Proof**: 1 > 0 ✓, and 1 has no prime divisors, so the condition is vacuously true.\n\nThis is one of the few theorems proved directly rather than axiomatized.",
     "mathContext": "The vacuous truth argument: if p is prime and p | 1, we'd have p = 1, contradicting primality. So no prime divides 1.",

@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 53
     },
-    "type": "context",
+    "type": "concept",
     "title": "Setup: Admissible Tuples and D(k) Background",
     "content": "The file imports Mathlib plus two sibling modules: BoundedPrimeGaps (which defines IsAdmissible, fsDiameter, admissible_subset, admissible_quadruple_0_2_6_8) and BoundedPrimeGapsOQ03OQ01 (which proved D(2)=2, D(3)=6, and the key lemma not_admissible_ap_diff2). The documentation block lays out the OEIS A008407 sequence and the two-part proof strategy before any Lean code appears.",
     "mathContext": "A $k$-tuple $H \\subset \\mathbb{Z}$ is **admissible** if for every prime $p$, the image $H \\pmod{p}$ does not cover all residue classes: $|\\{h \\bmod p : h \\in H\\}| < p$. The minimum admissible diameter is $D(k) = \\min\\{\\max H - \\min H : H \\text{ admissible}, |H|=k\\}$. OEIS A008407 gives $D(1)=0, D(2)=2, D(3)=6, D(4)=8, D(5)=12, \\ldots$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "admissible k-tuple",
       "prime constellation",
@@ -79,11 +79,11 @@
       "startLine": 104,
       "endLine": 115
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Exhaustive Case Analysis via interval_cases",
     "content": "The step showing H ⊆ {min, min+2, min+4, min+6} uses interval_cases on d := x - H.min'. Since d is even (d % 2 = 0) and d ≤ 6, interval_cases generates the seven sub-goals d ∈ {0,1,2,3,4,5,6} and omega closes each odd case (contradiction with d % 2 = 0) and each even case (shows x = min + d).",
     "mathContext": "interval_cases is a Lean/Mathlib tactic that, given $d : \\mathbb{N}$ with upper bound $d \\leq 6$, produces 7 goals for $d = 0,1,\\ldots,6$. Combined with the parity hypothesis $d \\equiv 0 \\pmod{2}$, omega eliminates $d \\in \\{1,3,5\\}$ and handles the arithmetic for the remaining cases.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "interval_cases tactic",
       "omega tactic",
@@ -106,7 +106,7 @@
     "title": "Workaround: Finset.card_eq_four for API Stability",
     "content": "Instead of using card_insert_of_notMem repeatedly (which changed in recent Mathlib), the proof uses Finset.card_eq_four.mpr with explicit distinctness witnesses. This avoids the Mathlib API churn flagged in the file description and is the same workaround applied to repair BoundedPrimeGapsOQ03OQ01.",
     "mathContext": "Finset.card_eq_four.mpr expects a proof of the form $\\exists a\\, b\\, c\\, d,\\, a \\neq b \\land \\cdots \\land S = \\{a,b,c,d\\}$. Distinctness of $\\{a, a+2, a+4, a+6\\}$ follows from $a < a+2 < a+4 < a+6$ (omega).",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Finset.card_eq_four",
       "Mathlib API stability",

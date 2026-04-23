@@ -2,14 +2,25 @@
   {
     "id": "erdos-324-degree-bounds-and-examples",
     "proofId": "erdos-324",
-    "type": "technique",
-    "range": { "startLine": 114, "endLine": 245 },
+    "type": "concept",
+    "range": {
+      "startLine": 114,
+      "endLine": 245
+    },
     "title": "Degree Bounds, Concrete Cases, and Counting Theorem",
     "content": "The second half of the file: axiomatizes `min_degree_for_distinct` (degree $\\geq 5$ needed), then proves concrete cases. `constant_not_distinct`: constant polynomials fail (all pair sums equal $2c$). `linear_not_distinct`: linear $f(x) = ax + b$ fails (proved via explicit collision). `quadratic_not_distinct`: quadratic fails (axiomatized). `cubic_quartic_not_distinct`: degree 3-4 fail (axiomatized). `distinctPairSumCount_eq`: for a polynomial with distinct pair sums, the number of distinct pair sums on $\\{0, \\ldots, N\\}$ equals $\\binom{N+1}{2}$ (proved via `Finset.card_image_of_injOn`). The `card_strict_pairs` helper computes $|\\{(a,b) : a < b \\leq N\\}| = \\binom{N+1}{2}$.",
     "mathContext": "For $f$ with distinct pair sums: $|\\{f(a)+f(b) : 0 \\leq a < b \\leq N\\}| = \\binom{N+1}{2}$. Degree bounds: $\\deg f \\leq 1$ proved by explicit collision; $\\deg f \\leq 4$ axiomatized (related to Lander-Parkin-Selfridge conjecture).",
     "significance": "key",
-    "relatedConcepts": ["polynomial pair sums", "Finset.card_image_of_injOn", "Lander-Parkin-Selfridge conjecture"],
-    "prerequisites": ["HasDistinctPairSums", "Polynomial.eval", "Finset.card_image_of_injOn"]
+    "relatedConcepts": [
+      "polynomial pair sums",
+      "Finset.card_image_of_injOn",
+      "Lander-Parkin-Selfridge conjecture"
+    ],
+    "prerequisites": [
+      "HasDistinctPairSums",
+      "Polynomial.eval",
+      "Finset.card_image_of_injOn"
+    ]
   },
   {
     "id": "erdos-324-header",
@@ -18,7 +29,7 @@
       "startLine": 1,
       "endLine": 15
     },
-    "type": "context",
+    "type": "concept",
     "title": "Distinct Polynomial Pair Sums (OPEN)",
     "content": "Module docstring for Erdős Problem #324: does there exist a polynomial $f(x) \\in \\mathbb{Z}[x]$ such that all sums $f(a) + f(b)$ for $a < b$ nonneg integers are distinct? It is conjectured that $f(x) = x^5$ works. The Lander-Parkin-Selfridge conjecture would imply $f(x) = x^n$ works for all $n \\geq 5$.",
     "mathContext": "Erdős #324: $\\exists f \\in \\mathbb{Z}[x],\\; \\forall 0 \\leq a < b,\\; f(a) + f(b)$ are all distinct.",
@@ -127,7 +138,7 @@
   {
     "id": "erdos-324-quintic-implies",
     "proofId": "erdos-324",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 60,
       "endLine": 67
@@ -192,7 +203,7 @@
   {
     "id": "erdos-324-squares-fail",
     "proofId": "erdos-324",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 79,
       "endLine": 79
@@ -235,7 +246,7 @@
   {
     "id": "erdos-324-quartics-fail",
     "proofId": "erdos-324",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 87,
       "endLine": 87
@@ -279,7 +290,7 @@
   {
     "id": "erdos-324-mindegree",
     "proofId": "erdos-324",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 98,
       "endLine": 99
@@ -325,7 +336,7 @@
   {
     "id": "erdos-324-binomial",
     "proofId": "erdos-324",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 112,
       "endLine": 113

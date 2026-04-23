@@ -158,7 +158,7 @@
       "startLine": 104,
       "endLine": 120
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Schipperus-Darby Theorem",
     "content": "**Erdős Problem #591 (SOLVED)**: `OrdinalRamseyProperty (ω ^ (ω ^ 2)) 3` holds!\n\nEvery 2-coloring of K_{ω^(ω²)} contains either a red K_{ω^(ω²)} or a blue K_3.\n\nProved independently by **Schipperus (2010)** and **Darby**. The $250 prize was claimed.",
     "mathContext": "The ordinal ω^(ω²) = ω^(ω·ω) is vastly larger than ω^ω. The positive answer confirms that limit exponents restore the Ramsey property.",
@@ -177,7 +177,7 @@
       "startLine": 129,
       "endLine": 135
     },
-    "type": "technique",
+    "type": "concept",
     "title": "ω² = ω · ω",
     "content": "We verify that ω² equals ω · ω using Mathlib's `pow_two` lemma. This is the ordinal that Specker showed has the Ramsey property.\n\nIntuitively, ω² is the order type of pairs (a, b) of natural numbers ordered lexicographically.",
     "significance": "supporting",
@@ -195,7 +195,7 @@
       "startLine": 137,
       "endLine": 141
     },
-    "type": "technique",
+    "type": "concept",
     "title": "ω³ = ω · ω · ω",
     "content": "We verify ω³ = ω · ω · ω. This is the **smallest ordinal** where Specker's negative result applies - the Ramsey property fails starting here.",
     "significance": "supporting",
@@ -213,7 +213,7 @@
       "startLine": 143,
       "endLine": 149
     },
-    "type": "technique",
+    "type": "concept",
     "title": "ω^ω is Positive",
     "content": "We prove 0 < ω^ω using Mathlib's `opow_pos` lemma. The ordinal ω^ω is the supremum of all ω^n for finite n - it's the first ordinal that 'escapes' the pattern of failures.",
     "significance": "supporting",

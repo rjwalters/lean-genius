@@ -6,9 +6,9 @@
       "startLine": 1,
       "endLine": 16
     },
-    "type": "context",
+    "type": "concept",
     "title": "Historical and Mathematical Context",
-    "content": "This module formalizes Archimedes' bounds on \u03c0 from his treatise 'Measurement of a Circle' (c. 250 BCE). Archimedes used inscribed and circumscribed regular 96-gons to trap \u03c0 between 223/71 and 22/7. Both bounds are fully verified using Mathlib's `pi_gt_d4` ($3.1415 < \\pi$) and `pi_lt_d4` ($\\pi < 3.1416$), which provide sufficient precision since $223/71 \\approx 3.14085 < 3.1415$ and $3.1416 < 22/7 \\approx 3.14286$.",
+    "content": "This module formalizes Archimedes' bounds on π from his treatise 'Measurement of a Circle' (c. 250 BCE). Archimedes used inscribed and circumscribed regular 96-gons to trap π between 223/71 and 22/7. Both bounds are fully verified using Mathlib's `pi_gt_d4` ($3.1415 < \\pi$) and `pi_lt_d4` ($\\pi < 3.1416$), which provide sufficient precision since $223/71 \\approx 3.14085 < 3.1415$ and $3.1416 < 22/7 \\approx 3.14286$.",
     "mathContext": "$\\frac{223}{71} < \\pi < \\frac{22}{7}$, equivalently $3 + \\frac{10}{71} < \\pi < 3 + \\frac{1}{7}$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -53,7 +53,7 @@
     },
     "type": "concept",
     "title": "Archimedes' Upper Bound (Verified)",
-    "content": "The upper bound $\\pi < 22/7$ is proved from Mathlib's `pi_lt_d4` ($\\pi < 3.1416$). Since $3.1416 < 22/7 \\approx 3.14286$, we have $\\pi < 3.1416 < 22/7$ by transitivity. The Dalzell\u2013Niven integral $\\int_0^1 t^4(1-t)^4/(1+t^2)\\,dt = 22/7 - \\pi$ provides an alternative elegant proof, but the `pi_lt_d4` approach is simpler.",
+    "content": "The upper bound $\\pi < 22/7$ is proved from Mathlib's `pi_lt_d4` ($\\pi < 3.1416$). Since $3.1416 < 22/7 \\approx 3.14286$, we have $\\pi < 3.1416 < 22/7$ by transitivity. The Dalzell–Niven integral $\\int_0^1 t^4(1-t)^4/(1+t^2)\\,dt = 22/7 - \\pi$ provides an alternative elegant proof, but the `pi_lt_d4` approach is simpler.",
     "mathContext": "$\\pi < 3.1416 < \\frac{22}{7}$",
     "significance": "key",
     "relatedConcepts": [
@@ -73,9 +73,9 @@
       "startLine": 46,
       "endLine": 48
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Combined Bounds via Anonymous Constructor",
-    "content": "The combined theorem packages both axioms into a single conjunction using Lean's anonymous constructor syntax `\u27e8_, _\u27e9`. This is a standard pattern for combining related results into a single statement that can be destructured by downstream theorems.",
+    "content": "The combined theorem packages both axioms into a single conjunction using Lean's anonymous constructor syntax `⟨_, _⟩`. This is a standard pattern for combining related results into a single statement that can be destructured by downstream theorems.",
     "mathContext": "$\\frac{223}{71} < \\pi \\wedge \\pi < \\frac{22}{7}$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -115,7 +115,7 @@
     },
     "type": "insight",
     "title": "Exact Gap: 1/497",
-    "content": "The gap between Archimedes' bounds is exactly $1/497 \\approx 0.00201$, proved entirely by `norm_num`. This means Archimedes achieved better than 0.1% relative accuracy using only geometric methods \u2014 remarkable for 250 BCE. The computation $22/7 - 223/71 = (22 \\cdot 71 - 223 \\cdot 7)/(7 \\cdot 71) = (1562 - 1561)/497 = 1/497$ is verified mechanically.",
+    "content": "The gap between Archimedes' bounds is exactly $1/497 \\approx 0.00201$, proved entirely by `norm_num`. This means Archimedes achieved better than 0.1% relative accuracy using only geometric methods — remarkable for 250 BCE. The computation $22/7 - 223/71 = (22 \\cdot 71 - 223 \\cdot 7)/(7 \\cdot 71) = (1562 - 1561)/497 = 1/497$ is verified mechanically.",
     "mathContext": "$\\frac{22}{7} - \\frac{223}{71} = \\frac{1562 - 1561}{497} = \\frac{1}{497}$",
     "significance": "key",
     "relatedConcepts": [
@@ -134,7 +134,7 @@
       "startLine": 63,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Error Bounds via Linear Arithmetic",
     "content": "Both error inequalities ($\\pi - 223/71 < 1/497$ and $22/7 - \\pi < 1/497$) follow from the combined bounds and the gap computation by pure linear arithmetic. The `obtain` tactic destructures the conjunction, and `linarith` closes both goals using the chain of inequalities. This is a clean example of deriving quantitative error estimates from bounding intervals.",
     "mathContext": "$\\pi - \\frac{223}{71} < \\frac{1}{497}$ and $\\frac{22}{7} - \\pi < \\frac{1}{497}$",
@@ -203,7 +203,7 @@
       "startLine": 95,
       "endLine": 100
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Packaging Theorem",
     "content": "A summary theorem bundling all three main results: Archimedes' bounds, the exact gap, and the general polygon bound. The universally quantified polygon bound is wrapped in a lambda to match the required signature. This pattern provides a single entry point for downstream consumers of the entire formalization.",
     "mathContext": "$(\\frac{223}{71} < \\pi < \\frac{22}{7}) \\wedge (\\frac{22}{7} - \\frac{223}{71} = \\frac{1}{497}) \\wedge (\\forall n \\geq 1,\\; n\\sin(\\pi/n) < \\pi)$",

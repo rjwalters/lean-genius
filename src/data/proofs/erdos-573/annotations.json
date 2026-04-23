@@ -180,7 +180,7 @@
       "startLine": 174,
       "endLine": 198
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorems",
     "content": "Two summary theorems. **erdos_573** states the problem is well-posed via the law of excluded middle: erdos573Conjecture ∨ ¬erdos573Conjecture (using Classical.em). This encodes that the problem has a definite answer even though we don't know which. **erdos_573_summary** combines the two key known facts: (1) ∀ n, exC3C4 n ≤ exC4 n (monotonicity) and (2) ∃ c > 0, ∀ n ≥ 1, exC3C4 n ≥ c·n^(3/2) (lower bound). The proof is ⟨exC3C4_le_exC4, exC3C4_lower_bound⟩, directly combining the two axioms.",
     "mathContext": "erdos_573 : erdos573Conjecture ∨ ¬erdos573Conjecture := Classical.em _. erdos_573_summary : (∀ n, exC3C4 n ≤ exC4 n) ∧ (∃ c > 0, ...) := ⟨exC3C4_le_exC4, exC3C4_lower_bound⟩.",

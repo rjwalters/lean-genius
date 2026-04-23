@@ -33,7 +33,7 @@
     "title": "powerSumRatio: The Normalized Power Sum",
     "content": "powerSumRatio k n is the ratio (∑_{i=0}^{n-1} i^k) / n^{k+1}, defined over ℚ with the convention that the value is 0 when n = 0 (to make it a total function). The denominator n^{k+1} normalizes the sum to the scale of 1/(k+1): by the Riemann sum interpretation, this ratio approximates ∫₀¹ x^k dx = 1/(k+1) for large n. The definition uses noncomputable because it involves rational division.",
     "mathContext": "$$R_k(n) = \\begin{cases} 0 & n = 0 \\\\ \\dfrac{\\displaystyle\\sum_{i=0}^{n-1} i^k}{n^{k+1}} & n > 0 \\end{cases}$$ which is a discrete approximation to $\\int_0^1 x^k\\,dx = \\frac{1}{k+1}$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Riemann sums",
       "Faulhaber's formula",

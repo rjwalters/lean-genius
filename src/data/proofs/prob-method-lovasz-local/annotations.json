@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 13
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Lovász Local Lemma: Crown Jewel of the Probabilistic Method",
     "content": "The Lovász Local Lemma (LLL), proved by Erdős and Lovász in their 1975 paper 'Problems and results on 3-chromatic hypergraphs', overcomes the main limitation of the basic probabilistic method: the union bound. When $n$ bad events each have probability $p$, the union bound only guarantees avoidance if $np < 1$. The LLL shows that if the events are mostly independent (sparse dependency graph), avoidance is possible even when $np \\gg 1$. This enables existence proofs for graph coloring, satisfiability, and combinatorial designs that the first moment method cannot reach.",
     "mathContext": "Union bound: $\\Pr[\\bigcup A_i] \\leq \\sum \\Pr[A_i]$. LLL: $\\Pr[\\bigcap \\overline{A_i}] > 0$ even when $\\sum \\Pr[A_i] \\gg 1$, provided dependencies are sparse.",
@@ -30,7 +30,7 @@
       "startLine": 24,
       "endLine": 28
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Symmetric LLL (Simplified Criterion)",
     "content": "The symmetric LLL states that if each of $n$ bad events has probability $\\leq p$ and depends on at most $d$ other events, and a criterion involving $p$, $d$ is met, then all bad events can be avoided. The formalization uses $p(d+1) \\leq 1/3$ as a simplified criterion (the exact bound is $ep(d+1) \\leq 1$ where $e \\approx 2.718$). The constant $1/3$ is a safe approximation since $1/e \\approx 0.368 > 1/3$. The theorem currently proves `True` as a placeholder because the full statement requires formalizing events, probability measures, and dependency graphs.",
     "mathContext": "Simplified: $p(d+1) \\leq 1/3$. Exact: $ep(d+1) \\leq 1$, i.e., $p \\leq \\frac{1}{e(d+1)}$.",
@@ -77,7 +77,7 @@
       "startLine": 41,
       "endLine": 44
     },
-    "type": "technique",
+    "type": "concept",
     "title": "k-SAT Satisfiability via LLL",
     "content": "A classic application of the symmetric LLL to random $k$-SAT: each clause of $k$ literals is unsatisfied with probability $2^{-k}$ under a random assignment. If each variable appears in at most $2^{k-2}/k$ clauses, then each clause depends on at most $k \\cdot 2^{k-2}/k = 2^{k-2}$ other clauses, and the LLL criterion is met. The formalization verifies the numerical inequality $2^{-k}(2^{k-2}+1) \\leq 1$. This gives the best unconditional lower bound on the $k$-SAT satisfiability threshold for large $k$.",
     "mathContext": "$2^{-k} \\cdot (k \\cdot 2^{k-2}/k + 1) = 2^{-k}(2^{k-2}+1) \\leq 1$ for $k \\geq 3$",
@@ -124,7 +124,7 @@
       "startLine": 54,
       "endLine": 75
     },
-    "type": "technique",
+    "type": "concept",
     "title": "LLL Probability Bounds and Factor Positivity",
     "content": "`lll_prob_bound`: The LLL condition $\\Pr[A_i] \\leq x_i \\prod_{j \\in \\Gamma(i)}(1-x_j)$ implies the simpler bound $\\Pr[A_i] \\leq x_i$, since each factor $(1-x_j) \\leq 1$ so the product is $\\leq 1$. The proof uses `Finset.prod_le_one` and `mul_le_mul_of_nonneg_left`.\n\n`lll_factor_pos`: Each factor $1 - x_i > 0$ is immediate from $x_i < 1$. This is the building block for the avoidance product $\\prod_i(1-x_i) > 0$.",
     "mathContext": "$\\Pr[A_i] \\leq x_i \\prod_{j}(1-x_j) \\leq x_i \\cdot 1 = x_i$ since each $(1-x_j) \\in (0,1]$.\n\nThe weaker bound $\\Pr[A_i] \\leq x_i$ is often sufficient for applications — the full product form gives the tighter avoidance guarantee.",
@@ -146,7 +146,7 @@
       "startLine": 81,
       "endLine": 113
     },
-    "type": "technique",
+    "type": "concept",
     "title": "k-SAT Application: Detailed Proof",
     "content": "The full k-SAT application requires verifying $2^{-k}(2^{k-2}+1) \\leq 1$ for $k \\geq 3$.\n\nThe auxiliary `pow2_plus_one_le` proves $2^{k-2}+1 \\leq 2^k$ by:\n1. $1 \\leq 2^{k-2}$ (for $k \\geq 3$)\n2. $2^{k-2} + 2^{k-2} = 2^{k-1}$ (doubling)\n3. $2^{k-1} \\leq 2^k$ (monotonicity)\n\nThe main `ksat_lll` theorem simplifies $k \\cdot (2^{k-2}/k) = 2^{k-2}$ (cancellation of $k$), then converts to $(2^{k-2}+1)/2^k \\leq 1$, dispatched by `pow2_plus_one_le`.\n\nThis gives the classical LLL bound on the k-SAT satisfiability threshold: any $k$-CNF formula where each variable appears in at most $2^{k-2}/k$ clauses is satisfiable.",
     "mathContext": "For $k \\geq 3$: each clause unsatisfied with probability $p = 2^{-k}$; each clause shares variables with at most $d = k \\cdot 2^{k-2}/k = 2^{k-2}$ others. The LLL criterion $p(d+1) \\leq 1$ becomes $2^{-k}(2^{k-2}+1) \\leq 1$.\n\nFor $k=3$: $p = 1/8$, $d = 2$, criterion $3/8 \\leq 1$ \\checkmark.",
@@ -170,7 +170,7 @@
       "startLine": 135,
       "endLine": 171
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Symmetric Case: x = 1/(d+1) Specialization",
     "content": "Four results specializing the general LLL to the symmetric assignment $x_i = 1/(d+1)$ for all $i$:\n\n1. `symmetric_x_in_range`: $0 \\leq 1/(d+1) < 1$ for $d > 0$ — verifies the witness values are valid.\n\n2. `symmetric_avoidance_pos`: $(d/(d+1))^n > 0$ — the avoidance product is positive for any $n$.\n\n3. `symmetric_product_eq`: $\\prod_i(1 - 1/(d+1)) = (d/(d+1))^n$ — unfolds the product using `Finset.prod_const`.\n\n4. `symmetric_moser_tardos_bound`: $\\sum_i \\frac{1/(d+1)}{d/(d+1)} = n/d$ — the Moser-Tardos resampling bound simplifies to $n/d$ in the symmetric case.\n\nThese results show that the symmetric case has clean, closed-form expressions for all the key quantities.",
     "mathContext": "With $x_i = 1/(d+1)$:\n- Avoidance product: $\\prod_i(1-x_i) = (d/(d+1))^n$\n- Moser-Tardos bound: $\\sum_i x_i/(1-x_i) = n \\cdot \\frac{1/d+1}{d/(d+1)} = n/d$\n- As $d \\to \\infty$: avoidance $\\to 1$ and resampling $\\to 0$, reflecting that sparse dependencies make avoidance easy.",
@@ -217,7 +217,7 @@
       "startLine": 231,
       "endLine": 294
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bernoulli's Inequality and Universal Threshold Bound T(d) ≤ 1/4",
     "content": "A self-contained proof of **Bernoulli's inequality** $(1+x)^n \\geq 1 + nx$ for $x \\geq -1$ by induction on $n$. The inductive step uses $(1+nx)(1+x) = 1+(n+1)x + nx^2 \\geq 1+(n+1)x$ since $nx^2 \\geq 0$.\n\nThis powers two corollaries:\n1. `one_plus_inv_pow_ge_two`: $(1+1/d)^d \\geq 2$ (from Bernoulli with $x = 1/d$)\n2. `succ_pow_ge_two_mul`: $(d+1)^d \\geq 2 d^d$ (multiplicative form)\n\nThe main result `lllThreshold_le_quarter` proves $T(d) \\leq 1/4$ for ALL $d \\geq 1$:\n- From $(d+1)^d \\geq 2d^d$ and $d+1 \\geq 2$: $(d+1)^{d+1} \\geq 4d^d$\n- Therefore $T(d) = d^d/(d+1)^{d+1} \\leq 1/4$\n\nThis is the **universal threshold bound**: the LLL always guarantees avoidance when each event has probability $\\leq 1/4$ and its dependency degree is arbitrary.",
     "mathContext": "Bernoulli: $(1+x)^n \\geq 1 + nx$ for $x \\geq -1$.\n\nChain: $(1+1/d)^d \\geq 2 \\implies (d+1)^d \\geq 2d^d \\implies (d+1)^{d+1} \\geq 4d^d \\implies T(d) \\leq 1/4$.\n\nThe bound $1/4$ is tight: $T(1) = 1/4$ exactly.",
@@ -267,7 +267,7 @@
       "startLine": 233,
       "endLine": 256
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bernoulli's Inequality and Exponential Lower Bound",
     "content": "`bernoulli_ineq` proves $(1+x)^n \\geq 1 + nx$ for $x \\geq -1$ by induction. The key step: $(1+nx)(1+x) = 1+(n+1)x + nx^2 \\geq 1+(n+1)x$. Corollary `one_plus_inv_pow_ge_two`: $(1+1/d)^d \\geq 2$, from Bernoulli with $x = 1/d$ giving $1 + d \\cdot (1/d) = 2$.\n\nThese classical inequalities are the foundation for the universal threshold bound $T(d) \\leq 1/4$.",
     "mathContext": "Bernoulli's inequality: $(1+x)^n \\geq 1 + nx$ for $x \\geq -1, n \\in \\mathbb{N}$. The limit $\\lim_{d \\to \\infty} (1+1/d)^d = e \\approx 2.718$, so the bound $(1+1/d)^d \\geq 2$ captures the coarse estimate $e \\geq 2$.",

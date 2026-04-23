@@ -2,7 +2,7 @@
   {
     "id": "erdos-500-ann-module-doc",
     "proofId": "erdos-500",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 1,
       "endLine": 19
@@ -10,7 +10,7 @@
     "title": "Module Documentation: Turán's Hypergraph Problem (OPEN, $500 Prize)",
     "content": "The module docstring frames Problem #500 as one of the most famous open problems in extremal combinatorics. It states the central question: determine $\\text{ex}_3(n, K_4^{(3)})$, the maximum number of 3-element subsets of an $n$-element set that avoid containing all four 3-subsets of any 4-element set. Turán's 1941 construction (3-partition) gives $(5/9 + o(1))\\binom{n}{3}$ edges, Razborov's 2010 flag algebra bound gives $\\leq 0.5612\\binom{n}{3}$. Erdős considered this important enough to assign it Problem #500 with a \\$500 prize. The problem remains completely open — the Turán density $\\pi(K_4^{(3)})$ is unknown even to within a gap of $0.0056$.",
     "mathContext": "$\\text{ex}_3(n, K_4^{(3)}) = \\max\\{|E| : E \\subseteq \\binom{[n]}{3},\\; \\forall S \\in \\binom{[n]}{4},\\; \\exists T \\in \\binom{S}{3},\\; T \\notin E\\}$. Turán conjecture: $\\lim_{n \\to \\infty} \\text{ex}_3(n)/\\binom{n}{3} = 5/9 \\approx 0.5556$. Razborov 2010: $\\leq 0.5612$. Gap: $0.0056$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Turán problem",
       "extremal combinatorics",
@@ -27,7 +27,7 @@
   {
     "id": "erdos-500-ann-imports",
     "proofId": "erdos-500",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 21,
       "endLine": 28
@@ -140,7 +140,7 @@
   {
     "id": "erdos-500-ann-open-problem-stubs",
     "proofId": "erdos-500",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 45,
       "endLine": 59
@@ -148,7 +148,7 @@
     "title": "Stubs: Extremal Number, Density, Bounds, and Conjecture (Incomplete)",
     "content": "Lines 45-59 are section header comments and orphaned docstrings marking out the remaining formalization work:\n\n**Turán number** (stub at line 45): `ex3_K4 n` would return the maximum number of edges in a $K_4^{(3)}$-free hypergraph on $n$ vertices, axiomatized with existence (`ex3_K4_achievable`) and optimality (`ex3_K4_optimal`) properties.\n\n**Turán density** (stub at line 49): `turanDensityK4_3` would formalize $\\pi(K_4^{(3)}) = \\lim_{n\\to\\infty} \\text{ex}_3(n)/\\binom{n}{3}$, whose existence is guaranteed by the Katona–Nemetz–Simonovits theorem (1964).\n\n**Turán's lower bound** (stub at line 50): $\\pi \\geq 5/9$ from the 3-partition construction.\n\n**Razborov's upper bound** (stub at line 52): $\\pi \\leq 0.5612$ via flag algebras (2010).\n\n**Turán's conjecture** (stub at line 54): $\\pi = 5/9$ (OPEN since 1941).\n\n**Exact small values** (stub at line 56): $\\text{ex}_3(4) = 3$, $\\text{ex}_3(5) = 7$, $\\text{ex}_3(6) = 13$.",
     "mathContext": "Bounds hierarchy: $5/9 \\leq \\pi(K_4^{(3)}) \\leq 0.5612$. Gap $\\approx 0.0056$. Known exact values: $\\text{ex}_3(4)=3$, $\\text{ex}_3(5)=7$, $\\text{ex}_3(6)=13$. Ratios: $0.75, 0.70, 0.65$ trending toward $5/9 \\approx 0.556$. Formalizing these requires the flag algebra method — currently out of scope for Mathlib.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Turán number stub",
       "Turán density stub",

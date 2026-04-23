@@ -154,7 +154,7 @@
       "startLine": 145,
       "endLine": 158
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem for chi = 4",
     "content": "**erdos_751_chromatic_4:**\n\nFor chi(G) = 4, there exist cycles m, m' with |m - m'| <= 2.\n\n**Proof:**\n1. chi(G) = 4 implies minDegree >= 3 (four_chromatic_minDeg)\n2. minDegree >= 3 implies close cycles (bondy_vince_theorem)\n3. Therefore chi = 4 implies close cycles",
     "significance": "key",
@@ -172,7 +172,7 @@
       "startLine": 160,
       "endLine": 171
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Girth Doesn't Help",
     "content": "**erdos_751_with_girth:**\n\nEven if girth(G) is large, the conclusion still holds.\n\n```lean\ntheorem erdos_751_with_girth (G : SimpleGraph V) (k : N) :\n    chromaticNumber G = 4 -> girth G >= k ->\n    exists close cycles\n```\n\nThe girth constraint doesn't change anything because the proof only uses minimum degree.",
     "significance": "key",
@@ -190,7 +190,7 @@
       "startLine": 173,
       "endLine": 190
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Full Answer",
     "content": "**erdos_751:**\n\nCan min(m_{i+1} - m_i) be arbitrarily large for chi(G) = 4?\n\n**NO.** The gap is always <= 2.\n\n```lean\ntheorem erdos_751 (G : SimpleGraph V) :\n    chromaticNumber G = 4 ->\n    NOT (forall n, minCycleLengthGap > n)\n```",
     "significance": "key",
@@ -208,7 +208,7 @@
       "startLine": 196,
       "endLine": 204
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Generalization",
     "content": "**min_degree_3_cycle_gap:**\n\nThe result holds for ANY graph with min degree >= 3, not just chi = 4.\n\nThis is actually the more general statement - chromatic number 4 is just one way to guarantee min degree >= 3.",
     "significance": "key",
@@ -226,7 +226,7 @@
       "startLine": 220,
       "endLine": 242
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "**erdos_751_summary:**\n\nCombines all results:\n\n1. **Main:** chi = 4 implies close cycles (gap <= 2)\n2. **General:** min degree >= 3 suffices\n3. **Connection:** chi = 4 implies min degree >= 3\n\nThe answer to Erdos's question is definitively NO.",
     "significance": "key",
