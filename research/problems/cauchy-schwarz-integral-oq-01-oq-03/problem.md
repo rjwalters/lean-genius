@@ -1,108 +1,134 @@
-# Problem: [Problem Title]
+# Problem: Complex-Valued Hölder via Nnnorm — Next Extensions
 
 **Slug**: cauchy-schwarz-integral-oq-01-oq-03
-**Created**: 2026-04-23T04:43:38+02:00
+**Created**: 2026-04-23
 **Status**: Active
-**Source**: user-request <!-- gallery-gap | proof-suggestion | user-request | external -->
+**Source**: gallery-gap
 
 ## Problem Statement
 
-### Formal Statement
+### Context
 
-$$
-\text{[LaTeX formulation of the theorem/conjecture]}
-$$
+The gallery proof `cauchy-schwarz-integral-oq-01-oq-03` (verified, 0 sorries) establishes:
+
+> The nnnorm approach to Hölder's inequality generalizes uniformly to any `NormedField`
+> (ℝ, ℂ, or any valued field). The complex case is a trivial corollary via nnnorm
+> multiplicativity.
+
+This problem workspace targets the two open questions raised by that proof.
+
+### Open Questions to Pursue
+
+**OQ-A** (primary): Can the snorm-based Hölder inequality
+
+$$\|fg\|_{L^1} \leq \|f\|_{L^p} \cdot \|g\|_{L^q}$$
+
+be formalized for `NormedField` scalars in the same uniform way as the nnnorm version?
+
+**OQ-B** (secondary): Does the same nnnorm approach extend to Hölder's inequality in
+Banach space-valued settings (Bochner integral)?
 
 ### Plain Language
 
-[Explain what we're trying to prove in accessible terms]
+The existing proof uses `nnnorm` (non-negative norm values, `ℝ≥0`-valued) to handle both
+real and complex cases uniformly. The question is whether the `snorm`-based Hölder (which
+Mathlib uses for `MeasureTheory.Lp` spaces) can be given the same treatment without
+case-splitting on ℝ vs ℂ.
 
 ### Why This Matters
 
-[Significance of the problem - mathematical importance, applications, connections]
+Uniform formulations for any `NormedField` reduce duplication in the `MeasureTheory.Lp`
+API and could simplify future extensions to p-adic or other valued field contexts.
 
 ## Known Results
 
 ### What's Already Proven
 
-- [Related theorem 1] — [citation/location]
-- [Related theorem 2] — [citation/location]
+- `NNNorm.inner_le_nnorm_mul_nnorm` — Cauchy-Schwarz via nnnorm (gallery)
+- `cauchy-schwarz-integral-oq-01-oq-03` (gallery, verified) — Hölder for NormedField via nnnorm
+- `MeasureTheory.inner_le_Lnorm_mul_Lnorm` — Mathlib snorm Hölder (real-valued)
 
 ### What's Still Open
 
-- [Open question 1]
-- [Open question 2]
+- Uniform snorm-based Hölder for `NormedField` scalars
+- Bochner-integral Hölder via nnnorm for Banach-valued functions
 
 ### Our Goal
 
-[Specific scope of what we're attempting — which piece of the puzzle]
+Determine which of OQ-A or OQ-B is more tractable and attempt a Lean formalization.
+OQ-A is preferred (direct snorm extension); OQ-B is harder (needs Bochner integral).
 
 ## Related Gallery Proofs
 
 | Proof | Relevance | Techniques |
 |-------|-----------|------------|
-| [proof-slug-1] | [why related] | [techniques used] |
-| [proof-slug-2] | [why related] | [techniques used] |
+| `cauchy-schwarz-integral-oq-01-oq-03` | Direct parent — nnnorm Hölder for NormedField | nnnorm, NNReal algebra |
+| `cauchy-schwarz-integral-oq-01` | Original Cauchy-Schwarz integral | ENNReal, snorm |
+| `cauchy-schwarz-integral` | Base Cauchy-Schwarz for L² | inner product space |
 
 ## Initial Thoughts
 
 ### Potential Approaches
 
-1. **Approach A**: [brief description]
-   - Why it might work: ...
-   - Risk: ...
+1. **snorm lifting via nnnorm** (OQ-A):
+   - Express `snorm f p μ` in terms of `∫ ‖f x‖₊^p ∂μ` (which uses nnnorm)
+   - Apply the existing nnnorm Hölder to get the bound
+   - Why it might work: snorm is defined via nnnorm integrals already
+   - Risk: `NNNorm` → `Norm` casting may need careful bounding
 
-2. **Approach B**: [brief description]
-   - Why it might work: ...
-   - Risk: ...
+2. **Bochner Hölder** (OQ-B):
+   - Extend `MeasureTheory.Lp.inner_le_Lnorm_mul_Lnorm` to Banach-valued case
+   - Requires: Pettis measurability, weak integration lemmas
+   - Why it might work: nnnorm still works for Banach norms
+   - Risk: Significantly more Mathlib infrastructure required
 
 ### Key Difficulties
 
-- [Difficulty 1]
-- [Difficulty 2]
+- `snorm` in Mathlib is `ℝ≥0∞`-valued; bridging to `NNReal` requires care at `p = ∞`
+- Mathlib's existing `snorm` Hölder is specialized to `ℝ`; NormedField version may not exist
 
 ### What Would a Proof Need?
 
-- Key lemma 1: ...
-- Key lemma 2: ...
-- Technical requirements: ...
+- Key lemma: `snorm (f * g) 1 μ ≤ snorm f p μ * snorm g q μ` for NormedField
+- Technical: `1/p + 1/q = 1` hypothesis in ENNReal arithmetic
+- Mathlib: `MeasureTheory.snorm_mul_le` or similar
 
 ## Tractability Assessment
 
-**Difficulty**: Low | Medium | High | Moonshot
+**Difficulty**: Medium
 
 **Justification**:
-- [Reason for assessment]
-- [Similar problems that have been solved]
-- [Techniques available in Mathlib]
+- The nnnorm framework is already established in the gallery
+- Mathlib has `MeasureTheory.inner_le_Lnorm_mul_Lnorm` as a model
+- The main gap is generalizing from ℝ to NormedField coefficients
+- OQ-A should be doable in a few days; OQ-B is harder (week+)
 
 **Estimated Effort**:
-- Exploration: [hours/days]
-- If tractable: [days/weeks]
-- If hard: [unknown]
+- Exploration: 2-4 hours (read Mathlib snorm API)
+- OQ-A: 2-4 days
+- OQ-B: 1-2 weeks
 
 ## References
 
-### Papers
-- [Author, Title, Year] — [brief note]
-
-### Online Resources
-- [URL] — [description]
-
 ### Mathlib
-- [Relevant Mathlib module] — [what it provides]
+- `Mathlib.MeasureTheory.Function.LpSpace` — snorm, Lp spaces
+- `Mathlib.MeasureTheory.Measure.Haar.InnerProductSpace` — Cauchy-Schwarz
+- `Mathlib.Analysis.NormedSpace.BoundedLinearMaps` — Banach-valued integration
 
 ## Metadata
 
 ```yaml
 tags:
-  - number-theory  # or: algebra, analysis, topology, combinatorics, etc.
-  - prime-gaps
-  - sieve-methods
+  - analysis
+  - inequalities
+  - holder
+  - nnnorm
+  - lp-spaces
 related_proofs:
-  - infinitude-of-primes
-  - sieve-of-eratosthenes
+  - cauchy-schwarz-integral-oq-01-oq-03
+  - cauchy-schwarz-integral-oq-01
+  - cauchy-schwarz-integral
 difficulty: medium
-source: proof-suggestion
-created: 2026-04-23T04:43:38+02:00
+source: gallery-gap
+created: 2026-04-23
 ```
