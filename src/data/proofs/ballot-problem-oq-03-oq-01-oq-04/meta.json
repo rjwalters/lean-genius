@@ -2,7 +2,7 @@
   "id": "ballot-problem-oq-03-oq-01-oq-04",
   "title": "Catalan Number Recurrence from the Ballot Theorem",
   "slug": "ballot-problem-oq-03-oq-01-oq-04",
-  "description": "Proves the Catalan convolution recurrence C\u2099\u208a\u2081 = \u2211_{k=0}^n C\u2096\u00b7C\u2099\u208b\u2096 using the ballot theorem identity C\u2099 = ballotSeqCount(n+1, n) as a bridge. Bridges the LatticePathLGV Catalan numbers to Mathlib's root-namespace catalan via the shared characterization f(n)\u00b7(n+1) = C(2n,n). Derives both the abstract Catalan recurrence and its ballot sequence form.",
+  "description": "Proves the Catalan convolution recurrence Cₙ₊₁ = ∑_{k=0}^n Cₖ·Cₙ₋ₖ using the ballot theorem identity Cₙ = ballotSeqCount(n+1, n) as a bridge. Bridges the LatticePathLGV Catalan numbers to Mathlib's root-namespace catalan via the shared characterization f(n)·(n+1) = C(2n,n). Derives both the abstract Catalan recurrence and its ballot sequence form.",
   "meta": {
     "author": "Bertrand (1887), Catalan (1838); formalized by researcher-10",
     "sourceUrl": "https://en.wikipedia.org/wiki/Catalan_number#First_proof",
@@ -21,23 +21,23 @@
     "sorries": 0,
     "originalContributions": [
       "Bridge cn_eq_catalan: LatticePathLGV.Cn n = catalan n (Mathlib root namespace) via centralBinom characterization",
-      "catalan_recurrence: C\u2099\u208a\u2081 = \u2211_{k=0}^n C\u2096\u00b7C\u2099\u208b\u2096 proved via Mathlib catalan_succ' bridge",
-      "ballot_catalan_recurrence: ballotSeqCount (n+2) (n+1) = \u2211 ballotSeqCount (k+1) k \u00b7 ballotSeqCount (n-k+1) (n-k)",
+      "catalan_recurrence: Cₙ₊₁ = ∑_{k=0}^n Cₖ·Cₙ₋ₖ proved via Mathlib catalan_succ' bridge",
+      "ballot_catalan_recurrence: ballotSeqCount (n+2) (n+1) = ∑ ballotSeqCount (k+1) k · ballotSeqCount (n-k+1) (n-k)",
       "Verification: small cases n=0,1,2,3,4 via native_decide"
     ],
     "dateAdded": "2026-04-23",
     "axiomCount": 0,
-    "lineCount": 120,
+    "lineCount": 182,
     "assumptions": "0 sorries. All proofs are complete. Uses Mathlib's catalan_succ' and catalan_eq_centralBinom_div as infrastructure.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Catalan numbers C\u2099 = C(2n,n)/(n+1) were studied by Eug\u00e8ne Catalan (1838) in the context of polygon triangulations and non-crossing partitions. The convolution recurrence C\u2099\u208a\u2081 = \u2211C\u2096\u00b7C\u2099\u208b\u2096 appears throughout combinatorics: it encodes the recursive decomposition of Dyck paths, ballot sequences, full binary trees, and triangulated polygons. The ballot problem (Bertrand 1887) connects ballot sequences to Catalan numbers: voting sequences where one candidate always leads are counted by Catalan numbers. The recurrence then admits a ballot-theoretic interpretation: a ballot sequence of length 2(n+1) decomposes at its first return to minimum margin, giving a product of two shorter ballot sequences.",
-    "problemStatement": "Prove the Catalan convolution recurrence C\u2099\u208a\u2081 = \u2211_{k=0}^{n} C\u2096 \u00b7 C\u2099\u208b\u2096, and derive its ballot-sequence form, using the ballot theorem identity C\u2099 = ballotSeqCount(n+1, n).",
-    "text": "The Catalan numbers satisfy the fundamental convolution recurrence C\u2099\u208a\u2081 = \u2211C\u2096\u00b7C\u2099\u208b\u2096, which can be derived via the ballot theorem by decomposing ballot sequences at their first return.",
-    "proofStrategy": "Bridge `LatticePathLGV.Cn` to Mathlib's root-namespace `catalan` via the shared characterization `f(n)\u00b7(n+1) = Nat.centralBinom n`. Then apply Mathlib's `catalan_succ'` (antidiagonal convolution form) and convert back. The ballot form follows by substituting `Cn n = ballotSeqCount (n+1) n` throughout.",
+    "historicalContext": "Catalan numbers Cₙ = C(2n,n)/(n+1) were studied by Eugène Catalan (1838) in the context of polygon triangulations and non-crossing partitions. The convolution recurrence Cₙ₊₁ = ∑Cₖ·Cₙ₋ₖ appears throughout combinatorics: it encodes the recursive decomposition of Dyck paths, ballot sequences, full binary trees, and triangulated polygons. The ballot problem (Bertrand 1887) connects ballot sequences to Catalan numbers: voting sequences where one candidate always leads are counted by Catalan numbers. The recurrence then admits a ballot-theoretic interpretation: a ballot sequence of length 2(n+1) decomposes at its first return to minimum margin, giving a product of two shorter ballot sequences.",
+    "problemStatement": "Prove the Catalan convolution recurrence Cₙ₊₁ = ∑_{k=0}^{n} Cₖ · Cₙ₋ₖ, and derive its ballot-sequence form, using the ballot theorem identity Cₙ = ballotSeqCount(n+1, n).",
+    "text": "The Catalan numbers satisfy the fundamental convolution recurrence Cₙ₊₁ = ∑Cₖ·Cₙ₋ₖ, which can be derived via the ballot theorem by decomposing ballot sequences at their first return.",
+    "proofStrategy": "Bridge `LatticePathLGV.Cn` to Mathlib's root-namespace `catalan` via the shared characterization `f(n)·(n+1) = Nat.centralBinom n`. Then apply Mathlib's `catalan_succ'` (antidiagonal convolution form) and convert back. The ballot form follows by substituting `Cn n = ballotSeqCount (n+1) n` throughout.",
     "keyInsights": [
-      "Both Cn and catalan satisfy the same multiplicative characterization: f(n)\u00b7(n+1) = C(2n,n). Natural number division cancellation makes the bridge immediate.",
+      "Both Cn and catalan satisfy the same multiplicative characterization: f(n)·(n+1) = C(2n,n). Natural number division cancellation makes the bridge immediate.",
       "Mathlib's catalan_succ' states the recurrence over antidiagonals; Finset.Nat.sum_antidiagonal_eq_sum_range_succ converts to the range-sum form.",
       "The ballot form ballot_catalan_recurrence is a new result: it states the recurrence entirely in terms of ballot sequence counts, giving a direct path-decomposition interpretation.",
       "The bridge pattern (show two functions agree by showing they satisfy the same multiplicative identity) is reusable for other Catalan-adjacent results in the LatticePathLGV framework."
@@ -55,16 +55,16 @@
       "title": "Bridge: Cn = Mathlib catalan",
       "startLine": 55,
       "endLine": 65,
-      "summary": "Proves cn_eq_catalan: Cn n = catalan n by showing both satisfy f(n)\u00b7(n+1) = centralBinom n, then applying Nat.mul_div_cancel.",
-      "mathContext": "**Cn_eq_catalan** (lines 58\u201368): Proves `Cn n = catalan n` where `Cn n := C(2n,n) - C(2n,n+1)` is the ballot-formula Catalan number. The key tool is `Nat.eq_of_mul_eq_mul_right (Nat.succ_pos n)`: it suffices to show `Cn n * (n+1) = catalan n * (n+1)`. Two separate lemmas supply both sides:\n\n\u2022 `catalan_formula n : Cn n * (n+1) = Nat.centralBinom n` \u2014 proved from `choose_2n_succ` (the absorption identity $\\binom{2n}{n+1}(n+1) = \\binom{2n}{n} \\cdot n$): $\\text{Cn}(n) \\cdot (n+1) = \\binom{2n}{n}(n+1) - \\binom{2n}{n+1}(n+1) = \\binom{2n}{n}(n+1) - \\binom{2n}{n} \\cdot n = \\binom{2n}{n}$.\n\n\u2022 `succ_mul_catalan_eq_centralBinom n : (n+1) * catalan n = centralBinom n` \u2014 Mathlib's form of the same identity.\n\nThe proof chains `h1.trans h2.symm` with a `mul_comm` to align the factor ordering. The bridge enables using Mathlib's `catalan_succ'` in the next section."
+      "summary": "Proves cn_eq_catalan: Cn n = catalan n by showing both satisfy f(n)·(n+1) = centralBinom n, then applying Nat.mul_div_cancel.",
+      "mathContext": "**Cn_eq_catalan** (lines 58–68): Proves `Cn n = catalan n` where `Cn n := C(2n,n) - C(2n,n+1)` is the ballot-formula Catalan number. The key tool is `Nat.eq_of_mul_eq_mul_right (Nat.succ_pos n)`: it suffices to show `Cn n * (n+1) = catalan n * (n+1)`. Two separate lemmas supply both sides:\n\n• `catalan_formula n : Cn n * (n+1) = Nat.centralBinom n` — proved from `choose_2n_succ` (the absorption identity $\\binom{2n}{n+1}(n+1) = \\binom{2n}{n} \\cdot n$): $\\text{Cn}(n) \\cdot (n+1) = \\binom{2n}{n}(n+1) - \\binom{2n}{n+1}(n+1) = \\binom{2n}{n}(n+1) - \\binom{2n}{n} \\cdot n = \\binom{2n}{n}$.\n\n• `succ_mul_catalan_eq_centralBinom n : (n+1) * catalan n = centralBinom n` — Mathlib's form of the same identity.\n\nThe proof chains `h1.trans h2.symm` with a `mul_comm` to align the factor ordering. The bridge enables using Mathlib's `catalan_succ'` in the next section."
     },
     {
       "id": "recurrence",
       "title": "Catalan Convolution Recurrence",
       "startLine": 68,
       "endLine": 90,
-      "summary": "Proves catalan_recurrence: Cn (n+1) = \u2211_{k=0}^n Cn k * Cn (n-k) via the bridge to Mathlib's catalan_succ'.",
-      "mathContext": "**Cn_recurrence** (lines 73\u201385): Proves `Cn (n+1) = \u2211 k \u2208 range (n+1), Cn k * Cn (n-k)` in three tactic steps:\n\n1. `simp_rw [Cn_eq_catalan]`: rewrites all `Cn` occurrences to `catalan`, converting the goal to `catalan (n+1) = \u2211 k, catalan k * catalan (n-k)`.\n2. `catalan_succ'`: Mathlib's antidiagonal form rewrites LHS to `\u2211 ij \u2208 antidiagonal n, catalan ij.1 * catalan ij.2`.\n3. `Finset.Nat.sum_antidiagonal_eq_sum_range_succ`: converts the antidiagonal sum to the range-indexed form, matching the RHS exactly.\n\nThe proof is a **one-line chain**: the entire content reduces to choosing the right Mathlib lemmas in order. The depth is in the bridge lemma; the recurrence proof itself is nearly trivial once the bridge exists.\n\nSupporting consequences: `Cn_recurrence_sym` (symmetry $C_k C_{n-k} = C_{n-k} C_k$), `Cn_characterization` (initial condition $C_0 = 1$ plus recurrence uniquely characterizes $\\{C_n\\}$), `Cn_pos` (positivity via `catalan_formula`), and five `native_decide` verifications for $n = 0, 1, 2, 3, 4$."
+      "summary": "Proves catalan_recurrence: Cn (n+1) = ∑_{k=0}^n Cn k * Cn (n-k) via the bridge to Mathlib's catalan_succ'.",
+      "mathContext": "**Cn_recurrence** (lines 73–85): Proves `Cn (n+1) = ∑ k ∈ range (n+1), Cn k * Cn (n-k)` in three tactic steps:\n\n1. `simp_rw [Cn_eq_catalan]`: rewrites all `Cn` occurrences to `catalan`, converting the goal to `catalan (n+1) = ∑ k, catalan k * catalan (n-k)`.\n2. `catalan_succ'`: Mathlib's antidiagonal form rewrites LHS to `∑ ij ∈ antidiagonal n, catalan ij.1 * catalan ij.2`.\n3. `Finset.Nat.sum_antidiagonal_eq_sum_range_succ`: converts the antidiagonal sum to the range-indexed form, matching the RHS exactly.\n\nThe proof is a **one-line chain**: the entire content reduces to choosing the right Mathlib lemmas in order. The depth is in the bridge lemma; the recurrence proof itself is nearly trivial once the bridge exists.\n\nSupporting consequences: `Cn_recurrence_sym` (symmetry $C_k C_{n-k} = C_{n-k} C_k$), `Cn_characterization` (initial condition $C_0 = 1$ plus recurrence uniquely characterizes $\\{C_n\\}$), `Cn_pos` (positivity via `catalan_formula`), and five `native_decide` verifications for $n = 0, 1, 2, 3, 4$."
     },
     {
       "id": "ballot-form",
@@ -72,7 +72,7 @@
       "startLine": 93,
       "endLine": 115,
       "summary": "Proves ballot_catalan_recurrence: the recurrence in terms of ballotSeqCount, derived from catalan_recurrence via the ballot theorem.",
-      "mathContext": "**Ballot decomposition interpretation** (lines 88\u2013120): `Cn_ballot_recurrence_interpretation` is an alias for `Cn_recurrence` annotated with the combinatorial meaning. The ballot theorem interprets $C_n$ as the count of Dyck paths of semilength $n$ (paths from $(0,0)$ to $(2n,0)$ staying non-negative). The recurrence $C_{n+1} = \\sum_{k=0}^n C_k C_{n-k}$ corresponds to decomposing at the **first return to zero**: each Dyck path of semilength $n+1$ returns to height 0 for the first time at step $2(k+1)$ for some $k \\in \\{0,\\ldots,n\\}$. The excursion from step 1 to step $2k+1$ (staying strictly positive) is a Dyck path of semilength $k$, and the remaining suffix is a Dyck path of semilength $n-k$.\n\n`Cn_characterization : Cn 0 = 1 \u2227 \u2200 n, Cn (n+1) = \u2211 k \u2208 range (n+1), Cn k * Cn (n-k)` packages both the initial condition and the recurrence as a characterization. This is the standard axiomatic description of the Catalan sequence \u2014 any sequence satisfying these two conditions equals $\\{C_n\\}$."
+      "mathContext": "**Ballot decomposition interpretation** (lines 88–120): `Cn_ballot_recurrence_interpretation` is an alias for `Cn_recurrence` annotated with the combinatorial meaning. The ballot theorem interprets $C_n$ as the count of Dyck paths of semilength $n$ (paths from $(0,0)$ to $(2n,0)$ staying non-negative). The recurrence $C_{n+1} = \\sum_{k=0}^n C_k C_{n-k}$ corresponds to decomposing at the **first return to zero**: each Dyck path of semilength $n+1$ returns to height 0 for the first time at step $2(k+1)$ for some $k \\in \\{0,\\ldots,n\\}$. The excursion from step 1 to step $2k+1$ (staying strictly positive) is a Dyck path of semilength $k$, and the remaining suffix is a Dyck path of semilength $n-k$.\n\n`Cn_characterization : Cn 0 = 1 ∧ ∀ n, Cn (n+1) = ∑ k ∈ range (n+1), Cn k * Cn (n-k)` packages both the initial condition and the recurrence as a characterization. This is the standard axiomatic description of the Catalan sequence — any sequence satisfying these two conditions equals $\\{C_n\\}$."
     }
   ],
   "mainTheorems": [
@@ -85,19 +85,19 @@
     {
       "name": "catalan_recurrence",
       "type": "core",
-      "statement": "Cn (n+1) = \u2211 k \u2208 range (n+1), Cn k * Cn (n-k)",
+      "statement": "Cn (n+1) = ∑ k ∈ range (n+1), Cn k * Cn (n-k)",
       "significance": "The fundamental Catalan convolution recurrence in the LatticePathLGV framework, proved via the ballot-Mathlib bridge"
     },
     {
       "name": "ballot_catalan_recurrence",
       "type": "core",
-      "statement": "ballotSeqCount (n+2) (n+1) = \u2211 k \u2208 range (n+1), ballotSeqCount (k+1) k * ballotSeqCount (n-k+1) (n-k)",
+      "statement": "ballotSeqCount (n+2) (n+1) = ∑ k ∈ range (n+1), ballotSeqCount (k+1) k * ballotSeqCount (n-k+1) (n-k)",
       "significance": "Ballot-sequence form of the Catalan recurrence, expressing the decomposition of ballot sequences by first return to minimum margin"
     }
   ],
   "conclusion": {
     "summary": "A complete, sorry-free formalization of the Catalan convolution recurrence in the ballot theorem framework. The bridge cn_eq_catalan connects LatticePathLGV.Cn to Mathlib's catalan, and the recurrence follows via catalan_succ'. The ballot form ballot_catalan_recurrence is a new result expressing the recurrence entirely in terms of ballot sequence counts.",
-    "implications": "This result closes a natural question from BallotProblemOQ03OQ01 (LGV 2\u00d72): the ballot theorem connection to Catalan numbers is strong enough to derive the fundamental Catalan recurrence. The bridge pattern used here is reusable for other LatticePathLGV results. The ballot form of the recurrence has a direct combinatorial interpretation via Dyck path/ballot sequence decomposition at first return.",
+    "implications": "This result closes a natural question from BallotProblemOQ03OQ01 (LGV 2×2): the ballot theorem connection to Catalan numbers is strong enough to derive the fundamental Catalan recurrence. The bridge pattern used here is reusable for other LatticePathLGV results. The ballot form of the recurrence has a direct combinatorial interpretation via Dyck path/ballot sequence decomposition at first return.",
     "openQuestions": [
       "Can the Catalan recurrence be proved directly from the ballot path decomposition bijection, without going through Mathlib's catalan_succ'?",
       "Does the ballot_catalan_recurrence admit a bijective proof entirely within the ballot sequence framework (lattice path decomposition at first return to margin 1)?",
@@ -113,7 +113,7 @@
     {
       "targetId": "ballot-problem-oq-03-oq-01",
       "relationship": "related",
-      "description": "Answers the open question from the LGV 2\u00d72 entry: prove Catalan recurrence from the ballot theorem"
+      "description": "Answers the open question from the LGV 2×2 entry: prove Catalan recurrence from the ballot theorem"
     },
     {
       "targetId": "combinations-formula-oq-02",
@@ -124,16 +124,16 @@
   "references": [
     {
       "authors": "Catalan, E.",
-      "title": "Note sur une \u00e9quation aux diff\u00e9rences finies",
+      "title": "Note sur une équation aux différences finies",
       "year": "1838",
-      "venue": "Journal de math\u00e9matiques pures et appliqu\u00e9es, 3, 508-516",
+      "venue": "Journal de mathématiques pures et appliquées, 3, 508-516",
       "note": "Original paper introducing Catalan numbers and the convolution recurrence"
     },
     {
       "authors": "Bertrand, J.",
-      "title": "Solution d'un probl\u00e8me",
+      "title": "Solution d'un problème",
       "year": "1887",
-      "venue": "Comptes Rendus de l'Acad\u00e9mie des Sciences, 105, 369",
+      "venue": "Comptes Rendus de l'Académie des Sciences, 105, 369",
       "note": "Original ballot problem: probability that one candidate leads throughout a vote count"
     },
     {
@@ -154,7 +154,7 @@
       "Finset"
     ],
     "namespace": "BallotProblemOQ03OQ01OQ04",
-    "lineCount": 120,
+    "lineCount": 182,
     "axiomCount": 0,
     "theoremCount": 3,
     "definitionCount": 0,
