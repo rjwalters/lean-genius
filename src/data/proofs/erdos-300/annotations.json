@@ -101,7 +101,7 @@
     },
     "type": "technique",
     "title": "Liu-Sawhney Theorem: Exact Asymptotic",
-    "content": "**Liu and Sawhney (2024)** proved A(N)/N → 1 - 1/e, showing the trivial lower bound is asymptotically optimal. The theorem asymptotic_formula combines the lower bound (trivial_lower_bound) and upper bound (liu_sawhney_upper) into a sandwich: (1 - 1/e - ε)N ≤ A(N) ≤ (1 - 1/e + ε)N for all large N. This is the definitive resolution after 44 years.",
+    "content": "**Liu and Sawhney (2024)** proved A(N)/N → 1 - 1/e, showing the trivial lower bound is asymptotically optimal. The theorem asymptotic_formula combines the lower bound (erdos_300_lower_bound) and upper bound (liu_sawhney_upper) into a sandwich: (1 - 1/e - ε)N ≤ A(N) ≤ (1 - 1/e + ε)N for all large N. This is the definitive resolution after 44 years.",
     "mathContext": "The combined theorem uses Filter.Eventually.and via filter_upwards to merge two asymptotic bounds. The optimal density 1 - 1/e ≈ 0.6321 is defined as a noncomputable real. The proof of asymptotic_formula is fully constructive from the axioms — it's one of the few proved (non-axiom) results in this formalization.",
     "significance": "key",
     "relatedConcepts": [

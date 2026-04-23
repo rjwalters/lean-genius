@@ -120,7 +120,7 @@ A(N) ≥ (1 - 1/e + o(1))N
 The set of n with n > e has density 1 - 1/e ≈ 0.632.
 Axiomatized because formalizing the density argument requires measure theory.
 -/
-axiom trivial_lower_bound :
+axiom erdos_300_lower_bound :
     ∀ ε > 0, ∀ᶠ N in Filter.atTop,
       (A N : ℝ) ≥ (1 - Real.exp (-1) - ε) * N
 
@@ -174,7 +174,7 @@ theorem asymptotic_formula :
       (1 - Real.exp (-1) - ε) * N ≤ (A N : ℝ) ∧
       (A N : ℝ) ≤ (1 - Real.exp (-1) + ε) * N := by
   intro ε hε
-  have h1 := trivial_lower_bound ε hε
+  have h1 := erdos_300_lower_bound ε hε
   have h2 := liu_sawhney_upper ε hε
   filter_upwards [h1, h2] with N hN1 hN2
   exact ⟨hN1, hN2⟩
