@@ -3,7 +3,7 @@
     "id": "ann-oq03-header",
     "proofId": "shapley-folkman-oq-03",
     "range": { "startLine": 1, "endLine": 42 },
-    "type": "context",
+    "type": "concept",
     "title": "Shapley-Folkman-Starr Theorem: Economic Context",
     "content": "This file formalizes Starr's (1969) economic application of the Shapley-Folkman lemma. The key insight: even if individual agent preferences or feasible sets are non-convex, the *aggregate* market demand is 'approximately convex' in a quantitative sense.\n\n**Historical setting**: Shapley and Folkman proved their lemma in 1967 unpublished correspondence (included as an appendix in Starr's 1969 *Econometrica* paper). Starr's contribution was recognizing the economic significance: the lemma gives a uniform bound on non-convexity that is *independent of the number of agents*, making large markets approximately competitive.\n\n**Three main results**:\n1. `convexHull_dist_le` — elementary distance lemma for convex hulls\n2. `shapley_folkman_starr` — the main theorem: dist(x, ΣSᵢ) ≤ dim(E)·δ for x ∈ conv(ΣSᵢ)\n3. `large_economy_near_convex` — corollary: per-agent error d·δ/n → 0 as n → ∞",
     "mathContext": "**Setup**: $E$ a finite-dimensional normed space, $\\{S_i\\}_{i \\in t}$ sets with pairwise distances $\\leq \\delta$, $x \\in \\text{conv}(\\sum_i S_i)$. **Main bound**: $\\|x - x'\\| \\leq d \\cdot \\delta$ where $d = \\dim(E)$ and $x' \\in \\sum_i S_i$.",

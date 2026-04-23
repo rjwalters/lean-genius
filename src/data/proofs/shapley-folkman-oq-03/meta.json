@@ -111,12 +111,12 @@
   ],
   "crossReferences": [
     {
-      "targetId": "shapley-folkman",
+      "proofId": "shapley-folkman",
       "relationship": "depends-on",
       "description": "Uses `sum_close_to_convexHull` (Shapley-Folkman decomposition) and the `Decomposition` structure from the parent proof. The parent file has 4 pending sorries in `reduce_excess_by_one` that transitively affect this entry's completeness status."
     },
     {
-      "targetId": "brouwer-fixed-point",
+      "proofId": "brouwer-fixed-point",
       "relationship": "related",
       "description": "Brouwer's fixed-point theorem is the classical tool for proving equilibrium existence in convex economies (Arrow-Debreu 1954). The Shapley-Folkman-Starr theorem provides an alternative path to approximate equilibria in non-convex economies, bypassing the convexity requirement by bounding non-convexity error. Both results are foundational for economic equilibrium theory."
     }
