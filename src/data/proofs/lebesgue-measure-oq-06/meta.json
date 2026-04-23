@@ -18,10 +18,10 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 8,
+    "sorries": 4,
     "axiomCount": 0,
     "lineCount": 419,
-    "assumptions": "8 sorries (no `axiom` declarations — all assumptions encoded as theorem sorries): hausdorff_free_subgroup (free subgroup of SO(3)), banach_tarski (main theorem), banach_tarski_pieces_nonmeasurable (non-measurability of pieces), int_amenable (ℤ amenability), W_a_two_cover (W(a) two-cover), W_a_smul_disj (W(a) smul disjointness), W_b_two_cover (W(b) two-cover), W_b_smul_disj (W(b) smul disjointness). The main proof requires ~800 lines via free subgroup of SO(3) — beyond this gallery entry's scope. Note: paradoxical_no_finite_measure and free_group_not_amenable structure are fully proved.",
+    "assumptions": "4 remaining sorries (no `axiom` declarations — all assumptions encoded as theorem sorries): hausdorff_free_subgroup (free subgroup of SO(3)), banach_tarski (main theorem), banach_tarski_pieces_nonmeasurable (non-measurability of pieces), int_amenable (ℤ amenability). The main proof requires ~800 lines via free subgroup of SO(3) — beyond this gallery entry's scope. Note: paradoxical_no_finite_measure, free_group_not_amenable, and the private W_a/W_b lemmas are fully proved.",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -206,7 +206,7 @@
     "theoremCount": 7,
     "definitionCount": 5,
     "path": "Proofs/LebesgueMeasureOQ06.lean",
-    "sorries": 8
+    "sorries": 4
   },
-  "sorries": 8
+  "sorries": 4
 }
