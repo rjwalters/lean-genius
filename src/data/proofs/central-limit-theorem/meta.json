@@ -41,16 +41,6 @@
     "wiedijkNumber": 47,
     "axiomCount": 12,
     "mathlib_version": "4.26.0",
-    "relatedProblems": [
-      {
-        "id": "central-limit-theorem-oq-01",
-        "relationship": "Extension of central limit theorem"
-      },
-      {
-        "id": "central-limit-theorem-oq-03",
-        "relationship": "Extension of central limit theorem"
-      }
-    ],
     "assumptions": "12 axioms encoding measure-theoretic infrastructure not yet available in Mathlib: (1) stdGaussian — standard Gaussian measure on ℝ, (2) stdGaussian_isProbabilityMeasure — probability measure instance, (3) gaussian_fourier_identity — Gaussian Fourier transform $\\int e^{itx} dN = e^{-t^2/2}$, (4) charFun_deriv_interchange — differentiation under the integral for characteristic functions, (5) charFun_taylor_remainder — Taylor expansion remainder bound $O(|t|^3)$, (6) charFun_normalized_sum_limit — core CLT convergence $[\\varphi(t/\\sqrt{n})]^n \\to e^{-t^2/2}$, (7) measureWeakTopology — weak-* topology on measures, (8) levy_continuity_axiom — Lévy continuity theorem, (9) clt_general_case_axiom — CLT for non-standardized distributions, (10) renormalization_measure — n-fold convolution and scaling, (11) gaussian_fixed_point_axiom — Gaussian fixed point under renormalization, (12) gaussian_attractor_axiom — Gaussian as attractor of renormalization flow. integral_ofReal_eq_ofReal_integral proved. The substantive original proofs are charFun_zero, charFun_deriv_mean, limit_one_plus_x_over_n, and gaussian_charFun.",
     "proofRepoPath": "Proofs/CentralLimitTheorem.lean",
     "lineCount": 620,
@@ -71,7 +61,6 @@
   "overview": {
     "historicalContext": "The Central Limit Theorem (CLT) stands as one of the most remarkable results in probability theory. Its origins trace back to Abraham de Moivre's 1733 analysis of coin flips, but the theorem took nearly two centuries to reach its modern form.\n\nPierre-Simon Laplace generalized de Moivre's result in 1812, showing that sums of many independent random variables tend toward a bell curve. However, the first rigorous proof came from Aleksandr Lyapunov in 1901, using characteristic functions.\n\nThe algebraic topological perspective—viewing the Gaussian as a fixed point of a renormalization flow on the space of distributions—emerged in the late 20th century, connecting probability theory to dynamical systems, information geometry, and category theory.\n\nThis dual perspective reveals not just *that* the Gaussian appears universally, but *why*: it is an attractor in the space of probability distributions under the operation of convolution and rescaling.",
     "problemStatement": "**Classical Statement**: Let $X_1, X_2, \\ldots, X_n$ be independent and identically distributed random variables with mean $\\mu$ and variance $\\sigma^2$. Define the normalized sum:\n$$Z_n = \\frac{\\sum_{i=1}^n X_i - n\\mu}{\\sigma\\sqrt{n}}$$\n\nThen $Z_n \\xrightarrow{d} N(0,1)$ as $n \\to \\infty$, where $N(0,1)$ is the standard normal distribution.\n\n**Topological Interpretation**: The space of probability distributions with finite variance forms a metric space under the Wasserstein metric. Convolution is a binary operation, and rescaling by $\\sqrt{n}$ defines a flow. The Gaussian is the unique fixed point of this renormalization group flow, and its basin of attraction includes all finite-variance distributions.",
-    "text": "A 618-line formalization of the Central Limit Theorem in Lean 4, with 0 sorries and 13 axioms encoding measure-theoretic convergence results not yet available in Mathlib. The proof follows the classical characteristic function approach: for i.i.d. random variables $X_1, \\ldots, X_n$ with mean $\\mu$ and variance $\\sigma^2$, the normalized sum $S_n = (\\sum X_i - n\\mu) / (\\sigma\\sqrt{n})$ has characteristic function $\\varphi_{S_n}(t) = [\\varphi_X(t/\\sigma\\sqrt{n})]^n$, which converges pointwise to $e^{-t^2/2}$ by Taylor expansion of $\\log\\varphi_X$ around 0. The Lévy continuity theorem then gives convergence in distribution to $\\mathcal{N}(0,1)$. Uses Mathlib's probability theory, Fourier analysis (`FourierTransform`), and Gaussian integral infrastructure. The 13 axioms encode characteristic function manipulation, Lévy's continuity theorem, and the convergence $[1 + z/n]^n \\to e^z$ in the measure-theoretic setting. Includes a topological interpretation of the Gaussian as an attractor in the space of distributions under convolution.",
     "proofStrategy": "**Classical Proof via Characteristic Functions**:\n\n1. **Define characteristic functions**: The characteristic function $\\varphi_X(t) = \\mathbb{E}[e^{itX}]$ encodes a distribution's properties.\n\n2. **Key property**: The characteristic function of a sum equals the product: $\\varphi_{X+Y}(t) = \\varphi_X(t) \\cdot \\varphi_Y(t)$.\n\n3. **Normalize and expand**: For $Z_n = (S_n - n\\mu)/(\\sigma\\sqrt{n})$, compute $\\varphi_{Z_n}(t)$ using Taylor expansion.\n\n4. **Take the limit**: Show $\\varphi_{Z_n}(t) \\to e^{-t^2/2}$ as $n \\to \\infty$.\n\n5. **Lévy's theorem**: Pointwise convergence of characteristic functions to a continuous function implies convergence in distribution.\n\n**Topological Interpretation**:\n\nThe convolution-rescaling operation $T_n(\\mu) = \\frac{1}{\\sqrt{n}} \\mu^{*n}$ defines a discrete dynamical system on probability measures. The Gaussian is a fixed point: $T_n(\\mathcal{N}) = \\mathcal{N}$. The CLT asserts that for any starting distribution $\\mu$ with finite variance, the orbit $T_n(\\mu) \\to \\mathcal{N}$.",
     "keyInsights": [
       "**Characteristic functions as topology**: The Fourier transform converts convolution (sums of r.v.s) to multiplication, revealing the multiplicative semigroup structure of distributions.",
@@ -93,15 +82,15 @@
       "id": "introduction",
       "title": "Introduction and Imports",
       "startLine": 1,
-      "endLine": 52,
+      "endLine": 55,
       "summary": "Ten Mathlib imports (Gaussian distributions, measure theory, Fourier analysis, Taylor calculus, probability independence) and module docstring describing the dual characteristic-function and topological approach to CLT. Wiedijk #47.",
       "mathContext": "Imports provide: $\\varphi_X(t) = \\mathbb{E}[e^{itX}]$ via `FourierTransform`, Gaussian density $\\frac{1}{\\sigma\\sqrt{2\\pi}}e^{-(x-\\mu)^2/(2\\sigma^2)}$ via `Gaussian.Basic`, and Bochner integration for $L^1$ functions. The proof strategy: Taylor-expand $\\varphi_X(t/\\sqrt{n})$, apply $(1+x/n)^n \\to e^x$, then Lévy continuity."
     },
     {
       "id": "characteristic-functions",
       "title": "Part I: Characteristic Functions",
-      "startLine": 54,
-      "endLine": 118,
+      "startLine": 56,
+      "endLine": 119,
       "summary": "Defines `characteristicFunction` as $\\varphi_\\mu(t) = \\int e^{itx} d\\mu$, proves `charFun_zero` ($\\varphi(0) = 1$), axiomatizes `stdGaussian` and its Fourier identity, and proves `gaussian_charFun`: $\\varphi_{N(0,1)}(t) = e^{-t^2/2}$.",
       "mathContext": "The characteristic function $\\varphi_\\mu(t) = \\int_{\\mathbb{R}} e^{itx}\\,d\\mu(x)$ uniquely determines $\\mu$ and converts convolution to multiplication: $\\varphi_{X+Y} = \\varphi_X \\cdot \\varphi_Y$. The Gaussian identity $\\int e^{itx} \\frac{e^{-x^2/2}}{\\sqrt{2\\pi}}dx = e^{-t^2/2}$ follows from completing the square: $itx - x^2/2 = -(x-it)^2/2 - t^2/2$."
     },
@@ -109,55 +98,55 @@
       "id": "taylor-expansion",
       "title": "Part II: Taylor Expansion and Moments",
       "startLine": 120,
-      "endLine": 205,
+      "endLine": 208,
       "summary": "Axiomatizes differentiation under the integral and the Taylor remainder bound. Proves `charFun_deriv_mean`: $\\varphi'(0) = i\\mu$ via integral linearity and the `smul` pattern. Proves `charFun_taylor`: the remainder $\\|\\varphi(t) - (1 + it\\mu - \\sigma^2 t^2/2)\\| \\leq |t|^3$.",
       "mathContext": "Taylor expansion: $\\varphi_X(t) = 1 + it\\mu - \\frac{\\sigma^2 t^2}{2} + O(|t|^3)$ where $\\mu = \\mathbb{E}[X]$ and $\\sigma^2 = \\text{Var}(X)$. The derivative $\\varphi'(0) = i\\mathbb{E}[X]$ and $\\varphi''(0) = -\\mathbb{E}[X^2]$ encode moments via the Fourier inversion of the moment-generating property."
     },
     {
       "id": "limit-computation",
       "title": "Part III: The Limit Computation",
-      "startLine": 207,
-      "endLine": 278,
+      "startLine": 209,
+      "endLine": 281,
       "summary": "Proves `limit_one_plus_x_over_n` via Mathlib's `tendsto_one_plus_div_pow_exp`, establishes `normalized_sum_charFun` for $\\varphi_{S_n}(t) = [\\varphi_X(t/\\sqrt{n})]^n$, and proves `charFun_converges_to_gaussian`: the normalized sum's characteristic function converges pointwise to $e^{-t^2/2}$.",
       "mathContext": "The heart of CLT: $\\varphi_X(t/\\sqrt{n}) = 1 - t^2/(2n) + O(n^{-3/2})$ by Taylor, so $[\\varphi_X(t/\\sqrt{n})]^n \\approx [1 - t^2/(2n)]^n \\to e^{-t^2/2}$ by the exponential limit $(1 + x/n)^n \\to e^x$. The third moment condition ensures the $O(n^{-3/2})$ error is uniform."
     },
     {
       "id": "levy-continuity",
       "title": "Part IV: Lévy Continuity Theorem",
-      "startLine": 280,
-      "endLine": 336,
+      "startLine": 282,
+      "endLine": 339,
       "summary": "Axiomatizes the weak-* topology on measures and Lévy's continuity theorem: pointwise convergence of characteristic functions $\\varphi_n(t) \\to \\varphi(t)$ to a continuous limit implies weak convergence $\\mu_n \\Rightarrow \\mu$. Wraps the axiom in `levy_continuity` theorem.",
       "mathContext": "Lévy continuity: $\\varphi_{\\mu_n}(t) \\to \\varphi_\\mu(t)$ for all $t \\in \\mathbb{R}$ implies $\\mu_n \\xrightarrow{w} \\mu$, provided the limit $\\varphi$ is continuous at 0. The proof requires Prokhorov's theorem (tightness $\\Rightarrow$ subsequential convergence) and uniqueness of characteristic functions."
     },
     {
       "id": "main-theorem",
       "title": "Part V: The Central Limit Theorem",
-      "startLine": 338,
-      "endLine": 409,
+      "startLine": 340,
+      "endLine": 412,
       "summary": "Axiomatizes the general-distribution CLT and proves `central_limit_theorem`: for i.i.d. $X_i$ with mean $\\mu$, variance $\\sigma^2$, and finite third moment, the normalized sum $Z_n = (\\sum X_i - n\\mu)/(\\sigma\\sqrt{n})$ converges in distribution to $N(0,1)$. Reduces to the standardized case via the affine transformation $Y_i = (X_i - \\mu)/\\sigma$.",
       "mathContext": "$Z_n = \\frac{\\sum_{i=1}^n X_i - n\\mu}{\\sigma\\sqrt{n}} \\xrightarrow{d} N(0,1)$. Standardization: $Y_i = (X_i - \\mu)/\\sigma$ has mean 0, variance 1, and $Z_n = (Y_1 + \\cdots + Y_n)/\\sqrt{n}$. Characteristic function relation: $\\varphi_Y(s) = e^{-is\\mu/\\sigma} \\varphi_X(s/\\sigma)$."
     },
     {
       "id": "topological-interpretation",
       "title": "Part VI: Topological Interpretation and Renormalization",
-      "startLine": 411,
-      "endLine": 521,
+      "startLine": 413,
+      "endLine": 524,
       "summary": "Defines the Wasserstein space $\\mathcal{P}_2(\\mathbb{R})$ and the renormalization map $T_n(\\mu)$ as the distribution of $(X_1 + \\cdots + X_n)/\\sqrt{n}$. Proves `gaussian_is_fixed_point` ($T_n(N(0,1)) = N(0,1)$) and `gaussian_is_attractor` (all finite-variance distributions converge to $N(0,1)$ under $T_n$).",
       "mathContext": "The renormalization map: $T_n(\\mu) = (\\mu^{*n})_{\\text{scale}(1/\\sqrt{n})}$. Fixed point: $T_n(N(0,1)) = N(0,1)$ since $\\text{Var}(\\bar{X}_n) = 1/n \\cdot n = 1$. Attractor: $T_n(\\mu) \\xrightarrow{w} N(0,1)$ for all $\\mu \\in \\mathcal{P}_2(\\mathbb{R})$ with $\\mathbb{E}[X]=0$, $\\mathbb{E}[X^2]=1$. The Wasserstein-2 metric $W_2(\\mu,\\nu)^2 = \\inf_\\gamma \\int |x-y|^2 d\\gamma$ makes this a complete metric space."
     },
     {
       "id": "why-gaussian",
       "title": "Part VII: Why the Gaussian — Max Entropy and Self-Duality",
-      "startLine": 523,
-      "endLine": 560,
+      "startLine": 525,
+      "endLine": 563,
       "summary": "Five characterizations of the Gaussian: (1) fixed point of renormalization, (2) maximum entropy at fixed variance, (3) minimum Fisher information, (4) self-dual under Fourier transform, (5) $\\alpha = 2$ stable distribution. Proves `gaussian_self_dual`: $\\varphi_{N(0,1)}(t) = e^{-t^2/2}$ via `gaussian_charFun`.",
       "mathContext": "Self-duality: $\\hat{g}(t) = \\frac{1}{\\sqrt{2\\pi}} \\int e^{-x^2/2} e^{-itx} dx = e^{-t^2/2}$. Max entropy: $H(\\mu) \\leq H(N(0,\\sigma^2))$ for all $\\mu$ with $\\text{Var}(\\mu) = \\sigma^2$. Min Fisher info: $I(\\mu) \\geq I(N(0,\\sigma^2)) = 1/\\sigma^2$. The Gaussian is the unique distribution satisfying all five simultaneously."
     },
     {
       "id": "extensions",
       "title": "Part VIII: Extensions — Berry-Esseen and Stable Distributions",
-      "startLine": 562,
-      "endLine": 618,
+      "startLine": 564,
+      "endLine": 620,
       "summary": "Berry-Esseen bound (placeholder): $\\sup_x |F_n(x) - \\Phi(x)| \\leq C\\rho/\\sqrt{n}$. Stable distributions (placeholder): $\\alpha$-stable laws for $0 < \\alpha \\leq 2$. Conclusion documenting the unification of analysis, dynamics, information theory, and topology.",
       "mathContext": "Berry-Esseen: $\\sup_x |F_n(x) - \\Phi(x)| \\leq \\frac{C \\rho}{\\sqrt{n}}$ where $C \\leq 0.4748$ (Shevtsova 2011) and $\\rho = \\mathbb{E}[|X|^3]$. Stable laws: $(X_1 + \\cdots + X_n)/n^{1/\\alpha} \\xrightarrow{d} S_\\alpha$ when $\\mathbb{P}(|X| > t) \\sim t^{-\\alpha}$, with Gaussian at $\\alpha = 2$ and Cauchy at $\\alpha = 1$."
     }
