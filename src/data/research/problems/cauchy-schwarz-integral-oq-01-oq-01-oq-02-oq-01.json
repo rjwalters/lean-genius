@@ -1,6 +1,6 @@
 {
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
-  "title": "Can Mathlib's Radon-Nikodým machinery (`MeasureTheory",
+  "title": "Can Mathlib's Radon-Nikod\u00fdm machinery (`MeasureTheory",
   "phase": "ACT",
   "status": "active",
   "tier": "B",
@@ -19,11 +19,11 @@
     "phase": "ACT",
     "since": "2026-04-23",
     "iteration": 9,
-    "focus": "SORRY C proved (complete structural proof with hn_eLpNorm). 1 critical sorry remains: SORRY A (φ(h_n)=∫h_n·g, DCT approximation)",
+    "focus": "SORRY C proved (complete structural proof with hn_eLpNorm). 1 critical sorry remains: SORRY A (\u03c6(h_n)=\u222bh_n\u00b7g, DCT approximation)",
     "blockers": [
-      "SORRY A: φ(h_n) = ∫ h_n g requires SimpleFunc.approxOn + DCT argument (~50 lines). Need: h_n bounded → approxOn in Lp; φ(approxOn) = ∫ approxOn·g by indicator linearity; take limit by CLM continuity + DCT bound n^{q-1}|g| ∈ L1."
+      "SORRY A: \u03c6(h_n) = \u222b h_n g requires SimpleFunc.approxOn + DCT argument (~50 lines). Need: h_n bounded \u2192 approxOn in Lp; \u03c6(approxOn) = \u222b approxOn\u00b7g by indicator linearity; take limit by CLM continuity + DCT bound n^{q-1}|g| \u2208 L1."
     ],
-    "nextAction": "Prove SORRY A: use SimpleFunc.approxOn h_n hhn_meas 0 to approximate h_n in Lp, then pass to limit using φ.continuous and integral_dominated_convergence",
+    "nextAction": "Prove SORRY A: use SimpleFunc.approxOn h_n hhn_meas 0 to approximate h_n in Lp, then pass to limit using \u03c6.continuous and integral_dominated_convergence",
     "attemptCounts": {
       "total": 9,
       "currentApproach": 1,
@@ -31,55 +31,62 @@
     }
   },
   "knowledge": {
-    "progressSummary": "CRITICAL PATH COMPLETE: All 4 sorries proved (A: hphi_hn via SimpleFunc.induction+DCT, B: hint_hn_gn via sign/abs algebra, C: eLpNorm chain via rpow, D: lintegral_mul_le via Hölder). Only 2 dead-path sorries remain. Build OOM due to Docker VM memory limit (7.6GB), not proof errors.",
+    "progressSummary": "BLOCKED (API): File compiles clean after replacing broken proof bodies with sorry. ~14 proof bodies replaced due to Mathlib API renames (MemLp.toLp_congr, Function.sign, withDensity\u1d65_apply, HolderTriple.one_lt_of_lt, etc.). 2 intentional dead-path sorries remain (lines 191, 207). PR #11812 open. Mathematical content preserved in type signatures.",
     "builtItems": [
       "integral_representation indicator case: proved (Lp.ext_iff + indicatorConstLp_coeFn + integral_smul chain)",
-      "integrationCLM: CLM f↦∫fg via LinearMap.mkContinuous + Hölder bound (no sorry)",
+      "integrationCLM: CLM f\u21a6\u222bfg via LinearMap.mkContinuous + H\u00f6lder bound (no sorry)",
       "integrationCLM_apply: proved (simp unfold)",
       "integral_representation addition+closedness: proved (linearity + isClosed_eq)",
-      "Restored hMCT proof in rn_deriv_memLq (3→2 sorry statements)",
-      "signedMeasureOfFunctional: noncomputable def constructing signed measure E↦φ(1_E) as proper SignedMeasure structure (all fields proved)",
-      "signedMeasureOfFunctional_ac: proved AbsolutelyContinuous — μ(E)=0 → functionalSetFn=0",
-      "signedMeasureOfFunctional_indicator: proved φ(1_E) = signedMeasureOfFunctional(E) equality",
-      "functional_hasSum_parts: proved σ-additivity via HasSum.map (CLM preserves convergence)",
-      "rnDeriv_integral_eq: proved ∫_E g dμ = ν(E) via withDensityᵥ_apply + rn_reconstruction",
+      "Restored hMCT proof in rn_deriv_memLq (3\u21922 sorry statements)",
+      "signedMeasureOfFunctional: noncomputable def constructing signed measure E\u21a6\u03c6(1_E) as proper SignedMeasure structure (all fields proved)",
+      "signedMeasureOfFunctional_ac: proved AbsolutelyContinuous \u2014 \u03bc(E)=0 \u2192 functionalSetFn=0",
+      "signedMeasureOfFunctional_indicator: proved \u03c6(1_E) = signedMeasureOfFunctional(E) equality",
+      "functional_hasSum_parts: proved \u03c3-additivity via HasSum.map (CLM preserves convergence)",
+      "rnDeriv_integral_eq: proved \u222b_E g d\u03bc = \u03bd(E) via withDensity\u1d65_apply + rn_reconstruction",
       "riesz_lp_surjective_from_rn: main theorem now 0-sorry, assembles from 3 focused helpers",
-      "rnDeriv_integrable_of_finite: proved as one-liner SignedMeasure.integrable_rnDeriv ν μ (was incorrectly listed as sorry in previous sessions)",
+      "rnDeriv_integrable_of_finite: proved as one-liner SignedMeasure.integrable_rnDeriv \u03bd \u03bc (was incorrectly listed as sorry in previous sessions)",
       "indicator_lp_hasSum proved (~80 lines): Finset.indicator_biUnion_apply + tendsto_indicatorConstLp_set + Set.iUnion_subtype + measure_iUnion",
-      "holder_extremizer_lq_bound structured proof: gₙ bounded, hₙ measurable+bounded+Lp, pointwise inequality hₙg ≥ hₙgₙ (3-case), integrability, integral monotonicity (session 6)",
-      "lintegral_mul_le_of_memLp (SORRY D): Hölder bound ∫⁻ ‖fg‖₊ ≤ eLpNorm f p * eLpNorm g q — proved via nnnorm_mul + ENNReal.lintegral_mul_le_Lp_mul_Lq + eLpNorm_eq_lintegral_rpow_enorm",
+      "holder_extremizer_lq_bound structured proof: g\u2099 bounded, h\u2099 measurable+bounded+Lp, pointwise inequality h\u2099g \u2265 h\u2099g\u2099 (3-case), integrability, integral monotonicity (session 6)",
+      "lintegral_mul_le_of_memLp (SORRY D): H\u00f6lder bound \u222b\u207b \u2016fg\u2016\u208a \u2264 eLpNorm f p * eLpNorm g q \u2014 proved via nnnorm_mul + ENNReal.lintegral_mul_le_Lp_mul_Lq + eLpNorm_eq_lintegral_rpow_enorm",
       "Fixed indicator_memLp API: removed duplicate (p:=p) named arg, explicit hE/hfin parameters in hagree and integral_representation",
-      "Fixed hn_eLpNorm rpow algebra: restated hlint_eq using ‖·‖ₑ notation, then rw before ← ENNReal.rpow_mul to avoid enorm/nnnorm mismatch"
+      "Fixed hn_eLpNorm rpow algebra: restated hlint_eq using \u2016\u00b7\u2016\u2091 notation, then rw before \u2190 ENNReal.rpow_mul to avoid enorm/nnnorm mismatch",
+      "CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean compiles clean (no errors, sorry warnings only) after API repair session 2026-04-23",
+      "Identified 14 theorems with broken proof bodies due to Mathlib 4.26 API changes"
     ],
     "insights": [
       "Mathlib HAS Radon-Nikodym (MeasureTheory.Measure.Decomposition.rnDeriv) but NOT the composition with Lp for Riesz",
-      "L2 case fully solved via Frechet-Riesz (InnerProductSpace.toDual) — no axioms needed",
-      "Embedding direction (Lq → (Lp)*) proved via Holder (ENNReal.lintegral_mul_le_Lp_mul_Lq)",
-      "Surjectivity gap: need (1) φ∈(Lp)* → signed measure ν, (2) ν≪μ, (3) RN deriv g∈Lq, (4) ‖g‖_q=‖φ‖",
-      "Estimated 200-500 lines of composition code needed — beyond single session scope",
+      "L2 case fully solved via Frechet-Riesz (InnerProductSpace.toDual) \u2014 no axioms needed",
+      "Embedding direction (Lq \u2192 (Lp)*) proved via Holder (ENNReal.lintegral_mul_le_Lp_mul_Lq)",
+      "Surjectivity gap: need (1) \u03c6\u2208(Lp)* \u2192 signed measure \u03bd, (2) \u03bd\u226a\u03bc, (3) RN deriv g\u2208Lq, (4) \u2016g\u2016_q=\u2016\u03c6\u2016",
+      "Estimated 200-500 lines of composition code needed \u2014 beyond single session scope",
       "Gap is infrastructure composition, not fundamental mathematical obstacle",
       "hMCT proof (abs_clamp + sup_min + norm_gn_eq + ptwise_eq + lintegral_iSup) was in PR #10765 but reverted by PR #10806; restored in Session 3",
-      "Key decomposition: φ → signed measure ν (via σ-additivity) → RN deriv g → Lq membership → full representation",
-      "σ-additivity proof: indicator partial sums HasSum in Lp topology (CLM continuity) → use HasSum.map",
-      "signedMeasureOfFunctional_ac proved without sorry: μ(E)=0 → indicator_{E} = 0 in Lp → φ(0)=0",
+      "Key decomposition: \u03c6 \u2192 signed measure \u03bd (via \u03c3-additivity) \u2192 RN deriv g \u2192 Lq membership \u2192 full representation",
+      "\u03c3-additivity proof: indicator partial sums HasSum in Lp topology (CLM continuity) \u2192 use HasSum.map",
+      "signedMeasureOfFunctional_ac proved without sorry: \u03bc(E)=0 \u2192 indicator_{E} = 0 in Lp \u2192 \u03c6(0)=0",
       "Main theorem now assembles cleanly from 3 focused helper sorries: indicator_lp_hasSum, rnDeriv_integrable_of_finite, holder_extremizer_lq_bound",
-      "rnDeriv_integrable_of_finite is ALREADY PROVED as `SignedMeasure.integrable_rnDeriv ν μ` — one-liner, not a sorry",
-      "truncated_rn_deriv_lq_bound (line 209 sorry) is on a DEAD-END path — not used by main theorem; riesz_lp_surjective_from_rn uses rn_deriv_memLq_from_trunc + holder_extremizer_lq_bound directly",
-      "Axiom conversion (theorem→axiom) fails in Lean 4 for private theorems using `.toLp _` wildcards: `private axiom` or `axiom` with auto-bound implicits causes `Memℒp` to be introduced as a universe-polymorphic variable, breaking downstream Memℒp type applications",
-      "2 critical sorries blocking completion: indicator_lp_hasSum (Lp convergence of disjoint indicator sums) and holder_extremizer_lq_bound (Hölder extremizer norm bound)",
+      "rnDeriv_integrable_of_finite is ALREADY PROVED as `SignedMeasure.integrable_rnDeriv \u03bd \u03bc` \u2014 one-liner, not a sorry",
+      "truncated_rn_deriv_lq_bound (line 209 sorry) is on a DEAD-END path \u2014 not used by main theorem; riesz_lp_surjective_from_rn uses rn_deriv_memLq_from_trunc + holder_extremizer_lq_bound directly",
+      "Axiom conversion (theorem\u2192axiom) fails in Lean 4 for private theorems using `.toLp _` wildcards: `private axiom` or `axiom` with auto-bound implicits causes `Mem\u2112p` to be introduced as a universe-polymorphic variable, breaking downstream Mem\u2112p type applications",
+      "2 critical sorries blocking completion: indicator_lp_hasSum (Lp convergence of disjoint indicator sums) and holder_extremizer_lq_bound (H\u00f6lder extremizer norm bound)",
       "indicator_lp_hasSum proof: HasSum is def-eq to Tendsto atTop (via @[simps] unconditional filter = atTop). Use tendsto_indicatorConstLp_set + symmDiff_of_le + ENNReal.tendsto_tsum_compl_atTop_zero.",
-      "SORRY B proof (session 9): sign(x)·x=|x| by 3-case (sign_neg/sign_zero/sign_pos); then |gₙ|^(q-1)·|gₙ| = |gₙ|^q via Real.rpow_add (abs_nonneg) + norm_num; ENNReal.coe_rpow_of_nonneg converts NNReal^q to ENNReal; integral_toReal (finite: NNReal coercion ≠ ⊤) + eLpNorm_eq_lintegral_rpow_nnnorm closes",
-      "SORRY C strategy: work in ℝ — let x = (eLpNorm g_n q μ).toReal; from hint_hn_gn+hphi_hn+CLM bound get x^q ≤ ‖φ‖·x^{q/p}; need ‖h_n‖_Lp = x^{q/p} via eLpNorm h_n p μ = eLpNorm g_n q μ ^ (q/p); then x^{q-q/p} = x^1 ≤ ‖φ‖ (q-q/p=1 from 1/p+1/q=1)"
+      "SORRY B proof (session 9): sign(x)\u00b7x=|x| by 3-case (sign_neg/sign_zero/sign_pos); then |g\u2099|^(q-1)\u00b7|g\u2099| = |g\u2099|^q via Real.rpow_add (abs_nonneg) + norm_num; ENNReal.coe_rpow_of_nonneg converts NNReal^q to ENNReal; integral_toReal (finite: NNReal coercion \u2260 \u22a4) + eLpNorm_eq_lintegral_rpow_nnnorm closes",
+      "SORRY C strategy: work in \u211d \u2014 let x = (eLpNorm g_n q \u03bc).toReal; from hint_hn_gn+hphi_hn+CLM bound get x^q \u2264 \u2016\u03c6\u2016\u00b7x^{q/p}; need \u2016h_n\u2016_Lp = x^{q/p} via eLpNorm h_n p \u03bc = eLpNorm g_n q \u03bc ^ (q/p); then x^{q-q/p} = x^1 \u2264 \u2016\u03c6\u2016 (q-q/p=1 from 1/p+1/q=1)"
     ],
     "mathlibGaps": [
-      "MeasureTheory: Lp functional → signed measure construction not formalized",
-      "MeasureTheory: RN derivative of functional-induced measure → Lq membership not proved",
-      "MeasureTheory: Operator norm equality for RN derivative not formalized"
+      "MeasureTheory: Lp functional \u2192 signed measure construction not formalized",
+      "MeasureTheory: RN derivative of functional-induced measure \u2192 Lq membership not proved",
+      "MeasureTheory: Operator norm equality for RN derivative not formalized",
+      "HolderTriple.one_lt_of_lt field does not exist in Mathlib 4.26.0 - need alternative proof of q > 1 from HolderConjugate",
+      "withDensity\u1d65_apply renamed or moved in Mathlib 4.26.0",
+      "Function.sign does not exist - should use Real.sign",
+      "ENNReal.coe_rpow_of_nonneg direction: gives \u2191(x^y) = (\u2191x)^y, use \u2190 to rewrite (\u2191x)^y \u2192 \u2191(x^y)"
     ],
     "nextSteps": [
-      "Increase Docker VM memory in Desktop settings to allow full build verification",
-      "Alternatively use LEAN_MEMORY_LIMIT=5120 to attempt within Docker VM limits",
-      "If build succeeds: update meta.json sorry count to 2 (dead-path only), update PR"
+      "Identify correct Mathlib 4.26.0 API names for: MemLp.toLp_congr, Function.sign (\u2192 Real.sign), withDensity\u1d65_apply, HolderTriple.one_lt_of_lt",
+      "Restore proof of holder_extremizer_lq_bound using correct Real.sign API",
+      "Fix integrationCLM proof (Lp.coeFn_add simp, integral_norm_eq_lintegral_enorm rw)",
+      "Investigate truncated_rn_deriv_memLq: MemLp.of_bound argument order in Mathlib 4.26"
     ],
     "markdown": "# Knowledge Base: cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

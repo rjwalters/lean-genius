@@ -1,12 +1,12 @@
 {
   "slug": "triangle-angle-sum-oq-02",
   "title": "Triangle Angle Sum: Gauss-Bonnet Theorem Formalization in Lean",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "knowledge": {
-    "progressSummary": "COMPLETE: Gauss-Bonnet generalization formalized. TriangleAngleSumOQ02.lean proves Girard spherical excess, Lambert hyperbolic defect, discrete Gauss-Bonnet for triangulations. All 22 theorems proved from 3 structural axioms (gb_local, spherical, discrete_gb). 0 sorries.",
+    "progressSummary": "COMPLETE: Build succeeds (exit code 0, 3091 jobs). Fixed Lean 4 auto-bound implicit conflict (\u03b1 \u03b2 \u03b3 renamed to a b c). Fixed spherical_area_eq_radius_sq_excess proof. All 22 theorems proved, 0 sorries, 0 errors. PR #11812 open.",
     "builtItems": [
       "GeodesicTriangle structure with gb_local axiom (angle excess = integrated curvature)",
       "FlatTriangle: proves flat_angle_sum (K=0 \u2192 \u03b1+\u03b2+\u03b3=\u03c0, Euclid recovery)",
@@ -17,7 +17,8 @@
       "flat_triangulation_chi_zero: flat triangulation has \u03c7=0",
       "three_geometries_unified: all three classical geometries characterized by curvature sign",
       "excess_classifies_curvature: angle excess \u2194 curvature sign",
-      "Mathlib example: angle_add_angle_add_angle_eq_pi as underlying flat case"
+      "Mathlib example: angle_add_angle_add_angle_eq_pi as underlying flat case",
+      "VERIFIED BUILD: TriangleAngleSumOQ02.lean compiles clean (exit code 0, 3091 jobs, 0 sorries, 0 errors) on 2026-04-23"
     ],
     "insights": [
       "Local Gauss-Bonnet E(T) = \u222b_T K dA directly generalizes angle sum theorem: K=0 gives E=0 gives sum=\u03c0",
@@ -25,7 +26,8 @@
       "Lambert defect (1761) is K=-1 Gauss-Bonnet: hyperbolic area = \u03c0 - angle_sum < \u03c0",
       "Discrete Gauss-Bonnet recoverable as sum of local versions over all triangles",
       "Curvature sign determines topology: K>0 globally \u2192 \u03c7>0 (sphere), K=0 \u2192 \u03c7=0 (torus), K<0 \u2192 \u03c7<0 (higher genus)",
-      "Lean formalization strategy: axiomatize GeodesicTriangle with gb_local as structure field, then derive all three classical geometries as special cases via sub-structures"
+      "Lean formalization strategy: axiomatize GeodesicTriangle with gb_local as structure field, then derive all three classical geometries as special cases via sub-structures",
+      "Lean 4 auto-bound implicit mechanism treats Greek letters (\u03b1 \u03b2 \u03b3) as implicit universe variables in type expressions - cannot be used as structure field names"
     ],
     "mathlibGaps": [
       "Riemannian metrics and geodesic triangles not formalized in Mathlib (as of v4.26.0)",
@@ -33,8 +35,8 @@
       "Spherical excess formula not directly available (though Mathlib has EuclideanGeometry.angle)"
     ],
     "nextSteps": [
-      "Build TriangleAngleSumOQ02.lean in Docker to verify 0 sorry, 0 error compilation",
-      "Gallery integration: add to gallery index and link to EulerPolyhedralOQ02OQ01 as complementary",
+      "Merge PR #11812 to deploy to gallery",
+      "Gallery integration: link to EulerPolyhedralOQ02OQ01 as complementary",
       "Update candidate pool to completed once PR merged"
     ]
   },
