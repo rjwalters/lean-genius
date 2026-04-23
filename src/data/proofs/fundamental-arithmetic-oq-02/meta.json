@@ -42,7 +42,7 @@
   },
   "parent": "fundamental-arithmetic",
   "openQuestion": "Can the failure of unique factorization in Z[sqrt(-5)] be formalized as a counterexample showing it is not a UFD?",
-  "significance": "This is the classical counterexample that motivated Kummer's ideal numbers (1847) and Dedekind's theory of ideals (1871). Z[sqrt(-5)] has class number 2, meaning the failure of unique factorization is measured by the class group Z/2Z. The formalization proves all four factors (2, 3, 1+sqrt(-5), 1-sqrt(-5)) are irreducible, that they give two genuinely different factorizations of 6, and that this implies Z[sqrt(-5)] is not a UFD via the irreducible-but-not-prime argument.",
+  "significance": "This is the classical counterexample that motivated Kummer's ideal numbers (1847) and Dedekind's theory of ideals (1871). Z[sqrt(-5)] has class number 2, meaning the failure of unique factorization is measured by the class group Z/2Z. The formalization proves all four factors are non-units, proves 2 is irreducible, and shows 2 does not divide (1+sqrt(-5)), that they give two genuinely different factorizations of 6, and that this implies Z[sqrt(-5)] is not a UFD via the irreducible-but-not-prime argument.",
   "overview": {
     "historicalContext": "The failure of unique factorization in algebraic number rings is one of the pivotal discoveries in 19th-century mathematics. In 1847, Ernst Kummer attempted to prove Fermat's Last Theorem by factoring in cyclotomic rings, only to discover that unique factorization could fail in these extensions of the integers. The specific example $\\mathbb{Z}[\\sqrt{-5}]$ became the standard counterexample: the equation $6 = 2 \\cdot 3 = (1 + \\sqrt{-5})(1 - \\sqrt{-5})$ gives two genuinely distinct factorizations into irreducible elements. This failure led Kummer to develop his theory of 'ideal numbers' (1847), which Dedekind later refined into the modern theory of ideals in rings (1871). Dedekind showed that while elements may not factor uniquely, ideals always do in rings of algebraic integers — this is the birth of algebraic number theory as a discipline. The ring $\\mathbb{Z}[\\sqrt{-5}]$ has class number 2, meaning its ideal class group is $\\mathbb{Z}/2\\mathbb{Z}$, and this class number precisely measures the degree to which unique factorization fails.",
     "problemStatement": "Show that $\\mathbb{Z}[\\sqrt{-5}]$ is not a unique factorization domain by exhibiting the identity $6 = 2 \\cdot 3 = (1 + \\sqrt{-5})(1 - \\sqrt{-5})$ where all four factors are irreducible but the two factorizations are essentially different (not related by units).",
@@ -82,7 +82,7 @@
       "title": "Irreducibility of All Four Factors",
       "startLine": 91,
       "endLine": 180,
-      "summary": "Proves all four factors are non-units (via norm != 1) and irreducible (via the absence of elements with norm 2 or 3). Also proves 2 does not divide (1 + sqrt(-5)), the key non-primality witness."
+      "summary": "Proves all four factors are non-units (via norm != 1), proves 2 is formally irreducible (via the absence of elements with norm 2), and proves 2 does not divide (1+sqrt(-5)) — the key non-primality witness."
     },
     {
       "id": "main-theorem",
@@ -93,7 +93,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization provides a complete, machine-verified proof that $\\mathbb{Z}[\\sqrt{-5}]$ is not a unique factorization domain. Every step — from the multiplicativity of the norm, through the irreducibility of all four factors, to the non-primality of 2 — is formally verified with zero sorries and zero axioms. The proof demonstrates how elementary norm arguments can resolve deep algebraic questions.",
+    "summary": "The formalization provides a complete, machine-verified proof that $\\mathbb{Z}[\\sqrt{-5}]$ is not a unique factorization domain. Every step — from the multiplicativity of the norm, through the irreducibility of 2 and its non-primality, to the two genuinely distinct factorizations of 6 — is formally verified with zero sorries and zero axioms. The proof demonstrates how elementary norm arguments can resolve deep algebraic questions.",
     "implications": "This counterexample lies at the foundation of algebraic number theory. The failure of unique factorization in $\\mathbb{Z}[\\sqrt{-5}]$ directly motivated Kummer's invention of ideal numbers and Dedekind's theory of ideals, which restored unique factorization at the ideal level and became cornerstones of modern algebra. The class group $\\mathrm{Cl}(\\mathbb{Z}[\\sqrt{-5}]) \\cong \\mathbb{Z}/2\\mathbb{Z}$ precisely quantifies the failure. Understanding which rings have unique factorization remains central to number theory, connecting to the Heegner-Stark theorem (only 9 imaginary quadratic fields are PIDs) and the Cohen-Lenstra heuristics on class group statistics.",
     "openQuestions": [
       "Can the full ideal-theoretic unique factorization in the ring of integers of Q(sqrt(-5)) be formalized in Lean 4, showing that every ideal factors uniquely into prime ideals?",
