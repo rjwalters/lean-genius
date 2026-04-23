@@ -17,7 +17,7 @@
       "axiom-of-choice",
       "research"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 5,
     "axiomCount": 5,
     "lineCount": 295,
@@ -189,7 +189,9 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
+    "imports": [
+      "Mathlib"
+    ],
     "namespace": "BanachTarski",
     "lineCount": 295,
     "axiomCount": 5,
