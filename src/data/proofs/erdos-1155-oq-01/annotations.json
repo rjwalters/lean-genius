@@ -422,29 +422,5 @@
       "BFL bounds",
       "Grable bounds"
     ]
-  },
-  {
-    "id": "ann-e1155-tightness",
-    "proofId": "erdos-1155-oq-01",
-    "range": {
-      "startLine": 434,
-      "endLine": 489
-    },
-    "type": "concept",
-    "title": "Ratio Tightness and Compactness Characterization",
-    "content": "`conjecture_tightness`: under the conjecture, $f(n)/(c_1 n^{3/2}) \\in [1, c_2/c_1]$ eventually. `conjecture_ratio_bounded`: $f(n)/n^{3/2} \\in [c_1, c_2]$ eventually.\n\nTogether these characterize the conjecture as: the normalized ratio $f(n)/n^{3/2}$ has a compact limit set in $(0, \\infty)$ — a topological reformulation of the number-theoretic conjecture. This is the sharpest formulation of the BFL-conjecture gap: BFL says the ratio eventually avoids $\\{0, \\infty\\}$ at sub-polynomial rate; the conjecture says it eventually stays in a compact interval.",
-    "mathContext": "The conjecture is equivalent to $\\{f(n)/n^{3/2}\\}_{n \\geq N}$ being bounded in $(0, \\infty)$: a compactness condition. This is the sharpest formulation of the BFL-conjecture gap.",
-    "significance": "key",
-    "relatedConcepts": [
-      "compactness",
-      "ratio sequence",
-      "topological reformulation",
-      "bounded sequences",
-      "limit set"
-    ],
-    "prerequisites": [
-      "conjecture definition",
-      "division properties of reals"
-    ]
   }
 ]

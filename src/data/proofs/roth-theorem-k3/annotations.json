@@ -184,52 +184,5 @@
       "GCD and divisibility"
     ],
     "importance": "high"
-  },
-  {
-    "id": "ann-tower-threshold",
-    "proofId": "roth-theorem-k3",
-    "range": {
-      "startLine": 1440,
-      "endLine": 1524
-    },
-    "type": "technique",
-    "title": "Tower-of-Squares Threshold and Density Chain (Proved)",
-    "content": "Defines `roth_threshold k` as a tower of squares: $T_0 = 4$, $T_{k+1} = T_k^2$. Proves `roth_threshold_ge_four` (all values $\\geq 4$) and `roth_threshold_sqrt` ($N \\geq T_{k+1} \\implies \\sqrt{N} \\geq T_k$). The main result `density_chain` (**PROVED** by induction) shows: after $k+1$ density increments starting from $N \\geq T_{k+1}$, the density reaches $\\geq \\delta + (k+1)\\delta^2/100$. The tower ensures $N$ stays $\\geq 4$ throughout all iterations (each step gives $M \\geq \\sqrt{N}$, and the threshold tracks iterated square roots).",
-    "mathContext": "$T_0 = 4$, $T_{k+1} = T_k^2$ (tower: 4, 16, 256, 65536, ...). After $k+1$ increments from $N \\geq T_{k+1}$: density $\\geq \\delta + (k+1)\\delta^2/100$. Proved by induction, composing `density_increment_dirichlet` with `roth_threshold_sqrt`.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "tower functions",
-      "iterated composition",
-      "well-foundedness"
-    ],
-    "prerequisites": [
-      "density increment lemma",
-      "square root bounds"
-    ],
-    "importance": "high"
-  },
-  {
-    "id": "ann-roth-final",
-    "proofId": "roth-theorem-k3",
-    "range": {
-      "startLine": 1556,
-      "endLine": 1596
-    },
-    "type": "insight",
-    "title": "Roth's Theorem: Final Proof via Mathlib's Corners Chain",
-    "content": "The final `roth_density_bound` theorem proves $r_3(N) = o(N)$ by connecting to Mathlib's `roth_3ap_theorem_nat`, which itself is proved via the chain: Szemerédi regularity lemma → triangle removal lemma → corners theorem → Roth's theorem. The proof maps $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ to $\\mathbb{N}$ via `ZMod.val`, shows the image preserves AP-freeness (`apFree_imp_threeAPFree_val`, proved in lines 1526-1554 via a careful modular-to-natural lifting argument), and applies Mathlib's theorem. This provides an elegant complement to the custom Fourier-analytic path developed in Parts I-V.",
-    "mathContext": "Final theorem: $\\forall \\delta > 0$, $\\exists N_0$, $\\forall N \\geq N_0$, $\\forall A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$, $|A| \\geq \\delta N \\implies A$ contains a 3-AP. Uses `cornersTheoremBound(\\delta/3)` from Mathlib as the explicit $N_0$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "corners theorem",
-      "triangle removal lemma",
-      "Szemerédi regularity",
-      "Mathlib integration"
-    ],
-    "prerequisites": [
-      "APFree to ThreeAPFree conversion",
-      "Mathlib's roth_3ap_theorem_nat"
-    ],
-    "importance": "high"
   }
 ]

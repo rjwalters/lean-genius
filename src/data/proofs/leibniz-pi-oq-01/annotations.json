@@ -187,28 +187,5 @@
       "abs_pow",
       "denom_pos"
     ]
-  },
-  {
-    "id": "ann-leibniz-oq01-09-machin",
-    "proofId": "leibniz-pi-oq-01",
-    "range": {
-      "startLine": 136,
-      "endLine": 138
-    },
-    "type": "technique",
-    "title": "Machin's Formula (Axiom + Sorry)",
-    "content": "States Machin's 1706 formula $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$ as the exponential convergence alternative. The arctangent addition formula is axiomatized (not yet proved from Mathlib), and the main identity has 1 sorry. The Taylor series of $\\arctan(1/5)$ has terms $O(1/5^{2n+1})$, giving roughly 1.4 decimal digits per term — compared to Leibniz's near-zero digits per term.",
-    "mathContext": "$$\\frac{\\pi}{4} = 4\\arctan\\frac{1}{5} - \\arctan\\frac{1}{239}, \\qquad \\text{rate} = O(1/25^N) \\gg O(1/N)$$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Machin's formula",
-      "arctan addition",
-      "exponential convergence"
-    ],
-    "prerequisites": [
-      "arctan",
-      "Taylor series",
-      "arctan addition formula"
-    ]
   }
 ]

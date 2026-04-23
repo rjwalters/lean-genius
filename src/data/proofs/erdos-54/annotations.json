@@ -201,27 +201,5 @@
       "burr_erdos_lower",
       "conlon_fox_pham"
     ]
-  },
-  {
-    "id": "erdos-54-earlier",
-    "proofId": "erdos-54",
-    "type": "concept",
-    "range": {
-      "startLine": 91,
-      "endLine": 94
-    },
-    "title": "Burr–Erdős Earlier Upper Bound: (2 log₂ N)³",
-    "content": "**burr_erdos_upper**: $\\exists A$ Ramsey 2-complete with $|A \\cap [1,N]| < (2\\log_2 N)^3$ for large $N$. The original 1985 cubic upper bound, superseded by Conlon–Fox–Pham's quadratic.",
-    "mathContext": "The cubic bound came from a greedy construction. The gap between $(\\log N)^2$ (lower) and $(\\log N)^3$ (upper) stood for 36 years (1985–2021). Reducing the exponent from 3 to 2 required fundamentally new ideas about the structure of subset sums under adversarial colourings.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Historical bound",
-      "Greedy construction",
-      "Cubic vs quadratic"
-    ],
-    "prerequisites": [
-      "IsRamsey2Complete",
-      "countingFn"
-    ]
   }
 ]

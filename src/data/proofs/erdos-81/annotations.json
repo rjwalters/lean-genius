@@ -336,25 +336,5 @@
     ],
     "significance": "key",
     "prerequisites": []
-  },
-  {
-    "id": "ann-81-main",
-    "proofId": "erdos-81",
-    "range": {
-      "startLine": 304,
-      "endLine": 312
-    },
-    "type": "technique",
-    "title": "Main Theorem",
-    "content": "`erdos_81` is a **genuine theorem**: for any chordal graph $G$, combines (1) the Erdős-Ordman-Zalcstein upper bound $(1/4 - \\varepsilon)n^2$ with (2) the PEO-based 2-approximation. The proof directly applies both axiomatized results.",
-    "mathContext": "The proof uses the anonymous constructor to pair the two results: `erdos_ordman_zalcstein G hChordal` (the upper bound) and `peo_gives_clique_partition G hChordal` (the algorithmic result). Both require the chordality hypothesis `hChordal`, which is passed directly. This theorem captures what is known constructively about any given chordal graph.",
-    "relatedConcepts": [
-      "erdos_ordman_zalcstein",
-      "peo_gives_clique_partition",
-      "IsChordal",
-      "And.intro"
-    ],
-    "significance": "key",
-    "prerequisites": []
   }
 ]

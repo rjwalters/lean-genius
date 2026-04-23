@@ -188,24 +188,5 @@
       "reduction"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e67-corollary",
-    "proofId": "erdos-67",
-    "range": {
-      "startLine": 189,
-      "endLine": 195
-    },
-    "type": "technique",
-    "title": "No Discrepancy-2 Sequences",
-    "content": "**no_discrepancy_2_sequence** is a simple corollary: there is no ±1 sequence with all discrepancies ≤ 2.\n\nThis follows directly from noBoundedDiscrepancy with C = 2. It illustrates that even very small bounds are impossible.",
-    "mathContext": "The Polymath5 project computationally verified this for small cases before Tao's theoretical proof. They found no sequence of length 1161 with discrepancy ≤ 2.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "corollary",
-      "polymath5",
-      "small-bounds"
-    ],
-    "prerequisites": []
   }
 ]

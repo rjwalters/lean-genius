@@ -39,7 +39,7 @@
       "type-level representations"
     ],
     "prerequisites": [
-      "Fin n \u2192 \u211d",
+      "Fin n → ℝ",
       "Set type"
     ]
   },
@@ -52,7 +52,7 @@
       "endLine": 33
     },
     "title": "Diameter of a Set",
-    "content": "The diameter of $S \\subseteq \\mathbb{R}^n$ is the supremum of $\\|x - y\\|$ over all pairs $x, y \\in S$. This is the standard metric diameter. The definition uses Lean's $\\text{sSup}$ (supremum of a set of reals), which returns $0$ for the empty set \u2014 a harmless convention since Borsuk's problem concerns nonempty sets.",
+    "content": "The diameter of $S \\subseteq \\mathbb{R}^n$ is the supremum of $\\|x - y\\|$ over all pairs $x, y \\in S$. This is the standard metric diameter. The definition uses Lean's $\\text{sSup}$ (supremum of a set of reals), which returns $0$ for the empty set — a harmless convention since Borsuk's problem concerns nonempty sets.",
     "mathContext": "$\\text{diam}(S) = \\sup\\{\\|x - y\\| : x, y \\in S\\}$",
     "significance": "key",
     "relatedConcepts": [
@@ -141,7 +141,7 @@
       "endLine": 63
     },
     "title": "Low-Dimensional Positive Results",
-    "content": "Axioms asserting Borsuk's conjecture for $n = 2$ (classical, due to Lenz and Hadwiger) and $n = 3$ (Eggleston 1955, also by Gr\u00fcnbaum and Heppes). For $n = 2$, the result follows from the fact that any planar set of diameter 1 can be covered by 3 strips. For $n = 3$, the proof uses the geometry of the Reuleaux triangle and its 3D analogues. The case $n = 1$ is trivial: any interval is already diameter $< 1$ after splitting into 2 parts.",
+    "content": "Axioms asserting Borsuk's conjecture for $n = 2$ (classical, due to Lenz and Hadwiger) and $n = 3$ (Eggleston 1955, also by Grünbaum and Heppes). For $n = 2$, the result follows from the fact that any planar set of diameter 1 can be covered by 3 strips. For $n = 3$, the proof uses the geometry of the Reuleaux triangle and its 3D analogues. The case $n = 1$ is trivial: any interval is already diameter $< 1$ after splitting into 2 parts.",
     "mathContext": "$\\alpha(2) = 3 \\leq 3$ and $\\alpha(3) = 4 \\leq 4$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -150,119 +150,6 @@
       "low-dimensional geometry"
     ],
     "prerequisites": [
-      "borsukConjecture"
-    ]
-  },
-  {
-    "id": "erdos-505-kahn-kalai",
-    "proofId": "erdos-505",
-    "type": "insight",
-    "range": {
-      "startLine": 67,
-      "endLine": 71
-    },
-    "title": "Kahn-Kalai Counterexample (1993)",
-    "content": "Jeff Kahn and Gil Kalai disproved Borsuk's conjecture for $n \\geq 2015$ (later improved to $n \\geq 2014$). Their construction uses a finite subset of the Boolean cube $\\{0,1\\}^n$: they select vectors of a specific weight and use the Frankl-Wilson theorem to show that any partition into parts of smaller diameter requires exponentially many parts. Specifically, they showed $\\alpha(n) \\geq (1.2)^{\\sqrt{n}}$, which exceeds $n + 1$ for large $n$. This was one of the most surprising results in discrete geometry, disproving a 60-year-old conjecture.",
-    "mathContext": "$\\forall n \\geq 2014,\\; \\alpha(n) > n + 1$; construction: $A \\subseteq \\{0,1\\}^n$ with $|A| = \\binom{n}{n/4}$ and controlled inner products",
-    "significance": "key",
-    "relatedConcepts": [
-      "Frankl-Wilson theorem",
-      "Boolean cube",
-      "intersecting families",
-      "algebraic combinatorics"
-    ],
-    "prerequisites": [
-      "borsukConjecture",
-      "Boolean hypercube geometry"
-    ]
-  },
-  {
-    "id": "erdos-505-brouwer-jenrich",
-    "proofId": "erdos-505",
-    "type": "insight",
-    "range": {
-      "startLine": 73,
-      "endLine": 76
-    },
-    "title": "Brouwer-Jenrich Improvement (2014)",
-    "content": "Andries Brouwer and Thomas Jenrich improved the counterexample dimension threshold from $n \\geq 2014$ to $n \\geq 64$. Their approach used computer-assisted search over two-distance sets (sets with only two distinct pairwise distances) to find explicit counterexamples in lower dimensions. The gap $4 \\leq n \\leq 63$ remains the frontier of the problem.",
-    "mathContext": "$\\forall n \\geq 64,\\; \\alpha(n) > n + 1$; current best threshold",
-    "significance": "key",
-    "relatedConcepts": [
-      "computer-assisted proofs",
-      "two-distance sets",
-      "dimension reduction"
-    ],
-    "prerequisites": [
-      "kahn_kalai_counterexample",
-      "borsukConjecture"
-    ]
-  },
-  {
-    "id": "erdos-505-lower-bound",
-    "proofId": "erdos-505",
-    "type": "technique",
-    "range": {
-      "startLine": 80,
-      "endLine": 84
-    },
-    "title": "Kahn-Kalai Lower Bound on $\\alpha(n)$",
-    "content": "The quantitative lower bound $\\alpha(n) \\geq (1.2)^{\\sqrt{n}}$ for large $n$. This shows the Borsuk number grows at least exponentially in $\\sqrt{n}$, spectacularly refuting the linear conjecture $\\alpha(n) = n + 1$. The proof uses the Frankl-Wilson theorem applied to layers of the Boolean cube, combined with a graph coloring argument: the partition number equals the chromatic number of the Borsuk graph (vertices = points, edges = diameter pairs).",
-    "mathContext": "$\\exists N_0,\\; \\forall n \\geq N_0,\\; \\alpha(n) \\geq 1.2^{\\sqrt{n}}$",
-    "significance": "key",
-    "relatedConcepts": [
-      "exponential lower bounds",
-      "Borsuk graph",
-      "chromatic number",
-      "Frankl-Wilson"
-    ],
-    "prerequisites": [
-      "borsukNumber",
-      "Real.sqrt"
-    ]
-  },
-  {
-    "id": "erdos-505-schramm",
-    "proofId": "erdos-505",
-    "type": "technique",
-    "range": {
-      "startLine": 86,
-      "endLine": 90
-    },
-    "title": "Schramm Upper Bound on $\\alpha(n)$",
-    "content": "Oded Schramm's upper bound $\\alpha(n) \\leq (\\sqrt{3/2} + o(1))^n \\approx 1.225^n$ using the illumination body technique and entropy methods. The idea is to illuminate a convex body $K$ with light sources placed at distance $> \\text{diam}(K)$; the number of sources needed provides an upper bound on $\\alpha(n)$. Combined with the Kahn-Kalai lower bound, this pins down $\\alpha(n)$ as being between $\\exp(c\\sqrt{n})$ and $\\exp(Cn)$ \u2014 the correct growth rate remains a major open question.",
-    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall n \\geq N_0,\\; \\alpha(n) \\leq (\\sqrt{3/2} + \\varepsilon)^n$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "illumination body",
-      "entropy methods",
-      "convex geometry",
-      "exponential upper bounds"
-    ],
-    "prerequisites": [
-      "borsukNumber",
-      "Real.sqrt"
-    ]
-  },
-  {
-    "id": "erdos-505-intermediate",
-    "proofId": "erdos-505",
-    "type": "context",
-    "range": {
-      "startLine": 94,
-      "endLine": 98
-    },
-    "title": "Intermediate Dimensions: The Open Frontier",
-    "content": "For $n = 4$, the Borsuk number satisfies $4 \\leq \\alpha(4) \\leq 5$, but the exact value is unknown. More generally, for $4 \\leq n \\leq 63$, neither a proof of the conjecture nor a counterexample is known. This range represents the hardest open cases: too small for the algebraic/combinatorial methods of Kahn-Kalai, yet too large for exhaustive geometric arguments. Progress on $n = 4$ would likely require new techniques in computational geometry or polyhedral combinatorics.",
-    "mathContext": "$4 \\leq \\alpha(4) \\leq 5$; status unknown for $4 \\leq n \\leq 63$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "open problems",
-      "computational geometry",
-      "small cases"
-    ],
-    "prerequisites": [
-      "borsukNumber",
       "borsukConjecture"
     ]
   }

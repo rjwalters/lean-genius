@@ -136,25 +136,6 @@
     "prerequisites": []
   },
   {
-    "id": "ann-e983-summary",
-    "proofId": "erdos-983",
-    "range": {
-      "startLine": 213,
-      "endLine": 228
-    },
-    "type": "technique",
-    "title": "Erdős Problem #983: SOLVED",
-    "content": "**erdos_983:**\n\nCombines the two main results:\n1. ¬ErdosQuestion983 — The answer is NO\n2. |2π(√n) - f(π(n)+1, n)| / √n → 0 — The difference is sublinear\n\n```lean\ntheorem erdos_983 :\n    ¬ErdosQuestion983 ∧\n    (∀ ε > 0, ...) :=\n  ⟨erdos_question_answer, difference_is_sublinear⟩\n```\n\n**Status: SOLVED** by Erdős and Straus (1970) in \"Some applications of graph theory to number theory\", Proc. Second Chapel Hill Conf. Combinatorial Mathematics, pp. 136-145.",
-    "mathContext": "This theorem packages the complete solution. The proof is a simple conjunction of the two axiomatized results, reflecting that the deep mathematics is in the Erdős-Straus paper.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Erdős problems",
-      "solved conjectures",
-      "asymptotic equivalence"
-    ],
-    "prerequisites": []
-  },
-  {
     "id": "ann-e983-imports",
     "proofId": "erdos-983",
     "range": {

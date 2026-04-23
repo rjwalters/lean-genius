@@ -305,23 +305,5 @@
     ],
     "mathContext": "Formal statement of main result: erdos_381 as described in the annotation content",
     "prerequisites": []
-  },
-  {
-    "id": "ann-e381-summary",
-    "proofId": "erdos-381",
-    "range": {
-      "startLine": 337,
-      "endLine": 348
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_381_summary:** Combines the three key results:\n\n1. **Erdős's lower bound** (1944): Q(x) ≫ (log x)^{1+c}\n2. **Nicolas's upper bound** (1971): Q(x) ≪ (log x)^C\n3. **Disproof**: ¬erdos_question\n\nThis single theorem captures the complete resolution of the problem.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Summary",
-      "Resolution"
-    ],
-    "mathContext": "Formal statement of summary theorem as described in the annotation content",
-    "prerequisites": []
   }
 ]

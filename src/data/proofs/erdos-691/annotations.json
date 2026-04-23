@@ -336,28 +336,5 @@
       "startLine": 173,
       "endLine": 178
     }
-  },
-  {
-    "id": "ann-e691-generalCharacterization",
-    "proofId": "erdos-691",
-    "type": "concept",
-    "title": "Erdős Problem 691: General Characterization",
-    "content": "Find a predicate P such that A is Behrend iff P(A) holds, subsuming the coprime criterion as a special case.",
-    "mathContext": "The **main open problem** asks for a single condition $P(A)$ characterizing when $A$ is Behrend, generalizing the coprime case ($P(A) = \\sum 1/a = \\infty$). The formalization requires $P$ to be an *if-and-only-if* characterization that specializes correctly for coprime sets. A candidate might involve logarithmic density, Davenport-Erdős type conditions, or a sieve-theoretic criterion. The difficulty is that without coprimality, the inclusion-exclusion becomes non-multiplicative, and the interaction between overlapping divisibility conditions is complex.",
-    "significance": "key",
-    "relatedConcepts": [
-      "characterization theorems",
-      "Davenport-Erdős",
-      "general sieve theory"
-    ],
-    "prerequisites": [
-      "IsBehrend",
-      "IsPairwiseCoprime",
-      "HasDivergentReciprocalSum"
-    ],
-    "range": {
-      "startLine": 190,
-      "endLine": 194
-    }
   }
 ]

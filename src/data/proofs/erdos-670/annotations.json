@@ -148,30 +148,5 @@
       "connections"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e670-summary",
-    "proofId": "erdos-670",
-    "range": {
-      "startLine": 166,
-      "endLine": 186
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_670_summary (PROVED):** Conjunction of:\n1. d = 1 SOLVED: diameter ≥ (1-ε)n² for large n (from erdos_1997_d1)\n2. WeakConjecture holds in all dimensions (from trivial_gives_half)\n\nThe problem remains OPEN for d ≥ 2.",
-    "mathContext": "The summary combines the known results into a single proved theorem. The d=1 case uses Erdős's 1997 result; the weak conjecture follows from the trivial bound.",
-    "significance": "key",
-    "relatedConcepts": [
-      "State of knowledge",
-      "Open problem",
-      "Proved conjunction"
-    ],
-    "tags": [
-      "summary-theorem",
-      "state-of-knowledge",
-      "proved",
-      "open-problem"
-    ],
-    "prerequisites": []
   }
 ]

@@ -220,23 +220,5 @@
     ],
     "mathContext": "See annotation content for formal details of main results summary",
     "prerequisites": []
-  },
-  {
-    "id": "ann-e582-prize",
-    "proofId": "erdos-582",
-    "range": {
-      "startLine": 322,
-      "endLine": 337
-    },
-    "type": "technique",
-    "title": "The $100 Challenge",
-    "content": "**erdos_100_challenge_resolved:**\n\nErdos offered $100 for finding a Folkman graph with < 10^10 vertices. Spencer (1988) claimed this prize.\n\n```lean\ntheorem erdos_100_challenge_resolved : folkmanNumber_2_3_4 < 10^10 := by\n  calc folkmanNumber_2_3_4 <= 941 := folkman_upper_bound\n    _ < 10^10 := by norm_num\n```\n\n**Conjecture:** Radziszowski-Xu (2007) conjecture f(2,3,4) <= 127.",
-    "mathContext": "Erdos famously offered cash prizes for solving his problems. The $100 prize for this problem motivated significant research.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Erdos prizes",
-      "Open conjectures"
-    ],
-    "prerequisites": []
   }
 ]

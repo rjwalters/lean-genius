@@ -429,26 +429,5 @@
       "L_little_o_x",
       "L_growth_rate"
     ]
-  },
-  {
-    "id": "ann-e437-answer",
-    "proofId": "erdos-437",
-    "range": {
-      "startLine": 295,
-      "endLine": 300
-    },
-    "type": "technique",
-    "title": "The Answer",
-    "content": "**erdos_437_answer:**\n\nThe answer to Erdős Problem #437 is **YES**.\n\nFor any ε > 0, there exist sequences with more than x^(1-ε) square partial products among elements ≤ x.",
-    "significance": "key",
-    "mathContext": "Erdos Problem #437 answer: YES. For any $\\varepsilon > 0$ and large enough $x$, there exists a strictly increasing sequence $1 \\leq a_1 < \\cdots < a_k \\leq x$ with more than $x^{1-\\varepsilon}$ partial products $\\prod_{i=1}^{j} a_i$ being perfect squares.",
-    "relatedConcepts": [
-      "Solved Erdos problems",
-      "Affirmative answer",
-      "Constructive existence"
-    ],
-    "prerequisites": [
-      "erdos_437_summary"
-    ]
   }
 ]

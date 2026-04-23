@@ -383,29 +383,5 @@
       "witnessSeq definition: $3^{2^m}$ in base 3 = 1 followed by $2^m$ zeros",
       "List.getD (safe list indexing)"
     ]
-  },
-  {
-    "id": "ann-e379-summary",
-    "proofId": "erdos-379",
-    "range": {
-      "startLine": 188,
-      "endLine": 197
-    },
-    "type": "concept",
-    "title": "Summary Theorem",
-    "content": "**erdos_379_summary** packages the key results: limsup S(n) = infinity, S(3^{2^m}) >= m, and concrete values witnessSeq(0) = 3, witnessSeq(1) = 9, witnessSeq(2) = 81.",
-    "mathContext": "These are verified computationally (native_decide for concrete values) and reference the main axioms for the theoretical results.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "summary",
-      "packaging",
-      "verification"
-    ],
-    "prerequisites": [
-      "erdos_379 axiom (limsup result, local)",
-      "S_witness_bound axiom (local)",
-      "native_decide tactic for concrete computations",
-      "witnessSeq values: $3^1=3$, $3^2=9$, $3^4=81$"
-    ]
   }
 ]

@@ -396,31 +396,6 @@
     "prerequisites": []
   },
   {
-    "id": "ann-e759-main",
-    "proofId": "erdos-759",
-    "range": {
-      "startLine": 300,
-      "endLine": 312
-    },
-    "type": "technique",
-    "title": "Main Result: erdos_759",
-    "content": "**theorem erdos_759 : erdos759Question**\n\n**Statement**: z(S_n) ≍ √n / log n.\n\nThere exist constants c₁, c₂ > 0 such that for all n ≥ 2:\nc₁ · √n / log n ≤ z(S_n) ≤ c₂ · √n / log n\n\n**Status**: SOLVED (Gimbel-Thomassen 1997)",
-    "mathContext": "This is the formal statement that completely determines the growth rate of maximum cochromatic number on surfaces.",
-    "significance": "key",
-    "relatedConcepts": [
-      "main-theorem",
-      "erdos-759",
-      "solved"
-    ],
-    "tags": [
-      "main-theorem",
-      "asymptotic-growth",
-      "cochromatic-number",
-      "solved"
-    ],
-    "prerequisites": []
-  },
-  {
     "id": "ann-e759-imports",
     "proofId": "erdos-759",
     "range": {

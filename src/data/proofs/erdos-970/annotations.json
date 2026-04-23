@@ -238,29 +238,5 @@
       "h_value_1 through h_value_5",
       "And.intro"
     ]
-  },
-  {
-    "id": "ann-970-summary",
-    "proofId": "erdos-970",
-    "range": {
-      "startLine": 163,
-      "endLine": 185
-    },
-    "type": "insight",
-    "title": "Summary: Upper and Lower Bounds",
-    "content": "`erdos_970_upper_bound_exists` and `erdos_970_lower_bound_exists` restate the two main known bounds as existence theorems. Upper: $\\exists C > 0,\\, \\forall k,\\, h(k) \\leq C(k \\log k)^2$ (Iwaniec 1978). Lower: $\\exists c > 0,\\, \\forall k,\\, h(k) \\geq ck \\log k$ (Rankin-type). The gap to the conjectured $k^2$ is $(\\log k)^2$. The problem remains OPEN.",
-    "mathContext": "The bounds: $ck \\log k \\leq h(k) \\leq C(k \\log k)^2$. The ratio of upper to lower bound is $O((\\log k)^3)$. With the FGKMT improvement: $h(k) \\geq ck \\log k \\cdot \\frac{\\log_3 k}{(\\log_2 k)^2}$, the gap to Iwaniec is $\\approx (\\log k)^2 \\cdot \\frac{(\\log_2 k)^2}{\\log_3 k}$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Iwaniec's bound",
-      "FGKMT lower bound",
-      "Jacobsthal's conjecture",
-      "analytic number theory open problems"
-    ],
-    "prerequisites": [
-      "iwaniec_upper_bound",
-      "fgkmt_lower_bound",
-      "Real.log"
-    ]
   }
 ]

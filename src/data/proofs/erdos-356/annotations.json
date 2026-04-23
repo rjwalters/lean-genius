@@ -302,43 +302,5 @@
       "Beker construction"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e356-solved",
-    "proofId": "erdos-356",
-    "type": "concept",
-    "range": {
-      "startLine": 250,
-      "endLine": 255
-    },
-    "title": "Main Result: Problem Solved",
-    "content": "erdos_356_solved combines both key results: the Erdős-Graham conjecture (Beker) and the permutation variant (Konieczny) are both true. The proof is a direct pair construction ⟨beker_theorem, konieczny_theorem⟩. This is a genuine Lean proof assembling the axiomatized results.",
-    "mathContext": "erdos_356_solved: erdosGrahamConjecture ∧ permutationConjecture. Proof: ⟨beker_theorem, konieczny_theorem⟩. Both components are axioms for deep results.",
-    "significance": "key",
-    "relatedConcepts": [
-      "combined result",
-      "anonymous constructor",
-      "solved"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e356-main",
-    "proofId": "erdos-356",
-    "type": "technique",
-    "range": {
-      "startLine": 257,
-      "endLine": 261
-    },
-    "title": "erdos_356: The Answer is YES",
-    "content": "The clean one-line main theorem: erdos_356 : erdosGrahamConjecture := beker_theorem. This directly states that the Erdős-Graham conjecture is true, citing Beker's theorem as the proof. Strictly increasing sequences can achieve Ω(n²) distinct consecutive sums.",
-    "mathContext": "erdos_356: erdosGrahamConjecture := beker_theorem. The simplest statement of the resolved problem.",
-    "significance": "key",
-    "relatedConcepts": [
-      "main theorem",
-      "direct proof",
-      "Beker 2023"
-    ],
-    "prerequisites": []
   }
 ]

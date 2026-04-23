@@ -112,24 +112,5 @@
       "counterexamples"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-classification",
-    "proofId": "hilbert-14",
-    "range": {
-      "startLine": 380,
-      "endLine": 410
-    },
-    "type": "insight",
-    "title": "The Complete Picture",
-    "content": "After Nagata's counterexample, the complete classification emerged:\n\n**Finitely Generated:**\n- Reductive groups (always)\n- Finite groups (always, with degree bound |G|)\n- Diagonalizable groups (always)\n\n**May Fail:**\n- General algebraic groups\n- Unipotent groups (like G_a)\n- Non-reductive groups",
-    "mathContext": "The dichotomy:\n\n- Reductive: good representation theory => good invariant theory\n- Non-reductive: bad representation theory => invariants may be bad",
-    "significance": "key",
-    "relatedConcepts": [
-      "reductive groups",
-      "classification",
-      "geometric invariant theory"
-    ],
-    "prerequisites": []
   }
 ]

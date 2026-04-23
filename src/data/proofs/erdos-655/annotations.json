@@ -204,28 +204,5 @@
       "startLine": 118,
       "endLine": 122
     }
-  },
-  {
-    "id": "ann-e655-correctedConjecture",
-    "proofId": "erdos-655",
-    "type": "concept",
-    "title": "Erdős Problem 655: Corrected Conjecture",
-    "content": "Under the stronger NoFourConcyclic condition, n points determine at least (1+c)·n/2 distinct distances for some universal c > 0.",
-    "mathContext": "The **corrected Erdős–Pach conjecture** replaces `NoConcyclicTriple` with `NoFourConcyclic`. Under this stronger condition, Hunter's counterexample no longer applies (all points were concyclic). The conjecture asks for a *multiplicative* improvement over the trivial $(n-1)/2$ bound: the factor $(1+c)$ with universal $c > 0$ would show that forbidding 4 concyclic points forces strictly more distinct distances than the pigeonhole minimum. This connects to the Szemerédi-Trotter incidence theorem framework, where the number of point-circle incidences controls distance multiplicities. The problem remains open and is part of the broader program of understanding how geometric restrictions on point configurations affect distance sets.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Szemerédi-Trotter theorem",
-      "point-circle incidences",
-      "multiplicative improvement"
-    ],
-    "prerequisites": [
-      "NoFourConcyclic",
-      "distinctDistances",
-      "Filter.atTop"
-    ],
-    "range": {
-      "startLine": 129,
-      "endLine": 133
-    }
   }
 ]

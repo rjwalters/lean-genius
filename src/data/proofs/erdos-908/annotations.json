@@ -187,52 +187,5 @@
       "Continuous",
       "Set.Ioo"
     ]
-  },
-  {
-    "id": "ann-908-9",
-    "proofId": "erdos-908",
-    "type": "definition",
-    "range": {
-      "startLine": 200,
-      "endLine": 207
-    },
-    "title": "Difference Closed Classes (de Bruijn Formulation)",
-    "content": "`DifferenceClosed C` says that for any function class $C$, if $\\Delta_h f \\in C$ for all $h > 0$, then $f$ decomposes as $f = g + h + r$ with $g \\in C$, $h$ additive, $r$ rigid. The axiom `measurable_difference_closed` asserts that the class of measurable functions is difference closed. This is de Bruijn's 1951 formulation of the problem.",
-    "mathContext": "**de Bruijn's question (1951):** For which function classes $C$ is it true that $\\{f : \\Delta_h f \\in C \\; \\forall h > 0\\} \\subseteq C + \\text{Additive} + \\text{Rigid}$? Laczkovich proved $C = \\{\\text{Lebesgue measurable}\\}$ works. The broader program asks about $C = L^p$, $C = \\{\\text{Baire measurable}\\}$, $C = \\{\\text{bounded}\\}$, etc.",
-    "significance": "key",
-    "relatedConcepts": [
-      "function classes",
-      "difference operators",
-      "de Bruijn's program",
-      "closure properties"
-    ],
-    "prerequisites": [
-      "HasMeasurableDifferences",
-      "IsAdditive",
-      "IsRigid"
-    ]
-  },
-  {
-    "id": "ann-908-10",
-    "proofId": "erdos-908",
-    "type": "concept",
-    "range": {
-      "startLine": 232,
-      "endLine": 256
-    },
-    "title": "Summary Theorems",
-    "content": "`erdos_908_solved` and `de_bruijn_erdos_conjecture` both state the decomposition theorem, proved by direct reference to `laczkovich_decomposition`. `erdos_908_summary` combines three results: (1) the decomposition theorem, (2) continuous functions have measurable differences, (3) additive functions have measurable differences. Proved by `⟨laczkovich_decomposition, continuous_has_measurable_differences, additive_has_measurable_differences⟩`.",
-    "mathContext": "$\\text{erdos\\_908\\_summary}: (\\forall f \\in \\text{MD},\\; f = g + h + r) \\wedge (C(\\mathbb{R}) \\subseteq \\text{MD}) \\wedge (\\text{Additive} \\subseteq \\text{MD})$. The first conjunct is the main theorem. The second and third show that the hypothesis class $\\text{MD}$ (measurable differences) is rich enough to contain both continuous and additive functions — justifying the decomposition into these components.",
-    "significance": "key",
-    "relatedConcepts": [
-      "theorem synthesis",
-      "conjunction",
-      "laczkovich_decomposition"
-    ],
-    "prerequisites": [
-      "laczkovich_decomposition",
-      "continuous_has_measurable_differences",
-      "additive_has_measurable_differences"
-    ]
   }
 ]

@@ -154,25 +154,6 @@
     "prerequisites": []
   },
   {
-    "id": "ann-e366-density",
-    "proofId": "erdos-366",
-    "range": {
-      "startLine": 220,
-      "endLine": 249
-    },
-    "type": "concept",
-    "title": "Density of k-Full Numbers",
-    "content": "**Growth Rates**:\n- Powerful numbers: |{n ≤ N : n is 2-full}| ~ c₂ × √N\n- Cubeful numbers: |{n ≤ N : n is 3-full}| ~ c₃ × N^(1/3)\n\n```lean\naxiom powerful_growth :\n  ∃ c₁ c₂ : ℕ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ N ≥ 100,\n    c₁ * Nat.sqrt N / 100 ≤ powerfulCount N ∧\n    powerfulCount N ≤ c₂ * Nat.sqrt N\n```\n\n**Heuristic for Erdős #366**:\n- P(n powerful) ~ n^(-1/2)\n- P(n+1 cubeful) ~ n^(-2/3)\n- P(both) ~ n^(-7/6)\n\nSum over all n: ∑ n^(-7/6) converges, so expected count is FINITE.",
-    "mathContext": "Golomb (1970) established the √N count for powerful numbers. The heuristic suggests only finitely many (2-full, 3-full) pairs should exist.",
-    "significance": "key",
-    "relatedConcepts": [
-      "asymptotic density",
-      "counting functions",
-      "probabilistic heuristics"
-    ],
-    "prerequisites": []
-  },
-  {
     "id": "ann-e366-structure",
     "proofId": "erdos-366",
     "range": {

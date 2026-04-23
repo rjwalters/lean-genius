@@ -414,27 +414,5 @@
       "nppz_bound axiom",
       "regular_polygon_distances axiom"
     ]
-  },
-  {
-    "id": "ann-e982-summary",
-    "proofId": "erdos-982",
-    "range": {
-      "startLine": 343,
-      "endLine": 359
-    },
-    "type": "technique",
-    "title": "Final Summary",
-    "content": "**erdos_982_summary:**\n\nThe complete summary theorem:\n\n1. f(n) >= n/3 + 1 for all n >= 3 (Erdos-Fishburn)\n2. The conjecture f(n) >= n/2 remains OPEN\n3. The stronger \"no equidistant triples\" conjecture is FALSE\n\nThis encapsulates 80 years of work on this beautiful geometric problem.",
-    "significance": "key",
-    "mathContext": "The summary is a conjunction: (1) $\\forall\\, n \\ge 3,\\; f(n) \\ge \\lfloor n/3 \\rfloor + 1$ (Erdos-Fishburn, still has `sorry`), (2) the main conjecture is unresolved (`sorry`), and (3) `strongerConjectureDisproved` holds (from axiom).",
-    "relatedConcepts": [
-      "Conjunction of results",
-      "Open problem formalization",
-      "Erdos-Fishburn theorem"
-    ],
-    "prerequisites": [
-      "erdos_fishburn_bound axiom",
-      "stronger_conjecture_is_false axiom"
-    ]
   }
 ]

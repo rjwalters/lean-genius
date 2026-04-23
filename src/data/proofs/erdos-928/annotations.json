@@ -446,26 +446,5 @@
       "teravainen_log_density",
       "wang_conditional"
     ]
-  },
-  {
-    "id": "ann-e928-main",
-    "proofId": "erdos-928",
-    "range": {
-      "startLine": 260,
-      "endLine": 274
-    },
-    "type": "technique",
-    "title": "Erdős Problem #928: OPEN",
-    "content": "The main theorem states the strongest unconditional result: infinitely many $n$ exist with both $P(n) < n^\\alpha$ and $P(n+1) < (n+1)^\\beta$. The proof is a direct application of `infinitely_many_exist`. The gap between this (infinitely many) and the desired result (positive density) illustrates the difficulty of Erdős #928 — even proving the set is infinite required Schinzel's deep sieve theory.",
-    "mathContext": "$\\forall \\alpha, \\beta \\in (0,1),\\, \\forall N,\\, \\exists n > N:\\, P(n) < n^\\alpha \\wedge P(n+1) < (n+1)^\\beta$",
-    "significance": "key",
-    "relatedConcepts": [
-      "open problems",
-      "unconditional results",
-      "gap between existence and density"
-    ],
-    "prerequisites": [
-      "infinitely_many_exist"
-    ]
   }
 ]

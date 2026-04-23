@@ -418,29 +418,5 @@
       "bipartite definition",
       "ContainsCycleLength"
     ]
-  },
-  {
-    "id": "ann-e64-random",
-    "proofId": "erdos-64",
-    "range": {
-      "startLine": 207,
-      "endLine": 210
-    },
-    "type": "concept",
-    "title": "Random Graphs Contain Power-of-Two Cycles",
-    "content": "Axiomatizes that random graphs $G(n, c/n)$ with appropriate constant $c$ have minimum degree $\\ge 3$ and contain $C_{2^k}$ for all $k \\le 10$. This probabilistic argument shows that 'most' sparse graphs satisfy the conjecture, so counterexamples must be specially constructed.",
-    "mathContext": "$\\exists c > 0$ such that $G(n, c/n)$ a.s. has $\\delta \\ge 3$ and $C_{2^k} \\subseteq G$ for $2 \\le k \\le 10$. The random graph model $G(n, p)$ at $p = c/n$ is in the sparse regime where cycles of length $\\ell$ appear with probability related to $(np)^\\ell / \\ell$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Erdős-Rényi model",
-      "random graph",
-      "probabilistic method",
-      "threshold function"
-    ],
-    "prerequisites": [
-      "probability",
-      "random graph model",
-      "HasMinDegree"
-    ]
   }
 ]

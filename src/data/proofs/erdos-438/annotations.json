@@ -123,55 +123,5 @@
       "sumset structure theorems",
       "quadratic Gauss sums"
     ]
-  },
-  {
-    "id": "erdos-438-why",
-    "proofId": "erdos-438",
-    "type": "concept",
-    "range": {
-      "startLine": 117,
-      "endLine": 128
-    },
-    "title": "Why $11/32$? Quadratic Residues and Maximality",
-    "content": "`squares_mod_32` $= \\{0, 1, 4, 9, 16, 17, 25\\}$ — exactly $7$ quadratic residues mod $32$, with cardinality proved by `native_decide`. `massias_avoids_squares` asserts all pairwise sums of Massias residues avoid these $7$ values. `massias_is_maximal` proves $11$ is optimal: no set of $12$ residues mod $32$ can avoid all square sums.",
-    "significance": "key",
-    "mathContext": "The quadratic residues mod $2^k$ have a special structure: for $k \\ge 3$, the residues are $\\{0\\} \\cup \\{r : r \\equiv 0 \\text{ or } 1 \\pmod{8}, 0 \\le r < 2^k\\}$. At $k = 5$ (mod $32$), this gives $7$ residues. The `native_decide` tactic performs the enumeration computationally in the Lean kernel, providing a verified count. The maximality proof that $\\alpha(G_{32}) = 11$ can be established by exhaustive search (checking all $\\binom{32}{12} = 12,\\!620,\\!256$ potential $12$-element sets) or by clever graph-theoretic arguments exploiting the symmetry of the residue graph.",
-    "relatedConcepts": [
-      "quadratic residues mod powers of 2",
-      "native_decide",
-      "maximum independent set",
-      "2-adic structure",
-      "computational verification"
-    ],
-    "prerequisites": [
-      "modular arithmetic",
-      "Finset.range",
-      "native_decide tactic",
-      "graph independence"
-    ]
-  },
-  {
-    "id": "erdos-438-summary",
-    "proofId": "erdos-438",
-    "type": "concept",
-    "range": {
-      "startLine": 138,
-      "endLine": 148
-    },
-    "title": "Summary Theorem",
-    "content": "`erdos_438_summary` packages three results: (1) `massias_construction_works` — the Massias construction produces square-free sumsets for all $N$, (2) `kls_theorem` — the tight upper bound $(11/32 + \\varepsilon)N$, and (3) `massias_is_maximal` — $11$ is the maximum number of valid residues mod $32$. Proved by the exact triple $\\langle$`massias_construction_works, kls_theorem, massias_is_maximal`$\\rangle$. **Status: SOLVED.**",
-    "significance": "key",
-    "mathContext": "The summary theorem demonstrates the complete resolution of Erdős Problem #438. The three components establish: a constructive lower bound matching the upper bound (up to $o(1)$ terms), the optimal upper bound via regularity methods, and the finite combinatorial verification that the modular construction is best possible. The proof structure — construction, upper bound, optimality — is a model for resolving extremal density problems in additive combinatorics. The analogous problems for higher powers (Problem #439) and for difference sets (Problem #587) remain active areas of research.",
-    "relatedConcepts": [
-      "complete resolution",
-      "matching bounds",
-      "extremal density",
-      "Erdős problems"
-    ],
-    "prerequisites": [
-      "massias_construction_works",
-      "kls_theorem",
-      "massias_is_maximal"
-    ]
   }
 ]

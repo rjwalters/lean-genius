@@ -131,23 +131,5 @@
       "small-cases"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e136-summary",
-    "proofId": "erdos-136",
-    "range": {
-      "startLine": 188,
-      "endLine": 205
-    },
-    "type": "technique",
-    "title": "Summary Theorem: erdos_136",
-    "content": "**erdos_136** is a proved theorem combining three results:\n1. f(n)/n → 5/6 (the asymptotic resolution)\n2. f(n) > (5/6)(n-1) for n ≥ 4 (Erdős-Gyárfás lower bound)\n3. f(n) < n for n ≥ 4 (Erdős-Gyárfás upper bound)\n\nProof: `exact ⟨bcdp_asymptotic, erdos_gyarfas_lower_bound, erdos_gyarfas_upper_bound⟩`. This captures the complete resolution of Problem #136.",
-    "mathContext": "erdos_136 : (f(n)/n → 5/6) ∧ (∀ n ≥ 4, f(n) > (5/6)(n-1)) ∧ (∀ n ≥ 4, f(n) < n).",
-    "significance": "key",
-    "relatedConcepts": [
-      "problem-resolution",
-      "exact-constructor"
-    ],
-    "prerequisites": []
   }
 ]

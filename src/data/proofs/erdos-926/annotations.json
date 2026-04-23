@@ -315,49 +315,5 @@
     "prerequisites": [
       "dependent_random_choice"
     ]
-  },
-  {
-    "id": "ann-926-summary",
-    "proofId": "erdos-926",
-    "range": {
-      "startLine": 261,
-      "endLine": 265
-    },
-    "type": "concept",
-    "title": "Summary Theorem (Proved)",
-    "content": "**Proved theorem** `erdos_926_summary`: packages three conclusions as a conjunction of `True` values: (1) $\\mathrm{ex}(n; H_k) \\ll_k n^{3/2}$, (2) the lower bound $n^{3/2}$ is tight, (3) the problem is a special case of the 2-degenerate conjecture. Proved by `⟨trivial, trivial, trivial⟩`.",
-    "mathContext": "Combined: $\\mathrm{ex}(n; H_k) = \\Theta_k(n^{3/2})$ and $H_k$ is 2-degenerate.",
-    "significance": "key",
-    "relatedConcepts": [
-      "conjunction",
-      "problem summary"
-    ],
-    "prerequisites": [
-      "erdos_926",
-      "hk_2_degenerate",
-      "hk_lower_bound"
-    ]
-  },
-  {
-    "id": "ann-926-order",
-    "proofId": "erdos-926",
-    "range": {
-      "startLine": 270,
-      "endLine": 272
-    },
-    "type": "concept",
-    "title": "Tight Order of Magnitude (Proved)",
-    "content": "**Proved theorem** `erdos_926_order`: the order of magnitude $\\mathrm{ex}(n; H_k) = \\Theta_k(n^{3/2})$ holds for all $k \\geq 3$. The lower bound comes from $C_4$-containment and polarity graph constructions achieving $\\mathrm{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$.",
-    "mathContext": "$\\mathrm{ex}(n; H_k) = \\Theta_k(n^{3/2})$ for all $k \\geq 3$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "order of magnitude",
-      "tight bounds",
-      "polarity graphs"
-    ],
-    "prerequisites": [
-      "alon_krivelevich_sudakov",
-      "hk_lower_bound"
-    ]
   }
 ]

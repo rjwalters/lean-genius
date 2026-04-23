@@ -131,43 +131,5 @@
       "partial result"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e325-two-term-def",
-    "proofId": "erdos-325",
-    "range": {
-      "startLine": 127,
-      "endLine": 132
-    },
-    "type": "definition",
-    "title": "Two-Term Analogues",
-    "content": "For context, we define the two-term versions: `IsSumTwoPower k n` (n is a^k + b^k) and `cardIsSumTwoPowerBelow k x` (count of such n ≤ x).",
-    "mathContext": "These mirror the three-term definitions but with only two summands. The two-term case is solved, providing motivation for the three-term conjecture.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "two-term sums",
-      "comparison",
-      "solved case"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e325-mahler-erdos",
-    "proofId": "erdos-325",
-    "range": {
-      "startLine": 134,
-      "endLine": 140
-    },
-    "type": "technique",
-    "title": "Mahler-Erdős Theorem (1938)",
-    "content": "**Solved case**: Mahler and Erdős proved f_{k,2}(x) ≫ x^{2/k} in 1938. This shows the conjecture IS true for two terms, making the three-term extension natural but elusive.",
-    "mathContext": "This 1938 result established the pattern: for j terms, expect f_{k,j}(x) ≈ x^{j/k}. The three-term case (j=3) remains the frontier.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Mahler",
-      "1938 result",
-      "two-term case"
-    ],
-    "prerequisites": []
   }
 ]

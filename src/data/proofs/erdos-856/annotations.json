@@ -313,27 +313,5 @@
       "tang_zhang_2025",
       "f_k definition"
     ]
-  },
-  {
-    "id": "ann-856-summary",
-    "proofId": "erdos-856",
-    "range": {
-      "startLine": 296,
-      "endLine": 305
-    },
-    "type": "concept",
-    "title": "Summary Theorem (PROVED)",
-    "content": "Trivially proved summary: problem is OPEN, Erdős gave initial bound, Tang–Zhang improved it, and the problem connects to the sunflower conjecture. Each clause is True, proved by exact ⟨trivial, trivial, trivial, trivial⟩.",
-    "mathContext": "$(\\text{OPEN}) \\land (\\text{Erdős bound}) \\land (\\text{Tang–Zhang}) \\land (\\text{sunflower connection}) = \\text{True}^4$. Proved trivially.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "summary theorem",
-      "trivial proof",
-      "documentation"
-    ],
-    "prerequisites": [
-      "True",
-      "And.intro"
-    ]
   }
 ]

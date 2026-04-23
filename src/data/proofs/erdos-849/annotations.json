@@ -259,25 +259,6 @@
     "prerequisites": []
   },
   {
-    "id": "ann-e849-history",
-    "proofId": "erdos-849",
-    "range": {
-      "startLine": 198,
-      "endLine": 212
-    },
-    "type": "concept",
-    "title": "Historical Context",
-    "content": "**Timeline**:\n- 1971: Singmaster poses the multiplicity bound conjecture\n- 1996: Erdős credits the 'every t occurs' question to himself and Gordon 'many years ago'\n- 2022: Matomäki, Radziwill, Shao, Tao, Teräväinen prove interior bound\n\n**Key insight**: The problem connects:\n1. **Edge appearances**: C(a,1) = a (trivial)\n2. **Triangular appearances**: C(n,2) = n(n-1)/2\n3. **Deep appearances**: Large k values (rare coincidences)\n\n**The difficulty**: For multiplicity t, we need t coincidences. Finding t = 5 requires an unprecedented alignment.",
-    "mathContext": "The 2022 MRSTT paper is a breakthrough: for k large enough, multiplicities are at most 2. This leaves the 'boundary' region as the hard case.",
-    "significance": "key",
-    "relatedConcepts": [
-      "erdos-gordon",
-      "singmaster",
-      "mrstt-2022"
-    ],
-    "prerequisites": []
-  },
-  {
     "id": "ann-e849-summary",
     "proofId": "erdos-849",
     "range": {

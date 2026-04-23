@@ -3,13 +3,24 @@
     "id": "erdos-47-header",
     "proofId": "erdos-47",
     "type": "context",
-    "range": { "startLine": 1, "endLine": 24 },
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
     "title": "Module Documentation: Unit Fractions from Dense Sets",
     "content": "Erdős Problem #47 (SOLVED): if $A \\subseteq \\{1, \\ldots, N\\}$ has $\\sum_{a \\in A} 1/a > \\delta \\log N$, must there exist $S \\subseteq A$ with $\\sum_{n \\in S} 1/n = 1$? Bloom [2021] proved YES with threshold $\\sum 1/a \\gg (\\log\\log\\log N / \\log\\log N) \\cdot \\log N$. Liu-Sawhney [2024] improved to $(\\log N)^{4/5+o(1)}$. Erdős conjectured $(\\log\\log N)^2$ suffices; Pomerance showed this is optimal. The formalization axiomatizes Bloom's theorem and the Liu-Sawhney improvement.",
     "mathContext": "Given $A \\subseteq [N]$ with $\\sum_{a \\in A} 1/a \\geq f(N)$, does $\\exists S \\subseteq A: \\sum_{s \\in S} 1/s = 1$? The threshold $f(N)$ is between $(\\log\\log N)^2$ (conjectured optimal) and $(\\log N)^{4/5}$ (best known).",
     "significance": "key",
-    "relatedConcepts": ["unit fractions", "Egyptian fractions", "Bloom's theorem", "dense subset sums"],
-    "prerequisites": ["reciprocal sums", "logarithmic density"]
+    "relatedConcepts": [
+      "unit fractions",
+      "Egyptian fractions",
+      "Bloom's theorem",
+      "dense subset sums"
+    ],
+    "prerequisites": [
+      "reciprocal sums",
+      "logarithmic density"
+    ]
   },
   {
     "id": "erdos-47-ann-imports",
@@ -231,51 +242,6 @@
     "prerequisites": [
       "bloom_theorem",
       "analytic number theory"
-    ]
-  },
-  {
-    "id": "erdos-47-ann-pomerance",
-    "proofId": "erdos-47",
-    "type": "concept",
-    "range": {
-      "startLine": 138,
-      "endLine": 142
-    },
-    "title": "Pomerance's Lower Bound",
-    "content": "Carl Pomerance constructed sets $A \\subseteq \\{1, \\ldots, N\\}$ with $\\sum \\frac{1}{a} \\geq (\\log \\log N)^2$ that contain no unit fraction subset. This shows that Erdős's conjectured threshold of $(\\log \\log N)^2$ is essentially optimal—one cannot guarantee unit fraction subsets below this level of density.",
-    "mathContext": "$\\forall N_0,\\; \\exists N \\geq N_0,\\; \\exists A \\subseteq \\{1,\\ldots,N\\} : \\sum \\frac{1}{a} \\geq (\\log \\log N)^2 \\wedge \\neg\\texttt{ContainsUnitFraction}(A)$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "extremal construction",
-      "Egyptian fraction avoidance",
-      "lower bounds"
-    ],
-    "prerequisites": [
-      "ContainsUnitFraction",
-      "constructive counterexample"
-    ]
-  },
-  {
-    "id": "erdos-47-ann-summary",
-    "proofId": "erdos-47",
-    "type": "concept",
-    "range": {
-      "startLine": 152,
-      "endLine": 152
-    },
-    "title": "Summary: Problem #47 is Solved",
-    "content": "The summary theorem $\\texttt{erdos\\_47\\_summary} : \\texttt{ErdosConjecture47} := \\texttt{bloom\\_theorem}$ records that Problem #47 is solved. The quantitative gap between the best upper bound ($(\\log N)^{4/5+o(1)}$ from Liu–Sawhney) and the lower bound ($(\\log \\log N)^2$ from Pomerance) remains wide open.",
-    "mathContext": "Best bounds: $(\\log \\log N)^2 \\leq \\text{threshold} \\leq (\\log N)^{4/5+o(1)}$. Closing this gap is the main remaining quantitative question.",
-    "significance": "key",
-    "relatedConcepts": [
-      "solved status",
-      "quantitative gap",
-      "threshold determination"
-    ],
-    "prerequisites": [
-      "bloom_theorem",
-      "liu_sawhney_improvement",
-      "pomerance_lower_bound"
     ]
   }
 ]

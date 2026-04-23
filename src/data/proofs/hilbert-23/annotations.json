@@ -169,43 +169,5 @@
       "costate equations"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-sobolev",
-    "proofId": "hilbert-23",
-    "range": {
-      "startLine": 340,
-      "endLine": 352
-    },
-    "type": "insight",
-    "title": "Weak Solutions and Sobolev Spaces",
-    "content": "**Sobolev spaces** $W^{k,p}$ allow 'weak' (distributional) derivatives.\n\nThis was essential because:\n- Minimizers may not be classically differentiable\n- Existence proofs work in Sobolev spaces\n- Regularity theory then shows smoothness\n\nThe Rellich-Kondrachov theorem provides compactness.",
-    "mathContext": "$W^{1,2}[a,b] = \\{u \\in L^2 : u' \\in L^2\\}$\n\nThe natural domain for variational problems.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Sobolev spaces",
-      "weak derivatives",
-      "compact embeddings"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-status",
-    "proofId": "hilbert-23",
-    "range": {
-      "startLine": 373,
-      "endLine": 378
-    },
-    "type": "concept",
-    "title": "A Living Research Program",
-    "content": "Unlike most Hilbert problems with definitive solutions, Problem 23 is a **living research program**.\n\nModern applications include:\n- **Optimal transport** (Villani, Figalli)\n- **Machine learning** (neural networks as variational problems)\n- **Materials science** (phase transitions, microstructure)\n- **Image processing** (total variation regularization)",
-    "mathContext": "The field continues to develop new methods and applications.",
-    "significance": "key",
-    "relatedConcepts": [
-      "optimal transport",
-      "machine learning",
-      "phase transitions"
-    ],
-    "prerequisites": []
   }
 ]

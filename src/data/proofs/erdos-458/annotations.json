@@ -166,51 +166,5 @@
       "prime gap theory",
       "square root bounds"
     ]
-  },
-  {
-    "id": "ann-e458-small-cases",
-    "proofId": "erdos-458",
-    "range": {
-      "startLine": 160,
-      "endLine": 168
-    },
-    "type": "technique",
-    "title": "Verified Small Cases",
-    "content": "Two concrete verifications:\n\n**$k = 1$** ($p_1 = 3, p_2 = 5$): $\\text{lcm}(1,2,3,4) = 12 < 3 \\cdot 6 = 18$. The ratio is $12/18 = 2/3$.\n\n**$k = 2$** ($p_2 = 5, p_3 = 7$): $\\text{lcm}(1,\\ldots,6) = 60 < 5 \\cdot 60 = 300$. The ratio is $60/300 = 1/5$.\n\nBoth are verified by `native_decide`, using the previously computed values of `lcm_upto`. The ratio $\\text{lcm}(1,\\ldots,p_{k+1}-1) / (p_k \\cdot \\text{lcm}(1,\\ldots,p_k))$ is well below 1 in both cases, providing computational confidence.",
-    "mathContext": "The inequality $\\text{lcm}(1,\\ldots,p_{k+1}-1) < p_k \\cdot \\text{lcm}(1,\\ldots,p_k)$ is equivalent to $\\frac{\\text{lcm}(1,\\ldots,p_{k+1}-1)}{\\text{lcm}(1,\\ldots,p_k)} < p_k$. The ratio on the left equals $\\prod_{p_k < p^a < p_{k+1}} p$ (product of primes whose powers enter the LCM in the gap). For small cases: $k=1$ has ratio $\\frac{12}{6} = 2 < 3$; $k=2$ has ratio $\\frac{60}{60} = 1 < 5$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "native_decide",
-      "computational verification",
-      "LCM ratio"
-    ],
-    "prerequisites": [
-      "lcm_upto small values",
-      "native_decide tactic"
-    ]
-  },
-  {
-    "id": "ann-e458-asymptotic",
-    "proofId": "erdos-458",
-    "range": {
-      "startLine": 170,
-      "endLine": 181
-    },
-    "type": "concept",
-    "title": "Chebyshev's Asymptotic and Closure",
-    "content": "The axiom `chebyshev_psi` states Chebyshev's bounds: there exist constants $0 < c_1 < 1 < c_2$ such that $c_1 n < \\log \\text{lcm\\_upto}(n) < c_2 n$ for all $n \\geq 2$. Chebyshev proved this in 1852 with $c_1 \\approx 0.92$ and $c_2 \\approx 1.11$.\n\nThe PNT strengthens this to $\\psi(n) \\sim n$, i.e., $\\lim_{n \\to \\infty} \\psi(n)/n = 1$. The Erdős #458 conjecture asks about the fine structure of this growth: not just the overall rate, but whether the growth *between consecutive primes* is bounded by multiplication by the smaller prime.\n\nThe `end Erdos458` closes the namespace.",
-    "mathContext": "Chebyshev (1852): $0.92 n < \\psi(n) < 1.11 n$ for $n \\geq 2$, where $\\psi(n) = \\log \\text{lcm}(1, \\ldots, n)$. The PNT: $\\psi(n)/n \\to 1$. Erdős #458 asks whether $\\psi(p_{k+1} - 1) - \\psi(p_k) < \\log p_k$, a question about the *local* behavior of $\\psi$ near primes, not its *global* growth rate.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Chebyshev bounds",
-      "Chebyshev psi function",
-      "Prime Number Theorem",
-      "asymptotic analysis"
-    ],
-    "prerequisites": [
-      "Chebyshev's theorem",
-      "natural logarithm",
-      "asymptotic notation"
-    ]
   }
 ]

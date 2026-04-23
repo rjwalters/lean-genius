@@ -207,24 +207,5 @@
       "Lorch 1976"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e1114-summary",
-    "proofId": "erdos-1114",
-    "range": {
-      "startLine": 173,
-      "endLine": 191
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_1114_summary** is the only fully proved theorem in the file, combining:\n1. **Bálint's theorem** — gap monotonicity for general n\n2. **Quartic property** — explicit outer > middle for n = 4\n\nThe proof is by exact construction ⟨balint_theorem, quartic_gap_property⟩, packaging both axioms into a conjunction.\n\nThis demonstrates that the Lean formalization correctly captures the mathematical content.",
-    "mathContext": "The summary theorem has type (∀ n ≥ 2, ...) ∧ (∀ c : Fin 4 → ℝ, ...). It is proved by providing the two axioms as the components of the conjunction.",
-    "significance": "key",
-    "relatedConcepts": [
-      "summary theorem",
-      "conjunction",
-      "axiom application"
-    ],
-    "prerequisites": []
   }
 ]

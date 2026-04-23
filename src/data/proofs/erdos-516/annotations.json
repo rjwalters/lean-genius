@@ -293,23 +293,5 @@
       "optimality"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e516-solved",
-    "proofId": "erdos-516",
-    "range": {
-      "startLine": 214,
-      "endLine": 221
-    },
-    "type": "technique",
-    "title": "Erdős #516 Solved",
-    "content": "**Main Result**: Erdős Problem #516 is SOLVED for finite order + Fabry gaps.\n\n```lean\ntheorem erdos_516_solved :\n    ∀ {f : ℂ → ℂ} {n : ℕ → ℕ},\n      HasFabryGaps n → ... → OfFiniteOrder f →\n      limsup (fun r => modulusRatio f r) atTop = 1\n```\n\nThis follows directly from Fuchs's theorem.",
-    "mathContext": "The original question asked by Pólya in 1929 is completely resolved by Fuchs 1963. The remaining open question (Fejér gaps) is a natural extension.",
-    "significance": "key",
-    "relatedConcepts": [
-      "main-result",
-      "solved"
-    ],
-    "prerequisites": []
   }
 ]

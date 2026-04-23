@@ -247,26 +247,5 @@
       "Algebraic rearrangement"
     ],
     "significance": "key"
-  },
-  {
-    "id": "ann-449-summary",
-    "proofId": "erdos-449",
-    "type": "technique",
-    "range": {
-      "startLine": 162,
-      "endLine": 174
-    },
-    "title": "Summary Theorem",
-    "content": "**erdos_449_summary** packages the two main results:\n1. ¬ErdosConjecture449 — the conjecture is false\n2. ∀ K > 0, ∃ δ > 0: r(n) > K·τ(n) on a δ-dense set\n\nProved by `exact ⟨erdos_449_false, erdos_449_disproof⟩`.",
-    "mathContext": "The summary theorem is a conjunction of the qualitative result (the conjecture is false) and the quantitative result (the negation is strong: $r(n)/\\tau(n)$ is unbounded on positive density).  The proof is a simple pairing of the two axioms.  This is the only non-axiom theorem in the file, with 0 sorries — the file's 'sorry count' is 0 because all substantive results are axiomatized.",
-    "relatedConcepts": [
-      "Conjunction introduction",
-      "Qualitative vs quantitative negation"
-    ],
-    "prerequisites": [
-      "erdos_449_false axiom",
-      "erdos_449_disproof axiom"
-    ],
-    "significance": "key"
   }
 ]

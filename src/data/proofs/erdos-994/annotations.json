@@ -467,49 +467,5 @@
       "Irrational",
       "Tendsto"
     ]
-  },
-  {
-    "id": "ann-994-main",
-    "proofId": "erdos-994",
-    "type": "concept",
-    "range": {
-      "startLine": 209,
-      "endLine": 209
-    },
-    "title": "Main Result: Erdős Problem #994",
-    "content": "The headline theorem: `erdos_994 : ¬KhintchineConjecture`, proved directly from `marstrand_disproof`. This one-line proof captures the resolution of the problem. Followed by `erdos_994_main` (alias) and `erdos_994_disproof` (pairing with Weyl's positive result).",
-    "mathContext": "$\\text{erdos\\_994} : \\neg\\text{KhintchineConjecture}$. Khintchine's 1923 conjecture is false (Marstrand 1970).",
-    "significance": "key",
-    "relatedConcepts": [
-      "problem resolution",
-      "disproof",
-      "axiom application"
-    ],
-    "prerequisites": [
-      "marstrand_disproof",
-      "KhintchineConjecture"
-    ]
-  },
-  {
-    "id": "ann-994-vs",
-    "proofId": "erdos-994",
-    "type": "concept",
-    "range": {
-      "startLine": 219,
-      "endLine": 220
-    },
-    "title": "Weyl vs. Khintchine: The Complete Picture",
-    "content": "The final summary theorem `weyl_vs_khintchine : WeylStatement ∧ ¬KhintchineConjecture` combines both results: Weyl's theorem IS true ($\\forall E,\\; \\forall^{\\text{a.e.}} \\alpha$) and Khintchine's conjecture is FALSE ($\\forall^{\\text{a.e.}} \\alpha,\\; \\forall E$). Proved by pairing `weyl_is_true` and `marstrand_disproof`.",
-    "mathContext": "$\\text{WeylStatement} \\wedge \\neg\\text{KhintchineConjecture}$: the quantifier order matters, and the two statements are genuinely different.",
-    "significance": "key",
-    "relatedConcepts": [
-      "conjunction",
-      "summary theorem",
-      "quantifier order"
-    ],
-    "prerequisites": [
-      "weyl_is_true",
-      "marstrand_disproof"
-    ]
   }
 ]

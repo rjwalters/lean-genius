@@ -312,23 +312,5 @@
       "Sum equals 1"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e310-summary",
-    "proofId": "erdos-310",
-    "range": {
-      "startLine": 314,
-      "endLine": 333
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_310_summary:**\n\nCombines the main results:\n\n1. erdosGrahamConjecture holds (the main theorem)\n2. For any alpha in (0, 1/2], there exists C such that alpha-dense sets have subsets with bounded denominator unit fraction sums\n\nThis provides a complete summary of what was proved about Erdos #310.",
-    "significance": "key",
-    "mathContext": "See annotation content for formal details of summary theorem",
-    "relatedConcepts": [
-      "proof technique",
-      "combinatorics"
-    ],
-    "prerequisites": []
   }
 ]

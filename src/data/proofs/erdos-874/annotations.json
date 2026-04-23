@@ -255,40 +255,5 @@
     ],
     "mathContext": "See annotation content for formal details of sum set properties",
     "prerequisites": []
-  },
-  {
-    "id": "ann-e874-main",
-    "proofId": "erdos-874",
-    "range": {
-      "startLine": 229,
-      "endLine": 234
-    },
-    "type": "technique",
-    "title": "Main Result: erdos_874",
-    "content": "**erdos_874:** k(N)/√N → 2 as N → ∞. This is the complete resolution of Problem #874, following directly from k_limit_is_two.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Main theorem"
-    ],
-    "mathContext": "See annotation content for formal details of main result: erdos_874",
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e874-answer",
-    "proofId": "erdos-874",
-    "range": {
-      "startLine": 236,
-      "endLine": 251
-    },
-    "type": "technique",
-    "title": "The Answer: Conjecture is TRUE",
-    "content": "**erdos_874_answer:** For any ε > 0 and large enough N, (2-ε)√N ≤ k(N) ≤ (2+ε)√N. This is proved from the main theorem using abs_sub_lt_iff and the non-negativity of √N. The proof is constructive given the axiomatized main theorem.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Explicit bounds",
-      "Resolution"
-    ],
-    "mathContext": "See annotation content for formal details of the answer: conjecture is true",
-    "prerequisites": []
   }
 ]

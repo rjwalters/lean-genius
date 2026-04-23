@@ -198,23 +198,5 @@
       "Linear systems"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e531-main-result",
-    "proofId": "erdos-531",
-    "range": {
-      "startLine": 182,
-      "endLine": 185
-    },
-    "type": "technique",
-    "title": "Main Result",
-    "content": "**erdos_531:**\n\n```lean\ntheorem erdos_531 :\n    ∀ k : ℕ, k ≥ 1 → (ValidN k).Nonempty :=\n  fun k hk => folkman_theorem k hk\n```\n\nThe main theorem confirms that for every k, the set of valid N values is non-empty, meaning F(k) exists and is finite.\n\nCombined with balogh_2017, we know F(k) ≥ 2^{2^{k-1}/k} for all k ≥ 1.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Folkman numbers",
-      "Existence theorems"
-    ],
-    "mathContext": "See annotation content for formal details of main result",
-    "prerequisites": []
   }
 ]

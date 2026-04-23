@@ -305,23 +305,5 @@
     ],
     "mathContext": "See annotation content for formal details of summary theorem",
     "prerequisites": []
-  },
-  {
-    "id": "ann-e869-open",
-    "proofId": "erdos-869",
-    "range": {
-      "startLine": 291,
-      "endLine": 300
-    },
-    "type": "technique",
-    "title": "The Open Question",
-    "content": "**erdos_869_open:**\n\nFormalizes that the conjecture is precisely stated.\n\n```lean\ntheorem erdos_869_open : erdos_869_conjecture ↔\n    (∀ A₁ A₂, areDisjointBases A₁ A₂ →\n      containsMinimalBasis (A₁ ∪ A₂))\n```\n\n**The Question:**\nDoes the special origin of A (as a union of disjoint bases) force it to contain a minimal sub-basis?\n\n**Status: OPEN** - Cannot be resolved by finite computation.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Open problems",
-      "Main question"
-    ],
-    "mathContext": "See annotation content for formal details of the open question",
-    "prerequisites": []
   }
 ]

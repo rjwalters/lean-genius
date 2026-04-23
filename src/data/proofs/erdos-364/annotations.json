@@ -218,27 +218,5 @@
       "number theory",
       "preceding definitions"
     ]
-  },
-  {
-    "id": "ann-e364-chan",
-    "proofId": "erdos-364",
-    "range": {
-      "startLine": 194,
-      "endLine": 203
-    },
-    "type": "technique",
-    "title": "Chan's Cube Result (2025)",
-    "content": "**A recent breakthrough**: Chan (2025) proved there's no triple n-1, n, n+1 where n is a perfect cube.\n\nWhy cubes? If n = m³, then n is always powerful (exponent 3 ≥ 2). The question becomes: can m³-1 and m³+1 BOTH be powerful?\n\nChan's argument likely exploits the factorizations:\n- m³ - 1 = (m-1)(m² + m + 1)\n- m³ + 1 = (m+1)(m² - m + 1)\n\nThese factors have special properties that make simultaneous powerfulness impossible.",
-    "mathContext": "The statement: ¬∃ n : ℕ, (∃ m : ℕ, n = m³) ∧ Powerful (n - 1) ∧ Powerful n ∧ Powerful (n + 1). Note Powerful n is automatic when n is a cube.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "chan-2025",
-      "perfect-cubes",
-      "partial-result"
-    ],
-    "prerequisites": [
-      "number theory",
-      "preceding definitions"
-    ]
   }
 ]

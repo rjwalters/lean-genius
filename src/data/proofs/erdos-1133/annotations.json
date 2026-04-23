@@ -273,26 +273,5 @@
       "lagrange_interpolation axiom",
       "classical logic"
     ]
-  },
-  {
-    "id": "ann-e1133-summary",
-    "proofId": "erdos-1133",
-    "range": {
-      "startLine": 202,
-      "endLine": 218
-    },
-    "type": "technique",
-    "title": "erdos_1133_summary",
-    "content": "The summary theorem wraps exact_interpolation_case as the main proved result. ErdosConjecture1133 remains OPEN — formalized as a Lean Prop but with no proof or disproof.",
-    "mathContext": "The theorem simply restates exact\\_interpolation\\_case. The conjecture $\\texttt{ErdosConjecture1133}$ is defined as a Lean $\\texttt{Prop}$ but is neither proved nor refuted — it has the logical status of an independent statement relative to the formalized axioms. Progress would require either: (1) constructing the target values $y_i$ (proving the conjecture), or (2) finding node configurations that defeat all target choices (disproving it).",
-    "significance": "key",
-    "relatedConcepts": [
-      "open problem formalization",
-      "Prop",
-      "independent statement"
-    ],
-    "prerequisites": [
-      "exact_interpolation_case"
-    ]
   }
 ]

@@ -534,26 +534,5 @@
     "prerequisites": [
       "cambie_main"
     ]
-  },
-  {
-    "id": "ann-648-length-four-verification",
-    "proofId": "erdos-648",
-    "range": {
-      "startLine": 386,
-      "endLine": 397
-    },
-    "type": "technique",
-    "title": "Concrete Length-4 Verification",
-    "content": "**length_four_exists**: Verifies that a concrete length-4 GPF-descending sequence exists below 100.\n\nWitnesses: $a = 7, b = 10, c = 27, d = 64$ with $7 < 10 < 27 < 64 < 100$ and $P(7) = 7 > P(10) = 5 > P(27) = 3 > P(64) = 2$. All inequalities are resolved by `omega` after rewriting GPF values.",
-    "mathContext": "This is a fully verified (non-sorry) theorem: the existential witness $[7, 10, 27, 64]$ is checked by Lean's kernel. It demonstrates that $g(100) \\ge 4$. By Cambie's theorem, $g(100) \\approx c\\sqrt{100/\\log 100} \\approx c \\cdot 4.66$, so $g(100)$ should be around 9-13.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "existential witnesses",
-      "concrete verification",
-      "omega tactic"
-    ],
-    "prerequisites": [
-      "GPF computations for 7, 10, 27, 64"
-    ]
   }
 ]

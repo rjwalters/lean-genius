@@ -206,24 +206,5 @@
       "main result"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e494-threshold",
-    "proofId": "erdos-494",
-    "range": {
-      "startLine": 211,
-      "endLine": 230
-    },
-    "type": "definition",
-    "title": "The Threshold Function N(k)",
-    "content": "For each k, there exists a minimal **N(k)** such that uniqueness holds for |A| > N(k). GFS give the explicit (but not sharp) bound N(k) <= k^2 - k + 2.",
-    "mathContext": "Known values: N(3) <= 6, N(4) <= 12 (Selfridge-Straus). The exact values of N(k) for k >= 5 are not known. The GFS bound gives N(5) <= 22, but the true value may be smaller.",
-    "significance": "key",
-    "relatedConcepts": [
-      "threshold",
-      "explicit bounds",
-      "GFS bound"
-    ],
-    "prerequisites": []
   }
 ]

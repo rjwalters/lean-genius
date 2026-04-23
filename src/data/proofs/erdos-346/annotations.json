@@ -245,31 +245,5 @@
     "prerequisites": [
       "number theory"
     ]
-  },
-  {
-    "id": "erdos-346-irregular",
-    "proofId": "erdos-346",
-    "type": "concept",
-    "range": {
-      "startLine": 91,
-      "endLine": 96
-    },
-    "title": "Irregular Counterexamples (Without Lacunarity)",
-    "content": "The axiom **irregular_examples** asserts that there exist sequences satisfying both strong completeness and fragility whose consecutive ratios do **not** converge to phi. These 'very irregular' sequences show that the **lacunarity hypothesis is essential** -- without it, the golden ratio conclusion fails.",
-    "mathContext": "These irregular examples demonstrate that strong completeness plus fragility alone do not force convergence to phi. The sequences can oscillate between fast and slow growth, alternating between Fibonacci-like and much faster regimes. The lacunarity condition (uniform lower bound on growth) eliminates such oscillations and is the key hypothesis enabling the conjectured rigidity.",
-    "relatedConcepts": [
-      "counterexamples",
-      "necessity of lacunarity",
-      "oscillating growth rates"
-    ],
-    "significance": "supporting",
-    "tags": [
-      "counterexample",
-      "lacunarity-necessity",
-      "oscillating-growth"
-    ],
-    "prerequisites": [
-      "number theory"
-    ]
   }
 ]

@@ -169,24 +169,5 @@
       "proof-status"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e672-heuristics",
-    "proofId": "erdos-672",
-    "range": {
-      "startLine": 221,
-      "endLine": 247
-    },
-    "type": "concept",
-    "title": "Heuristic Arguments",
-    "content": "**Why the conjecture should be true**:\n\n1. **Overdetermined system**: For product P = q^l, every prime p | P must appear with multiplicity ≡ 0 (mod l)\n\n2. **Near-independence**: The k factors have nearly independent prime factorizations (due to gcd bounds)\n\n3. **Probability argument**: The probability that a 'random' product of k near-coprime factors is a perfect l-th power is ~1/P^(1-1/l), which is extremely small\n\n**axiom heuristic_argument**: True (placeholder for informal reasoning)",
-    "mathContext": "These heuristics explain why mathematicians believe the conjecture is true, even though a proof remains elusive. The constraints are simply too restrictive for a perfect power to emerge.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "heuristics",
-      "probability",
-      "overdetermined"
-    ],
-    "prerequisites": []
   }
 ]

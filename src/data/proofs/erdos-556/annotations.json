@@ -262,42 +262,5 @@
       "Proof techniques"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "erdos-556-main-theorem",
-    "proofId": "erdos-556",
-    "type": "technique",
-    "range": {
-      "startLine": 208,
-      "endLine": 219
-    },
-    "title": "Main Theorem",
-    "content": "**erdos_556:**\n\nComplete resolution of Erdős Problem #556:\n\n1. R(C_n;3) ≤ 4n - 3 for all n ≥ 3 (Bondy-Erdős conjecture PROVED)\n2. R(C_n;3) = 4n - 3 for large odd n (exact!)\n3. R(C_n;3) = 2n for large even n\n\nThe problem is completely solved.",
-    "mathContext": "A comprehensive theorem packaging all results about 3-color cycle Ramsey numbers.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Complete resolution",
-      "Main theorem"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "erdos-556-summary",
-    "proofId": "erdos-556",
-    "type": "technique",
-    "range": {
-      "startLine": 221,
-      "endLine": 229
-    },
-    "title": "Summary",
-    "content": "**erdos_556_summary:**\n\n**Erdős Problem #556: SOLVED**\n\n- Odd n (large): R(C_n;3) = 4n - 3\n- Even n (large): R(C_n;3) = 2n\n\nThe Bondy-Erdős conjecture is proved with the beautiful twist that odd and even cycles have completely different Ramsey numbers.",
-    "mathContext": "The final answer shows one of the most striking parity dichotomies in Ramsey theory.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Final answer",
-      "Dichotomy",
-      "Solved problem"
-    ],
-    "prerequisites": []
   }
 ]

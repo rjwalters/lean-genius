@@ -212,28 +212,5 @@
       "Real.log",
       "divisor function bounds"
     ]
-  },
-  {
-    "id": "ann-e955-summary",
-    "proofId": "erdos-955",
-    "range": {
-      "startLine": 195,
-      "endLine": 217
-    },
-    "type": "concept",
-    "title": "Summary: Known Results and Main Theorem",
-    "content": "The summary axiom `erdos_955_summary` and main theorem `erdos_955` combine the three established partial results: Pollack's prime case, Troupe's sums-of-two-squares case, and the PPT sparse-set threshold. Together they delineate the boundary of current knowledge: the conjecture holds for all \"natural\" zero-density sets and for any set growing like $x^{1/2+o(1)}$, but the general case—arbitrary zero-density sets—remains open after over 35 years. The formalization cleanly separates axiomatized deep results from the structural framework.",
-    "mathContext": "$d(s^{-1}(\\text{primes})) = 0 \\;\\wedge\\; d(s^{-1}(\\text{sums of 2 squares})) = 0 \\;\\wedge\\; (|A \\cap [1,x]| \\leq x^{1/2+o(1)} \\Rightarrow d(s^{-1}(A)) = 0)$",
-    "significance": "key",
-    "relatedConcepts": [
-      "main theorem",
-      "partial results",
-      "open problem"
-    ],
-    "prerequisites": [
-      "pollack_primes",
-      "troupe_two_squares",
-      "ppt_bound"
-    ]
   }
 ]

@@ -201,28 +201,5 @@
       "Additive structure",
       "Sumset definition"
     ]
-  },
-  {
-    "id": "ann-808-10",
-    "proofId": "erdos-808",
-    "range": {
-      "startLine": 242,
-      "endLine": 250
-    },
-    "type": "insight",
-    "title": "Key Insight: Graph Structure Matters",
-    "content": "The fundamental lesson: graph structure changes sum-product behavior. Complete graphs (all pairs) give strong expansion. Sparse graphs with the 'right' structure can avoid expansion entirely.",
-    "mathContext": "Sparse structured G ≠ Complete graph behavior",
-    "significance": "key",
-    "relatedConcepts": [
-      "graph structure",
-      "sparse vs dense",
-      "expansion phenomenon"
-    ],
-    "prerequisites": [
-      "ErdosConjecture808",
-      "ars_counterexample",
-      "ars_positive_bound"
-    ]
   }
 ]

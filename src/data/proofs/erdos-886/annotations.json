@@ -110,43 +110,5 @@
       "Analytic number theory"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e886-bounds",
-    "proofId": "erdos-886",
-    "range": {
-      "startLine": 157,
-      "endLine": 165
-    },
-    "type": "technique",
-    "title": "Bounds on Divisor Count",
-    "content": "**trivial_bound** (PROVED): divisorsNearSqrt(n, ε) ≤ divisorCount(n) = τ(n). The count of divisors in any interval is at most the total divisor count.\n\nProof: `card_filter_le` — filtering a finset can only decrease its cardinality.\n\n**divisor_count_bound** (axiom): τ(n) ≤ 2√n for all n ≥ 1. This classical bound shows divisors can't be too numerous overall.\n\nCombined: divisorsNearSqrt(n, ε) ≤ 2√n, but this is much weaker than the conjectured O_ε(1).",
-    "mathContext": "The trivial bound is proved in Lean using Finset.card_filter_le. The divisor count bound τ(n) ≤ 2√n is a standard result in elementary number theory.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Divisor bound",
-      "card_filter_le",
-      "Elementary number theory"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e886-summary",
-    "proofId": "erdos-886",
-    "range": {
-      "startLine": 167,
-      "endLine": 180
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_886_summary** (PROVED): Combines two key results:\n1. The trivial bound: divisorsNearSqrt(n, ε) ≤ divisorCount(n) for all n ≥ 1 (proved)\n2. Erdős-Rosenfeld: infinitely many n have ≥ 4 divisors in (√n, √n + n^{1/4}) (axiom)\n\nProof: ⟨trivial_bound, erdos_rosenfeld_four_divisors⟩\n\nThis captures the known facts: divisor count near √n is bounded by τ(n), and clustering does occur for ε = 1/4. The main conjecture (O_ε(1) for all ε > 0) remains open.",
-    "mathContext": "The summary theorem packages the proved result with the axiomatized Erdős-Rosenfeld result, giving a complete picture of what is known.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Summary theorems",
-      "Known results",
-      "Open problem formalization"
-    ],
-    "prerequisites": []
   }
 ]

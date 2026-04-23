@@ -127,23 +127,5 @@
       "prime-number-theorem"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e855-summary",
-    "proofId": "erdos-855",
-    "range": {
-      "startLine": 186,
-      "endLine": 198
-    },
-    "type": "technique",
-    "title": "Main Result: erdos_855",
-    "content": "**erdos_855** combines the two incompatibility results:\n1. k-tuples → ¬SecondHardyLittlewoodConjecture\n2. k-tuples → ¬StrausConjecture\n\nProved via `exact ⟨hensley_richards_incompatibility, straus_also_incompatible⟩`. This captures the essence of the problem: if the widely-believed k-tuples conjecture is true, then both the original and Straus's variant are false.",
-    "mathContext": "The theorem is a clean conjunction of the two incompatibility axioms, demonstrating that one natural conjecture (k-tuples) refutes two others.",
-    "significance": "key",
-    "relatedConcepts": [
-      "incompatibility",
-      "conditional-disproof"
-    ],
-    "prerequisites": []
   }
 ]

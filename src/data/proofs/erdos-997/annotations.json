@@ -314,25 +314,5 @@
       "prime numbers"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e997-summary",
-    "proofId": "erdos-997",
-    "range": {
-      "startLine": 325,
-      "endLine": 348
-    },
-    "type": "technique",
-    "title": "Summary",
-    "content": "**erdos_997_summary:**\n\n**Question:** Is {αpₙ} non-well-distributed for all α?\n\n**Status:** OPEN\n\n**Known:**\n- 2024: Existence proved (CLLW)\n- Rational α: trivially not well-distributed\n- Lacunary sequences: almost all α work\n\n**Open:**\n- Does it hold for all irrational α?\n- What is the measure of exceptional α?\n- Can CLLW be generalized?",
-    "significance": "key",
-    "relatedConcepts": [
-      "erdos_997_summary",
-      "open conjecture",
-      "CLLW 2024",
-      "lacunary theorem"
-    ],
-    "mathContext": "Conjecture: $\\forall \\alpha$, $\\{\\alpha p_n\\}$ is not well-distributed. Status: OPEN. Partial: $\\exists \\alpha$ proved (2024)",
-    "prerequisites": []
   }
 ]

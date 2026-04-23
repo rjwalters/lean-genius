@@ -252,26 +252,5 @@
       "trigonometric functions",
       "chord-sine relationship"
     ]
-  },
-  {
-    "id": "ann-verification",
-    "proofId": "ptolemys-theorem",
-    "range": {
-      "startLine": 263,
-      "endLine": 267
-    },
-    "title": "Verification Checks",
-    "type": "concept",
-    "content": "Uses `#check` to verify the five exported theorems: `ptolemys_theorem`, `ptolemys_theorem_diagonals`, `ptolemys_theorem_symmetric`, `ptolemys_theorem_rearranged`, `diagonal_product_from_sides`.",
-    "mathContext": "The five exported theorems form the complete API: main theorem, diagonals form, symmetric form, rearranged form, and the diagonal-product corollary. All are equivalent modulo commutativity of multiplication.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "#check",
-      "API surface",
-      "theorem export"
-    ],
-    "prerequisites": [
-      "ptolemys_theorem"
-    ]
   }
 ]

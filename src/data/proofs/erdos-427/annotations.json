@@ -211,25 +211,6 @@
     "prerequisites": []
   },
   {
-    "id": "ann-e427-validks",
-    "proofId": "erdos-427",
-    "range": {
-      "startLine": 290,
-      "endLine": 298
-    },
-    "type": "definition",
-    "title": "The Set of Valid k Values",
-    "content": "**validKs(n, d)** is the set of k values that work:\n\n```lean\ndef validKs (n d : ℕ) : Set ℕ :=\n  { k : ℕ | k ≠ 0 ∧ d ∣ primeSum n k }\n```\n\nThe main theorem says this set is always nonempty when d ≠ 0.\n\nFinding the **minimum** element of validKs is a harder computational problem.",
-    "mathContext": "While existence is guaranteed by Erdos #427, the actual values in validKs depend on the specific distribution of primes and their residues modulo d.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "set membership",
-      "nonemptiness",
-      "minimal solutions"
-    ],
-    "prerequisites": []
-  },
-  {
     "id": "ann-e427-corollary",
     "proofId": "erdos-427",
     "range": {

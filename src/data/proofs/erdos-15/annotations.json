@@ -394,47 +394,5 @@
     "prerequisites": [
       "prime_number_theorem"
     ]
-  },
-  {
-    "id": "ann-15-harmlog",
-    "proofId": "erdos-15",
-    "range": {
-      "startLine": 224,
-      "endLine": 227
-    },
-    "type": "concept",
-    "title": "Harmonic-Log Series Diverges",
-    "content": "The series $\\sum_{n=2}^{\\infty} 1/\\ln n$ diverges. This is the comparison series for $\\sum n/p_n$: since $n/p_n \\sim 1/\\ln n$ by PNT and $\\sum 1/\\ln n = \\infty$, we get $\\sum n/p_n = \\infty$ by limit comparison. The divergence of $\\sum 1/\\ln n$ follows from $1/\\ln n > 1/n$ for $n \\ge 3$ being false, but rather from the integral test: $\\int_2^N dx/\\ln x \\sim N/\\ln N \\to \\infty$.",
-    "mathContext": "$\\sum_{n=2}^{\\infty} 1/\\ln n = \\infty$. Proof via integral test: $\\int_2^N dx/\\ln x = \\text{Li}(N) \\sim N/\\ln N \\to \\infty$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "integral test",
-      "logarithmic integral",
-      "divergence"
-    ],
-    "prerequisites": [
-      "Real.log"
-    ]
-  },
-  {
-    "id": "ann-15-empirical",
-    "proofId": "erdos-15",
-    "range": {
-      "startLine": 239,
-      "endLine": 241
-    },
-    "type": "concept",
-    "title": "Empirical Limit $\\approx -1$",
-    "content": "Computational evidence: the partial sums $S_N$ appear to oscillate around $\\approx -1$. The axiom states that for large $N$, $|S_N - (-1)| < 1 + \\varepsilon$ for any $\\varepsilon > 0$, capturing that the partial sums stay near $-1$ but don't necessarily converge. This numerical evidence is suggestive but cannot constitute a proof, as the tail behavior remains unknown.",
-    "mathContext": "$|S_N - (-1)| < 1 + \\varepsilon$ for $N \\ge N_0(\\varepsilon)$. Numerical: $S_{10^4} \\approx -1.003$, $S_{10^6} \\approx -0.998$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "numerical evidence",
-      "empirical mathematics",
-      "partial sum oscillation"
-    ],
-    "prerequisites": [
-      "alternatingPrimePartialSum"
-    ]
   }
 ]

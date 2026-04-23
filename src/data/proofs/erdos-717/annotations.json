@@ -367,55 +367,6 @@
     "prerequisites": []
   },
   {
-    "id": "ann-e717-summary",
-    "proofId": "erdos-717",
-    "range": {
-      "startLine": 294,
-      "endLine": 313
-    },
-    "type": "technique",
-    "title": "Summary of Results",
-    "content": "**theorem erdos_717_summary** combines:\n\n1. Catlin: Hajós fails for χ ≥ 7\n2. Erdős-Fajtlowicz: χ/σ can be Ω(√n/log n)\n3. Fox-Lee-Sudakov: χ/σ ≤ O(√n/log n)\n\n**The complete picture**:\n- Hajós is wrong\n- But χ/σ is at most O(√n/log n)\n- And this is achieved by random graphs",
-    "mathContext": "The summary theorem packages all the key results into one statement, documenting the complete resolution of the problem.",
-    "significance": "key",
-    "relatedConcepts": [
-      "summary",
-      "complete-picture",
-      "resolution"
-    ],
-    "tags": [
-      "summary-theorem",
-      "extremal-combinatorics",
-      "graph-coloring"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e717-main",
-    "proofId": "erdos-717",
-    "range": {
-      "startLine": 315,
-      "endLine": 327
-    },
-    "type": "technique",
-    "title": "Main Result: erdos_717",
-    "content": "**theorem erdos_717 : erdos717QuestionUniversal**\n\n**Statement**: There exists C > 0 such that for all n ≥ 2 and graphs G on n vertices:\nχ(G) ≤ C · (√n / log n) · σ(G)\n\n**Proof**: Follows from fox_lee_sudakov_theorem.\n\n**Status**: SOLVED (Fox, Lee, Sudakov 2013)",
-    "mathContext": "This theorem is the formal statement of the main result. The answer to Erdős Problem #717 is YES.",
-    "significance": "key",
-    "relatedConcepts": [
-      "main-theorem",
-      "erdos-717",
-      "solved"
-    ],
-    "tags": [
-      "main-theorem",
-      "solved-problem",
-      "chromatic-number",
-      "erdos-problem"
-    ],
-    "prerequisites": []
-  },
-  {
     "id": "ann-e717-historical",
     "proofId": "erdos-717",
     "range": {

@@ -116,53 +116,5 @@
       "derivative formulas",
       "epsilon-N asymptotics"
     ]
-  },
-  {
-    "id": "ann-eremenko-lempert",
-    "proofId": "erdos-115",
-    "range": {
-      "startLine": 74,
-      "endLine": 82
-    },
-    "type": "concept",
-    "title": "Eremenko-Lempert Theorem (Main Result)",
-    "content": "The central axiom **ErdosProblem115_proved**: for all $\\varepsilon > 0$, there exists $N$ such that for all $n \\geq N$ and all degree-$n$ polynomials $p$ with connected lemniscate: $\\max |p'| \\leq (1/2 + \\varepsilon) n^2$.\n\nThis resolves Erdős Problem #115 affirmatively. The $\\varepsilon$-$N$ formulation captures the $o(1)$ term: the bound holds asymptotically with constant approaching $1/2$. The proof by Eremenko and Lempert uses conformal mapping of the complement of $L(p)$ to the complement of a disk, combined with the Schwarz-Pick lemma.",
-    "mathContext": "$\\forall \\varepsilon > 0, \\exists N, \\forall n \\geq N, \\forall p \\in \\text{ComplexPoly}(n)$: $\\text{IsLemniscateConnected}(p) \\implies \\max_{L(p)} |p'| \\leq (1/2 + \\varepsilon) n^2$. Equivalently: $\\limsup_{n \\to \\infty} \\sup_p \\max |p'| / n^2 \\leq 1/2$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Eremenko-Lempert theorem",
-      "conformal mapping",
-      "Schwarz-Pick lemma",
-      "asymptotic upper bounds"
-    ],
-    "prerequisites": [
-      "epsilon-N quantification",
-      "lemniscate connectivity",
-      "complex analysis"
-    ]
-  },
-  {
-    "id": "ann-sharpness",
-    "proofId": "erdos-115",
-    "range": {
-      "startLine": 83,
-      "endLine": 92
-    },
-    "type": "technique",
-    "title": "Sharpness via Chebyshev Polynomials (Proved)",
-    "content": "The **only non-axiom result** in the file: `ErdosProblem115_sharp` proves that the constant $1/2$ is tight. For every $\\varepsilon > 0$ and sufficiently large $n$, there exists a polynomial with connected lemniscate achieving $\\max |p'| \\geq (1/2 - \\varepsilon) n^2$.\n\nThe proof is clean: obtain the threshold $N$ from `chebyshev_deriv_asymptotic`, then for $n \\geq N$, provide `chebyshev_poly n` as the witness, with connectivity from `chebyshev_connected` and the lower bound from the asymptotic. The `omega` tactic handles $1 \\leq n$ from $N \\leq n$.",
-    "mathContext": "$\\forall \\varepsilon > 0, \\exists N, \\forall n \\geq N, \\exists p$: $\\text{IsLemniscateConnected}(p) \\land \\max |p'| \\geq (1/2 - \\varepsilon)n^2$. Combined with the upper bound: $\\lim_{n \\to \\infty} \\sup_p \\max |p'| / n^2 = 1/2$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "constructive witness",
-      "Chebyshev extremality",
-      "omega tactic",
-      "asymptotic tightness"
-    ],
-    "prerequisites": [
-      "chebyshev_deriv_asymptotic axiom",
-      "existential introduction",
-      "basic Lean proof tactics"
-    ]
   }
 ]

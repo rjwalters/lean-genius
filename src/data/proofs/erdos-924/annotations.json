@@ -409,49 +409,5 @@
       "nesetril_rodl_1976",
       "folkman_1970"
     ]
-  },
-  {
-    "id": "ann-e924-main",
-    "proofId": "erdos-924",
-    "range": {
-      "startLine": 305,
-      "endLine": 306
-    },
-    "type": "concept",
-    "title": "erdos_924 (Proved)",
-    "content": "The main theorem: `∀ k l : ℕ, k ≥ 2 → l ≥ 3 → ErdosHajnalQuestion k l`. Defined directly as `nesetril_rodl_1976`, showing the complete solution is precisely the Nešetřil-Rödl theorem.",
-    "mathContext": "The one-line definition $\\texttt{erdos\\_924} := \\texttt{nesetril\\_rodl\\_1976}$ identifies Problem \\#924 with the Nesetril-Rodl theorem: $\\forall k \\ge 2,\\, l \\ge 3,\\; \\exists G,\\; \\omega(G) \\le l \\;\\land\\; G \\to (K_l)^k_2$. The axiomatized proof delegates to the deep combinatorial content of the original 1976 paper.",
-    "significance": "key",
-    "relatedConcepts": [
-      "definitional equality",
-      "axiom forwarding",
-      "Erdos-Hajnal question"
-    ],
-    "prerequisites": [
-      "nesetril_rodl_1976",
-      "ErdosHajnalQuestion"
-    ]
-  },
-  {
-    "id": "ann-e924-answer",
-    "proofId": "erdos-924",
-    "range": {
-      "startLine": 312,
-      "endLine": 315
-    },
-    "type": "concept",
-    "title": "erdos_924_answer (Proved)",
-    "content": "Unpacks the existential: for any k ≥ 2, l ≥ 3, there exists a finite graph G that is K_{l+1}-free and has the k-Ramsey property for K_l. A direct application of `nesetril_rodl_1976`.",
-    "mathContext": "This theorem unfolds `ErdosHajnalQuestion` into its constituent parts: $\\exists (V : \\text{Type})\\, [\\text{Fintype}\\, V]\\, (G : \\text{SimpleGraph}\\, V),\\; \\text{IsCliqueFree}\\, G\\, (l+1) \\;\\land\\; \\text{HasRamseyProperty}\\, G\\, k\\, l$. The proof forwards to `nesetril_rodl_1976`, serving as a readable interface to the main result for downstream use.",
-    "significance": "key",
-    "relatedConcepts": [
-      "existential unpacking",
-      "API theorem",
-      "ErdosHajnalQuestion"
-    ],
-    "prerequisites": [
-      "nesetril_rodl_1976",
-      "ErdosHajnalQuestion"
-    ]
   }
 ]

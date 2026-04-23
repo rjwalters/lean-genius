@@ -177,49 +177,5 @@
       "limit inferior vs limit superior",
       "entire functions"
     ]
-  },
-  {
-    "id": "ann-1117-glucksam-pardo-simon",
-    "proofId": "erdos-1117",
-    "range": {
-      "startLine": 87,
-      "endLine": 92
-    },
-    "type": "technique",
-    "title": "Glücksam–Pardo-Simón (2024): Approximate Answer",
-    "content": "Adi Glücksam and Leticia Pardo-Simón (2024) provided an **approximate** affirmative answer: for every $\\varepsilon > 0$ and $N \\in \\mathbb{N}$, there exists an entire function $f$ such that for all sufficiently large $r$, there are at least $N$ points on $|z| = r$ where $|f(z)| \\ge (1 - \\varepsilon) M(r)$. The gap between $(1-\\varepsilon)M(r)$ and the exact maximum $M(r)$ is the remaining difficulty — closing this gap would resolve the open problem.",
-    "mathContext": "$\\forall \\varepsilon > 0,\\, \\forall N,\\, \\exists f \\text{ entire}: \\forall r \\gg 1,\\, \\exists z_1, \\ldots, z_N \\text{ on } |z|=r : |f(z_k)| \\ge (1-\\varepsilon) M(r)$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "approximate maximum",
-      "near-maximum points",
-      "quantitative complex analysis"
-    ],
-    "prerequisites": [
-      "maximum modulus",
-      "epsilon-approximation"
-    ]
-  },
-  {
-    "id": "ann-1117-hadamard",
-    "proofId": "erdos-1117",
-    "range": {
-      "startLine": 96,
-      "endLine": 100
-    },
-    "type": "concept",
-    "title": "maxModulus_nondecreasing — Monotonicity of M(r)",
-    "content": "The maximum modulus $M(r)$ is a nondecreasing function of $r$ for nonconstant entire functions. This follows from the maximum modulus principle: if $|f|$ achieves value $M(r_1)$ at some point on $|z| = r_1$, then on the larger disc $|z| \\le r_2$ (with $r_2 \\ge r_1$), the maximum of $|f|$ can only increase. Moreover, by Hadamard's three-circles theorem, $\\log M(r)$ is a convex function of $\\log r$.",
-    "mathContext": "$0 < r_1 \\le r_2 \\implies M(r_1) \\le M(r_2)$ for nonconstant entire $f$. Furthermore, $\\log M(e^t)$ is convex in $t$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "maximum modulus principle",
-      "Hadamard three-circles theorem",
-      "log-convexity"
-    ],
-    "prerequisites": [
-      "maximum modulus principle",
-      "convex functions"
-    ]
   }
 ]

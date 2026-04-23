@@ -263,42 +263,5 @@
     ],
     "mathContext": "See annotation content for formal details of properties of m(r)",
     "prerequisites": []
-  },
-  {
-    "id": "ann-e514-summary",
-    "proofId": "erdos-514",
-    "range": {
-      "startLine": 323,
-      "endLine": 339
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_514_summary:**\n\nPart 1 is resolved: for any transcendental entire function, a path with super-polynomial growth exists.\n\n```lean\ntheorem erdos_514_summary :\n    ∀ f : ℂ → ℂ, IsTranscendental f →\n      ∃ γ : ℝ → ℂ, IsPathToInfinity γ ∧ HasSuperPolynomialGrowth f γ :=\n  fun f hf => erdos_514_part1 f hf\n```\n\n**Status:**\n- Part 1: SOLVED (Boas) — formalized as erdos_514_part1\n- Parts 2, 3: OPEN — formalized as conjectures",
-    "significance": "key",
-    "mathContext": "See annotation content for formal details of summary theorem",
-    "relatedConcepts": [
-      "proof technique",
-      "polynomial theory"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e514-key-insight",
-    "proofId": "erdos-514",
-    "range": {
-      "startLine": 341,
-      "endLine": 355
-    },
-    "type": "concept",
-    "title": "Key Insight",
-    "content": "**key_insight:**\n\nThe crucial difference between sequences and paths:\n\n- **Easy:** For transcendental f, there exist points z_n with |z_n| → ∞ and |f(z_n)|/|z_n|^n → ∞ for each fixed n.\n\n- **Hard (Boas):** There exists a continuous PATH γ achieving this for ALL n simultaneously.\n\nThe continuity constraint is what makes the problem interesting. Isolated exceptional points are easy to find; connecting them into a path requires careful construction.",
-    "mathContext": "This is the 'aha moment' of the problem: the challenge is geometric (finding a connected curve), not just analytic (finding large values).",
-    "significance": "key",
-    "relatedConcepts": [
-      "Continuity",
-      "Path connectedness",
-      "Exceptional sets"
-    ],
-    "prerequisites": []
   }
 ]

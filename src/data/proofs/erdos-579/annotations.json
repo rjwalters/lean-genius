@@ -156,51 +156,5 @@
       "startLine": 63,
       "endLine": 69
     }
-  },
-  {
-    "id": "ann-e579-conjecture",
-    "proofId": "erdos-579",
-    "type": "concept",
-    "title": "Erdős Problem 579: Full Conjecture",
-    "content": "For every δ > 0, K₂,₂,₂-free graphs with ≥ δn² edges have independent sets of size ≥ c(δ)·n.",
-    "mathContext": "The conjecture extends EHSS from $\\delta > 1/8$ to all $\\delta > 0$. For $\\delta \\leq 1/8$, the graph has *fewer* edges than the Turán extremal graph, so the structural argument changes qualitatively. The problem is analogous to Problem #533 (triangle-free subsets in $K_5$-free graphs) but with $K_{2,2,2}$ replacing $K_5$ and independent sets replacing triangle-free subsets. Both ask whether a forbidden subgraph condition, combined with positive density, forces structured subgraphs of linear size.",
-    "significance": "key",
-    "relatedConcepts": [
-      "sub-Turán density",
-      "linear independence number",
-      "Erdős Problem 533"
-    ],
-    "prerequisites": [
-      "SimpleGraph.IsK222Free",
-      "isDense",
-      "independenceNumber"
-    ],
-    "range": {
-      "startLine": 76,
-      "endLine": 82
-    }
-  },
-  {
-    "id": "ann-e579-turanK222",
-    "proofId": "erdos-579",
-    "type": "concept",
-    "title": "Turán Number of K₂,₂,₂",
-    "content": "The Turán number ex(n; K₂,₂,₂) = (1/8 + o(1))n², establishing the maximum edge count for K₂,₂,₂-free graphs.",
-    "mathContext": "The **Turán number** $\\text{ex}(n; H)$ is the maximum number of edges in an $H$-free graph on $n$ vertices. For $K_{2,2,2}$, the extremal graph is the balanced complete $8$-partite graph $T_8(n)$ with $\\lfloor n/8 \\rfloor$-sized parts. The formalization uses a vanishing error function $f : \\mathbb{N} \\to \\mathbb{R}$ with $f(n) \\to 0$ to express the asymptotic bound. The threshold $1/8$ explains why the EHSS proof works above this density: exceeding the Turán number forces structural richness in the graph.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Turán's theorem",
-      "extremal numbers",
-      "Turán graph T₈(n)"
-    ],
-    "prerequisites": [
-      "SimpleGraph.IsK222Free",
-      "edgeFinset",
-      "Filter.atTop"
-    ],
-    "range": {
-      "startLine": 89,
-      "endLine": 94
-    }
   }
 ]

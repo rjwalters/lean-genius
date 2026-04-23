@@ -368,26 +368,5 @@
       "Dirichlet characters",
       "L-functions"
     ]
-  },
-  {
-    "id": "ann-e980-summary",
-    "proofId": "erdos-980",
-    "range": {
-      "startLine": 298,
-      "endLine": 307
-    },
-    "type": "concept",
-    "title": "Summary Theorem",
-    "content": "Combines the two pillars of the solution into a single conjunction: (1) existence of the positive constant $c_2$ for the quadratic case (Erdos 1961), and (2) positivity of $c_k$ for all $k \\geq 2$ (Elliott 1967). The proof uses `c_2_positive` and `c_k_positive` directly.",
-    "mathContext": "$\\text{erdos\\_980\\_summary} : (\\exists c > 0,\\; c = c_2) \\wedge (\\forall k \\geq 2,\\; c_k > 0)$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Summary of results",
-      "Conjunction"
-    ],
-    "prerequisites": [
-      "Erdos 1961",
-      "Elliott 1967"
-    ]
   }
 ]

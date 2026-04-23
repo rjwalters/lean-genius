@@ -227,24 +227,5 @@
       "ehmr84"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e564-gap",
-    "proofId": "erdos-564",
-    "range": {
-      "startLine": 214,
-      "endLine": 228
-    },
-    "type": "concept",
-    "title": "Why the Problem is Hard",
-    "content": "The gap between known bounds is astronomically large. For n = 10:\n\n- Lower bound: ~2^{100} ≈ 10^{30}\n- Upper bound: 2^{1024} ≈ 10^{308}\n\nThe ratio is roughly 2^{924}, an incomprehensibly large number.",
-    "mathContext": "**bounds_gap_enormous** (stated with sorry) would formalize that the ratio exceeds 10^{100} for n ≥ 10.\n\nThe difficulty is that both bounds are proved using very different techniques:\n- Upper: counting/pigeonhole arguments\n- Lower: probabilistic method/explicit constructions\n\nNeither technique seems to give the 'true' answer.",
-    "significance": "key",
-    "relatedConcepts": [
-      "bounds-gap",
-      "difficulty",
-      "techniques"
-    ],
-    "prerequisites": []
   }
 ]

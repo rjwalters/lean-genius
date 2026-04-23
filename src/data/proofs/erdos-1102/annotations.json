@@ -206,24 +206,5 @@
       "6/π²"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e1102-special-sequences",
-    "proofId": "erdos-1102",
-    "range": {
-      "startLine": 164,
-      "endLine": 170
-    },
-    "type": "concept",
-    "title": "Special Sequences Have Property Q",
-    "content": "The sequences 2ⁿ ± 1 and n! ± 1 have property Q. These grow fast enough that infinitely many n have all translates squarefree. Whether they have property P remains open.",
-    "mathContext": "Fast growth ensures the sequence is sparse, making it easier to find n where all a ∈ A ∩ [1,n) give n + a squarefree.",
-    "significance": "key",
-    "relatedConcepts": [
-      "exponential growth",
-      "factorial",
-      "open problems"
-    ],
-    "prerequisites": []
   }
 ]

@@ -264,24 +264,5 @@
       "isolated zeros"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e906-summary",
-    "proofId": "erdos-906",
-    "range": {
-      "startLine": 179,
-      "endLine": 196
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_906_summary** packages: polynomials satisfy the property, and exp is entire and transcendental (but doesn't satisfy the property).",
-    "mathContext": "This demonstrates the gap: polynomials work trivially, exp fails completely. The question is whether some other transcendental entire function works.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "summary",
-      "verified",
-      "gap"
-    ],
-    "prerequisites": []
   }
 ]

@@ -398,49 +398,5 @@
       "centralBinom computation",
       "IsSquarefree definition"
     ]
-  },
-  {
-    "id": "erdos-175-main-statement",
-    "proofId": "erdos-175",
-    "type": "concept",
-    "range": {
-      "startLine": 197,
-      "endLine": 210
-    },
-    "title": "Complete Problem Statement",
-    "content": "Assembles three results into a conjunction: (1) $\\binom{2n}{n}$ not squarefree for $n \\ge 5$, (2) $f(n) \\to \\infty$, and (3) $f(n) \\ge C(\\log n)^{1/4}$. Each component follows directly from the corresponding axiom.",
-    "mathContext": "The conjunction: $\\left(\\forall n \\ge 5: \\neg\\text{Squarefree}\\binom{2n}{n}\\right) \\wedge \\left(f(n) \\to \\infty\\right) \\wedge \\left(f(n) \\gg (\\log n)^{1/4}\\right)$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "theorem assembly",
-      "Erdős problem resolution"
-    ],
-    "prerequisites": [
-      "granville_ramare_1996",
-      "sander_1992_f_unbounded",
-      "erdos_kolesnik_1999"
-    ]
-  },
-  {
-    "id": "erdos-175-summary",
-    "proofId": "erdos-175",
-    "type": "concept",
-    "range": {
-      "startLine": 216,
-      "endLine": 229
-    },
-    "title": "Summary: Two-Sided Bounds on f(n)",
-    "content": "Packages squarefreeness failure with the two-sided bound $C_1 (\\log n)^{1/4} \\le f(n) \\le C_2 \\log n$. The proof extracts constants from Erdős–Kolesnik (lower) and Sander (upper).",
-    "mathContext": "$\\exists C_1, C_2 > 0: \\forall n \\ge 2, C_1 (\\log n)^{1/4} \\le f(n) \\le C_2 \\log n$. Closing the gap between exponents $1/4$ and $1$ is the open question.",
-    "significance": "key",
-    "relatedConcepts": [
-      "two-sided bounds",
-      "sandwich inequalities",
-      "open exponent gap"
-    ],
-    "prerequisites": [
-      "erdos_kolesnik_1999",
-      "sander_1995_upper_bound"
-    ]
   }
 ]

@@ -166,23 +166,5 @@
       "Lean 4 formalization"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-1127-10",
-    "proofId": "erdos-1127",
-    "range": {
-      "startLine": 284,
-      "endLine": 286
-    },
-    "type": "technique",
-    "title": "Main Result",
-    "content": "**erdos_1127:**\n\nCH → ∀n, Erdos1127Question' n\n\nAssuming the Continuum Hypothesis, ℝⁿ can be decomposed into countably many sets with distinct pairwise distances, for every dimension n.\n\nThis follows immediately from Kunen's theorem.",
-    "significance": "key",
-    "mathContext": "See annotation content for formal details of main result",
-    "relatedConcepts": [
-      "proof technique",
-      "Lean 4 formalization"
-    ],
-    "prerequisites": []
   }
 ]

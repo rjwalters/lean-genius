@@ -203,27 +203,5 @@
       "ErdosProblem281",
       "HasFullCovering"
     ]
-  },
-  {
-    "id": "erdos-281-equivalence",
-    "proofId": "erdos-281",
-    "type": "concept",
-    "range": {
-      "startLine": 259,
-      "endLine": 262
-    },
-    "title": "Full Covering ↔ Uniform Finite Coverage",
-    "content": "The biconditional form: for valid strictly increasing moduli, full covering is equivalent to uniform finite coverage. Forward direction is Erdős #281 (hard, axiomatized). Backward direction is `uniform_implies_full` (easy, proved).",
-    "mathContext": "$\\text{HasFullCovering} \\iff \\text{HasUniformFiniteCoverage}$ for valid strictly increasing moduli.",
-    "significance": "key",
-    "relatedConcepts": [
-      "biconditional",
-      "equivalence",
-      "main result"
-    ],
-    "prerequisites": [
-      "erdos_281_proved",
-      "uniform_implies_full"
-    ]
   }
 ]

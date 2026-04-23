@@ -307,47 +307,5 @@
       "Prime number theorem",
       "Euler's theorem on primes"
     ]
-  },
-  {
-    "id": "ann-e3-examples",
-    "proofId": "erdos-3",
-    "range": {
-      "startLine": 173,
-      "endLine": 182
-    },
-    "type": "context",
-    "title": "Small Examples",
-    "content": "Verified examples: $\\{1, 3, 5\\}$ is the 3-AP with $a=1, d=2$; $\\{2, 5, 8, 11\\}$ is the 4-AP with $a=2, d=3$. Checked by the `decide` tactic.",
-    "mathContext": "The set $\\{1, 2, 4, 5, 10, 11, 13, 14\\}$ mentioned in a comment is a classic 3-AP-free construction in $\\{1, \\ldots, 14\\}$ achieving $r_3(14) = 8$. It comes from taking the base-3 representation and avoiding the digit 2 -- a variant of the Cantor set construction that generalizes to Behrend-type bounds.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Concrete verification",
-      "Small Roth numbers",
-      "Base-3 constructions"
-    ],
-    "prerequisites": [
-      "Decidable propositions"
-    ]
-  },
-  {
-    "id": "ann-e3-open",
-    "proofId": "erdos-3",
-    "range": {
-      "startLine": 184,
-      "endLine": 214
-    },
-    "type": "technique",
-    "title": "Problem Status: OPEN",
-    "content": "**Erdos Problem #3 remains OPEN** with a $5,000 prize. The theorem `erdos_3_open` uses `Classical.em` (law of excluded middle) to state the tautology `Erdos3Conjecture ∨ \\neg Erdos3Conjecture`, emphasizing that we do not know which disjunct holds.",
-    "mathContext": "The use of `Classical.em` (law of excluded middle) produces a constructively empty result -- it does not help determine the truth value. The concluding references document the trajectory from Bloom-Sisask (2020) through Kelley-Meka (2023) to Leng-Sah-Sawhney (2024), showing steady but insufficient progress toward the threshold $r_k(N) = o(N/\\log N)$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Law of excluded middle",
-      "Open problems in mathematics",
-      "Constructive vs classical logic"
-    ],
-    "prerequisites": [
-      "Classical logic"
-    ]
   }
 ]

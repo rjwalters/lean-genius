@@ -250,30 +250,5 @@
       "Fintype.card",
       "edge counting"
     ]
-  },
-  {
-    "id": "ann-583-summary",
-    "proofId": "erdos-583",
-    "range": {
-      "startLine": 246,
-      "endLine": 258
-    },
-    "type": "concept",
-    "title": "Summary Theorem",
-    "content": "`erdos_583_summary` bundles: (1) the conjecture unfolds correctly (`Iff.rfl`), (2) Lovász's $\\lfloor n/2 \\rfloor$ path+cycle bound, and (3) Fan's $\\lceil n/2 \\rceil$ covering bound. Proved by `exact ⟨fun n => Iff.rfl, lovasz_theorem, fan_theorem⟩`. **Status: OPEN** after 60+ years.",
-    "significance": "key",
-    "mathContext": "The summary theorem captures the current state of knowledge on Problem #583. The three-tuple $\\langle \\text{conjecture}, \\text{Lovász}, \\text{Fan} \\rangle$ frames the open gap: Lovász achieves disjointness with $\\lfloor n/2 \\rfloor$ paths and cycles, Fan achieves the exact bound $\\lceil n/2 \\rceil$ without disjointness, but no one has achieved both simultaneously. The conjecture asks for the intersection of these two achievements. The problem has been open since 1959, making it one of the longest-standing conjectures in graph decomposition theory. Unlike many open problems in graph theory, it has resisted even incremental progress beyond the results formalized here.",
-    "relatedConcepts": [
-      "open problem status",
-      "Lovász's theorem",
-      "Fan's theorem",
-      "graph decomposition",
-      "Erdős-Gallai"
-    ],
-    "prerequisites": [
-      "erdos_583_conjecture",
-      "lovasz_theorem",
-      "fan_theorem"
-    ]
   }
 ]

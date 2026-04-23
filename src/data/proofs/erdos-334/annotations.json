@@ -419,30 +419,5 @@
       "Main result formalization",
       "Real arithmetic for exponent comparison"
     ]
-  },
-  {
-    "id": "ann-e334-open",
-    "proofId": "erdos-334",
-    "range": {
-      "startLine": 296,
-      "endLine": 298
-    },
-    "type": "definition",
-    "title": "The Open Question",
-    "content": "**openQuestion:**\n\nWhat is the true growth rate of f(n)?\n\n**Current gap:**\n- Upper bound: n^{0.2695} (Balog)\n- Conjectured: n^{o(1)} or even e^{O(√log n)}\n\nClosing this gap is Erdős Problem #334.",
-    "mathContext": "The open question: $\\text{weakConjecture} \\vee \\text{strongConjecture}$? Currently $f(n) \\le n^{0.2695+\\varepsilon}$ (Balog). The conjecture $f(n) \\le e^{O(\\sqrt{\\log n})}$ would give a subexponential (but superpolylogarithmic) bound. Closing this gap requires new tools combining smooth number theory with additive combinatorics.",
-    "significance": "key",
-    "prerequisites": [
-      "open-problem",
-      "erdos-problem",
-      "smooth-numbers",
-      "additive-combinatorics"
-    ],
-    "relatedConcepts": [
-      "Open problem status",
-      "Smooth number conjecture",
-      "Green's Open Problems List #59",
-      "Erdős-Graham 1980"
-    ]
   }
 ]

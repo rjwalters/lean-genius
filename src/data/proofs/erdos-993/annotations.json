@@ -170,24 +170,5 @@
       "Peak location"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e993-summary",
-    "proofId": "erdos-993",
-    "range": {
-      "startLine": 170,
-      "endLine": 187
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_993_summary** combines three key results:\n\n1. Trees have unimodal independent set sequences (tree_unimodal)\n2. Forests have unimodal independent set sequences (forest_unimodal)\n3. General graphs do NOT (general_graph_not_unimodal)\n\nProved by `⟨..., ..., general_graph_not_unimodal⟩`, directly packaging the three results.\n\nThis captures the complete picture: trees/forests are YES, general graphs are NO. The dividing line is real-rootedness of the independence polynomial.",
-    "mathContext": "The summary highlights the dichotomy between trees (algebraically structured, unimodal sequences) and general graphs (combinatorially wild, any pattern achievable). This is a recurring theme in extremal combinatorics.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Summary theorem",
-      "Trees vs general graphs",
-      "Structural dichotomy"
-    ],
-    "prerequisites": []
   }
 ]

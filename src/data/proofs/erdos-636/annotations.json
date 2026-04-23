@@ -463,48 +463,5 @@
       "isomorphism",
       "induced subgraph freeness"
     ]
-  },
-  {
-    "id": "ann-636-main-result",
-    "proofId": "erdos-636",
-    "range": {
-      "startLine": 263,
-      "endLine": 284
-    },
-    "type": "insight",
-    "title": "Main Result",
-    "content": "**erdos_636**: Erdős Problem #636 is SOLVED.\n\nThe main theorem directly invokes kwan_sudakov: for any C > 0, there exists c > 0 such that every (C)-Ramsey graph on n ≥ 10 vertices has at least ⌊cn^(5/2)⌋ distinct signatures.\n\nThe formalization cleanly separates the lower bound (Kwan-Sudakov), upper bound (matching O(n^(5/2))), and their combination into the tight Θ(n^(5/2)) result.",
-    "mathContext": "Main theorem: $\\forall C > 0,\\; \\exists c > 0,\\; \\forall n \\ge 10,\\; \\forall G$ on $\\text{Fin}(n)$: if $\\omega(G), \\alpha(G) \\le \\lceil C\\log n \\rceil$ then $|\\text{Sig}(G)| \\ge \\lfloor cn^{5/2} \\rfloor$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Erdős problem",
-      "solved conjecture",
-      "tight bound"
-    ],
-    "prerequisites": [
-      "Kwan-Sudakov theorem",
-      "Ramsey graph"
-    ]
-  },
-  {
-    "id": "ann-636-answer",
-    "proofId": "erdos-636",
-    "range": {
-      "startLine": 282,
-      "endLine": 293
-    },
-    "type": "insight",
-    "title": "Final Answer and Verification",
-    "content": "**erdos_636_answer**: \"SOLVED: Kwan-Sudakov (2021) proved Θ(n^(5/2)) distinct signatures\"\n\n**erdos_636_exponent**: 5/2\n\nThe problem is completely resolved with tight bounds. The #check commands verify that the main theorems typecheck correctly in Lean.",
-    "mathContext": "The optimal exponent is $5/2$: $|\\text{Sig}(G)| = \\Theta(n^{5/2})$ for Ramsey graphs. The exponent progressed from $3/2$ (Erdős-Faudree-Sós) to the final $5/2$ (Kwan-Sudakov 2021).",
-    "significance": "key",
-    "relatedConcepts": [
-      "resolved problem",
-      "optimal exponent",
-      "Erdős problems"
-    ],
-    "prerequisites": [
-      "theta bound"
-    ]
   }
 ]

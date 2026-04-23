@@ -204,23 +204,5 @@
       "integration"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e229-summary",
-    "proofId": "erdos-229",
-    "range": {
-      "startLine": 147,
-      "endLine": 160
-    },
-    "type": "technique",
-    "title": "Summary",
-    "content": "The **summary** confirms the main result: Erdős Problem #229 has a positive answer via the Barth-Schneider theorem.",
-    "mathContext": "theorem summary_erdos_229 : Erdos229Question := barth_schneider_theorem. This packages the key result for export.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "summary",
-      "main result"
-    ],
-    "prerequisites": []
   }
 ]

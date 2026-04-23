@@ -131,43 +131,5 @@
       "Complete resolution"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "erdos-292-small-examples",
-    "proofId": "erdos-292",
-    "type": "concept",
-    "range": {
-      "startLine": 161,
-      "endLine": 171
-    },
-    "title": "Small Examples",
-    "content": "**Elements of B (not in A):** 2, 3, 4, 5, 7, 8, 9, 11, 13, 16, 17, 19, ...\n\nThese are prime powers and their small multiples.\n\n**Elements of A:** 1, 6, 10, 12, 14, 15, 18, 20, ...\n\nThese are products of small primes (avoiding prime powers).\n\n**six_smallest_in_A:** 6 is the smallest element of A greater than 1.",
-    "mathContext": "The concrete examples illustrate the pattern: prime powers out, products of distinct primes in.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Concrete examples",
-      "Prime powers",
-      "Products"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "erdos-292-summary",
-    "proofId": "erdos-292",
-    "type": "technique",
-    "range": {
-      "startLine": 192,
-      "endLine": 193
-    },
-    "title": "Main Result",
-    "content": "**erdos_292:**\n\nThe set A of integers that can be max denominators in Egyptian fractions summing to 1 has natural density 1.\n\nThe proof follows directly from Martin's main theorem axiom. This completely resolves Erdős Problem #292.",
-    "mathContext": "A complete resolution combining structural results (Straus, prime power exclusion) with density analysis (Martin).",
-    "significance": "key",
-    "relatedConcepts": [
-      "Complete solution",
-      "Density 1",
-      "Martin 2000"
-    ],
-    "prerequisites": []
   }
 ]
