@@ -20,6 +20,21 @@
     "sorries": 0,
     "mathlibDependencies": [
       {
+        "theorem": "roth_3ap_theorem_nat",
+        "description": "Mathlib's Roth theorem for 3-AP-free sets in ℕ — the core result used to prove roth_density_bound via the corners-theorem chain (Regularity Lemma → Triangle Removal → Corners → Roth)",
+        "module": "Mathlib.Combinatorics.Additive.Roth"
+      },
+      {
+        "theorem": "cornersTheoremBound",
+        "description": "Bound function from Mathlib's corners theorem chain used to compute N₀ in the main theorem",
+        "module": "Mathlib.Combinatorics.Additive.Corners"
+      },
+      {
+        "theorem": "ThreeAPFree",
+        "description": "Mathlib's 3-AP-free predicate on sets of naturals, used to bridge from APFree on ZMod N",
+        "module": "Mathlib.Combinatorics.Additive.Roth"
+      },
+      {
         "theorem": "Finset.card",
         "description": "Cardinality of finite sets for density arguments",
         "module": "Mathlib.Data.Finset.Card"
@@ -36,10 +51,10 @@
       }
     ],
     "originalContributions": [
-      "AP-free set definition and characterization",
-      "Density increment lemma via large Fourier coefficients",
-      "Roth density bound r_3(N) = o(N)",
-      "Fourier analysis framework for additive combinatorics in Lean"
+      "AP-free set definition and characterization on ZMod N",
+      "Density increment lemma via large Fourier coefficients (independently proved, Parts I-V)",
+      "Fourier analysis framework for additive combinatorics in Lean",
+      "Bridge formalization: ZMod.val mapping from APFree on ZMod N to Mathlib's ThreeAPFree on ℕ, connecting independently proved infrastructure to Mathlib's roth_3ap_theorem_nat"
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
