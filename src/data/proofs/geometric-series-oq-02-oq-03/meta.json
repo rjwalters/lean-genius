@@ -135,5 +135,27 @@
     "axiomCount": 0,
     "sorries": 0
   },
+  "crossReferences": [
+    {
+      "proofId": "geometric-series-oq-02",
+      "relationship": "extends",
+      "description": "The parent Neumann series file: proves `invertible_near_one` (‖1-B‖ < 1 → B is a unit), `neumann_summable` (the series ∑(1-B)^n converges), and `norm_neumann_le` (norm bound). This entry imports GeometricSeriesOQ02 directly and builds all six topology theorems as corollaries — the master technique is the factorization B = A·(1 - A⁻¹(A-B)) reducing near-unit invertibility to the base case `invertible_near_one`."
+    },
+    {
+      "proofId": "geometric-series",
+      "relationship": "foundational",
+      "description": "The scalar geometric series ∑rⁿ = (1-r)⁻¹ for |r| < 1 is the ancestor of the Neumann series. The operator norm bound ‖B⁻¹‖ ≤ (1-‖1-B‖)⁻¹ proved here is exactly the operator analog of the scalar formula 1/(1-r), confirming that the Banach-algebra theory is a literal extension of elementary analysis from scalars to bounded operators."
+    },
+    {
+      "proofId": "geometric-series-oq-02-oq-05",
+      "relationship": "sibling",
+      "description": "Resolvent and Neumann Series: Toward the Holomorphic Functional Calculus — the companion extension taking unit-group openness toward full spectral theory. The resolvent R(λ) = (λI-A)⁻¹ is analytic on the resolvent set precisely because units form an open set (this entry) and the Neumann series gives a local power series for R(λ). OQ-05 formalizes this resolvent expansion directly."
+    },
+    {
+      "proofId": "geometric-series-oq-01",
+      "relationship": "related",
+      "description": "Geometric Series at the Boundary (|r|=1 behavior): explores convergence at the edge of the radius of convergence. The unit group openness proved here uses the strictly interior regime ‖1-B‖ < 1 for the Neumann series — the boundary case ‖1-B‖ = 1 is where invertibility fails (B may or may not be a unit), connecting to the delicate |r|=1 analysis of OQ-01."
+    }
+  ],
   "sorries": 0
 }
