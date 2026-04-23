@@ -17,11 +17,11 @@
       "axiom-of-choice",
       "research"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 4,
     "axiomCount": 0,
     "lineCount": 563,
-    "assumptions": "4 sorries: hausdorff_free_subgroup (free subgroup of SO(3)), banach_tarski (main theorem), banach_tarski_pieces_nonmeasurable (non-measurability of pieces), int_amenable (ℤ amenability). W_a_two_cover, W_a_smul_disj, W_b_two_cover, W_b_smul_disj are all fully proved. The main proof requires ~800 lines via free subgroup of SO(3) — beyond this gallery entry's scope. Note: paradoxical_no_finite_measure and free_group_not_amenable structure are fully proved. No axiom declarations (axiomCount: 0).",
+    "assumptions": "4 sorry'd theorems representing major unproved results: hausdorff_free_subgroup (SO(3) contains F₂ as a free subgroup of rank 2), banach_tarski (main Banach-Tarski paradox for the unit ball in ℝ³), banach_tarski_pieces_nonmeasurable (non-measurability of decomposition pieces), int_amenable (ℤ is amenable via Cesàro means). Abstract framework (equidecomposability, paradoxical sets, F₂ non-amenability, measure-theoretic consequence) is fully proved.",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -88,7 +88,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Banach-Tarski paradox is formalized at the statement level with abstract equidecomposability and paradoxical set framework fully defined. The key measure-theoretic consequence (paradoxical sets admit no finite invariant measure) is structurally proved. The main theorem and ingredient lemmas are stated as axiomatized sorries, representing the current boundary of this gallery entry's formalization.",
+    "summary": "The Banach-Tarski paradox is formalized at the statement level with abstract equidecomposability and paradoxical set framework fully defined. The key measure-theoretic consequence (paradoxical sets admit no finite invariant measure) is structurally proved with 4 sorry'd unproved major results (hausdorff_free_subgroup, banach_tarski, banach_tarski_pieces_nonmeasurable, int_amenable) and 0 formal axiom declarations.",
     "openQuestions": [
       "Can Hausdorff's free subgroup theorem be fully formalized in Lean? The proof requires showing that explicit 3×3 rotation matrices generate a free group — the algebraic argument involves showing nontrivial words produce vectors with irrational coordinates via a number-theoretic argument.",
       "Can the full Banach-Tarski proof be formalized in Lean 4? The most likely path: build the free group paradoxical decomposition first (purely algebraic), then lift to S² (measure-theoretic), then to B³ (geometric extension). Estimated scope: 800-1200 lines."
