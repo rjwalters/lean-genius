@@ -31,7 +31,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Gaussian binomial coefficients were introduced by Gauss in his 1808-1811 work on number theory, where he counted k-dimensional subspaces of F_q^n — a fundamental quantity in finite geometry. Alexandre-Théophile Vandermonde had earlier (1772) identified the classical convolution identity ∑ C(m,j)C(n,k-j) = C(m+n,k); Cauchy (1843) gave the q-analog in his mémoire on series, establishing ∑ q^{(k-j)(m-j)} [m,j]_q [n,k-j]_q = [m+n,k]_q. The extra q-power factor has a beautiful combinatorial meaning: it counts the relative positions of two complementary subspaces, a phenomenon with no classical analog.\n\nThe theory of q-analogs underwent a renaissance in the 20th century through George Andrews' work on partition theory (1976) and the emergence of quantum groups in mathematical physics (Jimbo-Drinfeld, 1985). Quantum groups deform classical Lie algebra symmetry by replacing integers n with q-numbers [n]_q, and q-binomial coefficients appear as the natural q-analog of binomial coefficients in representation theory. The q-Vandermonde identity is the 'mother of all q-identities': the Rogers-Ramanujan identities, q-Pfaff-Saalschütz, and many other results in the theory of basic hypergeometric series follow from it.\n\nThis formalization builds the complete q-analog infrastructure from scratch (qNat, qFactorial, gaussianBinomial) because Mathlib currently lacks these definitions in the required generality. The main theorem qBinom_vandermonde is proved by induction on m in CombinationsFormulaOQ03, using q-Pascal's rule; here we derive seven consequences including q-sum-of-squares, boundary cases, and concrete numerical verifications at q=2 via native_decide.",
+    "historicalContext": "Gaussian binomial coefficients were introduced by Gauss in his 1808-1811 work on number theory, where he counted k-dimensional subspaces of F_q^n \u2014 a fundamental quantity in finite geometry. Alexandre-Th\u00e9ophile Vandermonde had earlier (1772) identified the classical convolution identity \u2211 C(m,j)C(n,k-j) = C(m+n,k); Cauchy (1843) gave the q-analog in his m\u00e9moire on series, establishing \u2211 q^{(k-j)(m-j)} [m,j]_q [n,k-j]_q = [m+n,k]_q. The extra q-power factor has a beautiful combinatorial meaning: it counts the relative positions of two complementary subspaces, a phenomenon with no classical analog.\n\nThe theory of q-analogs underwent a renaissance in the 20th century through George Andrews' work on partition theory (1976) and the emergence of quantum groups in mathematical physics (Jimbo-Drinfeld, 1985). Quantum groups deform classical Lie algebra symmetry by replacing integers n with q-numbers [n]_q, and q-binomial coefficients appear as the natural q-analog of binomial coefficients in representation theory. The q-Vandermonde identity is the 'mother of all q-identities': the Rogers-Ramanujan identities, q-Pfaff-Saalsch\u00fctz, and many other results in the theory of basic hypergeometric series follow from it.\n\nThis formalization builds the complete q-analog infrastructure from scratch (qNat, qFactorial, gaussianBinomial) because Mathlib currently lacks these definitions in the required generality. The main theorem qBinom_vandermonde is proved by induction on m in CombinationsFormulaOQ03, using q-Pascal's rule; here we derive seven consequences including q-sum-of-squares, boundary cases, and concrete numerical verifications at q=2 via native_decide.",
     "problemStatement": "Can the q-Vandermonde identity for Gaussian binomial coefficients be formalized using Mathlib's q-analogs?",
     "text": "The q-Vandermonde identity generalizes the classical Vandermonde identity to Gaussian binomial coefficients, with an extra q-power factor counting crossing configurations in subspace decompositions",
     "proofStrategy": "Define q-numbers, q-factorials, and Gaussian binomials from scratch. Prove basic properties by computation. State q-Pascal rules and q-Vandermonde. The q-binomial theorem is the generating identity.",
@@ -40,7 +40,7 @@
       "The q-Vandermonde extra factor q^{k(n-r+k)} counts the incidence between two complementary subspace decompositions",
       "q-Pascal has TWO dual forms (unlike the unique classical Pascal rule), reflecting the non-commutativity of q-analogs",
       "Everything specializes to the classical case at q = 1",
-      "The q-sum-of-squares proof (qVandermonde_sum_squares') applies qBinom_symm to rewrite [n,n-j]_q = [n,j]_q inside the summand — the symmetry of Gaussian binomials [n,k]_q = [n,n-k]_q is the q-analog of C(n,k) = C(n,n-k) and reflects the duality of subspace lattices (complementation)"
+      "The q-sum-of-squares proof (qVandermonde_sum_squares') applies qBinom_symm to rewrite [n,n-j]_q = [n,j]_q inside the summand \u2014 the symmetry of Gaussian binomials [n,k]_q = [n,n-k]_q is the q-analog of C(n,k) = C(n,n-k) and reflects the duality of subspace lattices (complementation)"
     ],
     "prerequisites": [
       "Vandermonde's identity (parent proof)",
@@ -70,7 +70,7 @@
       "title": "q-Sum-of-Squares Corollary (Part III)",
       "startLine": 70,
       "endLine": 98,
-      "summary": "qVandermonde_sum_squares (lines 82-87): set m=n=k, giving ∑ q^{(n-j)²} [n,j]_q [n,n-j]_q = [2n,n]_q. qVandermonde_sum_squares' (lines 90-98): applies qBinom_symm to replace [n,n-j]_q with [n,j]_q, giving the squared form ∑ q^{(n-j)²} [n,j]²_q = [2n,n]_q.",
+      "summary": "qVandermonde_sum_squares (lines 82-87): set m=n=k, giving \u2211 q^{(n-j)\u00b2} [n,j]_q [n,n-j]_q = [2n,n]_q. qVandermonde_sum_squares' (lines 90-98): applies qBinom_symm to replace [n,n-j]_q with [n,j]_q, giving the squared form \u2211 q^{(n-j)\u00b2} [n,j]\u00b2_q = [2n,n]_q.",
       "mathContext": "$\\sum_{j=0}^{n} q^{(n-j)^2} \\binom{n}{j}_q^2 = \\binom{2n}{n}_q$. At $q=1$: $\\sum \\binom{n}{k}^2 = \\binom{2n}{n}$. Geometrically: counts $n$-dimensional subspaces of $\\mathbb{F}_q^{2n}$ weighted by intersection dimension with a fixed $n$-subspace."
     },
     {
@@ -86,8 +86,8 @@
       "title": "Concrete Verifications and Summary (Parts VI-VII)",
       "startLine": 133,
       "endLine": 190,
-      "summary": "Part VI (lines 136-166): four numerical verifications via native_decide at q=2 over ℤ — confirms [4,2]₂=35 (2-dim subspaces of F₂⁴), [5,2]₂=155, sum-of-squares at n=2, and classical Vandermonde. Part VII (lines 172-190): qVandermonde_summary bundles the three main results into a conjunction proved by exact ⟨...⟩.",
-      "mathContext": "At $q=2$: $\\binom{4}{2}_2 = 35$ (number of 2-dimensional subspaces of $\\mathbb{F}_2^4$). $\\binom{5}{2}_2 = 155$. The `native_decide` tactic reduces these to kernel computation via decidability of ℤ-equality. The summary theorem: $\\text{qVandermonde} \\land \\text{vandermonde\\_classical} \\land \\text{qVandermonde\\_sum\\_squares'}$."
+      "summary": "Part VI (lines 136-166): four numerical verifications via native_decide at q=2 over \u2124 \u2014 confirms [4,2]\u2082=35 (2-dim subspaces of F\u2082\u2074), [5,2]\u2082=155, sum-of-squares at n=2, and classical Vandermonde. Part VII (lines 172-190): qVandermonde_summary bundles the three main results into a conjunction proved by exact \u27e8...\u27e9.",
+      "mathContext": "At $q=2$: $\\binom{4}{2}_2 = 35$ (number of 2-dimensional subspaces of $\\mathbb{F}_2^4$). $\\binom{5}{2}_2 = 155$. The `native_decide` tactic reduces these to kernel computation via decidability of \u2124-equality. The summary theorem: $\\text{qVandermonde} \\land \\text{vandermonde\\_classical} \\land \\text{qVandermonde\\_sum\\_squares'}$."
     }
   ],
   "crossReferences": [
@@ -111,6 +111,7 @@
     ]
   },
   "leanFile": {
+    "path": "Proofs/BinomialTheoremOQ04OQ03.lean",
     "imports": [
       "Mathlib.Data.Nat.Choose.Basic",
       "Mathlib.RingTheory.Polynomial.Basic",
@@ -133,19 +134,19 @@
       "name": "qVandermonde",
       "type": "core",
       "description": "The q-Vandermonde identity",
-      "leanType": "(q : ℝ) → (m n r : ℕ) → gaussianBinomial q (m+n) r = Σ q^{k(n-r+k)} [m,k]_q [n,r-k]_q"
+      "leanType": "(q : \u211d) \u2192 (m n r : \u2115) \u2192 gaussianBinomial q (m+n) r = \u03a3 q^{k(n-r+k)} [m,k]_q [n,r-k]_q"
     },
     {
       "name": "gaussianBinomial_at_one",
       "type": "core",
       "description": "Gaussian binomial at q=1 equals ordinary binomial",
-      "leanType": "(n k : ℕ) → gaussianBinomial 1 n k = Nat.choose n k"
+      "leanType": "(n k : \u2115) \u2192 gaussianBinomial 1 n k = Nat.choose n k"
     },
     {
       "name": "gaussianBinomial_symm",
       "type": "supporting",
       "description": "Symmetry of Gaussian binomials",
-      "leanType": "(q : ℝ) → (n k : ℕ) → k ≤ n → [n,k]_q = [n,n-k]_q"
+      "leanType": "(q : \u211d) \u2192 (n k : \u2115) \u2192 k \u2264 n \u2192 [n,k]_q = [n,n-k]_q"
     }
   ],
   "sorries": 0

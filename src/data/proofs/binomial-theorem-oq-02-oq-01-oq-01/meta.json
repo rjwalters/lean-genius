@@ -30,16 +30,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "The multinomial distribution was introduced by Jakob Bernoulli in his posthumous Ars Conjectandi (1713) as a natural generalization of the binomial to multiple outcomes. Pierre-Simon Laplace further developed its theory in Théorie analytique des probabilités (1812), deriving the multinomial theorem and using it to analyze games of chance with more than two outcomes. In the 20th century, the multinomial became central to categorical data analysis, information theory (Shannon entropy for discrete distributions), and maximum likelihood estimation for categorical models. The multinomial theorem — the key algebraic identity $(p_1+\\cdots+p_k)^n = \\sum \\binom{n}{k_1,\\ldots,k_r} \\prod p_i^{k_i}$ — simultaneously serves as both the probability normalization proof and a combinatorial identity, making it the elegant bridge between combinatorics and probability theory in this formalization.",
+    "historicalContext": "The multinomial distribution was introduced by Jakob Bernoulli in his posthumous Ars Conjectandi (1713) as a natural generalization of the binomial to multiple outcomes. Pierre-Simon Laplace further developed its theory in Th\u00e9orie analytique des probabilit\u00e9s (1812), deriving the multinomial theorem and using it to analyze games of chance with more than two outcomes. In the 20th century, the multinomial became central to categorical data analysis, information theory (Shannon entropy for discrete distributions), and maximum likelihood estimation for categorical models. The multinomial theorem \u2014 the key algebraic identity $(p_1+\\cdots+p_k)^n = \\sum \\binom{n}{k_1,\\ldots,k_r} \\prod p_i^{k_i}$ \u2014 simultaneously serves as both the probability normalization proof and a combinatorial identity, making it the elegant bridge between combinatorics and probability theory in this formalization.",
     "problemStatement": "Can the multinomial distribution be integrated into Mathlib's PMF framework?",
     "text": "The multinomial distribution can be constructed as a Mathlib PMF by defining a Composition type, lifting the multinomial theorem to ENNReal, and proving normalization",
     "proofStrategy": "Define Composition as the support type, construct the PMF value function in ENNReal, prove normalization from the multinomial theorem, then derive properties (marginals, moments).",
     "keyInsights": [
-      "The multinomial theorem IS the normalization proof — this is the deep connection between combinatorics and probability: $(\\sum p_i)^n = 1$ is simultaneously the multinomial theorem and PMF normalization",
+      "The multinomial theorem IS the normalization proof \u2014 this is the deep connection between combinatorics and probability: $(\\sum p_i)^n = 1$ is simultaneously the multinomial theorem and PMF normalization",
       "The Composition type provides a clean interface between combinatorics (piAntidiag) and probability (PMF support), bundling the sum constraint and zero-outside conditions into a single Lean structure",
-      "ENNReal arithmetic is the main technical hurdle: no subtraction, division requires careful handling of ∞, and lifting the real-valued multinomial theorem to ℝ≥0∞ requires coordinating Nat.cast, ENNReal.coe, and tsum identities",
-      "The Fintype instance for Composition is the key prerequisite for PMF.mk — it's provable via a finiteness argument (each counts(i) ≤ n, finitely many indices) but requires ~50 lines of Finset manipulation using piAntidiag as the underlying set",
-      "Negative covariance Cov(Xᵢ,Xⱼ) = -npᵢpⱼ reflects the conservation law ∑Xᵢ = n: the multinomial is concentrated on a hyperplane, so components cannot fluctuate independently"
+      "ENNReal arithmetic is the main technical hurdle: no subtraction, division requires careful handling of \u221e, and lifting the real-valued multinomial theorem to \u211d\u22650\u221e requires coordinating Nat.cast, ENNReal.coe, and tsum identities",
+      "The Fintype instance for Composition is the key prerequisite for PMF.mk \u2014 it's provable via a finiteness argument (each counts(i) \u2264 n, finitely many indices) but requires ~50 lines of Finset manipulation using piAntidiag as the underlying set",
+      "Negative covariance Cov(X\u1d62,X\u2c7c) = -np\u1d62p\u2c7c reflects the conservation law \u2211X\u1d62 = n: the multinomial is concentrated on a hyperplane, so components cannot fluctuate independently"
     ],
     "prerequisites": [
       "Multinomial distribution (parent)",
@@ -78,17 +78,17 @@
     },
     {
       "id": "sec-marginal-binomial",
-      "title": "Marginal Distribution: Multinomial → Binomial",
+      "title": "Marginal Distribution: Multinomial \u2192 Binomial",
       "startLine": 121,
       "endLine": 142,
-      "summary": "multinomial_marginal_binomial (sorry): fixing k(i) = m and summing over remaining components gives the binomial PMF formula C(n,m)·p(i)^m·(1-p(i))^(n-m)."
+      "summary": "multinomial_marginal_binomial (sorry): fixing k(i) = m and summing over remaining components gives the binomial PMF formula C(n,m)\u00b7p(i)^m\u00b7(1-p(i))^(n-m)."
     },
     {
       "id": "sec-moments",
       "title": "Mean and Covariance",
       "startLine": 144,
       "endLine": 168,
-      "summary": "multinomial_mean (E[Xᵢ] = n·pᵢ, sorry) and multinomial_covariance (Cov(Xᵢ,Xⱼ) = -n·pᵢ·pⱼ, sorry). Both use piAntidiag sum manipulation."
+      "summary": "multinomial_mean (E[X\u1d62] = n\u00b7p\u1d62, sorry) and multinomial_covariance (Cov(X\u1d62,X\u2c7c) = -n\u00b7p\u1d62\u00b7p\u2c7c, sorry). Both use piAntidiag sum manipulation."
     },
     {
       "id": "sec-feasibility",
@@ -102,7 +102,7 @@
       "title": "Concrete Example: Dice Roll",
       "startLine": 204,
       "endLine": 215,
-      "summary": "Example: rolling a fair die 6 times, probability of seeing each face exactly once = 6!/(1!^6) · (1/6)^6 = 720/46656."
+      "summary": "Example: rolling a fair die 6 times, probability of seeing each face exactly once = 6!/(1!^6) \u00b7 (1/6)^6 = 720/46656."
     }
   ],
   "crossReferences": [
@@ -113,7 +113,7 @@
     }
   ],
   "conclusion": {
-    "summary": "YES, the multinomial PMF can be integrated into Mathlib's PMF framework. The construction path is clear: Composition type → ENNReal normalization → PMF.mk → properties.",
+    "summary": "YES, the multinomial PMF can be integrated into Mathlib's PMF framework. The construction path is clear: Composition type \u2192 ENNReal normalization \u2192 PMF.mk \u2192 properties.",
     "implications": "A complete implementation would be a valuable Mathlib contribution, enabling verified statistical reasoning about multinomial experiments.",
     "openQuestions": [
       "Can the Fintype instance for Composition be proved efficiently using piAntidiag?",
@@ -121,6 +121,7 @@
     ]
   },
   "leanFile": {
+    "path": "Proofs/BinomialTheoremOQ02OQ01OQ01.lean",
     "imports": [
       "Mathlib.Probability.ProbabilityMassFunction.Basic",
       "Mathlib.Data.Nat.Choose.Multinomial",
@@ -146,7 +147,7 @@
       "name": "multinomialPMF",
       "type": "core",
       "description": "Multinomial distribution as Mathlib PMF",
-      "leanType": "(s p n hp) → PMF (Composition α s n)"
+      "leanType": "(s p n hp) \u2192 PMF (Composition \u03b1 s n)"
     },
     {
       "name": "multinomial_marginal_binomial",
@@ -157,7 +158,7 @@
     {
       "name": "multinomial_covariance",
       "type": "supporting",
-      "description": "Cov(Xi,Xj) = -n*pi*pj for i≠j",
+      "description": "Cov(Xi,Xj) = -n*pi*pj for i\u2260j",
       "leanType": "covariance_sum = -n*pi*pj"
     }
   ],
