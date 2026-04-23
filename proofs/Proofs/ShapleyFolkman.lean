@@ -18,8 +18,11 @@ Mathlib dependencies:
   - Mathlib.LinearAlgebra.AffineSpace.Independent (AffineIndependent)
   - Mathlib.LinearAlgebra.Dimension.Finrank (Module.finrank)
 
-Status: formalized — 1 sorry remains in Sub-case B2 of reduce_excess_by_one
-  (bv ∉ S; WF descent on Carathéodory vertex count needed; B1 proved when bv ∈ S)
+Status: formalized — 3 sorries remain:
+  (1) convexHull_not_mem_requires_two: Carathéodory API (needs eq_pos_convex_span_of_mem_convexHull)
+  (2) binary_repr_of_mem_convexHull_not_mem: depends on (1), needs Fin.sum_univ_succ API
+  (3) Sub-case B2 of reduce_excess_by_one: bv ∉ S; needs WF descent on Carathéodory depth
+  new_sum indicator sum rearrangement: proved (Finset.sum_image + Finset.sum_subset)
 -/
 import Mathlib
 
@@ -463,8 +466,29 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
           ε • (c' h.choose • δ h.choose) else 0) =
         ∑ l : Fin (d + 1), ε • (c' l • δ l) from by
       -- Sum rearrangement: indicator sum over t = sum over Fin(d+1) via injective emb.
-      -- Technical Lean4 proof: uses Finset.sum_subset + Finset.sum_image + injectivity.
-      sorry]
+      -- Step 1: reduce sum over t to sum over image(emb) (terms vanish outside image(emb))
+      have step1 : ∑ i ∈ t, (if h : ∃ l : Fin (d + 1), emb l = i then
+            ε • (c' h.choose • δ h.choose) else 0) =
+          ∑ i ∈ Finset.image emb Finset.univ, (if h : ∃ l : Fin (d + 1), emb l = i then
+            ε • (c' h.choose • δ h.choose) else 0) := by
+        symm
+        apply Finset.sum_subset (Finset.image_subset_iff.mpr (fun l _ => hemb_in_t l))
+        intro i _ hi
+        have hne : ¬∃ l : Fin (d + 1), emb l = i :=
+          fun ⟨l, hl⟩ => hi (Finset.mem_image.mpr ⟨l, Finset.mem_univ l, hl⟩)
+        simp only [dif_neg hne]
+      -- Step 2: rewrite sum over image via injectivity of emb
+      have step2 : ∑ i ∈ Finset.image emb Finset.univ, (if h : ∃ l : Fin (d + 1), emb l = i then
+            ε • (c' h.choose • δ h.choose) else 0) =
+          ∑ l : Fin (d + 1), ε • (c' l • δ l) := by
+        rw [Finset.sum_image (fun a _ b _ h => hemb_inj h)]
+        apply Finset.sum_congr rfl
+        intro l _
+        split_ifs with h
+        · have heq : h.choose = l := hemb_inj h.choose_spec
+          rw [heq]
+        · exact absurd ⟨l, rfl⟩ h
+      exact step1.trans step2]
     rw [← Finset.smul_sum, hc'δ, smul_zero]
   -- Step 6j: Verify each new_point lies in convexHull(S i).
   -- For i ∈ range(emb): new_point(emb l) = (sv_l + ε₀·c'_l)·av_l + ((1-sv_l) - ε₀·c'_l)·bv_l
@@ -677,9 +701,26 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
         fun heq => hl'_not_excess (heq ▸ hemb_mem l')⟩)⟩
     · -- Sub-case B2: bv(emb l') ∉ S(emb l').
       -- new_point(emb l') = bv(emb l') ∈ convexHull(S(emb l')) \ S(emb l').
-      -- bv was constructed from a (n-1)-vertex Carathéodory representation (av was removed).
-      -- WF induction on total Carathéodory vertex count terminates: each Case B step
-      -- decreases the count by ≥ 1, and Case A (or B1) exits excess when count reaches 2.
+      --
+      -- Mathematical argument (WF induction on Carathéodory depth):
+      -- Define caraDepth(x, s) = min n such that x has an n-vertex Carathéodory representation.
+      -- Define totalDepth(D) = Σ_{j ∈ D.excessIndices} caraDepth(D.point j, S j).
+      --
+      -- In B2: D'.point(emb l') = bv(emb l'), which has caraDepth = caraDepth(D.point(emb l')) - 1
+      --   (bv is the renormalized remainder after removing av from the representation).
+      -- All other D.point j are unchanged, so totalDepth(D') = totalDepth(D) - 1.
+      --
+      -- By strong induction on totalDepth ≥ 0:
+      --   At totalDepth = 0: all excess points are in S (depth 0 → point ∈ S) → excessIndices = ∅,
+      --     contradicting hexcess > d ≥ 0. So base case vacuously holds.
+      --   Inductive step: apply one perturbation. Cases A and B1 directly decrease excess count.
+      --   Case B2: totalDepth(D') = totalDepth(D) - 1 < totalDepth(D), apply IH to get D''.
+      --
+      -- Formal prerequisite: binary_repr_of_mem_convexHull_not_mem must return the full
+      --   Carathéodory representation (count + vertices + weights), not just the binary split.
+      --   Specifically, we need: if x ∈ convexHull(s) has n-vertex repr, then the constructed
+      --   bv ∈ convexHull(s) has an (n-1)-vertex repr.
+      -- Estimated additional work: ~80 lines (depth-tracking + induction structure).
       sorry
 
 /-

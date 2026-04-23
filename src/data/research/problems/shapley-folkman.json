@@ -6,7 +6,7 @@
   "tier": "A",
   "path": "full",
   "knowledge": {
-    "progressSummary": "PROGRESS: Joint ε eliminates Case B sorry; single sorry remains in hnew_point_av requiring WF Carathéodory descent",
+    "progressSummary": "PROGRESS: 4→3 sorries: proved sum rearrangement in new_sum. Remaining: (1) convexHull_not_mem_requires_two Carathéodory API, (2) binary_repr depends on (1), (3) Sub-case B2 needs WF descent on caraDepth",
     "insights": [
       "reduce_excess_by_one is the mathematical core — requires: (1) linear dependence of d+1 direction vectors via finrank, (2) perturbation ε construction from boundary distances, (3) verification that new points remain in convex hulls",
       "sum_close_to_convexHull needs convexHull(∑ Sᵢ) = ∑ convexHull(Sᵢ) from Mathlib (check Mathlib.Analysis.Convex.Combination for sum identity)",
@@ -28,7 +28,8 @@
       "Case B of reduce_excess_by_one requires WF descent — 5 alternative approaches investigated and ruled out",
       "caratheodoryCount strictly decreases from D.point to bv in binary_repr: bv uses n-1 of n original vertices",
       "totalCaratheodoryCount measure enables WF induction termination for the sorry",
-      "Sub-case B1 (bv in S) is a special case of WF; Sub-case B2 requires the full recursion"
+      "Sub-case B1 (bv in S) is a special case of WF; Sub-case B2 requires the full recursion",
+      "sum rearrangement sorry proved: ∑_{i∈t} [indicator terms] = ∑_{l:Fin(d+1)} using Finset.sum_subset (terms vanish outside image(emb)) + Finset.sum_image (injectivity) + split_ifs (h.choose = l via hemb_inj h.choose_spec)"
     ],
     "builtItems": [
       "binary_repr_of_mem_convexHull_not_mem private lemma (ShapleyFolkman.lean:220)",
@@ -42,15 +43,16 @@
       "ε₀ perturbation construction with neg-coefficient minimum",
       "Case A proof of new_mem_convexHull via by_cases hCaseA + c-trichotomy (ShapleyFolkman.lean ~50 lines at lines 543-590)",
       "new_mem_convexHull: proved sorry-free using joint ε (ShapleyFolkman.lean:576)",
-      "new_sum: updated to use ε consistently (ShapleyFolkman.lean:522)"
+      "new_sum: updated to use ε consistently (ShapleyFolkman.lean:522)",
+      "new_sum indicator sum rearrangement: proved via step1 (Finset.sum_subset) + step2 (Finset.sum_image + Finset.sum_congr rfl) — ShapleyFolkman.lean:467"
     ],
     "mathlibGaps": [
-      "WF descent on Carathéodory vertex count: needed to handle case where pos-index achieves joint minimum ε"
+      "WF descent on Carathéodory vertex count: needed for Sub-case B2 where bv ∉ S; formal prerequisite is binary_repr_of_mem_convexHull_not_mem returning full n-vertex count so caraDepth(bv) = caraDepth(x) - 1 can be tracked"
     ],
     "nextSteps": [
-      "Define caratheodoryCount function (min n for n-vertex Caratheodory decomposition) — ~40 lines",
-      "Prove binary_repr makes bv have strictly smaller count than x — ~30 lines",
-      "Restructure reduce_excess_by_one with WF induction on totalCaratheodoryCount — ~80 lines"
+      "Prove convexHull_not_mem_requires_two using Mathlib eq_pos_convex_span_of_mem_convexHull + Fin.sum_univ_succ — ~40 lines",
+      "Prove binary_repr_of_mem_convexHull_not_mem using (1) + Finset.centerMass renormalization — ~50 lines",
+      "Implement WF descent for Sub-case B2: add caraDepth parameter to reduce_excess, strong induction on totalCaraDepth — ~80 lines"
     ],
     "phase": "ACT"
   },
