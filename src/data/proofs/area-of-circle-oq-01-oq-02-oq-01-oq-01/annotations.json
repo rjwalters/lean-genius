@@ -98,7 +98,7 @@
   {
     "id": "ann-summary",
     "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
-    "range": { "startLine": 123, "endLine": 151 },
+    "range": { "startLine": 123, "endLine": 150 },
     "type": "context",
     "title": "Summary and Answer to Open Question",
     "content": "The proof summary confirms: YES, all unit ball volumes are recursively computable. The key insight is that the recurrence is a direct algebraic consequence of $\\Gamma(z+1) = z\\Gamma(z)$. An important correction is noted: the formula $(2\\pi/n)\\cdot\\omega_n$ sometimes cited has an off-by-two indexing error; the correct formula is $(2\\pi/(n+2))\\cdot\\omega_n$, as verified by the computation $\\omega_2 = \\pi$.",

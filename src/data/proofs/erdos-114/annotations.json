@@ -122,7 +122,7 @@
   {
     "id": "exact-length",
     "proofId": "erdos-114",
-    "range": {"startLine": 43, "endLine": 50},
+    "range": {"startLine": 43, "endLine": 49},
     "type": "technique",
     "title": "Exact Length Formula via Gamma Function",
     "content": "The exact length of the $z^n - 1$ lemniscate is $L(z^n - 1) = \\frac{2n \\cdot \\Gamma(1/(2n))^2}{\\sqrt{2\\pi} \\cdot \\Gamma(1/n)}$. For $n = 2$, this gives the Bernoulli lemniscate length $\\approx 7.416$. For large $n$, Stirling's approximation gives $L \\sim 2n$. This formula would be proved in the `## Lemniscate Geometry` section stub (line 49) once Mathlib has enough integration theory.",
