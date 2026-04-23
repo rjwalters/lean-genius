@@ -1,0 +1,136 @@
+{
+  "id": "shapley-folkman-oq-03",
+  "title": "Shapley-Folkman-Starr Theorem: Large Markets Are Approximately Convex",
+  "slug": "shapley-folkman-oq-03",
+  "meta": {
+    "author": "researcher-9",
+    "date": "2026-04-23",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/ShapleyFolkmanOQ03.lean",
+    "tags": [
+      "economics",
+      "convex-analysis",
+      "shapley-folkman",
+      "game-theory",
+      "epsilon-equilibrium"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axioms": 3,
+    "dateAdded": "2026-04-23",
+    "dateUpdated": "2026-04-23",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "convexHull_dist_le: distance lemma — p ∈ conv(S) and S ⊆ B(q,δ) implies dist(p,q) ≤ δ, proved via convexHull_min + convex_closedBall",
+      "convexHull_dist_le_diam: corollary bounding dist(p,q) by diameter when q ∈ S",
+      "shapley_folkman_starr: Starr's 1969 theorem — any x ∈ conv(ΣSᵢ) has x' ∈ ΣSᵢ with dist(x,x') ≤ dim(E)·δ",
+      "large_economy_near_convex: large economy corollary — n-fold Minkowski sum approximation error bounded by dim(E)·δ independently of n",
+      "no_excess_for_convex: convex summands incur zero approximation error",
+      "Clean derivation from sum_close_to_convexHull (parent ShapleyFolkman.lean) via Finset.sum_subset for term cancellation"
+    ],
+    "historicalContext": "Ross Starr (1969) applied the Shapley-Folkman lemma — proved by Lloyd Shapley and John Folkman in unpublished correspondence — to prove that large economies are approximately convex. The economic significance: even if each agent's feasible set is non-convex (e.g., due to indivisibilities), the aggregate market is 'nearly convex' in a quantitative sense. The approximation bound d·δ depends only on the dimension d of the commodity space, not the number of agents n. As n → ∞, the per-agent error d·δ/n → 0, validating the use of convex analysis for large market equilibria. Starr's theorem was a landmark in general equilibrium theory and provided mathematical foundations for ε-equilibrium results.",
+    "problemStatement": "Given a finite-dimensional normed space E and sets {Sᵢ}ᵢ with pairwise distances bounded by δ, prove that any x ∈ conv(ΣSᵢ) has an approximant x' ∈ ΣSᵢ with ‖x - x'‖ ≤ dim(E)·δ. As a corollary, large markets are approximately convex: the per-agent error vanishes as n grows.",
+    "proofStrategy": "Apply sum_close_to_convexHull (from ShapleyFolkman.lean) to decompose x as Σf(i) with f(i) ∈ conv(S(i)) and at most dim(E) 'excess' indices where f(i) ∉ S(i). For each excess index j, replace f(j) by any g(j) ∈ S(j). The sum x' = Σg(i) lies in ΣS(i). The distance bound uses convexHull_dist_le_diam (proved in this file) for each excess index. A Finset.sum_subset argument shows non-excess terms contribute zero to the difference.",
+    "assumptions": "3 axioms inherited from ShapleyFolkman.lean: (1) sum_close_to_convexHull (Shapley-Folkman decomposition), (2-3) two sorry lemmas in the parent file for sum rearrangement. This file itself has 0 direct axioms or sorries.",
+    "axiomCount": 3,
+    "lineCount": 203,
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Starr's (1969) theorem is the key mathematical result behind the approximate equilibrium theory for large markets. Shapley and Folkman proved (in unpublished 1967 correspondence, included in Starr's paper) that any point in the convex hull of a Minkowski sum of sets can be written as a sum of points, at most d of which lie outside their respective sets (where d = dim E). Starr used this to bound the distance from the convex hull to the actual sum. The economic corollary: with n agents each having diameter-bounded feasible sets, the aggregate non-convexity is bounded independently of n, vanishing per capita.",
+    "problemStatement": "Prove Starr's 1969 theorem: for sets {Sᵢ} in a finite-dimensional normed space with diameter ≤ δ, any x ∈ conv(ΣSᵢ) has x' ∈ ΣSᵢ with ‖x - x'‖ ≤ dim(E)·δ.",
+    "proofStrategy": "The Shapley-Folkman decomposition from the parent file gives x = Σf(i) where f(i) ∈ conv(S(i)) and at most d indices are 'excess' (f(i) ∉ S(i)). Replace each f(j) at an excess index with any g(j) ∈ S(j); non-excess terms are unchanged. Then x' = Σg(i) ∈ ΣS(i), and ‖x - x'‖ = ‖Σ(f-g)‖ = ‖Σ_{j ∈ J}(f(j)-g(j))‖ ≤ |J|·δ ≤ d·δ, using triangle inequality and convexHull_dist_le_diam for each excess index.",
+    "keyInsights": [
+      "Dimension controls non-convexity: the bound d·δ depends only on dim(E) and the diameter δ, not the number of summands. This is the dimensionality miracle of the theorem.",
+      "Convex hull distance lemma: if p ∈ conv(S) and S has diameter ≤ δ, then dist(p,q) ≤ δ for any q ∈ S. Proved by noting B(q,δ) is convex and contains S, so contains conv(S).",
+      "Large economy scaling: with n identical agents and per-agent diameter δ, the per-agent approximation error is d·δ/n → 0. Markets with many agents are approximately competitive.",
+      "Only excess indices contribute: for non-excess i, f(i) = g(i) ∈ S(i) already, so f(i) - g(i) = 0. The Finset.sum_subset lemma handles this term-by-term cancellation.",
+      "No convexity needed for the bound: individual sets Sᵢ need not be convex; only their diameter matters. Convex sets contribute zero error (no_excess_for_convex)."
+    ],
+    "prerequisites": [
+      "Shapley-Folkman Lemma (sum_close_to_convexHull from ShapleyFolkman.lean)",
+      "Convex hull minimality (convexHull_min from Mathlib)",
+      "Minkowski sums of sets",
+      "Finite-dimensional normed spaces"
+    ],
+    "text": "Economic application of the Shapley-Folkman lemma: large markets are approximately convex, with approximation error bounded by dim(E)·δ independently of the number of agents."
+  },
+  "conclusion": {
+    "summary": "Formalizes Starr's (1969) economic application of the Shapley-Folkman lemma. Main contributions: convexHull_dist_le (distance lemma for convex hulls), shapley_folkman_starr (Starr's theorem with the d·δ bound), large_economy_near_convex (n-agent corollary), no_excess_for_convex (zero error for convex sets). 0 sorries, 0 local axioms; depends on 3 assumptions in parent ShapleyFolkman.lean.",
+    "implications": "Validates the use of convex analysis in large-market equilibrium theory. Non-convexities (indivisibilities, increasing returns) in individual agent preferences become negligible in aggregate markets with many participants.",
+    "openQuestions": [
+      "Can the 3 sorries in ShapleyFolkman.lean be eliminated to make this proof fully axiom-free?",
+      "Does the bound dim(E)·δ admit a constructive proof of the approximating point x' (not just existence)?"
+    ]
+  },
+  "sections": [
+    {
+      "id": "distance-lemma",
+      "title": "Distance Bound for Convex Hulls",
+      "startLine": 48,
+      "endLine": 78,
+      "summary": "convexHull_dist_le: if p ∈ conv(S) and every s ∈ S satisfies dist(s,q) ≤ δ, then dist(p,q) ≤ δ. Proved via convexHull_min + convex_closedBall. convexHull_dist_le_diam: corollary for diameter-bounded sets.",
+      "mathContext": "Key: $B(q,\\delta)$ is convex and contains $S$, so $\\text{conv}(S) \\subseteq B(q,\\delta)$. Thus $p \\in \\text{conv}(S) \\Rightarrow \\text{dist}(p,q) \\leq \\delta$."
+    },
+    {
+      "id": "starr-theorem",
+      "title": "Shapley-Folkman-Starr Theorem",
+      "startLine": 84,
+      "endLine": 159,
+      "summary": "shapley_folkman_starr: given x ∈ conv(ΣSᵢ), produces x' ∈ ΣSᵢ with dist(x,x') ≤ dim(E)·δ. Full proof: Shapley-Folkman decomposition → select points in excess sets → Finset.sum_subset cancellation → norm_sum_le triangle inequality → convexHull_dist_le_diam for each excess index → card bound by finrank.",
+      "mathContext": "$\\|x - x'\\| = \\|\\sum_{j \\in J}(f_j - g_j)\\| \\leq \\sum_{j \\in J} \\delta \\leq |J| \\cdot \\delta \\leq d \\cdot \\delta$ where $|J| \\leq d = \\dim(E)$."
+    },
+    {
+      "id": "large-economy",
+      "title": "Large Economy Corollary",
+      "startLine": 165,
+      "endLine": 191,
+      "summary": "large_economy_near_convex: for n-fold Minkowski sum of a single set S, any x ∈ conv(n·S) has x' ∈ n·S with dist(x,x') ≤ dim(E)·δ. Proved by reducing n·S = Σᵢ Fin(n) S to shapley_folkman_starr via Finset.sum_const.",
+      "mathContext": "Per-agent error: $\\|x - x'\\|/n \\leq d\\delta/n \\to 0$ as $n \\to \\infty$."
+    },
+    {
+      "id": "convex-case",
+      "title": "Zero Error for Convex Sets",
+      "startLine": 196,
+      "endLine": 203,
+      "summary": "no_excess_for_convex: if S is convex then conv(S) = S, so any x ∈ conv(S) already lies in S. No approximation error for convex summands.",
+      "mathContext": "Convex sets satisfy $\\text{conv}(S) = S$ — the Shapley-Folkman bound is tight only for non-convex summands."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "shapley-folkman",
+      "relationship": "depends-on",
+      "description": "Uses sum_close_to_convexHull (Shapley-Folkman decomposition) and the Decomposition structure from the parent proof file."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Ross M. Starr",
+      "title": "Quasi-Equilibria in Markets with Non-Convex Preferences",
+      "year": "1969",
+      "venue": "Econometrica",
+      "note": "Original economic application of the Shapley-Folkman lemma; proves aggregate approximate convexity"
+    },
+    {
+      "authors": "Lloyd S. Shapley, John Folkman",
+      "title": "Correspondence with Ross Starr",
+      "year": "1967",
+      "venue": "Unpublished",
+      "note": "Original proof of the Shapley-Folkman lemma, included as appendix in Starr (1969)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Normed.Module.Convex",
+      "Proofs.ShapleyFolkman"
+    ],
+    "namespace": "ShapleyFolkmanOQ03",
+    "lineCount": 203,
+    "axiomCount": 3,
+    "sorries": 0,
+    "path": "Proofs/ShapleyFolkmanOQ03.lean"
+  },
+  "sorries": 0
+}

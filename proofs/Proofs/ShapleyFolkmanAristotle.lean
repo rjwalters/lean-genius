@@ -9,12 +9,7 @@
   - Clean theorem statement with no definition sorries
   - No axioms
 -/
-import Mathlib.Analysis.Convex.Caratheodory
-import Mathlib.Analysis.Convex.Combination
-import Mathlib.Analysis.Convex.Hull
-import Mathlib.LinearAlgebra.AffineSpace.Independent
-import Mathlib.LinearAlgebra.Dimension.Finrank
-import Mathlib.Data.Finset.Pointwise
+import Mathlib
 
 set_option linter.unusedVariables false
 
