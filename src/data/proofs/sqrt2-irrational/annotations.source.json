@@ -7,12 +7,15 @@
     },
     "type": "concept",
     "title": "Mathlib Imports",
-    "content": "We import from Mathlib: `Data.Rat.Basic` for rational number operations, `Data.Int.Parity` for even/odd predicates on integers, and `Tactic` for proof automation.",
+    "content": "Three Mathlib modules power this formalization:\n\n1. **`Mathlib.Data.Real.Irrational`**: Defines the `Irrational` predicate (`x : ℝ` is irrational iff `x ∉ ℚ` embedded in `ℝ`) and supplies the key lemmas: `irrational_sqrt_two` (main result), `Nat.Prime.irrational_sqrt` (√p is irrational for prime p), and `irrational_sqrt_natCast_iff` (√n irrational iff n is not a perfect square).\n\n2. **`Mathlib.Algebra.Ring.Parity`**: Provides the `Even` and `Odd` predicates and their algebraic properties — in particular `Odd.pow` (odd^n = odd) and `Int.odd_iff_not_even`, which are essential for the classical parity argument.\n\n3. **`Mathlib.Tactic`**: Imports all standard Lean 4 tactics (`omega`, `ring`, `decide`, `by_contra`, `by_cases`, `obtain`, etc.) used throughout the pedagogical proof demonstrations.",
+    "mathContext": "The central Mathlib predicate: $x \\in \\mathbb{R}$ is **irrational** iff $x \\notin \\iota(\\mathbb{Q})$ where $\\iota : \\mathbb{Q} \\hookrightarrow \\mathbb{R}$ is the canonical embedding. In Lean: `Irrational x ↔ x ∉ Set.range ((↑) : ℚ → ℝ)`. The key Mathlib theorem `irrational_sqrt_two : Irrational (Real.sqrt 2)` is available directly; this file wraps and extends it with pedagogical proofs.",
     "significance": "supporting",
+    "prerequisites": [],
     "relatedConcepts": [
-      "Mathlib",
-      "Lean 4",
-      "tactic mode"
+      "Irrational predicate in Mathlib",
+      "Real.sqrt",
+      "Parity (Even/Odd) in ring theory",
+      "Lean 4 tactic mode"
     ]
   },
   {
@@ -117,15 +120,35 @@
       "contains": "Supporting Lemmas -/"
     },
     "type": "theorem",
-    "title": "Main Theorem: Setup",
-    "content": "The theorem states $\\sqrt{2}$ is irrational. We assume the contrary: there exist integers $p, q$ with $q \\neq 0$ and $\\sqrt{2} = p/q$. We may assume $p, q$ are coprime (in lowest terms).",
-    "mathContext": "The WLOG (without loss of generality) step to assume coprimality is marked `sorry` here—a complete proof would reduce any $p/q$ to lowest terms first.",
+    "title": "Supporting Lemmas and Main Theorem: Parity Argument",
+    "content": "This section contains the classical parity-based proof machinery:\n\n**`even_of_sq_even`**: The key lemma — if $n^2$ is even, then $n$ is even. Proved by contradiction via `by_contra`: assume $n$ is odd, derive $n^2$ is odd (`Odd.pow`), contradict the hypothesis.\n\n**`sq_even_div_four`**: If $n$ is even (write $n = k + k$), then $n^2 = 4k^2$, so $4 \\mid n^2$. Proved by `calc` with `ring`.\n\n**`irrational_sqrt_two_classic`**: The main theorem — `Irrational (Real.sqrt 2)` — proved in one line: `exact irrational_sqrt_two` (delegating to Mathlib). The docstring spells out the classical argument: $\\sqrt{2} = a/b$ coprime $\\Rightarrow a^2 = 2b^2 \\Rightarrow a$ even $\\Rightarrow a = 2k \\Rightarrow b^2 = 2k^2 \\Rightarrow b$ even $\\Rightarrow$ both even, contradicting coprimality.",
+    "mathContext": "The classical parity argument formalizes as:\n1. Assume $\\sqrt{2} = a/b$ with $\\gcd(a,b) = 1$ (coprime).\n2. $a^2 = 2b^2$, so $a^2$ is even, so $a$ is even (`even_of_sq_even`): write $a = 2k$.\n3. $4k^2 = 2b^2$, so $b^2 = 2k^2$, so $b$ is even.\n4. Contradiction: $2 \\mid a$ and $2 \\mid b$ contradicts $\\gcd(a,b) = 1$.\n\nThis file has **0 sorries** — the main theorem is fully proved via Mathlib's `irrational_sqrt_two`.",
     "significance": "key",
+    "prerequisites": [
+      "ann-sqrt2-irrational-def",
+      "ann-sqrt2-coprime-def"
+    ],
     "relatedConcepts": [
-      "proof by contradiction",
-      "WLOG",
-      "lowest terms"
+      "proof by contradiction (by_contra)",
+      "Odd.pow",
+      "irrational_sqrt_two",
+      "calc proof blocks"
     ]
+  },
+  {
+    "id": "ann-sqrt2-pedagogical",
+    "proofId": "sqrt2-irrational",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "More Example Proofs with Rich Tactic Sequences"
+    },
+    "type": "context",
+    "title": "Pedagogical Tactic Examples",
+    "content": "This section contains six standalone educational theorems demonstrating core Lean 4 proof techniques. These are NOT part of the main irrationality argument — they serve as a teaching supplement showing how different tactic paradigms apply to simple mathematical facts:\n\n- **`int_sq_nonneg`**: `by_cases` on sign of $n$; uses `sq_nonneg` and `sq_pos_of_neg`. Demonstrates case splitting on a decidable condition.\n- **`sq_add_formula`**: $(a+b)^2 = a^2 + 2ab + b^2$; closed by `ring`. Shows algebraic identity verification.\n- **`imp_trans`**: If $P \\to Q$ and $Q \\to R$, then $P \\to R$; proved by `intro`/`apply` chains. Demonstrates basic propositional logic.\n- **`not_and_iff_or_not`**: De Morgan's law $\\neg(P \\wedge Q) \\iff \\neg P \\vee \\neg Q$; proved with `by_cases` and `cases`. Shows logical equivalence reasoning.\n- **`add_zero_nat`**: $n + 0 = n$; proved by `induction` with `rfl` and `simp`. Demonstrates structural induction on `ℕ`.\n- **`exists_gt_nat`**: $\\forall n \\in \\mathbb{N}, \\exists m > n$; proved via `use n + 1` and `omega`. Shows existential witness construction.",
+    "mathContext": "These examples illustrate the main Lean 4 proof paradigms: (1) case analysis (`by_cases`, `by_contra`), (2) algebraic automation (`ring`, `omega`), (3) structural induction (`induction ... with`), (4) existential/universal reasoning (`use`, `intro`), and (5) logical connective manipulation (`constructor`, `cases`). Collectively they show that Lean 4 proofs span a spectrum from near-automatic (`ring`, `decide`) to fully explicit (`intro`/`apply` chains).",
+    "significance": "context",
+    "prerequisites": [],
+    "relatedConcepts": ["Lean 4 tactics", "ring tactic", "omega tactic", "by_cases", "induction", "De Morgan's law"]
   },
   {
     "id": "ann-sqrt2-squaring",
