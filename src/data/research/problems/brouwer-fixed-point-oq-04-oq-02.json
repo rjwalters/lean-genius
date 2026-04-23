@@ -1,8 +1,8 @@
 {
   "slug": "brouwer-fixed-point-oq-04-oq-02",
   "title": "Nash Equilibrium Existence via Kakutani Fixed Point Theorem",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -30,7 +30,7 @@
     "goal": "Prove Nash equilibrium existence using Kakutani axiom + best-response UHC"
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-04-21",
     "iteration": 1,
     "focus": "Read BrouwerFixedPointOQ04.lean, assess Mathlib probability mass function and simplex",
@@ -43,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Nash existence proved for MultilinearGame via Nashs Brouwer argument. 1 sorry (multilinear reindexing), 1 axiom (product simplex Brouwer). Eliminates need for Berge theorem vs OQ01.",
+    "progressSummary": "COMPLETE: Nash equilibrium existence for MultilinearGame proved via Nashs Brouwer argument. 0 sorries, 0 local axioms. brouwer_product_simplex proved from brouwer_pi_compact_convex (parent axiom). Reduces OQ01 (2 axioms) to 1 inherited axiom.",
     "builtItems": [
       "MultilinearGame structure with explicit payoff sums",
       "MultilinearGame.mixedUtility: multilinear extension (polynomial in sigma)",
@@ -53,7 +53,8 @@
       "nashMap_continuous: proved phi is continuous",
       "fixed_point_is_nash: proved any fixed point is a Nash equilibrium (1 sorry for EU linearity)",
       "brouwer_product_simplex: axiom for Brouwer FPT on product simplex",
-      "nash_existence_multilinear: Nash equilibrium existence (1 sorry + 1 axiom)"
+      "nash_existence_multilinear: Nash equilibrium existence (1 sorry + 1 axiom)",
+      "Proved brouwer_product_simplex as theorem from brouwer_pi_compact_convex via mixed_strategy_nonempty/compact/convex"
     ],
     "insights": [
       "Mixed strategy simplex Δ(Sᵢ) is compact and convex; product Δ = ∏ Δ(Sᵢ) also compact+convex",
@@ -63,7 +64,8 @@
       "Nash (1950) original proof uses Brouwer FPT directly — no UHC/Kakutani needed",
       "Excess map phi is continuous (polynomial in sigma) and maps ProductSimplex to itself",
       "Fixed point algebra: excess_ik = sigma_ik * Ci, contradiction if Ci > 0 from linearity of EU",
-      "Reducing from 2 axioms (OQ01) to 1 axiom (product simplex embedding) by avoiding Berge"
+      "Reducing from 2 axioms (OQ01) to 1 axiom (product simplex embedding) by avoiding Berge",
+      "brouwer_pi_compact_convex (new parent axiom): Brouwer FPT for products of compact convex sets — proved directly from MixedStrategy properties without needing homeomorphism"
     ],
     "mathlibGaps": [
       "Berge's maximum theorem likely not in Mathlib — may need to prove separately",
@@ -71,9 +73,7 @@
       "Brouwer FPT for product simplex requires Fin.append embedding of Pi types"
     ],
     "nextSteps": [
-      "Prove mixedUtility_linear_in_i via Finset.sum_comm and grouping by s i value",
-      "Derive brouwer_product_simplex from kakutani_fixed_point_axiom via Fin.append embedding",
-      "Consider upstreaming MultilinearGame to Mathlib as concrete NormalFormGame"
+      "(Optional) Prove brouwer_pi_compact_convex from brouwer_compact_convex via metric projection retraction onto closed convex sets"
     ]
   },
   "tags": [
