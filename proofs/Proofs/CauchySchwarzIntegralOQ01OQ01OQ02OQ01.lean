@@ -860,10 +860,44 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
   have hphi_hn : φ (hhn_memLp.toLp _) = ∫ a, h_n a * g a ∂μ := by
     sorry
   -- SORRY B: ∫ hₙ gₙ dμ = (eLpNorm gₙ q μ ^ q.toReal).toReal
-  -- Proof: hₙ(a) · gₙ(a) = sign(gₙ a) · |gₙ a|^{q-1} · gₙ(a) = |gₙ a|^q;
-  --   ∫ |gₙ|^q = (∫⁻ ‖gₙ‖₊^q).toReal = (eLpNorm gₙ q μ ^ q.toReal).toReal.
   have hint_hn_gn : ∫ a, h_n a * g_n a ∂μ = (eLpNorm g_n q μ ^ q.toReal).toReal := by
-    sorry
+    have hq_ne_zero : q ≠ 0 := by
+      intro hq; rw [hq, ENNReal.zero_toReal] at hpq; linarith [hpq.symm.pos]
+    -- Step 1: pointwise identity h_n a * g_n a = |g_n a| ^ q.toReal
+    -- sign(x) * x = |x| for all x : ℝ, so sign(gₙ)|gₙ|^{q-1} * gₙ = |gₙ|^q
+    have hpw2 : ∀ a, h_n a * g_n a = |g_n a| ^ q.toReal := fun a => by
+      simp only [h_n]
+      have hsign : Real.sign (g_n a) * g_n a = |g_n a| := by
+        rcases lt_trichotomy (g_n a) 0 with ha | rfl | ha
+        · simp [Real.sign_neg ha, abs_of_neg ha]
+        · simp
+        · simp [Real.sign_pos ha, abs_of_pos ha]
+      rw [show Real.sign (g_n a) * |g_n a| ^ (q.toReal - 1) * g_n a =
+          |g_n a| ^ (q.toReal - 1) * (Real.sign (g_n a) * g_n a) from by ring,
+          hsign, show |g_n a| = |g_n a| ^ (1 : ℝ) from (Real.rpow_one _).symm,
+          ← Real.rpow_add (abs_nonneg _)]
+      norm_num
+    simp_rw [hpw2]
+    -- Step 2: |g_n a|^q = ((‖g_n a‖₊ : ℝ≥0∞)^q).toReal
+    -- Uses: ENNReal.coe_rpow_of_nonneg (coercion is ≠ ⊤), ENNReal.coe_toReal, NNReal.coe_rpow
+    have hpw3 : ∀ a, |g_n a| ^ q.toReal = ((‖g_n a‖₊ : ℝ≥0∞) ^ q.toReal).toReal := fun a => by
+      rw [ENNReal.coe_rpow_of_nonneg (le_of_lt hq_pos), ENNReal.coe_toReal, NNReal.coe_rpow]
+      simp [Real.norm_eq_abs]
+    simp_rw [hpw3]
+    -- Step 3: ∫ ((‖g_n‖₊ : ℝ≥0∞)^q).toReal = (∫⁻ (‖g_n‖₊ : ℝ≥0∞)^q).toReal
+    -- via integral_toReal (base is finite: coercion from ℝ≥0 is always ≠ ⊤)
+    have hf_meas : AEMeasurable (fun a => (‖g_n a‖₊ : ℝ≥0∞) ^ q.toReal) μ :=
+      ((hg_meas.min measurable_const).max measurable_const).nnnorm
+        |>.coe_nnreal_ennreal |>.ennreal_rpow_const q.toReal |>.aemeasurable
+    have hf_ne_top : ∀ᵐ a ∂μ, (‖g_n a‖₊ : ℝ≥0∞) ^ q.toReal ≠ ⊤ :=
+      ae_of_all μ fun a => by
+        rw [ENNReal.coe_rpow_of_nonneg (le_of_lt hq_pos)]; exact ENNReal.coe_ne_top
+    rw [integral_toReal hf_meas hf_ne_top]
+    -- Step 4: (∫⁻ (‖g_n‖₊ : ℝ≥0∞)^q).toReal = (eLpNorm g_n q μ ^ q.toReal).toReal
+    -- via eLpNorm_eq_lintegral_rpow_nnnorm + ENNReal.rpow_mul
+    congr 1
+    rw [eLpNorm_eq_lintegral_rpow_nnnorm hq_ne_zero hqne_top, ← ENNReal.rpow_mul,
+        one_div, inv_mul_cancel₀ hq_pos.ne', ENNReal.rpow_one]
   -- SORRY C: the chain gives eLpNorm gₙ q μ ≤ ENNReal.ofReal ‖φ‖
   -- From: ‖gₙ‖_q^q = ∫ hₙ gₙ ≤ ∫ hₙ g = φ(hₙ) ≤ ‖φ‖·‖hₙ‖_p and ‖hₙ‖_p^p = ‖gₙ‖_q^q
   -- → ‖gₙ‖_q^q ≤ ‖φ‖·‖gₙ‖_q^{q/p} → ‖gₙ‖_q^{q-q/p} ≤ ‖φ‖ → ‖gₙ‖_q ≤ ‖φ‖ (q-q/p=1).
