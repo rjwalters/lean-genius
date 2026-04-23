@@ -31,7 +31,7 @@
     "historicalContext": "Ross Starr (1969) applied the Shapley-Folkman lemma — proved by Lloyd Shapley and John Folkman in unpublished correspondence — to prove that large economies are approximately convex. The economic significance: even if each agent's feasible set is non-convex (e.g., due to indivisibilities), the aggregate market is 'nearly convex' in a quantitative sense. The approximation bound d·δ depends only on the dimension d of the commodity space, not the number of agents n. As n → ∞, the per-agent error d·δ/n → 0, validating the use of convex analysis for large market equilibria. Starr's theorem was a landmark in general equilibrium theory and provided mathematical foundations for ε-equilibrium results.",
     "problemStatement": "Given a finite-dimensional normed space E and sets {Sᵢ}ᵢ with pairwise distances bounded by δ, prove that any x ∈ conv(ΣSᵢ) has an approximant x' ∈ ΣSᵢ with ‖x - x'‖ ≤ dim(E)·δ. As a corollary, large markets are approximately convex: the per-agent error vanishes as n grows.",
     "proofStrategy": "Apply sum_close_to_convexHull (from ShapleyFolkman.lean) to decompose x as Σf(i) with f(i) ∈ conv(S(i)) and at most dim(E) 'excess' indices where f(i) ∉ S(i). For each excess index j, replace f(j) by any g(j) ∈ S(j). The sum x' = Σg(i) lies in ΣS(i). The distance bound uses convexHull_dist_le_diam (proved in this file) for each excess index. A Finset.sum_subset argument shows non-excess terms contribute zero to the difference.",
-    "assumptions": "0 axioms. 0 direct sorries. However, theorems depend on ShapleyFolkman.lean which has 3 sorry proofs pending completion (at lines 117, 187, 724 — all in reduce_excess_by_one). Transitively incomplete until parent sorries are closed.",
+    "assumptions": "0 axioms. 0 direct sorries. However, theorems depend on ShapleyFolkman.lean which has 1 sorry pending (at line 795 in the reduce_excess_by_one proof). Transitively incomplete until the parent sorry is closed.",
     "axiomCount": 0,
     "lineCount": 203,
     "theoremCount": 5,
@@ -48,7 +48,7 @@
       "Only excess indices contribute: for non-excess i, f(i) = g(i) ∈ S(i) already, so f(i) - g(i) = 0. The Finset.sum_subset lemma handles this term-by-term cancellation.",
       "No convexity needed for the bound: individual sets Sᵢ need not be convex; only their diameter matters. Convex sets contribute zero error (no_excess_for_convex).",
       "Carathéodory theorem connection: the Shapley-Folkman lemma is a Minkowski-sum strengthening of Carathéodory's theorem. Carathéodory says every $p \\in \\text{conv}(S) \\subseteq \\mathbb{R}^d$ is a convex combination of at most $d+1$ points of $S$. Shapley-Folkman strengthens this for sums: every $x \\in \\text{conv}(\\sum_i S_i)$ equals $\\sum_i f(i)$ where at most $d$ of the $f(i)$ lie outside $S_i$. The dimension $d$ bounds the non-convex 'failures' in both results.",
-      "Lean formalization challenge — transitive sorries: this file has 0 direct sorries and 0 axioms, but depends on ShapleyFolkman.lean which contains 4 unresolved sorry proofs (in `reduce_excess_by_one`). The badge 'wip' reflects this transitive incompleteness. Closing the parent's sorries would make this entry fully verified, completing the formal proof chain from Shapley-Folkman lemma to Starr's economic theorem."
+      "Lean formalization challenge — transitive sorry: this file has 0 direct sorries and 0 axioms, but depends on ShapleyFolkman.lean which has 1 unresolved sorry (at line 795, in `reduce_excess_by_one`). The badge 'wip' reflects this transitive incompleteness. Closing the parent's sorry would make this entry fully verified, completing the formal proof chain from Shapley-Folkman lemma to Starr's economic theorem."
     ],
     "prerequisites": [
       "Shapley-Folkman Lemma (sum_close_to_convexHull from ShapleyFolkman.lean)",
@@ -59,10 +59,10 @@
     "text": "Economic application of the Shapley-Folkman lemma: large markets are approximately convex, with approximation error bounded by dim(E)·δ independently of the number of agents."
   },
   "conclusion": {
-    "summary": "Formalizes Starr's (1969) economic application of the Shapley-Folkman lemma. Main contributions: convexHull_dist_le (distance lemma for convex hulls), shapley_folkman_starr (Starr's theorem with the d·δ bound), large_economy_near_convex (n-agent corollary), no_excess_for_convex (zero error for convex sets). 0 sorries, 0 local axioms; depends on 3 assumptions in parent ShapleyFolkman.lean.",
+    "summary": "Formalizes Starr's (1969) economic application of the Shapley-Folkman lemma. Main contributions: convexHull_dist_le (distance lemma for convex hulls), shapley_folkman_starr (Starr's theorem with the d·δ bound), large_economy_near_convex (n-agent corollary), no_excess_for_convex (zero error for convex sets). 0 sorries, 0 local axioms; depends on 1 sorry in parent ShapleyFolkman.lean (reduce_excess_by_one, line 795).",
     "implications": "Validates the use of convex analysis in large-market equilibrium theory. Non-convexities (indivisibilities, increasing returns) in individual agent preferences become negligible in aggregate markets with many participants.",
     "openQuestions": [
-      "Can the 3 sorries in ShapleyFolkman.lean (reduce_excess_by_one, lines 117, 187, 724) be eliminated to make this proof fully axiom-free? These are the remaining gaps in `reduce_excess_by_one`: a single step that reduces the excess index count by 1, which is the inductive heart of the Shapley-Folkman lemma.",
+      "Can the 1 sorry in ShapleyFolkman.lean (reduce_excess_by_one, line 795) be eliminated to make this proof fully axiom-free? This is the inductive heart of the Shapley-Folkman lemma: a single step that reduces the excess index count by 1 while maintaining the decomposition invariant.",
       "Does the bound dim(E)·δ admit a constructive proof of the approximating point x' (not just existence)? The current proof uses `Classical.choice` (via nonemptiness witnesses), so x' is not explicitly computable.",
       "Is there a version of the theorem with a tight bound? The bound dim(E)·δ is achieved when all non-convexity is concentrated in exactly d summands. Can a lower bound be proved showing no uniform constant < d works?"
     ]
@@ -119,6 +119,11 @@
       "targetId": "brouwer-fixed-point",
       "relationship": "related",
       "description": "Brouwer's fixed-point theorem is the classical tool for proving equilibrium existence in convex economies (Arrow-Debreu 1954). The Shapley-Folkman-Starr theorem provides an alternative path to approximate equilibria in non-convex economies, bypassing the convexity requirement by bounding non-convexity error. Both results are foundational for economic equilibrium theory."
+    },
+    {
+      "targetId": "minkowski-theorem",
+      "relationship": "related",
+      "description": "Minkowski's theorem in geometry-of-numbers is another result where lattice geometry and convexity interact to guarantee existence (of a lattice point in a symmetric convex body). The Shapley-Folkman theorem has an analogous structure: Minkowski sums of sets acquire convex hull properties, just as lattice points are forced into convex bodies by the volume condition."
     }
   ],
   "references": [
