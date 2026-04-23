@@ -116,22 +116,22 @@
   "crossReferences": [
     {
       "targetId": "denumerability-rationals",
-      "relationship": "parent-problem",
+      "relationship": "foundational",
       "description": "The parent proof establishes countability of ℚ; this proof extends the technique to all algebraic numbers ℚ̄ ∩ ℂ."
     },
     {
       "targetId": "cantor-diagonalization",
-      "relationship": "complement",
+      "relationship": "complementary",
       "description": "Cantor's diagonalization proves the reals are uncountable — the counterpart to this result, together establishing that transcendental numbers dominate ℝ."
     },
     {
       "targetId": "denumerability-rationals-oq-02",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "A sibling open question in the denumerability family exploring Cantor's characterization of ℚ as the unique countable dense linear order."
     },
     {
       "targetId": "denumerability-rationals-oq-03",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "The Stern-Brocot tree encoding of rationals provides an alternative constructive enumeration of ℚ, complementing this polynomial-based approach."
     }
   ],

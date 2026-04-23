@@ -113,12 +113,12 @@
   "crossReferences": [
     {
       "targetId": "erdos-1094",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Erdős Problem #1094 asks about the least prime factor of C(n,k), requiring it to be ≤ max(n/k, k) with finitely many exceptions. Both problems study the prime-factor structure of binomial coefficients under the condition n ≥ 2k, and share the same NoSmallPrimeFactors setting."
     },
     {
       "targetId": "kummer-theorem",
-      "relationship": "dependency",
+      "relationship": "foundational",
       "description": "Kummer's theorem (1852) characterizes v_p(C(n,k)) as the number of carries when adding k and n-k in base p. The NoSmallPrimeFactors condition in Problem #1093 is equivalent to zero carries in every base p ≤ k, making Kummer's theorem the central structural tool for the formalization."
     },
     {
@@ -128,7 +128,7 @@
     },
     {
       "targetId": "binomial-theorem",
-      "relationship": "foundation",
+      "relationship": "foundational",
       "description": "The Binomial Theorem provides the algebraic identity whose coefficient C(n,k) is the subject of Problem #1093. Understanding the prime structure of C(n,k) presupposes familiarity with its combinatorial definition as a falling factorial quotient."
     },
     {

@@ -147,17 +147,17 @@
   "crossReferences": [
     {
       "targetId": "fourier-series-oq-02",
-      "relationship": "parent",
+      "relationship": "foundational",
       "description": "Parent proof: quantitative Hölder decay ‖ĉ_n‖ ≤ (C/2)(T/2|n|)^α — this entry proves the same conclusion with a shorter qualitative argument"
     },
     {
       "targetId": "fourier-series",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "FourierSeries.lean provides fourierCoeff_tendsto_zero (L² Parseval-based RL) — the engine that drives this proof"
     },
     {
       "targetId": "fourier-series-oq-01",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "FourierSeriesOQ01 studies pointwise convergence of Fourier series; this entry studies coefficient decay"
     }
   ],

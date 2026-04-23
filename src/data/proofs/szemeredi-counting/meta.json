@@ -136,12 +136,12 @@
   "crossReferences": [
     {
       "targetId": "szemeredi-core",
-      "relationship": "depends-on",
+      "relationship": "foundational",
       "description": "Uses shared definitions from the core infrastructure module"
     },
     {
       "targetId": "szemeredi-regularity",
-      "relationship": "depends-on",
+      "relationship": "foundational",
       "description": "The counting and removal lemmas are direct applications of the Regularity Lemma"
     },
     {
@@ -151,7 +151,7 @@
     },
     {
       "targetId": "szemeredi-full",
-      "relationship": "used-by",
+      "relationship": "extended-by",
       "description": "The counting/removal lemma is used in the regularity proof of Szemeredi's theorem"
     }
   ],

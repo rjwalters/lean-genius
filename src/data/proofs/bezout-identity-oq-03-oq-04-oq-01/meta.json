@@ -111,17 +111,17 @@
   "crossReferences": [
     {
       "targetId": "bezout-identity-oq-03-oq-04",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "Parent: Efficient Verified CRT via Direct Bézout for ℤ. This file generalizes to arbitrary CommRing."
     },
     {
       "targetId": "bezout-identity",
-      "relationship": "grandparent",
+      "relationship": "foundational",
       "description": "Root Bézout identity entry: sm + tn = gcd(m,n). This entry uses IsCoprime (sm+tn=1 case) as the ring-theoretic generalization."
     },
     {
       "targetId": "bezout-identity-oq-03",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Sibling: multiple-moduli CRT via folding. This entry handles the two-moduli case over CommRing."
     }
   ],

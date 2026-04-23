@@ -110,12 +110,12 @@
   "crossReferences": [
     {
       "targetId": "intermediate-value-theorem",
-      "relationship": "parent-problem",
+      "relationship": "foundational",
       "description": "The parent IVT formalization; the 1D Brouwer proof in this file directly uses intermediate_value_zero_of_le from the IVT toolkit"
     },
     {
       "targetId": "schauder-fixed-point-oq-03",
-      "relationship": "related-problem",
+      "relationship": "related",
       "description": "Kakutani framework for infinite-dimensional extensions; the hierarchy documented here (IVT ⊂ Brouwer ⊂ Schauder) connects directly to the Schauder formalization"
     }
   ],

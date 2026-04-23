@@ -129,17 +129,17 @@
   "crossReferences": [
     {
       "targetId": "ballot-problem-oq-01",
-      "relationship": "parent",
+      "relationship": "foundational",
       "description": "Provides the Dvoretzky-Motzkin cycle lemma (cycle_lemma: |goodRotations l| = a - k*b), kCountedSequence definition, and algebraic infrastructure used throughout this file"
     },
     {
       "targetId": "ballot-problem-oq-03",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Provides Catalan number definition (Cn) and catalan_formula (Cn n * (n+1) = C(2n,n)), used in balanced_path_total"
     },
     {
       "targetId": "ballot-problem",
-      "relationship": "ancestor",
+      "relationship": "foundational",
       "description": "Classical Bertrand ballot theorem — the foundational result in this family of lattice path problems"
     }
   ],

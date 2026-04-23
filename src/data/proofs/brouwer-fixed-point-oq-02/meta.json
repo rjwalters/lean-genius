@@ -158,7 +158,7 @@
     },
     {
       "targetId": "intermediate-value-theorem",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "IVT provides the 1D fixed-point existence via exists_mem_Icc_isFixedPt_of_mapsTo — the binary search algorithm in this file exploits IVT's constructive nature to achieve O(log 1/ε) convergence"
     },
     {

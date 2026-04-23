@@ -183,17 +183,17 @@
   "crossReferences": [
     {
       "targetId": "geometric-series",
-      "relationship": "parent",
+      "relationship": "foundational",
       "description": "This entry investigates the boundary behavior at $|r| = 1$ for the geometric series $\\sum r^n$, which the parent entry proves converges to $1/(1-r)$ for $|r| < 1$. The parent provides the algebraic foundation (`mul_neg_geom_sum`) used throughout this proof."
     },
     {
       "targetId": "geometric-series-oq-02",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "The Neumann series $(I-T)^{-1} = \\sum T^k$ generalizes the scalar geometric series to bounded operators. This entry treats the scalar boundary $|r| = 1$; the Neumann series entry extends to the operator setting where the spectral radius replaces $|r|$."
     },
     {
       "targetId": "harmonic-divergence",
-      "relationship": "contrasts",
+      "relationship": "related",
       "description": "Both entries study divergent series, but through different mechanisms: the harmonic series $\\sum 1/n$ diverges despite terms tending to zero (they vanish too slowly), while the geometric series at $|r| = 1$ diverges because terms don't tend to zero at all. This illustrates the necessary-but-not-sufficient nature of the vanishing condition."
     },
     {

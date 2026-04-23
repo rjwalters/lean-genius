@@ -113,17 +113,17 @@
   "crossReferences": [
     {
       "proofId": "quadratic-reciprocity-algorithm",
-      "relationship": "Parent proof",
+      "relationship": "foundational",
       "description": "The parent proof demonstrates QR as a computation algorithm with verified examples; this entry answers the open question by providing a fully recursive implementation with termination and correctness proofs."
     },
     {
       "proofId": "quadratic-reciprocity",
-      "relationship": "Foundation",
+      "relationship": "related",
       "description": "The underlying Law of Quadratic Reciprocity that makes the algorithm work — the swap step (a/b) -> +/-(b mod a / a) is justified by this law."
     },
     {
       "proofId": "elementary-quadratic-reciprocity",
-      "relationship": "Related proof",
+      "relationship": "related",
       "description": "An elementary proof of quadratic reciprocity using Gauss sums, providing the theoretical foundation that this algorithmic entry makes computational."
     }
   ],

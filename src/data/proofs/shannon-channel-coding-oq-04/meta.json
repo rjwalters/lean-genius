@@ -150,12 +150,12 @@
     },
     {
       "targetId": "shannon-entropy",
-      "relationship": "specializes",
+      "relationship": "related",
       "description": "Binary entropy is Shannon entropy for the Bernoulli(p) distribution on {0,1}"
     },
     {
       "targetId": "shannon-source-coding",
-      "relationship": "supports",
+      "relationship": "foundational",
       "description": "Binary entropy h(p) determines the optimal compression rate for a Bernoulli(p) source via Shannon's source coding theorem"
     }
   ],

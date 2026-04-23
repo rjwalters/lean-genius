@@ -154,12 +154,12 @@
     },
     {
       "targetId": "prob-method-expectation",
-      "relationship": "technique",
+      "relationship": "related",
       "description": "Kleitman's proof uses probabilistic/entropy arguments showing that random antichains concentrate near the middle layer. The first moment method gives the lower bound: random subfamilies of the middle layer are antichains with high probability"
     },
     {
       "targetId": "stirling-formula",
-      "relationship": "technique",
+      "relationship": "related",
       "description": "Stirling's approximation gives C(n, ⌊n/2⌋) ~ 2^n · √(2/(πn)), converting the Dedekind number asymptotics from binomial coefficient form to exponential form: log₂ D(n) ~ 2^n / √(πn/2)"
     }
   ],

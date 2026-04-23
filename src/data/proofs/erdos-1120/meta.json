@@ -148,7 +148,7 @@
   "crossReferences": [
     {
       "targetId": "erdos-1041",
-      "relationship": "companion",
+      "relationship": "related",
       "description": "The most directly linked problem: #1041 asks whether a path of length less than 2 always exists within {|f(z)| < 1} connecting two roots of a unit-disk-rooted monic polynomial. Both problems concern path geometry in polynomial sublevel sets; #1041 gives an upper bound on path length while #1120 asks whether the infimal path length to the unit circle diverges with degree."
     },
     {
@@ -163,12 +163,12 @@
     },
     {
       "targetId": "erdos-114",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Problem #114 asks whether the arc length of the level curve {|p(z)| = 1} is maximized by z^n - 1 among monic degree-n polynomials. Both problems concern extremal geometry of polynomial lemniscates; #114 optimizes boundary arc length while #1120 optimizes interior path length to the unit circle, and both expect z^n (or z^n - 1) to be near-extremal."
     },
     {
       "targetId": "erdos-1115",
-      "relationship": "analogous",
+      "relationship": "related",
       "description": "Problem #1115 asks for the growth rate of paths to infinity along which an entire function of finite order grows slowly (analogous to shortest paths in sublevel sets for entire rather than polynomial functions). Both probe how efficiently one can traverse regions where a complex function stays bounded, and results for entire functions (Gol'dberg-Eremenko disproof) inform expectations for the polynomial case."
     },
     {

@@ -131,17 +131,17 @@
   ],
   "crossReferences": [
     {
-      "relationship": "ancestor",
+      "relationship": "foundational",
       "description": "The root formalization of Bézout's identity, which establishes the extended Euclidean algorithm used here",
       "targetId": "bezout-identity"
     },
     {
-      "relationship": "ancestor",
+      "relationship": "foundational",
       "description": "Euclid's lemma via coprimality — the classical (noncomputable) version that this entry makes computable",
       "targetId": "bezout-identity-oq-02"
     },
     {
-      "relationship": "parent",
+      "relationship": "foundational",
       "description": "The direct parent: constructive divisibility via Bézout coefficients using classical choice (`hdvd.choose`)",
       "targetId": "bezout-identity-oq-02-oq-02-oq-01"
     },

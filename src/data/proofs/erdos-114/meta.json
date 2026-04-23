@@ -121,7 +121,7 @@
   "crossReferences": [
     {
       "targetId": "erdos-115",
-      "relationship": "companion-problem",
+      "relationship": "complementary",
       "description": "Erdős #115 asks for bounds on |p'(z)| on connected lemniscates (Eremenko-Lempert, Chebyshev extremals), while #114 asks which monic polynomial maximizes lemniscate arc length. Both are solved for special cases and share Eremenko as a key contributor."
     },
     {
@@ -131,7 +131,7 @@
     },
     {
       "targetId": "erdos-1042",
-      "relationship": "prerequisite",
+      "relationship": "foundational",
       "description": "Erdős #1042 studies the number of connected components of polynomial lemniscates {|f(z)| < 1} as a function of transfinite diameter. Understanding lemniscate topology (connected vs. disconnected) is prerequisite to the length maximization in #114."
     },
     {
@@ -146,7 +146,7 @@
     },
     {
       "targetId": "isoperimetric-theorem",
-      "relationship": "isoperimetric-analogy",
+      "relationship": "related",
       "description": "The classical isoperimetric theorem (circle maximizes area for fixed perimeter) provides the philosophical template for #114. Both problems find a symmetric extremizer—circle for the classical case, z^n-1 (with D_n symmetry) for the polynomial lemniscate case."
     }
   ],

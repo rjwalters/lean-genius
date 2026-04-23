@@ -139,12 +139,12 @@
   ],
   "crossReferences": [
     {
-      "relationship": "parent",
+      "relationship": "foundational",
       "description": "The base Cantor's theorem proof; this entry derives it as a corollary of Lawvere's fixed-point theorem",
       "targetId": "cantors-theorem"
     },
     {
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "OQ-01 explores cardinality aspects of Cantor's theorem; OQ-02 explores the categorical unification via Lawvere",
       "targetId": "cantors-theorem-oq-01"
     },
@@ -159,12 +159,12 @@
       "targetId": "godel-incompleteness"
     },
     {
-      "relationship": "contrast",
+      "relationship": "related",
       "description": "Brouwer's fixed-point theorem guarantees fixed points for continuous maps on compact convex sets — a topological analog, whereas Lawvere's theorem forces fixed points from surjectivity",
       "targetId": "brouwer-fixed-point"
     },
     {
-      "relationship": "contrast",
+      "relationship": "related",
       "description": "Schauder's fixed-point theorem extends Brouwer to infinite dimensions; both contrast with Lawvere's algebraic/categorical fixed-point result",
       "targetId": "schauder-fixed-point"
     }

@@ -134,12 +134,12 @@
   "crossReferences": [
     {
       "targetId": "schauder-fixed-point",
-      "relationship": "used-by",
+      "relationship": "extended-by",
       "description": "The projection lemma is the key technical ingredient: it approximates a compact operator by finite-rank operators, reducing the infinite-dimensional Schauder theorem to the finite-dimensional Brouwer theorem. This entry resolves a sorry in SchauderFixedPoint.lean"
     },
     {
       "targetId": "brouwer-fixed-point",
-      "relationship": "depends-on",
+      "relationship": "foundational",
       "description": "Schauder's theorem generalizes Brouwer's from finite to infinite dimensions: the projection lemma maps into a finite-dimensional convex hull where Brouwer applies, then the approximation argument lifts the fixed point back to the infinite-dimensional space"
     },
     {

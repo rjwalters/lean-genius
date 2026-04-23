@@ -161,7 +161,7 @@
     },
     {
       "targetId": "szemeredi-full",
-      "relationship": "used-by",
+      "relationship": "extended-by",
       "description": "Roth's theorem is the k=3 base case of the full Szemeredi theorem"
     },
     {
@@ -196,7 +196,7 @@
     },
     {
       "targetId": "bounded-prime-gaps",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both are landmark results in analytic/additive number theory about structure in the integers. The Green-Tao theorem (2004) extended Roth's density increment method to prove the primes contain arbitrarily long APs, and Zhang's bounded gaps result (2013) uses similar sieve-theoretic density arguments"
     }
   ],

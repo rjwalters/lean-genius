@@ -188,7 +188,7 @@
     },
     {
       "targetId": "amgm-inequality",
-      "relationship": "technique",
+      "relationship": "related",
       "description": "The AM-GM inequality proves Motzkin's polynomial is non-negative: x⁴y² + x²y⁴ + 1 ≥ 3x²y² follows directly from AM-GM on three terms. This is the simplest proof of PSD for the first known non-SOS polynomial."
     },
     {
@@ -198,7 +198,7 @@
     },
     {
       "targetId": "cayley-hamilton",
-      "relationship": "technique",
+      "relationship": "related",
       "description": "The Gram matrix / Cholesky approach to quadratic SOS uses matrix theory: a quadratic form q(x) = xᵀQx is SOS iff Q ≽ 0 iff Q = LᵀL (Cholesky). Cayley-Hamilton and matrix polynomial theory underpin these decompositions."
     }
   ],

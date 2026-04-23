@@ -99,12 +99,12 @@
   },
   "crossReferences": [
     {
-      "relationship": "companion",
+      "relationship": "related",
       "description": "Erdős #1042 studies the number of connected components of polynomial lemniscates and their transfinite diameter. Problem #1044 asks about the boundary length of those same components — the two problems share the same geometric setup (sublevel sets of monic polynomials with roots in the unit disk) and together characterize both the topology and the metric geometry of polynomial lemniscates.",
       "targetId": "erdos-1042"
     },
     {
-      "relationship": "companion",
+      "relationship": "related",
       "description": "Erdős #1041 asks whether any two points in the same connected component of a polynomial sublevel set can be joined by a short path. Problem #1044 bounds the boundary length of those components. Both results quantify how 'thin' or 'large' the components can be.",
       "targetId": "erdos-1041"
     },
@@ -124,7 +124,7 @@
       "targetId": "erdos-1040"
     },
     {
-      "relationship": "prerequisite",
+      "relationship": "foundational",
       "description": "The fundamental theorem of algebra guarantees that every degree-n polynomial has exactly n roots (counted with multiplicity), which is essential for the root-in-disk hypothesis and the roots-of-unity construction used by Tang.",
       "targetId": "fundamental-theorem-algebra"
     }

@@ -111,17 +111,17 @@
     },
     {
       "targetId": "szemeredi-core",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "The graph regularity IsEpsilonRegular in SzemerediCore.lean is the k=2 special case of IsGowersRegular when the complex is the complete bipartite structure."
     },
     {
       "targetId": "szemeredi-regularity",
-      "relationship": "analogizes",
+      "relationship": "related",
       "description": "The graph regularity machinery (energy increment, density convexity) in szemeredi-regularity follows the same structural pattern as the hypergraph regularity lemma here. Both rely on an energy function that increases on each refinement step, with wowzer-type bounds in the hypergraph case."
     },
     {
       "targetId": "szemeredi-counting",
-      "relationship": "enables",
+      "relationship": "related",
       "description": "The hypergraph counting lemma (szemeredi-counting) generalizes to k-uniform hypergraphs only under Gowers' relative regularity, not naive regularity. The SimplicialComplex and relativeDensity defined here are direct prerequisites for formalizing the hypergraph counting lemma."
     },
     {
@@ -131,12 +131,12 @@
     },
     {
       "targetId": "szemeredi-hypergraph-core-oq-01-incomplete-01",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "A parallel formalization of the same Gowers infrastructure using a stratified (indexed-by-level) approach instead of a flat SimplicialComplex. The two approaches trade different proof obligations; comparing them reveals the design space for hypergraph regularity formalization."
     },
     {
       "targetId": "szemeredi-theorem",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "The k=3 Szemerédi theorem (Roth's theorem) follows from graph regularity alone. The hypergraph regularity machinery here is required for k≥4, making szemeredi-theorem a special case that avoids all this complexity."
     }
   ],

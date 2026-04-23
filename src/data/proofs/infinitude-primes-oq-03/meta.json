@@ -144,12 +144,12 @@
     },
     {
       "targetId": "dirichlets-theorem",
-      "relationship": "special-case",
+      "relationship": "related",
       "description": "Dirichlet's theorem (1837) proves infinitely many primes in every arithmetic progression gcd(a,d)=1. This file proves the special case a=2, d=3 elementarily, avoiding Dirichlet's L-function machinery."
     },
     {
       "targetId": "infinitude-primes-4k3",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Analogous elementary proof for primes ≡ 3 (mod 4) using N = 4·n! - 1. Same Euclid-style construction for the a ≡ -1 (mod d) case."
     }
   ],

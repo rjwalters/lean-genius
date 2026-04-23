@@ -97,12 +97,12 @@
     },
     {
       "targetId": "cube-root-2-irrational-oq-03",
-      "relationship": "depends",
+      "relationship": "foundational",
       "description": "Imports eisenstein_X_pow_sub_of_sqfree_factor from CubeRoot2IrrationalOQ03, which proves the general Eisenstein + minpoly degree theorem."
     },
     {
       "targetId": "angle-trisection",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "AngleTrisection also uses Eisenstein irreducibility (for 8X³−6X+1) as the key step in proving angle trisection is impossible. Same algebraic technique applied to a different polynomial."
     }
   ],

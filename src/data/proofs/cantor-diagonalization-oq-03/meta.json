@@ -155,12 +155,12 @@
   "crossReferences": [
     {
       "targetId": "cantor-diagonalization",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "The base Cantor proof uses the diagonal argument directly; this proof derives it as a corollary of the more general Lawvere fixed-point theorem"
     },
     {
       "targetId": "cantors-theorem",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "Cantor's theorem (|S| < |P(S)|) follows from Lawvere by taking B = Prop and f = Not"
     },
     {

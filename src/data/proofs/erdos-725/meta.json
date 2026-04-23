@@ -182,7 +182,7 @@
   "crossReferences": [
     {
       "targetId": "derangements",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "L(2,n) = n! · D(n) where D(n) counts derangements — the second row of a 2×n Latin rectangle must be a derangement of the first"
     },
     {
@@ -192,7 +192,7 @@
     },
     {
       "targetId": "inclusion-exclusion",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The Erdős-Kaplansky proof uses inclusion-exclusion over column collision events to derive the asymptotic formula"
     },
     {
@@ -202,7 +202,7 @@
     },
     {
       "targetId": "combinations-formula",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The binomial coefficient C(k,2) = k(k-1)/2 appears in the exponential correction factor of the Erdős-Kaplansky formula"
     }
   ],

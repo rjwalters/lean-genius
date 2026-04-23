@@ -213,12 +213,12 @@
     },
     {
       "targetId": "area-of-circle",
-      "relationship": "applied-in",
+      "relationship": "related",
       "description": "The area of a circle $\\pi r^2$ is the Lebesgue measure of the disk $\\{(x,y) : x^2 + y^2 \\leq r^2\\}$. Computing this via Fubini's theorem (iterated integration) or via the co-area formula demonstrates Lebesgue measure theory in its most classical geometric application."
     },
     {
       "targetId": "erdos-1124",
-      "relationship": "applied-in",
+      "relationship": "related",
       "description": "Tarski's circle-squaring problem (Erdős #1124) asks whether a disk can be partitioned into finitely many pieces and rearranged into a square of equal area. Laczkovich's solution (1990) uses $\\sim 10^{50}$ non-measurable pieces — the Lebesgue measure framework is essential for understanding which pieces preserve area."
     },
     {
@@ -228,7 +228,7 @@
     },
     {
       "targetId": "buffons-needle",
-      "relationship": "applied-in",
+      "relationship": "related",
       "description": "Buffon's needle problem computes the probability $2L/(\\pi d)$ that a needle of length $L$ crosses a line in a grid of spacing $d$. The proof requires integrating over the position and angle of the needle — a double integral computed with Lebesgue (or Riemann) integration and Fubini's theorem."
     }
   ],

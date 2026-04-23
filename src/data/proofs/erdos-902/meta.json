@@ -165,7 +165,7 @@
     },
     {
       "targetId": "erdos-165",
-      "relationship": "technique",
+      "relationship": "related",
       "description": "Erdős #165 on R(3,k) — the Ramsey number for triangle-free graphs — uses the probabilistic method and the Lovász Local Lemma to establish asymptotic bounds, the same core technique that gives the upper bound f(n) ≤ O(n²·2^n) in tournament domination. Both problems exemplify how probabilistic existence proofs yield the best known upper bounds in extremal combinatorics."
     },
     {
@@ -175,7 +175,7 @@
     },
     {
       "targetId": "quadratic-reciprocity",
-      "relationship": "prerequisite",
+      "relationship": "foundational",
       "description": "Quadratic reciprocity and the Legendre symbol underpin the Paley tournament construction central to Problem #902. The Paley tournament on a prime p ≡ 3 (mod 4) directs edge a → b iff (b−a)/p = 1 (a quadratic residue). The fact that exactly (p−1)/2 nonzero elements are quadratic residues — a consequence of the theory formalized in quadratic reciprocity — gives Paley tournaments their symmetric structure and optimal domination properties."
     },
     {
@@ -190,7 +190,7 @@
     },
     {
       "targetId": "erdos-900",
-      "relationship": "technique",
+      "relationship": "related",
       "description": "Erdős #900 on longest paths in sparse random graphs G(n, cn) uses the probabilistic method to show phase transitions in random graph structure. The upper bound for tournament domination similarly analyzes random tournaments: a random tournament on O(n²·2^n) vertices is n-dominating with positive probability. Both problems illustrate how random combinatorial objects achieve extremal properties that are hard to construct explicitly."
     }
   ],

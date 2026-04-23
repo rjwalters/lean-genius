@@ -259,7 +259,7 @@
     },
     {
       "targetId": "harmonic-divergence",
-      "relationship": "contrasts",
+      "relationship": "related",
       "description": "$\\sum 1/n$ diverges ($p=1$) while $\\sum 1/n^2$ converges ($p=2$) — the boundary between convergence and divergence at $p=1$"
     },
     {
@@ -269,7 +269,7 @@
     },
     {
       "targetId": "fourier-series",
-      "relationship": "technique",
+      "relationship": "related",
       "description": "The modern proof uses Parseval's theorem: applying it to $f(x) = x$ on $[-\\pi, \\pi]$ directly yields $\\sum 1/n^2 = \\pi^2/6$"
     },
     {
@@ -289,7 +289,7 @@
     },
     {
       "targetId": "vietas-formulas",
-      "relationship": "technique",
+      "relationship": "related",
       "description": "Euler's proof applies Vieta's formulas to the infinite product $\\sin(x)/x = \\prod(1 - x^2/n^2\\pi^2)$, matching the $x^2$ coefficient to get $\\sum 1/n^2\\pi^2 = 1/6$"
     },
     {

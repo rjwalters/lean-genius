@@ -168,12 +168,12 @@
   "crossReferences": [
     {
       "targetId": "derangements",
-      "relationship": "applies",
+      "relationship": "related",
       "description": "The derangement formula D(n) = n!·Σ(-1)^k/k! is a direct application of inclusion-exclusion to count permutations with no fixed points"
     },
     {
       "targetId": "euler-totient",
-      "relationship": "applies",
+      "relationship": "related",
       "description": "Euler's totient φ(n) = n·Π(1-1/p) uses inclusion-exclusion to count integers coprime to n"
     },
     {
@@ -183,7 +183,7 @@
     },
     {
       "targetId": "combinations-formula",
-      "relationship": "prerequisite",
+      "relationship": "foundational",
       "description": "Binomial coefficients C(n,k) appear in the general n-set inclusion-exclusion formula as weights on intersection terms"
     },
     {
@@ -193,7 +193,7 @@
     },
     {
       "targetId": "birthday-problem",
-      "relationship": "applies",
+      "relationship": "related",
       "description": "The birthday problem can be solved via inclusion-exclusion: P(at least one shared birthday) = 1 - P(all distinct), where P(all distinct) avoids the overcounting that inclusion-exclusion corrects"
     },
     {

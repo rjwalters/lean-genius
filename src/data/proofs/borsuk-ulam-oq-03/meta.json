@@ -171,7 +171,7 @@
     },
     {
       "targetId": "brouwer-fixed-point",
-      "relationship": "proves",
+      "relationship": "related",
       "description": "This file proves Brouwer's fixed-point theorem as a corollary of the no-retraction theorem, which in turn follows from Borsuk-Ulam — completing the classical equivalence chain BU → no-retraction → Brouwer FP"
     },
     {
@@ -181,7 +181,7 @@
     },
     {
       "targetId": "intermediate-value-theorem",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The IVT is the fundamental engine for the constructive 1D proof: applied to the antisymmetric difference g(x) = f(x) - f(-x) to find a zero"
     },
     {

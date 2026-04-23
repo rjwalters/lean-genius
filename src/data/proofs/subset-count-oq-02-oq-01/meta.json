@@ -93,17 +93,17 @@
   "crossReferences": [
     {
       "targetId": "subset-count-oq-02",
-      "relationship": "answers",
+      "relationship": "related",
       "description": "Answers the OQ raised in subset-count-oq-02 about whether ∏(mᵢ+1) can be formalized using Multiset.toFinset multiplicity counting"
     },
     {
       "targetId": "subset-count-multiset-oq-01",
-      "relationship": "parallel",
+      "relationship": "complementary",
       "description": "SubsetCountMultisetOQ01 builds the distinctSubMultisets API from scratch; this proof uses Mathlib's built-in Multiset.card_Iic directly"
     },
     {
       "targetId": "subset-count",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "The nodup specialization recovers the set powerset count 2^n from subset-count"
     }
   ],

@@ -138,27 +138,27 @@
   "crossReferences": [
     {
       "targetId": "erdos-89",
-      "relationship": "specializes",
+      "relationship": "related",
       "description": "The 2D base case: Guth-Katz proved f_2(n) ≥ cn/log n using polynomial partitioning, but these techniques do not extend to d ≥ 3 where the problem remains open."
     },
     {
       "targetId": "erdos-1082",
-      "relationship": "companion",
+      "relationship": "related",
       "description": "Distinct distances with no-three-collinear constraint. Shares the Erdős 1946 lower bound strategy and the challenge of exploiting structural restrictions on point sets."
     },
     {
       "targetId": "erdos-1084",
-      "relationship": "companion",
+      "relationship": "related",
       "description": "Unit-distance variant with separation constraint. The separation condition transforms the incidence geometry, directly relating unit-distance and distinct-distance exponents."
     },
     {
       "targetId": "erdos-1084-oq-01",
-      "relationship": "companion",
+      "relationship": "related",
       "description": "The 3D correction term conjecture f_3(n) = 6n − Θ(n^{2/3}). The isoperimetric exponent (d−1)/d and the distinct-distance exponent 2/d both arise from dimensional scaling."
     },
     {
       "targetId": "erdos-1085",
-      "relationship": "companion",
+      "relationship": "related",
       "description": "The unit distance problem: how many pairs at distance 1? The dual question to minimizing distinct distances — both probe the extremal structure of distance multisets."
     },
     {
@@ -173,7 +173,7 @@
     },
     {
       "targetId": "erdos-95",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Sum-of-squared-multiplicities bounds: the polynomial method and Guth-Katz ruling surfaces used there are the same tools sought for extending distinct-distance results to d ≥ 3."
     },
     {

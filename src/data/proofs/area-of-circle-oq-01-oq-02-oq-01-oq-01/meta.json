@@ -115,12 +115,12 @@
   "crossReferences": [
     {
       "targetId": "area-of-circle-oq-01-oq-02-oq-01",
-      "relationship": "parent",
+      "relationship": "foundational",
       "description": "Parent OQ defining unitBallVolume and proving V_n(r) = ∫₀ʳ S_n(ρ) dρ"
     },
     {
       "targetId": "area-of-circle",
-      "relationship": "ancestor",
+      "relationship": "foundational",
       "description": "Root proof: A = πr² for the circle, the starting point of this OQ chain"
     }
   ],

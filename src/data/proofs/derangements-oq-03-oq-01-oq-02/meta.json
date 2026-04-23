@@ -135,12 +135,12 @@
     },
     {
       "targetId": "derangements-oq-03",
-      "relationship": "depends-on",
+      "relationship": "foundational",
       "description": "Builds on the convergence rate D(n)/n! → 1/e and the alternating series infrastructure."
     },
     {
       "targetId": "derangements",
-      "relationship": "depends-on",
+      "relationship": "foundational",
       "description": "Uses the derangement counting formula D(n) = n! · ∑_{k=0}^n (-1)^k/k!."
     }
   ],

@@ -159,12 +159,12 @@
     },
     {
       "targetId": "binomial-theorem",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The ballot formula relies on binomial coefficients C(p+q,p) and C(p+q,q) for counting lattice paths"
     },
     {
       "targetId": "combinations-formula",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The ballot probability is a ratio of binomial coefficients C(p+q,p); the counting argument relies on the combinations formula"
     },
     {

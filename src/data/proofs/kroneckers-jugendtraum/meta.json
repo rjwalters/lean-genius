@@ -148,47 +148,47 @@
   "crossReferences": [
     {
       "targetId": "continuum-hypothesis",
-      "relationship": "Hilbert Problems",
+      "relationship": "related",
       "description": "Both are Hilbert problems (12th and 1st respectively). Hilbert's 12th connects number theory to analysis; Hilbert's 1st connects set theory to cardinal arithmetic."
     },
     {
       "targetId": "hilbert-9-reciprocity",
-      "relationship": "Reciprocity Laws",
+      "relationship": "related",
       "description": "Hilbert's 9th problem asks for the most general reciprocity law in number fields. Artin reciprocity, which underlies Kronecker's Jugendtraum via class field theory, is the answer to Hilbert 9 for abelian extensions."
     },
     {
       "targetId": "hilbert-11",
-      "relationship": "Algebraic Number Theory",
+      "relationship": "related",
       "description": "Hilbert's 11th problem concerns quadratic forms over number fields. Both problems require deep understanding of number field arithmetic and share the class field theory framework."
     },
     {
       "targetId": "quadratic-reciprocity",
-      "relationship": "Reciprocity Laws",
+      "relationship": "related",
       "description": "Quadratic reciprocity is the simplest reciprocity law and a precursor to Artin reciprocity. Kronecker-Weber generalizes it: quadratic extensions of ℚ are cyclotomic, which encodes the splitting behavior that quadratic reciprocity describes."
     },
     {
       "targetId": "euler-totient",
-      "relationship": "Cyclotomic Fields",
+      "relationship": "related",
       "description": "Euler's totient function φ(n) gives the degree [ℚ(ζₙ):ℚ] = φ(n) and the order of the Galois group (ℤ/nℤ)×, both proved in the formalization."
     },
     {
       "targetId": "inverse-galois",
-      "relationship": "Galois Theory",
+      "relationship": "related",
       "description": "The Inverse Galois Problem asks which groups appear as Galois groups over ℚ. Kronecker-Weber completely answers this for abelian groups: every finite abelian group is Gal(L/ℚ) for some cyclotomic subfield L."
     },
     {
       "targetId": "fermats-last-theorem",
-      "relationship": "Cyclotomic Fields",
+      "relationship": "related",
       "description": "Kummer's approach to Fermat's Last Theorem used cyclotomic fields ℚ(ζₚ) and their arithmetic, the same fields that are central to Kronecker-Weber. Both problems drove the development of algebraic number theory."
     },
     {
       "targetId": "abel-ruffini",
-      "relationship": "Galois Theory",
+      "relationship": "related",
       "description": "Abel-Ruffini uses the non-solvability of S₅ to show general quintics are not solvable by radicals. Kronecker-Weber uses the abelianness (extreme solvability) of cyclotomic Galois groups to classify abelian extensions. Both are landmark applications of Galois theory."
     },
     {
       "targetId": "primitive-roots",
-      "relationship": "Cyclotomic Fields",
+      "relationship": "related",
       "description": "Primitive roots modulo primes are closely related to generators of cyclic Galois groups Gal(ℚ(ζₚ)/ℚ) ≅ (ℤ/pℤ)×, which is cyclic of order p-1. The existence of primitive roots is equivalent to cyclicity of this Galois group."
     }
   ],

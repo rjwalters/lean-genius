@@ -119,12 +119,12 @@
   "crossReferences": [
     {
       "targetId": "lebesgue-measure",
-      "relationship": "parent-problem",
+      "relationship": "foundational",
       "description": "Banach-Tarski is the strongest consequence of the existence of non-measurable sets: it shows that the failure of measurability is not merely quantitative (some sets lack measure) but qualitative (the ball can be literally duplicated). The parent entry introduces the Lebesgue measure and why it requires restriction to measurable sets"
     },
     {
       "targetId": "lebesgue-measure-oq-03",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Both expose fundamental limitations of Lebesgue measure from different directions: OQ-03 shows infinite-dimensional impossibility (no translation-invariant measure in infinite dimensions), while OQ-06 shows 3D paradox via the non-amenability of SO(3). Together they delimit the extent of Lebesgue measure's naturality"
     },
     {

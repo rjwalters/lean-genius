@@ -126,12 +126,12 @@
   "crossReferences": [
     {
       "targetId": "nth-root-irrational",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "Generalizes to nth roots: √[n]{m} is irrational iff m is not a perfect nth power"
     },
     {
       "targetId": "fundamental-arithmetic",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Unique prime factorization underlies the argument: if p² | a² then p | a, which requires that prime multiplicities in a² are always even"
     },
     {
@@ -171,7 +171,7 @@
     },
     {
       "targetId": "cantor-diagonalization",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both prove that certain sets are 'too large' for a given description: $\\sqrt{2} \\notin \\mathbb{Q}$ shows irrationals exist, while Cantor proves the irrationals are uncountably many. The irrationality of $\\sqrt{2}$ is the first concrete witness; Cantor shows such numbers are the overwhelming majority"
     },
     {

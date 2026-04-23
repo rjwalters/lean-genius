@@ -126,7 +126,7 @@
   "crossReferences": [
     {
       "targetId": "ramseys-theorem",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Off-diagonal Ramsey numbers R(3,k) directly impact the upper bound on g(r); recent progress on R(3,k) by Campos et al. is what enables the HHKP upper bound g(r) ≤ (2+o(1))r² log r."
     },
     {
@@ -151,7 +151,7 @@
     },
     {
       "targetId": "szemeredi-regularity",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Szemerédi's Regularity Lemma is the principal tool in proving asymptotic Turán-type results; the Simonovits asymptotic for f_r(n) relies on regularity-based graph decompositions."
     }
   ],

@@ -105,12 +105,12 @@
   },
   "crossReferences": [
     {
-      "relationship": "companion",
+      "relationship": "related",
       "description": "Erdős Problem #102 asks for the maximum collinearity forced when n points contain cn² four-rich lines—the direct structural companion to #101's question about whether such dense configurations can exist at all.",
       "targetId": "erdos-102"
     },
     {
-      "relationship": "generalization",
+      "relationship": "extends",
       "description": "Erdős Problem #588 generalizes #101: is f_k(n) = o(n²) for all k ≥ 4? The Solymosi–Stojaković n^{2−o(1)} lower bound applies to both problems, and resolving one would likely resolve the other.",
       "targetId": "erdos-588"
     },
@@ -130,7 +130,7 @@
       "targetId": "erdos-100"
     },
     {
-      "relationship": "tool",
+      "relationship": "related",
       "description": "The Szemerédi–Trotter incidence theorem (formalized in this project) is the primary upper-bound tool referenced in #101: it bounds point-line incidences but yields only O(n²) for four-point lines without further structural input.",
       "targetId": "szemeredi-theorem"
     }

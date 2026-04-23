@@ -185,12 +185,12 @@
   "crossReferences": [
     {
       "targetId": "fermat-two-squares",
-      "relationship": "applies-to",
+      "relationship": "related",
       "description": "Minkowski's theorem provides the canonical geometric proof of Fermat's two-squares theorem: the disk $x^2+y^2 < 2p$ applied to the sublattice $\\{(a,b): a \\equiv kb \\pmod{p}\\}$ yields $p = a^2+b^2$ for primes $p \\equiv 1 \\pmod{4}$"
     },
     {
       "targetId": "lagrange-four-squares",
-      "relationship": "applies-to",
+      "relationship": "related",
       "description": "Lagrange's four-squares theorem ($n = a^2+b^2+c^2+d^2$) can be proved via Minkowski applied to quaternion lattices in $\\mathbb{R}^4$, a natural extension of the two-squares argument"
     },
     {
@@ -210,12 +210,12 @@
     },
     {
       "targetId": "dirichlets-theorem",
-      "relationship": "technique",
+      "relationship": "related",
       "description": "Dirichlet's approximation theorem ($|\\alpha - p/q| < 1/qQ$ for $1 \\leq q \\leq Q$) follows from Minkowski applied to a thin parallelogram in $\\mathbb{R}^2$ with area $> 4$"
     },
     {
       "targetId": "prime-number-theorem",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both are foundational 19th-century results connecting geometry/analysis to number theory -- Minkowski via lattice geometry and volumes, PNT via complex analysis of the zeta function"
     },
     {
@@ -225,12 +225,12 @@
     },
     {
       "targetId": "brouwer-fixed-point",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both use topological/geometric properties of convex sets to guarantee existence of distinguished points -- Brouwer via continuous maps on compact convex sets, Minkowski via volume and symmetry"
     },
     {
       "targetId": "four-color-theorem",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both are celebrated existence theorems where the proof method (pigeonhole/counting for Minkowski, reducibility/discharging for four-color) provides existence without explicit construction"
     }
   ],

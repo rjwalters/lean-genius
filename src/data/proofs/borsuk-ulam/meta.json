@@ -191,7 +191,7 @@
   "crossReferences": [
     {
       "targetId": "brouwer-fixed-point",
-      "relationship": "implication",
+      "relationship": "related",
       "description": "Borsuk-Ulam implies Brouwer's Fixed Point Theorem: the retraction proof shows that a continuous map without a fixed point would yield an antipode-preserving map, contradicting Borsuk-Ulam"
     },
     {
@@ -221,12 +221,12 @@
     },
     {
       "targetId": "poincare-conjecture",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both are landmark results in the topology of spheres. Borsuk-Ulam concerns the symmetry structure of $S^n$ (no odd map $S^n \\to S^{n-1}$), while the Poincaré conjecture characterizes $S^3$ among 3-manifolds by its fundamental group. Both rely on homotopy-theoretic invariants ($\\pi_1$ for Borsuk-Ulam's covering space argument, the full homotopy type for Poincaré) and both were solved using deep analytic/topological methods"
     },
     {
       "targetId": "four-color-theorem",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both connect topology to combinatorics. Borsuk-Ulam implies Kneser's conjecture on graph chromatic numbers via Lovász's 1978 proof, founding topological combinatorics. The four-color theorem concerns the chromatic number of planar graphs. Together they illustrate how topology constrains coloring: Borsuk-Ulam provides lower bounds ($\\chi(K(n,k)) \\geq n - 2k + 2$) while the four-color theorem provides an upper bound ($\\chi(G) \\leq 4$ for planar $G$)"
     },
     {
@@ -236,7 +236,7 @@
     },
     {
       "targetId": "erdos-780",
-      "relationship": "applied-in",
+      "relationship": "related",
       "description": "Erdős Problem #780 concerns the chromatic number of Kneser hypergraphs, generalizing Lovász's 1978 proof of Kneser's conjecture ($\\chi(KG(n,k)) = n - 2k + 2$) which was the first major application of the Borsuk-Ulam theorem to combinatorics and founded the field of topological combinatorics."
     },
     {

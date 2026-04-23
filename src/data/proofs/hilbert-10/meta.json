@@ -138,17 +138,17 @@
     },
     {
       "targetId": "godel-incompleteness",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both demonstrate fundamental limits of formal systems — Gödel shows incompleteness of arithmetic, MRDP shows undecidability of Diophantine equations"
     },
     {
       "targetId": "pell-equation",
-      "relationship": "technical",
+      "relationship": "related",
       "description": "Matiyasevich's proof uses Pell equations to show exponential relations are Diophantine — the key technical step"
     },
     {
       "targetId": "abel-ruffini",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Abel-Ruffini (1824) pioneered the impossibility-proof paradigm for polynomial equations: no radical formula solves all quintics, because the Galois group $S_5$ is not solvable. Matiyasevich (1970) proved the analogous impossibility for Diophantine equations: no algorithm decides all integer polynomial systems. Both reveal fundamental limits on 'solving' polynomial equations within a given formal framework"
     },
     {
@@ -158,7 +158,7 @@
     },
     {
       "targetId": "fermats-last-theorem",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both concern integer solutions of polynomial equations: FLT proves $x^n + y^n = z^n$ has no nontrivial solutions for $n > 2$ (a specific Diophantine question, decidable, answer is 'no'), while H10 proves that the GENERAL question of Diophantine solvability is undecidable. FLT shows some Diophantine equations can be resolved with enormous effort; H10 shows no uniform method can resolve them all"
     },
     {

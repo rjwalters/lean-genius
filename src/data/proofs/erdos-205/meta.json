@@ -171,12 +171,12 @@
     },
     {
       "targetId": "prime-number-theorem",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The Hardy-Ramanujan theorem and Erdős-Kac theorem used in the analysis build on the prime number theorem"
     },
     {
       "targetId": "infinitude-primes",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The covering system construction relies on infinitely many primes to build congruence covers"
     },
     {
@@ -191,7 +191,7 @@
     },
     {
       "targetId": "chinese-remainder-constructive",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The Chinese Remainder Theorem underlies the covering system construction: simultaneous congruences mod {3,5,7,13,17,241} produce the arithmetic progression of counterexamples"
     },
     {

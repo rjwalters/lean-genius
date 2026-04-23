@@ -107,27 +107,27 @@
   "crossReferences": [
     {
       "targetId": "general-quartic",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "Ferrari's quartic solution (Wiedijk #46) uses a cubic resolvent — the quartic reduces to a cubic, making Cardano's formula a prerequisite for solving degree 4."
     },
     {
       "targetId": "abel-ruffini",
-      "relationship": "related-problem",
+      "relationship": "related",
       "description": "The Abel-Ruffini theorem (Wiedijk #16) proves no general radical formula exists for degree ≥ 5. The cubic and quartic formulas are the last cases where radicals suffice."
     },
     {
       "targetId": "fundamental-theorem-algebra",
-      "relationship": "foundation",
+      "relationship": "foundational",
       "description": "The Fundamental Theorem of Algebra (Wiedijk #80) guarantees cubic roots exist in ℂ. Cardano's formula constructs them explicitly."
     },
     {
       "targetId": "de-moivre",
-      "relationship": "uses-same-technique",
+      "relationship": "related",
       "description": "De Moivre's theorem connects complex exponentials to trigonometry. The cube roots of unity ω = e^(2πi/3) central to expressing all three cubic roots are a direct application."
     },
     {
       "targetId": "angle-trisection",
-      "relationship": "related-problem",
+      "relationship": "related",
       "description": "The impossibility of angle trisection reduces to showing cos(20°) satisfies an irreducible cubic — the same cubic equation theory, applied to a geometric impossibility proof."
     },
     {

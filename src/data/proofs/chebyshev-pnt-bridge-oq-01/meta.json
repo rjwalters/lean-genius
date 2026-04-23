@@ -133,7 +133,7 @@
   "crossReferences": [
     {
       "targetId": "chebyshev-pnt-bridge",
-      "relationship": "parent",
+      "relationship": "foundational",
       "description": "Parent formalization establishing the Chebyshev-PNT bridge infrastructure. This file provides the key factorization bound used in the bridge."
     },
     {
@@ -148,7 +148,7 @@
     },
     {
       "targetId": "chebyshev-pnt-bridge-oq-02",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Sibling OQ-02: derives the real-valued lower bound π(2n) ≥ (n·log 4 − log(2n+1))/log(2n) from the same Chebyshev inequality; together OQ-01 and OQ-02 complete the combinatorial PNT-bridge"
     }
   ],

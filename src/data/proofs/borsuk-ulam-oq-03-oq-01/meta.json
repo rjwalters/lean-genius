@@ -219,12 +219,12 @@
     },
     {
       "targetId": "borsuk-ulam-oq-03-oq-01-oq-01",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Sibling open question from the same parent: Tucker 2D Lemma via Graph-Theoretic Path-Following"
     },
     {
       "targetId": "borsuk-ulam-oq-03-oq-03",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Sibling open question from the same parent: Constructive 2D Borsuk-Ulam via Tucker's Lemma"
     },
     {
@@ -234,7 +234,7 @@
     },
     {
       "targetId": "borsuk-ulam",
-      "relationship": "ancestor",
+      "relationship": "foundational",
       "description": "The root Borsuk-Ulam formalization — this entry provides the 1D combinatorial infrastructure (Tucker's lemma, discrete IVT) that forms the base case for inductive approaches to the full n-dimensional theorem"
     }
   ],

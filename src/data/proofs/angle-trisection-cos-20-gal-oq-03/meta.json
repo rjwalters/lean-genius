@@ -101,17 +101,17 @@
   "crossReferences": [
     {
       "targetId": "angle-trisection-cos-20-gal",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "cos(20°) = cos(π/9) case: 8X³−6X−1, same method, |Gal|=3"
     },
     {
       "targetId": "angle-trisection-cos-20-gal-oq-01",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "cos(π/7) case: 8X³−4X²−4X+1, same method, |Gal|=3"
     },
     {
       "targetId": "angle-trisection",
-      "relationship": "application",
+      "relationship": "related",
       "description": "The Galois group order 3 proves non-constructibility for 40° trisection"
     },
     {
@@ -135,7 +135,9 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
+    "imports": [
+      "Mathlib"
+    ],
     "namespace": "AngleTrisectionCos20GalOQ03",
     "lineCount": 434,
     "axiomCount": 0,

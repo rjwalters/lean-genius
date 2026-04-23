@@ -34,12 +34,12 @@
     },
     {
       "targetId": "ramseys-theorem",
-      "relationship": "depends",
+      "relationship": "foundational",
       "description": "Imports the Ramsey theorem (Wiedijk #31) to define ramseyNumber via Nat.find and prove the Erdős-Szekeres bound R(r,s) ≤ C(r+s-2, r-1) by induction."
     },
     {
       "targetId": "erdos-1015-oq-01",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Erdős #1015 OQ1: Exact Values of f(t) for Small t ≥ 4 — while this entry eliminates the Ramsey upper bound axiom, OQ1 complements it by computing tight values of f(t) (the leftover count in clique partitions) for small t. Together they show that the gap between the axiomatized f(t) formula and the proved Ramsey bound is measurable."
     },
     {

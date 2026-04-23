@@ -160,12 +160,12 @@
     },
     {
       "targetId": "ramseys-theorem",
-      "relationship": "used-by",
+      "relationship": "extended-by",
       "description": "Ramsey theory bounds like R(k,k) ≤ C(2k-2, k-1) use binomial coefficients directly. The combinations formula converts these into factorial expressions for asymptotic analysis via Stirling's formula"
     },
     {
       "targetId": "prob-method-lovasz-local",
-      "relationship": "used-by",
+      "relationship": "extended-by",
       "description": "The Lovász Local Lemma and many probabilistic method arguments use C(n,k) to count configurations — the k-SAT application bounds clause dependencies using binomial coefficient estimates"
     }
   ],

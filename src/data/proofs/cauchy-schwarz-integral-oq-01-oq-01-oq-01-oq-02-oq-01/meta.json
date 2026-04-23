@@ -121,17 +121,17 @@
   "crossReferences": [
     {
       "targetId": "amgm-inequality-oq-03",
-      "relationship": "parent",
+      "relationship": "foundational",
       "description": "Parent proof: power_mean_monotone_pos (0 < r ≤ s) and power_mean_monotone_neg (r ≤ s < 0) via Jensen's inequality"
     },
     {
       "targetId": "amgm-inequality-oq-03-oq-02-oq-01",
-      "relationship": "parent",
+      "relationship": "foundational",
       "description": "Crossing-zero case: M_r ≤ GM ≤ M_s for r < 0 < s (PowerMeanCrossZeroOQ)"
     },
     {
       "targetId": "cauchy-schwarz-integral-oq-01",
-      "relationship": "ancestor",
+      "relationship": "foundational",
       "description": "Ancestor in the OQ chain: the integral Cauchy-Schwarz inequality that started this line of power mean research"
     }
   ],

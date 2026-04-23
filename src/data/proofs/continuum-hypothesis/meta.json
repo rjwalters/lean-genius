@@ -148,7 +148,7 @@
     },
     {
       "targetId": "halting-problem",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both are undecidability results in their respective domains: the halting problem shows no algorithm decides all computation questions, CH's independence shows no ZFC proof decides the continuum's cardinality"
     },
     {
@@ -163,12 +163,12 @@
     },
     {
       "targetId": "parallel-postulate-independence",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both are landmark independence results: CH is independent of ZFC (Gödel 1940, Cohen 1963), the parallel postulate is independent of the other Euclidean axioms (Lobachevsky, Bolyai 1830s). Both spawned new mathematical universes — non-Euclidean geometry and forcing extensions of set theory."
     },
     {
       "targetId": "erdos-70",
-      "relationship": "applied-in",
+      "relationship": "related",
       "description": "Erdős Problem #70 concerns partition calculus for the continuum: $2^{\\aleph_0} \\to (\\aleph_1)^2_2$. The truth value depends on CH — under CH, $2^{\\aleph_0} = \\aleph_1$ and the partition relation fails; under $\\neg$CH, it may hold."
     },
     {

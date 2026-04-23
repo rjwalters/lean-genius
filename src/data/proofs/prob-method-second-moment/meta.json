@@ -127,7 +127,7 @@
   "crossReferences": [
     {
       "targetId": "prob-method-expectation",
-      "relationship": "depends-on",
+      "relationship": "foundational",
       "description": "The second moment method builds on the first moment framework, extending Markov's inequality with variance analysis to get concentration"
     },
     {
@@ -137,12 +137,12 @@
     },
     {
       "targetId": "prob-method-applications",
-      "relationship": "used-by",
+      "relationship": "extended-by",
       "description": "Threshold results from the second moment method are applied in random graph and Ramsey theory applications"
     },
     {
       "targetId": "cauchy-schwarz",
-      "relationship": "depends-on",
+      "relationship": "foundational",
       "description": "The Paley-Zygmund inequality is proved via the Cauchy-Schwarz inequality applied to $X \\cdot \\mathbf{1}_{X>0}$"
     },
     {

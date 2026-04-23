@@ -94,7 +94,7 @@
   "crossReferences": [
     {
       "targetId": "amgm-inequality-oq-03-oq-03",
-      "relationship": "answers",
+      "relationship": "related",
       "description": "Parent OQ-03 asked whether the extreme case limits could be formalized — this entry proves they can."
     },
     {
@@ -114,8 +114,14 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Filter", "Real", "Finset"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Real",
+      "Finset"
+    ],
     "namespace": "AmgmPowerMeanLimits",
     "lineCount": 272,
     "axiomCount": 0,

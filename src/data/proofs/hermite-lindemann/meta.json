@@ -140,22 +140,22 @@
   "crossReferences": [
     {
       "targetId": "e-transcendental",
-      "relationship": "specializes",
+      "relationship": "related",
       "description": "The transcendence of $e$ (Wiedijk #67) is the $\\alpha = 1$ special case of Hermite-Lindemann; Hermite's 1873 proof was the first application"
     },
     {
       "targetId": "pi-transcendental",
-      "relationship": "specializes",
+      "relationship": "related",
       "description": "The transcendence of $\\pi$ (Wiedijk #53) follows from Hermite-Lindemann via Euler's identity: $e^{i\\pi} = -1$ is algebraic, so $i\\pi$ must be transcendental"
     },
     {
       "targetId": "euler-identity",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Euler's identity $e^{i\\pi} = -1$ is the bridge that connects Hermite-Lindemann to $\\pi$'s transcendence"
     },
     {
       "targetId": "gelfond-schneider",
-      "relationship": "generalized-by",
+      "relationship": "extended-by",
       "description": "The Gelfond-Schneider theorem (1934) extends transcendence theory from exponentials to $\\alpha^\\beta$, using techniques inspired by Hermite-Lindemann"
     },
     {

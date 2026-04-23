@@ -217,12 +217,12 @@
     },
     {
       "targetId": "bezout-identity",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Bezout's identity in Euclidean domains ($d = ap + b\\mu$) is the key algebraic tool: it converts the GCD into a linear combination that annihilates the vector via $d(M)v = a(M)p(M)v + b(M)\\mu(M)v = 0$"
     },
     {
       "targetId": "fundamental-arithmetic",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Unique factorization in $K[X]$ (a Euclidean domain, hence UFD) provides the irreducible factor decomposition of the minimal polynomial, which drives the union avoidance construction"
     },
     {
@@ -232,7 +232,7 @@
     },
     {
       "targetId": "gcd-algorithm",
-      "relationship": "uses-concept",
+      "relationship": "foundational",
       "description": "The Euclidean algorithm for polynomial GCD is the computational backbone of the Bezout identity used in the GCD annihilation lemma"
     },
     {

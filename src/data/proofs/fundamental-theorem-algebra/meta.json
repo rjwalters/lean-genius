@@ -161,7 +161,7 @@
     },
     {
       "targetId": "liouville-theorem",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The Mathlib proof relies on Liouville's theorem: if $p(z) \\neq 0$ everywhere then $1/p$ is bounded entire, hence constant — contradiction"
     },
     {
@@ -171,12 +171,12 @@
     },
     {
       "targetId": "solution-of-cubic",
-      "relationship": "specializes",
+      "relationship": "related",
       "description": "Cardano's formula provides explicit complex roots for degree 3; FTA guarantees such roots exist without needing an explicit formula"
     },
     {
       "targetId": "general-quartic",
-      "relationship": "specializes",
+      "relationship": "related",
       "description": "Ferrari's formula provides explicit complex roots for degree 4; FTA guarantees existence for any degree"
     },
     {

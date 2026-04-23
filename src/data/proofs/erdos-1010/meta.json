@@ -141,12 +141,12 @@
     },
     {
       "targetId": "erdos-1010-oq-02",
-      "relationship": "generalization",
+      "relationship": "extends",
       "description": "Generalizes triangle supersaturation to K_r: how many r-cliques must appear in a graph exceeding the Turán threshold ex(n, K_r)? This is the natural next question after resolving the triangle case (r=3) in Problem #1010"
     },
     {
       "targetId": "szemeredi-regularity",
-      "relationship": "technique",
+      "relationship": "related",
       "description": "The Szemerédi regularity lemma provides the partition machinery underlying the stability method used in the Lovász-Simonovits proof. Regularity partitions decompose graphs into quasi-random parts, enabling supersaturation arguments for general subgraph counts"
     }
   ],

@@ -193,7 +193,7 @@
   "crossReferences": [
     {
       "targetId": "harmonic-divergence",
-      "relationship": "contrasts",
+      "relationship": "related",
       "description": "The geometric series $\\sum r^n$ converges for $|r| < 1$, while the harmonic series $\\sum 1/n$ diverges despite its terms approaching zero. Together they illustrate the boundary between convergent and divergent series — the harmonic series is the 'limit case' where the ratio between consecutive terms approaches 1 (from below), exactly the geometric series threshold"
     },
     {
@@ -203,7 +203,7 @@
     },
     {
       "targetId": "arithmetic-series",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Arithmetic and geometric series are the two fundamental finite summation formulas. Arithmetic series sum sequences with constant differences ($\\sum_{k=0}^{n} (a + kd)$); geometric series sum sequences with constant ratios ($\\sum_{k=0}^{n} ar^k$). The arithmetic sum is always a polynomial in $n$, while the geometric sum involves exponentials"
     },
     {

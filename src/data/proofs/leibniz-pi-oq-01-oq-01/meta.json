@@ -161,7 +161,7 @@
   "crossReferences": [
     {
       "targetId": "leibniz-pi-oq-01",
-      "relationship": "resolves",
+      "relationship": "related",
       "description": "Answers the open question about deriving Machin's formula from the arctan addition formula"
     },
     {
@@ -186,7 +186,7 @@
     },
     {
       "targetId": "taylor-theorem",
-      "relationship": "uses-concept",
+      "relationship": "foundational",
       "description": "The arctan series $\\arctan(x) = x - x^3/3 + x^5/5 - \\cdots$ that Machin's formula accelerates is a special case of Taylor expansion"
     },
     {

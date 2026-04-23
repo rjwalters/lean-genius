@@ -97,7 +97,7 @@
   "crossReferences": [
     {
       "targetId": "partition-theorem-oq-01",
-      "relationship": "parent",
+      "relationship": "foundational",
       "description": "Parent formalization providing the definitions of all partition sets (rr1GapPartitions, rr1Mod5Partitions, etc.) and the axiomatized Rogers-Ramanujan and Schur identities that this file verifies computationally."
     },
     {
@@ -107,7 +107,7 @@
     },
     {
       "targetId": "partition-theorem-oq-03",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Another companion file in the partition theorem family, exploring additional partition identity properties."
     }
   ],

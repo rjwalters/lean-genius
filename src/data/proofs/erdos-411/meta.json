@@ -159,27 +159,27 @@
   "crossReferences": [
     {
       "targetId": "erdos-410",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Both iterate arithmetic functions (φ vs σ) and study growth rates; #410 asks if $\\lim_{k \\to \\infty} \\sigma_k(n)^{1/k} = \\infty$"
     },
     {
       "targetId": "erdos-412",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Both study orbit dynamics of arithmetic function iterations; #412 asks whether iterated σ-sequences eventually merge"
     },
     {
       "targetId": "erdos-413",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Both study iterations $n \\mapsto n + f(n)$; #413 uses $f = \\omega$ (distinct prime factors) instead of $f = \\varphi$"
     },
     {
       "targetId": "erdos-414",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Both study arithmetic function iteration dynamics; #414 uses $h(n) = n + \\tau(n)$ and asks about orbit merging"
     },
     {
       "targetId": "euler-totient",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The foundational theorem $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ underlies the properties of $\\varphi$ used throughout #411"
     }
   ],

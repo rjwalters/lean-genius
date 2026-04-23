@@ -121,12 +121,12 @@
   "crossReferences": [
     {
       "targetId": "yang-mills",
-      "relationship": "part-of",
+      "relationship": "foundational",
       "description": "Sub-module of the comprehensive Yang-Mills formalization"
     },
     {
       "targetId": "yang-mills-lattice",
-      "relationship": "depends-on",
+      "relationship": "foundational",
       "description": "Uses lattice structures for the 2D lattice partition function"
     },
     {

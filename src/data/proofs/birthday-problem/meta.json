@@ -191,7 +191,7 @@
     },
     {
       "targetId": "binomial-theorem",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Binomial coefficients C(n,2) = n(n-1)/2 count the number of pairs, which is why 23 people have 253 pairs — the quadratic growth of pairs is the key to the birthday 'paradox'"
     },
     {
@@ -211,7 +211,7 @@
     },
     {
       "targetId": "inclusion-exclusion",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The birthday formula $P(n) = 1 - \\prod_{i=0}^{n-1}(1 - i/365)$ is a complement-counting argument, the simplest form of inclusion-exclusion. For the generalized birthday problem (counting exact number of collisions), full inclusion-exclusion over overlapping pair events is needed"
     },
     {
@@ -221,7 +221,7 @@
     },
     {
       "targetId": "combinations-formula",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The binomial coefficient $\\binom{n}{2} = n(n-1)/2$ counts the number of person-pairs, which is the key to the birthday 'paradox': 23 people yield 253 pairs, and each pair has probability $1/365$ of matching. The expected number of matching pairs is $\\binom{n}{2}/365$"
     },
     {

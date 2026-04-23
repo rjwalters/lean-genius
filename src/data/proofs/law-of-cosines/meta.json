@@ -131,7 +131,7 @@
   "crossReferences": [
     {
       "targetId": "pythagorean-theorem",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "The Law of Cosines generalizes the Pythagorean theorem: when $\\theta = \\pi/2$, $\\cos\\theta = 0$ and $\\|v - w\\|^2 = \\|v\\|^2 + \\|w\\|^2$. The formalization proves this reduction explicitly as `law_of_cosines_perpendicular`"
     },
     {

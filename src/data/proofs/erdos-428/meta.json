@@ -210,7 +210,7 @@
   "crossReferences": [
     {
       "targetId": "prime-number-theorem",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The PNT gives $\\pi(n) \\sim n/\\ln n$, the asymptotic for the denominator of primeDensityRatio"
     },
     {
@@ -220,7 +220,7 @@
     },
     {
       "targetId": "erdos-427",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Consecutive Erdős-Graham problem on prime sums divisibility, both from the same 1980 monograph"
     },
     {

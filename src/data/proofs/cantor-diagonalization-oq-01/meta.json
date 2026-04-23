@@ -149,12 +149,12 @@
     },
     {
       "targetId": "godel-incompleteness",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Gödel proved CH is consistent with ZFC (1940); Cohen proved ¬CH is also consistent (1963). This independence parallels Gödel's incompleteness: certain natural questions are undecidable within the standard axiom system"
     },
     {
       "targetId": "halting-problem",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both establish fundamental undecidability: the halting problem shows no algorithm decides all halting questions, while CH shows ZFC cannot decide the cardinality question — both reveal limits of formal systems"
     },
     {
@@ -169,7 +169,7 @@
     },
     {
       "targetId": "abel-ruffini",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both are impossibility results that transformed mathematics: Abel-Ruffini showed no radical formula solves the general quintic (1824), while Gödel-Cohen showed no ZFC proof decides CH (1940/1963). Both revealed that certain natural questions have no answer within a given formal framework, inaugurating the study of impossibility and independence"
     }
   ],

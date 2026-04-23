@@ -186,12 +186,12 @@
   "crossReferences": [
     {
       "targetId": "hodge-conjecture",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both concern the algebraic geometry of complex varieties — the Hodge conjecture asks about algebraic cycles on smooth projective varieties, while motivic classes encode the K-theory of maps between flag varieties"
     },
     {
       "targetId": "binomial-theorem",
-      "relationship": "technique",
+      "relationship": "related",
       "description": "Gaussian binomial coefficients $\\binom{n}{k}_q$ (the $q$-analogues of binomial coefficients) appear in the Bruhat decomposition of $\\text{GL}_n$: the class $[\\text{GL}_n] = \\prod_{i=0}^{n-1}(\\mathbb{L}^n - \\mathbb{L}^i)$ and flag variety classes $[\\text{Fl}_n] = [n]_q!$ both factor through $q$-binomial identities. The Gauss sum verification in this file is a $q$-analogue of the classical binomial theorem"
     },
     {

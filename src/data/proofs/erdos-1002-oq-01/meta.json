@@ -100,23 +100,23 @@
   },
   "crossReferences": [
     {
-      "relationship": "Proves two of the seven axioms from the parent formalization of Erdős Problem #1002, reducing its assumption count from 7 to 5",
+      "relationship": "related",
       "targetId": "erdos-1002"
     },
     {
-      "relationship": "Kesten and Sós's diophantine approximation density result (Problem #1001) is central to the parent Erdős #1002 formalization: the Cauchy distribution limit theorem proved by Kesten (1960) is the deep result that the remaining axioms approach",
+      "relationship": "related",
       "targetId": "erdos-1001"
     },
     {
-      "relationship": "Khintchine's equidistribution conjecture (Problem #994) concerns the same tension between pointwise and averaged equidistribution as Problem #1002 — the inner sum S(α,n) interpolates between the Weyl equidistribution (averaged) and the Cauchy-distribution limit (fluctuation scale)",
+      "relationship": "related",
       "targetId": "erdos-994"
     },
     {
-      "relationship": "Kesten's Cauchy-distribution theorem for the normalized inner sum is a law-of-large-numbers analogue for strongly dependent sequences: the Laws of Large Numbers gallery entry provides foundational context for why the Cauchy limit (rather than a Gaussian) emerges from the fractional-part sum",
+      "relationship": "related",
       "targetId": "laws-of-large-numbers"
     },
     {
-      "relationship": "The Cauchy CDF proved valid here is the canonical counterexample to the Central Limit Theorem: because the Cauchy distribution has no finite mean or variance, sums of i.i.d. Cauchy random variables remain Cauchy (scaled by n rather than √n) — violating the CLT's convergence-to-Gaussian conclusion",
+      "relationship": "related",
       "targetId": "central-limit-theorem"
     }
   ],

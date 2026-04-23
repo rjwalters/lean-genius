@@ -188,7 +188,7 @@
     },
     {
       "targetId": "fourier-series",
-      "relationship": "applied-in",
+      "relationship": "related",
       "description": "Fourier coefficients $a_n = \\frac{1}{\\pi}\\int_{-\\pi}^{\\pi} f(x)\\cos(nx)\\,dx$ are computed via integration (FTC). Integration by parts — a direct consequence of FTC — shows that smoother functions have faster-decaying Fourier coefficients: $|\\hat{f}(n)| = O(n^{-k})$ when $f \\in C^k$."
     },
     {

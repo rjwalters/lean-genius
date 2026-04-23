@@ -164,12 +164,12 @@
   "crossReferences": [
     {
       "targetId": "hilbert-10",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both are impossibility results: cube dissection shows no finite decomposition into distinct smaller cubes exists, while Hilbert's 10th (MRDP theorem) shows no algorithm solves all Diophantine equations. Both use indirect arguments — infinite descent here, undecidability there"
     },
     {
       "targetId": "angle-trisection",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both are geometric impossibility results: angle trisection shows certain constructions are impossible with compass and straightedge (via Galois theory), while cube dissection shows certain decompositions are impossible (via infinite descent). Different proof techniques for the same genre of result"
     },
     {
@@ -184,7 +184,7 @@
     },
     {
       "targetId": "abel-ruffini",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both are structural impossibility results where the proof identifies a fundamental obstruction: Abel-Ruffini's obstruction is the non-solvability of $S_5$ (group theory), while cube dissection's obstruction is the infinite descent forced by the surrounding geometry (combinatorics). Both reduce impossibility to a structural property that cannot be circumvented"
     },
     {

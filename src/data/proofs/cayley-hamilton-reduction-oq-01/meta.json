@@ -158,12 +158,12 @@
     },
     {
       "targetId": "cayley-hamilton-reduction-oq-02",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Sibling open question: Minimal Polynomial vs Characteristic Polynomial Reduction"
     },
     {
       "targetId": "cayley-hamilton",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Relies on the Cayley-Hamilton theorem (Matrix.aeval_self_charpoly = 0) as the foundation for all four sparse matrix reduction results"
     },
     {

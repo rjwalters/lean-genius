@@ -127,22 +127,22 @@
   "crossReferences": [
     {
       "targetId": "amgm-inequality-oq-03",
-      "relationship": "parent",
+      "relationship": "foundational",
       "description": "Parent: weighted power mean definitions and same-sign monotonicity (0 < r ≤ s and r ≤ s < 0). This entry supplies the crossing-zero case."
     },
     {
       "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01",
-      "relationship": "child",
+      "relationship": "related",
       "description": "Unified M_r ≤ M_s theorem (all r ≤ s, r,s ≠ 0) built on this crossing-zero case via PowerMeanMonotoneOQ."
     },
     {
       "targetId": "amgm-inequality-oq-03-oq-02",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Sibling: M_r → GM as r → 0 (the limiting case r=0). Together they complete the full power mean story."
     },
     {
       "targetId": "amgm-inequality-oq-03-oq-01",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Sibling: negative monotonicity M_r ≤ M_s for r ≤ s < 0 (same-sign case). This entry supplies the crossing-zero bridge between the negative and positive regimes."
     },
     {
@@ -152,7 +152,7 @@
     },
     {
       "targetId": "amgm-inequality",
-      "relationship": "ancestor",
+      "relationship": "foundational",
       "description": "Ancestor: the base AM-GM inequality. The HM ≤ GM ≤ AM corollary in §6 is a direct generalization of the classical AM-GM."
     }
   ],

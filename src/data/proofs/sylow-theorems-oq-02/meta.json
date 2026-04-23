@@ -156,7 +156,7 @@
   "crossReferences": [
     {
       "targetId": "sylow-theorems",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "The pro-p Sylow theory generalizes the classical Sylow theorems: for finite discrete groups, the two theories coincide (IsProP ↔ IsPGroup, and classical Sylow subgroups are closed pro-p)"
     },
     {
@@ -171,7 +171,7 @@
     },
     {
       "targetId": "lagrange-theorem",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Lagrange's theorem ($|H|$ divides $|G|$ for $H \\leq G$) underpins the finite recovery results: the index $[G:N]$ divides $|G|$, connecting pro-p subgroup orders to the group order"
     }
   ],

@@ -89,17 +89,17 @@
   "crossReferences": [
     {
       "targetId": "erdos-250",
-      "relationship": "related-problem",
+      "relationship": "related",
       "description": "Erdős #250 concerns irrationality of $\\sum \\sigma(n)/2^n$, the analogous series with denominator $2^n$ instead of $n!$. Solved by Nesterenko (1996) using modular forms."
     },
     {
       "targetId": "erdos-251",
-      "relationship": "related-problem",
+      "relationship": "related",
       "description": "Erdős #251 asks whether $\\sum p_n/2^n$ is irrational, a related open problem connecting prime distribution to irrationality."
     },
     {
       "targetId": "perfect-numbers",
-      "relationship": "uses-concept",
+      "relationship": "foundational",
       "description": "The divisor sum function $\\sigma_1(n) = \\sigma(n)$ central to Erdős #252 is the same function that characterizes perfect numbers: $n$ is perfect iff $\\sigma(n) = 2n$."
     },
     {
@@ -109,7 +109,7 @@
     },
     {
       "targetId": "pi-transcendental",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both problems lie in the territory of transcendence theory. The proof techniques for higher $k$ in Erdős #252 draw on the same analytic number theory toolkit used in transcendence proofs."
     }
   ],

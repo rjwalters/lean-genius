@@ -124,12 +124,12 @@
   "crossReferences": [
     {
       "targetId": "erdos-105",
-      "relationship": "parent-problem",
+      "relationship": "foundational",
       "description": "Erdős Problem #105 (disproved) and threshold function definition"
     },
     {
       "targetId": "erdos-105-oq-05",
-      "relationship": "sibling-question",
+      "relationship": "related",
       "description": "Higher-dimensional generalization (rich k-flats avoiding obstacles)"
     }
   ],
@@ -154,7 +154,10 @@
     }
   ],
   "leanFile": {
-    "imports": ["Proofs.Erdos105Problem", "Mathlib"],
+    "imports": [
+      "Proofs.Erdos105Problem",
+      "Mathlib"
+    ],
     "namespace": "Erdos105OQ02",
     "lineCount": 288,
     "axiomCount": 3,

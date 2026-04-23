@@ -152,17 +152,17 @@
   "crossReferences": [
     {
       "targetId": "basel-problem",
-      "relationship": "contrasts",
+      "relationship": "related",
       "description": "The harmonic series (p=1) diverges while the Basel series (p=2) converges to π²/6. The p-series boundary at p=1 is a fundamental divide in analysis"
     },
     {
       "targetId": "erdos-486",
-      "relationship": "applied-in",
+      "relationship": "related",
       "description": "Logarithmic density is defined as logSum(A,x)/log(x), where logSum uses harmonic-type sums Σ 1/n; the divergence of the harmonic series is why log(x) normalization yields a nontrivial density"
     },
     {
       "targetId": "erdos-25",
-      "relationship": "applied-in",
+      "relationship": "related",
       "description": "The Davenport-Erdős theorem on logarithmic density of congruence-sieved sets relies on harmonic sum asymptotics"
     },
     {
@@ -177,7 +177,7 @@
     },
     {
       "targetId": "geometric-series",
-      "relationship": "contrasts",
+      "relationship": "related",
       "description": "Geometric $\\sum r^n$ converges (exponential decay) vs harmonic $\\sum 1/n$ diverges (polynomial decay). The boundary between summable and non-summable decay rates"
     },
     {

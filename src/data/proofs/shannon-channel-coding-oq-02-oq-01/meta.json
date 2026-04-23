@@ -117,17 +117,17 @@
   "crossReferences": [
     {
       "targetId": "shannon-channel-coding-oq-03",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Imports fano_theorem from OQ-03 as the core Fano proof"
     },
     {
       "targetId": "shannon-channel-coding-oq-04",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Uses binary entropy function h and h_nonneg from OQ-04"
     },
     {
       "targetId": "shannon-channel-coding",
-      "relationship": "reduces",
+      "relationship": "related",
       "description": "Eliminates the fano_inequality axiom from the parent ShannonChannelCoding.lean (pending ShannonEntropy.lean fix)"
     },
     {

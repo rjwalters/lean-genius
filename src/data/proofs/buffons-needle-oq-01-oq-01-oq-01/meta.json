@@ -102,17 +102,17 @@
   "crossReferences": [
     {
       "targetId": "buffons-needle",
-      "relationship": "parent-problem",
+      "relationship": "foundational",
       "description": "The original Buffon's Needle formalization — this entry eliminates axioms introduced when generalizing from needles to arbitrary C¹ curves"
     },
     {
       "targetId": "buffons-needle-oq-01",
-      "relationship": "dependency",
+      "relationship": "foundational",
       "description": "Provides `buffon_smooth_of_contDiff`, the key theorem that the Buffon-Barbier formula holds for C¹ curves"
     },
     {
       "targetId": "buffons-needle-oq-01-oq-01",
-      "relationship": "dependency",
+      "relationship": "foundational",
       "description": "Provides the angular average formula and the concrete `concreteSmoothExpectedCrossings` double-integral definition"
     }
   ],

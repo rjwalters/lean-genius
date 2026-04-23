@@ -152,7 +152,7 @@
   "crossReferences": [
     {
       "targetId": "erdos-340",
-      "relationship": "specialization",
+      "relationship": "related",
       "description": "Problem #340 concerns the greedy Sidon (Mian-Chowla) sequence, which is the Dickson extension starting from {1}. Problem #341 generalizes to arbitrary starting sets."
     },
     {
@@ -177,7 +177,7 @@
     },
     {
       "targetId": "erdos-340-greedy-sidon",
-      "relationship": "specialization",
+      "relationship": "related",
       "description": "The greedy Sidon construction formalizes the singleton case $A_0 = \\{1\\}$ of Dickson's extension, producing the Mian–Chowla sequence. Problem #341's eventual periodicity conjecture for the difference sequence specializes to asking whether the Mian–Chowla gaps eventually repeat — a question that remains open even for this single starting set"
     }
   ],

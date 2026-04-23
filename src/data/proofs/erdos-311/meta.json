@@ -126,12 +126,12 @@
   },
   "crossReferences": [
     {
-      "relationship": "related-problem",
+      "relationship": "related",
       "description": "Both involve unit fraction sums: #311 asks about approximating 1, while #316 asks about partitioning sets with reciprocal sum < 2",
       "targetId": "erdos-316"
     },
     {
-      "relationship": "uses-result",
+      "relationship": "foundational",
       "description": "The lower bound δ(N) ≥ 1/lcm(1,...,N) uses lcm(1,...,N) = e^{ψ(N)} where ψ(N) ~ N by PNT",
       "targetId": "prime-number-theorem"
     }

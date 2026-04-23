@@ -137,12 +137,12 @@
   "crossReferences": [
     {
       "targetId": "schroeder-bernstein",
-      "relationship": "parent",
+      "relationship": "foundational",
       "description": "Parent proof using Mathlib's orbit-based Function.Embedding.schroeder_bernstein. This OQ-02 provides an alternative Knaster-Tarski proof of the same theorem."
     },
     {
       "targetId": "schroeder-bernstein-oq-04",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "OQ-04: constructive CBS for finite types using iterated expansion and pigeonhole. Both are alternative CBS proofs; this one uses lattice theory, OQ-04 uses decidable computation."
     }
   ],

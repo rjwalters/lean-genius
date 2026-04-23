@@ -128,17 +128,17 @@
   },
   "crossReferences": [
     {
-      "relationship": "related-problem",
+      "relationship": "related",
       "description": "Both involve counting integers with specific additive representations: #323 counts sums of k-th powers, #362 counts subsets with a given sum",
       "targetId": "erdos-362"
     },
     {
-      "relationship": "foundation",
+      "relationship": "foundational",
       "description": "Fermat's theorem on sums of two squares provides the multiplicative criterion underlying Landau's asymptotic for f_{2,2}(x)",
       "targetId": "fermat-two-squares"
     },
     {
-      "relationship": "technique",
+      "relationship": "related",
       "description": "The prime number theorem underlies the analytic number theory techniques used in Landau's proof of f_{2,2}(x) ~ c·x/√(log x)",
       "targetId": "prime-number-theorem"
     }

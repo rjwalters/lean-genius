@@ -116,12 +116,12 @@
     },
     {
       "targetId": "prime-number-theorem",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The upper bound D(k) <= C * k * (log k)^2 relies on the prime number theorem for greedy tuple construction"
     },
     {
       "targetId": "infinitude-primes",
-      "relationship": "strengthens",
+      "relationship": "extends",
       "description": "Bounded prime gaps dramatically strengthens infinitude of primes: not only are there infinitely many primes, but infinitely many pairs with gap at most 246"
     },
     {

@@ -123,17 +123,17 @@
     },
     {
       "targetId": "prob-method-lovasz-local",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The Lovász Local Lemma is the natural tool for proving Koishi Chan's theorem: bad events ('B misses A' or 'A ⊆ B') have sparse dependencies, and the LLL guarantees positive probability that none occur."
     },
     {
       "targetId": "prob-method-expectation",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The first moment method gives the core heuristic: a random B ⊆ X is good with probability ≈ e^{-2c}, predicting the density δ(c). The probabilistic infrastructure in this proof is the analytic heart of the existence argument."
     },
     {
       "targetId": "prob-method-alteration",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The amplification step from one good set to exponentially many uses an alteration-type argument: toggling 'free' elements of a good set B produces new good sets, directly paralleling the deletion method for independent sets."
     },
     {

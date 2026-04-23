@@ -200,7 +200,7 @@
     },
     {
       "targetId": "fundamental-arithmetic",
-      "relationship": "supports",
+      "relationship": "foundational",
       "description": "Unique prime factorization underlies the compositeness checks: verifying $n - k!$ is composite requires exhibiting a non-trivial factorization, which the `decide` tactic performs by trial division"
     },
     {

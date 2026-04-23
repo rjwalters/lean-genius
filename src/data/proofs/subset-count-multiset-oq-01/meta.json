@@ -123,12 +123,12 @@
   "crossReferences": [
     {
       "targetId": "subset-count-multiset",
-      "relationship": "follow-up",
+      "relationship": "related",
       "description": "Answers the open question from the parent: count distinct (not with-multiplicity) submultisets"
     },
     {
       "targetId": "subset-count-oq-02",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "OQ-02 proves 2^n (with multiplicity); this proves ∏(mᵢ+1) (distinct)"
     }
   ],

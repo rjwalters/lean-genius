@@ -128,7 +128,7 @@
     },
     {
       "targetId": "prime-number-theorem",
-      "relationship": "prerequisite-for",
+      "relationship": "foundational",
       "description": "The Prime Number Theorem π(x) ∼ x/log(x) is the asymptotic theorem whose existence Chebyshev's bounds predict: they show that if the limit exists, it must satisfy 0.92 ≤ c ≤ 1.11, presaging the PNT value c = 1"
     }
   ],
@@ -149,7 +149,10 @@
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": ["Nat", "Finset"]
+    "opens": [
+      "Nat",
+      "Finset"
+    ]
   },
   "sorries": 0
 }

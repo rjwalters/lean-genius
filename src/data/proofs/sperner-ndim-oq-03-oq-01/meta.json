@@ -94,12 +94,12 @@
   "crossReferences": [
     {
       "targetId": "sperner-ndim-oq-03",
-      "relationship": "completes",
+      "relationship": "extends",
       "description": "OQ-03 proves n-D Brouwer via Sperner + displacement coloring; OQ-03-OQ-01 provides the 1D base case via IVT"
     },
     {
       "targetId": "sperner-ndim",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The Sperner's lemma machinery from sperner-ndim feeds into the pipeline proved here"
     }
   ],

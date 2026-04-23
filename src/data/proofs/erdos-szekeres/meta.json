@@ -117,12 +117,12 @@
   "crossReferences": [
     {
       "targetId": "ramseys-theorem",
-      "relationship": "generalization",
+      "relationship": "extends",
       "description": "Ramsey's theorem generalizes the Erdős-Szekeres result: the ES theorem is a special case for ordered 2-colorings of pairs. The ES number $ES(r,s) = (r-1)(s-1)+1$ gives an exact Ramsey-type bound for monotone subsequences in linear orders"
     },
     {
       "targetId": "combinations-formula",
-      "relationship": "supports",
+      "relationship": "foundational",
       "description": "The binomial coefficient $\\binom{n}{2}$ counts the pairs in a sequence whose comparisons define the 2-coloring in the Ramsey-theoretic view. The pigeonhole argument implicitly uses that $(r-1)(s-1)+1$ pairs $(a_i, b_i)$ fit in a $(r-1) \\times (s-1)$ grid"
     },
     {
@@ -142,17 +142,17 @@
     },
     {
       "targetId": "four-color-theorem",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both are landmark results in combinatorics/graph theory. The Erdős-Szekeres theorem shows that structure (monotonicity) is unavoidable in long sequences; the four-color theorem shows that structure (4-colorability) is unavoidable in planar graphs. Both established fundamental paradigms in their fields."
     },
     {
       "targetId": "erdos-196",
-      "relationship": "applied-in",
+      "relationship": "related",
       "description": "Erdős Problem #196 asks about monotone 4-term arithmetic progressions in permutations — a direct application of the Erdős-Szekeres framework to structured subsequences with additional arithmetic constraints."
     },
     {
       "targetId": "friendship-theorem",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both are extremal/Ramsey-type results where structure emerges from quantitative hypotheses: the friendship theorem shows graphs where every pair has exactly one common friend must be 'windmill' graphs; the Erdős-Szekeres theorem shows long sequences must contain long monotone subsequences."
     }
   ],

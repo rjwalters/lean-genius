@@ -189,7 +189,7 @@
   "crossReferences": [
     {
       "targetId": "euler-totient",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Euler's totient function φ(n) is one of the two arithmetic functions at the heart of this problem; the formalization imports Nat.totient from Mathlib and relies on its multiplicativity and prime-value formula."
     },
     {
@@ -209,12 +209,12 @@
     },
     {
       "targetId": "infinitude-primes",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The infinite supply of twin primes (conjectural) and ordinary primes underpins the Ford-Luca-Pomerance construction; the infinitude of primes is the foundational fact that makes the argument work."
     },
     {
       "targetId": "fundamental-arithmetic",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Unique factorization is required for the multiplicativity of both φ and σ; the multiplicative structure exploited throughout the proof rests on the Fundamental Theorem of Arithmetic."
     }
   ],

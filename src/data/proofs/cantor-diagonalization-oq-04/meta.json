@@ -180,17 +180,17 @@
   "crossReferences": [
     {
       "targetId": "cantor-diagonalization-oq-03",
-      "relationship": "complements",
+      "relationship": "complementary",
       "description": "The surjection version of Lawvere; this file shows surjections induce retractions and derives both from the retraction form"
     },
     {
       "targetId": "cantor-diagonalization",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "The base Cantor diagonal proof is a special case of cantor_prop/cantor_no_surjection"
     },
     {
       "targetId": "cantors-theorem",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "Cantor's theorem (|S| < |P(S)|) follows from Lawvere by taking B = Prop and f = Not"
     },
     {

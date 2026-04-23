@@ -117,13 +117,20 @@
     },
     {
       "targetId": "feuerbachs-theorem-defs-oq-03",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "OQ-03 proves Feuerbach point uniqueness; this file provides the Mathlib sphere reformulation that enables Mathlib-compatible uniqueness proofs"
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib", "Proofs.FeuerbachsTheoremDefs"],
-    "opens": ["FeuerbachsTheorem", "Real", "EuclideanGeometry"],
+    "imports": [
+      "Mathlib",
+      "Proofs.FeuerbachsTheoremDefs"
+    ],
+    "opens": [
+      "FeuerbachsTheorem",
+      "Real",
+      "EuclideanGeometry"
+    ],
     "namespace": "FeuerbachsTheoremDefsOQ04",
     "lineCount": 190,
     "axiomCount": 0,

@@ -163,17 +163,17 @@
       "targetId": "euler-totient"
     },
     {
-      "relationship": "companion",
+      "relationship": "related",
       "description": "Erdős Problem #1004 studies distinct consecutive totient values from the same 1987 Erdős-Pomerance-Sárközy paper that provides the upper bound used here.",
       "targetId": "erdos-1004"
     },
     {
-      "relationship": "dependency",
+      "relationship": "foundational",
       "description": "The totient formula φ(n) = n·Π(1 - 1/p) relies on unique prime factorization; this entry formalizes the fundamental theorem of arithmetic underlying that computation.",
       "targetId": "fundamental-arithmetic"
     },
     {
-      "relationship": "analogy",
+      "relationship": "related",
       "description": "The infinitude-of-solutions argument mirrors the infinitude-of-primes style: both assert an infinite set exists within the positive integers via density or constructive arguments.",
       "targetId": "infinitude-primes"
     },

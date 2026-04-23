@@ -113,32 +113,32 @@
   "crossReferences": [
     {
       "slug": "euler-totient",
-      "relationship": "foundation",
+      "relationship": "foundational",
       "note": "Euler's totient function φ(n) is the central object of this problem; its properties (φ(p) = p−1 for primes, multiplicativity, distribution) drive the entire analysis."
     },
     {
       "slug": "erdos-48",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "note": "A neighboring Erdős problem concerning the interaction of φ(n) and σ(m); both problems probe the collision structure of multiplicative arithmetic functions."
     },
     {
       "slug": "erdos-1003",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "note": "Asks whether φ(n) = φ(n+1) infinitely often — directly about the collision structure of φ that limits the size of increasing-totient sets studied here."
     },
     {
       "slug": "erdos-1004",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "note": "Asks about long runs of distinct consecutive totient values; the distribution of φ-values is the same analytic ingredient underlying Tao's proof of Problem #49."
     },
     {
       "slug": "infinitude-primes",
-      "relationship": "prerequisite",
+      "relationship": "foundational",
       "note": "The infinitude of primes guarantees that the lower bound π(N) → ∞, and the set of primes is the explicit witness achieving asymptotic optimality in this problem."
     },
     {
       "slug": "fundamental-arithmetic",
-      "relationship": "prerequisite",
+      "relationship": "foundational",
       "note": "Unique factorization underlies the multiplicativity of φ and the anatomy-of-integers techniques (used by Ford and Tao) to control the distribution of totient values."
     }
   ],

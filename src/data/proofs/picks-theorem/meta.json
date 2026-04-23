@@ -165,7 +165,7 @@
   },
   "crossReferences": [
     {
-      "relationship": "Both compute polygon area: Heron's formula uses side lengths while Pick's uses lattice point counts. For lattice triangles, both can be applied and must agree",
+      "relationship": "related",
       "sharedConcepts": [
         "area-computation",
         "triangle",
@@ -174,7 +174,7 @@
       "targetId": "herons-formula"
     },
     {
-      "relationship": "Both concern lattice geometry: Minkowski's theorem guarantees lattice points in convex bodies of sufficient volume, while Pick's counts them in polygons",
+      "relationship": "related",
       "sharedConcepts": [
         "lattice-points",
         "convex-geometry",
@@ -183,7 +183,7 @@
       "targetId": "minkowski-theorem"
     },
     {
-      "relationship": "Pick's theorem for triangles connects to the angle sum property: a lattice triangle's area via Pick must be consistent with its angles via trigonometry",
+      "relationship": "related",
       "sharedConcepts": [
         "triangle",
         "area",
@@ -192,7 +192,7 @@
       "targetId": "triangle-angle-sum"
     },
     {
-      "relationship": "Both involve discrete geometry and counting: Erdos-Szekeres concerns point configurations in convex position, while Pick counts lattice points in polygons",
+      "relationship": "related",
       "sharedConcepts": [
         "discrete-geometry",
         "point-counting",

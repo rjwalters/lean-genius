@@ -153,7 +153,7 @@
   "crossReferences": [
     {
       "targetId": "chinese-remainder-constructive-oq-04",
-      "relationship": "answers",
+      "relationship": "related",
       "description": "Answers OQ04's third open question: 'Can the pairwise coprimality condition be weakened?'"
     },
     {
@@ -163,12 +163,12 @@
     },
     {
       "targetId": "chinese-remainder-non-coprime-oq-01",
-      "relationship": "relates",
+      "relationship": "related",
       "description": "OQ01 addresses computational efficiency; this file provides the general existence/uniqueness framework"
     },
     {
       "targetId": "chinese-remainder-constructive",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "The coprime case (parent proof) is recovered as a special case via coprime_implies_compatible"
     }
   ],

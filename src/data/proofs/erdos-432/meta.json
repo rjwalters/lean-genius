@@ -173,12 +173,12 @@
     },
     {
       "targetId": "gcd-algorithm",
-      "relationship": "supports",
+      "relationship": "foundational",
       "description": "The GCD algorithm is the computational tool for checking pairwise coprimality $\\gcd(x,y) = 1$, the central constraint in Problem #432"
     },
     {
       "targetId": "infinitude-primes",
-      "relationship": "supports",
+      "relationship": "foundational",
       "description": "The prime counting function $\\pi(n)$ bounds the maximum size of a pairwise coprime set in $[1,n]$. The infinitude of primes ensures $\\pi(n) \\to \\infty$, making the density question non-trivial"
     },
     {

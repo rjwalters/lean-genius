@@ -190,12 +190,12 @@
   "crossReferences": [
     {
       "targetId": "e-transcendental",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both problems concern the transcendence of naturally-arising constants: $e$ was proved transcendental by Hermite (1873) and the Erdős-Borwein constant $S(2)$ is conjectured transcendental. Both connect irrationality to deeper arithmetic properties of analytic functions."
     },
     {
       "targetId": "sqrt2-irrational",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "The irrationality of $\\sqrt{2}$ (attributed to the Pythagoreans) and Erdős's 1948 result are foundational irrationality theorems. Both use contradiction arguments, but $\\sqrt{2}$ is algebraic while $S(2)$ is conjectured transcendental — illustrating the spectrum from algebraic to transcendental irrationality."
     },
     {
@@ -210,12 +210,12 @@
     },
     {
       "targetId": "erdos-1003",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Erdős Problem #1003 is another number-theoretic problem from the Erdős collection involving divisibility and arithmetic properties of integer sequences, sharing techniques from analytic number theory with Problem #1049."
     },
     {
       "targetId": "erdos-1051",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Erdős Problem #1051 sits in the same cluster of problems concerning arithmetic properties of series and sums, closely neighboring #1049 in the Erdős problem list and likely sharing thematic techniques."
     }
   ],

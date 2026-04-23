@@ -110,32 +110,38 @@
     {
       "id": "binomial-theorem-oq-02-oq-01",
       "relation": "parent",
-      "description": "Proves the multinomial MGF formula that this file uses as its key tool"
+      "description": "Proves the multinomial MGF formula that this file uses as its key tool",
+      "relationship": "related"
     },
     {
       "id": "binomial-theorem-oq-02",
       "relation": "ancestor",
-      "description": "The multinomial theorem formalization"
+      "description": "The multinomial theorem formalization",
+      "relationship": "related"
     },
     {
       "id": "binomial-theorem",
       "relation": "ancestor",
-      "description": "The original binomial theorem"
+      "description": "The original binomial theorem",
+      "relationship": "related"
     },
     {
       "id": "binomial-theorem-oq-02-oq-02",
       "relation": "sibling",
-      "description": "Vandermonde's identity via the binomial theorem — another combinatorial identity derived from the same multinomial framework"
+      "description": "Vandermonde's identity via the binomial theorem — another combinatorial identity derived from the same multinomial framework",
+      "relationship": "related"
     },
     {
       "id": "binomial-theorem-oq-02-oq-03",
       "relation": "sibling",
-      "description": "q-Multinomial coefficients — a q-analogue generalization of the multinomial coefficients used here"
+      "description": "q-Multinomial coefficients — a q-analogue generalization of the multinomial coefficients used here",
+      "relationship": "related"
     },
     {
       "id": "central-limit-theorem",
       "relation": "related",
-      "description": "Central Limit Theorem — the marginal binomial Xᵢ ∼ Bin(n,pᵢ) proved here converges to Normal(npᵢ, npᵢ(1-pᵢ)) by CLT as n→∞"
+      "description": "Central Limit Theorem — the marginal binomial Xᵢ ∼ Bin(n,pᵢ) proved here converges to Normal(npᵢ, npᵢ(1-pᵢ)) by CLT as n→∞",
+      "relationship": "related"
     }
   ],
   "sorries": 0

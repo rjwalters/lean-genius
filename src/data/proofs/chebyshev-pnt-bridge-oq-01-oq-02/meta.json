@@ -85,7 +85,7 @@
     },
     {
       "targetId": "chebyshev-pnt-bridge-oq-01",
-      "relationship": "answers",
+      "relationship": "related",
       "description": "Answers the open question: yes, the factorization approach is the right technique."
     }
   ],
@@ -133,11 +133,10 @@
   ],
   "leanFile": {
     "namespace": "ChebyshevPNTBridgeOQ01OQ02",
-    "lineCount": 65,
+    "lineCount": 79,
     "axiomCount": 0,
     "theoremCount": 1,
     "definitionCount": 0,
-    "lineCount": 79,
     "path": "Proofs/ChebyshevPNTBridgeOQ01OQ02.lean",
     "sorries": 0
   },

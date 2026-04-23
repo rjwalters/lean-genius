@@ -112,12 +112,12 @@
   "crossReferences": [
     {
       "targetId": "fair-games-theorem-oq-01",
-      "relationship": "depends-on",
+      "relationship": "foundational",
       "description": "Provides BiasedGamblersRuin structure, biasedRuinProbWin/Lose definitions, favorable_game_r_lt_one, r_pos, and mul_neg_geom_sum."
     },
     {
       "targetId": "fair-games-theorem-oq-02",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Addresses OQ-02 (martingale connection and concrete OST examples); this file addresses OQ-04 (structural properties and alternative formulas for the biased case)."
     },
     {

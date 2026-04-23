@@ -167,7 +167,7 @@
   "crossReferences": [
     {
       "targetId": "prob-method-expectation",
-      "relationship": "depends-on",
+      "relationship": "foundational",
       "description": "The LLL extends the first moment framework to handle dependent events"
     },
     {
@@ -182,7 +182,7 @@
     },
     {
       "targetId": "prob-method-applications",
-      "relationship": "used-by",
+      "relationship": "extended-by",
       "description": "The LLL is applied in several results in the applications module, including hypergraph coloring and Ramsey bounds"
     }
   ],

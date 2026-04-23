@@ -124,22 +124,22 @@
     },
     {
       "targetId": "halting-problem",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Conway (1972) proved that generalizations of the 3n+1 problem are algorithmically undecidable — the halting problem for generalized Collatz maps is unsolvable. This directly parallels Turing's halting problem and suggests the full conjecture may resist proof within standard frameworks"
     },
     {
       "targetId": "godel-incompleteness",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "The Collatz conjecture is a candidate for a natural number-theoretic statement that might be independent of Peano Arithmetic or ZFC. If true but unprovable, it would be a striking concrete instance of Gödelian incompleteness — a simple $\\Pi^0_2$ statement ($\\forall n\\, \\exists k\\, f^{(k)}(n) = 1$) escaping formal provability"
     },
     {
       "targetId": "infinitude-primes",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both concern the structure of natural numbers under simple operations: Euclid proves the inexhaustibility of primes, while Collatz asks whether a simple iterative map always terminates. Both are easy to state but reveal deep structure; the parity of Collatz iterates is influenced by prime factorization"
     },
     {
       "targetId": "hilbert-10",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Matiyasevich's 1970 negative resolution of Hilbert's tenth problem (no algorithm decides whether arbitrary Diophantine equations have solutions) and Conway's 1972 undecidability of generalized Collatz maps are both instances of algorithmic undecidability for number-theoretic problems. Both show that simple arithmetic operations can encode computationally intractable behavior"
     },
     {
@@ -154,7 +154,7 @@
     },
     {
       "targetId": "ramseys-theorem",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both Ramsey theory and the Collatz conjecture illustrate how inevitability emerges from combinatorial structure: Ramsey's theorem guarantees order in large enough structures, while the Collatz conjecture asserts that all trajectories are eventually absorbed by the cycle $1 \\to 4 \\to 2 \\to 1$. Both resist quantitative bounds despite their qualitative simplicity"
     }
   ],

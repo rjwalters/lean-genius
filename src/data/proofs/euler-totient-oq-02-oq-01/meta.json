@@ -107,12 +107,12 @@
     },
     {
       "targetId": "euler-totient-oq-03",
-      "relationship": "complements",
+      "relationship": "complementary",
       "description": "OQ-03 proves the Dirichlet convolution identity φ * 1 = id, which is dual to the product formula"
     },
     {
       "targetId": "euler-totient",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "The parent proof establishes the basic totient API and Euler's theorem used throughout"
     }
   ],

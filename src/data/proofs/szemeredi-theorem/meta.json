@@ -137,7 +137,7 @@
   "crossReferences": [
     {
       "targetId": "roth-theorem-k3",
-      "relationship": "depends-on",
+      "relationship": "foundational",
       "description": "The k=3 case (Roth's theorem) is the proved component of this formalization, using Mathlib's roth_3ap_theorem_nat"
     },
     {
@@ -152,7 +152,7 @@
     },
     {
       "targetId": "erdos-817",
-      "relationship": "applied-in",
+      "relationship": "related",
       "description": "Szemerédi's theorem is axiomatized in erdos-817 to provide density bounds forcing exponential growth of g_k(n)"
     }
   ],

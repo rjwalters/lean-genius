@@ -132,27 +132,27 @@
   "crossReferences": [
     {
       "targetId": "cube-root-2-irrational",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "The cube root 2 irrationality result (minpoly ℚ (∛2) = X³ - 2) is the n=3, m=2 special case of this general theorem"
     },
     {
       "targetId": "sqrt2-minpoly",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "The square root 2 minimal polynomial (X² - 2) is the n=2, m=2 special case"
     },
     {
       "targetId": "sqrt2-minpoly-oq-01",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "sqrt2-minpoly-oq-01 proves minpoly ℚ (√n) = X² - n for squarefree-factor n (degree-2 case); this proof handles all degrees n ≥ 2"
     },
     {
       "targetId": "nth-root-irrational",
-      "relationship": "strengthens",
+      "relationship": "extends",
       "description": "nth-root-irrational proves m^(1/n) ∉ ℚ when m is not a perfect n-th power; this proof yields the stronger result that the algebraic degree is exactly n"
     },
     {
       "targetId": "cube-root-3-irrational-oq-02",
-      "relationship": "specializes",
+      "relationship": "related",
       "description": "cube-root-3-irrational-oq-02 proves X³-3 is irreducible via Eisenstein at p=3; this proof covers that as the n=3, m=3, p=3 instance"
     },
     {

@@ -132,12 +132,12 @@
   "crossReferences": [
     {
       "targetId": "laws-of-large-numbers",
-      "relationship": "parent",
+      "relationship": "foundational",
       "description": "Parent problem: Glivenko-Cantelli is the uniform version of the Strong Law of Large Numbers"
     },
     {
       "targetId": "laws-of-large-numbers-oq-01",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "OQ-01 covers SLLN for heavy-tailed distributions; both use strong_law_ae_real as the core Mathlib dependency"
     },
     {

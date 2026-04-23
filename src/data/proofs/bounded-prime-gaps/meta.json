@@ -254,7 +254,7 @@
     },
     {
       "targetId": "prime-gap-bounds",
-      "relationship": "depends-on",
+      "relationship": "foundational",
       "description": "Imports prime gap infrastructure: nth prime bounds (p_n <= 2^(n+1)), prime counting bounds (pi(2n) > pi(n)), and the order-preserving enumeration property of primes used in the prime gap analysis"
     },
     {

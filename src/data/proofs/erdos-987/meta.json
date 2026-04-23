@@ -102,32 +102,32 @@
   "crossReferences": [
     {
       "targetId": "erdos-990",
-      "relationship": "uses-same-technique",
+      "relationship": "related",
       "description": "Uses the Erdős-Turán exponential sum inequality to study angular distribution of polynomial roots — the same machinery that controls discrepancy in Problem #987."
     },
     {
       "targetId": "erdos-992",
-      "relationship": "related-problem",
+      "relationship": "related",
       "description": "Studies discrepancy of sequences mod 1 using Weyl's criterion and exponential sums — the same Erdős-Turán framework underlying Problem #987's connection to equidistribution."
     },
     {
       "targetId": "erdos-988",
-      "relationship": "related-problem",
+      "relationship": "related",
       "description": "Sphere discrepancy problem using Schmidt's theorem (1969). Applies discrepancy theory bounds in spherical geometry, complementing the one-dimensional analysis in #987."
     },
     {
       "targetId": "erdos-989",
-      "relationship": "uses-same-technique",
+      "relationship": "related",
       "description": "Beck's circle discrepancy theorem uses Fourier analysis and Bessel functions — the same harmonic analysis framework that underlies exponential sum bounds."
     },
     {
       "targetId": "erdos-995",
-      "relationship": "related-problem",
+      "relationship": "related",
       "description": "Lacunary sequences and fractional parts: the quasi-independence from exponential gaps prevents accumulation, relating to how #987's bounds depend on sequence structure."
     },
     {
       "targetId": "fourier-series",
-      "relationship": "foundation",
+      "relationship": "foundational",
       "description": "Fourier series convergence via Parseval's theorem provides the foundational harmonic analysis on which all exponential sum bounds in #987 rest."
     }
   ],

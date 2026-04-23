@@ -191,7 +191,7 @@
     },
     {
       "targetId": "combinations-formula",
-      "relationship": "supports",
+      "relationship": "foundational",
       "description": "The number of pairwise distances from $n$ points is $\\binom{n}{2}$, so $|\\Delta(P)| \\leq \\binom{n}{2}$. The combinatorial counting of pairs is the starting point for all distinct distance bounds"
     },
     {
@@ -221,7 +221,7 @@
     },
     {
       "targetId": "isoperimetric-theorem",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both concern fundamental geometric constraints in Euclidean space. The isoperimetric inequality (the sphere minimizes surface area for given volume) reveals the geometry of optimal shapes, while the distinct distances problem reveals the geometry of optimal point configurations. In high dimensions, concentration of measure (a consequence of isoperimetric theory) governs distance behavior: random points on $S^{d-1}$ have pairwise distances concentrating near $\\sqrt{2}$ as $d \\to \\infty$, explaining why few-distance configurations require careful algebraic construction rather than random placement"
     }
   ],

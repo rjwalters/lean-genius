@@ -161,12 +161,12 @@
     },
     {
       "targetId": "shannon-channel-coding-oq-04",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Uses the binary entropy function h(p) and its concavity from OQ04 for Jensen's inequality application"
     },
     {
       "targetId": "shannon-entropy",
-      "relationship": "specializes",
+      "relationship": "related",
       "description": "Conditional entropy definition is specialized from the general Shannon entropy framework"
     }
   ],

@@ -101,12 +101,12 @@
   "crossReferences": [
     {
       "targetId": "area-of-circle-oq-02",
-      "relationship": "proves-axiom-of",
+      "relationship": "related",
       "description": "This file proves the axiom `nball_volume_scaling` from AreaOfCircleOQ02.lean, valid for n ≥ 1."
     },
     {
       "targetId": "area-of-circle",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "The n=2 case recovers the original area-of-circle result A = πr²."
     }
   ],

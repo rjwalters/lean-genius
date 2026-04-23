@@ -145,7 +145,7 @@
   "crossReferences": [
     {
       "targetId": "erdos-90",
-      "relationship": "specializes",
+      "relationship": "related",
       "description": "Erdős #90 is the classical 2D unit distance problem — a direct special case of #1085 restricted to ℝ². Both share the open conjecture f_2(n) = n^{1+o(1)} and the Spencer-Szemerédi-Trotter O(n^{4/3}) upper bound."
     },
     {
@@ -160,7 +160,7 @@
     },
     {
       "targetId": "erdos-102",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Incidence geometry (#102): the Szemerédi-Trotter theorem that yields the O(n^{4/3}) upper bound for unit distances also governs point-line incidence counts."
     },
     {
@@ -175,17 +175,17 @@
     },
     {
       "targetId": "erdos-1084",
-      "relationship": "companion",
+      "relationship": "related",
       "description": "Erdős #1084 studies unit distances among *separated* points (pairwise distance ≥ 1). The separation constraint changes the extremal behavior entirely: f_d(n) = Θ(n) vs Θ(n^2)."
     },
     {
       "targetId": "erdos-1084-oq-01",
-      "relationship": "companion",
+      "relationship": "related",
       "description": "The 3D correction term conjecture f_3(n) = 6n - Θ(n^{2/3}) for separated points. Shares the kissing number and isoperimetric framework with the unseparated setting."
     },
     {
       "targetId": "erdos-1083",
-      "relationship": "companion",
+      "relationship": "related",
       "description": "Distinct distances in higher dimensions (#1083): the complementary extremal problem asking for the minimum number of distinct distances among n points in ℝ^d."
     },
     {

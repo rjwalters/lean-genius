@@ -145,17 +145,17 @@
   "crossReferences": [
     {
       "targetId": "roth-theorem-k3",
-      "relationship": "depends-on",
+      "relationship": "foundational",
       "description": "Roth's theorem provides the k=3 base case for Szemeredi's induction"
     },
     {
       "targetId": "szemeredi-regularity",
-      "relationship": "depends-on",
+      "relationship": "foundational",
       "description": "The Regularity Lemma provides the structural decomposition at each inductive step"
     },
     {
       "targetId": "szemeredi-counting",
-      "relationship": "depends-on",
+      "relationship": "foundational",
       "description": "The counting/removal lemma translates regularity structure into AP counts"
     },
     {

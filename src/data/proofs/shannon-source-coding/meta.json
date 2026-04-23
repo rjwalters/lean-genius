@@ -120,7 +120,7 @@
   "crossReferences": [
     {
       "targetId": "shannon-entropy",
-      "relationship": "depends-on",
+      "relationship": "foundational",
       "description": "The source coding theorem characterizes entropy $H(X) = -\\sum_x p(x)\\log p(x)$ operationally as the compression limit — giving entropy its concrete meaning as 'minimum bits per symbol'. Without the source coding theorem, entropy is just a mathematical formula; with it, entropy becomes the answer to 'how much can we compress?'"
     },
     {

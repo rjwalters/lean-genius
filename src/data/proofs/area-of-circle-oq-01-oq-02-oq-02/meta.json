@@ -92,17 +92,17 @@
     },
     {
       "targetId": "area-of-circle-oq-01-oq-03",
-      "relationship": "supports",
+      "relationship": "foundational",
       "description": "The Wirtinger inequality entry uses Fourier decomposition for the isoperimetric proof; this IBP formula is a key ingredient."
     },
     {
       "targetId": "fourier-series",
-      "relationship": "specializes",
+      "relationship": "related",
       "description": "The general Fourier series theory provides the foundation; this entry proves a specific derivative property of Fourier coefficients used in geometric applications."
     },
     {
       "targetId": "isoperimetric-theorem",
-      "relationship": "supports",
+      "relationship": "foundational",
       "description": "This IBP formula is a key analytical ingredient in the Fourier-analytic proof of the isoperimetric inequality $C^2 \\geq 4\\pi A$."
     },
     {
@@ -112,7 +112,7 @@
     },
     {
       "targetId": "area-of-circle-oq-01-oq-02-oq-01",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Sibling entry generalizing circumference integration to n-dimensional volume from surface area — both extend the parent's radial integration technique, with this file applying it to periodic function analysis via IBP and the sibling extending to higher-dimensional geometry"
     },
     {

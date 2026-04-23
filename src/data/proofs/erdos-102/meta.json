@@ -149,12 +149,12 @@
   "crossReferences": [
     {
       "targetId": "erdos-101",
-      "relationship": "companion",
+      "relationship": "related",
       "description": "Problem #101 asks whether a planar point set with no 5 collinear points can have cn² four-point lines. The bridge theorem in this file shows that if h_c(n) → ∞ (Problem #102), then the four-point line count must be o(n²), directly resolving Problem #101 for the no-five-collinear case."
     },
     {
       "targetId": "erdos-588",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "Problem #588 studies k-rich lines (lines containing ≥ k points) in general position. Erdős #102 is the specialization to k = 4 with the density condition cn² lines, while #588 treats the general k and asks about the extremal configurations."
     },
     {
@@ -169,7 +169,7 @@
     },
     {
       "targetId": "szemeredi-theorem",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Szemerédi's theorem (on arithmetic progressions) and the Szemerédi–Trotter incidence theorem are distinct results by the same author. The incidence theorem is the key upper bound tool for Problem #102; the regularity lemma underlying both results connects discrete geometry to combinatorics."
     },
     {

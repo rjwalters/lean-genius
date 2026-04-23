@@ -195,12 +195,12 @@
     },
     {
       "targetId": "area-of-circle",
-      "relationship": "ancestor",
+      "relationship": "foundational",
       "description": "The original area formalization A = πr² — this file recovers it as the n=2 special case V₂(r) = ω₂·r² = πr²"
     },
     {
       "targetId": "fundamental-theorem-calculus",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "FTC Part 2 (integral_eq_sub_of_hasDerivAt) is the key tool: since V_n(0) = 0 and V'_n = S_n, FTC gives V_n(r) = ∫₀ʳ S_n(ρ) dρ"
     },
     {
@@ -210,7 +210,7 @@
     },
     {
       "targetId": "area-of-circle-oq-01-oq-02-oq-02",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Sibling entry on integration by parts for Fourier coefficients — both extend the circumference integration approach from the parent entry, with this file generalizing to n dimensions and the sibling applying IBP to periodic function analysis"
     }
   ],

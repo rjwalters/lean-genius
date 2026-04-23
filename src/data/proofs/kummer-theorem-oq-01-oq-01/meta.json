@@ -99,12 +99,12 @@
     },
     {
       "targetId": "kummer-theorem",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Applies the binomial Kummer theorem (Nat.factorization_choose') to each step of the multinomial's scanl decomposition"
     },
     {
       "targetId": "euler-totient-oq-02-oq-01",
-      "relationship": "parallel",
+      "relationship": "complementary",
       "description": "Both use Finsupp/factorization infrastructure; the product formula for φ and the carries formula for multinomials are dual applications of Mathlib's factorization API"
     }
   ],

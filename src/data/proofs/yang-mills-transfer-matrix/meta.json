@@ -121,7 +121,7 @@
   "crossReferences": [
     {
       "targetId": "yang-mills",
-      "relationship": "part-of",
+      "relationship": "foundational",
       "description": "Sub-module of the comprehensive Yang-Mills formalization"
     },
     {
@@ -131,7 +131,7 @@
     },
     {
       "targetId": "yang-mills-lattice",
-      "relationship": "depends-on",
+      "relationship": "foundational",
       "description": "Uses lattice plaquette action and gauge invariance as foundation for the transfer matrix"
     }
   ],

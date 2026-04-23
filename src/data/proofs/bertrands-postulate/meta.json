@@ -139,7 +139,7 @@
   "crossReferences": [
     {
       "targetId": "infinitude-primes",
-      "relationship": "implied-by",
+      "relationship": "related",
       "description": "Bertrand's Postulate immediately implies infinitude of primes (for any n, there's a prime > n), giving an alternative to Euclid's proof via a much stronger quantitative result"
     },
     {
@@ -149,7 +149,7 @@
     },
     {
       "targetId": "binomial-theorem",
-      "relationship": "technique",
+      "relationship": "related",
       "description": "Erdős's proof hinges on analyzing the central binomial coefficient C(2n,n), using properties of binomial coefficients and their prime factorizations"
     },
     {

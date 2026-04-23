@@ -186,12 +186,12 @@
     },
     {
       "targetId": "erdos-364",
-      "relationship": "extension",
+      "relationship": "extends",
       "description": "Problem #364 asks the natural successor question: can three consecutive integers all be powerful? The quadruple case is impossible (proved), but the triple case remains open. Problem #365's Pell equation machinery is directly relevant -- Pell-type constructions produce pairs but not triples, suggesting that triples, if they exist, would require fundamentally new methods."
     },
     {
       "targetId": "erdos-366",
-      "relationship": "generalization",
+      "relationship": "extends",
       "description": "Problem #366 generalizes from 2-full (powerful) to k-full consecutive pairs: is there a powerful n with n+1 being 3-full (cubeful)? The pair (8, 9) = (2^3, 3^2) and Golomb's (12167, 12168) = (23^3, 2^3*3^2*13^2) are related, but neither has a 3-full member followed by a 2-full member. The problem asks about the asymmetry between higher fullness levels in consecutive pairs."
     },
     {
@@ -201,7 +201,7 @@
     },
     {
       "targetId": "pell-equation",
-      "relationship": "foundation",
+      "relationship": "foundational",
       "description": "The Pell equation entry formalizes the theory of x^2 - Dy^2 = 1 that underlies Mahler's construction of consecutive powerful pairs. The fundamental solution and recurrence for D = 8 produce the infinite family of Pell-derived pairs (8y^2, 8y^2 + 1), and Walker's generalization extends this to Pell-like equations in quadratic number fields."
     },
     {
@@ -211,7 +211,7 @@
     },
     {
       "targetId": "erdos-936",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Problem #936 asks whether 2^n +/- 1 and n! +/- 1 are powerful for only finitely many n, conditionally resolved via the ABC conjecture. Both problems study how powerful numbers interact with structured sequences (consecutive integers in #365, exponential/factorial sequences in #936), and the ABC conjecture is relevant to both counting questions."
     }
   ],

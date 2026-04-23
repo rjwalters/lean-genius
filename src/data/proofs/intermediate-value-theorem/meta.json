@@ -222,12 +222,12 @@
     },
     {
       "targetId": "schroeder-bernstein",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "Both establish existence of 'intermediate' objects: IVT proves a continuous function attains all values between $f(a)$ and $f(b)$, while Schröder-Bernstein proves a bijection exists between sets with injections in both directions. Both are powerful existence theorems that avoid explicit construction"
     },
     {
       "targetId": "cantor-diagonalization",
-      "relationship": "thematic",
+      "relationship": "related",
       "description": "IVT relies on the completeness of $\\mathbb{R}$ (which has uncountably many points, by Cantor's argument). Over $\\mathbb{Q}$ (countable), IVT fails: there are 'gaps' where intermediate values should exist but don't. Cantor's proof that $\\mathbb{R}$ is uncountable ensures that $\\mathbb{R}$ has 'no gaps' — the topological completeness that IVT requires"
     }
   ],

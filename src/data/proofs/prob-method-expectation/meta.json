@@ -138,7 +138,7 @@
     },
     {
       "targetId": "prob-method-applications",
-      "relationship": "used-by",
+      "relationship": "extended-by",
       "description": "The first moment principle is used throughout the applications module for Ramsey bounds and chromatic number estimates"
     },
     {
@@ -163,7 +163,7 @@
     },
     {
       "targetId": "randomized-maxcut",
-      "relationship": "used-by",
+      "relationship": "extended-by",
       "description": "The randomized MAX-CUT algorithm uses the first moment method: a random partition cuts each edge with probability 1/2, so E[cut] >= m/2 by linearity of expectation"
     }
   ],

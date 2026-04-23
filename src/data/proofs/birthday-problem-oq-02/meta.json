@@ -173,7 +173,7 @@
   "crossReferences": [
     {
       "targetId": "birthday-problem",
-      "relationship": "generalizes",
+      "relationship": "extends",
       "description": "Generalizes the parent birthday problem formalization from d=365 to arbitrary d and adds the exponential asymptotic bound"
     },
     {
@@ -188,7 +188,7 @@
     },
     {
       "targetId": "inclusion-exclusion",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Inclusion-exclusion is the classical exact method for birthday probabilities; this entry's exponential bound provides a simpler asymptotic alternative"
     },
     {
