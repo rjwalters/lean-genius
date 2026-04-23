@@ -192,16 +192,28 @@
     "prerequisites": ["IsSolvable typeclass", "alternating group embedding in symmetric group", "subgroup solvability theorem"]
   },
   {
-    "id": "arg-higher-cardinalities-factorial",
+    "id": "arg-higher-cardinalities",
     "proofId": "abel-ruffini-galois-extensions",
-    "range": { "startLine": 464, "endLine": 516 },
+    "range": { "startLine": 464, "endLine": 494 },
     "type": "technique",
-    "title": "Higher Group Orders (S₇, S₈, A₇, A₈) and Factorial Identity Verification",
-    "content": "Computational verification of group orders for larger symmetric and alternating groups, and formal proofs that $|S_n| = n!$ and $|A_n| = n!/2$. All proofs use `native_decide` — the groups (5040, 40320 elements) exceed `decide`'s kernel evaluation budget, requiring the native code evaluator. The factorial identities `factorial_s3/s4/s5` formally tie the abstract `Fintype.card (Equiv.Perm (Fin n))` to `Nat.factorial n`, providing definitional bridges useful as simp lemmas. The half-factorial identities `half_factorial_a3/a4/a5` verify $|A_n| = n!/2$ (note: integer division, since $n! / 2$ is always exact for $n \\geq 2$). These results serve as computational lemmas for other algebraic arguments and as regression tests confirming Mathlib's group theory infrastructure correctly handles these concrete groups. The fact that $|A_8| = 20160$ is also the order of $GL_4(\\mathbb{F}_2)$ reflects an exceptional isomorphism $A_8 \\cong GL_4(\\mathbb{F}_2)$.",
-    "mathContext": "$|S_7| = 5040 = 7!$; $|S_8| = 40320 = 8!$; $|A_7| = 2520 = 7!/2$; $|A_8| = 20160 = 8!/2$. Exceptional: $A_8 \\cong GL_4(\\mathbb{F}_2)$ (order 20160), one of the exceptional isomorphisms between alternating groups and classical groups over finite fields. `native_decide` compiles the Lean proposition to native OCaml and evaluates it, bypassing kernel reduction for speed.",
+    "title": "Part XIV: Higher Cardinalities and Extended Non-Solvability (S₇, S₈, A₇, A₈)",
+    "content": "Part XIV extends the cardinality computation to $S_7$, $S_8$, $A_7$, $A_8$ (all requiring `native_decide`) and adds three explicit non-solvability results: $A_6$, $A_7$, $A_8$ not solvable. All non-solvability results are one-liner applications of `alternating_not_solvable_of_five_le (by omega)`. The key mathematical fact is that non-solvability propagates upward through containment: $A_5 \\leq A_6 \\leq A_7 \\leq A_8 \\leq \\ldots$, and any group containing a non-solvable subgroup is itself non-solvable (subgroup solvability contraposes). The exceptional isomorphism $A_8 \\cong GL_4(\\mathbb{F}_2)$ connects this algebraic computation to the classification of finite simple groups — both groups have order 20160, and this is one of five exceptional isomorphisms between alternating groups and classical groups over $\\mathbb{F}_2$ discovered during the classification effort.",
+    "mathContext": "$|S_7| = 7! = 5040$; $|S_8| = 8! = 40320$; $|A_7| = 7!/2 = 2520$; $|A_8| = 8!/2 = 20160$. Exceptional: $A_8 \\cong GL_4(\\mathbb{F}_2)$ (the group of invertible $4 \\times 4$ matrices over $\\mathbb{F}_2$, also order 20160). Non-solvability chain: $A_5 \\hookrightarrow A_6 \\hookrightarrow A_7 \\hookrightarrow A_8$, so $A_n$ not solvable for all $n \\geq 5$ (by `alternating_not_solvable_of_five_le`). `native_decide` compiles to native OCaml — required since $|S_8| = 40320$ elements exceed the kernel reduction budget.",
     "significance": "technical",
-    "relatedConcepts": ["native_decide", "Fintype.card", "Nat.factorial", "symmetric group order", "alternating group order", "exceptional group isomorphisms"],
-    "prerequisites": ["native_decide tactic", "Fintype.card", "factorial function", "symmetric group", "alternating group", "integer division in Nat"]
+    "relatedConcepts": ["native_decide", "Fintype.card", "alternating_not_solvable_of_five_le", "GL_4(F_2) isomorphism", "subgroup containment chain", "CFSG"],
+    "prerequisites": ["alternating_not_solvable_of_five_le", "native_decide tactic", "subgroup solvability contrapositive", "alternating group embedding"]
+  },
+  {
+    "id": "arg-factorial-identities",
+    "proofId": "abel-ruffini-galois-extensions",
+    "range": { "startLine": 496, "endLine": 516 },
+    "type": "technique",
+    "title": "Part XV: Factorial Identity Verification ($|S_n| = n!$ and $|A_n| = n!/2$)",
+    "content": "Part XV formally proves the factorial identities connecting `Fintype.card` to `Nat.factorial`. `factorial_s3/s4/s5` verify $|S_n| = n!$ for $n = 3, 4, 5$; `half_factorial_a3/a4/a5` verify $|A_n| = n!/2$ for $n = 3, 4, 5$. All use `decide` (small enough for kernel evaluation). These serve as simp lemmas bridging the abstract group-order API to concrete arithmetic, enabling downstream calculations. Integer division $n!/2$ is always exact for $n \\geq 2$ since $A_n$ has index 2 in $S_n$ (the sign homomorphism is surjective). These identities also function as regression tests confirming that Mathlib's `Fintype.card (Equiv.Perm (Fin n))` correctly evaluates to $n!$ — a non-trivial fact since the definition works via fintype instances, not direct enumeration.",
+    "mathContext": "$|S_n| = n!$ (bijections on $n$ elements). $|A_n| = n!/2$ for $n \\geq 2$: from $[S_n : A_n] = 2$ (index of $\\ker(\\text{sign})$). Values: $|S_3|=6$, $|S_4|=24$, $|S_5|=120$; $|A_3|=3$, $|A_4|=12$, $|A_5|=60$. The identity $|A_n| = n!/2$ follows: $|S_n| = |A_n| \\cdot [S_n:A_n] = |A_n| \\cdot 2$ by Lagrange's theorem. `Nat.factorial n / 2` uses integer division — exact here since $n! = 2 \\cdot |A_n|$ (even for all $n \\geq 2$).",
+    "significance": "technical",
+    "relatedConcepts": ["Fintype.card", "Nat.factorial", "decide tactic", "sign homomorphism surjectivity", "Lagrange's theorem", "index of a subgroup"],
+    "prerequisites": ["Fintype.card", "Nat.factorial", "decide tactic", "sign homomorphism", "alternating group as index-2 subgroup"]
   },
   {
     "id": "arg-summary-closing",
