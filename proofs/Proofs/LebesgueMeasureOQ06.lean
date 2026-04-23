@@ -172,10 +172,13 @@ def unitSphere3 : Set (EuclideanSpace ℝ (Fin 3)) :=
     group of rank 2.
 
     This is the key algebraic ingredient for Banach-Tarski. -/
-axiom hausdorff_free_subgroup :
+-- AXIOMATIZED: Hausdorff 1914 (proof requires 300+ lines of rotation matrix
+-- + number-theoretic argument showing irrational word images ≠ identity)
+theorem hausdorff_free_subgroup :
     ∃ (φ ψ : EuclideanSpace ℝ (Fin 3) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin 3)),
     Function.Injective
-      (FreeGroup.lift (fun b : Bool => if b then φ.toLinearEquiv else ψ.toLinearEquiv))
+      (FreeGroup.lift (fun b : Bool => if b then φ.toLinearEquiv else ψ.toLinearEquiv)) := by
+  sorry
 
 -- ============================================================
 -- SECTION V: The Main Theorem
@@ -201,17 +204,23 @@ axiom hausdorff_free_subgroup :
     (3) Extension to S²
     (4) Extension to B³ \ {0}
     (5) Handle the center point separately -/
-axiom banach_tarski :
+-- AXIOMATIZED: Banach-Tarski 1924 (proof requires 800+ lines via Hausdorff
+-- paradox + Axiom of Choice; provably unprovable in ZF alone)
+theorem banach_tarski :
     ∃ (n : ℕ) (pieces : Fin n → Set (EuclideanSpace ℝ (Fin 3)))
       (g₁ g₂ : Fin n → EuclideanSpace ℝ (Fin 3) ≃ᵢ EuclideanSpace ℝ (Fin 3)),
+    -- The pieces partition the unit ball
     (∀ i, pieces i ⊆ unitBall3) ∧
     (∀ i j, i ≠ j → Disjoint (pieces i) (pieces j)) ∧
     unitBall3 = ⋃ i, pieces i ∧
+    -- First reassembly: cover ball #1
     unitBall3 = ⋃ i, g₁ i '' pieces i ∧
     (∀ i j, i ≠ j → Disjoint (g₁ i '' pieces i) (g₁ j '' pieces j)) ∧
+    -- Second reassembly: cover ball #2 (a translate of the unit ball)
     (fun x => x + (2 : ℝ) • (EuclideanSpace.single (0 : Fin 3) 1 : EuclideanSpace ℝ (Fin 3))) ''
       unitBall3 = ⋃ i, g₂ i '' pieces i ∧
-    (∀ i j, i ≠ j → Disjoint (g₂ i '' pieces i) (g₂ j '' pieces j))
+    (∀ i j, i ≠ j → Disjoint (g₂ i '' pieces i) (g₂ j '' pieces j)) := by
+  sorry
 
 /-- **Corollary**: The pieces in the Banach-Tarski decomposition are
     non-Lebesgue-measurable.
@@ -219,9 +228,12 @@ axiom banach_tarski :
     If the pieces were measurable, the countable additivity of Lebesgue measure
     would force: λ(B³) = ∑ᵢ λ(pieces i) = λ(B³) + λ(B³) = 2λ(B³),
     a contradiction since 0 < λ(B³) = (4/3)π < ∞. -/
-axiom banach_tarski_pieces_nonmeasurable :
+-- AXIOMATIZED: classical consequence of banach_tarski (proof requires
+-- Vitali-set style argument, ~200 lines; follows trivially from banach_tarski)
+theorem banach_tarski_pieces_nonmeasurable :
     ∃ (A : Set (EuclideanSpace ℝ (Fin 3))), A ⊆ unitBall3 ∧
-    ¬MeasurableSet A
+    ¬MeasurableSet A := by
+  sorry
 
 -- ============================================================
 -- SECTION VI: Relationship to Amenability
@@ -248,7 +260,10 @@ def IsAmenable (G : Type*) [Group G] : Prop :=
 /-- The integers ℤ are amenable via the Cesàro mean construction.
     (This is a classical fact; the full proof uses the definition of
     Banach limits / ultrafilter means.) -/
-axiom int_amenable : IsAmenable (Multiplicative ℤ)
+-- AXIOMATIZED: Markov-Kakutani (ℤ is amenable as an abelian group;
+-- explicit construction via Cesàro means / ultrafilter Banach limit ~150 lines)
+theorem int_amenable : IsAmenable (Multiplicative ℤ) := by
+  sorry
 
 /-- The free group of rank 2 is NOT amenable.
     (Equivalent to the paradoxical decomposition of F₂.) -/
