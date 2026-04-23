@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import key Mathlib modules: `Finset.Basic` for finite set operations and summation, `SimpleGraph.Basic` and `SimpleGraph.Finite` for graph structure and edge sets, and `Data.Real.Basic` for real number arithmetic in probability calculations.",
+    "mathContext": "In Lean 4: SimpleGraph V provides Adj : V → V → Prop and edgeFinset : Finset (Sym2 V). Assignments are functions (V → Bool). The proof uses Finset.sum_comm for sum interchange (linearity of expectation), and Function.update v (!v) for the toggle bijection flipping a single vertex's assignment.",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
@@ -86,6 +87,7 @@
     "type": "tactic",
     "title": "Sym2 Induction",
     "content": "To prove something about an unordered pair $e$, we use `induction e using Sym2.ind` to get representatives $u, v$. The hypothesis `h : ¬e.IsDiag` ensures $u \\neq v$ (edges don't have both endpoints the same).",
+    "mathContext": "Sym2 V is the quotient (V × V) / (swap symmetry), encoding unordered pairs. Sym2.ind eliminates to representatives: induction e using Sym2.ind with | h u v => .... h : ¬e.IsDiag asserts Sym2.IsDiag (Sym2.mk u v) = (u = v) is false, giving u ≠ v. Edges in SimpleGraph.edgeFinset are elements of Sym2 V satisfying ¬IsDiag.",
     "significance": "supporting",
     "relatedConcepts": [
       "quotient induction",
