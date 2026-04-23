@@ -7151,9 +7151,12 @@
     },
     "erdos-512": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 5,
+      "auditCount": 6,
       "lastAudited": "2026-04-23T10:25:43Z",
-      "result": "clean"
+      "issues": [
+        "sorries 2->1 (Lean file has 1 sorry: Parseval theorem at line 194)"
+      ],
+      "result": "issues-fixed"
     },
     "erdos-513": {
       "agentId": "auditor-cycle-20-batch",
