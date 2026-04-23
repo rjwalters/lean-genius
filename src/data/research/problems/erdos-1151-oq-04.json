@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1151-oq-04",
   "title": "Prove erdos_1941_divergence via Lebesgue Function Growth at Chebyshev Nodes",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -27,7 +27,7 @@
     "goal": "Prove erdos_1941_divergence to eliminate the axiom from the gallery"
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-04-21",
     "iteration": 1,
     "focus": "Read Erdos1151Problem.lean, assess Mathlib for Chebyshev polynomial theory",
@@ -40,18 +40,45 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Problem selected by Seeker. Parent uses erdos_1941_divergence as an axiom. Key fact: Lebesgue function Λₙ(cos(πp/q)) → ∞ for odd p, q.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: chebyshev_lebesgue_lb proved modulo chebyshev_trig_sum_lb; 2 sorries remain (harmonic sum lb + Banach-Steinhaus gap)",
+    "builtItems": [
+      "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
+      "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
+      "leadingCoeff_T_ofNat : ∀ n ≥ 1, (T ℝ (n : ℤ)).leadingCoeff = 2^(n-1) — Erdos1151OQ04.lean:306",
+      "Build fixes: all Session 3 lemmas compile cleanly in Proofs/Erdos1151OQ04.lean",
+      "chebyshev_product_formula: T_n = 2^{n-1} * prod(X - cos phi_k) — Erdos1151OQ04.lean:309",
+      "lagrange_basis_chebyshev_formula: explicit Lagrange basis via product formula — Erdos1151OQ04.lean:388",
+      "chebyshev_lebesgue_eq: Lebesgue function explicit formula for ALL n when q odd — Erdos1151OQ04.lean:498",
+      "x_not_chebyshev_node: parity lemma, cos(pi*p/q) != chebyshevNode n k for all n when p,q odd — Erdos1151OQ04.lean:534",
+      "chebyshev_lebesgue_eq_all_n: Lebesgue formula for all n when p,q odd — Erdos1151OQ04.lean:601",
+      "chebyshev_lebesgue_growth: proved (Filter.tendsto_atTop_mono + C·log(n+1) → ∞)",
+      "cos_rational_pi_pos_min: ∃ δ > 0 s.t. |cos(nπp/q)| ≥ δ for all n (parity argument)",
+      "x_not_chebyshev_node: cos(πp/q) ≠ chebyshevNode n k for all n,k when p,q odd",
+      "chebyshev_trig_sum_lb: sorry (isolated harmonic sum lower bound: S_n ≥ C₂·n·log(n+1))",
+      "chebyshev_lebesgue_lb: proved modulo chebyshev_trig_sum_lb via mul_le_mul chain (δ/n · C₂·n·log(n+1) ≤ |cos(nθ)|/n · S_n)"
+    ],
     "insights": [
       "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
       "Growth rate for rational cosines: Λₙ(cos(πp/q)) ≥ C·log(n)",
-      "Divergence of interpolation sequence follows from Λₙ → ∞ via bump function"
+      "Divergence of interpolation sequence follows from Λₙ → ∞ via bump function",
+      "natDegree and leadingCoeff of T_n proved by two-step induction on recurrence T_{n+2} = 2X·T_{n+1} - T_n",
+      "Product formula proof strategy: T_n - Q_n has deg < n and n roots (by Chebyshev node roots + card_roots_le_degree) → T_n = Q_n",
+      "(2 : ℝ[X]) = C 2 via Polynomial.C_ofNat; leadingCoeff_C gives leadingCoeff = 2",
+      "apply lemma fails when conclusion has concrete value (n+2) vs metavar (p.natDegree): use have key := lemma proof; rw [key]",
+      "ℕ strict bound j.val < n does NOT give 2*j+1 < 2*n in ℝ via linarith; need omega on ℕ then exact_mod_cast",
+      "div_lt_iff renamed to div_lt_iff₀ in Mathlib v4.26.0",
+      "Session 5 proved product formula, lagrange basis formula, and lebesgue_eq (sorries: 4→2)",
+      "x_not_chebyshev_node: cos(pi*p/q) is NEVER a Chebyshev node when q is odd (parity: q*(2k+1) is odd, angle condition requires even = odd)",
+      "chebyshev_lebesgue_eq_all_n: applies for ALL n when p,q odd (not just n=mq subsequence)",
+      "divergence_from_lebesgue_growth fundamental gap: Banach-Steinhaus only gives lim sup = inf, not lim = +inf; axiom may be overstated",
+      "chebyshev_lebesgue_growth reduces to lb sorry via tendsto_atTop_mono — growth theorem itself is proved",
+      "Filter.tendsto_atTop_mono pattern: if f ≤ g pointwise and f → ∞ then g → ∞",
+      "let binding in Lean 4 requires explicit unfolding in simp: simp only [vals, ...]"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Read Erdos1151Problem.lean fully",
-      "Check Mathlib.Analysis.Polynomial.Chebyshev existence",
-      "Search for trigonometric product formula for Lebesgue function"
+      "chebyshev_lebesgue_lb: harmonic sum lower bound for S_n = Σ sin(φₖ)/|cos θ - cos φₖ| ≥ C·n·log(n+1)",
+      "divergence_from_lebesgue_growth: weaken to lim sup = ∞ (Banach-Steinhaus) or find explicit construction"
     ]
   },
   "tags": [
@@ -79,6 +106,28 @@
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
+    {
+      "path": "Proofs/Erdos1151OQ04.lean",
+      "filename": "Erdos1151OQ04.lean",
+      "lineCount": 854,
+      "theoremCount": 31,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1151OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos1151OQ04Aristotle.lean",
+      "filename": "Erdos1151OQ04Aristotle.lean",
+      "lineCount": 141,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1151OQ04Aristotle.lean"
+    },
     {
       "path": "Proofs/Erdos1151Problem.lean",
       "filename": "Erdos1151Problem.lean",
