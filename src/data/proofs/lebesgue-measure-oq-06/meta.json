@@ -18,10 +18,10 @@
       "research"
     ],
     "badge": "wip",
-    "sorries": 6,
-    "axiomCount": 6,
-    "lineCount": 287,
-    "assumptions": "6 sorries encoding axiomatized results: banach_tarski (main theorem), hausdorff_free_subgroup (free subgroup of SO(3)), banach_tarski_pieces_nonmeasurable (non-measurability of pieces), free_group_not_amenable (F₂ non-amenability), int_amenable (ℤ amenability), and one auxiliary sorry in paradoxical_no_finite_measure. The main proof requires ~800 lines via free subgroup of SO(3) — beyond this gallery entry's scope.",
+    "sorries": 8,
+    "axiomCount": 8,
+    "lineCount": 419,
+    "assumptions": "8 sorries: hausdorff_free_subgroup (free subgroup of SO(3)), banach_tarski (main theorem), banach_tarski_pieces_nonmeasurable (non-measurability of pieces), int_amenable (ℤ amenability); plus 4 word-structure helper sorries for free_group_not_amenable (W_a_two_cover, W_a_smul_disj, W_b_two_cover, W_b_smul_disj — Aristotle candidates). Note: free_group_not_amenable theorem body is now structurally proved (sorry-free), reducing to these 4 focused lemmas. paradoxical_no_finite_measure is fully proved (no sorry).",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -30,7 +30,8 @@
       "IsAmenable (amenable group definition)",
       "ENNReal.eq_zero_or_top_of_add_eq_self (proved: a + a = a → a = 0 or a = ⊤)",
       "equidecomposable_refl (proved: every set is self-equidecomposable)",
-      "Framework: paradoxical sets have no finite invariant measure (structure proved, one sorry for B∪C=A covering)"
+      "Framework: paradoxical sets have no finite invariant measure (structure proved, one sorry for B∪C=A covering)",
+      "Structural proof of free_group_not_amenable: theorem body is now sorry-free, built on word-set definitions (W_a, W_ainv, W_b, W_binv) and 4 focused helper lemmas (W_a_two_cover, W_a_smul_disj, W_b_two_cover, W_b_smul_disj) that are Aristotle candidates"
     ]
   },
   "overview": {
@@ -130,12 +131,12 @@
   "leanFile": {
     "imports": ["Mathlib"],
     "namespace": "BanachTarski",
-    "lineCount": 287,
-    "axiomCount": 6,
-    "theoremCount": 7,
-    "definitionCount": 5,
+    "lineCount": 419,
+    "axiomCount": 8,
+    "theoremCount": 11,
+    "definitionCount": 9,
     "path": "Proofs/LebesgueMeasureOQ06.lean",
-    "sorries": 6
+    "sorries": 8
   },
-  "sorries": 6
+  "sorries": 8
 }
