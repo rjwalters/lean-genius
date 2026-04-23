@@ -7,7 +7,7 @@
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_integral#n-dimensional_and_functional_generalization",
     "date": "Classical result, formalized 2026",
-    "status": "verified",
+    "status": "formalized",
     "tags": [
       "analysis",
       "integration",
@@ -20,7 +20,7 @@
     ],
     "proofRepoPath": "Proofs/AreaOfCircleOQ05OQ02.lean",
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "axiomCount": 0,
     "assumptions": "Core scalar Gaussian ∫ exp(-bx²) = √(π/b) is derived from Mathlib's `integral_gaussian` via the parent proof's `scaled_gaussian`. All three theorems are proved with 0 sorries.",
     "originalContributions": [
@@ -116,5 +116,5 @@
       "Can the proof be simplified using `MeasurePreserving.integral_comp'` instead of `integral_map` + `hmap`?"
     ]
   },
-  "sorries": 0
+  "sorries": 1
 }
