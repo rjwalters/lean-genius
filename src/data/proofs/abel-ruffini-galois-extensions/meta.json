@@ -196,7 +196,7 @@
       "title": "Solvability Infrastructure",
       "startLine": 237,
       "endLine": 365,
-      "summary": "Proves solvability of $A_n$ for $n \\leq 4$ and non-solvability for $n \\geq 5$ (complete $A_n$ classification). Group cardinalities from $|S_2|=2$ to $|S_6|=720$. Solvability preservation: subgroups, quotients, isomorphisms. Specific non-solvability of $S_5, S_6, S_7, S_8$ and $A_6, A_7$."
+      "summary": "Proves complete alternating group classification: $A_n$ solvable $\\iff n \\leq 4$ (via `solvable_of_ker_le_range` for $n \\geq 5$, subgroup solvability for $n \\leq 4$). Group cardinalities $|S_2|$–$|S_6|$ and $|A_0|$–$|A_6|$ via `decide`/`native_decide`. Solvability preservation: subgroups ($H \\leq G$), quotients ($G/N$), and isomorphic groups all via `inferInstance`. Index theorem corollaries (Part X): $|S_0|=|S_1|=1$ and `a5_not_solvable` as a standalone named lemma for direct reference."
     },
     {
       "id": "specific-non-solvable",
