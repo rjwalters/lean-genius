@@ -151,6 +151,38 @@
       "endLine": 154,
       "summary": "Does positive density imply $\\sum_{d \\in D(A)} 1/d = \\infty$? This would show $D(A)$ has 'harmonic thickness' beyond mere syndeticity.",
       "mathContext": "Open: $\\overline{d}(A) > 0 \\Rightarrow \\sum_{d \\in D(A)} 1/|d| = \\infty$? (harmonic thickness conjecture)"
+    },
+    {
+      "id": "iff-characterizations",
+      "title": "If-and-Only-If Characterizations and Lower Density",
+      "startLine": 155,
+      "endLine": 163,
+      "summary": "Four theorems completing the structural picture: `zero_mem_diffSet_iff` ($0 \\in D(A) \\iff A$ is infinite), `diffSet_nonempty_iff` ($D(A) \\neq \\emptyset \\iff A$ is infinite), `lower_density_implies_upper` ($\\underline{d}(A) > 0 \\Rightarrow \\overline{d}(A) > 0$), and `positive_lower_density_bounded_gaps` (lower density suffices for syndeticity via Prikry composition).",
+      "mathContext": "$(0 \\in D(A)) \\iff (A \\text{ infinite}) \\iff (D(A) \\neq \\emptyset)$. Density hierarchy: $\\underline{d}(A) > 0 \\Rightarrow \\overline{d}(A) > 0 \\Rightarrow \\text{HasBoundedGaps}(D(A))$."
+    },
+    {
+      "id": "additional-structural",
+      "title": "Additional Structural Properties of D(A) and HasBoundedGaps",
+      "startLine": 165,
+      "endLine": 191,
+      "summary": "Four structural theorems: `diffSet_union_subset` ($D(A) \\cup D(B) \\subseteq D(A \\cup B)$), `hasBoundedGaps_nonempty` (syndetic sets are nonempty), `hasBoundedGaps_mono` (syndeticity is upward closed under superset), and `infinite_of_diffSet_bounded_gaps` ($D(A)$ syndetic implies $A$ infinite — the converse direction).",
+      "mathContext": "$D(A) \\cup D(B) \\subseteq D(A \\cup B)$; syndetic $S \\subseteq T$ implies $T$ syndetic; $\\text{HasBoundedGaps}(D(A)) \\Rightarrow A$ infinite (converse: $A$ infinite $\\not\\Rightarrow$ $D(A)$ syndetic without density)."
+    },
+    {
+      "id": "density-finiteness-chain",
+      "title": "Density–Finiteness Connection and Full Implication Chain",
+      "startLine": 192,
+      "endLine": 238,
+      "summary": "The culminating sequence: `countingFn_le` (trivial bound $A(N) \\leq N$), `positive_upper_density_infinite` (positive density forces $A$ infinite via Archimedean contradiction), `positive_upper_density_diffSet_nonempty` (density forces $0 \\in D(A)$), and `density_chain` (the complete chain: density $\\Rightarrow A$ infinite $\\Rightarrow D(A) \\neq \\emptyset \\Rightarrow D(A)$ syndetic, as a single triple conjunction).",
+      "mathContext": "$\\overline{d}(A) > 0 \\Rightarrow A$ infinite $\\Rightarrow 0 \\in D(A) \\Rightarrow D(A) \\neq \\emptyset \\Rightarrow \\text{HasBoundedGaps}(D(A))$. `positive_upper_density_infinite` uses Archimedean property: density $\\delta$ and finite $A$ of size $C$ give $\\delta N \\leq C$ for all large $N$, contradicting $\\delta > 0$."
+    },
+    {
+      "id": "main-problem-definition",
+      "title": "ErdosProblem332 Definition and Related Questions",
+      "startLine": 240,
+      "endLine": 254,
+      "summary": "`ErdosProblem332` is formalized as: any condition $P$ that implies $D(A)$ is syndetic for all $A$ must be implied by positive upper density — i.e., positive density is the 'weakest' known sufficient condition. The file closes with the related open question about harmonic thickness of $D(A)$ (whether $\\sum 1/d = \\infty$).",
+      "mathContext": "$\\text{ErdosProblem332} \\equiv \\forall P, (\\forall A, P(A) \\Rightarrow \\text{HasBoundedGaps}(D(A))) \\Rightarrow (\\forall A, \\overline{d}(A) > 0 \\Rightarrow P(A))$. This is a characterization of positive density as the minimal known sufficient property."
     }
   ],
   "conclusion": {

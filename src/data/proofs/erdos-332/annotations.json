@@ -275,5 +275,103 @@
       "diffSet",
       "Finset.sum"
     ]
+  },
+  {
+    "id": "erdos-332-finite-empty",
+    "proofId": "erdos-332",
+    "type": "technique",
+    "range": {
+      "startLine": 119,
+      "endLine": 131
+    },
+    "title": "Finite Sets Have Empty D(A); Infinite Sets Have Nonempty D(A)",
+    "content": "`diffSet_finite_eq_empty` proves $D(A) = \\emptyset$ when $A$ is finite: since $A \\times A$ is finite (as `Set.Finite.prod`), the fibre over any $d$ cannot be infinite, so no difference qualifies. The proof is by extensionality — for any $d$, membership in $D(A)$ requires an infinite fibre, but finite $A$ bounds the total pair count by $|A|^2$. `diffSet_nonempty_of_infinite` is then the immediate corollary: $A$ infinite $\\Rightarrow 0 \\in D(A)$ (by `zero_mem_diffSet`) $\\Rightarrow D(A)$ nonempty.",
+    "mathContext": "$A$ finite $\\Rightarrow A \\times A$ finite $\\Rightarrow$ no fibre can be infinite $\\Rightarrow D(A) = \\emptyset$. Contrapositive: $D(A) \\neq \\emptyset \\Rightarrow A$ infinite. Combined with `zero_mem_diffSet`: $D(A) \\neq \\emptyset \\iff A$ infinite.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "finite products",
+      "pigeonhole finiteness",
+      "contrapositive reasoning"
+    ],
+    "prerequisites": [
+      "diffSet",
+      "Set.Finite",
+      "Set.Finite.prod"
+    ]
+  },
+  {
+    "id": "erdos-332-iff-characterizations",
+    "proofId": "erdos-332",
+    "type": "technique",
+    "range": {
+      "startLine": 132,
+      "endLine": 163
+    },
+    "title": "Biconditional Characterizations and Lower-Density Corollaries",
+    "content": "Four theorems complete the finiteness–density picture. `zero_mem_diffSet_iff` gives the biconditional: $0 \\in D(A) \\iff A$ is infinite (forward direction by `diffSet_finite_eq_empty`, backward by `zero_mem_diffSet`). `diffSet_nonempty_iff` strengthens this: $D(A) \\neq \\emptyset \\iff A$ is infinite (the backward direction is `diffSet_nonempty_of_infinite`; the forward direction derives finiteness from `diffSet_finite_eq_empty` by contradiction). `lower_density_implies_upper` proves $\\underline{d}(A) > 0 \\Rightarrow \\overline{d}(A) > 0$ by turning the lower-density witness $(\\delta, N_0)$ into an upper-density witness by taking $N \\geq N_0$ arbitrarily large. `positive_lower_density_bounded_gaps` then composes: lower density → upper density (via previous) → bounded gaps (via Prikry axiom).",
+    "mathContext": "$0 \\in D(A) \\iff (D(A) \\neq \\emptyset) \\iff A$ is infinite. For lower density: $\\exists \\delta > 0, \\exists N_0, \\forall N \\geq N_0: \\delta N \\leq A(N)$ implies $\\forall N_0', \\exists N \\geq N_0': \\delta N \\leq A(N)$ (take $N = \\max(N_0, N_0')$). This is the simplest case of $\\liminf \\leq \\limsup$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "biconditional proofs",
+      "lower vs upper density",
+      "liminf vs limsup",
+      "density hierarchy"
+    ],
+    "prerequisites": [
+      "diffSet",
+      "zero_mem_diffSet",
+      "diffSet_finite_eq_empty",
+      "HasPositiveLowerDensity",
+      "HasPositiveUpperDensity",
+      "positive_density_bounded_gaps"
+    ]
+  },
+  {
+    "id": "erdos-332-bounded-gaps-props",
+    "proofId": "erdos-332",
+    "type": "technique",
+    "range": {
+      "startLine": 165,
+      "endLine": 191
+    },
+    "title": "Union Subadditivity and HasBoundedGaps Closure Properties",
+    "content": "`diffSet_union_subset` proves $D(A) \\cup D(B) \\subseteq D(A \\cup B)$: differences with infinite fibre in $A$ still have infinite fibre in $A \\cup B$ (by `diffSet_mono`), and similarly for $B$. This is a subadditivity result — equality need not hold. `hasBoundedGaps_nonempty` shows syndetic sets are nonempty (any syndetic parameter $M$ gives a witness for $z = 0$). `hasBoundedGaps_mono` shows syndeticity is upward closed: $S \\subseteq T$ and $S$ syndetic implies $T$ syndetic (the same $M$ and $z$-witnesses in $S$ also lie in $T$). `infinite_of_diffSet_bounded_gaps` completes the circle: if $D(A)$ is syndetic then $D(A) \\neq \\emptyset$ (by nonemptiness), hence $A$ is infinite (by `diffSet_nonempty_iff`).",
+    "mathContext": "$D(A \\cup B) \\supseteq D(A) \\cup D(B)$; strict inclusion is possible. Upward closure: $S \\subseteq T$ and $\\text{HasBoundedGaps}(S) \\Rightarrow \\text{HasBoundedGaps}(T)$. This gives: $D(A)$ syndetic $\\Rightarrow D(A)$ nonempty $\\Rightarrow A$ infinite — the converse of density $\\Rightarrow$ syndetic shows syndeticity is a non-trivial structural requirement.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity of difference sets",
+      "upward closed properties",
+      "syndetic set algebra"
+    ],
+    "prerequisites": [
+      "diffSet_mono",
+      "HasBoundedGaps",
+      "diffSet_nonempty_iff"
+    ]
+  },
+  {
+    "id": "erdos-332-density-chain",
+    "proofId": "erdos-332",
+    "type": "insight",
+    "range": {
+      "startLine": 192,
+      "endLine": 254
+    },
+    "title": "Density–Finiteness Bridge, Archimedean Contradiction, and ErdosProblem332",
+    "content": "`countingFn_le` is the trivial bound $A(N) \\leq N$ (at most $N$ elements in $\\{1,\\ldots,N\\}$). `positive_upper_density_infinite` uses an Archimedean contradiction: if $A$ has positive density $\\delta$ but is finite of size $C$, then $A(N) \\leq C$ for all $N$; but density gives $\\delta N \\leq A(N)$ for large $N$; choosing $N > C/\\delta$ gives $C < \\delta N \\leq A(N) \\leq C$, a contradiction. `density_chain` packages the full implication as a triple: density $\\Rightarrow A$ infinite (Archimedean), $A$ infinite $\\Rightarrow D(A) \\neq \\emptyset$ (diagonal), $D(A) \\neq \\emptyset \\Rightarrow$ syndetic (Prikry). `ErdosProblem332` formalizes the meta-question: any property $P$ implying syndeticity of $D(A)$ must be implied by positive upper density. The file closes with the related harmonic question.",
+    "mathContext": "$A$ finite, $|A| = C$, $\\overline{d}(A) \\geq \\delta > 0$: $\\exists N > C/\\delta$ with $\\delta N \\leq A(N) \\leq C < \\delta N$, contradiction. `ErdosProblem332` $\\equiv$ $\\overline{d}$ is the weakest known $P$: $\\forall P, (P \\Rightarrow \\text{syndetic}) \\Rightarrow (\\overline{d} > 0 \\Rightarrow P)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Archimedean property",
+      "implication chain",
+      "meta-mathematical characterization",
+      "Prikry's theorem"
+    ],
+    "prerequisites": [
+      "countingFn",
+      "HasPositiveUpperDensity",
+      "positive_density_bounded_gaps",
+      "diffSet_nonempty_of_infinite"
+    ]
   }
 ]
