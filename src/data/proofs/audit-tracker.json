@@ -652,9 +652,9 @@
       "result": "clean"
     },
     "ballot-problem-oq-03-oq-01-oq-02": {
-      "auditCount": 7,
+      "auditCount": 8,
       "issues": [],
-      "lastAudited": "2026-04-22T20:12:20Z",
+      "lastAudited": "2026-04-23T09:14:46Z",
       "result": "clean"
     },
     "ballot-problem-oq-03-oq-02": {
@@ -5810,10 +5810,10 @@
       "result": "clean"
     },
     "erdos-321": {
-      "auditCount": 7,
+      "auditCount": 9,
       "issues": [],
-      "lastAudited": "2026-04-22T12:28:08Z",
-      "result": "clean"
+      "lastAudited": "2026-04-23T09:28:17Z",
+      "result": "issues-fixed"
     },
     "erdos-322": {
       "agentId": "auditor-cycle-20-batch",
@@ -11636,10 +11636,10 @@
       "result": "clean"
     },
     "lebesgue-measure-oq-06": {
-      "auditCount": 9,
+      "auditCount": 10,
       "issues": [],
-      "lastAudited": "2026-04-23T05:00:05Z",
-      "result": "clean"
+      "lastAudited": "2026-04-23T09:24:25Z",
+      "result": "issues-fixed"
     },
     "legendre-partial": {
       "agentId": "auditor-cycle-20-batch",
@@ -13001,8 +13001,14 @@
       "issues": []
     },
     "solution-of-cubic-oq-05": {
-      "auditCount": 16,
-      "lastAudited": "2026-04-23T08:52:39Z",
+      "auditCount": 17,
+      "lastAudited": "2026-04-23T09:30:41Z",
+      "result": "clean",
+      "issues": []
+    },
+    "triangle-angle-sum-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-23T09:30:41Z",
       "result": "clean",
       "issues": []
     }
