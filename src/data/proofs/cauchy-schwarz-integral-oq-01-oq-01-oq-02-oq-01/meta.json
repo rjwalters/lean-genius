@@ -14,10 +14,10 @@
       "measure-theory"
     ],
     "badge": "wip",
-    "sorries": 4,
+    "sorries": 2,
     "axiomCount": 0,
     "lineCount": 980,
-    "assumptions": "4 remaining sorries: (1) truncated_rn_deriv_lq_bound (line 209) — dead path, marked false; (2–4) holder_extremizer_lq_bound (lines 861, 866, 871) — three sub-sorries in the Hölder extremizer bound. indicator_lp_hasSum was proved in session 4 (2026-04-22). See Lean source for details.",
+    "assumptions": "2 remaining sorries, both dead-path (not used in main proof chain): (1) truncated_rn_deriv_lq_bound (line 191) — incorrect approach, bypassed; (2) rn_deriv_memLq (line 207) — depends on (1), also bypassed. The main theorem riesz_lp_surjective_from_rn is proved via rn_deriv_memLq_from_trunc + holder_extremizer_lq_bound (all sorry-free). holder_extremizer_lq_bound proved in session 5 (2026-04-22).",
     "dateAdded": "2026-04-13"
   },
   "overview": {
@@ -123,17 +123,17 @@
       },
       {
         "name": "integral_representation",
-        "type": "core",
-        "description": "Integral representation via Lp.induction — addition and closedness cases proved, indicator case needs type matching"
+        "type": "proved",
+        "description": "Integral representation via Lp.induction — fully proved (addition, closedness, and indicator cases all complete)"
       },
       {
         "name": "riesz_lp_surjective_from_rn",
-        "type": "core",
-        "description": "Main surjectivity theorem — needs signed measure construction + assembly"
+        "type": "proved",
+        "description": "Main surjectivity theorem — fully proved via holder_extremizer_lq_bound + rn_deriv_memLq_from_trunc + integral_representation"
       }
     ],
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
-    "sorries": 4
+    "sorries": 2
   },
-  "sorries": 4
+  "sorries": 2
 }
