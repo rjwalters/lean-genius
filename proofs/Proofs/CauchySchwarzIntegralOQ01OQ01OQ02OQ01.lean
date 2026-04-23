@@ -899,10 +899,111 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
     rw [eLpNorm_eq_lintegral_rpow_nnnorm hq_ne_zero hqne_top, ← ENNReal.rpow_mul,
         one_div, inv_mul_cancel₀ hq_pos.ne', ENNReal.rpow_one]
   -- SORRY C: the chain gives eLpNorm gₙ q μ ≤ ENNReal.ofReal ‖φ‖
-  -- From: ‖gₙ‖_q^q = ∫ hₙ gₙ ≤ ∫ hₙ g = φ(hₙ) ≤ ‖φ‖·‖hₙ‖_p and ‖hₙ‖_p^p = ‖gₙ‖_q^q
-  -- → ‖gₙ‖_q^q ≤ ‖φ‖·‖gₙ‖_q^{q/p} → ‖gₙ‖_q^{q-q/p} ≤ ‖φ‖ → ‖gₙ‖_q ≤ ‖φ‖ (q-q/p=1).
-  -- (Uses: ENNReal rpow arithmetic, HolderConjugate.toReal_add_inv, ‖h‖_p = (eLpNorm h p μ).toReal.)
-  sorry
+  -- Step C0: setup
+  have hp_pos' : 0 < p.toReal :=
+    ENNReal.toReal_pos (ne_of_gt (lt_trans one_pos hp1)) hptop
+  -- Step C1: gₙ ∈ Lq (bounded on finite measure)
+  have hgn_memLq : Memℒp g_n q μ :=
+    truncated_rn_deriv_memLq g hg_meas n q
+      (by linarith [hpq.symm.one_lt_of_lt hp1]) hqne_top
+  have hgn_ne_top : eLpNorm g_n q μ ≠ ⊤ := (hgn_memLq.eLpNorm_lt_top).ne
+  -- Step C2: eLpNorm h_n p μ = eLpNorm g_n q μ ^ (q.toReal / p.toReal)
+  -- Proof: |h_n a|^p.toReal = |g_n a|^q.toReal pointwise (from p(q-1)=q via HolderConjugate),
+  -- so ∫⁻ ‖h_n‖₊^p = ∫⁻ ‖g_n‖₊^q, hence eLpNorm h_n p^p = eLpNorm g_n q^q,
+  -- hence eLpNorm h_n p = (eLpNorm g_n q^q)^(1/p) = eLpNorm g_n q^(q/p).
+  have hn_eLpNorm : eLpNorm h_n p μ = eLpNorm g_n q μ ^ (q.toReal / p.toReal) := by
+    have hp_ne : p ≠ 0 := ne_of_gt (lt_trans zero_lt_one hp1)
+    have hq_ne : q ≠ 0 := by
+      intro hq; rw [hq, ENNReal.zero_toReal] at hq_pos; linarith
+    -- p * q = p + q (from 1/p + 1/q = 1)
+    have hpq_prod : p.toReal * q.toReal = p.toReal + q.toReal := by
+      have h_conj : p.toReal⁻¹ + q.toReal⁻¹ = 1 := hpq.inv_add_inv_eq_one
+      field_simp [ne_of_gt hp_pos', ne_of_gt hq_pos] at h_conj; linarith
+    -- Pointwise: |h_n a|^p = |g_n a|^q (in ℝ)
+    have hpw_real : ∀ a, |h_n a| ^ p.toReal = |g_n a| ^ q.toReal := fun a => by
+      simp only [h_n]
+      rcases eq_or_ne (g_n a) 0 with ha | ha
+      · simp [ha]
+      · have habs_pos : 0 < |g_n a| := abs_pos.mpr ha
+        have hsign1 : |Real.sign (g_n a)| = 1 := by
+          rcases lt_trichotomy (g_n a) 0 with h | h | h
+          · simp [Real.sign_neg h]
+          · exact absurd h ha
+          · simp [Real.sign_pos h]
+        rw [abs_mul, hsign1, one_mul,
+            abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _),
+            ← Real.rpow_mul (abs_nonneg _)]
+        congr 1; nlinarith [hpq_prod]
+    -- Lift pointwise equality to ℝ≥0∞ via NNReal coercions
+    have hpw_enn : ∀ a, (‖h_n a‖₊ : ℝ≥0∞) ^ p.toReal =
+        (‖g_n a‖₊ : ℝ≥0∞) ^ q.toReal := fun a => by
+      rw [ENNReal.coe_rpow_of_nonneg (le_of_lt hp_pos'),
+          ENNReal.coe_rpow_of_nonneg (le_of_lt hq_pos)]
+      norm_cast
+      apply NNReal.coe_injective
+      simp only [NNReal.coe_rpow, NNReal.coe_nnnorm, Real.norm_eq_abs]
+      exact hpw_real a
+    -- ∫⁻ ‖h_n‖₊^p = ∫⁻ ‖g_n‖₊^q
+    have hlint_eq : ∫⁻ a, (‖h_n a‖₊ : ℝ≥0∞) ^ p.toReal ∂μ =
+        ∫⁻ a, (‖g_n a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ := lintegral_congr hpw_enn
+    -- eLpNorm h_n p = (∫⁻ ‖g_n‖₊^q)^(1/p) = eLpNorm g_n q ^ (q/p)
+    rw [eLpNorm_eq_lintegral_rpow_nnnorm hp_ne hptop,
+        show eLpNorm g_n q μ = (∫⁻ a, (‖g_n a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ) ^ (1 / q.toReal)
+          from eLpNorm_eq_lintegral_rpow_nnnorm hq_ne hqne_top,
+        hlint_eq, ← ENNReal.rpow_mul]
+    congr 1
+    field_simp [ne_of_gt hp_pos', ne_of_gt hq_pos]
+  -- Step C3: Lp norm of hhn_memLp.toLp h_n equals (eLpNorm h_n p μ).toReal
+  have hn_norm : ‖hhn_memLp.toLp h_n‖ = (eLpNorm h_n p μ).toReal := by
+    simp only [MeasureTheory.Lp.norm_def]
+    exact congrArg ENNReal.toReal (eLpNorm_congr_ae hhn_memLp.coeFn_toLp)
+  -- Step C4: arithmetic identity q.toReal / p.toReal + 1 = q.toReal
+  -- (from 1/p + 1/q = 1 → pq = p + q → q/p = q - 1 → q/p + 1 = q)
+  have hqp_eq : q.toReal / p.toReal + 1 = q.toReal := by
+    have h_conj : p.toReal⁻¹ + q.toReal⁻¹ = 1 := hpq.inv_add_inv_eq_one
+    have hpq_prod : p.toReal * q.toReal = p.toReal + q.toReal := by
+      have hp'' := ne_of_gt hp_pos'
+      have hq'' := ne_of_gt hq_pos
+      field_simp [hp'', hq''] at h_conj
+      linarith
+    field_simp [ne_of_gt hp_pos']
+    linarith
+  -- Step C5: the key chain — (‖gₙ‖_q)^q ≤ ‖φ‖ · (‖gₙ‖_q)^(q/p)
+  set x := (eLpNorm g_n q μ).toReal with hx_def
+  have hx_nn : 0 ≤ x := ENNReal.toReal_nonneg
+  have hchain : x ^ q.toReal ≤ ‖φ‖ * x ^ (q.toReal / p.toReal) := by
+    have hlhs : x ^ q.toReal = (eLpNorm g_n q μ ^ q.toReal).toReal := by
+      simp [hx_def, ENNReal.toReal_rpow]
+    have hrhs_eq : x ^ (q.toReal / p.toReal) = (eLpNorm h_n p μ).toReal := by
+      rw [hn_eLpNorm, hx_def, ENNReal.toReal_rpow]
+    rw [hlhs, hrhs_eq]
+    calc (eLpNorm g_n q μ ^ q.toReal).toReal
+        = ∫ a, h_n a * g_n a ∂μ := hint_hn_gn.symm
+      _ ≤ ∫ a, h_n a * g a ∂μ := hint_ineq
+      _ = φ (hhn_memLp.toLp h_n) := hphi_hn.symm
+      _ ≤ ‖φ (hhn_memLp.toLp h_n)‖ := le_abs_self _
+      _ ≤ ‖φ‖ * ‖hhn_memLp.toLp h_n‖ := ContinuousLinearMap.le_opNorm φ _
+      _ = ‖φ‖ * (eLpNorm h_n p μ).toReal := by rw [hn_norm]
+  -- Step C6: real arithmetic — x ≤ ‖φ‖
+  have hx_le : x ≤ ‖φ‖ := by
+    rcases le_or_lt x 0 with hx | hx
+    · linarith [norm_nonneg φ]
+    · -- x > 0: write x^q = x^(q/p) * x, then divide by x^(q/p) > 0
+      have hrpow : x ^ q.toReal = x ^ (q.toReal / p.toReal) * x := by
+        rw [show q.toReal = q.toReal / p.toReal + 1 from by linarith [hqp_eq],
+            Real.rpow_add hx, Real.rpow_one]
+      have hxqp_pos : 0 < x ^ (q.toReal / p.toReal) := Real.rpow_pos_of_pos hx _
+      have hkey : x ^ (q.toReal / p.toReal) * x ≤ x ^ (q.toReal / p.toReal) * ‖φ‖ :=
+        calc x ^ (q.toReal / p.toReal) * x
+            = x ^ q.toReal := hrpow.symm
+          _ ≤ ‖φ‖ * x ^ (q.toReal / p.toReal) := hchain
+          _ = x ^ (q.toReal / p.toReal) * ‖φ‖ := mul_comm _ _
+      exact (mul_le_mul_left hxqp_pos).mp hkey
+  -- Step C7: lift back to ENNReal
+  calc eLpNorm g_n q μ
+      = ENNReal.ofReal (eLpNorm g_n q μ).toReal :=
+          (ENNReal.ofReal_toReal hgn_ne_top).symm
+    _ ≤ ENNReal.ofReal ‖φ‖ := ENNReal.ofReal_le_ofReal hx_le
 
 /-
 ## Main Theorem: Riesz Representation for Lp (Surjectivity)
