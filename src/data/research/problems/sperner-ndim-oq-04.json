@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: sorries reduced 3→1. kuhnPathStart_is_fc and kuhn_path_terminates now proved. Only kuhn_walk_reaches_fc remains (non-revisiting invariant).",
+    "progressSummary": "PROGRESS: 3 sorries → 2 sorries. kuhn_path_terminates proved via sperner_ndim. Remaining: kuhn_walk_reaches_fc and kuhnPathStart_is_fc need non-revisiting invariant + unique-facet axiom.",
     "builtItems": [
       "doorDegree def: SpernerNDimOQ04.lean:60",
       "IsKuhnCompatible def: SpernerNDimOQ04.lean:65",
@@ -40,8 +40,7 @@
       "KuhnState structure: defined",
       "kuhnWalk function: fuel-based recursion defined",
       "kuhnPathStart def: algorithm entry point defined",
-      "kuhnPathStart_is_fc: PROVED — via kuhn_walk_reaches_fc on state₀ (visited=∅) — proofs/Proofs/SpernerNDimOQ04.lean:395",
-      "kuhn_path_terminates: PROVED — via kuhnPathStart existential witness — proofs/Proofs/SpernerNDimOQ04.lean:429"
+      "kuhn_path_terminates PROVED (not sorry): sperner_ndim c K hc hbdry_odd — SpernerNDimOQ04.lean:324"
     ],
     "insights": [
       "IsKuhnCompatible (door degree ≤ 2) combined with abstract_door_parity gives exact door counts: 1 for FC, 0 or 2 for non-FC",
@@ -49,21 +48,18 @@
       "Non-revisiting invariant is the hard open part: door graph component containing a boundary vertex is a path (not a cycle)",
       "Fuel-based recursion for kuhnWalk avoids well-founded termination obligations",
       "door_degree_parity proved via simp only [h2] + convert h using 2 pattern (same as per_simplex_door_parity in SpernerNDim)",
-      "Sorries 1 and 3 proved by establishing dependency chain: sorry1←sorry3←sorry2. All three reduce to kuhn_walk_reaches_fc.",
-      "kuhnPathStart_is_fc proof: initial state has visited=∅, so card=0, fuel=Fintype.card K.Simplex-0=Fintype.card K.Simplex (by Nat.sub_zero). Definitional equality closes goal.",
-      "Non-revisiting invariant requires tracking EXIT DOOR history — KuhnState only stores visited SET, losing edge info needed for contradiction.",
-      "kuhnWalk can also terminate at second boundary door (not just FC), requiring IsSperner c + unique-boundary-door assumption to eliminate case (3).",
-      "adj_symm is the key: K.adj s k = some (s_prime, k_prime) → K.adj s_prime k_prime = some (s, k). This gives the visited contradiction if s_prime was previously current."
+      "kuhn_path_terminates proved: given IsSperner c and odd boundary door count, FC existence follows from sperner_ndim directly (1-line proof). No walk argument needed for existence."
     ],
     "mathlibGaps": [
       "No Mathlib theorem for path-following algorithm termination with non-revisiting invariant",
-      "Mathlib lacks abstract door graph connectivity lemmas for non-revisiting proof"
+      "Mathlib lacks abstract door graph connectivity lemmas for non-revisiting proof",
+      "SpernerTriangulation lacks an adjacent-simplices-share-unique-facet axiom needed for the non-revisiting proof"
     ],
     "nextSteps": [
-      "Add prev_simplex : Option K.Simplex field to KuhnState with prev_exit_leads_to_current invariant; use adj_symm to derive non-revisiting contradiction",
-      "Alternatively: add IsSperner c + hbdry_unique (unique boundary door on face d) to kuhn_walk_reaches_fc hypotheses; use parity argument for boundary exit elimination",
-      "Check if Aristotle can handle kuhn_walk_reaches_fc sorry with the right induction hypothesis (strong induction on fuel with non-revisiting as IH)",
-      "Verify IsKuhnCompatible for Freudenthal triangulation (from sperner-ndim-oq-01) to demonstrate concrete instance"
+      "Add unique-facet axiom to SpernerTriangulation (SpernerNDim.lean)",
+      "Strengthen KuhnState with per-visited-simplex door history (entry/exit door tracking)",
+      "Prove kuhnWalk_never_revisits using unique-facet axiom + door history invariant",
+      "Then kuhn_walk_reaches_fc and kuhnPathStart_is_fc follow from non-revisiting"
     ]
   },
   "tags": [

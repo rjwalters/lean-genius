@@ -1,8 +1,8 @@
 # Problem Selection Report
 
-**Date**: 2026-04-22
+**Date**: 2026-04-23
 **Mode**: SELECT
-**Pool Status**: 25 available, 561 in-progress, 1404 completed, 3 graduated, 1 blocked
+**Pool Status**: 23 available, 562 in-progress, 1407 completed, 3 graduated, 1 blocked
 
 ## Selected Problem
 
@@ -16,46 +16,46 @@
 
 ## Selection Rationale
 
-1. **Highest composite score among unclaimed EMPTY candidates (68)**: With all 25
+1. **Highest composite score among unclaimed EMPTY candidates (68)**: With all
    available problems at EMPTY knowledge tier (0 items), composite reduces to
-   `(tractability × 10) + significance`. Score 68 leads the field by 10 points
-   over the next-best unclaimed candidates (szemeredi-counting-oq-02 at 58,
-   sylow-theorem-oq-02 at 57).
+   `(tractability × 10) + significance`. Score 68 ties with
+   `szemeredi-regularity-oq-02` but differential geometry is underrepresented
+   in recent batch selections (dominated by algebra, economics, additive
+   combinatorics, lattice geometry).
 
-2. **EMPTY knowledge tier**: No prior research has accumulated in this workspace —
-   fresh territory, workspace initialized today (2026-04-22), 0 attempts.
-
-3. **Domain diversity**: The last 5 seeker selections were:
-   - `sqrt2-minpoly` — algebraic number theory
+2. **Domain diversity**: Batch selections today were:
+   - `liouville-theorem-oq-04` — p-adic complex analysis
    - `shapley-folkman-oq-03` — convex analysis / economics
-   - `newton-inductive-step-oq-03` — combinatorics / q-analogues
-   - `napoleons-theorem-oq-02` — classical geometry / DFT
-   - `sqrt2-plus-sqrt3-irrational-oq-03` — algebraic number theory
+   - `erdos-476-oq-05-wip-01` — additive combinatorics (Cauchy-Davenport)
+   - `solution-of-cubic-oq-05` — classical algebra / Galois
+   - `minkowski-fundamental-theorem-oq-04` — lattice geometry / number theory
 
-   Differential geometry is unrepresented in recent selections. `triangle-angle-sum-oq-02`
-   brings Gauss-Bonnet / Riemannian geometry into the research pipeline — no diversity
-   penalty applies.
+   Riemannian/differential geometry is absent. `triangle-angle-sum-oq-02`
+   (Gauss-Bonnet) fills this gap — no diversity penalty applies.
 
-4. **Strategic depth**: The gallery already has `triangle-angle-sum` (Euclidean angle sum,
-   verified), `triangle-angle-sum-oq-01` (converse, verified), `spherical-law-of-cosines`,
-   and `spherical-law-of-sines`. Gauss-Bonnet is the natural capstone of this family,
-   connecting the elementary Euclidean result to its deep topological generalisation.
+3. **Strategic depth**: The gallery has `triangle-angle-sum` (Euclidean angle
+   sum, verified) and `triangle-angle-sum-oq-01` (converse, verified). Gauss-Bonnet
+   is the natural capstone of this family, connecting the elementary Euclidean
+   result to its deep topological generalisation via Euler characteristic.
 
-5. **Tractable entry point**: The full Gauss-Bonnet theorem requires significant new
-   Mathlib infrastructure (geodesic curvature, connection forms). However, the discrete
-   Descartes/Gauss-Bonnet theorem (relating angle defects at polyhedron vertices to the
-   Euler characteristic) is fully combinatorial and achievable with current Mathlib.
-   A researcher can deliver a genuine Gauss-Bonnet result without needing differential
-   geometry primitives.
+4. **Tractable entry point**: The full Gauss-Bonnet theorem requires
+   differential geometry infrastructure not yet in Mathlib. However, the
+   discrete Descartes/Gauss-Bonnet theorem (total angle defect of a convex
+   polyhedron = 4π) is fully combinatorial and achievable with current Mathlib.
+   A researcher can deliver a genuine Gauss-Bonnet result without needing
+   differential geometry primitives.
 
 ## Ranking Summary (top EMPTY candidates)
 
 | ID | Sig | Tract | Composite | Decision |
 |----|-----|-------|-----------|----------|
-| **triangle-angle-sum-oq-02** | **8** | **6** | **68** | **SELECTED** |
-| szemeredi-counting-oq-02 | 8 | 5 | 58 | Runner-up; Szemerédi overrepresented |
-| sylow-theorem-oq-02 | 7 | 5 | 57 | Computational complexity framing; lower sig |
-| divisibility-truncation-general-oq-03 | 6 | 5 | 56 | Lower significance |
+| **triangle-angle-sum-oq-02** | **8** | **6** | **68** | **SELECTED** (diversity tiebreak) |
+| szemeredi-regularity-oq-02 | 8 | 6 | 68 | Tied; Szemerédi family already has 4 available |
+| newton-inductive-step-oq-03 | 7 | 6 | 67 | Slightly lower significance |
+| ptolemys-complex-proof-oq-02 | 7 | 6 | 67 | Slightly lower significance |
+| ptolemys-theorem-oq-01-oq-02 | 7 | 6 | 67 | Slightly lower significance |
+| szemeredi-counting-oq-02 | 8 | 5 | 58 | Lower tractability |
+| sylow-theorem-oq-02 | 7 | 5 | 57 | Lower composite |
 | szemeredi-full-oq-01 | 9 | 4 | 49 | Furstenberg ergodic — high ambition, tractability 4 |
 | isoperimetric-theorem-oq-03 | 8 | 4 | 48 | Best constants non-Euclidean — tractability 4 |
 | hurwitz-theorem-oq-04 | 7 | 4 | 47 | Exceptional Lie groups — tractability 4 |
@@ -65,12 +65,14 @@ excluded from serious consideration.
 
 ## Rejection Summary
 
-- **Candidates considered**: 25 (all available from pool)
-- **Candidates rejected**: 24
+- **Candidates considered**: 23 (all available from pool)
+- **Candidates rejected**: 22
   - Moonshot tier (tractability ≤ 2): weak-goldbach, twin-primes-special, sophie-germain
   - Szemerédi family (4 problems): kept for future cycles to avoid over-concentration
-  - Remaining: all outranked by composite score
-- **Confidence**: high — 10-point gap between selected (68) and runner-up (58)
+  - `erdos-476-oq-05-wip-01`: already claimed (active lock)
+  - `triangle-angle-sum-oq-03`: already claimed (active lock)
+  - Remaining: all outranked by composite score or diversity consideration
+- **Confidence**: high — tiebreaker applied on well-understood grounds
 
 ## Related Gallery Proofs
 
@@ -108,25 +110,26 @@ excluded from serious consideration.
 
 | Status | Count |
 |--------|-------|
-| Available | 25 |
-| In Progress | 561 |
-| Completed | 1404 |
+| Available | 23 |
+| In Progress | 562 |
+| Completed | 1407 |
 | Graduated | 3 |
 | Blocked | 1 |
-| **Total** | **1994** |
+| **Total** | **1996** |
 
 ## Candidate Pool Health
 
-Pool has 25 available problems — above the 15-problem minimum threshold.
+Pool has 23 available problems — above the 15-problem minimum threshold.
 
-- **Pool depth**: adequate (25 available vs. 15 threshold)
-- **Recommendation**: Pool healthy. Szemerédi family (4 problems), moonshots (3), and
-  B/C tier tractable problems provide good variety. No immediate replenishment needed.
-- **Next refresh recommended**: When available count drops below 15, or after 5–6
-  more selections exhaust the current tractable tier
+- **Pool depth**: adequate (23 available vs. 15 threshold)
+- **Recommendation**: Pool healthy. Szemerédi family (4 problems), moonshots (3),
+  and B/C tier tractable problems provide good variety. No immediate replenishment needed.
+- **Next refresh recommended**: When available count drops below 15, or after 8
+  more selections exhaust the current tractable tier.
 
 ## Initialized
 
 - [x] Research workspace registered in `research/db/knowledge.db`
-- [x] `src/data/research/problems/triangle-angle-sum-oq-02.json` registered
+- [x] `candidate-pool.json` regenerated via `sync_pool.py`
+- [x] Research workspace at `research/problems/triangle-angle-sum-oq-02/` ready
 - [ ] Ready for /researcher
