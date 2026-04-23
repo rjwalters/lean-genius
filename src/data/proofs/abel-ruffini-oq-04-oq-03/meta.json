@@ -37,6 +37,38 @@
     "path": "Proofs/AbelRuffiniOQ04OQ03.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "galois_criterion",
+      "type": "core",
+      "description": "The full iff biconditional: over a characteristic 0 field, a root α is solvable by radicals iff its Galois group Gal(q) is solvable. Forward direction uses Mathlib's solvableByRad.isSolvable'; reverse direction uses the axiomatized solvableGal_implies_solvableByRad.",
+      "leanType": "(q : Polynomial F) → Irreducible q → [CharZero F] → (α : E) → aeval α q = 0 → (IsSolvableByRad F α ↔ IsSolvable q.Gal)"
+    },
+    {
+      "name": "solvableByRad_implies_solvableGal",
+      "type": "key",
+      "description": "Forward direction (fully proved): if α is solvable by radicals, then the Galois group of its minimal polynomial is solvable. Proved via Mathlib's solvableByRad.isSolvable'.",
+      "leanType": "(q : Polynomial F) → Irreducible q → (α : E) → aeval α q = 0 → IsSolvableByRad F α → IsSolvable q.Gal"
+    },
+    {
+      "name": "not_solvableByRad_of_not_solvableGal",
+      "type": "key",
+      "description": "Contrapositive of the forward direction: unsolvable Galois group implies the root is not solvable by radicals. Bridges from group theory to radical arithmetic.",
+      "leanType": "(q : Polynomial F) → Irreducible q → (α : E) → aeval α q = 0 → ¬IsSolvable q.Gal → ¬IsSolvableByRad F α"
+    },
+    {
+      "name": "galois_criterion_rationals",
+      "type": "corollary",
+      "description": "Specializes galois_criterion to ℚ (characteristic 0 by default). The primary use case: over ℚ, radical solvability ↔ solvable Galois group.",
+      "leanType": "(q : Polynomial ℚ) → Irreducible q → (α : E) → [Algebra ℚ E] → aeval α q = 0 → (IsSolvableByRad ℚ α ↔ IsSolvable q.Gal)"
+    },
+    {
+      "name": "abel_ruffini_as_galois_special_case",
+      "type": "corollary",
+      "description": "Abel-Ruffini as a corollary: if Gal(q) is not solvable (e.g., Gal = S₅), then no radical formula exists for the roots. This makes Galois's criterion the complete obstruction theorem.",
+      "leanType": "(q : Polynomial F) → Irreducible q → [CharZero F] → (α : E) → aeval α q = 0 → ¬IsSolvable q.Gal → ¬IsSolvableByRad F α"
+    }
+  ],
   "overview": {
     "historicalContext": "Évariste Galois (1811–1832) developed the foundations of what became Galois theory in a memoir written the night before his fatal duel on May 30, 1832 — at the age of 20. His central insight was to associate to each polynomial a group (now called the Galois group) encoding the symmetries among its roots. Galois's criterion — that a polynomial is solvable by radicals if and only if its Galois group is solvable — is the capstone of this theory and provides the complete algebraic characterization of radical solvability. The work resolved centuries of effort to find explicit root formulas generalizing the quadratic formula. The Abel-Ruffini theorem (Ruffini 1799, Abel 1824) had established that the general quintic polynomial has no radical formula, but Galois identified the exact obstruction: the Galois group must be a solvable group. The very concept of a solvable group originates in this theorem. Galois's memoir was published posthumously by Liouville in 1846 and fundamentally transformed algebra from the study of equations to the study of symmetry and group theory.",
     "problemStatement": "Let $F$ be a field of characteristic 0, $q \\in F[x]$ an irreducible polynomial, and $\\alpha$ a root of $q$ in some extension $E/F$. The Galois group $\\operatorname{Gal}(q)$ acts by permuting the roots of $q$. Galois's criterion states: $\\alpha$ is expressible by radicals over $F$ (i.e., by nested applications of $+, -, \\times, \\div, \\sqrt[n]{\\cdot}$) if and only if $\\operatorname{Gal}(q)$ is a solvable group — one admitting a subnormal series $1 = G_k \\trianglelefteq \\cdots \\trianglelefteq G_0 = \\operatorname{Gal}(q)$ with abelian quotients.",

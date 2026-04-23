@@ -123,6 +123,44 @@
       "Extend to the Feit-Thompson theorem context: for odd-order groups, every group is solvable — can the alternating group classification help formalize aspects of this?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "alternating_solvable_iff",
+      "type": "core",
+      "description": "Complete bidirectional classification: Aₙ is solvable if and only if n ≤ 4. Forward direction reduces to the symmetric group via the sign map exact sequence and Mathlib's Equiv.Perm.not_solvable. Backward direction splits into 5 subcases.",
+      "leanType": "(n : ℕ) → IsSolvable (alternatingGroup (Fin n)) ↔ n ≤ 4"
+    },
+    {
+      "name": "a4_solvable",
+      "type": "key",
+      "description": "A₄ is solvable. The derived series A₄ ⊵ V₄ ⊵ {e} (V₄ = Klein four-group) is verified computationally.",
+      "leanType": "IsSolvable (alternatingGroup (Fin 4))"
+    },
+    {
+      "name": "an_not_solvable_of_ge_five",
+      "type": "key",
+      "description": "For n ≥ 5, Aₙ is not solvable. Reduces to symmetric group non-solvability via the subgroup chain Aₙ ≤ Sₙ and the sign exact sequence.",
+      "leanType": "{n : ℕ} → 5 ≤ n → ¬IsSolvable (alternatingGroup (Fin n))"
+    },
+    {
+      "name": "sharp_threshold",
+      "type": "key",
+      "description": "Witnesses the exact sharpness of the threshold: A₄ is solvable AND A₅ is not. This pair makes the threshold at n=5 machine-verified.",
+      "leanType": "IsSolvable (alternatingGroup (Fin 4)) ∧ ¬IsSolvable (alternatingGroup (Fin 5))"
+    },
+    {
+      "name": "alternating_solvable_of_le_four",
+      "type": "corollary",
+      "description": "Convenience corollary: for n ≤ 4, Aₙ is solvable. Extracts the backward direction of alternating_solvable_iff.",
+      "leanType": "{n : ℕ} → n ≤ 4 → IsSolvable (alternatingGroup (Fin n))"
+    },
+    {
+      "name": "alternating_not_solvable_of_ge_five",
+      "type": "corollary",
+      "description": "Convenience corollary: for n ≥ 5, Aₙ is not solvable. Wraps an_not_solvable_of_ge_five for a clean API.",
+      "leanType": "{n : ℕ} → 5 ≤ n → ¬IsSolvable (alternatingGroup (Fin n))"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.GroupTheory.Solvable",
@@ -135,7 +173,7 @@
     "namespace": "AbelRuffiniOQ04OQ02OQ02",
     "lineCount": 167,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 12,
     "definitionCount": 0,
     "path": "Proofs/AbelRuffiniOQ04OQ02OQ02.lean",
     "sorries": 0
