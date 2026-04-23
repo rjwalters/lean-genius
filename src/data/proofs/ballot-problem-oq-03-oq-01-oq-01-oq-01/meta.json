@@ -18,10 +18,10 @@
       "representation-theory"
     ],
     "badge": "wip",
-    "sorries": 5,
+    "sorries": 1,
     "dateAdded": "2026-04-23",
     "axiomCount": 0,
-    "assumptions": "5 sorries: jacobiTrudiMatrix_entry_isSymmetric (hsymm IsSymmetric), schurPolynomial_isSymmetric (AlgHom.map_det reduction), schurPolynomial_two_row (det_fin_two expansion), schurPolynomial_one_row_at_one (eval at 1), and jacobiTrudi_lgv_connection (requires RSK correspondence, ~400 lines). Base cases (empty, one_row) are proved.",
+    "assumptions": "1 sorry: schurPolynomial_one_row_at_one (eval at 1 requires Nat.multichoose computation). All other theorems proved: jacobiTrudiMatrix_entry_isSymmetric (split_ifs + hsymm_isSymmetric), schurPolynomial_isSymmetric (AlgHom.map_det), schurPolynomial_two_row (det_fin_two expansion), jacobiTrudi_lgv_connection (proved as tautology rfl — placeholder until RSK is formalized). Base cases (empty, one_row) are proved.",
     "lineCount": 130,
     "theoremCount": 7,
     "definitionCount": 2,
@@ -32,7 +32,7 @@
       "schurPolynomial_one_row: Schur([n]) = hsymm σ R n (the n-th complete homogeneous symmetric polynomial)",
       "jacobiTrudiMatrix_entry_isSymmetric: each entry h_{sh_i+j-i} is individually symmetric",
       "schurPolynomial_isSymmetric: Schur polynomials are symmetric via AlgHom.map_det + rename_hsymm",
-      "schurPolynomial_two_row: explicit 2-row formula h_a*h_b - h_{a+1}*(h_{b-1} or 0) (sorry)"
+      "schurPolynomial_two_row: explicit 2-row formula h_a*h_b - h_{a+1}*(h_{b-1} or 0)"
     ]
   },
   "overview": {
@@ -54,10 +54,9 @@
     ]
   },
   "conclusion": {
-    "summary": "Defines Schur polynomials via the Jacobi-Trudi formula and proves base cases and symmetry. The two-row formula and hook-length evaluation are sorried pending Lean arithmetic simplification. The LGV combinatorial connection is sorried pending RSK correspondence (~400 lines).",
-    "implications": "This provides the first Lean 4 definition of Schur polynomials via the Jacobi-Trudi formula, which is the algebraically canonical definition connecting them to the representation theory of GL(n). The five sorried results map out a ~400-line research agenda: (1) symmetry proofs (immediate once `rename_hsymm` unification is resolved — likely 10-20 lines), (2) two-row formula (mechanical `det_fin_two` expansion, ~30 lines), (3) hook evaluation at 1 via `Nat.multichoose`, and (4) the full LGV combinatorial proof (SSYT + RSK + weight matching, ~400 lines). A completed formalization would unlock: the Pieri rule $s_\\lambda h_n = \\sum_\\mu s_\\mu$, the Murnaghan-Nakayama rule for character values, and connections to Schubert calculus. Schur polynomials are the backbone of algebraic combinatorics — once formalized, they would serve as building blocks for representation-theoretic calculations across the gallery.",
+    "summary": "Defines Schur polynomials via the Jacobi-Trudi formula and proves base cases, symmetry, and the two-row formula. 1 sorry remains: schurPolynomial_one_row_at_one (hook-length evaluation). The LGV combinatorial connection is a tautology placeholder pending RSK correspondence (~400 lines).",
+    "implications": "This provides the first Lean 4 definition of Schur polynomials via the Jacobi-Trudi formula, which is the algebraically canonical definition connecting them to the representation theory of GL(n). The remaining sorry (hook evaluation at 1 via `Nat.multichoose`) and the LGV placeholder (RSK + SSYT, ~400 lines) are the outstanding research items. A completed formalization would unlock: the Pieri rule $s_\\lambda h_n = \\sum_\\mu s_\\mu$, the Murnaghan-Nakayama rule for character values, and connections to Schubert calculus. Schur polynomials are the backbone of algebraic combinatorics — once formalized, they would serve as building blocks for representation-theoretic calculations across the gallery.",
     "openQuestions": [
-      "Prove schurPolynomial_two_row via det_fin_two expansion",
       "Prove schurPolynomial_one_row_at_one via Nat.multichoose",
       "Formalize the RSK correspondence and SSYT→NI-path bijection to prove jacobiTrudi_lgv_proof",
       "Prove the Pieri rule: s_λ * h_n = Σ_{μ} s_μ where μ ranges over partitions obtained by adding n boxes to λ"
@@ -80,7 +79,7 @@
     "theoremCount": 7,
     "definitionCount": 2,
     "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
-    "sorries": 5
+    "sorries": 1
   },
   "crossReferences": [
     {
@@ -139,7 +138,7 @@
       "title": "Part III: Symmetry",
       "startLine": 63,
       "endLine": 77,
-      "summary": "Two theorems: entry-level symmetry (each h_n invariant under variable rename, sorry) and full Schur polynomial symmetry via AlgHom.map_det (sorry, pending entry result).",
+      "summary": "Two theorems: entry-level symmetry (each h_n invariant under variable rename, proved via split_ifs + hsymm_isSymmetric) and full Schur polynomial symmetry via AlgHom.map_det (proved).",
       "mathContext": "`IsSymmetric φ` means `∀ e : Equiv.Perm σ, rename e φ = φ`. Strategy: `AlgHom.map_det` gives `rename e (det M) = det (Matrix.mapMatrix (rename e) M)`. Each entry satisfies `rename e (h_n) = h_n` by `rename_hsymm`, so the mapped matrix equals the original."
     },
     {
@@ -147,8 +146,8 @@
       "title": "Part IV: Two-Row Formula",
       "startLine": 79,
       "endLine": 90,
-      "summary": "Explicit formula for s_{[a,b]} = h_a*h_b - h_{a+1}*(h_{b-1} or 0). Currently sorry pending det_fin_two normalization.",
-      "mathContext": "`Matrix.det_fin_two` expands the $2 \\times 2$ determinant as $M_{00} M_{11} - M_{01} M_{10}$. Matrix.cons lemmas extract: $M_{00} = h_a$, $M_{01} = h_{a+1}$, $M_{10} = h_{b-1}$ (if $1 \\le b$, else $0$), $M_{11} = h_b$. Result: $s_{(a,b)} = h_a h_b - h_{a+1} h_{b-1}$. (sorry)"
+      "summary": "Explicit formula for s_{[a,b]} = h_a*h_b - h_{a+1}*(h_{b-1} or 0). Proved via det_fin_two + Nat arithmetic simplification.",
+      "mathContext": "`Matrix.det_fin_two` expands the $2 \\times 2$ determinant as $M_{00} M_{11} - M_{01} M_{10}$. Matrix.cons lemmas extract: $M_{00} = h_a$, $M_{01} = h_{a+1}$, $M_{10} = h_{b-1}$ (if $1 \\le b$, else $0$), $M_{11} = h_b$. Result: $s_{(a,b)} = h_a h_b - h_{a+1} h_{b-1}$."
     },
     {
       "id": "sec-hook-connection",
@@ -163,9 +162,9 @@
       "title": "Part VI: LGV Connection (Open)",
       "startLine": 103,
       "endLine": 129,
-      "summary": "Placeholder theorem for the LGV combinatorial proof of Jacobi-Trudi. The comment block describes the ~400-line formalization roadmap (SSYT + RSK + weight matching). Currently a tautology sorry.",
-      "mathContext": "Full proof requires: (1) SSYT type and weight function (~100 lines), (2) RSK bijection SSYT ↔ NI paths (~200 lines), (3) weight matching with the LGV edge weights from the parent proof (~100 lines). The placeholder states `schurPolynomial k sh = schurPolynomial k sh` (tautology) until SSYT generating function is defined. (sorry)"
+      "summary": "Placeholder theorem for the LGV combinatorial proof of Jacobi-Trudi. Proved as `rfl` (tautology: schurPolynomial k sh = schurPolynomial k sh) — a placeholder until SSYT generating function is defined.",
+      "mathContext": "Full proof requires: (1) SSYT type and weight function (~100 lines), (2) RSK bijection SSYT ↔ NI paths (~200 lines), (3) weight matching with the LGV edge weights from the parent proof (~100 lines). The placeholder states `schurPolynomial k sh = schurPolynomial k sh` (tautology) until SSYT generating function is defined."
     }
   ],
-  "sorries": 5
+  "sorries": 1
 }
