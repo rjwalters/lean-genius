@@ -4,7 +4,7 @@
 
 Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following in the door adjacency graph. Key goal: starting from a boundary door, follow the unique path to reach a fully-colored simplex.
 
-**Status**: ACT — 1 sorry remains (`kuhn_walk_reaches_fc`). `kuhn_path_terminates` and `kuhnPathStart_is_fc` proved (PR #11622). Non-revisiting infrastructure (KuhnStateValid) added in Session 3.
+**Status**: ACT — 1 sorry remains (`kuhn_walk_result_not_in_visited`, TRIVIAL for Aristotle). `kuhn_path_terminates` proved. `kuhn_walk_reaches_fc` REMOVED (mathematically incorrect). Session 6 replaced the false sorry with a true provable lemma.
 **Gallery entry**: `src/data/proofs/sperner-ndim-oq-04/`
 **Lean file**: `proofs/Proofs/SpernerNDimOQ04.lean`
 
@@ -245,4 +245,48 @@ None new. `kuhn_path_terminates` was previously proved in Session 2 (via `sperne
 2. Prove the disjunction using `KuhnStateValid`, `boundary_door_is_last_face`, `IsSperner c`
 3. Extract FC existence via boundary parity (global argument: boundary-to-boundary walks pair up, odd boundary door count → at least one walk reaches FC)
 4. This is a substantial architectural change to Section IX — estimate 100-150 new lines
+
+---
+
+## Session 2026-04-23 (Session 6) — Removed False Theorem, Added True Non-Revisiting Lemma
+
+**Mode**: REVISIT
+**Outcome**: progress — replaced false sorry with a true provable lemma; file is now honest
+
+### What I Did
+
+1. Confirmed `kuhn_walk_reaches_fc` is MATHEMATICALLY INCORRECT (Sessions 4-5 analysis):
+   - Case 4 (boundary exit via `K.adj s k_out = none`) CAN fire at non-FC simplices mid-walk
+   - No reformulation of hypotheses fixes this; theorem statement is fundamentally wrong
+2. REMOVED `kuhn_walk_reaches_fc` theorem (55 lines of sorry + commentary for a FALSE claim)
+3. REMOVED `kuhnPathStart_is_fc` theorem (was entirely sorry-propagated via the false theorem)
+4. ADDED `kuhn_walk_result_not_in_visited`: a TRUE, PROVABLE lemma:
+   - States: `kuhnWalk c K hKuhn fuel state ∉ state.visited` for all fuel and valid states
+   - Proof by structural induction on fuel: base case uses `current_not_visited`; recursive case
+     uses IH on new_state where new_state.visited ⊇ state.visited
+   - 1 sorry remains in the `succ n ih` case (TRIVIAL — submitted to Aristotle)
+5. Updated module header, meta.json, and this file
+
+### Key Findings
+
+- The non-revisiting invariant `result ∉ state.visited` is TRUE and provable by induction
+- This is weaker than "result is FC" but it is the correct algebraic statement of the path invariant
+- Proving "result is FC" requires a global parity argument (boundary-to-boundary paths pair up)
+- The sorry count remains 1 but the sorry is now for a TRUE statement solvable by Aristotle
+
+### Files Modified
+
+- `proofs/Proofs/SpernerNDimOQ04.lean` (485→430 lines; removed 2 flawed theorems, added 1 true lemma)
+- `src/data/proofs/sperner-ndim-oq-04/meta.json` (lineCount 485→430, assumptions updated)
+- `research/problems/sperner-ndim-oq-04/knowledge.md` (this file, Session 6 added)
+
+### Remaining Sorry (1)
+
+- `kuhn_walk_result_not_in_visited` — TRIVIAL induction; structural induction on `kuhnWalk` with all branches returning `state.current ∉ state.visited` or using IH with subset monotonicity. Submitted to Aristotle.
+
+### Next Steps
+
+1. Aristotle resolves `kuhn_walk_result_not_in_visited` sorry → file has 0 sorries
+2. For full constructive Kuhn correctness: prove "FC or boundary exit" disjunction for the walk result; derive FC via boundary parity counting
+3. Freudenthal triangulation (sperner-ndim-oq-01): check if it satisfies `IsKuhnCompatible` to make the algorithm concrete in dimension d
 
