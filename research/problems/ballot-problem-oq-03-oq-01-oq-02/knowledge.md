@@ -20,258 +20,10 @@ Key infrastructure already available:
 
 ---
 
-## Session 2026-04-21 (Session 1) - Foundation and Logical Chain
-
-**Mode**: FRESH (MODERATE knowledge tier, score 9)
-**Outcome**: progress — added Fintype instance, base case, and conditional chain proof
-
-### What I Did
-
-1. Read `BallotProblemOQ03OQ01OQ02.lean` (225 lines) — identified missing Fintype instance
-2. Read `BallotProblemOQ03OQ02.lean` — confirmed `lgv_lemma_rxr` signature:
-   `(niTupleCount cfg : ℤ) = (pathMatrix cfg).det`
-3. Read `YoungDiagram.lean` — confirmed SetLike membership: `c ∈ μ ↔ c ∈ μ.cells` (rfl)
-4. Added `instFintypeSYT` (Fintype instance) via injection into `μ.cells → Fin (μ.card+1)`
-5. Added `emptyTableau` and `hook_length_formula_bot` (proved base case)
-6. Fixed `lgv_det_factors_as_hook_quotient` from `det = n!/hookProd` to `det * hookProd = n!`
-7. Added `hook_length_formula_from_chain` — proves main theorem from two sorry lemmas
-
-### Key Findings
-
-**Critical gap found**: `Fintype.card (StandardYoungTableau μ)` did not typecheck without
-a Fintype instance. `StandardYoungTableau μ` has `entry : ℕ × ℕ → ℕ` (infinite domain),
-so no auto-derivation. Fixed by injecting into `↑μ.cells → Fin (μ.card+1)`.
-
-**Logical chain is now complete**: `hook_length_formula_from_chain` shows:
-
-```
-niTupleCount cfg = card(SYT μ)           [ni_count_eq_syt_count, sorry]
-niTupleCount cfg = pathMatrix.det        [lgv_lemma_rxr, proved]
-pathMatrix.det * hookProd μ = n!         [lgv_det_factors_as_hook_quotient, sorry]
-→ card(SYT μ) * hookProd μ = n!          [QED, proved from above]
-```
-
-The main theorem `hook_length_formula` reduces to closing the two sorries + encoding μ as (r, σ, m).
-
-**Empty case proved**: For μ = ⊥, unique SYT is the zero function, hookProd = 1, 0! = 1, 1×1=1 ✓
-
-**Determinant formulation fixed**: Changed `lgv_det_factors_as_hook_quotient` from
-`det = n!/hookProd` (integer division, problematic) to `det * hookProd = n!` (clean multiplication).
-
-### Proof Architecture
-
-```
-BallotProblemOQ03OQ02.lean
-  lgv_lemma_rxr: (niTupleCount cfg : ℤ) = (pathMatrix cfg).det  [proved]
-  lgv_universality: ∀ r cfg hwf, niTupleCount = det              [proved]
-
-BallotProblemOQ03OQ01OQ02.lean
-  instFintypeSYT: Fintype (StandardYoungTableau μ)               [proved]
-  hook_length_formula_bot: ⊥ case                                [proved]
-  hook_length_formula_from_chain: main theorem from sorries       [proved]
-  ni_count_eq_syt_count: card(SYT) = niTupleCount                [sorry]
-  lgv_det_factors_as_hook_quotient: det * hookProd = n!          [sorry]
-  hook_length_formula: main theorem                               [sorry]
-```
-
-### Remaining Sorries Assessment
-
-**`ni_count_eq_syt_count`** (RSK bijection):
-- Needs Fomin growth diagram or jeu de taquin
-- Maps SYT(λ) ↔ NI-lattice paths via insertion/recording tableau
-- Estimated: 200-300 lines of Lean bijection code
-- Status: HARD (known proof, needs formalization)
-
-**`lgv_det_factors_as_hook_quotient`** (Vandermonde det identity):
-- det[C(m+σ_j+j-i, m)] × hookProd(λ) = n! for n=∑σᵢ
-- Classical proof via Weyl denominator formula / hook-content formula
-- Alternative: direct verification via "hook walks" identity
-- Estimated: 200-300 lines of algebraic manipulation
-- Status: HARD (known proof, complex algebraic identity)
-
-**Encoding gap**: `hook_length_formula` from `hook_length_formula_from_chain` requires:
-- Extracting r = number of rows from μ
-- Building σ : Fin r → ℕ (ascending row lengths) from μ.rowLen
-- Proving σ monotone, σᵢ + i ≤ m, well-formedness
-- Estimated: 50-80 lines
-
-### Files Modified
-
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (225 → 315 lines, +3 proved theorems)
-- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md`
-- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json`
-
-### Next Steps
-
-1. **Prove `ni_count_eq_syt_count`** via Fomin growth diagrams or RSK
-2. **Prove `lgv_det_factors_as_hook_quotient`** via Vandermonde/Weyl denominator
-3. **Add encoding lemma**: extract (r, σ, m) from μ to close `hook_length_formula`
-4. **Consider Aristotle** for sub-lemmas of the bijection proof
 
 ---
 
-## Session 2026-04-21 (Session 2) - Single-Row Hook Formula Proved Directly
-
-**Mode**: REVISIT
-**Outcome**: PROGRESS — `hook_length_formula_one_row` proved (~190 lines, 0 sorries)
-
-### What I Did
-
-1. Assessed PART V LGV chain: `ni_count_eq_syt_count` and `lgv_det_factors_as_hook_quotient`
-   are missing because `μ` is disconnected from the `(r, σ, m)` parameters — the LGV lemma
-   uses a specific `youngLGVConfig` but μ is arbitrary. This makes the chain mathematically incoherent.
-2. Strategic pivot: instead of continuing the LGV path (two HARD sorries), proved the
-   hook-length formula for single-row Young diagrams directly without LGV.
-3. Added PART VI (~190 lines) to `BallotProblemOQ03OQ01OQ02.lean`:
-   - `oneRowYD n`: `YoungDiagram.ofRowLens [n] (...)` — single-row shape
-   - `mem_oneRowYD`: `(i,j) ∈ oneRowYD n ↔ i = 0 ∧ j < n`
-   - `oneRowYD_card`: card = n (via Finset.card_image_of_injective)
-   - `rowLen_oneRowYD_zero`: rowLen 0 = n
-   - `colLen_oneRowYD`: colLen j = 1 for j < n
-   - `hookLength_oneRowYD`: hookLength(0,j) = n - j (uses `hookLength_add_eq`)
-   - `hookProd_oneRowYD`: hookProd = n! (via `descFactorial_eq_prod_range` + `descFactorial_self`)
-   - `oneRowSYT n`: the unique SYT with `entry(0,j) = j+1`
-   - `entry_oneRow_eq`: any SYT has `entry(0,j) = j+1` (double induction: lower by IH on j, upper by chain)
-   - `oneRowSYT_unique`: all SYTs of oneRowYD n equal oneRowSYT n
-   - `hook_length_formula_one_row`: `card(SYT(oneRowYD n)) × hookProd(oneRowYD n) = n!` (0 sorries!)
-
-### Key Findings
-
-**Direct path avoids LGV entirely**: For single-row μ, we don't need LGV/RSK/Vandermonde.
-The proof is elementary and fully verified.
-
-**Uniqueness proof technique**: Double induction — lower bound by induction on j using `row_strict`
-(each next entry is strictly larger), upper bound by chain argument (entries form a chain bounded
-by `entry_range` at the last cell). Together these pin each entry exactly.
-
-**Key lemmas used**:
-- `hookLength_add_eq (μ : YoungDiagram) : (i,j) ∈ μ → hookLength μ i j + 1 = rowLen i - j + colLen j`
-- `Nat.descFactorial_eq_prod_range : n.descFactorial k = ∏ i ∈ range k, (n - i)`
-- `Nat.descFactorial_self n : n.descFactorial n = n!`
-- `YoungDiagram.mem_iff_lt_rowLen`, `YoungDiagram.mem_iff_lt_colLen`
-
-**Error patterns resolved**:
-- `List.getElem_cons_zero` needed to simplify `[n][0] = n` in `mem_oneRowYD`
-- `if_neg (mt mem_oneRowYD.mpr hc)` for `entry_zero` — cleaner than push_neg
-- `if_pos hc` after `rw [mem_oneRowYD] at hc` for in-diagram cases
-- `suffices h : ∀ k < n, ...` to get proper IH for lower bound induction
-
-### Files Modified
-
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (315 → ~505 lines, PART VI added, 0 sorries)
-
-### Next Steps
-
-1. **Prove single-column case**: `hook_length_formula_one_col` similarly (column-symmetric)
-2. **Two-row hook formula**: May be achievable via direct bijection (RSK for 2-row shapes is explicit)
-3. **Consider Aristotle** for `ni_count_eq_syt_count` sub-lemmas if tackling LGV chain
-4. **Generalize**: Hook formula for rectangular shapes (direct counting argument)
-
----
-
-## Session 2026-04-21 (Session 3) - Single-Column Hook Formula Proved Directly
-
-**Mode**: REVISIT (building on Session 2's technique)
-**Outcome**: PROGRESS — `hook_length_formula_one_col` proved (~173 lines, 0 sorries)
-
-### What I Did
-
-1. Reviewed Session 2's one-row proof technique and applied it symmetrically to one-column diagrams.
-2. Merged `origin/main` into worktree to get Session 2's work (PR #11096).
-3. Added PART VIb (~173 lines) to `BallotProblemOQ03OQ01OQ02.lean`:
-   - `oneColYD n`: direct `YoungDiagram` struct with `cells = (range n).image (·, 0)`
-   - `mem_oneColYD`: `(i,j) ∈ oneColYD n ↔ i < n ∧ j = 0`
-   - `oneColYD_card`: card = n
-   - `rowLen_oneColYD`: rowLen i = 1 for i < n
-   - `colLen_oneColYD_zero`: colLen 0 = n
-   - `hookLength_oneColYD`: hookLength(i,0) = n - i (arm=0, leg=n-i-1, hook=n-i)
-   - `hookProd_oneColYD`: hookProd = n! (same descFactorial technique)
-   - `oneColSYT n`: the unique SYT with `entry(i,0) = i+1`
-   - `entry_oneCol_eq`: any SYT has `entry(i,0) = i+1` (col_strict induction)
-   - `oneColSYT_unique`: all SYTs of oneColYD n equal oneColSYT n
-   - `hook_length_formula_one_col`: `card(SYT(oneColYD n)) × hookProd(oneColYD n) = n!` (0 sorries!)
-
-### Key Findings
-
-**Column-transpose of one-row**: The one-column proof is fully symmetric to the one-row case,
-replacing `row_strict` with `col_strict` and swapping row/column roles throughout.
-
-**Architecture insight**: `oneColYD` defined as struct literal rather than `ofRowLens`, using
-`cells = (range n).image (·, 0)`. The `isLowerSet` proof uses `Prod.mk_le_mk` to extract
-components: `(a,b) ≤ (k,0)` gives `a ≤ k` and `b ≤ 0`, so `b = 0` and `a < n`.
-
-**Pre-existing build failure in dependency**: `BallotProblemOQ03OQ02.lean` has an `omega`
-proof that reports a counterexample in the GV involution proof. This is a dependency of
-`BallotProblemOQ03OQ01OQ02.lean`. The failure predates this session (PR #11096 was merged
-despite it). My file compiles but the full dependency chain can't be verified locally.
-
-**Proved instances so far**: hook_length_formula for empty (⊥), single-row (oneRowYD),
-single-column (oneColYD). The general theorem remains open.
-
-### Files Modified
-
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (~503 → 676 lines, PART VIb added, 0 sorries)
-
-### Next Steps
-
-1. **Fix BallotProblemOQ03OQ02 omega issue**: Investigate which specific omega proof fails
-   in the GV involution; fixing this unblocks dependency builds for future sessions.
-2. **Prove hook formula for 2-row shapes**: Use a direct bijection between SYT([m+1,1]) and
-   Fin(m+1), which is explicit and doesn't need LGV (choose where n goes in corner position).
-3. **Inductive proof**: Explore the corner-cell induction (sum over corners of SYT(μ\{c}))
-   to get the full formula; the key identity is `∑_corners hookProd(μ)/hookProd(μ\{c}) = n`.
-4. **RSK bijection for 2-row shapes**: More tractable than general RSK; maps to monotone paths.
-
----
-
-## Session 2026-04-22 (Session 4) - Hook-Shape SYT, Complete Bijection Proof
-
-**Mode**: REVISIT (RICH knowledge tier, score 28)
-**Outcome**: progress — proved hook-length formula for hook-shape (m+1,1) with 0 sorries
-
-### What I Did
-
-1. Defined `hookShapeYD m` (YoungDiagram with rows [m+1, 1]) via `ofRowLens`
-2. Proved hook lengths: `h(0,0)=m+2`, `h(0,j+1)=m-j`, `h(1,0)=1`
-3. Proved `hookProd_hookShapeYD`: `hookProd(m+1,1) = (m+2) × m!` via insert decomposition + descFactorial
-4. Defined explicit bijection `hookSYT m k` for each `k : Fin(m+1)`:
-   - `entry(0,j) = j+1` for `j ≤ k`, `j+2` for `j > k`; `entry(1,0) = k+2`
-5. Proved `hookSYT_entry_zero_zero_eq_one`: row chain + upper bound shows `entry(0,0) = 1` always
-6. Proved `hookSYT_unique`: any SYT equals `hookSYT k` for `k = entry(1,0) - 2`
-7. Proved `hookSYT_injective` and `card_SYT_hookShapeYD = m+1` via `Equiv.ofBijective`
-8. Proved `hook_length_formula_hook_shape`: `(m+1) × (m+2) × m! = (m+2)!`
-
-### Key Findings
-
-**Bijection proof technique**: The key insight is `entry(0,0) = 1` in any hook-shape SYT.
-Proof: if `entry(0,0) = 2`, then by row chains + upper bounds, `entry(0,j) = j+2` for all j.
-Then `entry(1,0) ∈ {3,...,m+2}` equals some `entry(0,T.entry(1,0)-2)` by the formula,
-contradicting injectivity. This forces `entry(0,0) = 1`.
-
-**hookProd insert decomposition**: `range(m+1) = insert 0 (range m).image(·+1)` splits
-off the `j=0` term (`h=m+2`), then the remaining product over `j ∈ range m` gives `m!`
-via `descFactorial_eq_prod_range` + `descFactorial_self`.
-
-**Build note**: `BallotProblemOQ03OQ02.lean` dependency still has pre-existing build failures
-(multiple omega and Bool simp issues from Lean4/Mathlib API changes). Part VIII code is
-self-contained and does not use LGV infrastructure.
-
-### Files Modified
-
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (676 → 1089 lines, PART VIII added, 0 new sorries)
-
-### Next Steps
-
-1. **Fix dependency**: `BallotProblemOQ03OQ02.lean` has ~20+ errors from Lean4 API changes
-   (Bool.false_eq_false removed, omega changes). Fixing enables full build verification.
-2. **2-row rectangular shapes**: Prove hook formula for `(m+n, n)` shapes directly, extending
-   the hook-shape approach to 2-row cases.
-3. **Corner-cell induction**: The recursive formula `f^λ = Σ_{corners c} f^{λ\c}` might
-   be accessible; key identity is `Σ hookProd(μ)/hookProd(μ\{c}) = n` over removable corners.
-
----
-
----
+> **Note**: 4 older sessions archived to `sessions/` directory.
 
 ## Session 2026-04-22 (Session 5) - Bool Simp Fix + Deep Sorry Analysis
 
@@ -460,3 +212,57 @@ Then: LHS × (a+1-b) × (a+b+1) = RHS × (a+1-b) × (a+b+1), cancel both sides.
    This generalizes `card_SYT_twoRectYD` from (m,m) to general (a,b) with a≥b.
 2. **ni_count_eq_syt_count** (general RSK bijection, ~200 lines, HARD)
 3. **lgv_det_factors_as_hook_quotient** (Vandermonde det, ~200 lines, HARD)
+
+---
+
+## Session 2026-04-23 (Session 10) — Prove card_SYT_twoRowYD via Corner Bijection
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: progress — proved card_SYT_twoRowYD_step (corner bijection), completing card_SYT_twoRowYD and hook_length_formula_two_row_gen (0 sorries in OQ01OQ02 main theorem chain)
+
+### What I Did
+
+1. Fixed `BallotProblemOQ03.lean`: removed `set minSwap := ...` in `minSharedStepIdx_preserved` to resolve omega failure (committed separately as `7288cbcd65`)
+2. Added ~450 lines of corner bijection infrastructure to `BallotProblemOQ03OQ01OQ02.lean`:
+   - `mem_of_twoRowYD_pred`: c ∈ twoRowYD (a-1) b → c ∈ twoRowYD a b
+   - `mem_of_twoRowYD_pred2`: c ∈ twoRowYD a (b-1) → c ∈ twoRowYD a b
+   - `restrictSYT0`: SYT(a,b) → SYT(a-1,b) given entry(0,a-1) = a+b
+   - `restrictSYT1`: SYT(a,b) → SYT(a,b-1) given entry(1,b-1) = a+b
+   - `extendSYT0`: SYT(a-1,b) → SYT(a,b) adding cell (0,a-1) ↦ a+b
+   - `extendSYT1`: SYT(a,b-1) → SYT(a,b) adding cell (1,b-1) ↦ a+b
+   - `card_SYT_twoRowYD_step`: Pascal step via Fintype.card_congr with explicit Equiv
+3. Committed as `d23ef735c8`; Docker build running to verify
+
+### Key Findings
+
+**Corner identification**: For T : SYT(twoRowYD a b hab) with b<a:
+- T.entry is injective on cells (card = a+b) with range ⊆ {1,...,a+b}
+- By cardinality equality, image = {1,...,a+b}, so a+b is achieved at some cell c
+- c is a corner: (c.1, c.2+1) ∉ μ (otherwise row_strict gives T.entry c > a+b, contradiction)
+- For twoRowYD a b with b<a, corners are exactly (0,a-1) and (1,b-1)
+- `max_at_corner`: T.entry (0,a-1)=a+b ∨ T.entry (1,b-1)=a+b (by Finset.eq_of_subset_of_card_le)
+
+**Proof techniques used**:
+- `Finset.card_image_of_injOn` to get image cardinality = a+b
+- `Finset.eq_of_subset_of_card_le` to prove image = Icc 1 (a+b)
+- `split_ifs` to handle conditional entries in row_strict/col_strict
+- `Prod.ext_iff` to extract row/col components from cell equalities
+- `dif_pos`/`dif_neg` to unfold dependent if-then-else in Equiv proofs
+- `StandardYoungTableau.ext` for SYT equality via funext on entry
+
+**card_SYT_twoRowYD** now proved by strong induction on a+b:
+- b=0: twoRowYD a 0 = oneRowYD a (unique SYT), ballotSeqCount p 0 = 1
+- b=a: twoRowYD a a = twoRectYD a, card_SYT_twoRectYD + catalan_eq_ballot
+- 0<b<a: card_SYT_twoRowYD_step + induction + ballotSeqCount_rec
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03.lean` (omega fix in minSharedStepIdx_preserved)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (2991 → 3540 lines, corner bijection infra + step lemma)
+
+### Next Steps
+
+1. Verify Docker build succeeds (build running in background)
+2. Update meta.json lineCount → 3540 if build passes
+3. Push branch and merge PR
+4. Consider: can `ni_count_eq_syt_count` or `lgv_det_factors_as_hook_quotient` be proved now?

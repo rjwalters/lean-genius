@@ -2909,13 +2909,562 @@ theorem hookProd_twoRowYD (a b : ℕ) (hab : b ≤ a) :
         ← Nat.descFactorial_eq_prod_range, Nat.descFactorial_self]
   rw [hrow0, hrow1]
 
-/-- The count of SYT of shape twoRowYD a b equals ballotSeqCount (a+1) b.
-    Proof: bijection between SYT([a,b]) and ballot subsets (row-1 entries satisfy ballot condition).
-    [OPEN: requires ~150 lines of bijection infrastructure] -/
+-- ============================================================
+-- PART XIb: Card of SYT for General 2-Row Diagrams (Corner Recursion)
+-- ============================================================
+
+/-- twoRowYD a 0 hab = oneRowYD a: both have cells {(0,j) | j < a}. -/
+private lemma twoRowYD_zero_eq_oneRowYD (a : ℕ) {h : 0 ≤ a} :
+    twoRowYD a 0 h = oneRowYD a := by
+  apply YoungDiagram.ext
+  ext ⟨i, j⟩
+  simp only [YoungDiagram.mem_cells, mem_twoRowYD h, mem_oneRowYD]
+  omega
+
+/-- twoRowYD a a h = twoRectYD a: both have cells {(i,j) | i∈{0,1}, j<a}. -/
+private lemma twoRowYD_sq_eq_twoRectYD (a : ℕ) {h : a ≤ a} :
+    twoRowYD a a h = twoRectYD a := by
+  apply YoungDiagram.ext
+  ext ⟨i, j⟩
+  simp only [YoungDiagram.mem_cells, mem_twoRowYD h, mem_twoRectYD]
+  exact Iff.rfl
+
+/-- ballotSeqCount (a+1) 0 = 1 for all a:
+    C(a,a) - C(a, a+1) = 1 - 0 = 1. -/
+private lemma ballotSeqCount_zero_right (a : ℕ) :
+    LatticePathLGV.ballotSeqCount (a + 1) 0 = 1 := by
+  simp only [LatticePathLGV.ballotSeqCount,
+             show a + 1 + 0 - 1 = a from by omega,
+             show a + 1 - 1 = a from by omega,
+             Nat.choose_self, Nat.choose_eq_zero_of_lt (Nat.lt_succ_self a), Nat.sub_zero]
+
+/-- Pascal recursion for ballotSeqCount: for 0 < b < a,
+    ballotSeqCount (a+1) b = ballotSeqCount a b + ballotSeqCount (a+1) (b-1).
+    Both sides equal C(a+b-1, a-1) - C(a+b-1, a+1) by applying Pascal twice.
+    [Arithmetic identity: provable but deferred for build speed] -/
+private lemma ballotSeqCount_rec (a b : ℕ) (ha : b < a) (hb : 0 < b) :
+    LatticePathLGV.ballotSeqCount (a + 1) b =
+    LatticePathLGV.ballotSeqCount a b + LatticePathLGV.ballotSeqCount (a + 1) (b - 1) := by
+  -- Pascal: C(a+b,a) = C(a+b-1,a-1) + C(a+b-1,a)  and  C(a+b,a+1) = C(a+b-1,a) + C(a+b-1,a+1)
+  -- So LHS = C(a+b-1,a-1) - C(a+b-1,a+1) = RHS (both differences non-neg since a > b)
+  simp only [LatticePathLGV.ballotSeqCount,
+             show a + 1 + b - 1 = a + b from by omega,
+             show a + 1 - 1 = a from by omega,
+             show a + 1 + (b - 1) - 1 = a + b - 1 from by omega,
+             show a + 1 + (b - 1) = a + b from by omega]
+  -- Pascal identities:
+  have hPas1 : Nat.choose (a + b) a =
+      Nat.choose (a + b - 1) (a - 1) + Nat.choose (a + b - 1) a :=
+    Nat.choose_eq_choose_pred_add (by omega) (by omega)
+  have hPas2 : Nat.choose (a + b) (a + 1) =
+      Nat.choose (a + b - 1) a + Nat.choose (a + b - 1) (a + 1) :=
+    Nat.choose_succ_right _ _ (by omega)
+  -- Monotonicity: C(a+b-1, a-1) ≥ C(a+b-1, a) ≥ C(a+b-1, a+1) since a > b.
+  -- Key: choose_succ_right_eq says C(n,k+1)*(k+1) = C(n,k)*(n-k).
+  -- For hge1 (k=a-1): C(n,a)*a = C(n,a-1)*b, and b < a, so C(n,a)*a ≤ C(n,a-1)*a → C(n,a) ≤ C(n,a-1).
+  -- For hge2 (k=a): C(n,a+1)*(a+1) = C(n,a)*(b-1), and b-1 ≤ a+1, so C(n,a+1)*(a+1) ≤ C(n,a)*(a+1) → C(n,a+1) ≤ C(n,a).
+  -- Monotonicity via choose_succ_right_eq ratio identity:
+  -- C(n,k+1)*(k+1) = C(n,k)*(n-k), so C(n,k+1) ≤ C(n,k) iff n-k ≤ k+1 iff n ≤ 2k+1.
+  have hge1 : Nat.choose (a + b - 1) a ≤ Nat.choose (a + b - 1) (a - 1) := by
+    -- C(n,a)*a = C(n,a-1)*b via choose_succ_right_eq with k=a-1
+    -- b < a, so C(n,a)*a = C(n,a-1)*b ≤ C(n,a-1)*a → C(n,a) ≤ C(n,a-1) (cancel a > 0)
+    have hkey : Nat.choose (a + b - 1) a * a =
+        Nat.choose (a + b - 1) (a - 1) * b := by
+      have h := Nat.choose_succ_right_eq (a + b - 1) (a - 1)
+      simp only [show a - 1 + 1 = a from by omega,
+                 show a + b - 1 - (a - 1) = b from by omega] at h; exact h
+    nlinarith [Nat.zero_le (Nat.choose (a + b - 1) (a - 1)),
+               Nat.zero_le (Nat.choose (a + b - 1) a)]
+  have hge2 : Nat.choose (a + b - 1) (a + 1) ≤ Nat.choose (a + b - 1) a := by
+    -- C(n,a+1)*(a+1) = C(n,a)*(b-1) via choose_succ_right_eq with k=a
+    -- b-1 ≤ a+1, so C(n,a+1)*(a+1) = C(n,a)*(b-1) ≤ C(n,a)*(a+1) → C(n,a+1) ≤ C(n,a)
+    have hkey : Nat.choose (a + b - 1) (a + 1) * (a + 1) =
+        Nat.choose (a + b - 1) a * (b - 1) := by
+      have h := Nat.choose_succ_right_eq (a + b - 1) a
+      simp only [show a + b - 1 - a = b - 1 from by omega] at h; exact h
+    nlinarith [Nat.zero_le (Nat.choose (a + b - 1) a),
+               Nat.zero_le (Nat.choose (a + b - 1) (a + 1))]
+  -- Combine: (C1+C2)-(C2+C3) = C1-C3 = (C1-C2)+(C2-C3) in ℕ (since C1 ≥ C2 ≥ C3)
+  rw [hPas1, hPas2]
+  omega
+
+-- ============================================================
+-- PART XIa: Corner-Cell Bijection Infrastructure
+-- ============================================================
+
+-- Lift membership from twoRowYD (a-1) b to twoRowYD a b
+private lemma mem_of_twoRowYD_pred {a b : ℕ} (hab : b ≤ a) (hab₁ : b ≤ a - 1) :
+    ∀ c, c ∈ twoRowYD (a - 1) b hab₁ → c ∈ twoRowYD a b hab := fun c hc => by
+  rcases mem_twoRowYD hab₁ |>.mp hc with ⟨hi, hj⟩ | ⟨hi, hj⟩
+  · exact mem_twoRowYD hab |>.mpr (Or.inl ⟨hi, by omega⟩)
+  · exact mem_twoRowYD hab |>.mpr (Or.inr ⟨hi, hj⟩)
+
+-- Lift membership from twoRowYD a (b-1) to twoRowYD a b
+private lemma mem_of_twoRowYD_pred2 {a b : ℕ} (hab : b ≤ a) (hab₂ : b - 1 ≤ a) :
+    ∀ c, c ∈ twoRowYD a (b - 1) hab₂ → c ∈ twoRowYD a b hab := fun c hc => by
+  rcases mem_twoRowYD hab₂ |>.mp hc with ⟨hi, hj⟩ | ⟨hi, hj⟩
+  · exact mem_twoRowYD hab |>.mpr (Or.inl ⟨hi, hj⟩)
+  · exact mem_twoRowYD hab |>.mpr (Or.inr ⟨hi, by omega⟩)
+
+-- Restrict T : SYT(twoRowYD a b) to SYT(twoRowYD (a-1) b)
+-- when max entry a+b is at corner (0, a-1)
+private noncomputable def restrictSYT0 {a b : ℕ}
+    (hab : b ≤ a) (hab₁ : b ≤ a - 1)
+    (T : StandardYoungTableau (twoRowYD a b hab))
+    (hT : T.entry (0, a - 1) = a + b) :
+    StandardYoungTableau (twoRowYD (a - 1) b hab₁) where
+  entry c := if c ∈ twoRowYD (a - 1) b hab₁ then T.entry c else 0
+  entry_zero c hc := by simp [hc]
+  entry_range c hc := by
+    simp only [hc, ↓reduceIte]
+    have hmem := mem_of_twoRowYD_pred hab hab₁ c hc
+    refine ⟨(T.entry_range c hmem).1, ?_⟩
+    have hle := (T.entry_range c hmem).2
+    have hne : T.entry c ≠ a + b := by
+      intro heq
+      have := T.entry_injOn c (0, a - 1) hmem
+        (mem_twoRowYD hab |>.mpr (Or.inl ⟨rfl, by omega⟩)) (heq.trans hT.symm)
+      exact absurd (this ▸ hc) (by simp [mem_twoRowYD hab₁])
+    rw [twoRowYD_card a b hab] at hle
+    rw [twoRowYD_card (a - 1) b hab₁]; omega
+  entry_injOn c₁ c₂ hc₁ hc₂ h := by
+    simp only [hc₁, hc₂, ↓reduceIte] at h
+    exact T.entry_injOn c₁ c₂
+      (mem_of_twoRowYD_pred hab hab₁ c₁ hc₁) (mem_of_twoRowYD_pred hab hab₁ c₂ hc₂) h
+  row_strict i j₁ j₂ hc₁ hc₂ hlt := by
+    simp only [hc₁, hc₂, ↓reduceIte]
+    exact T.row_strict i j₁ j₂
+      (mem_of_twoRowYD_pred hab hab₁ _ hc₁) (mem_of_twoRowYD_pred hab hab₁ _ hc₂) hlt
+  col_strict i₁ i₂ j hc₁ hc₂ hlt := by
+    simp only [hc₁, hc₂, ↓reduceIte]
+    exact T.col_strict i₁ i₂ j
+      (mem_of_twoRowYD_pred hab hab₁ _ hc₁) (mem_of_twoRowYD_pred hab hab₁ _ hc₂) hlt
+
+-- Restrict T : SYT(twoRowYD a b) to SYT(twoRowYD a (b-1))
+-- when max entry a+b is at corner (1, b-1)
+private noncomputable def restrictSYT1 {a b : ℕ}
+    (hab : b ≤ a) (hab₂ : b - 1 ≤ a)
+    (T : StandardYoungTableau (twoRowYD a b hab))
+    (hT : T.entry (1, b - 1) = a + b) :
+    StandardYoungTableau (twoRowYD a (b - 1) hab₂) where
+  entry c := if c ∈ twoRowYD a (b - 1) hab₂ then T.entry c else 0
+  entry_zero c hc := by simp [hc]
+  entry_range c hc := by
+    simp only [hc, ↓reduceIte]
+    have hmem := mem_of_twoRowYD_pred2 hab hab₂ c hc
+    refine ⟨(T.entry_range c hmem).1, ?_⟩
+    have hle := (T.entry_range c hmem).2
+    have hne : T.entry c ≠ a + b := by
+      intro heq
+      have := T.entry_injOn c (1, b - 1) hmem
+        (mem_twoRowYD hab |>.mpr (Or.inr ⟨rfl, by omega⟩)) (heq.trans hT.symm)
+      exact absurd (this ▸ hc) (by simp [mem_twoRowYD hab₂])
+    rw [twoRowYD_card a b hab] at hle
+    rw [twoRowYD_card a (b - 1) hab₂]; omega
+  entry_injOn c₁ c₂ hc₁ hc₂ h := by
+    simp only [hc₁, hc₂, ↓reduceIte] at h
+    exact T.entry_injOn c₁ c₂
+      (mem_of_twoRowYD_pred2 hab hab₂ c₁ hc₁) (mem_of_twoRowYD_pred2 hab hab₂ c₂ hc₂) h
+  row_strict i j₁ j₂ hc₁ hc₂ hlt := by
+    simp only [hc₁, hc₂, ↓reduceIte]
+    exact T.row_strict i j₁ j₂
+      (mem_of_twoRowYD_pred2 hab hab₂ _ hc₁) (mem_of_twoRowYD_pred2 hab hab₂ _ hc₂) hlt
+  col_strict i₁ i₂ j hc₁ hc₂ hlt := by
+    simp only [hc₁, hc₂, ↓reduceIte]
+    exact T.col_strict i₁ i₂ j
+      (mem_of_twoRowYD_pred2 hab hab₂ _ hc₁) (mem_of_twoRowYD_pred2 hab hab₂ _ hc₂) hlt
+
+-- Extend T₁ : SYT(twoRowYD (a-1) b) to SYT(twoRowYD a b) by adding (0,a-1) ↦ a+b
+private noncomputable def extendSYT0 {a b : ℕ}
+    (hab : b ≤ a) (hab₁ : b ≤ a - 1)
+    (T₁ : StandardYoungTableau (twoRowYD (a - 1) b hab₁)) :
+    StandardYoungTableau (twoRowYD a b hab) where
+  entry c := if c = (0, a - 1) then a + b else T₁.entry c
+  entry_zero c hc := by
+    have hne : c ≠ (0, a - 1) := fun h =>
+      hc (h ▸ mem_twoRowYD hab |>.mpr (Or.inl ⟨rfl, by omega⟩))
+    rw [if_neg hne]
+    exact T₁.entry_zero c (fun hc₁ => hc (mem_of_twoRowYD_pred hab hab₁ c hc₁))
+  entry_range c hc := by
+    by_cases hce : c = (0, a - 1)
+    · simp only [hce, ↓reduceIte]
+      have ha1 : a - 1 < a := by
+        rcases mem_twoRowYD hab |>.mp (hce ▸ hc) with ⟨_, h⟩ | ⟨h, _⟩
+        · exact h; · exact absurd h (by norm_num)
+      rw [twoRowYD_card a b hab]; exact ⟨by omega, le_refl _⟩
+    · rw [if_neg hce]
+      have hcμ₁ : c ∈ twoRowYD (a - 1) b hab₁ := by
+        rcases mem_twoRowYD hab |>.mp hc with ⟨hi, hj⟩ | ⟨hi, hj⟩
+        · exact mem_twoRowYD hab₁ |>.mpr (Or.inl ⟨hi,
+            by have := fun heq => hce (Prod.ext hi heq); omega⟩)
+        · exact mem_twoRowYD hab₁ |>.mpr (Or.inr ⟨hi, hj⟩)
+      have hr := T₁.entry_range c hcμ₁
+      rw [twoRowYD_card (a - 1) b hab₁] at hr
+      rw [twoRowYD_card a b hab]; exact ⟨hr.1, by omega⟩
+  entry_injOn c₁ c₂ hc₁ hc₂ h := by
+    simp only at h
+    by_cases h₁ : c₁ = (0, a - 1) <;> by_cases h₂ : c₂ = (0, a - 1)
+    · rw [h₁, h₂]
+    · simp only [h₁, h₂, ↓reduceIte, if_false] at h
+      have hcμ₂ : c₂ ∈ twoRowYD (a - 1) b hab₁ := by
+        rcases mem_twoRowYD hab |>.mp hc₂ with ⟨hi, hj⟩ | ⟨hi, hj⟩
+        · exact mem_twoRowYD hab₁ |>.mpr (Or.inl ⟨hi,
+            by have := fun heq => h₂ (Prod.ext hi heq); omega⟩)
+        · exact mem_twoRowYD hab₁ |>.mpr (Or.inr ⟨hi, hj⟩)
+      have := (T₁.entry_range c₂ hcμ₂).2
+      rw [twoRowYD_card (a - 1) b hab₁] at this; omega
+    · simp only [h₁, h₂, ↓reduceIte, if_true, if_false] at h
+      have hcμ₁ : c₁ ∈ twoRowYD (a - 1) b hab₁ := by
+        rcases mem_twoRowYD hab |>.mp hc₁ with ⟨hi, hj⟩ | ⟨hi, hj⟩
+        · exact mem_twoRowYD hab₁ |>.mpr (Or.inl ⟨hi,
+            by have := fun heq => h₁ (Prod.ext hi heq); omega⟩)
+        · exact mem_twoRowYD hab₁ |>.mpr (Or.inr ⟨hi, hj⟩)
+      have := (T₁.entry_range c₁ hcμ₁).2
+      rw [twoRowYD_card (a - 1) b hab₁] at this; omega
+    · simp only [h₁, h₂, ↓reduceIte] at h
+      have hcμ₁ : c₁ ∈ twoRowYD (a - 1) b hab₁ := by
+        rcases mem_twoRowYD hab |>.mp hc₁ with ⟨hi, hj⟩ | ⟨hi, hj⟩
+        · exact mem_twoRowYD hab₁ |>.mpr (Or.inl ⟨hi,
+            by have := fun heq => h₁ (Prod.ext hi heq); omega⟩)
+        · exact mem_twoRowYD hab₁ |>.mpr (Or.inr ⟨hi, hj⟩)
+      have hcμ₂ : c₂ ∈ twoRowYD (a - 1) b hab₁ := by
+        rcases mem_twoRowYD hab |>.mp hc₂ with ⟨hi, hj⟩ | ⟨hi, hj⟩
+        · exact mem_twoRowYD hab₁ |>.mpr (Or.inl ⟨hi,
+            by have := fun heq => h₂ (Prod.ext hi heq); omega⟩)
+        · exact mem_twoRowYD hab₁ |>.mpr (Or.inr ⟨hi, hj⟩)
+      exact T₁.entry_injOn c₁ c₂ hcμ₁ hcμ₂ h
+  row_strict i j₁ j₂ hc₁ hc₂ hlt := by
+    simp only
+    split_ifs with h₁ h₂
+    · have := (Prod.ext_iff.mp h₁).2; have := (Prod.ext_iff.mp h₂).2; omega
+    · have hi₁ := (Prod.ext_iff.mp h₁).1; have hj₁ := (Prod.ext_iff.mp h₁).2
+      rcases mem_twoRowYD hab |>.mp hc₂ with ⟨_, hj₂⟩ | ⟨hi₂, _⟩ <;> omega
+    · have hi := (Prod.ext_iff.mp h₂).1; have hj₂ := (Prod.ext_iff.mp h₂).2
+      have hcμ₁ : (i, j₁) ∈ twoRowYD (a - 1) b hab₁ :=
+        mem_twoRowYD hab₁ |>.mpr (Or.inl ⟨hi, by omega⟩)
+      have := (T₁.entry_range _ hcμ₁).2
+      rw [twoRowYD_card (a - 1) b hab₁] at this; omega
+    · have hcμ₁ : (i, j₁) ∈ twoRowYD (a - 1) b hab₁ := by
+        rcases mem_twoRowYD hab |>.mp hc₁ with ⟨hi, hj⟩ | ⟨hi, hj⟩
+        · exact mem_twoRowYD hab₁ |>.mpr (Or.inl ⟨hi,
+            by have := fun heq => h₁ (Prod.ext hi heq); omega⟩)
+        · exact mem_twoRowYD hab₁ |>.mpr (Or.inr ⟨hi, hj⟩)
+      have hcμ₂ : (i, j₂) ∈ twoRowYD (a - 1) b hab₁ := by
+        rcases mem_twoRowYD hab |>.mp hc₂ with ⟨hi, hj⟩ | ⟨hi, hj⟩
+        · exact mem_twoRowYD hab₁ |>.mpr (Or.inl ⟨hi,
+            by have := fun heq => h₂ (Prod.ext hi heq); omega⟩)
+        · exact mem_twoRowYD hab₁ |>.mpr (Or.inr ⟨hi, hj⟩)
+      exact T₁.row_strict i j₁ j₂ hcμ₁ hcμ₂ hlt
+  col_strict i₁ i₂ j hc₁ hc₂ hlt := by
+    simp only
+    split_ifs with h₁ h₂
+    · exact absurd hlt (by
+        have := (Prod.ext_iff.mp h₁).1; have := (Prod.ext_iff.mp h₂).1; omega)
+    · have hja := (Prod.ext_iff.mp h₁).2
+      rcases mem_twoRowYD hab |>.mp hc₂ with ⟨hi₂, hj₂⟩ | ⟨_, hj₂⟩
+      · have := (Prod.ext_iff.mp h₁).1; omega
+      · rw [hja] at hj₂; omega
+    · exact absurd hlt (by have := (Prod.ext_iff.mp h₂).1; omega)
+    · have hcμ₁ : (i₁, j) ∈ twoRowYD (a - 1) b hab₁ := by
+        rcases mem_twoRowYD hab |>.mp hc₁ with ⟨hi, hj⟩ | ⟨hi, hj⟩
+        · exact mem_twoRowYD hab₁ |>.mpr (Or.inl ⟨hi,
+            by have := fun heq => h₁ (Prod.ext hi heq); omega⟩)
+        · exact mem_twoRowYD hab₁ |>.mpr (Or.inr ⟨hi, hj⟩)
+      have hcμ₂ : (i₂, j) ∈ twoRowYD (a - 1) b hab₁ := by
+        rcases mem_twoRowYD hab |>.mp hc₂ with ⟨hi, hj⟩ | ⟨hi, hj⟩
+        · exact mem_twoRowYD hab₁ |>.mpr (Or.inl ⟨hi,
+            by have := fun heq => h₂ (Prod.ext hi heq); omega⟩)
+        · exact mem_twoRowYD hab₁ |>.mpr (Or.inr ⟨hi, hj⟩)
+      exact T₁.col_strict i₁ i₂ j hcμ₁ hcμ₂ hlt
+
+-- Extend T₂ : SYT(twoRowYD a (b-1)) to SYT(twoRowYD a b) by adding (1,b-1) ↦ a+b
+private noncomputable def extendSYT1 {a b : ℕ}
+    (hab : b ≤ a) (hab₂ : b - 1 ≤ a)
+    (T₂ : StandardYoungTableau (twoRowYD a (b - 1) hab₂)) :
+    StandardYoungTableau (twoRowYD a b hab) where
+  entry c := if c = (1, b - 1) then a + b else T₂.entry c
+  entry_zero c hc := by
+    have hne : c ≠ (1, b - 1) := fun h =>
+      hc (h ▸ mem_twoRowYD hab |>.mpr (Or.inr ⟨rfl, by omega⟩))
+    rw [if_neg hne]
+    exact T₂.entry_zero c (fun hc₂ => hc (mem_of_twoRowYD_pred2 hab hab₂ c hc₂))
+  entry_range c hc := by
+    by_cases hce : c = (1, b - 1)
+    · simp only [hce, ↓reduceIte]
+      have hb1 : b - 1 < b := by
+        rcases mem_twoRowYD hab |>.mp (hce ▸ hc) with ⟨h, _⟩ | ⟨_, h⟩
+        · exact absurd h (by norm_num); · exact h
+      rw [twoRowYD_card a b hab]; exact ⟨by omega, le_refl _⟩
+    · rw [if_neg hce]
+      have hcμ₂ : c ∈ twoRowYD a (b - 1) hab₂ := by
+        rcases mem_twoRowYD hab |>.mp hc with ⟨hi, hj⟩ | ⟨hi, hj⟩
+        · exact mem_twoRowYD hab₂ |>.mpr (Or.inl ⟨hi, hj⟩)
+        · exact mem_twoRowYD hab₂ |>.mpr (Or.inr ⟨hi,
+            by have := fun heq => hce (Prod.ext hi heq); omega⟩)
+      have hr := T₂.entry_range c hcμ₂
+      rw [twoRowYD_card a (b - 1) hab₂] at hr
+      rw [twoRowYD_card a b hab]; exact ⟨hr.1, by omega⟩
+  entry_injOn c₁ c₂ hc₁ hc₂ h := by
+    simp only at h
+    by_cases h₁ : c₁ = (1, b - 1) <;> by_cases h₂ : c₂ = (1, b - 1)
+    · rw [h₁, h₂]
+    · simp only [h₁, h₂, ↓reduceIte, if_false] at h
+      have hcμ₂ : c₂ ∈ twoRowYD a (b - 1) hab₂ := by
+        rcases mem_twoRowYD hab |>.mp hc₂ with ⟨hi, hj⟩ | ⟨hi, hj⟩
+        · exact mem_twoRowYD hab₂ |>.mpr (Or.inl ⟨hi, hj⟩)
+        · exact mem_twoRowYD hab₂ |>.mpr (Or.inr ⟨hi,
+            by have := fun heq => h₂ (Prod.ext hi heq); omega⟩)
+      have := (T₂.entry_range c₂ hcμ₂).2
+      rw [twoRowYD_card a (b - 1) hab₂] at this; omega
+    · simp only [h₁, h₂, ↓reduceIte, if_true, if_false] at h
+      have hcμ₁ : c₁ ∈ twoRowYD a (b - 1) hab₂ := by
+        rcases mem_twoRowYD hab |>.mp hc₁ with ⟨hi, hj⟩ | ⟨hi, hj⟩
+        · exact mem_twoRowYD hab₂ |>.mpr (Or.inl ⟨hi, hj⟩)
+        · exact mem_twoRowYD hab₂ |>.mpr (Or.inr ⟨hi,
+            by have := fun heq => h₁ (Prod.ext hi heq); omega⟩)
+      have := (T₂.entry_range c₁ hcμ₁).2
+      rw [twoRowYD_card a (b - 1) hab₂] at this; omega
+    · simp only [h₁, h₂, ↓reduceIte] at h
+      have hcμ₁ : c₁ ∈ twoRowYD a (b - 1) hab₂ := by
+        rcases mem_twoRowYD hab |>.mp hc₁ with ⟨hi, hj⟩ | ⟨hi, hj⟩
+        · exact mem_twoRowYD hab₂ |>.mpr (Or.inl ⟨hi, hj⟩)
+        · exact mem_twoRowYD hab₂ |>.mpr (Or.inr ⟨hi,
+            by have := fun heq => h₁ (Prod.ext hi heq); omega⟩)
+      have hcμ₂ : c₂ ∈ twoRowYD a (b - 1) hab₂ := by
+        rcases mem_twoRowYD hab |>.mp hc₂ with ⟨hi, hj⟩ | ⟨hi, hj⟩
+        · exact mem_twoRowYD hab₂ |>.mpr (Or.inl ⟨hi, hj⟩)
+        · exact mem_twoRowYD hab₂ |>.mpr (Or.inr ⟨hi,
+            by have := fun heq => h₂ (Prod.ext hi heq); omega⟩)
+      exact T₂.entry_injOn c₁ c₂ hcμ₁ hcμ₂ h
+  row_strict i j₁ j₂ hc₁ hc₂ hlt := by
+    simp only
+    split_ifs with h₁ h₂
+    · have := (Prod.ext_iff.mp h₁).2; have := (Prod.ext_iff.mp h₂).2; omega
+    · have hi₁ := (Prod.ext_iff.mp h₁).1; have hj₁ := (Prod.ext_iff.mp h₁).2
+      rcases mem_twoRowYD hab |>.mp hc₂ with ⟨_, hj₂⟩ | ⟨hi₂, hj₂⟩
+      · omega
+      · have := fun heq => h₂ (Prod.ext hi₁ heq); omega
+    · have hi := (Prod.ext_iff.mp h₂).1; have hj₂ := (Prod.ext_iff.mp h₂).2
+      have hcμ₁ : (i, j₁) ∈ twoRowYD a (b - 1) hab₂ :=
+        mem_twoRowYD hab₂ |>.mpr (Or.inr ⟨hi, by omega⟩)
+      have := (T₂.entry_range _ hcμ₁).2
+      rw [twoRowYD_card a (b - 1) hab₂] at this; omega
+    · have hcμ₁ : (i, j₁) ∈ twoRowYD a (b - 1) hab₂ := by
+        rcases mem_twoRowYD hab |>.mp hc₁ with ⟨hi, hj⟩ | ⟨hi, hj⟩
+        · exact mem_twoRowYD hab₂ |>.mpr (Or.inl ⟨hi, hj⟩)
+        · exact mem_twoRowYD hab₂ |>.mpr (Or.inr ⟨hi,
+            by have := fun heq => h₁ (Prod.ext hi heq); omega⟩)
+      have hcμ₂ : (i, j₂) ∈ twoRowYD a (b - 1) hab₂ := by
+        rcases mem_twoRowYD hab |>.mp hc₂ with ⟨hi, hj⟩ | ⟨hi, hj⟩
+        · exact mem_twoRowYD hab₂ |>.mpr (Or.inl ⟨hi, hj⟩)
+        · exact mem_twoRowYD hab₂ |>.mpr (Or.inr ⟨hi,
+            by have := fun heq => h₂ (Prod.ext hi heq); omega⟩)
+      exact T₂.row_strict i j₁ j₂ hcμ₁ hcμ₂ hlt
+  col_strict i₁ i₂ j hc₁ hc₂ hlt := by
+    simp only
+    split_ifs with h₁ h₂
+    · exact absurd hlt (by
+        have := (Prod.ext_iff.mp h₁).1; have := (Prod.ext_iff.mp h₂).1; omega)
+    · rcases mem_twoRowYD hab |>.mp hc₂ with ⟨_, hj₂⟩ | ⟨hi₂, hj₂⟩
+      · have := (Prod.ext_iff.mp h₁).1; omega
+      · have hi₁ := (Prod.ext_iff.mp h₁).1
+        -- i₂ > i₁ = 1, but rows only go to 1: impossible
+        omega
+    · exact absurd hlt (by have := (Prod.ext_iff.mp h₂).1; omega)
+    · have hcμ₁ : (i₁, j) ∈ twoRowYD a (b - 1) hab₂ := by
+        rcases mem_twoRowYD hab |>.mp hc₁ with ⟨hi, hj⟩ | ⟨hi, hj⟩
+        · exact mem_twoRowYD hab₂ |>.mpr (Or.inl ⟨hi, hj⟩)
+        · exact mem_twoRowYD hab₂ |>.mpr (Or.inr ⟨hi,
+            by have := fun heq => h₁ (Prod.ext hi heq); omega⟩)
+      have hcμ₂ : (i₂, j) ∈ twoRowYD a (b - 1) hab₂ := by
+        rcases mem_twoRowYD hab |>.mp hc₂ with ⟨hi, hj⟩ | ⟨hi, hj⟩
+        · exact mem_twoRowYD hab₂ |>.mpr (Or.inl ⟨hi, hj⟩)
+        · exact mem_twoRowYD hab₂ |>.mpr (Or.inr ⟨hi,
+            by have := fun heq => h₂ (Prod.ext hi heq); omega⟩)
+      exact T₂.col_strict i₁ i₂ j hcμ₁ hcμ₂ hlt
+
+/-- Corner-cell step: for 0 < b < a,
+    card(SYT([a,b])) = card(SYT([a-1,b])) + card(SYT([a,b-1])).
+    The max entry a+b is at exactly one corner: (0,a-1) or (1,b-1).
+    Removing it gives an equiv between SYT([a,b]) and the disjoint union. -/
+private lemma card_SYT_twoRowYD_step (a b : ℕ) (ha : b < a) (hb : 0 < b) :
+    Fintype.card (StandardYoungTableau (twoRowYD a b (Nat.le_of_lt ha))) =
+    Fintype.card (StandardYoungTableau (twoRowYD (a - 1) b (by omega))) +
+    Fintype.card (StandardYoungTableau (twoRowYD a (b - 1) (by omega))) := by
+  have hab : b ≤ a := Nat.le_of_lt ha
+  have hab₁ : b ≤ a - 1 := by omega
+  have hab₂ : b - 1 ≤ a := by omega
+  -- Max entry a+b is at corner (0,a-1) or (1,b-1)
+  have hcard : (twoRowYD a b hab).card = a + b := twoRowYD_card a b hab
+  have max_at_corner : ∀ T : StandardYoungTableau (twoRowYD a b hab),
+      T.entry (0, a - 1) = a + b ∨ T.entry (1, b - 1) = a + b := by
+    intro T
+    -- T.entry is injective on cells with range ⊆ {1,...,a+b}, so surjective
+    have hcells_card : (twoRowYD a b hab).cells.card = a + b := by
+      unfold YoungDiagram.card at hcard; exact hcard
+    have himage_card : ((twoRowYD a b hab).cells.image T.entry).card = a + b := by
+      rw [Finset.card_image_of_injOn (fun c₁ hc₁ c₂ hc₂ h =>
+        T.entry_injOn c₁ c₂ (YoungDiagram.mem_cells.mp hc₁)
+          (YoungDiagram.mem_cells.mp hc₂) h), hcells_card]
+    have himage_sub : (twoRowYD a b hab).cells.image T.entry ⊆ Finset.Icc 1 (a + b) := by
+      intro k hk
+      obtain ⟨c, hc, rfl⟩ := Finset.mem_image.mp hk
+      have := T.entry_range c (YoungDiagram.mem_cells.mp hc)
+      rw [hcard] at this; exact Finset.mem_Icc.mpr this
+    have hIcc_card : (Finset.Icc 1 (a + b)).card = a + b := by simp [Finset.card_Icc]
+    have himage_eq : (twoRowYD a b hab).cells.image T.entry = Finset.Icc 1 (a + b) :=
+      Finset.eq_of_subset_of_card_le himage_sub (by rw [hIcc_card, himage_card])
+    have hab_in : a + b ∈ (twoRowYD a b hab).cells.image T.entry := by
+      rw [himage_eq]; simp [Finset.mem_Icc]
+    obtain ⟨c, hc_cell, hc_eq⟩ := Finset.mem_image.mp hab_in
+    have hc_mem := YoungDiagram.mem_cells.mp hc_cell
+    -- c is a corner: (c.1, c.2+1) ∉ μ
+    have hright : (c.1, c.2 + 1) ∉ twoRowYD a b hab := by
+      intro h
+      have hlt := T.row_strict c.1 c.2 (c.2 + 1) hc_mem h (Nat.lt_succ_self _)
+      rw [hc_eq, hcard] at hlt
+      exact absurd hlt (Nat.lt_irrefl _)
+    -- Determine which corner c is
+    rcases mem_twoRowYD hab |>.mp hc_mem with ⟨hi, hj⟩ | ⟨hi, hj⟩
+    · left
+      have hja : c.2 = a - 1 := by
+        have : ¬(0 = 0 ∧ c.2 + 1 < a) := fun ⟨_, h⟩ =>
+          hright (mem_twoRowYD hab |>.mpr (Or.inl ⟨hi, h⟩))
+        omega
+      have : c = (0, a - 1) := Prod.ext hi hja
+      rw [← this]; exact hc_eq
+    · right
+      have hja : c.2 = b - 1 := by
+        have : ¬(1 = 1 ∧ c.2 + 1 < b) := fun ⟨_, h⟩ =>
+          hright (mem_twoRowYD hab |>.mpr (Or.inr ⟨hi, h⟩))
+        omega
+      have : c = (1, b - 1) := Prod.ext hi hja
+      rw [← this]; exact hc_eq
+  -- Build the bijection SYT(a,b) ≃ SYT(a-1,b) ⊕ SYT(a,b-1)
+  rw [← Fintype.card_sum]
+  apply Fintype.card_congr
+  exact {
+    toFun := fun T =>
+      if hT : T.entry (0, a - 1) = a + b then
+        Sum.inl (restrictSYT0 hab hab₁ T hT)
+      else
+        Sum.inr (restrictSYT1 hab hab₂ T ((max_at_corner T).resolve_left hT))
+    invFun := fun x => match x with
+      | Sum.inl T₁ => extendSYT0 hab hab₁ T₁
+      | Sum.inr T₂ => extendSYT1 hab hab₂ T₂
+    left_inv := fun T => by
+      apply StandardYoungTableau.ext; intro c
+      by_cases hT : T.entry (0, a - 1) = a + b
+      · rw [dif_pos hT]
+        simp only [extendSYT0, restrictSYT0]
+        split_ifs with hce hcμ
+        · -- c = (0, a-1)
+          exact hT.symm
+        · -- c ∈ μ₁, c ≠ (0, a-1)
+          rfl
+        · -- c ∉ μ₁, c ≠ (0, a-1)
+          apply T.entry_zero; intro hcμ_big
+          rcases mem_twoRowYD hab |>.mp hcμ_big with ⟨hi, hj⟩ | ⟨hi, hj⟩
+          · exact hcμ (mem_twoRowYD hab₁ |>.mpr (Or.inl ⟨hi,
+              by have := fun heq => hce (Prod.ext hi heq); omega⟩))
+          · exact hcμ (mem_twoRowYD hab₁ |>.mpr (Or.inr ⟨hi, hj⟩))
+      · rw [dif_neg hT]
+        simp only [extendSYT1, restrictSYT1]
+        split_ifs with hce hcμ
+        · -- c = (1, b-1)
+          exact ((max_at_corner T).resolve_left hT).symm
+        · -- c ∈ μ₂, c ≠ (1, b-1)
+          rfl
+        · -- c ∉ μ₂, c ≠ (1, b-1)
+          apply T.entry_zero; intro hcμ_big
+          rcases mem_twoRowYD hab |>.mp hcμ_big with ⟨hi, hj⟩ | ⟨hi, hj⟩
+          · exact hcμ (mem_twoRowYD hab₂ |>.mpr (Or.inl ⟨hi, hj⟩))
+          · exact hcμ (mem_twoRowYD hab₂ |>.mpr (Or.inr ⟨hi,
+              by have := fun heq => hce (Prod.ext hi heq); omega⟩))
+    right_inv := fun x => by
+      match x with
+      | Sum.inl T₁ =>
+        -- Show toFun (extendSYT0 T₁) = Sum.inl T₁
+        -- extendSYT0 T₁ has entry (0, a-1) = a+b, so dif_pos applies
+        have h0a1 : (extendSYT0 hab hab₁ T₁).entry (0, a - 1) = a + b := by
+          simp [extendSYT0]
+        rw [dif_pos h0a1]
+        congr 1
+        apply StandardYoungTableau.ext; intro c
+        simp only [restrictSYT0, extendSYT0]
+        split_ifs with hcμ hce
+        · -- c ∈ μ₁: entry = if c=(0,a-1) then a+b else T₁.entry c
+          -- c ∈ μ₁ implies c ≠ (0,a-1), so entry = T₁.entry c
+          simp only [if_neg (by
+            intro h; exact absurd (h ▸ hcμ) (by simp [mem_twoRowYD hab₁]))]
+        · -- c = (0,a-1): entry = a+b, but (0,a-1) ∉ μ₁: branch is else = 0
+          simp only [if_pos rfl]
+          -- hcμ : c ∉ μ₁, hce : c = (0, a-1)
+          -- We want T₁.entry_zero applied to prove T₁.entry c = 0... wait,
+          -- the "if c ∈ μ₁ then T.entry c else 0" branch: c ∉ μ₁, so = 0.
+          -- But wait: the split_ifs split on c ∈ μ₁ first, then something else?
+          -- The outer if is "if c ∈ μ₁ then T.entry c else 0" (from restrictSYT0)
+          -- and the inner if is "if c = (0,a-1) then a+b else T₁.entry c" (from extendSYT0)
+          -- Case hcμ (c ∉ μ₁) and hce (c = (0,a-1)):
+          -- restrictSYT0 of extendSYT0 at c: (if c ∈ μ₁ then (extendSYT0).entry c else 0) = 0
+          -- We need 0 = T₁.entry c. By T₁.entry_zero c (hcμ) — no wait, the split_ifs is wrong here
+          -- Let me think: the goal here is:
+          -- (if c ∈ μ₁ then (if c = (0,a-1) then a+b else T₁.entry c) else 0) = T₁.entry c
+          -- c ∉ μ₁ (hcμ), c = (0,a-1) (hce): LHS = 0. RHS = T₁.entry (0,a-1).
+          -- T₁.entry (0,a-1) = 0 since (0,a-1) ∉ μ₁. ✓
+          exact (T₁.entry_zero c hcμ).symm
+        · -- c ∉ μ₁, c ≠ (0, a-1):
+          -- LHS = 0, RHS = T₁.entry c = 0 (by T₁.entry_zero)
+          exact (T₁.entry_zero c hcμ).symm
+      | Sum.inr T₂ =>
+        have h1b1 : (extendSYT1 hab hab₂ T₂).entry (1, b - 1) = a + b := by
+          simp [extendSYT1]
+        have h0a1 : (extendSYT1 hab hab₂ T₂).entry (0, a - 1) ≠ a + b := by
+          simp only [extendSYT1]
+          rw [if_neg (by
+            intro h; simp [Prod.ext_iff] at h)]
+          have hcμ₂ : (0, a - 1) ∈ twoRowYD a (b - 1) hab₂ :=
+            mem_twoRowYD hab₂ |>.mpr (Or.inl ⟨rfl, by omega⟩)
+          have := (T₂.entry_range _ hcμ₂).2
+          rw [twoRowYD_card a (b - 1) hab₂]; omega
+        rw [dif_neg h0a1]
+        have : (max_at_corner (extendSYT1 hab hab₂ T₂)).resolve_left h0a1 = h1b1 := by
+          rfl
+        congr 1
+        apply StandardYoungTableau.ext; intro c
+        simp only [restrictSYT1, extendSYT1]
+        split_ifs with hcμ hce
+        · -- c ∈ μ₂: entry = if c=(1,b-1) then a+b else T₂.entry c
+          simp only [if_neg (by
+            intro h; exact absurd (h ▸ hcμ) (by simp [mem_twoRowYD hab₂]))]
+        · exact (T₂.entry_zero c hcμ).symm
+        · exact (T₂.entry_zero c hcμ).symm
+  }
+
+/-- **Card of SYT of general 2-row shape equals ballotSeqCount.**
+    card(SYT([a,b])) = ballotSeqCount(a+1, b) for all a ≥ b ≥ 0.
+    Proof by strong induction on a+b:
+    - b=0: shape=[a], unique SYT, ballotSeqCount(a+1,0)=1
+    - b=a: twoRowYD a a = twoRectYD a, so card = Cn a = ballotSeqCount(a+1,a)
+    - b<a, b>0: corner recursion + arithmetic Pascal step -/
 theorem card_SYT_twoRowYD (a b : ℕ) (hab : b ≤ a) :
     Fintype.card (StandardYoungTableau (twoRowYD a b hab)) =
     LatticePathLGV.ballotSeqCount (a + 1) b := by
-  sorry
+  rcases Nat.eq_zero_or_pos b with rfl | hb
+  · -- Base: b = 0.  twoRowYD a 0 = oneRowYD a (unique SYT), ballotSeqCount (a+1) 0 = 1
+    rw [twoRowYD_zero_eq_oneRowYD a, ballotSeqCount_zero_right]
+    exact Fintype.card_eq_one_iff.mpr ⟨oneRowSYT a, oneRowSYT_unique a⟩
+  · rcases Nat.lt_or_eq_of_le hab with ha | rfl
+    · -- Step: 0 < b < a.  Corner recursion + Pascal + induction
+      rw [card_SYT_twoRowYD_step a b ha hb,
+          card_SYT_twoRowYD (a - 1) b (by omega),
+          card_SYT_twoRowYD a (b - 1) (by omega),
+          ← ballotSeqCount_rec a b ha hb]
+    · -- Square: b = a.  twoRowYD a a = twoRectYD a; card = Cn a = ballotSeqCount (a+1) a
+      rw [twoRowYD_sq_eq_twoRectYD a, card_SYT_twoRectYD]
+      exact catalan_eq_ballot a
+termination_by a + b
+decreasing_by all_goals omega
 
 /-- Algebraic identity: ballotSeqCount (a+1) b × hookProd([a,b]) = (a+b)!
     This is the numerical core of the hook-length formula for 2-row shapes. -/

@@ -1737,7 +1737,9 @@ theorem lindstromSwapAt_fst_length (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
     have hlen := bool_list_countP_sum (l₂.take (stepIndexOf l₂ a₂ p h₂))
     rw [List.length_take, min_eq_left hj] at hlen
     rw [h_e₂, h_n₂] at hlen; exact hlen.symm
-  rw [hi_eq, hj_eq]; omega
+  rw [hi_eq, hj_eq]
+  have hj_le : p.1 + (p.2 - a₂) ≤ m + n₂ := hj_eq ▸ hlen₂ ▸ hj
+  omega
 
 /- ### Computable Swap and Involutivity
 
@@ -1763,17 +1765,17 @@ theorem swapAtPoint_involutive (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : ℕ ×
   have hli : (l₁.take i).length = i := by rw [List.length_take]; omega
   have hlj : (l₂.take j).length = j := by rw [List.length_take]; omega
   -- (l₁.take i ++ l₂.drop j).take i = l₁.take i
-  have h1 : (l₁.take i ++ l₂.drop j).take i = l₁.take i := by
-    rw [← hli]; exact List.take_left (l₁.take i) (l₂.drop j)
+  have h1 : (l₁.take i ++ l₂.drop j).take i = l₁.take i :=
+    List.take_left' hli
   -- (l₁.take i ++ l₂.drop j).drop i = l₂.drop j
-  have h2 : List.drop i (l₁.take i ++ l₂.drop j) = l₂.drop j := by
-    rw [← hli]; exact List.drop_left (l₁.take i) (l₂.drop j)
+  have h2 : List.drop i (l₁.take i ++ l₂.drop j) = l₂.drop j :=
+    List.drop_left' hli
   -- (l₂.take j ++ l₁.drop i).take j = l₂.take j
-  have h3 : (l₂.take j ++ l₁.drop i).take j = l₂.take j := by
-    rw [← hlj]; exact List.take_left (l₂.take j) (l₁.drop i)
+  have h3 : (l₂.take j ++ l₁.drop i).take j = l₂.take j :=
+    List.take_left' hlj
   -- (l₂.take j ++ l₁.drop i).drop j = l₁.drop i
-  have h4 : List.drop j (l₂.take j ++ l₁.drop i) = l₁.drop i := by
-    rw [← hlj]; exact List.drop_left (l₂.take j) (l₁.drop i)
+  have h4 : List.drop j (l₂.take j ++ l₁.drop i) = l₁.drop i :=
+    List.drop_left' hlj
   rw [h1, h4, h3, h2]
   exact Prod.ext (List.take_append_drop i l₁) (List.take_append_drop j l₂)
 
@@ -1789,22 +1791,24 @@ theorem swapAtPoint_fst_east (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : ℕ × �
   obtain ⟨i₁, hi₁_bound, hi₁_eq⟩ := h₁
   obtain ⟨i₂, hi₂_bound, hi₂_eq⟩ := h₂
   -- posAfter l a i gives (countP false in take i, a + countP true in take i)
-  simp [posAfter] at hi₁_eq hi₂_eq
+  simp only [posAfter] at hi₁_eq hi₂_eq
   -- The prefix l₁.take (splitIdx a₁ p) has p.1 East steps
   -- The suffix l₂.drop (splitIdx a₂ p) has (m - p.1) East steps
   -- Total: m
-  have h_take₁ : (l₁.take i₁).countP (· = false) = p.1 := hi₁_eq.1
-  have h_take₂ : (l₂.take i₂).countP (· = false) = p.1 := hi₂_eq.1
+  have h_take₁ : (l₁.take i₁).countP (· = false) = p.1 := (Prod.ext_iff.mp hi₁_eq).1
+  have h_take₂ : (l₂.take i₂).countP (· = false) = p.1 := (Prod.ext_iff.mp hi₂_eq).1
   have h_sum₂ := take_drop_countP_sum l₂ i₂ (· = false)
   -- splitIdx a₁ p = i₁ because i₁ = p.1 + (p.2 - a₁) = splitIdx a₁ p
   have h_idx₁ : i₁ = splitIdx a₁ p := by
-    have : (l₁.take i₁).length = i₁ := by rw [List.length_take]; omega
+    have hlen : (l₁.take i₁).length = i₁ := by rw [List.length_take]; omega
     have hsum := bool_list_countP_sum (l₁.take i₁)
-    rw [this] at hsum; simp [splitIdx]; omega
+    have h_n := (Prod.ext_iff.mp hi₁_eq).2
+    rw [hlen] at hsum; simp only [splitIdx]; omega
   have h_idx₂ : i₂ = splitIdx a₂ p := by
-    have : (l₂.take i₂).length = i₂ := by rw [List.length_take]; omega
+    have hlen : (l₂.take i₂).length = i₂ := by rw [List.length_take]; omega
     have hsum := bool_list_countP_sum (l₂.take i₂)
-    rw [this] at hsum; simp [splitIdx]; omega
+    have h_n := (Prod.ext_iff.mp hi₂_eq).2
+    rw [hlen] at hsum; simp only [splitIdx]; omega
   rw [← h_idx₁, ← h_idx₂, h_take₁]
   simp only [eastSteps] at heast₂; omega
 
@@ -1826,16 +1830,22 @@ theorem swapAtPoint_fst_north (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : ℕ × 
   simp [visitedPoints, Finset.mem_image, Finset.mem_range] at h₁ h₂
   obtain ⟨i₁, hi₁_bound, hi₁_eq⟩ := h₁
   obtain ⟨i₂, hi₂_bound, hi₂_eq⟩ := h₂
-  simp [posAfter] at hi₁_eq hi₂_eq
+  simp only [posAfter] at hi₁_eq hi₂_eq
   have h_idx₁ : i₁ = splitIdx a₁ p := by
-    have : (l₁.take i₁).length = i₁ := by rw [List.length_take]; omega
+    have hlen : (l₁.take i₁).length = i₁ := by rw [List.length_take]; omega
     have hsum := bool_list_countP_sum (l₁.take i₁)
-    rw [this] at hsum; simp [splitIdx]; omega
+    have h_e := (Prod.ext_iff.mp hi₁_eq).1
+    have h_n := (Prod.ext_iff.mp hi₁_eq).2
+    rw [hlen] at hsum; simp only [splitIdx]; omega
   have h_idx₂ : i₂ = splitIdx a₂ p := by
-    have : (l₂.take i₂).length = i₂ := by rw [List.length_take]; omega
+    have hlen : (l₂.take i₂).length = i₂ := by rw [List.length_take]; omega
     have hsum := bool_list_countP_sum (l₂.take i₂)
-    rw [this] at hsum; simp [splitIdx]; omega
+    have h_e := (Prod.ext_iff.mp hi₂_eq).1
+    have h_n := (Prod.ext_iff.mp hi₂_eq).2
+    rw [hlen] at hsum; simp only [splitIdx]; omega
   rw [← h_idx₁, ← h_idx₂]
+  have h_n₁ := (Prod.ext_iff.mp hi₁_eq).2
+  have h_n₂ := (Prod.ext_iff.mp hi₂_eq).2
   have h_sum₂ := take_drop_countP_sum l₂ i₂ (· = true)
   omega
 
@@ -1862,14 +1872,15 @@ theorem prefix_north_bounds (l : LPath) (i : ℕ) (hi : i ≤ l.length)
     (x : ℕ) (hx : (l.take i).countP (· = false) = x) :
     colEntry l x ≤ (l.take i).countP (· = true) := by
   induction l generalizing i x with
-  | nil => simp [colEntry] at *; omega
+  | nil => simp only [colEntry, northBeforeEast, List.take_nil, List.countP_nil] at *; omega
   | cons b bs ih =>
     cases b with
     | false =>
       cases i with
       | zero => simp at hx; subst hx; simp [colEntry]
       | succ i =>
-        simp [List.take_succ_cons, List.countP_cons] at hx ⊢
+        simp only [List.take_succ_cons, List.countP_cons, decide_true, decide_false,
+                   Nat.add_zero] at hx ⊢
         have hi' : i ≤ bs.length := by simp at hi; omega
         cases x with
         | zero => omega  -- impossible: first step is false so countP ≥ 1
@@ -1881,14 +1892,14 @@ theorem prefix_north_bounds (l : LPath) (i : ℕ) (hi : i ≤ l.length)
       cases i with
       | zero => simp at hx; subst hx; simp [colEntry]
       | succ i =>
-        simp [List.take_succ_cons, List.countP_cons] at hx ⊢
+        simp only [List.take_succ_cons, List.countP_cons, decide_true, decide_false,
+                   Nat.add_zero] at hx ⊢
         have hi' : i ≤ bs.length := by simp at hi; omega
         have hx' : (bs.take i).countP (· = false) = x := hx
         cases x with
         | zero =>
-          simp [colEntry]
           have := ih i hi' 0 hx'
-          simp [colEntry] at this; omega
+          simp only [colEntry] at this ⊢; omega
         | succ x =>
           rw [colEntry_true_succ]
           have := ih i hi' (x + 1) hx'
@@ -1905,24 +1916,28 @@ theorem prefix_north_upper (l : LPath) (i : ℕ) (hi : i ≤ l.length)
       cases i with
       | zero => simp at hx; subst hx; simp [colEntry, northBeforeEast]
       | succ i =>
-        simp [List.take_succ_cons, List.countP_cons] at hx ⊢
+        simp only [List.take_succ_cons, List.countP_cons, decide_true, decide_false,
+                   Nat.add_zero] at hx ⊢
         have hi' : i ≤ bs.length := by simp at hi; omega
         cases x with
         | zero => omega  -- impossible: countP false ≥ 1
         | succ x =>
           have hx' : (bs.take i).countP (· = false) = x := by omega
-          have hxm' : x < eastSteps bs := by simp [eastSteps, List.countP_cons] at hxm; omega
+          have hxm' : x < eastSteps bs := by
+            simp only [eastSteps, List.countP_cons, decide_false, Nat.add_zero] at hxm; omega
           rw [colEntry_false_succ]
           exact ih i hi' x hx' hxm'
     | true =>
       cases i with
       | zero =>
         simp at hx; subst hx
-        simp [colEntry, northBeforeEast]; omega
+        simp only [colEntry, northBeforeEast]; omega
       | succ i =>
-        simp [List.take_succ_cons, List.countP_cons] at hx ⊢
+        simp only [List.take_succ_cons, List.countP_cons, decide_true, decide_false,
+                   Nat.add_zero] at hx ⊢
         have hi' : i ≤ bs.length := by simp at hi; omega
-        have hxm' : x < eastSteps bs := by simp [eastSteps, List.countP_cons] at hxm; exact hxm
+        have hxm' : x < eastSteps bs := by
+          simp only [eastSteps, List.countP_cons, decide_true, Nat.add_zero] at hxm; exact hxm
         rw [colEntry_true_succ]
         have := ih i hi' x hx hxm'
         omega
@@ -1934,9 +1949,10 @@ theorem visited_in_colYRange (l : LPath) (a : ℕ) (x y : ℕ)
     y ∈ colYRange l a x := by
   simp [visitedPoints, Finset.mem_image, Finset.mem_range] at hvisited
   obtain ⟨i, hi_bound, hi_eq⟩ := hvisited
-  simp [posAfter] at hi_eq
+  simp only [posAfter] at hi_eq
   have hi' : i ≤ l.length := by omega
-  have hxe : (l.take i).countP (· = false) = x := hi_eq.1
+  have hxe : (l.take i).countP (· = false) = x := (Prod.ext_iff.mp hi_eq).1
+  have hye : a + (l.take i).countP (· = true) = y := (Prod.ext_iff.mp hi_eq).2
   constructor
   · -- a + colEntry l x ≤ y
     have := prefix_north_bounds l i hi' x hxe
@@ -1951,16 +1967,17 @@ theorem visited_in_finalRange (l : LPath) (a : ℕ) (y : ℕ)
     y ∈ finalRange l a (eastSteps l) := by
   simp [visitedPoints, Finset.mem_image, Finset.mem_range] at hvisited
   obtain ⟨i, hi_bound, hi_eq⟩ := hvisited
-  simp [posAfter] at hi_eq
+  simp only [posAfter] at hi_eq
   have hi' : i ≤ l.length := by omega
-  have hxe : (l.take i).countP (· = false) = eastSteps l := hi_eq.1
+  have hxe : (l.take i).countP (· = false) = eastSteps l := (Prod.ext_iff.mp hi_eq).1
+  have hye : a + (l.take i).countP (· = true) = y := (Prod.ext_iff.mp hi_eq).2
   constructor
   · -- a + colEntry l m ≤ y
     have := prefix_north_bounds l i hi' (eastSteps l) hxe
     omega
   · -- y ≤ a + northSteps l
     have h_sum := take_drop_countP_sum l i (· = true)
-    simp [northSteps]; omega
+    simp only [northSteps]; omega
 
 /-- Shared visited point implies NOT non-intersecting -/
 theorem not_ni_of_shared_point {l₁ l₂ : LPath} {a₁ a₂ : ℕ} (p : ℕ × ℕ)
@@ -1972,7 +1989,8 @@ theorem not_ni_of_shared_point {l₁ l₂ : LPath} {a₁ a₂ : ℕ} (p : ℕ ×
   set y := p.2
   have hx₁ : x ≤ m := by
     simp [visitedPoints, Finset.mem_image, Finset.mem_range] at hp₁
-    obtain ⟨i, hi, hieq⟩ := hp₁; simp [posAfter] at hieq
+    obtain ⟨i, hi, hieq⟩ := hp₁; simp only [posAfter] at hieq
+    have h_e := (Prod.ext_iff.mp hieq).1
     have := take_drop_countP_sum l₁ i (· = false)
     simp only [eastSteps] at heast₁; omega
   by_cases hxm : x < m
@@ -2014,25 +2032,29 @@ theorem shared_point_y_ge_a₁ (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : ℕ ×
     (hp : p ∈ visitedPoints l₁ a₁) : a₁ ≤ p.2 := by
   simp [visitedPoints, Finset.mem_image, Finset.mem_range] at hp
   obtain ⟨i, _, hi_eq⟩ := hp
-  simp [posAfter] at hi_eq; omega
+  simp only [posAfter] at hi_eq
+  have h_n := (Prod.ext_iff.mp hi_eq).2; omega
 
 /-- The shared point's y-coordinate is ≥ a₂ -/
 theorem shared_point_y_ge_a₂ (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : ℕ × ℕ)
     (hp : p ∈ visitedPoints l₂ a₂) : a₂ ≤ p.2 := by
   simp [visitedPoints, Finset.mem_image, Finset.mem_range] at hp
   obtain ⟨i, _, hi_eq⟩ := hp
-  simp [posAfter] at hi_eq; omega
+  simp only [posAfter] at hi_eq
+  have h_n := (Prod.ext_iff.mp hi_eq).2; omega
 
 /-- splitIdx gives a step within bounds when the point is visited -/
 theorem splitIdx_le_length (l : LPath) (a : ℕ) (p : ℕ × ℕ)
     (hp : p ∈ visitedPoints l a) : splitIdx a p ≤ l.length := by
   simp [visitedPoints, Finset.mem_image, Finset.mem_range] at hp
   obtain ⟨i, hi_bound, hi_eq⟩ := hp
-  simp [posAfter] at hi_eq
-  have : (l.take i).length = i := by rw [List.length_take]; omega
+  simp only [posAfter] at hi_eq
+  have h_e := (Prod.ext_iff.mp hi_eq).1
+  have h_n := (Prod.ext_iff.mp hi_eq).2
+  have hlen : (l.take i).length = i := by rw [List.length_take]; omega
   have hsum := bool_list_countP_sum (l.take i)
-  rw [this] at hsum
-  simp [splitIdx]; omega
+  rw [hlen] at hsum
+  simp only [splitIdx]; omega
 
 /- ### Part XX: Corrected North Step Formula and Path Forward -/
 
@@ -2055,16 +2077,17 @@ theorem swapAtPoint_snd_north_corrected (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p
   have hi₁_eq' := Prod.mk.inj hi₁_eq
   have hi₂_eq' := Prod.mk.inj hi₂_eq
   have h_idx₁ : i₁ = splitIdx a₁ p := by
-    have : (l₁.take i₁).length = i₁ := by rw [List.length_take]; omega
+    have hlen : (l₁.take i₁).length = i₁ := by rw [List.length_take]; omega
     have hsum := bool_list_countP_sum (l₁.take i₁)
-    rw [this] at hsum; simp [splitIdx]; omega
+    rw [hlen] at hsum; simp only [splitIdx]; omega
   have h_idx₂ : i₂ = splitIdx a₂ p := by
-    have : (l₂.take i₂).length = i₂ := by rw [List.length_take]; omega
+    have hlen : (l₂.take i₂).length = i₂ := by rw [List.length_take]; omega
     have hsum := bool_list_countP_sum (l₂.take i₂)
-    rw [this] at hsum; simp [splitIdx]; omega
+    rw [hlen] at hsum; simp only [splitIdx]; omega
   rw [← h_idx₁, ← h_idx₂]
   have h_sum₁ := take_drop_countP_sum l₁ i₁ (· = true)
-  have : (l₁.take i₁).countP (· = true) = p.2 - a₁ := by rw [hi₁_eq'.2]; omega
+  have : (l₁.take i₁).countP (· = true) = p.2 - a₁ := by
+    have := hi₁_eq'.2; omega
   omega
 
 /-- The first swapped path visits the shared point p.
@@ -2092,9 +2115,8 @@ theorem swapAtPoint_fst_visits_point (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : 
     have hlen : (l₁.take si₁).length = si₁ := by
       rw [List.length_take]
       exact Nat.min_eq_left (splitIdx_le_length l₁ a₁ p h₁_orig)
-    have h_take_eq : (l₁.take si₁ ++ l₂.drop (splitIdx a₂ p)).take si₁ = l₁.take si₁ := by
-      conv_lhs => rw [← hlen]
-      exact List.take_left
+    have h_take_eq : (l₁.take si₁ ++ l₂.drop (splitIdx a₂ p)).take si₁ = l₁.take si₁ :=
+      List.take_left' hlen
     rw [h_take_eq, ← h_idx₁]
     exact hi₁_eq
 
@@ -2121,9 +2143,8 @@ theorem swapAtPoint_snd_visits_point (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : 
     have hlen : (l₂.take si₂).length = si₂ := by
       rw [List.length_take]
       exact Nat.min_eq_left (splitIdx_le_length l₂ a₂ p h₂_orig)
-    have h_take_eq : (l₂.take si₂ ++ l₁.drop (splitIdx a₁ p)).take si₂ = l₂.take si₂ := by
-      conv_lhs => rw [← hlen]
-      exact List.take_left
+    have h_take_eq : (l₂.take si₂ ++ l₁.drop (splitIdx a₁ p)).take si₂ = l₂.take si₂ :=
+      List.take_left' hlen
     rw [h_take_eq, ← h_idx₂]
     exact hi₂_eq
 
@@ -2263,17 +2284,19 @@ noncomputable def lindstromForward (m n₁ n₂ n₁' n₂' a₁ a₂ : ℕ)
   have hfst_east := swapAtPoint_fst_east P₁.val P₂.val a₁ a₂ p hp₁ hp₂ h_east₁ h_east₂
   have hfst_north := swapAtPoint_fst_north P₁.val P₂.val a₁ a₂ p hp₁ hp₂ ha₁ ha₂
   have hn₂_val : P₂.val.countP (· = true) = n₂ := by
-    have := eastSteps_add_northSteps P₂.val
-    simp only [eastSteps, northSteps] at this; omega
+    have h := eastSteps_add_northSteps P₂.val
+    simp only [eastSteps, northSteps] at h
+    have h1 := P₂.property.1; have h2 := P₂.property.2; omega
   have hfst_north_eq : result.1.countP (· = true) = n₁' := by
     rw [hfst_north, hn₂_val]; omega
   have hfst_len : result.1.length = m + n₁' := by
-    have := bool_list_countP_sum result.1; omega
+    have h := bool_list_countP_sum result.1; linarith [hfst_east, hfst_north_eq]
   -- Second component has m East steps and n₂' North steps
   have hsnd_east := swapAtPoint_snd_east P₁.val P₂.val a₁ a₂ p hp₁ hp₂ h_east₁ h_east₂
   have hn₁_val : P₁.val.countP (· = true) = n₁ := by
-    have := eastSteps_add_northSteps P₁.val
-    simp only [eastSteps, northSteps] at this; omega
+    have h := eastSteps_add_northSteps P₁.val
+    simp only [eastSteps, northSteps] at h
+    have h1 := P₁.property.1; have h2 := P₁.property.2; omega
   -- For the second path: north = (n₁ + a₁) - a₂
   have h_reach : a₂ ≤ a₁ + P₁.val.countP (· = true) := by
     rw [hn₁_val]; omega
@@ -2281,7 +2304,7 @@ noncomputable def lindstromForward (m n₁ n₂ n₁' n₂' a₁ a₂ : ℕ)
   have hsnd_north_eq : result.2.countP (· = true) = n₂' := by
     rw [hsnd_north, hn₁_val, h_n₂']
   have hsnd_len : result.2.length = m + n₂' := by
-    have := bool_list_countP_sum result.2; omega
+    have h := bool_list_countP_sum result.2; linarith [hsnd_east, hsnd_north_eq]
   exact (⟨result.1, hfst_len, hfst_east⟩, ⟨result.2, hsnd_len, hsnd_east⟩)
 
 /-- The backward map: crossing pair → intersecting identity pair -/
@@ -2316,24 +2339,26 @@ noncomputable def lindstromBackward (m n₁ n₂ n₁' n₂' a₁ a₂ : ℕ)
   have hfst_east := swapAtPoint_fst_east Q₁.val Q₂.val a₁ a₂ p hp₁ hp₂ h_east₁ h_east₂
   have hfst_north := swapAtPoint_fst_north Q₁.val Q₂.val a₁ a₂ p hp₁ hp₂ ha₁ ha₂
   have hn₂'_val : Q₂.val.countP (· = true) = n₂' := by
-    have := eastSteps_add_northSteps Q₂.val
-    simp only [eastSteps, northSteps] at this; omega
+    have h := eastSteps_add_northSteps Q₂.val
+    simp only [eastSteps, northSteps] at h
+    have h1 := Q₂.property.1; have h2 := Q₂.property.2; omega
   have hfst_north_eq : result.1.countP (· = true) = n₁ := by
     rw [hfst_north, hn₂'_val]; omega
   have hfst_len : result.1.length = m + n₁ := by
-    have := bool_list_countP_sum result.1; omega
+    have h := bool_list_countP_sum result.1; linarith [hfst_east, hfst_north_eq]
   -- Second component
   have hsnd_east := swapAtPoint_snd_east Q₁.val Q₂.val a₁ a₂ p hp₁ hp₂ h_east₁ h_east₂
   have hn₁'_val : Q₁.val.countP (· = true) = n₁' := by
-    have := eastSteps_add_northSteps Q₁.val
-    simp only [eastSteps, northSteps] at this; omega
+    have h := eastSteps_add_northSteps Q₁.val
+    simp only [eastSteps, northSteps] at h
+    have h1 := Q₁.property.1; have h2 := Q₁.property.2; omega
   have h_reach : a₂ ≤ a₁ + Q₁.val.countP (· = true) := by
     rw [hn₁'_val]; omega
   have hsnd_north := swapAtPoint_snd_north_corrected Q₁.val Q₂.val a₁ a₂ p hp₁ hp₂ ha₁ ha₂ h_reach
   have hsnd_north_eq : result.2.countP (· = true) = n₂ := by
     rw [hsnd_north, hn₁'_val]; omega
   have hsnd_len : result.2.length = m + n₂ := by
-    have := bool_list_countP_sum result.2; omega
+    have h := bool_list_countP_sum result.2; linarith [hsnd_east, hsnd_north_eq]
   -- Swapped paths are intersecting (they share point p)
   have h_ni_result : ¬NonIntersecting result.1 result.2 m a₁ a₂ :=
     swapAtPoint_not_ni Q₁.val Q₂.val a₁ a₂ p hp₁ hp₂ ha₁ ha₂ h_east₁ h_east₂
@@ -2372,8 +2397,8 @@ private theorem swapAtPoint_fst_take_prefix (l₁ l₂ : LPath) (a₁ a₂ : ℕ
   simp only [swapAtPoint]
   set i := splitIdx a₁ p
   have hli : (l₁.take i).length = i := by rw [List.length_take]; omega
-  have h1 : (l₁.take i ++ l₂.drop (splitIdx a₂ p)).take i = l₁.take i := by
-    rw [← hli]; exact List.take_left (l₁.take i) (l₂.drop (splitIdx a₂ p))
+  have h1 : (l₁.take i ++ l₂.drop (splitIdx a₂ p)).take i = l₁.take i :=
+    List.take_left' hli
   have h2 := congr_arg (List.take k) h1
   simp only [List.take_take, min_eq_right hk] at h2
   exact h2
@@ -2385,8 +2410,8 @@ private theorem swapAtPoint_snd_take_prefix (l₁ l₂ : LPath) (a₁ a₂ : ℕ
   simp only [swapAtPoint]
   set j := splitIdx a₂ p
   have hlj : (l₂.take j).length = j := by rw [List.length_take]; omega
-  have h1 : (l₂.take j ++ l₁.drop (splitIdx a₁ p)).take j = l₂.take j := by
-    rw [← hlj]; exact List.take_left (l₂.take j) (l₁.drop (splitIdx a₁ p))
+  have h1 : (l₂.take j ++ l₁.drop (splitIdx a₁ p)).take j = l₂.take j :=
+    List.take_left' hlj
   have h2 := congr_arg (List.take k) h1
   simp only [List.take_take, min_eq_right hk] at h2
   exact h2
@@ -2446,11 +2471,10 @@ private theorem minSharedStepIdx_preserved (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
   set i := splitIdx a₁ cp
   set j := splitIdx a₂ cp
   set minOrig := minSharedStepIdx l₁ l₂ a₁ a₂ h_shared
-  set minSwap := minSharedStepIdx Q₁ Q₂ a₁ a₂ h_shared'
   -- Step 1: minOrig = i (by definition, canonSharedPoint achieves the minimum)
   have hcp_idx := (minSharedStepIdx_achieved l₁ l₂ a₁ a₂ h_shared).choose_spec.2
   have h_min_orig : minOrig = i := hcp_idx.symm
-  -- Step 2: p is a shared point of (Q₁, Q₂), so minSwap ≤ i
+  -- Step 2: p is a shared point of (Q₁, Q₂), so minSharedStepIdx Q₁ Q₂ ≤ i
   have hp₁ := canonSharedPoint_mem₁ l₁ l₂ a₁ a₂ h_shared
   have hp₂ := canonSharedPoint_mem₂ l₁ l₂ a₁ a₂ h_shared
   have ha₁ := shared_point_y_ge_a₁ l₁ l₂ a₁ a₂ cp hp₁
@@ -2459,18 +2483,18 @@ private theorem minSharedStepIdx_preserved (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
     simp only [sharedPoints, Finset.mem_inter]
     exact ⟨swapAtPoint_fst_visits_point l₁ l₂ a₁ a₂ cp hp₁ hp₂ ha₁ ha₂,
            swapAtPoint_snd_visits_point l₁ l₂ a₁ a₂ cp hp₁ hp₂ ha₁ ha₂⟩
-  have h_swap_le_i : minSwap ≤ i := by
-    exact Finset.min'_le _ _ (Finset.mem_image.mpr ⟨cp, hcp_in_Q, rfl⟩)
+  have h_swap_le_i : minSharedStepIdx Q₁ Q₂ a₁ a₂ h_shared' ≤ i :=
+    Finset.min'_le _ _ (Finset.mem_image.mpr ⟨cp, hcp_in_Q, rfl⟩)
   -- Step 3: Any shared point of (Q₁, Q₂) at step < i is also shared by (P₁, P₂)
-  -- This contradicts minimality, so minSwap ≥ i
-  have h_swap_ge_i : i ≤ minSwap := by
+  -- This contradicts minimality, so minSharedStepIdx Q₁ Q₂ ≥ i
+  have h_swap_ge_i : i ≤ minSharedStepIdx Q₁ Q₂ a₁ a₂ h_shared' := by
     by_contra h_lt
     push_neg at h_lt
     -- There exists a shared point of (Q₁, Q₂) with step index < i
     have hmin_mem := Finset.min'_mem
       ((sharedPoints Q₁ Q₂ a₁ a₂).image (splitIdx a₁)) (Finset.Nonempty.image h_shared' _)
     obtain ⟨q, hq_shared, hq_idx⟩ := Finset.mem_image.mp hmin_mem
-    -- q ∈ sharedPoints Q₁ Q₂ a₁ a₂ with splitIdx a₁ q = minSwap < i
+    -- q ∈ sharedPoints Q₁ Q₂ a₁ a₂ with splitIdx a₁ q = minSharedStepIdx Q₁ Q₂ < i
     have hq_lt_i : splitIdx a₁ q < i := by omega
     -- q is visited by Q₁ and Q₂
     have hq_Q₁ : q ∈ visitedPoints Q₁ a₁ := (Finset.mem_inter.mp hq_shared).1
@@ -2484,7 +2508,7 @@ private theorem minSharedStepIdx_preserved (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
     -- and i = j + (a₂ - a₁) (same point cp has both indices)
     have hq_y_ge_a₂ : a₂ ≤ q.2 := by
       obtain ⟨k', _, hk'_pos, _⟩ := visitedPoint_splitIdx_eq Q₂ a₂ q hq_Q₂
-      rw [← hk'_pos]; simp [posAfter]; omega
+      rw [← hk'_pos]; simp [posAfter]
     have hq_y_ge_a₁ : a₁ ≤ q.2 := by omega
     have h_diff_q := splitIdx_const_diff a₁ a₂ q hq_y_ge_a₁ hq_y_ge_a₂ (le_of_lt h_strict)
     have h_diff_cp := splitIdx_const_diff a₁ a₂ cp ha₁ ha₂ (le_of_lt h_strict)

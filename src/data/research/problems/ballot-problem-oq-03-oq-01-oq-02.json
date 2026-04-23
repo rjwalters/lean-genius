@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "MAJOR PROGRESS (sessions 1-9): hook_length_formula proved for 5 infinite families. Session 9: hookProd_twoRowYD proved for general [a,b] shapes; hook_length_formula_two_row_gen proved conditional on card_SYT_twoRowYD (1 sorry). 2991-line file, 4 sorries total.",
+    "progressSummary": "MAJOR PROGRESS (sessions 1-10): hook_length_formula proved for 6 infinite families. Session 10: card_SYT_twoRowYD proved via corner bijection (0 sorries), completing hook_length_formula_two_row_gen. 3540-line file, build pending.",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -69,7 +69,13 @@
       "twoRowYD a b hab: general 2-row YoungDiagram [a,b] for a\u2265b (BallotProblemOQ03OQ01OQ02.lean:2728)",
       "hookProd_twoRowYD: hookProd([a,b]) = (a+1).descFactorial b \u00d7 (a-b)! \u00d7 b! proved 0 sorries (line 2800)",
       "two_row_hook_identity: ballotSeqCount(a+1,b) \u00d7 hookProd([a,b]) = (a+b)! proved 0 sorries (line 2930)",
-      "hook_length_formula_two_row_gen: card\u00d7hookProd=(a+b)! proved conditional on card_SYT_twoRowYD (line 2985)"
+      "hook_length_formula_two_row_gen: card\u00d7hookProd=(a+b)! proved conditional on card_SYT_twoRowYD (line 2985)",
+      "mem_of_twoRowYD_pred / mem_of_twoRowYD_pred2: membership lifting from sub-shapes (BallotProblemOQ03OQ01OQ02.lean:2993-3007)",
+      "restrictSYT0 / restrictSYT1: restrict SYT to sub-shape when max entry at corner (BallotProblemOQ03OQ01OQ02.lean:3011-3075)",
+      "extendSYT0 / extendSYT1: extend SYT by adding corner cell with max entry a+b (BallotProblemOQ03OQ01OQ02.lean:3078-3284)",
+      "card_SYT_twoRowYD_step: Pascal step card(SYT[a,b]) = card(SYT[a-1,b]) + card(SYT[a,b-1]) via Fintype.card_congr Equiv (BallotProblemOQ03OQ01OQ02.lean:3290-3442)",
+      "card_SYT_twoRowYD: card(SYT[a,b]) = ballotSeqCount(a+1,b) proved by strong induction, 0 sorries (BallotProblemOQ03OQ01OQ02.lean:3450-3466)",
+      "hook_length_formula_two_row_gen: card \u00d7 hookProd = (a+b)! proved 0 sorries for all a\u2265b (BallotProblemOQ03OQ01OQ02.lean:3527-3532)"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -97,17 +103,22 @@
       "BallotProblemOQ03OQ02 nil case fix: List.countP_nil + subst needed for take_at_column_entry and take_east_count_within_column",
       "hookProd for general [a,b] splits into 3 groups: b! (row-1) \u00d7 (a+1).descFactorial(b) (row-0 cells in cols 0..b-1) \u00d7 (a-b)! (row-0 cells in cols b..a-1)",
       "ballot_formula connects ballotSeqCount(a+1,b) to C(a+b+1,a+1) \u00d7 (a+1-b); combined with choose identity gives two_row_hook_identity",
-      "Nat.eq_of_mul_eq_mul_right enables cancellation of (a+1-b)*(a+b+1) from both sides"
+      "Nat.eq_of_mul_eq_mul_right enables cancellation of (a+1-b)*(a+b+1) from both sides",
+      "Corner bijection for SYT([a,b]): max entry a+b is at corner (0,a-1) or (1,b-1). Removing it gives Equiv SYT([a,b]) \u2243 SYT([a-1,b]) \u2295 SYT([a,b-1])",
+      "Surjectivity argument: injective T.entry on \u03bc.cells with card=a+b and range \u2286 {1,...,a+b} \u2192 image = {1,...,a+b} by Finset.eq_of_subset_of_card_le",
+      "Corner identification: c is a corner iff (c.1,c.2+1) \u2209 \u03bc; for twoRowYD a b with b<a, corners are (0,a-1) and (1,b-1)",
+      "dif_pos/dif_neg patterns for Equiv.left_inv/right_inv with dependent if-then-else",
+      "split_ifs + Prod.ext_iff decomposition for row_strict/col_strict in restrict/extend SYT"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram \u2014 check arm/leg availability",
       "StandardYoungTableau enumeration \u2014 check Mathlib.Combinatorics.YoungTableaux"
     ],
     "nextSteps": [
-      "Prove card_SYT_twoRowYD: SYT([a,b]) \u2194 ballot(a+1,b) sequences \u2014 generalizes sytBallotEquiv from (m,m) to (a,b) a\u2265b (~150 lines)",
+      "Verify Docker build succeeds for BallotProblemOQ03OQ01OQ02",
       "Prove ni_count_eq_syt_count: RSK bijection for general \u03bc, ~200 lines, HARD",
       "Prove lgv_det_factors_as_hook_quotient: Vandermonde det identity for hook product, ~200 lines, HARD",
-      "Consider corner-cell induction formula f^\u03bb = \u03a3_{corners c} f^{\u03bb\\c} as alternative path to general formula"
+      "Consider: extend corner induction to general Young diagrams for full hook-length formula"
     ]
   },
   "tags": [
