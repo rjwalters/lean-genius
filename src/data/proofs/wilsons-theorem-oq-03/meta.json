@@ -167,5 +167,20 @@
       "description": "Kummer's theorem on ν_p(C(m+n,m)) = number of base-p carries follows directly from Legendre's digit-sum formula applied to (m+n)!/(m!·n!)"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "WilsonsTheoremLegendre",
+    "lineCount": 223,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/WilsonsTheoremOQ03.lean"
+  }
 }

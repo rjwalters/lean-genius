@@ -167,5 +167,22 @@
       "description": "AM-GM inequality: the r=1 vs r=0 case of power mean monotonicity"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.MeanInequalities",
+      "Mathlib.Analysis.MeanInequalitiesPow",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "RenyiPowerMean",
+    "lineCount": 233,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 2,
+    "sorries": 0,
+    "path": "Proofs/AmgmInequalityOQ03OQ04.lean"
+  }
 }

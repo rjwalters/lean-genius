@@ -127,5 +127,26 @@
       "mathContext": "$1/(k! \\cdot (n-k+1)!) \\leq 1/(n-k+1)!$ since $k! \\geq 1$ for $k \\geq 0$."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Proofs.DerangementsConvergence",
+      "Proofs.DerangementsOQ02",
+      "Mathlib.Combinatorics.Derangements.Exponential",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "KFixedConvergence",
+    "lineCount": 153,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "sorries": 3,
+    "path": "Proofs/DerangementsConvergenceOQ01.lean"
+  }
 }

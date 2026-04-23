@@ -173,5 +173,22 @@
       "note": "Article 366: constructibility of the regular pentagon via cyclotomic fields"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "IntermediateField",
+      "FiniteDimensional"
+    ],
+    "namespace": "AngleTrisectionCos20GalOQ03OQ01",
+    "lineCount": 463,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/AngleTrisectionCos20GalOQ03OQ01.lean"
+  }
 }

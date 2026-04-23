@@ -145,5 +145,24 @@
       "note": "Comprehensive reference for records and heuristics on special prime types, including Sophie Germain primes. Chapter 5 covers their distribution and computational searches."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Proofs.SophieGermain",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SophieGermain",
+      "Finset"
+    ],
+    "namespace": "SophieGermainOQ02",
+    "lineCount": 157,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 3,
+    "sorries": 0,
+    "path": "Proofs/SophieGermainOQ02.lean"
+  }
 }

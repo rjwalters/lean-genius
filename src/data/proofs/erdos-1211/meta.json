@@ -109,5 +109,18 @@
       "description": "Sibling in sum-set theory: #530 (maximum Sidon subset of a finite set) and #1211 (logarithmic density of partition sum sets) are both extremal problems about structured subsets, sharing the combinatorial density framework."
     }
   ],
-  "sorries": 1
+  "sorries": 1,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 24,
+    "axiomCount": 0,
+    "theoremCount": 1,
+    "definitionCount": 0,
+    "sorries": 1,
+    "path": "Proofs/Erdos1211Problem.lean"
+  }
 }

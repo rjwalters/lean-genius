@@ -135,5 +135,27 @@
       "description": "Ancestor in the OQ chain: the integral Cauchy-Schwarz inequality that started this line of power mean research"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.MeanInequalities",
+      "Mathlib.Analysis.MeanInequalitiesPow",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic",
+      "Proofs.AmgmInequalityOQ03",
+      "Proofs.PowerMeanCrossZeroOQ"
+    ],
+    "opens": [
+      "Real",
+      "Finset",
+      "PowerMeanCrossZero"
+    ],
+    "namespace": "PowerMeanMonotone",
+    "lineCount": 194,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/PowerMeanMonotoneOQ.lean"
+  }
 }

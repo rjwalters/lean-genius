@@ -149,5 +149,21 @@
       "description": "Both identities hold for all n ≤ 8"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Proofs.PartitionTheoremOQ01",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "RogersRamanujan"
+    ],
+    "namespace": "PartitionTheoremOQ01OQ01",
+    "lineCount": 72,
+    "axiomCount": 0,
+    "theoremCount": 19,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/PartitionTheoremOQ01OQ01.lean"
+  }
 }

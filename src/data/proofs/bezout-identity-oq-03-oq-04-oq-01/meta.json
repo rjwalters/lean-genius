@@ -125,5 +125,19 @@
       "description": "Sibling: multiple-moduli CRT via folding. This entry handles the two-moduli case over CommRing."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Coprime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "BezoutIdentityOQ03OQ04OQ01",
+    "lineCount": 130,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "sorries": 0,
+    "path": "Proofs/BezoutIdentityOQ03OQ04OQ01.lean"
+  }
 }

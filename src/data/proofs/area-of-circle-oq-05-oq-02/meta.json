@@ -116,5 +116,29 @@
       "Can the proof be simplified using `MeasurePreserving.integral_comp'` instead of `integral_map` + `hmap`?"
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "Mathlib.Analysis.Matrix.Spectrum",
+      "Mathlib.Analysis.Matrix.PosDef",
+      "Mathlib.MeasureTheory.Integral.Pi",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.LinearAlgebra.Determinant",
+      "Proofs.AreaOfCircleOQ05"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Real",
+      "Matrix",
+      "Finset"
+    ],
+    "namespace": "MultivariateGaussian",
+    "lineCount": 190,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/AreaOfCircleOQ05OQ02.lean"
+  }
 }

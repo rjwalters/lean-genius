@@ -99,5 +99,18 @@
       "Is there a tournament-theoretic version of the probabilistic method that gives a sharp upper bound on $f(n)$, improving on the Erdős-Moser $2\\log_2 n$ bound?"
     ]
   },
-  "sorries": 1
+  "sorries": 1,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 24,
+    "axiomCount": 0,
+    "theoremCount": 1,
+    "definitionCount": 0,
+    "sorries": 1,
+    "path": "Proofs/Erdos1216Problem.lean"
+  }
 }

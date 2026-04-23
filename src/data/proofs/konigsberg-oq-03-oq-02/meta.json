@@ -127,5 +127,20 @@
       "description": "Directed Euler paths via in-degree/out-degree — analogous characterization in the directed setting"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Stream.Defs",
+      "Mathlib.Data.Stream.Init",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "KonigsbergOQ03OQ02",
+    "lineCount": 185,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 10,
+    "sorries": 0,
+    "path": "Proofs/KonigsbergOQ03OQ02.lean"
+  }
 }
