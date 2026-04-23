@@ -56,17 +56,19 @@
       "startLine": 87,
       "endLine": 95
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "diagonal_not_representable: The Diagonal is Never in Range",
-    "content": "diagonal_not_representable states: if f has no fixed point, then the diagonal function (fun a => f(eval(a,a))) is not representable — there is no a₀ such that eval(a₀,x) = f(eval(x,x)) for all x. This is the explicit 'diagonal argument': the diagonal function always escapes the range of the evaluation. Proof: if such a₀ existed, specializing at x=a₀ gives eval(a₀,a₀) = f(eval(a₀,a₀)), contradicting hf. This theorem makes the 'escape' explicit: Cantor's diagonal sequence, Gödel's unprovable sentence, and the halting problem are all instances of this non-representability.",
-    "mathContext": "If $f(v) \\neq v$ for all $v$, then $\\nexists a_0: \\forall x, \\text{eval}(a_0, x) = f(\\text{eval}(x, x))$.",
+    "content": "diagonal_not_representable states: if f has no fixed point, then the diagonal function (fun a => f(eval(a,a))) is not representable — there is no a₀ such that eval(a₀,x) = f(eval(x,x)) for all x. This is the explicit 'diagonal argument': the diagonal function always escapes the range of the evaluation. Proof: if such a₀ existed, specializing at x=a₀ gives eval(a₀,a₀) = f(eval(a₀,a₀)), contradicting hf.\n\nThis non-representability is the abstract core of all diagonal arguments in mathematics: Cantor's diagonal sequence cannot be the image of any natural number under any enumeration; Gödel's self-referential sentence cannot be proved by any consistent formal system; the halting problem oracle cannot be computed by any Turing machine; Rice's non-trivial property cannot be decided by any program. All of these are instances of the same 2-line proof — the diagonal construction produces an object that escapes any proposed representation. The formal statement 'diagonal_not_representable' is the precise mathematical content of Yanofsky's 'Universal Approach to Self-Referential Paradoxes': every self-referential paradox is an instance of the non-existence of a fixed-point-free endomorphism's diagonal representative.",
+    "mathContext": "If $f(v) \\neq v$ for all $v$, then $\\nexists a_0: \\forall x, \\text{eval}(a_0, x) = f(\\text{eval}(x, x))$. Equivalently: the image of $e : \\text{Ob} \\to (\\text{Ob} \\to \\text{Val})$ cannot contain the function $a \\mapsto f(\\text{eval}(a,a))$. Yanofsky (2003) calls this the 'universal diagonal argument': every self-referential paradox corresponds to a choice of $f$ and an attempted surjection.",
     "significance": "key",
     "relatedConcepts": [
       "diagonal argument",
       "non-representability",
       "Gödel's diagonalization",
       "halting problem non-computability",
-      "Russell's paradox"
+      "Russell's paradox",
+      "Rice's theorem",
+      "Yanofsky universal diagonal"
     ],
     "prerequisites": [
       "no fixed point hypothesis",
@@ -81,22 +83,24 @@
       "startLine": 97,
       "endLine": 134
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "typeEval_surjective_iff and lawvere_type_recovery: The Bridge to Type Theory",
-    "content": "typeEvalStructure A B e constructs an EvalStructure from a function e : A → A → B by setting Ob=A, Val=B, eval=e. The key equivalence typeEval_surjective_iff proves: (typeEvalStructure A B e).IsPointSurjective ↔ Function.Surjective e. The forward direction: IsPointSurjective says ∃ a₀, eval a₀ = g (as a function), which via funext becomes Function.Surjective e. The backward direction: Function.Surjective e gives ∃ a₀, e a₀ = g (as a function), which via congr_fun gives point-surjectivity. lawvere_type_recovery applies lawvere_abstract to typeEvalStructure, recovering the type-theoretic Lawvere FPT. cantor_recovery applies lawvere_type_recovery with f=Not: the fixed point b satisfying ¬b = b leads to a contradiction via the standard self-referential reasoning.",
-    "mathContext": "$(\\text{typeEvalStructure}(A,B,e))\\text{.IsPointSurjective} \\iff \\text{Function.Surjective}(e : A \\to A \\to B)$.",
+    "content": "typeEvalStructure A B e constructs an EvalStructure from a function e : A → A → B by setting Ob=A, Val=B, eval=e. The key equivalence typeEval_surjective_iff proves: (typeEvalStructure A B e).IsPointSurjective ↔ Function.Surjective e.\n\nThe **funext/congr_fun bridge** is the critical technique: the abstract notion 'IsPointSurjective' quantifies over functions (∀ g : Ob → Val, ∃ a₀, ∀ x, eval a₀ x = g x), while Lean's Function.Surjective e quantifies over elements of the function type A → B (∃ a₀, e a₀ = g). The forward direction uses `funext` to collapse a pointwise equality (∀ x, eval a₀ x = g x) into a function equality (e a₀ = g). The backward direction uses `congr_fun` to expand a function equality into pointwise evaluation. This funext/congr_fun duality is fundamental in Lean: function types are extensional (funext), so element equality and pointwise agreement are equivalent.\n\nlawvere_type_recovery then applies lawvere_abstract to typeEvalStructure, recovering the standard type-theoretic Lawvere FPT: if e : A → A → B is surjective, every f : B → B has a fixed point. cantor_recovery applies with f=Not: the fixed point b satisfying ¬b = b (as a Prop) is contradictory — from ¬b = b, we derive b ↔ ¬b via cast, which yields both b and ¬b simultaneously.",
+    "mathContext": "$(\\text{typeEvalStructure}(A,B,e))\\text{.IsPointSurjective} \\iff \\text{Function.Surjective}(e : A \\to A \\to B)$. The bridge: `∀ x, e a₀ x = g x` ↔ `e a₀ = g` via `funext`/`congr_fun`. Cantor recovery: $\\neg b = b$ as a `Prop` is contradictory since $\\neg b = b \\implies (b \\leftrightarrow \\neg b) \\implies b \\wedge \\neg b$.",
     "significance": "key",
     "relatedConcepts": [
       "Function.Surjective in Mathlib",
       "funext (function extensionality)",
       "congr_fun (applying equality of functions)",
       "Cantor's theorem",
-      "Not as fixed-point-free endomorphism"
+      "Not as fixed-point-free endomorphism",
+      "propositional extensionality"
     ],
     "prerequisites": [
       "typeEvalStructure construction",
       "funext/congr_fun for Prop=Prop",
-      "Function.Surjective: ∀ g, ∃ a, f a = g"
+      "Function.Surjective: ∀ g, ∃ a, f a = g",
+      "cast tactic for Prop coercion from ¬b = b"
     ]
   },
   {
@@ -147,7 +151,7 @@
     "prerequisites": [
       "CCC structure (Obj, Hom, exp, terminal object)",
       "global elements = morphisms from terminal 1",
-      "sorry as placeholder for unfinished proof steps"
+      "Yoneda lemma: natural transformations via global elements"
     ]
   },
   {
@@ -157,7 +161,7 @@
       "startLine": 221,
       "endLine": 245
     },
-    "type": "concept",
+    "type": "context",
     "title": "Topos Connection: Prop as Subobject Classifier Ω",
     "content": "topos_proxy_cantor proves: there is no surjective e : A → A → Prop. This is Cantor's theorem phrased as a topos-level statement: in the topos of sets (or the internal type theory of Lean), Prop acts as a proxy for the subobject classifier Ω. The power object P(A) = Ω^A = A → Prop corresponds to the type A → Prop in Lean, and Cantor's theorem says A cannot surject onto A → Prop. The proof reduces to cantor_recovery (which in turn reduces to lawvere_abstract). The longer prose comment explains the topos-theoretic setting: in a genuine topos, Cantor follows from Lawvere with B=Ω and f=¬ (the internal negation on Ω), since internal negation is always fixed-point-free (in a Boolean topos) or the Heyting negation. Johnstone's Elephant (A1.6.1) and MacLane-Moerdijk Sheaves IV.7 give the full categorical proof.",
     "mathContext": "In a topos: $\\neg \\exists e: A \\twoheadrightarrow \\Omega^A$ (Cantor). Type-theoretically: $\\neg \\exists e: A \\to A \\to \\text{Prop}, \\text{Function.Surjective}(e)$.",
