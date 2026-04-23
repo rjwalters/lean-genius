@@ -1,10 +1,33 @@
 [
   {
+    "id": "ann-module-header",
+    "proofId": "cantor-diagonalization-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 40 },
+    "type": "concept",
+    "title": "Module Header: Lawvere's 1969 Theorem and the Categorical Program",
+    "content": "The module header (lines 1-39) sets up the Lawvere fixed-point theorem program. The file answers the open question: 'Can the Lawvere fixed-point theorem be formalized in a topos-theoretic setting, recovering categorical generality beyond type theory?' The answer is yes — at the level of abstract evaluation structures, which capture the essential CCC structure without category theory imports.\n\nThe four-part plan (lines 16-23) outlines the hierarchy of generalizations: (1) Abstract EvalStructure → (2) Parametric diagonal lemma → (3) Type-theoretic recovery (connecting to the parent file CantorDiagonalizationOQ03) → (4) Concrete instances (Cantor, Russell, Rice, Halting Problem).\n\nThe key categorical insight stated in the docstring (lines 25-27): Lawvere's theorem holds in any *cartesian closed category* (CCC) where 'surjection' means *point-surjective* — the morphism e : A → B^A hits every global element 1 → B^A. The type-theoretic version in the parent file is a special case where the CCC is the category of types in Lean's type theory.",
+    "mathContext": "Lawvere's 1969 paper 'Diagonal arguments and cartesian closed categories' proved: in any CCC, if the evaluation map $e : A \\to B^A$ is point-surjective (hits every $f : 1 \\to B^A$, i.e., $\\forall g: A \\to B, \\exists a, e(a) = g$), then every endomorphism $f : B \\to B$ has a fixed point. Taking $B = \\Omega$ (subobject classifier) and $f = \\neg$ (internal negation, which is fixed-point-free) gives Cantor's theorem in any topos. The type-theoretic instance: $A = A$, $B = \\text{Prop}$, $e : A \\to A \\to \\text{Prop}$ surjective → every $\\neg$-like function has a fixed point → contradiction.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lawvere 1969 diagonal arguments",
+      "cartesian closed category",
+      "point-surjection global elements",
+      "topos subobject classifier",
+      "Cantor theorem in topos",
+      "CantorDiagonalizationOQ03 parent file"
+    ],
+    "prerequisites": [
+      "cartesian closed category (CCC): objects, morphisms, exponential B^A",
+      "global element: morphism from terminal object 1 → B",
+      "parent file CantorDiagonalizationOQ03.lean"
+    ]
+  },
+  {
     "id": "ann-eval-structure",
     "proofId": "cantor-diagonalization-oq-03-oq-01",
     "range": {
       "startLine": 41,
-      "endLine": 60
+      "endLine": 63
     },
     "type": "definition",
     "title": "EvalStructure: Minimal Abstract Framework for Lawvere",
@@ -29,7 +52,7 @@
     "proofId": "cantor-diagonalization-oq-03-oq-01",
     "range": {
       "startLine": 64,
-      "endLine": 85
+      "endLine": 86
     },
     "type": "insight",
     "title": "lawvere_abstract: The 2-Line Proof via Diagonal Construction",
@@ -54,7 +77,7 @@
     "proofId": "cantor-diagonalization-oq-03-oq-01",
     "range": {
       "startLine": 87,
-      "endLine": 95
+      "endLine": 96
     },
     "type": "theorem",
     "title": "diagonal_not_representable: The Diagonal is Never in Range",
@@ -79,7 +102,7 @@
     "proofId": "cantor-diagonalization-oq-03-oq-01",
     "range": {
       "startLine": 97,
-      "endLine": 134
+      "endLine": 135
     },
     "type": "theorem",
     "title": "typeEval_surjective_iff and lawvere_type_recovery: The Bridge to Type Theory",
@@ -104,7 +127,7 @@
     "proofId": "cantor-diagonalization-oq-03-oq-01",
     "range": {
       "startLine": 136,
-      "endLine": 165
+      "endLine": 166
     },
     "type": "insight",
     "title": "Three Instances: Prop, Bool, ℕ — Different Fixed-Point-Free Endomorphisms",
@@ -130,7 +153,7 @@
     "proofId": "cantor-diagonalization-oq-03-oq-01",
     "range": {
       "startLine": 167,
-      "endLine": 219
+      "endLine": 220
     },
     "type": "concept",
     "title": "CategoricalEval: Abstract CCC Structure (Fully Proved)",
@@ -155,7 +178,7 @@
     "proofId": "cantor-diagonalization-oq-03-oq-01",
     "range": {
       "startLine": 221,
-      "endLine": 245
+      "endLine": 249
     },
     "type": "concept",
     "title": "Topos Connection: Prop as Subobject Classifier Ω",
@@ -173,6 +196,29 @@
       "topos = CCC + subobject classifier",
       "P(A) = Ω^A = A → Prop in Set",
       "Function.Surjective for Prop-valued functions"
+    ]
+  },
+  {
+    "id": "ann-topos-summary",
+    "proofId": "cantor-diagonalization-oq-03-oq-01",
+    "range": { "startLine": 250, "endLine": 303 },
+    "type": "insight",
+    "title": "topos_proxy_cantor and Proof Summary: Answering OQ-03-OQ-01",
+    "content": "`topos_proxy_cantor` (lines 250-253): the culminating theorem, proving no surjection e : A → A → Prop exists. It is a 2-line proof: `rintro ⟨e, he⟩; exact cantor_recovery e he`. This collapses the topos-level statement into the type-theoretic recovery result.\n\n**Summary** (lines 255-293): The comment block answers OQ-03-OQ-01 directly. The file achieves: (1) `lawvere_abstract` — the abstract fixed-point theorem in an EvalStructure (no category theory imports); (2) `lawvere_type_recovery` — specializes to the parent file's type-theoretic version; (3) three instances (Prop, Bool, ℕ); (4) `lawvere_categorical` — reduces from a CategoricalEval (axiomatizing CCC global-element structure) to `lawvere_abstract` by packaging the data into an EvalStructure; (5) `topos_proxy_cantor` — Prop as proxy for the topos subobject classifier Ω.\n\nThe summary notes 0 axioms, 0 sorries: `lawvere_categorical` (previously the only sorry-bearing theorem) was proved by adding `e_pt : Pt A → Pt (exp A B)` as a parameter. What remains open: a full topos-theoretic formalization would require Mathlib's topos typeclass (not yet available), internal subobject classifier, and epimorphism definitions.",
+    "mathContext": "The proof hierarchy: `lawvere_abstract` ← `lawvere_type_recovery` ← `cantor_recovery` ← `cantor_instance`; and `lawvere_abstract` ← `lawvere_categorical` ← `topos_proxy_cantor`. The `topos_proxy_cantor` result $\\neg\\exists e: A \\to A \\to \\text{Prop}, \\text{surjective}(e)$ is Cantor's theorem in Set-topos language: $A \\not\\twoheadrightarrow \\text{Prop}^A$. What makes this 'topos-like' is that $\\text{Prop}$ has the internal negation $\\neg : \\text{Prop} \\to \\text{Prop}$ which is fixed-point-free — exactly the hypothesis of Lawvere's theorem. In a genuine Boolean topos, $\\Omega = \\{0, 1\\}$ and $\\neg$ is classical negation; Lean's `Prop` has classical double-negation elimination (via `Classical.em`) so it behaves like a Boolean topos Ω.",
+    "significance": "main-result",
+    "relatedConcepts": [
+      "Cantor's theorem in topos",
+      "topos subobject classifier Ω",
+      "Boolean topos vs Heyting",
+      "0 axioms 0 sorries achieved",
+      "EvalStructure as minimal CCC proxy",
+      "Mathlib topos infrastructure (pending)"
+    ],
+    "prerequisites": [
+      "cantor_recovery (from lawvere_type_recovery + Not fixed-point-free)",
+      "lawvere_categorical (with e_pt parameter)",
+      "Prop as Boolean topos Ω proxy"
     ]
   }
 ]

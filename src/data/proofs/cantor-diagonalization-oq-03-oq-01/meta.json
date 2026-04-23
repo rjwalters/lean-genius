@@ -213,5 +213,25 @@
       "description": "Rice's theorem: any non-trivial semantic property of computable functions is undecidable. A Lawvere instance with Ob=ℕ (Gödel codes), Val=partial computable functions, and fixed-point-free f=complement-of-P. The no_surjection_abstract theorem here is the abstract form."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "lawvere_abstract",
+      "statement": "∀ (E : EvalStructure), E.IsPointSurjective → ∀ (f : E.Endo), ∃ v : E.Val, f v = v",
+      "significance": "The abstract Lawvere fixed-point theorem: any point-surjective evaluation structure has the fixed-point property for all endomorphisms.",
+      "lineNumber": 71
+    },
+    {
+      "name": "topos_proxy_cantor",
+      "statement": "∀ (A : Type*), ¬ ∃ e : A → A → Prop, Function.Surjective e",
+      "significance": "Cantor's theorem in topos-proxy form: no function A → A → Prop can be surjective, using Prop as the subobject classifier.",
+      "lineNumber": 250
+    },
+    {
+      "name": "lawvere_categorical",
+      "statement": "∀ (C : CategoricalEval) {A B : C.Obj} (e_pt : C.Pt A → C.Pt (C.exp A B)) (hSurj : ∀ g, ∃ a, ...) (f : C.Pt B → C.Pt B), C.HasFixedPoint f",
+      "significance": "Lawvere's theorem in categorical form: the abstract CCC structure (via global elements) implies the fixed-point property.",
+      "lineNumber": 220
+    }
+  ],
   "sorries": 0
 }
