@@ -24,7 +24,35 @@
     "dateAdded": "2026-03-30",
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic#Generalizations",
-    "date": "Classical (Euclid, Gauss); formalized 2026"
+    "date": "Classical (Euclid, Gauss); formalized 2026",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanDomain.instUniqueFactorizationMonoid",
+        "description": "Instance deriving UniqueFactorizationMonoid from EuclideanDomain via WfDvdMonoid — the entire proof chain EuclideanDomain → GCDMonoid → UniqueFactorizationMonoid",
+        "module": "Mathlib.RingTheory.EuclideanDomain"
+      },
+      {
+        "theorem": "UniqueFactorizationMonoid.irreducible_iff_prime",
+        "description": "Irreducible ↔ prime in any UFD — the abstract Euclid's lemma, wrapped by irreducible_iff_prime_in_ufd",
+        "module": "Mathlib.RingTheory.UniqueFactorizationDomain"
+      },
+      {
+        "theorem": "UniqueFactorizationMonoid.factors / factors_prod / irreducible_of_factor",
+        "description": "The irreducible factorization multiset: factors gives the factorization, factors_prod assembles it, irreducible_of_factor verifies all factors are irreducible — all three used in factors_exist",
+        "module": "Mathlib.RingTheory.UniqueFactorizationDomain"
+      },
+      {
+        "theorem": "Int.gcd_dvd_left / Int.gcd_dvd_right / Int.dvd_gcd",
+        "description": "GCD universal property for integers: gcd divides both arguments and is divisible by every common divisor — used in int_gcd_exists",
+        "module": "Mathlib.Data.Int.GCD"
+      }
+    ],
+    "originalContributions": [
+      "irreducible_iff_prime_in_ufd: wraps UniqueFactorizationMonoid.irreducible_iff_prime to demonstrate that Euclid's lemma holds in all Euclidean domains",
+      "factors_exist: packages UniqueFactorizationMonoid.factors + factors_prod + irreducible_of_factor into a single existence statement for irreducible factorizations in any CancelCommMonoidWithZero UFD",
+      "int_gcd_exists: wraps Int.gcd_dvd_left/right and Int.dvd_gcd to state the GCD universal property in ℤ",
+      "inferInstance demonstrations: zero-proof confirmations that UniqueFactorizationMonoid ℤ and UniqueFactorizationMonoid (Polynomial F) are resolved automatically by Lean's typeclass chain"
+    ]
   },
   "overview": {
     "prerequisites": [
@@ -139,6 +167,56 @@
       "targetId": "fundamental-theorem-arithmetic",
       "relationship": "generalization-of",
       "description": "Fundamental Theorem of Arithmetic (ℤ) — the base case that this entry generalizes. The FTA states that every integer has a unique prime factorization (up to sign); this entry extends that to all Euclidean domains R via Mathlib's instance chain. The `UniqueFactorizationMonoid ℤ` inference in this file is literally a one-line proof of the FTA as a special case."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "irreducible_iff_prime_in_ufd",
+      "type": "core",
+      "description": "In any UFD, irreducible ↔ prime (abstract Euclid's lemma)",
+      "leanType": "UniqueFactorizationMonoid α → Irreducible p ↔ Prime p"
+    },
+    {
+      "name": "factors_exist",
+      "type": "core",
+      "description": "Every nonzero non-unit in a UFD has an irreducible factorization that reassembles to the original up to associates",
+      "leanType": "a ≠ 0 → ∃ s : Multiset α, (∀ p ∈ s, Irreducible p) ∧ Associated s.prod a"
+    },
+    {
+      "name": "int_gcd_exists",
+      "type": "supporting",
+      "description": "ℤ has a GCD satisfying the universal property: divides both arguments and is divisible by every common divisor",
+      "leanType": "∃ g : ℤ, g ∣ a ∧ g ∣ b ∧ ∀ d : ℤ, d ∣ a → d ∣ b → d ∣ g"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Euclid",
+      "title": "Elements, Book IX, Proposition 14",
+      "year": "ca. 300 BCE",
+      "venue": "Ancient Greek mathematics",
+      "note": "First statement of unique factorization: no composite number can have two different prime decompositions"
+    },
+    {
+      "authors": "Gauss, C. F.",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig: Gerh. Fleischer",
+      "note": "Rigorous proof of the Fundamental Theorem of Arithmetic for ℤ; Gauss (1832) extended unique factorization to ℤ[i] (Gaussian integers)"
+    },
+    {
+      "authors": "Kummer, E. E.",
+      "title": "Über die Zerlegung der aus Wurzeln der Einheit gebildeten complexen Zahlen in ihre Primfactoren",
+      "year": "1844",
+      "venue": "Journal für die reine und angewandte Mathematik, 35, 327-367",
+      "note": "Discovered failure of unique factorization in cyclotomic integers ℤ[ζₚ]; introduced 'ideal numbers' to restore it — the crisis motivating ideal theory and Dedekind domains"
+    },
+    {
+      "authors": "Hasse, H.; Schmidt, F. K.",
+      "title": "Noch eine Begründung der Theorie der höheren Differentialquotienten in einem algebraischen Funktionenkörper einer Unbestimmten",
+      "year": "1927-1930",
+      "venue": "Journal für die reine und angewandte Mathematik",
+      "note": "Developed the abstract framework of Euclidean domains; established the ED → PID → UFD hierarchy that Mathlib now encodes as a typeclass chain"
     }
   ],
   "leanFile": {
