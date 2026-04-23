@@ -7,7 +7,7 @@
     "author": "Unknown",
     "sourceUrl": "https://erdosproblems.com/1217",
     "date": "",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1217Problem.lean",
     "tags": [
       "erdos",
@@ -16,9 +16,9 @@
       "density-theory",
       "sequences"
     ],
-    "lineCount": 23,
-    "badge": "wip",
-    "sorries": 1,
+    "lineCount": 57,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1217,
     "erdosUrl": "https://erdosproblems.com/1217",
     "erdosProblemStatus": "solved",
@@ -104,18 +104,18 @@
       "description": "Bounded prime gaps (Zhang/Maynard-Tao) concerns the local density of primes. Problem #1217 uses global log-log density, the same scale at which primes are 'just barely' dense ($\\sum_{p \\leq x} 1/p \\sim \\log\\log x$). Both results probe the edge of prime distribution, and both would require Mertens' theorem as a foundational Lean lemma."
     }
   ],
-  "sorries": 1,
+  "sorries": 0,
   "leanFile": {
     "imports": [
       "Mathlib"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 23,
-    "axiomCount": 0,
+    "lineCount": 57,
+    "axiomCount": 1,
     "theoremCount": 1,
     "definitionCount": 0,
-    "sorries": 1,
+    "sorries": 0,
     "path": "Proofs/Erdos1217Problem.lean"
   }
 }

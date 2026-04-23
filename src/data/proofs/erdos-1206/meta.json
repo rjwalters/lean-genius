@@ -7,14 +7,14 @@
     "author": "Unknown",
     "sourceUrl": "https://erdosproblems.com/1206",
     "date": "",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1206Problem.lean",
     "tags": [
       "erdos"
     ],
-    "lineCount": 23,
-    "badge": "wip",
-    "sorries": 1,
+    "lineCount": 103,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1206,
     "erdosUrl": "https://erdosproblems.com/1206",
     "erdosProblemStatus": "solved"
@@ -99,18 +99,18 @@
       "description": "The Fundamental Theorem of Arithmetic (unique prime factorization) underpins the Sidon proof via the algebraic identity n³ - m³ = (n-m)(n² + nm + m²). The Sidon condition requires all pairwise sum differences to be distinct; the factorization shows that in a short interval [N - cN^(1/2), N], the quadratic factor n²+nm+m² is nearly constant (~3N²), making distinct pairs (n,m) give distinct differences. This is a multiplicative structure argument at heart — the same principles used in factoring in FTA."
     }
   ],
-  "sorries": 1,
+  "sorries": 0,
   "leanFile": {
     "imports": [
       "Mathlib"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 23,
-    "axiomCount": 0,
+    "lineCount": 103,
+    "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 0,
-    "sorries": 1,
+    "sorries": 0,
     "path": "Proofs/Erdos1206Problem.lean"
   }
 }

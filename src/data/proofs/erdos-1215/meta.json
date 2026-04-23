@@ -7,7 +7,7 @@
     "author": "Unknown",
     "sourceUrl": "https://erdosproblems.com/1215",
     "date": "",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1215Problem.lean",
     "tags": [
       "erdos",
@@ -16,9 +16,9 @@
       "topology",
       "unit-circle"
     ],
-    "lineCount": 23,
-    "badge": "wip",
-    "sorries": 1,
+    "lineCount": 71,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1215,
     "erdosUrl": "https://erdosproblems.com/1215",
     "erdosProblemStatus": "solved",
@@ -99,18 +99,18 @@
       "description": "Both represent formalization stubs pending major Mathlib infrastructure: Easton's class forcing and Mac Lane's polynomial lemniscate theory share the challenge of encoding analytic/metamathematical content in Lean 4."
     }
   ],
-  "sorries": 1,
+  "sorries": 0,
   "leanFile": {
     "imports": [
       "Mathlib"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 23,
-    "axiomCount": 0,
+    "lineCount": 71,
+    "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 0,
-    "sorries": 1,
+    "sorries": 0,
     "path": "Proofs/Erdos1215Problem.lean"
   }
 }

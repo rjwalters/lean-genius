@@ -7,7 +7,7 @@
     "author": "Unknown",
     "sourceUrl": "https://erdosproblems.com/1216",
     "date": "",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1216Problem.lean",
     "tags": [
       "erdos",
@@ -16,9 +16,9 @@
       "tournament-theory",
       "combinatorics"
     ],
-    "lineCount": 23,
-    "badge": "wip",
-    "sorries": 1,
+    "lineCount": 67,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1216,
     "erdosUrl": "https://erdosproblems.com/1216",
     "erdosProblemStatus": "solved",
@@ -99,18 +99,18 @@
       "Is there a tournament-theoretic version of the probabilistic method that gives a sharp upper bound on $f(n)$, improving on the Erdős-Moser $2\\log_2 n$ bound?"
     ]
   },
-  "sorries": 1,
+  "sorries": 0,
   "leanFile": {
     "imports": [
       "Mathlib"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 23,
-    "axiomCount": 0,
+    "lineCount": 67,
+    "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 0,
-    "sorries": 1,
+    "sorries": 0,
     "path": "Proofs/Erdos1216Problem.lean"
   }
 }
