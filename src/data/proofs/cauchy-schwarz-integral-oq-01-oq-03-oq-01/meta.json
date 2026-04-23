@@ -30,8 +30,8 @@
         "module": "Mathlib.MeasureTheory.Integral.MeanInequalities"
       },
       {
-        "theorem": "eLpNorm_eq_lintegral_rpow_nnnorm",
-        "description": "eLpNorm f p μ = (∫⁻ ‖f‖₊^p)^(1/p) for finite p > 0",
+        "theorem": "eLpNorm_eq_lintegral_rpow_enorm",
+        "description": "eLpNorm f p μ = (∫⁻ ‖f‖ₑ^p.toReal)^(1/p.toReal) for p ≠ 0 and p ≠ ∞",
         "module": "Mathlib.MeasureTheory.Function.LpSpace"
       },
       {
@@ -51,7 +51,7 @@
       }
     ],
     "originalContributions": [
-      "eLpNorm_ofReal_eq (bridge): eLpNorm f (ENNReal.ofReal p) μ = (∫⁻ ‖f‖₊^p)^(1/p) for p > 0",
+      "eLpNorm_ofReal_eq (bridge): eLpNorm f (ENNReal.ofReal p) μ = (∫⁻ ‖f‖ₑ^p)^(1/p) for p > 0",
       "holder_normedField_eLpNorm: Hölder in eLpNorm form for any NormedField 𝕜",
       "memLp_mul_of_memLp_ofReal: f ∈ Lp ∧ g ∈ Lq → fg ∈ L1 (product membership)",
       "holder_real_eLpNorm: real-valued specialization",
@@ -59,15 +59,15 @@
       "cauchy_schwarz_complex_eLpNorm: CS at p=q=2 in eLpNorm form"
     ],
     "dateAdded": "2026-04-23",
-    "lineCount": 169,
+    "lineCount": 176,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "**The eLpNorm API: Mathlib's Standard Interface for Lp Spaces**\n\nMathlib's Lp space infrastructure has two levels. The lower level uses the extended Lebesgue integral (`∫⁻`) and nnnorm directly: `∫⁻ a, ‖f a‖₊^p ∂μ`. The upper level uses `eLpNorm f p μ`, which packages these integrals into the standard Lp seminorm API.\n\n`Memℒp f p μ` — the predicate for \"f belongs to Lp\" — is defined as `AEStronglyMeasurable f μ ∧ eLpNorm f p μ < ∞`. All of Mathlib's Lp space theory (completeness, duality, interpolation) is stated in terms of `eLpNorm`, not raw lintegrals.\n\nThis file lifts Hölder's inequality from the lintegral level (proved in OQ-03) to the eLpNorm level, making it directly applicable to Lp space membership arguments. The bridge lemma `eLpNorm_ofReal_eq` connects the two levels via `eLpNorm_eq_lintegral_rpow_nnnorm`.\n\nOtto Hölder's 1889 inequality has been formalized in Lean 4 at increasing levels of abstraction: first for real functions (OQ-01), then for any NormedField at the lintegral level (OQ-03), and now at the eLpNorm API level (OQ-03-OQ-01) — the form that makes it immediately usable in Lp space arguments.",
+    "historicalContext": "**The eLpNorm API: Mathlib's Standard Interface for Lp Spaces**\n\nMathlib's Lp space infrastructure has two levels. The lower level uses the extended Lebesgue integral (`∫⁻`) and nnnorm directly: `∫⁻ a, ‖f a‖₊^p ∂μ`. The upper level uses `eLpNorm f p μ`, which packages these integrals into the standard Lp seminorm API.\n\n`Memℒp f p μ` — the predicate for \"f belongs to Lp\" — is defined as `AEStronglyMeasurable f μ ∧ eLpNorm f p μ < ∞`. All of Mathlib's Lp space theory (completeness, duality, interpolation) is stated in terms of `eLpNorm`, not raw lintegrals.\n\nThis file lifts Hölder's inequality from the lintegral level (proved in OQ-03) to the eLpNorm level, making it directly applicable to Lp space membership arguments. The bridge lemma `eLpNorm_ofReal_eq` connects the two levels via `eLpNorm_eq_lintegral_rpow_enorm`.\n\nOtto Hölder's 1889 inequality has been formalized in Lean 4 at increasing levels of abstraction: first for real functions (OQ-01), then for any NormedField at the lintegral level (OQ-03), and now at the eLpNorm API level (OQ-03-OQ-01) — the form that makes it immediately usable in Lp space arguments.",
     "problemStatement": "**OQ-03-OQ-01: Hölder Inequality in eLpNorm Form**\n\nThe open question from `CauchySchwarzIntegralOQ01OQ03.lean` asks:\n\"Can the Hölder inequality be stated using Mathlib's `eLpNorm` API for functions valued in any NormedField 𝕜?\"\n\nFor Hölder conjugate exponents $p, q$ ($1/p + 1/q = 1$, $p > 1$) and AE-measurable $f, g: \\alpha \\to \\mathbb{k}$:\n$$\\text{eLpNorm}(f \\cdot g, 1, \\mu) \\leq \\text{eLpNorm}(f, p, \\mu) \\cdot \\text{eLpNorm}(g, q, \\mu)$$\n\n**The answer**: YES. Moreover, the product membership theorem follows:\n$$f \\in L^p(\\mu) \\text{ and } g \\in L^q(\\mu) \\implies f \\cdot g \\in L^1(\\mu)$$",
     "text": "The Hölder inequality holds in eLpNorm form for any NormedField, bridging OQ-03's lintegral-level result to the standard Lp space API. The product membership theorem is the most practically useful consequence.",
-    "proofStrategy": "**Formalization Strategy**\n\n1. **Bridge lemma** (`eLpNorm_ofReal_eq`): For `p > 0`, use `eLpNorm_eq_lintegral_rpow_nnnorm` to convert `eLpNorm f (ENNReal.ofReal p) μ` into `(∫⁻ ‖f‖₊^p)^(1/p)`. Handle the `one_div` convention.\n\n2. **Main Hölder theorem** (`holder_normedField_eLpNorm`):\n   - Rewrite `eLpNorm (f·g) 1` via `eLpNorm_one_eq_lintegral_nnnorm`\n   - Rewrite `eLpNorm f p` and `eLpNorm g q` via `eLpNorm_ofReal_eq`\n   - Factor `nnnorm_mul + ENNReal.coe_mul` via `simp_rw`\n   - Apply `ENNReal.lintegral_mul_le_Lp_mul_Lq` from Mathlib\n\n3. **Product membership** (`memLp_mul_of_memLp_ofReal`):\n   - Measurability: `hf.1.mul hg.1` (AEStronglyMeasurable is closed under products)\n   - Finite eLpNorm: chain Hölder + `ENNReal.mul_lt_top`\n\n4. **Specializations**: Real, complex, and Cauchy-Schwarz (p=q=2) are one-liners.",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **Bridge lemma** (`eLpNorm_ofReal_eq`): For `p > 0`, use `eLpNorm_eq_lintegral_rpow_enorm` to convert `eLpNorm f (ENNReal.ofReal p) μ` into `(∫⁻ ‖f‖ₑ^p)^(1/p)`. Handle the `one_div` convention.\n\n2. **Main Hölder theorem** (`holder_normedField_eLpNorm`):\n   - Rewrite `eLpNorm (f·g) 1` via `eLpNorm_one_eq_lintegral_nnnorm`\n   - Rewrite `eLpNorm f p` and `eLpNorm g q` via `eLpNorm_ofReal_eq`\n   - Factor `nnnorm_mul + ENNReal.coe_mul` via `simp_rw`\n   - Apply `ENNReal.lintegral_mul_le_Lp_mul_Lq` from Mathlib\n\n3. **Product membership** (`memLp_mul_of_memLp_ofReal`):\n   - Measurability: `hf.1.mul hg.1` (AEStronglyMeasurable is closed under products)\n   - Finite eLpNorm: chain Hölder + `ENNReal.mul_lt_top`\n\n4. **Specializations**: Real, complex, and Cauchy-Schwarz (p=q=2) are one-liners.",
     "keyInsights": [
       "**eLpNorm = eLp lintegral up to 1/p exponent**: The bridge `eLpNorm_ofReal_eq` is the key lemma connecting the two levels. Without it, going from eLpNorm to lintegral requires unwinding multiple definitions.",
       "**1/p vs p**: The Lean convention uses `ENNReal.toReal_ofReal` and `one_div` to convert the exponent from the eLpNorm form to the lintegral form. This is a notational detail but critical for proof correctness.",
@@ -86,7 +86,7 @@
     {
       "id": "bridge-lemma",
       "title": "Bridge Lemma: eLpNorm ↔ lintegral",
-      "summary": "eLpNorm_ofReal_eq converts eLpNorm f (ENNReal.ofReal p) μ to (∫⁻ ‖f‖₊^p)^(1/p) using eLpNorm_eq_lintegral_rpow_nnnorm.",
+      "summary": "eLpNorm_ofReal_eq converts eLpNorm f (ENNReal.ofReal p) μ to (∫⁻ ‖f‖ₑ^p)^(1/p) using eLpNorm_eq_lintegral_rpow_enorm.",
       "startLine": 46,
       "endLine": 56,
       "mathContext": "Bridge from eLpNorm API to lintegral form. Requires p > 0 as a real number."
@@ -153,7 +153,7 @@
     "imports": ["Mathlib"],
     "opens": ["MeasureTheory", "ENNReal", "NNReal", "Real"],
     "namespace": "HolderELpNorm",
-    "lineCount": 169,
+    "lineCount": 176,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 0,
@@ -170,7 +170,7 @@
     },
     {
       "authors": "Mathlib Community",
-      "title": "eLpNorm_eq_lintegral_rpow_nnnorm",
+      "title": "eLpNorm_eq_lintegral_rpow_enorm",
       "year": "2025",
       "venue": "Mathlib4",
       "note": "Bridge between eLpNorm API and lintegral in Lean 4"
