@@ -3790,11 +3790,15 @@ private noncomputable def extendSYT_gen {μ : YoungDiagram} (c : ℕ × ℕ)
           ((mem_removeCorner hc).mpr ⟨hx₁, hx₁c⟩)
           ((mem_removeCorner hc).mpr ⟨hx₂, hx₂c⟩) hlt
 
+/-- Casting a StandardYoungTableau along a YoungDiagram equality preserves the entry function. -/
+private lemma cast_syt_entry {μ₁ μ₂ : YoungDiagram} (h : μ₁ = μ₂)
+    (T : StandardYoungTableau μ₁) (x : ℕ × ℕ) :
+    (cast (congrArg StandardYoungTableau h) T).entry x = T.entry x := by
+  subst h; rfl
+
 /-- General corner recursion: for non-empty μ,
     card(SYT(μ)) = Σ_{c ∈ corners(μ)} card(SYT(μ\c)).
-    Bijection: T ↦ (max-entry corner c, T restricted to μ\c).
-    [OPEN: right_inv requires HEq/cast argument; mathematical content is complete.
-     The restriction of extendSYT_gen to removeCorner equals the original tableau.] -/
+    Bijection: T ↦ (max-entry corner c, T restricted to μ\c). -/
 theorem card_SYT_corner_step (μ : YoungDiagram) (hn : 0 < μ.card) :
     Fintype.card (StandardYoungTableau μ) =
     ∑ c ∈ (corners μ).attach,
@@ -3830,10 +3834,33 @@ theorem card_SYT_corner_step (μ : YoungDiagram) (hn : 0 < μ.card) :
         apply maxEntryCell_unique
         · exact hc.1
         · simp [extendSYT_gen]
-      -- [OPEN sorry]: Sigma.ext for HEq - cast of restrictSYT_gen(extendSYT_gen T₁) = T₁
-      -- Mathematical content: the entries of restrictSYT_gen(extendSYT_gen T₁) equal T₁.entry
-      -- because extendSYT_gen adds entry μ.card only at c ∉ removeCorner.
-      sorry
+      have hmax_corner := maxEntryCell_isCorner (extendSYT_gen c hc T₁) hn
+      -- removeCorner with maxEntryCell = removeCorner with c (same cell, proof irrelevance)
+      have hyd : removeCorner μ (maxEntryCell (extendSYT_gen c hc T₁) hn) hmax_corner =
+                 removeCorner μ c hc := by
+        conv_lhs => rw [hmaxeq]
+        exact removeCorner_proof_irrel μ c _ _
+      refine Sigma.ext (Subtype.ext hmaxeq) ?_
+      -- Reduce HEq to regular equality via cast along hyd
+      have hEq : cast (congrArg StandardYoungTableau hyd)
+          (restrictSYT_gen (maxEntryCell (extendSYT_gen c hc T₁) hn) hmax_corner
+            (extendSYT_gen c hc T₁) (maxEntryCell_entry (extendSYT_gen c hc T₁) hn)) = T₁ := by
+        apply StandardYoungTableau.ext; intro x
+        rw [cast_syt_entry hyd]
+        simp only [restrictSYT_gen, extendSYT_gen]
+        by_cases hxrc : x ∈ removeCorner μ (maxEntryCell (extendSYT_gen c hc T₁) hn) hmax_corner
+        · simp only [hxrc, ↓reduceIte]
+          have hxne : x ≠ c := fun heq =>
+            ((mem_removeCorner hmax_corner).mp hxrc).2 (heq.trans hmaxeq.symm)
+          simp only [if_neg hxne]
+        · simp only [hxrc, ↓reduceIte]
+          symm
+          apply T₁.entry_zero
+          intro hxrc'
+          exact hxrc ((mem_removeCorner hmax_corner).mpr
+            ⟨((mem_removeCorner hc).mp hxrc').1,
+             fun h => ((mem_removeCorner hc).mp hxrc').2 (h.trans hmaxeq)⟩)
+      exact (cast_heq (congrArg StandardYoungTableau hyd) _).symm.trans (heq_of_eq hEq)
   }
 
 end HookLengthFormula
