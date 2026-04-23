@@ -2471,11 +2471,10 @@ private theorem minSharedStepIdx_preserved (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
   set i := splitIdx a₁ cp
   set j := splitIdx a₂ cp
   set minOrig := minSharedStepIdx l₁ l₂ a₁ a₂ h_shared
-  set minSwap := minSharedStepIdx Q₁ Q₂ a₁ a₂ h_shared'
   -- Step 1: minOrig = i (by definition, canonSharedPoint achieves the minimum)
   have hcp_idx := (minSharedStepIdx_achieved l₁ l₂ a₁ a₂ h_shared).choose_spec.2
   have h_min_orig : minOrig = i := hcp_idx.symm
-  -- Step 2: p is a shared point of (Q₁, Q₂), so minSwap ≤ i
+  -- Step 2: p is a shared point of (Q₁, Q₂), so minSharedStepIdx Q₁ Q₂ ≤ i
   have hp₁ := canonSharedPoint_mem₁ l₁ l₂ a₁ a₂ h_shared
   have hp₂ := canonSharedPoint_mem₂ l₁ l₂ a₁ a₂ h_shared
   have ha₁ := shared_point_y_ge_a₁ l₁ l₂ a₁ a₂ cp hp₁
@@ -2484,18 +2483,18 @@ private theorem minSharedStepIdx_preserved (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
     simp only [sharedPoints, Finset.mem_inter]
     exact ⟨swapAtPoint_fst_visits_point l₁ l₂ a₁ a₂ cp hp₁ hp₂ ha₁ ha₂,
            swapAtPoint_snd_visits_point l₁ l₂ a₁ a₂ cp hp₁ hp₂ ha₁ ha₂⟩
-  have h_swap_le_i : minSwap ≤ i := by
-    exact Finset.min'_le _ _ (Finset.mem_image.mpr ⟨cp, hcp_in_Q, rfl⟩)
+  have h_swap_le_i : minSharedStepIdx Q₁ Q₂ a₁ a₂ h_shared' ≤ i :=
+    Finset.min'_le _ _ (Finset.mem_image.mpr ⟨cp, hcp_in_Q, rfl⟩)
   -- Step 3: Any shared point of (Q₁, Q₂) at step < i is also shared by (P₁, P₂)
-  -- This contradicts minimality, so minSwap ≥ i
-  have h_swap_ge_i : i ≤ minSwap := by
+  -- This contradicts minimality, so minSharedStepIdx Q₁ Q₂ ≥ i
+  have h_swap_ge_i : i ≤ minSharedStepIdx Q₁ Q₂ a₁ a₂ h_shared' := by
     by_contra h_lt
     push_neg at h_lt
     -- There exists a shared point of (Q₁, Q₂) with step index < i
     have hmin_mem := Finset.min'_mem
       ((sharedPoints Q₁ Q₂ a₁ a₂).image (splitIdx a₁)) (Finset.Nonempty.image h_shared' _)
     obtain ⟨q, hq_shared, hq_idx⟩ := Finset.mem_image.mp hmin_mem
-    -- q ∈ sharedPoints Q₁ Q₂ a₁ a₂ with splitIdx a₁ q = minSwap < i
+    -- q ∈ sharedPoints Q₁ Q₂ a₁ a₂ with splitIdx a₁ q = minSharedStepIdx Q₁ Q₂ < i
     have hq_lt_i : splitIdx a₁ q < i := by omega
     -- q is visited by Q₁ and Q₂
     have hq_Q₁ : q ∈ visitedPoints Q₁ a₁ := (Finset.mem_inter.mp hq_shared).1
