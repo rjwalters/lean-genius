@@ -2,7 +2,7 @@
   "id": "erdos-476-oq-05",
   "title": "Erdős #476 OQ5: Vosper's Theorem — Equality Case of Cauchy-Davenport",
   "slug": "erdos-476-oq-05",
-  "description": "Vosper's theorem (1956): if |A+B| = |A|+|B|-1 in Z/pZ with |A|,|B|≥2 and |A+B|<p, then A and B are arithmetic progressions with the same common difference d. Infrastructure largely proved: IsArithmeticProgression definition, singleton/pair AP lemmas, translation invariance, ap_of_near_periodic (backward-shift induction), vosper_base (|A|=2 case), and vosper_ap_sdiff_card (AP extension lemma, proved via linear_combination) are all fully proved. One sorry remains: Case 1 existence in the full Vosper induction.",
+  "description": "Vosper's theorem (1956): if |A+B| = |A|+|B|-1 in Z/pZ with |A|,|B|≥2 and |A+B|<p, then A and B are arithmetic progressions with the same common difference d. Infrastructure largely proved: IsArithmeticProgression definition, singleton/pair AP lemmas, translation invariance, ap_of_near_periodic (backward-shift induction), and vosper_base (|A|=2 case) are all fully proved. Two sorries remain: (1) Case 1 existence in the full Vosper induction; (2) position analysis in vosper_ap_sdiff_card.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-21",
@@ -18,10 +18,10 @@
       "zmod"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 2,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "1 sorry remains: vosper Case 1 existence — find non-redundant a₀ ∈ A via counting argument or iterative removal (by contradiction: if all a ∈ A are redundant, a counting argument fails for small |A|,|B|). vosper_ap_sdiff_card (position analysis: a₀ is predecessor/successor of A' in the AP) is now fully proved via linear_combination. ap_of_near_periodic (backward-shift induction), vosper_base (|A|=2 case), and all infrastructure are proved with 0 sorries.",
+    "assumptions": "2 sorries remain: (1) vosper_ap_sdiff_card — position analysis: given |{a₀}+B \\ (A'+B)|=1, the hpos step proving a₀ = a₁-d or a₀ = a₁+|A'|·d is not yet proved; (2) vosper_case1_exists — find non-redundant a₀ ∈ A via counting argument or iterative removal (by contradiction: if all a ∈ A are redundant, a counting argument fails for small |A|,|B|). ap_of_near_periodic (backward-shift induction), vosper_base (|A|=2 case), and all other infrastructure are proved with 0 sorries.",
     "lineCount": 853,
     "theoremCount": 13,
     "definitionCount": 1,
@@ -33,7 +33,7 @@
       "shift_card_eq: |B.image (·+d)| = |B| via add_right_injective (proved, 0 sorries)",
       "ap_of_near_periodic: B is AP if |B\\(B+d)|=1 (proved — backward-shift induction)",
       "vosper_base: Vosper for |A|=2 (proved — uses ap_of_near_periodic)",
-      "vosper_ap_sdiff_card: AP extension lemma (proved — position analysis: given |{a₀}+B \\ (A'+B)|=1, proves a₀ = a₁-d or a₀ = a₁+|A'|·d via linear_combination)",
+      "vosper_ap_sdiff_card: AP extension lemma (1 sorry — position analysis: given |{a₀}+B \\ (A'+B)|=1, proves a₀ = a₁-d or a₀ = a₁+|A'|·d; hpos step not yet proved)",
       "vosper_case1_exists: Case 1 existence in vosper (1 sorry — find non-redundant a₀ ∈ A via counting argument or iterative removal)",
       "vosper: full Vosper theorem (1 sorry — delegates to vosper_case1_exists for Case 1 existence)"
     ]
@@ -58,7 +58,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Infrastructure for Vosper's theorem largely established: IsArithmeticProgression defined, basic AP lemmas proved (singleton, pair, shift, cardinality, d_ne_zero, add_isAP_eq, isAP_sum, isAP_sdiff_card), ap_of_near_periodic proved (backward-shift induction), vosper_base proved (|A|=2 case), vosper_ap_sdiff_card proved (position analysis via linear_combination). One sorry remains: Case 1 existence in the full Vosper induction (finding a non-redundant element via counting/contradiction).",
+    "summary": "Infrastructure for Vosper's theorem largely established: IsArithmeticProgression defined, basic AP lemmas proved (singleton, pair, shift, cardinality, d_ne_zero, add_isAP_eq, isAP_sum, isAP_sdiff_card), ap_of_near_periodic proved (backward-shift induction), vosper_base proved (|A|=2 case). Two sorries remain: (1) vosper_ap_sdiff_card position analysis (hpos step) and (2) Case 1 existence in the full Vosper induction (finding a non-redundant element via counting/contradiction).",
     "implications": "Once the remaining sorry is closed, Vosper's theorem would complement ZMod.cauchy_davenport in Mathlib, completing the picture of additive structure in Z/pZ.",
     "openQuestions": [
       "Prove Case 1 existence in vosper: find a non-redundant a₀ ∈ A by contradiction — if all a ∈ A are redundant, a counting argument on |A|·|B| ≥ 2(|A|+|B|-1) gives a contradiction",
@@ -105,7 +105,7 @@
       "title": "Key Sublemma: AP Extension via Position Analysis",
       "startLine": 204,
       "endLine": 520,
-      "summary": "vosper_ap_sdiff_card: given |{a₀}+B \\ (A'+B)| = 1 with A' and B both APs with diff d, proves a₀ = a₁-d or a₀ = a₁+|A'|·d via linear_combination. Fully proved (0 sorries). Also includes zmod_orbit_injective helper."
+      "summary": "vosper_ap_sdiff_card: given |{a₀}+B \\ (A'+B)| = 1 with A' and B both APs with diff d, proves a₀ = a₁-d or a₀ = a₁+|A'|·d. 1 sorry remains (hpos: position analysis step). Also includes zmod_orbit_injective helper."
     },
     {
       "id": "near-periodic-lemma",
@@ -129,7 +129,7 @@
     "theoremCount": 13,
     "definitionCount": 1,
     "path": "Proofs/Erdos476OQ05Problem.lean",
-    "sorries": 1
+    "sorries": 2
   },
-  "sorries": 1
+  "sorries": 2
 }
