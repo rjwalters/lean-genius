@@ -1461,11 +1461,9 @@ private lemma boundaryFlipLast_symm (s : GridSimplex d N)
         split_ifs with hi_inc hi_miss
         · rw [hi_inc]; exact hsi
         · rw [hi_miss]; omega
-        · have hss := s.step_same ⟨d - 1, by omega⟩ i
+        · exact (s.step_same ⟨d - 1, by omega⟩ i
             (fun h => hi_inc (h ▸ rfl))
-            (fun h => hi_miss (h ▸ rfl))
-          simp [Fin.castSucc, Fin.succ, show d - 1 + 1 = d from by omega] at hss
-          exact hss.symm
+            (fun h => hi_miss (h ▸ rfl))).symm
     · funext j
       simp only
       by_cases hjd : j.val + 1 < d
@@ -1801,23 +1799,17 @@ private lemma sperner_grid_one {N : ℕ} (hN : 0 < N)
     have honface : (v ⟨0, Nat.zero_lt_succ N⟩).onFace ⟨1, by omega⟩ := by
       show (v ⟨0, _⟩).coords ⟨1, by omega⟩ = 0; simp [v]
     have hne := hc (v ⟨0, _⟩) ⟨1, by omega⟩ honface
-    -- c(v(0)) ≠ 1 and c(v(0)) : Fin 2, so c(v(0)).val ∈ {0,1} and ≠ 1 → = 0
-    apply Fin.ext
-    have hlt := (c (v ⟨0, Nat.zero_lt_succ N⟩)).isLt
-    have hne' : (c (v ⟨0, Nat.zero_lt_succ N⟩)).val ≠ 1 :=
-      fun heq => hne (Fin.ext heq)
-    omega
+    fin_cases h : c (v ⟨0, Nat.zero_lt_succ N⟩)
+    · rfl
+    · exact absurd h hne
   -- v(N) lies on face 0 (coords(0) = N-N = 0), so c(v(N)) ≠ 0, hence = 1
   have hvN : c (v ⟨N, Nat.lt_succ_self N⟩) = 1 := by
     have honface : (v ⟨N, Nat.lt_succ_self N⟩).onFace ⟨0, by omega⟩ := by
       show (v ⟨N, _⟩).coords ⟨0, by omega⟩ = 0; simp [v]; omega
     have hne := hc (v ⟨N, _⟩) ⟨0, by omega⟩ honface
-    -- c(v(N)) ≠ 0 and c(v(N)) : Fin 2, so c(v(N)).val ∈ {0,1} and ≠ 0 → = 1
-    apply Fin.ext
-    have hlt := (c (v ⟨N, Nat.lt_succ_self N⟩)).isLt
-    have hne' : (c (v ⟨N, Nat.lt_succ_self N⟩)).val ≠ 0 :=
-      fun heq => hne (Fin.ext heq)
-    omega
+    fin_cases h : c (v ⟨N, Nat.lt_succ_self N⟩)
+    · exact absurd h hne
+    · rfl
   -- S = {k | c(v(k)) = 0}, find maximum k*
   let S := Finset.univ.filter (fun k : Fin (N + 1) => c (v k) = 0)
   have hS_ne : S.Nonempty :=
@@ -1841,31 +1833,23 @@ private lemma sperner_grid_one {N : ℕ} (hN : 0 < N)
   have hks1_color : c (v ⟨k_star.val + 1, by omega⟩) = 1 := by
     have hns : (⟨k_star.val + 1, by omega⟩ : Fin (N + 1)) ∉ S := by
       intro hmem
-      -- k_star = S.max' hS_ne; by maximality, ⟨k_star.val+1, _⟩ ≤ S.max' ⟨_, hmem⟩
-      -- Then proof irrelevance equates the two max' witnesses
-      have hle : (⟨k_star.val + 1, by omega⟩ : Fin (N + 1)) ≤
-          S.max' ⟨⟨k_star.val + 1, by omega⟩, hmem⟩ :=
-        Finset.le_max' S _ hmem
-      have heq : S.max' ⟨⟨k_star.val + 1, by omega⟩, hmem⟩ = k_star :=
-        congr_arg S.max' (Subsingleton.elim _ _)
-      exact absurd (heq ▸ hle) (by omega)
+      have hle := Finset.le_max' S hS_ne hmem
+      -- Fin le is definitionally Nat le, so extract as Nat inequality
+      have h_nat : k_star.val + 1 ≤ k_star.val := hle
+      omega
     have hne : c (v ⟨k_star.val + 1, by omega⟩) ≠ 0 := by
       intro h
       exact hns (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩)
-    -- c(v(k*+1)) ≠ 0 and : Fin 2, so .val ≠ 0 and .val < 2 → .val = 1
-    apply Fin.ext
-    have hlt := (c (v ⟨k_star.val + 1, by omega⟩)).isLt
-    have hne' : (c (v ⟨k_star.val + 1, by omega⟩)).val ≠ 0 :=
-      fun heq => hne (Fin.ext heq)
-    omega
+    fin_cases h : c (v ⟨k_star.val + 1, by omega⟩)
+    · exact absurd h hne
+    · rfl
   -- The edge [v(k*), v(k*+1)] is a GridSimplex with incDir=1, miss=0
   refine ⟨{
     verts := fun i => if i.val = 0 then v k_star
                       else v ⟨k_star.val + 1, by omega⟩
     incDir := fun _ => ⟨1, by omega⟩
     miss := ⟨0, by omega⟩
-    miss_ne_inc := fun _ => by
-      intro h; exact absurd (Fin.ext_iff.mp h) (by norm_num)
+    miss_ne_inc := fun _ => by decide
     step_inc := fun k => by
       fin_cases k
       show (v ⟨k_star.val + 1, by omega⟩).coords ⟨1, by omega⟩ =
@@ -1880,8 +1864,8 @@ private lemma sperner_grid_one {N : ℕ} (hN : 0 < N)
     step_same := fun k j hj1 hj2 => by
       fin_cases k
       fin_cases j
-      · exact absurd (Fin.ext rfl) hj2  -- j = miss = 0, contradiction
-      · exact absurd (Fin.ext rfl) hj1  -- j = incDir k = 1, contradiction
+      · exact absurd rfl hj2  -- j = miss = 0, contradiction
+      · exact absurd rfl hj1  -- j = incDir k = 1, contradiction
     inc_injective := fun a _b _h => Subsingleton.elim a _ }, ?_⟩
   -- Panchromatic: color 0 at v(k*), color 1 at v(k*+1)
   intro col
@@ -1935,9 +1919,7 @@ theorem sperner_grid (d N : ℕ) (hN : 0 < N)
       step_same := fun k _j _h1 _h2 => k.elim0
       inc_injective := fun a _b _h => a.elim0 }, ?_⟩
     intro col
-    -- col : Fin 1 = Fin (0+1); any two Fin 1 values are equal since both vals < 1
-    refine ⟨⟨0, by omega⟩, ?_⟩
-    apply Fin.ext; omega
+    exact ⟨⟨0, by omega⟩, Subsingleton.elim _ _⟩
   | 1 =>
     -- d=1: proved by discrete IVT via sperner_grid_one
     exact sperner_grid_one hN c hc
