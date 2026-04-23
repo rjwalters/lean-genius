@@ -24,27 +24,26 @@ namespace AMGMInequalityAristotle
 
 -- Routine: squares are nonneg.
 -- x^2 ≥ 0 for any real x.
-theorem sq_nonneg' (x : ℝ) : 0 ≤ x ^ 2 := by
-  sorry
+theorem sq_nonneg' (x : ℝ) : 0 ≤ x ^ 2 := sq_nonneg x
 
 -- Routine: 2ab ≤ a² + b².
 -- Equivalent to 0 ≤ (a-b)², which unfolds to a² - 2ab + b² ≥ 0.
 theorem two_mul_le_sq_add_sq (a b : ℝ) : 2 * a * b ≤ a ^ 2 + b ^ 2 := by
-  sorry
+  nlinarith [sq_nonneg (a - b)]
 
 -- Routine: sqrt(a²) = a for nonneg a.
 -- Standard real square root identity.
-theorem sqrt_sq_of_nonneg (a : ℝ) (ha : 0 ≤ a) : Real.sqrt (a ^ 2) = a := by
-  sorry
+theorem sqrt_sq_of_nonneg (a : ℝ) (ha : 0 ≤ a) : Real.sqrt (a ^ 2) = a :=
+  Real.sqrt_sq ha
 
 -- Routine: product of nonneg reals is nonneg.
 -- 0 ≤ a → 0 ≤ b → 0 ≤ a * b.
-theorem mul_nonneg' (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) : 0 ≤ a * b := by
-  sorry
+theorem mul_nonneg' (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) : 0 ≤ a * b :=
+  mul_nonneg ha hb
 
 -- Routine: (a + b) / 2 ≥ 0 when a, b ≥ 0.
 -- Arithmetic mean of nonneg numbers is nonneg.
-theorem half_sum_nonneg (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) : 0 ≤ (a + b) / 2 := by
-  sorry
+theorem half_sum_nonneg (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) : 0 ≤ (a + b) / 2 :=
+  div_nonneg (add_nonneg ha hb) (by norm_num)
 
 end AMGMInequalityAristotle
