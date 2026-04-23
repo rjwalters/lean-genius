@@ -19,7 +19,7 @@
 -/
 import Mathlib
 
-open Set MeasureTheory
+open Set MeasureTheory ENNReal
 
 namespace BanachTarskiAristotle
 
@@ -32,12 +32,19 @@ namespace BanachTarskiAristotle
     This is the key "paradox equation": if a paradoxical set has a
     finite invariant measure μ, then μ(A) = 2·μ(A) forces μ(A) ∈ {0, ⊤}. -/
 theorem ennreal_add_eq_self_iff {a : ℝ≥0∞} : a + a = a ↔ a = 0 ∨ a = ⊤ := by
-  sorry
+  constructor
+  · intro h
+    rcases eq_or_ne a ⊤ with rfl | hneT
+    · exact Or.inr rfl
+    rcases eq_or_ne a 0 with rfl | hne0
+    · exact Or.inl rfl
+    exact absurd h (ENNReal.lt_add_right hneT hne0).ne'
+  · rintro (rfl | rfl) <;> simp
 
 /-- If 0 < a < ⊤ then a + a ≠ a (the paradox equation fails for finite positive measures). -/
 theorem ennreal_two_mul_ne_self {a : ℝ≥0∞} (ha_pos : 0 < a) (ha_top : a ≠ ⊤) :
-    a + a ≠ a := by
-  sorry
+    a + a ≠ a :=
+  (ENNReal.lt_add_right ha_top ha_pos.ne').ne'
 
 /-- A + Aᶜ = Set.univ for any set. -/
 theorem union_compl_eq_univ {α : Type*} (A : Set α) : A ∪ Aᶜ = Set.univ :=
@@ -49,7 +56,7 @@ theorem amenable_compl_sum {G : Type*}
     (hμ_total : μ Set.univ = 1)
     (hμ_add : ∀ A B : Set G, Disjoint A B → μ (A ∪ B) = μ A + μ B)
     (A : Set G) : μ A + μ Aᶜ = 1 := by
-  sorry
+  rw [← hμ_add A Aᶜ disjoint_compl_right, Set.union_compl_self, hμ_total]
 
 /-
   ## Section 2: FreeGroup Basic Facts
@@ -58,11 +65,11 @@ theorem amenable_compl_sum {G : Type*}
 
 /-- The two generators of FreeGroup (Fin 2) are distinct elements. -/
 theorem freeGroup_generators_ne :
-    FreeGroup.of (0 : Fin 2) ≠ FreeGroup.of (1 : Fin 2) := by
-  sorry
+    FreeGroup.of (0 : Fin 2) ≠ FreeGroup.of (1 : Fin 2) :=
+  fun h => absurd (FreeGroup.of_injective h) (by decide)
 
 /-- FreeGroup (Fin 2) is nontrivial (contains more than just the identity). -/
-theorem freeGroup_nontrivial : Nontrivial (FreeGroup (Fin 2)) := by
-  sorry
+theorem freeGroup_nontrivial : Nontrivial (FreeGroup (Fin 2)) :=
+  ⟨_, _, freeGroup_generators_ne⟩
 
 end BanachTarskiAristotle
