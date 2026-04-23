@@ -15,6 +15,49 @@ all proved (0 sorries). `reduce_excess_by_one` has 1 sorry remaining (Step 6 per
 
 ---
 
+## Session 2026-04-23 (Session 9) — Sum Rearrangement Sorry Proved; 4→3 Sorries
+
+**Mode**: REVISIT
+**Outcome**: PROGRESS — proved sum rearrangement in `new_sum`; sorry count reduced 4→3
+
+### What I Did
+
+1. Identified all 4 sorries in the file (the "1 sorry" in header was outdated):
+   - Line 114: `convexHull_not_mem_requires_two` (Carathéodory n≥2 API)
+   - Line 184: `binary_repr_of_mem_convexHull_not_mem` (depends on above)
+   - Line 467: sum rearrangement in `new_sum` — **proved this session**
+   - Line 683: Sub-case B2 (WF descent)
+
+2. Proved the sum rearrangement (was sorry, now proved):
+   - **Step 1**: `Finset.sum_subset` with image(emb) ⊆ t — terms vanish outside image(emb)
+   - **Step 2**: `Finset.sum_image (fun a _ b _ h => hemb_inj h)` + `Finset.sum_congr rfl`
+   - Each term: `split_ifs with h; have heq := hemb_inj h.choose_spec; rw [heq]`
+
+3. Added detailed WF argument comment to Sub-case B2 sorry
+
+### Key Findings
+
+**Sum rearrangement pattern**: `∑_{i∈t} [if ∃ l, emb l = i then f(l) else 0] = ∑_l f(l)`
+proof steps:
+1. `Finset.sum_subset` (image ⊆ t; terms 0 outside image) reduces to sum over `image emb univ`
+2. `Finset.sum_image hemb_inj.injOn` converts to `∑ l ∈ univ, f(emb l)`
+3. `split_ifs; hemb_inj h.choose_spec` resolves the choose-based equality
+
+**3 remaining sorries**:
+- (1) `convexHull_not_mem_requires_two`: needs `eq_pos_convex_span_of_mem_convexHull` from Mathlib + Fin.sum_univ_succ API work
+- (2) `binary_repr_of_mem_convexHull_not_mem`: depends on (1), needs Finset.centerMass renormalization
+- (3) Sub-case B2: WF descent on `caraDepth`, needs (2) to track vertex counts
+
+### Files Modified
+- `proofs/Proofs/ShapleyFolkman.lean`: proved sum rearrangement (~20 lines); improved B2 sorry comment
+
+### Next Steps
+1. Attempt to prove `convexHull_not_mem_requires_two` using Mathlib Carathéodory API
+2. Then `binary_repr_of_mem_convexHull_not_mem` follows
+3. With those two proved: only Sub-case B2 WF descent remains
+
+---
+
 ## Session 2026-04-22 (Session 8) — Case A Sorry-Free; Case B WF Documented
 
 **Mode**: REVISIT
