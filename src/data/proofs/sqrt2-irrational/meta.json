@@ -183,6 +183,16 @@
       "targetId": "mathematical-induction",
       "relationship": "foundational",
       "description": "The proof by infinite descent (showing no smallest counterexample exists) is closely related to strong induction — both rely on the well-ordering of $\\mathbb{N}$. The irrationality proof uses descent: if $\\sqrt{2} = p/q$ in lowest terms, then derive a fraction with smaller denominator, contradicting minimality"
+    },
+    {
+      "targetId": "sqrt2-minpoly-oq-01",
+      "relationship": "generalizes",
+      "description": "Proves that $X^2 - 2$ is the minimal polynomial of $\\sqrt{2}$ over $\\mathbb{Q}$ — the algebraic-number-theory restatement of irrationality. Irrationality of $\\sqrt{2}$ is equivalent to $[\\mathbb{Q}(\\sqrt{2}):\\mathbb{Q}] = 2$, which follows from $X^2 - 2$ being irreducible over $\\mathbb{Q}$"
+    },
+    {
+      "targetId": "sqrt2-minpoly-oq-02",
+      "relationship": "generalizes",
+      "description": "Extends the minimal polynomial result: $\\sqrt{2} + \\sqrt{3}$ has minimal polynomial $X^4 - 10X^2 + 1$ and $[\\mathbb{Q}(\\sqrt{2},\\sqrt{3}):\\mathbb{Q}] = 4$. The irrationality of $\\sqrt{2}$ is the degree-2 base case of this tower of field extensions"
     }
   ],
   "references": [
