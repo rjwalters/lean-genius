@@ -18,10 +18,10 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 5,
-    "axiomCount": 5,
+    "sorries": 8,
+    "axiomCount": 8,
     "lineCount": 286,
-    "assumptions": "5 sorries encoding axiomatized results: hausdorff_free_subgroup (free subgroup of SO(3)), banach_tarski (main theorem), banach_tarski_pieces_nonmeasurable (non-measurability of pieces), int_amenable (ℤ amenability), free_group_not_amenable (F₂ non-amenability). The main proof requires ~800 lines via free subgroup of SO(3) — beyond this gallery entry's scope. Note: paradoxical_no_finite_measure is fully proved (no sorry).",
+    "assumptions": "8 sorries encoding axiomatized results: hausdorff_free_subgroup (free subgroup of SO(3)), banach_tarski (main theorem), banach_tarski_pieces_nonmeasurable (non-measurability of pieces), int_amenable (ℤ amenability), W_a_two_cover (F₂ = W_a ∪ a·W_ainv cover, private lemma), W_a_smul_disj (W_a ∩ a·W_ainv = ∅, private lemma), W_b_two_cover (F₂ = W_b ∪ b·W_binv cover, private lemma), W_b_smul_disj (W_b ∩ b·W_binv = ∅, private lemma). Note: free_group_not_amenable is structurally proved (no sorry) but depends on the 4 W_* private lemma sorries above. paradoxical_no_finite_measure is fully proved (no sorry).",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -101,7 +101,7 @@
       "title": "§VI: Amenability and the Group-Theoretic Source",
       "startLine": 249,
       "endLine": 295,
-      "summary": "Defines amenable groups. States int_amenable (ℤ is amenable via Cesàro means, sorry) and free_group_not_amenable (F₂ non-amenable via paradoxical decomposition, sorry). Closes the BanachTarski namespace.",
+      "summary": "Defines amenable groups. States int_amenable (ℤ is amenable via Cesàro means, sorry). Structurally proves free_group_not_amenable (F₂ non-amenable) using 4 sorry'd private lemmas (W_a_two_cover, W_a_smul_disj, W_b_two_cover, W_b_smul_disj) that encode the two-cover and disjointness properties of the word-partition of F₂. Closes the BanachTarski namespace.",
       "mathContext": "A group $G$ is amenable iff $\\exists \\mu: 2^G \\to [0,\\infty]$ with $\\mu(G)=1$, $\\mu(A \\cup B) = \\mu(A) + \\mu(B)$ for disjoint $A, B$, and $\\mu(gA) = \\mu(A)$ for all $g \\in G$. Abelian groups are amenable (via Markov-Kakutani). $F_2$ is not amenable: $F_2 = W(a) \\sqcup aW(a^{-1})$ and $F_2 = W(b) \\sqcup bW(b^{-1})$ give two paradoxical coverings. `int_amenable` can likely be proved using Mathlib's Hahn-Banach (`NormedSpace.HahnBanach`) to construct a Banach limit extending the Cesàro mean on $\\ell^\\infty(\\mathbb{Z})$."
     }
   ],
@@ -202,11 +202,11 @@
     ],
     "namespace": "BanachTarski",
     "lineCount": 286,
-    "axiomCount": 5,
+    "axiomCount": 8,
     "theoremCount": 7,
     "definitionCount": 5,
     "path": "Proofs/LebesgueMeasureOQ06.lean",
-    "sorries": 5
+    "sorries": 8
   },
-  "sorries": 5
+  "sorries": 8
 }
