@@ -25,13 +25,13 @@ namespace FairGamesOQ03.Aristotle
 lemma stoppedValue_const {Ω : Type*} {m : MeasurableSpace Ω}
     (f : ℕ → Ω → ℝ) (n : ℕ) (ω : Ω) :
     stoppedValue f (fun _ => (n : ℕ∞)) ω = f n ω := by
-  sorry
+  simp [stoppedValue]
 
 /-- stoppedValue at min(τ, N) equals stoppedValue at τ when τ ≤ N -/
 lemma stoppedValue_eq_of_le {Ω : Type*} {m : MeasurableSpace Ω}
     (f : ℕ → Ω → ℝ) (τ : Ω → ℕ∞) (N : ℕ) (ω : Ω) (h : τ ω ≤ N) :
     stoppedValue f τ ω = stoppedValue f (fun ω' => min (τ ω') N) ω := by
-  sorry
+  simp only [stoppedValue, min_eq_left h]
 
 /-- Measurability of stoppedValue for adapted processes -/
 lemma stoppedValue_measurable {Ω : Type*} {m : MeasurableSpace Ω}
@@ -47,15 +47,15 @@ lemma stoppedValue_measurable {Ω : Type*} {m : MeasurableSpace Ω}
 /-- The constant function N is a ℕ∞-stopping time -/
 lemma isStoppingTime_const {Ω : Type*} {m : MeasurableSpace Ω}
     {ℱ : Filtration ℕ m} (N : ℕ∞) :
-    IsStoppingTime ℱ (fun _ : Ω => N) := by
-  sorry
+    IsStoppingTime ℱ (fun _ : Ω => N) :=
+  MeasureTheory.isStoppingTime_const ℱ N
 
 /-- min of two stopping times is a stopping time -/
 lemma isStoppingTime_min {Ω : Type*} {m : MeasurableSpace Ω}
     {ℱ : Filtration ℕ m} (τ π : Ω → ℕ∞)
     (hτ : IsStoppingTime ℱ τ) (hπ : IsStoppingTime ℱ π) :
-    IsStoppingTime ℱ (fun ω => min (τ ω) (π ω)) := by
-  sorry
+    IsStoppingTime ℱ (fun ω => min (τ ω) (π ω)) :=
+  hτ.min hπ
 
 /-- A stopped ℕ∞-stopping time bounded by N gives integrability -/
 lemma stoppedValue_integrable {Ω : Type*} {m : MeasurableSpace Ω}
@@ -78,7 +78,10 @@ lemma martingale_stopped_integral_eq {Ω : Type*} {m : MeasurableSpace Ω}
     (τ π : Ω → ℕ∞) (hτ : IsStoppingTime ℱ τ) (hπ : IsStoppingTime ℱ π)
     (hτπ : τ ≤ π) (N : ℕ) (hπN : ∀ ω, π ω ≤ N) :
     ∫ ω, stoppedValue f τ ω ∂μ = ∫ ω, stoppedValue f π ω ∂μ := by
-  sorry
+  have h₁ := hf.submartingale.expected_stoppedValue_mono hτ hπ hτπ hπN
+  have h₂ := hf.supermartingale.neg.expected_stoppedValue_mono hτ hπ hτπ hπN
+  simp only [stoppedValue, Pi.neg_apply, integral_neg] at h₁ h₂ ⊢
+  linarith
 
 /-- For a martingale, ∫ stoppedValue f τ = ∫ f 0 when τ ≤ N -/
 lemma martingale_stopped_eq_initial {Ω : Type*} {m : MeasurableSpace Ω}
@@ -87,7 +90,12 @@ lemma martingale_stopped_eq_initial {Ω : Type*} {m : MeasurableSpace Ω}
     (hf : Martingale f ℱ μ)
     (τ : Ω → ℕ∞) (hτ : IsStoppingTime ℱ τ) (N : ℕ) (hτN : ∀ ω, τ ω ≤ N) :
     ∫ ω, stoppedValue f τ ω ∂μ = ∫ ω, f 0 ω ∂μ := by
-  sorry
+  have h₁ := hf.submartingale.expected_stoppedValue_mono
+    (MeasureTheory.isStoppingTime_const ℱ 0) hτ (fun _ => zero_le _) hτN
+  have h₂ := hf.supermartingale.neg.expected_stoppedValue_mono
+    (MeasureTheory.isStoppingTime_const ℱ 0) hτ (fun _ => zero_le _) hτN
+  simp only [stoppedValue_const, stoppedValue, Pi.neg_apply, integral_neg] at h₁ h₂ ⊢
+  linarith
 
 /-
   ## Section 4: NNReal to Real Conversion Helpers
@@ -96,8 +104,8 @@ lemma martingale_stopped_eq_initial {Ω : Type*} {m : MeasurableSpace Ω}
 /-- ENNReal.toReal of a probability measure of a set is ≤ 1 -/
 lemma measure_toReal_le_one {Ω : Type*} {m : MeasurableSpace Ω}
     {μ : Measure Ω} [IsProbabilityMeasure μ] (s : Set Ω) :
-    (μ s).toReal ≤ 1 := by
-  sorry
+    (μ s).toReal ≤ 1 :=
+  ENNReal.toReal_le_one.mpr prob_le_one
 
 /-- thresh * (μ s).toReal ≤ integral bound from Doob's maximal ineq via NNReal -/
 lemma doob_maximal_real_of_nnreal {Ω : Type*} {m : MeasurableSpace Ω}
