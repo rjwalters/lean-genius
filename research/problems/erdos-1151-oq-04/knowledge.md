@@ -158,3 +158,48 @@ Therefore T_n = Q_n.
    - Banach-Steinhaus gives lim sup = ∞ (NOT lim = +∞ as currently stated)
    - For lim = +∞: needs specialized construction for Chebyshev nodes at rational cosines
    - Option: weaken axiom statement to ∃ f, lim sup |Lₙf(x)| = ∞
+
+## Session 2026-04-23 — Results (Session 7)
+
+**Mode**: REVISIT
+**Outcome**: progress
+**Sorries closed**: 0 (infrastructure lemmas, not closing the remaining sorry directly)
+
+### What I Did
+Proved three infrastructure lemmas needed for `chebyshev_lebesgue_growth`:
+
+1. **`cos_rational_pi_ne_zero`** (compiles): cos(nπp/q) ≠ 0 for all n when p,q odd.
+   - Parity argument: 2np is even, (2k+1)q is odd×odd=odd; contradiction via `omega`
+   
+2. **`cos_rational_pi_mod`** (compiles with 800k heartbeats): Periodicity of cos(nπp/q) in n with period 2q.
+   - Via `Real.cos_add_nat_mul_two_pi` after decomposing n = (n%2q) + (n/2q)·2q
+   
+3. **`cos_rational_pi_pos_min`** (compiles): ∃ δ > 0 s.t. |cos(nπp/q)| ≥ δ for all n.
+   - Key fix: use `Finset.exists_min_image` NOT `Finset.min'` to avoid whnf timeout
+   - `Finset.min'` on Real.cos finsets causes whnf to loop on transcendental values
+   - Also needed `haveI : Nonempty (Fin (2 * q)) := ⟨⟨0, h2q_pos⟩⟩` for instance synthesis
+
+4. **`chebyshev_lebesgue_eq_all_n`** (compiles): The Lebesgue formula holds for all n.
+   - Key fix: `set θ := (↑p : ℝ) * Real.pi / ↑q` before simp to avoid isDefEq timeout
+   - Direct proof mirrors `chebyshev_lebesgue_eq`; `set_option maxHeartbeats 800000`
+
+### Key Technical Findings
+
+- **`set_option maxHeartbeats N in` must come BEFORE the docstring**, not between docstring and `lemma`
+- **`Finset.min'` pathology**: On finsets containing transcendental Real.cos values, whnf loops. Always use `Finset.exists_min_image` to find a minimizing element without computing the minimum value.
+- **isDefEq pathology with noncomputable defs**: `chebyshevLebesgue` (noncomputable def) causes exponential blow-up during definitional equality checks in term-mode proofs. Fix: abstract shared subexpressions with `set`.
+- **`push_cast` on naturals**: normalizes implicit coercions; needed to align `n` vs `↑n` in expressions.
+
+### Files Modified
+- `proofs/Proofs/Erdos1151OQ04.lean` (lines ~606-735)
+
+### PR
+rjwalters/lean-genius#11932
+
+### Next Steps
+1. **chebyshev_lebesgue_growth**: The remaining sorry. With the three infrastructure lemmas now proved:
+   - |cos(nπp/q)| ≥ δ > 0 for all n (by cos_rational_pi_pos_min)
+   - Λₙ(x) = |cos(nθ)|/n · Σ sin(φₖ)/|x - cos φₖ|
+   - Need: Σₖ sin(φₖ)/|cos(πp/q) - cos φₖ| ≥ C·n·log(n) (harmonic sum lower bound)
+   - Available: `Real.tendsto_sum_range_one_div_nat_succ_atTop` for harmonic divergence
+   - Key estimate needed: for nodes near πp/q, |cos(πp/q) - cos φₖ| ≤ |πp/q - φₖ|
