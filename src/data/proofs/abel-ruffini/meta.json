@@ -2,7 +2,7 @@
   "id": "abel-ruffini",
   "title": "Abel-Ruffini Theorem",
   "slug": "abel-ruffini",
-  "description": "The Abel-Ruffini theorem (Wiedijk #16): there is no general solution in radicals to polynomial equations of degree five or higher. First proved by Abel (1824) and later illuminated by Galois's theory connecting radical solvability to group structure. This formalization is a pedagogical walkthrough composed from Mathlib's Galois theory infrastructure — the contrapositive chain from solvability by radicals (`IsSolvableByRad`) through solvable Galois groups (`IsSolvable q.Gal`) to the non-solvability of S₅ (since A₅ is simple and non-abelian) — organized as 9 theorems across 185 lines with zero sorries and zero axioms.",
+  "description": "A pedagogical walkthrough of the Abel-Ruffini theorem (Wiedijk #16) composed from Mathlib's Galois theory infrastructure: the contrapositive chain from solvability by radicals (`IsSolvableByRad`) through solvable Galois groups (`IsSolvable q.Gal`) to the non-solvability of S₅ (since A₅ is simple and non-abelian), organized as 9 theorems across 185 lines with zero sorries and zero axioms. There is no general solution in radicals to polynomial equations of degree five or higher — first proved by Abel (1824) and later illuminated by Galois's theory connecting radical solvability to group structure.",
   "meta": {
     "author": "Niels Henrik Abel (1824), Evariste Galois (1832)",
     "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/FieldTheory/AbelRuffini.html",
