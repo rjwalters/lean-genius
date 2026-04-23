@@ -50,42 +50,42 @@
   "sections": [
     {
       "title": "Primitive Cube Root of Unity",
-      "startLine": 45,
-      "endLine": 100,
-      "description": "Define ω = (-1+I√3)/2 and its square ω² = (-1-I√3)/2. Prove the fundamental identities ω³=1 and 1+ω+ω²=0.",
-      "summary": "omega and its algebraic properties",
+      "startLine": 65,
+      "endLine": 116,
+      "description": "Define ω = (-1+I√3)/2 and its square ω² = (-1-I√3)/2. Prove the fundamental identities ω³=1 and 1+ω+ω²=0 using sqrt3_sq_real and nlinarith.",
+      "summary": "omega, omegaSq definitions and cube root identity proofs",
       "id": "primitive-cube-root"
     },
     {
       "title": "Outer Napoleon DFT at Frequency 1",
-      "startLine": 105,
-      "endLine": 150,
+      "startLine": 118,
+      "endLine": 156,
       "description": "Prove G₁+ω·G₂+ω²·G₃ = -(z₁+ω·z₂+ω²·z₃): the frequency-1 DFT component of the outer Napoleon triangle is the negation of the original triangle's frequency-1 component.",
       "summary": "Y₁ = -X₁ for outer Napoleon triangle",
       "id": "outer-dft-freq1"
     },
     {
       "title": "Outer Napoleon DFT at Frequency 2",
-      "startLine": 155,
-      "endLine": 195,
+      "startLine": 158,
+      "endLine": 191,
       "description": "Prove G₁+ω²·G₂+ω·G₃ = 0: the frequency-2 DFT component vanishes. Since equilateral triangles are characterized by vanishing X₂, this explains why Napoleon triangles are always equilateral.",
       "summary": "Y₂ = 0 for outer Napoleon triangle",
       "id": "outer-dft-freq2"
     },
     {
       "title": "Inner Napoleon DFT",
-      "startLine": 200,
-      "endLine": 240,
-      "description": "The inner Napoleon triangle has DFT Y₁'=0 and Y₂'=-X₂: exactly swapping the roles of X₁ and X₂ compared to the outer construction.",
+      "startLine": 193,
+      "endLine": 265,
+      "description": "The inner Napoleon triangle has DFT Y₁'=0 (napoleon_inner_dft1) and Y₂'=-X₂ (napoleon_inner_dft2): exactly swapping the roles of X₁ and X₂ compared to the outer construction.",
       "summary": "Y₁'=0 and Y₂'=-X₂ for inner Napoleon triangle",
       "id": "inner-dft"
     },
     {
       "title": "Complete DFT Filter Picture",
-      "startLine": 245,
-      "endLine": 275,
-      "description": "Bundle theorems: outer Napoleon acts as (X₀↦X₀, X₁↦-X₁, X₂↦0) and inner as (X₀↦X₀, X₁↦0, X₂↦-X₂). IDFT recovery formula: G₁=(X₀-X₁)/3.",
-      "summary": "Napoleon construction as explicit DFT filter",
+      "startLine": 267,
+      "endLine": 346,
+      "description": "Bundle theorems: outer Napoleon acts as (X₀↦X₀, X₁↦-X₁, X₂↦0) and inner as (X₀↦X₀, X₁↦0, X₂↦-X₂). IDFT recovery formula: G₁=(X₀-X₁)/3. Summary #check lines.",
+      "summary": "Napoleon construction as explicit DFT filter with IDFT recovery",
       "id": "dft-filter-complete"
     }
   ],
