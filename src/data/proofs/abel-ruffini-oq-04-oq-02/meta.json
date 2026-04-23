@@ -121,6 +121,44 @@
       "Can the general theorem 'finite group of order < 60 is solvable' be formalized?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "solvable_iff_le_four",
+      "type": "core",
+      "description": "The complete bidirectional classification: Sₙ is solvable if and only if n ≤ 4. Forward direction uses contrapositive of Mathlib's Equiv.Perm.not_solvable (n ≥ 5 → not solvable). Backward direction uses interval_cases to dispatch 5 finite subcases {0,1,2,3,4}.",
+      "leanType": "(n : ℕ) → IsSolvable (Perm (Fin n)) ↔ n ≤ 4"
+    },
+    {
+      "name": "s4_solvable",
+      "type": "key",
+      "description": "S₄ is solvable. Proves derivedSeries(S₄, 3) = ⊥ via native_decide, witnessing the 3-step series S₄ ⊵ A₄ ⊵ V₄ ⊵ {e} where V₄ is the Klein four-group.",
+      "leanType": "IsSolvable (Perm (Fin 4))"
+    },
+    {
+      "name": "s3_solvable",
+      "type": "key",
+      "description": "S₃ is solvable. Proves derivedSeries(S₃, 2) = ⊥ via decide, witnessing the 2-step series S₃ ⊵ A₃ ≅ ℤ/3ℤ ⊵ {e}.",
+      "leanType": "IsSolvable (Perm (Fin 3))"
+    },
+    {
+      "name": "s2_solvable",
+      "type": "supporting",
+      "description": "S₂ is solvable. Deduced by inferInstance from the s2_comm CommGroup instance (every abelian group is solvable).",
+      "leanType": "IsSolvable (Perm (Fin 2))"
+    },
+    {
+      "name": "small_symmetric_solvable",
+      "type": "corollary",
+      "description": "For n ≤ 4, the symmetric group Perm(Fin n) is solvable. Convenience corollary extracting the backward direction of solvable_iff_le_four.",
+      "leanType": "(n : ℕ) → n ≤ 4 → IsSolvable (Perm (Fin n))"
+    },
+    {
+      "name": "large_symmetric_not_solvable",
+      "type": "corollary",
+      "description": "For n ≥ 5, the symmetric group Perm(Fin n) is not solvable. Derived from solvable_iff_le_four by omega.",
+      "leanType": "(n : ℕ) → 5 ≤ n → ¬IsSolvable (Perm (Fin n))"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.GroupTheory.Solvable",
