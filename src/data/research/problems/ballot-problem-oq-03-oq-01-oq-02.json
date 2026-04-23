@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (session 5): Fixed Bool.xxx_eq_xxx simp lemma build failures in BallotProblemOQ03OQ02.lean. All 4 remaining sorries are HARD (RSK bijection, Vandermonde det, Catalan bijection, main theorem). hook_length_formula_two_rect is proved conditional on card_SYT_twoRectYD.",
+    "progressSummary": "MAJOR PROGRESS (sessions 1-7): hook_length_formula fully proved for 4 infinite families: 1-row, 1-col, hook-shape, 2×m rect. card_SYT_twoRectYD proved via Lindstrom reflection bijection (2727-line file, 3 sorries remain for GENERAL formula: RSK+Vandermonde+main theorem)",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -57,7 +57,12 @@
       "hookProd_hookShapeYD: proved hookProd(m+1,1)=(m+2)*m! in BallotProblemOQ03OQ01OQ02.lean:775",
       "card_SYT_hookShapeYD: proved |SYT(m+1,1)|=m+1 via Equiv.ofBijective hookSYT in BallotProblemOQ03OQ01OQ02.lean:1062",
       "hook_length_formula_hook_shape: proved hook formula for hook shapes in BallotProblemOQ03OQ01OQ02.lean:1075",
-      "Bool simp lemma fix: removed Bool.false_eq_false etc. from 5 locations in BallotProblemOQ03OQ02.lean (session 5, 2026-04-22)"
+      "Bool simp lemma fix: removed Bool.false_eq_false etc. from 5 locations in BallotProblemOQ03OQ02.lean (session 5, 2026-04-22)",
+      "sytBallotEquiv: SYT(twoRectYD m) ≃ ballot m-subsets of Fin(2m) (BallotProblemOQ03OQ01OQ02.lean:1503)",
+      "lRefl/firstAbove/badBarrier: Lindstrom reflection machinery (BallotProblemOQ03OQ01OQ02.lean:1572-1713)",
+      "ballot_finset_card: |ballot m-subsets| = Cn m (BallotProblemOQ03OQ01OQ02.lean:2620)",
+      "card_SYT_twoRectYD: Fintype.card(SYT(m×m)) = Cn m with 0 sorries (BallotProblemOQ03OQ01OQ02.lean:2708)",
+      "hook_length_formula_two_rect: proved with 0 sorries (BallotProblemOQ03OQ01OQ02.lean:2716)"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -79,17 +84,21 @@
       "Hook-shape family fully formalized without LGV infrastructure - elementary bijection suffices",
       "Pre-existing build failures in BallotProblemOQ03OQ02.lean (Bool.false_eq_false removed from Lean4) are blocking full build verification but do not affect Part VIII work",
       "Bool.false_eq_false, Bool.true_eq_false, Bool.false_eq_true, Bool.true_eq_true removed from modern Lean4/Mathlib — simp handles Bool equalities by kernel/definitional reduction",
-      "card_SYT_twoRectYD strategy: SYT(2×m) ↔ ballot sequences ↔ Dyck paths ↔ Cn m via subset bijection (k ∈ S iff k goes to row 1, ballot condition enforces ordering)"
+      "card_SYT_twoRectYD strategy: SYT(2×m) ↔ ballot sequences ↔ Dyck paths ↔ Cn m via subset bijection (k ∈ S iff k goes to row 1, ballot condition enforces ordering)",
+      "card_SYT_twoRectYD proved via Lindstrom reflection: SYT(m×m) ≃ ballot m-subsets of Fin(2m), |ballot subsets| = Cn m",
+      "hook_length_formula_two_rect fully proved (0 sorries): card×hookProd=(2m)! for 2×m rectangular shapes",
+      "Lindstrom reflection (lRefl) maps bad m-subsets ↔ (m+1)-subsets via involution at firstAbove/badBarrier",
+      "sytBallotEquiv: complete equiv with proved left/right inverses, uses orderEmbOfFin + compFin machinery"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
       "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux"
     ],
     "nextSteps": [
-      "Prove card_SYT_twoRectYD via ballot bijection: define SYT(2×m) ↔ {S ⊂ {1..2m} : |S|=m, ballot condition}",
-      "This unblocks hook_length_formula_two_rect which is already proved conditional on card_SYT_twoRectYD",
-      "Consider corner-cell induction formula f^λ = Σ_{corners c} f^{λ\\c} for general hook-length formula",
-      "All 4 deep sorries (ni_count, lgv_det, card_SYT_twoRect, hook_formula) require 200-300 lines each"
+      "Prove ni_count_eq_syt_count: SYT(λ) ↔ NI-paths via Fomin growth diagrams or RSK (~200 lines, HARD)",
+      "Prove lgv_det_factors_as_hook_quotient: det factorization identity via Vandermonde (~200 lines, HARD)",
+      "Extend ballot bijection to general 2-row shapes [a,b] with a≥b using ballot formula for unequal steps",
+      "Consider corner-cell induction approach to avoid LGV chain for general hook-length formula"
     ]
   },
   "tags": [
