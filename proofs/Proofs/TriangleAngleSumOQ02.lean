@@ -69,38 +69,45 @@ on a Riemannian surface. The key ingredient is the **angular excess**:
   excess = (α + β + γ) - π = ∫_T K dA
 
 This encapsulates the local Gauss-Bonnet theorem.
+
+Note: Fields are named a, b, c (not α, β, γ) to avoid conflict with
+Lean 4's auto-bound implicit mechanism for Greek letters.
 -/
 
 /-- A geodesic triangle on a Riemannian surface.
-    Records the angles, area, and integrated Gaussian curvature.
-    The local Gauss-Bonnet formula `gb_local` is the key axiom. -/
+    Records the angles (a, b, c correspond to α, β, γ), area, and integrated
+    Gaussian curvature. The local Gauss-Bonnet formula `gb_local` is the key axiom. -/
 structure GeodesicTriangle where
-  /-- The three interior angles (radians) -/
-  α β γ : ℝ
+  /-- Interior angle α (radians) -/
+  a : ℝ
+  /-- Interior angle β (radians) -/
+  b : ℝ
+  /-- Interior angle γ (radians) -/
+  c : ℝ
   /-- The area of the triangle -/
   area : ℝ
   /-- Integrated Gaussian curvature ∫_T K dA over the triangle -/
   integratedCurvature : ℝ
   /-- Each angle is positive -/
-  α_pos : 0 < α
-  β_pos : 0 < β
-  γ_pos : 0 < γ
+  a_pos : 0 < a
+  b_pos : 0 < b
+  c_pos : 0 < c
   /-- Each angle is less than π -/
-  α_lt_pi : α < π
-  β_lt_pi : β < π
-  γ_lt_pi : γ < π
+  a_lt_pi : a < π
+  b_lt_pi : b < π
+  c_lt_pi : c < π
   /-- Area is positive -/
   area_pos : 0 < area
   /-- Local Gauss-Bonnet: angle excess = integrated curvature -/
-  gb_local : α + β + γ - π = integratedCurvature
+  gb_local : a + b + c - π = integratedCurvature
 
 /-- The angular excess of a geodesic triangle. -/
 def GeodesicTriangle.excess (T : GeodesicTriangle) : ℝ :=
-  T.α + T.β + T.γ - π
+  T.a + T.b + T.c - π
 
 /-- The angle sum of a geodesic triangle. -/
 def GeodesicTriangle.angleSum (T : GeodesicTriangle) : ℝ :=
-  T.α + T.β + T.γ
+  T.a + T.b + T.c
 
 /-- The angle excess equals the integrated curvature (local Gauss-Bonnet). -/
 theorem excess_eq_curvature (T : GeodesicTriangle) :
@@ -110,7 +117,7 @@ theorem excess_eq_curvature (T : GeodesicTriangle) :
 /-- The angle sum equals π plus the excess. -/
 theorem angleSum_eq_pi_add_excess (T : GeodesicTriangle) :
     T.angleSum = π + T.excess := by
-  simp [GeodesicTriangle.angleSum, GeodesicTriangle.excess]; ring
+  simp [GeodesicTriangle.angleSum, GeodesicTriangle.excess]
 
 /-- The angle sum equals π plus the integrated curvature. -/
 theorem angleSum_eq_pi_add_curvature (T : GeodesicTriangle) :
@@ -133,7 +140,7 @@ structure FlatTriangle extends GeodesicTriangle where
 /-- **Euclid's Theorem**: On a flat surface, the angle sum equals π.
     This is the K = 0 special case of local Gauss-Bonnet. -/
 theorem flat_angle_sum (T : FlatTriangle) :
-    T.α + T.β + T.γ = π := by
+    T.a + T.b + T.c = π := by
   have := T.gb_local
   linarith [T.flat]
 
@@ -141,7 +148,6 @@ theorem flat_angle_sum (T : FlatTriangle) :
 theorem flat_excess_zero (T : FlatTriangle) :
     T.excess = 0 := by
   simp [GeodesicTriangle.excess, flat_angle_sum T]
-  ring
 
 /-- The angleSum of a flat triangle is π. -/
 theorem flat_angleSum_eq_pi (T : FlatTriangle) :
@@ -172,20 +178,22 @@ structure SphericalTriangle extends GeodesicTriangle where
     the angular excess. Equivalently, the angle sum exceeds π by Area/r².
     This is the positive-curvature case of local Gauss-Bonnet. -/
 theorem girard_theorem (T : SphericalTriangle) :
-    T.α + T.β + T.γ - π = T.area / T.radius ^ 2 := by
+    T.a + T.b + T.c - π = T.area / T.radius ^ 2 := by
   rw [← T.spherical]
   exact T.gb_local
 
 /-- The area of a spherical triangle is r² times the angular excess. -/
 theorem spherical_area_eq_radius_sq_excess (T : SphericalTriangle) :
-    T.area = T.radius ^ 2 * (T.α + T.β + T.γ - π) := by
+    T.area = T.radius ^ 2 * (T.a + T.b + T.c - π) := by
   have h := girard_theorem T
-  have hr2 : T.radius ^ 2 ≠ 0 := pow_ne_zero _ T.radius_pos.ne'
-  field_simp [hr2] at h ⊢; linarith
+  have hr2_pos : 0 < T.radius ^ 2 := sq_pos_of_pos T.radius_pos
+  have key : T.area = (T.a + T.b + T.c - π) * T.radius ^ 2 := by
+    rw [eq_comm, h]; exact div_mul_cancel₀ T.area hr2_pos.ne'
+  rw [key]; ring
 
 /-- Spherical triangles have angle sum **strictly greater than** π. -/
 theorem spherical_angle_sum_gt_pi (T : SphericalTriangle) :
-    π < T.α + T.β + T.γ := by
+    π < T.a + T.b + T.c := by
   have hexcess := girard_theorem T
   have harea : 0 < T.area / T.radius ^ 2 :=
     div_pos T.area_pos (sq_pos_of_pos T.radius_pos)
@@ -194,17 +202,17 @@ theorem spherical_angle_sum_gt_pi (T : SphericalTriangle) :
 /-- The area of a spherical triangle on the unit sphere (r = 1)
     equals the angular excess. -/
 theorem unit_sphere_area_eq_excess (T : SphericalTriangle) (hr : T.radius = 1) :
-    T.area = T.α + T.β + T.γ - π := by
+    T.area = T.a + T.b + T.c - π := by
   have := girard_theorem T
   rw [hr, one_pow, div_one] at this
   linarith
 
 /-- Spherical triangle angle sum is strictly between π and 3π. -/
 theorem spherical_sum_bound (T : SphericalTriangle) :
-    π < T.α + T.β + T.γ ∧ T.α + T.β + T.γ < 3 * π := by
+    π < T.a + T.b + T.c ∧ T.a + T.b + T.c < 3 * π := by
   constructor
   · exact spherical_angle_sum_gt_pi T
-  · have := T.α_lt_pi; have := T.β_lt_pi; have := T.γ_lt_pi; linarith
+  · have := T.a_lt_pi; have := T.b_lt_pi; have := T.c_lt_pi; linarith
 
 /-
 ## Part IV: The Hyperbolic Case — Lambert's Theorem (1761)
@@ -226,27 +234,27 @@ structure HyperbolicTriangle extends GeodesicTriangle where
     equals its area. The angle sum is less than π by exactly Area(T).
     This is the negative-curvature case of local Gauss-Bonnet. -/
 theorem lambert_theorem (T : HyperbolicTriangle) :
-    π - (T.α + T.β + T.γ) = T.area := by
+    π - (T.a + T.b + T.c) = T.area := by
   have := T.gb_local
   rw [T.hyperbolic] at this
   linarith
 
 /-- Hyperbolic triangles have angle sum **strictly less than** π. -/
 theorem hyperbolic_angle_sum_lt_pi (T : HyperbolicTriangle) :
-    T.α + T.β + T.γ < π := by
+    T.a + T.b + T.c < π := by
   have := lambert_theorem T
   linarith [T.area_pos]
 
 /-- The area of a hyperbolic triangle is bounded by π. -/
 theorem hyperbolic_area_lt_pi (T : HyperbolicTriangle) :
     T.area < π := by
-  have hpos : 0 < T.α + T.β + T.γ :=
-    add_pos (add_pos T.α_pos T.β_pos) T.γ_pos
+  have hpos : 0 < T.a + T.b + T.c :=
+    add_pos (add_pos T.a_pos T.b_pos) T.c_pos
   linarith [lambert_theorem T]
 
 /-- Hyperbolic triangle area equals the angle defect. -/
 theorem hyperbolic_area_eq_defect (T : HyperbolicTriangle) :
-    T.area = π - T.α - T.β - T.γ := by
+    T.area = π - T.a - T.b - T.c := by
   linarith [lambert_theorem T]
 
 /-
@@ -276,7 +284,7 @@ theorem total_curvature_eq (T : RiemannianTriangulation) :
     (∑ i, (T.triangles i).integratedCurvature) = 2 * π * T.eulerChar := by
   rw [show (∑ i, (T.triangles i).integratedCurvature) =
       (∑ i, (T.triangles i).excess) from
-    Finset.sum_congr rfl fun i _ => ((T.triangles i).excess_eq_curvature).symm]
+    Finset.sum_congr rfl fun i _ => (excess_eq_curvature (T.triangles i)).symm]
   exact T.discrete_gb
 
 /-- For a triangulation of the 2-sphere (χ = 2), total curvature is 4π. -/
@@ -362,9 +370,9 @@ theorem euclidean_case (T : FlatTriangle) :
 
 /-- Gauss-Bonnet unifies all three geometries. -/
 theorem three_geometries_unified :
-    (∀ T : FlatTriangle, T.α + T.β + T.γ = π) ∧
-    (∀ T : SphericalTriangle, π < T.α + T.β + T.γ) ∧
-    (∀ T : HyperbolicTriangle, T.α + T.β + T.γ < π) :=
+    (∀ T : FlatTriangle, T.a + T.b + T.c = π) ∧
+    (∀ T : SphericalTriangle, π < T.a + T.b + T.c) ∧
+    (∀ T : HyperbolicTriangle, T.a + T.b + T.c < π) :=
   ⟨flat_angle_sum, spherical_angle_sum_gt_pi, hyperbolic_angle_sum_lt_pi⟩
 
 /-- Mathlib's Euclidean angle sum: the underlying flat-case theorem.
