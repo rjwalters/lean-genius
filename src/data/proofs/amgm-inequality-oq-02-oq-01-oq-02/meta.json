@@ -150,6 +150,21 @@
       "targetId": "amgm-inequality-oq-02",
       "relationship": "extends",
       "description": "Root AM-GM formalization. The off-diagonal symmetry identity is part of the Newton-Girard framework underlying AM-GM"
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "ancestor",
+      "description": "The main AM-GM inequality — grandparent proof. The off-diagonal symmetry proved here (Σ_{i≠j} = 2·e₂) completes the factoring step in the parent Newton-Girard identity, ultimately connecting to the AM-GM proof."
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "related",
+      "description": "Vieta's formulas express polynomial coefficients as elementary symmetric polynomials. The second elementary symmetric polynomial e₂ = Σ_{i<j} xᵢxⱼ proved equal to half the off-diagonal sum here is exactly Vieta's e₂, connecting off-diagonal symmetry to root-coefficient relations."
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "The Cauchy-Schwarz inequality uses the same Lagrange identity that decomposes (Σaᵢbᵢ)² into a sum over pairs. The symmetric function structure here (pairing (i,j) with (j,i)) is the combinatorial engine behind Cauchy-Schwarz."
     }
   ],
   "references": [
