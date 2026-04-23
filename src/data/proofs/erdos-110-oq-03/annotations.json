@@ -4,7 +4,7 @@
     "proofId": "erdos-110-oq-03",
     "range": {
       "startLine": 1,
-      "endLine": 30
+      "endLine": 36
     },
     "type": "concept",
     "title": "EHS Conjecture at Higher Cardinals: Survey and Techniques",
@@ -26,11 +26,35 @@
     ]
   },
   {
+    "id": "ann-ehs-core-definitions",
+    "proofId": "erdos-110-oq-03",
+    "range": { "startLine": 37, "endLine": 81 },
+    "type": "definition",
+    "title": "Core Graph Coloring Definitions: Chromatic Numbers and Cardinal Extensions",
+    "content": "Part I (lines 37-74) restates the key definitions from the parent Erdős #110 problem to make this file self-contained. Eight definitions build the chromatic number infrastructure:\n\n`IsProperColoring G c` (L37-38): a vertex coloring `c : V → Fin k` is proper if adjacent vertices receive different colors.\n\n`IsKColorable G k` (L41-42): G admits a proper k-coloring (existential).\n\n`inducedSubgraph G S` (L45-48): the subgraph on vertex subset `S ⊆ V`, inheriting adjacency. Uses Lean's dependent type `SimpleGraph S` where `S : Set V`.\n\n`chromaticNumber G` (L51-52): the chromatic number as a value in `ℕ∞` (extended naturals), defined as `⨅ k : ℕ, if IsKColorable G k then k else ⊤`. The infimum in `ℕ∞` is well-defined.\n\n`subgraphChromaticNumber G S` (L54-55): chromatic number of the induced subgraph on S.\n\n`HasFiniteNChromaticSubgraph G n bound` (L58-59): there exists a finite set `S ⊆ V` with `|S| ≤ bound` and `χ(G[S]) ≥ n`.\n\n`HasChromaticNumberAtLeast G κ` (L62-63): for all `k : ℕ` with `k < κ` (as cardinals), G is not k-colorable.\n\n`HasChromaticNumber G κ` (L66-68): exactly `κ` — both `≥ κ` AND `κ.toNat`-colorable (for `κ.toNat > 0`). The condition handles infinite cardinals where `toNat = 0`.",
+    "mathContext": "Chromatic number as infimum: $\\chi(G) = \\inf\\{k \\in \\mathbb{N} : G \\text{ is } k\\text{-colorable}\\}$ in $\\mathbb{N}_\\infty = \\mathbb{N} \\cup \\{\\infty\\}$. For uncountable chromatic numbers: $\\chi(G) = \\kappa$ (infinite cardinal) is formalized via `HasChromaticNumber G κ` = `(HasChromaticNumberAtLeast G κ) ∧ (κ.toNat > 0 → IsKColorable G κ.toNat)`. The `toNat` coercion: for $\\kappa = \\aleph_1$, `Cardinal.aleph(1).toNat = 0`, so the second condition is vacuously true — matching the mathematical convention that $\\aleph_1$-chromatic means not finitely chromatic.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "SimpleGraph Mathlib",
+      "IsProperColoring",
+      "chromaticNumber as infimum in ℕ∞",
+      "Cardinal.toNat for infinite cardinals",
+      "inducedSubgraph",
+      "HasFiniteNChromaticSubgraph"
+    ],
+    "prerequisites": [
+      "SimpleGraph from Mathlib.Combinatorics.SimpleGraph",
+      "ENat (ℕ∞) and iInf in Mathlib",
+      "Cardinal.toNat coercion",
+      "Set vs Finset in Lean 4"
+    ]
+  },
+  {
     "id": "ann-ehs-higher-conjecture",
     "proofId": "erdos-110-oq-03",
     "range": {
-      "startLine": 75,
-      "endLine": 106
+      "startLine": 82,
+      "endLine": 112
     },
     "type": "concept",
     "title": "GeneralizedEHSConjecture κ: Parametric Formulation and ℵ₁ Special Case",
@@ -55,7 +79,7 @@
     "proofId": "erdos-110-oq-03",
     "range": {
       "startLine": 113,
-      "endLine": 145
+      "endLine": 146
     },
     "type": "theorem",
     "title": "Todorcevic Walks Axiom: Counterexamples at Every Successor Aleph",
@@ -81,7 +105,7 @@
     "proofId": "erdos-110-oq-03",
     "range": {
       "startLine": 147,
-      "endLine": 185
+      "endLine": 190
     },
     "type": "concept",
     "title": "CounterexampleGraph Structure and the Limit Cardinal Open Question",
@@ -106,7 +130,7 @@
     "proofId": "erdos-110-oq-03",
     "range": {
       "startLine": 191,
-      "endLine": 230
+      "endLine": 234
     },
     "type": "insight",
     "title": "No Universal Bounding Function and Independence of Failures",

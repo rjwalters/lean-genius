@@ -212,5 +212,25 @@
     "path": "Proofs/Erdos110HigherCardinals.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "generalized_ehs_fails_all_successor_alephs",
+      "statement": "∀ (α : Ordinal), ¬GeneralizedEHSConjecture (Cardinal.aleph (α + 1))",
+      "significance": "The core result: the EHS conjecture fails at every successor aleph ℵ_{α+1} for all ordinals α, generalizing Lambie-Hanson's ℵ₁ disproof to the entire successor hierarchy.",
+      "lineNumber": 113
+    },
+    {
+      "name": "no_universal_bound",
+      "statement": "¬∃ F : ℕ → ℕ, ∀ G : SimpleGraph _, HasChromaticNumberAtLeast G (Cardinal.aleph 1) → ∃ N₀, ∀ n ≥ N₀, HasFiniteNChromaticSubgraph G n (F n)",
+      "significance": "Stronger than individual failures: no single bounding function F works for all ℵ₁-chromatic graphs simultaneously, ruling out any weak universal version of the EHS conjecture.",
+      "lineNumber": 215
+    },
+    {
+      "name": "erdos_110_oq_03_summary",
+      "statement": "¬GeneralizedEHSConjecture (Cardinal.aleph 1) ∧ (∀ α, ¬GeneralizedEHSConjecture (Cardinal.aleph (α + 1))) ∧ (¬∃ F, ...)",
+      "significance": "Summary theorem combining three results: failure at ℵ₁, failure at all successor alephs, and no universal bounding function — a complete negative answer for the successor cardinal hierarchy.",
+      "lineNumber": 251
+    }
+  ],
   "sorries": 0
 }
