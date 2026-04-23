@@ -168,6 +168,18 @@
     "prerequisites": ["Fintype.card", "symmetric group", "alternating group", "decide/native_decide tactics", "Lagrange's theorem"]
   },
   {
+    "id": "arg-index-structure",
+    "proofId": "abel-ruffini-galois-extensions",
+    "range": { "startLine": 349, "endLine": 365 },
+    "type": "technique",
+    "title": "Index and Structure Theorems: Trivial Group Orders and A₅ Instantiation",
+    "content": "Part X collects three short but structurally important results. `card_s0` and `card_s1` verify $|S_0| = 1$ and $|S_1| = 1$ by `decide` — these confirm the trivial group identities used as base cases throughout the file, providing formal anchors for the cardinality computation chain. `a5_not_solvable` is the most significant: it instantiates the general theorem `alternating_not_solvable_of_five_le` at $n = 5$ using `le_rfl` (the reflexivity proof that $5 \\leq 5$). This one-liner bridges the general theorem to the concrete $A_5$ case, making it directly importable by downstream proofs without re-proving the $n \\geq 5$ bound. The three results together serve as an index of named corollaries — a reference layer atop the general theorems, ensuring that the specific groups $S_0$, $S_1$, and $A_5$ have canonically named results for citation.",
+    "mathContext": "$|S_0| = 0! = 1$; $|S_1| = 1! = 1$. Both groups are trivial (unique element). $A_5$ not solvable: direct corollary of $A_n$ not solvable for $n \\geq 5$ (since $5 \\leq 5$). The `le_rfl` tactic supplies the proof of $5 \\leq 5$ without invoking `omega` or arithmetic — the cleanest possible instantiation of a universal bound at its base case.",
+    "significance": "supporting",
+    "relatedConcepts": ["alternating_not_solvable_of_five_le", "Fintype.card", "le_rfl", "trivial group", "a5_not_solvable"],
+    "prerequisites": ["alternating_not_solvable_of_five_le", "decide tactic", "le_rfl", "symmetric group definition"]
+  },
+  {
     "id": "arg-specific-non-solvable",
     "proofId": "abel-ruffini-galois-extensions",
     "range": { "startLine": 366, "endLine": 406 },

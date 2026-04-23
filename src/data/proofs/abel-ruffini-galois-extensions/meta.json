@@ -121,6 +121,11 @@
       "description": "Finite Groups of Order $< 60$ Are Solvable — $|A_5| = 60$ is the precise boundary: every finite group of order $< 60$ is solvable. This entry proves the p-group chain $\\text{IsPGroup} \\Rightarrow \\text{IsNilpotent} \\Rightarrow \\text{IsSolvable}$, establishing the order-60 threshold that makes $A_5$ the minimal non-solvable example."
     },
     {
+      "targetId": "abel-ruffini-oq-04-oq-07",
+      "relationship": "related",
+      "description": "Bring-Jerrard Reduction: any quintic can be transformed to the canonical form $x^5 + x + t = 0$ via Tschirnhaus substitutions. The resulting Bring radical $\\mathrm{BR}(t)$ — the unique real root — provides a 'closed-form' solution to quintics, but one not expressible by radicals. This is fully consistent with this file's central result: $S_5$ not solvable means no radical tower can express roots of the reduced quintic for generic $t$. The Bring-Jerrard entry and this file together delimit the boundary between 'solvable' and 'transcendental' quintic solutions."
+    },
+    {
       "targetId": "abel-ruffini-oq-04-oq-03",
       "relationship": "related",
       "description": "Galois's Solvability Criterion: a root is solvable by radicals $\\iff$ its Galois group is solvable. This entry proves the forward direction from Mathlib and axiomatizes the reverse (Kummer theory). Complementary to this file's `not_solvable_by_rad_of_not_solvable_galois` (contrapositive form) and the `galois_group_order` result."
