@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Faber-Krahn Constant",
     "content": "The Faber-Krahn constant $c_{FK} = (1 - e^{-2})\\pi^2/4 \\approx 2.11$ arises from optimal concentration estimates. It measures how efficiently vorticity can concentrate in small regions before dissipation dominates.",
+    "mathContext": "In Lean: def c_FK : ℝ := (1 - Real.exp (-2)) * Real.pi^2 / 4. The Faber-Krahn inequality bounds the first Dirichlet eigenvalue: $\\lambda_1(\\Omega) \\geq c_{FK}/|\\Omega|^{2/3}$, minimized by balls (isoperimetric extremal). theorem kappa_cFK_gt_8 proves $\\kappa \\cdot c_{FK} > 8 > 2$, which is the key inequality driving depletion.",
     "significance": "key",
     "relatedConcepts": [
       "isoperimetric inequality",
@@ -84,6 +85,7 @@
     "type": "lemma",
     "title": "Bernoulli's Inequality",
     "content": "The classical Bernoulli inequality $(1+x)^n \\geq 1 + nx$ for $x \\geq -1$ is proved by induction. This elementary result becomes surprisingly powerful when applied to backward-time energy growth, establishing that solutions cannot remain bounded while growing at a positive rate.",
+    "mathContext": "theorem bernoulli (x : ℝ) (hx : x ≥ -1) (n : ℕ) : (1 + x)^n ≥ 1 + n * x — proved by induction on n. Applied with x = spectralGap * h to show enstrophy growth: $E_0(1 + \\lambda_1 h)^n \\geq E_0(1 + n\\lambda_1 h) \\to \\infty$ as $n \\to \\infty$.",
     "significance": "supporting",
     "relatedConcepts": [
       "induction",
@@ -203,6 +205,7 @@
     "type": "concept",
     "title": "BKM Blowup Criterion",
     "content": "The Beale-Kato-Majda criterion (1984): blowup occurs if and only if $\\int_0^T \\|\\omega\\|_\\infty \\, dt = \\infty$. Equivalently, bounded enstrophy implies bounded max vorticity, which prevents blowup. This is the bridge from energy estimates to regularity.",
+    "mathContext": "In Lean: bkm_criterion : ∀ M > 0, (∀ t ∈ Ioo 0 sol.T, sol.E t ≤ M) → ∃ C > 0, ∀ t ∈ Ioo 0 sol.T, sol.Omega t ≤ C. Bounded enstrophy E implies bounded max vorticity Ω. Beale-Kato-Majda (1984): $\\int_0^T \\|\\omega\\|_{L^\\infty} dt < \\infty$ is the definitive regularity criterion.",
     "significance": "key",
     "relatedConcepts": [
       "Beale-Kato-Majda",

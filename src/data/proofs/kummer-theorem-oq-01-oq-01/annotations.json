@@ -52,6 +52,7 @@
     "type": "technique",
     "title": "The Bound Parameter b in Nat.factorization_choose'",
     "content": "`Nat.factorization_choose'` requires a bound `b` with `Nat.log p (n + k) < b`. The bound doesn't affect the value — it just restricts the sum to `Ico 1 b`, and positions `i ≥ b` contribute 0 since `p^i > n+k` implies no carry.\n\nFor the multinomial theorem, we use `b = Nat.log p ks.sum + 1`. This is valid because:\n- Each pair `(acc, k)` in the scanl decomposition has `acc + k ≤ ks.sum`\n- By `Nat.log_mono_right`: `log p (acc + k) ≤ log p ks.sum`\n- So `log p (acc + k) < log p ks.sum + 1 = b`\n\nThe key helper `scanl_zip_tail_sum_le` proves `acc + k ≤ ks.sum` by induction on the list structure:\n- For `ks = k :: rest`, the tail pairs are in `(rest.scanl (·+·) k).zip rest`\n- By `scanl_zip_sum_le`: each such pair satisfies `acc + k ≤ k + rest.sum = ks.sum` ✓",
+    "mathContext": "Given b = Nat.log p ks.sum + 1 and acc + k ≤ ks.sum (from scanl_zip_tail_sum_le), Nat.log_mono_right gives log_p(acc + k) ≤ log_p(ks.sum), so log_p(acc + k) < b. Positions i ≥ b satisfy p^i > n + k, making all carry indicators 0 — the bound is tight and does not change the sum.",
     "significance": "technical",
     "relatedConcepts": [
       "Nat.log_mono_right",
@@ -98,6 +99,7 @@
     "type": "insight",
     "title": "Concrete Verification: multinomial([1,2,3]) = 60, v_2 = 2, v_3 = 1",
     "content": "For `ks = [1, 2, 3]`:\n- `multinomial [1, 2, 3] = 6! / (1! · 2! · 3!) = 720 / (1 · 2 · 6) = 60` ✓\n\nThe scanl pairs (via tail): `[(1, 2), (3, 3)]`\n\n**At p=2:**\n- Step (1, 2): carries at i where `2^i ≤ 2 mod 2^i + 1 mod 2^i`\n  - i=1: `2 ≤ 0 + 1 = 1`? No. (no carry)\n- Step (3, 3): carries at i where `2^i ≤ 3 mod 2^i + 3 mod 2^i`\n  - i=1: `2 ≤ 1 + 1 = 2`? Yes ✓ (carry)\n  - i=2: `4 ≤ 3 + 3 = 6`? Yes ✓ (carry)\n- Total: 2 carries. `v_2(60) = v_2(4 · 15) = 2` ✓\n\n**At p=3:**\n- Step (1, 2): `3 ≤ 2 mod 3 + 1 mod 3 = 2 + 1 = 3`? Yes ✓ (carry at i=1)\n- Step (3, 3): `3 ≤ 0 + 0 = 0`? No. (no carry)\n- Total: 1 carry. `v_3(60) = v_3(3 · 20) = 1` ✓",
+    "mathContext": "60 = 2^2 · 3 · 5, so $v_2(60) = 2$ and $v_3(60) = 1$. Carry count at p=2: scanl pairs [(1,2),(3,3)] give 0+2=2 carries ✓. Carry count at p=3: 1+0=1 carry ✓. Verified in Lean via native_decide for the factorization computations, and decide for the list-based carry count comparison.",
     "significance": "key",
     "relatedConcepts": [
       "native_decide",
