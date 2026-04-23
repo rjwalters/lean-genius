@@ -12,6 +12,18 @@
     "prerequisites": ["field extensions", "polynomial rings", "principal ideal domains"]
   },
   {
+    "id": "ann-sqrt2-namespace-setup",
+    "proofId": "sqrt2-minpoly",
+    "range": { "startLine": 38, "endLine": 43 },
+    "type": "context",
+    "title": "Proof Namespace and Structure",
+    "content": "The proof is organized in the `Sqrt2Minpoly` namespace, divided into four logical parts:\n\n- **Part I** (lines 44–79): Irreducibility of $X^2 - 2$ over $\\mathbb{Q}$ via Eisenstein and Gauss\n- **Part II** (lines 82–92): Root witness and algebraic integrality of $\\sqrt{2}$\n- **Part III** (lines 97–110): The minimal polynomial characterization theorem\n- **Part IV** (lines 113–140): Degree consequences and irrationality corollaries\n\nThe `private` modifier on `irred_X_sq_sub_two_int` (the ℤ-irreducibility lemma) is intentional: it is an internal lemma not intended for external use. The public API exports only the ℚ-level result `irred_X_sq_sub_two`.",
+    "mathContext": "The `private theorem` pattern is a Lean 4 design choice: helper lemmas that should not appear in the namespace's exported API are marked `private`. This prevents name pollution while keeping the proof self-contained. The ℤ-irreducibility is scaffolding; the mathematically meaningful result is the ℚ-irreducibility.",
+    "significance": "technical",
+    "relatedConcepts": ["Lean 4 namespace", "private lemma", "proof architecture", "information hiding"],
+    "prerequisites": ["Lean 4 syntax", "namespace scoping"]
+  },
+  {
     "id": "ann-sqrt2-eisenstein-int",
     "proofId": "sqrt2-minpoly",
     "range": { "startLine": 42, "endLine": 68 },
@@ -39,7 +51,7 @@
     "id": "ann-sqrt2-root",
     "proofId": "sqrt2-minpoly",
     "range": { "startLine": 82, "endLine": 92 },
-    "type": "theorem",
+    "type": "insight",
     "title": "Root Witness: (√2)² = 2",
     "content": "**Two theorems**:\n\n1. `aeval_sqrt_two_eq_zero`: evaluating $X^2 - 2$ at $\\sqrt{2}$ gives 0. The key fact is `Real.sq_sqrt : ∀ x ≥ 0, (√x)² = x`, applied at `x = 2`. After `simp` unfolds `aeval`, the goal reduces to `(√2)^2 - 2 = 0`, closed by `linarith`.\n\n2. `sqrt_two_isIntegral`: packages the root witness as an `IsIntegral ℚ (√2)` certificate — constructively providing the monic polynomial $X^2 - 2$ and its root property. This is needed downstream for `adjoin.finrank`.\n\n**Why two separate lemmas?** The minimal polynomial machinery (`minpoly.eq_of_irreducible_of_monic`) needs the `aeval = 0` form; the field extension degree theorem needs `IsIntegral`.",
     "mathContext": "`Polynomial.aeval α f = f(α)` where $f \\in K[X]$ is evaluated at $\\alpha \\in L$. For $f = X^2 - C(2)$: $\\text{aeval}(\\sqrt{2})(X^2 - C(2)) = (\\sqrt{2})^2 - 2 = 0$. The `IsIntegral ℚ (√2)` statement says $\\sqrt{2}$ is a root of some monic polynomial in $\\mathbb{Q}[X]$; here we provide $X^2 - 2$ explicitly.",
@@ -51,11 +63,11 @@
     "id": "ann-sqrt2-main",
     "proofId": "sqrt2-minpoly",
     "range": { "startLine": 96, "endLine": 109 },
-    "type": "theorem",
+    "type": "concept",
     "title": "Main Theorem: minpoly ℚ (√2) = X² - 2",
     "content": "**The capstone result**, combining all three ingredients:\n\n```lean\ntheorem minpoly_sqrt_two : minpoly ℚ (Real.sqrt 2) = X ^ 2 - C 2 :=\n  (minpoly.eq_of_irreducible_of_monic\n    irred_X_sq_sub_two        -- ①\n    aeval_sqrt_two_eq_zero    -- ②\n    (monic_X_pow_sub_C ...))  -- ③\n  .symm\n```\n\nThe Mathlib lemma `minpoly.eq_of_irreducible_of_monic` states: if $p \\in K[X]$ is (①) irreducible, (②) has $\\alpha$ as a root, and (③) is monic, then $p = \\text{minpoly}_K(\\alpha)$. The `.symm` flips the direction since the lemma returns `minpoly K α = p` but we want `minpoly K α = X² - 2`.\n\nThis characterization is elegant: it replaces the abstract universal-property definition of minimal polynomial with three checkable properties.",
     "mathContext": "The minimal polynomial $\\text{minpoly}_K(\\alpha)$ is uniquely characterized as the monic irreducible polynomial in $K[X]$ with $\\alpha$ as a root. `minpoly.eq_of_irreducible_of_monic` states: if $p$ is monic, irreducible, and $p(\\alpha)=0$, then $p = \\text{minpoly}_K(\\alpha)$. The proof goes via uniqueness: both $p$ and $\\text{minpoly}$ are monic irreducibles dividing the same ideal, so they're associates in $K[X]$, hence equal (since both monic).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["minpoly.eq_of_irreducible_of_monic", "monic polynomial", "uniqueness of minimal polynomial", ".symm"],
     "prerequisites": ["minimal polynomial theory", "irreducibility", "monicity", "Mathlib minpoly API"]
   },
