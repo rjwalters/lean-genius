@@ -1,6 +1,6 @@
 {
   "id": "erdos-1052",
-  "title": "Erd\u0151s #1052: Unitary Perfect Numbers",
+  "title": "Erdős #1052: Unitary Perfect Numbers",
   "slug": "erdos-1052",
   "description": "A unitary perfect number equals the sum of its proper unitary divisors (where d is unitary if gcd(d, n/d)=1). All unitary perfect numbers are even; finiteness is OPEN. Three examples verified by native_decide.",
   "meta": {
@@ -16,7 +16,7 @@
       "perfect-numbers",
       "open-problem"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1052,
     "erdosUrl": "https://erdosproblems.com/1052",
@@ -46,7 +46,7 @@
       }
     ],
     "originalContributions": [
-      "properUnitaryDivisors: Finset \u2115 via Ico and filter",
+      "properUnitaryDivisors: Finset ℕ via Ico and filter",
       "IsUnitaryPerfect with Decidable instance for native_decide",
       "one_mem_properUnitaryDivisors: basic membership proof",
       "odd_of_unitaryDivisor_of_odd: parity transfer via divisibility",
@@ -60,18 +60,18 @@
     ],
     "axiomCount": 0,
     "lineCount": 518,
-    "assumptions": "0 axioms, 0 sorries. even_of_isUnitaryPerfect is fully proved via multiplicativity + prime decomposition. Finiteness conjecture not formally stated as axiom \u2014 open problem described in closing comment."
+    "assumptions": "0 axioms, 0 sorries. even_of_isUnitaryPerfect is fully proved via multiplicativity + prime decomposition. Finiteness conjecture not formally stated as axiom — open problem described in closing comment."
   },
   "overview": {
-    "historicalContext": "Unitary divisors were introduced by Eckford Cohen in the 1960s as a natural refinement of classical divisor theory. A divisor $d$ of $n$ is **unitary** if $\\gcd(d, n/d) = 1$, meaning $d$ and its complement share no common prime factors. For example, 4 is a divisor of 12 but not a unitary divisor (since $\\gcd(4, 3) = 1$ \u2014 actually it is unitary), while 4 is not a unitary divisor of 24 (since $\\gcd(4, 6) = 2 \\neq 1$).\n\nSubbarao and Warren (1966) initiated the study of **unitary perfect numbers** \u2014 positive integers equal to the sum of their proper unitary divisors \u2014 and found the first four: 6, 60, 90, and 87360. Wall (1972) discovered the fifth: $146361946186458562560000 = 2^{18} \\cdot 3 \\cdot 5^4 \\cdot 7 \\cdot 11 \\cdot 13 \\cdot 19 \\cdot 37 \\cdot 79 \\cdot 109 \\cdot 157 \\cdot 313$, a 24-digit number with 12 distinct prime factors. No sixth has been found despite extensive computation.\n\nErd\u0151s conjectured there are only finitely many, contrasting sharply with classical perfect numbers where Euclid's construction $2^{p-1}(2^p - 1)$ yields infinitely many (contingent on the infinitude of Mersenne primes). The key structural difference is the product formula: $\\sigma^*(n) = \\prod(1 + p_i^{a_i})$ for unitary divisors versus $\\sigma(n) = \\prod(1 + p_i + \\cdots + p_i^{a_i})$ for standard divisors. The unitary sum grows much more slowly, making the equation $\\sigma^*(n) = 2n$ increasingly hard to satisfy as $n$ grows.\n\nAll unitary perfect numbers are provably even, by an elegant argument: if $n$ were odd, each factor $1 + p_i^{a_i}$ in the product formula would be even, making $\\sigma^*(n)$ divisible by $2^{\\omega(n)}$ where $\\omega(n)$ is the number of distinct prime factors. But $\\sigma^*(n) = 2n$ allows at most one factor of 2, forcing $\\omega(n) \\leq 1$ \u2014 and both cases $\\omega(n) = 0,1$ lead to contradictions.",
-    "problemStatement": "**OPEN CONJECTURE**: Are there only finitely many unitary perfect numbers?\n\n**SOLVED**: All unitary perfect numbers are even.\n\nKnown unitary perfect numbers:\n- 6 = 2 \u00b7 3\n- 60 = 2\u00b2 \u00b7 3 \u00b7 5\n- 90 = 2 \u00b7 3\u00b2 \u00b7 5\n- 87360 = 2\u2076 \u00b7 3 \u00b7 5 \u00b7 7 \u00b7 13\n- 146361946186458562560000 = 2\u00b9\u2078 \u00b7 3 \u00b7 5\u2074 \u00b7 7 \u00b7 11 \u00b7 13 \u00b7 19 \u00b7 37 \u00b7 79 \u00b7 109 \u00b7 157 \u00b7 313",
+    "historicalContext": "Unitary divisors were introduced by Eckford Cohen in the 1960s as a natural refinement of classical divisor theory. A divisor $d$ of $n$ is **unitary** if $\\gcd(d, n/d) = 1$, meaning $d$ and its complement share no common prime factors. For example, 4 is a divisor of 12 but not a unitary divisor (since $\\gcd(4, 3) = 1$ — actually it is unitary), while 4 is not a unitary divisor of 24 (since $\\gcd(4, 6) = 2 \\neq 1$).\n\nSubbarao and Warren (1966) initiated the study of **unitary perfect numbers** — positive integers equal to the sum of their proper unitary divisors — and found the first four: 6, 60, 90, and 87360. Wall (1972) discovered the fifth: $146361946186458562560000 = 2^{18} \\cdot 3 \\cdot 5^4 \\cdot 7 \\cdot 11 \\cdot 13 \\cdot 19 \\cdot 37 \\cdot 79 \\cdot 109 \\cdot 157 \\cdot 313$, a 24-digit number with 12 distinct prime factors. No sixth has been found despite extensive computation.\n\nErdős conjectured there are only finitely many, contrasting sharply with classical perfect numbers where Euclid's construction $2^{p-1}(2^p - 1)$ yields infinitely many (contingent on the infinitude of Mersenne primes). The key structural difference is the product formula: $\\sigma^*(n) = \\prod(1 + p_i^{a_i})$ for unitary divisors versus $\\sigma(n) = \\prod(1 + p_i + \\cdots + p_i^{a_i})$ for standard divisors. The unitary sum grows much more slowly, making the equation $\\sigma^*(n) = 2n$ increasingly hard to satisfy as $n$ grows.\n\nAll unitary perfect numbers are provably even, by an elegant argument: if $n$ were odd, each factor $1 + p_i^{a_i}$ in the product formula would be even, making $\\sigma^*(n)$ divisible by $2^{\\omega(n)}$ where $\\omega(n)$ is the number of distinct prime factors. But $\\sigma^*(n) = 2n$ allows at most one factor of 2, forcing $\\omega(n) \\leq 1$ — and both cases $\\omega(n) = 0,1$ lead to contradictions.",
+    "problemStatement": "**OPEN CONJECTURE**: Are there only finitely many unitary perfect numbers?\n\n**SOLVED**: All unitary perfect numbers are even.\n\nKnown unitary perfect numbers:\n- 6 = 2 · 3\n- 60 = 2² · 3 · 5\n- 90 = 2 · 3² · 5\n- 87360 = 2⁶ · 3 · 5 · 7 · 13\n- 146361946186458562560000 = 2¹⁸ · 3 · 5⁴ · 7 · 11 · 13 · 19 · 37 · 79 · 109 · 157 · 313",
     "text": "A unitary perfect number equals the sum of its proper unitary divisors (where d is unitary if gcd(d, n/d)=1). All unitary perfect numbers are even; finiteness is OPEN. Three examples verified by native_decide.",
-    "proofStrategy": "**Formalization Approach**\n\nThe Lean file provides a complete framework in 196 lines:\n\n1. **Definitions (lines 30-37):** Define `properUnitaryDivisors` via `Finset.Ico 1 n |>.filter` and `IsUnitaryPerfect` as sum equality plus positivity. Derive `Decidable` instance for `native_decide`.\n\n2. **Basic Properties (lines 47-58):** Prove `one_mem_properUnitaryDivisors` (1 is always unitary) and `mem_properUnitaryDivisors` (membership characterization).\n\n3. **Parity (lines 61-98):** Prove `odd_of_unitaryDivisor_of_odd` (divisibility transfer) and `sum_odd_parity` (Finset induction: sum of odds is odd iff count is odd).\n\n4. **Structure (lines 104-129):** Prove `unitary_iff_no_common_prime` via `Nat.exists_prime_and_dvd`, `unitary_complement` via `Nat.div_div_self`, and define `unitaryDivisorSum`.\n\n5. **Main Theorem (lines 131-150):** Axiomatize `even_of_isUnitaryPerfect` with detailed proof sketch in comments using the product formula \u03c3*(n) = \u220f(1 + p\u1d62^{a\u1d62}).\n\n6. **Examples (lines 156-166):** Verify `isUnitaryPerfect_6`, `isUnitaryPerfect_60`, `isUnitaryPerfect_90` by `native_decide`.\n\n7. **Conjecture (lines 191-194):** State `erdos_1052_conjecture : { n | IsUnitaryPerfect n }.Finite`.",
+    "proofStrategy": "**Formalization Approach**\n\nThe Lean file provides a complete framework in 196 lines:\n\n1. **Definitions (lines 30-37):** Define `properUnitaryDivisors` via `Finset.Ico 1 n |>.filter` and `IsUnitaryPerfect` as sum equality plus positivity. Derive `Decidable` instance for `native_decide`.\n\n2. **Basic Properties (lines 47-58):** Prove `one_mem_properUnitaryDivisors` (1 is always unitary) and `mem_properUnitaryDivisors` (membership characterization).\n\n3. **Parity (lines 61-98):** Prove `odd_of_unitaryDivisor_of_odd` (divisibility transfer) and `sum_odd_parity` (Finset induction: sum of odds is odd iff count is odd).\n\n4. **Structure (lines 104-129):** Prove `unitary_iff_no_common_prime` via `Nat.exists_prime_and_dvd`, `unitary_complement` via `Nat.div_div_self`, and define `unitaryDivisorSum`.\n\n5. **Main Theorem (lines 131-150):** Axiomatize `even_of_isUnitaryPerfect` with detailed proof sketch in comments using the product formula σ*(n) = ∏(1 + pᵢ^{aᵢ}).\n\n6. **Examples (lines 156-166):** Verify `isUnitaryPerfect_6`, `isUnitaryPerfect_60`, `isUnitaryPerfect_90` by `native_decide`.\n\n7. **Conjecture (lines 191-194):** State `erdos_1052_conjecture : { n | IsUnitaryPerfect n }.Finite`.",
     "keyInsights": [
-      "**Decidable IsUnitaryPerfect**: The `Decidable` instance via `instDecidableAnd` enables `native_decide` proofs for concrete examples \u2014 the kernel evaluates the Finset computation and checks equality. This is the most elegant verification approach.",
-      "**Finset Induction for Parity**: The `sum_odd_parity` proof uses `Finset.induction` to show \u2211(odd values) \u2261 card (mod 2). Each induction step splits on whether adding an odd number flips the parity, using `Odd.add_even` and `Odd.add_odd`.",
+      "**Decidable IsUnitaryPerfect**: The `Decidable` instance via `instDecidableAnd` enables `native_decide` proofs for concrete examples — the kernel evaluates the Finset computation and checks equality. This is the most elegant verification approach.",
+      "**Finset Induction for Parity**: The `sum_odd_parity` proof uses `Finset.induction` to show ∑(odd values) ≡ card (mod 2). Each induction step splits on whether adding an odd number flips the parity, using `Odd.add_even` and `Odd.add_odd`.",
       "**Prime Characterization**: `unitary_iff_no_common_prime` uses `Nat.exists_prime_and_dvd` (every non-unit has a prime factor) to characterize coprimality. The forward direction uses divisibility of gcd; the reverse constructs a contradiction via prime factorization.",
-      "**Product Formula Argument**: The evenness proof (in comments) uses \u03c3*(n) = \u220f(1 + p\u1d62^{a\u1d62}) \u2014 a product over prime power components. For odd n, each factor is even, making \u03c3* divisible by 2^\u03c9(n), but \u03c3* = 2n forces at most one factor of 2.",
+      "**Product Formula Argument**: The evenness proof (in comments) uses σ*(n) = ∏(1 + pᵢ^{aᵢ}) — a product over prime power components. For odd n, each factor is even, making σ* divisible by 2^ω(n), but σ* = 2n forces at most one factor of 2.",
       "**Only 5 Known**: Despite computational searches to very large bounds, only 5 unitary perfect numbers are known. The conjecture of finiteness remains one of the accessible open problems in number theory."
     ],
     "prerequisites": [
@@ -96,7 +96,7 @@
     {
       "targetId": "erdos-544",
       "relationship": "related",
-      "description": "Erd\u0151s #544 concerns off-diagonal Ramsey numbers, but Problem #1052's parity analysis echoes the parity constraints in classical perfect number theory \u2014 both ask whether perfection conditions force evenness"
+      "description": "Erdős #544 concerns off-diagonal Ramsey numbers, but Problem #1052's parity analysis echoes the parity constraints in classical perfect number theory — both ask whether perfection conditions force evenness"
     },
     {
       "targetId": "erdos-987",
@@ -106,22 +106,22 @@
     {
       "targetId": "perfect-numbers",
       "relationship": "related",
-      "description": "Classical perfect numbers satisfy \u03c3(n) = 2n (standard divisor sum). Unitary perfect numbers satisfy \u03c3*(n) = 2n (unitary divisor sum). The Euclid-Euler theorem classifies even perfect numbers as 2^{p-1}(2^p - 1); no analogous classification exists for unitary perfect numbers"
+      "description": "Classical perfect numbers satisfy σ(n) = 2n (standard divisor sum). Unitary perfect numbers satisfy σ*(n) = 2n (unitary divisor sum). The Euclid-Euler theorem classifies even perfect numbers as 2^{p-1}(2^p - 1); no analogous classification exists for unitary perfect numbers"
     },
     {
       "targetId": "euler-totient",
       "relationship": "foundational",
-      "description": "Euler's totient \u03c6(n) and the unitary divisor sum \u03c3*(n) are both multiplicative arithmetic functions. The multiplicativity \u03c3*(mn) = \u03c3*(m)\u03c3*(n) for coprime m,n (axiomatized here) parallels \u03c6(mn) = \u03c6(m)\u03c6(n), and both factor over prime powers"
+      "description": "Euler's totient φ(n) and the unitary divisor sum σ*(n) are both multiplicative arithmetic functions. The multiplicativity σ*(mn) = σ*(m)σ*(n) for coprime m,n (axiomatized here) parallels φ(mn) = φ(m)φ(n), and both factor over prime powers"
     },
     {
       "targetId": "infinitude-primes",
       "relationship": "foundational",
-      "description": "The prime factorization n = p\u2081^{a\u2081}\u00b7\u00b7\u00b7p\u2096^{a\u2096} underlying the product formula \u03c3*(n) = \u220f(1 + p\u1d62^{a\u1d62}) depends on the fundamental theorem of arithmetic. The infinitude of primes ensures an unbounded supply of potential prime factors for unitary perfect numbers"
+      "description": "The prime factorization n = p₁^{a₁}···pₖ^{aₖ} underlying the product formula σ*(n) = ∏(1 + pᵢ^{aᵢ}) depends on the fundamental theorem of arithmetic. The infinitude of primes ensures an unbounded supply of potential prime factors for unitary perfect numbers"
     },
     {
       "targetId": "bezout-identity",
       "relationship": "foundational",
-      "description": "The coprimality condition gcd(d, n/d) = 1 defining unitary divisors is characterized via B\u00e9zout's identity. The theorem unitary_iff_no_common_prime gives the prime-theoretic equivalent: no prime divides both d and n/d"
+      "description": "The coprimality condition gcd(d, n/d) = 1 defining unitary divisors is characterized via Bézout's identity. The theorem unitary_iff_no_common_prime gives the prime-theoretic equivalent: no prime divides both d and n/d"
     }
   ],
   "sections": [
@@ -130,7 +130,7 @@
       "title": "Core Definitions",
       "startLine": 26,
       "endLine": 42,
-      "summary": "Defines properUnitaryDivisors (n : \u2115) : Finset \u2115 via Finset.Ico 1 n filtered by d \u2223 n \u2227 d.Coprime (n / d). Defines IsUnitaryPerfect as sum equality plus positivity. Derives Decidable instance for native_decide.",
+      "summary": "Defines properUnitaryDivisors (n : ℕ) : Finset ℕ via Finset.Ico 1 n filtered by d ∣ n ∧ d.Coprime (n / d). Defines IsUnitaryPerfect as sum equality plus positivity. Derives Decidable instance for native_decide.",
       "mathContext": "$\\text{properUnitaryDivisors}(n) = \\{d \\in [1,n) : d \\mid n \\wedge \\gcd(d, n/d) = 1\\}$. $\\text{IsUnitaryPerfect}(n) \\iff \\sum_{d \\in \\text{properUnitaryDivisors}(n)} d = n \\wedge n > 0$. Decidable instance enables `native_decide`."
     },
     {
@@ -138,7 +138,7 @@
       "title": "Basic Properties",
       "startLine": 43,
       "endLine": 59,
-      "summary": "Proves one_mem_properUnitaryDivisors (1 is always unitary for n > 1) and mem_properUnitaryDivisors (membership \u2194 characterization) using simp and omega.",
+      "summary": "Proves one_mem_properUnitaryDivisors (1 is always unitary for n > 1) and mem_properUnitaryDivisors (membership ↔ characterization) using simp and omega.",
       "mathContext": "$1 \\in \\text{properUnitaryDivisors}(n)$ for $n > 1$, since $1 \\mid n$ and $\\gcd(1, n) = 1$. Membership characterized by: $d \\in [1,n) \\wedge d \\mid n \\wedge \\gcd(d, n/d) = 1$."
     },
     {
@@ -154,7 +154,7 @@
       "title": "Unitary Divisor Structure",
       "startLine": 100,
       "endLine": 130,
-      "summary": "Proves unitary_iff_no_common_prime (coprime \u2194 no common prime divisor) via Nat.exists_prime_and_dvd. Proves unitary_complement via Nat.div_div_self and Coprime.symm. Defines unitaryDivisorSum.",
+      "summary": "Proves unitary_iff_no_common_prime (coprime ↔ no common prime divisor) via Nat.exists_prime_and_dvd. Proves unitary_complement via Nat.div_div_self and Coprime.symm. Defines unitaryDivisorSum.",
       "mathContext": "$\\gcd(d, n/d) = 1 \\iff \\neg\\exists p$ prime with $p \\mid d$ and $p \\mid n/d$. Complement: if $d$ is a unitary divisor of $n$, so is $n/d$. $\\sigma^*(n) = \\sum_{d \\mid n,\\, \\gcd(d,n/d)=1} d$."
     },
     {
@@ -162,15 +162,15 @@
       "title": "Main Theorem: Even Unitary Perfect Numbers",
       "startLine": 131,
       "endLine": 151,
-      "summary": "Axiomatizes even_of_isUnitaryPerfect with detailed proof sketch: \u03c3*(n) = \u220f(1 + p\u1d62^a\u1d62) factors, odd n makes all factors even, 2^\u03c9(n) | 2n forces contradiction for k \u2265 2, k = 1 gives 1 = p^a impossible, k = 0 gives n = 1 not perfect.",
-      "mathContext": "For $n = p_1^{a_1} \\cdots p_k^{a_k}$: $\\sigma^*(n) = \\prod_{i=1}^{k}(1 + p_i^{a_i})$. If $n$ odd: each $1 + p_i^{a_i}$ is even, so $2^k \\mid \\sigma^*(n) = 2n$, giving $2^{k-1} \\mid n$ \u2014 contradiction for $k \\geq 2$."
+      "summary": "Axiomatizes even_of_isUnitaryPerfect with detailed proof sketch: σ*(n) = ∏(1 + pᵢ^aᵢ) factors, odd n makes all factors even, 2^ω(n) | 2n forces contradiction for k ≥ 2, k = 1 gives 1 = p^a impossible, k = 0 gives n = 1 not perfect.",
+      "mathContext": "For $n = p_1^{a_1} \\cdots p_k^{a_k}$: $\\sigma^*(n) = \\prod_{i=1}^{k}(1 + p_i^{a_i})$. If $n$ odd: each $1 + p_i^{a_i}$ is even, so $2^k \\mid \\sigma^*(n) = 2n$, giving $2^{k-1} \\mid n$ — contradiction for $k \\geq 2$."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 152,
       "endLine": 167,
-      "summary": "Proves isUnitaryPerfect_6, isUnitaryPerfect_60, isUnitaryPerfect_90 by native_decide \u2014 the Lean kernel evaluates the Finset computation and checks sum = n.",
+      "summary": "Proves isUnitaryPerfect_6, isUnitaryPerfect_60, isUnitaryPerfect_90 by native_decide — the Lean kernel evaluates the Finset computation and checks sum = n.",
       "mathContext": "$6 = 2 \\cdot 3$: unitary divisors $\\{1,2,3\\}$, sum $= 6$. $60 = 2^2 \\cdot 3 \\cdot 5$: unitary divisors $\\{1,3,4,5,12,15,20\\}$, sum $= 60$. $90 = 2 \\cdot 3^2 \\cdot 5$: unitary divisors $\\{1,2,5,9,10,18,45\\}$, sum $= 90$."
     },
     {
@@ -178,7 +178,7 @@
       "title": "Further Properties",
       "startLine": 168,
       "endLine": 226,
-      "summary": "Proves unitaryDivisors_primePow (only 1 and p^k for prime powers). Axiomatizes unitaryDivisorSum_mul_coprime (multiplicativity) and properUnitaryDivisors_pairing (d \u2194 n/d pairing).",
+      "summary": "Proves unitaryDivisors_primePow (only 1 and p^k for prime powers). Axiomatizes unitaryDivisorSum_mul_coprime (multiplicativity) and properUnitaryDivisors_pairing (d ↔ n/d pairing).",
       "mathContext": "For $p^k$ prime power: unitary divisors are exactly $\\{1, p^k\\}$ (proved). Multiplicativity: $\\sigma^*(mn) = \\sigma^*(m)\\sigma^*(n)$ for $\\gcd(m,n)=1$ (axiom). Pairing: $d \\mapsto n/d$ gives an involution on unitary divisors (axiom)."
     },
     {
@@ -186,18 +186,18 @@
       "title": "Open Conjecture",
       "startLine": 227,
       "endLine": 236,
-      "summary": "States erdos_1052_conjecture : { n : \u2115 | IsUnitaryPerfect n }.Finite as an axiom \u2014 the OPEN finiteness conjecture.",
+      "summary": "States erdos_1052_conjecture : { n : ℕ | IsUnitaryPerfect n }.Finite as an axiom — the OPEN finiteness conjecture.",
       "mathContext": "$\\{n \\in \\mathbb{N} \\mid \\text{IsUnitaryPerfect}(n)\\}$ is finite. Only 5 known: $6, 60, 90, 87360, 146361946186458562560000$. Open since 1972."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #1052 is formalized with 8 proved theorems (including 3 verified examples via native_decide, Finset induction parity lemma, prime characterization of coprimality, and unitary complement symmetry), 4 axioms (evenness of unitary perfect numbers, prime power structure, multiplicativity, pairing, and the open finiteness conjecture), and 3 definitions. The main computational verification uses native_decide through a Decidable instance on IsUnitaryPerfect.",
-    "implications": "**Theoretical Significance**: **Significance for Number Theory**\n\n1. **Unitary Divisor Theory**: The unitary divisor structure provides a natural generalization of classical divisor theory. The multiplicativity \u03c3*(mn) = \u03c3*(m)\u03c3*(n) for coprime m, n enables product formulas.\n\n**2. Parity Constraints**: The evenness proof illustrates how the factorization \u03c3*(n) = \u220f(1 + p\u1d62^{a\u1d62}) imposes strong arithmetic constraints. The argument generalizes to show unitary k-perfect numbers (\u03c3*(n) = kn) have restricted prime structures.\n\n3. **Computational Verification**: The `native_decide` approach demonstrates Lean 4's ability to verify number-theoretic properties computationally, avoiding manual divisor enumeration.\n\n4. **Open Problems**: The finiteness conjecture remains one of the most accessible open problems in number theory, requiring only elementary methods but resisting resolution for 50+ years.",
+    "summary": "Erdős Problem #1052 is formalized with 8 proved theorems (including 3 verified examples via native_decide, Finset induction parity lemma, prime characterization of coprimality, and unitary complement symmetry), 4 axioms (evenness of unitary perfect numbers, prime power structure, multiplicativity, pairing, and the open finiteness conjecture), and 3 definitions. The main computational verification uses native_decide through a Decidable instance on IsUnitaryPerfect.",
+    "implications": "**Theoretical Significance**: **Significance for Number Theory**\n\n1. **Unitary Divisor Theory**: The unitary divisor structure provides a natural generalization of classical divisor theory. The multiplicativity σ*(mn) = σ*(m)σ*(n) for coprime m, n enables product formulas.\n\n**2. Parity Constraints**: The evenness proof illustrates how the factorization σ*(n) = ∏(1 + pᵢ^{aᵢ}) imposes strong arithmetic constraints. The argument generalizes to show unitary k-perfect numbers (σ*(n) = kn) have restricted prime structures.\n\n3. **Computational Verification**: The `native_decide` approach demonstrates Lean 4's ability to verify number-theoretic properties computationally, avoiding manual divisor enumeration.\n\n4. **Open Problems**: The finiteness conjecture remains one of the most accessible open problems in number theory, requiring only elementary methods but resisting resolution for 50+ years.",
     "openQuestions": [
       "Are there only finitely many unitary perfect numbers?",
       "Is there a sixth unitary perfect number?",
       "What constraints exist on the prime factorization of unitary perfect numbers?",
-      "Are there infinitely many odd abundant numbers (\u03c3*(n) > 2n) that are squarefree?"
+      "Are there infinitely many odd abundant numbers (σ*(n) > 2n) that are squarefree?"
     ]
   },
   "references": [
