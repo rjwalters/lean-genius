@@ -19,10 +19,10 @@
       "representation-theory"
     ],
     "badge": "wip",
-    "sorries": 4,
+    "sorries": 5,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "Four open sorries: (1) hook_length_formula (requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) card_SYT_twoRectYD (SYT count for 2-row rectangular = Catalan number C_m via ballot bijection). StandardYoungTableau.ext is now fully proved (funext).",
+    "assumptions": "Five open sorries: (1) hook_length_formula (requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) card_SYT_twoRectYD (SYT count for 2-row rectangular = Catalan number C_m via ballot bijection), (5) card_SYT_twoRowYD (SYT count for general 2-row [a,b] = ballotSeqCount(a+1,b) via ballot subset bijection). StandardYoungTableau.ext is now fully proved (funext).",
     "lineCount": 2991,
     "theoremCount": 95,
     "definitionCount": 14,
@@ -34,8 +34,8 @@
       "hook_length_formula_one_row: f^(1×n) = 1 (direct, 0 sorries)",
       "hook_length_formula_one_col: f^(n×1) = 1 (direct, 0 sorries)",
       "hook_length_formula_hook_shape: f^(m+1,1) = (m+1) × (m+2) × m! (bijection with Fin(m+1), 0 sorries)",
-      "card_SYT_twoRectYD: card(SYT(m×m)) = Cn m via Lindstrom reflection bijection (0 sorries)",
-      "hook_length_formula_two_rect: Cn(m) × (m+1)! × m! = (2m)! (proved, 0 sorries)",
+      "card_SYT_twoRectYD: card(SYT(m×m)) = Cn m via Lindstrom reflection bijection (1 sorry: requires ~150 lines of bijection infrastructure)",
+      "hook_length_formula_two_rect: Cn(m) × (m+1)! × m! = (2m)! (conditional on card_SYT_twoRectYD sorry)",
       "twoRowYD: general 2-row Young diagram [a,b] for a≥b",
       "hookProd_twoRowYD: hookProd([a,b]) = (a+1).descFactorial b × (a-b)! × b! (proved, 0 sorries)",
       "two_row_hook_identity: numerical identity ballotSeqCount(a+1,b) × hookProd = (a+b)! (proved, 0 sorries)",
@@ -85,7 +85,7 @@
     "namespace": "HookLengthFormula",
     "lineCount": 2991,
     "axiomCount": 0,
-    "sorries": 4,
+    "sorries": 5,
     "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
     "theoremCount": 95,
     "definitionCount": 14
@@ -162,5 +162,5 @@
       "mathContext": "Verified: (2,1)→2, (2,2)→2, (3,1)→3, (3,2)→5, (3,2,1)→16, (4,3,2,1)→1440, (3,3)→5 (C₃), (4,4)→14 (C₄)."
     }
   ],
-  "sorries": 4
+  "sorries": 5
 }
