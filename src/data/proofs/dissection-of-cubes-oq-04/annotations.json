@@ -50,7 +50,7 @@
   {
     "id": "ann-dod-angle-def",
     "proofId": "dissection-of-cubes-oq-04",
-    "range": { "startLine": 178, "endLine": 195 },
+    "range": { "startLine": 194, "endLine": 203 },
     "type": "definition",
     "title": "dodAngle Definition and Domain Helper Lemmas",
     "content": "Part II opens by defining `dodAngle = arccos(-1/√5)` — the dihedral angle of a regular dodecahedron (12 pentagonal faces, 30 edges, ≈116.57°). Two private helper lemmas establish domain bounds: `one_div_sqrt5_nonneg` proves 0 ≤ 1/√5 via `positivity`; `one_div_sqrt5_le_one` proves 1/√5 ≤ 1 via `Real.one_le_sqrt`. These bounds are required for the subsequent `Real.arccos_cos` and `Real.arccos_le_pi_div_two` applications in the half-angle identity proof: `arccos_cos(h₁)(h₂)` requires `0 ≤ angle` and `angle ≤ π`, which come from `arccos(1/√5) ≤ π/2` (from `1/√5 ≥ 0`) doubling to `2·arccos(1/√5) ≤ π`.",
@@ -96,9 +96,21 @@
     "prerequisites": ["tmul_infinite_order_ne_zero", "DissectionOfCubesOQ02OQ02", "Module.Flat", "angleClass"]
   },
   {
+    "id": "ann-classification-intro",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": { "startLine": 320, "endLine": 347 },
+    "type": "context",
+    "title": "Part V: The Cube Isolation Result — Setup and Geometric Consequence",
+    "content": "Part V synthesizes the preceding four parts into the complete classification. The section comment explains the geometric consequence directly: the cube has D = 0 (all 12 edges at π/2, a rational multiple of π), while all other Platonic solids have D ≠ 0 (proved individually in Parts I-IV). Since the Dehn invariant is preserved by scissors congruence, any two polyhedra with different Dehn invariants are NOT scissors congruent.\n\nThis answers the question for all Platonic-solid pairs involving the cube: no other Platonic solid can be cut into finitely many polyhedral pieces and reassembled into a cube (of any size), and vice versa. This extends Hilbert's original formulation (which only asked about the single pair cube–tetrahedron) to cover all five Platonic solids systematically.\n\nThe theorem `cube_isolated_dehn_invariant` packages the entire classification as a 5-way conjunction, with each conjunct proved by the corresponding single-solid result from OQ02OQ02, Part III (dodecahedron), or Part IV (icosahedron).",
+    "mathContext": "If $D(P_1) \\neq D(P_2)$, then $P_1$ and $P_2$ are not scissors congruent. Here $D(\\text{cube}) = 0$ and $D(P) \\neq 0$ for all other Platonic solids $P$. The Dehn invariant $D(P) = \\sum_e \\ell(e) \\otimes [\\theta(e)]$ is additive over decompositions and invariant under rigid motions, making it a complete obstruction to scissors congruence.",
+    "significance": "key",
+    "relatedConcepts": ["scissors congruence", "Dehn invariant obstruction", "Hilbert's third problem", "Platonic solid classification"],
+    "prerequisites": ["cube_dehn_zero", "tet_dehn_ne_zero", "oct_dehn_ne_zero", "dod_dehn_ne_zero", "ico_dehn_ne_zero"]
+  },
+  {
     "id": "ann-classification-table",
     "proofId": "dissection-of-cubes-oq-04",
-    "range": { "startLine": 356, "endLine": 395 },
+    "range": { "startLine": 348, "endLine": 395 },
     "type": "insight",
     "title": "Complete Platonic Solid Classification",
     "content": "The theorem cube_isolated_dehn_invariant packages the complete 5-solid classification into a single conjunction. The cube (12 edges, π/2 dihedral) has D = 0; all other Platonic solids have D ≠ 0. The tetrahedron and octahedron results come from OQ02OQ02; the dodecahedron is new in this file; the icosahedron uses the axiomatized angle irrationality. The classification has an immediate geometric consequence: no scissors-congruence exists between the cube and any other Platonic solid.",
