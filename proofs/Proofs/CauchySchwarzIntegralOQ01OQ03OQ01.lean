@@ -13,7 +13,7 @@ OQ-03 (`CauchySchwarzIntegralOQ01OQ03.lean`) proved Hölder at the lintegral lev
   `∫⁻ ‖fg‖₊ dμ ≤ (∫⁻ ‖f‖₊^p dμ)^(1/p) · (∫⁻ ‖g‖₊^q dμ)^(1/q)`
 
 This file lifts to the `eLpNorm` API — the standard interface for Lp spaces — via:
-  `eLpNorm f (ENNReal.ofReal p) μ = (∫⁻ a, ‖f a‖₊^p dμ)^(1/p)`
+  `eLpNorm_eq_lintegral_rpow_enorm` (Mathlib: eLpNorm f p μ = (∫⁻ ‖f‖ₑ^p.toReal)^(1/p.toReal))
 
 ## Results
 
@@ -46,13 +46,15 @@ variable {α : Type*} [MeasurableSpace α] {μ : Measure α}
 -- Part 1: Bridge Lemma — eLpNorm ↔ lintegral
 -- ============================================================================
 
-/-- For `p > 0` (as a real number), the eLpNorm API equals the Lp lintegral. -/
+/-- For `p > 0` (as a real number), the eLpNorm API equals the Lp lintegral.
+    Uses `eLpNorm_eq_lintegral_rpow_enorm` (‖·‖ₑ is `enorm = nnnorm` as ENNReal). -/
 private lemma eLpNorm_ofReal_eq {p : ℝ} (hp : 0 < p)
     {E : Type*} [NormedAddCommGroup E] {f : α → E} :
     eLpNorm f (ENNReal.ofReal p) μ =
-    (∫⁻ a, (‖f a‖₊ : ℝ≥0∞) ^ p ∂μ) ^ (1 / p) := by
-  rw [eLpNorm_eq_lintegral_rpow_nnnorm (by positivity) ENNReal.ofReal_ne_top,
-      ENNReal.toReal_ofReal hp.le, one_div]
+    (∫⁻ a, ‖f a‖ₑ ^ p ∂μ) ^ (1 / p) := by
+  have h0 : (ENNReal.ofReal p) ≠ 0 := (ENNReal.ofReal_pos.mpr hp).ne'
+  rw [eLpNorm_eq_lintegral_rpow_enorm h0 ENNReal.ofReal_ne_top,
+      ENNReal.toReal_ofReal hp.le]
 
 -- ============================================================================
 -- Part 2: Hölder in eLpNorm Form
@@ -77,9 +79,9 @@ theorem holder_normedField_eLpNorm
   rw [eLpNorm_one_eq_lintegral_nnnorm,
       eLpNorm_ofReal_eq hpq.pos,
       eLpNorm_ofReal_eq hpq.symm.pos]
-  -- Factor nnnorm via NormedField multiplicativity
+  -- Factor nnnorm via NormedField multiplicativity: ‖fg‖₊ = ‖f‖₊ · ‖g‖₊
   simp_rw [nnnorm_mul, ENNReal.coe_mul]
-  -- Apply ENNReal Hölder from Mathlib
+  -- Apply ENNReal Hölder (‖·‖ₑ = (‖·‖₊ : ℝ≥0∞) definitionally, exact closes)
   exact ENNReal.lintegral_mul_le_Lp_mul_Lq μ hpq
     hf.nnnorm.coe_nnreal_ennreal hg.nnnorm.coe_nnreal_ennreal
 
@@ -102,7 +104,7 @@ theorem memLp_mul_of_memLp_ofReal
   calc eLpNorm (fun a => f a * g a) 1 μ
       ≤ eLpNorm f (ENNReal.ofReal p) μ * eLpNorm g (ENNReal.ofReal q) μ :=
           holder_normedField_eLpNorm hpq hf.1.aemeasurable hg.1.aemeasurable
-      _ < ∞ := ENNReal.mul_lt_top hf.2 hg.2
+      _ < ∞ := ENNReal.mul_lt_top hf.2.ne hg.2.ne
 
 -- ============================================================================
 -- Part 4: Real and Complex Specializations
@@ -128,17 +130,21 @@ theorem holder_complex_eLpNorm
 theorem cauchy_schwarz_complex_eLpNorm
     {f g : α → ℂ} (hf : AEMeasurable f μ) (hg : AEMeasurable g μ) :
     eLpNorm (fun a => f a * g a) 1 μ ≤
-    eLpNorm f (ENNReal.ofReal 2) μ * eLpNorm g (ENNReal.ofReal 2) μ :=
-  holder_complex_eLpNorm
-    (⟨by norm_num, by norm_num⟩ : Real.HolderConjugate 2 2)
-    hf hg
+    eLpNorm f (ENNReal.ofReal 2) μ * eLpNorm g (ENNReal.ofReal 2) μ := by
+  apply holder_complex_eLpNorm _ hf hg
+  have h := Real.HolderConjugate.conjExponent (p := 2) (by norm_num : (1 : ℝ) < 2)
+  have heq : Real.conjExponent 2 = 2 := by simp [Real.conjExponent]; norm_num
+  rwa [heq] at h
 
 -- ============================================================================
 -- Part 5: Numerical Verification
 -- ============================================================================
 
 -- Verify the 2-2 conjugate pair satisfies HolderConjugate
-example : Real.HolderConjugate 2 2 := ⟨by norm_num, by norm_num⟩
+example : Real.HolderConjugate 2 2 := by
+  have h := Real.HolderConjugate.conjExponent (p := 2) (by norm_num : (1 : ℝ) < 2)
+  have heq : Real.conjExponent 2 = 2 := by simp [Real.conjExponent]; norm_num
+  rwa [heq] at h
 
 -- Verify bridge: ENNReal.ofReal 2 → the usual 2
 example : (ENNReal.ofReal 2 : ℝ≥0∞) = 2 := by norm_num
@@ -160,8 +166,9 @@ useful form of Hölder's inequality: it shows fg ∈ L1 whenever f ∈ Lp and g 
 **Proof structure:**
 1. `nnnorm_mul` (NormedField): ‖fg‖₊ = ‖f‖₊ · ‖g‖₊
 2. `ENNReal.lintegral_mul_le_Lp_mul_Lq` (Mathlib): lintegral Hölder
-3. `eLpNorm_ofReal_eq` (bridge): eLpNorm ↔ lintegral
-4. Combine to get eLpNorm Hölder → product Memℒp
+3. `eLpNorm_ofReal_eq` (bridge via `eLpNorm_eq_lintegral_rpow_enorm`): eLpNorm ↔ lintegral
+4. `‖·‖ₑ = (‖·‖₊ : ℝ≥0∞)` definitionally — `exact` closes the Hölder goal
+5. Combine to get eLpNorm Hölder → product Memℒp
 -/
 
 end HolderELpNorm
