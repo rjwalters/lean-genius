@@ -1461,9 +1461,11 @@ private lemma boundaryFlipLast_symm (s : GridSimplex d N)
         split_ifs with hi_inc hi_miss
         · rw [hi_inc]; exact hsi
         · rw [hi_miss]; omega
-        · exact (s.step_same ⟨d - 1, by omega⟩ i
+        · have hss := s.step_same ⟨d - 1, by omega⟩ i
             (fun h => hi_inc (h ▸ rfl))
-            (fun h => hi_miss (h ▸ rfl))).symm
+            (fun h => hi_miss (h ▸ rfl))
+          simp [Fin.castSucc, Fin.succ, show d - 1 + 1 = d from by omega] at hss
+          exact hss.symm
     · funext j
       simp only
       by_cases hjd : j.val + 1 < d
@@ -1799,17 +1801,23 @@ private lemma sperner_grid_one {N : ℕ} (hN : 0 < N)
     have honface : (v ⟨0, Nat.zero_lt_succ N⟩).onFace ⟨1, by omega⟩ := by
       show (v ⟨0, _⟩).coords ⟨1, by omega⟩ = 0; simp [v]
     have hne := hc (v ⟨0, _⟩) ⟨1, by omega⟩ honface
-    fin_cases h : c (v ⟨0, Nat.zero_lt_succ N⟩)
-    · rfl
-    · exact absurd h hne
+    -- c(v(0)) ≠ 1 and c(v(0)) : Fin 2, so c(v(0)).val ∈ {0,1} and ≠ 1 → = 0
+    apply Fin.ext
+    have hlt := (c (v ⟨0, Nat.zero_lt_succ N⟩)).isLt
+    have hne' : (c (v ⟨0, Nat.zero_lt_succ N⟩)).val ≠ 1 :=
+      fun heq => hne (Fin.ext heq)
+    omega
   -- v(N) lies on face 0 (coords(0) = N-N = 0), so c(v(N)) ≠ 0, hence = 1
   have hvN : c (v ⟨N, Nat.lt_succ_self N⟩) = 1 := by
     have honface : (v ⟨N, Nat.lt_succ_self N⟩).onFace ⟨0, by omega⟩ := by
       show (v ⟨N, _⟩).coords ⟨0, by omega⟩ = 0; simp [v]; omega
     have hne := hc (v ⟨N, _⟩) ⟨0, by omega⟩ honface
-    fin_cases h : c (v ⟨N, Nat.lt_succ_self N⟩)
-    · exact absurd h hne
-    · rfl
+    -- c(v(N)) ≠ 0 and c(v(N)) : Fin 2, so c(v(N)).val ∈ {0,1} and ≠ 0 → = 1
+    apply Fin.ext
+    have hlt := (c (v ⟨N, Nat.lt_succ_self N⟩)).isLt
+    have hne' : (c (v ⟨N, Nat.lt_succ_self N⟩)).val ≠ 0 :=
+      fun heq => hne (Fin.ext heq)
+    omega
   -- S = {k | c(v(k)) = 0}, find maximum k*
   let S := Finset.univ.filter (fun k : Fin (N + 1) => c (v k) = 0)
   have hS_ne : S.Nonempty :=
@@ -1840,9 +1848,12 @@ private lemma sperner_grid_one {N : ℕ} (hN : 0 < N)
     have hne : c (v ⟨k_star.val + 1, by omega⟩) ≠ 0 := by
       intro h
       exact hns (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩)
-    fin_cases h : c (v ⟨k_star.val + 1, by omega⟩)
-    · exact absurd h hne
-    · rfl
+    -- c(v(k*+1)) ≠ 0 and : Fin 2, so .val ≠ 0 and .val < 2 → .val = 1
+    apply Fin.ext
+    have hlt := (c (v ⟨k_star.val + 1, by omega⟩)).isLt
+    have hne' : (c (v ⟨k_star.val + 1, by omega⟩)).val ≠ 0 :=
+      fun heq => hne (Fin.ext heq)
+    omega
   -- The edge [v(k*), v(k*+1)] is a GridSimplex with incDir=1, miss=0
   refine ⟨{
     verts := fun i => if i.val = 0 then v k_star
@@ -1919,7 +1930,9 @@ theorem sperner_grid (d N : ℕ) (hN : 0 < N)
       step_same := fun k _j _h1 _h2 => k.elim0
       inc_injective := fun a _b _h => a.elim0 }, ?_⟩
     intro col
-    exact ⟨⟨0, by omega⟩, Subsingleton.elim _ _⟩
+    -- col : Fin 1 = Fin (0+1); any two Fin 1 values are equal since both vals < 1
+    refine ⟨⟨0, by omega⟩, ?_⟩
+    apply Fin.ext; omega
   | 1 =>
     -- d=1: proved by discrete IVT via sperner_grid_one
     exact sperner_grid_one hN c hc
