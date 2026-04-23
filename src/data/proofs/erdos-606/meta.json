@@ -8,7 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/606",
     "date": "1988",
     "status": "axiomatized",
-    "proofRepoPath": "Proofs/Stubs/Erdos606Problem.lean",
+    "proofRepoPath": "Proofs/Erdos606Problem.lean",
     "tags": [
       "discrete-geometry",
       "incidence-geometry",
@@ -16,13 +16,13 @@
       "erdos"
     ],
     "badge": "axiom",
-    "sorries": 11,
+    "sorries": 0,
     "erdosNumber": 606,
     "erdosUrl": "https://erdosproblems.com/606",
     "erdosProblemStatus": "solved",
-    "axiomCount": 8,
-    "lineCount": 308,
-    "assumptions": "8 axiom(s) and 11 sorry(s). See the Lean source for details.",
+    "axiomCount": 12,
+    "lineCount": 243,
+    "assumptions": "12 axioms: numDistinctLines, numDistinctLines_collinear, numDistinctLines_general_position, numDistinctLines_min_noncollinear, sylvester_gallai, not_achievable_max_minus_1, not_achievable_max_minus_3, achievable_max_minus_2, erdos_density_result, beck_theorem, szemeredi_trotter_bound, erdos_salamon_characterization. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -49,89 +49,65 @@
       "id": "header-imports",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 38,
-      "summary": "Problem statement, references, and Mathlib imports for Euclidean spaces, finite sets, and affine geometry",
-      "mathContext": "#606: achievable line counts for n points in R^2."
+      "endLine": 42,
+      "summary": "Problem statement, timeline, references, and Mathlib imports",
+      "mathContext": "#606: achievable line counts for n points in R^2. Solved by Erdős-Salamon 1988."
     },
     {
       "id": "points-lines",
       "title": "Points and Lines in ℝ²",
-      "startLine": 39,
-      "endLine": 63,
-      "summary": "Defines Point as EuclideanSpace ℝ (Fin 2), PointConfiguration with injectivity, Line with parametric representation, and line equivalence",
-      "mathContext": "n distinct points. Line through 2+ points."
-    },
-    {
-      "id": "counting-lines",
-      "title": "Counting Distinct Lines",
-      "startLine": 64,
-      "endLine": 82,
-      "summary": "Defines distinctPairs, numDistinctLines (via equivalence classes), and maxLines = n(n-1)/2",
-      "mathContext": "Range: 1 (collinear) to C(n,2) (general position)."
+      "startLine": 44,
+      "endLine": 75,
+      "summary": "`Point` (EuclideanSpace ℝ (Fin 2)), `PointConfig n` (injective map), `Line` (two distinct points), `onLine`, `maxLines = n(n-1)/2`",
+      "mathContext": "n distinct points. Line: parametric. maxLines = C(n,2)."
     },
     {
       "id": "collinearity",
-      "title": "Collinearity and General Position",
-      "startLine": 83,
-      "endLine": 107,
-      "summary": "Defines Collinear, AllCollinear (→ 1 line), and GeneralPosition (→ C(n,2) lines) with boundary theorems",
-      "mathContext": "Collinear: 1 line. General position: C(n,2) lines."
+      "title": "Collinearity and Configurations",
+      "startLine": 77,
+      "endLine": 103,
+      "summary": "`Collinear`, `AllCollinear`, `GeneralPosition`, `IsOrdinaryLine` — the geometric predicates used in all main theorems",
+      "mathContext": "Collinear: 3 points on common line. Ordinary line: exactly 2 config points."
+    },
+    {
+      "id": "line-count-axioms",
+      "title": "Line Count Function (Axiomatized)",
+      "startLine": 105,
+      "endLine": 131,
+      "summary": "Axioms: `numDistinctLines` (function), `numDistinctLines_collinear` (→1), `numDistinctLines_general_position` (→C(n,2)), `numDistinctLines_min_noncollinear` (≥n)",
+      "mathContext": "numDistinctLines axiomatized. Collinear→1, GenPos→C(n,2), NonCol≥n."
     },
     {
       "id": "sylvester-gallai",
       "title": "Sylvester-Gallai Theorem",
-      "startLine": 108,
-      "endLine": 127,
-      "summary": "Defines ordinary lines, axiomatizes Sylvester-Gallai, and derives the minimum bound f(n) ≥ n for non-collinear configurations",
-      "mathContext": "Sylvester-Gallai: non-collinear points have ordinary line (exactly 2 points)."
+      "startLine": 133,
+      "endLine": 143,
+      "summary": "Axiom `sylvester_gallai`: non-collinear points determine an ordinary line (exactly 2 config points). Gallai proved this in 1944.",
+      "mathContext": "Sylvester-Gallai (1944): non-collinear ⟹ ∃ ordinary line with exactly 2 points."
     },
     {
-      "id": "main-problem",
-      "title": "The Main Problem",
-      "startLine": 128,
-      "endLine": 144,
-      "summary": "Defines AchievableLineCounts(n) as the set of realizable values and states the Erdős Problem #606 characterization question",
-      "mathContext": "Which values in [1,C(n,2)] achievable? Not all!"
-    },
-    {
-      "id": "known-results",
-      "title": "Known Results: Gaps and Density",
+      "id": "achievable-counts",
+      "title": "The Achievable Line Counts",
       "startLine": 145,
-      "endLine": 177,
-      "summary": "Axioms for the two impossible values C(n,2)-1 and C(n,2)-3, the achievable C(n,2)-2, and Erdős's density result for the range [cn^{3/2}, C(n,2)-4]",
-      "mathContext": "Impossible: C(n,2)-1 and C(n,2)-3. All others achievable."
+      "endLine": 191,
+      "summary": "`AchievableLineCounts n` definition; axioms for gaps (C(n,2)-1 and C(n,2)-3), achievable value C(n,2)-2, Erdős density result for [cn^{3/2}, C(n,2)-4]",
+      "mathContext": "Gaps: C(n,2)-1 and C(n,2)-3. C(n,2)-2 achievable. Density in [cn^{3/2}, C(n,2)-4]."
     },
     {
-      "id": "constructions",
-      "title": "Explicit Constructions",
-      "startLine": 178,
-      "endLine": 216,
-      "summary": "Collinear (f=1), circle (f=C(n,2)), and grid (intermediate values) configurations with correctness statements",
-      "mathContext": "Collinear:1, circle:C(n,2), grid:intermediate."
-    },
-    {
-      "id": "beck-theorem",
-      "title": "Beck's Theorem",
-      "startLine": 217,
-      "endLine": 228,
-      "summary": "Beck's dichotomy: ≥n/100 collinear points on one line, or ≥cn² distinct lines",
-      "mathContext": "Beck: >=n/100 collinear or >=cn^2 lines. Dichotomy."
-    },
-    {
-      "id": "szemeredi-trotter",
-      "title": "Szemerédi-Trotter Bound",
-      "startLine": 229,
-      "endLine": 245,
-      "summary": "Incidence bound O((nm)^{2/3} + n + m) and corollary for sparse configurations",
-      "mathContext": "ST: I(P,L)=O((nm)^{2/3}+n+m)."
+      "id": "beck-szemeredi",
+      "title": "Beck's Theorem and Szemerédi-Trotter",
+      "startLine": 193,
+      "endLine": 222,
+      "summary": "Axiom `beck_theorem`: n/100 collinear or n²/10000 lines. Axiom `szemeredi_trotter_bound`: I(P,L) ≤ 10(nm)^(2/3)+n+m",
+      "mathContext": "Beck (1983): dichotomy. ST (1983): I≤C(nm)^(2/3)+n+m."
     },
     {
       "id": "complete-characterization",
-      "title": "Complete Characterization",
-      "startLine": 246,
-      "endLine": 308,
-      "summary": "Erdős-Salamon characterization axiom and the main theorem erdos_606_solved, which derives the achievability result from set-theoretic reasoning",
-      "mathContext": "Erdos-Salamon: all values except exactly 2 are achievable."
+      "title": "Complete Characterization and Main Theorems",
+      "startLine": 224,
+      "endLine": 243,
+      "summary": "Axiom `erdos_salamon_characterization`; proved theorems `erdos_606_solved` and `min_lines_noncollinear`",
+      "mathContext": "Erdős-Salamon: {1}∪[n,C(n,2)]\\{C(n,2)-1, C(n,2)-3}. SOLVED."
     }
   ],
   "conclusion": {
@@ -169,21 +145,22 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Analysis.InnerProductSpace.PiL2",
-      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
       "Mathlib.LinearAlgebra.AffineSpace.Independent",
+      "Mathlib.Data.Finset.Card",
       "Mathlib.Tactic"
     ],
     "opens": [
-      "Finset"
+      "Finset",
+      "Real"
     ],
     "namespace": "Erdos606",
-    "lineCount": 308,
-    "axiomCount": 8,
-    "theoremCount": 9,
-    "definitionCount": 14,
-    "path": "Proofs/Stubs/Erdos606Problem.lean",
-    "sorries": 11
+    "lineCount": 243,
+    "axiomCount": 12,
+    "theoremCount": 3,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos606Problem.lean",
+    "sorries": 0
   },
-  "sorries": 11
+  "sorries": 0
 }
