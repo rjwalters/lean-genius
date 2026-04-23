@@ -21,9 +21,9 @@
       "van-der-waerden",
       "open"
     ],
-    "axiomCount": 1,
-    "assumptions": "1 axiom: optAPBound (optimal AP bound function f(d)). Former axioms maxMonoAPLength, maxMonoAPLength_pos, vanDerWaerden_implies_growth, beck_upper_bound, erdos_sqrt2_construction, erdos_187_optimal_bound now proved as theorems or definitions.",
-    "lineCount": 54,
+    "axiomCount": 4,
+    "assumptions": "4 axioms: (1) optAPBound — the optimal AP bound function f(d) itself, declared as an axiom because computing the infimum over all 2-colorings is not constructive; (2) optAPBound_unbounded — van der Waerden's theorem implication that f(d) → ∞ (∀ k, ∃ d, k ≤ optAPBound d); (3) beck_upper_bound — Beck's 1980 result f(d) = O(log d) (∃ C D₀, ∀ d ≥ D₀, optAPBound d ≤ C·(log₂ d + 1)); (4) erdos_187_conjecture — the open question f(d) = Θ(log d) stated as an axiom (∃ c D₀, ∀ d ≥ D₀, c·log₂ d ≤ optAPBound d).",
+    "lineCount": 60,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -61,25 +61,32 @@
       "summary": "TwoColoring = ℕ → Fin 2. IsMonoAP χ a d k: {a, a+d, ..., a+(k-1)d} is monochromatic under χ. maxMonoAPLength χ d: longest monochromatic AP with difference d. optAPBound d = f(d): infimum over all 2-colorings."
     },
     {
-      "id": "section-34",
-      "title": "Part I: Definitions (continued)",
+      "id": "opt-ap-bound",
+      "title": "Part II: optAPBound Axiom",
       "startLine": 34,
-      "endLine": 44,
-      "summary": "Continuation: remaining proofs and definitions in this section."
+      "endLine": 37,
+      "summary": "Axiom: optAPBound d — the optimal function f(d), declared as an axiom since computing the infimum over all 2-colorings requires reasoning beyond Mathlib's current scope."
     },
     {
       "id": "van-der-waerden",
-      "title": "Part II: Van der Waerden's Theorem",
-      "startLine": 45,
-      "endLine": 52,
-      "summary": "Axiom: f(d) → ∞. Van der Waerden's theorem guarantees that every 2-coloring contains monochromatic APs of any length; as a consequence, f(d) is unbounded."
+      "title": "Part III: Van der Waerden's Theorem Implication",
+      "startLine": 38,
+      "endLine": 46,
+      "summary": "Axiom optAPBound_unbounded: ∀ k, ∃ d, k ≤ optAPBound d — van der Waerden guarantees f(d) → ∞. Every 2-coloring of [1, W(2,k)] contains a monochromatic k-AP."
     },
     {
       "id": "beck-bound",
-      "title": "Part III: Beck's Upper Bound",
-      "startLine": 53,
-      "endLine": 54,
-      "summary": "Axiom: ∃ C, D₀, ∀ d ≥ D₀, f(d) ≤ C · (log₂ d + 1). Beck (1980) constructs a low-discrepancy 2-coloring limiting monochromatic AP length to O(log d)."
+      "title": "Part IV: Beck's Upper Bound",
+      "startLine": 47,
+      "endLine": 55,
+      "summary": "Axiom beck_upper_bound: ∃ C D₀, ∀ d ≥ D₀, f(d) ≤ C·(log₂ d + 1). Beck (1980) uses discrepancy theory to construct a 2-coloring limiting monochromatic AP length to O(log d)."
+    },
+    {
+      "id": "open-conjecture",
+      "title": "Part V: The Open Conjecture",
+      "startLine": 56,
+      "endLine": 60,
+      "summary": "Axiom erdos_187_conjecture: ∃ c D₀, ∀ d ≥ D₀, c·log₂ d ≤ optAPBound d. The open lower bound that would give f(d) = Θ(log d). Combined with Beck, this would close the problem."
     }
   ],
   "conclusion": {
@@ -100,8 +107,8 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 54,
-    "axiomCount": 1,
+    "lineCount": 60,
+    "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 2,
     "path": "Proofs/Erdos187Problem.lean",

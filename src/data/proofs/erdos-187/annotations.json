@@ -52,23 +52,23 @@
     "proofId": "erdos-187",
     "type": "technique",
     "range": {
-      "startLine": 49,
-      "endLine": 52
+      "startLine": 38,
+      "endLine": 46
     },
-    "title": "Van der Waerden's Theorem Implication",
-    "content": "**Axiom:** For any k₀, there exists d such that f(d) ≥ k₀ — equivalently, f(d) → ∞.\n\n**Origin:** Van der Waerden's 1927 theorem proves this by the Hales-Jewett compactness argument: any 2-coloring of {1,...,N} with N = W(2, k) contains a monochromatic k-AP. Taking d to be any common difference in this AP gives f(d) ≥ k.\n\n**Limitation:** The van der Waerden numbers W(2, k) are tower-type in k, so this gives no quantitative rate for f(d) as a function of d.",
-    "mathContext": "$\\forall k_0,\\ \\exists d,\\ f(d) \\geq k_0$; van der Waerden: $\\forall k, r,\\ \\exists N = W(r,k)$ such that any $r$-coloring of $\\{1,\\ldots,N\\}$ contains a monochromatic $k$-AP; for $r=2$: $W(2,k) \\leq 2^{2^{\\cdots}}$ (tower-type)",
+    "title": "Van der Waerden's Theorem Implication: f(d) → ∞",
+    "content": "**`optAPBound_unbounded`**: For every $k$, there exists $d$ such that $f(d) \\geq k$ — equivalently, $f(d) \\to \\infty$ as $d$ ranges over naturals.\n\n**Origin:** Van der Waerden's 1927 theorem: any 2-coloring of $\\{1, \\ldots, W(2,k)\\}$ contains a monochromatic $k$-AP. Taking $d$ to be the common difference gives $f(d) \\geq k$.\n\n**Limitation:** The van der Waerden numbers $W(2, k)$ grow tower-type in $k$ (at least as fast as $2^{2^{\\cdots}}$). This gives no quantitative rate for $f(d)$ as a function of $d$ itself.",
+    "mathContext": "$\\forall k_0,\\ \\exists d,\\ f(d) \\geq k_0$. Van der Waerden's theorem: $\\forall k, r,\\ \\exists N = W(r,k)$ such that any $r$-coloring of $\\{1,\\ldots,N\\}$ contains a monochromatic $k$-AP. For $r=2$: $W(2,k) \\leq 2^{2^{k}}$ (tower-type, far from the conjectured polynomial).",
     "significance": "key",
     "relatedConcepts": [
       "van-der-waerden-numbers",
-      "hales-jewett",
-      "tower-bounds",
-      "compactness"
+      "Hales-Jewett theorem",
+      "tower-type bounds",
+      "Ramsey theory"
     ],
     "prerequisites": [
-      "van der Waerden's theorem statement and what W(r,k) means",
-      "the connection between W(r,k) bounds and quantitative information about f(d)",
-      "why tower-type bounds give no useful rate for f(d)"
+      "van der Waerden's theorem and W(r,k)",
+      "why tower bounds give no rate for f(d)",
+      "optAPBound definition"
     ]
   },
   {
@@ -76,23 +76,47 @@
     "proofId": "erdos-187",
     "type": "technique",
     "range": {
-      "startLine": 53,
-      "endLine": 60
+      "startLine": 47,
+      "endLine": 55
     },
-    "title": "Beck's Upper Bound (1980)",
-    "content": "**Axiom:** ∃ C, D₀ such that for all d ≥ D₀, f(d) ≤ C·(log₂ d + 1).\n\n**Proof sketch:** Beck constructs an explicit 2-coloring χ using a probabilistic/discrepancy argument. The key is to control the 'discrepancy' of the coloring on all APs with any fixed difference d simultaneously, bounding the longest monochromatic run to O(log d).\n\n**Significance:** The O(log d) bound is believed tight, but no matching lower bound exists.",
-    "mathContext": "$\\exists C, D_0,\\ \\forall d \\geq D_0,\\ f(d) \\leq C(\\log_2 d + 1)$; equivalently $f(d) = O(\\log d)$; Beck's proof uses discrepancy theory: for AP discrepancy $D(\\chi, a, d, k) = |\\sum_{i<k} (-1)^{\\chi(a+id)}|$, a coloring with $D = O(\\sqrt{k})$ everywhere limits mono runs to $O(\\log d)$",
+    "title": "Beck's Upper Bound: f(d) = O(log d)",
+    "content": "**`beck_upper_bound`**: There exist $C > 0$ and $D_0$ such that for all $d \\geq D_0$, $f(d) \\leq C(\\lfloor \\log_2 d \\rfloor + 1)$.\n\n**Proof:** Beck (1980) constructed an explicit 2-coloring using a discrepancy argument. The key insight: a coloring where the AP discrepancy $|\\sum_{i<k} (-1)^{\\chi(a+id)}| = O(\\sqrt{k})$ for all $(a,d,k)$ limits the longest monochromatic AP with any fixed difference to $O(\\log d)$.\n\n**Significance:** The $O(\\log d)$ bound is widely believed to be tight, but proving any lower bound beyond $f(d) \\to \\infty$ remains open.",
+    "mathContext": "$\\exists C, D_0,\\ \\forall d \\geq D_0: f(d) \\leq C(\\lfloor \\log_2 d \\rfloor + 1)$. In Lean: `Nat.log 2 d` is the floor base-2 logarithm. Beck's discrepancy argument: AP discrepancy $D = O(\\sqrt{k})$ \\Rightarrow$ mono run length $= O(\\log d)$.",
     "significance": "key",
     "relatedConcepts": [
-      "beck",
-      "discrepancy-theory",
-      "probabilistic-method",
-      "AP-discrepancy"
+      "discrepancy theory",
+      "probabilistic method",
+      "AP discrepancy",
+      "Nat.log"
     ],
     "prerequisites": [
-      "discrepancy theory basics: measuring how evenly a ±1 sequence distributes over APs",
-      "the probabilistic method in combinatorics: showing a random coloring has desired properties with positive probability",
-      "Beck's 1980 paper 'On arithmetic progressions in random sets'"
+      "discrepancy theory basics",
+      "probabilistic method in combinatorics",
+      "optAPBound definition"
+    ]
+  },
+  {
+    "id": "erdos-187-open",
+    "proofId": "erdos-187",
+    "type": "concept",
+    "range": {
+      "startLine": 56,
+      "endLine": 60
+    },
+    "title": "Main Open Conjecture: f(d) = Θ(log d)",
+    "content": "**`erdos_187_conjecture`** formalizes the open question: does there exist $c > 0$ such that $f(d) \\geq c \\cdot \\lfloor \\log_2 d \\rfloor$ for all sufficiently large $d$?\n\nCombined with Beck's upper bound, this would give $f(d) = \\Theta(\\log d)$ — the exact answer to Problem #187.\n\n**Current gap:** The only known lower bound is $f(d) \\to \\infty$ (van der Waerden), which provides no rate at all. Even $f(d) \\geq \\log \\log d$ would be new. The conjectured $\\Theta(\\log d)$ lower bound seems plausible from probabilistic heuristics (a random 2-coloring has monochromatic APs of length $\\Theta(\\log d)$), but no proof technique is known.",
+    "mathContext": "$\\exists c > 0, D_0,\\ \\forall d \\geq D_0: c \\cdot \\lfloor \\log_2 d \\rfloor \\leq f(d)$. Known: $f(d) \\to \\infty$ (van der Waerden) and $f(d) = O(\\log d)$ (Beck). Open: matching lower bound $f(d) = \\Omega(\\log d)$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Theta notation",
+      "lower bounds",
+      "probabilistic heuristics",
+      "Ramsey-type lower bounds"
+    ],
+    "prerequisites": [
+      "optAPBound_unbounded",
+      "beck_upper_bound",
+      "Nat.log semantics"
     ]
   }
 ]
