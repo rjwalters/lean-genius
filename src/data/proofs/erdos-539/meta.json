@@ -7,7 +7,7 @@
     "author": "Erd\u0151s-Szemer\u00e9di (1973), Freiman-Lev (improvement)",
     "sourceUrl": "https://erdosproblems.com/539",
     "date": "1973",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos539Problem.lean",
     "tags": [
       "erdos",
@@ -55,7 +55,7 @@
       "ErdosSzemeredi_Bounds, ImprovedBounds: combined statements"
     ],
     "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. Definitions and basic properties proved; main bounds (Erdős-Szemerédi and Freiman-Lev) remain open conjectures stated as Prop definitions, not formalized as axioms or proved theorems.",
+    "assumptions": "0 axioms, 0 sorries. Definitions and basic properties proved; main bounds (Erd\u0151s-Szemer\u00e9di and Freiman-Lev) remain open conjectures stated as Prop definitions, not formalized as axioms or proved theorems. Open conjecture; supporting lemmas fully verified.",
     "prerequisites": [
       "Greatest common divisor (GCD) and basic divisibility",
       "Finite set cardinality and Finset operations",

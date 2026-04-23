@@ -7,7 +7,7 @@
     "author": "Erd\u0151s (connected to Problem #1098), Gustafson 1973, Neumann 1976",
     "sourceUrl": "https://erdosproblems.com/1098",
     "date": "1973",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1098OQ04.lean",
     "tags": [
       "erdos",
@@ -27,7 +27,7 @@
     "mathlib_version": "4.26.0",
     "lineCount": 133,
     "axiomCount": 0,
-    "assumptions": "0 sorries, 0 axioms. Core results (commProb G \u2264 1, equality iff abelian) obtained via Mathlib's commProb_le_one and commProb_eq_one_iff. The 5/8 theorem is stated as a Prop (open formalization goal, not an axiom). The nonCommGraph definition and nonCommDensity theorems are original infrastructure.",
+    "assumptions": "0 sorries, 0 axioms. Core results (commProb G \u2264 1, equality iff abelian) obtained via Mathlib's commProb_le_one and commProb_eq_one_iff. The 5/8 theorem is stated as a Prop (open formalization goal, not an axiom). The nonCommGraph definition and nonCommDensity theorems are original infrastructure. Open conjecture; supporting lemmas fully verified.",
     "mathlibDependencies": [
       {
         "theorem": "commProb_pos",
