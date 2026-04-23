@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 32
     },
-    "type": "concept",
-    "title": "Multiset Vandermonde: Problem Setup and Strategy",
-    "content": "The module docstring frames the problem: prove the multiset Vandermonde identity C^ms(m+n,r) = Σ_{j=0}^{r} C^ms(m,j)·C^ms(n,r-j), where C^ms(n,k) = Nat.multichoose n k counts multisets of size k from a set of n elements. The relation multichoose n k = C(n+k-1, k) connects multiset coefficients to standard binomials. The proof strategy is double induction on m and r, driven by the Pascal-like recurrence multichoose(n+1)(k+1) = multichoose n (k+1) + multichoose(n+1) k.",
-    "mathContext": "The multiset coefficient satisfies $\\binom{n+k-1}{k} = \\text{multichoose}(n,k)$, the number of ways to choose $k$ items from $n$ types with repetition. The identity $\\text{mc}(m+n,r) = \\sum_{j=0}^r \\text{mc}(m,j)\\cdot\\text{mc}(n,r-j)$ is the 'stars and bars' analogue of Vandermonde: choosing $r$ items with repetition from $m+n$ types splits by how many come from the first $m$ types. The Pascal-like recurrence $\\text{mc}(n+1)(k+1) = \\text{mc}(n)(k+1) + \\text{mc}(n+1)(k)$ plays the role of Pascal's triangle identity $\\binom{n}{k} = \\binom{n-1}{k-1} + \\binom{n-1}{k}$.",
-    "significance": "supporting",
+    "type": "context",
+    "title": "Multiset Vandermonde: Problem Setup and Three Proof Perspectives",
+    "content": "The module docstring frames the problem: prove the multiset Vandermonde identity C^ms(m+n,r) = Σ_{j=0}^{r} C^ms(m,j)·C^ms(n,r-j), where C^ms(n,k) = Nat.multichoose n k counts multisets of size k from a set of n elements. The relation multichoose n k = C(n+k-1, k) connects multiset coefficients to standard binomials. The proof strategy is double induction on m and r, driven by the Pascal-like recurrence multichoose(n+1)(k+1) = multichoose n (k+1) + multichoose(n+1) k.\n\nThree equivalent proof perspectives, only one formalized:\n1. **Inductive** (formalized): double induction on m and r using the Pascal recurrence — the combinatorial translation of the formal power series argument\n2. **Generating function** (conceptual): coefficient of x^r in (1-x)^{-m}·(1-x)^{-n} = (1-x)^{-(m+n)} gives the identity immediately — this is the 'obvious' proof but requires formalizing formal power series\n3. **Combinatorial** (bijective): count multisets of size r from m+n elements by partition into 'first m' and 'last n' contributions — the bijection proof, requiring multiset combinatorics infrastructure",
+    "mathContext": "The multiset coefficient satisfies $\\binom{n+k-1}{k} = \\text{mc}(n,k)$ (stars and bars). Three perspectives: (1) **Generating function**: $\\frac{1}{(1-x)^{m+n}} = \\frac{1}{(1-x)^m} \\cdot \\frac{1}{(1-x)^n}$ and $[x^r]\\frac{1}{(1-x)^n} = \\text{mc}(n,r)$; Cauchy product gives the convolution. (2) **Negative binomial**: $\\text{mc}(n,k) = (-1)^k\\binom{-n}{k}$ (extended binomial coefficient with negative top), so the identity follows from the ordinary Vandermonde convolution with negative parameters. (3) **Pascal recurrence**: $\\text{mc}(n+1)(k+1) = \\text{mc}(n)(k+1) + \\text{mc}(n+1)(k)$ mirrors $\\binom{n}{k} = \\binom{n-1}{k-1} + \\binom{n-1}{k}$, making the double induction a direct analogue of the classical Vandermonde proof via Pascal's triangle.",
+    "significance": "context",
     "relatedConcepts": [
       "multiset coefficient",
       "Vandermonde identity",
@@ -30,7 +30,7 @@
       "startLine": 38,
       "endLine": 47
     },
-    "type": "concept",
+    "type": "technique",
     "title": "Base Case m = 0: Only j = 0 Term Survives",
     "content": "When m = 0, multichoose 0 j = 0 for all j ≥ 1 (only multichoose 0 0 = 1). So the sum Σ_{j≤r} multichoose(0,j)·multichoose(n,r-j) collapses to just the j = 0 term: 1·multichoose n r = multichoose n r. Proved by induction on r: the zero case uses multichoose_zero_right; the successor case uses sum_range_succ' to split off the j = 0 term, then simp dispatches the rest with multichoose_zero_succ (= 0) and multichoose_zero_right (= 1).",
     "mathContext": "$\\text{mc}(0, 0) = 1$ and $\\text{mc}(0, j+1) = 0$ for all $j$. Thus $\\sum_{j=0}^r \\text{mc}(0,j)\\cdot\\text{mc}(n,r-j) = \\text{mc}(0,0)\\cdot\\text{mc}(n,r) + \\sum_{j=1}^r 0 = \\text{mc}(n,r)$. The Lean proof uses `sum_range_succ'` to split off the $j=0$ term from the sum over `range(r+1)`, placing it at the front. Then `multichoose_zero_succ` kills all remaining terms.",
@@ -76,10 +76,10 @@
       "startLine": 60,
       "endLine": 77
     },
-    "type": "concept",
-    "title": "Sum Decomposition Lemma: The Engine of Double Induction",
-    "content": "The crucial algebraic identity: Σ_{j≤r+1} mc(m+1,j)·mc(n,r+1-j) = Σ_{j≤r+1} mc(m,j)·mc(n,r+1-j) + Σ_{j≤r} mc(m+1,j)·mc(n,r-j). The proof applies sum_range_succ' to both sides to extract the j=0 terms (both equal mc(n,r+1)), leaving inner sums over range(r+1) with indices shifted. The key step: simp_rw [Nat.multichoose_succ_succ, add_mul] expands mc(m+1)(j+1) = mc(m)(j+1) + mc(m+1)(j) and distributes through the product. sum_add_distrib separates the two sum components, and ring closes the goal. The index shift r+1-(j+1) = r-j (via Nat.succ_sub_succ_eq_sub) allows the two sums to align.",
-    "mathContext": "The Pascal-like recurrence $\\text{mc}(m+1)(j+1) = \\text{mc}(m)(j+1) + \\text{mc}(m+1)(j)$ gives: $\\sum_{j=0}^{r+1} \\text{mc}(m+1,j)\\cdot\\text{mc}(n,r+1-j) = \\sum_{j=0}^{r+1}[\\text{mc}(m,j+1)+\\text{mc}(m+1,j)]\\cdot\\text{mc}(n,r-j)$ (after index shift $j\\to j+1$ for $j\\geq 1$). Distributing and splitting into two sums gives the identity. This is the multiset analogue of the standard Pascal-Vandermonde step $C(m+1,j) = C(m,j) + C(m,j-1)$.",
+    "type": "technique",
+    "title": "Sum Decomposition Lemma: Pascal Recurrence + simp_rw Index Alignment",
+    "content": "The crucial algebraic identity: Σ_{j≤r+1} mc(m+1,j)·mc(n,r+1-j) = Σ_{j≤r+1} mc(m,j)·mc(n,r+1-j) + Σ_{j≤r} mc(m+1,j)·mc(n,r-j). The proof applies `sum_range_succ'` to both sides to extract the j=0 terms (both equal mc(n,r+1)), leaving inner sums over range(r+1) with indices shifted.\n\n**Key Lean 4 detail**: `simp_rw [hsub]` (where `hsub : r+1-(j+1) = r-j`) must precede `simp_rw [Nat.multichoose_succ_succ]`. This is because `simp_rw` rewrites under binders (including inside `Finset.sum`), whereas plain `rw` only rewrites the outermost occurrence. If `multichoose_succ_succ` is applied first, Lean cannot yet see that `r+1-(j+1)` and `r-j` are the same term (truncated natural subtraction is definitionally opaque). The `have hsub : ∀ j : ℕ, r + 1 - (j + 1) = r - j := fun j => by omega` and subsequent `simp_rw [hsub]` make this identification explicit before the main expansion.\n\nAfter alignment, `simp_rw [Nat.multichoose_succ_succ, add_mul]` expands `mc(m+1)(j+1) = mc(m)(j+1) + mc(m+1)(j)` and distributes through the product. `sum_add_distrib` splits the one sum into two, and `ring` closes the goal by handling the j=0 boundary arithmetic.",
+    "mathContext": "The Pascal-like recurrence $\\text{mc}(m+1)(j+1) = \\text{mc}(m)(j+1) + \\text{mc}(m+1)(j)$ drives the splitting: after peeling the $j=0$ boundary terms (both sides contribute $\\text{mc}(n, r+1)$, which cancel), the inner sums need the substitution $r+1-(j+1) = r-j$ to align. In Lean 4, `Nat.sub` is **truncated** (not negative), so $r+1-(j+1)$ and $r-j$ are not definitionally equal even when $j \\leq r$ — they require `omega` to discharge the side condition $j \\leq r$. The `have hsub` approach makes the alignment a named propositional fact (universally quantified over $j$), which `simp_rw` can apply inside the sum. This is a common Lean 4 pattern for convolution index manipulation: prove the index equation as a `∀ j, ...` lemma, then apply via `simp_rw`.",
     "significance": "key",
     "relatedConcepts": [
       "Nat.multichoose_succ_succ",
