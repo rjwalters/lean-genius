@@ -168,16 +168,29 @@
       "targetId": "sqrt2-plus-sqrt3-irrational"
     }
   ],
-  "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": [
-      "Mathlib.RingTheory.EisensteinCriterion",
-      "Mathlib.RingTheory.Polynomial.Gauss",
-      "Mathlib.RingTheory.Algebraic.Basic",
-      "Mathlib.FieldTheory.Adjoin"
-    ]
-  },
+  "references": [
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig: Gerh. Fleischer",
+      "note": "Section VII: 'Equations defining sections of a circle.' Contains Gauss's lemma on content-multiplicativity of primitive polynomials, the foundational result used to transfer ℤ-irreducibility to ℚ-irreducibility (Part I of this proof)"
+    },
+    {
+      "authors": "Eisenstein, Ferdinand Gotthold Max",
+      "title": "Über die Irreductibilität und einige andere Eigenschaften der Gleichung...",
+      "year": "1850",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), vol. 39",
+      "note": "Contains the Eisenstein irreducibility criterion: the main tool for proving X²-2 is irreducible over ℤ (Part I of this proof). Applied here at p=2 with the condition 2∣(-2) but 4∤(-2)"
+    },
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra (3rd ed.)",
+      "year": "2002",
+      "venue": "Graduate Texts in Mathematics, vol. 211. Springer",
+      "note": "Standard reference for minimal polynomials (Ch. V), Gauss's lemma (Ch. IV §2), Eisenstein's criterion (Ch. IV §3), and simple algebraic extensions [K(α):K] = deg(minpoly_K(α)). The three-property characterization of minimal polynomials is proved in Chapter V."
+    }
+  ],
   "leanFile": {
     "path": "Proofs/Sqrt2Minpoly.lean",
     "sorries": 0,
