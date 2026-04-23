@@ -43,7 +43,9 @@
       "Despite algebraic numbers forming a proper superset of \u211a (they include \u221a2, \u221b3, (1+\u221a5)/2, and uncountably many algebraic irrationals), both sets have the same cardinality \u2135\u2080. This is formalized as: Cardinal.mk {x : \u211d // IsAlgebraic \u211a x} = Cardinal.mk \u211a, proved by both equaling aleph0 via Mathlib's cardinalMk_of_countable_of_charZero and mk_denumerable.",
       "The bounded-degree sets form a monotone filtration: algebraicRealsOfBoundedDegree d \u2286 algebraicRealsOfBoundedDegree (d+1) (by Nat.le_succ_of_le), and their union equals all algebraic numbers. This is the Lean analogue of Cantor's 'height' ordering \u2014 controlling complexity by bounding the degree.",
       "The complement \u2014 transcendental reals \u2014 is uncountable: \u211d is uncountable (Cantor's 1874 diagonal argument) while algebraic reals are countable, so the set difference is uncountable. 'Almost all' real numbers (in the sense of cardinality) are transcendental, even though constructing specific transcendentals is hard.",
-      "Degree 1 = \u211a via algebraMap: rationals embed as algebraic reals of degree 1 by `isAlgebraic_algebraMap`. The minimal polynomial of q \u2208 \u211a over \u211a is X \u2212 q (linear), so natDegree = 1. This proves the bottom stratum algebraicRealsOfDegree 1 \u2287 image(\u211a \u2192 \u211d), connecting the stratification to the well-known denumerability of \u211a."
+      "Degree 1 = \u211a via algebraMap: rationals embed as algebraic reals of degree 1 by `isAlgebraic_algebraMap`. The minimal polynomial of q \u2208 \u211a over \u211a is X \u2212 q (linear), so natDegree = 1. This proves the bottom stratum algebraicRealsOfDegree 1 \u2287 image(\u211a \u2192 \u211d), connecting the stratification to the well-known denumerability of \u211a.",
+      "Cantor's 1874 argument is non-constructive: it shows transcendentals exist by cardinality without exhibiting any. Liouville (1844) used a complementary constructive approach: numbers that are 'too well approximated' by rationals (e.g., \u03a3 10^{-k!}) cannot be algebraic, because algebraic numbers satisfy algebraic approximation bounds. These are dual perspectives \u2014 set-cardinality vs. Diophantine approximation \u2014 and the Lean formalization takes Cantor's route via Mathlib's Algebraic.countable, bypassing the constructive theory.",
+      "The algebraic numbers form an algebraically closed field (\u211a\u0305, the algebraic closure of \u211a) but are NOT metrically complete: Cauchy sequences of algebraic numbers can converge to transcendentals. Conversely, \u211d is metrically complete but not algebraically closed (no square root of \u22121). This algebraic-closure vs. metric-completion duality explains why \u2102 = algebraic closure of \u211d is needed to get both properties simultaneously, and why the 'natural' number systems form a strict hierarchy: \u211a \u2282 \u211a\u0305 \u2229 \u211d \u2282 \u211d \u2282 \u2102 = \u211a\u0305."
     ],
     "prerequisites": [
       "Set theory (countability, cardinality, \u2135\u2080)",
@@ -55,9 +57,11 @@
     "summary": "This formalization verifies Cantor's 1874 theorem that algebraic numbers form a countable set with cardinality \u2135\u2080, matching that of \u211a. The degree stratification provides additional structural insight: the algebraic numbers decompose as a countable union of countable strata, each indexed by minimal polynomial degree.",
     "implications": "The countability of algebraic numbers directly implies that almost all real numbers (in the sense of cardinality) are transcendental. This is Cantor's original motivation: transcendental numbers exist and are, in a precise sense, the 'typical' real number. The result also underpins the theory of transcendence: to show a number is transcendental, it suffices to show it is not algebraic.",
     "openQuestions": [
-      "Formalize the Lindemann-Weierstrass theorem: if \u03b1\u2081,...,\u03b1\u2099 are distinct algebraic numbers, then e^{\u03b1\u2081},...,e^{\u03b1\u2099} are linearly independent over \u211a (implying \u03c0 and e are transcendental)",
-      "Prove in Lean 4 that \u211d is uncountable (Cantor's diagonal argument, completing the 1874 paper)",
-      "Formalize the Gelfond-Schneider theorem: if \u03b1 is algebraic and \u03b2 is irrational algebraic, then \u03b1^\u03b2 is transcendental"
+      "**[Addressed in `hermite-lindemann`]** Formalize the Lindemann-Weierstrass theorem: if $\\alpha_1, \\ldots, \\alpha_n$ are distinct algebraic numbers, then $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are linearly independent over $\\mathbb{Q}$. This implies both $e$ and $\\pi$ are transcendental \u2014 Hermite (1873) proved $e$, Lindemann (1882) proved $\\pi$ using the same method.",
+      "**[Addressed in `algebraic-numbers-countable-oq-02`]** Prove in Lean 4 that $\\mathbb{R}$ is uncountable, completing the 1874 paper. The companion entry `algebraic-numbers-countable-oq-02` formalizes the diagonal argument ($|\\mathbb{R}| = 2^{\\aleph_0} > \\aleph_0$); `algebraic-numbers-countable-oq-02-oq-02` provides Cantor's original nested intervals proof from the same paper.",
+      "Formalize the Gelfond-Schneider theorem: if $\\alpha$ is algebraic ($\\alpha \\neq 0, 1$) and $\\beta$ is irrational algebraic, then $\\alpha^\\beta$ is transcendental. This implies $2^{\\sqrt{2}}$ is transcendental (Hilbert's seventh problem, solved 1934). A Lean proof would require formalizing complex exponentials and the auxiliary function method.",
+      "Formalize Baker's theorem (1966): if $\\log \\alpha_1, \\ldots, \\log \\alpha_n$ are linearly independent over $\\mathbb{Q}$ for nonzero algebraic $\\alpha_i$, then they are linearly independent over $\\overline{\\mathbb{Q}}$. Baker's theorem is the most powerful tool in transcendence theory, implying effective lower bounds for linear forms in logarithms.",
+      "Formalize Cantor's original height function proof (1874): define $H(a_0 + a_1 x + \\cdots + a_n x^n) = n + |a_0| + \\cdots + |a_n|$, show each height $H = k$ contains finitely many polynomials each with finitely many roots, and the resulting enumeration covers all algebraic numbers. This would give an explicit bijection $\\mathbb{N} \\to$ algebraic numbers, complementing the abstract Mathlib-based proofs."
     ]
   },
   "sections": [
@@ -126,6 +130,21 @@
       "targetId": "cayley-hamilton-minpoly",
       "relationship": "related",
       "description": "The Cayley-Hamilton theorem and minimal polynomial theory (minpoly) are central to both proofs. algebraic-numbers-countable uses minpoly ℚ x extensively for the degree stratification; Cayley-Hamilton proves A satisfies its own minpoly in a matrix algebra context."
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Formalizes Cantor's original 1874 nested intervals proof that ℝ is uncountable, complementing the diagonal argument in algebraic-numbers-countable-oq-02. Both entries complete the two-part result from Cantor's landmark paper: algebraic numbers are countable (this entry) and ℝ is uncountable (oq-02 / oq-02-oq-02)."
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "implication",
+      "description": "Addresses the first open question: formalizes the Lindemann-Weierstrass theorem proving $e$ and $\\pi$ are transcendental. This is the most concrete consequence of algebraic number countability — identifying specific members of the uncountable transcendental complement."
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "related",
+      "description": "Cantor's theorem ($|P(A)| > |A|$) provides the cardinality-theoretic foundation underlying the hierarchy $\\aleph_0 < 2^{\\aleph_0}$. The countability of algebraic numbers and uncountability of $\\mathbb{R} \\cong 2^{\\aleph_0}$ instantiates the Cantor's-theorem phenomenon at $\\aleph_0$."
     }
   ],
   "leanFile": {
