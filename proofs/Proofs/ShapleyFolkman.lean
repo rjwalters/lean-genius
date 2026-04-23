@@ -18,10 +18,10 @@ Mathlib dependencies:
   - Mathlib.LinearAlgebra.AffineSpace.Independent (AffineIndependent)
   - Mathlib.LinearAlgebra.Dimension.Finrank (Module.finrank)
 
-Status: formalized — 3 sorries remain:
-  (1) convexHull_not_mem_requires_two: Carathéodory API (needs eq_pos_convex_span_of_mem_convexHull)
-  (2) binary_repr_of_mem_convexHull_not_mem: depends on (1), needs Fin.sum_univ_succ API
-  (3) Sub-case B2 of reduce_excess_by_one: bv ∉ S; needs WF descent on Carathéodory depth
+Status: formalized — 1 sorry remains:
+  (1) convexHull_not_mem_requires_two: PROVED via eq_pos_convex_span_of_mem_convexHull + card analysis
+  (2) binary_repr_of_mem_convexHull_not_mem: PROVED via Fin.sum_univ_succ + centerMass_mem_convexHull
+  (3) Sub-case B2 of reduce_excess_by_one: bv ∉ S; needs WF descent on Carathéodory depth [OPEN]
   new_sum indicator sum rearrangement: proved (Finset.sum_image + Finset.sum_subset)
 -/
 import Mathlib
@@ -112,9 +112,46 @@ theorem convexHull_not_mem_requires_two {s : Set E} {x : E}
       (∀ i, 0 < w i) ∧
       ∑ i, w i = 1 ∧
       ∑ i, w i • f i = x := by
-  -- NOTE: Proof uses eq_pos_convex_span_of_mem_convexHull and Fintype/Equiv APIs.
-  -- Requires Mathlib API update (Equiv.sum_comp direction, Fintype.sum_eq_single beta).
-  exact sorry
+  -- Strategy: apply eq_pos_convex_span_of_mem_convexHull to get an affinely independent
+  -- representation with strictly positive weights, then show it needs ≥ 2 vertices.
+  obtain ⟨ι, hFin, z, w, hz_range, _, hw_pos, hw_sum, hx_eq⟩ :=
+    eq_pos_convex_span_of_mem_convexHull hx_hull
+  haveI : Fintype ι := hFin
+  -- Show the index type has ≥ 2 elements
+  have hn : 2 ≤ Fintype.card ι := by
+    by_contra h_lt
+    push_neg at h_lt
+    -- card = 0 or 1
+    rcases Nat.eq_zero_or_pos (Fintype.card ι) with h0 | hpos
+    · -- card = 0: sum over empty type = 0 ≠ 1
+      haveI : IsEmpty ι := Fintype.card_eq_zero_iff.mp h0
+      linarith [Fintype.sum_empty w, hw_sum]
+    · -- card = 1: unique element → x ∈ s, contradiction
+      have h1 : Fintype.card ι = 1 := Nat.le_antisymm (by omega) hpos
+      obtain ⟨i₀, hi₀⟩ := Fintype.card_eq_one_iff.mp h1
+      -- Since ∀ i, i = i₀, the sums reduce to single terms
+      have hw_single : ∑ i : ι, w i = w i₀ :=
+        Finset.sum_eq_single i₀ (fun b _ hb => (absurd (hi₀ b) hb).elim)
+          (fun h => (absurd (Finset.mem_univ i₀) h).elim)
+      have hz_single : ∑ i : ι, w i • z i = w i₀ • z i₀ :=
+        Finset.sum_eq_single i₀ (fun b _ hb => (absurd (hi₀ b) hb).elim)
+          (fun h => (absurd (Finset.mem_univ i₀) h).elim)
+      have hwi₀ : w i₀ = 1 := hw_single ▸ hw_sum
+      have hxi₀ : x = z i₀ := by
+        have := hx_eq; rw [hz_single, hwi₀, one_smul] at this; exact this.symm
+      exact hx_not (hxi₀ ▸ hz_range (Set.mem_range.mpr ⟨i₀, rfl⟩))
+  -- Convert from the abstract index type ι to Fin n via Fintype.equivFin
+  let e : Fin (Fintype.card ι) ≃ ι := (Fintype.equivFin ι).symm
+  refine ⟨Fintype.card ι, z ∘ e, w ∘ e, hn, ?_, ?_, ?_, ?_⟩
+  · intro i; exact hz_range (Set.mem_range.mpr ⟨e i, rfl⟩)
+  · intro i; exact hw_pos (e i)
+  · -- ∑ i : Fin n, (w ∘ e) i = ∑ i : ι, w i = 1
+    have heq := Fintype.sum_equiv e (w ∘ e) w (fun i => rfl)
+    rw [heq]; exact hw_sum
+  · -- ∑ i : Fin n, (w ∘ e) i • (z ∘ e) i = ∑ i : ι, w i • z i = x
+    have heq := Fintype.sum_equiv e (fun i => (w ∘ e) i • (z ∘ e) i)
+      (fun i => w i • z i) (fun i => rfl)
+    rw [heq]; exact hx_eq
 
 /-- The reduction step: if the total number of excess vertices exceeds d,
     an affine dependence exists among them, enabling a vertex reduction. -/
@@ -182,9 +219,43 @@ private lemma binary_repr_of_mem_convexHull_not_mem {s : Set E} {x : E}
     (hx : x ∈ convexHull ℝ s) (hxs : x ∉ s) :
     ∃ (a b : E) (t : ℝ), a ∈ s ∧ b ∈ convexHull ℝ s ∧ 0 < t ∧ t < 1 ∧
       x = t • a + (1 - t) • b := by
-  -- NOTE: Proof uses Fin.sum_univ_succ + Finset.centerMass API (Mathlib v4.26 update needed).
-  -- Relies on convexHull_not_mem_requires_two which itself needs API update.
-  exact sorry
+  -- Get Carathéodory decomposition with ≥ 2 vertices and strictly positive weights
+  obtain ⟨n, f, w, hn, hf_mem, hw_pos, hw_sum, hx_eq⟩ :=
+    convexHull_not_mem_requires_two hx hxs
+  -- Write n = m + 2 so Fin.sum_univ_succ splits off the first term
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 2 := ⟨n - 2, by omega⟩
+  -- Split: ∑ i : Fin (m+2) = first + rest
+  have hsum_split : ∑ i : Fin (m + 2), w i • f i =
+      w 0 • f 0 + ∑ i : Fin (m + 1), w i.succ • f i.succ :=
+    Fin.sum_univ_succ (fun i => w i • f i)
+  have hwsum_split : ∑ i : Fin (m + 2), w i = w 0 + ∑ i : Fin (m + 1), w i.succ :=
+    Fin.sum_univ_succ w
+  -- r = remaining weight sum = 1 - w 0 > 0
+  let r := ∑ i : Fin (m + 1), w i.succ
+  have hr_pos : 0 < r :=
+    Finset.sum_pos (fun i _ => hw_pos i.succ) ⟨0, Finset.mem_univ _⟩
+  have hr_eq : r = 1 - w 0 := by
+    have h : w 0 + r = 1 := by rw [← hwsum_split]; exact hw_sum
+    linarith
+  have hw0_lt1 : w 0 < 1 := by linarith [hr_pos, hr_eq]
+  -- Use a = f 0, b = r⁻¹ • ∑ remaining, t = w 0
+  refine ⟨f 0, r⁻¹ • ∑ i : Fin (m + 1), w i.succ • f i.succ, w 0,
+    hf_mem 0, ?_, hw_pos 0, hw0_lt1, ?_⟩
+  · -- b ∈ convexHull ℝ s: it equals the centerMass of f 1,...,f m+1 with weights w 1,...,w m+1
+    have hcenterMass : r⁻¹ • ∑ i : Fin (m + 1), w i.succ • f i.succ =
+        Finset.univ.centerMass (fun i : Fin (m + 1) => w i.succ) (fun i => f i.succ) := rfl
+    rw [hcenterMass]
+    exact Finset.centerMass_mem_convexHull Finset.univ
+      (fun i _ => le_of_lt (hw_pos i.succ))
+      hr_pos
+      (fun i _ => hf_mem i.succ)
+  · -- x = w 0 • f 0 + (1 - w 0) • (r⁻¹ • ∑ remaining)
+    -- Since (1 - w 0) = r and r • r⁻¹ = 1
+    have hb_eq : (1 - w 0) • (r⁻¹ • ∑ i : Fin (m + 1), w i.succ • f i.succ) =
+        ∑ i : Fin (m + 1), w i.succ • f i.succ := by
+      rw [smul_smul, show (1 - w 0) = r from hr_eq.symm,
+        mul_inv_cancel₀ (ne_of_gt hr_pos), one_smul]
+    rw [hb_eq, ← hsum_split]; exact hx_eq.symm
 
 /-- **Reduction step**: If a decomposition has more than d excess indices
     (where d = Module.finrank ℝ E), there exists another decomposition of
