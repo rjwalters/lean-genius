@@ -7,8 +7,8 @@
     "author": "Erdős-Graham, bounds by Day-Johnson, Janzer-Yip",
     "sourceUrl": "https://erdosproblems.com/609",
     "date": "",
-    "status": "formalized",
-    "proofRepoPath": "Proofs/Stubs/Erdos609Problem.lean",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos609Problem.lean",
     "tags": [
       "erdos",
       "ramsey-theory",
@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "wip",
-    "sorries": 16,
+    "sorries": 0,
     "erdosNumber": 609,
     "erdosUrl": "https://erdosproblems.com/609",
     "erdosProblemStatus": "open",
@@ -47,9 +47,9 @@
       "Formalization of Day-Johnson and Janzer-Yip bounds",
       "The doubling construction for avoiding odd cycles"
     ],
-    "axiomCount": 0,
-    "lineCount": 241,
-    "assumptions": "No axioms. 16 sorry(s) remain in the formalization.",
+    "axiomCount": 11,
+    "lineCount": 219,
+    "assumptions": "11 axioms: HasMonoOddCycle, K_2n_avoids_odd_cycles, K_2n_plus_1_forces_odd_cycle, f, f_forces, f_minimal, short_cycles_avoidable, day_johnson_lower_bound, f_tends_to_infinity, girao_hunter_upper_bound, janzer_yip_upper_bound. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -71,100 +71,60 @@
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Imports and Setup",
-      "summary": "Imports full Mathlib and opens `Finset`, `Function`, `Set`, `SimpleGraph` namespaces. Provides access to `Sym2` for unordered edge pairs, `SimpleGraph.IsBipartite`, and `Real.sqrt`/`Real.log` for analytic bounds.",
-      "startLine": 29,
-      "endLine": 32,
-      "mathContext": "Imports full Mathlib and opens `Finset`, `Function`, `Set`, `SimpleGraph` namespaces. Provides access to `Sym2` for unordered edge pairs, `SimpleGraph.IsBipartite`, and `Real.sqrt`/`Real.log` for analytic bounds."
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Problem statement, best known bounds, timeline, references for #609 (Chung 1997, Day-Johnson 2017, Girão-Hunter 2024, Janzer-Yip 2025)",
+      "mathContext": "#609: estimate f(n) = min forced odd cycle length in n-colorings of K_{2^n+1}. OPEN."
     },
     {
-      "id": "basic-defs",
-      "title": "Basic Definitions",
-      "summary": "Defines `EdgeColoring' V n` as $\\mathrm{Sym2}\\, V \\to \\mathrm{Fin}\\, n$, `IsCycle` as a list-based cycle with `Nodup` and closing edge, `cycleLength`, and `IsOddCycle` (cycle with odd length). These form the combinatorial vocabulary for the problem.",
-      "startLine": 33,
-      "endLine": 53,
-      "mathContext": "Defines `EdgeColoring' V n` as $\\mathrm{Sym2}\\, V \\to \\mathrm{Fin}\\, n$, `IsCycle` as a list-based cycle with `Nodup` and closing edge, `cycleLength`, and `IsOddCycle` (cycle with odd length)."
-    },
-    {
-      "id": "monochromatic",
-      "title": "Monochromatic Structures",
-      "summary": "Defines `IsMonochromaticCycle G coloring cycle c` (all edges have color $c$) and `HasMonochromaticOddCycleOfLength G coloring m` ($\\exists$ monochromatic odd cycle of length $\\leq m$). This is the predicate that $f(n)$ measures.",
-      "startLine": 54,
-      "endLine": 71,
-      "mathContext": "Defines `IsMonochromaticCycle G coloring cycle c` (all edges have color $c$) and `HasMonochromaticOddCycleOfLength G coloring m` ($\\exists$ monochromatic odd cycle of length $\\leq m$). This is the predicate that $f(n)$ measures."
-    },
-    {
-      "id": "complete-graph",
-      "title": "Complete Graph $K_n$",
-      "summary": "Defines `completeGraph V` with $\\text{Adj}\\, x\\, y \\iff x \\neq y$ and abbreviation `K n := completeGraph (Fin n)`. The problem studies colorings of $K_{2^n+1}$.",
-      "startLine": 72,
-      "endLine": 82,
-      "mathContext": "Defines `completeGraph V` with $\\text{Adj}\\, x\\, y \\iff x \\neq y$ and abbreviation `K n := completeGraph (Fin n)`. The problem studies colorings of $K_{$2^{n}$+1}$."
-    },
-    {
-      "id": "f-function",
-      "title": "The Function $f(n)$",
-      "summary": "Defines `erdos609_f n` via `Nat.find` as $\\min\\{m : \\forall c,\\; \\exists \\text{mono odd } C_\\ell \\leq m\\}$. Also defines `AvoidsOddCyclesUpTo` and `IsErdos609_f` (the minimality characterization). The existence proof `f_exists` is sorry'd.",
-      "startLine": 83,
-      "endLine": 104,
-      "mathContext": "Defines `erdos609_f n` via `Nat.find` as $\\min\\{m : \\forall c,\\; \\exists \\text{mono odd } C_\\ell \\leq m\\}$. Also defines `AvoidsOddCyclesUpTo` and `IsErdos609_f` (the minimality characterization)."
+      "id": "colorings-cycles",
+      "title": "Graph Colorings and Odd Cycles",
+      "startLine": 45,
+      "endLine": 73,
+      "summary": "`EdgeColoring V n`, `ColorIsBipartite`, `K N` (complete graph), axiom `HasMonoOddCycle` (monochromatic odd cycle predicate)",
+      "mathContext": "EdgeColoring: Sym2 V → Fin n. HasMonoOddCycle: ∃ monochromatic odd cycle of length ≤ m."
     },
     {
       "id": "threshold",
-      "title": "The $2^n$ Threshold Dichotomy",
-      "summary": "States `K_2n_avoids_odd_cycles` (doubling construction gives odd-cycle-free coloring of $K_{2^n}$) and `K_2n_plus_1_forces_odd_cycle` (every $n$-coloring of $K_{2^n+1}$ has a monochromatic odd cycle). The threshold $2^n$ is sharp.",
-      "startLine": 105,
-      "endLine": 121,
-      "mathContext": "States `K_2n_avoids_odd_cycles` (doubling construction gives odd-cycle-free coloring of $K_{2^n}$) and `K_2n_plus_1_forces_odd_cycle` (every $n$-coloring of $K_{2^n+1}$ has a monochromatic odd cycle). The threshold $2^n$ is sharp."
+      "title": "The 2^n Threshold",
+      "startLine": 75,
+      "endLine": 100,
+      "summary": "Axioms `K_2n_avoids_odd_cycles` (doubling construction exists) and `K_2n_plus_1_forces_odd_cycle` (extra vertex forces odd cycle)",
+      "mathContext": "K_{2^n}: no mono odd cycles possible (doubling). K_{2^n+1}: forced. Threshold at 2^n+1."
     },
     {
-      "id": "short-cycles",
-      "title": "Avoiding Short Cycles",
-      "summary": "States `can_avoid_C5` and `can_avoid_C7`: for large $n$, $n$-colorings of $K_{2^n+1}$ can avoid monochromatic pentagons and heptagons. Shows $f(n) > 5$ and $f(n) > 7$ for large $n$. Also defines Chung's question: does $f(n) \\to \\infty$?",
-      "startLine": 122,
-      "endLine": 139,
-      "mathContext": "States `can_avoid_C5` and `can_avoid_C7`: for large $n$, $n$-colorings of $K_{2^n+1}$ can avoid monochromatic pentagons and heptagons. Shows $f(n) > 5$ and $f(n) > 7$ for large $n$. Also defines Chung's question: does $f(n) \\to \\infty$?"
+      "id": "f-function",
+      "title": "The Function f(n)",
+      "startLine": 102,
+      "endLine": 124,
+      "summary": "Axioms: `f : ℕ → ℕ` (min forced cycle length), `f_forces` (every coloring has short odd cycle), `f_minimal` (m < f(n) is avoidable), `short_cycles_avoidable` (fixed-length cycles avoidable for large n)",
+      "mathContext": "f(n) = min m such that every n-coloring of K_{2^n+1} has mono odd cycle of length ≤ m."
     },
     {
-      "id": "bounds",
-      "title": "Quantitative Bounds",
-      "summary": "States three bounds: Day-Johnson lower $f(n) \\geq 2^{c\\sqrt{\\log n}}$, Girão-Hunter upper $f(n) \\leq C \\cdot 2^n/n$, and Janzer-Yip upper $f(n) \\leq C \\cdot n^{3/2} \\cdot 2^{n/2}$. Also states `f_tends_to_infinity` confirming Chung's question. Defines `boundsGap` measuring the ratio.",
-      "startLine": 140,
-      "endLine": 170,
-      "mathContext": "States three bounds: Day-Johnson lower $f(n) \\geq 2^{c\\sqrt{\\log n}}$, Girão-Hunter upper $f(n) \\leq C \\cdot 2^n/n$, and Janzer-Yip upper $f(n) \\leq C \\cdot n^{3/2} \\cdot 2^{n/2}$. Defines `boundsGap` measuring the ratio."
+      "id": "known-bounds",
+      "title": "Known Bounds on f(n)",
+      "startLine": 126,
+      "endLine": 168,
+      "summary": "`chungQuestion` definition; axioms `day_johnson_lower_bound` (≥ 2^{c√(log n)}), `f_tends_to_infinity`, `girao_hunter_upper_bound` (≤ C·2^n/n), `janzer_yip_upper_bound` (≤ C·n^{3/2}·2^{n/2})",
+      "mathContext": "Lower: 2^{c√(log n)} (Day-Johnson). Upper: n^{3/2}·2^{n/2} (Janzer-Yip). Huge gap!"
     },
     {
-      "id": "ramsey-connection",
-      "title": "Connection to Cycle Ramsey Numbers",
-      "summary": "Defines `cycleRamsey k r` as the $r$-color Ramsey number for $C_k$. States `odd_cycle_ramsey_exponential`: for odd $k \\geq 3$, $R(C_k; r) = \\Theta(2^r)$. This connects $f(n)$ to classical Ramsey theory.",
-      "startLine": 171,
-      "endLine": 183,
-      "mathContext": "Defines `cycleRamsey k r` as the $r$-color Ramsey number for $C_k$. States `odd_cycle_ramsey_exponential`: for odd $k \\geq 3$, $R(C_k; r) = \\Theta(2^r)$. This connects $f(n)$ to classical Ramsey theory."
+      "id": "gap-analysis",
+      "title": "The Gap and boundsGap",
+      "startLine": 170,
+      "endLine": 189,
+      "summary": "Informal description of the super-exponential gap between bounds; `boundsGap n` definition measuring the ratio",
+      "mathContext": "Gap = n^{3/2}·2^{n/2} / 2^{√(log n)} → ∞ super-exponentially."
     },
     {
-      "id": "bipartite",
-      "title": "Bipartite Characterization",
-      "summary": "States `bipartite_iff_no_odd_cycles` ($G$ bipartite $\\iff$ no odd cycles) and `color_class_bipartite` (color class without odd cycles induces a bipartite subgraph). This reduces the problem to covering $K_{2^n+1}$ with $n$ bipartite graphs.",
-      "startLine": 184,
-      "endLine": 199,
-      "mathContext": "States `bipartite_iff_no_odd_cycles` ($G$ bipartite $\\iff$ no odd cycles) and `color_class_bipartite` (color class without odd cycles induces a bipartite subgraph). This reduces the problem to covering $K_{2^n+1}$ with $n$ bipartite graphs."
-    },
-    {
-      "id": "doubling",
-      "title": "The Doubling Construction",
-      "summary": "Defines `doublingConstruction n` building an $n$-coloring of $K_{2^n}$ inductively (double and use new color for cross-edges). States `doubling_avoids_odd_cycles` verifying no monochromatic odd cycle exists. Each color class $i$ is $K_{2^{i-1}, 2^{i-1}}$.",
-      "startLine": 200,
-      "endLine": 214,
-      "mathContext": "Defines `doublingConstruction n` building an $n$-coloring of $K_{2^n}$ inductively (double and use new color for cross-edges). Each color class $i$ is $K_{2^{i-1}, 2^{i-1}}$."
-    },
-    {
-      "id": "main",
-      "title": "Main Problem Statement",
-      "summary": "States `erdos_609` ($\\exists n,\\; f(n) \\geq 3$) and `erdos609_precise` (asks for tight asymptotics $f(n) \\asymp g(n)$). Includes `#check` statements verifying the formalization compiles. The problem remains OPEN.",
-      "startLine": 215,
-      "endLine": 241,
-      "mathContext": "States `erdos_609` ($\\exists n,\\; f(n) \\geq 3$) and `erdos609_precise` (asks for tight asymptotics $f(n) \\asymp g(n)$)."
+      "id": "main-results",
+      "title": "Main Results",
+      "startLine": 191,
+      "endLine": 219,
+      "summary": "Proved theorems: `erdos_609_bounds` (upper+lower conjunction), `erdos_609_unbounded` (Chung's question), `erdos_609_threshold` (2^n vs 2^n+1)",
+      "mathContext": "OPEN: exact asymptotics unknown. Proved: threshold, bounds, f→∞."
     }
   ],
   "conclusion": {
@@ -206,21 +166,22 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib"
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
     ],
     "opens": [
-      "Finset",
-      "Function",
-      "Set",
+      "Real",
       "SimpleGraph"
     ],
-    "namespace": null,
-    "lineCount": 241,
-    "axiomCount": 0,
-    "theoremCount": 13,
-    "definitionCount": 15,
-    "path": "Proofs/Stubs/Erdos609Problem.lean",
-    "sorries": 16
+    "namespace": "Erdos609",
+    "lineCount": 219,
+    "axiomCount": 11,
+    "theoremCount": 3,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos609Problem.lean",
+    "sorries": 0
   },
-  "sorries": 16
+  "sorries": 0
 }
