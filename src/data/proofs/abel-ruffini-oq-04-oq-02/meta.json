@@ -178,6 +178,16 @@
       "targetId": "sylow-theorems",
       "relationship": "foundational",
       "description": "Sylow's theorems provide the p-group structure underlying the solvability proofs: the Sylow 2- and 3-subgroups of $S_3$ and $S_4$ are exactly the composition factors $\\mathbb{Z}/2\\mathbb{Z}$ and $\\mathbb{Z}/3\\mathbb{Z}$ that appear in the derived series."
+    },
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "complementary",
+      "description": "Cardano's cubic formula (1545) exists precisely because $S_3$ is solvable — this entry's `s3_solvable` proof is the group-theoretic certificate that licenses the existence of such a formula. The derived series $S_3 \\rhd A_3 \\rhd \\{e\\}$ (two cyclic quotients $\\mathbb{Z}/2\\mathbb{Z}$ and $\\mathbb{Z}/3\\mathbb{Z}$) corresponds to the two nested radical extraction steps in Cardano's formula: a square root (from the quadratic resolvent) and a cube root."
+    },
+    {
+      "targetId": "general-quartic",
+      "relationship": "complementary",
+      "description": "Ferrari's quartic formula (1540) exists because $S_4$ is solvable — this entry's `s4_solvable` proof certifies this. The three-step derived series $S_4 \\rhd A_4 \\rhd V_4 \\rhd \\{e\\}$ (with the Klein four-group $V_4$ as the crucial intermediate) corresponds to the three nested radical extractions in Ferrari's method: depressing to a resolvent cubic, then extracting square roots. The Klein four-group's role is subtle: $V_4 \\trianglelefteq S_4$ but $V_4 \\not\\trianglelefteq A_4$ is false (it is normal in $A_4$ too), making it the key that unlocks the extra solvability step unavailable to $S_5$."
     }
   ],
   "references": [

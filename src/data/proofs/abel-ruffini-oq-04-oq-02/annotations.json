@@ -60,20 +60,24 @@
       "startLine": 55,
       "endLine": 55
     },
-    "type": "theorem",
+    "type": "concept",
     "title": "S₂ Is Solvable via inferInstance",
-    "content": "`s2_solvable` is proved by `inferInstance`, which works because the `s2_comm` instance above made Perm(Fin 2) a CommGroup, and Mathlib has an instance `IsSolvable` for every CommGroup (since abelian groups have trivial commutator subgroup). This one-line proof is an example of how rich typeclass hierarchies enable powerful inference: proving S₂ solvable requires no manual work once the CommGroup instance exists.",
-    "mathContext": "For any abelian group $G$: $[G,G] = \\{e\\}$, so $G^{(1)} = \\{e\\}$ and $G$ is solvable with derived length 1. $S_2$: derived series is $S_2 \\rhd \\{e\\}$ with quotient $S_2/\\{e\\} \\cong \\mathbb{Z}/2\\mathbb{Z}$, which is abelian.",
+    "content": "`s2_solvable` is proved by `inferInstance`, which works because the `s2_comm` instance above made Perm(Fin 2) a CommGroup, and Mathlib has an instance `IsSolvable` for every CommGroup (since abelian groups have trivial commutator subgroup). This one-line proof is an example of how rich typeclass hierarchies enable powerful inference: proving S₂ solvable requires no manual work once the CommGroup instance exists.\n\n**The typeclass chain in Lean 4:** The instance hierarchy runs `CommGroup → CommMonoid → Monoid → IsSolvable`. Specifically, Mathlib provides `instIsSolvableOfCommGroup : CommGroup G → IsSolvable G`, which works because for any abelian group $G$, $[G,G] = \\{e\\}$ (the commutator subgroup is trivial), so `derivedSeries G 1 = ⊥`. The `inferInstance` tactic synthesizes this chain automatically, avoiding the need to manually unfold `isSolvable_def` and supply a witness.\n\n**Why S₂ is the unique non-trivial abelian symmetric group:** Among $S_n$ for $n \\geq 2$, only $S_2$ is abelian. For $n \\geq 3$, $S_n$ contains non-commuting transpositions: $(1\\;2)$ and $(1\\;3)$ do not commute in $S_3$ (their product $(1\\;2)(1\\;3) = (1\\;2\\;3)$ while $(1\\;3)(1\\;2) = (1\\;3\\;2)$). This is why S₂ is a special case requiring its own CommGroup instance, while S₃ and S₄ require different proof strategies (explicit witness `n` for the derived series length).\n\n**Connection to radical solvability:** $S_2$ being abelian directly corresponds to the quadratic formula's existence. The Galois group of a generic degree-2 polynomial over $\\mathbb{Q}$ is $\\mathbb{Z}/2\\mathbb{Z}$, which is abelian (hence solvable). The one radical extraction (square root) in the quadratic formula corresponds precisely to the single-step derived series $S_2 \\rhd \\{e\\}$.",
+    "mathContext": "For any abelian group $G$: $[G,G] = \\{e\\}$, so $G^{(1)} = \\{e\\}$ and $G$ is solvable with derived length 1. $S_2$: derived series is $S_2 \\rhd \\{e\\}$ with quotient $S_2/\\{e\\} \\cong \\mathbb{Z}/2\\mathbb{Z}$, which is abelian. Typeclass chain: $\\text{CommGroup} \\Rightarrow \\text{IsSolvable}$.",
     "significance": "supporting",
     "relatedConcepts": [
       "inferInstance",
       "IsSolvable",
       "CommGroup",
-      "typeclass inference"
+      "typeclass inference",
+      "abelian group",
+      "quadratic formula",
+      "commutator subgroup"
     ],
     "prerequisites": [
       "CommGroup implies IsSolvable",
-      "Lean typeclass hierarchy"
+      "Lean typeclass hierarchy",
+      "derived series definition"
     ]
   },
   {
@@ -83,7 +87,7 @@
       "startLine": 63,
       "endLine": 69
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "S₃ Solvable: Derived Series Verified by decide",
     "content": "Solvability of S₃ is proved by unfolding `isSolvable_def` (which is `∃ n, derivedSeries G n = ⊥`) and providing the witness `n = 2`, verified by `decide`. The decidability of `derivedSeries G n = ⊥` for finite groups follows from the finite computability of commutator subgroups. With |S₃| = 6, Lean can exhaustively verify that the second derived subgroup is trivial: `[S₃, S₃] = A₃ ≅ ℤ/3ℤ` and `[A₃, A₃] = {e}`.",
     "mathContext": "Derived series of $S_3$: $S_3^{(0)} = S_3$ (order 6), $S_3^{(1)} = [S_3, S_3] = A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (order 3), $S_3^{(2)} = [A_3, A_3] = \\{e\\}$. Composition factors: $\\mathbb{Z}/2\\mathbb{Z}$ and $\\mathbb{Z}/3\\mathbb{Z}$, both cyclic of prime order.",
@@ -108,7 +112,7 @@
       "startLine": 78,
       "endLine": 82
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "S₄ Solvable: native_decide for the Klein Four-Group Chain",
     "content": "S₄ (order 24) requires `native_decide` instead of `decide` because the computation is too large for the kernel's definitional reduction. The witness `n = 3` encodes the three-step derived series: S₄ ⊵ A₄ ⊵ V₄ ⊵ {e}. Here V₄ = {e, (12)(34), (13)(24), (14)(23)} is the Klein four-group (normal in S₄, the unique such subgroup of order 4). The third derived subgroup `[V₄, V₄] = {e}` since V₄ is abelian, completing the series.",
     "mathContext": "Derived series of $S_4$: $S_4^{(0)} = S_4$ (order 24), $S_4^{(1)} = A_4$ (order 12), $S_4^{(2)} = [A_4, A_4] = V_4 \\cong \\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$ (order 4), $S_4^{(3)} = \\{e\\}$. Composition factors: $\\mathbb{Z}/2\\mathbb{Z}$, $\\mathbb{Z}/3\\mathbb{Z}$, $\\mathbb{Z}/2\\mathbb{Z}$, $\\mathbb{Z}/2\\mathbb{Z}$ — all cyclic of prime order.",
@@ -133,7 +137,7 @@
       "startLine": 91,
       "endLine": 110
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Complete Classification: Sₙ Solvable iff n ≤ 4",
     "content": "The bidirectional classification `solvable_iff_le_four` is the main result. The forward direction (solvable → n ≤ 4) uses contrapositive: if n ≥ 5, then |Fin n| ≥ 5, so `Equiv.Perm.not_solvable` applies. The backward direction (n ≤ 4 → solvable) uses `interval_cases n` to split into 5 subcases {0, 1, 2, 3, 4}, each dispatched by the previously proved instances and theorems. The proof architecture is clean: reduce the infinite problem to 5 finite verifications plus one Mathlib theorem.",
     "mathContext": "Complete classification: $S_n$ is solvable $\\iff n \\leq 4$. The threshold is determined by the simplicity of $A_5$ (order 60, the smallest non-abelian simple group): for $n \\geq 5$, the derived series stalls at $A_n = [A_n, A_n]$, never reaching $\\{e\\}$. For $n \\leq 4$, all composition factors are cyclic $\\mathbb{Z}/p\\mathbb{Z}$.",
@@ -158,18 +162,23 @@
       "startLine": 116,
       "endLine": 121
     },
-    "type": "theorem",
+    "type": "concept",
     "title": "Small Symmetric Groups Are Solvable (n ≤ 4)",
-    "content": "`small_symmetric_solvable` is a convenience corollary that extracts the backward direction of `solvable_iff_le_four`: given `n ≤ 4`, conclude `IsSolvable (Perm (Fin n))`. Together with `large_symmetric_not_solvable`, these two one-liner corollaries provide the most user-friendly API for the classification. In applications, one typically knows which side of the threshold a given degree falls on, so these avoid the need to unfold the biconditional.",
-    "mathContext": "For $n \\leq 4$: $S_n$ is solvable. The composition factors of $S_n$ are all cyclic of prime order ($\\mathbb{Z}/2\\mathbb{Z}$ and $\\mathbb{Z}/3\\mathbb{Z}$), so the derived series terminates at $\\{e\\}$.",
+    "content": "`small_symmetric_solvable` is a convenience corollary that extracts the backward direction of `solvable_iff_le_four`: given `n ≤ 4`, conclude `IsSolvable (Perm (Fin n))`. Together with `large_symmetric_not_solvable`, these two one-liner corollaries provide the most user-friendly API for the classification. In applications, one typically knows which side of the threshold a given degree falls on, so these avoid the need to unfold the biconditional.\n\n**API design rationale:** The biconditional `solvable_iff_le_four` is powerful but requires the user to apply `.mp` or `.mpr` and may require `omega` to close the numerical goals. The directional corollaries (`small_symmetric_solvable` and `large_symmetric_not_solvable`) present a friendlier interface: each is a one-hypothesis implication that can be applied directly. This is standard Lean/Mathlib style for important biconditionals: prove the `↔`, then extract `.mp` and `.mpr` as separate lemmas with human-readable names.\n\n**The polynomial connection:** `small_symmetric_solvable` is the group-theoretic license for radical formulas in degrees 1–4. By the Galois correspondence, a polynomial of degree $n$ over $\\mathbb{Q}$ with Galois group $G \\leq S_n$ is solvable by radicals iff $G$ is solvable. For $n \\leq 4$, since $S_n$ itself is solvable (this theorem), every polynomial of degree $\\leq 4$ has a solvable Galois group — and hence a radical formula exists. This doesn't mean the formula is easy to find (Cardano's 1545 discovery required centuries of effort), but it guarantees existence. For $n = 5$, by contrast, `large_symmetric_not_solvable` shows $S_5$ is not solvable, so generic quintics have no such formula.\n\n**Derived series lengths by degree:** 0 and 1 (trivial groups, length 0), 2 ($S_2$ abelian, length 1), 3 ($S_3 \\supset A_3 \\supset \\{e\\}$, length 2), 4 ($S_4 \\supset A_4 \\supset V_4 \\supset \\{e\\}$, length 3). The derived series length equals the number of nested radical extractions needed for the general radical formula at each degree.",
+    "mathContext": "For $n \\leq 4$: $S_n$ is solvable. Derived series lengths: 0 ($n \\leq 1$), 1 ($n=2$), 2 ($n=3$), 3 ($n=4$). Each step in the derived series corresponds to one radical extraction in the classical formula for that degree.",
     "significance": "supporting",
     "relatedConcepts": [
       "solvable_iff_le_four",
       "API convenience lemma",
-      "polynomial solvability by radicals"
+      "polynomial solvability by radicals",
+      "Galois correspondence",
+      "derived series length",
+      "Cardano's formula",
+      "Ferrari's method"
     ],
     "prerequisites": [
-      "solvable_iff_le_four as the master theorem"
+      "solvable_iff_le_four as the master theorem",
+      "Galois correspondence for radical extensions"
     ]
   },
   {
@@ -179,7 +188,7 @@
       "startLine": 126,
       "endLine": 128
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "Large Symmetric Groups Are Not Solvable (n ≥ 5)",
     "content": "`large_symmetric_not_solvable` derives the non-solvability of Sₙ for n ≥ 5 as a corollary of `solvable_iff_le_four`. The proof is one line: assume `h : IsSolvable (Perm (Fin n))`, then `solvable_iff_le_four` gives `n ≤ 4`, contradicting `5 ≤ n` by `omega`. This is cleaner than invoking `Equiv.Perm.not_solvable` directly, as the classification theorem handles all the bookkeeping.",
     "mathContext": "For $n \\geq 5$: $A_n$ is simple and non-abelian, so $[A_n, A_n] = A_n \\neq \\{e\\}$. The derived series of $S_n$ is $S_n \\rhd A_n = A_n = A_n = \\cdots$ — it stalls and never reaches $\\{e\\}$. Hence $S_n$ has no solvable series.",
