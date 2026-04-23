@@ -259,6 +259,89 @@ theorem erdos_1941_divergence_from_growth (p q : ℕ) (hp : Odd p) (hq : Odd q)
   divergence_from_lebesgue_growth _
     (chebyshev_lebesgue_growth p q hp hq hq_pos)
 
+/-! ## Foundation: Chebyshev Polynomial Degree and Leading Coefficient
+
+These lemmas establish natDegree and leadingCoeff of T_n, prerequisites for:
+  T_n(x) = 2^{n-1} · ∏_{k=0}^{n-1} (x - cos φₖ)  [Chebyshev product formula]
+The product formula unblocks `lagrange_basis_chebyshev_formula`. -/
+
+section ChebyshevPolyProps
+
+open Polynomial
+
+/-- T ℝ (↑n) is nonzero for any n : ℕ.
+    Proof: T_n(1) = 1 ≠ 0. -/
+theorem T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 := by
+  intro h
+  have := T_eval_one ℝ (n : ℤ)
+  simp [h] at this
+
+/-- The n-th Chebyshev polynomial T_n has natDegree = n (n : ℕ).
+    Proof by two-step induction via T_{n+2} = 2X·T_{n+1} - T_n:
+    natDegree(T_{n+2}) = natDegree(2X·T_{n+1}) = n+2 since natDegree(T_n) = n < n+2. -/
+theorem natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n
+  | 0 => by simp [T_zero]
+  | 1 => by simp [T_one]
+  | (n + 2) => by
+      have ihn  : (T ℝ (n : ℤ)).natDegree = n := natDegree_T_ofNat n
+      have ihn1 : (T ℝ ((n + 1 : ℕ) : ℤ)).natDegree = n + 1 := natDegree_T_ofNat (n + 1)
+      have cast1 : ((n + 1 : ℕ) : ℤ) = (n : ℤ) + 1 := by push_cast; ring
+      have cast2 : ((n + 2 : ℕ) : ℤ) = (n : ℤ) + 2 := by push_cast; ring
+      rw [cast1] at ihn1; rw [cast2, T_add_two]
+      have hne1 : T ℝ ((n : ℤ) + 1) ≠ 0 := by rw [← cast1]; exact T_ofNat_ne_zero (n + 1)
+      -- natDegree(2 * X * T(n+1)) = n + 2
+      have h2XTdeg : (2 * X * T ℝ ((n : ℤ) + 1)).natDegree = n + 2 := by
+        rw [show (2 : ℝ[X]) * X * T ℝ ((n : ℤ) + 1) =
+            (2 : ℝ[X]) * (X * T ℝ ((n : ℤ) + 1)) from by ring]
+        rw [natDegree_mul (by norm_num : (2 : ℝ[X]) ≠ 0) (mul_ne_zero X_ne_zero hne1)]
+        rw [natDegree_ofNat, natDegree_X_mul hne1, ihn1]
+        omega
+      -- natDegree(T(n)) < natDegree(2 * X * T(n+1)), so degree of difference = LHS degree
+      apply natDegree_sub_eq_left_of_natDegree_lt
+      rw [h2XTdeg, ihn]; omega
+
+/-- The leading coefficient of T_n is 2^(n-1) for n ≥ 1.
+    Proof by two-step induction via T_{n+2} = 2X·T_{n+1} - T_n:
+    Since deg(T_n) < deg(2X·T_{n+1}), leadingCoeff(T_{n+2}) = leadingCoeff(2X·T_{n+1})
+    = 2 · leadingCoeff(T_{n+1}) = 2 · 2^n = 2^{n+1}. -/
+theorem leadingCoeff_T_ofNat : ∀ n : ℕ, n ≥ 1 → (T ℝ (n : ℤ)).leadingCoeff = 2 ^ (n - 1)
+  | 0, h => by omega
+  | 1, _ => by simp [T_one, leadingCoeff_X]
+  | (n + 2), _ => by
+      have ihn1_lc : (T ℝ ((n + 1 : ℕ) : ℤ)).leadingCoeff = 2 ^ n :=
+        leadingCoeff_T_ofNat (n + 1) (by omega)
+      have cast1 : ((n + 1 : ℕ) : ℤ) = (n : ℤ) + 1 := by push_cast; ring
+      have cast2 : ((n + 2 : ℕ) : ℤ) = (n : ℤ) + 2 := by push_cast; ring
+      rw [cast1] at ihn1_lc; rw [cast2, T_add_two]
+      have hne1 : T ℝ ((n : ℤ) + 1) ≠ 0 := by rw [← cast1]; exact T_ofNat_ne_zero (n + 1)
+      have hne0 : T ℝ (n : ℤ) ≠ 0 := T_ofNat_ne_zero n
+      have h2XT_ne : 2 * X * T ℝ ((n : ℤ) + 1) ≠ 0 :=
+        mul_ne_zero (mul_ne_zero (by norm_num) X_ne_zero) hne1
+      -- natDegree(2 * X * T(n+1)) = n + 2
+      have h2XTdeg : (2 * X * T ℝ ((n : ℤ) + 1)).natDegree = n + 2 := by
+        rw [show (2 : ℝ[X]) * X * T ℝ ((n : ℤ) + 1) =
+            (2 : ℝ[X]) * (X * T ℝ ((n : ℤ) + 1)) from by ring]
+        rw [natDegree_mul (by norm_num : (2 : ℝ[X]) ≠ 0) (mul_ne_zero X_ne_zero hne1)]
+        rw [natDegree_ofNat, natDegree_X_mul hne1]
+        have := natDegree_T_ofNat (n + 1); rw [cast1] at this; omega
+      -- degree(T(n)) < degree(2 * X * T(n+1))
+      have hdeg_lt : degree (T ℝ (n : ℤ)) < degree (2 * X * T ℝ ((n : ℤ) + 1)) := by
+        rw [degree_eq_natDegree hne0, degree_eq_natDegree h2XT_ne, h2XTdeg, natDegree_T_ofNat n]
+        exact_mod_cast (show n < n + 2 by omega)
+      rw [leadingCoeff_sub_of_degree_lt hdeg_lt]
+      -- Compute leadingCoeff(2 * X * T(n+1)) = 2 * 2^n = 2^{n+1}
+      rw [show (2 : ℝ[X]) * X * T ℝ ((n : ℤ) + 1) =
+          (2 : ℝ[X]) * (X * T ℝ ((n : ℤ) + 1)) from by ring]
+      rw [leadingCoeff_mul, leadingCoeff_mul, leadingCoeff_X, one_mul, ihn1_lc]
+      -- leadingCoeff (2 : ℝ[X]) = 2
+      have h2_lc : (2 : ℝ[X]).leadingCoeff = 2 := by
+        have hC : (2 : ℝ[X]) = C (2 : ℝ) := (C_ofNat 2).symm
+        rw [hC, leadingCoeff_C]
+      rw [h2_lc, show n + 2 - 1 = n + 1 from by omega, pow_succ]
+      ring
+
+end ChebyshevPolyProps
+
 /-! ## Auxiliary: Chebyshev Node Properties -/
 
 /-- The Chebyshev nodes are zeros of T_n.
