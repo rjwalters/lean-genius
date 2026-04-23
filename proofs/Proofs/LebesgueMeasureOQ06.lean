@@ -34,7 +34,8 @@ set_option linter.unusedVariables false
 
 namespace BanachTarski
 
-open Set MeasureTheory
+open Set MeasureTheory ENNReal
+open scoped Pointwise NNReal
 
 variable {α : Type*}
 
@@ -60,17 +61,14 @@ def Equidecomposable (G : Type*) [Group G] [MulAction G α]
 notation:50 A " ≃ᴳ[" G "] " B => Equidecomposable G A B
 
 /-- Equidecomposability is reflexive. -/
-theorem equidecomposable_refl (G : Type*) [Group G] [MulAction G α]
-    [MulAction.IsPretransitive G α] (A : Set α) :
+theorem equidecomposable_refl (G : Type*) [Group G] [MulAction G α] (A : Set α) :
     A ≃ᴳ[G] A := by
   refine ⟨1, fun _ => A, fun _ => 1, ?_, ?_, ?_, ?_, ?_⟩
-  · intro; exact le_refl A
-  · intro i j h; exact absurd (Fin.eq_of_val_eq (Nat.lt_one_iff.mp i.isLt ▸
-      Nat.lt_one_iff.mp j.isLt ▸ rfl)) h
-  · simp
-  · simp [one_smul]
-  · intro i j h; exact absurd (Fin.eq_of_val_eq (Nat.lt_one_iff.mp i.isLt ▸
-      Nat.lt_one_iff.mp j.isLt ▸ rfl)) h
+  · intro _; exact le_refl A
+  · intro i j h; exact absurd (Subsingleton.elim i j) h
+  · exact (Set.iUnion_const A).symm
+  · simp only [one_smul, Set.iUnion_const]
+  · intro i j h; exact absurd (Subsingleton.elim i j) h
 
 /-- A set is **G-paradoxical** if it can be decomposed into two disjoint subsets,
     each equidecomposable to the whole set.
@@ -86,6 +84,20 @@ def IsParadoxical (G : Type*) [Group G] [MulAction G α] (A : Set α) : Prop :=
 -- SECTION II: Paradoxical Sets Cannot Be Measured
 -- ============================================================
 
+/-- Helper: in ENNReal, a + a = a implies a = 0 or a = ⊤.
+    Proof: if a ≠ ⊤, lift to ℝ≥0 and cast to ℝ where linarith closes the goal. -/
+private lemma ennreal_add_self_eq_self {a : ℝ≥0∞} (h : a + a = a) :
+    a = 0 ∨ a = ⊤ := by
+  rcases eq_or_ne a ⊤ with rfl | ha
+  · exact Or.inr rfl
+  · left
+    lift a to ℝ≥0 using ha
+    norm_cast at h
+    -- h : a + a = a in ℝ≥0; cast to ℝ where linarith works
+    have h' : (a : ℝ) + a = a := by exact_mod_cast h
+    have ha0_real : (a : ℝ) = 0 := by linarith
+    exact_mod_cast ha0_real
+
 /-- **Key consequence**: If `A` is G-paradoxical, then any G-invariant
     finitely-additive measure on `A` must assign it measure 0 or ∞.
 
@@ -100,56 +112,35 @@ theorem paradoxical_no_finite_measure (G : Type*) [Group G] [MulAction G α]
     (hμ_add : ∀ S T : Set α, Disjoint S T → μ (S ∪ T) = μ S + μ T)
     (hμ_inv : ∀ (g : G) (S : Set α) (hS : S ⊆ A),
       μ (g • S) = μ S)
-    (hμ_equi : ∀ B : Set α, B ⊆ A → A ≃ᴳ[G] B → μ B = μ A) :
+    (hμ_equi : ∀ S : Set α, S ⊆ A → (A ≃ᴳ[G] S) → μ S = μ A) :
     μ A = 0 ∨ μ A = ⊤ := by
   obtain ⟨B, C, hBA, hCA, hBC, hAB, hAC⟩ := hA
-  -- μ(A) = μ(B) + μ(C) since B ⊆ A, C ⊆ A, B ∩ C = ∅
-  -- and A can be covered by B ∪ C ... (for simplicity, use equidecomposability)
   -- μ(A) = μ(B) (by equidecomposability A ≃ B)
   have hμB : μ B = μ A := hμ_equi B hBA hAB
   -- μ(A) = μ(C) (by equidecomposability A ≃ C)
   have hμC : μ C = μ A := hμ_equi C hCA hAC
-  -- μ(B ∪ C) = μ(B) + μ(C) = μ(A) + μ(A) = 2·μ(A)
+  -- μ(B ∪ C) = μ(B) + μ(C) = μ(A) + μ(A)
   have hBCunion : μ (B ∪ C) = μ A + μ A := by
     rw [hμ_add B C hBC, hμB, hμC]
-  -- B ∪ C ⊆ A, so μ(B ∪ C) ≤ μ(A) ... but also B ∪ C = A under equidecomp
-  -- From the equidecomposability structure: B ∪ C ⊆ A
-  -- And the equidecomposability gives μ(A) = μ(B) + μ(C) = 2·μ(A)
-  -- So μ(A) = 2·μ(A) → μ(A) = 0 or ∞
+  -- μ(A) + μ(A) = μ(A) follows from B ∪ C ⊆ A and finite additivity
   have h2 : μ A + μ A = μ A := by
-    -- B ∪ C ⊆ A since hBA : B ⊆ A and hCA : C ⊆ A
     have hBC_sub : B ∪ C ⊆ A := Set.union_subset hBA hCA
-    -- Split A = (B ∪ C) ∪ (A \ (B ∪ C)) and apply finite additivity
-    -- to get μ(A) = μ(B ∪ C) + μ(A \ (B ∪ C)) ≥ μ(B ∪ C)
+    -- A = (B ∪ C) ∪ (A \ (B ∪ C))  (disjoint decomposition)
     have hsplit : μ A = μ (B ∪ C) + μ (A \ (B ∪ C)) := by
       have h := hμ_add (B ∪ C) (A \ (B ∪ C)) disjoint_sdiff_right
-      rw [Set.union_sdiff_of_subset hBC_sub] at h
-      exact h.symm
-    -- μ(A) + μ(A) = μ(B ∪ C) ≤ μ(A)  [monotonicity from splitting]
+      rw [Set.union_diff_cancel hBC_sub] at h
+      exact h
+    -- μ(A) + μ(A) = μ(B ∪ C) ≤ μ(A)
     have hμ_mono : μ A + μ A ≤ μ A := by
       rw [← hBCunion]
       calc μ (B ∪ C)
-          ≤ μ (B ∪ C) + μ (A \ (B ∪ C)) := le_add_right _ _
+          ≤ μ (B ∪ C) + μ (A \ (B ∪ C)) := le_add_right le_rfl
         _ = μ A := hsplit.symm
-    exact le_antisymm hμ_mono (le_add_right _ _)
+    exact le_antisymm hμ_mono (le_add_right le_rfl)
   -- From h2: μ(A) = 0 or μ(A) = ∞
-  rcases ENNReal.eq_zero_or_top_of_add_eq_self h2.symm with h | h
+  rcases ennreal_add_self_eq_self h2 with h | h
   · exact Or.inl h
   · exact Or.inr h
-
-/-- Helper: in ENNReal, a + a = a implies a = 0 or a = ⊤. -/
-private lemma ENNReal.eq_zero_or_top_of_add_eq_self {a : ℝ≥0∞} (h : a + a = a) :
-    a = 0 ∨ a = ⊤ := by
-  by_contra hc
-  push_neg at hc
-  obtain ⟨ha0, hatop⟩ := hc
-  -- a > 0 and a < ∞, so a is a finite positive real
-  lift a to ℝ≥0 using hatop
-  -- In ℝ≥0: a + a = a → a = 0 (contradiction with a > 0)
-  have : (a : ℝ≥0∞) + a = a := h
-  rw [← ENNReal.coe_add, ENNReal.coe_inj] at this
-  have : a = 0 := by linarith [this.symm, add_le_add_right (le_refl a) a]
-  exact ha0 (by simp [this])
 
 -- ============================================================
 -- SECTION III: The Banach-Tarski Paradox (Statement)
