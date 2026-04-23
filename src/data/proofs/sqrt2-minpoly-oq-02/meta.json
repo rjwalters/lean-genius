@@ -63,6 +63,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Preamble: Problem Setup and Mathematical Framework",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring framing the question: when is minpoly ℚ (m^(1/n)) = Xⁿ - m? States the squarefree prime factor condition, lists the four concrete examples (∛6, ∛10, ⁵√12, ∜30), and opens the Polynomial and IntermediateField namespaces. Sets maxHeartbeats to 800000 for the intensive case-split in the Eisenstein proof.",
+      "mathContext": "The **squarefree prime factor condition**: $\\exists p$ prime with $p \\mid m$ but $p^2 \\nmid m$ (equivalently, $v_p(m) = 1$). This implies $m$ is not a perfect $n$-th power: if $m = k^n$ then $v_p(m) = n v_p(k) \\in \\{0, n, 2n, \\ldots\\}$, never 1 for $n \\geq 2$."
+    },
+    {
       "id": "eisenstein-int",
       "title": "Part I: Eisenstein Criterion for X^n - m",
       "startLine": 41,
