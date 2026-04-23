@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-module-header",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": { "startLine": 1, "endLine": 53 },
+    "type": "context",
+    "title": "Module Documentation: Platonic Solid Classification Table and Axiom Budget",
+    "content": "The module header serves as both documentation and a formal specification of the file's scope. The classification table (lines 31–39) displays the five Platonic solids with their Euler characteristics, edge counts, dihedral angles, and Dehn invariant status — the primary deliverable is completing this table from the 3 known entries (cube, tetrahedron, octahedron from OQ02OQ02) to all 5.\n\nThe axiom budget section (lines 24–28) is mathematically precise: 2 assumptions drive the entire formalization. `tmul_infinite_order_ne_zero` is inherited from DissectionOfCubesOQ02OQ02 — it states that ℝ is flat over ℤ (equivalently, the tensor product functor ℝ ⊗_ℤ (−) is exact). `icoAngle_irrational` is a new axiom introduced in this file for the icosahedron's dihedral angle.\n\nThe imports at lines 43–48 form a clean dependency chain: Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse (for arccos identities), then the two predecessor files `DissectionOfCubesOQ02` (Niven's theorem / nivenSeq technique) and `DissectionOfCubesOQ02OQ02` (Dehn invariant infrastructure including edgeTerm and tmul_infinite_order_ne_zero). The `open Real DissectionOfCubesOQ02 DehnSydler` declaration makes tetAngle, octAngle, cube_dehn_zero, tet_dehn_ne_zero, oct_dehn_ne_zero available without namespace prefixes.",
+    "mathContext": "Classification by Dehn invariant $D(P) = \\sum_e \\ell(e) \\otimes [\\theta(e)] \\in \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$: $D = 0$ iff all dihedral angles are rational multiples of $\\pi$. Cube: all angles $\\pi/2 \\in \\mathbb{Q}\\pi$, so $D = 0$. Others: $\\arccos(1/3)$, $\\arccos(-1/3)$, $\\arccos(-1/\\sqrt{5})$, $\\arccos(-\\sqrt{5}/3)$ are all irrational multiples of $\\pi$, so $D \\neq 0$.",
+    "significance": "context",
+    "relatedConcepts": ["Dehn invariant", "Hilbert's Third Problem", "scissors congruence", "Platonic solids", "Module.Flat", "DissectionOfCubesOQ02OQ02"],
+    "prerequisites": ["DissectionOfCubesOQ02.lean", "DissectionOfCubesOQ02OQ02.lean", "Real.arccos identities", "tensor product over ℤ"]
+  },
+  {
     "id": "ann-chebyshev-sequence-design",
     "proofId": "dissection-of-cubes-oq-04",
     "range": { "startLine": 60, "endLine": 82 },
@@ -22,6 +34,18 @@
     "significance": "key",
     "relatedConcepts": ["modular arithmetic", "prime divisibility", "strong induction"],
     "prerequisites": ["Prime.dvd_or_dvd", "Int.Prime"]
+  },
+  {
+    "id": "ann-irrationality-proof-core",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": { "startLine": 112, "endLine": 177 },
+    "type": "technique",
+    "title": "The Irrationality Proof: cosThreeFifthsSeq_eq_cos and arccos_three_fifths_irrational",
+    "content": "`cosThreeFifthsSeq_eq_cos` (lines 112–136) is proved by a paired strong induction: the inductive hypothesis simultaneously asserts the formula at steps $n$ AND $n+1$ (using a `∧` conjunction). This is necessary because the Chebyshev recurrence $d_{n+2} = 6d_{n+1} - 25d_n$ requires values at TWO preceding steps; standard single-step induction would only give the formula at step $n$. The Lean proof uses `suffices h : ∀ n, P(n) ∧ P(n+1) from (h k).1`, dispatching the base case by `simp` and `Real.cos_arccos`, and the inductive step using `cos_step` (the Chebyshev addition formula from DissectionOfCubesOQ02).\n\n`arccos_three_fifths_irrational` (lines 137–177) is a proof by contradiction. Assuming $\\arccos(3/5)/\\pi = p/q \\in \\mathbb{Q}$, the cosine relation gives $\\cos(q \\cdot \\arccos(3/5)) = \\cos(p\\pi)$, which equals $(-1)^{|p|}$ by `cos_int_mul_pi`. Combined with the sequence formula, $d_q = 5^q \\cdot 2 \\cdot (\\pm 1) = \\pm 2 \\cdot 5^q$. Since $q \\geq 1$ (as $p/q$ is in lowest terms and $\\arccos(3/5) \\neq 0$), we get $5 \\mid d_q$, contradicting `five_ndvd_cosThreeFifthsSeq`. The Lean proof handles both cases $(-1)^{|p|} = 1$ and $= -1$ separately via `rcases hpm`.",
+    "mathContext": "The paired induction: $P(n) \\wedge P(n+1)$ where $P(k)$: $d_k = 5^k \\cdot 2\\cos(k \\cdot \\arccos(3/5))$. Irrationality: if $\\arccos(3/5)/\\pi = p/q$ then $\\cos(q\\arccos(3/5)) = \\cos(p\\pi) = \\pm 1$, so $d_q = 5^q \\cdot 2 \\cdot (\\pm 1) = \\pm 2 \\cdot 5^q$, giving $5 \\mid 5^q \\mid d_q$. Contradiction with $5 \\nmid d_n$ (five_ndvd_cosThreeFifthsSeq).",
+    "significance": "key",
+    "relatedConcepts": ["paired induction", "arccos_three_fifths_irrational", "cosThreeFifthsSeq_eq_cos", "cos_int_mul_pi", "Chebyshev recurrence", "proof by contradiction"],
+    "prerequisites": ["cosThreeFifthsSeq", "five_ndvd_cosThreeFifthsSeq", "DissectionOfCubesOQ02.cos_step", "Real.cos_arccos", "Rat.pos"]
   },
   {
     "id": "ann-half-angle-identity",
@@ -48,6 +72,30 @@
     "prerequisites": ["arccos_three_fifths_irrational", "two_arccos_sqrt5_eq", "Real.arccos_neg"]
   },
   {
+    "id": "ann-dod-dehn-flatness",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": { "startLine": 263, "endLine": 275 },
+    "type": "insight",
+    "title": "Dodecahedron Dehn Invariant: Infinite Order + Flatness → Nonzero Tensor",
+    "content": "`dod_dehn_ne_zero` (lines 263–275) is the culmination of Part III: given edge length $a > 0$ and the dodecahedron's 30 edges, prove `edgeTerm (30 * a) dodAngle ≠ 0`. The proof applies `tmul_infinite_order_ne_zero` (the flatness axiom from OQ02OQ02) with three ingredients: (1) $30a > 0$ (by `linarith`), (2) `dodAngle_infinite_order` (the angle class has infinite order in $\\mathbb{R}/\\pi\\mathbb{Z}$). The flatness axiom states: if $r > 0$ and $x$ has infinite order in an abelian group $A$, then $r \\otimes x \\neq 0$ in $\\mathbb{R} \\otimes_{\\mathbb{Z}} A$. This connects the abstract algebra (infinite-order group element) to the geometric quantity (Dehn invariant).\n\nThe flatness of $\\mathbb{R}$ over $\\mathbb{Z}$ is what makes this argument work: it says the tensor product $\\mathbb{R} \\otimes_{\\mathbb{Z}} (-)$ is exact, so a nonzero element of $\\mathbb{R}/\\pi\\mathbb{Z}$ stays nonzero after tensoring with the positive real $30a$. For a module that is NOT flat, tensoring with a nonzero element could collapse to zero (e.g., $\\mathbb{Z}/2\\mathbb{Z} \\otimes_{\\mathbb{Z}} \\mathbb{Z}/2\\mathbb{Z} \\ni 1 \\otimes 1 = 0$ despite both factors being nonzero).",
+    "mathContext": "`edgeTerm (30a) dodAngle = (30a) \\otimes [\\arccos(-1/\\sqrt{5})]` in $\\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$. Flatness of $\\mathbb{R}$ over $\\mathbb{Z}$: for $r > 0$ and $[\\theta]$ of infinite order, $r \\otimes [\\theta] \\neq 0$. Proof: if $r \\otimes [\\theta] = 0$ then $\\sum_i r_i \\otimes [\\theta_i] = 0$ in the tensor product, contradicting infinite order via the universal property of tensors over a flat module.",
+    "significance": "key",
+    "relatedConcepts": ["edgeTerm", "tmul_infinite_order_ne_zero", "Module.Flat", "tensor product", "Dehn invariant", "dodAngle_infinite_order"],
+    "prerequisites": ["tmul_infinite_order_ne_zero", "dodAngle_infinite_order", "DissectionOfCubesOQ02OQ02.edgeTerm"]
+  },
+  {
+    "id": "ann-icosahedron-axiom",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": { "startLine": 276, "endLine": 319 },
+    "type": "context",
+    "title": "Icosahedron: Axiomatized Irrationality and Derived Dehn Invariant",
+    "content": "The icosahedron's dihedral angle $\\arccos(-\\sqrt{5}/3) \\approx 138.19°$ presents a technical barrier: while $\\cos\\theta = -\\sqrt{5}/3$ is algebraic, the Chebyshev sequence argument requires working over $\\mathbb{Z}[\\sqrt{5}]$ rather than $\\mathbb{Z}$. The sequence $e_n = 3^n \\cdot (\\sqrt{5})^{n \\bmod 2} \\cdot 2\\cos(n\\theta)$ satisfies an integer recurrence over $\\mathbb{Z}[\\sqrt{5}]$ with a mod-3 non-divisibility property, but Lean formalization of $\\mathbb{Z}[\\sqrt{5}]$ arithmetic is more involved (requiring Gaussian integers, or the ring of quadratic integers with discriminant 5).\n\nThe axiom `icoAngle_irrational` at line 300 defers this proof. It is the only new axiom in the file; mathematically the result is correct (it follows from the same Chebyshev technique). The subsequent theorems `icoAngle_infinite_order` (lines 302–310) and `ico_dehn_ne_zero` (lines 312–318) have exactly parallel structure to the dodecahedron case — once irrationality is given, infinite order and nonzero Dehn invariant follow by the same `zsmul_eq_zero_iff` and `tmul_infinite_order_ne_zero` pattern.\n\nThe icosahedron has 30 edges (same as the dodecahedron), so the edge term is also `edgeTerm (30 * a) icoAngle`. The two terms $30a \\otimes [\\arccos(-1/\\sqrt{5})]$ (dodecahedron) and $30a \\otimes [\\arccos(-\\sqrt{5}/3)]$ (icosahedron) are both nonzero but their equality or distinctness is not established here — that would require showing the two angle classes are not equal in $\\mathbb{R}/\\pi\\mathbb{Z}$, which is a separate algebraic independence question.",
+    "mathContext": "$\\text{icoAngle} = \\arccos(-\\sqrt{5}/3)$. Proof structure: `icoAngle_irrational` (axiom) $\\Rightarrow$ `icoAngle_infinite_order` (via `zsmul_eq_zero_iff`) $\\Rightarrow$ `ico_dehn_ne_zero` (via `tmul_infinite_order_ne_zero`). The icosahedron is dual to the dodecahedron (face/vertex exchange): dodecahedron has 12 pentagonal faces, icosahedron has 20 triangular faces; both have 30 edges. Their dihedral angles $\\arccos(-1/\\sqrt{5})$ and $\\arccos(-\\sqrt{5}/3)$ are related but distinct.",
+    "significance": "supporting",
+    "relatedConcepts": ["icoAngle_irrational", "icoAngle_infinite_order", "ico_dehn_ne_zero", "icosahedron", "duality", "ℤ[√5]", "zsmul_eq_zero_iff"],
+    "prerequisites": ["tmul_infinite_order_ne_zero", "zsmul_eq_zero_iff", "Real.arccos", "icosahedron geometry"]
+  },
+  {
     "id": "ann-classification-table",
     "proofId": "dissection-of-cubes-oq-04",
     "range": { "startLine": 356, "endLine": 395 },
@@ -58,5 +106,17 @@
     "significance": "main-result",
     "relatedConcepts": ["Platonic solids", "Dehn invariant", "scissors congruence", "Hilbert's third problem"],
     "prerequisites": ["cube_dehn_zero", "tet_dehn_ne_zero", "oct_dehn_ne_zero", "dod_dehn_ne_zero", "ico_dehn_ne_zero"]
+  },
+  {
+    "id": "ann-axiom-audit-closing",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": { "startLine": 398, "endLine": 437 },
+    "type": "context",
+    "title": "Axiom Audit: Budget, Sorry Analysis, and Verification Checks",
+    "content": "Part VI (lines 398–437) serves as a formal audit of the proof's assumptions. The axiom budget distinguishes two categories:\n\n**New axiom** (`icoAngle_irrational`, line 300): This is a genuine mathematical assumption in this file. Its proof would require Chebyshev arithmetic in $\\mathbb{Z}[\\sqrt{5}]$ — structurally the same as the dodecahedron proof, but over a quadratic integer ring. Lean's Mathlib has ring infrastructure for quadratic extensions, but a complete formalization requires more setup than is practical here.\n\n**Inherited axiom** (`tmul_infinite_order_ne_zero`): This states ℝ is flat over ℤ — a true algebraic fact (fields are flat modules). Mathlib's `Module.Flat` API could in principle close this, making it a theorem rather than an axiom.\n\n**The 3 sorries** in `cube_unique_zero_dehn` (lines 390–396) are NOT axiom-creating: they are gaps in an *otherwise provable* theorem. The theorem states edge terms with irrational-angle classes are nonzero for GENERAL edge counts $n$ (not just the specific 6, 12, 30 of actual Platonic solids). Closing these would require a scaling lemma: `edgeTerm (n * a) θ ≠ 0` for all `n > 0` when `[θ]` has infinite order and `a > 0`. This follows from `tmul_infinite_order_ne_zero` with `n * a > 0` as the positive real.\n\nThe `#check` lines at 432–435 serve as lightweight regression tests: they verify the stated theorems have the expected types at compile time, catching any accidental type changes.",
+    "mathContext": "Axiom count: 2 (icoAngle_irrational + tmul_infinite_order_ne_zero). Sorry count: 3 (in cube_unique_zero_dehn, non-critical). Key distinction: axioms add mathematical assumptions; sorries leave theorems incomplete. A proof with 2 axioms and 0 sorries is more complete than one with 0 axioms and 2 sorry-theorems. The main `cube_isolated_dehn_invariant` theorem has 0 sorries — all assumptions are explicit axioms.",
+    "significance": "context",
+    "relatedConcepts": ["icoAngle_irrational", "tmul_infinite_order_ne_zero", "Module.Flat", "sorry", "axiom", "#check"],
+    "prerequisites": ["Lean 4 axiom vs sorry distinction", "Module.Flat", "tensor product scaling"]
   }
 ]
