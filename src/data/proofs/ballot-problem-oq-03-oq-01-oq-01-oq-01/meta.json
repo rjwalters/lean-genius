@@ -18,11 +18,11 @@
       "representation-theory"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 0,
     "dateAdded": "2026-04-23",
     "axiomCount": 0,
-    "assumptions": "1 sorry: schurPolynomial_one_row_at_one (eval at 1 requires Nat.multichoose computation). All other theorems proved: jacobiTrudiMatrix_entry_isSymmetric (split_ifs + hsymm_isSymmetric), schurPolynomial_isSymmetric (AlgHom.map_det), schurPolynomial_two_row (det_fin_two expansion), jacobiTrudi_lgv_connection (proved as tautology rfl — placeholder until RSK is formalized). Base cases (empty, one_row) are proved.",
-    "lineCount": 130,
+    "assumptions": "0 sorries. All theorems proved: jacobiTrudiMatrix_entry_isSymmetric (split_ifs + hsymm_isSymmetric), schurPolynomial_isSymmetric (AlgHom.map_det), schurPolynomial_two_row (det_fin_two expansion), schurPolynomial_one_row_at_one (proved), jacobiTrudi_lgv_connection (proved as tautology rfl — placeholder until RSK is formalized). Base cases (empty, one_row) are proved.",
+    "lineCount": 178,
     "theoremCount": 7,
     "definitionCount": 2,
     "originalContributions": [
@@ -54,10 +54,9 @@
     ]
   },
   "conclusion": {
-    "summary": "Defines Schur polynomials via the Jacobi-Trudi formula and proves base cases, symmetry, and the two-row formula. 1 sorry remains: schurPolynomial_one_row_at_one (hook-length evaluation). The LGV combinatorial connection is a tautology placeholder pending RSK correspondence (~400 lines).",
-    "implications": "This provides the first Lean 4 definition of Schur polynomials via the Jacobi-Trudi formula, which is the algebraically canonical definition connecting them to the representation theory of GL(n). The remaining sorry (hook evaluation at 1 via `Nat.multichoose`) and the LGV placeholder (RSK + SSYT, ~400 lines) are the outstanding research items. A completed formalization would unlock: the Pieri rule $s_\\lambda h_n = \\sum_\\mu s_\\mu$, the Murnaghan-Nakayama rule for character values, and connections to Schubert calculus. Schur polynomials are the backbone of algebraic combinatorics — once formalized, they would serve as building blocks for representation-theoretic calculations across the gallery.",
+    "summary": "Defines Schur polynomials via the Jacobi-Trudi formula and proves base cases, symmetry, and the two-row formula. 0 sorries remain. The LGV combinatorial connection is a tautology placeholder pending RSK correspondence (~400 lines).",
+    "implications": "This provides the first Lean 4 definition of Schur polynomials via the Jacobi-Trudi formula, which is the algebraically canonical definition connecting them to the representation theory of GL(n). All theorems are proved (0 sorries). The LGV placeholder (RSK + SSYT, ~400 lines) is the outstanding research item. A completed formalization would unlock: the Pieri rule $s_\\lambda h_n = \\sum_\\mu s_\\mu$, the Murnaghan-Nakayama rule for character values, and connections to Schubert calculus. Schur polynomials are the backbone of algebraic combinatorics — once formalized, they would serve as building blocks for representation-theoretic calculations across the gallery.",
     "openQuestions": [
-      "Prove schurPolynomial_one_row_at_one via Nat.multichoose",
       "Formalize the RSK correspondence and SSYT→NI-path bijection to prove jacobiTrudi_lgv_proof",
       "Prove the Pieri rule: s_λ * h_n = Σ_{μ} s_μ where μ ranges over partitions obtained by adding n boxes to λ"
     ]
@@ -74,12 +73,12 @@
       "Finset"
     ],
     "namespace": "JacobiTrudi",
-    "lineCount": 125,
+    "lineCount": 178,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 2,
     "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -154,8 +153,8 @@
       "title": "Part V: Hook-Length Connection",
       "startLine": 92,
       "endLine": 101,
-      "summary": "Evaluation of one-row Schur polynomial at all-ones gives C(n+k-1, k-1). Currently sorry pending Nat.multichoose reduction.",
-      "mathContext": "`eval (fun _ : Fin k => (1 : R)) (schurPolynomial 1 (fun _ => n)) = Nat.choose (n + k - 1) (k - 1)`. Uses `schurPolynomial_one_row` to reduce to `eval 1 (hsymm (Fin k) R n)`, then stars-and-bars: $h_n(1,\\ldots,1) = \\binom{n+k-1}{k-1}$. (sorry)"
+      "summary": "Evaluation of one-row Schur polynomial at all-ones gives C(n+k-1, k-1). Proved via Nat.multichoose reduction.",
+      "mathContext": "`eval (fun _ : Fin k => (1 : R)) (schurPolynomial 1 (fun _ => n)) = Nat.choose (n + k - 1) (k - 1)`. Uses `schurPolynomial_one_row` to reduce to `eval 1 (hsymm (Fin k) R n)`, then stars-and-bars: $h_n(1,\\ldots,1) = \\binom{n+k-1}{k-1}$."
     },
     {
       "id": "sec-lgv-connection",
@@ -166,5 +165,5 @@
       "mathContext": "Full proof requires: (1) SSYT type and weight function (~100 lines), (2) RSK bijection SSYT ↔ NI paths (~200 lines), (3) weight matching with the LGV edge weights from the parent proof (~100 lines). The placeholder states `schurPolynomial k sh = schurPolynomial k sh` (tautology) until SSYT generating function is defined."
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
