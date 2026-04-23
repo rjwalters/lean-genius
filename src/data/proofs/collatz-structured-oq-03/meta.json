@@ -41,7 +41,9 @@
       "The Terras density axiom `terras_density` asserts: for any $\\varepsilon > 0$, the fraction of $n \\leq N$ with $\\sigma(n) < \\infty$ exceeds $1 - \\varepsilon$ for large $N$. This is strictly weaker than the Collatz conjecture (which claims all $n$ reach 1) but sufficient to make the average $S(N)$ well-behaved: the contribution from potentially divergent orbits is asymptotically negligible.",
       "`avgStoppingTimeAsymptotic` is a Lean `def` (a term of type `Prop`), not an axiom or theorem — it is a *statement* about the behavior of `avgStoppingTime`. This is the formal expression of the open question: the statement exists and is well-typed in Lean, but no proof is provided. One could write `theorem collatz_avg_open : ¬ Provable avgStoppingTimeAsymptotic` — except that meta-statement is itself undecidable. The formalization instead serves as a specification for future work.",
       "The gap between `logarithmicGrowth` (∃ c, C with c·log N ≤ S(N) ≤ C·log N) and `exactConstant` (S(N)/log N → c exactly) mirrors the distinction in classical analysis between order bounds and precise asymptotics. Even logarithmic bounds on S(N) are unknown unconditionally — proving c·log N ≤ S(N) would require controlling the sum of stopping times, which depends on the distribution of Collatz orbits, itself tied to the conjecture.",
-      "Tao's 2019 result ('almost all orbits attain almost bounded values') gives a related but distinct result: for any function f(n) → ∞, the set of n with max Collatz iterate ≤ f(n) has density 1. This does not directly bound σ(n), since an orbit could reach a small value quickly but then take many more steps to reach 1. The relationship between Tao's orbit-magnitude bounds and stopping-time averages remains unexplored — a gap this formalization is positioned to address."
+      "Tao's 2019 result ('almost all orbits attain almost bounded values') gives a related but distinct result: for any function f(n) → ∞, the set of n with max Collatz iterate ≤ f(n) has density 1. This does not directly bound σ(n), since an orbit could reach a small value quickly but then take many more steps to reach 1. The relationship between Tao's orbit-magnitude bounds and stopping-time averages remains unexplored — a gap this formalization is positioned to address.",
+      "The 2-adic structure underpins Terras's density proof. Every natural number $n$ can be written as $n = 2^a \\cdot m$ with $m$ odd; the 2-adic valuation $v_2(n) = a$ determines whether the first step is a halving ($a \\geq 1$) or a tripling ($a = 0$). Terras's density argument shows that after $k$ Collatz steps, the 2-adic structure of $n$ is 'mixed' enough that the orbit reaches a bounded set with probability $1 - O(2^{-ck})$ — an exponential concentration result. The formalization axiomatizes this via `terras_density` because the Lean proof would require Mathlib's `padicValNat` API and the structure theory of 2-adic integers $\\mathbb{Z}_2$, which lack the necessary lemmas about Collatz pre-images at this time.",
+      "Conway (1987) proved that the Membership Problem for Collatz-type functions is Turing-undecidable: given a 'fractional iteration' map $f$ generalizing the Collatz rule and a target $y$, it is undecidable whether the orbit of $x$ under $f$ ever visits $y$. This is captured in the gallery by the cross-reference to `halting-problem`. Crucially, Conway's undecidability applies to *generalized* Collatz maps — the specific $3x+1$ map may still be decidable (and almost certainly terminates for all $n$, per empirical evidence to $2^{68}$). The `noncomputable` tag on `stoppingTime` reflects this uncertainty: Lean cannot evaluate $\\sigma(n)$ without knowing the answer to the Collatz conjecture."
     ]
   },
   "sections": [
@@ -183,6 +185,16 @@
       "targetId": "halting-problem",
       "relationship": "related",
       "description": "The `stoppingTime` function is `noncomputable` in Lean because deciding `reachesOne n` — whether a Collatz orbit terminates — is not uniformly decidable. If the Collatz conjecture is false, there exists $n$ for which no algorithm can verify $\\sigma(n) < \\infty$ without running forever. The Halting Problem proof technique (diagonalization) was used by Conway (1987) to show that generalized Collatz-type problems are computationally undecidable in general, even though the specific $3n+1$ problem may be decidable"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The `terras_density` axiom asserts that $|\\{n \\leq N : \\sigma(n) < \\infty\\}|/N \\to 1$, a density-1 statement analogous in spirit to the Prime Number Theorem's assertion that $\\pi(N)/(N/\\log N) \\to 1$. Both are density statements about sparse or 'regular' subsets of $\\mathbb{N}$, proved via analytic techniques (complex analysis / Fourier analysis on $\\mathbb{Z}/p\\mathbb{Z}$ for PNT; 2-adic measure theory for Terras). The PNT formalization in Lean (Mathlib's `Nat.Prime.asymptotic`) demonstrates that density-1 results about number-theoretic functions are formalizable — a template for eventually removing the `terras_density` axiom"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "related",
+      "description": "The `terras_density` result is most naturally understood as a statement about Lebesgue measure on the 2-adic integers: the set of $n$ with $\\sigma(n) = \\infty$ has 2-adic measure 0. Terras's proof uses the 2-adic Haar measure on $\\mathbb{Z}_2$ and the ergodic theory of the Collatz map on $\\mathbb{Z}_2$. The Lebesgue measure formalization in Lean provides the measure-theoretic foundation that a full Lean proof of `terras_density` would build on"
     }
   ],
   "references": [
@@ -201,6 +213,14 @@
     {
       "text": "Tao, T. (2019). Almost all orbits of the Collatz map attain almost bounded values. arXiv:1909.03562.",
       "url": "https://en.wikipedia.org/wiki/Collatz_conjecture#In_2019,_Terence_Tao"
+    },
+    {
+      "text": "Lagarias, J. C. (ed.) (2010). The Ultimate Challenge: The 3x+1 Problem. American Mathematical Society.",
+      "url": "https://en.wikipedia.org/wiki/Collatz_conjecture"
+    },
+    {
+      "text": "Conway, J. H. (1987). Fractran: A Simple Universal Programming Language for Arithmetic. In Open Problems in Communication and Computation, Springer. (Establishes Turing-undecidability of generalized Collatz-type membership problems.)",
+      "url": "https://en.wikipedia.org/wiki/FRACTRAN"
     }
   ],
   "leanFile": {
