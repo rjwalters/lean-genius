@@ -143,6 +143,7 @@
     "openQuestions": [
       "Can the remaining axiom (tmul_infinite_order_ne_zero — flatness of ℝ over ℤ) be proved using Mathlib's Module.Flat infrastructure?",
       "Can icoAngle_irrational be proved by extending the Chebyshev argument to ℤ[√5], completing the proof for all five Platonic solids with 0 axioms?"
-    ]
+    ],
+    "implications": "This result extends Hilbert's Third Problem beyond the single pair (cube, tetrahedron) to the complete classification of all Platonic solid pairs. It demonstrates that the Dehn invariant is a complete scissors-congruence invariant for distinguishing the cube from all other Platonic solids. The Chebyshev sequence technique introduced here (for arccos(3/5)/π) is reusable: any angle of the form arccos(p/q) where the natural integer sequence modulo a prime factor of q cannot be divisible by that prime will yield irrationality of arccos(p/q)/π."
   }
 }
