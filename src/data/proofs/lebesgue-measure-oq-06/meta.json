@@ -18,10 +18,10 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 6,
     "axiomCount": 0,
     "lineCount": 563,
-    "assumptions": "4 sorries: hausdorff_free_subgroup (free subgroup of SO(3)), banach_tarski (main theorem), banach_tarski_pieces_nonmeasurable (non-measurability of pieces), int_amenable (ℤ amenability). W_a_two_cover, W_a_smul_disj, W_b_two_cover, W_b_smul_disj are all fully proved. The main proof requires ~800 lines via free subgroup of SO(3) — beyond this gallery entry's scope. Note: paradoxical_no_finite_measure and free_group_not_amenable structure are fully proved. No axiom declarations (axiomCount: 0).",
+    "assumptions": "6 sorries: paradoxical_no_finite_measure (B∪C=A covering step), hausdorff_free_subgroup (free subgroup of SO(3)), banach_tarski (main theorem), banach_tarski_pieces_nonmeasurable (non-measurability of pieces), int_amenable (ℤ amenability), free_group_not_amenable (F₂ not amenable). ENNReal.eq_zero_or_top_of_add_eq_self and equidecomposable_refl are fully proved. The main proof requires ~800 lines via free subgroup of SO(3) — beyond this gallery entry's scope. No axiom declarations (axiomCount: 0).",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -135,7 +135,7 @@
     "theoremCount": 7,
     "definitionCount": 5,
     "path": "Proofs/LebesgueMeasureOQ06.lean",
-    "sorries": 4
+    "sorries": 6
   },
-  "sorries": 4
+  "sorries": 6
 }
