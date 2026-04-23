@@ -21,22 +21,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 axiom declarations, 0 sorries. All results fully verified. Exact Sylow numbers computed by native_decide. Simplicity uses Mathlib's alternatingGroup.isSimpleGroup_five.",
-    "lineCount": 276,
-    "leanFile": {
-      "imports": [
-        "Mathlib"
-      ],
-      "opens": [
-        "Subgroup",
-        "Fintype",
-        "Equiv.Perm"
-      ],
-      "namespace": "SylowA5",
-      "lineCount": 276,
-      "axiomCount": 0,
-      "theoremCount": 21,
-      "definitionCount": 1
-    }
+    "lineCount": 276
   },
   "overview": {
     "historicalContext": "The simplicity of A\u2085 was first understood by Galois (1832), who recognized that A\u2085 is the smallest non-abelian simple group. The Sylow counting approach, using theorems from Sylow's 1872 paper, provides a concrete arithmetic proof: for |A\u2085| = 60 = 2\u00b2\u00b73\u00b75, the Sylow constraints force n\u2082 = 5, n\u2083 = 10, n\u2085 = 6, meaning no Sylow subgroup is normal. Combined with the conjugacy class sizes {1, 12, 12, 15, 20} (no subset sum divides 60), this proves A\u2085 has no proper nontrivial normal subgroups. This result is foundational for the Abel-Ruffini theorem (unsolvability of the quintic) and the classification of finite simple groups.",

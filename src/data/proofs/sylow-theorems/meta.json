@@ -44,24 +44,6 @@
     "dateAdded": "2025-12-27",
     "axiomCount": 0,
     "lineCount": 246,
-    "leanFile": {
-      "imports": [
-        "Mathlib.GroupTheory.Sylow",
-        "Mathlib.GroupTheory.Coset.Basic",
-        "Mathlib.GroupTheory.Index",
-        "Mathlib.GroupTheory.OrderOfElement",
-        "Mathlib.Data.Nat.Factorization.Basic",
-        "Mathlib.Tactic"
-      ],
-      "opens": [
-        "Subgroup"
-      ],
-      "namespace": "SylowTheorems",
-      "lineCount": 246,
-      "axiomCount": 0,
-      "theoremCount": 10,
-      "definitionCount": 1
-    },
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. All three Sylow theorems delegate to Mathlib's `Sylow` module: existence via `Sylow.exists`, conjugacy via `Sylow.equiv`, and counting via `Sylow.card_sylow_modEq_one`. Original contributions are pedagogical wrappers \u2014 `unique_sylow_normal` (unique Sylow subgroup is normal) and `cauchy_theorem` (Cauchy's theorem as corollary) provide accessible named statements composing Mathlib results.",
     "mathlib_version": "4.26.0"
   },
