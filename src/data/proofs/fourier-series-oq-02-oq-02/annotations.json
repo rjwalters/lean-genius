@@ -74,14 +74,14 @@
   {
     "id": "ann-fsoq02oq02-sharpness",
     "proofId": "fourier-series-oq-02-oq-02",
-    "range": { "startLine": 189, "endLine": 196 },
+    "range": { "startLine": 189, "endLine": 224 },
     "type": "insight",
-    "title": "Sharpness: α = 1/2 is the Critical Threshold (with sorry)",
-    "content": "`holder_half_is_critical_for_pseries` states that the p-series argument fails at exactly $\\alpha = 1/2$: the squared bound becomes $O(|n|^{-1})$ and the harmonic series $\\sum 1/|n|$ diverges over $\\mathbb{Z}$.\n\nThis theorem is left with a `sorry` because harmonic series divergence over $\\mathbb{Z}$ ($\\sum_{n \\neq 0} 1/|n| = \\infty$) is not immediately available in Mathlib in this form. The real question is: `¬ Summable (fun n : ℤ => K / |n|^1)` — a consequence of `Real.summable_nat_rpow_inv` going the other direction, but requiring extra work to transfer from $\\mathbb{N}$ to $\\mathbb{Z}$.\n\nNote: The sorry is in the sharpness statement only. The main results (Parts I–III) are sorry-free.",
-    "mathContext": "At $\\alpha = 1/2$: squared bound $= K/|n|^1$ = harmonic series. Mathlib has `Real.summable_nat_rpow_inv.1 (not_lt.mpr h)` for the divergence direction over $\\mathbb{N}$; extending to $\\mathbb{Z}$ requires additional argument. The sorry has a clear statement and clear proof path — it is a definitional gap, not a conceptual gap.",
+    "title": "Sharpness: α = 1/2 is the Critical Threshold",
+    "content": "`holder_half_is_critical_for_pseries` proves that the p-series argument fails at exactly $\\alpha = 1/2$: the squared bound becomes $O(|n|^{-1})$ and the harmonic series $\\sum 1/|n|$ diverges.\n\nThe proof is fully machine-checked. The key technique avoids direct ℤ-harmonic series divergence. Instead:\n1. Assume the universal summability statement for all Hölder functions at $\\alpha = 1/2$\n2. Instantiate with the zero function $f = 0$ (trivially Hölder with constant 1, exponent $1/2$) and $T = 2\\pi$, $C = 1$\n3. Apply `summable_int_iff_summable_nat_and_neg` to extract ℕ summability of the positive half\n4. Rescale by $4/\\pi$ via `.mul_left (4 / Real.pi)` and algebraic simplification to recover `Summable (fun n : ℕ => 1 / n)`\n5. Derive contradiction: `Real.summable_nat_rpow_inv.not.mpr (by norm_num)` shows the harmonic series over ℕ diverges (p=1 fails p > 1)\n\nThis routing through ℕ elegantly sidesteps the need to prove ℤ-harmonic divergence directly.",
+    "mathContext": "The theorem negates: $\\forall C, \\alpha, f$, if $(\\alpha : \\mathbb{R}) = 1/2$ and $f$ is $\\alpha$-Hölder, then $\\sum_{n:\\mathbb{Z}} (C/2)^2 \\pi^{2\\alpha} / |n|^{2\\alpha}$ converges. Taking $f=0$, $C=1$, $\\alpha=1/2$: the summability hypothesis reduces to $\\sum_{n:\\mathbb{N}} (1/4)\\pi / |n|$ being summable. Rescaling by $4/\\pi$ gives $\\sum_{n:\\mathbb{N}} 1/n$ summable — contradicting `Real.summable_nat_rpow_inv.not.mpr (by norm_num : ¬ 1 < 1)`.",
     "significance": "supporting",
-    "relatedConcepts": ["harmonic series divergence", "sharp threshold", "critical Hölder exponent", "Mathlib sorry"],
-    "prerequisites": ["Real.summable_nat_rpow_inv divergence direction", "integer harmonic series"]
+    "relatedConcepts": ["harmonic series divergence", "sharp threshold", "critical Hölder exponent", "Real.summable_nat_rpow_inv"],
+    "prerequisites": ["Real.summable_nat_rpow_inv divergence direction", "summable_int_iff_summable_nat_and_neg"]
   },
   {
     "id": "ann-fsoq02oq02-comparison",
