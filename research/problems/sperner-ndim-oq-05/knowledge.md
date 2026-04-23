@@ -385,7 +385,7 @@ handling both the "equal to k" and "not in s" cases internally.
 ## Session 2026-04-23 (Session 7) - Granular Imports for Mathlib PR
 
 **Mode**: REVISIT
-**Outcome**: PROGRESS — switched `SpernerMathlib4.lean` from `import Mathlib` to 4 granular imports; Docker build running
+**Outcome**: PROGRESS — switched `SpernerMathlib4.lean` from `import Mathlib` to 4 granular imports; **Docker build verified SUCCESS** (9.6s, 1093 jobs)
 
 ### What I Did
 
@@ -428,14 +428,14 @@ import Mathlib.Data.ZMod.Basic                          -- ZMod.natCast_eq_zero_
 ### Files Modified
 
 - `proofs/Proofs/SpernerMathlib4.lean` (line 6: `import Mathlib` → 4 granular imports)
-- Docker build running: `./proofs/scripts/docker-build.sh Proofs.SpernerMathlib4`
+- Docker build: ✅ `Built Proofs.SpernerMathlib4 (9.6s)` — 1093 jobs, all succeeded
+- PR #11625 created
 
 ### Next Steps
 
-1. **[AWAITING]** Docker build result — determines if import set is correct
-2. **If build succeeds**: Commit + PR; note heartbeats as 200000 (default) ✅
-3. **If build fails**: Add missing imports based on error messages; re-run Docker build
-4. **[USER ACTION]** Comment on mathlib4#25231 pointing to `SpernerSimplicialInstance.lean` as Part 2
+1. **[USER ACTION]** Comment on mathlib4#25231 pointing to `SpernerSimplicialInstance.lean` as Part 2
+2. **Profile `SpernerSimplicialInstance.lean`** with `set_option profiler true` to find heartbeat bottleneck
+3. **Prepare Mathlib PR**: Fork mathlib4, copy `SpernerMathlib4.lean` to `Mathlib/Combinatorics/Sperner.lean`, submit as answer to #25231
 
 ---
 
