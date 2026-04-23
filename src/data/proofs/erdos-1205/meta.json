@@ -61,7 +61,8 @@
       "The probabilistic method: choose each $a_n$ uniformly at random from $\\{0, \\ldots, n-1\\}$. For fixed m, $E[\\text{coverage of m}] = \\sum_{n \\le x} 1/n \\approx \\ln x$. By concentration, there exists a choice achieving $F(x) \\ge c \\ln x$.",
       "The covering congruences problem (every integer is covered) requires $\\sum 1/n_i \\ge 1$. The multi-covering problem scales this: achieving F-fold coverage requires $\\sum 1/n \\ge F$, which with moduli $1, 2, \\ldots, x$ gives $\\sum_{n \\le x} 1/n = \\Theta(\\log x)$.",
       "This is connected to the Erdős-Turán conjecture and sieve theory: the 'covering density' of an arithmetic progression $a_n \\pmod{n}$ in $\\{1, \\ldots, x\\}$ is approximately $1/n$.",
-      "The Θ(log x) answer is a rare instance where the probabilistic method gives an exact-order result matching the averaging bound: the achievable minimum equals the mean to within constants. This tight concentration — gap between min and mean is O(√log x) — is characteristic of covering sums with independent Bernoulli contributions of widely varying sizes (1/n for n ≤ x)."
+      "The Θ(log x) answer is a rare instance where the probabilistic method gives an exact-order result matching the averaging bound: the achievable minimum equals the mean to within constants. This tight concentration — gap between min and mean is O(√log x) — is characteristic of covering sums with independent Bernoulli contributions of widely varying sizes (1/n for n ≤ x).",
+      "The Lovász Local Lemma (LLL, 1975) provides a cleaner alternative to Chernoff + union bound for the lower bound. Label event B_m = {C(m) < c·ln x} as 'bad'. Each B_m has exponentially small probability (by Chernoff), and B_m depends only on the values of a_n for which n covers m — at most Σ_{n≤x} 1 = x events. But in the dependency graph, B_m and B_{m'} are independent when m and m' are not covered by any common n, i.e., when gcd(m-a_n, m'-a_n) has no small factors. The LLL applies when the degree of dependency is bounded, giving a cleaner existence proof that avoids the union bound threshold calculation."
     ]
   },
   "sections": [
@@ -133,6 +134,16 @@
       "targetId": "bertrands-postulate-oq-03-oq-04-oq-03",
       "relationship": "related",
       "description": "Both entries use the harmonic series ∑ 1/n ≈ ln(x) as a key asymptotic; this entry uses it to bound F(x) while the PNT density entry uses it to control interval prime counts."
+    },
+    {
+      "targetId": "erdos-1202",
+      "relationship": "related",
+      "description": "Neighbor in the Erdős 1200s cluster: #1202 (prime set density threshold m²/(n log n)) uses similar probabilistic/sieve-theoretic methods for quantitative covering results; both are axiomatized due to analytic depth beyond current Mathlib."
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "foundational",
+      "description": "Divergence of ∑ 1/p is the prime-modulus analogue of the harmonic sum ∑ 1/n ≈ ln x that controls F(x); both results use the harmonic series as the natural density for modular covering."
     }
   ],
   "sorries": 0
