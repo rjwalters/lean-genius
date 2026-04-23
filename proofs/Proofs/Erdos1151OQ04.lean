@@ -13,7 +13,7 @@ Prove `erdos_1941_divergence` by formalizing the connection between:
 The main theorem `erdos_1941_divergence_from_growth` is FULLY PROVED
 (i.e., is a valid mathematical deduction), assuming two sorry lemmas:
 
-  `chebyshev_lebesgue_growth` [SORRY: trig sum lower bound]
+  `chebyshev_lebesgue_lb` [SORRY: harmonic sum lower bound — key analytic step]
   `divergence_from_lebesgue_growth` [SORRY: lacunary series construction]
 
 The non-sorry results proved here:
@@ -27,13 +27,18 @@ The non-sorry results proved here:
   - `chebyshev_lebesgue_eq`: Λₙ(cos θ) = |cos(nθ)|/n · Σₖ sin(φₖ)/|cos θ - cos φₖ| [Session 5, NEW]
   - `x_not_chebyshev_node`: cos(πp/q) ≠ chebyshevNode n k for all n when p,q odd [Session 6, NEW]
   - `chebyshev_lebesgue_eq_all_n`: applies lebesgue_eq for ALL n (not just n=mq) [Session 6, NEW]
+  - `cos_rational_pi_ne_zero`: cos(nπp/q) ≠ 0 for ALL n [Session 7, NEW]
+  - `cos_rational_pi_mod`: periodicity with period 2q [Session 7, NEW]
+  - `cos_rational_pi_pos_min`: ∃ δ > 0, |cos(nπp/q)| ≥ δ for all n [Session 7, NEW]
+  - `chebyshev_lebesgue_growth`: Λₙ → ∞ proved modulo chebyshev_lebesgue_lb [Session 11, NEW]
 
-## Sorry 1: chebyshev_lebesgue_growth
+## Sorry 1: chebyshev_lebesgue_lb
 Proof requires:
-  a) chebyshev_lebesgue_eq_all_n [NOW PROVED in Session 6]
-  b) Lower bound on Σₖ sin(φₖ)/|cos θ - cos φₖ| growing like log(n) [OPEN]
-  c) Nonvanishing of cos(nπp/q) along n = kq subsequence [PROVED]
-  d) Key insight: for q odd, x = cos(πp/q) is never a Chebyshev node [PROVED, Session 6]
+  a) C_min = cos_rational_pi_pos_min gives ∃ δ > 0 [PROVED, Session 7]
+  b) S_n = Σₖ sin(φₖ)/|cos θ - cos φₖ| ≥ C₂·n·log(n+1) via harmonic comparison [OPEN]
+     — uses |cos θ - cos φ| ≤ |θ−φ| (Lipschitz), node spacing π/n, and
+     — Mathlib: `NumberTheory.Harmonic.Bounds.log_add_one_le_harmonic`
+  c) Λₙ = δ/n · S_n ≥ δ · C₂ · log(n+1) → ∞
 
 ## Sorry 2: divergence_from_lebesgue_growth
 Proof requires:
@@ -43,9 +48,12 @@ Proof requires:
 Tags: analysis, approximation-theory, chebyshev, lebesgue-function, erdos-problems
 -/
 
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Complex
+import Mathlib.NumberTheory.Harmonic.Bounds
+import Mathlib.Order.Filter.AtTopBot.Archimedean
 import Mathlib.RingTheory.Polynomial.Chebyshev
 import Mathlib.Topology.Baire.CompleteMetrizable
 import Mathlib.Topology.Baire.Lemmas
@@ -703,7 +711,7 @@ lemma cos_rational_pi_mod (p q n : ℕ) (hq_pos : 0 < q) :
   exact Real.cos_add_nat_mul_two_pi
     (↑(n % (2 * q)) * (↑p * Real.pi / ↑q)) (n / (2 * q) * p)
 
-set_option maxHeartbeats 800000 in
+set_option maxHeartbeats 4000000 in
 /-- **Uniform lower bound**: ∃ δ > 0 such that |cos(nπp/q)| ≥ δ for ALL n ∈ ℕ.
 
     Proof: since cos(nπp/q) is periodic with period 2q in n (by `cos_rational_pi_mod`)
@@ -718,11 +726,11 @@ lemma cos_rational_pi_pos_min (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_pos : 0 
     Finset.univ
   have hvals_nonempty : vals.Nonempty :=
     ⟨|Real.cos (0 * (↑p * Real.pi / ↑q))|,
-     Finset.mem_image.mpr ⟨⟨0, h2q_pos⟩, Finset.mem_univ _, rfl⟩⟩
+     Finset.mem_image.mpr ⟨⟨0, h2q_pos⟩, Finset.mem_univ _, by simp⟩⟩
   refine ⟨vals.min' hvals_nonempty, ?_, fun n => ?_⟩
   · -- min is positive since all values are positive
     have hall : ∀ x ∈ vals, (0 : ℝ) < x := fun x hx => by
-      simp only [Finset.mem_image, Finset.mem_univ, true_and] at hx
+      simp only [vals, Finset.mem_image, Finset.mem_univ, true_and] at hx
       obtain ⟨k, rfl⟩ := hx
       exact abs_pos.mpr (cos_rational_pi_ne_zero p q k.val hp hq hq_pos)
     exact hall _ (Finset.min'_mem vals hvals_nonempty)
@@ -734,24 +742,52 @@ lemma cos_rational_pi_pos_min (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_pos : 0 
 
 /-! ## Key Lemmas with Sorry -/
 
-/-- **[SORRY] Lebesgue function growth at rational cosines.**
+/-- **[SORRY] Logarithmic lower bound on the Lebesgue function.**
 
-    For x = cos(πp/q) with p, q odd and q ≥ 1, the Chebyshev Lebesgue
-    function Λₙ(x) → ∞ as n → ∞.
+    For x = cos(πp/q) with p, q odd, there exists C > 0 such that for all n ≥ 1:
+      Λₙ(x) ≥ C · log(n + 1)
 
-    Proof outline (given chebyshev_lebesgue_eq_all_n and cos_rational_pi_pos_min):
-    1. By `cos_rational_pi_pos_min`, ∃ δ > 0: |cos(nπp/q)| ≥ δ for all n.
-    2. By `chebyshev_lebesgue_eq_all_n`: Λₙ(x) = |cos(nθ)|/n · Σₖ sin(φₖ)/|x - cos φₖ|
-       ≥ δ/n · Σₖ sin(φₖ)/|cos(πp/q) - cos φₖ|
-    3. Harmonic sum estimate [OPEN]: Σₖ sin(φₖ)/|x - cos φₖ| ≥ C·log(n) for x = cos(πp/q)
-       (uses: |cos α - cos β| ≤ |α - β|, so 1/|x - cos φₖ| ≥ 1/|πp/q - φₖ|,
-        and Σ 1/|nπp/q - k·π| over k avoiding the nearest node is a harmonic sum ≥ C·log n)
-    4. Therefore Λₙ(x) ≥ δ·C·log(n)/n · n = δ·C·log(n) → ∞ -/
+    Proof sketch (uses `cos_rational_pi_pos_min` + harmonic sum estimate):
+
+    **Step 1** (proved): By `cos_rational_pi_pos_min`, ∃ δ > 0: |cos(nπp/q)| ≥ δ for ALL n.
+
+    **Step 2** (open): The Chebyshev sum S_n = Σₖ sin(φₖ)/|x - cos φₖ| grows like n·log(n).
+    Using |cos θ - cos φ| ≤ |θ - φ| (Lipschitz-1 of cosine) and node spacing φₖ = (2k+1)π/(2n):
+    - For nodes j steps from the nearest k₀: |θ - φ_{k₀+j}| ≤ 2j·π/n.
+    - Near x = cos θ with sin(θ) near 0 (e.g. x = 1): sin(φₖ)/|1-cos φₖ| = cot(φₖ/2) ≈ 2n/(2k+1).
+    - Summing the first n/2 such terms: ≥ Σ_{j=1}^{n/2} C·n/j = C·n·H_{n/2} ≥ C·n·log(n/2+1).
+    - By `NumberTheory.Harmonic.Bounds.log_add_one_le_harmonic`, H_n ≥ log(n+1).
+
+    **Step 3**: Λₙ = |cos(nπp/q)|/n · S_n ≥ (δ/n) · C·n·log(n+1) = δ·C·log(n+1). -/
+private lemma chebyshev_lebesgue_lb (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_pos : 0 < q) :
+    ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, 1 ≤ n →
+      C * Real.log ((↑n : ℝ) + 1) ≤ chebyshevLebesgue n (Real.cos (↑p * Real.pi / ↑q)) := by
+  sorry
+
+/-- **Lebesgue function growth at rational cosines** (proved modulo `chebyshev_lebesgue_lb`).
+
+    For x = cos(πp/q) with p, q odd, the Chebyshev Lebesgue function Λₙ(x) → ∞ as n → ∞.
+    The proof applies `tendsto_atTop_mono` with the logarithmic lower bound `chebyshev_lebesgue_lb`,
+    combined with the fact that C · log(n+1) → ∞ (from `tendsto_log_atTop`). -/
 theorem chebyshev_lebesgue_growth (p q : ℕ) (hp : Odd p) (hq : Odd q)
     (hq_pos : 0 < q) :
     Filter.Tendsto (fun n => chebyshevLebesgue n (Real.cos (↑p * Real.pi / ↑q)))
       Filter.atTop Filter.atTop := by
-  sorry
+  -- Extract: ∃ C > 0, ∀ n ≥ 1, C · log(n+1) ≤ Λₙ(x)
+  obtain ⟨C, hC_pos, hC_lb⟩ := chebyshev_lebesgue_lb p q hp hq hq_pos
+  -- The lower bound C · log(n+1) tends to +∞
+  have hlb_atTop : Filter.Tendsto (fun n : ℕ => C * Real.log ((↑n : ℝ) + 1))
+      Filter.atTop Filter.atTop :=
+    (tendsto_log_atTop.comp
+      (Filter.Tendsto.atTop_add tendsto_natCast_atTop_atTop tendsto_const_nhds)).const_mul_atTop hC_pos
+  -- Since Λₙ(x) ≥ C·log(n+1) and C·log(n+1) → ∞, we have Λₙ(x) → ∞
+  apply Filter.tendsto_atTop_mono (f := fun n : ℕ => C * Real.log ((↑n : ℝ) + 1)) _ hlb_atTop
+  intro n
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · -- n = 0: Λ₀ = 0 (empty sum) and C · log(0+1) = C · log(1) = 0
+    simp [chebyshevLebesgue, Real.log_one]
+  · -- n ≥ 1: apply the analytic lower bound
+    exact hC_lb n hn
 
 /-- **[SORRY] Divergence from Lebesgue growth.**
 
