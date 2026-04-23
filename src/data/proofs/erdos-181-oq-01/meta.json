@@ -65,7 +65,12 @@
       "The gap between Tikhomirov (exponent 2-c ≈ 1.963) and the conjecture (exponent 1) represents the main open problem",
       "For undirected Ramsey theory, requiring c(i,j) = c(j,i) is essential: directed colorings can be antisymmetric and prevent any monochromatic copies"
     ],
-    "prerequisites": ["Erdős #181 (parent proof)", "Hypercube graph Q_n", "Ramsey theory basics", "Finset pigeonhole principle"],
+    "prerequisites": [
+      "Erdős #181 (parent proof)",
+      "Hypercube graph Q_n",
+      "Ramsey theory basics",
+      "Finset pigeonhole principle"
+    ],
     "problemStatement": "OQ-01: Is R_sym(Q_n) ≪ 2^n? Does there exist a constant C such that R_sym(Q_n) ≤ C·2^n for all n?",
     "proofStrategy": "For R_sym(Q_1) = 2: Upper bound from the fact that 2 ∈ symmRamseySet(1) (any symmetric coloring of K_2 gives a monochromatic Q_1). Lower bound from non-emptiness + pigeonhole (N < 2^1 = 2 cannot embed Q_1). For general n: main conjecture open, only conditional lower bound proved."
   },
@@ -129,5 +134,8 @@
       "description": "Parent proof providing the axiomatized Ramsey number framework"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "axiomCount": 2
+  }
 }
