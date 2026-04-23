@@ -748,10 +748,79 @@ theorem vosper (A B : Finset (ZMod p)) (hA : 2 ≤ A.card) (hB : 2 ≤ B.card)
     --                 Inclusion gives |(A.erase a)+B| ≤ |A+B| = |A|+|B|-1.
     -- If ALL a are redundant (Case 2 for all), a counting argument fails. So ∃ Case 1.
     obtain ⟨a₀, ha₀A, hcase1⟩ : ∃ a₀ ∈ A, ((A.erase a₀) + B).card = A.card + B.card - 2 := by
-      -- Proof by contradiction: assume all a ∈ A give Case 2 (|(A.erase a)+B| = |A|+|B|-1).
-      -- Then |A|·|B| ≥ 2(|A|+|B|-1), which fails for small |A|,|B| and small p values.
-      -- For the general case, the iterative removal argument gives the contradiction.
-      sorry -- [SORRY 1/2] Case 1 existence: counting argument or iterative removal
+      rcases Nat.lt_or_eq_of_le hB with hB3 | hB2
+      · -- |B| ≥ 3: needs Vosper structure theory
+        sorry -- [SORRY] Case 1 existence for |B| ≥ 3
+      · -- |B| = 2: clean orbit argument
+        have hBcard : B.card = 2 := hB2.symm
+        obtain ⟨b₁, b₂, hb12, rfl⟩ := Finset.card_eq_two.mp hBcard
+        have hBpair : ({b₁, b₂} : Finset (ZMod p)).card = 2 := Finset.card_pair hb12
+        have hd : b₂ - b₁ ≠ 0 := sub_ne_zero.mpr hb12.symm
+        have hAlt : A.card < p := by omega
+        -- Step 1: ∃ a₀ ∈ A with a₀+(b₂-b₁) ∉ A
+        obtain ⟨a₀, ha₀A, ha₀d⟩ : ∃ a₀ ∈ A, a₀ + (b₂ - b₁) ∉ A := by
+          by_contra hall
+          push_neg at hall
+          obtain ⟨a_star, ha_star⟩ : A.Nonempty := Finset.card_pos.mp (by omega)
+          have horbit : ∀ k : ℕ, k < p → a_star + (k : ZMod p) * (b₂ - b₁) ∈ A := by
+            intro k hk
+            induction k with
+            | zero => simpa
+            | succ n ih =>
+              have := hall _ (ih (Nat.lt_of_succ_lt hk))
+              convert this using 1; push_cast; ring
+          have horbit_inj : Function.Injective
+              (fun k : Fin p => a_star + (k : ZMod p) * (b₂ - b₁)) := by
+            intro ⟨j₁, hj₁⟩ ⟨j₂, hj₂⟩ heq
+            simp only at heq
+            have hmul : (j₁ : ZMod p) * (b₂ - b₁) = (j₂ : ZMod p) * (b₂ - b₁) := by
+              linear_combination heq
+            have h_eq : (j₁ : ZMod p) = (j₂ : ZMod p) := by
+              have hc : (j₁ : ZMod p) * (b₂ - b₁) * (b₂ - b₁)⁻¹ =
+                        (j₂ : ZMod p) * (b₂ - b₁) * (b₂ - b₁)⁻¹ := by rw [hmul]
+              rwa [mul_assoc, mul_assoc, mul_inv_cancel₀ hd, mul_one, mul_one] at hc
+            ext
+            have := congrArg ZMod.val h_eq
+            simp only [ZMod.val_natCast, Nat.mod_eq_of_lt hj₁, Nat.mod_eq_of_lt hj₂] at this
+            omega
+          have himg_sub : (Finset.univ.image
+              (fun k : Fin p => a_star + (k : ZMod p) * (b₂ - b₁))) ⊆ A := by
+            intro x hx
+            obtain ⟨k, _, rfl⟩ := Finset.mem_image.mp hx
+            exact horbit k.val k.isLt
+          have hcard := Finset.card_le_card himg_sub
+          rw [Finset.card_image_of_injective _ horbit_inj, Finset.card_fin] at hcard
+          omega
+        -- Step 2: a₀+b₂ ∉ (A.erase a₀)+{b₁,b₂}
+        refine ⟨a₀, ha₀A, ?_⟩
+        have hnotmem : a₀ + b₂ ∉ (A.erase a₀) + ({b₁, b₂} : Finset (ZMod p)) := by
+          simp only [Finset.mem_add, Finset.mem_erase, ne_eq,
+                     Finset.mem_insert, Finset.mem_singleton]
+          rintro ⟨a', ⟨hne, haA⟩, b, (rfl | rfl), hadd⟩
+          · -- b = b₁: a' = a₀+(b₂-b₁) ∈ A, contradicts ha₀d
+            have ha' : a' = a₀ + (b₂ - b₁) := by linear_combination hadd
+            exact ha₀d (ha' ▸ haA)
+          · -- b = b₂: a' = a₀, contradicts hne
+            exact hne (by linear_combination hadd)
+        -- Step 3: |(A.erase a₀)+B| = A.card + |B| - 2 via CD + strict subset
+        have hAerase_ne : (A.erase a₀).Nonempty :=
+          Finset.card_pos.mp (by rw [Finset.card_erase_of_mem ha₀A]; omega)
+        have hB_ne : ({b₁, b₂} : Finset (ZMod p)).Nonempty := ⟨b₁, Finset.mem_insert_self _ _⟩
+        have hcd_raw := ZMod.cauchy_davenport hAerase_ne hB_ne
+        rw [Finset.card_erase_of_mem ha₀A, hBpair] at hcd_raw
+        have hmin : min p (A.card - 1 + 2 - 1) = A.card := by
+          rw [show A.card - 1 + 2 - 1 = A.card from by omega]
+          exact Nat.min_eq_right (Nat.le_of_lt hAlt)
+        rw [hmin] at hcd_raw
+        have hmem1 : a₀ + b₂ ∈ A + ({b₁, b₂} : Finset (ZMod p)) :=
+          Finset.mem_add.mpr ⟨a₀, ha₀A, b₂, Finset.mem_insert_self _ _, rfl⟩
+        have hsub : (A.erase a₀) + ({b₁, b₂} : Finset (ZMod p)) ⊆ A + {b₁, b₂} :=
+          Finset.add_subset_add_right (Finset.erase_subset _ _)
+        have hlt' : ((A.erase a₀) + ({b₁, b₂} : Finset (ZMod p))).card <
+                    (A + ({b₁, b₂} : Finset (ZMod p))).card :=
+          Finset.card_lt_card (lt_of_le_of_ne hsub
+            (fun heq => hnotmem (heq.symm ▸ hmem1)))
+        omega
     -- Step 2: Apply IH recursively to A' = A.erase a₀ and B.
     have hA'card : (A.erase a₀).card = A.card - 1 := Finset.card_erase_of_mem ha₀A
     have hA'2 : 2 ≤ (A.erase a₀).card := by omega
