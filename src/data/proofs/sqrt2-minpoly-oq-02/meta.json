@@ -49,7 +49,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Eisenstein's irreducibility criterion was introduced by Ferdinand Gotthold Max Eisenstein in 1850, in a paper on cyclotomic polynomials and algebraic number theory. Eisenstein used it to prove that the p-th cyclotomic polynomial $(X^p - 1)/(X - 1) = X^{p-1} + \\cdots + 1$ is irreducible over $\\mathbb{Q}$ (by a substitution $X \\mapsto X+1$). The criterion for binomials $X^n - m$ is among its most direct applications.\n\nGauss's Lemma, from Gauss's *Disquisitiones Arithmeticae* (1801), establishes that the product of primitive polynomials over $\\mathbb{Z}$ is primitive — which implies that ℤ-irreducibility of a primitive polynomial transfers to ℚ-irreducibility. Together, Eisenstein's criterion and Gauss's Lemma form the backbone of elementary algebraic irreducibility proofs.\n\nThis result generalizes the fundamental examples (minpoly ℚ (√2) = X² - 2, minpoly ℚ (∛2) = X³ - 2) to all n-th roots of numbers with a squarefree prime factor. The Mathlib formalization uses `Polynomial.irreducible_of_eisenstein_criterion` and `IsPrimitive.Int.irreducible_iff_irreducible_map_cast` to carry this classical argument into Lean 4.",
+    "historicalContext": "Eisenstein's irreducibility criterion, published in 1850 by Ferdinand Gotthold Max Eisenstein (1823–1852) — a student of Gauss who died at age 29 — is one of the most powerful elementary tools in algebraic number theory. The criterion appeared around the same time in related work by Theodor Schönemann (1848), making it a case of simultaneous discovery. For a polynomial $X^n - m$, the criterion applies at any prime $p$ with $p \\mid m$ but $p^2 \\nmid m$, yielding irreducibility over $\\mathbb{Z}$.\n\nGauss's lemma — that primitive $\\mathbb{Z}$-irreducible polynomials are $\\mathbb{Q}$-irreducible — appears in Gauss's *Disquisitiones Arithmeticae* (1801, Art. 42). The combination of Eisenstein over $\\mathbb{Z}$ and transfer via Gauss's lemma is the canonical approach to proving irreducibility of $X^n - m$ over $\\mathbb{Q}$, and forms a reusable template in Dedekind's algebraic number theory.\n\nThis result generalizes the fundamental examples ($\\mathrm{minpoly}_{\\mathbb{Q}}(\\sqrt{2}) = X^2 - 2$, $\\mathrm{minpoly}_{\\mathbb{Q}}(\\sqrt[3]{2}) = X^3 - 2$) to all $n$-th roots of numbers with a squarefree prime factor, and is the key step in determining the Galois group of the splitting field of $X^n - m$ over $\\mathbb{Q}$.",
     "problemStatement": "For n ≥ 2 and m > 0, when does `minpoly ℚ (m^(1/n)) = Xⁿ - m`?\n\n**Answer**: Whenever m has a prime factor p with p | m but p² ∤ m. This is equivalent to saying the p-adic valuation v_p(m) is odd for some prime p.",
     "proofStrategy": "**Four steps**:\n1. **Eisenstein over ℤ**: Apply Eisenstein at p — 1 ∉ (p), all lower coefficients ∈ (p), constant term ∉ (p)²\n2. **Transfer to ℚ**: Gauss's lemma (primitive ℤ-polynomial is ℚ-irreducible iff ℤ-irreducible)\n3. **Root witness**: (m^(1/n))^n = m, so m^(1/n) is a root of Xⁿ - m\n4. **Minimal polynomial**: Apply `minpoly.eq_of_irreducible_of_monic`",
     "keyInsights": [
@@ -58,7 +58,8 @@
       "The proof works uniformly for all n ≥ 2, covering square, cube, fourth, fifth roots, etc.",
       "The squarefree prime factor condition is NOT necessary — it's sufficient. X² - 8 is also irreducible but not Eisenstein.",
       "The proof architecture — Eisenstein (ℤ) → Gauss → minimal polynomial → field degree — is a reusable template for any irreducibility argument in algebraic number theory.",
-      "Irrationality is an immediate corollary: if $m^{1/n}$ were rational $= a/b$, then $\\mathrm{minpoly}(\\mathbb{Q}, m^{1/n})$ would have degree 1 (linear), contradicting degree $= n \\geq 2$. So the Eisenstein criterion provides a unified algebraic proof of irrationality for all n-th roots satisfying the squarefree condition."
+      "Irrationality is an immediate corollary: if $m^{1/n}$ were rational $= a/b$, then $\\mathrm{minpoly}(\\mathbb{Q}, m^{1/n})$ would have degree 1 (linear), contradicting degree $= n \\geq 2$. So the Eisenstein criterion provides a unified algebraic proof of irrationality for all n-th roots satisfying the squarefree condition.",
+      "The field extension ℚ(m^(1/n))/ℚ of degree n is the first step toward determining its Galois group: if ℚ contains all n-th roots of unity then the Galois closure has degree n (cyclic, Galois group ℤ/nℤ), otherwise the splitting field is larger — the full Galois group can be as large as the dihedral or symmetric group."
     ]
   },
   "sections": [
@@ -140,14 +141,19 @@
       "description": "The square root 2 minimal polynomial (X² - 2) is the n=2, m=2 special case"
     },
     {
-      "targetId": "nth-root-irrational",
-      "relationship": "related",
-      "description": "The n-th root irrationality proof uses a different approach; this file provides the stronger result of computing the minimal polynomial explicitly via Eisenstein"
+      "targetId": "sqrt2-minpoly-oq-01",
+      "relationship": "generalizes",
+      "description": "sqrt2-minpoly-oq-01 proves minpoly ℚ (√n) = X² - n for squarefree-factor n (degree-2 case); this proof handles all degrees n ≥ 2"
     },
     {
-      "targetId": "sqrt2-minpoly-oq-01",
-      "relationship": "extends",
-      "description": "OQ-01 proved the degree-n case for prime m; this file extends to all m with a squarefree prime factor (composite m like ∛6, ⁵√12)"
+      "targetId": "nth-root-irrational",
+      "relationship": "strengthens",
+      "description": "nth-root-irrational proves m^(1/n) ∉ ℚ when m is not a perfect n-th power; this proof yields the stronger result that the algebraic degree is exactly n"
+    },
+    {
+      "targetId": "cube-root-3-irrational-oq-02",
+      "relationship": "specializes",
+      "description": "cube-root-3-irrational-oq-02 proves X³-3 is irreducible via Eisenstein at p=3; this proof covers that as the n=3, m=3, p=3 instance"
     }
   ],
   "mainTheorems": [
