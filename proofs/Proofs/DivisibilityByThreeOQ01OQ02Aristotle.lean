@@ -58,8 +58,12 @@ theorem digitSum_pos (n : ℕ) (hn : 0 < n) : 0 < digitSum n := by
   rcases lt_or_ge n 10 with h | h
   · interval_cases n <;> native_decide
   · -- n ≥ 10: use last_digit_pos + List.single_le_sum
-    -- Digits list is nonempty; last digit is positive (by last_digit_pos);
-    -- last digit ∈ list (List.getLast_mem); last digit ≤ sum (List.single_le_sum)
-    sorry
+    have hne := digits_nonempty hn
+    have hld := last_digit_pos hn
+    have hmem : (Nat.digits 10 n).getLast hne ∈ Nat.digits 10 n :=
+      List.getLast_mem hne
+    have hle : (Nat.digits 10 n).getLast hne ≤ (Nat.digits 10 n).sum :=
+      List.single_le_sum (fun x _ => Nat.zero_le x) hmem
+    omega
 
 end DivisibilityByThreeOQ01OQ02Aristotle
