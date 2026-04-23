@@ -7,7 +7,7 @@
     "author": "Unknown",
     "sourceUrl": "https://erdosproblems.com/1206",
     "date": "",
-    "status": "formalized",
+    "status": "pending",
     "proofRepoPath": "Proofs/Erdos1206Problem.lean",
     "tags": [
       "erdos"
@@ -18,7 +18,7 @@
     "erdosNumber": 1206,
     "erdosUrl": "https://erdosproblems.com/1206",
     "erdosProblemStatus": "solved",
-    "axiomCount": 0
+    "lineCount": 23
   },
   "overview": {
     "historicalContext": "Erdős Problem #1206 concerns Sidon sets among cube numbers. A Sidon set (also called a B₂ set) is a set of integers where all pairwise sums are distinct—equivalently, all pairwise differences are distinct. Sidon introduced these in 1932 in connection with Fourier analysis. Erdős and Turán proved the fundamental bound: any Sidon subset of {1,...,N} has at most N^(1/2) + O(N^(1/4)) elements. Problem #1206 asks whether {1³, 2³, ..., N³} contains an unexpectedly large Sidon set of size ≫ N—much larger relative to the set's cardinality than the Erdős–Turán bound suggests for a generic subset of {1,...,N³}. The problem was marked solved on erdosproblems.com following work by Gabdullin and Konyagin (2024), who showed the short-interval cube set {n³ : N - cN^(1/2) ≤ n ≤ N} is Sidon. Garaev, Garayev, and Konyagin (2026) improved this to size ≫ N^(4/7-o(1)) for infinitely many N, using more refined estimates on the quadratic factor n² + nm + m². The problem is part of a broader Erdős program relating polynomial sequences to additive combinatorics, with analogues for squares (Problem #773) and linear sets (Problem #530).",
@@ -85,24 +85,19 @@
   },
   "crossReferences": [
     {
-      "targetId": "erdos-530",
+      "proofId": "erdos-340-greedy-sidon",
       "relationship": "related",
-      "description": "Linear Sidon analogue explicitly cited in the problem: #530 asks for the maximum Sidon subset of {1,...,N} (size ~ N^{1/2}), the k=1 case of Erdős's g_k formulation."
+      "description": "Greedy Sidon Sequence Infrastructure (Erdős Problem #340) — formalizes the greedy construction of Sidon sets in {1,...,N}. Problem #1206 asks about Sidon subsets of specifically the cube numbers {n³}. The greedy approach in #340 gives a Sidon set of size ≫ N^(1/2) in {1,...,N}; #1206's result (consecutive cubes form a Sidon set) achieves the same N^(1/2) scale but with an algebraically structured rather than greedily constructed sequence. Both results are tied to the Erdős-Turán N^(1/2) bound."
     },
     {
-      "targetId": "erdos-773",
-      "relationship": "related",
-      "description": "Squares analogue explicitly cited in the problem: #773 asks for the maximum Sidon subset of {1²,...,N²}, the k=2 case paralleling the k=3 (cubes) question here."
+      "proofId": "erdos-1202",
+      "relationship": "sibling",
+      "description": "Erdős #1202 (Prime Sets with Quantitative Density Conditions) is an adjacent problem in the same Erdős 1200s cluster. Both #1202 and #1206 concern structured subsets with quantitative size lower bounds — #1202 for prime sets, #1206 for cube-number Sidon sets. Problems #1201–1220 in Erdős's archive form a cluster on analytic and combinatorial number theory; these two are adjacent entries with similar quantitative threshold structure."
     },
     {
-      "targetId": "erdos-340-greedy-sidon",
-      "relationship": "uses-technique",
-      "description": "Sidon infrastructure: provides IsSidon predicate, difference-injectivity lemmas, and the counting bound |diffSet| = n(n-1)/2 used in any formal Sidon argument."
-    },
-    {
-      "targetId": "erdos-1208",
-      "relationship": "related",
-      "description": "Neighbor in 1200s cluster: #1208 (largest subset with distinct pairwise distances) shares the combinatorial flavor — both ask for large subsets with pairwise distinctness conditions."
+      "proofId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The Fundamental Theorem of Arithmetic (unique prime factorization) underpins the Sidon proof via the algebraic identity n³ - m³ = (n-m)(n² + nm + m²). The Sidon condition requires all pairwise sum differences to be distinct; the factorization shows that in a short interval [N - cN^(1/2), N], the quadratic factor n²+nm+m² is nearly constant (~3N²), making distinct pairs (n,m) give distinct differences. This is a multiplicative structure argument at heart — the same principles used in factoring in FTA."
     }
   ],
   "sorries": 1
