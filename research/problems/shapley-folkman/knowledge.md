@@ -332,3 +332,55 @@ The proof proceeds as:
    WF descent: either Case A kicks in (excess decreases), or pos-index minimizer gives new_point
    ∈ conv(S) with strictly fewer Carathéodory vertices (Starr 1969)
 2. Submit remaining Case B sorry to Aristotle as HARD sorry
+
+---
+
+## Session 2026-04-23 (Session 9) — Case B Blocker Analysis
+
+**Mode**: REVISIT
+**Outcome**: Analysis only — WF descent confirmed as the only viable path; no code changes
+
+### What I Did
+
+1. Read the full proof structure: Sessions 7-8 proved Case A of reduce_excess_by_one; 1 sorry remains in Case B (line 704)
+2. Analyzed Case B in detail: ε < ε₀ means some pos-index l' achieves joint min; new_point(emb l') = bv(emb l')
+3. Investigated 5 alternative approaches to avoid WF descent:
+   - Neg-only perturbation: breaks Σ c_l δ_l = 0 sum preservation condition
+   - Different index selection: still can get pos-coefficients in any linear dependence
+   - Minimality hypothesis: cleaner strategy but requires defining Carathéodory count (same work)
+   - Multiple minimizers: can't guarantee any bv ∈ S across all minimizers in general
+   - Sub-case B1 (bv ∈ S) + Sub-case B2 (sorry): doesn't remove sorry, just moves it
+
+### Key Mathematical Analysis
+
+**Why Case B cannot be closed without WF**:
+
+In Case B, all d+1 selected excess indices have new_point that is either:
+- A strict convex combination of av and bv (positive weights for both) → stays in excessIndices
+- Equal to bv (when a-weight = 0 at the pos-minimizer l') → may not be in S
+
+The centroid of a triangle example shows that bv can fail to be in S even when the original point has minimum Carathéodory count = 3: x = (1/3)e₁ + (1/3)e₂ + (1/3)e₃, bv = (1/2)(e₁ + e₂), which is in the interior of the edge, not in S = {e₁, e₂, e₃}.
+
+**WF descent structure (correct approach)**:
+
+Define `caratheodoryCount (x : E) (hx : x ∈ convexHull ℝ s) : ℕ` as the MINIMUM n such that x = Σ w_i v_i with v_i ∈ s, w_i > 0, Σ w_i = 1 (n points).
+
+Key fact: In Case B, when new_point(emb l') = bv(emb l'), caratheodoryCount of bv(emb l') ≤ caratheodoryCount of D.point(emb l') - 1. This is because bv was constructed as a renormalized combination of n-1 vertices (after removing av from the n-vertex Carathéodory representation).
+
+**Implementation path for the sorry** (~150-200 lines):
+1. Define `caratheodoryCount` using Classical.choice on the minimum n from `convexHull_not_mem_requires_two`
+2. Prove monotonicity: binary_repr preserves count of av (1) and reduces count of bv by ≥ 1
+3. Define `totalCaratheodoryCount D = Σ_{i ∈ D.excessIndices} caratheodoryCount D.point_i`
+4. Prove total count strictly decreases in Case B
+5. Use WF induction on total count to prove `reduce_excess_by_one`
+
+### Sorrys Remaining (1)
+
+- `reduce_excess_by_one` Case B (line 704) — WF Carathéodory descent; implementation path documented above
+
+### Next Steps
+
+1. Define `caratheodoryCount` function and prove basic properties (~40 lines)
+2. Prove bv from binary_repr has strictly smaller caratheodoryCount than x (~30 lines)
+3. Restructure `reduce_excess_by_one` to use WF induction on total count (~80 lines)
+4. Sub-case B1 (bv ∈ S) is then a special case of the WF argument; Case B2 follows inductively
