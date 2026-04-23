@@ -174,43 +174,5 @@
       "Bipartiteness"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "erdos-752-quantitative",
-    "proofId": "erdos-752",
-    "type": "context",
-    "range": {
-      "startLine": 207,
-      "endLine": 225
-    },
-    "title": "Quantitative Bounds",
-    "content": "**Explicit Bounds:**\n\n- The constant c in Sudakov-Verstraëte is computable (> 1/1000).\n- For s = 2 (girth > 4): at least k²/10 cycle lengths.\n- For s = 3 (girth > 6): at least k³/100 cycle lengths.\n\nThese explicit bounds are useful for algorithmic applications.",
-    "mathContext": "The paper doesn't optimize constants, so the explicit values here are rough estimates based on the proof structure.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Explicit constants",
-      "Algorithmic bounds",
-      "Optimization"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "erdos-752-summary",
-    "proofId": "erdos-752",
-    "type": "technique",
-    "range": {
-      "startLine": 231,
-      "endLine": 253
-    },
-    "title": "Main Theorem Summary",
-    "content": "**erdos_752, erdos_752_strong, erdos_752_summary:**\n\nProblem #752 is completely resolved:\n\n1. **Original Question:** Must there be ≫ k^s cycle lengths? **YES** (erdos_752)\n2. **Stronger Result:** There are Ω(k^s) consecutive even cycle lengths (erdos_752_strong)\n3. **Summary:** Combines both results via exact ⟨erdos_752_solved, sudakov_verstrate_2008⟩\n\n**Key Contributors:**\n- Erdős-Faudree-Schelp: Original conjecture, case s = 2\n- Sudakov-Verstraëte (2008): Complete solution with stronger result",
-    "mathContext": "The summary theorem proves ErdosFaudreeSchelpConjecture ∧ (stronger consecutive even lengths result), combining the two main achievements.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Complete resolution",
-      "Tight bounds",
-      "Historical attribution"
-    ],
-    "prerequisites": []
   }
 ]

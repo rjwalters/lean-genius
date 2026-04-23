@@ -118,54 +118,5 @@
       "extremal-combinatorics"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-902-paley",
-    "proofId": "erdos-902",
-    "range": {
-      "startLine": 167,
-      "endLine": 186
-    },
-    "type": "definition",
-    "title": "Paley Tournaments and Quadratic Residues",
-    "content": "**isPaleyEdge(p, u, v)**: Edge u → v iff v - u is a quadratic residue mod p (for p ≡ 3 mod 4).\n\n**paley_domination_bound**: Paley tournament of order p is ((p-1)/2-1)-dominating.\n\n**isQuadraticResidue(p, a)**: a ≠ 0 and a = x² for some x.\n**half_are_residues**: Exactly (p-1)/2 nonzero elements are quadratic residues.",
-    "mathContext": "Paley tournaments are highly structured: their automorphism group acts transitively. For primes p ≡ 3 mod 4, they provide optimal or near-optimal dominating tournaments.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Quadratic residues",
-      "Finite fields",
-      "Paley construction"
-    ],
-    "tags": [
-      "paley-tournament",
-      "quadratic-residues",
-      "finite-fields",
-      "algebraic-construction"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-902-summary",
-    "proofId": "erdos-902",
-    "range": {
-      "startLine": 217,
-      "endLine": 237
-    },
-    "type": "technique",
-    "title": "Summary",
-    "content": "**erdos_902**: Combines the Szekeres lower bound and Erdős upper bound:\n- ∃ c > 0: f(n) ≥ c·n·2^n\n- ∃ C > 0: f(n) ≤ C·n²·2^n\n\nProved by ⟨szekeres_lower_bound, erdos_upper_bound⟩.\n\nThe gap of a factor of n between bounds remains OPEN.",
-    "mathContext": "The problem is to close the gap between n·2^n and n²·2^n. Neither bound has been improved since the 1960s.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Summary",
-      "Open problem"
-    ],
-    "tags": [
-      "summary",
-      "open-problem",
-      "asymptotic-bounds",
-      "erdos"
-    ],
-    "prerequisites": []
   }
 ]

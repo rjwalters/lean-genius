@@ -134,24 +134,5 @@
       "independence-number-bound"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-925-summary",
-    "proofId": "erdos-925",
-    "range": {
-      "startLine": 179,
-      "endLine": 217
-    },
-    "type": "technique",
-    "title": "Summary Theorems",
-    "content": "Two summary theorems. **erdos_925** directly states the disproof: ¬erdos_925_conjecture, proved by erdos_925_disproved. **erdos_925_summary** combines both the negative and positive results: (1) the conjecture is false (no polynomial improvement over n^(1/3)), and (2) the easy lower bound c·n^(1/3) does hold. The proof is ⟨erdos_925_disproved, easy_lower_bound⟩, directly combining the two axioms via an anonymous constructor. This fully characterizes the situation: n^(1/3) is the right exponent, up to polylogarithmic factors.",
-    "mathContext": "erdos_925 : ¬erdos_925_conjecture := erdos_925_disproved. erdos_925_summary : ¬conjecture ∧ (∃ c > 0, α(G) ≥ c·n^(1/3)) := ⟨erdos_925_disproved, easy_lower_bound⟩.",
-    "significance": "key",
-    "relatedConcepts": [
-      "disproof",
-      "exact-constructor",
-      "complete-characterization"
-    ],
-    "prerequisites": []
   }
 ]

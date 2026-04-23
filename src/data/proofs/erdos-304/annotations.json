@@ -189,43 +189,5 @@
       "missing denominators"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e304-greedy",
-    "proofId": "erdos-304",
-    "range": {
-      "startLine": 195,
-      "endLine": 200
-    },
-    "type": "concept",
-    "title": "Greedy Algorithm Bound",
-    "content": "**Greedy Algorithm**: Given q > 0, repeatedly subtract the largest 1/n ≤ q.\n\n```lean\naxiom greedy_upper_bound :\n  ∃ C : ℚ, C > 0 ∧ ∀ b ≥ 2, ∀ a, 1 ≤ a → a < b →\n    ∃ s : Finset ℕ, s.card ≤ C * Nat.log 2 b ∧\n      (∀ n ∈ s, n > 1) ∧ (a / b : ℚ) = ∑ n ∈ s, (n : ℚ)⁻¹\n```\n\n**Bound**: Greedy uses O(log b) terms.\n\n**Comparison**:\n- Greedy: O(log b)\n- Optimal: O(√(log b))\n\nThe greedy algorithm is far from optimal!",
-    "mathContext": "The greedy algorithm is easy to implement but produces suboptimal representations.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "greedy algorithm",
-      "Fibonacci-Sylvester",
-      "algorithmic efficiency"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e304-bounds-known",
-    "proofId": "erdos-304",
-    "range": {
-      "startLine": 215,
-      "endLine": 220
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**bounds_known**: Combines the Erdős lower bound and Vose upper bound into a single theorem.\n\n```lean\ntheorem bounds_known :\n    (∃ c : ℚ, c > 0 ∧ ∀ b ≥ 10,\n      c * Nat.log 2 (Nat.log 2 b) ≤ smallestCollectionMax b) ∧\n    (∃ C : ℚ, C > 0 ∧ ∀ b ≥ 10,\n      smallestCollectionMax b * smallestCollectionMax b ≤ C * Nat.log 2 b) :=\n  ⟨erdos_1950_lower_bound, vose_1985_upper_bound⟩\n```\n\n**Summary**: log log b ≪ N(b) ≪ √(log b)",
-    "mathContext": "This theorem captures the current state of knowledge, combining results from 1950 and 1985.",
-    "significance": "key",
-    "relatedConcepts": [
-      "combined bounds",
-      "state of the art",
-      "theorem synthesis"
-    ],
-    "prerequisites": []
   }
 ]

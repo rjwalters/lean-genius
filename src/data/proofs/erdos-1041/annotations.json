@@ -206,42 +206,5 @@
     ],
     "mathContext": "See annotation content for formal details of distance bound in unit disk",
     "prerequisites": []
-  },
-  {
-    "id": "ann-e1041-lemniscate",
-    "proofId": "erdos-1041",
-    "range": {
-      "startLine": 171,
-      "endLine": 177
-    },
-    "type": "definition",
-    "title": "Polynomial Lemniscates",
-    "content": "**lemniscate f c** is the level set {z : |f(z)| = c}.\n\nThese curves are called polynomial lemniscates, generalizing the classical Bernoulli lemniscate (for f(z) = z² - 1). They have rich geometric properties studied since the 18th century.",
-    "mathContext": "The sublevel set is the interior bounded by the lemniscate at level 1.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "level curves",
-      "Bernoulli lemniscate",
-      "algebraic curves"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e1041-diameter",
-    "proofId": "erdos-1041",
-    "range": {
-      "startLine": 188,
-      "endLine": 192
-    },
-    "type": "technique",
-    "title": "Unit Disk Diameter",
-    "content": "**unit_disk_diameter_bound**: The diameter of the open unit disk ball(0, 1) is at most 2.\n\nThis uses the general formula diam(ball(x, r)) ≤ 2r. For the unit disk (r = 1), this gives diameter ≤ 2.\n\nThe bound 2 in the conjecture is thus geometrically sharp.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "metric diameter",
-      "ball geometry"
-    ],
-    "mathContext": "See annotation content for formal details of unit disk diameter",
-    "prerequisites": []
   }
 ]

@@ -199,24 +199,6 @@
     "prerequisites": []
   },
   {
-    "id": "ann-e1112-summary",
-    "proofId": "erdos-1112",
-    "range": {
-      "startLine": 212,
-      "endLine": 217
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_1112_summary:**\n\n```lean\ntheorem erdos_1112_summary :\n    (RkExists 2 2 3) ∧ (¬RkExists 3 2 3)\n```\n\nThis captures the essential result for the specific case [2, 3]:\n- 2-fold sumsets CAN avoid lacunary sequences (with r = 2)\n- 3-fold sumsets CANNOT avoid lacunary sequences (no r works)\n\nBoth components are proved from axioms, making this the strongest formal statement.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Summary",
-      "Dichotomy theorem"
-    ],
-    "mathContext": "See annotation content for formal details of summary theorem",
-    "prerequisites": []
-  },
-  {
     "id": "ann-e1112-open-questions",
     "proofId": "erdos-1112",
     "range": {

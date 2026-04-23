@@ -223,23 +223,5 @@
       "ring theory"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e728-summary",
-    "proofId": "erdos-728",
-    "range": {
-      "startLine": 258,
-      "endLine": 275
-    },
-    "type": "technique",
-    "title": "Summary",
-    "content": "**erdos_728_summary:**\n\n1. Erdos (1968): a!b! | n! implies a + b <= n + O(log n)\n2. Question (1975): Can we achieve divisibility AT the logarithmic limit?\n3. Answer (Barreto/ChatGPT-5.2): YES, using b = n/2 construction\n\n```lean\ntheorem erdos_728_summary :\n    exists K > 0, forall a b n,\n      a! * b! | n! -> (a + b : R) <= n + K * log n\n```",
-    "significance": "key",
-    "mathContext": "See annotation content for formal details of summary",
-    "relatedConcepts": [
-      "proof technique",
-      "limits"
-    ],
-    "prerequisites": []
   }
 ]

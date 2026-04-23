@@ -189,24 +189,5 @@
       "series manipulation"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e269-summary",
-    "proofId": "erdos-269",
-    "range": {
-      "startLine": 308,
-      "endLine": 340
-    },
-    "type": "technique",
-    "title": "Summary",
-    "content": "**Erdos Problem #269: Summary**\n\n```lean\ntheorem erdos_269_summary :\n    -- Infinite case is solved\n    (forall P, primes in P -> P.Infinite -> Irrational (lcmSeries P)) and\n    -- Distinct case is solved\n    (forall P finite primes, |P|>=2 -> Irrational (distinctLcmSeries P)) and\n    -- General finite case is open\n    True\n```\n\n**State of Knowledge:**\n1. Infinite P: SOLVED (irrational)\n2. Finite P, distinct: SOLVED (irrational)\n3. Finite P, full: OPEN",
-    "significance": "key",
-    "relatedConcepts": [
-      "open problems",
-      "partial solutions",
-      "research directions"
-    ],
-    "mathContext": "See annotation content for formal details of summary",
-    "prerequisites": []
   }
 ]

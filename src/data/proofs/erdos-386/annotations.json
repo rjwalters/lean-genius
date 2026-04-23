@@ -118,29 +118,5 @@
       "consecutivePrimeProd_squarefree axiom",
       "obtain tactic for existential elimination"
     ]
-  },
-  {
-    "id": "erdos-386-context",
-    "proofId": "erdos-386",
-    "type": "context",
-    "range": {
-      "startLine": 142,
-      "endLine": 158
-    },
-    "title": "Erdős–Graham (1980) Context and Connections",
-    "content": "This problem appears on page 74 of Erdős and Graham's 1980 monograph. It sits alongside Problems 384 (prime divisors < n/2) and 387 (divisors in (cn, n]), forming a cluster of questions about the prime structure of binomial coefficients.",
-    "mathContext": "The Erdős–Graham monograph 'Old and New Problems and Results in Combinatorial Number Theory' (1980) devotes Chapter 4 to problems on binomial coefficients. Problem 386 connects to: **Problem 384** (the largest prime $p | \\binom{n}{k}$ satisfies $p > n/2$ for $k \\ge 2$, proved by Sylvester–Schur), **Problem 385** (products of consecutive integers and smooth numbers), and **Problem 387** (divisors of $\\binom{n}{k}$ in the interval $(cn, n]$). The axiom `choose_largest_prime_le` captures a basic structural fact: every prime dividing $\\binom{n}{k}$ is at most $n$. This follows from $\\binom{n}{k} = n! / (k!(n-k)!)$: any prime $p > n$ cannot divide $n!$ hence cannot divide $\\binom{n}{k}$. The Korselt/Granville perspective sees $\\binom{n}{k}$ in base $p$ as a product of 'carry digits', connecting to $p$-adic valuations.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Erdős–Graham monograph (1980)",
-      "Sylvester–Schur theorem",
-      "p-adic valuation of binomials (Kummer's theorem)",
-      "Erdős Problems 384, 385, 387"
-    ],
-    "prerequisites": [
-      "prime factorization of factorials",
-      "Nat.choose divisibility properties",
-      "p-adic valuations via Legendre's formula"
-    ]
   }
 ]

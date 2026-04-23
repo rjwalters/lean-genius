@@ -136,24 +136,5 @@
       "Wetzel equivalence"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e1119-summary",
-    "proofId": "erdos-1119",
-    "range": {
-      "startLine": 149,
-      "endLine": 171
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_1119_summary** combines the two main provable-in-ZFC results into a conjunction: (1) Erdős's 1964 Wetzel theorem (countable families under ¬CH), and (2) the easy case (|family| ≤ 𝔪 when 𝔪⁺ < 𝔠). The proof is constructive, using `exact ⟨erdos_1964_wetzel, easy_case⟩`. The independence results (Kumar-Shelah, Schilhan-Weinert) are captured as separate axioms since they assert model existence rather than ZFC-provable facts.",
-    "mathContext": "The summary deliberately omits the independence results from the conjunction because they are meta-theoretic (about models of ZFC) rather than internal ZFC statements. The two included results are the strongest unconditional ZFC theorems about the problem.",
-    "significance": "key",
-    "relatedConcepts": [
-      "conjunction",
-      "exact",
-      "axiom composition"
-    ],
-    "prerequisites": []
   }
 ]

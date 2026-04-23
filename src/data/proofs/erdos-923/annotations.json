@@ -363,27 +363,5 @@
       "Coloring",
       "bipartite graph"
     ]
-  },
-  {
-    "id": "ann-e923-summary",
-    "proofId": "erdos-923",
-    "range": {
-      "startLine": 247,
-      "endLine": 262
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_923_summary** combines: (1) Rödl's theorem that Problem #923 is YES, and (2) the tower-type bound $f(k) \\leq \\text{tower}(C \\cdot k)$. Proved by `exact ⟨rodl_1977, rodl_bound⟩`, packaging both the qualitative answer and quantitative estimate.",
-    "mathContext": "The conjunction $\\text{rodl\\_1977} \\land \\text{rodl\\_bound}$ packages the complete resolution: existence of $f(k)$ (qualitative) and $f(k) \\leq \\text{tower}(O(k))$ (quantitative). The anonymous constructor `⟨\\cdot, \\cdot⟩` in Lean produces the conjunction from its two components. This is the canonical formal summary of the SOLVED status of Problem #923.",
-    "significance": "key",
-    "relatedConcepts": [
-      "problem-resolution",
-      "tower-bound",
-      "anonymous-constructor"
-    ],
-    "prerequisites": [
-      "rodl_1977",
-      "rodl_bound"
-    ]
   }
 ]

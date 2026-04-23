@@ -196,27 +196,5 @@
       "known Ramsey values",
       "BEFS theorem"
     ]
-  },
-  {
-    "id": "ann-812-summary",
-    "proofId": "erdos-812",
-    "range": {
-      "startLine": 165,
-      "endLine": 171
-    },
-    "type": "concept",
-    "title": "Summary Theorem (Proved)",
-    "content": "Combines the two main known results into a single conjunction: (1) the BEFS linear bound $R(n+1) - R(n) \\geq 4n - 8$, and (2) the Problem #165 two-step almost-quadratic bound. Proved by `exact \\langle \\text{BEFS\\_theorem}, \\text{problem\\_165\\_bound} \\rangle$. This is a **verified proof** that packages both known results, while the two main conjectures (ratio and quadratic) remain open.",
-    "mathContext": "$(\\forall n \\geq 2,\\; R(n+1) - R(n) \\geq 4n - 8) \\wedge (\\exists f, C,\\; R(n+2) - R(n) \\geq Cn^2/f(n))$",
-    "significance": "key",
-    "relatedConcepts": [
-      "theorem packaging",
-      "conjunction",
-      "open problems"
-    ],
-    "prerequisites": [
-      "BEFS theorem",
-      "Problem #165 bound"
-    ]
   }
 ]

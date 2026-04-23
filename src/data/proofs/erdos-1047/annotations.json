@@ -347,27 +347,5 @@
     "prerequisites": [
       "Real.rpow_le_rpow"
     ]
-  },
-  {
-    "id": "ann-e1047-main",
-    "proofId": "erdos-1047",
-    "range": {
-      "startLine": 258,
-      "endLine": 275
-    },
-    "type": "technique",
-    "title": "Main Result",
-    "content": "**Erdős Problem #1047: SOLVED**\n\nAnswer: NO, lemniscate components need not be convex.\n\nThe Grunsky conjecture is false, with explicit counterexamples from Pommerenke (1961) and Goodman (1966).",
-    "significance": "key",
-    "mathContext": "Grunsky's conjecture is false: $\\exists$ polynomial $f$, $\\exists c > 0$: lemniscate $\\{|f| \\leq c\\}$ has a non-convex component",
-    "relatedConcepts": [
-      "Disproved conjecture",
-      "Pommerenke counterexample",
-      "Goodman counterexample"
-    ],
-    "prerequisites": [
-      "Pommerenke (1961)",
-      "Goodman (1966)"
-    ]
   }
 ]

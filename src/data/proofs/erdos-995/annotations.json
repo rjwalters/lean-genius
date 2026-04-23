@@ -371,27 +371,5 @@
       "bound_gap_lower_exists",
       "bound_gap_upper_universal"
     ]
-  },
-  {
-    "id": "ann-995-summary",
-    "proofId": "erdos-995",
-    "range": {
-      "startLine": 227,
-      "endLine": 230
-    },
-    "type": "concept",
-    "title": "erdos_995_summary (Proved)",
-    "content": "Summary: Is sum o(N √(log log N))? Lower bound shows at least (log log N)^{1/2-ε} sometimes. Upper bound gives (log N)^{1/2+ε} always. Gap remains OPEN.",
-    "mathContext": "The summary theorem `erdos_995_summary = erdos_995_statement` captures the full state of this 75-year-old open problem. The OPEN status means this is one of the remaining unsolved Erdős problems — closing the gap between $(\\log\\log N)^{1/2}$ and $(\\log N)^{1/2}$ would be a major advance in metric number theory, with implications for understanding the fine structure of lacunary trigonometric sums, almost sure invariance principles, and connections to the Riemann zeta function on the critical line.",
-    "significance": "key",
-    "relatedConcepts": [
-      "open Erdős problem",
-      "metric number theory",
-      "Riemann zeta function",
-      "almost sure invariance principle"
-    ],
-    "prerequisites": [
-      "erdos_995_statement"
-    ]
   }
 ]

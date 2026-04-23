@@ -257,23 +257,5 @@
     ],
     "mathContext": "See annotation content for formal details of erdős problem #420: partially solved",
     "prerequisites": []
-  },
-  {
-    "id": "ann-e420-significance",
-    "proofId": "erdos-420",
-    "range": {
-      "startLine": 288,
-      "endLine": 303
-    },
-    "type": "concept",
-    "title": "Mathematical Significance",
-    "content": "**Why This Problem Matters:**\n\n1. **Divisor Growth:** τ(n!) encodes deep prime factorization information\n\n2. **Prime Connection:** F behavior is tied to prime gap distribution\n\n3. **Density Questions:** Whether F takes all values in (1,∞) is subtle\n\n4. **Multiplicativity:** τ's multiplicative nature makes analysis tractable\n\nThe connection to prime gaps (via Zhang's theorem) shows how progress in one area impacts another.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Number theory connections",
-      "Prime distribution"
-    ],
-    "mathContext": "See annotation content for formal details of mathematical significance",
-    "prerequisites": []
   }
 ]

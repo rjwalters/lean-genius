@@ -164,29 +164,5 @@
       "startLine": 68,
       "endLine": 70
     }
-  },
-  {
-    "id": "generalization",
-    "proofId": "erdos-279",
-    "type": "concept",
-    "title": "Generalized Covering Conjecture",
-    "content": "**ErdosProblem279_generalized**: For any set $A \\subseteq \\mathbb{N}$ with prime-like counting density and log-log reciprocal divergence, the covering property holds for all $k \\geq 3$.\n\n**GeneralizedCovering A k**: Replaces primes with an arbitrary set $A$. The residue choice becomes `aChoice : (n : ℕ) → n ∈ A → ℕ`, assigning a residue to each $n \\in A$. The covering condition is: for large $m$, there exist $n \\in A$ and $t \\geq k$ with $m = a_n + t \\cdot n$.\n\n**Philosophical point**: If the generalization is true, then Problem 279 for primes is 'just' a corollary of a density result. The prime structure (multiplicativity, gaps, twin primes, etc.) would be irrelevant — only the counting function and reciprocal sum matter.\n\n**Two density conditions**: HasPrimeLikeDensity ($|A \\cap [1,N]| \\gg N/\\log N$) controls the number of available moduli, while HasLogLogDivergence ($\\sum_{n \\in A, n \\leq N} 1/n - \\log\\log N \\to \\infty$) ensures the total coverage from all moduli grows fast enough.",
-    "mathContext": "Dense A + log-log divergence ⟹ ∃ choice, CoversEventually(A, k)",
-    "significance": "key",
-    "relatedConcepts": [
-      "density conditions",
-      "generalization beyond primes",
-      "Set membership",
-      "dependent choice function"
-    ],
-    "prerequisites": [
-      "HasPrimeLikeDensity",
-      "HasLogLogDivergence",
-      "GeneralizedCovering"
-    ],
-    "range": {
-      "startLine": 81,
-      "endLine": 86
-    }
   }
 ]

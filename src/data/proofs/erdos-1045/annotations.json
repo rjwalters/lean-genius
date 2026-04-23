@@ -159,50 +159,5 @@
       "Delta",
       "Configuration"
     ]
-  },
-  {
-    "id": "ann-1045-odd",
-    "proofId": "erdos-1045",
-    "range": {
-      "startLine": 132,
-      "endLine": 146
-    },
-    "type": "definition",
-    "title": "Odd n Conjecture and Small Cases",
-    "content": "Defines RegularPolygonOptimalOdd (conjecture that regular polygon is optimal for odd n ≥ 3). Axiomatizes optimal_n2 (max Δ = 4 for n = 2) and regular_optimal_n3 (equilateral triangle optimal for n = 3).",
-    "significance": "key",
-    "mathContext": "The **even/odd dichotomy** is a striking feature of this problem. For even $n \\ge 4$, the regular polygon is provably suboptimal; for odd $n$, it may be optimal. The heuristic explanation: even-sided regular polygons have antipodal vertex pairs at maximum distance $2$, creating a 'rigid' structure that can be deformed to increase $\\Delta$. For odd $n$, no vertex has an antipodal partner, giving the regular polygon more stability under perturbation.\n\n**Small cases**: $n = 2$: $\\Delta = |z_1 - z_2|^2 \\le 4$, achieved at distance $2$. $n = 3$: The equilateral triangle is optimal (verified by Lagrange multipliers or convexity).",
-    "relatedConcepts": [
-      "antipodal pairs",
-      "even/odd dichotomy",
-      "Lagrange multipliers"
-    ],
-    "prerequisites": [
-      "RegularPolygon",
-      "DiameterAtMost2",
-      "Delta"
-    ]
-  },
-  {
-    "id": "ann-1045-summary",
-    "proofId": "erdos-1045",
-    "range": {
-      "startLine": 148,
-      "endLine": 168
-    },
-    "type": "technique",
-    "title": "Summary Theorem: erdos_1045_summary",
-    "content": "Combines two main results: (1) Cambie's theorem (regular polygon not optimal for even n ≥ 4) and (2) Cambie–Dong–Tang lower bound (max Δ/n^n ≥ C > 1 for even n). Proved by pairing axioms with a linarith step.",
-    "significance": "key",
-    "mathContext": "The summary theorem:\n$$\\text{erdos\\_1045\\_summary} : \\left(\\forall n \\ge 4,\\; \\text{Even}(n) \\implies \\exists z,\\; \\Delta(z) > \\Delta(\\text{RegPoly})\\right) \\land \\left(\\exists C > 1,\\; \\liminf_{n \\text{ even}} \\frac{\\text{MaxDelta}(n)}{n^n} \\ge C\\right)$$\nThe proof uses `cambie_even_not_optimal` for the first conjunct, extracts $C \\ge 1.269$ from `cambie_dong_tang_even`, and weakens to $C > 1$ via `linarith`. This packages the state of knowledge: the even case is resolved (regular polygon suboptimal by $\\ge 27\\%$), the odd case remains open.",
-    "relatedConcepts": [
-      "state of the art",
-      "partially resolved",
-      "quantitative improvement"
-    ],
-    "prerequisites": [
-      "cambie_even_not_optimal",
-      "cambie_dong_tang_even"
-    ]
   }
 ]

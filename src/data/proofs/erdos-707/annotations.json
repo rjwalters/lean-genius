@@ -263,24 +263,5 @@
       "embedding"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e707-summary",
-    "proofId": "erdos-707",
-    "range": {
-      "startLine": 172,
-      "endLine": 192
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_707_summary** packages verified results: {1,2,4} is a Sidon set (proved by case analysis), and perfect difference sets exist (Singer construction for p=2).",
-    "mathContext": "This demonstrates both our definitions work correctly and provides constructive witnesses. The Singer construction for p=2 gives a perfect difference set mod 7.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "summary",
-      "verification",
-      "witnesses"
-    ],
-    "prerequisites": []
   }
 ]

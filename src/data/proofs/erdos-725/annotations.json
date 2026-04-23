@@ -213,27 +213,5 @@
       "nhds",
       "ErdosKaplanskyFormula"
     ]
-  },
-  {
-    "id": "ann-725-summary",
-    "proofId": "erdos-725",
-    "range": {
-      "startLine": 160,
-      "endLine": 167
-    },
-    "type": "concept",
-    "title": "erdos_725_summary",
-    "content": "The summary theorem combines two key established results: (1) the exact formula $L(1,n) = n!$ from `L_1_n`, and (2) the Godsil-McKay bounds establishing that $L(k,n)$ lies within constant factors of the Erdős-Kaplansky formula for all $k \\leq n$. The proof is an exact construction `⟨L_1_n, godsil_mckay_bounds⟩`.",
-    "mathContext": "This theorem synthesizes the formalization: the trivial case $k=1$ is exact, and for general $k \\leq n$, the multiplicative bounds $c_1 \\cdot e^{-\\binom{k}{2}}(n!)^k \\leq L(k,n) \\leq c_2 \\cdot e^{-\\binom{k}{2}}(n!)^k$ show the Erdős-Kaplansky formula captures the correct order of magnitude. The gap between bounds and exact asymptotics is precisely what Problem #725 asks to close.",
-    "significance": "key",
-    "relatedConcepts": [
-      "formal-synthesis",
-      "Godsil-McKay",
-      "Erdős-Kaplansky"
-    ],
-    "prerequisites": [
-      "L_1_n",
-      "godsil_mckay_bounds"
-    ]
   }
 ]

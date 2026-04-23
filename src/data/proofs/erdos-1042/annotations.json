@@ -131,24 +131,5 @@
       "Counterexample"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e1042-summary",
-    "proofId": "erdos-1042",
-    "range": {
-      "startLine": 139,
-      "endLine": 151
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_1042_summary** is a proved theorem combining two key results:\n1. For 0 < d < 1, at most (1-c)n components (ghosh_ramachandran_small_diameter)\n2. For d = 1, n components achievable for infinitely many n (ghosh_ramachandran_diameter_one_examples)\n\nProof: `⟨ghosh_ramachandran_small_diameter, ghosh_ramachandran_diameter_one_examples⟩`\n\nThis captures the essential dichotomy: diameter < 1 forces a linear reduction in components, while diameter 1 allows the maximum.",
-    "mathContext": "The summary shows Erdős Problem #1042 is completely resolved after 65+ years. The transfinite diameter d = 1 is the sharp threshold between bounded and unbounded component counts.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Summary theorem",
-      "Sharp threshold",
-      "Complete solution"
-    ],
-    "prerequisites": []
   }
 ]

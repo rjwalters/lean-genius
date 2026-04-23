@@ -177,25 +177,5 @@
       "ConvergesInDistribution",
       "clt_convergence"
     ]
-  },
-  {
-    "id": "ann-cltoq03-summary",
-    "proofId": "central-limit-theorem-oq-03",
-    "range": {
-      "startLine": 260,
-      "endLine": 271
-    },
-    "type": "technique",
-    "title": "Convolution Monoid Summary",
-    "content": "**convolution_monoid_summary**\n\nPackages all four commutative monoid axioms into a single conjunction theorem: associativity $\\land$ left identity $\\land$ right identity $\\land$ commutativity.\n\nThe full algebraic picture: $(\\text{ProbMeasure}, *, \\delta_0)$ is a commutative monoid with the characteristic function as a homomorphism, the Gaussian as a fixed point and prime element, and the CLT describing the domain of attraction.",
-    "mathContext": "$(\\text{ProbMeasure}, *, \\delta_0)$: associativity $\\land$ left identity $\\land$ right identity $\\land$ commutativity",
-    "significance": "key",
-    "relatedConcepts": [
-      "Summary theorem",
-      "Algebraic structure verification"
-    ],
-    "prerequisites": [
-      "All monoid axioms"
-    ]
   }
 ]

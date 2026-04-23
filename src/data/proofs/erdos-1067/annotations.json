@@ -116,28 +116,5 @@
       "hasAleph1Vertices",
       "Cardinal.mk"
     ]
-  },
-  {
-    "id": "ann-e1067-main",
-    "proofId": "erdos-1067",
-    "range": {
-      "startLine": 238,
-      "endLine": 252
-    },
-    "type": "insight",
-    "title": "Main Theorems: DISPROVED",
-    "content": "Three theorems capture the complete resolution: (1) `erdos_1067` directly witnesses the counterexample via Soukup's axiom. (2) `erdos_1067_elementary` gives the same via Bowler-Pitz's simpler construction. (3) `erdos_1067_answer` explicitly negates the universal statement $\\neg(\\forall G,\\, \\chi(G) = \\aleph_1 \\implies \\ldots)$ using `push_neg` to convert the counterexample into a formal refutation. This last proof is a genuine tactic proof: it decomposes the existential witness from Soukup's axiom and applies it to the negated goal.",
-    "mathContext": "$\\neg\\forall G : \\chi(G) = \\aleph_1 \\implies \\exists H \\subseteq G \\text{ inf. conn.} \\land \\chi(H) = \\aleph_1$",
-    "significance": "key",
-    "relatedConcepts": [
-      "negation",
-      "push_neg tactic",
-      "counterexample as proof",
-      "existential witness"
-    ],
-    "prerequisites": [
-      "soukup_counterexample_2015",
-      "bowler_pitz_counterexample_2024"
-    ]
   }
 ]

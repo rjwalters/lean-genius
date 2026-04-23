@@ -113,24 +113,5 @@
       "Additive combinatorics"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e865-main",
-    "proofId": "erdos-865",
-    "range": {
-      "startLine": 187,
-      "endLine": 213
-    },
-    "type": "technique",
-    "title": "Main Results Summary",
-    "content": "**erdos_865_summary** packages the known results into a conjunction: (1) the lower bound construction has no pairwise sum triple, and (2) the CES upper bound f_3(N) ≤ (2/3 - ε)N holds.\n\n**erdos_865** is the main entry-point theorem, proved directly from the summary axiom using `exact erdos_865_summary`. It captures everything that is currently **known** about the problem, while the sharp 5/8 threshold remains **open**.",
-    "mathContext": "The theorem demonstrates the state of the art: we know 5/8 ≤ f_3(N)/N ≤ 2/3 - ε for some ε > 0, but we cannot prove f_3(N)/N → 5/8. The gap between the lower bound (construction) and upper bound (CES) is the frontier of the problem.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Problem summary",
-      "Known bounds",
-      "Open problems"
-    ],
-    "prerequisites": []
   }
 ]

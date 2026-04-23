@@ -316,27 +316,5 @@
       "greedy algorithm"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-577-main",
-    "proofId": "erdos-577",
-    "range": {
-      "startLine": 198,
-      "endLine": 200
-    },
-    "type": "concept",
-    "title": "Erdős Problem #577: Final Theorem",
-    "content": "The canonical statement: `erdos_577 : ErdosFaudreeConjecture := wang_theorem`. Erdős Problem #577 is SOLVED. The Erdős-Faudree conjecture holds: dense graphs with $4k$ vertices and $\\delta(G) \\geq 2k$ contain $k$ vertex-disjoint $C_4$'s.",
-    "significance": "key",
-    "mathContext": "This is the formal resolution of Problem #577 from the Erdős problem list. The conjecture was posed by Erdős and Faudree in 1985, carried significant attention in the extremal graph theory community, and was resolved by Wang in 2010 after 25 years. The degree bound $2k$ is sharp (witnessed by `degree_bound_sharp`).",
-    "relatedConcepts": [
-      "Erdős problem resolution",
-      "extremal graph theory",
-      "cycle partition"
-    ],
-    "prerequisites": [
-      "wang_theorem",
-      "ErdosFaudreeConjecture"
-    ]
   }
 ]

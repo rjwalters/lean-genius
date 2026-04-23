@@ -192,25 +192,5 @@
       "erdos-765",
       "finite-geometry"
     ]
-  },
-  {
-    "id": "ann-e765-summary",
-    "proofId": "erdos-765",
-    "range": {
-      "startLine": 239,
-      "endLine": 246
-    },
-    "type": "concept",
-    "title": "Summary Theorem",
-    "content": "erdos_765_summary (PROVED): combines the asymptotic formula (via axiom) and the Fano plane computation (proved by simp+ring). The conjunction establishes both the main asymptotic answer and a concrete computational example. Problem #765 is SOLVED: ex(n;C4) ~ (1/2)n^{3/2}.",
-    "mathContext": "`erdos_765_summary : (\\forall \\varepsilon > 0, \\exists N, \\forall n \\geq N, |r(n) - 1/2| < \\varepsilon) \\wedge \\text{projectivePlaneVertices}(2) = 7$. Proved: `\\langle\\text{asymptotic\\_formula}, \\text{simp+ring}\\rangle`.",
-    "significance": "key",
-    "prerequisites": [
-      "asymptotic_formula",
-      "projectivePlaneVertices"
-    ],
-    "relatedConcepts": [
-      "erdos-765"
-    ]
   }
 ]

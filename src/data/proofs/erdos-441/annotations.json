@@ -200,48 +200,5 @@
       "propositional logic",
       "natural number arithmetic"
     ]
-  },
-  {
-    "id": "ann-441-nine-eighths",
-    "proofId": "erdos-441",
-    "range": {
-      "startLine": 219,
-      "endLine": 239
-    },
-    "type": "insight",
-    "title": "Why 9/8?",
-    "content": "The constant 9/8 arises from Erdős' construction: first part contributes ~(N/2)^{1/2}, second part contributes ~(1/2)((2N)^{1/2} - (N/2)^{1/2}). Total ≈ (3/(2√2))·N^{1/2} = (9/8)^{1/2}·N^{1/2}.",
-    "mathContext": "Computation: $\\sqrt{N/2} + \\frac{1}{2}(\\sqrt{2N} - \\sqrt{N/2}) = \\frac{\\sqrt{N}}{2}(\\frac{1}{\\sqrt{2}} + \\sqrt{2}) = \\frac{3\\sqrt{N}}{2\\sqrt{2}} = \\sqrt{\\frac{9N}{8}}$. The identity $\\sqrt{9/8} = 3/(2\\sqrt{2}) \\approx 1.0607$ is formally verified via `ring_nf` and `norm_num` in $\\texttt{constant\\_value}$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "algebraic identity",
-      "construction size computation",
-      "ring_nf tactic"
-    ],
-    "prerequisites": [
-      "real arithmetic",
-      "square root properties"
-    ]
-  },
-  {
-    "id": "ann-441-summary",
-    "proofId": "erdos-441",
-    "range": {
-      "startLine": 250,
-      "endLine": 274
-    },
-    "type": "technique",
-    "title": "Summary",
-    "content": "Erdős Problem #441: SOLVED. Question: Is Erdős' construction optimal? Answer: NO. Asymptotic g(N) ~ (9N/8)^{1/2} (Chen 1998). For infinitely many N, g(N) > |construction| (Chen-Dai 2006).",
-    "mathContext": "The summary theorem chains $\\texttt{ChenAsymptotic} \\to \\texttt{ConstructionNotOptimal} \\to \\neg\\texttt{ErdosQuestion}$ via $\\texttt{erdos\\_question\\_disproved}$. The packaging theorem $\\texttt{erdos\\_441\\_solved}$ bundles all three results as a conjunction from their axioms.",
-    "significance": "key",
-    "relatedConcepts": [
-      "problem resolution",
-      "conjunction packaging",
-      "implication chain"
-    ],
-    "prerequisites": [
-      "all preceding definitions and axioms"
-    ]
   }
 ]

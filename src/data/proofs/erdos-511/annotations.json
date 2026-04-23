@@ -227,43 +227,5 @@
     ],
     "mathContext": "See annotation content for formal details of sharpness of the bound 4",
     "prerequisites": []
-  },
-  {
-    "id": "ann-e511-summary",
-    "proofId": "erdos-511",
-    "range": {
-      "startLine": 289,
-      "endLine": 314
-    },
-    "type": "technique",
-    "title": "Complete Summary",
-    "content": "**erdos_511_summary:**\n\nCombines both the negative result and the upper bound:\n\n1. **Conjecture FALSE:** For any c < 4, there exist polynomials with arbitrarily many components of diameter > c\n\n2. **Upper Bound:** No component ever exceeds diameter 4\n\n```lean\ntheorem erdos_511_summary :\n    (∀ c, 1 < c → c < 4 → ∀ bound, ∃ f, ...) ∧\n    (∀ f, f.Monic → ... → Metric.diam C ≤ 4)\n```\n\nThe complete picture: unbounded below 4, but capped at 4.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Complete characterization",
-      "Phase transitions",
-      "Summary theorems"
-    ],
-    "mathContext": "See annotation content for formal details of complete summary",
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e511-answer",
-    "proofId": "erdos-511",
-    "range": {
-      "startLine": 316,
-      "endLine": 335
-    },
-    "type": "technique",
-    "title": "The Final Answer: No Bounding Function Exists",
-    "content": "**erdos_511_answer:**\n\nThere is NO function boundFn : ℝ → ℕ that bounds the number of components with diameter > c for all monic polynomials.\n\n**Statement:**\n```lean\ntheorem erdos_511_answer :\n    ¬(∃ (boundFn : ℝ → ℕ),\n        ∀ (c : ℝ), c > 1 → ...\n          components.card ≤ boundFn c)\n```\n\n**Proof:** By contradiction. If such a boundFn existed, taking c = 2 would give a bound B = boundFn 2. But Pommerenke's theorem provides a polynomial with > B components of diameter > 2. Contradiction.\n\nThis is the negation of Erdős's question in precise logical form.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Proof by contradiction",
-      "Existence negation",
-      "Formal refutation"
-    ],
-    "mathContext": "See annotation content for formal details of the final answer: no bounding function exists",
-    "prerequisites": []
   }
 ]

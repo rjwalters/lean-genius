@@ -255,32 +255,5 @@
       "bertrand-postulate",
       "central-binomial"
     ]
-  },
-  {
-    "id": "erdos-384-summary",
-    "proofId": "erdos-384",
-    "type": "insight",
-    "range": {
-      "startLine": 284,
-      "endLine": 292
-    },
-    "title": "Summary: SOLVED",
-    "content": "erdos_384_main: the complete theorem statement, proved by direct application of ecklund_1969 axiom. Status: SOLVED by Ecklund (1969).",
-    "mathContext": "erdos_384_main n k hk_lower hk_upper = ecklund_1969 n k hk_lower hk_upper. Proved.",
-    "significance": "key",
-    "relatedConcepts": [
-      "known results",
-      "solved problem",
-      "summary theorem"
-    ],
-    "prerequisites": [
-      "ecklund_1969",
-      "erdos_384_main"
-    ],
-    "tags": [
-      "summary",
-      "main-theorem",
-      "solved-problem"
-    ]
   }
 ]

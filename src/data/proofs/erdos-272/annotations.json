@@ -133,24 +133,5 @@
       "error term"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e272-summary",
-    "proofId": "erdos-272",
-    "range": {
-      "startLine": 151,
-      "endLine": 167
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_272_summary** combines the two main results into a conjunction: (1) the Simonovits-Sós upper bound t = O(N²), and (2) Szabó's precise asymptotic t = N²/2 + O(N^{5/3}(log N)³). The proof is constructive, using exact ⟨...⟩ to assemble the axioms. This captures the complete resolution of Erdős Problem #272.",
-    "mathContext": "The proof delegates to simonovits_sos_upper and szabo_theorem via lambda abstractions to handle the universal quantifiers over N.",
-    "significance": "key",
-    "relatedConcepts": [
-      "conjunction",
-      "axiom composition",
-      "resolved problem"
-    ],
-    "prerequisites": []
   }
 ]

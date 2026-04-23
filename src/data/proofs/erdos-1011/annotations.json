@@ -118,25 +118,5 @@
       "bipartite-vertex-deletion"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-1011-conjecture",
-    "proofId": "erdos-1011",
-    "range": {
-      "startLine": 196,
-      "endLine": 220
-    },
-    "type": "concept",
-    "title": "Main Conjecture: Asymptotics of g(r)",
-    "content": "Two formulations of the open question: erdos1011Conjecture asks whether g(r) = c·r² log r + O(r²) for some constant c > 0, while gAsymptoticConjecture asks whether g(r)/(r² log r) converges to some c ∈ [1/2, 2]. These capture the belief that g(r) has a clean asymptotic form with a specific leading constant.",
-    "mathContext": "The convergence formulation uses Filter.Tendsto and nhds from Mathlib's topology library, expressing that the ratio g(r)/(r² log r) approaches a limit. The two conjectures are not formally equivalent: the first allows polynomial error while the second demands convergence. Determining whether c = 1 (the 'natural' guess) or some other value remains completely open.",
-    "significance": "key",
-    "relatedConcepts": [
-      "asymptotic-constant",
-      "Filter.Tendsto",
-      "open-problem",
-      "leading-term"
-    ],
-    "prerequisites": []
   }
 ]

@@ -224,27 +224,5 @@
       "Polynomial.natDegree"
     ],
     "significance": "supporting"
-  },
-  {
-    "id": "ann-e485-lacunary",
-    "proofId": "erdos-485",
-    "type": "definition",
-    "range": {
-      "startLine": 230,
-      "endLine": 247
-    },
-    "title": "Lacunary Polynomials and Square Term Bounds",
-    "content": "**isLacunary(P):** ∃ gaps list of length termCount(P)-1 with all gaps ≥ 2. Adjacent exponents in the support differ by at least 2.\n\n**lacunary_square_terms (axiom):** For lacunary P, termCount(P²) ≥ 2·termCount(P) - 1.",
-    "mathContext": "A lacunary polynomial has support $S = \\{s_1 < s_2 < \\cdots < s_k\\}$ with $s_{i+1} - s_i \\geq 2$ for all $i$.  When $P$ is lacunary and we form $P^2$, the sumset $S + S$ contains at least the $2k - 1$ elements $\\{2s_1, s_1 + s_2, 2s_2, s_2 + s_3, \\ldots, 2s_k\\}$.  The gap condition ensures these are distinct: $s_i + s_{i+1} < 2s_{i+1} < s_{i+1} + s_{i+2}$ when gaps $\\geq 2$.  Moreover, with generic coefficients over $\\mathbb{Q}$, no cancellation occurs among these $2k-1$ terms.  This gives $f(k) \\geq 2k - 1$ *for lacunary polynomials*, but the minimum $f(k)$ is achieved by non-lacunary polynomials with carefully engineered cancellations.",
-    "relatedConcepts": [
-      "Hadamard gap condition",
-      "Lacunary series in analysis",
-      "Sumset structure for convex sets"
-    ],
-    "prerequisites": [
-      "isLacunary definition",
-      "Polynomial squaring"
-    ],
-    "significance": "supporting"
   }
 ]

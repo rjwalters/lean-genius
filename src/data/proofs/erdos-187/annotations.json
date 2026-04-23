@@ -94,53 +94,5 @@
       "the probabilistic method in combinatorics: showing a random coloring has desired properties with positive probability",
       "Beck's 1980 paper 'On arithmetic progressions in random sets'"
     ]
-  },
-  {
-    "id": "erdos-187-sqrt2",
-    "proofId": "erdos-187",
-    "type": "technique",
-    "range": {
-      "startLine": 61,
-      "endLine": 69
-    },
-    "title": "Erdős's √2-Coloring Construction",
-    "content": "**Axiom:** There exists a 2-coloring χ with optAPBound d ≪ d — specifically, the coloring χ(n) = ⌊√2·n⌋ mod 2.\n\n**Mechanism:** For any AP {a, a+d, ..., a+(k-1)d}, the values {√2·(a+id)} mod 1 are equidistributed by Weyl's theorem (since √2 is irrational). This means the coloring alternates rapidly, limiting the longest monochromatic run.\n\n**Historical role:** This was Erdős's own construction, predating Beck, showing the problem is non-trivial.",
-    "mathContext": "$\\chi(n) = \\lfloor \\sqrt{2} \\cdot n \\rfloor \\bmod 2$; Weyl: $\\{\\alpha n d\\}_{n=1}^{N}$ equidistributed mod 1 for irrational $\\alpha$; monochromatic run length in AP with diff $d$: $O(d)$ (from irrationality measure of $\\sqrt{2}$, not optimal $O(\\log d)$)",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "equidistribution",
-      "weyl-theorem",
-      "irrational-rotation",
-      "diophantine-approximation"
-    ],
-    "prerequisites": [
-      "Weyl's equidistribution theorem: {αn} mod 1 is equidistributed for irrational α",
-      "irrationality measure of √2: how well √2 is approximated by rationals p/q",
-      "why equidistribution limits monochromatic AP length but gives O(d) not O(log d)"
-    ]
-  },
-  {
-    "id": "erdos-187-conjecture",
-    "proofId": "erdos-187",
-    "type": "insight",
-    "range": {
-      "startLine": 70,
-      "endLine": 78
-    },
-    "title": "Optimal Bound Conjecture: f(d) = Θ(log d)",
-    "content": "**ErdosProblem187:** f(d) = Θ(log d) — i.e., ∃ c, C > 0 and D₀ such that c·log₂ d ≤ f(d) ≤ C·log₂ d for all d ≥ D₀.\n\n**Status:** The upper bound C·log₂ d is known (Beck 1980). The lower bound c·log₂ d is **completely open**: no non-trivial lower bound on f(d) is known beyond f(d) → ∞.\n\n**Difficulty:** Proving a lower bound requires showing that every 2-coloring (including Beck's optimal one) must have some difference d with a monochromatic AP of length Ω(log d).",
-    "mathContext": "$\\exists c, C > 0, D_0,\\ \\forall d \\geq D_0:\\ c \\log_2 d \\leq f(d) \\leq C \\log_2 d$; upper bound $C \\log_2 d$: known (Beck); lower bound $c \\log_2 d$: open; best known lower: $f(d) \\to \\infty$ (van der Waerden, no quantitative rate)",
-    "significance": "key",
-    "relatedConcepts": [
-      "theta-notation",
-      "open-problem",
-      "lower-bound-gap",
-      "ramsey-quantitative"
-    ],
-    "prerequisites": [
-      "Θ notation: both O and Ω hold simultaneously",
-      "why proving a lower bound requires handling ALL 2-colorings, including adversarial ones",
-      "the current state of knowledge: upper bound O(log d) known, lower bound open since 1980"
-    ]
   }
 ]

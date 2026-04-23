@@ -133,24 +133,5 @@
       "Limsup sets"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e999-summary",
-    "proofId": "erdos-999",
-    "range": {
-      "startLine": 150,
-      "endLine": 166
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_999_summary:** Proved conjunction of main results:\n1. DuffinSchaefferConjecture holds (from koukoulopoulos_maynard_2020)\n2. Both directions: ∀ f, SeriesDiverges f ↔ AlmostAllApproximable f\n3. Zero-one law: ∀ f, AlmostAllApproximable f ∨ AlmostNoneApproximable f\n\nThe proof is `⟨koukoulopoulos_maynard_2020, koukoulopoulos_maynard_2020, zero_one_law⟩`, packaging the axioms into a single proved statement.",
-    "mathContext": "Summary theorems serve as entry points for understanding the formalization. Items (1) and (2) are the same statement (DuffinSchaefferConjecture is defined as the biconditional), while (3) adds the zero-one dichotomy.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Axiom packaging",
-      "State of knowledge",
-      "Proved conjunction"
-    ],
-    "prerequisites": []
   }
 ]

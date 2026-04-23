@@ -389,27 +389,5 @@
       "luczak_schoen_theorem",
       "cameron_erdos_lower_bound"
     ]
-  },
-  {
-    "id": "ann-877-main",
-    "proofId": "erdos-877",
-    "type": "concept",
-    "title": "Main Theorem: f_m(n) = Θ(2^{n/4})",
-    "content": "The definitive statement: there exist c₁, c₂ > 0 such that c₁·2^{n/4} ≤ f_m(n) ≤ c₂·2^{n/4} for all n ≥ 4. Has a sorry — combining the axiomatized results requires careful constant extraction.",
-    "range": {
-      "startLine": 297,
-      "endLine": 301
-    },
-    "significance": "key",
-    "mathContext": "The $\\Theta(2^{n/4})$ bound is the strongest form of the resolution. The lower bound $c_1 = 1$ comes from Cameron-Erdős. The upper bound $c_2$ comes from BLST 2015: $f_m(n) < 2^{(1/4+\\varepsilon)n}$ for any $\\varepsilon > 0$ and large $n$.",
-    "relatedConcepts": [
-      "Θ-notation",
-      "tight asymptotic bounds",
-      "constant extraction"
-    ],
-    "prerequisites": [
-      "cameron_erdos_lower_bound",
-      "blst_2015"
-    ]
   }
 ]

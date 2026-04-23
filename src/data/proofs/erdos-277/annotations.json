@@ -552,29 +552,5 @@
     "prerequisites": [
       "covering system foundations"
     ]
-  },
-  {
-    "id": "ann-277-main",
-    "proofId": "erdos-277",
-    "range": {
-      "startLine": 276,
-      "endLine": 284
-    },
-    "type": "concept",
-    "title": "Main Theorem and Restatements",
-    "content": "Three equivalent restatements of the main result: `erdos_277`, `erdos_277_main` (with explicit $\\sigma$ inequality), and `erdos_277_summary`. All derive from `haight_theorem` directly.",
-    "significance": "key",
-    "mathContext": "The multiple restatements serve as API entry points: `erdos_277` uses the abstract predicate, `erdos_277_main` unfolds to the explicit $\\sigma(n) > cn$ formulation. This pattern is common in Mathlib-style formalization for usability.",
-    "relatedConcepts": [
-      "theorem restatement pattern",
-      "API design in formalization",
-      "definitional unfolding"
-    ],
-    "prerequisites": [
-      "haight_theorem",
-      "ErdosQuestion277",
-      "sigma",
-      "IsAbundant"
-    ]
   }
 ]

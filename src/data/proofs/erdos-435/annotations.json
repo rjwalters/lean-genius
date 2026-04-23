@@ -443,27 +443,5 @@
       "hwangSongFormula",
       "NotPrimePower"
     ]
-  },
-  {
-    "id": "ann-435-17",
-    "proofId": "erdos-435",
-    "range": {
-      "startLine": 235,
-      "endLine": 240
-    },
-    "type": "concept",
-    "title": "Complete Solution Summary",
-    "content": "The summary theorem combines the main result with the corollary that all larger numbers are representable. Together these completely characterize the representability: m is non-representable iff m ≤ hwangSongFormula(n) and m ∉ representableSet(n). Proved by combining hwang_song_theorem and large_numbers_representable via the anonymous constructor.",
-    "mathContext": "$\\text{erdos\\_435\\_summary} : \\text{frobeniusBinomial}(n) = \\text{hwangSongFormula}(n) \\wedge (\\forall m > \\text{frobeniusBinomial}(n),\\; \\text{IsRepresentable}(n, m))$. The conjunction packages both the **identification** of the Frobenius number and the **completeness** assertion (no gaps above it). The proof is `⟨hwang_song_theorem n hn hNotPP, large_numbers_representable n hn hNotPP⟩`.",
-    "significance": "key",
-    "relatedConcepts": [
-      "conjunction",
-      "completeness",
-      "Frobenius number characterization"
-    ],
-    "prerequisites": [
-      "hwang_song_theorem",
-      "large_numbers_representable"
-    ]
   }
 ]

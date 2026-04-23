@@ -220,47 +220,5 @@
       "properDivisors",
       "GCD computation"
     ]
-  },
-  {
-    "id": "ann-204-hough",
-    "proofId": "erdos-204",
-    "range": {
-      "startLine": 212,
-      "endLine": 216
-    },
-    "type": "concept",
-    "title": "Hough's Theorem and Classical Covering Systems",
-    "content": "**Context**: Hough (2015) proved another Erdős conjecture: for any covering system with distinct moduli $d_1 < d_2 < \\cdots < d_k$ all $> 1$, we have $\\sum_{i=1}^k 1/d_i \\geq 1$.\n\nThis is related but distinct: Hough's result constrains the reciprocal sum of moduli, while Problem #204 constrains the overlap structure. Both show that covering systems are quite restricted.\n\nAlso noted: without the coprimality constraint, covering systems exist abundantly. The simplest: $\\{0 \\pmod{2}, 0 \\pmod{3}, 1 \\pmod{4}, 5 \\pmod{6}, 7 \\pmod{12}\\}$.",
-    "mathContext": "Hough's theorem: if $\\{a_i \\pmod{d_i}\\}_{i=1}^k$ is a covering system with $1 < d_1 < \\cdots < d_k$, then $\\sum 1/d_i \\geq 1$. This gives a necessary condition for covering. Problem #204 shows that the coprimality constraint makes covering impossible even when $\\sum 1/d_i \\geq 1$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Hough's theorem",
-      "reciprocal sum",
-      "minimum modulus problem"
-    ],
-    "prerequisites": [
-      "covering systems",
-      "reciprocal sums"
-    ]
-  },
-  {
-    "id": "ann-204-summary",
-    "proofId": "erdos-204",
-    "range": {
-      "startLine": 240,
-      "endLine": 247
-    },
-    "type": "concept",
-    "title": "Summary: Problem #204 SOLVED",
-    "content": "**Theorem** (`erdos_204_summary`): $\\neg$ExistsDisjointCoveringN $\\wedge$ ErdosGrahamConjecture.\n\nBoth conjuncts proved from `adenwalla_2025`. This is the complete resolution of Erdős Problem #204: the Erdős-Graham conjecture is confirmed, and no $n > 1$ admits a covering system by its divisors with the disjointness property.",
-    "mathContext": "The conjunction is logically redundant (both parts are $\\neg$ExistsDisjointCoveringN), but serves to explicitly connect the formalized statement to the named conjecture.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Erdős-Graham conjecture",
-      "complete resolution"
-    ],
-    "prerequisites": [
-      "adenwalla_2025"
-    ]
   }
 ]

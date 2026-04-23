@@ -189,24 +189,5 @@
       "problem variants"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e888-numerical",
-    "proofId": "erdos-888",
-    "range": {
-      "startLine": 236,
-      "endLine": 240
-    },
-    "type": "concept",
-    "title": "Small Cases",
-    "content": "**maxValidSize_1 = 1**: For n = 1, only {1} works.\n\n**maxValidSize_2 = 2**: For n = 2, {1, 2} works.\n\nFor small n, we can verify by exhaustive enumeration. As n grows, exact computation becomes harder.\n\nThe primes {2, 3, 5, 7, 11, ...} provide a constructive lower bound for all n.",
-    "mathContext": "Computational verification for small cases provides confidence in the general theory.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "small cases",
-      "exhaustive verification",
-      "computational number theory"
-    ],
-    "prerequisites": []
   }
 ]

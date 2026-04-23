@@ -294,29 +294,5 @@
       "primorial",
       "primality-testing"
     ]
-  },
-  {
-    "id": "ann-e779-verification",
-    "proofId": "erdos-779",
-    "range": {
-      "startLine": 222,
-      "endLine": 228
-    },
-    "type": "technique",
-    "title": "Computational Verification and Heuristic Axioms",
-    "content": "Two axioms capture results beyond formal verification:\n\n1. **deaconescu_verification**: The conjecture holds for all $n \\leq 1000$. This is an axiom because verifying 1000 primorial computations in Lean is impractical.\n\n2. **heuristic_failure_probability**: The probability of failure is bounded by $\\exp(-n^c)$ for some $c > 0$. This captures the Cramér-model heuristic as a formal statement.",
-    "mathContext": "The axiom `deaconescu_verification` states $\\forall n, 2 \\leq n \\leq 1000 \\Rightarrow \\text{validPrimes}(n) \\neq \\emptyset$. The heuristic axiom formalizes the probabilistic argument: $\\exists c > 0, \\exists \\text{prob} < e^{-n^c}$, bounding the 'failure probability' super-exponentially.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "computational-verification",
-      "axiom",
-      "cramer-model",
-      "super-exponential-bound"
-    ],
-    "prerequisites": [
-      "real-exponential",
-      "set-nonempty",
-      "primorial"
-    ]
   }
 ]

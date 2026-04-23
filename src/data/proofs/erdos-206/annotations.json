@@ -188,23 +188,5 @@
       "Rational representations"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e206-summary",
-    "proofId": "erdos-206",
-    "range": {
-      "startLine": 202,
-      "endLine": 234
-    },
-    "type": "technique",
-    "title": "Summary and Main Theorem",
-    "content": "**erdos_206_summary** combines the key results:\n1. volume(EventuallyGreedySet) = 0 (the answer is NO)\n2. EventuallyGreedy 1 (x = 1 is greedy)\n3. For all m > 0, EventuallyGreedy(1/m) (unit fractions are greedy)\n\n**erdos_206** restates the final answer: SOLVED (Disproved).\n\nThe proof of the summary theorem uses kovac_theorem, curtiss_theorem, and erdos_unit_fractions.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Summary theorems",
-      "Combined results"
-    ],
-    "mathContext": "See annotation content for formal details of summary and main theorem",
-    "prerequisites": []
   }
 ]

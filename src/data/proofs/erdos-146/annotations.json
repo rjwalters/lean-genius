@@ -170,24 +170,5 @@
       "2-degenerate graphs"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-146-10",
-    "proofId": "erdos-146",
-    "range": {
-      "startLine": 230,
-      "endLine": 238
-    },
-    "type": "technique",
-    "title": "Summary Theorem (Proved)",
-    "content": "**erdos_146_summary (fully proved):**\n\nCombines three verified results into a single conjunction:\n1. ∀ r ≥ 1, the AKS exponent is strictly weaker than the conjectured exponent\n2. The r=2 exponents are exactly 3/2 (conjectured) and 15/8 (known)\n3. The r=2 bound comparison: 3/2 < 15/8\n\nAll three components are proved theorems (no axioms or trivial True placeholders). The proof uses exact with the three previously proved theorems.",
-    "mathContext": "This summary replaces the original True-valued placeholder with a meaningful conjunction of the key quantitative facts established in the formalization.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Conjunction",
-      "Summary theorem",
-      "Quantitative verification"
-    ],
-    "prerequisites": []
   }
 ]

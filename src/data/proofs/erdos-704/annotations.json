@@ -201,23 +201,5 @@
     ],
     "mathContext": "See annotation content for formal details of proof techniques",
     "prerequisites": []
-  },
-  {
-    "id": "ann-e704-main-result",
-    "proofId": "erdos-704",
-    "range": {
-      "startLine": 157,
-      "endLine": 161
-    },
-    "type": "technique",
-    "title": "Main Result",
-    "content": "**erdos_704_solved:**\n\nCombines both bounds:\n- ∀ε>0: χ(Gₙ) ≥ (1-ε)·1.2ⁿ for large n\n- ∀ε>0: χ(Gₙ) ≤ (3+ε)ⁿ for large n\n\nThis establishes exponential growth, resolving part of the problem.\n\nThe exact base remains open.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Exponential bounds",
-      "Asymptotic analysis"
-    ],
-    "mathContext": "See annotation content for formal details of main result",
-    "prerequisites": []
   }
 ]

@@ -318,27 +318,5 @@
       "steinerbergerN",
       "Nat.pow computation"
     ]
-  },
-  {
-    "id": "ann-933-main",
-    "proofId": "erdos-933",
-    "range": {
-      "startLine": 219,
-      "endLine": 219
-    },
-    "type": "concept",
-    "title": "erdos_933",
-    "content": "Main theorem: $\\limsup \\text{smoothRatio} = \\infty$ (the answer to Erdős #933 is YES). Proved as `erdos_933 := steinerberger_proof`—a one-line proof delegating to Steinerberger's axiomatized result.",
-    "significance": "key",
-    "mathContext": "The main theorem is a definitional unfolding: `ErdosQuestion933` states $\\forall M, \\exists n \\geq 2, \\text{smoothRatio}(n) > M$, and `steinerberger_proof` provides exactly this. The one-line proof `:= steinerberger_proof` shows that the formal statement matches perfectly. Two equivalent formulations follow: `erdos_933_main` (explicit unfolding) and `erdos_933_solved` (synonym), both proved by `exact erdos_933`.",
-    "relatedConcepts": [
-      "definitional equality",
-      "term-mode proof",
-      "problem resolution"
-    ],
-    "prerequisites": [
-      "ErdosQuestion933",
-      "steinerberger_proof"
-    ]
   }
 ]

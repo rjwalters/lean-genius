@@ -183,41 +183,5 @@
       "Fundamental theorem of arithmetic"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e491-convergence",
-    "proofId": "erdos-491",
-    "range": {
-      "startLine": 192,
-      "endLine": 208
-    },
-    "type": "concept",
-    "title": "Rate of Convergence and Non-Vanishing Error",
-    "content": "**wirsing_explicit_bound:** The O(1) constant M can be bounded explicitly: |f(n) - c'·log(n)| ≤ 10c for n ≥ 2, where c is the difference bound.\n\n**deviation_bounded_not_zero:** There exist additive functions with bounded differences where the O(1) error genuinely does not vanish — the function oscillates around c'·log(n) without converging to it. This shows that Wirsing's O(1) conclusion cannot be strengthened to o(1) in general, distinguishing it from Erdős's 1946 result.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Explicit bounds",
-      "Sharpness of results"
-    ],
-    "mathContext": "See annotation content for formal details of rate of convergence and non-vanishing error",
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e491-summary",
-    "proofId": "erdos-491",
-    "range": {
-      "startLine": 227,
-      "endLine": 249
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_491_summary** packages all main results into a conjunction: (1) Wirsing's theorem (bounded differences ⟹ f = c'·log + O(1)), (2) Erdős's 1946 result (vanishing differences ⟹ exact f = c·log), and (3) uniqueness of the coefficient c'.\n\n**erdos_491_answer:** Final restatement that Erdős Problem #491 is SOLVED by Wirsing (1970). The answer is YES — additive + bounded differences implies f = c'·log + O(1).",
-    "significance": "key",
-    "relatedConcepts": [
-      "Problem resolution",
-      "Summary"
-    ],
-    "mathContext": "See annotation content for formal details of summary theorem",
-    "prerequisites": []
   }
 ]

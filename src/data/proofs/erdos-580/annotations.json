@@ -264,27 +264,5 @@
       "TreeEmbeds negation",
       "Complete graphs"
     ]
-  },
-  {
-    "id": "ann-e580-summary",
-    "proofId": "erdos-580",
-    "range": {
-      "startLine": 238,
-      "endLine": 267
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_580_summary:** Restates the main result with an extensive docstring. The LKS $(n/2, n/2, n/2)$ conjecture is PROVED for large $n$.\n\nThe theorem is definitionally equal to `zhao_theorem`, serving as a self-documenting entry point that records the problem status, historical context, key techniques (Szemerédi's Regularity Lemma, probabilistic arguments), and remaining open question (verification for all $n$).",
-    "mathContext": "The summary theorem: $\\exists N_0, \\forall n \\geq N_0, \\forall G$ on $n$ vertices, $|H_{n/2}(G)| \\geq n/2 \\Rightarrow \\forall T$ tree with $|V(T)| \\leq n/2, T \\subseteq G$. The proof term is simply `zhao_theorem`.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Documentation theorems",
-      "Self-documenting proofs",
-      "Zhao's theorem"
-    ],
-    "prerequisites": [
-      "zhao_theorem",
-      "erdos_580"
-    ]
   }
 ]

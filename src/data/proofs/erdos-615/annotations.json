@@ -252,41 +252,5 @@
     ],
     "mathContext": "See annotation content for formal details of construction",
     "prerequisites": []
-  },
-  {
-    "id": "ann-e615-summary",
-    "proofId": "erdos-615",
-    "range": {
-      "startLine": 301,
-      "endLine": 307
-    },
-    "type": "concept",
-    "title": "Summary Theorem",
-    "content": "**erdos_615_summary:**\n\nCombines the main results:\n1. The conjecture is false\n2. For linear alpha < en, rt ~ (1/8)n^2 (EHSS bound is tight)\n\nThe 1/8 threshold is optimal for a wide range of independence number bounds, all the way down to n/log n.",
-    "significance": "key",
-    "mathContext": "See annotation content for formal details of summary theorem",
-    "relatedConcepts": [
-      "combinatorics",
-      "Lean 4 formalization"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e615-answer",
-    "proofId": "erdos-615",
-    "range": {
-      "startLine": 309,
-      "endLine": 313
-    },
-    "type": "technique",
-    "title": "The Answer is NO",
-    "content": "**erdos_615_answer:**\n\nThe answer to Erdos Problem #615 is NO.\n\nThe threshold 1/8 cannot be improved even for independence number n/log n.\n\nGraphs with ~(1/8)n^2 edges can avoid both K4 and large independent sets.",
-    "significance": "key",
-    "mathContext": "See annotation content for formal details of the answer is no",
-    "relatedConcepts": [
-      "proof technique",
-      "graph theory"
-    ],
-    "prerequisites": []
   }
 ]

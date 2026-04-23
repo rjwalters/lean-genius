@@ -135,49 +135,5 @@
       "h",
       "Filter.atTop"
     ]
-  },
-  {
-    "id": "ann-98-weak",
-    "proofId": "erdos-98",
-    "range": {
-      "startLine": 84,
-      "endLine": 85
-    },
-    "type": "concept",
-    "title": "Weak Conjecture: $h(n) \\ge n$",
-    "content": "`erdos_98_weak` axiomatizes the weaker conjecture that $h(n) \\ge n$ for all sufficiently large $n$, via `Filter.atTop`. Even this modest bound—that $n$ general-position points determine at least $n$ distinct distances—is unknown. This shows how far the field is from the full conjecture $h(n)/n \\to \\infty$.",
-    "mathContext": "$\\forall^\\infty n: h(n) \\ge n$; strictly weaker than $h(n)/n \\to \\infty$",
-    "significance": "key",
-    "relatedConcepts": [
-      "linear lower bound",
-      "open problem",
-      "distinct distances"
-    ],
-    "prerequisites": [
-      "h",
-      "Filter.atTop"
-    ]
-  },
-  {
-    "id": "ann-98-guthkatz",
-    "proofId": "erdos-98",
-    "range": {
-      "startLine": 87,
-      "endLine": 96
-    },
-    "type": "technique",
-    "title": "Guth-Katz Comparison: $\\Omega(n/\\log n)$ Without General Position",
-    "content": "`guth_katz_comparison` axiomatizes the Guth-Katz theorem (2015): without any general-position assumption, any $n$ distinct points in $\\mathbb{R}^2$ determine $\\Omega(n/\\log n)$ distinct distances. This near-optimal bound (matching Erdős's 1946 conjecture up to $\\sqrt{\\log n}$) uses algebraic geometry—the polynomial partitioning technique. General position should give more, but no one has proved that the Guth-Katz bound can be improved under general-position assumptions.",
-    "mathContext": "$\\exists c > 0: \\forall n \\ge 2, \\forall P \\text{ injective}: |\\text{dist}(P)| \\ge c \\cdot n / \\log n$",
-    "significance": "key",
-    "relatedConcepts": [
-      "Guth-Katz theorem",
-      "polynomial partitioning",
-      "Elekes-Sharir framework"
-    ],
-    "prerequisites": [
-      "numDistinctDistances",
-      "Real.log"
-    ]
   }
 ]

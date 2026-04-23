@@ -227,24 +227,5 @@
       "Sparse sets"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "erdos-393-main-theorem",
-    "proofId": "erdos-393",
-    "type": "technique",
-    "range": {
-      "startLine": 184,
-      "endLine": 192
-    },
-    "title": "Main Theorem",
-    "content": "**erdos_393:**\n\nComplete status of Problem #393:\n\n1. **Density:** F_m(N) = o(N) for each fixed m (Berend-Osgood 1992)\n2. **Power Saving:** F_m(N) ≪ N^{33/34} (BPZ 2023)\n3. **Conditional:** f(n) → ∞ assuming ABC (Luca 2002)\n\n**Open:** Does f(n) → ∞ unconditionally? Is f(n) = 1 infinitely often?",
-    "mathContext": "The theorem combines the known results to give a complete picture of current knowledge.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Problem resolution",
-      "Combined results",
-      "Open questions"
-    ],
-    "prerequisites": []
   }
 ]

@@ -348,30 +348,5 @@
       "Liu-Sawhney lower bound",
       "Lean4 conjunction"
     ]
-  },
-  {
-    "id": "ann-e294-status",
-    "proofId": "erdos-294",
-    "range": {
-      "startLine": 317,
-      "endLine": 330
-    },
-    "type": "concept",
-    "title": "Problem Status",
-    "content": "**erdos_294_status:**\n\n**SOLVED**\n\n- Upper bound: PROVED (Erdős-Graham 1980)\n- Lower bound: PROVED (Liu-Sawhney 2024)\n- Asymptotic: t(N) ≍ N/((log N)(log log N)^O(1))\n\nResolved up to polylogarithmic factors in 2024.",
-    "mathContext": "Erdős Problem #294, open for 44 years (1980–2024), is resolved: $t(N) \\asymp N / ((\\log N)(\\log\\log N)^{O(1)})$. The remaining open question is whether the $(\\log\\log N)^{O(1)}$ factor can be made precise or eliminated, i.e., whether $t(N) \\sim CN/\\log N$ for some constant $C$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Open problems resolved",
-      "Erdős problems",
-      "Egyptian fractions",
-      "Combinatorial number theory",
-      "44-year open problem"
-    ],
-    "prerequisites": [
-      "t(N) function",
-      "Both asymptotic bounds",
-      "Problem history"
-    ]
   }
 ]

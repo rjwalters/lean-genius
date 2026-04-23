@@ -221,23 +221,5 @@
       "prime numbers"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e937-contrast",
-    "proofId": "erdos-937",
-    "range": {
-      "startLine": 337,
-      "endLine": 348
-    },
-    "type": "technique",
-    "title": "Contrast with Fermat",
-    "content": "**squares_vs_powerful:**\n\n```lean\ntheorem squares_vs_powerful :\n    (¬∃ (a b c d : ℕ), a < b ∧ b < c ∧ c < d ∧\n      IsFourTermAP (a^2) (b^2) (c^2) (d^2)) ∧\n    coprimePowerfulFourTermAPs.Infinite\n```\n\n**Contrast:**\n- **Squares:** No four in AP (Fermat)\n- **Powerful numbers:** Infinitely many coprime 4-term APs\n\nPowerful numbers are richer than perfect squares.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Fermat's theorems",
-      "Set density"
-    ],
-    "mathContext": "See annotation content for formal details of contrast with fermat",
-    "prerequisites": []
   }
 ]

@@ -187,24 +187,5 @@
       "Sieve of Eratosthenes"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e457-summary",
-    "proofId": "erdos-457",
-    "range": {
-      "startLine": 202,
-      "endLine": 225
-    },
-    "type": "concept",
-    "title": "Summary and Status",
-    "content": "**Summary of Erdős Problem #457:**\n\n**The Central Question:** Can we cross the '2 barrier' for q(n, ⌊log n⌋)?\n\n**What we know:**\n- Trivially q(n,k) > k (all primes ≤ k divide k consecutive integers)\n- q(n, ⌊log n⌋) ≥ (2+o(1))log(n) via the prime product construction\n- The strict (2+ε) with fixed ε > 0 is OPEN\n- The upper bound q < (1-ε)(log n)² is also OPEN\n\n**The 2 barrier** is the central difficulty: the known construction gets arbitrarily close to 2 from below but cannot cross it. New ideas about the interplay between consecutive products and prime distribution are needed.\n\n**Related:** Problem #663 (also on prime factors of consecutive products)",
-    "mathContext": "The problem exemplifies a common phenomenon in number theory: o(1) results are achievable by construction, but fixed-constant improvements require deeper structural insights.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Open problems",
-      "Prime distribution",
-      "Number-theoretic barriers"
-    ],
-    "prerequisites": []
   }
 ]

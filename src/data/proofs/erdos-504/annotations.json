@@ -184,28 +184,5 @@
       "convex position",
       "Finset.image"
     ]
-  },
-  {
-    "id": "summary-theorem",
-    "proofId": "erdos-504",
-    "type": "technique",
-    "range": {
-      "startLine": 221,
-      "endLine": 255
-    },
-    "title": "Summary Theorem",
-    "content": "erdos_504_summary combines three key results into a single proved statement: (1) Sendov's upper range formula, (2) Sendov's lower range formula, and (3) the existence of a counterexample to the Erdős-Szekeres conjecture. Proved by direct application of the axioms sendov_upper, sendov_lower, and erdos_szekeres_conjecture_false.",
-    "mathContext": "The conjunction formalizes the complete solution:\n$(\\forall\\, n, N,\\; 2^{n-1}+2^{n-3} < N \\le 2^n \\implies \\alpha_N = \\pi(1-1/n))$\n$\\land\\; (\\forall\\, n, N,\\; 2^{n-1} < N \\le 2^{n-1}+2^{n-3} \\implies \\alpha_N = \\pi(1-1/(2n-1)))$\n$\\land\\; (\\exists\\, n, N,\\; \\alpha_N \\ne \\pi(1-1/n))$",
-    "significance": "key",
-    "relatedConcepts": [
-      "conjunction introduction",
-      "axiom application",
-      "Sendov's theorem"
-    ],
-    "prerequisites": [
-      "Sendov upper range",
-      "Sendov lower range",
-      "Erdős-Szekeres counterexample"
-    ]
   }
 ]

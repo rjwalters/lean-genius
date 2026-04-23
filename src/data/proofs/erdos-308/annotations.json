@@ -372,51 +372,5 @@
       "Harmonic number asymptotics",
       "Logarithmic growth"
     ]
-  },
-  {
-    "id": "ann-e308-summary",
-    "proofId": "erdos-308",
-    "range": {
-      "startLine": 293,
-      "endLine": 303
-    },
-    "type": "concept",
-    "title": "Summary Theorem",
-    "content": "**erdos_308_summary:**\n\nProves the conjunction of three results:\n1. Croot's lower bound: $f(N) \\geq \\lfloor H_N \\rfloor - 6$ for large $N$\n2. Croot's upper bound: $f(N) \\leq \\lfloor H_N \\rfloor$ for large $N$\n3. Contiguity: $\\text{RepresentableSet}(N) = \\{0, \\ldots, m\\}$ for large $N$\n\n**Proof:** `⟨croot_lower_bound, croot_upper_bound, question2_yes⟩`\n\nA direct composition of the three axiomatized results via And.intro.",
-    "mathContext": "The summary theorem packages the complete solution to Erdős Problem #308. The three-part conjunction captures both the quantitative answer (bounds on $f(N)$) and the qualitative answer (contiguity). The proof is trivial in Lean — it simply pairs the three axioms — but it serves as a formal certificate that the problem is fully resolved modulo the axiomatized deep results.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Conjunction",
-      "Axiom composition",
-      "Problem resolution"
-    ],
-    "prerequisites": [
-      "croot_lower_bound",
-      "croot_upper_bound",
-      "question2_yes"
-    ],
-    "leanSymbol": "erdos_308_summary"
-  },
-  {
-    "id": "ann-e308-main",
-    "proofId": "erdos-308",
-    "range": {
-      "startLine": 309,
-      "endLine": 313
-    },
-    "type": "concept",
-    "title": "Main Theorem",
-    "content": "**erdos_308:**\n\nThe contiguity result stated directly:\n$$\\exists N_0,\\; \\forall N \\geq N_0,\\; \\text{question2}(N)$$\n\n**Proof:** Directly from `question2_yes`.\n\nThis is the simplest statement of the main result: the representable set is contiguous for large $N$, meaning the structure of representable integers via bounded-denominator Egyptian fractions is completely determined by the single quantity $f(N)$.",
-    "mathContext": "By reducing the full characterization to the single function $f(N)$, this theorem transforms a set-valued problem into a scalar one. Combined with Croot's bounds, we know $f(N)$ to within 1 of $\\lfloor H_N \\rfloor$. The remaining question — whether $f(N) = \\lfloor H_N \\rfloor$ or $\\lfloor H_N \\rfloor - 1$ for a given $N$ — depends on delicate arithmetic properties of the fractional part of $H_N$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Direct proof",
-      "Contiguity",
-      "Scalar characterization"
-    ],
-    "prerequisites": [
-      "question2_yes"
-    ],
-    "leanSymbol": "erdos_308"
   }
 ]

@@ -224,49 +224,5 @@
       "algebraic geometry",
       "incidence bounds"
     ]
-  },
-  {
-    "id": "erdos-507-ann-exponent",
-    "proofId": "erdos-507",
-    "type": "concept",
-    "range": {
-      "startLine": 92,
-      "endLine": 95
-    },
-    "title": "Exponent Range $7/6 \\leq \\beta \\leq 2$",
-    "content": "Writing $\\alpha(n) = n^{-\\beta+o(1)}$, the current bounds give $7/6 \\leq \\beta \\leq 2$. The upper bound exponent $7/6$ comes from CPZ, and the lower bound exponent $2$ comes from KPS's $(\\log n)/n^2 = n^{-2+o(1)}$. The true value of $\\beta$ is one of the central open problems in combinatorial geometry. Even determining whether $\\beta < 2$ (i.e., improving the lower bound beyond $n^{-2+o(1)}$) seems extremely difficult.",
-    "mathContext": "$7/6 \\leq \\beta \\leq 2$ where $\\alpha(n) = n^{-\\beta+o(1)}$. Gap: $2 - 7/6 = 5/6 \\approx 0.833$. Neither side has seen order-of-magnitude improvement: lower bound stuck at $n^{-2}$ (up to logs) since 1982, upper bound only moved from $n^{-8/7}$ to $n^{-7/6}$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "asymptotic exponent",
-      "open problem",
-      "extremal combinatorial geometry"
-    ],
-    "prerequisites": [
-      "kps_lower_bound",
-      "cpz_upper_bound"
-    ]
-  },
-  {
-    "id": "erdos-507-ann-higher-dim",
-    "proofId": "erdos-507",
-    "type": "concept",
-    "range": {
-      "startLine": 101,
-      "endLine": 103
-    },
-    "title": "Higher-Dimensional Heilbronn Analog",
-    "content": "In dimension $d \\geq 3$, the analogous problem asks for the minimum-volume simplex among $n$ points in the unit ball $B^d$. The trivial bounds $c/n^d \\leq \\alpha_d(n) \\leq C/n$ generalize directly: the lower bound from greedy placement (forbidden volume $\\sim n^d \\cdot \\alpha_d / n^{d-1}$) and the upper bound from pigeonhole. Much less is known about improvements in higher dimensions.",
-    "mathContext": "$c/n^d \\leq \\alpha_d(n) \\leq C/n$ for $d \\geq 3$. In $d = 3$: trivial bounds are $1/n^3 \\leq \\alpha_3(n) \\leq 1/n$. Improvements to the planar exponents do not directly transfer.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "simplex volume",
-      "higher-dimensional geometry",
-      "unit ball"
-    ],
-    "prerequisites": [
-      "heilbronn function",
-      "d-dimensional geometry"
-    ]
   }
 ]

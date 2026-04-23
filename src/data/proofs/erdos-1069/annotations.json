@@ -112,24 +112,5 @@
       "tightness"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e1069-summary",
-    "proofId": "erdos-1069",
-    "range": {
-      "startLine": 204,
-      "endLine": 229
-    },
-    "type": "technique",
-    "title": "Summary: Problem #1069 is SOLVED",
-    "content": "**Complete Resolution**\n\nThe summary theorem erdos_1069_summary bundles the two main results:\n1. Szemerédi-Trotter incidence bound: I(P,L) = O(n^{2/3}m^{2/3} + n + m)\n2. k-rich lines bound: #{k-rich lines} = O(n²/k³) for k ≤ √n\n\nThis completely answers Erdős Problem #1069. The Szemerédi-Trotter theorem has become one of the most important tools in combinatorial geometry, with applications to the Erdős distinct distances problem, sum-product estimates, and Kakeya-type problems.",
-    "mathContext": "∀ P L, I(P,L) ≤ O(n^{2/3}m^{2/3} + n + m) ∧ #{k-rich} ≤ O(n²/k³)",
-    "significance": "key",
-    "relatedConcepts": [
-      "solved problem",
-      "incidence geometry",
-      "applications"
-    ],
-    "prerequisites": []
   }
 ]

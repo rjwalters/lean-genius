@@ -174,27 +174,5 @@
       "computational search",
       "divisibility testing"
     ]
-  },
-  {
-    "id": "ann-e396-infinitely-many",
-    "proofId": "erdos-396",
-    "range": {
-      "startLine": 82,
-      "endLine": 83
-    },
-    "type": "concept",
-    "title": "Infinitely Many Witnesses Strengthening",
-    "content": "A natural strengthening of the main conjecture: for each $k$, there are infinitely many $n$ with $n^{\\underline{k+1}} \\mid \\binom{2n}{n}$. This parallels Pomerance's single-factor result (infinitely many $n$ for each individual factor) but demands simultaneous divisibility. If the main conjecture holds, this strengthening is a natural next question.",
-    "mathContext": "$\\forall k, \\forall N, \\exists n \\geq N: n^{\\underline{k+1}} \\mid \\binom{2n}{n}$",
-    "significance": "key",
-    "relatedConcepts": [
-      "infinitely-often results",
-      "density questions",
-      "strengthenings"
-    ],
-    "prerequisites": [
-      "Erdős Problem #396",
-      "descending factorial divisibility"
-    ]
   }
 ]

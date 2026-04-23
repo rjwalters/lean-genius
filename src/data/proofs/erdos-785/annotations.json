@@ -254,59 +254,5 @@
       "Sum formula"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-785-examples",
-    "proofId": "erdos-785",
-    "range": {
-      "startLine": 215,
-      "endLine": 227
-    },
-    "type": "concept",
-    "title": "Examples",
-    "content": "**Non-Example: Squares**\n\nA = B = {n² : n ≥ 1} does NOT form an additive complement pair. Many integers (e.g., 3, 6, 7, ...) are not sums of two squares.\n\n**Simple Example:**\n\nA = {0} ∪ {2k : k ≥ 0}, B = {2k+1 : k ≥ 0}\n\nThis gives A + B = ℕ, but it's NOT 'exact' since A(x)B(x) ~ x²/4, which is much larger than x.",
-    "mathContext": "The examples illustrate that exact complements require careful construction - obvious pairs either fail to cover all integers or have too high density.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Sums of squares",
-      "Counterexamples"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-785-summary",
-    "proofId": "erdos-785",
-    "range": {
-      "startLine": 233,
-      "endLine": 261
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_785_summary:**\n\nCombines all the main results:\n\n1. **Existence:** Exact additive complements exist (Danzer 1964)\n2. **Main Result:** A(x)B(x) - x → ∞ (Sárközy-Szemerédi 1994)\n3. **Tightness:** Growth can be arbitrarily slow (Ruzsa 2017)\n\n```lean\ntheorem erdos_785_summary :\n    (∃ A B : Set ℕ, IsExactAdditiveComplement A B) ∧\n    ErdosDanzerQuestion ∧\n    True\n```\n\n**STATUS: SOLVED**",
-    "mathContext": "This theorem collects the complete picture of exact additive complements: they exist, the difference tends to infinity, but arbitrarily slowly.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Complete characterization",
-      "Summary results"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-785-conclusion",
-    "proofId": "erdos-785",
-    "range": {
-      "startLine": 263,
-      "endLine": 267
-    },
-    "type": "technique",
-    "title": "Problem Solved",
-    "content": "**erdos_785:**\n\nErdős Problem #785 is SOLVED.\n\n```lean\ntheorem erdos_785 : True := trivial\n```\n\nThe answer is YES: for exact additive complements, A(x)B(x) - x → ∞.\n\nSolved by Sárközy and Szemerédi in 1994.",
-    "mathContext": "This marks the problem as completely resolved.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Problem status",
-      "Solution"
-    ],
-    "prerequisites": []
   }
 ]

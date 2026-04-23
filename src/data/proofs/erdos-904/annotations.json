@@ -377,51 +377,5 @@
       "IsTriangle",
       "Real analysis (ε-arguments)"
     ]
-  },
-  {
-    "id": "ann-e904-supersat",
-    "proofId": "erdos-904",
-    "range": {
-      "startLine": 181,
-      "endLine": 185
-    },
-    "type": "concept",
-    "title": "supersaturation: Many Triangles Above Turán Threshold",
-    "content": "**axiom supersaturation**: Every dense graph $G$ contains a non-empty collection of triangles.\n\nThis is a weak form of the Erdős-Simonovits supersaturation lemma: graphs with $|E| > \\text{ex}(n, K_3) + t$ contain $\\Omega(tn)$ triangles.",
-    "mathContext": "The full supersaturation result (Erdős-Simonovits 1983) states that for $|E| \\geq \\text{ex}(n,K_3) + t$, the number of triangles is $\\geq c \\cdot t \\cdot n$ for some $c > 0$. Even adding one edge above Turán's bound forces a triangle, and the number grows linearly with the excess. Edwards' theorem refines supersaturation by finding a *qualitatively good* triangle.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Supersaturation lemma",
-      "Erdős-Simonovits theorem",
-      "Counting triangles"
-    ],
-    "prerequisites": [
-      "IsDense",
-      "IsTriangle",
-      "Finset"
-    ]
-  },
-  {
-    "id": "ann-e904-applied",
-    "proofId": "erdos-904",
-    "range": {
-      "startLine": 193,
-      "endLine": 196
-    },
-    "type": "concept",
-    "title": "erdos_904_main: Instantiated Edwards' Theorem",
-    "content": "**theorem erdos_904_main(G, h)**: Given a specific dense graph $G$ with proof $h$ : IsDense $G$, extract witnesses $x, y, z$ forming a triangle with $d(x)+d(y)+d(z) \\geq \\frac{3}{2}n$.\n\nApplies the universal `edwards_1978` to the concrete type $V$ and graph $G$.",
-    "mathContext": "This instantiation demonstrates Lean 4's universe-polymorphic quantification: `BollobasErdosConjecture` quantifies over all `V : Type*`, and `erdos_904_main` specializes it to the ambient type variable. The proof is `edwards_1978 V G h`, applying the axiom to the specific graph.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Universal instantiation",
-      "Lean 4 universe polymorphism",
-      "Theorem application"
-    ],
-    "prerequisites": [
-      "edwards_1978",
-      "IsDense",
-      "Specific graph G"
-    ]
   }
 ]

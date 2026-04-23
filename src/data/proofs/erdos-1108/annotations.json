@@ -188,24 +188,5 @@
       "dichotomy"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e1108-summary",
-    "proofId": "erdos-1108",
-    "range": {
-      "startLine": 184,
-      "endLine": 191
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_1108_summary** packages verified results: 1 is both a square factorial sum and powerful, and Mahler's example 1+7+49+343=400.",
-    "mathContext": "This shows the sets KthPowersInFactorialSums(2) and PowerfulFactorialSums are nonempty. The question is whether they're finite.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "summary",
-      "nonempty",
-      "verified"
-    ],
-    "prerequisites": []
   }
 ]

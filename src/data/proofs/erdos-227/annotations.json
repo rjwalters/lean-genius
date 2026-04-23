@@ -488,45 +488,5 @@
       "clunie_positive_coeffs",
       "achievable_limits_characterization"
     ]
-  },
-  {
-    "id": "ann-227-summary",
-    "proofId": "erdos-227",
-    "range": {
-      "startLine": 223,
-      "endLine": 236
-    },
-    "type": "technique",
-    "title": "erdos_227_summary",
-    "content": "Repackaged summary of all main results in a single conjunction: the conjecture is false, the achievable limits equal $[0, 1/2]$, and functions with positive coefficients satisfy the original conjecture. This serves as the canonical reference theorem for the complete resolution.",
-    "mathContext": "Combines $\\lnot\\text{OriginalConjecture}$, $\\text{AchievableLimits} = [0, 1/2]$, and Clunie's positive-coefficient theorem into a single statement.",
-    "significance": "key",
-    "relatedConcepts": [
-      "summary theorem",
-      "canonical reference"
-    ],
-    "prerequisites": [
-      "erdos_227_statement"
-    ]
-  },
-  {
-    "id": "ann-227-answer",
-    "proofId": "erdos-227",
-    "range": {
-      "startLine": 238,
-      "endLine": 239
-    },
-    "type": "technique",
-    "title": "erdos_227_answer",
-    "content": "Final status marker: Erdős Problem #227 is SOLVED and DISPROVED. The original conjecture that the limit must be 0 is false; the complete answer is that the achievable limits form the interval $[0, 1/2]$.",
-    "mathContext": "Status: DISPROVED. The answer is $\\{L : \\exists f,\\; \\mu_f(r)/M_f(r) \\to L\\} = [0, 1/2]$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "problem resolution",
-      "counterexample"
-    ],
-    "prerequisites": [
-      "erdos_227_summary"
-    ]
   }
 ]

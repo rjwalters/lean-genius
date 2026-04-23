@@ -112,24 +112,5 @@
       "Erdős-Hall theorem"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e543-summary",
-    "proofId": "erdos-543",
-    "range": {
-      "startLine": 176,
-      "endLine": 192
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_543_summary** packages the main result: ErdosCounterConjecture ∧ ¬LittleOConjecture. The proof is exact ⟨chatgpt_tang_disproof, little_o_conjecture_false⟩, combining the disproof axiom with the derived negation. This provides a clean formal statement that the Erdős-Rényi bound is tight up to constants in the log log N term.",
-    "mathContext": "The summary captures the complete resolution of the problem: both the positive result (the counter-conjecture holds) and its negative consequence (the little-o improvement fails). The conjunction is the strongest possible statement about the optimality of the Erdős-Rényi bound.",
-    "significance": "key",
-    "relatedConcepts": [
-      "problem resolution",
-      "tight bounds",
-      "axiom combination"
-    ],
-    "prerequisites": []
   }
 ]

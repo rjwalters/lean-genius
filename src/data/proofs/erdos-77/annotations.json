@@ -207,24 +207,5 @@
       "erdos-conjecture"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e77-summary",
-    "proofId": "erdos-77",
-    "range": {
-      "startLine": 267,
-      "endLine": 289
-    },
-    "type": "concept",
-    "title": "Summary and Historical Significance",
-    "content": "**Erdos Problem #77**: OPEN\n\n**Known bounds**: sqrt(2) <= liminf <= limsup <= 3.7993\n\n**Verified theorems**:\n- erdos_bounds\n- current_best_bounds\n- erdos_upper_bound'\n- erdos_conjecture_consistent\n\n**Historical significance**:\n1. Probabilistic method birthplace (1947)\n2. 90-year breakthrough (2023)\n3. Computational intractability (R(5) unknown)\n4. Prize system ($100 / $10000)",
-    "mathContext": "This problem captures fundamental aspects of Ramsey theory and combinatorics. The gap between bounds shows how much we don't understand about Ramsey numbers.",
-    "significance": "key",
-    "relatedConcepts": [
-      "summary",
-      "historical",
-      "status"
-    ],
-    "prerequisites": []
   }
 ]

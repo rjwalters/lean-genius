@@ -228,28 +228,5 @@
       "ContDiffOn",
       "iteratedDerivWithin_exp_eq"
     ]
-  },
-  {
-    "id": "ann-taylor-oq03-cauchy-bound",
-    "proofId": "taylor-theorem-oq-03",
-    "range": {
-      "startLine": 270,
-      "endLine": 291
-    },
-    "type": "technique",
-    "title": "Cauchy Remainder Bound for exp",
-    "content": "Proves the Cauchy remainder is bounded by exp(x) * x^{n+1}/n! for x > 0. The key estimates are exp(xi) <= exp(x) (monotonicity, since xi < x) and (x-xi)^n <= x^n (since 0 < x-xi < x). Combining: exp(xi)(x-xi)^n/n! * x <= exp(x) * x^n/n! * x = exp(x) * x^{n+1}/n!. The nonnegativity of the remainder is verified separately to handle the absolute value.",
-    "mathContext": "$\\left|\\frac{e^\\xi (x-\\xi)^n}{n!} \\cdot x\\right| \\leq \\frac{e^x \\cdot x^{n+1}}{n!}$ since $e^\\xi \\leq e^x$ and $(x - \\xi)^n \\leq x^n$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "monotonicity of exp",
-      "power inequalities",
-      "mul_le_mul"
-    ],
-    "prerequisites": [
-      "exp_cauchy_remainder",
-      "Real.exp_le_exp_of_le",
-      "pow_le_pow_left"
-    ]
   }
 ]

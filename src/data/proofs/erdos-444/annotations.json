@@ -268,28 +268,5 @@
     "prerequisites": [
       "erdos_graham_conjecture_true"
     ]
-  },
-  {
-    "id": "ann-444-limsup-proof",
-    "proofId": "erdos-444",
-    "range": {
-      "startLine": 154,
-      "endLine": 160
-    },
-    "type": "technique",
-    "title": "Lean Proof: limsup_infinite",
-    "content": "**limsup_infinite** instantiates the main theorem for specific A and k. The proof is: `intro C hC; exact erdos_graham_conjecture_true A hA k hk C hC`. This demonstrates how to specialize a universally quantified axiom — the `intro/exact` pattern is idiomatic Lean 4 for unfolding a ∀ statement.",
-    "significance": "key",
-    "mathContext": "The theorem `limsup_infinite (A : Set ℕ) (hA : InfiniteSubset A) (k : ℕ) (hk : k ≥ 1) : ∀ C : ℝ, C > 0 → ∃ᶠ x in Filter.atTop, (M_A A x : ℝ) > C * (H_A A x)^k` is the 'consumer-facing' version of the main axiom: whereas `erdos_graham_conjecture` packages all quantifiers inside a single `Prop`, `limsup_infinite` fixes A and k as parameters, leaving only the C quantifier in the statement. This makes instantiation easier in downstream use. The proof simply uses `exact` to discharge the goal by direct application of the axiom — two lines of Lean for a result that took Erdős and Sárközy a deep analytic paper to establish.",
-    "relatedConcepts": [
-      "Filter.Frequently",
-      "Filter.atTop",
-      "exact tactic",
-      "axiom instantiation"
-    ],
-    "prerequisites": [
-      "erdos_graham_conjecture_true",
-      "limsup_infinite"
-    ]
   }
 ]

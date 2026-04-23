@@ -150,43 +150,5 @@
       "Specialization"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e554-chromatic",
-    "proofId": "erdos-554",
-    "range": {
-      "startLine": 143,
-      "endLine": 164
-    },
-    "type": "concept",
-    "title": "Chromatic Number Connection",
-    "content": "**odd_cycle_chromatic**: All odd cycles have chromatic number 3.\n\nThis is the same chromatic number as K_3 (the triangle). The conjecture implies that chromatic number alone does NOT determine the Ramsey-theoretic complexity of a graph.\n\n**erdos_question_chromatic_3** poses a broader question: is there ANY 3-chromatic graph G with R(G; k) / R(K_3; k) not tending to 0? Problem #554 conjectures that odd cycles are not counterexamples.",
-    "mathContext": "A graph is 3-chromatic if it needs exactly 3 colors for a proper vertex coloring. Odd cycles are the simplest 3-chromatic graphs. The relationship between chromatic number and Ramsey numbers is a deep theme in combinatorics.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Chromatic number",
-      "Graph coloring",
-      "Ramsey complexity"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e554-erdos-554",
-    "proofId": "erdos-554",
-    "range": {
-      "startLine": 168,
-      "endLine": 175
-    },
-    "type": "concept",
-    "title": "Main Result: erdos_554",
-    "content": "**erdos_554** axiomatizes the full conjecture as an axiom, since the problem is OPEN.\n\nThis is the standard formalization approach for open problems: state the conjecture precisely and axiomatize it, allowing downstream reasoning to proceed conditionally.\n\nIf/when the conjecture is proved, this axiom can be replaced with a theorem.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Open problems",
-      "Axiomatization",
-      "Conditional reasoning"
-    ],
-    "mathContext": "See annotation content for formal details of main result: erdos_554",
-    "prerequisites": []
   }
 ]

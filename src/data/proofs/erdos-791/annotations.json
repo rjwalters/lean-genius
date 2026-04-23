@@ -129,23 +129,5 @@
       "asymptotic negation"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e791-summary",
-    "proofId": "erdos-791",
-    "range": {
-      "startLine": 217,
-      "endLine": 237
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_791_summary combines three key results:**\n\n1. **Mrose-type bound:** ∃ C < 4 such that g(n)² ≤ Cn + n for all n ≥ 1 (with C = 3, giving g(n)² ≤ 4n which subsumes Rohrbach's upper bound)\n2. **Rohrbach lower:** 2n ≤ g(n)² for all n ≥ 1\n3. **Rohrbach upper:** g(n)² ≤ 4n for all n ≥ 1\n\nThe proof uses ⟨⟨3, by omega, ...⟩, rohrbach_lower, rohrbach_upper⟩ to construct the conjunction. The existence of C = 3 < 4 is the formal content of Mrose's disproof.",
-    "mathContext": "The C = 3 instantiation gives g(n)² ≤ 3n + n = 4n, which is actually just Rohrbach's upper bound. A tighter formalization would use C = 3 with the bound g(n)² ≤ 3.5n, but integer arithmetic makes this cleaner.",
-    "significance": "key",
-    "relatedConcepts": [
-      "conjunction",
-      "summary theorem"
-    ],
-    "prerequisites": []
   }
 ]

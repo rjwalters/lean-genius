@@ -151,24 +151,5 @@
       "Counterexample"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-651-9",
-    "proofId": "erdos-651",
-    "range": {
-      "startLine": 220,
-      "endLine": 233
-    },
-    "type": "technique",
-    "title": "Main Results and Summary",
-    "content": "**erdos_651:** ¬ErdosConjecture. The exponential lower bound conjecture is FALSE.\n\n**erdos_651_summary** combines three results:\n1. ¬ErdosConjecture (the disproof)\n2. The Pohoata-Zakharov subexponential bound for k=3\n3. Suk's exact value f_2(n) = 2^{n-2} + 1 for k=2\n\nThis summary captures the complete picture: exponential in dimension 2, subexponential from dimension 3 onwards.",
-    "mathContext": "The summary theorem uses exact ⟨erdos_651_disproved, pohoata_zakharov_2022, suk_2017⟩ to combine all main results into a single statement.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Complete resolution",
-      "Dimension dichotomy",
-      "Summary theorem"
-    ],
-    "prerequisites": []
   }
 ]

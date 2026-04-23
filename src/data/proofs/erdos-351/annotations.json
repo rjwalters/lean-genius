@@ -184,23 +184,5 @@
       "rational-arithmetic"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e351-examples",
-    "proofId": "erdos-351",
-    "range": {
-      "startLine": 109,
-      "endLine": 115
-    },
-    "type": "technique",
-    "title": "Concrete Examples",
-    "content": "We verify: **1 + 1/1 = 2**, **2 + 1/2 = 5/2**, **3 + 1/3 = 10/3**. These use `norm_num` for automatic verification.",
-    "mathContext": "These concrete values show the sequence: 2, 2.5, 3.333..., 4.25, 5.2, ... The terms are 'almost integers' that grow roughly linearly.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "computation",
-      "norm_num"
-    ],
-    "prerequisites": []
   }
 ]

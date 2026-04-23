@@ -329,41 +329,5 @@
       "Explicit formulas"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e969-summary",
-    "proofId": "erdos-969",
-    "range": {
-      "startLine": 230,
-      "endLine": 238
-    },
-    "type": "technique",
-    "title": "Summary of Known Bounds",
-    "content": "**erdos_969_summary:**\n\nWhat we know:\n1. Upper bound: |E(x)| ≤ C·x^(1/2) (elementary)\n2. Lower bound: |E(x)| ≥ c·x^(1/4) (Evelyn-Linfoot)\n3. Gap: 1/2 - 1/4 = 1/4 in the exponent\n\n**Status:** OPEN for nearly 100 years!",
-    "significance": "key",
-    "mathContext": "See annotation content for formal details of summary of known bounds",
-    "relatedConcepts": [
-      "proof technique",
-      "Lean 4 formalization"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-e969-open-problem",
-    "proofId": "erdos-969",
-    "range": {
-      "startLine": 240,
-      "endLine": 241
-    },
-    "type": "definition",
-    "title": "The Open Problem",
-    "content": "**erdos_969_open_problem:**\n\nIs E(x) ≍ x^(1/4)?\n\nThis remains one of the major open problems in analytic number theory, with profound connections to the Riemann Hypothesis.",
-    "significance": "key",
-    "mathContext": "See annotation content for formal details of the open problem",
-    "relatedConcepts": [
-      "formal definition",
-      "Lean 4 formalization"
-    ],
-    "prerequisites": []
   }
 ]

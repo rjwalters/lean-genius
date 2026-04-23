@@ -175,44 +175,5 @@
       "approximate Steiner systems"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-1076-sts",
-    "proofId": "erdos-1076",
-    "range": {
-      "startLine": 180,
-      "endLine": 200
-    },
-    "type": "definition",
-    "title": "Steiner Triple Systems Connection",
-    "content": "A Steiner triple system STS(n) is a 3-uniform hypergraph where every pair of vertices lies in exactly one triple. By counting: C(n,2) pairs, each triple covers 3 pairs, so |E| = n(n-1)/6. The extremal density n²/6 matches STS density asymptotically — this is no coincidence. Extremal F_k-free hypergraphs resemble approximate Steiner systems with large girth (no short cycles that would create F_k subgraphs).",
-    "mathContext": "IsSteinerTripleSystem H := ∀ i ≠ j, ∃! e ∈ H.edges covering both i and j. sts_num_edges: |E| = n(n-1)/6. extremal_sts_connection: F_k-free hypergraphs with near-STS density exist.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Steiner systems",
-      "combinatorial designs",
-      "girth",
-      "approximate systems"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-1076-main",
-    "proofId": "erdos-1076",
-    "range": {
-      "startLine": 211,
-      "endLine": 229
-    },
-    "type": "technique",
-    "title": "Main Result: Problem Solved",
-    "content": "erdos_1076 := bohman_warnke_theorem states the conjecture is TRUE. erdos_1076_solved extracts the convergence for any specific k ≥ 5: ex₃(n, F_k)/n² → 1/6. The proof is a direct reference to the axiomatized Bohman-Warnke theorem. Both theorems are genuine Lean proofs assembling the axiomatized results.",
-    "mathContext": "erdos_1076 : BrownErdosSosConjecture := bohman_warnke_theorem. erdos_1076_solved k hk : Tendsto ... := erdos_1076 k hk.",
-    "significance": "key",
-    "relatedConcepts": [
-      "main theorem",
-      "direct proof",
-      "axiom application"
-    ],
-    "prerequisites": []
   }
 ]

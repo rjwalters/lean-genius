@@ -153,24 +153,5 @@
       "packing density"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e99-summary",
-    "proofId": "erdos-99",
-    "range": {
-      "startLine": 186,
-      "endLine": 200
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_99_summary** asserts the main concrete result: there exists a 4-point optimal configuration with no unit equilateral triangle. The proof delegates to the case_n4_no_equilateral axiom. This captures the known state of the problem: the conjecture is plausible for large n (due to Thue's theorem) but provably false for n=4, with the transition behavior unknown.",
-    "mathContext": "The summary theorem is intentionally modest — for an open problem, the strongest thing we can assert is the known counterexample for small n. The conjecture itself remains neither proved nor disproved.",
-    "significance": "key",
-    "relatedConcepts": [
-      "counterexample",
-      "open problem",
-      "axiom composition"
-    ],
-    "prerequisites": []
   }
 ]

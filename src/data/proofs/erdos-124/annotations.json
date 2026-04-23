@@ -115,53 +115,5 @@
       "startLine": 77,
       "endLine": 81
     }
-  },
-  {
-    "id": "q2-open",
-    "proofId": "erdos-124",
-    "type": "concept",
-    "title": "Question 2 (Open)",
-    "content": "**Q2 (OPEN)**: The stronger version adds two conditions:\n1. $\\gcd(d_1, \\ldots, d_r) = 1$ (coprimality)\n2. Use $P(d_i, k)$ for any $k \\geq 1$ (digits from position $k$ onward only)\n\nClaim: all sufficiently large integers are still representable.\n\n**Why harder**: Restricting to level $k \\geq 1$ removes the smallest powers ($d^0, \\ldots, d^{k-1}$), eliminating fine-grained control over small residues. The coprimality condition $\\gcd = 1$ is necessary to avoid trivial obstructions.\n\n**Status**: Open in general. Verified for the specific case $\\{3, 4, 7\\}$ where the reciprocal condition holds with equality.\n\n**Lean**: `Finset.univ.gcd d = 1` for the coprimality condition.",
-    "mathContext": "gcd(d₁,...,dᵣ) = 1 ∧ Σ 1/(dᵢ-1) ≥ 1 ⟹ ∀ k ≥ 1, ∀ᶠ n, IsRepresentableFromLevel(k, n)",
-    "significance": "key",
-    "relatedConcepts": [
-      "coprimality",
-      "level-k restriction",
-      "open problem",
-      "Finset.gcd"
-    ],
-    "prerequisites": [
-      "Q1 result",
-      "GCD over finite sets",
-      "digit restriction at higher levels"
-    ],
-    "range": {
-      "startLine": 85,
-      "endLine": 92
-    }
-  },
-  {
-    "id": "case-3-4-7",
-    "proofId": "erdos-124",
-    "type": "concept",
-    "title": "{3,4,7} Verification",
-    "content": "**Q2 verified for bases {3, 4, 7}**:\n\n- $1/(3-1) + 1/(4-1) + 1/(7-1) = 1/2 + 1/3 + 1/6 = 1$ (exact threshold)\n- $\\gcd(3, 4, 7) = 1$ (pairwise coprime)\n\nFor any $k \\geq 1$, all sufficiently large integers can be represented using digits from level $k$ onward in these three bases.\n\n**Why {3,4,7} is special**: The Egyptian fraction $1/2 + 1/3 + 1/6 = 1$ is one of the simplest unit fraction decompositions of 1 with distinct denominators. The pairwise coprimality (3, 4, 7 share no common factor) removes all trivial obstructions.\n\n**Lean**: Uses `![3, 4, 7]` (Matrix.vecCons notation) for the 3-element vector of bases.",
-    "mathContext": "1/2 + 1/3 + 1/6 = 1, gcd(3,4,7) = 1",
-    "significance": "key",
-    "relatedConcepts": [
-      "Egyptian fractions",
-      "pairwise coprime",
-      "Matrix.vecCons",
-      "special case verification"
-    ],
-    "prerequisites": [
-      "Q2 statement",
-      "Egyptian fraction decomposition",
-      "GCD computation"
-    ],
-    "range": {
-      "startLine": 95,
-      "endLine": 98
-    }
   }
 ]

@@ -170,24 +170,6 @@
     "prerequisites": []
   },
   {
-    "id": "ann-e295-summary",
-    "proofId": "erdos-295",
-    "range": {
-      "startLine": 158,
-      "endLine": 169
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_295_summary** combines the key known results: (1) the Erdős-Straus bounds showing -c < k(N) - (e-1)N < O(N/log N), and (2) the fact that e-1 > 0. The main conjecture (does the difference tend to ∞?) remains OPEN.",
-    "significance": "key",
-    "relatedConcepts": [
-      "erdos_straus_bounds",
-      "e_minus_one_positive"
-    ],
-    "mathContext": "See annotation content for formal details of summary theorem",
-    "prerequisites": []
-  },
-  {
     "id": "ann-e295-example-n2",
     "proofId": "erdos-295",
     "range": {

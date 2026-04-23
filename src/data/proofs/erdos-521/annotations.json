@@ -131,24 +131,5 @@
       "fundamental-theorem-algebra"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e521-summary",
-    "proofId": "erdos-521",
-    "range": {
-      "startLine": 178,
-      "endLine": 191
-    },
-    "type": "technique",
-    "title": "Summary Theorem",
-    "content": "**erdos_521_summary** combines three key results:\n\n1. **Variance bound:** ∃ C > 0, Var(Rₙ) ≤ C(log n)² for n ≥ 2\n2. **Root bound:** Rₙ ≤ n + 1 for all polynomials\n3. **Kac positivity:** 2/π > 0\n\nThe proof uses `exact ⟨variance_bound, real_root_bound, kac_constant_pos⟩` to combine axioms into a single conjunction.",
-    "mathContext": "This summary captures the quantitative framework around the problem: the expected behavior is known, variance is controlled, and the limiting constant is well-defined and positive.",
-    "significance": "key",
-    "relatedConcepts": [
-      "summary-theorem",
-      "exact-proof",
-      "conjunction"
-    ],
-    "prerequisites": []
   }
 ]

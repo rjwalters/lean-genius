@@ -347,53 +347,5 @@
       "freud_construction",
       "nineteen_thirty_sixth_gt_half"
     ]
-  },
-  {
-    "id": "ann-e867-main-theorem",
-    "proofId": "erdos-867",
-    "range": {
-      "startLine": 290,
-      "endLine": 303
-    },
-    "type": "concept",
-    "title": "Main Theorem: Erdős #867 (PROVED)",
-    "content": "Proves `erdos_867`: there exist rationals lb = 13/24 and ub = 2/3 - 1/512 such that lb > 1/2 and lb < ub. The proof witnesses lb and ub, then verifies the four conditions (two equalities via `rfl` and `ring`, two inequalities via `norm_num`). This packages the current state of knowledge into a single theorem.",
-    "mathContext": "$\\exists\\, lb = \\frac{13}{24},\\, ub = \\frac{2}{3} - \\frac{1}{512}: lb > \\frac{1}{2} \\land lb < ub$. The first inequality ($13/24 > 1/2$) disproves the conjecture. The second ($13/24 < 2/3 - 1/512$) shows the exact answer is unknown.",
-    "significance": "key",
-    "relatedConcepts": [
-      "norm_num tactic",
-      "ring tactic",
-      "existential witness",
-      "rational bounds"
-    ],
-    "prerequisites": [
-      "Rat",
-      "norm_num",
-      "ring"
-    ]
-  },
-  {
-    "id": "ann-e867-answer",
-    "proofId": "erdos-867",
-    "range": {
-      "startLine": 312,
-      "endLine": 320
-    },
-    "type": "concept",
-    "title": "The Answer is NO (PROVED)",
-    "content": "Proves `erdos_867_answer`: there exists c = 13/24 > 1/2 such that for all N >= 24, Coppersmith-Phillips constructions witness consecutive sum-free sets with |A| * 24 >= 13 * N - 24. The proof uses `norm_num` for c > 1/2 and delegates the construction to `coppersmith_phillips_lower`. This directly contradicts Erdős's conjecture.",
-    "mathContext": "$\\exists\\, c > 1/2,\\, \\forall N \\geq 24,\\, \\exists A \\subseteq \\{1, \\ldots, N\\}: |A| \\geq \\frac{13}{24}N - O(1)$. With $c = 13/24 = 0.5417 > 0.5$, the answer to Erdős's question is definitively NO.",
-    "significance": "key",
-    "relatedConcepts": [
-      "coppersmith_phillips_lower",
-      "norm_num",
-      "existential witness",
-      "problem resolution"
-    ],
-    "prerequisites": [
-      "coppersmith_phillips_lower",
-      "Rat",
-      "norm_num"
-    ]
   }
 ]

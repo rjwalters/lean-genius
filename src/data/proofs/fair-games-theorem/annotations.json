@@ -140,28 +140,5 @@
       "Optional Stopping Theorem (fair_games_theorem)"
     ],
     "mathContext": "The docstrings describe genuine mathematical applications of the Optional Stopping Theorem, but the formal content is trivial (`(1:ℕ)+1=2 := rfl`). These are placeholders for future formalization."
-  },
-  {
-    "id": "ann-history",
-    "proofId": "fair-games-theorem",
-    "range": {
-      "startLine": 429,
-      "endLine": 476
-    },
-    "type": "context",
-    "title": "Historical Context",
-    "content": "**Timeline**:\n- **1900**: Bachelier applies proto-martingale reasoning to financial markets\n- **1930s**: Lévy develops key probabilistic machinery\n- **1939**: Ville formalizes 'martingale' concept in his thesis\n- **1953**: Doob proves Optional Stopping Theorem in *Stochastic Processes*\n- **1979**: Harrison-Pliska connect martingales to arbitrage-free pricing\n\n**Wiedijk's Summary** (#62):\n\n*\"You cannot beat a fair game with any strategy.\"*\n\n**Three Connected Ideas formalized in this file**:\n1. **Fairness** (martingale): $E[X_{n+1} | \\mathcal{F}_n] = X_n$ (via Mathlib's `Martingale`)\n2. **Strategy** (stopping time): when to stop based on past (via `IsStoppingTime`)\n3. **Invariance** (Optional Stopping Theorem): $E[X_\\tau] = E[X_\\pi]$ (via `fair_games_theorem`)\n\nThe file also contains a `fair_games_summary` placeholder theorem (proves `1+1=2`) with a summary docstring.",
-    "summary": "Timeline from Bachelier (1900) to Harrison-Pliska (1979); formalizes Wiedijk #62's three connected ideas: fairness, strategy, invariance.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Joseph Doob (1953)",
-      "Paul Lévy (1934)",
-      "Louis Bachelier (1900)"
-    ],
-    "prerequisites": [
-      "probability theory history",
-      "fair games theorem"
-    ],
-    "mathContext": "See annotation content for formal details of historical context"
   }
 ]

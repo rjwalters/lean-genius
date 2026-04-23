@@ -264,24 +264,5 @@
       "cube"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e605-asymptotics",
-    "proofId": "erdos-605",
-    "range": {
-      "startLine": 262,
-      "endLine": 280
-    },
-    "type": "definition",
-    "title": "Asymptotic Notation",
-    "content": "Formal definitions of **Ω (IsOmega)**, **O (IsBigO)**, and **≍ (AsympEquiv)**. These capture the standard asymptotic relations: f = Ω(g) means f grows at least as fast as g; f ≍ g means they grow at the same rate up to constants.",
-    "mathContext": "These definitions are stated directly rather than using Mathlib's Asymptotics module, keeping the formalization self-contained and readable. The √2 sphere result is expressed as AsympEquiv with n^{4/3}.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "big-O notation",
-      "omega notation",
-      "asymptotic analysis"
-    ],
-    "prerequisites": []
   }
 ]

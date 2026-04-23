@@ -491,28 +491,5 @@
       "Theoretical computer science",
       "Complexity theory basics"
     ]
-  },
-  {
-    "id": "ann-e20-open",
-    "proofId": "erdos-20",
-    "range": {
-      "startLine": 203,
-      "endLine": 204
-    },
-    "type": "concept",
-    "title": "Problem Status: OPEN",
-    "content": "**Erdős Problem #20 remains OPEN** with a $1,000 prize.\n\nThe formal statement `erdos_20_open` uses the law of excluded middle to assert `SunflowerConjecture ∨ ¬SunflowerConjecture`. This is logically trivial but serves as a placeholder indicating the problem's status — we cannot yet determine which disjunct holds.",
-    "mathContext": "The use of `Classical.em` gives $P \\lor \\neg P$ for any proposition $P$. This is non-constructive: we know the conjecture is either true or false, but determining which requires resolving the $(\\log n)^n$ gap between Rao's upper bound and the conjectured $c_k^n$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Law of excluded middle",
-      "Classical logic",
-      "Open problems in combinatorics",
-      "Erdős prize problems"
-    ],
-    "prerequisites": [
-      "Classical logic",
-      "Decidability vs. provability"
-    ]
   }
 ]

@@ -2,14 +2,25 @@
   {
     "id": "ann-e117-header",
     "proofId": "erdos-117",
-    "range": { "startLine": 1, "endLine": 24 },
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
     "type": "context",
     "title": "Problem Statement: Covering Groups by Abelian Subgroups",
     "content": "Erdős Problem #117 asks: let $h(n)$ be the minimum number of Abelian subgroups needed to cover any group $G$ with the property that every subset of size $> n$ contains two distinct commuting elements. Estimate $h(n)$.\n\nPyber (1987) proved $c_1^n < h(n) < c_2^n$ for constants $c_2 > c_1 > 1$, establishing exponential growth. The problem remains open — determining the optimal base of the exponential is unknown.",
     "mathContext": "$h(n)$: min Abelian subgroups to cover any $G$ with the $n$-commuting property. Known: $c_1^n < h(n) < c_2^n$ (Pyber 1987).",
     "significance": "supporting",
-    "prerequisites": ["group theory", "Abelian subgroups", "covering numbers"],
-    "relatedConcepts": ["Ramsey-type conditions", "commuting pairs", "subgroup coverings"]
+    "prerequisites": [
+      "group theory",
+      "Abelian subgroups",
+      "covering numbers"
+    ],
+    "relatedConcepts": [
+      "Ramsey-type conditions",
+      "commuting pairs",
+      "subgroup coverings"
+    ]
   },
   {
     "id": "ann-e117-ncommuting",
@@ -127,51 +138,6 @@
     "prerequisites": [
       "abelianCoverNumber",
       "real exponentiation"
-    ]
-  },
-  {
-    "id": "ann-e117-isaacs",
-    "proofId": "erdos-117",
-    "range": {
-      "startLine": 65,
-      "endLine": 66
-    },
-    "type": "concept",
-    "title": "Isaacs Exponential Lower Bound",
-    "content": "**isaacs_lower**: The exponential lower bound $c^n \\leq h(n)$ for some $c > 1$ was known to Isaacs before Pyber's comprehensive treatment. Isaacs' approach uses character-theoretic methods: the number of Abelian subgroups needed to cover a group is bounded below by the number of irreducible representations of certain quotients, which grows exponentially for groups with bounded commuting subset size.",
-    "mathContext": "$\\exists c > 1 : \\forall n > 0,\\; c^n \\leq h(n)$",
-    "significance": "key",
-    "relatedConcepts": [
-      "Isaacs",
-      "character theory",
-      "exponential lower bound",
-      "irreducible representations"
-    ],
-    "prerequisites": [
-      "abelianCoverNumber",
-      "real exponentiation"
-    ]
-  },
-  {
-    "id": "ann-e117-trivial",
-    "proofId": "erdos-117",
-    "range": {
-      "startLine": 72,
-      "endLine": 72
-    },
-    "type": "concept",
-    "title": "Trivial Case: h(1) = 1",
-    "content": "**trivial_case**: $h(1) = 1$. If $G$ has the 1-commuting property, then every 2-element subset $\\{x, y\\}$ contains a commuting pair, meaning $xy = yx$ for all $x, y \\in G$. Thus $G$ is Abelian, and $G$ itself is the single Abelian subgroup that covers $G$. This is the base case for the exponential growth of $h(n)$.",
-    "mathContext": "$h(1) = 1$ since the 1-commuting property $\\iff$ $G$ is Abelian",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Abelian group",
-      "base case",
-      "identity covering"
-    ],
-    "prerequisites": [
-      "abelianCoverNumber",
-      "HasNCommutingProperty"
     ]
   }
 ]

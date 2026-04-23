@@ -308,23 +308,5 @@
       "Additive combinatorics"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e186-exponent",
-    "proofId": "erdos-186",
-    "range": {
-      "startLine": 246,
-      "endLine": 258
-    },
-    "type": "concept",
-    "title": "Growth Rate Optimality",
-    "content": "**exponent_is_quarter** and **upper_exponent_not_exact:**\n\nTwo complementary axioms establishing 1/4 as the correct exponent:\n\n1. F(N) cannot grow slower than N^(1/4-epsilon) for any epsilon > 0 (exponent_is_quarter)\n2. F(N) cannot be bounded by C * N^(1/4) for any constant C (upper_exponent_not_exact)\n\nTogether these show the exponent is exactly 1/4, but with a necessary sub-polynomial correction factor.",
-    "mathContext": "The o(1) correction in N^(1/4+o(1)) is genuine — the exact asymptotic remains open.",
-    "significance": "key",
-    "relatedConcepts": [
-      "polynomial theory",
-      "Lean 4 formalization"
-    ],
-    "prerequisites": []
   }
 ]

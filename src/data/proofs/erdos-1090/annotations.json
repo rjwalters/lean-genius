@@ -322,24 +322,5 @@
       "Hales-Jewett generalization"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-summary",
-    "proofId": "erdos-1090",
-    "range": {
-      "startLine": 346,
-      "endLine": 357
-    },
-    "type": "concept",
-    "title": "Summary Theorems",
-    "content": "**erdos_1090_summary** combines both results: Graham-Selfridge (k=3) and Hunter (∀ k ≥ 3), proved by the tuple `⟨graham_selfridge, fun k hk => hunter_observation k hk⟩`. **erdos_1090** is defined as `erdos_1090_affirmative`, the final clean statement of the solved problem.",
-    "significance": "key",
-    "mathContext": "`theorem erdos_1090_summary : (∃ A, HasRamseyProperty A 3) ∧ (∀ k ≥ 3, ∃ A, HasRamseyProperty A k) := ⟨graham_selfridge, fun k hk => hunter_observation k hk⟩` — anonymous constructor ⟨·, ·⟩ builds the conjunction. `theorem erdos_1090 : ∀ k ≥ 3, Erdos1090Question k := erdos_1090_affirmative` — a definitional alias for the main result.",
-    "relatedConcepts": [
-      "anonymous constructor",
-      "definitional equality",
-      "theorem summary"
-    ],
-    "prerequisites": []
   }
 ]

@@ -169,24 +169,5 @@
       "generalization"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e258-tau-positive",
-    "proofId": "erdos-258",
-    "range": {
-      "startLine": 113,
-      "endLine": 118
-    },
-    "type": "technique",
-    "title": "τ(n) is Always Positive",
-    "content": "For any n ≥ 1, we have τ(n) ≥ 1 since every positive integer has at least one divisor (itself, or 1).",
-    "mathContext": "We verify this for specific values using `native_decide`. A general proof would use that 1 always divides n, so 1 ∈ divisors(n), so card ≥ 1.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "positivity",
-      "divisibility",
-      "basic-properties"
-    ],
-    "prerequisites": []
   }
 ]
