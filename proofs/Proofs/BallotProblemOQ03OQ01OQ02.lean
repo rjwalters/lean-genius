@@ -1271,4 +1271,268 @@ example : LatticePathLGV.Cn 1 * (2 * 1) = 2 := by native_decide
 example : LatticePathLGV.Cn 2 * (6 * 2) = 24 := by native_decide
 example : LatticePathLGV.Cn 3 * (24 * 6) = 720 := by native_decide
 
+-- ============================================================
+-- PART XI: Hook-Length Formula for General 2-Row Diagrams
+-- ============================================================
+
+/-
+  The general 2-row Young diagram twoRowYD a b (a ≥ b) has shape [a, b].
+    hookLength(0,j) = a-j+1  for j < b  (arm = a-j-1, leg = 1 since colLen=2)
+    hookLength(0,j) = a-j    for b ≤ j < a  (arm = a-j-1, leg = 0 since colLen=1)
+    hookLength(1,j) = b-j    for j < b  (arm = b-j-1, leg = 0)
+    hookProd = (a+1).descFactorial b × (a-b)! × b!
+    card(SYT([a,b])) = ballotSeqCount (a+1) b  [sorry: bijection via ballot subsets]
+  Hook formula: ballotSeqCount (a+1) b × (a+1).descFactorial b × (a-b)! × b! = (a+b)!
+-/
+
+/-- The general 2-row Young diagram with row lengths a ≥ b ≥ 0. -/
+def twoRowYD (a b : ℕ) (hab : b ≤ a) : YoungDiagram :=
+  YoungDiagram.ofRowLens [a, b] (by
+    simp only [List.SortedGE, List.Sorted, List.pairwise_cons, List.mem_singleton, forall_eq,
+               List.Pairwise.nil, and_true]
+    exact hab)
+
+/-- Membership: (i,j) ∈ twoRowYD a b ↔ (i=0 ∧ j<a) ∨ (i=1 ∧ j<b) -/
+lemma mem_twoRowYD {a b : ℕ} (hab : b ≤ a) {i j : ℕ} :
+    (i, j) ∈ twoRowYD a b hab ↔ (i = 0 ∧ j < a) ∨ (i = 1 ∧ j < b) := by
+  simp only [twoRowYD, YoungDiagram.mem_ofRowLens, List.length_cons, List.length_singleton]
+  constructor
+  · rintro ⟨hi, hj⟩
+    interval_cases i
+    · left; exact ⟨rfl, by simpa [List.getElem_cons_zero] using hj⟩
+    · right; exact ⟨rfl, by simpa [List.getElem_cons_succ, List.getElem_cons_zero] using hj⟩
+    · omega
+  · rintro (⟨rfl, hj⟩ | ⟨rfl, hj⟩)
+    · exact ⟨by omega, by simpa [List.getElem_cons_zero] using hj⟩
+    · exact ⟨by omega, by simpa [List.getElem_cons_succ, List.getElem_cons_zero] using hj⟩
+
+/-- twoRowYD a b has a+b cells. -/
+lemma twoRowYD_card (a b : ℕ) (hab : b ≤ a) : (twoRowYD a b hab).card = a + b := by
+  have hcells : (twoRowYD a b hab).cells =
+      (Finset.range a).image (Prod.mk 0) ∪ (Finset.range b).image (Prod.mk 1) := by
+    ext ⟨i, j⟩
+    simp only [YoungDiagram.mem_cells, mem_twoRowYD hab, Finset.mem_union, Finset.mem_image,
+      Finset.mem_range, Prod.mk.injEq]
+    constructor
+    · rintro (⟨rfl, hj⟩ | ⟨rfl, hj⟩)
+      · left; exact ⟨j, hj, rfl, rfl⟩
+      · right; exact ⟨j, hj, rfl, rfl⟩
+    · rintro (⟨k, hk, rfl, rfl⟩ | ⟨k, hk, rfl, rfl⟩)
+      · left; exact ⟨rfl, hk⟩
+      · right; exact ⟨rfl, hk⟩
+  unfold YoungDiagram.card
+  rw [hcells, Finset.card_union_of_disjoint
+        (Finset.disjoint_left.mpr (by simp [Finset.mem_image, Prod.mk.injEq])),
+      Finset.card_image_of_injective _ (fun a b h => (Prod.mk.inj h).2),
+      Finset.card_image_of_injective _ (fun a b h => (Prod.mk.inj h).2),
+      Finset.card_range, Finset.card_range]
+
+lemma rowLen_twoRowYD_zero (a b : ℕ) (hab : b ≤ a) : (twoRowYD a b hab).rowLen 0 = a := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]
+    simp [mem_twoRowYD hab]
+  · cases a with
+    | zero => exact Nat.zero_le _
+    | succ a =>
+      exact YoungDiagram.mem_iff_lt_rowLen.mp
+        (mem_twoRowYD hab |>.mpr (Or.inl ⟨rfl, a.lt_succ_self⟩))
+
+lemma rowLen_twoRowYD_one (a b : ℕ) (hab : b ≤ a) : (twoRowYD a b hab).rowLen 1 = b := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]
+    simp [mem_twoRowYD hab]
+  · cases b with
+    | zero => simp
+    | succ b =>
+      exact YoungDiagram.mem_iff_lt_rowLen.mp
+        (mem_twoRowYD hab |>.mpr (Or.inr ⟨rfl, b.lt_succ_self⟩))
+
+lemma colLen_twoRowYD_lt {a b : ℕ} (hab : b ≤ a) {j : ℕ} (hj : j < b) :
+    (twoRowYD a b hab).colLen j = 2 := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]
+    simp [mem_twoRowYD hab]
+    omega
+  · have h1 : 1 < (twoRowYD a b hab).colLen j :=
+      YoungDiagram.mem_iff_lt_colLen.mp
+        (mem_twoRowYD hab |>.mpr (Or.inr ⟨rfl, hj⟩))
+    omega
+
+lemma colLen_twoRowYD_ge {a b : ℕ} (hab : b ≤ a) {j : ℕ} (hj : b ≤ j) (hja : j < a) :
+    (twoRowYD a b hab).colLen j = 1 := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]
+    simp [mem_twoRowYD hab]
+    omega
+  · have h1 : 0 < (twoRowYD a b hab).colLen j :=
+      YoungDiagram.mem_iff_lt_colLen.mp
+        (mem_twoRowYD hab |>.mpr (Or.inl ⟨rfl, hja⟩))
+    omega
+
+lemma hookLength_twoRowYD_row0_lt {a b : ℕ} (hab : b ≤ a) {j : ℕ} (hj : j < b) :
+    hookLength (twoRowYD a b hab) 0 j = a - j + 1 := by
+  unfold hookLength armLen legLen
+  rw [rowLen_twoRowYD_zero a b hab, colLen_twoRowYD_lt hab hj]
+  omega
+
+lemma hookLength_twoRowYD_row0_ge {a b : ℕ} (hab : b ≤ a) {j : ℕ} (hj : b ≤ j) (hja : j < a) :
+    hookLength (twoRowYD a b hab) 0 j = a - j := by
+  unfold hookLength armLen legLen
+  rw [rowLen_twoRowYD_zero a b hab, colLen_twoRowYD_ge hab hj hja]
+  omega
+
+lemma hookLength_twoRowYD_row1 {a b : ℕ} (hab : b ≤ a) {j : ℕ} (hj : j < b) :
+    hookLength (twoRowYD a b hab) 1 j = b - j := by
+  unfold hookLength armLen legLen
+  rw [rowLen_twoRowYD_one a b hab, colLen_twoRowYD_lt hab hj]
+  omega
+
+private lemma twoRowYD_cells_eq' (a b : ℕ) (hab : b ≤ a) :
+    (twoRowYD a b hab).cells =
+    (Finset.range a).image (Prod.mk 0) ∪ (Finset.range b).image (Prod.mk 1) := by
+  ext ⟨i, j⟩
+  simp only [YoungDiagram.mem_cells, mem_twoRowYD hab, Finset.mem_union, Finset.mem_image,
+    Finset.mem_range, Prod.mk.injEq]
+  constructor
+  · rintro (⟨rfl, hj⟩ | ⟨rfl, hj⟩)
+    · left; exact ⟨j, hj, rfl, rfl⟩
+    · right; exact ⟨j, hj, rfl, rfl⟩
+  · rintro (⟨k, hk, rfl, rfl⟩ | ⟨k, hk, rfl, rfl⟩)
+    · left; exact ⟨rfl, hk⟩
+    · right; exact ⟨rfl, hk⟩
+
+private lemma twoRowYD_cells_disj' (a b : ℕ) :
+    Disjoint ((Finset.range a).image (Prod.mk 0)) ((Finset.range b).image (Prod.mk 1)) :=
+  Finset.disjoint_left.mpr (by simp [Finset.mem_image, Prod.mk.injEq])
+
+/-- Hook product of twoRowYD a b equals (a+1).descFactorial b × (a-b)! × b!. -/
+theorem hookProd_twoRowYD (a b : ℕ) (hab : b ≤ a) :
+    hookProd (twoRowYD a b hab) =
+    (a + 1).descFactorial b * (a - b).factorial * b.factorial := by
+  unfold hookProd
+  rw [twoRowYD_cells_eq' a b hab,
+      Finset.prod_union (twoRowYD_cells_disj' a b),
+      Finset.prod_image (fun x _ y _ h => (Prod.mk.inj h).2),
+      Finset.prod_image (fun x _ y _ h => (Prod.mk.inj h).2)]
+  -- Row 0: split range a = range b ∪ Ico b a
+  have hsplit : Finset.range a = Finset.range b ∪ Finset.Ico b a := by
+    rw [Finset.range_eq_Ico, ← Finset.Ico_union_Ico_eq_Ico (by omega) (by omega)]
+    simp [Finset.range_eq_Ico]
+  have hdisj : Disjoint (Finset.range b) (Finset.Ico b a) :=
+    Finset.disjoint_left.mpr (fun x hx hy =>
+      absurd (Finset.mem_range.mp hx) (by simp [Finset.mem_Ico] at hy; omega))
+  -- Row 0 total product
+  have hrow0 : ∏ j ∈ Finset.range a, hookLength (twoRowYD a b hab) 0 j =
+      (a + 1).descFactorial b * (a - b).factorial := by
+    rw [hsplit, Finset.prod_union hdisj]
+    -- Left part: ∏ j in range b, (a-j+1) = (a+1).descFactorial b
+    have hleft : ∏ j ∈ Finset.range b, hookLength (twoRowYD a b hab) 0 j =
+        (a + 1).descFactorial b := by
+      rw [Finset.prod_congr rfl (fun j hj =>
+            hookLength_twoRowYD_row0_lt hab (Finset.mem_range.mp hj)),
+          Finset.prod_congr rfl (fun j hj =>
+            show a - j + 1 = (a + 1) - j from by
+              have := Finset.mem_range.mp hj; omega),
+          ← Nat.descFactorial_eq_prod_range]
+    -- Right part: ∏ j in Ico b a, (a-j) = (a-b)!
+    have hright : ∏ j ∈ Finset.Ico b a, hookLength (twoRowYD a b hab) 0 j =
+        (a - b).factorial := by
+      rw [Finset.prod_congr rfl (fun j hj =>
+            hookLength_twoRowYD_row0_ge hab
+              (Finset.mem_Ico.mp hj).1 (Finset.mem_Ico.mp hj).2)]
+      -- ∏ j in Ico b a, (a-j) = ∏ k in range(a-b), (a-b-k) via reindex k = j-b
+      rw [show Finset.Ico b a = (Finset.range (a - b)).image (b + ·) from by
+            ext x; simp [Finset.mem_Ico, Finset.mem_range, Finset.mem_image]; omega,
+          Finset.prod_image (fun x _ y _ h => by omega),
+          Finset.prod_congr rfl (fun k hk =>
+            show a - (b + k) = (a - b) - k from by
+              have := Finset.mem_range.mp hk; omega),
+          ← Nat.descFactorial_eq_prod_range, Nat.descFactorial_self]
+    rw [hleft, hright]
+  -- Row 1: ∏ j in range b, (b-j) = b!
+  have hrow1 : ∏ j ∈ Finset.range b, hookLength (twoRowYD a b hab) 1 j = b.factorial := by
+    rw [Finset.prod_congr rfl (fun j hj =>
+          hookLength_twoRowYD_row1 hab (Finset.mem_range.mp hj)),
+        ← Nat.descFactorial_eq_prod_range, Nat.descFactorial_self]
+  rw [hrow0, hrow1]
+
+/-- The count of SYT of shape twoRowYD a b equals ballotSeqCount (a+1) b.
+    Proof: bijection between SYT([a,b]) and ballot subsets (row-1 entries satisfy ballot condition).
+    [OPEN: requires ~150 lines of bijection infrastructure] -/
+theorem card_SYT_twoRowYD (a b : ℕ) (hab : b ≤ a) :
+    Fintype.card (StandardYoungTableau (twoRowYD a b hab)) =
+    LatticePathLGV.ballotSeqCount (a + 1) b := by
+  sorry
+
+/-- Algebraic identity: ballotSeqCount (a+1) b × hookProd([a,b]) = (a+b)!
+    This is the numerical core of the hook-length formula for 2-row shapes. -/
+private lemma two_row_hook_identity (a b : ℕ) (hab : b ≤ a) :
+    LatticePathLGV.ballotSeqCount (a + 1) b *
+    ((a + 1).descFactorial b * (a - b).factorial * b.factorial) =
+    (a + b).factorial := by
+  rcases Nat.eq_zero_or_pos b with rfl | hb
+  · -- b = 0: ballotSeqCount (a+1) 0 = 1, descFactorial b = 1, (a-0)! = a!, 0! = 1
+    simp [LatticePathLGV.ballotSeqCount]
+  -- b ≥ 1, a ≥ b
+  -- Sub-lemma: (a+1).descFactorial b * (a-b)! * (a+1-b) = (a+1)!
+  have hkey : (a + 1).descFactorial b * (a - b).factorial * (a + 1 - b) = (a + 1).factorial := by
+    have h1 : (a + 1 - b).factorial * (a + 1).descFactorial b = (a + 1).factorial :=
+      Nat.factorial_mul_descFactorial (by omega)
+    have h2 : (a + 1 - b).factorial = (a + 1 - b) * (a - b).factorial := by
+      rw [show a + 1 - b = (a - b) + 1 from by omega, Nat.factorial_succ]
+    calc (a + 1).descFactorial b * (a - b).factorial * (a + 1 - b)
+        = (a + 1 - b) * (a - b).factorial * (a + 1).descFactorial b := by ring
+      _ = (a + 1 - b).factorial * (a + 1).descFactorial b := by rw [← h2]
+      _ = (a + 1).factorial := h1
+  -- ballot_formula: ballotSeqCount (a+1) b * (a+b+1) = (a+1-b) * C(a+b+1, a+1)
+  have hbf : LatticePathLGV.ballotSeqCount (a + 1) b * (a + b + 1) =
+      (a + 1 - b) * Nat.choose (a + b + 1) (a + 1) :=
+    LatticePathLGV.ballot_formula (a + 1) b (by omega) (by omega) hb
+  -- C(a+b+1, a+1) * (a+1)! * b! = (a+b+1)!
+  have hcf : Nat.choose (a + b + 1) (a + 1) * (a + 1).factorial * b.factorial =
+      (a + b + 1).factorial := by
+    have := Nat.choose_mul_factorial_mul_factorial (show a + 1 ≤ a + b + 1 by omega)
+    rw [show a + b + 1 - (a + 1) = b from by omega] at this
+    linarith
+  -- (a+b+1)! = (a+b+1) * (a+b)!
+  have hfact : (a + b + 1).factorial = (a + b + 1) * (a + b).factorial :=
+    Nat.factorial_succ _
+  -- Combine: S*D*F*G * ((a+1-b) * (a+b+1)) = (a+b)! * ((a+1-b) * (a+b+1))
+  have hprod :
+      LatticePathLGV.ballotSeqCount (a + 1) b *
+      ((a + 1).descFactorial b * (a - b).factorial * b.factorial) *
+      ((a + 1 - b) * (a + b + 1)) =
+      (a + b).factorial * ((a + 1 - b) * (a + b + 1)) := by
+    calc LatticePathLGV.ballotSeqCount (a + 1) b *
+          ((a + 1).descFactorial b * (a - b).factorial * b.factorial) *
+          ((a + 1 - b) * (a + b + 1))
+        = LatticePathLGV.ballotSeqCount (a + 1) b * (a + b + 1) *
+          ((a + 1).descFactorial b * (a - b).factorial * (a + 1 - b)) *
+          b.factorial := by ring
+      _ = (a + 1 - b) * Nat.choose (a + b + 1) (a + 1) *
+          (a + 1).factorial * b.factorial := by rw [hbf, hkey]
+      _ = (a + 1 - b) * (Nat.choose (a + b + 1) (a + 1) * (a + 1).factorial *
+          b.factorial) := by ring
+      _ = (a + 1 - b) * (a + b + 1).factorial := by rw [hcf]
+      _ = (a + 1 - b) * ((a + b + 1) * (a + b).factorial) := by rw [hfact]
+      _ = (a + b).factorial * ((a + 1 - b) * (a + b + 1)) := by ring
+  exact Nat.eq_of_mul_eq_mul_right (Nat.mul_pos (by omega) (by omega)) hprod
+
+/-- **Hook-length formula for general 2-row Young diagrams.**
+    For a ≥ b ≥ 0: card(SYT([a,b])) × hookProd([a,b]) = (a+b)!
+    Generalizes hook_length_formula_two_rect (a=b=m case).
+    [Conditional on card_SYT_twoRowYD which is sorry] -/
+theorem hook_length_formula_two_row_gen (a b : ℕ) (hab : b ≤ a) :
+    Fintype.card (StandardYoungTableau (twoRowYD a b hab)) *
+    hookProd (twoRowYD a b hab) =
+    (twoRowYD a b hab).card.factorial := by
+  rw [twoRowYD_card a b hab, hookProd_twoRowYD a b hab, card_SYT_twoRowYD a b hab]
+  exact two_row_hook_identity a b hab
+
+-- Numerical verification
+example : LatticePathLGV.ballotSeqCount 3 1 * (2 * 1 * 1) = 2 := by native_decide  -- [2,1]
+example : LatticePathLGV.ballotSeqCount 4 1 * (6 * 1 * 1) = 6 := by native_decide  -- [3,1]
+example : LatticePathLGV.ballotSeqCount 4 2 * (3 * 1 * 2) = 24 := by native_decide -- [3,2]
+example : LatticePathLGV.ballotSeqCount 5 3 * (4 * 1 * 6) = 720 := by native_decide -- [4,3]
+
 end HookLengthFormula
