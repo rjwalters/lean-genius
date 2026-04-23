@@ -175,6 +175,25 @@
       "note": "Generalization to VC classes; foundation of statistical learning theory"
     }
   ],
-  "leanFile": "Proofs/LawsOfLargeNumbersOQ04.lean",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Probability.StrongLaw",
+      "Mathlib.Probability.Independence.Basic",
+      "Mathlib.Probability.IdentDistrib",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "ProbabilityTheory",
+      "Set"
+    ],
+    "namespace": "GlivenkoCantelli",
+    "lineCount": 208,
+    "axiomCount": 3,
+    "theoremCount": 11,
+    "definitionCount": 3,
+    "path": "Proofs/LawsOfLargeNumbersOQ04.lean",
+    "sorries": 0
+  },
   "sorries": 0
 }
