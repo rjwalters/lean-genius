@@ -1,7 +1,7 @@
 {
   "slug": "area-of-circle-oq-05-oq-02",
   "title": "Multivariate Gaussian Integral via Matrix Diagonalization",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -27,12 +27,12 @@
     "goal": "Prove multivariate Gaussian integral via spectral decomposition + Fubini"
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-21",
-    "iteration": 1,
-    "focus": "Read AreaOfCircleOQ05.lean and assess Mathlib spectral theorem API",
+    "phase": "ACT",
+    "since": "2026-04-23",
+    "iteration": 2,
+    "focus": "Complete proof structure with 1 sorry (hquad). Build verified. Aristotle submission pending.",
     "blockers": [],
-    "nextAction": "Read proofs/Proofs/AreaOfCircleOQ05.lean, search Matrix.IsHermitian spectral theorem",
+    "nextAction": "Integrate Aristotle solution for hquad when available",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -40,19 +40,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Problem selected by Seeker. Parent has scalar Gaussian. Key approach: diagonalize A = Q^T D Q, use Fubini and scalar case per eigenvalue.",
-    "builtItems": [],
-    "insights": [
-      "Spectral theorem: symmetric positive-definite A = Q^T D Q, Q orthogonal",
-      "Change of variables y = Qx has Jacobian 1 (orthogonal Q)",
-      "Fubini separates: ∫ e^{-Σ λᵢyᵢ²} = ∏ ∫ e^{-λᵢyᵢ²} = ∏ √(π/λᵢ)",
-      "Product of √(π/λᵢ) = √(πⁿ/det A) via det A = ∏ λᵢ"
+    "progressSummary": "PROGRESS: Full proof structure implemented and build-verified. 1 sorry remains (hquad — quadratic form rewrite via spectral theorem). Submitted to Aristotle.",
+    "builtItems": [
+      "prod_sqrt_eq_sqrt_prod in AreaOfCircleOQ05OQ02.lean:48 (proved, induction)",
+      "diagonal_gaussian in AreaOfCircleOQ05OQ02.lean:73 (proved, Fubini + scalar Gaussian)",
+      "multivariate_gaussian_integral in AreaOfCircleOQ05OQ02.lean:116 (proved except hquad sorry)",
+      "habs proof: det UT = ±1 via unitary group (AreaOfCircleOQ05OQ02.lean:150)",
+      "hmap: measure-preserving change of variables (AreaOfCircleOQ05OQ02.lean:177)",
+      "hcov: integral_map change of variables (AreaOfCircleOQ05OQ02.lean:182)"
     ],
-    "mathlibGaps": [],
+    "insights": [
+      "spectral_theorem uses conjStarAlgAut form not U*diag*Uᵀ directly",
+      "hλ_pos identifier causes parse error in Lean 4 v4.26.0 (λ is keyword)",
+      "map_matrix_volume_pi_eq_smul_volume_pi requires det ≠ 0",
+      "integral_map needs AEMeasurable + AEStronglyMeasurable for the map and function",
+      "det_conjTranspose + star_trivial gives det(Uᵀ) = det(U) for real matrices",
+      "Unitary.mem_iff.mp + star_trivial + nlinarith proves det = ±1 from (det U)^2 = 1"
+    ],
+    "mathlibGaps": [
+      "hquad sorry: xᵀAx = ∑ λᵢ (Uᵀx)ᵢ² via spectral theorem (HARD — Aristotle candidate)",
+      "IsHermitian.spectral_theorem form is conjStarAlgAut not direct matrix product"
+    ],
     "nextSteps": [
-      "Read AreaOfCircleOQ05.lean fully",
-      "Check Matrix.IsHermitian.eigenvectorMatrix in Mathlib",
-      "Search MeasureTheory for orthogonal change of variables"
+      "Integrate Aristotle solution for hquad when available",
+      "Update sorryCount to 0 and status to verified once hquad is proved"
     ]
   },
   "tags": [
@@ -77,7 +88,7 @@
     ]
   },
   "started": "2026-04-21T19:30:00.000Z",
-  "lastUpdate": "2026-04-21T19:30:00.000Z",
+  "lastUpdate": "2026-04-23T02:30:00.000Z",
   "significance": 7,
   "tractability": 7,
   "leanFiles": [
