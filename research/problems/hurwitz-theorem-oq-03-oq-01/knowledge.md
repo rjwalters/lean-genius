@@ -121,3 +121,112 @@ The remaining sorry covers **even non-admissible n** (n = 6, 10, 12, 14, 16, ...
 1. **Even n approach**: For even n, the halving argument: if n-sq identity exists, then (n/2)-sq identity exists. Use this recursively: 6→3 (impossible!), 10→5 (odd, impossible), 12→6→3, etc. May handle all even non-admissible n without Clifford algebra.
 2. **Submit current sorry to Aristotle** (likely HARD, not OPEN — mathematical argument exists via halving or Clifford)
 3. If halving argument works, `hurwitz_only_if` could be fully proved.
+
+---
+
+## Session 2026-04-23 (Session 3) — crossMat_anticommute Proved + Build Errors Fixed
+
+**Mode**: REVISIT (continuing session 2)
+**Outcome**: PROGRESS — proved `crossMat_anticommute`, fixed 5 pre-existing build errors, build passes
+
+### What I Did
+
+1. Proved `crossMat_anticommute` (key structural lemma ~55 lines):
+   - Shows M₂M₃ + M₃M₂ = 0 for crossMat(j₀,j₂) and crossMat(j₀,j₃) with pairwise distinct j₀,j₂,j₃
+   - **Step 1**: `hanti_T`: `colMat(j₂)ᵀ colMat(j₃) + colMat(j₃)ᵀ colMat(j₂) = 0` via cross_polarization with distinct j₂≠j₃
+   - **Step 2**: `hreduce`: `crossMat(j₀,ja)ᵀ * crossMat(j₀,jb) = colMat(ja)ᵀ * colMat(jb)` via colMat_mulTrans
+   - **Step 3**: anticommutativity at transpose level using hreduce + hanti_T
+   - **Step 4**: use crossMat_skewSym (M^T = -M) to convert transpose anticommutativity to direct anticommutativity
+   - Key tactics: `rw [← neg_mul]`, `abel`, `exact neg_eq_zero.mp hkey.symm`
+
+2. Fixed `crossMat_skewSym` proof: after `simp`, factor ordering in the sum is `k` before `j` (not `j` before `k`). Updated `hLHS` accordingly, fixed cross_polarization call order.
+
+3. Fixed `right_polarization` (lines 547-551): `rw [← nsi.norm_mul]` closes the goal entirely; removed spurious `; ring` that caused "No goals" error.
+
+4. Fixed `no_odd_nsquare`: replaced `show -(M * M) = (-M) * M from by ring` with `rw [← neg_mul]` (ring doesn't work for non-commutative matrix rings).
+
+5. Fixed `hurwitz_only_if`: replaced `Nat.eq_or_ne` (unknown) with `eq_or_ne` (5 occurrences).
+
+6. Fixed `eight_square_identity_exists`: changed `theorem` to `def` (NSquareIdentity 8 is a structure, not a Prop).
+
+7. Fixed `eight_square_identity_norm`: replaced `simp only [normSq, eightMul, sq, sum_fin_eight]; ring` with:
+   ```lean
+   simp only [normSq, eightMul, sum_fin_eight, Fin.isValue]
+   simp [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+         Matrix.cons_val_two, Matrix.cons_val_three]
+   ring
+   ```
+   The second `simp` (not `only`) evaluates `![c₀, ..., c₇] i` using Matrix.cons_val lemmas; increased heartbeats to 32M.
+
+### Key Findings
+
+**crossMat_anticommute mathematical structure**: M₂M₃ + M₃M₂ = 0 means crossMat matrices are generators of a Clifford algebra Cl(0,n-1). The n-1 matrices M_j = crossMat(j₀, j) for j ≠ j₀ satisfy:
+- M_j^T = -M_j (skew-symmetric)  
+- M_j^T M_j = I (orthogonal)
+- M_j M_k + M_k M_j = 0 for j ≠ k (anticommute)
+
+These are exactly the Clifford relations for Cl(0,n-1). A real representation of Cl(0,n-1) of dimension n gives n×n matrices. But for n ∉ {1,2,4,8}, no such representation exists (min dim > n). This is the final blocker — proving the min rep dim bound requires Radon-Hurwitz theory (~1000 lines not in Mathlib).
+
+**`ring` fails for non-commutative types**: Matrix rings over ℝ don't satisfy the commutativity assumption that `ring` requires. Use `abel` for additive ring goals, `neg_mul`/`mul_neg` for sign flips.
+
+**`Matrix.cons_val_*` pattern**: For `![c₀,...,c₇] : Fin 8 → ℝ`, a second `simp` (not `only`) with `Matrix.cons_val_zero, cons_val_one, head_cons, cons_val_two, cons_val_three` plus all default simp lemmas correctly evaluates all 8 indices. Needed for `eight_square_identity_norm`.
+
+### Current sorry count: 1
+
+The remaining sorry covers **even non-admissible n** (n = 6, 10, 12, ...):
+- **Mathematical obstacle**: Clifford algebra Cl(n-1) min representation dim > n requires Radon-Hurwitz numbers (not in Mathlib)
+- **Alternative path**: halving argument — if n-sq identity exists then (n/2)-sq identity exists. Would give 6→3, 10→5, 12→6→3, etc. recursively. Each reduction step is ~50 lines; worth attempting next session.
+
+### Files Modified
+
+- `proofs/Proofs/HurwitzTheorem.lean` (+96 lines: crossMat_anticommute + 6 build error fixes)
+
+### Next Steps
+
+1. **Attempt halving argument**: prove `halving_lemma`: NSquareIdentity n → NSquareIdentity (n/2). Key: block-matrix decomposition. If proved, recursion closes all even non-admissible cases.
+2. **If halving works**: hurwitz_only_if fully proved with 0 sorries
+3. **If halving blocks**: document as HARD blocker, set problem status to blocked
+
+---
+
+## Session 2026-04-23 (Session 4) — crossMat_sq_neg_one + Even-n Blocker Analysis
+
+**Mode**: REVISIT (continuing session 3)
+**Outcome**: PROGRESS — proved `crossMat_sq_neg_one`, confirmed even-n BLOCKED, embedded Bott periodicity table in sorry comment
+
+### What I Did
+
+1. Proved `crossMat_sq_neg_one` (M² = -I): extracted from implicit proof in `no_odd_nsquare`. 12 lines.
+2. Used `crossMat_sq_neg_one` to simplify `no_odd_nsquare` (4-line inline proof → 1-line application).
+3. Exhaustively analyzed paths to eliminate the even-n sorry — all require Clifford algebra structure theorem:
+   - Halving argument: insufficient for n=16,32,... (powers of 2 ≥ 16 reduce to admissible 8)
+   - Volume element P = M₁...M_{n-1}: commutes with M_j (not anticommutes), no contradiction
+   - Trace/det over ℝ: signs work out for even n, no contradiction
+   - Complexification: reduces to Cl_6(ℂ) simplicity (= Bott periodicity)
+4. Added precise Bott periodicity table to sorry comment.
+
+### Key Findings
+
+**Halving is insufficient for all even non-admissible n**: Handles n=6,10,12,14,... but NOT n=16,32,64,... (where repeated halving reaches admissible n=8).
+
+**Bott periodicity table (sole missing piece)**:
+| n  | Cl(0,n-1) | Min rep dim | Admissible? |
+|----|-----------|-------------|-------------|
+| 2  | ℂ         | 2           | ✓           |
+| 4  | ℍ         | 4           | ✓           |
+| 6  | M(4,ℂ)   | 8           | ✗           |
+| 8  | M(8,ℝ)²  | 8           | ✓           |
+| 10 | M(16,ℝ)  | 16          | ✗           |
+
+**Volume element P = M₁...M_{n-1}**: For n=2k (k odd), P² = -I. P commutes with all M_j. This is a complex structure, making M_j ℂ-antilinear — but showing 2k-2 ℂ-linear anticommuting maps can't exist in M_k(ℂ) requires Cl_{2k-2}(ℂ) being simple, which IS Bott periodicity.
+
+### Files Modified
+
+- `proofs/Proofs/HurwitzTheorem.lean` (+15 net: crossMat_sq_neg_one + improved sorry comment, 2042 lines total)
+- `src/data/research/problems/hurwitz-theorem-oq-03-oq-01.json`
+
+### Next Steps
+
+1. **Track Mathlib**: When Bott periodicity for Clifford algebras is formalized, sorry closes directly.
+2. **Gallery status**: Proof maximally complete — 1 sorry, 0 axioms, badge `wip`. No further progress possible without Clifford library.
+3. **Alternative**: Build Artin-Wedderburn for matrix algebras (~200 lines) as stepping stone toward Bott.
