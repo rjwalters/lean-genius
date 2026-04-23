@@ -60,9 +60,9 @@
       "independenceNumber: cardinal-valued graph invariant",
       "GeneralConjecture: $500 prize problem"
     ],
-    "axiomCount": 3,
+    "axiomCount": 4,
     "lineCount": 262,
-    "assumptions": "3 axiom(s) and 10 sorry(s). See the Lean source for details."
+    "assumptions": "4 axioms: critical_case_open, MartinsAxiom, ordinal_ramsey, general_conjecture_open. 10 sorries remain."
   },
   "sections": [
     {
@@ -206,7 +206,7 @@
     ],
     "namespace": "Erdos601",
     "lineCount": 262,
-    "axiomCount": 3,
+    "axiomCount": 4,
     "theoremCount": 19,
     "definitionCount": 13,
     "sorries": 10,
