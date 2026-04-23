@@ -4,7 +4,7 @@
   "slug": "erdos-327-oq-01",
   "description": "Explicit parametrization of all pairs (a,b) with (a+b)|ab via coprime factorizations. Proves the construction, verifies concrete examples, shows (3,6) is the smallest such pair, and counts pairs in {1,...,N}.",
   "meta": {
-    "author": "Erd\u0151s (generalized)",
+    "author": "Erdős (generalized)",
     "sourceUrl": "https://erdosproblems.com/327",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos327OQ01.lean",
@@ -15,7 +15,7 @@
       "divisibility",
       "open question"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 327,
     "erdosUrl": "https://erdosproblems.com/327",
@@ -32,16 +32,16 @@
     ]
   },
   "overview": {
-    "text": "A formalization studying the structure of sum-divides-product pairs: ordered pairs (a,b) of positive integers with (a+b) | ab. Uses the GCD characterization from Erd\u0151s #327 to give an explicit parametrization: every such pair has the form (m(a'+b')a', m(a'+b')b') where gcd(a',b')=1 and m \u2265 1. Proves this construction works, verifies 5 concrete examples and 2 non-examples, proves (3,6) is the smallest sum-dvd-prod pair with a < b, defines pair-counting functions, and states the density conjecture: the count in {1,...,N} grows as \u0398(N log N).",
-    "historicalContext": "The sum-divides-product relation (a+b) | ab is equivalent to 1/a + 1/b = k/lcm(a,b) for some integer k, and in particular is related to Egyptian fraction representations. Writing d = gcd(a,b), a = d\u00b7a', b = d\u00b7b' with gcd(a',b') = 1, we have a+b = d(a'+b') and ab = d\u00b2\u00b7a'\u00b7b', so (a+b)|ab \u2194 (a'+b') | d\u00b7a'\u00b7b'. Since gcd(a'+b', a'\u00b7b') = 1 (coprimality of a', b' implies gcd(a'+b', a') = gcd(b',a') = 1 and gcd(a'+b', b') = 1), this simplifies to (a'+b') | d, i.e., d = m\u00b7(a'+b') for some positive integer m. This GCD characterization was the key insight in Erd\u0151s #327. Problem #327 asked whether one can find a set A \u2282 {1,...,N} of size > N^{1-\u03b5} avoiding all sum-dvd-prod pairs \u2014 the density of such pairs (conjectured \u0398(N log N)) determines the difficulty of avoidance. Egyptian fraction connections appear because 1/a + 1/b = (a+b)/(ab), which is an integer reciprocal precisely when (a+b) | ab.",
+    "text": "A formalization studying the structure of sum-divides-product pairs: ordered pairs (a,b) of positive integers with (a+b) | ab. Uses the GCD characterization from Erdős #327 to give an explicit parametrization: every such pair has the form (m(a'+b')a', m(a'+b')b') where gcd(a',b')=1 and m ≥ 1. Proves this construction works, verifies 5 concrete examples and 2 non-examples, proves (3,6) is the smallest sum-dvd-prod pair with a < b, defines pair-counting functions, and states the density conjecture: the count in {1,...,N} grows as Θ(N log N).",
+    "historicalContext": "The sum-divides-product relation (a+b) | ab is equivalent to 1/a + 1/b = k/lcm(a,b) for some integer k, and in particular is related to Egyptian fraction representations. Writing d = gcd(a,b), a = d·a', b = d·b' with gcd(a',b') = 1, we have a+b = d(a'+b') and ab = d²·a'·b', so (a+b)|ab ↔ (a'+b') | d·a'·b'. Since gcd(a'+b', a'·b') = 1 (coprimality of a', b' implies gcd(a'+b', a') = gcd(b',a') = 1 and gcd(a'+b', b') = 1), this simplifies to (a'+b') | d, i.e., d = m·(a'+b') for some positive integer m. This GCD characterization was the key insight in Erdős #327. Problem #327 asked whether one can find a set A ⊂ {1,...,N} of size > N^{1-ε} avoiding all sum-dvd-prod pairs — the density of such pairs (conjectured Θ(N log N)) determines the difficulty of avoidance. Egyptian fraction connections appear because 1/a + 1/b = (a+b)/(ab), which is an integer reciprocal precisely when (a+b) | ab.",
     "problemStatement": "Parametrize all pairs $(a,b)$ with $(a+b) \\mid ab$ and determine the asymptotic count $\\#\\{(a,b) : 1 \\leq a < b \\leq N,\\; (a+b) \\mid ab\\}$.",
-    "proofStrategy": "Direct algebraic verification: expand a = m*s*a', b = m*s*b' with s = a'+b', and show a+b = m*s\u00b2 divides a*b = m\u00b2*s\u00b2*a'*b'. The distinctness and ordering proofs use positivity of the multiplier m*s. The minimality of (3,6) is verified by interval_cases exhaustion over a,b \u2264 5.",
+    "proofStrategy": "Direct algebraic verification: expand a = m*s*a', b = m*s*b' with s = a'+b', and show a+b = m*s² divides a*b = m²*s²*a'*b'. The distinctness and ordering proofs use positivity of the multiplier m*s. The minimality of (3,6) is verified by interval_cases exhaustion over a,b ≤ 5.",
     "keyInsights": [
-      "Every sum-dvd-prod pair (a,b) is uniquely determined by coprime parts (a', b') and a multiplier m, via a = m(a'+b')a', b = m(a'+b')b' \u2014 the GCD characterization gives (a'+b') | gcd(a,b), and the multiplier m = gcd(a,b)/(a'+b') is the only free parameter",
-      "The algebraic proof of construction is two lines: a+b = m(a'+b')\u00b2 and a\u00b7b = m\u00b2(a'+b')\u00b2\u00b7a'b' = (a+b)\u00b7(m\u00b7a'b'), so the quotient is explicitly m\u00b7a'\u00b7b'",
-      "(3, 6) is the smallest sum-dvd-prod pair: verified by exhaustive interval_cases over all (a,b) with b \u2264 5, each dispatched by omega. It corresponds to the coprime pair (1,2) with m=1 and sum s=3",
-      "Coprimality of a', b' implies gcd(a'+b', a'b') = 1: this is the hidden key to the GCD characterization \u2014 it means (a'+b') and the product a'b' are coprime, so the only way (a'+b') | d\u00b7a'b' is if (a'+b') | d",
-      "The pair count grows as \u0398(N log N): for each coprime pair (a',b') with sum s = a'+b', valid multipliers satisfy m \u2264 N/(s\u00b7b') giving ~N/(s\u00b7b') pairs; summing over coprime pairs produces a harmonic-type series giving the log correction",
+      "Every sum-dvd-prod pair (a,b) is uniquely determined by coprime parts (a', b') and a multiplier m, via a = m(a'+b')a', b = m(a'+b')b' — the GCD characterization gives (a'+b') | gcd(a,b), and the multiplier m = gcd(a,b)/(a'+b') is the only free parameter",
+      "The algebraic proof of construction is two lines: a+b = m(a'+b')² and a·b = m²(a'+b')²·a'b' = (a+b)·(m·a'b'), so the quotient is explicitly m·a'·b'",
+      "(3, 6) is the smallest sum-dvd-prod pair: verified by exhaustive interval_cases over all (a,b) with b ≤ 5, each dispatched by omega. It corresponds to the coprime pair (1,2) with m=1 and sum s=3",
+      "Coprimality of a', b' implies gcd(a'+b', a'b') = 1: this is the hidden key to the GCD characterization — it means (a'+b') and the product a'b' are coprime, so the only way (a'+b') | d·a'b' is if (a'+b') | d",
+      "The pair count grows as Θ(N log N): for each coprime pair (a',b') with sum s = a'+b', valid multipliers satisfy m ≤ N/(s·b') giving ~N/(s·b') pairs; summing over coprime pairs produces a harmonic-type series giving the log correction",
       "pairCountAsymptotics is stated as a Prop (not an axiom or theorem), making it a definition of an open mathematical statement that can be formally referred to and hypothetically assumed without polluting the axiom count"
     ],
     "prerequisites": [
@@ -61,7 +61,7 @@
       "title": "Explicit Construction",
       "startLine": 26,
       "endLine": 50,
-      "summary": "Proves that (m(a'+b')a', m(a'+b')b') satisfies sum-divides-product for coprime a', b', and that the pair is distinct when a' \u2260 b'.",
+      "summary": "Proves that (m(a'+b')a', m(a'+b')b') satisfies sum-divides-product for coprime a', b', and that the pair is distinct when a' ≠ b'.",
       "mathContext": "If $\\gcd(a', b') = 1$ and $m \\geq 1$, then $(m s a', m s b')$ with $s = a' + b'$ satisfies $(a+b) \\mid ab$ since $a+b = m s^2$ divides $a b = m^2 s^2 a' b'$."
     },
     {
@@ -77,7 +77,7 @@
       "title": "Classification of Small Pairs",
       "startLine": 78,
       "endLine": 86,
-      "summary": "Proves that (3,6) is the smallest sum-dvd-prod pair by exhaustive check of all pairs with b \u2264 5.",
+      "summary": "Proves that (3,6) is the smallest sum-dvd-prod pair by exhaustive check of all pairs with b ≤ 5.",
       "mathContext": "For all $1 \\leq a < b \\leq 5$, $(a+b) \\nmid ab$. The first pair is $(3,6)$ from coprime $(1,2)$."
     },
     {
@@ -85,18 +85,18 @@
       "title": "Pair Counting and Density",
       "startLine": 88,
       "endLine": 135,
-      "summary": "Defines sumDvdProdPairs and numSumDvdProdPairs, proves the count is 0 for N \u2264 5 and positive for N \u2265 6. States the density conjecture: pair count ~ C\u00b7N\u00b7log(N).",
+      "summary": "Defines sumDvdProdPairs and numSumDvdProdPairs, proves the count is 0 for N ≤ 5 and positive for N ≥ 6. States the density conjecture: pair count ~ C·N·log(N).",
       "mathContext": "$\\#\\{(a,b) : 1 \\leq a < b \\leq N,\\; (a+b) \\mid ab\\} = 0$ for $N \\leq 5$, positive for $N \\geq 6$, conjectured $\\Theta(N \\log N)$."
     }
   ],
   "conclusion": {
     "summary": "An axiom-free formalization giving the explicit parametrization of all sum-divides-product pairs. The bijection between pairs (a,b) with (a+b)|ab and triples (a', b', m) with gcd(a',b')=1 provides the structural foundation for counting these pairs.",
-    "implications": "The parametrization converts the sum-dvd-prod avoidance question from Erd\u0151s #327 into a covering problem: how efficiently can a set A avoid all arithmetic progressions of the form {m\u00b7s\u00b7a', m\u00b7s\u00b7b'} for coprime (a',b')? This viewpoint connects to Ramsey theory and the structure of sum-free sets.",
+    "implications": "The parametrization converts the sum-dvd-prod avoidance question from Erdős #327 into a covering problem: how efficiently can a set A avoid all arithmetic progressions of the form {m·s·a', m·s·b'} for coprime (a',b')? This viewpoint connects to Ramsey theory and the structure of sum-free sets.",
     "openQuestions": [
-      "What is the exact constant C in the pair count asymptotic C\u00b7N\u00b7log(N)? It should be expressible as a product involving \u03b6(2) and a sum over coprime pairs",
-      "How does the pair count change for the variant (a+b)|2ab from Erd\u0151s #327? The GCD analysis is more complex when the factor 2 is present",
-      "Prove the bijectivity direction: that every sum-dvd-prod pair arises from exactly one coprime triple (a',b',m) \u2014 the SumDvdProdTriple definition captures this but leaves it as a Prop",
-      "Can the density result \u0398(N log N) be proved in Lean using Mathlib's analytic number theory, e.g., via Mertens-type bounds on the sum over coprime pairs?"
+      "What is the exact constant C in the pair count asymptotic C·N·log(N)? It should be expressible as a product involving ζ(2) and a sum over coprime pairs",
+      "How does the pair count change for the variant (a+b)|2ab from Erdős #327? The GCD analysis is more complex when the factor 2 is present",
+      "Prove the bijectivity direction: that every sum-dvd-prod pair arises from exactly one coprime triple (a',b',m) — the SumDvdProdTriple definition captures this but leaves it as a Prop",
+      "Can the density result Θ(N log N) be proved in Lean using Mathlib's analytic number theory, e.g., via Mertens-type bounds on the sum over coprime pairs?"
     ]
   },
   "crossReferences": [
@@ -135,12 +135,12 @@
     {
       "name": "smallest_sumDvdProd_pair",
       "type": "proved",
-      "description": "(3,6) is the smallest sum-dvd-prod pair (exhaustive check for b \u2264 5)"
+      "description": "(3,6) is the smallest sum-dvd-prod pair (exhaustive check for b ≤ 5)"
     },
     {
       "name": "numSumDvdProdPairs_pos",
       "type": "proved",
-      "description": "At least one pair exists for N \u2265 6"
+      "description": "At least one pair exists for N ≥ 6"
     },
     {
       "name": "construction_produces_valid_pairs",
@@ -150,10 +150,10 @@
   ],
   "references": [
     {
-      "authors": "Erd\u0151s, Paul; Graham, Ronald",
+      "authors": "Erdős, Paul; Graham, Ronald",
       "title": "Old and new problems and results in combinatorial number theory",
       "year": "1980",
-      "venue": "L'Enseignement Math\u00e9matique",
+      "venue": "L'Enseignement Mathématique",
       "note": "Original statement of Problem #327 on sum-divides-product avoidance"
     }
   ],
