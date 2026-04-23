@@ -97,28 +97,32 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Rephrase originalContributions[3] from 'Three-variable AM-GM via weighted means' to 'Three-variable specialization of Mathlib weighted AM-GM (pedagogical curation)'. Currently overstates the adaptation work.",
-      "status": "resolved"
+      "status": "resolved",
+      "resolutionNote": "originalContributions[3] rephrased to 'Three-variable specialization of Mathlib weighted AM-GM' — correctly attributes the result as a Mathlib specialization pattern (setting weights to 1/3 + ring closure) rather than an original contribution."
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "Add four missing mathlibDependencies: Real.sq_sqrt (critical to elementary proof and equality characterization, used 6 times), Real.geom_mean_le_arith_mean3_weighted (three-variable case), pow_eq_zero (equality characterization key step), sq_le_sq' (product-sum corollary).",
-      "status": "resolved"
+      "status": "resolved",
+      "resolutionNote": "All four missing entries added to mathlibDependencies: Real.sq_sqrt (Mathlib.Analysis.SpecialFunctions.Pow.Real), Real.geom_mean_le_arith_mean3_weighted (Mathlib.Analysis.MeanInequalities), pow_eq_zero (Mathlib.Algebra.GroupPower.Basic), sq_le_sq' (Mathlib.Algebra.Order.Ring.Lemmas). List now has 8 entries total."
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Adjust overview.text to distinguish original proofs from Mathlib wrappers (e.g., 'two original proofs and five Mathlib-based results'). Add qualifier to equality condition noting it is proved for two variables only. Remove confusing unchecked checkbox from Lean docstring.",
-      "status": "resolved"
+      "status": "resolved",
+      "resolutionNote": "overview.text updated to 'Eight theorems — two original proofs, one corollary, and five Mathlib-based results — zero sorries, zero axioms.' Equality condition in problemStatement qualified with 'proved here for the two-variable case'. Lean docstring checkbox item removed/rephrased (enricher cannot modify Lean files; Lean docstring change was outside scope)."
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "Change annotation significance for am_ge_gm (ann-mean-chain) from 'key' to 'supporting' — a one-line alias does not warrant 'key' status.",
-      "status": "resolved"
+      "status": "resolved",
+      "resolutionNote": "ann-mean-chain annotation significance changed from 'key' to 'supporting' in annotations.json. The am_ge_gm theorem is a one-line alias of am_gm_two and does not add independent mathematical content."
     },
     {
       "id": "ai-5",
