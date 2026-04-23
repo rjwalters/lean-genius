@@ -60,6 +60,18 @@
     "prerequisites": ["ENNReal.coe_add", "ENNReal.coe_inj", "NNReal.eq_zero_of_add_eq_self"]
   },
   {
+    "id": "ann-hausdorff-free-subgroup",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": { "startLine": 145, "endLine": 191 },
+    "type": "theorem",
+    "title": "Hausdorff's Free Subgroup of SO(3): The Algebraic Engine",
+    "content": "Section III defines the rigid motion types: RigidMotion3 (isometric equivalences of ℝ³), unitBall3 (closed unit ball), and unitSphere3 (unit sphere S²). Section IV states Hausdorff's theorem (1914): SO(3) contains a free subgroup of rank 2. In Lean, this is axiomatized with sorry: there exist linear isometries φ, ψ on ℝ³ such that the induced group homomorphism from FreeGroup Bool (the free group on two generators) is injective. This is the algebraic cornerstone of Banach-Tarski — the non-amenability of SO(3) flows from this free subgroup.",
+    "mathContext": "The explicit generators: $\\varphi$ = rotation by $\\arccos(1/3)$ about the $z$-axis, $\\psi$ = rotation by $\\arccos(1/3)$ about the $x$-axis. Their rotation matrices have entries involving $2\\sqrt{2}/3$ (from $\\sin(\\arccos(1/3)) = \\sqrt{1-1/9} = 2\\sqrt{2}/3$). Freeness is proved by induction on word length: any nontrivial reduced word in $\\varphi^{\\pm 1}, \\psi^{\\pm 1}$ applied to the vector $(0, 0, 1)$ produces a vector with irrational $z$-coordinate (a number-theoretic argument in $\\mathbb{Z}[\\sqrt{2}]$). The same angle $\\arccos(1/3)$ appears in the Dehn invariant of the tetrahedron — the irrationality of $\\arccos(1/3)/\\pi$ proved in DissectionOfCubesOQ02 is structurally the same fact exploited here.",
+    "significance": "key",
+    "relatedConcepts": ["free group", "SO(3)", "isometric equivalence", "arccos(1/3)", "word problem"],
+    "prerequisites": ["LinearIsometryEquiv", "FreeGroup", "Function.Injective", "EuclideanSpace ℝ (Fin 3)"]
+  },
+  {
     "id": "ann-banach-tarski",
     "proofId": "lebesgue-measure-oq-06",
     "range": { "startLine": 192, "endLine": 226 },
@@ -70,6 +82,18 @@
     "significance": "key",
     "relatedConcepts": ["isometry", "unit ball", "finitely many pieces", "Axiom of Choice", "non-measurable sets"],
     "prerequisites": ["IsometryEquiv", "Metric.closedBall", "EuclideanSpace", "Set.image"]
+  },
+  {
+    "id": "ann-nonmeasurability",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": { "startLine": 227, "endLine": 248 },
+    "type": "theorem",
+    "title": "Non-Measurability of Banach-Tarski Pieces (Axiomatized)",
+    "content": "The theorem `banach_tarski_pieces_nonmeasurable` states: there exists a subset A of unitBall3 that is not Lebesgue measurable (¬MeasurableSet A). This is a corollary of Banach-Tarski but is stated separately because it carries independent conceptual weight: the pieces MUST be non-measurable (not just constructed non-measurably). The proof is axiomatized with sorry. The argument: if all pieces were measurable with finite measure, then additivity of Lebesgue measure would give λ(B³) = λ(B³) + λ(B³), forcing λ(B³) = 0 or ∞ — but λ(B³) = 4π/3 is finite and nonzero.",
+    "mathContext": "Let $P_1, \\ldots, P_n$ be measurable pieces partitioning $B^3$. Since Lebesgue measure is rigid-motion invariant: $\\lambda(B^3) = \\sum_i \\lambda(P_i) = \\sum_i \\lambda(g_i P_i)$ and $\\lambda(B^3) = \\sum_i \\lambda(P_i) = \\sum_i \\lambda(h_i P_i)$. Adding both equations: $2\\lambda(B^3) = \\lambda(B^3) + \\lambda(B^3)$, so $2 \\cdot \\frac{4\\pi}{3} = \\frac{4\\pi}{3}$, a contradiction. Therefore at least one piece is non-measurable. This argument mirrors the abstract `paradoxical_no_finite_measure` theorem proved earlier in the file, instantiated with Lebesgue measure and the unit ball.",
+    "significance": "important",
+    "relatedConcepts": ["Lebesgue measure", "MeasurableSet", "rigid-motion invariance", "measure contradiction"],
+    "prerequisites": ["MeasureTheory.Measure.lebesgue", "MeasurableSet", "banach_tarski", "paradoxical_no_finite_measure"]
   },
   {
     "id": "ann-amenability",
