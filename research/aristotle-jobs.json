@@ -3432,7 +3432,7 @@
       "problem_id": "erdos-476",
       "submitted": "unknown",
       "status": "completed",
-      "outcome": "No improvement (recovered from server)",
+      "outcome": "1 sorries remaining",
       "notes": "Recovered from server at 2026-04-21T13:14:56Z. No sorry reduction."
     },
     {
@@ -3443,6 +3443,16 @@
       "status": "PENDING_SUBMISSION",
       "submitted": null,
       "notes": "Submit when Aristotle pipeline backlog clears (14 untracked COMPLETE jobs). vosper_ap_sdiff_card in companion is now proved in main file."
+    },
+    {
+      "project_id": "fc4ab19a-b8c8-4494-a33a-6753d0846757",
+      "file": "proofs/Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean",
+      "problem_id": "baselproblemoq01oq01oq02",
+      "submitted": "unknown",
+      "status": "integrated",
+      "outcome": "1 theorems proved via server recovery",
+      "theorems_proved": 1,
+      "notes": "Recovered and integrated from server at 2026-04-23T13:21:16Z"
     }
   ]
 }

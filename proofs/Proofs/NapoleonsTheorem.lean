@@ -1,3 +1,4 @@
+import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Complex.Exponential
@@ -285,11 +286,11 @@ theorem inner_napoleon_rotation (z₁ z₂ z₃ : ℂ) :
     have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := Real.mul_self_sqrt (by norm_num : (3:ℝ) ≥ 0)
     nlinarith [z₁.re, z₂.re, z₃.re, z₁.im, z₂.im, z₃.im,
                sq_nonneg (z₁.re - z₂.re), sq_nonneg (z₁.im - z₂.im)]
-  · simp only [Complex.add_im, Complex.sub_im, Complex.mul_im, Complex.div_ofNat,
-      Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, Complex.one_im]
-    have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := Real.mul_self_sqrt (by norm_num : (3:ℝ) ≥ 0)
-    nlinarith [z₁.re, z₂.re, z₃.re, z₁.im, z₂.im, z₃.im,
-               sq_nonneg (z₁.re - z₂.re), sq_nonneg (z₁.im - z₂.im)]
+  · simp only [Complex.add_im, Complex.sub_im, Complex.mul_im, Complex.add_re, Complex.sub_re,
+      Complex.mul_re, Complex.div_ofNat,
+      Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im,
+      Complex.one_im, Complex.one_re]
+    ring
 
 /-- The inner Napoleon triangle is also equilateral. -/
 theorem inner_napoleons_theorem (z₁ z₂ z₃ : ℂ) :
