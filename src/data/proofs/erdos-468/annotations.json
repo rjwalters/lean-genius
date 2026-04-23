@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-e468-header",
+    "proofId": "erdos-468",
+    "range": { "startLine": 1, "endLine": 16 },
+    "type": "context",
+    "title": "Erdős Problem #468: Two Open Questions on Partial Divisor Sums",
+    "content": "The module header poses two interconnected open questions from Erdős and Graham's 1980 monograph. For each $n$, the partial sums $D_n$ form a finite set of integers. Question 1 asks about the growth of new contributions — how many elements of $D_n$ are genuinely new (not in $\\bigcup_{m < n} D_m$)? Question 2 introduces the first-appearance function $f(N) = \\min\\{n : N \\in D_n\\}$ and asks whether it is sublinear.\n\nThe problem is notable for its elementary formulation hiding deep difficulty. The divisors of $n$ grow multiplicatively, but their partial sums are additive. Understanding when a given number $N$ first appears as a partial divisor sum requires understanding the interface between multiplication and addition — a notoriously hard regime in number theory.",
+    "mathContext": "$D_n = \\{d_1, d_1+d_2, \\ldots, \\sum_{i=1}^k d_i\\}$ where $1 < d_1 < \\cdots < d_k$ are divisors of $n$. Questions: (1) $|D_n \\setminus \\bigcup_{m<n} D_m|$ as $n \\to \\infty$; (2) Is $f(N) = \\min\\{n : N \\in D_n\\} = o(N)$?",
+    "significance": "context",
+    "relatedConcepts": ["divisor sums", "partial sums", "first-appearance function", "additive number theory", "Erdős–Graham problems"],
+    "prerequisites": ["elementary number theory", "divisor functions", "asymptotic notation"]
+  },
+  {
     "id": "ann-e468-imports",
     "proofId": "erdos-468",
     "range": {
