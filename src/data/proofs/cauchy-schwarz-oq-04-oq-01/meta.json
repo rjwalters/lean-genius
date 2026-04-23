@@ -96,23 +96,23 @@
   "crossReferences": [
     {
       "slug": "cauchy-schwarz",
-      "title": "Cauchy-Schwarz Inequality",
-      "relationship": "parent — proves CS in three forms including finite sums via EuclideanSpace"
+      "relationship": "related",
+      "description": "Cauchy-Schwarz Inequality"
     },
     {
       "slug": "cauchy-schwarz-oq-04",
-      "title": "Cauchy-Schwarz Equality: Exact Proportionality Constant",
-      "relationship": "extends — characterizes equality case, dual to the inequality proved here"
+      "relationship": "related",
+      "description": "Cauchy-Schwarz Equality: Exact Proportionality Constant"
     },
     {
       "slug": "cauchy-schwarz-integral",
-      "title": "Cauchy-Schwarz Integral Inequality",
-      "relationship": "parallel — the continuous (integral) analogue of the discrete sum inequality proved here"
+      "relationship": "related",
+      "description": "Cauchy-Schwarz Integral Inequality"
     },
     {
       "slug": "amgm-inequality",
-      "title": "AM-GM Inequality",
-      "relationship": "sibling — another fundamental inequality; both CS and AM-GM are special cases of Jensen's inequality for convex functions"
+      "relationship": "related",
+      "description": "AM-GM Inequality"
     }
   ],
   "leanFile": {

@@ -1,6 +1,6 @@
 {
   "id": "erdos-109",
-  "title": "Erd\u0151s Problem #109: The Sumset Conjecture",
+  "title": "Erdős Problem #109: The Sumset Conjecture",
   "slug": "erdos-109",
   "description": "Any subset A of natural numbers with positive upper density contains a sumset B + C where both B and C are infinite.",
   "meta": {
@@ -53,14 +53,14 @@
     "assumptions": "1 axiom: moreira_richter_robertson. See Lean source for the complete statement."
   },
   "overview": {
-    "historicalContext": "The Erd\u0151s Sumset Conjecture was a longstanding open problem connecting density and additive structure. Erd\u0151s asked whether sets of positive upper density must contain rich additive structure in the form of infinite sumsets.\n\nThe conjecture was proved in 2019 by Joel Moreira, Florian Richter, and Donald Robertson in their paper 'A proof of a sumset conjecture of Erd\u0151s' published in the Annals of Mathematics. This was a major breakthrough in additive combinatorics, establishing a fundamental connection between asymptotic density and additive structure.\n\nThe proof uses sophisticated techniques from ergodic theory, including the Furstenberg correspondence principle and recurrence along polynomial sequences. This connects to Szemer\u00e9di's theorem (arithmetic progressions in dense sets) but establishes a different kind of additive structure.",
-    "problemStatement": "Let $A \\subseteq \\mathbb{N}$ have positive upper density, meaning\n$$\\limsup_{N \\to \\infty} \\frac{|A \\cap \\{1,\\ldots,N\\}|}{N} > 0$$\n\nMust $A$ contain a sumset $B + C = \\{b + c : b \\in B, c \\in C\\}$ where both $B$ and $C$ are infinite?\n\n**Answer**: YES \u2014 proved by Moreira, Richter, and Robertson (2019).",
+    "historicalContext": "The Erdős Sumset Conjecture was a longstanding open problem connecting density and additive structure. Erdős asked whether sets of positive upper density must contain rich additive structure in the form of infinite sumsets.\n\nThe conjecture was proved in 2019 by Joel Moreira, Florian Richter, and Donald Robertson in their paper 'A proof of a sumset conjecture of Erdős' published in the Annals of Mathematics. This was a major breakthrough in additive combinatorics, establishing a fundamental connection between asymptotic density and additive structure.\n\nThe proof uses sophisticated techniques from ergodic theory, including the Furstenberg correspondence principle and recurrence along polynomial sequences. This connects to Szemerédi's theorem (arithmetic progressions in dense sets) but establishes a different kind of additive structure.",
+    "problemStatement": "Let $A \\subseteq \\mathbb{N}$ have positive upper density, meaning\n$$\\limsup_{N \\to \\infty} \\frac{|A \\cap \\{1,\\ldots,N\\}|}{N} > 0$$\n\nMust $A$ contain a sumset $B + C = \\{b + c : b \\in B, c \\in C\\}$ where both $B$ and $C$ are infinite?\n\n**Answer**: YES — proved by Moreira, Richter, and Robertson (2019).",
     "text": "Any subset A of natural numbers with positive upper density contains a sumset B + C where both B and C are infinite.",
-    "proofStrategy": "We formalize the problem by defining:\n\n1. **Upper density**: Using limsup of the counting function ratio\n2. **Lower density**: Using liminf, with a proof that lower \u2264 upper\n3. **Sumsets**: Custom definition B +\u209b C with commutativity proof\n4. **Main theorem**: Axiomatized as the Moreira-Richter-Robertson theorem\n\nThe actual proof (not formalized) uses:\n- Furstenberg correspondence: Convert density to measure theory\n- IP-sets and recurrence along polynomial sequences\n- Sophisticated ergodic-theoretic arguments\n\nWe derive consequences including that positive density sets are infinite, and provide the even numbers as a concrete example.",
+    "proofStrategy": "We formalize the problem by defining:\n\n1. **Upper density**: Using limsup of the counting function ratio\n2. **Lower density**: Using liminf, with a proof that lower ≤ upper\n3. **Sumsets**: Custom definition B +ₛ C with commutativity proof\n4. **Main theorem**: Axiomatized as the Moreira-Richter-Robertson theorem\n\nThe actual proof (not formalized) uses:\n- Furstenberg correspondence: Convert density to measure theory\n- IP-sets and recurrence along polynomial sequences\n- Sophisticated ergodic-theoretic arguments\n\nWe derive consequences including that positive density sets are infinite, and provide the even numbers as a concrete example.",
     "keyInsights": [
       "**Upper density**: The proportion of A in {1,...,N} may fluctuate; upper density captures the 'best case' via limsup.",
       "**Sumsets are structured**: B + C contains all pairwise sums, giving rich additive structure when B and C are infinite.",
-      "**Density vs structure**: High density forces additive structure\u2014this parallels Szemer\u00e9di (APs) but gives sumsets instead.",
+      "**Density vs structure**: High density forces additive structure—this parallels Szemerédi (APs) but gives sumsets instead.",
       "**Ergodic theory connection**: The proof uses dynamics to translate the combinatorial problem to measure theory.",
       "**Consequences**: A corollary shows positive density sets are necessarily infinite (since they contain infinite sumsets)."
     ],
@@ -77,8 +77,8 @@
       "title": "Density Definitions",
       "startLine": 31,
       "endLine": 94,
-      "summary": "Define counting function, upper/lower density, and prove lower \u2264 upper density.",
-      "mathContext": "Define counting function, upper/lower density, and prove lower \u2264 upper density."
+      "summary": "Define counting function, upper/lower density, and prove lower ≤ upper density.",
+      "mathContext": "Define counting function, upper/lower density, and prove lower ≤ upper density."
     },
     {
       "id": "sumset-defs",
@@ -90,7 +90,7 @@
     },
     {
       "id": "main-theorem",
-      "title": "The Erd\u0151s Sumset Conjecture",
+      "title": "The Erdős Sumset Conjecture",
       "startLine": 118,
       "endLine": 144,
       "summary": "State the conjecture as ErdosSumsetConjecture and axiomatize the Moreira-Richter-Robertson theorem.",
@@ -109,13 +109,13 @@
       "title": "Examples",
       "startLine": 208,
       "endLine": 438,
-      "summary": "Verify that \u2115 has full density, define even numbers, and prove even + even \u2286 even.",
-      "mathContext": "Verify that \u2115 has full density, define even numbers, and prove even + even \u2286 even."
+      "summary": "Verify that ℕ has full density, define even numbers, and prove even + even ⊆ even.",
+      "mathContext": "Verify that ℕ has full density, define even numbers, and prove even + even ⊆ even."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erd\u0151s Problem #109, the Sumset Conjecture, which asks whether positive density sets contain infinite sumsets B + C. The answer is YES, proved by Moreira-Richter-Robertson in 2019. We provide a complete density framework, axiomatize the main theorem, derive key consequences, and verify concrete examples.",
-    "implications": "**Theoretical Significance**: This result establishes a deep connection between asymptotic density and additive structure.\n\nIt shows that positive density is not just about 'being large'\u2014it forces specific algebraic structure (infinite sumsets). The ergodic-theoretic proof technique has broad applications in combinatorics.",
+    "summary": "We formalize Erdős Problem #109, the Sumset Conjecture, which asks whether positive density sets contain infinite sumsets B + C. The answer is YES, proved by Moreira-Richter-Robertson in 2019. We provide a complete density framework, axiomatize the main theorem, derive key consequences, and verify concrete examples.",
+    "implications": "**Theoretical Significance**: This result establishes a deep connection between asymptotic density and additive structure.\n\nIt shows that positive density is not just about 'being large'—it forces specific algebraic structure (infinite sumsets). The ergodic-theoretic proof technique has broad applications in combinatorics.",
     "openQuestions": [
       "Can we strengthen to find B, C with specific gap conditions?",
       "What is the minimal density threshold for various sumset structures?",
@@ -125,39 +125,39 @@
   "crossReferences": [
     {
       "slug": "erdos-656",
-      "title": "Erd\u0151s Problem #656: Density Version of Hindman's Theorem",
-      "relationship": "Direct strengthening by the same team: Kra, Moreira, and Richter extended their sumset techniques to prove that positive-density sets contain B+B+t for some infinite B and integer t, a density analogue of Hindman's theorem.",
-      "targetId": "erdos-656"
+      "relationship": "related",
+      "targetId": "erdos-656",
+      "description": "Erdős Problem #656: Density Version of Hindman's Theorem"
     },
     {
       "slug": "erdos-139",
-      "title": "Erd\u0151s #139: Szemer\u00e9di's Theorem",
-      "relationship": "Paradigmatic parallel: Szemer\u00e9di's theorem shows positive upper density forces arithmetic progressions; Problem #109 shows it forces infinite sumsets B+C. Both use the Furstenberg correspondence principle to translate density hypotheses into ergodic recurrence.",
-      "targetId": "erdos-139"
+      "relationship": "related",
+      "targetId": "erdos-139",
+      "description": "Erdős #139: Szemerédi's Theorem"
     },
     {
       "slug": "erdos-3",
-      "title": "Erd\u0151s Problem #3: Arithmetic Progressions in Large Sets",
-      "relationship": "Companion density-forces-structure conjecture: Erd\u0151s conjectures that divergent reciprocal sum (a weaker condition than positive density) still forces arbitrarily long arithmetic progressions, making Problem #3 harder than Szemer\u00e9di and philosophically linked to Problem #109.",
-      "targetId": "erdos-3"
+      "relationship": "related",
+      "targetId": "erdos-3",
+      "description": "Erdős Problem #3: Arithmetic Progressions in Large Sets"
     },
     {
       "slug": "erdos-31",
-      "title": "Erd\u0151s Problem #31: Additive Complements",
-      "relationship": "Sumset covering perspective: while Problem #31 asks when A+B covers \u2115 (with B of density 0), Problem #109 asks when A itself contains an infinite sumset \u2014 complementary questions about the additive structure forced by density conditions.",
-      "targetId": "erdos-31"
+      "relationship": "related",
+      "targetId": "erdos-31",
+      "description": "Erdős Problem #31: Additive Complements"
     },
     {
       "slug": "erdos-245",
-      "title": "Erd\u0151s Problem #245: Sumset Growth Ratio",
-      "relationship": "Sumset size and structure: Freiman's result (limsup |A+A|/|A| \u2265 3 for zero-density A) and Pl\u00fcnnecke-Ruzsa theory provide the finite sumset toolkit that informs the infinite sumset theory underlying Problem #109.",
-      "targetId": "erdos-245"
+      "relationship": "related",
+      "targetId": "erdos-245",
+      "description": "Erdős Problem #245: Sumset Growth Ratio"
     },
     {
       "slug": "szemeredi-theorem",
-      "title": "Szemer\u00e9di's Theorem (k=3 via Mathlib)",
-      "relationship": "Lean formalization of the k=3 Szemer\u00e9di theorem (Roth's theorem); shares the density framework and limsup-based definitions that appear in the Erd\u0151s-109 Lean file, making it a direct technical companion in the gallery.",
-      "targetId": "szemeredi-theorem"
+      "relationship": "related",
+      "targetId": "szemeredi-theorem",
+      "description": "Szemerédi's Theorem (k=3 via Mathlib)"
     }
   ],
   "references": [
@@ -167,10 +167,10 @@
         "Florian K. Richter",
         "Donald Robertson"
       ],
-      "title": "A proof of a sumset conjecture of Erd\u0151s",
+      "title": "A proof of a sumset conjecture of Erdős",
       "volume": "189",
       "number": "2",
-      "pages": "605\u2013652",
+      "pages": "605–652",
       "year": "2019",
       "doi": "10.4007/annals.2019.189.2.4",
       "note": "The primary source proving the conjecture; uses Furstenberg correspondence and polynomial ergodic recurrence.",
@@ -181,37 +181,37 @@
         "Vitaly Bergelson",
         "Alexander Leibman"
       ],
-      "title": "Polynomial extensions of van der Waerden's and Szemer\u00e9di's theorems",
+      "title": "Polynomial extensions of van der Waerden's and Szemerédi's theorems",
       "volume": "9",
       "number": "3",
-      "pages": "725\u2013753",
+      "pages": "725–753",
       "year": "1996",
       "doi": "10.1090/S0894-0347-96-00194-4",
-      "note": "Foundational ergodic theory paper on polynomial recurrence; key precursor to the Moreira\u2013Richter\u2013Robertson proof.",
+      "note": "Foundational ergodic theory paper on polynomial recurrence; key precursor to the Moreira–Richter–Robertson proof.",
       "venue": "Journal of the American Mathematical Society"
     },
     {
       "authors": [
         "Hillel Furstenberg"
       ],
-      "title": "Ergodic behavior of diagonal measures and a theorem of Szemer\u00e9di on arithmetic progressions",
+      "title": "Ergodic behavior of diagonal measures and a theorem of Szemerédi on arithmetic progressions",
       "volume": "31",
-      "pages": "204\u2013256",
+      "pages": "204–256",
       "year": "1977",
       "doi": "10.1007/BF02813304",
       "note": "Introduces the Furstenberg correspondence principle connecting combinatorial density to measure-theoretic recurrence; central tool in the sumset conjecture proof.",
-      "venue": "Journal d'Analyse Math\u00e9matique"
+      "venue": "Journal d'Analyse Mathématique"
     },
     {
       "authors": [
-        "Endre Szemer\u00e9di"
+        "Endre Szemerédi"
       ],
       "title": "On sets of integers containing no k elements in arithmetic progression",
       "volume": "27",
-      "pages": "199\u2013245",
+      "pages": "199–245",
       "year": "1975",
       "doi": "10.4064/aa-27-1-199-245",
-      "note": "Szemer\u00e9di's theorem: positive-density sets contain k-term arithmetic progressions; the parallel density-forces-structure result whose proof technique influenced Problem #109.",
+      "note": "Szemerédi's theorem: positive-density sets contain k-term arithmetic progressions; the parallel density-forces-structure result whose proof technique influenced Problem #109.",
       "venue": "Acta Arithmetica"
     },
     {
@@ -224,10 +224,10 @@
       "title": "Infinite sumsets in sets with positive density",
       "volume": "26",
       "number": "10",
-      "pages": "3709\u20133735",
+      "pages": "3709–3735",
       "year": "2024",
       "doi": "10.4171/JEMS/1388",
-      "note": "Follow-up extending the sumset result; proves density versions of Hindman's theorem and related combinatorial results (Erd\u0151s Problem #656).",
+      "note": "Follow-up extending the sumset result; proves density versions of Hindman's theorem and related combinatorial results (Erdős Problem #656).",
       "venue": "Journal of the European Mathematical Society"
     }
   ],
