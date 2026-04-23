@@ -55,7 +55,7 @@
   },
   "conclusion": {
     "summary": "Defines Schur polynomials via the Jacobi-Trudi formula and proves base cases and symmetry. The two-row formula and hook-length evaluation are sorried pending Lean arithmetic simplification. The LGV combinatorial connection is sorried pending RSK correspondence (~400 lines).",
-    "implications": "This provides a Lean 4 definition of Schur polynomials and their key structural properties. A complete formalization of the LGV→Jacobi-Trudi connection would require RSK correspondence formalization and is a natural next step.",
+    "implications": "This provides the first Lean 4 definition of Schur polynomials via the Jacobi-Trudi formula, which is the algebraically canonical definition connecting them to the representation theory of GL(n). The five sorried results map out a ~400-line research agenda: (1) symmetry proofs (immediate once `rename_hsymm` unification is resolved — likely 10-20 lines), (2) two-row formula (mechanical `det_fin_two` expansion, ~30 lines), (3) hook evaluation at 1 via `Nat.multichoose`, and (4) the full LGV combinatorial proof (SSYT + RSK + weight matching, ~400 lines). A completed formalization would unlock: the Pieri rule $s_\\lambda h_n = \\sum_\\mu s_\\mu$, the Murnaghan-Nakayama rule for character values, and connections to Schubert calculus. Schur polynomials are the backbone of algebraic combinatorics — once formalized, they would serve as building blocks for representation-theoretic calculations across the gallery.",
     "openQuestions": [
       "Prove schurPolynomial_two_row via det_fin_two expansion",
       "Prove schurPolynomial_one_row_at_one via Nat.multichoose",
@@ -84,19 +84,29 @@
   },
   "crossReferences": [
     {
-      "proofId": "ballot-problem-oq-03-oq-01-oq-01",
+      "targetId": "ballot-problem-oq-03-oq-01-oq-01",
       "relationship": "parent",
-      "description": "Parent entry providing the LGV lemma infrastructure that the jacobiTrudi_lgv_connection sorry depends on"
+      "description": "Parent entry providing the LGV lemma infrastructure that the jacobiTrudi_lgv_connection sorry depends on. The parent formalizes the path-weight machinery and non-intersecting path determinant identity that, once connected to SSYT, gives the combinatorial proof of Jacobi-Trudi."
     },
     {
-      "proofId": "ballot-problem-oq-03-oq-01-oq-02",
+      "targetId": "ballot-problem-oq-03-oq-01-oq-02",
       "relationship": "sibling",
-      "description": "Hook-Length Formula via LGV — another application of the same parent LGV machinery to enumerate SYT"
+      "description": "Hook-Length Formula via LGV — another application of the same parent LGV machinery. While Jacobi-Trudi computes $s_\\lambda$ as a determinant of $h_n$'s, the hook-length formula counts Standard Young Tableaux (SYT) of shape $\\lambda$ — both are consequences of the LGV combinatorial framework."
     },
     {
-      "proofId": "ballot-problem-oq-03-oq-02",
+      "targetId": "ballot-problem-oq-03-oq-02",
       "relationship": "foundational",
-      "description": "Full n×n LGV Lemma formalization that the LGV connection proof strategy ultimately relies upon"
+      "description": "Full n×n LGV Lemma formalization that the LGV connection proof strategy ultimately relies upon. The LGV lemma equates a determinant of path-counting polynomials to a signed sum over non-intersecting path systems, which Jacobi-Trudi applies to prove $s_\\lambda = \\det[h_{\\lambda_i - i + j}]$."
+    },
+    {
+      "targetId": "ballot-problem-oq-03-oq-01-oq-04",
+      "relationship": "sibling",
+      "description": "Catalan Recurrence via LGV — a third application of the same LGV machinery from the parent entry, computing Catalan numbers as a determinant. The shared infrastructure (LGV + ballot paths) connects Catalan numbers, hook-length formula, and Jacobi-Trudi as three faces of the same determinant-path correspondence."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem $\\binom{n+k-1}{k-1} = h_n(1,\\ldots,1)$ connects Jacobi-Trudi to combinatorial identities: evaluating $s_\\lambda$ at all-ones gives the number of SSYT of shape $\\lambda$ in $k$ variables, which equals the dimension of the corresponding GL(k) representation — computed via the hook-length formula. The stars-and-bars formula $\\binom{n+k-1}{k-1}$ for $h_n(1^k)$ is a direct binomial coefficient identity."
     }
   ],
   "sections": [
