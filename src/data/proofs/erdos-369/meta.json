@@ -5,7 +5,7 @@
   "description": "For \u03b5 > 0 and k \u2265 2, does {1,\u2026,n} contain k consecutive n^\u03b5-smooth integers for all large n? Open even for k=2. Balog-Wooley: infinitely many exist. OPEN.",
   "meta": {
     "erdosNumber": 369,
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "erdos",
       "number-theory",
@@ -35,7 +35,7 @@
       }
     ],
     "axiomCount": 0,
-    "assumptions": "None. balog_wooley_infinitely_many removed (unused). No sorries.",
+    "assumptions": "None. balog_wooley_infinitely_many removed (unused). No sorries. Open conjecture; supporting lemmas fully verified.",
     "author": "Erd\u0151s-Graham (1980), Balog-Wooley (1998)",
     "mathlibDependencies": [
       {
