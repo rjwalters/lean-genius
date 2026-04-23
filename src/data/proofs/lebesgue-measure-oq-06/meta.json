@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 5,
     "axiomCount": 5,
-    "lineCount": 295,
+    "lineCount": 286,
     "assumptions": "5 sorries encoding axiomatized results: hausdorff_free_subgroup (free subgroup of SO(3)), banach_tarski (main theorem), banach_tarski_pieces_nonmeasurable (non-measurability of pieces), int_amenable (ℤ amenability), free_group_not_amenable (F₂ non-amenability). The main proof requires ~800 lines via free subgroup of SO(3) — beyond this gallery entry's scope. Note: paradoxical_no_finite_measure is fully proved (no sorry).",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
@@ -28,7 +28,7 @@
       "Equidecomposable (G-equidecomposability definition, with group action)",
       "IsParadoxical (paradoxical set definition)",
       "IsAmenable (amenable group definition)",
-      "ENNReal.eq_zero_or_top_of_add_eq_self (proved: a + a = a → a = 0 or a = ⊤)",
+      "ennreal_add_self_eq_self (proved: a + a = a → a = 0 or a = ⊤ in ENNReal)",
       "equidecomposable_refl (proved: every set is self-equidecomposable)",
       "Framework: paradoxical sets have no finite invariant measure (fully proved, no sorry)"
     ]
@@ -201,7 +201,7 @@
       "Mathlib"
     ],
     "namespace": "BanachTarski",
-    "lineCount": 295,
+    "lineCount": 286,
     "axiomCount": 5,
     "theoremCount": 7,
     "definitionCount": 5,
