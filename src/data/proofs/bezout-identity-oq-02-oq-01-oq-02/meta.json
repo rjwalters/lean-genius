@@ -130,7 +130,7 @@
   "crossReferences": [
     {
       "targetId": "bezout-identity-oq-02-oq-01",
-      "relationship": "parent",
+      "relationship": "foundational",
       "description": "FTA in Euclidean Domains via Mathlib — the parent open question, of which this file is a direct resolution via inferInstance."
     },
     {
@@ -140,12 +140,12 @@
     },
     {
       "targetId": "bezout-identity-oq-02",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Euclid's Lemma via coprime_iff_linear_combination — proves that if gcd(a,b)=1 then a∣bc implies a∣c, the key divisibility step that makes irreducible elements prime in ℤ and underlies the UFD argument formalized here."
     },
     {
       "targetId": "bezout-identity-oq-02-oq-01-oq-01",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Unique Factorization in Polynomial Rings — proves UFD for polynomial rings over fields via the same inferInstance / Mathlib instance chain demonstrated here. The two entries together show that the ED→UFD pathway applies uniformly to both ℤ and k[x] as the two canonical Euclidean domains in algebra."
     },
     {
@@ -165,7 +165,7 @@
     },
     {
       "targetId": "fundamental-theorem-arithmetic",
-      "relationship": "generalization-of",
+      "relationship": "extends",
       "description": "Fundamental Theorem of Arithmetic (ℤ) — the base case that this entry generalizes. The FTA states that every integer has a unique prime factorization (up to sign); this entry extends that to all Euclidean domains R via Mathlib's instance chain. The `UniqueFactorizationMonoid ℤ` inference in this file is literally a one-line proof of the FTA as a special case."
     }
   ],
