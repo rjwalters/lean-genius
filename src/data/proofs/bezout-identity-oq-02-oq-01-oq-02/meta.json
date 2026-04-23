@@ -62,6 +62,7 @@
       "Unique factorization domains (UFDs): irreducible, prime, associated elements",
       "Lean 4 typeclass synthesis and Mathlib algebraic hierarchy"
     ],
+    "text": "The Fundamental Theorem of Arithmetic — unique prime factorization in ℤ — holds in all Euclidean domains via the typeclass chain `EuclideanDomain → GCDMonoid → UniqueFactorizationMonoid`. This formalization demonstrates the chain using three theorems (irreducible ↔ prime, factorization existence, GCD universal property) as one-line Mathlib wrappers, and confirms via `inferInstance` that both ℤ and polynomial rings over fields are UFDs. The historical counterpoint — failure of unique factorization in cyclotomic integers ℤ[ζₚ] (Kummer 1844) — motivates ideal theory but lies outside the Euclidean domain framework.",
     "historicalContext": "The Fundamental Theorem of Arithmetic — that every positive integer has a unique factorization into primes — was known to the ancient Greeks (Euclid's Elements, Book IX, Proposition 14, ca. 300 BCE) and formalized by Gauss in 1801. The 19th century saw rapid generalization: Gauss (1832) proved unique factorization in $\\mathbb{Z}[i]$ (Gaussian integers), Eisenstein (1844) in $\\mathbb{Z}[\\sqrt{-2}]$, and Kummer (1844) discovered that $\\mathbb{Z}[\\zeta_p]$ (cyclotomic integers) can fail unique factorization — his fix was the theory of 'ideal numbers', later developed by Dedekind into ideal theory. The abstract framework of Euclidean domains (rings with a division algorithm) was developed by Hasse and Schmidt (1927-1930), providing the clean algebraic setting in which unique factorization holds in full generality. Today, Mathlib encodes the complete instance hierarchy: `EuclideanDomain → GCDMonoid → UniqueFactorizationMonoid`, making the generalization fully automatic in Lean.",
     "problemStatement": "Does the Fundamental Theorem of Arithmetic generalize from $\\mathbb{Z}$ to all Euclidean domains? Specifically: (1) Is every Euclidean domain a unique factorization domain (UFD)? (2) Does irreducible $\\Leftrightarrow$ prime hold in all UFDs (generalizing Euclid's lemma)? (3) Does every nonzero non-unit element have an irreducible factorization?",
     "proofStrategy": "The proofs are one-liners exploiting Mathlib's instance hierarchy. `UniqueFactorizationMonoid ℤ` and `EuclideanDomain ℤ` are discharged by `inferInstance`. `irreducible_iff_prime_in_ufd` wraps `UniqueFactorizationMonoid.irreducible_iff_prime`. `factors_exist` packages `irreducible_of_factor` and `factors_prod` into a single existence statement. `int_gcd_exists` uses `Int.gcd_dvd_left`, `Int.gcd_dvd_right`, and `Int.dvd_gcd` from Mathlib's integer library. The entire file is a showcase of Mathlib's algebraic hierarchy doing all the heavy lifting.",
@@ -217,6 +218,13 @@
       "year": "1927-1930",
       "venue": "Journal für die reine und angewandte Mathematik",
       "note": "Developed the abstract framework of Euclidean domains; established the ED → PID → UFD hierarchy that Mathlib now encodes as a typeclass chain"
+    },
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra (3rd ed.)",
+      "year": "2002",
+      "venue": "Graduate Texts in Mathematics, vol. 211. Springer",
+      "note": "Standard graduate reference for the ED → PID → UFD hierarchy (Ch. II); includes the Z[sqrt(-5)] non-UFD example and Kummer's theory of ideal numbers as historical motivation"
     }
   ],
   "leanFile": {
