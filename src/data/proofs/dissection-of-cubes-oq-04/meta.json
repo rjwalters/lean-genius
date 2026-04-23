@@ -139,10 +139,29 @@
     }
   ],
   "conclusion": {
-    "summary": "Among the five Platonic solids, the cube is uniquely characterized by having zero Dehn invariant. This extends Hilbert's Third Problem from the single pair (cube, tetrahedron) to the complete classification of all Platonic solids under scissors congruence.",
+    "summary": "Among the five Platonic solids, the cube is uniquely characterized by having zero Dehn invariant. This extends Hilbert's Third Problem from the single pair (cube, tetrahedron) to the complete classification of all Platonic solids under scissors congruence. The key new contribution is the irrationality of arccos(1/√5)/π (the dodecahedron dihedral angle), proved via a Chebyshev integer sequence argument parallel to Niven's theorem for arccos(1/3)/π.",
+    "implications": "The complete classification has several implications:\n\n1. **Cube isolation**: No sequence of finitely many planar cuts and reassemblies can transform any other Platonic solid into a cube of the same volume. This is a strong impossibility — even with unlimited cuts, the Dehn invariant is preserved and blocks scissors congruence between the cube and its four siblings.\n\n2. **Niven's theorem generalized**: The Chebyshev sequence technique used here (for arccos(3/5)/π) is a new instantiation of Niven's original method, showing the technique applies to any angle arccos(p/q) where a suitable prime $r$ satisfies $r \\nmid (q^n \\cdot 2\\cos(n \\cdot \\arccos(p/q)))$. This suggests a systematic classification of rational-valued arccos irrationality.\n\n3. **Dehn invariant completeness**: Sydler (1965) proved the converse: two polyhedra of the same volume and the same Dehn invariant ARE scissors congruent. So the Dehn invariant (together with volume) is a complete invariant for scissors congruence of polyhedra in $\\mathbb{R}^3$. The classification here thus gives a complete characterization of which Platonic solid pairs can be scissors congruent.\n\n4. **Formal verification scope**: The formalization covers 11 theorems with 2 axioms and 3 non-critical sorries, demonstrating that substantial new irrationality results can be machine-verified with moderate formalization effort when the arithmetic structure is sufficiently regular.",
     "openQuestions": [
       "Can the remaining axiom (tmul_infinite_order_ne_zero — flatness of ℝ over ℤ) be proved using Mathlib's Module.Flat infrastructure?",
-      "Can icoAngle_irrational be proved by extending the Chebyshev argument to ℤ[√5], completing the proof for all five Platonic solids with 0 axioms?"
+      "Can icoAngle_irrational be proved by extending the Chebyshev argument to ℤ[√5], completing the proof for all five Platonic solids with 0 axioms?",
+      "Does the Chebyshev sequence technique generalize to characterize all angles arccos(p/q)/π that are irrational? Niven's theorem (1956) gives arccos(r) irrational for r ∈ {0, ±1/2, ±1}; this file extends to arccos(3/5). Which other rational cosines give irrational arc-cosines as fractions of π?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "dissection-of-cubes",
+      "relationship": "sub-entry",
+      "description": "Parent entry on Dehn's original solution to Hilbert's Third Problem (1900): the cube and regular tetrahedron have different Dehn invariants (arccos(1/3)/π is irrational), so they are not scissors congruent. This sub-entry extends the classification to all five Platonic solids"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-02",
+      "relationship": "foundational",
+      "description": "Niven's theorem for arccos(1/3)/π: defines nivenSeq, proves 3 ∤ nivenSeq_n, establishes the cosine relation, and provides cos_step (Chebyshev addition). This file's cosThreeFifthsSeq parallels nivenSeq exactly, and cos_step is used directly in cosThreeFifthsSeq_eq_cos"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-02-oq-02",
+      "relationship": "foundational",
+      "description": "Dehn invariant infrastructure: defines the tensor product group ℝ ⊗_ℤ (ℝ/πℤ), edgeTerm, angleClass, zsmul_eq_zero_iff, and proves cube_dehn_zero, tet_dehn_ne_zero, oct_dehn_ne_zero. Also axiomatizes tmul_infinite_order_ne_zero (flatness). This file uses all of these directly"
+    }
+  ]
 }
