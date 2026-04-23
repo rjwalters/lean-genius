@@ -72,10 +72,50 @@ The Banach-Tarski paradox is equivalent (via Tarski's theorem) to the statement:
 
 ## Insights
 
-[Insights from research attempts will be accumulated here]
+### Lean 4 Build Fixes (2026-04-23)
+
+The original file had never successfully compiled. Fixed the following issues:
+
+1. **`ℝ≥0∞` notation requires `open ENNReal`**: Added to the `open` statement. Without it,
+   the `∞` symbol fails to parse with "expected token" errors.
+
+2. **Set SMul requires `open scoped Pointwise`**: `g • (Set α)` in the `Equidecomposable`
+   definition and in `IsAmenable` fails without this. Added `open scoped Pointwise NNReal`.
+
+3. **Forward reference bug**: `paradoxical_no_finite_measure` called a private lemma
+   (`ENNReal.eq_zero_or_top_of_add_eq_self`) that was defined AFTER it. Lean 4 doesn't
+   allow forward references. Fixed by moving the helper lemma before its caller.
+
+4. **`Set.union_sdiff_of_subset` → `Set.union_diff_cancel`**: Wrong Lean 4 name.
+   `Set.union_diff_cancel (h : s ⊆ t) : s ∪ (t \ s) = t`.
+
+5. **Notation parsing issue with `A ≃ᴳ[G] B → P`**: The custom notation consumed the `→`
+   and everything after `B` as part of the RHS argument. Fixed by wrapping `(A ≃ᴳ[G] S)`
+   in parentheses in the `hμ_equi` parameter.
+
+6. **`linarith` on ℝ≥0 requires cast to ℝ**: To prove `a = 0` from `a + a = a` in NNReal,
+   must lift to ℝ≥0, `norm_cast`, then cast to ℝ before `linarith`.
+
+7. **`le_add_right` signature in Lean 4 Mathlib**: Takes a proof `h : a ≤ b` as first
+   explicit argument. Use `le_add_right le_rfl` to get `a ≤ a + c`.
+
+8. **`[MulAction.IsPretransitive G α]` is unnecessary** for `equidecomposable_refl`.
+   Removed. Reflexivity proof uses `Subsingleton.elim` for disjointness (since `Fin 1`
+   has exactly one element), and `Set.iUnion_const` + `one_smul` for the union goals.
+
+### Build Status
+File now compiles with exactly 5 intentional `sorry`s:
+- `hausdorff_free_subgroup` (needs explicit rotation matrix freeness proof)
+- `banach_tarski` (needs full 800-line proof via Hausdorff paradox)
+- `banach_tarski_pieces_nonmeasurable` (follows from banach_tarski + measure theory)
+- `int_amenable` (needs Cesàro mean / Banach limit construction)
+- `free_group_not_amenable` (needs paradoxical decomposition of F₂)
 
 ---
 
 ## Dead Ends
 
-[Approaches known not to work will be documented here]
+### `equidecomposable_refl` with `[MulAction.IsPretransitive G α]`
+The original proof tried to use `Fin.eq_of_val_eq` for the disjointness subgoal.
+This is fragile and unnecessarily constrains the signature. `Subsingleton.elim i j`
+directly gives `i = j` for `i j : Fin 1` without needing any extra hypotheses.
