@@ -54,18 +54,18 @@
     ],
     "originalContributions": [
       "CochromaticColoring structure: partition where each class is clique or independent set",
-      "cochromaticNumber definition: minimum colors in a cochromatic coloring",
-      "z(n) function: maximum cochromatic number over n-vertex graphs",
-      "knownValues table: z(n) for n = 1 to 19",
-      "z_12 theorem: main result that z(12) = 4",
-      "gimbel_asymptotic axiom: z(n) ~ n/log n",
-      "ramsey_connection axiom: relationship to Ramsey numbers",
-      "mehta_unique_graph axiom: unique K₄-free graph with χ ≥ 5",
-      "mehta_verification axiom: that graph has ζ = 4"
+      "cochromaticNumber definition: sInf of colors over all valid cochromatic colorings",
+      "z(n) function: sSup of cochromatic numbers over all n-vertex graphs (universe-polymorphic)",
+      "knownValues table: explicit Fin 19 → ℕ lookup encoding z(n) for n = 1 to 19",
+      "z_1 axiom: z(1) = 1",
+      "z_12 axiom: z(12) = 4 (Mehta's main result)",
+      "known_values_correct axiom: asserts the full known-values table",
+      "erdos_758_summary theorem: conjunction bundling z_12 and known_values_correct",
+      "erdos_758 theorem: minimal public API — z 12 = 4"
     ],
     "axiomCount": 3,
     "lineCount": 128,
-    "assumptions": "3 axiom(s): z_1, z_12, known_values_correct. See Lean source for complete statements."
+    "assumptions": "3 axioms: z_1 (z(1) = 1), z_12 (z(12) = 4, Bhavik Mehta computational), known_values_correct (z(i+1) = knownValues(i) for all i < 19)."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #758: Cochromatic Number**\n\nThis problem was posed by Erdős and Gimbel and concerns the cochromatic number of graphs.\n\n**Key History:**\n- **Erdős-Gimbel:** Established 4 ≤ z(12) ≤ 5 and 5 ≤ z(15) ≤ 6\n- **Gimbel [Gi86]:** Proved z(n) ~ n/log n asymptotically\n- **Bhavik Mehta:** Computationally verified z(12) = 4 by finding the unique extremal graph\n\n**Mathematical Context:**\nThe cochromatic number generalizes both chromatic number (independent sets only) and clique cover number (cliques only). It connects to Ramsey theory since R(3) = 6 and R(4) = 18 control the growth of z(n).",
@@ -86,75 +86,44 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header and Documentation",
+      "summary": "Block comment (lines 1–26) documenting the problem statement, answer, known values table, asymptotic, and references. Establishes that z(12) = 4 (Bhavik Mehta, computational) and z(n) ~ n/log n (Gimbel).",
+      "startLine": 1,
+      "endLine": 26,
+      "mathContext": "The header states the two key results formalized: (1) $z(12) = 4$; (2) $\\forall n \\leq 19$, $z(n) = \\text{knownValues}(n)$. It also records the asymptotic $z(n) \\sim n/\\log n$ (Gimbel) and the Erdős-Gimbel bounds $4 \\leq z(12) \\leq 5$ that preceded Mehta's exact computation."
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports, Namespace, and Universe Setup",
+      "summary": "Six Mathlib imports for graphs, finite sets, logarithm, and tactics. Opens SimpleGraph and Finset namespaces, introduces the Erdos758 namespace, and declares a polymorphic variable for finite vertex types.",
+      "startLine": 27,
+      "endLine": 39,
+      "mathContext": "`variable {V : Type*} [Fintype V] [DecidableEq V]` makes all definitions universe-polymorphic — they apply to any finite type with decidable equality (e.g., `Fin 12`, `ZMod 12`, or any concrete 12-element type)."
+    },
+    {
       "id": "cochromatic-definitions",
-      "title": "Cochromatic Coloring Definitions",
-      "summary": "CochromaticColoring structure and cochromatic number",
-      "startLine": 41,
-      "endLine": 68,
-      "mathContext": "Formal definition: CochromaticColoring structure and cochromatic number"
+      "title": "Part I: Three Core Definitions",
+      "summary": "CochromaticColoring structure (each color class is clique or independent set), cochromaticNumber (sInf over valid colorings), and z(n) (sSup over all n-vertex graphs). These are noncomputable due to use of classical sInf/sSup.",
+      "startLine": 40,
+      "endLine": 69,
+      "mathContext": "$\\zeta(G) = \\text{sInf}\\{k \\mid \\exists$ valid $k$-cochromatic coloring of $G\\}$. $z(n) = \\text{sSup}\\{\\zeta(G) \\mid |V(G)| = n\\}$. The `sSup` ranges over all finite types $V$ with `Fintype.card V = n`, making $z$ a well-defined function $\\mathbb{N} \\to \\mathbb{N}$."
     },
     {
-      "id": "basic-properties",
-      "title": "Basic Properties",
-      "summary": "Bounds, monotonicity, connection to chromatic number",
-      "startLine": 78,
-      "endLine": 107,
-      "mathContext": "Bound: Bounds, monotonicity, connection to chromatic number"
+      "id": "axioms-known-values",
+      "title": "Parts II–IV: Axioms and Known Values Table",
+      "summary": "Three axioms: z_1 (z(1) = 1), z_12 (z(12) = 4, Mehta's result), and known_values_correct (the full 19-entry table). Plus the knownValues Fin 19 → ℕ lookup table definition. Parts II and III section headers are stubs (no theorems proved for basic properties).",
+      "startLine": 70,
+      "endLine": 95,
+      "mathContext": "All three axioms assert computational results: $z(1) = 1$ (trivial), $z(12) = 4$ (Mehta's exhaustive search), and $z(i+1) = \\text{knownValues}(i)$ for $i < 19$ (Mehta + Gimbel). The pattern in knownValues — $\\{1,1,2,2,3,3,3,3,4,4,4,4,5,5,5,6,6,6,6\\}$ — is consistent with Ramsey thresholds $R(2)=2$, $R(3)=6$, $R(4)=18$."
     },
     {
-      "id": "known-values",
-      "title": "Known Exact Values",
-      "summary": "z(n) for n = 1 to 19",
-      "startLine": 108,
-      "endLine": 128
-    },
-    {
-      "id": "value-table",
-      "title": "Complete Sequence",
-      "summary": "knownValues function and verification",
-      "startLine": 128,
+      "id": "summary-theorem",
+      "title": "Parts V–IX: Placeholder Sections and Summary Theorems",
+      "summary": "Five empty section comment headers (Asymptotic Behavior, Erdős-Gimbel Bounds, Mehta's Proof Method, Ramsey Connection, Summary) with no Lean content — intended for future expansion. Two theorems: erdos_758_summary bundles z_12 and known_values_correct; erdos_758 is the minimal 1-line corollary z 12 = 4.",
+      "startLine": 96,
       "endLine": 128,
-      "mathContext": "Mathematical content: knownValues function and verification"
-    },
-    {
-      "id": "asymptotics",
-      "title": "Asymptotic Behavior",
-      "summary": "Gimbel's z(n) ~ n/log n result",
-      "startLine": 128,
-      "endLine": 128,
-      "mathContext": "Gimbel's z(n) ~ n/$\\log n$ result"
-    },
-    {
-      "id": "erdos-gimbel-bounds",
-      "title": "Erdős-Gimbel Bounds",
-      "summary": "Original bounds for z(12) and z(15)",
-      "startLine": 128,
-      "endLine": 128,
-      "mathContext": "Bound: Original bounds for z(12) and z(15)"
-    },
-    {
-      "id": "mehta-proof",
-      "title": "Mehta's Proof Method",
-      "summary": "Unique extremal graph and verification",
-      "startLine": 128,
-      "endLine": 128,
-      "mathContext": "Mathematical content: Unique extremal graph and verification"
-    },
-    {
-      "id": "ramsey-connection",
-      "title": "Connection to Ramsey Theory",
-      "summary": "How Ramsey numbers constrain z(n)",
-      "startLine": 128,
-      "endLine": 128,
-      "mathContext": "Mathematical content: How Ramsey numbers constrain z(n)"
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "Final theorem and problem solved status",
-      "startLine": 128,
-      "endLine": 128,
-      "mathContext": "Verified: Final theorem and problem solved status"
+      "mathContext": "`erdos_758_summary : z 12 = 4 ∧ (∀ i : Fin 19, z (i.val + 1) = knownValues i) ∧ True` — the `True` placeholder acknowledges the asymptotic $z(n) \\sim n/\\log n$ (Gimbel) without formalizing it. The proof term `⟨z_12, known_values_correct, trivial⟩` directly applies the two axioms."
     }
   ],
   "conclusion": {
