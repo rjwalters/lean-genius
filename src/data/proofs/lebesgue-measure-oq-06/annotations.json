@@ -55,9 +55,33 @@
     "title": "ENNReal Helper: a + a = a implies a = 0 or ∞ (Proved)",
     "content": "This lemma is fully proved (no sorry). In ℝ≥0∞ (extended non-negative reals), if a + a = a then a must be 0 or ⊤ (infinity). The proof lifts a to ℝ≥0 using the finiteness assumption (a ≠ ⊤), then derives a = 0 from a + a = a by linarith. This captures the essential arithmetic of the paradox: 'measure doubled = original measure' forces extremal values.",
     "mathContext": "The proof uses: (1) push_neg to separate the ¬(a = 0 ∨ a = ⊤) into a ≠ 0 ∧ a ≠ ⊤; (2) lift a to ℝ≥0 using a ≠ ⊤; (3) cast the ENNReal equation to ℝ≥0 using ENNReal.coe_add and ENNReal.coe_inj; (4) linarith to conclude a = 0, contradicting a ≠ 0. The key coercion: ↑a + ↑a = ↑a in ℝ≥0 gives 2·a = a (in ℝ≥0), hence a = 0.",
-    "significance": "important",
+    "significance": "supporting",
     "relatedConcepts": ["ENNReal arithmetic", "extended reals", "measure paradoxes", "linarith in ℝ≥0"],
     "prerequisites": ["ENNReal.coe_add", "ENNReal.coe_inj", "NNReal.eq_zero_of_add_eq_self"]
+  },
+  {
+    "id": "ann-geometric-framework",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": { "startLine": 146, "endLine": 161 },
+    "type": "definition",
+    "title": "Geometric Framework: Rigid Motions, Unit Ball, Unit Sphere",
+    "content": "Three geometric objects set up the arena for Banach-Tarski. **RigidMotion3** is the type of orientation-preserving isometries of ℝ³ — rigid motions (rotations and translations). In Lean, these are isometric automorphisms of `EuclideanSpace ℝ (Fin 3)`. Using `abbrev` makes `RigidMotion3` definitionally equal to the isometry type, so all isometry lemmas apply without coercion. **unitBall3** is the closed unit ball $B^3 = \\{x \\in \\mathbb{R}^3 : \\|x\\| \\leq 1\\}$, formalized as `Metric.closedBall 0 1`. The Banach-Tarski theorem partitions this set into pieces. **unitSphere3** is $S^2 = \\{x \\in \\mathbb{R}^3 : \\|x\\| = 1\\}$, formalized as `Metric.sphere 0 1`. The sphere is where the Hausdorff paradox first operates — the free subgroup F₂ ⊂ SO(3) acts on S² (minus a countable exceptional set D), producing the paradoxical decomposition that extends to B³ via a cone construction.",
+    "mathContext": "SE(3) = SO(3) ⋉ ℝ³. $B^3 = \\{x \\in \\mathbb{R}^3 : \\|x\\|_2 \\leq 1\\}$, $S^2 = \\{x \\in \\mathbb{R}^3 : \\|x\\|_2 = 1\\}$. Cone construction: $B^3 = \\{0\\} \\cup \\bigcup_{r \\in (0,1]} r \\cdot S^2$, so paradoxical decompositions of $S^2$ lift to $B^3$ by scaling pieces. The exceptional countable set $D$ (orbit of a point under a fixed infinite-order rotation) is handled by the Hilbert-hotel argument: $D \\cup \\{p\\} \\sim D$ for any $p \\notin D$, absorbing $D$ into the main decomposition.",
+    "significance": "supporting",
+    "relatedConcepts": ["special Euclidean group SE(3)", "Metric.closedBall", "Metric.sphere", "EuclideanSpace", "IsometryEquiv", "cone construction"],
+    "prerequisites": ["EuclideanSpace ℝ (Fin 3)", "Metric.closedBall", "IsometryEquiv", "EuclideanSpace norm"]
+  },
+  {
+    "id": "ann-hausdorff-free-subgroup",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": { "startLine": 164, "endLine": 187 },
+    "type": "theorem",
+    "title": "Hausdorff Free Subgroup of SO(3): The Algebraic Engine (Axiomatized)",
+    "content": "Hausdorff's theorem (1914) provides the algebraic ingredient making Banach-Tarski possible: SO(3) contains a free subgroup of rank 2. The specific construction uses rotations φ (by arccos(1/3) around the z-axis) and ψ (by arccos(1/3) around the x-axis). Freeness means no nontrivial word in φ, ψ, φ⁻¹, ψ⁻¹ equals the identity — proved via a number-theoretic argument showing any nontrivial word produces a vector with algebraically independent (irrational) components. In Lean, freeness is expressed as injectivity of the `FreeGroup.lift` map from the free group on two generators into the linear isometry group. The sorry captures a 300+ line proof involving number theory over ℤ[√2, 1/3].",
+    "mathContext": "The rotation by $\\theta = \\arccos(1/3)$ around the $z$-axis has $\\cos\\theta = 1/3$, $\\sin\\theta = 2\\sqrt{2}/3$. Matrix: $R_z(\\theta) = \\begin{pmatrix} 1/3 & -2\\sqrt{2}/3 & 0 \\\\ 2\\sqrt{2}/3 & 1/3 & 0 \\\\ 0 & 0 & 1 \\end{pmatrix}$. Similarly $R_x(\\theta)$. Freeness argument: any nontrivial reduced word $w(\\varphi, \\psi)$ applied to $e_1 = (1,0,0)$ produces a vector with coordinates in $\\mathbb{Z}[\\sqrt{2}]/3^n$ that are irrational and hence $\\neq e_1$. Specifically, tracking the denominator $3^n$ and the $\\sqrt{2}$ coefficient through the matrix products gives a contradiction for any nontrivial word.",
+    "significance": "key",
+    "relatedConcepts": ["free group", "SO(3)", "rotation matrix", "arccos(1/3)", "Hausdorff paradox", "algebraic independence", "FreeGroup.lift"],
+    "prerequisites": ["LinearIsometryEquiv", "FreeGroup.lift", "EuclideanSpace ℝ (Fin 3)", "Matrix multiplication"]
   },
   {
     "id": "ann-banach-tarski",
@@ -79,7 +103,7 @@
     "title": "Amenable Groups: The Group-Theoretic Obstruction",
     "content": "IsAmenable G defines amenability: the group G admits a finitely-additive left-invariant probability measure on ALL subsets of G. Amenable groups include ℤ (via Cesàro means, stated as int_amenable with sorry) and all finite groups, but NOT F₂ (free group on 2 generators, stated as free_group_not_amenable with sorry). The non-amenability of F₂ is the group-theoretic root cause of Banach-Tarski: F₂ ↪ SO(3) → SO(3) not amenable → unit ball paradoxical.",
     "mathContext": "Day's theorem (1949): a group $G$ is amenable iff every $G$-set has no paradoxical subset. Equivalently (Tarski), every $G$-set admits a $G$-invariant finitely-additive probability measure. The free group $F_2$ has a paradoxical decomposition: $F_2 = W(a) \\sqcup aW(a^{-1})$ where $F_2 \\sim W(a)$ (via $a$) and $F_2 \\sim aW(a^{-1})$ directly. The Cesàro mean construction for ℤ: $\\mu(A) = \\lim_{N \\to \\infty} |A \\cap [-N, N]| / (2N+1)$ (when the limit exists; extend via Banach limits).",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["Day's theorem", "Tarski's theorem", "Cesaro mean", "Banach limit", "free group paradox"],
     "prerequisites": ["FreeGroup", "Group action", "finitely-additive measure", "left-invariant measure"]
   }
