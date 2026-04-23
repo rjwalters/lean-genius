@@ -1,8 +1,8 @@
 {
   "slug": "sylow-theorem-oq-02",
   "title": "Sylow Theorem: Complexity of Finding All Sylow p-Subgroups",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-04-22T13:03:46.506Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,11 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: 0 sorries, 0 axioms. Orbit enumeration n_p=[G:N_G(P)] plus uniqueness↔normal. PR #12038.",
+    "builtItems": [
+      "SylowTheoremOQ02Orbit.lean: sylow_orbit_is_all (orbit G P = ⊤)",
+      "SylowTheoremOQ02Orbit.lean: sylow_count_eq_normalizer_index (n_p = [G:N_G(P)])",
+      "SylowTheoremOQ02Orbit.lean: sylowEquivQuotientNormalizer (Sylow p G ≃ G/N_G(P))",
+      "SylowTheoremOQ02Orbit.lean: sylow_orbit_stabilizer_formula (|G| = n_p × |N_G(P)|)",
+      "SylowTheoremOQ02Orbit.lean: sylow_unique_iff_normal (n_p=1 ↔ P◁G)"
+    ],
+    "insights": [
+      "orbit_eq_top gives all Sylow p-subgroups as single conjugation orbit",
+      "stabilizer G P = N_G(P) connects orbit-stabilizer to normalizer theory",
+      "card_eq_index_normalizer is the direct Mathlib API for n_p = [G:N_G(P)]",
+      "Sylow p G ≃ G / N_G(P) via equivQuotientNormalizer",
+      "n_p = 1 ↔ P ◁ G via Subgroup.index_eq_one + normalizer_eq_top_iff"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Nilpotent group corollary: G nilpotent ↔ all Sylow subgroups normal (Mathlib.GroupTheory.Nilpotent)"
+    ]
   },
   "tags": [
     "algebra",
