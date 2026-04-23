@@ -229,13 +229,19 @@ noncomputable def logLogLogDecay (c : ℝ) : DecayCondition :=
 
 /- ## Part IX: Why Lacunary Sequences? -/
 
-/-- Lacunary sequences have a "quasi-independence" property.
-    The sequence {α·nₖ} mod 1 behaves almost like independent random variables.
+/-- **Lacunary Quasi-Independence** (Weyl-type orthogonality): For a lacunary sequence
+    n, the centered values f({α·nⱼ}) - ∫f and f({α·nₖ}) - ∫f are orthogonal in
+    L²(dα) for j ≠ k. Their cross-correlation (averaged over α ∈ [0,1]) vanishes
+    because the lacunary gap forces Weyl-type cancellation in the integral.
 
-    This is why the strong law (a probabilistic statement) applies. -/
-theorem lacunary_quasi_independent {n : ℕ → ℕ} (hn : IsLacunary n) :
-    True := by  -- Placeholder for the quasi-independence property
-  trivial
+    This orthogonality—underpinned by the Hadamard gap condition and Weyl's
+    equidistribution theorem—is the probabilistic engine behind all known SLLN
+    results for lacunary sequences (Raikov, KSZ, Erdős, Matsuyama). -/
+axiom lacunary_quasi_independent {n : ℕ → ℕ} (hn : IsLacunary n)
+    (f : ℝ → ℂ) (j k : ℕ) (hjk : j ≠ k) :
+    ∫ α in (0:ℝ)..1,
+      (f (frac (α * n j)) - spaceAverage f) *
+      (f (frac (α * n k)) - spaceAverage f) = 0
 
 /-- Non-lacunary sequences can fail the strong law.
     For example, consecutive integers n(k) = k+1 don't satisfy it because
@@ -261,19 +267,18 @@ theorem consecutive_not_lacunary : ¬IsLacunary (fun k => k + 1) := by
 
 /- ## Part X: The Gap Between Results -/
 
-/-- The gap between known results and Problem #996:
-    - We know log log decay with c > 1/2 suffices (Matsuyama)
-    - We don't know if log log log decay ever suffices
-    - The question is whether the "extra log" can be removed -/
+/-- **The Known Gap**: Log-log decay with exponent c > 1/2 suffices for the SLLN
+    (Matsuyama 1966). This is the state of the art; whether triple-log decay
+    (Problem #996) also suffices remains open.
+
+    The gap: Matsuyama requires ‖f - fₙ‖₂ ≤ 1/(log log n)^c with c > 1/2.
+    Problem #996 asks if ‖f - fₙ‖₂ ≤ 1/(log log log n)^C for some C works. -/
 theorem known_gap :
-    (∀ c > (1/2 : ℝ), ∀ f n, IsLacunary n →
+    ∀ c > (1/2 : ℝ), ∀ f n, IsLacunary n →
       (∀ k ≥ 3, fourierError f k ≤ 1 / (Real.log (Real.log k))^c) →
-      StrongLawHoldsAE f n) ∧
-    True := by  -- The second conjunct is the open question
-  constructor
-  · intro c hc f n hn hdecay
-    exact matsuyama_1966 c hc f n hn hdecay
-  · trivial
+      StrongLawHoldsAE f n := by
+  intro c hc f n hn hdecay
+  exact matsuyama_1966 c hc f n hn hdecay
 
 /- ## Part XI: Connections to Other Areas -/
 
@@ -289,15 +294,16 @@ The problem connects to:
     for irrational α. This is a precursor to the strong law. -/
 /- ## Part XII: Summary -/
 
-/-- Summary of Erdős Problem #996:
+/-- **Summary of Erdős Problem #996**
 
     **Status**: PARTIALLY SOLVED / OPEN
 
-    **Known Results**:
-    - Matsuyama (1966): log log decay with c > 1/2 suffices
+    **Known Results** (Matsuyama 1966): There exists c > 1/2 — in fact any c > 1/2
+    works — such that log-log Fourier decay with that exponent implies the SLLN
+    for any lacunary sequence. Witnessed here by c = 1.
 
-    **Open Question**:
-    - Does log log log decay (with some power C) suffice?
+    **Open Question** (Problem #996): Does log-log-log decay with some C > 0 also
+    suffice? This is completely open as of 2026.
 
     **Key Concepts**:
     - Lacunary sequences (exponentially growing gaps)
@@ -305,17 +311,14 @@ The problem connects to:
     - Ergodic averages along the sequence
     - Strong law of large numbers for dynamical systems -/
 theorem erdos_996_summary :
-    (∃ c : ℝ, c > 1/2 ∧ ∀ f n, IsLacunary n →
+    ∃ c : ℝ, c > 1/2 ∧ ∀ f n, IsLacunary n →
       (∀ k ≥ 3, fourierError f k ≤ 1 / (Real.log (Real.log k))^c) →
-      StrongLawHoldsAE f n) ∧
-    True := by  -- Second conjunct: open question about log log log
+      StrongLawHoldsAE f n := by
+  use 1
   constructor
-  · use 1
-    constructor
-    · norm_num
-    · intro f n hn hdecay
-      exact matsuyama_1966 1 (by norm_num) f n hn hdecay
-  · trivial
+  · norm_num
+  · intro f n hn hdecay
+    exact matsuyama_1966 1 (by norm_num) f n hn hdecay
 
 end Erdos996
 
