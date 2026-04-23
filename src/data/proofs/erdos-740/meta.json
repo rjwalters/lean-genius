@@ -25,7 +25,33 @@
     "axiomCount": 2,
     "lineCount": 341,
     "assumptions": "2 axiom(s) and 1 sorry(s). See the Lean source for details.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.Coloring",
+        "description": "Proper graph coloring for the chromatic number definition",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Coloring"
+      },
+      {
+        "theorem": "Cardinal",
+        "description": "Cardinal arithmetic for infinite chromatic numbers (ℵ₀, 𝔪) and the threshold function",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Walk",
+        "description": "Graph walks for the cycle and odd-cycle predicate definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Walk"
+      }
+    ],
+    "originalContributions": [
+      "chromaticNumber: Cardinal-valued chromatic number for infinite graphs (noncomputable via iInf)",
+      "isColorable: predicate checking if a graph is k-colorable via a proper coloring function",
+      "hasCycle / hasOddCycle: predicates for the presence of cycles and odd cycles of length ≤ r",
+      "avoidsOddCyclesOf: predicate for a subgraph avoiding all odd cycles of length ≤ r",
+      "erdosHajnal_conjecture: formal statement of the Erdős-Hajnal conjecture for all infinite cardinals",
+      "rodl_triangle_free axiom: Rödl's theorem for ℵ₀ chromatic number and r=3 (triangle-free case)",
+      "girth_implies_odd_avoidance: girth > 2r implies avoidance of all odd cycles of length ≤ r"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős and Hajnal posed this problem about preserving chromatic number while avoiding short odd cycles. It first appeared in Erdős's 1981 paper 'On the combinatorial problems which I would most like to see solved' ([Er81]), where he listed it among approximately 50 problems he considered most important in combinatorics. Rödl proved the case 𝔪 = ℵ₀ and r = 3 (triangle-free) in 1977, using a sophisticated probabilistic argument involving random vertex selection. The problem also appears in Erdős's 1995 survey [Er95d] on combinatorial set theory. The general case and the threshold function f_r(𝔪) remain open, connecting infinite combinatorics, set theory, and structural graph theory. The problem sits at the intersection of Ramsey theory and chromatic graph theory, building on Erdős's seminal 1959 result that graphs with arbitrarily high girth and chromatic number exist.",
