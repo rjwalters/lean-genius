@@ -132,17 +132,17 @@
     },
     {
       "targetId": "erdos-1-oq-03",
-      "relationship": "companion",
+      "relationship": "related",
       "description": "Conway–Guy sequence: the conjectured-optimal upper bound construction. Together, OQ-02 (lower bound) and OQ-03 (upper bound) bound the optimal constant from both sides. The DFX lower bound $N \\geq \\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}$ and the Conway-Guy upper bound $N \\lesssim c \\cdot 2^n/\\sqrt{n}$ are within a constant factor of each other, showing the true constant is between $\\sqrt{2/\\pi}$ and $c \\approx 0.22003$."
     },
     {
       "targetId": "cauchy-schwarz",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Cauchy–Schwarz Inequality — the algebraic core of the variance lower bound in this entry. `sum_sq_cauchy_schwarz` proves $(\\sum a_i)^2 \\leq n \\cdot \\sum a_i^2$, the finite-set form of Cauchy–Schwarz. This is lifted to $\\mathbb{Z}$ and proved by Finset induction, closing with `nlinarith`. Without this bound, the DFX argument cannot eliminate $\\sum a^2$ to get a lower bound purely in terms of $n$ and $N$."
     },
     {
       "targetId": "central-limit-theorem",
-      "relationship": "uses",
+      "relationship": "foundational",
       "description": "Central Limit Theorem — the probabilistic foundation for the axiomatized anticoncentration step. The Berry–Esseen theorem (a quantitative CLT) controls the error in the normal approximation for $X = \\sum \\varepsilon_i a_i$; the anticoncentration of $\\mathcal{N}(S/2, V)$ then bounds how many distinct values can fit in $[0, S]$. This entry's `anticoncentration_bound` axiom is the Lean placeholder for the full CLT-based argument, which requires Mathlib's `ProbabilityTheory.CLT` developments."
     }
   ],

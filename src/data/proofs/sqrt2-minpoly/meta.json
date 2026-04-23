@@ -144,27 +144,27 @@
   "crossReferences": [
     {
       "id": "sqrt2-irrational",
-      "relationship": "parent",
+      "relationship": "foundational",
       "description": "Irrationality of √2 — motivating result; degree-2 minpoly implies irrationality"
     },
     {
       "id": "cube-root-2-irrational",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Irrationality of ∛2 — analogous Eisenstein argument at p=2 for X³-2 over ℤ"
     },
     {
       "id": "nth-root-irrational",
-      "relationship": "generalization",
+      "relationship": "extends",
       "description": "General irrationality of nth roots: m^(1/n) is irrational when m is not a perfect nth power — the Eisenstein+Gauss technique here specializes to this case with n=2, m=2"
     },
     {
       "id": "cayley-hamilton-minpoly",
-      "relationship": "sibling",
+      "relationship": "complementary",
       "description": "Minimal polynomial in the matrix context — same annihilator-of-evaluation notion applied to matrices rather than algebraic numbers"
     },
     {
       "id": "sqrt2-plus-sqrt3-irrational",
-      "relationship": "extension",
+      "relationship": "extends",
       "description": "√2+√3 is irrational — builds on the degree-2 extensions ℚ(√2) and ℚ(√3); its minimal polynomial over ℚ is X⁴-10X²+1 (degree 4)"
     }
   ],
