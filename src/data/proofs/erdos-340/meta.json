@@ -16,15 +16,15 @@
       "greedy-algorithms",
       "open"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 340,
     "erdosUrl": "https://erdosproblems.com/340",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-19",
-    "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. Core definitions proved: IsSidonSet, greedySidon (via sInf), greedySidonCount, greedySidonDiffSet. The main conjectures (near-optimal growth N^{1/2-ε} and positive density of A-A) are not stated as axioms or proved theorems — they remain open questions. Open conjecture; supporting lemmas fully verified.",
-    "lineCount": 57,
+    "axiomCount": 7,
+    "assumptions": "7 axioms: greedy_sidon_values (first 11 OEIS A005282 terms), greedy_sidon_strict_mono (StrictMono), greedy_sidon_is_sidon (Sidon invariant at every prefix), greedy_sidon_lower_bound (Ω(N^{1/3}) growth), erdos_turan_upper_bound (O(√N + N^{1/4}) upper bound), greedy_sidon_growth_conjecture (open: Ω(N^{1/2-ε}) for all ε>0), greedy_sidon_diffset_pos_density (open: A-A has positive upper density).",
+    "lineCount": 101,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -50,39 +50,49 @@
       "id": "header-imports",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 12,
-      "summary": "Module docstring and Mathlib imports for the formalization.",
-      "mathContext": "Sets up the Lean 4 formalization environment with Mathlib dependencies."
-    },
-    {
-      "id": "section-13",
-      "title": "Problem Statement and Imports (continued)",
-      "startLine": 13,
       "endLine": 23,
-      "summary": "Continuation of Problem Statement and Imports."
+      "summary": "Module docstring stating the open conjecture |A ∩ [1,N]| ≫ N^{1/2-ε} and the Erdős–Graham difference set question, plus Mathlib imports.",
+      "mathContext": "Introduces the Mian-Chowla (greedy Sidon) sequence OEIS A005282, the Ω(N^{1/3}) known lower bound, and both open questions: near-optimal growth and positive density of A-A."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 24,
-      "endLine": 33,
-      "summary": "`IsSidonSet` (unique pairwise sums), `greedySidon` (recursive Mian-Chowla construction via `sInf`), `greedySidonCount N`.",
-      "mathContext": "`IsSidonSet S`: $\\forall a, b, c, d \\in S$, $a \\leq b \\wedge c \\leq d \\wedge a + b = c + d \\Rightarrow a = c \\wedge b = d$. `greedySidon n` builds the Mian-Chowla sequence by recursively adding $\\inf\\{m > \\max(S) : S \\cup \\{m\\} \\text{ is Sidon}\\}$. The count function $f(N) = |\\text{greedySidon}(N) \\cap \\{1, \\ldots, N\\}|$ measures the sequence's density."
-    },
-    {
-      "id": "section-34",
-      "title": "Core Definitions (continued)",
-      "startLine": 34,
+      "startLine": 25,
       "endLine": 42,
-      "summary": "Continuation of Core Definitions."
+      "summary": "Three definitions: IsSidonSet (unique pairwise sums predicate), greedySidon (Mian-Chowla via sInf recursion), greedySidonCount N (counting function |A ∩ [1,N]|).",
+      "mathContext": "`IsSidonSet S`: $a+b=c+d$ with $a \\leq b, c \\leq d$ implies $a=c, b=d$. `greedySidon n` $= \\inf\\{m > a(n) : S \\cup \\{m\\}$ is Sidon$\\}$. `greedySidonCount N = |\\{k : a(k) \\leq N\\}|$."
     },
     {
       "id": "initial-values",
-      "title": "Known Initial Values",
+      "title": "Known Initial Values and Basic Properties",
       "startLine": 43,
-      "endLine": 57,
-      "summary": "First 11 values of OEIS A005282, strict monotonicity, and Sidon invariant at every stage.",
-      "mathContext": "OEIS A005282: $\\{0, 1, 2, 4, 8, 13, 21, 31, 45, 66, 81, 97, \\ldots\\}$. The greedy algorithm adds the smallest integer preserving the Sidon property. Axioms assert strict monotonicity ($a_n < a_{n+1}$) and that each prefix is a Sidon set."
+      "endLine": 62,
+      "summary": "Axiom greedy_sidon_values: first 11 terms (1,2,4,8,13,21,31,45,66,81,97). Axioms: StrictMono greedySidon and Sidon invariant at every prefix.",
+      "mathContext": "OEIS A005282: $a(0)=1, a(1)=2, a(2)=4, a(3)=8, a(4)=13, a(5)=21, a(6)=31, a(7)=45, a(8)=66, a(9)=81, a(10)=97$. Monotonicity and Sidon invariant are definitional properties of the greedy construction."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds: Omega(N^{1/3}) and O(sqrt(N))",
+      "startLine": 63,
+      "endLine": 76,
+      "summary": "Axiom greedy_sidon_lower_bound (Omega(N^{1/3}) from forbidden-sum counting) and erdos_turan_upper_bound (O(sqrt(N) + N^{1/4}) from Erdos-Turan 1941).",
+      "mathContext": "Lower bound: each of $k$ greedy elements blocks $O(k^2)$ future candidates, so the $k$-th element is $O(k^3)$, giving $k \\geq \\Omega(N^{1/3})$. Upper bound: any Sidon set in $[1,N]$ has $\\leq \\sqrt{N} + O(N^{1/4})$ elements."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture: Near-Optimal Greedy Growth",
+      "startLine": 77,
+      "endLine": 85,
+      "summary": "Open conjecture: for all epsilon>0, |A intersect [1,N]| >= C_eps * N^{1/2-eps} for large N.",
+      "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists C_\\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: f(N) \\geq C_\\varepsilon \\cdot N^{1/2-\\varepsilon}$. Computations up to $N \\approx 10^{15}$ show $f(N) \\approx N^{0.497}$, very close to $\\sqrt{N}$."
+    },
+    {
+      "id": "diff-set",
+      "title": "Difference Set and Open Density Question",
+      "startLine": 86,
+      "endLine": 101,
+      "summary": "Definition greedySidonDiffSet = {a(m)-a(n) : m>n}. Open conjecture: A-A has positive upper density. Comparison with random Sidon set.",
+      "mathContext": "$A - A = \\{a(m) - a(n) : m > n\\}$. Positive density: $\\exists \\delta > 0$ such that infinitely many $N$ satisfy $|A-A \\cap [1,N]| \\geq \\delta N$. Connected to Erdős Problem #332."
     }
   ],
   "conclusion": {
@@ -171,8 +181,8 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 57,
-    "axiomCount": 0,
+    "lineCount": 101,
+    "axiomCount": 7,
     "sorries": 0
   },
   "sorries": 0
