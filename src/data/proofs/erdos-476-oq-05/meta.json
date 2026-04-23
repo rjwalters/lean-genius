@@ -18,12 +18,12 @@
       "zmod"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 1,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "2 sorries remain: [SORRY 1/2] vosper_ap_sdiff_card position analysis — given |{a₀}+B \\ (A'+B)| = 1 with both APs having diff d, prove a₀ = a₁-d or a₀ = a₁+|A'|*d (HARD). [SORRY 2/2] vosper Case 1 existence — find non-redundant a₀ ∈ A via counting argument or iterative removal. ap_of_near_periodic (backward-shift induction), vosper_base (|A|=2 case) are fully proved. Infrastructure all proved with 0 sorries.",
-    "lineCount": 583,
-    "theoremCount": 8,
+    "assumptions": "1 sorry remains: [SORRY 1/1] vosper Case 1 existence — find non-redundant a₀ ∈ A via counting argument or iterative removal. vosper_ap_sdiff_card, ap_of_near_periodic (backward-shift induction), and vosper_base (|A|=2 case) are all fully proved. Infrastructure all proved with 0 sorries.",
+    "lineCount": 784,
+    "theoremCount": 7,
     "definitionCount": 1,
     "originalContributions": [
       "IsArithmeticProgression: AP definition for Finset (ZMod p) with starting point a and difference d",
@@ -117,12 +117,12 @@
   ],
   "leanFile": {
     "namespace": "Erdos476OQ05",
-    "lineCount": 583,
+    "lineCount": 784,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 7,
     "definitionCount": 1,
     "path": "Proofs/Erdos476OQ05Problem.lean",
-    "sorries": 2
+    "sorries": 1
   },
-  "sorries": 2
+  "sorries": 1
 }
