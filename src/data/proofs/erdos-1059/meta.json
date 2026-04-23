@@ -163,7 +163,7 @@
       "title": "Verified Examples Summary",
       "summary": "Proves `prime_101`, `prime_211` via certified `decide` (trial division checked by the kernel). Packages both witnesses into `two_witnesses`: $(101).\\text{Prime} \\wedge \\text{AllFact}(101) \\wedge (211).\\text{Prime} \\wedge \\text{AllFact}(211)$.",
       "startLine": 137,
-      "endLine": 160,
+      "endLine": 155,
       "mathContext": "Summary: $101, 211 \\in $ OEIS A064152, both verified prime and factorial-avoiding. Lean's `decide` performs certified trial division."
     }
   ],

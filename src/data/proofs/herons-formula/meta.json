@@ -116,7 +116,7 @@
       "id": "applications",
       "title": "Triangle Area API and Applications",
       "startLine": 244,
-      "endLine": 275,
+      "endLine": 268,
       "summary": "Defines `triangle_area(a,b,c) = \\sqrt{s(s-a)(s-b)(s-c)}` and proves non-negativity via `sqrt_nonneg`. Concludes with `#check` statements exporting the main results.",
       "mathContext": "`triangle_area(a,b,c) = Real.sqrt(heron_product(a,b,c))`. Non-negativity of area follows from `Real.sqrt_nonneg` — Lean's `sqrt` is defined to return 0 for negative inputs, so `0 ≤ sqrt x` is unconditional. The `#check` statements export: `heron_main : ∀ p₁ p₂ p₃, p₁ ≠ p₂ → p₃ ≠ p₂ → ...`; `heron_product_nonneg : ∀ a b c, 0 < a → 0 < b → 0 < c → a < b + c → ... → 0 ≤ heron_product a b c`; `triangle_area_nonneg`. These form a complete API for computing and reasoning about triangle areas."
     }

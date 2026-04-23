@@ -104,7 +104,7 @@
       "title": "The Ratio of Derivatives Has No Limit",
       "summary": "Proves 1 + cos(x) → (no limit) via two subsequences: at 2πn the value is 2; at π + 2πn the value is 0. tendsto_nhds_unique gives L = 2 and L = 0, contradiction.",
       "startLine": 93,
-      "endLine": 160,
+      "endLine": 142,
       "mathContext": "$1 + \\cos(2\\pi n) = 2$ and $1 + \\cos(\\pi + 2\\pi n) = 0$. By uniqueness of limits, no $L$ satisfies $1 + \\cos(x) \\to L$."
     },
     {

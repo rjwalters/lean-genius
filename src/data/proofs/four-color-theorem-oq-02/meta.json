@@ -78,7 +78,7 @@
       "id": "open-question-discussion",
       "title": "Open Question: Can 633 Be Reduced Further?",
       "startLine": 70,
-      "endLine": 91,
+      "endLine": 86,
       "summary": "Analysis of obstacles to reducing below 633 configurations: (1) computational constraint — reducibility checking grows exponentially with ring size; (2) unavoidability constraint — removing configs requires new discharging rules; (3) inherent trade-off — fewer configs typically means larger ring sizes.",
       "mathContext": "Minimum set size: lower bound ~10 (theoretical), heuristic lower bound ~200-400, current best 633 (RSST). The trade-off: fewer configurations $\\Rightarrow$ larger ring sizes $\\Rightarrow$ harder reducibility checking (exponential in ring size)."
     }
