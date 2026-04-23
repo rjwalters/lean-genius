@@ -22,7 +22,7 @@
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$100",
     "axiomCount": 5,
-    "lineCount": 523,
+    "lineCount": 524,
     "assumptions": "5 axioms: JPSZ_set (explicit construction), JPSZ_is_basis, JPSZ_representation_bound, JPSZ_explicit, JPSZ_size_optimal. JPSZ_is_economical and JPSZ_density_zero fully proved as consequences (not independent axioms): economical follows from representation bound via exp(C\u221a(log n) - \u03b5\u00b7log n) \u2192 -\u221e, density zero follows from size optimal via squeeze with C\u00b7\u221a(log N/N) \u2192 0. 0 sorries.",
     "prerequisites": [
       "Additive bases and Waring's problem",
