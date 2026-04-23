@@ -1,38 +1,27 @@
 {
   "slug": "feuerbachs-theorem-defs-oq-04",
   "title": "Feuerbach's Theorem: Connect to Mathlib Affine Geometry Framework",
-  "phase": "COMPLETED",
+  "phase": "NEW",
   "status": "active",
-  "tier": "B",
+  "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "theorem ninePointCircle_nine_points_sphere (T : Triangle) (hnt : T.is_nondegenerate) : ∀ p ∈ [T.midpoint_a, T.midpoint_b, T.midpoint_c, T.foot_a, T.foot_b, T.foot_c, T.midpoint_AH, T.midpoint_BH, T.midpoint_CH], dist (toEuclidean T.ninePointCenter) (toEuclidean p) = T.ninePointRadius",
-    "plain": "Reformulate FeuerbachsTheoremDefs.lean — which uses a custom coordinate API (Point = ℝ × ℝ, dist2, Triangle) — using Mathlib's abstract EuclideanSpace ℝ (Fin 2) and Sphere types, bridging via a toEuclidean conversion lemma.",
-    "whyMatters": [
-      "Mathlib alignment: bridges gallery's bespoke coordinate API to Mathlib's preferred geometry types, enabling potential Mathlib contribution",
-      "Dimension abstraction: Mathlib's EuclideanSpace ℝ (Fin n) scales to higher dimensions",
-      "Reusable API: toEuclidean conversion lemmas would benefit other gallery proofs using the same custom coordinate infrastructure"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in geometry: Feuerbach's Theorem: Connect to Mathlib Affine Geometry Framework.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "FeuerbachsTheoremDefs.lean: nine-point circle membership and incircle tangency via custom Point/dist2 API (33 theorems, 0 sorries)",
-      "FeuerbachsTheoremDefsOQ03.lean: Feuerbach point uniqueness (7 theorems, 0 sorries)"
-    ],
-    "open": [
-      "Bridge lemma: dist (toEuclidean P) (toEuclidean Q) = dist2 P Q",
-      "Sphere membership reformulation of ninePointCircleContainsAllNinePoints",
-      "Sphere tangency reformulation of incircle_tangent_to_ninePointCircle"
-    ],
-    "goal": "Prove the nine-point membership and Feuerbach tangency using Mathlib Sphere/EuclideanSpace, connected via a toEuclidean bridge lemma"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-22T21:00:00.000Z",
+    "phase": "NEW",
+    "since": "2026-04-22T13:03:46.505Z",
     "iteration": 1,
-    "focus": "Survey Mathlib's Sphere and EuclideanSpace API; understand existing FeuerbachsTheoremDefs structure; define bridge approach.",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Read Mathlib.Geometry.Euclidean.Sphere.Basic definitions; check dist2 naming (actual distance vs squared); inspect FeuerbachsTheoremDefs.lean key types.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -40,53 +29,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: FeuerbachsTheoremDefsOQ04.lean created. Bridge lemma proved, all 9 membership theorems reformulated as Metric.sphere, combined theorem. 12 theorems, 0 sorries. PR #11474.",
-    "builtItems": [
-      "FeuerbachsTheoremDefsOQ04.lean (155 lines, 12 theorems, 0 sorries)",
-      "toEuclidean_dist: bridge lemma dist = dist2",
-      "ninePoints_all_on_sphere: combined Mathlib sphere theorem",
-      "Gallery entry: src/data/proofs/feuerbachs-theorem-defs-oq-04/"
-    ],
-    "insights": [
-      "toEuclidean bridge proved via EuclideanSpace.norm_eq + Fin.sum_univ_two + ring; dist2 is actual Euclidean distance (not squared)",
-      "All 9 nine-point membership theorems reformulated as Metric.sphere membership in 3 lines each by delegating to existing FeuerbachsTheoremDefs proofs",
-      "EuclideanSpace ℝ (Fin 2) is definitionally Fin 2 → ℝ, so ![P.1,P.2] typechecks directly"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Inspect FeuerbachsTheoremDefs.lean — confirm dist2 is actual distance, not squared",
-      "Check Mathlib.Geometry.Euclidean.Sphere.Basic for Sphere membership API",
-      "Define toEuclidean : Point → EuclideanSpace ℝ (Fin 2) bridge function",
-      "Prove bridge lemma: dist (toEuclidean P) (toEuclidean Q) = dist2 P Q"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "geometry",
     "feuerbach",
     "mathlib",
     "affine-geometry",
-    "formalization",
-    "euclidean-space",
-    "sphere",
-    "api-bridge"
+    "formalization"
   ],
   "relatedProofs": [
     "feuerbachs-theorem",
-    "feuerbachs-theorem-defs",
-    "sperner-ndim"
+    "feuerbachs-theorem-defs"
   ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.Geometry.Euclidean.Sphere.Basic",
-      "Mathlib.Geometry.Euclidean.Circumcenter",
-      "Mathlib.Geometry.Euclidean.Triangle",
-      "EuclideanSpace ℝ (Fin 2)"
-    ]
+    "mathlib": []
   },
   "started": "2026-04-22T13:03:46.505Z",
-  "lastUpdate": "2026-04-22T21:00:00.000Z",
+  "lastUpdate": "2026-04-22T13:03:46.505Z",
   "significance": 7,
   "tractability": 7,
   "leanFiles": [

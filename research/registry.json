@@ -16085,11 +16085,11 @@
     },
     {
       "slug": "shannon-channel-coding-oq-02-oq-04",
-      "phase": "COMPLETED",
+      "phase": "OBSERVE",
       "path": "full",
       "started": "2026-04-13T00:54:20.862Z",
       "status": "graduated",
-      "lastUpdate": "2026-04-13T06:39:18.605Z",
+      "lastUpdate": "2026-04-23T01:33:17+02:00",
       "completed": "2026-04-13T06:39:18.605Z"
     },
     {
@@ -16350,11 +16350,11 @@
     },
     {
       "slug": "ptolemys-theorem-oq-01-incomplete-01",
-      "phase": "COMPLETED",
+      "phase": "OBSERVE",
       "path": "fast",
       "started": "2026-04-13T22:43:37.486Z",
       "status": "graduated",
-      "lastUpdate": "2026-04-14T20:51:02.132Z",
+      "lastUpdate": "2026-04-22T19:43:19+02:00",
       "completed": "2026-04-14T20:51:02.132Z"
     },
     {
@@ -16937,12 +16937,11 @@
     },
     {
       "slug": "area-of-circle-oq-05-oq-02",
-      "phase": "COMPLETED",
+      "phase": "OBSERVE",
       "path": "full",
       "started": "2026-04-21T18:07:30.995892+00:00",
-      "status": "graduated",
-      "lastUpdate": "2026-04-23T01:30:19.724Z",
-      "completed": "2026-04-23T01:30:19.719Z"
+      "status": "active",
+      "lastUpdate": "2026-04-21T18:07:30.995892+00:00"
     },
     {
       "slug": "angle-trisection-oq-04-oq-03",
@@ -17046,7 +17045,9 @@
       "phase": "OBSERVE",
       "path": "full",
       "started": "2026-04-21T22:19:23+02:00",
-      "status": "active"
+      "status": "active",
+      "lastUpdate": "2026-04-23T01:53:00+02:00",
+      "seekerSelected": "2026-04-23T01:53:00+02:00"
     },
     {
       "slug": "arithmetic-series-oq-00-oq-01",
@@ -17155,11 +17156,11 @@
     },
     {
       "slug": "lebesgue-measure-oq-06",
-      "phase": "OBSERVE",
+      "phase": "NEW",
       "path": "full",
       "started": "2026-04-22T13:25:38.669Z",
       "status": "active",
-      "lastUpdate": "2026-04-22T21:55:56.683Z"
+      "lastUpdate": "2026-04-22T13:25:38.669Z"
     },
     {
       "slug": "sophie-germain-oq-01",
@@ -17179,19 +17180,19 @@
     },
     {
       "slug": "sperner-ndim-oq-04",
-      "phase": "OBSERVE",
+      "phase": "NEW",
       "path": "full",
       "started": "2026-04-22T13:25:38.670Z",
       "status": "active",
-      "lastUpdate": "2026-04-22T17:25:48.961Z"
+      "lastUpdate": "2026-04-22T13:25:38.670Z"
     },
     {
       "slug": "szemeredi-counting-oq-02",
-      "phase": "OBSERVE",
+      "phase": "NEW",
       "path": "full",
       "started": "2026-04-22T13:25:38.671Z",
       "status": "active",
-      "lastUpdate": "2026-04-23T01:30:20.616Z"
+      "lastUpdate": "2026-04-22T13:25:38.671Z"
     },
     {
       "slug": "szemeredi-full-oq-01",
@@ -17215,15 +17216,15 @@
       "path": "full",
       "started": "2026-04-22T13:25:38.671Z",
       "status": "active",
-      "lastUpdate": "2026-04-22T21:55:56.684Z"
+      "lastUpdate": "2026-04-22T20:00:00.000Z"
     },
     {
       "slug": "triangle-angle-sum-oq-02",
-      "phase": "OBSERVE",
+      "phase": "NEW",
       "path": "full",
       "started": "2026-04-22T13:25:38.671Z",
       "status": "active",
-      "lastUpdate": "2026-04-22T21:55:56.684Z"
+      "lastUpdate": "2026-04-22T13:25:38.671Z"
     },
     {
       "slug": "twin-primes-special-oq-01",
@@ -17371,12 +17372,11 @@
     },
     {
       "slug": "dissection-of-cubes-oq-04",
-      "phase": "COMPLETED",
+      "phase": "NEW",
       "path": "full",
       "started": "2026-04-22T13:25:40.571Z",
-      "status": "graduated",
-      "lastUpdate": "2026-04-22T21:55:56.648Z",
-      "completed": "2026-04-22T21:55:56.648Z"
+      "status": "active",
+      "lastUpdate": "2026-04-22T13:25:40.571Z"
     },
     {
       "slug": "divisibility-truncation-general-oq-03",
@@ -17388,20 +17388,19 @@
     },
     {
       "slug": "feuerbachs-theorem-defs-oq-04",
-      "phase": "COMPLETED",
+      "phase": "NEW",
       "path": "fast",
       "started": "2026-04-22T13:25:40.571Z",
-      "status": "graduated",
-      "lastUpdate": "2026-04-22T21:55:56.649Z",
-      "completed": "2026-04-22T21:55:56.649Z"
+      "status": "active",
+      "lastUpdate": "2026-04-22T13:25:40.571Z"
     },
     {
       "slug": "liouville-theorem-oq-04",
-      "phase": "OBSERVE",
+      "phase": "NEW",
       "path": "full",
       "started": "2026-04-22T13:25:40.572Z",
       "status": "active",
-      "lastUpdate": "2026-04-22T23:51:30.578Z"
+      "lastUpdate": "2026-04-22T13:25:40.572Z"
     },
     {
       "slug": "minkowski-fundamental-theorem-oq-04",
@@ -17417,39 +17416,40 @@
       "path": "full",
       "started": "2026-04-22T13:25:40.573Z",
       "status": "active",
-      "lastUpdate": "2026-04-22T21:55:56.685Z"
+      "lastUpdate": "2026-04-22T21:17:05+02:00"
     },
     {
       "slug": "newton-inductive-step-oq-03",
-      "phase": "OBSERVE",
+      "phase": "NEW",
       "path": "full",
       "started": "2026-04-22T13:25:40.573Z",
       "status": "active",
-      "lastUpdate": "2026-04-22T21:55:56.685Z"
+      "lastUpdate": "2026-04-22T13:25:40.573Z"
     },
     {
       "slug": "shapley-folkman-oq-03",
-      "phase": "OBSERVE",
+      "phase": "NEW",
       "path": "full",
       "started": "2026-04-22T13:25:40.573Z",
       "status": "active",
-      "lastUpdate": "2026-04-22T21:55:56.685Z"
+      "lastUpdate": "2026-04-22T23:45:22.000Z",
+      "seekerSelected": "2026-04-22T23:45:22.000Z"
     },
     {
       "slug": "solution-of-cubic-oq-05",
-      "phase": "OBSERVE",
+      "phase": "NEW",
       "path": "full",
       "started": "2026-04-22T13:25:40.573Z",
       "status": "active",
-      "lastUpdate": "2026-04-22T19:08:00Z"
+      "lastUpdate": "2026-04-22T13:25:40.573Z"
     },
     {
       "slug": "sylow-theorem-oq-02",
-      "phase": "NEW",
+      "phase": "OBSERVE",
       "path": "full",
       "started": "2026-04-22T13:25:40.575Z",
       "status": "active",
-      "lastUpdate": "2026-04-22T13:25:40.575Z"
+      "lastUpdate": "2026-04-23T02:30:21+02:00"
     },
     {
       "slug": "triangle-angle-sum-oq-03",
@@ -17457,7 +17457,7 @@
       "path": "fast",
       "started": "2026-04-22T13:25:40.575Z",
       "status": "active",
-      "lastUpdate": "2026-04-22T21:55:56.685Z"
+      "lastUpdate": "2026-04-22T20:50:25+02:00"
     },
     {
       "slug": "ptolemys-theorem-oq-01-oq-02",
@@ -17489,38 +17489,34 @@
     },
     {
       "slug": "sqrt2-plus-sqrt3-irrational-oq-03",
-      "phase": "COMPLETED",
+      "phase": "OBSERVE",
       "path": "full",
       "started": "2026-04-22T19:03:06+02:00",
-      "status": "graduated",
-      "completed": "2026-04-22T21:55:56.652Z",
-      "lastUpdate": "2026-04-22T21:55:56.652Z"
+      "status": "active"
     },
     {
       "slug": "sqrt2-minpoly",
-      "phase": "COMPLETED",
+      "phase": "OBSERVE",
       "path": "full",
       "started": "2026-04-22T19:23:25+02:00",
-      "status": "graduated",
-      "completed": "2026-04-22T21:55:56.651Z",
-      "lastUpdate": "2026-04-22T21:55:56.651Z"
+      "status": "active"
+    },
+    {
+      "slug": "lebesgue-measure-oq-06",
+      "phase": "OBSERVE",
+      "path": "research",
+      "started": "2026-04-22T20:15:00+02:00",
+      "status": "available",
+      "tier": "A",
+      "significance": 8,
+      "tractability": 6
     },
     {
       "slug": "sqrt2-minpoly-oq-01",
       "phase": "OBSERVE",
-      "path": "fast",
-      "started": "2026-04-22T21:55:56.657Z",
-      "status": "active",
-      "lastUpdate": "2026-04-23T01:53:00+02:00",
-      "seekerSelected": "2026-04-23T01:53:00+02:00"
-    },
-    {
-      "slug": "sqrt2-minpoly-oq-02",
-      "phase": "NEW",
-      "path": "fast",
-      "started": "2026-04-22T21:55:56.657Z",
-      "status": "active",
-      "lastUpdate": "2026-04-22T21:55:56.657Z"
+      "path": "full",
+      "started": "2026-04-23T02:11:45+02:00",
+      "status": "active"
     }
   ],
   "config": {
@@ -17528,5 +17524,5 @@
     "oodaTimeoutMinutes": 60,
     "attemptsBeforePivot": 5
   },
-  "lastUpdated": "2026-04-21T20:43:04.330807Z"
+  "lastUpdated": "2026-04-22T18:17:36.942223+00:00"
 }
