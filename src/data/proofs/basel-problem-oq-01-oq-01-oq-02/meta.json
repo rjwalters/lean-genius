@@ -21,8 +21,8 @@
     "sorries": 0,
     "dateAdded": "2026-04-12",
     "axiomCount": 5,
-    "lineCount": 949,
-    "assumptions": "5 axioms: aperyB_recurrence (WZ recurrence), denominator_control (lcm^3*a_n is integer), lcm_hanson_bound (3^n Hanson bound), apery_linearForm_decay (geometric decay), apery_linearForm_nonzero (L_n != 0 for n>=1). Removed unused nair_lcm_bound. Main theorem apery_theorem PROVED from these 5 axioms.",
+    "lineCount": 952,
+    "assumptions": "5 axioms: aperyB_recurrence (WZ recurrence), denominator_control (lcm^3*a_n is integer), lcm_hanson_bound (3^n Hanson bound), apery_linearForm_decay (geometric decay), apery_linearForm_nonzero (L_n != 0 for n>=1). Main theorem apery_theorem PROVED from these 5 axioms. Note: denominator_control_factorial (AXIOM-FREE) proves (n!)³·aₙ∈ℤ — weaker than lcm version but fully verified.",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "Defined Apéry numbers aperyB(n) = ∑ C(n,k)²C(n+k,k)² as a computable ℕ-valued function",
@@ -188,13 +188,13 @@
       "Nat"
     ],
     "namespace": "AperyZetaThree",
-    "lineCount": 949,
+    "lineCount": 952,
     "axiomCount": 5,
-    "theoremCount": 27,
+    "theoremCount": 29,
     "definitionCount": 4,
     "path": "Proofs/BaselProblemOQ01OQ01OQ02.lean",
     "sorries": 0,
-    "notes": "11 pre-existing build errors fixed (Mathlib API changes). Parts XVII-XVIII added: telescoping upper bound for ζ(3) tail + L₂ > 0 via native_decide. Part XIX added: aperyA_three (a₃=62531/36) and linearForm_three_pos (L₃ = 1445ζ(3) - 62531/36 > 0 via N=350 native_decide bound; gap ≈ 3×10⁻⁸ requires N≥325)."
+    "notes": "Part XIX (verified build): aperyA_three (a₃=62531/36), linearForm_three_pos (L₃>0 via N=1000 native_decide), aperyA_factorial_step (recurrence for (n!)³·aₙ), denominator_control_factorial (AXIOM-FREE: proves (n!)³·aₙ∈ℤ by induction). aperyA refactored to use aperyRecCoeff."
   },
   "references": [
     {
