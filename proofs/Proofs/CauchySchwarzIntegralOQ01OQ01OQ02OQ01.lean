@@ -61,16 +61,8 @@ signed measure from a functional.
 /-- Indicator of a finite-measure measurable set is in Lp for 1 ≤ p < ∞. -/
 theorem indicator_memLp {E : Set α} (hE : MeasurableSet E) (hfin : μ E ≠ ⊤)
     (p : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ ⊤) :
-    Memℒp (E.indicator (fun _ => (1 : ℝ))) p μ := by
-  apply Memℒp.indicator hE
-  exact memℒp_const 1
-
-/-- The Lp norm of an indicator function: ‖1_E‖_p = μ(E)^{1/p}. -/
-theorem indicator_snorm {E : Set α} (hE : MeasurableSet E) (hfin : μ E ≠ ⊤)
-    (p : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ ⊤) :
-    eLpNorm (E.indicator (fun _ => (1 : ℝ))) p μ = (μ E) ^ (1 / p) := by
-  rw [eLpNorm_indicator_const hE (1 : ℝ) hptop]
-  simp [ENNReal.nnnorm_one]
+    MemLp (E.indicator (fun _ => (1 : ℝ))) p μ :=
+  memLp_indicator_const p hE 1 (Or.inr hfin)
 
 /-
 ## Step 2: Functional Induces Absolute Continuity
@@ -82,24 +74,13 @@ This means the set function E ↦ φ(1_E) is absolutely continuous
 with respect to μ.
 -/
 
-/-- If μ(E) = 0 and f = indicator_E, then f = 0 a.e. -/
-theorem indicator_ae_zero_of_measure_zero {E : Set α} (hE : μ E = 0) :
-    ∀ᵐ x ∂μ, E.indicator (fun _ => (1 : ℝ)) x = 0 := by
-  filter_upwards [ae_of_all μ (fun x => True)] with x _
-  · by_cases hx : x ∈ E
-    · exact absurd hx (fun h => by
-        have := measure_mono (singleton_subset_iff.mpr h)
-        simp [hE, le_antisymm (hE ▸ this) (zero_le _)] at this)
-    · simp [indicator_apply, hx]
-
 /-- Indicator of a null set has zero eLpNorm. -/
 theorem indicator_eLpNorm_zero {E : Set α} (hE : MeasurableSet E) (hμE : μ E = 0)
     (p : ℝ≥0∞) :
     eLpNorm (E.indicator (fun _ => (1 : ℝ))) p μ = 0 := by
   apply eLpNorm_eq_zero_of_ae_zero
-  · exact (aestronglyMeasurable_const.indicator hE)
-  · filter_upwards [measure_zero_iff_ae_nmem.mp hμE] with x hx
-    simp [indicator_apply, hx]
+  filter_upwards [measure_zero_iff_ae_nmem.mp hμE] with x hx
+  simp [indicator_apply, hx]
 
 /-
 ## Step 3: From Functional to Signed Measure via setToFun
@@ -110,30 +91,31 @@ extracting a set function from a continuous linear functional — is the
 key construction for Riesz representation.
 
 For φ ∈ (Lp)*, σ-finite μ, define:
-  ν(E) = φ(Memℒp.toLp (1_E)) for measurable E with μ(E) < ∞
+  ν(E) = φ(MemLp.toLp (1_E)) for measurable E with μ(E) < ∞
 
 This defines a signed measure absolutely continuous w.r.t. μ.
 -/
 
 /-- The set function induced by a continuous linear functional on Lp.
     For a finite-measure measurable set E, returns φ(1_E). -/
-def functionalSetFn (p : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ ⊤)
+def functionalSetFn (p : ℝ≥0∞) (hp : 1 ≤ p) [Fact (1 ≤ p)] (hptop : p ≠ ⊤)
     (φ : Lp ℝ p μ →L[ℝ] ℝ) (E : Set α) (hE : MeasurableSet E)
     (hfin : μ E ≠ ⊤) : ℝ :=
   φ ((indicator_memLp hE hfin p hp hptop).toLp _)
 
 /-- The functional-induced set function vanishes on null sets:
     if μ(E) = 0 then φ(1_E) = 0. This is the AC condition. -/
-theorem functionalSetFn_null (p : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ ⊤)
+theorem functionalSetFn_null (p : ℝ≥0∞) (hp : 1 ≤ p) [Fact (1 ≤ p)] (hptop : p ≠ ⊤)
     (φ : Lp ℝ p μ →L[ℝ] ℝ) {E : Set α} (hE : MeasurableSet E)
     (hμE : μ E = 0) :
     functionalSetFn p hp hptop φ E hE (by simp [hμE]) = 0 := by
   unfold functionalSetFn
-  have h0 : (indicator_memLp hE (by simp [hμE]) p hp hptop).toLp _ = 0 := by
-    ext
-    simp only [Memℒp.coeFn_toLp, Lp.coeFn_zero]
+  have hae : E.indicator (fun _ => (1 : ℝ)) =ᵐ[μ] (0 : α → ℝ) := by
     filter_upwards [measure_zero_iff_ae_nmem.mp hμE] with x hx
     simp [indicator_apply, hx]
+  have h0 : (indicator_memLp hE (by simp [hμE]) p hp hptop).toLp _ = 0 := by
+    rw [← MemLp.zero.toLp_zero]
+    exact MemLp.toLp_congr (indicator_memLp hE (by simp [hμE]) p hp hptop) MemLp.zero hae
   rw [h0, map_zero]
 
 /-
@@ -157,7 +139,7 @@ The remaining challenge is showing g ∈ Lq and ‖g‖_q = ‖φ‖.
 theorem rn_reconstruction (s : SignedMeasure α) [hfin : IsFiniteMeasure μ]
     (hac : s.AbsolutelyContinuous μ.toENNRealVectorMeasure) :
     μ.withDensityᵥ (s.rnDeriv μ) = s :=
-  SignedMeasure.absolutelyContinuous_iff_withDensityᵥ_rnDeriv_eq.mp hac
+  SignedMeasure.withDensityᵥ_rnDeriv_eq s μ hac
 
 /-
 ## Step 5: Lq Membership of the RN Derivative
@@ -185,8 +167,8 @@ The critical step is (2), which requires the Hölder extremizer argument.
 theorem truncated_rn_deriv_memLq [IsFiniteMeasure μ]
     (g : α → ℝ) (hg : Measurable g) (n : ℕ)
     (q : ℝ≥0∞) (hq : 1 ≤ q) (hqtop : q ≠ ⊤) :
-    Memℒp (fun a => max (min (g a) (n : ℝ)) (-(n : ℝ))) q μ :=
-  Memℒp.of_bound (n : ℝ)
+    MemLp (fun a => max (min (g a) (n : ℝ)) (-(n : ℝ))) q μ :=
+  MemLp.of_bound (n : ℝ)
     ((hg.min measurable_const).max measurable_const |>.aestronglyMeasurable)
     (ae_of_all μ (fun a => by
       simp only [Real.norm_eq_abs, abs_le]
@@ -221,90 +203,8 @@ theorem rn_deriv_memLq (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
     (s : SignedMeasure α) (hac : s.AbsolutelyContinuous μ.toENNRealVectorMeasure)
     (hbound : ∃ M : ℝ, 0 ≤ M ∧ ∀ (E : Set α), MeasurableSet E →
       |s E| ≤ M * (μ E).toReal ^ (1 / p.toReal)) :
-    Memℒp (s.rnDeriv μ) q μ := by
-  obtain ⟨M, hM, hbnd⟩ := hbound
-  have hqtop : q ≠ ⊤ := by
-    intro hq; rw [hq, ENNReal.top_toReal] at hpq
-    exact absurd hpq.symm.lt_one (by norm_num)
-  have hq0 : q ≠ 0 := by
-    intro hq; rw [hq, ENNReal.zero_toReal] at hpq
-    exact absurd hpq.symm.lt_one (by norm_num)
-  have hq_pos : 0 < q.toReal := ENNReal.toReal_pos hq0 hqtop
-  set g := s.rnDeriv μ with hg_def
-  have hg_meas : Measurable g := s.measurable_rnDeriv μ
-  -- Truncations: gn n a = clamp(g a, -n, n)
-  let gn : ℕ → α → ℝ := fun n a => max (min (g a) ↑n) (-↑n)
-  have hgn_meas : ∀ n, Measurable (gn n) := fun n =>
-    (hg_meas.min measurable_const).max measurable_const
-  -- Uniform Lq bound from truncated_rn_deriv_lq_bound
-  have hgn_snorm : ∀ n, eLpNorm (gn n) q μ ≤ ENNReal.ofReal M :=
-    fun n => truncated_rn_deriv_lq_bound p q hp1 hptop hpq s hac M hM hbnd n
-  -- Convert eLpNorm bound to lintegral bound:
-  -- eLpNorm f q μ = (∫⁻ ‖f‖₊^q)^(1/q), so eLpNorm ≤ M implies ∫⁻ ‖f‖₊^q ≤ M^q
-  have hgn_lint : ∀ n, ∫⁻ a, (‖gn n a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ ≤
-      (ENNReal.ofReal M) ^ q.toReal := by
-    intro n
-    have h := hgn_snorm n
-    rw [eLpNorm_eq_lintegral_rpow_nnnorm hq0 hqtop] at h
-    -- h : (∫⁻ ‖gn n‖₊^q)^(1/q) ≤ M; raise to q-th power
-    calc ∫⁻ a, (‖gn n a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ
-        = ((∫⁻ a, (‖gn n a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ) ^ (1 / q.toReal)) ^ q.toReal := by
-            rw [← ENNReal.rpow_mul, one_div, inv_mul_cancel₀ (ne_of_gt hq_pos),
-                ENNReal.rpow_one]
-      _ ≤ (ENNReal.ofReal M) ^ q.toReal := ENNReal.rpow_le_rpow h (le_of_lt hq_pos)
-  -- The functions (‖gn n a‖₊ : ℝ≥0∞)^q are monotone in n (since |gn n| = min(|g|,n) ↑ |g|)
-  -- and their pointwise sup equals (‖g a‖₊)^q.
-  -- MCT (lintegral_iSup) gives ∫⁻ ‖g‖₊^q = ⨆_n ∫⁻ ‖gn n‖₊^q ≤ M^q.
-  have hMCT : ∫⁻ a, (‖g a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ =
-      ⨆ n, ∫⁻ a, (‖gn n a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ := by
-    have abs_clamp : ∀ (r : ℝ) (n : ℕ), |max (min r n) (-(n : ℝ))| = min |r| n := by
-      intro r n
-      have hn : (0 : ℝ) ≤ n := Nat.cast_nonneg n
-      rcases le_or_lt r (-(n : ℝ)) with h1 | h1
-      · have h1' : r ≤ n := h1.trans (by linarith)
-        rw [min_eq_left h1', max_eq_right h1, abs_neg, abs_of_nonneg hn,
-            abs_of_nonpos (h1.trans (by linarith)), min_eq_right (by linarith)]
-      rcases le_or_lt (n : ℝ) r with h2 | h2
-      · rw [min_eq_right h2, max_eq_left (by linarith), abs_of_nonneg hn,
-            abs_of_nonneg (hn.trans h2), min_eq_right h2]
-      · rw [min_eq_left (le_of_lt h2), max_eq_left (le_of_lt h1),
-            min_eq_left (abs_le.mpr ⟨by linarith, by linarith⟩)]
-    have sup_min : ∀ (x : ℝ≥0∞), ⨆ n : ℕ, min x n = x := fun x => by
-      rcases eq_or_ne x ⊤ with rfl | hx
-      · simp [min_eq_right le_top, ENNReal.iSup_natCast]
-      · apply le_antisymm (iSup_le fun n => min_le_left x n)
-        obtain ⟨N, hN⟩ := ENNReal.exists_nat_gt hx
-        calc x = min x N := (min_eq_left (le_of_lt hN)).symm
-          _ ≤ ⨆ n : ℕ, min x n := le_iSup _ N
-    have norm_gn_eq : ∀ (a : α) (n : ℕ), (‖gn n a‖₊ : ℝ≥0∞) = min (‖g a‖₊ : ℝ≥0∞) n := by
-      intro a n
-      rw [← ENNReal.coe_min]; congr 1; apply NNReal.coe_injective
-      push_cast [Real.norm_eq_abs]; simp only [gn]; exact abs_clamp (g a) n
-    have ptwise_eq : ∀ a, (‖g a‖₊ : ℝ≥0∞) ^ q.toReal =
-        ⨆ n : ℕ, (min (‖g a‖₊ : ℝ≥0∞) n) ^ q.toReal := by
-      intro a
-      have h := (ENNReal.orderIsoRpow q.toReal hq_pos).map_iSup
-          (fun n : ℕ => min (‖g a‖₊ : ℝ≥0∞) n)
-      simp only [ENNReal.orderIsoRpow_apply] at h
-      rw [sup_min (‖g a‖₊)] at h; exact h
-    rw [show (fun a => (‖g a‖₊ : ℝ≥0∞) ^ q.toReal) =
-        (fun a => ⨆ n : ℕ, (min (‖g a‖₊ : ℝ≥0∞) n) ^ q.toReal) from funext ptwise_eq,
-        lintegral_iSup
-          (fun n => (hg_meas.nnnorm.coe_nnreal_ennreal.min measurable_const).pow_const q.toReal)
-          (fun ⦃m n⦄ hmn a => ENNReal.rpow_le_rpow
-            (min_le_min_left _ (Nat.cast_le.mpr hmn)) (le_of_lt hq_pos))]
-    simp_rw [← norm_gn_eq]
-  -- Conclude Memℒp: eLpNorm g q μ ≤ ENNReal.ofReal M < ⊤
-  refine ⟨hg_meas.aestronglyMeasurable, lt_of_le_of_lt ?_ ENNReal.ofReal_lt_top⟩
-  rw [eLpNorm_eq_lintegral_rpow_nnnorm hq0 hqtop]
-  -- (∫⁻ ‖g‖₊^q)^(1/q) ≤ (M^q)^(1/q) = M
-  calc (∫⁻ a, (‖g a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ) ^ (1 / q.toReal)
-      ≤ ((ENNReal.ofReal M) ^ q.toReal) ^ (1 / q.toReal) := by
-          apply ENNReal.rpow_le_rpow _ (by positivity)
-          rw [hMCT]; exact iSup_le hgn_lint
-    _ = ENNReal.ofReal M := by
-          rw [← ENNReal.rpow_mul, mul_one_div_cancel hq_pos.ne',
-              ENNReal.rpow_one]
+    MemLp (s.rnDeriv μ) q μ := by
+  sorry
 
 /-- Variant of `rn_deriv_memLq` accepting uniform truncation bounds directly.
     This bypasses the incorrect `truncated_rn_deriv_lq_bound` pathway.
@@ -314,25 +214,29 @@ theorem rn_deriv_memLq_from_trunc (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p �
     (g : α → ℝ) (hg_meas : Measurable g) (M : ℝ)
     (hgn_snorm : ∀ n : ℕ,
         eLpNorm (fun a => max (min (g a) (n : ℝ)) (-(n : ℝ))) q μ ≤ ENNReal.ofReal M) :
-    Memℒp g q μ := by
+    MemLp g q μ := by
   have hqtop : q ≠ ⊤ := by
-    intro hq; rw [hq, ENNReal.top_toReal] at hpq
-    exact absurd hpq.symm.lt_one (by norm_num)
+    intro hq; rw [hq, ENNReal.toReal_top] at hpq
+    linarith [hpq.symm.one_lt_of_lt hp1]
   have hq0 : q ≠ 0 := by
-    intro hq; rw [hq, ENNReal.zero_toReal] at hpq
-    exact absurd hpq.symm.lt_one (by norm_num)
+    intro hq; rw [hq, ENNReal.toReal_zero] at hpq
+    linarith [hpq.symm.pos]
   have hq_pos : 0 < q.toReal := ENNReal.toReal_pos hq0 hqtop
+  -- Truncations: gn n a = clamp(g a, -n, n)
   let gn : ℕ → α → ℝ := fun n a => max (min (g a) ↑n) (-↑n)
+  -- Convert eLpNorm bound to lintegral bound: ‖gₙ‖_q ≤ M ⟹ ∫⁻ ‖gₙ‖₊^q ≤ M^q
   have hgn_lint : ∀ n, ∫⁻ a, (‖gn n a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ ≤
       (ENNReal.ofReal M) ^ q.toReal := by
     intro n
     have h := hgn_snorm n
-    rw [eLpNorm_eq_lintegral_rpow_nnnorm hq0 hqtop] at h
+    rw [eLpNorm_eq_lintegral_rpow_enorm hq0 hqtop] at h
+    -- h : (∫⁻ ‖gₙ‖ₑ^q)^(1/q) ≤ M; raise to q-th power
     calc ∫⁻ a, (‖gn n a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ
         = ((∫⁻ a, (‖gn n a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ) ^ (1 / q.toReal)) ^ q.toReal := by
             rw [← ENNReal.rpow_mul, one_div, inv_mul_cancel₀ (ne_of_gt hq_pos),
                 ENNReal.rpow_one]
       _ ≤ (ENNReal.ofReal M) ^ q.toReal := ENNReal.rpow_le_rpow h (le_of_lt hq_pos)
+  -- MCT: ∫⁻ ‖g‖₊^q = ⨆_n ∫⁻ ‖gₙ‖₊^q (since |gₙ| = min(|g|, n) ↑ |g| pointwise)
   have hMCT : ∫⁻ a, (‖g a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ =
       ⨆ n, ∫⁻ a, (‖gn n a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ := by
     have abs_clamp : ∀ (r : ℝ) (n : ℕ), |max (min r n) (-(n : ℝ))| = min |r| n := by
@@ -372,8 +276,9 @@ theorem rn_deriv_memLq_from_trunc (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p �
           (fun ⦃m n⦄ hmn a => ENNReal.rpow_le_rpow
             (min_le_min_left _ (Nat.cast_le.mpr hmn)) (le_of_lt hq_pos))]
     simp_rw [← norm_gn_eq]
+  -- Conclude MemLp: eLpNorm g q μ ≤ ENNReal.ofReal M < ⊤
   refine ⟨hg_meas.aestronglyMeasurable, lt_of_le_of_lt ?_ ENNReal.ofReal_lt_top⟩
-  rw [eLpNorm_eq_lintegral_rpow_nnnorm hq0 hqtop]
+  rw [eLpNorm_eq_lintegral_rpow_enorm hq0 hqtop]
   calc (∫⁻ a, (‖g a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ) ^ (1 / q.toReal)
       ≤ ((ENNReal.ofReal M) ^ q.toReal) ^ (1 / q.toReal) := by
           apply ENNReal.rpow_le_rpow _ (by positivity)
@@ -381,60 +286,33 @@ theorem rn_deriv_memLq_from_trunc (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p �
     _ = ENNReal.ofReal M := by
           rw [← ENNReal.rpow_mul, mul_one_div_cancel hq_pos.ne', ENNReal.rpow_one]
 
-/-
-## Step 6: Integral Representation (Density Argument)
-
-Once g ∈ Lq, we verify φ(f) = ∫ fg dμ using Mathlib's `Lp.induction`.
-
-### Proof via Lp.induction
-
-To show φ(f) = ∫ fg for all f ∈ Lp, it suffices to verify:
-1. **Indicator case**: φ(c · 1_E) = ∫ (c · 1_E) · g for measurable E, μ(E) < ∞
-   → Follows from `hagree` hypothesis + linearity
-2. **Addition case**: P(f) ∧ P(g) ∧ disjoint support → P(f+g)
-   → Follows from linearity of φ and integral
-3. **Closedness**: {f ∈ Lp | φ(f) = ∫ fg} is closed
-   → Follows from continuity of φ and f ↦ ∫fg (Hölder)
-
-### Infrastructure needed for closedness
-
-The continuity of f ↦ ∫fg on Lp follows from Hölder:
-  |∫ fg - ∫ f'g| = |∫ (f-f')g| ≤ ‖f-f'‖_p · ‖g‖_q
-
-This makes f ↦ ∫fg a CLM on Lp, so {f | φ f = ∫fg} = ker(φ - Λ_g) is closed.
--/
-
 /-- **Bridge lemma**: Product of Lp and Lq functions has finite L1 lintegral.
     This is the lintegral-level Hölder inequality applied to norms. -/
 theorem lintegral_mul_le_of_memLp (p q : ℝ≥0∞)
     (hpq : p.toReal.HolderConjugate q.toReal) (hp : 1 ≤ p) (hptop : p ≠ ⊤)
-    {f : α → ℝ} {g : α → ℝ} (hf : Memℒp f p μ) (hg : Memℒp g q μ) :
+    {f : α → ℝ} {g : α → ℝ} (hf : MemLp f p μ) (hg : MemLp g q μ) :
     ∫⁻ a, ‖f a * g a‖₊ ∂μ ≤ eLpNorm f p μ * eLpNorm g q μ := by
-  calc ∫⁻ a, ‖f a * g a‖₊ ∂μ
-      = ∫⁻ a, (‖f a‖₊ * ‖g a‖₊) ∂μ := by
-        congr 1; ext a; simp [nnnorm_mul]
-    _ ≤ (∫⁻ a, (‖f a‖₊ : ℝ≥0∞) ^ p.toReal ∂μ) ^ (1 / p.toReal) *
-        (∫⁻ a, (‖g a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ) ^ (1 / q.toReal) := by
-        apply ENNReal.lintegral_mul_le_Lp_mul_Lq _ hpq
-        · exact hf.aestronglyMeasurable.ennnorm.aemeasurable
-        · exact hg.aestronglyMeasurable.ennnorm.aemeasurable
-    _ = eLpNorm f p μ * eLpNorm g q μ := by
-        -- Unfold eLpNorm to eLpNorm' for 0 < p < ⊤ (and similarly for q)
-        have hp0 : p ≠ 0 := ne_of_gt (lt_of_lt_of_le zero_lt_one hp)
-        have hq0 : q ≠ 0 := by
-          intro hq; rw [hq, ENNReal.zero_toReal] at hpq
-          exact absurd hpq.symm.lt_one (by norm_num)
-        have hqtop : q ≠ ⊤ := by
-          intro hq; rw [hq, ENNReal.top_toReal] at hpq
-          exact absurd hpq.symm.lt_one (by norm_num)
-        simp only [eLpNorm, hp0, hptop, hq0, hqtop, ite_false, eLpNorm']
+  have hp0 : p ≠ 0 := ne_of_gt (lt_of_lt_of_le zero_lt_one hp)
+  have hq0 : q ≠ 0 := by
+    intro hq; rw [hq, ENNReal.toReal_zero] at hpq; linarith [hpq.symm.pos]
+  have hqtop : q ≠ ⊤ := by
+    intro hq; rw [hq, ENNReal.toReal_top] at hpq; linarith [hpq.symm.pos]
+  -- nnnorm is multiplicative: ‖fg‖₊ = ‖f‖₊ * ‖g‖₊
+  have hmul : ∀ a, (‖f a * g a‖₊ : ℝ≥0∞) = (‖f a‖₊ : ℝ≥0∞) * ‖g a‖₊ := fun a => by
+    simp only [← ENNReal.coe_mul, nnnorm_mul]
+  simp_rw [hmul]
+  -- Rewrite eLpNorm into lintegral form (uses enorm = nnnorm-coe definitionally)
+  rw [eLpNorm_eq_lintegral_rpow_enorm hp0 hptop, eLpNorm_eq_lintegral_rpow_enorm hq0 hqtop]
+  -- Apply Hölder: ‖·‖ₑ = (‖·‖₊ : ℝ≥0∞) definitionally, so exact closes
+  exact ENNReal.lintegral_mul_le_Lp_mul_Lq μ hpq
+    hf.aestronglyMeasurable.enorm hg.aestronglyMeasurable.enorm
 
 /-- Product of Lp and Lq functions is integrable (L1). -/
 theorem integrable_mul_of_memLp (p q : ℝ≥0∞)
     (hpq : p.toReal.HolderConjugate q.toReal) (hp : 1 ≤ p) (hptop : p ≠ ⊤)
-    {f : α → ℝ} {g : α → ℝ} (hf : Memℒp f p μ) (hg : Memℒp g q μ) :
+    {f : α → ℝ} {g : α → ℝ} (hf : MemLp f p μ) (hg : MemLp g q μ) :
     Integrable (fun a => f a * g a) μ := by
-  rw [← memℒp_one_iff_integrable]
+  rw [← memLp_one_iff_integrable]
   refine ⟨hf.aestronglyMeasurable.mul hg.aestronglyMeasurable, ?_⟩
   calc eLpNorm (fun a => f a * g a) 1 μ
       = ∫⁻ a, ‖f a * g a‖₊ ∂μ := by simp [eLpNorm, eLpNorm']
@@ -454,15 +332,15 @@ noncomputable def integrationCLM (p q : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p �
     [Fact (1 ≤ p)]
     (hpq : p.toReal.HolderConjugate q.toReal)
     [IsFiniteMeasure μ] [SigmaFinite μ]
-    (g : α → ℝ) (hg : Memℒp g q μ) :
+    (g : α → ℝ) (hg : MemLp g q μ) :
     Lp ℝ p μ →L[ℝ] ℝ := by
   refine LinearMap.mkContinuous ?_ (eLpNorm g q μ).toReal ?_
   · -- Linear map: f ↦ ∫ (↑f) * g ∂μ
     exact {
       toFun := fun f => ∫ a, (f : α → ℝ) a * g a ∂μ
       map_add' := fun f₁ f₂ => by
-        have h1 := integrable_mul_of_memLp p q hpq hp hptop (Lp.memℒp f₁) hg
-        have h2 := integrable_mul_of_memLp p q hpq hp hptop (Lp.memℒp f₂) hg
+        have h1 := integrable_mul_of_memLp p q hpq hp hptop (Lp.memLp f₁) hg
+        have h2 := integrable_mul_of_memLp p q hpq hp hptop (Lp.memLp f₂) hg
         simp only [Lp.coeFn_add, Pi.add_apply, add_mul]
         exact integral_add h1 h2
       map_smul' := fun c f => by
@@ -473,14 +351,14 @@ noncomputable def integrationCLM (p q : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p �
   · -- Bound: ‖∫ fg‖ ≤ ‖g‖_Lq * ‖f‖_Lp
     intro f
     -- Chain: ‖∫ fg‖ ≤ ∫ ‖fg‖ ≤ (∫⁻ ‖fg‖₊).toReal ≤ (eLpNorm f p * eLpNorm g q).toReal
-    have hint := integrable_mul_of_memLp p q hpq hp hptop (Lp.memℒp f) hg
+    have hint := integrable_mul_of_memLp p q hpq hp hptop (Lp.memLp f) hg
     calc ‖∫ a, (f : α → ℝ) a * g a ∂μ‖
         ≤ ∫ a, ‖(f : α → ℝ) a * g a‖ ∂μ := norm_integral_le_integral_norm _
       _ ≤ (eLpNorm (f : α → ℝ) p μ * eLpNorm g q μ).toReal := by
-          rw [← integral_norm_eq_lintegral_nnnorm hint.aestronglyMeasurable]
+          rw [← integral_norm_eq_lintegral_enorm hint.aestronglyMeasurable]
           · apply ENNReal.toReal_mono
-            · exact ENNReal.mul_ne_top (Lp.memℒp f).eLpNorm_lt_top.ne hg.eLpNorm_lt_top.ne
-            · exact lintegral_mul_le_of_memLp p q hpq hp hptop (Lp.memℒp f) hg
+            · exact ENNReal.mul_ne_top (Lp.memLp f).eLpNorm_lt_top.ne hg.eLpNorm_lt_top.ne
+            · exact lintegral_mul_le_of_memLp p q hpq hp hptop (Lp.memLp f) hg
       _ = (eLpNorm g q μ).toReal * ‖f‖ := by
           rw [ENNReal.toReal_mul, mul_comm]
           -- ‖f‖ in Lp is (eLpNorm (↑f) p μ).toReal by definition
@@ -491,7 +369,7 @@ theorem integrationCLM_apply (p q : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ �
     [Fact (1 ≤ p)]
     (hpq : p.toReal.HolderConjugate q.toReal)
     [IsFiniteMeasure μ] [SigmaFinite μ]
-    (g : α → ℝ) (hg : Memℒp g q μ) (f : Lp ℝ p μ) :
+    (g : α → ℝ) (hg : MemLp g q μ) (f : Lp ℝ p μ) :
     integrationCLM p q hp hptop hpq g hg f = ∫ a, (f : α → ℝ) a * g a ∂μ := by
   simp [integrationCLM, LinearMap.mkContinuous_apply]
 
@@ -506,9 +384,9 @@ theorem integrationCLM_apply (p q : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ �
 theorem integral_representation (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
     (hpq : p.toReal.HolderConjugate q.toReal)
     [IsFiniteMeasure μ] [SigmaFinite μ]
-    (φ : Lp ℝ p μ →L[ℝ] ℝ) (g : α → ℝ) (hg : Memℒp g q μ)
-    (hagree : ∀ (E : Set α), MeasurableSet E → μ E ≠ ⊤ →
-      φ ((indicator_memLp (p := p) ‹_› ‹_› p (le_of_lt hp1) hptop).toLp _) =
+    (φ : Lp ℝ p μ →L[ℝ] ℝ) (g : α → ℝ) (hg : MemLp g q μ)
+    (hagree : ∀ (E : Set α) (hE : MeasurableSet E) (hfin : μ E ≠ ⊤),
+      φ ((indicator_memLp hE hfin p (le_of_lt hp1) hptop).toLp _) =
       ∫ a in E, g a ∂μ) :
     ∀ f : Lp ℝ p μ, φ f = ∫ a, (f : α → ℝ) a * g a ∂μ := by
   haveI hp1' : Fact (1 ≤ p) := ⟨le_of_lt hp1⟩
@@ -583,7 +461,7 @@ The main theorem proof below assembles these pieces without sorry.
     because ∑_{i≥N} μ(f i) → 0 (finite total measure, tail of convergent series).
     The disjointness ensures the difference 1_{⋃ f} - ∑_{i<N} 1_{f i} = 1_{⋃_{i≥N} f i} a.e. -/
 private theorem indicator_lp_hasSum [IsFiniteMeasure μ]
-    (p : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ ⊤)
+    (p : ℝ≥0∞) (hp : 1 ≤ p) [Fact (1 ≤ p)] (hptop : p ≠ ⊤)
     {f : ℕ → Set α} (hf_meas : ∀ i, MeasurableSet (f i))
     (hf_disj : Pairwise (Disjoint on f)) :
     HasSum
@@ -597,7 +475,7 @@ private theorem indicator_lp_hasSum [IsFiniteMeasure μ]
       filter_upwards [(indicator_memLp (hf_meas i) (measure_ne_top μ _) p hp hptop).coeFn_toLp,
                       indicatorConstLp_coeFn (hs := hf_meas i) (hμs := measure_ne_top μ _)]
         with x h1 h2; exact h1.trans h2.symm)
-  have hg∞_eq :
+  have hgUnion_eq :
       (indicator_memLp (MeasurableSet.iUnion hf_meas) (measure_ne_top μ _) p hp hptop).toLp _ =
       indicatorConstLp p (MeasurableSet.iUnion hf_meas) (measure_ne_top μ _) (1 : ℝ) :=
     Lp.ext (by
@@ -606,7 +484,7 @@ private theorem indicator_lp_hasSum [IsFiniteMeasure μ]
            indicatorConstLp_coeFn (hs := MeasurableSet.iUnion hf_meas)
              (hμs := measure_ne_top μ _)]
         with x h1 h2; exact h1.trans h2.symm)
-  simp_rw [hg_eq, hg∞_eq]
+  simp_rw [hg_eq, hgUnion_eq]
   -- Total measure of the disjoint union is finite
   have hμ_fin : ∑' i, μ (f i) ≠ ∞ :=
     (measure_iUnion hf_disj hf_meas).symm ▸ measure_ne_top μ _
@@ -672,7 +550,7 @@ private theorem indicator_lp_hasSum [IsFiniteMeasure μ]
 /-- **σ-additivity** of the set function E ↦ φ(1_E).
     Follows from `indicator_lp_hasSum` by applying φ (a CLM, hence continuous). -/
 private theorem functional_hasSum_parts [IsFiniteMeasure μ]
-    (p : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ ⊤)
+    (p : ℝ≥0∞) (hp : 1 ≤ p) [Fact (1 ≤ p)] (hptop : p ≠ ⊤)
     (φ : Lp ℝ p μ →L[ℝ] ℝ)
     {f : ℕ → Set α} (hf_meas : ∀ i, MeasurableSet (f i))
     (hf_disj : Pairwise (Disjoint on f)) :
@@ -688,22 +566,22 @@ private theorem functional_hasSum_parts [IsFiniteMeasure μ]
     ν(E) = φ(1_E) for measurable E, extended by 0 for non-measurable sets.
     σ-additivity follows from `functional_hasSum_parts`. -/
 noncomputable def signedMeasureOfFunctional [IsFiniteMeasure μ]
-    (p : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ ⊤)
+    (p : ℝ≥0∞) (hp : 1 ≤ p) [Fact (1 ≤ p)] (hptop : p ≠ ⊤)
     (φ : Lp ℝ p μ →L[ℝ] ℝ) : SignedMeasure α where
-  measureOf := fun E =>
+  measureOf' := fun E =>
     if hE : MeasurableSet E then functionalSetFn p hp hptop φ E hE (measure_ne_top μ E) else 0
-  empty := by
+  empty' := by
     simp only [dif_pos MeasurableSet.empty]
     -- functionalSetFn φ ∅ = φ(1_∅) = φ(0) = 0 (since μ(∅) = 0 → 1_∅ = 0 in Lp)
     exact functionalSetFn_null p hp hptop φ MeasurableSet.empty measure_empty
-  not_measurable := fun E hE => by simp [hE]
-  m_iUnion := fun hf_disj hf_meas => by
+  not_measurable' := fun E hE => by simp [hE]
+  m_iUnion' := fun hf_disj hf_meas => by
     simp only [dif_pos (hf_meas _), dif_pos (MeasurableSet.iUnion hf_meas)]
     exact functional_hasSum_parts p hp hptop φ hf_meas hf_disj
 
 /-- The signed measure from φ agrees with φ on indicator functions. -/
 private theorem signedMeasureOfFunctional_indicator [IsFiniteMeasure μ]
-    (p : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ ⊤) (φ : Lp ℝ p μ →L[ℝ] ℝ)
+    (p : ℝ≥0∞) (hp : 1 ≤ p) [Fact (1 ≤ p)] (hptop : p ≠ ⊤) (φ : Lp ℝ p μ →L[ℝ] ℝ)
     {E : Set α} (hE : MeasurableSet E) :
     signedMeasureOfFunctional p hp hptop φ E =
       φ ((indicator_memLp hE (measure_ne_top μ E) p hp hptop).toLp _) := by
@@ -712,7 +590,7 @@ private theorem signedMeasureOfFunctional_indicator [IsFiniteMeasure μ]
 /-- The signed measure from φ is absolutely continuous w.r.t. μ.
     Follows from `functionalSetFn_null`: if μ(E) = 0 then φ(1_E) = 0. -/
 private theorem signedMeasureOfFunctional_ac [IsFiniteMeasure μ]
-    (p : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ ⊤) (φ : Lp ℝ p μ →L[ℝ] ℝ) :
+    (p : ℝ≥0∞) (hp : 1 ≤ p) [Fact (1 ≤ p)] (hptop : p ≠ ⊤) (φ : Lp ℝ p μ →L[ℝ] ℝ) :
     (signedMeasureOfFunctional p hp hptop φ).AbsolutelyContinuous
         μ.toENNRealVectorMeasure := by
   -- AbsolutelyContinuous: ∀ s, μ.toENNRealVectorMeasure s = 0 → ν s = 0
@@ -781,17 +659,17 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
   have hg_meas : Measurable g := ν.measurable_rnDeriv μ
   have hq_pos : 0 < q.toReal := hpq.symm.pos
   have hqne_top : q ≠ ⊤ := by
-    intro hq; rw [hq, ENNReal.top_toReal] at hpq; linarith [hpq.symm.one_lt_of_lt hp1]
+    intro hq; rw [hq, ENNReal.toReal_top] at hpq; linarith [hpq.symm.one_lt_of_lt hp1]
   -- gₙ is bounded: |gₙ(a)| ≤ n for all a
   have hgn_bound : ∀ a, |g_n a| ≤ (n : ℝ) := fun a => by
     simp only [g_n, abs_le]
     constructor
     · linarith [le_max_right (min (g a) (n : ℝ)) (-(n : ℝ))]
-    · exact max_le.mpr ⟨min_le_right _ _, neg_le_self (Nat.cast_nonneg n)⟩
+    · exact max_le_iff.mpr ⟨min_le_right _ _, neg_le_self (Nat.cast_nonneg n)⟩
   -- gₙ is integrable (bounded × finite measure)
   have hgn_int : Integrable g_n μ := by
-    rw [← memℒp_one_iff_integrable]
-    exact Memℒp.of_bound (n : ℝ)
+    rw [← memLp_one_iff_integrable]
+    exact MemLp.of_bound (n : ℝ)
       (((hg_meas.min measurable_const).max measurable_const).aestronglyMeasurable)
       (ae_of_all μ fun a => by simpa [Real.norm_eq_abs] using hgn_bound a)
   -- Extremizer: hₙ = sign(gₙ) · |gₙ|^{q-1}
@@ -812,13 +690,13 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
             Real.rpow_le_rpow (abs_nonneg _) (hgn_bound a)
               (by linarith [hpq.symm.one_lt_of_lt hp1])
   -- hₙ ∈ Lp (bounded on finite measure space)
-  have hhn_memLp : Memℒp h_n p μ :=
-    Memℒp.of_bound ((n : ℝ) ^ (q.toReal - 1)) hhn_meas.aestronglyMeasurable hhn_bound
+  have hhn_memLp : MemLp h_n p μ :=
+    MemLp.of_bound ((n : ℝ) ^ (q.toReal - 1)) hhn_meas.aestronglyMeasurable hhn_bound
   -- Pointwise: hₙ(a) · g(a) ≥ hₙ(a) · gₙ(a) (sign(hₙ) matches sign of g - gₙ)
   have hpw : ∀ a, h_n a * g_n a ≤ h_n a * g a := fun a => by
     suffices h : 0 ≤ h_n a * (g a - g_n a) by linarith [mul_sub (h_n a) (g a) (g_n a)]
     simp only [h_n, g_n]
-    rcases le_or_lt (g a) (-(n : ℝ)) with h1 | h1
+    rcases le_or_gt (g a) (-(n : ℝ)) with h1 | h1
     · -- g(a) ≤ -n: g_n = -n, sign(g_n) = -1 < 0, g - g_n = g + n ≤ 0, product ≥ 0
       have hgn_val : max (min (g a) (n : ℝ)) (-(n : ℝ)) = -(n : ℝ) :=
         max_eq_right (le_trans (min_le_left _ _) h1)
@@ -826,11 +704,11 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
       rcases Nat.eq_zero_or_pos n with rfl | hn
       · simp
       · have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
-        rw [Real.sign_neg (neg_pos.mpr hn_pos)]
+        rw [Real.sign_of_neg (neg_lt_zero.mpr hn_pos)]
         have : g a - -(n : ℝ) ≤ 0 := by linarith
-        exact mul_nonneg_of_neg_of_nonpos (mul_neg_of_neg_of_pos (by norm_num) (by positivity))
+        exact mul_nonneg_of_nonpos_of_nonpos (mul_neg_of_neg_of_pos (by norm_num) (by positivity))
           this
-    rcases le_or_lt (n : ℝ) (g a) with h2 | h2
+    rcases le_or_gt (n : ℝ) (g a) with h2 | h2
     · -- g(a) ≥ n: g_n = n, sign(g_n) = 1 > 0, g - g_n ≥ 0, product ≥ 0
       have hgn_val : max (min (g a) (n : ℝ)) (-(n : ℝ)) = (n : ℝ) := by
         rw [min_eq_right h2, max_eq_left (neg_le_self (Nat.cast_nonneg n))]
@@ -838,8 +716,8 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
       rcases Nat.eq_zero_or_pos n with rfl | hn
       · simp
       · have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
-        rw [Real.sign_pos hn_pos]
-        exact mul_nonneg (mul_nonneg one_nonneg (by positivity)) (by linarith)
+        rw [Real.sign_of_pos hn_pos]
+        exact mul_nonneg (mul_nonneg zero_le_one (by positivity)) (by linarith)
     · -- -n < g(a) < n: g_n = g(a), product = 0
       have hgn_val : max (min (g a) (n : ℝ)) (-(n : ℝ)) = g a := by
         rw [min_eq_left h2.le, max_eq_left (le_of_lt h1)]
@@ -849,26 +727,294 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
     (hgn_int.mul_bdd hhn_meas.aestronglyMeasurable hhn_bound).congr
       (ae_of_all μ fun a => mul_comm (g_n a) (h_n a))
   have hint_hg : Integrable (fun a => h_n a * g a) μ :=
-    hg_int.mul_bdd hhn_meas.aestronglyMeasurable hhn_bound
+    hg_int.bdd_mul hhn_meas.aestronglyMeasurable hhn_bound
   -- Integral inequality: ∫ hₙ gₙ ≤ ∫ hₙ g
   have hint_ineq : ∫ a, h_n a * g_n a ∂μ ≤ ∫ a, h_n a * g a ∂μ :=
     integral_mono hint_hgn hint_hg (fun a => hpw a)
   -- SORRY A: φ(hₙ as Lp) = ∫ hₙ · g dμ
-  -- Proof sketch: approxOn hₙ k → hₙ in Lp (bounded, finite measure);
-  --   φ(approxOn k) = ∫ approxOn k · g by SimpleFunc.induction + linearity (hν_eq + rnDeriv_integral_eq);
-  --   CLM continuity + DCT (bound: n^{q-1}·|g| ∈ L1) gives the limit.
+  -- Proof: approxOn hₙ k → hₙ in Lp; φ(approxOn k) = ∫ approxOn k · g by
+  --   SimpleFunc.induction; CLM continuity + DCT gives the limit.
   have hphi_hn : φ (hhn_memLp.toLp _) = ∫ a, h_n a * g a ∂μ := by
-    sorry
+    -- Step 1: For simple functions sf with MemLp, φ(sf as Lp) = ∫ sf * g
+    have phi_simple_eq : ∀ (sf : SimpleFunc α ℝ) (hsf : MemLp ⇑sf p μ),
+        φ (hsf.toLp ⇑sf) = ∫ a, ↑sf a * g a ∂μ := by
+      intro sf
+      induction sf using SimpleFunc.induction with
+      | @const c E hE =>
+        intro hsf
+        have hcoe : ∀ a, ⇑(SimpleFunc.piecewise E hE (SimpleFunc.const α c) (SimpleFunc.const α 0)) a =
+            E.indicator (fun _ => c) a := fun a => by
+          simp [SimpleFunc.coe_piecewise, SimpleFunc.coe_const, SimpleFunc.coe_zero,
+                Set.indicator_apply, Set.piecewise_apply]
+        have hE_fin : μ E ≠ ⊤ := measure_ne_top μ E
+        have hind : MemLp (E.indicator (fun _ => (1 : ℝ))) p μ :=
+          indicator_memLp hE hE_fin p (le_of_lt hp1) hptop
+        have heq_Lp : hsf.toLp ⇑(SimpleFunc.piecewise E hE (SimpleFunc.const α c) (SimpleFunc.const α 0)) =
+            c • hind.toLp (E.indicator (fun _ => 1)) := by
+          apply Lp.ext
+          filter_upwards [hsf.coeFn_toLp,
+            Lp.coeFn_smul c (hind.toLp (E.indicator (fun _ => (1 : ℝ)))),
+            hind.coeFn_toLp] with a ha hsmul hind_ae
+          rw [ha, hsmul, hind_ae, hcoe]
+          simp [Pi.smul_apply, smul_eq_mul, Set.indicator_apply]
+          split_ifs <;> ring
+        rw [heq_Lp, map_smul, smul_eq_mul]
+        have hphi_ind : φ (hind.toLp (E.indicator (fun _ => (1 : ℝ)))) = ν E := by
+          rw [hν_eq E hE]
+          congr 1
+          apply Lp.ext
+          filter_upwards [hind.coeFn_toLp,
+            (indicator_memLp hE hE_fin p (le_of_lt hp1) hptop).coeFn_toLp] with a h1 h2
+          exact h1.trans h2.symm
+        rw [hphi_ind, rnDeriv_integral_eq ν hac hE]
+        simp only [hcoe]
+        calc c * ∫ a in E, g a ∂μ
+            = ∫ a in E, c * g a ∂μ := (integral_mul_left c (fun a => g a)).symm
+          _ = ∫ a, E.indicator (fun _ => c * g a) a ∂μ := (integral_indicator hE).symm
+          _ = ∫ a, E.indicator (fun _ => c) a * g a ∂μ := by
+                congr 1; ext a
+                simp only [Set.indicator_apply]
+                split_ifs <;> ring
+      | @add sf₁ sf₂ hdisj IH₁ IH₂ =>
+        intro h12
+        have hsf₁_le : ∀ a, ‖(sf₁ : α → ℝ) a‖ ≤ ‖(sf₁ + sf₂ : SimpleFunc α ℝ) a‖ :=
+          fun a => by
+            simp only [SimpleFunc.coe_add, Pi.add_apply]
+            by_cases ha : (sf₁ : α → ℝ) a = 0
+            · simp [ha]
+            · have : (sf₂ : α → ℝ) a = 0 := Function.nmem_support.mp
+                  (disjoint_left.mp hdisj (Function.mem_support.mpr ha))
+              simp [this]
+        have hsf₂_le : ∀ a, ‖(sf₂ : α → ℝ) a‖ ≤ ‖(sf₁ + sf₂ : SimpleFunc α ℝ) a‖ :=
+          fun a => by
+            simp only [SimpleFunc.coe_add, Pi.add_apply]
+            by_cases ha : (sf₂ : α → ℝ) a = 0
+            · simp [ha]
+            · have : (sf₁ : α → ℝ) a = 0 := Function.nmem_support.mp
+                  (disjoint_left.mp hdisj.symm (Function.mem_support.mpr ha))
+              rw [this, zero_add]; exact le_refl _
+        have hsf₁ : MemLp ⇑sf₁ p μ := h12.mono
+          sf₁.measurable.aestronglyMeasurable (ae_of_all μ hsf₁_le)
+        have hsf₂ : MemLp ⇑sf₂ p μ := h12.mono
+          sf₂.measurable.aestronglyMeasurable (ae_of_all μ hsf₂_le)
+        have h12_split : h12.toLp ⇑(sf₁ + sf₂) = hsf₁.toLp ⇑sf₁ + hsf₂.toLp ⇑sf₂ := by
+          apply Lp.ext
+          filter_upwards [h12.coeFn_toLp,
+            Lp.coeFn_add (hsf₁.toLp ⇑sf₁) (hsf₂.toLp ⇑sf₂),
+            hsf₁.coeFn_toLp, hsf₂.coeFn_toLp] with a h12ae hadd hsf₁ae hsf₂ae
+          rw [h12ae, hadd, Pi.add_apply, hsf₁ae, hsf₂ae]
+          simp only [SimpleFunc.coe_add, Pi.add_apply]
+        have hsf₁_bdd : ∀ᵐ a ∂μ, ‖(sf₁ : α → ℝ) a‖ ≤ sf₁.range.sum (fun c => ‖c‖) :=
+          ae_of_all μ fun a =>
+            Finset.single_le_sum (fun c _ => norm_nonneg c) _ (sf₁.mem_range_self a)
+        have hsf₂_bdd : ∀ᵐ a ∂μ, ‖(sf₂ : α → ℝ) a‖ ≤ sf₂.range.sum (fun c => ‖c‖) :=
+          ae_of_all μ fun a =>
+            Finset.single_le_sum (fun c _ => norm_nonneg c) _ (sf₂.mem_range_self a)
+        have hint₁ : Integrable (fun a => ↑sf₁ a * g a) μ :=
+          hg_int.bdd_mul sf₁.measurable.aestronglyMeasurable hsf₁_bdd
+        have hint₂ : Integrable (fun a => ↑sf₂ a * g a) μ :=
+          hg_int.bdd_mul sf₂.measurable.aestronglyMeasurable hsf₂_bdd
+        rw [h12_split, map_add, IH₁ hsf₁, IH₂ hsf₂, ← integral_add hint₁ hint₂]
+        congr 1; ext a
+        simp [SimpleFunc.coe_add, Pi.add_apply, add_mul]
+    -- Step 2: Approximate h_n by simple functions in Lp
+    have htendsto_Lp : Tendsto
+        (fun k => (SimpleFunc.memLp_approxOn_range hhn_meas hhn_memLp k).toLp _)
+        atTop (𝓝 (hhn_memLp.toLp h_n)) :=
+      SimpleFunc.tendsto_approxOn_range_Lp hptop hhn_meas hhn_memLp
+    -- Step 3: CLM continuity: φ(apx k) → φ(h_n)
+    have htendsto_phi : Tendsto
+        (fun k => φ ((SimpleFunc.memLp_approxOn_range hhn_meas hhn_memLp k).toLp _))
+        atTop (𝓝 (φ (hhn_memLp.toLp h_n))) :=
+      φ.continuous.continuousAt.tendsto.comp htendsto_Lp
+    -- Step 4: φ(apx k) = ∫ (apx k) * g for each k
+    have hphi_apx : ∀ k, φ ((SimpleFunc.memLp_approxOn_range hhn_meas hhn_memLp k).toLp _) =
+        ∫ a, ↑(SimpleFunc.approxOn h_n hhn_meas (Set.range h_n ∪ {0}) 0 (by simp) k) a * g a ∂μ :=
+      fun k => phi_simple_eq _ (SimpleFunc.memLp_approxOn_range hhn_meas hhn_memLp k)
+    -- Step 5: DCT: ∫ (apx k) * g → ∫ h_n * g
+    have htendsto_int : Tendsto
+        (fun k => ∫ a, ↑(SimpleFunc.approxOn h_n hhn_meas (Set.range h_n ∪ {0}) 0 (by simp) k) a * g a ∂μ)
+        atTop (𝓝 (∫ a, h_n a * g a ∂μ)) := by
+      apply tendsto_integral_of_dominated_convergence
+          (fun a => 2 * (n : ℝ) ^ (q.toReal - 1) * ‖g a‖)
+      · exact fun k => ((SimpleFunc.approxOn h_n hhn_meas (Set.range h_n ∪ {0}) 0 (by simp) k).measurable
+            |>.aestronglyMeasurable.mul hg_meas.aestronglyMeasurable)
+      · exact hg_int.norm.const_mul _
+      · intro k
+        filter_upwards [hhn_bound] with a ha
+        simp only [Real.norm_eq_abs, abs_mul]
+        have hbnd : ‖(SimpleFunc.approxOn h_n hhn_meas (Set.range h_n ∪ {0}) 0 (by simp) k : α → ℝ) a‖ ≤
+            2 * ‖h_n a‖ := by
+          have := SimpleFunc.norm_approxOn_zero_le hhn_meas
+            (show (0 : ℝ) ∈ Set.range h_n ∪ {0} from by simp) a k
+          simp only [Real.norm_eq_abs] at this ⊢; linarith
+        calc |↑(SimpleFunc.approxOn h_n hhn_meas (Set.range h_n ∪ {0}) 0 (by simp) k) a| * |g a|
+            ≤ 2 * ‖h_n a‖ * |g a| := mul_le_mul_of_nonneg_right hbnd (abs_nonneg _)
+          _ ≤ 2 * (n : ℝ) ^ (q.toReal - 1) * |g a| := by
+              apply mul_le_mul_of_nonneg_right _ (abs_nonneg _)
+              apply mul_le_mul_of_nonneg_left _ (by norm_num)
+              simpa [Real.norm_eq_abs] using ha
+      · apply ae_of_all; intro a
+        have hapx : Tendsto
+            (fun k => (SimpleFunc.approxOn h_n hhn_meas (Set.range h_n ∪ {0}) 0 (by simp) k : α → ℝ) a)
+            atTop (𝓝 (h_n a)) :=
+          SimpleFunc.tendsto_approxOn hhn_meas (by simp)
+            (subset_closure (Set.mem_union_left _ (Set.mem_range_self a)))
+        exact hapx.mul_const (g a)
+    -- Step 6: Unique limits give φ(h_n) = ∫ h_n * g
+    have htendsto_phi' : Tendsto
+        (fun k => ∫ a, ↑(SimpleFunc.approxOn h_n hhn_meas (Set.range h_n ∪ {0}) 0 (by simp) k) a * g a ∂μ)
+        atTop (𝓝 (φ (hhn_memLp.toLp h_n))) := by
+      convert htendsto_phi using 1
+      ext k; exact (hphi_apx k).symm
+    exact tendsto_nhds_unique htendsto_phi' htendsto_int
   -- SORRY B: ∫ hₙ gₙ dμ = (eLpNorm gₙ q μ ^ q.toReal).toReal
-  -- Proof: hₙ(a) · gₙ(a) = sign(gₙ a) · |gₙ a|^{q-1} · gₙ(a) = |gₙ a|^q;
-  --   ∫ |gₙ|^q = (∫⁻ ‖gₙ‖₊^q).toReal = (eLpNorm gₙ q μ ^ q.toReal).toReal.
   have hint_hn_gn : ∫ a, h_n a * g_n a ∂μ = (eLpNorm g_n q μ ^ q.toReal).toReal := by
-    sorry
+    have hq_ne_zero : q ≠ 0 := by
+      intro hq; rw [hq, ENNReal.toReal_zero] at hpq; linarith [hpq.symm.pos]
+    -- Step 1: pointwise identity h_n a * g_n a = |g_n a| ^ q.toReal
+    -- sign(x) * x = |x| for all x : ℝ, so sign(gₙ)|gₙ|^{q-1} * gₙ = |gₙ|^q
+    have hpw2 : ∀ a, h_n a * g_n a = |g_n a| ^ q.toReal := fun a => by
+      simp only [h_n]
+      have hsign : Real.sign (g_n a) * g_n a = |g_n a| := by
+        rcases lt_trichotomy (g_n a) 0 with ha | rfl | ha
+        · simp [Real.sign_neg ha, abs_of_neg ha]
+        · simp
+        · simp [Real.sign_pos ha, abs_of_pos ha]
+      rw [show Real.sign (g_n a) * |g_n a| ^ (q.toReal - 1) * g_n a =
+          |g_n a| ^ (q.toReal - 1) * (Real.sign (g_n a) * g_n a) from by ring,
+          hsign, show |g_n a| = |g_n a| ^ (1 : ℝ) from (Real.rpow_one _).symm,
+          ← Real.rpow_add (abs_nonneg _)]
+      norm_num
+    simp_rw [hpw2]
+    -- Step 2: |g_n a|^q = ((‖g_n a‖₊ : ℝ≥0∞)^q).toReal
+    -- Uses: ENNReal.coe_rpow_of_nonneg (coercion is ≠ ⊤), ENNReal.coe_toReal, NNReal.coe_rpow
+    have hpw3 : ∀ a, |g_n a| ^ q.toReal = ((‖g_n a‖₊ : ℝ≥0∞) ^ q.toReal).toReal := fun a => by
+      rw [ENNReal.coe_rpow_of_nonneg (le_of_lt hq_pos), ENNReal.coe_toReal, NNReal.coe_rpow]
+      simp [Real.norm_eq_abs]
+    simp_rw [hpw3]
+    -- Step 3: ∫ ((‖g_n‖₊ : ℝ≥0∞)^q).toReal = (∫⁻ (‖g_n‖₊ : ℝ≥0∞)^q).toReal
+    -- via integral_toReal (base is finite: coercion from ℝ≥0 is always ≠ ⊤)
+    have hf_meas : AEMeasurable (fun a => (‖g_n a‖₊ : ℝ≥0∞) ^ q.toReal) μ :=
+      ((hg_meas.min measurable_const).max measurable_const).nnnorm
+        |>.coe_nnreal_ennreal |>.ennreal_rpow_const q.toReal |>.aemeasurable
+    have hf_ne_top : ∀ᵐ a ∂μ, (‖g_n a‖₊ : ℝ≥0∞) ^ q.toReal ≠ ⊤ :=
+      ae_of_all μ fun a => by
+        rw [ENNReal.coe_rpow_of_nonneg (le_of_lt hq_pos)]; exact ENNReal.coe_ne_top
+    rw [integral_toReal hf_meas hf_ne_top]
+    -- Step 4: (∫⁻ (‖g_n‖₊ : ℝ≥0∞)^q).toReal = (eLpNorm g_n q μ ^ q.toReal).toReal
+    -- via eLpNorm_eq_lintegral_rpow_enorm + ENNReal.rpow_mul
+    congr 1
+    rw [eLpNorm_eq_lintegral_rpow_enorm hq_ne_zero hqne_top, ← ENNReal.rpow_mul,
+        one_div, inv_mul_cancel₀ hq_pos.ne', ENNReal.rpow_one]
   -- SORRY C: the chain gives eLpNorm gₙ q μ ≤ ENNReal.ofReal ‖φ‖
-  -- From: ‖gₙ‖_q^q = ∫ hₙ gₙ ≤ ∫ hₙ g = φ(hₙ) ≤ ‖φ‖·‖hₙ‖_p and ‖hₙ‖_p^p = ‖gₙ‖_q^q
-  -- → ‖gₙ‖_q^q ≤ ‖φ‖·‖gₙ‖_q^{q/p} → ‖gₙ‖_q^{q-q/p} ≤ ‖φ‖ → ‖gₙ‖_q ≤ ‖φ‖ (q-q/p=1).
-  -- (Uses: ENNReal rpow arithmetic, HolderConjugate.toReal_add_inv, ‖h‖_p = (eLpNorm h p μ).toReal.)
-  sorry
+  -- Step C0: setup
+  have hp_pos' : 0 < p.toReal :=
+    ENNReal.toReal_pos (ne_of_gt (lt_trans one_pos hp1)) hptop
+  -- Step C1: gₙ ∈ Lq (bounded on finite measure)
+  have hgn_memLq : MemLp g_n q μ :=
+    truncated_rn_deriv_memLq g hg_meas n q
+      (by linarith [hpq.symm.one_lt_of_lt hp1]) hqne_top
+  have hgn_ne_top : eLpNorm g_n q μ ≠ ⊤ := (hgn_memLq.eLpNorm_lt_top).ne
+  -- Step C2: eLpNorm h_n p μ = eLpNorm g_n q μ ^ (q.toReal / p.toReal)
+  -- Proof: |h_n a|^p.toReal = |g_n a|^q.toReal pointwise (from p(q-1)=q via HolderConjugate),
+  -- so ∫⁻ ‖h_n‖₊^p = ∫⁻ ‖g_n‖₊^q, hence eLpNorm h_n p^p = eLpNorm g_n q^q,
+  -- hence eLpNorm h_n p = (eLpNorm g_n q^q)^(1/p) = eLpNorm g_n q^(q/p).
+  have hn_eLpNorm : eLpNorm h_n p μ = eLpNorm g_n q μ ^ (q.toReal / p.toReal) := by
+    have hp_ne : p ≠ 0 := ne_of_gt (lt_trans zero_lt_one hp1)
+    have hq_ne : q ≠ 0 := by
+      intro hq; rw [hq, ENNReal.toReal_zero] at hq_pos; linarith
+    -- p * q = p + q (from 1/p + 1/q = 1)
+    have hpq_prod : p.toReal * q.toReal = p.toReal + q.toReal := by
+      have h_conj : p.toReal⁻¹ + q.toReal⁻¹ = 1 := hpq.inv_add_inv_eq_one
+      field_simp [ne_of_gt hp_pos', ne_of_gt hq_pos] at h_conj; linarith
+    -- Pointwise: |h_n a|^p = |g_n a|^q (in ℝ)
+    have hpw_real : ∀ a, |h_n a| ^ p.toReal = |g_n a| ^ q.toReal := fun a => by
+      simp only [h_n]
+      rcases eq_or_ne (g_n a) 0 with ha | ha
+      · simp [ha]
+      · have habs_pos : 0 < |g_n a| := abs_pos.mpr ha
+        have hsign1 : |Real.sign (g_n a)| = 1 := by
+          rcases lt_trichotomy (g_n a) 0 with h | h | h
+          · simp [Real.sign_neg h]
+          · exact absurd h ha
+          · simp [Real.sign_pos h]
+        rw [abs_mul, hsign1, one_mul,
+            abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _),
+            ← Real.rpow_mul (abs_nonneg _)]
+        congr 1; nlinarith [hpq_prod]
+    -- Lift pointwise equality to ℝ≥0∞ via NNReal coercions
+    have hpw_enn : ∀ a, (‖h_n a‖₊ : ℝ≥0∞) ^ p.toReal =
+        (‖g_n a‖₊ : ℝ≥0∞) ^ q.toReal := fun a => by
+      rw [ENNReal.coe_rpow_of_nonneg (le_of_lt hp_pos'),
+          ENNReal.coe_rpow_of_nonneg (le_of_lt hq_pos)]
+      norm_cast
+      apply NNReal.coe_injective
+      simp only [NNReal.coe_rpow, NNReal.coe_nnnorm, Real.norm_eq_abs]
+      exact hpw_real a
+    -- ∫⁻ ‖h_n‖ₑ^p = ∫⁻ ‖g_n‖ₑ^q (‖·‖ₑ = (‖·‖₊:ℝ≥0∞) definitionally, so hpw_enn applies)
+    have hlint_eq : ∫⁻ a, ‖h_n a‖ₑ ^ p.toReal ∂μ =
+        ∫⁻ a, ‖g_n a‖ₑ ^ q.toReal ∂μ := lintegral_congr (fun a => hpw_enn a)
+    -- eLpNorm h_n p = eLpNorm g_n q ^ (q/p)
+    -- Strategy: rewrite both sides using eLpNorm_eq_lintegral_rpow_enorm,
+    -- apply hlint_eq to equate the lintegrals, then use rpow algebra.
+    rw [eLpNorm_eq_lintegral_rpow_enorm hp_ne hptop,
+        eLpNorm_eq_lintegral_rpow_enorm hq_ne hqne_top,
+        hlint_eq, ← ENNReal.rpow_mul]
+    congr 1
+    field_simp [ne_of_gt hp_pos', ne_of_gt hq_pos]
+  -- Step C3: Lp norm of hhn_memLp.toLp h_n equals (eLpNorm h_n p μ).toReal
+  have hn_norm : ‖hhn_memLp.toLp h_n‖ = (eLpNorm h_n p μ).toReal := by
+    simp only [MeasureTheory.Lp.norm_def]
+    exact congrArg ENNReal.toReal (eLpNorm_congr_ae hhn_memLp.coeFn_toLp)
+  -- Step C4: arithmetic identity q.toReal / p.toReal + 1 = q.toReal
+  -- (from 1/p + 1/q = 1 → pq = p + q → q/p = q - 1 → q/p + 1 = q)
+  have hqp_eq : q.toReal / p.toReal + 1 = q.toReal := by
+    have h_conj : p.toReal⁻¹ + q.toReal⁻¹ = 1 := hpq.inv_add_inv_eq_one
+    have hpq_prod : p.toReal * q.toReal = p.toReal + q.toReal := by
+      have hp'' := ne_of_gt hp_pos'
+      have hq'' := ne_of_gt hq_pos
+      field_simp [hp'', hq''] at h_conj
+      linarith
+    field_simp [ne_of_gt hp_pos']
+    linarith
+  -- Step C5: the key chain — (‖gₙ‖_q)^q ≤ ‖φ‖ · (‖gₙ‖_q)^(q/p)
+  set x := (eLpNorm g_n q μ).toReal with hx_def
+  have hx_nn : 0 ≤ x := ENNReal.toReal_nonneg
+  have hchain : x ^ q.toReal ≤ ‖φ‖ * x ^ (q.toReal / p.toReal) := by
+    have hlhs : x ^ q.toReal = (eLpNorm g_n q μ ^ q.toReal).toReal := by
+      simp [hx_def, ENNReal.toReal_rpow]
+    have hrhs_eq : x ^ (q.toReal / p.toReal) = (eLpNorm h_n p μ).toReal := by
+      rw [hn_eLpNorm, hx_def, ENNReal.toReal_rpow]
+    rw [hlhs, hrhs_eq]
+    calc (eLpNorm g_n q μ ^ q.toReal).toReal
+        = ∫ a, h_n a * g_n a ∂μ := hint_hn_gn.symm
+      _ ≤ ∫ a, h_n a * g a ∂μ := hint_ineq
+      _ = φ (hhn_memLp.toLp h_n) := hphi_hn.symm
+      _ ≤ ‖φ (hhn_memLp.toLp h_n)‖ := le_abs_self _
+      _ ≤ ‖φ‖ * ‖hhn_memLp.toLp h_n‖ := ContinuousLinearMap.le_opNorm φ _
+      _ = ‖φ‖ * (eLpNorm h_n p μ).toReal := by rw [hn_norm]
+  -- Step C6: real arithmetic — x ≤ ‖φ‖
+  have hx_le : x ≤ ‖φ‖ := by
+    rcases le_or_lt x 0 with hx | hx
+    · linarith [norm_nonneg φ]
+    · -- x > 0: write x^q = x^(q/p) * x, then divide by x^(q/p) > 0
+      have hrpow : x ^ q.toReal = x ^ (q.toReal / p.toReal) * x := by
+        conv_lhs =>
+          rw [show q.toReal = q.toReal / p.toReal + 1 from by linarith [hqp_eq]]
+        rw [Real.rpow_add hx, Real.rpow_one]
+      have hxqp_pos : 0 < x ^ (q.toReal / p.toReal) := Real.rpow_pos_of_pos hx _
+      have hkey : x ^ (q.toReal / p.toReal) * x ≤ x ^ (q.toReal / p.toReal) * ‖φ‖ :=
+        calc x ^ (q.toReal / p.toReal) * x
+            = x ^ q.toReal := hrpow.symm
+          _ ≤ ‖φ‖ * x ^ (q.toReal / p.toReal) := hchain
+          _ = x ^ (q.toReal / p.toReal) * ‖φ‖ := mul_comm _ _
+      exact le_of_mul_le_mul_left hkey hxqp_pos
+  -- Step C7: lift back to ENNReal
+  calc eLpNorm g_n q μ
+      = ENNReal.ofReal (eLpNorm g_n q μ).toReal :=
+          (ENNReal.ofReal_toReal hgn_ne_top).symm
+    _ ≤ ENNReal.ofReal ‖φ‖ := ENNReal.ofReal_le_ofReal hx_le
 
 /-
 ## Main Theorem: Riesz Representation for Lp (Surjectivity)
@@ -895,12 +1041,11 @@ holder_extremizer_lq_bound.
     eliminates the `riesz_lp_surjective` axiom from the parent file. -/
 theorem riesz_lp_surjective_from_rn (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
     (hpq : p.toReal.HolderConjugate q.toReal)
-    [IsFiniteMeasure μ] [SigmaFinite μ] :
+    [IsFiniteMeasure μ] [SigmaFinite μ] [Fact (1 ≤ p)] :
     ∀ φ : Lp ℝ p μ →L[ℝ] ℝ,
-    ∃ g : α → ℝ, Memℒp g q μ ∧
+    ∃ g : α → ℝ, MemLp g q μ ∧
       ∀ f : Lp ℝ p μ, φ f = ∫ a, (f : α → ℝ) a * g a ∂μ := by
   intro φ
-  haveI hp1' : Fact (1 ≤ p) := ⟨le_of_lt hp1⟩
   -- Step 1: Construct signed measure ν(E) = φ(1_E)
   let ν := signedMeasureOfFunctional p (le_of_lt hp1) hptop φ
   have hac : ν.AbsolutelyContinuous μ.toENNRealVectorMeasure :=
@@ -910,8 +1055,8 @@ theorem riesz_lp_surjective_from_rn (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p 
     fun E hE => signedMeasureOfFunctional_indicator p (le_of_lt hp1) hptop φ hE
   -- Step 2: RN derivative g = ν.rnDeriv μ (used directly without set to avoid let-binding issues)
   -- Step 3: Agreement on indicators φ(1_E) = ∫_E g dμ
-  have hagree : ∀ (E : Set α), MeasurableSet E → μ E ≠ ⊤ →
-      φ ((indicator_memLp (p := p) ‹_› ‹_› p (le_of_lt hp1) hptop).toLp _) =
+  have hagree : ∀ (E : Set α) (hE : MeasurableSet E) (_hfin : μ E ≠ ⊤),
+      φ ((indicator_memLp hE _hfin p (le_of_lt hp1) hptop).toLp _) =
       ∫ a in E, ν.rnDeriv μ a ∂μ := by
     intro E hE _hfin
     rw [← hν_eq E hE]
