@@ -1,8 +1,8 @@
 # Problem Selection Report
 
-**Date**: 2026-04-23 (updated)
+**Date**: 2026-04-23
 **Mode**: SELECT
-**Pool Status**: 23 available, 561 in-progress, 1406 completed, 3 graduated
+**Pool Status**: 60 available, 559 in-progress, 1405 completed, 3 graduated
 
 ## Selected Problem
 
@@ -61,16 +61,16 @@
 
 | Status | Count |
 |--------|-------|
-| Available | 23 |
-| In Progress | 561 |
-| Completed | 1406 |
+| Available | 60 |
+| In Progress | 559 |
+| Completed | 1405 |
 | Graduated | 3 |
-| Blocked | 3 |
+| Blocked | 1 |
 
 ## Candidate Pool Health
 
-Pool has 23 available problems against a threshold of 15 — **healthy**.
+Pool has 60 available problems against a threshold of 15 — **healthy**.
 
-- Pool depth: adequate (23 available, above threshold)
+- Pool depth: adequate (60 available, 4× above threshold)
 - Recommendation: Pool is healthy. No replenishment needed this cycle.
 - Next refresh recommended: when available count drops below 20
