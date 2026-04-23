@@ -48,33 +48,53 @@ chebyshev_lebesgue_growth [sorry] + divergence_from_lebesgue_growth [sorry]
 
 ## Hard Sorries Remaining (4 in main file)
 
-### 1. `lagrange_basis_chebyshev_formula` [PARTIAL PROGRESS]
-Requires: Chebyshev product formula T_n(x) = 2^{n-1}·Π_{k=0}^{n-1}(x - cos φₖ).
-**NOT in Mathlib v4.26.0**, but now have the prerequisites:
-- `T_ofNat_ne_zero` ✓
-- `natDegree_T_ofNat` ✓  
-- `leadingCoeff_T_ofNat` ✓
-**Next**: Prove product formula using: T_n - 2^{n-1}·∏(X - cos φₖ) has degree < n with n roots → = 0.
+### Remaining Sorries (2, as of Session 6)
 
-### 2. `chebyshev_lebesgue_eq` [BLOCKED by #1]
-Reduces Λₙ(cos θ) to a trigonometric sum. Follows from #1.
+### 1. `chebyshev_lebesgue_growth` [OPEN - harmonic sum lower bound]
+Main result: Λₙ(cos(πp/q)) → ∞ for all n.
+Key insight from Session 6: cos(πp/q) is NEVER a Chebyshev node when q is odd (x_not_chebyshev_node).
+So `chebyshev_lebesgue_eq_all_n` applies for ALL n.
+Formula: Λₙ = |cos(nπp/q)| / n · Σₖ sin(φₖ) / |cos(πp/q) - cos φₖ|.
+Remaining: show Λₙ → ∞. Key step: the trig sum S(n) ≥ C·n·log(n) (harmonic lower bound).
+For the full sequence: cos(nπp/q) can vanish for some n, so need a more refined argument.
 
-### 3. `chebyshev_lebesgue_growth` [BLOCKED by #1, #2]
-Main result: Λₙ(cos(πp/q)) → ∞. Proof outline known:
-- Along n = mq: |cos(nπp/q)| = 1 (already proved: cos_rational_pi_nonzero_along_multiples)
-- Lower bound: Σₖ sin(φₖ)/|cos(πp/q) - cos φₖ| ≥ C·log(n)
-- Blocked by needing formula from #1.
+### 2. `divergence_from_lebesgue_growth` [OPEN - fundamental gap]
+Statement: Λₙ(x) → ∞ ⟹ ∃ continuous f, Lₙf(x) → +∞ (full sequence).
+**Gap**: Banach-Steinhaus gives lim sup |Lₙf(x)| = ∞ (NOT lim = +∞).
+Lacunary construction fails: cross terms from earlier n_j dominate n_k contribution.
+May need to weaken axiom statement to lim sup = ∞ or find explicit construction specific to Chebyshev nodes.
 
-### 4. `divergence_from_lebesgue_growth` [OPEN, proof sketch has gap]
-Statement: Λₙ(x) → ∞ ⟹ ∃ continuous f, Lₙf(x) → +∞.
+## Session 2026-04-23 — Results (Session 6)
 
-Proof sketch in file gives lacunary construction: f = Σₖ (1/k²) fₙₖ.
-**Gap**: Cross terms dominate: Σⱼ≠ₖ (1/j²) Λₙₖ(x) ≥ Λₙₖ(x)·(π²/6) >> Λₙₖ(x)/k².
-Fix requires de-correlation: |Lₙₖ(fₙⱼ)(x)| << Λₙₖ(x) for nₖ >> nⱼ.
-Estimated: 200+ lines, needs analysis of Chebyshev interpolation between different grids.
+**Outcome**: progress
+**Sorries closed**: 0 (new helper lemmas, no sorry reduction this session)
+**New lemmas added**:
+- `x_not_chebyshev_node (p q n k)`: For odd p, q, cos(πp/q) ≠ chebyshevNode n k for ALL n, k.
+  Proof: parity argument — cos(πp/q) = cos((2k+1)π/(2n)) requires q*(2k+1) = even, but LHS is odd (q odd, 2k+1 odd). Contradiction.
+- `chebyshev_lebesgue_eq_all_n`: applies lebesgue_eq for ALL n ≥ 1 when p, q odd.
+  Direct consequence of x_not_chebyshev_node + chebyshev_lebesgue_eq.
 
-**Alternative**: Baire category gives lim sup = ∞, but NOT full divergence (lim = ∞).
-May need to reconsider whether the axiom statement is too strong.
+**Key insight discovered**: For q ODD, x = cos(πp/q) is NEVER a Chebyshev node of any degree. This is because the node condition q*(2k+1) = 4j*n*q ± 2n*p requires an odd integer to equal an even integer. This means `chebyshev_lebesgue_eq` (the trigonometric sum formula) applies for ALL n (not just the n = mq subsequence as previously thought).
+
+**Remaining blockers**: 
+1. Harmonic sum lower bound for `chebyshev_lebesgue_growth`
+2. `divergence_from_lebesgue_growth` may require weakening (lim sup = ∞ instead of lim = +∞)
+
+**PR**: TBD (this session)
+
+## Session 2026-04-23 — Results (Session 5)
+
+**Outcome**: progress
+**Sorries closed**: 2 (lagrange_basis_chebyshev_formula ✓, chebyshev_lebesgue_eq ✓, from 4 → 2 sorries)
+**New proofs added**:
+- `chebyshev_product_formula`: T_n = 2^{n-1} · ∏(X - C(cos φₖ)) — key algebraic identity
+  Proof: T_n - Q has degree < n and n distinct roots (Chebyshev nodes) → T_n - Q = 0
+- `lagrange_basis_chebyshev_formula`: explicit Lagrange basis at Chebyshev nodes
+  Uses product formula + T_derivative_eq_U + U_real_cos
+- `chebyshev_lebesgue_eq`: Λₙ(cos θ) = |cos(nθ)|/n · Σ sin(φₖ)/|cos θ - cos φₖ|
+  Direct from lagrange_basis_chebyshev_formula
+
+**PR**: #11829 (merged)
 
 ## Session 2026-04-23 — Results (Session 4)
 
@@ -128,11 +148,13 @@ Therefore T_n = Q_n.
 
 ## Next Steps
 
-1. **IMMEDIATE**: Prove the Chebyshev product formula using T_ofNat_ne_zero + natDegree_T_ofNat + leadingCoeff_T_ofNat (all now building):
-   - Define Q_n = 2^{n-1} · ∏_{k : Fin n} (X - C (cos φₖ))
-   - Show T_n - Q_n has natDegree ≤ n-1 (leadingCoeffs cancel: both = 2^{n-1})
-   - Show T_n - Q_n has n distinct roots (chebyshevNode_is_root + chebyshevNode_injective)
-   - Apply `Polynomial.card_roots_le_degree` to conclude T_n - Q_n = 0
-   - This unblocks lagrange_basis_chebyshev_formula, chebyshev_lebesgue_eq, chebyshev_lebesgue_growth
-2. Assess divergence_from_lebesgue_growth gap more carefully; consider Banach-Steinhaus
-3. Mathlib v4.26.0 confirmed: no Chebyshev product formula; must build locally
+1. **chebyshev_lebesgue_growth**: Prove the sum S(n) = Σₖ sin(φₖ)/|cos(πp/q) - cos φₖ| ≥ C·n·log(n).
+   - Strategy: nodes near angle πp/q contribute ≈ n/π · Σ 1/j (harmonic series)
+   - `Real.tendsto_sum_range_one_div_nat_succ_atTop` from Mathlib (harmonic divergence) is available
+   - chebyshev_lebesgue_eq_all_n (new from Session 6) now applies for ALL n, not just n = mq
+   - For the |cos(nπp/q)| factor: nonzero when q is odd (parity argument used in x_not_chebyshev_node)
+   
+2. **divergence_from_lebesgue_growth**: Consider weakening the theorem.
+   - Banach-Steinhaus gives lim sup = ∞ (NOT lim = +∞ as currently stated)
+   - For lim = +∞: needs specialized construction for Chebyshev nodes at rational cosines
+   - Option: weaken axiom statement to ∃ f, lim sup |Lₙf(x)| = ∞
