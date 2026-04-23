@@ -18,7 +18,7 @@
       "probabilistic-method"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 165,
     "erdosUrl": "https://erdosproblems.com/165",
     "erdosProblemStatus": "solved",
@@ -51,15 +51,9 @@
       "Main theorem combining upper and lower bounds",
       "Conjectures about exact constant c = 1/2"
     ],
-<<<<<<< HEAD
     "axiomCount": 10,
     "lineCount": 239,
     "assumptions": "10 axioms: ramseyNumber, ramseyNumber_symm, ramseyNumber_recurrence, R3_small_values, aks_upper_bound, shearer_upper_bound, kim_lower_bound, bk_pgm_bound, cjms_bound, hhkp_bound. 0 sorries.",
-=======
-    "axiomCount": 16,
-    "lineCount": 322,
-    "assumptions": "16 axiom(s) and 1 sorry(s).",
->>>>>>> 565ec31b7a (Enrich erdos-165: promote Lean file from Stubs to main Proofs directory)
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -163,21 +157,12 @@
       "Real"
     ],
     "namespace": "Erdos165",
-<<<<<<< HEAD
     "lineCount": 239,
     "axiomCount": 10,
     "theoremCount": 2,
     "definitionCount": 3,
     "path": "Proofs/Erdos165Problem.lean",
     "sorries": 0
-=======
-    "lineCount": 322,
-    "axiomCount": 16,
-    "theoremCount": 4,
-    "definitionCount": 3,
-    "path": "Proofs/Erdos165Problem.lean",
-    "sorries": 1
->>>>>>> 565ec31b7a (Enrich erdos-165: promote Lean file from Stubs to main Proofs directory)
   },
   "crossReferences": [
     {
@@ -222,5 +207,5 @@
       "note": "Alternative proof of Kim's bound via the triangle-free graph process"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
