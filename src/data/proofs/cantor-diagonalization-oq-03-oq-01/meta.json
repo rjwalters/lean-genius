@@ -53,7 +53,9 @@
       "**Minimal abstraction**: EvalStructure requires only three things — Ob (codes), Val (values), eval : Ob → Ob → Val — and a point-surjectivity condition. No category theory imports are needed. The structure captures exactly what the Lawvere proof needs and nothing more. typeEvalStructure bridges this to the type-theoretic setting via the equivalence typeEval_surjective_iff.",
       "**Fixed-point-free endomorphisms determine Val**: The three instances use Not (Prop→Prop), (!·) (Bool→Bool), and Nat.succ (ℕ→ℕ) as the 'troublemaker' f. Each has no fixed point, so Lawvere forces non-surjectivity. The diversity of the instances — logical self-negation, boolean negation, successor arithmetic — shows how the single abstract theorem unifies phenomena that appear mathematically unrelated.",
       "**Cantor recovery proof**: cantor_recovery applies lawvere_type_recovery with f=Not to get a Prop b with ¬b=b. From ¬b=b: (a) b→¬b (apply hb.symm and cast) and (b) ¬b→b (apply hb and cast). These give a liar-paradox-style contradiction. The proof is a direct formalization of the standard self-referential argument.",
-      "**The categorical bridge**: lawvere_categorical is proved by adding e_pt : Pt A → Pt (exp A B) as a parameter (the Yoneda-level action of the morphism e : A → B^A on global elements) and constructing EvalStructure with Ob = Pt A, Val = Pt B, eval a x = apply (e_pt a) x. The proof then reduces to lawvere_abstract in one line. This is the minimal categorical data needed: e_pt is exactly what a 'point-surjective morphism' provides at the global-element level."
+      "**The categorical bridge**: lawvere_categorical is proved by adding e_pt : Pt A → Pt (exp A B) as a parameter (the Yoneda-level action of the morphism e : A → B^A on global elements) and constructing EvalStructure with Ob = Pt A, Val = Pt B, eval a x = apply (e_pt a) x. The proof then reduces to lawvere_abstract in one line. This is the minimal categorical data needed: e_pt is exactly what a 'point-surjective morphism' provides at the global-element level.",
+      "**Rice's theorem is a Lawvere instance**: Rice's theorem (1953) states that for any non-trivial semantic property $P$ of computable functions, the set $\\{e : P(\\varphi_e)\\}$ is undecidable. This is a Lawvere instance with $\\text{Ob} = \\mathbb{N}$ (Gödel codes), $\\text{Val} = \\{0, 1\\}^\\mathbb{N}$ (partial computable functions), $\\text{eval}(e, x) = \\varphi_e(x)$, and $f = $ 'complement w.r.t. P'. The `no_surjection_abstract` theorem in this file is exactly the Lean statement that: if eval is point-surjective (a 'universal evaluator' exists for P), then every endomorphism has a fixed point — but complement-of-P has no fixed point for non-trivial P. In Lean's type theory, the analogue is: there is no computable function `decide : ℕ → Bool` such that `decide e = true ↔ P(φₑ)` for any non-trivial semantic predicate. The formalization here (using `Prop` and `Not` as the minimal instance) is the simplest case of this family.",
+      "**The Yoneda connection**: Lawvere's theorem in a CCC is closely related to the Yoneda lemma. The Yoneda lemma says: natural transformations $\\text{Nat}(\\text{Hom}(A, -), F) \\cong F(A)$ (representable functors capture all natural transformations). Lawvere's point-surjectivity condition $e : A \\to B^A$ surjective on global elements is asking: does $\\text{Hom}(1, B^A) \\cong \\text{Hom}(A, B)$ surject onto all of $B^A$'s global sections? By the CCC adjunction, $\\text{Hom}(A, B) \\cong \\text{Hom}(1, B^A)$, so the question becomes: does the Yoneda embedding at $A$ 'cover' $B^A$? The connection runs: if $B^A$ is 'representably accessible' (every element is in the image of the Yoneda embedding via $A$), then every $B \\to B$ map has a fixed point — but internal negation $\\neg : \\Omega \\to \\Omega$ never has a fixed point in a well-pointed topos. In this file, `lawvere_categorical` proves the abstract version using `e_pt : Pt A → Pt (exp A B)` — precisely the Yoneda-level map — and `typeEval_surjective_iff` proves that point-surjectivity is exactly `Function.Surjective`, bridging the categorical and type-theoretic formulations."
     ],
     "prerequisites": [
       "Lawvere fixed-point theorem in type theory (CantorDiagonalizationOQ03.lean)",
@@ -187,11 +189,28 @@
   },
   "references": [
     {
-      "authors": "Lawvere, F. William",
-      "title": "Diagonal arguments and cartesian closed categories",
-      "year": "1969",
-      "venue": "Category Theory, Homology Theory and their Applications II, Springer LNM 92, pp. 134-145",
-      "note": "The original paper establishing the categorical fixed-point theorem"
+      "key": "La69",
+      "citation": "Lawvere, F. W. (1969). Diagonal arguments and cartesian closed categories. Lecture Notes in Mathematics, 92, 134-145. Springer.",
+      "type": "paper",
+      "description": "The original paper establishing the categorical fixed-point theorem. Shows Cantor, Russell, Gödel, and Turing are all instances of a single theorem in cartesian closed categories."
+    },
+    {
+      "key": "Ya03",
+      "citation": "Yanofsky, N. S. (2003). A Universal Approach to Self-Referential Paradoxes, Incompleteness and Fixed Points. The Bulletin of Symbolic Logic, 9(3), 362-386.",
+      "type": "paper",
+      "description": "Accessible survey popularizing Lawvere's insight. Extends the diagonal argument to a general 'setting with enough structure' including Cantor, Russell, Gödel, Berry's paradox, Richard's paradox, and Rice's theorem as instances."
+    },
+    {
+      "key": "MM94",
+      "citation": "MacLane, S. & Moerdijk, I. (1994). Sheaves in Geometry and Logic: A First Introduction to Topos Theory. Springer.",
+      "type": "textbook",
+      "description": "Section IV.7 proves the topos-theoretic Cantor theorem (no surjection A → Ω^A in a well-pointed topos) using the Lawvere argument with B=Ω, f=internal negation. The framework sketched in this file's sec-topos section."
+    },
+    {
+      "key": "Ri53",
+      "citation": "Rice, H. G. (1953). Classes of recursively enumerable sets and their decision problems. Transactions of the AMS, 74(2), 358-366.",
+      "type": "paper",
+      "description": "Rice's theorem: any non-trivial semantic property of computable functions is undecidable. A Lawvere instance with Ob=ℕ (Gödel codes), Val=partial computable functions, and fixed-point-free f=complement-of-P. The no_surjection_abstract theorem here is the abstract form."
     }
   ],
   "sorries": 0
