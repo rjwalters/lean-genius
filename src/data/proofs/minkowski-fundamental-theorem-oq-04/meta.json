@@ -1,0 +1,22 @@
+{
+  "id": "minkowski-fundamental-theorem-oq-04",
+  "title": "Minkowski's Theorem: Custom Lattice API vs ZLattice Comparison",
+  "parentId": "minkowski-fundamental-theorem",
+  "openQuestionIndex": 4,
+  "description": "A formal comparison between the custom Lattice API used in the parent Minkowski proof and Mathlib's ZSpan/ZLattice infrastructure. Proves the central equivalence: the custom covolume |det(L.basis)| equals the ZSpan fundamental domain volume. Also constructs the inverse map (Module.Basis → Lattice) and shows the ZSpan-native Minkowski theorem implies the custom-API version.",
+  "status": "formalized",
+  "badge": "wip",
+  "sorries": 0,
+  "axiomCount": 0,
+  "leanFile": "Proofs/MinkowskiFundamentalTheoremOQ04.lean",
+  "namespace": "MinkowskiOQ04",
+  "tags": ["number-theory", "lattices", "mathlib", "geometry-of-numbers", "api-comparison"],
+  "keyResults": [
+    "covolume_eq_volume_fundamentalDomain: ENNReal.ofReal L.covolume = vol(ZSpan.fundamentalDomain (L.toModuleBasis n))",
+    "basis_det_ne_zero: (Matrix.of b).det ≠ 0 for any Basis (Fin n) ℝ (Fin n → ℝ)",
+    "Lattice.ofBasis: every Module.Basis gives a custom Lattice",
+    "instIsZLatticeCustom: the ZSpan of a custom lattice is IsZLattice",
+    "minkowski_custom_via_zlattice: custom Minkowski ← ZSpan Minkowski"
+  ],
+  "mathBackground": "The custom Lattice type wraps a basis matrix with an invertibility condition. Mathlib's ZSpan approach abstracts this as Submodule.span ℤ (Set.range b) for a Module.Basis b. The central bridge is ZSpan.volume_fundamentalDomain, which shows vol(fundamentalDomain b) = ENNReal.ofReal |(Matrix.of b).det|."
+}
