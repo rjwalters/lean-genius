@@ -63,6 +63,7 @@
       "Lean 4 typeclasses: IsCyclic, Monoid.exponent, ZMod API",
       "Mathlib group theory library: GroupTheory.Exponent, SpecificGroups.Cyclic"
     ],
+    "text": "Carmichael's function λ(n) = exponent((ℤ/nℤ)*) refines Euler's totient φ(n) to the exact minimal universal exponent satisfying a^λ(n) ≡ 1 (mod n) for all coprime a. This formalization proves the three fundamental properties — universality, divisibility λ(n) | φ(n), and minimality — as one-line consequences of Mathlib's abstract `Monoid.exponent` API, then computes λ(p) = p−1 via Gauss's primitive root theorem. The formalization reveals why λ(n) is the correct modulus for RSA key generation: decryption is possible if and only if λ(n) | (ed−1), not merely φ(n) | (ed−1).",
     "historicalContext": "Euler's theorem (1763) states $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a, n) = 1$, where $\\varphi(n) = |({\\mathbb{Z}}/n{\\mathbb{Z}})^*|$ is Euler's totient. Robert D. Carmichael (1910) observed that Euler's exponent $\\varphi(n)$ is often far from optimal: for instance, $\\varphi(8) = 4$ but $a^2 \\equiv 1 \\pmod{8}$ for all odd $a$. Carmichael defined $\\lambda(n)$ as the smallest universal exponent, now known as Carmichael's function or the reduced totient. He showed $\\lambda(n) \\mid \\varphi(n)$ and computed when equality holds: $(\\mathbb{Z}/n\\mathbb{Z})^*$ is cyclic — equivalently $\\lambda(n) = \\varphi(n)$ — precisely when $n \\in \\{1, 2, 4, p^k, 2p^k\\}$ for odd primes $p$. This characterization was already implicit in Gauss's Disquisitiones Arithmeticae (1801), where the primitive root theorem establishes cyclicity for prime moduli. Carmichael's function has since become essential in cryptography: the RSA private key exponent $d$ satisfies $ed \\equiv 1 \\pmod{\\lambda(n)}$ (not merely $\\pmod{\\varphi(n)}$), giving a smaller and therefore more efficient $d$.",
     "problemStatement": "Define Carmichael's function $\\lambda(n)$ as the exponent of the multiplicative group $(\\mathbb{Z}/n\\mathbb{Z})^*$ (the LCM of the orders of all elements). Prove: (1) $a^{\\lambda(n)} \\equiv 1 \\pmod{n}$ for all $a$ coprime to $n$; (2) $\\lambda(n) \\mid \\varphi(n)$; (3) $\\lambda(n)$ is minimal: if $a^e \\equiv 1 \\pmod{n}$ for all coprime $a$, then $\\lambda(n) \\mid e$; (4) special values $\\lambda(p) = p-1$ for primes $p$, $\\lambda(1) = \\lambda(2) = 1$.",
     "proofStrategy": "All results follow from Mathlib's `Monoid.exponent` API. `carmichael n` is defined as `Monoid.exponent (ZMod n)ˣ`. The three core properties — `pow_exponent_eq_one`, `exponent_dvd_card`, and `exponent_dvd_of_forall_pow_eq_one` — are pre-proved in Mathlib's group theory library and require no additional argument. For `carmichael_prime`, the key ingredient is `IsCyclic.exponent_eq_card`: for a cyclic group, the exponent equals the group order (since a generator has order = group order = LCM of all orders).",
@@ -203,6 +204,18 @@
       "citation": "Niven, I., Zuckerman, H. S. & Montgomery, H. L. (1991). An Introduction to the Theory of Numbers (5th ed.). Wiley.",
       "type": "textbook",
       "description": "Standard reference for Carmichael's function, primitive roots, and the structure of (ℤ/nℤ)*."
+    },
+    {
+      "key": "RSA78",
+      "citation": "Rivest, R. L., Shamir, A. & Adleman, L. (1978). A method for obtaining digital signatures and public-key cryptosystems. Communications of the ACM, 21(2), 120–126.",
+      "type": "paper",
+      "description": "Original RSA paper; uses φ(n) as the key modulus. Carmichael's λ(n) is the correct (smaller) modulus, as formalized by carmichael_minimal: decryption succeeds iff λ(n) | (ed−1)."
+    },
+    {
+      "key": "AGP94",
+      "citation": "Alford, W. R., Granville, A. & Pomerance, C. (1994). There are infinitely many Carmichael numbers. Annals of Mathematics, 139(3), 703–722.",
+      "type": "paper",
+      "description": "Proves that Carmichael numbers (composites n with λ(n) | (n−1)) are infinite; the Korselt criterion characterizing them uses carmichael_minimal as its key lemma."
     }
   ],
   "sorries": 0
