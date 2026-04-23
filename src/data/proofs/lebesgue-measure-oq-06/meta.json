@@ -18,10 +18,10 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 0,
-    "axiomCount": 4,
+    "sorries": 6,
+    "axiomCount": 5,
     "lineCount": 542,
-    "assumptions": "4 axioms: hausdorff_free_subgroup (Hausdorff 1914 — SO(3) contains F₂, requires 300+ lines of number theory), banach_tarski (Banach-Tarski 1924 — main paradox, requires 800+ lines via Hausdorff paradox + AC), banach_tarski_pieces_nonmeasurable (classical non-measurability corollary), int_amenable (Markov-Kakutani — ℤ is amenable via Cesàro means/ultrafilter construction). All 4 are known mathematical results; the framework (equidecomposability, paradoxical sets, F₂ non-amenability) is fully proved with 0 sorries.",
+    "assumptions": "5 sorry'd theorems (intentional axioms): hausdorff_free_subgroup (Hausdorff 1914 — SO(3) contains F₂, requires 300+ lines of number theory), banach_tarski (Banach-Tarski 1924 — main paradox, requires 800+ lines via Hausdorff paradox + AC), banach_tarski_pieces_nonmeasurable (classical non-measurability corollary), int_amenable (Markov-Kakutani — ℤ is amenable via Cesàro means/ultrafilter construction), free_group_not_amenable (F₂ is not amenable — equivalent to its paradoxical decomposition). Additionally 1 WIP sorry in banach_tarski_nonmeasurable_measure proof step (h2: μ A + μ A = μ A, needs monotonicity of μ via B ∪ C ⊆ A). Total: 6 sorry tactics in file.",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -206,7 +206,7 @@
     "theoremCount": 7,
     "definitionCount": 5,
     "path": "Proofs/LebesgueMeasureOQ06.lean",
-    "sorries": 0
+    "sorries": 6
   },
-  "sorries": 0
+  "sorries": 6
 }

@@ -19,10 +19,10 @@
       "irrational-angles"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 3,
     "dateAdded": "2026-04-22",
     "axiomCount": 2,
-    "assumptions": "1. tmul_infinite_order_ne_zero (from OQ02OQ02): ℝ is flat over ℤ — needed to show nonzero tensor products. 2. icoAngle_irrational: arccos(-√5/3)/π is irrational (icosahedron dihedral angle) — proof requires Chebyshev arithmetic in ℤ[√5], deferred.",
+    "assumptions": "2 axioms: (1) tmul_infinite_order_ne_zero (from OQ02OQ02): ℝ is flat over ℤ — needed to show nonzero tensor products. (2) icoAngle_irrational: arccos(-√5/3)/π is irrational (icosahedron dihedral angle) — proof requires Chebyshev arithmetic in ℤ[√5], deferred. Additionally 3 WIP sorries in cube_isolated_dehn_invariant proof steps: octahedron, dodecahedron, and icosahedron cases need 'general edge count scaling' helper (applies oct_dehn_ne_zero/dod_dehn_ne_zero/ico_dehn_ne_zero lemmas to the full table).",
     "lineCount": 436,
     "theoremCount": 15,
     "definitionCount": 4,
@@ -146,5 +146,6 @@
       "Can icoAngle_irrational be proved by extending the Chebyshev argument to ℤ[√5], completing the proof for all five Platonic solids with 0 axioms?",
       "Are any two of the four non-cube Platonic solids scissors congruent to each other? Their Dehn invariants are all nonzero, but they may still differ — this requires comparing the angle classes [arccos(1/3)], [arccos(-1/3)], [arccos(-1/√5)], [arccos(-√5/3)] in ℝ/πℤ, which reduces to algebraic independence questions."
     ]
-  }
+  },
+  "sorries": 3
 }

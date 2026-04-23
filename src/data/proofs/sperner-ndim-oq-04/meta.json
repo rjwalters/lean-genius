@@ -21,7 +21,7 @@
       "advanced"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 2,
     "originalContributions": [
       "Definition of door degree and IsKuhnCompatible for abstract Sperner triangulations",
       "Proof that FC simplices have exactly 1 door under Kuhn compatibility",
@@ -39,7 +39,7 @@
     "dateAdded": "2026-04-22",
     "axiomCount": 0,
     "lineCount": 430,
-    "assumptions": "1 sorry: kuhn_walk_result_not_in_visited — TRIVIAL induction; all cases reduce to current_not_visited or subset monotonicity via the IH. Submitted to Aristotle for automated resolution. kuhn_path_terminates is PROVED (non-constructively via sperner_ndim). All other theorems (fc_door_count_eq_one, nonfc_door_count_zero_or_two, nonfc_with_door_has_unique_exit, KuhnStateValid infrastructure) are fully verified. Note: the previously-present kuhn_walk_reaches_fc theorem was REMOVED as mathematically incorrect (mid-walk boundary exits can terminate the walk at a non-FC simplex).",
+    "assumptions": "2 sorries: (1) kuhn_walk_reaches_fc — non-revisiting invariant: the walk with sufficient fuel reaches an FC simplex (pending: door graph path invariant, requires adding unique-facet axiom to SpernerTriangulation and tracking per-visited door history in KuhnState); (2) kuhnPathStart_is_fc — blocked on kuhn_walk_reaches_fc. kuhn_path_terminates is PROVED (non-constructively via sperner_ndim). All door-counting infrastructure (fc_door_count_eq_one, nonfc_door_count_zero_or_two, nonfc_with_door_has_unique_exit, KuhnStateValid) is fully verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -260,7 +260,7 @@
     "theoremCount": 8,
     "definitionCount": 5,
     "path": "Proofs/SpernerNDimOQ04.lean",
-    "sorries": 1
+    "sorries": 2
   },
-  "sorries": 1
+  "sorries": 2
 }
