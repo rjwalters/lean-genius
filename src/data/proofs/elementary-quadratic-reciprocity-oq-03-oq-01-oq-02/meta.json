@@ -106,35 +106,40 @@
       "title": "Imports and Algorithm Overview",
       "startLine": 1,
       "endLine": 35,
-      "summary": "Module header describing the certified Jacobi symbol computation problem. Imports JacobiSymbol and QuadraticReciprocity from Mathlib. Documents the four algorithm steps: reduce, extract 2s, reciprocity, repeat. States the O(log² n) complexity."
+      "summary": "Module header describing the certified Jacobi symbol computation problem. Imports JacobiSymbol and QuadraticReciprocity from Mathlib. Documents the four algorithm steps: reduce, extract 2s, reciprocity, repeat. States the O(log² n) complexity.",
+      "mathContext": "The Euclidean Jacobi algorithm alternates: (1) reduce $J(a,n) = J(a \\bmod n, n)$, (2) factor out 2s using $J(2,n) = \\chi_8(n)$, (3) apply reciprocity $J(a,n) = \\pm J(n,a)$, (4) repeat with strictly smaller bottom argument. The complexity $O(\\log^2 n)$ follows from the same Fibonacci worst-case analysis as the Euclidean GCD algorithm."
     },
     {
       "id": "part-i-reduction-lemmas",
       "title": "Part I: Euclidean Reduction Lemmas",
       "startLine": 36,
       "endLine": 76,
-      "summary": "Proves 8 reusable step theorems: reduce_step (J(a,n) = J(a mod n,n)), extract_two_step (multiplicativity for factor 2), reciprocity_step (general sign), reciprocity_one_mod_four (no sign for a≡1 mod 4), reciprocity_three_mod_four (sign flip for both ≡3 mod 4), base_one, base_zero, two_supplement (J(2,n) = χ₈(n))."
+      "summary": "Proves 8 reusable step theorems: reduce_step (J(a,n) = J(a mod n,n)), extract_two_step (multiplicativity for factor 2), reciprocity_step (general sign), reciprocity_one_mod_four (no sign for a≡1 mod 4), reciprocity_three_mod_four (sign flip for both ≡3 mod 4), base_one, base_zero, two_supplement (J(2,n) = χ₈(n)).",
+      "mathContext": "The 8 lemmas cover every case in the algorithm: periodicity ($J(a,n) = J(a \\bmod n, n)$), multiplicativity ($J(2a,n) = J(2,n) J(a,n)$), reciprocity sign cases ($a \\equiv 1 \\pmod 4$: sign $+1$; both $\\equiv 3 \\pmod 4$: sign $-1$), base cases ($J(1,n)=1$, $J(0,n)=0$), and second supplement ($J(2,n) = (-1)^{(n^2-1)/8}$). Together they are sufficient to compute any $J(a,n)$ with $\\gcd(a,n) = 1$."
     },
     {
       "id": "part-ii-certified-computations",
       "title": "Part II: Certified Computation Chains",
       "startLine": 77,
       "endLine": 125,
-      "summary": "Three certified computation examples: J(7,13)=-1 (5-step Euclidean chain), J(1001,9907)=-1 (factorization into 7×11×13 + native_decide), J(219,383)=1 (full Euclidean chain documented in comments). Each step is a separately verified theorem."
+      "summary": "Three certified computation examples: J(7,13)=-1 (5-step Euclidean chain), J(1001,9907)=-1 (factorization into 7×11×13 + native_decide), J(219,383)=1 (full Euclidean chain documented in comments). Each step is a separately verified theorem.",
+      "mathContext": "$J(7,13)$: $13 \\equiv 1 \\pmod 4 \\Rightarrow J(7,13)=J(13,7)=J(6,7)=J(2,7)J(3,7)=(-1)(-1)=... =-1$ (via `native_decide` for final factors). $J(1001,9907)$: $1001=7 \\cdot 11 \\cdot 13$, so $J(1001,9907)=J(7,9907)J(11,9907)J(13,9907)=-1$. The certified chain documents the algorithm's derivation trace, not merely the numerical answer."
     },
     {
       "id": "part-iii-helper-functions",
       "title": "Part III: Algorithm Helper Functions",
       "startLine": 126,
       "endLine": 155,
-      "summary": "Defines extractTwos (computes 2-adic valuation: n = 2^k·m with m odd) and recipSign (the Legendre/Jacobi reciprocity sign). Verifies extractTwos on 5 concrete inputs and correctness of the 2^k·m decomposition."
+      "summary": "Defines extractTwos (computes 2-adic valuation: n = 2^k·m with m odd) and recipSign (the Legendre/Jacobi reciprocity sign). Verifies extractTwos on 5 concrete inputs and correctness of the 2^k·m decomposition.",
+      "mathContext": "`extractTwos n = (k, m)` where $n = 2^k \\cdot m$ and $m$ is odd. The 2-adic valuation $v_2(n) = k$ decomposes the even part for use in $J(2^k m, n) = J(2,n)^k \\cdot J(m,n)$. `recipSign a n = (-1 : \\mathbb{Z})^{(a/2)(n/2)}$ is the sign correction in `one_step_reduction`, using Lean integer floor division (so $a/2 = \\lfloor a/2 \\rfloor = (a-1)/2$ for odd $a$)."
     },
     {
       "id": "part-iv-one-step-theorem",
       "title": "Part IV: One-Step Reduction and Termination",
       "startLine": 156,
       "endLine": 189,
-      "summary": "one_step_reduction: J(a,n) = recipSign(a,n) · J(n mod a, a) — one full reciprocity+reduction step. one_step_decreasing: the bottom argument strictly decreases (n mod a < a when 0 < a < n), guaranteeing termination. Together these are the recursive correctness theorem."
+      "summary": "one_step_reduction: J(a,n) = recipSign(a,n) · J(n mod a, a) — one full reciprocity+reduction step. one_step_decreasing: the bottom argument strictly decreases (n mod a < a when 0 < a < n), guaranteeing termination. Together these are the recursive correctness theorem.",
+      "mathContext": "`one_step_reduction`: $J(a,n) = (-1)^{(a-1)/2 \\cdot (n-1)/2} \\cdot J(n \\bmod a, a)$ — one reciprocity swap plus reduction mod $a$. `one_step_decreasing`: $n \\bmod a < a$ for $a > 0$ (`Nat.mod_lt`). Together these constitute the certified recursive structure: correctness by `one_step_reduction`, termination by `one_step_decreasing` on the strictly decreasing bottom argument."
     }
   ],
   "conclusion": {

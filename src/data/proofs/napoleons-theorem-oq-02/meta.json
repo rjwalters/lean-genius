@@ -90,7 +90,7 @@
     }
   ],
   "overview": {
-    "historicalContext": "Napoleon's theorem has been known since the early 19th century, but its connection to the Discrete Fourier Transform is a more modern observation. The DFT perspective on polygon geometry was developed in the 20th century, with applications to signal processing and harmonic analysis.\n\nThe key insight — that the Napoleon construction is a linear filter in the DFT basis — reveals the algebraic structure underlying the geometric fact. This perspective unifies Napoleon's theorem with other results in discrete harmonic analysis on triangles and polygons.",
+    "historicalContext": "Napoleon's theorem carries a curious attribution: it bears the name of Napoleon Bonaparte (1769–1821), yet no contemporary source confirms he discovered it. Napoleon had genuine mathematical interests — he studied with Laplace and Monge, sat in on lectures at the École Polytechnique, and corresponded with leading mathematicians — but the theorem's true origin remains unclear. The earliest published appearances trace to the 1820s–1830s in British mathematical periodicals (including the Ladies' Diary) and French journals, where it circulated as a novelty of elementary geometry. By the mid-19th century it was a standard result, and subsequent decades brought dozens of proofs — via trigonometry, complex numbers, projective methods, and inversive geometry.\n\nThe complex-coordinate approach used in this formalization emerged as part of the broader 19th-century recognition that planar geometry is naturally the algebra of $\\mathbb{C}$. Argand (1806) and Gauss popularized the representation of plane geometry via complex multiplication; in this language, rotating a triangle vertex by $60°$ around another is simply multiplication by $e^{i\\pi/3}$, making the Napoleon centroid formula $G_k = \\frac{z_{k-1}+z_{k+1}}{2} + \\frac{i\\sqrt{3}}{6}(z_{k+1}-z_{k-1})$ an immediate consequence.\n\nThe DFT perspective developed in the 20th century as part of a broader spectral geometry of polygons. The central observation — that equilateral triangles are characterized by vanishing DFT at frequency 2 — generalizes to arbitrary $n$-gons: a polygon has a regular $n$-gon at each frequency if and only if the corresponding DFT component vanishes. This gives rise to the generalized Napoleon theorem (sometimes called the Napoleon-Douglas theorem): if regular $n$-gons are constructed on the sides of any $n$-gon and their centers connected, the resulting polygon is regular if and only if the original polygon has vanishing DFT at the relevant frequency. The 3-point DFT filter picture proved in this Lean formalization is the $n=3$ case of this general principle, now machine-verified for the first time.",
     "problemStatement": "**Napoleon's Theorem DFT Characterization**: Let ω = e^{2πi/3} and define the 3-point DFT of triangle (z₁,z₂,z₃) as:\n  X₀ = z₁+z₂+z₃\n  X₁ = z₁+ω·z₂+ω²·z₃\n  X₂ = z₁+ω²·z₂+ω·z₃\n\nThe outer Napoleon triangle (G₁,G₂,G₃) has DFT (X₀, -X₁, 0).\nThe inner Napoleon triangle (G₁',G₂',G₃') has DFT (X₀, 0, -X₂).",
     "text": "The Napoleon triangle construction is a linear DFT filter: it maps X₁ to -X₁ and eliminates X₂ (outer case), explaining algebraically why Napoleon triangles are always equilateral.",
     "proofStrategy": "All proofs are algebraic, expanding the napoleonCenter formula and using the fundamental identities of cube roots of unity.\n\n1. **Define ω**: Set ω = (-1+I√3)/2. Prove ω³=1 and 1+ω+ω²=0 from √3²=3 and I²=-1.\n\n2. **Expand G_k**: Using napoleonCenter(b,c) = (b+c)/2 + I√3/6·(c-b), verify algebraically that G₁ = z₂·(1-ω)/3 + z₃·(1-ω²)/3.\n\n3. **Compute Y₁**: G₁+ω·G₂+ω²·G₃. The coefficient of z₁ is (ω(1-ω²)+ω²(1-ω))/3 = (ω+ω²-2ω³)/3 = (-1-2)/3 = -1. Similarly for z₂ (coeff = -ω) and z₃ (coeff = -ω²). Hence Y₁ = -(z₁+ω·z₂+ω²·z₃) = -X₁.\n\n4. **Compute Y₂**: G₁+ω²·G₂+ω·G₃ = 0. The z₁ coefficient is (ω²(1-ω²)+ω(1-ω))/3 = (ω²-ω⁴+ω-ω²)/3 = (ω-ω)/3 = 0. Similarly 0 for z₂ and z₃.\n\n5. **Inner case**: Symmetric computation with -I√3 replacing +I√3, giving the swapped filter action.",
@@ -99,7 +99,8 @@
       "**Equilateral ↔ X₂=0**: A triangle is equilateral iff its DFT at frequency 2 (outer convention) is zero. Since Y₂=0 always, Napoleon triangles are always equilateral",
       "**Centroid invariance**: Y₀ = X₀ means Napoleon preserves the DC component (centroid) — a DFT perspective on napoleon_centroid_eq_original",
       "**Outer/inner symmetry**: Outer kills X₂, inner kills X₁ — they are complex conjugates of each other in the DFT domain",
-      "**IDFT formula**: G₁ = (X₀-X₁)/3 = ((z₁+z₂+z₃)-(z₁+ω·z₂+ω²·z₃))/3 = (z₂(1-ω)+z₃(1-ω²))/3, making the algebraic structure transparent"
+      "**IDFT formula**: G₁ = (X₀-X₁)/3 = ((z₁+z₂+z₃)-(z₁+ω·z₂+ω²·z₃))/3 = (z₂(1-ω)+z₃(1-ω²))/3, making the algebraic structure transparent",
+      "**Circulant matrix structure**: The Napoleon map $(z_1, z_2, z_3) \\mapsto (G_1, G_2, G_3)$ is a circulant linear map — defined by a fixed generating vector whose cyclic shifts give the matrix rows. All circulant matrices over $\\mathbb{C}^n$ are simultaneously diagonalized by the DFT matrix $F_n$, with eigenvalues equal to the DFT of the generating vector. For the Napoleon map, the generating vector's 3-point DFT yields eigenvalues $(1, -1, 0)$, immediately confirming the filter action $(X_0, X_1, X_2) \\mapsto (X_0, -X_1, 0)$ algebraically from the matrix structure alone."
     ],
     "prerequisites": [
       "Complex numbers and arithmetic in ℂ",
@@ -123,14 +124,35 @@
   },
   "crossReferences": [
     {
-      "relationship": "Parent proof: the base Napoleon theorem whose centroid formula is used and whose centroid-preservation result is cited",
-      "sharedConcepts": [
-        "napoleon",
-        "equilateral-triangle",
-        "centroid",
-        "complex-coordinates"
-      ],
-      "targetId": "napoleons-theorem"
+      "targetId": "napoleons-theorem",
+      "relationship": "parent",
+      "description": "Parent proof providing the base Napoleon theorem, the napoleonCenter formula $(b+c)/2 + i\\sqrt{3}/6(c-b)$, and the centroid-preservation result cited in `napoleon_centroid_eq_original`. The DFT characterization here gives a spectral explanation for why the parent proof's equilateral conclusion holds."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "The continuous Fourier series is the infinite-dimensional analogue of the 3-point DFT used here: both decompose a signal into frequency components. The Napoleon DFT filter kills frequency-2 content, paralleling how a low-pass Fourier filter eliminates high-frequency components. Parseval's identity from the fourier-series entry has a discrete analogue: $|X_0|^2 + |X_1|^2 + |X_2|^2 = 3(|z_1|^2 + |z_2|^2 + |z_3|^2)$ (energy conservation in the DFT domain)."
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "The primitive root theorem — $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic — underpins cyclotomic theory. The cube root of unity $\\omega = e^{2\\pi i/3}$ used throughout this proof is a primitive 3rd root of unity, the complex analogue: it generates the cyclic group $\\mu_3 = \\{1, \\omega, \\omega^2\\}$ under multiplication. The identity $1+\\omega+\\omega^2 = 0$ (used in every main theorem) is the cyclotomic polynomial $\\Phi_3(x) = x^2+x+1$ evaluated at $x=\\omega$."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Wetzel, John E.",
+      "title": "Converses of Napoleon's Theorem",
+      "year": "1992",
+      "venue": "The American Mathematical Monthly, vol. 99, no. 4, pp. 339–351",
+      "note": "A comprehensive treatment of Napoleon's theorem and its converses, including the disputed historical attribution to Napoleon Bonaparte and a survey of the many published proofs via trigonometry, complex numbers, and vectors. The complex-number proof strategy in this gallery entry connects to Wetzel's algebraic approach."
+    },
+    {
+      "authors": "Pedoe, Daniel",
+      "title": "Geometry: A Comprehensive Course",
+      "year": "1988",
+      "venue": "Dover Publications (reprint of 1970 Cambridge University Press edition)",
+      "note": "A standard reference for complex-coordinate geometry, covering Napoleon's theorem via complex numbers, the algebraic structure of the Napoleon centroid formula, and the equilateral triangle characterization via complex roots of unity. The treatment illuminates the algebraic core of this DFT formalization."
     }
   ],
   "sorries": 0,

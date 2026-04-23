@@ -69,7 +69,8 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Fix exists_quintic: either remove it or add a comment clarifying it is a trivial witness, not the substantive statement needed (which would be ∃ q : Polynomial ℚ, Irreducible q ∧ q.natDegree = 5 ∧ ¬ IsSolvable q.Gal). Cross-reference the open question about formalizing x⁵-x-1.",
-      "status": "resolved"
+      "status": "resolved",
+      "resolutionNote": "The annotation `ann-exists-quintic` was expanded to explicitly call out the theorem as 'mathematically trivial and not used in the main Abel-Ruffini argument', distinguishing it from the substantive statement needed (∃ q with Gal(q) ≅ S₅, Irreducible q). The annotation cross-references `abel-ruffini-oq-04-oq-01` for the actual concrete witness (x⁵ − 4x + 2 with Gal ≅ S₅, now fully verified with 0 axioms and 0 sorries). The Lean file theorem was kept as-is since its docstring already labels it 'Statement: there exists a degree-5 polynomial' without claiming more."
     },
     {
       "id": "ai-2",
@@ -84,7 +85,8 @@
       "priority": "low",
       "target": "enricher",
       "description": "Change originalContributions[2] from 'Quintic unsolvability demonstration' to 'General contrapositive form of Abel-Ruffini' for precision.",
-      "status": "resolved"
+      "status": "resolved",
+      "resolutionNote": "Changed meta.json `originalContributions[2]` from 'Quintic unsolvability demonstration' to 'General contrapositive form of Abel-Ruffini (non-solvable Galois group implies not solvable by radicals)', precisely describing what `not_solvable_by_rad_of_not_solvable_gal` proves without overstating it as a concrete quintic demonstration."
     }
   ],
 
