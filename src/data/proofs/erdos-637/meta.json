@@ -7,7 +7,7 @@
     "author": "Paul Erdős, Faudree, Sós, Bukh, Sudakov, Jenssen, Keevash, Long, Yepremyan",
     "sourceUrl": "https://erdosproblems.com/637",
     "date": "2007-2020",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos637Problem.lean",
     "tags": [
       "erdos",
@@ -15,12 +15,12 @@
       "ramsey-theory",
       "degrees"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 10,
     "erdosNumber": 637,
     "erdosUrl": "https://erdosproblems.com/637",
     "erdosProblemStatus": "solved",
-    "axiomCount": 0,
+    "axiomCount": 2,
     "prerequisites": [
       "Graph theory basics (vertices, edges, adjacency, neighborhoods)",
       "Degree sequences and regular graphs",
@@ -29,7 +29,7 @@
       "Probabilistic method and random graph models (Erdős-Rényi G(n, 1/2))"
     ],
     "lineCount": 243,
-    "assumptions": "No axioms. 10 sorry(s) remain in the formalization.",
+    "assumptions": "2 axioms: ramsey_lower_bound (Ramsey number lower bound R(k,k) ≥ 2^(k/2)), vertex_bound_from_ramsey (vertex count bounded by R(k+1,k+1)). 10 sorries remain.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -200,7 +200,7 @@
     ],
     "namespace": "Erdos637",
     "lineCount": 243,
-    "axiomCount": 0,
+    "axiomCount": 2,
     "theoremCount": 13,
     "definitionCount": 16,
     "sorries": 10,
