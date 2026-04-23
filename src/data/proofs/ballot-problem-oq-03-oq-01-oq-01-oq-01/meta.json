@@ -36,15 +36,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Jacobi-Trudi identity (1841, independently rediscovered by Trudi 1864) expresses Schur polynomials as determinants of complete homogeneous symmetric polynomials: s_λ = det[h_{λᵢ-i+j}]. This is foundational in algebraic combinatorics and representation theory: Schur polynomials are characters of GL(n) representations, and the Jacobi-Trudi formula connects them to the ring of symmetric functions. The LGV lemma provides the standard combinatorial proof via non-intersecting lattice paths and RSK correspondence.",
+    "historicalContext": "Carl Gustav Jacob Jacobi stated the identity bearing his name in 1841, and Nicola Trudi independently rediscovered it in 1864. The formula $s_\\lambda = \\det[h_{\\lambda_i - i + j}]$ expresses Schur polynomials as determinants of complete homogeneous symmetric polynomials $h_n$. Issai Schur (1901–1911) developed the systematic theory connecting these polynomials to the representation theory of GL(n): each $s_\\lambda$ is the character of the irreducible polynomial representation indexed by partition $\\lambda$. This dual algebraic/combinatorial nature — both a ring-theoretic determinant formula and a character — makes the Jacobi-Trudi identity central to modern algebraic combinatorics. The combinatorial proof via the Lindström-Gessel-Viennot (LGV) lemma was developed by Gessel and Viennot in 1985, completing the picture by showing semistandard Young tableaux (SSYT) biject with non-intersecting lattice path systems. Macdonald's 1979 book 'Symmetric Functions and Hall Polynomials' systematized these connections and remains the standard reference.",
     "problemStatement": "Formalize the definition of Schur polynomials via the Jacobi-Trudi determinant formula and prove their key properties: symmetry, base cases, and the connection to the LGV lemma infrastructure already formalized in the parent gallery proofs.",
     "text": "The key insight is that Mathlib's complete homogeneous symmetric polynomials hsymm σ R n provide exactly the building blocks for the Jacobi-Trudi matrix. The entry at position (i,j) is h_{sh_i + j - i} when i ≤ sh_i + j (else 0 to handle the h_n = 0 for n < 0 convention using ℕ subtraction). Symmetry of the Schur polynomial then follows from: (1) each matrix entry is symmetric (using hsymm_isSymmetric + rename_hsymm), and (2) AlgHom.map_det lets us push rename through the determinant.",
     "proofStrategy": "For symmetry: AlgHom.map_det gives (rename e)(det M) = det((rename e).mapMatrix M), then show each entry (rename e)(h_{sh_i+j-i}) = h_{sh_i+j-i} using rename_hsymm. For base cases: det_fin_zero = 1, det_fin_one simplifies 1×1 determinant. The LGV connection (SSYT ↔ NI paths via RSK) requires ~400 lines of additional formalization.",
     "keyInsights": [
-      "Mathlib's hsymm σ R n is precisely the h_n in the Jacobi-Trudi formula — no additional definitions needed",
-      "ℕ subtraction handles the h_n = 0 for n < 0 convention cleanly: check i ≤ sh_i + j before computing sh_i + j - i",
-      "AlgHom.map_det + rename_hsymm + split_ifs handles the symmetry proof in 10 lines",
-      "The LGV connection (RSK + SSYT) requires ~400 lines — stated as open sorry"
+      "Mathlib's hsymm σ R n is precisely the h_n in the Jacobi-Trudi formula — no additional definitions needed, the whole matrix is built from Mathlib primitives",
+      "ℕ subtraction handles the h_n = 0 for n < 0 convention cleanly: checking i ≤ sh_i + j before computing sh_i + j - i avoids the need for integers or a custom 'truncated subtraction' type",
+      "AlgHom.map_det lifts any R-algebra homomorphism through det, reducing symmetry of s_λ to symmetry of each h_n — a single Mathlib lemma carries the whole argument",
+      "The 0-indexed Lean representation (Fin k) shifts the matrix entry formula: standard 1-indexed M_{ij} = h_{λᵢ+j-i} becomes 0-indexed h_{sh_i+j-i} with conditional on i.val ≤ sh_i + j.val",
+      "The LGV connection (SSYT ↔ NI paths via RSK) requires ~400 lines and is the key missing piece: once formalized, it gives a purely combinatorial proof that the determinant formula equals the tableau-sum definition"
     ],
     "prerequisites": [
       "Mathlib.RingTheory.MvPolynomial.Symmetric.Defs: hsymm, IsSymmetric, rename_hsymm, hsymm_isSymmetric",
@@ -83,69 +84,77 @@
   },
   "crossReferences": [
     {
-      "id": "ballot-problem-oq-03-oq-01-oq-01",
-      "title": "General n×n LGV Lemma",
-      "relationship": "parent"
+      "proofId": "ballot-problem-oq-03-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "Parent entry providing the LGV lemma infrastructure that the jacobiTrudi_lgv_connection sorry depends on"
     },
     {
-      "id": "ballot-problem-oq-03-oq-01-oq-02",
-      "title": "Hook-Length Formula via LGV",
-      "relationship": "sibling"
+      "proofId": "ballot-problem-oq-03-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "Hook-Length Formula via LGV — another application of the same parent LGV machinery to enumerate SYT"
     },
     {
-      "id": "ballot-problem-oq-03-oq-02",
-      "title": "LGV Lemma n×n (full formalization)",
-      "relationship": "foundational"
+      "proofId": "ballot-problem-oq-03-oq-02",
+      "relationship": "foundational",
+      "description": "Full n×n LGV Lemma formalization that the LGV connection proof strategy ultimately relies upon"
     }
   ],
   "sections": [
     {
+      "id": "sec-preamble",
+      "title": "Preamble: Imports, Opens, Variables",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "File header, Mathlib imports (Symmetric.Defs, Determinant.Basic, parent proof), opens (MvPolynomial, Matrix, Finset), namespace, and variable declarations for the abstract commutative ring setting.",
+      "mathContext": "Works over `{σ R : Type*} [CommRing R] [Fintype σ] [DecidableEq σ]` — fully abstract in both the variable set σ and coefficient ring R. The parent import `Proofs.BallotProblemOQ03OQ01OQ01` supplies the LGV infrastructure."
+    },
+    {
       "id": "sec-definitions",
       "title": "Part I: Definitions",
-      "startLine": 36,
-      "endLine": 54,
-      "summary": "Defines jacobiTrudiMatrix and schurPolynomial. Entry (i,j) = h_{sh_i+j-i} if i ≤ sh_i+j, else 0.",
-      "mathContext": "jacobiTrudiMatrix k sh : Matrix (Fin k) (Fin k) (MvPolynomial σ R). schurPolynomial k sh = det(jacobiTrudiMatrix). Uses ℕ subtraction with conditional to avoid negative indices."
+      "startLine": 35,
+      "endLine": 47,
+      "summary": "Defines jacobiTrudiMatrix (k×k matrix with entries h_{sh_i+j-i} or 0) and schurPolynomial (its determinant). Both are noncomputable due to classical choice in hsymm.",
+      "mathContext": "`jacobiTrudiMatrix k sh : Matrix (Fin k) (Fin k) (MvPolynomial σ R)`. `schurPolynomial k sh = Matrix.det (jacobiTrudiMatrix k sh)`. Uses ℕ subtraction with conditional `if i.val ≤ sh i + j.val` to handle the $h_n = 0$ for $n < 0$ convention."
     },
     {
       "id": "sec-base-cases",
       "title": "Part II: Base Cases",
-      "startLine": 56,
-      "endLine": 70,
-      "summary": "schurPolynomial_empty = 1 (0×0 det). schurPolynomial_one_row = hsymm σ R n (1×1 det).",
-      "mathContext": "det_fin_zero = 1 handles empty case. det_fin_one reduces to single entry. simp reduces the ℕ arithmetic."
+      "startLine": 53,
+      "endLine": 61,
+      "summary": "schurPolynomial_empty: s_() = 1 (0×0 det via det_fin_zero). schurPolynomial_one_row: s_[n] = h_n (1×1 det via det_fin_one). Both proved with simp.",
+      "mathContext": "`Matrix.det_fin_zero`: the determinant of the unique $0 \\times 0$ matrix is $1$. `Matrix.det_fin_one`: the $1 \\times 1$ determinant reduces to the single entry. These are boundary sanity checks for the Jacobi-Trudi definition."
     },
     {
       "id": "sec-symmetry",
       "title": "Part III: Symmetry",
-      "startLine": 72,
-      "endLine": 93,
-      "summary": "Each entry is symmetric (via hsymm_isSymmetric). Full symmetry via AlgHom.map_det.",
-      "mathContext": "IsSymmetric φ = ∀ e : Perm σ, rename e φ = φ. Key lemma: AlgHom.map_det gives (rename e)(det M) = det(mapMatrix (rename e) M). Then each entry: rename e (h_n) = h_n by rename_hsymm."
+      "startLine": 63,
+      "endLine": 77,
+      "summary": "Two theorems: entry-level symmetry (each h_n invariant under variable rename, sorry) and full Schur polynomial symmetry via AlgHom.map_det (sorry, pending entry result).",
+      "mathContext": "`IsSymmetric φ` means `∀ e : Equiv.Perm σ, rename e φ = φ`. Strategy: `AlgHom.map_det` gives `rename e (det M) = det (Matrix.mapMatrix (rename e) M)`. Each entry satisfies `rename e (h_n) = h_n` by `rename_hsymm`, so the mapped matrix equals the original."
     },
     {
       "id": "sec-two-row",
       "title": "Part IV: Two-Row Formula",
-      "startLine": 96,
-      "endLine": 107,
-      "summary": "Explicit formula for Schur([a,b]) = h_a*h_b - h_{a+1}*(h_{b-1} or 0). Currently sorry.",
-      "mathContext": "det_fin_two gives the 2×2 expansion. Matrix.cons lemmas extract entries. The (1,0) entry check: if 1 ≤ b then h_{b-1} else 0. (sorry)"
+      "startLine": 79,
+      "endLine": 90,
+      "summary": "Explicit formula for s_{[a,b]} = h_a*h_b - h_{a+1}*(h_{b-1} or 0). Currently sorry pending det_fin_two normalization.",
+      "mathContext": "`Matrix.det_fin_two` expands the $2 \\times 2$ determinant as $M_{00} M_{11} - M_{01} M_{10}$. Matrix.cons lemmas extract: $M_{00} = h_a$, $M_{01} = h_{a+1}$, $M_{10} = h_{b-1}$ (if $1 \\le b$, else $0$), $M_{11} = h_b$. Result: $s_{(a,b)} = h_a h_b - h_{a+1} h_{b-1}$. (sorry)"
     },
     {
       "id": "sec-hook-connection",
       "title": "Part V: Hook-Length Connection",
-      "startLine": 110,
-      "endLine": 116,
-      "summary": "Evaluation at all-ones = C(n+k-1, k-1) = |Sym (Fin k) n|. Currently sorry.",
-      "mathContext": "eval (fun _ => 1) (hsymm (Fin k) R n) = |Sym (Fin k) n| via map_sum and card_univ. (sorry)"
+      "startLine": 92,
+      "endLine": 101,
+      "summary": "Evaluation of one-row Schur polynomial at all-ones gives C(n+k-1, k-1). Currently sorry pending Nat.multichoose reduction.",
+      "mathContext": "`eval (fun _ : Fin k => (1 : R)) (schurPolynomial 1 (fun _ => n)) = Nat.choose (n + k - 1) (k - 1)`. Uses `schurPolynomial_one_row` to reduce to `eval 1 (hsymm (Fin k) R n)`, then stars-and-bars: $h_n(1,\\ldots,1) = \\binom{n+k-1}{k-1}$. (sorry)"
     },
     {
       "id": "sec-lgv-connection",
       "title": "Part VI: LGV Connection (Open)",
-      "startLine": 119,
-      "endLine": 135,
-      "summary": "Placeholder theorem for the LGV combinatorial proof of Jacobi-Trudi. Currently sorry — requires RSK correspondence (~400 lines).",
-      "mathContext": "The full proof requires: (1) SSYT formalization, (2) RSK bijection SSYT ↔ NI paths, (3) weight matching. Each is ~100-200 lines of additional Lean. (sorry)"
+      "startLine": 103,
+      "endLine": 129,
+      "summary": "Placeholder theorem for the LGV combinatorial proof of Jacobi-Trudi. The comment block describes the ~400-line formalization roadmap (SSYT + RSK + weight matching). Currently a tautology sorry.",
+      "mathContext": "Full proof requires: (1) SSYT type and weight function (~100 lines), (2) RSK bijection SSYT ↔ NI paths (~200 lines), (3) weight matching with the LGV edge weights from the parent proof (~100 lines). The placeholder states `schurPolynomial k sh = schurPolynomial k sh` (tautology) until SSYT generating function is defined. (sorry)"
     }
   ],
   "sorries": 5
