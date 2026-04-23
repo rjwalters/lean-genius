@@ -1,0 +1,21 @@
+{
+  "slug": "cauchy-schwarz-integral-lp-duality-synthesis",
+  "title": "Synthesis: Eliminate riesz_lp_surjective axiom — Full Lp Duality",
+  "type": "synthesis",
+  "status": "available",
+  "tier": "A",
+  "significance": 8,
+  "tractability": 9,
+  "tags": ["synthesis", "functional-analysis", "lp-spaces", "axiom-elimination"],
+  "proposedDate": "2026-04-23",
+  "synthesisOf": [
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01"
+  ],
+  "description": "The recent completion of riesz_lp_surjective_from_rn (0 sorries, 0 axioms) in CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean proves exactly the statement that was axiomatized as riesz_lp_surjective in the parent CauchySchwarzIntegralOQ01OQ01OQ02.lean. Replacing the axiom with the theorem upgrades the Riesz Lp representation theorem from axiomatized (1 axiom) to verified (0 axioms), completing the full Lp duality chain: Young → Hölder (eLpNorm form) → isometric embedding Lq ↪ (Lp)* + surjectivity via Radon-Nikodým → Full (Lp)* ≅ Lq.",
+  "concreteFirstStep": "1. Open proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02.lean. 2. Add import: import Proofs.CauchySchwarzIntegralOQ01OQ01OQ02OQ01. 3. Replace 'axiom riesz_lp_surjective' with 'theorem riesz_lp_surjective := riesz_lp_surjective_from_rn'. 4. Build: ./proofs/scripts/docker-build.sh Proofs.CauchySchwarzIntegralOQ01OQ01OQ02. 5. Update src/data/proofs/cauchy-schwarz-integral-oq-01-oq-01-oq-02/meta.json: axiomCount 1→0, status axiomatized→verified, badge axiom→original.",
+  "sharedLemmas": [
+    "riesz_lp_surjective (axiom in OQ01OQ01OQ02, proved as riesz_lp_surjective_from_rn in OQ01OQ01OQ02OQ01)"
+  ],
+  "proposedBy": "lean-synthesis agent (2026-04-23)"
+}
