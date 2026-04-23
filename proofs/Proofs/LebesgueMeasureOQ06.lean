@@ -270,17 +270,150 @@ def IsAmenable (G : Type*) [Group G] : Prop :=
 theorem int_amenable : IsAmenable (Multiplicative ℤ) := by
   sorry -- Cesàro mean: μ(A) = lim_{N→∞} #{k ∈ [-N,N] : k ∈ A} / (2N+1)
 
-/-- The free group of rank 2 is NOT amenable.
-    (Equivalent to the paradoxical decomposition of F₂.) -/
-theorem free_group_not_amenable : ¬IsAmenable (FreeGroup (Fin 2)) := by
+-- ============================================================
+-- Word-start sets for the non-amenability proof
+-- In FreeGroup α, elements are reduced words. toWord gives the unique
+-- reduced representative. true = positive occurrence, false = inverse.
+-- toWord_of : (FreeGroup.of x).toWord = [(x, true)]
+-- ============================================================
+
+/-- Words in F₂ starting with generator a = of 0 (positive). -/
+private def W_a : Set (FreeGroup (Fin 2)) :=
+  {w | w.toWord.head? = some ((0 : Fin 2), true)}
+
+/-- Words in F₂ starting with a⁻¹. -/
+private def W_ainv : Set (FreeGroup (Fin 2)) :=
+  {w | w.toWord.head? = some ((0 : Fin 2), false)}
+
+/-- Words in F₂ starting with generator b = of 1 (positive). -/
+private def W_b : Set (FreeGroup (Fin 2)) :=
+  {w | w.toWord.head? = some ((1 : Fin 2), true)}
+
+/-- Words in F₂ starting with b⁻¹. -/
+private def W_binv : Set (FreeGroup (Fin 2)) :=
+  {w | w.toWord.head? = some ((1 : Fin 2), false)}
+
+-- All six pairwise disjointness lemmas (different head letters → disjoint)
+private lemma W_a_W_ainv_disj : Disjoint W_a W_ainv := by
+  simp only [Set.disjoint_left, W_a, W_ainv, Set.mem_setOf_eq]
+  intro x h1 h2; rw [h1] at h2; exact absurd h2 (by decide)
+
+private lemma W_a_W_b_disj : Disjoint W_a W_b := by
+  simp only [Set.disjoint_left, W_a, W_b, Set.mem_setOf_eq]
+  intro x h1 h2; rw [h1] at h2; exact absurd h2 (by decide)
+
+private lemma W_a_W_binv_disj : Disjoint W_a W_binv := by
+  simp only [Set.disjoint_left, W_a, W_binv, Set.mem_setOf_eq]
+  intro x h1 h2; rw [h1] at h2; exact absurd h2 (by decide)
+
+private lemma W_ainv_W_b_disj : Disjoint W_ainv W_b := by
+  simp only [Set.disjoint_left, W_ainv, W_b, Set.mem_setOf_eq]
+  intro x h1 h2; rw [h1] at h2; exact absurd h2 (by decide)
+
+private lemma W_ainv_W_binv_disj : Disjoint W_ainv W_binv := by
+  simp only [Set.disjoint_left, W_ainv, W_binv, Set.mem_setOf_eq]
+  intro x h1 h2; rw [h1] at h2; exact absurd h2 (by decide)
+
+private lemma W_b_W_binv_disj : Disjoint W_b W_binv := by
+  simp only [Set.disjoint_left, W_b, W_binv, Set.mem_setOf_eq]
+  intro x h1 h2; rw [h1] at h2; exact absurd h2 (by decide)
+
+/-- Two-piece cover: F₂ = W_a ∪ (a • W_ainv).
+    Word-structure proof: if w ∉ W_a, then a⁻¹ * w starts with a⁻¹.
+    The key fact is: reduce ((0,true) :: l) with l.head? ≠ some (0,false)
+    produces (0,true) :: reduce l (no cancellation at the junction).
+    (Aristotle candidate — pure word-reduction property) -/
+private lemma W_a_two_cover :
+    (Set.univ : Set (FreeGroup (Fin 2))) =
+    W_a ∪ (FreeGroup.of (0 : Fin 2) • W_ainv) := by
   sorry
-  -- Proof via paradoxical decomposition:
-  -- Let a = FreeGroup.of 0, b = FreeGroup.of 1 (generators)
-  -- Define: W(a) = {words starting with a}, W(a⁻¹), W(b), W(b⁻¹), {e}
-  -- F₂ = W(a) ∪ aW(a⁻¹) [partition into 2 parts equidecomposable to F₂]
-  -- F₂ = W(b) ∪ bW(b⁻¹) [another such partition]
-  -- If μ is an invariant measure: μ(F₂) = μ(W(a)) + μ(aW(a⁻¹))
-  --   = μ(W(a)) + μ(W(a⁻¹)) (by invariance)
-  --   But also F₂ = W(a) ∪ W(a⁻¹) ∪ ... contradiction.
+
+/-- Disjointness: W_a ∩ (a • W_ainv) = ∅.
+    If w starts with a and w = a * v (v starts with a⁻¹), then
+    w = a * a⁻¹ * rest = rest, which by reducedness cannot start with a.
+    (Aristotle candidate) -/
+private lemma W_a_smul_disj : Disjoint W_a (FreeGroup.of (0 : Fin 2) • W_ainv) := by
+  sorry
+
+/-- Two-piece cover for b: F₂ = W_b ∪ (b • W_binv). -/
+private lemma W_b_two_cover :
+    (Set.univ : Set (FreeGroup (Fin 2))) =
+    W_b ∪ (FreeGroup.of (1 : Fin 2) • W_binv) := by
+  sorry
+
+/-- Disjointness: W_b ∩ (b • W_binv) = ∅. -/
+private lemma W_b_smul_disj : Disjoint W_b (FreeGroup.of (1 : Fin 2) • W_binv) := by
+  sorry
+
+/-- The free group of rank 2 is NOT amenable.
+
+    Proof via paradoxical word decomposition:
+
+    Let a = FreeGroup.of 0, b = FreeGroup.of 1. Define:
+      W_a   = {words starting with a},    W_ainv = {words starting with a⁻¹}
+      W_b   = {words starting with b},    W_binv = {words starting with b⁻¹}
+
+    Key facts (all proved or sorry'd above):
+    (1) F₂ = W_a ⊔ a·W_ainv  and  F₂ = W_b ⊔ b·W_binv  (two-piece covers)
+    (2) a·W_ainv has the same μ-measure as W_ainv (left-invariance)
+    (3) W_a, W_ainv, W_b, W_binv are pairwise disjoint (different first letters)
+
+    From (1)+(2): μ(W_a) + μ(W_ainv) = 1  and  μ(W_b) + μ(W_binv) = 1
+    From (3)+additivity: μ(W_a ∪ W_ainv ∪ W_b ∪ W_binv) = sum = 2
+    But monotonicity gives: μ(W_a ∪ W_ainv ∪ W_b ∪ W_binv) ≤ μ(univ) = 1
+    Contradiction: 2 ≤ 1. -/
+theorem free_group_not_amenable : ¬IsAmenable (FreeGroup (Fin 2)) := by
+  intro ⟨μ, hμ_total, hμ_add, hμ_inv⟩
+  -- Step 1: μ(W_a) + μ(W_ainv) = 1  (from two-cover + left-invariance)
+  have ha : μ W_a + μ W_ainv = 1 := by
+    have h1 : μ W_a + μ (FreeGroup.of (0 : Fin 2) • W_ainv) = 1 := by
+      calc μ W_a + μ (FreeGroup.of (0 : Fin 2) • W_ainv)
+          = μ (W_a ∪ FreeGroup.of (0 : Fin 2) • W_ainv) :=
+            (hμ_add _ _ W_a_smul_disj).symm
+        _ = μ Set.univ := by rw [← W_a_two_cover]
+        _ = 1 := hμ_total
+    rw [hμ_inv (FreeGroup.of 0) W_ainv] at h1
+    exact h1
+  -- Step 2: μ(W_b) + μ(W_binv) = 1
+  have hb : μ W_b + μ W_binv = 1 := by
+    have h1 : μ W_b + μ (FreeGroup.of (1 : Fin 2) • W_binv) = 1 := by
+      calc μ W_b + μ (FreeGroup.of (1 : Fin 2) • W_binv)
+          = μ (W_b ∪ FreeGroup.of (1 : Fin 2) • W_binv) :=
+            (hμ_add _ _ W_b_smul_disj).symm
+        _ = μ Set.univ := by rw [← W_b_two_cover]
+        _ = 1 := hμ_total
+    rw [hμ_inv (FreeGroup.of 1) W_binv] at h1
+    exact h1
+  -- Step 3: μ(W_a ∪ W_ainv ∪ W_b ∪ W_binv) = μ(W_a) + μ(W_ainv) + μ(W_b) + μ(W_binv)
+  --         (pairwise disjoint → repeated finite additivity)
+  have h_sum_eq : μ (W_a ∪ W_ainv ∪ W_b ∪ W_binv) =
+      μ W_a + μ W_ainv + μ W_b + μ W_binv := by
+    have hab : Disjoint (W_a ∪ W_ainv) (W_b ∪ W_binv) :=
+      Disjoint.union_left
+        (W_a_W_b_disj.union_right W_a_W_binv_disj)
+        (W_ainv_W_b_disj.union_right W_ainv_W_binv_disj)
+    rw [Set.union_assoc (W_a ∪ W_ainv) W_b W_binv,
+        hμ_add _ _ hab,
+        hμ_add _ _ W_a_W_ainv_disj,
+        hμ_add _ _ W_b_W_binv_disj]
+    simp [add_assoc]
+  -- Step 4: μ(W_a ∪ W_ainv ∪ W_b ∪ W_binv) ≤ 1  (monotonicity via complement)
+  have h_le : μ (W_a ∪ W_ainv ∪ W_b ∪ W_binv) ≤ 1 := by
+    have heq : μ (W_a ∪ W_ainv ∪ W_b ∪ W_binv) +
+               μ (Set.univ \ (W_a ∪ W_ainv ∪ W_b ∪ W_binv)) = 1 := by
+      rw [← hμ_add _ _ disjoint_sdiff_right,
+          Set.union_sdiff_of_subset (Set.subset_univ _), hμ_total]
+    calc μ (W_a ∪ W_ainv ∪ W_b ∪ W_binv)
+        ≤ μ (W_a ∪ W_ainv ∪ W_b ∪ W_binv) +
+          μ (Set.univ \ (W_a ∪ W_ainv ∪ W_b ∪ W_binv)) := le_add_right _ _
+      _ = 1 := heq
+  -- Step 5: Contradiction — 2 ≤ 1 in ℝ≥0∞
+  have h_two : (2 : ℝ≥0∞) ≤ 1 :=
+    calc (2 : ℝ≥0∞) = 1 + 1 := by norm_num
+      _ = (μ W_a + μ W_ainv) + (μ W_b + μ W_binv) := by rw [ha, hb]
+      _ = μ W_a + μ W_ainv + μ W_b + μ W_binv := by ring
+      _ = μ (W_a ∪ W_ainv ∪ W_b ∪ W_binv) := h_sum_eq.symm
+      _ ≤ 1 := h_le
+  exact absurd h_two (by norm_num)
 
 end BanachTarski
