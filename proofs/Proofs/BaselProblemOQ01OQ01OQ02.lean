@@ -931,19 +931,22 @@ theorem denominator_control_factorial (n : ℕ) :
 theorem linearForm_three_pos : 0 < linearForm 3 := by
   unfold linearForm
   have hb : (aperyB 3 : ℝ) = 1445 := by exact_mod_cast aperyB_three
-  have ha : (aperyA 3 : ℝ) = 62531 / 36 := by norm_cast; exact aperyA_three
+  have ha : (aperyA 3 : ℝ) = 62531 / 36 := by rw [aperyA_three]; norm_num
   rw [hb, ha]
   -- Suffices: ζ(3) > 62531/52020 (= a₃/b₃)
   suffices h : (62531 : ℝ) / 52020 < zetaValue 3 by linarith
-  -- Lower bound: ζ(3) ≥ S₃₅₀ + 1/(2·350²). Need N ≥ 325 since gap ≈ 3×10⁻⁸ and error ≈ 1/N³.
-  -- Use native_decide over ℚ (fast native OCaml computation) then cast to ℝ.
-  have hlb := zetaValue_three_tail_lb 350 (by norm_num)
+  -- Lower bound: ζ(3) ≥ S₁₀₀₀ + 1/(2·1000²). N=1000 gives bound error ≈ 5×10⁻⁷.
+  have hlb := zetaValue_three_tail_lb 1000 (by norm_num)
   have hbound : (62531 : ℝ) / 52020 <
-      ∑ k ∈ Finset.range 350, (1 : ℝ) / (k : ℝ) ^ 3 + 1 / (2 * (350 : ℝ) ^ 2) := by
+      ∑ k ∈ Finset.range 1000, (1 : ℝ) / (k : ℝ) ^ 3 + 1 / (2 * (1000 : ℝ) ^ 2) := by
     have h : (62531 : ℚ) / 52020 <
-        ∑ k ∈ Finset.range 350, (1 : ℚ) / (k : ℚ) ^ 3 + 1 / (2 * (350 : ℚ) ^ 2) := by
+        ∑ k ∈ Finset.range 1000, (1 : ℚ) / (k : ℚ) ^ 3 + 1 / (2 * (1000 : ℚ) ^ 2) := by
       native_decide
-    exact_mod_cast h
+    have h2 : ((62531 : ℚ) / 52020 : ℝ) <
+        ((∑ k ∈ Finset.range 1000, (1 : ℚ) / (k : ℚ) ^ 3 +
+          1 / (2 * (1000 : ℚ) ^ 2) : ℚ) : ℝ) := by exact_mod_cast h
+    push_cast at h2
+    linarith
   linarith
 
 end AperyZetaThree
