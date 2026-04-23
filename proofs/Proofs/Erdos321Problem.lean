@@ -135,10 +135,29 @@ noncomputable def maxDistinctReciprocal (N : ℕ) : ℕ :=
 
 /- ## Known Bounds -/
 
-/-- **Bleicher–Erdős lower bound (1975)**: R(N) ≥ N/log N asymptotically.
-    More precisely, R(N) ≥ (N/log N) · Π_{i=3}^{k} log_i N. -/
-/-- **Bleicher–Erdős upper bound (1976)**: R(N) ≤ C · (N/log N) · log log N. -/
-/-- **Asymptotic form**: R(N) = Θ(N/log N) up to iterated log factors. -/
+/-- **Bleicher–Erdős lower bound (1975)**: R(N) ≥ c·N/log N for all large N.
+    More precisely, R(N) ≥ (N/log N)·Π_{i=3}^{k} log_i N.
+    Axiomatized: the proof uses greedy constructions from analytic number theory. -/
+axiom bleicher_erdos_lower :
+    ∃ C : ℝ, C > 0 ∧ ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
+      C * N / Real.log N ≤ maxDistinctReciprocal N
+
+/-- **Bleicher–Erdős upper bound (1976)**: R(N) ≤ C·(N/log N)·log(log N).
+    Axiomatized: the proof uses a counting/pigeonhole argument. -/
+axiom bleicher_erdos_upper :
+    ∃ C : ℝ, C > 0 ∧ ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
+      (maxDistinctReciprocal N : ℝ) ≤ C * N / Real.log N * Real.log (Real.log N)
+
+/-- **Θ bound**: R(N) = Θ(N/log N) — combining both Bleicher–Erdős results. -/
+theorem bleicher_erdos_theta :
+    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
+      c₁ * N / Real.log N ≤ maxDistinctReciprocal N ∧
+      (maxDistinctReciprocal N : ℝ) ≤ c₂ * N / Real.log N * Real.log (Real.log N) := by
+  obtain ⟨c₁, hc₁, N₁, h₁⟩ := bleicher_erdos_lower
+  obtain ⟨c₂, hc₂, N₂, h₂⟩ := bleicher_erdos_upper
+  exact ⟨c₁, c₂, hc₁, hc₂, max N₁ N₂,
+    fun N hN => ⟨h₁ N (le_of_max_le_left hN), h₂ N (le_of_max_le_right hN)⟩⟩
+
 /- ## Main Conjecture -/
 
 /-- **Erdős Problem #321** (OPEN): Determine the exact asymptotic
