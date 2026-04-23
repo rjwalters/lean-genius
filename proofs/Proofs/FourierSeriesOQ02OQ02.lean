@@ -190,8 +190,37 @@ theorem holder_half_is_critical_for_pseries :
     ¬ (∀ (C : ℝ≥0) (α : ℝ≥0), (α : ℝ) = 1/2 →
        ∀ f : AddCircle (2 * Real.pi) → ℂ, IsHolderOnCircle C α f →
        Summable (fun n : ℤ => ((C : ℝ) / 2) ^ 2 * (Real.pi) ^ (2 * (α : ℝ)) / |↑n| ^ (2 * (α : ℝ)))) := by
-  -- The p-series ∑ 1/|n|^1 diverges (harmonic series), so α = 1/2 is the critical threshold.
-  -- Full proof requires: harmonic series divergence over ℤ (not in Mathlib in this form)
-  sorry
+  -- Strategy: assume universal statement, use f=0 witness, extract harmonic series contradiction.
+  intro hall
+  -- Zero function is Hölder with constant 1 and exponent 1/2
+  have h0 : IsHolderOnCircle 1 ⟨1/2, by norm_num⟩ (0 : AddCircle (2 * Real.pi) → ℂ) := by
+    intro x y
+    simp only [IsHolderOnCircle, HolderWith, Pi.zero_apply, edist_self, NNReal.coe_one,
+               ENNReal.coe_one, zero_le]
+  have hα_eq : ((⟨1/2, by norm_num⟩ : ℝ≥0) : ℝ) = 1/2 := by norm_num
+  -- Apply the universal statement with C=1, α=1/2, f=0
+  have hsum := hall 1 ⟨1/2, by norm_num⟩ hα_eq 0 h0
+  -- Extract the ℕ positive part: Summable (fun n : ℕ => (1/4) * π / |n|)
+  rw [summable_int_iff_summable_nat_and_neg] at hsum
+  obtain ⟨h_pos, _⟩ := hsum
+  -- Rescale: multiply by 4/π to get harmonic series summability
+  have h_pi_pos : (0 : ℝ) < Real.pi := Real.pi_pos
+  have h_harm : Summable (fun n : ℕ => (1 : ℝ) / (n : ℝ)) := by
+    refine (h_pos.mul_left (4 / Real.pi)).congr fun n => ?_
+    rcases Nat.eq_zero_or_pos n with rfl | hn
+    · simp
+    · have hn_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr hn
+      rw [Int.cast_natCast, abs_of_nonneg hn_pos.le]
+      have h2 : (2 : ℝ) * (1 / 2) = 1 := by norm_num
+      simp only [NNReal.coe_one, NNReal.coe_mk, h2, Real.rpow_one]
+      field_simp [h_pi_pos.ne', hn_pos.ne']
+      ring
+  -- Contradiction: harmonic series diverges (Real.summable_nat_rpow_inv for p=1)
+  have h_not_harm : ¬ Summable (fun n : ℕ => (1 : ℝ) / (n : ℝ)) := by
+    intro hs
+    have : Summable (fun n : ℕ => (n : ℝ)⁻¹ ^ (1 : ℝ)) :=
+      hs.congr (fun n => by simp only [Real.rpow_one, one_div])
+    exact absurd this (Real.summable_nat_rpow_inv.not.mpr (by norm_num))
+  exact h_not_harm h_harm
 
 end FourierSqSummablePSeries
