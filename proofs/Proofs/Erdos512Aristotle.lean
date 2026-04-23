@@ -38,7 +38,12 @@ Uses: Complex.continuous_abs, Continuous.comp, continuous_finset_sum,
       Complex.continuous_exp, Continuous.mul_const, continuous_ofReal
 -/
 theorem expSumNorm_continuous (A : Finset ℤ) : Continuous (expSumNorm A) := by
-  sorry
+  unfold expSumNorm expSum expTwoPiI
+  apply Complex.continuous_abs.comp
+  apply continuous_finset_sum
+  intro n _
+  apply Complex.continuous_exp.comp
+  fun_prop
 
 /-
 TARGET 2 (depends on Target 1)
@@ -54,6 +59,19 @@ Strategy:
 -/
 theorem L1norm_le_card (A : Finset ℤ) :
     ∫ θ in Set.Icc (0 : ℝ) 1, expSumNorm A θ ≤ A.card := by
-  sorry
+  have hint : IntegrableOn (expSumNorm A) (Set.Icc 0 1) :=
+    (expSumNorm_continuous A).continuousOn.integrableOn_compact isCompact_Icc
+  have hcint : IntegrableOn (fun _ : ℝ => (A.card : ℝ)) (Set.Icc 0 1) :=
+    integrableOn_const.mpr (Or.inr (by simp [Real.volume_Icc]))
+  have hbdd : ∀ θ ∈ Set.Icc (0:ℝ) 1, expSumNorm A θ ≤ (A.card : ℝ) :=
+    fun θ _ => expSum_bound A θ
+  have h1 : ∫ θ in Set.Icc 0 1, expSumNorm A θ ≤ ∫ θ in Set.Icc 0 1, (A.card : ℝ) :=
+    setIntegral_mono_on hint hcint measurableSet_Icc hbdd
+  have h2 : ∫ θ in Set.Icc (0:ℝ) 1, (A.card : ℝ) = A.card := by
+    rw [set_integral_const, smul_eq_mul]
+    have hv : (volume (Set.Icc (0:ℝ) 1)).toReal = 1 := by
+      rw [Real.volume_Icc]; simp [ENNReal.toReal_ofReal]
+    linarith [hv]
+  linarith
 
 end Erdos512Aristotle
