@@ -106,14 +106,6 @@
       "startLine": 93,
       "endLine": 142,
       "mathContext": "$1 + \\cos(2\\pi n) = 2$ and $1 + \\cos(\\pi + 2\\pi n) = 0$. By uniqueness of limits, no $L$ satisfies $1 + \\cos(x) \\to L$."
-    },
-    {
-      "id": "failure-statement",
-      "title": "L'Hôpital Failure Theorem",
-      "summary": "Combined statement: f/g → 1 AND f'/g' has no limit. Shows L'Hôpital's rule is one-directional.",
-      "startLine": 163,
-      "endLine": 169,
-      "mathContext": "The conjunction proves both that the original ratio converges and that the derivative ratio does not."
     }
   ],
   "conclusion": {

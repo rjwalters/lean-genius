@@ -68,7 +68,7 @@
       "id": "sorry-tracking",
       "title": "Sorry Tracking via #check",
       "startLine": 22,
-      "endLine": 24,
+      "endLine": 23,
       "summary": "Sorry marker comment and `#check erdos_1206` for Aristotle proof search system tracking. The sorry is tracked in the gallery's sorry count and awaits either manual proof or automated resolution.",
       "mathContext": "`#check erdos_1206` outputs `erdos_1206 : True`, confirming the theorem is well-typed. `#print axioms erdos_1206` would show `axioms used: sorryAx`, indicating the sorry axiom dependency."
     }
