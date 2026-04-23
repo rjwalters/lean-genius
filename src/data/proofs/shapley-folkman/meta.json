@@ -16,7 +16,7 @@
       "intermediate"
     ],
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "convexHull_eq_union",
@@ -61,7 +61,7 @@
       "Caratheodory's theorem (points in convex hull need at most d+1 vertices)",
       "Affine independence and dimension"
     ],
-    "lineCount": 833,
+    "lineCount": 904,
     "mathlib_version": "4.26.0",
     "relatedProblems": []
   },
@@ -187,7 +187,7 @@
       "leanType": "Decomposition S t x -> d.excessIndices.card <= Module.finrank R E"
     }
   ],
-  "sorries": 3,
+  "sorries": 1,
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.Convex.Caratheodory",
@@ -204,11 +204,11 @@
       "Pointwise"
     ],
     "namespace": "ShapleyFolkman",
-    "lineCount": 833,
+    "lineCount": 904,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 1,
-    "sorries": 3,
+    "sorries": 1,
     "path": "Proofs/ShapleyFolkman.lean"
   }
 }
