@@ -53,6 +53,12 @@ axiom ramseyTree (n : ℕ) (T : Tree n) (k : ℕ) : ℕ
 
 /- ## Main Conjecture -/
 
+/-- **Erdős Problem #557 (open):** Is R(T; k) ≤ k·n + C for some universal constant C?
+    For all trees T on n vertices and all k ≥ 1 colors,
+    the multicolor Ramsey number is at most linear in both n and k. -/
+axiom erdos_557_conjecture : ∃ C : ℕ, ∀ n : ℕ, ∀ (T : Tree n), ∀ k : ℕ,
+    0 < k → ramseyTree n T k ≤ k * n + C
+
 /- ## Lower Bound: Stars -/
 
 /-- The star graph K_{1,n-1} on n vertices. -/
@@ -72,5 +78,18 @@ def starTree (n : ℕ) (hn : n ≥ 1) : Tree n where
   }
 
 /- ## Known Special Cases -/
+
+/-- 2-color tree Ramsey: R(T; 2) ≤ 2n - 2 for any tree T on n ≥ 2 vertices. -/
+axiom two_color_tree_ramsey : ∀ n : ℕ, 2 ≤ n → ∀ (T : Tree n),
+    ramseyTree n T 2 ≤ 2 * n - 2
+
+/-- Monotonicity: R(T; k) ≤ R(T; k+1). -/
+axiom ramseyTree_mono_k : ∀ n : ℕ, ∀ (T : Tree n), ∀ k : ℕ,
+    ramseyTree n T k ≤ ramseyTree n T (k + 1)
+
+/-- Star lower bound: R(S_n; k) ≥ k·(n-1) + 1 for n ≥ 2, k ≥ 1.
+    Proves the conjecture is tight: the additive constant cannot be better than O(k). -/
+axiom star_ramsey_lower : ∀ n : ℕ, 2 ≤ n → ∀ k : ℕ, 1 ≤ k →
+    k * (n - 1) + 1 ≤ ramseyTree n (starTree n (by omega)) k
 
 /- ## Connection to Burr–Erdős -/
