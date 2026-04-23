@@ -22,7 +22,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 3,
-    "lineCount": 320,
+    "lineCount": 382,
     "assumptions": "gb_local (local Gauss-Bonnet: angle excess = integrated curvature, for each geodesic triangle), spherical/flat/hyperbolic curvature formulas (K=1/r², K=0, K=-1 respectively), discrete_gb (discrete Gauss-Bonnet for triangulations: total excess = 2π·χ). All are classical theorems of differential geometry requiring Riemannian geometry infrastructure not yet in Mathlib.",
     "mathlib_version": "4.26.0"
   },
@@ -47,42 +47,58 @@
     {
       "id": "geodesic-triangle",
       "title": "Geodesic Triangle Structure",
-      "startLine": 65,
-      "endLine": 100,
-      "summary": "Axiomatized structure encoding angles, area, curvature integral, and the local Gauss-Bonnet formula as a structure field.",
-      "mathContext": "GeodesicTriangle with fields α, β, γ ∈ (0,π), area > 0, integratedCurvature, and gb_local : α+β+γ-π = integratedCurvature."
+      "startLine": 64,
+      "endLine": 118,
+      "summary": "GeodesicTriangle structure axiomatizes local Gauss-Bonnet as gb_local : α+β+γ-π = integratedCurvature. Defines excess and angleSum, with immediate algebraic corollaries.",
+      "mathContext": "GeodesicTriangle: fields α, β, γ ∈ (0,π), area > 0, integratedCurvature ∈ ℝ, gb_local : α+β+γ-π = integratedCurvature; excess := α+β+γ-π."
     },
     {
       "id": "flat-case",
       "title": "Flat Case: Euclid's Theorem",
-      "startLine": 115,
-      "endLine": 140,
-      "summary": "FlatTriangle (K=0, integratedCurvature=0) proves the classical angle sum theorem α+β+γ=π.",
-      "mathContext": "K=0 → excess=0 → α+β+γ=π. Direct from local Gauss-Bonnet with zero curvature."
+      "startLine": 120,
+      "endLine": 149,
+      "summary": "FlatTriangle extends GeodesicTriangle with flat : integratedCurvature = 0. Proves α+β+γ=π (Euclid) as the K=0 special case of local Gauss-Bonnet.",
+      "mathContext": "K=0 → excess=0 → α+β+γ=π. FlatTriangle inherits all GeodesicTriangle fields and adds the flatness constraint."
     },
     {
       "id": "spherical-case",
       "title": "Spherical Case: Girard's Theorem (1629)",
-      "startLine": 155,
-      "endLine": 210,
-      "summary": "SphericalTriangle (K=1/r²) proves Girard's formula: area = r²·(α+β+γ-π) and angle sum > π.",
-      "mathContext": "K = 1/r² → integratedCurvature = area/r² → α+β+γ-π = area/r² > 0 → α+β+γ > π."
+      "startLine": 151,
+      "endLine": 207,
+      "summary": "SphericalTriangle (K=1/r²) proves Girard's formula: area = r²·(α+β+γ-π), angle sum > π, area bounded by r²·(3π-π)=2πr². Unit sphere: area = excess.",
+      "mathContext": "K = 1/r² → integratedCurvature = area/r² → α+β+γ-π = area/r² > 0 → α+β+γ > π; unit sphere: area = α+β+γ-π."
     },
     {
       "id": "hyperbolic-case",
       "title": "Hyperbolic Case: Lambert's Theorem (1761)",
-      "startLine": 220,
-      "endLine": 260,
-      "summary": "HyperbolicTriangle (K=-1) proves Lambert's formula: area = π-α-β-γ and angle sum < π.",
-      "mathContext": "K = -1 → integratedCurvature = -area → α+β+γ-π = -area < 0 → α+β+γ < π. Area bounded by π."
+      "startLine": 209,
+      "endLine": 250,
+      "summary": "HyperbolicTriangle (K=-1) proves Lambert's formula: angular defect = area, angle sum < π, and area < π (maximum possible hyperbolic triangle area).",
+      "mathContext": "K = -1 → integratedCurvature = -area → δ := π-(α+β+γ) = area ∈ (0,π). All hyperbolic triangles have angle sum < π."
     },
     {
       "id": "discrete-gauss-bonnet",
       "title": "Discrete Gauss-Bonnet for Triangulations",
-      "startLine": 265,
-      "endLine": 310,
-      "summary": "RiemannianTriangulation with axiom Σ excess = 2π·χ. Proves sphere (4π), torus (0), genus-g (2π(2-2g)) total curvature.",
-      "mathContext": "For a closed triangulated surface: Σ_i (α_i+β_i+γ_i-π) = 2π·χ. Derives topology from curvature sign."
+      "startLine": 252,
+      "endLine": 297,
+      "summary": "RiemannianTriangulation axiomatizes Σ excess = 2π·χ. Derives sphere total curvature 4π (χ=2), torus 0 (χ=0), genus-g surface 2π(2-2g).",
+      "mathContext": "Σ_i (α_i+β_i+γ_i-π) = 2π·χ(M); sphere: 4π; torus: 0; genus-g: 2π(2-2g). Finset.sum over all triangles."
+    },
+    {
+      "id": "curvature-topology",
+      "title": "Curvature Sign Determines Topology",
+      "startLine": 299,
+      "endLine": 330,
+      "summary": "Proves the Gauss-Bonnet sign constraint: positive total curvature → χ > 0 (sphere), zero → χ = 0 (torus), negative → χ < 0 (higher genus ≥ 2).",
+      "mathContext": "total excess > 0 → χ > 0; = 0 → χ = 0; < 0 → χ < 0. Uses mul_pos_iff, mul_neg_iff with 2π > 0."
+    },
+    {
+      "id": "unification-summary",
+      "title": "The Unification: Three Geometries and Mathlib Anchor",
+      "startLine": 332,
+      "endLine": 382,
+      "summary": "Part VII capstone: excess_classifies_curvature (excess sign ↔ curvature sign), three_geometries_unified (flat/spherical/hyperbolic in one statement), euclidean_case. Closes with a direct Mathlib EuclideanGeometry.angle_add_angle_add_angle_eq_pi example as the concrete anchor.",
+      "mathContext": "three_geometries_unified: (∀ FlatTriangle, sum=π) ∧ (∀ SphericalTriangle, sum>π) ∧ (∀ HyperbolicTriangle, sum<π). Mathlib: angle_add_angle_add_angle_eq_pi for concrete Euclidean points."
     }
   ],
   "conclusion": {
@@ -121,7 +137,7 @@
       "Real"
     ],
     "namespace": "TriangleAngleSumGaussBonnet",
-    "lineCount": 320,
+    "lineCount": 382,
     "axiomCount": 3,
     "sorries": 0,
     "path": "Proofs/TriangleAngleSumOQ02.lean",
