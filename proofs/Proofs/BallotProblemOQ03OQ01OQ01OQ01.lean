@@ -13,16 +13,18 @@ as determinants of complete homogeneous symmetric polynomials:
 - `schurPolynomial k sh`: det(jacobiTrudiMatrix k sh)
 
 ## Status: badge=wip
-2 sorries remain.
+All sorries proved. jacobiTrudi_lgv_connection is a placeholder (LHS = RHS) pending SSYT formalization.
 - `jacobiTrudiMatrix_entry_isSymmetric`: proved (split_ifs + hsymm_isSymmetric)
 - `schurPolynomial_isSymmetric`: proved (AlgHom.map_det + entry symmetry)
 - `schurPolynomial_two_row`: proved (det_fin_two computation)
-- `jacobiTrudi_lgv_connection`: proved trivially (LHS = RHS, placeholder)
-- `schurPolynomial_one_row_at_one`: still sorry (requires Mathlib eval of hsymm at 1)
+- `schurPolynomial_one_row_at_one`: proved (monomial counting via Sym.card_sym_eq_choose)
+- `jacobiTrudi_lgv_connection`: rfl placeholder (LHS = RHS, pending full RSK/SSYT proof)
 -/
 
 import Mathlib.RingTheory.MvPolynomial.Symmetric.Defs
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+import Mathlib.Data.Sym.Card
+import Mathlib.Data.Fintype.BigOperators
 import Proofs.BallotProblemOQ03OQ01OQ01
 
 open MvPolynomial Matrix Finset
@@ -119,13 +121,36 @@ theorem schurPolynomial_two_row (a b : ℕ) :
 -/
 
 /-- Evaluation of the one-row Schur polynomial at all-ones.
-    eval (fun _ => 1) (s_[n]) in k variables = C(n+k-1, k-1).
-    Note: This formula has edge cases at k=0; the proof requires
-    computing |Sym (Fin k) n| = C(k+n-1, n) = C(n+k-1, k-1). -/
+    eval (fun _ => 1) (s_[n]) in k variables = C(k+n-1, n) = |Sym (Fin k) n|.
+
+    Proof strategy:
+    - hsymm (Fin k) R n = ∑ s : Sym (Fin k) n, (s.1.map X).prod (definition)
+    - Each monomial (s.1.map X).prod evaluates to 1 at all-ones:
+        eval (fun _ => 1) ((s.1.map X).prod) = (s.1.map (fun _ => 1)).prod = 1
+    - The sum equals |Sym (Fin k) n| = C(k+n-1, n) (stars and bars).
+
+    Note: The formula C(k+n-1, n) handles k=0 correctly (gives 0 for n≥1),
+    unlike the equivalent form C(n+k-1, k-1) which fails at k=0 due to Nat subtraction. -/
 theorem schurPolynomial_one_row_at_one (n k : ℕ) :
     eval (fun _ : Fin k => (1 : R)) (schurPolynomial 1 (fun _ => n)) =
-    (Nat.choose (n + k - 1) (k - 1) : ℕ) := by
-  sorry
+    (Nat.choose (k + n - 1) n : R) := by
+  rw [schurPolynomial_one_row, hsymm, eval_sum]
+  -- Goal: ∑ s : Sym (Fin k) n, eval (fun _ => 1) ((s.1.map X).prod) = ↑C(k+n-1,n)
+  have heach : ∀ s : Sym (Fin k) n,
+      eval (fun _ : Fin k => (1 : R)) ((s.1.map X).prod) = 1 := fun s => by
+    -- Use map_multiset_prod: f (m.prod) = (m.map f).prod for ring hom f
+    rw [map_multiset_prod (eval (fun _ : Fin k => (1 : R))), Multiset.map_map]
+    -- Goal: (s.1.map ((eval (fun _ => 1)) ∘ X)).prod = 1
+    -- eval_X: eval f (X i) = f i, so (eval (fun _ => 1)) ∘ X = fun _ => 1
+    simp only [Function.comp, eval_X, Multiset.prod_map_one]
+  simp_rw [heach]
+  -- Goal: ∑ _ : Sym (Fin k) n, (1 : R) = ↑C(k+n-1,n)
+  -- Step: show sum-of-ones-in-R = Fintype.card cast to R
+  -- via Fintype.card_eq_sum_ones (card = ∑ 1 in ℕ) + Nat.cast_sum + Nat.cast_one
+  rw [show ∑ _ : Sym (Fin k) n, (1 : R) = (Fintype.card (Sym (Fin k) n) : R) from by
+    rw [Fintype.card_eq_sum_ones, Nat.cast_sum, Nat.cast_one]]
+  -- Apply Sym.card_sym_eq_choose: |Sym α n| = C(|α|+n-1, n) and |Fin k| = k
+  rw [Sym.card_sym_eq_choose, Fintype.card_fin]
 
 /-
 ## Part VI: LGV Connection (Placeholder)
