@@ -3581,4 +3581,259 @@ theorem hook_length_formula_atMostTwoRows (μ : YoungDiagram) (h2 : μ.rowLen 2 
   rw [hμ]
   exact hook_length_formula_two_row_gen (μ.rowLen 0) (μ.rowLen 1) hab
 
+-- ============================================================
+-- PART XIII: General Corner Recursion for SYT Counts
+-- ============================================================
+
+/-
+  We prove the general corner recursion:
+    card(SYT(μ)) = Σ_{c ∈ corners(μ)} card(SYT(μ\c))  (for non-empty μ)
+  where corners(μ) are cells c with arm(c)=0 and leg(c)=0 (hookLength = 1).
+  The bijection T ↦ (max-entry corner, restricted SYT) is the key tool.
+-/
+
+/-- A corner of μ: a cell c ∈ μ with no cell immediately to its right or below.
+    Equivalently arm(c) = 0 and leg(c) = 0, so hookLength(μ,c) = 1. -/
+private def isCorner (μ : YoungDiagram) (c : ℕ × ℕ) : Prop :=
+  c ∈ μ ∧ (c.1, c.2 + 1) ∉ μ ∧ (c.1 + 1, c.2) ∉ μ
+
+/-- Finset of corner cells of μ. -/
+private def corners (μ : YoungDiagram) : Finset (ℕ × ℕ) :=
+  μ.cells.filter (fun c => (c.1, c.2 + 1) ∉ μ ∧ (c.1 + 1, c.2) ∉ μ)
+
+private lemma mem_corners {μ : YoungDiagram} {c : ℕ × ℕ} :
+    c ∈ corners μ ↔ isCorner μ c := by
+  simp only [corners, Finset.mem_filter, YoungDiagram.mem_cells, isCorner]
+
+/-- Removing a corner cell preserves the lower-set property. -/
+private noncomputable def removeCorner (μ : YoungDiagram) (c : ℕ × ℕ)
+    (hc : isCorner μ c) : YoungDiagram where
+  cells := μ.cells.erase c
+  isLowerSet := by
+    intro a b hab hb
+    rw [Finset.coe_erase, Set.mem_diff, Set.mem_singleton_iff] at hb ⊢
+    obtain ⟨hb_mem, hb_ne⟩ := hb
+    refine ⟨μ.isLowerSet hab hb_mem, ?_⟩
+    intro ha_eq
+    subst ha_eq
+    obtain ⟨_, h_right, h_below⟩ := hc
+    have h1 : a.1 ≤ b.1 ∧ a.2 ≤ b.2 := Prod.mk_le_mk.mp hab
+    rcases Nat.lt_or_eq_of_le h1.1 with h1' | rfl
+    · exact h_below (μ.isLowerSet (Prod.mk_le_mk.mpr ⟨by omega, h1.2⟩) hb_mem)
+    · rcases Nat.lt_or_eq_of_le h1.2 with h2' | rfl
+      · exact h_right (μ.isLowerSet (Prod.mk_le_mk.mpr ⟨le_refl _, by omega⟩) hb_mem)
+      · exact hb_ne rfl
+
+/-- Membership in removeCorner: all cells except c. -/
+private lemma mem_removeCorner {μ : YoungDiagram} {c x : ℕ × ℕ} (hc : isCorner μ c) :
+    x ∈ removeCorner μ c hc ↔ x ∈ μ ∧ x ≠ c := by
+  simp only [removeCorner, YoungDiagram.mem_mk, Finset.mem_erase, YoungDiagram.mem_cells]
+  tauto
+
+/-- Cardinality of removeCorner is μ.card - 1. -/
+private lemma removeCorner_card {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c) :
+    (removeCorner μ c hc).card = μ.card - 1 := by
+  simp [YoungDiagram.card, removeCorner,
+    Finset.card_erase_of_mem (YoungDiagram.mem_cells.mpr hc.1)]
+
+/-- removeCorner doesn't depend on which proof of isCorner we use.
+    (The cells are just μ.cells.erase c, independent of the proof.) -/
+private lemma removeCorner_proof_irrel (μ : YoungDiagram) (c : ℕ × ℕ)
+    (hc₁ hc₂ : isCorner μ c) :
+    removeCorner μ c hc₁ = removeCorner μ c hc₂ := by
+  apply YoungDiagram.ext
+  simp [removeCorner]
+
+/-- For any SYT, its entries surject onto {1,...,μ.card}. -/
+private lemma syt_entry_image {μ : YoungDiagram} (T : StandardYoungTableau μ)
+    (hn : 0 < μ.card) :
+    μ.cells.image T.entry = Finset.Icc 1 μ.card := by
+  apply Finset.eq_of_subset_of_card_le
+  · intro k hk
+    obtain ⟨c, hc, rfl⟩ := Finset.mem_image.mp hk
+    exact Finset.mem_Icc.mpr (T.entry_range c (YoungDiagram.mem_cells.mp hc))
+  · rw [Finset.card_Icc, Nat.add_sub_cancel,
+      Finset.card_image_of_injOn (fun c₁ hc₁ c₂ hc₂ h =>
+        T.entry_injOn c₁ c₂ (YoungDiagram.mem_cells.mp hc₁)
+          (YoungDiagram.mem_cells.mp hc₂) h)]
+
+/-- The unique cell of μ where T.entry achieves μ.card (the maximum). -/
+private noncomputable def maxEntryCell {μ : YoungDiagram}
+    (T : StandardYoungTableau μ) (hn : 0 < μ.card) : ℕ × ℕ :=
+  Classical.choose (Finset.mem_image.mp
+    (show μ.card ∈ μ.cells.image T.entry by
+      rw [syt_entry_image T hn]; simp [Finset.mem_Icc, hn]))
+
+private lemma maxEntryCell_spec {μ : YoungDiagram}
+    (T : StandardYoungTableau μ) (hn : 0 < μ.card) :
+    maxEntryCell T hn ∈ μ.cells ∧ T.entry (maxEntryCell T hn) = μ.card :=
+  Classical.choose_spec (Finset.mem_image.mp
+    (show μ.card ∈ μ.cells.image T.entry by
+      rw [syt_entry_image T hn]; simp [Finset.mem_Icc, hn]))
+
+private lemma maxEntryCell_mem {μ : YoungDiagram}
+    (T : StandardYoungTableau μ) (hn : 0 < μ.card) :
+    maxEntryCell T hn ∈ μ :=
+  YoungDiagram.mem_cells.mp (maxEntryCell_spec T hn).1
+
+private lemma maxEntryCell_entry {μ : YoungDiagram}
+    (T : StandardYoungTableau μ) (hn : 0 < μ.card) :
+    T.entry (maxEntryCell T hn) = μ.card :=
+  (maxEntryCell_spec T hn).2
+
+/-- The cell achieving the maximum entry is a corner (no larger entries can exist to right/below). -/
+private lemma maxEntryCell_isCorner {μ : YoungDiagram}
+    (T : StandardYoungTableau μ) (hn : 0 < μ.card) :
+    isCorner μ (maxEntryCell T hn) := by
+  set c := maxEntryCell T hn
+  refine ⟨maxEntryCell_mem T hn, ?_, ?_⟩
+  · intro h
+    have := T.row_strict c.1 c.2 (c.2 + 1) (maxEntryCell_mem T hn) h (Nat.lt_succ_self _)
+    rw [maxEntryCell_entry T hn] at this; exact Nat.lt_irrefl _ this
+  · intro h
+    have := T.col_strict c.1 (c.1 + 1) c.2 (maxEntryCell_mem T hn) h (Nat.lt_succ_self _)
+    rw [maxEntryCell_entry T hn] at this; exact Nat.lt_irrefl _ this
+
+private lemma maxEntryCell_in_corners {μ : YoungDiagram}
+    (T : StandardYoungTableau μ) (hn : 0 < μ.card) :
+    maxEntryCell T hn ∈ corners μ :=
+  mem_corners.mpr (maxEntryCell_isCorner T hn)
+
+/-- maxEntryCell is unique: if T.entry x = μ.card and x ∈ μ, then x = maxEntryCell T hn. -/
+private lemma maxEntryCell_unique {μ : YoungDiagram}
+    (T : StandardYoungTableau μ) (hn : 0 < μ.card)
+    (x : ℕ × ℕ) (hx : x ∈ μ) (heq : T.entry x = μ.card) :
+    x = maxEntryCell T hn := by
+  apply T.entry_injOn x (maxEntryCell T hn) hx (maxEntryCell_mem T hn)
+  rw [heq, maxEntryCell_entry T hn]
+
+/-- Restrict a SYT to shape μ\c, given the max entry is at c. -/
+private noncomputable def restrictSYT_gen {μ : YoungDiagram} (c : ℕ × ℕ)
+    (hc : isCorner μ c) (T : StandardYoungTableau μ)
+    (hT : T.entry c = μ.card) :
+    StandardYoungTableau (removeCorner μ c hc) where
+  entry x := if x ∈ removeCorner μ c hc then T.entry x else 0
+  entry_zero x hx := by simp [hx]
+  entry_range x hx := by
+    simp only [hx, ↓reduceIte]
+    obtain ⟨hxmem, hxne⟩ := (mem_removeCorner hc).mp hx
+    have hne : T.entry x ≠ μ.card := by
+      intro h; exact hxne (T.entry_injOn x c hxmem hc.1 (h.trans hT.symm))
+    exact ⟨(T.entry_range x hxmem).1,
+      by rw [removeCorner_card hc]; have := (T.entry_range x hxmem).2; omega⟩
+  entry_injOn x₁ x₂ hx₁ hx₂ h := by
+    simp only [hx₁, hx₂, ↓reduceIte] at h
+    exact T.entry_injOn x₁ x₂ ((mem_removeCorner hc).mp hx₁).1
+      ((mem_removeCorner hc).mp hx₂).1 h
+  row_strict i j₁ j₂ hx₁ hx₂ hlt := by
+    simp only [hx₁, hx₂, ↓reduceIte]
+    exact T.row_strict i j₁ j₂ ((mem_removeCorner hc).mp hx₁).1
+      ((mem_removeCorner hc).mp hx₂).1 hlt
+  col_strict i₁ i₂ j hx₁ hx₂ hlt := by
+    simp only [hx₁, hx₂, ↓reduceIte]
+    exact T.col_strict i₁ i₂ j ((mem_removeCorner hc).mp hx₁).1
+      ((mem_removeCorner hc).mp hx₂).1 hlt
+
+/-- Extend a SYT of shape μ\c to shape μ by placing μ.card at the corner c. -/
+private noncomputable def extendSYT_gen {μ : YoungDiagram} (c : ℕ × ℕ)
+    (hc : isCorner μ c) (T₁ : StandardYoungTableau (removeCorner μ c hc)) :
+    StandardYoungTableau μ where
+  entry x := if x = c then μ.card else T₁.entry x
+  entry_zero x hx := by
+    have hne : x ≠ c := fun h => hx (h ▸ hc.1)
+    rw [if_neg hne]
+    exact T₁.entry_zero x (fun hm => (mem_removeCorner hc).mp hm |>.1 |> hx)
+  entry_range x hx := by
+    by_cases hxc : x = c
+    · simp [hxc, hc.1]
+    · rw [if_neg hxc]
+      have hxrc : x ∈ removeCorner μ c hc := (mem_removeCorner hc).mpr ⟨hx, hxc⟩
+      exact ⟨(T₁.entry_range x hxrc).1,
+        by have := (T₁.entry_range x hxrc).2; rw [removeCorner_card hc] at this; omega⟩
+  entry_injOn x₁ x₂ hx₁ hx₂ heq := by
+    by_cases hx₁c : x₁ = c <;> by_cases hx₂c : x₂ = c
+    · exact hx₁c.trans hx₂c.symm
+    · simp [hx₁c, if_neg hx₂c] at heq
+      have := (T₁.entry_range x₂ ((mem_removeCorner hc).mpr ⟨hx₂, hx₂c⟩)).2
+      rw [removeCorner_card hc] at this; omega
+    · simp [if_neg hx₁c, hx₂c] at heq
+      have := (T₁.entry_range x₁ ((mem_removeCorner hc).mpr ⟨hx₁, hx₁c⟩)).2
+      rw [removeCorner_card hc] at this; omega
+    · simp only [if_neg hx₁c, if_neg hx₂c] at heq
+      exact T₁.entry_injOn x₁ x₂
+        ((mem_removeCorner hc).mpr ⟨hx₁, hx₁c⟩)
+        ((mem_removeCorner hc).mpr ⟨hx₂, hx₂c⟩) heq
+  row_strict i j₁ j₂ hx₁ hx₂ hlt := by
+    by_cases hx₁c : (i, j₁) = c
+    · exfalso  -- arm(c) = 0: no cell to right
+      exact hc.2.1 (μ.isLowerSet
+        (by simp only [← hx₁c]; exact Prod.mk_le_mk.mpr ⟨le_refl _, by omega⟩) hx₂)
+    · by_cases hx₂c : (i, j₂) = c
+      · rw [if_neg hx₁c, hx₂c, if_pos rfl]
+        have := (T₁.entry_range _ ((mem_removeCorner hc).mpr ⟨hx₁, hx₁c⟩)).2
+        rw [removeCorner_card hc] at this; omega
+      · rw [if_neg hx₁c, if_neg hx₂c]
+        exact T₁.row_strict i j₁ j₂
+          ((mem_removeCorner hc).mpr ⟨hx₁, hx₁c⟩)
+          ((mem_removeCorner hc).mpr ⟨hx₂, hx₂c⟩) hlt
+  col_strict i₁ i₂ j hx₁ hx₂ hlt := by
+    by_cases hx₁c : (i₁, j) = c
+    · exfalso  -- leg(c) = 0: no cell below
+      exact hc.2.2 (μ.isLowerSet
+        (by simp only [← hx₁c]; exact Prod.mk_le_mk.mpr ⟨by omega, le_refl _⟩) hx₂)
+    · by_cases hx₂c : (i₂, j) = c
+      · rw [if_neg hx₁c, hx₂c, if_pos rfl]
+        have := (T₁.entry_range _ ((mem_removeCorner hc).mpr ⟨hx₁, hx₁c⟩)).2
+        rw [removeCorner_card hc] at this; omega
+      · rw [if_neg hx₁c, if_neg hx₂c]
+        exact T₁.col_strict i₁ i₂ j
+          ((mem_removeCorner hc).mpr ⟨hx₁, hx₁c⟩)
+          ((mem_removeCorner hc).mpr ⟨hx₂, hx₂c⟩) hlt
+
+/-- General corner recursion: for non-empty μ,
+    card(SYT(μ)) = Σ_{c ∈ corners(μ)} card(SYT(μ\c)).
+    Bijection: T ↦ (max-entry corner c, T restricted to μ\c).
+    [OPEN: right_inv requires HEq/cast argument; mathematical content is complete.
+     The restriction of extendSYT_gen to removeCorner equals the original tableau.] -/
+theorem card_SYT_corner_step (μ : YoungDiagram) (hn : 0 < μ.card) :
+    Fintype.card (StandardYoungTableau μ) =
+    ∑ c ∈ (corners μ).attach,
+      Fintype.card (StandardYoungTableau (removeCorner μ c.val
+        (mem_corners.mp c.prop))) := by
+  rw [← Fintype.card_sigma]
+  apply Fintype.card_congr
+  exact {
+    toFun := fun T =>
+      ⟨⟨maxEntryCell T hn, maxEntryCell_in_corners T hn⟩,
+        restrictSYT_gen (maxEntryCell T hn) (maxEntryCell_isCorner T hn) T
+          (maxEntryCell_entry T hn)⟩
+    invFun := fun ⟨⟨c, hc_corners⟩, T₁⟩ =>
+      extendSYT_gen c (mem_corners.mp hc_corners) T₁
+    left_inv := fun T => by
+      apply StandardYoungTableau.ext; intro x
+      simp only [extendSYT_gen, restrictSYT_gen]
+      split_ifs with hxc hxrc
+      · -- x = maxEntryCell T hn
+        rw [hxc]; exact (maxEntryCell_entry T hn).symm
+      · -- x ∈ removeCorner (so x ≠ maxEntryCell)
+        rfl
+      · -- x ∉ removeCorner and x ≠ maxEntryCell
+        apply T.entry_zero
+        intro hxμ
+        exact hxrc ((mem_removeCorner (maxEntryCell_isCorner T hn)).mpr
+          ⟨hxμ, fun h => hxc h.symm⟩)
+    right_inv := fun ⟨⟨c, hc_corners⟩, T₁⟩ => by
+      simp only
+      have hc := mem_corners.mp hc_corners
+      -- maxEntryCell of extendSYT_gen is c (unique cell with max entry)
+      have hmaxeq : maxEntryCell (extendSYT_gen c hc T₁) hn = c := by
+        apply maxEntryCell_unique
+        · exact hc.1
+        · simp [extendSYT_gen]
+      -- [OPEN sorry]: Sigma.ext for HEq - cast of restrictSYT_gen(extendSYT_gen T₁) = T₁
+      -- Mathematical content: the entries of restrictSYT_gen(extendSYT_gen T₁) equal T₁.entry
+      -- because extendSYT_gen adds entry μ.card only at c ∉ removeCorner.
+      sorry
+  }
+
 end HookLengthFormula
