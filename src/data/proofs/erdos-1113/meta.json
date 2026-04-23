@@ -59,19 +59,6 @@
       "erdos_1113_summary combining Izotov, perfect power, and FFK compatibility (verified)",
       "sierpinski_infinitely_many: Sierpinski's theorem that infinitely many covered numbers exist"
     ],
-    "leanFile": {
-      "lineCount": 172,
-      "structureCount": 0,
-      "axiomCount": 1,
-      "theoremCount": 5,
-      "defCount": 14,
-      "imports": [
-        "Mathlib.Data.Nat.Basic",
-        "Mathlib.Data.Nat.Prime.Basic",
-        "Mathlib.Data.Finset.Basic",
-        "Mathlib.Data.Nat.Parity"
-      ]
-    },
     "axiomCount": 1,
     "lineCount": 172,
     "assumptions": "1 axiom: `izotov_is_sierpinski` \u2014 Izotov (1995) proved that m = 734110615000775^4 is a Sierpinski number. The 8 axioms present in an earlier file version (covering_set_implies_sierpinski, selfridge_78557, covering_78557, and 5 others) have since been eliminated from the Lean source."
