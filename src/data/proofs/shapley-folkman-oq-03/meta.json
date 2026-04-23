@@ -5,7 +5,7 @@
   "meta": {
     "author": "researcher-9",
     "date": "2026-04-23",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/ShapleyFolkmanOQ03.lean",
     "tags": [
       "economics",
@@ -14,7 +14,7 @@
       "game-theory",
       "epsilon-equilibrium"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "axioms": 3,
     "dateAdded": "2026-04-23",
@@ -31,8 +31,8 @@
     "historicalContext": "Ross Starr (1969) applied the Shapley-Folkman lemma — proved by Lloyd Shapley and John Folkman in unpublished correspondence — to prove that large economies are approximately convex. The economic significance: even if each agent's feasible set is non-convex (e.g., due to indivisibilities), the aggregate market is 'nearly convex' in a quantitative sense. The approximation bound d·δ depends only on the dimension d of the commodity space, not the number of agents n. As n → ∞, the per-agent error d·δ/n → 0, validating the use of convex analysis for large market equilibria. Starr's theorem was a landmark in general equilibrium theory and provided mathematical foundations for ε-equilibrium results.",
     "problemStatement": "Given a finite-dimensional normed space E and sets {Sᵢ}ᵢ with pairwise distances bounded by δ, prove that any x ∈ conv(ΣSᵢ) has an approximant x' ∈ ΣSᵢ with ‖x - x'‖ ≤ dim(E)·δ. As a corollary, large markets are approximately convex: the per-agent error vanishes as n grows.",
     "proofStrategy": "Apply sum_close_to_convexHull (from ShapleyFolkman.lean) to decompose x as Σf(i) with f(i) ∈ conv(S(i)) and at most dim(E) 'excess' indices where f(i) ∉ S(i). For each excess index j, replace f(j) by any g(j) ∈ S(j). The sum x' = Σg(i) lies in ΣS(i). The distance bound uses convexHull_dist_le_diam (proved in this file) for each excess index. A Finset.sum_subset argument shows non-excess terms contribute zero to the difference.",
-    "assumptions": "3 axioms inherited from ShapleyFolkman.lean: (1) sum_close_to_convexHull (Shapley-Folkman decomposition), (2-3) two sorry lemmas in the parent file for sum rearrangement. This file itself has 0 direct axioms or sorries.",
-    "axiomCount": 3,
+    "assumptions": "0 axioms. 0 direct sorries. However, theorems depend on ShapleyFolkman.lean which has 4 sorry proofs pending completion (reduce_excess_by_one has 2 sorry sub-cases). Transitively incomplete until parent sorries are closed.",
+    "axiomCount": 0,
     "lineCount": 203,
     "theoremCount": 5,
     "definitionCount": 0
@@ -128,7 +128,7 @@
     ],
     "namespace": "ShapleyFolkmanOQ03",
     "lineCount": 203,
-    "axiomCount": 3,
+    "axiomCount": 0,
     "sorries": 0,
     "path": "Proofs/ShapleyFolkmanOQ03.lean"
   },
