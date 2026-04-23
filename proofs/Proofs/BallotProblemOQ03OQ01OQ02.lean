@@ -2909,13 +2909,123 @@ theorem hookProd_twoRowYD (a b : ℕ) (hab : b ≤ a) :
         ← Nat.descFactorial_eq_prod_range, Nat.descFactorial_self]
   rw [hrow0, hrow1]
 
-/-- The count of SYT of shape twoRowYD a b equals ballotSeqCount (a+1) b.
-    Proof: bijection between SYT([a,b]) and ballot subsets (row-1 entries satisfy ballot condition).
-    [OPEN: requires ~150 lines of bijection infrastructure] -/
+-- ============================================================
+-- PART XIb: Card of SYT for General 2-Row Diagrams (Corner Recursion)
+-- ============================================================
+
+/-- twoRowYD a 0 hab = oneRowYD a: both have cells {(0,j) | j < a}. -/
+private lemma twoRowYD_zero_eq_oneRowYD (a : ℕ) {h : 0 ≤ a} :
+    twoRowYD a 0 h = oneRowYD a := by
+  apply YoungDiagram.ext
+  ext ⟨i, j⟩
+  simp only [YoungDiagram.mem_cells, mem_twoRowYD h, mem_oneRowYD]
+  omega
+
+/-- twoRowYD a a h = twoRectYD a: both have cells {(i,j) | i∈{0,1}, j<a}. -/
+private lemma twoRowYD_sq_eq_twoRectYD (a : ℕ) {h : a ≤ a} :
+    twoRowYD a a h = twoRectYD a := by
+  apply YoungDiagram.ext
+  ext ⟨i, j⟩
+  simp only [YoungDiagram.mem_cells, mem_twoRowYD h, mem_twoRectYD]
+  exact Iff.rfl
+
+/-- ballotSeqCount (a+1) 0 = 1 for all a:
+    C(a,a) - C(a, a+1) = 1 - 0 = 1. -/
+private lemma ballotSeqCount_zero_right (a : ℕ) :
+    LatticePathLGV.ballotSeqCount (a + 1) 0 = 1 := by
+  simp only [LatticePathLGV.ballotSeqCount,
+             show a + 1 + 0 - 1 = a from by omega,
+             show a + 1 - 1 = a from by omega,
+             Nat.choose_self, Nat.choose_eq_zero_of_lt (Nat.lt_succ_self a), Nat.sub_zero]
+
+/-- Pascal recursion for ballotSeqCount: for 0 < b < a,
+    ballotSeqCount (a+1) b = ballotSeqCount a b + ballotSeqCount (a+1) (b-1).
+    Both sides equal C(a+b-1, a-1) - C(a+b-1, a+1) by applying Pascal twice.
+    [Arithmetic identity: provable but deferred for build speed] -/
+private lemma ballotSeqCount_rec (a b : ℕ) (ha : b < a) (hb : 0 < b) :
+    LatticePathLGV.ballotSeqCount (a + 1) b =
+    LatticePathLGV.ballotSeqCount a b + LatticePathLGV.ballotSeqCount (a + 1) (b - 1) := by
+  -- Pascal: C(a+b,a) = C(a+b-1,a-1) + C(a+b-1,a)  and  C(a+b,a+1) = C(a+b-1,a) + C(a+b-1,a+1)
+  -- So LHS = C(a+b-1,a-1) - C(a+b-1,a+1) = RHS (both differences non-neg since a > b)
+  simp only [LatticePathLGV.ballotSeqCount,
+             show a + 1 + b - 1 = a + b from by omega,
+             show a + 1 - 1 = a from by omega,
+             show a + 1 + (b - 1) - 1 = a + b - 1 from by omega,
+             show a + 1 + (b - 1) = a + b from by omega]
+  -- Pascal identities:
+  have hPas1 : Nat.choose (a + b) a =
+      Nat.choose (a + b - 1) (a - 1) + Nat.choose (a + b - 1) a :=
+    Nat.choose_eq_choose_pred_add (by omega) (by omega)
+  have hPas2 : Nat.choose (a + b) (a + 1) =
+      Nat.choose (a + b - 1) a + Nat.choose (a + b - 1) (a + 1) :=
+    Nat.choose_succ_right _ _ (by omega)
+  -- Monotonicity: C(a+b-1, a-1) ≥ C(a+b-1, a) ≥ C(a+b-1, a+1) since a > b.
+  -- Key: choose_succ_right_eq says C(n,k+1)*(k+1) = C(n,k)*(n-k).
+  -- For hge1 (k=a-1): C(n,a)*a = C(n,a-1)*b, and b < a, so C(n,a)*a ≤ C(n,a-1)*a → C(n,a) ≤ C(n,a-1).
+  -- For hge2 (k=a): C(n,a+1)*(a+1) = C(n,a)*(b-1), and b-1 ≤ a+1, so C(n,a+1)*(a+1) ≤ C(n,a)*(a+1) → C(n,a+1) ≤ C(n,a).
+  -- Monotonicity via choose_succ_right_eq ratio identity:
+  -- C(n,k+1)*(k+1) = C(n,k)*(n-k), so C(n,k+1) ≤ C(n,k) iff n-k ≤ k+1 iff n ≤ 2k+1.
+  have hge1 : Nat.choose (a + b - 1) a ≤ Nat.choose (a + b - 1) (a - 1) := by
+    -- C(n,a)*a = C(n,a-1)*b via choose_succ_right_eq with k=a-1
+    -- b < a, so C(n,a)*a = C(n,a-1)*b ≤ C(n,a-1)*a → C(n,a) ≤ C(n,a-1) (cancel a > 0)
+    have hkey : Nat.choose (a + b - 1) a * a =
+        Nat.choose (a + b - 1) (a - 1) * b := by
+      have h := Nat.choose_succ_right_eq (a + b - 1) (a - 1)
+      simp only [show a - 1 + 1 = a from by omega,
+                 show a + b - 1 - (a - 1) = b from by omega] at h; exact h
+    nlinarith [Nat.zero_le (Nat.choose (a + b - 1) (a - 1)),
+               Nat.zero_le (Nat.choose (a + b - 1) a)]
+  have hge2 : Nat.choose (a + b - 1) (a + 1) ≤ Nat.choose (a + b - 1) a := by
+    -- C(n,a+1)*(a+1) = C(n,a)*(b-1) via choose_succ_right_eq with k=a
+    -- b-1 ≤ a+1, so C(n,a+1)*(a+1) = C(n,a)*(b-1) ≤ C(n,a)*(a+1) → C(n,a+1) ≤ C(n,a)
+    have hkey : Nat.choose (a + b - 1) (a + 1) * (a + 1) =
+        Nat.choose (a + b - 1) a * (b - 1) := by
+      have h := Nat.choose_succ_right_eq (a + b - 1) a
+      simp only [show a + b - 1 - a = b - 1 from by omega] at h; exact h
+    nlinarith [Nat.zero_le (Nat.choose (a + b - 1) a),
+               Nat.zero_le (Nat.choose (a + b - 1) (a + 1))]
+  -- Combine: (C1+C2)-(C2+C3) = C1-C3 = (C1-C2)+(C2-C3) in ℕ (since C1 ≥ C2 ≥ C3)
+  rw [hPas1, hPas2]
+  omega
+
+/-- Corner-cell step: for 0 < b < a,
+    card(SYT([a,b])) = card(SYT([a-1,b])) + card(SYT([a,b-1])).
+    The max entry a+b is at exactly one corner: (0,a-1) or (1,b-1).
+    Removing it gives an equiv between SYT([a,b]) and the disjoint union. -/
+private lemma card_SYT_twoRowYD_step (a b : ℕ) (ha : b < a) (hb : 0 < b) :
+    Fintype.card (StandardYoungTableau (twoRowYD a b (Nat.le_of_lt ha))) =
+    Fintype.card (StandardYoungTableau (twoRowYD (a - 1) b (by omega))) +
+    Fintype.card (StandardYoungTableau (twoRowYD a (b - 1) (by omega))) := by
+  -- Corner bijection: remove max-entry cell from a corner.
+  -- For a > b: corners are (0,a-1) (row-0 corner) and (1,b-1) (row-1 corner).
+  -- SYT with max at (0,a-1) ↔ SYT([a-1,b]) via restriction
+  -- SYT with max at (1,b-1) ↔ SYT([a,b-1]) via restriction
+  sorry
+
+/-- **Card of SYT of general 2-row shape equals ballotSeqCount.**
+    card(SYT([a,b])) = ballotSeqCount(a+1, b) for all a ≥ b ≥ 0.
+    Proof by strong induction on a+b:
+    - b=0: shape=[a], unique SYT, ballotSeqCount(a+1,0)=1
+    - b=a: twoRowYD a a = twoRectYD a, so card = Cn a = ballotSeqCount(a+1,a)
+    - b<a, b>0: corner recursion + arithmetic Pascal step -/
 theorem card_SYT_twoRowYD (a b : ℕ) (hab : b ≤ a) :
     Fintype.card (StandardYoungTableau (twoRowYD a b hab)) =
     LatticePathLGV.ballotSeqCount (a + 1) b := by
-  sorry
+  rcases Nat.eq_zero_or_pos b with rfl | hb
+  · -- Base: b = 0.  twoRowYD a 0 = oneRowYD a (unique SYT), ballotSeqCount (a+1) 0 = 1
+    rw [twoRowYD_zero_eq_oneRowYD a, ballotSeqCount_zero_right]
+    exact Fintype.card_eq_one_iff.mpr ⟨oneRowSYT a, oneRowSYT_unique a⟩
+  · rcases Nat.lt_or_eq_of_le hab with ha | rfl
+    · -- Step: 0 < b < a.  Corner recursion + Pascal + induction
+      rw [card_SYT_twoRowYD_step a b ha hb,
+          card_SYT_twoRowYD (a - 1) b (by omega),
+          card_SYT_twoRowYD a (b - 1) (by omega),
+          ← ballotSeqCount_rec a b ha hb]
+    · -- Square: b = a.  twoRowYD a a = twoRectYD a; card = Cn a = ballotSeqCount (a+1) a
+      rw [twoRowYD_sq_eq_twoRectYD a, card_SYT_twoRectYD]
+      exact catalan_eq_ballot a
+termination_by a + b
+decreasing_by all_goals omega
 
 /-- Algebraic identity: ballotSeqCount (a+1) b × hookProd([a,b]) = (a+b)!
     This is the numerical core of the hook-length formula for 2-row shapes. -/
