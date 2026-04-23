@@ -92,36 +92,44 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Block comment (lines 1–33) documenting the problem and proof strategy. Line 34: import of parent FourierSeriesOQ02.lean. Lines 35–41: opens, set_option maxHeartbeats 800000 (algebraic cost of Real.rpow manipulations), and namespace FourierSqSummablePSeries.",
+      "mathContext": "Single import `Proofs.FourierSeriesOQ02` brings in `fourierCoeff_holder_decay` (the quantitative Hölder decay bound) and `IsHolderOnCircle`. The `set_option maxHeartbeats 800000` signals that `Real.rpow` arithmetic is expensive — the `rpow_mul_natCast` bridge in particular requires extended elaboration."
+    },
+    {
       "id": "part-i-pseries",
       "title": "Part I: p-Series Summability over ℤ",
-      "startLine": 45,
-      "endLine": 70,
-      "summary": "Two theorems: summable_const_div_nat_rpow (p-series over ℕ via Real.summable_nat_rpow_inv) and summable_const_div_int_rpow (p-series over ℤ by splitting into positive/negative halves).",
-      "mathContext": "The p-series ∑ 1/n^β converges for β > 1. Extension to ℤ splits into ∑_{n:ℕ} K/n^β (positive half) and ∑_{n:ℕ} K/|-(n:ℤ)|^β (negative half), both equal to the same ℕ series."
+      "startLine": 53,
+      "endLine": 78,
+      "summary": "Two theorems: summable_const_div_nat_rpow (p-series over ℕ via Real.summable_nat_rpow_inv) and summable_const_div_int_rpow (p-series over ℤ by splitting into positive/negative halves via summable_int_iff_summable_nat_and_neg).",
+      "mathContext": "The p-series $\\sum_{n:\\mathbb{N}} K/n^\\beta < \\infty$ for $\\beta > 1$ is `Real.summable_nat_rpow_inv`. Extension to $\\mathbb{Z}$: `summable_int_iff_summable_nat_and_neg` reduces to two ℕ p-series (positive and negative halves), both convergent for $\\beta > 1$."
     },
     {
       "id": "part-ii-decay-bound",
       "title": "Part II: Squared Decay Bound",
-      "startLine": 71,
-      "endLine": 114,
-      "summary": "Helper mul_rpow_sq: (a·b^α)² = a²·b^{2α}. Main: fourierCoeff_sq_le_pseries_term: ‖ĉ_n‖² ≤ K/|n|^{2α} for n ≠ 0, derived by squaring the Hölder decay bound from FourierSeriesOQ02.",
-      "mathContext": "The key algebraic manipulation: (T/(2|n|))^α → split via div_rpow → (T/2)^α/|n|^α → square → K/|n|^{2α}. Uses pow_le_pow_left₀ to square the norm inequality and Real.div_rpow to factor out |n|^{2α}."
+      "startLine": 79,
+      "endLine": 131,
+      "summary": "Helper mul_rpow_sq (line 79): (a·b^α)² = a²·b^{2α}. Main theorem fourierCoeff_sq_le_pseries_term (line 87): ‖ĉ_n‖² ≤ K/|n|^{2α} for n ≠ 0, derived by squaring the Hölder decay bound from FourierSeriesOQ02.",
+      "mathContext": "The key algebraic chain: $(T/(2|n|))^\\alpha \\xrightarrow{\\text{div\\_rpow}} (T/2)^\\alpha/|n|^\\alpha \\xrightarrow{\\text{square}} K/|n|^{2\\alpha}$ where $K = (C/2)^2(T/2)^{2\\alpha}$. Uses `pow_le_pow_left₀` to square the norm inequality and `Real.div_rpow` to factor $|n|^{2\\alpha}$ out of the power."
     },
     {
       "id": "part-iii-main",
       "title": "Part III: Main Theorem — Square-Summability via p-Series",
-      "startLine": 119,
-      "endLine": 158,
-      "summary": "fourierCoeff_sq_summable_of_holder_pseries: main theorem proving ∑ ‖ĉ_n‖² < ∞ by comparison with the p-series ∑ K/|n|^{2α}. Uses Summable.of_norm_bounded_eventually with the cofinite filter for the n=0 exception.",
-      "mathContext": "The comparison argument: h_dominated gives summability of the p-series (2α > 1 from α > 1/2). The comparison test Summable.of_norm_bounded_eventually allows finitely many exceptions — here exactly {0}."
+      "startLine": 132,
+      "endLine": 164,
+      "summary": "fourierCoeff_sq_summable_of_holder_pseries: main theorem proving ∑ ‖ĉ_n‖² < ∞ by comparison with the p-series ∑ K/|n|^{2α}. Uses Summable.of_norm_bounded_eventually with the cofinite filter for the n=0 exception (where |n|=0 makes K/|n|^{2α} undefined).",
+      "mathContext": "Comparison: $\\|\\hat{c}_n\\|^2 \\leq K/|n|^{2\\alpha}$ for $n \\neq 0$, and $\\sum_{n:\\mathbb{Z}} K/|n|^{2\\alpha} < \\infty$ since $2\\alpha > 1$. `Summable.of_norm_bounded_eventually` handles the $n=0$ exception via `Set.finite_singleton (0:ℤ)` in the cofinite filter."
     },
     {
       "id": "part-iv-corollaries",
-      "title": "Part IV: Corollaries",
-      "startLine": 159,
+      "title": "Part IV: Corollaries and Sharpness",
+      "startLine": 165,
       "endLine": 197,
-      "summary": "Three corollaries: sq_summable_matches_parseval (aliases the main theorem), fourier_coeff_l2 (existential form: ∃ S, HasSum ...), holder_half_is_critical_for_pseries (sharpness: α = 1/2 fails, 1 sorry).",
-      "mathContext": "The sharpness statement formalizes that the p-series argument fails at α = 1/2 because the harmonic series ∑ 1/|n| diverges. The sorry requires harmonic series divergence over ℤ not immediately available in this form from Mathlib."
+      "summary": "Three theorems: sq_summable_matches_parseval (aliases the main theorem, matching the parent's conclusion), fourier_coeff_l2 (existential HasSum form), and holder_half_is_critical_for_pseries (sharpness: α = 1/2 fails the p-series test — harmonic series diverges, 1 sorry).",
+      "mathContext": "Sharpness at $\\alpha = 1/2$: squared bound $= K/|n|^1$ = harmonic series, which diverges over $\\mathbb{Z}$. The sorry requires `¬Summable (fun n:ℤ => K/|↑n|)` — a consequence of `Real.summable_nat_rpow_inv` in the divergence direction, not yet transferred to $\\mathbb{Z}$ in this form."
     }
   ],
   "conclusion": {
