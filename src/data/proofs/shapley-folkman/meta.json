@@ -16,7 +16,7 @@
       "intermediate"
     ],
     "badge": "wip",
-    "sorries": 4,
+    "sorries": 3,
     "mathlibDependencies": [
       {
         "theorem": "convexHull_eq_union",
@@ -187,7 +187,7 @@
       "leanType": "Decomposition S t x -> d.excessIndices.card <= Module.finrank R E"
     }
   ],
-  "sorries": 4,
+  "sorries": 3,
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.Convex.Caratheodory",
@@ -208,7 +208,7 @@
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 1,
-    "sorries": 4,
+    "sorries": 3,
     "path": "Proofs/ShapleyFolkman.lean"
   }
 }
