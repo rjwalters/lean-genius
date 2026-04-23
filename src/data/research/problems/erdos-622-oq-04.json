@@ -29,7 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All sorries eliminated. Fixed flipped hypothesis in absorbing_pair_exists (|V|+2 <= 2d, not 2d <= |V|+2). Proved absorbing_pair_exists via common neighborhood bound. Proved erdos_faudree_absorbing_pairs_ge via injection argument (u -> (u, choose(N(u) ∩ N(w)))). Fixed bug in isAbsorbingTriple_symm. Changed absorbingPairs to Prop-based filter for cleaner proofs. File: 0 sorries, 0 axioms, 9 theorems, 4 definitions.",
+<<<<<<< Updated upstream
+    "progressSummary": "COMPLETED: All sorries eliminated. Fixed flipped hypothesis in absorbing_pair_exists (|V|+2 <= 2d, not 2d <= |V|+2). Proved absorbing_pair_exists via common neighborhood bound. Proved erdos_faudree_absorbing_pairs_ge via injection argument (u -> (u, choose(N(u) \u2229 N(w)))). Fixed bug in isAbsorbingTriple_symm. Changed absorbingPairs to Prop-based filter for cleaner proofs. File: 0 sorries, 0 axioms, 9 theorems, 4 definitions.",
+=======
+    "progressSummary": "PROGRESS: Created Erdos622OQ04.lean with absorbing method infrastructure. 4 proved theorems (regular edge count, Erdos-Faudree edge count, common neighborhood bound, common ≥ 2 for EF graphs), 2 sorries (absorbing pair density). Absorbing lemma stated as definition.",
+>>>>>>> Stashed changes
     "builtItems": [
       "regular_edge_count: 2|E| = |V|·d for d-regular graphs (proved)",
       "erdos_faudree_edge_count: |E| = n(n+1) (proved)",
@@ -50,7 +54,7 @@
       "Absorbing method requires: (1) absorbing pair density, (2) probabilistic path sampling, (3) concentration inequality",
       "The absorbing pair density bound needs graph theory on induced subgraph edge count",
       "The hypothesis in absorbing_pair_exists was flipped: need |V| <= 2d-2 (not |V| >= 2d-2)",
-      "Injection argument for density: u -> (u, choose(N(u) ∩ N(w))) has distinct first coords, so is injective",
+      "Injection argument for density: u -> (u, choose(N(u) \u2229 N(w))) has distinct first coords, so is injective",
       "Prop-based Finset.filter is much cleaner than Bool-based decide && for membership proofs"
     ],
     "mathlibGaps": [
@@ -71,8 +75,7 @@
   "relatedProofs": [
     "erdos-6",
     "erdos-62",
-    "erdos-622",
-    "erdos-622-oq-04"
+    "erdos-622"
   ],
   "references": {
     "papers": [],
@@ -87,11 +90,26 @@
     {
       "path": "Proofs/Erdos622OQ04.lean",
       "filename": "Erdos622OQ04.lean",
-      "lineCount": 216,
+      "lineCount": 152,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 3,
+      "sorryCount": 3,
+<<<<<<< Updated upstream
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos622OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos622OQ04.lean",
+      "filename": "Erdos622OQ04.lean",
+      "lineCount": 180,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
       "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos622OQ04.lean"
+=======
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos622OQ04.lean"
     },
@@ -105,6 +123,7 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos622Problem.lean"
+>>>>>>> Stashed changes
     }
   ]
 }

@@ -29,18 +29,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Eliminated both axioms via native_decide. File now fully verified: 0 axioms, 0 sorries, 33 theorems.",
-    "builtItems": [
-      "Eliminated axiom birthday_threshold_lower via native_decide",
-      "Eliminated axiom birthday_threshold_upper via native_decide",
-      "Updated meta.json: axiomCount 2→0, status axiomatized→verified, badge axiom→original"
-    ],
-    "insights": [
-      "Both axioms are concrete numerical bounds on birthdayCount3 - provable by native_decide",
-      "native_decide compiles to GMP (arbitrary precision), handles ~200-digit number arithmetic easily",
-      "The slot recurrence R has O(n²) evaluations, feasible for n=88 in compiled mode",
-      "Previous concern about exceeding Lean native arithmetic was about decide (kernel), not native_decide (compiled)"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -150,9 +141,9 @@
     {
       "path": "Proofs/BirthdayProblemOQ03OQ01OQ01.lean",
       "filename": "BirthdayProblemOQ03OQ01OQ01.lean",
-      "lineCount": 318,
-      "theoremCount": 41,
-      "axiomCount": 0,
+      "lineCount": 244,
+      "theoremCount": 30,
+      "axiomCount": 2,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
@@ -161,13 +152,24 @@
     {
       "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
       "filename": "BirthdayProblemOQ03OQ01OQ02.lean",
-      "lineCount": 464,
-      "theoremCount": 19,
+      "lineCount": 421,
+      "theoremCount": 18,
       "axiomCount": 1,
       "defCount": 3,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01OQ02Aristotle.lean",
+      "filename": "BirthdayProblemOQ03OQ01OQ02Aristotle.lean",
+      "lineCount": 27,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ02Aristotle.lean"
     },
     {
       "path": "Proofs/BirthdayProblemOQ03OQ03.lean",

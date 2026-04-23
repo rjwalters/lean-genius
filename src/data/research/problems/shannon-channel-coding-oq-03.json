@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Fano inequality fully proved. 664 lines, 0 sorries, 0 axioms. Proves H(X|Y) ≤ h(P_e) + P_e·log(|X|-1) via Gibbs inequality, per-element Fano, MAP bound, and monotonicity.",
+    "progressSummary": "PROGRESS: 3 new sorries proved (gibbs, slice_sq, map_nn). 4 remain, Aristotle job 47c3a15c submitted.",
     "builtItems": [
       "Proofs/ShannonChannelCodingOQ03.lean: gibbs_inequality (proved - KL divergence >= 0 via log x <= x-1)",
       "Proofs/ShannonChannelCodingOQ03.lean: slice_sq_le_max (proved - per-slice max bound, P=0 and P>0 cases)",
@@ -38,8 +38,7 @@
     "insights": [
       "gibbs_inequality proved in Lean: sum kl_term_bound per element, 0=sum(p-q)<=sum p*log(p/q)",
       "slice_sq_le_max: P>0 case uses pXY^2<=max*pXY per term then sum; avoids normalization",
-      "mapErrorProb_nonneg: max(pXY(.,y)) <= sum_x pXY(x,y) via Finset.sup_le + single_le_sum, summed over y",
-      "File already fully proved by prior researcher sessions. All 8 proof steps complete: sum_sq_le_max, slice_sq_le_max, formula_pe_ge_map_pe, gibbs_inequality, fano_per_element, fano_map_bound, fano_func_mono, fano_theorem."
+      "mapErrorProb_nonneg: max(pXY(.,y)) <= sum_x pXY(x,y) via Finset.sup_le + single_le_sum, summed over y"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -54,7 +53,6 @@
     "shannon-channel-coding",
     "shannon-channel-coding-oq-02",
     "shannon-channel-coding-oq-02-oq-01",
-    "shannon-channel-coding-oq-02-oq-04",
     "shannon-channel-coding-oq-03",
     "shannon-channel-coding-oq-04",
     "shannon-channel-coding-oq-04-oq-01",
@@ -93,11 +91,11 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ02OQ01.lean",
       "filename": "ShannonChannelCodingOQ02OQ01.lean",
-      "lineCount": 169,
+      "lineCount": 143,
       "theoremCount": 3,
       "axiomCount": 2,
       "defCount": 0,
-      "sorryCount": 2,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ02OQ01.lean"
     },
@@ -111,17 +109,6 @@
       "sorryCount": 5,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ02OQ01Aristotle.lean"
-    },
-    {
-      "path": "Proofs/ShannonChannelCodingOQ02OQ04.lean",
-      "filename": "ShannonChannelCodingOQ02OQ04.lean",
-      "lineCount": 249,
-      "theoremCount": 10,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ02OQ04.lean"
     },
     {
       "path": "Proofs/ShannonChannelCodingOQ03.lean",
@@ -178,6 +165,5 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ04OQ01OQ01.lean"
     }
-  ],
-  "lastUpdate": "2026-04-12T20:00:00.000Z"
+  ]
 }

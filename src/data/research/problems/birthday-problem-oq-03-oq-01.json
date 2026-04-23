@@ -1,7 +1,7 @@
 {
   "slug": "birthday-problem-oq-03-oq-01",
   "title": "Exact k=3 birthday coincidence threshold",
-  "phase": "ACT",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "B",
   "path": "fast",
@@ -16,36 +16,27 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-04-13T11:10:00.000Z",
-    "iteration": 2,
-    "focus": "COMPLETED: Exact k=3 birthday threshold for d=365 (n=88) proved via native_decide. All axioms eliminated from main recurrence file.",
+    "phase": "ORIENT",
+    "since": "2026-03-30T08:49:59.592Z",
+    "iteration": 1,
+    "focus": "Surveyed: exact threshold requires computing P(no 3-way) as product over multinomial arrangements",
     "blockers": [],
-    "nextAction": "None — problem solved. OQ02 retains 1 deep axiom (Chen-Stein Poisson) which is a separate formalization challenge.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: d=365 k=3 threshold proved (n=88) via native_decide with slot-based O(n²) recurrence. d=7 and d=10 thresholds also verified. OQ02 asymptotic analysis complete (1 deep axiom: Chen-Stein).",
-    "builtItems": [
-      "threshold_d7_lower: 2 * birthdayCount3 8 7 < 7^8 by native_decide in BirthdayProblemOQ03OQ01OQ01.lean",
-      "threshold_d7_upper: 7^7 ≤ 2 * birthdayCount3 7 7 by native_decide in BirthdayProblemOQ03OQ01OQ01.lean",
-      "threshold_d7: exact threshold statement for d=7 in BirthdayProblemOQ03OQ01OQ01.lean"
-    ],
+    "progressSummary": "SURVEY: Assessed tractability. Parent BirthdayProblemOQ03.lean has k-way pigeonhole (fully proved, 0 axioms). Exact k=3 threshold n=88 requires computing probability that all days have ≤2 people — a counting/probability computation best handled via computable functions + native_decide.",
+    "builtItems": [],
     "insights": [
       "Parent has HasKWay, fiberAt, generalized pigeonhole — all fully proved (0 axioms, 0 sorries)",
       "Exact k=3 threshold for d=365 is n=88 (first n where P(≥3-way) > 1/2)",
       "P(no 3-way with n people, d days) = sum over valid assignments (each day ≤ 2 people) / d^n",
       "Approach: define computable noKWayProb function, verify threshold via native_decide or norm_num",
-      "For small d (e.g., d=7), threshold can be computed directly; d=365 may require efficient algorithms",
-      "For d=7, n=8 is the exact k=3 threshold: R(7,7,0)=463680, R(8,7,0)=2346120",
-      "native_decide works for small d (d=7) because recursion tree has O(n^2) nodes when s≠0 branches dominate",
-      "For d=365, n=88: without memoization the call tree is O(d^n) — native_decide times out",
-      "The 0* short-circuit in Lean 4 native_decide helps: s=0 term evaluates only the e* branch",
-      "Memoized DP would enable proving d=365 axioms: state space is O(n*d) ≈ 32000 states"
+      "For small d (e.g., d=7), threshold can be computed directly; d=365 may require efficient algorithms"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -159,9 +150,9 @@
     {
       "path": "Proofs/BirthdayProblemOQ03OQ01OQ01.lean",
       "filename": "BirthdayProblemOQ03OQ01OQ01.lean",
-      "lineCount": 318,
-      "theoremCount": 41,
-      "axiomCount": 0,
+      "lineCount": 244,
+      "theoremCount": 30,
+      "axiomCount": 2,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
@@ -170,13 +161,24 @@
     {
       "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
       "filename": "BirthdayProblemOQ03OQ01OQ02.lean",
-      "lineCount": 464,
-      "theoremCount": 19,
+      "lineCount": 421,
+      "theoremCount": 18,
       "axiomCount": 1,
       "defCount": 3,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01OQ02Aristotle.lean",
+      "filename": "BirthdayProblemOQ03OQ01OQ02Aristotle.lean",
+      "lineCount": 27,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ02Aristotle.lean"
     },
     {
       "path": "Proofs/BirthdayProblemOQ03OQ03.lean",

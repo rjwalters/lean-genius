@@ -1,188 +1,25 @@
 {
-  "slug": "feuerbachs-theorem-oq-01-oq-03",
-  "title": "Feuerbach's Theorem via Inversive Geometry",
-  "phase": "OBSERVE",
-  "status": "active",
-  "tier": "B",
-  "path": "full",
-  "problemStatement": {
-    "formal": "",
-    "plain": "Can Feuerbach's tangency configuration be understood via inversive geometry centered at the Feuerbach point? Specifically: under inversion at F, the incircle and nine-point circle (both passing through F) should map to parallel lines, explaining the tangency as a limiting case.",
-    "whyMatters": []
+  "id": "feuerbachs-theorem-oq-01-oq-03",
+  "title": "Feuerbach proof via inversive geometry in Lean",
+  "description": "Formalize the proof of Feuerbach tangency via circle inversion centered at the Feuerbach point, using Mathlib inversive geometry.",
+  "source": {
+    "proofId": "feuerbachs-theorem-oq-01",
+    "proofTitle": "Feuerbach OQ-01: Distance Relations",
+    "type": "open-question"
   },
-  "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
-  },
-  "currentState": {
-    "phase": "DONE",
-    "since": "2026-04-13T00:00:00.000Z",
-    "iteration": 1,
-    "focus": "All theorems proved — 0 sorries, 0 axioms",
-    "blockers": [],
-    "nextAction": "None — proof complete",
-    "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
-    }
-  },
-  "knowledge": {
-    "progressSummary": "Created FeuerbachsTheoremOQ01OQ03.lean: 14 theorems, 6 defs, 0 sorries, 0 axioms. Establishes the inversive geometry framework for Feuerbach: circle-to-line, parallel lines for collinear centers, Feuerbach point collinearity, and the full inversive framework theorem.",
-    "builtItems": [
-      "dot, normSq: basic planar operations",
-      "normSq_nonneg, normSq_eq_zero_iff, dot_comm: basic properties",
-      "invert: inversion with center at origin and radius r",
-      "invert_normSq: |φ_r(P)|² = r⁴/|P|²",
-      "invert_involution: φ_r(φ_r(P)) = P",
-      "dot_invert_self: P · φ_r(P) = r²",
-      "onCircleThroughOrigin: P on circle |P-C|²=|C|² iff |P|²=2(P·C)",
-      "origin_on_circle: (0,0) lies on every such circle",
-      "invert_circle_to_line: main circle-to-line theorem — φ_r maps circle through O to line Q·C=r²/2",
-      "line_to_circle: converse — points on line Q·C=r²/2 map back to circle",
-      "invert_parallel_lines: two circles through O with collinear centers C₁=λ₁e, C₂=λ₂e map to parallel lines Q·e=r²/(2λ₁) and Q·e=r²/(2λ₂)",
-      "Triangle.inradius': r = Area/semiperimeter",
-      "Triangle.feuerbachPoint: point on segment I→N at distance inradius from I",
-      "feuerbachPoint_coords: explicit coordinate formula",
-      "feuerbach_centers_collinear: F, I, N are collinear (proved by ring)",
-      "incenter_feuerbach_dir: I-F = -(r/d)(N-I) componentwise",
-      "ninepoint_feuerbach_dir: N-F = (1-r/d)(N-I) componentwise",
-      "feuerbach_inversive_framework: under inversion at F, incircle maps to line Q·(I-F)=r²/2 and nine-point circle maps to line Q·(N-F)=r²/2; since both directions are proportional to N-I, the lines are parallel"
-    ],
-    "insights": [
-      "Key insight: circle through O with center C has equation |P|²=2(P·C); under inversion φ_r, this becomes Q·C=r²/2 (a line)",
-      "For collinear centers C₁=λ₁e and C₂=λ₂e, the image lines Q·e=r²/(2λ₁) and Q·e=r²/(2λ₂) are parallel since both are perpendicular to e",
-      "Feuerbach point is defined as the point on I→N at distance r_incircle from I; this makes it the tangency point of the incircle and nine-point circle",
-      "feuerbach_centers_collinear is trivial by ring because F is defined as a point on segment IN",
-      "The inversive framework reduces to two applications of invert_circle_to_line; the parallel structure follows from F, I, N collinearity",
-      "invert_parallel_lines proof: after factoring λᵢ out of the dot product, use eq_div_iff + linear_combination 2*h to get the division equality",
-      "invert_circle_to_line step 2: use have hd := linarith from hon, then rw [hd] to rewrite the dot product; avoid linarith directly on division expressions"
-    ],
-    "mathlibGaps": [],
-    "nextSteps": []
-  },
+  "category": "extension",
+  "tractability": "challenging",
   "tags": [
     "geometry",
     "inversive-geometry",
-    "feuerbach",
     "triangle",
-    "circle"
+    "wiedijk-100",
+    "seeker-selected"
   ],
   "relatedProofs": [
-    "feuerbachs-theorem",
-    "feuerbachs-theorem-defs",
-    "feuerbachs-theorem-oq-01",
-    "feuerbachs-theorem-oq-02",
-    "feuerbachs-theorem-oq-03",
-    "feuerbachs-theorem-oq-05"
+    "feuerbachs-theorem"
   ],
-  "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
-  },
-  "started": "2026-04-13T06:00:00.000Z",
-  "lastUpdate": "2026-04-13T06:00:00.000Z",
-  "leanFiles": [
-    {
-      "path": "Proofs/FeuerbachsTheorem.lean",
-      "filename": "FeuerbachsTheorem.lean",
-      "lineCount": 165,
-      "theoremCount": 11,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheorem.lean"
-    },
-    {
-      "path": "Proofs/FeuerbachsTheoremDefs.lean",
-      "filename": "FeuerbachsTheoremDefs.lean",
-      "lineCount": 688,
-      "theoremCount": 33,
-      "axiomCount": 0,
-      "defCount": 34,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremDefs.lean"
-    },
-    {
-      "path": "Proofs/FeuerbachsTheoremDefsOQ03.lean",
-      "filename": "FeuerbachsTheoremDefsOQ03.lean",
-      "lineCount": 251,
-      "theoremCount": 7,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremDefsOQ03.lean"
-    },
-    {
-      "path": "Proofs/FeuerbachsTheoremOQ01.lean",
-      "filename": "FeuerbachsTheoremOQ01.lean",
-      "lineCount": 1554,
-      "theoremCount": 71,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ01.lean"
-    },
-    {
-      "path": "Proofs/FeuerbachsTheoremOQ01Aristotle.lean",
-      "filename": "FeuerbachsTheoremOQ01Aristotle.lean",
-      "lineCount": 188,
-      "theoremCount": 16,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 1,
-      "isAristotle": true,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ01Aristotle.lean"
-    },
-    {
-      "path": "Proofs/FeuerbachsTheoremOQ01OQ03.lean",
-      "filename": "FeuerbachsTheoremOQ01OQ03.lean",
-      "lineCount": 288,
-      "theoremCount": 14,
-      "axiomCount": 0,
-      "defCount": 6,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ01OQ03.lean"
-    },
-    {
-      "path": "Proofs/FeuerbachsTheoremOQ02.lean",
-      "filename": "FeuerbachsTheoremOQ02.lean",
-      "lineCount": 666,
-      "theoremCount": 15,
-      "axiomCount": 3,
-      "defCount": 47,
-      "sorryCount": 5,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ02.lean"
-    },
-    {
-      "path": "Proofs/FeuerbachsTheoremOQ02Aristotle.lean",
-      "filename": "FeuerbachsTheoremOQ02Aristotle.lean",
-      "lineCount": 124,
-      "theoremCount": 15,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 14,
-      "isAristotle": true,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ02Aristotle.lean"
-    },
-    {
-      "path": "Proofs/FeuerbachsTheoremOQ05.lean",
-      "filename": "FeuerbachsTheoremOQ05.lean",
-      "lineCount": 267,
-      "theoremCount": 7,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ05.lean"
-    }
-  ]
+  "status": "available",
+  "selectedDate": "2026-04-12",
+  "selectedBy": "seeker"
 }

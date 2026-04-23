@@ -42,15 +42,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated both sorries in ChebyshevPNTBridge.lean. Fixed wrong Mathlib API call (pow_factorization_choose_le) and proved centralBinom_le_pow_primeCounting via unique factorization.",
+    "progressSummary": "PROGRESS: Created ChebyshevPNTBridge.lean with upper bound on π(n) fully proved and lower bound structure with 1 sorry. Upper bound uses primorial inequality; lower bound uses central binomial factorization.",
     "builtItems": [
       "ChebyshevPNTBridge.lean: 220 lines, 10 theorems, 2 definitions, 2 sorries",
       "Upper bound: pow_sqrt_primeCounting_diff_le (fully proved)",
       "Lower bound: four_pow_le_mul_pow_primeCounting (depends on factorization sorry)",
       "Helper: numPrimesAbove_eq, prodPrimesAbove_dvd_primorial, primeCounting_le",
-      "Gallery data: src/data/proofs/chebyshev-pnt-bridge/",
-      "Fixed prime_pow_factorization_centralBinom_le: corrected API to Nat.pow_factorization_choose_le",
-      "Proved centralBinom_le_pow_primeCounting: 40 lines, uses factorization_prod_pow_eq_self + prod_le_prod"
+      "Gallery data: src/data/proofs/chebyshev-pnt-bridge/"
     ],
     "insights": [
       "PNT is already axiomatized in PrimeNumberTheorem.lean with 8 axioms",
@@ -59,10 +57,7 @@
       "Factorization bound C(2n,n) ≤ (2n)^{π(2n)} reduces to: v_p(C(2n,n)) ≤ log_p(2n), provable from Kummer",
       "Upper bound approach: primes > √n in primorial give (√n)^k ≤ 4^n, reusing pow_le_of_prod_primes_dvd",
       "Lower bound approach: 4^n/(2n+1) ≤ C(2n,n) ≤ (2n)^{π(2n)} gives π(2n) ≥ log(2)·n/log(2n)",
-      "Weak Chebyshev constants achieved: 0.693 ≤ ... ≤ 2.773 (vs Chebyshev's 0.921 ≤ ... ≤ 1.106)",
-      "Nat.pow_factorization_choose_le (0 < n) gives p^{v_p(C(n,k))} <= n directly — no primality needed",
-      "C(2n,n) <= (2n)^{pi(2n)} proved via: express as factorization product, bound each factor by 2n, count factors <= pi(2n)",
-      "Key pattern: factorization.support subset of primeFactors, use prime_of_mem_primeFactors for primality"
+      "Weak Chebyshev constants achieved: 0.693 ≤ ... ≤ 2.773 (vs Chebyshev's 0.921 ≤ ... ≤ 1.106)"
     ],
     "mathlibGaps": [
       "No Tauberian theorems (Wiener-Ikehara, Newman) in Mathlib — blocks full PNT proof",

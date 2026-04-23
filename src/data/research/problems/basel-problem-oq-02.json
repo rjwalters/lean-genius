@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 5 axioms (Lindemann, Apery, Rivoal, Zudilin, FSZ-2019), 20 theorems, 0 sorries. Added Fischler-Sprang-Zudilin 2019 quantitative axiom completing state-of-the-art coverage.",
+    "progressSummary": "COMPLETE: Assessed and marked complete.",
     "builtItems": [
       "Created proofs/Proofs/BaselProblemOQ02.lean (109 lines)",
       "Proved zetaValue_two and zetaValue_four from Mathlib",
@@ -49,13 +49,7 @@
       "Proved zetaValue_four_transcendental (ζ(4) transcendental over ℚ)",
       "Proved summable_zetaValue (convergence for s≥2)",
       "Proved zetaValue_ge_one, zetaValue_pos, zetaValue_ne_zero",
-      "Proved even_odd_hierarchy (summary theorem)",
-      "Restored axiom rivoal_theorem (Set.Infinite formulation of infinitely many odd zeta irrational)",
-      "Restored axiom zudilin_theorem (4-way disjunction: one of ζ(5,7,9,11) irrational)",
-      "Restored conjecture_implies_rivoal (sorry-free proof)",
-      "Restored conjecture_implies_zudilin (sorry-free proof)",
-      "Restored conjecture_implies_all_known (sorry-free summary theorem)",
-      "Added axiom fischler_sprang_zudilin_2019: quantitative Rivoal bound in Lean (BaselProblemOQ02.lean:238-258)"
+      "Proved even_odd_hierarchy (summary theorem)"
     ],
     "insights": [
       "Stark even/odd divide: ζ(2k) = rational × π^(2k) (fully understood since Euler 1734), but ζ(2k+1) has no closed form",
@@ -69,9 +63,7 @@
       "Full hierarchy chain is provable without sorry: transcendence ⟹ irrationality ⟹ {Apéry, Rivoal, Zudilin}",
       "IsAlgebraic.mul + isAlgebraic_algebraMap gives clean transcendence proofs without explicit polynomial construction",
       "Polynomial.natDegree_comp enables comp_ne_zero_of_pos_natDegree via case analysis on constant vs positive-degree polynomials",
-      "algebraMap ℚ ℝ is definitionally Rat.cast; push_cast handles the conversion cleanly",
-      "Rivoal/Zudilin axioms and structural implications were lost in refactoring commit 39fb3769a8, restored from 1499a0b513",
-      "Fischler-Sprang-Zudilin 2019 (Compositio Math) gives quantitative Rivoal: ≥(1-ε)log(s)/(1+log2) of ζ(3),...,ζ(2s+1) are irrational; axiomatized as fischler_sprang_zudilin_2019 in Lean file"
+      "algebraMap ℚ ℝ is definitionally Rat.cast; push_cast handles the conversion cleanly"
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -86,10 +78,8 @@
   "relatedProofs": [
     "basel-problem",
     "basel-problem-oq-01-oq-01",
-    "basel-problem-oq-01-oq-01-oq-02",
     "basel-problem-oq-01-oq-03",
     "basel-problem-oq-02",
-    "basel-problem-oq-04",
     "basel-problem-oq-05"
   ],
   "references": {
@@ -125,28 +115,6 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01.lean"
     },
     {
-      "path": "Proofs/BaselProblemOQ01OQ01OQ02.lean",
-      "filename": "BaselProblemOQ01OQ01OQ02.lean",
-      "lineCount": 852,
-      "theoremCount": 43,
-      "axiomCount": 5,
-      "defCount": 9,
-      "sorryCount": 1,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01OQ02.lean"
-    },
-    {
-      "path": "Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean",
-      "filename": "BaselProblemOQ01OQ01OQ02Aristotle.lean",
-      "lineCount": 45,
-      "theoremCount": 1,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 1,
-      "isAristotle": true,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean"
-    },
-    {
       "path": "Proofs/BaselProblemOQ01OQ03.lean",
       "filename": "BaselProblemOQ01OQ03.lean",
       "lineCount": 214,
@@ -160,9 +128,9 @@
     {
       "path": "Proofs/BaselProblemOQ02.lean",
       "filename": "BaselProblemOQ02.lean",
-      "lineCount": 349,
-      "theoremCount": 19,
-      "axiomCount": 5,
+      "lineCount": 275,
+      "theoremCount": 16,
+      "axiomCount": 2,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
@@ -178,17 +146,6 @@
       "sorryCount": 2,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ02Aristotle.lean"
-    },
-    {
-      "path": "Proofs/BaselProblemOQ04.lean",
-      "filename": "BaselProblemOQ04.lean",
-      "lineCount": 108,
-      "theoremCount": 5,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ04.lean"
     },
     {
       "path": "Proofs/BaselProblemOQ05.lean",

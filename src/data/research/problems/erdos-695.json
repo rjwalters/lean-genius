@@ -29,27 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 of 3 sorries. Proved question1_equiv (rpow/tendsto equivalence) and fixed smallestPrimeCongruentOne (Dirichlet). 1 sorry remains (conjecture_implies_question2 — iterative asymptotic argument).",
+    "progressSummary": "COMPLETED: Proved exponential_lower_bound axiom (6A→5A). p(k) ≥ 2^k for any prime chain, via chain_step_ge: for odd prime p₀, q≡1(mod p₀) implies q≥2p₀+1.",
     "builtItems": [
       "Proved: chain_step_ge — q ≡ 1 (mod p₀) implies q ≥ 2p₀+1 for odd prime p₀",
       "Proved: exponential_lower_bound — p(k) ≥ 2^k for any prime chain (was axiom)",
-      "Updated: meta.json axiomCount 6→5, lineCount 203→259",
-      "Proved question1_equiv: rpow/tendsto equivalence for prime chain growth (eliminated sorry)",
-      "Fixed smallestPrimeCongruentOne: replaced sorry with Dirichlet theorem from Mathlib (eliminated sorry)"
+      "Updated: meta.json axiomCount 6→5, lineCount 203→259"
     ],
     "insights": [
       "Key insight: for odd prime p₀, p₀+1 is even and ≥4, so not prime — forces q/p₀ ≥ 2",
       "chain_step_ge: q ≡ 1 (mod p₀) with p₀ ≥ 3 prime implies q ≥ 2p₀+1",
       "Exponential bound: p(k) ≥ 2^k by induction using chain_step_ge for k ≥ 1",
       "Remaining 5 axioms: 4 deep results (Linnik, FKL, greedy bounds) + 1 conjecture (small prime)",
-      "3 sorries: question1_equiv (tendsto equivalence), conjecture_implies_question2, smallestPrimeCongruentOne (Dirichlet)",
-      "question1_equiv: Tendsto kthRoot atTop atTop ↔ p_k > c^k eventually. Proved via rpow_inv_pow helper (rpow identity for k-th root), pow_lt_pow_left for monotonicity, and rpow_le_rpow for the backward direction.",
-      "smallestPrimeCongruentOne: Nat.forall_exists_prime_gt_and_modEq (Mathlib Dirichlet theorem) provides existence of primes ≡ 1 (mod p). Nat.mod_eq_of_lt hp.one_lt simplifies 1 % p = 1."
+      "3 sorries: question1_equiv (tendsto equivalence), conjecture_implies_question2, smallestPrimeCongruentOne (Dirichlet)"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "conjecture_implies_question2 sorry requires iterative growth estimate: if next prime ≤ p·(log p)^C then p_k ≤ exp(k(log k)^{1+o(1)})"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #695 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p_1<p_2<\\cdots$ be a sequence of primes such that $p_{i+1}\\equiv 1\\pmod{p_i}$. Is it true that\\[\\lim_k p_k^{1/k}=\\infty?\\]Does there exist such a sequence with\\[p_k \\leq \\exp(k(\\log k)^{1+o(1)})?\\]\n\n\n\nSuch a sequence is sometimes called a prime chain.\n\nIf we take the obvious 'greedy' chain with $2=p_1$ and $p_{i+1}$ is the smallest prime $\\equiv 1\\pmod{p_i}$ then Linnik's theorem implies that this sequence grows like\\[p_k \\leq e^{e^{O(k)}}.\\]It is conjectured that, for any prime $p$, there is a prime $p'\\leq p(\\log p)^{O(1)}$ which is congruent to $1\\pmod{p}$, which would imply this sequence grows like\\[p_k\\leq \\exp(k(\\log k)^{1+o(1)}).\\]An extensive study of the growth of finite prime chains was carried out by Ford, Konyagin, and Luca \\cite{FKL10}.\n\nSee also [696].\n\n\n\n\nReferences\n\n\n[FKL10] Ford, Kevin and Konyagin, Sergei V. and Luca, Florian, Prime chains and {P}ratt trees. Geom. Funct. Anal. (2010), 1231--1258.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #696\n- Problem #694\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79e\n- FKL10\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
@@ -84,11 +78,11 @@
     {
       "path": "Proofs/Erdos695Problem.lean",
       "filename": "Erdos695Problem.lean",
-      "lineCount": 300,
+      "lineCount": 252,
       "theoremCount": 8,
       "axiomCount": 1,
       "defCount": 10,
-      "sorryCount": 1,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos695Problem.lean"
     }

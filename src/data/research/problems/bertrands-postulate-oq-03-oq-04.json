@@ -29,23 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: All sorries resolved. 0 sorries across all files. 1 axiom (shortIntervalPNT_rh_conditional) correctly represents open conjecture.",
+    "progressSummary": "PROGRESS: Created BertrandsPostulateOQ03OQ04.lean (323 lines). Builds with 2 sorries + 1 axiom. Proves ShortIntervalPNT density implies PrimeGapConjecture existence; log ratio lemma proved; RH-conditional density axiomatized.",
     "builtItems": [
       "BertrandsPostulateOQ03OQ04.lean: ShortIntervalPNT def + 7 proved/partial theorems",
-      "Gallery entry: src/data/proofs/bertrands-postulate-oq-03-oq-04/meta.json",
-      "BertrandsPostulateOQ03OQ04Aristotle.lean: proved pnt_1c_logx_tendsto and long_interval_density_from_pnt (2→0 sorries)"
+      "Gallery entry: src/data/proofs/bertrands-postulate-oq-03-oq-04/meta.json"
     ],
     "insights": [
       "ShortIntervalPNT (density ~ h/ln x) is strictly stronger than PrimeGapConjecture (existence only)",
       "primeCounting_lt_implies_prime_exists: counting jump → prime in gap, proved via Finset.card_le_card",
       "log(x)/log((1+c)x) → 1 proved via 1/(1 + log(1+c)/log(x)) decomposition",
       "Under RH: von Koch bound gives density for h = x^(1/2+ε) — axiomatized",
-      "Filter limit algebra for combining PNT limits is the hard part — 2 sorries remain",
-      "pnt_1c_logx_tendsto proved via filter product of PNT.comp(scaling) * log_ratio_tendsto_one",
-      "long_interval_density_from_pnt proved via (1+c)/c * pnt_1c_logx - 1/c * pnt via Tendsto.sub"
+      "Filter limit algebra for combining PNT limits is the hard part — 2 sorries remain"
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove long_interval_density_from_pnt: need pnt_1c.mul hlog_ratio filter algebra",
+      "Submit sorries to Aristotle for automated search"
+    ]
   },
   "tags": [
     "seeker-selected"
@@ -53,8 +53,7 @@
   "relatedProofs": [
     "bertrands-postulate",
     "bertrands-postulate-oq-03",
-    "bertrands-postulate-oq-03-oq-04",
-    "bertrands-postulate-oq-03-oq-04-oq-03"
+    "bertrands-postulate-oq-03-oq-04"
   ],
   "references": {
     "papers": [],
@@ -102,24 +101,13 @@
     {
       "path": "Proofs/BertrandsPostulateOQ03OQ04Aristotle.lean",
       "filename": "BertrandsPostulateOQ03OQ04Aristotle.lean",
-      "lineCount": 125,
+      "lineCount": 84,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 0,
+      "sorryCount": 2,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulateOQ03OQ04Aristotle.lean"
-    },
-    {
-      "path": "Proofs/BertrandsPostulateOQ03OQ04OQ03.lean",
-      "filename": "BertrandsPostulateOQ03OQ04OQ03.lean",
-      "lineCount": 214,
-      "theoremCount": 3,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 1,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulateOQ03OQ04OQ03.lean"
     }
   ]
 }

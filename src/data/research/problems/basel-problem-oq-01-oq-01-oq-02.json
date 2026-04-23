@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "OBSERVE",
     "since": "2026-04-03T21:34:24-07:00",
-    "iteration": 4,
-    "focus": "All axioms represent concrete intermediate facts; main theorem proved",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Prove aperyB_recurrence to complete the growth bound chain",
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,83 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3 new proved theorems (cube_succ_inv_le_telescoping, zetaValue_three_tail_ub, linearForm_two_pos). 11 pre-existing build errors fixed. Total: 5 axioms, 0 sorries, ~25 proved theorems. All 5 axioms still blocked on WZ/PNT/integral infrastructure.",
-    "builtItems": [
-      "Created proofs/Proofs/BaselProblemOQ01OQ01OQ02.lean (199 lines)",
-      "Defined aperyB: ℕ → ℕ (Apéry number sequence)",
-      "Proved aperyB_zero, aperyB_one, aperyB_two, aperyB_three (initial values)",
-      "Proved aperyB_pos (all Apéry numbers positive)",
-      "Stated aperyB_recurrence (3-term recurrence, sorry)",
-      "Stated apery_theorem (ζ(3) irrational, sorry)",
-      "Created gallery entry src/data/proofs/basel-problem-oq-01-oq-01-oq-02/meta.json",
-      "Defined aperyA: ℕ → ℚ (a-sequence via recurrence)",
-      "Defined harmonicNumber, genHarmonicNumber (H_n and H_n^{(s)})",
-      "Defined lcmUpTo and stated nair_lcm_bound (sorry)",
-      "Defined linearForm: bₙ·ζ(3) - aₙ",
-      "Stated denominator_control: lcm³·aₙ ∈ ℤ (sorry)",
-      "Proved aperyRecCoeff_le_34_mul_cubeSucc: (2n+1)(17n^2+17n+5) ≤ 34*(n+1)^3 by nlinarith (BaselProblemOQ01OQ01OQ02.lean)",
-      "aperyA_recurrence (private): a-sequence satisfies 3-term recurrence, BaselProblemOQ01OQ01OQ02.lean",
-      "lcmUpTo_dvd: m ≤ n → lcmUpTo m ∣ lcmUpTo n, BaselProblemOQ01OQ01OQ02.lean",
-      "denominator_control_factorial: (n!)³·aperyA n ∈ ℤ for all n, by 2-step induction, BaselProblemOQ01OQ01OQ02.lean",
-      "Proved apery_decay_rate_pos: (0:real) < 17 - 12*sqrt(2) using nlinarith + sq_nonneg hint",
-      "Proved apery_product_lt_one: 27*(17-12*sqrt(2)) < 1 using sqrt lower bound 229/162 < sqrt(2)",
-      "Added axiom lcm_hanson_bound: lcmUpTo n <= 3^n (Hanson 1974, sharper than Nair 4^n)",
-      "Added axiom apery_linearForm_decay: exists C > 0, |linearForm n| <= C*(17-12*sqrt(2))^n",
-      "Added axiom apery_linearForm_nonzero: forall n > 0, linearForm n != 0",
-      "Proved apery_theorem as theorem (not axiom) via apery_irrationality_conditional with Hanson bound",
-      "lcmUpTo_dvd_of_le: lcmUpTo n ∣ lcmUpTo m when n≤m (proved from Finset monotonicity)",
-      "lcmUpTo_three=6, lcmUpTo_four=12 (proved by norm_num)",
-      "zetaValue_three_gt_6_5: 6/5 < zetaValue 3 (proved via 16-term partial sum, BaselProblemOQ01OQ01OQ02.lean:770)",
-      "linearForm_one_pos: 0 < linearForm 1 = 5*zeta(3)-6 (proved from lower bound, BaselProblemOQ01OQ01OQ02.lean:784)",
-      "Fixed 11 pre-existing build errors from Mathlib API changes (harmonicNumber_nonneg, harmonicNumber_mono sum_le_sum_of_subset_of_nonneg, lcmUpTo decide, parser fixes, apery_bterm_int calc rewrite)",
-      "cube_succ_inv_le_telescoping: 1/(x+1)³ ≤ 1/(2x²) - 1/(2(x+1)²) for x≥1 (proved via polynomial identity nlinarith hint)",
-      "zetaValue_three_tail_ub N (hN : 1≤N): ζ(3) ≤ S_{N+1} + 1/(2N²) — upper companion to tail_lb (proved via telescope + le_of_tendsto')",
-      "linearForm_two_pos: 0 < linearForm 2 = 73ζ(3) - 351/4 (proved via native_decide ℚ computation, N=100 terms)"
-    ],
-    "insights": [
-      "Apéry numbers bₙ = ∑ C(n,k)²C(n+k,k)² computable as ℕ in Lean via Finset.sum",
-      "Initial values verified by norm_num: b₀=1, b₁=5, b₂=73, b₃=1445",
-      "Recurrence verified numerically: 8·73 = 117·5 - 1 and 27·1445 = 535·73 - 40",
-      "No WZ-theory in Mathlib; recurrence must be proved by direct manipulation or auxiliary lemma",
-      "The decay rate (√2-1)⁴ ≈ 0.029 < e⁻³ ≈ 0.050 is what makes the proof work — denominator growth is only e³ⁿ",
-      "Can bypass prime number theorem for lcm bound using Nair (1982): lcm(1,...,n) ≤ 4^n",
-      "a-sequence satisfies same recurrence as b-sequence with a₀=0, a₁=6",
-      "lcm bound lcm(1,...,n) ≤ 4^n (Nair 1982) bypasses PNT for denominator control",
-      "Critical path: recurrence → growth → decay + denominator control → irrationality",
-      "Harmonic numbers H_n and generalized H_n^{(s)} needed for a-sequence closed form",
-      "aperyRecCoeff_le_34_mul_cubeSucc proves the key algebraic inequality: 34(n+1)^3 - (2n+1)(17n^2+17n+5) = 51n^2+75n+29 > 0. This enables bounding b_{n+1} ≤ 34*b_n from the recurrence.",
-      "factorial denominator control is provable by 2-step induction on the recurrence; lcm version is harder",
-      "push_cast before field_simp is essential when cast types mix ℤ and ℚ in recurrence proofs",
-      "lcmUpTo_dvd follows immediately from Finset.lcm_dvd + Finset.range_mono",
-      "PNT (lcm ~ eⁿ) is needed for unconditional irrationality; Nair (lcm ≤ 4ⁿ) is insufficient",
-      "Key quantitative threshold: c^3 * (17-12*sqrt(2)) < 1 requires c < 3.24; Hanson gives c=3 < 3.24 (sufficient) while Nair gives c=4 > 3.24 (insufficient)",
-      "27*(17-12*sqrt(2)) < 1 proved by showing sqrt(2) > 229/162 (since (229/162)^2 = 52441/26244 < 2) then nlinarith",
-      "apery_irrationality_conditional is the fully proved integer-squeeze core: Tendsto (lcmUpTo n)^3 * |linearForm n| to 0 suffices for irrationality",
-      "tendsto_pow_atTop_nhds_zero_of_lt_one + const_mul gives the decay to 0 in the conditional proof",
-      "nair_lcm_bound (lcm≤4^n) is unused by main proof and too weak (4³=64 > 1/(17-12√2)≈34); removed to reduce axiom count",
-      "psi_le_const_mul_self gives ψ(x) ≤ (log4+4)·x ≈ 5.38x — 4× too weak for lcm ≤ 4^n (needs ψ ≤ log4·n ≈ 1.39n)",
-      "lcm(1,...,n) = e^{ψ(n)} connection is NOT formalized in Mathlib — double blocker for both Nair and Hanson bounds",
-      "All 5 remaining axioms confirmed BLOCKED: WZ theory, Hanson bound, explicit ψ bound, and integral representation all absent from Lean 4",
-      "theta_le_log4_mul_x is for Chebyshev THETA (product over primes), not PSI (prime powers) — conversion requires additional work",
-      "Must run worktree's own docker-build.sh (not main repo's) to mount worktree files in Docker",
-      "native_decide over ℚ bypasses heartbeat limits for large rational sum comparisons (N=100 terms for L₂>0 requires N≥63 minimum, norm_num times out)",
-      "cube_succ_inv_le_telescoping proof key: polynomial identity 2(2x+1)(x+1)³ - 4x²(x+1)² = (x+1)²(6x+2) ≥ 0 as nlinarith hint",
-      "zetaValue_three_tail_lb + zetaValue_three_tail_ub together give rigorous rational interval arithmetic for ζ(3) — useful for proving linearForm_n_pos for any concrete n"
-    ],
-    "mathlibGaps": [
-      "Mathlib has primorial_le_four_pow (primorial ≤ 4^n) but NOT lcmUpTo ≤ 4^n directly",
-      "Mathlib has primorial_add_dvd: primorial(m+n) | primorial(m) * C(m+n,m) for n ≤ m",
-      "lcmUpTo n = ∏_{k≥1} primorial(⌊n^{1/k}⌋) but this product approach gives weaker bound 4^{2n} not 4^n",
-      "nair_lcm_bound needs either PNT/Chebyshev or a clever ballot-integral argument not yet available"
-    ],
-    "nextSteps": [
-      "Wait for Mathlib lcm=exp(psi) formalization or Hanson-type explicit bounds",
-      "Wait for WZ theory / Zeilberger algorithm in Lean 4",
-      "If Rosser-Schoenfeld explicit PNT bounds added to Mathlib, revisit lcm_hanson_bound",
-      "Aristotle attempt on nair_lcm_bound via central binomial coefficient argument (alternative to Chebyshev)",
-      "Consider linearForm_three_pos (L₃ = 1445ζ(3) - 7432... > 0) via same native_decide approach",
-      "The lb+ub sandwich can prove apery_linearForm_nonzero for all concrete small n"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
     "markdown": "# Knowledge Base: basel-problem-oq-01-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -117,10 +45,8 @@
     "basel-problem",
     "basel-problem-oq-01",
     "basel-problem-oq-01-oq-01",
-    "basel-problem-oq-01-oq-01-oq-02",
     "basel-problem-oq-01-oq-03",
     "basel-problem-oq-02",
-    "basel-problem-oq-04",
     "basel-problem-oq-05"
   ],
   "references": {
@@ -129,7 +55,7 @@
     "mathlib": []
   },
   "started": "2026-04-04T04:39:45.903Z",
-  "lastUpdate": "2026-04-21T21:00:00-07:00",
+  "lastUpdate": "2026-04-04T04:39:46.008Z",
   "leanFiles": [
     {
       "path": "Proofs/BaselProblem.lean",
@@ -154,28 +80,6 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01.lean"
     },
     {
-      "path": "Proofs/BaselProblemOQ01OQ01OQ02.lean",
-      "filename": "BaselProblemOQ01OQ01OQ02.lean",
-      "lineCount": 852,
-      "theoremCount": 43,
-      "axiomCount": 5,
-      "defCount": 9,
-      "sorryCount": 1,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01OQ02.lean"
-    },
-    {
-      "path": "Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean",
-      "filename": "BaselProblemOQ01OQ01OQ02Aristotle.lean",
-      "lineCount": 45,
-      "theoremCount": 1,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 1,
-      "isAristotle": true,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean"
-    },
-    {
       "path": "Proofs/BaselProblemOQ01OQ03.lean",
       "filename": "BaselProblemOQ01OQ03.lean",
       "lineCount": 214,
@@ -189,9 +93,9 @@
     {
       "path": "Proofs/BaselProblemOQ02.lean",
       "filename": "BaselProblemOQ02.lean",
-      "lineCount": 349,
-      "theoremCount": 19,
-      "axiomCount": 5,
+      "lineCount": 275,
+      "theoremCount": 16,
+      "axiomCount": 2,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
@@ -207,17 +111,6 @@
       "sorryCount": 2,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ02Aristotle.lean"
-    },
-    {
-      "path": "Proofs/BaselProblemOQ04.lean",
-      "filename": "BaselProblemOQ04.lean",
-      "lineCount": 108,
-      "theoremCount": 5,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ04.lean"
     },
     {
       "path": "Proofs/BaselProblemOQ05.lean",
