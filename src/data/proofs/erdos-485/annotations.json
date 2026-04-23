@@ -208,7 +208,7 @@
     "type": "definition",
     "range": {
       "startLine": 210,
-      "endLine": 228
+      "endLine": 226
     },
     "title": "Sparse Polynomials and Product Density",
     "content": "**isSparse(P, c):** termCount(P) ≤ c · log(deg(P) + 1). A polynomial is sparse when its term count is logarithmic in its degree.\n\n**sparse_product_density (axiom):** ∃ c > 0 such that for sparse P, Q: termCount(P·Q) ≥ termCount(P) + termCount(Q) - 1.",

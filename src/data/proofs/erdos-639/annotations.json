@@ -146,7 +146,7 @@
   {
     "id": "ann-639-pyber",
     "proofId": "erdos-639",
-    "range": { "startLine": 196, "endLine": 208 },
+    "range": { "startLine": 196, "endLine": 202 },
     "type": "concept",
     "title": "Pyber's Covering and Earlier Results",
     "content": "**pyber_covering**: Pyber (1986) showed edges of any 2-colored K_n can be covered by ≤ ⌊n²/4⌋ + 2 monochromatic cliques. Alon observed this implies the Erdős #639 bound.\n\n**erdos_rousseau_schelp_large**: The bound holds asymptotically for large n: countEdgesNotInMono ≤ (1+ε)n²/4 for n ≥ N(ε). This was the state of the art before Keevash-Sudakov's exact result.",

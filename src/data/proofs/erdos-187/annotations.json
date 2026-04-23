@@ -77,7 +77,7 @@
     "type": "technique",
     "range": {
       "startLine": 53,
-      "endLine": 60
+      "endLine": 54
     },
     "title": "Beck's Upper Bound (1980)",
     "content": "**Axiom:** ∃ C, D₀ such that for all d ≥ D₀, f(d) ≤ C·(log₂ d + 1).\n\n**Proof sketch:** Beck constructs an explicit 2-coloring χ using a probabilistic/discrepancy argument. The key is to control the 'discrepancy' of the coloring on all APs with any fixed difference d simultaneously, bounding the longest monochromatic run to O(log d).\n\n**Significance:** The O(log d) bound is believed tight, but no matching lower bound exists.",

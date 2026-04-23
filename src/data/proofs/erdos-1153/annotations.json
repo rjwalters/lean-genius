@@ -86,7 +86,7 @@
   {
     "id": "ann-chebyshev-tightness",
     "proofId": "erdos-1153",
-    "range": { "startLine": 165, "endLine": 175 },
+    "range": { "startLine": 165, "endLine": 169 },
     "type": "insight",
     "title": "Chebyshev Optimality (Matching Upper Bound)",
     "content": "The matching upper bound (axiomatized): there exist node configurations (Chebyshev polynomial roots $x_k = \\cos\\left(\\frac{2k-1}{2n}\\pi\\right)$) for which the Lebesgue constant is at most $(2/\\pi + \\varepsilon) \\log n$. Together with the lower bound, this establishes $2/\\pi$ as the sharp constant for the growth rate of the optimal Lebesgue constant. The Chebyshev roots are the unique nodes achieving this minimum, making them the provably best interpolation nodes on $[-1,1]$.",

@@ -50,7 +50,7 @@
   {
     "id": "ann-fct02-open-question",
     "proofId": "four-color-theorem-oq-02",
-    "range": { "startLine": 67, "endLine": 93 },
+    "range": { "startLine": 67, "endLine": 86 },
     "type": "insight",
     "title": "The Open Question: Minimum Configuration Set",
     "content": "The open question documents three obstacles to reducing below 633: (1) computational: reducibility checking is exponential in ring size, (2) unavoidability: removing a configuration requires adjusting discharging rules, potentially adding others, (3) trade-off: fewer configurations often means larger rings. Heuristic estimates suggest ~200-400 configurations suffice, but no tight lower bound is known. The file notes this is heuristic rather than proved — an honest assessment of the mathematical state of the art.",

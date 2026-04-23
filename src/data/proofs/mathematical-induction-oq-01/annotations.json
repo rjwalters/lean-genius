@@ -50,7 +50,7 @@
   {
     "id": "ann-mi01-cantor-stub",
     "proofId": "mathematical-induction-oq-01",
-    "range": { "startLine": 149, "endLine": 153 },
+    "range": { "startLine": 149, "endLine": 150 },
     "type": "context",
     "title": "Cantor Normal Form: Statement Stub",
     "content": "`cantor_normal_form_exists` states that every ordinal α has a Cantor normal form ω^β₁·c₁ + ... + ω^βₙ·cₙ with β₁ ≥ β₂ ≥ ... ≥ βₙ and each cᵢ < ω, but proves only `True`. This is a conscious stub: the actual formalization exists in Mathlib as `Ordinal.CNF`. The comment points to this. The theorem would be proved by transfinite induction: for α = 0, the empty sum; for successor α = β+1, prepend; for limit α, use the supremum of normal forms below α. Each step requires the ordinal arithmetic operations and the uniqueness of base-ω representation.",

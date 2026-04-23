@@ -195,7 +195,7 @@
     "type": "insight",
     "range": {
       "startLine": 320,
-      "endLine": 352
+      "endLine": 326
     },
     "title": "Bounds Summary",
     "content": "**erdos_82_bounds_summary** is a proved theorem combining both known bounds:\n1. F(n) ≥ (1/2)log₂(n) from Ramsey theory (F_ramsey_lower)\n2. F(n) ≤ C·√n·(log n)^{O(1)} from Alon-Krivelevich-Sudakov (aks_upper_bound)\n\nProof: `exact ⟨F_ramsey_lower, aks_upper_bound⟩`\n\nThe problem remains OPEN with a large gap between log(n) and √n.",

@@ -50,7 +50,7 @@
   {
     "id": "ann-noncommutative-sorry",
     "proofId": "hurwitz-theorem-oq-03-oq-01",
-    "range": { "startLine": 81, "endLine": 115 },
+    "range": { "startLine": 81, "endLine": 113 },
     "type": "insight",
     "title": "The Non-Commutative Sorry: Two Paths to Quaternion-Octonion Restriction",
     "content": "`hurwitz_only_if_ring` extends to all `NormedDivisionRing A` (associative) with `[Module.Finite ℝ A]`. The sorry (line 115) represents the non-commutative hard case. The inline proof sketch (lines 103-114) outlines the resolution:\n\n**Path 1: NSquareIdentity reduction** (lines 106-112): Choose an orthonormal basis {e₁,...,eₙ} of A as ℝ-vector space. Define multiplication in coordinates via mul a b := basis coordinates of (Σ aᵢeᵢ)·(Σ bᵢeᵢ). The norm-multiplicativity ‖xy‖ = ‖x‖·‖y‖ then gives normSq a × normSq b = normSq(mul a b) — exactly `NSquareIdentity n`. Apply `HurwitzTheorem.hurwitz_only_if` (an axiom in the parent file).\n\n**Path 2: Clifford algebras** (lines 89-92): The (n-1) imaginary unit elements of A satisfy eᵢeⱼ + eⱼeᵢ = -2δᵢⱼ (Clifford relations on ℝ^(n-1)), giving a real n-dim representation of Cl(n-1). The Radon-Hurwitz constraint forces n ∈ {1,2,4,8}.\n\n**Frobenius' theorem note** (lines 97-99): For ASSOCIATIVE real division algebras, only ℝ, ℂ, ℍ (dims 1,2,4) are possible. The octonions (dim 8) need non-associativity beyond `NormedDivisionRing`. So the sorry, once resolved, actually gives a stronger result: `finrank ℝ A ∈ {1, 2, 4}` for associative A, and the `8` entry is vacuously included.",

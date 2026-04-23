@@ -74,7 +74,7 @@
   {
     "id": "ann-minpoly-vec-divisibility-proof",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-01",
-    "range": { "startLine": 181, "endLine": 267 },
+    "range": { "startLine": 181, "endLine": 265 },
     "type": "technique",
     "title": "vec_minpoly_exists: Divisibility via Euclidean Contradiction + Degree Chain",
     "content": "Steps 3-4 of the main proof. Divisibility (μ | q for any annihilating q): by contradiction, assume r = q mod μ ≠ 0. The Euclidean identity q = (q mod μ) + μ·(q div μ) gives r(M)·v = q(M)·v - μ(M)·(q div μ)(M)·v = 0 - 0 = 0 (using annihilation of both q and μ). But deg(r) < deg(μ), contradicting minimality of deg(μ). Therefore μ | q. Degree bound (μ.natDegree ≤ n): q₀.degree ≤ μ_M.degree (since μ_M ∈ Ann), and μ_M.natDegree ≤ charpoly.natDegree = n via the divisibility chain. The closing summary comment (lines 250-267) reviews all 9 theorems.",
