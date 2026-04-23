@@ -128,14 +128,14 @@
   },
   "crossReferences": [
     {
-      "id": "godel-first-incompleteness-oq01",
+      "targetId": "godel-first-incompleteness-oq01",
       "relationship": "prerequisite",
-      "note": "Imported directly; second_incompleteness uses G_not_provable from this file"
+      "description": "Imported directly; second_incompleteness uses G_not_provable from this file"
     },
     {
-      "id": "godel-incompleteness",
+      "targetId": "godel-incompleteness",
       "relationship": "companion",
-      "note": "Original pedagogical scaffold; all three files together give the complete incompleteness picture"
+      "description": "Original pedagogical scaffold; all three files together give the complete incompleteness picture"
     }
   ],
   "mainTheorems": [

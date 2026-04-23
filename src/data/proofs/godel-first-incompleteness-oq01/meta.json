@@ -132,9 +132,9 @@
   },
   "crossReferences": [
     {
-      "id": "godel-incompleteness",
+      "targetId": "godel-incompleteness",
       "relationship": "companion",
-      "note": "Pedagogical scaffold using Provable := fun _ => False; proofs hold vacuously. This file provides the non-vacuous axiomatic version."
+      "description": "Pedagogical scaffold using Provable := fun _ => False; proofs hold vacuously. This file provides the non-vacuous axiomatic version."
     }
   ],
   "mainTheorems": [
