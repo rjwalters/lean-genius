@@ -1841,14 +1841,10 @@ private lemma sperner_grid_one {N : ℕ} (hN : 0 < N)
   have hks1_color : c (v ⟨k_star.val + 1, by omega⟩) = 1 := by
     have hns : (⟨k_star.val + 1, by omega⟩ : Fin (N + 1)) ∉ S := by
       intro hmem
-      -- k_star = S.max' hS_ne; by maximality, ⟨k_star.val+1, _⟩ ≤ S.max' ⟨_, hmem⟩
-      -- Then proof irrelevance equates the two max' witnesses
-      have hle : (⟨k_star.val + 1, by omega⟩ : Fin (N + 1)) ≤
-          S.max' ⟨⟨k_star.val + 1, by omega⟩, hmem⟩ :=
-        Finset.le_max' S _ hmem
-      have heq : S.max' ⟨⟨k_star.val + 1, by omega⟩, hmem⟩ = k_star :=
-        congr_arg S.max' (Subsingleton.elim _ _)
-      exact absurd (heq ▸ hle) (by omega)
+      have hle := Finset.le_max' S hS_ne hmem
+      -- Fin le is definitionally Nat le, so extract as Nat inequality
+      have h_nat : k_star.val + 1 ≤ k_star.val := hle
+      omega
     have hne : c (v ⟨k_star.val + 1, by omega⟩) ≠ 0 := by
       intro h
       exact hns (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩)
@@ -1864,8 +1860,7 @@ private lemma sperner_grid_one {N : ℕ} (hN : 0 < N)
                       else v ⟨k_star.val + 1, by omega⟩
     incDir := fun _ => ⟨1, by omega⟩
     miss := ⟨0, by omega⟩
-    miss_ne_inc := fun _ => by
-      intro h; exact absurd (Fin.ext_iff.mp h) (by norm_num)
+    miss_ne_inc := fun _ => by decide
     step_inc := fun k => by
       fin_cases k
       show (v ⟨k_star.val + 1, by omega⟩).coords ⟨1, by omega⟩ =
@@ -1880,8 +1875,8 @@ private lemma sperner_grid_one {N : ℕ} (hN : 0 < N)
     step_same := fun k j hj1 hj2 => by
       fin_cases k
       fin_cases j
-      · exact absurd (Fin.ext rfl) hj2  -- j = miss = 0, contradiction
-      · exact absurd (Fin.ext rfl) hj1  -- j = incDir k = 1, contradiction
+      · exact absurd rfl hj2  -- j = miss = 0, contradiction
+      · exact absurd rfl hj1  -- j = incDir k = 1, contradiction
     inc_injective := fun a _b _h => Subsingleton.elim a _ }, ?_⟩
   -- Panchromatic: color 0 at v(k*), color 1 at v(k*+1)
   intro col
