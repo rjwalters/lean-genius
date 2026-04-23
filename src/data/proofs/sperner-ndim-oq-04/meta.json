@@ -30,12 +30,16 @@
       "Definition of KuhnState structure for path-following algorithm",
       "Definition of kuhnWalk with fuel parameter (termination by fuel bound)",
       "Definition of kuhnPathStart as entry point for boundary door",
-      "Preservation of door property across adjacency steps (door_transfer application)"
+      "Preservation of door property across adjacency steps (door_transfer application)",
+      "Definition of KuhnStateValid: 3-part path invariant for non-revisiting argument",
+      "Proof kuhnState_initial_valid: initial boundary-door state satisfies KuhnStateValid",
+      "Proof guard_entry_case_impossible: Case A non-revisiting via adj_symm contradiction",
+      "Proof guard_current_impossible: walk never steps to current via adj_ne"
     ],
     "dateAdded": "2026-04-22",
     "axiomCount": 0,
-    "lineCount": 437,
-    "assumptions": "1 sorry: kuhn_walk_reaches_fc — walk correctness requires the non-revisiting invariant (door graph component containing a boundary door is a path, not a cycle). kuhn_path_terminates and kuhnPathStart_is_fc are now fully proved. The non-sorry content (fc_door_count_eq_one, nonfc_door_count_zero_or_two, nonfc_with_door_has_unique_exit, kuhn_path_terminates, kuhnPathStart_is_fc) is fully verified.",
+    "lineCount": 496,
+    "assumptions": "1 sorry: kuhn_walk_reaches_fc — walk correctness requires the non-revisiting invariant (door graph component containing a boundary door is a path, not a cycle). Case A of non-revisiting is now proved (guard_entry_case_impossible). Case B requires per-simplex path history beyond the visited set. kuhn_path_terminates and kuhnPathStart_is_fc are proved. All other theorems (fc_door_count_eq_one, nonfc_door_count_zero_or_two, nonfc_with_door_has_unique_exit) are fully verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

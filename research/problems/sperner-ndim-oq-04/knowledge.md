@@ -4,7 +4,7 @@
 
 Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following in the door adjacency graph. Key goal: starting from a boundary door, follow the unique path to reach a fully-colored simplex.
 
-**Status**: ACT — 3 sorries → 2 sorries. `kuhn_path_terminates` proved via `sperner_ndim`.
+**Status**: ACT — 1 sorry remains (`kuhn_walk_reaches_fc`). `kuhn_path_terminates` and `kuhnPathStart_is_fc` proved (PR #11622). Non-revisiting infrastructure (KuhnStateValid) added in Session 3.
 **Gallery entry**: `src/data/proofs/sperner-ndim-oq-04/`
 **Lean file**: `proofs/Proofs/SpernerNDimOQ04.lean`
 
@@ -106,3 +106,53 @@ Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following
 2. **Strengthen KuhnState**: Add per-visited-simplex entry/exit door records (path invariant)
 3. **Prove kuhnWalk_never_revisits**: Using the two additions above
 4. **Then kuhn_walk_reaches_fc and kuhnPathStart_is_fc** follow from non-revisiting
+
+---
+
+## Session 2026-04-23 (Session 3) — Non-Revisiting Infrastructure
+
+**Mode**: REVISIT
+**Outcome**: progress — KuhnStateValid infrastructure proved, 1 sorry remains
+
+### What I Did
+
+1. Confirmed current sorry count: 1 (only `kuhn_walk_reaches_fc`); sessions 1-2 + PR #11622 proved the other 2
+2. Added non-revisiting infrastructure (Section VIII) to SpernerNDimOQ04.lean (~59 new lines):
+   - `KuhnStateValid`: 3-part path invariant for the Kuhn walk
+   - `kuhnState_initial_valid`: proves initial state (boundary door, empty visited) satisfies KuhnStateValid
+   - `guard_entry_case_impossible`: Case A of non-revisiting — if s' ∈ visited and k' = s''s entry door, adj_symm forces contradiction via current_not_visited
+   - `guard_current_impossible`: adj_ne rules out stepping to current itself
+3. Updated `kuhn_walk_reaches_fc` signature to take `hvalid : KuhnStateValid c K state`
+4. Updated `kuhnPathStart_is_fc` to construct `hvalid` via `kuhnState_initial_valid`
+5. Build verified: 7.9s recompile, all new code type-checks, 1 sorry as expected
+
+### Key Findings
+
+- `adj_symm` is functional: `K.adj s k = some (s', k') → K.adj s' k' = some (s, k)` uniquely. This closes Case A: if s' revisited via k' = its entry door, then its predecessor = current ∈ visited, contradicting `current_not_visited`.
+- `adj_ne` immediately rules out s' = current (the walk cannot step to itself).
+- **Case B remains unproved**: if k' = s''s EXIT door (not entry), deriving a contradiction requires knowing that when s' was current, it exited via k' toward current — i.e., full walk sequence history, not just the visited set.
+- **KuhnStateValid is necessary but not sufficient**: captures that every visited simplex has a predecessor, but the walk proof needs to also know which door s' exited through (not just that it exists in visited).
+- **Next architectural fix**: extend KuhnState with `prev : Option (K.Simplex × Fin (d+1))` tracking (previous simplex, exit door), enabling the Case B contradiction.
+
+### Files Modified
+
+- `proofs/Proofs/SpernerNDimOQ04.lean` (MODIFIED, 437→496 lines)
+- `src/data/proofs/sperner-ndim-oq-04/meta.json` (UPDATED: lineCount 437→496, new originalContributions)
+- `research/problems/sperner-ndim-oq-04/knowledge.md` (this file)
+
+### Proven This Session
+
+5. `kuhnState_initial_valid` — initial state satisfies KuhnStateValid
+6. `guard_entry_case_impossible` — Case A of non-revisiting (adj_symm closes cycle)
+7. `guard_current_impossible` — walk never steps to current (adj_ne)
+
+### Remaining Sorry (1)
+
+- `kuhn_walk_reaches_fc` — needs Case B of non-revisiting + boundary-door uniqueness
+
+### Next Steps
+
+1. **Extend KuhnState**: Add `prev : Option (K.Simplex × Fin (d+1))` field to track the previous simplex and exit door
+2. **Add prev_leads_to_current invariant**: `prev = some (s_prev, k_prev) → K.adj s_prev k_prev = some (current, entry)`
+3. **Prove Case B with prev field**: When s' ∈ visited and k' = s''s exit door, use prev to derive current ∈ visited → contradiction
+4. **Boundary door uniqueness**: Add axiom that only one boundary door exists per walk component (needed to rule out case (4) in kuhn_walk_reaches_fc)
