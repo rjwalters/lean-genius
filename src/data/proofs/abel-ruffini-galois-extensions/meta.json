@@ -151,6 +151,11 @@
       "targetId": "abel-ruffini-oq-04-oq-03",
       "relationship": "related",
       "description": "Galois's Solvability Criterion: a root is solvable by radicals $\\iff$ its Galois group is solvable. This entry proves the forward direction from Mathlib and axiomatizes the reverse (Kummer theory). Complementary to this file's `not_solvable_by_rad_of_not_solvable_galois` (contrapositive form) and the `galois_group_order` result."
+    },
+    {
+      "targetId": "inverse-galois-oq-01",
+      "relationship": "sibling",
+      "description": "Inverse Galois Problem: Non-Solvable Frontier — independently proves the same biconditionals ($S_n$ solvable $\\iff n \\leq 4$, $A_n$ solvable $\\iff n \\leq 4$, $A_5$ simple) from the Inverse Galois Problem perspective. Where this file uses these results to explain quintic unsolvability (Abel-Ruffini), that entry uses them to delimit which groups can appear as Galois groups over $\\mathbb{Q}$ — two complementary perspectives on the same structural boundary at $n = 4$."
     }
   ],
   "references": [
