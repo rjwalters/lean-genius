@@ -38,7 +38,7 @@
     ],
     "dateAdded": "2026-04-22",
     "axiomCount": 0,
-    "lineCount": 430,
+    "lineCount": 408,
     "assumptions": "2 sorries: (1) kuhn_walk_reaches_fc — non-revisiting invariant for the Kuhn walk (door graph component containing a boundary vertex is a path, not a cycle); (2) kuhnPathStart_is_fc — the simplex found by kuhnPathStart is fully colored (blocked on kuhn_walk_reaches_fc). All other theorems (fc_door_count_eq_one, nonfc_door_count_zero_or_two, nonfc_with_door_has_unique_exit, KuhnStateValid infrastructure, kuhn_path_terminates via sperner_ndim) are fully verified.",
     "mathlib_version": "4.26.0"
   },
@@ -255,7 +255,7 @@
       "BigOperators"
     ],
     "namespace": "SpernerNDimOQ04",
-    "lineCount": 430,
+    "lineCount": 408,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 5,
