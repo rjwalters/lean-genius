@@ -86,7 +86,7 @@
   {
     "id": "ann-sqrt2oq02-examples",
     "proofId": "sqrt2-minpoly-oq-02",
-    "range": { "startLine": 174, "endLine": 204 },
+    "range": { "startLine": 174, "endLine": 202 },
     "type": "insight",
     "title": "Concrete Examples: ∛6, ∛10, ⁵√12, ∜30",
     "content": "Four concrete applications verify the general theorem for composite (non-prime) numbers, showing the Eisenstein condition applies at different primes:\n\n- **∛6** ($n=3$, $m=6$, $p=2$): $2 \\mid 6$ and $4 \\nmid 6$, so $[\\mathbb{Q}(\\sqrt[3]{6}) : \\mathbb{Q}] = 3$\n- **∛10** ($n=3$, $m=10$, $p=2$): $2 \\mid 10$ and $4 \\nmid 10$, so $[\\mathbb{Q}(\\sqrt[3]{10}) : \\mathbb{Q}] = 3$\n- **⁵√12** ($n=5$, $m=12$, $p=3$): $3 \\mid 12$ and $9 \\nmid 12$, so $[\\mathbb{Q}(\\sqrt[5]{12}) : \\mathbb{Q}] = 5$ — note $p=3$ is used, not $p=2$, since $4 \\mid 12$\n- **∜30** ($n=4$, $m=30$, $p=2$): $2 \\mid 30$ and $4 \\nmid 30$, so $[\\mathbb{Q}(\\sqrt[4]{30}) : \\mathbb{Q}] = 4$\n\nEach proof is just `adjoin_nthRoot_finrank` applied with the right numerical witnesses, closed by `norm_num`. The compactness of these proofs (2 lines each) shows the payoff of the general theorem.",

@@ -86,7 +86,7 @@
   {
     "id": "ann-e536-structure",
     "proofId": "erdos-536",
-    "range": { "startLine": 82, "endLine": 84 },
+    "range": { "startLine": 82, "endLine": 83 },
     "type": "concept",
     "title": "LCM Divisibility Structure Lemma",
     "content": "**lcm_structure**: Axiomatizes that if $\\text{HasEqualPairwiseLCM}(a, b, c)$ and $[a,b] = L$, then $a \\mid L$, $b \\mid L$, and $c \\mid L$. This follows from the definition of LCM: $[a,b] = L$ implies $a \\mid L$ and $b \\mid L$, and $[a,c] = L$ implies $c \\mid L$. The lemma shows that an LCM triple must consist of three divisors of a common value.",

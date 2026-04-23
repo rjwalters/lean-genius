@@ -110,7 +110,7 @@
   {
     "id": "ann-cube-unique-axiom-audit",
     "proofId": "dissection-of-cubes-oq-04",
-    "range": { "startLine": 365, "endLine": 437 },
+    "range": { "startLine": 365, "endLine": 436 },
     "type": "insight",
     "title": "cube_unique_zero_dehn (Partial) and Axiom Audit",
     "content": "cube_unique_zero_dehn (lines 367-396) attempts the stronger statement: for ANY positive integer n and any non-cube Platonic dihedral angle x, the edge term n·a ⊗ [x] is nonzero. This requires a general scaling lemma: if a ⊗ [θ] ≠ 0 and c > 0, then ca ⊗ [θ] ≠ 0. The three sorries (lines 390, 393, 396) are exactly this step for octahedron, dodecahedron, and icosahedron angles. The main theorem cube_isolated_dehn_invariant (fully proved) already captures the key mathematical content; cube_unique_zero_dehn is a generalization in progress.\n\nThe axiom audit (lines 398-429) formally inventories both axioms with justifications: `icoAngle_irrational` (new to this file; the deferred ℤ[√5] Chebyshev argument) and `tmul_infinite_order_ne_zero` (inherited from OQ02OQ02; flatness of ℝ over ℤ). The `#check` lines (431-435) provide Lean elaboration verification.",
