@@ -10,7 +10,13 @@
       "number-theory",
       "collatz",
       "stopping-time",
-      "research"
+      "research",
+      "2-adic",
+      "asymptotic-analysis",
+      "open-problem",
+      "noncomputable",
+      "ergodic-theory",
+      "random-walk"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -22,7 +28,41 @@
     "dateAdded": "2026-03-30",
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Collatz_conjecture#Stopping_time",
-    "date": "Terras 1976, Lagarias 1985; formalized 2026"
+    "date": "Terras 1976, Lagarias 1985; formalized 2026",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.find",
+        "description": "Classical minimum witness extraction — used to define stoppingTime as the least k with T^k(n) = 1",
+        "module": "Mathlib.Data.Nat.Find"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite summation over Finset.range N — used in totalStoppingTime",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit / convergence along a filter — used to state avgStoppingTimeAsymptotic and exactConstant",
+        "module": "Mathlib.Topology.Filter"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm — used in heuristicConstant and all three convergence props",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Nat.find_eq_iff",
+        "description": "Characterizes Nat.find as the minimum witness — used in stoppingTime_two proof",
+        "module": "Mathlib.Data.Nat.Find"
+      }
+    ],
+    "originalContributions": [
+      "stoppingTime: Lean 4 formalization of the Collatz stopping time via Nat.find with noncomputable classical choice and sentinel 0 for potentially divergent orbits",
+      "avgStoppingTime: real-valued average stopping time S(N) = (1/N)Σσ(n) formalized as a noncomputable real function",
+      "heuristicConstant: the probabilistic constant c = 1/log₂(4/3) ≈ 6.95 formalized as a Lean real number",
+      "avgStoppingTimeAsymptotic / logarithmicGrowth / exactConstant: three levels of precision for the open conjecture, each a well-typed Lean Prop serving as a formal specification for future proofs",
+      "terras_density axiomatization: Terras's 1976 density-1 result stated precisely in Lean as an ∀ε statement over Finset.filter cardinalities"
+    ]
   },
   "overview": {
     "historicalContext": "The Collatz conjecture (1937, attributed to Lothar Collatz) asks whether every positive integer eventually reaches 1 under the iteration $n \\mapsto n/2$ (n even) or $n \\mapsto 3n+1$ (n odd). Despite its elementary statement, it remains unsolved. The *stopping time* $\\sigma(n)$ — the number of steps to reach 1 — varies wildly: $\\sigma(27) = 111$ while $\\sigma(28) = 18$. Terras (1976) proved the first density result: $\\sigma(n) < \\infty$ for a set of integers of density 1, meaning almost all $n$ eventually reach 1 even without knowing the conjecture is fully true. Krasikov and Lagarias (2003) strengthened this to: the number of $n \\leq N$ with $\\sigma(n) < \\infty$ is at least $N^{0.84}$. The *average* stopping time $S(N) = \\frac{1}{N}\\sum_{n=1}^N \\sigma(n)$ is predicted by the probabilistic heuristic to grow as $c \\cdot \\log N$ where $c = 1/\\log_2(4/3) \\approx 6.95$. This heuristic treats Collatz as a random walk: each step either halves $n$ (prob. 1/2) or multiplies by $3/2$ (prob. 1/2), giving a geometric decay in the expected value of $\\log n$. Whether $S(N)/\\log N$ converges to $c$ remains open.",

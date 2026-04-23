@@ -45,9 +45,8 @@
     "assumptions": "hypergraph_regularity_lemma (Gowers 2007, Rödl–Skokan 2004): the existence of a regular partition is stated as a sorry pending the full formalization."
   },
   "overview": {
-    "historicalContext": "Szemerédi's graph regularity lemma (1978) was extended to k-uniform hypergraphs by Rödl–Skokan (2004) and Gowers (2007) independently, each proving a hypergraph regularity lemma with applications to the multidimensional Szemerédi theorem. The key difficulty is that naive ε-regularity for hypergraphs (as formalized in SzemerediHypergraphCore.lean) is insufficient for the counting lemma: unlike in graphs, controlling the density between large vertex subsets does not guarantee density control for embedded cliques. Gowers introduced regularity relative to a simplicial (k-1)-complex — requiring density to be stable when restricting to dense sub-complexes — and used it to prove that every set of positive upper density contains a k-dimensional arithmetic progression (Gowers 2007, Annals). The counting lemma for regular hypergraphs was independently developed by Nagle–Rödl–Schacht (2006), and the tower-type bounds in the regularity lemma were shown nearly tight by Gowers.",
+    "historicalContext": "Szemerédi's graph regularity lemma (1978) decomposed any dense graph into quasi-random bipartite pieces, enabling the k=3 case of the arithmetic progression theorem via the triangle removal lemma. Extending this to k-uniform hypergraphs — needed for k≥4 arithmetic progressions — proved substantially harder. The naive generalisation (density between large vertex-subsets) is insufficient: unlike graphs, it does not control density for embedded cliques.\n\nGowers (2007) and Rödl–Skokan (2004) independently resolved this by introducing regularity *relative to a simplicial complex*. A k-uniform hypergraph is Gowers-regular when its edge density is stable under restriction to any dense sub-(k-1)-complex. The key payoff is the hypergraph counting lemma (Nagle–Rödl–Schacht 2006): Gowers-regular hypergraphs contain the expected count of embedded complete hypergraphs. Together, these give the multidimensional Szemerédi theorem: every set of positive upper density contains a k-dimensional arithmetic progression.\n\nGowers received the Fields Medal in 1998 for his earlier work on quantitative bounds in Szemerédi's theorem (using higher-order Fourier analysis / Gowers norms), predating the hypergraph regularity paper. The wowzer-type bounds in the hypergraph regularity lemma — a tower of towers — were shown by Gowers to be essentially necessary, making it one of the most extreme known examples of a mathematically natural but computationally intractable result.\n\nFurstenberg and Katznelson gave an independent ergodic-theoretic proof of the multidimensional Szemerédi theorem (1978), avoiding hypergraph regularity entirely. The two approaches — regularity and ergodic — remain the two main proof strategies, with Gowers' quantitative bounds being inaccessible to the ergodic method.",
     "problemStatement": "**Open Question from SzemerediHypergraphCore.lean**:\n\nDefine the `SimplicialComplex` infrastructure for the full Gowers (2007) relative regularity:\n1. `SimplicialComplex`: nested family of j-graphs with downward closure\n2. `relativeDensity`: density of k-graph conditioned on the (k-1)-complex\n3. `IsGowersRegular`: ε-regularity relative to a complex\n\nThis was listed as a follow-up direction in SzemerediHypergraphCore.lean.",
-    "text": "Defines the complete infrastructure for Gowers-type hypergraph regularity.",
     "proofStrategy": "**SimplicialComplex** is a record type with: a Finset of faces, a proof all faces are nonempty, and downward closure.\n\n**CompleteKLinks** filters k-element subsets of V by the condition that every nonempty proper subset is a face of the complex. This generalizes the notion of 'transversal' from the naive k-partite density.\n\n**relativeDensity** counts the fraction of complete k-links that are hyperedges. This is the quantity Gowers proves is stable under restriction to dense sub-complexes.\n\n**IsGowersRegular** formalizes the stability property: for any δ > 0 and δ-dense sub-complex C', |d(H|C) - d(H|C')| ≤ ε.\n\nKey theorem (with sorry): The hypergraph regularity lemma — existence of a Gowers-regular partition for any ε > 0.",
     "keyInsights": [
       "The downward closure axiom in SimplicialComplex is the key structure that distinguishes it from an arbitrary family of sets.",
@@ -114,14 +113,47 @@
       "targetId": "szemeredi-core",
       "relationship": "generalizes",
       "description": "The graph regularity IsEpsilonRegular in SzemerediCore.lean is the k=2 special case of IsGowersRegular when the complex is the complete bipartite structure."
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "analogizes",
+      "description": "The graph regularity machinery (energy increment, density convexity) in szemeredi-regularity follows the same structural pattern as the hypergraph regularity lemma here. Both rely on an energy function that increases on each refinement step, with wowzer-type bounds in the hypergraph case."
+    },
+    {
+      "targetId": "szemeredi-counting",
+      "relationship": "enables",
+      "description": "The hypergraph counting lemma (szemeredi-counting) generalizes to k-uniform hypergraphs only under Gowers' relative regularity, not naive regularity. The SimplicialComplex and relativeDensity defined here are direct prerequisites for formalizing the hypergraph counting lemma."
+    },
+    {
+      "targetId": "szemeredi-full",
+      "relationship": "foundational",
+      "description": "The full Szemerédi theorem assembly (szemeredi-full) axiomatizes the k≥4 case. Replacing that sorry with a proof would require the hypergraph regularity machinery formalized here, plus the hypergraph counting lemma, plus the inverse theorem for Gowers norms."
+    },
+    {
+      "targetId": "szemeredi-hypergraph-core-oq-01-incomplete-01",
+      "relationship": "sibling",
+      "description": "A parallel formalization of the same Gowers infrastructure using a stratified (indexed-by-level) approach instead of a flat SimplicialComplex. The two approaches trade different proof obligations; comparing them reveals the design space for hypergraph regularity formalization."
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "generalizes",
+      "description": "The k=3 Szemerédi theorem (Roth's theorem) follows from graph regularity alone. The hypergraph regularity machinery here is required for k≥4, making szemeredi-theorem a special case that avoids all this complexity."
     }
   ],
   "conclusion": {
-    "summary": "Provides the missing infrastructure for Gowers hypergraph regularity: SimplicialComplex, CompleteKLinks, relativeDensity, and IsGowersRegular. The key theorem (hypergraph_regularity_lemma) is stated with sorry, marking an honest boundary for current formalization.",
-    "implications": "With this infrastructure in place, the multidimensional Szemerédi theorem (SzemerediFull) could in principle be connected to the hypergraph framework. The key remaining work is proving the regularity lemma itself — a tower-type existence result requiring substantial combinatorial argument.",
+    "summary": "Provides the missing infrastructure for Gowers hypergraph regularity: SimplicialComplex, CompleteKLinks, relativeDensity, and IsGowersRegular. The key theorem (hypergraph_regularity_lemma) is stated with sorry, marking an honest boundary for current formalization. This is the first Lean 4 formalization of the Gowers relative regularity framework.",
+    "implications": [
+      "**Path to multidimensional Szemerédi**: This infrastructure is the first of three components needed to formalize the full multidimensional Szemerédi theorem in Lean 4. The other two are the hypergraph counting lemma (Nagle–Rödl–Schacht 2006) and the hypergraph regularity lemma itself — a wowzer-type existence argument.",
+      "**Design space for regularity notions**: By formalizing both naive regularity (SzemerediHypergraphCore.lean) and Gowers relative regularity here, the gallery exposes why the naive notion fails for the counting lemma and what the minimal additional structure (SimplicialComplex) needed to fix it is.",
+      "**Correctness boundary marker**: The sorry in hypergraph_regularity_lemma serves as a formal machine-checked boundary: everything above it is fully verified, and the gap to the full theorem is precisely the regularity lemma proof. This is more informative than either omitting the lemma or proving it from an axiom.",
+      "**Template for future hypergraph formalizations**: The SimplicialComplex + CompleteKLinks + relativeDensity triple could be reused in formalizations of the density Hales-Jewett theorem (Furstenberg–Katznelson 1991) and the polynomial Szemerédi theorem (Bergelson–Leibman 1996), both of which use analogous regularity/density frameworks."
+    ],
     "openQuestions": [
-      "Can the hypergraph counting lemma be formalized using these definitions? (Nagle–Rödl–Schacht 2006 requires verifying density estimates for regular hypergraphs)",
-      "What is the tower-height bound in hypergraph_regularity_lemma? Is it provably necessary (Gowers 2007 shows a wowzer-type lower bound)?"
+      "Can the hypergraph counting lemma be formalized using these definitions? (Nagle–Rödl–Schacht 2006 requires verifying density estimates for regular hypergraphs via an intricate induction on k)",
+      "What is the tower-height bound in hypergraph_regularity_lemma? Is it provably necessary? (Gowers 2007 shows a wowzer-type lower bound — a tower of towers — distinguishing hypergraph from graph regularity)",
+      "Can `IsGowersRegular` serve as a bridge to the Furstenberg ergodic approach? The two proofs of the multidimensional Szemerédi theorem (regularity vs. ergodic) give no quantitative bounds in the ergodic case — is there a formal connection exploitable in Lean 4?",
+      "Can the stratified approach in szemeredi-hypergraph-core-oq-01-incomplete-01 be proved equivalent to the flat SimplicialComplex approach here? Showing isomorphism between the two formalizations would give a verified correctness certificate.",
+      "Does the density Hales-Jewett theorem require a richer notion of simplicial complex (with labelled faces for combinatorial lines) that would extend the SimplicialComplex structure here?"
     ]
   },
   "leanFile": {

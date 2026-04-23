@@ -328,6 +328,21 @@
       "description": "Proves Vieta's formulas for the three Cardano roots of $x^3 + px + q = 0$ (sum $= 0$, pairwise products $= p$, triple product $= -q$) and the complete factorization into linear factors. This is the positive constructive counterpart to Abel-Ruffini: Cardano's formula works because $S_3$ is solvable ($S_3 \\triangleright A_3 \\cong \\mathbb{Z}/3 \\triangleright \\{e\\}$), and Vieta's formulas express the symmetric functions of roots that the Galois group permutes"
     },
     {
+      "targetId": "solution-of-cubic-oq-03-oq-01",
+      "relationship": "foundational",
+      "description": "Formalizes the discriminant $\\Delta = -4p^3 - 27q^2 = (x_1-x_2)^2(x_1-x_3)^2(x_2-x_3)^2$ of the depressed cubic $x^3+px+q=0$ and its connection to root nature. The discriminant criterion is central to Abel-Ruffini: $\\text{Gal}(f) \\subseteq A_n$ iff $\\Delta(f)$ is a perfect square in $F$. For the quintic examples used to instantiate `not_solvable_by_rad_of_not_solvable_gal` — e.g., $x^5 - x - 1$ with $\\Delta = 2869 = 19 \\times 151$ (not a perfect square) — the non-square discriminant immediately forces $\\text{Gal}(f) \\not\\subseteq A_5$. This cubic formalization provides the foundational discriminant machinery on which quintic Galois group computations build"
+    },
+    {
+      "targetId": "solution-of-cubic-oq-03-oq-02",
+      "relationship": "complementary",
+      "description": "Formalizes the casus irreducibilis: when $x^3+px+q=0$ has three distinct real roots ($\\Delta > 0$), Cardano's formula necessarily involves non-real complex cube roots even though all roots are real. This illustrates that radical expressibility (Abel-Ruffini) is subtler than existence of real solutions: even when a radical formula exists (as for the cubic, since $S_3$ is solvable), the formula may require complex intermediate values. The casus irreducibilis foreshadows Abel-Ruffini's impossibility at degree 5, where no radical formula exists at all"
+    },
+    {
+      "targetId": "solution-of-cubic-oq-03-oq-03",
+      "relationship": "complementary",
+      "description": "Proves that Ferrari's resolvent cubic for the quartic reduces to a depressed cubic solvable by Cardano's formula, completing the quartic-cubic-Cardano solution chain. Lagrange's 1770 analysis (described in this entry's historicalContext) studied resolvents precisely: the resolvent of a cubic has degree 2 (solvable by square roots), the resolvent of a quartic has degree 3 (solvable by Cardano), but the resolvent of a quintic has degree 6 — higher, not lower — which is the sign that no radical formula can exist. This entry formalizes the quartic resolvent step that succeeds; Abel-Ruffini explains why the corresponding quintic step fails"
+    },
+    {
       "targetId": "nth-root-irrational",
       "relationship": "foundational",
       "description": "The irrationality of $\\sqrt[n]{m}$ for non-perfect-power $m$ is the simplest instance of the radical extension phenomenon central to Abel-Ruffini: each adjunction $\\mathbb{Q}(\\sqrt[n]{m})/\\mathbb{Q}$ produces a degree-$n$ extension with cyclic Galois group $\\mathbb{Z}/n\\mathbb{Z}$ (solvable). Abel-Ruffini's impossibility arises when the full Galois group $S_5$ cannot be decomposed into such cyclic layers — the irrationality barrier ($\\sqrt[n]{m} \\notin \\mathbb{Q}$) is the first level of the expressibility hierarchy discussed in the conclusion"
