@@ -186,3 +186,47 @@ The remaining sorry covers **even non-admissible n** (n = 6, 10, 12, ...):
 1. **Attempt halving argument**: prove `halving_lemma`: NSquareIdentity n → NSquareIdentity (n/2). Key: block-matrix decomposition. If proved, recursion closes all even non-admissible cases.
 2. **If halving works**: hurwitz_only_if fully proved with 0 sorries
 3. **If halving blocks**: document as HARD blocker, set problem status to blocked
+
+---
+
+## Session 2026-04-23 (Session 4) — crossMat_sq_neg_one + Even-n Blocker Analysis
+
+**Mode**: REVISIT (continuing session 3)
+**Outcome**: PROGRESS — proved `crossMat_sq_neg_one`, confirmed even-n BLOCKED, embedded Bott periodicity table in sorry comment
+
+### What I Did
+
+1. Proved `crossMat_sq_neg_one` (M² = -I): extracted from implicit proof in `no_odd_nsquare`. 12 lines.
+2. Used `crossMat_sq_neg_one` to simplify `no_odd_nsquare` (4-line inline proof → 1-line application).
+3. Exhaustively analyzed paths to eliminate the even-n sorry — all require Clifford algebra structure theorem:
+   - Halving argument: insufficient for n=16,32,... (powers of 2 ≥ 16 reduce to admissible 8)
+   - Volume element P = M₁...M_{n-1}: commutes with M_j (not anticommutes), no contradiction
+   - Trace/det over ℝ: signs work out for even n, no contradiction
+   - Complexification: reduces to Cl_6(ℂ) simplicity (= Bott periodicity)
+4. Added precise Bott periodicity table to sorry comment.
+
+### Key Findings
+
+**Halving is insufficient for all even non-admissible n**: Handles n=6,10,12,14,... but NOT n=16,32,64,... (where repeated halving reaches admissible n=8).
+
+**Bott periodicity table (sole missing piece)**:
+| n  | Cl(0,n-1) | Min rep dim | Admissible? |
+|----|-----------|-------------|-------------|
+| 2  | ℂ         | 2           | ✓           |
+| 4  | ℍ         | 4           | ✓           |
+| 6  | M(4,ℂ)   | 8           | ✗           |
+| 8  | M(8,ℝ)²  | 8           | ✓           |
+| 10 | M(16,ℝ)  | 16          | ✗           |
+
+**Volume element P = M₁...M_{n-1}**: For n=2k (k odd), P² = -I. P commutes with all M_j. This is a complex structure, making M_j ℂ-antilinear — but showing 2k-2 ℂ-linear anticommuting maps can't exist in M_k(ℂ) requires Cl_{2k-2}(ℂ) being simple, which IS Bott periodicity.
+
+### Files Modified
+
+- `proofs/Proofs/HurwitzTheorem.lean` (+15 net: crossMat_sq_neg_one + improved sorry comment, 2042 lines total)
+- `src/data/research/problems/hurwitz-theorem-oq-03-oq-01.json`
+
+### Next Steps
+
+1. **Track Mathlib**: When Bott periodicity for Clifford algebras is formalized, sorry closes directly.
+2. **Gallery status**: Proof maximally complete — 1 sorry, 0 axioms, badge `wip`. No further progress possible without Clifford library.
+3. **Alternative**: Build Artin-Wedderburn for matrix algebras (~200 lines) as stepping stone toward Bott.
