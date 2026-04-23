@@ -1,7 +1,7 @@
 # Problem: Minkowski Fundamental Theorem — Custom Lattice API vs ZLattice Comparison
 
 **Slug**: minkowski-fundamental-theorem-oq-04
-**Created**: 2026-04-22
+**Created**: 2026-04-23
 **Status**: Active
 **Source**: gallery-gap
 
@@ -123,5 +123,8 @@ related_proofs:
   - minkowski-fundamental-theorem
 difficulty: low-medium
 source: gallery-gap
-created: 2026-04-22
+created: 2026-04-23
 ```
+
+**Significance**: 7/10
+**Tractability**: 7/10
