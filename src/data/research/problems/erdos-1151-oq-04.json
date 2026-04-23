@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: Session 6 complete. 2 sorries remain (lebesgue_growth + divergence_from_growth). New lemmas: x_not_chebyshev_node + chebyshev_lebesgue_eq_all_n prove formula applies for ALL n when q odd.",
+    "progressSummary": "PROGRESS: chebyshev_lebesgue_growth proved, 2 sorries remain (lb analytic bound + Banach-Steinhaus gap)",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -50,7 +50,11 @@
       "lagrange_basis_chebyshev_formula: explicit Lagrange basis via product formula — Erdos1151OQ04.lean:388",
       "chebyshev_lebesgue_eq: Lebesgue function explicit formula for ALL n when q odd — Erdos1151OQ04.lean:498",
       "x_not_chebyshev_node: parity lemma, cos(pi*p/q) != chebyshevNode n k for all n when p,q odd — Erdos1151OQ04.lean:534",
-      "chebyshev_lebesgue_eq_all_n: Lebesgue formula for all n when p,q odd — Erdos1151OQ04.lean:601"
+      "chebyshev_lebesgue_eq_all_n: Lebesgue formula for all n when p,q odd — Erdos1151OQ04.lean:601",
+      "chebyshev_lebesgue_growth: proved (Filter.tendsto_atTop_mono + C·log(n+1) → ∞)",
+      "chebyshev_lebesgue_lb: sorry — harmonic sum lower bound Λₙ(x) ≥ C·log(n+1)",
+      "cos_rational_pi_pos_min: ∃ δ > 0 s.t. |cos(nπp/q)| ≥ δ for all n (parity argument)",
+      "x_not_chebyshev_node: cos(πp/q) ≠ chebyshevNode n k for all n,k when p,q odd"
     ],
     "insights": [
       "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
@@ -65,13 +69,15 @@
       "Session 5 proved product formula, lagrange basis formula, and lebesgue_eq (sorries: 4→2)",
       "x_not_chebyshev_node: cos(pi*p/q) is NEVER a Chebyshev node when q is odd (parity: q*(2k+1) is odd, angle condition requires even = odd)",
       "chebyshev_lebesgue_eq_all_n: applies for ALL n when p,q odd (not just n=mq subsequence)",
-      "divergence_from_lebesgue_growth fundamental gap: Banach-Steinhaus only gives lim sup = inf, not lim = +inf; axiom may be overstated"
+      "divergence_from_lebesgue_growth fundamental gap: Banach-Steinhaus only gives lim sup = inf, not lim = +inf; axiom may be overstated",
+      "chebyshev_lebesgue_growth reduces to lb sorry via tendsto_atTop_mono — growth theorem itself is proved",
+      "Filter.tendsto_atTop_mono pattern: if f ≤ g pointwise and f → ∞ then g → ∞",
+      "let binding in Lean 4 requires explicit unfolding in simp: simp only [vals, ...]"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove harmonic sum lower bound: S(n) >= C*n*log(n) for the trig sum",
-      "Use chebyshev_lebesgue_eq_all_n + harmonic lower bound to prove chebyshev_lebesgue_growth",
-      "Assess whether divergence_from_lebesgue_growth needs weakening to lim sup = inf"
+      "chebyshev_lebesgue_lb: harmonic sum lower bound for S_n = Σ sin(φₖ)/|cos θ - cos φₖ| ≥ C·n·log(n+1)",
+      "divergence_from_lebesgue_growth: weaken to lim sup = ∞ (Banach-Steinhaus) or find explicit construction"
     ]
   },
   "tags": [
