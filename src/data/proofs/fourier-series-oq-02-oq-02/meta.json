@@ -2,12 +2,12 @@
   "id": "fourier-series-oq-02-oq-02",
   "title": "Fourier Coefficient Square-Summability via p-Series (Elementary Proof)",
   "slug": "fourier-series-oq-02-oq-02",
-  "description": "Elementary proof that Fourier coefficients of α-Hölder functions (α > 1/2) are square-summable, using only the Hölder decay bound and the p-series convergence criterion — no Parseval's theorem or L² theory required. 1 sorry (harmonic series sharpness), 0 axioms.",
+  "description": "Elementary proof that Fourier coefficients of α-Hölder functions (α > 1/2) are square-summable, using only the Hölder decay bound and the p-series convergence criterion — no Parseval's theorem or L² theory required. 0 sorries, 0 axioms.",
   "meta": {
     "author": "Classical result; formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fourier_series#Convergence",
     "date": "Classical",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/FourierSeriesOQ02OQ02.lean",
     "tags": [
       "harmonic-analysis",
@@ -17,8 +17,8 @@
       "comparison-test",
       "square-summability"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
     "mathlibDependencies": [
       {
@@ -65,7 +65,7 @@
     ],
     "dateAdded": "2026-04-23",
     "lineCount": 197,
-    "assumptions": "1 sorry: holder_half_is_critical_for_pseries (harmonic series divergence over ℤ). Main results 0 sorries.",
+    "assumptions": "0 sorries, 0 axioms. All theorems fully proved including holder_half_is_critical_for_pseries (harmonic series divergence via Real.summable_nat_rpow_inv).",
     "mathlib_version": "4.26.0",
     "prerequisites": [
       "FourierSeriesOQ02.lean: Hölder decay bound fourierCoeff_holder_decay",
@@ -170,7 +170,7 @@
     "theoremCount": 7,
     "definitionCount": 0,
     "path": "Proofs/FourierSeriesOQ02OQ02.lean",
-    "sorries": 1
+    "sorries": 0
   },
-  "sorries": 1
+  "sorries": 0
 }
