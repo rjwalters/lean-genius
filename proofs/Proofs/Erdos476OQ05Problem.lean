@@ -3,8 +3,8 @@ Erdős Problem #476, Open Question 5: Vosper's Theorem (1956)
 
 Source: Follow-up to erdos-476 (Erdős-Heilbronn conjecture)
 Status: PARTIAL — ap_of_near_periodic proved (orbit-cardinality argument);
-                   vosper_base proved; vosper_ap_sdiff_card structured (hpos sorry);
-                   isAP_sdiff_card proved; vosper_case1_exists sorryed
+                   vosper_base proved; vosper_ap_sdiff_card proved (hpos: linear_combination);
+                   isAP_sdiff_card proved; vosper_case1_exists sorryed (1 sorry remains)
 
 Statement (Vosper 1956):
 Let p be prime, A, B ⊆ Z/pZ with |A|, |B| ≥ 2.
@@ -27,6 +27,7 @@ import Mathlib.Combinatorics.Additive.CauchyDavenport
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.NAry
+import Mathlib.Tactic.LinearCombination
 import Mathlib.Tactic.IntervalCases
 
 open Finset Function
@@ -131,7 +132,7 @@ private lemma add_isAP_eq {A B : Finset (ZMod p)} {a b d : ZMod p}
       · simp [Nat.min_eq_left h]; exact Finset.card_pos.mp hBpos
       · have : min k (A.card - 1) = A.card - 1 := Nat.min_eq_right (by omega)
         simp [this]; omega
-    have h_ij : i + j = k := Nat.min_add_sub_cancel' (by omega)
+    have h_ij : i + j = k := Nat.add_sub_cancel' (Nat.min_le_left k _)
     simp only [Finset.mem_add]
     refine ⟨a + (i : ZMod p) * d, ?_, b + (j : ZMod p) * d, ?_, ?_⟩
     · rw [hA]; simp only [Finset.mem_image, Finset.mem_range]; exact ⟨i, hi, rfl⟩
@@ -176,7 +177,8 @@ private lemma isAP_sdiff_card {A : Finset (ZMod p)} {a d : ZMod p}
         calc a + ((i - 1 : ℕ) : ZMod p) * d + d
             = a + (((i - 1 : ℕ) : ZMod p) + 1) * d := by rw [add_mul]; ring
           _ = a + (i : ZMod p) * d := by rw [hcast]
-  · rintro rfl
+  · intro hxa
+    rw [hxa]
     refine ⟨?_, ?_⟩
     · rw [hA]; simp only [Finset.mem_image, Finset.mem_range]
       exact ⟨0, hApos, by simp⟩
@@ -188,7 +190,9 @@ private lemma isAP_sdiff_card {A : Finset (ZMod p)} {a d : ZMod p}
         have h : a + ((j : ZMod p) + 1) * d = a + 0 := by
           simp only [add_zero, add_mul, one_mul, ← add_assoc]; exact hyd
         exact add_left_cancel h
-      have hzero : (j : ZMod p) + 1 = 0 := (mul_eq_zero.mp h_eq).resolve_right hd
+      have hzero : (j : ZMod p) + 1 = 0 := by
+        have hc : ((j : ZMod p) + 1) * d * d⁻¹ = 0 * d⁻¹ := by rw [h_eq]
+        rwa [mul_assoc, mul_inv_cancel₀ hd, mul_one, zero_mul] at hc
       have h_dvd : p ∣ j + 1 := by
         have hcast : ((j + 1 : ℕ) : ZMod p) = 0 := by
           rw [Nat.cast_add, Nat.cast_one]; exact hzero
@@ -224,7 +228,7 @@ private lemma vosper_ap_sdiff_card
   have hAP_a₀B : IsArithmeticProgression ({a₀} + B : Finset (ZMod p)) (a₀ + b₀) d :=
     isAP_sum (isAP_singleton a₀ d) hAP_B (by simp) hBpos (by rw [hcard_a₀B]; simp)
   -- |{a₀}+B \ (A'+B)| = 1: follows from |A+B| = |A'+B| + 1
-  have h_sdiff_one : ({a₀} + B \ ((A.erase a₀) + B) : Finset (ZMod p)).card = 1 := by
+  have h_sdiff_one : ((({a₀} + B) \ ((A.erase a₀) + B)) : Finset (ZMod p)).card = 1 := by
     have hunion : A + B = (A.erase a₀ + B) ∪ ({a₀} + B) := by
       ext x
       simp only [Finset.mem_add, Finset.mem_union]
@@ -245,7 +249,199 @@ private lemma vosper_ap_sdiff_card
     omega
   -- Position analysis: a₀ is a₁-d (predecessor) or a₁+|A'|*d (successor)
   have hpos : a₀ = a₁ - d ∨ a₀ = a₁ + ((A.erase a₀).card : ZMod p) * d := by
-    sorry -- HARD: position analysis from |{a₀}+B \ (A'+B)| = 1, both APs with diff d
+    -- Injectivity of k ↦ a₀+b₀+k*d on {0,...,|B|-1} (size < p)
+    have hBlt : B.card < p := by omega
+    have hinj_a₀B : Set.InjOn (fun k : ℕ => a₀ + b₀ + (k : ZMod p) * d)
+        (Finset.range B.card : Set ℕ) := by
+      intro k₁ hk₁ k₂ hk₂ heq
+      simp only [Finset.mem_coe, Finset.mem_range] at hk₁ hk₂
+      have hmul : (k₁ : ZMod p) * d = (k₂ : ZMod p) * d := add_left_cancel heq
+      have h_eq : (k₁ : ZMod p) = (k₂ : ZMod p) := by
+        have hc : (k₁ : ZMod p) * d * d⁻¹ = (k₂ : ZMod p) * d * d⁻¹ := by rw [hmul]
+        rwa [mul_assoc, mul_assoc, mul_inv_cancel₀ hd, mul_one, mul_one] at hc
+      have hk₁p : k₁ < p := lt_trans hk₁ hBlt
+      have hk₂p : k₂ < p := lt_trans hk₂ hBlt
+      have := congrArg ZMod.val h_eq
+      simp only [ZMod.val_natCast, Nat.mod_eq_of_lt hk₁p, Nat.mod_eq_of_lt hk₂p] at this
+      omega
+    -- Injectivity of j ↦ a₁+b₀+j*d on {0,...,|A'|+|B|-2}
+    have hA'Blt : (A.erase a₀).card + B.card - 1 < p := by omega
+    have hinj_A'B : Set.InjOn (fun j : ℕ => a₁ + b₀ + (j : ZMod p) * d)
+        (Finset.range ((A.erase a₀).card + B.card - 1) : Set ℕ) := by
+      intro j₁ hj₁ j₂ hj₂ heq
+      simp only [Finset.mem_coe, Finset.mem_range] at hj₁ hj₂
+      have hmul : (j₁ : ZMod p) * d = (j₂ : ZMod p) * d := add_left_cancel heq
+      have h_eq : (j₁ : ZMod p) = (j₂ : ZMod p) := by
+        have hc : (j₁ : ZMod p) * d * d⁻¹ = (j₂ : ZMod p) * d * d⁻¹ := by rw [hmul]
+        rwa [mul_assoc, mul_assoc, mul_inv_cancel₀ hd, mul_one, mul_one] at hc
+      have hj₁p : j₁ < p := lt_trans hj₁ hA'Blt
+      have hj₂p : j₂ < p := lt_trans hj₂ hA'Blt
+      have := congrArg ZMod.val h_eq
+      simp only [ZMod.val_natCast, Nat.mod_eq_of_lt hj₁p, Nat.mod_eq_of_lt hj₂p] at this
+      omega
+    -- Extract the unique sdiff element
+    obtain ⟨elem, helem_eq⟩ := Finset.card_eq_one.mp h_sdiff_one
+    have helem_mem : elem ∈ (({a₀} + B) \ ((A.erase a₀) + B) : Finset (ZMod p)) := by
+      rw [helem_eq]; exact Finset.mem_singleton_self elem
+    have helem_a₀B : elem ∈ ({a₀} + B : Finset (ZMod p)) :=
+      (Finset.mem_sdiff.mp helem_mem).1
+    have helem_notA'B : elem ∉ (A.erase a₀) + B := (Finset.mem_sdiff.mp helem_mem).2
+    -- elem = a₀+b₀+k₀*d for some k₀ < |B|
+    rw [hAP_a₀B] at helem_a₀B
+    simp only [Finset.mem_image, Finset.mem_range] at helem_a₀B
+    obtain ⟨k₀, hk₀B, hk₀_eq⟩ := helem_a₀B
+    -- All elements a₀+b₀+k*d for k ≠ k₀ are in A'+B (since sdiff = {elem})
+    have hall_in : ∀ k < B.card, k ≠ k₀ → a₀ + b₀ + (k : ZMod p) * d ∈ (A.erase a₀) + B := by
+      intro k hkB hkk₀
+      have hmem_a₀B : a₀ + b₀ + (k : ZMod p) * d ∈ ({a₀} + B : Finset (ZMod p)) := by
+        rw [hAP_a₀B]; simp only [Finset.mem_image, Finset.mem_range]; exact ⟨k, hkB, rfl⟩
+      by_contra hnotA'B
+      have hsd : a₀ + b₀ + (k : ZMod p) * d ∈ (({a₀} + B) \ ((A.erase a₀) + B) : Finset (ZMod p)) :=
+        Finset.mem_sdiff.mpr ⟨hmem_a₀B, hnotA'B⟩
+      rw [helem_eq] at hsd
+      simp only [Finset.mem_singleton] at hsd
+      exact hkk₀ (hinj_a₀B
+        (Finset.mem_coe.mpr (Finset.mem_range.mpr hkB))
+        (Finset.mem_coe.mpr (Finset.mem_range.mpr hk₀B))
+        (by rw [hsd, hk₀_eq]))
+    -- Helper: convert "in A'+B" to position j in range
+    have hmem_to_pos : ∀ x, x ∈ (A.erase a₀) + B →
+        ∃ j < (A.erase a₀).card + B.card - 1, x = a₁ + b₀ + (j : ZMod p) * d := by
+      intro x hx
+      rw [hAP_A'B] at hx
+      simp only [Finset.mem_image, Finset.mem_range] at hx
+      exact hx
+    -- Case split: k₀ = 0 (predecessor case) or k₀ = |B|-1 (successor case)
+    rcases Nat.eq_zero_or_pos k₀ with rfl | hk₀pos
+    · -- k₀ = 0: elem = a₀+b₀, which is NOT in A'+B
+      -- a₀+b₀+1*d IS in A'+B (since k=1 ≠ 0, |B|≥2)
+      left
+      have h1_in : a₀ + b₀ + (1 : ZMod p) * d ∈ (A.erase a₀) + B :=
+        hall_in 1 (by omega) (by omega)
+      obtain ⟨j₁, hj₁lt, hj₁_eq⟩ := hmem_to_pos _ h1_in
+      -- hj₁_eq: a₀+b₀+d = a₁+b₀+j₁*d  → a₀+d = a₁+j₁*d
+      -- Claim: j₁ = 0 (otherwise a₀+b₀ = a₁+b₀+(j₁-1)*d ∈ A'+B, contradicting helem_notA'B)
+      have hj₁_zero : j₁ = 0 := by
+        by_contra hj₁ne
+        have hj₁_pos : 0 < j₁ := Nat.pos_of_ne_zero hj₁ne
+        -- a₀+b₀ = a₁+b₀+(j₁-1)*d
+        have hpred_eq : a₀ + b₀ = a₁ + b₀ + ((j₁ - 1 : ℕ) : ZMod p) * d := by
+          have hcast : ((j₁ - 1 : ℕ) : ZMod p) + 1 = (j₁ : ZMod p) := by
+            have h := Nat.sub_add_cancel hj₁_pos
+            have := congrArg (Nat.cast (R := ZMod p)) h
+            rwa [Nat.cast_add, Nat.cast_one] at this
+          simp only [one_mul] at hj₁_eq
+          linear_combination hj₁_eq - d * hcast
+        -- a₀+b₀ ∈ A'+B (since j₁-1 < |A'|+|B|-1)
+        have hpred_in : a₀ + b₀ ∈ (A.erase a₀) + B := by
+          rw [hAP_A'B]; simp only [Finset.mem_image, Finset.mem_range]
+          exact ⟨j₁ - 1, by omega, hpred_eq⟩
+        -- But a₀+b₀ = elem (since k₀=0, hk₀_eq says elem = a₀+b₀+0*d = a₀+b₀)
+        have helem_eq' : elem = a₀ + b₀ := by rw [hk₀_eq]; simp
+        exact helem_notA'B (helem_eq' ▸ hpred_in)
+      -- j₁ = 0: a₀+b₀+d = a₁+b₀ → a₀ = a₁-d
+      rw [hj₁_zero] at hj₁_eq
+      simp only [Nat.cast_zero, zero_mul, add_zero] at hj₁_eq
+      -- hj₁_eq: a₀+b₀+1*d = a₁+b₀
+      have h1d : (1 : ZMod p) * d = d := one_mul d
+      rw [h1d] at hj₁_eq
+      linear_combination hj₁_eq
+    · -- k₀ > 0. Check if k₀ = |B|-1 or k₀ is in the middle.
+      rcases Nat.eq_or_lt_of_le (Nat.lt_succ_iff.mp hk₀B) with rfl | hk₀mid
+      · -- k₀ = |B|-1 (successor case)
+        right
+        -- elem = a₀+b₀+(|B|-1)*d ∉ A'+B
+        -- All of a₀+b₀, ..., a₀+b₀+(|B|-2)*d ARE in A'+B
+        -- In particular a₀+b₀+(|B|-2)*d ∈ A'+B (since |B|≥2, |B|-2 ≠ |B|-1)
+        have hlast_in : a₀ + b₀ + ((B.card - 2 : ℕ) : ZMod p) * d ∈ (A.erase a₀) + B :=
+          hall_in (B.card - 2) (by omega) (by omega)
+        obtain ⟨jl, hjllt, hjl_eq⟩ := hmem_to_pos _ hlast_in
+        -- Also a₀+b₀ ∈ A'+B (since k=0 ≠ k₀=|B|-1, |B|≥2)
+        have hfirst_in : a₀ + b₀ + (0 : ZMod p) * d ∈ (A.erase a₀) + B :=
+          hall_in 0 (by omega) (by omega)
+        obtain ⟨jf, hjflt, hjf_eq⟩ := hmem_to_pos _ hfirst_in
+        simp only [Nat.cast_zero, zero_mul, add_zero] at hjf_eq
+        -- From hjf_eq: a₀+b₀ = a₁+b₀+jf*d → a₀ = a₁+jf*d
+        -- a₀+b₀+(|B|-1)*d ∉ A'+B (this is elem)
+        -- a₀+b₀+(|B|-1)*d = a₁+b₀+(jf+|B|-1)*d (from hjf_eq)
+        -- (jf+|B|-1) ∉ {0,...,|A'|+|B|-2} means jf+|B|-1 ≥ |A'|+|B|-1 → jf ≥ |A'|
+        -- Also jf ≤ |A'|+|B|-2 - (|B|-1) = |A'|-1 ... hmm that would force jf = |A'| contradicting jf ≤ |A'|-1
+        -- Actually: we need to show the last element is outside AND use this to pin jf = |A'|
+        -- elem = a₀+b₀+(|B|-1)*d ∉ A'+B
+        have hlast_notA'B : a₀ + b₀ + ((B.card - 1 : ℕ) : ZMod p) * d ∉ (A.erase a₀) + B := by
+          intro hmem
+          obtain ⟨jx, hjxlt, hjx_eq⟩ := hmem_to_pos _ hmem
+          -- a₀+b₀+(|B|-1)*d = a₁+b₀+jx*d
+          -- But this element = elem (since k₀=|B|-1)
+          have helem_eq' : a₀ + b₀ + ((B.card - 1 : ℕ) : ZMod p) * d = elem := by
+            rw [← hk₀_eq]; congr 1; simp
+          exact helem_notA'B (helem_eq' ▸ hmem)
+        -- From hjf_eq: a₀+b₀ = a₁+b₀+jf*d
+        -- The last element: a₀+b₀+(|B|-1)*d = a₁+b₀+(jf+|B|-1)*d
+        -- But (jf+|B|-1) must be ≥ |A'|+|B|-1 (outside range)
+        -- And jf ≤ |A'|+|B|-2-(|B|-1) = |A'|-1... hmm, contradiction unless I'm wrong about jf bound
+        -- Actually: jf < |A'|+|B|-1 from hjflt
+        -- jf+|B|-1: need this ≥ |A'|+|B|-1 (outside range means ≥ |A'|+|B|-1)
+        -- And jf+|B|-1 ≥ |A'|+|B|-1 ↔ jf ≥ |A'|. So jf ≥ |A'|.
+        -- Combined with jf < |A'|+|B|-1: jf ∈ {|A'|,...,|A'|+|B|-2}.
+        -- But the only valid value: a₀+b₀+(|B|-2)*d = a₁+b₀+jl*d, and jl = jf+|B|-2.
+        -- If jf = |A'|: jl = |A'|+|B|-2 ∈ {0,...,|A'|+|B|-2}. ✓
+        -- If jf > |A'|: jl = jf+|B|-2 ≥ |A'|+|B|-1 which is outside range... but jl < |A'|+|B|-1. Contradiction!
+        -- So jf = |A'|.
+        have hjf_val : jf = (A.erase a₀).card := by
+          -- From hjf_eq and hlast_notA'B:
+          -- a₀+b₀+(|B|-1)*d = a₁+b₀+(jf+|B|-1:ZMod p)*d is outside A'+B
+          -- meaning (jf+|B|-1:ℕ) ≥ |A'|+|B|-1 (in ℕ sense, since sizes < p)
+          by_contra hjfne
+          -- If jf < |A'|: then jf+|B|-1 < |A'|+|B|-1, so a₀+b₀+(|B|-1)*d ∈ A'+B. Contradiction.
+          have hjflt' : jf < (A.erase a₀).card := Nat.lt_of_le_of_ne (by omega) hjfne
+          apply hlast_notA'B
+          rw [hAP_A'B]; simp only [Finset.mem_image, Finset.mem_range]
+          refine ⟨jf + (B.card - 1), by omega, ?_⟩
+          -- a₀+b₀+(|B|-1)*d = a₁+b₀+(jf+|B|-1)*d
+          -- from hjf_eq: a₀+b₀ = a₁+b₀+jf*d
+          have hcast : ((jf + (B.card - 1) : ℕ) : ZMod p) = (jf : ZMod p) + ((B.card - 1 : ℕ) : ZMod p) := by
+            push_cast; ring
+          rw [hcast, add_mul]
+          -- a₁+b₀+jf*d+(|B|-1)*d = a₀+b₀+(|B|-1)*d (using hjf_eq)
+          linear_combination hjf_eq
+        -- jf = |A'|, so a₀ = a₁+|A'|*d
+        rw [hjf_val] at hjf_eq
+        simp only [Nat.cast_zero, zero_mul, add_zero] at hjf_eq
+        -- hjf_eq: a₀+b₀ = a₁+b₀+|A'|*d → a₀ = a₁+|A'|*d
+        linear_combination hjf_eq
+      · -- k₀ is in the middle (0 < k₀ < |B|-1): derive contradiction
+        exfalso
+        -- Both first (k=0) and last (k=|B|-1) elements of {a₀}+B are in A'+B
+        have hfirst_in : a₀ + b₀ + (0 : ZMod p) * d ∈ (A.erase a₀) + B :=
+          hall_in 0 (by omega) (by omega)
+        have hlast_in : a₀ + b₀ + ((B.card - 1 : ℕ) : ZMod p) * d ∈ (A.erase a₀) + B :=
+          hall_in (B.card - 1) (by omega) (by omega)
+        simp only [Nat.cast_zero, zero_mul, add_zero] at hfirst_in
+        obtain ⟨jf, hjflt, hjf_eq⟩ := hmem_to_pos _ hfirst_in
+        obtain ⟨jl, hjllt, hjl_eq⟩ := hmem_to_pos _ hlast_in
+        -- jl = jf + |B| - 1 (from injectivity and positions)
+        -- Both jf and jl are < |A'|+|B|-1
+        -- But also: the middle element a₀+b₀+k₀*d ∉ A'+B (it's the unique sdiff element)
+        -- From positions: jf+k₀ must be outside {0,...,|A'|+|B|-2}
+        -- From jf ≥ 0 and jf+|B|-1 = jl < |A'|+|B|-1: jf ≤ |A'|-1
+        -- So jf+k₀ ≤ jf+|B|-2 < |A'|+|B|-1 (since jf ≤ |A'|-1 and k₀ ≤ |B|-2)
+        -- contradiction: all positions jf,...,jf+|B|-1 are valid → a₀+b₀+k*d ∈ A'+B for ALL k
+        -- including k=k₀ → contradiction with helem_notA'B
+        have hk₀_in : a₀ + b₀ + (k₀ : ZMod p) * d ∈ (A.erase a₀) + B := by
+          rw [hAP_A'B]; simp only [Finset.mem_image, Finset.mem_range]
+          -- Need: jf + k₀ ∈ {0,...,|A'|+|B|-2}
+          -- jl = jf + |B| - 1 (from the position of the last element)
+          have hjl_eq2 : jl = jf + (B.card - 1) := by
+            apply hinj_A'B
+              (Finset.mem_coe.mpr (Finset.mem_range.mpr hjllt))
+              (Finset.mem_coe.mpr (Finset.mem_range.mpr (by omega)))
+            push_cast
+            linear_combination -hjl_eq + hjf_eq
+          refine ⟨jf + k₀, by omega, ?_⟩
+          push_cast
+          linear_combination hjf_eq
+        exact helem_notA'B (by rwa [← hk₀_eq])
   -- In each case A is an AP with diff d, so |A \ A.image(·+d)| = 1 by isAP_sdiff_card
   rcases hpos with ha₀_pred | ha₀_succ
   · -- Case: a₀ = a₁ - d (predecessor of AP A'); A = AP(a₀, d, |A|)
@@ -278,9 +474,7 @@ private lemma vosper_ap_sdiff_card
             have := congrArg (Nat.cast (R := ZMod p)) h
             rwa [Nat.cast_add, Nat.cast_one] at this
           rw [ha₁]
-          calc a₀ + (↑i : ZMod p) * d
-              = a₀ + ((↑(i - 1 : ℕ) : ZMod p) + 1) * d := by rw [hcast]
-            _ = a₀ + d + (↑(i - 1 : ℕ) : ZMod p) * d := by ring
+          linear_combination d * hcast
     rw [isAP_sdiff_card hAP_A hd (by omega) hA_lt_p, Finset.card_singleton]
   · -- Case: a₀ = a₁ + |A'|*d (successor of AP A'); A = AP(a₁, d, |A|)
     have hAP_A : IsArithmeticProgression A a₁ d := by
@@ -290,8 +484,10 @@ private lemma vosper_ap_sdiff_card
       ext x
       simp only [Finset.mem_insert, Finset.mem_image, Finset.mem_range]
       constructor
-      · rintro (rfl | hx)
-        · exact ⟨(A.erase a₀).card, by omega, by rw [← ha₀_succ]⟩
+      · intro hmem
+        rcases hmem with hxa | hx
+        · rw [hxa]
+          exact ⟨(A.erase a₀).card, by omega, ha₀_succ.symm⟩
         · rw [hAP_A'] at hx
           simp only [Finset.mem_image, Finset.mem_range] at hx
           obtain ⟨i, hi, rfl⟩ := hx
@@ -313,7 +509,9 @@ private lemma zmod_orbit_injective {x₀ d : ZMod p} (hd : d ≠ 0) :
   simp only at heq
   have hmul : (j₁ : ZMod p) * d = (j₂ : ZMod p) * d :=
     add_left_cancel heq
-  have h_eq : (j₁ : ZMod p) = (j₂ : ZMod p) := mul_right_cancel₀ hd hmul
+  have h_eq : (j₁ : ZMod p) = (j₂ : ZMod p) := by
+    have hc : (j₁ : ZMod p) * d * d⁻¹ = (j₂ : ZMod p) * d * d⁻¹ := by rw [hmul]
+    rwa [mul_assoc, mul_assoc, mul_inv_cancel₀ hd, mul_one, mul_one] at hc
   ext
   have hval := congrArg ZMod.val h_eq
   simp only [ZMod.val_natCast, Nat.mod_eq_of_lt hj₁, Nat.mod_eq_of_lt hj₂] at hval
@@ -344,7 +542,9 @@ lemma ap_of_near_periodic {B : Finset (ZMod p)} {d : ZMod p}
     intro j₁ hj₁ j₂ hj₂ heq
     simp only [Finset.mem_coe, Finset.mem_range] at hj₁ hj₂
     have hmul : (j₁ : ZMod p) * d = (j₂ : ZMod p) * d := add_left_cancel heq
-    have h_eq : (j₁ : ZMod p) = (j₂ : ZMod p) := mul_right_cancel₀ hd hmul
+    have h_eq : (j₁ : ZMod p) = (j₂ : ZMod p) := by
+      have hc : (j₁ : ZMod p) * d * d⁻¹ = (j₂ : ZMod p) * d * d⁻¹ := by rw [hmul]
+      rwa [mul_assoc, mul_assoc, mul_inv_cancel₀ hd, mul_one, mul_one] at hc
     have := congrArg ZMod.val h_eq
     simp only [ZMod.val_natCast, Nat.mod_eq_of_lt (lt_trans hj₁ hlt),
                Nat.mod_eq_of_lt (lt_trans hj₂ hlt)] at this
@@ -428,12 +628,11 @@ lemma ap_of_near_periodic {B : Finset (ZMod p)} {d : ZMod p}
           intro ⟨j₁, hj₁⟩ ⟨j₂, hj₂⟩ heq
           simp only at heq
           -- From x₀ - j₁*d = x₀ - j₂*d, derive j₁*d = j₂*d
-          have h_neg : -(j₁ : ZMod p) * d = -(j₂ : ZMod p) * d :=
-            add_left_cancel (show x₀ + -(j₁ : ZMod p) * d = x₀ + -(j₂ : ZMod p) * d by
-              rwa [← sub_eq_add_neg, ← sub_eq_add_neg])
           have hmul : (j₁ : ZMod p) * d = (j₂ : ZMod p) * d := by
-            rwa [neg_mul, neg_mul, neg_inj] at h_neg
-          have h_eq : (j₁ : ZMod p) = (j₂ : ZMod p) := mul_right_cancel₀ hd hmul
+            linear_combination -heq
+          have h_eq : (j₁ : ZMod p) = (j₂ : ZMod p) := by
+            have hc : (j₁ : ZMod p) * d * d⁻¹ = (j₂ : ZMod p) * d * d⁻¹ := by rw [hmul]
+            rwa [mul_assoc, mul_assoc, mul_inv_cancel₀ hd, mul_one, mul_one] at hc
           ext
           have := congrArg ZMod.val h_eq
           simp only [ZMod.val_natCast, Nat.mod_eq_of_lt hj₁, Nat.mod_eq_of_lt hj₂] at this
@@ -446,7 +645,9 @@ lemma ap_of_near_periodic {B : Finset (ZMod p)} {d : ZMod p}
           obtain ⟨j, _, rfl⟩ := Finset.mem_image.mp hx
           exact (Finset.mem_sdiff.mp (horbit j.val j.isLt)).1
         -- p ≤ |B| < p: contradiction
-        linarith [Finset.card_le_card himg_sub, himg_card]
+        have hle := Finset.card_le_card himg_sub
+        rw [himg_card] at hle
+        omega
   -- Conclude B = (range B.card).image (j ↦ b₀ + j*d)
   refine ⟨b₀, ?_⟩
   unfold IsArithmeticProgression
