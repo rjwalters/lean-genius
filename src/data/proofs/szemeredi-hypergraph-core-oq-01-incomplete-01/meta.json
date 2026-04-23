@@ -18,7 +18,7 @@
       "research"
     ],
     "proofRepoPath": "Proofs/SzemerediHypergraphGowers.lean",
-    "badge": "research",
+    "badge": "wip",
     "sorries": 1,
     "mathlibDependencies": [
       {
@@ -128,7 +128,9 @@
     "imports": [
       "Proofs.SzemerediHypergraphCore"
     ],
-    "opens": ["Classical"],
+    "opens": [
+      "Classical"
+    ],
     "namespace": "Szemeredi.Hypergraph",
     "lineCount": 244,
     "axiomCount": 0,
