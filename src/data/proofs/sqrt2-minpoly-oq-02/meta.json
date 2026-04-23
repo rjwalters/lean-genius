@@ -191,18 +191,20 @@
   "sorries": 0,
   "leanFile": {
     "imports": [
-      "Mathlib"
+      "Mathlib",
+      "Proofs.CubeRoot2IrrationalOQ03"
     ],
     "opens": [
       "Polynomial",
-      "IntermediateField"
+      "IntermediateField",
+      "CubeRoot2IrrationalOQ03"
     ],
-    "namespace": "CubeRoot2IrrationalOQ03",
-    "lineCount": 204,
+    "namespace": "Sqrt2MinpolyOQ02",
+    "lineCount": 202,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 20,
     "definitionCount": 0,
     "sorries": 0,
-    "path": "Proofs/CubeRoot2IrrationalOQ03.lean"
+    "path": "Proofs/Sqrt2MinpolyOQ02.lean"
   }
 }
