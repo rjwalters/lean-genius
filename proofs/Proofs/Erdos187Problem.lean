@@ -37,18 +37,24 @@ axiom optAPBound (d : ℕ) : ℕ
 
 /- ## Known Results -/
 
-/-- Van der Waerden's theorem implies f(d) → ∞: for any 2-coloring,
-    monochromatic APs of arbitrary length exist. In particular,
-    for every k there exists d such that f(d) ≥ k. -/
-/-- Beck's upper bound (1980): f(d) ≤ (1 + o(1)) log₂ d.
-    Formalized as: there exists C such that for all large d,
-    optAPBound d ≤ C * Nat.log 2 d. -/
-/-- Erdős's √2-coloring construction gives a lower bound f(d) ≫ d.
-    There exists a 2-coloring such that the longest monochromatic AP
-    with difference d has length O(d). -/
+/-- Van der Waerden's theorem implies f(d) → ∞: for every k, there exists
+    d such that optAPBound d ≥ k. Follows from van der Waerden's theorem: any
+    2-coloring of [1, W(2,k)] contains a monochromatic k-AP. -/
+axiom optAPBound_unbounded : ∀ k : ℕ, ∃ d : ℕ, k ≤ optAPBound d
+
+/-- Beck's upper bound (1980): there exists C > 0 such that for all sufficiently
+    large d, optAPBound d ≤ C * (Nat.log 2 d + 1). Gives f(d) = O(log d).
+    Beck's proof uses a discrepancy argument to construct an explicit 2-coloring
+    where no monochromatic AP with difference d exceeds O(log d) in length. -/
+axiom beck_upper_bound : ∃ C : ℕ, 0 < C ∧ ∃ D₀ : ℕ, ∀ d : ℕ, D₀ ≤ d →
+    optAPBound d ≤ C * (Nat.log 2 d + 1)
+
 /- ## The Open Question -/
 
-/-- Erdős Problem #187: Determine the exact asymptotic behavior of f(d).
-    Is f(d) = Θ(log d)? Formalized as asking whether there exist
-    constants c, C such that c · log₂ d ≤ f(d) ≤ C · log₂ d
-    for all large d. -/
+/-- **Erdős Problem #187 (open):** Is f(d) = Θ(log d)?
+    Asks for a matching lower bound: does there exist c > 0 such that
+    c * log₂ d ≤ optAPBound d for all sufficiently large d?
+    Beck's O(log d) upper bound is believed tight, but no lower bound
+    better than f(d) → ∞ is known. -/
+axiom erdos_187_conjecture : ∃ c : ℕ, 0 < c ∧ ∃ D₀ : ℕ, ∀ d : ℕ, D₀ ≤ d →
+    c * Nat.log 2 d ≤ optAPBound d
