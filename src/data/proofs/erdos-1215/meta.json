@@ -73,7 +73,7 @@
       "id": "sorry-tracking",
       "title": "Sorry Check for Aristotle Tracking",
       "startLine": 22,
-      "endLine": 24,
+      "endLine": 23,
       "summary": "`#check erdos_1215` verifies the placeholder theorem declaration is well-typed. The sorry is tracked by the Aristotle automated proof search system and by the gallery's sorry count.",
       "mathContext": "The `#check` command in Lean 4 elaborates the term and verifies its type without executing the sorry. Allows tooling to detect the axiom dependency via `#print axioms erdos_1215` → `sorry`."
     }

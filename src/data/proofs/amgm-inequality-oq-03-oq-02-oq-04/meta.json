@@ -139,7 +139,7 @@
       "id": "sec-min-theorem",
       "title": "Min Limit Theorem",
       "startLine": 153,
-      "endLine": 220,
+      "endLine": 219,
       "summary": "powerMean_tendsto_min: M_r → min(x) as r → -∞. Constructs g = 1/x, proves sup'(g) = (inf'(x))⁻¹ via le_antisymm (antitone inversion), applies the max theorem to g, inverts via Tendsto.inv₀, establishes the duality identity M_r(x) = (M_{-r}(g))⁻¹, and composes with Filter.tendsto_neg_atBot_atTop."
     }
   ],

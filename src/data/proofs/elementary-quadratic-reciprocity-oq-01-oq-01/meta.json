@@ -90,7 +90,7 @@
       "id": "main-answer",
       "title": "Answer to the Open Question",
       "startLine": 155,
-      "endLine": 167,
+      "endLine": 166,
       "summary": "The concluding theorem gauss_sum_is_third_qr_pathway states QR universally for all distinct odd primes, answering YES: the Gauss sum proof is a valid third formal QR pathway in Lean 4 alongside Eisenstein and Zolotarev. The three approaches represent geometry, algebra, and analytic number theory respectively.",
       "mathContext": "Three independent conceptual pathways, one theorem: $\\forall p, q$ odd distinct primes, $\\left(\\frac{p}{q}\\right)\\left(\\frac{q}{p}\\right) = (-1)^{\\lfloor p/2 \\rfloor \\cdot \\lfloor q/2 \\rfloor}$"
     }

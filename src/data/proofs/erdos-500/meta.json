@@ -114,7 +114,7 @@
       "id": "open-problem-stubs",
       "title": "Open Problem Stubs: Density, Bounds, Conjecture",
       "startLine": 44,
-      "endLine": 59,
+      "endLine": 58,
       "summary": "Lines 44-59 are comment-only section headers marking out the remaining formalization work: ex₃(n, K₄³) Turán number (line 45-47 docstring stub), Turán density π (line 49), Turán's lower bound 5/9 (line 50), Razborov's upper bound 0.5612 (line 52), Turán's conjecture (line 54), exact small values ex₃(4)=3, ex₃(5)=7, ex₃(6)=13 (line 56), and hypergraph context (line 58). No Lean declarations exist — these are roadmap comments for future work.",
       "mathContext": "The stubs outline the full formalization roadmap: (1) Turán density existence (KNS theorem 1964, requires sequential compactness); (2) lower bound $\\pi \\geq 5/9$ (Turán's 3-partition); (3) upper bound $\\pi \\leq 0.5612$ (Razborov's flag algebras, currently the deepest gap — requires formalizing semidefinite programming in Lean); (4) conjecture $\\pi = 5/9$ (OPEN). Formalizing step (3) would require extending Mathlib with the flag algebra framework."
     }
