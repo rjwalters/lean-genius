@@ -127,7 +127,7 @@
       "id": "density-function-properties",
       "title": "Properties of the Density Function",
       "startLine": 461,
-      "endLine": 512,
+      "endLine": 510,
       "summary": "Conditional properties of the density $f(c)$ (if it exists): $f(c) \\in [0,1]$, $f$ is monotone non-decreasing, and $f(c) \\to 1$ as $c \\to \\infty$. The last result uses density_at_infinity and `tendsto_order`.",
       "mathContext": "Verified: If the density exists (the limit of gapProportion), it necessarily satisfies CDF properties. The limit approach uses `ge_of_tendsto` / `le_of_tendsto` for bounds and `tendsto_order` for the convergence $f(c) \\to 1$."
     }

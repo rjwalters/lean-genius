@@ -109,7 +109,7 @@
       "id": "general-case",
       "title": "General Division Ring Case (1 sorry)",
       "startLine": 81,
-      "endLine": 115,
+      "endLine": 113,
       "summary": "hurwitz_only_if_ring: the non-commutative case with a documented sorry and full proof sketch. Two resolution paths: (1) NSquareIdentity reduction via orthonormal basis transport, (2) direct Clifford algebra + Radon-Hurwitz argument.",
       "mathContext": "The sorry covers NormedDivisionRing A, NormedAlgebra ℝ A, Module.Finite ℝ A. By Frobenius, the associative case only admits dims 1, 2, 4 — the '8' entry is vacuous for NormedDivisionRing."
     }
