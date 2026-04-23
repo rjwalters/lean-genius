@@ -29,7 +29,7 @@ namespace AperyZetaThreeAristotle
 def lcmUpTo (n : ℕ) : ℕ :=
   (Finset.range n).lcm (· + 1)
 
-/-! ## Helper lemmas for the Nair bound -/
+/- ## Helper lemmas for the Nair bound -/
 
 /-- C(2n, n) ≤ 4^n: the central binomial coefficient is at most 4^n.
     Proof: C(2n, n) ≤ Σ_{k=0}^{2n} C(2n, k) = 2^(2n) = 4^n. -/
