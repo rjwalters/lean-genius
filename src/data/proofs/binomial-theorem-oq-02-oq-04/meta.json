@@ -70,7 +70,12 @@
       "The multinomial coefficients arise naturally from the recursive structure: multinomial_cons gives the recurrence relation that packages C(n,j) factors.",
       "The proof reveals a bijection between induction steps and variables: for a k-variable multinomial, exactly k-1 applications of the binomial theorem suffice (since the base case k=1 is trivial: (f a)^n = f a^n with the unique antidiagram element). This matches the classical textbook proof step-count and confirms that the multinomial theorem is not an independent principle but a direct consequence of repeated application of the binomial theorem."
     ],
-    "prerequisites": ["Multinomial theorem (BinomialTheoremOQ02)", "Binomial theorem (add_pow)", "Finset induction (Finset.cons_induction)", "piAntidiag structure (Mathlib.Algebra.Order.Antidiag.Pi)"],
+    "prerequisites": [
+      "Multinomial theorem (BinomialTheoremOQ02)",
+      "Binomial theorem (add_pow)",
+      "Finset induction (Finset.cons_induction)",
+      "piAntidiag structure (Mathlib.Algebra.Order.Antidiag.Pi)"
+    ],
     "problemStatement": "OQ-04: Is there a direct Lean proof of the multinomial theorem (∑ᵢ∈s fᵢ)ⁿ = ∑_{k∈piAntidiag s n} multinomial(s,k) · ∏_s f^k by induction on |s|, explicitly using the binomial theorem at each inductive step?",
     "proofStrategy": "Structural induction (Finset.cons_induction): Base case (s=∅) uses piAntidiag_empty simp. Inductive step uses piAntidiag_cons to decompose the RHS, add_pow to expand the LHS, the IH to handle each (∑_s f)^m factor, and the support condition g a = 0 to simplify multinomial_cons."
   },
@@ -161,5 +166,26 @@
       "description": "The classical binomial theorem (add_pow) used at each inductive step"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Multinomial",
+      "Mathlib.Data.Nat.Choose.Sum",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Algebra.Order.Antidiag.Pi",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Nat"
+    ],
+    "namespace": "BinomialTheoremOQ02OQ04",
+    "lineCount": 207,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/BinomialTheoremOQ02OQ04.lean"
+  }
 }

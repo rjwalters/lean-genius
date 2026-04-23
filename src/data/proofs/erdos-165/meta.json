@@ -8,7 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/165",
     "date": "2025",
     "status": "axiomatized",
-    "proofRepoPath": "Proofs/Stubs/Erdos165Problem.lean",
+    "proofRepoPath": "Proofs/Erdos165Problem.lean",
     "tags": [
       "erdos",
       "combinatorics",
@@ -18,7 +18,7 @@
       "probabilistic-method"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 165,
     "erdosUrl": "https://erdosproblems.com/165",
     "erdosProblemStatus": "solved",
@@ -51,9 +51,15 @@
       "Main theorem combining upper and lower bounds",
       "Conjectures about exact constant c = 1/2"
     ],
-    "axiomCount": 4,
-    "lineCount": 187,
-    "assumptions": "4 axiom(s) and 0 sorry(s).",
+<<<<<<< HEAD
+    "axiomCount": 10,
+    "lineCount": 239,
+    "assumptions": "10 axioms: ramseyNumber, ramseyNumber_symm, ramseyNumber_recurrence, R3_small_values, aks_upper_bound, shearer_upper_bound, kim_lower_bound, bk_pgm_bound, cjms_bound, hhkp_bound. 0 sorries.",
+=======
+    "axiomCount": 16,
+    "lineCount": 322,
+    "assumptions": "16 axiom(s) and 1 sorry(s).",
+>>>>>>> 565ec31b7a (Enrich erdos-165: promote Lean file from Stubs to main Proofs directory)
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -80,74 +86,58 @@
     {
       "id": "ramsey-basics",
       "title": "Ramsey Numbers - Basic Definitions",
-      "summary": "ramseyNumber axiom, symmetry, base cases, recurrence relation",
-      "startLine": 46,
-      "endLine": 73,
-      "mathContext": "Axiomatized: ramseyNumber axiom, symmetry, base cases, recurrence relation"
-    },
-    {
-      "id": "r3-definition",
-      "title": "R(3,k) - Triangle vs Independent Set",
-      "summary": "R3 definition, characterization, small values",
-      "startLine": 74,
-      "endLine": 96,
-      "mathContext": "Formal definition: R3 definition, characterization, small values"
+      "summary": "ramseyNumber axiom, ramseyNumber_symm, ramseyNumber_recurrence, R3 definition, R3_small_values (exact values for k=3..9)",
+      "startLine": 44,
+      "endLine": 72,
+      "mathContext": "Axiomatized: ramseyNumber, symmetry R(m,n)=R(n,m), recurrence R(m,n)≤R(m-1,n)+R(m,n-1). Exact: R(3,3)=6, R(3,4)=9, ..., R(3,9)=36."
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
-      "summary": "AKS theorem (1980), Shearer's theorem (1983), independence lemma",
-      "startLine": 97,
-      "endLine": 132,
-      "mathContext": "Verified: AKS theorem (1980), Shearer's theorem (1983), independence lemma"
+      "summary": "AKS theorem (1980): O(k²/log k). Shearer's theorem (1983): R(3,k) ≤ (1+ε)k²/log k for any ε > 0.",
+      "startLine": 73,
+      "endLine": 92,
+      "mathContext": "aks_upper_bound: ∃C>0, R3 k ≤ C·k²/log k. shearer_upper_bound: ∀ε>0, ∃k₀, ∀k≥k₀, R3 k ≤ (1+ε)k²/log k."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds - History of Constant c",
-      "summary": "Kim (1995), Bohman-Keevash (2021), CJMS (2025), HHKP (2025)",
-      "startLine": 133,
-      "endLine": 178,
-      "mathContext": "Mathematical content: Kim (1995), Bohman-Keevash (2021), CJMS (2025), HHKP (2025)"
+      "summary": "Four axioms tracking the history: Kim (1995) c≥1/162, Bohman-Keevash/PGM (2021) c≥1/4, CJMS (2025) c≥1/3, HHKP (2025) c≥1/2.",
+      "startLine": 93,
+      "endLine": 127,
+      "mathContext": "kim_lower_bound, bk_pgm_bound, cjms_bound, hhkp_bound: progressive lower bound axioms for R(3,k) ≥ (c-ε)k²/log k."
     },
     {
       "id": "main-result",
       "title": "Main Asymptotic Result",
-      "summary": "R3_asymptotic_order theorem, current_best_bounds axiom",
-      "startLine": 179,
-      "endLine": 187,
-      "mathContext": "Verified: R3_asymptotic_order theorem, current_best_bounds axiom"
+      "summary": "current_best_bounds theorem combining HHKP and Shearer. erdos_165 theorem (explicit c₁=1/4, c₂=2 witnesses).",
+      "startLine": 128,
+      "endLine": 162,
+      "mathContext": "Proved: ∀ε>0, ∃k₀, ∀k≥k₀, (1/2-ε)k²/log k ≤ R3 k ≤ (1+ε)k²/log k. Witnesses c₁=1/4, c₂=2."
     },
     {
       "id": "triangle-free-process",
       "title": "The Triangle-Free Process",
-      "summary": "Probabilistic construction, Kim's insight",
-      "startLine": 187,
-      "endLine": 187,
-      "mathContext": "Mathematical content: Probabilistic construction, Kim's insight"
+      "summary": "Informal description of Kim's semi-random construction: greedily add random triangle-free edges; produces graphs with small independence number.",
+      "startLine": 163,
+      "endLine": 185,
+      "mathContext": "The triangle-free process is the probabilistic method behind all lower bound results. Key: tracks codegree evolution via martingales/differential equations."
     },
     {
       "id": "conjectures",
       "title": "Conjectures and Open Questions",
-      "summary": "Main conjecture (c=1/2), PGM conjecture (disproved)",
-      "startLine": 187,
-      "endLine": 187,
-      "mathContext": "Mathematical content: Main conjecture (c=1/2), PGM conjecture (disproved)"
+      "summary": "mainConjecture (c=1/2, supported by CJMS and HHKP), pgmConjecture (c=1/4, disproved), informal refutation of PGM.",
+      "startLine": 186,
+      "endLine": 221,
+      "mathContext": "mainConjecture: R(3,k) ~ (1/2)k²/log k. pgmConjecture: R(3,k) ~ (1/4)k²/log k (disproved by HHKP lower bound c≥1/2 > 1/4)."
     },
     {
       "id": "related",
       "title": "Related Problems",
-      "summary": "Erdős #544 (general R(k,k)), #986 (R(s,k) for fixed s)",
-      "startLine": 187,
-      "endLine": 187,
-      "mathContext": "Mathematical content: Erdős #544 (general R(k,k)), #986 (R(s,k) for fixed s)"
-    },
-    {
-      "id": "main-theorem",
-      "title": "Main Results Summary",
-      "summary": "erdos_165 theorem, prize_claimed",
-      "startLine": 187,
-      "endLine": 187,
-      "mathContext": "Verified: erdos_165 theorem, prize_claimed"
+      "summary": "Connection to Erdős #544 (diagonal R(k,k)), #986 (off-diagonal R(s,k) for fixed s≥4).",
+      "startLine": 222,
+      "endLine": 239,
+      "mathContext": "R(k,k): 2^(k/2) ≤ R(k,k) ≤ 4^k. R(s,k) for fixed s ≥ 4: Θ(k^((s+1)/2) / (log k)^((s-1)/2)) conjectured."
     }
   ],
   "conclusion": {
@@ -173,12 +163,21 @@
       "Real"
     ],
     "namespace": "Erdos165",
-    "lineCount": 187,
-    "axiomCount": 4,
+<<<<<<< HEAD
+    "lineCount": 239,
+    "axiomCount": 10,
     "theoremCount": 2,
     "definitionCount": 3,
-    "path": "Proofs/Stubs/Erdos165Problem.lean",
+    "path": "Proofs/Erdos165Problem.lean",
     "sorries": 0
+=======
+    "lineCount": 322,
+    "axiomCount": 16,
+    "theoremCount": 4,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos165Problem.lean",
+    "sorries": 1
+>>>>>>> 565ec31b7a (Enrich erdos-165: promote Lean file from Stubs to main Proofs directory)
   },
   "crossReferences": [
     {
@@ -223,5 +222,5 @@
       "note": "Alternative proof of Kim's bound via the triangle-free graph process"
     }
   ],
-  "sorries": 0
+  "sorries": 1
 }

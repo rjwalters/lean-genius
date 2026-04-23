@@ -150,5 +150,24 @@
       "description": "Complete biconditional characterization of when the angle sum formula holds"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Geometry.Euclidean.Triangle",
+      "Mathlib.Geometry.Euclidean.Angle.Unoriented.Affine",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "scoped",
+      "EuclideanGeometry",
+      "Classical"
+    ],
+    "namespace": "TriangleAngleSumOQ03",
+    "lineCount": 140,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/TriangleAngleSumOQ03.lean"
+  }
 }

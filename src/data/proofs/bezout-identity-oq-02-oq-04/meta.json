@@ -153,5 +153,24 @@
       "description": "Binary GCD (Stein's algorithm) computes gcd(a,b) using subtraction and bit shifts, implicitly using the same UFD structure (ℤ as a Euclidean domain). The Bézout identity certifies the GCD value; this entry shows that the transition from gcd-via-Euclidean-algorithm to gcd-via-content-theory is forced when moving from ℤ to ℤ[X], where division-with-remainder no longer works for all coefficient pairs."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Polynomial.Content",
+      "Mathlib.RingTheory.Polynomial.GaussLemma",
+      "Mathlib.RingTheory.Polynomial.UniqueFactorization",
+      "Mathlib.Algebra.Polynomial.FieldDivision",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "BezoutIdentityOQ02OQ04",
+    "lineCount": 170,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/BezoutIdentityOQ02OQ04.lean"
+  }
 }

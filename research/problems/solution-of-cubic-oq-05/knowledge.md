@@ -25,15 +25,60 @@ May need to work with `∃ branch, ...` or choose a canonical branch.
 
 ---
 
+## Session 2026-04-23 (Session 1) — Cardano-Ferrari Bridge via Tschirnhaus Reduction
+
+**Mode**: FRESH
+**Outcome**: completed — 0 sorries, 0 axioms
+
+### What I Did
+
+1. Surveyed `SolutionOfCubic.lean` (297 lines): `depressedCubic`, `cardano_formula`, `discriminant`, `cubeRoot`
+2. Surveyed `GeneralQuartic.lean` (360 lines): `resolventCubic`, `resolvent_cubic_has_root`, FTA pattern
+3. Identified the key approach: Tschirnhaus substitution m = t − 5p/6 eliminates the quadratic term
+4. Verified the algebra by hand: P_r = −p²/12 − r, Q_r = pr/3 − p³/108 − q²/8
+5. Created `proofs/Proofs/SolutionOfCubicOQ05.lean` (183 lines, 0 sorries):
+   - `resolventP`, `resolventQ`, `tschirnhausShift` — parameter definitions
+   - `resolvent_tschirnhaus_identity` — key polynomial identity, proved by `ring`
+   - `resolvent_root_via_cardano` — main theorem: Cardano gives resolvent root
+   - `depressed_resolvent_has_root`, `resolvent_has_root_via_tschirnhaus` — FTA existence
+   - `depressed_root_lifts` — root lifting corollary
+   - `params_p0_q2_r0`, `params_p_neg1_q0_r0`, `identity_at_t1_p0`, `identity_at_t2_p0_q60` — numerical checks
+6. Created gallery data: `src/data/proofs/solution-of-cubic-oq-05/` (meta.json, annotations.json, index.ts, tacticStates.json)
+7. Created PR for this session
+
+### Key Findings
+
+- The Tschirnhaus shift b/(3a) = 20p/(3·8) = 5p/6 eliminates the quadratic term
+- `ring` handles the full polynomial identity after `simp only` unfolds definitions
+- `SolutionOfCubic.cardano_formula` composes cleanly: after rewriting with the identity, just `rw [hcard, mul_zero]`
+- FTA existence follows the same pattern as `GeneralQuartic.resolvent_cubic_has_root`: show leading coefficient ≠ 0, apply `IsAlgClosed.exists_root`
+- No issues with `linarith` over ℂ — use `mul_zero` instead for zero-product arguments
+
+### Files Created
+
+- `proofs/Proofs/SolutionOfCubicOQ05.lean` (183 lines, 0 sorries, 0 axioms)
+- `src/data/proofs/solution-of-cubic-oq-05/meta.json`
+- `src/data/proofs/solution-of-cubic-oq-05/annotations.json`
+- `src/data/proofs/solution-of-cubic-oq-05/index.ts`
+- `src/data/proofs/solution-of-cubic-oq-05/tacticStates.json`
+
+### Status
+
+**COMPLETED** — all theorems proved, 0 sorries, 0 axioms. Gallery data created.
+
+---
+
 ## Insights
 
-[Insights from research attempts will be accumulated here]
+- Tschirnhaus approach: always try b/(3a) shift first for cubic depressing
+- `ring` is powerful enough to verify multi-variable polynomial identities after definitional unfolding
+- Lemma composition (identity → main theorem) keeps individual proofs trivial
 
 ---
 
 ## Dead Ends
 
-[Approaches known not to work will be documented here]
+- None needed — first approach succeeded
 
 ---
 
@@ -41,6 +86,6 @@ May need to work with `∃ branch, ...` or choose a canonical branch.
 
 | File | Key definitions |
 |------|----------------|
-| `proofs/Proofs/SolutionOfCubic.lean` | `depressedCubic`, `cardanoRoot`, `cardano_formula_is_root` |
-| `proofs/Proofs/GeneralQuartic.lean` | `resolventCubic`, `depressedQuartic`, `ferrari_factorization` (partial) |
-| `proofs/Proofs/SolutionOfCubicOQ03.lean` | Vieta's formulas for cubic roots |
+| `proofs/Proofs/SolutionOfCubic.lean` | `depressedCubic`, `cubeRoot`, `cardano_formula` |
+| `proofs/Proofs/GeneralQuartic.lean` | `resolventCubic`, `resolvent_cubic_has_root` |
+| `proofs/Proofs/SolutionOfCubicOQ05.lean` | `resolventP`, `resolventQ`, `tschirnhausShift`, `resolvent_tschirnhaus_identity`, `resolvent_root_via_cardano` |

@@ -121,5 +121,24 @@
       "description": "The pair count is unbounded"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos327OQ01",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos327OQ01OQ04",
+    "lineCount": 87,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "sorries": 0,
+    "path": "Proofs/Erdos327OQ01OQ04.lean"
+  }
 }

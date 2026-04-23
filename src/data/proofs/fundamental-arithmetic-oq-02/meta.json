@@ -113,5 +113,21 @@
       "description": "Explores the multiplicative property of prime factorization in Z, which this entry shows breaks down in larger rings."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Zsqrtd.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Zsqrtd"
+    ],
+    "namespace": "FundamentalArithmeticOQ02",
+    "lineCount": 192,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 2,
+    "sorries": 0,
+    "path": "Proofs/FundamentalArithmeticOQ02.lean"
+  }
 }

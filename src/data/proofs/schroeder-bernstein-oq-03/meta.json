@@ -221,5 +221,26 @@
       "status": "proved",
       "description": "Packages reflexivity, symmetry, transitivity as an Equivalence"
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Computability.Reduce",
+      "Mathlib.Computability.Partrec",
+      "Mathlib.Computability.Primrec",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Primcodable",
+      "Function",
+      "Computable"
+    ],
+    "namespace": "MyhillIsomorphism",
+    "lineCount": 257,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 4,
+    "sorries": 5,
+    "path": "Proofs/SchroederBernsteinOQ03.lean"
+  }
 }

@@ -48,7 +48,7 @@
       "Sylow pro-p subgroup structure with maximality condition",
       "Conjugation preserves Sylow pro-p structure (closedness, pro-p, maximality)",
       "Uniqueness implies normality via conjugate SylowProP construction",
-      "Equivalence theorem: IsProP \u2194 IsPGroup for finite discrete groups",
+      "Equivalence theorem: IsProP ↔ IsPGroup for finite discrete groups",
       "Bridge theorem: classical Sylow subgroups satisfy pro-p condition",
       "Pro-p subgroup p-power order theorem for finite groups",
       "Axiomatization of Serre existence and conjugacy theorems"
@@ -58,15 +58,15 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Jean-Pierre Serre (born 1926) generalized the Sylow theorems to profinite groups in his foundational 1965 work 'Cohomologie Galoisienne'. A profinite group is a compact, Hausdorff, totally disconnected topological group \u2014 equivalently, an inverse limit of finite groups. The absolute Galois group Gal(k\u0304/k) of any field is profinite, making pro-p Sylow theory essential for Galois cohomology and class field theory.\n\nThe pro-p Sylow theorem states that every profinite group G has maximal pro-p closed subgroups (the Sylow pro-p subgroups), that these are all conjugate, and that they arise as inverse limits of the finite Sylow p-subgroups in the quotient system of G. The existence proof uses Zorn's lemma on the poset of closed pro-p subgroups, with compactness guaranteeing that the closure of a chain's union is still pro-p.",
+    "historicalContext": "Jean-Pierre Serre (born 1926) generalized the Sylow theorems to profinite groups in his foundational 1965 work 'Cohomologie Galoisienne'. A profinite group is a compact, Hausdorff, totally disconnected topological group — equivalently, an inverse limit of finite groups. The absolute Galois group Gal(k̄/k) of any field is profinite, making pro-p Sylow theory essential for Galois cohomology and class field theory.\n\nThe pro-p Sylow theorem states that every profinite group G has maximal pro-p closed subgroups (the Sylow pro-p subgroups), that these are all conjugate, and that they arise as inverse limits of the finite Sylow p-subgroups in the quotient system of G. The existence proof uses Zorn's lemma on the poset of closed pro-p subgroups, with compactness guaranteeing that the closure of a chain's union is still pro-p.",
     "problemStatement": "**Pro-p Sylow Theorems for Profinite Groups**: Let G be a profinite group (compact, Hausdorff, totally disconnected topological group) and p a prime.\n\n1. **Existence**: G has a maximal pro-p closed subgroup (Sylow pro-p subgroup)\n2. **Conjugacy**: All Sylow pro-p subgroups are conjugate under inner automorphisms\n3. **Finite Recovery**: For finite discrete groups, the pro-p Sylow theory recovers the classical Sylow theorems",
     "text": "A 298-line formalization of pro-p Sylow theory for profinite groups. Defines IsProfiniteGroup as the conjunction of TopologicalGroup, CompactSpace, T2Space, and TotallyDisconnectedSpace. Introduces IsProP (pro-p condition: every open normal subgroup has p-power index) and SylowProP (maximal closed pro-p subgroup). Axiomatizes the deep results: existence via Zorn's lemma on closed pro-p subgroups, conjugacy via the finite approximation technique, the Frattini argument, projection to p-groups in quotients, and trivial intersection for distinct primes. Proves seven theorems: compactness of Sylow pro-p subgroups, the trivial subgroup is pro-p, the pro-p/p-group equivalence for finite groups, classical Sylow subgroups are pro-p, pro-p subgroups have p-power order, and the counting theorem for finite quotients.",
-    "proofStrategy": "**Structure**: Bundle the profinite condition as IsProfiniteGroup, avoiding class-extension complications with TopologicalGroup.\n\n**Pro-p Definition**: A group is pro-p if every open normal subgroup has index equal to a power of p \u2014 this captures the inverse limit characterization.\n\n**Axioms**: The five axioms encode results whose proofs require inverse limit arguments:\n- Existence: Zorn's lemma on the nonempty poset of closed pro-p subgroups, with compactness providing upper bounds for chains\n- Conjugacy: Project to finite quotients, apply finite Sylow conjugacy, lift via the finite intersection property\n\n**Proved Results**: Compactness (closed subset of compact space), bot is pro-p (trivial quotients), finite recovery (IsProP \u2194 IsPGroup via index-of-bot = cardinality), and Sylow counting in quotients.",
+    "proofStrategy": "**Structure**: Bundle the profinite condition as IsProfiniteGroup, avoiding class-extension complications with TopologicalGroup.\n\n**Pro-p Definition**: A group is pro-p if every open normal subgroup has index equal to a power of p — this captures the inverse limit characterization.\n\n**Axioms**: The five axioms encode results whose proofs require inverse limit arguments:\n- Existence: Zorn's lemma on the nonempty poset of closed pro-p subgroups, with compactness providing upper bounds for chains\n- Conjugacy: Project to finite quotients, apply finite Sylow conjugacy, lift via the finite intersection property\n\n**Proved Results**: Compactness (closed subset of compact space), bot is pro-p (trivial quotients), finite recovery (IsProP ↔ IsPGroup via index-of-bot = cardinality), and Sylow counting in quotients.",
     "keyInsights": [
       "**Pro-p via open indices**: A profinite group is pro-p iff every open normal subgroup N has [G:N] = p^k. This captures 'every finite quotient is a p-group' without constructing the quotients explicitly.",
-      "**Finite recovery**: For a finite group G with discrete topology, IsProP G p \u2194 IsPGroup p G, because the only open normal subgroup to check is \u22a5, and [G:\u22a5] = |G|.",
+      "**Finite recovery**: For a finite group G with discrete topology, IsProP G p ↔ IsPGroup p G, because the only open normal subgroup to check is ⊥, and [G:⊥] = |G|.",
       "**Zorn's lemma for existence**: The poset of closed pro-p subgroups is nonempty ({e} is pro-p), and any chain has an upper bound: the closure of the union is closed (by definition) and pro-p (by compactness, any open cover of the closure is also an open cover of some finite subchain member).",
-      "**Conjugacy via compactness**: For each open normal N \u22b2 G, the set C_N = {g \u2208 G : g(PN/N)g\u207b\u00b9 = QN/N} is a coset of N (nonempty by finite Sylow conjugacy). The C_N form a decreasing net of nonempty closed sets in the compact space G, so their intersection is nonempty.",
+      "**Conjugacy via compactness**: For each open normal N ⊲ G, the set C_N = {g ∈ G : g(PN/N)g⁻¹ = QN/N} is a coset of N (nonempty by finite Sylow conjugacy). The C_N form a decreasing net of nonempty closed sets in the compact space G, so their intersection is nonempty.",
       "**Bridge to classical theory**: Classical Sylow p-subgroups of finite groups are automatically closed (discrete topology) and pro-p (every quotient of a p-group is a p-group). This unifies finite and profinite Sylow theory."
     ],
     "prerequisites": [
@@ -91,7 +91,7 @@
       "title": "Profinite and Pro-p Definitions",
       "startLine": 39,
       "endLine": 88,
-      "summary": "Four definitions form the type-theoretic foundation: (1) `IsProfiniteGroup` \u2014 a Prop-valued structure bundling continuous mul/inv, compactness, Hausdorff, and total disconnectedness; (2) `IsProP` \u2014 a typeclass requiring every open normal subgroup to have p-power index; (3) `IsProPSubgroup` \u2014 a predicate combining closedness and pro-p; (4) `SylowProP` \u2014 a structure bundling a subgroup with closedness, pro-p, and maximality proofs.",
+      "summary": "Four definitions form the type-theoretic foundation: (1) `IsProfiniteGroup` — a Prop-valued structure bundling continuous mul/inv, compactness, Hausdorff, and total disconnectedness; (2) `IsProP` — a typeclass requiring every open normal subgroup to have p-power index; (3) `IsProPSubgroup` — a predicate combining closedness and pro-p; (4) `SylowProP` — a structure bundling a subgroup with closedness, pro-p, and maximality proofs.",
       "mathContext": "A profinite group $G \\cong \\varprojlim G_i$ is the inverse limit of finite groups. A pro-$p$ group is one where $[G:N] = p^k$ for every open normal $N$. A Sylow pro-$p$ subgroup is a maximal element in the poset of closed pro-$p$ subgroups."
     },
     {
@@ -100,14 +100,14 @@
       "startLine": 89,
       "endLine": 148,
       "summary": "Five axioms encode the deep results of profinite Sylow theory: (1) existence via Zorn's lemma on closed pro-p subgroups, (2) conjugacy via finite approximation and the finite intersection property, (3) the Frattini argument $G = N \\cdot N_G(P)$, (4) projection of Sylow pro-p subgroups to p-groups in finite quotients, (5) trivial intersection $P \\cap Q = \\{e\\}$ for distinct primes. Each axiom includes a proof sketch documenting the mathematical argument.",
-      "mathContext": "These five results require Zorn's lemma, inverse limit constructions, and the finite intersection property in compact spaces \u2014 techniques that go beyond Mathlib's current formalized infrastructure for profinite groups. The axioms together give the complete analogue of the three classical Sylow theorems in the profinite setting."
+      "mathContext": "These five results require Zorn's lemma, inverse limit constructions, and the finite intersection property in compact spaces — techniques that go beyond Mathlib's current formalized infrastructure for profinite groups. The axioms together give the complete analogue of the three classical Sylow theorems in the profinite setting."
     },
     {
       "id": "consequences",
       "title": "Proved Consequences",
       "startLine": 150,
       "endLine": 204,
-      "summary": "Three theorems proved from the definitions: (1) `sylowProP_compact` \u2014 Sylow pro-p subgroups are compact (one-line: closed subset of compact space); (2) `bot_isProPSubgroup` \u2014 the trivial subgroup is closed and pro-p (uses singleton-is-closed in T2 spaces and the Unique quotient cardinality argument); (3) `sylowProP_normal_of_unique` \u2014 uniqueness implies normality (1 sorry: needs conjugate-is-SylowProP construction).",
+      "summary": "Three theorems proved from the definitions: (1) `sylowProP_compact` — Sylow pro-p subgroups are compact (one-line: closed subset of compact space); (2) `bot_isProPSubgroup` — the trivial subgroup is closed and pro-p (uses singleton-is-closed in T2 spaces and the Unique quotient cardinality argument); (3) `sylowProP_normal_of_unique` — uniqueness implies normality (1 sorry: needs conjugate-is-SylowProP construction).",
       "mathContext": "The compactness proof uses the topological fact that closed subsets of compact spaces are compact. The trivial-is-pro-$p$ proof shows $[\\{e\\}:N] = 1 = p^0$ by constructing a `Unique` instance on the quotient $\\{e\\}/N$."
     },
     {
@@ -115,7 +115,7 @@
       "title": "Finite Recovery and Classical Bridge",
       "startLine": 206,
       "endLine": 262,
-      "summary": "Four theorems bridging profinite and finite Sylow theory: (1) `isProP_iff_isPGroup_finite` \u2014 IsProP \u2194 IsPGroup for finite discrete groups (the key equivalence); (2) `finite_sylow_is_proP` \u2014 classical Sylow p-subgroups are closed and pro-p; (3) `proP_subgroup_card_ppow` \u2014 pro-p subgroups of finite groups have p-power order; (4) `finite_quotient_sylow_count` \u2014 the counting theorem $n_p \\equiv 1 \\pmod{p}$ via Mathlib's `card_sylow_modEq_one`.",
+      "summary": "Four theorems bridging profinite and finite Sylow theory: (1) `isProP_iff_isPGroup_finite` — IsProP ↔ IsPGroup for finite discrete groups (the key equivalence); (2) `finite_sylow_is_proP` — classical Sylow p-subgroups are closed and pro-p; (3) `proP_subgroup_card_ppow` — pro-p subgroups of finite groups have p-power order; (4) `finite_quotient_sylow_count` — the counting theorem $n_p \\equiv 1 \\pmod{p}$ via Mathlib's `card_sylow_modEq_one`.",
       "mathContext": "For finite groups with discrete topology, every subgroup is open and closed. The IsProP condition reduces to checking $[G:\\bot] = |G| = p^k$, which is exactly IsPGroup. This shows the profinite Sylow theory is a strict generalization of the classical theory."
     },
     {
@@ -145,24 +145,24 @@
   ],
   "conclusion": {
     "summary": "A 298-line formalization of pro-p Sylow theory for profinite groups with 7 proved theorems, 5 axioms, 4 definitions, and 1 sorry. The formalization bridges finite and infinite Sylow theory, showing that the classical Sylow theorems are a special case of the profinite theory when applied to finite discrete groups.",
-    "implications": "Pro-p Sylow theory is foundational for: (1) **Galois cohomology**: the absolute Galois group Gal(k\u0304/k) is profinite, and its Sylow pro-p subgroups control p-adic representations; (2) **p-adic Lie groups**: pro-p groups of finite rank are p-adic analytic (Lazard's theorem); (3) **Class field theory**: the p-part of the Galois group of the maximal abelian extension is determined by the Sylow pro-p subgroup; (4) **Profinite group structure**: every profinite group decomposes into a system of Sylow pro-p subgroups, one for each prime.",
+    "implications": "Pro-p Sylow theory is foundational for: (1) **Galois cohomology**: the absolute Galois group Gal(k̄/k) is profinite, and its Sylow pro-p subgroups control p-adic representations; (2) **p-adic Lie groups**: pro-p groups of finite rank are p-adic analytic (Lazard's theorem); (3) **Class field theory**: the p-part of the Galois group of the maximal abelian extension is determined by the Sylow pro-p subgroup; (4) **Profinite group structure**: every profinite group decomposes into a system of Sylow pro-p subgroups, one for each prime.",
     "openQuestions": [
       "Formalize the full inverse limit construction: a Sylow pro-p subgroup P of G is the inverse limit of the Sylow p-subgroups of G/N as N ranges over open normal subgroups, with P mapping surjectively onto each finite Sylow p-subgroup.",
-      "Prove the Sylow pro-p counting theorem: in each finite quotient G/N, the number of Sylow p-subgroups satisfies n_p \u2261 1 (mod p) and n_p | [G/N : P\u00b7N/N], and these constraints are compatible across the inverse system.",
+      "Prove the Sylow pro-p counting theorem: in each finite quotient G/N, the number of Sylow p-subgroups satisfies n_p ≡ 1 (mod p) and n_p | [G/N : P·N/N], and these constraints are compatible across the inverse system.",
       "Formalize Lazard's theorem: a pro-p group of finite rank (every open subgroup is finitely generated) is a p-adic analytic group, and conversely every compact p-adic Lie group is a pro-p group of finite rank.",
-      "Formalize the pro-p completion: for any group G, its pro-p completion G_p^ = lim G/N (N ranges over normal subgroups with p-power index quotient) is a pro-p group, and the canonical map G \u2192 G_p^ is universal among maps to pro-p groups."
+      "Formalize the pro-p completion: for any group G, its pro-p completion G_p^ = lim G/N (N ranges over normal subgroups with p-power index quotient) is a pro-p group, and the canonical map G → G_p^ is universal among maps to pro-p groups."
     ]
   },
   "crossReferences": [
     {
       "targetId": "sylow-theorems",
       "relationship": "generalizes",
-      "description": "The pro-p Sylow theory generalizes the classical Sylow theorems: for finite discrete groups, the two theories coincide (IsProP \u2194 IsPGroup, and classical Sylow subgroups are closed pro-p)"
+      "description": "The pro-p Sylow theory generalizes the classical Sylow theorems: for finite discrete groups, the two theories coincide (IsProP ↔ IsPGroup, and classical Sylow subgroups are closed pro-p)"
     },
     {
       "targetId": "inverse-galois",
       "relationship": "related",
-      "description": "The inverse Galois problem asks which groups appear as Galois groups over \u211a. Profinite Sylow theory constrains which pro-p subgroups can appear in absolute Galois groups"
+      "description": "The inverse Galois problem asks which groups appear as Galois groups over ℚ. Profinite Sylow theory constrains which pro-p subgroups can appear in absolute Galois groups"
     },
     {
       "targetId": "inverse-galois-oq-01",
@@ -205,5 +205,10 @@
       "note": "The definitive treatment of pro-p groups of finite rank and their connection to p-adic Lie groups via Lazard's theorem"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "axiomCount": 5,
+    "lineCount": 393,
+    "sorries": 0
+  }
 }

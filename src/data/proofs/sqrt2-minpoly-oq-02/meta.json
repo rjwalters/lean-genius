@@ -188,5 +188,21 @@
       "description": "m is not a perfect n-th power when it has a squarefree prime factor"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "IntermediateField"
+    ],
+    "namespace": "CubeRoot2IrrationalOQ03",
+    "lineCount": 204,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/CubeRoot2IrrationalOQ03.lean"
+  }
 }

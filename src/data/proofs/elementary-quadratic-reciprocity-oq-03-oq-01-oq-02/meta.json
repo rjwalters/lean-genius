@@ -49,7 +49,9 @@
       "The Euclidean algorithm for $J(a, n)$ mirrors the integer GCD algorithm: reduce $a$ mod $n$, then apply quadratic reciprocity to swap $a$ and $n$ (with sign tracking), then repeat. The three key operations — `reduce_step` ($J(a,n) = J(a \\bmod n, n)$), `extract_two_step` ($J(2a,n) = J(2,n) \\cdot J(a,n)$), and `reciprocity_step` ($J(a,n) = (-1)^{(a-1)(n-1)/4} \\cdot J(n,a)$) — are the exact analogues of GCD's division and swap steps.",
       "The `certified_J_7_13` and `certified_J_1001_9907` theorems demonstrate *certified computation*: each step in the calculation is a separate theorem, and the chain of equalities is machine-verified by Lean. This is more informative than `by native_decide` (which just computes the answer) — it documents the algorithm's execution as a formal proof object. For larger inputs, the certified chain becomes the algorithm's proof of correctness.",
       "The `extractTwos` function computes $(k, m)$ such that $n = 2^k \\cdot m$ with $m$ odd. This is needed because the second supplement ($J(2, n) = \\chi_8(n)$) allows evaluating the 'even part' of $a$ separately. Lean's `def extractTwos : ℕ → ℕ × ℕ` is a computable recursive function (no `noncomputable` needed), verified on concrete inputs by `native_decide`.",
-      "`one_step_reduction` and `one_step_decreasing` together give the *certified recursive structure* of the Euclidean Jacobi algorithm. `one_step_reduction` says: $J(a, n) = (-1)^{(a-1)/2 \\cdot (n-1)/2} \\cdot J(n \\bmod a, a)$ (one step reduces the problem). `one_step_decreasing` says: $n \\bmod a < a$ when $0 < a < n$ (the bottom argument strictly decreases). Together they prove termination and correctness of the recursive algorithm in $O(\\log^2 n)$ steps."
+      "`one_step_reduction` and `one_step_decreasing` together give the *certified recursive structure* of the Euclidean Jacobi algorithm. `one_step_reduction` says: $J(a, n) = (-1)^{(a-1)/2 \\cdot (n-1)/2} \\cdot J(n \\bmod a, a)$ (one step reduces the problem). `one_step_decreasing` says: $n \\bmod a < a$ when $0 < a < n$ (the bottom argument strictly decreases). Together they prove termination and correctness of the recursive algorithm in $O(\\log^2 n)$ steps.",
+      "The certified Jacobi computation in this file is the computational engine for the **Solovay-Strassen primality test** (1977). The test: given odd $n > 2$, pick random $a$ coprime to $n$ and check whether $a^{(n-1)/2} \\equiv J(a,n) \\pmod{n}$. By Euler's criterion, this holds for all $a$ when $n$ is prime (since then $J(a,n) = (a/n)_{\\text{Legendre}}$ and $a^{(p-1)/2} \\equiv (a/p)_L \\pmod{p}$). For composite $n$, at least half the bases $a \\in (\\mathbb{Z}/n\\mathbb{Z})^*$ are witnesses to compositeness — so $k$ rounds give error probability $\\leq 2^{-k}$. The Jacobi symbol evaluation requires $O(\\log^2 n)$ operations (the certified algorithm here), while the modular exponentiation $a^{(n-1)/2}$ requires $O(\\log^2 n)$ too. The theorems `carmichael_prime` (from euler-totient-oq-01) and the `one_step_reduction` chain here together verify the mathematical foundation of this probabilistic primality test.",
+      "The contrast between `certified_J_7_13` (4 named theorem rewrites) and `native_decide` (1 opaque oracle call) exemplifies a deep distinction in formal verification: **proof certificates vs. verification witnesses**. A `native_decide` witness says 'the answer is X, verified by kernel computation'; a certified chain says 'the answer is X *because* step 1 is J(7,13)=J(13,7) by reciprocity, step 2 is J(13,7)=J(6,7) by reduction, ...'. The certified chain is a *proof-carrying computation*: it can be re-verified without re-executing the algorithm, it explains the structure, and it documents which algebraic laws were applied at each step. In cryptographic verification, this distinction matters: a verified implementation of Jacobi symbol needs not just the correct output but the correct *derivation trace* — which this file provides via the 8 step lemmas. The `one_step_reduction` theorem is the key recursive building block for generating such traces automatically."
     ]
   },
   "leanFile": {
@@ -91,6 +93,11 @@
       "targetId": "elementary-quadratic-reciprocity",
       "relationship": "foundational",
       "description": "Quadratic Reciprocity (root theorem) — the foundational result that this entry applies computationally. The `reciprocity_step` lemma in this entry wraps the main QR theorem (J(a,n)·J(n,a) = (-1)^((a-1)/2·(n-1)/2)) into an algorithmic step, turning a theoretical result into a certified computation primitive."
+    },
+    {
+      "targetId": "euler-totient-oq-01",
+      "relationship": "related",
+      "description": "Carmichael's Function and the minimal universal exponent — the Solovay-Strassen test (whose Jacobi evaluation this file certifies) rests on Euler's criterion: a^((p-1)/2) ≡ J(a,p) (mod p) for prime p. This is equivalent to the statement that (p-1) = λ(p) = φ(p) is the exact exponent for (ℤ/pℤ)*. The euler-totient-oq-01 entry formalizes this via IsCyclic.exponent_eq_card, while this entry provides the certified J(a,p) computation needed to test the criterion."
     }
   ],
   "sections": [
@@ -140,5 +147,25 @@
       "Can the Solovay-Strassen primality test — which uses the Jacobi symbol to detect composites — be formalized? The test checks $a^{(n-1)/2} \\equiv J(a,n) \\pmod{n}$; composites fail for at least half of bases $a$."
     ]
   },
+  "references": [
+    {
+      "key": "SS77",
+      "citation": "Solovay, R. & Strassen, V. (1977). A fast Monte-Carlo test for primality. SIAM Journal on Computing, 6(1), 84-85.",
+      "type": "paper",
+      "description": "Introduces the Solovay-Strassen probabilistic primality test using the Jacobi symbol; establishes the 1/2 error bound per round. The certified Jacobi computation in this file is the key subroutine."
+    },
+    {
+      "key": "BS96",
+      "citation": "Bach, E. & Shallit, J. (1996). Algorithmic Number Theory, Vol. 1: Efficient Algorithms. MIT Press.",
+      "type": "textbook",
+      "description": "Standard reference for the Euclidean Jacobi algorithm (Algorithm 9.4.3), its O(log² n) complexity analysis via Fibonacci worst-case, and applications to primality testing and quadratic form theory."
+    },
+    {
+      "key": "Ja37",
+      "citation": "Jacobi, C. G. J. (1837). Über die Kreisteilung und ihre Anwendung auf die Zahlentheorie. Journal für die reine und angewandte Mathematik, 17, 71-80.",
+      "type": "paper",
+      "description": "Original introduction of the Jacobi symbol J(a,n) for composite n, motivated by the study of quadratic forms and the factorization of cyclotomic polynomials."
+    }
+  ],
   "sorries": 0
 }

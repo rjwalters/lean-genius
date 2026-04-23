@@ -55,7 +55,7 @@
       "InGeneralPosition.mono: hereditary property (proved)",
       "CardSet.mono: upward closure of threshold set (proved)",
       "cardSet_three_lower_bound: f(3) >= 3 via witness construction (proved)",
-      "f_3_value: f(3) = 3 (proved via convexHull \u2286 affineSpan + non-collinearity)",
+      "f_3_value: f(3) = 3 (proved via convexHull ⊆ affineSpan + non-collinearity)",
       "Erdos-Szekeres lower bound 2^{n-2}+1 (axiomatized)",
       "Suk bound 2^{(1+o(1))n} with Filter.atTop formalization",
       "HMPT bound 2^{n+O(sqrt(n log n))} with existential constant",
@@ -91,7 +91,7 @@
       "title": "Module Docstring",
       "startLine": 1,
       "endLine": 22,
-      "summary": "Historical introduction covering Klein (1931), Erd\u0151s-Szekeres (1935, 1960), Suk (2017), and HMPT (2020). States the problem and lists key milestones.",
+      "summary": "Historical introduction covering Klein (1931), Erdős-Szekeres (1935, 1960), Suk (2017), and HMPT (2020). States the problem and lists key milestones.",
       "mathContext": "States the open conjecture f(n) = 2^{n-2}+1 and gives historical context."
     },
     {
@@ -107,7 +107,7 @@
       "title": "Small Cases (Axiomatized)",
       "startLine": 64,
       "endLine": 84,
-      "summary": "Known exact values: $f(4)=5$ (Klein 1931) and $f(5)=9$ (Tur\u00e1n-Makai). Both stated as axioms. All match $2^{n-2}+1$.",
+      "summary": "Known exact values: $f(4)=5$ (Klein 1931) and $f(5)=9$ (Turán-Makai). Both stated as axioms. All match $2^{n-2}+1$.",
       "mathContext": "Axioms f_four_eq and f_five_eq for the only verified small cases."
     },
     {
@@ -115,7 +115,7 @@
       "title": "Main Bounds",
       "startLine": 86,
       "endLine": 131,
-      "summary": "Four axioms covering all key bounds: Erd\u0151s-Szekeres lower bound $2^{n-2}+1$, ES upper bound $\\binom{2n-4}{n-2}+1$, Suk 2017 bound $2^{(1+o(1))n}$, and HMPT 2020 bound $2^{n+O(\\sqrt{n\\log n})}$.",
+      "summary": "Four axioms covering all key bounds: Erdős-Szekeres lower bound $2^{n-2}+1$, ES upper bound $\\binom{2n-4}{n-2}+1$, Suk 2017 bound $2^{(1+o(1))n}$, and HMPT 2020 bound $2^{n+O(\\sqrt{n\\log n})}$.",
       "mathContext": "Formalizes the main known bounds on f(n) as axioms with full asymptotic notation."
     },
     {
@@ -123,7 +123,7 @@
       "title": "Main Conjecture (OPEN)",
       "startLine": 133,
       "endLine": 146,
-      "summary": "HappyEndingConjecture defined as a Prop: $f(n) = 2^{n-2}+1$ for all $n \\geq 3$. Correctly stated without asserting truth. $500 Erd\u0151s prize.",
+      "summary": "HappyEndingConjecture defined as a Prop: $f(n) = 2^{n-2}+1$ for all $n \\geq 3$. Correctly stated without asserting truth. $500 Erdős prize.",
       "mathContext": "The open problem stated as a Prop rather than an axiom or theorem."
     },
     {
@@ -177,33 +177,38 @@
   ],
   "references": [
     {
-      "authors": "Erd\u0151s, Paul; Szekeres, George",
+      "authors": "Erdős, Paul; Szekeres, George",
       "title": "A combinatorial problem in geometry",
       "year": "1935",
-      "venue": "Compositio Mathematica 2, pp. 463\u2013470",
-      "note": "The founding paper of Ramsey-type combinatorial geometry. Proved that for every n, there exists N such that any N points in general position contain a convex n-gon. The paper's romantic origin \u2014 Erd\u0151s named it the 'Happy Ending Problem' because Szekeres married Esther Klein, who posed the original question \u2014 is one of the most famous stories in mathematics"
+      "venue": "Compositio Mathematica 2, pp. 463–470",
+      "note": "The founding paper of Ramsey-type combinatorial geometry. Proved that for every n, there exists N such that any N points in general position contain a convex n-gon. The paper's romantic origin — Erdős named it the 'Happy Ending Problem' because Szekeres married Esther Klein, who posed the original question — is one of the most famous stories in mathematics"
     },
     {
       "authors": "Suk, Andrew",
-      "title": "On the Erd\u0151s-Szekeres convex polygon problem",
+      "title": "On the Erdős-Szekeres convex polygon problem",
       "year": "2017",
-      "venue": "Journal of the American Mathematical Society 30(4), pp. 1047\u20131053",
-      "note": "Major breakthrough proving ES(n) \u2264 2^(n+o(n)), nearly matching the Erd\u0151s-Szekeres lower bound of 2^(n-2)+1 and essentially resolving the conjecture up to lower-order terms"
+      "venue": "Journal of the American Mathematical Society 30(4), pp. 1047–1053",
+      "note": "Major breakthrough proving ES(n) ≤ 2^(n+o(n)), nearly matching the Erdős-Szekeres lower bound of 2^(n-2)+1 and essentially resolving the conjecture up to lower-order terms"
     },
     {
       "authors": "Morris, Walter; Soltan, Valeriu",
-      "title": "The Erd\u0151s-Szekeres problem on points in convex position \u2014 a survey",
+      "title": "The Erdős-Szekeres problem on points in convex position — a survey",
       "year": "2000",
-      "venue": "Bulletin of the American Mathematical Society 37(4), pp. 437\u2013458",
-      "note": "Comprehensive survey of the Happy Ending Problem and its generalizations, covering the original Erd\u0151s-Szekeres results, the conjectured bound 2^(n-2)+1, higher-dimensional extensions, and connections to Ramsey theory"
+      "venue": "Bulletin of the American Mathematical Society 37(4), pp. 437–458",
+      "note": "Comprehensive survey of the Happy Ending Problem and its generalizations, covering the original Erdős-Szekeres results, the conjectured bound 2^(n-2)+1, higher-dimensional extensions, and connections to Ramsey theory"
     },
     {
-      "authors": "T\u00f3th, G\u00e9za; Valtr, Pavel",
-      "title": "The Erd\u0151s-Szekeres theorem: upper bounds and related results",
+      "authors": "Tóth, Géza; Valtr, Pavel",
+      "title": "The Erdős-Szekeres theorem: upper bounds and related results",
       "year": "2005",
-      "venue": "Combinatorial and Computational Geometry, MSRI Publications 52, pp. 557\u2013568",
-      "note": "Surveys upper bounds on the Erd\u0151s-Szekeres function and variants including the number of empty convex polygons, complementing the original 1935 result"
+      "venue": "Combinatorial and Computational Geometry, MSRI Publications 52, pp. 557–568",
+      "note": "Surveys upper bounds on the Erdős-Szekeres function and variants including the number of empty convex polygons, complementing the original 1935 result"
     }
   ],
-  "sorries": 2
+  "sorries": 2,
+  "leanFile": {
+    "axiomCount": 6,
+    "lineCount": 243,
+    "sorries": 2
+  }
 }

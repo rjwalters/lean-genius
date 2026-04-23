@@ -8,7 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/607",
     "date": "1983",
     "status": "axiomatized",
-    "proofRepoPath": "Proofs/Stubs/Erdos607Problem.lean",
+    "proofRepoPath": "Proofs/Erdos607Problem.lean",
     "tags": [
       "erdos",
       "combinatorial-geometry",
@@ -18,7 +18,7 @@
       "asymptotics"
     ],
     "badge": "axiom",
-    "sorries": 20,
+    "sorries": 0,
     "erdosNumber": 607,
     "erdosUrl": "https://erdosproblems.com/607",
     "erdosProblemStatus": "solved",
@@ -65,9 +65,9 @@
       "partition_count_growth: partition-theoretic explanation",
       "erdos_607, erdos_607_tight: main results"
     ],
-    "axiomCount": 1,
-    "lineCount": 203,
-    "assumptions": "1 axiom(s) and 20 sorry(s). See the Lean source for details.",
+    "axiomCount": 10,
+    "lineCount": 224,
+    "assumptions": "10 axioms: incidenceSignature, incidence_at_least_two, incidence_at_most_n, incidence_pair_constraint, F, F_two, F_three, szemeredi_trotter_incidence, sz_trotter_upper_bound, f_lower_bound. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -101,89 +101,65 @@
       "id": "header",
       "title": "Problem Overview",
       "startLine": 1,
-      "endLine": 25,
-      "summary": "Header: incidence signatures, $F(n)$ counting function, Szemerédi-Trotter solution, $\\$250$ prize",
-      "mathContext": "#607: incidence signatures. F(n)=distinct signature count."
+      "endLine": 37,
+      "summary": "Header: incidence signatures, $F(n)$ counting function, Szemerédi-Trotter solution, timeline, $\\$250$ prize",
+      "mathContext": "#607: incidence signatures. F(n)=distinct signature count. Solved 1983."
     },
     {
       "id": "point-configurations",
-      "title": "Point Configurations",
-      "startLine": 31,
-      "endLine": 62,
-      "summary": "`Point` ($\\mathbb{R}^2$), `PointConfig n` (injective $\\text{Fin}\\, n \\to \\text{Point}$), `Line` (two distinct points), `Line.contains` (parametric $p_1 + t(p_2 - p_1)$), `determinedLines`",
-      "mathContext": "n distinct points in R^2."
+      "title": "Point Configurations and Lines",
+      "startLine": 39,
+      "endLine": 76,
+      "summary": "`Point` ($\\mathbb{R}^2$), `PointConfig n` (injective $\\text{Fin}\\, n \\to \\text{Point}$), `Line` (two distinct points), `Line.contains` (parametric), `lineThroughPair`, `incidenceCount`",
+      "mathContext": "n distinct points in R^2. incidenceCount: |ℓ ∩ P| for a line ℓ."
     },
     {
-      "id": "incidence-counts",
-      "title": "Incidence Counts and Signatures",
-      "startLine": 63,
-      "endLine": 76,
-      "summary": "`incidenceCount` (points on a line), `incidenceSignature` (`Multiset ℕ`), `incidenceSet` (`Finset ℕ` ignoring multiplicities)",
-      "mathContext": "incidenceCount: points on a line. Signature: multiset of counts."
+      "id": "incidence-signatures",
+      "title": "Incidence Signatures (Axiomatized)",
+      "startLine": 78,
+      "endLine": 108,
+      "summary": "Axioms: `incidenceSignature` (multiset of counts), `incidence_at_least_two` (≥2), `incidence_at_most_n` (≤n), `incidence_pair_constraint` (Σ C(kᵢ,2)=C(n,2))",
+      "mathContext": "incidenceSignature: multiset {|ℓ∩P|}. Pair constraint: Σ C(k,2)=C(n,2)."
     },
     {
       "id": "f-function",
       "title": "The Function $F(n)$",
-      "startLine": 77,
-      "endLine": 86,
-      "summary": "`F n` (distinct signatures) and `F_set n` (distinct incidence sets) counting achievable patterns",
-      "mathContext": "F(n)=|distinct signatures|."
-    },
-    {
-      "id": "conjecture-solution",
-      "title": "The Conjecture and Solution",
-      "startLine": 87,
-      "endLine": 96,
-      "summary": "`ErdosConjecture607`: $F(n) \\leq \\exp(C\\sqrt{n})$; `szemeredi_trotter_607`: proved",
-      "mathContext": "Erdos: F(n)<=exp(C sqrt(n)). SOLVED."
-    },
-    {
-      "id": "upper-bound",
-      "title": "Upper Bound Analysis",
-      "startLine": 97,
-      "endLine": 113,
-      "summary": "Constraints: `incidence_at_least_two` ($\\geq 2$), `incidence_at_most_n` ($\\leq n$), `lines_at_most_binomial` ($\\leq \\binom{n}{2}$)",
-      "mathContext": "Upper: partition + Szemeredi-Trotter constraints."
-    },
-    {
-      "id": "lower-bound",
-      "title": "Lower Bound Optimality",
-      "startLine": 114,
-      "endLine": 124,
-      "summary": "`LowerBoundConjecture`: $F(n) \\geq \\exp(c\\sqrt{n})$; `lower_bound_construction`: explicit configurations achieve this",
-      "mathContext": "Lower: F(n)>=exp(c sqrt(n)). Grid constructions."
-    },
-    {
-      "id": "special-configs",
-      "title": "Special Configurations",
-      "startLine": 125,
-      "endLine": 150,
-      "summary": "`collinearConfig` ($A = \\{n\\}$), `generalPositionConfig` ($A = \\{2\\}$), `gridConfig` (intermediate $A$ with multiple values)",
-      "mathContext": "Collinear: {n}. General position: {2,...,2}."
+      "startLine": 110,
+      "endLine": 123,
+      "summary": "Axioms: `F : ℕ → ℕ` (distinct signatures), `F_two = 1`, `F_three = 2` (small values)",
+      "mathContext": "F(n)=|distinct incidence signatures|. F(2)=1, F(3)=2."
     },
     {
       "id": "sz-trotter",
       "title": "Szemerédi-Trotter Incidence Theorem",
-      "startLine": 151,
-      "endLine": 164,
-      "summary": "`szemeredi_trotter_incidence`: $I \\leq O((nm)^{2/3} + n + m)$; `incidence_bound_constrains_signature`",
-      "mathContext": "ST bound controls signature shapes."
+      "startLine": 125,
+      "endLine": 149,
+      "summary": "Axiom `szemeredi_trotter_incidence`: $I(P,L) \\leq C(nm)^{2/3} + n + m$ for absolute constant $C$",
+      "mathContext": "ST bound: I(P,L) ≤ C(nm)^(2/3)+n+m. Tight, achieved by grids."
     },
     {
-      "id": "partitions",
-      "title": "Partition Connection",
-      "startLine": 165,
-      "endLine": 181,
-      "summary": "`incidence_sum_constraint` ($\\sum \\binom{k_i}{2} = \\binom{n}{2}$), `partition_count_growth`: $\\exp(\\Theta(\\sqrt{n}))$ from Hardy-Ramanujan asymptotics",
-      "mathContext": "Sum C(k_i,2)=C(n,2). Constrained partition."
+      "id": "bounds",
+      "title": "Upper and Lower Bounds on $F(n)$",
+      "startLine": 151,
+      "endLine": 184,
+      "summary": "Axioms: `sz_trotter_upper_bound` ($F(n) \\leq \\exp(C\\sqrt{n})$), `f_lower_bound` ($F(n) \\geq \\exp(c\\sqrt{n})$ eventually)",
+      "mathContext": "Upper: ST constrains realizable partitions. Lower: explicit constructions."
     },
     {
       "id": "main-results",
       "title": "Main Results",
-      "startLine": 182,
-      "endLine": 203,
-      "summary": "`erdos_607`: both bounds hold; `erdos_607_tight`: $\\exp(c\\sqrt{n}) \\leq F(n) \\leq \\exp(C\\sqrt{n})$",
-      "mathContext": "SOLVED: exp(c sqrt(n))<=F(n)<=exp(C sqrt(n))."
+      "startLine": 186,
+      "endLine": 207,
+      "summary": "`erdos_607`: conjunction of upper and lower bounds; `erdos_607_tight`: explicit witnesses $c, C > 0$",
+      "mathContext": "SOLVED: exp(c sqrt(n)) ≤ F(n) ≤ exp(C sqrt(n)). Proved from axioms."
+    },
+    {
+      "id": "partitions",
+      "title": "Connection to Integer Partitions",
+      "startLine": 209,
+      "endLine": 224,
+      "summary": "Informal explanation: signatures = constrained partitions of $\\binom{n}{2}$; Hardy-Ramanujan $p(n) \\sim \\exp(\\pi\\sqrt{2n/3})$ explains the $\\sqrt{n}$ exponent",
+      "mathContext": "Partition of C(n,2) into triangular parts. HR: p(N)~exp(π√(2N/3))."
     }
   ],
   "conclusion": {
@@ -199,20 +175,24 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib"
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Data.Multiset.Basic",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Exp",
+      "Mathlib.Analysis.SpecialFunctions.Sqrt",
+      "Mathlib.Order.Filter.AtTopBot"
     ],
     "opens": [
-      "Finset",
-      "Function",
-      "Set"
+      "Real",
+      "Filter"
     ],
-    "namespace": null,
-    "lineCount": 203,
-    "axiomCount": 1,
-    "theoremCount": 13,
-    "definitionCount": 13,
-    "path": "Proofs/Stubs/Erdos607Problem.lean",
-    "sorries": 20
+    "namespace": "Erdos607",
+    "lineCount": 224,
+    "axiomCount": 10,
+    "theoremCount": 2,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos607Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -231,5 +211,5 @@
       "description": "Related Erdős problem sharing themes: incidence-geometry, point-line-incidences"
     }
   ],
-  "sorries": 20
+  "sorries": 0
 }

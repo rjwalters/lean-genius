@@ -121,6 +121,11 @@
       "description": "Finite Groups of Order $< 60$ Are Solvable — $|A_5| = 60$ is the precise boundary: every finite group of order $< 60$ is solvable. This entry proves the p-group chain $\\text{IsPGroup} \\Rightarrow \\text{IsNilpotent} \\Rightarrow \\text{IsSolvable}$, establishing the order-60 threshold that makes $A_5$ the minimal non-solvable example."
     },
     {
+      "targetId": "abel-ruffini-oq-04-oq-07",
+      "relationship": "related",
+      "description": "Bring-Jerrard Reduction: any quintic can be transformed to the canonical form $x^5 + x + t = 0$ via Tschirnhaus substitutions. The resulting Bring radical $\\mathrm{BR}(t)$ — the unique real root — provides a 'closed-form' solution to quintics, but one not expressible by radicals. This is fully consistent with this file's central result: $S_5$ not solvable means no radical tower can express roots of the reduced quintic for generic $t$. The Bring-Jerrard entry and this file together delimit the boundary between 'solvable' and 'transcendental' quintic solutions."
+    },
+    {
       "targetId": "abel-ruffini-oq-04-oq-03",
       "relationship": "related",
       "description": "Galois's Solvability Criterion: a root is solvable by radicals $\\iff$ its Galois group is solvable. This entry proves the forward direction from Mathlib and axiomatizes the reverse (Kummer theory). Complementary to this file's `not_solvable_by_rad_of_not_solvable_galois` (contrapositive form) and the `galois_group_order` result."
@@ -191,7 +196,7 @@
       "title": "Solvability Infrastructure",
       "startLine": 237,
       "endLine": 365,
-      "summary": "Proves solvability of $A_n$ for $n \\leq 4$ and non-solvability for $n \\geq 5$ (complete $A_n$ classification). Group cardinalities from $|S_2|=2$ to $|S_6|=720$. Solvability preservation: subgroups, quotients, isomorphisms. Specific non-solvability of $S_5, S_6, S_7, S_8$ and $A_6, A_7$."
+      "summary": "Proves complete alternating group classification: $A_n$ solvable $\\iff n \\leq 4$ (via `solvable_of_ker_le_range` for $n \\geq 5$, subgroup solvability for $n \\leq 4$). Group cardinalities $|S_2|$–$|S_6|$ and $|A_0|$–$|A_6|$ via `decide`/`native_decide`. Solvability preservation: subgroups ($H \\leq G$), quotients ($G/N$), and isomorphic groups all via `inferInstance`. Index theorem corollaries (Part X): $|S_0|=|S_1|=1$ and `a5_not_solvable` as a standalone named lemma for direct reference."
     },
     {
       "id": "specific-non-solvable",

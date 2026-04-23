@@ -6,7 +6,13 @@
   "meta": {
     "status": "verified",
     "proofRepoPath": "Proofs/DivisibilityBy3OQ03OQ02.lean",
-    "tags": ["number-theory", "divisibility", "digital-root", "modular-arithmetic", "research"],
+    "tags": [
+      "number-theory",
+      "divisibility",
+      "digital-root",
+      "modular-arithmetic",
+      "research"
+    ],
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
@@ -160,5 +166,20 @@
       "note": "Studies the multiplicative and additive properties of digital roots in arbitrary bases, proving asymptotic results about their distribution."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "DigitalRootBase",
+    "lineCount": 211,
+    "axiomCount": 0,
+    "theoremCount": 19,
+    "definitionCount": 1,
+    "sorries": 0,
+    "path": "Proofs/DivisibilityBy3OQ03OQ02.lean"
+  }
 }

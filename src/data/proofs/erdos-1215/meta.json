@@ -99,5 +99,18 @@
       "description": "Both represent formalization stubs pending major Mathlib infrastructure: Easton's class forcing and Mac Lane's polynomial lemniscate theory share the challenge of encoding analytic/metamathematical content in Lean 4."
     }
   ],
-  "sorries": 1
+  "sorries": 1,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 23,
+    "axiomCount": 0,
+    "theoremCount": 1,
+    "definitionCount": 0,
+    "sorries": 1,
+    "path": "Proofs/Erdos1215Problem.lean"
+  }
 }

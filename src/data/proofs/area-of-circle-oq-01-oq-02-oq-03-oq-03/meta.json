@@ -137,5 +137,22 @@
       "description": "Root proof establishing A(r) = πr². Our result is the n-dimensional generalization of A'(r) = 2πr."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory",
+      "intervalIntegral"
+    ],
+    "namespace": "SteinerFormulaNBall",
+    "lineCount": 302,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 3,
+    "sorries": 0,
+    "path": "Proofs/AreaOfCircleOQ01OQ02OQ03OQ03.lean"
+  }
 }

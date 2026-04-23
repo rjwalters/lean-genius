@@ -130,5 +130,20 @@
       "description": "Root: Bézout's identity ax + by = gcd(a,b) for integers"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "EuclideanDomain"
+    ],
+    "namespace": "BezoutIdentityOQ04OQ02",
+    "lineCount": 138,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/BezoutIdentityOQ04OQ02.lean"
+  }
 }

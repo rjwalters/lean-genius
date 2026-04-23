@@ -78,9 +78,9 @@
         "relationship": "Related limit theorem; the exponent c > 1/2 in Matsuyama's result is reminiscent of CLT variance scaling"
       }
     ],
-    "axiomCount": 1,
-    "lineCount": 350,
-    "assumptions": "1 axiom: matsuyama_1966. 0 sorries."
+    "axiomCount": 2,
+    "lineCount": 353,
+    "assumptions": "2 axioms: matsuyama_1966, lacunary_quasi_independent. 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős Problem #996 sits at the intersection of harmonic analysis, probability theory, and ergodic theory. It concerns the strong law of large numbers for sequences evaluated along lacunary (exponentially growing) subsequences.\n\n**Origins in Weyl's Equidistribution (1916)**\n\nThe problem traces back to Weyl's theorem: for irrational α, the sequence {α}, {2α}, {3α}, ... is equidistributed mod 1. The natural question is what happens when we sample only at lacunary times n₁, n₂, ...\n\n**The Problem's Historical Progression**\n\nThe decay conditions required for the strong law were progressively weakened:\n- **Raikov**: Proved the strong law for geometric sequences nₖ = aᵏ unconditionally — no Fourier decay condition needed at all\n- **Kac-Salem-Zygmund (1948)**: First general result for lacunary sequences, requiring Fourier error ‖f - fₙ‖₂ = O(1/(log n)^c) for c > 1. The proof uses a Borel-Cantelli argument.\n- **Erdős (1949)**: Improved to O(1/(log log n)^c) for c > 1 — replacing log with log log, a dramatic weakening of the regularity assumption\n- **Matsuyama (1966)**: Further improved the exponent from c > 1 to c > 1/2 for log log decay. The exponent 1/2 is suggestive of the central limit theorem.\n\nThe open question asks whether we can push to log log log decay — adding yet another level of iterated logarithm to the hierarchy. The pattern of improvements suggests it might work, but current techniques cannot bridge the gap.",
@@ -107,97 +107,97 @@
       "id": "lacunary",
       "title": "Lacunary Sequences",
       "startLine": 50,
-      "endLine": 90,
+      "endLine": 106,
       "summary": "Defines IsLacunary (ratio condition n(k+1)/n(k) ≥ λ > 1), proves powers of 2 and 3 are lacunary via explicit ratio calculations, and proves lacunary_strictMono via induction on positivity.",
       "mathContext": "Lacunary sequence: n(k+1)/n(k) >= lambda > 1. Growth at least geometric. Examples: 2^k, floor(a^k)."
     },
     {
       "id": "fourier",
       "title": "Fourier Series and Partial Sums",
-      "startLine": 91,
-      "endLine": 108,
+      "startLine": 107,
+      "endLine": 120,
       "summary": "Defines fourierPartialSum (trigonometric polynomial of degree N), fourierError (L² norm of f - fₙ), and axiomatizes Parseval's identity connecting L² norm to Fourier coefficient ℓ² norm.",
       "mathContext": "Fourier partial sum: S_N f(x) = sum |k|<=N f_hat(k) e^{2pi ikx}. Convergence depends on smoothness."
     },
     {
       "id": "ergodic",
       "title": "The Ergodic Average",
-      "startLine": 109,
-      "endLine": 123,
+      "startLine": 121,
+      "endLine": 135,
       "summary": "Defines frac (fractional part), ergodicAverage ((1/N)Σf({αnₖ}) as Cesàro mean), and spaceAverage (∫₀¹f dx, the zeroth Fourier coefficient).",
       "mathContext": "Ergodic average: (1/N) sum f({alpha n_k}). Birkhoff: converges a.e. for L^1."
     },
     {
       "id": "strong-law",
       "title": "The Strong Law of Large Numbers",
-      "startLine": 124,
-      "endLine": 135,
+      "startLine": 136,
+      "endLine": 147,
       "summary": "Defines StrongLawHolds (Tendsto of ergodic average to space average) and StrongLawHoldsAE (a.e. version using ∀ᵐ α with Lebesgue measure on [0,1]).",
       "mathContext": "SLLN for {alpha n_k}: (1/N) sum f({alpha n_k}) -> int f for a.e. alpha."
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "startLine": 136,
-      "endLine": 171,
-      "summary": "Four axiomatized historical milestones: raikov_theorem (geometric sequences, unconditional), kac_salem_zygmund_1948 (log decay c > 1), erdos_1949 (log log c > 1), matsuyama_1966 (log log c > 1/2).",
-      "mathContext": "Raikov: geometric n_k = q^k. Takahashi: n(k+1)/n(k) -> infinity. Matsuyama: O(1/(log N)^{1/2+eps}) suffices."
+      "startLine": 148,
+      "endLine": 169,
+      "summary": "Axiomatized historical milestones: matsuyama_1966 (log log decay c > 1/2, the state of the art). Documentary comments cover Raikov (unconditional for geometric), KSZ (log c > 1), and Erdős (log log c > 1).",
+      "mathContext": "Raikov: geometric n_k = q^k. Takahashi: n(k+1)/n(k) -> infinity. Matsuyama: O(1/(log log N)^{1/2+eps}) suffices."
     },
     {
       "id": "open-question",
       "title": "The Open Question",
-      "startLine": 172,
-      "endLine": 187,
+      "startLine": 170,
+      "endLine": 184,
       "summary": "Formalizes ErdosProblem996 as a Lean Prop: ∃ C > 0 such that log log log decay with exponent C suffices for StrongLawHoldsAE. Status: OPEN.",
       "mathContext": "OPEN: does O(1/(log log log N)^C) decay suffice for SLLN? Triple-log is very weak."
     },
     {
       "id": "related",
       "title": "Related Questions",
-      "startLine": 188,
-      "endLine": 200,
+      "startLine": 185,
+      "endLine": 198,
       "summary": "Two additional open questions: FloorPowerQuestion (SLLN for ⌊aᵏ⌋ with real a > 1) and BoundedFunctionQuestion (SLLN for all bounded f without Fourier decay condition).",
       "mathContext": "Related open: SLLN for floor(a^k) with non-integer a > 1."
     },
     {
       "id": "decay-hierarchy",
       "title": "The Decay Hierarchy",
-      "startLine": 201,
-      "endLine": 231,
+      "startLine": 199,
+      "endLine": 229,
       "summary": "DecayCondition structure with name/rate/sufficiency, instantiated for log (c > 1, sufficient), log log (c > 1/2, sufficient), and log log log (unknown, sufficient = false).",
       "mathContext": "Hierarchy: polynomial > 1/(log N)^C > 1/(log log N)^C > 1/(log log log N)^C."
     },
     {
       "id": "quasi-independence",
       "title": "Why Lacunary Sequences?",
-      "startLine": 232,
-      "endLine": 250,
-      "summary": "Placeholder for quasi-independence theorem (proved as True), and consecutive_not_lacunary showing n(k) = k+1 fails the ratio condition via Archimedean argument.",
-      "mathContext": "Quasi-independence: {alpha n_k} behaves like independent r.v.s due to lacunary gaps."
+      "startLine": 230,
+      "endLine": 267,
+      "summary": "Axiomatizes lacunary_quasi_independent (orthogonality of centered f({αnⱼ}) and f({αnₖ}) for j≠k, the Weyl-type cancellation underlying all SLLN results), and proves consecutive_not_lacunary via Archimedean argument.",
+      "mathContext": "Quasi-independence: {alpha n_k} behaves like independent r.v.s due to lacunary gaps. Formally: cross-correlation of centered values vanishes for j ≠ k."
     },
     {
       "id": "gap",
       "title": "The Gap Between Results",
-      "startLine": 251,
-      "endLine": 266,
-      "summary": "known_gap theorem packaging Matsuyama's result (∀ c > 1/2, ...) with a True placeholder for the open question. Proved by direct application of matsuyama_1966.",
-      "mathContext": "Gap: Matsuyama c > 1/2. Problem asks about c = 0 (no log decay, just triple-log)."
+      "startLine": 268,
+      "endLine": 282,
+      "summary": "known_gap theorem directly applying Matsuyama's result: for any c > 1/2, log-log Fourier decay implies StrongLawHoldsAE. Proved by direct application of matsuyama_1966 axiom.",
+      "mathContext": "Gap: Matsuyama c > 1/2 is known. Problem asks about triple-log decay (any C)."
     },
     {
       "id": "connections",
       "title": "Connections to Other Areas",
-      "startLine": 267,
-      "endLine": 282,
-      "summary": "Weyl equidistribution theorem axiomatized as a precursor. Documents connections to ergodic theory, harmonic analysis, probability, and Diophantine approximation.",
+      "startLine": 283,
+      "endLine": 294,
+      "summary": "Documents connections to ergodic theory, harmonic analysis, probability, and Diophantine approximation. Includes Weyl equidistribution as the precursor result.",
       "mathContext": "Weyl equidistribution: {alpha n} equidistributed for irrational alpha."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 283,
-      "endLine": 343,
-      "summary": "erdos_996_summary theorem: existential witness c = 1 > 1/2 satisfies Matsuyama, conjoined with True for the open log log log question. Complete docstring overview.",
-      "mathContext": "OPEN. Known: SLLN for O(1/(log N)^{1/2+eps}). Unknown: triple-log decay."
+      "startLine": 295,
+      "endLine": 353,
+      "summary": "erdos_996_summary theorem: existential witness c = 1 > 1/2 satisfies Matsuyama's condition, proving the known result. Complete docstring overview of Problem #996 status.",
+      "mathContext": "OPEN. Known: SLLN for O(1/(log log N)^{1/2+eps}). Unknown: triple-log decay."
     }
   ],
   "conclusion": {
@@ -228,9 +228,9 @@
       "Real"
     ],
     "namespace": "Erdos996",
-    "lineCount": 350,
-    "axiomCount": 1,
-    "theoremCount": 7,
+    "lineCount": 353,
+    "axiomCount": 2,
+    "theoremCount": 6,
     "definitionCount": 14,
     "path": "Proofs/Erdos996Problem.lean",
     "sorries": 0

@@ -174,5 +174,26 @@
       "description": "Grandparent: 2D Hockey Stick Identity in the arithmetic series hierarchy"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Totient",
+      "Proofs.BurnsideCountingOQ03",
+      "Mathlib.GroupTheory.GroupAction.Quotient"
+    ],
+    "opens": [
+      "Finset",
+      "MulAction"
+    ],
+    "namespace": "PolyaEnumeration",
+    "lineCount": 507,
+    "axiomCount": 0,
+    "theoremCount": 27,
+    "definitionCount": 4,
+    "sorries": 0,
+    "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ01.lean"
+  }
 }

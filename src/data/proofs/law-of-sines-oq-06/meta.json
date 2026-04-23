@@ -147,5 +147,25 @@
       "note": "Chapter 1 gives the area-based proof of the law of sines used here: Area = (1/2)ab sin(C)"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Analysis.InnerProductSpace.Angle",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "scoped",
+      "RealInnerProductSpace"
+    ],
+    "namespace": "LawOfSines",
+    "lineCount": 309,
+    "axiomCount": 0,
+    "theoremCount": 24,
+    "definitionCount": 8,
+    "sorries": 1,
+    "path": "Proofs/LawOfSinesOQ06.lean"
+  }
 }

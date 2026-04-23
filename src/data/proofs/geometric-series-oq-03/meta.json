@@ -151,5 +151,32 @@
       "description": "The Neumann series is the operator-theoretic geometric series (1-T)^{-1} = ∑ T^n for ‖T‖ < 1. The Euler factor formula is the scalar (complex) case of this identity."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.LSeries.RiemannZeta",
+      "Mathlib.NumberTheory.EulerProduct.DirichletLSeries",
+      "Mathlib.Algebra.GeomSum",
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Complex",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Complex",
+      "Real",
+      "Nat",
+      "Filter",
+      "Topology",
+      "BigOperators"
+    ],
+    "namespace": "GeometricSeriesOQ03",
+    "lineCount": 215,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/GeometricSeriesOQ03.lean"
+  }
 }

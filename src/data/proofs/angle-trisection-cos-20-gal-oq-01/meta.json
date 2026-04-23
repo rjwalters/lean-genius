@@ -147,5 +147,22 @@
       "description": "The inverse Galois problem — ℤ/3ℤ is realized here as Gal(cos(π/7) minpoly/ℚ)"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "IntermediateField",
+      "FiniteDimensional"
+    ],
+    "namespace": "AngleTrisectionCos20GalOQ01",
+    "lineCount": 416,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/AngleTrisectionCos20GalOQ01.lean"
+  }
 }

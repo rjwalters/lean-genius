@@ -1,10 +1,10 @@
 {
   "id": "erdos-1095-oq-01",
-  "title": "Erd\u0151s #1095 OQ01: Asymptotics of g(k) \u2014 Smooth Binomial Coefficients",
+  "title": "Erdős #1095 OQ01: Asymptotics of g(k) — Smooth Binomial Coefficients",
   "slug": "erdos-1095-oq-01",
-  "description": "Is log g(k) ~ c\u00b7k/log k, where g(k) is the smallest n > k+1 with all prime factors of C(n,k) exceeding k?",
+  "description": "Is log g(k) ~ c·k/log k, where g(k) is the smallest n > k+1 with all prime factors of C(n,k) exceeding k?",
   "meta": {
-    "author": "Erd\u0151s",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1095",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1095OQ01Problem.lean",
@@ -16,7 +16,7 @@
       "smooth-numbers",
       "asymptotics"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 1095,
     "erdosUrl": "https://erdosproblems.com/1095",
@@ -27,17 +27,17 @@
     "assumptions": "0 axioms, 0 sorries. gFunc_exists proved constructively via Kummer's theorem (carry-free base-p arithmetic). gFunc defined via Nat.find; gFunc_gt, gFunc_spec, gFunc_minimal proved as theorems. Concrete values g(1)=3, g(2)=6, g(3)=7, g(4)=7, g(5)=23, g(6)=62 all verified. Open conjecture; supporting lemmas fully verified."
   },
   "overview": {
-    "historicalContext": "The function $g(k)$ \u2014 the smallest $n > k+1$ such that every prime factor of $\\binom{n}{k}$ exceeds $k$ \u2014 was introduced by Ecklund, Erd\u0151s, and Selfridge in their 1974 paper on smooth binomial coefficients. They established the initial bounds $k^{1+c} < g(k) \\leq \\exp((1+o(1))k)$, showing that $g(k)$ grows faster than any polynomial but no faster than exponential.\n\nThe lower bound was substantially improved by Konyagin, who proved $g(k) \\gg \\exp(c(\\log k)^2)$ using estimates on smooth numbers (integers whose prime factors are all below a given bound). The key insight is that $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$, and avoiding all primes $\\leq k$ requires $n$ to be chosen so that the prime factorization of the numerator $n(n-1)\\cdots(n-k+1)$ has no small prime factors surviving the cancellation with $k!$.\n\nErd\u0151s, Lacampagne, and Selfridge conjectured that $\\log g(k) \\sim c \\cdot k / \\log k$ for some positive constant $c$, which would place $g(k)$ at a precise intermediate growth rate between polynomial and exponential. Computational evidence by Sorenson, Sorenson, and Webster supports this conjecture, but it remains open. The problem connects to smooth number theory, sieve methods, and the distribution of prime factors in products of consecutive integers.",
-    "problemStatement": "Let g(k) > k+1 be the smallest n such that all prime factors of C(n,k) exceed k. Is log g(k) ~ c\u00b7k/log k for some constant c > 0?",
-    "text": "Is log g(k) asymptotically equivalent to c\u00b7k/log k for some constant c?",
+    "historicalContext": "The function $g(k)$ — the smallest $n > k+1$ such that every prime factor of $\\binom{n}{k}$ exceeds $k$ — was introduced by Ecklund, Erdős, and Selfridge in their 1974 paper on smooth binomial coefficients. They established the initial bounds $k^{1+c} < g(k) \\leq \\exp((1+o(1))k)$, showing that $g(k)$ grows faster than any polynomial but no faster than exponential.\n\nThe lower bound was substantially improved by Konyagin, who proved $g(k) \\gg \\exp(c(\\log k)^2)$ using estimates on smooth numbers (integers whose prime factors are all below a given bound). The key insight is that $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$, and avoiding all primes $\\leq k$ requires $n$ to be chosen so that the prime factorization of the numerator $n(n-1)\\cdots(n-k+1)$ has no small prime factors surviving the cancellation with $k!$.\n\nErdős, Lacampagne, and Selfridge conjectured that $\\log g(k) \\sim c \\cdot k / \\log k$ for some positive constant $c$, which would place $g(k)$ at a precise intermediate growth rate between polynomial and exponential. Computational evidence by Sorenson, Sorenson, and Webster supports this conjecture, but it remains open. The problem connects to smooth number theory, sieve methods, and the distribution of prime factors in products of consecutive integers.",
+    "problemStatement": "Let g(k) > k+1 be the smallest n such that all prime factors of C(n,k) exceed k. Is log g(k) ~ c·k/log k for some constant c > 0?",
+    "text": "Is log g(k) asymptotically equivalent to c·k/log k for some constant c?",
     "proofStrategy": "The formalization axiomatizes $g(k)$ with four declarations: the function itself (`gFunc`), the bound $g(k) > k+1$ (`gFunc_gt`), the specification that all prime factors of $\\binom{g(k)}{k}$ exceed $k$ (`gFunc_spec`), and minimality (`gFunc_minimal`). From these, 11 theorems are proved:\n\n1. **Structural lemmas** (Part 3): `AllPrimesExceed` holds for 1 (vacuously), is inherited by divisors (transitivity of divisibility), is monotone in $k$ (strengthening threshold), and has a negation lemma for exhibiting witnesses.\n\n2. **Parity constraint** (Part 4): For $k \\geq 2$, $\\binom{g(k)}{k}$ must be odd, since $2 \\leq k$ and $2$ is prime. By Kummer's theorem, this means no carries in binary addition of $k$ and $g(k)-k$.\n\n3. **Concrete computations** (Part 5): $g(1) = 3$ ($\\binom{3}{1} = 3$, prime), $g(2) = 6$ ($\\binom{6}{2} = 15 = 3 \\times 5$). Verified by `decide`.\n\n4. **Growth bound** (Part 6): $g(k) \\geq k+2$ from the axiom.\n\n5. **Open statement** (Part 7): The weakened conjecture $\\exists c > 0,\\; g(k) > k^c$ is formally stated; the full asymptotic conjecture requires `Filter.Tendsto` and is described informally.",
     "keyInsights": [
-      "**AllPrimesExceed predicate**: The core notion \u2014 all prime factors of m exceed k \u2014 is clean to formalize",
-      "**Even binomial coefficients**: For k \u2265 2, g(k) must produce odd C(n,k), severely constraining possible n",
+      "**AllPrimesExceed predicate**: The core notion — all prime factors of m exceed k — is clean to formalize",
+      "**Even binomial coefficients**: For k ≥ 2, g(k) must produce odd C(n,k), severely constraining possible n",
       "**Growth rate**: The conjecture places g(k) between polynomial and exponential growth",
       "**Kummer's theorem connection**: C(n,k) is odd iff there are no carries in binary addition of k and n-k",
-      "**Wide gap between known bounds**: The gap between the best lower bound $\\exp(c(\\log k)^2)$ (Konyagin) and the conjectured $\\exp(c \\cdot k/\\log k)$ is enormous \u2014 the exponent differs by a factor of $k/(\\log k)^3$. Closing this gap is a major open problem in analytic number theory",
-      "**Bertrand's postulate inversion**: Erd\u0151s' 1932 proof of Bertrand's postulate showed that $\\binom{2n}{n}$ always has prime factors in $(n, 2n]$; the $g(k)$ problem inverts this by asking when binomial coefficients *avoid* all primes $\\leq k$ \u2014 a much rarer phenomenon"
+      "**Wide gap between known bounds**: The gap between the best lower bound $\\exp(c(\\log k)^2)$ (Konyagin) and the conjectured $\\exp(c \\cdot k/\\log k)$ is enormous — the exponent differs by a factor of $k/(\\log k)^3$. Closing this gap is a major open problem in analytic number theory",
+      "**Bertrand's postulate inversion**: Erdős' 1932 proof of Bertrand's postulate showed that $\\binom{2n}{n}$ always has prime factors in $(n, 2n]$; the $g(k)$ problem inverts this by asking when binomial coefficients *avoid* all primes $\\leq k$ — a much rarer phenomenon"
     ],
     "prerequisites": [
       "Number theory basics",
@@ -51,8 +51,8 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 28,
-      "summary": "Module docstring describing the problem, known bounds (Ecklund-Erd\u0151s-Selfridge, Konyagin), concrete values, and imports from Mathlib (Nat.Choose.Basic, Nat.Prime.Basic, Tactic).",
-      "mathContext": "Bound: Module docstring describing the problem, known bounds (Ecklund-Erd\u0151s-Selfridge, Konyagin), concrete values, and imports from Mathlib (Nat.Choose.Basic, Nat.Prime.Basic, Tactic)."
+      "summary": "Module docstring describing the problem, known bounds (Ecklund-Erdős-Selfridge, Konyagin), concrete values, and imports from Mathlib (Nat.Choose.Basic, Nat.Prime.Basic, Tactic).",
+      "mathContext": "Bound: Module docstring describing the problem, known bounds (Ecklund-Erdős-Selfridge, Konyagin), concrete values, and imports from Mathlib (Nat.Choose.Basic, Nat.Prime.Basic, Tactic)."
     },
     {
       "id": "core-definitions",
@@ -67,7 +67,7 @@
       "title": "Part 2: g(k) Axiomatization",
       "startLine": 40,
       "endLine": 56,
-      "summary": "Four axiom declarations: `gFunc : \u2115 \u2192 \u2115`, `gFunc_gt` ($g(k) > k+1$), `gFunc_spec` (all primes in $\\binom{g(k)}{k}$ exceed $k$), `gFunc_minimal` (minimality).",
+      "summary": "Four axiom declarations: `gFunc : ℕ → ℕ`, `gFunc_gt` ($g(k) > k+1$), `gFunc_spec` (all primes in $\\binom{g(k)}{k}$ exceed $k$), `gFunc_minimal` (minimality).",
       "mathContext": "Four axiom declarations: `gFunc : $\\mathbb{N}$ $\\to$ $\\mathbb{N}$`, `gFunc_gt` ($g(k) > k+1$), `gFunc_spec` (all primes in $\\binom{g(k)}{k}$ exceed $k$), `gFunc_minimal` (minimality)."
     },
     {
@@ -128,10 +128,10 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization establishes the framework for Erd\u0151s problem #1095 OQ01 about the growth rate of g(k). We prove structural lemmas about the AllPrimesExceed predicate and connect it to parity of binomial coefficients.",
-    "implications": "A resolution would precisely characterize how rare it is for large binomial coefficients to avoid all small prime factors. The answer has implications for smooth number theory: since $\\binom{n}{k} = \\prod_{i=1}^{k} \\frac{n-k+i}{i}$, understanding when this product avoids small primes connects to the distribution of smooth numbers among products of consecutive integers. The function $g(k)$ also relates to Grimm's conjecture (that if $n+1, n+2, \\ldots, n+k$ are all composite, they can be assigned distinct prime divisors) and to the Erd\u0151s-Selfridge conjecture on the largest prime factor of products of consecutive integers.",
+    "summary": "This formalization establishes the framework for Erdős problem #1095 OQ01 about the growth rate of g(k). We prove structural lemmas about the AllPrimesExceed predicate and connect it to parity of binomial coefficients.",
+    "implications": "A resolution would precisely characterize how rare it is for large binomial coefficients to avoid all small prime factors. The answer has implications for smooth number theory: since $\\binom{n}{k} = \\prod_{i=1}^{k} \\frac{n-k+i}{i}$, understanding when this product avoids small primes connects to the distribution of smooth numbers among products of consecutive integers. The function $g(k)$ also relates to Grimm's conjecture (that if $n+1, n+2, \\ldots, n+k$ are all composite, they can be assigned distinct prime divisors) and to the Erdős-Selfridge conjecture on the largest prime factor of products of consecutive integers.",
     "openQuestions": [
-      "Is log g(k) ~ c\u00b7k/log k for some constant c > 0?",
+      "Is log g(k) ~ c·k/log k for some constant c > 0?",
       "What is the exact value of c if it exists?",
       "Does g(k) < lcm(1,...,k) for large k?"
     ]
@@ -157,7 +157,7 @@
     {
       "targetId": "erdos-1095",
       "relationship": "parent",
-      "description": "Open question derived from Erd\u0151s #1095 on g(k)"
+      "description": "Open question derived from Erdős #1095 on g(k)"
     },
     {
       "targetId": "kummer-theorem",
@@ -172,7 +172,7 @@
     {
       "targetId": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate guarantees primes in $(k, 2k]$, relevant to understanding the prime factorization of $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$ \u2014 primes in $(k, n]$ divide the numerator but not $k!$"
+      "description": "Bertrand's postulate guarantees primes in $(k, 2k]$, relevant to understanding the prime factorization of $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$ — primes in $(k, n]$ divide the numerator but not $k!$"
     },
     {
       "targetId": "infinitude-primes",
@@ -182,32 +182,32 @@
   ],
   "references": [
     {
-      "authors": "Ecklund, Earl F.; Erd\u0151s, Paul; Selfridge, John L.",
+      "authors": "Ecklund, Earl F.; Erdős, Paul; Selfridge, John L.",
       "title": "A new function associated with the prime factors of $\\binom{n}{k}$",
       "year": "1974",
-      "venue": "Mathematics of Computation, vol. 28, no. 125, pp. 647\u2013649",
-      "note": "Introduced g(k) and established the initial bounds k^{1+c} < g(k) \u2264 exp((1+o(1))k)"
+      "venue": "Mathematics of Computation, vol. 28, no. 125, pp. 647–649",
+      "note": "Introduced g(k) and established the initial bounds k^{1+c} < g(k) ≤ exp((1+o(1))k)"
     },
     {
       "authors": "Konyagin, Sergei V.",
       "title": "On the number of solutions of an equation with a prime divisor",
       "year": "1999",
       "venue": "Izvestiya: Mathematics",
-      "note": "Improved the lower bound to g(k) \u226b exp(c(log k)\u00b2) using smooth number estimates"
+      "note": "Improved the lower bound to g(k) ≫ exp(c(log k)²) using smooth number estimates"
     },
     {
-      "authors": "Erd\u0151s, Paul; Lacampagne, C. B.; Selfridge, John L.",
+      "authors": "Erdős, Paul; Lacampagne, C. B.; Selfridge, John L.",
       "title": "Estimates of the least prime factor of a binomial coefficient",
       "year": "1993",
-      "venue": "Mathematics of Computation, vol. 61, no. 203, pp. 215\u2013224",
-      "note": "Conjectured log g(k) ~ c\u00b7k/log k and established refined bounds on the least prime factor of binomial coefficients"
+      "venue": "Mathematics of Computation, vol. 61, no. 203, pp. 215–224",
+      "note": "Conjectured log g(k) ~ c·k/log k and established refined bounds on the least prime factor of binomial coefficients"
     },
     {
       "authors": "Sorenson, Jonathan; Sorenson, Jared; Webster, Jonathan",
-      "title": "Computing the first instances of the Erd\u0151s-Selfridge function",
+      "title": "Computing the first instances of the Erdős-Selfridge function",
       "year": "2013",
       "venue": "arXiv preprint",
-      "note": "Computed g(k) for small k values, providing heuristic evidence for the conjecture log g(k) ~ c\u00b7k/log k"
+      "note": "Computed g(k) for small k values, providing heuristic evidence for the conjecture log g(k) ~ c·k/log k"
     }
   ],
   "sorries": 0
