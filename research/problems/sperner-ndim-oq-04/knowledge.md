@@ -201,3 +201,48 @@ Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following
 1. **Reformulate the theorem**: Change `kuhn_walk_reaches_fc` to conclude "FC or boundary exit"
 2. **Prove parity externally**: Show that the set of FC-or-boundary-exit endpoints has odd cardinality (using the Sperner parity argument), deriving FC existence
 3. **Update `kuhnPathStart_is_fc`**: Use the weaker walk theorem + parity argument to conclude FC exists constructively
+
+---
+
+## Session 2026-04-23 (Session 5) — Restored kuhn_path_terminates, Documented Blocker
+
+**Mode**: REVISIT
+**Outcome**: progress — kuhn_path_terminates now proved (0 sorries), sorry isolated in blocked theorem
+
+### What I Did
+
+1. Confirmed Session 4's finding: `kuhn_walk_reaches_fc` is WRONG as stated (Case 4 genuinely fires)
+2. Identified regression: `kuhn_path_terminates` had been changed to depend on the sorry chain; originally proved via `sperner_ndim` in Session 2
+3. Restored `kuhn_path_terminates` to non-constructive proof: added `hc : IsSperner c` and `hbdry : Odd (...).card` hypotheses; body = `sperner_ndim c K hc hbdry`
+4. Updated `kuhn_walk_reaches_fc` sorry comment: marks theorem as BLOCKED (mathematically incorrect), explains Case 4 analysis, specifies correct reformulation ("FC or boundary exit")
+5. Updated meta.json: fixed incorrect claim that `kuhnPathStart_is_fc` was "proved" (it still depends on sorry)
+6. Updated module header to reflect correct status
+
+### Key Findings
+
+- **Case 4 analysis (rigorous)**: Even with `IsSperner c` + `boundary_door_is_last_face`, Case 4 fires after step 1: initial entry has k₀ = Fin.last d (boundary); subsequent entries have k_entry ≠ Fin.last d (interior); so exit k_out = Fin.last d IS possible → K.adj s k_out = none → Case 4 fires at non-FC simplex
+- **Why KuhnStateValid doesn't help**: `KuhnStateValid` tracks predecessors but not that no simplex in the walk has a boundary exit door. Adding `hvalid` to `kuhn_walk_reaches_fc` doesn't rule out Case 4
+- **Correct reformulation**: `kuhn_walk_reaches_fc` should conclude `IsFC c K result ∨ ∃ k, isDoorAt c K result k ∧ K.adj result k = none`; then FC existence requires a global parity argument that boundary-to-boundary walks come in pairs
+
+### Files Modified
+
+- `proofs/Proofs/SpernerNDimOQ04.lean` (kuhn_walk_reaches_fc comment updated, kuhn_path_terminates restored, 496→485 lines)
+- `src/data/proofs/sperner-ndim-oq-04/meta.json` (lineCount, assumptions, conclusion updated)
+- `src/data/research/problems/sperner-ndim-oq-04.json` (progressSummary, insights, nextSteps updated)
+- `research/problems/sperner-ndim-oq-04/knowledge.md` (this file, Session 5 added)
+
+### Proven This Session
+
+None new. `kuhn_path_terminates` was previously proved in Session 2 (via `sperner_ndim`); this session RESTORED that proof after a regression introduced in Sessions 3-4.
+
+### Remaining Sorry (1)
+
+- `kuhn_walk_reaches_fc` — BLOCKED: theorem statement is wrong. `kuhnPathStart_is_fc` depends on it (also sorry-propagated but no new sorry token).
+
+### Next Steps
+
+1. Reformulate `kuhn_walk_reaches_fc` to conclude "FC or boundary exit" disjunction
+2. Prove the disjunction using `KuhnStateValid`, `boundary_door_is_last_face`, `IsSperner c`
+3. Extract FC existence via boundary parity (global argument: boundary-to-boundary walks pair up, odd boundary door count → at least one walk reaches FC)
+4. This is a substantial architectural change to Section IX — estimate 100-150 new lines
+
