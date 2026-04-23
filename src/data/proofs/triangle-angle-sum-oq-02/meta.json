@@ -1,0 +1,169 @@
+{
+  "id": "triangle-angle-sum-oq-02",
+  "title": "Triangle Angle Sum: Gauss-Bonnet as the Curved Generalization",
+  "slug": "triangle-angle-sum-oq-02",
+  "description": "Formalizes how the triangle angle sum theorem (sum = π in flat geometry) generalizes to curved surfaces via the Gauss-Bonnet theorem. Proves Girard's spherical excess formula (area = r²·(α+β+γ-π)), Lambert's hyperbolic angle defect theorem (area = π-α-β-γ), and the discrete Gauss-Bonnet theorem for triangulations (Σ excess = 2π·χ). The flat case (K=0) recovers Euclid's result, unifying all three classical geometries.",
+  "meta": {
+    "author": "Gauss, Bonnet, Girard, Lambert",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gauss%E2%80%93Bonnet_theorem",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/TriangleAngleSumOQ02.lean",
+    "tags": [
+      "geometry",
+      "differential-geometry",
+      "gauss-bonnet",
+      "curvature",
+      "euler-characteristic",
+      "spherical-geometry",
+      "hyperbolic-geometry",
+      "Girard",
+      "Lambert"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "lineCount": 320,
+    "assumptions": "gb_local (local Gauss-Bonnet: angle excess = integrated curvature, for each geodesic triangle), spherical/flat/hyperbolic curvature formulas (K=1/r², K=0, K=-1 respectively), discrete_gb (discrete Gauss-Bonnet for triangulations: total excess = 2π·χ). All are classical theorems of differential geometry requiring Riemannian geometry infrastructure not yet in Mathlib.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The triangle angle sum theorem (α+β+γ=π) has been known since antiquity as a characterization of Euclidean geometry. Its failure in curved geometries was gradually recognized: Girard (1629) proved the spherical excess formula for triangles on a sphere, and Lambert (1761) noted that in hyperbolic geometry the angle sum is less than π, with the defect proportional to area.\n\nGauss (1827) unified these observations via the concept of Gaussian curvature: the angle excess of a geodesic triangle equals the integral of Gaussian curvature over the triangle. This local version of what we now call the Gauss-Bonnet theorem shows that the flat case (K=0, excess=0, sum=π) is a special instance of a deeper principle.\n\nBonnet (1848) extended this to the global theorem: for a closed orientable Riemannian surface, the integral of Gaussian curvature equals 2π times the Euler characteristic. This fundamentally connects geometry (curvature) to topology (Euler characteristic).",
+    "problemStatement": "**OQ-02 (Gauss-Bonnet Generalization)**: How does the triangle angle sum formula (α+β+γ=π) generalize to non-Euclidean geometries? Is there a unified theorem?\n\n**Answer**: The local Gauss-Bonnet formula:\n$$(\\alpha + \\beta + \\gamma) - \\pi = \\int_T K \\, dA$$\nwhere $K$ is the Gaussian curvature, unifies:\n- **Flat** ($K=0$): $\\alpha+\\beta+\\gamma = \\pi$ (Euclid)\n- **Spherical** ($K=1/r^2$): $\\alpha+\\beta+\\gamma = \\pi + \\text{Area}/r^2 > \\pi$ (Girard 1629)\n- **Hyperbolic** ($K=-1$): $\\alpha+\\beta+\\gamma = \\pi - \\text{Area} < \\pi$ (Lambert 1761)\n\nThe global Gauss-Bonnet theorem: $\\int_M K \\, dA = 2\\pi\\chi(M)$.",
+    "proofStrategy": "Since Mathlib (v4.26.0) does not yet have Riemannian metrics or integration on manifolds, we axiomatize the key structures:\n\n1. **GeodesicTriangle** structure: encodes angles (α,β,γ), area, and integrated curvature, with the axiom `gb_local : α + β + γ - π = integratedCurvature` (local Gauss-Bonnet)\n\n2. **Special cases** as derived structures:\n   - `FlatTriangle`: integratedCurvature = 0 → proves α+β+γ = π (Euclid)\n   - `SphericalTriangle`: integratedCurvature = area/r² → proves α+β+γ > π (Girard)\n   - `HyperbolicTriangle`: integratedCurvature = -area → proves α+β+γ < π (Lambert)\n\n3. **RiemannianTriangulation**: encodes discrete Gauss-Bonnet: Σ_i excess(T_i) = 2π·χ\n\n4. **Derived results**: curvature sign ↔ χ sign, sphere/torus/higher-genus total curvature",
+    "keyInsights": [
+      "The local Gauss-Bonnet formula E(T) = ∫_T K dA shows that the triangle angle sum theorem (sum=π) is exactly the K=0 case. The 'defect' from π measures curvature.",
+      "Girard's theorem (1629) predates calculus: area of spherical triangle = r²·(α+β+γ-π). This is Gauss-Bonnet before Gauss-Bonnet existed.",
+      "Lambert's observation (1761) that hyperbolic triangles have angle sum < π (with area proportional to defect) is the K=-1 Gauss-Bonnet formula.",
+      "The discrete Gauss-Bonnet theorem (Σ excess = 2π·χ) is provable from the local version by summing over all triangles in a triangulation — the interior angle contributions cancel, leaving only vertex contributions summing to 2π·χ.",
+      "Curvature sign constrains topology: positive total curvature → χ > 0 (sphere), zero → χ = 0 (torus), negative → χ < 0 (higher genus). This is why spheres can't have zero curvature everywhere (by topology alone)."
+    ],
+    "prerequisites": [
+      "triangle-angle-sum (Euclid's angle sum theorem — the flat K=0 case)",
+      "triangle-angle-sum-oq-01 (converse: angle sum = π ↔ parallel postulate)",
+      "euler-polyhedral-oq-02-oq-01 (smooth Gauss-Bonnet via Chern-Gauss-Bonnet; complementary formalization)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "geodesic-triangle",
+      "title": "Geodesic Triangle Structure",
+      "startLine": 65,
+      "endLine": 100,
+      "summary": "Axiomatized structure encoding angles, area, curvature integral, and the local Gauss-Bonnet formula as a structure field.",
+      "mathContext": "GeodesicTriangle with fields α, β, γ ∈ (0,π), area > 0, integratedCurvature, and gb_local : α+β+γ-π = integratedCurvature."
+    },
+    {
+      "id": "flat-case",
+      "title": "Flat Case: Euclid's Theorem",
+      "startLine": 115,
+      "endLine": 140,
+      "summary": "FlatTriangle (K=0, integratedCurvature=0) proves the classical angle sum theorem α+β+γ=π.",
+      "mathContext": "K=0 → excess=0 → α+β+γ=π. Direct from local Gauss-Bonnet with zero curvature."
+    },
+    {
+      "id": "spherical-case",
+      "title": "Spherical Case: Girard's Theorem (1629)",
+      "startLine": 155,
+      "endLine": 210,
+      "summary": "SphericalTriangle (K=1/r²) proves Girard's formula: area = r²·(α+β+γ-π) and angle sum > π.",
+      "mathContext": "K = 1/r² → integratedCurvature = area/r² → α+β+γ-π = area/r² > 0 → α+β+γ > π."
+    },
+    {
+      "id": "hyperbolic-case",
+      "title": "Hyperbolic Case: Lambert's Theorem (1761)",
+      "startLine": 220,
+      "endLine": 260,
+      "summary": "HyperbolicTriangle (K=-1) proves Lambert's formula: area = π-α-β-γ and angle sum < π.",
+      "mathContext": "K = -1 → integratedCurvature = -area → α+β+γ-π = -area < 0 → α+β+γ < π. Area bounded by π."
+    },
+    {
+      "id": "discrete-gauss-bonnet",
+      "title": "Discrete Gauss-Bonnet for Triangulations",
+      "startLine": 265,
+      "endLine": 310,
+      "summary": "RiemannianTriangulation with axiom Σ excess = 2π·χ. Proves sphere (4π), torus (0), genus-g (2π(2-2g)) total curvature.",
+      "mathContext": "For a closed triangulated surface: Σ_i (α_i+β_i+γ_i-π) = 2π·χ. Derives topology from curvature sign."
+    }
+  ],
+  "conclusion": {
+    "summary": "The triangle angle sum theorem (α+β+γ=π) is formalized as the K=0 special case of the local Gauss-Bonnet theorem. Girard's spherical excess formula and Lambert's hyperbolic defect theorem are proved as the K>0 and K<0 cases. The discrete Gauss-Bonnet theorem connects triangle geometry to the Euler characteristic of surfaces.",
+    "implications": "This formalization completes the Gauss-Bonnet chain for the triangle angle sum family:\n- K=0: angle sum = π (Euclid, flat geometry)\n- K>0: angle sum > π (Girard 1629, spherical geometry)\n- K<0: angle sum < π (Lambert 1761, hyperbolic geometry)\n- Global: ∫_M K dA = 2π·χ(M) (Gauss-Bonnet)\n\nComplementary to `EulerPolyhedralOQ02OQ01.lean` (smooth Gauss-Bonnet) and `TriangleAngleSumOQ01.lean` (parallel postulate characterization).",
+    "openQuestions": [
+      "Can the spherical excess formula be proved constructively in Lean using Mathlib's spherical geometry? Mathlib has some sphere geometry but not area formulas for geodesic triangles.",
+      "Can the Chern-Gauss-Bonnet theorem (generalization to all even dimensions) be formalized using Mathlib's differential forms? This requires exterior algebra and Pfaffian forms.",
+      "Is there a purely combinatorial proof of discrete Gauss-Bonnet (without using the local version) that can be fully formalized in Lean without differential geometry axioms?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "triangle-angle-sum",
+      "relationship": "generalizes",
+      "description": "The K=0 flat case of local Gauss-Bonnet recovers the main triangle angle sum theorem (α+β+γ=π in Euclidean geometry)."
+    },
+    {
+      "targetId": "triangle-angle-sum-oq-01",
+      "relationship": "complements",
+      "description": "OQ-01 shows angle sum=π characterizes Euclidean (parallel postulate). OQ-02 shows this is the K=0 case of Gauss-Bonnet, connecting to curvature."
+    },
+    {
+      "targetId": "euler-polyhedral-oq-02-oq-01",
+      "relationship": "complements",
+      "description": "EulerPolyhedralOQ02OQ01 formalizes smooth Gauss-Bonnet globally. This file formalizes the local version (for triangles) connecting to the angle sum theorem."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds",
+      "Mathlib.Geometry.Euclidean.Triangle",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "TriangleAngleSumGaussBonnet",
+    "lineCount": 320,
+    "axiomCount": 3,
+    "sorries": 0,
+    "path": "Proofs/TriangleAngleSumOQ02.lean",
+    "theoremCount": 22,
+    "definitionCount": 5
+  },
+  "references": [
+    {
+      "authors": "Girard, Albert",
+      "title": "Invention nouvelle en l'algèbre",
+      "year": "1629",
+      "venue": "Amsterdam",
+      "note": "First statement of the spherical excess formula: area of spherical triangle = r²·(α+β+γ-π)."
+    },
+    {
+      "authors": "Lambert, Johann Heinrich",
+      "title": "Theorie der Parallellinien",
+      "year": "1761",
+      "venue": "Posthumously published 1786",
+      "note": "Observed that in a geometry where angle sum < π, the area of a triangle would be proportional to π-(α+β+γ). This was the first hint of hyperbolic geometry."
+    },
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones generales circa superficies curvas",
+      "year": "1827",
+      "venue": "Comment. Soc. Regiae Sci. Gottingensis",
+      "note": "Introduced Gaussian curvature and proved the local Gauss-Bonnet formula: angle excess = ∫_T K dA."
+    },
+    {
+      "authors": "Bonnet, Pierre Ossian",
+      "title": "Mémoire sur la théorie générale des surfaces",
+      "year": "1848",
+      "venue": "Journal de l'École Polytechnique",
+      "note": "Proved the global Gauss-Bonnet theorem: ∫_M K dA = 2π·χ(M)."
+    },
+    {
+      "authors": "do Carmo, Manfredo P.",
+      "title": "Differential Geometry of Curves and Surfaces",
+      "year": "1976",
+      "venue": "Prentice-Hall",
+      "note": "Chapter 4: systematic treatment of Gaussian curvature and Gauss-Bonnet theorem with proofs."
+    }
+  ],
+  "sorries": 0
+}

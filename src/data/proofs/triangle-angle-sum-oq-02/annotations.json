@@ -1,0 +1,44 @@
+{
+  "annotations": [
+    {
+      "id": "local-gauss-bonnet",
+      "line": 75,
+      "type": "key-theorem",
+      "label": "Local Gauss-Bonnet (Axiom)",
+      "content": "The core axiom: angle excess = integrated Gaussian curvature. This is the local version of the Gauss-Bonnet theorem, valid for any geodesic triangle on a Riemannian surface.",
+      "mathContent": "α + β + γ - π = ∫_T K dA"
+    },
+    {
+      "id": "girard-theorem",
+      "line": 155,
+      "type": "key-theorem",
+      "label": "Girard's Theorem (1629)",
+      "content": "The spherical excess formula: the area of a geodesic triangle on a sphere of radius r equals r² times the angular excess. Proved as the K=1/r² case of local Gauss-Bonnet.",
+      "mathContent": "α + β + γ - π = Area(T) / r²"
+    },
+    {
+      "id": "lambert-theorem",
+      "line": 220,
+      "type": "key-theorem",
+      "label": "Lambert's Theorem (1761)",
+      "content": "The angular defect of a hyperbolic triangle equals its area. Proved as the K=-1 case of local Gauss-Bonnet. This implies all hyperbolic triangles have angle sum < π.",
+      "mathContent": "π - (α + β + γ) = Area(T)"
+    },
+    {
+      "id": "discrete-gb",
+      "line": 278,
+      "type": "key-theorem",
+      "label": "Discrete Gauss-Bonnet",
+      "content": "For a triangulation of a compact surface, the total angular excess equals 2π times the Euler characteristic. This is the discrete version of the global Gauss-Bonnet theorem.",
+      "mathContent": "∑_i (α_i + β_i + γ_i - π) = 2π · χ(M)"
+    },
+    {
+      "id": "three-geometries",
+      "line": 320,
+      "type": "insight",
+      "label": "The Three Geometries Unified",
+      "content": "The Gauss-Bonnet framework unifies all three classical geometries in a single theorem. The triangle angle sum theorem is recovered as the K=0 special case.",
+      "mathContent": "K=0: sum=π | K>0: sum>π | K<0: sum<π"
+    }
+  ]
+}
