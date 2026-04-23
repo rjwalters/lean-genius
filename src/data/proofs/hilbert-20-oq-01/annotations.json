@@ -1,177 +1,208 @@
 [
   {
+    "id": "ann-module-header",
+    "proofId": "hilbert-20-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "Module Overview: The 43-Year Journey to Condition (Ψ)",
+    "content": "The module header presents a historical table spanning 1957-2006: Lewy's counterexample (1957) destroyed the assumption that smooth linear PDEs always have local solutions; Hörmander (1960) gave a necessary condition; Nirenberg-Treves (1963) conjectured condition (Ψ) as the precise characterization; Beals-Fefferman (1973) proved the stronger condition (P) suffices; and Dencker (2006) completed the conjecture. Three axioms remain: `IsLocallySolvable` (distribution theory gap), `hormander_necessity` (microlocal analysis), and `dencker_sufficiency` (Dencker's deep proof).",
+    "mathContext": "The local solvability problem asks: given a smooth linear PDE $Pu = f$, when does a distribution solution $u \\in \\mathcal{D}'$ exist near every point $x_0$ for every smooth $f$? The principal symbol $p_m(x, \\xi)$ encodes the leading-order behavior. Condition (Ψ): $\\mathrm{Im}(p_m)$ cannot change sign from $-$ to $+$ along oriented bicharacteristics of $\\mathrm{Re}(p_m)$. This is both necessary (Hörmander 1960) and sufficient (Dencker 2006) for principal-type operators.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Lewy counterexample",
+      "Hörmander's 1960 paper",
+      "Nirenberg-Treves conjecture",
+      "condition (P)",
+      "Bôcher Memorial Prize"
+    ],
+    "prerequisites": [
+      "linear partial differential operators",
+      "distribution solutions",
+      "principal symbol"
+    ]
+  },
+  {
     "id": "ann-linear-pdo",
-    "startLine": 61,
-    "endLine": 65,
-    "title": "LinearPDO: Formalizing Differential Operators via Multi-Index Coefficients",
-    "mathContext": "A linear PDO of order $m$ on $\\mathbb{R}^n$ is $P = \\sum_{|\\alpha| \\leq m} a_\\alpha(x) D^\\alpha$ where $D^\\alpha = \\partial^{|\\alpha|}/\\partial x_1^{\\alpha_1} \\cdots \\partial x_n^{\\alpha_n}$. The structure `LinearPDO n m` stores the smooth coefficient functions $a_\\alpha : \\mathbb{R}^n \\to \\mathbb{C}$ indexed by multi-indices $\\alpha$, with `order_bound` ensuring all but finitely many vanish.",
-    "significance": "supporting",
+    "proofId": "hilbert-20-oq-01",
+    "range": {
+      "startLine": 49,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "LinearPDO and principalSymbol: Multi-Index Formalism",
+    "content": "The multi-index representation is the algebraically clean way to encode differential operators in Lean: a `Fin n → ℕ` encodes the exponent tuple $(\\alpha_1, \\ldots, \\alpha_n)$, and the coefficient map `coeff : MultiIndex n → (Fin n → ℝ) → ℂ` compactly packages all the variable-coefficient data. The `order_bound` field enforces the crucial constraint that $P$ has finite order. The `principalSymbol` filters to `MultiIndex.order α = m` via an `if-then-else` inside `Finset.univ.sum`, extracting the homogeneous part and casting real $\\xi$ components to complex.",
+    "mathContext": "A linear PDO of order $m$ on $\\mathbb{R}^n$ is $P = \\sum_{|\\alpha| \\leq m} a_\\alpha(x) D^\\alpha$ where $D^\\alpha = \\partial^{|\\alpha|}/\\partial x_1^{\\alpha_1} \\cdots \\partial x_n^{\\alpha_n}$. The principal symbol $p_m(x, \\xi) = \\sum_{|\\alpha| = m} a_\\alpha(x) \\xi^\\alpha$ lives on the cotangent bundle $T^*\\mathbb{R}^n \\cong \\mathbb{R}^n \\times \\mathbb{R}^n$ and determines all qualitative properties: ellipticity ($p_m \\neq 0$ for $\\xi \\neq 0$), hyperbolicity (real $p_m$ with specified cone structure), and local solvability (condition (Ψ)).",
+    "significance": "key",
     "relatedConcepts": [
       "multi-index notation",
       "principal symbol",
-      "cotangent bundle",
-      "elliptic operators"
+      "cotangent bundle T*ℝⁿ",
+      "elliptic operators",
+      "symbol calculus"
     ],
     "prerequisites": [
       "multi-index arithmetic (MultiIndex.order)",
       "Lean structures vs classes",
-      "Finset.sum for finite sums"
-    ],
-    "content": "The multi-index representation is the algebraically clean way to encode differential operators in Lean: a `Fin n → ℕ` encodes the exponent tuple $(\\alpha_1, \\ldots, \\alpha_n)$, and the coefficient map `coeff : MultiIndex n → (Fin n → ℝ) → ℂ` compactly packages all the variable-coefficient data. The `order_bound` field enforces the crucial constraint that $P$ has finite order.",
-    "proofId": "hilbert-20-oq-01",
-    "range": {
-      "startLine": 61,
-      "endLine": 68
-    }
-  },
-  {
-    "id": "ann-principal-symbol",
-    "startLine": 69,
-    "endLine": 73,
-    "title": "Principal Symbol: Leading-Order Behavior on the Cotangent Bundle",
-    "mathContext": "The principal symbol $p_m(x, \\xi) = \\sum_{|\\alpha| = m} a_\\alpha(x) \\xi^\\alpha$ keeps only the highest-degree terms ($|\\alpha| = m$), replacing $D^\\alpha$ with the dual variable $\\xi^\\alpha = \\xi_1^{\\alpha_1} \\cdots \\xi_n^{\\alpha_n}$. It is a polynomial of degree $m$ in $\\xi \\in \\mathbb{R}^n$ with smooth $x$-dependent coefficients, living on the cotangent bundle $T^*\\mathbb{R}^n \\cong \\mathbb{R}^n \\times \\mathbb{R}^n$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "cotangent bundle T*ℝⁿ",
-      "symbol calculus",
-      "microlocal analysis",
-      "elliptic symbol"
-    ],
-    "prerequisites": [
-      "LinearPDO structure",
-      "MultiIndex.order definition",
-      "Finset.univ.sum for polynomial evaluation"
-    ],
-    "content": "The principal symbol is the key invariant for the qualitative theory of PDEs: ellipticity, hyperbolicity, and local solvability are all determined by $p_m$ rather than the lower-order terms. By filtering to `MultiIndex.order α = m` via an `if-then-else` inside `Finset.univ.sum`, Lean correctly extracts the homogeneous part and converts real $\\xi$ components to complex via the cast `(ξ i : ℂ)`.",
-    "proofId": "hilbert-20-oq-01",
-    "range": {
-      "startLine": 69,
-      "endLine": 82
-    }
+      "Finset.sum for finite sums",
+      "ℝ-to-ℂ coercion"
+    ]
   },
   {
     "id": "ann-local-solvability-axiom",
-    "startLine": 83,
-    "endLine": 83,
-    "title": "IsLocallySolvable: The Axiom Awaiting Distribution Theory",
-    "mathContext": "Local solvability at $x_0$ asks: for every $f \\in C^\\infty$ near $x_0$, does $Pu = f$ have a distribution solution $u \\in \\mathcal{D}'$ in some neighborhood? An `axiom` declaration in Lean 4 introduces a proposition without proof — mathematically sound as long as the proposition is true, but it means no constructive witness is given.",
-    "significance": "supporting",
+    "proofId": "hilbert-20-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 94
+    },
+    "type": "concept",
+    "title": "IsLocallySolvable and IsPrincipalType: Two Missing Ingredients",
+    "content": "`IsLocallySolvable` is axiomatized because Schwartz distributions $\\mathcal{D}'$ (the dual of test functions $C_c^\\infty$) are not yet in Mathlib. Rather than embedding a long distribution theory digression, the `axiom` pattern explicitly names the gap. `IsPrincipalType P` is a concrete `def`: for every $(x_0, \\xi_0)$ with $p_m(x_0, \\xi_0) = 0$ and $\\xi_0 \\neq 0$, the symbol has a nonzero partial derivative in some $\\xi$-direction. This ensures the bicharacteristic flow is non-degenerate.",
+    "mathContext": "Local solvability at $x_0$: for every $f \\in C^\\infty$ near $x_0$, $\\exists u \\in \\mathcal{D}'$ with $Pu = f$ in some neighborhood. Principal type: $p_m(x_0, \\xi_0) = 0, \\xi_0 \\neq 0 \\Rightarrow \\nabla_\\xi p_m(x_0, \\xi_0) \\neq 0$. Principal type excludes operators like $P = \\partial_x^2$ (symbol $\\xi_1^2$ vanishes to second order at $\\xi_1 = 0$) and ensures that the bicharacteristic curves of $\\mathrm{Re}(p_m)$ are smooth non-degenerate curves in $T^*\\mathbb{R}^n$.",
+    "significance": "key",
     "relatedConcepts": [
-      "Schwartz distributions",
+      "Schwartz distributions D'(Ω)",
       "Mathlib distribution theory gap",
-      "IsPrincipalType",
-      "dencker_sufficiency axiom"
+      "bicharacteristic curves",
+      "Hamilton flow non-degeneracy"
     ],
     "prerequisites": [
       "Lean 4 axiom declarations vs sorry",
       "distribution theory (D'(Ω))",
-      "smooth functions C^∞"
-    ],
-    "content": "This axiom captures the central obstacle in formalizing PDE theory: Schwartz distributions $\\mathcal{D}'$ (the dual of test functions $C_c^\\infty$) are not yet in Mathlib. Rather than embedding a long distribution theory digression, the `axiom` pattern explicitly names the gap. The rest of the file axiomatizes what Hörmander and Dencker proved *about* local solvability, deferring only the foundational definition.",
-    "proofId": "hilbert-20-oq-01",
-    "range": {
-      "startLine": 83,
-      "endLine": 87
-    }
+      "smooth functions C^∞",
+      "cotangent bundle geometry"
+    ]
   },
   {
     "id": "ann-bicharacteristic-curve",
-    "startLine": 106,
-    "endLine": 114,
-    "title": "BicharacteristicCurve: Symplectic Geometry Meets PDE Theory",
-    "mathContext": "A bicharacteristic curve of $\\mathrm{Re}(p_m)$ is a curve $\\gamma(t) = (x(t), \\xi(t))$ in $T^*\\mathbb{R}^n$ along which: (1) $p_m(x(t), \\xi(t)) = 0$ (`symbol_vanishes`) and (2) $\\xi(t) \\neq 0$ (`ξ_ne_zero`). In full microlocal theory, $\\gamma$ also follows the Hamilton flow $\\dot{x} = \\nabla_\\xi \\mathrm{Re}(p_m)$, $\\dot{\\xi} = -\\nabla_x \\mathrm{Re}(p_m)$, but this ODE structure is omitted pending Mathlib ODE infrastructure.",
-    "significance": "supporting",
+    "proofId": "hilbert-20-oq-01",
+    "range": {
+      "startLine": 95,
+      "endLine": 128
+    },
+    "type": "definition",
+    "title": "BicharacteristicCurve and imSymbolAlongCurve: Symplectic Geometry in Lean",
+    "content": "Encoding bicharacteristics as a `structure` rather than an `axiom` is a key design choice: it enables Lean to construct concrete bicharacteristic objects and reason about them in proved theorems (like `elliptic_satisfies_psi`). The omission of the Hamilton flow makes `ConditionPsi` stronger than the classical definition (more curves to check), so the deep axioms remain conservative — a deliberate over-approximation that preserves soundness. The bridge lemma `imSymbolAlongCurve_eq` proves that `imSymbolAlongCurve γ t` is indeed $\\mathrm{Im}(p_m(x(t), \\xi(t)))$.",
+    "mathContext": "A bicharacteristic curve of $\\mathrm{Re}(p_m)$ is a curve $\\gamma(t) = (x(t), \\xi(t))$ in $T^*\\mathbb{R}^n$ satisfying: (1) $p_m(x(t), \\xi(t)) = 0$ and (2) $\\xi(t) \\neq 0$. In the full theory, $\\gamma$ also follows the Hamilton flow $\\dot{x} = \\nabla_\\xi \\mathrm{Re}(p_m)$, $\\dot{\\xi} = -\\nabla_x \\mathrm{Re}(p_m)$ — these are Hamilton's equations with Hamiltonian $H = \\mathrm{Re}(p_m)$ and symplectic form $\\omega = d\\xi \\wedge dx$ on $T^*\\mathbb{R}^n$. The Hamilton flow condition is omitted here pending Mathlib ODE infrastructure.",
+    "significance": "key",
     "relatedConcepts": [
       "Hamilton flow on T*ℝⁿ",
       "symplectic geometry",
       "null bicharacteristics",
-      "ConditionPsi"
+      "ConditionPsi",
+      "Hamilton's equations"
     ],
     "prerequisites": [
       "cotangent bundle T*ℝⁿ structure",
       "Hamilton equations",
-      "Lean 4 structures with hypotheses as fields"
-    ],
-    "content": "Encoding bicharacteristics as a `structure` rather than an `axiom` is a key design choice: it enables Lean to construct concrete bicharacteristic objects and reason about them in proved theorems (like `elliptic_satisfies_psi`). The omission of the Hamilton flow makes `ConditionPsi` stronger than the classical definition (more curves to check), so the deep axioms remain conservative — a deliberate over-approximation that preserves soundness.",
-    "proofId": "hilbert-20-oq-01",
-    "range": {
-      "startLine": 196,
-      "endLine": 203
-    }
+      "Lean 4 structures with hypotheses as fields",
+      "Complex.im field"
+    ]
   },
   {
     "id": "ann-condition-psi",
-    "startLine": 136,
-    "endLine": 138,
-    "title": "Condition (Ψ): The Sign Condition That Characterizes Solvability",
-    "mathContext": "Condition (Ψ) says: $\\mathrm{Im}(p_m)$ does not change sign from $-$ to $+$ along any bicharacteristic curve. Formally: for all $\\gamma$, $t_1 < t_2$, if $\\mathrm{Im}(p_m(\\gamma(t_1))) < 0$ then $\\mathrm{Im}(p_m(\\gamma(t_2))) \\leq 0$. Equivalently, there is no $t_1 < t_2$ with $\\mathrm{Im}(p_m) < 0$ at $t_1$ and $\\mathrm{Im}(p_m) > 0$ at $t_2$.",
-    "significance": "supporting",
+    "proofId": "hilbert-20-oq-01",
+    "range": {
+      "startLine": 130,
+      "endLine": 138
+    },
+    "type": "definition",
+    "title": "Condition (Ψ): The Asymmetric Sign Condition",
+    "content": "This sign condition — proposed by Nirenberg and Treves in 1963 and proved necessary and sufficient by Dencker in 2006 — is the precise obstruction to local solvability. The asymmetry ($- \\to +$ is forbidden, but $+ \\to -$ is allowed) reflects the oriented structure of the bicharacteristic flow. The Lean encoding as `¬(imSymbolAlongCurve γ t₂ > 0)` directly captures the forbidden $+$ arrival. The condition is vacuously true when no bicharacteristic curves exist (elliptic case).",
+    "mathContext": "Condition (Ψ): $\\forall$ bicharacteristic curve $\\gamma$, $\\forall t_1 < t_2$: $\\mathrm{Im}(p_m(\\gamma(t_1))) < 0 \\Rightarrow \\mathrm{Im}(p_m(\\gamma(t_2))) \\leq 0$. Equivalently, there is no $t_1 < t_2$ with $\\mathrm{Im}(p_m) < 0$ at $t_1$ and $\\mathrm{Im}(p_m) > 0$ at $t_2$. Lewy's example has $p_m = \\xi_1 + iz\\xi_3$ (for $n=3$, $m=1$), and $\\mathrm{Im}(p_m) = z\\xi_3$ changes sign along the bicharacteristics of $\\mathrm{Re}(p_m) = \\xi_1$, explaining its non-solvability.",
+    "significance": "key",
     "relatedConcepts": [
       "Nirenberg-Treves conjecture",
       "principal type operators",
-      "microlocal sign changes",
+      "Lewy example",
+      "bicharacteristic flow orientation",
       "Hörmander necessity"
     ],
     "prerequisites": [
       "BicharacteristicCurve structure",
       "imSymbolAlongCurve definition",
-      "sign conditions in analysis"
-    ],
-    "content": "This sign condition — proposed by Nirenberg and Treves in 1963 and proved necessary and sufficient by Dencker in 2006 — is the precise obstruction to local solvability. The asymmetry ($- \\to +$ is forbidden, but $+ \\to -$ is allowed) reflects the oriented structure of the bicharacteristic flow. The Lean encoding as `¬(imSymbolAlongCurve γ t₂ > 0)` directly captures the forbidden $+$ arrival.",
+      "sign conditions in analysis",
+      "oriented curves"
+    ]
+  },
+  {
+    "id": "ann-nt-axioms",
     "proofId": "hilbert-20-oq-01",
     "range": {
-      "startLine": 136,
-      "endLine": 146
-    }
+      "startLine": 140,
+      "endLine": 158
+    },
+    "type": "concept",
+    "title": "hormander_necessity and dencker_sufficiency: The Two Halves of the Theorem",
+    "content": "The two axioms represent fundamentally different levels of mathematical difficulty. `hormander_necessity` (Hörmander 1960): if $P$ is locally solvable and principal type, then condition (Ψ) holds. The proof uses a microlocal contradiction argument — if (Ψ) fails, a specific approximate solution construction shows $Pu = f$ has no distribution solution near the sign-change point. `dencker_sufficiency` (Dencker 2006): if (Ψ) holds, then $P$ is locally solvable. This is exponentially harder — it requires second microlocalization and a delicate energy estimate showing that (Ψ) prevents the loss of derivatives that would block solvability.",
+    "mathContext": "Hörmander necessity: uses the fact that if $\\mathrm{Im}(p_m)$ changes sign from $-$ to $+$ at some time $t_0$, one can construct a sequence of approximate solutions $u_k$ with $\\|Pu_k\\|_{H^s} \\to 0$ but $\\|u_k\\|_{H^{s-m+1}}$ bounded below, contradicting a priori estimates for local solvability. Dencker sufficiency: uses a pseudodifferential operator calculus ($L^2$ Sobolev estimates, symbol classes $S^m_{\\rho,\\delta}$) and the geometrically subtle construction of a microlocal energy density that is non-increasing along bicharacteristics when (Ψ) holds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "microlocal analysis",
+      "pseudodifferential operators",
+      "$L^2$ energy estimates",
+      "second microlocalization",
+      "approximate solutions"
+    ],
+    "prerequisites": [
+      "Sobolev spaces $H^s$",
+      "a priori estimates for PDEs",
+      "pseudodifferential operator calculus",
+      "bicharacteristic curves"
+    ]
   },
   {
     "id": "ann-nt-theorem",
-    "startLine": 166,
-    "endLine": 170,
+    "proofId": "hilbert-20-oq-01",
+    "range": {
+      "startLine": 160,
+      "endLine": 170
+    },
+    "type": "tactic",
     "title": "nirenberg_treves_characterization: 43 Years of Mathematics in Four Lines",
-    "mathContext": "The theorem `IsLocallySolvable P x₀ ↔ ConditionPsi P` is proved as a straightforward `⟨fun h => hormander_necessity P hpt x₀ h, fun h => dencker_sufficiency P hpt h x₀⟩`. The forward direction is Hörmander's 1960 necessity; the reverse is Dencker's 2006 sufficiency, completing the 1963 Nirenberg-Treves conjecture.",
-    "significance": "supporting",
+    "content": "The proof is four lines of Lean because the deep mathematical content is captured by the two axioms `hormander_necessity` and `dencker_sufficiency`. This is the honest structure of the formalization: the logical skeleton of the equivalence is checked mechanically, while the two halves — each representing decades of hard analysis — are explicitly named as assumptions awaiting full formalization. The iff construction `⟨forward, backward⟩` is standard Lean for biconditionals.",
+    "mathContext": "The theorem `IsLocallySolvable P x₀ ↔ ConditionPsi P` is proved as `⟨fun h => hormander_necessity P hpt x₀ h, fun h => dencker_sufficiency P hpt h x₀⟩`. Note the argument order differs: necessity takes the solvability proof $h$ and produces (Ψ), while sufficiency takes the (Ψ) proof $h$ and the point $x_0$ separately. The hypothesis `hpt : IsPrincipalType P` threads through both directions — without it, neither direction holds.",
+    "significance": "key",
     "relatedConcepts": [
       "hormander_necessity axiom",
       "dencker_sufficiency axiom",
-      "principal type operators",
-      "Iff.intro"
+      "IsPrincipalType",
+      "Iff.intro",
+      "Lean 4 anonymous constructor"
     ],
     "prerequisites": [
       "Lean 4 Iff constructor syntax",
       "Hörmander's microlocal analysis (1960)",
-      "Dencker's resolution (2006)"
-    ],
-    "content": "The proof is four lines of Lean because the deep mathematical content is captured by the two axioms `hormander_necessity` and `dencker_sufficiency`. This is the honest structure of the formalization: the logical skeleton of the equivalence is checked mechanically, while the two halves — each representing decades of hard analysis — are explicitly named as assumptions awaiting full formalization. The iff construction `⟨forward, backward⟩` is standard Lean for biconditionals.",
-    "proofId": "hilbert-20-oq-01",
-    "range": {
-      "startLine": 147,
-      "endLine": 155
-    }
+      "Dencker's resolution (2006)",
+      "argument threading in Lean"
+    ]
   },
   {
     "id": "ann-elliptic-psi",
-    "startLine": 196,
-    "endLine": 201,
-    "title": "elliptic_satisfies_psi: Vacuous Truth via Nonexistent Bicharacteristics",
-    "mathContext": "An elliptic operator satisfies `principalSymbol P x ξ ≠ 0` for all $\\xi \\neq 0$. But any `BicharacteristicCurve P` requires `symbol_vanishes : ∀ t, principalSymbol P (γ.x t) (γ.ξ t) = 0` and `ξ_ne_zero : ∀ t, γ.ξ t ≠ 0`. These are contradictory, so no `BicharacteristicCurve P` can exist. Condition (Ψ) is a universal quantifier over bicharacteristic curves, so with an empty domain it is vacuously true.",
+    "proofId": "hilbert-20-oq-01",
+    "range": {
+      "startLine": 172,
+      "endLine": 209
+    },
+    "type": "tactic",
+    "title": "Elliptic Special Case: Three Theorems, One Design Principle",
+    "content": "`real_symbol_satisfies_psi`: if $\\mathrm{Im}(p_m) = 0$ everywhere, then (Ψ) holds because its hypothesis $\\mathrm{Im}(p_m(\\gamma(t_1))) < 0$ is never satisfied (it equals 0 by assumption), so the conclusion is vacuously true. `elliptic_satisfies_psi`: no bicharacteristic curve can exist for an elliptic $P$ (it would require $p_m = 0$ and $\\xi \\neq 0$ simultaneously), so the universal quantifier in (Ψ) has empty domain. `elliptic_locally_solvable` chains: elliptic ⟹ (Ψ) via `elliptic_satisfies_psi` ⟹ solvable via `dencker_sufficiency`.",
+    "mathContext": "`elliptic_satisfies_psi` proof: `exact absurd (γ.symbol_vanishes 0) (hell (γ.x 0) (γ.ξ 0) (γ.ξ_ne_zero 0))`. The `absurd` combinator takes `h : A` and `h' : ¬A` and produces any type. Here $A$ = `principalSymbol P (γ.x 0) (γ.ξ 0) = 0` (from `γ.symbol_vanishes 0`) and $\\neg A$ = `principalSymbol P (γ.x 0) (γ.ξ 0) ≠ 0` (from `hell (γ.x 0) (γ.ξ 0) (γ.ξ_ne_zero 0)`). The `real_symbol_satisfies_psi` proof uses `linarith` to derive $0 < 0$ from `hreal` (giving $= 0$) and `hneg` (giving $< 0$).",
     "significance": "supporting",
     "relatedConcepts": [
       "IsElliptic definition",
       "vacuous quantification",
-      "elliptic_locally_solvable",
-      "Laplacian as elliptic operator"
+      "real symbol operators",
+      "absurd combinator in Lean 4",
+      "linarith tactic"
     ],
     "prerequisites": [
       "absurd tactic/term in Lean 4",
       "BicharacteristicCurve.symbol_vanishes field",
-      "IsElliptic definition"
-    ],
-    "content": "This single-line proof `exact absurd (γ.symbol_vanishes 0) (hell (γ.x 0) (γ.ξ 0) (γ.ξ_ne_zero 0))` elegantly demonstrates how Lean handles vacuous quantifiers: rather than case analysis, the absurdity is derived directly by feeding the conflicting fields of `γ` to `hell`. It also explains why classical elliptic theory (Laplacian, Cauchy-Riemann) never encounters local nonsolvability — ellipticity precludes bicharacteristics entirely.",
-    "proofId": "hilbert-20-oq-01",
-    "range": {
-      "startLine": 196,
-      "endLine": 203
-    }
+      "IsElliptic definition",
+      "linarith for linear arithmetic"
+    ]
   }
 ]
