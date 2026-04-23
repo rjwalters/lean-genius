@@ -245,7 +245,7 @@
     "type": "insight",
     "title": "A₅ is Simple: The Minimal Obstruction",
     "content": "A₅ is the smallest non-abelian simple group ($|A_5| = 60$). Its simplicity is the root obstruction to S₅'s non-solvability: a solvable group has a composition series with abelian factors, but A₅ is simple and non-abelian, so it cannot appear in any such series. Lean invokes `alternatingGroup.isSimpleGroup_five` from Mathlib. The simplicity of A₅ was proved by Galois himself in 1832 and is the centerpiece of the unsolvability proof.",
-    "mathContext": "$A_5$ is simple: the only normal subgroups are $\\{e\\}$ and $A_5$ itself. $|A_5| = 60 = 5!/2$. In the composition series of $S_5$: $\\{e\\} \\trianglelefteq A_5 \\trianglelefteq S_5$, where $A_5/\\{e\\} \\cong A_5$ is simple and non-abelian. A group is solvable iff all composition factors are cyclic of prime order.",
+    "mathContext": "$A_5$ is simple: the only normal subgroups are $\\{e\\}$ and $A_5$ itself. $|A_5| = 60 = 5!/2$. In the composition series of $S_5$: $\\{e\\} \\trianglelefteq A_5 \\trianglelefteq S_5$, where $A_5/\\{e\\} \\cong A_5$ is simple and non-abelian. A group is solvable iff all composition factors are cyclic of prime order. Remarkably, $A_5$ carries three exceptional isomorphisms: $A_5 \\cong \\text{PSL}(2,4) \\cong \\text{PSL}(2,5) \\cong I$, where $I$ is the icosahedral rotation group (60 orientation-preserving symmetries of the regular icosahedron). These identify $A_5$ as the first member of the $\\text{PSL}(2,q)$ family of finite simple groups (simple for prime powers $q \\geq 4$). The next is $\\text{PSL}(2,7) \\cong GL_3(\\mathbb{F}_2)$ of order 168.",
     "significance": "key",
     "relatedConcepts": [
       "simple group",
@@ -253,7 +253,10 @@
       "Jordan-Hölder theorem",
       "A₅ simplicity",
       "IsSimpleGroup",
-      "non-abelian simple group"
+      "non-abelian simple group",
+      "PSL(2,5)",
+      "icosahedral symmetry group",
+      "classification of finite simple groups"
     ],
     "prerequisites": [
       "simple groups",
