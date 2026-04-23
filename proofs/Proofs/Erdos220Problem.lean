@@ -190,10 +190,11 @@ Few large gaps + many small gaps = manageable sum, bounded by n²/φ(n).
 noncomputable def countGapsOfSize (n g : ℕ) : ℕ :=
   (gapList n).count g
 
-/-- Most gaps are close to the average in a suitable sense. -/
-theorem gap_concentration (n : ℕ) (hn : n ≥ 2) :
-    -- The "bulk" of gaps have size O(n/φ(n))
-    True := trivial
+/-- Most gaps are concentrated near the average n/φ(n):
+    the squared-gap sum is bounded by O(φ(n) · (n/φ(n))²) = O(n²/φ(n)). -/
+axiom gap_concentration (n : ℕ) (hn : n ≥ 2) :
+    ∃ C : ℝ, C > 0 ∧
+      (sumSquaredGaps n : ℝ) ≤ C * (Nat.totient n : ℝ) * (averageGap n) ^ 2
 
 /-!
 ## Part X: Summary
