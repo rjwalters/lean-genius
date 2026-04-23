@@ -62,7 +62,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The concept of a minimal polynomial is central to algebraic number theory and Galois theory. For a field extension $K \\subseteq L$ and an element $\\alpha \\in L$ that is algebraic over $K$, the minimal polynomial $\\text{minpoly}_K(\\alpha)$ is the unique monic polynomial of smallest degree in $K[X]$ that has $\\alpha$ as a root.\n\nFor $\\alpha = \\sqrt{2}$ and $K = \\mathbb{Q}$, the minimal polynomial is $X^2 - 2$. This is one of the foundational examples in algebraic number theory:\n- It explains *why* $\\sqrt{2}$ is irrational: its minimal polynomial has degree 2, not 1\n- It establishes that $\\mathbb{Q}(\\sqrt{2})$ is a degree-2 extension of $\\mathbb{Q}$\n- It is the prototype for quadratic extensions and real quadratic fields\n\nThe result connects several classical topics: Eisenstein's irreducibility criterion (1850), Gauss's lemma on primitive polynomials, and the tower theorem for field extensions.",
+    "historicalContext": "The concept of a minimal polynomial emerged from Évariste Galois's revolutionary work on the solvability of polynomial equations (1832). Galois recognized that the algebraic relationships between the roots of a polynomial — encoded by what we now call minimal polynomials — determine whether the equation is solvable by radicals. Although Galois did not use modern terminology, his manuscripts implicitly relied on the notion of the degree of an algebraic element over its base field.\n\nRichard Dedekind (1871) gave the first rigorous formulation of algebraic extensions and minimal polynomials in his supplement to Dirichlet's *Vorlesungen über Zahlentheorie*. Dedekind's framework established that for a field extension $K \\subseteq L$ and an algebraic element $\\alpha \\in L$, the minimal polynomial $\\text{minpoly}_K(\\alpha)$ is the unique monic irreducible polynomial of smallest degree in $K[X]$ having $\\alpha$ as a root.\n\nFor $\\alpha = \\sqrt{2}$ and $K = \\mathbb{Q}$, the minimal polynomial is $X^2 - 2$ — one of the foundational examples in algebraic number theory:\n- It explains *why* $\\sqrt{2}$ is irrational: a rational number $q$ has $\\text{minpoly}_{\\mathbb{Q}}(q) = X - q$ (degree 1), while $\\sqrt{2}$ has degree-2 minimal polynomial\n- It establishes that $\\mathbb{Q}(\\sqrt{2})$ is a real quadratic field — the simplest non-trivial number field — with ring of integers $\\mathbb{Z}[\\sqrt{2}]$ and Galois group $\\text{Gal}(\\mathbb{Q}(\\sqrt{2})/\\mathbb{Q}) \\cong \\mathbb{Z}/2\\mathbb{Z}$\n- It is the prototype for all quadratic extensions: $\\mathbb{Q}(\\sqrt{d})$ for squarefree $d \\neq 1$ has minimal polynomial $X^2 - d$\n\nThe proof connects three classical tools: Eisenstein's irreducibility criterion (Ferdinand Eisenstein, 1850), Gauss's lemma on primitive polynomials (Carl Friedrich Gauss, *Disquisitiones Arithmeticae*, 1801), and Dedekind's tower law for field extension degrees.",
     "problemStatement": "Given the real number $\\alpha = \\sqrt{2}$, determine the minimal polynomial of $\\alpha$ over the rational field $\\mathbb{Q}$.\n\nThat is, find the unique monic polynomial $p \\in \\mathbb{Q}[X]$ of minimal degree such that:\n1. $p(\\sqrt{2}) = 0$\n2. $p$ is irreducible over $\\mathbb{Q}$\n\n**Answer**: $\\text{minpoly}_{\\mathbb{Q}}(\\sqrt{2}) = X^2 - 2$.",
     "text": "We prove that the minimal polynomial of √2 over ℚ is X² - 2. The proof establishes irreducibility via Eisenstein's criterion and transfers the result from ℤ to ℚ via Gauss's lemma.",
     "proofStrategy": "**Three-step characterization**:\n\nTo show $p = X^2 - 2$ equals $\\text{minpoly}_{\\mathbb{Q}}(\\sqrt{2})$, we verify three properties:\n\n1. **Root witness**: $(\\sqrt{2})^2 - 2 = 2 - 2 = 0$, so $\\sqrt{2}$ is a root of $p$.\n\n2. **Irreducibility** (Eisenstein at $p = 2$): Work over $\\mathbb{Z}$ first:\n   - Leading coefficient $1 \\notin (2)$\n   - Constant term $-2 \\equiv 0 \\pmod{2}$, so $2 \\mid (-2)$\n   - The constant term is NOT divisible by $4$: $4 \\nmid 2$\n   - Middle coefficient $0 \\equiv 0 \\pmod{2}$ ✓\n   By Eisenstein, $X^2 - 2$ is irreducible over $\\mathbb{Z}$. Gauss's lemma transfers this to $\\mathbb{Q}$.\n\n3. **Monic**: The leading coefficient of $X^2 - 2$ is $1$.\n\nBy `minpoly.eq_of_irreducible_of_monic`, these three properties characterize the minimal polynomial.",
@@ -83,6 +83,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "preamble",
+      "title": "Imports and Proof Overview",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Imports Mathlib, opens polynomial and field extension namespaces, sets elaboration budget, and documents the three-step proof strategy.",
+      "mathContext": "`open Polynomial IntermediateField` brings $\\mathbb{Q}[X]$ notation, `minpoly`, `aeval`, `Module.finrank`, and adjoin notation $\\mathbb{Q}\\!\\langle\\sqrt{2}\\rangle$ into scope. `set_option maxHeartbeats 800000` raises the elaboration budget to accommodate the Eisenstein criterion's `interval_cases` computation over coefficient indices."
+    },
     {
       "id": "eisenstein-int",
       "title": "Eisenstein Irreducibility over ℤ",
@@ -125,10 +133,12 @@
     }
   ],
   "conclusion": {
-    "summary": "We have proved that $\\text{minpoly}_{\\mathbb{Q}}(\\sqrt{2}) = X^2 - 2$ with zero axioms and zero sorry placeholders. The proof is complete and machine-verified.",
+    "summary": "We have proved that $\\text{minpoly}_{\\mathbb{Q}}(\\sqrt{2}) = X^2 - 2$ with zero axioms and zero sorry placeholders. The proof combines Eisenstein's criterion at $p = 2$, Gauss's lemma, and the three-property characterization of minimal polynomials to deliver a complete machine-verified result.",
+    "implications": "The identification $\\text{minpoly}_{\\mathbb{Q}}(\\sqrt{2}) = X^2 - 2$ is the prototype for algebraic number theory. It shows that $\\mathbb{Q}(\\sqrt{2})$ is a real quadratic field — the simplest non-trivial number field — isomorphic to $\\mathbb{Q}[X]/(X^2 - 2)$ as a 2-dimensional $\\mathbb{Q}$-vector space with basis $\\{1, \\sqrt{2}\\}$. The Galois group $\\text{Gal}(\\mathbb{Q}(\\sqrt{2})/\\mathbb{Q}) \\cong \\mathbb{Z}/2\\mathbb{Z}$ is the smallest non-trivial Galois group, with the unique non-trivial automorphism $\\sqrt{2} \\mapsto -\\sqrt{2}$. This degree-2 result also underpins the classical quadratic formula: every degree-2 polynomial over $\\mathbb{Q}$ splits over an extension of degree $\\leq 2$. More broadly, the Eisenstein + Gauss technique demonstrated here generalizes to show that $X^n - p$ is irreducible over $\\mathbb{Q}$ for any prime $p$, proving the existence of arbitrarily high-degree algebraic extensions.",
     "openQuestions": [
-      "Generalize: minpoly ℚ (√n) = X² - n for any non-perfect-square n. This follows from the same Eisenstein argument at any prime factor p of n with p∣n but p²∤n.",
-      "Generalize: minpoly ℚ (∜2) = X⁴ - 2 and more generally minpoly ℚ (n^(1/k)) = X^k - n for suitable n, k."
+      "Generalize: $\\text{minpoly}_{\\mathbb{Q}}(\\sqrt{n}) = X^2 - n$ for any non-perfect-square $n$. This follows from the same Eisenstein argument at any prime factor $p$ of $n$ with $p \\mid n$ but $p^2 \\nmid n$.",
+      "Generalize: $\\text{minpoly}_{\\mathbb{Q}}(\\sqrt[k]{m}) = X^k - m$ for suitable $m, k$ (e.g., $m$ has a prime factor $p$ with $p \\mid m$ but $p^2 \\nmid m$, and $k$ is prime). Can this be formalized parametrically in Lean?",
+      "What is the class number of $\\mathbb{Q}(\\sqrt{2})$? The ring of integers $\\mathbb{Z}[\\sqrt{2}]$ is a PID (class number 1) — can this be proved in Lean using the Minkowski bound and the norm $N(a + b\\sqrt{2}) = a^2 - 2b^2$?"
     ]
   },
   "crossReferences": [
@@ -138,9 +148,24 @@
       "description": "Irrationality of √2 — motivating result; degree-2 minpoly implies irrationality"
     },
     {
-      "id": "cube-root-2-irrational-oq-03",
+      "id": "cube-root-2-irrational",
+      "relationship": "sibling",
+      "description": "Irrationality of ∛2 — analogous Eisenstein argument at p=2 for X³-2 over ℤ"
+    },
+    {
+      "id": "nth-root-irrational",
       "relationship": "generalization",
-      "description": "nth-root minimal polynomial theorem: minpoly ℚ (m^(1/n)) = X^n - m"
+      "description": "General irrationality of nth roots: m^(1/n) is irrational when m is not a perfect nth power — the Eisenstein+Gauss technique here specializes to this case with n=2, m=2"
+    },
+    {
+      "id": "cayley-hamilton-minpoly",
+      "relationship": "sibling",
+      "description": "Minimal polynomial in the matrix context — same annihilator-of-evaluation notion applied to matrices rather than algebraic numbers"
+    },
+    {
+      "id": "sqrt2-plus-sqrt3-irrational",
+      "relationship": "extension",
+      "description": "√2+√3 is irrational — builds on the degree-2 extensions ℚ(√2) and ℚ(√3); its minimal polynomial over ℚ is X⁴-10X²+1 (degree 4)"
     }
   ],
   "references": {
@@ -183,5 +208,5 @@
       "description": "The field extension ℚ(√2)/ℚ has degree 2"
     }
   ],
-  "sorries": []
+  "sorries": 0
 }

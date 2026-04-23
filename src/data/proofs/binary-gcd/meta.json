@@ -84,9 +84,24 @@
   ],
   "crossReferences": [
     {
-      "targetId": "gcd-algorithm",
+      "proofId": "gcd-algorithm",
       "relationship": "extends",
-      "description": "Alternative GCD algorithm using bit operations instead of Euclidean division"
+      "description": "The Euclidean algorithm computes GCD via repeated division ($\\gcd(a,b) = \\gcd(b, a \\bmod b)$). Stein's Binary GCD replaces each modular reduction with subtraction and halving — the same mathematical invariant ($\\gcd$ is preserved at each step), but using only bit shifts and comparison, which are cheaper than division on binary hardware. The two algorithms are equivalent by correctness (`binaryGcd a b = Nat.gcd a b`), but have different computational costs: Euclidean is $O(\\log(\\min(a,b)))$ modular reductions; binary uses $O(\\log^2 n)$ bit operations."
+    },
+    {
+      "proofId": "bezout-identity",
+      "relationship": "related",
+      "description": "Bézout's identity ($\\exists x, y: ax + by = \\gcd(a,b)$) is the algebraic companion to GCD computation: the Euclidean algorithm's extended form computes the Bézout coefficients $x, y$. The Binary GCD algorithm does not naturally produce Bézout coefficients (only the GCD value), but since `binaryGcd a b = Nat.gcd a b`, all of Nat.gcd's properties — including the Bézout certificate via `Nat.gcd_eq_gcd_ab` — transfer for free. The distinction is: `Nat.gcd` is defined algebraically; `binaryGcd` is an efficient implementation proved to agree."
+    },
+    {
+      "proofId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The Fundamental Theorem of Arithmetic underpins GCD: $\\gcd(a,b)$ equals the product of common prime factors of $a$ and $b$ (each taken to the smaller power). The Binary GCD algorithm computes this implicitly via the three parity identities, which factor out powers of 2 (a special prime) separately from odd factors — an observation that the algorithm is really computing a $2$-adic and odd part of the GCD simultaneously. FTA guarantees that the result is unique, which `binaryGcd_eq_gcd` exploits: once we show `binaryGcd a b` divides both $a$ and $b$ and has the divisibility property, uniqueness follows from FTA."
+    },
+    {
+      "proofId": "infinitude-primes",
+      "relationship": "related",
+      "description": "The binary GCD's efficiency on hardware reflects a number-theoretic distinction between 2 and odd primes: the algorithm factors out all powers of 2 first (using bit shifts), then handles odd-odd subtraction. This special treatment of 2 mirrors the fact that 2 is the only even prime — both `binaryGcd` and primality use the `p % 2 = 1` test as a separator. The infinitude of primes (proved via GCD arguments: $\\gcd(F_n, F_m) = 1$ for distinct Fermat numbers) connects GCD to prime distribution."
     }
   ],
   "conclusion": {

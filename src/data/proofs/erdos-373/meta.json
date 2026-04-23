@@ -7,7 +7,7 @@
     "author": "Luca (2007, conditional), Erdos (1976)",
     "sourceUrl": "https://erdosproblems.com/373",
     "date": "2007",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos373Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "diophantine-equations",
       "abc-conjecture"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 373,
     "erdosUrl": "https://erdosproblems.com/373",
@@ -49,7 +49,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 168,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified."
   },
   "overview": {
     "historicalContext": "Erdos Problem #373 asks whether the Diophantine equation n! = a_1! * a_2! * ... * a_k! (with the constraint n-1 > a_1 >= a_2 >= ... >= a_k >= 2) has only finitely many solutions.\n\nThe constraint a_1 < n-1 rules out trivial solutions like n! = (n-1)! * n = (n-1)! * a_2! * ... where n factors as a product of factorials of smaller numbers.\n\nSuranyi was the first to conjecture that 6!7! = 10! is the only two-factor solution. Hickerson conjectured that there are exactly four non-trivial solutions in total.\n\nFlorian Luca proved in 2007 that the set of solutions is finite, assuming the ABC conjecture. Erdos showed that finiteness would follow from the number-theoretic conjecture P(n(n-1)) > 4 log n for large n, where P(m) is the largest prime factor of m.",

@@ -71,7 +71,9 @@
       "The divisibility $\\lambda(n) \\mid \\varphi(n)$ is an instance of Lagrange's theorem: the exponent of any finite group $G$ divides its order $|G|$. Here $|G| = |(\\mathbb{Z}/n\\mathbb{Z})^*| = \\varphi(n)$, so `exponent_dvd_card` gives the result immediately without explicit computation.",
       "The minimality theorem `carmichael_minimal` states that $\\lambda(n)$ divides any universal exponent $e$. This is equivalent to saying $\\lambda(n)$ is the order-theoretic infimum of all universal exponents — $\\lambda(n) = \\gcd$ of all $e$ with $a^e = 1$ for all coprime $a$. In Mathlib, `exponent_dvd_of_forall_pow_eq_one` captures exactly this property.",
       "For prime $p$, the group $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic of order $p-1$ (Gauss's primitive root theorem). `IsCyclic.exponent_eq_card` then gives $\\lambda(p) = p-1$. The formula $\\lambda(p^k) = p^{k-1}(p-1) = \\varphi(p^k)$ also holds (cyclicity extends to prime powers for odd $p$), but this is not proved in this file.",
-      "The failure of cyclicity for $n = 2^k$ ($k \\geq 3$) is arithmetic: $(\\mathbb{Z}/2^k\\mathbb{Z})^* \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2^{k-2}$ (non-cyclic for $k \\geq 3$), giving $\\lambda(2^k) = 2^{k-2} \\neq \\varphi(2^k) = 2^{k-1}$. This is the source of the '2-adic' anomaly in the structure of $\\lambda$."
+      "The failure of cyclicity for $n = 2^k$ ($k \\geq 3$) is arithmetic: $(\\mathbb{Z}/2^k\\mathbb{Z})^* \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2^{k-2}$ (non-cyclic for $k \\geq 3$), giving $\\lambda(2^k) = 2^{k-2} \\neq \\varphi(2^k) = 2^{k-1}$. This is the source of the '2-adic' anomaly in the structure of $\\lambda$.",
+      "The theorems `carmichael_pow_eq_one` and `carmichael_minimal` together give the **exact characterization** of RSA correctness. Classical RSA uses $ed \\equiv 1 \\pmod{\\varphi(n)}$ as the key constraint, but the correct constraint is $ed \\equiv 1 \\pmod{\\lambda(n)}$: decryption $(m^e)^d \\equiv m \\pmod{n}$ succeeds iff $\\lambda(n) \\mid (ed - 1)$, not merely $\\varphi(n) \\mid (ed - 1)$. Since $\\lambda(n) \\mid \\varphi(n)$, the $\\varphi$-based constraint is sufficient but strictly stronger — it excludes valid key pairs where $\\gcd(e, \\varphi(n)) > 1$ but $\\gcd(e, \\lambda(n)) = 1$. The `carmichael_minimal` theorem is precisely the Lean statement of RSA correctness necessity: if decryption works for all messages, then $\\lambda(n) \\mid (ed-1)$. PKCS#1 v2.1 (RFC 3447) and FIPS 186-4 both mandate $\\lambda(n)$-based key generation for this reason.",
+      "The `carmichael_minimal` theorem is the key tool for characterizing **Carmichael numbers** — composite integers $n$ where $a^n \\equiv a \\pmod{n}$ for all $a$ (pseudoprimes to every base). The Korselt criterion (1899) states: $n$ is a Carmichael number iff $n$ is squarefree, $n > 1$, and $\\lambda(n) \\mid (n-1)$. The proof uses exactly `carmichael_minimal`: since $a^n \\equiv a$ for all $a$, in particular $a^{n-1} \\equiv 1$ for all coprime $a$, so $\\lambda(n) \\mid (n-1)$. The infinite existence of Carmichael numbers (Alford-Granville-Pomerance 1994) shows pseudoprimality cannot be eliminated by any fixed base — the minimal universal exponent $\\lambda(n)$ is the correct measure of how far a composite is from being prime-like."
     ]
   },
   "sections": [
@@ -156,6 +158,16 @@
       "targetId": "euler-totient-oq-03",
       "relationship": "sibling",
       "description": "Structural Properties of φ: parity, divisibility, and the product formula φ(n) = n·∏_{p|n}(1-1/p). These structural results, combined with λ(n) | φ(n) proved here, determine when Carmichael's function equals Euler's totient: λ(n) = φ(n) iff (ℤ/nℤ)* is cyclic, which can be detected from n's prime factorization structure."
+    },
+    {
+      "targetId": "fermat-little-theorem",
+      "relationship": "generalization-of",
+      "description": "Fermat's Little Theorem: a^(p-1) ≡ 1 (mod p) for prime p and gcd(a,p)=1. This is the special case λ(p) = p-1, proved here as carmichael_prime. The Carmichael function unifies Fermat's little theorem (prime case), Euler's theorem (λ(n) | φ(n)), and the exact minimal exponent — all as consequences of the group exponent Monoid.exponent."
+    },
+    {
+      "targetId": "bezout-identity-oq-03",
+      "relationship": "related",
+      "description": "Chinese Remainder Theorem — CRT gives the product formula λ(p₁^k₁ · p₂^k₂ · ... ) = lcm(λ(p₁^k₁), λ(p₂^k₂), ...), which follows because (ℤ/nℤ)* ≅ ∏(ℤ/pᵢ^kᵢ ℤ)* and the exponent of a direct product is the lcm of component exponents. The CRT isomorphism (formalized in bezout-identity-oq-03) is the structural bridge between the component-wise computation of λ and the global value."
     }
   ],
   "leanFile": {

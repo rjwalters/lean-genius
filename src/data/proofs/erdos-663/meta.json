@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/663",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos663Problem.lean",
     "tags": [
       "erdos",
@@ -15,14 +15,14 @@
       "consecutive-products",
       "asymptotic-bounds"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 663,
     "erdosUrl": "https://erdosproblems.com/663",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 179,
-    "assumptions": "None. All axioms eliminated: smallestMissingPrime defined via Nat.find, properties proved from definition.",
+    "assumptions": "None. All axioms eliminated: smallestMissingPrime defined via Nat.find, properties proved from definition. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

@@ -68,69 +68,7 @@
         "id": "erdos-1179",
         "relationship": "Parent problem: the main Erd\u0151s #1179 formalization establishing g_\u03b5(N) ~ log\u2082 N"
       }
-    ],
-    "leanFile": {
-      "imports": [
-        "Mathlib.Data.Finset.Basic",
-        "Mathlib.Data.Finset.Powerset",
-        "Mathlib.Data.Finset.Card",
-        "Mathlib.Data.Fintype.Basic",
-        "Mathlib.Data.Real.Basic",
-        "Mathlib.Data.ZMod.Basic",
-        "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-        "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
-        "Mathlib.Analysis.SpecificLimits.Normed",
-        "Mathlib.Tactic"
-      ],
-      "opens": [
-        "Finset",
-        "Real"
-      ],
-      "namespace": "Erdos1179OQ01",
-      "lineCount": 709,
-      "axiomCount": 0,
-      "sorryCount": 0,
-      "theoremCount": 23,
-      "definitionCount": 7,
-      "mainTheorems": [
-        {
-          "name": "total_reprCount",
-          "type": "proved",
-          "description": "Total representations partition: \u2211_g F_A(g) = 2^|A|",
-          "leanType": "(A : Finset (ZMod N)) \u2192 (\u2211 g : ZMod N, reprCount A g) = 2 ^ A.card"
-        },
-        {
-          "name": "reprCount_insert_ge",
-          "type": "proved",
-          "description": "Monotonicity: adding an element never decreases reprCount",
-          "leanType": "(A : Finset (ZMod N)) \u2192 (b : ZMod N) \u2192 (g : ZMod N) \u2192 b \u2209 A \u2192 reprCount A g \u2264 reprCount (insert b A) g"
-        },
-        {
-          "name": "coverage_mono",
-          "type": "proved",
-          "description": "Coverage monotonicity: the number of represented elements grows with set size",
-          "leanType": "(A : Finset (ZMod N)) \u2192 (b : ZMod N) \u2192 b \u2209 A \u2192 |{g : F_A(g) > 0}| \u2264 |{g : F_{A\u222a{b}}(g) > 0}|"
-        },
-        {
-          "name": "bounded_implies_sublinear",
-          "type": "proved",
-          "description": "The correction hierarchy: O(1) implies o(log\u2082 N)",
-          "leanType": "(gEps : \u211d \u2192 \u2115 \u2192 \u2115) \u2192 (\u03b5 : \u211d) \u2192 CorrectionIsBounded gEps \u03b5 \u2192 CorrectionIsSublinearInLog gEps \u03b5"
-        },
-        {
-          "name": "abs_cos_pi_div_prime_lt_one",
-          "type": "proved",
-          "description": "|cos(\u03c0/p)| < 1 for any prime p \u2014 key lemma for geometric decay",
-          "leanType": "(p : \u2115) \u2192 (hp : Nat.Prime p) \u2192 |cos(\u03c0/p)| < 1"
-        },
-        {
-          "name": "erdos_renyi_decay",
-          "type": "proved",
-          "description": "Erd\u0151s-R\u00e9nyi exponential decay: for k \u2265 clog\u2082 p + C, Fourier error \u2264 \u03b5 \u00b7 2^k/p. Proved from fourier_error_bound via geometric decay of |cos(\u03c0/p)|^(k-1)",
-          "leanType": "(p : \u2115) \u2192 (hp : Nat.Prime p) \u2192 \u2200 \u03b5 > 0, \u2203 C, \u2200 k \u2265 clog 2 p + C, \u2200 A, A.card = k \u2192 \u2200 g, |F_A(g) - 2^k/p| \u2264 \u03b5 \u00b7 (2^k/p)"
-        }
-      ]
-    }
+    ]
   },
   "sections": [
     {
@@ -275,11 +213,5 @@
       "note": "Standard reference for additive combinatorics including Fourier analysis on finite groups, representation counts, and the probabilistic method"
     }
   ],
-  "leanFile": {
-    "lineCount": 709,
-    "path": "Proofs/Erdos1179OQ01.lean",
-    "axiomCount": 0,
-    "sorries": 0
-  },
   "sorries": 0
 }

@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/152",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos152Problem.lean",
     "tags": [
       "erdos",
@@ -14,14 +14,14 @@
       "sidon-sets",
       "sumsets"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 152,
     "erdosUrl": "https://erdosproblems.com/152",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 470,
-    "assumptions": "Fully verified (0 axioms, 0 sorries). gap_existence_pigeonhole proved via endpoint analysis and Sidon difference injectivity.",
+    "assumptions": "Fully verified (0 axioms, 0 sorries). gap_existence_pigeonhole proved via endpoint analysis and Sidon difference injectivity. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

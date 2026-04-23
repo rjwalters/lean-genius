@@ -5,9 +5,9 @@
   "description": "Prove an asymptotic formula for r_k(N), the maximum size of a subset of {1,...,N} with no non-trivial k-term AP. The gap between Behrend's lower bound and Kelley–Meka's upper bound remains enormous even for k=3. Open ($10,000).",
   "meta": {
     "erdosNumber": 142,
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos142Problem.lean",
-    "badge": "mathlib",
+    "badge": "wip",
     "erdosProblemStatus": "open",
     "tags": [
       "erdos",
@@ -29,7 +29,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 54,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

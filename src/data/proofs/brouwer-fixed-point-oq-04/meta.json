@@ -19,9 +19,9 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axioms": 1,
+    "axioms": 2,
     "dateAdded": "2026-03-24",
-    "dateUpdated": "2026-03-27",
+    "dateUpdated": "2026-04-23",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "Correspondence structure for set-valued maps with nonempty/closed/maps-to fields",
@@ -52,9 +52,9 @@
       }
     ],
     "historicalContext": "Shizuo Kakutani (1941) proved this generalization of Brouwer's theorem. John Nash (1950) used it to prove the existence of Nash equilibria, earning the Nobel Prize in Economics (1994). The theorem is essential in mathematical economics (Arrow-Debreu general equilibrium) and optimal control (Filippov's lemma).",
-    "axiomCount": 1,
-    "lineCount": 473,
-    "assumptions": "1 axiom: kakutani_fixed_point_axiom (Kakutani fixed-point theorem). 0 sorries."
+    "axiomCount": 2,
+    "lineCount": 505,
+    "assumptions": "2 axioms: kakutani_fixed_point_axiom (Kakutani fixed-point theorem for compact convex sets in ℝⁿ) and brouwer_pi_compact_convex (Brouwer FPT for products of compact convex sets — requires Schoenflies-type theorem not yet in Mathlib). 0 sorries."
   },
   "overview": {
     "historicalContext": "Shizuo Kakutani proved his fixed point theorem in 1941, motivated by von Neumann's 1937 minimax theorem and its use of Brouwer's theorem for existence proofs in economics. Kakutani's insight was that many economic and game-theoretic models naturally involve set-valued maps (e.g., a consumer's demand given prices is a set of optimal bundles, not a single point), and that Brouwer's theorem could be extended to handle these. John Nash's 1950 proof of equilibrium existence in non-cooperative games — for which he received the 1994 Nobel Prize in Economics — relies essentially on Kakutani's theorem applied to the best-response correspondence. The Arrow-Debreu proof of general competitive equilibrium (1954), which earned Arrow the 1972 Nobel Prize, also depends on it. The theorem has since become indispensable in mathematical economics, optimal control theory (Filippov's lemma for differential inclusions, 1962), and nonlinear analysis. The infinite-dimensional generalization by Glicksberg (1952) and Fan (1952) extends it to locally convex spaces, enabling applications to infinite-horizon economic models.",
@@ -142,7 +142,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the Kakutani Fixed Point Theorem, its relationship to Brouwer, and its application to Nash equilibrium. 0 sorries, 1 axiom (Kakutani FPT). Brouwer for compact convex sets now proved from the parent file. The 1D case is fully proved via IVT. Nash equilibrium formally defined.",
+    "summary": "This formalization captures the Kakutani Fixed Point Theorem, its relationship to Brouwer, and its application to Nash equilibrium. 0 sorries, 2 axioms: kakutani_fixed_point_axiom (Kakutani FPT) and brouwer_pi_compact_convex (Brouwer FPT for products of compact convex sets). Brouwer for compact convex sets is proved from the parent file. The 1D case is fully proved via IVT. Nash equilibrium formally defined.",
     "implications": "Kakutani's theorem is the bridge between pure topology and applied mathematics. It transforms Brouwer's abstract existence result into a tool for economics (equilibrium existence), game theory (Nash equilibria), and control theory (differential inclusions). The formalization demonstrates this bridge explicitly.",
     "openQuestions": [
       "Can the main Kakutani FPT be proved from Brouwer using only Mathlib's current topology (requires triangulation and simplicial approximation)?",
@@ -204,8 +204,8 @@
       "Filter"
     ],
     "namespace": "KakutaniFPT",
-    "lineCount": 473,
-    "axiomCount": 1,
+    "lineCount": 505,
+    "axiomCount": 2,
     "theoremCount": 22,
     "definitionCount": 15,
     "path": "Proofs/BrouwerFixedPointOQ04.lean",

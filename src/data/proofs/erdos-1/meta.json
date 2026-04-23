@@ -7,7 +7,7 @@
     "author": "Erdős (1931)",
     "sourceUrl": "https://erdosproblems.com/1",
     "date": "1931",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1Problem.lean",
     "tags": [
       "erdos",
@@ -15,7 +15,7 @@
       "subset-sums",
       "extremal-combinatorics"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 1,
     "erdosUrl": "https://erdosproblems.com/1",
@@ -46,7 +46,7 @@
       "Formal statement of the $500 conjecture"
     ],
     "axiomCount": 0,
-    "assumptions": "None. 0 axioms, 0 sorries. Previous Aristotle proofs were vacuously true due to broken definition. Corrected version proves the weaker but correct counting bound.",
+    "assumptions": "None. 0 axioms, 0 sorries. Previous Aristotle proofs were vacuously true due to broken definition. Corrected version proves the weaker but correct counting bound. Open conjecture; supporting lemmas fully verified.",
     "lineCount": 143,
     "prerequisites": [
       "Finite set theory (Finset operations, powerset, filter)",

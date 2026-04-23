@@ -6,7 +6,7 @@
   "meta": {
     "author": "Straus (via Erdős–Graham)",
     "erdosNumber": 432,
-    "status": "verified",
+    "status": "axiomatized",
     "mathlib_version": "4.26.0",
     "tags": [
       "erdos",
@@ -18,7 +18,7 @@
       "density",
       "open"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/432",
     "erdosUrl": "https://erdosproblems.com/432",
@@ -51,7 +51,7 @@
       "Noted Ostmann connection and Tao's assessment of difficulty"
     ],
     "axiomCount": 0,
-    "assumptions": "0 axioms. All 3 former axioms now proved theorems: prime_divides_at_most_one (via Nat.dvd_gcd + coprimality contradiction), coprime_set_bound (via Finset.card_filter counting argument), ostmann_connection (trivial).",
+    "assumptions": "0 axioms. All 3 former axioms now proved theorems: prime_divides_at_most_one (via Nat.dvd_gcd + coprimality contradiction), coprime_set_bound (via Finset.card_filter counting argument), ostmann_connection (trivial). Open conjecture; supporting lemmas fully verified.",
     "relatedProblems": [
       {
         "id": "erdos-431",

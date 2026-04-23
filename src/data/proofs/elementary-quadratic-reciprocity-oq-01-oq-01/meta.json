@@ -154,6 +154,21 @@
       "note": "Comprehensive treatment of Gauss sums and their applications"
     }
   ],
-  "leanFile": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01.lean",
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "ZMod"
+    ],
+    "namespace": "GaussSumPathway",
+    "lineCount": 166,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01.lean",
+    "sorries": 0
+  },
   "sorries": 0
 }

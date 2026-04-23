@@ -1,7 +1,7 @@
 # Problem: Minimal Polynomial of √n over ℚ: Eisenstein Generalization
 
 **Slug**: sqrt2-minpoly-oq-01
-**Created**: 2026-04-23T00:07:54+02:00
+**Created**: 2026-04-23T02:11:45+02:00
 **Status**: Active
 **Source**: gallery-gap
 
@@ -41,7 +41,7 @@ it must be the minimal polynomial.
 This is a clean and self-contained generalization of the flagship `sqrt2-minpoly` gallery
 entry.  Formalizing it:
 - Closes the first listed open question from that proof's conclusion
-- Provides a reusable pattern for proving irrationality of $\sqrt{n}$
+- Provides a reusable pattern for proving irrationality of $\sqrt{n}$ for all non-squares
 - Connects `minpoly` API to `Polynomial.Irreducible.eisenstein` in Mathlib
 - Could become a Mathlib PR candidate (straightforward, general, and cited often)
 
@@ -51,7 +51,6 @@ entry.  Formalizing it:
 
 - `minpoly ℚ (√2) = X² - 2` — `proofs/Proofs/Sqrt2MinPoly.lean` (gallery entry)
 - `Polynomial.irreducible_of_eisenstein_criterion` — Mathlib (`Mathlib.RingTheory.Eisenstein.Basic`)
-- `minpoly.eq_X_pow_sub_C_of_isSplittingField` — possible Mathlib route
 - `Nat.sqrt_lt_self` + `Nat.sqrt_eq` for checking perfect-square status
 
 ### What's Still Open
@@ -145,5 +144,5 @@ related_proofs:
   - algebraic-numbers-countable
 difficulty: low
 source: gallery-gap
-created: 2026-04-23T00:07:54+02:00
+created: 2026-04-23T02:11:45+02:00
 ```

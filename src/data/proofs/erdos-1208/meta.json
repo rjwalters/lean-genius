@@ -122,25 +122,30 @@
   },
   "crossReferences": [
     {
-      "targetId": "erdos-1206",
-      "relationship": "related",
-      "description": "Sibling problem on pairwise distinctness: #1206 (Sidon sets in cube numbers) and #1208 (distinct pairwise distances) both ask for large subsets with pairwise distinctness conditions — sums vs. distances."
+      "proofId": "erdos-1206",
+      "relationship": "sibling",
+      "description": "Erdős #1206 (Sidon sets in cube numbers) is the additive analog: both #1206 and #1208 ask for large Sidon-type subsets within a structured point set, with #1206 using the additive Sidon condition (distinct pairwise sums) and #1208 using the distance-Sidon condition (distinct pairwise Euclidean distances). The Erdős-Turán N^(1/2) bound governs additive Sidon sets; the analogous geometric bound governs distance-Sidon sets."
     },
     {
-      "targetId": "erdos-1211",
+      "proofId": "erdos-340-greedy-sidon",
       "relationship": "related",
-      "description": "Neighbor in the Erdős 1200s cluster: both involve quantitative extremal questions about structured subsets with density/size constraints from the same era of Erdős's work."
+      "description": "Greedy Sidon Sequence (Erdős #340) formalizes the greedy construction of additive Sidon sets. The distance-Sidon problem here uses a similar greedy argument: pick points one at a time, each adding a new distance not yet present. The greedy approach gives the Ω(n^(1/3)) lower bound for F₂(n) — the same exponent as Spencer-Szemerédi-Trotter's 1984 result axiomatized here. Distance-Sidon and additive Sidon share the k(k-1)/2 distinct pairs structure."
     },
     {
-      "targetId": "erdos-530",
+      "proofId": "unit-distance-independence",
       "relationship": "related",
-      "description": "Structural parallel: #530 (max Sidon subset of {1,...,N}) and #1208 (max distance-Sidon subset of n points in ℝᵈ) both ask for the largest subset with a pairwise distinctness property in different settings."
+      "description": "Unit Distance Graph Independence Numbers and Hadwiger-Nelson Bounds — a complementary geometric problem in the same combinatorial geometry setting. The unit distance graph (vertices = points, edges = unit distance apart) and the distance-Sidon problem both study the combinatorial structure of distance sets. The key overlap: the unit distance problem's O(n^{4/3}) bound on unit distances in the plane (Szemerédi-Trotter) is also the main tool bounding how many pairs can share any fixed distance, directly connecting to the distinct distances problem underlying #1208."
     },
     {
-      "targetId": "isoperimetric-theorem",
-      "relationship": "related",
-      "description": "Geometric measurement companion: isoperimetric inequalities in ℝᵈ provide the geometric framework for counting distances, relevant to the greedy construction and unit-distance bounds used in F_d(n) estimates."
+      "proofId": "erdos-1202",
+      "relationship": "sibling",
+      "description": "Erdős #1202 (Prime Sets with Quantitative Density Conditions) is in the same Erdős 1200s cluster. Both #1202 and #1208 formalize open/solved Erdős problems with quantitative lower bound structure, both using axioms to capture deep results (sieve theory for #1202, Szemerédi-Trotter incidence bounds for #1208). The 1200-numbered problems in Erdős's archive span analytic number theory and combinatorial geometry, reflecting his unified interest in threshold phenomena."
     }
   ],
-  "sorries": 1
+  "sorries": 1,
+  "leanFile": {
+    "axiomCount": 2,
+    "lineCount": 137,
+    "sorries": 1
+  }
 }

@@ -40,8 +40,9 @@ the unique other door (if any), repeating until reaching an FC simplex.
 1. `fc_door_count_eq_one` — FC simplices have exactly 1 door
 2. `nonfc_door_count_zero_or_two` — Non-FC simplices have 0 or 2 doors
 3. `nonfc_with_door_has_unique_exit` — Non-FC simplex with an entry door has a unique exit door
-4. `kuhn_step` — One step of the Kuhn algorithm
-5. `kuhn_path_terminates` — The Kuhn path terminates at an FC simplex (main theorem)
+4. `kuhnPathStart` — The Kuhn walk from a boundary door
+5. `kuhnPathStart_is_fc` — The walk terminates at an FC simplex (depends on kuhn_walk_reaches_fc)
+6. `kuhn_path_terminates` — FC simplex exists given a boundary door
 -/
 
 set_option maxHeartbeats 400000
@@ -296,49 +297,117 @@ def kuhnWalk (c : Coloring d N) (K : SpernerTriangulation d N)
         state.current
 
 -- ============================================================
--- SECTION VIII: Main Theorem
+-- SECTION VIII: Non-Revisiting Infrastructure
 -- ============================================================
 
-/-- Key correctness property: kuhnWalk with sufficient fuel reaches an FC simplex.
+/-- Path invariant for the Kuhn walk: every visited simplex was reached from a
+    predecessor in the visited set. The three parts capture:
+    (1) current was either the initial boundary vertex, or was reached from a visited predecessor;
+    (2) visited is empty iff we are at the boundary (initial state);
+    (3) every visited simplex has a door and a predecessor in visited. -/
+def KuhnStateValid (c : Coloring d N) (K : SpernerTriangulation d N)
+    (state : KuhnState d N c K) : Prop :=
+  (K.adj state.current state.entry = none ∨
+   ∃ s_pred k_pred, K.adj s_pred k_pred = some (state.current, state.entry) ∧
+     s_pred ∈ state.visited) ∧
+  (K.adj state.current state.entry = none → state.visited = ∅) ∧
+  (∀ s ∈ state.visited, ∃ (e_s k_pred : Fin (d + 1)) (s_pred : K.Simplex),
+    isDoorAt c K s e_s ∧
+    K.adj s_pred k_pred = some (s, e_s) ∧
+    s_pred ∈ state.visited)
 
-    The proof requires showing:
-    1. The walk is injective (no revisiting) — relies on graph structure
-    2. The terminal simplex (when no exit door or FC) is FC
-
-    The full proof requires the additional invariant that the walk
-    never revisits a simplex (which follows from the door graph having
-    no cycles containing boundary vertices). -/
-theorem kuhn_path_terminates {c : Coloring d N} {K : SpernerTriangulation d N}
-    (hKuhn : IsKuhnCompatible c K)
+/-- The initial state (boundary door, empty visited) satisfies KuhnStateValid. -/
+lemma kuhnState_initial_valid (c : Coloring d N) (K : SpernerTriangulation d N)
     (s₀ : K.Simplex) (k₀ : Fin (d + 1))
-    (hdoor₀ : isDoorAt c K s₀ k₀)
-    (hbdry₀ : K.adj s₀ k₀ = none) :
-    ∃ s : K.Simplex, IsFC c K s := by
-  -- This follows from the existing sperner_ndim theorem.
-  -- Kuhn's algorithm provides a constructive path; the existence follows from parity.
-  --
-  -- The Kuhn-constructive proof would be:
-  --   1. hbdry₀ gives a boundary door on face Fin.last d (by boundary_door_is_last_face)
-  --   2. The boundary door count is ≥ 1
-  --   3. The kuhnWalk with fuel = Fintype.card K.Simplex terminates at FC
-  --
-  -- For now we derive existence from sperner_ndim applied with oddness of the
-  -- single boundary door count.
-  sorry
+    (hdoor₀ : isDoorAt c K s₀ k₀) (hbdry₀ : K.adj s₀ k₀ = none) :
+    KuhnStateValid c K {
+      current := s₀, entry := k₀, entry_is_door := hdoor₀,
+      visited := ∅, current_not_visited := Finset.notMem_empty _ } := by
+  refine ⟨Or.inl hbdry₀, fun _ => rfl, fun s hs => ?_⟩
+  exact absurd hs (Finset.notMem_empty _)
 
-/-- The Kuhn walk with appropriate fuel finds an FC simplex from a boundary door.
+/-- If s' ∈ visited and k' = s''s entry door (Case A of non-revisiting), adj_symm
+    forces the predecessor of s' to be current, contradicting current_not_visited. -/
+lemma guard_entry_case_impossible {c : Coloring d N} {K : SpernerTriangulation d N}
+    {state : KuhnState d N c K}
+    {k_out : Fin (d + 1)}
+    {s' : K.Simplex} {k' : Fin (d + 1)}
+    (hadj : K.adj state.current k_out = some (s', k'))
+    {e_s : Fin (d + 1)} {k_pred : Fin (d + 1)} {s_pred : K.Simplex}
+    (he_s_adj : K.adj s_pred k_pred = some (s', e_s))
+    (hs_pred_vis : s_pred ∈ state.visited)
+    (hk'_is_entry : k' = e_s) : False := by
+  have hadj_back : K.adj s' k' = some (state.current, k_out) := K.adj_symm _ _ _ _ hadj
+  have he_s_back : K.adj s' e_s = some (s_pred, k_pred) := K.adj_symm _ _ _ _ he_s_adj
+  rw [hk'_is_entry] at hadj_back
+  rw [hadj_back] at he_s_back
+  have ⟨heq_cur, _⟩ := Prod.mk.inj (Option.some.inj he_s_back)
+  exact state.current_not_visited (heq_cur ▸ hs_pred_vis)
 
-    The proof proceeds by strong induction on remaining unvisited simplices.
-    The invariant is: the walk never revisits a simplex (injectivity of the path).
-    This injectivity follows from the door graph structure: each interior vertex
-    of the door graph has degree exactly 0 or 2, and the starting boundary door
-    has degree 1 in the boundary, so the component is a path (not a cycle). -/
+/-- The walk never steps to current itself: adj_ne rules it out immediately. -/
+lemma guard_current_impossible {c : Coloring d N} {K : SpernerTriangulation d N}
+    (state : KuhnState d N c K) {k_out : Fin (d + 1)} {s' : K.Simplex} {k' : Fin (d + 1)}
+    (hadj : K.adj state.current k_out = some (s', k')) :
+    s' ≠ state.current :=
+  fun h => K.adj_ne _ _ _ _ hadj h.symm
+
+-- ============================================================
+-- SECTION IX: Core Walk Correctness (Main Blocker)
+-- ============================================================
+
+/-- The Kuhn walk with sufficient fuel finds an FC simplex from any valid state.
+
+    **STATUS**: One sorry remains. This is the core mathematical obligation.
+
+    **What needs to be proved**:
+    The walk's termination conditions must all guarantee FC. The `kuhnWalk` function
+    terminates (returns state.current) in these cases:
+    1. `IsFC c K state.current` — correct, current is FC ✓
+    2. `fuel = 0` — incorrect if current is non-FC
+    3. `exit_doors.isEmpty` — non-FC with 0 doors; shouldn't occur if entered
+    4. `K.adj state.current k_out = none` — boundary exit, current may be non-FC
+    5. `s' ∈ state.visited ∪ {state.current}` — revisit guard, current may be non-FC
+
+    Cases (2)-(5) must be eliminated:
+    - (2) is handled by choosing fuel = Fintype.card K.Simplex - visited.card
+    - (3) follows from nonfc_with_door_has_unique_exit (entry door ⟹ exit door exists)
+    - (4) requires: the walk never hits a second boundary door (needs IsSperner c +
+          unique-boundary-door-on-face-d assumption)
+    - (5) requires: the NON-REVISITING INVARIANT
+
+    **Non-Revisiting Invariant** (why the walk never revisits):
+    Suppose s' = K.adj state.current k_out arrives in state.visited.
+    By adj_symm: K.adj s' k_out' = some (state.current, k_out).
+    When s' was previously the current at time j:
+    - s' had door k_out' (which leads to state.current)
+    - s' exited via the unique other door k_exit ≠ k_out' (by nonfc_with_door_has_unique_exit)
+    - OR s' exited via k_out', moving to state.current at time j+1
+    In the second case, state.current was visited at time j+1 < now,
+    so state.current ∈ state.visited — contradicting current_not_visited.
+    In the first case, s' has 2 doors {k_out', k_exit}, and exited via k_exit.
+    But then s' can only be re-entered via the OTHER door (k_out'), which is
+    the entry from state.current. This forces state.current to be visited, contradiction.
+
+    **Blocker**: Formalizing this requires tracking NOT just the visited set but
+    the sequence of (simplex, exit-door) pairs used. The current KuhnState structure
+    stores only the visited set, losing the edge information needed to complete
+    the contradiction. A stronger invariant would be required.
+
+    **Possible fix**: Add a `prev_simplex : Option K.Simplex` field and a
+    `prev_exit_door_leads_to_current` invariant to KuhnState. Then the
+    non-revisiting argument becomes: if s' ∈ visited, it was previously current,
+    its exit led toward state.current via a chain, and the chain closes a cycle —
+    contradicting current_not_visited via adj_symm and the predecessor invariant. -/
 theorem kuhn_walk_reaches_fc {c : Coloring d N} {K : SpernerTriangulation d N}
     (hKuhn : IsKuhnCompatible c K)
     (state : KuhnState d N c K)
+    (hvalid : KuhnStateValid c K state)
     (hfuel_sufficient : state.visited.card + (Fintype.card K.Simplex - state.visited.card) =
                         Fintype.card K.Simplex) :
     IsFC c K (kuhnWalk c K hKuhn (Fintype.card K.Simplex - state.visited.card) state) := by
+  -- SORRY: The non-revisiting invariant is captured by hvalid (KuhnStateValid), but
+  -- formalizing Case B requires tracking the full walk sequence. Case A is ruled out
+  -- by guard_entry_case_impossible; Case B (s''s exit door) needs per-simplex history.
   sorry
 
 -- ============================================================
@@ -374,16 +443,54 @@ def kuhnPathStart (c : Coloring d N) (K : SpernerTriangulation d N)
 
 /-- The simplex found by kuhnPathStart is fully colored.
 
-    This is the main correctness theorem for Kuhn's algorithm.
-    The proof requires the non-revisiting invariant and the fact that
-    the door graph component containing the boundary door is a path
-    terminating at an FC simplex. -/
+    This follows from kuhn_walk_reaches_fc applied to the initial state:
+    - Initial visited = ∅, so visited.card = 0
+    - Fuel = Fintype.card K.Simplex - 0 = Fintype.card K.Simplex
+    - kuhnPathStart is exactly kuhnWalk with this initial state and fuel
+
+    Note: the sorry in kuhn_walk_reaches_fc is the only remaining obligation. -/
 theorem kuhnPathStart_is_fc {c : Coloring d N} {K : SpernerTriangulation d N}
     (hKuhn : IsKuhnCompatible c K)
     (s₀ : K.Simplex) (k₀ : Fin (d + 1))
     (hdoor₀ : isDoorAt c K s₀ k₀)
     (hbdry₀ : K.adj s₀ k₀ = none) :
     IsFC c K (kuhnPathStart c K hKuhn s₀ k₀ hdoor₀ hbdry₀) := by
-  sorry
+  -- The initial KuhnState matching kuhnPathStart's internal state
+  let state₀ : KuhnState d N c K := {
+    current := s₀
+    entry := k₀
+    entry_is_door := hdoor₀
+    visited := ∅
+    current_not_visited := Finset.notMem_empty _
+  }
+  -- visited.card = 0, so fuel = Fintype.card K.Simplex - 0 = Fintype.card K.Simplex
+  have hcard : state₀.visited.card = 0 := by simp [state₀]
+  have hfuel : state₀.visited.card + (Fintype.card K.Simplex - state₀.visited.card) =
+               Fintype.card K.Simplex := by simp [state₀]
+  -- The initial state satisfies KuhnStateValid (boundary door, empty visited set)
+  have hvalid : KuhnStateValid c K state₀ := kuhnState_initial_valid c K s₀ k₀ hdoor₀ hbdry₀
+  -- Apply kuhn_walk_reaches_fc
+  have hreach : IsFC c K (kuhnWalk c K hKuhn (Fintype.card K.Simplex - state₀.visited.card) state₀) :=
+    kuhn_walk_reaches_fc hKuhn state₀ hvalid hfuel
+  -- Simplify fuel: Fintype.card K.Simplex - 0 = Fintype.card K.Simplex
+  rw [hcard, Nat.sub_zero] at hreach
+  -- hreach : IsFC c K (kuhnWalk c K hKuhn (Fintype.card K.Simplex) state₀)
+  -- kuhnPathStart is definitionally kuhnWalk (Fintype.card K.Simplex) state₀
+  exact hreach
+
+/-- Existence of FC simplex: given a Kuhn-compatible triangulation with a boundary door,
+    there exists a fully-colored simplex.
+
+    The constructive witness is kuhnPathStart: the Kuhn walk from (s₀, k₀) returns an
+    FC simplex by kuhnPathStart_is_fc. This reduces the existence claim to the
+    walk correctness theorem (kuhn_walk_reaches_fc, which has one remaining sorry). -/
+theorem kuhn_path_terminates {c : Coloring d N} {K : SpernerTriangulation d N}
+    (hKuhn : IsKuhnCompatible c K)
+    (s₀ : K.Simplex) (k₀ : Fin (d + 1))
+    (hdoor₀ : isDoorAt c K s₀ k₀)
+    (hbdry₀ : K.adj s₀ k₀ = none) :
+    ∃ s : K.Simplex, IsFC c K s :=
+  ⟨kuhnPathStart c K hKuhn s₀ k₀ hdoor₀ hbdry₀,
+   kuhnPathStart_is_fc hKuhn s₀ k₀ hdoor₀ hbdry₀⟩
 
 end SpernerNDimOQ04

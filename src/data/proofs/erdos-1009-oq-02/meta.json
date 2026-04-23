@@ -7,7 +7,7 @@
     "author": "Erdős (open question, K₄ analog of #1009)",
     "sourceUrl": "https://erdosproblems.com/1009",
     "date": "1971",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1009OQ02Problem.lean",
     "tags": [
       "erdos",
@@ -19,7 +19,7 @@
       "open",
       "extremal-combinatorics"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 1009,
     "erdosUrl": "https://erdosproblems.com/1009",
@@ -28,7 +28,7 @@
     "mathlib_version": "4.26.0",
     "lineCount": 240,
     "axiomCount": 0,
-    "assumptions": "Main open question stated as Prop (not asserted true). All supporting theorems fully proved: 0 sorries, 0 axioms. Core Turán bound (turanK4_extremal) uses Mathlib's CliqueFree.card_edgeFinset_le.",
+    "assumptions": "Main open question stated as Prop (not asserted true). All supporting theorems fully proved: 0 sorries, 0 axioms. Core Turán bound (turanK4_extremal) uses Mathlib's CliqueFree.card_edgeFinset_le. Open conjecture; supporting lemmas fully verified.",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.CliqueFree.card_edgeFinset_le",

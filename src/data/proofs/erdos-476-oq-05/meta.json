@@ -2,7 +2,7 @@
   "id": "erdos-476-oq-05",
   "title": "Erdős #476 OQ5: Vosper's Theorem — Equality Case of Cauchy-Davenport",
   "slug": "erdos-476-oq-05",
-  "description": "Vosper's theorem (1956): if |A+B| = |A|+|B|-1 in Z/pZ with |A|,|B|≥2 and |A+B|<p, then A and B are arithmetic progressions with the same common difference d. Infrastructure fully proved: IsArithmeticProgression definition, singleton/pair AP lemmas, translation invariance, ap_of_near_periodic (backward-shift induction), and vosper_base (|A|=2 case). Full Vosper induction (2 sorries) remains open.",
+  "description": "Vosper's theorem (1956): if |A+B| = |A|+|B|-1 in Z/pZ with |A|,|B|≥2 and |A+B|<p, then A and B are arithmetic progressions with the same common difference d. Infrastructure partially proved: IsArithmeticProgression definition, singleton/pair AP lemmas, translation invariance, ap_of_near_periodic (backward-shift induction), and vosper_base (|A|=2 case) are fully proved. Two sorries remain: position analysis in vosper_ap_sdiff_card and Case 1 existence in the full Vosper induction.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-21",
@@ -21,7 +21,7 @@
     "sorries": 2,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "2 sorries in vosper theorem: [SORRY 1/2] Case 1 existence (counting argument for removing an element from A) and [SORRY 2/2] AP extension (a₀ adjacent to A' implies A is AP with same difference d). Both ap_of_near_periodic (backward-shift induction) and vosper_base (|A|=2 case) are fully proved. Infrastructure all proved with 0 sorries.",
+    "assumptions": "2 sorries remain: [SORRY 1/2] vosper_ap_sdiff_card position analysis — given |{a₀}+B \\ (A'+B)| = 1 with both APs having diff d, prove a₀ = a₁-d or a₀ = a₁+|A'|*d (HARD). [SORRY 2/2] vosper Case 1 existence — find non-redundant a₀ ∈ A via counting argument or iterative removal. ap_of_near_periodic (backward-shift induction), vosper_base (|A|=2 case) are fully proved. Infrastructure all proved with 0 sorries.",
     "lineCount": 583,
     "theoremCount": 8,
     "definitionCount": 1,
@@ -33,7 +33,8 @@
       "shift_card_eq: |B.image (·+d)| = |B| via add_right_injective (proved, 0 sorries)",
       "ap_of_near_periodic: B is AP if |B\\(B+d)|=1 (proved — backward-shift induction)",
       "vosper_base: Vosper for |A|=2 (proved — uses ap_of_near_periodic)",
-      "vosper: full Vosper theorem (2 sorries — Case 1 existence and AP extension in induction on |A|)"
+      "vosper_ap_sdiff_card: AP extension lemma (1 sorry — position analysis: given |{a₀}+B \\ (A'+B)|=1, prove a₀ is predecessor or successor in AP)",
+      "vosper: full Vosper theorem (1 sorry — Case 1 existence: find non-redundant a₀ ∈ A via counting argument)"
     ]
   },
   "overview": {
@@ -56,12 +57,12 @@
     ]
   },
   "conclusion": {
-    "summary": "Infrastructure for Vosper's theorem fully established and mostly proved: IsArithmeticProgression defined, basic AP lemmas proved (singleton, pair, shift, cardinality), ap_of_near_periodic proved (backward-shift induction), vosper_base proved (|A|=2 case). Two sorries remain in the full Vosper induction: Case 1 existence (counting/iterative removal) and AP extension (a₀ adjacent to A' forces A to be AP).",
-    "implications": "Once ap_of_near_periodic is formalized (the backward-shift induction), the full Vosper theorem follows from standard induction. Vosper's theorem would then complement ZMod.cauchy_davenport in Mathlib, completing the picture of additive structure in Z/pZ.",
+    "summary": "Infrastructure for Vosper's theorem largely established: IsArithmeticProgression defined, basic AP lemmas proved (singleton, pair, shift, cardinality), ap_of_near_periodic proved (backward-shift induction), vosper_base proved (|A|=2 case). Two sorries remain: position analysis in vosper_ap_sdiff_card (HARD: proving a₀ is predecessor or successor given |{a₀}+B \\ (A'+B)|=1) and Case 1 existence in the full Vosper induction (finding a non-redundant element via counting).",
+    "implications": "Once the two remaining sorries are closed, Vosper's theorem would complement ZMod.cauchy_davenport in Mathlib, completing the picture of additive structure in Z/pZ.",
     "openQuestions": [
-      "Formalize ap_of_near_periodic: B is an AP if |B \\ (B+d)| = 1 (needs backward-shift induction on |B|)",
+      "Prove position analysis in vosper_ap_sdiff_card: given |{a₀}+B \\ (A'+B)|=1 with both APs having diff d, prove a₀ = a₁-d or a₀ = a₁+|A'|*d (HARD)",
+      "Prove Case 1 existence in vosper: find a non-redundant a₀ ∈ A via counting argument or iterative removal",
       "Extend Vosper to the case |A|=1 or |B|=1 (trivial but needs separate statement)",
-      "Prove the full Vosper theorem with the inductive step on |A|",
       "Generalize to other groups: Vosper has analogs in other settings (e.g., non-prime orders with different extremal sets)"
     ]
   },
@@ -111,7 +112,7 @@
       "title": "Vosper's Theorem: Base Case and Full Induction",
       "startLine": 128,
       "endLine": 165,
-      "summary": "vosper_base (|A|=2, inclusion-exclusion → ap_of_near_periodic, fully proved), vosper (strong induction on |A|, 2 sorries: Case 1 existence and AP extension). vosper_base now proved; two specific sub-goals in the induction remain open."
+      "summary": "vosper_base (|A|=2, inclusion-exclusion → ap_of_near_periodic, fully proved), vosper_ap_sdiff_card (AP extension, 1 sorry: position analysis proving a₀ is predecessor/successor), vosper (strong induction on |A|, 1 sorry: Case 1 existence). Two sorries remain across these two theorems."
     }
   ],
   "leanFile": {

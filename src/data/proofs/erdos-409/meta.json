@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdos, Graham, Finucane",
     "sourceUrl": "https://erdosproblems.com/409",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos409Problem.lean",
     "tags": [
       "erdos",
@@ -16,13 +16,13 @@
       "primes",
       "dynamical-systems"
     ],
-    "badge": "original",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 409,
     "erdosUrl": "https://erdosproblems.com/409",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "assumptions": "None. All results are fully proved. 19 theorems including: iterate_decreasing, iteration_terminates, iteration_reaches_prime_in (F(n) ≤ n−2), iteration_reaches_prime_half (F(n) ≤ n/2), sigma_prime_fixed (σ(p)−1=p), sigma_composite_growth (σ(n)−1>n for composite), one_iteration_infinite, and more.",
+    "assumptions": "None. All results are fully proved. 19 theorems including: iterate_decreasing, iteration_terminates, iteration_reaches_prime_in (F(n) ≤ n−2), iteration_reaches_prime_half (F(n) ≤ n/2), sigma_prime_fixed (σ(p)−1=p), sigma_composite_growth (σ(n)−1>n for composite), one_iteration_infinite, and more. Open conjecture; supporting lemmas fully verified.",
     "lineCount": 424,
     "mathlib_version": "4.26.0",
     "theoremCount": 19

@@ -133,24 +133,24 @@
   },
   "crossReferences": [
     {
-      "targetId": "bezout-identity-oq-02",
+      "proofId": "bezout-identity-oq-02",
       "relationship": "extends",
-      "description": "Direct parent: Euclid's lemma via coprime_iff_linear_combination. This OQ answers whether that linear_combination approach scales to Gauss's lemma — concluding it does for k[X] (PIDs) but not ℤ[X] (UFD only)."
+      "description": "The parent entry proving Euclid's Lemma via `coprime_iff_linear_combination`: in ℤ (a PID), if p|ab and gcd(p,a)=1 then a·u + p·v = 1 provides the Bézout certificate. This entry answers the natural next question: does this `linear_combination` approach scale to polynomial rings? Answer: yes for k[X] (PID/Bézout), no for ℤ[X] (UFD but not PID)."
     },
     {
-      "targetId": "bezout-identity-oq-02-oq-02",
+      "proofId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's identity (∃u,v: au+bv=gcd(a,b)) is the foundation for the `linear_combination` approach. This entry proves that k[X] has Bézout structure (poly_bezout_application: explicit linear combination in the field case) and that ℤ[X] does NOT (two_X_not_coprime_in_ZX: no Bézout identity for 2 and X), making Bézout's identity the dividing line between PID and UFD proof strategies."
+    },
+    {
+      "proofId": "fundamental-arithmetic",
       "relationship": "related",
-      "description": "Sibling: Euclid's lemma in Bézout domains and PIDs. Both OQ-02 and OQ-04 explore the boundary of where the Bézout/linear_combination technique applies, with OQ-04 identifying the PID vs. UFD obstruction."
+      "description": "The Fundamental Theorem of Arithmetic proves ℤ is a UFD (unique prime factorization). This entry shows ℤ[X] is also a UFD — and exploits this via `irreducible_iff_prime` to prove Euclid's lemma over ℤ[X] without Bézout. The content theory used for Gauss's lemma (content(f·g) = content(f)·content(g)) is a generalization of prime factorization from integers to polynomial coefficients."
     },
     {
-      "targetId": "bezout-identity",
-      "relationship": "extends",
-      "description": "Root: Bézout's identity (every gcd is a linear combination). The full hierarchy shows: Bézout (ℤ) → Euclid's lemma (PID) → Gauss's lemma (UFD), with content theory replacing linear combinations at the UFD level."
-    },
-    {
-      "targetId": "bezout-identity-oq-03",
+      "proofId": "binary-gcd",
       "relationship": "related",
-      "description": "Related OQ: polynomial Bézout structure. Both OQ-03 and OQ-04 address polynomial ring arithmetic, with OQ-03 covering the Bézout domain structure and OQ-04 explaining where it fails (ℤ[X])."
+      "description": "Binary GCD (Stein's algorithm) computes gcd(a,b) using subtraction and bit shifts, implicitly using the same UFD structure (ℤ as a Euclidean domain). The Bézout identity certifies the GCD value; this entry shows that the transition from gcd-via-Euclidean-algorithm to gcd-via-content-theory is forced when moving from ℤ to ℤ[X], where division-with-remainder no longer works for all coefficient pairs."
     }
   ],
   "sorries": 0

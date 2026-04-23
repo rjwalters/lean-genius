@@ -63,14 +63,6 @@
       "Volume product formula: vol(β_d)·vol(□_d) = 4^d/d! (proved for all d)"
     ],
     "dateAdded": "2026-03-06",
-    "leanFile": {
-      "lineCount": 710,
-      "structures": 2,
-      "axioms": 2,
-      "theorems": 34,
-      "definitions": 20,
-      "instances": 0
-    },
     "additionalFiles": [
       {
         "path": "Proofs/PicksTheoremOQ03CrossPoly.lean",
@@ -237,18 +229,10 @@
       "targetId": "picks-theorem"
     }
   ],
+  "sorries": 0,
   "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "opens": [],
-    "namespace": "EhrhartPolynomial",
-    "lineCount": 710,
     "axiomCount": 2,
-    "theoremCount": 45,
-    "definitionCount": 21,
-    "path": "Proofs/EhrhartPolynomialOQ03.lean",
+    "lineCount": 710,
     "sorries": 0
-  },
-  "sorries": 0
+  }
 }

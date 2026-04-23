@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős–Graham",
     "sourceUrl": "https://erdosproblems.com/340",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos340Problem.lean",
     "tags": [
       "erdos",
@@ -16,14 +16,14 @@
       "greedy-algorithms",
       "open"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 340,
     "erdosUrl": "https://erdosproblems.com/340",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-19",
     "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. Core definitions proved: IsSidonSet, greedySidon (via sInf), greedySidonCount, greedySidonDiffSet. The main conjectures (near-optimal growth N^{1/2-ε} and positive density of A-A) are not stated as axioms or proved theorems — they remain open questions.",
+    "assumptions": "0 axioms, 0 sorries. Core definitions proved: IsSidonSet, greedySidon (via sInf), greedySidonCount, greedySidonDiffSet. The main conjectures (near-optimal growth N^{1/2-ε} and positive density of A-A) are not stated as axioms or proved theorems — they remain open questions. Open conjecture; supporting lemmas fully verified.",
     "lineCount": 57,
     "mathlib_version": "4.26.0"
   },

@@ -42,7 +42,9 @@
       "The equivalence irreducible $\\Leftrightarrow$ prime in UFDs (proved here as `irreducible_iff_prime_in_ufd`) is the abstract form of Euclid's lemma. In non-UFDs this fails: in $\\mathbb{Z}[\\sqrt{-5}]$, the element $2$ is irreducible but not prime (since $2 \\mid (1+\\sqrt{-5})(1-\\sqrt{-5}) = 6$ but $2 \\nmid (1 \\pm \\sqrt{-5})$). The equivalence is precisely what distinguishes UFDs from general domains.",
       "The `factors_exist` theorem pairs `irreducible_of_factor` (all factors in the factorization are irreducible) with `factors_prod` (the factorization reassembles to the original element, up to associates). The `Associated` relation ($a \\sim b$ iff $a = u \\cdot b$ for some unit $u$) accounts for sign conventions in $\\mathbb{Z}$ (e.g., $6 = 2 \\cdot 3 = (-2)(-3)$ are considered the same factorization).",
       "Polynomial rings over fields are Euclidean domains (with Euclidean function $= $ degree), hence UFDs. This gives unique factorization of polynomials — the algebraic foundation for root counting, resultants, and the Fundamental Theorem of Algebra's statement. The instance `UniqueFactorizationMonoid (Polynomial F)` is discharged by `inferInstance` for any `[Field F]`.",
-      "The `int_gcd_exists` theorem states that $\\gcd(a, b)$ is the greatest common divisor in the divisibility order: it divides both $a$ and $b$, and is divisible by every common divisor. This is Bézout's identity's algebraic consequence: in a PID (which every ED is), $\\gcd(a, b) = ax + by$ for some $x, y$. Lean's `Int.gcd` computes this constructively."
+      "The `int_gcd_exists` theorem states that $\\gcd(a, b)$ is the greatest common divisor in the divisibility order: it divides both $a$ and $b$, and is divisible by every common divisor. This is Bézout's identity's algebraic consequence: in a PID (which every ED is), $\\gcd(a, b) = ax + by$ for some $x, y$. Lean's `Int.gcd` computes this constructively.",
+      "The hidden layer between `GCDMonoid` and `UniqueFactorizationMonoid` in Mathlib is `WfDvdMonoid` — a monoid where the strict divisibility relation '$a$ properly divides $b$' (i.e., $a \\mid b$ but $b \\nmid a$) is **well-founded**. This is the abstract distillation of the Euclidean descent property: in an ED, the Euclidean function strictly decreases at each step, so any sequence $a_0 \\mid a_1 \\mid a_2 \\mid \\cdots$ of proper divisors must terminate. The factorization algorithm is then structural recursion on this well-founded order: if $a$ is irreducible, stop; otherwise write $a = bc$ with $b, c$ non-units and recurse on each. Lean's `WfDvdMonoid` (from `Mathlib.RingTheory.WfDvd`) encodes this and is the bridge enabling `EuclideanDomain.instUniqueFactorizationMonoid`. In practice, users never see `WfDvdMonoid` — it is synthesized silently — but it is the mathematical heart of why the instance chain works.",
+      "The `factors_exist` theorem requires `[CancelCommMonoidWithZero α]` — a strictly stronger assumption than `UniqueFactorizationMonoid` alone. The cancellation property ($ac = bc \\land c \\neq 0 \\Rightarrow a = b$) is needed because `UniqueFactorizationMonoid.factors_prod` returns `Associated (∏ factors) a` (equality **up to units**), and transitivity of `Associated` across the factorization computation requires that units cannot 'absorb' non-units. Without cancellation, one can construct monoids where the multiset product telescopes incorrectly. The practical consequence: `factors_exist` applies to $\\mathbb{Z}$, $k[x]$, and $\\mathbb{Z}[i]$ (all integral domains, hence cancellative), but **not** to $\\mathbb{Z}/6\\mathbb{Z}$ (which has zero divisors and is not even a UFD). The `int_gcd_exists` theorem avoids this constraint because divisibility in $\\mathbb{Z}$ is handled via `Int.gcd` directly rather than the abstract `factors` machinery."
     ]
   },
   "sections": [
@@ -127,6 +129,16 @@
       "targetId": "bezout-identity-oq-03",
       "relationship": "related",
       "description": "Chinese Remainder Theorem via Bézout's Identity — CRT for coprime moduli follows from the PID structure that every ED inherits. The decomposition ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ (for gcd(m,n)=1) is a consequence of the ideal structure of ℤ as a PID, linking this entry's ED→UFD chain to the CRT isomorphism."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Abel-Ruffini Theorem (insolubility of the general quintic) — the failure of unique factorization in cyclotomic integers ℤ[ζₚ] (discovered by Kummer, 1844) was the historical crisis that motivated ideal theory and the Dedekind domain framework. Abel-Ruffini's Galois-theoretic proof works in polynomial rings k[x] which ARE UFDs (via the instance chain formalized here), while the quintic's insolubility concerns the splitting field structure. The contrast illuminates the scope of the ED→UFD theorem: it governs the ring structure, not the Galois group action."
+    },
+    {
+      "targetId": "fundamental-theorem-arithmetic",
+      "relationship": "generalization-of",
+      "description": "Fundamental Theorem of Arithmetic (ℤ) — the base case that this entry generalizes. The FTA states that every integer has a unique prime factorization (up to sign); this entry extends that to all Euclidean domains R via Mathlib's instance chain. The `UniqueFactorizationMonoid ℤ` inference in this file is literally a one-line proof of the FTA as a special case."
     }
   ],
   "leanFile": {

@@ -8,7 +8,7 @@
     "content": "The definitions establish two key objects:\n\n```lean\nnoncomputable def threshold (d : ℕ) : ℝ :=\n  (d : ℝ) ^ d / ((d : ℝ) + 1) ^ (d + 1)\n\nnoncomputable def lllProb (d : ℕ) (x : ℝ) : ℝ :=\n  x * (1 - x) ^ d\n```\n\n`threshold d` is the symmetric LLL threshold $T(d) = d^d/(d+1)^{d+1}$. This is the value of $p(x) = x(1-x)^d$ at its unique maximizer $x^* = 1/(d+1)$:\n$$T(d) = \\frac{1}{d+1} \\cdot \\left(\\frac{d}{d+1}\\right)^d = \\frac{d^d}{(d+1)^{d+1}}$$\n\nThe LLL says: if every bad event $A_i$ has probability $p \\leq T(d)$ and each event is dependent with at most $d$ others, then $\\Pr[\\text{none occur}] > 0$. The threshold $T(d)$ is the maximum $p$ for which this conclusion is guaranteed.",
     "mathContext": "Explicit values: $T(1) = 1/4$, $T(2) = 4/27$, $T(3) = 27/256$, $T(4) = 256/3125$. The general formula arises from setting $\\frac{d}{dx}[x(1-x)^d] = (1-x)^{d-1}(1-(d+1)x) = 0$, giving $x^* = 1/(d+1)$.",
     "significance": "key",
-    "relatedConcepts": ["lllThreshold", "LovaszLocalLemma", "symmetric LLL", "probabilistic method"],
+    "relatedConcepts": ["lllThreshold", "LovászLocalLemma", "symmetric LLL", "probabilistic method"],
     "prerequisites": ["lovasz-local-lemma"]
   },
   {
@@ -18,6 +18,7 @@
     "type": "insight",
     "title": "Two Proof Strategies: Polynomial Factoring (small d) vs AM-GM (general d)",
     "content": "The two sorries represent two complementary strategies:\n\n**Strategy 1 (algebraic)**: For each small $d$, the gap $T(d) - x(1-x)^d$ factors explicitly:\n- $d=1$: $T(1) - x(1-x) = (x - 1/2)^2 \\geq 0$ (square term)\n- $d=2$: $T(2) - x(1-x)^2 = (3x-1)^2(4-3x)/27 \\geq 0$ for $x \\in [0,1]$ (sq × linear)\n- $d=3$: $T(3) - x(1-x)^3 = (4x-1)^2(16x^2-40x+27)/256 \\geq 0$ (sq × irreducible quadratic with $\\Delta < 0$)\n\nFor $d=3$, the key observation is $16x^2 - 40x + 27 = (4x-5)^2 + 2 > 0$ for ALL real $x$ (discriminant $1600 - 1728 < 0$).\n\n**Strategy 2 (AM-GM)**: Apply AM-GM to $d+1$ numbers $(d+1)x$ and $d$ copies of $(1-x)$:\n$$1 = \\text{AM} \\geq \\text{GM} = \\left((d+1)x \\cdot (1-x)^d\\right)^{1/(d+1)}$$\nRearranging: $x(1-x)^d \\leq 1/(d+1)^1 \\cdot (1/d+1)^d$ ... wait, actually:\n$$(d+1)x + d(1-x) = d+1 \\Rightarrow \\text{GM} = ((d+1)x)^{1/(d+1)} \\cdot (1-x)^{d/(d+1)} \\leq 1$$\nThis proves $(d+1)x \\cdot (1-x)^d \\leq (1/(d+1))^{d+1} \\cdot (d+1)^{d+1}$ by AM-GM in the form needed.",
+    "mathContext": "Polynomial witness strategy for $d \\in \\{1,2,3\\}$: $T(1) - x(1-x) = (x-\\tfrac{1}{2})^2$; $T(2) - x(1-x)^2 = \\frac{(3x-1)^2(4-3x)}{27}$; $T(3) - x(1-x)^3 = \\frac{(4x-1)^2(16x^2-40x+27)}{256}$ where $16x^2-40x+27 = (4x-5)^2+2 > 0$ (discriminant $= 1600 - 1728 < 0$). Lean proves non-negativity via nlinarith [sq_nonneg (...), mul_nonneg].",
     "significance": "key",
     "relatedConcepts": ["nlinarith", "sq_nonneg", "mul_nonneg", "AM-GM inequality", "polynomial factorization"],
     "prerequisites": ["lllThreshold_eq_product"]
@@ -29,6 +30,7 @@
     "type": "context",
     "title": "The LLL in Context: From 1975 Paper to Modern Applications",
     "content": "The Lovász Local Lemma was introduced by Erdős and Lovász in their 1975 paper *Problems and Results on 3-Chromatic Hypergraphs*. The symmetric version (all events have probability ≤ p, all have at most d dependent events) gives the clean sufficient condition $p \\leq T(d) = d^d/(d+1)^{d+1}$.\n\nThe threshold $T(d)$ has deep connections:\n1. **Shearer's bound (1985)**: $T(d)$ is the exact threshold for d-regular dependency graphs — it cannot be improved in general.\n2. **Moser-Tardos algorithm (2010)**: The constructive version of LLL via randomized variable resetting provably works when $p \\leq T(d)$, turning the non-constructive proof into an efficient algorithm.\n3. **Entropy compression**: Beck's method (1991) achieves weaker bounds constructively without assuming independence structure.\n\nThe OQ-02 question — proving $T(d)$ is the exact maximum of $x(1-x)^d$ — is a prerequisite for understanding WHY the symmetric LLL threshold is optimal: no higher probability can possibly work for all d-regular dependency graphs.",
+    "mathContext": "Symmetric LLL: if each event $A_i$ has $\\Pr[A_i] \\leq p$ and each $A_i$ is mutually independent of all but $d$ others, then $p \\leq T(d) = d^d/(d+1)^{d+1}$ implies $\\Pr[\\bigcap_i \\overline{A_i}] > 0$. Shearer (1985): for any $p > T(d)$, there exist $d$-regular dependency graphs where $\\Pr[\\bigcap_i \\overline{A_i}] = 0$ — the threshold is tight.",
     "significance": "supporting",
     "relatedConcepts": ["Erdős-Lovász 1975", "Shearer's bound", "Moser-Tardos algorithm", "LLL threshold"],
     "prerequisites": ["lovasz-local-lemma"]

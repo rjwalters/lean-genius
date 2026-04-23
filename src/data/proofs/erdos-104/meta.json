@@ -7,7 +7,7 @@
     "author": "Erdős (1975)",
     "sourceUrl": "https://erdosproblems.com/104",
     "date": "1975",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos104Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "unit-circles",
       "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 104,
     "erdosUrl": "https://erdosproblems.com/104",
@@ -24,7 +24,7 @@
     "erdosPrizeValue": "$100",
     "axiomCount": 0,
     "lineCount": 330,
-    "assumptions": "0 axioms, 0 sorries. All geometric lemmas fully proved: two_points_no_circle (triangle inequality), two_points_one_circle (parallelogram law uniqueness), strong_implies_weak, quadratic_at_most_two_roots. The main conjecture O(n^{3/2}) remains open.",
+    "assumptions": "0 axioms, 0 sorries. All geometric lemmas fully proved: two_points_no_circle (triangle inequality), two_points_one_circle (parallelogram law uniqueness), strong_implies_weak, quadratic_at_most_two_roots. The main conjecture O(n^{3/2}) remains open. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

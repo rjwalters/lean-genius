@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/488",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos488Problem.lean",
     "tags": [
       "erdos",
@@ -15,14 +15,14 @@
       "density",
       "inclusion-exclusion"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 488,
     "erdosUrl": "https://erdosproblems.com/488",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 322,
-    "assumptions": "None. All 5 former axioms fully proved: multiplesSet_density_exists (Davenport's density via periodicity), constant_2_optimal (optimality via Archimedean choice), singleton count formula (bijection), monotonicity, subset monotonicity.",
+    "assumptions": "None. All 5 former axioms fully proved: multiplesSet_density_exists (Davenport's density via periodicity), constant_2_optimal (optimality via Archimedean choice), singleton count formula (bijection), monotonicity, subset monotonicity. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

@@ -55,25 +55,6 @@
     ],
     "assumptions": "5 axioms encoding deep profinite group theory results: (1) Sylow pro-p existence via Zorn's lemma on closed pro-p subgroups, (2) conjugacy via finite approximation and compactness, (3) Frattini argument for profinite groups, (4) projection of Sylow pro-p subgroups to p-groups in finite quotients, (5) trivial intersection of Sylow subgroups for distinct primes.",
     "dateAdded": "2026-03-25",
-    "leanFile": {
-      "imports": [
-        "Mathlib.GroupTheory.Sylow",
-        "Mathlib.Topology.Algebra.Group.Basic",
-        "Mathlib.Topology.Connected.TotallyDisconnected",
-        "Mathlib.Topology.Compactness.Compact",
-        "Mathlib.GroupTheory.Index",
-        "Mathlib.GroupTheory.Coset.Basic",
-        "Mathlib.Tactic"
-      ],
-      "opens": [
-        "Subgroup"
-      ],
-      "namespace": "ProfiniteSylow",
-      "lineCount": 393,
-      "axiomCount": 5,
-      "theoremCount": 10,
-      "definitionCount": 5
-    },
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -224,11 +205,10 @@
       "note": "The definitive treatment of pro-p groups of finite rank and their connection to p-adic Lie groups via Lazard's theorem"
     }
   ],
+  "sorries": 0,
   "leanFile": {
-    "lineCount": 393,
     "axiomCount": 5,
-    "path": "Proofs/SylowTheoremOQ02.lean",
+    "lineCount": 393,
     "sorries": 0
-  },
-  "sorries": 0
+  }
 }

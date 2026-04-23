@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1094",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1094Problem.lean",
     "tags": [
       "erdos",
@@ -14,14 +14,14 @@
       "binomial-coefficients",
       "prime-factorization"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 1094,
     "erdosUrl": "https://erdosproblems.com/1094",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 248,
-    "assumptions": "None. Previously had 1 axiom (main_implies_384) which was eliminated by proving the naive formulation of Problem 384 is false.",
+    "assumptions": "None. Previously had 1 axiom (main_implies_384) which was eliminated by proving the naive formulation of Problem 384 is false. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

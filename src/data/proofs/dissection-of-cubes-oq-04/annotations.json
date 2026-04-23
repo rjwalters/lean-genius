@@ -1,17 +1,5 @@
 [
   {
-    "id": "ann-preamble-and-imports",
-    "proofId": "dissection-of-cubes-oq-04",
-    "range": { "startLine": 1, "endLine": 59 },
-    "type": "context",
-    "title": "Module Header: Hilbert's Third Problem and the Classification Table",
-    "content": "The file opens with a detailed comment summarizing Dehn's 1900 solution to Hilbert's Third Problem — two polyhedra of equal volume need not be scissors congruent — and maps out the full Platonic solid classification table. The comment also declares the axiom budget (2 axioms: flatness of ℝ over ℤ, and the deferred icosahedron irrationality) and outlines the new Chebyshev sequence argument. This transparency in axiom accounting is a discipline the file maintains throughout: every assumption is named and justified before any theorem is stated. The imports bring in DissectionOfCubesOQ02 (for nivenSeq techniques and the tetrahedral/octahedral results) and DissectionOfCubesOQ02OQ02 (for the Dehn infrastructure: edgeTerm, angleClass, tmul_infinite_order_ne_zero).",
-    "mathContext": "The module's key identity is the Dehn invariant: $D(P) = \\sum_e \\ell(e) \\otimes [\\theta(e)] \\in \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$. For the cube all $\\theta(e) = \\pi/2$, so $[\\theta(e)] = 0$ and $D = 0$. For each other Platonic solid, the single dihedral angle is an irrational multiple of $\\pi$, making $[\\theta(e)]$ a torsion-free element of $\\mathbb{R}/\\pi\\mathbb{Z}$.",
-    "significance": "context",
-    "relatedConcepts": ["Hilbert's third problem", "Dehn invariant", "scissors congruence", "Platonic solids"],
-    "prerequisites": ["DissectionOfCubesOQ02.lean", "DissectionOfCubesOQ02OQ02.lean", "Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse"]
-  },
-  {
     "id": "ann-chebyshev-sequence-design",
     "proofId": "dissection-of-cubes-oq-04",
     "range": { "startLine": 60, "endLine": 82 },
@@ -36,33 +24,21 @@
     "prerequisites": ["Prime.dvd_or_dvd", "Int.Prime"]
   },
   {
-    "id": "ann-irrationality-proof",
+    "id": "ann-contradiction-proof",
     "proofId": "dissection-of-cubes-oq-04",
     "range": { "startLine": 113, "endLine": 177 },
-    "type": "theorem",
-    "title": "Irrationality Proof: cosThreeFifthsSeq_eq_cos + arccos(3/5)/π ∉ ℚ",
-    "content": "Two theorems form the irrationality argument. First, cosThreeFifthsSeq_eq_cos proves by strong induction that d_n = 5^n · 2cos(n·arccos(3/5)), using the Chebyshev addition formula at each step. Second, arccos_three_fifths_irrational derives a contradiction: if arccos(3/5)/π = p/q ∈ ℚ, then d_q = 5^q · 2cos(q·arccos(3/5)) = 5^q · 2cos(pπ) = ±2·5^q. Since q ≥ 1, the prime 5 divides 5^q and hence divides d_q — contradicting five_ndvd_cosThreeFifthsSeq.",
-    "mathContext": "The induction in cosThreeFifthsSeq_eq_cos uses the Chebyshev addition formula $2\\cos((n+2)\\theta) = 2\\cos\\theta \\cdot 2\\cos((n+1)\\theta) - 2\\cos(n\\theta)$ with $\\cos\\theta = 3/5$. For arccos_three_fifths_irrational: if $\\theta/\\pi = p/q$, then $q\\theta = p\\pi$, so $\\cos(q\\theta) = \\cos(p\\pi) = (-1)^p$. Then $d_q = 5^q \\cdot 2(-1)^p = \\pm 2 \\cdot 5^q$, which is divisible by $5^q$ and hence by 5 (since $q \\geq 1$). But $5 \\nmid d_n$ for all $n$. Contradiction.",
+    "type": "technique",
+    "title": "Contradiction Proof: Rationality Forces 5 | d_q",
+    "content": "**The core irrationality argument** in `arccos_three_fifths_irrational` proceeds by contradiction. Assume arccos(3/5)/π = p/q ∈ ℚ. Then:\n\n1. **Compute cos(q·arccos(3/5))**: from q·arccos(3/5) = p·π, we get cos(q·arccos(3/5)) = cos(pπ) = (-1)^p ∈ {+1, -1}.\n\n2. **Apply the sequence identity**: cosThreeFifthsSeq_eq_cos gives d_q = 5^q · 2·cos(q·arccos(3/5)) = ±2·5^q.\n\n3. **Derive 5 | d_q**: since d_q = ±2·5^q and q ≥ 1, we have 5 | 5^q | d_q.\n\n4. **Contradiction**: five_ndvd_cosThreeFifthsSeq says 5 ∤ d_n for all n.\n\nThe two cases (cos = +1 vs. -1) are handled identically; Lean uses `rcases hpm with h1 | h1` to split them. `exact_mod_cast` handles the casting from ℝ to ℤ equality.\n\nThis proof is structurally identical to the Niven proof in OQ02 for arccos(1/3)/π — the only difference is the prime 5 instead of 3 and the sequence cosThreeFifthsSeq instead of nivenSeq.",
+    "mathContext": "The proof uses the identity $\\cos(q \\cdot \\arccos(3/5)) = \\cos(p\\pi) = (-1)^p$ and $d_q = 5^q \\cdot 2\\cos(q\\arccos(3/5)) = \\pm 2 \\cdot 5^q$. Since $q \\geq 1$, we get $5 \\mid d_q$, contradicting $5 \\nmid d_n$. The key: `cos_int_mul_pi n : Real.cos ((n : ℝ) * π) = (-1)^n.natAbs` from Mathlib.",
     "significance": "key",
-    "relatedConcepts": ["Niven's theorem", "Chebyshev polynomials", "cosine of rational multiples of π", "Chebyshev addition formula"],
-    "prerequisites": ["cosThreeFifthsSeq_eq_cos", "five_ndvd_cosThreeFifthsSeq", "cos_int_mul_pi"]
-  },
-  {
-    "id": "ann-dodangle-definition",
-    "proofId": "dissection-of-cubes-oq-04",
-    "range": { "startLine": 178, "endLine": 203 },
-    "type": "definition",
-    "title": "dodAngle: The Regular Dodecahedron's Dihedral Angle",
-    "content": "The regular dodecahedron has 12 pentagonal faces, 30 edges, and 20 vertices (Euler: 20 - 30 + 12 = 2). Its dihedral angle — the interior angle between two adjacent faces — is arccos(-1/√5) ≈ 116.57°. This file defines `dodAngle` as a noncomputable real constant and proves two helper lemmas: 1/√5 ∈ [0, 1], which ensure the half-angle identity argument stays in the valid range for arccos. The noncomputability arises because sqrt and arccos are defined via Cauchy sequences or sup constructions in Mathlib, with no computable closed form.",
-    "mathContext": "The dodecahedron is dual to the icosahedron. Its dihedral angle satisfies $\\cos\\theta = -1/\\sqrt{5}$. The helper lemma `one_div_sqrt5_le_one` uses $1/\\sqrt{5} \\leq 1 \\iff \\sqrt{5} \\geq 1$, which follows from $\\sqrt{5} \\geq \\sqrt{1} = 1$ (monotonicity of sqrt). Similarly, $\\sqrt{5} > 0$ gives $1/\\sqrt{5} > 0 \\geq -1$, placing $1/\\sqrt{5}$ firmly in the domain $[-1,1]$ of arccos.",
-    "significance": "supporting",
-    "relatedConcepts": ["dodecahedron", "dihedral angle", "arccos", "Platonic solids"],
-    "prerequisites": ["Real.sqrt_pos", "Real.one_le_sqrt", "div_le_one"]
+    "relatedConcepts": ["proof by contradiction", "Niven's theorem", "Chebyshev sequence", "cos_int_mul_pi", "rationality assumption"],
+    "prerequisites": ["cosThreeFifthsSeq_eq_cos", "five_ndvd_cosThreeFifthsSeq", "Real.cos_int_mul_pi", "Rat.den"]
   },
   {
     "id": "ann-half-angle-identity",
     "proofId": "dissection-of-cubes-oq-04",
-    "range": { "startLine": 204, "endLine": 228 },
+    "range": { "startLine": 196, "endLine": 228 },
     "type": "technique",
     "title": "Half-Angle Identity: 2·arccos(1/√5) = arccos(-3/5)",
     "content": "The proof computes cos(2·arccos(1/√5)) = 2·(1/√5)² − 1 = 2/5 − 1 = −3/5, then uses Real.arccos_cos to identify the angle: since 2·arccos(1/√5) ∈ [0, π] (because arccos(1/√5) ≤ π/2, which holds since 1/√5 ≥ 0), and its cosine equals −3/5, it must equal arccos(−3/5). The key Mathlib fact: arccos_le_pi_div_two says arccos x ≤ π/2 iff x ≥ 0.",
@@ -84,38 +60,26 @@
     "prerequisites": ["arccos_three_fifths_irrational", "two_arccos_sqrt5_eq", "Real.arccos_neg"]
   },
   {
-    "id": "ann-dehn-nonzero-results",
+    "id": "ann-dehn-nonzero-applications",
     "proofId": "dissection-of-cubes-oq-04",
-    "range": { "startLine": 263, "endLine": 320 },
+    "range": { "startLine": 261, "endLine": 319 },
     "type": "theorem",
-    "title": "Dodecahedron and Icosahedron: Nonzero Dehn Invariants",
-    "content": "Three theorems complete the non-cube Platonic solid coverage. dodAngle_infinite_order proves the angle class [arccos(-1/√5)] has infinite order in ℝ/πℤ: if n·[arccos(-1/√5)] = 0, then arccos(-1/√5)/π ∈ ℚ, contradicting dodAngle_irrational. dod_dehn_ne_zero then applies tmul_infinite_order_ne_zero (the flatness axiom): 30a ⊗ [arccos(-1/√5)] ≠ 0. The icosahedron section is analogous but uses the axiom icoAngle_irrational directly (as the Chebyshev argument in ℤ[√5] is deferred).",
-    "mathContext": "The argument for dodAngle_infinite_order: suppose $n \\cdot [\\theta] = 0$ in $\\mathbb{R}/\\pi\\mathbb{Z}$, i.e., $n\\theta \\in \\pi\\mathbb{Z}$. Then $n\\theta = m\\pi$ for some $m \\in \\mathbb{Z}$, giving $\\theta/\\pi = m/n \\in \\mathbb{Q}$ — contradiction. For dod_dehn_ne_zero: `edgeTerm (30a) θ = (30a) ⊗ [θ]` in $\\mathbb{R} \\otimes_\\mathbb{Z} (\\mathbb{R}/\\pi\\mathbb{Z})$. Since $[\\theta]$ has infinite order and $30a > 0$, the flatness axiom gives $30a \\otimes [\\theta] \\neq 0$. The icosahedron mirrors this with $\\theta = \\arccos(-\\sqrt{5}/3)$.",
-    "significance": "key",
-    "relatedConcepts": ["infinite order in ℝ/πℤ", "tensor product", "flatness", "angle class"],
-    "prerequisites": ["dodAngle_irrational", "icoAngle_irrational", "tmul_infinite_order_ne_zero", "DehnSydler.edgeTerm"]
-  },
-  {
-    "id": "ann-icosahedron-axiom-and-dehn",
-    "proofId": "dissection-of-cubes-oq-04",
-    "range": { "startLine": 321, "endLine": 355 },
-    "type": "context",
-    "title": "Part V Header: Why the Cube is Isolated (Scissors Congruence Geometry)",
-    "content": "Before stating cube_isolated_dehn_invariant, the module includes a prose explanation of why Dehn invariant = 0 and Dehn invariant ≠ 0 are the right notions: the cube has all 12 edges at dihedral angle π/2, a rational multiple of π, so all 12 edge terms vanish in ℝ ⊗_ℤ (ℝ/πℤ). The other four Platonic solids have a single irrational dihedral angle making the edge terms nonzero. The comment also articulates the historical significance: this extends Hilbert's Third Problem from the single pair (cube, tetrahedron) — Dehn's original 1900 result — to all Platonic solid pairs involving the cube. Sydler's 1965 theorem (not formalized here) shows Dehn invariant is a complete invariant.",
-    "mathContext": "For the cube: $D = 12a \\otimes [\\pi/2]$. Since $\\pi/2 = (1/2)\\pi$, we have $[\\pi/2] = 0$ in $\\mathbb{R}/\\pi\\mathbb{Z}$, so $D = 0$. For any other Platonic solid with irrational dihedral angle $\\theta$ (i.e., $\\theta/\\pi \\notin \\mathbb{Q}$): $[\\theta] \\neq 0$ and has infinite order in $\\mathbb{R}/\\pi\\mathbb{Z}$; by flatness $na \\otimes [\\theta] \\neq 0$ for any $a > 0$ and $n > 0$. The scissors-congruence theorem: $P \\sim_{sc} Q \\Rightarrow D(P) = D(Q)$. Contrapositively, $D(\\text{cube}) = 0 \\neq D(\\text{tet/oct/dod/ico})$ proves impossibility for all four pairs.",
-    "significance": "key",
-    "relatedConcepts": ["scissors congruence", "Sydler's theorem", "Hilbert's third problem", "rational multiples of π"],
-    "prerequisites": ["cube_dehn_zero", "tet_dehn_ne_zero", "oct_dehn_ne_zero", "dod_dehn_ne_zero", "ico_dehn_ne_zero"]
+    "title": "Applying Dehn Infrastructure: Dodecahedron and Icosahedron",
+    "content": "**Two applications** of the Dehn nonzero result template from OQ02OQ02:\n\n1. **dod_dehn_ne_zero** (lines 263-274): The regular dodecahedron has 30 edges, each with dihedral angle `dodAngle = arccos(-1/√5)`. Since this angle has infinite order in ℝ/πℤ (proved via dodAngle_irrational), the edge term `30a ⊗ [dodAngle]` is nonzero by the flatness axiom (`tmul_infinite_order_ne_zero`). The proof is essentially one `apply` call.\n\n2. **Icosahedron (lines 276-319)**: The icosahedron's dihedral angle `icoAngle = arccos(-√5/3)` is treated analogously, but its irrationality is *axiomatized* (`axiom icoAngle_irrational`) rather than proved. The `icoAngle_infinite_order` theorem then follows from this axiom by the same linear algebra argument (rationality of θ/π ↔ finite order of [θ] in ℝ/πℤ), and `ico_dehn_ne_zero` follows immediately.\n\nThe pattern is a reusable template: **angle irrational → angle class infinite order → edge term nonzero**. The template works for any angle whose irrationality can be established.",
+    "mathContext": "The flatness axiom `tmul_infinite_order_ne_zero` states: if $a > 0$ and $[\\theta]$ has infinite order in $\\mathbb{R}/\\pi\\mathbb{Z}$, then $a \\otimes [\\theta] \\neq 0$ in $\\mathbb{R} \\otimes_\\mathbb{Z} (\\mathbb{R}/\\pi\\mathbb{Z})$. This uses that $\\mathbb{R}$ is flat over $\\mathbb{Z}$: tensoring with $\\mathbb{R}$ preserves injectivity. The three-step chain: irrational angle → infinite-order class → nonzero Dehn contribution.",
+    "significance": "supporting",
+    "relatedConcepts": ["flatness", "tensor product", "infinite order", "Dehn invariant", "icoAngle_irrational axiom"],
+    "prerequisites": ["tmul_infinite_order_ne_zero", "DissectionOfCubesOQ02OQ02", "Module.Flat", "angleClass"]
   },
   {
     "id": "ann-classification-table",
     "proofId": "dissection-of-cubes-oq-04",
-    "range": { "startLine": 356, "endLine": 437 },
+    "range": { "startLine": 356, "endLine": 395 },
     "type": "insight",
     "title": "Complete Platonic Solid Classification",
-    "content": "The theorem cube_isolated_dehn_invariant packages the complete 5-solid classification into a single conjunction proved by directly supplying the five component results. The companion theorem cube_unique_zero_dehn attempts a stronger universal statement (any positive edge count, any non-cube angle gives D ≠ 0) but contains 3 sorries for edge-count scaling — the core result cube_isolated_dehn_invariant is fully proved. The file closes with an axiom audit comment enumerating the 2 axioms and 11 new theorems, and four #check calls verifying that the key results type-check. The cube (12 edges, π/2 dihedral) has D = 0; all other Platonic solids have D ≠ 0. No scissors-congruence exists between the cube and any other Platonic solid.",
-    "mathContext": "Five Platonic solids ($V - E + F = 2$): Cube ($8-12+6$, $\\pi/2$), Tetrahedron ($4-6+4$, $\\arccos(1/3)$), Octahedron ($6-12+8$, $\\arccos(-1/3)$), Dodecahedron ($20-30+12$, $\\arccos(-1/\\sqrt{5})$), Icosahedron ($12-30+20$, $\\arccos(-\\sqrt{5}/3)$). All non-cube angles are irrational multiples of $\\pi$ (proved here for dodecahedron, axiomatized for icosahedron, proved in OQ02 for tetrahedron/octahedron), giving nonzero Dehn invariants. The cube's angle $\\pi/2 = \\frac{1}{2}\\pi$ is rational, giving $D = 0$.",
-    "significance": "key",
+    "content": "The theorem cube_isolated_dehn_invariant packages the complete 5-solid classification into a single conjunction. The cube (12 edges, π/2 dihedral) has D = 0; all other Platonic solids have D ≠ 0. The tetrahedron and octahedron results come from OQ02OQ02; the dodecahedron is new in this file; the icosahedron uses the axiomatized angle irrationality. The classification has an immediate geometric consequence: no scissors-congruence exists between the cube and any other Platonic solid.",
+    "mathContext": "Five Platonic solids (V-E+F = 2): Cube (8-12+6=2, π/2), Tetrahedron (4-6+4=2, arccos(1/3)), Octahedron (6-12+8=2, arccos(-1/3)), Dodecahedron (20-30+12=2, arccos(-1/√5)), Icosahedron (12-30+20=2, arccos(-√5/3)). All non-cube angles are irrational multiples of π, giving nonzero Dehn invariants. The cube's angle π/2 = (1/2)π is rational, giving D = 0.",
+    "significance": "main-result",
     "relatedConcepts": ["Platonic solids", "Dehn invariant", "scissors congruence", "Hilbert's third problem"],
     "prerequisites": ["cube_dehn_zero", "tet_dehn_ne_zero", "oct_dehn_ne_zero", "dod_dehn_ne_zero", "ico_dehn_ne_zero"]
   }

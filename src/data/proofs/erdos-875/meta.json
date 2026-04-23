@@ -6,7 +6,7 @@
   "meta": {
     "author": "Deshouillers, Erdős",
     "sourceUrl": "https://erdosproblems.com/875",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos875Problem.lean",
     "tags": [
       "erdos",
@@ -17,14 +17,14 @@
       "binary-representation",
       "popcount"
     ],
-    "badge": "verified",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 875,
     "erdosUrl": "https://erdosproblems.com/875",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 212,
-    "assumptions": "No axioms, no sorries. All theorems fully proved: powers_of_two_admissible (binary uniqueness proof via pow2_subset_sum_inj), pow2_strictly_increasing, admissible_growth_lower, pow2_small_example (native_decide), finite_version_connection.",
+    "assumptions": "No axioms, no sorries. All theorems fully proved: powers_of_two_admissible (binary uniqueness proof via pow2_subset_sum_inj), pow2_strictly_increasing, admissible_growth_lower, pow2_small_example (native_decide), finite_version_connection. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -150,7 +150,9 @@
     "lineCount": 212,
     "axiomCount": 0,
     "theoremCount": 4,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "path": "Proofs/Erdos875Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {

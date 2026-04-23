@@ -6,6 +6,7 @@
     "type": "technique",
     "title": "gaussianCharFn Definition: Splitting the Exponent into Real and Imaginary Parts",
     "content": "The definition separates the Gaussian exponent into two auxiliary definitions:\n\n```lean\ndef gaussianCharFn (μ σ_sq : ℝ) (t : ℝ) : ℂ :=\n  Complex.exp (↑(μ * t) * Complex.I - ↑(σ_sq * t ^ 2 / 2))\n\ndef gaussianExponent (μ σ_sq t : ℝ) : ℂ :=\n  ↑(μ * t) * Complex.I - ↑(σ_sq * t ^ 2 / 2)\n```\n\nThe exponent has structure:\n- **Imaginary part**: `(μ * t) * I` — encodes the phase, shifts the distribution\n- **Real part**: `-(σ_sq * t^2 / 2)` — encodes the Gaussian envelope, controls decay\n\nThe theorems `gaussianExponent_re` and `gaussianExponent_im` prove these parts explicitly via `simp [gaussianExponent, Complex.sub_re, Complex.mul_re]`. The `ring` tactic closes the algebra. The theorem `gaussianCharFn_at_zero` follows immediately from `simp [gaussianCharFn]` since both parts vanish at t=0 and `exp(0) = 1`.",
+    "mathContext": "The Gaussian characteristic function $\\phi_{\\mu,\\sigma^2}(t) = E[e^{itX}] = e^{i\\mu t - \\sigma^2 t^2/2}$ for $X \\sim N(\\mu, \\sigma^2)$. In Lean: def gaussianCharFn (μ σ_sq : ℝ) (t : ℝ) : ℂ := Complex.exp (↑(μ * t) * Complex.I - ↑(σ_sq * t ^ 2 / 2)). gaussianExponent_re gives (gaussianExponent μ σ_sq t).re = -(σ_sq * t ^ 2 / 2); gaussianExponent_im gives .im = μ * t. At t = 0: gaussianCharFn_at_zero proves gaussianCharFn μ σ 0 = 1.",
     "significance": "key",
     "relatedConcepts": ["Complex.exp", "Complex.I", "gaussianExponent", "Complex.abs_exp"],
     "prerequisites": ["Complex.exp_add"]
@@ -41,6 +42,7 @@
     "type": "insight",
     "title": "Scaling: φ_{0,σ²}(t) = φ_{0,1}(√σ · t) — The Key Standardization Identity",
     "content": "The scaling theorem `gaussianCharFn_scaling` proves:\n```\nφ_{0,σ²}(t) = φ_{0,1}(√σ · t)\n```\nby expanding both sides as `Complex.exp` and checking the exponents agree: `σ² · t² / 2 = (√σ · t)² / 2` uses `Real.sq_sqrt hσ` to justify `(√σ)² = σ`.\n\nThis is the characteristic function form of the standardization $X \\sim N(0, \\sigma^2) \\Rightarrow X/\\sigma \\sim N(0,1)$. The standard Gaussian $N(0,1)$ is the reference distribution of the CLT.\n\nThe proof uses:\n- `ring_nf` to normalize the polynomial expression\n- `Real.sq_sqrt hσ` (requires `hσ : σ_sq ≥ 0`) to rewrite `Real.sqrt σ ^ 2 = σ`\n- `ring` to close the remaining algebraic goal\n\nNote: `Real.sq_sqrt` is the right lemma (not `Real.sqrt_sq`) — it states `(√x)² = x` when `x ≥ 0`, while `Real.sqrt_sq` states `√(x²) = |x|`.",
+    "mathContext": "theorem gaussianCharFn_scaling (σ_sq t : ℝ) (hσ : σ_sq ≥ 0) : gaussianCharFn 0 σ_sq t = gaussianCharFn 0 1 (Real.sqrt σ_sq * t). Standardization: $X \\sim N(0, \\sigma^2) \\Rightarrow X/\\sigma \\sim N(0,1)$, equivalently $\\phi_{0,\\sigma^2}(t) = \\phi_{0,1}(\\sqrt{\\sigma^2} \\cdot t)$. Uses Real.sq_sqrt hσ to justify (√σ_sq)² = σ_sq.",
     "significance": "key",
     "relatedConcepts": ["Real.sq_sqrt", "standardGaussianCharFn", "gaussianCharFn_scaling", "standardization"],
     "prerequisites": ["gaussianCharFn_pow"]

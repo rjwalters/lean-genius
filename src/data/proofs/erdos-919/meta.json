@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/919",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos919Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "ordinals",
       "infinite-combinatorics"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 919,
     "erdosUrl": "https://erdosproblems.com/919",
@@ -53,7 +53,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 690,
-    "assumptions": "None. All results are fully machine-checked. The Erdős-Hajnal graphs on ω₁² and ω₂² are proved to have chromatic numbers ℵ₁ and ℵ₂ respectively via double pigeonhole arguments. The open questions (Questions 1 and 2) are stated but not assumed.",
+    "assumptions": "None. All results are fully machine-checked. The Erdős-Hajnal graphs on ω₁² and ω₂² are proved to have chromatic numbers ℵ₁ and ℵ₂ respectively via double pigeonhole arguments. The open questions (Questions 1 and 2) are stated but not assumed. Open conjecture; supporting lemmas fully verified.",
     "theoremCount": 42
   },
   "overview": {

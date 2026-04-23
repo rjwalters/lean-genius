@@ -180,57 +180,57 @@
   ],
   "crossReferences": [
     {
-      "targetId": "cauchy-schwarz-integral",
+      "proofId": "cauchy-schwarz-integral",
       "relationship": "extends",
       "description": "The Bunyakovsky-Schwarz integral inequality extends Cauchy-Schwarz from finite sums to L² inner products: (∫fg)² ≤ (∫f²)(∫g²). This formalization proves the measure-theoretic version."
     },
     {
-      "targetId": "triangle-inequality",
+      "proofId": "triangle-inequality",
       "relationship": "proves",
       "description": "The triangle inequality ‖u+v‖ ≤ ‖u‖+‖v‖ is derived as a direct corollary of Cauchy-Schwarz in both formalizations, demonstrating the foundational role of Cauchy-Schwarz in normed space theory."
     },
     {
-      "targetId": "amgm-inequality",
+      "proofId": "amgm-inequality",
       "relationship": "related",
       "description": "AM-GM and Cauchy-Schwarz are the two most fundamental inequalities in analysis. Cauchy-Schwarz for n=2 can be derived from AM-GM applied to a²/b² + b²/a², and conversely."
     },
     {
-      "targetId": "hurwitz-theorem",
+      "proofId": "hurwitz-theorem",
       "relationship": "related",
       "description": "Hurwitz's theorem on normed division algebras (ℝ, ℂ, ℍ, 𝕆) relies on the inner product space structure where Cauchy-Schwarz is the fundamental inequality."
     },
     {
-      "targetId": "amgm-inequality-oq-03",
+      "proofId": "amgm-inequality-oq-03",
       "relationship": "related",
       "description": "For equal weights, the power mean inequality M₁ ≤ M₂ is equivalent to Cauchy-Schwarz: (∑wᵢzᵢ)² ≤ ∑wᵢzᵢ². Cauchy-Schwarz is the p=2 case of the general power mean monotonicity chain"
     },
     {
-      "targetId": "amgm-inequality-oq-02",
+      "proofId": "amgm-inequality-oq-02",
       "relationship": "related",
       "description": "The Cauchy-Schwarz sum n·∑xᵢ² ≥ (∑xᵢ)² is the key engine in the Maclaurin M₁²≥M₂ proof — directly connecting Cauchy-Schwarz to the elementary symmetric polynomial hierarchy"
     },
     {
-      "targetId": "cauchy-schwarz-oq-01",
+      "proofId": "cauchy-schwarz-oq-01",
       "relationship": "extended-by",
       "description": "Extends Cauchy-Schwarz to complex inner product spaces using $|\\langle u,v \\rangle_{\\mathbb{C}}| \\leq \\|u\\|\\|v\\|$ — answering the open question about complex generalization"
     },
     {
-      "targetId": "cauchy-schwarz-oq-03",
+      "proofId": "cauchy-schwarz-oq-03",
       "relationship": "extended-by",
       "description": "Hölder's inequality $|\\sum a_i b_i| \\leq (\\sum |a_i|^p)^{1/p}(\\sum |b_i|^q)^{1/q}$ for $1/p + 1/q = 1$ — Cauchy-Schwarz is the $p = q = 2$ case"
     },
     {
-      "targetId": "cauchy-schwarz-oq-04",
+      "proofId": "cauchy-schwarz-oq-04",
       "relationship": "extended-by",
       "description": "Strengthens the equality characterization to give the exact proportionality constant $c = \\langle u,v\\rangle/\\|v\\|^2$ when $u = cv$ — answering the resolved open question"
     },
     {
-      "targetId": "randomized-maxcut",
+      "proofId": "randomized-maxcut",
       "relationship": "related",
       "description": "The randomized MAX-CUT approximation algorithm uses semidefinite programming relaxations where Cauchy-Schwarz bounds constrain the objective function. The Goemans-Williamson 0.878-approximation ratio arises from analyzing $\\arccos(\\langle v_i, v_j \\rangle)$ subject to Cauchy-Schwarz constraints"
     },
     {
-      "targetId": "law-of-cosines",
+      "proofId": "law-of-cosines",
       "relationship": "related",
       "description": "The law of cosines $\\|u-v\\|^2 = \\|u\\|^2 + \\|v\\|^2 - 2\\|u\\|\\|v\\|\\cos\\theta$ defines the angle $\\theta$ between vectors via $\\cos\\theta = \\langle u,v\\rangle/(\\|u\\|\\|v\\|)$. Cauchy-Schwarz $|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$ is precisely the statement that $|\\cos\\theta| \\leq 1$, ensuring the angle is well-defined"
     }

@@ -49,34 +49,6 @@
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       }
     ],
-    "leanFile": {
-      "lineCount": 7432,
-      "structureCount": 92,
-      "axiomCount": 18,
-      "theoremCount": 253,
-      "lemmaCount": 3,
-      "defCount": 143,
-      "imports": [
-        "Mathlib.AlgebraicGeometry.EllipticCurve.Weierstrass",
-        "Mathlib.AlgebraicGeometry.EllipticCurve.Affine.Basic",
-        "Mathlib.AlgebraicGeometry.EllipticCurve.Affine.Point",
-        "Mathlib.NumberTheory.LSeries.Basic",
-        "Mathlib.NumberTheory.ArithmeticFunction.Defs",
-        "Mathlib.NumberTheory.ArithmeticFunction.Misc",
-        "Mathlib.NumberTheory.ArithmeticFunction.Moebius",
-        "Mathlib.NumberTheory.ArithmeticFunction.VonMangoldt",
-        "Mathlib.NumberTheory.ArithmeticFunction.Zeta",
-        "Mathlib.Algebra.Group.Subgroup.Basic",
-        "Mathlib.Analysis.Complex.Basic",
-        "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-        "Mathlib.Analysis.SpecialFunctions.Pow.Complex",
-        "Mathlib.Analysis.Calculus.Deriv.Basic",
-        "Mathlib.Order.Filter.AtTopBot.Basic",
-        "Mathlib.Analysis.Complex.ExponentialBounds",
-        "Mathlib.Topology.Order.Basic",
-        "Mathlib.Tactic"
-      ]
-    },
     "originalContributions": [
       "EllipticCurveQ structure with verified embedding into Mathlib's WeierstrassCurve",
       "Discriminant and c4 theorems proved by ring (no sorry)",
@@ -648,46 +620,6 @@
       "Can BSD be verified for specific curves of rank $\\geq 2$ in Lean? The curve 389a ($y^2 + y = x^3 + x^2 - 2x$) has rank 2 and is the first curve where $L''(E,1) \\neq 0$ was verified numerically (by Buhler-Gross-Zagier). Formalizing this verification would extend beyond the rank $\\leq 1$ cases"
     ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib.AlgebraicGeometry.EllipticCurve.Weierstrass",
-      "Mathlib.AlgebraicGeometry.EllipticCurve.Affine.Basic",
-      "Mathlib.AlgebraicGeometry.EllipticCurve.Affine.Point",
-      "Mathlib.NumberTheory.LSeries.Basic",
-      "Mathlib.NumberTheory.ArithmeticFunction.Defs",
-      "Mathlib.NumberTheory.ArithmeticFunction.Misc",
-      "Mathlib.NumberTheory.ArithmeticFunction.Moebius",
-      "Mathlib.NumberTheory.ArithmeticFunction.VonMangoldt",
-      "Mathlib.NumberTheory.ArithmeticFunction.Zeta",
-      "Mathlib.Algebra.Group.Subgroup.Basic",
-      "Mathlib.Analysis.Complex.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Pow.Complex",
-      "Mathlib.Analysis.Calculus.Deriv.Basic",
-      "Mathlib.Order.Filter.AtTopBot.Basic",
-      "Mathlib.Analysis.Complex.ExponentialBounds",
-      "Mathlib.Topology.Order.Basic",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "Complex",
-      "Real",
-      "Set",
-      "Function",
-      "Filter",
-      "Topology",
-      "Topology",
-      "BigOperators",
-      "ComplexConjugate"
-    ],
-    "namespace": "BirchSwinnertonDyer",
-    "lineCount": 7432,
-    "axiomCount": 18,
-    "theoremCount": 253,
-    "definitionCount": 143,
-    "path": "Proofs/BirchSwinnertonDyer.lean",
-    "sorries": 0
-  },
   "references": [
     {
       "authors": "Birch, Bryan J.; Swinnerton-Dyer, H.P.F.",
@@ -782,5 +714,10 @@
       "leanType": "EllipticCurve E -> rank E(Q) = ord_{s=1} L(E,s)"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "axiomCount": 18,
+    "lineCount": 7432,
+    "sorries": 0
+  }
 }

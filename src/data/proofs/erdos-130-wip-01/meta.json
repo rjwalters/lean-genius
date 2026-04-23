@@ -6,7 +6,7 @@
   "meta": {
     "author": "Anning & Erdős (1945), formalized 2026",
     "sourceUrl": "https://erdosproblems.com/130",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos130WIP01.lean",
     "tags": [
       "erdos",
@@ -16,14 +16,14 @@
       "finiteness",
       "algebraic-geometry"
     ],
-    "badge": "original",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 130,
     "erdosUrl": "https://erdosproblems.com/130",
     "erdosProblemStatus": "open",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
-    "assumptions": "No axioms. All theorems proved from Mathlib using ring identities, linarith, nlinarith, and linear_combination. The main result is a formalization of the elementary algebraic argument underlying the Anning-Erdős theorem.",
+    "assumptions": "No axioms. All theorems proved from Mathlib using ring identities, linarith, nlinarith, and linear_combination. The main result is a formalization of the elementary algebraic argument underlying the Anning-Erdős theorem. Open conjecture; supporting lemmas fully verified.",
     "lineCount": 201,
     "relatedProblems": [
       {

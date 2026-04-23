@@ -54,21 +54,6 @@
       }
     ],
     "lineCount": 348,
-    "leanFile": {
-      "lineCount": 348,
-      "structureCount": 0,
-      "axiomCount": 2,
-      "theoremCount": 29,
-      "lemmaCount": 0,
-      "defCount": 4,
-      "imports": [
-        "Mathlib.Analysis.Calculus.Taylor",
-        "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv",
-        "Mathlib.Analysis.SpecificLimits.Normed",
-        "Mathlib.Topology.Algebra.InfiniteSum.Real",
-        "Mathlib.Tactic"
-      ]
-    },
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -226,29 +211,6 @@
       "note": "Systematically used the Taylor series for sin, cos, and exp to derive Euler's formula and the foundations of analytic function theory"
     }
   ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.Analysis.Calculus.Taylor",
-      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv",
-      "Mathlib.Analysis.SpecificLimits.Normed",
-      "Mathlib.Topology.Algebra.InfiniteSum.Real",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "Set",
-      "Filter",
-      "Topology",
-      "Finset",
-      "Real"
-    ],
-    "namespace": "TaylorSinCosConvergence",
-    "lineCount": 348,
-    "axiomCount": 2,
-    "theoremCount": 31,
-    "definitionCount": 4,
-    "path": "Proofs/TaylorSinCosConvergence.lean",
-    "sorries": 0
-  },
   "mainTheorems": [
     {
       "name": "sin_taylor",
@@ -257,5 +219,10 @@
       "leanType": "HasSum (fun n => (-1)^n * x^(2*n+1) / (2*n+1)!) (Real.sin x)"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "axiomCount": 2,
+    "lineCount": 348,
+    "sorries": 0
+  }
 }

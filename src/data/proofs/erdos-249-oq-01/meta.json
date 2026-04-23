@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos249OQ01.lean",
     "tags": [
       "erdos",
@@ -17,7 +17,7 @@
       "bounds",
       "open"
     ],
-    "badge": "original",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 249,
     "erdosUrl": "https://erdosproblems.com/249",
@@ -27,7 +27,7 @@
     "lineCount": 225,
     "theoremCount": 13,
     "definitionCount": 0,
-    "assumptions": "None. Imports Erdos249Problem.lean (0 axioms). Fully machine-verified.",
+    "assumptions": "None. Imports Erdos249Problem.lean (0 axioms). Fully machine-verified. Open conjecture; supporting lemmas fully verified.",
     "originalContributions": [
       "termFn_three/four/five/six: exact term values φ(n)/2^n for n = 3, 4, 5, 6",
       "partial_sum_6: first 6 terms sum exactly to 5/4",

@@ -98,7 +98,7 @@
   {
     "id": "ann-amenability",
     "proofId": "lebesgue-measure-oq-06",
-    "range": { "startLine": 249, "endLine": 287 },
+    "range": { "startLine": 249, "endLine": 295 },
     "type": "definition",
     "title": "Amenable Groups: The Group-Theoretic Obstruction",
     "content": "IsAmenable G defines amenability: the group G admits a finitely-additive left-invariant probability measure on ALL subsets of G. Amenable groups include ℤ (via Cesàro means, stated as int_amenable with sorry) and all finite groups, but NOT F₂ (free group on 2 generators, stated as free_group_not_amenable with sorry). The non-amenability of F₂ is the group-theoretic root cause of Banach-Tarski: F₂ ↪ SO(3) → SO(3) not amenable → unit ball paradoxical.",

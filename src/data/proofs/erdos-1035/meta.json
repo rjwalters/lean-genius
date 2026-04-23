@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1035",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1035Problem.lean",
     "tags": [
       "erdos",
@@ -15,7 +15,7 @@
       "extremal-graph-theory",
       "minimum-degree"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 1035,
     "erdosUrl": "https://erdosproblems.com/1035",
@@ -29,7 +29,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 255,
-    "assumptions": "None. All auxiliary theorems proved. Q_n regularity proved for all n via bit-flip bijection. Main conjecture stated as Prop definition (open problem).",
+    "assumptions": "None. All auxiliary theorems proved. Q_n regularity proved for all n via bit-flip bijection. Main conjecture stated as Prop definition (open problem). Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

@@ -41,14 +41,6 @@
       "Half-integer area corollary and lattice width bounds"
     ],
     "dateAdded": "2025-12-29",
-    "leanFile": {
-      "lineCount": 484,
-      "structures": 1,
-      "axioms": 2,
-      "theorems": 12,
-      "definitions": 11,
-      "instances": 0
-    },
     "axiomCount": 1,
     "lineCount": 484,
     "assumptions": "1 axiom: picks_theorem (the main theorem statement). Removed inconsistent area_bounded_by_box_axiom (claimed A(P) ≤ w_x*w_y for all w_x,w_y without containment hypothesis).",
@@ -209,21 +201,6 @@
       "targetId": "erdos-szekeres"
     }
   ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
-      "Mathlib.Data.Rat.Cast.Lemmas",
-      "Mathlib.Tactic"
-    ],
-    "opens": [],
-    "namespace": "PicksTheorem",
-    "lineCount": 484,
-    "axiomCount": 1,
-    "theoremCount": 12,
-    "definitionCount": 14,
-    "path": "Proofs/PicksTheorem.lean",
-    "sorries": 0
-  },
   "references": [
     {
       "authors": "Pick, Georg Alexander",
@@ -241,5 +218,10 @@
       "leanType": "lattice_polygon P -> area P = interior_points P + boundary_points P / 2 - 1"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "axiomCount": 1,
+    "lineCount": 484,
+    "sorries": 0
+  }
 }

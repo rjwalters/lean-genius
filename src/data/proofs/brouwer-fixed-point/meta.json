@@ -68,27 +68,6 @@
     ],
     "lineCount": 249,
     "mathlib_version": "4.26.0",
-    "leanFile": {
-      "imports": [
-        "Mathlib.Topology.Basic",
-        "Mathlib.Topology.Compactness.Compact",
-        "Mathlib.Topology.Connected.PathConnected",
-        "Mathlib.Topology.Order.IntermediateValue",
-        "Mathlib.Analysis.Normed.Module.FiniteDimension",
-        "Mathlib.Analysis.InnerProductSpace.Basic",
-        "Mathlib.Analysis.InnerProductSpace.PiL2",
-        "Mathlib.Topology.MetricSpace.Basic"
-      ],
-      "opens": [
-        "Set",
-        "Metric"
-      ],
-      "namespace": "Brouwer",
-      "lineCount": 249,
-      "axiomCount": 2,
-      "theoremCount": 5,
-      "definitionCount": 6
-    },
     "relatedProblems": [
       {
         "id": "brouwer-fixed-point-oq-02",
@@ -318,50 +297,6 @@
       "description": "Kakutani's fixed point theorem (1941) generalizes Brouwer from single-valued to set-valued (multi-valued) maps: every upper hemicontinuous correspondence with non-empty convex compact values on a compact convex set has a fixed point. Nash's equilibrium theorem is a direct application"
     }
   ],
-  "leanFile": {
-    "lineCount": 249,
-    "structureCount": 2,
-    "axiomCount": 2,
-    "theoremCount": 5,
-    "lemmaCount": 0,
-    "defCount": 5,
-    "imports": [
-      "Mathlib.Topology.Basic",
-      "Mathlib.Topology.Compactness.Compact",
-      "Mathlib.Topology.Connected.PathConnected",
-      "Mathlib.Topology.Order.IntermediateValue",
-      "Mathlib.Analysis.Normed.Module.FiniteDimension",
-      "Mathlib.Analysis.InnerProductSpace.Basic",
-      "Mathlib.Analysis.InnerProductSpace.PiL2",
-      "Mathlib.Topology.MetricSpace.Basic"
-    ],
-    "opens": [
-      "Set",
-      "Metric"
-    ],
-    "mainTheorems": [
-      {
-        "name": "brouwer_fixed_point",
-        "type": "synthesis",
-        "description": "Every continuous self-map of the closed n-ball has a fixed point (n >= 1)",
-        "leanType": "(hn : n ≥ 1) → (f : SelfMap n) → HasFixedPoint n f"
-      },
-      {
-        "name": "no_retraction",
-        "type": "wrapper",
-        "description": "No continuous retraction from B^n to S^{n-1} exists (wraps axiom)",
-        "leanType": "(hn : n ≥ 1) → ¬∃ r : Retraction n, True"
-      },
-      {
-        "name": "retraction_from_no_fixpoint",
-        "type": "bridge",
-        "description": "A self-map without fixed points yields a retraction via ray-casting (wraps axiom)",
-        "leanType": "(n : ℕ) → (f : SelfMap n) → ¬HasFixedPoint n f → Retraction n"
-      }
-    ],
-    "path": "Proofs/BrouwerFixedPoint.lean",
-    "sorries": 0
-  },
   "mainTheorems": [
     {
       "name": "brouwer_fixed_point",
@@ -370,5 +305,10 @@
       "leanType": "Continuous f -> maps_to f (closedBall 0 1) -> exists x, f x = x"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "axiomCount": 2,
+    "lineCount": 249,
+    "sorries": 0
+  }
 }

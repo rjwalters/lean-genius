@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/638",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos638Problem.lean",
     "tags": [
       "erdos",
@@ -15,14 +15,14 @@
       "infinite combinatorics",
       "cardinals"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 638,
     "erdosUrl": "https://erdosproblems.com/638",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 242,
-    "assumptions": "None. The classical Ramsey theorem for triangles is fully proved by induction with the pigeonhole principle. All supporting lemmas (monotonicity, base case, inductive step) are proved from Mathlib. 0 axioms, 0 sorries.",
+    "assumptions": "None. The classical Ramsey theorem for triangles is fully proved by induction with the pigeonhole principle. All supporting lemmas (monotonicity, base case, inductive step) are proved from Mathlib. 0 axioms, 0 sorries. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

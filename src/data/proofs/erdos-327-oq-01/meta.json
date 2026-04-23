@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős (generalized)",
     "sourceUrl": "https://erdosproblems.com/327",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos327OQ01.lean",
     "tags": [
       "erdos",
@@ -15,14 +15,14 @@
       "divisibility",
       "open question"
     ],
-    "badge": "original",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 327,
     "erdosUrl": "https://erdosproblems.com/327",
     "erdosProblemStatus": "open",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
-    "assumptions": "No axioms. All theorems proved from Mathlib alone. The density conjecture (pair count ~ N log N) is stated as a definition.",
+    "assumptions": "No axioms. All theorems proved from Mathlib alone. The density conjecture (pair count ~ N log N) is stated as a definition. Open conjecture; supporting lemmas fully verified.",
     "lineCount": 165,
     "relatedProblems": [
       {

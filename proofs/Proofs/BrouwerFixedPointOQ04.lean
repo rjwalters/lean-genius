@@ -457,6 +457,37 @@ theorem uhc_image {α : Type*} [TopologicalSpace α]
     rw [← hwz]
     exact (hUF y hy) hw⟩
 
+-- ============================================================
+-- PART 10: General Brouwer FPT for Products of Compact Convex Sets
+-- ============================================================
+
+/-- **Brouwer Fixed Point Theorem for Products of Compact Convex Sets**
+
+    Let ι be a finite index type and κ : ι → ℕ. Let K i ⊆ Fin (κ i) → ℝ be
+    nonempty compact convex sets for each i. Then any continuous self-map of
+    ∏ᵢ K i has a fixed point.
+
+    **Mathematical proof sketch:**
+    1. The product ∏ᵢ K i is compact (Tychonoff) and convex (product of convex sets).
+    2. The product embeds into EuclideanSpace ℝ (Fin D) where D = ∑ᵢ κ i via
+       the concatenation map: x ↦ (x i j)_{(i,j) ∈ Σ i, Fin (κ i)}.
+    3. The image is a compact convex subset of a finite-dimensional Euclidean space.
+    4. Such sets are homeomorphic to closed balls (compact convex body theorem).
+    5. By Brouwer FPT for the closed ball, any continuous self-map has a fixed point.
+    6. Transport the fixed point back via the homeomorphism.
+
+    Steps (4) requires algebraic topology (Schoenflies-type theorem) not yet
+    formalized in Mathlib. Hence this theorem is stated as an axiom. -/
+axiom brouwer_pi_compact_convex {ι : Type*} [Fintype ι] {κ : ι → ℕ}
+    (K : ∀ i, Set (Fin (κ i) → ℝ))
+    (hK_ne : ∀ i, (K i).Nonempty)
+    (hK_compact : ∀ i, IsCompact (K i))
+    (hK_convex : ∀ i, Convex ℝ (K i))
+    (f : (∀ i, Fin (κ i) → ℝ) → ∀ i, Fin (κ i) → ℝ)
+    (hf : Continuous f)
+    (hfK : ∀ x, (∀ i, x i ∈ K i) → ∀ i, f x i ∈ K i) :
+    ∃ x, (∀ i, x i ∈ K i) ∧ f x = x
+
 end KakutaniFPT
 
 -- Export main results
@@ -471,3 +502,4 @@ end KakutaniFPT
 #check KakutaniFPT.nash_equilibrium_framework
 #check @KakutaniFPT.IsNashEquilibrium
 #check @KakutaniFPT.isNashEquilibrium_of_constant_utility
+#check @KakutaniFPT.brouwer_pi_compact_convex

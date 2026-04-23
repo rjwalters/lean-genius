@@ -28,10 +28,17 @@ OQ-01 needed 2 axioms:
   - `bestResponse_uhc` (Berge's maximum theorem — blocked)
   - `kakutani_product_simplex` (product simplex embedding)
 
-OQ-02 needs 1 axiom:
-  - `brouwer_product_simplex` (Brouwer FPT on product simplex — embedding into ℝⁿ)
+OQ-02 depends on 1 axiom (in BrouwerFixedPointOQ04):
+  - `brouwer_pi_compact_convex` (general Brouwer FPT for products of compact convex sets)
 
-## Status: COMPLETE (0 sorries, 1 axiom)
+The original `axiom brouwer_product_simplex` has been replaced by a THEOREM that
+derives from `brouwer_pi_compact_convex`, using the already-proved properties:
+  - `mixed_strategy_nonempty`: each Δᵢ is nonempty
+  - `mixed_strategy_compact`: each Δᵢ is compact
+  - `mixed_strategy_convex`: each Δᵢ is convex
+
+## Status: COMPLETE (0 sorries, 0 local axioms)
+  (depends on `brouwer_pi_compact_convex` in BrouwerFixedPointOQ04.lean)
 - [x] `MultilinearGame` structure with explicit payoff
 - [x] `mixedUtility`: multilinear extension (polynomial in σ)
 - [x] `mixedUtility_continuous`: joint continuity of EU
@@ -40,7 +47,7 @@ OQ-02 needs 1 axiom:
 - [x] `nashMap_continuous`: φ is jointly continuous (PROVED)
 - [x] `mixedUtility_linear_in_i`: EU_i linear in σᵢ (PROVED)
 - [x] `fixed_point_is_nash`: fixed point ⟹ Nash equilibrium (PROVED)
-- [x] `brouwer_product_simplex`: Brouwer FPT on product simplex (1 axiom)
+- [x] `brouwer_product_simplex`: THEOREM (proved from brouwer_pi_compact_convex)
 - [x] `nash_existence_multilinear`: Nash equilibrium exists (PROVED)
 -/
 
@@ -431,22 +438,40 @@ theorem fixed_point_is_nash {N : ℕ} (G : MultilinearGame N)
 -- PART 8: Brouwer FPT on the Product Simplex
 -- ============================================================
 
-/-- **Axiom: Brouwer's Fixed Point Theorem for the Product Simplex**
+/-- **Theorem: Brouwer's Fixed Point Theorem for the Product Simplex**
 
     The product simplex ∏ᵢ Δᵢ (with Δᵢ = MixedStrategy (G.strategies i))
     is a compact convex subset of a finite-dimensional Euclidean space.
     By Brouwer's fixed point theorem, every continuous self-map has a fixed point.
 
-    Full proof: embed ∏ᵢ Δᵢ into Fin(Σᵢ strategies i) → ℝ via concatenation,
-    which gives a homeomorphism preserving compactness and convexity. Then apply
-    `kakutani_fixed_point_axiom` (from BrouwerFixedPointOQ04) with a singleton
-    correspondence at each point. The embedding is routine topology but requires
-    `Fin.appendEquiv` and `IsHomeomorph` machinery. -/
-axiom brouwer_product_simplex {N : ℕ} (G : MultilinearGame N)
+    **Proof**: Apply `brouwer_pi_compact_convex` (from BrouwerFixedPointOQ04)
+    with the mixed strategy simplices as the compact convex factors.
+    The required properties hold:
+    - Nonemptiness: each player has at least one strategy (G.strategies_pos)
+    - Compactness: MixedStrategy k is compact (closed subset of compact box)
+    - Convexity: MixedStrategy k is convex (convex combination of distributions)
+
+    `brouwer_pi_compact_convex` is the general Brouwer FPT for products of
+    compact convex subsets of finite-dimensional spaces, which requires the
+    topological fact that compact convex bodies are homeomorphic to balls. -/
+theorem brouwer_product_simplex {N : ℕ} (G : MultilinearGame N)
     (f : MixedProfile N G → MixedProfile N G)
     (hf_maps : ∀ σ ∈ ProductSimplex G, f σ ∈ ProductSimplex G)
     (hf_cont : Continuous f) :
-    ∃ σ ∈ ProductSimplex G, f σ = σ
+    ∃ σ ∈ ProductSimplex G, f σ = σ := by
+  -- Translate hf_maps into the form required by brouwer_pi_compact_convex
+  -- ProductSimplex G = { σ | ∀ j, σ j ∈ MixedStrategy (G.strategies j) }
+  -- MixedProfile N G = ∀ j : Fin N, Fin (G.strategies j) → ℝ
+  have hmaps' : ∀ σ : MixedProfile N G, (∀ j, σ j ∈ MixedStrategy (G.strategies j)) →
+      ∀ j, f σ j ∈ MixedStrategy (G.strategies j) := fun σ hσ j =>
+    hf_maps σ hσ j
+  obtain ⟨σ, hmem, hfp⟩ := brouwer_pi_compact_convex
+    (fun j : Fin N => MixedStrategy (G.strategies j))
+    (fun j => mixed_strategy_nonempty (G.strategies_pos j))
+    (fun _ => mixed_strategy_compact)
+    (fun _ => mixed_strategy_convex)
+    f hf_cont hmaps'
+  exact ⟨σ, hmem, hfp⟩
 
 -- ============================================================
 -- PART 9: Nash Equilibrium Existence

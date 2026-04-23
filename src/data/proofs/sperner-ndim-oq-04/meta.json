@@ -21,7 +21,7 @@
       "advanced"
     ],
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 1,
     "originalContributions": [
       "Definition of door degree and IsKuhnCompatible for abstract Sperner triangulations",
       "Proof that FC simplices have exactly 1 door under Kuhn compatibility",
@@ -30,12 +30,16 @@
       "Definition of KuhnState structure for path-following algorithm",
       "Definition of kuhnWalk with fuel parameter (termination by fuel bound)",
       "Definition of kuhnPathStart as entry point for boundary door",
-      "Preservation of door property across adjacency steps (door_transfer application)"
+      "Preservation of door property across adjacency steps (door_transfer application)",
+      "Definition of KuhnStateValid: 3-part path invariant for non-revisiting argument",
+      "Proof kuhnState_initial_valid: initial boundary-door state satisfies KuhnStateValid",
+      "Proof guard_entry_case_impossible: Case A non-revisiting via adj_symm contradiction",
+      "Proof guard_current_impossible: walk never steps to current via adj_ne"
     ],
     "dateAdded": "2026-04-22",
     "axiomCount": 0,
-    "lineCount": 389,
-    "assumptions": "3 sorries: (1) kuhn_path_terminates — main existence theorem (derived via sorry from sperner_ndim), (2) kuhn_walk_reaches_fc — walk correctness requires non-revisiting invariant, (3) kuhnPathStart_is_fc — top-level correctness. The non-sorry content (fc_door_count_eq_one, nonfc_door_count_zero_or_two, nonfc_with_door_has_unique_exit) is fully verified.",
+    "lineCount": 496,
+    "assumptions": "1 sorry: kuhn_walk_reaches_fc — walk correctness requires the non-revisiting invariant (door graph component containing a boundary door is a path, not a cycle). Case A of non-revisiting is now proved (guard_entry_case_impossible). Case B requires per-simplex path history beyond the visited set. kuhn_path_terminates and kuhnPathStart_is_fc are proved. All other theorems (fc_door_count_eq_one, nonfc_door_count_zero_or_two, nonfc_with_door_has_unique_exit) are fully verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -127,7 +131,7 @@
       "title": "Termination and Walk Correctness Theorems",
       "startLine": 298,
       "endLine": 343,
-      "summary": "States kuhn_path_terminates (FC existence from boundary door) and kuhn_walk_reaches_fc (walk correctness). Both use sorry pending the non-revisiting invariant.",
+      "summary": "States kuhn_path_terminates (FC existence from boundary door, now proved) and kuhn_walk_reaches_fc (walk correctness, one sorry pending the non-revisiting invariant).",
       "mathContext": "kuhn_path_terminates can be derived from sperner_ndim (parity of boundary doors implies FC existence). kuhn_walk_reaches_fc requires the door graph path invariant: components containing boundary vertices are paths, not cycles."
     },
     {
@@ -166,7 +170,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization establishes the door-counting infrastructure for Kuhn's constructive proof of n-dimensional Sperner's lemma. The fully-proved results (fc_door_count_eq_one, nonfc_door_count_zero_or_two, nonfc_with_door_has_unique_exit) rigorously verify that Kuhn's algorithm is well-defined and deterministic. Three sorries remain for the termination/correctness theorems, pending formalization of the non-revisiting invariant.",
+    "summary": "This formalization establishes the door-counting infrastructure and path-following algorithm for Kuhn's constructive proof of n-dimensional Sperner's lemma. The fully-proved results include fc_door_count_eq_one, nonfc_door_count_zero_or_two, nonfc_with_door_has_unique_exit, kuhn_path_terminates, and kuhnPathStart_is_fc. One sorry remains (kuhn_walk_reaches_fc), pending formalization of the non-revisiting invariant for the door graph walk.",
     "implications": "Kuhn's 1968 result is historically significant as the first polynomial-time algorithm for finding a fully-colored simplex. Path-following algorithms descended from Kuhn's work underlie Scarf's algorithm for computing approximate fixed points and (through Lemke-Howson) Nash equilibrium computation. The abstract formulation using IsKuhnCompatible applies to any Sperner triangulation satisfying the degree bound, including Freudenthal triangulations and simplicial complexes arising in topological data analysis. The PPAD complexity connection (Papadimitriou 1994) situates this work in modern computational complexity: the door graph formalized here — a directed graph where every node has in-degree and out-degree at most 1, with a distinguished source — is exactly the End-of-Line problem that defines PPAD. The non-revisiting invariant (the hard remaining sorry) is equivalent to showing the door graph component is a directed path, not a cycle. Fully-colored simplices also appear in topological data analysis as birth-death pairs in persistent homology, making the abstract FC-finding framework relevant to TDA algorithms.",
     "openQuestions": [
       "Can the non-revisiting invariant (the door graph component containing a boundary door is a path) be proved in Lean 4 using graph theory from Mathlib?",
@@ -245,10 +249,12 @@
       "BigOperators"
     ],
     "namespace": "SpernerNDimOQ04",
-    "lineCount": 389,
+    "lineCount": 496,
     "axiomCount": 0,
     "theoremCount": 8,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/SpernerNDimOQ04.lean",
+    "sorries": 1
   },
-  "sorries": 3
+  "sorries": 1
 }

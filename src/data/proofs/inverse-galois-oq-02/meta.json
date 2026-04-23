@@ -26,20 +26,6 @@
       "Finite group classification (sporadic groups, Mathieu groups)"
     ],
     "assumptions": "3 axioms: M23 (existence of M₂₃ as subgroup of S₂₃), M23_card (|M₂₃| = 10200960), M23_isSimple (M₂₃ is simple). The 3 axioms are well-established mathematical facts, not conjectures. 6 sorries in this file.",
-    "leanFile": {
-      "lineCount": 388,
-      "theoremCount": 18,
-      "lemmaCount": 0,
-      "defCount": 0,
-      "axiomCount": 3,
-      "sorryCount": 6,
-      "imports": [
-        "Mathlib",
-        "Proofs.InverseGalois",
-        "Proofs.InverseGaloisOQ01"
-      ],
-      "note": "M₂₃ axiomatized as subgroup of Perm(Fin 23). Key results: order factorization (2⁷·3²·5·7·11·23), non-prime cardinality, prime divisibility results, perfectness, non-solvability, Shafarevich gap, S₂₃ index relation. 1 sorry is intentional (open problem). 5 sorries are Aristotle candidates for Mathlib API chains."
-    },
     "relatedProblems": [
       {
         "id": "inverse-galois",
@@ -157,11 +143,19 @@
       "relationship": "Sister entry proving the solvability divide (S_n solvable iff n ≤ 4) and A₅ analysis"
     }
   ],
+  "sorries": 6,
   "leanFile": {
-    "axiomCount": 3,
-    "lineCount": 388,
     "path": "Proofs/InverseGaloisOQ02.lean",
-    "sorries": 6
-  },
-  "sorries": 6
+    "lineCount": 388,
+    "axiomCount": 3,
+    "sorries": 6,
+    "theoremCount": 18,
+    "definitionCount": 0,
+    "imports": [
+      "Mathlib",
+      "Proofs.InverseGalois",
+      "Proofs.InverseGaloisOQ01"
+    ],
+    "lemmaCount": 0
+  }
 }

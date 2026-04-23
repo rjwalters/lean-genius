@@ -58,19 +58,6 @@
       "K4_free_high_chi_possible: verified existence witness",
       "erdos_1091_summary: verified combined result"
     ],
-    "leanFile": {
-      "lineCount": 211,
-      "structureCount": 2,
-      "axiomCount": 5,
-      "theoremCount": 4,
-      "defCount": 8,
-      "imports": [
-        "Mathlib.Combinatorics.SimpleGraph.Basic",
-        "Mathlib.Combinatorics.SimpleGraph.Coloring",
-        "Mathlib.Combinatorics.SimpleGraph.Clique",
-        "Mathlib.Data.Finset.Basic"
-      ]
-    },
     "dateAdded": "2026-01-26",
     "axiomCount": 5,
     "lineCount": 211,
@@ -183,21 +170,10 @@
       "targetId": "erdos-107"
     }
   ],
+  "sorries": 0,
   "leanFile": {
-    "imports": [
-      "Mathlib.Combinatorics.SimpleGraph.Basic",
-      "Mathlib.Combinatorics.SimpleGraph.Coloring",
-      "Mathlib.Combinatorics.SimpleGraph.Clique",
-      "Mathlib.Data.Finset.Basic"
-    ],
-    "opens": [],
-    "namespace": "Erdos1091",
-    "lineCount": 211,
     "axiomCount": 5,
-    "theoremCount": 4,
-    "definitionCount": 8,
-    "path": "Proofs/Erdos1091Problem.lean",
+    "lineCount": 211,
     "sorries": 0
-  },
-  "sorries": 0
+  }
 }

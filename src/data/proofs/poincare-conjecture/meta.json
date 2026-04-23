@@ -74,18 +74,6 @@
       "Gordon-Luecke theorem: knot complements determine knots, Alexander polynomial data, hyperbolic volume, genus-crossing bounds",
       "590 theorems proved, 137 structures defined, 218 definitions, 82 parts across 11574 lines"
     ],
-    "leanFile": {
-      "lineCount": 17670,
-      "theoremCount": 897,
-      "lemmaCount": 0,
-      "defCount": 365,
-      "axiomCount": 33,
-      "sorryCount": 0,
-      "structureCount": 183,
-      "instanceCount": 21,
-      "parts": 100,
-      "note": "Single file formalization. 100 parts covering: topology of S³ and S^n, closed manifolds, simple connectivity, Perelman's proof strategy, counterexamples, geometrization, connected sum theory, covering spaces, Hopf fibration, knot surgery, JSJ decomposition, foliations, Papakyriakopoulos results, Heegaard Floer homology, L-space conjecture, contact structures, Virtual Haken conjecture, Gordon-Luecke theorem, Chern-Simons theory, h-cobordism, TQFT axioms, κ-solutions, surgery algorithm, Kneser-Milnor, finite extinction, proof architecture, generalized Poincaré, open problems, legacy."
-    },
     "dateAdded": "2025-12-29",
     "millenniumProblem": "poincare",
     "lineCount": 17675,
@@ -306,43 +294,6 @@
       "Can Ricci flow techniques prove the Borel conjecture for aspherical manifolds?"
     ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib.Topology.Basic",
-      "Mathlib.Topology.Compactness.Compact",
-      "Mathlib.Topology.Connected.PathConnected",
-      "Mathlib.Topology.Homotopy.Basic",
-      "Mathlib.Topology.Homotopy.Equiv",
-      "Mathlib.Topology.Homotopy.Path",
-      "Mathlib.Topology.Homotopy.Contractible",
-      "Mathlib.Topology.MetricSpace.Basic",
-      "Mathlib.Topology.Order.Basic",
-      "Mathlib.Analysis.InnerProductSpace.PiL2",
-      "Mathlib.Analysis.Normed.Module.FiniteDimension",
-      "Mathlib.Analysis.Normed.Module.Connected",
-      "Mathlib.Analysis.Convex.Contractible",
-      "Mathlib.Geometry.Manifold.ContMDiff.Basic",
-      "Mathlib.Geometry.Manifold.Instances.Sphere",
-      "Mathlib.MeasureTheory.Measure.Haar.Basic",
-      "Mathlib.AlgebraicTopology.FundamentalGroupoid.FundamentalGroup",
-      "Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "Set",
-      "Metric",
-      "Topology",
-      "TopologicalSpace",
-      "ThurstonGeometry"
-    ],
-    "namespace": "PoincareConjecture",
-    "lineCount": 17675,
-    "axiomCount": 32,
-    "theoremCount": 941,
-    "definitionCount": 369,
-    "path": "Proofs/PoincareConjecture.lean",
-    "sorries": 0
-  },
   "references": [
     {
       "authors": "Perelman, Grigori",
@@ -388,5 +339,14 @@
       "leanType": "SimplyConnected M -> ClosedManifold M -> dim M = 3 -> M homeomorphic S3"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/PoincareConjecture.lean",
+    "lineCount": 17675,
+    "axiomCount": 32,
+    "sorries": 0,
+    "theoremCount": 897,
+    "definitionCount": 365,
+    "lemmaCount": 0
+  }
 }

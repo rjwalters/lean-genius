@@ -18,7 +18,7 @@
     "sorries": 0,
     "axioms": 1,
     "dateAdded": "2026-04-21",
-    "dateUpdated": "2026-04-22",
+    "dateUpdated": "2026-04-23",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "MultilinearGame structure with explicit pure strategy payoffs and multilinear utility extension",
@@ -28,15 +28,16 @@
       "Proved nashMap is continuous (finite composition of continuous operations)",
       "Proved fixed_point_is_nash: any fixed point of Nash's map is a Nash equilibrium",
       "Proved mixedUtility_linear_in_i: EU_i linear in σ_i via Finset.sum_comm and product splitting",
-      "Reduced Nash existence from 2 axioms (OQ-01) to 1 axiom, 0 sorries"
+      "Reduced Nash existence from 2 axioms (OQ-01) to 1 axiom, 0 sorries",
+      "Replaced axiom brouwer_product_simplex with theorem proved from general brouwer_pi_compact_convex axiom in parent file, using proved properties: mixed_strategy_nonempty, mixed_strategy_compact, mixed_strategy_convex"
     ],
     "historicalContext": "John Nash's 1950 proof of equilibrium existence in his landmark 2-page paper used Brouwer's fixed point theorem directly — not Kakutani's generalization, which Nash also used in his 1951 Annals paper. The original argument defines a deviation map on the product simplex: each player shifts weight toward pure strategies that give higher expected utility, then normalizes. Continuous self-maps of compact convex sets have fixed points by Brouwer, and at any fixed point the deviation vanishes — meaning no player can unilaterally improve. This formalization implements this original argument for multilinear games.",
     "problemStatement": "For a finite N-player game where expected utility is the multilinear extension of pure strategy payoffs (the standard definition for matrix games), does there exist a Nash equilibrium in mixed strategies? Nash (1950) proved yes, using Brouwer FPT applied to an explicit single-valued continuous self-map of the product simplex.",
     "proofStrategy": "Define Nash's deviation map: for each player i and pure strategy k, compute the excess payoff from deviating to pure strategy k; shift weight toward strategies with positive excess, then normalize. This map is continuous (polynomial in strategy profiles) and maps the product simplex to itself. Brouwer FPT gives a fixed point, and the algebra of the fixed-point equation shows all excesses are zero — i.e., no player can improve by deviating.",
-    "assumptions": "1 axiom: brouwer_product_simplex (Brouwer FPT for the product simplex — the topological embedding of ∏ᵢ Δᵢ into ℝⁿ for appropriate n). All other lemmas fully proved.",
+    "assumptions": "1 axiom: brouwer_pi_compact_convex (in BrouwerFixedPointOQ04.lean — general Brouwer FPT for products of compact convex sets in finite-dimensional Euclidean spaces). This file has 0 direct axioms; brouwer_product_simplex is now a theorem proved from the general axiom using mixed_strategy_nonempty, mixed_strategy_compact, and mixed_strategy_convex.",
     "axiomCount": 1,
-    "lineCount": 494,
-    "theoremCount": 15,
+    "lineCount": 519,
+    "theoremCount": 16,
     "definitionCount": 8
   },
   "overview": {
@@ -59,10 +60,10 @@
     "text": "Nash equilibrium existence for multilinear games via Nash's original Brouwer argument."
   },
   "conclusion": {
-    "summary": "Formalizes Nash's original 1950 proof of equilibrium existence via Brouwer FPT. Main contributions: MultilinearGame structure, joint continuity of mixedUtility, Nash's deviation map, proof of mixedUtility_linear_in_i, and the algebraic proof that fixed points are Nash equilibria. 0 sorries, 1 axiom (product simplex Brouwer). Reduces OQ-01's 2 axioms to 1 by eliminating the need for Berge's maximum theorem.",
+    "summary": "Formalizes Nash's original 1950 proof of equilibrium existence via Brouwer FPT. Main contributions: MultilinearGame structure, joint continuity of mixedUtility, Nash's deviation map, proof of mixedUtility_linear_in_i, algebraic proof that fixed points are Nash equilibria, and proof of brouwer_product_simplex from general brouwer_pi_compact_convex. 0 sorries, 0 local axioms (depends on general axiom in parent). Reduces OQ-01's 2 axioms to 1 general axiom.",
     "implications": "Demonstrates that Nash equilibrium existence follows from the topological minimum (Brouwer FPT), without requiring the more subtle upper hemicontinuity theory of set-valued maps. The key obstacle (Berge's theorem) is replaced by elementary polynomial continuity.",
     "openQuestions": [
-      "Can brouwer_product_simplex be derived from kakutani_fixed_point_axiom via the Fin.append embedding?",
+      "Can brouwer_pi_compact_convex be proved from no_retraction_axiom + retraction_construction via a homeomorphism between compact convex bodies and closed balls?",
       "Does the Nash map approach extend to games with infinite strategy sets (e.g., compact metric spaces)?"
     ]
   },
@@ -145,7 +146,7 @@
       "Proofs.BrouwerFixedPointOQ04"
     ],
     "namespace": "NashBrouwer",
-    "lineCount": 494,
+    "lineCount": 519,
     "axiomCount": 1,
     "sorries": 0,
     "path": "Proofs/BrouwerFixedPointOQ04OQ02.lean"

@@ -1,13 +1,13 @@
 {
   "slug": "erdos-1151-oq-04",
   "title": "Prove erdos_1941_divergence via Lebesgue Function Growth at Chebyshev Nodes",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "axiom erdos_1941_divergence (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq1 : 1 < q) (x : ℝ) (hx : x = Real.cos (↑p * Real.pi / ↑q)) : Filter.Tendsto (fun n => chebyshevInterpSeq (fun _ => 0) x n) Filter.atTop Filter.atTop",
-    "plain": "Can the axiom erdos_1941_divergence be proved in Lean 4 by formalizing the Lebesgue function growth rate Λₙ(cos(πp/q)) → ∞ for rational cosine points with odd p, q?",
+    "formal": "axiom erdos_1941_divergence (p q : \u2115) (hp : Odd p) (hq : Odd q) (hq1 : 1 < q) (x : \u211d) (hx : x = Real.cos (\u2191p * Real.pi / \u2191q)) : Filter.Tendsto (fun n => chebyshevInterpSeq (fun _ => 0) x n) Filter.atTop Filter.atTop",
+    "plain": "Can the axiom erdos_1941_divergence be proved in Lean 4 by formalizing the Lebesgue function growth rate \u039b\u2099(cos(\u03c0p/q)) \u2192 \u221e for rational cosine points with odd p, q?",
     "whyMatters": [
       "Eliminates an axiom from Erdos1151Problem.lean, moving from axiomatized to verified",
       "Connects classical approximation theory (Chebyshev nodes, Lebesgue function) to Lean 4",
@@ -21,13 +21,13 @@
       "limitPointSet_isClosed: limit point sets are closed"
     ],
     "open": [
-      "Lebesgue function growth: Λₙ(cos(πp/q)) → ∞ as n → ∞",
+      "Lebesgue function growth: \u039b\u2099(cos(\u03c0p/q)) \u2192 \u221e as n \u2192 \u221e",
       "erdos_1941_divergence: divergence of Chebyshev interpolation at rational cosines"
     ],
     "goal": "Prove erdos_1941_divergence to eliminate the axiom from the gallery"
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-04-21",
     "iteration": 1,
     "focus": "Read Erdos1151Problem.lean, assess Mathlib for Chebyshev polynomial theory",
@@ -40,18 +40,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Problem selected by Seeker. Parent uses erdos_1941_divergence as an axiom. Key fact: Lebesgue function Λₙ(cos(πp/q)) → ∞ for odd p, q.",
-    "builtItems": [],
+    "progressSummary": "ACT: 3 new lemmas (T_ofNat_ne_zero, natDegree_T_ofNat, leadingCoeff_T_ofNat) build cleanly; product formula proof strategy clear; 4 sorries remain",
+    "builtItems": [
+      "T_ofNat_ne_zero (n : \u2115) : T \u211d (n : \u2124) \u2260 0 \u2014 Erdos1151OQ04.lean:274",
+      "natDegree_T_ofNat : \u2200 n : \u2115, (T \u211d (n : \u2124)).natDegree = n \u2014 Erdos1151OQ04.lean:282",
+      "leadingCoeff_T_ofNat : \u2200 n \u2265 1, (T \u211d (n : \u2124)).leadingCoeff = 2^(n-1) \u2014 Erdos1151OQ04.lean:306",
+      "Build fixes: all Session 3 lemmas compile cleanly in Proofs/Erdos1151OQ04.lean"
+    ],
     "insights": [
-      "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
-      "Growth rate for rational cosines: Λₙ(cos(πp/q)) ≥ C·log(n)",
-      "Divergence of interpolation sequence follows from Λₙ → ∞ via bump function"
+      "Lebesgue function \u039b\u2099(x) = \u03a3\u2096 |\u2113\u2096(x)| measures worst-case interpolation amplification",
+      "Growth rate for rational cosines: \u039b\u2099(cos(\u03c0p/q)) \u2265 C\u00b7log(n)",
+      "Divergence of interpolation sequence follows from \u039b\u2099 \u2192 \u221e via bump function",
+      "natDegree and leadingCoeff of T_n proved by two-step induction on recurrence T_{n+2} = 2X\u00b7T_{n+1} - T_n",
+      "Product formula proof strategy: T_n - Q_n has deg < n and n roots (by Chebyshev node roots + card_roots_le_degree) \u2192 T_n = Q_n",
+      "(2 : \u211d[X]) = C 2 via Polynomial.C_ofNat; leadingCoeff_C gives leadingCoeff = 2",
+      "apply lemma fails when conclusion has concrete value (n+2) vs metavar (p.natDegree): use have key := lemma proof; rw [key]",
+      "\u2115 strict bound j.val < n does NOT give 2*j+1 < 2*n in \u211d via linarith; need omega on \u2115 then exact_mod_cast",
+      "div_lt_iff renamed to div_lt_iff\u2080 in Mathlib v4.26.0"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Read Erdos1151Problem.lean fully",
-      "Check Mathlib.Analysis.Polynomial.Chebyshev existence",
-      "Search for trigonometric product formula for Lebesgue function"
+      "Prove Chebyshev product formula: define Q_n = 2^{n-1}*prod(X - cos phi_k), show T_n - Q_n = 0 via card_roots_le_degree",
+      "chebyshevNode_is_root + chebyshevNode_injective give n distinct roots of T_n - Q_n",
+      "Unblocks: lagrange_basis_chebyshev_formula, chebyshev_lebesgue_eq, chebyshev_lebesgue_growth"
     ]
   },
   "tags": [

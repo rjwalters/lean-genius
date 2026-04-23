@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős (generalized)",
     "sourceUrl": "https://erdosproblems.com/1022",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1022OQ01.lean",
     "tags": [
       "erdos",
@@ -15,14 +15,14 @@
       "Property B",
       "open question"
     ],
-    "badge": "original",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 1022,
     "erdosUrl": "https://erdosproblems.com/1022",
     "erdosProblemStatus": "open",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
-    "assumptions": "No axioms. All theorems proved from Mathlib. The generalized first-moment bound is stated as a definition.",
+    "assumptions": "No axioms. All theorems proved from Mathlib. The generalized first-moment bound is stated as a definition. Open conjecture; supporting lemmas fully verified.",
     "lineCount": 164,
     "relatedProblems": [
       {

@@ -32,21 +32,6 @@
       "Field extensions (finrank, tower law)"
     ],
     "assumptions": "1 axiom total (0 in main file, 1 transitive via InverseGaloisA5.lean: three_dvd_gal_card — Dedekind's theorem that 3 divides the Galois group order). 1 sorry: the open Inverse Galois Conjecture (intentional). Census theorem sorry-free via imports. AbelRuffiniOQ04OQ01.lean and AbelRuffiniGaloisExtensions.lean are axiom-free. Commutator theorem [S5,S5]=A5 fully proved.",
-    "leanFile": {
-      "lineCount": 723,
-      "theoremCount": 46,
-      "lemmaCount": 0,
-      "defCount": 1,
-      "axiomCount": 1,
-      "sorryCount": 1,
-      "imports": [
-        "Mathlib",
-        "Proofs.AbelRuffiniGaloisExtensions",
-        "Proofs.InverseGaloisA5",
-        "Proofs.AbelRuffiniOQ04OQ01"
-      ],
-      "note": "Key results: sn_solvable_iff, an_solvable_iff, a5_simple, a5_commutator_eq_top, s5_commutator_eq_alternating ([S5,S5]=A5), finrank_over_fixed_field, finrank_fixed_field_over_base, cayley_card, nonsolvable_realized_orders (sorry-free census), inverse_galois_conjecture (open). Census of 18+ explicitly realized groups."
-    },
     "relatedProblems": [
       {
         "id": "inverse-galois",
@@ -309,11 +294,20 @@
       "note": "Proved that every group of order p^a q^b is solvable. This implies that non-solvability requires at least 3 distinct prime factors: |A5| = 60 = 2²·3·5 is the smallest example, connecting to the solvability frontier explored in this file"
     }
   ],
+  "sorries": 1,
   "leanFile": {
-    "lineCount": 723,
     "path": "Proofs/InverseGaloisOQ01.lean",
+    "lineCount": 723,
     "axiomCount": 1,
-    "sorries": 1
-  },
-  "sorries": 1
+    "sorries": 1,
+    "theoremCount": 46,
+    "definitionCount": 1,
+    "imports": [
+      "Mathlib",
+      "Proofs.AbelRuffiniGaloisExtensions",
+      "Proofs.InverseGaloisA5",
+      "Proofs.AbelRuffiniOQ04OQ01"
+    ],
+    "lemmaCount": 0
+  }
 }

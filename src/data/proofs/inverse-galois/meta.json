@@ -35,30 +35,6 @@
       "Algebraic number theory (Eisenstein criterion, Dedekind's theorem)"
     ],
     "assumptions": "5 axioms: inverse_galois_problem_open_conjecture (OPEN PROBLEM), abelian_realizable (Kronecker-Weber), shafarevich_theorem (solvable groups realizable), symmetric_group_realizable (Hilbert irreducibility), three_dvd_gal_card (Dedekind's theorem, in InverseGaloisA5.lean). 0 sorries.",
-    "leanFile": {
-      "lineCount": 1882,
-      "theoremCount": 105,
-      "lemmaCount": 1,
-      "defCount": 1,
-      "axiomCount": 5,
-      "sorryCount": 0,
-      "imports": [
-        "Mathlib.NumberTheory.Cyclotomic.Basic",
-        "Mathlib.NumberTheory.Cyclotomic.Gal",
-        "Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots",
-        "Mathlib.FieldTheory.AbelRuffini",
-        "Mathlib.GroupTheory.Solvable",
-        "Mathlib.GroupTheory.SpecificGroups.Alternating",
-        "Mathlib.FieldTheory.Galois.Basic",
-        "Mathlib.GroupTheory.Perm.Sign",
-        "Mathlib.FieldTheory.SplittingField.Construction",
-        "Mathlib.RingTheory.Polynomial.Cyclotomic.Basic",
-        "Mathlib.RingTheory.Polynomial.Eisenstein.Criterion",
-        "Mathlib.RingTheory.Polynomial.GaussLemma",
-        "Mathlib.NumberTheory.LSeries.PrimesInAP"
-      ],
-      "note": "Total across 6 files (5879 lines, 313 thms, 5 axioms, 0 sorries): InverseGalois.lean (1882 lines, 106 thms, 4 axioms, 0 sorries), InverseGaloisA5.lean (2067 lines, 85 thms, 1 axiom, 0 sorries), InverseGaloisD4.lean (682 lines, 27 thms, 0 axioms, 0 sorries), InverseGaloisF20.lean (529 lines, 27 thms, 0 axioms, 0 sorries), AbelRuffiniGaloisExtensions.lean (534 lines, 59 thms, 0 sorries), AbelRuffini.lean (185 lines, 9 thms, 0 sorries). vandermondeProduct_sq_eq PROVED via ℂ embedding + Sophie Germain identity. q_derivative_eq PROVED via ext + coefficient case analysis. disc_q_val sorry removed (proved as disc_q_val_proved via Vandermonde chain)."
-    },
     "mathlibDependencies": [
       {
         "theorem": "IsCyclotomicExtension.isGalois",
@@ -260,33 +236,6 @@
       "Is there a uniform method to realize all finite groups over ℚ?"
     ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib.NumberTheory.Cyclotomic.Gal",
-      "Mathlib.NumberTheory.Cyclotomic.Basic",
-      "Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots",
-      "Mathlib.FieldTheory.Galois.Basic",
-      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
-      "Mathlib.GroupTheory.Solvable",
-      "Mathlib.GroupTheory.SpecificGroups.Alternating",
-      "Mathlib.FieldTheory.AbelRuffini",
-      "Mathlib.Algebra.Group.Equiv.Basic",
-      "Mathlib.RingTheory.Polynomial.Eisenstein.Criterion",
-      "Mathlib.RingTheory.Polynomial.GaussLemma",
-      "Mathlib.NumberTheory.LSeries.PrimesInAP",
-      "Proofs.NthRootIrrationalOQ01"
-    ],
-    "opens": [
-      "Polynomial"
-    ],
-    "namespace": "InverseGaloisProblem",
-    "lineCount": 1882,
-    "axiomCount": 5,
-    "theoremCount": 106,
-    "definitionCount": 1,
-    "path": "Proofs/InverseGalois.lean",
-    "sorries": 0
-  },
   "crossReferences": [
     {
       "targetId": "abel-ruffini",
@@ -350,5 +299,29 @@
       "leanType": "(n : Nat) -> exists K : IntermediateField Q, Gal(K/Q) ≅ Perm (Fin n)"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/InverseGalois.lean",
+    "lineCount": 1882,
+    "axiomCount": 5,
+    "sorries": 0,
+    "theoremCount": 105,
+    "definitionCount": 1,
+    "imports": [
+      "Mathlib.NumberTheory.Cyclotomic.Basic",
+      "Mathlib.NumberTheory.Cyclotomic.Gal",
+      "Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots",
+      "Mathlib.FieldTheory.AbelRuffini",
+      "Mathlib.GroupTheory.Solvable",
+      "Mathlib.GroupTheory.SpecificGroups.Alternating",
+      "Mathlib.FieldTheory.Galois.Basic",
+      "Mathlib.GroupTheory.Perm.Sign",
+      "Mathlib.FieldTheory.SplittingField.Construction",
+      "Mathlib.RingTheory.Polynomial.Cyclotomic.Basic",
+      "Mathlib.RingTheory.Polynomial.Eisenstein.Criterion",
+      "Mathlib.RingTheory.Polynomial.GaussLemma",
+      "Mathlib.NumberTheory.LSeries.PrimesInAP"
+    ],
+    "lemmaCount": 1
+  }
 }

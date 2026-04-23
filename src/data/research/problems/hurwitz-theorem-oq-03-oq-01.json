@@ -40,12 +40,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved odd n impossibility (no_odd_nsquare) via skew-symmetric det argument. hurwitz_only_if now handles n∉{1,2,4,8}: n=3 exact, n=odd≥5 via no_odd_nsquare, n=even≥6 sorry. 1 sorry remains for even non-admissible case.",
+    "progressSummary": "PROGRESS: Proved crossMat_anticommute (Clifford Cl(n-1) anticommutativity). Fixed 5 build errors. Build passes with 1 sorry (even non-admissible n). Halving argument is next path.",
     "builtItems": [
       "colMat(nsi, j₀): orthogonal matrix from j₀-th column of multiplication table (HurwitzTheorem.lean)",
       "crossMat(nsi, j₁, j₂) = colMat(j₁)ᵀ × colMat(j₂): skew-symmetric AND orthogonal (HurwitzTheorem.lean)",
       "no_odd_nsquare: odd n ≥ 3 → NSquareIdentity n → False, via det(M)² = (-1)^n = -1 < 0 (HurwitzTheorem.lean)",
-      "hurwitz_only_if: handles n∈{1,2,3,4,8} exactly; odd n≥5 via no_odd_nsquare; 1 sorry for even n≥6"
+      "hurwitz_only_if: handles n∈{1,2,3,4,8} exactly; odd n≥5 via no_odd_nsquare; 1 sorry for even n≥6",
+      "crossMat_anticommute: M₂M₃ + M₃M₂ = 0 for pairwise distinct crossMat generators — proves Clifford Cl(n-1) relations (HurwitzTheorem.lean)"
     ],
     "insights": [
       "Radon-Hurwitz numbers ρ(n): {1,2,2,4,4,4,4,8,9,...} — forces n∈{1,2,4,8}",
@@ -59,7 +60,11 @@
       "Wait - correction: crossMat transMul uses: (Mᵀ×M)ᵀ = (col2ᵀ×col1×col1ᵀ×col2) = I using mul_eq_one_comm",
       "Matrix.mul_eq_one_comm: for square matrices over commutative ring, A*B=1 ↔ B*A=1",
       "Odd.neg_one_pow: (-1:R)^n = -1 for Odd n — used in det contradiction",
-      "Even n case (n=6,10,12,...) requires: Clifford algebra Cl(n-1) has no real representation of dim n — needs Radon-Hurwitz theory"
+      "Even n case (n=6,10,12,...) requires: Clifford algebra Cl(n-1) has no real representation of dim n — needs Radon-Hurwitz theory",
+      "crossMat_anticommute establishes anticommuting complex structures M_j satisfying Clifford Cl(0,n-1) relations — final structural blocker for even n requires Radon-Hurwitz min rep dim bound",
+      "ring fails for non-commutative matrix rings: use abel for additive goals, neg_mul for sign flips",
+      "eight_square_identity_norm: two-step simp pattern needed — first simp only unfolds defs, second simp (not only) evaluates ![...] i via Matrix.cons_val_* for all 8 indices",
+      "Fixed 5 pre-existing build errors: right_polarization spurious ring, no_odd_nsquare ring for non-comm, Nat.eq_or_ne → eq_or_ne, eight_square_identity_exists theorem→def, eight_square_identity_norm simp pattern"
     ],
     "mathlibGaps": [
       "Radon-Hurwitz numbers not in Mathlib (as of 2026-04)",
@@ -85,9 +90,11 @@
     "extension"
   ],
   "relatedProofs": [
-    "hurwitz-theorem",
+    "borsuk-ulam",
     "cayley-hamilton-minpoly",
-    "borsuk-ulam"
+    "hurwitz-theorem",
+    "hurwitz-theorem-oq-03",
+    "hurwitz-theorem-oq-03-oq-01"
   ],
   "references": {
     "papers": [
@@ -107,14 +114,14 @@
     {
       "path": "Proofs/HurwitzTheorem.lean",
       "filename": "HurwitzTheorem.lean",
-      "lineCount": 1973,
-      "theoremCount": 20,
+      "lineCount": 2027,
+      "theoremCount": 36,
       "axiomCount": 0,
-      "defCount": 8,
+      "defCount": 15,
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzTheorem.lean"
     }
   ],
-  "lastUpdate": "2026-04-22T00:00:00.000Z"
+  "lastUpdate": "2026-04-23T00:00:00.000Z"
 }

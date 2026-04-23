@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős, Graham (1976)",
     "sourceUrl": "https://erdosproblems.com/374",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos374Problem.lean",
     "tags": [
       "erdos",
@@ -15,7 +15,7 @@
       "perfect-squares",
       "open"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 374,
     "erdosUrl": "https://erdosproblems.com/374",
@@ -46,7 +46,7 @@
       "Legendre's formula: v_p(n!) = ∑_{i≥1} ⌊n/pⁱ⌋ for prime p",
       "Combinatorics: partitions and set counting"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.26.0"
   },
   "crossReferences": [
