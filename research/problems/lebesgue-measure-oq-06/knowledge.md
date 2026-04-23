@@ -119,3 +119,54 @@ File now compiles with exactly 5 intentional `sorry`s:
 The original proof tried to use `Fin.eq_of_val_eq` for the disjointness subgoal.
 This is fragile and unnecessarily constrains the signature. `Subsingleton.elim i j`
 directly gives `i = j` for `i j : Fin 1` without needing any extra hypotheses.
+
+---
+
+## Session 2026-04-23 (Session 2) — free_group_not_amenable PROVED
+
+**Mode**: REVISIT (ACT phase)
+**Outcome**: proof completed — `free_group_not_amenable` fully proved, sorry count 5 → 4
+
+### What I Did
+
+Proved `free_group_not_amenable : ¬ IsAmenable (FreeGroup (Fin 2))` via explicit
+paradoxical decomposition of F₂. Key components:
+
+1. **W_a_two_cover**: `univ = W_a ∪ (a • W_ainv)` — words starting with `a` plus
+   left-multiplied words starting with `a⁻¹` cover F₂. Proved by `ext g`, case split on
+   whether `g.toWord.head? = some (0, true)`.
+
+2. **W_a_smul_disj**: `Disjoint W_a (a • W_ainv)` — no word can start with both `a` and
+   have its `a`-shifted preimage start with `a⁻¹`. Proved using `FreeGroup.Red.Step.cons_not`
+   and `FreeGroup.IsReduced.infix`.
+
+3. **W_b_two_cover**, **W_b_smul_disj**: Symmetric versions for generator `b = FreeGroup.of 1`.
+
+4. **free_group_not_amenable** itself: If μ were an amenable measure on F₂, left-invariance
+   gives `μ(W_a) + μ(W_ainv) = 1` and `μ(W_b) + μ(W_binv) = 1`. Pairwise disjointness of
+   the four sets gives `μ(W_a) + μ(W_ainv) + μ(W_b) + μ(W_binv) ≤ 1`, contradicting
+   adding the two equations to get ≥ 2.
+
+### Key Technical Fixes
+
+- **`rcases hw : w.toWord with _ | ⟨hd, rest⟩`**: After this, Lean substitutes `w.toWord → hd :: rest` in the goal, so the existential goal becomes `∃ tl, hd :: rest = (0, false) :: tl` — NOT `w.toWord = ...`. The proof term must match the *substituted* form.
+
+- **Correct proof**: `exact ⟨rest, by rw [hd_eq]⟩` — where `hd_eq : hd = (0, false)`, `rw [hd_eq]` closes `hd :: rest = (0, false) :: rest` directly.
+
+- **Wrong attempts**: `hw.trans (by simp [hd_eq])` fails because `simp` sees goal `hd :: rest = ?m` with a free RHS metavar and can't close it. `hw.trans` is not needed — the goal is already `hd :: rest = ...` not `w.toWord = ...`.
+
+- **`FreeGroup.isReduced_toWord`**: All arguments implicit — use type annotation `have h1 : FreeGroup.IsReduced w.toWord := FreeGroup.isReduced_toWord`.
+
+- **`instSMulOfMul`**: `a • b = a * b` definitionally — `mul_inv_cancel_left _ g` works where `by group` fails.
+
+- **`Set.union_diff_cancel (Set.subset_univ _)`**: Provides `s ∪ (univ \ s) = univ`.
+
+- **`le_add_of_nonneg_right (zero_le _)`**: Provides `a ≤ a + b` in ℝ≥0∞.
+
+### Files Modified
+- `proofs/Proofs/LebesgueMeasureOQ06.lean`: 419 → 527 lines, sorries 5 → 4
+
+### Next Steps
+- Submit `hausdorff_free_subgroup` sorry to Aristotle (explicit rotation matrix freeness — HARD)
+- Consider building F₂ paradoxical decomposition as standalone algebraic lemma (~150 lines)
+- `int_amenable` sorry: tractable via Banach limit / Mathlib's Hahn-Banach (~200 lines)

@@ -21,7 +21,7 @@
     "iteration": 1,
     "focus": "Banach-Tarski formalization: equidecomposability, paradoxical sets, amenability",
     "blockers": [],
-    "nextAction": "Build docker and verify compilation; attempt Aristotle on helper sorries",
+    "nextAction": "Submit hausdorff_free_subgroup to Aristotle; consider building F₂ paradoxical decomposition lemmas as standalone infrastructure",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Banach-Tarski fully formalized at statement level (287 lines). Abstract framework (Equidecomposable, IsParadoxical, IsAmenable) defined. ENNReal helper and equidecomposable_refl fully proved. 6 sorries for main theorems (axiomatized).",
+    "progressSummary": "PROGRESS: free_group_not_amenable FULLY PROVED via F₂ word-structure paradoxical decomposition. 4 sorries remain (hausdorff_free_subgroup, banach_tarski, banach_tarski_pieces_nonmeasurable, int_amenable — all axiomatized by design).",
     "builtItems": [
       "Equidecomposable (G-equidecomposability, with notation ≃ᴳ[G]) — proofs/Proofs/LebesgueMeasureOQ06.lean:43",
       "IsParadoxical — proofs/Proofs/LebesgueMeasureOQ06.lean:81",
@@ -42,7 +42,8 @@
       "banach_tarski_pieces_nonmeasurable (axiomatized, sorry) — proofs/Proofs/LebesgueMeasureOQ06.lean:234",
       "free_group_not_amenable (axiomatized, sorry) — proofs/Proofs/LebesgueMeasureOQ06.lean:276",
       "int_amenable (axiomatized, sorry) — proofs/Proofs/LebesgueMeasureOQ06.lean:271",
-      "Gallery entry: src/data/proofs/lebesgue-measure-oq-06/ (meta.json, index.ts, annotations.json)"
+      "Gallery entry: src/data/proofs/lebesgue-measure-oq-06/ (meta.json, index.ts, annotations.json)",
+      "free_group_not_amenable (PROVED) — F₂ non-amenability via paradoxical decomposition, word-structure lemmas W_a_two_cover, W_a_smul_disj, W_b_two_cover, W_b_smul_disj — proofs/Proofs/LebesgueMeasureOQ06.lean:472"
     ],
     "insights": [
       "Banach-Tarski NOT in Mathlib as of 2026-04 — confirmed via search. Available Mathlib pieces: Matrix.orthogonalGroup, FreeGroup, IsometryEquiv, EuclideanSpace.",
@@ -160,11 +161,11 @@
     {
       "path": "Proofs/LebesgueMeasureOQ06.lean",
       "filename": "LebesgueMeasureOQ06.lean",
-      "lineCount": 287,
+      "lineCount": 527,
       "theoremCount": 7,
       "axiomCount": 6,
       "defCount": 5,
-      "sorryCount": 6,
+      "sorryCount": 4,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ06.lean"
     }

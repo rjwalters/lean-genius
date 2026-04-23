@@ -18,10 +18,10 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 5,
-    "axiomCount": 5,
-    "lineCount": 286,
-    "assumptions": "5 sorries encoding axiomatized results: hausdorff_free_subgroup (free subgroup of SO(3)), banach_tarski (main theorem), banach_tarski_pieces_nonmeasurable (non-measurability of pieces), int_amenable (ℤ amenability), free_group_not_amenable (F₂ non-amenability). The main proof requires ~800 lines via free subgroup of SO(3) — beyond this gallery entry's scope. Note: paradoxical_no_finite_measure is fully proved (no sorry).",
+    "sorries": 4,
+    "axiomCount": 4,
+    "lineCount": 527,
+    "assumptions": "4 sorries encoding axiomatized results: hausdorff_free_subgroup (free subgroup of SO(3)), banach_tarski (main theorem), banach_tarski_pieces_nonmeasurable (non-measurability of pieces), int_amenable (ℤ amenability). The main proof requires ~800 lines via free subgroup of SO(3) — beyond this gallery entry's scope. free_group_not_amenable (F₂ non-amenability) is now fully proved via explicit word-structure decomposition of F₂.",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -30,7 +30,8 @@
       "IsAmenable (amenable group definition)",
       "ennreal_add_self_eq_self (proved: a + a = a → a = 0 or a = ⊤ in ENNReal)",
       "equidecomposable_refl (proved: every set is self-equidecomposable)",
-      "Framework: paradoxical sets have no finite invariant measure (fully proved, no sorry)"
+      "Framework: paradoxical sets have no finite invariant measure (fully proved, no sorry)",
+      "free_group_not_amenable (PROVED): F₂ is not amenable, via explicit paradoxical decomposition F₂ = W_a ∪ a·W_ainv = W_b ∪ b·W_binv with pairwise disjointness verified by FreeGroup word structure"
     ]
   },
   "overview": {
@@ -201,12 +202,12 @@
       "Mathlib"
     ],
     "namespace": "BanachTarski",
-    "lineCount": 286,
-    "axiomCount": 5,
+    "lineCount": 527,
+    "axiomCount": 4,
     "theoremCount": 7,
     "definitionCount": 5,
     "path": "Proofs/LebesgueMeasureOQ06.lean",
-    "sorries": 5
+    "sorries": 4
   },
-  "sorries": 5
+  "sorries": 4
 }

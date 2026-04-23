@@ -319,31 +319,138 @@ private lemma W_b_W_binv_disj : Disjoint W_b W_binv := by
   intro x h1 h2; rw [h1] at h2; exact absurd h2 (by decide)
 
 /-- Two-piece cover: F₂ = W_a ∪ (a • W_ainv).
-    Word-structure proof: if w ∉ W_a, then a⁻¹ * w starts with a⁻¹.
-    The key fact is: reduce ((0,true) :: l) with l.head? ≠ some (0,false)
-    produces (0,true) :: reduce l (no cancellation at the junction).
-    (Aristotle candidate — pure word-reduction property) -/
+    Word-structure proof: if g ∉ W_a, then a⁻¹ * g starts with a⁻¹.
+    Key: reduce ((0,false) :: L) with L.head? ≠ some (0,true) gives (0,false)::L (no cancel). -/
 private lemma W_a_two_cover :
     (Set.univ : Set (FreeGroup (Fin 2))) =
     W_a ∪ (FreeGroup.of (0 : Fin 2) • W_ainv) := by
-  sorry
+  ext g
+  simp only [Set.mem_univ, Set.mem_union, W_a, W_ainv, Set.mem_setOf_eq,
+             Set.mem_smul_set, true_iff]
+  by_cases hg : g.toWord.head? = some ((0 : Fin 2), true)
+  · exact Or.inl hg
+  · refine Or.inr ⟨(FreeGroup.of (0 : Fin 2))⁻¹ * g, ?_, mul_inv_cancel_left _ g⟩
+    -- Show ((FreeGroup.of 0)⁻¹ * g).toWord.head? = some (0, false)
+    rw [FreeGroup.toWord_mul, FreeGroup.toWord_inv, FreeGroup.toWord_of]
+    -- invRev [(0, true)] = [(0, false)]
+    simp only [FreeGroup.invRev, List.reverse_singleton, List.map_singleton, Bool.not_true,
+               List.singleton_append]
+    -- Goal: (reduce ((0, false) :: g.toWord)).head? = some (0, false)
+    rw [FreeGroup.reduce.cons, FreeGroup.reduce_toWord]
+    -- Goal: (casesOn g.toWord [(0, false)] fun hd tl => if 0=hd.1 ∧ false=!hd.2 then tl else ...).head? = some (0, false)
+    rcases hx : g.toWord with _ | ⟨⟨a, b⟩, tl⟩
+    · -- nil case: casesOn [] = [(0, false)], head? = some (0, false) ✓
+      rfl
+    · -- cons case: need to show condition 0=a ∧ false=!b is false
+      rw [hx] at hg
+      simp only [List.head?] at hg
+      have hne : (a, b) ≠ ((0 : Fin 2), true) := fun heq => hg (heq ▸ rfl)
+      have hcond : ¬ ((0 : Fin 2) = a ∧ (false : Bool) = !b) := by
+        rintro ⟨rfl, hb⟩
+        exact hne (Prod.ext rfl (by cases b with | false => simp at hb | true => rfl))
+      -- casesOn ((a,b)::tl) ... = if hcond then tl else (0,false)::(a,b)::tl
+      -- After if_neg: = (0,false)::(a,b)::tl, head? = some (0,false) ✓
+      change (if (0 : Fin 2) = a ∧ (false : Bool) = !b then tl
+              else ((0 : Fin 2), false) :: (a, b) :: tl).head? = some ((0 : Fin 2), false)
+      rw [if_neg hcond]
+      rfl
 
 /-- Disjointness: W_a ∩ (a • W_ainv) = ∅.
-    If w starts with a and w = a * v (v starts with a⁻¹), then
-    w = a * a⁻¹ * rest = rest, which by reducedness cannot start with a.
-    (Aristotle candidate) -/
+    If g starts with a and g = a * w (w starts with a⁻¹), then
+    g.toWord = reduce ((a)(a⁻¹) :: w.tail) = w.tail, but w.tail can't start with a
+    because (a⁻¹ :: w.tail) is reduced. -/
 private lemma W_a_smul_disj : Disjoint W_a (FreeGroup.of (0 : Fin 2) • W_ainv) := by
-  sorry
+  simp only [Set.disjoint_left, W_a, Set.mem_smul_set, W_ainv, Set.mem_setOf_eq]
+  intro g hga ⟨w, hwainv, hgw⟩
+  -- hgw : FreeGroup.of 0 • w = g; convert • to * (definitionally equal for groups)
+  have hg_eq : g = FreeGroup.of (0 : Fin 2) * w := by rw [← hgw]; rfl
+  -- Extract tail: w.toWord = (0, false) :: tl
+  have ⟨tl, htl⟩ : ∃ tl, w.toWord = ((0 : Fin 2), false) :: tl := by
+    rcases hw : w.toWord with _ | ⟨hd, rest⟩
+    · simp [hw] at hwainv
+    · rw [hw] at hwainv
+      have hd_eq : hd = ((0 : Fin 2), false) := by
+        have : (hd :: rest).head? = some hd := rfl
+        rw [this] at hwainv; exact Option.some.inj hwainv
+      exact ⟨rest, by rw [hd_eq]⟩
+  -- tl is reduced (suffix of reduced word)
+  have hred_tl : FreeGroup.IsReduced tl := by
+    have h1 : FreeGroup.IsReduced w.toWord := FreeGroup.isReduced_toWord
+    rw [htl] at h1
+    exact h1.infix ⟨[((0 : Fin 2), false)], [], by simp⟩
+  -- (0, true) and (0, false) cancel: reduce ((0,true)::(0,false)::tl) = tl
+  have hstep : FreeGroup.Red.Step (((0 : Fin 2), true) :: ((0 : Fin 2), false) :: tl) tl :=
+    FreeGroup.Red.Step.cons_not
+  have hreduce_eq : FreeGroup.reduce (((0 : Fin 2), true) :: ((0 : Fin 2), false) :: tl) = tl := by
+    rw [FreeGroup.reduce.eq_of_red hstep.to_red, hred_tl.reduce_eq]
+  -- g.toWord = reduce ((0,true) :: w.toWord) = reduce ((0,true)::(0,false)::tl) = tl
+  rw [hg_eq, FreeGroup.toWord_mul, FreeGroup.toWord_of, List.singleton_append, htl,
+      hreduce_eq] at hga
+  -- hga : tl.head? = some (0, true)
+  -- But (0,false)::tl is reduced → tl can't start with (0,true)
+  have hred_con : FreeGroup.IsReduced (((0 : Fin 2), false) :: tl) := htl ▸ FreeGroup.isReduced_toWord
+  rcases tl with _ | ⟨⟨a, c⟩, rest⟩
+  · simp at hga
+  · have heq : (a, c) = ((0 : Fin 2), true) := Option.some_injective _ hga
+    rw [heq, FreeGroup.isReduced_cons_cons] at hred_con
+    simp at hred_con
 
 /-- Two-piece cover for b: F₂ = W_b ∪ (b • W_binv). -/
 private lemma W_b_two_cover :
     (Set.univ : Set (FreeGroup (Fin 2))) =
     W_b ∪ (FreeGroup.of (1 : Fin 2) • W_binv) := by
-  sorry
+  ext g
+  simp only [Set.mem_univ, Set.mem_union, W_b, W_binv, Set.mem_setOf_eq,
+             Set.mem_smul_set, true_iff]
+  by_cases hg : g.toWord.head? = some ((1 : Fin 2), true)
+  · exact Or.inl hg
+  · refine Or.inr ⟨(FreeGroup.of (1 : Fin 2))⁻¹ * g, ?_, mul_inv_cancel_left _ g⟩
+    rw [FreeGroup.toWord_mul, FreeGroup.toWord_inv, FreeGroup.toWord_of]
+    simp only [FreeGroup.invRev, List.reverse_singleton, List.map_singleton, Bool.not_true,
+               List.singleton_append]
+    rw [FreeGroup.reduce.cons, FreeGroup.reduce_toWord]
+    rcases hx : g.toWord with _ | ⟨⟨a, b⟩, tl⟩
+    · rfl
+    · rw [hx] at hg
+      simp only [List.head?] at hg
+      have hne : (a, b) ≠ ((1 : Fin 2), true) := fun heq => hg (heq ▸ rfl)
+      have hcond : ¬ ((1 : Fin 2) = a ∧ (false : Bool) = !b) := by
+        rintro ⟨rfl, hb⟩
+        exact hne (Prod.ext rfl (by cases b with | false => simp at hb | true => rfl))
+      change (if (1 : Fin 2) = a ∧ (false : Bool) = !b then tl
+              else ((1 : Fin 2), false) :: (a, b) :: tl).head? = some ((1 : Fin 2), false)
+      rw [if_neg hcond]
+      rfl
 
 /-- Disjointness: W_b ∩ (b • W_binv) = ∅. -/
 private lemma W_b_smul_disj : Disjoint W_b (FreeGroup.of (1 : Fin 2) • W_binv) := by
-  sorry
+  simp only [Set.disjoint_left, W_b, Set.mem_smul_set, W_binv, Set.mem_setOf_eq]
+  intro g hgb ⟨w, hwbinv, hgw⟩
+  have ⟨tl, htl⟩ : ∃ tl, w.toWord = ((1 : Fin 2), false) :: tl := by
+    rcases hw : w.toWord with _ | ⟨hd, rest⟩
+    · simp [hw] at hwbinv
+    · rw [hw] at hwbinv
+      have hd_eq : hd = ((1 : Fin 2), false) := by
+        have : (hd :: rest).head? = some hd := rfl
+        rw [this] at hwbinv; exact Option.some.inj hwbinv
+      exact ⟨rest, by rw [hd_eq]⟩
+  have hred_tl : FreeGroup.IsReduced tl := by
+    have h1 : FreeGroup.IsReduced w.toWord := FreeGroup.isReduced_toWord
+    rw [htl] at h1
+    exact h1.infix ⟨[((1 : Fin 2), false)], [], by simp⟩
+  have hstep : FreeGroup.Red.Step (((1 : Fin 2), true) :: ((1 : Fin 2), false) :: tl) tl :=
+    FreeGroup.Red.Step.cons_not
+  have hreduce_eq : FreeGroup.reduce (((1 : Fin 2), true) :: ((1 : Fin 2), false) :: tl) = tl := by
+    rw [FreeGroup.reduce.eq_of_red hstep.to_red, hred_tl.reduce_eq]
+  have hg_eq : g = FreeGroup.of (1 : Fin 2) * w := by rw [← hgw]; rfl
+  rw [hg_eq, FreeGroup.toWord_mul, FreeGroup.toWord_of, List.singleton_append, htl,
+      hreduce_eq] at hgb
+  have hred_con : FreeGroup.IsReduced (((1 : Fin 2), false) :: tl) := htl ▸ FreeGroup.isReduced_toWord
+  rcases tl with _ | ⟨⟨a, c⟩, rest⟩
+  · simp at hgb
+  · have heq : (a, c) = ((1 : Fin 2), true) := Option.some_injective _ hgb
+    rw [heq, FreeGroup.isReduced_cons_cons] at hred_con
+    simp at hred_con
 
 /-- The free group of rank 2 is NOT amenable.
 
@@ -402,10 +509,11 @@ theorem free_group_not_amenable : ¬IsAmenable (FreeGroup (Fin 2)) := by
     have heq : μ (W_a ∪ W_ainv ∪ W_b ∪ W_binv) +
                μ (Set.univ \ (W_a ∪ W_ainv ∪ W_b ∪ W_binv)) = 1 := by
       rw [← hμ_add _ _ disjoint_sdiff_right,
-          Set.union_sdiff_of_subset (Set.subset_univ _), hμ_total]
+          Set.union_diff_cancel (Set.subset_univ _), hμ_total]
     calc μ (W_a ∪ W_ainv ∪ W_b ∪ W_binv)
         ≤ μ (W_a ∪ W_ainv ∪ W_b ∪ W_binv) +
-          μ (Set.univ \ (W_a ∪ W_ainv ∪ W_b ∪ W_binv)) := le_add_right _ _
+          μ (Set.univ \ (W_a ∪ W_ainv ∪ W_b ∪ W_binv)) :=
+            le_add_of_nonneg_right (zero_le _)
       _ = 1 := heq
   -- Step 5: Contradiction — 2 ≤ 1 in ℝ≥0∞
   have h_two : (2 : ℝ≥0∞) ≤ 1 :=
