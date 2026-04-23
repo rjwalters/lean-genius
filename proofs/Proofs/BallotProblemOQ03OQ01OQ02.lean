@@ -3537,4 +3537,48 @@ example : LatticePathLGV.ballotSeqCount 4 1 * (6 * 1 * 1) = 6 := by native_decid
 example : LatticePathLGV.ballotSeqCount 4 2 * (3 * 1 * 2) = 24 := by native_decide -- [3,2]
 example : LatticePathLGV.ballotSeqCount 5 3 * (4 * 1 * 6) = 720 := by native_decide -- [4,3]
 
+-- ============================================================
+-- PART XII: Hook-Length Formula for Arbitrary 2-Row Diagrams
+-- ============================================================
+
+/-
+  Any YoungDiagram μ with rowLen 2 = 0 (at most 2 rows) equals twoRowYD a b
+  where a = μ.rowLen 0 and b = μ.rowLen 1.
+  Combined with hook_length_formula_two_row_gen, this gives the HLF for ALL 2-row shapes.
+  This covers: ⊥ (empty), 1×n (1-row), and all 2-row shapes [a,b] with a ≥ b.
+-/
+
+/-- Any YoungDiagram with at most 2 rows equals twoRowYD (rowLen 0) (rowLen 1).
+    Key idea: (i,j) ∈ μ ↔ j < rowLen i; for i ≥ 2, rowLen i ≤ rowLen 2 = 0,
+    so no cells with row index ≥ 2 exist. -/
+private lemma eq_twoRowYD_of_atMostTwoRows (μ : YoungDiagram) (h2 : μ.rowLen 2 = 0) :
+    ∃ (hab : μ.rowLen 1 ≤ μ.rowLen 0), μ = twoRowYD (μ.rowLen 0) (μ.rowLen 1) hab := by
+  have hab : μ.rowLen 1 ≤ μ.rowLen 0 := μ.rowLen_anti 0 1 (by omega)
+  refine ⟨hab, ?_⟩
+  apply YoungDiagram.ext
+  ext ⟨i, j⟩
+  simp only [YoungDiagram.mem_cells, YoungDiagram.mem_iff_lt_rowLen, mem_twoRowYD hab]
+  constructor
+  · intro hlt
+    rcases i with _ | _ | i
+    · exact Or.inl ⟨rfl, hlt⟩
+    · exact Or.inr ⟨rfl, hlt⟩
+    · -- i+2 ≥ 2: rowLen (i+2) ≤ rowLen 2 = 0, so j < 0, contradiction
+      have hzero : μ.rowLen (i + 2) = 0 :=
+        Nat.le_zero.mp (calc μ.rowLen (i + 2)
+              ≤ μ.rowLen 2 := μ.rowLen_anti 2 (i + 2) (by omega)
+            _ = 0 := h2)
+      omega
+  · rintro (⟨rfl, hlt⟩ | ⟨rfl, hlt⟩) <;> exact hlt
+
+/-- **Hook-length formula for all YoungDiagrams with at most 2 rows.**
+    Any μ with rowLen 2 = 0 is characterized as twoRowYD (rowLen 0) (rowLen 1),
+    so hook_length_formula_two_row_gen directly applies.
+    This subsumes: ⊥ (empty), 1-row, 2-row-rectangle, and general 2-row [a,b]. -/
+theorem hook_length_formula_atMostTwoRows (μ : YoungDiagram) (h2 : μ.rowLen 2 = 0) :
+    Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.card.factorial := by
+  obtain ⟨hab, hμ⟩ := eq_twoRowYD_of_atMostTwoRows μ h2
+  rw [hμ]
+  exact hook_length_formula_two_row_gen (μ.rowLen 0) (μ.rowLen 1) hab
+
 end HookLengthFormula
