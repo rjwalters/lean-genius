@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 6,
     "axiomCount": 4,
-    "lineCount": 542,
+    "lineCount": 287,
     "assumptions": "4 axioms: hausdorff_free_subgroup (Hausdorff 1914 — SO(3) contains F₂, requires 300+ lines of number theory), banach_tarski (Banach-Tarski 1924 — main paradox, requires 800+ lines via Hausdorff paradox + AC), banach_tarski_pieces_nonmeasurable (classical non-measurability corollary), int_amenable (Markov-Kakutani — ℤ is amenable via Cesàro means/ultrafilter construction). 6 sorries in supporting theorems: measure-theoretic consequence of paradoxical decomposition, SO(3) rotation matrices, banach_tarski_corollary, banach_tarski_pieces_measurable_contradiction, cesaro_mean_density, and free_group_not_amenable.",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
@@ -201,7 +201,7 @@
       "Mathlib"
     ],
     "namespace": "BanachTarski",
-    "lineCount": 542,
+    "lineCount": 287,
     "axiomCount": 4,
     "theoremCount": 7,
     "definitionCount": 5,
