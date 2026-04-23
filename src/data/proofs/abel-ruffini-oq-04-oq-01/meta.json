@@ -222,50 +222,50 @@
   "sections": [
     {
       "id": "header",
-      "title": "Problem Overview, Proof Chain, and Vestigial Lemmas",
+      "title": "Problem Overview, Proof Chain, and Pre-Classical Computational Lemmas",
       "startLine": 1,
-      "endLine": 133,
-      "summary": "Documents the complete Abel-Ruffini proof chain and motivation for choosing $x^5 - 4x + 2$. Lists all 5 steps from $A_5$ simplicity to unsolvability by radicals. Includes vestigial computational lemmas (mod-13 facts, normalizer computations) from earlier proof strategies. Opens namespace and imports Mathlib.",
+      "endLine": 98,
+      "summary": "Documents the complete Abel-Ruffini proof chain and motivation for choosing $x^5 - 4x + 2$. Lists all 5 steps from $A_5$ simplicity to unsolvability by radicals. Lines 63-91: three computational lemmas proved by `native_decide` that must appear before `open scoped Classical` for decidability — `perm_fin5_order5_order3_not_commute` (used in Sylow order-15 elimination), `perm_fin5_order_dvd5_sign_one` (elements of order dividing 5 in $S_5$ are even), and `transposition_not_normalizing_5cycle` (used in Sylow elimination of orders 10, 20, 40). All three feed into the main proof.",
       "mathContext": "Proof chain: (1) $A_5$ simple, (2) $S_n$ not solvable for $n \\geq 5$, (3) solvable by radicals $\\Rightarrow$ solvable Gal, (4) $\\text{Gal}(x^5-4x+2/\\mathbb{Q}) \\cong S_5$, (5) roots not expressible by radicals."
     },
     {
       "id": "polynomial",
       "title": "Part I: The Polynomial p = X⁵ - 4X + 2",
-      "startLine": 135,
-      "endLine": 143,
+      "startLine": 99,
+      "endLine": 108,
       "summary": "Defines $p = X^5 - 4X + 2$ over $\\mathbb{Q}$ and its $\\mathbb{Z}[X]$ version `p_int` for Eisenstein criterion application.",
       "mathContext": "$p(x) = x^5 - 4x + 2 \\in \\mathbb{Q}[X]$, $p_{\\text{int}} = x^5 - 4x + 2 \\in \\mathbb{Z}[X]$."
     },
     {
       "id": "irreducibility",
       "title": "Part II: Irreducibility via Eisenstein at p = 2",
-      "startLine": 145,
-      "endLine": 219,
+      "startLine": 109,
+      "endLine": 183,
       "summary": "Proves $p$ is irreducible over $\\mathbb{Q}$. First proves irreducibility over $\\mathbb{Z}$ using Eisenstein's criterion at the prime ideal $(2)$, then transfers to $\\mathbb{Q}$ via Gauss's lemma (monic $\\Rightarrow$ primitive).",
       "mathContext": "Eisenstein at $(2) \\subset \\mathbb{Z}$: $2 \\nmid 1$, $2 \\mid 0, 0, 0, -4, 2$, $4 \\nmid 2$. Therefore $p$ is irreducible over $\\mathbb{Z}$, hence over $\\mathbb{Q}$ by Gauss's lemma."
     },
     {
       "id": "structure",
       "title": "Part III: Basic Structural Properties",
-      "startLine": 220,
-      "endLine": 243,
+      "startLine": 184,
+      "endLine": 207,
       "summary": "Proves $\\deg(p) = 5$, $p$ is monic, $p$ is separable (char 0), and $|\\text{rootSet}(p)| = 5$.",
       "mathContext": "$\\deg(p) = 5$, $p$ monic and separable. In the splitting field: $|\\{\\alpha : p(\\alpha) = 0\\}| = 5$."
     },
     {
       "id": "galois-structure",
       "title": "Part IV: Galois Group Structure",
-      "startLine": 244,
-      "endLine": 267,
+      "startLine": 208,
+      "endLine": 231,
       "summary": "Proves $5 \\mid |\\text{Gal}|$ (prime degree gives transitive action, orbit-stabilizer) and $|\\text{Gal}| \\mid 120$ (galActionHom embeds $\\text{Gal}$ into $S_5$). Together: $|\\text{Gal}| \\in \\{5, 10, 15, 20, 30, 40, 60, 120\\}$.",
       "mathContext": "$5 \\mid |\\text{Gal}|$ and $|\\text{Gal}| \\mid 5! = 120$. Possible orders: $\\{5, 10, 15, 20, 30, 40, 60, 120\\}$."
     },
     {
       "id": "gal-order",
       "title": "Parts V(a)-(f): Galois Group Order |Gal| = 120 (Theorem)",
-      "startLine": 268,
+      "startLine": 232,
       "endLine": 1377,
-      "summary": "The largest section (~1200 lines): proves $|\\text{Gal}| = 120$ via systematic case elimination. (a) Lines 268-299: polynomial evaluations showing 3 sign changes. (b) Lines 301-393: `closure_cycle_swap_eq_top` — 5-cycle + transposition generates $S_5$ [vestigial]. (c) Lines 394-439: `galToPerm5` injection from $\\text{Gal}$ to $S_5$. (d) Lines 440-609: Sylow elimination of orders 15 and 30. (e) Lines 610-908: Vandermonde machinery, discriminant sign, and `gal_has_odd_perm`. (e2) Lines 909-1341: complex conjugation gives transposition, Sylow elimination of non-3-divisible orders. (f) Lines 1348-1480: case elimination and `gal_card_eq_120`. Fully proved with 0 axioms.",
+      "summary": "The largest section (~1150 lines): proves $|\\text{Gal}| = 120$ via systematic case elimination. (a) Lines 232-264: polynomial evaluations showing 3 sign changes (sign change comment motivates complex conjugation argument). (b) Lines 265-293: `c5` 5-cycle definition and Part V(c) Galois infrastructure header. (c) Lines 306-336: `galToPerm5` injection from $\\text{Gal}$ to $S_5$, injectivity, and `galSign`. (d) Lines 337-507: Sylow elimination of orders 15 and 30 (`no_subgroup_order_15`, `a5_card`, `no_subgroup_order_30`). (e) Lines 508-806: Vandermonde machinery, discriminant computation ($\\Delta^2 = -212144$), and `gal_has_odd_perm`. (e2) Lines 807-1244: complex conjugation gives transposition (`sfEmb`, `conjGalAut`, `gal_has_transposition`), Sylow elimination of non-3-divisible orders (`gal_card_ne_20`, `gal_card_ne_10`, `gal_card_ne_40`), `three_dvd_gal_card`. (f) Lines 1246-1377: case elimination (`gal_card_ne_15`, `gal_card_ne_30`, `gal_card_ne_60`) and `gal_card_eq_120`. Fully proved with 0 axioms.",
       "mathContext": "Theorem: $|\\text{Gal}(x^5-4x+2/\\mathbb{Q})| = 120$. From $5 \\mid |G|$, $3 \\mid |G|$, $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15 (Sylow), not 30 ($A_5$ simple), not 60 ($\\text{Gal} \\not\\subset A_5$ by discriminant sign). All steps fully proved."
     },
     {
@@ -294,24 +294,24 @@
     },
     {
       "id": "three-dvd-proved",
-      "title": "Part V(d2): three_dvd_gal_card as Theorem (formerly Axiom A)",
-      "startLine": 1313,
-      "endLine": 1341,
+      "title": "Part V(e2): three_dvd_gal_card (Eliminating Non-3-Divisible Orders)",
+      "startLine": 1210,
+      "endLine": 1244,
       "summary": "Proves `three_dvd_gal_card`: $3 \\mid |\\text{Gal}|$ by eliminating all non-3-divisible candidate orders $\\{5, 10, 20, 40\\}$. Order 5 eliminated by sign argument (order-5 permutations in $S_5$ are even). Order 20 eliminated by `gal_card_ne_20` (F₂₀ has no transpositions but Gal does). Orders 10 and 40 eliminated via Sylow theory. All cases fully proved.",
       "mathContext": "$|\\text{Gal}| \\in \\{5,10,15,20,30,40,60,120\\}$. Not 5 (sign), not 10, 20, 40 (Sylow/transposition arguments). Remaining: $\\{15,30,60,120\\}$ — all divisible by 3."
     },
     {
       "id": "vandermonde-infrastructure",
       "title": "Part V(e)+(e2): Vandermonde, Complex Conjugation, and Discriminant Infrastructure",
-      "startLine": 610,
-      "endLine": 1341,
+      "startLine": 508,
+      "endLine": 1244,
       "summary": "Root enumeration (`rootEnum_p`), Vandermonde product $\\Delta = \\det(V(\\text{roots}))$, Galois permutation of roots, Vandermonde permutation identity ($\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta$), and `gal_has_odd_perm` proved via the discriminant sign argument ($\\text{disc}(p) < 0$ implies $\\Delta \\notin \\mathbb{Q}$, so some $\\sigma$ has odd sign).",
       "mathContext": "$\\Delta = \\prod_{i<j}(\\alpha_j - \\alpha_i)$. $\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta$. If all signs $+1$, $\\Delta \\in \\mathbb{Q}$ but $\\Delta^2 < 0$ — contradiction."
     },
     {
       "id": "gal-card-120",
       "title": "Part V(f): |Gal(p/ℚ)| = 120 (Case Elimination)",
-      "startLine": 1348,
+      "startLine": 1246,
       "endLine": 1377,
       "summary": "Proves `gal_card_eq_120`: $|\\text{Gal}| = 120$ by combining $15 \\mid |\\text{Gal}|$ (from `five_dvd_gal_card` and `three_dvd_gal_card`) with elimination of orders 15 (Sylow), 30 ($A_5$ simplicity), and 60 (odd permutation). Only 120 remains.",
       "mathContext": "$15 \\mid |G|$, $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15, 30, 60 $\\Rightarrow |G| = 120$."
@@ -333,7 +333,7 @@
       "Can this approach be generalized to realize other transitive subgroups of $S_5$ (e.g., $A_5$, $D_5$, $F_{20}$) as Galois groups of specific quintics?",
       "Can the repetitive Sylow arguments for `gal_card_ne_10`, `gal_card_ne_20`, and `gal_card_ne_40` be factored into a single generic lemma? All three follow the same pattern: a transposition cannot normalize the unique Sylow 5-subgroup.",
       "Can Mathlib's growing theory of polynomial Galois groups eventually compute $|\\text{Gal}|$ for specific polynomials via a unified tactic, avoiding the manual case-elimination approach used here?",
-      "The file contains 7 vestigial computational lemmas from earlier proof strategies (mod-13 facts, `closure_cycle_swap_eq_top`, etc.) that are no longer used in the main proof. Can these be removed or moved to a separate pedagogical file?"
+      "The file documents the Key Group Theory Lemma (a transitive subgroup of $S_p$ containing a transposition is $S_p$) in a comment block, and defines the `c5` 5-cycle supporting it, but the formal proof of this classical result is not included. The current proof avoids it via Sylow elimination. Should this classical lemma be formalized for pedagogical completeness?"
     ]
   },
   "mainTheorems": [

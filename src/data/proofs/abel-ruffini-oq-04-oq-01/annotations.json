@@ -4,11 +4,11 @@
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
       "startLine": 1,
-      "endLine": 133
+      "endLine": 98
     },
     "type": "context",
     "title": "Proof Chain Overview and Mathematical Background",
-    "content": "Documents the complete Abel-Ruffini proof chain as realized in this formalization. The chain proceeds: (1) $A_5$ is simple (Mathlib), (2) $S_n$ ($n \\geq 5$) is not solvable (parent OQ-04 file), (3) solvable by radicals $\\Rightarrow$ solvable Galois group (Mathlib's `solvableByRad.isSolvable'`), (4) $\\text{Gal}(x^5 - 4x + 2/\\mathbb{Q}) \\cong S_5$ (this file), (5) therefore roots of $x^5 - 4x + 2$ cannot be expressed by radicals. This is the final link: a concrete polynomial witness.",
+    "content": "Documents the complete Abel-Ruffini proof chain as realized in this formalization. The chain proceeds: (1) $A_5$ is simple (Mathlib), (2) $S_n$ ($n \\geq 5$) is not solvable (parent OQ-04 file), (3) solvable by radicals $\\Rightarrow$ solvable Galois group (Mathlib's `solvableByRad.isSolvable'`), (4) $\\text{Gal}(x^5 - 4x + 2/\\mathbb{Q}) \\cong S_5$ (this file), (5) therefore roots of $x^5 - 4x + 2$ cannot be expressed by radicals. This is the final link: a concrete polynomial witness.\n\nLines 63-91 contain three computational lemmas proved by `native_decide` that must appear before `open scoped Classical` to remain decidable: `perm_fin5_order5_order3_not_commute` (no order-5 and order-3 elements commute in $S_5$, used in `no_subgroup_order_15`), `perm_fin5_order_dvd5_sign_one` (elements of $S_5$ whose order divides 5 are even), and `transposition_not_normalizing_5cycle` (no transposition normalizes any 5-cycle in $S_5$, used in the Sylow elimination of orders 10, 20, 40). These are not vestigial — all three feed into the main proof.",
     "mathContext": "The Abel-Ruffini theorem (1824/1832): there is no general algebraic solution in radicals for polynomial equations of degree $\\geq 5$. This file provides a concrete witness: $p(x) = x^5 - 4x + 2$.",
     "significance": "context",
     "relatedConcepts": [
@@ -52,8 +52,8 @@
     "id": "ann-abeloq04oq01-eisenstein",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 166,
-      "endLine": 210
+      "startLine": 145,
+      "endLine": 170
     },
     "type": "technique",
     "title": "Eisenstein's Irreducibility Criterion at p = 2",
@@ -100,8 +100,8 @@
     "id": "ann-abeloq04oq01-structural",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 225,
-      "endLine": 243
+      "startLine": 184,
+      "endLine": 207
     },
     "type": "technique",
     "title": "Structural Properties: Degree, Separability, Root Set",
@@ -125,8 +125,8 @@
     "id": "ann-abeloq04oq01-galois-bounds",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 249,
-      "endLine": 267
+      "startLine": 208,
+      "endLine": 231
     },
     "type": "technique",
     "title": "Galois Group Order Bounds: 5 | |Gal| and |Gal| | 120",
@@ -149,8 +149,8 @@
     "id": "ann-abeloq04oq01-evaluations",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 273,
-      "endLine": 299
+      "startLine": 232,
+      "endLine": 264
     },
     "type": "technique",
     "title": "Polynomial Evaluations: Sign Changes Locating 3 Real Roots",
@@ -174,26 +174,23 @@
     "id": "ann-abeloq04oq01-group-theory",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 321,
-      "endLine": 393
+      "startLine": 265,
+      "endLine": 290
     },
     "type": "technique",
-    "title": "5-Cycle + Transposition Generates S₅ (closure_cycle_swap_eq_top) [Vestigial]",
-    "content": "Proves that $\\langle c_5, (0\\;1) \\rangle = S_5$ where $c_5 = (0\\;1\\;2\\;3\\;4)$. The 5-cycle is constructed explicitly as the modular successor map $i \\mapsto (i+1) \\bmod 5$. The proof generates all 10 transpositions in three stages: (1) **Adjacent transpositions** via conjugation: $c_5^k (0\\;1) c_5^{-k} = (k\\;k{+}1)$ for $k = 1,2,3$, verified by `native_decide`. (2) **Star transpositions** via double conjugation: $(0\\;k)(k\\;k{+}1)(0\\;k) = (0\\;k{+}1)$. (3) **Remaining transpositions**: $(0\\;a)(0\\;b)(0\\;a) = (a\\;b)$. Finally, `Equiv.Perm.swap_induction_on` decomposes any permutation into transpositions, and `fin_cases` with `Equiv.swap_comm` handles all $\\binom{5}{2} = 10$ cases. This is the formal proof of the classical result that a transitive subgroup of $S_p$ ($p$ prime) containing a transposition equals $S_p$.\n\n**Note**: This lemma is NOT used in the current main proof. The actual proof of $|\\text{Gal}| = 120$ uses Sylow elimination rather than the cycle+transposition generation approach. This 62-line theorem is a vestigial artifact from an earlier proof strategy, retained for its pedagogical value.",
-    "mathContext": "$c_5 = (0\\;1\\;2\\;3\\;4)$, $\\tau = (0\\;1)$. Stage 1: $c_5^k \\tau c_5^{-k} = (k\\;k{+}1)$. Stage 2: $(0\\;k)(k\\;k{+}1)(0\\;k) = (0\\;k{+}1)$. Stage 3: $(0\\;a)(0\\;b)(0\\;a) = (a\\;b)$. Therefore $\\langle c_5, \\tau \\rangle \\supseteq \\{\\text{all transpositions}\\} \\Rightarrow \\langle c_5, \\tau \\rangle = S_5$.",
+    "title": "Part V(b): 5-Cycle c₅ and the Key Group Theory Claim",
+    "content": "Part V(b) (lines 265-290) documents the classical group-theoretic fact: a transitive subgroup of $S_p$ ($p$ prime) containing a transposition equals $S_p$ (the Key Group Theory Lemma). The section defines `c5 : Equiv.Perm (Fin 5)` — the explicit 5-cycle $(0\\;1\\;2\\;3\\;4)$ constructed as the modular successor map $i \\mapsto (i+1) \\bmod 5$ with its inverse $i \\mapsto (i+4) \\bmod 5$.\n\nThe claim is: 5-cycle + transposition generates $S_5$, which would follow from: conjugating the transposition by powers of $c_5$ yields all adjacent transpositions $(k\\;k{+}1)$, then star transpositions $(0\\;k)$, then all transpositions $(a\\;b)$. Since the Galois group acts transitively on the 5 roots (by prime degree) and contains a transposition (from complex conjugation or the discriminant sign argument), this would imply $\\text{Gal} = S_5$ directly. The actual proof of $|\\text{Gal}| = 120$ instead uses Sylow elimination (Part V(d)-(f)), making the `c5` definition available but the generation theorem unused.",
+    "mathContext": "$c_5: i \\mapsto (i+1) \\bmod 5$. Key claim (not formalized in this version): $\\langle c_5, (0\\;1) \\rangle = S_5$. Used for: if $\\text{Gal}$ acts transitively on 5 roots and contains a transposition, then $\\text{Gal} \\supseteq \\langle c_5, \\tau \\rangle = S_5$.",
     "significance": "supporting",
     "relatedConcepts": [
-      "conjugation in symmetric groups",
+      "5-cycle",
       "transposition generation",
-      "native_decide",
-      "swap_induction_on",
-      "fin_cases",
-      "Cayley generation of Sn"
+      "transitive subgroup",
+      "modular arithmetic"
     ],
     "prerequisites": [
-      "Subgroup.closure",
-      "Equiv.Perm.swap_induction_on",
-      "conjugation in groups",
+      "Equiv.Perm",
+      "Fin 5",
       "modular arithmetic"
     ]
   },
@@ -201,8 +198,8 @@
     "id": "ann-abeloq04oq01-galtoperm5",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 420,
-      "endLine": 439
+      "startLine": 306,
+      "endLine": 336
     },
     "type": "technique",
     "title": "galToPerm5: Injection Infrastructure from Gal to S₅",
@@ -377,8 +374,8 @@
     "id": "ann-abeloq04oq01-sylow-no15",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 449,
-      "endLine": 609
+      "startLine": 337,
+      "endLine": 507
     },
     "type": "technique",
     "title": "Sylow Theory: No Subgroups of Order 15 or 30 in S₅",
