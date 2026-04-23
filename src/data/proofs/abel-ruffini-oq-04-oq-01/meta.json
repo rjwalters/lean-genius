@@ -142,6 +142,11 @@
       "description": "Descartes' rule bounds real root counts by sign changes in coefficients — the same sign-change analysis used in this proof to locate 3 real roots of $x^5 - 4x + 2$, establishing that complex conjugation swaps the 2 non-real roots and thus acts as a transposition in the Galois group"
     },
     {
+      "targetId": "solution-of-cubic-oq-03-oq-01",
+      "relationship": "foundational",
+      "description": "Formalizes the discriminant $\\Delta = -4p^3 - 27q^2$ for the depressed cubic and the criterion $\\text{Gal}(f) \\subseteq A_n \\iff \\Delta(f)$ is a perfect square in $F$. The discriminant machinery is the linchpin of this entry's $|\\text{Gal}|=120$ proof: the Vandermonde product identity $\\Delta^2 = \\text{disc}(p)$ and the computed value $\\Delta^2 = -212144 < 0$ together force $\\text{Gal}(x^5-4x+2/\\mathbb{Q}) \\not\\subseteq A_5$, which eliminates order 60 and is essential to the Sylow elimination cascade. Both entries develop discriminant theory in service of the concrete Abel-Ruffini proof chain."
+    },
+    {
       "targetId": "sylow-theorems",
       "relationship": "foundational",
       "description": "Sylow's theorems are the primary tool for the case elimination in Part V: unique Sylow subgroups force cyclic structure (ruling out order 15), and Sylow counting constrains subgroup existence (ruling out order 30). The Sylow $p$-subgroup machinery directly enables the elimination of candidate Galois group orders"
