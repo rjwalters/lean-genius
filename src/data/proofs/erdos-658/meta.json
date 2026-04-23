@@ -50,15 +50,14 @@
       "density definition: |A|/N² ratio",
       "GrahamConjectureAxisAligned: formal statement of the conjecture",
       "graham_axis_aligned_true axiom: the main result",
-      "qualitative_threshold axiom: existence of N₀(δ)",
       "density_hales_jewett axiom: the underlying deep theorem",
-      "solymosi_bound axiom: quantitative bounds",
+      "small_case_2x2 axiom: any 3 points in a 2x2 grid contain a square",
       "erdos_658 theorem: main result",
       "erdos_658_answer theorem: final answer"
     ],
-    "axiomCount": 2,
+    "axiomCount": 3,
     "lineCount": 299,
-    "assumptions": "2 axioms: graham_axis_aligned_true, density_hales_jewett. 0 sorries."
+    "assumptions": "3 axioms: graham_axis_aligned_true, density_hales_jewett, small_case_2x2. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #658: Squares in Dense Grid Subsets**\n\nThis problem, attributed to Graham, asks a natural geometric question: if you have enough points in an N×N grid, must some four of them form the vertices of a square?\n\n**Key History:**\n- Graham: Posed the problem for axis-aligned squares\n- Erdős [Er97e]: Included in his list of favorite unsolved problems (ambiguous about axis-alignment)\n- Furstenberg-Katznelson (1991): Proved qualitatively via the density Hales-Jewett theorem\n- Solymosi (2004): Gave the first quantitative proof with explicit bounds\n\n**Mathematical Setting:**\nThe problem connects discrete geometry with additive combinatorics. The proof uses the density Hales-Jewett theorem, one of the deepest results in the field, showing that dense sets in high-dimensional spaces must contain combinatorial structures.",
@@ -168,7 +167,7 @@
     ],
     "namespace": "Erdos658",
     "lineCount": 299,
-    "axiomCount": 2,
+    "axiomCount": 3,
     "theoremCount": 7,
     "definitionCount": 8,
     "path": "Proofs/Erdos658Problem.lean",
