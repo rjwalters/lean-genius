@@ -147,6 +147,36 @@
       "description": "Cantor's theorem ($|P(A)| > |A|$) provides the cardinality-theoretic foundation underlying the hierarchy $\\aleph_0 < 2^{\\aleph_0}$. The countability of algebraic numbers and uncountability of $\\mathbb{R} \\cong 2^{\\aleph_0}$ instantiates the Cantor's-theorem phenomenon at $\\aleph_0$."
     }
   ],
+  "references": [
+    {
+      "authors": "Georg Cantor",
+      "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "year": "1874",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal)",
+      "note": "Original proof that algebraic numbers are countable; the same paper contains the first uncountability proof of the reals via the nested-intervals argument"
+    },
+    {
+      "authors": "Charles Hermite",
+      "title": "Sur la fonction exponentielle",
+      "year": "1873",
+      "venue": "Comptes rendus de l'Académie des Sciences",
+      "note": "First proof that e is transcendental; the method was extended by Lindemann (1882) to prove π transcendental and generalized to the Lindemann-Weierstrass theorem"
+    },
+    {
+      "authors": "Joseph Liouville",
+      "title": "Sur des classes très étendues de quantités dont la valeur n'est ni algébrique, ni même réductible à des irrationnelles algébriques",
+      "year": "1844",
+      "venue": "Journal de Mathématiques Pures et Appliquées",
+      "note": "First constructive existence proof of transcendental numbers via Diophantine approximation bounds; complements Cantor's cardinality argument by giving explicit examples"
+    },
+    {
+      "authors": "Ferdinand von Lindemann",
+      "title": "Über die Zahl π",
+      "year": "1882",
+      "venue": "Mathematische Annalen",
+      "note": "Proves π is transcendental using Hermite's exponential method; together with Cantor's countability result, establishes that specific transcendentals are hard to identify despite 'almost all' reals being transcendental"
+    }
+  ],
   "leanFile": {
     "lineCount": 254,
     "path": "Proofs/AlgebraicNumbersCountable.lean",
