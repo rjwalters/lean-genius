@@ -29,44 +29,49 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (session 5): Proved gridAdj_ne in SpernerGrid.lean (6 → 5 sorries). gridAdj_symm and gridAdj_vertex remain (require involutivity proofs).",
+    "progressSummary": "PROGRESS (session 6): Proved sperner_grid for d=0 (trivial) and d=1 (discrete IVT). d>=2 remains sorry. Added sperner_grid_one lemma (~95 lines).",
     "builtItems": [
       "SpernerMathlib4Opt.lean: optimized proof proposal for even_card_of_fpf_invol using sum_involution (research/problems/sperner-ndim-oq-05/lean/)",
       "even_card_of_fpf_invol: 53-line strongInduction proof replaced with 11-line sum_involution proof in SpernerMathlib4.lean",
-      "boundaryFlip0.step_same: proved (SpernerGrid.lean:868-903, 2 sorries → 0)",
-      "boundaryFlipLast.step_same: proved (SpernerGrid.lean:1011-1046, 2 sorries → 0)",
-      "gridAdj_ne: proved in SpernerGrid.lean (1 sorry removed, 6 → 5 remaining)"
+      "boundaryFlip0.step_same: proved (SpernerGrid.lean:868-903, 2 sorries \u2192 0)",
+      "boundaryFlipLast.step_same: proved (SpernerGrid.lean:1011-1046, 2 sorries \u2192 0)",
+      "gridAdj_ne: proved in SpernerGrid.lean (1 sorry removed, 6 \u2192 5 remaining)",
+      "sperner_grid_one: private lemma proving d=1 case via discrete IVT (SpernerGrid.lean)",
+      "sperner_grid: d=0 and d=1 cases proved; d+2 case still sorry"
     ],
     "insights": [
-      "All gallery files (SpernerMathlib4, SpernerSimplicialInstance, etc.) have 0 sorries — mathematical work complete",
+      "All gallery files (SpernerMathlib4, SpernerSimplicialInstance, etc.) have 0 sorries \u2014 mathematical work complete",
       "Mathlib fork branch rjwalters/mathlib4:sperner-abstract-parity pushed 2026-04-01",
       "Blocked on external feedback from Dillies/SproutSeeds on mathlib4#25231",
       "maxHeartbeats 1600000 (8x default) is the main technical blocker for Mathlib acceptance",
       "Finset.sum_involution from Mathlib.Algebra.BigOperators.Group.Finset.Basic can replace the 53-line strongInduction proof of even_card_of_fpf_invol (SpernerMathlib4.lean:57-109) with a 12-line ZMod 2 argument",
-      "maxHeartbeats 1600000 is 8x default; target for Mathlib is ≤ 400000; sum_involution optimization expected to reduce by 30-50%",
+      "maxHeartbeats 1600000 is 8x default; target for Mathlib is \u2264 400000; sum_involution optimization expected to reduce by 30-50%",
       "Granular imports (replacing import Mathlib) should reduce heartbeats by an additional 20-30%",
       "ZMod.natCast_eq_zero_iff_even is the current lemma (natCast_zmod_eq_zero_iff_dvd deprecated 2025-06-30)",
-      "nsmul_one: n • (1 : A) = n is @[simp] — simpa [Finset.sum_const] closes the sum-to-card step",
+      "nsmul_one: n \u2022 (1 : A) = n is @[simp] \u2014 simpa [Finset.sum_const] closes the sum-to-card step",
       "Finset.sum_involution is the additive version of prod_involution via @[to_additive]",
       "Pre-compiled Mathlib strongInduction (in prod_involution) does not count against our file heartbeats",
-      "mathlib4#25231 is an OPEN ISSUE not a PR — YaelDillies asked for Part 2 (SpernerSimplicialInstance.lean, 0 sorries) but it has not been pointed out yet",
+      "mathlib4#25231 is an OPEN ISSUE not a PR \u2014 YaelDillies asked for Part 2 (SpernerSimplicialInstance.lean, 0 sorries) but it has not been pointed out yet",
       "Granular imports for SpernerMathlib4: Mathlib.Algebra.BigOperators.Group.Finset + Mathlib.Data.ZMod.Basic + Mathlib.Data.Fintype.Card (3 imports replace import Mathlib)",
       "SpernerSimplicialInstance adjFn_symm (87 lines, dite+choose) and adjFn_vertex (62 lines) are likely heartbeat bottlenecks; needs profiler",
       "SpernerSimplicialInstance needs Mathlib.Data.Finset.Sort for Finset.sort",
-      "boundaryFlip0.step_same middle: simp [hj_mid, dite_true] at hj_inc to get j ≠ s.incDir, then delegate to s.step_same; same pattern as step_inc/step_dec",
-      "boundaryFlip*.step_same boundary case: BaryPoint.transfer_coords_other is the key lemma when j ≠ inc and j ≠ dec",
-      "SpernerGrid.lean: 11 → 6 sorries after proving all four step_same cases",
-      "split_ifs auto-closes h:none=some contradictions — only 1 bullet needed per split_ifs in helper lemmas",
-      "j_step.castSucc.val syntactically ≠ j_step.val even though equal — need simp [Fin.castSucc] before omega in hlv proofs",
-      "gridAdj_ne proved via 3-case split: boundary cases use verts_injective; interior case uses inc_injective + interiorFlip_incDir_kprev"
+      "boundaryFlip0.step_same middle: simp [hj_mid, dite_true] at hj_inc to get j \u2260 s.incDir, then delegate to s.step_same; same pattern as step_inc/step_dec",
+      "boundaryFlip*.step_same boundary case: BaryPoint.transfer_coords_other is the key lemma when j \u2260 inc and j \u2260 dec",
+      "SpernerGrid.lean: 11 \u2192 6 sorries after proving all four step_same cases",
+      "split_ifs auto-closes h:none=some contradictions \u2014 only 1 bullet needed per split_ifs in helper lemmas",
+      "j_step.castSucc.val syntactically \u2260 j_step.val even though equal \u2014 need simp [Fin.castSucc] before omega in hlv proofs",
+      "gridAdj_ne proved via 3-case split: boundary cases use verts_injective; interior case uses inc_injective + interiorFlip_incDir_kprev",
+      "boundary_verts_on_face is FALSE: adj(s,k)=none does not imply geometric face membership. Counterexample: d=1, N=2, miss=1, incDir=0.",
+      "boundary_doors_odd is FALSE: oriented gridComplex has EVEN boundary door count (each geometric door appears twice).",
+      "d=1 discrete IVT: define v(k)=(N-k,k), let k*=max{k|c(v(k))=0}, then [v(k*),v(k*+1)] is panchromatic.",
+      "Fin.max (Finset.max_via hS_ne) gives the transition point cleanly; step_same for d=1 is vacuous."
     ],
     "mathlibGaps": [],
     "nextSteps": [
+      "Try inductive proof for d>=2: reduce to d=1 by face-restriction argument",
+      "Alternative: build unoriented SpernerTriangulation (~500-700 lines) with canonical geometric indexing",
       "[USER ACTION] Post comment on mathlib4#25231 pointing Dillies to SpernerSimplicialInstance.lean as Part 2",
-      "Test granular imports via Docker build for SpernerMathlib4.lean",
-      "Profile SpernerSimplicialInstance.lean with set_option profiler true to find expensive proofs",
-      "Reduce SpernerSimplicialInstance heartbeats to ≤ 800000 for Mathlib PR",
-      "Submit Part 1 (SpernerMathlib4) PR to mathlib4 as initial contribution, Part 2 as follow-up"
+      "Submit Part 1 (SpernerMathlib4) PR to mathlib4 as initial contribution"
     ],
     "markdown": "# Knowledge Base: sperner-ndim-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
