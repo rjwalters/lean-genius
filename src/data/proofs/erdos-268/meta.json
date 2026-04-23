@@ -57,7 +57,7 @@
       "Concrete examples: squares (Basel problem) and powers of 2 (geometric series)"
     ],
     "axiomCount": 1,
-    "lineCount": 762,
+    "lineCount": 943,
     "assumptions": "1 axiom: erdos_268_solved (main interior result for all dimensions). 2 sorries remaining: both inside harmonicPointSet_path_connected — (1) d=0 greedy construction (⊇ direction: any s > 0 is achievable by a Cauchy sequence argument); (2) d ≥ 2 path-connectedness (Kovač-Tao structural analysis; hard topology). Proved: shifted_summable (decomposition at n=0), harmonicPointSet_nonempty (powers-of-2 witness), harmonicPointSet_dense_somewhere (directly from interior axiom), coordinate_decreasing (tsum_lt_tsum; requires 0 ∉ A), first_coordinate_largest (from coordinate_decreasing), squares_convergent (bijection + p-series), powers_convergent (bijection + geometric series)."
   },
   "overview": {

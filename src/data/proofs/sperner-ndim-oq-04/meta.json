@@ -35,7 +35,7 @@
     ],
     "dateAdded": "2026-04-22",
     "axiomCount": 0,
-    "lineCount": 408,
+    "lineCount": 496,
     "assumptions": "2 sorries: (1) kuhn_walk_reaches_fc — walk correctness requires non-revisiting invariant (detailed proof sketch provided: needs 'adjacent simplices share unique facet' axiom + door history in KuhnState), (2) kuhnPathStart_is_fc — constructive correctness, depends on kuhn_walk_reaches_fc. The non-sorry content includes fc_door_count_eq_one, nonfc_door_count_zero_or_two, nonfc_with_door_has_unique_exit, and kuhn_path_terminates (proved via sperner_ndim).",
     "mathlib_version": "4.26.0"
   },
