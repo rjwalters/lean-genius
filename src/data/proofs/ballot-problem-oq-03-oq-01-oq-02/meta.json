@@ -19,10 +19,10 @@
       "representation-theory"
     ],
     "badge": "wip",
-    "sorries": 4,
+    "sorries": 5,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "Four open sorries: (1) hook_length_formula (requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) card_SYT_twoRectYD (SYT count for 2-row rectangular = Catalan number C_m via ballot bijection). StandardYoungTableau.ext is now fully proved (funext).",
+    "assumptions": "Five open sorries: (1) hook_length_formula (requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) card_SYT_twoRectYD (SYT count for 2-row rectangular = Catalan number C_m via ballot bijection). StandardYoungTableau.ext is now fully proved (funext). and (5) card_SYT_twoRowYD (SYT count for general 2-row [a,b] = ballotSeqCount (a+1) b via ballot bijection).",
     "lineCount": 1274,
     "theoremCount": 12,
     "definitionCount": 5,
@@ -60,7 +60,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Hook-length formula infrastructure established: hookLength, hookProd, StandardYoungTableau defined; positivity and ext proved; LGV encoding described; formula verified numerically for 8 specific shapes. Main theorem stated with 4 sorries: hook_length_formula, ni_count_eq_syt_count, lgv_det_factors_as_hook_quotient (two deep open components requiring SYT↔NI bijection and det factorization), and card_SYT_twoRectYD (2-row rectangular SYT count = Catalan number).",
+    "summary": "Hook-length formula infrastructure established: hookLength, hookProd, StandardYoungTableau defined; positivity and ext proved; LGV encoding described; formula verified numerically for 8 specific shapes. Main theorem stated conditional on ballot bijection (1 sorry: card_SYT_twoRowYD). hookProd for [a,b] proved with 0 sorries. General formula has 3 remaining sorries (RSK bijection, det factorization, main theorem). card_SYT_twoRectYD (2-row rect Catalan count) also remains open. Total: 5 sorries.",
     "implications": "A complete formalization would be the first Lean 4 proof of the hook-length formula, a milestone in formal combinatorics. The LGV approach connects our existing ballot problem proofs to representation theory via the Specht module dimension formula f^λ = dim S^λ.",
     "openQuestions": [
       "Formalize the SYT ↔ NI bijection via Fomin's growth diagrams or the RSK correspondence (~200 lines)",
@@ -81,7 +81,7 @@
     "namespace": "HookLengthFormula",
     "lineCount": 1274,
     "axiomCount": 0,
-    "sorries": 4,
+    "sorries": 5,
     "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
     "theoremCount": 12,
     "definitionCount": 5
@@ -158,5 +158,5 @@
       "mathContext": "Verified: (2,1)→2, (2,2)→2, (3,1)→3, (3,2)→5, (3,2,1)→16, (4,3,2,1)→1440, (3,3)→5 (C₃), (4,4)→14 (C₄)."
     }
   ],
-  "sorries": 4
+  "sorries": 5
 }
