@@ -1841,10 +1841,15 @@ private lemma sperner_grid_one {N : ℕ} (hN : 0 < N)
   have hks1_color : c (v ⟨k_star.val + 1, by omega⟩) = 1 := by
     have hns : (⟨k_star.val + 1, by omega⟩ : Fin (N + 1)) ∉ S := by
       intro hmem
-      have hle := Finset.le_max' S hS_ne hmem
-      -- Fin le is definitionally Nat le, so extract as Nat inequality
-      have h_nat : k_star.val + 1 ≤ k_star.val := hle
-      omega
+      -- Finset.le_max' has signature (s) (x) (h : x ∈ s) : x ≤ s.max' ⟨x, h⟩
+      have hle : (⟨k_star.val + 1, by omega⟩ : Fin (N + 1)) ≤
+          S.max' ⟨⟨k_star.val + 1, by omega⟩, hmem⟩ :=
+        Finset.le_max' S _ hmem
+      -- S.max' with any Nonempty witness = k_star (by proof irrelevance)
+      have heq : S.max' ⟨⟨k_star.val + 1, by omega⟩, hmem⟩ = k_star :=
+        congr_arg S.max' (Subsingleton.elim _ _)
+      -- k_star.val + 1 ≤ k_star.val is a contradiction
+      exact absurd (heq ▸ hle) (by omega)
     have hne : c (v ⟨k_star.val + 1, by omega⟩) ≠ 0 := by
       intro h
       exact hns (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩)
@@ -1860,7 +1865,10 @@ private lemma sperner_grid_one {N : ℕ} (hN : 0 < N)
                       else v ⟨k_star.val + 1, by omega⟩
     incDir := fun _ => ⟨1, by omega⟩
     miss := ⟨0, by omega⟩
-    miss_ne_inc := fun _ => by decide
+    miss_ne_inc := fun _ => by
+      intro h
+      -- miss = ⟨0, _⟩, incDir _ = ⟨1, _⟩; val equality: 0 ≠ 1
+      exact absurd (Fin.ext_iff.mp h) (by norm_num)
     step_inc := fun k => by
       fin_cases k
       show (v ⟨k_star.val + 1, by omega⟩).coords ⟨1, by omega⟩ =
@@ -1873,10 +1881,12 @@ private lemma sperner_grid_one {N : ℕ} (hN : 0 < N)
       simp [v]
       omega
     step_same := fun k j hj1 hj2 => by
-      fin_cases k
-      fin_cases j
-      · exact absurd rfl hj2  -- j = miss = 0, contradiction
-      · exact absurd rfl hj1  -- j = incDir k = 1, contradiction
+      fin_cases k; fin_cases j
+      -- After fin_cases: j is concrete ⟨0,_⟩ or ⟨1,_⟩
+      · -- j = ⟨0, _⟩ = miss → contradiction with hj2 : j ≠ miss
+        exact absurd (Fin.ext rfl) hj2
+      · -- j = ⟨1, _⟩ = incDir k → contradiction with hj1 : j ≠ incDir k
+        exact absurd (Fin.ext rfl) hj1
     inc_injective := fun a _b _h => Subsingleton.elim a _ }, ?_⟩
   -- Panchromatic: color 0 at v(k*), color 1 at v(k*+1)
   intro col
