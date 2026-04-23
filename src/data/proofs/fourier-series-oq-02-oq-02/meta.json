@@ -127,9 +127,9 @@
       "id": "part-iv-corollaries",
       "title": "Part IV: Corollaries and Sharpness",
       "startLine": 165,
-      "endLine": 197,
+      "endLine": 226,
       "summary": "Three theorems: sq_summable_matches_parseval (aliases the main theorem, matching the parent's conclusion), fourier_coeff_l2 (existential HasSum form), and holder_half_is_critical_for_pseries (sharpness: α = 1/2 fails the p-series test — harmonic series diverges, fully proved).",
-      "mathContext": "Sharpness at $\\alpha = 1/2$: squared bound $= K/|n|^1$ = harmonic series, which diverges over $\\mathbb{Z}$. The sorry requires `¬Summable (fun n:ℤ => K/|↑n|)` — a consequence of `Real.summable_nat_rpow_inv` in the divergence direction, not yet transferred to $\\mathbb{Z}$ in this form."
+      "mathContext": "Sharpness at $\\alpha = 1/2$: `holder_half_is_critical_for_pseries` is fully proved. The proof assumes the universal summability statement, instantiates with the zero function (Hölder with any exponent), applies `summable_int_iff_summable_nat_and_neg` to extract the ℕ positive half, then rescales via `.mul_left (4/π)` to recover the harmonic series $\\sum 1/n$. Contradiction follows from `Real.summable_nat_rpow_inv.not.mpr (by norm_num)` (p=1 fails $p > 1$ criterion). This avoids direct ℤ-harmonic series divergence by routing through ℕ."
     }
   ],
   "conclusion": {
@@ -166,7 +166,7 @@
       "FourierHolderDecay"
     ],
     "namespace": "FourierSqSummablePSeries",
-    "lineCount": 197,
+    "lineCount": 226,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 0,
