@@ -25,7 +25,7 @@
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
     "assumptions": "Four open sorries: (1) hook_length_formula (main theorem, requires (2)+(3)), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence, ~200 lines), (3) lgv_det_factors_as_hook_quotient (Vandermonde-type det factorization, ~200 lines), (4) card_SYT_twoRectYD (card(SYT(m×m)) = Cn(m) via RSK bijection with ballot sequences, ~150-200 lines). Special-case theorems for one-row, one-column, and hook-shape are fully proved.",
-    "lineCount": 2727,
+    "lineCount": 1274,
     "theoremCount": 85,
     "definitionCount": 12,
     "originalContributions": [
@@ -78,7 +78,7 @@
       "LGV"
     ],
     "namespace": "HookLengthFormula",
-    "lineCount": 2727,
+    "lineCount": 1274,
     "axiomCount": 0,
     "sorries": 4,
     "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
