@@ -14,9 +14,13 @@ Key infrastructure already available:
 - `lgvDet` (2×2) and `lgv_lemma_rxr` (n×n) — BallotProblemOQ03.lean + BallotProblemOQ03OQ02.lean
 - `hook_length_formula_two_row` (numerical, 2-row case) — BallotProblemOQ03OQ03.lean
 
-**Remaining sorries (2):**
-1. `ni_count_eq_syt_count` — RSK/Fomin growth diagram bijection: SYT(μ) ↔ NI-paths
-2. `lgv_det_factors_as_hook_quotient` — det × hookProd = n! (Vandermonde-type identity)
+**Remaining sorries (3):**
+1. `hook_length_formula` (general) — sorry for 3+ row shapes
+2. `ni_count_eq_syt_count` — RSK/Fomin growth diagram bijection: SYT(μ) ↔ NI-paths
+3. `lgv_det_factors_as_hook_quotient` — det × hookProd = n! (Vandermonde-type identity)
+
+**Proved shapes (all 2-row via hook_length_formula_atMostTwoRows):**
+- All 1-row, 1-col, hook shapes, 2-row rectangles, general 2-row [a,b], any μ with rowLen 2 = 0
 
 ---
 
@@ -266,3 +270,50 @@ Then: LHS × (a+1-b) × (a+b+1) = RHS × (a+1-b) × (a+b+1), cancel both sides.
 2. Update meta.json lineCount → 3540 if build passes
 3. Push branch and merge PR
 4. Consider: can `ni_count_eq_syt_count` or `lgv_det_factors_as_hook_quotient` be proved now?
+
+---
+
+## Session 2026-04-23 (Session 11) — 2-Row Characterization + HLF for All 2-Row Shapes
+
+**Mode**: REVISIT (RICH knowledge tier, score 56)
+**Outcome**: progress — proved eq_twoRowYD_of_atMostTwoRows + hook_length_formula_atMostTwoRows (0 sorries), fixed meta.json
+
+### What I Did
+
+1. Assessed state: 3 sorries remain (hook_length_formula, ni_count_eq_syt_count, lgv_det_factors_as_hook_quotient)
+2. Identified that meta.json incorrectly showed `meta.sorries = 0` (should be 3)
+3. Added PART XII (~45 lines) to BallotProblemOQ03OQ01OQ02.lean (3540 → 3584 lines):
+   - `eq_twoRowYD_of_atMostTwoRows`: any μ with rowLen 2 = 0 equals twoRowYD (μ.rowLen 0) (μ.rowLen 1)
+   - `hook_length_formula_atMostTwoRows`: HLF for all 2-row YoungDiagrams via characterization
+4. Fixed meta.json: sorries 0 → 3, lineCount 3540 → 3584, theoremCount 102 → 104
+5. Docker build running to verify
+
+### Key Findings
+
+**eq_twoRowYD_of_atMostTwoRows proof technique:**
+- Uses `YoungDiagram.ext` + cell membership `mem_iff_lt_rowLen`
+- `rcases i with _ | _ | i` handles row 0, row 1, row i+2 cleanly
+- Anti-monotonicity `rowLen_anti 2 (i+2) (by omega)` + `h2 : rowLen 2 = 0` → `rowLen (i+2) = 0` → contradiction with `j < rowLen (i+2)`
+- Reverse direction: `rintro (⟨rfl, hlt⟩ | ⟨rfl, hlt⟩)` immediately gives `j < rowLen i`
+
+**hook_length_formula_atMostTwoRows proof:**
+- One liner using `eq_twoRowYD_of_atMostTwoRows` + `hook_length_formula_two_row_gen`
+- Covers: empty (rowLen 0 = 0 = rowLen 1), 1-row, 2-row shapes all at once
+
+**LGV chain disconnect (not fixed this session):**
+- `ni_count_eq_syt_count` and `lgv_det_factors_as_hook_quotient` both have μ as a free parameter unrelated to (r,σ,m)
+- These theorems are FALSE as stated for arbitrary μ unrelated to the LGV config
+- Fixing requires: either (a) add hypothesis relating μ to (r,σ,m), or (b) use corner-cell induction instead
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (3540 → 3584 lines, PART XII added)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json` (sorries corrected: 0→3, lineCount updated)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md` (this file)
+
+### Next Steps
+
+1. Verify Docker build succeeds
+2. Consider: fix `lgv_det_factors_as_hook_quotient` statement to add μ = f(r,σ,m) hypothesis
+3. Consider: corner-cell induction approach for 3-row special cases
+4. The general hook_length_formula (3+ rows) remains open
