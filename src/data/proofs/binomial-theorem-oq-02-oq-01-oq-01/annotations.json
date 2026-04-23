@@ -73,6 +73,31 @@
     ]
   },
   {
+    "id": "ann-pmf-apply-support",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 101,
+      "endLine": 119
+    },
+    "type": "insight",
+    "title": "PMF.apply by rfl and Support Characterization (one proved, one sorry)",
+    "content": "`multinomialPMF_apply` (lines 106-110) proves that `(multinomialPMF s p n hp) k = multinomialPMFVal s p n k` — the PMF value at a composition k equals the multinomial probability. This is proved by `rfl`: the PMF is defined as a structure with the value function as its first field, so unfolding gives definitional equality.\n\n`multinomialPMF_support` (lines 114-119) characterizes the support: a composition k has nonzero probability iff for every outcome i with positive count k(i) ≠ 0, the probability p(i) is also nonzero. This is sorry — the proof requires showing that a product of ENNReal terms is nonzero iff each factor is nonzero (using `ENNReal.prod_ne_zero_iff` or similar), then decomposing the multinomial probability into the coefficient part (always positive) and the product part.",
+    "mathContext": "The `rfl` proof for `multinomialPMF_apply` works because `multinomialPMF` is defined as `⟨fun k => multinomialPMFVal s p n k, ...⟩`, and `PMF.instFunLike` makes `(P : PMF α) a` definitionally equal to `P.1 a`. Support characterization: $P(X = k) = \\binom{n}{k} \\prod_{i} p_i^{k_i} \\neq 0$ iff $\\binom{n}{k} \\neq 0$ (always true for valid compositions) AND $p_i \\neq 0$ whenever $k_i \\neq 0$. The condition '$p_i \\neq 0$ whenever $k_i \\neq 0$' is equivalent to the product $\\prod_i p_i^{k_i} \\neq 0$ in $\\mathbb{R}_{\\geq 0}^\\infty$, since $0^0 = 1$ (vacuously nonzero) and $p_i^{k_i} = 0$ iff $p_i = 0$ and $k_i > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "PMF.instFunLike",
+      "definitional equality",
+      "ENNReal.prod_ne_zero_iff",
+      "PMF support",
+      "zero-product property"
+    ],
+    "prerequisites": [
+      "multinomialPMF definition",
+      "multinomialPMFVal definition",
+      "ENNReal.pow_ne_zero"
+    ]
+  },
+  {
     "id": "ann-marginal-binomial",
     "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
     "range": {
@@ -117,6 +142,31 @@
     "prerequisites": [
       "multinomial_marginal_binomial",
       "Finset.sum manipulation"
+    ]
+  },
+  {
+    "id": "ann-feasibility-and-example",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 170,
+      "endLine": 247
+    },
+    "type": "context",
+    "title": "Mathlib Integration Feasibility Analysis and Dice Roll Example",
+    "content": "Lines 174-202 provide a structured feasibility analysis for contributing the multinomial PMF to Mathlib. The analysis identifies what Mathlib already has: `PMF` type with tsum normalization, `Nat.multinomial` coefficients, `Finset.sum_pow_eq_sum_piAntidiag` (the multinomial theorem), and `ENNReal` arithmetic. What needs to be built: (1) the `Composition` `Fintype` instance (~50 lines via piAntidiag), (2) ENNReal multinomial theorem lift (~30 lines), (3) PMF construction (~20 lines), (4) marginal extraction (~100 lines). Estimated total: 200-300 lines for a complete Mathlib contribution.\n\nLines 211-214 give a concrete dice example: `dice_six_rolls_all_different` (sorry) — the probability of seeing all 6 distinct faces in 6 rolls of a fair die. The Lean statement verifies `Nat.multinomial {0,...,5} (fun _ => 1) * 1 = 6!`: the multinomial coefficient when all counts equal 1 is exactly n! (the number of permutations).\n\nLines 244-245 use `#check` to verify that `multinomialPMF` and `multinomial_marginal_binomial` have the expected polymorphic types, confirming Lean's type checker accepts the definitions despite the underlying sorries.",
+    "mathContext": "Dice example: $P(\\text{all distinct in 6 rolls of fair die}) = \\frac{6!}{1!^6} \\cdot \\left(\\frac{1}{6}\\right)^6 = \\frac{720}{46656} = \\frac{5}{324} \\approx 1.54\\%$. This is a birthday-problem variant: with $n = k$ trials and categories, the probability of a perfect cover decreases as $n! / n^n$; by Stirling, $n!/n^n \\approx (e/n)^n \\cdot \\sqrt{2\\pi n}$. The Fintype strategy for `Composition α s n`: define a Lean `Equiv` between `Composition α s n` and the Finset `s.piAntidiag n` via `{counts | sum = n}`. Since `Finset.piAntidiag s n` is computable and finite, `Composition` inherits `Fintype` via `Fintype.ofEquiv`. The `#check` command is a non-sorry type-checking tool: it verifies the universe and typeclass constraints without requiring a closed proof term.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Mathlib contribution",
+      "Finset.piAntidiag",
+      "Fintype.ofEquiv",
+      "birthday problem",
+      "Stirling approximation"
+    ],
+    "prerequisites": [
+      "Composition type",
+      "PMF framework",
+      "Fintype instance strategy"
     ]
   }
 ]
