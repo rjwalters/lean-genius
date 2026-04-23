@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3 sorries → 2 sorries. kuhn_path_terminates proved via sperner_ndim. Remaining: kuhn_walk_reaches_fc and kuhnPathStart_is_fc need non-revisiting invariant + unique-facet axiom.",
+    "progressSummary": "PROGRESS: Non-revisiting infrastructure added (Case A proved). 1 sorry remains (kuhn_walk_reaches_fc, Case B blocker).",
     "builtItems": [
       "doorDegree def: SpernerNDimOQ04.lean:60",
       "IsKuhnCompatible def: SpernerNDimOQ04.lean:65",
@@ -40,7 +40,11 @@
       "KuhnState structure: defined",
       "kuhnWalk function: fuel-based recursion defined",
       "kuhnPathStart def: algorithm entry point defined",
-      "kuhn_path_terminates PROVED (not sorry): sperner_ndim c K hc hbdry_odd — SpernerNDimOQ04.lean:324"
+      "kuhn_path_terminates PROVED (not sorry): sperner_ndim c K hc hbdry_odd — SpernerNDimOQ04.lean:324",
+      "KuhnStateValid predicate (3-part path invariant) in SpernerNDimOQ04.lean:308",
+      "kuhnState_initial_valid lemma (initial state satisfies KuhnStateValid) in SpernerNDimOQ04.lean:319",
+      "guard_entry_case_impossible lemma (Case A non-revisiting via adj_symm) in SpernerNDimOQ04.lean:331",
+      "guard_current_impossible lemma (walk never steps to current via adj_ne) in SpernerNDimOQ04.lean:348"
     ],
     "insights": [
       "IsKuhnCompatible (door degree ≤ 2) combined with abstract_door_parity gives exact door counts: 1 for FC, 0 or 2 for non-FC",
@@ -48,7 +52,11 @@
       "Non-revisiting invariant is the hard open part: door graph component containing a boundary vertex is a path (not a cycle)",
       "Fuel-based recursion for kuhnWalk avoids well-founded termination obligations",
       "door_degree_parity proved via simp only [h2] + convert h using 2 pattern (same as per_simplex_door_parity in SpernerNDim)",
-      "kuhn_path_terminates proved: given IsSperner c and odd boundary door count, FC existence follows from sperner_ndim directly (1-line proof). No walk argument needed for existence."
+      "kuhn_path_terminates proved: given IsSperner c and odd boundary door count, FC existence follows from sperner_ndim directly (1-line proof). No walk argument needed for existence.",
+      "Case A of non-revisiting is proved: adj_symm closes the cycle when k prime equals entry door, giving contradiction via current_not_visited",
+      "adj_ne immediately rules out walking to current itself",
+      "Case B (k prime = exit door) requires per-simplex path history beyond the visited set — KuhnStateValid necessary but not sufficient",
+      "KuhnState needs prev field (previous simplex + exit door) to enable Case B contradiction"
     ],
     "mathlibGaps": [
       "No Mathlib theorem for path-following algorithm termination with non-revisiting invariant",
@@ -56,10 +64,10 @@
       "SpernerTriangulation lacks an adjacent-simplices-share-unique-facet axiom needed for the non-revisiting proof"
     ],
     "nextSteps": [
-      "Add unique-facet axiom to SpernerTriangulation (SpernerNDim.lean)",
-      "Strengthen KuhnState with per-visited-simplex door history (entry/exit door tracking)",
-      "Prove kuhnWalk_never_revisits using unique-facet axiom + door history invariant",
-      "Then kuhn_walk_reaches_fc and kuhnPathStart_is_fc follow from non-revisiting"
+      "Extend KuhnState with prev : Option (K.Simplex x Fin (d+1)) field",
+      "Add prev_leads_to_current invariant to KuhnStateValid",
+      "Prove Case B of non-revisiting using prev field",
+      "Add boundary door uniqueness axiom to SpernerTriangulation"
     ]
   },
   "tags": [
