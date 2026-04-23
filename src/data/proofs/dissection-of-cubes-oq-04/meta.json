@@ -138,6 +138,38 @@
       ]
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "dissection-of-cubes-oq-02",
+      "relationship": "foundational",
+      "description": "Proves arccos(1/3)/π ∉ ℚ via the nivenSeq Chebyshev technique — the direct template for this entry's cosThreeFifthsSeq argument. The recurrence structure, mod-prime divisibility argument, and rationality-contradiction pattern in Part I are all transplanted from OQ02: only the prime changes from 3 to 5 and the cosine from 1/3 to 3/5."
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-02-oq-02",
+      "relationship": "foundational",
+      "description": "Develops the Dehn-Sydler tensor product infrastructure (ℝ ⊗_ℤ (ℝ/πℤ)) and proves the infinite-order lemma tmul_infinite_order_ne_zero used in this entry's Parts III-IV to conclude D(dodecahedron) ≠ 0 and D(icosahedron) ≠ 0. The flatness axiom this entry inherits (tmul_infinite_order_ne_zero) originates in OQ02OQ02 and represents the remaining deferred proof."
+    },
+    {
+      "targetId": "hilbert-3",
+      "relationship": "extends",
+      "description": "Hilbert's Third Problem asks whether equal-volume polyhedra are always scissors congruent. This entry extends the answer: not only are cube and tetrahedron not scissors congruent (hilbert-3's result), but among all five Platonic solids the cube stands alone — no scissors congruence exists between the cube and any other Platonic solid. The cube is the unique Platonic solid with D = 0."
+    },
+    {
+      "targetId": "dissection-of-cubes",
+      "relationship": "extends",
+      "description": "The parent entry establishes the Dehn invariant framework and proves the cube-tetrahedron impossibility. This entry completes the classification to all five Platonic solids, proving the dodecahedron case (new) and providing the single theorem cube_isolated_dehn_invariant that classifies the entire Platonic solid family under scissors congruence."
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "Both entries reduce geometric impossibility to angle irrationality. Angle trisection shows the general angle cannot be trisected because the minimal polynomial of cos(20°) has degree 3 over ℚ; this entry shows the dodecahedron cannot be scissors-congruent to the cube because arccos(-1/√5)/π ∉ ℚ. The Chebyshev sequence technique for proving arccos(3/5)/π ∉ ℚ is analogous to the minimal polynomial argument for proving cos(2π/9) is not constructible."
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "related",
+      "description": "The irrationality of nth roots and the irrationality of arccos values as multiples of π are parallel results: both assert that specific algebraic numbers fall outside ℚ. This entry's Chebyshev sequence method (proving 5 ∤ d_n to derive arccos(3/5)/π ∉ ℚ) is the trigonometric analogue of the p-adic argument for √p ∉ ℚ — in both cases, a prime divisibility obstruction rules out rationality."
+    }
+  ],
   "conclusion": {
     "summary": "Among the five Platonic solids, the cube is uniquely characterized by having zero Dehn invariant. This extends Hilbert's Third Problem from the single pair (cube, tetrahedron) to the complete classification of all Platonic solids under scissors congruence.",
     "implications": "The Dehn invariant classification of Platonic solids resolves one of the oldest unsolved questions in polyhedron geometry: which solids can be cut and reassembled into each other? The answer is now completely determined for the five Platonic solids — the cube is entirely isolated in its scissors-congruence class. More broadly, the Chebyshev sequence technique pioneered by Niven (1956) for arccos(1/3)/π and extended here to arccos(3/5)/π establishes a general algorithm for proving transcendence of dihedral angles of regular polyhedra: any angle of the form arccos(p/q) where p/q is rational and |p/q| < 1 can be tested by building the integer sequence $q^n \\cdot 2\\cos(n \\cdot \\arccos(p/q))$ and checking prime divisibility. The Dehn invariant also connects to K-theory: Dupont and Sah showed that the scissors congruence group $\\mathcal{P}(\\mathbb{R}^3)$ is related to $K_3(\\mathbb{R})$, placing this elementary geometric result in a deep algebraic context.",
