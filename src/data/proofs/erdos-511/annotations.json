@@ -102,7 +102,7 @@
       "startLine": 137,
       "endLine": 162
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #511: DISPROVED",
     "content": "**erdos_511:**\n\nThe main theorem proving Erdős's conjecture is false.\n\n**Statement:**\n```lean\ntheorem erdos_511 :\n    ∀ (c : ℝ), 1 < c → c < 4 →\n      ∀ (bound : ℕ), ∃ (f : Polynomial ℂ), f.Monic ∧\n        ∃ (components : Finset (Set ℂ)),\n          components.card > bound ∧ ...\n```\n\n**Meaning:** For any bound you propose, there exists a polynomial exceeding that bound in number of large components.\n\nThe proof derives this from Pommerenke's theorem by taking k = bound + 1.",
     "significance": "key",

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 85
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Isoperimetric OQ Chain: From Area Formula to Global Inequality",
     "content": "This file is the third in the area-of-circle open question chain. OQ01 proved C = dA/dr (circumference equals the derivative of area). OQ01-OQ02 proved A = ∫₀ʳ C(ρ) dρ (area equals the integral of circumference). OQ01-OQ03 (this file) establishes C² ≥ 4πA for all closed curves — the isoperimetric inequality. The equality for circles follows trivially from the ring computation (2πr)² = 4π·πr². The general inequality for arbitrary curves is a deeper result requiring Wirtinger's inequality from Fourier analysis.",
     "mathContext": "**Isoperimetric inequality**: $C^2 \\geq 4\\pi A$ for all closed curves. **Circle optimality**: circles achieve equality $C^2 = 4\\pi A$. **Hurwitz proof** (1901): parameterize curve $\\gamma: [0,2\\pi] \\to \\mathbb{R}^2$, apply Green's theorem for area, then use Wirtinger's inequality $\\int_0^{2\\pi} f^2 \\leq \\int_0^{2\\pi}(f')^2$ (valid for mean-zero periodic $f$). **Mathlib status**: isoperimetric inequality not in Mathlib; Wirtinger not in Mathlib; Fourier basis and Parseval ARE in Mathlib.",
@@ -80,11 +80,11 @@
       "startLine": 173,
       "endLine": 277
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Regular n-gons Converge to Circle: tan(h)/h → 1 at h = 0",
     "content": "Part III proves that regular n-gons converge to the circle's isoperimetric ratio as n → ∞. The key theorem ngon_limit_tendsto_circle shows lim_{n→∞} π/(n·tan(π/n)) = 1. Proof technique: use Real.hasDerivAt_tan at 0 and hasDerivAt_iff_tendsto_slope to get tan(h)/h → 1 as h → 0. Then compose with π/n → 0. The formula regular_ngon_isoperimetric_ratio = cos(π/n)·sin(π/n)·C²R/(2π·n·R²) = π/(n·tan(π/n)) uses the n-gon area formula with circumradius R.",
     "mathContext": "**n-gon ratio**: $\\frac{\\pi}{n\\tan(\\pi/n)} \\to 1$ as $n \\to \\infty$. **Proof**: $\\frac{\\tan(h)}{h} \\to 1$ as $h \\to 0$ (derivative of $\\tan$ at 0 is 1); substitute $h = \\pi/n \\to 0$. **n-gon area formula**: $A = \\frac{C^2}{4n}\\cot(\\frac{\\pi}{n})$ where $C$ is perimeter. **Mathlib**: `Real.hasDerivAt_tan`, `hasDerivAt_iff_tendsto_slope`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "regular_ngon_isoperimetric_ratio",
       "ngon_limit_tendsto_circle",
@@ -136,7 +136,7 @@
     "title": "Smooth Curve Inequality, Equality Characterization, and Algebraic Corollaries",
     "content": "Parts V-VII build on Wirtinger. Part V: isoperimetric_inequality_smooth — NOW FULLY PROVED via mean subtraction (zero mean, preserves C and A), reparametrization to constant speed (exists_arclength_reparam, 1 sorry), Wirtinger sum-of-squares bound, integral Cauchy-Schwarz, area bound, and the arithmetic kernel. Part VI: equality characterization — equality_implies_circle proved algebraically (set r=C/(2π)). Part VII: algebraic corollaries from 4πA ≤ C² — bounds on area from perimeter, scale invariance, circle maximizes area.",
     "mathContext": "**Main theorem** `isoperimetric_inequality_smooth` (proved): $4\\pi A \\leq C^2$ for any SmoothClosedCurve. **Proof**: reparametrize to constant speed + zero mean, apply Wirtinger bounds, close with arithmetic kernel. **Equality**: if $4\\pi A = C^2$ then curve is a circle ($r = C/(2\\pi)$). **Corollary**: $A \\leq C^2/(4\\pi)$ with equality iff circle.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "isoperimetric_inequality_smooth",
       "circle_satisfies_isoperimetric",

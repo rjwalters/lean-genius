@@ -141,7 +141,7 @@
       "startLine": 101,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Larman-Rogers Theorem",
     "content": "The fundamental bridge between discrete and continuous: $f(n) \\geq m_1 \\cdot n$ for all $n$. The proof idea: given $n$ points, consider a random translate of a high-density unit-distance-free set $S$; by linearity of expectation, $\\mathbb{E}[|\\text{points} \\cap S|] \\geq m_1 \\cdot n$, so some translate contains $\\geq m_1 n$ points forming an independent set. Axiomatized because the measure-theoretic argument is beyond current Lean formalization.",
     "mathContext": "$\\forall n \\in \\mathbb{N} : f(n) \\geq m_1 \\cdot n$",
@@ -165,7 +165,7 @@
       "startLine": 110,
       "endLine": 111
     },
-    "type": "context",
+    "type": "concept",
     "title": "Croft's Lower Bound",
     "content": "Croft (1967) constructed an explicit unit-distance-free set of density $\\geq 0.22936$. The construction uses a regular hexagonal lattice: remove disks of radius $r$ around each lattice point, where $r$ is chosen so no two remaining points are at unit distance. The optimal $r$ gives density $\\approx 0.22936$. This has stood as the best lower bound on $m_1$ for over 55 years.",
     "mathContext": "$m_1 \\geq 0.22936$ (Croft 1967, hexagonal lattice construction)",
@@ -231,7 +231,7 @@
       "startLine": 144,
       "endLine": 148
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Best Known Bounds Theorem",
     "content": "Combines the Croft lower bound and Moser spindle upper bound: $0.22936n \\leq f(n) \\leq (2/7)n$ for all $n$. The proof is `exact ⟨f_lower_bound n, moser_spindle_upper_bound n⟩`, packaging both inequalities. The gap between $0.22936 \\approx 0.229$ and $2/7 \\approx 0.286$ is about $0.057n$ — closing this gap is the main open challenge.",
     "mathContext": "$\\forall n : 0.22936n \\leq f(n) \\leq (2/7)n$",
@@ -253,7 +253,7 @@
       "startLine": 156,
       "endLine": 157
     },
-    "type": "context",
+    "type": "concept",
     "title": "ACMVZ Upper Bound on m₁",
     "content": "Ambrus, Csiszárik, Matolcsi, Varga, and Zsámboki (ACMVZ, 2023) proved $m_1 \\leq 0.247$ using a computer-assisted optimization over harmonic analysis techniques. The bound exploits the Fourier transform of the indicator function of a unit-distance-free set — the constraint $d(p,q) \\neq 1$ translates into conditions on the Fourier transform's behavior at the Bessel function zeros.",
     "mathContext": "$m_1 \\leq 0.247$ (ACMVZ 2023, Fourier-analytic method)",
@@ -298,7 +298,7 @@
       "startLine": 177,
       "endLine": 188
     },
-    "type": "context",
+    "type": "concept",
     "title": "Chromatic Number Connection",
     "content": "The Hadwiger-Nelson problem asks for the chromatic number $\\chi$ of the unit distance graph of $\\mathbb{R}^2$. Since $\\alpha(G) \\cdot \\chi(G) \\geq |V(G)|$ for any graph (each color class is an independent set), we get $f(n) \\geq n/\\chi$. De Grey (2018) showed $\\chi \\geq 5$ (improving the 1961 lower bound of 4), so $f(n) \\geq n/7$ from the upper bound $\\chi \\leq 7$. The theorem `f_from_chromatic` has a `sorry` because the division monotonicity argument requires careful casting between $\\mathbb{N}$ and $\\mathbb{R}$.",
     "mathContext": "$5 \\leq \\chi \\leq 7 \\implies f(n) \\geq n/\\chi \\geq n/7$",

@@ -269,7 +269,7 @@
       "startLine": 199,
       "endLine": 210
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Triangle Case (n=3)",
     "content": "**triangle_case:**\n\nEvery triangle vertex has at least 1 distinct distance.\n\nThe conjecture requires floor(3/2) = 1.\n\n**Proof:** In a triangle, each vertex sees exactly 2 other vertices, giving at least 1 distinct distance (and usually 2).",
     "significance": "supporting",
@@ -290,7 +290,7 @@
       "startLine": 225,
       "endLine": 235
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pentagon Case (n=5)",
     "content": "**pentagon_case:**\n\nEvery convex pentagon has a vertex with at least 2 distinct distances.\n\nThe conjecture requires floor(5/2) = 2.\n\n**Proof:** Direct from Moser's bound: (5+2)/3 = 2.\n\n```lean\nexact moser_bound 5 (by norm_num) S hcard hconv\n```",
     "significance": "supporting",
@@ -378,7 +378,7 @@
       "startLine": 300,
       "endLine": 312
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gap Analysis",
     "content": "**currentGap:**\n\nThe gap between known bounds and the conjecture:\n\n- Known: f(n) >= 0.361n (approximately 13/36)\n- Conjectured: f(n) >= 0.5n (exactly 1/2)\n- Gap: 0.139n (approximately 5/36)\n\n```lean\ntheorem gap_value : currentGap 1 = 5 / 36 := by native_decide\n```\n\nClosing this gap is the main open problem.",
     "mathContext": "The gap is $\\tfrac{1}{2} - \\tfrac{13}{36} = \\tfrac{18 - 13}{36} = \\tfrac{5}{36} \\approx 0.139$. This is computed in $\\mathbb{Q}$ and verified by `native_decide`.",
@@ -400,7 +400,7 @@
       "startLine": 320,
       "endLine": 341
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Problem Status Summary",
     "content": "**erdos_982_status:**\n\nSummarizes the current state of knowledge:\n\n1. Lower bound: f(n) >= (13n)/36 for large n (Nivasch et al.)\n2. Upper bound: Regular polygon achieves ceil(n/2)\n\nThe theorem combines the NPPZ bound with the regular polygon construction to give both directions.\n\n**Status:** OPEN - the gap between 0.361n and 0.5n remains.",
     "mathContext": "The theorem proves two facts: (1) $\\exists\\, n_0,\\; \\forall\\, n \\ge n_0,\\; \\operatorname{MaxDist}(S) \\ge 13n/36$ (from `nppz_bound`), and (2) $\\forall\\, n \\ge 3,\\; \\exists\\, S$ with $\\operatorname{MaxDist}(S) = \\lceil n/2 \\rceil$ (from `regular_polygon_distances`).",

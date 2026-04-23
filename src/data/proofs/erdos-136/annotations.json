@@ -101,7 +101,7 @@
       "startLine": 148,
       "endLine": 165
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Why 5/6?",
     "content": "Two proved theorems explaining the constant. **why_five_sixths**: 6-1=5 and 5/6 = 1 - 1/6 (proved by norm_num). **k4_edges**: Nat.choose 4 2 = 6 (proved by norm_num).\n\nThe constant 5/6 emerges naturally: K₄ has 6 edges, we require 5 colors, so the defect tolerance is 1/6, giving the asymptotic ratio 5/6.",
     "mathContext": "C(4,2) = 6 edges in K₄. Requiring ≥ 5 colors means tolerance = 1/6. Asymptotic ratio = 1 - 1/6 = 5/6.",

@@ -152,7 +152,7 @@
   {
     "id": "erdos-686-example",
     "proofId": "erdos-686",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 134,
       "endLine": 146
@@ -210,7 +210,7 @@
   {
     "id": "erdos-686-connections",
     "proofId": "erdos-686",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 158,
       "endLine": 163
@@ -238,7 +238,7 @@
   {
     "id": "erdos-686-summary",
     "proofId": "erdos-686",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 165,
       "endLine": 174
@@ -272,7 +272,7 @@
       "startLine": 176,
       "endLine": 199
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Product-Factorial Bounds and Shift Gap",
     "content": "Three auxiliary lemmas establishing $P(n,k) \\geq k$:\n\n1. `consecutiveProduct_ge_factorial`: $P(n,k) \\geq k!$ from `product_binomial_relation` and $\\binom{n+k}{k} \\geq 1$\n2. `factorial_ge_self`: $k! \\geq k$ for $k \\geq 1$, by induction with case split on $m = 0$\n3. `shift_ge_gap`: the shifted index $n + (t+1)P(n,k) \\geq n + k$ when $k \\geq 2$, combining the bounds via `nlinarith`\n\nThe shift gap ensures the non-overlapping constraint $m \\geq n + k$ is satisfied, making the ratio formula valid.",
     "mathContext": "$P(n,k) = k! \\binom{n+k}{k} \\geq k! \\geq k$ for $k \\geq 1$. Hence $(t+1) P(n,k) \\geq P(n,k) \\geq k$, giving $m = n + (t+1)P(n,k) \\geq n + k$.",

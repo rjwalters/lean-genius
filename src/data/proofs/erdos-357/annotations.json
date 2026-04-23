@@ -114,7 +114,7 @@
       "startLine": 84,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Weisenberg's Lower Bound: f(n) ≥ (2+o(1))√n",
     "content": "**weisenberg_lower_bound** axiomatizes: there exists a function $o(n) = o(1)$ (vanishing as $n \\to \\infty$) such that $f(n) \\geq (2 + o(n)) \\cdot \\sqrt{n}$ for all large $n$.\n\nThe proof idea: **B₂ sequences** (Sidon sets) have distinct consecutive sums. If $A = \\{a_1 < a_2 < \\cdots < a_k\\} \\subseteq [1,n]$ satisfies $a_i + a_j \\ne a_k + a_l$ for all $i < j$ and $k < l$, then consecutive sums of $A$ are distinct. Erdős–Turán (1941) proved the maximum B₂ set in $[1,n]$ has size $(1+o(1))\\sqrt{n}$, giving $f(n) \\geq (2+o(1))\\sqrt{n}$ (the factor of 2 comes from a refinement in Weisenberg's argument).\n\nFormalized with an explicit little-o correction term `o : ℕ → ℝ` satisfying `o =o[atTop] (1 : ℕ → ℝ)`, making the bound precise.",
     "mathContext": "B₂ (Sidon) sets: $A$ is B₂ if the multiset $\\{a+b : a,b \\in A, a \\leq b\\}$ has all distinct elements. The connection to distinct consecutive sums: consecutive sums are differences of prefix sums, and distinct prefix sums follow from the B₂ property.",
@@ -137,7 +137,7 @@
       "startLine": 98,
       "endLine": 114
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hegyvári's Bounds and the Proved Density Result",
     "content": "**hegyvari_bounds** axiomatizes Hegyvári (1986): there exist $o_1, o_2 = o(1)$ such that\n$$\\left(\\tfrac{1}{3} + o_1(n)\\right) n \\leq g(n) \\leq \\left(\\tfrac{2}{3} + o_2(n)\\right) n$$\nfor all large $n$. This shows $g(n) = \\Theta(n)$ — dramatically larger than the conjectured $f(n) = o(n)$.\n\n**infinite_set_lower_density_zero** is a *proved* result (though axiomatized here for formalization convenience): any infinite strictly increasing sequence $A : \\mathbb{N} \\to \\mathbb{N}$ with distinct consecutive sums satisfies\n$$\\liminf_{n \\to \\infty} \\frac{\\#\\{k : A(k) \\leq n\\}}{n} = 0$$\ni.e., $A$ has lower density 0. The stronger density 0 conjecture (limit exists and equals 0) remains open.",
     "mathContext": "The `Filter.liminf` formulation uses Mathlib's `Filter.liminf (f : α → β) l` for the limit inferior of `f` along filter `l`. For density: `#{k | A k ≤ n} / n` where `#` denotes `Finset.card`.",

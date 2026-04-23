@@ -2,38 +2,72 @@
   {
     "id": "erdos-436-header",
     "proofId": "erdos-436",
-    "type": "context",
-    "range": { "startLine": 1, "endLine": 35 },
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
     "title": "Module Documentation: Consecutive kth Power Residues",
     "content": "Erdős Problem #436: for prime $p$ and $k, m \\geq 2$, let $r(k,m,p)$ be the minimal $r$ such that $r, r+1, \\ldots, r+m-1$ are all $k$th power residues mod $p$. Define $\\Lambda(k,m) = \\limsup_{p \\to \\infty} r(k,m,p)$. Q1: Is $\\Lambda(k,2)$ finite? [SOLVED: YES, Hildebrand 1991]. Q2: Is $\\Lambda(k,3)$ finite for odd $k$? [OPEN]. Known values include $\\Lambda(2,2)=9$ (Lehmer 1962), $\\Lambda(3,2)=77$ (Dunton 1965), up to $\\Lambda(7,2)=1649375$ (Brillhart-Lehmer 1964). Graham (1964) proved $\\Lambda(k,m) = \\infty$ for $m \\geq 4$, and $\\Lambda(k,3) = \\infty$ for even $k$.",
     "mathContext": "$\\Lambda(k,m) = \\limsup_{p \\to \\infty} \\min\\{r : r, r+1, \\ldots, r+m-1$ are $k$th power residues mod $p\\}$. Finite iff consecutive runs of $k$th power residues start bounded.",
     "significance": "supporting",
-    "relatedConcepts": ["power residues", "consecutive residues", "Hildebrand's theorem", "Lehmer computations"],
-    "prerequisites": ["modular arithmetic", "Nat.Prime"]
+    "relatedConcepts": [
+      "power residues",
+      "consecutive residues",
+      "Hildebrand's theorem",
+      "Lehmer computations"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "Nat.Prime"
+    ]
   },
   {
     "id": "erdos-436-fermat-qr-block",
     "proofId": "erdos-436",
-    "type": "technique",
-    "range": { "startLine": 404, "endLine": 556 },
+    "type": "concept",
+    "range": {
+      "startLine": 404,
+      "endLine": 556
+    },
     "title": "Fermat's Little Theorem, QR Multiplicativity, and Power Residue Arithmetic",
     "content": "A large block of proved theorems and axioms building the number-theoretic infrastructure. Key proved results: `fermat_little_theorem` ($r^{p-1} \\equiv 1 \\pmod{p}$ for $\\gcd(r,p)=1$), `kth_residue_fermat_little` (applies Fermat to power residues), `euler_criterion_forward` ($a$ is QR $\\Rightarrow a^{(p-1)/2} \\equiv 1$). Axiomatized: `qr_product_non_residues` (product of two non-residues is a residue via Legendre symbol multiplicativity), `consecutive_qr_existence_k2` (Hildebrand: consecutive pairs of $k$th power residues start bounded). The `even_k_m3_infinite` and `lambda_finite_small_m` theorems establish the parity dichotomy.",
     "mathContext": "Fermat: $r^{p-1} \\equiv 1 \\pmod{p}$ for $p \\nmid r$. Euler: $a$ is QR mod $p$ $\\iff a^{(p-1)/2} \\equiv 1 \\pmod{p}$. Legendre: $(ab/p) = (a/p)(b/p)$, so non-residue $\\times$ non-residue = residue.",
     "significance": "key",
-    "relatedConcepts": ["Fermat's Little Theorem", "Euler's criterion", "Legendre symbol", "quadratic residues"],
-    "prerequisites": ["Nat.Prime", "ZMod", "Nat.pow_mod"]
+    "relatedConcepts": [
+      "Fermat's Little Theorem",
+      "Euler's criterion",
+      "Legendre symbol",
+      "quadratic residues"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "ZMod",
+      "Nat.pow_mod"
+    ]
   },
   {
     "id": "erdos-436-euler-full",
     "proofId": "erdos-436",
-    "type": "technique",
-    "range": { "startLine": 580, "endLine": 634 },
+    "type": "concept",
+    "range": {
+      "startLine": 580,
+      "endLine": 634
+    },
     "title": "Euler's Criterion and Quadratic Reciprocity Applications",
     "content": "The closing section proves and axiomatizes the full Euler criterion ($a$ is QR mod $p$ $\\iff a^{(p-1)/2} \\equiv 1$) and applies it to specific computations. The forward direction is proved via direct computation; the backward direction (`euler_criterion_backward`) is axiomatized as it requires deeper `ZMod` machinery. The combined `euler_criterion` iff statement wraps both. Additional axioms encode specific computational results for small power residues and lambda values.",
     "mathContext": "Euler's criterion: $a \\in (\\mathbb{Z}/p\\mathbb{Z})^{\\times 2} \\iff a^{(p-1)/2} \\equiv 1 \\pmod{p}$. Forward: if $a = b^2$, then $a^{(p-1)/2} = b^{p-1} = 1$ by Fermat. Backward: requires that $x^{(p-1)/2} = 1$ has exactly $(p-1)/2$ solutions, which are exactly the QRs.",
     "significance": "key",
-    "relatedConcepts": ["Euler's criterion", "quadratic residue computation", "ZMod machinery"],
-    "prerequisites": ["fermat_little_theorem", "IsQuadraticResidue", "Nat.mul_div_cancel'"]
+    "relatedConcepts": [
+      "Euler's criterion",
+      "quadratic residue computation",
+      "ZMod machinery"
+    ],
+    "prerequisites": [
+      "fermat_little_theorem",
+      "IsQuadraticResidue",
+      "Nat.mul_div_cancel'"
+    ]
   },
   {
     "id": "erdos-436-ann-imports",

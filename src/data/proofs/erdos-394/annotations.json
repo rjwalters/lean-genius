@@ -63,7 +63,7 @@
       "startLine": 80,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "concept",
     "title": "t₂(p) = p - 1 for Primes",
     "content": "For any prime p, t₂(p) = p - 1 because p divides (p-1)·p but p does not divide m(m+1) for any m < p - 1. This is the key fact underlying the lower bound on Σ t₂(n): since there are ~x/log x primes up to x, each contributing p - 1 ≈ p to the sum, we get Σ t₂(n) ≫ x²/log x.",
     "mathContext": "Axiomatized as t2_of_prime. The corollary primes_large_t2 restates this universally. This fact makes the threshold c = log 2 in the Erdős-Hall conjecture optimal.",
@@ -82,7 +82,7 @@
       "startLine": 107,
       "endLine": 116
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Lower Bound: x²/log x",
     "content": "The sum Σ_{n≤x} t₂(n) ≫ x²/log x. This follows from the Prime Number Theorem: there are approximately x/log x primes up to x, and each prime p contributes t₂(p) = p - 1 ≈ p to the sum. Summing over primes gives roughly Σ_{p≤x} p ≈ x²/(2 log x).",
     "mathContext": "Axiomatized as trivial_lower_bound. This is sharp in the sense that no exponent larger than 1 can appear on log x in the denominator.",
@@ -157,7 +157,7 @@
       "startLine": 182,
       "endLine": 213
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Factorial Special Cases",
     "content": "For factorial arguments, t_k(n!) has elegant exact values. t_{n-1}(n!) = 2 since 2·3·4···n = n! is divisible by n! (starting at m = 2 gives exactly n - 1 consecutive integers whose product is n!). The bound t_{n-2}(n!) ≤ 2n is proved, and it is sharp for n = 2^r where t_{n-2}(n!) ≥ 2^{r-1} ≈ n/2.",
     "mathContext": "Three axioms formalize these results: factorial_t_n_minus_1, factorial_t_n_minus_2, and factorial_t_n_minus_2_sharp. The sharpness for powers of 2 reflects the high multiplicity of 2 in n!.",

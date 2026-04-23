@@ -148,7 +148,7 @@
       "startLine": 111,
       "endLine": 114
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Positive Gaps from Strict Monotonicity",
     "content": "**gaps_pos**: For a strictly increasing sequence, the gaps are always positive: $q(n+1) > q(n)$ for all $n$. The proof is a one-liner using `q.strictMono (Nat.lt_succ_self n)`.",
     "mathContext": "Proved: `theorem gaps_pos (q : MonotoneGapPrimeSeq) (n : ℕ) : q.seq (n + 1) > q.seq n := q.strictMono (Nat.lt_succ_self n)`. Uses `StrictMono` which gives $i < j \\Rightarrow f(i) < f(j)$, and `Nat.lt_succ_self n : n < n + 1$.",
@@ -170,7 +170,7 @@
       "startLine": 116,
       "endLine": 124
     },
-    "type": "technique",
+    "type": "concept",
     "title": "All Terms at Least 2",
     "content": "**first_prime_ge_two** and **all_ge_two**: Every prime $p$ satisfies $p \\geq 2$ (the smallest prime is 2). Applied to the sequence, this gives $q_n \\geq 2$ for all $n$.",
     "mathContext": "Proved using `Nat.Prime.two_le` from Mathlib: `theorem all_ge_two (q : MonotoneGapPrimeSeq) (n : ℕ) : q.seq n ≥ 2 := Nat.Prime.two_le (q.allPrime n)`. The key Mathlib fact is `Nat.Prime.two_le : Nat.Prime p → p ≥ 2`.",

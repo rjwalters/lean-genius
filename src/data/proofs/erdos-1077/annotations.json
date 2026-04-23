@@ -81,7 +81,7 @@
       "startLine": 76,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "concept",
     "title": "1-Balanced Implies Regular",
     "content": "**one_balanced_iff_regular**: G is 1-balanced ⟺ maxDegree G = minDegree G ⟺ G is regular.\n\n**Proof**: \n- (⇒) If maxDegree ≤ 1 · minDegree, combined with minDegree ≤ maxDegree, gives equality.\n- (⇐) If maxDegree = minDegree, then trivially maxDegree ≤ 1 · minDegree.",
     "mathContext": "Regular graphs are central in algebraic graph theory. Examples: complete graphs K_n, cycles C_n, hypercubes Q_n.",
@@ -135,7 +135,7 @@
       "startLine": 109,
       "endLine": 117
     },
-    "type": "context",
+    "type": "concept",
     "title": "Upper Bound: Complete Bipartite Graphs",
     "content": "**upperBound_bipartite**: Complete bipartite graphs K_{n^α, n^{1-α}} show the optimal bound is O(n^α).\n\n**Why**: In K_{a,b} with a ≪ b:\n- Vertices in the small part have degree b\n- Vertices in the large part have degree a\n- Any balanced subgraph can only include O(a) vertices from the small side\n\nFor a = n^α, b = n^{1-α}, this gives O(n^α) vertices.",
     "mathContext": "Complete bipartite graphs are extremal for many graph theory problems. Here K_{n^α, n^{1-α}} has n^α · n^{1-α} = n edges... wait, that's not n^{1+α}. The graph actually needs n^{1+α} edges.",
@@ -153,7 +153,7 @@
       "startLine": 119,
       "endLine": 128
     },
-    "type": "context",
+    "type": "concept",
     "title": "Lower Bound: 6-Balanced Subgraphs",
     "content": "**lowerBound_balanced**: Every graph with n^{1+α} edges contains a 6-balanced subgraph on Ω(n^α) vertices.\n\n**The constant 6 is explicit** in the Jiang-Longbrake proof.\n\n**Technique**: Iterative regularization - repeatedly remove vertices of extreme degree while preserving edge density. After O(log n) iterations, the remaining graph is 6-balanced.",
     "mathContext": "The constant 6 may not be optimal. Improving it is an open problem. The key insight is that logarithmically many iterations suffice.",
@@ -172,7 +172,7 @@
       "startLine": 130,
       "endLine": 142
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #1077 (Resolved)",
     "content": "**erdos_1077_resolution**: The original conjecture (as literally stated) is FALSE.\n\n**Correct Answer**: The optimal number of vertices in a guaranteed D-balanced subgraph of a graph with n^{1+α} edges is **Θ(n^α)**.\n\n- Lower bound: Jiang-Longbrake show 6-balanced subgraphs exist\n- Upper bound: Complete bipartite graphs show this is tight",
     "mathContext": "The resolution clarifies the original ambiguous statement. The answer Θ(n^α) means both lower and upper bounds match asymptotically.",

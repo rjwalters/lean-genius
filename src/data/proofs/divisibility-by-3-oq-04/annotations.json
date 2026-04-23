@@ -6,7 +6,7 @@
       "startLine": 44,
       "endLine": 53
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Digit Sums Respect Addition (General)",
     "content": "The core theorem: for any base $b$ and modulus $d$ with $b \\bmod d = 1$, the digit-sum function is an additive homomorphism modulo $d$. The proof unfolds `Nat.ModEq` to percentage equality, applies `Nat.add_mod` to decompose, then uses the digit-sum congruence (backward direction via $\\leftarrow$) to replace digit sums with original numbers, and closes with the forward congruence applied to the sum. This single theorem generates all casting-out methods for addition.",
     "mathContext": "$\\mathrm{digitsum}_b(a) + \\mathrm{digitsum}_b(c) \\equiv \\mathrm{digitsum}_b(a+c) \\pmod{d}$ when $b \\bmod d = 1$",
@@ -29,7 +29,7 @@
       "startLine": 55,
       "endLine": 64
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Digit Sums Respect Multiplication (General)",
     "content": "The multiplicative counterpart: digit sums form a multiplicative homomorphism modulo $d$. The proof is structurally identical to the additive case, replacing `Nat.add_mod` with `Nat.mul_mod`. Together with the additive theorem, this shows that digit-sum reduction is a ring homomorphism $\\mathbb{N} \\to \\mathbb{Z}/d\\mathbb{Z}$, which is the algebraic reason why casting out nines works for both addition and multiplication.",
     "mathContext": "$\\mathrm{digitsum}_b(a) \\cdot \\mathrm{digitsum}_b(c) \\equiv \\mathrm{digitsum}_b(a \\cdot c) \\pmod{d}$",

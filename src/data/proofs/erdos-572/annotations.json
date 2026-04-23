@@ -237,7 +237,7 @@
       "startLine": 162,
       "endLine": 179
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conjecture Proved for k=3",
     "content": "**erdos_572_k3:**\n\nThe conjecture holds for k=3.\n\n```lean\ntheorem erdos_572_k3 : erdosConjectureLowerBound 3 := by\n  unfold erdosConjectureLowerBound\n  obtain (c, hc_pos, hc) := benson_k3\n  use c\n  ...\n```\n\nFollows from Benson's theorem since 4/3 = 1 + 1/3.",
     "significance": "key",
@@ -306,7 +306,7 @@
       "startLine": 212,
       "endLine": 218
     },
-    "type": "technique",
+    "type": "concept",
     "title": "LUW Matches Conjecture for k=3",
     "content": "**luw_matches_k3:**\n\nFor k=3 (odd), the LUW exponent equals the conjectured exponent.\n\nluwExponent 3 = 1 + 2/6 = 4/3 = 1 + 1/3 = conjecturedExponent 3\n\nThis is why LUW gives the optimal bound for k=3.",
     "significance": "key",
@@ -329,7 +329,7 @@
       "startLine": 219,
       "endLine": 225
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gap for k=4",
     "content": "**luw_gap_k4:**\n\nFor k=4, there is a gap:\n- LUW gives 1 + 2/10 = 1.2\n- Conjecture is 1 + 1/4 = 1.25\n\nThe k=4 case remains open.",
     "significance": "key",
@@ -398,7 +398,7 @@
       "startLine": 277,
       "endLine": 291
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_572_summary:**\n\nCombines the partial results:\n\n```lean\ntheorem erdos_572_summary :\n    erdosConjectureLowerBound 3 and\n    erdosConjectureLowerBound 5 and\n    luwExponent 3 = conjecturedExponent 3\n```\n\n1. Conjecture proved for k=3\n2. Conjecture proved for k=5\n3. LUW bound optimal for k=3",
     "significance": "key",
@@ -421,7 +421,7 @@
       "startLine": 292,
       "endLine": 304
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Best Known Lower Bounds",
     "content": "**best_known_lower_bounds:**\n\nSummarizes all known lower bounds:\n\n1. k=3: n^{4/3} (Benson, optimal)\n2. k=5: n^{6/5} (Benson, optimal)\n3. General k: n^{1+2/(3k-3+v)} (LUW, suboptimal)\n\nThe gap between LUW and the conjecture grows with k.",
     "significance": "key",

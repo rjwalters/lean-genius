@@ -128,7 +128,7 @@
       "startLine": 74,
       "endLine": 87
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sidon Sets: Bounded but Sparse",
     "content": "**sidon_bounded_rep and sidon_density_zero.** Sidon sets have r(n) ≤ 2 (bounded) but d(A+A) = 0 (density 0). This shows one extreme: bounded r(n) is compatible with sparse sumsets, but Sidon sets are far from the dense sumset goal.",
     "mathContext": "A **Sidon set** (or B₂ set) is a set A where all pairwise sums a + b (a ≤ b) are distinct. This gives r_A(n) ≤ 1 for all n. The classical result of Erdős and Turán shows |A ∩ {1,...,N}| ≤ (1+o(1))√N for Sidon sets, giving |A+A| ≤ (1+o(1))N, so d(A+A) can be at most 1 — but the density is actually 0 since |A+A| ∼ N while we need |A+A ∩ [1,N]|/N → 0 from the sparsity of A. This establishes the 'lower left' of the density-representation landscape: bounded r(n) is achievable, but only with sparse sumsets.",

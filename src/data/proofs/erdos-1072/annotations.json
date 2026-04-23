@@ -2,13 +2,13 @@
   {
     "id": "erdos-1072-header",
     "proofId": "erdos-1072",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 1,
       "endLine": 27
     },
     "title": "Problem Statement and Imports",
-    "content": "The docstring presents Erd\u0151s Problem #1072: for a prime $p$, let $f(p)$ be the least positive $n$ with $n! \\equiv -1 \\pmod{p}$. Wilson's theorem guarantees $f(p) \\leq p-1$. The two main questions ask (1) whether infinitely many primes have $f(p) = p-1$ (Wilson-maximal), and (2) whether $f(p)/p \\to 0$ for almost all primes. Imports include `Nat.Factorial.Basic` (factorial definitions and basic properties), `Nat.Prime.Basic` (primality), `ZMod.Basic` (modular arithmetic), and `Filter.AtTopBot` (for limit statements).",
+    "content": "The docstring presents Erdős Problem #1072: for a prime $p$, let $f(p)$ be the least positive $n$ with $n! \\equiv -1 \\pmod{p}$. Wilson's theorem guarantees $f(p) \\leq p-1$. The two main questions ask (1) whether infinitely many primes have $f(p) = p-1$ (Wilson-maximal), and (2) whether $f(p)/p \\to 0$ for almost all primes. Imports include `Nat.Factorial.Basic` (factorial definitions and basic properties), `Nat.Prime.Basic` (primality), `ZMod.Basic` (modular arithmetic), and `Filter.AtTopBot` (for limit statements).",
     "mathContext": "Wilson's theorem states $(p-1)! \\equiv -1 \\pmod{p}$ for every prime $p$. The function $f(p) = \\min\\{n \\geq 1 : n! \\equiv -1 \\pmod{p}\\}$ measures how early this congruence can be achieved. The sequence $f(p)$ for $p = 2, 3, 5, 7, 11, 13, \\ldots$ begins $1, 2, 4, 3, 8, 4, \\ldots$ (OEIS A154554).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -76,7 +76,7 @@
   {
     "id": "erdos-1072-wilson",
     "proofId": "erdos-1072",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 43,
       "endLine": 57
@@ -109,7 +109,7 @@
     },
     "title": "Question 1: Infinitely Many Wilson-Maximal Primes",
     "content": "The first main question: is the set $\\{p \\text{ prime} : f(p) = p-1\\}$ infinite? The known maximal primes include $2, 3, 5$ but the question of whether this set is infinite is completely open. Stated using Mathlib's `Set.Infinite`, which asserts the set is not contained in any finite set. A positive answer would show that there are arbitrarily large primes where the factorial residues modulo $p$ avoid $-1$ until the very last moment.",
-    "mathContext": "$\\text{erdos\\_1072a} : \\text{Set.Infinite}\\{p : \\mathbb{N} \\mid \\text{isWilsonMaximal}(p)\\}$. This is a statement about the distribution of primes with a specific factorial residue property. Heuristically, for random $p$, the probability that $n! \\not\\equiv -1 \\pmod{p}$ for all $n < p-1$ might be estimated as $\\prod_{n=1}^{p-2}(1 - 1/p) \\approx e^{-1}$, suggesting a positive density\u2014but this naive model ignores correlations between factorial residues.",
+    "mathContext": "$\\text{erdos\\_1072a} : \\text{Set.Infinite}\\{p : \\mathbb{N} \\mid \\text{isWilsonMaximal}(p)\\}$. This is a statement about the distribution of primes with a specific factorial residue property. Heuristically, for random $p$, the probability that $n! \\not\\equiv -1 \\pmod{p}$ for all $n < p-1$ might be estimated as $\\prod_{n=1}^{p-2}(1 - 1/p) \\approx e^{-1}$, suggesting a positive density—but this naive model ignores correlations between factorial residues.",
     "significance": "key",
     "relatedConcepts": [
       "Set.Infinite in Mathlib",
@@ -152,14 +152,14 @@
       "startLine": 78,
       "endLine": 86
     },
-    "title": "Hardy\u2013Subbarao Density Conjecture",
+    "title": "Hardy–Subbarao Density Conjecture",
     "content": "Hardy and Subbarao conjectured that the number of Wilson-maximal primes $p \\leq x$ is $o(x/\\log x)$, i.e., their density among all primes tends to zero. This is stronger than Question 2 (which only asks about $f(p)/p$, not about the proportion of maximal primes). The formalization uses $\\epsilon$-$N$ quantifiers with `Finset.Icc` to count primes in an interval. If true, Wilson-maximal primes would be analogous to twin primes: potentially infinite but increasingly sparse.",
     "mathContext": "$\\forall \\epsilon > 0,\\, \\exists N,\\, \\forall x \\geq N: |\\{p \\leq x : \\text{isWilsonMaximal}(p)\\}| \\leq \\epsilon \\cdot x / \\ln x$. Since the prime counting function $\\pi(x) \\sim x/\\ln x$, this says the fraction of maximal primes among all primes $\\leq x$ tends to $0$. The conjecture is consistent with computational evidence but no theoretical progress has been made.",
     "significance": "supporting",
     "relatedConcepts": [
       "prime counting function",
       "density zero subsets",
-      "Hardy\u2013Littlewood conjectures",
+      "Hardy–Littlewood conjectures",
       "twin prime analogy"
     ],
     "prerequisites": [
@@ -170,7 +170,7 @@
   {
     "id": "erdos-1072-examples",
     "proofId": "erdos-1072",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 88,
       "endLine": 103
@@ -198,8 +198,8 @@
       "endLine": 114
     },
     "title": "Distinction from Wilson Primes",
-    "content": "A Wilson prime satisfies the stronger congruence $p^2 \\mid (p-1)! + 1$ (i.e., $(p-1)! \\equiv -1 \\pmod{p^2}$). The only known Wilson primes are $5, 13, 563$, and no others have been found below $5 \\times 10^{17}$. Every Wilson prime is Wilson-maximal (proved as an axiom here: if $p^2 \\mid (p-1)!+1$, then certainly $p \\mid (p-1)!+1$, and the question is whether any earlier factorial works). But Wilson-maximality is much weaker than being a Wilson prime\u2014it only requires $p \\mid (p-1)!+1$ with no earlier hit, not $p^2 \\mid (p-1)!+1$.",
-    "mathContext": "Wilson prime: $p^2 \\mid (p-1)! + 1$, i.e., $(p-1)! \\equiv -1 \\pmod{p^2}$. Known Wilson primes: $5, 13, 563$. The implication Wilson prime $\\Rightarrow$ Wilson-maximal holds because if $p^2 \\mid (p-1)!+1$ and $p \\mid n!+1$ for some $n < p-1$, then $p \\mid n!+1$ and $p \\mid (p-1)!+1$, but this doesn't immediately give a contradiction\u2014the axiom as stated requires proof that the $p^2$ divisibility somehow prevents earlier hits.",
+    "content": "A Wilson prime satisfies the stronger congruence $p^2 \\mid (p-1)! + 1$ (i.e., $(p-1)! \\equiv -1 \\pmod{p^2}$). The only known Wilson primes are $5, 13, 563$, and no others have been found below $5 \\times 10^{17}$. Every Wilson prime is Wilson-maximal (proved as an axiom here: if $p^2 \\mid (p-1)!+1$, then certainly $p \\mid (p-1)!+1$, and the question is whether any earlier factorial works). But Wilson-maximality is much weaker than being a Wilson prime—it only requires $p \\mid (p-1)!+1$ with no earlier hit, not $p^2 \\mid (p-1)!+1$.",
+    "mathContext": "Wilson prime: $p^2 \\mid (p-1)! + 1$, i.e., $(p-1)! \\equiv -1 \\pmod{p^2}$. Known Wilson primes: $5, 13, 563$. The implication Wilson prime $\\Rightarrow$ Wilson-maximal holds because if $p^2 \\mid (p-1)!+1$ and $p \\mid n!+1$ for some $n < p-1$, then $p \\mid n!+1$ and $p \\mid (p-1)!+1$, but this doesn't immediately give a contradiction—the axiom as stated requires proof that the $p^2$ divisibility somehow prevents earlier hits.",
     "significance": "supporting",
     "relatedConcepts": [
       "Wilson primes",

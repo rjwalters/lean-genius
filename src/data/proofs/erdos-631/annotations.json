@@ -6,7 +6,7 @@
       "startLine": 20,
       "endLine": 26
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Setup",
     "content": "Imports all of Mathlib and opens Finset, Function, SimpleGraph, and Nat namespaces. Introduces universe-polymorphic vertex type V with Fintype and DecidableEq instances.",
     "significance": "supporting",
@@ -277,7 +277,7 @@
       "startLine": 187,
       "endLine": 232
     },
-    "type": "context",
+    "type": "concept",
     "title": "Related Results",
     "content": "Better bounds for restricted planar graphs: (1) Alon-Tarsi (1992): bipartite planar → χ_L ≤ 3; (2) outerplanar → χ_L ≤ 3; (3) planar with girth ≥ 5 → χ_L ≤ 3. Also includes Thomassen's proof structure: key lemma about precolored edges and induction strategy.",
     "significance": "key",
@@ -302,7 +302,7 @@
       "startLine": 245,
       "endLine": 276
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Status: erdos_631_status",
     "content": "The main theorem erdos_631_status bundles both answers: (1) ∀ planar G, χ_L(G) ≤ 5 (Thomassen), and (2) ∃ planar G with χ_L(G) = 5 (Voigt). Both are direct applications of the axiomatized results.",
     "significance": "key",

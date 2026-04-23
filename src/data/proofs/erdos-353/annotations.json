@@ -206,7 +206,7 @@
       "startLine": 299,
       "endLine": 318
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Scaling Property",
     "content": "**scaling_property:**\n\nIf infinite measure sets contain configurations of area 1, they contain configurations of ANY positive area t.\n\n**Proof idea:** Scale the set by factor √t. The scaled set still has infinite measure, so it contains area-1 configurations. Scaling back gives area-t configurations in the original set.",
     "significance": "key",
@@ -224,7 +224,7 @@
       "startLine": 342,
       "endLine": 393
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "**Erdős Problem #353: SOLVED**\n\n**Results:**\n- Isosceles trapezoid: YES (Koizumi 2025)\n- Isosceles triangle: YES (Koizumi 2025)\n- Right triangle: YES (Koizumi 2025)\n- Cyclic quadrilateral: YES (Kovač-Predojević 2024)\n- Parallelogram: NO (counterexample exists)\n\n**Key Insight:** One parallel pair (trapezoid) is weak enough to guarantee existence, but two parallel pairs (parallelogram) can fail.",
     "significance": "key",

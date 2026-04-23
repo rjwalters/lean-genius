@@ -62,7 +62,7 @@
       "startLine": 72,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Restricted Subset of Ordinary",
     "content": "**restrictedSumset_subset_sumset:**\n\nA +̂ A ⊆ A + A\n\nEvery sum of distinct elements is also a sum (possibly equal). The restricted sumset is always contained in the ordinary sumset.",
     "significance": "supporting",
@@ -80,7 +80,7 @@
       "startLine": 82,
       "endLine": 87
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Singleton Restricted Sumset",
     "content": "**restrictedSumset_singleton:**\n\n{a} +̂ {a} = ∅\n\nA singleton has no pairs of distinct elements, so its restricted sumset is empty. This is the edge case where the bound 2|A| - 3 = -1 would be negative.",
     "significance": "supporting",
@@ -135,7 +135,7 @@
       "startLine": 144,
       "endLine": 169
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tightness via Arithmetic Progressions",
     "content": "**arithmeticProgression:**\n\nA = {a, a+d, a+2d, ..., a+(n-1)d} in 𝔽ₚ.\n\n**AP_restrictedSumset:**\nFor this A with d ≠ 0:\n  A +̂ A = {2a+d, 2a+2d, ..., 2a+(2n-3)d}\n\nThis has exactly 2n - 3 elements (when small enough).\n\nSo the bound min(2|A| - 3, p) is TIGHT - we cannot improve it.",
     "mathContext": "APs are the extremal examples for many sumset problems.",
@@ -209,7 +209,7 @@
       "startLine": 251,
       "endLine": 257
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: |A| = 2",
     "content": "**card_two_case:**\n\nIf A = {a, b} with a ≠ b, then:\n  A +̂ A = {a + b}\n\nExactly 1 element. The bound gives min(2·2 - 3, p) = min(1, p) = 1. ✓",
     "significance": "supporting",
@@ -227,7 +227,7 @@
       "startLine": 259,
       "endLine": 270
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: |A| = 3",
     "content": "**card_three_lower_bound:**\n\nFor |A| = 3, the restricted sumset has at least 3 elements.\n\nThe bound gives min(2·3 - 3, p) = min(3, p) = 3 for p ≥ 3.\n\nIf A = {a, b, c}, then A +̂ A contains a+b, a+c, b+c (at least 3 elements).",
     "significance": "supporting",
@@ -245,7 +245,7 @@
       "startLine": 276,
       "endLine": 300
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_476_summary:**\n\nCombines the main results:\n1. |A +̂ A| ≥ min(2|A| - 3, p) for all A with |A| ≥ 2\n2. The bound is tight (achieved by arithmetic progressions)\n\nThe Erdős-Heilbronn conjecture is completely resolved.",
     "significance": "key",

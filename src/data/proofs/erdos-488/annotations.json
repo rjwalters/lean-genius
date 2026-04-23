@@ -123,7 +123,7 @@
       "startLine": 62,
       "endLine": 68
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Optimality of Constant 2",
     "content": "The constant 2 in the conjecture is sharp. For the singleton A = {a}, taking n = 2a-1 and m = 2a, the ratio of density ratios approaches 2 as a → ∞. The key insight is that ⌊(2a-1)/a⌋ = 1 while ⌊2a/a⌋ = 2, causing a near-doubling in the count.",
     "mathContext": "For $A = \\{a\\}$: $\\rho(\\{a\\}, 2a) = 2/(2a) = 1/a$ and $\\rho(\\{a\\}, 2a-1) = 1/(2a-1)$. Thus $\\rho(\\{a\\}, 2a) / \\rho(\\{a\\}, 2a-1) = (2a-1)/a = 2 - 1/a \\to 2$ as $a \\to \\infty$.",

@@ -144,7 +144,7 @@
       "startLine": 196,
       "endLine": 227
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorems",
     "content": "**finite_case_complete** (PROVED): Directly wraps folkman_finite_resistance, confirming the finite case is settled.\n\n**erdos_595_summary** (PROVED): Combines two key results:\n1. Folkman's finite resistance: for all n ≥ 1, K₄-free graphs exist that resist n-covers\n2. C₄-free coverability: C₄-free graphs always admit countable triangle-free covers\n\nProof: `⟨folkman_finite_resistance, c4_free_countable_trees⟩`\n\nThis captures what is known: finite resistance holds, C₄-free coverability holds, but the K₄-free countable case remains open.",
     "mathContext": "The summary packages the established positive results without claiming resolution of the open problem. The conjunction structure highlights the contrast between finite resistance and C₄-free coverability.",

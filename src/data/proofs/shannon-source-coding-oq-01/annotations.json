@@ -72,7 +72,7 @@
       "startLine": 98,
       "endLine": 108
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Joint Distribution Properties",
     "content": "The induced joint distribution $p(x,y) = p(x) W(y|x)$ inherits non-negativity from the source and test channel, and sums to 1 by the chain $\\sum_{x,y} p(x) W(y|x) = \\sum_x p(x) \\sum_y W(y|x) = \\sum_x p(x) \\cdot 1 = 1$. These are the basic well-formedness properties needed to apply mutual information.",
     "mathContext": "$p_{XY}(x,y) = p_X(x) \\cdot W(y|x) \\ge 0$, $\\sum_{x,y} p_{XY}(x,y) = 1$",
@@ -93,7 +93,7 @@
       "startLine": 122,
       "endLine": 132
     },
-    "type": "technique",
+    "type": "concept",
     "title": "R(D) Monotonicity via Set Inclusion",
     "content": "R(D) is non-increasing: if $D_1 \\le D_2$, then any channel admissible at distortion $D_1$ is also admissible at $D_2$, so the infimum is taken over a larger set. Formally, `achievableRates_mono` proves $\\{I : E[d] \\le D_1\\} \\subseteq \\{I : E[d] \\le D_2\\}$. The monotonicity of `sInf` then gives $R(D_2) \\le R(D_1)$.",
     "mathContext": "$D_1 \\le D_2 \\Rightarrow R(D_2) \\le R(D_1)$",
@@ -137,7 +137,7 @@
       "startLine": 217,
       "endLine": 227
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gaussian Rate-Distortion",
     "content": "For a Gaussian source $X \\sim N(0, \\sigma^2)$ with squared-error distortion, $R(D) = \\frac{1}{2}\\log\\frac{\\sigma^2}{D}$ for $0 < D \\le \\sigma^2$, and $R(D) = 0$ for $D > \\sigma^2$. This is the cleanest closed-form rate-distortion result: each additional bit per symbol halves the distortion (the '6 dB per bit' rule). The optimal reproduction is $\\hat{X} = X + Z$ where $Z$ is independent Gaussian noise.",
     "mathContext": "$R(D) = \\frac{1}{2}\\log\\frac{\\sigma^2}{D}$ for $0 < D \\le \\sigma^2$",

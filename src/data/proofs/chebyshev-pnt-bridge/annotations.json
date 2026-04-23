@@ -6,7 +6,7 @@
       "startLine": 42,
       "endLine": 68
     },
-    "type": "context",
+    "type": "concept",
     "title": "Counting and Multiplying Primes in Intervals",
     "content": "Defines numPrimesAbove(m, n) as the cardinality of primes in the half-open interval (m, n], implemented as the filter of Nat.Prime over Ico(m+1, n+1). Proves this equals π(n) - π(m) by decomposing range(n+1) into range(m+1) ∪ Ico(m+1, n+1) and using disjointness. Also defines prodPrimesAbove as the product of these primes. These are the key building blocks for the upper bound.",
     "mathContext": "numPrimesAbove$(m, n) = |\\{p : m < p \\le n, p \\text{ prime}\\}| = \\pi(n) - \\pi(m)$. The proof splits $\\{0, \\ldots, n\\}$ into $\\{0, \\ldots, m\\} \\sqcup (m, n]$ and counts primes in each piece.",
@@ -94,7 +94,7 @@
       "startLine": 152,
       "endLine": 212
     },
-    "type": "context",
+    "type": "concept",
     "title": "Factorization Bound and Central Binomial Estimate (Fully Proved)",
     "content": "Two key theorems, both fully proved from Mathlib: (1) `prime_pow_factorization_centralBinom_le`: p^{v_p(C(2n,n))} ≤ 2n for any prime p. Proved via `Nat.pow_factorization_choose_le` after rewriting `centralBinom n = choose(2n,n)`. (2) `centralBinom_le_pow_primeCounting`: C(2n,n) ≤ (2n)^{π(2n)}. Proved in three steps: (a) each prime power factor p^{v_p} ≤ 2n from (1); (b) the support of the factorization maps into {primes ≤ 2n}, so |support| ≤ π(2n); (c) C(2n,n) = ∏_p p^{v_p} ≤ ∏ (2n) = (2n)^|support| ≤ (2n)^{π(2n)}.",
     "mathContext": "By Legendre's formula, $v_p\\binom{2n}{n} = \\sum_{j\\ge1}(\\lfloor 2n/p^j \\rfloor - 2\\lfloor n/p^j \\rfloor)$. Each term is 0 or 1 (since $\\lfloor 2x \\rfloor - 2\\lfloor x \\rfloor \\in \\{0,1\\}$), and terms with $p^j > 2n$ are 0. So $v_p \\le \\lfloor \\log_p(2n) \\rfloor$, giving $p^{v_p} \\le p^{\\log_p(2n)} = 2n$.",

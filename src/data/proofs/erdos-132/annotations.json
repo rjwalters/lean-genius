@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 38
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview: Rare Distances in the Plane",
     "content": "Erdős Problem #132 asks a deceptively simple question about finite planar point sets: must there always be at least two 'rare' distances — distances that occur at least once but at most $n$ times among the $\\binom{n}{2}$ pairs? The foundational result of Hopf and Pannwitz (1934) guarantees ONE rare distance (the diameter), but finding a SECOND has resisted attack for decades. Erdős offered $100 for any nontrivial progress. The formalization imports `InnerProductSpace.PiL2` for Euclidean geometry, `Finset.Basic`/`Card` for finite combinatorics, `Real.Sqrt` for distance computations, and `MetricSpace.Basic` for the metric structure.",
     "mathContext": "Given $A \\subset \\mathbb{R}^2$ with $|A| = n$, define $\\text{mult}(A, d) = |\\{\\{p, q\\} \\subset A : \\|p - q\\| = d\\}|$ and $d$ is **rare** if $1 \\leq \\text{mult}(A, d) \\leq n$. Q: Must $|\\{d > 0 : d \\text{ is rare}\\}| \\geq 2$ for all $n \\geq 7$?",
@@ -219,7 +219,7 @@
       "startLine": 186,
       "endLine": 217
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem: Combining Known Results",
     "content": "The main theorem `erdos_132_summary` combines four established results into a single conjunction: (1) Hopf-Pannwitz — at least one rare distance for $|A| \\geq 2$, (2) `counterexample_n4` — $n = 4$ fails, (3) `erdos_fishburn_5` — $n = 5$ works, (4) `erdos_fishburn_6` — $n = 6$ works. Proved by `exact ⟨hopf_pannwitz, counterexample_n4, erdos_fishburn_5, erdos_fishburn_6⟩`. The convex position result (CDL 2025) and the open general case $n \\geq 7$ remain as separate statements, reflecting the current frontier of knowledge.",
     "mathContext": "$(\\forall |A| \\geq 2,\\, \\exists \\text{rare } d) \\wedge (\\exists |A| = 4 \\text{ with } \\leq 1 \\text{ rare}) \\wedge (\\forall |A| = 5,\\, \\exists 2 \\text{ rare}) \\wedge (\\forall |A| = 6,\\, \\exists 2 \\text{ rare})$.",

@@ -297,7 +297,7 @@
       "startLine": 209,
       "endLine": 221
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Janzer Beats Threshold",
     "content": "**janzer_beats_threshold Theorem:**\n\nFor ε > 0 with ε < 1/6:\n∃ bipartite G: G not 2-degenerate ∧ ex(n;G) ≪ n^{3/2}\n\n**Proof:**\n1. Apply Janzer's counterexample with ε\n2. Get 3-regular bipartite H with ex ≪ n^{4/3+ε}\n3. H is not 2-degenerate (by regular3_not_2degenerate)\n4. Since 4/3 + ε < 3/2 when ε < 1/6, apply asymp_trans_exponent\n5. Thus ex(n;H) ≪ n^{3/2}",
     "significance": "key",
@@ -351,7 +351,7 @@
       "startLine": 249,
       "endLine": 261
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: Conjecture Disproved",
     "content": "**erdos_113: ¬ErdosSimonovitsConjecture**\n\n**Proof:**\n1. Assume ErdosSimonovitsConjecture holds\n2. Apply backward_false to get counterexample g:\n   - g is bipartite\n   - ex(n;g) ≪ n^{3/2}\n   - g is NOT 2-degenerate\n3. By the conjecture's ↔, ex ≪ n^{3/2} implies 2-degenerate\n4. But g is NOT 2-degenerate — contradiction\n5. Therefore the conjecture is FALSE.\n\n**The $500 prize was claimed by Janzer.**",
     "significance": "key",
@@ -369,7 +369,7 @@
       "startLine": 263,
       "endLine": 267
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Forward Direction Theorem",
     "content": "**erdos_113_forward:**\n\nisBipartite g → isDegenerate g 2 → ex(n;g) ≪ n^{3/2}\n\nThis theorem confirms the forward direction remains true.\n\nThe conjecture was only half wrong.",
     "significance": "key",

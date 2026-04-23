@@ -65,7 +65,7 @@
       "startLine": 117,
       "endLine": 172
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Downward Divisibility Markov Chain",
     "content": "**The Key Construction (GPT-5.4 Pro):**\n\nDefine a Markov chain on positive integers: from state n, transition to n/q with probability Lambda(q)/log(n) for each prime power q | n, where Lambda is the von Mangoldt function.\n\nThe fundamental identity sum_{d | n} Lambda(d) = log(n) ensures transition probabilities sum to 1, making this a genuine Markov chain.\n\n**transitionProb n q** = Lambda(q)/log(n) if q | n and n >= 2, else 0.\n\nThis identity is the Dirichlet convolution Lambda = mu * log evaluated at n, a standard result in analytic number theory. The Markov chain interpretation is the novel contribution.",
     "mathContext": "P(n -> n/q) = Lambda(q)/log(n). Sum_{q | n} Lambda(q) = log(n) ensures sum of transition probabilities = 1. Lambda(p^k) = log(p) for prime powers, 0 otherwise.",
@@ -105,7 +105,7 @@
       "startLine": 213,
       "endLine": 242
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Primitivity as Single-Hit and Source Mass",
     "content": "**Primitive => At Most One Hit:**\n\nIf a downward walk hits a in A and then later hits b in A (with b | a), primitivity forces a = b. So each walk hits A at most once.\n\n**Source Mass B_x:**\n\nThe initial distribution on the Markov chain has total mass B_x = sum_{p <= x} 1/(p log p) = 1 + O(1/log x). This is the 'budget' for hitting probability: the sub-Markov property ensures the total probability of hitting A is at most B_x, which gives f(A) <= 1 + O(1/log x) = 1 + o(1).",
     "mathContext": "Single-hit: A primitive, a,b in A, b | a => a = b. Source mass: B_x = 1 + O(1/log x). Combined: f(A) <= B_x = 1 + o(1).",

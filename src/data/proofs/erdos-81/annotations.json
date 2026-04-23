@@ -204,7 +204,7 @@
       "startLine": 194,
       "endLine": 195
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gap Analysis",
     "content": "`gap_analysis`: The rational inequality $(1 : \\mathbb{Q})/4 > 1/6$, proved by `norm_num`. This quantifies the gap between the upper bound coefficient $1/4$ and the conjectured coefficient $1/6$.",
     "mathContext": "The gap factor is $\\frac{1/4}{1/6} = 3/2$, meaning the current upper bound allows up to 50% more cliques than conjectured. Closing this gap — either by improving the upper bound or finding a counterexample to the conjecture — is the core open question.",
@@ -324,7 +324,7 @@
       "startLine": 288,
       "endLine": 296
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "`erdos_81_summary` is a **genuine theorem** for $n \\geq 3$: combines (1) the lower bound — some chordal graph on $n$ vertices needs $\\geq n^2/6$ cliques — with (2) the gap $1/4 > 1/6$. The proof applies `lower_bound` and `norm_num`.",
     "mathContext": "The proof uses the anonymous constructor $\\langle\\ldots, \\ldots\\rangle$ to combine the existential lower bound (from the `lower_bound` theorem, which itself uses `extremal_construction_exists` and `split_is_chordal`) with the arithmetic gap fact. The `by norm_num` tactic handles the rational arithmetic.",

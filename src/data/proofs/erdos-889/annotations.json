@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 22
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Header and Imports",
     "content": "File header documenting Erdos Problem #889 on new prime factors in consecutive integers. Imports `Nat.Basic`, `Nat.Prime.Basic`, `Nat.Factorization.Basic` for prime factorization, `Finset.Basic` for finite set operations, `ConditionallyCompleteLattice.Basic` for the supremum $\\iSup$, and `Tactic` for proof automation.",
     "mathContext": "Imports provide $\\text{primeFactors}$, $\\text{factorization}$, $\\text{Finset.filter}$, and $\\iSup$ (conditional supremum on $\\mathbb{N}$).",

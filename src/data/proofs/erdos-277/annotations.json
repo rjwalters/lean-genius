@@ -293,7 +293,7 @@
       "startLine": 113,
       "endLine": 116
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Haight's Theorem (1979)",
     "content": "Axiomatized main result: `ErdosQuestion277` holds. Haight proved that for every $c > 0$, there exists $n$ with $\\sigma(n) > cn$ but no covering system has all moduli dividing $n$. Published in Mathematika 26 (1979), 53-61.",
     "significance": "key",
@@ -315,7 +315,7 @@
       "startLine": 118,
       "endLine": 119
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Answer: YES",
     "content": "Immediate corollary restating Haight's theorem: the answer to Erdős #277 is YES. Derived directly from the axiomatized `haight_theorem`.",
     "significance": "key",
@@ -426,7 +426,7 @@
       "startLine": 164,
       "endLine": 169
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Haight's Strong Theorem",
     "content": "The stronger axiomatized result: for every $c > 0$, there exists $n \\geq 1$ with $\\sigma(n) > cn$ and $\\neg\\text{HasNonTrivialCoveringWithDivisorModuli}(n)$. This is the precise formalization of Haight's 1979 paper.",
     "significance": "key",
@@ -471,7 +471,7 @@
       "startLine": 179,
       "endLine": 182
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Reciprocal Sum Bound",
     "content": "Axiomatized: for a covering system with distinct moduli, $\\sum 1/m_i \\geq 1$. This is the fundamental necessary condition constraining covering systems.",
     "significance": "key",

@@ -74,7 +74,7 @@
       "startLine": 102,
       "endLine": 126
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Correctness Proof via Calc Chain",
     "content": "The correctness proof $a \\cdot q = c$ uses a `calc` chain that mirrors the algebraic identity: $a(xc + yk) = xac + yak = xac + y(bc) = (xa + yb)c = 1 \\cdot c = c$. The key step `Int.mul_ediv_cancel'` establishes that $a \\cdot k = bc$ when $a \\mid bc$, converting the computable division back to the exact divisibility equation. The Bézout identity then collapses the expression to $c$.",
     "mathContext": "$a(xc + yk) = (ax + by)c = 1 \\cdot c = c$ where $k = \\lfloor bc/a \\rfloor$ and $ak = bc$",

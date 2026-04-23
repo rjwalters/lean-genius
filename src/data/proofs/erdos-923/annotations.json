@@ -188,7 +188,7 @@
       "startLine": 118,
       "endLine": 120
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Subgraph Chromatic Monotonicity",
     "content": "**Axiom**: $\\chi(H) \\leq \\chi(G)$ whenever $H$ is a spanning subgraph of $G$. Any proper coloring of $G$ remains proper for $H$ since removing edges only relaxes constraints.",
     "mathContext": "If $c : V \\to \\{1,\\ldots,k\\}$ is a proper $k$-coloring of $G$, then for any $H$ with $E(H) \\subseteq E(G)$, the coloring $c$ is also proper for $H$: $H.\\text{Adj}\\,u\\,v \\Rightarrow G.\\text{Adj}\\,u\\,v \\Rightarrow c(u) \\neq c(v)$. Hence $\\chi(H) \\leq \\chi(G)$.",
@@ -347,7 +347,7 @@
       "startLine": 223,
       "endLine": 226
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Rödl's General Theorem for Bipartite H",
     "content": "**Axiom** (Rödl): The $H$-free subgraph problem holds whenever $H$ is bipartite (2-colorable). Bipartiteness is formalized as the existence of a `Coloring (Fin 2)` for $H$.",
     "mathContext": "The bipartite case is special because the Kővári-Sós-Turán theorem provides $\\text{ex}(n, K_{r,s}) = O(n^{2-1/r})$, giving quantitative control on the density of $H$-free subgraphs. Rödl's general proof extends the triangle-free argument using bipartite Ramsey numbers. For non-bipartite $H$ (e.g., odd cycles $C_{2t+1}$), different techniques are needed, and the full generalization remains an active area connecting to Erdős Problem #108.",

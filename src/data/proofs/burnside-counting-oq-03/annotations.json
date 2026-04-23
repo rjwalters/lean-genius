@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 43
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Pólya Insight: Fixed-Point Count = k^(number of orbits)",
     "content": "The key generalization from Burnside to Pólya is identifying **exactly** how many colorings each rotation fixes. For rotation by r on n positions: the orbit of position i is {j | j ≡ i mod gcd(r,n)}, giving gcd(r,n) orbits of size n/gcd(r,n) each. A coloring is fixed iff it's constant on each orbit, so there are k^gcd(r,n) fixed colorings. This follows from `ZMod.addOrderOf_coe`: the additive order of r in ZMod n is n/gcd(n,r), which is the orbit size.",
     "mathContext": "For $r \\in \\mathbb{Z}/n\\mathbb{Z}$: the subgroup $\\langle r \\rangle = \\{kr \\bmod n \\mid k \\in \\mathbb{Z}\\}$ has order $\\text{addOrderOf}(r) = n/\\gcd(n,r)$. Two positions $i,j$ are in the same orbit iff $i - j \\in \\langle r \\rangle$ iff $\\gcd(r,n) \\mid (i-j)$ iff $i \\equiv j \\pmod{\\gcd(r,n)}$. Hence $|\\text{Fix}(r)| = k^{\\gcd(r,n)}$.",
@@ -74,7 +74,7 @@
       "startLine": 80,
       "endLine": 171
     },
-    "type": "technique",
+    "type": "concept",
     "title": "fixed_factors_through_mod: Orbit Equality via Bezout",
     "content": "The key structural lemma: if A is fixed by rotation r, then positions i and j with i.val ≡ j.val (mod gcd(r,n)) satisfy c(i) = c(j). The proof has three steps: (1) show the backward step c(x+r) = c(x); (2) iterate to c(x + m*r) = c(x) for any m; (3) use Bezout's identity (Nat.gcd_eq_gcd_ab) to find m with (i + m*r) % n = j. The Bezout step converts 'same mod gcd' to 'reachable by rotation', which is the algebraic heart of the orbit characterization.",
     "mathContext": "Bezout: $\\gcd(r,n) = r \\cdot A + n \\cdot B$ for integers $A, B$. If $\\gcd(r,n) \\mid (j-i)$, write $j - i = \\gcd(r,n) \\cdot C$, so $j - i = (r \\cdot A + n \\cdot B) \\cdot C = r \\cdot (AC) + n \\cdot (BC)$. Thus $j \\equiv i + r \\cdot (AC) \\pmod{n}$, i.e., $m = AC$ rotations carry $i$ to $j$.",
@@ -170,7 +170,7 @@
       "startLine": 282,
       "endLine": 362
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Fiber-Totient Bijection and Pólya Sum Identity",
     "content": "fiber_card_eq_totient proves that the fiber {r : Fin n | gcd(r.val, n) = d} has exactly φ(n/d) elements. The proof constructs a bijection r ↦ r.val/d with {s < n/d | Coprime(n/d, s)}: forward map divides by d (valid since d | r.val), injectivity uses linarith on d*(r1.val/d) = d*(r2.val/d), surjectivity sends s ↦ d*s. polya_sum_identity then uses Finset.sum_fiberwise_of_maps_to to reindex the rotation sum by divisors.",
     "mathContext": "$|\\{r < n : \\gcd(r,n) = d\\}| = \\varphi(n/d)$, via $r \\mapsto r/d$ with $\\{s < n/d : \\gcd(s, n/d) = 1\\}$. Hence $\\sum_{r < n} k^{\\gcd(r,n)} = \\sum_{d \\mid n} \\varphi(n/d) \\cdot k^d$.",

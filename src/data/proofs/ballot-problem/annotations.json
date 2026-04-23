@@ -31,7 +31,7 @@
       "startLine": 80,
       "endLine": 92
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Namespace and MeasurableSpace Setup",
     "content": "Opens the `BallotProblem` namespace and `Ballot`, `Set`, `ProbabilityTheory`, `MeasureTheory` namespaces for access to Mathlib's probability infrastructure.\n\nThe two `private` instances (lines 86-91) are critical Lean boilerplate: Mathlib's `Ballot` module defines `MeasurableSpace (List ℤ)` locally (with `local instance`), so it is not available outside that file. To use `condCount` (conditional counting measure) here, we must recreate the instance as the discrete σ-algebra (`⊤`) and prove `MeasurableSingletonClass` (every singleton is measurable). Without these, `condCount` would fail to find its typeclass instances.",
     "mathContext": "`MeasurableSpace (List ℤ) := ⊤` sets the σ-algebra to the discrete/top σ-algebra, where every subset is measurable. This is needed because `condCount (A : Set α) (B : Set α)` requires `[MeasurableSpace α]`. The Mathlib Ballot module uses `local instance` to define this, which scopes it to that file only — outside the module, the instance is invisible to Lean's typeclass search. The two `private` definitions + `attribute [local instance]` pattern recreates it locally. `MeasurableSingletonClass` is proved by `{ measurableSet_singleton := fun _ => trivial }` — in the discrete σ-algebra, every singleton `{x}` is trivially measurable (it's a subset of everything). `condCount A B` then computes `Measure.count (A ∩ B) / Measure.count A` where `Measure.count` counts elements of a finite set.",
@@ -105,7 +105,7 @@
       "startLine": 154,
       "endLine": 166
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Edge Cases",
     "content": "Unanimous vote ($q = 0$): probability is 1 — if B gets no votes, A always leads. Verification: $(p-0)/(p+0) = 1$. Tied election base case ($p = q$): probability is 0 — equal votes must eventually tie. Verification: $(p-p)/(2p) = 0$. These boundary cases demonstrate the formula's extremal behavior.",
     "mathContext": "Lean proofs: `ballot_unanimous (p : ℕ) : condCount (countedSequence (p+1) 0) staysPositive = 1 := ballot_edge p` and `ballot_tie (p : ℕ) : condCount (countedSequence (p+1) (p+1)) staysPositive = 0 := ballot_same p`. Both are one-line delegations. The `(p+1)` in the hypothesis avoids the degenerate case $p = 0$ (need positive vote count). The unanimous case $(q=0)$: every sequence is just $[1,1,\\ldots,1]$, every suffix has positive sum, so all paths are good. The tie case $(p=q)$: at the end of counting, the running total is 0 — but by the intermediate value property for integer sequences, the running total must have been 0 at some earlier step, so no sequence stays positive. Together these check the formula at $p-q = p+q$ (ratio=1) and $p-q = 0$ (ratio=0).",
@@ -129,7 +129,7 @@
       "startLine": 168,
       "endLine": 189
     },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete Examples",
     "content": "Numerical verifications: $(p,q) = (2,1)$ gives $P = 1/3$; $(3,1)$ gives $P = 1/2$; $(4,2)$ gives $P = 1/3$; $(5,2)$ gives $P = 3/7$. Explicit check for $(2,1)$: three sequences $[+1,+1,-1], [+1,-1,+1], [-1,+1,+1]$ — only $[+1,+1,-1]$ has partial sums $(1,2,1) > 0$ throughout. Probability $= 1/3 = (2-1)/(2+1)$ ✓",
     "mathContext": "These examples (lines 177-186) are `example` proofs over `ℚ` (rationals), not directly invoking `ballot_theorem` — they just verify the arithmetic `(p - q : ℚ) / (p + q) = r` by `norm_num`. This is a lightweight check: it confirms the formula gives the right rational value but doesn't invoke the probabilistic machinery. For $(2,1)$: 3 total sequences, only `[1,1,-1]` stays positive (partial sums: 1, 2, 1 > 0 throughout); `[1,-1,1]` (sums: 1, 0, ...) and `[-1,1,1]` (sums: -1, ...) fail at step 2. The formula $(p-q)/(p+q) = 1/3$. Note that $(2,1)$ and $(4,2)$ both give $P = 1/3$ — the probability depends only on the ratio $p:q$, not the absolute values: $(p-q)/(p+q) = (kp - kq)/(kp + kq)$ for any $k > 0$.",

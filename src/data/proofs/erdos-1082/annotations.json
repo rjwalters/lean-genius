@@ -152,7 +152,7 @@
       "startLine": 144,
       "endLine": 154
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conjecture 2 is False",
     "content": "**conjecture2_false:**\n\n```lean\ntheorem conjecture2_false : not Conjecture2\n```\n\n**Proof idea:**\n1. Assume Conjecture2\n2. Apply to Xichuan's 42-point set\n3. Get a point p with at least 21 distances\n4. But Xichuan says every point has at most 20\n5. Contradiction via omega\n\nThis is a formal disproof using the axiomatized counterexample.",
     "significance": "key",
@@ -188,7 +188,7 @@
       "startLine": 182,
       "endLine": 191
     },
-    "type": "context",
+    "type": "concept",
     "title": "Connection to Guth-Katz",
     "content": "**guth_katz_distinct_distances:**\n\nThe famous Erdos distinct distances problem asks: what is the minimum number of distinct distances determined by n points in R^2?\n\n**Answer (Guth-Katz 2015):** Omega(n / log n) distinct distances.\n\nProblem #1082 asks a related question: what happens when we add the general position constraint?",
     "mathContext": "Guth-Katz used algebraic topology and polynomial partitioning - a breakthrough result.",
@@ -206,7 +206,7 @@
       "startLine": 193,
       "endLine": 208
     },
-    "type": "context",
+    "type": "concept",
     "title": "3D Generalizations",
     "content": "**3D Extensions:**\n\nErdos asked: Given n points in R^3 with no three collinear, do they determine >> n distances?\n\n**Known results:**\n- YES for convex polyhedra vertices (Altman)\n- YES if no four points are coplanar (Szemeredi)\n\nThe 3D problem has different behavior depending on geometric constraints.",
     "significance": "supporting",

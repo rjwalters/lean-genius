@@ -99,7 +99,7 @@
       "startLine": 67,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Derivative Equals Circumference Function",
     "content": "Wraps the main theorem to state `HasDerivAt circleArea (circumference r) r`, connecting the abstract derivative value $2\\pi r$ to the named circumference function. This is the headline result: the boundary length is the rate of change of enclosed area.",
     "mathContext": "$\\frac{dA}{dr} = C(r)$ — the geometric insight that adding a thin annular ring of width $dr$ increases area by $C(r) \\cdot dr$.",
@@ -122,7 +122,7 @@
       "startLine": 73,
       "endLine": 76
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Global Differentiability",
     "content": "Proves `Differentiable ℝ circleArea`: the area function is differentiable at every real number. This is immediate from the `HasDerivAt` result — if a function has a derivative at every point, it is differentiable everywhere.",
     "mathContext": "$A(r) = \\pi r^2$ is a polynomial, hence smooth ($C^\\infty$). In Lean, `Differentiable ℝ f` asserts $f$ is Fréchet differentiable at every point.",
@@ -145,7 +145,7 @@
       "startLine": 78,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Deriv Computation and Equivalence",
     "content": "Two theorems extracting the `deriv` (computable derivative function) form: `deriv circleArea r = 2 * π * r` and the equivalence `deriv circleArea r = circumference r`. The `deriv` function in Mathlib returns 0 for non-differentiable points; since differentiability is already established, these equalities hold unconditionally.",
     "mathContext": "In Mathlib, `deriv f x` is the unique real number $f'(x)$ satisfying `HasDerivAt f (deriv f x) x` when $f$ is differentiable. The `ring` tactic closes the algebraic identity $2 \\cdot \\pi \\cdot r = 2 \\cdot \\pi \\cdot r$.",
@@ -167,7 +167,7 @@
       "startLine": 90,
       "endLine": 114
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Special Cases and Scaling Laws",
     "content": "Six concrete results: the unit circle has circumference $2\\pi$ and area $\\pi$, the degenerate circle (radius 0) has circumference and area 0, circumference scales linearly ($C(cr) = c \\cdot C(r)$), and area scales quadratically ($A(cr) = c^2 \\cdot A(r)$). All proved by `unfold; ring`.",
     "mathContext": "The **scaling laws** encode dimensional analysis: $[A] = \\text{length}^2$ and $[C] = \\text{length}^1$. Formally, $A$ is homogeneous of degree 2 and $C$ is homogeneous of degree 1: $A(\\lambda r) = \\lambda^2 A(r)$, $C(\\lambda r) = \\lambda C(r)$.",
@@ -189,7 +189,7 @@
       "startLine": 116,
       "endLine": 124
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Second Derivative: Constant 2π",
     "content": "Proves `deriv (deriv circleArea) r = 2 * π`: the second derivative of area is the constant $2\\pi$. The proof first establishes that `deriv circleArea` equals the linear function $r \\mapsto 2\\pi r$ (by extensionality and `deriv_circleArea`), then differentiates this linear function to get $2\\pi$.",
     "mathContext": "$\\frac{d^2 A}{dr^2} = \\frac{dC}{dr} = 2\\pi$. This constant second derivative means the area function is a parabola $A(r) = \\pi r^2$, and geometrically, the circumference increases at a uniform rate as the radius grows.",
@@ -211,7 +211,7 @@
       "startLine": 126,
       "endLine": 134
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Positivity of Area and Circumference",
     "content": "For positive radius, both area and circumference are strictly positive. Both proofs use Lean's `positivity` tactic, which automatically verifies inequalities involving products of positive terms (here $\\pi > 0$ and $r > 0$).",
     "mathContext": "$r > 0 \\implies A(r) = \\pi r^2 > 0$ and $C(r) = 2\\pi r > 0$. These follow from `Real.pi_pos` ($\\pi > 0$) and the hypothesis $r > 0$.",
@@ -233,7 +233,7 @@
       "startLine": 136,
       "endLine": 148
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Monotonicity of Area and Circumference",
     "content": "For non-negative radii $0 \\le r_1 \\le r_2$, both $A(r_1) \\le A(r_2)$ and $C(r_1) \\le C(r_2)$. The area monotonicity uses `sq_le_sq'` (squaring preserves order for non-negatives) composed with `mul_le_mul_of_nonneg_left` (multiplying by $\\pi \\ge 0$ preserves order). Circumference monotonicity multiplies $r_1 \\le r_2$ by $2\\pi \\ge 0$.",
     "mathContext": "For $r \\ge 0$: $r_1 \\le r_2 \\implies r_1^2 \\le r_2^2 \\implies \\pi r_1^2 \\le \\pi r_2^2$. The restriction to non-negative radii is necessary because $A(-1) = \\pi > 0 = A(0)$.",
@@ -256,7 +256,7 @@
       "startLine": 150,
       "endLine": 155
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Circumference-Area Algebraic Identity",
     "content": "Proves the algebraic identity $C(r)^2 = 4\\pi \\cdot A(r)$ for circles, purely by expanding definitions: $(2\\pi r)^2 = 4\\pi^2 r^2 = 4\\pi \\cdot (\\pi r^2)$. The `ring` tactic handles the computation. This is the equality case of the isoperimetric inequality ($C^2 \\ge 4\\pi A$ for any simple closed curve), though the inequality itself — that circles maximize enclosed area for a given perimeter — is not proved here.",
     "mathContext": "$C^2 = 4\\pi A$ is an algebraic tautology for circles (both sides expand to $4\\pi^2 r^2$). The isoperimetric inequality asserts this ratio is maximized by circles, but that optimality statement requires the calculus of variations and is not formalized in this file.",
@@ -279,7 +279,7 @@
       "startLine": 157,
       "endLine": 163
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Circumference-Derivative Duality",
     "content": "The closing theorem `circumference_from_deriv` states $C(r) = \\text{deriv}(A, r)$: the circumference function can be recovered as the derivative of the area function. This is the dual direction of the main theorem, expressed using `deriv` rather than `HasDerivAt`.",
     "mathContext": "$C(r) = A'(r)$ — the 'inverse' perspective of the main result. Combined with the integral direction $A(r) = \\int_0^r C(\\rho)\\,d\\rho$, this exhibits the Fundamental Theorem of Calculus for the area-circumference pair.",

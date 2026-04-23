@@ -206,7 +206,7 @@
       "startLine": 207,
       "endLine": 224
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: Erdős #991",
     "content": "**erdos_991:**\n\nOptimal logarithmic energy points have o(n) discrepancy:\n```lean\ntheorem erdos_991 :\n    ∀ points, IsOptimalConfig points →\n    HasSmallDiscrepancy points\n```\n\n**Answer to Erdős:** YES, optimal configurations distribute uniformly.\n\n**Proof sketch:** Uses marzo_mas_bound to get O(n^{2/3}), which is o(n) since 2/3 < 1.",
     "significance": "key",
@@ -278,7 +278,7 @@
       "startLine": 265,
       "endLine": 283
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hemisphere Approximation",
     "content": "**hemisphere_approx:**\n\nFor the hemisphere (cosAngle = 0), approximately half the points fall in each half:\n```lean\ntheorem hemisphere_approx : ... →\n  ||A ∩ hemisphere| - n/2| ≤ C · n^(2/3)\n```\n\n**Proof:** Follows from marzo_mas_bound with cosAngle = 0, since normalizedCapArea(0) = 1/2.\n\n**Intuition:** Optimal points are roughly symmetric - you can't bunch too many on one side without increasing energy.",
     "significance": "supporting",
@@ -296,7 +296,7 @@
       "startLine": 302,
       "endLine": 315
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Improvement Factor",
     "content": "**improvement_factor:**\n\nMerge-Mas improves on Brauchart by n^{1/12}:\n```lean\ntheorem improvement_factor :\n  n^(3/4) / n^(2/3) = n^(1/12)\n```\n\n**Verification:** 3/4 - 2/3 = 9/12 - 8/12 = 1/12.\n\n**Significance:** For n = 10^12 points, this is a factor of 10 improvement. For practical n, the improvement is modest but theoretically significant.",
     "significance": "supporting",

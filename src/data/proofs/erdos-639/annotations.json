@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 22
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdős Problem #639: Edges Not in Monochromatic Triangles**\n\nIn a 2-coloring of K_n, at most how many edges avoid all monochromatic triangles?\n\n**Answer**: ⌊n²/4⌋ for n ≥ 7 (Keevash-Sudakov 2004). Small cases differ: all edges for n ≤ 5 (since R(3,3) = 6 means K₅ can be 2-colored without monochromatic triangles), and exactly 10 for n = 6.",
     "mathContext": "For a 2-coloring $c : E(K_n) \\to \\{\\text{red}, \\text{blue}\\}$, the number of edges not contained in any monochromatic triangle is at most $\\lfloor n^2/4 \\rfloor$ for $n \\ge 7$. The bound is achieved by the balanced complete bipartite coloring.",
@@ -252,7 +252,7 @@
       "startLine": 171,
       "endLine": 189
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Edge Partition and Bipartite Structure",
     "content": "**edge_partition**: Every edge is either in a monochromatic triangle or not — proved by by_cases on the existential. This clean dichotomy structures the problem.\n\n**non_mono_edges_bipartite**: The exceptional edges form a bipartite-like structure. This is the key structural insight: if the exceptional edges contained a triangle (three vertices all pairwise exceptional), it would contradict the Ramsey property for those 3 vertices. So exceptional edges are triangle-free, and by Turán's theorem, there are at most ⌊n²/4⌋ of them.",
     "mathContext": "The exceptional edges form a triangle-free graph: if $ij, jk, ik$ were all exceptional, then among $i,j,k$ there would be no monochromatic triangle, contradicting the structure. By Turán's theorem, a triangle-free graph on $n$ vertices has $\\le \\lfloor n^2/4 \\rfloor$ edges.",

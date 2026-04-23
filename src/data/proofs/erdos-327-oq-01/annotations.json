@@ -77,7 +77,7 @@
     "title": "Counting Definitions: sumDvdProdPairs and numSumDvdProdPairs",
     "content": "sumDvdProdPairs N is a Finset of ordered pairs (a,b) in {1,...,N}² satisfying a < b and (a+b) | (a·b), defined as a filtered Cartesian product. numSumDvdProdPairs N is its cardinality. Both are noncomputable because Finset.card is computable but the filter predicate involves divisibility, which is decidable but the definition uses noncomputable natural number operations in Lean 4. These definitions formalize the counting function whose asymptotic behavior is the open question in pairCountAsymptotics.",
     "mathContext": "$$\\text{sumDvdProdPairs}(N) = \\{(a,b) \\in [1,N]^2 \\mid a < b \\text{ and } (a+b) \\mid ab\\}$$ defined via $\\text{Icc}(1,N) \\times_s \\text{Icc}(1,N)$ filtered by the two conditions.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Finset.filter",
       "Finset.product",
@@ -101,7 +101,7 @@
     "title": "pairCountAsymptotics: The Open Density Conjecture",
     "content": "pairCountAsymptotics encodes the open question as a Lean Prop: there exist constants 0 < C₁ < C₂ such that for all N > 0, C₁·N·log(N) ≤ numSumDvdProdPairs(N) ≤ C₂·N·log(N). This is a two-sided Θ(N log N) estimate. The heuristic argument from the header: for each coprime pair (a',b') with sum s = a'+b', the valid multipliers m satisfy m·s·max(a',b') ≤ N, giving roughly N/(s·max(a',b')) choices; summing over coprime pairs produces a harmonic sum with a log correction. The exact constant C = Σ_{a' < b', gcd=1} 1/(a'·b'·(a'+b')) is irrational and not yet computed.",
     "mathContext": "$$\\#\\{(a,b) : 1 \\leq a < b \\leq N,\\; (a+b) \\mid ab\\} = \\Theta(N \\log N)$$ conjectured via: $\\sum_{\\substack{a' < b' \\\\ \\gcd(a',b')=1}} \\frac{N/((a'+b') \\cdot \\max(a',b'))}{1} \\approx C \\cdot N \\log N$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "density of arithmetic sets",
       "harmonic sums",

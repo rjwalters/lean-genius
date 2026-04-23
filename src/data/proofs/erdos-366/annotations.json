@@ -46,7 +46,7 @@
       "startLine": 64,
       "endLine": 69
     },
-    "type": "technique",
+    "type": "concept",
     "title": "1 is Vacuously k-Full",
     "content": "**Theorem**: 1 is k-full for any k ≥ 0.\n\n```lean\ntheorem one_is_kfull (k : ℕ) : IsKFull k 1 := by\n  intro p hp hdiv\n  have h1 : p = 1 := Nat.dvd_one.mp hdiv\n  exact absurd h1 (Nat.Prime.ne_one hp)\n```\n\n**Proof**: The definition requires k ≤ factorization(1, p) for all primes p dividing 1. But no prime divides 1 (if p | 1 then p = 1, contradicting p prime), so the condition is vacuously true.",
     "mathContext": "This is a standard vacuous truth argument: the universal quantifier over an empty set is always true.",
@@ -84,7 +84,7 @@
       "startLine": 121,
       "endLine": 138
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Known Pairs in Reverse Direction",
     "content": "**CubefulPowerfulPairs**: The set of n where n is 3-full and n+1 is 2-full.\n\n```lean\ndef CubefulPowerfulPairs : Set ℕ := { n | IsCubeful n ∧ IsPowerful (n + 1) }\n\ntheorem eight_nine_pair : 8 ∈ CubefulPowerfulPairs\ntheorem golomb_pair : 12167 ∈ CubefulPowerfulPairs\n```\n\n**Known Examples**:\n1. **(8, 9)**: 8 = 2³ is cubeful, 9 = 3² is powerful\n2. **(12167, 12168)**: 12167 = 23³ is cubeful, 12168 = 2³ × 3² × 13² is powerful (Golomb 1970)\n\n**Computational Bound**: These are the ONLY pairs below 10²².",
     "mathContext": "Golomb discovered the second pair in 1970. The 35-year gap between 8 and 12167 hints at the extreme rarity of such pairs.",

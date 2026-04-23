@@ -145,7 +145,7 @@
       "startLine": 168,
       "endLine": 377
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Alpha Field: ζ + ζ⁻¹ Generates the Maximal Real Subfield",
     "content": "Defines $\\alpha = \\zeta_n + \\zeta_n^{-1}$ and proves $\\mathbb{Q}(\\alpha) = K^H$ (the fixed field of conjugation), with $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\varphi(n)/2$.\n\nThe proof strategy: (1) $\\zeta_n$ satisfies $X^2 - \\alpha X + 1 = 0$ over $\\mathbb{Q}(\\alpha)$, so $[K:\\mathbb{Q}(\\alpha)] \\leq 2$. (2) $\\alpha = \\zeta + \\zeta^{-1}$ is fixed by conjugation ($\\sigma(\\alpha) = \\zeta^{-1} + \\zeta = \\alpha$), so $\\mathbb{Q}(\\alpha) \\subseteq K^H$. (3) By the tower law: $\\varphi(n) = [K:\\mathbb{Q}] = [K:\\mathbb{Q}(\\alpha)] \\cdot [\\mathbb{Q}(\\alpha):\\mathbb{Q}]$. Since $[K:\\mathbb{Q}(\\alpha)] \\leq 2$ and $[K:K^H] = |H| = 2$, we get $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\varphi(n)/2$ by sandwiching between $\\leq$ and $\\geq$ bounds.\n\nThis 200-line section is the technical heart of the file, establishing the degree computation that drives Gauss-Wantzel.",
     "mathContext": "$\\alpha = \\zeta_n + \\zeta_n^{-1}$; $\\zeta_n^2 - \\alpha\\zeta_n + 1 = 0$; $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\varphi(n)/2$. The equality $\\mathbb{Q}(\\alpha) = K^H$ follows from $\\alpha \\in K^H$ and the degree matching.",
@@ -195,7 +195,7 @@
       "startLine": 542,
       "endLine": 739
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Chebyshev Polynomials and Galois Conjugates of cos(2π/n)",
     "content": "Proves the algebraic Chebyshev identity $T_k((x + x^{-1})/2) = (x^k + x^{-k})/2$ by strong induction on $k$, using the recurrence $T_{k+1}(t) = 2t \\cdot T_k(t) - T_{k-1}(t)$. This identity is then used to show that for coprime $k$ and $n$, $\\cos(2k\\pi/n)$ is a root of $\\text{minpoly}(\\mathbb{Q}, \\cos(2\\pi/n))$ — i.e., the Galois conjugates of $\\cos(2\\pi/n)$ are exactly $\\{\\cos(2k\\pi/n) : \\gcd(k,n) = 1\\}$.\n\nThe Chebyshev approach is more elementary than direct cyclotomic polynomial manipulation, leveraging the three-term recurrence and the connection $T_k(\\cos\\theta) = \\cos(k\\theta)$ to avoid explicit Galois group computations.",
     "mathContext": "Chebyshev: $T_k(\\cos\\theta) = \\cos(k\\theta)$. Algebraic form: $T_k((x+x^{-1})/2) = (x^k + x^{-k})/2$. For $(k,n) = 1$: $\\text{minpoly}(\\mathbb{Q}, \\cos(2\\pi/n))(\\cos(2k\\pi/n)) = 0$.",

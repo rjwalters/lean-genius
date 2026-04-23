@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 32
     },
-    "type": "context",
+    "type": "concept",
     "title": "Buffon's Needle in n Dimensions: From Lines to Hyperplanes",
     "content": "The classical Buffon needle gives P = 2L/(πd) for a needle of length L on lines spaced d apart. In n dimensions, we replace lines with parallel hyperplanes and ask: what is the expected number of crossings? The answer is E = c_n · L/d where c_n is the dimensional constant — the expected absolute cosine of a random direction in ℝⁿ. This file defines c_n via the Gamma function, proves its values for n = 2,3,4,5,6, and establishes the connection to integral geometry.",
     "mathContext": "$c_n = \\frac{2\\Gamma(n/2)}{\\sqrt{\\pi}\\,\\Gamma((n-1)/2)}$. Key values: $c_2 = 2/\\pi$, $c_3 = 1$, $c_4 = 4/\\pi$, $c_5 = 2/3$, $c_6 = 3/\\pi$.",
@@ -52,7 +52,7 @@
       "startLine": 57,
       "endLine": 68
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Proving c₂ = 2/π: The Classical Buffon Constant",
     "content": "The proof unfolds the definition, simplifies (2:ℕ)/2 to 1 and ((2:ℕ)-1)/2 to 1/2 via push_cast, then applies Γ(1) = 1 (Mathlib) and Γ(1/2) = √π (axiom). The key step: √π · √π = π via mul_self_sqrt. This confirms the Gamma-function definition reproduces the classical constant.",
     "mathContext": "$c_2 = \\frac{2\\Gamma(1)}{\\sqrt{\\pi}\\Gamma(1/2)} = \\frac{2 \\cdot 1}{\\sqrt{\\pi} \\cdot \\sqrt{\\pi}} = \\frac{2}{\\pi}$",
@@ -144,7 +144,7 @@
       "startLine": 237,
       "endLine": 260
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Recurrence: Computing c_n for Any Dimension",
     "content": "The axiomatized recurrence c_{n+2} = ((n-1)/n)·c_n comes from the sphere volume relation Vol(S^{n+1}) = (2π/n)·Vol(S^{n-1}). Since (n-1)/n < 1 for n ≥ 2, the sequence c_n → 0 (high-dimensional concentration of measure). The recurrence enables computing c₅ = (2/3)·c₃ = 2/3 and c₆ = (3/4)·c₄ = 3/π without re-invoking the Gamma function.",
     "mathContext": "$c_{n+2} = \\frac{n-1}{n} c_n$. Even indices: $c_2 = 2/\\pi, c_4 = 4/\\pi, c_6 = 3/\\pi, \\ldots$ Odd indices: $c_3 = 1, c_5 = 2/3, c_7 = 8/15, \\ldots$",

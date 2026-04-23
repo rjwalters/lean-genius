@@ -151,7 +151,7 @@
       "startLine": 144,
       "endLine": 149
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Perturbation Argument",
     "content": "**perturbation_argument:**\n\nIf n ∈ rSums A r, then some m with |m - n| ≤ r² lies in rDistinctSums A r.\n\n**Key Idea:** If a representation uses repeated elements, we can 'perturb' them slightly (using nearby elements of A) to get distinct summands.\n\nThis is the heart of the proof: representations with repetition can always be converted to distinct representations nearby.",
     "mathContext": "The bound r² comes from at most r elements to perturb, each by at most r positions.",

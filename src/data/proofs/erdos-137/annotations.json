@@ -44,7 +44,7 @@
       "startLine": 63,
       "endLine": 69
     },
-    "type": "technique",
+    "type": "concept",
     "title": "1 is Powerful",
     "content": "**Vacuously true**: 1 has no prime divisors, so the condition 'every prime p | 1 has p² | 1' holds trivially.",
     "mathContext": "This follows from Nat.eq_one_of_dvd_one: if p | 1, then p = 1, contradicting p being prime.",
@@ -62,7 +62,7 @@
       "startLine": 71,
       "endLine": 79
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Perfect Squares are Powerful",
     "content": "If n ≠ 0, then n² is powerful. This uses: if p | n², then p | n (by prime.dvd_of_dvd_pow), so p² | n².",
     "mathContext": "More generally, perfect m-th powers are powerful for m ≥ 2. This shows powerful numbers strictly contain perfect powers.",
@@ -80,7 +80,7 @@
       "startLine": 81,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Squarefree Numbers > 1 are Not Powerful",
     "content": "A **squarefree** number has no repeated prime factors. If n > 1 is squarefree, it has some prime divisor p with p² ∤ n, so it cannot be powerful.",
     "mathContext": "The proof uses Mathlib's Squarefree predicate: p * p | n implies IsUnit p. For primes, IsUnit p means p = 1 (contradiction).",
@@ -156,7 +156,7 @@
       "startLine": 174,
       "endLine": 201
     },
-    "type": "technique",
+    "type": "concept",
     "title": "72 = 8 × 9 is Powerful",
     "content": "**Verified counterexample** for k = 2: 72 = 2³ × 3² is powerful (both 4 | 72 and 9 | 72). The proof explicitly checks all prime divisors of 72.",
     "mathContext": "Key technique: show any prime p | 72 must be 2 or 3 (using Prime.dvd_mul and dvd_prime), then verify p² | 72 by norm_num.",
@@ -175,7 +175,7 @@
       "startLine": 203,
       "endLine": 212
     },
-    "type": "technique",
+    "type": "concept",
     "title": "k = 2 Case Fails",
     "content": "**Demonstrates the k = 2 boundary**: n(n+1) CAN be powerful. We verify consecutiveProduct 7 2 = 8 × 9 = 72 using native_decide, then apply seventy_two_powerful.",
     "mathContext": "Infinitely many such n exist (related to Erdős Problem #364). This is why the conjecture requires k ≥ 3.",

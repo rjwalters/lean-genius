@@ -29,7 +29,7 @@
       "startLine": 42,
       "endLine": 56
     },
-    "type": "context",
+    "type": "concept",
     "title": "Known Values of g(n) at Powers of 2",
     "content": "The sequence $g(2^m)$ for $m = 0, 1, 2, \\ldots$ is: 1, 1, 2, 5, 14, 51, 267, 2328, 56092, 10494213, $\\ldots$ This explosive growth reflects the combinatorial richness of 2-groups. The dominant contribution comes from groups whose commutator structure can be encoded by nilpotent Lie algebras over $\\mathbb{F}_2$, giving the asymptotic $g(2^m) \\sim 2^{(2/27)m^3}$.",
     "mathContext": "$g(2^0)=1,\\; g(2^1)=1,\\; g(2^2)=2,\\; g(2^3)=5,\\; g(2^4)=14,\\; g(2^5)=51$. The ratio $g(2^{m+1})/g(2^m)$ grows rapidly, reaching $g(256)/g(128) \\approx 24$ and accelerating.",
@@ -206,7 +206,7 @@
       "startLine": 120,
       "endLine": 123
     },
-    "type": "context",
+    "type": "concept",
     "title": "Pantelidakis's Result for Odd Orders",
     "content": "Pantelidakis (2003) proved that when $n$ is odd and $m \\geq 3619$, then $g(n) \\leq g(2^m)$. The key insight is that odd-order groups are all solvable (Feit–Thompson theorem, 1963) and their enumeration is controlled by Sylow theory and Hall's theorem, which provides much tighter bounds than are available for 2-groups. The threshold $m \\geq 3619$ is likely far from optimal.",
     "mathContext": "Pantelidakis: $n$ odd, $n \\leq 2^m$, $m \\geq 3619 \\implies g(n) \\leq g(2^m)$. Uses Feit–Thompson ($|G|$ odd $\\Rightarrow G$ solvable) and Hall subgroup theory.",
@@ -252,7 +252,7 @@
       "startLine": 143,
       "endLine": 150
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Higman–Sims (2/27)m³ Growth Rate",
     "content": "The asymptotic formula $\\log_2(g(2^m)) \\sim \\frac{2}{27}m^3$ was established by Higman (1960) and Sims (1965). The constant $\\frac{2}{27}$ arises from counting nilpotent Lie algebras over $\\mathbb{F}_2$: most 2-groups of order $2^m$ correspond to such algebras of dimension $m$ via the Lazard correspondence, and the enumeration reduces to counting antisymmetric bilinear forms on an $m$-dimensional space modulo linear equivalence. This super-exponential growth is the fundamental reason that powers of 2 are conjectured to maximize $g(n)$.",
     "mathContext": "$\\lim_{m \\to \\infty} \\frac{\\log_2 g(2^m)}{m^3} = \\frac{2}{27}$, formalized as $\\forall \\varepsilon > 0,\\; \\exists M,\\; \\forall m \\geq M:\\; \\frac{2}{27} - \\varepsilon < \\frac{\\log g(2^m)}{m^3 \\log 2} < \\frac{2}{27} + \\varepsilon$",

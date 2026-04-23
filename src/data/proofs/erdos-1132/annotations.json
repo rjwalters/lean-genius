@@ -142,7 +142,7 @@
       "startLine": 209,
       "endLine": 245
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorems",
     "content": "Two summary theorems. **erdos_1132** combines the two main known results: (1) Bernstein's density theorem holds for all sequences, and (2) the Erdős maximum bound holds for each n. Proved by ⟨bernstein_density_theorem, erdos_max_theorem⟩. **erdos_1132_summary** applies Bernstein's theorem to a specific sequence: denseGoodPoints seq := bernstein_density_theorem seq. Both questions remain OPEN — we know good points are dense but not whether they have positive measure or full measure.",
     "mathContext": "erdos_1132 : (∀ seq, denseGoodPoints seq) ∧ (∀ seq n ≥ 2, ∃ x, Lₙ(x) > threshold) := ⟨bernstein, erdos_max⟩. erdos_1132_summary seq : denseGoodPoints seq := bernstein seq.",

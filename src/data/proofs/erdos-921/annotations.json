@@ -101,7 +101,7 @@
       "startLine": 81,
       "endLine": 99
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Gallai Conjecture and KST Resolution",
     "content": "**erdos_gallai_conjecture(k) and kierstead_szemeredi_trotter:**\n\nThe conjecture states: for k ≥ 4, f_k(n) ≍ n^{1/(k-2)}.\n\nThe notation ≍ means asymptotically equivalent:\n∃ c₁, c₂ > 0: c₁ · n^{1/(k-2)} ≤ f_k(n) ≤ c₂ · n^{1/(k-2)}\n\nThe KST axiom asserts this conjecture is proved for all k ≥ 4. The proof required combining regularity methods (Szemerédi), coloring theory (Kierstead), and combinatorial geometry (Trotter).",
     "mathContext": "Asymptotic notation captures the essential growth behavior up to constant factors, standard in extremal combinatorics.",
@@ -120,7 +120,7 @@
       "startLine": 105,
       "endLine": 132
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The k = 4 Case: Gallai + Erdős",
     "content": "**gallai_lower_bound, erdos_upper_bound, and k4_case:**\n\nGallai (1963) proved f_4(n) ≥ c√n by constructing explicit 4-chromatic graphs with large odd girth. Erdős proved the matching upper bound f_4(n) ≤ C√n (unpublished).\n\nThe k4_case theorem combines both bounds constructively:\n∃ c₁, c₂ > 0: c₁√n ≤ f_4(n) ≤ c₂√n\n\nNote: 1/(k-2) = 1/2 when k = 4, matching √n = n^{1/2}. This case provided key intuition for the general exponent formula.",
     "mathContext": "The k = 4 case was resolved before the general conjecture and is the only case with a constructive proof in this formalization.",
@@ -158,7 +158,7 @@
       "startLine": 158,
       "endLine": 183
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Final Status: Problem Solved",
     "content": "**erdos_921_status:**\n\n∀ k ≥ 4, erdos_gallai_conjecture k\n\nThis states that for all k ≥ 4, the conjecture f_k(n) ≍ n^{1/(k-2)} is proved. The proof follows directly from the kierstead_szemeredi_trotter axiom.\n\nThe problem stood for over 20 years between Gallai's partial result (1963) and the full resolution by KST (1984). It remains an important result in understanding how local structure (odd cycles) constrains global properties (chromatic number).",
     "mathContext": "This theorem summarizes the complete resolution of Erdős Problem #921.",

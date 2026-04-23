@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 26
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Documentation and Imports",
     "content": "The module docstring introduces Erdős Problem #341 (Dickson's sum-free extension): given a finite starting set $A_0 = \\{a_1 < \\cdots < a_k\\}$, greedily extend to an infinite sequence where each $a_{n+1}$ is the smallest integer greater than $a_n$ not expressible as $a_i + a_j$ for $i, j \\leq n$. The conjecture asks whether the difference sequence $a_{m+1} - a_m$ is eventually periodic. Originally studied by Dickson, popularized by Erdős and Graham (1980, p. 53), and featured as Problem 7 on Ben Green's open problems list. Even the starting set $\\{1, 4, 9, 16, 25\\}$ (perfect squares) requires thousands of terms before periodicity emerges. Imports provide Finset (for finite initial sets and their pairwise sums), Nat.Basic (for natural number arithmetic), and Tactic (for proof automation).",
     "mathContext": "Given $A_0 = \\{a_1, \\ldots, a_k\\}$, define $a_{n+1} = \\min\\{m > a_n : m \\notin \\{a_i + a_j : i, j \\leq n\\}\\}$. Conjecture: $\\exists p \\geq 1, N$ such that $a_{n+p+1} - a_{n+p} = a_{n+1} - a_n$ for all $n \\geq N$.",
@@ -148,7 +148,7 @@
       "startLine": 89,
       "endLine": 116
     },
-    "type": "context",
+    "type": "concept",
     "title": "Examples, Slow Periodicity, and Growth",
     "content": "Starting from {1}: sequence is 1, 2, 4, 8, 13, 21, 31, 45, ... (the Mian-Chowla sequence). Starting from {1,4,9,16,25}: periodicity takes thousands of terms. Different starting sets yield different eventual periods. Growth is at least linear.",
     "mathContext": "The singleton case $A_0 = \\{1\\}$ gives the Mian-Chowla (greedy Sidon) sequence, connecting Problems #340 and #341. The axiom `squares_slow_periodicity` states that for the perfect squares starting set, no small period ($p \\le 10$) works before index 1000, illustrating the 'slow emergence' phenomenon. `period_depends_on_initial` asserts different starting sets yield different periods, showing the eventual period is a non-trivial function of $A_0$. `dickson_linear_growth` gives $a_n \\ge cn$ for some $c \\ge 1$, which follows from $d(n) \\ge 1$. If the conjecture holds, the asymptotic slope $\\lim a_n/n = (d(N) + \\cdots + d(N+p-1))/p$ is a computable rational number depending on $A_0$.",

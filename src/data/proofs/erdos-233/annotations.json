@@ -196,7 +196,7 @@
       "startLine": 137,
       "endLine": 140
     },
-    "type": "technique",
+    "type": "concept",
     "title": "First Prime Gaps",
     "content": "The first few prime gaps are:\n\n- d₀ = 3 - 2 = 1\n- d₁ = 5 - 3 = 2  \n- d₂ = 7 - 5 = 2\n\nThese concrete values are axiomatized since nthPrime is noncomputable in Lean.",
     "mathContext": "primeGap(0) = 1, primeGap(1) = 2, primeGap(2) = 2. These can be verified externally.",
@@ -215,7 +215,7 @@
       "startLine": 144,
       "endLine": 158
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "The **summary theorem** combines our concrete examples with the open status:\n\n1. First prime gaps: d₀=1, d₁=2, d₂=2\n2. The conjecture is either true or false (we don't know which)\n\nThis captures the complete state of knowledge we've formalized.",
     "mathContext": "summary_erdos_233: (first_prime_gaps) ∧ (Erdos233Conjecture ∨ ¬Erdos233Conjecture)",

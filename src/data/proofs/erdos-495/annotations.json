@@ -81,7 +81,7 @@
       "startLine": 88,
       "endLine": 98
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Rational Case",
     "content": "**The conjecture is trivially true when α is rational.** If α = p/q, then for any multiple n of q, we have nα is an integer, so ‖nα‖ = 0 and the entire product vanishes. This is the simplest case and shows the conjecture is really about irrational numbers.",
     "mathContext": "If α = p/q with q ≥ 1, then for n = kq we get ‖nα‖ = ‖kp‖ = 0, making the Littlewood product zero. Axiomatized since the formal proof requires divisibility arguments.",
@@ -99,7 +99,7 @@
       "startLine": 100,
       "endLine": 111
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cassels-Swinnerton-Dyer (1955)",
     "content": "**The first non-trivial result:** Cassels and Swinnerton-Dyer proved the Littlewood conjecture holds when α and β are algebraically related cubic irrationals — for example, α = ∛2 and β = (∛2)². Their proof uses the geometry of numbers and properties of cubic number fields.",
     "mathContext": "The theorem applies when α is a root of a cubic polynomial aX³ + bX + c = 0 (a ≠ 0) and β = rα² + sα for rational r, s. This covers pairs in the same cubic field extension of ℚ. The proof was later reinterpreted in terms of dynamics on SL(3,ℝ)/SL(3,ℤ).",
@@ -157,7 +157,7 @@
       "startLine": 165,
       "endLine": 188
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_495_summary** combines the known results:\n1. The conjecture holds for rational α (trivially)\n2. For each α, exceptions are countable (consequence of EKL)\n\n**Status: OPEN** in full generality.",
     "mathContext": "The summary theorem assembles littlewood_rational_case and ekl_countable_exceptions.",

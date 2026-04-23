@@ -254,7 +254,7 @@
       "startLine": 315,
       "endLine": 337
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_111_summary:**\n\nCombines all known results about Erdős Problem #111 into a single theorem:\n\n1. **Lower bound:** For all $\\chi = \\aleph_1$ graphs, $h_G(n) \\geq cn$ for some $c > 0$\n2. **Upper bound:** There exists a $\\chi = \\aleph_1$ graph with $h_G(n) \\leq Cn^{3/2}$\n\nThe proof derives the lower bound from `h_at_least_linear` and the upper bound from `ehs_upper_bound`. The gap between linear and $n^{3/2}$ remains to be closed.",
     "mathContext": "This is one of the few theorems in the file with a complete proof — it follows directly from combining the two main axioms.",

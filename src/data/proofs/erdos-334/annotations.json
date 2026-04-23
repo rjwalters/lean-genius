@@ -301,7 +301,7 @@
       "startLine": 178,
       "endLine": 193
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: 10 = 2 + 8",
     "content": "**example_10:**\n\n10 has a 2-smooth pair representation: 10 = 2 + 8.\n\n**Verification:**\n- 2 = 2¹ is 2-smooth (only prime factor is 2)\n- 8 = 2³ is 2-smooth (only prime factor is 2)\n\nThis is a complete proof using Nat.Prime.dvd_prime_pow.",
     "mathContext": "$10 = 2 + 8$ with $2 = 2^1$ and $8 = 2^3$, both 2-smooth. Proof uses Nat.Prime.dvd_prime_pow: if prime $p \\mid 2^k$ then $p = 2$. The smallest representable y for 10 is thus $f(10) \\le 2$.",
@@ -326,7 +326,7 @@
       "startLine": 201,
       "endLine": 221
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: 100 = 64 + 36",
     "content": "**example_100:**\n\n100 has a 3-smooth pair representation: 100 = 64 + 36.\n\n**Verification:**\n- 64 = 2⁶ is 2-smooth (hence 3-smooth)\n- 36 = 2² × 3² is 3-smooth (prime factors 2 and 3)\n\nThe proof handles both prime divisibility cases using dvd_mul.",
     "mathContext": "$100 = 64 + 36$. $64 = 2^6$ is 3-smooth. $36 = 4 \\cdot 9 = 2^2 \\cdot 3^2$ has prime factors 2 and 3, both $\\le 3$. Lean proof: for prime $p \\mid 36$, by Nat.Prime.dvd_mul get $p \\mid 4$ or $p \\mid 9$, then $p = 2$ or $p = 3$.",
@@ -377,7 +377,7 @@
       "startLine": 263,
       "endLine": 276
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_334_summary:**\n\nCombines all main results:\n1. Erdős's n^{1/3} question is resolved (erdos_cube_root_bound)\n2. Balog's bound n^{0.2695+ε} is current best (balog_bound)\n3. The optimal bound remains unknown\n\nThis summarizes the state of knowledge for Erdős #334.",
     "mathContext": "Summary packages: (1) $f(n) \\le n^{1/3}$ (Erdős, resolved), (2) $f(n) \\le n^{\\beta+\\varepsilon}$ where $\\beta = 4/(9\\sqrt{e}) \\approx 0.2695$ (Balog 1989), (3) weakConjecture and strongConjecture remain open. Proved by combining the three main axioms via And.intro.",
@@ -402,7 +402,7 @@
       "startLine": 282,
       "endLine": 289
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: n^{0.27+ε}-Smooth",
     "content": "**erdos_334:**\n\nFor any ε > 0, there exists N such that every n ≥ N can be written as a + b with both summands being n^{0.27+ε}-smooth.\n\n**Derivation:** 0.27 > 4/(9√e) ≈ 0.2695, so this follows from Balog's bound.\n\nThis is the main formalized result.",
     "mathContext": "$\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall n \\ge N : n = a + b$ with $a, b$ being $n^{0.27+\\varepsilon}$-smooth. Since $0.27 > 4/(9\\sqrt{e}) \\approx 0.2695$, this is a slight weakening of Balog's bound (more conservative exponent). Proved by: $0.27 > \\beta \\Rightarrow$ apply balog_bound with $\\varepsilon' = 0.27 - \\beta + \\varepsilon$.",

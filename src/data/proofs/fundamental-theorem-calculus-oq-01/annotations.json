@@ -31,7 +31,7 @@
       "startLine": 86,
       "endLine": 102
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lipschitz Implies Absolutely Continuous",
     "content": "Proves that K-Lipschitz functions are absolutely continuous by choosing δ = ε/(K+1). The Lipschitz condition |F(x) - F(y)| ≤ K|x - y| bounds each term in the variation sum, giving Σ|F(bₖ) - F(aₖ)| ≤ K · Σ(bₖ - aₖ) < K · ε/(K+1) < ε. The sorry is for the final arithmetic chain. This establishes the top of the continuity hierarchy: Lipschitz → AC → uniformly continuous → continuous.",
     "mathContext": "If $|F(x) - F(y)| \\le K|x - y|$, choose $\\delta = \\varepsilon/(K+1)$. Then $\\sum |F(b_k) - F(a_k)| \\le K \\sum (b_k - a_k) < K \\cdot \\varepsilon/(K+1) < \\varepsilon$.",
@@ -171,7 +171,7 @@
       "startLine": 206,
       "endLine": 212
     },
-    "type": "context",
+    "type": "concept",
     "title": "Monotone A.E. Differentiability from Mathlib",
     "content": "Re-exports Mathlib's Monotone.ae_differentiableAt: every monotone function ℝ → ℝ is differentiable at almost every point. This is Lebesgue's 1904 theorem and one of the foundational results of real analysis. It is a key building block for the Lebesgue FTC: once an AC function is decomposed via Jordan decomposition into a difference of monotone functions, each is a.e. differentiable by this theorem.",
     "mathContext": "If $f: \\mathbb{R} \\to \\mathbb{R}$ is monotone, then $f$ is differentiable $\\mu$-a.e., i.e., $\\forall^{\\text{ae}}\\, x,\\, \\exists\\, f'(x)$.",
@@ -197,7 +197,7 @@
     "title": "Vitali Family and Lebesgue Density from Mathlib",
     "content": "Notes the existence of VitaliFamily and the Lebesgue density theorem in Mathlib. The Vitali covering theorem provides the abstract framework for differentiating measures: it says that 'good' covers of a set can be refined to essentially disjoint subcovers. The Lebesgue density theorem then shows μ(S ∩ B(x,r))/μ(B(x,r)) → 1_S(x) for a.e. x, which is used in proving monotone a.e. differentiability.",
     "mathContext": "Lebesgue density: $\\lim_{r \\to 0} \\frac{\\mu(S \\cap B(x,r))}{\\mu(B(x,r))} = \\mathbf{1}_S(x)$ for $\\mu$-a.e. $x$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Vitali covering lemma",
       "Besicovitch covering theorem",

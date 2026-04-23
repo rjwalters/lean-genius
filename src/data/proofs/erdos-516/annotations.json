@@ -80,7 +80,7 @@
       "startLine": 52,
       "endLine": 58
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Fabry Implies Fejér",
     "content": "**Theorem**: Fabry gaps imply Fejér gaps.\n\nIf nₖ/k → ∞, then eventually nₖ > k², so Σ 1/nₖ < Σ 1/k² < ∞.\n\nThis shows Fabry is a strictly stronger condition.",
     "mathContext": "The proof uses the comparison test: superlinear growth of nₖ gives superlinear decay of 1/nₖ, which is summable.",

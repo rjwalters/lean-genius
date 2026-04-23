@@ -122,7 +122,7 @@
       "startLine": 159,
       "endLine": 191
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary: Problem #322 is PARTIALLY SOLVED",
     "content": "**Combined Results**\n\nThe erdos_322_summary theorem bundles the two main known results:\n1. hypothesisK_fails 3 — Mahler's disproof of Hypothesis K for cubes\n2. Erdős-Chowla bound for all k ≥ 3 — weaker sub-polynomial lower bound\n\nThe proof is a direct pair ⟨hypothesisK_fails_for_3, fun k hk => erdos_chowla_bound k hk⟩.\n\nThe main theorem erdos_322 states simply: hypothesisK_fails 3, citing Mahler via the axiom. For k ≥ 4, the problem remains one of the central open questions in additive number theory.",
     "mathContext": "erdos_322 : hypothesisK_fails 3; erdos_322_summary : hypothesisK_fails 3 ∧ (∀ k ≥ 3, Erdős-Chowla)",

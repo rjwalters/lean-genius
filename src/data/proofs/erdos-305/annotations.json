@@ -269,7 +269,7 @@
       "startLine": 186,
       "endLine": 189
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Solution",
     "content": "**erdos_305_solved** proves the conjecture. Since (log log b)^k = (log b)^{o(1)}, Yokota's bound confirms D(b) ≪ b(log b)^{1+o(1)}.",
     "mathContext": "The proof requires showing $(\\log\\log b)^4 (\\log\\log\\log b)^2 \\leq (\\log b)^\\epsilon$ for any $\\epsilon > 0$ and sufficiently large $b$. This follows from $\\log\\log b = o((\\log b)^\\delta)$ for any $\\delta > 0$. The `sorry` reflects the technicality of formalizing iterated logarithm asymptotics.",

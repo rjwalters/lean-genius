@@ -49,7 +49,7 @@
       "startLine": 62,
       "endLine": 98
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Elementary Properties of Product Sets",
     "content": "Several structural facts about $k(m-k)$ are established:\n\nThe product is maximized at $k = m/2$ (axiomatized as product_max_at_half), vanishes at the endpoints $k = 0$ and $k = m$ (proved by product_zero_endpoints using simp and ring), is bounded by $m^2/4$ (axiomatized), and satisfies the symmetry $k(m-k) = (m-k) \\cdot k$ (axiomatized). The set $A_m$ has at most $m/2$ elements (productSet_card_le) and is nonempty for $m \\ge 2$ (productSet_nonempty).\n\nThe proved theorem product_zero_endpoints demonstrates the boundary behavior, while the symmetry explains why we restrict to $k \\le m/2$ without losing generality.",
     "mathContext": "The maximum $\\lfloor m^2/4 \\rfloor$ is a well-known quantity in extremal combinatorics: it equals the number of edges in the complete bipartite graph $K_{\\lfloor m/2 \\rfloor, \\lceil m/2 \\rceil}$, which by Turán's theorem is the maximum edge count in a triangle-free graph on $m$ vertices. This coincidence hints at deeper connections between product sets and extremal graph theory.",
@@ -110,7 +110,7 @@
       "startLine": 142,
       "endLine": 162
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Special Cases and Computed Examples",
     "content": "The trivial case $m = n$ is proved: common_self shows $A_m \\cap A_m = A_m$ using Finset.inter_self.\n\nConcrete computations via native_decide verify: $1 \\cdot 3 = 3$, $2 \\cdot 2 = 4$ (so $A_4 = \\{3, 4\\}$); $1 \\cdot 5 = 5$, $2 \\cdot 4 = 8$, $3 \\cdot 3 = 9$ (so $A_6 = \\{5, 8, 9\\}$). Since $A_4 \\cap A_6 = \\emptyset$ (no overlap), this illustrates that small product sets can be disjoint.\n\nThe axioms A4_elements and A6_elements bound these sets from above.",
     "mathContext": "For $A_4 = \\{3, 4\\}$ and $A_6 = \\{5, 8, 9\\}$, the disjointness reflects the general principle that product sets from different moduli rarely overlap for small $m, n$. Large intersections require $m$ and $n$ to be large enough that their product sets cover a dense range of integers near $m^2/4$ and $n^2/4$ respectively.",

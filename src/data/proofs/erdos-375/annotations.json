@@ -79,7 +79,7 @@
       "startLine": 104,
       "endLine": 124
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Cases: k <= 2",
     "content": "**k = 1 Case:**\nAny composite n+1 has at least one prime divisor. Just pick that prime.\n\n**k = 2 Case:**\nConsecutive integers n+1 and n+2 are coprime (gcd = 1).\nSo they have distinct prime factors, and we can pick one from each.\n\nThese cases are \"trivial\" - the real difficulty starts at k >= 3.",
     "significance": "key",
@@ -133,7 +133,7 @@
       "startLine": 198,
       "endLine": 214
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: 24, 25, 26",
     "content": "**example_24_25_26:**\n\n24, 25, 26 are consecutive composites (between primes 23 and 29).\n\n**Factorizations:**\n- 24 = 2^3 x 3\n- 25 = 5^2\n- 26 = 2 x 13\n\n**Valid Assignment:**\np_1 = 2 (divides 24)\np_2 = 5 (divides 25)\np_3 = 13 (divides 26)\n\nDistinct primes: 2, 5, 13 - verified!",
     "significance": "supporting",
@@ -151,7 +151,7 @@
       "startLine": 216,
       "endLine": 233
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: 90-95",
     "content": "**example_90_to_95:**\n\n90 through 95 are 6 consecutive composites (between primes 89 and 97).\n\n**Factorizations:**\n- 90 = 2 x 3^2 x 5\n- 91 = 7 x 13\n- 92 = 2^2 x 23\n- 93 = 3 x 31\n- 94 = 2 x 47\n- 95 = 5 x 19\n\n**Valid Assignment:** 5, 7, 23, 31, 47, 19\n\nNote: Many share factor 2 or 3, but we can find 6 distinct primes.",
     "significance": "supporting",
@@ -206,7 +206,7 @@
       "startLine": 304,
       "endLine": 318
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "**erdos_375_summary:**\n\n1. Trivial cases k <= 2 are provable\n2. Best partial result: k << (log n / log log n)^3\n3. The general conjecture is open\n\n```lean\ntheorem erdos_375_summary :\n    True and  -- trivial cases\n    (exists c ...) and  -- RST bound\n    True  -- open status\n```",
     "significance": "key",
@@ -224,7 +224,7 @@
       "startLine": 320,
       "endLine": 336
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Why Grimm's Conjecture is Hard",
     "content": "**grimm_difficulty:**\n\nGrimm's conjecture implies Legendre's conjecture.\n\n```lean\ntheorem grimm_difficulty :\n    grimmsConjecture -> legendresConjecture\n```\n\n**Why Hard:**\n1. Long prime gaps create long composite runs\n2. Many composites share small primes (2, 3, 5)\n3. Distinctness requirement grows harder with k\n4. Full proof would resolve Legendre",
     "mathContext": "The difficulty stems from the deep connection to prime gaps. Proving Grimm would be a major breakthrough.",

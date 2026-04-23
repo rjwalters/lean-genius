@@ -58,7 +58,7 @@
       "startLine": 1,
       "endLine": 14
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Composite Density and the Positive Resolution: Paths Through Non-Prime Pairs",
     "content": "The positive answer to Problem #1212 relies on the density of composite numbers. The prime counting function satisfies π(n) ~ n/ln n (prime number theorem), so the fraction of primes in {1,...,n} is ~ 1/ln n → 0. Thus almost all positive integers are composite, and almost all coprime pairs (x,y) have at least one composite coordinate. The key step in the path construction: for any fixed composite number c (e.g., c = 4), the row {(x,4) : gcd(x,4)=1} consists of all (x,4) with x odd. Consecutive odd numbers x and x+2 satisfy gcd(x,4)=1 and gcd(x+2,4)=1, but one cannot step from (x,4) to (x+2,4) directly—one must go through (x+1,4) which requires gcd(x+1,4)=1 (but x+1 is even, giving gcd(x+1,4)≥2). Instead, the path must use vertical steps to 'row-hop' between valid x values. Dirichlet's theorem on primes in arithmetic progressions guarantees that for any composite modulus c, there are infinitely many composites x with gcd(x,c)=1 (since composites dominate the progression).",
     "mathContext": "Prime number theorem: $\\pi(n) \\sim n/\\ln n$, so $P[x \\text{ prime}] \\to 0$. For the path: at $(x,y)$ with $y = c$ composite, horizontal step to $(x+1, c)$ requires $\\gcd(x+1, c) = 1$. By Euler $\\phi$: $|\\{x \\in \\{1,\\ldots,c\\} : \\gcd(x,c)=1\\}| = \\phi(c) \\geq 1$. Dirichlet's theorem: for $\\gcd(a,c)=1$, $|\\{p \\leq n : p \\equiv a \\pmod{c}\\}| \\sim \\frac{1}{\\phi(c)} \\cdot \\frac{n}{\\ln n}$, so composites $\\equiv a \\pmod c$ have relative density $1 - 1/\\phi(c) \\cdot 1/\\ln n \\to 1$.",
@@ -84,7 +84,7 @@
       "startLine": 1,
       "endLine": 14
     },
-    "type": "context",
+    "type": "concept",
     "title": "Boundary Exclusion (min > 1) and Infinite Path Structure",
     "content": "The condition min(x,y) > 1 excludes the 'boundary axes' {(1,y) : y ≥ 2} and {(x,1) : x ≥ 2} (and the origin (1,1)). On the axis (1,y), gcd(1,y)=1 for all y, so the entire positive y-axis is in V—but these vertices trivially satisfy the coprimality condition (gcd=1 with x=1). The problem forbids using these 'trivial' coprime pairs. The connected subgraph G[min>1] = G restricted to vertices with both coordinates ≥ 2 is a proper subgraph of G. The condition 'at least one composite' combined with min>1 means we avoid (p,q) pairs where both p,q are prime. Among pairs with both coordinates prime, the graph-adjacency is only possible between (p,q) and (p±1,q) or (p,q±1) where the neighbor has gcd=1—which requires p±1 or q±1 to be coprime with the other coordinate. The question is whether the 'prime obstacle pairs' can be circumnavigated by an infinite path.",
     "mathContext": "The axes: $\\{(1,y) : y \\in \\mathbb{N}\\} \\cup \\{(x,1) : x \\in \\mathbb{N}\\} \\subset V$ (all with $\\gcd=1$). After excluding these: $V' = \\{(x,y) \\in V : x \\geq 2, y \\geq 2\\}$. Prime obstacle pairs: $O = \\{(p,q) \\in V' : p,q \\text{ both prime}\\}$. The path $P$ must satisfy: $P \\subset V' \\setminus O$ is infinite. Bertrand's postulate: for every $n \\geq 1$, $\\exists$ prime $p$ with $n < p \\leq 2n$—so primes are 'never too sparse', but composites still dominate in density.",
@@ -113,7 +113,7 @@
     "title": "Lean Formalization: Infinite Paths in Infinite Graphs",
     "content": "The stub `erdos_1212 : True := by sorry` awaits formalization. Key Lean components: (1) `Nat.Coprime x y` for gcd(x,y)=1; (2) `Nat.Prime p` and `¬ Nat.Prime n` for prime/composite; (3) `SimpleGraph (ℕ × ℕ)` with adjacency `fun (x,y) (x',y') => (x = x' ∧ (y' = y+1 ∨ y+1 = y')) ∨ ...` and the coprimality condition; (4) `SimpleGraph.Walk` or `SimpleGraph.Path` for paths; (5) an infinite path as `∃ f : ℕ → ℕ × ℕ, ∀ n, G.Adj (f n) (f (n+1)) ∧ ...`. The existence proof uses classical logic (non-constructive density argument) or an explicit construction via Dirichlet/CRT. Lean's `Nat.Coprime.prime_dvd_of_dvd_mul` and related lemmas are useful for coprimality arithmetic.",
     "mathContext": "Lean 4 sketch: `def coprimePairGraph : SimpleGraph (ℕ × ℕ) where Adj p q := Nat.Coprime p.1 p.2 ∧ Nat.Coprime q.1 q.2 ∧ (p.1 = q.1 ∧ (p.2 + 1 = q.2 ∨ q.2 + 1 = p.2)) ∨ (p.2 = q.2 ∧ (p.1 + 1 = q.1 ∨ q.1 + 1 = p.1))`. The infinite path: `∃ f : ℕ → ℕ × ℕ, Function.Injective f ∧ ∀ n, coprimePairGraph.Adj (f n) (f (n+1)) ∧ 1 < min (f n).1 (f n).2 ∧ (¬ Nat.Prime (f n).1 ∨ ¬ Nat.Prime (f n).2)`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.Coprime in Mathlib",
       "SimpleGraph.Walk",

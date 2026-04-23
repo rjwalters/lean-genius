@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 20
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Statement: Asymptotics of g(k)",
     "content": "Erdős Problem #1095 OQ01 asks about the growth rate of $g(k)$, the smallest $n > k+1$ such that all prime factors of $\\binom{n}{k}$ exceed $k$. The conjecture is $\\log g(k) \\sim c \\cdot k / \\log k$ for some constant $c > 0$. Known bounds span from $k^{1+c}$ (Ecklund-Erdős-Selfridge) to $\\exp((1+o(1))k)$, with Konyagin's improvement $g(k) \\gg \\exp(c(\\log k)^2)$ sitting between.",
     "mathContext": "$g(k) = \\min\\{n > k+1 : p \\mid \\binom{n}{k} \\implies p > k\\}$. Conjecture: $\\log g(k) \\sim c \\cdot k / \\log k$. Known: $k^{1+c} < g(k) \\leq \\exp((1+o(1))k)$.",
@@ -134,7 +134,7 @@
       "startLine": 78,
       "endLine": 82
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Contrapositive: Witnessing a Small Prime Factor",
     "content": "If there exists a prime $p \\leq k$ dividing $m$, then $\\text{AllPrimesExceed}(m, k)$ fails. This is the direct contrapositive of the definition, but having it as an explicit lemma simplifies reasoning about when $g(k)$ candidates are eliminated. For example, to show $g(2) \\neq 4$, one exhibits the witness $p = 2$ dividing $\\binom{4}{2} = 6$.",
     "mathContext": "$p$ prime, $p \\leq k$, $p \\mid m \\implies \\neg\\text{AllPrimesExceed}(m, k)$",
@@ -156,7 +156,7 @@
       "startLine": 91,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Boundary: C(n,k) = 0 When k > n",
     "content": "When $k > n$, $\\binom{n}{k} = 0$ by convention. Since $0$ is divisible by every prime, $\\text{AllPrimesExceed}(0, k)$ fails for $k \\geq 2$ (as $2 \\mid 0$). This means the search for $n$ with smooth-free $\\binom{n}{k}$ only makes sense when $n \\geq k$. The lemma wraps Mathlib's `Nat.choose_eq_zero_of_lt`.",
     "mathContext": "$n < k \\implies \\binom{n}{k} = 0$. Since $p \\mid 0$ for all $p$, AllPrimesExceed fails at $\\binom{n}{k}$ when $n < k$ and $k \\geq 2$.",
@@ -242,11 +242,11 @@
       "startLine": 128,
       "endLine": 149
     },
-    "type": "context",
+    "type": "concept",
     "title": "Why the Full Conjecture Is Not Formalized",
     "content": "The full asymptotic conjecture $\\log g(k) \\sim c \\cdot k / \\log k$ requires expressing limits of real-valued functions at infinity, specifically $\\lim_{k \\to \\infty} \\frac{\\log g(k)}{k / \\log k} = c$. In Lean 4 with Mathlib, this would use `Filter.Tendsto` with the `atTop` filter and `Real.log`. The file avoids this dependency to keep the formalization self-contained within natural number arithmetic and `Nat.choose`. The informal statement in the comment block preserves the conjecture's full mathematical content, while the formal `ErdosProblem1095OQ01` definition captures a weaker (but still open) consequence: super-polynomial growth $g(k) > k^c$.",
     "mathContext": "Full: $\\lim_{k \\to \\infty} \\frac{\\log g(k)}{k / \\log k} = c$, requiring `Filter.Tendsto (fun k => Real.log (gFunc k) / (k / Real.log k)) Filter.atTop (nhds c)`. Weakened formal version avoids real analysis entirely.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Filter.Tendsto",
       "asymptotic equivalence",

@@ -225,7 +225,7 @@
       "startLine": 143,
       "endLine": 150
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Blecksmith-Erdős-Selfridge Upper Bound",
     "content": "**Blecksmith, Erdős, Selfridge (1999)**: The count of cluster primes up to $x$ is $O(x/(\\log x)^A)$ for ANY $A > 0$. This is a very strong bound — stronger than any fixed power of $\\log x$ — but it does not imply finiteness. For comparison, primes in arithmetic progressions have count $\\sim x/(\\varphi(d) \\log x)$, so cluster primes are much rarer.",
     "mathContext": "$\\pi_{\\text{cluster}}(x) \\ll x/(\\log x)^A$ for all $A > 0$ (Blecksmith-Erdős-Selfridge, 1999).",
@@ -248,7 +248,7 @@
       "startLine": 152,
       "endLine": 158
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Elsholtz's Improved Bound",
     "content": "**Elsholtz (2003)**: The cluster prime count satisfies $\\pi_{\\text{cluster}}(x) \\le C x \\exp(-c(\\log \\log x)^2)$ for $c < 1/8$. This double-logarithmic exponential decay is even stronger than the BES bound, showing cluster primes are among the rarest known special primes. Yet this still doesn't resolve finiteness.",
     "mathContext": "$\\pi_{\\text{cluster}}(x) \\ll x \\cdot \\exp(-c(\\log \\log x)^2)$ for $c < 1/8$ (Elsholtz, 2003).",
@@ -360,7 +360,7 @@
       "startLine": 203,
       "endLine": 209
     },
-    "type": "context",
+    "type": "concept",
     "title": "Known Cluster Primes (OEIS A038134)",
     "content": "The complete list of cluster primes below 100: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89 (OEIS A038134). These are exactly the 24 primes below 97. The axiom `known_cluster_primes_correct` asserts that all entries in this list satisfy the cluster property, linking the computational enumeration to the formal predicate. The non-cluster primes (OEIS A038133) begin: 97, 127, 149, 157, 163, 173, ...",
     "mathContext": "OEIS A038134: $\\{p \\text{ prime} : p \\le 89, \\, p \\text{ cluster}\\} = \\{2, 3, 5, \\ldots, 89\\}$, all 24 primes below 97. OEIS A038133 (non-cluster primes): 97, 127, 149, 157, 163, ...",

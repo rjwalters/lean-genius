@@ -177,7 +177,7 @@
       "startLine": 215,
       "endLine": 242
     },
-    "type": "context",
+    "type": "concept",
     "title": "Summary: The Complete Proof Chain",
     "content": "Documents the full hierarchy of 8 theorems proved with 0 sorries:\n\n1. `holder_nnreal` — General Hölder for $\\mathbb{R}_{\\geq 0}$ (Mathlib wrapper)\n2. `holder_normalized` — Hölder for unit-norm inputs\n3. `cauchy_schwarz_finite` — CS via Lagrange identity (elementary)\n4. `cauchy_schwarz_from_holder` — CS as $p=q=2$ Hölder (definitional)\n5. `holder_real` — Hölder for signed reals via NNReal lift\n6. `holder_lintegral` — Integral Hölder for measure spaces (Mathlib wrapper)\n7. `cauchy_schwarz_inner` — Abstract inner product CS (Mathlib wrapper)\n8. `cauchy_schwarz_holder_bridge` — CS = Hölder at $p=q=2$ for NNReal\n\nThe key mathematical insight: the conjugate condition $1/p + 1/q = 1$ appears naturally in the Young normalization — it is the exact condition that makes the bound sharp, not an arbitrary algebraic constraint.",
     "mathContext": "The chain: Young ($ab \\leq a^p/p + b^q/q$) $\\to$ Normalized Hölder ($\\sum f_i g_i \\leq 1$ when $\\|f\\|_p = \\|g\\|_q = 1$) $\\to$ General Hölder ($\\sum f_i g_i \\leq \\|f\\|_p \\|g\\|_q$) $\\to$ CS ($p=q=2$).",

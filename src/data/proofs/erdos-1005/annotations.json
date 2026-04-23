@@ -70,7 +70,7 @@
   {
     "id": "ann-1005-count",
     "proofId": "erdos-1005",
-    "type": "technique",
+    "type": "concept",
     "title": "Farey Count Asymptotic",
     "content": "The number of Farey fractions of order $n$ satisfies $|F_n| = \\frac{3n^2}{\\pi^2} + O(n \\log n)$. This follows from the identity $|F_n| = 1 + \\sum_{k=1}^{n} \\varphi(k)$ and the classical estimate $\\sum_{k=1}^{n} \\varphi(k) = \\frac{3n^2}{\\pi^2} + O(n \\log n)$, which in turn relies on the Möbius inversion formula and the zeta function value $\\zeta(2) = \\pi^2/6$.",
     "mathContext": "$|F_n| = 1 + \\sum_{k=1}^{n} \\varphi(k) = \\frac{3n^2}{\\pi^2} + O(n \\log n)$, where $\\frac{3}{\\pi^2} = \\frac{1}{2\\zeta(2)}$.",
@@ -116,7 +116,7 @@
   {
     "id": "ann-1005-symm",
     "proofId": "erdos-1005",
-    "type": "technique",
+    "type": "concept",
     "title": "Symmetry of Similar Ordering",
     "content": "The similarly ordered relation is symmetric: `similarlyOrdered f g ↔ similarlyOrdered g f`. This is proved by case analysis on the two disjuncts, swapping the direction of inequalities. Together with reflexivity (proved below), this shows `similarlyOrdered` is an equivalence-like relation, though it is not transitive (which is what makes the run-length question non-trivial).",
     "mathContext": "$(a-c)(b-d) \\geq 0 \\iff (c-a)(d-b) \\geq 0$, since negating both factors preserves the sign of the product.",
@@ -181,7 +181,7 @@
   {
     "id": "ann-1005-mayer",
     "proofId": "erdos-1005",
-    "type": "technique",
+    "type": "concept",
     "title": "Mayer's Theorem (1942)",
     "content": "Mayer (1942) proved that $f(n) \\to \\infty$ as $n \\to \\infty$: the longest similarly ordered run grows without bound. This was the first result on the problem, showing that the phenomenon Erdős later quantified is real. Stated via `Filter.Tendsto` to express that `mayerErdosF` tends to infinity along the `atTop` filter.",
     "mathContext": "$\\lim_{n \\to \\infty} f(n) = \\infty$",
@@ -203,7 +203,7 @@
   {
     "id": "ann-1005-erdos43",
     "proofId": "erdos-1005",
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős's Linear Growth (1943)",
     "content": "Erdős (1943) strengthened Mayer's result by proving $f(n) \\geq cn$ for some absolute constant $c > 0$: the longest run grows at least linearly in $n$. This established the correct order of magnitude and motivated the search for the precise asymptotic constant. The proof used a probabilistic/counting argument to show that a linear-length run must exist somewhere in $F_n$.",
     "mathContext": "$\\exists c > 0,\\ \\forall n,\\ f(n) \\geq cn$. Erdős showed $c > 0$ exists without giving an explicit value.",
@@ -225,7 +225,7 @@
   {
     "id": "ann-1005-vdlower",
     "proofId": "erdos-1005",
-    "type": "technique",
+    "type": "concept",
     "title": "van Doorn Lower Bound (2025)",
     "content": "van Doorn (2025) proved $f(n) \\geq (1/12 - o(1))n$: the explicit lower bound constant $1/12$. The proof constructs explicit long similarly ordered runs by analyzing the local structure of Farey fractions near specific denominators. The $o(1)$ term means: for every $\\varepsilon > 0$, there exists $N$ such that for $n \\geq N$, $f(n) \\geq (1/12 - \\varepsilon)n$.",
     "mathContext": "$\\forall \\varepsilon > 0,\\ \\exists N,\\ \\forall n \\geq N,\\ f(n) \\geq (1/12 - \\varepsilon)n$",
@@ -247,7 +247,7 @@
   {
     "id": "ann-1005-vdupper",
     "proofId": "erdos-1005",
-    "type": "technique",
+    "type": "concept",
     "title": "van Doorn Upper Bound (2025)",
     "content": "van Doorn (2025) proved $f(n) \\leq n/4 + O(1)$: no similarly ordered run can exceed $n/4$ plus a bounded constant. The proof analyzes obstructions to similar ordering using the mediant property: adjacent Farey fractions satisfy $|ad - bc| = 1$, which constrains how long a chain of pairwise similarly ordered fractions can be. The upper bound argument identifies a pigeonhole obstruction at length $\\sim n/4$.",
     "mathContext": "$\\exists C,\\ \\forall n,\\ f(n) \\leq n/4 + C$",
@@ -269,7 +269,7 @@
   {
     "id": "ann-1005-combined",
     "proofId": "erdos-1005",
-    "type": "technique",
+    "type": "concept",
     "title": "Combined van Doorn Bounds",
     "content": "A theorem packaging both van Doorn bounds into a single statement: $(1/12 - o(1))n \\leq f(n) \\leq n/4 + O(1)$. The proof simply pairs the lower and upper bound axioms. The factor of 3 gap between $1/12$ and $1/4$ is the central remaining challenge.",
     "mathContext": "$(1/12 - o(1))n \\leq f(n) \\leq n/4 + O(1)$, a ratio of $3:1$ between bounds.",
@@ -356,7 +356,7 @@
   {
     "id": "ann-1005-adjacent",
     "proofId": "erdos-1005",
-    "type": "technique",
+    "type": "concept",
     "title": "Farey Adjacent Determinant Property",
     "content": "Adjacent Farey fractions $a/b$ and $c/d$ in $F_n$ satisfy $|ad - bc| = 1$. This is equivalent to saying the $2 \\times 2$ matrix $\\begin{pmatrix} a & c \\\\ b & d \\end{pmatrix}$ has determinant $\\pm 1$, i.e., it lies in $GL_2(\\mathbb{Z})$. This determinant condition is what makes Farey fractions so structured and is key to van Doorn's upper bound: it constrains how many consecutive fractions can be pairwise similarly ordered.",
     "mathContext": "For adjacent $a/b, c/d \\in F_n$: $|ad - bc| = 1$, equivalently $\\begin{vmatrix} a & c \\\\ b & d \\end{vmatrix} = \\pm 1$.",
@@ -379,7 +379,7 @@
   {
     "id": "ann-1005-monotone",
     "proofId": "erdos-1005",
-    "type": "technique",
+    "type": "concept",
     "title": "Geometric Characterization: Monotone in Both Coordinates",
     "content": "The similarly ordered condition is equivalent to monotonicity in both coordinates when viewing fractions as lattice points: `similarlyOrdered f g ↔ (f.num ≤ g.num ∧ f.denom ≤ g.denom) ∨ (f.num ≥ g.num ∧ f.denom ≥ g.denom)`. This is the product order on $\\mathbb{Z}^2$. The proof proceeds by case analysis on the disjuncts and uses `omega` for the integer arithmetic. A pairwise similarly ordered run thus corresponds to a chain in the product order — connecting to Dilworth's theorem and longest chain problems.",
     "mathContext": "$\\text{similarlyOrdered}(a/b, c/d) \\iff (a,b) \\leq_{\\text{prod}} (c,d) \\vee (a,b) \\geq_{\\text{prod}} (c,d)$, where $\\leq_{\\text{prod}}$ is the componentwise partial order on $\\mathbb{Z}^2$.",

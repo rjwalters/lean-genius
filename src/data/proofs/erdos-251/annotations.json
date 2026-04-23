@@ -100,7 +100,7 @@
       "startLine": 99,
       "endLine": 106
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Partial Sum Verification",
     "content": "We verify that the first 5 terms sum to **101/32 ≈ 3.15625**. This is computed as 2/2 + 3/4 + 5/8 + 7/16 + 11/32 = 1 + 0.75 + 0.625 + 0.4375 + 0.34375.",
     "mathContext": "Partial sums provide lower bounds on the infinite sum. The gap between 3.15625 and 3.597 shows that the tail contributes about 0.44 to the total.",

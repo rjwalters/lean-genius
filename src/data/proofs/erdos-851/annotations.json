@@ -78,7 +78,7 @@
       "startLine": 47,
       "endLine": 50
     },
-    "type": "technique",
+    "type": "concept",
     "title": "2^k + 1 is Always Representable",
     "content": "**twoPow_add_one_mem**: For any k, 2^k + 1 ∈ TwoPowAddSet 0.\n\n**Proof**: The number 1 has 0 prime factors (primeFactors 1 = ∅), so 2^k + 1 is in TwoPowAddSet 0.\n\nThis gives us Fermat numbers (3, 5, 17, 257, 65537, ...) for free.",
     "mathContext": "The simp tactic handles Nat.primeFactors 1 = ∅ automatically.",
@@ -101,7 +101,7 @@
       "startLine": 52,
       "endLine": 55
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Monotonicity of TwoPowAddSet",
     "content": "**twoPowAddSet_mono**: If r ≤ s, then TwoPowAddSet r ⊆ TwoPowAddSet s.\n\n**Proof**: If m = 2^k + n with n having ≤ r prime factors, then certainly n has ≤ s prime factors.\n\n**Consequence**: As we allow more prime factors, we can represent more integers. The density is non-decreasing in r.",
     "significance": "key",
@@ -124,7 +124,7 @@
       "startLine": 57,
       "endLine": 61
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Union Covers All Integers ≥ 2",
     "content": "**twoPowAddSet_union_covers**: For m ≥ 2, there exists r such that m ∈ TwoPowAddSet r.\n\n**Proof**: Write m = 2^0 + (m-1). Then take r = (m-1).primeFactors.card.\n\n**Significance**: Every integer ≥ 2 is eventually covered. The question is how large r needs to be as a function of the desired density.",
     "mathContext": "Uses omega tactic to verify m = 1 + (m-1) when m ≥ 2.",
@@ -308,7 +308,7 @@
       "startLine": 137,
       "endLine": 151
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Examples",
     "content": "**Explicit verifications**:\n\n- 3 = 2^1 + 1 ∈ TwoPowAddSet 0\n- 5 = 2^2 + 1 ∈ TwoPowAddSet 0\n- 9 = 2^3 + 1 ∈ TwoPowAddSet 0\n- 17 = 2^4 + 1 ∈ TwoPowAddSet 0\n\nThese are Fermat numbers F_n = 2^{2^n} + 1 for n = 0, 1, 2.\n\nThe proofs use rfl for the equation and simp for the prime factor count.",
     "mathContext": "Each theorem provides witnesses (k, n) showing the representation exists.",

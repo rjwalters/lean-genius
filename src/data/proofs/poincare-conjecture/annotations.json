@@ -331,7 +331,7 @@
       "startLine": 432,
       "endLine": 442
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Fundamental Group Triviality",
     "content": "**`fundamental_group_trivial_of_sc`** is **proved**: for a simply connected space $X$, the fundamental group $\\pi_1(X, x)$ is a subsingleton (trivial) at every point. The proof uses `simply_connected_iff_paths_homotopic` which gives `Subsingleton` on all path homotopy quotients.",
     "mathContext": "In Mathlib, `FundamentalGroup X x` is `CategoryTheory.Aut x` in the fundamental groupoid. `SimplyConnectedSpace` implies all path quotients are singletons via `simply_connected_iff_paths_homotopic`. Specializing the endpoints to $x_0 = x_1 = x$ gives triviality of the loop space quotient, i.e., $\\pi_1(X, x) \\cong 1$.",

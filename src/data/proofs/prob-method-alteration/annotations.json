@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 18
     },
-    "type": "context",
+    "type": "concept",
     "title": "Alteration Method Overview",
     "content": "The module header introduces the alteration (deletion) method, a two-phase probabilistic technique: first construct a random object, then deterministically remove the few violations. The Mathlib import provides access to Finset, simple graph definitions, and integer arithmetic needed for the expectation arguments.",
     "mathContext": "The alteration method: given a random variable $X$ on a probability space with value function $v(X)$ and defect count $d(X)$, if $\\mathbb{E}[v(X) - d(X)] > 0$, then there exists an outcome whose alteration (removing defects) has positive value.",
@@ -102,7 +102,7 @@
       "startLine": 16,
       "endLine": 18
     },
-    "type": "context",
+    "type": "concept",
     "title": "Namespace Organization",
     "content": "The proof is organized under `ProbMethod.Alteration`, following a hierarchical convention shared with `ProbMethod.Expectation`, `ProbMethod.LovaszLocal`, etc. This structure mirrors the textbook organization of the probabilistic method, where the alteration method is typically Chapter 3 after the first and second moment methods.",
     "mathContext": "The probabilistic method family: first moment (expectation), second moment (variance), alteration (deletion), and Lovász Local Lemma form an increasing hierarchy of sophistication for proving existence results.",
@@ -123,7 +123,7 @@
       "startLine": 20,
       "endLine": 23
     },
-    "type": "context",
+    "type": "concept",
     "title": "Part I: The Alteration Principle",
     "content": "The Part I section header introduces the alteration principle as the deterministic core of the deletion method. The key conceptual move is abstracting away the probabilistic language: while the method is motivated by random constructions, the formal theorem is a purely combinatorial statement about finite sums. This abstraction makes the principle applicable beyond probability — it works for any finite collection of outcomes where net value can be computed.",
     "mathContext": "The alteration principle is a weighted pigeonhole principle: if $\\sum_{a \\in S} f(a) > 0$ for $f : S \\to \\mathbb{Z}$, then $\\exists a \\in S,\\, f(a) > 0$. Here $f(a) = \\text{good}(a) - \\text{bad}(a)$ measures the net value after alteration.",
@@ -144,7 +144,7 @@
       "startLine": 40,
       "endLine": 43
     },
-    "type": "context",
+    "type": "concept",
     "title": "Part II: Independent Set Application",
     "content": "The Part II section header introduces the most famous application of the alteration method: bounding the independence number of graphs. The alteration argument here is the textbook example from Alon-Spencer Chapter 3 — select a random subset, then delete vertices that violate independence. The bound $\\alpha(G) \\geq n/(2d)$ for $d$-regular graphs was among the first applications of the probabilistic method to graph theory and remains a standard benchmark for more sophisticated techniques.",
     "mathContext": "The independence number $\\alpha(G)$ is the size of the largest independent set (no two vertices adjacent). For a $d$-regular graph: randomly include each vertex with probability $p$, delete one vertex per surviving edge. The expected surviving set has size $np - \\frac{ndp^2}{2}$, maximized at $p = 1/d$ giving $\\frac{n}{2d}$.",
@@ -167,7 +167,7 @@
       "startLine": 52,
       "endLine": 55
     },
-    "type": "context",
+    "type": "concept",
     "title": "Part III: Hypergraph Coloring (Property B)",
     "content": "The Part III section header introduces Property B, a fundamental concept in hypergraph coloring theory. A hypergraph has Property B if its vertices can be 2-colored so that no edge is monochromatic. Erd\\u0151s (1963) asked for the minimum number of edges $m(k)$ in a $k$-uniform hypergraph without Property B. The alteration method gives the bound $m(k) > 2^{k-1}$: randomly 2-color vertices, then fix monochromatic edges by recoloring. This is one of the earliest and most elegant applications of the deletion method.",
     "mathContext": "Property B threshold: $m(k) = \\min\\{|\\mathcal{E}| : \\mathcal{H} = (V, \\mathcal{E})$ is $k$-uniform without Property B$\\}$. The alteration bound gives $m(k) \\geq 2^{k-1}$. The best known upper bound is $m(k) = O(\\sqrt{k/\\ln k} \\cdot 2^k)$ due to Radhakrishnan-Srinivasan (2000).",

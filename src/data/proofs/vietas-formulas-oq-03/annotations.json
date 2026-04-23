@@ -2,7 +2,10 @@
   {
     "id": "ann-header-doc",
     "proofId": "vietas-formulas-oq-03",
-    "range": { "startLine": 1, "endLine": 29 },
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
     "type": "concept",
     "title": "Module Documentation and Imports",
     "content": "This module formalizes Newton's identities, which express power sums $p_k = \\sum x_i^k$ in terms of elementary symmetric polynomials $e_j$ and vice versa. Newton stated these in *Arithmetica Universalis* (1707), though Albert Girard had earlier versions in *Invention nouvelle en l'algèbre* (1629).\n\nThe single import `Mathlib.Tactic` provides the `ring` and `field_simp` tactics that close all 31 theorems automatically — every Newton identity is a polynomial identity verifiable by normalization.",
@@ -23,7 +26,10 @@
   {
     "id": "ann-two-var-setup",
     "proofId": "vietas-formulas-oq-03",
-    "range": { "startLine": 33, "endLine": 54 },
+    "range": {
+      "startLine": 33,
+      "endLine": 54
+    },
     "type": "definition",
     "title": "Two-Variable Setup and First Identity",
     "content": "The simplest case: two variables $x, y$ with elementary symmetric polynomials $e_1 = x + y$ and $e_2 = xy$. The first identity $p_1 = e_1$ is trivially `rfl`. This section works over an arbitrary commutative ring $R$, requiring no field or characteristic assumptions.\n\nThe two-variable case is the workhorse of the formalization — the recurrence $p_k = e_1 \\cdot p_{k-1} - e_2 \\cdot p_{k-2}$ is a linear recurrence with constant coefficients, and its characteristic polynomial is $t^2 - e_1 t + e_2 = (t - x)(t - y)$.",
@@ -42,8 +48,11 @@
   {
     "id": "ann-two-var-identities",
     "proofId": "vietas-formulas-oq-03",
-    "range": { "startLine": 55, "endLine": 85 },
-    "type": "technique",
+    "range": {
+      "startLine": 55,
+      "endLine": 85
+    },
+    "type": "concept",
     "title": "Two-Variable Newton Identities (p₂ through p₄, Pure Forms)",
     "content": "Newton's identities for $n = 2$, proved both in recursive form (each $p_k$ from previous power sums and elementary symmetric polynomials) and pure form (each $p_k$ expressed solely in $e_1, e_2$).\n\nAll proofs are one-liners using `ring`, which normalizes both sides to a canonical polynomial form and checks equality. This demonstrates that Newton's identities are purely algebraic — they hold in any commutative ring, not just over fields or $\\mathbb{Z}$.",
     "mathContext": "Recursive: $p_2 = e_1^2 - 2e_2$, $p_3 = e_1 p_2 - e_2 p_1$, $p_4 = e_1 p_3 - e_2 p_2$.\n\nPure: $p_3 = e_1^3 - 3e_1 e_2$, $p_4 = e_1^4 - 4e_1^2 e_2 + 2e_2^2$.\n\nThe pure forms are obtained by substituting the recurrence repeatedly, eliminating all intermediate $p_j$.",
@@ -61,7 +70,10 @@
   {
     "id": "ann-three-var-setup",
     "proofId": "vietas-formulas-oq-03",
-    "range": { "startLine": 88, "endLine": 118 },
+    "range": {
+      "startLine": 88,
+      "endLine": 118
+    },
     "type": "definition",
     "title": "Three-Variable Setup and Abbreviations",
     "content": "The three-variable case introduces the third elementary symmetric polynomial $e_3 = xyz$, which appears with an explicit coefficient in the identities. Private abbreviations `e1_3`, `e2_3`, `e3_3`, `p1_3`, `p2_3`, `p3_3`, `p4_3` keep theorem statements readable.\n\nThe use of `private abbrev` rather than `def` ensures these are definitionally transparent — the `unfold` tactic can expand them inline before `ring` closes the goal. This is a practical Lean 4 pattern for naming sub-expressions without introducing opaque definitions.",
@@ -80,7 +92,10 @@
   {
     "id": "ann-three-var-identities",
     "proofId": "vietas-formulas-oq-03",
-    "range": { "startLine": 119, "endLine": 160 },
+    "range": {
+      "startLine": 119,
+      "endLine": 160
+    },
     "type": "theorem",
     "title": "Three-Variable Newton Identities (Recursive and Pure)",
     "content": "Newton's identities for three variables, in both forms. The key new feature at $n = 3$ is that $p_3$ gets an explicit $3e_3$ term: $p_3 = e_1 p_2 - e_2 p_1 + 3e_3$.\n\nThe proof pattern is uniform: `unfold` all abbreviations, then `ring`. The pure forms eliminate intermediate power sums, expressing each $p_k$ directly in $e_1, e_2, e_3$. These pure forms are what matrix trace computations use in practice: given the characteristic polynomial (whose coefficients are $\\pm e_k$), compute $\\text{tr}(A^k) = p_k$ directly.",
@@ -99,7 +114,10 @@
   {
     "id": "ann-four-var",
     "proofId": "vietas-formulas-oq-03",
-    "range": { "startLine": 162, "endLine": 204 },
+    "range": {
+      "startLine": 162,
+      "endLine": 204
+    },
     "type": "theorem",
     "title": "Four-Variable Newton Identities",
     "content": "The four-variable case introduces $e_4 = abcd$ and the full fourth identity: $p_4 = e_1 p_3 - e_2 p_2 + e_3 p_1 - 4e_4$. The coefficient $-4$ on $e_4$ follows the general pattern $(-1)^{k-1} k \\cdot e_k$.\n\nThis section demonstrates that Newton's identities scale to arbitrary variable counts with the same recurrence structure. The `ring` tactic handles the increasing polynomial complexity automatically — the four-variable $p_4$ identity involves 35 monomial terms when fully expanded.",
@@ -118,8 +136,11 @@
   {
     "id": "ann-inversion",
     "proofId": "vietas-formulas-oq-03",
-    "range": { "startLine": 206, "endLine": 232 },
-    "type": "technique",
+    "range": {
+      "startLine": 206,
+      "endLine": 232
+    },
+    "type": "concept",
     "title": "Inversion: Recovering Elementary Symmetric Polynomials from Power Sums",
     "content": "Newton's identities also work in reverse: the elementary symmetric polynomials $e_k$ can be recovered from the power sums $p_1, \\ldots, p_k$. This is crucial for spectral theory: given matrix traces $\\text{tr}(A), \\text{tr}(A^2), \\ldots$, recover the characteristic polynomial coefficients.\n\nThe inversion requires a field with characteristic zero (division by 2 and 6 appears). The proofs use `field_simp` to clear denominators, then `ring`. The formulas are: $e_2 = (p_1^2 - p_2)/2$ and $e_3 = (p_1^3 - 3p_1 p_2 + 2p_3)/6$.",
     "mathContext": "$e_2 = \\frac{p_1^2 - p_2}{2}$, $e_3 = \\frac{p_1^3 - 3p_1 p_2 + 2p_3}{6}$.\n\nThese are instances of the general inversion via the exponential formula: $\\sum_{k=0}^{\\infty} e_k t^k = \\exp\\left(-\\sum_{j=1}^{\\infty} \\frac{(-1)^j p_j}{j} t^j\\right)$. The denominators $2, 6, \\ldots$ are $k!$, explaining the characteristic zero requirement.",
@@ -140,7 +161,10 @@
   {
     "id": "ann-discriminant",
     "proofId": "vietas-formulas-oq-03",
-    "range": { "startLine": 234, "endLine": 266 },
+    "range": {
+      "startLine": 234,
+      "endLine": 266
+    },
     "type": "insight",
     "title": "Application: Polynomial Discriminants via Symmetric Functions",
     "content": "The discriminant $\\Delta = \\prod_{i<j} (r_i - r_j)^2$ of a polynomial is a symmetric function of the roots, hence expressible via $e_k$. This section verifies the quadratic discriminant $\\Delta = e_1^2 - 4e_2$ and the cubic discriminant $\\Delta = e_1^2 e_2^2 - 4e_2^3 - 4e_1^3 e_3 + 18e_1 e_2 e_3 - 27e_3^2$.\n\nThe cubic discriminant formula is particularly important: $\\Delta > 0$ means three real roots, $\\Delta = 0$ means a repeated root, and $\\Delta < 0$ means one real and two complex conjugate roots. In Galois theory, $\\Delta$ being a perfect square determines whether the Galois group lies in $A_n$.",
@@ -161,7 +185,10 @@
   {
     "id": "ann-matrix-trace",
     "proofId": "vietas-formulas-oq-03",
-    "range": { "startLine": 268, "endLine": 296 },
+    "range": {
+      "startLine": 268,
+      "endLine": 296
+    },
     "type": "insight",
     "title": "Application: Matrix Traces and Cayley-Hamilton",
     "content": "For an $n \\times n$ matrix $A$ with eigenvalues $\\lambda_1, \\ldots, \\lambda_n$, the trace of $A^k$ equals the power sum $p_k(\\lambda_1, \\ldots, \\lambda_n)$. Newton's identities then recover the characteristic polynomial $\\det(xI - A)$ from traces alone.\n\nThe theorem `cayley_hamilton_trace_2x2` shows that for $2 \\times 2$ matrices, Newton's second identity $p_2 - e_1 p_1 + 2e_2 = 0$ is precisely the Cayley-Hamilton theorem $A^2 - \\text{tr}(A) \\cdot A + \\det(A) \\cdot I = 0$ evaluated at the trace level. This connection is the basis for the Faddeev-LeVerrier algorithm for computing characteristic polynomials.",
@@ -182,8 +209,11 @@
   {
     "id": "ann-recurrence",
     "proofId": "vietas-formulas-oq-03",
-    "range": { "startLine": 298, "endLine": 330 },
-    "type": "technique",
+    "range": {
+      "startLine": 298,
+      "endLine": 330
+    },
+    "type": "concept",
     "title": "Recurrence Verification for Higher Power Sums",
     "content": "Verification that the recurrence pattern extends beyond $k = n$. For $k > n$, the explicit $e_k$ term vanishes (since $e_k = 0$ for $k > n$ variables), and the recurrence simplifies. This section proves $p_5$ and $p_6$ for 2 and 3 variables.\n\nFor 3 variables: $p_5 = e_1 p_4 - e_2 p_3 + e_3 p_2$ (no $e_4$ or $e_5$ terms). For 2 variables: $p_5 = e_1 p_4 - e_2 p_3$ and $p_6 = e_1 p_5 - e_2 p_4$. The recurrence is finite-order: for $n$ variables, the recurrence has depth $n$.",
     "mathContext": "For $k > n$: $p_k = \\sum_{i=1}^{n} (-1)^{i-1} e_i \\cdot p_{k-i}$. The recurrence has characteristic polynomial $t^n - e_1 t^{n-1} + e_2 t^{n-2} - \\cdots + (-1)^n e_n = \\prod_{i=1}^n (t - x_i)$, whose roots are the variables $x_1, \\ldots, x_n$.",
@@ -201,7 +231,10 @@
   {
     "id": "ann-vieta-connection",
     "proofId": "vietas-formulas-oq-03",
-    "range": { "startLine": 332, "endLine": 383 },
+    "range": {
+      "startLine": 332,
+      "endLine": 383
+    },
     "type": "insight",
     "title": "Connection to Vieta's Formulas and Sum-of-Cubes Factorization",
     "content": "The closing section connects Newton's identities back to Vieta's formulas: the coefficients of a monic polynomial are $\\pm e_k$ of its roots (Vieta), and Newton's identities then express all power sums in terms of these coefficients.\n\nThe sum-of-cubes factorization $x^3 + y^3 + z^3 - 3xyz = (x+y+z)(x^2+y^2+z^2 - xy - xz - yz)$ is a direct consequence of Newton's third identity $p_3 = e_1^3 - 3e_1 e_2 + 3e_3$ rewritten as $p_3 - 3e_3 = e_1(e_1^2 - 3e_2) = e_1(p_2 - e_2)$. This factorization appears in AM-GM proofs and Schur's inequality.",

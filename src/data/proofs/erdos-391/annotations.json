@@ -84,7 +84,7 @@
       "startLine": 106,
       "endLine": 137
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The ACRSTUV Theorem: Complete Resolution (2025)",
     "content": "**The main result** of Alexeev, Conway, Rosenfeld, Sutherland, Tao, Uhr, and Ventullo (2025) resolves both of Erdős's questions simultaneously. They proved the precise asymptotic formula: t(n)/n = 1/e - c₀/log(n) + O(1/(log n)^{1+c}), where c₀ ≈ 0.3044 is an explicit constant and c > 0.\n\nThis formula tells us three things at once: (1) the limit exists and equals 1/e (answering Question 1), (2) the approach to 1/e is from below with rate c₀/log(n) (answering Question 2, and showing it holds for ALL large n, not just infinitely many), and (3) the error beyond the second-order term decays as a power of 1/log(n).",
     "mathContext": "The axiom acrstuv_theorem existentially quantifies over c > 0 and C > 0, asserting the bound |ratio n - (1/exp(1) - c₀/log(n))| ≤ C/(log n)^{1+c} for n ≥ 3. The corollaries limit_is_one_over_e and second_order_correction are stated separately as they answer the two original questions directly.",
@@ -122,7 +122,7 @@
       "startLine": 177,
       "endLine": 196
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Guy-Selfridge Conjectures: Verified",
     "content": "**Guy and Selfridge** formulated two precise conjectures about t(n) in their 1998 paper 'Factoring Factorial n' in the American Mathematical Monthly. Conjecture 1: t(n) ≤ n/e for all n ≠ 1, 2, 4. Conjecture 2: t(n) ≥ n/3 for all n ≥ 43632. Both were proved by ACRSTUV in 2025.\n\nThe formalization defines these as Lean propositions (guySelfridgeConjecture1, guySelfridgeConjecture2) and provides their proofs: Conjecture 1 via the axiom guy_selfridge_1_proved, and Conjecture 2 as a direct consequence of lower_bound_explicit.",
     "mathContext": "The definitions use Lean's Prop type to state the conjectures as formal propositions. Conjecture 2 is proved as a theorem (guy_selfridge_2_proved) equated directly to lower_bound_explicit, demonstrating that the two formulations are identical.",
@@ -141,7 +141,7 @@
       "startLine": 210,
       "endLine": 247
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem: All Main Results Combined",
     "content": "**The summary theorem** erdos_391_summary packages all four main results into a single Lean statement: (1) lim t(n)/n = 1/e, (2) the second-order correction t(n)/n ≤ 1/e - c/log(n) for large n, (3) the explicit upper bound t(n) ≤ ⌊n/e⌋ for n ≥ 3, n ≠ 4, and (4) the lower bound t(n) ≥ n/3 for n ≥ 43632.\n\nThis is a proved theorem (not an axiom), constructed from the individual axioms using Lean's refine tactic. It demonstrates that the axioms are coherent and combine to give a comprehensive picture of the problem's resolution.",
     "mathContext": "The proof uses refine ⟨limit_is_one_over_e, second_order_correction, ?_, lower_bound_explicit⟩ to decompose the conjunction, then handles the upper bound case by introducing hypotheses and applying upper_bound_explicit with the appropriate argument packaging ⟨hn, hne⟩.",

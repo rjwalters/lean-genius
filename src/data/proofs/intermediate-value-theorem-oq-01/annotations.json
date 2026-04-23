@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 24
     },
-    "type": "context",
+    "type": "concept",
     "title": "Header and Problem Context",
     "content": "The header describes the bisection method as a constructive counterpart to the Intermediate Value Theorem. While the IVT asserts existence non-constructively, bisection builds an explicit sequence of nested intervals converging to a root. The file proves 7 theorems with 2 sorries (the inductive width decay and error bound).",
     "mathContext": "The IVT states: if $f: [a,b] \\to \\mathbb{R}$ is continuous and $f(a) \\cdot f(b) < 0$, then $\\exists c \\in (a,b)$ with $f(c) = 0$. The classical proof uses completeness of $\\mathbb{R}$ (sup of $\\{x : f(x) \\leq 0\\}$) and is non-constructive. Bisection provides a constructive alternative.",
@@ -50,7 +50,7 @@
       "startLine": 36,
       "endLine": 51
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Midpoint Properties",
     "content": "Three lemmas about the midpoint: (1) midpoint_mem_Icc: $a \\leq (a+b)/2 \\leq b$ when $a \\leq b$; (2) midpoint_sub_left: $(a+b)/2 - a = (b-a)/2$; (3) right_sub_midpoint: $b - (a+b)/2 = (b-a)/2$. All proved by `linarith` or `ring`. These establish that the midpoint is well-positioned and each half has exactly half the width.",
     "mathContext": "The midpoint $m = \\frac{a+b}{2}$ satisfies $m - a = b - m = \\frac{b-a}{2}$, so each half has equal width. This symmetry is essential: the convergence rate $(b-a)/2^n$ depends on the width being exactly halved, not merely reduced.",

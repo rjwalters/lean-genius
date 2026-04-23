@@ -6,7 +6,7 @@
       "startLine": 67,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Geometric Sum Formula at r = -1",
     "content": "The identity $2 \\cdot S_n = 1 - (-1)^n$ is the finite geometric sum formula $(1 - r)\\sum_{k=0}^{n-1} r^k = 1 - r^n$ specialized to $r = -1$, where $1 - (-1) = 2$. Mathlib's `mul_neg_geom_sum` provides this identity over any ring, and `linarith` resolves the resulting linear arithmetic.",
     "mathContext": "$(1 - (-1)) \\cdot \\sum_{k=0}^{n-1} (-1)^k = 1 - (-1)^n$, i.e., $2 S_n = 1 - (-1)^n$",

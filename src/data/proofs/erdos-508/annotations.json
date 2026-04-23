@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 24
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview: Hadwiger-Nelson Problem (OPEN, χ ∈ {5,6,7})",
     "content": "**The Hadwiger-Nelson Problem (Erdős #508)**\n\nWhat is the chromatic number of the plane? The problem asks for the minimum number of colors needed to color $\\mathbb{R}^2$ so that no two points at Euclidean distance exactly 1 share the same color. After 75+ years of research, the answer is known to be one of $\\{5, 6, 7\\}$:\n- $\\chi \\geq 3$: equilateral triangle with side 1 requires 3 colors ($K_3$)\n- $\\chi \\geq 4$: Moser spindle (1961) or Golomb graph require 4 colors\n- $\\chi \\geq 5$: de Grey (2018) using a unit-distance graph on ~1500 vertices — first improvement in 60+ years\n- $\\chi \\leq 7$: Isbell's hexagonal tiling with 7-color repeating pattern\n\nImports `SimpleGraph`, `Coloring`, and `Tactic`.",
     "mathContext": "The unit-distance graph $G = (\\mathbb{R}^2, E)$ has vertex set $\\mathbb{R}^2$ and edge set $E = \\{\\{x,y\\} : \\|x - y\\| = 1\\}$. Its chromatic number $\\chi(\\mathbb{R}^2)$ is the minimum $k$ such that there exists a coloring $c : \\mathbb{R}^2 \\to \\{1,\\ldots,k\\}$ with $c(x) \\neq c(y)$ whenever $\\|x-y\\| = 1$. The constraint $5 \\leq \\chi \\leq 7$ gives three candidates; most experts conjecture $\\chi = 7$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "graph coloring",
       "unit-distance graphs",
@@ -105,11 +105,11 @@
       "startLine": 39,
       "endLine": 45
     },
-    "type": "context",
+    "type": "concept",
     "title": "Stubs: Known Results (Unformalized Lower Bounds, Upper Bound, Related Results)",
     "content": "Lines 38-46 contain section header stubs — Lean comments of the form `/- ## Section Name -/` with no Lean declarations underneath. These mark planned but unimplemented formalization regions:\n\n- Line 38: blank transition before stub sections\n- Line 39: `/- ## Main Problem -/` — stub for `erdos_508_problem : 5 ≤ planeChromatic ∧ planeChromatic ≤ 7`\n- Line 41: `/- ## Known Lower Bounds -/` — stubs for `chromatic_ge_3` (triangle), `chromatic_ge_4_moser` (Moser spindle 1961), `de_grey_2018` (~1581-vertex graph requiring 5 colors)\n- Line 43: `/- ## Known Upper Bound -/` — stub for `chromatic_le_7_isbell` (hexagonal tiling)\n- Line 45: `/- ## Related Results -/` — stubs for fractional chromatic bounds, higher dimensions, Erdős-de Bruijn\n\nThe stubs serve as a structured roadmap: each comment names a planned theorem with enough mathematical context to guide future implementation. The file intentionally separates what IS formalized (the unit-distance graph definition and the axiom) from what IS NOT yet formalized (the bounds and theorems).",
     "mathContext": "Bounds: $3 \\leq 4 \\leq 5 \\leq \\chi(\\mathbb{R}^2) \\leq 7$. Isbell hexagon: diameter $d < 1$, same-color hexagons separated by $> 1$. de Grey graph: 1581 vertices (Exoo-Ismailescu later found 509-vertex examples). Erdős-de Bruijn: $k \\leq \\chi(\\mathbb{R}^2) \\iff \\exists$ finite unit-distance $H$ with $\\chi(H) \\geq k$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Moser spindle",
       "de Grey 2018",

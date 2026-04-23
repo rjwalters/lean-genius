@@ -98,7 +98,7 @@
       "startLine": 74,
       "endLine": 82
     },
-    "type": "context",
+    "type": "concept",
     "title": "Threshold Tightness",
     "content": "**threshold_tight** axiomatizes the BES construction showing r - 3/2 cannot be improved. For any r ≥ 2, there exist arbitrarily large r-partite graphs with minimum degree near (r - 3/2)n that avoid K_r.",
     "mathContext": "The construction exploits parity in the partition structure. This is axiomatized because the explicit construction involves probabilistic or algebraic methods beyond current Mathlib.",
@@ -116,7 +116,7 @@
       "startLine": 84,
       "endLine": 107
     },
-    "type": "context",
+    "type": "concept",
     "title": "Haxell's Theorem (2001)",
     "content": "**haxell_theorem** axiomatizes the main result: the BES conjecture is true. Haxell's proof used connections to list coloring theory, reducing the clique-finding problem to a vertex list coloring problem on an auxiliary graph. The corollary **asymptotic_threshold** is proved from this axiom with explicit constant C = 1.",
     "mathContext": "The proof technique — reducing multipartite clique existence to list coloring — is beyond current Mathlib capabilities. The corollary demonstrates that axiom-based reasoning still allows deriving useful consequences.",
@@ -134,7 +134,7 @@
       "startLine": 109,
       "endLine": 135
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sharp Threshold (Haxell-Szabó 2006)",
     "content": "**sharpThreshold** computes the exact minimum degree threshold: (r-1)n - ⌈sn/(2s-1)⌉ where s = ⌊r/2⌋. The Haxell-Szabó theorem states this is both sufficient (above threshold forces K_r) and necessary (at the threshold, counterexamples exist).",
     "mathContext": "The formula reveals the role of parity: s = ⌊r/2⌋ makes the threshold depend on whether r is even or odd. The ceiling is approximated via integer arithmetic: ⌈a/b⌉ = (a + b - 1) / b.",
@@ -153,7 +153,7 @@
       "startLine": 137,
       "endLine": 163
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Special Cases r = 2, 3, 4",
     "content": "**Concrete computations** verify the sharp threshold formula for small values of r. For r=2 (bipartite), the threshold is 0 — any edge gives K_2. For r=3 (tripartite), the threshold is n. For r=4, the formula gives 3n - ⌈2n/3⌉. These are proved by simplification and ring arithmetic.",
     "mathContext": "These cases confirm the formula matches intuition. The bipartite case shows the formula degenerates appropriately, while the tripartite case recovers a classical result.",
@@ -189,7 +189,7 @@
       "startLine": 198,
       "endLine": 214
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_1078_summary** combines all four main results into a single conjunction: (1) Haxell's theorem (BES conjecture is true), (2) tightness of the r-3/2 constant, (3) Haxell-Szabó sufficiency at the sharp threshold, and (4) sharpness via counterexamples at the threshold.",
     "mathContext": "Proved by exact ⟨haxell_theorem, threshold_tight, haxell_szabo_theorem, threshold_sharp⟩. This summary theorem packages the complete resolution of Erdős Problem #1078.",

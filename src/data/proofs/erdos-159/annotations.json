@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 19
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview: Power Saving in R(C₄, Kₙ)",
     "content": "Erdős Problem #159 asks whether the off-diagonal Ramsey number $R(C_4, K_n)$ admits a genuine **power saving** over the trivial $n^2$ bound: does there exist $c > 0$ such that $R(C_4, K_n) \\leq C \\cdot n^{2-c}$? The known bounds are $\\Omega(n^{3/2}/(\\log n)^{3/2})$ (Spencer, probabilistic) and $O(n^2/(\\log n)^2)$ (Szemerédi, regularity lemma). Both only achieve logarithmic improvements over the exponent, leaving the true polynomial exponent unknown. The formalization imports `SimpleGraph.Basic`, `Fin.Basic`, `Real.Basic`, and `Tactic`.",
     "mathContext": "$R(C_4, K_n)$ = smallest $N$ such that every graph on $N$ vertices contains $C_4$ or has independence number $\\geq n$. Known: $c_1 \\cdot n^{3/2}/(\\log n)^{3/2} \\leq R(C_4, K_n) \\leq C_2 \\cdot n^2/(\\log n)^2$. Question: $\\exists c > 0$, $R(C_4, K_n) \\leq C \\cdot n^{2-c}$?",

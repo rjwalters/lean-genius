@@ -88,7 +88,7 @@
       "startLine": 78,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Danzer's Counterexample (1987)",
     "content": "**danzer_counterexample** axiom: there exists a convex 9-gon where every vertex has 3 equidistant neighbors.\n\nThis **disproves** Erdős's original k = 3 conjecture. The radius can vary by vertex.\n\nThe explicit coordinates involve specific rational multiples of √3, arranged in 3 groups of 3 around an equilateral triangle. Verification requires floating-point computation; axiomatized here.",
     "mathContext": "The formal-conjectures project (erdosproblems.com/97) gives explicit coordinates: three groups $(A_1, A_2, A_3)$, $(B_1, B_2, B_3)$, $(C_1, C_2, C_3)$ with carefully chosen rational-√3 coordinates. Proving convex independence and the equidistance property for all 9 points requires `norm_num` with these explicit values.",
@@ -132,7 +132,7 @@
       "startLine": 115,
       "endLine": 133
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Fishburn–Reeds Results (1992)",
     "content": "**fishburn_reeds_example**: a convex 20-gon where every vertex has 3 unit-distance neighbors.\n\n**fishburn_reeds_minimal**: 20 is the minimum size for such a configuration.\n\nThis strengthens Danzer's result: the common distance is fixed at 1, not just equal. The minimality of 20 is proved in Fishburn–Reeds' 1992 paper.",
     "mathContext": "The 20-gon construction uses integer coordinates satisfying carefully crafted Diophantine conditions. `fishburn_reeds_minimal` is stated as a conjunction: all smaller convex sets fail, and the 20-gon exists — combining the minimality and existence in one axiom.",

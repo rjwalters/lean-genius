@@ -2,7 +2,7 @@
   {
     "id": "imports",
     "proofId": "erdos-90",
-    "type": "context",
+    "type": "concept",
     "title": "Mathlib Imports",
     "content": "Imports six Mathlib modules: InnerProductSpace.Basic for EuclideanSpace ℝ (Fin 2), MetricSpace.Basic for the dist function, Finset.Basic and Finset.Card for finite point sets and offDiag enumeration, Filter.Basic for the atTop filter used in asymptotic statements, and Tactic for general automation.",
     "significance": "supporting",
@@ -114,7 +114,7 @@
   {
     "id": "sst-bound",
     "proofId": "erdos-90",
-    "type": "technique",
+    "type": "concept",
     "title": "Spencer–Szemerédi–Trotter Bound",
     "content": "u(n) = O(n^{4/3}), proved in 1984 using the Szemerédi–Trotter incidence theorem. This is the best known upper bound and has stood for over 40 years.",
     "significance": "key",
@@ -137,7 +137,7 @@
   {
     "id": "lattice-bound",
     "proofId": "erdos-90",
-    "type": "technique",
+    "type": "concept",
     "title": "Lattice Lower Bound",
     "content": "Integer lattice constructions achieve n^{1+c/log log n} unit distances, establishing the conjectured order of magnitude from below.",
     "significance": "key",

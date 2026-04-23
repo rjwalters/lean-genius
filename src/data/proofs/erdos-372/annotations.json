@@ -44,7 +44,7 @@
       "startLine": 73,
       "endLine": 91
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Concrete Examples",
     "content": "**Three computed examples verified by native_decide:**\n\n- P(6) = 3, since 6 = 2 × 3\n- P(30) = 5, since 30 = 2 × 3 × 5\n- P(210) = 7, since 210 = 2 × 3 × 5 × 7 (the primorial of 7)\n\nThe `native_decide` tactic compiles the decision procedure to native code for fast evaluation. These examples illustrate how P extracts the largest prime from increasingly complex factorizations.",
     "mathContext": "The primorial p# is the product of all primes up to p. These are natural test cases because their largest prime factor equals p exactly.",
@@ -138,7 +138,7 @@
       "startLine": 193,
       "endLine": 219
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_372_summary combines two key results:**\n\n1. **Descending triplets are infinite:** Set.Infinite {n | isDescendingTriple n} — from Balog (2001)\n2. **Ascending triplets are infinite:** Set.Infinite {n | isAscendingTriple n} — from Erdős-Pomerance (1978)\n\nTogether, these establish that both monotone patterns in largest prime factors occur infinitely often among consecutive integers. The proof is a simple conjunction: ⟨balog_descending_infinite, erdos_pomerance_ascending⟩.\n\nErdős Problem #372 is completely SOLVED.",
     "mathContext": "The summary theorem packages the two main results into a single conjunction. The proof is trivially constructed from the two axioms. The remaining open question is the density conjecture (1/6 for each of the 6 orderings).",

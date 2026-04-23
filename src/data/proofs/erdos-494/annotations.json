@@ -63,7 +63,7 @@
       "startLine": 63,
       "endLine": 82
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The k = 2 Case: Powers of 2",
     "content": "**Selfridge-Straus (1958)** completely characterized k = 2: uniqueness holds iff |A| is NOT a power of 2. When |A| = 2^l, counterexamples exist.",
     "mathContext": "The failure for powers of 2 relates to the structure of addition in characteristic 2. The pairwise sums can be encoded as a polynomial over F_2, and when |A| = 2^l, the polynomial has special symmetries.",
@@ -82,7 +82,7 @@
       "startLine": 84,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Specific Bounds for k = 3, 4",
     "content": "**Selfridge-Straus** also proved: for k = 3, uniqueness holds when |A| > 6; for k = 4, when |A| > 12. These give concrete thresholds.",
     "mathContext": "The bounds 6 and 12 are not known to be sharp. They arise from analyzing when the k-sum multiset provides enough 'equations' to determine A. Smaller sets may have counterexamples due to symmetries.",
@@ -100,7 +100,7 @@
       "startLine": 99,
       "endLine": 109
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Prime Divisibility Criterion",
     "content": "**Selfridge-Straus**: Uniqueness holds if |A| has a prime factor p > k. This powerful criterion explains many special cases instantly.",
     "mathContext": "For example, |A| = 7 and k = 3: since 7 > 3 is prime dividing 7, uniqueness holds. The proof uses Newton's identities relating power sums to elementary symmetric polynomials.",
@@ -157,7 +157,7 @@
       "startLine": 138,
       "endLine": 151
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gordon-Fraenkel-Straus Main Theorem",
     "content": "**GFS (1962)**: For all k > 2, uniqueness holds for sufficiently large |A|. This is the main positive result, resolving Problem #494 affirmatively.",
     "mathContext": "The statement uses Filter.atTop to express 'eventually'. The proof uses polynomial methods: the k-sum multiset encodes the elementary symmetric polynomial e_k, and for large enough sets, the full set of symmetric polynomials can be recovered.",
@@ -195,7 +195,7 @@
       "startLine": 173,
       "endLine": 190
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_494_summary** combines the main positive results: (1) for k = 2, uniqueness iff |A| is not a power of 2; (2) for k > 2, uniqueness for large enough |A|.",
     "mathContext": "This is a proved theorem (not an axiom) that simply packages the two main axioms into a conjunction. It summarizes the complete solution to Problem #494.",

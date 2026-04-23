@@ -261,7 +261,7 @@
       "startLine": 243,
       "endLine": 293
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary: erdos_465_solved and erdos_465_summary",
     "content": "erdos_465_solved packages FirstConjecture ∧ SecondConjecture, proved from the two corollary theorems (which use sorry for calculus steps). erdos_465_summary adds KonyaginBound ∧ LowerBound for the full picture. optimal_growth packages the tight bounds. erdos_465_status gives a human-readable string.",
     "mathContext": "The packaging theorems: $\\texttt{erdos\\_465\\_solved} : \\texttt{FirstConjecture} \\wedge \\texttt{SecondConjecture}$ uses $\\texttt{first\\_conjecture\\_holds}$ and $\\texttt{second\\_conjecture\\_holds}$ (both with sorry). $\\texttt{erdos\\_465\\_summary}$ adds the tight asymptotic: $\\texttt{KonyaginBound} \\wedge \\texttt{LowerBound}$ from axioms. $\\texttt{optimal\\_growth}$ directly applies $\\texttt{konyagin\\_2001}$ and $\\texttt{problem\\_466\\_lower\\_bound}$. The two sorry entries are in corollaries that need elementary calculus ($\\log \\log X \\to \\infty$ and $C \\cdot X^{1/2} < X^{1/2 + \\varepsilon}$ for large $X$).",

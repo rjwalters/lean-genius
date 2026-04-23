@@ -103,9 +103,9 @@
     "id": "annotation-cosh-sinh-identities",
     "lineStart": 46,
     "lineEnd": 72,
-    "type": "technique",
+    "type": "concept",
     "mathContext": "Six hyperbolic function identities are proved as wrappers around Mathlib: `cosh_sq_sub_sinh_sq` uses `have := Real.cosh_sq_sub_sinh_sq x; linarith` (Mathlib's version gives the same identity, so one `linarith` suffices). `cosh_ge_one` uses `nlinarith [cosh_sq_sub_sinh_sq x, sq_nonneg (Real.sinh x), Real.cosh_pos x]` — from $\\cosh^2 x - \\sinh^2 x = 1$ and $\\sinh^2 x \\geq 0$, we get $\\cosh^2 x \\geq 1$, and $\\cosh x > 0$, so $\\cosh x \\geq 1$ by `nlinarith`. The remaining four are direct equalities from Mathlib: `Real.sinh_neg`, `Real.cosh_neg`, `Real.sinh_zero`, `Real.cosh_zero`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Real.cosh_sq_sub_sinh_sq",
       "Real.cosh_pos",

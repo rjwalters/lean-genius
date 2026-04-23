@@ -26,13 +26,21 @@
       "startLine": 60,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Support Invariance and Derangement Restriction",
     "content": "Two key lemmas that enable the bijection. `support_mem_iff_smul_mem` proves the support is σ-invariant: x ∈ σ.support ↔ σ x ∈ σ.support. This is needed for `subtypePerm` which restricts σ to the subtype of support elements. `subtypePerm_of_support_is_derangement` then shows the restricted permutation is a derangement: every element of the support is moved (by definition of support), so the restriction has no fixed points. The `.symm` on the invariance proof is needed because Mathlib's `subtypePerm` takes `h : ∀ x, p (σ x) ↔ p x` (the reversed direction from what's natural).",
     "mathContext": "$x \\in \\text{support}(\\sigma) \\iff \\sigma(x) \\in \\text{support}(\\sigma)$ (support is $\\sigma$-invariant). Therefore $\\sigma|_{\\text{support}(\\sigma)} \\in \\text{derangements}(\\text{support}(\\sigma))$, since $\\forall x \\in \\text{support}(\\sigma): \\sigma(x) \\neq x$.",
     "significance": "supporting",
-    "relatedConcepts": ["support invariance", "subtypePerm", "derangement restriction", "Equiv.Perm.mem_support"],
-    "prerequisites": ["Equiv.Perm.support", "subtypePerm API"]
+    "relatedConcepts": [
+      "support invariance",
+      "subtypePerm",
+      "derangement restriction",
+      "Equiv.Perm.mem_support"
+    ],
+    "prerequisites": [
+      "Equiv.Perm.support",
+      "subtypePerm API"
+    ]
   },
   {
     "id": "ann-bijection",
@@ -83,7 +91,7 @@
       "startLine": 248,
       "endLine": 300
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Special Cases: S(n,0), S(n,n), S(n,n-1)",
     "content": "Three special cases provide sanity checks:\n\n**S(n,0) = D(n)**: No fixed points means the permutation is a derangement. Proved by reducing to `σ.support = Finset.univ` (full support = moves everything).\n\n**S(n,n) = 1**: The only permutation fixing all n elements is the identity. Proved by `Finset.eq_univ_of_card` (the fixed-point set is all of Fin n, so σ is forced to be identity).\n\n**S(n,n-1) = 0** (for n ≥ 2): Impossible to fix exactly n-1 elements. If n-1 elements are fixed, the remaining element must also be fixed (no room for a non-trivial orbit). Formally: `σ.support.card = 1` via the formula, but `Equiv.Perm.card_support_ne_one σ` says this is impossible for any permutation.",
     "mathContext": "S(n,0) = D(n), \\quad S(n,n) = 1, \\quad S(n,n-1) = 0 \\text{ for } n \\geq 2",
@@ -102,7 +110,7 @@
       "startLine": 306,
       "endLine": 329
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Algebraic Identity: ∑ S(n,k) = n!",
     "content": "**Theorem** `sum_permsWithKFixed_eq_factorial`:\n```\n∑_{k=0}^{n} S(n,k) = n!\n```\n\nEvery permutation has exactly one fixed-point count (its fixed-point set has a definite cardinality in {0,...,n}), so the filter classes partition all of `Equiv.Perm (Fin n)`. The sum equals the cardinality of the disjoint union, which is `Fintype.card_perm = n!`.\n\n**Proof**: Using `Finset.card_biUnion` with the disjointness proof (two permutations in different filter classes have different fixed-point counts, hence are in different sets). The biUnion covers all permutations by membership: `(Finset.univ.filter fun x => σ x = x).card ∈ Finset.range (n+1)` (fixed-point count ≤ n).",
     "mathContext": "\\sum_{k=0}^{n} S(n,k) = n!",
@@ -122,7 +130,7 @@
       "startLine": 198,
       "endLine": 242
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verification via native_decide",
     "content": "**11 concrete verifications** using `native_decide`:\n\n- **n=3**: S(3,0)=2, S(3,1)=3, S(3,2)=0, S(3,3)=1 → sum = 6 = 3!\n- **n=4**: S(4,0)=9, S(4,1)=8, S(4,2)=6, S(4,3)=0, S(4,4)=1 → sum = 24 = 4!\n- **n=5**: S(5,2)=20 = C(5,2)·D(3) = 10·2\n\nThese verify the formula S(n,k) = C(n,k)·D(n-k) for small concrete values. `native_decide` compiles the proposition to native code and evaluates it, providing fast decidable verification.\n\n**Formula check for n=4**: D(0)=1, D(1)=0, D(2)=1, D(3)=2, D(4)=9. Then:\n- S(4,0) = C(4,0)·9 = 9 ✓\n- S(4,1) = C(4,1)·2 = 8 ✓\n- S(4,2) = C(4,2)·1 = 6 ✓\n- S(4,3) = C(4,3)·0 = 0 ✓\n- S(4,4) = C(4,4)·1 = 1 ✓",
     "mathContext": "S(n,k) = \\binom{n}{k} \\cdot D(n-k) \\text{ verified for } n \\in \\{3,4,5\\}",

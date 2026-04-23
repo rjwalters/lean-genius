@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 34
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Header and Imports",
     "content": "The file imports four Mathlib modules: `EuclideanDist` for the Euclidean space type, `Data.Real.Basic` for ℝ, `Data.Finset.Basic` for finite sets, and `Data.Set.Finite.Basic` for finiteness predicates. Opens `Set` and `Finset` namespaces for convenient access.",
     "significance": "supporting",
@@ -158,7 +158,7 @@
       "startLine": 131,
       "endLine": 146
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Graham-Selfridge Theorem (k=3)",
     "content": "**graham_selfridge** (axiom): There exists a finite set A ⊂ ℝ² with the Ramsey property for k=3. **k3_case**: Proves `Erdos1090Question 3` by introducing the k ≥ 3 hypothesis (discarded via `_`) and applying the axiom directly.",
     "significance": "key",
@@ -196,7 +196,7 @@
       "startLine": 168,
       "endLine": 177
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hales-Jewett Theorem",
     "content": "**hales_jewett** (axiom): For any k ≥ 1 and r ≥ 1, there exists dimension n such that any r-coloring of [k]ⁿ contains a monochromatic combinatorial line. This fundamental Ramsey result (1963) implies van der Waerden's theorem as a corollary.",
     "significance": "key",
@@ -215,7 +215,7 @@
       "startLine": 179,
       "endLine": 192
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Generic Projection",
     "content": "**generic_projection** (axiom): For any k and n, there exists a map proj : [k]ⁿ → Point that is (1) injective on [k]ⁿ, and (2) maps every combinatorial line to a geometric line. This is the transfer mechanism from combinatorial to geometric Ramsey theory.",
     "significance": "key",
@@ -234,7 +234,7 @@
       "startLine": 194,
       "endLine": 200
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hunter's Observation",
     "content": "**hunter_observation** (axiom): For k ≥ 3, there exists a finite set A with the Ramsey property for k. This combines Hales-Jewett (monochromatic combinatorial line in [k]ⁿ) with generic projection (transferring to ℝ²). The pullback argument: any 2-coloring of the projected points induces a 2-coloring of [k]ⁿ.",
     "significance": "key",
@@ -253,7 +253,7 @@
       "startLine": 206,
       "endLine": 214
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: Erdős #1090 Solved",
     "content": "**erdos_1090_affirmative**: For every k ≥ 3, `Erdos1090Question k` holds — there exists a finite set with the Ramsey property for k. The proof is a three-line application of `hunter_observation`.",
     "significance": "key",
@@ -272,7 +272,7 @@
       "startLine": 244,
       "endLine": 264
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Size Bounds",
     "content": "**ramseyNumber k** is defined (noncomputably) as the minimum |A| with the Ramsey property. **ramsey_lower_bound** (sorry) states R(k) ≥ k — trivially since we need at least k points. **r3_small** (axiom) states R(3) ≤ 9, showing a 9-point set suffices for the k=3 case.",
     "significance": "supporting",
@@ -292,7 +292,7 @@
       "startLine": 270,
       "endLine": 282
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sylvester-Gallai Theorem",
     "content": "**SylvesterGallai** defines the property that a non-collinear point set has an ordinary line (containing exactly 2 points). **sylvester_gallai** (axiom) states this for sets of ≥ 3 points not all on one line. This classical incidence geometry result provides structural constraints complementing the Ramsey approach.",
     "significance": "supporting",

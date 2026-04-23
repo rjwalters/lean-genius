@@ -213,7 +213,7 @@
       "startLine": 82,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Bound on Maximal Prime Gap",
     "content": "Attempts to prove $d(x) \\le x$: the maximal gap between consecutive primes below $x$ cannot exceed $x$ itself. The proof handles the empty case (no gaps when there are fewer than 2 primes below $x$) but leaves the non-empty case as sorry, requiring a `BddAbove` proof for the gap set and a bound on its `sSup`.",
     "mathContext": "$d(x) = \\sup\\{q - p : p, q \\text{ consecutive primes}, q \\le x\\} \\le x$ because each gap satisfies $q - p < q \\le x$. The sorry arises from the need to show the set is bounded above (for `sSup` to be meaningful in $\\mathbb{N}$) and then that the supremum respects the pointwise bound.",
@@ -286,7 +286,7 @@
       "startLine": 126,
       "endLine": 132
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cramér's Conjecture",
     "content": "States Cramér's conjecture as an axiom: for every $\\varepsilon > 0$, eventually $d(x) \\le (1 + \\varepsilon)(\\log x)^2$. Harald Cramér proposed this in 1936 based on his probabilistic model of primes, where each integer $n$ is independently 'prime' with probability $1/\\log n$. Under this model, the maximal gap below $x$ is $(\\log x)^2$ with probability 1. The conjecture is OPEN and far stronger than any proven result. If true, Erdős's conjecture would ask for the PNT in intervals of length $\\sim C(\\log x)^2$.",
     "mathContext": "$\\forall \\varepsilon > 0, \\, \\exists N, \\, \\forall x \\ge N: d(x) \\le (1 + \\varepsilon)(\\log x)^2$. The best unconditional bound is $d(x) \\ll x^{0.525}$ (Baker–Harman–Pintz, 2001). Under RH, one gets $d(x) \\ll \\sqrt{x} \\log x$ (Cramér, 1920). Granville (1995) suggested the constant may be $2e^{-\\gamma} \\approx 1.1229$ rather than 1.",

@@ -81,7 +81,7 @@
       "startLine": 1,
       "endLine": 14
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Extremal Example: Showing c Cannot Be Larger",
     "content": "The problem mentions 'an example which shows c < [something]'—there exists a partition A ∪ B = ℕ where max(δ̄(S(A)), δ̄(S(B))) = c exactly. This extremal example is the lower bound: it shows the constant c cannot be replaced by any larger constant. Finding such an extremal partition requires balancing A and B so that their sum sets have equal logarithmic density, with neither exceeding c. This is a delicate construction, likely involving a greedy or probabilistic assignment of elements to A or B based on their harmonic weight.",
     "mathContext": "An extremal partition would satisfy: $\\overline{\\delta}(S(A)) = \\overline{\\delta}(S(B)) = c$ and $c$ is minimal. By symmetry, the extremal partition likely assigns elements alternately to $A$ and $B$ in a way that keeps $\\sum_{a \\leq x} 1/a \\approx \\sum_{b \\leq x} 1/b \\approx \\frac{1}{2} \\log x$.",
@@ -109,7 +109,7 @@
     "title": "Lean Formalization: Filter.limsup and Harmonic Density",
     "content": "The current Lean content is `erdos_1211 : True := by sorry`. A formalization would need: (1) `Filter.limsup` for the lim sup in the logarithmic density definition; (2) a definition of S(A) as a set of ℕ values using Finset sums; (3) a proof that for all partitions A ∪ B = ℕ, the density inequality holds. Mathlib has `Filter.limsup`, `Finset.sum`, and `Nat.card` infrastructure. The main challenge is that logarithmic density involves an infinite product (Euler product) and analytic continuation arguments that may require significant new Mathlib infrastructure.",
     "mathContext": "Lean 4 formalization sketch: `def logDensity (X : Set ℕ) : ℝ := Filter.limsup (fun x => (Real.log x)⁻¹ * ∑ n in (Finset.Icc 1 x).filter (· ∈ X), (n : ℝ)⁻¹) atTop`. Then `def subsetSums (A : Set ℕ) : Set ℕ := {n | ∃ F : Finset ℕ, F ⊆ A ∧ F.sum id = n}`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Filter.limsup in Mathlib",
       "Finset.sum API",

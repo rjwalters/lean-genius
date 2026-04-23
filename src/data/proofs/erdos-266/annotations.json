@@ -63,7 +63,7 @@
       "startLine": 46,
       "endLine": 55
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kovač-Tao Disproof",
     "content": "**Kovač-Tao (2024)**: Stolarsky's conjecture is FALSE. There exist sequences where NO integer shift produces irrationality — all shifts give rational sums.",
     "mathContext": "Stated as `¬StolarskyConjecture`. The proof constructs an explicit counterexample sequence using techniques from Ahmes series theory.",
@@ -82,7 +82,7 @@
       "startLine": 59,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "concept",
     "title": "All-Rationals Result",
     "content": "**Stronger Result**: There exists a strictly increasing sequence aₙ where ∑1/(aₙ + t) is RATIONAL for ALL t ∈ ℚ (avoiding poles). Not just integers — ALL rational shifts!",
     "mathContext": "This extraordinary rigidity: `∃ a, StrictMono a ∧ ∀ t : ℚ, (valid) → ∃ q : ℚ, ∑' 1/(a + t) = q`. The sequence simultaneously avoids irrationality for uncountably many shifts.",
@@ -139,7 +139,7 @@
       "startLine": 102,
       "endLine": 104
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Harmonic Series Diverges",
     "content": "The harmonic series ∑1/n diverges, so it doesn't satisfy the convergence hypothesis of Stolarsky's conjecture.",
     "mathContext": "This is a prerequisite check: the conjecture only applies to convergent series. Divergent series like the harmonic one are excluded.",

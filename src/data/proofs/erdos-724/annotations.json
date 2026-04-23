@@ -227,7 +227,7 @@
       "startLine": 211,
       "endLine": 230
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: MOLS of Order 3",
     "content": "**latinSquare3_L and latinSquare3_M:**\n\nExplicit construction of two orthogonal Latin squares of order 3.\n\n**L (addition mod 3):**\n```\n0 1 2\n1 2 0\n2 0 1\n```\n\n**M (2×row + col mod 3):**\n```\n0 1 2\n2 0 1\n1 2 0\n```\n\nSuperimposing gives all 9 pairs: (0,0), (1,1), (2,2), (1,2), (2,0), (0,1), (2,1), (0,2), (1,0).\n\nSince 3 is prime, we have f(3) = 3 - 1 = 2.",
     "significance": "key",

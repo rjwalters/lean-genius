@@ -75,7 +75,7 @@
       "startLine": 79,
       "endLine": 143
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Core Lame Bound via Strong Induction",
     "content": "The core result, proved by strong induction (`Nat.strongRecOn`) on the step count $n$. The two-part invariant: if $\\text{euclideanSteps}(a, b) = n$ with $b > 0$, then (1) $\\text{fib}(n+1) \\leq b$, and (2) for $n \\geq 2$, $\\text{fib}(n) \\leq a \\bmod b$. The base cases $n = 0$ (impossible since $b > 0$), $n = 1$ (remainder is 0, so $b \\geq \\text{fib}(2) = 1$), and the inductive step $n + 2$ which uses the Fibonacci recurrence $\\text{fib}(n+3) = \\text{fib}(n+2) + \\text{fib}(n+1)$ and the division algorithm $b = (b/r) \\cdot r + b \\bmod r \\geq r + b \\bmod r$.",
     "mathContext": "$\\text{euclideanSteps}(a, b) = n \\wedge b > 0 \\implies \\text{fib}(n+1) \\leq b \\wedge (n \\geq 2 \\implies \\text{fib}(n) \\leq a \\bmod b)$",
@@ -122,7 +122,7 @@
       "startLine": 150,
       "endLine": 155
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Contrapositive of Lame's Theorem",
     "content": "Contrapositive form: if $b < \\text{fib}(k+2)$, then $\\text{euclideanSteps}(a, b) \\leq k$. More convenient for deriving explicit upper bounds. The proof is by contradiction: assuming $\\text{steps} > k$, Lame's theorem gives $\\text{fib}(\\text{steps}+1) \\leq b$, and monotonicity of Fibonacci (`Nat.fib_mono`) gives $\\text{fib}(k+2) \\leq \\text{fib}(\\text{steps}+1)$, contradicting $b < \\text{fib}(k+2)$.",
     "mathContext": "$b > 0 \\wedge b < \\text{fib}(k+2) \\implies \\text{euclideanSteps}(a, b) \\leq k$",
@@ -215,7 +215,7 @@
       "startLine": 221,
       "endLine": 231
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Logarithmic Step Bound",
     "content": "Derives $\\text{euclideanSteps}(a, b) \\leq 2 \\log_2(b) + 2$ by chaining: $b < 2^{L+1}$ (definition of $L = \\lfloor \\log_2 b \\rfloor$), $2^{L+1} \\leq \\text{fib}(2(L+1)+1)$ (exponential lower bound), and $\\text{fib}(2(L+1)+1) \\leq \\text{fib}(2L+4)$ (monotonicity). Then `lame_step_bound` gives $\\text{steps} \\leq 2L + 2$. This confirms the $O(\\log b)$ worst-case complexity.",
     "mathContext": "$b > 0 \\implies \\text{euclideanSteps}(a, b) \\leq 2 \\lfloor \\log_2 b \\rfloor + 2 = O(\\log b)$",

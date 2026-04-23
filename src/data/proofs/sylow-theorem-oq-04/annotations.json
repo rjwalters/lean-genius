@@ -3,7 +3,7 @@
     "id": "ann-sylow-oq04-header",
     "line": 1,
     "endLine": 31,
-    "type": "context",
+    "type": "concept",
     "title": "A₅ Simplicity: Two Proof Strategies and Historical Significance",
     "body": "This module proves simplicity of A₅ (order 60 = 2²·3·5) using two independent strategies: **Sylow counting** (showing n₂=5, n₃=10, n₅=6, all > 1, so no Sylow subgroup is normal) and **conjugacy class analysis** (showing no union of conjugacy class sizes {1,12,12,15,20} sums to a proper divisor of 60 other than 1). The module also derives the group-theoretically fundamental corollary that A₅ is not solvable — the algebraic core of the Abel-Ruffini theorem. References cite Sylow's 1872 paper, Rotman's graduate text, and Dummit & Foote's standard reference.",
     "mathContext": "A₅ ≅ PSL(2,5) ≅ I (the icosahedral rotation group). It is the smallest non-abelian simple group: all groups of order < 60 are solvable, while A₅ is not. This makes A₅ the critical obstruction in the composition series of any non-solvable group — by the Jordan-Hölder theorem, A₅ appears as a composition factor of any finite group with a non-solvable quotient.",

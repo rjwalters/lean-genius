@@ -52,7 +52,7 @@
       "startLine": 52,
       "endLine": 73
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Properties and Small Witnesses",
     "content": "Proves $V(x) \\ge 0$ (from `Nat.cast_nonneg`), monotonicity $V(x) \\le V(y)$ for $x \\le y$ (from `Finset.Icc_subset_Icc`), and verifies that 1, 2, and 4 are totient values with explicit witnesses $\\varphi(1) = 1$, $\\varphi(3) = 2$, $\\varphi(5) = 4$.",
     "mathContext": "Monotonicity follows because $[1, \\lfloor x \\rfloor] \\subseteq [1, \\lfloor y \\rfloor]$ when $x \\le y$, so the filtered set can only grow. The witnesses use `native_decide` for computational verification of $\\varphi(3) = 2$ and $\\varphi(5) = 4$.",

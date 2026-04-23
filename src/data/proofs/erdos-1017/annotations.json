@@ -2,7 +2,7 @@
   {
     "id": "ann-1017-header",
     "proofId": "erdos-1017",
-    "type": "context",
+    "type": "concept",
     "title": "Problem Documentation and Imports",
     "content": "The header documents Erdős Problem #1017 on clique partitions of graphs. The key question: given the Erdős-Goodman-Pósa bound $f(n,k) \\le \\lfloor n^2/4 \\rfloor$, can this be improved when $k > n^2/4$? The file imports Mathlib's `SimpleGraph` infrastructure for graph theory, `Clique` for clique-related definitions, and `Finset`/`Fintype` for finite combinatorics.",
     "mathContext": "$f(n,k) = \\min\\{m : \\text{every } G \\text{ with } |V|=n, |E|=k \\text{ has a clique partition of size } \\le m\\}$",
@@ -220,7 +220,7 @@
   {
     "id": "ann-1017-egp",
     "proofId": "erdos-1017",
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Goodman-Pósa Theorem (1966)",
     "content": "The foundational result: every graph on $n$ vertices can be partitioned into at most $\\lfloor n^2/4 \\rfloor$ edge-disjoint cliques, using only edges and triangles. Axiomatized as `erdos_goodman_posa`. The theorem `cliquePartitionNumber_le` then derives $f(n,k) \\le n^2/4$. The proof idea: greedily extract edge-disjoint triangles from $G$; the remaining triangle-free graph is bipartite (by the Ramsey-type argument), needing at most $\\lfloor n^2/4 \\rfloor$ edge-cliques by Turán's theorem.",
     "mathContext": "$f(n,k) \\le \\lfloor n^2/4 \\rfloor$ for all $k$; achieved using only $K_2$ and $K_3$",
@@ -287,7 +287,7 @@
   {
     "id": "ann-1017-lovasz",
     "proofId": "erdos-1017",
-    "type": "technique",
+    "type": "concept",
     "title": "Lovász's Covering Result (1968)",
     "content": "Lovász proved that any graph $G$ with $n$ vertices and $k$ edges is the union (not necessarily edge-disjoint!) of $\\binom{n}{2} - k + t$ complete subgraphs, where $t$ is the largest integer with $t^2 - t \\le \\binom{n}{2} - k$. The parameter `lovaszT` computes $t \\approx \\sqrt{\\binom{n}{2} - k}$. This is a *covering* result, not a *partition* result—it allows edge overlap, making it weaker than EGP for partitions but useful as a structural tool.",
     "mathContext": "$G = \\bigcup_{i=1}^{\\binom{n}{2} - k + t} K_{S_i}$ where $t = \\lfloor \\sqrt{\\binom{n}{2} - k} \\rfloor$",
@@ -310,7 +310,7 @@
   {
     "id": "ann-1017-k4free",
     "proofId": "erdos-1017",
-    "type": "technique",
+    "type": "concept",
     "title": "Győri-Keszegh Theorem (2017): $K_4$-Free Case",
     "content": "The major partial result: if $G$ is $K_4$-free with $n$ vertices and $\\lfloor n^2/4 \\rfloor + m$ edges, then $G$ contains $m$ edge-disjoint triangles. Since $G$ is $K_4$-free, all cliques in $G$ have size $\\le 3$, so the only way to improve on the edge-by-edge partition is via triangles. Each triangle replaces 3 edges with 1 clique, saving 2 from the count. The theorem `k4free_triangle_partition` derives the partition size.",
     "mathContext": "$G$ is $K_4$-free, $|E(G)| = \\lfloor n^2/4 \\rfloor + m \\Rightarrow G$ has $m$ edge-disjoint triangles; partition size $= \\lfloor n^2/4 \\rfloor - 2m + m = \\lfloor n^2/4 \\rfloor - m$",

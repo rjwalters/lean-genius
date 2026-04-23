@@ -2,7 +2,7 @@
   {
     "id": "erdos-1104-imports",
     "proofId": "erdos-1104",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 19,
       "endLine": 24
@@ -10,7 +10,7 @@
     "title": "Mathlib Imports",
     "content": "Imports SimpleGraph.Basic and SimpleGraph.Clique for graph structure and triangle-freeness (CliqueFree 3), SimpleGraph.Coloring for chromatic number and colorability, Real.Basic and Log.Basic for the asymptotic bounds involving √(n/log n), and Tactic for automation.",
     "mathContext": "The formalization uses $\\chi(G)$ (chromatic number), $\\operatorname{CliqueFree}(G, 3)$ (triangle-freeness), and $\\sqrt{n / \\log n}$ from Mathlib's real analysis library.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "SimpleGraph.chromaticNumber",
       "SimpleGraph.CliqueFree",
@@ -181,7 +181,7 @@
   {
     "id": "erdos-1104-mycielski",
     "proofId": "erdos-1104",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 176,
       "endLine": 201

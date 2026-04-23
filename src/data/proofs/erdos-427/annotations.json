@@ -160,7 +160,7 @@
       "startLine": 166,
       "endLine": 171
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem",
     "content": "**Erdos Problem #427 is SOLVED**:\n\n```lean\naxiom erdos_427_of_shiu : ShiuTheorem → erdos_427_statement\n\ntheorem erdos_427 : erdos_427_statement := erdos_427_of_shiu shiu_theorem\n```\n\nThe answer to Erdos's question is YES: for any n and d ≠ 0, there exists k ≠ 0 such that d divides primeSum(n, k).",
     "mathContext": "The implication erdos_427_of_shiu is axiomatized since the full proof involves technical modular arithmetic manipulations that follow Pilatte's outline.",

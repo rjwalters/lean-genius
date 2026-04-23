@@ -178,7 +178,7 @@
       "startLine": 109,
       "endLine": 115
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Corollary: Lower Bound",
     "content": "**max_density_ge_inv_sqrt2**: A proved theorem that the maximum density is at least 1/sqrt(2). This follows directly from Kruckeberg's existence result.",
     "mathContext": "The proof is simple: Kruckeberg gives us a Sidon set achieving exactly 1/sqrt(2), so the supremum is at least this value. We use hd.ge to convert equality to >=.",
@@ -216,7 +216,7 @@
       "startLine": 129,
       "endLine": 136
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Maximum Density at Most 1",
     "content": "**max_density_le_one**: Every element in the set of achievable densities is at most 1. This uses the Erdos-Turan bound applied to the witnessing Sidon set.",
     "mathContext": "The proof destructures the membership: if d is an achievable density, there exists A with IsSidon A and sidonUpperDensity A = d. Applying Erdos-Turan to A gives d <= 1.",
@@ -254,7 +254,7 @@
       "startLine": 158,
       "endLine": 163
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Empty Set is Sidon",
     "content": "**empty_is_sidon**: The empty set trivially satisfies the Sidon property - there are no elements, so no sums can collide!",
     "mathContext": "The proof uses vacuous truth: we assume a is in the empty set, which is a contradiction (Set.notMem_empty). From a false premise, anything follows.",
@@ -273,7 +273,7 @@
       "startLine": 165,
       "endLine": 170
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Singletons are Sidon",
     "content": "**singleton_is_sidon**: Any singleton {n} is a Sidon set. With only one element, the only sum is n + n, which cannot collide with itself.",
     "mathContext": "The proof uses Set.mem_singleton_iff to show all four elements must equal n, then the conclusion (n,n) = (n,n) is trivial.",
@@ -311,7 +311,7 @@
       "startLine": 175,
       "endLine": 195
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Verified Sum Computations",
     "content": "We verify the 6 pairwise sums from {1, 2, 5, 10}: 1+2=3, 1+5=6, 1+10=11, 2+5=7, 2+10=12, 5+10=15. All are distinct!",
     "mathContext": "These use native_decide to compute at proof-checking time. The set {3, 6, 7, 11, 12, 15} has 6 distinct elements, confirming the Sidon property.",
@@ -330,7 +330,7 @@
       "startLine": 197,
       "endLine": 213
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_329_summary** packages the two main known results: Kruckeberg's lower bound (existence of 1/sqrt(2) density) and Erdos-Turan's upper bound (all densities <= 1).",
     "mathContext": "This is a proved theorem, not an axiom - it simply combines the two axioms into a conjunction. It captures the complete known state of the problem.",

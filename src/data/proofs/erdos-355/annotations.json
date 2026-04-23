@@ -64,7 +64,7 @@
       "startLine": 99,
       "endLine": 109
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lacunary Implies Strictly Increasing",
     "content": "**lacunary_strictMono** shows that any lacunary sequence is strictly increasing. Since each term is at least λ > 1 times the previous one, and all terms are positive, the sequence must grow.",
     "mathContext": "Proof uses induction on the index difference. If a_{n+1}/a_n ≥ λ > 1, then a_{n+1} > a_n. Repeated application gives strict monotonicity.",
@@ -82,7 +82,7 @@
       "startLine": 125,
       "endLine": 140
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Powers of 2 are Lacunary with λ = 2",
     "content": "**powers_of_two_lacunary** proves that the sequence 2, 4, 8, 16, ... is lacunary with ratio exactly 2. This is the boundary case: λ = 2 is the exact threshold between sequences that can and cannot cover intervals.",
     "mathContext": "The proof shows 2^{n+2}/2^{n+1} = 2 for all n. We use positivity tactic for the positivity conditions and field_simp for the division.",
@@ -139,7 +139,7 @@
       "startLine": 298,
       "endLine": 305
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: Such Sequences Exist",
     "content": "**erdos_355_solved** instantiates the van Doorn-Kovač theorem with λ = 3/2, proving existence of a lacunary sequence whose reciprocal sums cover all rationals in some interval. Since 1 < 3/2 < 2, this falls in the valid range.",
     "mathContext": "The proof applies vanDoorn_Kovac_theorem to (3 : ℝ)/2 after checking 1 < 3/2 < 2 by norm_num. The existential witness comes from the axiom.",
@@ -158,7 +158,7 @@
       "startLine": 330,
       "endLine": 336
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sharp Threshold at λ = 2",
     "content": "**sharp_threshold** bundles both directions: (1) For λ ∈ (1,2), such sequences exist (van Doorn-Kovač); (2) For λ = 2, no such sequence exists. The threshold λ = 2 is exactly sharp.",
     "mathContext": "The axiom lambda_two_fails captures that no sequence with ratio exactly 2 can cover an interval. Combined with vanDoorn_Kovac_theorem, this gives the complete picture.",
@@ -215,7 +215,7 @@
       "startLine": 374,
       "endLine": 385
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary of Results",
     "content": "**erdos_355_summary** packages the main results: (1) existence of lacunary sequences covering intervals, (2) powers of 2 form a lacunary sequence with λ = 2, (3) 3/2 is in the valid range (1, 2).",
     "mathContext": "The summary uses refine to construct a 4-tuple of proofs. Each component draws on the theorems proved above.",

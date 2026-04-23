@@ -143,7 +143,7 @@
       "startLine": 117,
       "endLine": 121
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Surányi 1959",
     "content": "**Combined bounds theorem:**\n\n$$(\\log n)^c \\ll f(n) \\ll \\sqrt{n}$$\n\nThis theorem packages both bounds into a single statement. The proof is immediate from the two axioms `lower_bound_log` and `upper_bound_sqrt`.\n\nThe gap between these bounds is the heart of the open problem.",
     "mathContext": "The ≪ notation (Vinogradov notation) means 'bounded above by a constant times'. The combined statement shows f(n) is sandwiched between polynomial and logarithmic growth, with the exact rate unknown.",

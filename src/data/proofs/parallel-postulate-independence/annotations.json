@@ -215,7 +215,7 @@
       "startLine": 229,
       "endLine": 256
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: Independence of the Parallel Postulate",
     "content": "**Theorem (Wiedijk #12)**: The parallel postulate is **independent** of neutral geometry axioms.\n\n**Proof**: We exhibit two models of neutral geometry that disagree on the parallel postulate:\n1. **Euclidean plane** ℝ²: satisfies neutral geometry ✓, satisfies parallel postulate ✓\n2. **Poincaré disk** 𝔻: satisfies neutral geometry ✓, violates parallel postulate ✗\n\nBy the **soundness theorem** of first-order logic: if a statement were provable from neutral axioms, it would hold in every model. Since the Poincaré disk is a model where the parallel postulate fails, it cannot be provable. Similarly, since the Euclidean plane satisfies it, its negation cannot be provable either.\n\nFormally the theorem states: (∃G, PlayfairAxiom(G)) ∧ (∃G, ¬PlayfairAxiom(G)), asserting both a model and a countermodel exist.",
     "mathContext": "Independence: Neutral ⊬ Playfair ∧ Neutral ⊬ ¬Playfair. Proved via: (∃M ⊨ Neutral+Playfair) ∧ (∃M ⊨ Neutral+¬Playfair). This is the model-theoretic criterion for independence.",

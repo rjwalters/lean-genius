@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 37
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Module Setup",
     "content": "Imports ZetaValues, PSeries, InfiniteSum, and Pow.Real from Mathlib. The noncomputable section and maxHeartbeats 800000 are needed for heavy real analysis elaboration. Opens Finset, BigOperators, Topology, Filter namespaces.",
     "mathContext": "The `rpow` function implements $x^s$ for $x \\geq 0$ and $s \\in \\mathbb{R}$ via $x^s = e^{s \\ln x}$.",
@@ -31,7 +31,7 @@
     },
     "type": "concept",
     "title": "P-Series Convergence for s > 1",
-    "content": "Wraps Mathlib's Real.summable_nat_rpow_inv. Internally uses the Cauchy condensation test: the condensed series $\\sum 2^{n(1-s)}$ converges iff $s > 1$. The threshold at $s = 1$ is fundamental \u2014 the harmonic series diverges (Oresme, c. 1360).",
+    "content": "Wraps Mathlib's Real.summable_nat_rpow_inv. Internally uses the Cauchy condensation test: the condensed series $\\sum 2^{n(1-s)}$ converges iff $s > 1$. The threshold at $s = 1$ is fundamental — the harmonic series diverges (Oresme, c. 1360).",
     "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{1}{n^s}$ converges $\\iff s > 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -53,7 +53,7 @@
       "endLine": 49
     },
     "type": "concept",
-    "title": "P-Series Divergence for s \u2264 1",
+    "title": "P-Series Divergence for s ≤ 1",
     "content": "Contrapositive argument: summability implies $1 < s$, contradicting $s \\leq 1$. Completes the sharp convergence dichotomy.",
     "mathContext": "$\\sum n^{-s}$ diverges for $s \\leq 1$. Contrapositive: summable $\\Rightarrow 1 < s$.",
     "significance": "key",
@@ -75,8 +75,8 @@
       "endLine": 55
     },
     "type": "insight",
-    "title": "The Basel Problem: \u03b6(2) = \u03c0\u00b2/6",
-    "content": "Euler (1734) solved this \u2014 the appearance of \u03c0 in a purely arithmetic series was a great surprise. Mathlib uses Parseval's identity on Fourier series of Bernoulli polynomials.",
+    "title": "The Basel Problem: ζ(2) = π²/6",
+    "content": "Euler (1734) solved this — the appearance of π in a purely arithmetic series was a great surprise. Mathlib uses Parseval's identity on Fourier series of Bernoulli polynomials.",
     "mathContext": "$\\zeta(2) = \\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -98,14 +98,14 @@
       "endLine": 59
     },
     "type": "insight",
-    "title": "\u03b6(4) = \u03c0\u2074/90",
+    "title": "ζ(4) = π⁴/90",
     "content": "Part of Euler's general formula $\\zeta(2k) = (-1)^{k+1} B_{2k} (2\\pi)^{2k} / (2(2k)!)$. No closed form is known for odd zeta values.",
     "mathContext": "$\\zeta(4) = \\frac{\\pi^4}{90}$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Bernoulli numbers",
       "even zeta values",
-      "Ap\u00e9ry's theorem"
+      "Apéry's theorem"
     ],
     "prerequisites": [
       "Bernoulli numbers",
@@ -119,7 +119,7 @@
       "startLine": 61,
       "endLine": 73
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Term-wise Antitonicity",
     "content": "For $n \\geq 1$: $s_1 \\leq s_2 \\Rightarrow (n^{s_2})^{-1} \\leq (n^{s_1})^{-1}$. Uses rpow monotonicity and order inversion via div_le_div_of_nonneg_left.",
     "mathContext": "$(n^{s_2})^{-1} \\leq (n^{s_1})^{-1}$ when $n \\geq 1$ and $s_1 \\leq s_2$.",
@@ -141,8 +141,8 @@
       "startLine": 75,
       "endLine": 83
     },
-    "type": "technique",
-    "title": "Strict Antitonicity for n \u2265 2",
+    "type": "concept",
+    "title": "Strict Antitonicity for n ≥ 2",
     "content": "Strict version: $n \\geq 2$ excludes the constant case $1^s = 1$.",
     "mathContext": "For $n \\geq 2$: $s_1 < s_2 \\Rightarrow (n^{s_2})^{-1} < (n^{s_1})^{-1}$.",
     "significance": "supporting",
@@ -161,8 +161,8 @@
       "endLine": 91
     },
     "type": "concept",
-    "title": "\u03b6(s) Antitone \u2014 Sorry",
-    "content": "States \u03b6(s) is antitone for $s > 1$. Should follow from tsum_le_tsum with pointwise bound. Sorry: proof assembly incomplete.",
+    "title": "ζ(s) Antitone — Sorry",
+    "content": "States ζ(s) is antitone for $s > 1$. Should follow from tsum_le_tsum with pointwise bound. Sorry: proof assembly incomplete.",
     "mathContext": "$1 < s_1 \\leq s_2 \\Rightarrow \\zeta(s_2) \\leq \\zeta(s_1)$. **Sorry.**",
     "significance": "key",
     "relatedConcepts": [
@@ -181,8 +181,8 @@
       "endLine": 99
     },
     "type": "concept",
-    "title": "\u03b6(s) \u2265 1 \u2014 Sorry",
-    "content": "From the $n=1$ term: $1^{-s} = 1$, all terms \u2265 0. Needs le_tsum. Sorry.",
+    "title": "ζ(s) ≥ 1 — Sorry",
+    "content": "From the $n=1$ term: $1^{-s} = 1$, all terms ≥ 0. Needs le_tsum. Sorry.",
     "mathContext": "$\\zeta(s) \\geq 1$ for $s > 1$. **Sorry.**",
     "significance": "supporting",
     "relatedConcepts": [
@@ -201,7 +201,7 @@
       "endLine": 107
     },
     "type": "concept",
-    "title": "\u03b6(s) \u2264 \u03c0\u00b2/6 for s \u2265 2 \u2014 Sorry",
+    "title": "ζ(s) ≤ π²/6 for s ≥ 2 — Sorry",
     "content": "Combines antitonicity with Basel. Depends on antitone sorry.",
     "mathContext": "$\\zeta(s) \\leq \\pi^2/6$ for $s \\geq 2$. **Sorry.**",
     "significance": "supporting",
@@ -220,7 +220,7 @@
       "startLine": 109,
       "endLine": 126
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Partial Sums",
     "content": "Defines partialZeta, proves convergence via HasSum.tendsto_sum_nat and monotonicity via Finset.sum_le_sum_of_subset_of_nonneg.",
     "mathContext": "$S(n,s) \\to \\zeta(s)$ monotonically as $n \\to \\infty$.",
@@ -243,7 +243,7 @@
       "endLine": 145
     },
     "type": "insight",
-    "title": "Bridge: rpow \u2194 Nat.pow",
+    "title": "Bridge: rpow ↔ Nat.pow",
     "content": "Three theorems connecting real to integer exponents via rpow_natCast. Proves summability for $k \\geq 2$ and partial sum convergence to $\\pi^2/6$. This is the type-theoretic glue connecting Faulhaber to the Riemann zeta function.",
     "mathContext": "$(n : \\mathbb{R})^{(k : \\mathbb{R})} = (n : \\mathbb{R})^k$ via `rpow_natCast`.",
     "significance": "key",
@@ -264,7 +264,7 @@
       "startLine": 147,
       "endLine": 164
     },
-    "type": "context",
+    "type": "concept",
     "title": "Verification",
     "content": "Type-checks all 14 results. 11 fully proved, 3 with sorry (tsum ordering).",
     "mathContext": "14 results: 11 proved, 3 sorry.",

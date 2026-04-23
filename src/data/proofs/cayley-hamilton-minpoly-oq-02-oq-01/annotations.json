@@ -6,7 +6,7 @@
       "startLine": 45,
       "endLine": 62
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Abstract Invariance of Minimal Polynomials",
     "content": "The two foundational results from Mathlib are re-exported here: minpoly.algEquiv_eq states that the minimal polynomial is invariant under K-algebra equivalences, and minpoly.algHom_eq extends this to injective K-algebra homomorphisms. These results establish that the minimal polynomial is not a matrix-specific concept but a general K-algebra invariant, preserved by any structure-respecting injective map.",
     "mathContext": "$\\text{minpoly}(K, \\varphi(x)) = \\text{minpoly}(K, x)$ for $\\varphi : S \\xrightarrow{\\sim} T$ a $K$-algebra isomorphism",

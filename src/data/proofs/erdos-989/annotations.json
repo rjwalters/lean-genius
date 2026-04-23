@@ -234,7 +234,7 @@
       "startLine": 103,
       "endLine": 128
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Discrepancy is Unbounded",
     "content": "Corollary of Beck's lower bound: f(r) → ∞ for every sequence. This answers Erdős's first question: YES, discrepancy is always unbounded. The proof chooses r large enough that c√r exceeds any given M.",
     "mathContext": "Given any $M > 0$, choose $r = \\max(r_0 + 1, (M/c + 1)^2)$ so that $c\\sqrt{r} \\geq c \\cdot (M/c + 1) = M + c > M$. The formal proof uses `calc` chains and `mul_le_mul_of_nonneg_left` with `Real.sqrt_le_sqrt` to establish the chain of inequalities. This is one of the rare fully-proved theorems in this file.",
@@ -305,7 +305,7 @@
       "startLine": 153,
       "endLine": 182
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Complete Solution",
     "content": "The main theorem combining all results: (1) discrepancy is unbounded for all A, (2) universal lower bound √r, (3) existence of near-optimal sequence with √(r log r). This completely answers Erdős's questions.",
     "mathContext": "The conjunction $P_1 \\wedge P_2 \\wedge P_3$ packages three results: (1) $\\forall A, \\forall M, \\exists r > 0: f_A(r) > M$, (2) $\\exists c > 0, \\forall A, \\ldots: f_A(r) \\geq c\\sqrt{r}$, (3) $\\exists A, \\exists C > 0, \\ldots: f_A(r) \\leq C\\sqrt{r \\log r}$. Together these establish $f_A(r) = \\tilde{\\Theta}(\\sqrt{r})$.",
@@ -539,7 +539,7 @@
       "startLine": 321,
       "endLine": 365
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "Complete summary of Erdős Problem #989: (1) f(r) unbounded for all A - YES, (2) optimal growth Θ̃(√r), (3) lower bound via Fourier/Bessel, (4) upper bound via probabilistic perturbation. Foundational result in geometric discrepancy.",
     "mathContext": "The final theorem $\\texttt{erdos\\_989\\_answers\\_both\\_questions}$ packages the two key results as a conjunction: unboundedness ($\\forall A, \\forall M, \\exists r > 0: f_A(r) > M$) and the sharp lower bound ($\\exists c > 0, \\forall A: f_A(r) \\geq c\\sqrt{r}$ eventually). It is proved by pairing $\\texttt{discrepancy\\_unbounded}$ with $\\texttt{beck\\_lower\\_bound}$.",

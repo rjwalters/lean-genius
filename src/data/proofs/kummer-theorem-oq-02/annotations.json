@@ -28,7 +28,7 @@
     "startLine": 44,
     "endLine": 93,
     "mathContext": "Three core definitions in Z[X]: (1) qNumber n = ∑_{i<n} X^i — the geometric sum 1 + q + q² + ... + q^(n-1), the 'quantum integer'. (2) qFactorial: recursive, qFactorial 0 = 1, qFactorial (n+1) = qFactorial n * qNumber (n+1). (3) qBinomial via q-Pascal: qBinomial n 0 = 1, qBinomial 0 (k+1) = 0, qBinomial (n+1) (k+1) = qBinomial n k + X^(k+1) * qBinomial n (k+1). The Pascal recurrence avoids polynomial division entirely. Boundary cases: qBinomial n n = 1, qNumber 1 = 1 [simp lemmas].",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Z[X] integral domain",
       "q-Pascal recurrence",
@@ -116,7 +116,7 @@
     "startLine": 221,
     "endLine": 295,
     "mathContext": "floorDeficiency n k d = n/d - k/d - (n-k)/d (natural subtraction). Auxiliary div_add_div_le proves ⌊a/d⌋ + ⌊b/d⌋ ≤ ⌊(a+b)/d⌋ (subadditivity of floor division). floorDeficiency_add_eq: fd(n,k,d) + k/d + (n-k)/d = n/d (uses omega after div_add_div_le). Then qFactorial_cyclotomic: [n]_q! = ∏_{d in Icc 2 n} Φ_d^(n/d), proved by induction using succ_div_step (which handles (n+1)/d = n/d + [d | n+1]) and the filter/erase product manipulation.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "floor division subadditivity",
       "carry counting",

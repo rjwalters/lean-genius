@@ -56,7 +56,7 @@
       "startLine": 164,
       "endLine": 203
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Algebraic Closure Theorem",
     "content": "**Main Theorem** (axiomatized):\n\nFor K algebraically closed of characteristic 0:\n$$K\\{\\{x\\}\\} = \\overline{K((x))}$$\n\nPuiseux series form the algebraic closure of Laurent series.\n\n**Two axiomatized statements**:\n1. `puiseux_theorem`: every polynomial over K of positive degree has Puiseux series coefficients forming a root\n2. `puiseux_is_algebraic_closure`: every polynomial specified by degree and coefficients has a root with explicit ramification index\n\n**Why axiomatized**: A complete proof requires rigorous treatment of Puiseux series arithmetic, Newton polygon construction, convergence of the Newton-Puiseux iteration, and the delicate characteristic 0 argument. This is ~2000+ lines of infrastructure.",
     "mathContext": "axiom: ∀K alg. closed, char 0, ∀P ∈ K[Y] with deg(P) > 0, ∃ Puiseux series y s.t. P(y) = 0. Equivalently: K{{x}} is algebraically closed.",
@@ -82,7 +82,7 @@
       "startLine": 205,
       "endLine": 261
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Newton-Puiseux Algorithm",
     "content": "**Constructive Root Finding**:\n\n**Input**: Monic polynomial P(Y) ∈ K{{x}}[Y] of degree n\n**Output**: n Puiseux series roots\n\n**Algorithm**:\n1. **Newton Polygon**: Lower convex hull of {(i, ord(aᵢ)) : aᵢ ≠ 0} where P(Y) = Σᵢ aᵢ(x)Yⁱ\n2. **Edge Analysis**: Edge with slope −p/q (in lowest terms) → leading exponent p/q\n3. **Characteristic Polynomial**: Restrict to points on the edge; roots c of this polynomial give leading coefficients\n4. **Substitution**: Y = c·x^{p/q}(1 + Y'), get simpler polynomial P'(Y')\n5. **Recurse**: Apply algorithm to P' for higher-order terms\n6. **Termination**: Newton polygon strictly improves at each step (key argument uses char 0)\n\n**Example** (Y² = x): Newton polygon edge from (0,1) to (2,0), slope −1/2, characteristic poly c² = 1, solutions Y = ±x^{1/2}.\n\nThe constructive nature is what makes Puiseux's theorem so powerful: roots are not just shown to exist but can be computed to any desired precision.",
     "mathContext": "Newton polygon Γ(P) = lower convex hull of {(i, v(aᵢ))}. Edge of slope −p/q contributes roots with leading term c·x^{p/q}. The multiplicity of the edge = number of roots contributed.",
@@ -129,7 +129,7 @@
       "startLine": 322,
       "endLine": 344
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Galois Group: Profinite Integers",
     "content": "**Galois Theory of the Puiseux Extension**:\n\n$$\\text{Gal}(K\\{\\{x\\}\\} / K((x))) \\cong \\hat{\\mathbb{Z}}$$\n\nwhere Ẑ = lim←_n ℤ/nℤ is the profinite completion of ℤ.\n\n**Galois Action**: An automorphism σ ∈ Gal is determined by a compatible system (σₙ)_{n≥1} where σₙ: x^{1/n} ↦ ζₙ^{kₙ} · x^{1/n} with ζₙ a primitive nth root of unity, and kₘ ≡ kₙ (mod n) whenever n | m.\n\n**Significance**:\n- The profinite integers Ẑ ≅ ∏_p ℤ_p (product over all primes) is an uncountable group\n- This is a key example in infinite Galois theory\n- The extension is the union of all finite cyclic extensions K((x^{1/n}))/K((x))\n- Relates to the fundamental group of the punctured disk π₁(𝔻 \\ {0}) ≅ Ẑ",
     "mathContext": "Gal(K{{x}}/K((x))) ≅ Ẑ = lim←_n ℤ/nℤ ≅ ∏_p ℤ_p. Action: σ(x^{1/n}) = ζₙ^k · x^{1/n}. Subgroup of index n: Gal(K{{x}}/K((x^{1/n}))) ≅ nẐ.",
@@ -156,7 +156,7 @@
       "startLine": 352,
       "endLine": 397
     },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete Calculations",
     "content": "**Worked Examples**:\n\n| Equation | Newton Polygon | Slope | Puiseux Root |\n|----------|---------------|-------|--------------|\n| Y² = x | (0,1)→(2,0) | −1/2 | ±x^{1/2} |\n| Y² = x³ (cusp) | (0,3)→(2,0) | −3/2 | ±x^{3/2} |\n| Y³ = x | (0,1)→(3,0) | −1/3 | ω^k x^{1/3}, k=0,1,2 |\n| Y² − Y = x^{−1} | Two edges | varies | Laurent + fractional parts |\n\nThe formalization verifies specific exponents: `square_root_puiseux` confirms exponent 1/2 for Y² = x, and `cusp_parameterization` confirms exponent 3/2 for the cusp Y² = x³.\n\nThese examples illustrate how the Newton polygon method systematically determines leading exponents, after which the characteristic polynomial determines leading coefficients and recursion computes higher-order terms.",
     "mathContext": "Y² = x: Newton polygon slope = −(1−0)/(2−0) = −1/2, char poly c² − 1 = 0, roots c = ±1. Y² = x³: slope = −3/2, exponent = 3/2.",
@@ -197,7 +197,7 @@
       "startLine": 427,
       "endLine": 444
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Characteristic Zero Requirement",
     "content": "**Puiseux Fails in Positive Characteristic!**\n\n**Counterexample**: Over 𝔽_p((x)), the Artin-Schreier polynomial:\n$$Y^p - Y - x^{-1} = 0$$\nhas no solution in any K((x^{1/n})), hence no Puiseux series root.\n\n**Why**: In characteristic p, there are two types of field extensions:\n- **Ramified**: Y^n = x (these work like char 0, give Puiseux-type roots)\n- **Artin-Schreier**: Y^p − Y = f(x) (these are inseparable at the wild level and cannot be expressed via fractional powers)\n\nThe algebraic closure of 𝔽_p((x)) requires infinitely many Artin-Schreier extensions stacked on top of each other — a fundamentally different structure from the Puiseux tower.\n\nThis is why `CharZero K` appears as a hypothesis in the formalization.",
     "mathContext": "char(K) = p > 0 ⟹ K{{x}} ≠ algebraic closure of K((x)). Artin-Schreier: Yᵖ − Y = f generates degree-p extensions not contained in any K((x^{1/n})). Wild ramification index divisible by p causes failure.",

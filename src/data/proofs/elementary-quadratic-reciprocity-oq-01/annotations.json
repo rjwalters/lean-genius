@@ -54,7 +54,7 @@
       "startLine": 455,
       "endLine": 482
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cyclic Group Infrastructure",
     "content": "Proves three foundational facts about $(\\mathbb{Z}/p\\mathbb{Z})^\\times$: (1) cardinality equals $p - 1$ (from Euler's totient), (2) for odd $p$, the order is even (so quadratic characters exist), and (3) a primitive root (generator) exists. The even-order result uses contradiction: if $p$ were even, primality forces $p = 2$.",
     "mathContext": "$|(\\mathbb{Z}/p\\mathbb{Z})^\\times| = \\varphi(p) = p - 1$ for prime $p$. For odd $p$: $2 \\mid (p-1)$, so the group has elements of order 2 and non-trivial quadratic characters exist. A generator $g$ satisfies $\\langle g \\rangle = (\\mathbb{Z}/p\\mathbb{Z})^\\times$ with $\\mathrm{ord}(g) = p - 1$.",
@@ -149,7 +149,7 @@
       "startLine": 295,
       "endLine": 321
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Zolotarev's Lemma (Proved)",
     "content": "The central theorem: $\\left(\\frac{a}{p}\\right) = \\mathrm{sign}(\\sigma_a)$ for all units $a \\in (\\mathbb{Z}/p\\mathbb{Z})^\\times$. The proof applies character uniqueness: both `signMulHom` and `legendreCharOnUnits` are surjective homomorphisms $(\\mathbb{Z}/p\\mathbb{Z})^\\times \\to \\mathbb{Z}^\\times$, so they must be equal. A bridge lemma connects `legendreSym p (unitToInt a)` to `quadraticChar (ZMod p) a` via the val round-trip.",
     "mathContext": "$\\left(\\frac{a}{p}\\right) = \\mathrm{sign}(x \\mapsto ax)$ for all $a \\in (\\mathbb{Z}/p\\mathbb{Z})^\\times$. Proof chain: (1) $\\mathrm{sign} \\circ \\sigma$ is surjective (generator analysis), (2) Legendre character is surjective (non-residues exist), (3) unique quadratic character $\\Rightarrow$ they agree.",
@@ -173,7 +173,7 @@
       "startLine": 328,
       "endLine": 347
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Consequences of Zolotarev's Lemma",
     "content": "Derives two consequences from Zolotarev's Lemma: (1) multiplicativity of the Legendre symbol follows from permutation sign multiplicativity, and (2) squares are quadratic residues because $\\mathrm{sign}(\\sigma_{b^2}) = +1$. These give a purely permutation-theoretic proof of classical Legendre symbol properties.",
     "mathContext": "Multiplicativity: $\\left(\\frac{ab}{p}\\right) = \\mathrm{sign}(\\sigma_{ab}) = \\mathrm{sign}(\\sigma_a) \\cdot \\mathrm{sign}(\\sigma_b) = \\left(\\frac{a}{p}\\right)\\left(\\frac{b}{p}\\right)$. Square detection: $\\left(\\frac{b^2}{p}\\right) = \\mathrm{sign}(\\sigma_b^2) = 1$.",

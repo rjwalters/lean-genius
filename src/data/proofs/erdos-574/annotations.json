@@ -147,7 +147,7 @@
       "startLine": 65,
       "endLine": 71
     },
-    "type": "context",
+    "type": "concept",
     "title": "Even Cycle Turán Number",
     "content": "The established result that $\\text{ex}(n; C_{2k}) = \\Theta(n^{1+1/k})$. The Bondy–Simonovits theorem (1974) gives the upper bound $O(n^{1+1/k})$, while algebraic constructions by Lazebnik–Ustimenko–Woldar (1995) provide matching lower bounds for $k = 2, 3, 5$. These constructions use incidence graphs of generalized polygons over finite fields, yielding bipartite graphs with $\\sim q^{1+1/k}$ edges and girth $> 2k$.",
     "mathContext": "$\\exists c_1, c_2 > 0: \\; c_1 \\cdot n^{1+1/k} \\le \\text{ex}(n; C_{2k}) \\le c_2 \\cdot n^{1+1/k}$ for $n \\ge 1$",
@@ -172,7 +172,7 @@
       "startLine": 73,
       "endLine": 77
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bondy–Simonovits Upper Bound",
     "content": "The Bondy–Simonovits theorem (1974) proves $\\text{ex}(n; C_{2k}) \\le c_k \\cdot n^{1+1/k}$ for a constant $c_k$ depending on $k$. The proof uses a supersaturation argument: if a graph has too many edges, a dependent random walk finds a cycle of length $2k$. Since $\\{C_{2k-1}, C_{2k}\\}$-free graphs are a fortiori $C_{2k}$-free, this upper bound applies to the consecutive pair problem as well.",
     "mathContext": "$\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\}) \\le \\text{ex}(n; C_{2k}) \\le c_k \\cdot n^{1+1/k}$",

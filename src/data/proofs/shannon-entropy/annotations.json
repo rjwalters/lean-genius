@@ -123,7 +123,7 @@
       "startLine": 26,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Entropy Non-Negativity and Point Mass (Fully Proved)",
     "content": "Three fully proved results establishing basic entropy properties:\n\n1. **`prob_le_one`**: Each probability is at most 1, proved via `Finset.single_le_sum` (each term is dominated by the full sum, which equals 1).\n\n2. **`mul_log_nonpos`**: For $0 < t \\leq 1$, $t \\ln t \\leq 0$. Since $\\ln t \\leq 0$ for $t \\leq 1$ (`Real.log_nonpos`), the product of a positive and a non-positive number is non-positive.\n\n3. **`entropy_nonneg`**: $H(p) \\geq 0$. Unfold the negation: show $\\sum p(x) \\ln p(x) \\leq 0$ via `Finset.sum_nonpos`, case-splitting on $p(x) = 0$ (contributing 0) vs $p(x) > 0$ (contributing $\\leq 0$ by `mul_log_nonpos`).\n\n4. **`entropy_point_mass`**: $H(p) = 0$ when $p$ is a point mass. First show $p(a) = 1$ from $\\sum p = 1$ and $p(x) = 0$ for $x \\neq a$. Then each entropy term is 0: $p(a) \\ln p(a) = 1 \\cdot \\ln 1 = 0$, and other terms are $0$ by the point mass condition.",
     "mathContext": "$H(p) \\geq 0$ with equality when $p$ is a point mass. Proof: each term $-p(x)\\ln p(x) \\geq 0$ since $\\ln p(x) \\leq 0$ for $p(x) \\in (0,1]$.",
@@ -170,7 +170,7 @@
       "startLine": 109,
       "endLine": 156
     },
-    "type": "technique",
+    "type": "concept",
     "title": "KL Divergence Non-Negativity (Gibbs Master Inequality)",
     "content": "Two fully proved results establishing the master inequality of information theory:\n\n1. **`kl_term_bound`**: The pointwise bound $p \\ln(p/q) \\geq p - q$ for $p, q > 0$. Proof: from $\\ln(q/p) \\leq q/p - 1$ (the fundamental log inequality), multiply by $p$ to get $p \\ln(q/p) \\leq q - p$, then negate using $\\ln(p/q) = -\\ln(q/p)$.\n\n2. **`kl_divergence_nonneg`**: $D(p \\| q) \\geq 0$ for distributions $p, q$ with $q > 0$. Proof: each term satisfies $p(x) \\ln(p(x)/q(x)) \\geq p(x) - q(x)$ (or is 0 when $p(x) = 0$, contributing $\\geq -q(x)$). Summing: $D(p \\| q) \\geq \\sum(p - q) = 1 - 1 = 0$.\n\nThe key insight is that $\\ln t \\leq t - 1$ (Mathlib's `Real.log_le_sub_one_of_pos`) is the single inequality from which *all* information-theoretic inequalities ultimately derive.",
     "mathContext": "Master inequality: $\\ln t \\leq t - 1 \\Rightarrow p \\ln(p/q) \\geq p - q \\Rightarrow D(p \\| q) = \\sum p \\ln(p/q) \\geq \\sum(p - q) = 0$.",
@@ -193,7 +193,7 @@
       "startLine": 158,
       "endLine": 218
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gibbs Inequality and Maximum Entropy (Fully Proved)",
     "content": "Two landmark results, both fully proved:\n\n1. **`gibbs_inequality`**: $H(p) \\leq -\\sum p(x) \\ln q(x)$ for any distribution $q > 0$. Proved by decomposing each KL divergence term: $p(x) \\ln(p(x)/q(x)) = p(x) \\ln p(x) - p(x) \\ln q(x)$. Since $D(p \\| q) \\geq 0$, summing gives $\\sum p \\ln p \\geq \\sum p \\ln q$, hence $H(p) = -\\sum p \\ln p \\leq -\\sum p \\ln q$.\n\n2. **`entropy_le_log_card`**: $H(X) \\leq \\ln |\\mathcal{X}|$ (maximum entropy). Proved by applying Gibbs with $q = $ uniform distribution $(1/|\\mathcal{X}|)$. Then $-\\sum p(x) \\ln(1/|\\mathcal{X}|) = -\\ln(1/|\\mathcal{X}|) \\cdot \\sum p(x) = \\ln |\\mathcal{X}|$. The proof first derives $|\\mathcal{X}| > 0$ (since $\\sum p = 1 \\neq 0$), defines the uniform distribution, verifies it sums to 1, then applies Gibbs and simplifies using `Real.log_inv`.",
     "mathContext": "Gibbs: $H(p) \\leq -\\sum p(x) \\ln q(x)$, i.e., $D(p \\| q) \\geq 0$. Max entropy: set $q = \\text{unif}(1/|\\mathcal{X}|)$ to get $H(X) \\leq \\ln |\\mathcal{X}|$.",

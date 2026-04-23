@@ -190,7 +190,7 @@
       "startLine": 146,
       "endLine": 151
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem",
     "content": "**erdos_danzer_solved:**\n\nThe Erdős-Danzer question has an affirmative answer.\n\n```lean\ntheorem erdos_danzer_solved : ErdosDanzerQuestion :=\n  sarkozy_szemeredi_1994\n```\n\nThis directly applies the Sárközy-Szemerédi result.",
     "mathContext": "This theorem completes Problem #785 affirmatively.",

@@ -64,7 +64,7 @@
       "startLine": 71,
       "endLine": 92
     },
-    "type": "context",
+    "type": "concept",
     "title": "Lower Bounds",
     "content": "**Three progressively stronger lower bounds:**\n\n1. **pollack_lower_bound**: g(n) ≥ n/4 (1985) — from planarity and the Four Colour Theorem\n2. **csizmadia_lower_bound**: g(n) ≥ (9/35)n ≈ 0.257n (1998) — geometric arguments\n3. **swanepoel_lower_bound**: g(n) ≥ (8/31)n ≈ 0.258n (2002) — current best\n\n**lower_bounds_comparison** (PROVED): 1/4 < 9/35 < 8/31, confirming the progression.\n\nAll bounds are axiomatized since the proofs involve geometric reasoning about planar unit distance graphs.",
     "mathContext": "The baseline n/4 follows from the Four Colour Theorem: planar graphs are 4-colorable, so the largest color class is an independent set of size ≥ n/4. Improvements exploit specific structure of unit distance graphs.",
@@ -83,7 +83,7 @@
       "startLine": 94,
       "endLine": 109
     },
-    "type": "context",
+    "type": "concept",
     "title": "Upper Bounds",
     "content": "**Two upper bounds disproving Erdős's n/3 conjecture:**\n\n1. **chung_graham_pach_upper_bound**: g(n) ≤ (6/19)n ≈ 0.316n — first disproof of n/3\n2. **pach_toth_upper_bound**: g(n) ≤ (5/16)n = 0.3125n (1996) — current best\n\n**upper_bounds_comparison** (PROVED): 5/16 < 6/19 < 1/3, confirming the improvement over Erdős's conjecture.\n\nThe upper bounds are proved by explicit constructions of point configurations where independent sets are small.",
     "mathContext": "Erdős initially conjectured g(n) = n/3 ≈ 0.333n. The Chung-Graham-Pach construction disproved this. Pach-Tóth further improved the upper bound to 5/16 = 0.3125.",
@@ -102,7 +102,7 @@
       "startLine": 111,
       "endLine": 125
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Current Best Bounds and Gap",
     "content": "**current_best_bounds** (PROVED): (8/31) < (5/16) — the lower bound is strictly below the upper bound.\n\n**bound_gap** (PROVED): 5/16 - 8/31 = 27/496 ≈ 0.054 — the gap is about 5.4%.\n\n**current_knowledge** (axiom): Combines Swanepoel and Pach-Tóth: (8/31)n ≤ g(n) ≤ (5/16)n for all n ≥ 1.\n\nThe true value of lim g(n)/n lies somewhere in this interval of width 27/496.",
     "mathContext": "The gap 27/496 represents the current state of ignorance. Closing it is the main open challenge of Problem #1066.",

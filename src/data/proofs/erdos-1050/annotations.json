@@ -87,7 +87,7 @@
   {
     "id": "ann-1050-summable",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "Convergence",
     "content": "**T_summable**: T(q, r) converges (is summable) for q ≥ 2 and r ≠ -q^n for all n.\n\nFor large n, |1/(q^n + r)| ≤ 2/q^n, and ∑ 1/q^n converges as a geometric series with ratio 1/q < 1. The pole-avoidance condition r ≠ -q^n ensures each term is finite.",
     "significance": "key",
@@ -109,7 +109,7 @@
   {
     "id": "ann-1050-S-summable",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "S Convergence",
     "content": "**S_summable**: ∑ 1/(2^n - 3) converges.\n\nSpecializes T_summable to q = 2, r = -3. Need to verify 3 ≠ 2^n for all n ≥ 1, which holds since 2^n ∈ {2, 4, 8, 16, ...} never equals 3.",
     "significance": "supporting",
@@ -130,7 +130,7 @@
   {
     "id": "ann-1050-denom",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "Nonzero Denominators",
     "content": "**denom_nonzero**: 2^n - 3 ≠ 0 for all n ≥ 1.\n\nFor n = 1: 2^1 - 3 = -1 ≠ 0. For n ≥ 2: 2^n ≥ 4 > 3, so 2^n - 3 ≥ 1 > 0.",
     "significance": "supporting",
@@ -150,7 +150,7 @@
   {
     "id": "ann-1050-first",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "First Term",
     "content": "**first_term**: 1/(2^1 - 3) = 1/(-1) = -1.\n\nThe first term is negative! This is unusual for irrationality problems — the series has a large negative initial term that nearly cancels the second term 1/(2² - 3) = 1/1 = 1, leaving a small positive remainder ≈ 0.287.",
     "significance": "key",
@@ -170,7 +170,7 @@
   {
     "id": "ann-1050-term1",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "Term 1",
     "content": "**term_1**: 2^1 - 3 = -1.\n\nThe unique negative denominator in the series.",
     "significance": "supporting",
@@ -187,7 +187,7 @@
   {
     "id": "ann-1050-term2",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "Term 2",
     "content": "**term_2**: 2^2 - 3 = 1.\n\nGives the second term 1/(2²-3) = 1, which exactly cancels the first term -1.",
     "significance": "supporting",
@@ -205,7 +205,7 @@
   {
     "id": "ann-1050-term3",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "Term 3",
     "content": "**term_3**: 2^3 - 3 = 5.\n\nThe third term 1/5 = 0.2 is the first contribution to the 'effective value' of S after cancellation of the first two terms.",
     "significance": "supporting",
@@ -222,7 +222,7 @@
   {
     "id": "ann-1050-first-terms",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "First Terms",
     "content": "**S_first_terms**: S = -1 + 1 + 1/5 + 1/13 + 1/29 + 1/61 + ...\n\nAfter the first two terms cancel (-1 + 1 = 0), the sum equals 1/5 + 1/13 + 1/29 + 1/61 + ... ≈ 0.287. The denominators grow as 2^n - 3, ensuring rapid convergence.",
     "significance": "key",
@@ -242,7 +242,7 @@
   {
     "id": "ann-1050-borwein",
     "proofId": "erdos-1050",
-    "type": "context",
+    "type": "concept",
     "title": "Borwein's Theorem",
     "content": "**borwein_irrationality (1991)**: ∑ 1/(q^n + r) is irrational for integer q ≥ 2, rational r ≠ 0, and r ≠ -q^n for any n ≥ 1.\n\nAxiomatized from Borwein's 1991 paper in Math. Proc. Cambridge Philos. Soc. The proof constructs Padé-type rational approximants to the q-logarithm function whose convergence rate forces irrationality.",
     "significance": "key",
@@ -265,7 +265,7 @@
   {
     "id": "ann-1050-S-irr",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "S is Irrational",
     "content": "**S_irrational**: ∑ 1/(2^n - 3) is irrational.\n\nApplies Borwein's theorem with q = 2, r = -3. The verification that -3 ≠ -2^n for any n uses the fact that 3 is not a power of 2 (since 2^n ∈ {2, 4, 8, 16, ...} never equals 3).",
     "significance": "key",
@@ -287,7 +287,7 @@
   {
     "id": "ann-1050-2n-1",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "∑ 1/(2^n - 1)",
     "content": "**sum_2n_minus_1_irrational**: ∑ 1/(2^n - 1) is irrational.\n\nThis is Erdős's original 1948 result, now recovered as the special case T(2, -1) of Borwein's theorem. The sum ∑ 1/(2^n - 1) = 1 + 1/3 + 1/7 + 1/15 + ... ≈ 1.607 is the Erdős-Borwein constant.",
     "significance": "key",
@@ -309,7 +309,7 @@
   {
     "id": "ann-1050-2n+1",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "∑ 1/(2^n + 1)",
     "content": "**sum_2n_plus_1_irrational**: ∑ 1/(2^n + 1) is irrational.\n\nApplies Borwein's theorem with q = 2, r = 1. The condition r ≠ -q^n is automatic since 1 > 0 while -2^n < 0.",
     "significance": "supporting",
@@ -329,7 +329,7 @@
   {
     "id": "ann-1050-3n-1",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "∑ 1/(3^n - 1)",
     "content": "**sum_3n_minus_1_irrational**: ∑ 1/(3^n - 1) is irrational.\n\nExtends to base q = 3 with r = -1. The sum = 1/2 + 1/8 + 1/26 + 1/80 + ... ≈ 0.6634. Verification: 1 ≠ 3^n for any n ≥ 1 since 3^n ≥ 3.",
     "significance": "supporting",
@@ -349,7 +349,7 @@
   {
     "id": "ann-1050-general",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "General Case",
     "content": "**general_irrational**: ∑ 1/(q^n + r) is irrational for all valid q ≥ 2 and rational r ≠ 0, r ≠ -q^n.\n\nThe full generality of Borwein's theorem instantiated: for any choice of parameters satisfying the hypotheses, the resulting series is irrational.",
     "significance": "key",
@@ -414,7 +414,7 @@
   {
     "id": "ann-1050-trans-implies",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "Transcendence Implies Irrationality",
     "content": "**transcendence_implies_irrationality**: If T(q,r) is transcendental, then it is irrational.\n\nEvery transcendental number is irrational (since every rational number is algebraic: a/b is a root of bx - a = 0). So the transcendence conjecture strictly strengthens Borwein's theorem.",
     "significance": "supporting",
@@ -434,7 +434,7 @@
   {
     "id": "ann-1050-status",
     "proofId": "erdos-1050",
-    "type": "context",
+    "type": "concept",
     "title": "Conjecture Status",
     "content": "**transcendence_conjecture_status**: The transcendence conjecture for ∑ 1/(q^n + r) remains open as of 2026.\n\nRecorded as an axiom for documentation purposes. No progress beyond irrationality has been established for any T(q, r).",
     "significance": "supporting",
@@ -472,7 +472,7 @@
   {
     "id": "ann-1050-T-eq-S1049",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "Connection",
     "content": "**T_eq_S_1049**: T(q, -1) = S_1049(q) = ∑ 1/(q^n - 1).\n\nEstablishes the formal equivalence between the r = -1 case of T(q, r) and the series from Problem #1049. This makes explicit that Borwein's theorem subsumes Erdős's 1948 result.",
     "significance": "key",
@@ -493,7 +493,7 @@
   {
     "id": "ann-1050-related",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "Problems Related",
     "content": "**problems_related**: Both T(q, -1) = ∑ 1/(q^n - 1) and T(q, r) = ∑ 1/(q^n + r) are irrational for valid parameters.\n\nShows that Problem #1049 and #1050 share the same resolution method via Borwein's theorem.",
     "significance": "supporting",
@@ -513,7 +513,7 @@
   {
     "id": "ann-1050-approx",
     "proofId": "erdos-1050",
-    "type": "context",
+    "type": "concept",
     "title": "Approximation",
     "content": "**S_approx**: 0.286 < S < 0.288, so S ≈ 0.287.\n\nAxiomatized numerical bounds. Verified by computing the first ~10 terms: S ≈ 0 + 1/5 + 1/13 + 1/29 + 1/61 + 1/125 + ... ≈ 0.28719.",
     "significance": "supporting",
@@ -534,7 +534,7 @@
   {
     "id": "ann-1050-positive",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "S Positive",
     "content": "**S_positive**: S > 0.\n\nDespite the first term being -1, the series sums to a positive value. This follows from the exact cancellation of the first two terms (-1 + 1 = 0) and the positivity of all subsequent terms (1/5 + 1/13 + ... > 0).",
     "significance": "supporting",
@@ -554,7 +554,7 @@
   {
     "id": "ann-1050-lt-one",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "S < 1",
     "content": "**S_lt_one**: S < 1.\n\nAfter the cancellation of -1 + 1 = 0, the remaining series 1/5 + 1/13 + 1/29 + ... < 1/5 · (1 + 1/2 + 1/4 + ...) = 1/5 · 2 = 2/5 < 1.",
     "significance": "supporting",
@@ -575,7 +575,7 @@
   {
     "id": "ann-1050-partial",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "Partial Sums",
     "content": "**partial_sums_converge**: The partial sums Sₙ = ∑_{k=1}^{n} 1/(2^k - 3) converge to S.\n\nStandard convergence statement relating finite partial sums to the infinite series via Mathlib's tsum machinery.",
     "significance": "supporting",
@@ -615,7 +615,7 @@
   {
     "id": "ann-1050-denom-seq",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "Denominator Sequence",
     "content": "**denom_sequence**: oeis_A331372(n) = 2^n - 3 for n ≥ 1.\n\nVerifies the sequence definition matches the OEIS entry.",
     "significance": "supporting",
@@ -634,7 +634,7 @@
   {
     "id": "ann-1050-growth",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "Exponential Growth",
     "content": "**denom_growth**: For n ≥ 3, 2^n - 3 > 2^(n-1).\n\nThe denominators grow exponentially, ensuring the series terms 1/(2^n - 3) decay at rate 1/2^n. This is stronger than polynomial growth and guarantees rapid convergence.",
     "significance": "supporting",
@@ -655,7 +655,7 @@
   {
     "id": "ann-1050-main",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result",
     "content": "**erdos_1050**: ∑ 1/(2^n - 3) is irrational.\n\nThe complete answer to Erdős Problem #1050, solved by Peter Borwein (1991). Follows from S_irrational which applies borwein_irrationality with q = 2, r = -3. The transcendence conjecture (is S transcendental?) remains OPEN.",
     "significance": "key",
@@ -695,7 +695,7 @@
   {
     "id": "ann-1050-borwein-thm",
     "proofId": "erdos-1050",
-    "type": "technique",
+    "type": "concept",
     "title": "Borwein's Full Theorem",
     "content": "**borwein_theorem**: ∑ 1/(q^n + r) is irrational for integer q ≥ 2, rational r ≠ 0, and r ≠ -q^n for any n.\n\nThe complete restatement of Borwein's 1991 result, emphasizing it covers rational (not just integer) shifts r. This extends the theorem's reach beyond what Erdős originally asked.",
     "significance": "key",

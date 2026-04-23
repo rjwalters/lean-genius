@@ -139,7 +139,7 @@
       "startLine": 48,
       "endLine": 70
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cantor's Triangular Number Example",
     "content": "Defines `cantorSeq n = n * (n + 1) / 2` (triangular numbers: 0, 1, 3, 6, 10, 15, ...) and proves it is strictly increasing for $n \\geq 1$ via `simp`, `ring_nf`, and `omega`. The rationality of both sums is stated as axioms. For the standard triangular numbers, $\\sum_{n=1}^{\\infty} 2/(n(n+1)) = 2$ by the telescoping identity $2/(n(n+1)) = 2/n - 2/(n+1)$. This is the prototype example with polynomial growth: $a_n \\sim n^2/2$, so $a_n^{1/n} \\to 1$.",
     "mathContext": "$a_n = \\binom{n+1}{2} = \\frac{n(n+1)}{2}$. The telescoping sum $\\sum_{n=1}^{N} \\frac{2}{n(n+1)} = 2 - \\frac{2}{N+1} \\to 2$ gives rationality. Growth: $a_n^{1/n} = (n(n+1)/2)^{1/n} \\to 1$.",

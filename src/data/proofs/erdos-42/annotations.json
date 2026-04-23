@@ -2,7 +2,7 @@
   {
     "id": "ann-e42-imports",
     "proofId": "erdos-42",
-    "type": "context",
+    "type": "concept",
     "title": "Mathlib Foundations",
     "content": "Imports Finset and natural number basics from Mathlib, providing the finite set infrastructure for Sidon set definitions.",
     "mathContext": "Sidon sets are naturally modeled as `Finset ℕ` since they are finite subsets of positive integers. The `Finset.card` function provides the cardinality needed for the size bound $|A|^2 \\leq 2N+1$.",

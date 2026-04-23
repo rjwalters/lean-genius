@@ -193,7 +193,7 @@
       "startLine": 200,
       "endLine": 211
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Corollary of Zhang's Theorem",
     "content": "**bounded_gaps_consequence:**\n\nZhang's theorem implies limsup F(g(n), n) = ∞ for any g(n) → ∞.\n\n```lean\ntheorem bounded_gaps_consequence :\n    ∀ g : ℕ → ℝ, (∀ M, ∃ N, ∀ n ≥ N, g n > M) →\n      ∀ M : ℝ, ∃ᶠ n, F g n > M\n```\n\n**This is a theorem, not an axiom!** It follows from zhang_bounded_gaps and bounded_gaps_implies_limsup_infinity.",
     "significance": "key",
@@ -247,7 +247,7 @@
       "startLine": 261,
       "endLine": 271
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #420: Partially Solved",
     "content": "**erdos_420:**\n\nThe problem is partially solved.\n\n**What's Known:**\n- liminf F(c log n, n) = 1 for any c > 0\n- lim F(n^{4/9}, n) = ∞\n- F ≈ 1 almost always for f = o((log n)²)\n\n**What's Open:**\n- Behavior for f between log n and n^{4/9}\n- Density questions",
     "significance": "key",

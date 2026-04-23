@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 29
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview: Strong Chromatic Index",
     "content": "Erdős Problem #149 is the Erdős-Nešetřil conjecture (1985): for any graph $G$ with maximum degree $\\Delta$, is $\\chi'_s(G) \\leq \\frac{5}{4}\\Delta^2$? The strong chromatic index $\\chi'_s(G)$ is the minimum number of colors needed to color edges so that edges within distance 2 in the line graph receive different colors. The blow-up of $C_5$ (replacing each vertex with $\\Delta/2$ copies) achieves exactly $\\frac{5}{4}\\Delta^2$, so the conjecture is tight if true. The best known bound is $1.772\\Delta^2$ (Hurley-de Joannis de Verclos-Kang, 2022). The formalization imports `SimpleGraph.Basic`, `Nat.Basic`, `Finset.Basic`, and `Tactic`.",
     "mathContext": "$\\chi'_s(G) = \\min\\{k : E(G) \\text{ can be } k\\text{-colored with edges at distance } \\leq 2 \\text{ getting distinct colors}\\}$. Conjecture: $\\chi'_s(G) \\leq \\frac{5}{4}\\Delta(G)^2$.",

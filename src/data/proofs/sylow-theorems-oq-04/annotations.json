@@ -10,7 +10,7 @@
     "title": "Defining A₅ and Computing Its Order",
     "content": "The alternating group A₅ = ker(sign : S₅ → ℤ/2) has |A₅| = 5!/2 = 60. This is verified by native_decide, which exhaustively enumerates the even permutations of Fin 5.",
     "mathContext": "A₅ = alternatingGroup(Fin 5) is the kernel of the sign homomorphism sgn : S₅ → {±1}. Since S₅ has order 5! = 120 and sgn is surjective, |A₅| = 120/2 = 60 = 2²·3·5.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "alternatingGroup",
       "sign homomorphism",

@@ -75,7 +75,7 @@
       "startLine": 37,
       "endLine": 41
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Prime Gaps Are Positive (PROVED)",
     "content": "Proved from strict monotonicity: nthPrime n < nthPrime (n+1) implies primeGap n = nthPrime(n+1) - nthPrime(n) > 0. The omega tactic handles the natural number arithmetic after unfolding.",
     "mathContext": "$p_n < p_{n+1} \\Rightarrow d_n = p_{n+1} - p_n > 0$. This is essential: distinct-run counting requires all gaps to be positive.",
@@ -209,7 +209,7 @@
       "startLine": 99,
       "endLine": 111
     },
-    "type": "technique",
+    "type": "concept",
     "title": "h(x) ≥ 1 and Monotonicity (PROVED)",
     "content": "Two proved properties: (1) For x ≥ 3: since p₀ = 2 < 3 ≤ x, a single-gap run at index 0 gives h(x) ≥ 1. (2) For x ≤ y with x ≥ 2: any witness for h(x) is also valid for h(y), so h(x) ≤ h(y). Both use the optimality axiom.",
     "mathContext": "(1) $x \\geq 3 \\Rightarrow p_0 = 2 < x$ and $\\text{IsDistinctRun}(0, 1)$, so $h(x) \\geq 1$. (2) $x \\leq y$: if $p_n < x \\leq y$, then any witness for $h(x)$ gives $h(x) \\leq h(y)$.",
@@ -232,7 +232,7 @@
       "startLine": 115,
       "endLine": 127
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Brun's Sieve Divergence",
     "content": "Axiomatizes Brun's sieve result: for every C, there exists X such that h(x) ≥ C for all x ≥ X. Then proves the Filter.Tendsto reformulation: h(x) → +∞ as x → ∞. The proof uses tendsto_atTop_atTop, exists_nat_ge (to cast from ℝ to ℕ), and Nat.cast_le.",
     "mathContext": "Brun's sieve: $\\forall C,\\, \\exists X,\\, \\forall x \\geq X,\\, h(x) \\geq C$. Equivalently: $\\mathrm{Tendsto}\\, (\\lambda x.\\, h(x))\\, \\mathrm{atTop}\\, \\mathrm{atTop}$. The Lean proof bridges $\\mathbb{N}$ bounds and $\\mathbb{R}$ via `Nat.cast_le`.",
@@ -302,7 +302,7 @@
       "startLine": 149,
       "endLine": 155
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Combined Growth Rate (PROVED)",
     "content": "Packages both conjectures into a single statement: h(x) is eventually above (log x)^c AND h(x) = o(log x). Proved trivially by pairing the two axioms. This pins h(x) to a narrow growth window between polynomial-in-log and logarithmic.",
     "mathContext": "$(\\exists c > 0,\\, \\forall^\\infty x,\\, (\\log x)^c < h(x)) \\land (h = o(\\log))$. The growth window: $(\\log x)^c \\ll h(x) \\ll \\log x$.",
@@ -324,7 +324,7 @@
       "startLine": 159,
       "endLine": 170
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pigeonhole Upper Bound",
     "content": "Axiomatizes h(x) ≤ x and the underlying pigeonhole principle: k distinct positive integers all ≤ M implies k ≤ M. Since gaps d_n among primes ≤ x satisfy d_n ≤ x, any distinct run has length ≤ x. This is the trivial ceiling, vastly weaker than the conjectured o(log x).",
     "mathContext": "$h(x) \\leq x$: if $d_{n+i} \\leq x$ for all $i < k$ and the $d_{n+i}$ are distinct positive integers, then $k \\leq x$ by pigeonhole into $\\{1, \\ldots, x\\}$.",

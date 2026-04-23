@@ -78,7 +78,7 @@
       "startLine": 102,
       "endLine": 120
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Known Exact Values of g",
     "content": "Four axioms record the known values: g(3)=3 (trivial), g(4)=5 (Erdős), g(5)=10 (Harborth 1978), and g(6)=30 (Heule-Scheucher 2024). The g(6)=30 result was a landmark: existence was proved by Nicolás (2007) and Gerken (2008), but the exact value required SAT solvers verifying all 29-point configurations and finding a 30-point universal property.",
     "mathContext": "$g(3) = 3$, $g(4) = 5$, $g(5) = 10$, $g(6) = 30$. The sequence grows rapidly: the ratio $g(k)/g(k{-}1)$ is $5/3 \\approx 1.67$, $10/5 = 2$, $30/10 = 3$, suggesting super-exponential growth within the finite range.",
@@ -102,7 +102,7 @@
       "startLine": 122,
       "endLine": 148
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Horton's Theorem: g(7) Does Not Exist",
     "content": "Horton (1983) constructed arbitrarily large point sets in general position containing no empty 7-gon. The key idea: recursively interlace two smaller Horton sets so that any potential empty heptagon must use points from both halves, but the interlacing prevents this. The theorem g_7_not_exists is actually proved (not axiomatized) from the horton_sets_exist axiom, demonstrating a genuine deduction in the formalization.",
     "mathContext": "A Horton set $H_n$ of $n$ points satisfies $\\text{InGeneralPosition}(H_n)$ and $\\lnot\\text{ContainsEmptyKGon}(H_n, 7)$. Since $H_n$ exists for all $n$, no threshold $g(7)$ can exist: for any candidate $n$, $H_n$ is a counterexample with $|H_n| = n$ points but no empty heptagon.",
@@ -126,7 +126,7 @@
       "startLine": 150,
       "endLine": 162
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bounds and Growth of g(k)",
     "content": "The lower bound g(k) ≥ 2k − 3 for 3 ≤ k ≤ 6 is axiomatized from known results. The theorem g_exists_le_6 is proved by case analysis on k ∈ {3,4,5,6}, dispatching each case via the known-value axioms. Lean's interval_cases tactic automates the case split.",
     "mathContext": "For $3 \\le k \\le 6$: $g(k) \\ge 2k - 3$. This gives $g(3) \\ge 3$, $g(4) \\ge 5$, $g(5) \\ge 7$, $g(6) \\ge 9$. The actual values $3, 5, 10, 30$ exceed these bounds significantly for $k = 5, 6$.",
@@ -148,7 +148,7 @@
       "startLine": 164,
       "endLine": 180
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Horton Construction",
     "content": "The recursive Horton construction starts from a base point and builds larger sets by merging two Horton sets of equal size. The axiom horton_recursive guarantees closure under this merge. Crucially, horton_has_empty_6 records that Horton sets of ≥ 30 points do contain empty hexagons — the construction specifically avoids heptagons but permits smaller empty polygons.",
     "mathContext": "Given Horton sets $H_1, H_2$ with $|H_1| = |H_2|$, there exists $H$ with $|H| = |H_1| + |H_2|$ and $\\text{IsHortonSet}(H)$. For $|H| \\ge 30$: $\\text{ContainsEmptyKGon}(H, 6) = \\text{true}$, consistent with $g(6) = 30$.",
@@ -195,7 +195,7 @@
       "startLine": 205,
       "endLine": 215
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Computational Verification of g(6) = 30",
     "content": "The determination of g(6) = 30 required both directions: a 29-point witness set in general position with no empty hexagon (lower bound), and a proof that every 30-point set in general position contains one (upper bound). The lower bound was found by exhaustive search; the upper bound was established by Heule and Scheucher (2024) using SAT solvers encoding the geometric constraints as propositional formulas.",
     "mathContext": "Lower bound: $\\exists S \\subseteq \\mathbb{R}^2,\\; |S| = 29 \\land \\text{InGeneralPosition}(S) \\land \\lnot\\text{ContainsEmptyKGon}(S, 6)$. Upper bound: $\\forall S,\\; |S| \\ge 30 \\land \\text{InGeneralPosition}(S) \\Rightarrow \\text{ContainsEmptyKGon}(S, 6)$.",

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 31
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview and References",
     "content": "Erdős Problem #626 explores the chromatic number-girth trade-off: for $k$-chromatic graphs on $n$ vertices, how large can the girth be?\n\nDefine $g_k(n)$ as the largest $m$ such that an $n$-vertex graph with $\\chi = k$ and girth $> m$ exists. The question: does $\\lim_{n \\to \\infty} g_k(n)/\\log n$ exist?\n\nBoth bounds show $g_k(n) = \\Theta(\\log n)$:\n- Lower (Kostochka): $g_k(n) \\ge \\frac{1}{4 \\log k} \\cdot \\log n$\n- Upper (Erdős): $g_k(n) \\le \\frac{2}{\\log(k-2)} \\cdot \\log n + 1$\n\nThe file imports the full Mathlib library and uses SimpleGraph, real logarithms, and filter convergence.",
     "mathContext": "$g_k(n) = \\max\\{m : \\exists G,\\; |V(G)| = n,\\; \\chi(G) = k,\\; \\text{girth}(G) > m\\}$. Question: $\\exists L_k \\in \\mathbb{R} : g_k(n)/\\log n \\to L_k$?",
@@ -293,7 +293,7 @@
       "startLine": 217,
       "endLine": 244
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Status: Combined Bounds and Existence",
     "content": "**erdos_626_status:**\n\nThe capstone theorem combines all results:\n1. **Bounds exist**: For all $k \\ge 4$, constants $c_1, c_2 > 0$ exist with $c_1 \\log n \\le g_k(n) \\le c_2 \\log n + 1$.\n2. **High-$\\chi$, high-girth graphs exist**: For all $k \\ge 2$, $g \\ge 3$.\n\nThe proof delegates to the axiomatized bounds and existence results. The status summary confirms that $g_k(n) = \\Theta(\\log n)$ with explicit constants, but the limit question remains open.\n\nThe `#check` statements at the end verify that all key declarations are accessible.",
     "mathContext": "$\\forall k \\ge 4 : \\exists c_1, c_2 > 0 : \\forall n \\ge 2 : c_1 \\log n \\le g_k(n) \\le c_2 \\log n + 1$, and $\\forall k \\ge 2,\\; g \\ge 3 : \\exists G$ with $\\chi(G) \\ge k$, $\\text{girth}(G) > g$.",

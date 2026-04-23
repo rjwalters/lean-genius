@@ -74,7 +74,7 @@
       "startLine": 38,
       "endLine": 43
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Reciprocal Sum Bound",
     "content": "This theorem verifies that the counterexample satisfies the hypothesis: its reciprocal sum is strictly less than 2.\n\n```lean\ntheorem minimalCounterexample_sum_lt_two :\n    ∑ n ∈ minimalCounterexample, (1 / n : ℚ) < 2 := by\n  native_decide\n```\n\nThe proof uses **native_decide** to compute the exact rational value $4234829/2162160 < 2$.",
     "mathContext": "Computing $\\sum_{n \\in A} 1/n$ over rationals gives $1/2 + 1/3 + 1/4 + 1/5 + 1/6 + 1/7 + 1/10 + 1/11 + 1/13 + 1/14 + 1/15 = 4234829/2162160$. The denominator $2162160 = \\text{lcm}(2,3,\\ldots,15)$ ensures exact arithmetic. `native_decide` compiles this to native code for fast evaluation.",
@@ -97,7 +97,7 @@
       "startLine": 45,
       "endLine": 48
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Validity Check",
     "content": "This verifies that the counterexample excludes 0 and 1 as required by the problem statement.\n\n```lean\ntheorem minimalCounterexample_excludes_zero_one :\n    0 ∉ minimalCounterexample ∧ 1 ∉ minimalCounterexample := by\n  decide\n```\n\nDivision by 0 is undefined, and $1/1 = 1$ would trivially make one part have sum $\\ge 1$.",
     "mathContext": "The problem statement restricts to $A \\subseteq \\mathbb{N} \\setminus \\{1\\}$ (some formulations use $\\mathbb{N} \\setminus \\{0, 1\\}$). Excluding 1 is essential: if $1 \\in A$, then any part containing 1 has $\\sum 1/n \\ge 1$, making the conjecture trivially false. The `decide` tactic resolves this by evaluating membership.",
@@ -119,7 +119,7 @@
       "startLine": 50,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: Erdős's Conjecture is FALSE",
     "content": "**The core result**: Erdős's conjecture is false. The proof exhibits the counterexample and exhaustively verifies that no valid partition exists.\n\nThe proof strategy:\n1. Negate the universal statement to produce an existential goal\n2. Provide the specific counterexample set $A$\n3. Verify $A$ satisfies the hypotheses (sum $< 2$, excludes 0 and 1)\n4. Check all $2^{11} = 2048$ possible subsets $B$ to confirm that whenever $B$ has sum $< 1$, the complement $A \\setminus B$ has sum $\\ge 1$",
     "mathContext": "The proof structure is: $\\neg \\forall A, P(A) \\Rightarrow Q(A)$ iff $\\exists A, P(A) \\wedge \\neg Q(A)$. After `simp only` rewrites, we witness $A = \\{2, 3, \\ldots, 15\\}$, verify $P(A)$ (sum $< 2$), and prove $\\neg Q(A)$ by showing every subset $B \\subseteq A$ with $\\sum_{B} 1/n < 1$ has complement satisfying $\\sum_{A \\setminus B} 1/n \\ge 1$. The `decide +kernel` tactic enumerates all $2^{11} = 2048$ subsets and checks the condition computationally, making this a certified exhaustive search.",
@@ -143,7 +143,7 @@
       "startLine": 73,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Multiset Variant",
     "content": "The conjecture also fails for **multisets** (sets with repeated elements). The counterexample $\\{2, 3, 3, 5, 5, 5, 5\\}$ is simpler than the minimal set counterexample.\n\nReciprocal sum: $1/2 + 2/3 + 4/5 = 59/30 \\approx 1.97 < 2$.\n\nAny split of this 7-element multiset into two sub-multisets must have at least one part with sum $\\ge 1$.",
     "mathContext": "With multisets, repetition is allowed, so $\\{3, 3\\}$ contributes $2/3$ rather than $1/3$. The multiset variant uses `Multiset` instead of `Finset`, with addition replacing union for splitting: $A = A_1 + A_2$ in multiset addition. The counterexample $\\{2, 3, 3, 5, 5, 5, 5\\}$ is smaller (7 elements vs 11) because repetition creates tighter constraints — the four copies of 5 contribute $4/5$ which is already close to 1.",
@@ -166,7 +166,7 @@
       "startLine": 97,
       "endLine": 114
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sándor's Generalization",
     "content": "**Sándor's full result**: For any $n \\ge 2$, there exists a set with reciprocal sum $< n$ that cannot be partitioned into $n$ parts each with sum $< 1$.\n\n```lean\naxiom erdos_316_generalized (n : ℕ) (hn : 2 ≤ n) : ∃ A : Finset ℕ, ...\n```\n\nAxiomatized because proving it for all $n$ requires an infinite family of constructions beyond computational verification.",
     "mathContext": "Sándor's 1997 paper constructs, for each $n \\ge 2$, a finite set $A_n$ with $\\sum_{k \\in A_n} 1/k < n$ that resists $n$-partition. The construction uses careful selection of unit fractions with mutual dependencies. For $n = 2$, the computational proof suffices ($2^{11}$ cases). For general $n$, the sets grow and an analytic argument replaces exhaustive search. The `Finpartition` type from Mathlib represents a partition of a `Finset` into disjoint parts covering the whole.",

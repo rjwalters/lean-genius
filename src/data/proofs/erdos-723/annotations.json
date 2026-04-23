@@ -271,7 +271,7 @@
       "startLine": 143,
       "endLine": 168
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Small Orders (Verified)",
     "content": "**Verified by `decide`**:\n- `order_1_is_prime_power` ✓ (trivial plane: 3 points)\n- `order_2_is_prime_power` ✓ (Fano plane: 7 points)\n- `order_3_is_prime_power` ✓ (PG(2,3): 13 points)\n- `order_4_is_prime_power` ✓ ($2^2 = 4$: 21 points)\n- `order_5_is_prime_power` ✓ (PG(2,5): 31 points)\n\n**Non-prime-powers (verified)**:\n- `order_6_not_prime_power` ✓\n- `order_10_not_prime_power` ✓\n- `order_12_not_prime_power` ✓\n\nOrder 4 requires special handling: `decide` alone times out, so the proof rewrites $4 = 2^2$ and applies `IsPrimePow.pow`.",
     "mathContext": "The `decide` tactic reduces `IsPrimePow n` to a finite computation. For $n = 4 = 2^2$, the composite prime power case requires explicitly exhibiting the factorization, since `decide` on `IsPrimePow 4` involves checking divisibility patterns that exceed the default timeout. This illustrates a general pattern: composite prime powers are harder for automated methods than primes.",
@@ -301,7 +301,7 @@
       "startLine": 171,
       "endLine": 187
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bruck-Ryser Application: No Order-6 Plane (Verified)",
     "content": "**theorem six_mod_4** ✓: $6 \\bmod 4 = 2$\n\n**theorem six_not_sum_squares** ✓:\n$$\\neg\\exists\\, a\\, b \\in \\mathbb{N},\\; 6 = a^2 + b^2$$\nProved by `interval_cases`: exhaustively checks all $(a,b)$ with $a^2 + b^2 \\le 6$.\n\n**theorem no_plane_order_6** ✓:\nNo projective plane of order 6 exists.\n\n**Proof chain**: Since $6 \\equiv 2 \\pmod{4}$, Bruck-Ryser requires $6 = a^2 + b^2$. But `six_not_sum_squares` shows this is impossible. Therefore no order-6 plane exists. This is the file's crown jewel: a complete, machine-verified non-existence proof using the Bruck-Ryser method.",
     "mathContext": "The `interval_cases` tactic generates cases for all natural numbers $a$ with $a^2 \\le 6$ (i.e., $a \\in \\{0, 1, 2\\}$) and similarly for $b$, then `simp_all` discharges each case. This verified proof mirrors the pencil-and-paper argument: check $0^2+0^2=0$, $0^2+1^2=1$, $0^2+2^2=4$, $1^2+1^2=2$, $1^2+2^2=5$, $2^2+2^2=8$—none equal 6. The connection to Fermat's two-square theorem is natural: 6 has a prime factor $3 \\equiv 3 \\pmod{4}$ appearing to an odd power, which obstructs the sum-of-squares representation.",

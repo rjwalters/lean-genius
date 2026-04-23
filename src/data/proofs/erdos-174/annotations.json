@@ -105,7 +105,7 @@
       "startLine": 161,
       "endLine": 205
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Concrete Examples and Non-Examples",
     "content": "Concrete configurations with explicit coordinates. **twoPoints** ({![0], ![1]}) is the simplest Ramsey set — by pigeonhole in high dimension. **equilateralTriangle** and **square** are Ramsey as special cases of simplices and rectangles. **not_spherical_not_ramsey** is a genuine Lean proof: the contrapositive of EGMRSS, proved by `intro hNotSph hRam; exact hNotSph (ramsey_implies_spherical A hRam)`. **collinearFour** ({0,1,2,4}) demonstrates a non-Ramsey set: unequal spacing means non-spherical. **collinear_not_ramsey** chains the two results.",
     "mathContext": "not_spherical_not_ramsey : ¬IsSpherical A → ¬IsRamsey A. Proved by contrapositive of EGMRSS axiom.",
@@ -124,7 +124,7 @@
       "startLine": 207,
       "endLine": 220
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Characterization Problem",
     "content": "**erdos_174_question** formalizes the main open problem: ∃ P, ∀ n A, P n A ↔ IsRamsey A — find a property characterizing Ramsey sets. **characterization_exists** is a genuine Lean proof that such a P exists trivially (take P = IsRamsey, proved by `rfl`). The real challenge is finding a *geometrically meaningful* P. The candidates are IsSpherical (Graham) and IsSubtransitive (LRW). This section highlights the gap between mathematical existence and mathematical understanding.",
     "mathContext": "characterization_exists : erdos_174_question := ⟨IsRamsey, fun n A => rfl⟩. Trivial but illustrates the real question.",
@@ -143,7 +143,7 @@
       "startLine": 222,
       "endLine": 256
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorems",
     "content": "Two summary theorems. **erdos_174** combines four key results into a conjunction: (1) Ramsey ⟹ Spherical (EGMRSS), (2) Rectangles are Ramsey, (3) Simplices are Ramsey, (4) Trapezoids are Ramsey, proved by ⟨ramsey_implies_spherical, rectangle_is_ramsey, simplex_is_ramsey, trapezoid_is_ramsey⟩. **erdos_174_summary** gives just the EGMRSS necessary condition for a specific configuration. The problem remains OPEN — the gap between the necessary condition and the known sufficient conditions has persisted for over 50 years.",
     "mathContext": "erdos_174 : (Ramsey→Spherical) ∧ (Rectangle→Ramsey) ∧ (Simplex→Ramsey) ∧ (Trapezoid→Ramsey) := ⟨...⟩.",

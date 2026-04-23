@@ -206,7 +206,7 @@
       "startLine": 228,
       "endLine": 246
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem",
     "content": "**erdos_209:**\n\n```lean\ntheorem erdos_209 :\n    ∀ d ≥ 4, ∃ A : LineArrangement,\n      A.card = d ∧ NoParallels A ∧ NoFourConcurrent A ∧ ¬HasGallaiTriangle A\n```\n\n**The answer to Erdős's question is NO.**\n\nCounterexamples exist for every d ≥ 4. The proof uses Escudero's 2016 construction.",
     "significance": "key",

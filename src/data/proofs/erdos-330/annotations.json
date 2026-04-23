@@ -33,13 +33,20 @@
       "startLine": 19,
       "endLine": 23
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Definitions Section Header",
     "content": "Lines 19-21: three imports — `Mathlib.Tactic` (all tactics), `Mathlib.Data.Nat.Basic` (natural number API), `Mathlib.Data.Finset.Basic` (finite sets and sums). Line 23: `/-## Definitions -/` block comment marking the start of the six core definitions.",
     "mathContext": "`Mathlib.Data.Finset.Basic` is needed for `Finset.univ.sum` used in `IsRepresentable`. The `Fin k → ℕ` sequences are indexed by `Fin k = {0,...,k-1}` and `Finset.univ.sum f` sums all values. No `open` statements — all names are used qualified.",
     "significance": "supporting",
-    "relatedConcepts": ["Mathlib.Tactic", "Finset.Basic", "Fin k"],
-    "prerequisites": ["Lean 4 import syntax", "Mathlib structure"]
+    "relatedConcepts": [
+      "Mathlib.Tactic",
+      "Finset.Basic",
+      "Fin k"
+    ],
+    "prerequisites": [
+      "Lean 4 import syntax",
+      "Mathlib structure"
+    ]
   },
   {
     "id": "ann-e330-representable",

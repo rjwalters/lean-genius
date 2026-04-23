@@ -2,61 +2,125 @@
   {
     "id": "ann-nash-brouwer-header",
     "proofId": "brouwer-fixed-point-oq-04-oq-02",
-    "range": { "startLine": 1, "endLine": 50 },
-    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 50
+    },
+    "type": "concept",
     "title": "Nash's Original Brouwer Argument vs. Kakutani Approach",
     "content": "This file formalizes Nash's 1950 proof of equilibrium existence — the original argument from his 2-page PNAS paper, which used Brouwer's fixed point theorem directly. This distinguishes it from `BrouwerFixedPointOQ04OQ01.lean` (Kakutani-based proof via best-response correspondences).\n\n**The key innovation**: Nash replaced the set-valued best-response correspondence with a single-valued continuous map. Instead of tracking which pure strategies are optimal (the best-response correspondence, requiring upper hemicontinuity theory), Nash's map tracks *how much better* each pure strategy is and shifts weight proportionally. This avoids Berge's maximum theorem entirely.\n\n**Reduction from OQ-01**: The OQ-01 (Kakutani) approach required 2 axioms: `kakutani_product_simplex` and `berge_maximum_theorem`. This file eliminates `berge_maximum_theorem` — polynomial continuity is elementary — reducing to 1 axiom (`brouwer_product_simplex`) plus 1 sorry (multilinear reindexing).",
     "mathContext": "Nash (1950): for each player $i$ and pure strategy $k$, define the *excess payoff* $e_{ik}(\\sigma) = \\max(0, EU_i(e_k, \\sigma_{-i}) - EU_i(\\sigma_i, \\sigma_{-i}))$. The Nash map: $\\phi_{ik}(\\sigma) = (\\sigma_i(k) + e_{ik}(\\sigma)) / (1 + \\sum_l e_{il}(\\sigma))$. Any fixed point satisfies: $e_{ik}(\\sigma) = \\sigma_i(k) \\cdot C_i$ for all $i,k$, where $C_i \\geq 0$. If $C_i > 0$, all positive-weight strategies are best responses — i.e., $\\sigma$ is a Nash equilibrium. If $C_i = 0$, no deviation is profitable, also a Nash equilibrium.",
-    "significance": "context",
-    "relatedConcepts": ["Nash equilibrium", "Brouwer fixed point theorem", "mixed strategies", "deviation map", "BrouwerFixedPointOQ04OQ01"],
-    "prerequisites": ["Brouwer FPT", "product simplex", "multilinear extension", "BrouwerFixedPointOQ04"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nash equilibrium",
+      "Brouwer fixed point theorem",
+      "mixed strategies",
+      "deviation map",
+      "BrouwerFixedPointOQ04OQ01"
+    ],
+    "prerequisites": [
+      "Brouwer FPT",
+      "product simplex",
+      "multilinear extension",
+      "BrouwerFixedPointOQ04"
+    ]
   },
   {
     "id": "ann-multilinear-game",
     "proofId": "brouwer-fixed-point-oq-04-oq-02",
-    "range": { "startLine": 51, "endLine": 100 },
+    "range": {
+      "startLine": 51,
+      "endLine": 100
+    },
     "type": "definition",
     "title": "MultilinearGame Structure: Pure Payoffs and Mixed Extension",
     "content": "The `MultilinearGame` structure captures a finite N-player game with:\n- `N : ℕ` — number of players\n- `strategies i : ℕ` — number of pure strategies for player i\n- `payoff i : (∀ j, Fin (strategies j)) → ℝ` — pure strategy payoff for player i\n\nThe *mixed utility* `mixedUtility G i σ` for player i under strategy profile σ (one mixed strategy per player) is the multilinear extension:\n$$EU_i(\\sigma) = \\sum_{s : \\prod_j [\\text{strategies}_j]} \\prod_j \\sigma_j(s_j) \\cdot \\text{payoff}_i(s)$$\n\nThis is a polynomial in all mixed strategy components, making it jointly continuous without any additional hypotheses.",
     "mathContext": "For a finite game with $m_i$ strategies for player $i$, mixed strategies are probability vectors $\\sigma_i \\in \\Delta_{m_i-1}$. The mixed extension $EU_i : \\prod_i \\Delta_{m_i-1} \\to \\mathbb{R}$ is a multi-linear polynomial (degree $N$) in $\\sum_i m_i$ variables. Continuity follows from the polynomial structure — no compactness or convexity arguments needed.",
     "significance": "key",
-    "relatedConcepts": ["multilinear extension", "expected utility", "finite games", "mixed strategies", "Finset.sum"],
-    "prerequisites": ["Finset.prod", "Finset.univ", "Fin N"]
+    "relatedConcepts": [
+      "multilinear extension",
+      "expected utility",
+      "finite games",
+      "mixed strategies",
+      "Finset.sum"
+    ],
+    "prerequisites": [
+      "Finset.prod",
+      "Finset.univ",
+      "Fin N"
+    ]
   },
   {
     "id": "ann-nash-map-construction",
     "proofId": "brouwer-fixed-point-oq-04-oq-02",
-    "range": { "startLine": 141, "endLine": 200 },
-    "type": "technique",
+    "range": {
+      "startLine": 141,
+      "endLine": 200
+    },
+    "type": "concept",
     "title": "Nash's Deviation Map: Well-Definedness and Self-Mapping",
     "content": "The Nash deviation map has two components:\n\n**Excess payoff** (well-defined): `excess G i k σ = max 0 (EU_i(eₖ, σ₋ᵢ) - EU_i(σᵢ, σ₋ᵢ))` — how much player i gains by switching to pure strategy k. Always ≥ 0 by definition.\n\n**Normalized map** (self-maps the simplex): `nashMap G i k σ = (σᵢ(k) + excess G i k σ) / (1 + Σₗ excess G i l σ)`. The denominator is `1 + total_excess ≥ 1 > 0`, so division is well-defined. The map sends the product simplex to itself:\n- Each component ≥ 0: numerator = σᵢ(k) + excess ≥ 0 + 0 = 0\n- Components sum to 1: `Σₖ nashMap G i k σ = (Σₖ σᵢ(k) + Σₖ excess) / (1 + Σₖ excess) = (1 + Cᵢ)/(1 + Cᵢ) = 1`\n\nThe simplex-preservation is the key structural lemma, proved by algebraic manipulation.",
     "mathContext": "Self-mapping: $\\sum_k \\phi_{ik}(\\sigma) = \\frac{\\sum_k (\\sigma_i(k) + e_{ik})}{1 + \\sum_k e_{ik}} = \\frac{1 + C_i}{1 + C_i} = 1$ where $C_i = \\sum_k e_{ik} \\geq 0$. Non-negativity: $\\phi_{ik}(\\sigma) \\geq 0$ since $\\sigma_i(k) \\geq 0$ and $e_{ik} \\geq 0$. Together: $\\phi_i(\\sigma) \\in \\Delta_{m_i-1}$.",
     "significance": "key",
-    "relatedConcepts": ["product simplex", "probability simplex", "self-map", "excess payoff", "normalization"],
-    "prerequisites": ["Finset.sum_div", "mixedUtility_linear_in_i", "ProductSimplex"]
+    "relatedConcepts": [
+      "product simplex",
+      "probability simplex",
+      "self-map",
+      "excess payoff",
+      "normalization"
+    ],
+    "prerequisites": [
+      "Finset.sum_div",
+      "mixedUtility_linear_in_i",
+      "ProductSimplex"
+    ]
   },
   {
     "id": "ann-fixed-point-is-nash",
     "proofId": "brouwer-fixed-point-oq-04-oq-02",
-    "range": { "startLine": 201, "endLine": 260 },
+    "range": {
+      "startLine": 201,
+      "endLine": 260
+    },
     "type": "insight",
     "title": "The Key Algebraic Argument: Fixed Points Are Nash Equilibria",
     "content": "The proof that any fixed point σ* of Nash's map is a Nash equilibrium is a beautiful piece of algebra:\n\n**Setup**: If φ(σ*) = σ*, then for each player i and strategy k:\n`σ*ᵢ(k) = (σ*ᵢ(k) + eᵢₖ) / (1 + Cᵢ)`\n\nwhere Cᵢ = Σₗ eᵢₗ ≥ 0 is the total excess for player i.\n\n**Rearranging**: σ*ᵢ(k) · (1 + Cᵢ) = σ*ᵢ(k) + eᵢₖ, so **eᵢₖ = σ*ᵢ(k) · Cᵢ** for all i, k.\n\n**Equilibrium proof**: Sum over k: Cᵢ = Σₖ eᵢₖ = Σₖ σ*ᵢ(k) · Cᵢ = Cᵢ · 1 = Cᵢ. This is consistent. Now if Cᵢ > 0: for each k with σ*ᵢ(k) > 0, we have eᵢₖ = σ*ᵢ(k)·Cᵢ > 0, meaning EU_i(eₖ, σ*) > EU_i(σ*). But then EU_i(σ*ᵢ, σ*) = Σₖ σ*ᵢ(k)·EU_i(eₖ, σ*) > EU_i(σ*ᵢ, σ*) — contradiction! So **Cᵢ = 0** for all i, meaning no player can improve by deviating.",
     "mathContext": "At fixed point: $e_{ik} = \\sigma^*_i(k) \\cdot C_i$. If $C_i > 0$: $EU_i(\\sigma^*_i, \\sigma^*_{-i}) = \\sum_k \\sigma^*_i(k) \\cdot EU_i(e_k, \\sigma^*_{-i}) = \\sum_k \\sigma^*_i(k) \\cdot [EU_i(\\sigma^*_i, \\sigma^*_{-i}) + e_{ik}/\\sigma^*_i(k) + \\ldots]$. The contradiction forces $C_i = 0$, i.e., $e_{ik} = 0$ for all $k$.",
     "significance": "key",
-    "relatedConcepts": ["fixed point algebra", "Nash equilibrium", "excess payoff", "contradiction"],
-    "prerequisites": ["fixed_point_is_nash", "Finset.sum_congr", "max_eq_zero_iff"]
+    "relatedConcepts": [
+      "fixed point algebra",
+      "Nash equilibrium",
+      "excess payoff",
+      "contradiction"
+    ],
+    "prerequisites": [
+      "fixed_point_is_nash",
+      "Finset.sum_congr",
+      "max_eq_zero_iff"
+    ]
   },
   {
     "id": "ann-multilinear-reindexing-sorry",
     "proofId": "brouwer-fixed-point-oq-04-oq-02",
-    "range": { "startLine": 101, "endLine": 140 },
+    "range": {
+      "startLine": 101,
+      "endLine": 140
+    },
     "type": "insight",
     "title": "The One Sorry: Multilinear Factoring by One Player's Strategy",
     "content": "`mixedUtility_linear_in_i` (the 1 sorry) states that `EU_i(eₖ, σ₋ᵢ) = Σ_{s₋ᵢ} ∏_{j≠i} σ_j(s_j) · payoff(k, s₋ᵢ)`. This is the linearity of expected utility in one player's strategy, obtained by separating player i's strategy from the others in the multilinear sum.\n\n**Proof sketch**: The full sum is `Σ_{s} ∏_j σ_j(s_j) · payoff(s)`. For player i's strategy = eₖ (pure strategy k), only terms with s_i = k survive. Separating: `Σ_{s₋ᵢ} ∏_{j≠i} σ_j(s_j) · payoff(k, s₋ᵢ)`. This requires reindexing a `Finset.sum` over `(Fin m₁) × ... × (Fin mₙ)` by factoring out the i-th coordinate.\n\n**Formalization barrier**: In Lean, `Finset.univ` for a product type doesn't automatically provide this factoring. The needed lemma is essentially `Finset.sum_product'` applied to separate the sum over all strategy profiles into `Σ_{k : Fin m_i} × Σ_{s₋ᵢ}`. This is routine mathematics but requires careful Finset bookkeeping.",
     "mathContext": "$EU_i(\\sigma) = \\sum_{s \\in \\prod_j S_j} \\prod_j \\sigma_j(s_j) \\cdot u_i(s) = \\sum_k \\sigma_i(k) \\cdot \\left(\\sum_{s_{-i}} \\prod_{j \\neq i} \\sigma_j(s_j) \\cdot u_i(k, s_{-i})\\right)$. The factoring uses `Finset.sum_product'` or `Finset.sum_comm` to separate the sum over player $i$'s strategies from the rest.",
     "significance": "key",
-    "relatedConcepts": ["Finset.sum_product'", "multilinear factoring", "sorry", "Finset.univ for product types"],
-    "prerequisites": ["Finset.sum_comm", "Finset.prod_univ_eq_prod_range", "Fin.prod_univ_succ"]
+    "relatedConcepts": [
+      "Finset.sum_product'",
+      "multilinear factoring",
+      "sorry",
+      "Finset.univ for product types"
+    ],
+    "prerequisites": [
+      "Finset.sum_comm",
+      "Finset.prod_univ_eq_prod_range",
+      "Fin.prod_univ_succ"
+    ]
   }
 ]

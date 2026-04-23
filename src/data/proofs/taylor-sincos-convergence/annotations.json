@@ -29,7 +29,7 @@
       "startLine": 35,
       "endLine": 51
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Four Derivative Transitions",
     "content": "**The derivative cycle**: Four theorems establish the cycle $\\sin \\xrightarrow{d/dx} \\cos \\xrightarrow{d/dx} -\\sin \\xrightarrow{d/dx} -\\cos \\xrightarrow{d/dx} \\sin$:\n\n1. `deriv_sin'`: $\\sin' = \\cos$ (via `Real.hasDerivAt_sin`)\n2. `deriv_cos'`: $\\cos' = -\\sin$ (via `Real.hasDerivAt_cos`)\n3. `deriv_neg_sin`: $(-\\sin)' = -\\cos$ (via `deriv_neg` and `hasDerivAt_sin`)\n4. `deriv_neg_cos`: $(-\\cos)' = \\sin$ (via `deriv_neg` and `hasDerivAt_cos`)\n\nThe proofs are one-liners using `funext` and `simp`. Each theorem states the derivative as a function equality (`deriv f = g`), not a pointwise statement — this is essential for composing with `iteratedDeriv_succ` in the period-4 proof.\n\n**Why function equality matters**: Lean's `iteratedDeriv_succ` rewrites $f^{(n+1)} = (f^{(n)})'$. To chain these, we need $\\sin' = \\cos$ as a definitional equality of functions, not merely $\\sin'(x) = \\cos(x)$ for each $x$. The `funext` tactic bridges the gap.",
     "mathContext": "$\\sin \\xrightarrow{d/dx} \\cos \\xrightarrow{d/dx} -\\sin \\xrightarrow{d/dx} -\\cos \\xrightarrow{d/dx} \\sin$",
@@ -54,7 +54,7 @@
       "startLine": 53,
       "endLine": 87
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Base Cases: Iterated Derivatives 0-3 for Sin and Cos",
     "content": "**Eight base cases** establish the first four iterated derivatives for both functions:\n\n| $n$ | $\\sin^{(n)}$ | $\\cos^{(n)}$ |\n|-----|-------------|-------------|\n| 0 | $\\sin$ | $\\cos$ |\n| 1 | $\\cos$ | $-\\sin$ |\n| 2 | $-\\sin$ | $-\\cos$ |\n| 3 | $-\\cos$ | $\\sin$ |\n\nEach proof rewrites $n$ as $k+1$ for the appropriate $k$, applies `iteratedDeriv_succ` to decompose $f^{(k+1)} = (f^{(k)})'$, then substitutes the previous base case and the derivative lemma from Section I.\n\n**Pattern**: The Lean idiom `rw [show (2 : ℕ) = 1 + 1 from rfl]` converts the literal `2` to `1 + 1` so that `iteratedDeriv_succ` can fire. This is necessary because Lean's `iteratedDeriv_succ` expects the form $n + 1$, not a literal natural number.\n\n**Observation**: At $n = 3$ for cos, we get $\\cos^{(3)} = \\sin$ — the cycle has come full circle (shifted by one position from sin).",
     "mathContext": "$\\sin^{(0)} = \\sin, \\; \\sin^{(1)} = \\cos, \\; \\sin^{(2)} = -\\sin, \\; \\sin^{(3)} = -\\cos$",
@@ -179,7 +179,7 @@
       "startLine": 218,
       "endLine": 260
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Convergence via Squeeze Theorem",
     "content": "**Main results**: `sinPartialSum_tendsto` and `cosPartialSum_tendsto` — the Taylor partial sums converge to $\\sin(x)$ and $\\cos(x)$ for all $x \\in \\mathbb{R}$.\n\n**Proof chain**:\n1. `pow_div_factorial_tendsto`: $|x|^n/n! \\to 0$ as $n \\to \\infty$, derived from Mathlib's `summable_pow_div_factorial` (summable implies $n$-th term $\\to 0$).\n2. `sin_taylor_remainder_tendsto`: $\\|\\sin(x) - S_n(x)\\| \\leq |x|^{n+1}/n! = |x| \\cdot |x|^n/n! \\to 0$, using `squeeze_zero_norm'` with the constant-multiple limit theorem.\n3. `sinPartialSum_tendsto`: If $\\sin(x) - S_n(x) \\to 0$, then $S_n(x) = \\sin(x) - (\\sin(x) - S_n(x)) \\to \\sin(x) - 0 = \\sin(x)$.\n\n**Lean technique**: The trick $|x|^{n+1}/n! = |x| \\cdot (|x|^n/n!)$ is handled by `h2.congr fun n => by ring`, which rewrites the sequence via `ring` to match the constant-multiple form. The `const_sub` trick in step 3 avoids dealing with double negation.\n\n**Symmetry**: The cos convergence proof is structurally identical — the same squeeze argument applies because $\\cos$ has the same remainder bound.",
     "mathContext": "$\\lim_{n \\to \\infty} S_n^{\\sin}(x) = \\sin(x)$ via $\\|\\sin(x) - S_n(x)\\| \\leq |x| \\cdot \\frac{|x|^n}{n!} \\to 0$",
@@ -278,7 +278,7 @@
       "startLine": 336,
       "endLine": 348
     },
-    "type": "context",
+    "type": "concept",
     "title": "API Summary and Namespace Close",
     "content": "Nine `#check` commands verify the signatures of the main exported theorems:\n- **Period-4**: `iteratedDeriv_sin_add_four`, `iteratedDeriv_cos_add_four`\n- **Uniform bound**: `norm_iteratedDeriv_sin_le`, `norm_iteratedDeriv_cos_le`\n- **Convergence**: `sinPartialSum_tendsto`, `cosPartialSum_tendsto`\n- **Summability**: `summable_sinSeries`, `summable_cosSeries`\n- **Comparison**: `sincos_remainder_tighter_than_exp`\n\nThe namespace `TaylorSinCosConvergence` closes on line 348, scoping all 29 theorems, 4 definitions, and 2 axioms.",
     "mathContext": "The 9 checked theorems span the full argument: structural property (period-4) $\\to$ quantitative bound ($\\|f^{(n)}\\| \\leq 1$) $\\to$ convergence ($S_n \\to f$) $\\to$ summability $\\to$ comparison with exp.",

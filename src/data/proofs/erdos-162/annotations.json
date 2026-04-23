@@ -62,7 +62,7 @@
       "startLine": 51,
       "endLine": 54
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Edge Count Partition",
     "content": "**colourEdgeCount_total:**\n\nThe red and blue edge counts sum to C(|S|, 2):\n```\nred edges + blue edges = C(|S|, 2)\n```\n\nThis is the fundamental partition identity: every edge is exactly one colour. Currently stated with `sorry` — the proof requires showing the filter partition covers all ordered pairs with i < j.",
     "mathContext": "This identity is the basis for the balance condition: if both colours exceed α · C(|S|,2), then α must be at most 1/2.",
@@ -138,7 +138,7 @@
       "startLine": 120,
       "endLine": 134
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Θ(log n) Growth and Extremal Case",
     "content": "**discrepancy_theta_log** — combines the lower and upper bounds to establish F(n, α) = Θ(log n).\n\n**half_is_extremal** — F(n, 1/2) ≤ F(n, α) for all α ≤ 1/2, by monotonicity. The case α = 1/2 is the hardest: requiring each colour to have nearly half the edges is the tightest constraint.\n\nThis is the first proved theorem (not axiom): it follows directly from combining the axiomatised bounds.",
     "mathContext": "The Θ(log n) result is well-established in the literature. The open question is whether the ratio F(n,α)/log n converges to a definite limit.",
@@ -176,7 +176,7 @@
       "startLine": 150,
       "endLine": 162
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Concrete Edge Count Examples",
     "content": "**Verified examples** (via `native_decide`):\n\n- C(1, 2) = 0 — K₁ has no edges\n- C(2, 2) = 1 — K₂ has 1 edge\n- C(4, 2) = 6 — K₄ has 6 edges (balanced colouring: 3 red, 3 blue)\n- C(8, 2) = 28 — K₈ has 28 edges (probabilistic method ensures balanced colourings exist)\n\nThese ground the abstract theory in concrete computations that Lean can verify.",
     "mathContext": "The examples illustrate the growth C(n,2) = n(n-1)/2. For K₄, a perfect balance (3 red, 3 blue) is achievable. As n grows, the question is how large a balanced subgraph persists.",

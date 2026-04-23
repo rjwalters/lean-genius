@@ -138,7 +138,7 @@
       "startLine": 139,
       "endLine": 160
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Grzesik-Hatami Pentagon Theorem",
     "content": "**Main Theorem**: Every triangle-free graph on 5n vertices contains at most n^5 copies of C5. The proof uses Razborov's flag algebras, a computer-assisted method.",
     "mathContext": "Flag algebras convert extremal problems to semidefinite programs. The key is encoding graph constraints as polynomial inequalities and using SDP solvers to verify bounds.",
@@ -213,7 +213,7 @@
       "startLine": 230,
       "endLine": 257
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorems",
     "content": "**erdos_24_pentagon_theorem**: The main result. **erdos_24_extremal_exists**: Proves the extremal graph exists and achieves the bound.",
     "mathContext": "The existence theorem constructs the extremal graph explicitly using balancedBlowupC5, showing the bound is tight. This completes the solution to Problem #24.",

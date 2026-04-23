@@ -34,7 +34,7 @@
     "title": "Simp Lemmas for Evaluation",
     "content": "Registers the base cases and recurrence as `@[simp]` lemmas. This is crucial for automated simplification: when Lean encounters `crossingFactor 4`, the simplifier can unfold it step-by-step using these lemmas rather than requiring manual `rfl` calls. The `rfl` proofs confirm that these are definitional equalities, not theorems requiring proof.",
     "mathContext": "$\\alpha_2 = \\frac{2}{\\pi}$, $\\alpha_3 = \\frac{1}{2}$, $\\alpha_{n+4} = \\frac{n+2}{n+3}\\alpha_{n+2}$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "simp tactic",
       "definitional equality",
@@ -95,7 +95,7 @@
       "startLine": 91,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Positivity by Structural Induction",
     "content": "Proves $\\alpha_n > 0$ for all $n \\geq 2$ by matching the recursive definition's structure. The base cases use Lean's `positivity` tactic ($2/\\pi > 0$ from $\\pi > 0$) and `norm_num` ($1/2 > 0$). The inductive step uses `mul_pos`: a product of positive reals is positive, where the ratio $(n+2)/(n+3)$ is positive by `div_pos` and the recursive term is positive by the induction hypothesis. This mirrors the mathematical argument that a product of positive terms remains positive.",
     "mathContext": "$\\alpha_n > 0$ for $n \\geq 2$: base from $\\frac{2}{\\pi} > 0$ and $\\frac{1}{2} > 0$; step from $\\frac{n+2}{n+3} > 0$ and $\\alpha_{n+2} > 0$",
@@ -161,7 +161,7 @@
       "startLine": 147,
       "endLine": 154
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Monotonicity in Arc Length",
     "content": "Proves that longer curves produce more expected crossings: $L_1 \\leq L_2 \\implies E_n(L_1) \\leq E_n(L_2)$. Uses `mul_le_mul_of_nonneg_left` with $\\alpha_n > 0$ from the positivity theorem. This is geometrically obvious but formally requires the positivity result, showcasing how foundational lemmas compose.",
     "mathContext": "$L_1 \\leq L_2 \\implies \\alpha_n \\frac{L_1}{d} \\leq \\alpha_n \\frac{L_2}{d}$",
@@ -204,7 +204,7 @@
       "startLine": 195,
       "endLine": 223
     },
-    "type": "technique",
+    "type": "concept",
     "title": "General Strict Decrease via Recurrence Ratio",
     "content": "Proves the general strict decrease $\\alpha_{n+2} < \\alpha_n$ for all $n \\geq 2$, bypassing the need for explicit Gamma function computations. The argument is elegant: since $\\alpha_{n+2} = \\frac{n}{n+1}\\alpha_n$ and $\\frac{n}{n+1} < 1$ while $\\alpha_n > 0$, we get $\\alpha_{n+2} < 1 \\cdot \\alpha_n = \\alpha_n$. The proof uses `obtain ⟨m, rfl⟩` to witness $n = m + 2$, then applies `mul_lt_mul_of_pos_right` with the ratio bound. This is the key structural result: crossing probability strictly decreases with dimension.",
     "mathContext": "$\\alpha_{n+2} = \\underbrace{\\frac{n}{n+1}}_{< 1} \\cdot \\underbrace{\\alpha_n}_{> 0} < \\alpha_n$",
@@ -226,7 +226,7 @@
       "startLine": 229,
       "endLine": 234
     },
-    "type": "context",
+    "type": "concept",
     "title": "Asymptotic Vanishing",
     "content": "Proves that $\\alpha_n \\to 0$ as $n \\to \\infty$: in high dimensions, a random unit vector concentrates its mass equally across all coordinates, so the expected absolute projection onto any single axis vanishes. Uses a squeeze argument with a $1/\\sqrt{n}$ upper bound derived from the recurrence relation.",
     "mathContext": "$\\alpha_n \\to 0$ as $n \\to \\infty$; equivalently $\\prod_{j=1}^{\\infty}\\frac{j}{j+1} = 0$ (Wallis product divergence)",

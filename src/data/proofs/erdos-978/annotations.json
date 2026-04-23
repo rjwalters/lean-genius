@@ -62,7 +62,7 @@
       "startLine": 64,
       "endLine": 87
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Squarefree Examples",
     "content": "**Verified squarefree numbers:**\n\n- **one_squarefree:** 1 is squarefree (vacuously: p² ≥ 4 > 1 for any prime)\n- **two_squarefree:** 2 is squarefree (only prime is 2, and 4 ∤ 2)\n- **three_squarefree:** 3 is squarefree (only prime is 3, and 9 ∤ 3)\n\nThese are fully proved using interval_cases and omega tactics.",
     "significance": "supporting",
@@ -230,7 +230,7 @@
       "startLine": 255,
       "endLine": 295
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Problem Summary",
     "content": "**erdos_978_summary:**\n\nCombines all three main results into one theorem.\n\n**Status of Erdős Problem #978:**\n\n| Question | About | Answer |\n|----------|-------|--------|\n| 1 | (d-1)-power-free density | **YES** (Hooley 1967) |\n| 2 | (d-2)-power-free infinitely many | **YES for d ≥ 9** (Browning 2011) |\n| 3 | n⁴ + 2 squarefree | **OPEN** (d = 4 < 9) |\n\n**Key insight:** The gap between (d-1) and (d-2) power-free represents the frontier of current knowledge.",
     "significance": "key",

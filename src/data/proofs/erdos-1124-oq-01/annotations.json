@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 21
     },
-    "type": "context",
+    "type": "concept",
     "title": "Tarski's Circle-Squaring Problem",
     "content": "Tarski asked in 1925 whether a disk can be partitioned into finitely many pieces and reassembled by translations into a square of equal area. Laczkovich answered affirmatively in 1990, using roughly 10^50 non-measurable pieces and the Axiom of Choice. This file formalizes the follow-up open question: what is the minimum number of pieces needed? The formalization covers three generations of results -- Laczkovich (1990), Grabowski-Mathe-Pikhurko (2016, measurable pieces), and Marks-Unger (2017, Borel pieces with fewer than 10^5 pieces).",
     "mathContext": "Tarski's problem sits at the intersection of geometric measure theory and the Banach-Tarski tradition. Unlike the Banach-Tarski paradox (which uses rotations and non-measurable pieces to duplicate a ball), circle-squaring preserves area and uses only translations.",
@@ -51,7 +51,7 @@
       "startLine": 83,
       "endLine": 92
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Reflexivity via Identity Translation",
     "content": "The proof of reflexivity is fully verified (no sorry). Every set is 1-piece equidecomposable with itself: use the set itself as the single piece and the zero vector as the translation. The proof leverages Subsingleton.elim to handle the fact that Fin 1 has exactly one element, making the disjointness condition vacuously true.",
     "mathContext": "Reflexivity: $S \\sim_1 S$ via the decomposition $\\text{pieces}(0) = S$ and translation $v_0 = 0$. The identity $\\text{translateBy}(0)(S) = S$ is immediate from $p + 0 = p$.",
@@ -72,7 +72,7 @@
       "startLine": 94,
       "endLine": 111
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Symmetry via Inverse Translations",
     "content": "Symmetry is fully proved by swapping the two decompositions and negating each translation vector. The helper theorem translateBy_inv_image shows that applying translateBy(-v) to translateBy(v)(S) recovers S. This is the set-level analogue of the group-theoretic fact that translation by v has inverse translation by -v.",
     "mathContext": "If $B_i = A_i + v_i$ for each piece, then $A_i = B_i + (-v_i)$. Formally, $\\text{translateBy}(-v)(\\text{translateBy}(v)(S)) = S$ follows from $(p + v) + (-v) = p$.",
@@ -93,7 +93,7 @@
       "startLine": 113,
       "endLine": 171
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Monotonicity by Appending an Empty Piece",
     "content": "The monotonicity theorem is the longest fully-verified proof in the file. It shows that N-piece equidecomposability implies (N+1)-piece equidecomposability by extending the Fin n indexed family to Fin (n+1), mapping the new index to the empty set. The bulk of the proof re-establishes the disjointness and union conditions for the extended families, with careful case-splitting on whether each index falls below n.",
     "mathContext": "Given $\\{A_0, \\ldots, A_{n-1}\\}$ decomposing $S$, define $A'_i = A_i$ for $i < n$ and $A'_n = \\emptyset$. Then $\\bigcup_{i=0}^{n} A'_i = \\bigcup_{i=0}^{n-1} A_i = S$ and $\\emptyset + v = \\emptyset$ for any translation $v$.",
@@ -115,7 +115,7 @@
       "startLine": 195,
       "endLine": 227
     },
-    "type": "context",
+    "type": "concept",
     "title": "Three Generations of Upper Bounds",
     "content": "The file axiomatizes three progressively stronger results. Laczkovich (1990) showed circle-squaring with at most 10^50 non-measurable pieces. Grabowski-Mathe-Pikhurko (2016) proved that the pieces can be chosen Lebesgue measurable, removing the Axiom of Choice objection. Marks-Unger (2017) achieved Borel pieces with fewer than 10^5 pieces. Each result is a strictly stronger statement, and the formalization captures the measurability upgrade as an additional constraint on the piece sets.",
     "mathContext": "Laczkovich: $\\exists$ decomposition into $\\leq 10^{50}$ pieces (AC-dependent). Marks-Unger: $\\exists$ decomposition into $< 10^5$ Borel pieces (constructive methods from descriptive set theory). The gap between $10^5$ and $10^{50}$ represents the cost of Axiom of Choice avoidance.",
@@ -204,7 +204,7 @@
       "startLine": 454,
       "endLine": 477
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Complete Bound Chain: 3 <= minPieceCount <= 10^50",
     "content": "The culminating result combines all prior work into the bound 3 <= minPieceCount(r,s) <= 10^50. The lower bound proof uses case analysis via omega on the three possibilities (0, 1, or 2 pieces), dispatching each case with the corresponding impossibility result: 0-piece impossibility (nonemptiness), 1-piece impossibility (diagonal norm argument), and 2-piece impossibility (topological obstruction, axiomatized). The upper bound follows directly from Laczkovich's theorem via the minimality axiom.",
     "mathContext": "Lower bound: If $\\text{minPieceCount} < 3$, then $\\text{minPieceCount} \\in \\{0, 1, 2\\}$. Cases 0 and 1 are proved impossible; case 2 is axiomatized (topological argument involving the Jordan curve theorem). Upper bound: Laczkovich gives a $10^{50}$-piece decomposition, so $\\text{minPieceCount} \\leq 10^{50}$ by minimality.",

@@ -29,7 +29,7 @@
       "startLine": 41,
       "endLine": 42
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basel Problem: ζ(2) = π²/6",
     "content": "Derives $\\zeta(2) = \\pi^2/6$ directly from Mathlib's `hasSum_zeta_two`. The proof pattern is elegant: unfold the tsum definition, then extract the equality from the HasSum witness using `.tsum_eq`. This is the celebrated Basel problem, first solved by Euler in 1734 using a daring manipulation of infinite products that he later justified rigorously.",
     "mathContext": "$\\zeta(2) = \\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}$",
@@ -163,7 +163,7 @@
       "startLine": 80,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Transcendence Implies Irrationality",
     "content": "Sorry-free proof that the transcendence conjecture implies the irrationality conjecture, using Mathlib's `Transcendental.irrational`. This is the top link in the implication chain: every transcendental number is irrational (by contrapositive, since rationals are algebraic).",
     "mathContext": "If $\\alpha$ is transcendental then $\\alpha$ is irrational (contrapositive: $\\mathbb{Q} \\subset \\overline{\\mathbb{Q}}$).",
@@ -203,7 +203,7 @@
       "startLine": 92,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conjecture Gives Both ζ(3) and ζ(5) Irrational",
     "content": "Further demonstrates the conjecture's strength by extracting both $\\zeta(3)$ and $\\zeta(5)$ irrationality as a conjunction. Uses `omega` to discharge the $1 \\leq 2$ condition for $k=2$.",
     "mathContext": "$\\zeta(3) \\notin \\mathbb{Q} \\wedge \\zeta(5) \\notin \\mathbb{Q}$.",
@@ -246,7 +246,7 @@
       "startLine": 113,
       "endLine": 119
     },
-    "type": "technique",
+    "type": "concept",
     "title": "ζ(2) Transcendence (Sorry Target)",
     "content": "Asserts $\\zeta(2)$ is transcendental with sorry on the algebraic manipulation. The proof strategy: $\\zeta(2) = \\pi^2/6$, so if $\\zeta(2)$ were algebraic, then $\\pi^2 = 6\\zeta(2)$ would be algebraic (algebraic numbers form a field), hence $\\pi$ would be algebraic — contradicting Lindemann. The sorry is on the Mathlib gap: closure of algebraic numbers under field operations and $n$th roots.",
     "mathContext": "$\\pi^2/6$ algebraic $\\Rightarrow$ $\\pi^2$ algebraic $\\Rightarrow$ $\\pi$ algebraic $\\Rightarrow$ contradiction with Lindemann.",
@@ -333,7 +333,7 @@
       "startLine": 150,
       "endLine": 157
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conjecture Implies Rivoal",
     "content": "Sorry-free proof that the irrationality conjecture subsumes Rivoal's theorem. Uses `Set.infinite_of_injective_forall_mem` with the injection $n \\mapsto n+1$: if every $\\zeta(2(n+1)+1)$ is irrational, the set of witnesses is infinite. This is a clean structural argument using Mathlib's set-theoretic infrastructure rather than manual cardinality reasoning.",
     "mathContext": "If $f: \\mathbb{N} \\to S$ is injective and $\\text{ran}(f) \\subseteq S$, then $S$ is infinite. Here $f(n) = n+1$.",
@@ -397,11 +397,11 @@
       "startLine": 185,
       "endLine": 185
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Status: OPEN",
     "content": "A simple string recording the problem status. No odd zeta value is known to be transcendental as of 2026. Even the most accessible case, $\\zeta(3)$ transcendence, appears to require fundamentally new techniques beyond current methods.",
     "mathContext": "Status: OPEN. Best known: $\\zeta(3) \\notin \\mathbb{Q}$ (Apery 1978).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "open problems in number theory"
     ],

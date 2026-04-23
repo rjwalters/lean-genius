@@ -78,7 +78,7 @@
       "startLine": 63,
       "endLine": 76
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Known Bounds: Ω(N^{1/3}) Lower and O(√N) Upper",
     "content": "**`greedy_sidon_lower_bound`**: There exists $C > 0$ such that $|A \\cap [1,N]| \\geq C \\cdot N^{1/3}$ for all $N \\geq 1$. The proof idea: when the greedy sequence has $k$ elements, it has $O(k^2)$ forbidden sums. Each step adds the smallest non-forbidden integer, so the $k$-th element is $a(k) \\leq O(k^3)$ (at most $O(k^2)$ values are blocked per step). Inverting: $k = |A \\cap [1,N]| \\geq \\Omega(N^{1/3})$.\n\n**`erdos_turan_upper_bound`**: Any Sidon set in $[1,N]$ has $\\leq \\sqrt{N} + O(N^{1/4})$ elements (Erdős–Turán, 1941). So the greedy sequence itself satisfies this bound. The gap between $N^{1/3}$ and $N^{1/2}$ is the core open problem.",
     "mathContext": "$\\exists C > 0: \\forall N \\geq 1,\\; |A \\cap [1,N]| \\geq C N^{1/3}$. Upper bound: $|A \\cap [1,N]| \\leq \\sqrt{N} + C' N^{1/4}$ (Erdős–Turán). The open conjecture closes this gap: $|A \\cap [1,N]| \\geq C_\\varepsilon N^{1/2-\\varepsilon}$.",

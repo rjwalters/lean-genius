@@ -196,7 +196,7 @@
       "startLine": 272,
       "endLine": 302
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Comparability Examples",
     "content": "**Concrete Examples:**\n\n1. **singleton_comparable:** Two distinct singletons {a} and {b} are NOT comparable (neither contains the other)\n\n2. **empty_comparable:** The empty set ∅ is comparable to every set (∅ ⊆ A for all A)\n\n3. **full_comparable:** Every subset A of a base set B is comparable to B (A ⊆ B)\n\nThese illustrate the basic behavior of comparability.",
     "significance": "supporting",
@@ -234,7 +234,7 @@
       "startLine": 323,
       "endLine": 384
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Results Summary",
     "content": "**erdos_777_summary:**\n\nCombines all three main results:\n\n1. **Question 1 (YES):** Small families have bounded edges\n2. **Question 2 (NO):** Quadratic density does not imply small family\n3. **Question 3 (YES):** Subquadratic threshold exists\n\n```lean\ntheorem erdos_777_summary :\n    (∀ ε : ℝ, ε > 0 → ...) ∧  -- Q1\n    (∃ (f : ℕ → ...), ...) ∧   -- Q2\n    (∀ ε : ℝ, ε > 0 → ...)    -- Q3\n```\n\nErdos Problem #777 is completely resolved.",
     "significance": "key",

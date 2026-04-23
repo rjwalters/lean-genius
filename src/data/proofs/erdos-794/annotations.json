@@ -144,7 +144,7 @@
       "startLine": 178,
       "endLine": 196
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_794_disproved and erdos_794_original_false (PROVED)",
     "content": "erdos_794_disproved proves ¬Erdos794Simplified: assumes the conjecture, extracts Harris's H with 9 vertices and 28 edges, applies the conjecture to get ContainsK4Minus H, contradicting ¬ContainsK4Minus. erdos_794_original_false extends to ¬Erdos794Conjecture by showing Simplified ↔ Original.",
     "mathContext": "The proof of $\\neg\\texttt{Erdos794Simplified}$: assume $\\forall H,\\; |V| = 3n \\wedge |E| \\geq n^3 + 1 \\implies K_4^- \\subseteq H$. Apply with Harris's $H$ and $n = 3$: $|V| = 9 = 3 \\times 3$ and $|E| = 28 \\geq 3^3 + 1 = 28$, giving $K_4^- \\subseteq H$, contradicting $\\neg(K_4^- \\subseteq H)$. For the original: if $\\texttt{Original}$ holds, then for any $H$ with enough edges, either $K_4^- \\subseteq H$ (done) or $\\texttt{5-7} \\subseteq H$ (which implies $K_4^- \\subseteq H$ by Balogh), giving $\\texttt{Simplified}$. So $\\neg\\texttt{Simplified} \\implies \\neg\\texttt{Original}$.",
@@ -190,7 +190,7 @@
       "startLine": 227,
       "endLine": 256
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary: erdos_794_summary and erdos_794 (PROVED)",
     "content": "erdos_794_summary packages three results: ¬Erdos794Conjecture (from erdos_794_original_false), Contains5_7 → ContainsK4Minus (from balogh_observation), and density ≥ 2/7 (from frankl_furedi_lower). erdos_794 is the final theorem: ¬Erdos794Conjecture.",
     "mathContext": "The summary theorem $\\texttt{erdos\\_794\\_summary} : \\neg\\texttt{Erdos794Conjecture} \\wedge (\\forall H, \\texttt{Contains5\\_7}\\; H \\to \\texttt{ContainsK4Minus}\\; H) \\wedge \\texttt{turanDensityK4Minus} \\geq 2/7$ is proved by $\\langle\\texttt{erdos\\_794\\_original\\_false}, \\lambda\\; H \\Rightarrow \\texttt{balogh\\_observation}\\; H, \\texttt{frankl\\_furedi\\_lower}\\rangle$. The file has 0 sorry entries and uses 3 axioms (balogh_observation, harris_counterexample_exists, frankl_furedi_lower) plus 1 noncomputable definition (turanDensityK4Minus).",

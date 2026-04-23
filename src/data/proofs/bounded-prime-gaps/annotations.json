@@ -30,7 +30,7 @@
       "startLine": 66,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Admissibility: Empty, Singleton, Subset Properties",
     "content": "Three foundational lemmas establish the structural properties of admissibility. `admissible_empty` is trivial: the empty set has no residues, so the image always has card 0 < p. `admissible_singleton` proves a single element is always admissible: it has exactly one residue mod any prime, and all primes are ≥ 2 > 1. `admissible_subset` uses `Finset.card_le_card (Finset.image_subset_image h)` to show that a subset's image is contained in the full image, hence has smaller cardinality. `admissible_of_card_lt_two` handles the case |H| < 2 via the chain |image(H)| ≤ |H| < 2 ≤ p.",
     "mathContext": "The subset property is key: if $H_1 \\subseteq H_2$ and $H_2$ is admissible, then $H_1$ is admissible. Admissibility is 'anti-monotone' in set inclusion — smaller sets satisfy it more easily. Contrapositive: if $H_1$ is NOT admissible (covers all residues mod some prime), then any superset $H_2 \\supseteq H_1$ is also NOT admissible.",

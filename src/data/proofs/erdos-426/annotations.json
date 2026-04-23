@@ -223,7 +223,7 @@
       "startLine": 183,
       "endLine": 202
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Problem Resolved",
     "content": "**original_question_false, erdos_426_resolved:**\n\n¬OriginalQuestion\n\nThe answer to Erdős's question is NO. Unique subgraphs are rare - they cannot approach the total count of non-isomorphic graphs.",
     "significance": "key",
@@ -277,7 +277,7 @@
       "startLine": 255,
       "endLine": 281
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Problem Summary",
     "content": "**erdos_426_summary:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | Can f(n) = Ω(2^(n choose 2)/n!)? |\n| Answer | NO (Bradač-Christoph 2024) |\n| Upper bound | f(n) = o(2^(n choose 2)/n!) |\n| Best construction | 2^{(n choose 2) - O(n)}/n! (Brouwer) |\n| Prize | $25 for impossibility proof |",
     "significance": "key",

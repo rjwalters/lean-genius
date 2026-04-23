@@ -196,7 +196,7 @@
       "startLine": 129,
       "endLine": 142
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Squarefree Examples",
     "content": "We verify small cases using **native_decide**: 2, 3, 5, 6 are squarefree, while 4 = 2² is not. These establish the basic structure of the sequence.",
     "mathContext": "The native_decide tactic uses Lean's kernel to check decidable predicates. Squarefree has a decidable instance via factorization.",
@@ -215,7 +215,7 @@
       "startLine": 166,
       "endLine": 182
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Small Gap Examples",
     "content": "Concrete gap computations: gap of 1 (1→2, 2→3, 5→6, 6→7), gap of 2 (3→5, skipping 4=2²), gap of 3 (7→10, skipping 8=2³ and 9=3²).",
     "mathContext": "Most gaps are 1 or 2. Larger gaps occur when multiple consecutive numbers are divisible by squares. The gap 7→10 is the first gap of 3.",

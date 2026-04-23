@@ -120,7 +120,7 @@
       "startLine": 153,
       "endLine": 175
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Special Cases: Complete, Bipartite, Star",
     "content": "**complete_graph_case** proves the conjecture reduces to Chvátal when G = Kₘ (the only fully proved case). **bipartite_case** axiomatizes an upper bound for K_{m,m}. **starGraph** constructs K_{1,n-1} as a bipartite graph, relevant because stars are the 'easiest' trees for Ramsey problems.",
     "mathContext": "Stars K_{1,n-1} have maximum degree n-1 (hub vertex), making them extremal among trees. For stars, R(K_{1,n}, G) can often be computed exactly because embedding a star requires only finding a vertex with enough neighbors of the right color.",

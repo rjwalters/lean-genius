@@ -101,7 +101,7 @@
       "startLine": 93,
       "endLine": 101
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #108: Affirmative Answer",
     "content": "**The answer is YES**: The threshold function f(k,r) exists for all valid parameters. This theorem is a direct consequence of the axiomatized Erdős-Hajnal-Rödl theorem, providing a clean statement of the positive resolution.",
     "mathContext": "The proof is simply `erdos_hajnal_rodl_theorem` - we extract the main result directly from the axiom. This shows the logical structure: once the core theorem is established, the problem's resolution follows immediately.",

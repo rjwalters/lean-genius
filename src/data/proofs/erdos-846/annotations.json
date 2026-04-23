@@ -2,7 +2,7 @@
   {
     "id": "ann-e846-imports",
     "proofId": "erdos-846",
-    "type": "context",
+    "type": "concept",
     "title": "Euclidean Geometry Imports",
     "content": "Imports InnerProductSpace for ℝ², Finset for combinatorics, and tactics.",
     "mathContext": "The formalization represents points in $\\mathbb{R}^2$ as `Fin 2 → ℝ` (the coordinate representation) rather than `EuclideanSpace ℝ (Fin 2)`, avoiding the metric space infrastructure in favor of direct coordinate access for the collinearity cross-product formula. The `Finset` imports support the finite subset quantification in the $\\varepsilon$-non-trilinear property.",

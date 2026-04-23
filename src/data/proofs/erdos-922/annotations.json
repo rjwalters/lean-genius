@@ -118,7 +118,7 @@
       "startLine": 98,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "concept",
     "title": "k = 0 Implies Bipartiteness",
     "content": "**folkman_zero_implies_bipartite:**\n\nIf every subgraph has α ≥ n/2, then χ(G) ≤ 2.\n\n**Proof idea:**\n- No odd cycles exist (they violate the condition)\n- A graph is bipartite iff it has no odd cycles\n- Bipartite graphs are 2-colorable",
     "significance": "key",
@@ -154,7 +154,7 @@
       "startLine": 121,
       "endLine": 124
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #922: SOLVED",
     "content": "**erdos_922:**\n\nThe statement of the problem, now a theorem:\n\n∀ k ≥ 0, Folkman property with k → χ(G) ≤ k+2\n\n**Answer: YES** - proved by Folkman (1970).",
     "significance": "key",
@@ -190,7 +190,7 @@
       "startLine": 141,
       "endLine": 144
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The k = 1 Case",
     "content": "**folkman_k1:**\n\nFor k = 1: Folkman property implies χ(G) ≤ 3.\n\nThis is the first non-trivial case that Erdős and Hajnal couldn't prove themselves.",
     "significance": "key",

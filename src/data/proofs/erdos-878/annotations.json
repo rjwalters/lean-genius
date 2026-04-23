@@ -119,7 +119,7 @@
       "startLine": 182,
       "endLine": 230
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "**erdos_878_summary** and **erdos_878**: Combine the known results:\n1. f(n) ≤ F(n) for all n (f_le_F)\n2. Erdős's bounds on H(x): x·log⁴x ≪ H(x) ≪ x·log³x\n3. f(n)/n has no mean value (limsup = ∞, liminf finite)\n\nProved by combining f_le_F, H_lower_bound, H_upper_bound, and f_no_mean_value.\n\nThe main questions (Questions 1-3, precise H(x) asymptotic) remain OPEN.",
     "mathContext": "The summary captures what is known while the open questions are formalized as Prop definitions without being asserted.",

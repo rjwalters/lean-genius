@@ -30,7 +30,7 @@
       "startLine": 46,
       "endLine": 118
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Totient Computations and Power-of-2 Tests",
     "content": "Core computations: $\\varphi(n)$ for $n = 3, \\ldots, 17, 257, 65537$ proved by `decide`/`native_decide`. The key helper `not_pow_two_of_odd_prime_dvd` shows: if $p \\mid n$ with $p$ an odd prime, then $n \\neq 2^k$. Proof: $p \\mid 2^k \\Rightarrow p \\mid 2$ (by `Prime.dvd_of_dvd_pow`) $\\Rightarrow p \\le 2$, contradicting $p \\ge 3$.\n\n**Positive**: $\\varphi(3) = 2$, $\\varphi(5) = 4$, $\\varphi(17) = 16$, $\\varphi(257) = 256$, $\\varphi(65537) = 65536$ — all $2^k$.\n**Negative**: $\\varphi(7) = 6$ ($3 \\mid 6$), $\\varphi(9) = 6$, $\\varphi(11) = 10$ ($5 \\mid 10$), $\\varphi(13) = 12$ ($3 \\mid 12$).",
     "mathContext": "$p \\mid n$, $p$ odd prime $\\Rightarrow n \\neq 2^k$. Proof: $p \\mid 2^k \\Rightarrow p \\mid 2 \\Rightarrow p \\leq 2$, contradiction.",
@@ -102,7 +102,7 @@
       "startLine": 265,
       "endLine": 291
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Non-Constructible Polygons: The Odd Prime Obstruction",
     "content": "Four non-constructible polygons: $n = 7, 9, 11, 13$.\n\n- **7-gon**: $\\varphi(7) = 6 = 2 \\cdot 3$. The factor 3 prevents a 2-tower.\n- **9-gon**: $\\varphi(9) = 6$. Despite 3 being Fermat, $9 = 3^2$ fails — primes must appear at most once.\n- **11-gon**: $\\varphi(11) = 10 = 2 \\cdot 5$. 11 is prime but not Fermat ($11 \\neq 2^{2^k}+1$).\n- **13-gon**: $\\varphi(13) = 12 = 4 \\cdot 3$. Odd factor 3 is the obstruction.",
     "mathContext": "$\\varphi(7) = 6$, $\\varphi(9) = 6$, $\\varphi(11) = 10$, $\\varphi(13) = 12$ — none powers of 2.",
@@ -148,7 +148,7 @@
       "startLine": 332,
       "endLine": 385
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Composite Polygon Examples: Constructible and Non-Constructible",
     "content": "Section VIII applies the Gauss-Wantzel criterion to composite numbers. **Constructible composites**: $n = 15 = 3 \\times 5$ with $\\varphi(15) = 8 = 2^3$, and $n = 20 = 4 \\times 5$ with $\\varphi(20) = 8 = 2^3$. **Non-constructible composites**: $n = 14 = 2 \\times 7$ with $\\varphi(14) = 6$ (factor 3), and $n = 18 = 2 \\times 9$ with $\\varphi(18) = 6$ (factor 3). The constructibility of 15 is historically significant: the ancient Greeks could construct the regular 15-gon via combining the triangle and pentagon constructions, confirmed here algebraically via $\\varphi(15) = 2^3$.",
     "mathContext": "$\\varphi(15) = \\varphi(3)\\varphi(5) = 2 \\cdot 4 = 8 = 2^3$ (constructible). $\\varphi(14) = \\varphi(2)\\varphi(7) = 1 \\cdot 6 = 6 \\neq 2^k$ (not constructible, factor 3).",
@@ -171,7 +171,7 @@
       "startLine": 386,
       "endLine": 454
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Arithmetic Infrastructure and the (Z/nZ)* Bridge",
     "content": "**Three structural lemmas**:\n1. `totient_pow2_of_two_power`: $\\varphi(2^k) = 2^{k-1}$ is a power of 2.\n2. `totient_prod_is_pow2`: coprime with pow2-totients $\\Rightarrow$ product has pow2-totient (multiplicativity).\n3. `odd_prime_pow_gt_one_not_pow2`: $p$ odd prime, $k \\ge 2 \\Rightarrow \\varphi(p^k) \\neq 2^j$ (why $9 = 3^2$, $25 = 5^2$ fail).\n\n**The (Z/nZ)* bridge**: `units_zmod_card_eq_totient` proves $|(\\mathbb{Z}/n\\mathbb{Z})^*| = \\varphi(n)$, and `units_zmod_is_2group_iff` proves the group is a 2-group $\\iff$ $\\varphi(n) = 2^k$, connecting Galois theory (OQ02) to the totient criterion.",
     "mathContext": "$\\varphi(2^k) = 2^{k-1}$. $\\gcd(m,n)=1 \\Rightarrow \\varphi(mn) = \\varphi(m)\\varphi(n)$. $p$ odd, $k \\ge 2 \\Rightarrow p \\mid \\varphi(p^k)$. Bridge: $|(\\mathbb{Z}/n\\mathbb{Z})^*| = \\varphi(n)$ and 2-group $\\iff$ $2^k$.",
@@ -195,7 +195,7 @@
       "startLine": 456,
       "endLine": 558
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Composite Polygon Examples: Products and Squares",
     "content": "**Constructible composites**: $n = 15, 20, 34, 51, 85, 255$ (products of distinct Fermat primes $\\times$ powers of 2).\n- $15 = 3 \\times 5$: $\\varphi = 8$. Also proved structurally via `totient_prod_is_pow2`.\n- $255 = 3 \\times 5 \\times 17$: $\\varphi = 128 = 2^7$. Three distinct Fermat primes.\n\n**Non-constructible composites**: $n = 14, 18, 21, 25, 35$.\n- $25 = 5^2$: fails despite 5 being Fermat, because each Fermat prime may appear at most once. Proved via `odd_prime_pow_gt_one_not_pow2`.\n- $21 = 3 \\times 7$: fails because 7 is NOT a Fermat prime ($\\varphi(7) = 6$, odd factor 3).",
     "mathContext": "$\\varphi(15) = 8$, $\\varphi(51) = 32$, $\\varphi(255) = 128$ (constructible). $\\varphi(21) = 12$, $\\varphi(25) = 20$, $\\varphi(35) = 24$ (not constructible).",
@@ -242,7 +242,7 @@
       "startLine": 581,
       "endLine": 708
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Axiom Elimination via Chebyshev Polynomials",
     "content": "Section XIV begins the elimination of the `gauss_wantzel_theorem` axiom. The key theorem `cos_2pi_div_n_isIntegral` proves that $\\cos(2\\pi/n)$ is algebraic over $\\mathbb{Q}$ using Chebyshev polynomials: $T_n(\\cos\\theta) = \\cos(n\\theta)$, so setting $\\theta = 2\\pi/n$ gives $T_n(\\cos(2\\pi/n)) = \\cos(2\\pi) = 1$, making $\\cos(2\\pi/n)$ a root of $T_n - 1$. This is one of three components needed to prove Gauss-Wantzel from scratch. Also includes `totient_div2_pow2_iff` linking $\\varphi(n)/2 = 2^k$ to `TotientIsPow2`, handling the edge case that $\\varphi(n) \\geq 2$ for $n \\geq 3$ (so division by 2 is valid).",
     "mathContext": "Chebyshev polynomials: $T_n(\\cos\\theta) = \\cos(n\\theta)$. Setting $\\theta = 2\\pi/n$: $T_n(\\cos(2\\pi/n)) = 1$, so $\\cos(2\\pi/n)$ is a root of $T_n - 1 \\in \\mathbb{Q}[x]$. Nonzero: $T_n = 1$ would force $\\cos(\\pi/n) = 1$ (absurd). Hence $\\cos(2\\pi/n)$ is algebraic over $\\mathbb{Q}$.",
@@ -267,7 +267,7 @@
       "startLine": 710,
       "endLine": 1133
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cyclotomic-Cosine Bridge: From Roots of Unity to Constructibility",
     "content": "Sections XV-XXI build the comprehensive infrastructure connecting cyclotomic polynomials to cosine values. The key chain: $\\zeta_n = e^{2\\pi i/n}$ is a primitive $n$th root of unity; $\\cos(2\\pi/n) = (\\zeta_n + \\zeta_n^{-1})/2$ generates the maximal real subfield of $\\mathbb{Q}(\\zeta_n)$; the extension $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\cos(2\\pi/n))] = 2$ because $\\zeta_n$ satisfies the quadratic $X^2 - 2\\cos(2\\pi/n)X + 1 = 0$ over $\\mathbb{Q}(\\cos(2\\pi/n))$, which is irreducible over $\\mathbb{R}$ (hence over $\\mathbb{Q}(\\cos)$) when $n \\geq 3$ because $\\sin(2\\pi/n) > 0$ prevents real roots.\n\nThis 400+ line section also establishes that $\\zeta_n$ is a root of the $n$th cyclotomic polynomial $\\Phi_n$, connects `IsPrimitiveRoot` to the complex exponential definition, and proves separability results needed for the Galois group analysis.",
     "mathContext": "$\\zeta_n = e^{2\\pi i/n}$ satisfies $\\zeta_n^2 - 2\\cos(2\\pi/n)\\zeta_n + 1 = 0$. Since $\\sin(2\\pi/n) > 0$ for $n \\geq 3$, the discriminant $4\\cos^2(2\\pi/n) - 4 = -4\\sin^2(2\\pi/n) < 0$, so the quadratic has no real roots. Hence $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\cos(2\\pi/n))] = 2$.",

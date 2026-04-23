@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 24
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Documentation and Imports",
     "content": "Documents Erdős Problem #1044 on boundary lengths of polynomial level sets. Imports Mathlib modules for complex analysis (Circle), metric spaces, and real numbers.",
     "significance": "key",
@@ -53,7 +53,7 @@
       "startLine": 50,
       "endLine": 61
     },
-    "type": "context",
+    "type": "concept",
     "title": "Tang's Theorem: inf Λ(f) = 2",
     "content": "Axiomatizes Tang's result: (1) Λ(f) > 2 for every polynomial with roots in the disk (infimum not achieved), and (2) for every ε > 0, there exists a polynomial with Λ(f) < 2 + ε (infimum approached).",
     "significance": "key",
@@ -76,7 +76,7 @@
       "startLine": 63,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Infimum Not Achieved / Infimum Approached",
     "content": "Two derived theorems: infimum_not_achieved (Λ(f) > 2 for all f with roots in disk) and infimum_approached (for any ε > 0, there exists f with Λ(f) < 2 + ε). Both follow directly from tang_infimum_eq_two.",
     "significance": "key",
@@ -121,7 +121,7 @@
       "startLine": 89,
       "endLine": 97
     },
-    "type": "context",
+    "type": "concept",
     "title": "Tang's Conjecture: z^n - 1 Minimizes Λ for Fixed Degree",
     "content": "Axiomatizes the conjecture that for each degree n ≥ 1, the roots-of-unity polynomial z^n - 1 minimizes Λ(f) among all degree-n polynomials with roots in the unit disk. Verified for n = 1 and n = 2.",
     "significance": "key",
@@ -144,7 +144,7 @@
       "startLine": 99,
       "endLine": 109
     },
-    "type": "context",
+    "type": "concept",
     "title": "Degree 1 Case: Boundary Length 2π",
     "content": "Axiomatizes that for f(z) = z - z₀ with |z₀| ≤ 1, the sublevel set is an open disk of radius 1 centered at z₀, with boundary length 2π.",
     "significance": "key",
@@ -167,7 +167,7 @@
       "startLine": 111,
       "endLine": 128
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Problem Summary: erdos_1044",
     "content": "The main theorem erdos_1044 restates Tang's result: Λ(f) > 2 for all polynomials with roots in the unit disk, and for any ε > 0 there exists such a polynomial with Λ(f) < 2 + ε. Proof is by direct application of tang_infimum_eq_two.",
     "significance": "key",

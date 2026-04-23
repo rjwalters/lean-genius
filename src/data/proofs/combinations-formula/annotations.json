@@ -6,7 +6,7 @@
       "startLine": 5,
       "endLine": 51
     },
-    "type": "context",
+    "type": "concept",
     "title": "Wiedijk #58: Combinations Formula from Factorials to Generalized Coefficients",
     "content": "The header establishes the dual scope: (1) classical C(n,k) = n!/(k!(n-k)!) for natural numbers via Mathlib's Nat.choose_eq_factorial_div_factorial, and (2) extension to genBinom (α : ℝ) k for real arguments using the falling factorial definition. The proof is complete (0 sorries). The combinatorial interpretation: C(n,k) counts k-element subsets of an n-element set (Finset.powersetCard). The historical note credits Pascal's 1654 Traité du triangle arithmétique, though the formula was known earlier to al-Karaji (10th century AD). The division principle: n! ordered arrangements, divide by k! for selected items' order, divide by (n-k)! for unselected items' order.",
     "mathContext": "**Pascal (1654)**: $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$ systematized in the *Traité du triangle arithmétique*. Earlier: al-Karaji (10th c.), Yang Hui (13th c., 'Yang Hui's triangle'), Tartaglia (16th c.). **Combinatorial interpretation**: $\\binom{n}{k} = |\\{S \\subseteq [n] : |S| = k\\}|$ — number of $k$-subsets of $[n]$. **Proof**: $n!$ bijections $[n] \\to [n]$; quotient by $k! \\times (n-k)!$ (permutations of selected/unselected) gives $\\binom{n}{k}$. **Wiedijk #58**: one of the 100 theorems benchmark for proof assistants.",

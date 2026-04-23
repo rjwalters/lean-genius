@@ -222,7 +222,7 @@
       "startLine": 219,
       "endLine": 236
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Squares Count Bound (Verified)",
     "content": "**theorem squares_count_bound** ✓\n\n|{k²} ∩ [1,N]| ≤ √N + 1\n\n**Proof**: Uses the bijection to [1, √N], then counts.\n\nThe +1 handles the case N = 0.",
     "mathContext": "The count is O(√N), much smaller than N. This is why squares have density 0.",

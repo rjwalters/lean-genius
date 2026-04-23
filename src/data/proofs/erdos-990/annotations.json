@@ -216,7 +216,7 @@
       "startLine": 114,
       "endLine": 117
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Classical Erdős-Turán (1950)",
     "content": "The foundational result: maxDiscrepancy(p) ≤ C · √(d · log M) for some universal constant C > 0. This was the first quantitative equidistribution bound for polynomial roots.",
     "mathContext": "The proof by Erdős and Turán (1950) uses *exponential sum estimates*. For the polynomial f(x) = a_d ∏(x - z_j), the power sums s_k = Σ z_j^k satisfy |s_k| ≤ (sum of |coefficients|) by Newton's identities. The discrepancy bound follows from the *Erdős-Turán inequality for sequences*: D* ≤ C/N + C Σ_{k=1}^N |s_k|/(k) for any N, optimized by choosing N ~ √(d/log M). This is the same exponential sum method used for equidistribution of sequences mod 1 (connected to Erdős #987, #992). The paper appeared in the Bulletin of the AMS (1950).",

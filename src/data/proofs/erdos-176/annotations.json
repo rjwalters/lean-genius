@@ -43,7 +43,7 @@
       "startLine": 62,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "concept",
     "title": "AP Size",
     "content": "**arithProg_card:**\n\nFor d > 0, (ArithProg a d k).card = k.\n\nThe arithmetic progression has exactly k distinct elements when the common difference is positive. The proof uses injectivity of the index map.",
     "significance": "supporting",
@@ -116,7 +116,7 @@
       "startLine": 124,
       "endLine": 132
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Monotonicity",
     "content": "**satisfiesNkl_mono:**\n\nIf N satisfies the N(k,ℓ) condition, so does any N' ≥ N.\n\nLarger domains only make it easier to find unbalanced APs. This monotonicity justifies taking the minimum.",
     "significance": "supporting",
@@ -261,7 +261,7 @@
       "startLine": 278,
       "endLine": 311
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_176_summary:**\n\nCaptures the state of knowledge:\n\n1. Spencer gives exact formula for N(k, 1)\n2. N(k, k) = W(k), the van der Waerden number\n3. The main conjectures are precisely stated\n\n**Known:** Exact formula for N(k,1); exponential lower bounds.\n**Open:** Exponential upper bounds for N(k,2), N(k,√k), N(k,ck).",
     "significance": "key",

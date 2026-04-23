@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 28
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview and Imports",
     "content": "Module documentation for Erdős Problem #750: Almost bipartite graphs with infinite chromatic number. For any f(m) → ∞, does there exist a graph G with χ(G) = ∞ where every m-vertex subgraph has an independent set of size ≥ m/2 − f(m)? Linear case solved (EHS 1982); sublinear case open. Imports SimpleGraph.Basic, Finset.Card, Nat.Basic, Tactic.",
     "mathContext": "A bipartite graph on $m$ vertices has independence number $\\geq \\lceil m/2 \\rceil$. The deviation $f(m)$ measures how far subgraphs are from bipartite: $\\alpha(G[S]) \\geq |S|/2 - f(|S|)$. The question is how slowly $f$ can grow while still permitting $\\chi(G) = \\infty$. Since $\\chi(G) = \\infty$ forces arbitrarily large clique minors (Hadwiger's conjecture direction), this probes the tension between local near-bipartiteness and global complexity.",

@@ -28,7 +28,7 @@
       "startLine": 57,
       "endLine": 58
     },
-    "type": "technique",
+    "type": "concept",
     "title": "GPF Axiom",
     "content": "**gpfAx n**: Axiomatized greatest prime factor function.\n\nThe greatest prime factor $P(n)$ is axiomatized rather than computed from `Nat.primeFactors` for simplicity. In Mathlib, one could define $P(n) = \\max(n.\\text{primeFactors})$, but axiomatization avoids decidability complications with `Finset.sup`.",
     "mathContext": "The greatest prime factor $P(n) = \\max\\{p \\in \\mathbb{P} : p \\mid n\\}$ is a fundamental arithmetic function studied since Ramanujan's work on highly composite numbers (1915).",
@@ -72,7 +72,7 @@
       "startLine": 64,
       "endLine": 68
     },
-    "type": "technique",
+    "type": "concept",
     "title": "GPF Base Cases",
     "content": "**gpf_one** and **gpf_zero**: Both evaluate to 0 by the definition's guard clause `if n ≤ 1 then 0`.\n\nThese base cases are proved by `simp [gpf]`, unfolding the definition and simplifying the conditional.",
     "mathContext": "$P(0) = P(1) = 0$. This convention ensures that the set $\\{n : P(n) \\le y\\}$ (the $y$-smooth numbers) includes 1 but not 0 when $y \\ge 0$.",
@@ -92,7 +92,7 @@
       "startLine": 70,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Fundamental GPF Properties",
     "content": "**Four axiomatized properties of $P(n)$:**\n\n1. **gpf_prime**: $P(p) = p$ for prime $p$ — a prime's only prime factor is itself\n2. **gpf_dvd**: $P(n) \\mid n$ for $n > 1$ — the GPF divides the number\n3. **gpf_is_prime**: $P(n)$ is prime for $n > 1$ — GPF is always prime\n4. **gpf_max**: If $p$ is prime and $p \\mid n$, then $p \\le P(n)$ — GPF is maximal\n\nThese four properties completely characterize $P(n)$ for $n > 1$.",
     "mathContext": "These properties encode: $P(n) \\in \\mathbb{P}$, $P(n) \\mid n$, and $\\forall p \\in \\mathbb{P},\\, p \\mid n \\Rightarrow p \\le P(n)$. Together they define $P(n)$ uniquely as $\\max(\\text{supp}(n))$ where $\\text{supp}(n)$ is the prime support of $n$.",
@@ -271,7 +271,7 @@
       "startLine": 204,
       "endLine": 218
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lower Bounds on g(n)",
     "content": "**g_ge_one through g_ge_four**: Explicit lower bounds via concrete witness sequences.\n\n- $g(n) \\ge 1$ for $n \\ge 3$: sequence $[2]$\n- $g(n) \\ge 2$ for $n \\ge 5$: sequence $[3, 4]$\n- $g(n) \\ge 3$ for $n \\ge 17$: sequence $[7, 9, 16]$\n- $g(n) \\ge 4$ for $n \\ge 65$: sequence $[7, 10, 27, 64]$\n\nAll four are `sorry`-ed; proving them requires showing the witness sequences are valid.",
     "mathContext": "The thresholds $3, 5, 17, 65$ are the smallest $n$ for each length. For $g(n) \\ge k$, we need $k$ distinct primes $p_1 > \\cdots > p_k$ and representatives $a_1 < \\cdots < a_k < n$ with $P(a_i) = p_i$. The minimum $n$ is $a_k + 1$.",
@@ -317,7 +317,7 @@
       "startLine": 232,
       "endLine": 240
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Smoothness of Prime Powers",
     "content": "**power_of_two_smooth** and **prime_power_smooth**: Prime powers $p^k$ are $p$-smooth.\n\nSince $P(p^k) = p$, we have $p^k$ is $p$-smooth for $k \\ge 1$. This is the simplest source of smooth numbers and the basis for constructing GPF-descending sequences: given prime $p$, the number $p^k$ has GPF exactly $p$ for any $k \\ge 1$.",
     "mathContext": "For a prime $p$ and $k \\ge 1$: $P(p^k) = p \\le p$, so $p^k$ is $p$-smooth. More generally, $P(\\prod p_i^{a_i}) = \\max(p_i)$, so any product of primes $\\le B$ is $B$-smooth.",
@@ -521,7 +521,7 @@
       "startLine": 378,
       "endLine": 384
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: Erdős #648 Solved",
     "content": "**erdos_648**: The final theorem, restating `cambie_main` in a slightly different form.\n\nExtracts witnesses from `cambie_main` using `obtain` and repacks them. This is the gallery's main result, confirming that Erdős Problem #648 is resolved: $g(n) = \\Theta(\\sqrt{n/\\log n})$.",
     "mathContext": "Erdős Problem #648 is **SOLVED**: $g(n) \\asymp (n/\\log n)^{1/2}$. The problem was posed by Erdős as part of his extensive collection of number-theoretic questions. Stijn Cambie's 2025 solution (arXiv:2503.22691) determines the order of magnitude completely.",

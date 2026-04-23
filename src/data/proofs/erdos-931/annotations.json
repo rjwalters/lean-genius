@@ -3,120 +3,237 @@
     "id": "erdos-931-product-factors",
     "proofId": "erdos-931",
     "type": "definition",
-    "range": { "startLine": 34, "endLine": 40 },
+    "range": {
+      "startLine": 34,
+      "endLine": 40
+    },
     "title": "Consecutive Product and Prime Factors",
     "content": "Two core definitions: `consecutiveProduct n k` computes $\\prod_{i=1}^{k}(n+i) = (n+1)(n+2)\\cdots(n+k)$ using `Finset.Icc 1 k` and `Finset.prod`, while `consecutivePrimeFactors n k` extracts the set of prime divisors via `Nat.primeFactors`. The product $(n+1)\\cdots(n+k) = (n+k)!/n!$ is always positive since each factor $n+i \\geq 1$. The prime factor set $\\text{rad}(\\prod(n+i))$ captures the radical of the product, discarding multiplicity information.",
     "mathContext": "$\\text{consecutiveProduct}(n, k) = \\prod_{i=1}^{k}(n+i) = \\frac{(n+k)!}{n!}$, $\\text{consecutivePrimeFactors}(n, k) = \\{p \\text{ prime} : p \\mid \\prod_{i=1}^{k}(n+i)\\}$",
     "significance": "key",
-    "relatedConcepts": ["factorial quotient", "radical of an integer", "Finset.prod", "Nat.primeFactors"],
-    "prerequisites": ["Finset.Icc", "Finset.prod", "Nat.primeFactors", "Nat.Prime"]
+    "relatedConcepts": [
+      "factorial quotient",
+      "radical of an integer",
+      "Finset.prod",
+      "Nat.primeFactors"
+    ],
+    "prerequisites": [
+      "Finset.Icc",
+      "Finset.prod",
+      "Nat.primeFactors",
+      "Nat.Prime"
+    ]
   },
   {
     "id": "erdos-931-same-factors",
     "proofId": "erdos-931",
     "type": "definition",
-    "range": { "startLine": 42, "endLine": 48 },
+    "range": {
+      "startLine": 42,
+      "endLine": 48
+    },
     "title": "Same Prime Factors Property",
     "content": "The predicate `SamePrimeFactors n₁ k₁ n₂ k₂` holds when $\\text{rad}(\\prod_{i=1}^{k_1}(n_1+i)) = \\text{rad}(\\prod_{j=1}^{k_2}(n_2+j))$, i.e., the two consecutive products have identical sets of prime divisors. This is decidable since it reduces to equality of finite sets. The relation is an equivalence relation (reflexive, symmetric, transitive), as proved later in the file.",
     "mathContext": "$\\text{SamePrimeFactors}(n_1, k_1, n_2, k_2) \\iff \\{p \\text{ prime} : p \\mid \\prod_{i=1}^{k_1}(n_1+i)\\} = \\{p \\text{ prime} : p \\mid \\prod_{j=1}^{k_2}(n_2+j)\\}$",
     "significance": "key",
-    "relatedConcepts": ["radical of an integer", "equivalence relation", "decidable proposition", "prime support"],
-    "prerequisites": ["consecutivePrimeFactors", "Finset equality", "Decidable"]
+    "relatedConcepts": [
+      "radical of an integer",
+      "equivalence relation",
+      "decidable proposition",
+      "prime support"
+    ],
+    "prerequisites": [
+      "consecutivePrimeFactors",
+      "Finset equality",
+      "Decidable"
+    ]
   },
   {
     "id": "erdos-931-computations",
     "proofId": "erdos-931",
-    "type": "technique",
-    "range": { "startLine": 54, "endLine": 68 },
+    "type": "concept",
+    "range": {
+      "startLine": 54,
+      "endLine": 68
+    },
     "title": "Verified Small Computations",
     "content": "Four concrete product computations verified by `native_decide`: $1 \\cdot 2 \\cdots 10 = 10! = 3628800$, $14 \\cdot 15 \\cdot 16 = 3360$, $19 \\cdot 20 \\cdot 21 \\cdot 22 = 175560$, and $54 \\cdot 55 \\cdot 56 \\cdot 57 = 9459360$. These ground the abstract definitions in explicit numerical values and support the counterexample verifications. The `native_decide` tactic evaluates these equalities by computation in the kernel.",
     "mathContext": "$10! = 3628800 = 2^8 \\cdot 3^4 \\cdot 5^2 \\cdot 7$, $14 \\cdot 15 \\cdot 16 = 3360 = 2^5 \\cdot 3 \\cdot 5 \\cdot 7$",
     "significance": "supporting",
-    "relatedConcepts": ["native_decide", "kernel computation", "factorial values"],
-    "prerequisites": ["consecutiveProduct", "Nat arithmetic"]
+    "relatedConcepts": [
+      "native_decide",
+      "kernel computation",
+      "factorial values"
+    ],
+    "prerequisites": [
+      "consecutiveProduct",
+      "Nat arithmetic"
+    ]
   },
   {
     "id": "erdos-931-conjecture",
     "proofId": "erdos-931",
     "type": "insight",
-    "range": { "startLine": 90, "endLine": 95 },
+    "range": {
+      "startLine": 90,
+      "endLine": 95
+    },
     "title": "Erdős Problem 931: Main Finiteness Conjecture",
     "content": "For all $k_1 \\geq k_2 \\geq 3$, the set $\\{(n_1, n_2) : n_2 \\geq n_1 + k_1 \\wedge \\text{SamePrimeFactors}(n_1, k_1, n_2, k_2)\\}$ is finite. This asks whether far-apart blocks of consecutive integers can share the same prime factor set only finitely often. The constraint $k_1, k_2 \\geq 3$ is necessary: for $k = 2$, the products $n(n+1)$ and $m(m+1)$ can share prime factors for infinitely many pairs (e.g., all pairs where both are even). The formalization uses `Set.Finite` on the set of pairs satisfying both the gap and same-factors conditions.",
     "mathContext": "$\\forall k_1 \\geq k_2 \\geq 3,\\; |\\{(n_1, n_2) : n_2 \\geq n_1 + k_1 \\wedge \\text{rad}(\\prod_{i=1}^{k_1}(n_1+i)) = \\text{rad}(\\prod_{j=1}^{k_2}(n_2+j))\\}| < \\infty$",
     "significance": "key",
-    "relatedConcepts": ["finiteness conjecture", "Set.Finite", "radical equality", "prime distribution"],
-    "prerequisites": ["SamePrimeFactors", "Set.Finite", "Finset.Icc"]
+    "relatedConcepts": [
+      "finiteness conjecture",
+      "Set.Finite",
+      "radical equality",
+      "prime distribution"
+    ],
+    "prerequisites": [
+      "SamePrimeFactors",
+      "Set.Finite",
+      "Finset.Icc"
+    ]
   },
   {
     "id": "erdos-931-stronger",
     "proofId": "erdos-931",
     "type": "insight",
-    "range": { "startLine": 97, "endLine": 102 },
+    "range": {
+      "startLine": 97,
+      "endLine": 102
+    },
     "title": "Stronger Conjecture: n₂ > 2(n₁+k₁)",
     "content": "Erdős himself expressed doubt about the main conjecture, proposing instead the weaker claim that same-prime-factor pairs must satisfy $n_2 > 2(n_1 + k_1)$, with only finitely many exceptions. This stronger conjecture was disproved by the AlphaProof counterexample. The formalization defines `StrongerConjecture` as finiteness of pairs with the additional constraint $n_2 \\leq 2(n_1 + k_1)$.",
     "mathContext": "$\\forall k_1 \\geq k_2 \\geq 3,\\; |\\{(n_1, n_2) : n_1 + k_1 \\leq n_2 \\leq 2(n_1 + k_1) \\wedge \\text{SamePrimeFactors}\\}| < \\infty$",
     "significance": "key",
-    "relatedConcepts": ["stronger conjecture", "gap condition", "counterexample", "Erdős's doubt"],
-    "prerequisites": ["SamePrimeFactors", "Set.Finite"]
+    "relatedConcepts": [
+      "stronger conjecture",
+      "gap condition",
+      "counterexample",
+      "Erdős's doubt"
+    ],
+    "prerequisites": [
+      "SamePrimeFactors",
+      "Set.Finite"
+    ]
   },
   {
     "id": "erdos-931-alphaproof",
     "proofId": "erdos-931",
-    "type": "technique",
-    "range": { "startLine": 108, "endLine": 117 },
+    "type": "concept",
+    "range": {
+      "startLine": 108,
+      "endLine": 117
+    },
     "title": "AlphaProof Counterexample (Verified)",
     "content": "The counterexample $10! = 2^8 \\cdot 3^4 \\cdot 5^2 \\cdot 7$ and $14 \\cdot 15 \\cdot 16 = 2^5 \\cdot 3 \\cdot 5 \\cdot 7$ share prime factors $\\{2, 3, 5, 7\\}$. With $n_1 = 0, k_1 = 10, n_2 = 13, k_2 = 3$, we have $n_2 = 13 \\leq 20 = 2(n_1 + k_1)$, disproving the stronger conjecture. All three facts (`alphaproof_same_factors`, `alphaproof_gap`, `alphaproof_within_double`) are proved by `native_decide` or `omega`—fully verified, no sorry.",
     "mathContext": "$\\text{rad}(10!) = \\text{rad}(3628800) = \\{2,3,5,7\\} = \\text{rad}(3360) = \\text{rad}(14 \\cdot 15 \\cdot 16)$, with $13 \\leq 2 \\cdot 10$",
     "significance": "key",
-    "relatedConcepts": ["native_decide verification", "counterexample", "factorial factorization", "radical equality"],
-    "prerequisites": ["SamePrimeFactors", "consecutiveProduct", "native_decide"]
+    "relatedConcepts": [
+      "native_decide verification",
+      "counterexample",
+      "factorial factorization",
+      "radical equality"
+    ],
+    "prerequisites": [
+      "SamePrimeFactors",
+      "consecutiveProduct",
+      "native_decide"
+    ]
   },
   {
     "id": "erdos-931-tijdeman",
     "proofId": "erdos-931",
-    "type": "technique",
-    "range": { "startLine": 119, "endLine": 126 },
+    "type": "concept",
+    "range": {
+      "startLine": 119,
+      "endLine": 126
+    },
     "title": "Tijdeman's Example (Verified)",
     "content": "Tijdeman found that $19 \\cdot 20 \\cdot 21 \\cdot 22 = 175560$ and $54 \\cdot 55 \\cdot 56 \\cdot 57 = 9459360$ share the same prime factors. With $n_1 = 18, k_1 = k_2 = 4, n_2 = 53$, we have $n_2 = 53 > 44 = 2(n_1 + k_1)$, so this example does not violate the stronger conjecture. The factorizations are $175560 = 2^3 \\cdot 3 \\cdot 5 \\cdot 7 \\cdot 11 \\cdot 19$ and $9459360 = 2^5 \\cdot 3^3 \\cdot 5 \\cdot 7 \\cdot 11 \\cdot 19 \\cdot ...$, sharing primes $\\{2, 3, 5, 7, 11, 19\\}$. All verified by `native_decide`/`omega`.",
     "mathContext": "$\\text{rad}(19 \\cdot 20 \\cdot 21 \\cdot 22) = \\text{rad}(54 \\cdot 55 \\cdot 56 \\cdot 57)$, with $53 > 2 \\cdot 22 = 44$",
     "significance": "supporting",
-    "relatedConcepts": ["Tijdeman", "verified example", "same prime support beyond double gap"],
-    "prerequisites": ["SamePrimeFactors", "consecutiveProduct", "native_decide"]
+    "relatedConcepts": [
+      "Tijdeman",
+      "verified example",
+      "same prime support beyond double gap"
+    ],
+    "prerequisites": [
+      "SamePrimeFactors",
+      "consecutiveProduct",
+      "native_decide"
+    ]
   },
   {
     "id": "erdos-931-properties",
     "proofId": "erdos-931",
-    "type": "technique",
-    "range": { "startLine": 132, "endLine": 170 },
+    "type": "concept",
+    "range": {
+      "startLine": 132,
+      "endLine": 170
+    },
     "title": "Properties of Prime Factors and Equivalence",
     "content": "Seven lemmas establishing structural properties: (1) prime factors divide the product, (2) prime factors are prime, (3) a prime dividing any $n+i$ divides the whole product, (4) such a prime is in the prime factor set, (5) `SamePrimeFactors` is reflexive, (6) symmetric, (7) transitive. The first four connect individual factors to the product via `Finset.dvd_prod_of_mem`, while the last three show `SamePrimeFactors` is an equivalence relation on $\\mathbb{N}^2$ pairs. The positivity lemma `consecutiveProduct_pos` is proved by showing each factor $n + i \\geq 1$.",
     "mathContext": "$p \\mid (n+i) \\wedge 1 \\leq i \\leq k \\implies p \\in \\text{rad}(\\prod_{i=1}^k(n+i))$. SamePrimeFactors is an equivalence relation.",
     "significance": "supporting",
-    "relatedConcepts": ["equivalence relation", "Finset.dvd_prod_of_mem", "Nat.mem_primeFactors", "transitivity"],
-    "prerequisites": ["Nat.primeFactors", "Finset.prod", "dvd_trans"]
+    "relatedConcepts": [
+      "equivalence relation",
+      "Finset.dvd_prod_of_mem",
+      "Nat.mem_primeFactors",
+      "transitivity"
+    ],
+    "prerequisites": [
+      "Nat.primeFactors",
+      "Finset.prod",
+      "dvd_trans"
+    ]
   },
   {
     "id": "erdos-931-implication",
     "proofId": "erdos-931",
     "type": "insight",
-    "range": { "startLine": 176, "endLine": 179 },
+    "range": {
+      "startLine": 176,
+      "endLine": 179
+    },
     "title": "Stronger Conjecture Implies Main Conjecture",
     "content": "The axiom `stronger_implies_main` records that the stronger conjecture (finiteness of pairs with $n_2 \\leq 2(n_1 + k_1)$) would imply the main finiteness conjecture. The argument is: for $n_2 > 2(n_1 + k_1)$, Bertrand's postulate guarantees a prime $p$ in $(n_1 + k_1, 2(n_1 + k_1)]$. Since $p \\leq n_2 \\leq n_2 + k_2$ but $p > n_1 + k_1$, this prime divides some factor in the second block but no factor in the first, contradicting same prime factors. Thus only finitely many pairs with $n_2 \\leq 2(n_1 + k_1)$ can exist.",
     "mathContext": "StrongerConjecture $\\implies$ ErdosProblem931. Sketch: Bertrand's postulate gives $p \\in (n_1+k_1, 2(n_1+k_1)]$, so $n_2 > 2(n_1+k_1) \\implies p \\mid \\prod(n_2+j)$ but $p \\nmid \\prod(n_1+i)$.",
     "significance": "key",
-    "relatedConcepts": ["Bertrand's postulate", "prime gap", "logical implication", "finiteness reduction"],
-    "prerequisites": ["StrongerConjecture", "ErdosProblem931", "Bertrand's postulate"]
+    "relatedConcepts": [
+      "Bertrand's postulate",
+      "prime gap",
+      "logical implication",
+      "finiteness reduction"
+    ],
+    "prerequisites": [
+      "StrongerConjecture",
+      "ErdosProblem931",
+      "Bertrand's postulate"
+    ]
   },
   {
     "id": "erdos-931-prime-between",
     "proofId": "erdos-931",
     "type": "insight",
-    "range": { "startLine": 185, "endLine": 191 },
+    "range": {
+      "startLine": 185,
+      "endLine": 191
+    },
     "title": "Open Question: Prime Between Blocks",
     "content": "If two consecutive products share the same prime factors with $n_2 \\geq n_1 + k_1$, must there exist a prime $p$ with $n_1 < p \\leq n_2 + k_2$? Erdős himself could not prove this seemingly weaker consequence. By Bertrand's postulate, there is always a prime in $(n_1, 2n_1]$, but the constraint here is that $p$ must also divide one of the block products—which is guaranteed if $p \\leq n_2 + k_2$ since $p$ would divide some $n_2 + j$. The difficulty is showing $p$ falls in the right range when $n_2$ is much larger than $n_1$.",
     "mathContext": "$\\text{SamePrimeFactors}(n_1, k_1, n_2, k_2) \\wedge n_2 \\geq n_1 + k_1 \\implies \\exists p \\text{ prime},\\; n_1 < p \\leq n_2 + k_2$",
     "significance": "key",
-    "relatedConcepts": ["Bertrand's postulate", "prime existence", "prime gap", "open question"],
-    "prerequisites": ["SamePrimeFactors", "Nat.Prime", "Bertrand's postulate"]
+    "relatedConcepts": [
+      "Bertrand's postulate",
+      "prime existence",
+      "prime gap",
+      "open question"
+    ],
+    "prerequisites": [
+      "SamePrimeFactors",
+      "Nat.Prime",
+      "Bertrand's postulate"
+    ]
   }
 ]

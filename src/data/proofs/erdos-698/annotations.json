@@ -107,7 +107,7 @@
       "startLine": 84,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "concept",
     "title": "GCD is Always > 1",
     "content": "**theorem gcd_always_gt_one**: For valid pairs, gcd > 1.\n\n**Proof**:\n1. By erdos_szekeres_exponential: gcd ≥ 2^i\n2. Since i ≥ 2: 2^i ≥ 2^2 = 4\n3. Therefore: gcd ≥ 4 > 1 ✓\n\nThis is one of the few theorems proved directly (not axiomatized)!",
     "mathContext": "This theorem shows that distinct middle binomial coefficients always share non-trivial factors - a surprising structural property of Pascal's triangle.",
@@ -207,7 +207,7 @@
       "startLine": 164,
       "endLine": 195
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Resolution of the Problem",
     "content": "**bergmanH c n**: The growth function h(n) = ⌊c · √n⌋.\n\n```lean\nnoncomputable def bergmanH (c : ℝ) (n : ℕ) : ℕ :=\n  ⌊c * Real.sqrt n⌋₊\n```\n\n**theorem bergmanH_unbounded**: h(n) = ⌊c · √n⌋ → ∞.\n\n**theorem erdos698_answer : erdos698Question**\n\nBy Bergman's bound, taking h = bergmanH c gives an unbounded function with gcd ≥ h(n) for all valid pairs.",
     "mathContext": "The resolution connects Bergman's analytic bound to the discrete existence question. The floor function ensures h is a natural number.",
@@ -382,7 +382,7 @@
       "startLine": 254,
       "endLine": 272
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary of Results",
     "content": "**theorem erdos_698_summary** combines:\n\n1. **Erdős-Szekeres bound**: gcd ≥ 2^i\n2. **Non-trivial GCD**: gcd > 1 always\n3. **Affirmative answer**: erdos698Question = YES\n\nThis packages all the main results into one theorem for easy reference.",
     "mathContext": "Summary theorems document what has been achieved. They're useful for building on this work in future proofs.",
@@ -407,7 +407,7 @@
       "startLine": 274,
       "endLine": 287
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result: erdos_698",
     "content": "**theorem erdos_698 : erdos698Question**\n\n**Statement**: There exists h(n) → ∞ such that gcd(C(n,i), C(n,j)) ≥ h(n) for all valid pairs.\n\n**Proof**: Follows from erdos698_answer, which uses Bergman's bound.\n\n**Status**: SOLVED by Bergman (2011)\n\n**The answer**: h(n) = Ω(√n) works - the minimum GCD grows like the square root of n.",
     "mathContext": "This is the formal resolution of Erdős Problem #698. The theorem states the existence of the required growth function.",

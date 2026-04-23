@@ -63,7 +63,7 @@
       "startLine": 45,
       "endLine": 50
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: {3, 5, 7}",
     "content": "The triple **{3, 5, 7}** is the simplest non-trivial example of a prime AP. It has first term 3, common difference 2, and length 3. All three are prime.",
     "mathContext": "This is the unique 3-term prime AP with difference 2. For larger differences, many 3-term APs exist (e.g., {5, 11, 17} with difference 6).",
@@ -82,7 +82,7 @@
       "startLine": 52,
       "endLine": 59
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: {5, 11, 17, 23, 29}",
     "content": "The quintuple **{5, 11, 17, 23, 29}** is a 5-term prime AP with first term 5 and common difference 6. We verify each element is prime using norm_num.",
     "mathContext": "The common difference 6 = 2·3 is the smallest possible for a 5-term prime AP. Differences must be divisible by 2·3 = 6 for progressions of length ≥ 5.",
@@ -196,7 +196,7 @@
       "startLine": 126,
       "endLine": 141
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "The **summary** combines our main results: the Green-Tao theorem holds (axiomatized), {3, 5, 7} is verified as a prime AP, and {5, 11, 17, 23, 29} are all prime.",
     "mathContext": "This conjunction packages the key verified facts for export and reference.",

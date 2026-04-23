@@ -121,7 +121,7 @@
       "startLine": 169,
       "endLine": 198
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorems",
     "content": "**erdos_489_summary** and **erdos_489:**\n\nBoth theorems state LimitExists(PrimeSquares), proved via erdos_squarefree_limit. This captures the known result: the squarefree case is solved.\n\nThe general conjecture (ErdosConjecture) remains open — it is defined but not asserted as an axiom, reflecting its unsolved status.",
     "mathContext": "The formalization distinguishes between the solved special case (squarefree numbers, stated as a theorem) and the open general conjecture (stated as a definition of type Prop). This accurately reflects the mathematical status of Problem #489.",

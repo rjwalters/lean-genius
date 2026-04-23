@@ -51,7 +51,7 @@
       "startLine": 59,
       "endLine": 77
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: (8, 9) is a Consecutive Powerful Pair",
     "content": "**example_8_9** (proved): 8 = 2³ and 9 = 3² are both powerful. The proof checks each prime divisor p via interval_cases: for 8, only p = 2 divides it and 4 | 8; for 9, only p = 3 divides it and 9 | 9. This is the smallest consecutive powerful pair and corresponds to the fundamental Pell solution (3, 1) since 3² = 8·1² + 1.",
     "mathContext": "The proof uses interval_cases to enumerate small primes that could divide 8 or 9, then verifies the p² | n condition computationally with decide. This approach works for small numbers but would not scale to larger examples like Golomb's (12167, 12168), which is why that is axiomatized.",
@@ -171,7 +171,7 @@
       "startLine": 165,
       "endLine": 189
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_365_summary** packages three results as a proved conjunction: (1) ¬Question1 — the square requirement fails, (2) Golomb's specific counterexample (12167, 12168) with neither being a square, (3) Walker's infinite family of non-square counterexamples. The proof is ⟨question1_false, golomb_counterexample, walker_infinitely_many⟩. Question 2 (polylogarithmic counting bound) remains open and is formalized as a definition only.",
     "mathContext": "The three-part conjunction captures the complete state of Q1: qualitative (it's false), concrete (explicit counterexample), and structural (infinitely many counterexamples). Q2 is deliberately not included in the summary since it remains open. The formalization of Q2 as a Prop allows future work to state and potentially prove it.",

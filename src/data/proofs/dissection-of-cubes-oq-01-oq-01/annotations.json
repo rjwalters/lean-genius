@@ -10,7 +10,7 @@
     "title": "Explicit Witness Construction: Three Axis-Aligned Cubes",
     "content": "The proof builds an explicit witness using three `noncomputable` cube definitions. `cubeA` sits at the origin with side 1/4, `cubeB` is displaced by 1/2 along the x-axis (also side 1/4), and `cubeC` is displaced by 1/2 along the z-axis with a different side of 1/3. The `@[simp]` lemmas reduce each `.size` to a rational by `rfl`, making size comparisons fully transparent to the elaborator. The size distinctness lemmas `cubeC_size_ne_cubeA` and `cubeC_size_ne_cubeB` use `norm_num` after `simp` unfolds the definitions, establishing 1/3 ≠ 1/4 in ℝ.",
     "mathContext": "The `Cube` structure records coordinates $(x, y, z, \\text{side})$ with $\\text{side} > 0$. The `size` field equals `side` (or a derived area/volume). Concretely: \\(A = \\langle 0, 0, 0, \\tfrac{1}{4}\\rangle\\), \\(B = \\langle \\tfrac{1}{2}, 0, 0, \\tfrac{1}{4}\\rangle\\), \\(C = \\langle 0, 0, \\tfrac{1}{2}, \\tfrac{1}{3}\\rangle\\). The collision criterion is equality of `.size`, so $A$ and $B$ form a collision pair while $C$'s size $\\tfrac{1}{3} \\neq \\tfrac{1}{4}$ keeps it isolated.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "CubeDissection",
       "collidingCubes",

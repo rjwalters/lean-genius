@@ -28,7 +28,7 @@
       "startLine": 90,
       "endLine": 101
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Optional Stopping Theorem for the Linear Martingale",
     "content": "The identity process $X_n$ is a martingale for the symmetric random walk. By the Optional Stopping Theorem, $E[X_T] = E[X_0] = k$. Since the stopped position $X_T \\in \\{0, N\\}$, the equation $P(\\text{win}) \\cdot N + P(\\text{lose}) \\cdot 0 = k$ yields $P(\\text{win}) = k/N$. This was previously an axiom in the formalization but is now proved directly from the definition of `ruinProbWin` via `div_mul_cancel`.",
     "mathContext": "$E[X_T] = P(\\text{win}) \\cdot N = k$, so $P(\\text{win}) = k/N$",
@@ -50,7 +50,7 @@
       "startLine": 103,
       "endLine": 113
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ruin Probabilities Sum to One (Axiom Elimination)",
     "content": "The fact that $P(\\text{win}) + P(\\text{lose}) = 1$ means the random walk reaches a barrier with probability 1, i.e., ruin is almost sure. The algebraic proof reduces to showing $k/N + (N-k)/N = N/N = 1$. In the previous version of this formalization, this was an axiom. Eliminating it makes the proof fully self-contained and axiom-free, which is a significant improvement for formal verification.",
     "mathContext": "$\\frac{k}{N} + \\frac{N-k}{N} = \\frac{N}{N} = 1$",
@@ -72,7 +72,7 @@
       "startLine": 141,
       "endLine": 163
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Expected Ruin Time via the Quadratic Martingale",
     "content": "The process $M_n = X_n^2 - n$ is a martingale because $E[X_{n+1}^2 | \\mathcal{F}_n] = X_n^2 + 1$ for the symmetric walk. Applying OST gives $E[X_T^2 - T] = E[X_0^2 - 0] = k^2$. Since $E[X_T^2] = P(\\text{win}) \\cdot N^2 = (k/N) \\cdot N^2 = kN$, we obtain $E[T] = kN - k^2 = k(N-k)$. This elegant technique of extracting information from different martingales is a hallmark of Doob's martingale theory.",
     "mathContext": "$E[T] = E[X_T^2] - k^2 = kN - k^2 = k(N-k)$",
@@ -160,7 +160,7 @@
       "startLine": 374,
       "endLine": 389
     },
-    "type": "technique",
+    "type": "concept",
     "title": "House Advantage: Unfavorable Win Probability < 1",
     "content": "When $p < 1/2$ (the house has an edge), the win probability is strictly less than 1. The proof shows that $r > 1$ implies $r^k < r^N$ (since $k < N$), making the numerator $1 - r^k$ larger in magnitude than would give probability 1. The denominator $1 - r^N$ is negative (since $r^N > 1$), requiring careful sign analysis. As $N \\to \\infty$, $P(\\text{win}) \\to 0$ exponentially fast in $N$, meaning ruin is virtually certain against an infinitely wealthy house even with a tiny disadvantage.",
     "mathContext": "$p < 1/2 \\Rightarrow r > 1 \\Rightarrow P(\\text{win}) < 1$",
@@ -182,7 +182,7 @@
       "startLine": 411,
       "endLine": 425
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Exponential Decay Rate: cos(pi/N) is Positive",
     "content": "The dominant eigenvalue of the transition matrix for the absorbed random walk is $\\cos(\\pi/N)$, which governs the tail behavior $P(T > t) \\sim C \\cdot \\cos(\\pi/N)^t$. For $N \\geq 3$, the angle $\\pi/N \\in (0, \\pi/2)$ lies in the first quadrant where cosine is positive. The proof applies `Real.cos_pos_of_mem_Ioo` after verifying that $-\\pi/2 < \\pi/N < \\pi/2$ via the bound $N \\geq 3 > 2$. This eigenvalue arises from the spectral decomposition of the tridiagonal transition matrix.",
     "mathContext": "$N \\geq 3 \\Rightarrow \\pi/N \\in (0, \\pi/2) \\Rightarrow \\cos(\\pi/N) > 0$",
@@ -204,7 +204,7 @@
       "startLine": 427,
       "endLine": 441
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Decay Rate Strictly Less Than 1: Genuine Exponential Decay",
     "content": "The proof that $\\cos(\\pi/N) < 1$ for $N \\geq 3$ ensures genuine exponential decay rather than mere sub-exponential behavior. The argument is indirect: if $\\cos(\\pi/N) = 1$, then by the Pythagorean identity $\\sin^2(\\pi/N) + \\cos^2(\\pi/N) = 1$, we would need $\\sin(\\pi/N) = 0$. But $\\pi/N \\in (0, \\pi)$ for $N \\geq 2$, where sine is strictly positive, giving a contradiction. Combined with positivity, this establishes $\\cos(\\pi/N) \\in (0,1)$, so $\\cos(\\pi/N)^t \\to 0$ geometrically.",
     "mathContext": "$\\cos(\\pi/N) < 1$ via contradiction with $\\sin(\\pi/N) > 0$ and the Pythagorean identity",

@@ -214,7 +214,7 @@
       "startLine": 159,
       "endLine": 171
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Complete Graph is Not K₄-free",
     "content": "This **constructive proof** shows the complete graph on ℕ is not K₄-free by exhibiting the 4-clique {0, 1, 2, 3}. The proof is by contradiction: assume K₄-freeness, instantiate with vertices 0-3, show all 6 edges exist (via `SimpleGraph.top_adj`), and derive a contradiction. This demonstrates that the K₄-freeness constraint in part (a) is essential—without it, the coloring property holds trivially via Ramsey.",
     "mathContext": "The tactic `simp [SimpleGraph.top_adj]` resolves all adjacency goals in the complete graph ⊤, and `omega` handles the distinctness conditions.",

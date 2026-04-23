@@ -167,7 +167,7 @@
       "startLine": 177,
       "endLine": 187
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Infinitely Many Size-4 Collections",
     "content": "**Theorem infinitely_many_size4_collections:**\n\nThere are infinitely many collections where all intervals have size 4 and the product is a perfect square.\n\nProof: Apply Ulas's theorem for n = 4, then project to forget the constraint on n.",
     "significance": "key",
@@ -185,7 +185,7 @@
       "startLine": 189,
       "endLine": 205
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Conjecture is FALSE",
     "content": "**Theorem erdosConjecture363_false:**\n\n¬erdosConjecture363\n\n**Proof**: The set of size-4 collections is a subset of squareCollections (since size-4 ≥ 4). We have infinitely many size-4 collections. An infinite subset of a finite set is a contradiction.",
     "significance": "key",
@@ -203,7 +203,7 @@
       "startLine": 211,
       "endLine": 216
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem (erdos_363)",
     "content": "**Theorem erdos_363:**\n\n¬erdosConjecture363\n\nThe answer to Erdős Problem #363 is NO - the conjecture is FALSE.",
     "significance": "key",
@@ -257,7 +257,7 @@
       "startLine": 261,
       "endLine": 276
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "**Theorem erdos_363_summary:**\n\n1. The conjecture is FALSE (infinitely many square-product collections exist)\n2. Pomerance showed |Iᵢ| ≥ 4 is needed (size-3 gives trivial counterexamples)\n3. Ulas + Bauer-Bennett cover all n ≥ 3 for size-4 intervals\n4. Bennett-Van Luijk extended to size-5 intervals\n5. Ulas's conjecture (any size k for large n) remains open",
     "significance": "key",

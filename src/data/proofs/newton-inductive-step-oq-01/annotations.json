@@ -2,12 +2,15 @@
   {
     "id": "ann-newton-oq01-context",
     "proofId": "newton-inductive-step-oq-01",
-    "range": { "startLine": 1, "endLine": 35 },
-    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "concept",
     "title": "Newton's Inequality: Log-Concavity of Elementary Symmetric Means",
     "content": "**Newton's inequality** (1707): for nonneg reals $x_1, \\ldots, x_n$ with elementary symmetric polynomials $e_k = \\sum_{|S|=k} \\prod_{i \\in S} x_i$, the normalized means $\\bar{e}_k = e_k / \\binom{n}{k}$ form a **log-concave sequence**: $\\bar{e}_k^2 \\geq \\bar{e}_{k-1} \\cdot \\bar{e}_{k+1}$. This file formalizes the recurrence definition of $e_k$ on lists, proves log-concavity of binomial coefficients, proves explicit small cases ($n=2,3$), and derives Maclaurin's first inequality and the AM-GM connection. 1 sorry (the general inductive step).",
     "mathContext": "Newton stated this in **Arithmetica Universalis** (1707) for polynomials with positive roots. Equivalent form: $\\binom{n}{k}^2 e_k^2 \\geq \\binom{n}{k-1}\\binom{n}{k+1} e_{k-1} e_{k+1}$. The **Maclaurin inequality chain** $\\bar{e}_1 \\geq \\bar{e}_2^{1/2} \\geq \\cdots \\geq \\bar{e}_n^{1/n}$ follows. Special case $k=1, n$ gives **AM-GM**. The **log-concavity of binomial coefficients** is Newton's inequality for the all-ones sequence. Hardy–Littlewood–Pólya (1952), Ch. 2 covers this; Niculescu (2000) gives a modern elementary proof.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Newton's inequalities (1707)",
       "log-concavity of symmetric means",
@@ -24,7 +27,10 @@
   {
     "id": "ann-newton-oq01-esymm",
     "proofId": "newton-inductive-step-oq-01",
-    "range": { "startLine": 40, "endLine": 58 },
+    "range": {
+      "startLine": 40,
+      "endLine": 58
+    },
     "type": "definition",
     "title": "esymm: Elementary Symmetric Polynomial on Lists via Recurrence",
     "content": "**esymm : List ℝ → ℕ → ℝ** — the $k$-th elementary symmetric polynomial of a list, defined by structural recursion: $e_k([]) = [k=0]$; $e_k(x :: xs) = e_k(xs) + x \\cdot e_{k-1}(xs)$. **simp lemmas**: `esymm_cons_zero` and `esymm_cons_succ` expose the recurrence for use by other proofs. The definition is `noncomputable` due to ℝ.",
@@ -46,7 +52,10 @@
   {
     "id": "ann-newton-oq01-basic",
     "proofId": "newton-inductive-step-oq-01",
-    "range": { "startLine": 61, "endLine": 113 },
+    "range": {
+      "startLine": 61,
+      "endLine": 113
+    },
     "type": "theorem",
     "title": "Basic Properties: e₀=1, Vanishing, Product, Nonnegativity",
     "content": "Four key properties: (1) **esymm_zero**: $e_0(xs) = 1$ for any list (proved by induction using `esymm_cons_zero`); (2) **esymm_eq_zero_of_gt**: $e_k(xs) = 0$ when $k > |xs|$ (induction with `omega` for edge cases); (3) **esymm_length**: $e_n(xs) = \\prod xs$ when $|xs| = n$; (4) **esymm_nonneg**: $e_k(xs) \\geq 0$ when all elements $\\geq 0$ (by induction using `add_nonneg` and `mul_nonneg`).",
@@ -68,7 +77,10 @@
   {
     "id": "ann-newton-oq01-sorry",
     "proofId": "newton-inductive-step-oq-01",
-    "range": { "startLine": 129, "endLine": 155 },
+    "range": {
+      "startLine": 129,
+      "endLine": 155
+    },
     "type": "theorem",
     "title": "newton_inequality_binomial: The General Case (1 sorry)",
     "content": "**newton_inequality_binomial**: the full general Newton inequality $\\binom{n}{k-1}\\binom{n}{k+1} e_k^2 \\geq \\binom{n}{k}^2 e_{k-1} e_{k+1}$ for all nonneg lists and $1 \\leq k \\leq n-1$. The proof is **stated** with its inductive structure: write $F_k = e_k(x::xs) = e_k(xs) + x \\cdot e_{k-1}(xs)$; expand $F_k^2$ and use the IH and Cauchy–Schwarz on the cross term. The expansion is outlined in comments but the final `nlinarith` call is replaced by `sorry`.",
@@ -90,7 +102,10 @@
   {
     "id": "ann-newton-oq01-binom",
     "proofId": "newton-inductive-step-oq-01",
-    "range": { "startLine": 161, "endLine": 249 },
+    "range": {
+      "startLine": 161,
+      "endLine": 249
+    },
     "type": "theorem",
     "title": "binom_log_concave and binom_ultra_log_concave: Proven via Absorption Identities",
     "content": "**binom_log_concave**: $\\binom{n}{k}^2 \\geq \\binom{n}{k-1}\\binom{n}{k+1}$ (0 sorries). Proof via **absorption identities**: $k\\binom{n}{k} = (n-k+1)\\binom{n}{k-1}$ (from `Nat.choose_succ_right_eq`) and $(k+1)\\binom{n}{k+1} = (n-k)\\binom{n}{k}$. These give $\\binom{n}{k-1}\\binom{n}{k+1} = \\frac{k(n-k)}{(n-k+1)(k+1)} \\binom{n}{k}^2$, and $k(n-k) \\leq (n-k+1)(k+1) \\Leftrightarrow 0 \\leq n+1$. **binom_ultra_log_concave**: $\\binom{n}{k}^4 \\geq \\binom{n}{k-1}^2 \\binom{n}{k+1}^2$ by squaring.",
@@ -112,7 +127,10 @@
   {
     "id": "ann-newton-oq01-mean",
     "proofId": "newton-inductive-step-oq-01",
-    "range": { "startLine": 256, "endLine": 295 },
+    "range": {
+      "startLine": 256,
+      "endLine": 295
+    },
     "type": "definition",
     "title": "esymmMean, newton_inequality_means, and maclaurin_first_step",
     "content": "**esymmMean xs k** = $e_k(xs) / \\binom{|xs|}{k}$ — the normalized elementary symmetric mean. **newton_inequality_means**: $\\bar{e}_k^2 \\geq \\bar{e}_{k-1} \\cdot \\bar{e}_{k+1}$ — derived from `newton_inequality_binomial` by clearing denominators via `div_le_div_iff`. **maclaurin_first_step**: $\\bar{e}_1^2 \\geq \\bar{e}_2$ — the first Maclaurin inequality, proved from Newton with $k=1$ using `esymm_zero` ($\\bar{e}_0 = 1$).",
@@ -134,7 +152,10 @@
   {
     "id": "ann-newton-oq01-small",
     "proofId": "newton-inductive-step-oq-01",
-    "range": { "startLine": 299, "endLine": 353 },
+    "range": {
+      "startLine": 299,
+      "endLine": 353
+    },
     "type": "theorem",
     "title": "Small Cases and AM-GM: Explicit Sum-of-Squares Witnesses",
     "content": "**amgm_from_newton**: $(\\sum x_i / n)^2 \\geq (\\sum_{i<j} x_i x_j) / \\binom{n}{2}$ — AM-GM connection via `maclaurin_first_step`. **newton_two**: $(x+y)^2 \\geq 4xy$ via `nlinarith [sq_nonneg (x-y)]`. **newton_three_k1**: $(x+y+z)^2 \\geq 3(xy+xz+yz)$ via `nlinarith [sq_nonneg (x-y), sq_nonneg (x-z), sq_nonneg (y-z)]`. **newton_three_k2**: $(xy+xz+yz)^2 \\geq 3xyz(x+y+z)$ via `nlinarith [sq_nonneg (xy-xz), sq_nonneg (xy-yz), sq_nonneg (xz-yz)]`. **esymm_one_eq_sum**: $e_1(xs) = \\sum xs$.",

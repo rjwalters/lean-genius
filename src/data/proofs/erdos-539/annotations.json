@@ -34,7 +34,7 @@
       "startLine": 42,
       "endLine": 48
     },
-    "type": "technique",
+    "type": "concept",
     "title": "gcdQuotient_pos",
     "content": "gcdQuotient is always positive for positive inputs.",
     "significance": "key",
@@ -61,7 +61,7 @@
       "startLine": 50,
       "endLine": 54
     },
-    "type": "technique",
+    "type": "concept",
     "title": "gcdQuotient_is_nat",
     "content": "gcdQuotient a b * gcd(a,b) = a.",
     "significance": "key",
@@ -171,7 +171,7 @@
       "startLine": 83,
       "endLine": 86
     },
-    "type": "technique",
+    "type": "concept",
     "title": "gcdQuotient_self",
     "content": "gcdQuotient a a = 1 for a > 0.",
     "significance": "key",
@@ -198,7 +198,7 @@
       "startLine": 88,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "concept",
     "title": "one_in_quotient_set",
     "content": "1 is always in the quotient set.",
     "significance": "key",
@@ -225,7 +225,7 @@
       "startLine": 100,
       "endLine": 105
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_szemeredi_lower",
     "content": "Erdős-Szemerédi: h(n) ≥ c·n^{1/2}.",
     "significance": "key",
@@ -253,7 +253,7 @@
       "startLine": 107,
       "endLine": 113
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_szemeredi_upper",
     "content": "Erdős-Szemerédi: h(n) ≤ n^{1-c}.",
     "significance": "key",
@@ -308,7 +308,7 @@
       "startLine": 124,
       "endLine": 130
     },
-    "type": "technique",
+    "type": "concept",
     "title": "freiman_lev_upper",
     "content": "Freiman-Lev: h(n) ≤ C·n^{2/3}.",
     "significance": "key",

@@ -53,7 +53,7 @@
       "startLine": 39,
       "endLine": 43
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Existence of Optimal Sieving Set",
     "content": "An axiomatized existence result: for any budget $C > 0$ and bound $n$, there exists a valid sieving set $A$ that minimizes the unsieved count over all valid sets. This follows from the finiteness of the candidate space (subsets of $\\{2, \\ldots, n\\}$ with pairwise coprime elements).",
     "mathContext": "$\\forall n, C > 0,\\; \\exists A^*$ valid such that $\\text{unsievedCount}(A^*, n) \\leq \\text{unsievedCount}(B, n)$ for all valid $B$.",
@@ -100,7 +100,7 @@
       "startLine": 68,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Distinct Primes Are Coprime",
     "content": "A proved theorem: distinct primes in the sieving set are automatically coprime. This uses Mathlib's `Nat.coprime_primes` which states that two primes are coprime iff they are distinct. Combined with nthPrime injectivity, this ensures the prime sieving set satisfies the coprimality constraint.",
     "mathContext": "$i \\neq j \\Rightarrow \\gcd(p_i, p_j) = 1$, since distinct primes share no common factor.",
@@ -216,7 +216,7 @@
       "startLine": 158,
       "endLine": 161
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Primes Minimize Survival Product",
     "content": "The key optimization result (axiomatized): among all coprime sets with reciprocal sum $\\leq C$, the first $k$ primes minimize $\\prod(1 - 1/a_i)$. The intuition: replacing a composite $a$ with a prime divisor $p$ of $a$ gives $1/p > 1/a$ (spending less budget) while $(1 - 1/p) < (1 - 1/a)$ (sieving more per unit), so the freed budget can sieve additional integers.",
     "mathContext": "$\\forall A$ valid: $\\prod_{a \\in A}(1 - 1/a) \\geq \\prod_{p \\in \\text{primeSievingSet}(k)}(1 - 1/p)$.",
@@ -263,7 +263,7 @@
       "startLine": 188,
       "endLine": 191
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sieving Monotonicity",
     "content": "Adding any element $a \\geq 2$ to the sieving set can only reduce the unsieved count: every multiple of $a$ that was previously unsieved gets eliminated. This monotonicity property justifies the greedy approach — the question is not whether adding an element helps, but which element gives the best return per unit of reciprocal budget.",
     "mathContext": "$a \\geq 2,\\; a \\notin A \\Rightarrow \\text{unsievedCount}(A \\cup \\{a\\}, n) \\leq \\text{unsievedCount}(A, n)$.",

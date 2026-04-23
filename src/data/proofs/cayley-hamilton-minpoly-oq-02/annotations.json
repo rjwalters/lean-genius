@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 26
     },
-    "type": "context",
+    "type": "concept",
     "title": "Minimal Polynomial Invariance Under Similarity: Open Question Setup",
     "content": "The header frames the open question: does the minimal polynomial of a matrix depend on the choice of basis? The file proves it does not — similar matrices (related by P⁻¹MP for invertible P) share the same minimal polynomial. Imports include Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly (which provides minpoly, charpoly, and their relationship), Mathlib.RingTheory.Algebraic.Basic (for algebraMap), and Mathlib.Algebra.Algebra.Basic (for AlgHom). The header comment explains the three-part structure: (I) conjugation as K-algebra endomorphism, (II) minimal polynomial invariance, (III) charpoly connection.",
     "mathContext": "For $M, P \\in \\text{Mat}_n(K)$ with $P$ invertible, $M$ and $P^{-1}MP$ are **similar** matrices. The minimal polynomial $\\mu_M(x)$ is the monic polynomial of least degree with $\\mu_M(M) = 0$. Similarity invariance: $\\mu_{P^{-1}MP}(x) = \\mu_M(x)$ for all invertible $P$. This follows because $\\mu(P^{-1}MP) = P^{-1}\\mu(M)P$ for any polynomial $\\mu$, so $\\mu(M) = 0 \\iff \\mu(P^{-1}MP) = 0$.",

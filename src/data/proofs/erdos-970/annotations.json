@@ -104,7 +104,7 @@
       "startLine": 85,
       "endLine": 87
     },
-    "type": "context",
+    "type": "concept",
     "title": "Jacobsthal's Conjecture",
     "content": "The main open question: `jacobsthalConjecture` states $\\exists C > 0,\\, \\forall k \\geq 1,\\, h(k) \\leq Ck^2$. This asserts at most quadratic growth. The evidence: small values $h(1)=2, h(2)=4, h(3)=6, h(4)=10, h(5)=14$ are consistent with $h(k) = O(k^2)$ since the primorials $2, 6, 30, 210, 2310$ grow faster than $k^2$.",
     "mathContext": "Jacobsthal's conjecture: $h(k) \\ll k^2$. Comparison with known bounds: Iwaniec gives $h(k) \\leq C(k \\log k)^2$, leaving a gap of $(\\log k)^2$. Small values: $h(k)/k^2 \\approx 2, 1, 0.67, 0.625, 0.56$ for $k = 1, \\ldots, 5$ — decreasing toward a constant.",
@@ -152,7 +152,7 @@
       "startLine": 119,
       "endLine": 125
     },
-    "type": "context",
+    "type": "concept",
     "title": "FGKMT Lower Bound (2018)",
     "content": "The current best lower bound: $h(k) \\geq ck \\cdot \\frac{\\log k \\cdot \\log_3 k}{(\\log_2 k)^2}$, by Ford, Green, Konyagin, Maynard, and Tao (2018). This builds on their breakthrough results about long gaps between primes (they also proved $g_n \\geq c \\frac{\\log n \\log_2 n \\log_4 n}{(\\log_3 n)^2}$ for prime gaps). The simpler Rankin bound gives $h(k) \\geq ck \\log k$.",
     "mathContext": "$h(k) \\geq ck \\cdot \\frac{\\log k \\cdot \\log_3 k}{(\\log_2 k)^2}$ where $\\log_j$ denotes the $j$-th iterated logarithm. This is essentially $k \\log k$ with iterated log corrections. The gap to Iwaniec's upper bound is roughly $(\\log k)^2 / \\frac{\\log_3 k}{(\\log_2 k)^2}$.",
@@ -176,7 +176,7 @@
       "startLine": 131,
       "endLine": 144
     },
-    "type": "context",
+    "type": "concept",
     "title": "Small Values of h(k)",
     "content": "Computed values: $h(1)=2$ (any 2 consecutive integers have one odd), $h(2)=4$ (extremal at $n=6$), $h(3)=6$ (extremal at $n=30$), $h(4)=10$ (extremal at $n=210$), $h(5)=14$ (extremal at $n=2310$). All extremal cases are primorials $p_k\\# = 2 \\cdot 3 \\cdot 5 \\cdots p_k$. The quadratic bound $k^2$ gives $1, 4, 9, 16, 25$ — all at least as large.",
     "mathContext": "Primorials: $p_1\\# = 2$, $p_2\\# = 6$, $p_3\\# = 30$, $p_4\\# = 210$, $p_5\\# = 2310$. The values $h(k) \\in \\{2, 4, 6, 10, 14\\}$ suggest $h(k) \\leq 3k$ for small $k$, but growth accelerates for larger $k$.",
@@ -224,7 +224,7 @@
       "startLine": 157,
       "endLine": 161
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Small Values Consistency",
     "content": "`small_values_consistent` combines all five known small values into a single theorem, serving as a sanity check that the axiomatization is internally consistent. The proof is a direct conjunction of the five individual value axioms.",
     "mathContext": "$h(1) = 2 \\wedge h(2) = 4 \\wedge h(3) = 6 \\wedge h(4) = 10 \\wedge h(5) = 14$. This is a conjunction of five axioms, verified by the known values of Jacobsthal's function at primorials.",

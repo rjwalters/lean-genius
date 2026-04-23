@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 18
     },
-    "type": "context",
+    "type": "concept",
     "title": "Introduction",
     "content": "Twin primes are pairs (p, p+2) where both are prime. Examples: (3,5), (5,7), (11,13), ...\n\nThis file proves that for p > 3, twin prime pairs must have the form (6k-1, 6k+1). They 'straddle' multiples of 6.\n\nThe twin prime conjecture (infinitely many pairs) remains one of math's great open problems.",
     "mathContext": "The twin prime conjecture has resisted proof for centuries.",
@@ -44,7 +44,7 @@
       "startLine": 42,
       "endLine": 66
     },
-    "type": "context",
+    "type": "concept",
     "title": "Verified Twin Pairs",
     "content": "We verify 6 twin prime pairs computationally:\n\n| p | p+2 | Status |\n|---|-----|--------|\n| 3 | 5 | ✓ |\n| 5 | 7 | ✓ |\n| 11 | 13 | ✓ |\n| 17 | 19 | ✓ |\n| 29 | 31 | ✓ |\n| 41 | 43 | ✓ |\n\nEach is proven using Lean's `decide` tactic.",
     "mathContext": "constructor <;> decide",
@@ -63,7 +63,7 @@
       "startLine": 92,
       "endLine": 115
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Primes mod 6",
     "content": "**Lemma**: Every prime p > 3 satisfies p ≡ 1 or 5 (mod 6).\n\n**Proof**: Residue classes mod 6 are {0, 1, 2, 3, 4, 5}.\n- 0, 2, 4: divisible by 2\n- 0, 3: divisible by 3\n\nOnly 1 and 5 remain for primes > 3.\n\nThis is the foundation for the structure theorem.",
     "mathContext": "prime_mod_six: Nat.Prime p → p > 3 → p % 6 = 1 ∨ p % 6 = 5",
@@ -100,7 +100,7 @@
       "startLine": 123,
       "endLine": 134
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Structure Theorem",
     "content": "**Main Result**: For p > 3, if (p, p+2) is a twin prime pair, then p ≡ 5 (mod 6).\n\n**Proof**:\n1. By prime_mod_six, p ≡ 1 or 5 (mod 6)\n2. If p ≡ 1: Then 3 | (p+2), so p+2 composite—contradiction\n3. Therefore p ≡ 5 (mod 6)\n\nThe twin pair straddles the multiple of 6.",
     "mathContext": "twin_prime_mod_six: IsTwinPrimePair p → p > 3 → p % 6 = 5",
@@ -119,7 +119,7 @@
       "startLine": 136,
       "endLine": 154
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The (6k-1, 6k+1) Form",
     "content": "**Corollary**: Twin primes > 3 have the form (6k-1, 6k+1).\n\nExamples:\n- (5, 7) = (6·1-1, 6·1+1)\n- (11, 13) = (6·2-1, 6·2+1)\n- (17, 19) = (6·3-1, 6·3+1)\n- (29, 31) = (6·5-1, 6·5+1)\n- (41, 43) = (6·7-1, 6·7+1)\n\nThe twins straddle a multiple of 6.",
     "mathContext": "twin_prime_form: ∃ k : ℕ, k ≥ 1 ∧ p = 6 * k - 1 ∧ p + 2 = 6 * k + 1",
@@ -138,7 +138,7 @@
       "startLine": 162,
       "endLine": 167
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Conjecture",
     "content": "**Twin Prime Conjecture**: There are infinitely many twin prime pairs.\n\nThis is stated as an axiom since it remains unproven.\n\nProgress: Zhang (2013) showed infinitely many primes with gap ≤ 70 million. Polymath reduced this to 246. Gap 2 remains open.",
     "mathContext": "axiom twin_prime_conjecture : TwinPrimeConjecture",
@@ -157,7 +157,7 @@
       "startLine": 173,
       "endLine": 188
     },
-    "type": "context",
+    "type": "concept",
     "title": "Non-Examples",
     "content": "Some numbers cannot start twin prime pairs:\n\n- **2**: 2+2 = 4 = 2², not prime\n- **1**: 1 is not prime (by definition)\n- **0**: 0 is not prime\n\nThe only twin pair with p ≤ 3 is (3, 5).",
     "mathContext": "Proof by showing the conditions fail",

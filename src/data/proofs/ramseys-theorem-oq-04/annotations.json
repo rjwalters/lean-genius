@@ -50,7 +50,7 @@
       "startLine": 264,
       "endLine": 300
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pigeonhole Ramsey: Full Proof",
     "content": "**pigeonhole_ramsey r n**: HypergraphRamseyProperty 1 r n (r*(n-1)+1)\n\nThe key Mathlib tool: `Finset.exists_lt_card_fiber_of_nsmul_lt_card`:\n  If r · (n-1) < |S|, then ∃ i ∈ Fin r, n-1 < |{x ∈ S : f(x) = i}|\n\nProof outline:\n1. Convert singleton coloring to element coloring `f : ℕ → Fin r`\n2. Apply pigeonhole: r·(n-1) < r·(n-1)+1 = N\n3. Get large fiber: |{x ∈ S : f(x) = i}| > n-1, so ≥ n\n4. Monochromaticity: any singleton {a} in the filter has c({a}) = f(a) = i\n   — closed by `dif_pos ha_S` and proof irrelevance on the membership hypothesis\n\nThe `dif_pos` step is subtle: `f a = c ⟨{a}, h_sing a ha_S⟩` because the definition of f uses `dite (a ∈ S)`, and `dif_pos` extracts the `then` branch.",
     "mathContext": "`Finset.exists_lt_card_fiber_of_nsmul_lt_card`: given $f: \\alpha \\to \\beta$ and $|\\beta| \\cdot m < |s|$, there exists $b \\in \\beta$ with $m < |\\{a \\in s : f(a) = b\\}|$. Here $\\beta = \\text{Fin } r$, $m = n-1$, $|s| = N = r(n-1)+1$. The hypothesis `r·(n-1) < r·(n-1)+1` is `omega`.",

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 37
     },
-    "type": "context",
+    "type": "concept",
     "title": "k-Moduli CRT Extension: From 2 to k Non-Coprime Moduli",
     "content": "The parent proof (OQ01) established three efficiency improvements for 2 non-coprime moduli: LCM bound, Bézout reduction, and Garner decomposition. This file answers the natural follow-up: does the theory extend to k arbitrary moduli?\n\nThe answer is yes, and the key insight is that Finset.lcm in ℤ's GCDMonoid provides the k-fold LCM universality property out of the box. The main theorem (kModuli_periodic) states that k congruences y₁ ≡ y₂ [ZMOD mᵢ] for all i ∈ s are equivalent to kLCM(s) | (y₁ - y₂).\n\nFour main results: (1) LCM periodicity, (2) canonical form in [0, kLCM), (3) kLCM ≤ ∏mᵢ with strict inequality when moduli share factors, (4) iterative construction reducing k+1 to k + one 2-modulus step.",
     "mathContext": "For $k$ congruences $x \\equiv a_i \\pmod{m_i}$, $i \\in s$: solutions form a coset of $L\\mathbb{Z}$ where $L = \\text{lcm}_{i \\in s}(m_i)$. The LCM satisfies $L \\le \\prod m_i$ with equality iff moduli are pairwise coprime.",

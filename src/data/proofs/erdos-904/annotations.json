@@ -275,7 +275,7 @@
       "startLine": 127,
       "endLine": 134
     },
-    "type": "technique",
+    "type": "concept",
     "title": "edwards_1978: The Conjecture is True",
     "content": "**axiom edwards_1978 : BollobasErdosConjecture**\n\nC.S. Edwards proved in 1978 that every graph with $n$ vertices and more than $n^2/4$ edges contains a triangle $\\{x,y,z\\}$ with $d(x)+d(y)+d(z) \\geq \\frac{3}{2}n$.\n\nPublished in *Combinatorics* (Proc. British Combinatorial Conf., 1977), London Math. Soc. Lecture Note Ser. 26.",
     "mathContext": "Edwards' proof uses a careful degree-counting argument: select an edge $\\{u,v\\}$ maximizing $d(u)+d(v)$, then find a common neighbor $w$ with sufficiently high degree. The key insight is that the average $d(u)+d(v)$ over edges is large enough (by the density condition) to guarantee the degree-sum bound for the resulting triangle.",
@@ -296,7 +296,7 @@
       "startLine": 136,
       "endLine": 140
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_904: Main Result (= Edwards' Theorem)",
     "content": "**theorem erdos_904 : BollobasErdosConjecture := edwards_1978**\n\nThe answer to Erdős Problem #904: dense graphs contain high-degree-sum triangles. Defined as a direct alias for Edwards' 1978 theorem.",
     "mathContext": "This theorem is the definitive answer to Problem #904. The equality `erdos_904 := edwards_1978` expresses that Edwards' result completely resolves the Bollobás-Erdős conjecture.",

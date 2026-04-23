@@ -227,7 +227,7 @@
       "startLine": 140,
       "endLine": 155
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Specific Values and Highly Composite Numbers",
     "content": "**Specific computations.** G(6) = 1/2 + 2/3 + 1/2 (divisors [1,2,3,6], ratios 1/2, 2/3, 3/6). G(12) = 1/2 + 2/3 + 3/4 + 4/6 + 6/12 (divisors [1,2,3,4,6,12]). For highly composite numbers, G(n) ≥ τ(n)/4.",
     "mathContext": "Computing G for small values illustrates the definition concretely. For $n = 6$: divisors are $1, 2, 3, 6$ and G(6) = 1/2 + 2/3 + 3/6 = 5/3 ≈ 0.833 · τ(6). For $n = 12$: five ratios give G(12) = 1/2 + 2/3 + 3/4 + 2/3 + 1/2 = 37/12 ≈ 0.617 · τ(12). Highly composite numbers (those with more divisors than any smaller number) have densely packed divisors and thus large G(n). The bound G(n) ≥ τ(n)/4 for such n follows from evenness (all highly composite numbers > 1 are even).",

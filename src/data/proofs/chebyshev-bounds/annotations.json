@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 44
     },
-    "type": "context",
+    "type": "concept",
     "title": "Chebyshev 1852: Elementary Bounds That Almost Proved the Prime Number Theorem",
     "content": "This module formalizes Pafnuty Chebyshev's 1852 approach to bounding π(n). Working 44 years before Hadamard and de la Vallée Poussin proved the Prime Number Theorem (1896), Chebyshev established that π(n) lies between two constant multiples of n/log(n). The two main tools are:\n1. **Central binomial coefficient** C(2n,n): every prime in (n, 2n] divides it exactly once, while C(2n,n) ≤ 4^n — giving an upper bound on the prime product\n2. **Bertrand's postulate** (also proved by Chebyshev in 1852): there is always a prime in (n, 2n] — giving lower bounds by telescoping\n\nThe file defines three structures: `chebyshevTheta` (θ function), `prodPrimesInInterval` (∏_{n < p ≤ 2n} p), and `numPrimesInInterval` (= π(2n) − π(n)). The 18 theorems span upper bounds on θ and π, divisibility of C(2n,n) by primes in the interval, and lower bounds from Bertrand's postulate.",
     "mathContext": "Chebyshev actually proved the tighter bounds $0.92 < \\theta(x)/x < 1.11$ for large $x$, but the $\\log(4) \\approx 1.386$ upper bound proved here is what follows directly from the primorial inequality. The key consequence: if $\\pi(x) \\sim cx/\\log(x)$ for some constant $c$, then $c$ must equal 1 (the PNT). Chebyshev's bounds show $0.92 \\leq c \\leq 1.11$ if the limit exists.",

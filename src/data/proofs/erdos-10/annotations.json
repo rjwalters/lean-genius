@@ -79,7 +79,7 @@
       "startLine": 52,
       "endLine": 59
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Graham Conjecture",
     "content": "The main conjecture (axiomatized): no finite $k$ suffices to represent all integers $> 1$ as a prime plus at most $k$ powers of 2. Formally: $\\neg \\exists k, \\{n : n > 1\\} \\subseteq S_k$. Erdős described this as 'probably unattackable.' The negation form $\\forall k, \\exists n > 1, n \\notin S_k$ says that for every $k$, there are arbitrarily large exceptions.",
     "mathContext": "$\\neg \\exists k \\in \\mathbb{N} : \\{n > 1\\} \\subseteq S_k$. Equivalently: $\\forall k, \\; \\{n > 1\\} \\setminus S_k \\neq \\emptyset$.",
@@ -102,7 +102,7 @@
       "startLine": 62,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gallagher's Density Theorem",
     "content": "Gallagher (1975) proved: for any $\\varepsilon > 0$, there exists $k(\\varepsilon)$ such that $\\underline{d}(S_{k(\\varepsilon)}) \\geq 1 - \\varepsilon$. This means 'almost all' integers are representable for sufficiently large $k$. The proof uses sieve methods (the large sieve) and the distribution of primes in arithmetic progressions. This is the strongest unconditional result toward Problem 10.",
     "mathContext": "$\\forall \\varepsilon > 0, \\; \\exists k : \\underline{d}(S_k) \\geq 1 - \\varepsilon$. Gallagher's argument: for $n \\leq N$, most $n$ can be written as $p + m$ where $m$ is a sum of $\\leq k$ powers of 2, by the large sieve.",
@@ -125,7 +125,7 @@
       "startLine": 70,
       "endLine": 74
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Granville-Soundararajan (Odd)",
     "content": "Granville and Soundararajan (1998) conjectured that every odd integer $> 1$ is the sum of a prime and at most 3 powers of 2. This would give a uniform bound $k = 3$ for all odd integers. Verified computationally for odd $n$ up to large bounds. The key observation: odd $n = p + 2^a + 2^b + 2^c$ forces $p$ odd (hence prime candidate), and the three powers of 2 provide enough flexibility.",
     "mathContext": "$\\{n \\in \\mathbb{N} : n \\text{ odd}, \\; n > 1\\} \\subseteq S_3$.",
@@ -147,7 +147,7 @@
       "startLine": 76,
       "endLine": 79
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Granville-Soundararajan (Even)",
     "content": "Granville and Soundararajan also conjectured that every nonzero even integer is the sum of a prime and at most 4 powers of 2. This follows from the odd case by writing $2m = (2m - 1) + 1 = (2m - 1) + 2^0$, reducing to the odd conjecture with one additional power of 2. The even case is more delicate due to parity: $p + 2^{a_1} + \\cdots + 2^{a_j}$ is even iff $p = 2$ or an odd number of exponents are 0.",
     "mathContext": "$\\{n \\in \\mathbb{N} : n \\text{ even}, \\; n \\neq 0\\} \\subseteq S_4$.",
@@ -189,7 +189,7 @@
       "startLine": 89,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Infinitely Many Exceptions for k = 2",
     "content": "There are infinitely many even integers not representable as a prime plus 2 powers of 2. The proof uses covering congruences: choosing moduli $m_1, \\ldots, m_t$ and residues $r_i$ such that $\\{r_i \\pmod{m_i}\\}$ cover all integers, then for $n \\equiv r_i \\pmod{m_i}$, the candidate $n - 2^a - 2^b$ falls in a residue class containing no primes (by Dirichlet). This technique dates to Erdős's work on covering systems.",
     "mathContext": "$\\{n \\in \\mathbb{N} : n \\text{ even}\\} \\setminus S_2$ is infinite. Proof via covering congruences: $n \\equiv r_i \\pmod{m_i}$ forces $n - 2^a - 2^b \\equiv 0 \\pmod{p_i}$ for some prime $p_i$.",

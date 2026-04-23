@@ -98,7 +98,7 @@
       "startLine": 120,
       "endLine": 122
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Bounds",
     "content": "**trivial_bounds:**\n\nFor u ≥ 2: u + 2 ≤ f(u) ≤ u².\n\nThis captures the basic range of f(u).",
     "significance": "key",
@@ -189,7 +189,7 @@
       "startLine": 172,
       "endLine": 175
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Irregular Growth Theorem",
     "content": "**irregular_growth:**\n\nBoth extremes occur infinitely often:\n- Infinitely many u with f(u) = u + 2 (minimal)\n- Infinitely many u with f(u) = u² (maximal)\n\nThis is the key insight: f has no regular growth pattern.",
     "mathContext": "The function oscillates between its bounds infinitely often.",
@@ -244,7 +244,7 @@
       "startLine": 198,
       "endLine": 219
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #459: SOLVED",
     "content": "**erdos_459_solved:**\n\nCombines all the main results:\n1. Trivial bounds: u + 2 ≤ f(u) ≤ u²\n2. f(p) = p² for primes\n3. Infinitely many minimal (u+2) cases\n4. Infinitely many maximal (u²) cases\n\nCambie's observations settle the main questions about f(u).",
     "mathContext": "The problem asked to 'estimate f(u)' - these results provide a complete characterization.",

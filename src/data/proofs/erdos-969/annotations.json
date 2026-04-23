@@ -25,7 +25,7 @@
       "startLine": 50,
       "endLine": 62
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Squarefree Examples",
     "content": "**Verified examples:**\n\n- Squarefree 1, 2, 3, 6, 10, 30 (verified by decide)\n- ¬Squarefree 4, 12 (contain 2²)\n\nPrimes are always squarefree. Products of distinct primes are squarefree.",
     "significance": "supporting",
@@ -62,7 +62,7 @@
       "startLine": 76,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Computed Values of Q(x)",
     "content": "**Q_one, Q_ten, Q_twenty:**\n\n- Q(1) = 1\n- Q(10) = 7 (squarefree: 1,2,3,5,6,7,10)\n- Q(20) = 13\n\nVerified using native_decide for exact computation.",
     "significance": "key",
@@ -99,7 +99,7 @@
       "startLine": 100,
       "endLine": 109
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Density Approximation",
     "content": "**density_approx:**\n\n0.607 < 6/π² < 0.609\n\nProved using bounds 3.14 < π < 3.15 from Mathlib.\n\nAbout 60.8% of all positive integers are squarefree!",
     "significance": "key",
@@ -263,7 +263,7 @@
       "startLine": 179,
       "endLine": 183
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Exponent Comparisons",
     "content": "**liu_exponent, exponent_gap:**\n\n- 11/35 > 1/4 (Liu's bound exceeds conjecture)\n- Gap: 11/35 - 1/4 = 9/140 ≈ 0.064\n\nEven with RH, we cannot reach the conjectured bound.",
     "significance": "supporting",

@@ -44,7 +44,7 @@
       "startLine": 80,
       "endLine": 92
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tschirnhaus Transformation",
     "content": "**Depressing the Quartic**:\n\nSubstitution $y = x + a/4$ transforms $x^4 + ax^3 + bx^2 + cx + d$ to $y^4 + py^2 + qy + r$ where:\n\n$$p = b - \\frac{3a^2}{8}$$\n$$q = c - \\frac{ab}{2} + \\frac{a^3}{8}$$\n$$r = d - \\frac{ac}{4} + \\frac{a^2 b}{16} - \\frac{3a^4}{256}$$\n\n**Why**: Eliminates $y^3$ term, simplifying Ferrari's method.\n\n**Reversibility**: Solutions $y$ give $x = y - a/4$.",
     "mathContext": "y = x + a/4 removes x³ term",
@@ -63,7 +63,7 @@
       "startLine": 35,
       "endLine": 56
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ferrari's Key Insight",
     "content": "**The Brilliant Trick**:\n\nStarting with $y^4 + py^2 + qy + r = 0$:\n\n1. Rearrange as $(y^2 + p/2)^2 = (p^2/4 - r) - qy$\n\n2. Add parameter $m$ to complete the square:\n$$(y^2 + p/2 + m)^2 = (2m + p)y^2 - qy + (m^2 + pm + p^2/4 - r)$$\n\n3. Right side is perfect square when discriminant = 0:\n$$q^2 - 4(2m + p)(m^2 + pm + p^2/4 - r) = 0$$\n\nThis is the **resolvent cubic**! Once $m$ is found:\n$$(y^2 + p/2 + m)^2 = (\\alpha y + \\beta)^2$$\n\nTake square roots $\\to$ two quadratics.",
     "mathContext": "completing the square with auxiliary m",
@@ -82,7 +82,7 @@
       "startLine": 203,
       "endLine": 227
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ferrari Factorization",
     "content": "**Factorization Theorem**:\n\nGiven depressed quartic $y^4 + py^2 + qy + r = 0$ and resolvent root $m$:\n\nLet $\\alpha^2 = 2m + p$ and $\\beta = q/(2\\alpha)$. Then:\n\n$$y^4 + py^2 + qy + r = (y^2 + p/2 + m - \\alpha y + \\beta)(y^2 + p/2 + m + \\alpha y - \\beta)$$\n\n**Lean Statement**:\n```lean\ntheorem ferrari_factorization ... :\n    (depressedQuartic p q r).eval y = 0 ↔\n    (y² + p/2 + m - αy + β = 0) ∨ \n    (y² + p/2 + m + αy - β = 0)\n```\n\nEach quadratic gives 2 roots → 4 total.",
     "mathContext": "quartic = product of two quadratics",
@@ -101,7 +101,7 @@
       "startLine": 234,
       "endLine": 272
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Explicit Root Formulas",
     "content": "**Ferrari's Four Roots**:\n\nWith $\\alpha = \\sqrt{2m + p}$, $\\beta = q/(2\\alpha)$:\n\n$$y_{1,2} = \\frac{-\\alpha \\pm \\sqrt{\\alpha^2 - 4(p/2 + m + \\beta)}}{2}$$\n$$y_{3,4} = \\frac{\\alpha \\pm \\sqrt{\\alpha^2 - 4(p/2 + m - \\beta)}}{2}$$\n\n**For general quartic**: Subtract $a/4$ from each $y_i$.\n\n**Lean Implementation**:\n```lean\ndef ferrariRoots (p q r m : ℂ) : ℂ × ℂ × ℂ × ℂ := ...\n```\n\nThe axiom `ferrari_roots_verify` ensures these satisfy the equation.",
     "mathContext": "explicit radical expressions",
@@ -120,7 +120,7 @@
       "startLine": 287,
       "endLine": 303
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Biquadratic Special Case",
     "content": "**When $q = 0$**: $y^4 + py^2 + r = 0$\n\nThis is a **quadratic in $y^2$**!\n\n$$z^2 + pz + r = 0 \\quad \\text{where } z = y^2$$\n\n**Solutions**:\n$$z = \\frac{-p \\pm \\sqrt{p^2 - 4r}}{2}$$\n\nThen $y = \\pm\\sqrt{z}$ (four roots from two values of $z$).\n\n**Simpler than general case**: No resolvent cubic needed!",
     "mathContext": "y⁴ + py² + r = 0 is quadratic in y²",
@@ -159,7 +159,7 @@
       "startLine": 306,
       "endLine": 315
     },
-    "type": "context",
+    "type": "concept",
     "title": "Historical Race (1515-1545)",
     "content": "**The Renaissance Algebra Race**:\n\n| Year | Mathematician | Achievement |\n|------|--------------|-------------|\n| c.1515 | del Ferro | First cubic solution (secret) |\n| 1535 | Tartaglia | Rediscovered cubic |\n| 1539 | Cardano | Learned Tartaglia's method |\n| 1540 | **Ferrari** | Solved quartic (age 18!) |\n| 1545 | Cardano | Published *Ars Magna* |\n\n**Drama**: Tartaglia taught Cardano under oath of secrecy. Cardano broke the oath when he learned del Ferro had priority.\n\nFerrari's quartic solution used Cardano's cubic - creating an elegant tower.",
     "significance": "supporting",

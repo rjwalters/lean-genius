@@ -63,7 +63,7 @@
       "startLine": 21,
       "endLine": 35
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kummer's Theorem",
     "content": "**Kummer's Theorem (The Key Tool)**\n\nThe p-adic valuation of C(n, k) equals the number of **carries** when adding k and n-k in base p.\n\n**Example** (p = 3, n = 8, k = 3):\n- 3 in base 3: 10\n- 5 in base 3: 12\n- Adding: 10 + 12 = 22 with 1 carry\n- So v₃(C(8,3)) = 1\n\n**In the proof**: The p-adic valuation of C(2m, m) counts carries when adding m + m in base p. If p^j divides m+i for small i, this forces carries in specific digit positions.\n\n**Why it matters**: Translates factorial divisibility into combinatorial digit counting!",
     "mathContext": "v_p(C(n,k)) = carries in base-p addition",
@@ -82,7 +82,7 @@
       "startLine": 21,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Forced Carries Lemma",
     "content": "**Forced Carries from Divisibility**\n\n```lean\nlemma lemma_forced_carries_largep (p m i j : ℕ) (hp : p.Prime)\n    (hi : 1 ≤ i) (hip : i < p) (hij : i ≤ (p - 1) / 2)\n    (hdiv : p ^ j ∣ m + i) :\n    kappa p m ≥ j\n```\n\n**What this says**: If p^j divides m+i for a \"small\" i (between 1 and (p-1)/2), then the p-adic valuation of C(2m, m) is at least j.\n\n**Intuition**: When m+i is divisible by a high power of p, the base-p representation of m has a specific structure that forces carries when computing m+m.\n\n**Key technique**: Uses floor division identities and careful modular arithmetic to track digit positions.",
     "mathContext": "p^j | m+i implies v_p(C(2m,m)) >= j",
@@ -101,7 +101,7 @@
       "startLine": 72,
       "endLine": 112
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Large Prime Simplification",
     "content": "**For Large Primes: kappa >= W**\n\n```lean\nlemma lemma_p_gt_2k (m k p : ℕ) (hp : p.Prime) (hk : 2 * k < p) :\n    kappa p m ≥ W p m k\n```\n\n**What this says**: When p > 2k, the p-adic valuation of C(2m, m) dominates the valuation of the product (m+1)...(m+k).\n\n**Why it matters**: Large primes contribute positively to the divisibility condition. We only need to worry about primes up to 2k.\n\n**Proof idea**: For p > 2k, at most one multiple of p appears in (m+1, ..., m+k). The unique multiple (if it exists) contributes the same to both sides.",
     "mathContext": "p > 2k implies kappa >= W",
@@ -232,7 +232,7 @@
       "startLine": 1,
       "endLine": 12
     },
-    "type": "context",
+    "type": "concept",
     "title": "The AI Collaboration Story",
     "content": "**January 5-7, 2026: A New Milestone**\n\n**Timeline**:\n- Problem clarification on erdosproblems.com forum\n- Kevin Barreto prompts GPT-5.2 with the refined problem\n- GPT-5.2 produces initial solution; when asked to handle arbitrary C, independently identifies the key reformulation\n- Aristotle formalizes in Lean\n- Boris Alexeev simplifies (proof now 1/3 shorter)\n\n**Terence Tao's Assessment**: \"An Erdos problem (#728) was solved more or less autonomously by AI... with the result not replicated in existing literature.\"\n\n**What's different from #124**:\n- Problem #124 used known techniques (Brown's criterion) in a new combination\n- Problem #728 appears to use genuinely novel probabilistic arguments\n- The AI showed independent mathematical reasoning in reformulating the approach\n\n**Links**:\n- [erdosproblems.com/728](https://www.erdosproblems.com/728)\n- [Tao's Mathstodon thread](https://mathstodon.xyz/@tao/115855840223258103)",
     "significance": "key",

@@ -97,7 +97,7 @@
       "startLine": 104,
       "endLine": 120
     },
-    "type": "technique",
+    "type": "concept",
     "title": "w(1) = 0",
     "content": "**w_one_zero:**\n\nNo representation exists for n = 1.\n\n**Proof:** Each term 2^a, 3^b, 2^c·3^d is ≥ 1 (powers of positive integers). Their sum is at least 3, so it can't equal 1.",
     "significance": "supporting",
@@ -115,7 +115,7 @@
       "startLine": 122,
       "endLine": 135
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Representations of 5",
     "content": "**five_has_rep, five_has_rep2:**\n\n5 = 2^0 + 3^1 + 2^0·3^0 = 1 + 3 + 1\n5 = 2^1 + 3^0 + 2^1·3^0 = 2 + 1 + 2\n\nSo w(5) ≥ 2. These are verified computationally with norm_num.",
     "significance": "supporting",
@@ -205,7 +205,7 @@
       "startLine": 210,
       "endLine": 233
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_407_summary:**\n\nCombines the three main results:\n\n1. w(n) is bounded (EGST 1988)\n2. w(n) ≤ 4 for large n (Tijdeman-Wang 1988)\n3. w(n) ≤ 9 always (Bajpai-Bennett 2024)\n\n**Conclusion:** Newman's conjecture is TRUE with explicit bounds.",
     "significance": "key",

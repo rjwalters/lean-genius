@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 24
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview",
     "content": "Erdős Problem #249: Is $\\sum_{n=1}^{\\infty} \\phi(n)/2^n$ irrational? Here $\\phi$ is Euler's totient function. The series converges to $\\approx 1.3240$ (OEIS A256936). Status: OPEN.\n\nPosed by Erdős and Graham [ErGr80, p.61] and revisited in [Er88c, p.102]. No proof of irrationality or rationality is known. The formalization proves convergence, positivity, and bounds with 0 axioms.",
     "mathContext": "$\\phi(n) = |\\{k : 1 \\le k \\le n, \\gcd(k,n) = 1\\}|$. The series $\\sum \\phi(n)/2^n$ converges since $\\phi(n) \\le n$ and $\\sum n/2^n = 2$.",
@@ -230,7 +230,7 @@
       "startLine": 186,
       "endLine": 190
     },
-    "type": "context",
+    "type": "concept",
     "title": "Summary: 0 Axioms, Full Convergence Proof",
     "content": "**Status**: OPEN. All convergence and bound results are fully proved from Mathlib (0 axioms). The key results are: convergence (comparison test), positivity (≥ 1/2), upper bound (≤ 2), term computations, and the equivalence between irrationality and non-rationality.\n\nThe `#check` commands at the end serve as a verification that all key theorems are accessible.",
     "mathContext": "Summary: $0 < \\sum_{n=1}^{\\infty} \\frac{\\phi(n)}{2^n} \\le 2$, with the exact value $\\approx 1.3240$. Whether this is rational or irrational is unknown.",

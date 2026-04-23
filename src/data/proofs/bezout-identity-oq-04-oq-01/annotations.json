@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 37
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Mathematical Context",
     "content": "The proof imports Mathlib's matrix and GCD infrastructure. `Mathlib.Data.Matrix.Basic` provides `Matrix.mulVec` and linear operations. `Mathlib.LinearAlgebra.Matrix.IsDiag` gives the diagonal predicate. `Mathlib.Data.Int.GCD` provides `Int.gcdA`, `Int.gcdB`, and `Int.gcd_eq_gcd_ab`. The doc-comment frames this as Open Question OQ-04-OQ-01: generalizing the single-equation parameterization from BezoutIdentityOQ04 to full matrix systems over ℤ.",
     "mathContext": "The formalization builds the Smith Normal Form theory for $A \\in M_{m \\times n}(\\mathbb{Z})$, producing a decomposition $A = UDV$ with $U \\in \\mathrm{GL}_m(\\mathbb{Z})$, $V \\in \\mathrm{GL}_n(\\mathbb{Z})$, and $D$ diagonal with $d_1 \\mid d_2 \\mid \\cdots \\mid d_k$. This structure reduces the system $Ax = b$ to $k$ independent divisibility conditions $d_i \\mid (Ub)_i$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Smith Normal Form",
       "integer matrix systems",
@@ -82,7 +82,7 @@
       "startLine": 111,
       "endLine": 131
     },
-    "type": "technique",
+    "type": "concept",
     "title": "SNF Existence Axiom: Euclidean Row/Column Reduction",
     "content": "The `snf_exists` axiom encodes the fundamental existence theorem: every $m \\times n$ integer matrix has a Smith Normal Form. The doc-comment outlines the constructive algorithm: (1) find the smallest $|a_{ij}|$, (2) move to position $(0,0)$ via swaps, (3) use it to clear column 0 and row 0 via Euclidean division, (4) if any remaining entry is not divisible by $d_{11}$, add its row/column to row/column 0 (decreasing $|d_{11}|$), (5) recurse on the lower-right $(m-1) \\times (n-1)$ submatrix. Axiomatization is justified by the ~500-line implementation cost.",
     "mathContext": "The algorithm terminates because the absolute value of $a_{11}$ strictly decreases in step (4) and $\\mathbb{Z}$ is well-ordered under $|\\cdot|$. The elementary row operations are left-multiplication by unimodular matrices (transvections, permutation matrices, sign matrices), so $U$ accumulates as their product. Similarly $V$ accumulates column operations. The algorithm runs in $O(mn \\cdot \\log(\\|A\\|_\\infty))$ steps in practice.",
@@ -132,7 +132,7 @@
       "startLine": 149,
       "endLine": 167
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Solvability Criterion: Diagonal Reduction of the System",
     "content": "The `snf_solvability_criterion` axiom characterizes solvability of $Ax = b$ via the SNF. Given $A = UDV$, the system becomes $UDV x = b$, i.e., $D(Vx) = Ub$. Setting $y = Vx$ (valid since $V$ is invertible), we get the diagonal system $Dy = Ub$: the $i$-th equation is $d_i y_i = (Ub)_i$. This has a solution iff $d_i \\mid (Ub)_i$ (when $d_i \\neq 0$) and $(Ub)_i = 0$ (when $d_i = 0$). The axiom captures this reduction without implementing the full SNF machinery.",
     "mathContext": "The solvability condition $d_i \\mid (Ub)_i$ is equivalent to the system $Ax = b$ having integer solutions. For each $i$: if $d_i \\neq 0$, then $y_i = (Ub)_i / d_i \\in \\mathbb{Z}$ iff $d_i \\mid (Ub)_i$; if $d_i = 0$, then $(Ub)_i$ must be 0 (no $y_i$ can make $0 \\cdot y_i = c \\neq 0$ hold). Once a solution $y$ exists, $x = V^{-1}y$ gives the integer solution (since $V^{-1}$ has integer entries).",

@@ -78,7 +78,7 @@
       "startLine": 123,
       "endLine": 160
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Chebyshev's Inequality",
     "content": "Formalizes Chebyshev's inequality: $P(|X - E[X]| \\geq \\varepsilon) \\leq \\text{Var}(X)/\\varepsilon^2$, wrapping Mathlib's `ProbabilityTheory.meas_ge_le_variance_div_sq`.\n\nThe proof is a direct Mathlib application. The hypothesis `Memℒp X 2` ensures finite second moment, which guarantees both the variance and the expectation exist.\n\nChebyshev's inequality follows from Markov's inequality applied to $(X - E[X])^2$: $P(|X - E[X]| \\geq \\varepsilon) = P((X - E[X])^2 \\geq \\varepsilon^2) \\leq E[(X - E[X])^2]/\\varepsilon^2 = \\text{Var}(X)/\\varepsilon^2$. The bound is tight: the two-point distribution $P(X = \\pm \\sigma) = 1/2$ achieves equality for $\\varepsilon = \\sigma$.\n\nAlso includes `variance_nonneg` wrapping Mathlib's non-negativity of variance.",
     "mathContext": "$P(|X - \\mu| \\geq \\varepsilon) \\leq \\frac{\\text{Var}(X)}{\\varepsilon^2}$\n\nDerivation: Apply Markov's inequality to $(X - \\mu)^2$:\n$P((X - \\mu)^2 \\geq \\varepsilon^2) \\leq \\frac{E[(X-\\mu)^2]}{\\varepsilon^2} = \\frac{\\text{Var}(X)}{\\varepsilon^2}$",
@@ -103,7 +103,7 @@
       "startLine": 179,
       "endLine": 186
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Variance of Sum of Independent Variables",
     "content": "For independent random variables, the variance of the sum equals the sum of variances: $\\text{Var}(\\sum_{i \\in s} X_i) = \\sum_{i \\in s} \\text{Var}(X_i)$. This is Mathlib's `ProbabilityTheory.IndepFun.variance_sum`.\n\nIndependence is crucial: for general random variables, $\\text{Var}(X + Y) = \\text{Var}(X) + \\text{Var}(Y) + 2\\text{Cov}(X,Y)$, and the covariance term vanishes precisely when $X$ and $Y$ are uncorrelated (a weaker condition than independence). For i.i.d. variables with common variance $\\sigma^2$, this gives $\\text{Var}(\\bar{X}_n) = \\sigma^2/n$ — the variance reduction that powers the WLLN.\n\nThe pairwise independence hypothesis (`Set.Pairwise`) suffices; full mutual independence is not needed for the variance sum formula.",
     "mathContext": "$\\text{Var}\\left(\\sum_{i \\in s} X_i\\right) = \\sum_{i \\in s} \\text{Var}(X_i)$ when $\\{X_i\\}$ are pairwise independent.\n\nFor the sample mean: $\\text{Var}(\\bar{X}_n) = \\frac{1}{n^2} \\sum_{i=1}^n \\text{Var}(X_i) = \\frac{\\sigma^2}{n}$",
@@ -127,7 +127,7 @@
       "startLine": 188,
       "endLine": 233
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Weak Law of Large Numbers",
     "content": "The WLLN is stated as: for i.i.d. random variables with common mean $\\mu$ and finite variance, $P(|\\bar{X}_n - \\mu| > \\varepsilon) \\to 0$ for all $\\varepsilon > 0$.\n\nThe proof strategy combines Chebyshev's inequality with the variance reduction property:\n1. $\\text{Var}(\\bar{X}_n) = \\sigma^2/n$ (from `variance_sum_indep` and i.i.d.)\n2. $P(|\\bar{X}_n - \\mu| \\geq \\varepsilon) \\leq \\sigma^2/(n\\varepsilon^2)$ (Chebyshev)\n3. $\\sigma^2/(n\\varepsilon^2) \\to 0$ as $n \\to \\infty$\n\nThe current formalization uses an axiom (`weak_law_of_large_numbers_axiom`) to wrap the proof steps, with the core mathematical content coming from Mathlib's Chebyshev inequality and variance properties. The `weak_law_of_large_numbers` theorem is a direct application of this axiom.\n\nThis is Wiedijk #59 (partial — the Weak Law component). The hypotheses require `Memℒp X_i 2` (finite second moment) and pairwise independence.",
     "mathContext": "$P(|\\bar{X}_n - \\mu| \\geq \\varepsilon) \\leq \\frac{\\text{Var}(\\bar{X}_n)}{\\varepsilon^2} = \\frac{\\sigma^2}{n\\varepsilon^2} \\xrightarrow{n \\to \\infty} 0$\n\nThis is Bernoulli's original approach (1713), though Bernoulli used direct combinatorial estimates rather than Chebyshev's inequality (which came 150 years later).",
@@ -151,7 +151,7 @@
       "startLine": 236,
       "endLine": 277
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Strong Law of Large Numbers",
     "content": "The SLLN asserts almost sure convergence: $P(\\lim_{n \\to \\infty} \\bar{X}_n = \\mu) = 1$. This is strictly stronger than the Weak Law — almost sure convergence implies convergence in probability, but not conversely.\n\nThe proof is a direct application of Mathlib's `ProbabilityTheory.strong_law_ae`, which implements Etemadi's 1981 proof — a significant simplification of Kolmogorov's original 1930 argument. Etemadi's method:\n1. Truncate $X_i$ at level $c^n$ for a constant $c > 1$\n2. Prove convergence along the subsequence $c^n$\n3. Extend to all $n$ by monotonicity\n4. Control the truncation error using integrability\n\nRemarkably, the SLLN only requires finite first moment ($E[|X|] < \\infty$), not finite variance. The hypotheses are pairwise independence (`Pairwise ... IndepFun`) and identical distribution (`IdentDistrib`). The `#check` line documents the Mathlib API entry point.",
     "mathContext": "$\\bar{X}_n \\xrightarrow{\\text{a.s.}} E[X_0]$, i.e., $P\\left(\\omega : \\lim_{n \\to \\infty} \\frac{1}{n}\\sum_{i=0}^{n-1} X_i(\\omega) = E[X_0]\\right) = 1$\n\nIn Lean: `∀ᵐ ω, Filter.Tendsto (fun n => (↑n)⁻¹ • ∑ i ∈ Finset.range n, X i ω) atTop (nhds (∫ ω', X 0 ω'))`",
@@ -199,7 +199,7 @@
       "startLine": 318,
       "endLine": 360
     },
-    "type": "context",
+    "type": "concept",
     "title": "Applications: Monte Carlo and Bernoulli's Theorem",
     "content": "Two application theorems are stated as stubs (proved as `(1 : ℕ) + 1 = 2 := rfl` — placeholders awaiting full formalization):\n\n**Monte Carlo convergence**: For i.i.d. samples and integrable $f$, $(1/n)\\sum f(X_i) \\xrightarrow{\\text{a.s.}} E[f(X)]$. This justifies Monte Carlo integration — the foundation of computational statistics, Bayesian inference (MCMC), and stochastic simulation. The convergence rate is $O(1/\\sqrt{n})$ regardless of dimension, making Monte Carlo superior to deterministic quadrature in high dimensions.\n\n**Bernoulli's theorem** (1713): For i.i.d. Bernoulli($p$) variables, the relative frequency converges to $p$ almost surely. This was the first Law of Large Numbers, proving that empirical frequencies approach theoretical probabilities — the mathematical foundation of the frequentist interpretation of probability.",
     "mathContext": "Monte Carlo: $\\frac{1}{n}\\sum_{i=1}^n f(X_i) \\xrightarrow{\\text{a.s.}} E[f(X)]$ by SLLN.\n\nBernoulli: $\\frac{1}{n}\\sum_{i=1}^n \\mathbf{1}_{A}(X_i) \\xrightarrow{\\text{a.s.}} P(A)$.\n\nConvergence rate (from CLT): $\\frac{1}{\\sqrt{n}}\\sum_{i=1}^n (X_i - \\mu) \\xrightarrow{d} N(0, \\sigma^2)$.",
@@ -223,7 +223,7 @@
       "startLine": 362,
       "endLine": 396
     },
-    "type": "context",
+    "type": "concept",
     "title": "Conclusion and Axiom Inventory",
     "content": "The concluding section summarizes both laws and their applications, and documents the axiom count. The file contains **1 axiom** (`weak_law_of_large_numbers_axiom`) wrapping the WLLN proof that uses Mathlib's Chebyshev inequality and variance properties. All other results are proved directly from Mathlib:\n\n- Chebyshev's inequality: `ProbabilityTheory.meas_ge_le_variance_div_sq`\n- Variance sum: `ProbabilityTheory.IndepFun.variance_sum`\n- Strong Law: `ProbabilityTheory.strong_law_ae`\n- Convergence implication: `MeasureTheory.tendstoInMeasure_of_tendsto_ae`\n\nThe 2 application stubs (`monte_carlo_convergence`, `bernoulli_law`) use placeholder proofs — they state the result informally in comments but prove `1 + 1 = 2` instead of the actual theorem.",
     "mathContext": "Axiom inventory: 1 axiom (`weak_law_of_large_numbers_axiom`). The axiom wraps the chain: $\\text{Var}(\\bar{X}_n) = \\sigma^2/n$ (from `variance_sum_indep`) $\\Rightarrow$ $P(|\\bar{X}_n - \\mu| \\geq \\varepsilon) \\leq \\sigma^2/(n\\varepsilon^2)$ (Chebyshev) $\\Rightarrow$ convergence.",

@@ -52,7 +52,7 @@
       "startLine": 43,
       "endLine": 47
     },
-    "type": "technique",
+    "type": "concept",
     "title": "σ(1) = 1",
     "content": "**sigma_one:**\n\nThe only divisor of 1 is 1 itself, so σ(1) = 1.\n\n```lean\ntheorem sigma_one : sigma 1 = 1\n```",
     "significance": "supporting",
@@ -106,7 +106,7 @@
       "startLine": 78,
       "endLine": 82
     },
-    "type": "technique",
+    "type": "concept",
     "title": "g(p) = p(p+1) for primes",
     "content": "**g_prime:**\n\nFor prime p, g(p) = p · (p+1).\n\n**Examples:**\n- g(2) = 2·3 = 6\n- g(3) = 3·4 = 12\n- g(5) = 5·6 = 30\n- g(7) = 7·8 = 56",
     "mathContext": "$g(p) = p \\cdot \\sigma(p) = p(p+1)$ for prime $p$. Since $p(p+1)$ is always even and there are infinitely many primes, infinitely many even numbers are in the range of $g$. For twin primes $p, p+2$: $g(p) = p(p+1)$ and $g(p+2) = (p+2)(p+3)$.",
@@ -236,7 +236,7 @@
       "startLine": 212,
       "endLine": 217
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: g(2) = 6",
     "content": "**Example:**\n\nn = 6: k = 2 gives 2·σ(2) = 2·3 = 6.\n\n```lean\nexample : g 2 = 6\n```\n\nVerified by native_decide.",
     "significance": "supporting",
@@ -254,7 +254,7 @@
       "startLine": 219,
       "endLine": 224
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: g(3) = 12",
     "content": "**Example:**\n\nn = 12: k = 3 gives 3·σ(3) = 3·4 = 12.\n\n```lean\nexample : g 3 = 12\n```",
     "significance": "supporting",
@@ -290,7 +290,7 @@
       "startLine": 233,
       "endLine": 239
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Prime Examples",
     "content": "**Prime examples:**\n\nFor prime p, g(p) = p(p+1):\n- g(5) = 30\n- g(7) = 56\n\nThis gives infinitely many values in the range of g.",
     "significance": "key",

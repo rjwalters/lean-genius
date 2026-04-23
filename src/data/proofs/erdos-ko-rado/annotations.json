@@ -34,7 +34,7 @@
     "title": "IsIntersectingFamily, Star, and cyclicInterval",
     "content": "Three foundational definitions: (1) IsIntersectingFamily A k — A is a family of k-element sets from Fin n where every pair has nonempty intersection; (2) Star x k — all k-subsets of Fin n containing fixed element x, the unique extremizer for n > 2k; (3) cyclicInterval start k — k consecutive elements of Fin n in cyclic order, the auxiliary structure for Katona's proof that plays no role in the EKR statement itself.",
     "mathContext": "IsIntersectingFamily A k := (∀ s ∈ A, s.card = k) ∧ ∀ s t, s ∈ A → t ∈ A → (s ∩ t).Nonempty. Star x k := (powersetCard k univ).filter (fun s => x ∈ s). cyclicInterval start k := {i : Fin n | ∃ j < k, i = ⟨(start.val + j) % n, ...⟩}, i.e., the k elements starting at 'start' in the cyclic order 0,1,...,n-1,0,1,.... The card_cyclicInterval theorem verifies |cyclicInterval start k| = k via Finset.card_image_of_injective, using injectivity of i ↦ (start + i) % n on the range {0,...,k-1}.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "k-uniform families",
       "Star family",

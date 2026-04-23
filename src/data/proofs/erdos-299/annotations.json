@@ -83,7 +83,7 @@
       "startLine": 96,
       "endLine": 102
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Bounded Gaps Imply Positive Density",
     "content": "**The crucial connection**: if a strictly increasing sequence has gaps bounded by C, its range has positive density (at least 1/C). This is because bounded gaps force the sequence to include many elements below any N.",
     "mathContext": "Intuitively: if gaps ≤ C, then a_n ≤ a_0 + n·C, so there are at least N/C - O(1) elements below N. The proof requires careful counting arguments.",
@@ -140,7 +140,7 @@
       "startLine": 189,
       "endLine": 201
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Egyptian Fraction Examples",
     "content": "**Verified examples**: {2, 3, 6} gives 1/2 + 1/3 + 1/6 = 1, and {2, 4, 6, 12} gives 1/2 + 1/4 + 1/6 + 1/12 = 1. These concrete examples show that Egyptian fractions with sum 1 exist.",
     "mathContext": "We use native_decide for the rational arithmetic verification. The positivity conditions are proved by case analysis with omega.",

@@ -6,7 +6,7 @@
       "startLine": 73,
       "endLine": 85
     },
-    "type": "context",
+    "type": "concept",
     "title": "Namespace and Proof Architecture",
     "content": "The `DissectionOfCubes` namespace scopes the entire 366-line development into five logical parts:\n\n- **Part 1** (lines 86-143): Basic definitions — `Cube` structure, `CubeDissection`, `allDifferentSizes`\n- **Part 2** (lines 144-181): The floor argument — `cubesTouchingBottom`, `smallest_cube_top_is_floor`\n- **Part 3** (lines 182-257): Infinite descent — `hasDecreasingChain`, two axioms, and the proved `chain_length_bounded`\n- **Part 4** (lines 258-298): Main theorem — `dissection_of_cubes` and `two_cubes_same_size`\n- **Part 5** (lines 299-366): Historical contrast — `squaring_the_square_exists` and commentary\n\nThe modular structure mirrors the proof's logic: definitions → geometric lemma → descent machinery → contradiction → context. The Lean file uses `noncomputable` in several places due to `Classical.propDecidable` (real number equality is not decidable), and the two axioms are clearly separated from the proved results.",
     "mathContext": "The five-part structure mirrors the mathematical argument: (1) formalize the geometric objects; (2) establish the key lemma about the smallest cube on each floor; (3) build the infinite descent machinery via chain injectivity; (4) derive the contradiction; (5) contrast with the 2D case. The namespace ensures all 7 theorems and 8 definitions are scoped under `DissectionOfCubes.*`.",
@@ -29,7 +29,7 @@
       "startLine": 6,
       "endLine": 71
     },
-    "type": "context",
+    "type": "concept",
     "title": "Wiedijk #82: Cube Dissection Impossibility via Littlewood's Infinite Descent",
     "content": "The header establishes the impossibility theorem: a cube cannot be dissected into finitely many smaller cubes of all different sizes. Littlewood's proof (A Mathematician's Miscellany, 1953) proceeds by infinite descent: (1) find the smallest cube on the bottom floor; (2) it's surrounded by taller cubes, so its top face is a new floor; (3) repeat — producing an infinite strictly decreasing sequence of sizes; (4) contradiction with finite dissection. The proof formalizes in 5 parts: Cube definitions, CubeDissection structure, floor argument (partially axiomatized), chain_length_bounded (proved via Fintype.card_le_of_injective), main theorem (omega). Two axioms capture unformalized 3D geometry: smaller_cube_above_axiom and all_different_implies_long_chains_axiom. Contrast: 2D squares CAN be dissected into different-sized squares (Brooks-Smith-Stone-Tutte, 1940).",
     "mathContext": "**Wiedijk #82**: impossibility of 'perfect cube dissection'. **Littlewood's proof**: infinite descent via floor argument — each smallest cube on any horizontal floor generates a smaller cube above it. **In 3D**: a cube in the interior is surrounded on all sides; in 2D, an edge square can extend to the boundary, allowing 'squaring the square'. **Well-foundedness of ℕ**: infinite descent contradicts finiteness — strictly decreasing sequence of positive reals with length $> |\\text{cubes}|$ is impossible. **Fintype.card_le_of_injective**: if $f: \\text{Fin}(n) \\hookrightarrow S$ is injective and $|S| = m$, then $n \\leq m$.",

@@ -82,7 +82,7 @@
       "startLine": 124,
       "endLine": 150
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Known Results: KST and Complete Bipartite Graphs",
     "content": "kovari_sos_turan (axiom): ex(n; K_{s,t}) = O(n^{2-1/s}) for s ≤ t. complete_bipartite_lower (axiom): ex(n; K_{s,t}) = Ω(n^{2-1/s}). Together these show ex(n; K_{s,t}) ≍ n^{2-1/s}. complete_bipartite_exponent (theorem): the exponent 2-1/s is rational, proved by exhibiting it as a rational number.",
     "mathContext": "The KST theorem (1954) is foundational in extremal graph theory and provides the key positive example for this problem.",
@@ -101,7 +101,7 @@
       "startLine": 152,
       "endLine": 168
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Original Conjecture Disproved",
     "content": "erdosOriginalConjecture: α always has form 1+1/k or 2-1/k. erdos_simonovits_counterexample (axiom): this is FALSE. Erdős and Simonovits (1970) found bipartite graphs with exponents outside this restricted set. This narrowed the question to the broader forms (existence, rationality) that remain open.",
     "mathContext": "The counterexample showed the space of possible exponents is richer than initially expected.",
@@ -139,7 +139,7 @@
       "startLine": 188,
       "endLine": 212
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "erdos_713 combines two established results: (1) the original conjecture is false (Erdős-Simonovits), and (2) complete bipartite graphs have rational exponents. Proved by exact ⟨erdos_simonovits_counterexample, complete_bipartite_exponent⟩. The main questions about existence and rationality of exponents for general bipartite graphs remain open.",
     "significance": "key",

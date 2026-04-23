@@ -119,7 +119,7 @@
       "startLine": 158,
       "endLine": 179
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_992_summary** (PROVED): Combines two key results:\n1. Baker's bound: D(N) ≪ √N·(log N)^{3/2} for all sequences and a.e. α\n2. Erdős-Gál: D(N) ≪ √N·(log log N)^k for lacunary sequences and a.e. α\n\nProof: ⟨baker_1981, erdos_gal_lacunary⟩\n\nThe summary captures the complete picture: the best general bound and the special lacunary bound. The conjectures ask whether the lacunary bound extends to all sequences.",
     "mathContext": "Both conjuncts are instantiated from the axiomatized results. The summary theorem is proved, not axiomatized.",

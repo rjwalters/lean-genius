@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 29
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview: Totient Preimage Growth (OPEN)",
     "content": "**Erdős Problem #51**: Is there an infinite set $A \\subseteq \\mathbb{N}$ of totient values such that the smallest preimage $n_a = \\min\\{n : \\phi(n) = a\\}$ satisfies $n_a/a \\to \\infty$ as $a \\to \\infty$ through $A$?\n\nContext: Euler's totient $\\phi(n)$ counts integers $\\leq n$ coprime to $n$. The inverse totient problem asks: given $a$, find the smallest $n$ with $\\phi(n) = a$. For prime-generated values (when $a = p-1$), the ratio $n_a/a \\leq p/(p-1) \\to 1$. The conjecture asks whether arbitrarily large ratios are possible.\n\nImports: `Nat.Totient`, `Order.Filter.Basic`, `Order.Filter.AtTopBot`, `Topology.Order.Basic`, and `Tactic`.",
     "mathContext": "$\\phi(n) = |\\{k \\leq n : \\gcd(k,n)=1\\}|$. The inverse totient function $n_a = \\min\\{n \\in \\mathbb{N} : \\phi(n) = a\\}$ satisfies $n_a \\leq 2a+1$ trivially. The conjecture asks: $\\sup_{a \\in A} n_a/a = \\infty$ for some infinite set $A$ of totient values. Related: Problem #694 (totient preimage structure), Carmichael's conjecture (1907, OPEN), OEIS A002202 (totient values), A014197 (preimage counts).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Euler totient function",
       "inverse totient problem",
@@ -26,14 +26,25 @@
   {
     "id": "erdos-51-ann-opens",
     "proofId": "erdos-51",
-    "range": { "startLine": 30, "endLine": 35 },
-    "type": "context",
+    "range": {
+      "startLine": 30,
+      "endLine": 35
+    },
+    "type": "concept",
     "title": "Opens and Core Definitions Header",
     "content": "`open Filter` (line 31) brings `atTop`, `Tendsto`, `liminf`, `limsup` into scope. `open scoped Nat Topology` (line 32) opens scoped notation: `Nat.totient` can be written as `n.totient` (dot notation) and topological filter notation becomes available. Line 34 is the `/-## Core Definitions -/` section header — a block comment (not a docstring) marking the start of the three core definitions.",
     "mathContext": "`open Filter` enables writing `Tendsto f atTop (nhds L)` instead of `Filter.Tendsto f Filter.atTop (nhds L)`. `open scoped Nat` enables dot notation for totient: `n.totient = Nat.totient n`. The section header comment `/-## Core Definitions -/` uses Lean's block comment syntax, not docstring syntax — it has no attached declaration.",
     "significance": "supporting",
-    "relatedConcepts": ["open Filter", "open scoped", "Nat.totient dot notation", "Filter.atTop"],
-    "prerequisites": ["Lean 4 open scoped syntax", "Mathlib Filter namespace"]
+    "relatedConcepts": [
+      "open Filter",
+      "open scoped",
+      "Nat.totient dot notation",
+      "Filter.atTop"
+    ],
+    "prerequisites": [
+      "Lean 4 open scoped syntax",
+      "Mathlib Filter namespace"
+    ]
   },
   {
     "id": "erdos-51-ann-preimage",
@@ -134,7 +145,7 @@
       "startLine": 61,
       "endLine": 61
     },
-    "type": "technique",
+    "type": "concept",
     "title": "totient_one: φ(1) = 1 (The Only Proved Theorem)",
     "content": "`totient_one : Nat.totient 1 = 1` is the only fully proved theorem in the file. Proved by `simp`, which unfolds `Nat.totient` for the literal value 1. This is the only integer coprime to 1 in $\\{1,\\ldots,1\\}$ — trivially, every integer is coprime to 1, so the count is 1. Note: $\\phi(2) = 1$ as well, so 1 is a totient value with two preimages $\\{1, 2\\}$, consistent with Carmichael's conjecture (which requires $|\\phi^{-1}(a)| \\neq 1$).",
     "significance": "supporting",
@@ -155,11 +166,11 @@
       "startLine": 63,
       "endLine": 70
     },
-    "type": "context",
+    "type": "concept",
     "title": "Stubs: Preimage Structure and Growth Bounds (Unformalized)",
     "content": "Lines 63-70 contain section header stubs and the `inverseTotientCount` definition:\n\n**Preimage Structure** (stub, line 63): Would include:\n- `totient_prime` (axiom): $\\phi(p) = p-1$ for prime $p$ — every integer $< p$ is coprime to a prime\n- `even_totient_values` (axiom): Every even $a \\geq 2$ is a totient value (constructive via primes in arithmetic progressions, or by direct prime argument)\n- `erdos_carmichael` (axiom): If any totient value has exactly one preimage, infinitely many do (Erdős 1935, partial result toward Carmichael's conjecture)\n\n**Growth Bounds** (stub, line 65): Would include:\n- `prime_preimage_ratio`: For prime $p$, $n_{p-1} \\leq p$ (since $p$ is a preimage of $p-1$), giving ratio $\\leq p/(p-1) \\leq 2$\n- `highly_totient_exist`: For any $k$, some totient value has $\\geq k$ preimages (unbounded $|\\phi^{-1}(a)|$)\n\n**inverseTotientCount** (line 68): `inverseTotientCount a = (totientPreimage a).ncard` — the number of solutions to $\\phi(n) = a$ (OEIS A014197). Ford's theorem (1998): for any $k$, infinitely many $a$ have exactly $k$ preimages.",
     "mathContext": "Carmichael (1907, open): $|\\phi^{-1}(a)| \\neq 1$ for all $a$. Verified up to $10^{10^{10}}$. Erdős (1935): if $\\exists a$ with $|\\phi^{-1}(a)|=1$ then $|\\{a : |\\phi^{-1}(a)|=1\\}|$ is infinite. Highly totient numbers (OEIS A097942): 1, 2, 4, 8, 12, 24, 48, 72, 144, ...",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Carmichael's conjecture",
       "Erdős 1935",

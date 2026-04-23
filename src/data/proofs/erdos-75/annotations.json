@@ -2,7 +2,7 @@
   {
     "id": "ann-e75-imports",
     "proofId": "erdos-75",
-    "type": "context",
+    "type": "concept",
     "title": "Basic Mathlib Imports",
     "content": "Imports Nat.Basic, Finset, Rat.Basic, and tactics from Mathlib.",
     "mathContext": "The formalization uses `ℚ` (rational numbers) for the density parameter $\\varepsilon$ and the linear constant $c$, avoiding the complications of working with real-valued exponents. The `Finset` import supports finite vertex counting. Notably, this file does NOT import Mathlib's `SimpleGraph` type—instead it axiomatizes an abstract `Graph` type to handle infinite graphs with uncountable chromatic number, which are beyond SimpleGraph's scope.",

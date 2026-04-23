@@ -81,7 +81,7 @@
       "startLine": 89,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős #139: Main Statement",
     "content": "**Szemerédi's Theorem (Erdős #139)**: For any k ≥ 2, the ratio r_k(N)/N tends to 0 as N → ∞. This means that k-AP-free subsets of {1,...,N} become asymptotically negligible compared to N.",
     "mathContext": "Using Filter.Tendsto, we express this as: `Tendsto (fun N => (r k N / N : ℝ)) atTop (𝓝 0)`. The hypothesis `1 < k` excludes the trivial case k=1 where every nonempty set contains a 1-AP.",
@@ -131,7 +131,7 @@
       "startLine": 123,
       "endLine": 147
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Cases: k=1 and k=2",
     "content": "**k=1**: Any nonempty set contains a 1-AP (a single element). **k=2**: Any set with ≥2 elements contains a 2-AP (two distinct elements form a 2-term AP with common difference their gap).",
     "mathContext": "For k=1, we witness `⟨a, 1, Nat.one_pos, ...⟩` with any element a. For k=2, given distinct a,b with a < b, the progression is a, b with common difference b-a. The `interval_cases i` tactic handles the two cases i=0,1.",
@@ -155,7 +155,7 @@
       "startLine": 155,
       "endLine": 194
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Equivalence with Mathlib's ThreeAPFree",
     "content": "**isKAPFree_iff_threeAPFree**: Our `IsKAPFree S 3` is equivalent to Mathlib's `ThreeAPFree S`. This is crucial for connecting to Mathlib's Roth theorem.",
     "mathContext": "Mathlib's `ThreeAPFree S` says: ∀ a,b,c ∈ S, a+c = b+b implies a=b. This captures 'no non-trivial 3-APs' differently—by requiring that arithmetic mean b equals the endpoint a when they satisfy the AP condition. The proof carefully handles the case analysis for both directions.",
@@ -180,7 +180,7 @@
       "startLine": 196,
       "endLine": 210
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Roth's Theorem via Mathlib",
     "content": "**Roth's Theorem (k=3)**: Proved completely using Mathlib's `roth_3ap_theorem_nat`. For any δ > 0 and sufficiently large N, any subset of {0,...,N-1} with ≥δN elements contains a 3-AP.",
     "mathContext": "The proof uses `cornersTheoremBound (δ/3)` as the threshold N₀. Mathlib's proof chain is: Szemerédi Regularity → Triangle Removal → Corners → Roth. The bound is tower-type exponential, making it huge in practice, but the theorem is fully proved.",

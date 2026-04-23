@@ -140,7 +140,7 @@
       "startLine": 180,
       "endLine": 211
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**Complete Summary of Known Results**\n\nThe summary theorem erdos_617_summary bundles the three main known results into a single conjunction:\n1. Every 3-colouring of K₁₀ is not balanced (r=3 case)\n2. Every 4-colouring of K₁₇ is not balanced (r=4 case)\n3. A balanced 2-colouring of K₅ exists (r=2 counterexample)\n\nThe general conjecture for r ≥ 5 remains one of the notable open problems in edge-colouring theory.",
     "mathContext": "erdos_617_summary : (∀ c, ¬balanced 10 3 c) ∧ (∀ c, ¬balanced 17 4 c) ∧ (∃ c, balanced 5 2 c)",

@@ -7,10 +7,10 @@
       "endLine": 35
     },
     "title": "Module Documentation: Proof Architecture",
-    "type": "context",
+    "type": "concept",
     "content": "The module documentation explains the two-step proof architecture: (1) the algebraic identity holds over any CommRing and is proved by `ring`, and (2) Ptolemy's inequality follows by taking norms and applying the triangle inequality. The note that this is independent from `PtolemysTheorem.lean` highlights that the codebase contains two distinct formalizations of Ptolemy: an algebraic/analytic proof (here) and a geometric proof (using Mathlib's cospherical formulation).",
     "mathContext": "The observation that 'Ptolemy is fundamentally about the multiplicative structure of $\\mathbb{C}$ and the triangle inequality' captures the algebraic essence: $\\|ab\\| = \\|a\\|\\|b\\|$ and $\\|a+b\\| \\leq \\|a\\| + \\|b\\|$ suffice once the ring identity is established. The six exported theorems cover three levels: the generic CommRing identity, the $\\mathbb{C}$-specialized identity, and Ptolemy's inequality in norm, `Complex.abs`, and `dist` forms, plus the equality characterization.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "normed field",
       "commutative ring",

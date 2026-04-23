@@ -169,7 +169,7 @@
       "startLine": 155,
       "endLine": 162
     },
-    "type": "technique",
+    "type": "concept",
     "title": "k-th Powers Ramsey Complete",
     "content": "**kth_powers_ramsey_complete:**\n\nFor k ≥ 2 and r ≥ 2, the k-th powers are Ramsey r-complete.\n\nFollows from CFP's sparse subsequence result plus subset_ramsey_complete.",
     "significance": "key",
@@ -187,7 +187,7 @@
       "startLine": 168,
       "endLine": 184
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Problem Resolved",
     "content": "**squares_ramsey_2_complete, erdos_843_resolved:**\n\nThe squares are Ramsey 2-complete.\n\nProof: Squares = KthPowers 2, and kth_powers_ramsey_complete gives the result for k=2, r=2.",
     "significance": "key",
@@ -241,7 +241,7 @@
       "startLine": 245,
       "endLine": 271
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Problem Summary",
     "content": "**erdos_843_summary:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | Are squares Ramsey 2-complete? |\n| Answer | YES (Conlon-Fox-Pham 2021) |\n| Generalization | k-th powers Ramsey r-complete |\n| Optimal density | (log N)² |\n| Prize | Part of $350 combined |",
     "significance": "key",

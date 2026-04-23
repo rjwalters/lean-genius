@@ -30,7 +30,7 @@
       "startLine": 48,
       "endLine": 74
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Two-Prime Bound: reciprocalSum ≤ 5/6",
     "content": "For any 2 distinct primes {p, q}: 1/p + 1/q ≤ 1/2 + 1/3 = 5/6. The maximum is achieved at {2, 3}. Proof: both p, q ≥ 2; they cannot both equal 2 (distinct), so one is ≥ 3. This gives reciprocals ≤ 1/2 and ≤ 1/3.",
     "mathContext": "For distinct primes $p < q$: $p \\geq 2$ and $q \\geq 3$, giving $\\frac{1}{p} + \\frac{1}{q} \\leq \\frac{1}{2} + \\frac{1}{3} = \\frac{5}{6}$. The Lean proof uses `Finset.card_eq_two` to destructure the 2-element set, then `inv_le_inv_of_le` for the bound on each reciprocal.",
@@ -53,7 +53,7 @@
       "startLine": 82,
       "endLine": 149
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Three-Prime Bound: reciprocalSum ≤ 31/30 (Pigeonhole)",
     "content": "For any 3 distinct primes: 1/p₁ + 1/p₂ + 1/p₃ ≤ 1/2 + 1/3 + 1/5 = 31/30. Proof by pigeonhole: the only primes < 5 are {2, 3}, so among 3 distinct primes at least one is ≥ 5 (reciprocal ≤ 1/5). Among the remaining two distinct primes, at least one is ≥ 3 (reciprocal ≤ 1/3). Total ≤ 1/2 + 1/3 + 1/5 = 31/30. The `interval_cases` tactic handles case analysis over primes < 5.",
     "mathContext": "Pigeonhole: only $2, 3 < 5$ are prime, so 3 distinct primes cannot all be $< 5$. Formally: $\\neg(a < 5 \\land b < 5 \\land c < 5)$ when $a, b, c$ are distinct primes; `interval_cases` resolves this by exhausting all combinations. Result: $\\Sigma_{1/Q} \\leq \\frac{1}{2} + \\frac{1}{3} + \\frac{1}{5} = \\frac{31}{30}$.",

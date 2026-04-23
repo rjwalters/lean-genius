@@ -197,7 +197,7 @@
       "startLine": 111,
       "endLine": 134
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**`erdos_909_summary`**: Packages two results into one theorem:\n\n1. `erdos909Statement` holds — the problem is solved for all $n \\geq 1$\n2. An **explicit example** exists for $n = 1$ — the rational Hilbert space $\\ell^2(\\mathbb{Q})$\n\n**Lean proof**: `exact ⟨erdos_909, rational_hilbert_example⟩`\n\n**What this means**: Not only does the abstract Anderson-Keisler theorem guarantee existence for all $n$, but for the base case $n = 1$, we have a concrete and well-understood witness. The gap between the concrete ($n = 1$) and abstract (general $n$) reflects the difficulty jump: the $n = 1$ case uses elementary properties of $\\ell^2(\\mathbb{Q})$, while the general case requires deep descriptive set theory.",
     "mathContext": "erdos_909_summary : erdos909Statement ∧ (∃ S, dim(S)=1 ∧ dim(S×S)=1)",

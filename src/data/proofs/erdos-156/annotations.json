@@ -53,7 +53,7 @@
       "startLine": 38,
       "endLine": 81
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Equivalence of Sidon Definitions",
     "content": "The theorem `sidonSet_iff_alt` proves the two Sidon characterizations are equivalent (using a slightly different 'alt' with $a \\neq b$). The proof handles four cases based on whether $a \\leq b$ or $a > b$ and $c \\leq d$ or $c > d$. Each case applies the hypothesis after reordering elements, using `push_neg`, `linarith`, and set extensionality (`ext x`, `simp`, `tauto`). The reverse direction handles the degenerate case $a = b$ separately.",
     "mathContext": "The equivalence requires careful handling of the case $a = b$ (diagonal sums $2a$). When $a = b$ and $c \\neq d$, or vice versa, the sum equation $2a = c + d$ with $c < d$ needs separate treatment. The proof uses `linarith` to derive contradictions in impossible cases.",
@@ -101,7 +101,7 @@
       "startLine": 101,
       "endLine": 131
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Greedy Sidon Construction and Properties",
     "content": "The greedy algorithm `greedySidon` is defined recursively: at step $n+1$, add $n+1$ if $A \\cup \\{n+1\\}$ remains Sidon, otherwise keep $A$. Two theorems:\n\n1. **greedySidon_is_sidon**: Proved by induction — the base case (empty set) is vacuously Sidon; the inductive step either uses the explicit Sidon check or the inductive hypothesis.\n2. **greedySidon_maximal**: States the greedy set is maximal (sorry — requires tracking rejection history).\n\nThe greedy construction is the canonical baseline: it produces maximal Sidon sets of size $\\Theta(\\sqrt{N})$.",
     "mathContext": "Greedy analysis: when considering element $n$, it is rejected if $n = a + b - c$ for some $a, b, c$ in the current set $A$. With $|A| = s$ elements, there are $O(s^2)$ such forbidden values. The set saturates when $s^2 \\sim N$, giving $s \\sim \\sqrt{N}$.",

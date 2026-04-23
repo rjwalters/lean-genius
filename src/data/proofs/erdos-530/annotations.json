@@ -2,7 +2,7 @@
   {
     "id": "erdos-530-imports",
     "proofId": "erdos-530",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 17,
       "endLine": 21
@@ -70,7 +70,7 @@
   {
     "id": "erdos-530-erdos-lower",
     "proofId": "erdos-530",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 72,
       "endLine": 77
@@ -113,7 +113,7 @@
   {
     "id": "erdos-530-upper",
     "proofId": "erdos-530",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 86,
       "endLine": 91
@@ -180,7 +180,7 @@
   {
     "id": "erdos-530-sum-count",
     "proofId": "erdos-530",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 137,
       "endLine": 141
@@ -230,7 +230,7 @@
       "startLine": 194,
       "endLine": 257
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Counting Sorted Pairs: $k(k+1)/2$",
     "content": "`card_sorted_pairs` proves $|\\{(a,b) \\in S \\times S : a \\leq b\\}| = |S|(|S|+1)/2$. The proof is the longest in the file (~63 lines) and uses a three-part decomposition:\n\n1. **Decompose**: $\\{a \\leq b\\} = \\{a < b\\} \\cup \\{a = b\\}$ (disjoint)\n2. **Swap bijection**: $\\{a > b\\} \\cong \\{a < b\\}$ via $(a,b) \\mapsto (b,a)$, so $|\\text{gt}| = |\\text{lt}|$\n3. **Diagonal bijection**: $\\{a = b\\} \\cong S$ via $(a,a) \\mapsto a$, so $|\\text{eq}| = |S|$\n4. **Combine**: $|\\text{le}| + |\\text{gt}| = |S|^2$, so $2|\\text{le}| = |S|^2 + |S|$\n\nThe `omega` tactic handles the final arithmetic.",
     "mathContext": "$|\\{(a,b) \\in S \\times S : a \\leq b\\}| = \\binom{|S|+1}{2} = \\frac{|S|(|S|+1)}{2}$. This is the number of multisets of size 2 from $S$ (pairs with repetition). The proof avoids binomial coefficients and works directly with Finset cardinalities.",

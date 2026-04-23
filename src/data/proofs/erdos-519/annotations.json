@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 30
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview and References",
     "content": "**Erdős Problem #519: Power Sums of Complex Numbers**\n\n**Question:** For $z_1, \\ldots, z_n \\in \\mathbb{C}$ with $z_1 = 1$, is there an absolute constant $c > 0$ such that $\\max_{1 \\le k \\le n} |\\sum_i z_i^k| > c$?\n\n**Answer: YES** (Atkinson 1961)\n\nBest known: $c > 1/2$ (Biró 2000). The optimal value is conjectured to be $\\approx 0.7$. The header documents the full bibliography: Atkinson's 1961 breakthrough, Biró's two improvements (1994, 2000), and the problem's origin in Turán's power sum method.",
     "mathContext": "This is Turán's power sum problem. The key insight is that while individual power sums $S_k = \\sum_i z_i^k$ can cancel to nearly zero (as with roots of unity for $n \\nmid k$), not ALL power sums $S_1, S_2, \\ldots, S_n$ can be simultaneously small when $z_1 = 1$.",
@@ -142,7 +142,7 @@
       "startLine": 96,
       "endLine": 117
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Atkinson's Theorem and the YES Answer",
     "content": "**atkinson_theorem** and **turan_question_yes:**\n\nAtkinson (1961) proved: for all $n \\ge 1$ and all $z$ with $z_1 = 1$, $\\max_k |S_k| > 1/6$. This was the breakthrough — the first proof of an absolute constant, resolving Turán's question affirmatively.\n\nThe corollary `turan_question_yes` follows immediately: instantiate `turanQuestion` with $c = 1/6$ and apply Atkinson's theorem.",
     "mathContext": "Atkinson's proof used contour integration and careful estimates of exponential sums. The constant $1/6$ was not claimed to be optimal — the focus was on establishing existence of any absolute bound.",
@@ -170,7 +170,7 @@
       "startLine": 119,
       "endLine": 148
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Biró's Improvements: From $1/6$ to $> 1/2$",
     "content": "**biro_1994**, **biro_2000**, and **optimal_constant_conjecture:**\n\nBiró (1994) improved Atkinson's constant from $1/6$ to $1/2$, a threefold improvement. In 2000, Biró pushed past the $1/2$ barrier to some $c > 1/2$. The `optimal_constant_conjecture` is a placeholder axiom (proving `True`) recording that computational evidence suggests $c^* \\approx 0.7$.\n\nThe gap between $1/2$ and $0.7$ represents the current frontier.",
     "mathContext": "Biró's 1994 proof refined Atkinson's analytic approach to extract the larger constant $1/2$. The 2000 improvement required new ideas to break the natural barrier at $1/2$. The optimal constant problem asks: $c^* = \\inf_{n, z : z_1=1} \\max_k |S_k(z)|$ — what is this infimum?",

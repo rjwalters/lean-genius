@@ -6,7 +6,7 @@
       "startLine": 43,
       "endLine": 55
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Iterated Derivatives of exp Equal exp",
     "content": "Proves iteratedDeriv n exp = exp by induction on n. The base case uses iteratedDeriv_zero (the 0th derivative is the function itself). The inductive step rewrites iteratedDeriv (n+1) as deriv of iteratedDeriv n, applies the inductive hypothesis, and finishes with Real.deriv_exp. The pointwise corollary iteratedDeriv_exp_apply follows immediately by function evaluation.",
     "mathContext": "$\\frac{d^n}{dx^n} e^x = e^x$ for all $n \\in \\mathbb{N}$. Base: $\\frac{d^0}{dx^0} e^x = e^x$. Step: $\\frac{d^{n+1}}{dx^{n+1}} e^x = \\frac{d}{dx}\\left(\\frac{d^n}{dx^n} e^x\\right) = \\frac{d}{dx} e^x = e^x$.",
@@ -51,7 +51,7 @@
       "startLine": 84,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summability and Factorial Domination",
     "content": "Proves the series x^n/n! is summable for any real x, by norm comparison with Mathlib's summable_pow_div_factorial for ||x||. The key consequence is x^n/n! -> 0, which follows from summability via Summable.tendsto_atTop_zero. This is the engine driving all convergence results: factorial growth eventually dominates any fixed power.",
     "mathContext": "$\\sum_{n=0}^{\\infty} \\frac{|x|^n}{n!}$ converges (comparison with $e^{|x|}$), so $\\frac{x^n}{n!} \\to 0$ as $n \\to \\infty$.",
@@ -120,7 +120,7 @@
       "startLine": 144,
       "endLine": 156
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Remainder Tends to Zero",
     "content": "Proves the Taylor remainder exp(x) - S_n(x) -> 0 using the squeeze theorem (squeeze_zero_norm'). The upper bound exp(|x|) * |x|^{n+1}/n! is rewritten as (exp(|x|) * |x|) * (|x|^n/n!) and shown to tend to zero because |x|^n/n! -> 0 (from factorial domination) while exp(|x|) * |x| is a constant factor.",
     "mathContext": "$\\frac{e^{|x|} \\cdot |x|^{n+1}}{n!} = \\left(e^{|x|} \\cdot |x|\\right) \\cdot \\frac{|x|^n}{n!} \\to 0$ since $\\frac{|x|^n}{n!} \\to 0$.",

@@ -142,7 +142,7 @@
       "startLine": 156,
       "endLine": 190
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorems",
     "content": "Two summary theorems. **erdos_708** combines all three known results: g(2) = 2, g(3) = 4, and the Erdős-Surányi lower bound, proved by ⟨g_two, g_three, erdos_suranyi_lower⟩. **erdos_708_summary** provides just the exact values: g(2) = 2 ∧ g(3) = 4, proved by ⟨g_two, g_three⟩. The problem remains OPEN — the gap between the lower bound (2-o(1))n and the conjectured upper bound (2+o(1))n has resisted over 60 years of effort.",
     "mathContext": "erdos_708 : g 2 = 2 ∧ g 3 = 4 ∧ (∀ n ≥ 2, g(n) ≥ 2n - 10√n) := ⟨g_two, g_three, erdos_suranyi_lower⟩. erdos_708_summary : g 2 = 2 ∧ g 3 = 4 := ⟨g_two, g_three⟩.",

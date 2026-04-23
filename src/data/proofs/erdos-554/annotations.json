@@ -120,7 +120,7 @@
       "startLine": 100,
       "endLine": 124
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Classical 2-Color Results",
     "content": "**Bondy-Erdős (1973)**: R(C_{2n+1}; 2) = 4n + 1 for n >= 2.\n**Classical**: R(K_3; 2) = 6.\n\nThe 2-color case is completely solved. For the pentagon: R(C_5; 2) = 9, R(K_3; 2) = 6, so the ratio is 9/6 = 1.5.\n\n**two_color_pentagon_ratio** derives these values from the axioms, verifying consistency of our formalization.",
     "mathContext": "The Bondy-Erdős theorem uses a Hamiltonian cycle argument: in a 2-colored K_{4n+1}, one color class has minimum degree >= 2n, which guarantees a C_{2n+1}. The proof is elegant and constructive.",

@@ -235,7 +235,7 @@
       "startLine": 110,
       "endLine": 115
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Maximum Distance Not Rich",
     "content": "**max_distance_not_rich:**\n\nDirect consequence: the largest distance is never rich.\n\n```lean\ntheorem max_distance_not_rich (A : PointSet) (hA : A.card ≥ 2) :\n    ¬IsRichDistance A (maxDistance A)\n```\n\n**Proof:** By Hopf-Pannwitz, multiplicity ≤ n. Rich requires multiplicity > n. Contradiction.\n\nThis is why the strong question asks for n-1 rich distances (excluding the largest).",
     "mathContext": "This is a direct corollary of Hopf-Pannwitz, proved in Lean using omega.",
@@ -291,7 +291,7 @@
       "startLine": 142,
       "endLine": 150
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Answer: YES",
     "content": "**erdos_756_answer:**\n\nThe answer to Erdős Problem #756 is YES.\n\n```lean\ntheorem erdos_756_answer : ErdosPachQuestion := by\n  unfold ErdosPachQuestion\n  use 1/4\n  constructor\n  · norm_num\n  intro n hn\n  obtain ⟨A, hcard, hrich⟩ := bhowmick_main n hn\n  exact ⟨A, hcard, by simp only [hcard]; linarith [hrich]⟩\n```\n\n**Proof:** Use Bhowmick's construction with constant c = 1/4.",
     "mathContext": "This theorem formally resolves Erdős Problem #756 by invoking Bhowmick's axiomatized result.",
@@ -328,7 +328,7 @@
       "startLine": 203,
       "endLine": 217
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Richness Ratio",
     "content": "**richDistanceRatio and bhowmick_ratio:**\n\nThe ratio of rich distances to n.\n\n```lean\nnoncomputable def richDistanceRatio (A : PointSet) : ℝ :=\n  (numRichDistances A : ℝ) / A.card\n\ntheorem bhowmick_ratio (n : ℕ) (hn : n ≥ 4) :\n    ∃ A : PointSet, A.card = n ∧ richDistanceRatio A ≥ 1/4\n```\n\nBhowmick achieves ratio ≥ 1/4. What is the optimal ratio as n → ∞?",
     "mathContext": "The ratio question asks for the best constant in the linear bound.",

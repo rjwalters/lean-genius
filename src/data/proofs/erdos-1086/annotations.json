@@ -84,7 +84,7 @@
       "startLine": 97,
       "endLine": 99
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lower Bound: n² log log n (Erdős-Purdy 1971)",
     "content": "`lower_bound_erdos_purdy`: $\\exists C > 0$ such that $g(n) \\geq C \\cdot n^2 \\cdot \\log \\log n$ for $n \\geq 16$. This is the best known lower bound and uses a probabilistic construction.",
     "mathContext": "The lower bound construction places points on a carefully chosen set to maximize equal-area triangles. The $\\log \\log n$ factor arises from a Ramsey-theoretic argument about arithmetic progressions. The threshold $n \\geq 16$ ensures $\\log \\log n > 0$. The $n^2$ factor is natural since there are $\\binom{n}{3} = O(n^3)$ triangles total and each area class contributes at most $O(n^2)$ in typical configurations.",
@@ -104,7 +104,7 @@
       "startLine": 101,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Upper Bounds: n^{5/2} to n^{20/9}",
     "content": "The upper bound improved from $g(n) \\ll n^{5/2}$ (Erdős-Purdy 1971) to $g(n) \\ll n^{20/9}$ (Raz-Sharir 2017). The exponent decreased: $5/2 = 2.5 \\to 20/9 \\approx 2.222$, approaching but not reaching the conjectured quadratic.",
     "mathContext": "The upper bounds use the reduction to point-curve incidences. For area $\\alpha$ and base $(A,B)$, the third vertex $C$ lies on a line parallel to $AB$ at distance $2\\alpha/|AB|$. This gives $O(n^2)$ lines, and the Szemerédi-Trotter theorem bounds point-line incidences. The Raz-Sharir improvement uses a refined incidence bound for algebraic curves (not just lines).",
@@ -163,7 +163,7 @@
       "startLine": 137,
       "endLine": 161
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Higher-Dimensional Bounds",
     "content": "Various dimension-specific results:\n- $g_3^2(n) \\ll n^{8/3}$ (Erdős-Purdy) improved to $n^{2.4286}$ (DST 2009)\n- $g_6^2(n) \\gg n^3$ (Erdős-Purdy)\n- $g_4^2(n) \\leq g_5^2(n) \\ll n^{3-c}$ (Purdy 1974)\n- Oppenheim-Lenz: $g_{2k+2}^k(n) \\geq c \\cdot n^{k+1}$\n- Conjecture: $g_{2k+2}^k(n) = \\Theta(n^{k+1})$",
     "mathContext": "The Oppenheim-Lenz construction places $n$ points on $k+1$ curves in $\\mathbb{R}^{2k+2}$ arranged so that many $(k+1)$-tuples span simplices of the same volume. The conjecture that this is optimal would generalize the 2D Erdős-Purdy conjecture. The Purdy bound $g_5^2(n) \\ll n^{3-c}$ is significant because $3$ is the 'obvious' exponent for 5D.",

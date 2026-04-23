@@ -82,7 +82,7 @@
       "startLine": 112,
       "endLine": 114
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Superlinear Growth Definition",
     "content": "**superlinearGrowth(D)** formalizes Erdős's question: for every constant C, there exists N such that u_D(n) ≥ C·n for all n ≥ N. This is equivalent to u_D(n)/n → ∞, meaning the repeated-distance count grows strictly faster than any linear function.",
     "mathContext": "This is the standard ε-N definition of a function tending to infinity, applied to the ratio u_D(n)/n. It captures 'superlinear' without specifying the exact growth rate.",
@@ -196,7 +196,7 @@
       "startLine": 203,
       "endLine": 210
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: Erdős #605 Solved",
     "content": "**The answer is YES.** For any sphere of radius D > 1, repeated distances grow superlinearly: u_D(n)/n → ∞. The proof combines the Swanepoel-Valtr bound u_D(n) ≥ c·n·√(log n) with the fact that √(log n) → ∞.",
     "mathContext": "The theorem erdos_605 states superlinearGrowth(D) for all D > 1. It follows from erdos_605_superlinear, which is axiomatized since the full proof chain requires analysis beyond basic Lean tactics.",

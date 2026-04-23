@@ -183,7 +183,7 @@
       "startLine": 89,
       "endLine": 90
     },
-    "type": "context",
+    "type": "concept",
     "title": "Bondy's Quadratic Threshold for Pancyclicity",
     "content": "Bondy (1971) proved that any graph with $n$ vertices and at least $n^2/4$ edges is either pancyclic or bipartite (and hence has no odd cycles). This quadratic threshold $n^2/4$ is far from the tight bound of $n + O(\\log n)$, but was historically the first pancyclicity result. The bipartite exception is necessary since $K_{n/2,n/2}$ has $n^2/4$ edges but no odd cycles.",
     "mathContext": "$|E(G)| \\geq n^2/4 \\implies G$ is pancyclic or bipartite. Note $n^2/4 \\gg n + \\log_2 n$ for large $n$, so this is very far from tight.",
@@ -206,7 +206,7 @@
       "startLine": 94,
       "endLine": 96
     },
-    "type": "context",
+    "type": "concept",
     "title": "Monotonicity of Pancyclicity",
     "content": "Adding edges preserves pancyclicity: if $G$ is pancyclic and $G \\subseteq G'$ (same vertex set, more edges), then $G'$ is pancyclic. This is because adding edges can only create new cycles, never destroy existing ones. This means the set of pancyclic graphs on $n$ vertices is upward-closed in the edge-inclusion order.",
     "mathContext": "Pancyclicity is a monotone graph property: $G \\subseteq G'$ and $G$ pancyclic $\\implies G'$ pancyclic.",

@@ -6,7 +6,7 @@
       "startLine": 32,
       "endLine": 36
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Polynomial Exponent Law",
     "content": "The foundational identity $(1+X)^{m+n} = (1+X)^m \\cdot (1+X)^n$ is proved by applying `pow_add`, the general monoid exponent law, to the polynomial ring $\\mathbb{N}[X]$. This single line encodes what classically requires justification that polynomial rings form a commutative monoid under multiplication.",
     "mathContext": "$(1+X)^{m+n} = (1+X)^m \\cdot (1+X)^n$ in the polynomial ring $\\mathbb{N}[X]$, via the monoid law $a^{m+n} = a^m \\cdot a^n$",
@@ -53,7 +53,7 @@
     },
     "type": "insight",
     "title": "Symmetry via Commutativity of Addition",
-    "content": "The symmetry of Vandermonde's identity \u2014 swapping $m$ and $n$ in the convolution \u2014 is proved not by manipulating the sum, but by rewriting through $m+n = n+m$ at the level of `Nat.add_choose_eq`. This algebraic approach is more elegant than a direct bijection on antidiagonal pairs, exploiting the fact that both sides equal $\\binom{m+n}{r} = \\binom{n+m}{r}$.",
+    "content": "The symmetry of Vandermonde's identity — swapping $m$ and $n$ in the convolution — is proved not by manipulating the sum, but by rewriting through $m+n = n+m$ at the level of `Nat.add_choose_eq`. This algebraic approach is more elegant than a direct bijection on antidiagonal pairs, exploiting the fact that both sides equal $\\binom{m+n}{r} = \\binom{n+m}{r}$.",
     "mathContext": "$\\sum_{(i,j) \\in \\text{antidiag}(r)} \\binom{m}{i}\\binom{n}{j} = \\sum_{(i,j) \\in \\text{antidiag}(r)} \\binom{n}{i}\\binom{m}{j}$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -95,11 +95,11 @@
       "startLine": 66,
       "endLine": 68
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Coefficient Comparison Principle",
     "content": "The principle that equal polynomials have equal coefficients ($f = g \\implies [X^r]f = [X^r]g$) is the formal justification for the 'coefficient comparison' method. While mathematically obvious, it is the logical step that connects a polynomial identity to a numerical identity about binomial coefficients.",
     "mathContext": "$f = g \\implies [X^r]f = [X^r]g$ for all $r \\in \\mathbb{N}$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "polynomial equality",
       "coefficient extraction",
@@ -181,9 +181,9 @@
       "startLine": 98,
       "endLine": 109
     },
-    "type": "context",
+    "type": "concept",
     "title": "Summary Conjunction",
-    "content": "The summary theorem packages the three core components \u2014 exponent law, Vandermonde identity, and Cauchy product \u2014 into a single conjunction. This serves as both documentation and a machine-checkable certification that all three pillars of the algebraic proof have been formally verified. The anonymous constructor \u27e8\u00b7, \u00b7, \u00b7\u27e9 witnesses the conjunction.",
+    "content": "The summary theorem packages the three core components — exponent law, Vandermonde identity, and Cauchy product — into a single conjunction. This serves as both documentation and a machine-checkable certification that all three pillars of the algebraic proof have been formally verified. The anonymous constructor ⟨·, ·, ·⟩ witnesses the conjunction.",
     "mathContext": "The conjunction of: (1) $a^{m+n} = a^m \\cdot a^n$, (2) $\\binom{m+n}{r} = \\sum_{i+j=r} \\binom{m}{i}\\binom{n}{j}$, (3) $[X^r](fg) = \\sum_{i+j=r} f_i g_j$",
     "significance": "supporting",
     "relatedConcepts": [

@@ -162,7 +162,7 @@
       "startLine": 152,
       "endLine": 175
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem: erdos_797_summary",
     "content": "**erdos_797_summary** is a proved theorem combining:\n1. The AMR upper bound: ∃ C > 0, ∀ d ≥ 1, f(d) ≤ C·d^{4/3}\n2. The precise lower bound: ∃ c > 0, ∀ d ≥ 3, f(d) ≥ c·d^{4/3}/(log d)^{1/3}\n\nProof: `exact ⟨alon_mcdiarmid_reed_upper, precise_lower_bound⟩`\n\nThis captures the complete resolution of Erdős Problem #797, establishing f(d) = Θ(d^{4/3}) and confirming that f(d) = o(d²).",
     "mathContext": "The theorem is a clean conjunction of the two main asymptotic bounds, demonstrating that f(d) = Θ(d^{4/3}) up to a logarithmic factor in the lower bound.",

@@ -2,7 +2,7 @@
   {
     "id": "erdos-913-imports",
     "proofId": "erdos-913",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 17,
       "endLine": 25
@@ -31,7 +31,7 @@
       "endLine": 45
     },
     "title": "Distinct Exponent Property",
-    "content": "The predicate `HasDistinctExponents n` holds when the exponent map $p \\mapsto v_p(n(n+1))$ is injective on the set of prime factors of $n(n+1)$. Here $v_p(m)$ denotes the $p$-adic valuation (exponent of $p$ in the factorization of $m$). Using Mathlib's `Nat.factorization` (a `Finsupp \u2115 \u2115`) and `Set.InjOn`, this says no two distinct primes share the same exponent. The set $\\{n : \\text{HasDistinctExponents}(n)\\}$ is called `DistinctExponentSet`.",
+    "content": "The predicate `HasDistinctExponents n` holds when the exponent map $p \\mapsto v_p(n(n+1))$ is injective on the set of prime factors of $n(n+1)$. Here $v_p(m)$ denotes the $p$-adic valuation (exponent of $p$ in the factorization of $m$). Using Mathlib's `Nat.factorization` (a `Finsupp ℕ ℕ`) and `Set.InjOn`, this says no two distinct primes share the same exponent. The set $\\{n : \\text{HasDistinctExponents}(n)\\}$ is called `DistinctExponentSet`.",
     "mathContext": "$\\text{HasDistinctExponents}(n) \\iff v_{p_1}(n(n+1)) \\neq v_{p_2}(n(n+1))$ for all distinct primes $p_1, p_2 \\mid n(n+1)$",
     "significance": "key",
     "relatedConcepts": [
@@ -55,7 +55,7 @@
       "startLine": 53,
       "endLine": 55
     },
-    "title": "Erd\u0151s Problem 913: Infinitude Conjecture",
+    "title": "Erdős Problem 913: Infinitude Conjecture",
     "content": "The central open question: Is $\\{n \\in \\mathbb{N} : \\text{HasDistinctExponents}(n)\\}$ an infinite set? Since $\\gcd(n, n+1) = 1$, the factorizations of $n$ and $n+1$ are disjoint, so the exponents of $n(n+1)$ are the union of exponents from $n$ and $n+1$ separately. The distinct-exponent condition requires that these two sets of exponents don't overlap and are individually injective. Formalized as `DistinctExponentSet.Infinite`.",
     "mathContext": "$|\\{n : v_p(n(n+1)) \\text{ injective on primes } p \\mid n(n+1)\\}| = \\infty$?",
     "significance": "key",
@@ -78,7 +78,7 @@
       "startLine": 63,
       "endLine": 67
     },
-    "title": "The 8p\u00b2-1 Prime Pair Set",
+    "title": "The 8p²-1 Prime Pair Set",
     "content": "The set `PrimePairs8` $= \\{p : p \\text{ prime and } 8p^2 - 1 \\text{ prime}\\}$. Small examples: $p = 3$ gives $8 \\cdot 9 - 1 = 71$ (prime); $p = 5$ gives $8 \\cdot 25 - 1 = 199$ (prime); $p = 11$ gives $8 \\cdot 121 - 1 = 967$ (prime). The infinitude of this set is a special case of the Bunyakovsky conjecture applied to $f(x) = 8x^2 - 1$, an irreducible polynomial with no fixed prime divisor. This is axiomatized since it is currently unproven.",
     "mathContext": "$\\text{PrimePairs8} = \\{p \\in \\mathbb{N} : p \\text{ prime} \\wedge 8p^2 - 1 \\text{ prime}\\}$",
     "significance": "key",
@@ -101,7 +101,7 @@
       "startLine": 80,
       "endLine": 83
     },
-    "title": "Conditional Proof via 8p\u00b2-1 Construction",
+    "title": "Conditional Proof via 8p²-1 Construction",
     "content": "The key conditional result: if PrimePairs8 is infinite, then DistinctExponentSet is infinite. For each $p \\in \\text{PrimePairs8}$, set $n = 8p^2 - 1$. Then $n(n+1) = (8p^2 - 1) \\cdot 8p^2 = (8p^2 - 1)^1 \\cdot p^2 \\cdot 2^3$. Since $8p^2 - 1$, $p$, and 2 are distinct primes (for $p \\neq 2$), the exponents $\\{1, 2, 3\\}$ are all distinct. The map $p \\mapsto 8p^2 - 1$ is injective on primes, so distinct $p$ values give distinct $n$ values, yielding infinitely many examples.",
     "mathContext": "$n = 8p^2 - 1 \\implies n(n+1) = (8p^2-1)^1 \\cdot p^2 \\cdot 2^3$, exponents $\\{1, 2, 3\\}$ all distinct",
     "significance": "key",
@@ -171,7 +171,7 @@
       "startLine": 128,
       "endLine": 132
     },
-    "title": "Exponent Structure for n = 8p\u00b2-1",
+    "title": "Exponent Structure for n = 8p²-1",
     "content": "The precise factorization: for $p$ prime, $p \\neq 2$, with $8p^2 - 1$ also prime, the product $n(n+1) = (8p^2 - 1)(8p^2) = (8p^2-1) \\cdot p^2 \\cdot 2^3$ has exactly three prime factors $\\{8p^2 - 1, p, 2\\}$ with corresponding exponents $\\{1, 2, 3\\}$. The condition $p \\neq 2$ ensures $p \\neq 2$ and $8p^2 - 1 \\neq p$ (since $8p^2 - 1 > p$ for all $p \\geq 3$). The three primes are distinct because $8p^2 - 1$ is odd (hence $\\neq 2$), $8p^2 - 1 > p$, and $p > 2$.",
     "mathContext": "$(8p^2-1)(8p^2) = (8p^2-1)^1 \\cdot p^2 \\cdot 2^3$, with $\\text{primeFactors} = \\{8p^2-1, p, 2\\}$ pairwise distinct",
     "significance": "key",

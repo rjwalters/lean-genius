@@ -78,7 +78,7 @@
       "startLine": 84,
       "endLine": 136
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Powers of 2 Witness (0, 1)",
     "content": "The pair $(0, 1)$ is valid, witnessed by $a(n) = 2^n$. Three components:\n\n1. **powersOf2_complete** (sorry): Every positive integer has a binary representation — a sum of distinct powers of 2.\n2. **powersOf2_not_1_robust**: Removing index 0 (i.e., $2^0 = 1$) makes 1 unrepresentable (sorry for the final step).\n3. **pair_0_1_valid**: Assembles the witness. Monotonicity is proved via `Nat.pow_lt_pow_right`. 0-robustness is trivial (removing nothing changes nothing).\n\nThe key insight: binary representation is **unique**, so each $2^k$ has exactly one representation — removing it leaves a permanent gap.",
     "mathContext": "Binary representation: $\\forall n \\geq 1$, $\\exists!$ $S \\subseteq \\{2^0, 2^1, \\ldots\\}$ with $n = \\sum_{s \\in S} s$. Uniqueness implies that removing $2^k$ makes $2^k$ itself unrepresentable: no other subset sums to $2^k$.",
@@ -102,7 +102,7 @@
       "startLine": 137,
       "endLine": 165
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Fibonacci Sequence Witnesses (1, 2)",
     "content": "The pair $(1, 2)$ is valid, witnessed by $F_0 = 1, F_1 = 2, F_2 = 3, F_3 = 5, \\ldots$ Three components (all with sorries):\n\n1. **fib_complete**: By Zeckendorf's theorem, every positive integer is a sum of non-consecutive Fibonacci numbers.\n2. **fib_1_robust**: Removing any single $F_k$ leaves enough flexibility — alternative representations exist using nearby Fibonacci numbers.\n3. **fib_not_2_robust**: Removing $F_0 = 1$ and $F_1 = 2$ makes 3 unrepresentable — the remaining terms start at $F_2 = 3$, and $3 = F_2$ is available but any sum involving $F_2 = 3$ and larger terms exceeds 3.\n\nThe Fibonacci sequence's redundancy (multiple representations for most numbers) provides exactly 1-robustness but not 2.",
     "mathContext": "Zeckendorf: $\\forall n \\geq 1$, $\\exists$ unique $S \\subseteq \\{F_i\\}$ with $n = \\sum_{i \\in S} F_i$ and no two consecutive indices in $S$. Non-uniqueness of general (non-Zeckendorf) representations provides the resilience: e.g., $F_k = F_{k-2} + F_{k-3} + \\cdots$ gives alternatives.",

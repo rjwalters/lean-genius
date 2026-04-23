@@ -411,7 +411,7 @@
       "startLine": 223,
       "endLine": 241
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #211: SOLVED",
     "content": "The final statement of Erdős Problem #211: for n points with at most n−k collinear (1 ≤ k < n), there are Ω(kn) lines containing at least 2 points. Solved independently by Beck and Szemerédi-Trotter in 1983. The $100 Erdős prize was awarded. The proof delegates to the Beck-Szemerédi-Trotter axiom, encapsulating the deep results needed.",
     "mathContext": "$$\\text{erdos\\_211}: \\forall n, k, P, \\; |P| = n \\wedge 1 \\leq k < n \\wedge m(P) \\leq n - k \\implies |\\mathcal{L}(P)| = \\Omega(kn)$$\nThis is the formalization of the original Erdős conjecture, now a theorem.",

@@ -124,7 +124,7 @@
       "startLine": 135,
       "endLine": 154
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorems",
     "content": "**erdos_473_solved:** Direct corollary — segalQuestion follows from odlyzko_theorem.\n\n**erdos_473_main:** A proved conjunction packaging four results:\n1. segalQuestion (existence, from Odlyzko)\n2. HasPrimeSumProperty greedySeq (greedy works)\n3. 197 never appears as a greedy sum (van Doorn)\n4. Finite version true for infinitely many n\n\nThe proof uses `refine ⟨..., ...⟩` to package the four axioms into a single proved statement. This captures the complete state of knowledge about prime sum permutations.",
     "mathContext": "The summary theorem serves as an entry point for understanding the formalization. It demonstrates that the axioms are logically consistent (they can be combined without contradiction) and captures the full landscape of known results.",

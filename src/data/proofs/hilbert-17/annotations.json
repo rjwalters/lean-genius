@@ -6,7 +6,7 @@
       "startLine": 8,
       "endLine": 82
     },
-    "type": "context",
+    "type": "concept",
     "title": "Hilbert's 17th Problem — Historical Introduction",
     "content": "The module docstring traces the full history of Hilbert's 17th Problem. In 1888, Hilbert proved non-constructively that non-negative polynomials need not be sums of squares of polynomials. In 1900, he posed Problem 17: are they at least sums of squares of rational functions? Artin answered affirmatively in 1927 using real closed field theory and model-theoretic transfer. Motzkin (1967) gave the first explicit non-SOS polynomial. The file also explains why rational functions are necessary: the degree structure of leading forms in certain PSD polynomials prevents polynomial SOS decomposition.",
     "mathContext": "The question is: if $f \\in \\mathbb{R}[X_1, \\ldots, X_n]$ and $f(x) \\geq 0$ for all $x \\in \\mathbb{R}^n$, does $f = \\sum_i g_i^2$ for some $g_i \\in \\mathbb{R}(X_1, \\ldots, X_n)$? Artin proved yes. The distinction between $\\mathbb{R}[X]$ (polynomials) and $\\mathbb{R}(X)$ (rational functions) is crucial.",
@@ -175,7 +175,7 @@
       "startLine": 440,
       "endLine": 479
     },
-    "type": "context",
+    "type": "concept",
     "title": "Modern Applications: SOS Programming",
     "content": "Documents the modern computational significance of Hilbert 17. If a polynomial is polynomial-SOS, the decomposition can be found via semidefinite programming (SDP) in polynomial time. Applications include control theory verification, robotics safety certificates, and program invariant generation. The Positivstellensatz generalizes SOS certificates to constrained settings. Motzkin's counterexample explains the fundamental limitation: not all PSD polynomials admit polynomial-SOS certificates, so SDP-based methods are incomplete.",
     "mathContext": "SOS programming: find $p = \\sum q_i^2$ by writing $p(x) = x_{\\text{mon}}^T Q \\, x_{\\text{mon}}$ where $x_{\\text{mon}}$ is the monomial vector and $Q \\succeq 0$. This is a semidefinite program. The Positivstellensatz: if $\\{g_i(x) \\geq 0\\}$ is infeasible over $\\mathbb{R}^n$, there exist SOS certificates $s_j$ such that $-1 = s_0 + \\sum s_j \\prod g_{i_j}$.",
@@ -221,7 +221,7 @@
       "startLine": 543,
       "endLine": 577
     },
-    "type": "context",
+    "type": "concept",
     "title": "Summary and Problem Status",
     "content": "The summary section uses #check to verify the main theorems are well-formed, then provides a prose overview. The key results are: artin_hilbert17 (PSD → rational-SOS), motzkin_not_sos_polynomial (PSD ↛ polynomial-SOS), univariate_psd_is_sos (univariate PSD = polynomial-SOS), and pfister_bound (at most 2^n squares). The practical distinction matters: polynomial-SOS is computationally tractable via SDP, while rational-SOS always exists but is harder to compute.",
     "mathContext": "The complete picture: PSD $\\Rightarrow$ rational-SOS (Artin) but PSD $\\not\\Rightarrow$ polynomial-SOS (Motzkin). Special cases where PSD = polynomial-SOS: univariate (any degree), quadratic forms (any variables), bivariate quartics. Quantitatively: $\\leq 2^n$ squares suffice (Pfister).",

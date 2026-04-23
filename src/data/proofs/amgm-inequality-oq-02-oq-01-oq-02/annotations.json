@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 30
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports, Variables, and Context",
     "content": "This module proves the off-diagonal symmetry identity for symmetric functions on a Finset. The key imports are `Mathlib.Data.Finset.Card` (for `Finset.offDiag`) and `Mathlib.Algebra.BigOperators.Group.Finset` (for `Finset.sum_image`, `Finset.sum_union`). The variable declarations set up the most general context: `ι` is any type with `LinearOrder` and `DecidableEq` (for the `<` comparison needed to define upper/lower triangular pairs), `s` is any `Finset ι`, `R` is any `CommAddGroup`, and `f : ι → ι → R` is the symmetric function.\n\nThe `LinearOrder ι` requirement is stronger than the `DecidableEq ι` needed by the parent entry (`amgm-inequality-oq-02-oq-01`). This is because the upper-triangular decomposition {(i,j) | i < j} requires a total order on `ι`, whereas the parent's `Finset.erase` only needs decidable equality.",
     "mathContext": "The off-diagonal set `Finset.offDiag s` = {(i,j) ∈ s×s | i ≠ j}. For the upper-triangular set, Lean uses `Finset.offDiag.filter (fun p => p.1 < p.2)`. The swap map $(i,j) \\mapsto (j,i)$ is an involution on the off-diagonal that reverses the ordering of pairs, mapping upper-triangular to lower-triangular.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Finset.offDiag",
       "LinearOrder",
@@ -30,7 +30,7 @@
       "startLine": 31,
       "endLine": 52
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Decomposing offDiag into Upper and Lower Triangular Parts",
     "content": "The theorem `offDiag_eq_upper_union_lower` decomposes `s.offDiag` (pairs (i,j) with i ≠ j) into upper triangular ({i<j}) and lower triangular ({j<i}) parts. The proof uses `rcases lt_or_gt_of_ne hab` to case-split on the linear order. The disjointness `upper_lower_disjoint` follows because i < j and j < i would imply i < i by transitivity, contradicting irreflexivity. The `LinearOrder` typeclass provides the total order needed to ensure every (i,j) with i ≠ j falls into exactly one part.",
     "mathContext": "For a linearly ordered finite set $\\iota$: $\\text{offDiag}(s) = \\{(i,j) \\mid i,j \\in s, i < j\\} \\sqcup \\{(i,j) \\mid i,j \\in s, j < i\\}$ (disjoint union). Linear order guarantees: for $i \\ne j$, either $i < j$ or $j < i$ (totality), and not both (antisymmetry). This is the foundation of the double-counting argument: each unordered pair $\\{i,j\\}$ contributes exactly two ordered pairs, one to each part.",
@@ -55,7 +55,7 @@
       "startLine": 57,
       "endLine": 70
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Swap Image: Prod.swap Bijects Lower to Upper Triangular",
     "content": "The theorem `image_swap_lower_eq_upper` proves that applying `Prod.swap` to the lower-triangular part (filter j<i) gives exactly the upper-triangular part (filter i<j). The proof is a set membership characterization (`ext ⟨a, b⟩`): (a,b) ∈ swap(lower) iff ∃ (c,d) ∈ lower with swap(c,d) = (a,b), i.e., (d,c) = (a,b), i.e., d < c. The backward direction: given a < b (upper), take (b,a) in lower — it swaps to (a,b). This establishes the explicit bijection needed for reindexing the sum.",
     "mathContext": "The bijection: $\\text{swap}: \\{(i,j) \\mid j < i\\} \\to \\{(i,j) \\mid i < j\\}$ via $(i,j) \\mapsto (j,i)$. Proof of surjectivity: $(a,b)$ with $a < b$ is the image of $(b,a)$ which has $b > a$, so $(b,a)$ is in the lower part. Injectivity: if $(j_1, i_1) = (j_2, i_2)$ then $(i_1,j_1) = (i_2,j_2)$. This bijectivity is what `Finset.sum_image` needs to reindex the sum over lower as a sum over upper.",

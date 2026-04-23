@@ -80,7 +80,7 @@
     "title": "BadFactorialIndices: The Sieve Target Set",
     "content": "For candidate prime p at level l, the bad factorial indices are those k ≤ l where p - k! is prime. AllFactorialSubtractionsComposite holds iff this set is empty (with the ≥ 2 side condition). The Selberg sieve bounds the number of p ∈ I(l) with nonempty bad set — and condition_count_at_level confirms |Bad(p,l)| ≤ l+1 (trivially, since it's a subset of {0,...,l}).",
     "mathContext": "$\\mathrm{Bad}(p, l) = \\{k \\leq l : p - k! \\in \\mathbb{P}\\} \\subseteq \\{0, 1, \\ldots, l\\}$. So $|\\mathrm{Bad}(p,l)| \\leq l+1$. Each bad index $k$ witnesses $p \\in \\{n \\in I(l) : n - k! \\in \\mathbb{P}\\}$ — a shifted prime set of size $\\ll l!/(\\log l!)^2$ by Brun-Titchmarsh.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Finset.filter",
       "condition_count_at_level",

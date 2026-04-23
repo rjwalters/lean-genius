@@ -10,7 +10,7 @@
     "title": "3D Arc Length via Component Integration",
     "content": "Defines the arc length of a 3D curve γ : ℝ → ℝ × ℝ × ℝ over interval [a,b] as the integral of the speed ‖γ'(t)‖. The speed is computed component-wise using Prod.fst and Prod.snd projections to extract x(t), y(t), z(t), then deriv to differentiate each component. The Euclidean norm in ℝ³ becomes √(x'² + y'² + z'²) under the product type encoding.",
     "mathContext": "$$L(\\gamma, a, b) = \\int_a^b \\sqrt{x'(t)^2 + y'(t)^2 + z'(t)^2}\\, dt$$\nwhere $x = \\texttt{Prod.fst} \\circ \\gamma$, $y = \\texttt{Prod.fst} \\circ \\texttt{Prod.snd} \\circ \\gamma$, $z = \\texttt{Prod.snd} \\circ \\texttt{Prod.snd} \\circ \\gamma$.\n\nLean encodes $\\mathbb{R}^3$ as $\\mathbb{R} \\times (\\mathbb{R} \\times \\mathbb{R})$, so projections are nested.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "arc length formula",
       "speed of a curve",

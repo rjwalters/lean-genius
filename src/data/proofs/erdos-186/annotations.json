@@ -81,7 +81,7 @@
       "startLine": 75,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Empty Set is Non-Averaging",
     "content": "**empty_is_nonAveraging:**\n\nThe empty set is trivially non-averaging — there are no elements to average.\n\nProved by contradiction: assuming a is in the empty set leads immediately to a contradiction via Finset.not_mem_empty.",
     "significance": "supporting",
@@ -99,7 +99,7 @@
       "startLine": 82,
       "endLine": 89
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Singletons are Non-Averaging",
     "content": "**singleton_is_nonAveraging:**\n\nAny set with one element is non-averaging.\n\nWith only one element, the conditions b != a and c != a cannot both be satisfied since b and c must also be in the singleton {n}.",
     "significance": "supporting",
@@ -117,7 +117,7 @@
       "startLine": 91,
       "endLine": 99
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Pairs are Non-Averaging",
     "content": "**pair_is_nonAveraging:**\n\nAny set with two distinct elements is non-averaging.\n\n**Proof:** With only two elements a and b, we need three distinct elements x, y, z in the set, but can only pick from {a, b}. By pigeonhole, at least two must be equal, contradicting the distinctness requirements.",
     "significance": "supporting",
@@ -225,7 +225,7 @@
       "startLine": 166,
       "endLine": 188
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Bounds Theorem",
     "content": "**erdos_186_bounds:**\n\nCombines the lower and upper bounds into a single statement:\n\n(1/2) * N^(1/4) <= F(N) <= C * N^(1/4+epsilon)\n\nfor any epsilon > 0, with C depending on epsilon.\n\n**Proof:** Uses the Bosznay lower bound axiom and Pham-Zakharov upper bound axiom directly. The constant c = 1/2 comes from the lower bound construction.",
     "mathContext": "This is the key result that establishes F(N) = N^(1/4+o(1)).",
@@ -261,7 +261,7 @@
       "startLine": 210,
       "endLine": 216
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hereditary Property",
     "content": "**nonAveraging_subset:**\n\nSubsets of non-averaging sets are non-averaging.\n\n**Proof:** If A is non-averaging and B is a subset of A, any three distinct elements in B are also in A. Since A satisfies the non-averaging condition for all triples, so does B.\n\nThis makes the family of non-averaging sets a downward-closed (hereditary) family.",
     "mathContext": "Hereditary properties are fundamental in extremal set theory. They ensure that the extremal function F(N) is well-behaved.",
@@ -279,7 +279,7 @@
       "startLine": 218,
       "endLine": 225
     },
-    "type": "technique",
+    "type": "concept",
     "title": "No Centered Arithmetic Progressions",
     "content": "**nonAveraging_no_centered_AP:**\n\nIn a non-averaging set, for any three distinct elements a, b, c, b cannot be the midpoint: 2b != a + c.\n\n**Proof:** Direct application of IsNonAveraging with reordered arguments, using symmetry of the \"not equal\" conditions.",
     "significance": "supporting",

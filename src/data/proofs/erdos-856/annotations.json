@@ -164,7 +164,7 @@
       "startLine": 137,
       "endLine": 149
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tang–Zhang 2025 Bounds",
     "content": "Axiomatizes the Tang–Zhang improvement: there exist constants 0 < b_k ≤ c_k ≤ 1 such that for all ε > 0, eventually (log N)^{b_k - ε} ≤ f_k(N) ≤ (log N)^{c_k + ε}. This replaces Erdős's log/loglog bound with power-of-log bounds.",
     "mathContext": "$\\forall \\varepsilon > 0,\\, \\exists N_0: \\forall N \\geq N_0,\\, (\\log N)^{b_k - \\varepsilon} \\leq f_k(N) \\leq (\\log N)^{c_k + \\varepsilon}$. For $k = 3$: $b_3 \\geq 0.438$, $c_3 \\leq 0.889$.",
@@ -187,7 +187,7 @@
       "startLine": 150,
       "endLine": 158
     },
-    "type": "technique",
+    "type": "concept",
     "title": "k = 3 Explicit Bounds",
     "content": "Specific exponents for the most studied case k = 3: (log N)^{0.438} ≤ f_3(N) ≤ (log N)^{0.889}. The gap between 0.438 and 0.889 leaves the true exponent c_3 undetermined.",
     "mathContext": "For $k = 3$: $(\\log N)^{0.438} \\leq f_3(N) \\leq (\\log N)^{0.889}$. The ratio $0.889/0.438 \\approx 2.03$ shows the bounds are off by a factor of $\\sim 2$ in the exponent.",
@@ -232,7 +232,7 @@
       "startLine": 185,
       "endLine": 196
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sunflower Equivalence",
     "content": "Axiomatizes the deep equivalence: c_k < 1 (non-trivial upper bound on f_k(N)) if and only if the sunflower conjecture holds for k-petalled sunflowers. This connects a number-theoretic extremal problem to a purely combinatorial conjecture.",
     "mathContext": "$\\text{SunflowerConjectureForK}(k) \\iff \\exists c_k < 1: f_k(N) \\leq (\\log N)^{c_k + o(1)}$. The forward direction uses LCM structure to build sunflowers; the reverse uses sunflower-free families to build LCM-free sets.",
@@ -255,7 +255,7 @@
       "startLine": 201,
       "endLine": 224
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Natural Density Variant",
     "content": "Defines g_k(N) = max|A| over k-LCM-free subsets (natural density instead of harmonic sum). Axiomatizes g_4(N) ≫ N and g_3(N) ≫ N: sets of linear size can avoid the LCM condition. The harmonic sum version is the harder and more interesting quantity.",
     "mathContext": "$g_k(N) = \\max\\{|A| : A \\subseteq [N],\\, \\text{IsLCMFree}(A, k)\\}$. For $k \\geq 3$: $g_k(N) \\geq CN$ for some $C > 0$. The harmonic sum $f_k(N)$ is much smaller: $f_k(N) \\leq (\\log N)^{c_k}$.",

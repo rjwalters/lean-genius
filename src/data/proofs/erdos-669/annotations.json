@@ -97,7 +97,7 @@
       "startLine": 109,
       "endLine": 121
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The General Conjecture",
     "content": "**Conjecture: lim f_k(n)/n² = lim F_k(n)/n² = 1/(k(k-1))**\n\nThis says the trivial upper bound is asymptotically tight for all k.\n\n**Verification for k=3:** 1/(3·2) = 1/6, which matches BGS.\n\nThe theorem `k3_conjecture_true` proves that the conjecture holds for k=3 by directly applying the k3_limit axiom. This is the only fully resolved case.\n\nFor k ≥ 4, the conjecture remains open.",
     "significance": "key",

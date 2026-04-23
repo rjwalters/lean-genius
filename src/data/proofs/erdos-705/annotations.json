@@ -102,7 +102,7 @@
       "startLine": 172,
       "endLine": 197
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Consequences of Known Constructions",
     "content": "Three theorems derived from the construction axioms:\n\n**girth_3_chi_4:** 4-chromatic UDGs exist (from Moser spindle).\n**girth_4_chi_4:** 4-chromatic UDGs with girth ≥ 4 exist (from O'Donnell).\n**girth_5_chi_4:** 4-chromatic UDGs with girth ≥ 5 exist (from Wormald).\n\nEach proof extracts the relevant properties from the axioms. Together, they show the conjecture's threshold k must be at least 6.",
     "significance": "key",
@@ -177,7 +177,7 @@
       "startLine": 275,
       "endLine": 311
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Statement and Summary",
     "content": "**erdos_705_main** combines all three girth-specific results:\n\n1. 4-chromatic UDGs exist (Moser spindle)\n2. 4-chromatic UDGs with girth ≥ 4 exist (O'Donnell)\n3. 4-chromatic UDGs with girth ≥ 5 exist (Wormald)\n\nThe problem asks whether this sequence can be extended to all girths, or whether some threshold forces 3-colorability.\n\nThe answer remains **OPEN** — one of the most tantalizing problems in combinatorial geometry.",
     "mathContext": "The proof is a simple conjunction of the three derived theorems, showing the current state of knowledge.",

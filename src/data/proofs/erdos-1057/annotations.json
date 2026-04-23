@@ -74,7 +74,7 @@
       "startLine": 57,
       "endLine": 59
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Korselt's Theorem (1899)",
     "content": "For composites $n > 1$, Korselt's criterion is equivalent to the Fermat property. This 1899 result (predating Carmichael's 1910 discovery of 561) characterizes Carmichael numbers purely in terms of divisibility. Axiomatized here as the full proof requires careful modular arithmetic over all residues.",
     "mathContext": "$n > 1 \\wedge \\neg\\text{Prime}(n) \\implies (\\text{satisfiesKorselt}(n) \\iff \\text{satisfiesFermat}(n))$.",
@@ -96,7 +96,7 @@
       "startLine": 67,
       "endLine": 92
     },
-    "type": "technique",
+    "type": "concept",
     "title": "561 is Carmichael (Verified)",
     "content": "$561 = 3 \\times 11 \\times 17$ is the smallest Carmichael number, discovered by R.D. Carmichael in 1910. The Lean proof verifies squarefreeness by showing no prime square divides 561, and Korselt's condition by checking $(3-1) \\mid 560$, $(11-1) \\mid 560$, $(17-1) \\mid 560$. Uses `native_decide` for primality and `norm_num` for arithmetic.",
     "mathContext": "$561 = 3 \\times 11 \\times 17$, $560 = 2^4 \\times 5 \\times 7$. Check: $2 \\mid 560$, $10 \\mid 560$, $16 \\mid 560$.",
@@ -339,7 +339,7 @@
       "startLine": 368,
       "endLine": 443
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Carmichael Numbers Are Not Semiprimes (Verified)",
     "content": "A complete verified proof that no Carmichael number is a product of exactly two primes. The key lemma: if $p < q$ are primes and $(q-1) \\mid (pq-1)$, then $(q-1) \\mid (p-1)$ (since $pq-1 = q(p-1) + (q-1)$ and $\\gcd(q, q-1) = 1$), but $q > p$ makes this impossible. The proof lifts natural number subtraction to $\\mathbb{Z}$ for clean arithmetic.",
     "mathContext": "If $n = pq$ with $p < q$ prime, then $pq - 1 = q(p-1) + (q-1)$, so $(q-1) \\mid q(p-1)$. Since $\\gcd(q, q-1) = 1$, $(q-1) \\mid (p-1)$, contradicting $q > p$.",

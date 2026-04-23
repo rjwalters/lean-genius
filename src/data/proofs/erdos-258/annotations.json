@@ -120,7 +120,7 @@
       "startLine": 62,
       "endLine": 79
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Monotone Variant (Erdős-Straus)",
     "content": "**Solved (1971)**: If (aₙ) is a monotone increasing sequence of positive integers tending to infinity, then the sum Σ τ(n)/(a₁·...·aₙ) is **irrational**.",
     "mathContext": "This is stated as an `axiom` because the Erdős-Straus proof uses analytic techniques beyond current Mathlib. The key is that monotonicity ensures the denominators grow predictably.",
@@ -139,7 +139,7 @@
       "startLine": 81,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Power Variant (Erdős 1948)",
     "content": "**Solved (1948)**: For any integer t ≥ 2, the sum Σ τ(n)/tⁿ is **irrational**. This is the special case where all aₙ = t.",
     "mathContext": "This connects to **Lambert series** Σ xⁿ/(1-xⁿ) which generate divisor-related functions. The proof uses divisibility analysis of partial sums.",

@@ -63,7 +63,7 @@
       "startLine": 43,
       "endLine": 51
     },
-    "type": "context",
+    "type": "concept",
     "title": "Representability Predicate",
     "content": "We axiomatize **IsRepresentable(n)**: the predicate that n can be written as a sum of the k smallest divisors of some m ≥ 1.\n\nThis predicate is true for most positive integers, but fails for exactly n = 2 and n = 5.",
     "mathContext": "A constructive definition would enumerate divisors of all m and compute partial sums. We axiomatize to focus on the mathematical structure rather than implementation details.",
@@ -139,7 +139,7 @@
       "startLine": 100,
       "endLine": 118
     },
-    "type": "technique",
+    "type": "concept",
     "title": "f(2) = 0 and f(5) = 0",
     "content": "These theorems follow immediately from:\n1. The axioms `not_representable_2` and `not_representable_5`\n2. The axiom `f_undefined` that says f(n) = 0 when n is not representable\n\nThe proofs are one-liners applying the f_undefined axiom.",
     "significance": "supporting",

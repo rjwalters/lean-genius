@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 61
     },
-    "type": "context",
+    "type": "concept",
     "title": "Setup: Algorithmic Primitive Root Finding via Prime Factor Test",
     "content": "The file opens with a `/-! ... -/` module docstring explaining the prime factor testing criterion and why it works. The key reasoning (lines 16-23) is informal but precise: if g is NOT a primitive root, orderOf g < p-1, and since orderOf g ∣ p-1, some prime q exists with orderOf g ∣ (p-1)/q, giving g^{(p-1)/q} = 1. Conversely, passing all prime tests forces orderOf g = p-1.\n\nLine 52 defines `IsGenerator g ↔ orderOf g = p-1`. Lines 55-61 prove `pow_pred_prime_eq_one`: Fermat's little theorem g^(p-1) = 1, derived by showing orderOf g ∣ |G| = p-1 via `orderOf_dvd_card`, then using the standard group-theoretic argument `rw [hk, pow_mul, pow_orderOf_eq_one, one_pow]`.",
     "mathContext": "$g$ is a primitive root $\\pmod{p}$ iff $\\mathrm{ord}(g) = p-1$. Fermat's LT: $\\mathrm{ord}(g) \\mid |G| = p-1$, so $g^{p-1} = (g^{\\mathrm{ord}(g)})^k = 1^k = 1$. This gives the '=' for free; only the '$\\leq$' needs proof via the prime factor test.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "IsGenerator",
       "orderOf",
@@ -99,11 +99,11 @@
       "startLine": 95,
       "endLine": 115
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Using Nat.minFac for Existence of Prime Factor",
     "content": "In the proof of `orderOf_eq_of_prime_factor_test`, we need 'some prime q dividing n/orderOf g'. The cleanest Lean approach is:\n\n```lean\nlet q := Nat.minFac (n / orderOf g)\nhave hq_prime : q.Prime := Nat.minFac_prime hquot_ne_one\nhave hq_dvd : q ∣ n / orderOf g := Nat.minFac_dvd _\n```\n\nCompared to `Nat.exists_prime_and_dvd`, using `minFac` directly avoids an `obtain ⟨q, ...⟩` step and gives a canonical choice. This is common in Mathlib-style Lean 4 proofs for prime divisor arguments.",
     "mathContext": "$q = \\min\\{p : p \\mid (n/\\text{ord}(g)),\\, p \\text{ prime}\\}$ via `Nat.minFac`",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.minFac",
       "Nat.minFac_prime",
@@ -118,11 +118,11 @@
       "startLine": 106,
       "endLine": 116
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Natural Number Division: The Witness Calculation",
     "content": "The step `orderOf g ∣ n / q` from `orderOf g * q ∣ n` requires careful natural number arithmetic:\n\n**Goal**: Show `n / q = orderOf g * c` for some c.\n\n**Proof**: Get c from `hmul_dvd : orderOf g * q ∣ n`, i.e., `n = orderOf g * q * c`.\nThen:\n```\nq * (n / q)   = n              [since q ∣ n]\nq * (n / q)   = orderOf g * q * c = q * (orderOf g * c)\n```\nSo `n / q = orderOf g * c` by `Nat.eq_of_mul_eq_mul_left hq_prime.pos`.\n\nThe key Lean idiom: use `Nat.eq_of_mul_eq_mul_left` to cancel the factor q from both sides of a natural number equation.",
     "mathContext": "$n = \\text{ord}(g) \\cdot q \\cdot c \\implies n/q = \\text{ord}(g) \\cdot c$ via `Nat.eq_of_mul_eq_mul_left`",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.mul_div_cancel",
       "Nat.eq_of_mul_eq_mul_left",

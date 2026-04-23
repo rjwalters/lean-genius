@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 27
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Docstring: Open Question Setup and Imports",
     "content": "The file opens with a block comment (lines 1-21) establishing the mathematical context: h(n) is the abelian covering number, Pyber (1987) proved exponential bounds $c_1^n < h(n) < c_2^n$ with $c_2 > c_1 > 1$, giving $\\log h(n)/n \\in (\\log c_1, \\log c_2)$ for all $n > 0$. The open question is whether $\\lim_{n\\to\\infty} \\log h(n)/n$ exists — equivalently, whether $h(n) = \\Theta(c^n)$ for a single base $c$. Lines 23-27: `import Mathlib` (full library), `open Real Filter` (Real.log and Filter.atTop), `namespace Erdos117OQ01`.",
     "mathContext": "The normalized logarithm $r(n) = \\log h(n)/n$ is known to lie in $(\\log c_1, \\log c_2)$ by Pyber's bounds. Both $\\liminf r(n)$ and $\\limsup r(n)$ are thus well-defined real numbers in this interval. The open question: $\\liminf r(n) = \\limsup r(n)$? The `open Real Filter` makes `Real.log`, `Real.exp`, `Filter.atTop`, `Filter.liminf`, and `Filter.limsup` available unqualified.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "abelian covering number h(n)",
       "Pyber bounds (1987)",
@@ -31,11 +31,11 @@
       "startLine": 28,
       "endLine": 48
     },
-    "type": "context",
+    "type": "concept",
     "title": "Part I Setup: Three Axioms Encoding Pyber's Theorem",
     "content": "Lines 28-34 are the Part I block comment explaining that h and its bounds are axiomatized. Three `axiom` declarations follow: `h : ℕ → ℕ` (the abelian covering number function, axiomatized as it is not constructively defined), `h_pos : ∀ n ≥ 1, h n ≥ 1` (trivially needed since at least one subgroup is required), and `pyber_bounds` (the key: $\\exists c_1, c_2, 1 < c_1 < c_2$ and $c_1^n \\leq h(n) \\leq c_2^n$ for all $n \\geq 1$). These 3 axioms account for the file's `axiomCount: 3` and `badge: \"axiom\"` status. Pyber's actual proof is a deep combinatorial argument in group theory — axiomatizing it is the appropriate Lean approach for an open problem.",
     "mathContext": "The growth rate sequence $a_n = \\log h(n)/n$ lies in $[\\log c_1, \\log c_2]$. Fekete's subadditive lemma (applied if $h$ is submultiplicative) would guarantee convergence. But submultiplicativity of $h$ is itself open. The connection to the abelian covering problem: $h(n)$ counts the minimum covers, and exponential behavior reflects the complexity of non-abelian group structure in the $n$-commuting class.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "h(n) abelian covering number",
       "Pyber bounds",

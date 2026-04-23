@@ -78,7 +78,7 @@
       "startLine": 42,
       "endLine": 57
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Known Bounds: Hadwiger-Nelson and Monotonicity",
     "content": "**Base case, monotonicity, and trivial lower bound.** For r = 1 (Hadwiger-Nelson): 5 ≤ L(1) ≤ 7. De Grey (2018) proved the lower bound 5 with a 1581-vertex graph. L(r) is monotone non-decreasing (more distances → more edges → higher chromatic number). Trivial lower bound: L(r) ≥ 5 for all r ≥ 1.",
     "mathContext": "The **Hadwiger-Nelson problem** (1950) asks for the chromatic number of the unit distance graph of ℝ². For decades the bounds were 4 ≤ χ ≤ 7, until Aubrey de Grey's breakthrough (2018) showing χ ≥ 5 via a computer-found 1581-vertex unit distance graph requiring 5 colors. The upper bound 7 comes from a hexagonal tiling with diameter slightly less than 1. Monotonicity of L(r) follows because G_A is a subgraph of G_B whenever A ⊆ B, and subgraphs have at most the chromatic number of the supergraph. The trivial lower bound L(r) ≥ 5 combines monotonicity with de Grey's result.",
@@ -101,7 +101,7 @@
       "startLine": 59,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Exponential Upper Bound",
     "content": "**erdos_706_exponential_upper.** L(r) ≤ C^r for some constant C > 1. This exponential upper bound is known from Frankl-Wilson type methods. The polynomial conjecture asks whether this can be dramatically improved.",
     "mathContext": "The exponential upper bound L(r) ≤ C^r follows from bounds on the chromatic number of distance graphs derived from algebraic methods. The **Frankl-Wilson theorem** (1981) gives exponential lower bounds on the chromatic number of unit distance graphs in ℝ^n, but in the plane the situation is different: the upper bound for multi-distance graphs is exponential in r. The gap between the polynomial conjecture L(r) ≤ r^{O(1)} and the known exponential bound L(r) ≤ C^r is vast. Closing this gap — in either direction — would be a major advance in combinatorial geometry.",

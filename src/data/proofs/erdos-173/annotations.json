@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 32
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview and Background",
     "content": "Erdős Problem #173 asks whether, in any 2-coloring of $\\mathbb{R}^2$, all but at most one triangle shape (up to congruence) must have a monochromatic congruent copy. The formalization defines plane colorings, triangle congruence via side-length permutations, and the Ramsey property. Shader (1976) proved all right triangles are Ramsey; a strip coloring construction shows equilateral triangles are the natural candidate exception.",
     "mathContext": "A triangle $T$ is Ramsey in $\\mathbb{R}^2$ if for every $\\chi: \\mathbb{R}^2 \\to \\{0,1\\}$, there exists $T' \\cong T$ with $\\chi$ constant on the vertices of $T'$. The problem asks: is $|\\{[T] : T \\text{ not Ramsey}\\}| \\leq 1$?",
@@ -100,7 +100,7 @@
       "startLine": 124,
       "endLine": 149
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Shader's Theorem (1976)",
     "content": "Axiomatizes Shader's 1976 result: all right triangles are Ramsey in $\\mathbb{R}^2$. For any right triangle $T$ and any 2-coloring, there exists a monochromatic congruent copy of $T$. Shader's proof uses geometric constructions exploiting the right angle to find monochromatic copies via a sequence of reflections and rotations. The corollary **right_345_ramsey** applies this to the 3-4-5 right triangle, verifying $3^2 + 4^2 = 5^2$ via `norm_num`.",
     "mathContext": "$\\forall T: \\text{IsRightTriangle}(T) \\implies \\text{IsRamseyTriangle}(T)$. Applied to $(3,4,5)$: $9 + 16 = 25$ confirms it is right-angled, so it is Ramsey by Shader's theorem.",
@@ -123,7 +123,7 @@
       "startLine": 151,
       "endLine": 182
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Strip Coloring Counterexample",
     "content": "Constructs **stripColoring h**: colors $\\mathbb{R}^2$ with alternating horizontal strips of width $h$, using $\\lfloor y/h \\rfloor \\bmod 2$. Axiomatizes **equilateral_not_monochromatic_strip**: for any strip width $h > 0$, the equilateral triangle with side length $2h/\\sqrt{3}$ (height exactly $h$) cannot be placed monochromatically. The theorem **at_most_one_is_tight** instantiates with $h = 1$ to show some equilateral triangle is NOT Ramsey, proving the 'at most one exception' bound is achieved.",
     "mathContext": "Strip coloring: $\\chi(x,y) = \\lfloor y/h \\rfloor \\bmod 2$. An equilateral triangle with side $s = 2h/\\sqrt{3}$ has height $h$, so one vertex must lie in a different strip from the other two. Thus $\\exists T$ equilateral: $\\neg \\text{IsRamseyTriangle}(T)$.",
@@ -192,7 +192,7 @@
       "startLine": 211,
       "endLine": 234
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "Packages the three main results into a single conjunction: (1) all right triangles are Ramsey (Shader's theorem), (2) the 'at most one exception' bound is tight (some equilateral triangle is not Ramsey), and (3) the open conjecture (AlmostAllTrianglesRamsey). The proof is a direct triple constructor from the three previously established results.",
     "mathContext": "$(\\forall T: \\text{IsRight}(T) \\implies \\text{IsRamsey}(T)) \\;\\wedge\\; (\\exists T: \\text{IsEquilateral}(T) \\wedge \\neg\\text{IsRamsey}(T)) \\;\\wedge\\; \\text{AlmostAllTrianglesRamsey}$.",

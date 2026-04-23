@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 29
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Setup",
     "content": "Imports `ZMod.Basic` (the 2-fold CRT), `Int.GCD` (integer GCD), `Coprime.Basic` (coprimality and `RingEquiv.prodCongr`), and Mathlib tactics. Sets `maxHeartbeats 800000` for the computationally intensive `by decide` coprimality checks.",
     "mathContext": "The key imports provide: `ZMod.chineseRemainder` ($\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ for $\\gcd(m,n)=1$), `Nat.Coprime.mul_right` (coprimality propagation), and `RingEquiv.prodCongr` (lifting isomorphisms into products).",
@@ -74,11 +74,11 @@
       "startLine": 140,
       "endLine": 182
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Algebraic Properties via RingEquiv API",
     "content": "Seven theorems extracting properties from the k-fold CRT ring isomorphism: bijectivity, injectivity, surjectivity, multiplication preservation, addition preservation, and both round-trip identities. Each is a one-line proof delegating to the RingEquiv API (e.g., `.bijective`, `map_mul`, `.symm_apply_apply`). This demonstrates a key Lean/Mathlib pattern: once you construct an equivalence, its properties are essentially free — the algebraic structure does the bookkeeping.",
     "mathContext": "A ring isomorphism $\\varphi: R \\xrightarrow{\\sim} S$ is automatically bijective, preserves $+$ and $\\times$, and satisfies $\\varphi^{-1}(\\varphi(x)) = x$ and $\\varphi(\\varphi^{-1}(y)) = y$. These are not theorems about the CRT specifically but about any `RingEquiv`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "RingEquiv",
       "Function.Bijective",

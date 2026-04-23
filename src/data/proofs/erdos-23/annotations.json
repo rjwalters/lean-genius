@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 29
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview",
     "content": "Erdős Problem #23 (1971): Can every triangle-free graph on $5n$ vertices be made bipartite by deleting at most $n^2$ edges? The blow-up of $C_5$ shows $n^2$ is necessary, and the conjecture claims it is also sufficient. Status: OPEN. Best known bound: $1.064n^2$ (Balogh-Clemen-Lidický 2021).",
     "mathContext": "Let $\\text{bip}(G)$ denote the minimum number of edges whose removal makes $G$ bipartite. The conjecture: $\\forall G$ triangle-free with $|V(G)| = 5n$, $\\text{bip}(G) \\leq n^2$. The blow-up of $C_5$ achieves $\\text{bip} = n^2$ exactly.",
@@ -168,7 +168,7 @@
       "startLine": 136,
       "endLine": 150
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Triangle-Freeness Proofs (Verified)",
     "content": "Two proved theorems:\n\n`c5_triangle_free`: $C_5$ has no triangles, proved by exhaustive case analysis on $\\text{Fin}\\, 5$ using `fin_cases` (checks all $5^3 = 125$ triples).\n\n`c5_blowup_triangle_free`: the blow-up is triangle-free, proved by projection — a triangle in the blow-up projects to a triangle in $C_5$, contradicting `c5_triangle_free`.",
     "mathContext": "For `c5_triangle_free`: if $i \\sim j \\sim k \\sim i$ in $C_5$, then $i, j, k$ are three mutually consecutive vertices, which is impossible in a 5-cycle (the gap between $i$ and $k$ must be $\\geq 2$). The blow-up proof is a standard hereditary property argument.",
@@ -214,7 +214,7 @@
       "startLine": 175,
       "endLine": 186
     },
-    "type": "context",
+    "type": "concept",
     "title": "Best Known Bound: 1.064n² (2021)",
     "content": "Balogh-Clemen-Lidický (2021) proved $\\text{bip}(G) \\leq 1.064n^2$ for triangle-free $G$ on $5n$ vertices, using Razborov's flag algebra method. This is axiomatized. The trivial upper bound from Mantel's theorem gives $\\leq (5n)^2/4 = 6.25n^2$, so the flag algebra result is a dramatic improvement.",
     "mathContext": "The flag algebra approach formulates the problem as a semidefinite program (SDP) over graph homomorphism densities. The coefficient $1.064$ comes from an optimized SDP solution, not from a structural argument. Earlier bounds included $1.5n^2$ and $1.25n^2$.",

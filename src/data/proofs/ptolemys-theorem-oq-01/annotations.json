@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 50
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Overview: Ptolemy Inequality with Concyclicity Characterization",
     "content": "This file completes the concyclicity characterization of Ptolemy's theorem in ℂ. Building on `PtolemysComplexProof.lean` (inequality + proportionality) and `PtolemysComplexProofOQ01.lean` (SameRay biconditional), this file provides the geometric/trigonometric connection: for four unit-circle points in CCW order, the Ptolemy ratio is a positive real. The proof is self-contained via trig identities, requiring no inscribed angle theorem.",
     "mathContext": "Key chain: concyclic CCW → Ptolemy ratio > 0 → SameRay → Ptolemy equality. This file proves the first arrow; PtolemysComplexProofOQ01 proves the second.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Ptolemy's theorem",
       "complex exponential",
@@ -30,7 +30,7 @@
       "startLine": 51,
       "endLine": 127
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Unit Circle Conjugation and Ptolemy Ratio Reality",
     "content": "For unit-circle points (‖z‖ = 1), the complex conjugate satisfies conj(z) = z⁻¹ because z·conj(z) = normSq(z) = 1. This section uses this to prove the Ptolemy ratio R = (z₂-z₃)(z₁-z₄)/((z₁-z₂)(z₃-z₄)) is always real when all four points lie on the unit circle.\n\nThe proof strategy: show conj(R) = R, which means R ∈ ℝ. After substituting conj(zᵢ) = zᵢ⁻¹ throughout, `field_simp` collapses the inverses and `ring` closes the resulting algebraic identity. This establishes that R is real before analyzing its sign — the positivity for CCW order is established in the next section.",
     "mathContext": "For $z$ on the unit circle: $|z|^2 = z \\bar{z} = 1$, so $\\bar{z} = z^{-1}$. The Ptolemy ratio $R = \\frac{(z_2-z_3)(z_1-z_4)}{(z_1-z_2)(z_3-z_4)}$ satisfies $\\bar{R} = R$ because applying conjugation to all $z_i \\mapsto z_i^{-1}$ and simplifying yields the same expression. Hence $R \\in \\mathbb{R}$ for any four unit-circle points, regardless of their order.",

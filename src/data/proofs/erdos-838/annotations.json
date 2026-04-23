@@ -82,7 +82,7 @@
       "startLine": 96,
       "endLine": 113
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdos's Bounds (1978)",
     "content": "**erdos_lower_bound:** f(n) > n^{c_1 log n} for some c_1 > 0.\n**erdos_upper_bound:** f(n) < n^{c_2 log n} for some c_2 > 0.\n\n**erdos_bounds theorem (PROVED):** Combines both into a single statement. The proof extracts constants from each axiom using obtain.\n\nThese bounds pin down f(n) to quasi-polynomial growth: n^{Theta(log n)}, faster than any polynomial but slower than any exponential.",
     "mathContext": "Quasi-polynomial growth n^{O(log n)} is an intermediate rate between polynomial and exponential, common in complexity theory and combinatorics.",

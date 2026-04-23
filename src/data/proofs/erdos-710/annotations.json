@@ -249,7 +249,7 @@
       "startLine": 307,
       "endLine": 341
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_710_summary:**\n\nCombines all main results:\n\n```lean\ntheorem erdos_710_summary :\n    -- Lower bound established\n    (∀ ε > 0, ∃ N, ∀ n ≥ N,\n      (2/√e - ε) * n * √(log n / log log n) ≤ f(n)) ∧\n    -- Upper bound established  \n    (∀ ε > 0, ∃ N, ∀ n ≥ N,\n      f(n) ≤ (1.7398 + ε) * n * √(log n)) ∧\n    -- Small examples verified\n    IntervalAdmitsSelection 1 1 2 ∧\n    IntervalAdmitsSelection 2 2 3 ∧\n    IntervalAdmitsSelection 3 3 4\n```\n\n**Status:** Bounds known, exact asymptotics OPEN.",
     "significance": "key",

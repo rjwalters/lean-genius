@@ -6,7 +6,7 @@
     "title": "EFLFamily: Encoding Edge-Disjoint Cliques as a Structure",
     "body": "The `EFLFamily n` structure captures the essence of the EFL conjecture combinatorially: n cliques of size n on a shared vertex set Fin(n²), where any two distinct cliques share at most one vertex. The condition `pairwise_intersection : ∀ i j, i ≠ j → (cliques i ∩ cliques j).card ≤ 1` is equivalent to edge-disjointness for K_n copies, since two K_n copies share an edge iff they share two vertices. The vertex set Fin(n²) provides enough room for n disjoint K_n copies in the worst case (e.g., from a projective plane of order n).",
     "mathContext": "An EFL family formally consists of $n$ cliques $C_1, \\ldots, C_n \\subseteq \\text{Fin}(n^2)$ with $|C_i| = n$ for all $i$ and $|C_i \\cap C_j| \\leq 1$ for $i \\neq j$. The last condition is equivalent to edge-disjointness: if $|C_i \\cap C_j| \\geq 2$, say $\\{u, v\\} \\subseteq C_i \\cap C_j$, then the edge $uv$ is in both $K_n[C_i]$ and $K_n[C_j]$. The EFL conjecture asserts that the union graph $G = \\bigcup_i K_n[C_i]$ satisfies $\\chi(G) = n$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "K_n copies",
       "edge-disjoint cliques",
@@ -61,7 +61,7 @@
     "title": "eflThreshold: The Minimum N via Nat.find",
     "body": "The definition `noncomputable def eflThreshold : ℕ := Nat.find kang_kelly_kuhn_methuku_osthus_asymptotic` uses the well-foundedness of ℕ to extract the MINIMUM N satisfying the KKMO existential. The `noncomputable` tag is required because `Nat.find` uses classical decidability (it searches over all naturals until it finds the witness). The result is mathematically the exact threshold N₀ — not just any witness, but the smallest one. Three companion theorems (`efl_holds_above_threshold`, `efl_threshold_minimal`) immediately follow from `Nat.find_spec` and `Nat.find_min`.",
     "mathContext": "In Lean, `Nat.find` requires a proof that the predicate is satisfiable (here: the KKMO axiom provides `∃ N, ∀ n ≥ N, EFLHoldsAt n`). It returns the minimal $N$ satisfying $\\forall n \\geq N, \\text{EFLHoldsAt}(n)$. The companion `Nat.find_spec` proves the predicate holds at the returned value; `Nat.find_min` proves it fails at all smaller values. This trio precisely characterizes $N_0 = \\min\\{N : \\forall n \\geq N, \\text{EFLHoldsAt}(n)\\}$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.find",
       "well-founded recursion",

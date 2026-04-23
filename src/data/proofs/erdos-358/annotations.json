@@ -79,7 +79,7 @@
       "startLine": 57,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Consecutive Sum Formula",
     "content": "The sum of integers from u+1 to v+1 equals (v-u+1)(u+v+2)/2. This is the classic arithmetic series formula, essential for characterizing which n are representable.",
     "mathContext": "Sorry'd because the proof requires algebraic manipulation that is tedious in Lean.",
@@ -97,7 +97,7 @@
       "startLine": 62,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Classical Characterization",
     "content": "n can be written as a sum of at least 2 consecutive positive integers if and only if n is NOT a power of 2. This is the complete answer for naturals with the >=2 terms restriction.",
     "mathContext": "The proof uses the sum formula: (v-u+1)(u+v+2)/2 = n. For n = 2^k, the factors force v-u+1 = 1 (single term).",
@@ -169,7 +169,7 @@
       "startLine": 95,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Egami's Observation",
     "content": "f(n) >= 1 for all n >= 1 is trivially achieved by A = naturals, since n can always be written as the single-term sum (n itself). The challenge is getting f(n) >= 2.",
     "mathContext": "The trivial representation n = sum from index n-1 to n-1 works for any n.",
@@ -276,7 +276,7 @@
       "startLine": 175,
       "endLine": 183
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Status Theorem",
     "content": "erdos_358_status: Summarizes that Strong implies Weak, and the problem is formally undetermined (either answer is consistent with current knowledge).",
     "mathContext": "The final theorem packages the implications and openness into a single statement.",

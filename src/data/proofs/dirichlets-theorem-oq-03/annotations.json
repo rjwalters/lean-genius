@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 20
     },
-    "type": "context",
+    "type": "concept",
     "title": "Seven Decades of Improving the Linnik Constant",
     "content": "The header documents the full progression of upper bounds on the Linnik constant L: from Linnik's original existence result (1944) through Pan (L≤10000, 1957), Elliott-Halberstam (L≤40), Jutila (L≤20), Chen (L≤13.5), Wang (L≤8), Heath-Brown (L≤5.5, 1992), to Xylouris (L≤5, 2011). Each improvement uses increasingly refined zero-free regions for Dirichlet L-functions. The conjectured truth L = 1+ε follows from GRH and represents the boundary of what analytic number theory currently cannot resolve unconditionally.",
     "mathContext": "Each bound $L \\leq L_k$ is proved by showing: if $L(s, \\chi)$ has no zeros in $\\{\\text{Re}(s) > 1 - \\delta_k\\}$ for a character $\\chi \\pmod q$, then $p(a,q) \\leq c q^{L_k}$. The zero-free region width $\\delta_k$ determines $L_k$: wider zero-free regions → smaller $L_k$. Xylouris improved the Vinogradov-Korobov zero-free region to $\\delta \\geq c / \\log^{2/3} q (\\log \\log q)^{1/3}$, giving $L = 5$. GRH would give $\\delta = 1/2 - \\text{Re}(\\rho)$ effectively infinite for a subconvex zero-free region, yielding $L = 2 + \\varepsilon$.",
@@ -32,11 +32,11 @@
       "startLine": 32,
       "endLine": 40
     },
-    "type": "context",
+    "type": "concept",
     "title": "leastPrimeInAP: Two Sorries from Dirichlet's Theorem",
     "content": "The definition `leastPrimeInAP a q = Nat.find ⟨sorry, sorry⟩` requires an existence witness for `∃ p, p.Prime ∧ p ≡ a [MOD q]` with `Nat.Coprime a q`. The two sorries provide (1) a prime p and (2) the congruence p ≡ a (mod q). Filling these requires Dirichlet's theorem — the parent entry `dirichlets-theorem`. The function is noncomputable but well-defined once the sorries are filled: `Nat.find` gives the least natural number satisfying the decidable predicate.",
     "mathContext": "Dirichlet's theorem (1837): for $\\gcd(a,q) = 1$, there are infinitely many primes $p \\equiv a \\pmod q$. This gives the existence witness. `Nat.find` requires `∃ n, P n` where `P` is decidable — both `Nat.Prime` and `· ≡ a [MOD q]` are decidable in Lean, so `leastPrimeInAP` is well-typed. The axiom `linnik_theorem` provides the quantitative bound $p(a,q) \\leq c \\cdot q^L$, which cannot be inferred from just existence of a prime in the AP.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.find",
       "Nat.Coprime",
@@ -57,7 +57,7 @@
       "startLine": 48,
       "endLine": 73
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Linnik Constant as sInf: Definition and Nonemptiness",
     "content": "The `linnikConstant = sInf admissibleExponents` uses Mathlib's `csInf_le` to prove `linnikConstant ≤ 5`: this requires showing (1) the set is bounded below (here by 0, since all L > 0 by definition), and (2) 5 ∈ admissibleExponents (the `xylouris_bound` axiom). The proof `csInf_le ⟨0, fun L hL => le_of_lt hL.1⟩ xylouris_bound` is a two-liner that packages both conditions. The nonemptiness theorem `admissible_nonempty` unwraps `linnik_theorem` to produce an explicit member.",
     "mathContext": "`csInf_le : BoundedBelow s → a ∈ s → sInf s ≤ a`. Here $s = \\text{admissibleExponents}$, $a = 5$. Bounded below: `⟨0, fun L hL => le_of_lt hL.1⟩` witnesses that $0 \\leq L$ for all $L \\in s$ (since all admissible exponents satisfy $L > 0$). Membership: `xylouris_bound`. The `admissible_nonempty` proof: `linnik_theorem` gives $\\exists c, L, \\ldots$, and `⟨L, hL, c, hc, hbound⟩` shows $L \\in \\text{admissibleExponents}$. The lower bound $L^* \\geq 1$ (sorry) would then give the range $1 \\leq L^* \\leq 5$.",
@@ -131,7 +131,7 @@
       "startLine": 125,
       "endLine": 139
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Open Question: L* = 1 and GRH Conditionals",
     "content": "The file formalizes two speculative Props: `GRHImpliesSmallLinnik` (under GRH, every 2+ε is admissible) and `optimalLinnikConjecture` (every 1+ε is admissible). Neither is proved — they are mathematical statements formalized as types. The `openQuestion = (linnikConstant = 1)` definition formalizes the deepest conjecture: that L* equals 1, meaning p(a,q) ≤ c·q^{1+ε} for all ε > 0. This has not been proved even under GRH; the GRH conditional only gives L* ≤ 2+ε. The gap from 2+ε to 1+ε represents a profound open problem in analytic number theory.",
     "mathContext": "The GRH conditional $p(a,q) \\leq c(\\phi(q) \\log q)^2$ (Goldfeld 1981) gives $L \\leq 2 + \\varepsilon$ since $\\phi(q) \\leq q$ and $\\log q \\leq q^\\varepsilon$. The optimal bound $p(a,q) \\leq q^{1+\\varepsilon}$ would follow from the 'optimal' zero-free region — essentially the Riemann Hypothesis for individual Dirichlet $L$-functions at the specific $q$. In practice, known results for fixed small $q$ (e.g., $q = 1, 2, 3$) achieve $L = 1$ trivially (by Bertrand's postulate), but the uniformity in $q$ is what makes the problem hard.",

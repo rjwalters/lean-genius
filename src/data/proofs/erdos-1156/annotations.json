@@ -32,11 +32,11 @@
       "startLine": 48,
       "endLine": 54
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Namespace",
     "content": "Imports `Mathlib.Tactic` for standard proof automation, `Mathlib.Combinatorics.SimpleGraph.Basic` for the `SimpleGraph` type and adjacency, and `Mathlib.Order.Filter.Basic` for the `Filter.atTop` filter used in asymptotic statements. Opens the `SimpleGraph` namespace for cleaner syntax.\n\nThe two explicit imports reflect what the formalization actually needs: the combinatorial graph structure (for chromatic number definitions) and filter infrastructure (for asymptotic statements). MeasureTheory imports are intentionally absent — the random graph model is axiomatized precisely because full measure-theoretic infrastructure for random graphs is not yet available in Mathlib.",
     "mathContext": "`SimpleGraph V` in Mathlib represents a simple graph on vertex type $V$ with an irreflexive symmetric adjacency relation. The `Filter.atTop` filter on $\\mathbb{N}$ provides the $n \\to \\infty$ limit, used when stating that concentration holds for large $n$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "SimpleGraph",
       "Filter.atTop",
@@ -104,7 +104,7 @@
       "startLine": 81,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Coloring Theorems",
     "content": "**isKColorable_card:** Every graph on n vertices is n-colorable. The proof uses the identity coloring f = id : Fin n -> Fin n, which is trivially proper since distinct vertices receive distinct colors (no two adjacent vertices can be equal as elements of Fin n when the graph is simple).\n\n**isKColorable_zero_iff:** A graph G is 0-colorable if and only if G has no edges. In one direction, a coloring f : V -> Fin 0 immediately yields `Fin.elim0 (f v)` for any vertex (Fin 0 is the empty type). In the other direction, the empty function `Fin.elim0` witnesses 0-colorability of an edgeless graph.",
     "mathContext": "For $n$-vertex graphs: $\\chi(G) \\leq n$ (trivially, by the identity coloring). $\\chi(G) = 0$ iff $G$ has no edges. Note: $\\chi(K_n) = n$ (complete graph requires $n$ colors) and $\\chi(G) = 1$ iff $G$ is edgeless (with at least one vertex). The case $\\chi(G) = 0$ only occurs for the empty graph (no vertices) or under the convention that edgeless graphs are 0-colorable.",

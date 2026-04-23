@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 58
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview and Setup",
     "content": "Erdős Problem #1023 asks whether the maximum size F(n) of a union-free family of subsets of {1,...,n} grows as c · 2^n / √n. A family is union-free if no member equals the union of other members. The answer is YES: F(n) = C(n, ⌊n/2⌋) ~ √(2/π) · 2^n / √n. The formalization includes several proofs by Aristotle (Harmonic), covering the equivalence of union-free definitions, the antichain-to-union-free implication, middle layer cardinality, and the asymptotic result.",
     "mathContext": "This problem sits at the intersection of extremal set theory and Sperner theory. The key connection is that antichains (no containment) imply union-freeness, linking the problem to the classical Dilworth-Sperner framework for poset width.",

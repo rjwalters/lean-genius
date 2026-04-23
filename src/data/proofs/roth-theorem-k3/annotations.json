@@ -51,7 +51,7 @@
       "startLine": 93,
       "endLine": 448
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Part III: Fourier Analysis on Z/NZ (356 lines)",
     "content": "Defines `fourierCoeff A r` as the discrete Fourier transform and builds a comprehensive character theory infrastructure (225 lines of fully proved ψ properties including character orthogonality via the shift argument). **Key proved results**: (1) `fourierCoeff_norm_le`: $|\\hat{1_A}(r)| \\leq |A|$ via triangle inequality, (2) `parseval_on_zmod` (PROVED, 43 lines): Parseval's identity $\\sum_r |\\hat{1_A}(r)|^2 = |A| \\cdot N$ via character orthogonality, (3) `triple_count_fourier` (PROVED, 32 lines): the AP counting Fourier identity. One sorry remains in the helper `tripleCount_add_card_eq_triple_sum` (combinatorial identity). The Parseval proof is particularly elegant: it expands Fourier products into double character sums, applies orthogonality to collapse to the diagonal, and simplifies.",
     "mathContext": "$\\hat{1_A}(r) = \\sum_{x \\in A} e^{2\\pi i rx/N}$. Parseval: $\\sum_r |\\hat{1_A}(r)|^2 = N|A|$. 3-AP identity: $\\Lambda_3(A) = N^{-1} \\sum_r \\hat{1_A}(r)^2 \\overline{\\hat{1_A}(2r)}$.",
@@ -144,7 +144,7 @@
       "startLine": 597,
       "endLine": 706
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Part IV Extended: Large Fourier Coefficient (Fully Proved)",
     "content": "The full 110-line proof of `fourier_large_coefficient`: if $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ is AP-free with density $\\delta$, then $\\exists r \\neq 0$ with $|\\hat{1}_A(r)| \\geq \\delta^2 N/2$. First proves `parseval_nonzero`: $\\sum_{r \\neq 0} |\\hat{1}_A(r)|^2 = n(N-n)$ where $n = |A|$. Then splits into two cases: (1) if $\\delta^2 N < 2$, Parseval pigeonhole gives $\\max_{r \\neq 0} |\\hat{1}_A(r)|^2 \\geq (N-1)/(N-1) = 1 > (\\delta^2 N/2)^2$; (2) if $\\delta^2 N \\geq 2$, uses the Fourier identity and AM-GM to derive the bound. This is a key proved result in the formalization.",
     "mathContext": "$\\sum_{r \\neq 0} |\\hat{1}_A(r)|^2 = |A|(N-|A|) \\geq N-1$. If AP-free: $\\exists r \\neq 0$, $|\\hat{1}_A(r)| \\geq \\delta^2 N/2$.",

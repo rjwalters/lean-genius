@@ -140,7 +140,7 @@
       "startLine": 187,
       "endLine": 201
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Disproof",
     "content": "**conjecture_false_k3:** No c > 0 gives f_3(n) > (1+c)^n for all n ≥ 4. Proof: given any c, Pohoata-Zakharov provides N where f_3(n) < (1+c)^n for n ≥ N, yielding a contradiction via linarith.\n\n**erdos_651_disproved:** The full conjecture ¬ErdosConjecture follows by instantiating with k = 3.",
     "mathContext": "This is a genuine Lean proof combining the Pohoata-Zakharov axiom with basic arithmetic. The proof strategy is a clean contradiction: assume exponential bound, get subexponential counterexample.",

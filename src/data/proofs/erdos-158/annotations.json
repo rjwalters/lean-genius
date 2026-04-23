@@ -82,7 +82,7 @@
       "startLine": 53,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "concept",
     "title": "ESS94 Log Bound",
     "content": "**Erdős-Sárközy-Sós (1994)** proved a stronger bound for Sidon sets: liminf A(N)/√N · (log N)^{1/2} < ∞. This implies the weaker result that liminf A(N)/√N = 0.",
     "mathContext": "The log factor is crucial - it provides the 'room' that makes the limit inferior finite rather than requiring it to be zero directly. This uses sieve methods and probabilistic arguments from the ESS94 paper.",
@@ -101,7 +101,7 @@
       "startLine": 68,
       "endLine": 77
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sidon Sets: liminf = 0",
     "content": "For any **infinite Sidon set**, the counting function must dip below c√N infinitely often. You cannot have A(N) ≥ c√N for all large N - uniform density is impossible.",
     "mathContext": "This follows from the log bound: if liminf A(N)/√N = c > 0, then liminf A(N)/√N · (log N)^{1/2} would be infinite (since log N → ∞), contradicting ESS94.",
@@ -120,7 +120,7 @@
       "startLine": 78,
       "endLine": 89
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Open Conjecture",
     "content": "**Erdős Problem #158** asks if the same conclusion holds for B₂[2] sets. Allowing two representations per sum is a significant relaxation - does it still force liminf A(N)/√N = 0?",
     "mathContext": "Formally: ∀ A, A.Infinite → B2 2 A → liminf (normalizedCount A) atTop = 0. The Sidon case is solved but this remains open.",
@@ -139,7 +139,7 @@
       "startLine": 90,
       "endLine": 105
     },
-    "type": "technique",
+    "type": "concept",
     "title": "B₂[g] Hierarchy",
     "content": "Every Sidon set (B₂[1]) is automatically a B₂[2] set. So if the conjecture holds for B₂[2], it would generalize the known Sidon result.",
     "mathContext": "The proof sidon_implies_b2_hierarchy uses that 1 ≤ 2. This shows the conjecture is a true generalization - proving it for B₂[2] would give a new proof for Sidon sets as a corollary.",
@@ -177,7 +177,7 @@
       "startLine": 119,
       "endLine": 127
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: Perfect Squares",
     "content": "The set of **perfect squares** {1, 4, 9, 16, ...} forms a Sidon set. This follows from unique factorization in the Gaussian integers ℤ[i].",
     "mathContext": "If a² + b² = c² + d² as sums of two squares, the factorization in ℤ[i] is (a + bi)(a - bi) = (c + di)(c - di). Unique factorization implies {a², b²} = {c², d²}.",

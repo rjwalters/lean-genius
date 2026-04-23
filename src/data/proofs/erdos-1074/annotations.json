@@ -62,7 +62,7 @@
       "startLine": 48,
       "endLine": 58
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Chowla's Divisibility",
     "content": "**Key Divisibility: 23 | 14! + 1**\n\nChowla's fundamental observation that answered Pillai's question.\n\n**Calculation:**\n- 14! = 87,178,291,200\n- 14! + 1 = 87,178,291,201\n- 87,178,291,201 ÷ 23 = 3,790,360,487\n\n**Verification in Lean:**\n```lean\ntheorem twentyThree_dvd_factorial_14_plus_one : 23 ∣ 14 ! + 1 := by\n  native_decide\n```\n\nThe tactic `native_decide` performs this large arithmetic check automatically.",
     "significance": "key",
@@ -80,7 +80,7 @@
       "startLine": 60,
       "endLine": 66
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Chowla's Congruence Check",
     "content": "**The Non-Congruence: 23 ≢ 1 (mod 14)**\n\nThe second condition for 23 to be a Pillai prime.\n\n**Calculation:**\n- 23 = 1 × 14 + 9\n- So 23 ≡ 9 (mod 14)\n- Since 9 ≠ 1, we have 23 ≢ 1 (mod 14) ✓\n\n**Why this matters:**\nIf p ≡ 1 (mod m), then p - 1 is divisible by m, which creates a 'Wilson-like' situation where p | m! + 1 would be less surprising.",
     "significance": "key",
@@ -98,7 +98,7 @@
       "startLine": 68,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "concept",
     "title": "23 is a Pillai Prime",
     "content": "**pillai_23: Chowla's Complete Result**\n\nCombining the divisibility and congruence checks proves 23 ∈ PillaiPrimes.\n\n**Proof Structure:**\n```lean\ntheorem pillai_23 : 23 ∈ PillaiPrimes := by\n  refine ⟨twentyThree_prime, 14, twentyThree_not_cong_one_mod_14, ?_⟩\n  exact twentyThree_dvd_factorial_14_plus_one\n```\n\n**The witness:** m = 14 satisfies all conditions:\n- 23 is prime ✓\n- 23 ≢ 1 (mod 14) ✓\n- 23 | 14! + 1 ✓\n\nThis was the first known Pillai prime, answering Pillai's 1930 question.",
     "mathContext": "Chowla also noted that 18! + 1 ≡ 0 (mod 23), providing a second witness for 23 being a Pillai prime.",
@@ -116,7 +116,7 @@
       "startLine": 76,
       "endLine": 85
     },
-    "type": "technique",
+    "type": "concept",
     "title": "8 is the First EHS Number",
     "content": "**ehs_8: The Smallest EHS Number**\n\n8 is the first EHS number, witnessed by the prime 61.\n\n**Calculation:**\n- 8! = 40,320\n- 8! + 1 = 40,321 = 61 × 661\n- 61 mod 8 = 5 ≠ 1 ✓\n\n**Why 1-7 fail:**\nFor m = 1 to 7, every prime divisor p of m! + 1 satisfies p ≡ 1 (mod m).\n\n**Proof:**\n```lean\ntheorem ehs_8 : 8 ∈ EHSNumbers := by\n  constructor\n  · decide\n  · refine ⟨61, ?_, ?_, ?_⟩\n    · native_decide  -- 61 is prime\n    · native_decide  -- 61 ≢ 1 (mod 8)\n    · native_decide  -- 61 | 8! + 1\n```",
     "significance": "key",
@@ -134,7 +134,7 @@
       "startLine": 87,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "concept",
     "title": "9 is an EHS Number",
     "content": "**ehs_9: Second Example**\n\n9 is an EHS number, also witnessed by the prime 71.\n\n**Calculation:**\n- 9! = 362,880\n- 9! + 1 = 362,881 = 19 × 71 × 269\n- 71 mod 9 = 8 ≠ 1 ✓\n\n**Note:** 19 mod 9 = 1, so 19 doesn't work as a witness.\nBut 71 and 269 both work (71 ≡ 8, 269 ≡ 8 mod 9).\n\nThis shows EHS numbers can have multiple valid witnesses.",
     "significance": "supporting",
@@ -152,7 +152,7 @@
       "startLine": 98,
       "endLine": 115
     },
-    "type": "context",
+    "type": "concept",
     "title": "Infinitude Results",
     "content": "**Both Sets Are Infinite**\n\nErdős, Hardy, and Subbarao proved that both EHSNumbers and PillaiPrimes are infinite sets.\n\n**Axioms:**\n```lean\naxiom EHSNumbers_infinite : EHSNumbers.Infinite\naxiom PillaiPrimes_infinite : PillaiPrimes.Infinite\n```\n\n**Why axioms?**\nThe proofs require sophisticated number-theoretic arguments about:\n- Distribution of prime factors of m! + 1\n- Primes in arithmetic progressions\n- Analytic techniques\n\nThese results are well beyond current Mathlib formalization capabilities.",
     "mathContext": "The proof uses properties of prime factorizations of factorial values combined with Dirichlet's theorem on primes in arithmetic progressions.",

@@ -94,7 +94,7 @@
     "startLine": 148,
     "endLine": 176,
     "mathContext": "typeUniverse : CategoricalEval encodes types as objects, functions as morphisms, function-types as exponentials, terms as global elements (Pt = id), function application as apply. categorical_cantor: for any A : Type* and e : A → (A → Prop), e is not point-surjective. Proof: hNotFixed (∀ v : Prop, ¬v = v) derived from v = ¬v giving both v → ¬v and ¬v → v; then obtain a₀ from hSurj (fun a => ¬ e a a), get e a₀ a₀ = ¬ e a₀ a₀, apply hNotFixed.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Cantor's theorem",
       "diagonal function",

@@ -10,7 +10,7 @@
     "title": "Thomae's Function via Classical Choice",
     "content": "Thomae's function is defined by case-splitting on whether x is rational: if x = p/q in reduced form, return 1/q; otherwise return 0. The Lean definition uses `h.choose.den` to extract the denominator of the canonical rational representative, exploiting Lean's classical choice principle.",
     "mathContext": "$$f(x) = \\begin{cases} \\frac{1}{q} & \\text{if } x = \\frac{p}{q} \\text{ in lowest terms}, \\\\ 0 & \\text{if } x \\in \\mathbb{R} \\setminus \\mathbb{Q}. \\end{cases}$$\nIn Lean: `if h : ∃ q : ℚ, (q : ℝ) = x then 1 / (h.choose.den : ℝ) else 0`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "rational-number-representation",
       "classical-choice",

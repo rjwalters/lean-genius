@@ -349,7 +349,7 @@
       "startLine": 205,
       "endLine": 230
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős #775: DISPROVED",
     "content": "**erdos_775_answer:**\n\n```lean\ntheorem erdos_775_answer : ¬erdos775Question\n```\n\n**Proof Idea:**\n1. Assume there exists constant C (proof by contradiction)\n2. By gaoFunction_tendsto_infinity, choose N such that f_3(n) ≥ C+1 for n ≥ N\n3. Take n = max(N, 3)\n4. The assumed hypergraph would have ≥ n - C clique sizes\n5. But Gao's bound gives ≤ n - (C+1) clique sizes\n6. Contradiction: n - C ≤ n - (C+1) is impossible",
     "mathContext": "The proof uses a standard technique: showing that for any proposed constant, a large enough n violates it.",
@@ -372,7 +372,7 @@
       "startLine": 232,
       "endLine": 235
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem",
     "content": "**erdos_775:**\n\n```lean\ntheorem erdos_775 : ¬erdos775Question := erdos_775_answer\n```\n\nThe answer to Erdős Problem #775 is NO.",
     "significance": "key",
@@ -395,7 +395,7 @@
       "startLine": 241,
       "endLine": 259
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Graphs vs Hypergraphs",
     "content": "**graphs_vs_hypergraphs:**\n\nThis theorem captures the fundamental dichotomy:\n\n1. **Graphs (k=2):** Can achieve n - log₂n - O(1) clique sizes (Spencer)\n2. **Hypergraphs (k≥3):** Cannot achieve n - O(1) clique sizes (Gao)\n\nThe extra uniformity constraint for k ≥ 3 fundamentally limits clique size diversity.",
     "mathContext": "This phase transition at k=2 vs k≥3 is a striking structural result in extremal combinatorics.",
@@ -440,7 +440,7 @@
       "startLine": 272,
       "endLine": 291
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_775_summary:**\n\nCombines all main results:\n\n1. ¬erdos775Question: The answer is NO\n2. For any k ≥ 3 and any target M, sufficiently large hypergraphs have clique diversity bounded by n - M\n\n```lean\ntheorem erdos_775_summary :\n    ¬erdos775Question ∧\n    (∀ k ≥ 3, ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, ∀ H : UniformHypergraph k (Fin n),\n      numCliqueSizes H ≤ n - M)\n```",
     "significance": "key",

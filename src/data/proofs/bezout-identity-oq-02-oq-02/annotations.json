@@ -6,7 +6,7 @@
       "startLine": 3,
       "endLine": 42
     },
-    "type": "context",
+    "type": "concept",
     "title": "IsCoprime IS the Abstract Bézout Condition",
     "content": "The module docstring establishes the key insight: `IsCoprime a b` in Lean is *defined* as `∃ u v, u*a + v*b = 1` — this is precisely the Bézout identity with no special ring structure required. The proof hierarchy flows from most general to most specific: CommRing (ring axioms only) → IsBezout (every pair-generated ideal is principal) → EuclideanDomain (algorithmic gcd) → DecompositionMonoid (irreducible ↔ prime). The Mathlib API chain is: `IsBezout.span_pair_isPrincipal` → `IsRelPrime.isCoprime` → `euclids_lemma_ring`.",
     "mathContext": "The abstract framework: $\\text{IsCoprime}(a,b) \\equiv \\exists u,v,\\; ua + vb = 1$ (Bézout identity). This holds in any commutative ring. The typeclass hierarchy: $$\\text{EuclideanDomain} \\to \\text{PrincipalIdealRing} \\to \\text{IsBezout} \\to \\text{CommRing}.$$ Each level adds more structure, but Euclid's lemma holds already at `CommRing` level given `IsCoprime`. `IsBezout R` means $\\forall a,b \\in R$, the ideal $(a,b) = \\langle d \\rangle$ is principal — this is what allows converting arithmetic coprimality (`IsRelPrime`) to algebraic coprimality (`IsCoprime`).",
@@ -58,7 +58,7 @@
       "startLine": 95,
       "endLine": 129
     },
-    "type": "technique",
+    "type": "concept",
     "title": "IsBezout Bridge: span_pair_isPrincipal Converts IsRelPrime to IsCoprime",
     "content": "`isBezout_relPrime_to_isCoprime` proves `IsRelPrime a b → IsCoprime a b` in any IsBezout ring. The key is `haveI := IsBezout.span_pair_isPrincipal a b` which installs the instance `Submodule.IsPrincipal (Ideal.span {a, b})` — exactly what `IsRelPrime.isCoprime` requires. This single `haveI` is the entire bridge from arithmetic coprimality to algebraic Bézout coefficients. `euclids_lemma_isbezout` then chains: `IsRelPrime → IsCoprime → euclids_lemma_ring`.",
     "mathContext": "The algebraic meaning: In a Bézout ring, every ideal $(a, b)$ is principal: $(a,b) = (d)$ for some $d$. If $a$ and $b$ are coprime (no non-unit common divisor), then $d = 1$, so $1 \\in (a,b)$, meaning $\\exists u,v,\\; ua + vb = 1$. Lean's typeclass mechanism: `IsBezout.span_pair_isPrincipal a b : Submodule.IsPrincipal (Ideal.span {a, b})` provides the instance that `IsRelPrime.isCoprime` uses as an implicit argument. The `haveI` tactic introduces it locally.",
@@ -109,7 +109,7 @@
       "startLine": 145,
       "endLine": 164
     },
-    "type": "technique",
+    "type": "concept",
     "title": "DecompositionMonoid: Irreducible ↔ Prime as Abstract Euclid's Lemma",
     "mathContext": "In abstract algebra: $p$ is **prime** if $p \\mid ab \\Rightarrow p \\mid a$ or $p \\mid b$. $p$ is **irreducible** if $p = ab \\Rightarrow$ a or b is a unit. These coincide in UFDs (unique factorization domains) and more generally in **GCD domains** and **Bézout domains**. Lean's `DecompositionMonoid` captures exactly this property. For ℤ: primes are ±2, ±3, ±5, ... and irreducibles coincide. For ℤ[i]: Gaussian primes are (1+i), 2+i, 3, 3+2i, ... and again irreducible = prime. The typeclass `DecompositionMonoid` is Lean's way of saying 'every element factors'.",
     "significance": "key",

@@ -30,7 +30,7 @@
       "startLine": 36,
       "endLine": 44
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Namespace",
     "content": "The formalization imports Mathlib's Euclidean distance infrastructure, Lebesgue measure theory, and metric space basics. The `EuclideanSpace R (Fin 2)` type provides the formal model of R^2 with its inner product structure.",
     "mathContext": "The type `EuclideanSpace \\mathbb{R} (\\text{Fin } 2)` is Mathlib's representation of $\\mathbb{R}^2$ as a finite-dimensional inner product space, inheriting the Euclidean norm $\\|x\\| = \\sqrt{x_0^2 + x_1^2}$ and induced metric.",
@@ -254,7 +254,7 @@
       "startLine": 208,
       "endLine": 227
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdos's Question Answered",
     "content": "**erdos_232_solution and erdos_232_quarter_bound:**\n\nThe main theorem `erdos_232_solution` proves m_1 < 1/4 by chaining the Ambrus et al. bound (m_1 <= 0.247) with the numerical fact 0.247 < 0.25. The weaker `erdos_232_quarter_bound` follows by `linarith`.",
     "mathContext": "The proof is a simple chain of inequalities: $m_1 \\leq 0.247 < 1/4$. The first inequality is the deep result of Ambrus et al.; the second is arithmetic. In Lean, `calc` chains the inequalities and `norm_num` handles $0.247 < 0.25$. The `linarith` tactic derives the weak bound $m_1 \\leq 1/4$ from the strict bound $m_1 < 1/4$.",
@@ -275,7 +275,7 @@
       "startLine": 229,
       "endLine": 244
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Current Best Bounds",
     "content": "**current_bounds:**\n\n0.22936 <= m_1 <= 0.247\n\nCombines Croft's lower bound with the Ambrus et al. upper bound. The `bounds_gap` theorem computes the explicit gap: 0.247 - 0.22936 = 0.01764.",
     "mathContext": "The current state of knowledge pins $m_1$ to the interval $[0.22936, 0.247]$, a window of width $\\approx 0.018$. Narrowing this gap requires either (a) a better construction for the lower bound, or (b) a tighter LP relaxation for the upper bound. The exact value of $m_1$ remains one of the outstanding open problems in combinatorial geometry.",
@@ -295,7 +295,7 @@
       "startLine": 246,
       "endLine": 274
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Examples",
     "content": "**Basic examples of unit-distance-free sets:**\n\n1. **Empty set:** Trivially unit-distance-free (vacuously true, proved by `False.elim`).\n2. **Singletons:** One point has no distinct pair, so no unit distance pair. Proved via `simp` on membership.\n3. **Ball of radius 1/2:** Any two points in an open ball of radius 1/2 have distance < 1 by the triangle inequality. (Still a `sorry` in the formalization.)",
     "mathContext": "These examples illustrate the definition at increasing complexity. The ball example is the key building block for the hexagonal construction: if $B(c, 1/2) = \\{x : \\|x - c\\| < 1/2\\}$, then for $p, q \\in B(c, 1/2)$ the triangle inequality gives $\\|p - q\\| \\leq \\|p - c\\| + \\|c - q\\| < 1/2 + 1/2 = 1$, so no unit distance pair exists.",
@@ -341,7 +341,7 @@
       "startLine": 307,
       "endLine": 333
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "**erdos_232_summary:**\n\nCombines the main results into a single theorem: m_1 <= 1/4 AND 0.22936 <= m_1 <= 0.247. Built from `erdos_232_quarter_bound` and `current_bounds`.",
     "mathContext": "The summary theorem packages the complete answer to Erdos's question as a conjunction: (1) the affirmative answer $m_1 \\leq 1/4$, and (2) the precise bounds $0.22936 \\leq m_1 \\leq 0.247$ representing the current state of the art as of 2023.",

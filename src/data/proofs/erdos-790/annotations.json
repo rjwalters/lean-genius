@@ -101,7 +101,7 @@
       "startLine": 95,
       "endLine": 111
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Questions Answered",
     "content": "**Question 1** (l(n)/√n → ∞?) is answered YES: the CKS lower bound gives l(n)/√n ≥ c√(log n / log log n) → ∞. **Question 2** (l(n) < n^{1-c}?) is answered YES: the CKS upper bound l(n) ≤ n/log n is o(n^{1-c}) for any c. Both answers are formalized as axioms referencing the CKS bounds.",
     "mathContext": "These questions were posed by Erdős to understand the qualitative behavior of l(n). The CKS bounds settle them definitively, but the quantitative gap between the bounds remains enormous.",
@@ -139,7 +139,7 @@
       "startLine": 123,
       "endLine": 133
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Combined CKS Bounds",
     "content": "**cks_bounds** combines both CKS results into a single theorem: √(n log n / log log n) ≪ l(n) ≪ n / log n. The proof pairs the lower and upper bound axioms. Both bounds come from the same 1975 paper, making it remarkable that neither has been improved in 50 years.",
     "mathContext": "The ≪ notation (Vinogradov notation) means 'bounded above by a constant times.' The combined statement captures the state of the art for this problem.",

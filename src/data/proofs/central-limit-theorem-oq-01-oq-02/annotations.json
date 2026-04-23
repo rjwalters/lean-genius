@@ -78,7 +78,7 @@
       "startLine": 142,
       "endLine": 169
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Algebraic Structure of Lévy Triplets",
     "content": "Proves that Lévy triplets form a commutative monoid under componentwise addition: (γ₁+γ₂, σ₁²+σ₂², ν₁+ν₂). This reflects the fundamental property that the sum of independent infinitely divisible random variables is infinitely divisible, with the triplet of the sum being the sum of triplets. Scaling by c > 0 transforms (γ, σ², ν) to (cγ, c²σ², c²ν). All proofs are definitional (rfl) since the operations are defined componentwise.",
     "mathContext": "If $X_1 \\sim (\\gamma_1, \\sigma_1^2, \\nu_1)$ and $X_2 \\sim (\\gamma_2, \\sigma_2^2, \\nu_2)$ are independent, then $X_1 + X_2 \\sim (\\gamma_1 + \\gamma_2, \\sigma_1^2 + \\sigma_2^2, \\nu_1 + \\nu_2)$. Scaling: $cX \\sim (c\\gamma, c^2\\sigma^2, c^2\\nu)$.",
@@ -150,7 +150,7 @@
       "startLine": 244,
       "endLine": 264
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Classification by Triplet Components",
     "content": "Proves the fundamental classification: an infinitely divisible distribution with ν = 0 is Gaussian (pure continuous), and one with σ² = 0 is compound Poisson (pure jump). The gaussian_variance_from_exponent theorem states that σ² can be recovered as lim_{t→0} -2ψ(t)/t², providing a concrete way to extract the Gaussian component from the characteristic exponent. This classification is the basis for model selection in mathematical finance (jump-diffusion vs pure diffusion).",
     "mathContext": "Classification: $\\nu = 0 \\Rightarrow$ Gaussian; $\\sigma^2 = 0 \\Rightarrow$ compound Poisson. Recovery: $\\sigma^2 = \\lim_{t \\to 0} \\frac{-2\\psi(t)}{t^2}$.",

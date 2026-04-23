@@ -141,7 +141,7 @@
       "startLine": 142,
       "endLine": 161
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Turán's Theorem Context",
     "content": "**turan_odd_cycle:** A graph with > ⌊n²/4⌋ edges must contain an odd cycle (axiomatized). This is the key structural result justifying the edge threshold: at exactly ⌊n²/4⌋ + 1 edges, odd cycles are guaranteed to exist.\n\n**threshold_significance:** Proved theorem showing turanThreshold n > n²/4 for n ≥ 2. The proof uses simp and omega — a straightforward arithmetic fact confirming the threshold is above the Turán bound.\n\n**Why this matters:** Without guaranteed odd cycles, the rainbow coloring question would be vacuous. The threshold ensures every valid graph has C_{2k+1} subgraphs to color.",
     "mathContext": "Turán's theorem (1941) is one of the foundational results in extremal graph theory. The complete bipartite graph K_{⌊n/2⌋, ⌈n/2⌉} achieves exactly ⌊n²/4⌋ edges with no odd cycles, showing the threshold is tight.",
@@ -161,7 +161,7 @@
       "startLine": 163,
       "endLine": 186
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_809_summary:** Combines the two established results into a single theorem:\n1. The BEGS quadratic lower bound: F_k(n) ≥ c·n² for some c > 0\n2. The quadratic upper bound: F_k(n) ≤ C·n² for some C\n\nThe proof is `exact ⟨begs_lower_bound, quadratic_upper_bound⟩` — a direct pairing of the two axioms.\n\n**What remains open:** The conjecture F_k(n) ~ n²/8 would pin down the constant between these bounds. The summary theorem captures what is currently known, while the open conjecture describes what is yet to be proved.",
     "mathContext": "Summary theorems collect the state of knowledge about a problem. Here they serve as a formal certificate that the known bounds have been correctly stated and combined.",

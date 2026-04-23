@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 25
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview",
     "content": "Erdős Problem #474 asks: Under what set-theoretic assumptions can $\\mathbb{R}^2$ be 3-colored so every uncountable $A$ has $A^2$ containing pairs of all colors? In partition calculus notation: $2^{\\aleph_0} \\to (\\aleph_1)^3_2$. Posed in 1954 with a $100 prize. The 2-color case always works; the 3-color case depends on cardinal arithmetic.",
     "mathContext": "This problem lies at the intersection of infinite Ramsey theory and set-theoretic independence. The partition arrow notation $\\kappa \\to (\\lambda)^r_s$ asks whether every $s$-coloring of $r$-element subsets of $\\kappa$ has a monochromatic subset of size $\\lambda$. The transition from 2 to 3 colors reveals deep sensitivity to the axioms of set theory — a phenomenon characteristic of problems at the boundary of ZFC.",

@@ -2,7 +2,7 @@
   {
     "id": "erdos-273-header",
     "proofId": "erdos-273",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 1,
       "endLine": 21
@@ -98,7 +98,7 @@
   {
     "id": "erdos-273-selfridge",
     "proofId": "erdos-273",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 64,
       "endLine": 91
@@ -146,7 +146,7 @@
   {
     "id": "erdos-273-counting-lemmas",
     "proofId": "erdos-273",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 101,
       "endLine": 137
@@ -171,7 +171,7 @@
   {
     "id": "erdos-273-reciprocal",
     "proofId": "erdos-273",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 139,
       "endLine": 211
@@ -243,7 +243,7 @@
   {
     "id": "erdos-273-even-difficulty",
     "proofId": "erdos-273",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 229,
       "endLine": 236
@@ -317,7 +317,7 @@
       "startLine": 260,
       "endLine": 303
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Computational Verification of Easy Primes and Density Bound",
     "content": "Five `decide` and `norm_num` proofs verifying properties of the concrete modulus set $\\{4, 6, 12, 18, 36, 60, 180\\}$. `easyPrimes_all_prime`: all 7 elements are prime. `easyPrimes_ge_five`: all are $\\geq 5$. `easyPrimes_mod_divides_360`: each $p-1$ divides 360. These are checked by `decide` (kernel computation). Then `max_single_density` proves that no single residue class with modulus $p-1$ ($p \\geq 5$) can cover more than $1/4$ of integers, since $1/(p-1) \\leq 1/4$ when $p \\geq 5$. The proof uses `div_le_div_iff` and `linarith`. Together these establish the quantitative constraints on covering with prime-minus-one moduli.",
     "mathContext": "Verified: $\\{5,7,13,19,37,61,181\\}$ are all primes $\\geq 5$ with $(p-1) \\mid 360$. Density bound: $\\forall p \\geq 5$ prime, $1/(p-1) \\leq 1/4$. Equality at $p = 5$: modulus 4 gives the densest class. At least $\\lceil 1/(1/4) \\rceil = 4$ classes needed to cover all integers.",

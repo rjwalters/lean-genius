@@ -352,7 +352,7 @@
       "startLine": 152,
       "endLine": 162
     },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete Gap Examples",
     "content": "For p=2: n=7, gap is (7,9). For p=3: n=13, gap is (13,16). For p=4: n=21, gap is (21,25). For p=5: n=31, gap is (31,36). Each computed by `norm_num`.",
     "mathContext": "These examples illustrate the gap width growing linearly with p. For the Fano plane (p=2, n=7), the gap excludes only t=8, and indeed no PBD on 7 points has exactly 8 blocks. The first achievable value above 7 is 9 (a broken Fano plane: remove one line of 3 points and replace with 3 singletons, giving 7 - 1 + 3 = 9 blocks). For p=3 (PG(2,3), n=13), t=14 and t=15 are forbidden, and the broken plane gives t=16.",

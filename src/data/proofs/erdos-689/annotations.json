@@ -140,7 +140,7 @@
       "startLine": 61,
       "endLine": 65
     },
-    "title": "Covering Count Bounded by \u03c0(n)",
+    "title": "Covering Count Bounded by π(n)",
     "content": "Proves `coveringCount_le_card_primes`: the covering count of any $m$ is at most $\\pi(n) = |\\text{primesUpTo}(n)|$. This is tight when $m$ lies in every selected residue class. The proof uses `Finset.card_filter_le`, since the covering primes are a subset of all primes $\\leq n$.",
     "mathContext": "$\\text{coveringCount}(n, m, a) \\leq \\pi(n)$ for all $m, a$",
     "significance": "supporting",
@@ -207,13 +207,13 @@
       "endLine": 111
     },
     "title": "Double Covering Conjecture",
-    "content": "Axiomatizes `erdos_689_double_cover`: there exists $N_0$ such that for all $n \\geq N_0$, some assignment $a$ achieves `IsRFoldCover n 2 a`. This is the core of Erd\u0151s Problem 689. The existential quantifier over $a$ means we must find a single assignment that simultaneously covers every integer in $[1,n]$ twice.",
+    "content": "Axiomatizes `erdos_689_double_cover`: there exists $N_0$ such that for all $n \\geq N_0$, some assignment $a$ achieves `IsRFoldCover n 2 a`. This is the core of Erdős Problem 689. The existential quantifier over $a$ means we must find a single assignment that simultaneously covers every integer in $[1,n]$ twice.",
     "mathContext": "$\\exists N_0,\\; \\forall n \\geq N_0,\\; \\exists a: \\text{IsRFoldCover}(n, 2, a)$",
     "significance": "key",
     "relatedConcepts": [
       "covering congruences",
       "existential quantifier",
-      "Lov\u00e1sz Local Lemma"
+      "Lovász Local Lemma"
     ],
     "prerequisites": [
       "IsRFoldCover",
@@ -268,7 +268,7 @@
   {
     "id": "erdos-689-jacobsthal",
     "proofId": "erdos-689",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 129,
       "endLine": 134
@@ -281,7 +281,7 @@
       "Jacobsthal function",
       "Filter.atTop",
       "1-fold covering",
-      "Erd\u0151s Problem 687"
+      "Erdős Problem 687"
     ],
     "prerequisites": [
       "Filter.atTop",
@@ -291,7 +291,7 @@
   {
     "id": "erdos-689-green",
     "proofId": "erdos-689",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 136,
       "endLine": 141

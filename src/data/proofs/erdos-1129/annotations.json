@@ -246,7 +246,7 @@
       "startLine": 232,
       "endLine": 242
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Optimal Nodes for n=2",
     "content": "**optimal_n2:**\n\nFor n = 2, the optimal nodes are {-1, 1} with Lambda = 1.\n\nThis is trivial: with only two nodes at the endpoints, the Lagrange basis functions are:\n- l_1(x) = (x - 1) / (-1 - 1) = (1 - x) / 2\n- l_2(x) = (x + 1) / (1 + 1) = (1 + x) / 2\n\nThen |l_1(x)| + |l_2(x)| = (1-x)/2 + (1+x)/2 = 1 for all x in [-1, 1].",
     "significance": "supporting",
@@ -264,7 +264,7 @@
       "startLine": 243,
       "endLine": 254
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Optimal Nodes for n=3",
     "content": "**optimal_n3 (Bernstein 1931):**\n\nFor n = 3, the optimal nodes are {-1, 0, 1} with Lambda = 5/4 = 1.25.\n\nThe Lebesgue function achieves its maximum at x = +/- 1/sqrt(2), where Lambda(+/- 1/sqrt(2)) = 5/4.\n\nBernstein proved this as part of his study of interpolation bounds.",
     "mathContext": "Sergei Bernstein (1880-1968) was a pioneer in approximation theory who proved many fundamental results.",
@@ -354,7 +354,7 @@
       "startLine": 306,
       "endLine": 317
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdos's Complex Conjecture: PROVED",
     "content": "**erdos_complex_conjecture:**\n\nFor all n, roots of unity minimize the complex Lebesgue constant.\n\n```lean\ntheorem erdos_complex_conjecture (n : N) (hn : n > 0) :\n    forall nodes, (forall k, |nodes k| = 1) ->\n    ComplexLebesgueConstant (RootsOfUnity n hn) <= ComplexLebesgueConstant nodes\n```\n\nThe proof cases on whether n is even or odd, applying the appropriate theorem.",
     "significance": "key",
@@ -372,7 +372,7 @@
       "startLine": 324,
       "endLine": 354
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Result",
     "content": "**erdos_1129:**\n\nThe complete answer to Erdos Problem #1129:\n\n1. **Existence:** Optimal nodes exist for any n (Kilgore-Cheney)\n2. **Bounds:** For any nodes, (2/pi) log n - O(1) <= Lambda\n3. **Achievability:** Chebyshev nodes achieve Lambda <= (2/pi) log n + O(1)\n\n```lean\ntheorem erdos_1129 (n : N) (hn : n > 0) :\n    (exists nodes, ... optimal ...) and\n    (exists C1 C2, ... bounds ...)\n```",
     "mathContext": "This combines decades of work from Faber (1914) through de Boor-Pinkus (1978).",
@@ -390,7 +390,7 @@
       "startLine": 355,
       "endLine": 374
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_1129_summary:**\n\nCombines all results:\n\n1. For any n > 0, optimal interpolation nodes exist in [-1, 1]\n2. For any n > 0, roots of unity are optimal on the unit circle\n\n```lean\ntheorem erdos_1129_summary :\n    (forall n > 0, optimal nodes exist) and\n    (forall n > 0, roots of unity are optimal for complex case)\n```\n\nThe answer to Erdos's question is complete.",
     "significance": "key",

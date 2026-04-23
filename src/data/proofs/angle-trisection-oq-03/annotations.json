@@ -6,7 +6,7 @@
       "startLine": 34,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Power-of-2 Divisibility: Induction on the Exponent",
     "content": "`dvd_pow_two_is_pow_two` proves: if d | 2^m and d > 0, then d is a power of 2. The proof is by induction on m (not on d as in OQ01's strong induction approach). The induction structure:\n- **Base m=0**: d | 1 forces d = 1 = 2^0.\n- **Inductive step m+1**: Case split on whether 2 | d. If 2 | d, write d = 2d' and show d' | 2^m (canceling the factor of 2), apply IH to get d' = 2^k, conclude d = 2^{k+1}. If 2 ∤ d, then d has an odd prime factor p | d | 2^{m+1}, so p | 2, contradiction (p ≥ 2, p | 2 → p ≤ 2 → p = 2, but p is odd).\n\nThis proof style — induction on the exponent rather than strong induction on d — is cleaner for this problem since the cancellation step is immediate.",
     "mathContext": "Induction on $m$. Case $2 \\mid d$: write $d = 2d'$, get $d' \\mid 2^m$, IH gives $d' = 2^k$, so $d = 2^{k+1}$. Case $2 \\nmid d$: $d$ has an odd prime factor $p \\mid d \\mid 2^{m+1}$, but $p \\mid 2$ implies $p = 2$, contradicting odd.",
@@ -30,7 +30,7 @@
       "startLine": 80,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Prime Factor Characterization: d = 2^k ↔ All Prime Factors Equal 2",
     "content": "`pow_two_iff_all_prime_factors_two` gives the equivalence: d = 2^k iff every prime factor of d equals 2. The forward direction is `prime_factor_of_pow_two`: any prime dividing 2^m must be 2 (squeeze argument). The backward direction uses `Nat.strongRecOn` — if all primes dividing d equal 2, then d has a factor of 2, write d = 2d', check that d' also has only prime factor 2 (by transitivity), apply strong IH to get d' = 2^k.\n\nThis characterization is useful algorithmically: to test if d is a power of 2, repeatedly divide by 2; if the quotient ever has an odd prime factor, d is not a power of 2.",
     "mathContext": "$d = 2^k \\iff \\forall p, p \\text{ prime} \\land p \\mid d \\Rightarrow p = 2$. The backward direction reduces to: $d$ has prime factor $2$ (since $d > 1$), write $d = 2d'$, all primes dividing $d'$ also divide $d$, apply IH.",
@@ -52,7 +52,7 @@
       "startLine": 116,
       "endLine": 140
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Decidability via Bounded Search: Is d a Power of 2?",
     "content": "`decidable_is_pow_two` provides a `Decidable` instance for '∃ k, d = 2^k'. The key bound: if d = 2^k then k < 2^k = d, so k ∈ {0, ..., d}. The proof uses `decidable_of_iff` to reduce to a search over `Finset.range (d+1)`: membership in a finite set is decidable, so the bounded existential is decidable.\n\n`decidable_isConstructible` follows immediately via `inferInstanceAs (Decidable (_ ∧ _))`: the conjunction of `d > 0` (decidable for ℕ) and `∃ n, d | 2^n` (decidable by `decidable_dvd_some_pow_two`) is decidable.\n\nThis is the constructive content: not just 'constructibility is decidable in principle' but 'here is the Lean `Decidable` typeclass instance that computes the answer'.",
     "mathContext": "Bound: $d = 2^k \\Rightarrow k \\leq \\log_2 d < d$. So $\\exists k, d = 2^k$ reduces to $\\exists k \\in \\{0,\\ldots,d\\}, d = 2^k$, which is a decidable search over a finite set.",
@@ -77,7 +77,7 @@
       "startLine": 148,
       "endLine": 160
     },
-    "type": "technique",
+    "type": "concept",
     "title": "N-gon Constructibility Decidability via Gauss-Wantzel",
     "content": "`decidable_ngon_constructibility` reduces to `decidable_is_pow_two` applied to φ(n) (Euler's totient). The proof is one line: `decidable_of_iff (TotientIsPow2 n) (gauss_wantzel_theorem n hn).symm`. The Gauss-Wantzel theorem (from `AngleTrisectionOQ02OQ03.lean`) gives the biconditional `IsConstructibleNgon n ↔ TotientIsPow2 n`, and decidability of `TotientIsPow2 n` follows from `decidable_totientIsPow2`.\n\nThe complexity: computing φ(n) takes O(√n) (trial division), then checking if φ(n) is a power of 2 takes O(log n). The total is polynomial in n — the constructibility problem for regular n-gons is in P.",
     "mathContext": "IsConstructibleNgon $n$ $\\iff$ $\\phi(n) = 2^k$ (Gauss-Wantzel). `TotientIsPow2 n` is decidable via `decidable_is_pow_two (n.totient)`. Complexity: $\\phi(n)$ in $O(\\sqrt{n})$, power-of-2 check in $O(\\log n)$.",

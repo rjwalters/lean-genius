@@ -53,7 +53,7 @@
       "startLine": 116,
       "endLine": 127
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kronecker-Weber Theorem",
     "content": "**THE SOLUTION FOR ℚ**:\n\nEvery finite abelian extension of ℚ is contained in some cyclotomic field ℚ(ζₙ).\n\n**In other words**: The ONLY way to build an abelian extension of ℚ is to adjoin roots of unity!\n\n**Proof**: Uses local class field theory at each prime p.\n\nThis completely solves Hilbert 12 for K = ℚ.",
     "mathContext": "The theorem states $L/\\mathbb{Q}$ abelian $\\Longrightarrow$ $L \\hookrightarrow \\mathbb{Q}(\\zeta_n)$ for some $n$. In Lean, `KroneckerWeberTheorem` is defined as a `Prop`: for every finite-dimensional abelian extension $L/\\mathbb{Q}$, there exists $n \\in \\mathbb{N}^+$ and an injective $\\mathbb{Q}$-algebra map $L \\hookrightarrow K$ where $K$ is a cyclotomic extension. This is a statement-only axiomatization; the proof requires local class field theory.",

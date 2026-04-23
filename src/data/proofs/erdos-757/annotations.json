@@ -154,7 +154,7 @@
       "startLine": 113,
       "endLine": 130
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Basic Sidon Properties",
     "content": "**sidon_subset**: Any subset of a Sidon set is Sidon.\n\n**sidon_empty**: The empty set is Sidon (vacuously true).\n\n**sidon_singleton**: Singletons {x} are Sidon (only x + x = 2x possible).\n\n**sidon_pair**: Pairs {x, y} with x ≠ y are Sidon.\n\nThese provide base cases for inductive arguments.",
     "significance": "supporting",
@@ -172,7 +172,7 @@
       "startLine": 136,
       "endLine": 147
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Difference Set Properties",
     "content": "**zero_mem_differenceSet**: For nonempty A, 0 ∈ A - A (since a - a = 0).\n\n**differenceSet_symmetric**: x ∈ A - A ↔ -x ∈ A - A (since a - b = x implies b - a = -x).\n\nThese structural properties hold for any set, not just Sidon sets.",
     "significance": "supporting",
@@ -208,7 +208,7 @@
       "startLine": 177,
       "endLine": 206
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Properties of Admissible Constants",
     "content": "**zero_admissible**: c = 0 is admissible (empty set is Sidon, |∅| ≥ 0 · n).\n\n**neg_admissible**: c < 0 is admissible (0 ≥ c · n for c < 0, n ≥ 0).\n\n**admissible_bounded_above**: The set of admissible constants is bounded above (by 1, since |S| ≤ |A|).\n\n**admissible_nonempty**: The set is nonempty (contains 0).\n\nThese ensure sSup exists by completeness of ℝ.",
     "significance": "supporting",

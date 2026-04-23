@@ -188,7 +188,7 @@
       "startLine": 132,
       "endLine": 138
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Combined Known Solutions",
     "content": "Bundles the k=2 and k=3 results into a conjunction (known_small_solutions) and proves problem non-triviality by exhibiting a specific k >= 2 with a solution. These serve as the verified foundation for the open conjecture.",
     "mathContext": "$\\text{HasSolution}(2) \\land \\text{HasSolution}(3)$, and $\\exists k \\ge 2,\\; \\text{HasSolution}(k)$. The conjunction confirms both known cases, while the existential witnesses that the conjecture is non-vacuously satisfiable.",
@@ -278,7 +278,7 @@
       "startLine": 177,
       "endLine": 178
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Conjecture: All k >= 2",
     "content": "The core open problem stated as an axiom: for every k >= 2, HasSolution k. This claims that arbitrarily many consecutive intervals with products congruent to 1 modulo some prime always exist. Only k=2 and k=3 are verified. No k=4 solution is known, and exhaustive searches for small primes have not found one.",
     "mathContext": "**Erdos Problem #1056** (axiomatized): $\\forall k \\ge 2,\\; \\text{HasSolution}(k)$. Equivalently: for every $k \\ge 2$, there exists a prime $p$ with $k+1$ values $q_0 < q_1 < \\cdots < q_k < p$ satisfying $q_0! \\equiv q_1! \\equiv \\cdots \\equiv q_k! \\pmod{p}$. **Status: OPEN.**",

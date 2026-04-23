@@ -138,7 +138,7 @@
       "startLine": 80,
       "endLine": 111
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Density Properties",
     "content": "Three basic properties: (1) d_s(A) ≥ 0 (proved), (2) d_s(A) ≤ 1 (8 sorries in proof), (3) d_s(A) ≤ d_s(A+B) when 0 ∈ B (monotonicity). The non-negativity is fully proved; the others have sorry-gaps in the Lean proofs.",
     "mathContext": "Basic bounds: $0 \\leq d_s(A) \\leq 1$. Proof of $d_s \\geq 0$: each $A(N)/N \\geq 0$, so $\\inf \\geq 0$. Proof of $d_s \\leq 1$: $A(N) \\leq N$, so each ratio $\\leq 1$. Monotonicity: $0 \\in B \\implies A \\subseteq A + B \\implies d_s(A) \\leq d_s(A+B)$.",
@@ -160,7 +160,7 @@
       "startLine": 115,
       "endLine": 122
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős 1936 Bound",
     "content": "The original partial result: d_s(A+B) ≥ α + α(1-α)/(2k). This was the first quantitative lower bound, a factor of 2 weaker than the conjecture. Published in Erdős's 1936 paper [Er36c].",
     "mathContext": "Erdős (1936): $d_s(A + B) \\geq \\alpha + \\frac{\\alpha(1-\\alpha)}{2k}$ where $\\alpha = d_s(A)$. The denominator $2k$ was later improved to $k$ by Plünnecke's stronger inequality. The $\\alpha(1-\\alpha)$ factor vanishes at the extremes $\\alpha = 0$ and $\\alpha = 1$, as expected.",
@@ -182,7 +182,7 @@
       "startLine": 126,
       "endLine": 133
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Plünnecke's Inequality",
     "content": "The key 1970 result: d_s(A+B) ≥ α^{1-1/k}. This is strictly stronger than Erdős's conjecture for all α ∈ (0,1) and k ≥ 2. Ruzsa later gave a simplified proof using graph-theoretic methods.",
     "mathContext": "Plünnecke's inequality (1970): $d_s(A + B) \\geq \\alpha^{1 - 1/k}$ for $B$ a basis of order $k$ with $0 \\in B$ and $\\alpha = d_s(A)$. Ruzsa's proof (1989) uses a clever graph-theoretic argument. For $k = 2$: $\\alpha^{1/2} \\geq \\alpha + \\alpha(1-\\alpha)/2$ iff $\\sqrt{\\alpha} \\geq \\alpha(3-\\alpha)/2$, which holds on $[0,1]$.",
@@ -205,7 +205,7 @@
       "startLine": 135,
       "endLine": 142
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Power Bound Implies Erdős",
     "content": "Calculus lemma: α^{1-1/k} ≥ α + α(1-α)/k for α ∈ [0,1]. This bridges Plünnecke's inequality to Erdős's conjecture. The proof uses concavity of x^p for p ∈ (0,1).",
     "mathContext": "The bridge lemma: $\\alpha^{1-1/k} \\geq \\alpha + \\frac{\\alpha(1-\\alpha)}{k}$ for $\\alpha \\in [0,1]$, $k \\geq 1$. Proof sketch: let $f(\\alpha) = \\alpha^{1-1/k} - \\alpha - \\alpha(1-\\alpha)/k$. Then $f(0) = 0$, $f(1) = 0$, and $f$ is concave on $(0,1)$ (since $1-1/k < 1$), so $f \\geq 0$.",
@@ -228,7 +228,7 @@
       "startLine": 146,
       "endLine": 160
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős Problem #35 (SOLVED)",
     "content": "The main result: d_s(A+B) ≥ α + α(1-α)/k. Follows from Plünnecke + the power bound. The Lean proof compiles modulo sorries: it chains plunnecke_inequality and power_bound_implies_erdos via linarith.",
     "mathContext": "Main theorem: $d_s(A + B) \\geq d_s(A) + \\frac{d_s(A)(1 - d_s(A))}{k}$. The proof in Lean: (1) $d_s(A+B) \\geq \\alpha^{1-1/k}$ [Plünnecke], (2) $\\alpha^{1-1/k} \\geq \\alpha + \\alpha(1-\\alpha)/k$ [power bound], (3) combine via $\\texttt{linarith}$.",
@@ -250,7 +250,7 @@
       "startLine": 177,
       "endLine": 182
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Squares Form Basis of Order 4",
     "content": "Lagrange's four-square theorem: every natural number is a sum of four squares. This makes {0, 1, 4, 9, 16, ...} an additive basis of order 4, and Erdős's theorem gives d_s(A + squares) ≥ α + α(1-α)/4.",
     "mathContext": "Lagrange (1770): $\\forall n \\in \\mathbb{N},\\, n = a^2 + b^2 + c^2 + d^2$ for some $a,b,c,d \\in \\mathbb{N}$. The set of perfect squares $\\{0, 1, 4, 9, 16, \\ldots\\}$ is therefore a basis of order 4. Applying Erdős #35: $d_s(A + \\text{squares}) \\geq \\alpha + \\alpha(1-\\alpha)/4$.",
@@ -272,7 +272,7 @@
       "startLine": 184,
       "endLine": 190
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Primes Form Basis (Conditional)",
     "content": "Conditional on Goldbach: primes with 1 form a basis of order 3 (every integer ≥ 2 is a sum of at most 3 primes). Unconditionally, Vinogradov's theorem gives order 4 for sufficiently large n, and Helfgott's 2013 work gives ternary Goldbach for all odd n ≥ 7.",
     "mathContext": "Conditional (Goldbach): $\\{1\\} \\cup \\{p : p \\text{ prime}\\}$ is a basis of order 3. Unconditional (Vinogradov 1937 + Helfgott 2013): every odd $n \\geq 7$ is a sum of three primes, so primes with 1 form a basis of order 4. Applying Erdős #35: $d_s(A + \\text{primes}) \\geq \\alpha + \\alpha(1-\\alpha)/3$ (conditional).",

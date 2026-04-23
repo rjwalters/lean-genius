@@ -51,7 +51,7 @@
       "startLine": 145,
       "endLine": 170
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Volume Ratio Bound: The Core Consequence of Bishop-Gromov",
     "content": "The key theorem: Vol(B(p,s)) <= Vol(B(p,r)) * (s/r)^n. The proof cross-multiplies the Bishop-Gromov inequality using `div_le_div_iff`, identifies V(s)/V(r) = (s/r)^n using the homogeneity of the Euclidean model volume (via `field_simp`), and chains the steps with `le_div_iff` and `mul_div_assoc`. This single theorem implies volume doubling, polynomial growth, and all subsequent bounds.",
     "mathContext": "From $\\text{Vol}(s)/V_0(s) \\leq \\text{Vol}(r)/V_0(r)$: cross-multiply to get $\\text{Vol}(s) \\cdot V_0(r) \\leq \\text{Vol}(r) \\cdot V_0(s)$, then $\\text{Vol}(s) \\leq \\text{Vol}(r) \\cdot V_0(s)/V_0(r) = \\text{Vol}(r) \\cdot (s/r)^n$.",

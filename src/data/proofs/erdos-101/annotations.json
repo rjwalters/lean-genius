@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 21
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Statement and Imports",
     "content": "The header states Erdős Problem #101: given $n$ points in $\\mathbb{R}^2$ with no five collinear, is the number of lines through exactly four points $o(n^2)$? This is an open problem with a $100 prize. The formalization imports Mathlib's finite set cardinality and basic natural number machinery.",
     "mathContext": "The problem asks whether $f_4(n) = o(n^2)$, where $f_4(n)$ is the maximum number of 4-point lines determined by $n$ points in general position (no five collinear). The quantity $f_4(n)$ lies between $\\Omega(n^{3/2})$ and $O(n^2)$.",
@@ -188,7 +188,7 @@
       "startLine": 85,
       "endLine": 91
     },
-    "type": "context",
+    "type": "concept",
     "title": "Collinear Triples Without Four-Point Lines",
     "content": "Burr, Grünbaum, and Sloane, as well as Füredi and Palásti, constructed point sets with approximately $n^2/6$ collinear triples but no four-point lines at all. This shows that three-point collinearity can be abundant even when four-point collinearity is absent, highlighting the delicate combinatorial transition from 3-point to 4-point collinearity.",
     "mathContext": "There exist configurations $P$ with $|P| = n$, no four collinear points, and $\\Theta(n^2)$ collinear triples. The constant $1/6$ comes from the construction: $\\sim n^2/6$ collinear triples in $n$ points on a cubic curve.",

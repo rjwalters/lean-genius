@@ -82,7 +82,7 @@
       "startLine": 88,
       "endLine": 101
     },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős-Herzog-Piranian (1958)",
     "content": "**ehp_disc_result**: The unit disc achieves n components for all n > 0. This is the classical positive result.\n\n**roots_of_unity_example**: The specific polynomial f(z) = zⁿ + 1 achieves this. Its roots are the nth roots of -1, evenly spaced on the unit circle. Each root generates one small component of the lemniscate.\n\nThis shows the maximum n components IS achievable when F is the unit disc (transfinite diameter 1).",
     "mathContext": "The roots of zⁿ + 1 are e^{iπ(2k+1)/n} for k = 0,...,n-1. When |z - zₖ| is small, |f(z)| ≈ |z - zₖ| · ∏_{j≠k} |zₖ - zⱼ|, which is < 1 in a small disc around zₖ.",
@@ -101,7 +101,7 @@
       "startLine": 103,
       "endLine": 124
     },
-    "type": "context",
+    "type": "concept",
     "title": "Ghosh-Ramachandran Solution (2024)",
     "content": "Three axioms capturing the complete 2024 solution:\n\n**ghosh_ramachandran_small_diameter**: If 0 < d < 1, at most (1-c)n components for some c > 0. This confirms Question 2.\n\n**ghosh_ramachandran_small_connected**: If d ≤ 1/4 and F is connected, only 1 component. A dramatic strengthening for connected sets.\n\n**ghosh_ramachandran_diameter_one_examples**: For d = 1, there exist F with n components for infinitely many n. This partially answers Question 1.\n\nThe 1/4 threshold in the connected case is sharp — related to the capacity of the Mandelbrot set.",
     "mathContext": "The solution uses tools from potential theory (Green's function, equilibrium measure), the argument principle for component counting, and careful estimates of polynomial norms.",
@@ -120,7 +120,7 @@
       "startLine": 126,
       "endLine": 137
     },
-    "type": "context",
+    "type": "concept",
     "title": "Geometry vs Diameter Counterexample",
     "content": "**diameter_not_sufficient**: The crucial insight that the answer cannot depend on transfinite diameter alone.\n\nF₁ = disc of radius 1/2: transfinite diameter = 1/2, always gives 1 component\nF₂ = interval [-1,1]: transfinite diameter = 1/2, can give ≥ 0.01n components\n\nSame diameter, completely different behavior! The disc is 'round' (all directions equal), while the interval is 'thin' (extends in one direction), allowing Chebyshev-like polynomials to create many components.",
     "mathContext": "The interval [-1,1] supports Chebyshev polynomials Tₙ(x), whose lemniscates have n components corresponding to the n intervals where |Tₙ(x)| < 1. The disc has rotational symmetry that prevents this.",

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 23
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Goemans-Williamson Breakthrough",
     "content": "The Goemans-Williamson algorithm (1995) was a watershed moment in combinatorial optimization. Before their work, the best polynomial-time approximation for MaxCut was the trivial 1/2-approximation obtained by assigning vertices randomly. By introducing semidefinite programming (SDP) relaxation combined with random hyperplane rounding, they achieved an approximation ratio of approximately 0.878, nearly doubling the gap closed between 1/2 and 1. Under the Unique Games Conjecture (Khot et al. 2007), this ratio is conditionally optimal -- no polynomial-time algorithm can do better.",
     "mathContext": "\\alpha_{\\text{GW}} = \\min_{0 < \\theta \\leq \\pi} \\frac{2}{\\pi} \\cdot \\frac{\\theta}{1 - \\cos\\theta} \\approx 0.878",
@@ -73,7 +73,7 @@
       "startLine": 78,
       "endLine": 98
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conservative Rational Bound for the GW Constant",
     "content": "The true Goemans-Williamson constant is an irrational number defined as the minimum of (2/pi)(theta/(1-cos(theta))) over (0,pi], achieved at theta* where theta*sin(theta*) + cos(theta*) = 1. Its decimal expansion begins 0.87856... The formalization uses the rational lower bound 878/1000, which is strictly less than the true value. This conservative choice is deliberate: since the main theorem proves E[cut] >= alpha_GW * MaxCut, using a smaller alpha_GW makes the inequality strictly easier to satisfy while still demonstrating the substantial improvement over 1/2.",
     "mathContext": "\\alpha_{\\text{GW}} = \\frac{878}{1000} < 0.87856\\ldots = \\min_{0 < \\theta \\leq \\pi} \\frac{2\\theta}{\\pi(1 - \\cos\\theta)}",
@@ -118,7 +118,7 @@
       "startLine": 124,
       "endLine": 162
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hyperplane Rounding and the Arccos Inequality",
     "content": "The hyperplane rounding technique is the algorithmic innovation at the heart of the GW result. Given unit vectors from the SDP solution, a uniformly random hyperplane through the origin assigns each vertex to the side where its vector points. The probability that edge (i,j) is cut equals arccos(v_i.v_j)/pi, derived from the proportion of the unit sphere where the hyperplane separates v_i from v_j. The deep analytical inequality arccos(x)/pi >= alpha_GW * (1-x)/2 for x in [-1,1] then bounds this rounding probability below, connecting it to the SDP contribution for each edge.",
     "mathContext": "\\Pr[\\text{cut}(i,j)] = \\frac{\\arccos(v_i \\cdot v_j)}{\\pi} \\geq \\alpha_{\\text{GW}} \\cdot \\frac{1 - v_i \\cdot v_j}{2}",
@@ -141,7 +141,7 @@
       "startLine": 174,
       "endLine": 179
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem: The calc Chain",
     "content": "The main approximation guarantee is proved via a two-step calc chain. First, alpha_GW * MaxCut <= alpha_GW * SDP_OPT follows from the SDP relaxation bound (sdp_ge_maxcut) and monotonicity of multiplication by the positive constant alpha_GW. Second, alpha_GW * SDP_OPT <= E[cut] follows from the rounding inequality. This is the entire algebraic backbone of the GW result: the chain of inequalities E[cut] >= alpha_GW * SDP_OPT >= alpha_GW * MaxCut. The proof uses mul_le_mul_of_nonneg_left, demonstrating how Lean's ordered algebra API supports clean approximation arguments.",
     "mathContext": "\\alpha_{\\text{GW}} \\cdot \\text{MaxCut} \\leq \\alpha_{\\text{GW}} \\cdot \\text{SDP}_{\\text{OPT}} \\leq \\mathbb{E}[|C_{\\text{GW}}|]",

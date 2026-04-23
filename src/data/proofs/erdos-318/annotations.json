@@ -250,7 +250,7 @@
       "startLine": 139,
       "endLine": 148
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem",
     "content": "**erdos_318_arithmetic_progression:**\n\nThe answer to the main question is YES.\n\n```lean\ntheorem erdos_318_arithmetic_progression :\n    ∀ a d : ℕ, a ≥ 1 → d ≥ 1 → HasPropertyP1 (arithmeticProgression a d)\n```\n\nDirect from Sattler's theorem.",
     "mathContext": "This is a direct wrapper applying Sattler's axiom.  The proof `exact sattler_1982 a d ha hd` simply instantiates the axiom with the given parameters.  The theorem serves as the formal answer to the primary question of Problem #318: *every* infinite arithmetic progression has Property $P_1$, regardless of the common difference $d$ or starting term $a$.",
@@ -317,7 +317,7 @@
       "startLine": 188,
       "endLine": 197
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Positive Density Insufficient",
     "content": "**positive_density_insufficient:**\n\nThere exist positive-density sets without Property P₁.\n\n```lean\ntheorem positive_density_insufficient :\n    ∃ A : Set ℕ, hasPositiveDensity A ∧ ¬HasPropertyP1 A\n```\n\nThe counterexampleSet has density ~1/2 but fails P₁.",
     "mathContext": "This is a constructive existence proof: instantiate $A = C_1 = \\{1, 3, 5, \\ldots\\} \\cup \\{2\\}$ and combine `counterexample_positive_density` (density $\\approx 1/2$) with `counterexample_fails_P1` (fails $P_1$).  The result shows that $P_1$ is *not* a density property — it depends on arithmetic structure, not just the size of the set.  This distinguishes $P_1$ from properties like 'contains 3-term APs' which *are* density-dependent (Roth's theorem).",
@@ -363,7 +363,7 @@
       "startLine": 210,
       "endLine": 217
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Why Exclude 1",
     "content": "**sum_reciprocal_squares_less_than_one:**\n\n∑_{k≥2} 1/k² < 1.\n\nSo we can't cancel -1/1 = -1 with positive reciprocals of squares. Including 1 makes the problem trivially false.",
     "mathContext": "By the Basel problem (Euler, 1734), $\\sum_{k=1}^{\\infty} 1/k^2 = \\pi^2/6$.  Therefore $\\sum_{k=2}^{\\infty} 1/k^2 = \\pi^2/6 - 1 \\approx 0.6449$.  If $1 \\in A$ and $f(1) = -1$, we need $\\sum_{n \\in S \\setminus \\{1\\}} f(n)/n = 1$.  But even taking all positive signs gives $\\sum_{k \\geq 2} 1/k^2 < 1$, so no finite subset suffices.  The sign function $f(1) = -1$, $f(n) = +1$ for $n > 1$ witnesses $\\neg P_1$ for $\\{k^2 : k \\geq 1\\}$.  This is why the problem restricts to $k \\geq 2$.",
@@ -409,7 +409,7 @@
       "startLine": 237,
       "endLine": 246
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Common Denominator Technique",
     "content": "**zero_sum_integer_form:**\n\nIf ∑f(n)/n = 0, multiply by ∏m to get an integer equation.\n\nThis transforms rational arithmetic to integer arithmetic.\n\n```lean\ntheorem zero_sum_integer_form (S : Finset ℕ) (f : ℕ → ℤ) ...\n    ∑ n ∈ S, f n * (∏ m ∈ S, m) / n = 0\n```",
     "mathContext": "Given $\\sum_{n \\in S} f(n)/n = 0$, multiply both sides by $M = \\prod_{n \\in S} n$ to obtain $\\sum_{n \\in S} f(n) \\cdot (M/n) = 0$ where each $M/n$ is a positive integer.  This is the standard technique for converting unit fraction equations to integer equations.  The resulting integer equation is amenable to analysis via divisibility, modular arithmetic, and $p$-adic valuations.  The proof has `sorry` because it requires Mathlib's `Finset.prod_dvd_prod_of_dvd` and careful handling of the division in $\\mathbb{Z}$.",
@@ -479,7 +479,7 @@
       "startLine": 281,
       "endLine": 306
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_318_summary:**\n\nFormal conjunction of all main results:\n1. Arithmetic progressions: P₁ holds (Sattler 1982)\n2. Natural numbers: P₁ holds (Erdős-Straus 1975)\n3. Odd numbers: P₁ holds (Sattler 1975)\n4. Positive density: NOT sufficient\n\nProved via `refine ⟨?_, ?_, ?_, ?_⟩` decomposing the conjunction.",
     "mathContext": "The summary theorem packages the four resolved cases into a single formal statement.  The proof uses Lean 4's anonymous constructor `⟨...⟩` for the four-fold conjunction, applying each previously established result.  Note that the squares case is *not* included because it remains open — the summary only contains proven facts.  This is a common formalization pattern: collecting results into a 'state of the art' theorem.",

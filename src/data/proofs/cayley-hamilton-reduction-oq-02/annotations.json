@@ -6,7 +6,7 @@
       "startLine": 22,
       "endLine": 25
     },
-    "type": "context",
+    "type": "concept",
     "title": "Mathlib Characteristic and Minimal Polynomial Infrastructure",
     "content": "Imports Mathlib's Charpoly.Basic (characteristic polynomial definition and Cayley-Hamilton), Charpoly.Minpoly (relationship between charpoly and minpoly), and Polynomial.Basic (polynomial ring operations including division and modular reduction).",
     "mathContext": "The characteristic polynomial $\\chi_M = \\det(XI - M) \\in R[X]$ is monic of degree $n$. The minimal polynomial $\\mu_M$ is the monic polynomial of smallest degree with $\\mu_M(M) = 0$.",
@@ -30,7 +30,7 @@
       "startLine": 38,
       "endLine": 44
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Minpoly Divides Charpoly",
     "content": "Proves μ_M | χ_M in two steps: (1) Cayley-Hamilton gives χ_M(M) = 0 via `Matrix.aeval_self_charpoly`, making χ_M an annihilating polynomial; (2) `minpoly.dvd` says the minimal polynomial divides any annihilating polynomial, yielding the divisibility. This is the foundational structural relationship between the two polynomials.",
     "mathContext": "$\\mu_M \\mid \\chi_M$. Proof: Cayley-Hamilton gives $\\chi_M(M) = 0$. By the universal property of $\\mu_M$: $\\mu_M \\mid f$ for any $f$ with $f(M) = 0$. Hence $\\mu_M \\mid \\chi_M$.",

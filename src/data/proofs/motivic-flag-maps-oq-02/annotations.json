@@ -50,7 +50,7 @@
     "startLine": 79,
     "endLine": 133,
     "mathContext": "qNumber K n = ∑_{i<n} L^i (geometric sum). Key theorem: qNumber_succ_eq_projective — qNumber K (n+1) = projectiveClass K n, since both are 1+L+...+L^n. qFactorial K n = ∏_{i<n} qNumber K (i+1) = [1]_L·[2]_L·...·[n]_L. Main theorem qFactorial_eq_completeFlagClass: qFactorial K n = completeFlagClass K n = ∏_{i<n} [P^i]. In motivic K₀, [P^i] is the class of i-dimensional projective space, and the complete flag variety fibers over lower flags with projective fibers.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "projective space class",
       "complete flag variety",
@@ -72,7 +72,7 @@
     "startLine": 157,
     "endLine": 227,
     "mathContext": "grassmannianClass K d n : K.carrier defined by q-Pascal: grassmannianClass K (d+1) (n+1) = L^{d+1} · grassmannianClass K (d+1) n + grassmannianClass K d n, with boundary cases Gr(0,n)=1, Gr(d+1,0)=0, Gr(d,d)=1. This mirrors Pascal's triangle with L-weighted terms from Schubert cell stratification. Key theorems: grassmannianClass_lines (Gr(1,n+1) = [P^n]), grassmannianClass_2_4 ([Gr(2,4)] = 1+L+2L²+L³+L⁴), qNumber_split ([d]_L + L^d·[n-d]_L = [n]_L used in grassmannianClass_lines).",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "q-Pascal identity",
       "Gaussian binomial coefficient",
@@ -160,7 +160,7 @@
     "startLine": 534,
     "endLine": 566,
     "mathContext": "leviClass K n dims computes ∏ᵢ [GL_{nᵢ}] where nᵢ are the block sizes (differences of consecutive dimensions). unipotentDim computes dim U = ∑_{i<j} nᵢ·nⱼ (dimension of the unipotent radical of the corresponding parabolic subgroup). The extension conjecture (partial_flag_extension, axiomatized): for based maps Ω²_β(Fl(d₁,...,dₖ; n+1)) with positive β, [Ω²_β] = [Levi] · L^{dim U + a} for some a depending on β. This extends Bryan et al.'s GL_n × A^a formula (complete flags) to Levi subgroups (partial flags).",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Levi subgroup",
       "parabolic subgroup",

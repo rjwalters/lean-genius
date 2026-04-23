@@ -6,7 +6,7 @@
       "startLine": 20,
       "endLine": 26
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Statement and Background",
     "content": "Erdős Problem #1166, posed by Erdős and Révész, asks about the geometry of planar random walks. Given a simple random walk $(s_n)$ on $\\mathbb{Z}^2$, let $f_k(x)$ count visits to point $x$ through step $k$, and let $F(k)$ be the set of most-visited points. The question is whether $|\\bigcup_{k \\leq n} F(k)|$ grows at most polylogarithmically. The answer is YES: almost surely $|\\bigcup_{k \\leq n} F(k)| \\ll (\\log n)^2$.",
     "mathContext": "$F(k) = \\{x \\in \\mathbb{Z}^2 : f_k(x) = \\max_y f_k(y)\\}$, and the main result is $|\\bigcup_{k \\leq n} F(k)| = O((\\log n)^2)$ a.s.",
@@ -274,7 +274,7 @@
       "startLine": 197,
       "endLine": 210
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Proof from Two Ingredients",
     "content": "Demonstrates how the main theorem follows from combining the two key ingredients. The docstring gives the full argument: (1) $|F(n)| \\leq 3$ for large $n$, (2) $T_n \\leq C(\\log n)^2$ for large $n$, and (3) since $T_n$ is integer-valued and bounded by $C(\\log n)^2$, it takes at most $O((\\log n)^2)$ distinct values, each contributing at most 3 new points. Thus $|\\bigcup_{k \\leq n} F(k)| \\leq 3C(\\log n)^2$. The `almostSurely_and` axiom combines the two almost sure events.",
     "mathContext": "$|\\bigcup_{k \\leq n} F(k)| \\leq |\\{T_k : k \\leq n\\}| \\cdot \\max_k |F(k)| \\leq C(\\log n)^2 \\cdot 3$",

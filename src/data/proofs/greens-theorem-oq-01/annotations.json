@@ -30,7 +30,7 @@
       "startLine": 94,
       "endLine": 114
     },
-    "type": "technique",
+    "type": "concept",
     "title": "FTC for Partial Derivatives: Two Direct Applications",
     "mathContext": "**FTC for partial derivatives**: for fixed $y$ and $x \\mapsto Q(x,y)$ differentiable with integrable derivative: $\\int_a^b \\partial_x Q(x,y)\\,dx = Q(b,y) - Q(a,y)$. Mathlib's `integral_eq_sub_of_hasDerivAt` provides this directly. The `HasDerivAt` condition (differentiability at each point) is weaker than $C^1$ — no continuity of the derivative is required for FTC to apply with `IntervalIntegrable`.",
     "significance": "key",
@@ -54,7 +54,7 @@
       "startLine": 129,
       "endLine": 172
     },
-    "type": "context",
+    "type": "concept",
     "title": "Green's Theorem Setup: 12 Regularity Hypotheses + Fubini",
     "mathContext": "Classically, $P, Q \\in C^1([a,b] \\times [c,d])$ implies all 12 conditions. In the Lean formulation, the conditions are weakened: `HasDerivAt` without continuity + `IntervalIntegrable` is weaker than $C^1$. The outer integrability conditions (`hQ_outer_int`, `hPdy_outer_int`) follow from Tonelli in the classical setting. The full list makes explicit exactly what the proof uses at each of the 8 steps.",
     "significance": "key",
@@ -157,7 +157,7 @@
       "startLine": 307,
       "endLine": 330
     },
-    "type": "context",
+    "type": "concept",
     "title": "Summary Theorem and the Fubini Gap: What Remains Open",
     "mathContext": "**Fubini for intervalIntegral**: $\\int_c^d \\int_a^b f(x,y)\\,dx\\,dy = \\int_a^b \\int_c^d f(x,y)\\,dy\\,dx$ requires: $f$ jointly measurable on $[a,b] \\times [c,d]$ w.r.t. `Measure.prod volume volume`, and $\\int\\int |f|\\,dA < \\infty$. Mathlib's `MeasureTheory.integral_integral_swap` provides this. The gap: connecting `intervalIntegral` on $[a,b]$ to `∫ x, ...` w.r.t. `volume` on $\\mathbb{R}$ requires additional work with `Measure.restrict`.",
     "significance": "key",

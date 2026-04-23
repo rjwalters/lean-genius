@@ -86,7 +86,7 @@
     "title": "Uniform Family",
     "content": "**IsUniform F n**: All sets in F have exactly n elements.\n\n```lean\ndef IsUniform (F : Finset (Finset α)) (n : ℕ) : Prop :=\n  ∀ A ∈ F, A.card = n\n```\n\nAlso called an n-uniform hypergraph.",
     "mathContext": "Uniformity simplifies the analysis. The covering condition for (n-1)-sets interacts cleanly with n-sets.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "hypergraph",
       "uniform-family",
@@ -139,7 +139,7 @@
       "startLine": 104,
       "endLine": 191
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Known Exact Values",
     "content": "**Computed values of f(n)**:\n\n| n | f(n) | Source |\n|---|------|--------|\n| 1 | 1 | trivial |\n| 2 | 3 | edges of triangle |\n| 3 | 6 | Tripathi 2014 |\n| 4 | 9 | Tripathi 2014 |\n| 5 | 13 | Barát-Wanless 2021 |\n| 6 | 13-18 | bounds only |\n\nThe values suggest f(n) ≈ 3n - O(1).",
     "mathContext": "f(2) = 3: Three edges {a,b}, {b,c}, {a,c} of a triangle form the optimal family. For n = 3, 4, 5, computer-assisted proofs were needed.",

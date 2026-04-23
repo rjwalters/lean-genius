@@ -6,7 +6,7 @@
       "startLine": 83,
       "endLine": 106
     },
-    "type": "technique",
+    "type": "concept",
     "title": "1D Borsuk-Ulam via IVT on Antisymmetric Difference",
     "content": "borsuk_ulam_interval proves ∃ x ∈ [-1,1], f(x)=f(-x) for continuous f. The proof defines g(x)=f(x)-f(-x), observes g(-1)=-g(1) (antisymmetry), then case-splits on the sign of g(-1). In each case, IVT (intermediate_value_Icc or intermediate_value_Icc') gives a zero of g in [-1,1], and g(x₀)=0 means f(x₀)=f(-x₀). The continuity of g follows from hf.sub (hf.comp continuous_neg).",
     "mathContext": "$g(x) = f(x) - f(-x)$, $g(-1) = -g(1)$. IVT on $g$: $g(-1) \\leq 0 \\leq g(1)$ or $g(1) \\leq 0 \\leq g(-1)$ gives zero.",
@@ -29,7 +29,7 @@
       "startLine": 167,
       "endLine": 194
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Circle S^1 Borsuk-Ulam via Trigonometric Parametrization",
     "content": "borsuk_ulam_circle_param proves the circle version: for continuous f: ℝ²→ℝ, ∃ θ ∈ [0,π] with f(cosθ,sinθ)=f(-cosθ,-sinθ). The proof parametrizes S^1 by θ ∈ [0,π], defines g(θ)=f(cosθ,sinθ)-f(-cosθ,-sinθ), shows g(π)=-g(0) using cos(π)=-1, sin(π)=0, cos(0)=1, sin(0)=0, then applies IVT on [0,π]. Continuity is handled by fun_prop.",
     "mathContext": "$g(\\theta) = f(\\cos\\theta,\\sin\\theta) - f(-\\cos\\theta,-\\sin\\theta)$. $g(\\pi) = f(-1,0) - f(1,0) = -g(0)$. IVT gives zero.",
@@ -53,7 +53,7 @@
       "startLine": 470,
       "endLine": 479
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tucker's 1D Combinatorial Lemma via Fin.induction",
     "content": "tucker_1d_sign_change proves the discrete BU: any Boolean sequence s: Fin(n+2)→Bool with s(0)≠s(last) has adjacent indices i where s(i)≠s(i+1). The proof is by contradiction: if all adjacent pairs agree, Fin.induction shows s is constant (s(i)=s(0) for all i), contradicting the endpoint hypothesis. The key Lean technique is Fin.induction with the recursive step (h i).symm.trans ih.",
     "mathContext": "Tucker 1D: $s_0 \\neq s_{n+1}$ and $\\forall i: s_i = s_{i+1}$ is contradictory (Fin.induction shows $s$ constant).",
@@ -76,7 +76,7 @@
       "startLine": 405,
       "endLine": 423
     },
-    "type": "technique",
+    "type": "concept",
     "title": "1D Brouwer Fixed-Point Theorem (Independent Proof)",
     "content": "brouwer_fixed_point_1d proves every continuous f: [-1,1]→[-1,1] has a fixed point. The proof defines g(x)=f(x)-x, observes g(-1)=f(-1)+1≥0 (since f(-1)≥-1) and g(1)=f(1)-1≤0 (since f(1)≤1), then IVT gives x₀ with g(x₀)=0, i.e., f(x₀)=x₀. This is independent of Borsuk-Ulam, demonstrating IVT as a general tool for 1D fixed-point theory.",
     "mathContext": "$g(x) = f(x) - x$. $g(-1) \\geq 0$ and $g(1) \\leq 0$ (from $f: [-1,1] \\to [-1,1]$). IVT gives fixed point.",
@@ -97,7 +97,7 @@
       "startLine": 224,
       "endLine": 229
     },
-    "type": "technique",
+    "type": "concept",
     "title": "No Odd Continuous Map to {±1} (1D No-Retraction)",
     "content": "no_odd_map_to_pm_one proves there is no continuous odd function f: ℝ→{1,-1}. By odd_continuous_has_zero, f has a zero in [-1,1], but f only takes values ±1, giving the contradiction 0=1 or 0=-1. This is the 1D analog of the no-retraction theorem: S^0={±1} is not a retract of [-1,1] via odd maps.",
     "mathContext": "If $f$ continuous, $f(x) \\in \\{\\pm 1\\}$, and $f(-x) = -f(x)$, then $\\exists x_0: f(x_0)=0$ (by BU), contradicting $f(x_0) \\in \\{\\pm 1\\}$.",

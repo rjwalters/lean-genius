@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 22
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Infinitude Question: Are There Unboundedly Many Wolstenholme Primes?",
     "content": "Wolstenholme's theorem tells us that C(2p-1,p-1) ≡ 1 (mod p³) for all primes p ≥ 5. Primes where this strengthens to mod p⁴ are called Wolstenholme primes. Only two are known — 16843 (McIntosh, 1995) and 2124679 (McIntosh-Roettger, 2007). The central conjecture: are there infinitely many? The heuristic argument: if P(p is WP) ≈ 1/p, then the expected count below N is Σ_{p≤N} 1/p ≈ ln(ln N), which diverges — but excruciatingly slowly (≈ 3.1 at 10⁹). This file formalizes the conjecture, proves the logical dichotomy, and connects it to Bernoulli numbers and Wieferich primes.",
     "mathContext": "InfinitelyManyWP := ∀ N, ∃ p > N, IsWP p. BoundedWP := ∃ N, ∀ p, IsWP p → p ≤ N. These are provably complementary. The Bernoulli characterization: IsWP p ↔ p | B_{p-3}.",
@@ -31,7 +31,7 @@
       "startLine": 42,
       "endLine": 79
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Two Known Wolstenholme Primes",
     "content": "Primality of 16843 and 2124679 is verified via native_decide. The mod p⁴ congruences are axiomatized because C(33685, 16842) and C(4249357, 2124678) are astronomical. From these axioms we construct `isWP_16843` and `isWP_2124679`, then prove at least two distinct WPs exist. The gap (2,107,836) and ratio (126×) quantify the sparsity: consistent with the 1/p density heuristic where spacing grows roughly as p·ln(p).",
     "mathContext": "$\\text{cb}(16843) \\bmod 16843^4 = 1$ and $\\text{cb}(2124679) \\bmod 2124679^4 = 1$ (axiomatized). Gap: $2124679 - 16843 = 2107836$. Ratio: $\\lfloor 2124679/16843 \\rfloor = 126$.",
@@ -145,7 +145,7 @@
       "startLine": 221,
       "endLine": 240
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Divisibility Chain: WP → Wolstenholme → Babbage",
     "content": "Every Wolstenholme prime satisfies three nested congruences: mod p⁴ (by definition), mod p³ (Wolstenholme's theorem), and mod p² (Babbage's theorem). The proofs use the divisibility chain p² | p³ | p⁴ with Nat.mod_mod_of_dvd. This grounds the exceptional concept (WPs) in the classical hierarchy: WP ⊂ primes satisfying Wolstenholme ⊂ primes satisfying Babbage = all primes ≥ 3.",
     "mathContext": "$p^4 \\mid (\\text{cb}(p) - 1) \\Rightarrow p^3 \\mid \\Rightarrow p^2 \\mid$. Uses $p^3 \\mid p^4$ (witness: $p$) and $p^2 \\mid p^3$ (witness: $p$) with `Nat.mod_mod_of_dvd`.",

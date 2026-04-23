@@ -236,7 +236,7 @@
       "startLine": 103,
       "endLine": 109
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Problem Solved",
     "content": "**erdos_754_solved:**\n\nCombines the bounds: ∃ C₁ C₂, n/2 + C₁ ≤ f(n) ≤ n/2 + C₂.\n\n**Proof:** Uses avis_erdos_pach_lower_bound (C₁ = 2) and swanepoel_erdos_754 (get C₂).\n\nThe answer is f(n) = n/2 + Θ(1) - determined up to an additive constant.",
     "significance": "key",

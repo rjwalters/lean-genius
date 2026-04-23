@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 30
     },
-    "type": "context",
+    "type": "concept",
     "title": "Problem History and Imports",
     "content": "The module docstring traces the 80-year history of Erdős Problem #4 from Rankin's 1938 bound ($C = e^\\gamma/3$, unimproved for 75 years) through the simultaneous 2016 breakthroughs by Maynard and Ford-Green-Konyagin-Tao, to the combined FGKMT improvement (2018). The problem offered a $\\$10{,}000$ Erdős prize (for the weaker $(\\log n)^{1+c}$ conjecture, still open). The `import Mathlib` pulls in `Nat.nth` for prime enumeration, `Real.log` for iterated logarithms, and `Filter.Tendsto` for asymptotic analysis. The `open Set Nat Real` declaration makes these namespaces available without prefix.",
     "mathContext": "The problem asks: $\\forall C > 0$, $\\exists^\\infty n : p_{n+1} - p_n > C \\cdot f(n)$ where $f(n) = \\frac{\\log n \\cdot \\log\\log n \\cdot \\log\\log\\log\\log n}{(\\log\\log\\log n)^2}$. SOLVED (Maynard 2016, FGKT 2016).",
@@ -319,7 +319,7 @@
       "startLine": 149,
       "endLine": 157
     },
-    "type": "context",
+    "type": "concept",
     "title": "Cramér's Conjecture: Section Introduction",
     "content": "The transition from established results (Rankin through FGKMT) to open conjectures. Cramér's conjecture (1936) predicts the true maximal prime gap is $O((\\log p_n)^2)$, based on his probabilistic model of primes. This section provides the conjectural upper bounds that complement the proved lower bounds from Problem #4.",
     "significance": "supporting",
@@ -475,7 +475,7 @@
       "startLine": 186,
       "endLine": 192
     },
-    "type": "technique",
+    "type": "concept",
     "title": "FGKMT Dominance: Improved ≥ Original (sorry)",
     "content": "**improved_stronger**: For $n \\geq 100$, the FGKMT improved function dominates the original Erdős function. This is the file's only `sorry` — a technical inequality comparing $(\\log\\log\\log n)^2$ vs $\\log\\log\\log n$ in the denominator. The proof unfolds both definitions and needs to verify that $1/(\\log\\log\\log n)^2 \\leq 1/\\log\\log\\log n$ for $n \\geq 100$, which follows from $\\log\\log\\log n \\geq 1$.",
     "significance": "supporting",
@@ -497,7 +497,7 @@
       "startLine": 193,
       "endLine": 194
     },
-    "type": "context",
+    "type": "concept",
     "title": "Related Conjectures: Beyond Problem #4",
     "content": "This section introduces two conjectures that go beyond the resolved Problem #4. Erdős's stronger conjecture ($g_n > (\\log n)^{1+c}$) represents the next frontier — it would show that maximal gaps grow as a genuine power of $\\log n$ beyond the first, far exceeding the iterated-log amplification proved by FGKMT. Firoozbakht's conjecture provides a complementary upper bound perspective. These two conjectures are in tension: if both were true, the maximal gap would be tightly constrained between $(\\log n)^{1+c}$ and $(\\log n)^2 - \\log n$.",
     "significance": "supporting",
@@ -563,7 +563,7 @@
       "startLine": 216,
       "endLine": 243
     },
-    "type": "context",
+    "type": "concept",
     "title": "Summary: SOLVED Status and Open Questions",
     "content": "The closing commentary summarizes the complete resolution of Erdős Problem #4 and the remaining frontier. The file contains 16 definitions, 2 theorems, and 9 axiom declarations across 243 lines. The single sorry (`improved_stronger`) is a technical inequality comparing the original and improved Erdős functions.\n\nThe summary lists the four key milestones: Rankin (1938, $\\exists C$), Maynard (2016, $\\forall C$), FGKT (2016, independent $\\forall C$), and FGKMT (2018, improved bound). Three open questions remain: Cramér's conjecture, the $\\$10{,}000$ growth rate conjecture, and the exact growth rate of $G(x) = \\max_{p_n \\leq x} g_n$.",
     "significance": "supporting",

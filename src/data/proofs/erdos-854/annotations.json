@@ -2,7 +2,7 @@
   {
     "id": "ann-e854-imports",
     "proofId": "erdos-854",
-    "type": "context",
+    "type": "concept",
     "title": "Number Theory Imports",
     "content": "Imports Nat.Basic, Nat.Prime.Basic, Finset.Basic, Finset.Card, and tactics.",
     "mathContext": "The formalization uses `Nat.Prime` for primality, `Nat.Coprime` for the coprimality condition, and `Finset` for the finite set of coprime residues and gap values. The `Finset.range` and `Finset.filter` combinators construct the coprime residue set computationally.",

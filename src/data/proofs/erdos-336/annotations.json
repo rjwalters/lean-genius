@@ -141,7 +141,7 @@
       "startLine": 112,
       "endLine": 130
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Order ≠ Exact Order",
     "content": "The Erdős-Graham example A = ∪_{k≥0}(2^{2k}, 2^{2k+1}] demonstrates that order and exact order can differ. This set contains integers in (1,2], (4,8], (16,32], etc. — doubling-length intervals at exponentially growing positions. It has order 2 (every large integer is a sum of ≤ 2 elements) but exact order 3 (every large integer needs exactly 3 elements). The theorem order_exact_order_differ constructs the witness ⟨A, 2, 3, ...⟩.",
     "mathContext": "erdosGrahamExample = {n | ∃ k, 2^{2k} < n ∧ n ≤ 2^{2k+1}}. Axioms: IsBasis A 2, HasExactOrder A 3. Theorem: ∃ A r k, r ≠ k ∧ HasOrderAndExactOrder A r k.",
@@ -199,7 +199,7 @@
       "startLine": 160,
       "endLine": 180
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Results",
     "content": "Two summary theorems. erdos_336_main combines five key results: the Grekos lower bound (1/3), the Nash upper bound (1/2), the specific values h(2) = 4 and h(3) = 7, and the existence of bases where order ≠ exact order. erdos_336 is the clean summary: h(r)/r² converges to a value in [1/3, 1/2]. Both proofs are direct constructions from the axioms using anonymous constructors.",
     "mathContext": "erdos_336_main: bounds ∧ values ∧ order_differ. erdos_336: ⟨grekos_lower_1988, nash_upper_1993⟩. The exact limit value remains an open problem.",

@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 44
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Header: Quantitative Union Bound Strategy",
     "content": "This file formalizes OQ-01 from Erdős #1027: an explicit lower bound on the number of good sets (proper transversals) in an n-uniform set family. Imports Erdos1027Problem for SetFamily, goodSets, familyUnion, IsNUniform, HasPropertyB. The main result: |goodSets F| ≥ 2^|X| − |F|·2^{|X|−n+1}. The proof has two stages: (1) count missing and containing subsets for each A ∈ F; (2) apply union bound over F.\n\nThe file header documents that all 3 original sorries have been resolved: `card_subsets_containing` (involution bijection), `hbad_bound` (union bound over bad-due-to-A sets), and `hgood_bad` (goodSets and badTotal partition X.powerset).",
     "mathContext": "The union bound argument: for each $A \\in F$, the 'bad subsets due to $A$' (missing $A$ or containing $A$) number at most $2 \\cdot 2^{|X|-n}$. Summing: total bad $\\leq |F| \\cdot 2^{|X|-n+1}$. So good $= 2^{|X|} - \\text{bad} \\geq 2^{|X|} - |F| \\cdot 2^{|X|-n+1}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Property B",
       "union bound",

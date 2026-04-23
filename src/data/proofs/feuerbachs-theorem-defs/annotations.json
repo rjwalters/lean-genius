@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 55
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Setup and Historical Documentation",
     "content": "The module imports Mathlib's Euclidean geometry infrastructure (sphere definitions, triangle operations, circumcenter API), real square roots, trigonometric functions, and general-purpose tactics. The detailed docstring explains the scope: this file provides all definitions and nine-point circle proofs, while the actual Feuerbach tangency (incircle and excircle distance relations) is proved in FeuerbachsTheoremOQ01.lean. The file operates in a `noncomputable section` because the coordinate geometry uses real-valued functions like `Real.sqrt`.",
     "mathContext": "Feuerbach's Theorem (Wiedijk #29): The nine-point circle of any triangle is internally tangent to the incircle and externally tangent to each of the three excircles. This module provides the definitional foundation: $\\mathbb{R}^2$ coordinates, special points, and nine-point circle membership proofs.",
@@ -119,7 +119,7 @@
       "startLine": 254,
       "endLine": 372
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Euler Line, Circumcenter Properties, and Nine-Point Membership Lemma",
     "content": "This section establishes the theoretical foundation for nine-point circle membership. The Euler line relation $G = (2O + H)/3$ and the nine-point center's position on the Euler line both reduce to `ring` after unfolding definitions. The circumcenter equidistance proofs ($|OB|^2 = |OA|^2$ and $|OC|^2 = |OA|^2$) use the perpendicular bisector condition, which is linear in $O$ and hence verifiable by `field_simp + ring`. The key `ninepoint_membership` lemma factors out the common proof pattern: if $P - N = (O - V)/2$ for a vertex $V$, then $|NP|^2 = |OV|^2/4 = R^2/4$, so $|NP| = R/2$.",
     "mathContext": "Euler line: $G = (2O + H)/3$. Perpendicular bisector condition (linear in $O$): $(B-A) \\cdot (B+A-2O) = 0 \\implies |OB|^2 = |OA|^2$. Nine-point membership: $P - N = (O - V)/2 \\implies |NP| = |OV|/2 = R/2$.",
@@ -164,7 +164,7 @@
       "startLine": 442,
       "endLine": 576
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Altitude Feet on the Nine-Point Circle (Heavy Computation)",
     "content": "The altitude foot membership proofs are the most computationally expensive (requiring `maxHeartbeats 25600000`, about 4x the default). The strategy differs from the midpoint proofs: instead of using `ninepoint_membership`, they directly show $|H_a - N|^2 = R^2/4$ by comparing `dist2_sq`. After unfolding the altitude projection formula and all definitions, two denominators must be cleared: the side length squared $|BC|^2$ (from the projection) and the circumcenter denominator $d$. The `field_simp` tactic clears both, and `ring` verifies the resulting polynomial identity. Three helper lemmas (`bc_sq_ne_zero`, `ca_sq_ne_zero`, `ab_sq_ne_zero`) establish that side lengths are nonzero.",
     "mathContext": "For altitude foot $H_a = B + \\frac{(A-B)\\cdot(C-B)}{|BC|^2}(C-B)$: after clearing $|BC|^2$ and the circumcenter denominator $d$, the identity $|H_a - N|^2 \\cdot |BC|^2 \\cdot d^2 = R^2 \\cdot |BC|^2 \\cdot d^2 / 4$ reduces to a polynomial identity in vertex coordinates, verified by `ring`.",

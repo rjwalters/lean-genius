@@ -376,7 +376,7 @@
     "title": "Consistency Check: πr² Equals the FTC Integral",
     "content": "`exhaustion_consistent` proves the equality `πr² = ∫₀ʳ 2πρ dρ` — the direction opposite to `circumference_integral_eq`. The proof uses `circumference_integral_eq` and then reverses with `.symm`. This seemingly trivial theorem serves as a sanity check and an explicitly named entry point for downstream proofs that need the equality in the form `Real.pi * r ^ 2 = ∫ ρ ...`. In Lean, equality is symmetric but not definitionally, so having both directions as named theorems avoids repeated `rw [← circumference_integral_eq]` patterns.",
     "mathContext": "$\\pi r^2 = \\int_0^r 2\\pi\\rho\\,d\\rho$. This is the converse of the FTC direction `circumference_integral_eq`: the FTC gives $\\int = \\pi r^2$; this theorem gives $\\pi r^2 = \\int$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Eq.symm",
       "circumference_integral_eq",

@@ -6,7 +6,7 @@
       "startLine": 28,
       "endLine": 50
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Core Reduction: Evaluation Factors Through the Quotient",
     "content": "**`minpoly_reduction`**: For integral $x$ in a $K$-algebra $A$, $f(x) = (f \\bmod \\mu_x)(x)$.\n\nProof: use the division algorithm $f = (f \\bmod \\mu_x) + \\mu_x \\cdot q$. Evaluate at $x$: $f(x) = (f \\bmod \\mu_x)(x) + \\mu_x(x) \\cdot q(x)$. Since $\\mu_x(x) = 0$ by `minpoly.aeval`, the quotient term vanishes.\n\nThe proof uses `calc` for clarity, applying `map_add`, `map_mul`, and `minpoly.aeval` in sequence.",
     "mathContext": "This is the fundamental theorem of quotient algebra computation: the evaluation homomorphism $\\text{ev}_x : K[X] \\to A$ factors as $K[X] \\twoheadrightarrow K[X]/(\\mu_x) \\hookrightarrow A$, so only the residue class matters.",
@@ -87,7 +87,7 @@
       "startLine": 130,
       "endLine": 143
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Power Reduction: Computing in $K[x]/(\\mu_x)$",
     "content": "**`power_reduction`**: $x^k = (X^k \\bmod \\mu_x)(x)$.\n\nThis is the computational backbone: to compute high powers of an algebraic element, reduce $X^k$ modulo the minimal polynomial and evaluate. The result is a polynomial of degree $< \\deg(\\mu_x)$ — a $K$-linear combination of $\\{1, x, \\ldots, x^{d-1}\\}$.\n\n`element_is_remainder`: $x = (X \\bmod \\mu_x)(x)$ — the element itself is represented by $X$ mod minpoly.",
     "mathContext": "Power reduction is the computational content of the finite-dimensionality of $K[x] \\cong K[X]/(\\mu_x)$: every element is a $K$-linear combination of the basis $\\{1, x, \\ldots, x^{d-1}\\}$ where $d = \\deg(\\mu_x)$.",
@@ -141,7 +141,7 @@
       "startLine": 166,
       "endLine": 232
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Algebra Tower: Base Change of Minimal Polynomials",
     "content": "**Tower theorems** for $K \\subseteq L \\subseteq A$:\n\n1. **Integrality lifts**: `IsIntegral K x → IsIntegral L x` via `IsIntegral.tower_top`\n2. **Tower divisibility**: $\\mu_L(x) | \\text{map}(\\mu_K(x))$ — the minimal polynomial over $L$ divides the base-changed one over $K$\n3. **Degree bound**: $\\deg(\\mu_L(x)) \\le \\deg(\\mu_K(x))$ — more polynomials available over $L$ means potentially smaller minpoly\n4. **Equality condition**: $\\mu_L(x) = \\text{map}(\\mu_K(x))$ when $\\text{map}(\\mu_K(x))$ remains irreducible over $L$ (proved via `minpoly.eq_of_irreducible_of_monic`)",
     "mathContext": "In the tower $K \\subset L$, the base change $\\mu_K \\mapsto \\mu_K \\otimes_K L$ gives an annihilating polynomial over $L$. Since $\\mu_L$ is the minimal such, $\\mu_L | (\\mu_K \\otimes L)$. Equality holds iff $\\mu_K$ stays irreducible over $L$ — the criterion for the extension $K(x)/K$ being linearly disjoint from $L/K$.",

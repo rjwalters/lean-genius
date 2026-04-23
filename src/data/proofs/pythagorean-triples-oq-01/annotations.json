@@ -73,7 +73,7 @@
   {
     "id": "computational-verification",
     "proofId": "pythagorean-triples-oq-01",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 184,
       "endLine": 221
@@ -117,7 +117,7 @@
   {
     "id": "density-axioms",
     "proofId": "pythagorean-triples-oq-01",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 490,
       "endLine": 530
@@ -189,7 +189,7 @@
   {
     "id": "column-decomposition",
     "proofId": "pythagorean-triples-oq-01",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 918,
       "endLine": 1138
@@ -211,7 +211,7 @@
   {
     "id": "eo-coprime-density",
     "proofId": "pythagorean-triples-oq-01",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 1138,
       "endLine": 2029
@@ -235,7 +235,7 @@
   {
     "id": "mathlib-parametrization",
     "proofId": "pythagorean-triples-oq-01",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 606,
       "endLine": 660
@@ -257,7 +257,7 @@
   {
     "id": "additional-axioms",
     "proofId": "pythagorean-triples-oq-01",
-    "type": "context",
+    "type": "concept",
     "range": {
       "startLine": 2029,
       "endLine": 2120
@@ -280,7 +280,7 @@
   {
     "id": "monotonicity-growth",
     "proofId": "pythagorean-triples-oq-01",
-    "type": "technique",
+    "type": "concept",
     "range": {
       "startLine": 222,
       "endLine": 375
@@ -288,7 +288,7 @@
     "title": "Monotonicity and Growth of Counting Functions",
     "content": "Establishes that all counting functions are monotone non-decreasing: if $M \\le N$, then $\\text{count}(M) \\le \\text{count}(N)$. Also proves that the intermediate coprime sector count tends to infinity ($\\text{coprimeInSectorCount}(N) \\to \\infty$), which is needed for the telescoping ratio argument — you cannot divide by the coprime count unless it is eventually nonzero.",
     "mathContext": "$M \\le N \\Rightarrow \\text{primitiveTripleCount}(M) \\le \\text{primitiveTripleCount}(N)$; $\\text{coprimeInSectorCount}(N) \\to \\infty$ as $N \\to \\infty$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Finset.card_le_card",
       "Filter.Tendsto.atTop",

@@ -95,7 +95,7 @@
       "startLine": 70,
       "endLine": 75
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Axiom: Lattice Works",
     "content": "We take as an axiom that the Moree-Osburn lattice achieves all three required properties:\n1. Can be truncated to have exactly n points\n2. Satisfies the 4-point property\n3. Has at most n/√(log n) distinct distances\n\nThis is axiomatic because the proof requires deep results from analytic number theory (Landau's theorem on quadratic forms).",
     "mathContext": "Landau's theorem (1908): the number of positive integers $\\leq N$ representable as $x^2 + Dy^2$ is asymptotic to $C_D \\cdot N/\\sqrt{\\log N}$, where $C_D$ involves the Dirichlet $L$-function $L(1, \\chi_{-4D})$ and the class number of $\\mathbb{Q}(\\sqrt{-D})$. For $D = 2$: $C_2 = \\frac{1}{\\sqrt{2}} \\prod_{p \\equiv 3,5 \\pmod{8}} (1 - p^{-2})^{-1/2}$. The axiom encapsulates this deep analytic result plus the combinatorial 4-point verification, which together constitute the full Moree–Osburn argument.",
@@ -118,7 +118,7 @@
       "startLine": 81,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős #659: Answer is Yes",
     "content": "The main theorem states that point sets with the 4-point property and few distances **do exist**. We prove this by exhibiting the Moree-Osburn lattice as a witness.\n\nThe proof is straightforward given the axiom: we use the lattice family, and the axiom guarantees it has the required properties with constant C = 1.",
     "mathContext": "The theorem has the form $\\exists A, \\exists C > 0, \\forall n > 1, \\ldots$: an explicit witness construction. The Moree–Osburn lattice provides $A$, and the axiom `moreeOsburnWorks` certifies all three properties (correct cardinality, 4-point property, distance bound). The proof uses `omega` for arithmetic and `norm_num` to verify $C = 1 > 0$. This is the typical pattern for resolved Erdős problems: state existence, exhibit a witness, verify properties.",

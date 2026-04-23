@@ -193,7 +193,7 @@
       "startLine": 666,
       "endLine": 668
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gross-Zagier Formula and Heegner Points",
     "content": "The **Gross-Zagier Formula** (1986): $L'(E, 1) = c \\cdot \\hat{h}(P_K)$ where $P_K$ is a Heegner point from an imaginary quadratic field $K$, $\\hat{h}$ is the Neron-Tate height, and $c$ involves periods and Tamagawa numbers. If $L'(E, 1) \\neq 0$, the Heegner point is non-torsion, giving an explicit generator of $E(\\mathbb{Q})$. The `HeegnerPoint` structure wraps a placeholder point with a discriminant field for the quadratic field.",
     "mathContext": "$$L'(E, 1) = \\frac{8\\pi^2 \\langle f, f \\rangle}{\\sqrt{|D|}} \\cdot \\hat{h}(P_K)$$\nThe formula bridges the analytic world (L-function derivative) and the algebraic world (height of a rational point). The `NeronTateHeight` is axiomatized as a bilinear form $\\hat{h}: E(\\mathbb{Q}) \\times E(\\mathbb{Q}) \\to \\mathbb{R}$; the regulator is its Gram determinant.",
@@ -287,7 +287,7 @@
       "startLine": 1407,
       "endLine": 1411
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Hasse Bound and Point Counting",
     "content": "The **Hasse bound** (1933): $|a_p| \\leq 2\\sqrt{p}$, equivalently $a_p^2 \\leq 4p$, where $a_p = p + 1 - \\#E(\\mathbb{F}_p)$ is the trace of Frobenius. This is a consequence of the Riemann Hypothesis for curves over finite fields (Weil 1948). The axiomatized `hasse_bound` gives $(\\text{traceOfFrobenius}\\, E\\, p)^2 \\leq 4p$, and `hasse_bound_consequence` derives $0 \\leq 4p - a_p^2$ by `omega`.",
     "mathContext": "$$|a_p| \\leq 2\\sqrt{p} \\quad \\Leftrightarrow \\quad a_p^2 \\leq 4p, \\quad a_p = p + 1 - \\#E(\\mathbb{F}_p)$$\nThe Hasse bound constrains local point counts and is fundamental for computing L-functions. For large $p$, $\\#E(\\mathbb{F}_p) \\approx p$, so the L-function Euler product converges for $\\text{Re}(s) > 3/2$.",
@@ -378,7 +378,7 @@
       "startLine": 1843,
       "endLine": 1929
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Root Number Theory and Parity of Rank",
     "content": "The root number $w(E) \\in \\{\\pm 1\\}$ determines the parity of the analytic rank via the functional equation. The key **proved theorem** `rootNumber_neg_implies_vanishing`: if $w(E) = -1$ and BSD holds, then $\\text{rank}(E) \\geq 1$. The proof combines the functional equation parity ($r_{\\text{an}} \\bmod 2 = 1$ when $w = -1$) with BSD ($r_{\\text{alg}} = r_{\\text{an}}$), concluding by `omega` since no natural number $\\equiv 1 \\pmod{2}$ can be 0.\n\nLocal root numbers are defined for each reduction type: $w_p = +1$ for good and nonsplit multiplicative, $w_p = -1$ for split multiplicative. The archimedean root number is always $-1$.",
     "mathContext": "$$w(E) = -1 \\;\\wedge\\; \\text{BSD} \\implies \\text{rank}(E) \\geq 1$$\nProof: $w = -1 \\implies r_{\\text{an}} \\equiv 1 \\pmod{2}$ (functional equation) $\\implies r_{\\text{an}} \\geq 1$ (since $0 \\not\\equiv 1$) $\\implies r_{\\text{alg}} \\geq 1$ (BSD). Global: $w(E) = -\\prod_p w_p \\cdot w_\\infty$.",
@@ -427,7 +427,7 @@
       "startLine": 3067,
       "endLine": 3218
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tunnell's Theorem and Congruent Numbers",
     "content": "**Tunnell's theorem** (1983) gives a strikingly simple criterion for the ancient congruent number problem, *conditional on BSD*. For squarefree $n$: $n$ is congruent iff $f(n) = 2g(n)$, where $f$ and $g$ count representations by specific ternary quadratic forms ($2x^2 + y^2 + 8z^2 = n$ and $2x^2 + y^2 + 32z^2 = n$ for odd $n$).\n\nThe forward direction (congruent $\\implies f = 2g$) is unconditional. The reverse requires BSD. Verified: $n = 1$ (not congruent: $f = 2, g = 2, f \\neq 2g$), $n = 5$ ($f = 4, g = 2$), $n = 6$ ($f = 2, g = 1$), $n = 7$ ($f = 4, g = 2$).",
     "mathContext": "$$n \\text{ congruent} \\iff f(n) = 2g(n) \\quad (\\text{conditional on BSD})$$\nConnection: $f(n) = 2g(n) \\iff L(E_n, 1) = 0$ (via theta series and Shimura correspondence), then BSD gives $\\text{rank}(E_n) \\geq 1$, then Koblitz gives a rational right triangle with area $n$.",
@@ -475,7 +475,7 @@
       "startLine": 5140,
       "endLine": 5233
     },
-    "type": "technique",
+    "type": "concept",
     "title": "j-Invariant Classification and CM Curves (PROVED)",
     "content": "**Fully proved section.** The j-invariant classifies elliptic curves up to isomorphism. Two special values: $j = 0$ for curves $y^2 = x^3 + b$ (CM by $\\mathbb{Z}[\\omega]$, extra order-3 automorphism), and $j = 108$ (our convention) for curves $y^2 = x^3 + ax$ (CM by $\\mathbb{Z}[i]$, extra order-4 automorphism).\n\nProved: `jInvariant_zero_iff_a_zero` (by simp), `jInvariant_b_zero` (by field_simp/ring, using cube root extraction via `pow_eq_zero_iff`), discriminant formulas for both cases, and mutual exclusion (`a = 0 \\implies b \\neq 0` and vice versa).",
     "mathContext": "$$j = 0 \\iff a = 0; \\quad j = 108 \\iff b = 0 \\;(\\text{our convention})$$\nCM curves are significant for BSD: Coates-Wiles first proved BSD rank 0 for CM curves. CM curves have explicitly computable L-functions via Hecke characters. The 13 CM j-invariants are known (class number 1 fields).",
@@ -498,7 +498,7 @@
       "startLine": 5234,
       "endLine": 5339
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Point Doubling Formula (PROVED)",
     "content": "**Fully proved.** For $P = (x_0, y_0)$ on $y^2 = x^3 + ax + b$ with $y_0 \\neq 0$: tangent slope $m = (3x_0^2 + a)/(2y_0)$, doubled point $[2]P = (m^2 - 2x_0, \\; m(3x_0 - m^2) - y_0)$. All proved by `field_simp` and `ring`. This is the explicit group law that makes elliptic curves an algebraic group.",
     "mathContext": "$$m = \\frac{3x_0^2 + a}{2y_0}, \\quad x_2 = m^2 - 2x_0, \\quad y_2 = m(3x_0 - m^2) - y_0$$\nThe point doubling formula is the foundation for computing the Mordell-Weil group. Together with the chord construction for addition, it defines the complete group law on $E$.",

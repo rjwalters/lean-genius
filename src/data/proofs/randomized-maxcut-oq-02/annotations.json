@@ -54,7 +54,7 @@
       "startLine": 52,
       "endLine": 68
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Random Partition: Expected Cut Weight = W/2",
     "content": "`random_partition_expected_cut` proves `totalWeight G / 2 ≥ 0`. This is weaker than the actual claim ($\\mathbb{E}[\\text{cut}] = W/2$), but verifies the key quantity is nonneg. The proof unfolds `totalWeight`, then applies `div_nonneg` twice (for the outer `/2` and inner `/2`), reducing to `G.nonneg i j ≥ 0` which is the `nonneg` field. The full probabilistic statement would require: linearity of expectation for $\\mathbb{E}[\\text{cut}] = \\sum_e \\mathbb{P}[e \\text{ cut}] \\cdot w(e) = \\sum_e \\frac{1}{2} w(e) = W/2$.",
     "mathContext": "For a uniformly random partition (each vertex $i$ independently in $S$ with probability $1/2$): $\\Pr[\\text{edge}\\{i,j\\}\\text{ is cut}] = \\Pr[i \\in S, j \\notin S] + \\Pr[i \\notin S, j \\in S] = \\frac{1}{4} + \\frac{1}{4} = \\frac{1}{2}$. By linearity of expectation: $\\mathbb{E}[\\text{cut weight}] = \\sum_{\\{i,j\\}} W_{ij} \\cdot \\frac{1}{2} = \\frac{W}{2}$.",

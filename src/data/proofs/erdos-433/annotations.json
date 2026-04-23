@@ -152,7 +152,7 @@
       "startLine": 207,
       "endLine": 214
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Special Case k = 2",
     "content": "**g_two:**\n\nFor n ≥ 3:\n  g(2, n) = n² - 3n + 1\n\nThe maximum is achieved by A = {n-1, n}, which are always coprime.\n\nUsing Sylvester-Frobenius:\n  G({n-1, n}) = (n-1)n - (n-1) - n = n² - 3n + 1",
     "significance": "key",
@@ -170,7 +170,7 @@
       "startLine": 220,
       "endLine": 235
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Extremal Set Structure",
     "content": "**extremal_set_structure:**\n\nThe sets achieving g(k, n) are concentrated near the top:\n  A ⊆ {n-k+1, ..., n}\n\n**Why?** Larger elements create more gaps:\n- Smaller coefficients can be used\n- Linear combinations are more spread out\n- More integers are left non-representable",
     "significance": "key",
@@ -242,7 +242,7 @@
       "startLine": 294,
       "endLine": 335
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "**Erdős Problem #433: SOLVED**\n\n**Result:** g(k,n) ~ n²/(k-1) as n → ∞\n\n**Proof:** Dixmier (1990) via precise bounds\n\n**Key Insights:**\n1. Extremal sets use elements near n\n2. Sylvester-Frobenius handles k = 2\n3. Dixmier's bounds bracket the asymptotic\n4. Computing G is NP-hard for ≥ 3 generators",
     "significance": "key",

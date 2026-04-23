@@ -140,7 +140,7 @@
       "startLine": 131,
       "endLine": 138
     },
-    "type": "technique",
+    "type": "concept",
     "title": "JJMT Bound (2024)",
     "content": "**jjmtBound** states: f(n) ≪ n^{4/11} ≈ n^{0.364}.\n\nThis is the best known upper bound, from Janzer, Janzer, Methuku, and Tardos (2024) using circle-point incidence bounds.\n\n**Why an axiom?** The proof uses sophisticated incidence geometry.",
     "mathContext": "4/11 ≈ 0.364 is still far from o(1), but improves on the earlier 2/5 = 0.4 bound.",
@@ -159,7 +159,7 @@
       "startLine": 140,
       "endLine": 147
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lattice Lower Bound",
     "content": "**latticeLowerBound** states: f(n) > n^{c/log log n} for some c > 0.\n\nThe √n × √n integer lattice achieves this. Points at distance √(a² + b²) for integers a, b have high multiplicity.\n\nThis is why the strong conjecture uses n^{c/log log n} as the target.",
     "mathContext": "The lattice's equidistance structure comes from representing integers as sums of two squares.",

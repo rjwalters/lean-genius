@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 25
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Header: Eisenstein Irrationality Strategy",
     "content": "This file answers OQ-02 from cube-root-3-irrational: prove ∛3 is irrational via Eisenstein's irreducibility criterion. Strategy: (1) X³−3 irreducible (Eisenstein at p=3), (2) irreducible degree-3 polynomial has no rational roots, (3) if ∛3=q∈ℚ then q³=3 makes q a rational root, contradiction. Imports CubeRoot2IrrationalOQ03 for the general Eisenstein theorem `eisenstein_X_pow_sub_of_sqfree_factor`.",
     "mathContext": "Eisenstein criterion: polynomial $a_n X^n + \\cdots + a_0$ is irreducible over $\\mathbb{Z}$ if prime $p$ divides $a_0, \\ldots, a_{n-1}$, $p$ does not divide $a_n$, and $p^2$ does not divide $a_0$. For $X^3 - 3$: $p = 3$, $a_3 = 1$, $a_0 = -3$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Eisenstein criterion",
       "polynomial irreducibility",
@@ -97,11 +97,11 @@
       "startLine": 72,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Universal Pattern: isUnit_or_isUnit for Irreducibility → No Roots",
     "content": "`cases X3_sub_3_irred.isUnit_or_isUnit hR` generates two cases that both yield degree contradictions:\n\n**Case `inl h`** — X − Cq is a unit:\n```lean\nhave hd := Polynomial.natDegree_eq_zero_of_isUnit h  -- hd : (X-Cq).natDegree = 0\nhave hd1 : (X - C q : ℚ[X]).natDegree = 1 := natDegree_X_sub_C q\nomega  -- 0 = 1, contradiction\n```\n\n**Case `inr h`** — cofactor R is a unit:\n```lean\nhave hR_deg : R.natDegree = 0 := Polynomial.natDegree_eq_zero_of_isUnit h\n-- natDegree((X-Cq) * R) = natDegree(X-Cq) + natDegree(R) = 1 + 0 = 1\n-- But natDegree(X³-3) = 3 (proved in setup), so 3 = 1. norm_num.\n```\n\nThis pattern — splitting on `Irreducible.isUnit_or_isUnit` and deriving degree contradictions — works for any irreducible polynomial of degree ≥ 2 over any field. The key lemmas `natDegree_eq_zero_of_isUnit` and `natDegree_mul` are the workhorses.",
     "mathContext": "General fact: if $p \\in F[X]$ is irreducible with $\\deg p \\geq 2$ and $p(\\alpha) = 0$ for $\\alpha \\in F$, then $(X-\\alpha) \\mid p$, say $p = (X-\\alpha) \\cdot R$. Since $p$ is irreducible, one factor is a unit. Units in $F[X]$ are nonzero constants, so $\\deg = 0$. But $\\deg(X-\\alpha) = 1 > 0$ and $\\deg p = \\deg(X-\\alpha) + \\deg R \\geq 1 + 0 \\neq \\deg p$ in the other case. Contradiction.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Irreducible.isUnit_or_isUnit",
       "natDegree_eq_zero_of_isUnit",

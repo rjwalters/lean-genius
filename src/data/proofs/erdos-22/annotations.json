@@ -177,7 +177,7 @@
       "startLine": 169,
       "endLine": 205
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conjecture Resolution (Verified Proof)",
     "content": "**theorem conjecture_resolved : BollobasErdosConjecture**\n\nThis is the main verified proof in the file!\n\n**Proof outline**:\n1. Given ε > 0, get N where Fox-Loh-Zhao bound < ε\n2. For n ≥ N, apply Fox-Loh-Zhao to get graph G\n3. G has ≥ n²/8 edges and independence < εn\n4. By rt_lower_bound, rt(n; 4, ⌈εn⌉) ≥ edgeCount G ≥ n²/8",
     "mathContext": "The proof uses linarith for the final inequality chain. Key steps: Fox-Loh-Zhao gives the graph, then we verify it satisfies the rt bound.",

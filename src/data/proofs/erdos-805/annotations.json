@@ -120,7 +120,7 @@
       "startLine": 86,
       "endLine": 105
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_805** packages both main results:\n1. Negative: ∃ c > 0, no graph for g(n) = c(log n)³/(log log n) (Alon-Sudakov)\n2. Positive: graph exists for g(n) ≤ 2^{2^{√(log log n)}} (Alon-Bucić-Sudakov)\n\nProved by `⟨alon_sudakov_2007, alon_bucic_sudakov_2021⟩`.\n\nThe enormous gap between these bounds — polynomial in log n vs doubly exponential in √(log log n) — shows the exact threshold requires fundamentally new techniques.",
     "significance": "key",

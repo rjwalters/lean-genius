@@ -216,7 +216,7 @@
       "startLine": 736,
       "endLine": 825
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Well-Formedness and Non-Identity Crossing",
     "content": "Defines `wellFormed`: every source-target pair is reachable ($a_i \\leq b_j$ for all $i,j$), equivalent to $a_r \\leq b_1$ when both sequences are strictly monotone. Then proves two key structural results: (1) `perm_ne_one_has_inversion` — any non-identity permutation $\\sigma$ creates an inversion when composed with a strictly monotone function $f$, i.e., $\\exists i < j$ with $f(\\sigma(j)) < f(\\sigma(i))$; (2) `nonid_perm_paths_cross` — for any non-identity $\\sigma$-path tuple, some pair of paths must cross, using the inversion to set up the lattice_paths_must_cross hypothesis. This is the combinatorial core showing that only identity path tuples can be non-intersecting.",
     "mathContext": "For $\\sigma \\neq \\mathrm{id}$: $\\exists i < j$ with $b_{\\sigma(j)} < b_{\\sigma(i)}$. Then path $P_i: (0, a_i) \\to (m, b_{\\sigma(i)})$ starts below $P_j$ but ends above it, so they must cross by the discrete IVT.",
@@ -240,7 +240,7 @@
       "startLine": 826,
       "endLine": 1078
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Column Entry Prefix Lemmas",
     "content": "A suite of technical lemmas establishing that lattice path column entries depend only on the prefix before the crossing point. `take_at_column_entry` (40-line induction) proves that the first $(x + \\mathrm{colEntry}(l, x))$ elements of a path contain exactly $x$ East steps — the foundation of the tail-swap construction. `take_east_count_within_column` (78 lines) generalizes this to positions within a column. These lemmas ensure that when paths are split and tails swapped, the resulting paths still have correct East-step counts and valid column entries at all points before the crossing.",
     "mathContext": "For path $P$ with $\\geq x$ East steps: $|\\{\\text{East steps in } P[0..x{+}\\mathrm{colEntry}(P,x)]\\}| = x$. This means the prefix up to column entry $x$ captures exactly $x$ East steps — enabling clean tail-swap at column boundaries.",
@@ -265,7 +265,7 @@
       "startLine": 1079,
       "endLine": 1530
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Canonical Crossing Selection via Nat.find",
     "content": "The deterministic heart of the GV involution. Defines `crossingCode` which encodes a crossing 4-tuple $(c, y, i, j)$ as a single natural number $n = c \\cdot B r^2 + y \\cdot r^2 + i \\cdot r + j$ (where $B$ is a $y$-coordinate bound). Applies `Nat.find` to select the lexicographically minimal crossing, yielding `canonCrossN`. Accessor functions (`canonCol`, `canonY`, `canonI`, `canonJ`) extract the 4-tuple components. Includes `northThenEastPath` — the canonical all-North-then-all-East path used in the involution construction — and extensive verification that the encoding/decoding round-trips correctly. The lex-minimum selection is critical for the involution being self-inverse: both the original and swapped tuples must select the same canonical crossing.",
     "mathContext": "Crossing code: $n = c \\cdot Br^2 + y \\cdot r^2 + i \\cdot r + j$, minimized via $\\mathrm{Nat.find}$. This yields the lex-minimum $(c, y, i, j)$ where paths $P_i$ and $P_j$ share the point $(c, y)$, ensuring the involution is canonical.",
@@ -290,7 +290,7 @@
       "startLine": 1531,
       "endLine": 1797
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tail-Swap Construction and Involution Assembly",
     "content": "Constructs the actual GV involution `gvCanonInv`. Given a cancellable tagged tuple $(\\sigma, \\vec{P})$, it: (1) extracts the canonical crossing $(c, y, i, j)$; (2) splits paths $P_i$ and $P_j$ at their column-$c$, height-$y$ entry point via `splitPosAt`; (3) swaps their tails to form new paths $P_i'$ and $P_j'$; (4) proves the swapped paths have correct lengths and East-step counts (so they're valid PathMN elements); (5) composes with the transposition $(i\\;j)$ applied to $\\sigma$ to form the output tagged tuple $((i\\;j) \\circ \\sigma, \\vec{P'})$. The key preservation theorems — `splitPos_east_eq` (both split positions have the same East count) and `tailSwap_n_ci`/`tailSwap_n_cj` (swapped paths land in the correct PathMN type) — ensure type-correctness. Properties `gvCanon_sign_reversal` (sign flips) and `gvCanon_no_fixed` (no fixed points on cancellable tuples) are proved; `gvCanon_membership` (118 lines, FULLY PROVED) shows the image is again cancellable.",
     "mathContext": "$\\iota(\\sigma, \\vec{P}) = ((i\\;j) \\circ \\sigma, \\vec{P'})$ where $P'_k = \\begin{cases} P_i[0..s_i] \\mathbin{\\|} P_j[s_j..] & k = i \\\\ P_j[0..s_j] \\mathbin{\\|} P_i[s_i..] & k = j \\\\ P_k & \\text{otherwise} \\end{cases}$ with $s_i, s_j$ the split positions at the canonical crossing $(c, y)$.",
@@ -319,7 +319,7 @@
       "startLine": 1886,
       "endLine": 2091
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Self-Inverse Proof and Final Cancellation",
     "content": "The remaining gap and final assembly. `canonCrossN_preserved` (sorry, line 1982) would show that the canonical crossing code is the same for the original and swapped tuples — essential because the involution must select the same crossing point in both directions. `gvCanon_self_inverse` (sorry, line 1989) would combine this with double tail-swap = identity and $(i\\;j)^2 = \\mathrm{id}$ to show $\\iota^2 = \\mathrm{id}$. The proved `cancellable_sum_eq_zero` applies Mathlib's `Finset.sum_involution` to the canonical involution, yielding zero signed sum over cancellable tuples. `gv_involution_cancellation` then adds back the fixed-point contribution (non-intersecting identity tuples) to get $\\mathrm{niTupleCount} = \\det M$. The file concludes with corollaries: determinant non-negativity, $r=1$ vacuous NI, and an applications survey.",
     "mathContext": "The 2 remaining sorries: (1) $\\mathrm{canonCrossN}(\\iota(t)) = \\mathrm{canonCrossN}(t)$ — prefix preservation ensures the lex-minimum crossing is invariant; (2) $\\iota(\\iota(t)) = t$ — double tail-swap recovers original paths since $\\mathrm{swap}^2 = \\mathrm{id}$.",

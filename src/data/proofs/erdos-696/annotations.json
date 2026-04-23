@@ -98,7 +98,7 @@
       "startLine": 91,
       "endLine": 104
     },
-    "type": "technique",
+    "type": "concept",
     "title": "h(n) ≤ H(n)",
     "content": "**prime_chain_is_divisor_chain & h_le_H:**\n\nEvery prime chain is automatically a divisor chain (primes are divisors). Therefore:\n\nh(n) ≤ H(n) for all n\n\nThis is a fundamental inequality between the two functions.",
     "significance": "key",
@@ -190,7 +190,7 @@
       "startLine": 200,
       "endLine": 221
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Concrete Examples",
     "content": "**Examples of h(n):**\n\n- **n = 6 = 2·3:** h(6) ≥ 2\n  Chain [2, 3] works since 3 ≡ 1 (mod 2)\n\n- **n = 30 = 2·3·5:** h(30) = 2\n  Chains [2, 3] or [2, 5] work, but no length-3 chain\n\n- **n = 2310 = 2·3·5·7·11:** h(2310) ≥ 3\n  Chain [2, 3, 7] works:\n  - 3 ≡ 1 (mod 2) ✓\n  - 7 ≡ 1 (mod 3) ✓",
     "significance": "supporting",
@@ -245,7 +245,7 @@
       "startLine": 298,
       "endLine": 340
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "**Erdős Problem #696: Status Summary**\n\n**KNOWN:**\n- h(n) → ∞ for almost all n (van Doorn) ✓\n- h(n) ≤ H(n) always ✓\n\n**CONJECTURED:**\n- Normal order of h(n) is log*(n)\n\n**OPEN:**\n- Is H(n)/h(n) → ∞ for almost all n?\n\n**KEY INSIGHTS:**\n1. The congruence pᵢ₊₁ ≡ 1 (mod pᵢ) reflects multiplicative group structure\n2. The iterated logarithm grows extremely slowly\n3. Composite divisors give more flexibility than primes\n4. Sophie Germain and Cunningham chains are relevant examples",
     "significance": "key",

@@ -2,7 +2,7 @@
   {
     "id": "ann-header-imports",
     "proofId": "erdos-279",
-    "type": "context",
+    "type": "concept",
     "title": "Problem Statement and Imports",
     "content": "The file opens with a detailed doc comment stating Erdős Problem #279: for $k \\geq 3$, can residue classes $a_p \\pmod{p}$ be chosen for every prime $p$ so that every sufficiently large integer $n$ is representable as $n = a_p + tp$ for some prime $p$ and $t \\geq k$? The comment notes that even $k = 3$ is difficult, describes the generalization to dense subsets of $\\mathbb{N}$, and records that $k \\leq 2$ is solved. Imports `Nat.Basic`, `Nat.Prime.Basic`, and `Tactic` from Mathlib.\n\n**Historical note:** This problem appears in Erdős and Graham's 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (Enseign. Math., Geneva). The monograph collected hundreds of problems across combinatorial number theory, many of which remain open. Problem 279 belongs to a cluster of questions about covering integers with arithmetic progressions of prescribed moduli.",
     "mathContext": "The problem: $\\forall k \\geq 3$, $\\exists (a_p)_p$, $\\forall n \\gg 0$, $\\exists$ prime $p$, $\\exists t \\geq k$: $n = a_p + tp$. The imports provide `Nat.Prime` (primality predicate) and basic arithmetic tactics.",
@@ -98,7 +98,7 @@
   {
     "id": "small-k-result",
     "proofId": "erdos-279",
-    "type": "technique",
+    "type": "concept",
     "title": "Small k Result (k ≤ 2)",
     "content": "**For $k \\leq 2$**: Any set with divergent reciprocal sum (including primes, since $\\sum 1/p = \\infty$) can cover all sufficiently large integers.\n\n**Why k ≤ 2 is easy**: For $k = 1$, each prime $p$ covers the full residue class $a_p + p\\mathbb{Z}_{\\geq 0}$. Since $\\sum 1/p$ diverges, the 'expected number of primes covering $n$' is infinite, and a probabilistic or greedy argument shows almost all integers are covered. For $k = 2$, the gap of $p$ at the start of each progression is manageable because the total coverage from all primes still diverges.\n\n**Current status in Lean**: Axiomatized with a placeholder `True` body — the formal proof would require Mertens' theorem ($\\sum_{p \\leq N} 1/p \\sim \\log \\log N$) and a covering argument.\n\n**The k = 3 barrier**: At $k = 3$, the gaps grow to $3p$, and the total 'lost coverage' from these gaps becomes comparable to the total coverage, making the divergence argument fail.",
     "mathContext": "k ≤ 2 ∧ Σ 1/p = ∞ ⟹ covering holds",

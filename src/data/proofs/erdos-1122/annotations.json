@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 33
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Header and Imports",
     "content": "The file imports `Mathlib.Data.Nat.Prime.Basic` (for `Nat.Prime`, `Nat.primeFactors`), `Mathlib.Data.Nat.GCD.Basic` (for `Nat.gcd`, coprimality), `Mathlib.Data.Real.Basic`, `Mathlib.Analysis.SpecialFunctions.Log.Basic` (for `Real.log`, `Real.log_mul`, `Real.log_le_log`), and `Mathlib.Order.Filter.Basic` (for `Filter.Tendsto`, `atTop`, `nhds`). Opens `Nat`, `Real`, `Filter` namespaces.",
     "significance": "supporting",
@@ -62,7 +62,7 @@
       "startLine": 54,
       "endLine": 59
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Logarithm is Completely Additive",
     "content": "**log_completely_additive** proves `Real.log` is completely additive on positive naturals: `log(ab) = log(a) + log(b)`. The proof converts the natural product to reals via `Nat.cast_mul`, then applies `Real.log_mul`.",
     "significance": "key",
@@ -139,7 +139,7 @@
       "startLine": 79,
       "endLine": 91
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Empty Defect Implies Increasing",
     "content": "**hasEmptyDefectSet f** is `monotonicityDefectSet f = ∅`. **empty_defect_means_increasing** proves: if the defect set is empty, then `f(n) ≤ f(n+1)` for all `n ≥ 1`. Proof by contradiction — if `f(n+1) < f(n)`, then `n ∈ monotonicityDefectSet f`, but the set is empty.",
     "significance": "supporting",
@@ -158,7 +158,7 @@
       "startLine": 95,
       "endLine": 111
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Logarithmic Form and Properties",
     "content": "**hasLogarithmicForm f** = `∃ c : ℝ, ∀ n ≥ 1, f(n) = c * Real.log(n)`. **zero_is_logarithmic** uses `c = 0`. **logarithmic_is_additive** proves any `c·log` is additive: substitute the form, apply `Real.log_mul` for coprime arguments, close by `ring`.",
     "significance": "key",
@@ -254,7 +254,7 @@
       "startLine": 158,
       "endLine": 179
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Condition Hierarchy",
     "content": "**empty_implies_littleO** is fully proved: if defect set is empty, then `defectIsLittleO f`. The proof shows `defectCount = 0` via `Finset.filter_eq_empty_iff` and `Set.not_mem_empty`. **mangerel_implies_littleO** is axiomatized (requires `X/(log X)^{2+c} = o(X)`). **conditionHierarchy** bundles both implications.",
     "significance": "key",
@@ -273,7 +273,7 @@
       "startLine": 183,
       "endLine": 190
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Log Has Empty Defect Set",
     "content": "**log_has_empty_defect** proves `hasEmptyDefectSet (fun n => Real.log n)` — log is strictly increasing on positive naturals, so its defect set is empty. Uses `ext`/`simp` to reduce to showing `log(n) ≤ log(n+1)` for `n ≥ 1`, then `Real.log_le_log` and `positivity`.",
     "significance": "supporting",

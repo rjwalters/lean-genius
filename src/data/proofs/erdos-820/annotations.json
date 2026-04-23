@@ -103,7 +103,7 @@
       "startLine": 91,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "concept",
     "title": "H(n)=3 Characterization",
     "content": "**H_eq_3_iff_2_3_coprime:**\n\nH(n) = 3 if and only if gcd(2^n - 1, 3^n - 1) = 1.\n\nWhen H(n)=3, the witness is always k=2, l=3.",
     "significance": "key",
@@ -265,7 +265,7 @@
       "startLine": 208,
       "endLine": 216
     },
-    "type": "technique",
+    "type": "concept",
     "title": "GCD Characterization",
     "content": "**gcd_characterization:**\n\nIf p | gcd(k^n-1, l^n-1), then there exists d|n with k^d ≡ 1 and l^d ≡ 1 (mod p).\n\nThis connects the GCD problem to multiplicative orders modulo primes.",
     "mathContext": "The key number-theoretic insight behind the problem.",
@@ -318,7 +318,7 @@
       "startLine": 241,
       "endLine": 247
     },
-    "type": "technique",
+    "type": "concept",
     "title": "H ≤ h Relationship",
     "content": "**H_le_h:**\n\nH(n) ≤ h(n) always.\n\nSince h(n) requires pairwise coprimality while H(n) only needs one coprime pair, H is always at most h.",
     "significance": "supporting",
@@ -336,7 +336,7 @@
       "startLine": 253,
       "endLine": 267
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem",
     "content": "**erdos_820_summary:**\n\n```lean\ntheorem erdos_820_summary :\n    (∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, ∃ n > N,\n      (H n : ℝ) > Real.exp ((n : ℝ)^(c / Real.log (Real.log (n : ℝ))))) := ...\n```\n\nVan Doorn's lower bound is the strongest known result.",
     "significance": "key",

@@ -107,7 +107,7 @@
       "startLine": 108,
       "endLine": 119
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Proper Implies Cochromatic",
     "content": "**proper_implies_cochromatic:**\n\nEvery proper coloring is automatically a cochromatic coloring.\n\n**Theorem:**\n```lean\ntheorem proper_implies_cochromatic (G : SimpleGraph V) (k : ℕ) (c : V → Fin k) :\n    IsProperColoring G k c → IsCochromaticColoring G k c\n```\n\n**Proof:** In a proper coloring, each color class is an independent set, which satisfies the cochromatic condition (no edges).",
     "mathContext": "This implies χ(G) ≥ ζ(G): any proper coloring gives a cochromatic coloring with the same number of colors.",
@@ -182,7 +182,7 @@
       "startLine": 159,
       "endLine": 170
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conjecture is False",
     "content": "**egs_conjecture_false:**\n\nThe EGS conjecture is FALSE.\n\n**Theorem:**\n```lean\ntheorem egs_conjecture_false : ¬egs_conjecture\n```\n\n**Proof:** Apply the conjecture to Steiner's graph (ω=4, ζ=4). The conjecture would give χ ≤ 6, but χ = 7. Contradiction.",
     "mathContext": "This formally derives the falsity of the conjecture from the existence of Steiner's counterexample.",
@@ -232,7 +232,7 @@
       "startLine": 185,
       "endLine": 196
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Gap is Bounded",
     "content": "**chi_zeta_gap_bounded:**\n\nThe gap χ(G) - ζ(G) can be bounded in terms of clique number.\n\n**Theorem:**\n```lean\ntheorem chi_zeta_gap_bounded :\n    ∀ n : ℕ, n > 2 → ∃ f : ℕ,\n      ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),\n        cliqueNumber G < n → chromaticNumber G - cochromaticNumber G ≤ f\n```\n\nDerived from the general EGS theorem.",
     "significance": "key",
@@ -281,7 +281,7 @@
       "startLine": 236,
       "endLine": 247
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "**erdos_762_summary:**\n\nCombines all results:\n1. The EGS conjecture (χ ≤ ζ + 2 for K₅-free graphs) is FALSE\n2. The general bounded gap theorem (χ - ζ bounded by f(ω)) is TRUE\n\n**Theorem:**\n```lean\ntheorem erdos_762_summary :\n    ¬egs_conjecture ∧\n    (∀ n > 2, ∃ f : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),\n      cliqueNumber G < n → chromaticNumber G ≤ cochromaticNumber G + f)\n```",
     "significance": "key",

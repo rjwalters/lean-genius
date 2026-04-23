@@ -98,7 +98,7 @@
       "startLine": 157,
       "endLine": 165
     },
-    "type": "context",
+    "type": "concept",
     "title": "Lower Bound: n^3 log n",
     "content": "**erdos_purdy_lower_bound:**\n\nThere exist n-point configurations with at least Omega(n^3 log n) degenerate quadruples.\n\n```lean\naxiom erdos_purdy_lower_bound :\n    exists c : R, c > 0 and forall n : N, n >= 4 ->\n      (f n : R) >= c * n^3 * Real.log n\n```\n\n**Construction:** The integer lattice sqrt(n) x sqrt(n) achieves this bound due to many repeated distances (sums of two squares appear with high multiplicity).",
     "mathContext": "The lower bound construction uses number-theoretic properties of sums of squares and their multiplicities.",
@@ -117,7 +117,7 @@
       "startLine": 167,
       "endLine": 175
     },
-    "type": "context",
+    "type": "concept",
     "title": "Upper Bound: n^{7/2}",
     "content": "**erdos_purdy_upper_bound:**\n\nEvery n-point configuration has at most O(n^{7/2}) degenerate quadruples.\n\n```lean\naxiom erdos_purdy_upper_bound :\n    exists C : R, C > 0 and forall n : N, n >= 4 ->\n      (f n : R) <= C * n^(7/2)\n```\n\n**Proof Technique:** Uses incidence bounds between points and circles. The Szemeredi-Trotter theorem and its generalizations play a key role.",
     "mathContext": "The upper bound relies on incidence geometry, bounding how many point-circle pairs can be incident.",
@@ -135,7 +135,7 @@
       "startLine": 177,
       "endLine": 184
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Exponent Gap",
     "content": "**bounds_gap:**\n\nThe known bounds leave a gap in the exponent.\n\n```lean\ntheorem bounds_gap : exists alpha beta : R, 3 <= alpha and beta <= 3.5 and alpha < beta\n```\n\n**The Gap:**\n- Lower bound: n^3 (ignoring log factors)\n- Upper bound: n^{3.5}\n\nThe true exponent lies somewhere in [3, 3.5]. Erdos asked if it's essentially 3.",
     "significance": "key",
@@ -190,7 +190,7 @@
       "startLine": 244,
       "endLine": 270
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Trivial Bounds",
     "content": "**Trivial Bounds:**\n\n**Total Quadruples:**\nAn n-point set has C(n,4) = n(n-1)(n-2)(n-3)/24 ~ n^4/24 quadruples.\n\n**Trivial Upper Bound:**\nf(n) <= C(n,4) <= n^4/24, since at most all quadruples could be degenerate.\n\n**Non-trivial Lower Bound:**\nThe lattice construction shows f(n) >= Omega(n^3 log n), far below the trivial bound but still polynomial.",
     "significance": "supporting",
@@ -208,7 +208,7 @@
       "startLine": 284,
       "endLine": 291
     },
-    "type": "context",
+    "type": "concept",
     "title": "Guth-Katz Theorem",
     "content": "**guth_katz:**\n\nAny n-point set has Omega(n/log n) distinct distances.\n\n```lean\naxiom guth_katz :\n    exists c : R, c > 0 and forall n : N, n >= 2 ->\n      forall S : Finset Point, S.card = n ->\n        (distinctDistances S : R) >= c * n / Real.log n\n```\n\nProved by Guth and Katz in 2015 using the polynomial method, resolving Erdos's distinct distances conjecture up to log factors.",
     "mathContext": "The Guth-Katz theorem was a major breakthrough using algebraic techniques (polynomial partitioning). While it doesn't directly solve Problem 1087, it shows the power of these methods for distance problems.",
@@ -227,7 +227,7 @@
       "startLine": 314,
       "endLine": 317
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Main Theorem",
     "content": "**erdos_1087:**\n\nCombines the known bounds into a single statement.\n\n```lean\ntheorem erdos_1087 :\n    (exists c : R, c > 0 and forall n : N, n >= 4 -> (f n : R) >= c * n^3 * Real.log n) and\n    (exists C : R, C > 0 and forall n : N, n >= 4 -> (f n : R) <= C * n^(7/2)) :=\n  <erdos_purdy_lower_bound, erdos_purdy_upper_bound>\n```\n\nThis formalizes the state of knowledge: n^3 log n << f(n) << n^{7/2}.",
     "significance": "key",

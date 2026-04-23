@@ -51,7 +51,7 @@
       "startLine": 31,
       "endLine": 33
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Positivity of Ramsey Numbers",
     "content": "R(k,l) ≥ 1 for k,l ≥ 1. This basic property ensures the ratio R(k,l+1)/R(k,l) is well-defined (denominator is positive), which is essential for stating the limit conjecture.",
     "significance": "supporting",
@@ -71,7 +71,7 @@
       "startLine": 35,
       "endLine": 36
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ramsey Symmetry: R(k,l) = R(l,k)",
     "content": "R(k,l) = R(l,k) follows from swapping red and blue in any 2-coloring. This symmetry means the ratio convergence question is symmetric in which parameter grows, reducing the problem to studying one parameter direction.",
     "significance": "key",
@@ -91,7 +91,7 @@
       "startLine": 40,
       "endLine": 42
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős-Szekeres Upper Bound",
     "content": "R(k,l) ≤ C(k+l-2, k-1), the foundational 1935 result. For fixed k, this gives R(k,l) ≤ c_k · l^(k-1), establishing polynomial growth in l. This upper bound, combined with lower bounds, constrains the ratio R(k,l+1)/R(k,l).",
     "significance": "key",
@@ -113,7 +113,7 @@
       "startLine": 44,
       "endLine": 46
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Monotonicity: R(k,l) ≤ R(k,l+1)",
     "content": "Requiring a larger monochromatic clique can only increase the Ramsey number. This ensures the ratio R(k,l+1)/R(k,l) ≥ 1, so the conjecture R(k,l+1)/R(k,l) → 1 asks whether this ratio approaches 1 from above.",
     "significance": "key",
@@ -134,7 +134,7 @@
       "startLine": 48,
       "endLine": 50
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ramsey Recurrence Relation",
     "content": "R(k, l+1) ≤ R(k, l) + R(k-1, l+1). This is the fundamental recurrence underlying the Erdős-Szekeres bound. It implies R(k,l+1) - R(k,l) ≤ R(k-1,l+1), giving a crude upper bound on the increment.",
     "significance": "key",
@@ -156,7 +156,7 @@
       "startLine": 54,
       "endLine": 62
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tight Bounds for R(3,l): Θ(l²/log l)",
     "content": "R(3,l) is Θ(l²/log l). The lower bound is due to Shearer (1983) / Kim (1995) via the triangle-free process; the upper bound to Ajtai-Komlós-Szemerédi (1980). Even with this tight characterization, the ratio convergence for k=3 remains open because the implicit constants in the lower and upper bounds don't match precisely enough.",
     "significance": "key",
@@ -202,7 +202,7 @@
       "startLine": 74,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Ratio Convergence from Power-Law Asymptotics",
     "content": "If R(k,l) ~ c_k · l^(k-1) / (log l)^(k-2), then R(k,l+1)/R(k,l) = ((l+1)/l)^(k-1) · (log l/log(l+1))^(k-2) → 1. The conjecture thus follows from any power-law asymptotic with the same exponent, making it a weaker statement than the full asymptotic conjecture.",
     "significance": "key",
@@ -226,7 +226,7 @@
       "startLine": 82,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Equivalence: Ratio → 1 iff Difference is o(R(k,l))",
     "content": "The ratio convergence R(k,l+1)/R(k,l) → 1 is equivalent to the difference condition R(k,l+1) - R(k,l) = o(R(k,l)). This reformulation makes the conjecture more intuitive: the increment between consecutive Ramsey numbers is negligible compared to their magnitude.",
     "significance": "key",

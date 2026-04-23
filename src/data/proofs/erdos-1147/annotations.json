@@ -25,7 +25,7 @@
       "startLine": 37,
       "endLine": 48
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Namespace Setup",
     "content": "Imports the full Mathlib library and opens `Real`, `Set`, `Filter`, and `MeasureTheory` namespaces. The `noncomputable section` is needed because real-valued functions (distance to nearest integer, logarithms) are inherently noncomputable in Lean 4.\n\nThe combination of `Filter` (for asymptotic limits via `atTop`) and `MeasureTheory` (for 'almost every' statements via `∀ᵐ`) reflects the dual nature of the problem: it involves both asymptotic behavior ($1/\\log n \\to 0$) and measure-theoretic statements (Konieczny's disproof holds for almost every $\\alpha$).",
     "mathContext": "The `noncomputable` modifier is required for `distToNearestInt`, `diophantineSet`, and related definitions that use `Real.log` and `Int.fract`, which are not algorithmically computable in Lean's type theory.",
@@ -110,7 +110,7 @@
       "startLine": 128,
       "endLine": 148
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Threshold Properties: Boundedness and Convergence",
     "content": "`threshold_lt_one`: For $n \\geq 3$, $1/\\log n < 1$, proved by showing $\\log n > \\log 3 > 1$ (using $\\log 3 > \\log e = 1$, since $3 > e \\approx 2.718$). This ensures the threshold condition $\\|\\alpha n^2\\| < 1/\\log n$ is non-trivial.\n\n`threshold_tendsto_zero`: $1/\\log n \\to 0$ as $n \\to \\infty$, proved by composing three Mathlib lemmas: `tendsto_natCast_atTop_atTop` ($\\mathbb{N} \\to \\mathbb{R}$ goes to $\\infty$), `Real.tendsto_log_atTop` ($\\log \\to \\infty$), and `tendsto_inv_atTop_zero` ($1/x \\to 0$).\n\nTogether these establish that the Diophantine set captures increasingly rare events as $n$ grows — the threshold narrows, making membership harder to achieve.",
     "mathContext": "$1/\\log n < 1$ for $n \\geq 3$ (since $\\log 3 > 1$). $1/\\log n \\to 0$ as $n \\to \\infty$ (composition of three limits).\n\nThe narrowing threshold is why the set $A_\\alpha$ is sparse: $\\Pr[n \\in A_\\alpha] \\approx 2/\\log n \\to 0$.",
@@ -154,7 +154,7 @@
       "startLine": 180,
       "endLine": 188
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Conjecture Disproved",
     "content": "**theorem erdos_1147_false**: ¬Erdos1147Conjecture\n\nProved without sorry! The proof:\n1. Assume the conjecture holds for ALL irrational α > 0\n2. In particular, it holds for α = √2\n3. But sqrt2_not_basis says diophantineSet(√2) is NOT a basis\n4. Contradiction\n\nUses Real.sqrt_pos_of_pos for √2 > 0 and irrational_sqrt_two from Mathlib.",
     "mathContext": "This is the cleanest route to disproving the conjecture: a single specific counterexample suffices to refute a universal statement.",
@@ -173,7 +173,7 @@
       "startLine": 197,
       "endLine": 234
     },
-    "type": "context",
+    "type": "concept",
     "title": "Infinity of A_α and Summary",
     "content": "`diophantine_set_infinite` (axiom): For any irrational $\\alpha > 0$, the Diophantine set $A_\\alpha$ is infinite. This follows from Dirichlet's approximation theorem, which provides infinitely many $n$ with $\\|\\alpha n^2\\| < 1/n$, and $1/n < 1/\\log n$ eventually.\n\nThe summary section documents the key paradox: $A_\\alpha$ is infinite (by Dirichlet) but NOT an additive basis of order 2 (by Konieczny) for almost every $\\alpha$. The set is too sparse and too irregularly distributed to generate all large integers as pairwise sums.\n\nAxiom inventory: 4 axioms (konieczny_disproof, konieczny_generalized, sqrt2_not_basis, diophantine_set_infinite). 8 proved theorems. 0 sorries.\n\nThe `#check` lines at the end verify that the key results exist and are well-typed.",
     "mathContext": "Dirichlet's theorem: $\\forall \\alpha$ irrational, $\\exists^\\infty n,\\; \\|\\alpha n\\| < 1/n$. Applied to $\\alpha n^2$: the set $A_\\alpha$ is infinite.\n\nBut infinite $\\neq$ basis: $A_\\alpha + A_\\alpha$ misses cofinitely many integers for a.e. $\\alpha$. The gap between 'infinite' and 'basis' is the mathematical content of Konieczny's disproof.",

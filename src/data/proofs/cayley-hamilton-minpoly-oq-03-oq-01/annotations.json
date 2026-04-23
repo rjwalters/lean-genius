@@ -2,85 +2,171 @@
   {
     "id": "ann-minpoly-vec-preamble",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-01",
-    "range": { "startLine": 1, "endLine": 43 },
-    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 43
+    },
+    "type": "concept",
     "title": "Krylov Method for Vector Minimal Polynomial: Problem Statement and Context",
     "content": "The module docstring frames the question: can the Krylov method be formalized for vector-specific minimal polynomials μ_{M,v}, the unique monic polynomial of smallest degree annihilating v under M? This extends the parent entry (OQ-03, Krylov complexity for the matrix minimal polynomial μ_M) to individual vectors. The key properties of μ_{M,v} stated here: it annihilates v, divides μ_M, has degree ≤ n, and is characterized by the Krylov sequence {v, Mv, ..., M^d·v} becoming linearly dependent at exactly step d = deg(μ_{M,v}). The primary application context is Wiedemann's (1986) algorithm for solving sparse linear systems over finite fields, where single-vector Krylov sequences replace full Krylov subspaces. References: Wiedemann (1986), Horn & Johnson §3.3, and Mathlib's LinearAlgebra.Matrix.Charpoly.Minpoly.",
     "mathContext": "Vector minimal polynomial: $\\mu_{M,v}$ = unique monic $p \\in K[X]$ of minimum degree with $p(M)v = 0$. Properties: (1) $\\mu_{M,v} \\mid \\mu_M$ (hence $\\deg \\mu_{M,v} \\leq n$); (2) $\\mu_{M,v} \\mid q$ for any $q$ with $q(M)v = 0$ (universally minimal); (3) The Krylov sequence $v, Mv, M^2v, \\ldots$ is linearly independent up to step $d = \\deg \\mu_{M,v} - 1$ and dependent at step $d$.",
-    "significance": "context",
-    "relatedConcepts": ["Wiedemann's algorithm", "Krylov subspace methods", "sparse linear systems", "vector annihilator", "Polynomial.minpoly"],
-    "prerequisites": ["Polynomial.minpoly in Mathlib", "Matrix.mulVec", "Krylov sequences", "Field typeclass"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Wiedemann's algorithm",
+      "Krylov subspace methods",
+      "sparse linear systems",
+      "vector annihilator",
+      "Polynomial.minpoly"
+    ],
+    "prerequisites": [
+      "Polynomial.minpoly in Mathlib",
+      "Matrix.mulVec",
+      "Krylov sequences",
+      "Field typeclass"
+    ]
   },
   {
     "id": "ann-minpoly-vec-krylov",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-01",
-    "range": { "startLine": 44, "endLine": 78 },
+    "range": {
+      "startLine": 44,
+      "endLine": 78
+    },
     "type": "theorem",
     "title": "Krylov Expansion: aeval_mulVec_eq_krylov_sum",
     "content": "The central computational lemma (lines 60-78): evaluating a polynomial p at matrix M and applying to vector v equals the linear combination Σ_{i=0}^{deg p} p.coeff(i) · M^i·v. The proof first expands aeval M p into a sum of scalar multiples of M^i using Polynomial.eval₂_eq_sum, then applies sum_mulVec (lines 49-56) to distribute mulVec over the finite sum, and identifies each term with krylovVec M v i = M^i·v. The helper sum_mulVec uses Finset.induction_on with Matrix.zero_mulVec and Matrix.add_mulVec as base case and step.",
     "mathContext": "$(\\text{aeval}_M\\, p) \\cdot v = \\sum_{i=0}^{\\deg p} p_i \\cdot M^i v$. This is the Krylov expansion: polynomial evaluation becomes a linear combination of Krylov vectors $\\{v, Mv, M^2v, \\ldots\\}$ with coefficients from the polynomial. Used to convert algebraic annihilation ($p(M)v = 0$) into linear dependence of Krylov vectors.",
     "significance": "key",
-    "relatedConcepts": ["Krylov subspace", "aeval in Mathlib", "Matrix.mulVec distribution", "polynomial evaluation"],
-    "prerequisites": ["Polynomial.eval₂_eq_sum", "Finset.induction_on", "Matrix.add_mulVec"]
+    "relatedConcepts": [
+      "Krylov subspace",
+      "aeval in Mathlib",
+      "Matrix.mulVec distribution",
+      "polynomial evaluation"
+    ],
+    "prerequisites": [
+      "Polynomial.eval₂_eq_sum",
+      "Finset.induction_on",
+      "Matrix.add_mulVec"
+    ]
   },
   {
     "id": "ann-minpoly-vec-ann-ideal",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-01",
-    "range": { "startLine": 83, "endLine": 106 },
+    "range": {
+      "startLine": 83,
+      "endLine": 106
+    },
     "type": "definition",
     "title": "The Annihilator Set as an Ideal of K[X]",
     "content": "vecAnnSet M v = {p ∈ K[X] | (aeval M p)·v = 0} is the key algebraic object. Three ideal axioms are proved: (1) 0 ∈ vecAnnSet (trivial: zero polynomial maps to zero matrix). (2) Closure under addition: if p,q ∈ vecAnnSet then map_add + add_mulVec gives (p+q)(M)·v = p(M)·v + q(M)·v = 0+0 = 0. (3) Closure under multiplication: if p ∈ vecAnnSet then (q·p)(M)·v = q(M)·(p(M)·v) = q(M)·0 = 0, using map_mul and mul_mulVec. This last property is the ideal axiom that distinguishes it from a mere subgroup.",
     "mathContext": "$I_v = \\{p \\in K[X] \\mid p(M)v = 0\\}$ is an ideal of $K[X]$: it is an additive subgroup and satisfies $K[X] \\cdot I_v \\subseteq I_v$. Since $K[X]$ is a PID (K a field), every ideal is principal: $I_v = \\langle \\mu_{M,v} \\rangle$ for a unique monic generator $\\mu_{M,v}$ — the vector minimal polynomial.",
     "significance": "key",
-    "relatedConcepts": ["ideal of a polynomial ring", "PID principal ideal", "annihilator ideal", "Set.mem_setOf_eq"],
-    "prerequisites": ["map_mul for ring homomorphisms", "Matrix.mul_mulVec", "matrix algebra via aeval"]
+    "relatedConcepts": [
+      "ideal of a polynomial ring",
+      "PID principal ideal",
+      "annihilator ideal",
+      "Set.mem_setOf_eq"
+    ],
+    "prerequisites": [
+      "map_mul for ring homomorphisms",
+      "Matrix.mul_mulVec",
+      "matrix algebra via aeval"
+    ]
   },
   {
     "id": "ann-minpoly-vec-inclusion",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-01",
-    "range": { "startLine": 111, "endLine": 126 },
+    "range": {
+      "startLine": 111,
+      "endLine": 126
+    },
     "type": "insight",
     "title": "μ_M Annihilates Every Vector: The Key Inclusion",
     "content": "minpoly_mem_vecAnnSet (lines 114-118) proves the fundamental fact: μ_M ∈ vecAnnSet M v for every vector v. The proof is a one-liner: (aeval M (minpoly K M))·v = 0·v = 0, using minpoly.aeval K M (which states aeval M (minpoly K M) = 0 as a matrix). The corollary vecAnnSet_ne_bot (lines 122-125) immediately follows: vecAnnSet is nonempty, so a vector minimal polynomial must exist. The nonzero witness is μ_M itself, with minpoly.ne_zero used to confirm it is not the zero polynomial.",
     "mathContext": "$\\mu_M(M) = 0$ as a matrix (Mathlib's `minpoly.aeval K M`). Therefore $\\mu_M(M) \\cdot v = 0 \\cdot v = 0$ for every vector $v$, placing $\\mu_M \\in I_v$. This shows $I_v \\neq \\{0\\}$, guaranteeing by PID theory that the generator $\\mu_{M,v}$ exists and satisfies $\\mu_{M,v} \\mid \\mu_M$.",
     "significance": "key",
-    "relatedConcepts": ["minpoly.aeval", "Cayley-Hamilton via minimal polynomial", "Matrix.zero_mulVec", "nonzero ideal in PID"],
-    "prerequisites": ["minpoly.aeval K M in Mathlib", "minpoly.ne_zero for Algebra.IsIntegral", "the PID structure of K[X]"]
+    "relatedConcepts": [
+      "minpoly.aeval",
+      "Cayley-Hamilton via minimal polynomial",
+      "Matrix.zero_mulVec",
+      "nonzero ideal in PID"
+    ],
+    "prerequisites": [
+      "minpoly.aeval K M in Mathlib",
+      "minpoly.ne_zero for Algebra.IsIntegral",
+      "the PID structure of K[X]"
+    ]
   },
   {
     "id": "ann-minpoly-vec-degree",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-01",
-    "range": { "startLine": 131, "endLine": 157 },
+    "range": {
+      "startLine": 131,
+      "endLine": 157
+    },
     "type": "theorem",
     "title": "Degree Bound and Krylov Termination Certificate",
     "content": "Two results in Part IV. (1) vec_ann_poly_of_deg_le_dim (lines 133-146): there exists an annihilating polynomial of degree ≤ n. Proof: μ_M ∈ vecAnnSet and natDegree(μ_M) ≤ natDegree(char_M) = n. The divisibility chain μ_M | char_M uses minpoly.dvd with the Cayley-Hamilton aeval_self_charpoly. (2) krylov_zero_combo_at_minpoly (lines 151-156): Σ_{i=0}^{deg(μ_M)} coeff_i(μ_M) · M^i·v = 0. This follows immediately from aeval_mulVec_eq_krylov_sum applied to μ_M — the certificate that Krylov vectors are linearly dependent within deg(μ_M)+1 steps.",
     "mathContext": "$\\deg(\\mu_{M,v}) \\leq \\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$. The Krylov sequence terminates: $\\sum_{i=0}^{d} c_i M^i v = 0$ where $(c_0, \\ldots, c_d)$ are the coefficients of $\\mu_M$ and $d = \\deg(\\mu_M)$. In Wiedemann's algorithm, this means the sequence $v, Mv, \\ldots$ always yields a linear relation within $n+1$ steps.",
     "significance": "key",
-    "relatedConcepts": ["Matrix.natDegree_charpoly", "Polynomial.natDegree_le_natDegree", "Wiedemann algorithm termination", "Krylov subspace dimension"],
-    "prerequisites": ["charpoly degree = n", "minpoly divides charpoly", "aeval_mulVec_eq_krylov_sum"]
+    "relatedConcepts": [
+      "Matrix.natDegree_charpoly",
+      "Polynomial.natDegree_le_natDegree",
+      "Wiedemann algorithm termination",
+      "Krylov subspace dimension"
+    ],
+    "prerequisites": [
+      "charpoly degree = n",
+      "minpoly divides charpoly",
+      "aeval_mulVec_eq_krylov_sum"
+    ]
   },
   {
     "id": "ann-minpoly-vec-existence",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-01",
-    "range": { "startLine": 162, "endLine": 180 },
+    "range": {
+      "startLine": 162,
+      "endLine": 180
+    },
     "type": "theorem",
     "title": "vec_minpoly_exists: Setup and Minimum-Degree Extraction",
     "content": "The main theorem (lines 169-249+) begins by finding the minimum-degree nonzero annihilating polynomial via degree_lt_wf.min — Lean's built-in well-founded recursion on polynomial degree. The set Ann = {p ≠ 0 | p(M)·v = 0} is nonempty (witnessed by μ_M), so degree_lt_wf.min Ann extracts the minimum-degree element q₀. Minimality is encoded as: for any p ∈ Ann, p.degree is not strictly less than q₀.degree. The next step makes q₀ monic via unit scaling: μ = (q₀.leadingCoeff)⁻¹ • q₀, using monic_of_isUnit_leadingCoeff_inv_smul. This avoids Mathlib's abstract PID machinery entirely.",
     "mathContext": "Well-founded recursion: $\\deg: K[X] \\setminus \\{0\\} \\to \\mathbb{N}$ has no infinite descending chains, so any nonempty set of polynomials has a minimum-degree element. Here $\\text{Ann} = \\{p \\neq 0 \\mid p(M)v = 0\\}$ is nonempty (contains $\\mu_M$), so $\\exists q_0 \\in \\text{Ann}$ with $\\deg(q_0)$ minimal. Making it monic: $\\mu = c^{-1} q_0$ where $c = \\text{lc}(q_0) \\neq 0$ — scaling by a unit preserves degree and annihilation.",
     "significance": "key",
-    "relatedConcepts": ["degree_lt_wf", "monic_of_isUnit_leadingCoeff_inv_smul", "well-founded recursion", "minimum-degree polynomial"],
-    "prerequisites": ["Polynomial.degree_lt_wf in Mathlib", "IsUnit.mk0 (nonzero leadingCoeff is a unit in a field)", "Polynomial.natDegree_smul_of_smul_regular"]
+    "relatedConcepts": [
+      "degree_lt_wf",
+      "monic_of_isUnit_leadingCoeff_inv_smul",
+      "well-founded recursion",
+      "minimum-degree polynomial"
+    ],
+    "prerequisites": [
+      "Polynomial.degree_lt_wf in Mathlib",
+      "IsUnit.mk0 (nonzero leadingCoeff is a unit in a field)",
+      "Polynomial.natDegree_smul_of_smul_regular"
+    ]
   },
   {
     "id": "ann-minpoly-vec-divisibility-proof",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-01",
-    "range": { "startLine": 181, "endLine": 267 },
-    "type": "technique",
+    "range": {
+      "startLine": 181,
+      "endLine": 267
+    },
+    "type": "concept",
     "title": "vec_minpoly_exists: Divisibility via Euclidean Contradiction + Degree Chain",
     "content": "Steps 3-4 of the main proof. Divisibility (μ | q for any annihilating q): by contradiction, assume r = q mod μ ≠ 0. The Euclidean identity q = (q mod μ) + μ·(q div μ) gives r(M)·v = q(M)·v - μ(M)·(q div μ)(M)·v = 0 - 0 = 0 (using annihilation of both q and μ). But deg(r) < deg(μ), contradicting minimality of deg(μ). Therefore μ | q. Degree bound (μ.natDegree ≤ n): q₀.degree ≤ μ_M.degree (since μ_M ∈ Ann), and μ_M.natDegree ≤ charpoly.natDegree = n via the divisibility chain. The closing summary comment (lines 250-267) reviews all 9 theorems.",
     "mathContext": "Minimality implies divisibility: if $\\mu \\nmid q$ then $r = q \\bmod \\mu \\neq 0$ and $\\deg(r) < \\deg(\\mu)$. But $r(M)v = q(M)v - \\mu(M)(q\\div\\mu)(M)v = 0$, so $r \\in \\text{Ann}$, contradicting minimality. Degree chain: $\\deg(\\mu) \\leq \\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$.",
     "significance": "key",
-    "relatedConcepts": ["modByMonic_add_div", "degree_modByMonic_lt", "Euclidean division argument", "natDegree_charpoly"],
-    "prerequisites": ["Polynomial.modByMonic_eq_zero_iff_dvd", "vecAnnSet_mul_mem (ideal closure for annihilation)", "Matrix.charpoly_natDegree_eq_dim"]
+    "relatedConcepts": [
+      "modByMonic_add_div",
+      "degree_modByMonic_lt",
+      "Euclidean division argument",
+      "natDegree_charpoly"
+    ],
+    "prerequisites": [
+      "Polynomial.modByMonic_eq_zero_iff_dvd",
+      "vecAnnSet_mul_mem (ideal closure for annihilation)",
+      "Matrix.charpoly_natDegree_eq_dim"
+    ]
   }
 ]

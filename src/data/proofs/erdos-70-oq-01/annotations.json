@@ -10,7 +10,7 @@
     "title": "PartitionArrow via Cardinal Comparison (Not Order Type)",
     "content": "`HasOrderTypeAtLeast S H α := α.card ≤ #H` captures order type via *cardinality* comparison, not actual order-type isomorphism. This is a deliberate simplification: proving that a subset has order type ≥ α (as an ordinal) requires constructing a specific order embedding, while cardinal comparison is easier to formalize. For countable ordinals like ω², the cardinality condition coincides with the order-type condition on ordered sets (any infinite countable set has order type ≥ ω² in some ordering), but the formalization works with the weaker cardinality version. The `PartitionArrow κ α m` definition uses existential witnesses for homogeneous sets rather than explicit colorings.",
     "mathContext": "The partition arrow $\\kappa \\to (\\alpha, m)_2^3$ (2-colorings, 3-element subsets) is formalized as: for every 2-coloring $c: \\binom{S}{3} \\to \\{0,1\\}$ with $|S| = \\kappa$, either $\\exists H \\subseteq S$ with $|H| \\geq \\alpha.\\text{card}$ and $H$ color-0 homogeneous, or $\\exists H \\subseteq S$ finite with $|H| \\geq m$ and $H$ color-1 homogeneous. The cardinality-based `HasOrderTypeAtLeast` captures the quantitative content while avoiding the complexity of order-type isomorphism (`OrderIso`), which would require specifying the ordering on $H$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "PartitionArrow",
       "HasOrderTypeAtLeast",
@@ -56,7 +56,7 @@
       "startLine": 129,
       "endLine": 155
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Threading Witnesses Through Monotonicity Lemmas",
     "content": "The proof of `partition_arrow_mono_ordinal` is: given a witness (H, hord, hhom) for the β case, the same H witnesses the α case because `Ordinal.card_le_card hαβ` composed with `hord` gives α.card ≤ #H. For the finite case in `partition_arrow_mono_size`, the same H witnesses the smaller bound m too. This 'thread the witness' pattern recurs in `omega_squared_implies_omega_plus_n` and `omega_squared_implies_omega_mult_k`. The key Lean tactic is `exact partition_arrow_mono_ordinal _ _ _ _ (ineq_proof) h`, threading the monotonicity result directly.",
     "mathContext": "Antimonotonicity: if $\\alpha \\leq \\beta$ then $\\kappa \\to (\\beta, m) \\Rightarrow \\kappa \\to (\\alpha, m)$. Proof: any color-0 homogeneous set of cardinality $\\geq |\\beta|$ also has cardinality $\\geq |\\alpha|$ since $|\\alpha| \\leq |\\beta|$. The same coloring avoidance transfers. This gives the implication chain: $\\omega^2$ partition $\\Rightarrow$ $\\omega \\cdot k$ partition (all $k$) $\\Rightarrow$ $\\omega + n$ partition (all $n$). Each step uses `Ordinal.card_le_card` applied to the strict inequality $\\omega+n < \\omega k < \\omega^2$.",

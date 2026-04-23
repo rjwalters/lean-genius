@@ -82,7 +82,7 @@
       "startLine": 94,
       "endLine": 109
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Case t = 2: Connection to C4",
     "content": "**For graphs (t=2)**, a crossed pair is essentially a 4-cycle!\n\nThe four 2-element edges form an alternating path v1-v2-v3-v4-v1.\n\nThe **Kovari-Sos-Turan theorem** gives f(n,2) = O(n^{3/2}), connecting this to classical extremal graph theory.",
     "mathContext": "C4-free graphs have at most (1/2 + o(1))n^{3/2} edges.",
@@ -120,7 +120,7 @@
       "startLine": 132,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "concept",
     "title": "General Bounds",
     "content": "**Lower bound**: f(n,t) >= C(n-1,t-1) + floor((n-1)/t)\n\nThis comes from sunflower constructions.\n\n**Upper bound**: f(n,t) < (7/2)*C(n,t-1)\n\nThe gap between these bounds is what the conjecture aims to close.",
     "mathContext": "C(n-1,t-1) <= f(n,t) < (7/2)*C(n,t-1)",
@@ -177,7 +177,7 @@
       "startLine": 171,
       "endLine": 181
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sunflowers Have No Crossed Pairs",
     "content": "**Key Insight**: A sunflower cannot contain crossed pairs!\n\n**Proof sketch**: Any two edges in a sunflower intersect in the core. For a crossed pair, we need A cap B = empty. But since t >= 2, the core has size >= 1, so any two edges share at least one vertex.\n\nThis contradiction shows sunflowers are crossed-pair-free.",
     "mathContext": "forall A,B in Sunflower: A cap B contains core != empty",
@@ -196,7 +196,7 @@
       "startLine": 189,
       "endLine": 195
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Small Cases",
     "content": "**f(4,2) = 3**: With 4 vertices and 3 edges, we can avoid a 4-cycle. With 4 edges (K4), we must have one.\n\n**f(5,2) = 5**: Related to the Petersen graph, a famous 3-regular graph avoiding 4-cycles.",
     "mathContext": "Exact values known for small parameters.",

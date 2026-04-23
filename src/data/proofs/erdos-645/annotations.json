@@ -140,7 +140,7 @@
       "startLine": 149,
       "endLine": 174
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Connection to van der Waerden",
     "content": "**vanDerWaerden_2_3**: For any 2-coloring, there exists a monochromatic 3-AP (without the d > x constraint).\n\n**erdos_645_implies_vdw**: Erdős #645 implies this weak form of van der Waerden.\n\nProof: If we have a monochromatic 3-AP with d > x, then in particular d > 0, so it's a valid 3-AP for van der Waerden.\n\nThe converse is NOT true - van der Waerden is strictly weaker since it doesn't guarantee d > x.",
     "mathContext": "This shows the logical relationship between the problems. Erdős's question is a strengthening that adds structure beyond mere existence.",

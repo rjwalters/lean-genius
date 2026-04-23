@@ -82,7 +82,7 @@
       "startLine": 104,
       "endLine": 123
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Main Conjecture and Finite Case",
     "content": "**erdos597Conjecture** states the full open problem: for all graphs G with ≤ℵ₁ vertices, no K₄, and no K_{ℵ₀,ℵ₀}, the partition relation ω₁² → (ω₁ω, G)² holds. **finiteCaseConjecture** restricts to finite G (dropping the K_{ℵ₀,ℵ₀}-free condition, since finite graphs are automatically K_{ℵ₀,ℵ₀}-free). Even the finite case is open beyond the triangle.",
     "mathContext": "The conjecture is formalized as a universally quantified Prop over all types α with a SimpleGraph' structure satisfying the three conditions. The finite case uses Lean's Fintype class to restrict to finite vertex sets.",
@@ -158,7 +158,7 @@
       "startLine": 173,
       "endLine": 189
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem: Known Results Combined",
     "content": "**erdos597_knownResults** is the only proven theorem in this formalization. It combines the two axiomatized partial results into a conjunction: (1) the Erdős-Hajnal positive result for triangles, and (2) the Baumgartner negative result for K_{ℵ₀,ℵ₀}. The proof is `⟨erdosHajnalTriangle, baumgartnerCounterexample⟩`, directly pairing the two axioms. This theorem encapsulates the current state of knowledge on Problem #597.",
     "mathContext": "The conjunction captures the 'gap' that defines Problem #597: we know the partition relation holds for the smallest non-trivial case (triangles) and fails for the infinite bipartite case. Everything in between — finite K₄-free graphs, countable graphs, graphs on ℵ₁ vertices with both exclusions — is unknown.",

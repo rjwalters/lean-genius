@@ -112,7 +112,7 @@
       "startLine": 93,
       "endLine": 99
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Axiom: Half-Period Translation Flips Sign",
     "content": "The central identity of the proof: translating by $T/(2n)$ negates the $n$-th Fourier monomial. This is because $e^{2\\pi i(-n)(x + T/(2n))/T} = e^{2\\pi i(-n)x/T} \\cdot e^{-\\pi i} = -e_{-n}(x)$. The sign flip is what transforms the Fourier integral into a difference integral, enabling the Hölder bound.",
     "mathContext": "$e_{-n}(x + T/(2n)) = e^{-\\pi i} \\cdot e_{-n}(x) = -e_{-n}(x)$ because $e^{-\\pi i} = -1$.",
@@ -134,7 +134,7 @@
       "startLine": 101,
       "endLine": 109
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Axiom: Difference Formula for Fourier Coefficients",
     "content": "Axiomatizes the key identity: $2\\hat{c}_n(f) = \\int (f(x) - f(x + T/(2n))) \\cdot e_{-n}(x)\\, dx$. Derived by writing $\\hat{c}_n$ as an integral, applying translation invariance of Haar measure to the second copy, and using the half-period sign flip. This converts the oscillatory integral into one controlled by the Hölder modulus of continuity.",
     "mathContext": "$2\\hat{c}_n(f) = \\int_{\\mathbb{R}/T\\mathbb{Z}} (f(x) - f(x + T/(2n))) \\cdot e_{-n}(x)\\, d\\mu(x)$ where $\\mu$ is the Haar probability measure.",
@@ -178,7 +178,7 @@
       "startLine": 118,
       "endLine": 125
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Axiom: Integral Product Bound",
     "content": "Axiomatizes the integral estimate: $\\|\\int (f(x) - f(x+h)) e_{-n}(x)\\, dx\\| \\leq C(T/(2|n|))^\\alpha$. This combines: (1) norm-integral inequality $\\|\\int g\\| \\leq \\int \\|g\\|$, (2) $\\|e_{-n}(x)\\| = 1$, (3) the Hölder pointwise bound, and (4) the Haar measure being a probability measure ($\\mu(\\mathbb{R}/T\\mathbb{Z}) = 1$).",
     "mathContext": "$\\left\\|\\int (f(x) - f(x+h)) e_{-n}(x)\\, d\\mu \\right\\| \\leq \\int \\|f(x) - f(x+h)\\| \\cdot 1\\, d\\mu \\leq C(T/(2|n|))^\\alpha \\cdot 1$.",
@@ -334,7 +334,7 @@
       "startLine": 235,
       "endLine": 249
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Arithmetic Consequences and Quantitative Riemann-Lebesgue",
     "content": "Three proved results: (1) $\\alpha > 1/2 \\Rightarrow 2\\alpha > 1$ (the square-summability threshold). (2) For $\\alpha \\in (1/2, 1]$, the decay exponent $2\\alpha \\in (1, 2]$ (Parseval range). (3) `quantitative_riemannLebesgue` — a synonym for the main theorem, emphasizing that it provides an explicit decay rate for the classical Riemann-Lebesgue lemma.",
     "mathContext": "The quantitative Riemann-Lebesgue lemma: $\\hat{c}_n(f) \\to 0$ with explicit rate $O(1/|n|^\\alpha)$ for $\\alpha$-Hölder $f$.",

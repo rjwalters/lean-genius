@@ -2,7 +2,7 @@
   {
     "id": "ann-e875-imports",
     "proofId": "erdos-875",
-    "type": "context",
+    "type": "concept",
     "title": "Combinatorics and Bitwise Imports",
     "content": "Imports tactics, Finset.Basic, Finset.Powerset for subset enumeration, and Nat.Bitwise for popcount.",
     "mathContext": "The formalization uses `Finset.powersetCard r` to enumerate all $r$-element subsets (for the $r$-fold sumset), `Finset.image` and `Finset.sum` for computing sumset elements, and `Nat.popcount` (from `Nat.Bitwise`) for the binary argument that powers of 2 are admissible. The `Filter.atTop` filter is used implicitly through `HasPolynomialGaps` and `HasRatioOne`.",

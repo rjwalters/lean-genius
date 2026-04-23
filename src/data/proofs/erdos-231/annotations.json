@@ -136,7 +136,7 @@
       "startLine": 91,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Avoidance Hierarchy",
     "content": "**square_is_abelian_square, abelian_square_free_implies_squarefree:**\n\nEvery square is an abelian square.\n\nSo abelian-square-free ⟹ squarefree.",
     "mathContext": "This hierarchy is fundamental in combinatorics on words.",
@@ -266,7 +266,7 @@
       "startLine": 185,
       "endLine": 189
     },
-    "type": "technique",
+    "type": "concept",
     "title": "k = 2 Case",
     "content": "**k_equals_2_abelian_square:**\n\nFor k = 2 (binary alphabet), all strings of length ≥ 4 contain abelian squares.\n\nSo Erdős's conjecture holds for k = 2.",
     "significance": "supporting",
@@ -302,7 +302,7 @@
       "startLine": 205,
       "endLine": 214
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Example: abba",
     "content": "**example: isAbelianSquare ['a', 'b', 'b', 'a']:**\n\n\"abba\" = \"ab\" + \"ba\" where \"ba\" is a permutation of \"ab\".\n\nSo \"abba\" is an abelian square.",
     "significance": "supporting",

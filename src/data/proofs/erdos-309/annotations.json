@@ -268,7 +268,7 @@
       "startLine": 244,
       "endLine": 263
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Answer to Erdős's Question",
     "content": "**erdos_309_answer:**\n\nF(N) is NOT o(log N). Instead, F(N) = Θ(log N).\n\n```lean\ntheorem erdos_309_answer :\n    ∃ c : ℝ, c > 0 ∧\n    ∀ N ≥ 10, countRepresentable N ≥ Nat.floor (c * log N)\n```\n\n**Conclusion:** The answer to Erdős's question is definitively NO. The count grows logarithmically.",
     "significance": "key",
@@ -364,7 +364,7 @@
       "startLine": 306,
       "endLine": 322
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Density Result",
     "content": "**representable_sparse_but_unbounded:**\n\nRepresentable integers have density 0 among all integers, but the count is unbounded.\n\n```lean\ntheorem representable_sparse_but_unbounded :\n    (∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, (countRepresentable N : ℝ) / N < ε) ∧\n    (∀ M : ℕ, ∃ N : ℕ, countRepresentable N > M)\n```\n\nF(N)/N ~ log N / N → 0, but F(N) ~ log N → ∞.",
     "significance": "key",
@@ -389,7 +389,7 @@
       "startLine": 328,
       "endLine": 349
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary",
     "content": "**erdos_309_summary:**\n\nCombines the main results.\n\n```lean\ntheorem erdos_309_summary :\n    (∀ N, IsRepresentable N 0) ∧\n    True :=\n  ⟨zero_representable, trivial⟩\n```\n\n**Key Results:**\n1. F(N) ≤ log N + O(1) (trivial upper bound)\n2. F(N) ≥ log N - O(log log N) (Yokota 1997)\n3. F(N) ~ log N + γ (Yokota 2002)\n\n**Answer:** F(N) = Θ(log N), NOT o(log N).",
     "significance": "key",

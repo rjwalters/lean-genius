@@ -28,7 +28,7 @@
       "startLine": 25,
       "endLine": 31
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Base Cases with @[simp]",
     "content": "Two base cases tagged `@[simp]` for automatic simplification: $S_0(n) = 1$ (the 0-dimensional simplex is a point) and $S_k(0) = 1$ (any simplex of side length 0 has one vertex). The first uses `Nat.choose_zero_right` and the second uses `Nat.choose_self`, reflecting the combinatorial identities $\\binom{n}{0} = 1$ and $\\binom{k}{k} = 1$.",
     "mathContext": "$S_0(n) = \\binom{n}{0} = 1$ and $S_k(0) = \\binom{k}{k} = 1$",
@@ -166,7 +166,7 @@
       "startLine": 119,
       "endLine": 130
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Special Cases and Computational Verification",
     "content": "Three verification results: `parallel_vandermonde_left` shows that setting $a=0$ reduces to the 1D hockey stick (since $S_0(i) = 1$), providing a sanity check on the general identity. The `native_decide` checks verify $S_2(2) = 6$ (the 2-simplex with 6 lattice points) and $S_3(2) = 10$ (confirming the Vandermonde convolution at small values). These concrete computations ground the abstract identities in tangible numbers.",
     "mathContext": "$S_2(2) = \\binom{4}{2} = 6$ and $S_3(2) = \\binom{5}{3} = 10$",
