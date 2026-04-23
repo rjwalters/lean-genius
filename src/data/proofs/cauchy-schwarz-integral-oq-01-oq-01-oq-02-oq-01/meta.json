@@ -14,10 +14,10 @@
       "measure-theory"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 16,
     "axiomCount": 0,
-    "lineCount": 980,
-    "assumptions": "2 remaining sorries, both dead-path (not used in main proof chain): (1) truncated_rn_deriv_lq_bound (line 191) — incorrect approach, bypassed; (2) rn_deriv_memLq (line 207) — depends on (1), also bypassed. The main theorem riesz_lp_surjective_from_rn is proved via rn_deriv_memLq_from_trunc + holder_extremizer_lq_bound (all sorry-free). holder_extremizer_lq_bound proved in session 5 (2026-04-22).",
+    "lineCount": 863,
+    "assumptions": "16 active sorries across supporting infrastructure lemmas (functionalSetFn_null, truncated_memLq, truncated_rn_deriv_lq_bound, rn_deriv_memLq, rn_deriv_memLq_from_trunc, holder_product_integrable, integrationCLM, integrationCLM_eq, integral_representation_from_rn, indicator_lp_hasSum, functional_hasSum_parts, signedMeasureOfFunctional def, signedMeasureOfFunctional_spec, signedMeasureOfFunctional_ac, rnDeriv_integral_eq, holder_extremizer_lq_bound). Dead code section (lines 390–755) is commented out.",
     "dateAdded": "2026-04-13"
   },
   "overview": {
@@ -106,7 +106,7 @@
     "imports": [
       "Mathlib"
     ],
-    "lineCount": 980,
+    "lineCount": 863,
     "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 2,
@@ -133,7 +133,7 @@
       }
     ],
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
-    "sorries": 2
+    "sorries": 16
   },
-  "sorries": 2
+  "sorries": 16
 }
