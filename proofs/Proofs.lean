@@ -2424,6 +2424,7 @@ import Proofs.TractatusOntology
 import Proofs.TractatusQuantifiers
 import Proofs.TriangleAngleSum
 import Proofs.TriangleAngleSumOQ01
+import Proofs.TriangleAngleSumOQ02
 import Proofs.TriangleInequality
 import Proofs.TriangleInequalityOQ02
 import Proofs.TriangleInequalityOQ03
