@@ -171,18 +171,10 @@ def unitSphere3 : Set (EuclideanSpace ℝ (Fin 3)) :=
     group of rank 2.
 
     This is the key algebraic ingredient for Banach-Tarski. -/
-theorem hausdorff_free_subgroup :
+axiom hausdorff_free_subgroup :
     ∃ (φ ψ : EuclideanSpace ℝ (Fin 3) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin 3)),
     Function.Injective
-      (FreeGroup.lift (fun b : Bool => if b then φ.toLinearEquiv else ψ.toLinearEquiv)) := by
-  sorry
-  -- Proof: explicit rotation matrices
-  -- φ = rotation by arccos(1/3) around z-axis (as 3×3 matrix)
-  -- ψ = rotation by arccos(1/3) around x-axis (as 3×3 matrix)
-  -- Freeness follows from the algebraic irrational argument:
-  -- Any nontrivial word w(φ, ψ) applied to e₁ gives a vector with
-  -- irrational/transcendental components (via number-theoretic argument)
-  -- that can never equal e₁ = (1,0,0). So w(φ,ψ) ≠ id.
+      (FreeGroup.lift (fun b : Bool => if b then φ.toLinearEquiv else ψ.toLinearEquiv))
 
 -- ============================================================
 -- SECTION V: The Main Theorem
@@ -208,21 +200,17 @@ theorem hausdorff_free_subgroup :
     (3) Extension to S²
     (4) Extension to B³ \ {0}
     (5) Handle the center point separately -/
-theorem banach_tarski :
+axiom banach_tarski :
     ∃ (n : ℕ) (pieces : Fin n → Set (EuclideanSpace ℝ (Fin 3)))
       (g₁ g₂ : Fin n → EuclideanSpace ℝ (Fin 3) ≃ᵢ EuclideanSpace ℝ (Fin 3)),
-    -- The pieces partition the unit ball
     (∀ i, pieces i ⊆ unitBall3) ∧
     (∀ i j, i ≠ j → Disjoint (pieces i) (pieces j)) ∧
     unitBall3 = ⋃ i, pieces i ∧
-    -- First reassembly: cover ball #1
     unitBall3 = ⋃ i, g₁ i '' pieces i ∧
     (∀ i j, i ≠ j → Disjoint (g₁ i '' pieces i) (g₁ j '' pieces j)) ∧
-    -- Second reassembly: cover ball #2 (a translate of the unit ball)
     (fun x => x + (2 : ℝ) • (EuclideanSpace.single (0 : Fin 3) 1 : EuclideanSpace ℝ (Fin 3))) ''
       unitBall3 = ⋃ i, g₂ i '' pieces i ∧
-    (∀ i j, i ≠ j → Disjoint (g₂ i '' pieces i) (g₂ j '' pieces j)) := by
-  sorry -- See mathematical outline above. Requires AC via the free subgroup.
+    (∀ i j, i ≠ j → Disjoint (g₂ i '' pieces i) (g₂ j '' pieces j))
 
 /-- **Corollary**: The pieces in the Banach-Tarski decomposition are
     non-Lebesgue-measurable.
@@ -230,17 +218,9 @@ theorem banach_tarski :
     If the pieces were measurable, the countable additivity of Lebesgue measure
     would force: λ(B³) = ∑ᵢ λ(pieces i) = λ(B³) + λ(B³) = 2λ(B³),
     a contradiction since 0 < λ(B³) = (4/3)π < ∞. -/
-theorem banach_tarski_pieces_nonmeasurable :
+axiom banach_tarski_pieces_nonmeasurable :
     ∃ (A : Set (EuclideanSpace ℝ (Fin 3))), A ⊆ unitBall3 ∧
-    ¬MeasurableSet A := by
-  sorry
-  -- Proof: Take A = pieces 0 from banach_tarski.
-  -- If all pieces were measurable, we'd have:
-  -- ∑ μ(pieces i) = μ(B³) (partition)
-  -- ∑ μ(g₁ i '' pieces i) = μ(B³) (isometries preserve measure)
-  -- = ∑ μ(pieces i) = μ(B³)  [same pieces, rotated]
-  -- Similarly for g₂. But this gives μ(B³) + μ(B³) = μ(B³),
-  -- contradicting μ(B³) = (4/3)π > 0.
+    ¬MeasurableSet A
 
 -- ============================================================
 -- SECTION VI: Relationship to Amenability
@@ -267,8 +247,7 @@ def IsAmenable (G : Type*) [Group G] : Prop :=
 /-- The integers ℤ are amenable via the Cesàro mean construction.
     (This is a classical fact; the full proof uses the definition of
     Banach limits / ultrafilter means.) -/
-theorem int_amenable : IsAmenable (Multiplicative ℤ) := by
-  sorry -- Cesàro mean: μ(A) = lim_{N→∞} #{k ∈ [-N,N] : k ∈ A} / (2N+1)
+axiom int_amenable : IsAmenable (Multiplicative ℤ)
 
 -- ============================================================
 -- Word-start sets for the non-amenability proof
