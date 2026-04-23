@@ -32,7 +32,7 @@
     "proofId": "erdos-1015-oq-05",
     "range": {
       "startLine": 48,
-      "endLine": 62
+      "endLine": 68
     },
     "type": "definition",
     "title": "ramseyNumber: Axiom Replaced by Nat.find Definition",
@@ -60,7 +60,7 @@
     "proofId": "erdos-1015-oq-05",
     "range": {
       "startLine": 69,
-      "endLine": 101
+      "endLine": 109
     },
     "type": "theorem",
     "title": "HasRamseyProperty_mono: Ramsey Property Propagates to Larger Graphs",
@@ -87,7 +87,7 @@
     "proofId": "erdos-1015-oq-05",
     "range": {
       "startLine": 110,
-      "endLine": 216
+      "endLine": 218
     },
     "type": "theorem",
     "title": "HasRamseyProperty_of_add: The Erdős-Szekeres Pigeonhole Step",
@@ -115,7 +115,7 @@
     "proofId": "erdos-1015-oq-05",
     "range": {
       "startLine": 235,
-      "endLine": 281
+      "endLine": 286
     },
     "type": "theorem",
     "title": "ramseyBound_HasRamseyProperty: Inductive Proof of the Binomial Bound",
@@ -166,30 +166,72 @@
     ]
   },
   {
-    "id": "ann-axiom-summary",
+    "id": "ann-ramsey-bound-pascal",
     "proofId": "erdos-1015-oq-05",
-    "range": {
-      "startLine": 325,
-      "endLine": 353
-    },
-    "type": "concept",
-    "title": "Axiom Elimination Summary: 8 → 6 Axioms and Why 6 Remain",
-    "content": "Lines 325-353 contain the §5 summary section: a comment table listing all 8 original axioms with their elimination status, followed by `#check` declarations confirming the key theorems.\n\n**Eliminated (2)**:\n1. `ramseyNumber`: Converted from `axiom ramseyNumber : ℕ → ℕ → ℕ` to `noncomputable def` via `Nat.find` (§1). This makes the function mathematically well-defined — it returns the true minimum.\n2. `ramsey_upper_bound`: Proved from scratch via the Erdős-Szekeres binomial bound (§3-§4). This gives `R(t,t) ≤ 4^t` without any axiomatic assumption.\n\n**Remaining (6)** — why each is hard:\n- `moon_f3`, `moon_f3_n` (Moon 1966): These state properties of the problem's function $f(t)$ in terms of specific graph structures. Moon's 1966 result uses a detailed analysis of spanning tree counts in complete graphs, not available in Mathlib.\n- `erdos_ramsey_bound`: Connects $f(t)$ to $R(t,t)$ via Ramsey lower bounds (probabilistic method). The probabilistic method is not formalized in Mathlib.\n- `burr_erdos_spencer` (BES 1975): The complete Burr-Erdős-Spencer argument gives the exact formula for $f(t)$. This is a 10+ page research paper argument.\n- `f_root_limit`, `f_not_linear`: Asymptotic analysis requiring Ramsey lower bounds and analysis of $f(t)^{1/t}$ as $t \\to \\infty$.\n\nThe `#check` lines (348-351) serve as documentation: they confirm the types of the key theorems compile correctly and provide anchor points for readers navigating the file.",
-    "mathContext": "Axiom count reduction: 8 `axiom` declarations → 6 remaining. The two eliminated axioms were the 'easiest': `ramseyNumber` was always a definition (its axiom status was a Lean formalization choice, not a mathematical necessity), and `ramsey_upper_bound` (R(t,t) ≤ 4^t) is a standard 1935 result with a clean combinatorial proof. The remaining 6 require either the full BES theorem or probabilistic method arguments.",
+    "range": { "startLine": 219, "endLine": 233 },
+    "type": "technique",
+    "title": "ramseyBound_pascal: Pascal's Rule Connects Binomial Recurrence to Induction",
+    "content": "`ramseyBound_pascal` proves the identity `ramseyBound (r+2) (s+2) = ramseyBound (r+1) (s+2) + ramseyBound (r+2) (s+1)` — Pascal's rule translated into the ramseyBound notation. This is the algebraic key that makes `ramseyBound_HasRamseyProperty` work: the goal at the inductive step `(r+2, s+2)` expresses `C(r+s+2, r+1)` as a sum matching the two recursive calls to `HasRamseyProperty_of_add`.\n\nThe proof unfolds `ramseyBound` (eliminating the `if` guards via `rw [if_neg ...]`), introduces arithmetic simplification lemmas `h1`–`h5` for the index calculations, and applies `Nat.choose_succ_succ` — which is Pascal's identity `C(n+1, k+1) = C(n, k) + C(n, k+1)` in Mathlib. The 5 auxiliary `have h1`–`h5` lines rewrite the natural number arithmetic to put the choose terms in the form required by `Nat.choose_succ_succ`.",
+    "mathContext": "Pascal's rule: $\\binom{n}{k} = \\binom{n-1}{k-1} + \\binom{n-1}{k}$. In ramseyBound: $\\text{ramseyBound}(r+2)(s+2) = \\binom{r+s}{r+1} = \\binom{r+s-1}{r} + \\binom{r+s-1}{r+1} = \\text{ramseyBound}(r+1)(s+2) + \\text{ramseyBound}(r+2)(s+1)$. Mathlib: `Nat.choose_succ_succ n k : C(n+1, k+1) = C(n, k) + C(n, k+1)`. The `(by omega)` calls handle the arithmetic identities $r+s+2-2 = r+s$, etc., avoiding natural number subtraction pitfalls.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pascal's identity binomial coefficients",
+      "Nat.choose_succ_succ Mathlib",
+      "ramseyBound definition",
+      "ramseyBound_HasRamseyProperty inductive step",
+      "HasRamseyProperty_of_add",
+      "natural number arithmetic omega"
+    ],
+    "prerequisites": [
+      "Nat.choose_succ_succ from Mathlib.Data.Nat.Choose.Basic",
+      "ramseyBound definition (noncomputable, lines 48-62)",
+      "HasRamseyProperty_of_add (lines 110-216)"
+    ]
+  },
+  {
+    "id": "ann-choose-le-two-pow",
+    "proofId": "erdos-1015-oq-05",
+    "range": { "startLine": 288, "endLine": 297 },
+    "type": "technique",
+    "title": "choose_le_two_pow: Bounding Binomial Coefficients via the Binomial Theorem",
+    "content": "`choose_le_two_pow` is a private auxiliary lemma proving `C(n, k) ≤ 2^n` for all `n` and `k`. It is the key step in `ramseyBound_le_four_pow` that reduces the binomial coefficient bound to an exponential bound.\n\nThe proof splits on `k ≤ n` vs `k > n`. When `k ≤ n`: uses `Finset.single_le_sum` to argue that one term of the sum `∑ i ≤ n, C(n, i)` is ≤ the whole sum, combined with `Nat.sum_range_choose` which identifies the sum with `2^n`. When `k > n`: `Nat.choose_eq_zero_of_lt` gives `C(n, k) = 0`, making the inequality trivial.\n\nThe `private` modifier hides this lemma from the module interface — it is purely an implementation detail of `ramseyBound_le_four_pow`.",
+    "mathContext": "$C(n, k) \\leq \\sum_{i=0}^n C(n, i) = 2^n$. The equality $\\sum_{i=0}^n C(n,i) = 2^n$ is the binomial theorem at $x=y=1$: $(1+1)^n = \\sum_i C(n,i) 1^i 1^{n-i}$. Lean: `Nat.sum_range_choose n : ∑ i in Finset.range(n+1), C(n,i) = 2^n`. `Finset.single_le_sum`: for nonneg `f`, `f a ≤ ∑ x in s, f x` when `a ∈ s`. Here `f i = C(n, i)` and `a = k`.",
     "significance": "supporting",
     "relatedConcepts": [
+      "binomial theorem sum 2^n",
+      "Nat.sum_range_choose Mathlib",
+      "Finset.single_le_sum",
+      "Nat.choose_eq_zero_of_lt",
+      "private lemma Lean 4",
+      "ramseyBound_le_four_pow"
+    ],
+    "prerequisites": [
+      "Nat.sum_range_choose (Mathlib.Data.Nat.Choose.Sum)",
+      "Finset.single_le_sum",
+      "Nat.choose_eq_zero_of_lt"
+    ]
+  },
+  {
+    "id": "ann-ramsey-complete-bound",
+    "proofId": "erdos-1015-oq-05",
+    "range": { "startLine": 315, "endLine": 353 },
+    "type": "insight",
+    "title": "Universal R(t,t) ≤ 4^t and Axiom Elimination Summary",
+    "content": "Two theorems complete the `R(t,t) ≤ 4^t` bound for all `t ∈ ℕ`:\n\n`ramsey_upper_bound_zero` (lines 315-317): For `t = 0`, proves `ramseyNumber 0 0 ≤ 4^0 = 1` via `simp` unfolding the `dif_neg` branch.\n\n`ramsey_upper_bound_all` (lines 319-323): Universal statement `∀ t, ramseyNumber t t ≤ 4^t`. Case splits `t = 0` vs `t > 0` via `Nat.eq_zero_or_pos`, combining `ramsey_upper_bound_zero` and `ramsey_upper_bound`.\n\n**Axiom Elimination Summary** (§5 comment block, lines 325-351): The comment table documents 2 eliminated and 6 remaining axioms.\n\nEliminated: (1) `ramseyNumber` — converted from `axiom ramseyNumber : ℕ → ℕ → ℕ` to `noncomputable def` via `Nat.find`. (2) `ramsey_upper_bound` — proved via Erdős-Szekeres (§3-§4).\n\nRemaining (6): `moon_f3`, `moon_f3_n` (Moon 1966, spanning tree counts not in Mathlib); `erdos_ramsey_bound` (Ramsey lower bounds via probabilistic method); `burr_erdos_spencer` (BES 1975 full theorem); `f_root_limit`, `f_not_linear` (asymptotic analysis of $f(t)^{1/t}$). The `#check` lines at 348-351 confirm exported theorem types compile correctly.",
+    "mathContext": "Degenerate case $t = 0$: the `dif_neg` branch gives `ramseyNumber 0 0 = 0 ≤ 1 = 4^0$. Axiom count: 8 original axioms → 6 remaining. The two eliminated axioms were definitional in nature (`ramseyNumber`) or accessible via classical combinatorics (`ramsey_upper_bound`). The 6 remaining require deep results: Moon's 1966 spanning tree formula, the probabilistic method (Erdős 1947), and the full Burr-Erdős-Spencer theorem.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ramsey_upper_bound main bound",
+      "Nat.eq_zero_or_pos case split",
       "axiom count reduction 8→6",
       "Moon 1966 spanning trees",
       "Burr-Erdős-Spencer theorem 1975",
-      "probabilistic method combinatorics",
-      "f(t) Erdős 1015 problem",
-      "Ramsey lower bounds",
-      "#check Lean documentation",
-      "open problems Erdős #1015"
+      "probabilistic method lower bounds",
+      "dif_neg degenerate ramseyNumber"
     ],
     "prerequisites": [
-      "ramseyNumber (§1)",
-      "ramsey_upper_bound (§4)",
+      "ramsey_upper_bound (line 312, requires t ≥ 1)",
+      "ramseyNumber definition (lines 48-68)",
       "remaining axioms in Erdos1015Problem.lean"
     ]
   }

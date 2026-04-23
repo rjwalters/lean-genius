@@ -160,5 +160,25 @@
       "description": "Determines R(4,5) = 25 via computer search; illustrates the computational difficulty that makes ramseyNumber noncomputable even for small values — and why Lean's Nat.find definition is classical rather than algorithmic."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "ramsey_upper_bound_all",
+      "statement": "∀ t : ℕ, ramseyNumber t t ≤ 4 ^ t",
+      "significance": "The fully proved main result: R(t,t) ≤ 4^t for all t, eliminating the axiomatized bound from the parent proof.",
+      "lineNumber": 319
+    },
+    {
+      "name": "ramseyBound_HasRamseyProperty",
+      "statement": "∀ r s : ℕ, r ≥ 1 → s ≥ 1 → HasRamseyProperty (Fin (ramseyBound r s)) r s",
+      "significance": "The Erdős-Szekeres 1935 bound: the binomial coefficient C(r+s-2, r-1) has the Ramsey property.",
+      "lineNumber": 235
+    },
+    {
+      "name": "HasRamseyProperty_of_add",
+      "statement": "HasRamseyProperty (Fin n₁) (r-1) s → HasRamseyProperty (Fin n₂) r (s-1) → HasRamseyProperty (Fin (n₁+n₂)) r s",
+      "significance": "The key inductive step: formalizes the Erdős-Szekeres pigeonhole argument R(r,s) ≤ R(r-1,s) + R(r,s-1).",
+      "lineNumber": 110
+    }
+  ],
   "sorries": 0
 }
