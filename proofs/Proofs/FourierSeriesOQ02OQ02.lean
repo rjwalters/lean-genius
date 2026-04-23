@@ -219,7 +219,7 @@ theorem holder_half_is_critical_for_pseries :
   have h_not_harm : ¬ Summable (fun n : ℕ => (1 : ℝ) / (n : ℝ)) := by
     intro hs
     have : Summable (fun n : ℕ => (n : ℝ)⁻¹ ^ (1 : ℝ)) :=
-      hs.congr (fun n => by simp [Real.rpow_one, inv_eq_one_div])
+      hs.congr (fun n => by simp only [Real.rpow_one, one_div])
     exact absurd this (Real.summable_nat_rpow_inv.not.mpr (by norm_num))
   exact h_not_harm h_harm
 
