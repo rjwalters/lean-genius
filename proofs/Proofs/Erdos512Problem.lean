@@ -101,7 +101,34 @@ theorem L1norm_nonneg (A : Finset ℤ) : L1norm A ≥ 0 := by
 /-- The L¹ norm is at most |A| (trivial upper bound). -/
 theorem L1norm_upper_bound (A : Finset ℤ) : L1norm A ≤ A.card := by
   unfold L1norm
-  sorry -- Requires measure theory
+  -- expSumNorm A is continuous (finite sum of continuous functions + Complex.abs)
+  have hf_cont : Continuous (expSumNorm A) := by
+    unfold expSumNorm expSum expTwoPiI
+    apply Complex.continuous_abs.comp
+    apply continuous_finset_sum
+    intro n _
+    apply Complex.continuous_exp.comp
+    fun_prop
+  -- IntegrableOn [0,1] from continuity on compact set
+  have hint : IntegrableOn (expSumNorm A) (Set.Icc 0 1) :=
+    hf_cont.continuousOn.integrableOn_compact isCompact_Icc
+  -- Constant A.card is integrable on [0,1] (finite measure)
+  have hcint : IntegrableOn (fun _ : ℝ => (A.card : ℝ)) (Set.Icc 0 1) :=
+    integrableOn_const.mpr (Or.inr (by simp [Real.volume_Icc]))
+  -- Pointwise bound: expSumNorm A θ ≤ A.card (proved as expSum_bound)
+  have hbdd : ∀ θ ∈ Set.Icc (0:ℝ) 1, expSumNorm A θ ≤ (A.card : ℝ) :=
+    fun θ _ => expSum_bound A θ
+  -- Monotone integration gives the integral bound
+  have h1 : ∫ θ in Set.Icc 0 1, expSumNorm A θ ≤ ∫ θ in Set.Icc 0 1, (A.card : ℝ) :=
+    setIntegral_mono_on hint hcint measurableSet_Icc hbdd
+  -- Constant integral over [0,1] equals A.card (vol([0,1]) = 1)
+  have h2 : ∫ θ in Set.Icc (0:ℝ) 1, (A.card : ℝ) = A.card := by
+    rw [set_integral_const, smul_eq_mul]
+    have hv : (volume (Set.Icc (0:ℝ) 1)).toReal = 1 := by
+      rw [Real.volume_Icc]
+      simp [ENNReal.toReal_ofReal]
+    linarith [hv]
+  linarith
 
 /-
 ## Part IV: Littlewood's Conjecture

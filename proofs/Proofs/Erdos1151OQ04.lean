@@ -42,6 +42,7 @@ Tags: analysis, approximation-theory, chebyshev, lebesgue-function, erdos-proble
 
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Complex
 import Mathlib.RingTheory.Polynomial.Chebyshev
 import Mathlib.Topology.Baire.CompleteMetrizable
 import Mathlib.Topology.Baire.Lemmas
@@ -516,6 +517,95 @@ theorem chebyshev_lebesgue_eq (n : ℕ) (hn : 0 < n) (θ : ℝ)
   simp only [abs_pow, abs_neg, abs_one, one_pow, mul_one]
   -- Now: |cos(nθ)|/n · sin(φₖ)/|cos θ - nodes k| = |cos(nθ)|/n · sin(φₖ)/|cos θ - nodes k|
   field_simp
+
+/-! ## Rational Cosine Not a Node (Session 6) -/
+
+/-- **Key helper**: For odd p and odd q, cos(πp/q) is never a Chebyshev node of any degree n.
+
+    Proof: By `Real.cos_eq_cos_iff`, the equation cos(πp/q) = cos((2k+1)π/(2n)) requires
+    either (2k+1)π/(2n) = 2jπ + πp/q or (2k+1)π/(2n) = 2jπ − πp/q for some j : ℤ.
+
+    Dividing by π and multiplying by 2nq:
+    - Case 1: q(2k+1) = 4jnq + 2np. LHS is odd (product of two odd numbers q, 2k+1).
+      RHS is even. Contradiction.
+    - Case 2: q(2k+1) + 2np = 4jnq. LHS is odd + even = odd. RHS is even. Contradiction.
+
+    This allows `chebyshev_lebesgue_eq` to be applied for ALL n (not just n = mq). -/
+lemma x_not_chebyshev_node (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_pos : 0 < q)
+    (n : ℕ) (hn : 0 < n) (k : Fin n) :
+    Real.cos (↑p * Real.pi / ↑q) ≠ chebyshevNode n k := by
+  simp only [chebyshevNode]
+  intro heq
+  rw [Real.cos_eq_cos_iff] at heq
+  obtain ⟨j, hj | hj⟩ := heq
+  · -- Case 1: (2k+1)π/(2n) = 2jπ + πp/q
+    -- → q(2k+1) = 4jnq + 2np (after ×2nq/π)
+    -- LHS is odd, RHS is even → contradiction
+    have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
+    have hq_ne : (q : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hq_pos.ne'
+    have hn_ne : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+    -- Extract the angle equation (divide by π)
+    have hangle : (2 * (k.val : ℝ) + 1) / (2 * n) = 2 * j + p / q := by
+      have h := hj
+      rw [show (2 * (k.val : ℝ) + 1) * Real.pi / (2 * ↑n) =
+            Real.pi * ((2 * k.val + 1) / (2 * n)) from by ring,
+          show 2 * (j : ℝ) * Real.pi + ↑p * Real.pi / ↑q =
+            Real.pi * (2 * j + ↑p / ↑q) from by ring] at h
+      exact mul_left_cancel₀ hpi h
+    -- Multiply by 2nq to get integer equation in ℝ
+    have hR : (q : ℝ) * (2 * k.val + 1) = 4 * j * n * q + 2 * n * p := by
+      have h := congr_arg (· * (2 * n * q)) hangle
+      field_simp [hn_ne, hq_ne] at h ⊢
+      linarith
+    -- Cast to ℤ
+    have hint : (q : ℤ) * (2 * ↑k.val + 1) = 4 * j * ↑n * ↑q + 2 * ↑n * ↑p := by
+      exact_mod_cast hR
+    -- LHS q*(2k+1) is odd (product of two odd numbers)
+    have hodd : Odd ((q : ℤ) * (2 * ↑k.val + 1)) :=
+      (by exact_mod_cast hq : Odd (q : ℤ)).mul ⟨↑k.val, by ring⟩
+    -- RHS 4jnq + 2np is even (= 2*(2jnq + np))
+    have heven : Even (4 * j * (↑n : ℤ) * ↑q + 2 * ↑n * ↑p) :=
+      ⟨2 * j * ↑n * ↑q + ↑n * ↑p, by ring⟩
+    -- hint rewrites hodd: Odd (4jnq + 2np), contradicting heven
+    exact heven.not_odd (hint ▸ hodd)
+  · -- Case 2: (2k+1)π/(2n) = 2jπ - πp/q
+    -- → q(2k+1) + 2np = 4jnq (after ×2nq/π)
+    -- LHS is odd + even = odd, RHS is even → contradiction
+    have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
+    have hq_ne : (q : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hq_pos.ne'
+    have hn_ne : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+    have hangle : (2 * (k.val : ℝ) + 1) / (2 * n) = 2 * j - p / q := by
+      have h := hj
+      rw [show (2 * (k.val : ℝ) + 1) * Real.pi / (2 * ↑n) =
+            Real.pi * ((2 * k.val + 1) / (2 * n)) from by ring,
+          show 2 * (j : ℝ) * Real.pi - ↑p * Real.pi / ↑q =
+            Real.pi * (2 * j - ↑p / ↑q) from by ring] at h
+      exact mul_left_cancel₀ hpi h
+    have hR : (q : ℝ) * (2 * k.val + 1) + 2 * n * p = 4 * j * n * q := by
+      have h := congr_arg (· * (2 * n * q)) hangle
+      field_simp [hn_ne, hq_ne] at h ⊢
+      linarith
+    have hint : (q : ℤ) * (2 * ↑k.val + 1) + 2 * ↑n * ↑p = 4 * j * ↑n * ↑q := by
+      exact_mod_cast hR
+    -- LHS: q*(2k+1) is odd (odd × odd), 2np is even → sum is odd
+    have hodd_sum : Odd ((q : ℤ) * (2 * ↑k.val + 1) + 2 * ↑n * ↑p) := by
+      apply Odd.add_even
+      · exact (by exact_mod_cast hq : Odd (q : ℤ)).mul ⟨↑k.val, by ring⟩
+      · exact ⟨↑n * ↑p, by ring⟩
+    -- RHS 4jnq is even
+    have heven_rhs : Even (4 * j * (↑n : ℤ) * ↑q) := ⟨2 * j * ↑n * ↑q, by ring⟩
+    exact heven_rhs.not_odd (hint ▸ hodd_sum)
+
+/-- The Lebesgue formula applies for ALL n when p, q are odd (not just along n = mq
+    multiples), since cos(πp/q) is never a Chebyshev node. -/
+lemma chebyshev_lebesgue_eq_all_n (p q : ℕ) (hp : Odd p) (hq : Odd q)
+    (hq_pos : 0 < q) (n : ℕ) (hn : 0 < n) :
+    chebyshevLebesgue n (Real.cos (↑p * Real.pi / ↑q)) =
+    |Real.cos (↑n * (↑p * Real.pi / ↑q))| / ↑n *
+    ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+                 |Real.cos (↑p * Real.pi / ↑q) - chebyshevNode n k| :=
+  chebyshev_lebesgue_eq n hn (↑p * Real.pi / ↑q)
+    (fun k => x_not_chebyshev_node p q hp hq hq_pos n hn k)
 
 /-! ## Key Lemmas with Sorry -/
 
