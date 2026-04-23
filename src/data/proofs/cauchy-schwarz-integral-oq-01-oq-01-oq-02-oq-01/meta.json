@@ -2,9 +2,9 @@
   "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
   "title": "Radon-Nikodým Route to Lp Duality",
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
-  "description": "Can Mathlib's Radon-Nikodým machinery (SignedMeasure.rnDeriv) be composed with Lp membership to eliminate the surjectivity axiom? Answer: yes in principle — all pieces exist, ~200 lines of composition needed.",
+  "description": "Can Mathlib's Radon-Nikodým machinery (SignedMeasure.rnDeriv) be composed with Lp membership to eliminate the surjectivity axiom? Answer: yes — all steps proved, 0 sorries.",
   "meta": {
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
     "tags": [
       "functional-analysis",
@@ -13,24 +13,24 @@
       "radon-nikodym",
       "measure-theory"
     ],
-    "badge": "wip",
-    "sorries": 2,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 1125,
-    "assumptions": "2 remaining sorries, both dead-path (not used in main proof chain): (1) truncated_rn_deriv_lq_bound (line 191) — incorrect approach, bypassed; (2) rn_deriv_memLq (line 207) — depends on (1), also bypassed. The main theorem riesz_lp_surjective_from_rn is proved via rn_deriv_memLq_from_trunc + holder_extremizer_lq_bound (all sorry-free). holder_extremizer_lq_bound proved in session 5 (2026-04-22).",
+    "lineCount": 1079,
+    "assumptions": "No axioms, no sorries. Main theorem riesz_lp_surjective_from_rn proved via signedMeasureOfFunctional + holder_extremizer_lq_bound + rn_deriv_memLq_from_trunc + integral_representation. Dead-path theorems (truncated_rn_deriv_lq_bound, rn_deriv_memLq) removed 2026-04-23.",
     "dateAdded": "2026-04-13"
   },
   "overview": {
     "problemStatement": "Can Mathlib's Radon-Nikodým machinery (`MeasureTheory.SignedMeasure.rnDeriv`) be composed with $L^p$ membership to eliminate the surjectivity axiom `riesz_lp_surjective`?",
-    "text": "The parent file axiomatizes the hard direction of the Riesz representation theorem: surjectivity of the map $L^q \\to (L^p)^*$. This file investigates whether Mathlib's Radon-Nikodým theorem can be composed with $L^p$ infrastructure to prove the axiom. The answer is yes in principle, with ~200 lines of composition code needed.",
-    "historicalContext": "The duality of $L^p$ spaces is one of the central results of 20th-century functional analysis. Frigyes Riesz proved the $L^2$ case in 1907 using inner product structure. The general $L^p$ case ($1 < p < \\infty$) was established through the work of Riesz, Stefan Banach, and others in the 1920s-1930s, relying crucially on the Radon-Nikodým theorem (Johann Radon 1913, Otto Nikodým 1930). The standard modern proof, as presented in Rudin's Real and Complex Analysis (Theorem 6.16), constructs the representing function via a three-step process: extract a signed measure from the functional, apply Radon-Nikodým to get a density, and verify $L^q$ membership via the Hölder extremizer trick. This file follows Rudin's route, using Mathlib's substantial measure theory library to formalize the first three steps and precisely isolating the remaining infrastructure gaps.",
-    "proofStrategy": "The proof follows Rudin's route in 6 steps: (1) show indicator functions are in $L^p$ for finite-measure sets, (2) prove the functional-induced set function $E \\mapsto \\varphi(\\mathbf{1}_E)$ vanishes on null sets (absolute continuity), (3) apply Radon-Nikodým to get $g = d\\nu/d\\mu$, (4) prove $g \\in L^q$ via the Hölder extremizer argument, (5) verify the integral representation $\\varphi(f) = \\int fg\\,d\\mu$ extends from simple functions to all of $L^p$ by density. Steps 1-3 are proved from Mathlib; steps 4-5 remain as infrastructure sorries.",
+    "text": "The parent file axiomatizes the hard direction of the Riesz representation theorem: surjectivity of the map $L^q \\to (L^p)^*$. This file proves that Mathlib's Radon-Nikodým theorem can be composed with $L^p$ infrastructure to prove the surjectivity direction directly. The answer is yes — all steps are formalized.",
+    "historicalContext": "The duality of $L^p$ spaces is one of the central results of 20th-century functional analysis. Frigyes Riesz proved the $L^2$ case in 1907 using inner product structure. The general $L^p$ case ($1 < p < \\infty$) was established through the work of Riesz, Stefan Banach, and others in the 1920s-1930s, relying crucially on the Radon-Nikodým theorem (Johann Radon 1913, Otto Nikodým 1930). The standard modern proof, as presented in Rudin's Real and Complex Analysis (Theorem 6.16), constructs the representing function via a three-step process: extract a signed measure from the functional, apply Radon-Nikodým to get a density, and verify $L^q$ membership via the Hölder extremizer trick. This file follows Rudin's route, using Mathlib's substantial measure theory library to formalize all steps.",
+    "proofStrategy": "The proof follows Rudin's route in 6 steps: (1) show indicator functions are in $L^p$ for finite-measure sets, (2) prove the functional-induced set function $E \\mapsto \\varphi(\\mathbf{1}_E)$ vanishes on null sets (absolute continuity), (3) apply Radon-Nikodým to get $g = d\\nu/d\\mu$, (4) prove $g \\in L^q$ via the Hölder extremizer argument, (5) verify the integral representation $\\varphi(f) = \\int fg\\,d\\mu$ extends from simple functions to all of $L^p$ by density. All steps proved from Mathlib.",
     "keyInsights": [
-      "Mathlib has all necessary components: SignedMeasure.rnDeriv, withDensityᵥ, Lebesgue decomposition, Hölder inequality, L2 duality — only the composition is missing",
+      "Mathlib has all necessary components: SignedMeasure.rnDeriv, withDensityᵥ, Lebesgue decomposition, Hölder inequality, L2 duality — the composition is ~1000 lines",
       "The absolute continuity step (ν ≪ μ) is immediate: null sets have zero-norm indicators in Lp, so the functional evaluates to zero",
-      "The critical missing piece is the Hölder extremizer argument: choosing test function |g|^{q/p}·sgn(g) to bootstrap \\|g\\|_q ≤ \\|φ\\|",
-      "The density argument (extending from indicators to Lp) requires Lp.simpleFunc.denseRange from Mathlib, which exists but needs careful type-matching",
-      "Aristotle cannot help with the remaining sorries — they require multi-step infrastructure building, not single-lemma proofs"
+      "The Hölder extremizer argument: choosing test function sign(gₙ)|gₙ|^{q-1} bootstraps ‖gₙ‖_q ≤ ‖φ‖ via φ(hₙ) = ∫ hₙ·g",
+      "The density argument (extending from indicators to Lp) proved via Lp.induction with indicator, addition, and closedness cases",
+      "SimpleFunc.induction + DCT (tendsto_integral_of_dominated_convergence) extends φ(simple fn) = ∫ simple fn · g to all bounded functions"
     ]
   },
   "sections": [
@@ -57,39 +57,39 @@
     },
     {
       "id": "lq-membership",
-      "title": "Step 5: Lq Membership (Infrastructure Gap)",
+      "title": "Step 4: Lq Membership via Hölder Extremizer",
       "startLine": 130,
       "endLine": 163,
-      "summary": "States the key remaining challenge: showing $g \\in L^q$ via the Hölder extremizer argument. Documents the classical proof technique and estimates ~100-200 lines needed."
+      "summary": "Proves $g \\in L^q$ via the Hölder extremizer: $h_n = \\mathrm{sign}(g_n)|g_n|^{q-1}$ satisfies $\\|g_n\\|_q \\leq \\|\\varphi\\|$ uniformly, then MCT gives $g \\in L^q$."
     },
     {
       "id": "density-extension",
-      "title": "Step 6: Integral Representation by Density",
+      "title": "Step 5: Integral Representation by Density",
       "startLine": 165,
       "endLine": 186,
-      "summary": "States the extension of the integral representation from indicator functions to all of $L^p$ via density of simple functions and continuity."
+      "summary": "Extends the integral representation from indicator functions to all of $L^p$ via Lp.induction (indicator, addition, and closedness cases)."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Riesz Lp Surjectivity from Radon-Nikodým",
-      "startLine": 188,
-      "endLine": 216,
-      "summary": "Combines all steps into the main surjectivity theorem, with 2 remaining sorries from Steps 5 and 6. Concludes that the parent file's axiom IS eliminable."
+      "startLine": 988,
+      "endLine": 1030,
+      "summary": "Combines all steps: given φ ∈ (Lp)*, constructs g ∈ Lq with φ(f) = ∫ fg dμ. Proves the parent file's riesz_lp_surjective axiom. 0 sorries, 0 axioms."
     }
   ],
   "conclusion": {
-    "summary": "The `riesz_lp_surjective` axiom in the parent file is eliminable using Mathlib's existing infrastructure. All mathematical components exist; the gap is ~200 lines of composition connecting Radon-Nikodým output to Lp membership proofs.",
-    "implications": "This establishes a clear roadmap for fully verifying the Riesz representation theorem in Lean 4. The 2 remaining sorries are infrastructure-level, not research-level: they require careful type-matching and norm estimation, but the mathematical arguments are well-understood and all required Mathlib primitives exist.",
+    "summary": "The `riesz_lp_surjective` axiom in the parent file is proved using Mathlib's existing infrastructure. The Rudin route via Radon-Nikodým is fully formalized: signed measure construction, RN derivative, Hölder extremizer bound, and Lp.induction extension.",
+    "implications": "This is a complete machine-verified proof of the Riesz representation theorem (surjectivity direction) for $L^p$ spaces with $1 < p < \\infty$ in Lean 4. The proof is elementary in structure, requiring no beyond-Mathlib infrastructure.",
     "openQuestions": [
-      "Can the Hölder extremizer construction (|g|^{q/p}·sgn(g)) be formalized efficiently using Mathlib's MeasureTheory.SimpleFunc API?",
-      "Does Mathlib's Lp.simpleFunc.denseRange provide a clean enough density argument, or does the sigma-finite extension require additional care?"
+      "Can the proof be generalized to sigma-finite measures without IsFiniteMeasure (would require localizing the argument)?",
+      "Does the proof extend to complex-valued Lp spaces (Riesz representation for complex functionals)?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
       "relationship": "extends",
-      "description": "The parent file which axiomatizes riesz_lp_surjective; this file provides the route to eliminating that axiom"
+      "description": "The parent file which axiomatizes riesz_lp_surjective; this file provides the proof of that axiom"
     },
     {
       "targetId": "cauchy-schwarz-integral-oq-01",
@@ -106,9 +106,9 @@
     "imports": [
       "Mathlib"
     ],
-    "lineCount": 1125,
+    "lineCount": 1079,
     "axiomCount": 0,
-    "theoremCount": 15,
+    "theoremCount": 13,
     "definitionCount": 2,
     "mainTheorems": [
       {
@@ -117,9 +117,14 @@
         "description": "Truncated RN derivative is in Lq (bounded function on finite measure)"
       },
       {
-        "name": "rn_deriv_memLq",
-        "type": "core",
-        "description": "RN derivative is in Lq via MCT — proved via abs_clamp, sup_min, norm_gn_eq, ptwise_eq, lintegral_iSup (depends on truncated_rn_deriv_lq_bound sorry)"
+        "name": "rn_deriv_memLq_from_trunc",
+        "type": "proved",
+        "description": "RN derivative is in Lq given uniform truncation bounds — proved via MCT (lintegral_iSup)"
+      },
+      {
+        "name": "holder_extremizer_lq_bound",
+        "type": "proved",
+        "description": "Hölder extremizer gives ‖gₙ‖_q ≤ ‖φ‖: sign(gₙ)|gₙ|^{q-1} ∈ Lp via SimpleFunc.induction + DCT"
       },
       {
         "name": "integral_representation",
@@ -129,11 +134,11 @@
       {
         "name": "riesz_lp_surjective_from_rn",
         "type": "proved",
-        "description": "Main surjectivity theorem — fully proved via holder_extremizer_lq_bound + rn_deriv_memLq_from_trunc + integral_representation"
+        "description": "Main surjectivity theorem — fully proved via holder_extremizer_lq_bound + rn_deriv_memLq_from_trunc + integral_representation. 0 sorries."
       }
     ],
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
-    "sorries": 2
+    "sorries": 0
   },
-  "sorries": 2
+  "sorries": 0
 }

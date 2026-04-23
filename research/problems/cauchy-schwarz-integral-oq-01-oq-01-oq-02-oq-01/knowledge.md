@@ -2,9 +2,34 @@
 
 **Problem**: Can Mathlib's RN machinery (SignedMeasure.rnDeriv) prove that every φ ∈ (Lp)* is represented by integration against some g ∈ Lq?
 
-**Status**: PROGRESS — holder_extremizer_lq_bound restructured with 3 focused sub-sorries; proof structure complete
+**Status**: COMPLETE — 0 sorries, 0 axioms. Dead-path theorems removed 2026-04-23.
 
 **Lean file**: `Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean`
+
+---
+
+## Session 2026-04-23 (Session 7) — Dead-path cleanup: 0 sorries
+
+**Mode**: REVISIT
+**Outcome**: completed — 0 sorries, 0 axioms
+
+### What I Did
+
+1. Confirmed main proof path (riesz_lp_surjective_from_rn) has 0 sorries
+2. Removed 2 dead-path sorry-bearing theorems:
+   - `truncated_rn_deriv_lq_bound` (MARKED FALSE: set-function bound approach is wrong)
+   - `rn_deriv_memLq` (depended on above; replaced by rn_deriv_memLq_from_trunc)
+3. Updated meta.json: sorries 2→0, badge wip→verified, lineCount 1125→1079
+4. Updated knowledge.md status to COMPLETE
+
+### Files Modified
+
+- `proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean` (-46 lines, 0 sorries)
+- `src/data/proofs/cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01/meta.json` (sorries→0, badge→verified)
+
+### Next Steps
+
+COMPLETED. No further research needed.
 
 ---
 
