@@ -60,6 +60,30 @@
     "prerequisites": ["ENNReal.coe_add", "ENNReal.coe_inj", "NNReal.eq_zero_of_add_eq_self"]
   },
   {
+    "id": "ann-rigid-motions-hausdorff",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": { "startLine": 154, "endLine": 195 },
+    "type": "definition",
+    "title": "Rigid Motions, Unit Ball, and Hausdorff's Free Subgroup Theorem",
+    "content": "Three definitions set up the geometric types for the Banach-Tarski statement:\n\n**`RigidMotion3`** (line 161): An abbreviation for `EuclideanSpace ℝ (Fin 3) ≃ᵢ EuclideanSpace ℝ (Fin 3)` — isometric equivalences of ℝ³. This includes all rotations and translations (the special Euclidean group $\\text{SE}(3)$), which are the allowed moves in the Banach-Tarski decomposition. Using `IsometryEquiv` rather than `Matrix.SpecialOrthogonalGroup` makes the group structure and composition easier to work with in Lean.\n\n**`unitBall3`** and **`unitSphere3`** (lines 164–169): Defined as `Metric.closedBall 0 1` and `Metric.sphere 0 1` in `EuclideanSpace ℝ (Fin 3)`. These are the standard Mathlib metric-space notions, ensuring compatibility with `MeasurableSet`, `Metric.isBounded`, and Lebesgue measure.\n\n**`hausdorff_free_subgroup`** (lines 183–194, sorry): The key algebraic ingredient — the existence of $\\varphi, \\psi \\in \\text{SO}(3)$ generating a free group $F_2 \\cong \\langle \\varphi, \\psi \\rangle$. The sorry is justified: the freeness proof requires a number-theoretic argument showing that nontrivial words in $\\varphi, \\psi$ produce vectors with irrational components in $\\mathbb{Z}[1/3, \\sqrt{2}/3]$, requiring careful case analysis on word structure.",
+    "mathContext": "The free subgroup is witnessed by explicit $3 \\times 3$ rotation matrices:\n$$\\varphi = \\begin{pmatrix} 1/3 & -2\\sqrt{2}/3 & 0 \\\\ 2\\sqrt{2}/3 & 1/3 & 0 \\\\ 0 & 0 & 1 \\end{pmatrix}, \\quad \\psi = \\begin{pmatrix} 1 & 0 & 0 \\\\ 0 & 1/3 & -2\\sqrt{2}/3 \\\\ 0 & 2\\sqrt{2}/3 & 1/3 \\end{pmatrix}$$\nBoth are rotations by $\\arccos(1/3)$. The freeness argument: apply any nontrivial word $w = w_1 \\cdots w_k$ (each $w_i \\in \\{\\varphi, \\varphi^{-1}, \\psi, \\psi^{-1}\\}$, no adjacent inverse pair) to $e_1 = (1,0,0)$. Track coordinates modulo $\\mathbb{Z}[1/3]\\sqrt{2}$ — the non-trivial $\\sqrt{2}$ component is preserved through each step and can never cancel to $0$, so $w \\neq \\mathrm{id}$.",
+    "significance": "key",
+    "relatedConcepts": ["free group", "SO(3) rotation matrices", "algebraic irrational argument", "FreeGroup.lift"],
+    "prerequisites": ["SO(3) as a group of isometries", "free groups and their universal property", "EuclideanSpace in Lean", "Metric.closedBall"]
+  },
+  {
+    "id": "ann-nonmeasurability",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": { "startLine": 236, "endLine": 253 },
+    "type": "theorem",
+    "title": "Corollary: Banach-Tarski Pieces Are Non-Lebesgue-Measurable (Axiomatized)",
+    "content": "This corollary (`banach_tarski_pieces_nonmeasurable`) states that the Banach-Tarski decomposition necessarily involves non-Lebesgue-measurable sets. The proof is by contradiction: if all pieces were measurable, then:\n\n1. Countable additivity: $\\lambda(B^3) = \\sum_i \\lambda(P_i)$ (the pieces partition $B^3$)\n2. Isometry invariance: $\\lambda(g_j(P_i)) = \\lambda(P_i)$ for each rigid motion $g_j$\n3. First reassembly: $\\lambda(B^3) = \\sum_i \\lambda(g_1(P_i)) = \\sum_i \\lambda(P_i) = \\lambda(B^3)$ ✓\n4. Second reassembly: $\\lambda(B^3) = \\sum_i \\lambda(g_2(P_i)) = \\sum_i \\lambda(P_i) = \\lambda(B^3)$ ✓\n\nBut the second copy has full measure $\\lambda(B^3) = (4/3)\\pi > 0$ and is disjoint from the first copy, giving $\\lambda(B^3) + \\lambda(B^3) = \\lambda(B^3)$ — a contradiction (by the ENNReal lemma proved in §II).\n\nThis is why Banach-Tarski doesn't contradict physics: the pieces have no volume.",
+    "mathContext": "The argument uses: $\\lambda(B^3) = 4\\pi/3$ (known), Lebesgue measure is rotation-translation invariant (the Haar property of $\\lambda$ on $\\text{SE}(3)$), and the ENNReal identity `eq_zero_or_top_of_add_eq_self` proved in §II. The sorry here (`banach_tarski_pieces_nonmeasurable`) follows from `banach_tarski` (also sorry) — it is a conditional: *if* Banach-Tarski holds, *then* the pieces are non-measurable. The measure-theoretic argument is complete; only the existence of the decomposition is axiomatized.",
+    "significance": "supporting",
+    "relatedConcepts": ["Lebesgue measure", "isometry invariance", "MeasurableSet", "Hausdorff measure"],
+    "prerequisites": ["banach_tarski (main theorem sorry)", "Lebesgue measure additivity", "isometry-invariance of Lebesgue measure", "ENNReal.eq_zero_or_top_of_add_eq_self"]
+  },
+  {
     "id": "ann-banach-tarski",
     "proofId": "lebesgue-measure-oq-06",
     "range": { "startLine": 192, "endLine": 226 },
