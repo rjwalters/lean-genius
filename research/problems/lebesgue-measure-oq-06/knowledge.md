@@ -113,6 +113,35 @@ File now compiles with exactly 5 intentional `sorry`s:
 
 ---
 
+## Session 2026-04-23 — Aristotle Companion File Proved
+
+**Mode**: REVISIT
+**Outcome**: progress (0 sorries in companion file)
+
+### What I Did
+- Proved all 5 lemmas in `LebesgueMeasureOQ06Aristotle.lean` (replacing all sorries)
+- Added `open ENNReal` to fix `ℝ≥0∞` notation parse errors
+- `ennreal_add_eq_self_iff`: rcases + `ENNReal.lt_add_right` for contradiction
+- `ennreal_two_mul_ne_self`: term-mode one-liner via `ENNReal.lt_add_right`
+- `amenable_compl_sum`: `rw [← hμ_add, Set.union_compl_self, hμ_total]`
+- `freeGroup_generators_ne`: `FreeGroup.of_injective` reduces to `decide`
+- `freeGroup_nontrivial`: anonymous constructor from `freeGroup_generators_ne`
+- Build verified from worktree: `./proofs/scripts/docker-build.sh Proofs.LebesgueMeasureOQ06Aristotle`
+
+### Key Findings
+- Docker build must run from the **worktree directory** not main repo when edits are worktree-only
+- `ℝ≥0∞` is a scoped notation requiring `open ENNReal` (or `open scoped ENNReal`)
+- `FreeGroup.of_injective : Function.Injective FreeGroup.of` is in FreeGroup/Basic.lean:654
+
+### Files Modified
+- `proofs/Proofs/LebesgueMeasureOQ06Aristotle.lean` (0 sorries, builds clean)
+
+### Next Steps
+- Submit companion file for Aristotle integration (5 proved lemmas)
+- Main `LebesgueMeasureOQ06.lean` retains 5 axiomatized sorries (hausdorff_free_subgroup, banach_tarski, etc.)
+
+---
+
 ## Dead Ends
 
 ### `equidecomposable_refl` with `[MulAction.IsPretransitive G α]`

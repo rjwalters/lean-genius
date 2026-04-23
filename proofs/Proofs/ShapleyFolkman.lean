@@ -18,7 +18,8 @@ Mathlib dependencies:
   - Mathlib.LinearAlgebra.AffineSpace.Independent (AffineIndependent)
   - Mathlib.LinearAlgebra.Dimension.Finrank (Module.finrank)
 
-Status: formalized — 1 sorry remains in reduce_excess_by_one Case B (WF Carathéodory descent)
+Status: formalized — 1 sorry remains in Sub-case B2 of reduce_excess_by_one
+  (bv ∉ S; WF descent on Carathéodory vertex count needed; B1 proved when bv ∈ S)
 -/
 import Mathlib.Analysis.Convex.Caratheodory
 import Mathlib.Analysis.Convex.Combination
@@ -693,15 +694,68 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
       Finset.ssubset_iff_subset_ne.mpr ⟨hD'_subset,
         fun heq => hD'_not_excess (heq ▸ hD_excess)⟩
     exact ⟨D', Finset.card_lt_card hD'_ssub⟩
-  · -- Case B: ε < ε₀ (a pos-index achieves the joint minimum; WF descent needed).
-    -- The joint minimizer l' ∈ pos_indices satisfies ε = sv(emb l') / c'(l'), so:
-    --   new_point(emb l') = bv(emb l') ∈ convexHull(S(emb l'))  [from new_mem_convexHull]
-    -- When bv(emb l') ∈ S(emb l') (e.g., binary Carathéodory count = 2): l' exits excess.
-    -- When bv(emb l') ∉ S(emb l'): bv has n-1 Carathéodory vertices (Starr 1969 WF).
-    -- Full proof: WF induction on N = Σ_{j excess} (Carathéodory vertex count of D.point j),
-    --   using a DecoratedDecomp structure that carries explicit vertex/weight data per index.
-    --   Each perturbation step: Case A exits excess; Case B decreases N by 1. N ≥ 2*(d+1).
-    sorry
+  · -- Case B: ε < ε₀ (pos-index achieves joint minimum).
+    -- pos_indices must be nonempty (else ε = ε₀, contradiction with Case B)
+    have h_pos_ne : pos_indices.Nonempty := by
+      by_contra h
+      exact hcase_A (by simp only [ε, dif_neg h])
+    have h_pr_ne : (pos_indices.image (fun l => sv (emb l) / c' l)).Nonempty :=
+      Finset.image_nonempty.mpr h_pos_ne
+    -- ε = min ε₀ (min of pos_ratios) from the definition of ε
+    have hε_eq : ε = min ε₀ ((pos_indices.image (fun l => sv (emb l) / c' l)).min' h_pr_ne) := by
+      simp only [ε, dif_pos h_pos_ne]
+    -- The pos minimum is ≤ ε₀ (since ε ≠ ε₀ means the neg branch didn't win)
+    have h_pm_le : (pos_indices.image (fun l => sv (emb l) / c' l)).min' h_pr_ne ≤ ε₀ := by
+      by_contra h
+      push_neg at h
+      exact hcase_A (hε_eq ▸ min_eq_left (le_of_lt h))
+    -- ε equals the pos minimum
+    have hε_pm : ε = (pos_indices.image (fun l => sv (emb l) / c' l)).min' h_pr_ne :=
+      hε_eq ▸ min_eq_right h_pm_le
+    -- Extract l' ∈ pos_indices achieving the minimum ratio
+    obtain ⟨l', hl'_in, hl'_eq⟩ :
+        ∃ l' ∈ pos_indices, sv (emb l') / c' l' =
+          (pos_indices.image (fun l => sv (emb l) / c' l)).min' h_pr_ne :=
+      Finset.mem_image.mp (Finset.min'_mem _ _)
+    simp only [pos_indices, Finset.mem_filter] at hl'_in
+    have hl'_pos : 0 < c' l' := hl'_in.2
+    -- sv(emb l') / c'(l') = ε (the joint minimum)
+    have hl'_ratio : sv (emb l') / c' l' = ε := hl'_eq ▸ hε_pm.symm
+    -- a-weight at l' hits 0: sv(emb l') - ε * c'(l') = 0
+    have h_aw : sv (emb l') - ε * c' l' = 0 := by
+      have heq : sv (emb l') = ε * c' l' := by
+        rw [← hl'_ratio]; field_simp [ne_of_gt hl'_pos]
+      linarith
+    -- Get binary representation data for emb l'
+    obtain ⟨_, hbv_mem', _, _, hpoint_eq'⟩ :=
+      hrepr (emb l') (Finset.mem_of_mem_filter _ (hemb_mem l'))
+    -- new_point(emb l') = bv(emb l'): a-weight = 0, b-weight = 1
+    have hnew_bv : new_point (emb l') = bv (emb l') := by
+      rw [new_point_emb l', hpoint_eq']; simp only [δ]
+      have h_bw : (1 - sv (emb l')) + ε * c' l' = 1 := by linarith [h_aw]
+      have key : sv (emb l') • av (emb l') + (1 - sv (emb l')) • bv (emb l') +
+                 ε • (c' l' • (bv (emb l') - av (emb l'))) = bv (emb l') := by
+        have : sv (emb l') • av (emb l') + (1 - sv (emb l')) • bv (emb l') +
+               ε • (c' l' • (bv (emb l') - av (emb l'))) =
+               (sv (emb l') - ε * c' l') • av (emb l') +
+               ((1 - sv (emb l')) + ε * c' l') • bv (emb l') := by
+          simp only [smul_sub, smul_smul, add_smul, sub_smul]; ring
+        rw [this, h_aw, h_bw, zero_smul, one_smul, zero_add]
+      exact key
+    -- Sub-case B1: bv ∈ S(emb l') → l' exits excess → done
+    by_cases hbv_S : bv (emb l') ∈ S (emb l')
+    · have hl'_not_excess : emb l' ∉ D'.excessIndices := by
+        simp only [Decomposition.excessIndices, Finset.mem_filter, D']
+        intro ⟨_, hnot⟩
+        exact hnot (hnew_bv ▸ hbv_S)
+      exact ⟨D', Finset.card_lt_card (Finset.ssubset_iff_subset_ne.mpr ⟨hD'_subset,
+        fun heq => hl'_not_excess (heq ▸ hemb_mem l')⟩)⟩
+    · -- Sub-case B2: bv(emb l') ∉ S(emb l').
+      -- new_point(emb l') = bv(emb l') ∈ convexHull(S(emb l')) \ S(emb l').
+      -- bv was constructed from a (n-1)-vertex Carathéodory representation (av was removed).
+      -- WF induction on total Carathéodory vertex count terminates: each Case B step
+      -- decreases the count by ≥ 1, and Case A (or B1) exits excess when count reaches 2.
+      sorry
 
 /-
 Part 5: Main Theorem Proof (from reduction step)
