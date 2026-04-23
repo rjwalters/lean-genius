@@ -37,10 +37,11 @@ algebras over ℝ are:
 - [x] Complete proof of 8-square identity (Degen/Cayley-Dickson)
 - [x] Polarization identities (left, right, cross / Pfister identity)
 - [x] hurwitz_only_if: n=3 case proved; remaining cases (n∉{1,2,3,4,8}) have 1 sorry
+- [x] crossMat_sq_neg_one: M² = -I for any skew-symmetric orthogonal crossMat matrix
 - [x] Uses Mathlib for quaternion structure
 
 ## Axioms: 0
-## Sorries: 1 (hurwitz_only_if: n∉{1,2,3,4,8} case; needs Clifford/Radon-Hurwitz)
+## Sorries: 1 (hurwitz_only_if: even n∉{2,4,8} case; needs Clifford/Bott periodicity)
 
 ## Mathlib Dependencies
 - `Quaternion.normSq_mul` : Quaternion norm is multiplicative
@@ -275,13 +276,13 @@ private lemma sum_fin_eight {f : Fin 8 → ℝ} :
   simp only [Fin.sum_univ_succ, Fin.sum_univ_zero]
   abel
 
-set_option maxHeartbeats 16000000 in
+set_option maxHeartbeats 32000000 in
 /-- Degen's 8-square identity (1818): the norm is multiplicative under octonion multiplication -/
 theorem eight_square_identity_norm (a b : Fin 8 → ℝ) :
     normSq a * normSq b = normSq (eightMul a b) := by
-  simp only [normSq, eightMul, sq, sum_fin_eight]
-  simp (config := { decide := true }) only [Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons, Matrix.cons_val_succ]
+  simp only [normSq, eightMul, sum_fin_eight, Fin.isValue]
+  simp [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+        Matrix.cons_val_two, Matrix.cons_val_three]
   ring
 
 set_option maxHeartbeats 800000 in
@@ -299,7 +300,7 @@ def eightSquareIdentity : NSquareIdentity 8 where
   norm_mul := eight_square_identity_norm
 
 /-- The 8-square identity exists (proved via octonion multiplication) -/
-theorem eight_square_identity_exists : NSquareIdentity 8 := eightSquareIdentity
+def eight_square_identity_exists : NSquareIdentity 8 := eightSquareIdentity
 
 -- ============================================================
 -- PART 7: Non-Existence for n = 3
@@ -544,11 +545,11 @@ lemma right_polarization {n : ℕ} (nsi : NSquareIdentity n) (x a b : Fin n → 
     calc normSq (nsi.mul x a) + 2 * innerProd (nsi.mul x a) (nsi.mul x b) + normSq (nsi.mul x b)
         = normSq (nsi.mul x a + nsi.mul x b) := (normSq_add _ _).symm
       _ = normSq (nsi.mul x (a + b)) := by rw [nsi.add_right]
-      _ = normSq x * normSq (a + b) := by rw [← nsi.norm_mul]; ring
+      _ = normSq x * normSq (a + b) := by rw [← nsi.norm_mul]
       _ = normSq x * (normSq a + 2 * innerProd a b + normSq b) := by rw [normSq_add]
       _ = normSq x * normSq a + 2 * normSq x * innerProd a b + normSq x * normSq b := by ring
-  have ha : normSq (nsi.mul x a) = normSq x * normSq a := by rw [← nsi.norm_mul]; ring
-  have hb : normSq (nsi.mul x b) = normSq x * normSq b := by rw [← nsi.norm_mul]; ring
+  have ha : normSq (nsi.mul x a) = normSq x * normSq a := by rw [← nsi.norm_mul]
+  have hb : normSq (nsi.mul x b) = normSq x * normSq b := by rw [← nsi.norm_mul]
   linarith
 
 /-- Cross polarization (Pfister identity): the sum of cross inner products equals
@@ -1788,37 +1789,93 @@ private lemma crossMat_skewSym {n : ℕ} [NeZero n] (nsi : NSquareIdentity n)
     (j₁ j₂ : Fin n) (hj₁j₂ : j₁ ≠ j₂) :
     (crossMat nsi j₁ j₂).transpose = -(crossMat nsi j₁ j₂) := by
   ext j k
-  simp only [crossMat, Matrix.transpose_mul, Matrix.transpose_transpose,
-             Matrix.mul_apply, Matrix.transpose_apply, Matrix.neg_apply, colMat]
-  -- LHS: ((colMat j₂)^T * (colMat j₁))_{jk} = Σᵢ (nsi.mul eⱼ eⱼ₂)ᵢ * (nsi.mul eₖ eⱼ₁)ᵢ
-  --    = innerProd (nsi.mul eⱼ eⱼ₂) (nsi.mul eₖ eⱼ₁)
-  -- RHS: -(crossMat j₁ j₂)_{jk} = -innerProd (nsi.mul eⱼ eⱼ₁) (nsi.mul eₖ eⱼ₂)
-  -- Need: ⟨m_{j,j₂}, m_{k,j₁}⟩ = -⟨m_{j,j₁}, m_{k,j₂}⟩
-  have hLHS : ∑ i, (nsi.mul (stdBasis j) (stdBasis j₂)) i * (nsi.mul (stdBasis k) (stdBasis j₁)) i =
-      innerProd (nsi.mul (stdBasis j) (stdBasis j₂)) (nsi.mul (stdBasis k) (stdBasis j₁)) := rfl
+  simp only [crossMat, Matrix.transpose_mul, Matrix.mul_apply, Matrix.transpose_apply,
+             Matrix.neg_apply, colMat]
+  -- After simp: goal is
+  --   ∑ i, (nsi.mul (stdBasis k) (stdBasis j₁)) i * (nsi.mul (stdBasis j) (stdBasis j₂)) i =
+  --   -(∑ i, (nsi.mul (stdBasis j) (stdBasis j₁)) i * (nsi.mul (stdBasis k) (stdBasis j₂)) i)
+  -- i.e., innerProd(mul k j₁, mul j j₂) = -innerProd(mul j j₁, mul k j₂)
+  have hLHS : ∑ i, (nsi.mul (stdBasis k) (stdBasis j₁)) i * (nsi.mul (stdBasis j) (stdBasis j₂)) i =
+      innerProd (nsi.mul (stdBasis k) (stdBasis j₁)) (nsi.mul (stdBasis j) (stdBasis j₂)) := rfl
   have hRHS : -(∑ i, (nsi.mul (stdBasis j) (stdBasis j₁)) i * (nsi.mul (stdBasis k) (stdBasis j₂)) i) =
       -(innerProd (nsi.mul (stdBasis j) (stdBasis j₁)) (nsi.mul (stdBasis k) (stdBasis j₂))) := rfl
   rw [hLHS, hRHS]
   rcases eq_or_ne j k with rfl | hjk
-  · -- j=k: both sides 0 from row orthogonality (j₁ ≠ j₂)
+  · -- j=k: innerProd(mul k j₁, mul k j₂) = 0 from row orthogonality (j₁ ≠ j₂)
     have h := orthogonality_constraint_right nsi (stdBasis j) (stdBasis j₁) (stdBasis j₂)
       (normSq_stdBasis j) (normSq_stdBasis j₁) (normSq_stdBasis j₂)
       (by rw [innerProd_stdBasis]; simp [hj₁j₂])
-    rw [innerProd_symm (nsi.mul (stdBasis j) (stdBasis j₂)) (nsi.mul (stdBasis j) (stdBasis j₁))]
+    -- h: innerProd(mul j j₁, mul j j₂) = 0, goal: 0 = -0
     linarith
-  · -- j≠k: cross_polarization with ⟨eⱼ,eₖ⟩=0 gives M_{jk} + M_{kj}' = 0
-    have hcp := cross_polarization nsi (stdBasis k) (stdBasis j) (stdBasis j₂) (stdBasis j₁)
-    -- hcp: ⟨m_{k,j₂}, m_{j,j₁}⟩ + ⟨m_{k,j₁}, m_{j,j₂}⟩ = 2⟨eₖ,eⱼ⟩⟨eⱼ₂,eⱼ₁⟩ = 0
-    rw [innerProd_stdBasis, if_neg (Ne.symm hjk), mul_zero] at hcp
-    -- hcp: ⟨m_{k,j₂}, m_{j,j₁}⟩ + ⟨m_{k,j₁}, m_{j,j₂}⟩ = 0
-    -- = ⟨m_{j,j₁}, m_{k,j₂}⟩ + ⟨m_{k,j₁}, m_{j,j₂}⟩ = 0  (using innerProd_symm on first term)
-    -- Wait: we want ⟨m_{j,j₂}, m_{k,j₁}⟩ = -⟨m_{j,j₁}, m_{k,j₂}⟩
-    -- From hcp: innerProd(m_{k,j₂}, m_{j,j₁}) + innerProd(m_{k,j₁}, m_{j,j₂}) = 0
-    rw [innerProd_symm (nsi.mul (stdBasis k) (stdBasis j₂)) (nsi.mul (stdBasis j) (stdBasis j₁)),
-        innerProd_symm (nsi.mul (stdBasis k) (stdBasis j₁)) (nsi.mul (stdBasis j) (stdBasis j₂))] at hcp
-    -- hcp: ⟨m_{j,j₁}, m_{k,j₂}⟩ + ⟨m_{j,j₂}, m_{k,j₁}⟩ = 0 -- hmm, not exactly what we want
-    -- We want: ⟨m_{j,j₂}, m_{k,j₁}⟩ = -⟨m_{j,j₁}, m_{k,j₂}⟩
+  · -- j≠k: cross_polarization(k,j,j₁,j₂) with ⟨eₖ,eⱼ⟩=0
+    have hcp := cross_polarization nsi (stdBasis k) (stdBasis j) (stdBasis j₁) (stdBasis j₂)
+    simp only [innerProd_stdBasis, if_neg (Ne.symm hjk), mul_zero, zero_mul] at hcp
+    -- hcp: innerProd(mul k j₁, mul j j₂) + innerProd(mul k j₂, mul j j₁) = 0
+    rw [innerProd_symm (nsi.mul (stdBasis k) (stdBasis j₂)) (nsi.mul (stdBasis j) (stdBasis j₁))] at hcp
+    -- hcp: innerProd(mul k j₁, mul j j₂) + innerProd(mul j j₁, mul k j₂) = 0
     linarith
+
+/-- crossMat(j₀,j₂) and crossMat(j₀,j₃) anticommute when j₀,j₂,j₃ pairwise distinct.
+    Key structural fact: the n-1 complex structures M_j = crossMat(j₀,j) generate a Clifford
+    algebra Cl(n-1) acting on ℝⁿ, whose minimum real representation dimension exceeds n for
+    n ∉ {1,2,4,8} — giving a contradiction (but proving the rep dimension bound needs Cl theory). -/
+private lemma crossMat_anticommute {n : ℕ} [NeZero n] (nsi : NSquareIdentity n)
+    (j₀ j₂ j₃ : Fin n) (hj₀j₂ : j₀ ≠ j₂) (hj₀j₃ : j₀ ≠ j₃) (hj₂₃ : j₂ ≠ j₃) :
+    crossMat nsi j₀ j₂ * crossMat nsi j₀ j₃ + crossMat nsi j₀ j₃ * crossMat nsi j₀ j₂ = 0 := by
+  -- Step 1: colMat(j₂)ᵀ colMat(j₃) + colMat(j₃)ᵀ colMat(j₂) = 0  (cross_polarization at e_j, e_k)
+  have hanti_T : (colMat nsi j₂).transpose * colMat nsi j₃ +
+                 (colMat nsi j₃).transpose * colMat nsi j₂ = 0 := by
+    ext m l
+    simp only [Matrix.add_apply, Matrix.mul_apply, Matrix.transpose_apply,
+               Matrix.zero_apply, colMat]
+    -- entry = ⟨B(eₘ,e_{j₂}), B(eₗ,e_{j₃})⟩ + ⟨B(eₘ,e_{j₃}), B(eₗ,e_{j₂})⟩
+    have hcp := cross_polarization nsi (stdBasis m) (stdBasis l) (stdBasis j₂) (stdBasis j₃)
+    -- hcp: ⟨B(eₘ,e_{j₂}), B(eₗ,e_{j₃})⟩ + ⟨B(eₘ,e_{j₃}), B(eₗ,e_{j₂})⟩ = 2*⟨eₘ,eₗ⟩*⟨e_{j₂},e_{j₃}⟩
+    -- Apply innerProd_stdBasis twice to get 2*(if m=l then 1 else 0)*(if j₂=j₃ then 1 else 0)
+    rw [innerProd_stdBasis, innerProd_stdBasis, if_neg hj₂₃, mul_zero] at hcp
+    -- hcp: ⟨B(eₘ,e_{j₂}), B(eₗ,e_{j₃})⟩ + ⟨B(eₘ,e_{j₃}), B(eₗ,e_{j₂})⟩ = 0
+    linarith [show ∑ i, (nsi.mul (stdBasis m) (stdBasis j₂)) i * (nsi.mul (stdBasis l) (stdBasis j₃)) i =
+        innerProd (nsi.mul (stdBasis m) (stdBasis j₂)) (nsi.mul (stdBasis l) (stdBasis j₃)) from rfl,
+      show ∑ i, (nsi.mul (stdBasis m) (stdBasis j₃)) i * (nsi.mul (stdBasis l) (stdBasis j₂)) i =
+        innerProd (nsi.mul (stdBasis m) (stdBasis j₃)) (nsi.mul (stdBasis l) (stdBasis j₂)) from rfl]
+  -- Step 2: crossMat(j₀,j₂)ᵀ * crossMat(j₀,j₃) = colMat(j₂)ᵀ * colMat(j₃)
+  -- Proof: Aⱼ₂ᵀAⱼ₀ · Aⱼ₀ᵀAⱼ₃ = Aⱼ₂ᵀ(Aⱼ₀Aⱼ₀ᵀ)Aⱼ₃ = Aⱼ₂ᵀ·I·Aⱼ₃
+  have hreduce : ∀ (ja jb : Fin n),
+      (crossMat nsi j₀ ja).transpose * crossMat nsi j₀ jb =
+      (colMat nsi ja).transpose * colMat nsi jb := by
+    intro ja jb
+    simp only [crossMat, Matrix.transpose_mul, Matrix.transpose_transpose]
+    -- Goal: colMat(ja)ᵀ * colMat(j₀) * (colMat(j₀)ᵀ * colMat(jb)) = colMat(ja)ᵀ * colMat(jb)
+    rw [Matrix.mul_assoc, ← Matrix.mul_assoc (colMat nsi j₀), colMat_mulTrans nsi j₀, Matrix.one_mul]
+  -- Step 3: anticommutativity at the transpose level
+  have hanti_cross_T :
+      (crossMat nsi j₀ j₂).transpose * crossMat nsi j₀ j₃ +
+      (crossMat nsi j₀ j₃).transpose * crossMat nsi j₀ j₂ = 0 := by
+    rw [hreduce j₂ j₃, hreduce j₃ j₂, hanti_T]
+  -- Step 4: use skew-symmetry (j₀ ≠ j₂ and j₀ ≠ j₃) to convert to regular anticommutativity
+  have hsk₂ := crossMat_skewSym nsi j₀ j₂ hj₀j₂  -- M₂ᵀ = -M₂
+  have hsk₃ := crossMat_skewSym nsi j₀ j₃ hj₀j₃  -- M₃ᵀ = -M₃
+  -- M₂ᵀM₃ + M₃ᵀM₂ = -(M₂M₃ + M₃M₂) (by skew-symmetry substitution + ring)
+  have hkey : (crossMat nsi j₀ j₂).transpose * crossMat nsi j₀ j₃ +
+              (crossMat nsi j₀ j₃).transpose * crossMat nsi j₀ j₂ =
+              -(crossMat nsi j₀ j₂ * crossMat nsi j₀ j₃ +
+                crossMat nsi j₀ j₃ * crossMat nsi j₀ j₂) := by
+    rw [hsk₂, hsk₃, neg_mul, neg_mul]
+    abel
+  -- hanti_cross_T says LHS = 0, so -(M₂M₃ + M₃M₂) = 0, i.e., M₂M₃ + M₃M₂ = 0
+  rw [hanti_cross_T] at hkey
+  exact neg_eq_zero.mp hkey.symm
+
+/-- crossMat satisfies M² = -I: skew-symmetry + orthogonality imply M is a complex structure. -/
+private lemma crossMat_sq_neg_one {n : ℕ} [NeZero n] (nsi : NSquareIdentity n)
+    (j₁ j₂ : Fin n) (h : j₁ ≠ j₂) :
+    crossMat nsi j₁ j₂ * crossMat nsi j₁ j₂ = -1 := by
+  have hskew := crossMat_skewSym nsi j₁ j₂ h
+  have horth := crossMat_transMul nsi j₁ j₂
+  -- M^T = -M and M^T M = I → (-M) M = I → -(M M) = I → M² = -I
+  have h1 : (-crossMat nsi j₁ j₂) * crossMat nsi j₁ j₂ = 1 := by rw [← hskew]; exact horth
+  have h2 : -(crossMat nsi j₁ j₂ * crossMat nsi j₁ j₂) = 1 := by rw [← neg_mul]; exact h1
+  exact neg_eq_iff_eq_neg.mp h2
 
 /-- For odd n, NSquareIdentity n is impossible (matrix det argument) -/
 private lemma no_odd_nsquare {n : ℕ} [NeZero n] (hodd : Odd n) (hn3 : 3 ≤ n)
@@ -1829,15 +1886,10 @@ private lemma no_odd_nsquare {n : ℕ} [NeZero n] (hodd : Odd n) (hn3 : 3 ≤ n)
   let j₂ : Fin n := ⟨1, by omega⟩
   have hj₁j₂ : j₁ ≠ j₂ := by
     intro heq; exact absurd (congrArg Fin.val heq) (by simp [j₁, j₂])
-  -- Set up the cross matrix M
+  -- Set up the cross matrix M = crossMat(j₁,j₂), which satisfies M² = -I
   let M := crossMat nsi j₁ j₂
-  have hMTM : M.transpose * M = 1 := crossMat_transMul nsi j₁ j₂
-  have hskew : M.transpose = -M := crossMat_skewSym nsi j₁ j₂ hj₁j₂
-  -- M is skew + orthogonal → M² = -I
-  have hMsq : M * M = -1 := by
-    have h1 : (-M) * M = 1 := by rw [← hskew]; exact hMTM
-    have h2 : -(M * M) = 1 := by rw [show -(M * M) = (-M) * M from by ring]; exact h1
-    exact neg_eq_iff_eq_neg.mp h2
+  -- M² = -I (from crossMat_sq_neg_one)
+  have hMsq : M * M = -1 := crossMat_sq_neg_one nsi j₁ j₂ hj₁j₂
   -- det(M)² = det(M²) = det(-I) = (-1)^n = -1 for odd n
   have hdet_sq : M.det ^ 2 = (-1 : ℝ) ^ n := by
     rw [sq, ← Matrix.det_mul, hMsq]
@@ -1852,20 +1904,37 @@ private lemma no_odd_nsquare {n : ℕ} [NeZero n] (hodd : Odd n) (hn3 : 3 ≤ n)
 theorem hurwitz_only_if (n : ℕ) (hn : n > 0) (nsi : NSquareIdentity n) :
     n ∈ admissibleDimensions := by
   simp only [admissibleDimensions, Set.mem_insert_iff, Set.mem_singleton_iff]
-  rcases Nat.eq_or_ne n 1 with rfl | h1; · simp
-  rcases Nat.eq_or_ne n 2 with rfl | h2; · simp
-  rcases Nat.eq_or_ne n 4 with rfl | h4; · simp
-  rcases Nat.eq_or_ne n 8 with rfl | h8; · simp
+  rcases eq_or_ne n 1 with rfl | h1; · simp
+  rcases eq_or_ne n 2 with rfl | h2; · simp
+  rcases eq_or_ne n 4 with rfl | h4; · simp
+  rcases eq_or_ne n 8 with rfl | h8; · simp
   exfalso
-  rcases Nat.eq_or_ne n 3 with rfl | h3
+  rcases eq_or_ne n 3 with rfl | h3
   · exact no_three_square_identity nsi
   · -- n ∉ {1,2,3,4,8}, n ≥ 1
     -- Split on parity of n
     rcases Nat.even_or_odd n with ⟨k, rfl⟩ | hodd
     · -- n = 2k: even non-admissible (n ∈ {6,10,12,...})
-      -- Requires Clifford algebra classification (even case)
-      -- Key: 2k anticommuting isometries on ℝ^{2k} → Clifford algebra constraint
-      sorry -- HARD: even non-admissible case (n=6 and n=10,12,...); needs Clifford/Radon-Hurwitz
+      -- PROVED INFRASTRUCTURE:
+      -- 1. For j ∈ {1,...,n-1}: M_j = crossMat nsi ⟨0,...⟩ ⟨j,...⟩ satisfies:
+      --    (a) M_j^T = -M_j           [crossMat_skewSym]
+      --    (b) M_j^T M_j = I          [crossMat_transMul]
+      --    (c) M_j² = -I              [crossMat_sq_neg_one]
+      --    (d) M_j M_k + M_k M_j = 0  [crossMat_anticommute]
+      -- 2. So {M_1,...,M_{n-1}} generate a rep of Cl(0,n-1) on ℝⁿ.
+      -- MISSING STEP (the sole blocker):
+      -- 3. Min faithful real rep dim of Cl(0,n-1) > n for even n ∉ {2,4,8}:
+      --      Cl(0,1) ≅ ℂ        → min dim 2 = 2  ✓ (n=2 admissible)
+      --      Cl(0,3) ≅ ℍ        → min dim 4 = 4  ✓ (n=4 admissible)
+      --      Cl(0,5) ≅ M(4,ℂ)   → min dim 8 > 6  ✗ (n=6 impossible)
+      --      Cl(0,7) ≅ M(8,ℝ)²  → min dim 8 = 8  ✓ (n=8 admissible)
+      --      Cl(0,9) ≅ M(16,ℝ)  → min dim 16 > 10 ✗ (n=10 impossible)
+      -- REQUIRED MATHLIB ADDITIONS (~1000 lines):
+      --   • CliffordAlgebra.ofRep: classifying reps via Wedderburn structure theorem
+      --   • Bott periodicity: Cl(0,n+8) ≅ Cl(0,n) ⊗ M(16,ℝ)
+      --   • Artin-Wedderburn theorem for real semisimple algebras
+      -- None of these are in Mathlib as of April 2026.
+      sorry -- BLOCKED: needs Clifford algebra structure theorem (Bott periodicity + Artin-Wedderburn)
     · -- n is odd: n ∉ {1,3} (handled above), so n ≥ 5 odd
       have hn3 : 3 ≤ n := by
         have hodd' := hodd
