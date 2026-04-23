@@ -114,7 +114,7 @@
       "id": "quantitative-bounds",
       "title": "Part III: Four Quantitative Bound Statements (All Sorried)",
       "startLine": 188,
-      "endLine": 242,
+      "endLine": 234,
       "summary": "States four landmark bounds: roth_quantitative_upper_bound (1953, O(N/log log N)), behrend_lower_bound (1946, Ω(N·exp(-c√log N))), bloom_sisask_bound (2020, O(N/(log N)^{1+c})), kelley_meka_upper_bound (2023, O(N·exp(-c(log N)^{1/12}))). All 4 carry sorries.",
       "mathContext": "Historical progression: Roth $N/\\log\\log N$ → Bourgain $N/(\\log N)^{1-\\varepsilon}$ → Sanders $N\\log\\log N/\\log N$ → Bloom-Sisask $N/(\\log N)^{1+c}$ → Kelley-Meka $N\\exp(-(\\log N)^{1/12})$. Lower bound: Behrend $N\\exp(-c\\sqrt{\\log N})$ (1946). Gap: exponent $1/12$ vs $1/2$ is open."
     }

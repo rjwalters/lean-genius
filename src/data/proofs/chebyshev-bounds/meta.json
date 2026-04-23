@@ -101,7 +101,7 @@
       "id": "sec-chebyshev-binom-lower",
       "title": "Central Binomial Lower Bound and Log Corollary",
       "startLine": 372,
-      "endLine": 445,
+      "endLine": 439,
       "description": "Two lower bound results: `centralBinom_ge_four_pow_div`: 4^n ≤ (2n+1)·C(2n,n), proved by: 4^n = Σ_k C(2n,k) ≤ Σ_k C(2n,n) = (2n+1)·C(2n,n), using `Nat.choose_le_middle` (C(2n,n) is the maximum term). `log_centralBinom_ge`: n·log(4) − log(2n+1) ≤ log(C(2n,n)), proved by casting to ℝ, dividing, and applying `Real.log_le_log`. Summary section (lines 421-440) catalogs 8 results in two categories (upper vs. lower bounds and central binomial bounds)."
     }
   ],

@@ -76,7 +76,7 @@
       "id": "sorry-tracking",
       "title": "Sorry Check for Aristotle Tracking",
       "startLine": 22,
-      "endLine": 24,
+      "endLine": 23,
       "summary": "`#check erdos_1212` line used for sorry tracking by the Aristotle automated proof search system. This line verifies the theorem declaration is well-typed and makes the sorry visible to tooling.",
       "mathContext": "The `#check` command in Lean 4 elaborates the term and reports its type, allowing automated tools to detect the sorry dependency via `#check_axioms` or similar introspection."
     }

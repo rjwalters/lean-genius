@@ -122,17 +122,9 @@
       "id": "applications",
       "title": "Applications (Placeholder Theorems)",
       "startLine": 349,
-      "endLine": 428,
+      "endLine": 417,
       "summary": "Five placeholder theorems proving `(1:ℕ)+1=2` with substantive docstrings discussing gambler's ruin, betting systems, option pricing, and Doob's inequality. The mathematical applications described are accurate but NOT formalized — these are future targets.",
       "mathContext": "Docstrings describe: gambler's ruin $P(\\text{success}) = W_0/(W_0 + a)$, Doob's inequality $P(\\max_{n \\leq N} f_n \\geq \\lambda) \\leq E[f_N]/\\lambda$, and Black-Scholes pricing. The formal content is trivial (`rfl`)."
-    },
-    {
-      "id": "historical",
-      "title": "Historical Context",
-      "startLine": 429,
-      "endLine": 475,
-      "summary": "Timeline from Bachelier (1906) through Lévy (1934), Ville (1939), Doob (1953). Explains the name 'martingale' and Wiedijk's characterization.",
-      "mathContext": "Doob (1953): $E[X_\\tau] = E[X_0]$ for bounded $\\tau$. Ville (1939) coined 'martingale'. Bachelier (1900) applied to finance."
     }
   ],
   "crossReferences": [

@@ -144,7 +144,7 @@
       "id": "corollaries",
       "title": "Corollaries and Special Cases",
       "startLine": 93,
-      "endLine": 146,
+      "endLine": 141,
       "summary": "Derives: explicit form (∫₀ʳ 2πρ dρ = πr²), annulus area formula (∫_{r₁}^{r₂} 2πρ dρ = π(r₂² - r₁²)), FTC Part 1 duality (differentiating the integral recovers circumference), unit disk area (= π), and quadratic scaling law.",
       "mathContext": "Corollaries: (1) annulus area $\\int_{r_1}^{r_2} 2\\pi\\rho\\,d\\rho = \\pi(r_2^2 - r_1^2)$; (2) FTC Part 1 duality: $\\frac{d}{dr}\\int_0^r 2\\pi\\rho\\,d\\rho = 2\\pi r$, recovering the circumference by differentiating the area integral; (3) unit disk $\\int_0^1 2\\pi\\rho\\,d\\rho = \\pi$; (4) scaling: $A(cr) = c^2 A(r)$, reflecting the quadratic dependence on radius."
     }
