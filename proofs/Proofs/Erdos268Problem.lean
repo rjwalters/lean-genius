@@ -731,7 +731,7 @@ theorem powers_convergent : HasConvergentHarmonicSubseries powersOf2Set := by
   have heq : (fun n : powersOf2Set => (1 : ℝ) / ↑↑n) ∘
       (Equiv.ofBijective e ⟨hinj, hsurj⟩) = fun k => ((1 : ℝ) / 2) ^ k := by
     ext k
-    simp only [Function.comp, Equiv.ofBijective_apply, e, Subtype.coe_mk]
+    simp only [Function.comp, Equiv.ofBijective_apply, e]
     rw [Nat.cast_pow, Nat.cast_ofNat, div_pow, one_pow]
   rw [heq]
   exact summable_geometric_of_lt_one (by positivity) (by norm_num)
@@ -843,10 +843,9 @@ theorem coordinate_decreasing (A : Set ℕ) (hA : A.Infinite)
     intro ⟨n, hn⟩
     have hn_pos : 0 < n := Nat.pos_of_ne_zero (fun h => h0 (h ▸ hn))
     apply one_div_le_one_div_of_le
-    · simp only [Subtype.coe_mk]; exact_mod_cast Nat.add_pos_left hn_pos i
-    · simp only [Subtype.coe_mk]; exact_mod_cast Nat.add_le_add_left (Nat.le_of_lt hij) n
+    · exact_mod_cast Nat.add_pos_left hn_pos i
+    · exact_mod_cast Nat.add_le_add_left (Nat.le_of_lt hij) n
   · -- hi : strict at n₀
-    simp only [Subtype.coe_mk]
     apply one_div_lt_one_div_of_lt
     · exact_mod_cast Nat.add_pos_left hn₀_pos i
     · exact_mod_cast Nat.add_lt_add_left hij n₀
@@ -899,7 +898,7 @@ theorem squares_convergent : HasConvergentHarmonicSubseries squaresSet := by
   apply (Real.summable_nat_pow_inv.mpr (by norm_num : 1 < 2) |>.comp_injective
       (show Function.Injective (· + 1 : ℕ → ℕ) from fun a b h => add_right_cancel h)).congr
   intro k
-  simp only [Function.comp, Equiv.ofBijective_apply, e, Subtype.coe_mk]
+  simp only [Function.comp, Equiv.ofBijective_apply, e]
   push_cast
   rw [one_div]
 
