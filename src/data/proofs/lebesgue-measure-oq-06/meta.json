@@ -84,17 +84,25 @@
       "id": "main-statement",
       "title": "§III–V: Banach-Tarski Statement and Hausdorff Free Subgroup",
       "startLine": 146,
-      "endLine": 226,
-      "summary": "States the main Banach-Tarski paradox for the unit ball in ℝ³ as a theorem with sorry. Includes the type RigidMotion3 (isometries of ℝ³), definitions of unitBall3 and unitSphere3. States Hausdorff's theorem: SO(3) contains a free subgroup of rank 2.",
-      "mathContext": "The full statement: $\\exists n, \\{P_i\\}_{i<n}, g_1^{(i)}, g_2^{(i)}$ such that $\\{P_i\\}$ partitions $B^3$, $B^3 = \\bigsqcup_i g_1^{(i)}(P_i)$, and $B^3 + 2e_1 = \\bigsqcup_i g_2^{(i)}(P_i)$. Hausdorff's rotation matrices have entries involving $\\sqrt{1 - 1/9} = 2\\sqrt{2}/3$, producing algebraically independent column vectors."
+      "endLine": 235,
+      "summary": "States the main Banach-Tarski paradox for the unit ball in ℝ³ as a theorem with sorry. Includes RigidMotion3, unitBall3, unitSphere3 definitions. States Hausdorff's free subgroup theorem (sorry) and the full banach_tarski statement requiring AC.",
+      "mathContext": "The full statement: $\\exists n, \\{P_i\\}_{i<n}, g_1^{(i)}, g_2^{(i)}$ such that $\\{P_i\\}$ partitions $B^3$, $B^3 = \\bigsqcup_i g_1^{(i)}(P_i)$, and $B^3 + 2e_1 = \\bigsqcup_i g_2^{(i)}(P_i)$. Hausdorff's rotation matrices have entries involving $\\sqrt{1 - 1/9} = 2\\sqrt{2}/3$. The sorry is justified: any proof of `banach_tarski` must use AC (Solovay's model shows ZF alone cannot prove it)."
+    },
+    {
+      "id": "non-measurable-pieces",
+      "title": "§V Corollary: Banach-Tarski Pieces Are Non-Measurable",
+      "startLine": 236,
+      "endLine": 253,
+      "summary": "States and sketches the proof that at least one piece in the Banach-Tarski decomposition is necessarily non-Lebesgue-measurable, with detailed proof outline in comments.",
+      "mathContext": "If all pieces $P_i$ were measurable, then by isometry invariance $\\lambda(g_j(P_i)) = \\lambda(P_i)$, and finite additivity over the two reassemblies gives $\\lambda(B^3) + \\lambda(B^3) = \\lambda(B^3)$. Since $\\lambda(B^3) = \\frac{4}{3}\\pi \\in (0, \\infty)$, the ENNReal lemma `eq_zero_or_top_of_add_eq_self` gives contradiction. This is why the paradox does not violate physics: the pieces are unmeasurable and carry no well-defined volume."
     },
     {
       "id": "amenability",
       "title": "§VI: Amenability and the Group-Theoretic Source",
       "startLine": 249,
-      "endLine": 287,
-      "summary": "Defines amenable groups (admit a finitely-additive left-invariant probability measure on all subsets). States that ℤ is amenable (via Cesàro means) and F₂ is not (via paradoxical decomposition).",
-      "mathContext": "A group $G$ is amenable iff $\\exists \\mu: 2^G \\to [0,\\infty]$ with $\\mu(G)=1$, $\\mu(A \\cup B) = \\mu(A) + \\mu(B)$ for disjoint $A, B$, and $\\mu(gA) = \\mu(A)$ for all $g \\in G$. Abelian groups are amenable (via Markov-Kakutani fixed point theorem). $F_2$ is not amenable: the partition $F_2 = W(a) \\sqcup aW(a^{-1})$ with $F_2 = W(a) \\sqcup W(a^{-1}) \\sqcup \\cdots$ forces $\\mu(F_2) = \\infty$ or $0$."
+      "endLine": 295,
+      "summary": "Defines amenable groups. States int_amenable (ℤ is amenable via Cesàro means, sorry) and free_group_not_amenable (F₂ non-amenable via paradoxical decomposition, sorry). Closes the BanachTarski namespace.",
+      "mathContext": "A group $G$ is amenable iff $\\exists \\mu: 2^G \\to [0,\\infty]$ with $\\mu(G)=1$, $\\mu(A \\cup B) = \\mu(A) + \\mu(B)$ for disjoint $A, B$, and $\\mu(gA) = \\mu(A)$ for all $g \\in G$. Abelian groups are amenable (via Markov-Kakutani). $F_2$ is not amenable: $F_2 = W(a) \\sqcup aW(a^{-1})$ and $F_2 = W(b) \\sqcup bW(b^{-1})$ give two paradoxical coverings. `int_amenable` can likely be proved using Mathlib's Hahn-Banach (`NormedSpace.HahnBanach`) to construct a Banach limit extending the Cesàro mean on $\\ell^\\infty(\\mathbb{Z})$."
     }
   ],
   "conclusion": {
