@@ -106,19 +106,24 @@
   },
   "crossReferences": [
     {
-      "targetId": "divisibility-rules",
+      "proofId": "divisibility-rules",
       "relationship": "extends",
-      "description": "Parent: provides the altDigitSum function and modEq_alternating_digits_sum lemma. This OQ instantiates those for the specific cases b=10 (11-rule), b=100 (101-rule), b=1000 (7- and 13-rules)."
+      "description": "The parent divisibility rules collection — provides `modEq_alternating_digits_sum` and `altDigitSum` that this entry imports directly. The parent file proves the general modular arithmetic foundations; this entry applies them to the specific case b ≡ -1 (mod d) and derives the alternating block sum tests for 7, 11, 13, and 101."
     },
     {
-      "targetId": "divisibility-rules-oq-01",
-      "relationship": "related",
-      "description": "Sibling OQ: studies digit-grouping and truncation divisibility rules, complementing the alternating-block rules formalized here."
+      "proofId": "divisibility-rules-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01 on extensions with truncation, grouping, and casting-out-nines. Together OQ-01 and OQ-02 cover the main classical divisibility tests: OQ-01 handles additive (b ≡ +1) and truncation approaches, OQ-02 handles alternating (b ≡ -1) block sum rules. The unification in OQ-02 (all d with b ≡ -1 mod d) complements OQ-01's digit-sum rules (d | 9 or d | b-1 gives digit sum tests)."
     },
     {
-      "targetId": "divisibility-by-3",
+      "proofId": "divisibility-by-3",
       "relationship": "related",
-      "description": "Complementary: the digit-sum rule for 3 and 9 (b≡+1 mod d) contrasts with the alternating-sum rules here (b≡-1 mod d), together covering the two fundamental patterns of block divisibility."
+      "description": "The classical divisibility-by-3 rule (digit sum divisible by 3, since 10 ≡ 1 mod 3) is the b ≡ +1 analog of the alternating sum rules here (b ≡ -1). Both exploit the congruence of the base modulo the divisor — the sign difference (≡ +1 vs. ≡ -1) determines whether plain sums or alternating sums are used. The connection 7×11×13=1001 explaining why 1000 ≡ -1 mod 7,11,13 simultaneously parallels 9×...=999 patterns used for digit-sum rules."
+    },
+    {
+      "proofId": "divisibility-truncation-general",
+      "relationship": "related",
+      "description": "General Truncation Divisibility Rule — the complementary approach where divisibility is tested via a truncation procedure rather than block sums. For 7, both a truncation rule (double last digit, subtract) and the 3-digit alternating block sum rule (this entry) exist. The two methods reflect different decompositions of 7's relationship to powers of 10, and can be proven to be equivalent via modular arithmetic."
     }
   ],
   "sorries": 0

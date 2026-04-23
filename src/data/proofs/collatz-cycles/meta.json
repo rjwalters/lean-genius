@@ -183,5 +183,27 @@
     "axiomCount": 0,
     "sorries": 0
   },
+  "crossReferences": [
+    {
+      "proofId": "collatz-cycles-oq-04",
+      "relationship": "extended-by",
+      "description": "Collatz Cycle Algebraic Equation: General Halving Constraint — the algebraic generalization of the halving constraint min_halvings_j_odd proved here. OQ-04 formalizes the full product identity ∏(3nᵢ+1) = 2^M · ∏nᵢ for j-step cycles and derives that 2^M > 3^j, making the minimum cycle length lower bound M ≥ ⌈j·log₂(3)⌉ a formal theorem rather than a numeric check for small j."
+    },
+    {
+      "proofId": "collatz-structured-oq-02",
+      "relationship": "sibling",
+      "description": "Collatz Cycles: Non-Existence of Small Cycles — a sibling formalization of the same cycle non-existence results (no fixed points, no 2-cycles, unique 3-cycle {1,4,2}). Both entries prove collatz_no_fixpoint and the period-3 uniqueness; comparing their proof approaches illustrates different Lean 4 formalization strategies for the same mathematical content."
+    },
+    {
+      "proofId": "collatz-structured",
+      "relationship": "foundational",
+      "description": "Collatz Conjecture for Structured Values — proves the sequence reaches 1 for powers of 2 and numbers of the form 2^k·m where m reaches 1. The verified computations for n=1..20 in this entry (via native_decide) extend these structured cases. The structural proof here (3/4 contraction for n≡1 mod 4) is the algebraic complement to the explicit-computation approach of collatz-structured."
+    },
+    {
+      "proofId": "collatz-structured-oq-03",
+      "relationship": "related",
+      "description": "Growth Rate of Average Collatz Stopping Time — analyzes how many steps it takes for n to reach 1 on average, a continuous/probabilistic perspective complementary to the exact cycle-length lower bounds proved here. The stopping-time growth rate connects to the halving constraint: more halvings per odd step means faster average convergence, matching the M ≥ 1.585j bound."
+    }
+  ],
   "sorries": 0
 }

@@ -115,24 +115,24 @@
   },
   "crossReferences": [
     {
-      "targetId": "prime-number-theorem",
-      "relationship": "uses-technique",
-      "description": "The asymptotic threshold m²/(n log n) derives from PNT: the number of primes up to n is ~n/log n, so prime pair counting at scale m gives m²/(n log n) as the natural density."
+      "proofId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The Prime Number Theorem (π(n) ~ n/log n) underlies the m²/(n log n) threshold in this problem. The expected number of primes in an interval of length m within [1, n] is roughly m/log n by PNT, giving expected prime pair counts of order m²/(n log²n). The threshold m²/(n log n) appearing here is the characteristic scale for such second-moment prime counting arguments, with PNT providing the baseline count that makes the bound non-trivial."
     },
     {
-      "targetId": "prime-reciprocal-divergence",
-      "relationship": "related",
-      "description": "Complementary prime density result: divergence of Σ1/p underpins sieve-theoretic arguments that bound prime set sizes, the same framework as the large sieve inequality used in #1202."
+      "proofId": "erdos-1205",
+      "relationship": "sibling",
+      "description": "Erdős #1205 (Maximum Multi-Covering by Congruence Classes) is in the same cluster of Erdős problems #1201–1220, covering analytic number theory and structured prime sets. Both entries formalize solved Erdős problems with quantitative density conditions, and both connect to the theory of covering systems and prime distribution. Problems in the 1200s block share Erdős's sustained interest in threshold phenomena for finite prime/integer sets."
     },
     {
-      "targetId": "erdos-1205",
-      "relationship": "related",
-      "description": "Neighbor in the Erdős 1200s cluster: #1205 (congruence class multi-covering) involves modular structure of prime sets — both are solved analytic/quantitative prime problems from the same era."
+      "proofId": "erdos-1206",
+      "relationship": "sibling",
+      "description": "Erdős #1206 (Sidon sets and density conditions) is an adjacent problem in the same numbered cluster. Both #1202 and #1206 ask about structured subsets with quantitative size lower bounds. The Sidon set structure in #1206 (sum-free or sum-distinct) and the prime subset structure in #1202 represent different combinatorial-arithmetic constraints on the same type of quantitative threshold question."
     },
     {
-      "targetId": "bounded-prime-gaps",
-      "relationship": "related",
-      "description": "Related prime distribution result: the bounded prime gaps (Zhang/Maynard) technique of controlling prime pairs in short intervals underlies the m²/(n log n) threshold regime."
+      "proofId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes is the starting point for the quantitative prime set analysis here. While infinitude is qualitative (primes don't run out), this entry's threshold m²/(n log n) makes the count precise: in an interval of length m up to n, the density m/(n log n) quantifies how many primes exist. The growth condition m > √(n log n) ensures the prime set is large enough relative to this density for the threshold result to be non-trivial."
     }
   ],
   "sorries": 0
