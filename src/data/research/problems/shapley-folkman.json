@@ -24,7 +24,11 @@
       "Case A of new_mem_convexHull proved: when ε₀ satisfies all pos-index bounds, three-way c-trichotomy (neg/zero/pos) covers all cases via convex_convexHull ℝ (S i)",
       "Joint minimum ε = min(ε₀, pos_ratios) eliminates Case B sorry in new_mem_convexHull: hε_le_neg and hε_le_pos ensure all convex weights ≥ 0",
       "Single remaining sorry precisely located: hnew_point_av needs ε = ε₀, which holds when neg-index l_min achieves joint minimum",
-      "When pos-index achieves joint minimum: a-weight → 0, new_point = bv ∈ convexHull but not S; excess does not decrease — WF descent on Carathéodory count needed"
+      "When pos-index achieves joint minimum: a-weight → 0, new_point = bv ∈ convexHull but not S; excess does not decrease — WF descent on Carathéodory count needed",
+      "Case B of reduce_excess_by_one requires WF descent — 5 alternative approaches investigated and ruled out",
+      "caratheodoryCount strictly decreases from D.point to bv in binary_repr: bv uses n-1 of n original vertices",
+      "totalCaratheodoryCount measure enables WF induction termination for the sorry",
+      "Sub-case B1 (bv in S) is a special case of WF; Sub-case B2 requires the full recursion"
     ],
     "builtItems": [
       "binary_repr_of_mem_convexHull_not_mem private lemma (ShapleyFolkman.lean:220)",
@@ -44,8 +48,9 @@
       "WF descent on Carathéodory vertex count: needed to handle case where pos-index achieves joint minimum ε"
     ],
     "nextSteps": [
-      "Add case split in hnew_point_av: if ε = ε₀ (neg achieves joint min) use current proof; else WF induction",
-      "Formalize Carathéodory-based WF argument: when pos achieves min, Carathéodory count at that index decreases (a-weight → 0)"
+      "Define caratheodoryCount function (min n for n-vertex Caratheodory decomposition) — ~40 lines",
+      "Prove binary_repr makes bv have strictly smaller count than x — ~30 lines",
+      "Restructure reduce_excess_by_one with WF induction on totalCaratheodoryCount — ~80 lines"
     ],
     "phase": "ACT"
   },
