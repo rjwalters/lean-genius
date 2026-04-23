@@ -297,8 +297,10 @@ theorem natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n
         rw [natDegree_ofNat, natDegree_X_mul hne1, ihn1]
         omega
       -- natDegree(T(n)) < natDegree(2 * X * T(n+1)), so degree of difference = LHS degree
-      apply natDegree_sub_eq_left_of_natDegree_lt
-      rw [h2XTdeg, ihn]; omega
+      have key : (2 * X * T ℝ ((n : ℤ) + 1) - T ℝ (n : ℤ)).natDegree =
+                 (2 * X * T ℝ ((n : ℤ) + 1)).natDegree :=
+        natDegree_sub_eq_left_of_natDegree_lt (by rw [h2XTdeg, ihn]; omega)
+      rw [key, h2XTdeg]
 
 /-- The leading coefficient of T_n is 2^(n-1) for n ≥ 1.
     Proof by two-step induction via T_{n+2} = 2X·T_{n+1} - T_n:
@@ -306,7 +308,7 @@ theorem natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n
     = 2 · leadingCoeff(T_{n+1}) = 2 · 2^n = 2^{n+1}. -/
 theorem leadingCoeff_T_ofNat : ∀ n : ℕ, n ≥ 1 → (T ℝ (n : ℤ)).leadingCoeff = 2 ^ (n - 1)
   | 0, h => by omega
-  | 1, _ => by simp [T_one, leadingCoeff_X]
+  | 1, _ => by simp [T_one]
   | (n + 2), _ => by
       have ihn1_lc : (T ℝ ((n + 1 : ℕ) : ℤ)).leadingCoeff = 2 ^ n :=
         leadingCoeff_T_ofNat (n + 1) (by omega)
@@ -354,7 +356,7 @@ theorem chebyshevNode_is_root (n : ℕ) (hn : 0 < n) (k : Fin n) :
       (2 * k.val + 1 : ℝ) * Real.pi / 2 := by
     push_cast
     have : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
-    field_simp; ring
+    field_simp
   rw [hmul]
   -- cos((2k+1)π/2) = 0: rewrite as cos(kπ + π/2) and use cos_add
   have h : (2 * (k.val : ℝ) + 1) * Real.pi / 2 = k.val * Real.pi + Real.pi / 2 := by ring
@@ -369,10 +371,18 @@ theorem chebyshevNode_injective (n : ℕ) (hn : 0 < n) :
   simp only [chebyshevNode] at heq
   have hi : (2 * (i.val : ℝ) + 1) * Real.pi / (2 * n) ∈ Set.Icc (0 : ℝ) Real.pi :=
     ⟨le_of_lt (div_pos (mul_pos (by positivity) Real.pi_pos) (by positivity)),
-     le_of_lt (by rw [div_lt_iff (by positivity)]; nlinarith [i.isLt, Real.pi_pos])⟩
+     le_of_lt (by
+       have hlt : 2 * i.val + 1 < 2 * n := by omega
+       have hrlt : (2 * (i.val : ℝ) + 1) < 2 * n := by exact_mod_cast hlt
+       rw [div_lt_iff₀ (by positivity)]
+       nlinarith [Real.pi_pos])⟩
   have hj : (2 * (j.val : ℝ) + 1) * Real.pi / (2 * n) ∈ Set.Icc (0 : ℝ) Real.pi :=
     ⟨le_of_lt (div_pos (mul_pos (by positivity) Real.pi_pos) (by positivity)),
-     le_of_lt (by rw [div_lt_iff (by positivity)]; nlinarith [j.isLt, Real.pi_pos])⟩
+     le_of_lt (by
+       have hlt : 2 * j.val + 1 < 2 * n := by omega
+       have hrlt : (2 * (j.val : ℝ) + 1) < 2 * n := by exact_mod_cast hlt
+       rw [div_lt_iff₀ (by positivity)]
+       nlinarith [Real.pi_pos])⟩
   have hangle_eq := Real.strictAntiOn_cos.injOn hi hj heq
   apply Fin.ext
   have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'

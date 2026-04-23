@@ -76,6 +76,22 @@ Estimated: 200+ lines, needs analysis of Chebyshev interpolation between differe
 **Alternative**: Baire category gives lim sup = ∞, but NOT full divergence (lim = ∞).
 May need to reconsider whether the axiom statement is too strong.
 
+## Session 2026-04-23 — Results (Session 4)
+
+**Outcome**: progress
+**Sorries closed**: 0 (build fixes — Session 3 lemmas now compile)
+**Build errors fixed** (Mathlib v4.26.0 API changes + proof bugs):
+- `natDegree_T_ofNat | (n+2)`: `apply natDegree_sub_eq_left_of_natDegree_lt` failed (conclusion `p.natDegree` doesn't unify with `n+2`); fixed using `have key + rw`
+- `chebyshevNode_is_root`: `field_simp; ring` — field_simp closes goal, `ring` had no goals; fixed by removing `ring`
+- `chebyshevNode_injective`: `div_lt_iff` renamed to `div_lt_iff₀` in Mathlib v4.26.0; `nlinarith` then needed `omega` + `exact_mod_cast` to convert ℕ→ℝ strict bound before `nlinarith` for nonlinear finish
+
+**Key technique learned**:
+- When `apply lemma` fails "could not unify conclusion", use `have key := lemma proof; rw [key, ...]` instead
+- `linarith` cannot multiply inequalities by variables (nonlinear); use `nlinarith` or provide product as hint `mul_lt_mul_of_pos_right`
+- ℕ strict inequality `j.val < n` gives only `(j.val : ℝ) < n`, NOT `2 * j.val + 1 < 2 * n` in ℝ; must use `omega` first on ℕ, then `exact_mod_cast`
+
+**PR**: rjwalters/lean-genius#11646 — all 3 Session 3 lemmas now build clean
+
 ## Session 2026-04-23 — Results (Session 3)
 
 **Outcome**: progress  
@@ -112,8 +128,11 @@ Therefore T_n = Q_n.
 
 ## Next Steps
 
-1. **IMMEDIATE**: Prove the Chebyshev product formula using T_ofNat_ne_zero + natDegree_T_ofNat + leadingCoeff_T_ofNat:
-   - Use `Polynomial.card_roots_le_degree` to show T_n - Q_n = 0
+1. **IMMEDIATE**: Prove the Chebyshev product formula using T_ofNat_ne_zero + natDegree_T_ofNat + leadingCoeff_T_ofNat (all now building):
+   - Define Q_n = 2^{n-1} · ∏_{k : Fin n} (X - C (cos φₖ))
+   - Show T_n - Q_n has natDegree ≤ n-1 (leadingCoeffs cancel: both = 2^{n-1})
+   - Show T_n - Q_n has n distinct roots (chebyshevNode_is_root + chebyshevNode_injective)
+   - Apply `Polynomial.card_roots_le_degree` to conclude T_n - Q_n = 0
    - This unblocks lagrange_basis_chebyshev_formula, chebyshev_lebesgue_eq, chebyshev_lebesgue_growth
 2. Assess divergence_from_lebesgue_growth gap more carefully; consider Banach-Steinhaus
 3. Mathlib v4.26.0 confirmed: no Chebyshev product formula; must build locally
