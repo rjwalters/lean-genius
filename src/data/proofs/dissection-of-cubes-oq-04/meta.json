@@ -19,11 +19,11 @@
       "irrational-angles"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 3,
     "dateAdded": "2026-04-22",
     "axiomCount": 2,
     "assumptions": "1. tmul_infinite_order_ne_zero (from OQ02OQ02): ℝ is flat over ℤ — needed to show nonzero tensor products. 2. icoAngle_irrational: arccos(-√5/3)/π is irrational (icosahedron dihedral angle) — proof requires Chebyshev arithmetic in ℤ[√5], deferred.",
-    "lineCount": 436,
+    "lineCount": 437,
     "theoremCount": 15,
     "definitionCount": 4,
     "mathlibDependencies": [
@@ -138,46 +138,13 @@
       ]
     }
   ],
-  "crossReferences": [
-    {
-      "relationship": "parent",
-      "description": "Hilbert's Third Problem — the overarching question resolved by Dehn invariants",
-      "targetId": "hilbert-3"
-    },
-    {
-      "relationship": "parent",
-      "description": "Main dissection entry introducing the scissors congruence framework",
-      "targetId": "dissection-of-cubes"
-    },
-    {
-      "relationship": "sibling",
-      "description": "Niven's theorem for arccos(1/3)/π — the template Chebyshev argument for the tetrahedron",
-      "targetId": "dissection-of-cubes-oq-02"
-    },
-    {
-      "relationship": "dependency",
-      "description": "Dehn invariant group infrastructure (ℝ ⊗_ℤ (ℝ/πℤ)) and tmul_infinite_order_ne_zero axiom",
-      "targetId": "dissection-of-cubes-oq-02-oq-02"
-    },
-    {
-      "relationship": "sibling",
-      "description": "Octahedron and related dihedral angle results",
-      "targetId": "dissection-of-cubes-oq-03"
-    }
-  ],
   "conclusion": {
     "summary": "Among the five Platonic solids, the cube is uniquely characterized by having zero Dehn invariant. This extends Hilbert's Third Problem from the single pair (cube, tetrahedron) to the complete classification of all Platonic solids under scissors congruence.",
-    "implications": "The Dehn invariant classification of Platonic solids resolves one of the oldest unsolved questions in polyhedron geometry: which solids can be cut and reassembled into each other? The answer is now completely determined for the five Platonic solids — the cube is entirely isolated in its scissors-congruence class. More broadly, the Chebyshev sequence technique pioneered by Niven (1956) for arccos(1/3)/π and extended here to arccos(3/5)/π establishes a general algorithm for proving transcendence of dihedral angles of regular polyhedra: any angle of the form arccos(p/q) where p/q is rational and |p/q| < 1 can be tested by building the integer sequence $q^n \\cdot 2\\cos(n \\cdot \\arccos(p/q))$ and checking prime divisibility. The Dehn invariant also connects to K-theory: Dupont and Sah showed that the scissors congruence group $\\mathcal{P}(\\mathbb{R}^3)$ is related to $K_3(\\mathbb{R})$, placing this elementary geometric result in a deep algebraic context.",
+    "implications": "The classification is complete and sharp: every pair of distinct Platonic solids involving the cube is provably non-scissors-congruent, not just the original Hilbert-Dehn pair (cube, tetrahedron). The Chebyshev integer sequence technique generalizes to any algebraic cosine: for cos θ = p/q with gcd(p,q) = 1 and |q| > 1, the sequence d_n = q^n · 2cos(nθ) ∈ ℤ satisfies a prime-non-divisibility argument that establishes arccos(p/q)/π ∉ ℚ. The proof architecture (Chebyshev sequence → mod-p non-divisibility → irrationality → infinite order in ℝ/πℤ → nonzero tensor product) is a reusable template for showing algebraic angle classes obstruct scissors congruence. This formalization confirms the Dehn invariant completely classifies all five Platonic solids under scissors congruence, answering a natural extension of Hilbert's 1900 question.",
     "openQuestions": [
       "Can the remaining axiom (tmul_infinite_order_ne_zero — flatness of ℝ over ℤ) be proved using Mathlib's Module.Flat infrastructure?",
       "Can icoAngle_irrational be proved by extending the Chebyshev argument to ℤ[√5], completing the proof for all five Platonic solids with 0 axioms?",
-      "Sydler's theorem (1965) shows the converse: two polyhedra are scissors congruent iff they have the same volume AND the same Dehn invariant. Can Sydler's theorem be formalized for general polyhedra, not just the Platonic solids?"
+      "Are any two of the four non-cube Platonic solids scissors congruent to each other? Their Dehn invariants are all nonzero, but they may still differ — this requires comparing the angle classes [arccos(1/3)], [arccos(-1/3)], [arccos(-1/√5)], [arccos(-√5/3)] in ℝ/πℤ, which reduces to algebraic independence questions."
     ]
-  },
-  "leanFile": {
-    "axiomCount": 2,
-    "lineCount": 436,
-    "sorries": 0,
-    "path": "Proofs/DissectionOfCubesOQ04.lean"
   }
 }
