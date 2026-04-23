@@ -124,7 +124,7 @@
       "id": "euler-product",
       "title": "The Euler Product Formula and Bridge Theorem",
       "startLine": 201,
-      "endLine": 235,
+      "endLine": 215,
       "summary": "euler_product_formula (from Mathlib), and zeta_eq_prod_geom_series: the main bridge theorem ζ(s) = ∏_p ∑_k (p^{-s})^k.",
       "mathContext": "The bridge theorem combines the geometric series identity for each factor with the Euler product formula. The simp_rw tactic rewrites each ∑_k ... to (1 - ...)⁻¹, then euler_product_formula closes the goal."
     }
