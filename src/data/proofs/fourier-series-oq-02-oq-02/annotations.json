@@ -50,8 +50,8 @@
   {
     "id": "ann-fsoq02oq02-sq-bound",
     "proofId": "fourier-series-oq-02-oq-02",
-    "range": { "startLine": 85, "endLine": 113 },
-    "type": "key-theorem",
+    "range": { "startLine": 87, "endLine": 131 },
+    "type": "insight",
     "title": "Squared Decay Bound: ‖ĉ_n‖² ≤ K/|n|^{2α}",
     "content": "`fourierCoeff_sq_le_pseries_term` is the bridge between the Hölder decay bound and the p-series comparison. For $n \\neq 0$:\n1. Get Hölder decay from the parent proof: $\\|\\hat{c}_n(f)\\| \\leq (C/2) \\cdot (T/(2|n|))^\\alpha$\n2. Square via `pow_le_pow_left₀`: $\\|\\hat{c}_n(f)\\|^2 \\leq [(C/2)(T/(2|n|))^\\alpha]^2$  \n3. Expand the square using `mul_rpow_sq` and `Real.div_rpow` to factor out $|n|^{2\\alpha}$: $= (C/2)^2 (T/2)^{2\\alpha} / |n|^{2\\alpha}$\n\nThe field_simp step in `h_split : T/(2|n|) = (T/2)/|n|` is the key algebraic reduction that allows `Real.div_rpow` to factor the absolute value out of the exponent.",
     "mathContext": "Final bound: $\\|\\hat{c}_n(f)\\|^2 \\leq K/|n|^{2\\alpha}$ where $K = (C/2)^2 \\cdot (T/2)^{2\\alpha}$. This converts the Hölder bound $O(|n|^{-\\alpha})$ into the p-series term $O(|n|^{-2\\alpha})$ suitable for the comparison test with $\\beta = 2\\alpha > 1$.",
@@ -62,8 +62,8 @@
   {
     "id": "ann-fsoq02oq02-main-theorem",
     "proofId": "fourier-series-oq-02-oq-02",
-    "range": { "startLine": 121, "endLine": 157 },
-    "type": "key-theorem",
+    "range": { "startLine": 132, "endLine": 164 },
+    "type": "insight",
     "title": "Main Theorem: Square-Summability via Comparison Test",
     "content": "`fourierCoeff_sq_summable_of_holder_pseries` is the main result. The proof structure:\n1. Derive $2\\alpha > 1$ from $\\alpha > 1/2$ via `linarith`\n2. Set $K = (C/2)^2 (T/2)^{2\\alpha}$ as a local definition\n3. Get convergence of the dominating series $\\sum K/|n|^{2\\alpha}$ from `summable_const_div_int_rpow`\n4. Apply `Summable.of_norm_bounded_eventually` (the comparison test with cofinite exceptions)\n5. Handle the $n=0$ exception: `Filter.eventually_cofinite.mpr` with `Set.finite_singleton (0:ℤ)` shows $\\{0\\}$ is the only exception\n6. For $n \\neq 0$: use `fourierCoeff_sq_le_pseries_term` by contradiction\n\nThe cofinite filter approach is elegant: `Summable.of_norm_bounded_eventually` allows the bound to fail on finitely many terms (here just $n=0$ where $|n|=0$ makes $K/|n|^{2\\alpha}$ ill-defined).",
     "mathContext": "Applied theorem: `Summable.of_norm_bounded_eventually`: if $\\sum g_n < \\infty$ and $|f_n| \\leq g_n$ for all but finitely many $n$, then $\\sum f_n < \\infty$. Here $f_n = \\|\\hat{c}_n\\|^2$, $g_n = K/|n|^{2\\alpha}$, exceptions $= \\{0\\}$.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-fsoq02oq02-sharpness",
     "proofId": "fourier-series-oq-02-oq-02",
-    "range": { "startLine": 181, "endLine": 195 },
+    "range": { "startLine": 189, "endLine": 196 },
     "type": "insight",
     "title": "Sharpness: α = 1/2 is the Critical Threshold (with sorry)",
     "content": "`holder_half_is_critical_for_pseries` states that the p-series argument fails at exactly $\\alpha = 1/2$: the squared bound becomes $O(|n|^{-1})$ and the harmonic series $\\sum 1/|n|$ diverges over $\\mathbb{Z}$.\n\nThis theorem is left with a `sorry` because harmonic series divergence over $\\mathbb{Z}$ ($\\sum_{n \\neq 0} 1/|n| = \\infty$) is not immediately available in Mathlib in this form. The real question is: `¬ Summable (fun n : ℤ => K / |n|^1)` — a consequence of `Real.summable_nat_rpow_inv` going the other direction, but requiring extra work to transfer from $\\mathbb{N}$ to $\\mathbb{Z}$.\n\nNote: The sorry is in the sharpness statement only. The main results (Parts I–III) are sorry-free.",
@@ -86,7 +86,7 @@
   {
     "id": "ann-fsoq02oq02-comparison",
     "proofId": "fourier-series-oq-02-oq-02",
-    "range": { "startLine": 163, "endLine": 179 },
+    "range": { "startLine": 165, "endLine": 188 },
     "type": "insight",
     "title": "Two Routes to the Same Conclusion: p-Series vs Parseval",
     "content": "`sq_summable_matches_parseval` makes explicit that this p-series proof gives the same conclusion as the Parseval-based proof in `FourierSeriesOQ02OQ01.lean`. The two routes differ in what they require:\n\n- **Parseval route** (sibling proof OQ02OQ01): Continuity → bounded → $L^2$ → Parseval identity $\\sum \\|\\hat{c}_n\\|^2 = \\|f\\|_{L^2}^2$. Shorter (~15 lines) but requires $L^2$ theory and measure theory.\n\n- **p-Series route** (this file): Hölder decay → squared bound → comparison. Longer (~50 lines) but elementary — no $L^2$, no measure theory beyond the definition of Fourier coefficients.\n\n`fourier_coeff_l2` re-expresses the result as an existential `HasSum` statement, giving the concrete sum value $S$ such that the Fourier coefficients sum to $S$ in the $L^2(\\mathbb{Z})$ sense.",
