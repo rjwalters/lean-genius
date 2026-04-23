@@ -127,6 +127,21 @@
       "note": "Proves maxNonSqfreeSet N = N/25 for large N via additive combinatorics"
     }
   ],
-  "leanFile": "Proofs/Erdos848ProblemOQ01.lean",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Proofs.Erdos848Problem"
+    ],
+    "opens": [],
+    "namespace": "Erdos848OQ01",
+    "lineCount": 160,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos848ProblemOQ01.lean",
+    "sorries": 0
+  },
   "sorries": 0
 }
