@@ -7,7 +7,7 @@
     "author": "Wirsing (1970) proved converse; main questions open",
     "sourceUrl": "https://erdosproblems.com/897",
     "date": "1970",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos897Problem.lean",
     "tags": [
       "erdos",
@@ -55,7 +55,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 141,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified."
   },
   "overview": {
     "historicalContext": "This problem explores the behavior of additive arithmetic functions\u2014functions satisfying f(ab) = f(a) + f(b) whenever gcd(a,b) = 1. Classic examples include \u03c9(n) (distinct prime factors), \u03a9(n) (total prime factors with multiplicity), and log(n).\n\nErd\u0151s asked: if an additive function f grows unboundedly fast on prime powers (specifically, if limsup f(p^k)/log(p^k) = \u221e), does this force the consecutive differences f(n+1) - f(n) to also be unbounded when normalized by log(n)?\n\nThe converse direction was settled by Wirsing in 1970, who proved that if consecutive differences are BOUNDED (|f(n+1) - f(n)| \u2264 C), then f must behave like c\u00b7log(n) + O(1). This characterizes the logarithm as essentially the unique additive function with bounded consecutive differences.",

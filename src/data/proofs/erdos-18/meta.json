@@ -1,13 +1,13 @@
 {
   "id": "erdos-18",
-  "title": "Erdős Problem #18: Practical Numbers",
+  "title": "Erd\u0151s Problem #18: Practical Numbers",
   "slug": "erdos-18",
   "description": "Is h(n!) < n^o(1), where h(m) is the minimum number of divisors of m needed to represent all integers k < m? A number m is practical if every k < m is a sum of distinct divisors of m. Prize: $250.",
   "meta": {
-    "author": "Srinivasan (1948), Stewart-Sierpiński (1954-55), Vose (1985)",
+    "author": "Srinivasan (1948), Stewart-Sierpi\u0144ski (1954-55), Vose (1985)",
     "sourceUrl": "https://erdosproblems.com/18",
     "date": "1948",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos18Problem.lean",
     "tags": [
       "erdos",
@@ -87,7 +87,7 @@
       "Representation of integers as sums of divisors",
       "Analytic number theory (growth rates of arithmetic functions)"
     ],
-    "assumptions": "Fully verified. 0 axioms, 0 sorries."
+    "assumptions": "Fully verified. 0 axioms, 0 sorries. Open conjecture; supporting lemmas fully verified."
   },
   "overview": {
     "historicalContext": "Practical numbers were introduced by Srinivasan in 1948. The name reflects their 'practical' use: if m is practical, any weight k < m can be measured using denominations 1, d_2, d_3, ... where each d_i divides m. Stewart (1954) and Sierpinski (1955) independently characterized practical numbers via prime factorization: m is practical iff m=1 or m=2^a * p_2^{a_2} * ... * p_k^{a_k} where each prime p_i <= sigma(m/p_i^{a_i})+1.\n\nErdos studied practical numbers extensively, proving their density is 0 and showing h(n!) < n. Vose (1985) improved this for special numbers, showing infinitely many m have h(m) = O(sqrt(log m)). The main conjecture asks whether h(n!) can be subpolynomial in n.",
@@ -149,7 +149,7 @@
       "summary": "Efficient test via prime factorization",
       "startLine": 122,
       "endLine": 141,
-      "mathContext": "Stewart (1954) and Sierpiński (1955) independently proved: $m = 2^{a_0} p_1^{a_1} \\cdots p_k^{a_k}$ is practical $\\iff$ for each $i \\geq 1$, $p_i \\leq 1 + \\sigma(2^{a_0} p_1^{a_1} \\cdots p_{i-1}^{a_{i-1}})$ where $\\sigma(n) = \\sum_{d \\mid n} d$."
+      "mathContext": "Stewart (1954) and Sierpi\u0144ski (1955) independently proved: $m = 2^{a_0} p_1^{a_1} \\cdots p_k^{a_k}$ is practical $\\iff$ for each $i \\geq 1$, $p_i \\leq 1 + \\sigma(2^{a_0} p_1^{a_1} \\cdots p_{i-1}^{a_{i-1}})$ where $\\sigma(n) = \\sum_{d \\mid n} d$."
     },
     {
       "id": "h-function",
@@ -165,7 +165,7 @@
       "summary": "Erdos h(n!) < n, Vose h(m) <= C*sqrt(log m)",
       "startLine": 156,
       "endLine": 176,
-      "mathContext": "Known results: Erdős: $h(n!) < n$. Vose (1985): $\\exists$ infinitely many practical $m$ with $h(m) \\ll \\sqrt{\\log m}$."
+      "mathContext": "Known results: Erd\u0151s: $h(n!) < n$. Vose (1985): $\\exists$ infinitely many practical $m$ with $h(m) \\ll \\sqrt{\\log m}$."
     },
     {
       "id": "conjectures",
@@ -205,7 +205,7 @@
       "summary": "Fibonacci's 1202 use of practical numbers",
       "startLine": 187,
       "endLine": 187,
-      "mathContext": "Every $\\frac{a}{b}$ with $b$ practical can be written as a sum of distinct unit fractions $\\frac{1}{d_i}$ with $d_i \\mid b$. This connects practical numbers to the Erdős-Straus conjecture on Egyptian fractions."
+      "mathContext": "Every $\\frac{a}{b}$ with $b$ practical can be written as a sum of distinct unit fractions $\\frac{1}{d_i}$ with $d_i \\mid b$. This connects practical numbers to the Erd\u0151s-Straus conjecture on Egyptian fractions."
     },
     {
       "id": "oeis",
@@ -275,21 +275,21 @@
       "authors": "Srinivasan, Anand K.",
       "title": "Practical numbers",
       "year": "1948",
-      "venue": "Current Science, vol. 17, pp. 179–180",
-      "note": "Introduced practical numbers: m is practical if every integer ≤ m is a sum of distinct divisors of m"
+      "venue": "Current Science, vol. 17, pp. 179\u2013180",
+      "note": "Introduced practical numbers: m is practical if every integer \u2264 m is a sum of distinct divisors of m"
     },
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "On practical numbers",
       "year": "1988",
-      "venue": "In: Number Theory (Budapest 1987), Colloquia Mathematica Societatis János Bolyai, vol. 51, pp. 453–459",
+      "venue": "In: Number Theory (Budapest 1987), Colloquia Mathematica Societatis J\u00e1nos Bolyai, vol. 51, pp. 453\u2013459",
       "note": "Studied the growth rate of h(n!) and its connection to the structure of practical numbers"
     },
     {
       "authors": "Hausman, Miriam; Shapiro, Harold N.",
       "title": "On practical numbers",
       "year": "1984",
-      "venue": "Communications on Pure and Applied Mathematics, vol. 37, no. 5, pp. 801–812",
+      "venue": "Communications on Pure and Applied Mathematics, vol. 37, no. 5, pp. 801\u2013812",
       "note": "Proved practical numbers have asymptotic density, with counting function proportional to x/log x"
     }
   ],
