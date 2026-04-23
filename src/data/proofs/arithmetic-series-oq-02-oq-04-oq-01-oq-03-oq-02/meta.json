@@ -124,5 +124,21 @@
       "note": "Chapter 1: multiset coefficients, generating functions, and Vandermonde-type convolutions"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "MultisetVandermonde",
+    "lineCount": 119,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02.lean"
+  }
 }

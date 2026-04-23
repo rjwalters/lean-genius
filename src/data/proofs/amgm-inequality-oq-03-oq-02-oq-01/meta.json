@@ -165,5 +165,22 @@
       "Is there a more direct Lean 4 proof using StrictMono of rpow on the positive reals with negative exponent?"
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Proofs.AmgmInequalityOQ03",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "Finset"
+    ],
+    "namespace": "PowerMeanCrossZero",
+    "lineCount": 226,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/PowerMeanCrossZeroOQ.lean"
+  }
 }

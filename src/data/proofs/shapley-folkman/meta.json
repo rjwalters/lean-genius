@@ -187,5 +187,28 @@
       "leanType": "Decomposition S t x -> d.excessIndices.card <= Module.finrank R E"
     }
   ],
-  "sorries": 1
+  "sorries": 1,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Convex.Caratheodory",
+      "Mathlib.Analysis.Convex.Combination",
+      "Mathlib.Analysis.Convex.Hull",
+      "Mathlib.LinearAlgebra.AffineSpace.Independent",
+      "Mathlib.LinearAlgebra.Dimension.Finrank",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Data.Finset.Pointwise"
+    ],
+    "opens": [
+      "Set",
+      "Finset",
+      "Pointwise"
+    ],
+    "namespace": "ShapleyFolkman",
+    "lineCount": 814,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "sorries": 2,
+    "path": "Proofs/ShapleyFolkman.lean"
+  }
 }

@@ -151,5 +151,24 @@
       "description": "Root of the ball volume chain: π·r² for the 2-ball"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Proofs.AreaOfCircleOQ01OQ02OQ01OQ01",
+      "Mathlib.Analysis.SpecificLimits.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Filter",
+      "Nat",
+      "UnitBallRecurrence"
+    ],
+    "namespace": "BallVolumeTendsto",
+    "lineCount": 164,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ01OQ01.lean"
+  }
 }

@@ -143,5 +143,25 @@
       "description": "Source of ptolemy_equality_implies_proportional, the first step of the converse proof"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Proofs.PtolemysTheoremOQ01",
+      "Proofs.PtolemysComplexProofOQ01",
+      "Proofs.PtolemysComplexProof",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Complex",
+      "Real"
+    ],
+    "namespace": "PtolemysTheoremOQ01Incomplete01",
+    "lineCount": 490,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "sorries": 3,
+    "path": "Proofs/PtolemysTheoremOQ01Incomplete01.lean"
+  }
 }

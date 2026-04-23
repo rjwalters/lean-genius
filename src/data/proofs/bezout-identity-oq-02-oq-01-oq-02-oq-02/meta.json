@@ -135,5 +135,23 @@
       "description": "Fundamental theorem of arithmetic from Euclid's lemma — the ℤ case that ℤ[i] generalizes"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Zsqrtd.GaussianInt",
+      "Mathlib.RingTheory.EuclideanDomain",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "GaussianInt",
+      "Zsqrtd"
+    ],
+    "namespace": "GaussianIntEuclidean",
+    "lineCount": 194,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/BezoutIdentityOQ02OQ01OQ02OQ02.lean"
+  }
 }

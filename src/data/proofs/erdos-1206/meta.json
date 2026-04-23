@@ -17,8 +17,7 @@
     "sorries": 1,
     "erdosNumber": 1206,
     "erdosUrl": "https://erdosproblems.com/1206",
-    "erdosProblemStatus": "solved",
-    "lineCount": 23
+    "erdosProblemStatus": "solved"
   },
   "overview": {
     "historicalContext": "Erdős Problem #1206 concerns Sidon sets among cube numbers. A Sidon set (also called a B₂ set) is a set of integers where all pairwise sums are distinct—equivalently, all pairwise differences are distinct. Sidon introduced these in 1932 in connection with Fourier analysis. Erdős and Turán proved the fundamental bound: any Sidon subset of {1,...,N} has at most N^(1/2) + O(N^(1/4)) elements. Problem #1206 asks whether {1³, 2³, ..., N³} contains an unexpectedly large Sidon set of size ≫ N—much larger relative to the set's cardinality than the Erdős–Turán bound suggests for a generic subset of {1,...,N³}. The problem was marked solved on erdosproblems.com following work by Gabdullin and Konyagin (2024), who showed the short-interval cube set {n³ : N - cN^(1/2) ≤ n ≤ N} is Sidon. Garaev, Garayev, and Konyagin (2026) improved this to size ≫ N^(4/7-o(1)) for infinitely many N, using more refined estimates on the quadratic factor n² + nm + m². The problem is part of a broader Erdős program relating polynomial sequences to additive combinatorics, with analogues for squares (Problem #773) and linear sets (Problem #530).",
@@ -100,5 +99,18 @@
       "description": "The Fundamental Theorem of Arithmetic (unique prime factorization) underpins the Sidon proof via the algebraic identity n³ - m³ = (n-m)(n² + nm + m²). The Sidon condition requires all pairwise sum differences to be distinct; the factorization shows that in a short interval [N - cN^(1/2), N], the quadratic factor n²+nm+m² is nearly constant (~3N²), making distinct pairs (n,m) give distinct differences. This is a multiplicative structure argument at heart — the same principles used in factoring in FTA."
     }
   ],
-  "sorries": 1
+  "sorries": 1,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 24,
+    "axiomCount": 0,
+    "theoremCount": 1,
+    "definitionCount": 0,
+    "sorries": 1,
+    "path": "Proofs/Erdos1206Problem.lean"
+  }
 }

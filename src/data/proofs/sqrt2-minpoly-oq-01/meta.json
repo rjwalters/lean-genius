@@ -161,5 +161,23 @@
       "description": "General theorem: all non-perfect-square n, not just Eisenstein cases. Covers n=8=2³, n=27=3³, n=32=2⁵ and all others where the Eisenstein condition fails."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.CubeRoot2IrrationalOQ03"
+    ],
+    "opens": [
+      "Polynomial",
+      "IntermediateField",
+      "CubeRoot2IrrationalOQ03"
+    ],
+    "namespace": "Sqrt2MinpolyOQ01",
+    "lineCount": 253,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/Sqrt2MinpolyOQ01.lean"
+  }
 }
