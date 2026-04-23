@@ -557,7 +557,7 @@ lemma x_not_chebyshev_node (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_pos : 0 < q
       exact mul_left_cancel₀ hpi h
     -- Multiply by 2nq to get integer equation in ℝ
     have hR : (q : ℝ) * (2 * k.val + 1) = 4 * j * n * q + 2 * n * p := by
-      have h := congr_arg (· * (2 * n * q)) hangle
+      have h := congr_arg (· * (2 * (n : ℝ) * ↑q)) hangle
       field_simp [hn_ne, hq_ne] at h ⊢
       linarith
     -- Cast to ℤ
@@ -570,7 +570,9 @@ lemma x_not_chebyshev_node (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_pos : 0 < q
     have heven : Even (4 * j * (↑n : ℤ) * ↑q + 2 * ↑n * ↑p) :=
       ⟨2 * j * ↑n * ↑q + ↑n * ↑p, by ring⟩
     -- hint rewrites hodd: Odd (4jnq + 2np), contradicting heven
-    exact heven.not_odd (hint ▸ hodd)
+    obtain ⟨r, hr⟩ := heven
+    obtain ⟨s, hs⟩ := hint ▸ hodd
+    omega
   · -- Case 2: (2k+1)π/(2n) = 2jπ - πp/q
     -- → q(2k+1) + 2np = 4jnq (after ×2nq/π)
     -- LHS is odd + even = odd, RHS is even → contradiction
@@ -585,7 +587,7 @@ lemma x_not_chebyshev_node (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_pos : 0 < q
             Real.pi * (2 * j - ↑p / ↑q) from by ring] at h
       exact mul_left_cancel₀ hpi h
     have hR : (q : ℝ) * (2 * k.val + 1) + 2 * n * p = 4 * j * n * q := by
-      have h := congr_arg (· * (2 * n * q)) hangle
+      have h := congr_arg (· * (2 * (n : ℝ) * ↑q)) hangle
       field_simp [hn_ne, hq_ne] at h ⊢
       linarith
     have hint : (q : ℤ) * (2 * ↑k.val + 1) + 2 * ↑n * ↑p = 4 * j * ↑n * ↑q := by
@@ -597,8 +599,11 @@ lemma x_not_chebyshev_node (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_pos : 0 < q
       · exact ⟨↑n * ↑p, by ring⟩
     -- RHS 4jnq is even
     have heven_rhs : Even (4 * j * (↑n : ℤ) * ↑q) := ⟨2 * j * ↑n * ↑q, by ring⟩
-    exact heven_rhs.not_odd (hint ▸ hodd_sum)
+    obtain ⟨r, hr⟩ := heven_rhs
+    obtain ⟨s, hs⟩ := hint ▸ hodd_sum
+    omega
 
+set_option maxHeartbeats 800000 in
 /-- The Lebesgue formula applies for ALL n when p, q are odd (not just along n = mq
     multiples), since cos(πp/q) is never a Chebyshev node. -/
 lemma chebyshev_lebesgue_eq_all_n (p q : ℕ) (hp : Odd p) (hq : Odd q)
@@ -606,9 +611,117 @@ lemma chebyshev_lebesgue_eq_all_n (p q : ℕ) (hp : Odd p) (hq : Odd q)
     chebyshevLebesgue n (Real.cos (↑p * Real.pi / ↑q)) =
     |Real.cos (↑n * (↑p * Real.pi / ↑q))| / ↑n *
     ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
-                 |Real.cos (↑p * Real.pi / ↑q) - chebyshevNode n k| :=
-  chebyshev_lebesgue_eq n hn (↑p * Real.pi / ↑q)
-    (fun k => x_not_chebyshev_node p q hp hq hq_pos n hn k)
+                 |Real.cos (↑p * Real.pi / ↑q) - chebyshevNode n k| := by
+  -- Direct proof mirroring chebyshev_lebesgue_eq, specialised to θ = ↑p * π / ↑q.
+  -- Avoids the expensive isDefEq triggered by applying chebyshev_lebesgue_eq.
+  -- push_cast normalizes implicit n-coercions from lagrange_basis_chebyshev_formula
+  -- against the explicit ↑n coercions in the annotation.
+  set θ := (↑p : ℝ) * Real.pi / ↑q with hθ
+  simp only [chebyshevLebesgue, Finset.mul_sum]
+  congr 1
+  ext k
+  have hne : Real.cos θ ≠ chebyshevNode n k :=
+    x_not_chebyshev_node p q hp hq hq_pos n hn k
+  rw [lagrange_basis_chebyshev_formula n hn k θ hne]
+  have hsin_pos : 0 < Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) :=
+    chebyshevAngle_sin_pos n hn k
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+  have hne' : Real.cos θ - chebyshevNode n k ≠ 0 := sub_ne_zero.mpr hne
+  rw [abs_div, abs_mul, abs_mul, abs_mul,
+      abs_of_pos hsin_pos, abs_of_pos hn_pos]
+  simp only [abs_pow, abs_neg, abs_one, one_pow, mul_one]
+  push_cast
+  field_simp
+
+/-! ## Session 7: Cosine Nonvanishing at ALL n for Rational Multiples of π -/
+
+/-- **cos(nπp/q) ≠ 0 for ALL n ∈ ℕ** when p and q are both odd.
+
+    This uses a parity argument: if cos(nπp/q) = 0 then (2*k+1)*π/2 = n*p*π/q
+    for some k : ℤ, giving 2*n*p = (2k+1)*q. But 2np is even and (2k+1)*q is
+    odd*odd = odd (since q odd), a contradiction.
+
+    This strengthens `cos_rational_pi_nonzero_along_multiples` which only covers
+    the subsequence n = mq. Used in `cos_rational_pi_pos_min` to obtain a
+    uniform lower bound δ > 0 over all n. -/
+lemma cos_rational_pi_ne_zero (p q n : ℕ) (hp : Odd p) (hq : Odd q) (hq_pos : 0 < q) :
+    Real.cos ((n : ℝ) * (↑p * Real.pi / ↑q)) ≠ 0 := by
+  intro h
+  rw [Real.cos_eq_zero_iff] at h
+  obtain ⟨k, heq⟩ := h
+  have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
+  have hq_ne : (q : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hq_pos.ne'
+  -- Derive: (n : ℝ) * p / q = (2k+1)/2
+  have hangle : (n : ℝ) * ↑p / ↑q = (2 * (k : ℝ) + 1) / 2 := by
+    have heq' := heq
+    rw [show (↑n : ℝ) * (↑p * Real.pi / ↑q) = Real.pi * ((↑n * ↑p) / ↑q) from by ring,
+        show (2 * (↑k : ℝ) + 1) * Real.pi / 2 = Real.pi * ((2 * ↑k + 1) / 2) from by ring] at heq'
+    exact mul_left_cancel₀ hpi heq'
+  -- Cross-multiply: 2np = (2k+1)q  (over ℝ, then cast to ℤ)
+  have hR : 2 * (n : ℝ) * (p : ℝ) = (2 * (k : ℝ) + 1) * (q : ℝ) := by
+    have h' := hangle
+    field_simp [hq_ne] at h'
+    linarith
+  have hint : 2 * (n : ℤ) * (p : ℤ) = (2 * k + 1) * (q : ℤ) := by exact_mod_cast hR
+  -- Parity contradiction: LHS even, RHS = odd * odd = odd (since q odd)
+  obtain ⟨qm, hqm⟩ := hq
+  have hq_int : (q : ℤ) = 2 * ↑qm + 1 := by exact_mod_cast hqm
+  have hint2 : 2 * (n : ℤ) * ↑p = (2 * k + 1) * (2 * ↑qm + 1) := by
+    rw [← hq_int]; exact hint
+  have heven : Even (2 * (n : ℤ) * ↑p) := ⟨↑n * ↑p, by ring⟩
+  have hodd : Odd ((2 * k + 1) * (2 * ↑qm + 1) : ℤ) :=
+    ⟨2 * k * ↑qm + k + ↑qm, by ring⟩
+  rw [hint2] at heven
+  obtain ⟨r, hr⟩ := heven
+  obtain ⟨s, hs⟩ := hodd
+  omega
+
+set_option maxHeartbeats 800000 in
+/-- **cos(nπp/q) has period 2q in n**: cos(nπp/q) = cos((n mod 2q)·πp/q).
+
+    This follows because cos(nπp/q) = cos((n mod 2q)·πp/q + (n/2q)·p · 2π),
+    and cos is 2π-periodic. -/
+lemma cos_rational_pi_mod (p q n : ℕ) (hq_pos : 0 < q) :
+    Real.cos ((n : ℝ) * (↑p * Real.pi / ↑q)) =
+    Real.cos ((↑(n % (2 * q)) : ℝ) * (↑p * Real.pi / ↑q)) := by
+  have hq_ne : (q : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hq_pos.ne'
+  -- ℕ floor division: n = n%(2q) + n/(2q) * (2q)
+  have hdiv : n = n % (2 * q) + n / (2 * q) * (2 * q) := by
+    have h := Nat.mod_add_div n (2 * q)
+    linarith [Nat.mul_comm (2 * q) (n / (2 * q))]
+  -- The shift (n/(2q)*p * 2π) can be absorbed via cos periodicity
+  have hshift : (↑(n / (2 * q) * (2 * q) : ℕ) : ℝ) * (↑p * Real.pi / ↑q) =
+                (↑(n / (2 * q) * p : ℕ) : ℝ) * (2 * Real.pi) := by
+    have lhs_eq : (↑(n / (2 * q) * (2 * q) : ℕ) : ℝ) = ↑(n / (2 * q)) * (2 * ↑q) := by
+      push_cast; ring
+    have rhs_eq : (↑(n / (2 * q) * p : ℕ) : ℝ) = ↑(n / (2 * q)) * ↑p := Nat.cast_mul _ _
+    rw [lhs_eq, rhs_eq]
+    field_simp [hq_ne]
+  -- Rewrite n as sum, then apply cos_add_nat_mul_two_pi
+  have hn_cast : (n : ℝ) = ↑(n % (2 * q)) + ↑(n / (2 * q) * (2 * q)) := by exact_mod_cast hdiv
+  rw [hn_cast, add_mul, hshift]
+  exact Real.cos_add_nat_mul_two_pi
+    (↑(n % (2 * q)) * (↑p * Real.pi / ↑q)) (n / (2 * q) * p)
+
+/-- **Uniform lower bound**: ∃ δ > 0 such that |cos(nπp/q)| ≥ δ for ALL n ∈ ℕ.
+
+    Proof: since cos(nπp/q) is periodic with period 2q in n (by `cos_rational_pi_mod`)
+    and nonzero everywhere (by `cos_rational_pi_ne_zero`), the minimum over one
+    full period is positive. -/
+lemma cos_rational_pi_pos_min (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_pos : 0 < q) :
+    ∃ δ : ℝ, 0 < δ ∧ ∀ n : ℕ, δ ≤ |Real.cos ((n : ℝ) * (↑p * Real.pi / ↑q))| := by
+  have h2q_pos : 0 < 2 * q := by omega
+  -- Use exists_min_image to find the minimizer k_min in [0,2q) — avoids whnf on real values
+  haveI : Nonempty (Fin (2 * q)) := ⟨⟨0, h2q_pos⟩⟩
+  let f : Fin (2 * q) → ℝ := fun k => |Real.cos ((k.val : ℝ) * (↑p * Real.pi / ↑q))|
+  obtain ⟨k_min, _, hk_le⟩ :=
+    Finset.exists_min_image Finset.univ f Finset.univ_nonempty
+  refine ⟨f k_min, ?_, fun n => ?_⟩
+  · -- f k_min > 0 since cos(k_min π p/q) ≠ 0
+    exact abs_pos.mpr (cos_rational_pi_ne_zero p q k_min.val hp hq hq_pos)
+  · -- |cos(nπp/q)| = |cos((n%2q)πp/q)| ≥ f k_min
+    rw [cos_rational_pi_mod p q n hq_pos]
+    exact hk_le ⟨n % (2 * q), Nat.mod_lt _ h2q_pos⟩ (Finset.mem_univ _)
 
 /-! ## Key Lemmas with Sorry -/
 
@@ -617,10 +730,14 @@ lemma chebyshev_lebesgue_eq_all_n (p q : ℕ) (hp : Odd p) (hq : Odd q)
     For x = cos(πp/q) with p, q odd and q ≥ 1, the Chebyshev Lebesgue
     function Λₙ(x) → ∞ as n → ∞.
 
-    Proof outline (given chebyshev_lebesgue_eq):
-    1. Along n = mq: |cos(nπp/q)| = 1 (cos_rational_pi_nonzero_along_multiples)
-    2. Λₙ = (1/n) · Σₖ sin(φₖ) / |cos(πp/q) - cos φₖ|  (chebyshev_lebesgue_eq)
-    3. Harmonic sum Σₖ sin(φₖ) / |cos(πp/q) - cos φₖ| ≥ C·log(n) [remaining open step] -/
+    Proof outline (given chebyshev_lebesgue_eq_all_n and cos_rational_pi_pos_min):
+    1. By `cos_rational_pi_pos_min`, ∃ δ > 0: |cos(nπp/q)| ≥ δ for all n.
+    2. By `chebyshev_lebesgue_eq_all_n`: Λₙ(x) = |cos(nθ)|/n · Σₖ sin(φₖ)/|x - cos φₖ|
+       ≥ δ/n · Σₖ sin(φₖ)/|cos(πp/q) - cos φₖ|
+    3. Harmonic sum estimate [OPEN]: Σₖ sin(φₖ)/|x - cos φₖ| ≥ C·log(n) for x = cos(πp/q)
+       (uses: |cos α - cos β| ≤ |α - β|, so 1/|x - cos φₖ| ≥ 1/|πp/q - φₖ|,
+        and Σ 1/|nπp/q - k·π| over k avoiding the nearest node is a harmonic sum ≥ C·log n)
+    4. Therefore Λₙ(x) ≥ δ·C·log(n)/n · n = δ·C·log(n) → ∞ -/
 theorem chebyshev_lebesgue_growth (p q : ℕ) (hp : Odd p) (hq : Odd q)
     (hq_pos : 0 < q) :
     Filter.Tendsto (fun n => chebyshevLebesgue n (Real.cos (↑p * Real.pi / ↑q)))
