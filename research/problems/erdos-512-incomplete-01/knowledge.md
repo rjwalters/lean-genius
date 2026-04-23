@@ -2,78 +2,62 @@
 
 ## Problem Summary
 
-**Goal**: Fill measure theory sorries in `Erdos512Problem.lean` (Littlewood conjecture formalization).
+**Goal**: Fill 2 sorry gaps in the Erdős #512 Aristotle companion file.
 
-**File**: `proofs/Proofs/Erdos512Problem.lean`
+**Current state**:
+- `Erdos512Problem.lean`: 1 sorry — `L2_norm` (Parseval's theorem, line 194)
+- `Erdos512Aristotle.lean`: 2 sorries — `expSumNorm_continuous` and `L1norm_le_card`
 
-## Status: 1 sorry remaining (L2_norm / Parseval)
+**Note**: The Aristotle file header is outdated — `L1norm_upper_bound` in the main file is
+already proved (no sorry). Only `L2_norm` remains there.
 
-### Sorries
-1. `L1norm_upper_bound` (line 102): `∫₀¹ |∑_{n∈A} e(nθ)| dθ ≤ |A|` — **PROVED**
-2. `L2_norm` (line 194): `∫₀¹ |∑_{n∈A} e(nθ)|² dθ = |A|` — **OPEN** (Parseval's theorem)
+## Architecture
 
-## Proof Architecture
+```
+expSumNorm A θ = Complex.abs (expSum A θ)
+expSum A θ = A.sum (fun n => expTwoPiI (n * θ))
+expTwoPiI x = Complex.exp (2 * π * x * I)
+```
 
-### L1norm_upper_bound (PROVED)
+Already proved (no sorry):
+- `expSum_bound`: |expSum A θ| ≤ A.card (triangle + |e^{2πiθ}|=1)
+- `L1norm_upper_bound`: ∫₀¹ |expSum| dθ ≤ A.card (continuity + monotone integral)
+- All periodic properties, norm facts, etc.
 
-Strategy:
-1. **Continuity**: `expSumNorm A` is continuous (finite sum of continuous exponentials + Complex.abs). Proved via `Complex.continuous_abs.comp + continuous_finset_sum + Complex.continuous_exp.comp + fun_prop`.
-2. **Integrability**: `ContinuousOn.integrableOn_compact isCompact_Icc`
-3. **Constant integrability**: `integrableOn_const.mpr (Or.inr (by simp [Real.volume_Icc]))`
-4. **Monotone integral**: `setIntegral_mono_on hint hcint measurableSet_Icc hbdd`
-5. **Constant integral = A.card**: `set_integral_const + smul_eq_mul + Real.volume_Icc + ENNReal.toReal_ofReal`
+## Session 2026-04-23 — Results (Session 1)
 
-### L2_norm (OPEN — Parseval's theorem)
+**Outcome**: progress
+**Sorries closed**: 2 (`expSumNorm_continuous`, `L1norm_le_card` in Aristotle file)
 
-Mathematical proof:
-1. `|∑_{n∈A} e(nθ)|² = ∑_{m,n∈A×A} e((m-n)θ)` via `Complex.normSq`
-2. Interchange sum and integral (Fubini for finite sums)
-3. `∫₀¹ e(kθ) dθ = δ_{k,0}`: 
-   - k=0: trivial
-   - k≠0: antiderivative = `exp(2πikθ)/(2πik)`, value = `(exp(2πik)-1)/(2πik) = 0`
-4. `∑_{m,n∈A} δ_{m=n} = |A|`
+**Key proofs**:
+- `expSumNorm_continuous`: standard tactic chain — `Complex.continuous_abs.comp` →
+  `continuous_finset_sum` → `Complex.continuous_exp.comp` → `fun_prop`
+- `L1norm_le_card`: continuity → `integrableOn_compact` → `setIntegral_mono_on` →
+  `set_integral_const` with `Real.volume_Icc`
+  Both proofs mirror the inline proof in `L1norm_upper_bound` (main file lines 105-131).
 
-**Estimated complexity**: 80-120 lines of Lean
+**Remaining**:
+- `L2_norm` (Parseval): `∫₀¹ |∑_{n∈A} e(nθ)|² dθ = |A|`
+  Strategy: expand via double sum + character orthogonality `∫₀¹ e^{2πikθ} dθ = [k=0]`
+  This requires more Fourier analysis infrastructure in Mathlib.
 
-## Key Mathlib APIs
+## Mathlib API Notes
 
-| API | Purpose |
-|-----|---------|
-| `Complex.continuous_abs` | Continuity of complex norm |
-| `continuous_finset_sum` | Finite sum of continuous functions |
-| `ContinuousOn.integrableOn_compact` | Compact set + continuousOn = integrable |
-| `setIntegral_mono_on` | Monotone set integral bounds |
-| `set_integral_const` | Constant integral: `∫ c = (μ s).toReal • c` |
-| `Real.volume_Icc` | Lebesgue measure of [a,b] = ofReal(b-a) |
-| `ENNReal.toReal_ofReal` | `(ofReal r).toReal = r` for r ≥ 0 |
+- `Complex.continuous_abs.comp` — continuity of complex abs composed with continuous fn
+- `continuous_finset_sum` — finite sum of continuous functions is continuous
+- `Complex.continuous_exp.comp` — continuity of complex exponential
+- `fun_prop` — closes arithmetic continuity goals (e.g., `2 * π * ↑n * θ * I` continuous in θ)
+- `ContinuousOn.integrableOn_compact` — integrable on compact interval from continuity
+- `integrableOn_const.mpr (Or.inr ...)` — constant is integrable when finite measure
+- `setIntegral_mono_on` — monotone integral bound
+- `set_integral_const` — integral of constant = constant * volume
+- `Real.volume_Icc` — volume of [a,b] = ENNReal.ofReal (b-a)
+- `ENNReal.toReal_ofReal` — converts back to ℝ
 
-## Session 2026-04-23 (Session 1) — L1norm_upper_bound Proved
+## Next Steps
 
-**Mode**: FRESH
-**Outcome**: PROGRESS — SORRY 1 eliminated; 1 sorry remains (L2_norm)
-
-### What I Did
-
-1. Read the existing proof file (240 lines, 2 sorries)
-2. Identified that `L1norm_upper_bound` was tractable via continuity + monotone integration
-3. Applied the proof (already present in main repo from Aristotle integration `d6783713f0`)
-4. Applied same proof to the worktree's feature branch
-
-### Key Findings
-
-**fun_prop** handles the continuity of `fun θ : ℝ => Complex.exp (2 * π * ↑n * θ * I)` (linear in θ, standard composition).
-
-**setIntegral_mono_on** signature: `IntegrableOn f s → IntegrableOn g s → MeasurableSet s → (∀ x ∈ s, f x ≤ g x) → ∫ f ≤ ∫ g`
-
-**Constant integral**: `set_integral_const` (snake_case, not camelCase) gives `∫ x in s, c = (μ s).toReal • c`.
-
-### Files Modified
-
-- `proofs/Proofs/Erdos512Problem.lean` (+28 lines: L1norm_upper_bound proved)
-
-### Next Steps
-
-1. **Prove L2_norm** (Parseval): ~80-120 lines via normSq expansion + character orthogonality
-2. **Alternative**: Submit to Aristotle companion file
-3. Character orthogonality: `∫₀¹ exp(2πikθ) dθ = 0` for k : ℤ, k≠0 — needs FTC + Complex.exp_int_mul_two_pi_mul_I
-
+1. `L2_norm`: Prove ∫₀¹ |expSum A θ|² dθ = |A| via Parseval/character orthogonality
+   - Key step: `∫₀¹ expTwoPiI (k * θ) dθ = if k = 0 then 1 else 0` for integer k
+   - When k≠0: antiderivative is `expTwoPiI (k * θ) / (2πki)`; FTC gives (e^{2πki}-1)/(2πki) = 0
+   - Need: `Complex.integral_exp` or `intervalIntegral.integral_comp_mul_right` in Mathlib
+   - Then swap integral and double sum using `MeasureTheory.integral_finset_sum`

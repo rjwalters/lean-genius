@@ -146,13 +146,40 @@ Therefore T_n = Q_n.
 - `chebyshevNode_is_root`: simp [chebyshev_T_at_cos], arithmetic cast manipulation, cos_odd_half_pi
 - `chebyshevNode_injective`: strictAntiOn_cos.injOn on angles in (0,π)
 
+## Session 2026-04-23 — Results (Session 8)
+
+**Outcome**: progress
+**Sorries closed**: 0 (same count — 2 sorries, but proof structure significantly improved)
+**New proofs added**:
+- `chebyshev_lebesgue_lb`: now PROVED (modulo `chebyshev_trig_sum_lb` sorry)
+  - Extracts δ from `cos_rational_pi_pos_min` and C₂ from `chebyshev_trig_sum_lb`
+  - Takes C = δ·C₂ and shows Λₙ ≥ C·log(n+1) via `mul_le_mul` chain
+  - Key calc: δ·C₂·log(n+1) = (δ/n)·(C₂·n·log(n+1)) ≤ (|cos(nθ)|/n)·S_n = Λₙ
+- `chebyshev_trig_sum_lb` (new isolated sorry): S_n ≥ C₂·n·log(n+1)
+  - Replaces the undifferentiated sorry in `chebyshev_lebesgue_lb`
+  - Docstring explains strategy: Lipschitz |cos θ - cos φₖ| ≤ |θ - φₖ| + node spacing π/n
+
+**Recovery work (session start)**:
+- Restored 818-line (2-sorry) file from commit `eddbbdca9b` after squash-merge regression
+- Root cause: ballot-problem enrichment PR #11991 was squash-merged from a branch predating PRs #11829/#11873/#11947
+
+**Sorry analysis**:
+1. `chebyshev_trig_sum_lb` — harmonic sum lower bound S_n ≥ C₂·n·log(n+1)
+   - Strategy: nodes k₀+j at distance ≈ jπ/n from θ = πp/q
+   - |cos θ - cos φₖ| ≤ |θ - φₖ| ≤ 2jπ/n (Lipschitz + node spacing)
+   - sin(φₖ) ≥ C·sin(θ) near k₀ → each term ≥ C·sin(θ)·n/(2jπ)
+   - Summing j = 1..n/2: S_n ≥ C·n·sin(θ)/2π · H_{n/2} ≥ C·n·log(n+1)/2
+   - Mathlib: `log_add_one_le_harmonic` (H_n ≥ log(n+1)) available
+   - Challenge: θ = πp/q might have sin(θ) close to 0 for large p/q; needs careful bounds
+2. `divergence_from_lebesgue_growth` — full-sequence divergence from Λₙ → ∞
+   - Fundamental gap: Banach-Steinhaus only gives lim sup |Lₙf(x)| = ∞, not lim = +∞
+   - May need to weaken the axiom statement or find an explicit specialized construction
+
 ## Next Steps
 
-1. **chebyshev_lebesgue_growth**: Prove the sum S(n) = Σₖ sin(φₖ)/|cos(πp/q) - cos φₖ| ≥ C·n·log(n).
-   - Strategy: nodes near angle πp/q contribute ≈ n/π · Σ 1/j (harmonic series)
-   - `Real.tendsto_sum_range_one_div_nat_succ_atTop` from Mathlib (harmonic divergence) is available
-   - chebyshev_lebesgue_eq_all_n (new from Session 6) now applies for ALL n, not just n = mq
-   - For the |cos(nπp/q)| factor: nonzero when q is odd (parity argument used in x_not_chebyshev_node)
+1. **chebyshev_trig_sum_lb**: Prove S_n ≥ C₂·n·log(n+1) using Lipschitz bound + harmonic series.
+   - Need: lower bound on sin(φₖ) near θ, upper bound on |cos θ - cos φₖ|
+   - Mathlib tools: `Real.sin_pos_of_pos_of_lt_pi`, `Real.abs_cos_sub_cos_le`, `log_add_one_le_harmonic`
    
 2. **divergence_from_lebesgue_growth**: Consider weakening the theorem.
    - Banach-Steinhaus gives lim sup = ∞ (NOT lim = +∞ as currently stated)
