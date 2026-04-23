@@ -55,90 +55,68 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header: IVT Sufficiency and Six Main Results",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "Imports for IVT (`Topology.Order.IntermediateValue`), Banach contraction (`Topology.MetricSpace.Contracting`), and inner product spaces. The docstring establishes the central message: OQ-01 asks whether 1D Brouwer can be proved by IVT alone — the answer is yes. Lists six main results: two proofs of 1D Brouwer, no-retraction (1D), Borsuk-Ulam (1D), Banach contraction, Brouwer vs Banach comparison. Notes the dimensional gap: n ≥ 2 requires algebraic topology.",
+      "mathContext": "Key equivalence: $\\text{IVT} \\iff \\text{1D Brouwer FPT} \\iff \\text{1D No-Retraction}$. Brouwer FPT (1D): every continuous $f:[a,b] \\to [a,b]$ has a fixed point. Proof via $g(x) = f(x) - x$: $g(a) \\geq 0 \\geq g(b)$, so IVT gives $g(x_0) = 0$, i.e., $f(x_0) = x_0$."
+    },
+    {
       "id": "two-proofs-1d-brouwer",
       "title": "1D Brouwer Fixed Point Theorem — Two Proofs",
-      "summary": "Brouwer FPT via Mathlib and directly via IVT applied to g(x) = f(x) - x",
-      "content": "brouwer_1d applies exists_mem_Icc_isFixedPt_of_mapsTo directly. brouwer_1d_via_ivt makes the g(x) = f(x) - x sign-change argument explicit: g(a) ≥ 0, g(b) ≤ 0, IVT gives zero.",
-      "lineStart": 64,
-      "lineEnd": 117,
-      "theorems": [
-        "brouwer_1d",
-        "brouwer_1d_via_ivt",
-        "brouwer_1d_unit_interval"
-      ]
+      "startLine": 64,
+      "endLine": 117,
+      "summary": "Two proofs of the 1D Brouwer FPT. `brouwer_1d` directly applies Mathlib's `exists_mem_Icc_isFixedPt_of_mapsTo`. `brouwer_1d_via_ivt` makes the $g(x) = f(x) - x$ argument explicit: $g(a) \\geq 0$, $g(b) \\leq 0$, IVT gives a zero. `brouwer_1d_unit_interval` specializes to $[0,1]$.",
+      "mathContext": "For $f:[a,b] \\to [a,b]$ continuous, let $g(x) = f(x) - x$. Then $g(a) = f(a) - a \\geq 0$ (since $f(a) \\in [a,b]$) and $g(b) = f(b) - b \\leq 0$ (since $f(b) \\in [a,b]$). IVT gives $x_0$ with $g(x_0) = 0$, so $f(x_0) = x_0$."
     },
     {
       "id": "no-retraction-1d",
       "title": "1D No-Retraction Theorem",
-      "summary": "No continuous map [0,1] → {0,1} fixes both boundary points — IVT forces hitting 1/2",
-      "content": "no_retraction_1d: if r is continuous, maps to {0,1}, r(0)=0, r(1)=1, IVT gives a point where r = 1/2, contradicting the discrete image.",
-      "lineStart": 119,
-      "lineEnd": 159,
-      "theorems": [
-        "no_retraction_1d",
-        "connected_interval_no_discrete_surjection"
-      ]
+      "startLine": 119,
+      "endLine": 159,
+      "summary": "Proves `no_retraction_1d`: no continuous map $r:[0,1] \\to \\{0,1\\}$ can fix both boundary points. Such a map would need to pass through $1/2$ (by IVT since the image is in $\\{0,1\\}$, creating a contradiction with continuity). Also proves `connected_interval_no_discrete_surjection`.",
+      "mathContext": "If $r:[0,1] \\to \\{0,1\\}$ is continuous with $r(0)=0$ and $r(1)=1$, then IVT applied to $r$ would require hitting $1/2 \\notin \\{0,1\\}$ — contradiction. This is the 1D analogue of the No-Retraction theorem: $\\partial B^1 = \\{0,1\\}$ cannot be retracted to itself via $B^1$."
     },
     {
       "id": "borsuk-ulam-1d",
       "title": "1D Borsuk-Ulam Theorem",
-      "summary": "For any continuous f, there exists x ∈ [-1,1] with f(x) = f(-x) — via antisymmetric g(x) = f(x) - f(-x)",
-      "content": "borsuk_ulam_1d: g(1) = -g(-1) forces a sign change; IVT gives a zero of g, i.e., f(x) = f(-x). Three cases: g(-1) = 0 (endpoint), g(-1) < 0 < g(1), g(-1) > 0 > g(1).",
-      "lineStart": 161,
-      "lineEnd": 229,
-      "theorems": [
-        "borsuk_ulam_1d",
-        "borsuk_ulam_1d_existence",
-        "borsuk_ulam_1d_antipodal"
-      ]
+      "startLine": 161,
+      "endLine": 229,
+      "summary": "Proves `borsuk_ulam_1d`: for any continuous $f:[-1,1] \\to \\mathbb{R}$, there exists $x \\in [-1,1]$ with $f(x) = f(-x)$. The proof uses the antisymmetric function $g(x) = f(x) - f(-x)$, which satisfies $g(1) = -g(-1)$, forcing a sign change and an IVT zero. Three cases handled: $g(-1) = 0$, $g(-1) < 0$, $g(-1) > 0$.",
+      "mathContext": "$g(x) = f(x) - f(-x)$ satisfies $g(-x) = -g(x)$ (antisymmetry). $g(1) = f(1) - f(-1) = -(f(-1) - f(1)) = -g(-1)$. If $g(-1) \\neq 0$, one of $\\{g(-1), g(1)\\}$ is positive and the other negative, so IVT gives $x_0$ with $g(x_0) = 0$, i.e., $f(x_0) = f(-x_0)$."
     },
     {
       "id": "banach-contraction",
       "title": "Banach Contraction Mapping Theorem",
-      "summary": "Unique fixed point for contracting maps via Mathlib's ContractingWith",
-      "content": "banach_contraction_fixed_point wraps Mathlib's ContractingWith to give existence and uniqueness. banach_fixed_point_unique derives uniqueness from the existsUnique conclusion.",
-      "lineStart": 231,
-      "lineEnd": 278,
-      "theorems": [
-        "banach_contraction_fixed_point",
-        "banach_fixed_point_unique",
-        "contraction_1d_unique_fixed_point"
-      ]
+      "startLine": 231,
+      "endLine": 278,
+      "summary": "Wraps Mathlib's `ContractingWith` to prove `banach_contraction_fixed_point` (existence + uniqueness for contracting maps on complete metric spaces) and `banach_fixed_point_unique` (uniqueness extracted from `ExistsUnique`). Shows `contraction_1d_unique_fixed_point` for the specific case of contracting maps on $[0,1]$.",
+      "mathContext": "Banach: if $(X, d)$ is complete and $f$ is $k$-contracting ($d(fx, fy) \\leq k \\cdot d(x,y)$ with $k < 1$), then $\\exists! p: f(p) = p$. Compared to Brouwer: stronger hypotheses (contracting + complete) give stronger conclusion (uniqueness). `ContractingWith k f` is Mathlib's name for $k$-contracting."
     },
     {
       "id": "brouwer-non-uniqueness",
       "title": "Brouwer Fixed Points Can Be Non-Unique",
-      "summary": "Identity function witnesses infinite fixed points; constant map witnesses unique fixed point",
-      "content": "brouwer_nonunique: id has every point as a fixed point (exhibits x=0, y=1 both fixed). constant_map_fixed_point: constant map fun _ => c has exactly c as its unique fixed point.",
-      "lineStart": 280,
-      "lineEnd": 310,
-      "theorems": [
-        "brouwer_nonunique",
-        "constant_map_fixed_point"
-      ]
+      "startLine": 280,
+      "endLine": 310,
+      "summary": "Contrasts with Banach: `brouwer_nonunique` shows that the identity map on $[0,1]$ has every point as a fixed point (infinitely many), exhibiting both $x=0$ and $y=1$ explicitly. `constant_map_fixed_point` shows a constant map `fun _ => c` has exactly $c$ as its unique fixed point (trivially).",
+      "mathContext": "$\\text{id}:[0,1] \\to [0,1]$ is continuous and satisfies $\\text{id}(x) = x$ for all $x$ — every point is a fixed point. Brouwer only guarantees existence, not uniqueness. The additional hypothesis of contraction ($k < 1$) in Banach's theorem is what forces uniqueness."
     },
     {
       "id": "brouwer-vs-banach",
-      "title": "Brouwer vs Banach: Comparison",
-      "summary": "Banach implies Brouwer in 1D; contraction uniqueness shown directly",
-      "content": "banach_implies_brouwer_1d: uses LipschitzWith.continuous to get continuity from Lipschitz, then applies brouwer_1d_unit_interval. The comparison table (compact convex vs complete metric, continuous vs contracting, existence vs existence+uniqueness) is documented in comments.",
-      "lineStart": 312,
-      "lineEnd": 354,
-      "theorems": [
-        "banach_implies_brouwer_1d",
-        "contraction_on_interval_unique_fixed_point"
-      ]
+      "title": "Brouwer vs Banach: Hierarchy and Comparison",
+      "startLine": 312,
+      "endLine": 354,
+      "summary": "Proves `banach_implies_brouwer_1d` (Banach theorem implies Brouwer in 1D via `LipschitzWith.continuous` to get continuity from the Lipschitz bound, then applies `brouwer_1d_unit_interval`). Establishes `contraction_on_interval_unique_fixed_point`. Contextualizes: Brouwer requires only continuity on compact convex sets (existence); Banach requires contraction on complete metric spaces (uniqueness).",
+      "mathContext": "Banach $\\Rightarrow$ Brouwer (1D): a contracting map is Lipschitz hence continuous, so Brouwer applies. The converse fails: Brouwer (identity map) does not give a contracting map. Schematic: $\\text{compact + continuous} \\xrightarrow{\\text{Brouwer}} \\exists$ fixed point vs $\\text{complete + contracting} \\xrightarrow{\\text{Banach}} \\exists!$ fixed point."
     },
     {
       "id": "dimensional-gap",
       "title": "The Dimensional Gap: Why n ≥ 2 Needs Algebraic Topology",
-      "summary": "H_{n-1}(S^{n-1}) = Z provides homological obstruction absent in 1D",
-      "content": "Section documents why IVT suffices in 1D (discrete boundary {0,1}) but not n≥2 (connected sphere S^{n-1}). No-Retraction in n≥2 requires H_{n-1}(S^{n-1}) = Z ≠ H_{n-1}(B^n) = 0. Available approaches: Sperner's Lemma (combinatorial), degree theory, simplicial homology. Mathlib gap noted.",
-      "lineStart": 355,
-      "lineEnd": 392,
-      "theorems": [
-        "dimension_gap"
-      ]
+      "startLine": 355,
+      "endLine": 402,
+      "summary": "Documents why IVT suffices in 1D but not n ≥ 2: in 1D the boundary $\\{0,1\\}$ is discrete so IVT creates a contradiction, but $S^{n-1}$ for $n \\geq 2$ is connected so the argument fails. No-Retraction for $n \\geq 2$ requires $H_{n-1}(S^{n-1}) = \\mathbb{Z} \\neq 0 = H_{n-1}(B^n)$. Available Lean approaches: Sperner's Lemma (combinatorial), degree theory, simplicial homology. Closes the namespace.",
+      "mathContext": "1D: $\\partial B^1 = \\{0,1\\}$ is discrete $\\Rightarrow$ continuous $r:\\{0,1\\} \\to [0,1]$ with $r|_{\\{0,1\\}} = \\text{id}$ contradicts IVT. For $n \\geq 2$: $S^{n-1}$ is connected, so the IVT argument fails. Homological obstruction: $\\tilde{H}_{n-1}(S^{n-1}) = \\mathbb{Z}$ but $\\tilde{H}_{n-1}(B^n) = 0$."
     }
   ],
   "conclusion": {

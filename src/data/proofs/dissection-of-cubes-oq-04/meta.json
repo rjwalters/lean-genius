@@ -140,34 +140,29 @@
   ],
   "crossReferences": [
     {
-      "targetId": "dissection-of-cubes-oq-02",
-      "relationship": "foundational",
-      "description": "Proves arccos(1/3)/π ∉ ℚ via the nivenSeq Chebyshev technique — the direct template for this entry's cosThreeFifthsSeq argument. The recurrence structure, mod-prime divisibility argument, and rationality-contradiction pattern in Part I are all transplanted from OQ02: only the prime changes from 3 to 5 and the cosine from 1/3 to 3/5."
+      "relationship": "parent",
+      "description": "Hilbert's Third Problem — the overarching question resolved by Dehn invariants",
+      "targetId": "hilbert-3"
     },
     {
-      "targetId": "dissection-of-cubes-oq-02-oq-02",
-      "relationship": "foundational",
-      "description": "Develops the Dehn-Sydler tensor product infrastructure (ℝ ⊗_ℤ (ℝ/πℤ)) and proves the infinite-order lemma tmul_infinite_order_ne_zero used in this entry's Parts III-IV to conclude D(dodecahedron) ≠ 0 and D(icosahedron) ≠ 0. The flatness axiom this entry inherits (tmul_infinite_order_ne_zero) originates in OQ02OQ02 and represents the remaining deferred proof."
+      "relationship": "parent",
+      "description": "Main dissection entry introducing the scissors congruence framework",
+      "targetId": "dissection-of-cubes"
     },
     {
-      "targetId": "hilbert-3",
-      "relationship": "extends",
-      "description": "Hilbert's Third Problem asks whether equal-volume polyhedra are always scissors congruent. This entry extends the answer: not only are cube and tetrahedron not scissors congruent (hilbert-3's result), but among all five Platonic solids the cube stands alone — no scissors congruence exists between the cube and any other Platonic solid. The cube is the unique Platonic solid with D = 0."
+      "relationship": "sibling",
+      "description": "Niven's theorem for arccos(1/3)/π — the template Chebyshev argument for the tetrahedron",
+      "targetId": "dissection-of-cubes-oq-02"
     },
     {
-      "targetId": "dissection-of-cubes",
-      "relationship": "extends",
-      "description": "The parent entry establishes the Dehn invariant framework and proves the cube-tetrahedron impossibility. This entry completes the classification to all five Platonic solids, proving the dodecahedron case (new) and providing the single theorem cube_isolated_dehn_invariant that classifies the entire Platonic solid family under scissors congruence."
+      "relationship": "dependency",
+      "description": "Dehn invariant group infrastructure (ℝ ⊗_ℤ (ℝ/πℤ)) and tmul_infinite_order_ne_zero axiom",
+      "targetId": "dissection-of-cubes-oq-02-oq-02"
     },
     {
-      "targetId": "angle-trisection",
-      "relationship": "related",
-      "description": "Both entries reduce geometric impossibility to angle irrationality. Angle trisection shows the general angle cannot be trisected because the minimal polynomial of cos(20°) has degree 3 over ℚ; this entry shows the dodecahedron cannot be scissors-congruent to the cube because arccos(-1/√5)/π ∉ ℚ. The Chebyshev sequence technique for proving arccos(3/5)/π ∉ ℚ is analogous to the minimal polynomial argument for proving cos(2π/9) is not constructible."
-    },
-    {
-      "targetId": "nth-root-irrational",
-      "relationship": "related",
-      "description": "The irrationality of nth roots and the irrationality of arccos values as multiples of π are parallel results: both assert that specific algebraic numbers fall outside ℚ. This entry's Chebyshev sequence method (proving 5 ∤ d_n to derive arccos(3/5)/π ∉ ℚ) is the trigonometric analogue of the p-adic argument for √p ∉ ℚ — in both cases, a prime divisibility obstruction rules out rationality."
+      "relationship": "sibling",
+      "description": "Octahedron and related dihedral angle results",
+      "targetId": "dissection-of-cubes-oq-03"
     }
   ],
   "conclusion": {
@@ -179,33 +174,6 @@
       "Sydler's theorem (1965) shows the converse: two polyhedra are scissors congruent iff they have the same volume AND the same Dehn invariant. Can Sydler's theorem be formalized for general polyhedra, not just the Platonic solids?"
     ]
   },
-  "crossReferences": [
-    {
-      "id": "hilbert-3",
-      "relationship": "parent",
-      "description": "Hilbert's Third Problem — the overarching question resolved by Dehn invariants"
-    },
-    {
-      "id": "dissection-of-cubes",
-      "relationship": "parent",
-      "description": "Main dissection entry introducing the scissors congruence framework"
-    },
-    {
-      "id": "dissection-of-cubes-oq-02",
-      "relationship": "sibling",
-      "description": "Niven's theorem for arccos(1/3)/π — the template Chebyshev argument for the tetrahedron"
-    },
-    {
-      "id": "dissection-of-cubes-oq-02-oq-02",
-      "relationship": "dependency",
-      "description": "Dehn invariant group infrastructure (ℝ ⊗_ℤ (ℝ/πℤ)) and tmul_infinite_order_ne_zero axiom"
-    },
-    {
-      "id": "dissection-of-cubes-oq-03",
-      "relationship": "sibling",
-      "description": "Octahedron and related dihedral angle results"
-    }
-  ],
   "leanFile": {
     "axiomCount": 2,
     "lineCount": 436,

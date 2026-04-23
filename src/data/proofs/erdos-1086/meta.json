@@ -140,33 +140,33 @@
   "crossReferences": [
     {
       "slug": "erdos-1069",
-      "title": "Erdős Problem #1069: Szemerédi-Trotter Theorem on k-Rich Lines",
-      "relationship": "The Szemerédi-Trotter theorem is the primary tool for the upper bound on g(n). Problem #1069 formalizes the k-rich lines variant of the same incidence theorem used in the incidence_reduction step here."
+      "relationship": "related",
+      "description": "Erdős Problem #1069: Szemerédi-Trotter Theorem on k-Rich Lines"
     },
     {
       "slug": "erdos-1085",
-      "title": "Erdős Problem #1085: The Unit Distance Problem",
-      "relationship": "The unit distance problem is the archetypal Erdős point-configuration problem in the plane. Both problems ask for the maximum number of a geometric pattern (unit distances vs. equal-area triangles) among n points, and both use Szemerédi-Trotter incidence bounds."
+      "relationship": "related",
+      "description": "Erdős Problem #1085: The Unit Distance Problem"
     },
     {
       "slug": "erdos-1082",
-      "title": "Erdős Problem #1082: Distinct Distances in General Position",
-      "relationship": "The Erdős distinct distances problem is the closest sibling to the equal-area triangles problem. The Guth-Katz polynomial partitioning framework that improved distinct distance bounds also influences the Raz-Sharir 2017 upper bound n^{20/9} for g(n)."
+      "relationship": "related",
+      "description": "Erdős Problem #1082: Distinct Distances in General Position"
     },
     {
       "slug": "erdos-1084",
-      "title": "Erdős Problem #1084: Unit Distances Among Separated Points",
-      "relationship": "Studies unit distances under separation constraints in the plane, another extremal point-configuration problem sharing the same incidence-geometry toolkit and partially overlapping with the methods used for equal-area triangle bounds."
+      "relationship": "related",
+      "description": "Erdős Problem #1084: Unit Distances Among Separated Points"
     },
     {
       "slug": "erdos-102",
-      "title": "Erdős Problem #102: Maximum Collinear Points Forced by Many Rich Lines",
-      "relationship": "Concerns collinearity and rich-line configurations — exactly the dual perspective to the incidence_reduction argument in this problem, where equal-area triangles reduce to counting incidences between points and parallel-line pairs."
+      "relationship": "related",
+      "description": "Erdős Problem #102: Maximum Collinear Points Forced by Many Rich Lines"
     },
     {
       "slug": "szemeredi-core",
-      "title": "Szemerédi Core Definitions",
-      "relationship": "Provides the foundational combinatorial framework underlying the Szemerédi-Trotter incidence bound cited as szemeredi_trotter_bound in this formalization."
+      "relationship": "related",
+      "description": "Szemerédi Core Definitions"
     }
   ],
   "references": [

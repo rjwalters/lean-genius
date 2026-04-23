@@ -58,9 +58,9 @@
       "montgomery_vaughan_general axiom: generalization",
       "jacobsthal n: maximum gap function"
     ],
-    "axiomCount": 3,
-    "lineCount": 226,
-    "assumptions": "3 axioms: montgomery_vaughan_squared (squared gaps sum O(n²/φ(n))), montgomery_vaughan_general (γ-th power generalization), maximum_gap_bound (max gap ≤ C·n/φ(n)·(log n)²). 2 sorries (sum_gaps_bound derivation; reduced_residues_count)."
+    "axiomCount": 4,
+    "lineCount": 227,
+    "assumptions": "4 axioms: montgomery_vaughan_squared (squared gaps sum O(n²/φ(n))), montgomery_vaughan_general (γ-th power generalization), maximum_gap_bound (max gap ≤ C·n/φ(n)·(log n)²), gap_concentration (squared sum ≤ C·φ(n)·avg²). 2 sorries (sum_gaps_bound derivation; reduced_residues_count)."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #220**\n\nThis problem concerns the gaps between consecutive reduced residues modulo n. The reduced residues are integers 1 ≤ m < n with gcd(m,n) = 1, and there are φ(n) of them.\n\n**Background:**\n- Average gap is n/φ(n)\n- Large gaps can occur (related to Jacobsthal's function)\n- Erdős asked if squared gaps sum to O(n²/φ(n))\n\n**History:**\n- Erdős posed the problem; $500 prize\n- The general γ ≥ 1 version was posed in [Er73]\n- Montgomery and Vaughan proved it in 1986 (Ann. of Math.)\n- Discussed in Guy's \"Unsolved Problems in Number Theory\" (B40)\n\n**Context:** The bound n²/φ(n) is what you'd get if all gaps were equal to the average. The theorem says even with gap variance, the squared sum doesn't exceed this by more than a constant factor.",
@@ -111,15 +111,15 @@
       "id": "applications",
       "title": "Arithmetic Consequences and Spacing Bounds",
       "startLine": 160,
-      "endLine": 200,
-      "summary": "Derives consequences: the average squared gap is O(n log n / φ(n)), individual gaps satisfy gᵢ₊₁ - gᵢ = O(n^(1/2+ε)). Connects to questions about gaps between consecutive quadratic residues.",
+      "endLine": 201,
+      "summary": "Derives consequences: the average squared gap is O(n log n / φ(n)), individual gaps satisfy gᵢ₊₁ - gᵢ = O(n^(1/2+ε)). gap_concentration axiom: squared sum ≤ C·φ(n)·(n/φ(n))² = O(n²/φ(n)).",
       "mathContext": "Average squared gap: $O(n \\log n / \\varphi(n))$. A key consequence: the maximal gap between consecutive reduced residues satisfies $\\max_i (g_{i+1} - g_i) = O(n^{1/2+\\varepsilon})$ (conditionally on GRH)."
     },
     {
       "id": "open-questions",
       "title": "Open Questions and Current State",
-      "startLine": 200,
-      "endLine": 226,
+      "startLine": 201,
+      "endLine": 227,
       "summary": "Summarizes the factor-of-log gap between O(n log n) and the conjectured O(n), and states related open problems about prime gaps and multiplicative character sums.",
       "mathContext": "The gap between $O(n \\log n)$ (known) and $O(n)$ (conjectured) corresponds to improving the large sieve inequality for character sums. The problem is closely related to the distribution of reduced residues in short intervals."
     }
@@ -137,8 +137,8 @@
     "imports": [],
     "opens": [],
     "namespace": null,
-    "lineCount": 226,
-    "axiomCount": 3,
+    "lineCount": 227,
+    "axiomCount": 4,
     "theoremCount": 3,
     "definitionCount": 0,
     "path": "Proofs/Erdos220Problem.lean",

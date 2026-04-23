@@ -72,55 +72,52 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header: History and Mathlib Imports",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring traces the history of local solvability: Lewy's 1957 counterexample, Hörmander's 1960 necessary condition, Nirenberg-Treves's 1963 condition (Ψ) conjecture, and Dencker's 2006 proof. Five Mathlib imports for normed spaces, metric topology, and Fréchet derivatives. Opens namespace `Hilbert20LocalSolvability`.",
+      "mathContext": "Condition (Ψ): Im(p_m) does not change sign from − to + along oriented bicharacteristics of Re(p_m). Historical table: Lewy (1957) non-solvability, Hörmander (1960) necessity, Nirenberg-Treves (1963) conjecture, Dencker (2006) proof."
+    },
+    {
+      "id": "linear-differential-operators",
       "title": "Linear Differential Operators",
-      "content": "Define multi-indices, linear PDOs with polynomial coefficients, and the principal symbol.",
-      "lineStart": 46,
-      "lineEnd": 76,
-      "theorems": [],
-      "summary": "Linear Differential Operators",
-      "id": "linear-differential-operators"
+      "startLine": 46,
+      "endLine": 76,
+      "summary": "Defines multi-indices, linear PDOs with polynomial coefficients, and the principal symbol. Establishes the algebraic scaffolding for microlocal analysis: the polynomial structure of differential operators and the leading-order term (principal symbol) that determines local solvability.",
+      "mathContext": "For a PDO $P(x, D) = \\sum_{|\\alpha| \\leq m} a_\\alpha(x) D^\\alpha$, the principal symbol is $p_m(x, \\xi) = \\sum_{|\\alpha| = m} a_\\alpha(x) \\xi^\\alpha$ — a polynomial of degree $m$ in $\\xi \\in \\mathbb{R}^n$."
     },
     {
-      "title": "Local Solvability",
-      "content": "Define local solvability (axiomatically, since distributions are not in Mathlib) and the principal type condition.",
-      "lineStart": 78,
-      "lineEnd": 98,
-      "theorems": [],
-      "summary": "Local Solvability",
-      "id": "local-solvability"
+      "id": "local-solvability",
+      "title": "Local Solvability Axiomatization",
+      "startLine": 78,
+      "endLine": 98,
+      "summary": "Axiomatizes `IsLocallySolvable` (since distribution theory is not yet in Mathlib) and the principal type condition (`IsPrincipalType`). An operator is locally solvable at $x_0$ if $Pu = f$ has a distribution solution near $x_0$ for every smooth $f$.",
+      "mathContext": "$P$ is locally solvable at $x_0$ iff $\\forall f \\in C^\\infty$, $\\exists u \\in \\mathcal{D}'$: $Pu = f$ in a neighborhood of $x_0$. Principal type: $p_m(x, \\xi) = 0 \\Rightarrow \\nabla_\\xi p_m \\neq 0$ (non-degenerate)."
     },
     {
-      "title": "Condition (Ψ)",
-      "content": "Concrete structure for bicharacteristic curves (x(t), ξ(t) with symbol vanishing and ξ ≠ 0), definition of Im(p_m) along curves, proved bridge theorem, and condition (Ψ).",
-      "lineStart": 93,
-      "lineEnd": 136,
-      "theorems": [],
-      "summary": "Condition (Ψ)",
-      "id": "condition-ψ"
+      "id": "condition-psi",
+      "title": "Bicharacteristic Curves and Condition (Ψ)",
+      "startLine": 100,
+      "endLine": 136,
+      "summary": "Concrete structure `BicharacteristicCurve` for curves $(x(t), \\xi(t))$ along which the principal symbol vanishes and $\\xi \\neq 0$. Defines `Im(p_m)` along curves, a bridge theorem, and formalizes condition (Ψ): the imaginary part cannot change sign from $-$ to $+$ along bicharacteristics of $\\text{Re}(p_m)$.",
+      "mathContext": "$(x(t), \\xi(t))$ is bicharacteristic if $p_m(x(t), \\xi(t)) = 0$ and $\\xi(t) \\neq 0$. Condition (Ψ): $\\exists t_1 < t_2 < t_3$ with $\\text{Im}(p_m) < 0$ at $t_1$, $= 0$ at $t_2$, $> 0$ at $t_3$ is forbidden."
     },
     {
-      "title": "The Nirenberg-Treves Theorem",
-      "content": "State the Hörmander necessity and Dencker sufficiency, then derive the full characterization.",
-      "lineStart": 124,
-      "lineEnd": 152,
-      "theorems": [
-        "nirenberg_treves_characterization"
-      ],
-      "summary": "The Nirenberg-Treves Theorem",
-      "id": "the-nirenberg-treves-theorem"
+      "id": "the-nirenberg-treves-theorem",
+      "title": "The Nirenberg-Treves Characterization",
+      "startLine": 138,
+      "endLine": 168,
+      "summary": "States Hörmander necessity and Dencker sufficiency as axioms, then derives the full biconditional: for principal-type operators, $P$ is locally solvable iff $p_m$ satisfies condition (Ψ). The 43-year gap between conjecture (1963) and proof (2006) reflects the depth of Dencker's result.",
+      "mathContext": "For $P$ of principal type: $P$ locally solvable $\\iff$ $p_m$ satisfies condition (Ψ). Axioms: `hormander_necessity` ($\\text{locally solvable} \\Rightarrow \\Psi$) and `dencker_sufficiency` ($\\Psi \\Rightarrow \\text{locally solvable}$)."
     },
     {
-      "title": "Special Cases",
-      "content": "Proved: elliptic operators satisfy (Ψ) vacuously (no bicharacteristic curves exist). Proved: real-symbol operators satisfy (Ψ) (Im p_m = 0). Elliptic operators of principal type are locally solvable.",
-      "lineStart": 170,
-      "lineEnd": 207,
-      "theorems": [
-        "real_symbol_satisfies_psi",
-        "elliptic_satisfies_psi",
-        "elliptic_locally_solvable"
-      ],
-      "summary": "Special Cases",
-      "id": "special-cases"
+      "id": "special-cases",
+      "title": "Special Cases: Elliptic and Real-Symbol Operators",
+      "startLine": 170,
+      "endLine": 209,
+      "summary": "Proved theorems: `real_symbol_satisfies_psi` (operators with real principal symbol satisfy condition (Ψ) since $\\text{Im}(p_m) = 0$ always), `elliptic_satisfies_psi` (elliptic operators satisfy (Ψ) vacuously — no bicharacteristics exist), `elliptic_locally_solvable` (elliptic principal-type operators are locally solvable, combining (Ψ) with Dencker sufficiency).",
+      "mathContext": "Real symbol: $p_m$ real $\\Rightarrow \\text{Im}(p_m) = 0 \\Rightarrow$ (Ψ) trivially. Elliptic: $p_m(x, \\xi) \\neq 0$ for $\\xi \\neq 0 \\Rightarrow$ no bicharacteristics $\\Rightarrow$ (Ψ) vacuously $\\Rightarrow$ locally solvable."
     }
   ],
   "conclusion": {
@@ -138,8 +135,9 @@
   },
   "crossReferences": [
     {
-      "id": "hilbert-20",
-      "relationship": "Parent problem — Hilbert's 20th problem on boundary value problems"
+      "targetId": "hilbert-20",
+      "relationship": "related",
+      "description": "Parent problem — Hilbert's 20th problem on boundary value problems"
     }
   ],
   "references": [

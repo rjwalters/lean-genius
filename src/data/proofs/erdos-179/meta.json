@@ -7,7 +7,7 @@
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/179",
     "status": "axiomatized",
-    "proofRepoPath": "Proofs/Stubs/Erdos179Problem.lean",
+    "proofRepoPath": "Proofs/Erdos179Problem.lean",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -17,13 +17,13 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 10,
+    "sorries": 8,
     "erdosNumber": 179,
     "erdosUrl": "https://erdosproblems.com/179",
     "erdosProblemStatus": "solved",
-    "axiomCount": 8,
-    "lineCount": 234,
-    "assumptions": "8 axiom(s) and 10 sorries(s). See the Lean source for details.",
+    "axiomCount": 6,
+    "lineCount": 253,
+    "assumptions": "6 axiom(s) and 8 sorries(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -48,80 +48,80 @@
     {
       "id": "imports",
       "title": "Imports and Setup",
-      "startLine": 25,
-      "endLine": 30,
+      "startLine": 32,
+      "endLine": 36,
       "summary": "import Mathlib, Erdos179 namespace, open Finset.",
       "mathContext": "Mathematical content: import Mathlib, Erdos179 namespace, open Finset."
     },
     {
       "id": "arithmetic-progressions",
       "title": "Arithmetic Progressions",
-      "startLine": 31,
-      "endLine": 48,
+      "startLine": 39,
+      "endLine": 55,
       "summary": "arithmeticProgression (Finset.image), ContainsAP (∃ AP ⊆ A), countAPs (powerset filter).",
       "mathContext": "Mathematical content: arithmeticProgression (Finset.image), ContainsAP (∃ AP ⊆ A), countAPs (powerset filter)."
     },
     {
       "id": "supersaturation-function",
       "title": "The Supersaturation Function",
-      "startLine": 49,
-      "endLine": 69,
+      "startLine": 57,
+      "endLine": 76,
       "summary": "F_k(N, ℓ) via Nat.find (sorry for existence), SupersaturationProperty.",
       "mathContext": "Mathematical content: F_k(N, ℓ) via Nat.find (sorry for existence), SupersaturationProperty."
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
-      "startLine": 70,
-      "endLine": 88,
-      "summary": "F_lower_bound ≥ N^{1.99} (axiom), F_upper_trivial ≤ N² (sorry), random_set_APs (sorry).",
-      "mathContext": "F_lower_bound $\\geq$ N^{1.99} (axiom), F_upper_trivial $\\leq$ N² (sorry), random_set_APs (sorry)."
+      "startLine": 78,
+      "endLine": 92,
+      "summary": "F_lower_bound ≥ N^{1.99} (axiom, Behrend-type), F_upper_trivial ≤ N² (sorry).",
+      "mathContext": "F_lower_bound $\\geq$ N^{1.99} (axiom), F_upper_trivial $\\leq$ N² (sorry)."
     },
     {
       "id": "erdos-questions",
       "title": "Erdős's Questions",
-      "startLine": 89,
-      "endLine": 104,
+      "startLine": 94,
+      "endLine": 111,
       "summary": "Question1: F₃(N,4) = o(N²). Question2: lim log F₃(N,ℓ)/log N = 2.",
       "mathContext": "Mathematical content: Question1: F₃(N,4) = o(N²). Question2: lim log F₃(N,ℓ)/log N = 2."
     },
     {
       "id": "fox-pohoata",
       "title": "Fox-Pohoata Theorem (2020)",
-      "startLine": 105,
-      "endLine": 131,
+      "startLine": 112,
+      "endLine": 145,
       "summary": "fox_pohoata_theorem: F ≤ N²/(log log N)^C. question1_solved (1 sorry). question2_solved (sorry).",
       "mathContext": "fox_pohoata_theorem: F $\\leq$ N²/(log log N)^C. question1_solved (1 sorry). question2_solved (sorry)."
     },
     {
       "id": "leng-sah-sawhney",
       "title": "Leng-Sah-Sawhney Improvement (2024)",
-      "startLine": 132,
-      "endLine": 149,
+      "startLine": 147,
+      "endLine": 168,
       "summary": "leng_sah_sawhney: F ≤ N²/exp((log log N)^c). improvement_significant (sorry).",
       "mathContext": "leng_sah_sawhney: F $\\leq$ N²/exp((log log N)^c). improvement_significant (sorry)."
     },
     {
       "id": "szemeredi-connection",
       "title": "Connection to Szemerédi and Roth",
-      "startLine": 150,
-      "endLine": 191,
-      "summary": "szemeredi_theorem, roth_theorem, behrend_construction (axioms). Dense set AP counting.",
-      "mathContext": "Verified: szemeredi_theorem, roth_theorem, behrend_construction (axioms). Dense set AP counting."
+      "startLine": 170,
+      "endLine": 211,
+      "summary": "szemeredi_theorem, roth_theorem, behrend_construction (axioms). SzemerediImplication, AP_free_has_2APs.",
+      "mathContext": "szemeredi_theorem, roth_theorem, behrend_construction (axioms). Dense set AP counting."
     },
     {
       "id": "special-cases",
-      "title": "Special Cases",
-      "startLine": 192,
-      "endLine": 208,
+      "title": "Special Cases and Asymptotics",
+      "startLine": 212,
+      "endLine": 227,
       "summary": "F_2_well_defined (sorry), exponent_is_2 (sorry).",
       "mathContext": "Mathematical content: F_2_well_defined (sorry), exponent_is_2 (sorry)."
     },
     {
       "id": "main-result",
       "title": "Main Results",
-      "startLine": 209,
-      "endLine": 234,
+      "startLine": 229,
+      "endLine": 253,
       "summary": "erdos_179: Question1 ∧ Question2. erdos_179_answer (String def). #check statements.",
       "mathContext": "Mathematical content: erdos_179: Question1 ∧ Question2. erdos_179_answer (String def). #check statements."
     }
@@ -154,12 +154,12 @@
       "Finset"
     ],
     "namespace": "Erdos179",
-    "lineCount": 234,
-    "axiomCount": 8,
+    "lineCount": 253,
+    "axiomCount": 6,
     "theoremCount": 8,
     "definitionCount": 9,
-    "path": "Proofs/Stubs/Erdos179Problem.lean",
-    "sorries": 10
+    "path": "Proofs/Erdos179Problem.lean",
+    "sorries": 8
   },
   "references": [
     "Fox & Pohoata (2020): Sets without k-term progressions can have many shorter progressions, arXiv:1908.09905",
@@ -186,5 +186,5 @@
       "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory"
     }
   ],
-  "sorries": 10
+  "sorries": 8
 }

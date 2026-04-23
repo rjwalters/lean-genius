@@ -64,7 +64,7 @@
       "erdos_515 theorem: main result"
     ],
     "axiomCount": 3,
-    "lineCount": 285,
+    "lineCount": 286,
     "assumptions": "3 axioms: huber_1957, zhang_1977, lewis_rossi_weitsman_1984. 0 sorries."
   },
   "overview": {
@@ -152,10 +152,10 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Proves erdos_515_summary by assembling LRW, Huber (via unfolding HuberQuestion), and a True placeholder for Zhang. The theorems erdos_515 and erdos_515_answer are direct aliases for lewis_rossi_weitsman_1984.",
+      "summary": "Proves erdos_515_summary by assembling LRW (UniversalQuestion), Huber (HuberQuestion via unfolding), and Zhang (single path for finite-order functions via zhang_1977). The theorems erdos_515 and erdos_515_answer are direct aliases for lewis_rossi_weitsman_1984.",
       "startLine": 242,
-      "endLine": 285,
-      "mathContext": "Proves erdos_515_summary by assembling LRW, Huber (via unfolding HuberQuestion), and a True placeholder for Zhang. The theorems erdos_515 and erdos_515_answer are direct aliases for lewis_rossi_weitsman_1984."
+      "endLine": 286,
+      "mathContext": "Proves erdos_515_summary : UniversalQuestion ∧ (∀ f, HuberQuestion f) ∧ (∀ f finite-order, zhang path exists). All three proved from axioms with 0 sorries."
     }
   ],
   "conclusion": {
@@ -181,7 +181,7 @@
       "MeasureTheory"
     ],
     "namespace": "Erdos515",
-    "lineCount": 285,
+    "lineCount": 286,
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 11,

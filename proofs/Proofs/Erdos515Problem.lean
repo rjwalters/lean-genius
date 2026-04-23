@@ -253,10 +253,11 @@ KEY INSIGHT: The result extends to e^u for subharmonic u.
 theorem erdos_515_summary :
     -- The answer is YES
     UniversalQuestion ∧
-    -- Huber's weaker result
+    -- Huber's weaker result (1957): path exists per λ
     (∀ f : ℂ → ℂ, IsTranscendental f → HuberQuestion f) ∧
-    -- Zhang's intermediate result
-    True := by
+    -- Zhang's intermediate result (1977): single path for finite-order functions
+    (∀ f : ℂ → ℂ, IsTranscendental f → HasFiniteOrder f →
+      ∃ γ : ℝ → ℂ, IsGoodPath γ ∧ ∀ λ : ℝ, λ > 0 → IntegralIsFinite f γ λ) := by
   constructor
   · exact lewis_rossi_weitsman_1984
   constructor
@@ -264,7 +265,7 @@ theorem erdos_515_summary :
     unfold HuberQuestion
     intro _
     exact huber_1957 f hf
-  · trivial
+  · exact zhang_1977
 
 /--
 **Erdős Problem #515: SOLVED**

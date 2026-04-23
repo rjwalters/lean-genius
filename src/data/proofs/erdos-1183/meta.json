@@ -80,78 +80,60 @@
   },
   "sections": [
     {
-      "title": "Basic Definitions",
-      "content": "We define 2-colorings of the powerset, union-closed families, intersection-closed families, sublattices, monochromaticity, and chains.",
-      "lineStart": 35,
-      "lineEnd": 62,
-      "theorems": [],
-      "summary": "Basic Definitions",
-      "id": "basic-definitions"
+      "id": "header-imports",
+      "title": "Module Header: Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Module docstring defines f(n) (max monochromatic sublattice size in 2-colorings of subsets of {1,...,n}) and F(n) (same but for union-closed families). States the trivial chain lower bound f(n) ≥ ⌈(n+1)/2⌉, Howorka's result on same-size colorings, and the open status. Imports Mathlib for Finset powerset/lattice operations and conditional completeness.",
+      "mathContext": "$f(n) = \\max\\{k : \\text{any 2-coloring of } \\mathcal{P}([n])$ has a monochromatic sublattice of size $\\geq k\\}$. Trivial bound: the chain $\\emptyset \\subset \\{0\\} \\subset \\cdots \\subset [n]$ has $n+1$ elements; pigeonhole gives one color class of size $\\geq \\lceil(n+1)/2\\rceil$."
     },
     {
+      "id": "basic-definitions",
+      "title": "Basic Definitions: Colorings, Sublattices, Chains",
+      "startLine": 35,
+      "endLine": 62,
+      "summary": "Defines 2-colorings of the powerset, union-closed families (`IsUnionClosed`), intersection-closed families (`IsInterClosed`), sublattices (`IsSublattice`: both union- and intersection-closed), monochromaticity (`IsMonochromatic`), and chains (totally ordered by ⊆). Sets up the combinatorial vocabulary for the pigeonhole argument.",
+      "mathContext": "A sublattice of $\\mathcal{P}([n])$ is a family closed under $\\cup$ and $\\cap$. A chain in $\\mathcal{P}([n])$ is a family totally ordered by $\\subseteq$. Every chain is a sublattice (since min/max of chain elements are in the chain)."
+    },
+    {
+      "id": "chains-are-sublattices",
       "title": "Chains Are Sublattices",
-      "content": "We prove that in any chain (totally ordered by ⊆), the union and intersection of any two elements remain in the chain. Hence every chain is a sublattice.",
-      "lineStart": 64,
-      "lineEnd": 85,
-      "theorems": [
-        "chain_union_mem",
-        "chain_inter_mem",
-        "chain_isSublattice"
-      ],
-      "summary": "Chains Are Sublattices",
-      "id": "chains-are-sublattices"
+      "startLine": 64,
+      "endLine": 85,
+      "summary": "Proves that chains are sublattices: `chain_union_mem` and `chain_inter_mem` show that union/intersection of two chain elements is either the smaller or larger element (hence in the chain). `chain_isSublattice` combines these: any chain is simultaneously union-closed and intersection-closed.",
+      "mathContext": "For $A, B$ in a chain with $A \\subseteq B$: $A \\cup B = B \\in \\mathcal{C}$ and $A \\cap B = A \\in \\mathcal{C}$. Hence every chain is a sublattice — the key structural fact enabling the pigeonhole lower bound."
     },
     {
-      "title": "The Standard Chain",
-      "content": "We construct the standard chain ∅ ⊂ {0} ⊂ {0,1} ⊂ ... ⊂ Fin n using initial segments, prove it is a chain, that initial segments are injective, and that the chain has exactly n+1 elements.",
-      "lineStart": 87,
-      "lineEnd": 132,
-      "theorems": [
-        "initialSeg_mono",
-        "stdChain_isChain",
-        "initialSeg_injective",
-        "stdChain_card"
-      ],
-      "summary": "The Standard Chain",
-      "id": "the-standard-chain"
+      "id": "the-standard-chain",
+      "title": "The Standard Chain of Initial Segments",
+      "startLine": 87,
+      "endLine": 132,
+      "summary": "Constructs the standard chain $\\emptyset \\subset \\{0\\} \\subset \\{0,1\\} \\subset \\cdots \\subset \\text{Fin}(n)$ using initial segments. Proves `initialSeg_mono` (initial segments are monotone), `stdChain_isChain` (the family is a chain), `initialSeg_injective` (distinct initial segments are distinct), and `stdChain_card` (the chain has exactly $n+1$ elements).",
+      "mathContext": "$\\text{initialSeg}(k) = \\{0, 1, \\ldots, k-1\\} \\subseteq \\text{Fin}(n)$. The chain $\\{\\text{initialSeg}(k) : 0 \\leq k \\leq n\\}$ has $n+1$ elements and is totally ordered by $\\subseteq$."
     },
     {
-      "title": "Pigeonhole",
-      "content": "A pigeonhole lemma: in any 2-coloring of a finite set S, some color class has at least ⌈|S|/2⌉ elements.",
-      "lineStart": 134,
-      "lineEnd": 164,
-      "theorems": [
-        "exists_mono_color_class"
-      ],
-      "summary": "Pigeonhole",
-      "id": "pigeonhole"
+      "id": "pigeonhole",
+      "title": "Pigeonhole Lemma for 2-Colorings",
+      "startLine": 134,
+      "endLine": 164,
+      "summary": "Proves `exists_mono_color_class`: in any 2-coloring of a finite set $S$, some color class has at least $\\lceil|S|/2\\rceil$ elements. This is the pigeonhole step that converts the $n+1$ chain elements into a large monochromatic subfamily.",
+      "mathContext": "$|S| = |S_0| + |S_1|$ (two color classes). By pigeonhole, $\\max(|S_0|, |S_1|) \\geq \\lceil|S|/2\\rceil$. Applied to the standard chain of size $n+1$: one color class has $\\geq \\lceil(n+1)/2\\rceil$ elements."
     },
     {
-      "title": "Main Results",
-      "content": "The chain bound: for any 2-coloring of subsets of Fin n, there exists a monochromatic sublattice of size ≥ ⌈(n+1)/2⌉. The F(n) bound follows since every sublattice is union-closed.",
-      "lineStart": 166,
-      "lineEnd": 200,
-      "theorems": [
-        "erdos1183_chain_bound",
-        "erdos1183_F_chain_bound"
-      ],
-      "summary": "Main Results",
-      "id": "main-results"
+      "id": "main-results",
+      "title": "Main Bound: f(n) ≥ ⌈(n+1)/2⌉",
+      "startLine": 166,
+      "endLine": 200,
+      "summary": "The chain bound: for any 2-coloring of subsets of $\\text{Fin}(n)$, there exists a monochromatic sublattice of size $\\geq \\lceil(n+1)/2\\rceil$. Proved by: standard chain (size $n+1$) → pigeonhole → monochromatic color class (size $\\geq \\lceil(n+1)/2\\rceil$) → this color class is a sublattice (being a chain). The $F(n)$ bound follows since sublattices are union-closed.",
+      "mathContext": "$f(n) \\geq \\lceil(n+1)/2\\rceil$: the monochromatic color class of the standard chain is a chain, hence a sublattice, of size $\\geq \\lceil(n+1)/2\\rceil$. $F(n) \\geq f(n)$: every sublattice is union-closed, so $F(n) \\geq f(n) \\geq \\lceil(n+1)/2\\rceil$."
     },
     {
-      "title": "Abstract Definitions and Bounds",
-      "content": "Corrected definitions of f(n) and F(n) using sSup (previously sInf, which gave 0). Proves the chain bound connects to the abstract definition: f(n) ≥ ⌈(n+1)/2⌉. Proves F(n) ≥ f(n) since sublattices are union-closed.",
-      "lineStart": 201,
-      "lineEnd": 276,
-      "theorems": [
-        "achievableSublattice_bddAbove",
-        "achievableUnionClosed_bddAbove",
-        "erdos1183_f_lower_bound",
-        "achievableSublattice_subset_unionClosed",
-        "erdos1183_F_ge_f"
-      ],
-      "summary": "Abstract Definitions and Bounds",
-      "id": "abstract-definitions-and-bound"
+      "id": "abstract-definitions-and-bound",
+      "title": "Abstract Definitions of f(n), F(n) and Formal Bounds",
+      "startLine": 201,
+      "endLine": 280,
+      "summary": "Formalizes $f(n)$ and $F(n)$ as suprema over achievable sizes (`sSup`), with proofs that the suprema are bounded above (hence the `sSup` is a nat). `erdos1183_f_lower_bound` proves $f(n) \\geq \\lceil(n+1)/2\\rceil$ by exhibiting the chain witness. `achievableSublattice_subset_unionClosed` and `erdos1183_F_ge_f` formalize $F(n) \\geq f(n)$ via subset ordering of achievable sets and `csSup_le_csSup`.",
+      "mathContext": "$f(n) = \\text{sSup}\\{k : \\exists \\text{ monochromatic sublattice of size } k\\}$. $F(n) = \\text{sSup}\\{k : \\exists \\text{ monochromatic union-closed family of size } k\\}$. Since every sublattice is union-closed: $\\{\\text{achievable sublattice sizes}\\} \\subseteq \\{\\text{achievable union-closed sizes}\\} \\Rightarrow f(n) \\leq F(n)$."
     }
   ],
   "conclusion": {
@@ -170,8 +152,9 @@
   },
   "crossReferences": [
     {
-      "id": "ramseys-theorem",
-      "relationship": "Both are Ramsey-type problems about 2-colorings"
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are Ramsey-type problems about 2-colorings"
     }
   ],
   "references": [

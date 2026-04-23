@@ -143,29 +143,29 @@
   },
   "crossReferences": [
     {
-      "id": "sqrt2-irrational",
       "relationship": "parent",
-      "description": "Irrationality of √2 — motivating result; degree-2 minpoly implies irrationality"
+      "description": "Irrationality of √2 — motivating result; degree-2 minpoly implies irrationality",
+      "targetId": "sqrt2-irrational"
     },
     {
-      "id": "cube-root-2-irrational",
       "relationship": "sibling",
-      "description": "Irrationality of ∛2 — analogous Eisenstein argument at p=2 for X³-2 over ℤ"
+      "description": "Irrationality of ∛2 — analogous Eisenstein argument at p=2 for X³-2 over ℤ",
+      "targetId": "cube-root-2-irrational"
     },
     {
-      "id": "nth-root-irrational",
       "relationship": "generalization",
-      "description": "General irrationality of nth roots: m^(1/n) is irrational when m is not a perfect nth power — the Eisenstein+Gauss technique here specializes to this case with n=2, m=2"
+      "description": "General irrationality of nth roots: m^(1/n) is irrational when m is not a perfect nth power — the Eisenstein+Gauss technique here specializes to this case with n=2, m=2",
+      "targetId": "nth-root-irrational"
     },
     {
-      "id": "cayley-hamilton-minpoly",
       "relationship": "sibling",
-      "description": "Minimal polynomial in the matrix context — same annihilator-of-evaluation notion applied to matrices rather than algebraic numbers"
+      "description": "Minimal polynomial in the matrix context — same annihilator-of-evaluation notion applied to matrices rather than algebraic numbers",
+      "targetId": "cayley-hamilton-minpoly"
     },
     {
-      "id": "sqrt2-plus-sqrt3-irrational",
       "relationship": "extension",
-      "description": "√2+√3 is irrational — builds on the degree-2 extensions ℚ(√2) and ℚ(√3); its minimal polynomial over ℚ is X⁴-10X²+1 (degree 4)"
+      "description": "√2+√3 is irrational — builds on the degree-2 extensions ℚ(√2) and ℚ(√3); its minimal polynomial over ℚ is X⁴-10X²+1 (degree 4)",
+      "targetId": "sqrt2-plus-sqrt3-irrational"
     }
   ],
   "references": {

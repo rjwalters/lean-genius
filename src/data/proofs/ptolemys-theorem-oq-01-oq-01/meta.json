@@ -126,17 +126,17 @@
   },
   "crossReferences": [
     {
-      "id": "ptolemys-theorem-oq-01",
+      "targetId": "ptolemys-theorem-oq-01",
       "relationship": "parent",
       "description": "Proves the forward direction (CCW → equality) and all angular infrastructure (exp_diff_factor, ptolemy_ratio_pos_of_ccw, IsCCWOrder)"
     },
     {
-      "id": "ptolemys-complex-proof-oq-01",
+      "targetId": "ptolemys-complex-proof-oq-01",
       "relationship": "dependency",
       "description": "Provides ptolemy_equality_implies_proportional (the equality-case-of-triangle-inequality argument)"
     },
     {
-      "id": "ptolemys-theorem",
+      "targetId": "ptolemys-theorem",
       "relationship": "ancestor",
       "description": "The original Ptolemy theorem formalization using complex numbers"
     }

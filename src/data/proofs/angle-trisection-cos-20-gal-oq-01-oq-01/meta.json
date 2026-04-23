@@ -95,7 +95,10 @@
     }
   ],
   "leanFile": {
-    "imports": ["Proofs.AngleTrisectionCos20Gal", "Proofs.AngleTrisectionCos20GalOQ01"],
+    "imports": [
+      "Proofs.AngleTrisectionCos20Gal",
+      "Proofs.AngleTrisectionCos20GalOQ01"
+    ],
     "namespace": "AngleTrisectionCos20GalOQ01OQ01",
     "lineCount": 182,
     "axiomCount": 0,
@@ -108,17 +111,17 @@
   "sorries": 0,
   "crossReferences": [
     {
-      "id": "angle-trisection-cos-20-gal",
+      "targetId": "angle-trisection-cos-20-gal",
       "relationship": "parent",
       "description": "Proves the cos(20°) Galois result (|Gal(8X³−6X−1)| = 3) used here as `cos20_gal_card` for the p=3 case."
     },
     {
-      "id": "angle-trisection-cos-20-gal-oq-01",
+      "targetId": "angle-trisection-cos-20-gal-oq-01",
       "relationship": "parent",
       "description": "Proves the cos(π/7) Galois result (|Gal(8X³−4X²−4X+1)| = 3) used here as `cos_pi_7_gal_card` for the p=7 case."
     },
     {
-      "id": "angle-trisection",
+      "targetId": "angle-trisection",
       "relationship": "ancestor",
       "description": "The root angle trisection proof establishing impossibility via Galois theory — the original context motivating these specific Galois group computations."
     }
