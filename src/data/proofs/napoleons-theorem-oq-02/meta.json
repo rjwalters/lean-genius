@@ -1,0 +1,157 @@
+{
+  "id": "napoleons-theorem-oq-02",
+  "title": "Napoleon's Theorem: DFT Characterization",
+  "slug": "napoleons-theorem-oq-02",
+  "description": "The Napoleon triangle construction is a linear DFT filter: it maps the frequency-1 component X₁ to -X₁ and eliminates the frequency-2 component X₂. This characterizes both the outer and inner Napoleon triangles via the 3-point discrete Fourier transform.",
+  "meta": {
+    "author": "Lean Genius Researcher (2026)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Napoleon%27s_theorem",
+    "date": "2026-04-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/NapoleonsTheoremOQ02.lean",
+    "tags": [
+      "geometry",
+      "napoleon",
+      "discrete-fourier-transform",
+      "complex-analysis",
+      "signal-processing",
+      "filter-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex",
+        "description": "Complex number field ℂ and arithmetic operations",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for √3 in omega definition",
+        "module": "Mathlib.Data.Real.Sqrt"
+      }
+    ],
+    "originalContributions": [
+      "omega = e^{2πi/3} = (-1+I√3)/2 as a primitive cube root of unity with ω³=1 and 1+ω+ω²=0",
+      "Outer Napoleon DFT: G₁+ω·G₂+ω²·G₃ = -(z₁+ω·z₂+ω²·z₃) — frequency-1 component negated",
+      "Outer Napoleon DFT: G₁+ω²·G₂+ω·G₃ = 0 — frequency-2 component eliminated",
+      "Inner Napoleon DFT: G₁'+ω·G₂'+ω²·G₃' = 0 — frequency-1 component eliminated",
+      "Inner Napoleon DFT: G₁'+ω²·G₂'+ω·G₃' = -(z₁+ω²·z₂+ω·z₃) — frequency-2 negated",
+      "Napoleon as DFT filter: the complete filter action (X₀↦X₀, X₁↦-X₁, X₂↦0) for outer triangle",
+      "IDFT recovery: G₁ = (X₀ - X₁)/3, giving an explicit DFT-based centroid formula"
+    ],
+    "dateAdded": "2026-04-23",
+    "axiomCount": 0,
+    "lineCount": 346,
+    "assumptions": "0 axioms. 0 sorries. Fully verified using only 1+ω+ω²=0, ω³=1, and √3²=3.",
+    "mathlib_version": "4.26.0",
+    "parentProof": "napoleons-theorem"
+  },
+  "sections": [
+    {
+      "title": "Primitive Cube Root of Unity",
+      "startLine": 45,
+      "endLine": 100,
+      "description": "Define ω = (-1+I√3)/2 and its square ω² = (-1-I√3)/2. Prove the fundamental identities ω³=1 and 1+ω+ω²=0.",
+      "summary": "omega and its algebraic properties",
+      "id": "primitive-cube-root"
+    },
+    {
+      "title": "Outer Napoleon DFT at Frequency 1",
+      "startLine": 105,
+      "endLine": 150,
+      "description": "Prove G₁+ω·G₂+ω²·G₃ = -(z₁+ω·z₂+ω²·z₃): the frequency-1 DFT component of the outer Napoleon triangle is the negation of the original triangle's frequency-1 component.",
+      "summary": "Y₁ = -X₁ for outer Napoleon triangle",
+      "id": "outer-dft-freq1"
+    },
+    {
+      "title": "Outer Napoleon DFT at Frequency 2",
+      "startLine": 155,
+      "endLine": 195,
+      "description": "Prove G₁+ω²·G₂+ω·G₃ = 0: the frequency-2 DFT component vanishes. Since equilateral triangles are characterized by vanishing X₂, this explains why Napoleon triangles are always equilateral.",
+      "summary": "Y₂ = 0 for outer Napoleon triangle",
+      "id": "outer-dft-freq2"
+    },
+    {
+      "title": "Inner Napoleon DFT",
+      "startLine": 200,
+      "endLine": 240,
+      "description": "The inner Napoleon triangle has DFT Y₁'=0 and Y₂'=-X₂: exactly swapping the roles of X₁ and X₂ compared to the outer construction.",
+      "summary": "Y₁'=0 and Y₂'=-X₂ for inner Napoleon triangle",
+      "id": "inner-dft"
+    },
+    {
+      "title": "Complete DFT Filter Picture",
+      "startLine": 245,
+      "endLine": 275,
+      "description": "Bundle theorems: outer Napoleon acts as (X₀↦X₀, X₁↦-X₁, X₂↦0) and inner as (X₀↦X₀, X₁↦0, X₂↦-X₂). IDFT recovery formula: G₁=(X₀-X₁)/3.",
+      "summary": "Napoleon construction as explicit DFT filter",
+      "id": "dft-filter-complete"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Napoleon's theorem has been known since the early 19th century, but its connection to the Discrete Fourier Transform is a more modern observation. The DFT perspective on polygon geometry was developed in the 20th century, with applications to signal processing and harmonic analysis.\n\nThe key insight — that the Napoleon construction is a linear filter in the DFT basis — reveals the algebraic structure underlying the geometric fact. This perspective unifies Napoleon's theorem with other results in discrete harmonic analysis on triangles and polygons.",
+    "problemStatement": "**Napoleon's Theorem DFT Characterization**: Let ω = e^{2πi/3} and define the 3-point DFT of triangle (z₁,z₂,z₃) as:\n  X₀ = z₁+z₂+z₃\n  X₁ = z₁+ω·z₂+ω²·z₃\n  X₂ = z₁+ω²·z₂+ω·z₃\n\nThe outer Napoleon triangle (G₁,G₂,G₃) has DFT (X₀, -X₁, 0).\nThe inner Napoleon triangle (G₁',G₂',G₃') has DFT (X₀, 0, -X₂).",
+    "text": "The Napoleon triangle construction is a linear DFT filter: it maps X₁ to -X₁ and eliminates X₂ (outer case), explaining algebraically why Napoleon triangles are always equilateral.",
+    "proofStrategy": "All proofs are algebraic, expanding the napoleonCenter formula and using the fundamental identities of cube roots of unity.\n\n1. **Define ω**: Set ω = (-1+I√3)/2. Prove ω³=1 and 1+ω+ω²=0 from √3²=3 and I²=-1.\n\n2. **Expand G_k**: Using napoleonCenter(b,c) = (b+c)/2 + I√3/6·(c-b), verify algebraically that G₁ = z₂·(1-ω)/3 + z₃·(1-ω²)/3.\n\n3. **Compute Y₁**: G₁+ω·G₂+ω²·G₃. The coefficient of z₁ is (ω(1-ω²)+ω²(1-ω))/3 = (ω+ω²-2ω³)/3 = (-1-2)/3 = -1. Similarly for z₂ (coeff = -ω) and z₃ (coeff = -ω²). Hence Y₁ = -(z₁+ω·z₂+ω²·z₃) = -X₁.\n\n4. **Compute Y₂**: G₁+ω²·G₂+ω·G₃ = 0. The z₁ coefficient is (ω²(1-ω²)+ω(1-ω))/3 = (ω²-ω⁴+ω-ω²)/3 = (ω-ω)/3 = 0. Similarly 0 for z₂ and z₃.\n\n5. **Inner case**: Symmetric computation with -I√3 replacing +I√3, giving the swapped filter action.",
+    "keyInsights": [
+      "**Napoleon is a linear DFT filter**: The map (z₁,z₂,z₃) ↦ (G₁,G₂,G₃) is linear and diagonal in the DFT basis, with eigenvalues (1,-1,0) for outer and (1,0,-1) for inner",
+      "**Equilateral ↔ X₂=0**: A triangle is equilateral iff its DFT at frequency 2 (outer convention) is zero. Since Y₂=0 always, Napoleon triangles are always equilateral",
+      "**Centroid invariance**: Y₀ = X₀ means Napoleon preserves the DC component (centroid) — a DFT perspective on napoleon_centroid_eq_original",
+      "**Outer/inner symmetry**: Outer kills X₂, inner kills X₁ — they are complex conjugates of each other in the DFT domain",
+      "**IDFT formula**: G₁ = (X₀-X₁)/3 = ((z₁+z₂+z₃)-(z₁+ω·z₂+ω²·z₃))/3 = (z₂(1-ω)+z₃(1-ω²))/3, making the algebraic structure transparent"
+    ],
+    "prerequisites": [
+      "Complex numbers and arithmetic in ℂ",
+      "Cube roots of unity: ω = e^{2πi/3}, ω³=1, 1+ω+ω²=0",
+      "Napoleon's Theorem (parent proof: napoleons-theorem)",
+      "Discrete Fourier Transform (3-point version)"
+    ],
+    "openQuestions": [
+      "Can this DFT filter perspective generalize to n-gons? (Napoleon-Douglas theorem for equilateral polygons)",
+      "Does the DFT characterization connect to the Jordan-von Neumann identity or other operator theory results?",
+      "Can the n-point DFT filter interpretation give a new proof of the Douglas-Neumann theorem?"
+    ]
+  },
+  "conclusion": {
+    "summary": "Napoleon's theorem is re-examined through the lens of the Discrete Fourier Transform. The Napoleon construction acts as a linear DFT filter, diagonally in the Fourier basis: (X₀,X₁,X₂) ↦ (X₀,-X₁,0) for the outer triangle and (X₀,0,-X₂) for the inner triangle. This gives a concise algebraic explanation for why Napoleon triangles are equilateral: equilateral triangles are precisely those with zero Fourier component at frequency 2.",
+    "implications": "This perspective connects Napoleon's theorem to signal processing and harmonic analysis. The outer Napoleon construction is a '2nd-harmonic killer' — it completely suppresses the frequency-2 content of any triangle while preserving the DC component (centroid) and negating the frequency-1 component.",
+    "openQuestions": [
+      "Generalization to n-gons via n-point DFT filters (Napoleon-Douglas theorem)",
+      "Connection to operator algebras and circulant matrices"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Parent proof: the base Napoleon theorem whose centroid formula is used and whose centroid-preservation result is cited",
+      "sharedConcepts": [
+        "napoleon",
+        "equilateral-triangle",
+        "centroid",
+        "complex-coordinates"
+      ],
+      "targetId": "napoleons-theorem"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Data.Complex.Exponential",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Tactic",
+      "Proofs.NapoleonsTheorem"
+    ],
+    "opens": [
+      "Complex",
+      "Real",
+      "NapoleonsTheorem"
+    ],
+    "namespace": "NapoleonsTheoremOQ02",
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "sorries": 0,
+    "path": "Proofs/NapoleonsTheoremOQ02.lean"
+  }
+}
