@@ -138,6 +138,29 @@
       "note": "Classical treatment of series transformation methods including Euler's transform"
     }
   ],
-  "leanFile": "Proofs/LeibnizPiOQ03.lean",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv",
+      "Mathlib.Analysis.Real.Pi.Leibniz",
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "Filter",
+      "Finset",
+      "BigOperators",
+      "intervalIntegral",
+      "MeasureTheory"
+    ],
+    "namespace": "LeibnizPiOQ03",
+    "lineCount": 277,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 2,
+    "path": "Proofs/LeibnizPiOQ03.lean",
+    "sorries": 0
+  },
   "sorries": 0
 }
