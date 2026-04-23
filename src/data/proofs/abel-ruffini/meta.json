@@ -337,6 +337,21 @@
       "description": "The irrationality of $\\sqrt{2}$ (c. 500 BCE) is the earliest impossibility result in the expressibility hierarchy discussed in the conclusion: $\\sqrt{2} \\notin \\mathbb{Q}$ shows certain quantities escape rational expressions. Abel-Ruffini extends this paradigm one level higher: certain algebraic quantities escape radical expressions. The progression irrationality → radical inexpressibility → transcendence ($e, \\pi \\notin \\overline{\\mathbb{Q}}$) forms the expressibility hierarchy that Abel-Ruffini occupies at the middle level"
     },
     {
+      "targetId": "sqrt2-minpoly",
+      "relationship": "foundational",
+      "description": "Formalizes that the minimal polynomial of $\\sqrt{2}$ over $\\mathbb{Q}$ is $X^2 - 2$. The `galois_bridge` theorem in this entry takes the minimal polynomial $\\text{minpoly}_F(\\alpha)$ as a key input — this entry makes that input concrete for the simplest radical extension $\\mathbb{Q}(\\sqrt{2})/\\mathbb{Q}$. The Galois group of $X^2 - 2$ over $\\mathbb{Q}$ is $\\mathbb{Z}/2\\mathbb{Z}$ (cyclic, solvable), confirming that $\\sqrt{2}$ is solvable by radicals in exact alignment with `not_solvable_by_rad_of_not_solvable_gal`'s contrapositive"
+    },
+    {
+      "targetId": "sqrt2-minpoly-oq-01",
+      "relationship": "foundational",
+      "description": "Generalizes the minimal polynomial computation to $\\text{minpoly}_{\\mathbb{Q}}(\\sqrt{n}) = X^2 - n$ for any squarefree $n$ via the Eisenstein criterion. Each step $K_i \\to K_i(\\sqrt[n]{a})$ in a radical tower requires that $X^n - a$ is irreducible over $K_i$ — exactly the Eisenstein-type irreducibility this entry formalizes. The Galois group of $X^2 - n$ over $\\mathbb{Q}$ is $\\mathbb{Z}/2\\mathbb{Z}$ (solvable), providing a gallery-verified instance of the abelian Galois quotient at each radical step"
+    },
+    {
+      "targetId": "sqrt2-minpoly-oq-02",
+      "relationship": "foundational",
+      "description": "Formalizes that $\\text{minpoly}_{\\mathbb{Q}}(m^{1/n}) = X^n - m$ whenever $m$ has a prime factor $p$ with $p \\mid m$ but $p^2 \\nmid m$ (Eisenstein at $p$). This is the exact polynomial used in each radical extension step of the Galois bridge: when $\\alpha = m^{1/n}$ is adjoined to build a radical tower, `galois_bridge` applies to $q = X^n - m$ with $\\text{aeval}\\,\\alpha\\,q = 0$. The Galois group of $X^n - m$ over $\\mathbb{Q}$ is metacyclic (a subgroup of the dihedral group $D_n$) and hence solvable — machine-verified proof that each individual radical step contributes a solvable Galois quotient to the tower"
+    },
+    {
       "targetId": "angle-trisection-oq-02",
       "relationship": "related",
       "description": "The Wantzel-Galois characterization of constructibility: an algebraic number $\\alpha$ is constructible iff $\\text{Gal}(\\text{minpoly}_{\\mathbb{Q}}(\\alpha))$ is a 2-group. This is directly parallel to Abel-Ruffini's characterization of radical solvability: $\\alpha$ is solvable by radicals iff $\\text{Gal}(\\text{minpoly}_{\\mathbb{Q}}(\\alpha))$ is solvable. Both use Galois groups to convert geometric/algebraic impossibility questions into group-theoretic conditions — 2-groups for constructibility, solvable groups for radical solvability"
