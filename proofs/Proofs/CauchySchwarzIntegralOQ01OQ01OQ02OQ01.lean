@@ -174,40 +174,8 @@ theorem truncated_rn_deriv_memLq [IsFiniteMeasure μ]
       simp only [Real.norm_eq_abs, abs_le]
       exact ⟨le_max_right _ _, le_trans (min_le_right _ _) (le_max_left _ _)⟩))
 
-/-- **Sub-goal 5b**: Uniform Lq norm bound for truncations.
-    If |s(E)| ≤ M · μ(E)^{1/p} for all E, then ‖truncate_n(g)‖_q ≤ M for all n.
-    This is the Hölder extremizer argument applied to truncations.
-    Requires: ~50 lines of careful norm estimation. -/
-theorem truncated_rn_deriv_lq_bound (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
-    (hpq : p.toReal.HolderConjugate q.toReal)
-    [IsFiniteMeasure μ] [SigmaFinite μ]
-    (s : SignedMeasure α) (hac : s.AbsolutelyContinuous μ.toENNRealVectorMeasure)
-    (M : ℝ) (hM : 0 ≤ M)
-    (hbound : ∀ (E : Set α), MeasurableSet E →
-      |s E| ≤ M * (μ E).toReal ^ (1 / p.toReal))
-    (n : ℕ) :
-    eLpNorm (fun a => max (min (s.rnDeriv μ a) (n : ℝ)) (-(n : ℝ))) q μ ≤
-      ENNReal.ofReal M := by
-  sorry
-
-/-- **Infrastructure Gap**: The RN derivative of the functional-induced measure
-    belongs to Lq. Uses truncation approach:
-    1. Truncated derivatives gₙ ∈ Lq (sub-goal 5a — proved)
-    2. ‖gₙ‖_q ≤ M uniformly (sub-goal 5b — sorry)
-    3. gₙ → g a.e., so g ∈ Lq by Fatou (routine convergence argument)
-
-    Estimated: ~30 lines once sub-goal 5b is resolved. -/
-theorem rn_deriv_memLq (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
-    (hpq : p.toReal.HolderConjugate q.toReal)
-    [IsFiniteMeasure μ] [SigmaFinite μ]
-    (s : SignedMeasure α) (hac : s.AbsolutelyContinuous μ.toENNRealVectorMeasure)
-    (hbound : ∃ M : ℝ, 0 ≤ M ∧ ∀ (E : Set α), MeasurableSet E →
-      |s E| ≤ M * (μ E).toReal ^ (1 / p.toReal)) :
-    MemLp (s.rnDeriv μ) q μ := by
-  sorry
-
-/-- Variant of `rn_deriv_memLq` accepting uniform truncation bounds directly.
-    This bypasses the incorrect `truncated_rn_deriv_lq_bound` pathway.
+/-- Variant of `rn_deriv_memLq_from_trunc` accepting uniform truncation bounds directly.
+    This is the correct approach bypassing the false truncated_rn_deriv_lq_bound pathway.
     Used in `riesz_lp_surjective_from_rn` with the Hölder extremizer bound. -/
 theorem rn_deriv_memLq_from_trunc (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
     (hpq : p.toReal.HolderConjugate q.toReal)
@@ -1029,16 +997,14 @@ Proof structure (previously a single sorry, now assembled from focused sorries):
 4. g ∈ Lq via holder_extremizer_lq_bound + rn_deriv_memLq_from_trunc
 5. Full φ(f) = ∫ fg via integral_representation (Lp.induction, already proved)
 
-Remaining focused sorries: indicator_lp_hasSum, rnDeriv_integrable_of_finite,
-holder_extremizer_lq_bound.
+All sorries resolved. Full proof complete (0 sorries, 0 axioms).
 -/
 
 /-- **Riesz Representation for Lp** (surjectivity direction).
     Every bounded linear functional on Lp is represented by integration
     against an Lq function, where 1/p + 1/q = 1, 1 < p < ∞.
 
-    This theorem, once the infrastructure sorries are resolved,
-    eliminates the `riesz_lp_surjective` axiom from the parent file. -/
+    Eliminates the `riesz_lp_surjective` axiom from the parent file. -/
 theorem riesz_lp_surjective_from_rn (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
     (hpq : p.toReal.HolderConjugate q.toReal)
     [IsFiniteMeasure μ] [SigmaFinite μ] [Fact (1 ≤ p)] :
@@ -1083,8 +1049,7 @@ theorem riesz_lp_surjective_from_rn (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p 
 3. RN reconstruction: withDensityᵥ (rnDeriv) = s for AC measures
 4. Truncated RN derivative is in Lq for finite measures (Sub-goal 5a)
 5. **MCT for truncations**: ∫⁻ ‖g‖₊^q = ⨆_n ∫⁻ ‖gₙ‖₊^q (proved via lintegral_iSup)
-6. **rn_deriv_memLq** (modulo `truncated_rn_deriv_lq_bound` sorry — MARKED FALSE, dead path)
-7. **rn_deriv_memLq_from_trunc**: COMPLETE sorry-free Lq membership from truncation bounds
+6. **rn_deriv_memLq_from_trunc**: COMPLETE sorry-free Lq membership from truncation bounds
 8. **Integral representation** via Lp.induction (all 3 cases proved)
 9. lintegral Hölder, Bochner integrability from Lp×Lq, integrationCLM
 10. **signedMeasureOfFunctional**: signed measure construction from φ (COMPLETE — no sorry)
@@ -1092,32 +1057,19 @@ theorem riesz_lp_surjective_from_rn (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p 
 12. **rnDeriv_integral_eq**: ν E = ∫_E g (complete, no sorry)
 13. **rnDeriv_integrable_of_finite**: g = ν.rnDeriv μ ∈ L1 (complete via SignedMeasure.integrable_rnDeriv)
 14. **indicator_lp_hasSum**: HasSum of Lp indicator functions (PROVED in session 4)
-15. **riesz_lp_surjective_from_rn**: PROOF STRUCTURE COMPLETE (1 remaining sorry)
+15. **riesz_lp_surjective_from_rn**: COMPLETE (0 sorries, 0 axioms)
 
-### Focused Sorries (2 total, 1 on critical path)
-1. `truncated_rn_deriv_lq_bound` — MARKED FALSE (set function bound approach; dead path)
-2. `holder_extremizer_lq_bound` — ‖gₙ‖_q ≤ ‖φ‖ uniformly (~100 lines)
-   Proof: extremizer h = sign(gₙ)|gₙ|^{q-1}, ‖gₙ‖_q^q ≤ ∫ h·g = φ(h) ≤ ‖φ‖·‖gₙ‖_q^{q/p}
-   Hard step: extend φ(1_E) = ∫_E g to bounded functions via SimpleFunc.approxOn + DCT
-   Tools needed: SimpleFunc.tendsto_approxOn, tendsto_integral_of_dominated_convergence
+### Sorries: 0 (COMPLETE as of 2026-04-23)
+All critical sorries resolved. Two dead-path theorems removed:
+- `truncated_rn_deriv_lq_bound` (MARKED FALSE: set-function bound approach is wrong)
+- `rn_deriv_memLq` (depended on above; replaced by `rn_deriv_memLq_from_trunc`)
 
-### Key Progress (2026-04-22 Session 4) — indicator_lp_hasSum PROVED
-- Proved indicator_lp_hasSum (the σ-additivity step): ~80 lines
-  Uses: indicatorConstLp_coeFn, Lp.ext, Finset.indicator_biUnion_apply (additive),
-        tendsto_indicatorConstLp_set, symmDiff_of_le, Set.iUnion_subtype,
-        measure_iUnion, ENNReal.tendsto_tsum_compl_atTop_zero
-- Key insight: HasSum is definitionally Tendsto atTop (via @[simps] def unconditional)
-  so `show Tendsto ... atTop ...` works after `simp_rw [hsum_eq]`
+The correct proof route (`rn_deriv_memLq_from_trunc` + `holder_extremizer_lq_bound`) is fully proved.
 
-### Path to Completion (1 remaining critical sorry)
-`holder_extremizer_lq_bound` (~100 lines):
-1. Build hn = sign(gₙ)|gₙ|^{q-1} ∈ Lp (bounded by n^{q-1}, finite measure)
-2. Simple function agreement: for sₙ → hn via SimpleFunc.approxOn:
-   φ(sₙ) = ∫ sₙ·g (by indicator linearity + hν_eq + rnDeriv_integral_eq)
-   ∫ sₙ·g → ∫ hn·g (by tendsto_integral_of_dominated_convergence with bound n^{q-1}·|g| ∈ L1)
-   φ(hn) = ∫ hn·g by continuity of φ
-3. Chain: ‖gₙ‖_q^q = ∫ hn·gₙ ≤ ∫ hn·g = φ(hn) ≤ ‖φ‖·‖hn‖_p = ‖φ‖·‖gₙ‖_q^{q/p}
-4. Algebra: ‖gₙ‖_q ≤ ‖φ‖ (q - q/p = 1 from 1/p + 1/q = 1)
+### Key Milestones
+- Session 4 (2026-04-22): indicator_lp_hasSum proved (σ-additivity step, ~80 lines)
+- Session 5 (2026-04-22): holder_extremizer_lq_bound proved (4 sub-sorries A/B/C/D all filled)
+- Session 7 (2026-04-23): Dead-path theorems removed, sorry count → 0
 -/
 
 end RieszLpSurjectivity
