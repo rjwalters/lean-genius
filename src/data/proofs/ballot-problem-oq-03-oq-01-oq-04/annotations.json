@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ann-ballot-oq04-header",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-04",
+    "range": { "startLine": 1, "endLine": 53 },
+    "type": "concept",
+    "title": "Catalan Recurrence from Ballot Theorem: Proof Architecture",
+    "content": "This file answers the open question from `ballot-problem-oq-03-oq-01` (LGV 2×2): prove the Catalan convolution recurrence using the ballot theorem. The proof has three layers:\n\n1. **Bridge** (`cn_eq_catalan`): Shows `LatticePathLGV.Cn n = catalan n` (Mathlib root namespace) by proving both satisfy `f(n)·(n+1) = Nat.centralBinom n`. This connects the ballot-formula Catalan numbers to Mathlib's infrastructure.\n\n2. **Recurrence** (`catalan_recurrence`): Uses Mathlib's `catalan_succ'` to prove `Cₙ₊₁ = ∑Cₖ·Cₙ₋ₖ` in the LatticePathLGV framework.\n\n3. **Ballot form** (`ballot_catalan_recurrence`): Translates the recurrence into ballot sequence counts using `catalan_eq_ballot`, giving a direct path-decomposition statement.",
+    "mathContext": "The central identity: $C_{n+1} = \\sum_{k=0}^{n} C_k C_{n-k}$ where $C_n = \\binom{2n}{n} - \\binom{2n}{n+1}$ is the ballot Catalan number. Equivalently in ballot language: $\\text{ballot}(n+2, n+1) = \\sum_{k=0}^n \\text{ballot}(k+1, k) \\cdot \\text{ballot}(n-k+1, n-k)$, where ballot$(p,q)$ counts voting sequences with $p$ A-votes and $q$ B-votes where A always leads.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-ballot-oq04-bridge",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-04",
+    "range": { "startLine": 55, "endLine": 65 },
+    "type": "technique",
+    "title": "Bridge Lemma: Multiplicative Characterization Uniqueness",
+    "content": "The bridge `cn_eq_catalan` uses a clean technique: two natural-number-valued functions that agree on a multiplicative characterization must be equal.\n\n- `catalan_formula`: `Cn n * (n+1) = C(2n,n) = Nat.centralBinom n`\n- `catalan_eq_centralBinom_div`: `catalan n = Nat.centralBinom n / (n+1)`\n\nRewriting with `catalan_eq_centralBinom_div` and then `← catalan_formula` gives `Cn n = Cn n * (n+1) / (n+1)`, which closes by `Nat.mul_div_cancel`.\n\nThis bridge pattern generalizes: any function satisfying `f(n) * (n+1) = centralBinom n` equals `catalan n`. It is reusable for other Catalan-adjacent results in the LatticePathLGV framework.",
+    "mathContext": "The key identity: $C_n \\cdot (n+1) = \\binom{2n}{n}$. Combined with $\\text{catalan}(n) = \\binom{2n}{n}/(n+1)$ from Mathlib, this gives $\\text{Cn}(n) = \\text{catalan}(n)$ by natural number cancellation.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-ballot-oq04-recurrence",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-04",
+    "range": { "startLine": 68, "endLine": 90 },
+    "type": "proof-step",
+    "title": "Catalan Recurrence via Mathlib catalan_succ'",
+    "content": "The recurrence proof uses `conv_lhs => rw [cn_eq_catalan]` to rewrite only the LHS's `Cn (n+1)` as `catalan (n+1)`, avoiding issues with the RHS. Then:\n\n1. `catalan_succ'` rewrites to the antidiagonal form: `∑ p ∈ antidiagonal n, catalan p.1 * catalan p.2`\n2. `Finset.Nat.sum_antidiagonal_eq_sum_range_succ` converts to the range-sum form\n3. `Finset.sum_congr rfl` + `← cn_eq_catalan` converts each factor back to `Cn`",
+    "mathContext": "`catalan_succ'` is Mathlib's antidiagonal form: $C_{n+1} = \\sum_{(a,b) \\in \\text{antidiag}(n)} C_a \\cdot C_b$. After `sum_antidiagonal_eq_sum_range_succ`: $= \\sum_{k=0}^{n} C_k \\cdot C_{n-k}$.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-ballot-oq04-ballot-form",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-04",
+    "range": { "startLine": 93, "endLine": 115 },
+    "type": "concept",
+    "title": "Ballot Form: Path Decomposition Interpretation",
+    "content": "The ballot recurrence has a direct combinatorial meaning:\n\n`ballotSeqCount (n+2) (n+1)` counts voting sequences with n+2 A-votes and n+1 B-votes where A always strictly leads. Each such sequence can be decomposed at its **first return to minimum margin** (the first step where A's lead is exactly 1 again after the initial step). If this occurs at vote 2k+2:\n- The prefix (k+1 A-votes, k B-votes) is counted by `ballotSeqCount (k+1) k = Cₖ`\n- The suffix (n-k+1 A-votes, n-k B-votes) is counted by `ballotSeqCount (n-k+1) (n-k) = Cₙ₋ₖ`\n\nThe recurrence is thus a direct formalization of this bijective decomposition.",
+    "mathContext": "This is the ballot analog of the Dyck path first-return decomposition: each Dyck path of semilength $n+1$ returns to 0 for the first time at step $2k+2$ for some $k \\in \\{0, \\ldots, n\\}$, giving two shorter Dyck paths of semilengths $k$ and $n-k$.",
+    "significance": "high"
+  }
+]
