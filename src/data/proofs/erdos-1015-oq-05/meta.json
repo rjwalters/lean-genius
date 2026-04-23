@@ -65,7 +65,9 @@
       "The Erdős-Szekeres bound `ramseyBound_HasRamseyProperty` proves $\\binom{r+s-2}{r-1}$ has the Ramsey property by strong induction on $r + s$. The key recurrence is Pascal's rule: $\\binom{r+s-2}{r-1} = \\binom{r+s-3}{r-2} + \\binom{r+s-3}{r-1}$, which matches the recursive structure of the pigeonhole argument. The `HasRamseyProperty_of_add` lemma captures this addition structure.",
       "The inequality $\\binom{n}{k} \\leq 2^n$ bridges the combinatorial bound $R(t,t) \\leq \\binom{2t-2}{t-1}$ to the exponential bound $R(t,t) \\leq 4^t$. Combined with $4^{t-1} \\leq 4^t$, this chain: $R(t,t) \\leq \\binom{2t-2}{t-1} \\leq 2^{2t-2} = 4^{t-1} \\leq 4^t$.",
       "The `HasRamseyProperty_mono` lemma establishes that if $n$ has the Ramsey property for $(r, s)$, so does any $m \\geq n$. This is needed to derive `ramseyNumber r s \\leq ramseyBound r s` from `HasRamseyProperty ramseyBound` and uses `Finset.card_le_card` with embeddings.",
-      "The 6 remaining axioms from the parent proof — Moon's theorem (1966), Erdős's $f(t) < R(t,t)$, the Burr-Erdős-Spencer formula for $f(t)$, the root limit $f(t)^{1/t} \\to c$, and superlinear growth — require either specific extremal graph constructions or deep analytic arguments (entropy, concentration) not yet in Mathlib."
+      "The 6 remaining axioms from the parent proof — Moon's theorem (1966), Erdős's $f(t) < R(t,t)$, the Burr-Erdős-Spencer formula for $f(t)$, the root limit $f(t)^{1/t} \\to c$, and superlinear growth — require either specific extremal graph constructions or deep analytic arguments (entropy, concentration) not yet in Mathlib.",
+      "The `ramseyNumber` definition is `noncomputable` because `Nat.find` uses classical logic (`Classical.dec`). In principle, `HasRamseyProperty (Fin n) r s` is decidable — one can enumerate all $2^{\\binom{n}{2}}$ edge-2-colorings of $K_n$ and check each for a monochromatic $r$- or $s$-clique. A computable `ramseyNumber` would require this exhaustive search, running in EXPTIME. Lean's `noncomputable` annotation accurately represents this gap: the minimum exists *classically* (by `Nat.find_spec`), but computing it efficiently is an open algorithmic problem. For fixed small values like $R(3,3) = 6$ and $R(4,4) = 18$, verification is feasible via `decide`; for $R(5,5) \\in [43, 48]$, even the 5-year McKay-Radziszowski (1995) computation required dedicated search.",
+      "The 4^t upper bound proved here — $R(t,t) \\leq 4^t$ — was essentially unchanged from Erdős-Szekeres (1935) until **2023**, when Campos, Griffiths, Morris, and Sahasrabudhe proved $R(t,t) \\leq (3.993)^t$ — the first exponential improvement in 88 years. The key breakthrough was replacing the pigeonhole argument with a *book algorithm* exploiting spread structure in the neighborhood, giving an exponential gain factor. This contextualizes the `ramsey_upper_bound` axiom elimination here: the proved bound $4^t$ is correct but far from tight, and the 6 remaining axioms (`erdos_ramsey_bound` and the $f(t)$ asymptotics) depend on Ramsey lower bounds that are comparably deep. The lower bound $R(t,t) \\geq (\\sqrt{2}/e)^t \\cdot t^{1/2}$ (Erdős 1947, the paper that launched the probabilistic method) means the true answer lies between $(\\sqrt{2}/e)^t$ and $(3.993)^t$ — a massive exponential gap that remains one of the central open problems of combinatorics."
     ]
   },
   "sections": [
@@ -132,5 +134,31 @@
     "path": "Proofs/Erdos1015OQ05.lean",
     "sorries": 0
   },
+  "references": [
+    {
+      "key": "ES35",
+      "citation": "Erdős, P. & Szekeres, G. (1935). A combinatorial problem in geometry. Compositio Mathematica, 2, 463-470.",
+      "type": "paper",
+      "description": "Founding paper of quantitative Ramsey theory. Proves R(r,s) ≤ C(r+s-2, r-1) via the pigeonhole induction formalized here as HasRamseyProperty_of_add and ramseyBound_HasRamseyProperty."
+    },
+    {
+      "key": "Er47",
+      "citation": "Erdős, P. (1947). Some remarks on the theory of graphs. Bulletin of the American Mathematical Society, 53(4), 292-294.",
+      "type": "paper",
+      "description": "Introduces the probabilistic method in combinatorics. Proves R(t,t) ≥ (√2/e)^t · t^(1/2) via a random coloring argument — the lower bound that makes the 4^t upper bound proved here far from optimal."
+    },
+    {
+      "key": "CGMS23",
+      "citation": "Campos, M., Griffiths, S., Morris, R. & Sahasrabudhe, J. (2023). An exponential improvement for diagonal Ramsey. Annals of Mathematics, 200, 1-127. arXiv:2303.09521.",
+      "type": "paper",
+      "description": "First exponential improvement over the Erdős-Szekeres 4^t bound in 88 years: proves R(t,t) ≤ (3.993)^t via the 'book algorithm'. Contextualizes why the 4^t bound here, though correct, leaves substantial room for improvement."
+    },
+    {
+      "key": "MR95",
+      "citation": "McKay, B. D. & Radziszowski, S. P. (1995). R(4,5) = 25. Journal of Graph Theory, 19(3), 309-322.",
+      "type": "paper",
+      "description": "Determines R(4,5) = 25 via computer search; illustrates the computational difficulty that makes ramseyNumber noncomputable even for small values — and why Lean's Nat.find definition is classical rather than algorithmic."
+    }
+  ],
   "sorries": 0
 }
