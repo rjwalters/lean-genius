@@ -84,3 +84,52 @@
 1. Prove SORRY 1 (Case 1 existence) for all |A|,|B|
 2. Prove SORRY 2 (AP extension) — should be tractable given infrastructure in place
 3. Both sorries are good Aristotle candidates once well-formalized
+
+## Session 2026-04-23 (Session 4) — Aristotle submission for Case 1 existence
+
+**Mode**: REVISIT (continuing from Session 3)
+**Outcome**: Progress — cleaned Aristotle companion, submitted vosper_case1_exists to Aristotle
+
+### What I Did
+- Analyzed the sole remaining sorry (Case 1 existence for |A|≥3, |B|≥3) in depth
+- Proved SORRY 2 (vosper_ap_sdiff_card) was already complete in the main file; removed stale sorry from companion
+- Cleaned up `Erdos476OQ05Aristotle.lean`: removed stale `vosper_ap_sdiff_card` sorry (now proved in main)
+- Resolved Aristotle submission backlog: added 16 ghost-COMPLETE server jobs to local tracking
+- Submitted `Erdos476OQ05Aristotle.lean` to Aristotle (project ID: a5594e66-6409-47ed-89d8-eea7d709f12a)
+
+### Key Mathematical Findings (Case 1 Existence)
+
+**Why the sorry is hard:**
+The goal: given |A|≥3, |B|≥3, |A+B|=|A|+|B|-1 < p, find a₀∈A with |(A\{a₀})+B|=|A|+|B|-2.
+
+**Counting argument (partial proof):**
+Define r(x) = |A∩(x-B)| for x∈A+B. Then:
+- Σ_{x∈A+B} r(x) = |A|·|B| (double counting via Finset.card_eq_sum_card_fiberwise)
+- If all a∈A are Case 2 (|(A\{a})+B|=|A+B|), then r(x)≥2 for all x∈A+B
+  - Proof: r(x)=1 with unique a₀ → x∉(A\{a₀})+B → a₀ is Case 1. Contradiction.
+- So: |A|·|B| ≥ 2·|A+B| = 2(|A|+|B|-1), i.e., (|A|-2)(|B|-2) ≥ 2
+- For |A|=|B|=3: (1)(1)=1 < 2 → CONTRADICTION → Case 1 exists ✓
+- For |A|=3, |B|=4: (1)(2)=2 → no contradiction via counting (boundary case)
+- For |A|≥4, |B|≥4: (|A|-2)(|B|-2)≥4 → no contradiction
+
+**Conclusion:** Counting proves Case 1 for |A|=|B|=3 only. Larger cases require compression/shifting methods not in Mathlib. Aristotle is the right tool for the full proof.
+
+**Orbit argument for |B|=2 (already proved in main):**
+For |B|=2, find a₀ with a₀+d∉A (orbit injectivity argument). This is proved at line 761.
+
+**Double counting infrastructure:**
+Key Mathlib lemma available: `Finset.card_eq_sum_card_fiberwise` (BigOperators/Group/Finset/Basic.lean:971) which gives |s| = Σ_{b∈t} |s.filter(f·=b)| when f maps s into t.
+
+### Files Modified
+- `proofs/Proofs/Erdos476OQ05Aristotle.lean`: Removed stale vosper_ap_sdiff_card sorry
+- `research/aristotle-jobs.json`: Added 16 ghost-completed entries, updated submission record
+
+### Current State
+- Main file: 1 sorry remaining (Case 1 existence, |B|≥3 branch, line 753)
+- Aristotle job submitted: a5594e66-6409-47ed-89d8-eea7d709f12a
+- Companion file: 2 sorries (ap_of_near_periodic contextual + vosper_case1_exists target)
+
+### Next Steps
+1. Check Aristotle results for project a5594e66 in next session
+2. If Aristotle succeeds: integrate solution into main file
+3. If Aristotle fails: implement the |A|=|B|=3 counting argument (provable via card_eq_sum_card_fiberwise) and leave |A|≥3,|B|≥4 and |A|≥4,|B|≥3 for future sessions
