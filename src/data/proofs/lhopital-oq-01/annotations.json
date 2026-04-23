@@ -74,7 +74,7 @@
   {
     "id": "ann-failure-theorem",
     "proofId": "lhopital-oq-01",
-    "range": { "startLine": 130, "endLine": 142 },
+    "range": { "startLine": 136, "endLine": 142 },
     "title": "lhopital_converse_fails: The Combined Counterexample Statement",
     "type": "insight",
     "content": "`lhopital_converse_fails` bundles the two main results into the single conjunction that constitutes the counterexample. The statement is: $(x + \\sin x)/x \\to 1$ AND $\\nexists L,\\ (1 + \\cos x)/1 \\to L$. The proof uses `refine ⟨lim_ratio_eq_one, fun ⟨L, hL⟩ => deriv_ratio_no_limit ⟨L, ?_⟩⟩` to match the conjunction and the negated existential. The `simpa using hL` at the end simplifies `(1 + cos x)/1` to `1 + cos x` via `div_one` before applying `deriv_ratio_no_limit`. This is the public API of the file — 8 supporting lemmas lead to this 2-line synthesis. The theorem name `lhopital_converse_fails` precisely captures the logical content: it is the converse of L'Hôpital's rule that fails, not the rule itself.",
