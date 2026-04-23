@@ -3436,13 +3436,16 @@
       "notes": "Recovered from server at 2026-04-21T13:14:56Z. No sorry reduction."
     },
     {
-      "id": "pending-erdos-476-oq-05-wip-01-2026-04-23",
-      "problem_id": "erdos-476-oq-05-wip-01",
+      "project_id": "a5594e66-6409-47ed-89d8-eea7d709f12a",
       "file": "proofs/Proofs/Erdos476OQ05Aristotle.lean",
-      "theorem": "vosper_case1_exists",
-      "status": "PENDING_SUBMISSION",
-      "submitted": null,
-      "notes": "Submit when Aristotle pipeline backlog clears (14 untracked COMPLETE jobs). vosper_ap_sdiff_card in companion is now proved in main file."
+      "problem_id": "erdos-476-oq-05",
+      "submitted": "2026-04-23T00:00:00Z",
+      "status": "submitted",
+      "sorries": [
+        "vosper_case1_exists",
+        "ap_of_near_periodic"
+      ],
+      "notes": "Case 1 existence: find a₀∈A with |(A\\{a₀})+B|=|A|+|B|-2. Hard counting argument. ap_of_near_periodic is restated for context (proved in main file)."
     },
     {
       "project_id": "fc4ab19a-b8c8-4494-a33a-6753d0846757",
@@ -3453,6 +3456,145 @@
       "outcome": "1 theorems proved via server recovery",
       "theorems_proved": 1,
       "notes": "Recovered and integrated from server at 2026-04-23T13:21:16Z"
+    },
+    {
+      "project_id": "7dc7b47e-6feb-4229-8ced-057e63a6aaa0",
+      "file": null,
+      "problem_id": "ghost_completed",
+      "submitted": "unknown",
+      "status": "ghost_completed",
+      "notes": "Recovered from server 2026-04-23: COMPLETE but solution too short/unmapped to integrate"
+    },
+    {
+      "project_id": "20c7a565-a00b-44bb-ab31-a7a1546973f5",
+      "file": null,
+      "problem_id": "ghost_completed",
+      "submitted": "unknown",
+      "status": "ghost_completed",
+      "notes": "Recovered from server 2026-04-23: COMPLETE but solution too short/unmapped to integrate"
+    },
+    {
+      "project_id": "908ddf63-7709-45e1-a455-f8f638f3f454",
+      "file": null,
+      "problem_id": "ghost_completed",
+      "submitted": "unknown",
+      "status": "ghost_completed",
+      "notes": "Recovered from server 2026-04-23: COMPLETE but solution too short/unmapped to integrate"
+    },
+    {
+      "project_id": "9faac45b-7f93-4b57-8dd1-12310bdbebab",
+      "file": null,
+      "problem_id": "ghost_completed",
+      "submitted": "unknown",
+      "status": "ghost_completed",
+      "notes": "Recovered from server 2026-04-23: COMPLETE but solution too short/unmapped to integrate"
+    },
+    {
+      "project_id": "26bdef41-a7e0-480d-a23c-f6024006608f",
+      "file": null,
+      "problem_id": "ghost_completed",
+      "submitted": "unknown",
+      "status": "ghost_completed",
+      "notes": "Recovered from server 2026-04-23: COMPLETE but solution too short/unmapped to integrate"
+    },
+    {
+      "project_id": "5471b50f-fec3-47a6-9727-c43617ec2973",
+      "file": null,
+      "problem_id": "ghost_completed",
+      "submitted": "unknown",
+      "status": "ghost_completed",
+      "notes": "Recovered from server 2026-04-23: COMPLETE but solution too short/unmapped to integrate"
+    },
+    {
+      "project_id": "6e4f49cf-1517-4908-9f5c-fc9c04d04b63",
+      "file": null,
+      "problem_id": "ghost_completed",
+      "submitted": "unknown",
+      "status": "ghost_completed",
+      "notes": "Recovered from server 2026-04-23: COMPLETE but solution too short/unmapped to integrate"
+    },
+    {
+      "project_id": "c7669d7d-32b7-4c49-bda3-7ae62873ac59",
+      "file": null,
+      "problem_id": "ghost_completed",
+      "submitted": "unknown",
+      "status": "ghost_completed",
+      "notes": "Recovered from server 2026-04-23: COMPLETE but solution too short/unmapped to integrate"
+    },
+    {
+      "project_id": "4645f3ce-9c6b-4eb6-acf1-31780074d6bd",
+      "file": null,
+      "problem_id": "ghost_completed",
+      "submitted": "unknown",
+      "status": "ghost_completed",
+      "notes": "Recovered from server 2026-04-23: COMPLETE but solution too short/unmapped to integrate"
+    },
+    {
+      "project_id": "a42fc301-9179-4025-b585-07e410b89ae6",
+      "file": null,
+      "problem_id": "ghost_completed",
+      "submitted": "unknown",
+      "status": "ghost_completed",
+      "notes": "Recovered from server 2026-04-23: COMPLETE but solution too short/unmapped to integrate"
+    },
+    {
+      "project_id": "547ebf00-027d-4ee4-9d52-f45a3ff5d9f4",
+      "file": null,
+      "problem_id": "ghost_completed",
+      "submitted": "unknown",
+      "status": "ghost_completed",
+      "notes": "Recovered from server 2026-04-23: COMPLETE but solution too short/unmapped to integrate"
+    },
+    {
+      "project_id": "c85e4f91-5151-4667-8618-0a0e0b36e0b3",
+      "file": null,
+      "problem_id": "ghost_completed",
+      "submitted": "unknown",
+      "status": "ghost_completed",
+      "notes": "Recovered from server 2026-04-23: COMPLETE but solution too short/unmapped to integrate"
+    },
+    {
+      "project_id": "8adee520-9c29-4558-b5b1-1bb28c21b7db",
+      "file": null,
+      "problem_id": "ghost_completed",
+      "submitted": "unknown",
+      "status": "ghost_completed",
+      "notes": "Recovered from server 2026-04-23: COMPLETE but solution too short/unmapped to integrate"
+    },
+    {
+      "project_id": "4d691a5e-b7ea-44a0-8594-071541f7e850",
+      "file": null,
+      "problem_id": "ghost_completed",
+      "submitted": "unknown",
+      "status": "ghost_completed",
+      "notes": "Recovered from server 2026-04-23: COMPLETE but solution too short/unmapped to integrate"
+    },
+    {
+      "project_id": "3f6577ab-c5c8-4420-a6ab-baa5e27df52b",
+      "file": null,
+      "problem_id": "ghost_completed",
+      "submitted": "unknown",
+      "status": "ghost_completed",
+      "notes": "Recovered from server 2026-04-23: COMPLETE but solution too short/unmapped to integrate"
+    },
+    {
+      "project_id": "2f24f5e8-c777-47d4-86e3-0b414235e239",
+      "file": null,
+      "problem_id": "ghost_completed",
+      "submitted": "unknown",
+      "status": "ghost_completed",
+      "notes": "Recovered from server 2026-04-23: COMPLETE but solution too short/unmapped to integrate"
+    },
+    {
+      "project_id": "e578c05f-8fb9-487e-b626-1d8769c5fdf3",
+      "file": "proofs/Proofs/AngleTrisectionOQ02OQ04OQ01Aristotle.lean",
+      "problem_id": "angletrisectionoq02oq04oq01",
+      "submitted": "2026-04-23T18:24:37Z",
+      "status": "submitted",
+      "preprocessed": true,
+      "preprocessing_log": "Converted 1 /-! docstrings to /-",
+      "companion_file": true,
+      "notes": "Companion file submission (T1)"
     }
   ]
 }

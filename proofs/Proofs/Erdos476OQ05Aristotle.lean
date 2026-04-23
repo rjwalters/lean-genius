@@ -1,11 +1,12 @@
 /-
 Aristotle targets for Erdős Problem #476 OQ05 (Vosper's Theorem)
 
-Two key sorry'd lemmas from the Vosper proof:
-  1. vosper_case1_exists  — find a non-redundant element in A (SORRY 1/2)
-  2. vosper_ap_sdiff_card — AP has exactly 1 element with no d-predecessor (SORRY 2/2)
+One key unproved lemma from the Vosper proof (Aristotle target):
+  1. vosper_case1_exists  — find a non-redundant element in A (SORRY 1/1)
 
-These are HARD lemmas — known mathematical results needing Lean formalization.
+Note: vosper_ap_sdiff_card was proved in Erdos476OQ05Problem.lean and removed from this companion.
+
+This is a HARD lemma — a known mathematical result needing Lean formalization.
 See Erdos476OQ05Problem.lean for the full Vosper proof context.
 
 Mathematical context:
@@ -137,33 +138,6 @@ theorem vosper_case1_exists (A B : Finset (ZMod p))
     (h : (A + B).card = A.card + B.card - 1)
     (hlt : A.card + B.card - 1 < p) :
     ∃ a₀ ∈ A, ((A.erase a₀) + B).card = A.card + B.card - 2 := by
-  sorry
-
-/- ###SORRY 2: AP sdiff cardinality (key lemma for Vosper AP extension) -/
-
-/-- **Vosper AP Sdiff Card**: Given IsAP(A\{a₀}, a₁, d) and IsAP(B, b₀, d),
-    the set A has exactly 1 element with no d-predecessor in A.
-
-    Proof strategy:
-    1. isAP_sum gives IsAP(A'+B, a₁+b₀, d) where A' = A.erase a₀.
-    2. a₀+B = AP(a₀+b₀, d, |B|). |a₀+B \ A'+B| = |A+B| - |A'+B| = 1.
-    3. Let c = (a₀-a₁)·d⁻¹ ∈ ZMod p. Elements of a₀+B at "positions" {c,...,c+m-1}.
-       A'+B at positions {0,...,n'+m-2} (n' = |A'|, m = |B|). Both have same diff d.
-    4. |{c,...,c+m-1} \ {0,...,n'+m-2}| = 1 forces c = n' (successor) or c = p-1 (≡ -1).
-    5. c = n' → a₀ = a₁+n'·d (successor): A\A.image(·+d) = {a₁} (the AP start).
-       c = p-1 → a₀ = a₁-d (predecessor): A\A.image(·+d) = {a₀} (the new start).
-    6. In both cases |A \ A.image(·+d)| = 1. -/
-theorem vosper_ap_sdiff_card
-    (A : Finset (ZMod p)) (a₀ a₁ b₀ d : ZMod p) (B : Finset (ZMod p))
-    (ha₀A : a₀ ∈ A)
-    (hA3 : 2 < A.card)
-    (hB : 2 ≤ B.card)
-    (hlt : A.card + B.card - 1 < p)
-    (hAB : (A + B).card = A.card + B.card - 1)
-    (hcase1 : ((A.erase a₀) + B).card = A.card + B.card - 2)
-    (hAP_A' : IsArithmeticProgression (A.erase a₀) a₁ d)
-    (hAP_B : IsArithmeticProgression B b₀ d) :
-    (A \ A.image (· + d)).card = 1 := by
   sorry
 
 end Erdos476OQ05Aristotle
