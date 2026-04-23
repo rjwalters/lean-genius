@@ -15,7 +15,7 @@
       "solvability",
       "abel-ruffini"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-04-02",
     "axiomCount": 0,
@@ -23,13 +23,34 @@
     "lineCount": 534,
     "theoremCount": 59,
     "definitionCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Equiv.Perm.not_solvable",
+        "description": "S_n is not solvable for n ≥ 5",
+        "module": "Mathlib.GroupTheory.Solvable"
+      },
+      {
+        "theorem": "solvableByRad.isSolvable'",
+        "description": "Solvability by radicals implies solvable Galois group",
+        "module": "Mathlib.FieldTheory.AbelRuffini"
+      },
+      {
+        "theorem": "alternatingGroup.isSimpleGroup_five",
+        "description": "A₅ is a simple group",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Alternating"
+      },
+      {
+        "theorem": "IsGalois.card_aut_eq_finrank",
+        "description": "Order of Galois group equals extension degree",
+        "module": "Mathlib.FieldTheory.Galois.Basic"
+      }
+    ],
     "originalContributions": [
-      "symmetric_solvable_of_le_four: S_n is solvable for n ≤ 4 (general theorem)",
-      "alternating_solvable_of_le_four: A_n is solvable for n ≤ 4",
-      "symmetric_not_solvable_of_five_le: S_n not solvable for n ≥ 5",
-      "symmetric_solvable_iff: S_n solvable ↔ n ≤ 4 (complete characterization)",
-      "s3_not_comm / s4_not_comm / s5_not_comm: non-commutativity witnesses",
-      "sign_kernel_is_alternating: ker(sign) = A_n formally verified"
+      "Klein four-group V₄ construction and normality proof in A₄ (infrastructure for A₄ solvability via 1 → V₄ → A₄ → A₄/V₄ → 1)",
+      "Complete biconditional packaging: symmetric_solvable_iff and alternating_solvable_iff combining Mathlib results into explicit iff statements",
+      "sign_kernel_is_alternating: formal verification that ker(sign) = A_n",
+      "solvable_small_has_abelian_factors: joint solvability packaging for S_n and A_n (n ≤ 4)",
+      "not_solvable_by_rad_of_not_solvable_galois: contrapositive of Galois's theorem as a standalone named theorem"
     ]
   },
   "overview": {
