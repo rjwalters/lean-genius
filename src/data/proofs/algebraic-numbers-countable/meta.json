@@ -145,6 +145,11 @@
       "targetId": "cantors-theorem",
       "relationship": "related",
       "description": "Cantor's theorem ($|P(A)| > |A|$) provides the cardinality-theoretic foundation underlying the hierarchy $\\aleph_0 < 2^{\\aleph_0}$. The countability of algebraic numbers and uncountability of $\\mathbb{R} \\cong 2^{\\aleph_0}$ instantiates the Cantor's-theorem phenomenon at $\\aleph_0$."
+    },
+    {
+      "targetId": "denumerability-rationals",
+      "relationship": "foundational",
+      "description": "Countability of $\\mathbb{Q}$ is the degree-1 base case of the algebraic stratification: $\\text{alg}_1(\\mathbb{R}) = \\mathbb{Q}$ (the algebraic reals of exact degree 1 are precisely the rationals, since they are roots of linear polynomials $ax + b$ with $a, b \\in \\mathbb{Q}$). The degree stratification $\\text{Alg}(\\mathbb{R}) = \\bigcup_{d \\geq 1} \\text{alg}_d(\\mathbb{R})$ is a countable union starting from this $\\mathbb{Q} = \\text{alg}_1$, and the countability of $\\mathbb{Q}$ proved in denumerability-rationals is the prototype for the countability of each degree-$d$ stratum by the same finite-polynomial-coefficient argument."
     }
   ],
   "references": [
