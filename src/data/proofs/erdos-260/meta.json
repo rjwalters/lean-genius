@@ -17,7 +17,7 @@
       "number-theory"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 3,
     "erdosNumber": 260,
     "erdosUrl": "https://erdosproblems.com/260",
     "erdosProblemStatus": "open",
@@ -47,11 +47,12 @@
       "Stated superlogarithmic irrationality result",
       "Developed the n² sequence as a concrete example",
       "Stated the main conjecture: fast growth alone implies irrationality",
-      "Proved convergence of the series under fast growth"
+      "Proved GapsToInfinity → FastGrowth via Stolz-Cesàro telescoping argument",
+      "Proved SuperlogarithmicGrowth → FastGrowth via log-growth analysis"
     ],
     "axiomCount": 1,
-    "lineCount": 203,
-    "assumptions": "1 axiom: erdos_260_conjecture (open conjecture). 5 sorries: series_converges (convergence argument), irrational_of_gaps_to_infinity (Erdős 1974 theorem), irrational_of_superlogarithmic (number-theoretic result), fastGrowth_of_gapsToInfinity (Stolz-Cesàro argument), fastGrowth_of_superlogarithmic (basic analysis)."
+    "lineCount": 269,
+    "assumptions": "1 axiom: erdos_260_conjecture (open conjecture). 3 sorries: series_converges (convergence argument), irrational_of_gaps_to_infinity (Erdős 1974 theorem), irrational_of_superlogarithmic (number-theoretic result)."
   },
   "overview": {
     "historicalContext": "This problem originates from Erdős's 1974 work on irrationality of series [Er74b], further developed in the landmark monograph 'Old and New Problems and Results in Combinatorial Number Theory' with Graham [ErGr80]. It explores a fundamental question at the boundary of analysis and number theory: when does a lacunary (sparse) series produce an irrational sum?\n\nErdős proved that irrationality holds under the stronger condition that the gaps a_{n+1} − aₙ tend to infinity. He also showed irrationality when aₙ grows superlogarithmically, specifically when aₙ ≫ n√(log n · log log n). These partial results demonstrate that 'sufficiently fast' growth guarantees irrationality, but the full conjecture — that the mere condition aₙ/n → ∞ suffices — remains open.\n\nThe problem has an appealing simplicity: the series ∑ aₙ/2^{aₙ} converges absolutely for any increasing sequence (the terms decrease exponentially), so the question is purely about the arithmetic nature of the limit. Erdős and Graham speculated that even having limsup of the gaps being infinite might not suffice for irrationality, but no counterexample has been found. The problem connects to the theory of lacunary series, normal numbers, and the Lindemann-Weierstrass theorem.",
@@ -75,66 +76,66 @@
     {
       "id": "header-imports",
       "title": "Header and Imports",
-      "summary": "Module docstring with problem statement, known results, Erdős-Graham references, and status. Imports Mathlib's `SpecificLimits`, `Irrational`, topology, filters, and tactics.",
+      "summary": "Module docstring with problem statement, known results, Erdős-Graham references, and status. Imports Mathlib's `SpecificLimits`, `Irrational`, `Log`, `Pow`, filters, and tactics.",
       "startLine": 1,
-      "endLine": 38,
-      "mathContext": "Mathematical content: Module docstring with problem statement, known results, Erdős-Graham references, and status. Imports Mathlib's `SpecificLimits`, `Irrational`, topology, filters, and tactics."
+      "endLine": 39,
+      "mathContext": "Mathematical content: Module docstring with problem statement, known results, Erdős-Graham references, and status. Imports Mathlib's `SpecificLimits`, `Irrational`, `Log`, `Pow`, filters, and tactics."
     },
     {
       "id": "seq-properties",
       "title": "Sequence Properties",
       "summary": "Definitions of the growth hierarchy: `IncreasingSeq` (strict monotonicity), `FastGrowth` ($a_n/n \\to \\infty$), `GapsToInfinity` ($a_{n+1} - a_n \\to \\infty$), and `SuperlogarithmicGrowth` ($a_n \\geq Cn\\sqrt{\\log n \\cdot \\log\\log n}$).",
-      "startLine": 39,
-      "endLine": 58,
+      "startLine": 40,
+      "endLine": 59,
       "mathContext": "Definitions of the growth hierarchy: `IncreasingSeq` (strict monotonicity), `FastGrowth` ($a_n/n \\to \\infty$), `GapsToInfinity` ($a_{n+1} - a_n \\to \\infty$), and `SuperlogarithmicGrowth` ($a_n \\geq Cn\\sqrt{\\log n \\cdot \\log\\log n}$)."
     },
     {
       "id": "series-def",
       "title": "Series Definition and Convergence",
-      "summary": "The series term $a_n/2^{a_n}$, partial sums via `Finset.range`, convergence theorem (comparison with $\\sum n/2^n$), and the `seriesSum` limit extracted via `Classical.choose`.",
-      "startLine": 59,
-      "endLine": 79,
-      "mathContext": "The series term $a_n/$$2^{{a_n}$}$$, partial sums via `Finset.range`, convergence theorem (comparison with $\\sum n/$2^{n}$$), and the `seriesSum` limit extracted via `Classical.choose`."
+      "summary": "The series term $a_n/2^{a_n}$, partial sums via `Finset.range`, convergence theorem (comparison with $\\sum n/2^n$, sorry), and the `seriesSum` limit extracted via `Classical.choose`.",
+      "startLine": 60,
+      "endLine": 80,
+      "mathContext": "The series term $a_n/2^{a_n}$, partial sums via `Finset.range`, convergence theorem (comparison with $\\sum n/2^n$, sorry), and the `seriesSum` limit extracted via `Classical.choose`."
     },
     {
       "id": "known-results",
       "title": "Known Irrationality Results",
-      "summary": "Erdős's two partial results (both `sorry`): gaps $\\to \\infty$ implies irrational (1974), and superlogarithmic growth implies irrational. These bracket the open conjecture.",
-      "startLine": 80,
-      "endLine": 100,
-      "mathContext": "Mathematical content: Erdős's two partial results (both `sorry`): gaps $\\to \\infty$ implies irrational (1974), and superlogarithmic growth implies irrational. These bracket the open conjecture."
+      "summary": "Erdős's two partial results (both sorry): gaps $\\to \\infty$ implies irrational (1974), and superlogarithmic growth implies irrational. These bracket the open conjecture.",
+      "startLine": 81,
+      "endLine": 101,
+      "mathContext": "Erdős's two partial results (both sorry): gaps $\\to \\infty$ implies irrational (1974), and superlogarithmic growth implies irrational. These bracket the open conjecture."
     },
     {
       "id": "implications",
       "title": "Growth Condition Implications",
-      "summary": "The implication chain: GapsToInfinity $\\Rightarrow$ FastGrowth $\\Leftarrow$ SuperlogarithmicGrowth. Both proofs use telescoping/growth comparison arguments (both `sorry`).",
-      "startLine": 101,
-      "endLine": 114,
-      "mathContext": "Verified: The implication chain: GapsToInfinity $\\Rightarrow$ FastGrowth $\\Leftarrow$ SuperlogarithmicGrowth. Both proofs use telescoping/growth comparison arguments (both `sorry`)."
+      "summary": "The implication chain: GapsToInfinity $\\Rightarrow$ FastGrowth $\\Leftarrow$ SuperlogarithmicGrowth. Both proofs are fully formalized: the first via a telescoping Stolz-Cesàro argument, the second via log-growth analysis.",
+      "startLine": 102,
+      "endLine": 184,
+      "mathContext": "Verified: The implication chain: GapsToInfinity $\\Rightarrow$ FastGrowth $\\Leftarrow$ SuperlogarithmicGrowth. Both proofs are fully formalized: `fastGrowth_of_gapsToInfinity` uses telescoping on the gap sequence; `fastGrowth_of_superlogarithmic` bounds $a_n/n$ below by $C\\sqrt{\\log n \\cdot \\log\\log n}$ using `tendsto_rpow_atTop`."
     },
     {
       "id": "examples",
       "title": "Example: Square Sequence",
       "summary": "The sequence $a_n = n^2$: strict monotonicity, fast growth ($n^2/n = n \\to \\infty$, fully proved), gaps $\\to \\infty$ ($2n+1 \\to \\infty$, fully proved), and irrationality of $\\sum n^2/2^{n^2}$ (by composition).",
-      "startLine": 115,
-      "endLine": 153,
-      "mathContext": "The sequence $a_n = n^2$: strict monotonicity, fast growth ($n^2/n = n \\to \\infty$, fully proved), gaps $\\to \\infty$ ($2n+1 \\to \\infty$, fully proved), and irrationality of $\\sum n^2/2^{n^2}$ (by composition)."
+      "startLine": 185,
+      "endLine": 219,
+      "mathContext": "The sequence $a_n = n^2$: strict monotonicity, fast growth ($n^2/n = n \\to \\infty$, fully proved), gaps $\\to \\infty$ ($2n+1 \\to \\infty$, fully proved), and irrationality of $\\sum n^2/2^{n^2}$ (by composition with `irrational_of_gaps_to_infinity`)."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture and Counterexample Specification",
       "summary": "The open conjecture (axiom): $\\mathrm{FastGrowth}(a) \\Rightarrow \\mathrm{Irrational}(\\sum a_n/2^{a_n})$. Plus the Erdős-Graham counterexample specification: what a sequence with $\\limsup(\\text{gaps}) = \\infty$ but rational sum would look like.",
-      "startLine": 154,
-      "endLine": 180,
+      "startLine": 220,
+      "endLine": 245,
       "mathContext": "The open conjecture (axiom): $\\mathrm{FastGrowth}(a) \\Rightarrow \\mathrm{Irrational}(\\sum a_n/2^{a_n})$. Plus the Erdős-Graham counterexample specification: what a sequence with $\\limsup(\\text{gaps}) = \\infty$ but rational sum would look like."
     },
     {
       "id": "summary",
       "title": "Summary Comments",
-      "summary": "End-of-file documentation: status (OPEN), what's formalized, key sorries, and what a proof would require.",
-      "startLine": 181,
-      "endLine": 203,
-      "mathContext": "Verified: End-of-file documentation: status (OPEN), what's formalized, key sorries, and what a proof would require."
+      "summary": "End-of-file documentation: status (OPEN), what's formalized (including two proved implications), key sorries (3 remaining), and what a proof would require.",
+      "startLine": 246,
+      "endLine": 269,
+      "mathContext": "End-of-file documentation: status (OPEN), what's formalized (including two proved implications), key sorries (3 remaining: series_converges, irrational_of_gaps_to_infinity, irrational_of_superlogarithmic), and what a proof would require."
     }
   ],
   "conclusion": {
@@ -151,8 +152,9 @@
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.SpecificLimits.Basic",
-      "Mathlib.Data.Real.Irrational",
-      "Mathlib.Topology.Instances.Real",
+      "Mathlib.NumberTheory.Real.Irrational",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
       "Mathlib.Order.Filter.Basic",
       "Mathlib.Tactic"
     ],
@@ -161,12 +163,12 @@
       "Topology"
     ],
     "namespace": "Erdos260",
-    "lineCount": 203,
+    "lineCount": 269,
     "axiomCount": 1,
     "theoremCount": 8,
-    "definitionCount": 8,
+    "definitionCount": 9,
     "path": "Proofs/Erdos260Problem.lean",
-    "sorries": 5
+    "sorries": 3
   },
   "references": [
     {
@@ -197,5 +199,5 @@
       "description": "Related Erdős problem sharing themes: irrationality, number-theory, series"
     }
   ],
-  "sorries": 5
+  "sorries": 3
 }
