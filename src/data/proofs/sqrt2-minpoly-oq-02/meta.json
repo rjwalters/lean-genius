@@ -15,11 +15,11 @@
       "field-extensions"
     ],
     "mathlib_version": "4.26.0",
-    "proofRepoPath": "Proofs/CubeRoot2IrrationalOQ03.lean",
+    "proofRepoPath": "Proofs/Sqrt2MinpolyOQ02.lean",
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 204,
+    "lineCount": 202,
     "dateAdded": "2026-04-06",
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlibDependencies": [
@@ -168,24 +168,24 @@
   ],
   "mainTheorems": [
     {
-      "name": "CubeRoot2IrrationalOQ03.minpoly_nthRoot_eq",
-      "statement": "X ^ n - C (m : ℚ) = minpoly ℚ ((m : ℝ) ^ ((1 : ℝ) / n))",
-      "description": "Main theorem: minimal polynomial of m^(1/n) is Xⁿ - m"
+      "name": "Sqrt2MinpolyOQ02.minpoly_kthRoot_of_sqfree_factor",
+      "statement": "minpoly ℚ ((m : ℝ) ^ ((1 : ℝ) / k)) = X ^ k - C (m : ℚ)",
+      "description": "Main theorem: minpoly of m^(1/k) is Xᵏ - m when m has a squarefree prime factor p"
     },
     {
-      "name": "CubeRoot2IrrationalOQ03.eisenstein_X_pow_sub_of_sqfree_factor",
-      "statement": "Irreducible (X ^ n - C (m : ℚ) : ℚ[X])",
-      "description": "Xⁿ - m is irreducible over ℚ when m has a squarefree prime factor"
+      "name": "Sqrt2MinpolyOQ02.minpoly_kthRoot_of_squarefree",
+      "statement": "minpoly ℚ ((m : ℝ) ^ ((1 : ℝ) / k)) = X ^ k - C (m : ℚ)",
+      "description": "Squarefree corollary: minpoly of m^(1/k) is Xᵏ - m for all squarefree m ≥ 2 and k ≥ 2"
     },
     {
-      "name": "CubeRoot2IrrationalOQ03.adjoin_nthRoot_finrank",
-      "statement": "Module.finrank ℚ ℚ⟮(m : ℝ) ^ ((1 : ℝ) / ↑n)⟯ = n",
-      "description": "Field extension degree [ℚ(m^(1/n)) : ℚ] = n"
+      "name": "Sqrt2MinpolyOQ02.adjoin_kthRoot_finrank",
+      "statement": "Module.finrank ℚ ℚ⟮(m : ℝ) ^ ((1 : ℝ) / ↑k)⟯ = k",
+      "description": "Field extension degree [ℚ(m^(1/k)) : ℚ] = k when m has a squarefree prime factor"
     },
     {
-      "name": "CubeRoot2IrrationalOQ03.not_perfect_power_of_sqfree_factor",
-      "statement": "¬ ∃ k : ℕ, m = k ^ n",
-      "description": "m is not a perfect n-th power when it has a squarefree prime factor"
+      "name": "Sqrt2MinpolyOQ02.not_perfect_kthPower_of_sqfree_factor",
+      "statement": "¬ ∃ n : ℕ, m = n ^ k",
+      "description": "m is not a perfect k-th power when it has a squarefree prime factor"
     }
   ],
   "sorries": 0,

@@ -3434,6 +3434,15 @@
       "status": "completed",
       "outcome": "No improvement (recovered from server)",
       "notes": "Recovered from server at 2026-04-21T13:14:56Z. No sorry reduction."
+    },
+    {
+      "id": "pending-erdos-476-oq-05-wip-01-2026-04-23",
+      "problem_id": "erdos-476-oq-05-wip-01",
+      "file": "proofs/Proofs/Erdos476OQ05Aristotle.lean",
+      "theorem": "vosper_case1_exists",
+      "status": "PENDING_SUBMISSION",
+      "submitted": null,
+      "notes": "Submit when Aristotle pipeline backlog clears (14 untracked COMPLETE jobs). vosper_ap_sdiff_card in companion is now proved in main file."
     }
   ]
 }
