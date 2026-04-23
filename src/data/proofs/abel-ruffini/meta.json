@@ -343,6 +343,16 @@
       "description": "Proves that Ferrari's resolvent cubic for the quartic reduces to a depressed cubic solvable by Cardano's formula, completing the quartic-cubic-Cardano solution chain. Lagrange's 1770 analysis (described in this entry's historicalContext) studied resolvents precisely: the resolvent of a cubic has degree 2 (solvable by square roots), the resolvent of a quartic has degree 3 (solvable by Cardano), but the resolvent of a quintic has degree 6 — higher, not lower — which is the sign that no radical formula can exist. This entry formalizes the quartic resolvent step that succeeds; Abel-Ruffini explains why the corresponding quintic step fails"
     },
     {
+      "targetId": "solution-of-cubic-oq-05",
+      "relationship": "complementary",
+      "description": "Proves the Tschirnhaus substitution $m = t - 5p/6$ that reduces Ferrari's resolvent cubic to depressed form, enabling Cardano's formula to provide the resolvent root directly. This formalization makes concrete the 'resolvent success' story at degree 4: the Tschirnhaus substitution lowers complexity, allowing a radical formula. Lagrange's 1770 observation — that the analogous quintic resolvent has degree 6 (not lower) — is the precursor to Abel-Ruffini's impossibility: unlike the quartic case proved here, the quintic admits no complexity-lowering substitution, blocking any radical formula"
+    },
+    {
+      "targetId": "vietas-formulas-oq-03-oq-05",
+      "relationship": "complementary",
+      "description": "Proves the quartic discriminant formula (16 terms in elementary symmetric polynomials $e_1$–$e_4$), Ferrari's algebraic decomposition identity, and the key relation $\\Delta(\\text{resolvent cubic}) = 64 \\cdot \\Delta(\\text{quartic})$. The discriminant criterion discussed in key insight 8 — $\\text{Gal}(f) \\subseteq A_n$ iff $\\Delta(f)$ is a perfect square in $F$ — applies directly: the quartic discriminant formula here is the degree-4 success case, and the analogous quintic discriminant (e.g., $\\Delta(x^5 - x - 1) = 2869 = 19 \\times 151$, not a perfect square) forces $\\text{Gal}(f) \\not\\subseteq A_5$, providing the first step toward a machine-verified unsolvable quintic"
+    },
+    {
       "targetId": "nth-root-irrational",
       "relationship": "foundational",
       "description": "The irrationality of $\\sqrt[n]{m}$ for non-perfect-power $m$ is the simplest instance of the radical extension phenomenon central to Abel-Ruffini: each adjunction $\\mathbb{Q}(\\sqrt[n]{m})/\\mathbb{Q}$ produces a degree-$n$ extension with cyclic Galois group $\\mathbb{Z}/n\\mathbb{Z}$ (solvable). Abel-Ruffini's impossibility arises when the full Galois group $S_5$ cannot be decomposed into such cyclic layers — the irrationality barrier ($\\sqrt[n]{m} \\notin \\mathbb{Q}$) is the first level of the expressibility hierarchy discussed in the conclusion"

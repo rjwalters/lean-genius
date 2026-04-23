@@ -76,7 +76,8 @@
       "priority": "low",
       "target": "researcher",
       "description": "Align the Lean file docstring (lines 18-21) with the meta.json assumptions field: change 'Explicit proofs of S₅ not solvable...' to 'Pedagogical wrappers around Mathlib's solvability theory' for consistency. NOTE: Lean file modifications are outside enricher scope; reassigned to researcher.",
-      "status": "deferred"
+      "status": "resolved",
+      "resolutionNote": "Lean file docstring (lines 18-21) now reads '- **Original Contributions:** Pedagogical wrappers composing Mathlib's solvability theory into an accessible walkthrough' — aligned with meta.json assumptions field. Verified in AbelRuffini.lean."
     },
     {
       "id": "ai-3",
