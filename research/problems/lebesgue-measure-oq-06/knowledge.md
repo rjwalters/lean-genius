@@ -148,3 +148,38 @@ File now compiles with exactly 5 intentional `sorry`s:
 The original proof tried to use `Fin.eq_of_val_eq` for the disjointness subgoal.
 This is fragile and unnecessarily constrains the signature. `Subsingleton.elim i j`
 directly gives `i = j` for `i j : Fin 1` without needing any extra hypotheses.
+
+## Session 2026-04-23 (Session 10) — Blocked Assessment; free_group_not_amenable Confirmed Proved
+
+**Mode**: REVISIT
+**Outcome**: BLOCKED — 4 sorries all HARD; no new sorry removed this session
+
+### What I Did
+
+1. Confirmed current state: 4 sorries remain (hausdorff_free_subgroup, banach_tarski, banach_tarski_pieces_nonmeasurable, int_amenable)
+2. Confirmed `free_group_not_amenable` is PROVED (lines 509-561) — not counted in 5 sorries
+3. Attempted to find simple proof for `int_amenable` — all elementary approaches fail
+4. Assessed ultrafilter Banach limit approach for `int_amenable` (~100 lines)
+
+### Key Findings
+
+- **free_group_not_amenable**: Already fully proved. Uses: W_a, W_ainv, W_b, W_binv word-start sets + two-cover lemmas + pairwise disjointness + measure additivity → contradiction 2 ≤ 1.
+- **int_amenable**: All simple measures fail. Need ultrafilter Banach limit:
+  - `U` = non-principal ultrafilter on ℕ extending atTop
+  - `μ(A) = U-lim_N card(A ∩ [-N..N]) / (2N+1 : ℝ≥0∞)`
+  - Left-invariance: `|μ(g•A) - μ(A)| ≤ 2|g|/(2N+1) → 0` — preserved by ultrafilter limit
+  - ~100 lines, tractable in a focused session
+- **banach_tarski_pieces_nonmeasurable**: Can NOT be proved independently of banach_tarski without Vitali set construction (~200 lines)
+- **banach_tarski + hausdorff_free_subgroup**: Need ~800 + ~300 lines respectively
+
+### Files Modified
+- `src/data/research/problems/lebesgue-measure-oq-06.json`: updated knowledge
+
+### Next Steps
+1. **int_amenable** via ultrafilter Banach limit (most tractable, ~100 lines):
+   - `let U := Ultrafilter.of Filter.atTop`
+   - Define `f_N A = card(Finset.Icc (-(N:ℤ)) N |>.filter (fun k => ofAdd k ∈ A)) / (2*N+1)`
+   - `μ A = (U : Filter ℕ).limsup (fun N => f_N A)` or `Ultrafilter.lim U (f_N A)`
+   - Prove additivity: f_N is additive → U-limit is additive (Filter.Tendsto preserves + for ℝ≥0∞)
+   - Prove left-invariance: f_N(g•A) - f_N(A) ≤ 2|g|/(2N+1) → U-limit equalizes
+2. If int_amenable proved: only 3 hard sorries remain (hausdorff, banach_tarski, non-measurability)
