@@ -70,76 +70,83 @@
       "title": "Header: Module Documentation, Degree Examples, and Historical Context",
       "startLine": 1,
       "endLine": 68,
-      "description": "Module header explaining the 6 key results (algebraic reals/complex countable, bounded degree countable, cardinality \u2135\u2080, exact degree countable, degree stratification). Three proof approach sections: Foundation (Mathlib's Algebraic.countable and cardinalMk), Original Contributions (degree stratification), Proof Techniques. Mathematical background defining algebraic numbers and degree, with examples by degree (degree 1: rationals; degree 2: \u221a2, (1+\u221a5)/2; degree 3: \u221b2; degree n: roots of irreducible n-polys). Historical note on Cantor 1874. Connection to denumerability of \u211a: all these sets (\u211a, degree \u2264 d, all algebraic) have cardinality \u2135\u2080. Opens namespace AlgebraicNumbersCountable."
+      "description": "Module header explaining the 6 key results (algebraic reals/complex countable, bounded degree countable, cardinality \u2135\u2080, exact degree countable, degree stratification). Three proof approach sections: Foundation (Mathlib's Algebraic.countable and cardinalMk), Original Contributions (degree stratification), Proof Techniques. Mathematical background defining algebraic numbers and degree, with examples by degree (degree 1: rationals; degree 2: \u221a2, (1+\u221a5)/2; degree 3: \u221b2; degree n: roots of irreducible n-polys). Historical note on Cantor 1874. Connection to denumerability of \u211a: all these sets (\u211a, degree \u2264 d, all algebraic) have cardinality \u2135\u2080. Opens namespace AlgebraicNumbersCountable.",
+      "mathContext": "Cantor's 1874 height function: $H(a_0 + a_1 x + \\cdots + a_n x^n) = n + |a_0| + |a_1| + \\cdots + |a_n|$ orders integer polynomials by total complexity. For each height $H$, there are finitely many polynomials (since the coefficient sum is bounded) each with $\\leq H$ roots, giving a well-defined enumeration $\\mathbb{N} \\to \\overline{\\mathbb{Q}} \\cap \\mathbb{R}$. The modern Lean proof uses the equivalent degree stratification via Mathlib's $\\texttt{Algebraic.countable}$, bypassing explicit bijection in favor of abstract countability. The examples by degree illustrate the size of each stratum: degree 2 already contains infinitely many numbers ($\\sqrt{2}, \\sqrt{3}, \\sqrt{5}, (1+\\sqrt{5})/2, \\ldots$) yet the union over all degrees is still only $\\aleph_0$."
     },
     {
       "id": "sec-algebraic-core",
       "title": "\u00a71. Core Countability and Cardinality Results",
       "startLine": 72,
       "endLine": 101,
-      "description": "Four one-line theorems delegating to Mathlib: `algebraic_reals_countable` (Algebraic.countable \u211a \u211d), `algebraic_complex_countable` (Algebraic.countable \u211a \u2102), `card_algebraic_reals_eq_aleph0` (cardinalMk_of_countable_of_charZero \u211a \u211d), `card_algebraic_complex_eq_aleph0` (cardinalMk_of_countable_of_charZero \u211a \u2102). The cardinality results are strictly stronger than countability: they prove |algebraic reals| = \u2135\u2080 (countably infinite), ruling out finite algebraic number sets. The char_zero condition on \u211d and \u2102 ensures the field is of characteristic 0, needed for Mathlib's API."
+      "description": "Four one-line theorems delegating to Mathlib: `algebraic_reals_countable` (Algebraic.countable \u211a \u211d), `algebraic_complex_countable` (Algebraic.countable \u211a \u2102), `card_algebraic_reals_eq_aleph0` (cardinalMk_of_countable_of_charZero \u211a \u211d), `card_algebraic_complex_eq_aleph0` (cardinalMk_of_countable_of_charZero \u211a \u2102). The cardinality results are strictly stronger than countability: they prove |algebraic reals| = \u2135\u2080 (countably infinite), ruling out finite algebraic number sets. The char_zero condition on \u211d and \u2102 ensures the field is of characteristic 0, needed for Mathlib's API.",
+      "mathContext": "$\\texttt{Algebraic.countable}\\ \\mathbb{Q}\\ \\mathbb{R}$: Mathlib's general theorem that algebraic elements over a countable commutative ring form a countable set. Here $\\mathbb{Q}$ is $\\texttt{Denumerable}$ — has an explicit bijection with $\\mathbb{N}$ — which makes it countable as a ring. $\\texttt{cardinalMk\\_of\\_countable\\_of\\_charZero}\\ \\mathbb{Q}\\ \\mathbb{R}$: strengthens countable to the exact cardinality $\\aleph_0$ (ruling out finite algebraic sets). The $\\texttt{CharZero}$ typeclass on $\\mathbb{R}$ and $\\mathbb{C}$ ensures $\\operatorname{char}(\\mathbb{R}) = 0$, preventing pathological behavior in the cardinality computation (e.g., finite fields in characteristic $p$ have finite algebraic closures)."
     },
     {
       "id": "sec-algebraic-bounded",
       "title": "\u00a72. Algebraic Numbers of Bounded Degree",
       "startLine": 103,
       "endLine": 135,
-      "description": "Defines `algebraicRealsOfBoundedDegree d` = {x : \u211d | IsAlgebraic \u211a x \u2227 (minpoly \u211a x).natDegree \u2264 d} and `algebraicComplexOfBoundedDegree d` (analogous for \u2102). Both are noncomputable (because minpoly is noncomputable). Proves `bounded_degree_subset_algebraic_reals`: the bounded-degree set \u2286 all algebraic numbers (fun _ hx => hx.1 extracts the IsAlgebraic component from the conjunction). Proves countability of both sets via Set.Countable.mono \u2014 subsets of countable sets are countable."
+      "description": "Defines `algebraicRealsOfBoundedDegree d` = {x : \u211d | IsAlgebraic \u211a x \u2227 (minpoly \u211a x).natDegree \u2264 d} and `algebraicComplexOfBoundedDegree d` (analogous for \u2102). Both are noncomputable (because minpoly is noncomputable). Proves `bounded_degree_subset_algebraic_reals`: the bounded-degree set \u2286 all algebraic numbers (fun _ hx => hx.1 extracts the IsAlgebraic component from the conjunction). Proves countability of both sets via Set.Countable.mono \u2014 subsets of countable sets are countable.",
+      "mathContext": "$\\texttt{algebraicRealsOfBoundedDegree}\\ d = \\{x : \\mathbb{R} \\mid \\texttt{IsAlgebraic}\\ \\mathbb{Q}\\ x \\wedge (\\texttt{minpoly}\\ \\mathbb{Q}\\ x).\\texttt{natDegree} \\leq d\\}$. The minimal polynomial $\\texttt{minpoly}\\ \\mathbb{Q}\\ x$ is the unique monic irreducible polynomial over $\\mathbb{Q}$ with $x$ as a root; $\\texttt{natDegree}$ gives its degree. These bounded sets grow as $\\mathbb{Q} = \\text{BoundedDeg}_1 \\subsetneq \\text{BoundedDeg}_2 \\subsetneq \\cdots$ (strictly, since $\\sqrt[d+1]{2} \\in \\text{BoundedDeg}_{d+1} \\setminus \\text{BoundedDeg}_d$). Countability follows from $\\texttt{Set.Countable.mono}$: a subset of a countable set is countable."
     },
     {
       "id": "sec-algebraic-exact",
       "title": "\u00a73. Algebraic Numbers of Exact Degree",
       "startLine": 137,
       "endLine": 165,
-      "description": "Defines `algebraicRealsOfDegree d` = {x : \u211d | IsAlgebraic \u211a x \u2227 (minpoly \u211a x).natDegree = d} and `algebraicComplexOfDegree d`. Proves `exact_degree_subset_bounded`: exact-degree d \u2286 bounded-degree d (le_of_eq converts equality to \u2264). Proves `algebraicRealsOfDegree_countable`: via two-step subset chain exact \u2192 bounded \u2192 all algebraic. For complex: uses apply Set.Countable.mono with explicit lambda to convert the exact-degree condition to bounded-degree. This establishes that each horizontal slice of the degree stratification is individually countable."
+      "description": "Defines `algebraicRealsOfDegree d` = {x : \u211d | IsAlgebraic \u211a x \u2227 (minpoly \u211a x).natDegree = d} and `algebraicComplexOfDegree d`. Proves `exact_degree_subset_bounded`: exact-degree d \u2286 bounded-degree d (le_of_eq converts equality to \u2264). Proves `algebraicRealsOfDegree_countable`: via two-step subset chain exact \u2192 bounded \u2192 all algebraic. For complex: uses apply Set.Countable.mono with explicit lambda to convert the exact-degree condition to bounded-degree. This establishes that each horizontal slice of the degree stratification is individually countable.",
+      "mathContext": "The degree strata: $\\texttt{algebraicRealsOfDegree}\\ d$ partitions algebraic reals by exact minimal polynomial degree. Degree 1: $\\mathbb{Q}$ (minimal polynomial $X - q$). Degree 2: $\\mathbb{Q}(\\sqrt{n})$ for squarefree $n > 1$ (minimal polynomial $X^2 - n$). Degree 3: $\\mathbb{Q}(\\sqrt[3]{2})$ (minimal polynomial $X^3 - 2$, irreducible by Eisenstein at $p = 2$). Each stratum is countable (subset of countable algebraic numbers); countability of the union follows from $\\texttt{Set.countable\\_iUnion}$. The partition $\\text{Alg}(\\mathbb{R}) = \\bigsqcup_{d \\geq 1} \\text{alg}_d(\\mathbb{R})$ is disjoint since minimal polynomial degree is unique."
     },
     {
       "id": "sec-algebraic-stratification",
       "title": "\u00a74. Degree Stratification and Alternative Countability Proof",
       "startLine": 167,
       "endLine": 201,
-      "description": "Proves `algebraic_reals_eq_iUnion_degree`: {x : \u211d | IsAlgebraic \u211a x} = \u22c3 d : \u2115, algebraicRealsOfDegree d. Proof by ext x, simp, constructor: (\u2192) given IsAlgebraic x, use d = natDegree(minpoly \u211a x) and rfl; (\u2190) extract IsAlgebraic from the existential. Analogous for complex numbers. `algebraic_reals_countable_via_strata`: alternative proof by rewriting via the union and applying Set.countable_iUnion algebraicRealsOfDegree_countable (countable union of countable sets). This demonstrates the stratification is not just a structural description but a valid proof technique."
+      "description": "Proves `algebraic_reals_eq_iUnion_degree`: {x : \u211d | IsAlgebraic \u211a x} = \u22c3 d : \u2115, algebraicRealsOfDegree d. Proof by ext x, simp, constructor: (\u2192) given IsAlgebraic x, use d = natDegree(minpoly \u211a x) and rfl; (\u2190) extract IsAlgebraic from the existential. Analogous for complex numbers. `algebraic_reals_countable_via_strata`: alternative proof by rewriting via the union and applying Set.countable_iUnion algebraicRealsOfDegree_countable (countable union of countable sets). This demonstrates the stratification is not just a structural description but a valid proof technique.",
+      "mathContext": "$\\texttt{algebraic\\_reals\\_eq\\_iUnion\\_degree}$: $\\text{Alg}(\\mathbb{R}) = \\bigcup_{d \\in \\mathbb{N}} \\texttt{algebraicRealsOfDegree}\\ d$. The witness for each $x$ is $d := (\\texttt{minpoly}\\ \\mathbb{Q}\\ x).\\texttt{natDegree}$ with $\\texttt{rfl}$. $\\texttt{Set.countable\\_iUnion}$: a $\\mathbb{N}$-indexed union of countable sets is countable — this is the Lean encoding of $|\\mathbb{N} \\times \\mathbb{N}| = |\\mathbb{N}|$ (Cantor pairing function). The alternative proof $\\texttt{algebraic\\_reals\\_countable\\_via\\_strata}$ demonstrates that the stratification is mathematically substantive: it gives an independent route to the same conclusion, bypassing the direct Mathlib delegation in $\\S1$."
     },
     {
       "id": "sec-algebraic-degree1",
       "title": "\u00a75. Degree 1 = Rationals and Monotone Filtration",
       "startLine": 203,
       "endLine": 217,
-      "description": "Two theorems: `rat_algebraic_degree_one`: every q \u2208 \u211a is algebraic (isAlgebraic_algebraMap q \u2014 elements mapped from the base field are algebraic, with minimal polynomial X \u2212 q of degree 1). `bounded_degree_monotone`: algebraicRealsOfBoundedDegree d \u2286 algebraicRealsOfBoundedDegree (d+1), proved by Nat.le_succ_of_le on the degree bound. These establish the filtration structure: \u211a \u2286 deg\u22641 \u2286 deg\u22642 \u2286 ... \u2286 all algebraic, each inclusion strict (e.g., \u221a2 \u2208 deg\u22642 but \u221a2 \u2209 \u211a)."
+      "description": "Two theorems: `rat_algebraic_degree_one`: every q \u2208 \u211a is algebraic (isAlgebraic_algebraMap q \u2014 elements mapped from the base field are algebraic, with minimal polynomial X \u2212 q of degree 1). `bounded_degree_monotone`: algebraicRealsOfBoundedDegree d \u2286 algebraicRealsOfBoundedDegree (d+1), proved by Nat.le_succ_of_le on the degree bound. These establish the filtration structure: \u211a \u2286 deg\u22641 \u2286 deg\u22642 \u2286 ... \u2286 all algebraic, each inclusion strict (e.g., \u221a2 \u2208 deg\u22642 but \u221a2 \u2209 \u211a).",
+      "mathContext": "$\\texttt{isAlgebraic\\_algebraMap}$: for $q \\in \\mathbb{Q}$, the image of $q$ in $\\mathbb{R}$ satisfies $q$ as a root of $X - q \\in \\mathbb{Q}[X]$ (a monic linear polynomial), so $\\texttt{minpoly}\\ \\mathbb{Q}\\ q = X - q$ and $\\texttt{natDegree} = 1$. $\\texttt{bounded\\_degree\\_monotone}$: $\\text{BoundedDeg}_d \\subseteq \\text{BoundedDeg}_{d+1}$ by $\\texttt{Nat.le\\_succ\\_of\\_le}$ on the degree inequality. The inclusions are strict: $\\sqrt[d+1]{2}$ has minimal polynomial $X^{d+1} - 2$ (irreducible by Eisenstein at $p=2$), giving degree $d+1$, so $\\sqrt[d+1]{2} \\in \\text{BoundedDeg}_{d+1} \\setminus \\text{BoundedDeg}_d$."
     },
     {
       "id": "sec-algebraic-cardinality",
       "title": "\u00a76\u20137. Cardinality Comparisons and Exhaustive Filtration",
       "startLine": 219,
       "endLine": 254,
-      "description": "Section 6: `card_algebraic_eq_card_rat` proves |{x : \u211d // IsAlgebraic \u211a x}| = |\u211a| by rewriting both via aleph0 (card_algebraic_reals_eq_aleph0 and Cardinal.mk_denumerable). `card_algebraic_eq_card_nat` proves the same equals |\u2115|. Both illustrate the 'paradox' that a proper superset has the same cardinality. Section 7: `algebraic_reals_eq_iUnion_bounded` proves {x : \u211d | IsAlgebraic \u211a x} = \u22c3 d, algebraicRealsOfBoundedDegree d, using d = natDegree(minpoly x) and le_refl. This is the bounded-degree version of the exact-degree stratification. Ends with end AlgebraicNumbersCountable."
+      "description": "Section 6: `card_algebraic_eq_card_rat` proves |{x : \u211d // IsAlgebraic \u211a x}| = |\u211a| by rewriting both via aleph0 (card_algebraic_reals_eq_aleph0 and Cardinal.mk_denumerable). `card_algebraic_eq_card_nat` proves the same equals |\u2115|. Both illustrate the 'paradox' that a proper superset has the same cardinality. Section 7: `algebraic_reals_eq_iUnion_bounded` proves {x : \u211d | IsAlgebraic \u211a x} = \u22c3 d, algebraicRealsOfBoundedDegree d, using d = natDegree(minpoly x) and le_refl. This is the bounded-degree version of the exact-degree stratification. Ends with end AlgebraicNumbersCountable.",
+      "mathContext": "$\\texttt{card\\_algebraic\\_eq\\_card\\_rat}$: $|\\{x : \\mathbb{R} \\mid \\texttt{IsAlgebraic}\\ \\mathbb{Q}\\ x\\}| = |\\mathbb{Q}|$, proved via the chain $= \\aleph_0 = |\\mathbb{Q}|$ using $\\texttt{mk\\_denumerable}$ ($\\mathbb{Q}$ is countably infinite). The 'paradox': $\\text{Alg}(\\mathbb{R}) \\supsetneq \\mathbb{Q}$ (containing $\\sqrt{2}, \\sqrt[3]{2}, (1+\\sqrt{5})/2, \\ldots$) yet $|\\text{Alg}(\\mathbb{R})| = |\\mathbb{Q}| = |\\mathbb{N}| = \\aleph_0$. This is Dedekind's definition of infinite sets: a set is infinite iff it is equinumerous with a proper subset. $\\texttt{algebraic\\_reals\\_eq\\_iUnion\\_bounded}$: $\\text{Alg}(\\mathbb{R}) = \\bigcup_d \\text{BoundedDeg}_d$ uses $d = (\\texttt{minpoly}\\ \\mathbb{Q}\\ x).\\texttt{natDegree}$ and $\\texttt{le\\_refl}$ as the witness and membership proof."
     }
   ],
   "crossReferences": [
     {
       "targetId": "algebraic-numbers-countable-oq-02",
       "relationship": "companion",
-      "description": "Proves ℝ is uncountable via Cantor's diagonal argument — the complementary result from Cantor's 1874 paper. Together these two results establish: algebraic numbers are countable (ℵ₀) while reals are uncountable (2^ℵ₀), implying almost all real numbers are transcendental."
+      "description": "Proves \u211d is uncountable via Cantor's diagonal argument \u2014 the complementary result from Cantor's 1874 paper. Together these two results establish: algebraic numbers are countable (\u2135\u2080) while reals are uncountable (2^\u2135\u2080), implying almost all real numbers are transcendental."
     },
     {
       "targetId": "cantor-diagonalization",
       "relationship": "related",
-      "description": "Cantor's diagonal argument that ℝ is uncountable — the other half of the 1874 paper. The countability of algebraic numbers and uncountability of ℝ together imply transcendental numbers are 'most' real numbers."
+      "description": "Cantor's diagonal argument that \u211d is uncountable \u2014 the other half of the 1874 paper. The countability of algebraic numbers and uncountability of \u211d together imply transcendental numbers are 'most' real numbers."
     },
     {
       "targetId": "cayley-hamilton-minpoly",
       "relationship": "related",
-      "description": "The Cayley-Hamilton theorem and minimal polynomial theory (minpoly) are central to both proofs. algebraic-numbers-countable uses minpoly ℚ x extensively for the degree stratification; Cayley-Hamilton proves A satisfies its own minpoly in a matrix algebra context."
+      "description": "The Cayley-Hamilton theorem and minimal polynomial theory (minpoly) are central to both proofs. algebraic-numbers-countable uses minpoly \u211a x extensively for the degree stratification; Cayley-Hamilton proves A satisfies its own minpoly in a matrix algebra context."
     },
     {
       "targetId": "algebraic-numbers-countable-oq-02-oq-02",
       "relationship": "related",
-      "description": "Formalizes Cantor's original 1874 nested intervals proof that ℝ is uncountable, complementing the diagonal argument in algebraic-numbers-countable-oq-02. Both entries complete the two-part result from Cantor's landmark paper: algebraic numbers are countable (this entry) and ℝ is uncountable (oq-02 / oq-02-oq-02)."
+      "description": "Formalizes Cantor's original 1874 nested intervals proof that \u211d is uncountable, complementing the diagonal argument in algebraic-numbers-countable-oq-02. Both entries complete the two-part result from Cantor's landmark paper: algebraic numbers are countable (this entry) and \u211d is uncountable (oq-02 / oq-02-oq-02)."
     },
     {
       "targetId": "hermite-lindemann",
       "relationship": "implication",
-      "description": "Addresses the first open question: formalizes the Lindemann-Weierstrass theorem proving $e$ and $\\pi$ are transcendental. This is the most concrete consequence of algebraic number countability — identifying specific members of the uncountable transcendental complement."
+      "description": "Addresses the first open question: formalizes the Lindemann-Weierstrass theorem proving $e$ and $\\pi$ are transcendental. This is the most concrete consequence of algebraic number countability \u2014 identifying specific members of the uncountable transcendental complement."
     },
     {
       "targetId": "cantors-theorem",
@@ -154,52 +161,57 @@
     {
       "targetId": "liouville-theorem",
       "relationship": "complementary",
-      "description": "Liouville's Theorem on Transcendental Numbers — the constructive complement to Cantor's cardinality argument. Liouville (1844) showed that algebraic numbers of degree $d$ cannot be approximated by rationals to better than order $1/q^d$; numbers violating this bound (like $\\sum_{k=1}^{\\infty} 10^{-k!}$) must be transcendental. This gives explicit examples, whereas Cantor's 1874 argument (formalized here) proves transcendentals are cardinality-'most' of $\\mathbb{R}$ without constructing any. The two approaches are dual: the Lean formalization here uses Mathlib's `Algebraic.countable` to bypass constructive enumeration, while `liouville-theorem` formalizes the Diophantine approximation criterion. Together they represent the two founding strategies of transcendence theory — counting vs. construction."
+      "description": "Liouville's Theorem on Transcendental Numbers \u2014 the constructive complement to Cantor's cardinality argument. Liouville (1844) showed that algebraic numbers of degree $d$ cannot be approximated by rationals to better than order $1/q^d$; numbers violating this bound (like $\\sum_{k=1}^{\\infty} 10^{-k!}$) must be transcendental. This gives explicit examples, whereas Cantor's 1874 argument (formalized here) proves transcendentals are cardinality-'most' of $\\mathbb{R}$ without constructing any. The two approaches are dual: the Lean formalization here uses Mathlib's `Algebraic.countable` to bypass constructive enumeration, while `liouville-theorem` formalizes the Diophantine approximation criterion. Together they represent the two founding strategies of transcendence theory \u2014 counting vs. construction."
     },
     {
       "targetId": "e-transcendental",
       "relationship": "implication",
-      "description": "Transcendence of $e$ — the first concrete member of the uncountable transcendental complement. Hermite (1873), one year before Cantor's 1874 paper, proved $e$ is transcendental by showing it is not a root of any nonzero rational polynomial. This entry proves that transcendentals are cardinality-'most' reals; `e-transcendental` proves $e$ specifically lies in that complement. The contrast is instructive: Cantor's argument establishes the transcendental complement is uncountable without naming a single element, while Hermite's proof identifies $e$ without using cardinality. Both results were needed to understand the landscape: existence, prevalence, and specific examples."
+      "description": "Transcendence of $e$ \u2014 the first concrete member of the uncountable transcendental complement. Hermite (1873), one year before Cantor's 1874 paper, proved $e$ is transcendental by showing it is not a root of any nonzero rational polynomial. This entry proves that transcendentals are cardinality-'most' reals; `e-transcendental` proves $e$ specifically lies in that complement. The contrast is instructive: Cantor's argument establishes the transcendental complement is uncountable without naming a single element, while Hermite's proof identifies $e$ without using cardinality. Both results were needed to understand the landscape: existence, prevalence, and specific examples."
     },
     {
       "targetId": "pi-transcendental",
       "relationship": "implication",
-      "description": "Transcendence of $\\pi$ — Lindemann (1882) applied Hermite's exponential method to prove $\\pi$ transcendental, settling the ancient question of circle squaring. The Lindemann-Weierstrass theorem generalizes both: if $\\alpha_1, \\ldots, \\alpha_n$ are distinct algebraic numbers, then $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are linearly independent over $\\mathbb{Q}$. Since $e^{i\\pi} = -1$ (Euler's identity) and $-1$ is algebraic, $i\\pi$ cannot be algebraic — hence $\\pi$ is transcendental. Together with this entry's proof that algebraic numbers are countable and $\\mathbb{R}$ is uncountable, `pi-transcendental` shows that $\\pi$ is among the uncountable majority."
+      "description": "Transcendence of $\\pi$ \u2014 Lindemann (1882) applied Hermite's exponential method to prove $\\pi$ transcendental, settling the ancient question of circle squaring. The Lindemann-Weierstrass theorem generalizes both: if $\\alpha_1, \\ldots, \\alpha_n$ are distinct algebraic numbers, then $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are linearly independent over $\\mathbb{Q}$. Since $e^{i\\pi} = -1$ (Euler's identity) and $-1$ is algebraic, $i\\pi$ cannot be algebraic \u2014 hence $\\pi$ is transcendental. Together with this entry's proof that algebraic numbers are countable and $\\mathbb{R}$ is uncountable, `pi-transcendental` shows that $\\pi$ is among the uncountable majority."
     },
     {
       "targetId": "gelfond-schneider",
       "relationship": "implication",
       "description": "The Gelfond-Schneider theorem: if $\\alpha$ is algebraic ($\\alpha \\neq 0, 1$) and $\\beta$ is irrational algebraic, then $\\alpha^\\beta$ is transcendental. Proved independently by Gelfond and Schneider (1934), solving Hilbert's seventh problem: $2^{\\sqrt{2}}$ (Hilbert's example) is transcendental. This is the most powerful consequence of algebraic countability formalized in the gallery: any number constructed by exponentiating an algebraic base to an irrational algebraic power must lie in the transcendental complement whose existence this entry establishes by cardinality. This open question was listed in this entry's `openQuestions` and has since been formalized."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-03",
+      "relationship": "complementary",
+      "description": "Galois's solvability criterion: a root of an irreducible polynomial is expressible by radicals iff its Galois group is solvable. Every algebraic number is a root of some polynomial, but only those whose Galois groups are solvable admit radical expressions. This entry proves all algebraic numbers are 'countably many'; Galois's criterion classifies which ones are 'radically expressible' — a strict countable subcollection (algebraic numbers of degree $\\leq 4$ whose Galois groups are solvable) within the countable algebraic numbers."
     }
   ],
   "references": [
     {
       "authors": "Georg Cantor",
-      "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "title": "\u00dcber eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
       "year": "1874",
-      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal)",
+      "venue": "Journal f\u00fcr die reine und angewandte Mathematik (Crelle's Journal)",
       "note": "Original proof that algebraic numbers are countable; the same paper contains the first uncountability proof of the reals via the nested-intervals argument"
     },
     {
       "authors": "Charles Hermite",
       "title": "Sur la fonction exponentielle",
       "year": "1873",
-      "venue": "Comptes rendus de l'Académie des Sciences",
-      "note": "First proof that e is transcendental; the method was extended by Lindemann (1882) to prove π transcendental and generalized to the Lindemann-Weierstrass theorem"
+      "venue": "Comptes rendus de l'Acad\u00e9mie des Sciences",
+      "note": "First proof that e is transcendental; the method was extended by Lindemann (1882) to prove \u03c0 transcendental and generalized to the Lindemann-Weierstrass theorem"
     },
     {
       "authors": "Joseph Liouville",
-      "title": "Sur des classes très étendues de quantités dont la valeur n'est ni algébrique, ni même réductible à des irrationnelles algébriques",
+      "title": "Sur des classes tr\u00e8s \u00e9tendues de quantit\u00e9s dont la valeur n'est ni alg\u00e9brique, ni m\u00eame r\u00e9ductible \u00e0 des irrationnelles alg\u00e9briques",
       "year": "1844",
-      "venue": "Journal de Mathématiques Pures et Appliquées",
+      "venue": "Journal de Math\u00e9matiques Pures et Appliqu\u00e9es",
       "note": "First constructive existence proof of transcendental numbers via Diophantine approximation bounds; complements Cantor's cardinality argument by giving explicit examples"
     },
     {
       "authors": "Ferdinand von Lindemann",
-      "title": "Über die Zahl π",
+      "title": "\u00dcber die Zahl \u03c0",
       "year": "1882",
       "venue": "Mathematische Annalen",
-      "note": "Proves π is transcendental using Hermite's exponential method; together with Cantor's countability result, establishes that specific transcendentals are hard to identify despite 'almost all' reals being transcendental"
+      "note": "Proves \u03c0 is transcendental using Hermite's exponential method; together with Cantor's countability result, establishes that specific transcendentals are hard to identify despite 'almost all' reals being transcendental"
     }
   ],
   "leanFile": {
