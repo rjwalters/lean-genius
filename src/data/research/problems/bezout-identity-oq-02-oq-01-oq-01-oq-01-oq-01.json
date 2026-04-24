@@ -36,21 +36,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Proved ¬IsPrincipalIdealRing (MvPolynomial (Fin 2) ℤ) with 0 sorries, 0 axioms. Witness: ideal I = (2, X). Proper by ring map ZXY → ZMod 2; non-principal by totalDegree argument + coefficient extraction.",
+    "progressSummary": "COMPLETE: Proved ¬IsPrincipalIdealRing (MvPolynomial (Fin 2) ℤ) with 0 sorries, 0 axioms. Witness: ideal I = (2, X₀). Proper via constantCoeff; non-principal via totalDegree_mul_of_isDomain (exact equality) + coefficient extraction.",
     "builtItems": [
       "not_isPrincipalIdealRing: ¬IsPrincipalIdealRing (MvPolynomial (Fin 2) ℤ)",
       "I_not_principal: ¬Submodule.IsPrincipal (Ideal.span {C 2, X 0})",
-      "one_not_mem_I: (1 : ZXY) ∉ I proved via ring map φ : ZXY →+* ZMod 2",
+      "one_not_mem_I: (1 : ZXY) ∉ I proved via constantCoeff (omega closes 2k=1)",
       "dvd_gen2_is_const: if f | C 2 then ∃ c : ℤ, f = C c ∧ c | 2",
       "isUnit_of_C_dvd_genX: if (C c : ZXY) | genX then IsUnit c",
-      "ufd_not_pir_distinction: UniqueFactorizationMonoid ZXY ∧ ¬IsPrincipalIdealRing ZXY"
+      "ufd_not_pir_distinction: UniqueFactorizationMonoid ZXY ∧ ¬IsPrincipalIdealRing ZXY",
+      "exists_non_principal_ideal: ∃ J : Ideal ZXY, J ≠ ⊤ ∧ ¬Submodule.IsPrincipal J"
     ],
     "insights": [
       "IsPrincipalIdealRing is the correct Mathlib4 class (not IsPrincipalIdealDomain)",
-      "eval₂Hom (not eval₂RingHom) is the correct MvPolynomial ring hom evaluator",
+      "constantCoeff : ZXY →+* ℤ (not eval₂Hom/ZMod2) is the cleanest properness witness",
+      "CRITICAL: totalDegree_mul_of_isDomain (EXACT equality) required, not totalDegree_mul (≤ only)",
+      "totalDegree_mul_of_isDomain is in Mathlib.RingTheory.MvPolynomial.MonomialOrder.DegLex",
       "totalDegree_eq_zero_iff_eq_C characterizes constant polynomials",
-      "totalDegree_mul gives the degree bound under multiplication",
-      "IsUnit.map lifts units from ℤ to ZXY via C : ℤ →+* ZXY"
+      "IsUnit.map lifts units from ℤ to ZXY via C : ℤ →+* ZXY",
+      "Ideal.mem_span_pair gives existential decomposition z = a*x + b*y for z ∈ span{x,y}",
+      "Submodule.mem_span_singleton gives divisibility characterization of principal ideal membership"
     ],
     "mathlibGaps": [],
     "nextSteps": []
