@@ -4630,20 +4630,96 @@ theorem card_SYT_corner_step (μ : YoungDiagram) (hn : 0 < μ.card) :
     = (n-1)! * n = n!                             [hook_walk_identity]
 -/
 
+/-- hookProd is nonzero in ℚ. -/
+private lemma hookProdQ_ne_zero (μ : YoungDiagram) : (hookProd μ : ℚ) ≠ 0 :=
+  Nat.cast_ne_zero.mpr (hookProd_pos μ).ne'
+
+/-- Removing a corner from a ≤2-row diagram preserves the ≤2-row property.
+    Any corner c is in row 0 or row 1; removing it leaves rows 2+ unchanged (still empty). -/
+private lemma removeCorner_atMostTwoRows {μ : YoungDiagram} {c : ℕ × ℕ}
+    (h2 : μ.rowLen 2 = 0) (hc : isCorner μ c) :
+    (removeCorner μ c hc).rowLen 2 = 0 := by
+  -- If rowLen 2 > 0 then (2, 0) ∈ removeCorner, so (2, 0) ∈ μ, contradicting h2
+  rcases Nat.eq_zero_or_pos ((removeCorner μ c hc).rowLen 2) with h | hpos
+  · exact h
+  · exfalso
+    have hmem : (2, 0) ∈ removeCorner μ c hc := YoungDiagram.mem_iff_lt_rowLen.mpr hpos
+    obtain ⟨hmem2, _⟩ := (mem_removeCorner hc).mp hmem
+    have hlt := YoungDiagram.mem_iff_lt_rowLen.mp hmem2
+    omega
+
+/-- The hook walk identity for at-most-2-row Young diagrams.
+    **Non-circular proof**: hook_length_formula_atMostTwoRows was proved without this identity,
+    and removing a corner of a ≤2-row shape gives another ≤2-row shape.
+    Key algebraic identity:
+      HP / HPc = card(SYT(μ\c)) · HP / (N-1)!   [from HLF for μ\c]
+      Σ_c HP/HPc = HP/(N-1)! · Σ_c card(SYT(μ\c))
+               = HP/(N-1)! · card(SYT(μ))         [corner step]
+               = N!/(N-1)! = N                     [HLF for μ] -/
+private lemma hook_walk_identity_atMostTwoRows (μ : YoungDiagram) (h2 : μ.rowLen 2 = 0)
+    (hpos : 0 < μ.card) :
+    ∑ c ∈ (corners μ).attach,
+      ((hookProd μ : ℚ) / (hookProd (removeCorner μ c.val (mem_corners.mp c.prop)) : ℚ))
+    = (μ.card : ℚ) := by
+  have hHP : (hookProd μ : ℚ) ≠ 0 := hookProdQ_ne_zero μ
+  have hfact : ((μ.card - 1).factorial : ℚ) ≠ 0 :=
+    Nat.cast_ne_zero.mpr (Nat.factorial_pos _).ne'
+  -- HLF for μ over ℚ (proved independently, without hook_walk_identity)
+  have hμ : (Fintype.card (StandardYoungTableau μ) : ℚ) * hookProd μ = μ.card.factorial :=
+    by exact_mod_cast hook_length_formula_atMostTwoRows μ h2
+  -- HLF for each removeCorner (stays ≤2-row by removeCorner_atMostTwoRows)
+  have hμc : ∀ cx : { x // x ∈ corners μ },
+      (Fintype.card (StandardYoungTableau
+        (removeCorner μ cx.val (mem_corners.mp cx.prop))) : ℚ) *
+      (hookProd (removeCorner μ cx.val (mem_corners.mp cx.prop)) : ℚ) =
+      ((μ.card - 1).factorial : ℚ) := by
+    intro ⟨c, hcx⟩
+    have h2c := removeCorner_atMostTwoRows h2 (mem_corners.mp hcx)
+    have hlf := hook_length_formula_atMostTwoRows _ h2c
+    rw [removeCorner_card (mem_corners.mp hcx)] at hlf
+    exact_mod_cast hlf
+  -- Corner step over ℚ
+  have hstepQ : (Fintype.card (StandardYoungTableau μ) : ℚ) =
+      ∑ cx ∈ (corners μ).attach,
+        (Fintype.card (StandardYoungTableau
+          (removeCorner μ cx.val (mem_corners.mp cx.prop))) : ℚ) :=
+    by exact_mod_cast card_SYT_corner_step μ hpos
+  -- μ.card! = μ.card × (μ.card − 1)! as rationals
+  have hfact_succ : (μ.card.factorial : ℚ) = (μ.card : ℚ) * ((μ.card - 1).factorial : ℚ) := by
+    cases hcard : μ.card with
+    | zero => omega
+    | succ n =>
+      rw [show μ.card - 1 = n by omega, show μ.card = n + 1 from hcard, Nat.factorial_succ]
+      push_cast; ring
+  -- Each summand: HP/HPc = card(SYT(μ\c)) × (HP/(N-1)!)
+  have hterm : ∀ cx : { x // x ∈ corners μ },
+      (hookProd μ : ℚ) / (hookProd (removeCorner μ cx.val (mem_corners.mp cx.prop)) : ℚ) =
+      (Fintype.card (StandardYoungTableau
+        (removeCorner μ cx.val (mem_corners.mp cx.prop))) : ℚ) *
+      ((hookProd μ : ℚ) / ((μ.card - 1).factorial : ℚ)) := by
+    intro ⟨c, hcx⟩
+    have hHPc : (hookProd (removeCorner μ c (mem_corners.mp hcx)) : ℚ) ≠ 0 :=
+      hookProdQ_ne_zero _
+    have hIHc := hμc ⟨c, hcx⟩
+    rw [mul_div_assoc, div_eq_div_iff hHPc hfact]
+    linear_combination -(hookProd μ : ℚ) * hIHc
+  -- Assemble: rewrite summands, factor, apply corner step, use HLF and factorial identity
+  simp_rw [hterm]
+  rw [← Finset.sum_mul, ← hstepQ, mul_div_assoc, hμ, hfact_succ]
+  field_simp [hfact]
+
 /-- The hook walk identity: sum over corners c of hookProd(μ)/hookProd(μ\c) equals μ.card.
-    For each corner c = (i,j): removing c decreases each hook length in row i (left of c)
-    and col j (above c) by exactly 1. The sum of resulting ratios telescopes to μ.card.
-    Verified for: empty, 1-row, 1-col, 2-row, generalized hook shapes.
-    [OPEN: general proof requires hook walk combinatorics (~300 lines)] -/
+    Proved for at-most-2-row shapes via hook_walk_identity_atMostTwoRows (non-circular).
+    General (≥3-row) case: requires GNW probabilistic proof (~300 lines) or RSK (~500 lines). -/
 private lemma hook_walk_identity (μ : YoungDiagram) (hn : 0 < μ.card) :
     ∑ c ∈ (corners μ).attach,
       ((hookProd μ : ℚ) / (hookProd (removeCorner μ c.val (mem_corners.mp c.prop)) : ℚ))
     = (μ.card : ℚ) := by
-  sorry
-
-/-- hookProd is nonzero in ℚ. -/
-private lemma hookProdQ_ne_zero (μ : YoungDiagram) : (hookProd μ : ℚ) ≠ 0 :=
-  Nat.cast_ne_zero.mpr (hookProd_pos μ).ne'
+  by_cases h2 : μ.rowLen 2 = 0
+  · -- At-most-2-row case: proved non-circularly
+    exact hook_walk_identity_atMostTwoRows μ h2 hn
+  · -- ≥3-row case: requires hook walk combinatorics (GNW ~300 lines or RSK ~500 lines)
+    sorry
 
 /-- The general hook-length formula in ℚ, proved by well-founded recursion on μ.card.
     Uses card_SYT_corner_step (Part XIII) + hook_walk_identity. -/
