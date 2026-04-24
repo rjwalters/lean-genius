@@ -1,5 +1,53 @@
 [
   {
+    "id": "ann-header-overview",
+    "proofId": "arithmetic-series-oq-02-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 17
+    },
+    "type": "context",
+    "title": "Module Header: Three Identities in the Hockey Stick Hierarchy",
+    "content": "The module docstring states the open question ('Generalize the hockey stick identity to multi-dimensional sums') and previews the three identities proved: the 1D hockey stick (already known), the parallel Vandermonde (new intermediate result), and the 2D hockey stick (the target). The dependency graph is explicit: parallel Vandermonde is the technical core, 2D hockey stick follows by composition with the 1D result. The `open Finset BigOperators` makes range, sum, and ∑ notation available throughout, standard for Lean 4 combinatorics proofs in Mathlib.",
+    "mathContext": "The three-identity hierarchy:\n$$\\text{1D: } \\sum_{i=0}^n \\binom{i+k}{k} = \\binom{n+k+1}{k+1}$$\n$$\\text{Parallel Vandermonde: } \\sum_{i+j=n} \\binom{i+a}{a}\\binom{j+b}{b} = \\binom{n+a+b+1}{a+b+1}$$\n$$\\text{2D: } \\sum_{i+j \\leq n} \\binom{i+a}{a}\\binom{j+b}{b} = \\binom{n+a+b+2}{a+b+2}$$\nThe 2D identity is essentially $\\sum_{m=0}^{n}(\\text{parallel Vandermonde at }m)$, i.e., applying the 1D hockey stick to the parallel Vandermonde result.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "hockey stick identity generalization",
+      "open Finset BigOperators",
+      "module documentation",
+      "arithmetic-series-oq-02 parent"
+    ],
+    "prerequisites": [
+      "Mathlib import",
+      "Finset.range and BigOperators notation",
+      "1D hockey stick from parent file"
+    ]
+  },
+  {
+    "id": "ann-summary-section",
+    "proofId": "arithmetic-series-oq-02-oq-02",
+    "range": {
+      "startLine": 132,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Summary: 12 Theorems, Nested Induction Architecture",
+    "content": "The file summary enumerates the three main parts: (I) parallel Vandermonde by nested induction on (b, n), (II) 2D hockey stick as a two-step composition, (III) special cases and concrete verification. The key insights documented are (1) the parallel Vandermonde satisfies the same recurrence as simplicial numbers — so the proof reduces to matching two sequences that obey the same recurrence with the same initial conditions; (2) Pascal on S_{b+1} decomposes each term into two IH applications; (3) the 2D hockey stick is literally `hockey_stick ∘ parallel_vandermonde`; and (4) natural number subtraction issues are avoided by careful sum splitting. The `end ArithmeticSeriesOQ02OQ02` closes the namespace.",
+    "mathContext": "The full proof chain: $\\mathtt{simplicial}(k, n) = \\binom{n+k}{k}$ (definition) $\\to$ $\\mathtt{simplicial\\_succ}$ (Pascal) $\\to$ $\\mathtt{hockey\\_stick}$ $\\to$ $\\mathtt{parallel\\_vandermonde}$ (nested induction) $\\to$ $\\mathtt{hockey\\_stick\\_2d}$ (2-line composition). Total: 12 theorems, 0 sorries, 0 axioms.\n\nThe recurrence-matching insight: if two sequences $f(b,n)$ and $g(b,n)$ satisfy the same Pascal-like recurrence and agree on all base cases $(b=0$ and $n=0)$, then $f \\equiv g$ by induction — no explicit bijection needed.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "recurrence matching proof technique",
+      "namespace closure",
+      "proof architecture documentation",
+      "Lean 4 namespace blocks"
+    ],
+    "prerequisites": [
+      "all preceding theorems in the file",
+      "nested induction pattern",
+      "Lean 4 namespace syntax"
+    ]
+  },
+  {
     "id": "ann-simplicial-def",
     "proofId": "arithmetic-series-oq-02-oq-02",
     "range": {
