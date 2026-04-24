@@ -151,7 +151,22 @@ lemma distinctDistances_empty :
 /-- A two-point set has exactly 1 distinct distance -/
 lemma two_point_one_distance (p q : Point3D) (hne : p ≠ q) :
     distinctDistances {p, q} = 1 := by
-  sorry
+  unfold distinctDistances
+  suffices h : (pairwiseDistances {p, q}).filter (· > 0) = {dist p q} by
+    rw [h, Finset.card_singleton]
+  ext d
+  simp only [Finset.mem_filter, Finset.mem_singleton, pairwiseDistances,
+             Finset.mem_image, Finset.mem_product, Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · rintro ⟨⟨⟨a, b⟩, ⟨ha, hb⟩, rfl⟩, hpos⟩
+    simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb
+    rcases ha with rfl | rfl <;> rcases hb with rfl | rfl
+    · simp [dist_self] at hpos
+    · rfl
+    · exact dist_comm q p
+    · simp [dist_self] at hpos
+  · rintro rfl
+    exact ⟨⟨(p, q), ⟨by simp, by simp⟩, rfl⟩, dist_pos.mpr hne⟩
 
 /-
   ## Section 6: Finset and Cardinality Helpers
