@@ -263,10 +263,101 @@ def IsAmenable (G : Type*) [Group G] : Prop :=
 /-- The integers ℤ are amenable via the Cesàro mean construction.
     (This is a classical fact; the full proof uses the definition of
     Banach limits / ultrafilter means.) -/
--- AXIOMATIZED: Markov-Kakutani (ℤ is amenable as an abelian group;
--- explicit construction via Cesàro means / ultrafilter Banach limit ~150 lines)
+-- Proof strategy: non-principal ultrafilter U on ℕ + symmetric Cesàro density.
+-- For each N : ℕ and A ⊆ Multiplicative ℤ, define
+--   dens N A = |{k ∈ [-N,N] | ofAdd k ∈ A}| / (2N+1)
+-- Then μ A = U.lim (dens · A) (ultrafilter limit, exists since ENNReal is compact T2).
+-- Properties: (1) dens N univ = 1 → μ(univ) = 1.
+--             (2) dens N (A∪B) = dens N A + dens N B for disjoint A,B → additive.
+--             (3) |dens N (g•A) - dens N A| ≤ 2|n|/(2N+1) → 0 along U → invariant.
 theorem int_amenable : IsAmenable (Multiplicative ℤ) := by
-  sorry
+  -- Non-principal ultrafilter on ℕ extending atTop
+  let U : Ultrafilter ℕ := Ultrafilter.of Filter.atTop
+  -- Symmetric Cesàro density function (values in ENNReal = [0,∞])
+  let dens : ℕ → Set (Multiplicative ℤ) → ℝ≥0∞ := fun N A =>
+    (((Finset.Icc (-(N : ℤ)) N).filter
+       (fun k => Multiplicative.ofAdd k ∈ A)).card : ℝ≥0∞) /
+    (2 * (N : ℝ≥0∞) + 1)
+  -- μ A = ultrafilter limit of the Cesàro densities
+  -- ENNReal is compact and T2 (it equals [0,∞] as a topological space)
+  -- so Ultrafilter.lim is well-defined for ENNReal-valued sequences.
+  let μ : Set (Multiplicative ℤ) → ℝ≥0∞ := fun A => U.lim (dens · A)
+  refine ⟨μ, ?_, ?_, ?_⟩
+  -- Part 1: Total mass μ(univ) = 1
+  · suffices h : ∀ N : ℕ, dens N Set.univ = 1 by
+      simp only [μ]
+      rw [show dens · Set.univ = fun _ => (1 : ℝ≥0∞) from funext h]
+      exact Ultrafilter.lim_const 1
+    intro N
+    simp only [dens]
+    -- Every k in the window is in Set.univ, so filter keeps all elements
+    have hfilt : (Finset.Icc (-(N : ℤ)) N).filter
+        (fun k => Multiplicative.ofAdd k ∈ (Set.univ : Set (Multiplicative ℤ))) =
+        Finset.Icc (-(N : ℤ)) N := Finset.filter_True_of_mem (fun _ _ => trivial)
+    rw [hfilt, Finset.Int.card_fintypeIcc, Int.toNat_of_nonneg (by omega)]
+    push_cast
+    rw [show (2 * (N : ℝ≥0∞) + 1) = (2 * (N : ℝ≥0∞) + 1) from rfl]
+    norm_cast
+    rw [ENNReal.div_self]
+    · norm_cast; omega
+    · norm_cast; omega
+  -- Part 2: Finite additivity μ(A ∪ B) = μ(A) + μ(B) for disjoint A, B
+  · intro A B hAB
+    -- At each N, the equality is exact: dens N (A∪B) = dens N A + dens N B
+    have h_eq : ∀ N : ℕ, dens N (A ∪ B) = dens N A + dens N B := by
+      intro N
+      simp only [dens]
+      rw [← ENNReal.add_div]
+      congr 1
+      -- card(filter(A∪B)) = card(filter A) + card(filter B) since A ∩ B = ∅
+      have h_disj : Disjoint
+          ((Finset.Icc (-(N : ℤ)) N).filter (fun k => Multiplicative.ofAdd k ∈ A))
+          ((Finset.Icc (-(N : ℤ)) N).filter (fun k => Multiplicative.ofAdd k ∈ B)) :=
+        Finset.disjoint_filter.mpr fun k _ hkA hkB =>
+          Set.disjoint_left.mp hAB hkA hkB
+      push_cast
+      rw [← Finset.card_union_of_disjoint h_disj]
+      congr 1
+      ext k
+      simp [Finset.mem_filter, Finset.mem_union, Set.mem_union]
+    -- Rewrite as function equality, then use continuity of + and uniqueness of limits
+    simp only [μ]
+    rw [show dens · (A ∪ B) = fun N => dens N A + dens N B from funext h_eq]
+    -- U.lim (f + g) = U.lim f + U.lim g via continuity of addition in ENNReal
+    have hA_tendsto : Filter.Tendsto (dens · A) U.toFilter (nhds (U.lim (dens · A))) :=
+      Ultrafilter.tendsto_nhds_lim rfl
+    have hB_tendsto : Filter.Tendsto (dens · B) U.toFilter (nhds (U.lim (dens · B))) :=
+      Ultrafilter.tendsto_nhds_lim rfl
+    have hsum_tendsto := hA_tendsto.add hB_tendsto
+    exact tendsto_nhds_unique hsum_tendsto (Ultrafilter.tendsto_nhds_lim rfl)
+  -- Part 3: Left-invariance μ(g • A) = μ(A) for all g : Multiplicative ℤ
+  · intro g A
+    simp only [μ]
+    -- n = the integer corresponding to g under toAdd
+    set n : ℤ := Multiplicative.toAdd g
+    -- The left-multiplication action: g • A = {ofAdd (n + k) | ofAdd k ∈ A}
+    -- Therefore: ofAdd m ∈ g • A ↔ ofAdd (m - n) ∈ A
+    have h_mem : ∀ m : ℤ, Multiplicative.ofAdd m ∈ g • A ↔
+        Multiplicative.ofAdd (m - n) ∈ A := by
+      intro m
+      simp [Set.mem_smul_set, smul_eq_mul, Multiplicative.ofAdd_mul,
+            Multiplicative.toAdd_ofAdd]
+      constructor
+      · rintro ⟨a, ha, rfl⟩
+        simp [Multiplicative.toAdd_ofAdd, Multiplicative.ofAdd_toAdd]
+        convert ha using 2
+        simp [Multiplicative.toAdd_mul, Multiplicative.toAdd_ofAdd]
+        ring
+      · intro ha
+        exact ⟨Multiplicative.ofAdd (m - n), ha, by
+          simp [Multiplicative.ofAdd_mul, Multiplicative.ofAdd_toAdd]
+          congr 1; push_cast; ring⟩
+    -- The window-shift approximation:
+    -- |dens N (g•A) - dens N A| ≤ 2*|n| / (2N+1)
+    -- Because the windows Icc(-N,N) and Icc(-N-n, N-n) differ by ≤ 2|n| elements.
+    -- As N → ∞ (along atTop, hence along U), 2|n|/(2N+1) → 0.
+    -- Since U extends atTop and dens values are non-negative ENNReals:
+    sorry -- Window-shift: 2|n|/(2N+1)→0 along U implies dens·(g•A) and dens·A same U-limit
 
 /-- Words starting with generator g (as positive or inverse letter).
     NOTE: Mathlib convention: (g, true) = positive generator, (g, false) = inverse.
