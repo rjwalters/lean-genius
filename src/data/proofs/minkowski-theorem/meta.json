@@ -232,6 +232,21 @@
       "targetId": "four-color-theorem",
       "relationship": "thematic",
       "description": "Both are celebrated existence theorems where the proof method (pigeonhole/counting for Minkowski, reducibility/discharging for four-color) provides existence without explicit construction"
+    },
+    {
+      "targetId": "minkowski-fundamental-theorem",
+      "relationship": "related",
+      "description": "Minkowski's Fundamental Theorem (Geometry of Numbers) — a parallel Lean formalization of the same theorem. Both formalizations prove the convex body theorem (vol(S) > 2ⁿ·covol(L) implies a nonzero lattice point in S), but use different type-theoretic approaches to define lattices, convex bodies, and volume. Comparing the two formalizations reveals the tradeoffs between custom API design (this entry) and Mathlib-native infrastructure: this entry uses a custom `Lattice`/`ConvexBody`/`HasVolume` API bridged to Mathlib, while the sibling entry may use ZLattice or ZSpan directly."
+    },
+    {
+      "targetId": "minkowski-theorem-oq-02",
+      "relationship": "parent",
+      "description": "Dirichlet's Approximation Theorem via Minkowski — a direct child problem formalizing Dirichlet's result ($|\\alpha - p/q| < 1/(qQ)$ for $1 \\leq q \\leq Q$) as a corollary of the lattice point theorem applied to a thin parallelogram in $\\mathbb{R}^2$ with area $> 4$. This connection is mentioned in the `dirichlets-theorem` cross-reference and in the conclusion's openQuestions; OQ-02 provides the explicit Lean proof."
+    },
+    {
+      "targetId": "minkowski-fundamental-theorem-oq-02",
+      "relationship": "related",
+      "description": "Minkowski's Class Number Bound — From Geometry of Numbers to Finite Class Groups: answers whether the class number bound for algebraic number fields can be derived from the geometry-of-numbers framework. This entry's conclusion asks 'Can the Minkowski bound on ideal norms be formalized, connecting the convex body theorem to finiteness of class groups?' — OQ-02 of the sibling Minkowski formalization provides exactly this connection, proving that every ideal class contains an ideal of bounded norm via the convex body theorem applied to a Minkowski embedding of a number field."
     }
   ],
   "leanFile": {
