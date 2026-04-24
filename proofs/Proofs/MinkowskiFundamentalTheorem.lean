@@ -111,8 +111,10 @@ variable (n : ℕ) [NeZero n]
 -- PART 1: Euclidean Space and Basic Definitions
 -- ============================================================
 
-/-- The ambient space: n-dimensional Euclidean space over the reals -/
-abbrev EuclideanN (n : ℕ) := EuclideanSpace ℝ (Fin n)
+/-- The ambient space: n-dimensional real space (ℝⁿ as a function type).
+    Using `Fin n → ℝ` rather than `EuclideanSpace ℝ (Fin n)` so that Mathlib's
+    geometry-of-numbers API applies directly (it is stated for `Fin n → ℝ`). -/
+abbrev EuclideanN (n : ℕ) := Fin n → ℝ
 
 /-- A set is centrally symmetric if x ∈ S implies -x ∈ S -/
 def CentrallySymmetric (S : Set (EuclideanN n)) : Prop :=
@@ -126,7 +128,7 @@ theorem origin_mem_of_symmetric_nonempty (S : Set (EuclideanN n))
   have hnx : -x ∈ S := hsym x hx
   -- The midpoint of x and -x is 0
   have h : (1/2 : ℝ) • x + (1/2 : ℝ) • (-x) = 0 := by
-    simp [smul_neg, ← sub_eq_add_neg, smul_sub]
+    simp [smul_neg]
   -- By convexity, 0 ∈ S
   have hmid := hconvex hx hnx (by norm_num : (0 : ℝ) ≤ 1/2)
     (by norm_num : (0 : ℝ) ≤ 1/2) (by norm_num : (1/2 : ℝ) + 1/2 = 1)
@@ -202,11 +204,12 @@ structure ConvexBody (n : ℕ) where
   nonempty : carrier.Nonempty
 
 instance : Membership (EuclideanN n) (ConvexBody n) where
-  mem x S := x ∈ S.carrier
+  mem (S : ConvexBody n) (x : EuclideanN n) := S.carrier x
 
 /-- The origin is in every convex body (by symmetry and convexity) -/
 theorem ConvexBody.zero_mem (S : ConvexBody n) : (0 : EuclideanN n) ∈ S :=
-  origin_mem_of_symmetric_nonempty n S.carrier S.symmetric S.nonempty S.convex
+  show (0 : EuclideanN n) ∈ S.carrier from
+    origin_mem_of_symmetric_nonempty n S.carrier S.symmetric S.nonempty S.convex
 
 -- ============================================================
 -- PART 4: Volume of Sets
@@ -256,29 +259,41 @@ def Lattice.basisVec (L : Lattice n) (i : Fin n) : EuclideanN n :=
   fun j => L.basis i j
 
 /-- Linear equivalence from lattice basis matrix (transpose acts on standard basis).
-    Maps standard basis vector eᵢ to row_i(L.basis). -/
+    Maps standard basis vector eᵢ to row_i(L.basis). Constructed via LinearEquiv.ofBijective
+    using the nonsingular inverse as the two-sided inverse. -/
 noncomputable def Lattice.toLinearEquiv (L : Lattice n) :
-    (EuclideanN n) ≃ₗ[ℝ] (EuclideanN n) := by
-  apply LinearEquiv.ofBijective (L.basis.transpose.mulVecLin)
-  rw [← LinearMap.isUnit_iff_bijective, ← Matrix.isUnit_det_iff_isUnit_mulVecLin,
-      Matrix.det_transpose]
-  exact isUnit_iff_ne_zero.mpr L.basis_invertible
+    (EuclideanN n) ≃ₗ[ℝ] (EuclideanN n) :=
+  have hdet : IsUnit L.basis.transpose.det := by
+    rw [Matrix.det_transpose]; exact isUnit_iff_ne_zero.mpr L.basis_invertible
+  LinearEquiv.ofBijective (L.basis.transpose.mulVecLin)
+    ⟨fun x y hxy => by
+        have h := congr_arg ((L.basis.transpose)⁻¹.mulVecLin) hxy
+        simp only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec,
+                   Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec] at h
+        exact h,
+     fun y => ⟨(L.basis.transpose)⁻¹.mulVecLin y, by
+        simp only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec,
+                   Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]⟩⟩
 
 /-- Module basis constructed from the lattice basis matrix.
-    The i-th basis vector is row_i(L.basis). -/
+    The i-th basis vector is row_i(L.basis): eᵢ ↦ L.basis.transpose *ᵥ eᵢ. -/
 noncomputable def Lattice.toModuleBasis (L : Lattice n) :
     Module.Basis (Fin n) ℝ (EuclideanN n) :=
   (Pi.basisFun ℝ (Fin n)).map (L.toLinearEquiv n)
 
-/-- The matrix of the module basis equals the original lattice matrix. -/
+/-- The matrix of the module basis equals the original lattice matrix.
+    Proof: (b.map f) i = f (b i) is definitional, so `change` reduces to computing
+    L.toLinearEquiv n (Pi.single i 1) = L.basis.transpose *ᵥ (Pi.single i 1),
+    whose j-th component is L.basis i j. -/
 theorem Lattice.toModuleBasis_matrix_eq (L : Lattice n) :
     Matrix.of (L.toModuleBasis n) = L.basis := by
   ext i j
-  simp only [toModuleBasis, Basis.map_apply, toLinearEquiv, LinearEquiv.ofBijective_apply,
-    Matrix.mulVecLin_apply, Pi.basisFun_apply, Matrix.of_apply]
-  -- (L.basis^T).mulVec (Pi.single i 1) at component j = L.basis i j
-  simp only [Matrix.mulVec, Matrix.dotProduct, Matrix.transpose_apply,
-    Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, ite_true]
+  simp only [Matrix.of_apply, toModuleBasis]
+  -- (b.map f) i = f (b i) is definitional in Lean 4
+  change (L.toLinearEquiv n (Pi.basisFun ℝ (Fin n) i)) j = L.basis i j
+  simp [Pi.basisFun_apply, toLinearEquiv, LinearEquiv.ofBijective_apply,
+        Matrix.mulVecLin_apply, Matrix.mulVec, Matrix.transpose_apply,
+        Pi.single_apply, Finset.sum_ite_eq', Finset.mem_univ]
 
 /-- Row i of the lattice basis matrix equals the i-th module basis vector. -/
 theorem Lattice.basisVec_eq_toModuleBasis (L : Lattice n) (i : Fin n) :
@@ -303,12 +318,12 @@ theorem latticePoints_eq_span (L : Lattice n) :
     rintro ⟨coeffs, hx⟩
     simp_rw [hbasis] at hx
     rw [Submodule.mem_span_range_iff_exists_fun]
-    exact ⟨coeffs, by simp_rw [zsmul_eq_smul_cast ℝ]; exact hx.symm⟩
+    exact ⟨coeffs, by simp_rw [← Int.cast_smul_eq_zsmul ℝ]; exact hx.symm⟩
   · -- span → latticePoints: x ∈ ℤ-span → ∃ c, x = ∑ i, (c i : ℝ) • basis_i
     intro hx
     rw [Submodule.mem_span_range_iff_exists_fun] at hx
     obtain ⟨coeffs, hx⟩ := hx
-    exact ⟨coeffs, by simp_rw [hbasis, zsmul_eq_smul_cast ℝ] at hx; exact hx.symm⟩
+    exact ⟨coeffs, by simp_rw [← Int.cast_smul_eq_zsmul ℝ, ← hbasis] at hx; exact hx.symm⟩
 
 -- ============================================================
 -- PART 5: Minkowski's Fundamental Theorem
@@ -346,30 +361,33 @@ theorem minkowski_fundamental (L : Lattice n) (S : ConvexBody n) [hv : HasVolume
   set b := L.toModuleBasis n with hb_def
   -- Bridge: convert volume inequality from ℝ to ENNReal
   have h_vol_ennreal : MeasureTheory.volume (ZSpan.fundamentalDomain b) *
-      2 ^ Fintype.card (Fin n) < MeasureTheory.volume S.carrier := by
-    rw [ZSpan.volume_fundamentalDomain, L.toModuleBasis_matrix_eq, hv.volume_eq]
+      2 ^ Module.finrank ℝ (EuclideanN n) < MeasureTheory.volume S.carrier := by
+    rw [Module.finrank_fin_fun, ZSpan.volume_fundamentalDomain, L.toModuleBasis_matrix_eq, hv.volume_eq]
     -- Need: ENNReal.ofReal |L.basis.det| * 2 ^ n < ENNReal.ofReal hv.volume
     -- From: hv.volume > 2^n * |L.basis.det| (all positive reals)
     unfold criticalVolume Lattice.covolume at h_vol
     have h_nonneg : 0 ≤ |L.basis.det| * (2 : ℝ) ^ n :=
       mul_nonneg (abs_nonneg _) (pow_nonneg (by norm_num) _)
-    rw [show ENNReal.ofReal |L.basis.det| * (2 : ENNReal) ^ Fintype.card (Fin n) =
+    rw [show ENNReal.ofReal |L.basis.det| * (2 : ENNReal) ^ n =
         ENNReal.ofReal (|L.basis.det| * (2 : ℝ) ^ n) from by
-      rw [Fintype.card_fin]
       rw [ENNReal.ofReal_mul (abs_nonneg _)]
       congr 1
       rw [ENNReal.ofReal_pow (by norm_num : (0 : ℝ) ≤ 2)]
       simp [ENNReal.ofReal_ofNat]]
-    exact ENNReal.ofReal_lt_ofReal_of_nonneg h_nonneg (by linarith [mul_comm ((2 : ℝ) ^ n) |L.basis.det|])
+    exact (ENNReal.ofReal_lt_ofReal_iff_of_nonneg h_nonneg).mpr
+      (by linarith [mul_comm ((2 : ℝ) ^ n) |L.basis.det|])
   -- Apply Mathlib's geometry of numbers theorem directly
+  haveI : Countable (Submodule.span ℤ (Set.range b)).toAddSubgroup := by
+    change Countable (Submodule.span ℤ (Set.range b)); infer_instance
   have h_mathlib := exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure
-    (ZSpan.isAddFundamentalDomain b volume) S.symmetric S.convex h_vol_ennreal
+    (ZSpan.isAddFundamentalDomain' b volume) S.symmetric S.convex h_vol_ennreal
   -- Extract the result and translate back to custom types
   obtain ⟨⟨x, hx_span⟩, hne, hx_carrier⟩ := h_mathlib
+  have hx_mem : x ∈ Submodule.span ℤ (Set.range b) := hx_span
   refine ⟨x, hx_carrier, ?_, ?_⟩
   · -- x is in latticePoints (via span equivalence)
     rw [latticePoints_eq_span]
-    exact hx_span
+    exact hx_mem
   · -- x ≠ 0 (from subtype nonzero)
     intro h0
     exact hne (Subtype.ext h0)
@@ -583,8 +601,8 @@ theorem stdFundDomain_measurableSet :
 
 /-- The unit cube is a fundamental domain for the ℤⁿ lattice. -/
 theorem stdLattice_isAddFundamentalDomain :
-    IsAddFundamentalDomain (stdLattice n) (stdFundDomain n) volume :=
-  ZSpan.isAddFundamentalDomain (stdBasis n) volume
+    IsAddFundamentalDomain (stdLattice n).toAddSubgroup (stdFundDomain n) volume :=
+  ZSpan.isAddFundamentalDomain' (stdBasis n) volume
 
 /-- The matrix of the standard basis is the identity matrix. -/
 theorem stdBasis_matrix_eq_one :
@@ -622,7 +640,10 @@ theorem minkowski_integer_lattice_proved
     (h_symm : ∀ x ∈ s, -x ∈ s)
     (h_conv : Convex ℝ s)
     (h_vol : (2 : ENNReal) ^ n < volume s) :
-    ∃ x : (stdLattice n), x ≠ 0 ∧ (x : Fin n → ℝ) ∈ s := by
+    ∃ x : (stdLattice n).toAddSubgroup, x ≠ 0 ∧ (x : Fin n → ℝ) ∈ s := by
+  haveI : Countable (stdLattice n).toAddSubgroup := by
+    unfold stdLattice
+    change Countable (Submodule.span ℤ (Set.range (stdBasis n))); infer_instance
   apply exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure
     (stdLattice_isAddFundamentalDomain n) h_symm h_conv
   rw [stdLattice_covolume, one_mul, Module.finrank_fin_fun]
@@ -644,10 +665,13 @@ theorem minkowski_general_lattice_proved
     (h_conv : Convex ℝ s)
     (h_vol : ENNReal.ofReal |(Matrix.of b).det| * 2 ^ n < volume s) :
     ∃ x : Submodule.span ℤ (Set.range b), x ≠ 0 ∧ (x : Fin n → ℝ) ∈ s := by
-  apply exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure
-    (ZSpan.isAddFundamentalDomain b volume) h_symm h_conv
-  rw [ZSpan.volume_fundamentalDomain, Module.finrank_fin_fun]
-  exact h_vol
+  haveI : Countable (Submodule.span ℤ (Set.range b)).toAddSubgroup := by
+    change Countable (Submodule.span ℤ (Set.range b)); infer_instance
+  obtain ⟨⟨x, hx_sub⟩, hne, hx_s⟩ :=
+    exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure
+      (ZSpan.isAddFundamentalDomain' b volume) h_symm h_conv
+      (by rw [ZSpan.volume_fundamentalDomain, Module.finrank_fin_fun]; exact h_vol)
+  exact ⟨⟨x, hx_sub⟩, fun h => hne (Subtype.ext (congrArg Subtype.val h)), hx_s⟩
 
 end MinkowskiProved
 

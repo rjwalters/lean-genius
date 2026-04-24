@@ -35,6 +35,7 @@ set_option linter.unusedVariables false
 namespace BanachTarski
 
 open Set MeasureTheory
+open scoped Pointwise ENNReal
 
 variable {α : Type*}
 
@@ -67,8 +68,8 @@ theorem equidecomposable_refl (G : Type*) [Group G] [MulAction G α]
   · intro; exact le_refl A
   · intro i j h; exact absurd (Fin.eq_of_val_eq (Nat.lt_one_iff.mp i.isLt ▸
       Nat.lt_one_iff.mp j.isLt ▸ rfl)) h
-  · simp
-  · simp [one_smul]
+  · simp only [Set.iUnion_const]
+  · simp only [one_smul, Set.iUnion_const]
   · intro i j h; exact absurd (Fin.eq_of_val_eq (Nat.lt_one_iff.mp i.isLt ▸
       Nat.lt_one_iff.mp j.isLt ▸ rfl)) h
 
@@ -86,6 +87,16 @@ def IsParadoxical (G : Type*) [Group G] [MulAction G α] (A : Set α) : Prop :=
 -- SECTION II: Paradoxical Sets Cannot Be Measured
 -- ============================================================
 
+/-- Helper: in ENNReal, a + a = a implies a = 0 or a = ⊤. -/
+private lemma ennreal_add_self_eq_self {a : ℝ≥0∞} (h : a + a = a) :
+    a = 0 ∨ a = ⊤ := by
+  rcases eq_or_ne a ⊤ with rfl | hatop
+  · exact Or.inr rfl
+  · left
+    rcases eq_or_ne a 0 with rfl | ha0
+    · rfl
+    · exact absurd h (ENNReal.lt_add_right hatop ha0).ne'
+
 /-- **Key consequence**: If `A` is G-paradoxical, then any G-invariant
     finitely-additive measure on `A` must assign it measure 0 or ∞.
 
@@ -100,7 +111,7 @@ theorem paradoxical_no_finite_measure (G : Type*) [Group G] [MulAction G α]
     (hμ_add : ∀ S T : Set α, Disjoint S T → μ (S ∪ T) = μ S + μ T)
     (hμ_inv : ∀ (g : G) (S : Set α) (hS : S ⊆ A),
       μ (g • S) = μ S)
-    (hμ_equi : ∀ B : Set α, B ⊆ A → A ≃ᴳ[G] B → μ B = μ A) :
+    (hμ_equi : ∀ B : Set α, B ⊆ A → (A ≃ᴳ[G] B) → μ B = μ A) :
     μ A = 0 ∨ μ A = ⊤ := by
   obtain ⟨B, C, hBA, hCA, hBC, hAB, hAC⟩ := hA
   -- μ(A) = μ(B) + μ(C) since B ⊆ A, C ⊆ A, B ∩ C = ∅
@@ -125,23 +136,9 @@ theorem paradoxical_no_finite_measure (G : Type*) [Group G] [MulAction G α]
     -- and the center has measure 0. We simplify by assuming B ∪ C = A here.
     sorry -- Full proof: B ∪ C ⊆ A, μ(B ∪ C) ≤ μ(A) ≤ μ(A) + μ(A) = μ(B ∪ C)
   -- From h2: μ(A) = 0 or μ(A) = ∞
-  rcases ENNReal.eq_zero_or_top_of_add_eq_self h2.symm with h | h
+  rcases ennreal_add_self_eq_self h2 with h | h
   · exact Or.inl h
   · exact Or.inr h
-
-/-- Helper: in ENNReal, a + a = a implies a = 0 or a = ⊤. -/
-private lemma ENNReal.eq_zero_or_top_of_add_eq_self {a : ℝ≥0∞} (h : a + a = a) :
-    a = 0 ∨ a = ⊤ := by
-  by_contra hc
-  push_neg at hc
-  obtain ⟨ha0, hatop⟩ := hc
-  -- a > 0 and a < ∞, so a is a finite positive real
-  lift a to ℝ≥0 using hatop
-  -- In ℝ≥0: a + a = a → a = 0 (contradiction with a > 0)
-  have : (a : ℝ≥0∞) + a = a := h
-  rw [← ENNReal.coe_add, ENNReal.coe_inj] at this
-  have : a = 0 := by linarith [this.symm, add_le_add_right (le_refl a) a]
-  exact ha0 (by simp [this])
 
 -- ============================================================
 -- SECTION III: The Banach-Tarski Paradox (Statement)
@@ -265,17 +262,201 @@ def IsAmenable (G : Type*) [Group G] : Prop :=
 theorem int_amenable : IsAmenable (Multiplicative ℤ) := by
   sorry
 
+/-- Words starting with generator g (as positive or inverse letter).
+    NOTE: Mathlib convention: (g, true) = positive generator, (g, false) = inverse.
+    This follows from FreeGroup.toWord_of : (of a).toWord = [(a, true)]. -/
+private def WordStart (g : Fin 2) (b : Bool) : Set (FreeGroup (Fin 2)) :=
+  {w | w.toWord.head? = some (g, b)}
+
+/-- WordStart coincides with Mathlib's FreeGroup.startsWith. -/
+private lemma wordStart_eq_startsWith {g : Fin 2} {b : Bool} :
+    WordStart g b = FreeGroup.startsWith (g, b) := by
+  ext w
+  simp only [WordStart, FreeGroup.startsWith, Set.mem_setOf_eq]
+  cases w.toWord <;> simp [List.head?]
+
+/-- (FreeGroup.of 0)⁻¹ = mk [(0, false)].
+    Proof: toWord_of gives [(0,true)]; invRev reverses and negates bools → [(0,false)]. -/
+private lemma freeGroup_inv_eq_mk_false (g : Fin 2) :
+    (FreeGroup.of g)⁻¹ = FreeGroup.mk [(g, false)] := by
+  apply FreeGroup.toWord_injective
+  simp [FreeGroup.toWord_inv, FreeGroup.toWord_of, FreeGroup.invRev,
+        FreeGroup.toWord_mk]
+
+/-- COVER: F₂ = (starts with a) ∪ a · (starts with a⁻¹).
+    Key: positive generator is (0,true); inverse is (0,false) (Mathlib convention).
+    Any w not starting with a satisfies: a⁻¹·w starts with a⁻¹ (no cancellation),
+    so w = a·(a⁻¹·w) lies in a • WordStart 0 false. -/
+private lemma free_group_cover_a :
+    let a := FreeGroup.of (0 : Fin 2)
+    Set.univ = WordStart 0 true ∪ a • WordStart 0 false := by
+  intro a
+  simp_rw [wordStart_eq_startsWith]
+  ext w
+  simp only [Set.mem_univ, true_iff, Set.mem_union, Set.mem_smul_set]
+  by_cases h : w ∈ FreeGroup.startsWith (0, true)
+  · exact Or.inl h
+  · -- w doesn't start with a. Take v = a⁻¹·w.
+    -- By startsWith_mk_mul with letter=(0,false): since w ∉ startsWith(0,true),
+    -- mk[(0,false)]·w ∈ startsWith(0,false), i.e., a⁻¹·w starts with a⁻¹.
+    refine Or.inr ⟨FreeGroup.mk [(0, false)] * w, FreeGroup.startsWith_mk_mul w h, ?_⟩
+    -- a · (a⁻¹ · w) = w
+    have : FreeGroup.of (0 : Fin 2) * FreeGroup.mk [(0, false)] = 1 := by
+      rw [← freeGroup_inv_eq_mk_false]; exact mul_inv_cancel _
+    calc a * (FreeGroup.mk [(0, false)] * w)
+        = (a * FreeGroup.mk [(0, false)]) * w := (mul_assoc _ _ _).symm
+      _ = 1 * w := by rw [this]
+      _ = w := one_mul _
+
+/-- DISJOINTNESS: (starts with a) and a·(starts with a⁻¹) are disjoint.
+    Proof: if w starts with a AND w = a·v with v starting with a⁻¹, then
+    v.toWord = (0,false)::rest and w.toWord = rest (after cancellation of a·a⁻¹).
+    But w.toWord.head = (0,true) = rest.head forces (0,false)::(0,true) in v.toWord,
+    contradicting IsReduced. -/
+private lemma free_group_cover_a_disj :
+    let a := FreeGroup.of (0 : Fin 2)
+    Disjoint (WordStart 0 true) (a • WordStart 0 false) := by
+  intro a
+  rw [Set.disjoint_left]
+  intro w hw1 ⟨v, hv, hvw⟩
+  simp only [WordStart, Set.mem_setOf_eq] at hw1 hv
+  -- Extract: v.toWord = (0,false) :: rest
+  obtain ⟨rest, hv_eq⟩ : ∃ rest, v.toWord = (0, false) :: rest := by
+    rcases hv_nil : v.toWord with _ | ⟨hd, tl⟩
+    · simp [hv_nil, List.head?] at hv
+    · have hhd : hd = (0, false) := by simpa [hv_nil, List.head?] using hv
+      subst hhd
+      exact ⟨tl, rfl⟩
+  -- Compute: (a·v).toWord = rest  (a·a⁻¹ cancels at the front)
+  have hw_eq : w.toWord = rest := by
+    simp only [smul_eq_mul] at hvw
+    rw [← hvw, FreeGroup.toWord_mul, FreeGroup.toWord_of]
+    rw [List.singleton_append, FreeGroup.reduce.cons]
+    -- reduce v.toWord = v.toWord (already reduced)
+    rw [FreeGroup.isReduced_iff_reduce_eq.mp FreeGroup.isReduced_toWord, hv_eq]
+    -- casesOn ((0,false)::rest): condition 0=0 ∧ true=!false → cancel → result = rest
+    -- All decidable computations on Fin 2 × Bool; rfl closes by kernel reduction
+    rfl
+  -- Now rest.head? = some (0,true) (from hw1 and hw_eq)
+  -- So v.toWord = (0,false)::(0,true)::rest', which is unreduced — contradiction.
+  rcases hrest : rest with _ | ⟨hd', rest'⟩
+  · simp [hrest] at hw_eq; rw [hw_eq] at hw1; simp [List.head?] at hw1
+  · have hhd' : hd' = (0, true) := by
+      have := hw1; rw [hw_eq, hrest] at this; simpa [List.head?] using this
+    subst hhd'
+    -- v.toWord = (0,false)::(0,true)::rest' is not reduced
+    have hred : FreeGroup.IsReduced v.toWord := FreeGroup.isReduced_toWord
+    rw [hv_eq, hrest, FreeGroup.isReduced_cons_cons] at hred
+    exact absurd (hred.1 rfl) (by decide)
+
+/-- Same cover for generator b = FreeGroup.of 1. -/
+private lemma free_group_cover_b :
+    let b := FreeGroup.of (1 : Fin 2)
+    Set.univ = WordStart 1 true ∪ b • WordStart 1 false := by
+  intro b
+  simp_rw [wordStart_eq_startsWith]
+  ext w
+  simp only [Set.mem_univ, true_iff, Set.mem_union, Set.mem_smul_set]
+  by_cases h : w ∈ FreeGroup.startsWith (1, true)
+  · exact Or.inl h
+  · refine Or.inr ⟨FreeGroup.mk [(1, false)] * w, FreeGroup.startsWith_mk_mul w h, ?_⟩
+    have : FreeGroup.of (1 : Fin 2) * FreeGroup.mk [(1, false)] = 1 := by
+      rw [← freeGroup_inv_eq_mk_false]; exact mul_inv_cancel _
+    calc b * (FreeGroup.mk [(1, false)] * w)
+        = (b * FreeGroup.mk [(1, false)]) * w := (mul_assoc _ _ _).symm
+      _ = 1 * w := by rw [this]
+      _ = w := one_mul _
+
+private lemma free_group_cover_b_disj :
+    let b := FreeGroup.of (1 : Fin 2)
+    Disjoint (WordStart 1 true) (b • WordStart 1 false) := by
+  intro b
+  rw [Set.disjoint_left]
+  intro w hw1 ⟨v, hv, hvw⟩
+  simp only [WordStart, Set.mem_setOf_eq] at hw1 hv
+  obtain ⟨rest, hv_eq⟩ : ∃ rest, v.toWord = (1, false) :: rest := by
+    rcases hv_nil : v.toWord with _ | ⟨hd, tl⟩
+    · simp [hv_nil, List.head?] at hv
+    · have hhd : hd = (1, false) := by simpa [hv_nil, List.head?] using hv
+      subst hhd
+      exact ⟨tl, rfl⟩
+  have hw_eq : w.toWord = rest := by
+    simp only [smul_eq_mul] at hvw
+    rw [← hvw, FreeGroup.toWord_mul, FreeGroup.toWord_of]
+    rw [List.singleton_append, FreeGroup.reduce.cons]
+    rw [FreeGroup.isReduced_iff_reduce_eq.mp FreeGroup.isReduced_toWord, hv_eq]
+    rfl
+  rcases hrest : rest with _ | ⟨hd', rest'⟩
+  · simp [hrest] at hw_eq; rw [hw_eq] at hw1; simp [List.head?] at hw1
+  · have hhd' : hd' = (1, true) := by
+      have := hw1; rw [hw_eq, hrest] at this; simpa [List.head?] using this
+    subst hhd'
+    have hred : FreeGroup.IsReduced v.toWord := FreeGroup.isReduced_toWord
+    rw [hv_eq, hrest, FreeGroup.isReduced_cons_cons] at hred
+    exact absurd (hred.1 rfl) (by decide)
+
+/-- The four word-start sets are pairwise disjoint (they check distinct head? values). -/
+private lemma wordStart_disjoint {g₁ g₂ : Fin 2} {b₁ b₂ : Bool}
+    (h : (g₁, b₁) ≠ (g₂, b₂)) : Disjoint (WordStart g₁ b₁) (WordStart g₂ b₂) := by
+  apply Set.disjoint_left.mpr
+  intro w h₁ h₂
+  simp [WordStart] at h₁ h₂
+  exact h (Option.some.inj (h₁.symm.trans h₂))
+
 /-- The free group of rank 2 is NOT amenable.
-    (Equivalent to the paradoxical decomposition of F₂.) -/
+    Proof: F₂ = W_a ∪ a·W_ainv (disjoint) gives μ(W_a) + μ(W_ainv) = 1.
+    Similarly μ(W_b) + μ(W_binv) = 1. But all four sets are pairwise disjoint
+    subsets of F₂, so their measures sum ≤ 1. This gives 2 ≤ 1. -/
 theorem free_group_not_amenable : ¬IsAmenable (FreeGroup (Fin 2)) := by
-  sorry
-  -- Proof via paradoxical decomposition:
-  -- Let a = FreeGroup.of 0, b = FreeGroup.of 1 (generators)
-  -- Define: W(a) = {words starting with a}, W(a⁻¹), W(b), W(b⁻¹), {e}
-  -- F₂ = W(a) ∪ aW(a⁻¹) [partition into 2 parts equidecomposable to F₂]
-  -- F₂ = W(b) ∪ bW(b⁻¹) [another such partition]
-  -- If μ is an invariant measure: μ(F₂) = μ(W(a)) + μ(aW(a⁻¹))
-  --   = μ(W(a)) + μ(W(a⁻¹)) (by invariance)
-  --   But also F₂ = W(a) ∪ W(a⁻¹) ∪ ... contradiction.
+  intro ⟨μ, hμ1, hμ_add, hμ_inv⟩
+  set a := FreeGroup.of (0 : Fin 2)
+  set b := FreeGroup.of (1 : Fin 2)
+  -- W_a = starts with a (positive), W_ainv = starts with a⁻¹ (inverse)
+  -- Mathlib convention: (g, true) = positive, (g, false) = inverse
+  set W_a    := WordStart 0 true
+  set W_ainv := WordStart 0 false
+  set W_b    := WordStart 1 true
+  set W_binv := WordStart 1 false
+  -- From the a-cover: F₂ = W_a ∪ a·W_ainv → 1 = μ(W_a) + μ(W_ainv)
+  have hsum_a : μ W_a + μ W_ainv = 1 := by
+    have heq : μ Set.univ = μ W_a + μ (a • W_ainv) := by
+      conv_lhs => rw [free_group_cover_a]
+      exact hμ_add W_a (a • W_ainv) free_group_cover_a_disj
+    rw [hμ1, hμ_inv a W_ainv] at heq
+    exact heq.symm
+  -- From the b-cover: μ(W_b) + μ(W_binv) = 1
+  have hsum_b : μ W_b + μ W_binv = 1 := by
+    have heq : μ Set.univ = μ W_b + μ (b • W_binv) := by
+      conv_lhs => rw [free_group_cover_b]
+      exact hμ_add W_b (b • W_binv) free_group_cover_b_disj
+    rw [hμ1, hμ_inv b W_binv] at heq
+    exact heq.symm
+  -- The four sets are pairwise disjoint
+  have hd_a_ainv : Disjoint W_a W_ainv   := wordStart_disjoint (by decide)
+  have hd_b_binv : Disjoint W_b W_binv   := wordStart_disjoint (by decide)
+  have hd_ab     : Disjoint W_a W_b      := wordStart_disjoint (by decide)
+  have hd_abv    : Disjoint W_a W_binv   := wordStart_disjoint (by decide)
+  have hd_aib    : Disjoint W_ainv W_b   := wordStart_disjoint (by decide)
+  have hd_aibv   : Disjoint W_ainv W_binv := wordStart_disjoint (by decide)
+  -- μ((W_a ∪ W_ainv) ∪ (W_b ∪ W_binv)) ≤ 1
+  have hd_pair : Disjoint (W_a ∪ W_ainv) (W_b ∪ W_binv) :=
+    Set.disjoint_union_right.mpr
+      ⟨Set.disjoint_union_left.mpr ⟨hd_ab, hd_aib⟩,
+       Set.disjoint_union_left.mpr ⟨hd_abv, hd_aibv⟩⟩
+  have hsub : (W_a ∪ W_ainv) ∪ (W_b ∪ W_binv) ⊆ Set.univ := Set.subset_univ _
+  have hμ_union_le : μ ((W_a ∪ W_ainv) ∪ (W_b ∪ W_binv)) ≤ 1 := by
+    have hcompl := hμ_add ((W_a ∪ W_ainv) ∪ (W_b ∪ W_binv))
+                   (Set.univ \ ((W_a ∪ W_ainv) ∪ (W_b ∪ W_binv)))
+                   disjoint_sdiff_right
+    rw [Set.union_diff_cancel hsub, hμ1] at hcompl
+    exact (le_add_right le_rfl).trans hcompl.symm.le
+  -- Expand μ to sum = 2, derive 2 ≤ 1: contradiction
+  have hexpand : μ ((W_a ∪ W_ainv) ∪ (W_b ∪ W_binv)) =
+                 μ W_a + μ W_ainv + (μ W_b + μ W_binv) := by
+    rw [hμ_add _ _ hd_pair, hμ_add W_a W_ainv hd_a_ainv, hμ_add W_b W_binv hd_b_binv]
+  have h2 : μ W_a + μ W_ainv + (μ W_b + μ W_binv) = 2 := by
+    rw [hsum_a, hsum_b]; norm_num
+  rw [hexpand, h2] at hμ_union_le
+  exact absurd hμ_union_le (by norm_num)
 
 end BanachTarski
