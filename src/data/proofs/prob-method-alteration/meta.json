@@ -62,7 +62,9 @@
       "Deleting defects is often cheaper than avoiding them: if expected defects are few, the altered structure retains most of the random construction's value",
       "The independent set bound n^2/(2m+n) is tight for regular graphs and was the best known for general sparse graphs for decades",
       "Property B results demonstrate that the alteration method applies beyond graph theory to hypergraph coloring",
-      "The alteration method can be derandomized via the method of conditional expectations, converting the existence proof into an efficient deterministic algorithm — this is the algorithmic significance of keeping the alteration step simple"
+      "The alteration method can be derandomized via the method of conditional expectations, converting the existence proof into an efficient deterministic algorithm — this is the algorithmic significance of keeping the alteration step simple",
+      "**Erdős-Selfridge pessimistic estimator**: The most elegant derandomization of the alteration method uses the Erdős-Selfridge potential function $\\Phi = \\sum_{e \\in \\mathcal{E}} 2^{-|e \\cap S|}$ where $S$ is the chosen set. If $\\Phi < 1$, no edge is monochromatic. At each step, choose the variable (color the next vertex) that does not increase $\\Phi$ — this greedy rule is deterministic and guaranteed to succeed by the same calculation showing the random argument works. The pessimistic estimator unifies the probabilistic and derandomization arguments: $\\mathbb{E}[\\Phi]$ is the condition making the original random argument work, and the sequential greedy rule maintains this condition deterministically.",
+      "**From existence to construction — the alteration paradigm**: The alteration method converts a non-constructive probabilistic argument ('there exists a good object') into a two-step construction: (1) random phase: pick a random object $X$; (2) fix-up phase: deterministically repair the $d(X)$ defects. The key quantitative condition is $\\mathbb{E}[v(X)] > \\mathbb{E}[d(X)]$ — the expected value exceeds the expected repair cost. This paradigm appears across computer science: Shannon's channel coding theorem uses it (random codebook + expurgation of bad codewords), network design uses it (random graph + augmentation), and compressed sensing uses it (random measurement matrix + sparse recovery). The `alteration_principle` theorem here is the abstract algebraic core of all these arguments."
     ],
     "prerequisites": [
       "Probabilistic method and first moment principle",
@@ -149,6 +151,16 @@
       "targetId": "binomial-theorem",
       "relationship": "foundational",
       "description": "Binomial coefficients underpin the probability calculations in the alteration method: random subset selection with probability $p$ creates a binomially distributed vertex count, and the expected edge count within the subset uses $\\binom{d}{2} p^2$ style calculations"
+    },
+    {
+      "targetId": "randomized-maxcut-oq-04",
+      "relationship": "related",
+      "description": "Formalizes the method of conditional expectations — the canonical derandomization of probabilistic existence proofs like the alteration method. The MaxCut derandomization processes vertices greedily, always choosing the side that doesn't increase a pessimistic estimator; this is precisely the Erdős-Selfridge technique that derandomizes the alteration argument for Property B. Both proofs have the same algebraic structure: the alteration_principle theorem (sum of net values positive → some element has positive net value) is the deterministic core of both arguments"
+    },
+    {
+      "targetId": "shannon-channel-coding",
+      "relationship": "related",
+      "description": "Shannon's proof of the channel coding theorem uses the same random-construction-then-alter paradigm as the alteration method: (1) random phase: pick a random codebook; (2) expurgation: delete the worst half of codewords (fixing decoding errors). The mathematical structure is identical to `alteration_principle`: $\\mathbb{E}[\\text{good}] > \\mathbb{E}[\\text{bad}]$ implies some codebook survives expurgation with positive rate. Both are instances of the alteration method applied in information theory vs. combinatorics"
     }
   ],
   "conclusion": {

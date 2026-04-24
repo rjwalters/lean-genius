@@ -31,15 +31,17 @@
       "endLine": 38
     },
     "type": "insight",
-    "title": "Alteration Principle (Deterministic Core)",
-    "content": "This theorem captures the deterministic essence of the alteration method. Given a nonempty finite set $S$ and integer-valued functions `good` and `bad`, if the net good value summed over $S$ is positive, then some element achieves positive net good value. This is essentially a pigeonhole argument: if every element had non-positive net value, the sum could not be positive.\n\nThe formalization uses integer coercions ($\\mathbb{Z}$) to handle the subtraction cleanly, since natural number subtraction in Lean truncates at zero.",
-    "mathContext": "If $\\sum_{a \\in S} \\text{good}(a) - \\sum_{a \\in S} \\text{bad}(a) > 0$ over a nonempty finite set $S$, then $\\exists a \\in S$ such that $\\text{good}(a) - \\text{bad}(a) > 0$. This is the first moment method in disguise: if the average of $\\text{good} - \\text{bad}$ is positive, some element exceeds the average.",
+    "title": "Alteration Principle (Deterministic Core and Derandomization Bridge)",
+    "content": "This theorem captures the deterministic essence of the alteration method. Given a nonempty finite set $S$ and integer-valued functions `good` and `bad`, if the net good value summed over $S$ is positive, then some element achieves positive net good value. This is essentially a pigeonhole argument: if every element had non-positive net value, the sum could not be positive.\n\nThe formalization uses integer coercions ($\\mathbb{Z}$) to handle the subtraction cleanly, since natural number subtraction in Lean truncates at zero.\n\n**Derandomization bridge**: The same algebraic structure (`sum positive → some element positive`) is the core of the **method of conditional expectations** — the canonical technique for converting probabilistic existence proofs into efficient deterministic algorithms. In the Erdős-Selfridge pessimistic estimator for Property B, one processes variables (vertex colorings) sequentially, always choosing the value that does not increase the potential $\\Phi = \\sum_{e} 2^{-|e \\cap S|}$. The condition $\\mathbb{E}[\\Phi] < 1$ ensures the greedy rule always has a valid choice — the same inequality this theorem proves. The gallery entry `randomized-maxcut-oq-04` formalizes this derandomization for MaxCut, showing the exact same Lean proof structure.",
+    "mathContext": "If $\\sum_{a \\in S} \\text{good}(a) - \\sum_{a \\in S} \\text{bad}(a) > 0$ over a nonempty finite set $S$, then $\\exists a \\in S$ such that $\\text{good}(a) - \\text{bad}(a) > 0$. Probabilistic version: if $\\mathbb{E}[v(X) - d(X)] > 0$, some outcome $X$ has $v(X) > d(X)$ — the first moment principle applied to $f = v - d$.",
     "significance": "key",
     "relatedConcepts": [
       "first moment method",
       "pigeonhole principle",
       "expected value linearity",
-      "integer coercion in Lean"
+      "method of conditional expectations",
+      "Erdős-Selfridge pessimistic estimator",
+      "randomized-maxcut-oq-04"
     ],
     "prerequisites": [
       "Finset.sum",
