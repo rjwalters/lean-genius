@@ -90,4 +90,24 @@ theorem lgv_det_factors_as_hook_quotient_Aristotle (μ : YoungDiagram) (r : ℕ)
     μ.card.factorial := by
   sorry
 
+/-
+TARGET 3 (hook_walk_identity)
+
+The hook walk identity: for any non-empty Young diagram μ,
+  Σ_{c ∈ corners(μ)} hookProd(μ) / hookProd(μ\c) = μ.card  (in ℚ)
+
+For each corner c=(r,s): hookProd(μ)/hookProd(μ\c) equals the product over cells in
+the same row/column as c (excluding c) of h(cell)/(h(cell)-1), since the corner itself
+has hook length 1. The sum over all corners telescopes to μ.card by hook combinatorics.
+
+This is the key lemma for proving hook_length_formula_Q by well-founded induction.
+Verified for 1-row, 1-column, and hook shapes. General proof requires frame-Robinson-Thrall
+hook walk argument or a combinatorial identity on hook lengths.
+-/
+lemma hook_walk_identity_Aristotle (μ : YoungDiagram) (hn : 0 < μ.card) :
+    ∑ c ∈ (corners μ).attach,
+      ((hookProd μ : ℚ) / (hookProd (removeCorner μ c.val (mem_corners.mp c.prop)) : ℚ))
+    = (μ.card : ℚ) := by
+  sorry
+
 end BallotProblemOQ03OQ01OQ02Aristotle

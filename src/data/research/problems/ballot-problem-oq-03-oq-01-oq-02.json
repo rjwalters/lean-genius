@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: HLF proved for all \u22642-row shapes AND all generalized hook shapes [a, 1^b]. 3 sorries remain (main HLF + 2 LGV helpers). Inline bijection technique proven for corner recursion.",
+    "progressSummary": "IN-PROGRESS: hook_walk_identity (line 4638) is sole remaining sorry for general HLF. Submitted to Aristotle (project 8a9026a1). All other infrastructure complete.",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -81,11 +81,7 @@
       "hook_length_formula_two_row_gen in BallotProblemOQ03OQ01OQ02.lean:3527 (proved): HLF for general 2-row [a,b]",
       "card_SYT_corner_step in BallotProblemOQ03OQ01OQ02.lean:3802 (proved, 0 sorries): SYT corner recursion",
       "BallotProblemOQ03OQ01OQ02Aristotle.lean created with ni_count_eq_syt_count_Aristotle + lgv_det_factors_as_hook_quotient_Aristotle",
-      "gHookYD a b ha: Young diagram with top row length a and b single-cell rows (PART VIc, line 694)",
-      "hookProd_gHookYD: hookProd(gHookYD a b ha) = (a+b) * (a-1)! * b! (line 811, 0 sorries)",
-      "card_SYT_gHookYD_step: corner recursion for gHookYD via inline bijection (line 997, 0 sorries)",
-      "card_SYT_gHookYD: |SYT(gHookYD a b ha)| = C(a+b-1, b) by double induction (line 1330, 0 sorries)",
-      "hook_length_formula_gHookYD: HLF for all generalized hook shapes [a, 1^b] (line 1377, 0 sorries)"
+      "hook_walk_identity_Aristotle in BallotProblemOQ03OQ01OQ02Aristotle.lean (submitted to Aristotle project 8a9026a1)"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -118,9 +114,9 @@
       "hook_length_formula_atMostTwoRows: any mu with rowLen(2)=0 is twoRowYD (rowLen 0) (rowLen 1); hook formula applies directly",
       "card_SYT_corner_step proved: card(SYT(mu)) = sum_c card(SYT(mu\\c)) for non-empty mu (via extendSYT/restrictSYT bijection)",
       "General hook_length_formula via corner induction requires hook walk identity: sum_c hookProd(mu)/hookProd(mu\\c) = n \u2014 lives in Q not N",
-      "Inline bijection pattern (anonymous Equiv) avoids cast issues in corner-recursion proofs for gHookYD",
-      "Double induction on (b, a) with Pascal's rule proves card_SYT_gHookYD = C(a+b-1, b) cleanly",
-      "HLF for gHookYD: C(a+b-1,b) * (a+b) * (a-1)! * b! = (a+b)! via Nat.choose_mul_factorial_mul_factorial"
+      "hook_walk_identity (line 4638) is the sole remaining sorry for general HLF via well-founded induction",
+      "For each corner c=(r,s): hookProd(mu)/hookProd(mu\\c) = prod over same-row/col cells of h/(h-1), since corner has h=1",
+      "Identity is NOT provable by reducing to HLF (circular) \u2014 needs independent hook-walk/RSK argument"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram \u2014 check arm/leg availability",
@@ -129,7 +125,9 @@
     "nextSteps": [
       "Prove ni_count_eq_syt_count: Fomin growth diagram bijection SYT(mu) <-> NI-paths in youngLGVConfig (~200 lines)",
       "Prove lgv_det_factors_as_hook_quotient: det(pathMatrix) * hookProd = n! via Vandermonde-type identity (~200 lines)",
-      "Alternative: prove hook walk identity sum_c hookProd(mu)/hookProd(mu\\c) = n in Q, then derive HLF by induction"
+      "Alternative: prove hook walk identity sum_c hookProd(mu)/hookProd(mu\\c) = n in Q, then derive HLF by induction",
+      "Retrieve Aristotle result for hook_walk_identity (project 8a9026a1-e4ec-40d3-81d4-bee5bec6e4b3)",
+      "If Aristotle proves hook_walk_identity, integrate into BallotProblemOQ03OQ01OQ02.lean:4638 and close hook_length_formula_Q"
     ]
   },
   "tags": [
