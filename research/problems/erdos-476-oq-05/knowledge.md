@@ -133,3 +133,35 @@ Key Mathlib lemma available: `Finset.card_eq_sum_card_fiberwise` (BigOperators/G
 1. Check Aristotle results for project a5594e66 in next session
 2. If Aristotle succeeds: integrate solution into main file
 3. If Aristotle fails: implement the |A|=|B|=3 counting argument (provable via card_eq_sum_card_fiberwise) and leave |A|≥3,|B|≥4 and |A|≥4,|B|≥3 for future sessions
+
+## Session 2026-04-24 (Session 20) — Prove hpos in vosper_ap_sdiff_card
+
+**Mode**: REVISIT (continuing from Session 4)
+**Outcome**: Progress — hpos proved, 1→1 sorry (only case1_exists remains)
+
+### What I Did
+- Proved `hpos` sorry inside `vosper_ap_sdiff_card` (line 248 → replaced with ~170 lines of proof)
+- hpos states: `a₀ = a₁ - d ∨ a₀ = a₁ + |A'| * d` — the unique missing element is at an endpoint
+- Committed as Session 20 to feature/researcher-6, PR #12392
+
+### Key Mathematical Argument
+
+**Three-way case split on missing index m ∈ {0,...,|B|-1}:**
+
+1. **Interior (0 < m < |B|-1):** Get AP₂ indices from (m-1) and (m+1) not missing; `linear_combination` gives `(|A'|+|B|)·d = 0` in ZMod p. But `|A'|+|B| = A.card+B.card-1 < p` via `hlt`, so `ZMod.natCast_zmod_eq_zero_iff_dvd` + `Nat.le_of_dvd` gives contradiction.
+2. **First (m=0):** Index 0 in AP₂ gives j=0 not missing, `linear_combination -hj_eq` shows `a₀ = a₁ - d`.
+3. **Last (m=|B|-1):** Index n₂-1 in AP₂ gives j=n₂-1 not missing, `linear_combination hj_eq` shows `a₀ = a₁ + |A'|·d`.
+
+**Key tools:** `ZMod.val_natCast`, `Nat.mod_eq_of_lt` (for injectivity), `ZMod.natCast_zmod_eq_zero_iff_dvd`, `Nat.le_of_dvd`, `linear_combination`.
+
+### Files Modified
+- `proofs/Proofs/Erdos476OQ05Problem.lean`: hpos proved (583→750 lines, 2→1 sorry)
+
+### Current State
+- Main file: 1 sorry remaining (Case 1 existence, `vosper_case1_exists`, line 720)
+- Aristotle job still running: a5594e66-6409-47ed-89d8-eea7d709f12a
+
+### Next Steps
+1. Check Aristotle results for project a5594e66
+2. If Aristotle succeeds on case1_exists: integrate, then 0 sorries
+3. If Aristotle fails: attempt double-counting argument (|A|=|B|=3 case is provable)
