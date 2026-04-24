@@ -4711,6 +4711,261 @@ private lemma hook_walk_identity_atMostTwoRows (μ : YoungDiagram) (h2 : μ.rowL
 /-- The hook walk identity: sum over corners c of hookProd(μ)/hookProd(μ\c) equals μ.card.
     Proved for at-most-2-row shapes via hook_walk_identity_atMostTwoRows (non-circular).
     General (≥3-row) case: requires GNW probabilistic proof (~300 lines) or RSK (~500 lines). -/
+
+-- ============================================================
+-- Infrastructure: rowLen/colLen/hookLength changes for removeCorner
+-- ============================================================
+
+/-- For a corner c of μ, the row at row c.1 ends exactly at c.2: rowLen = c.2 + 1. -/
+private lemma rowLen_of_isCorner {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c) :
+    μ.rowLen c.1 = c.2 + 1 := by
+  have h1 : c.2 < μ.rowLen c.1 := YoungDiagram.mem_iff_lt_rowLen.mp hc.1
+  have h2 : ¬(c.2 + 1 < μ.rowLen c.1) := by
+    rw [← YoungDiagram.mem_iff_lt_rowLen]; exact hc.2.1
+  omega
+
+/-- For a corner c of μ, the column at col c.2 ends exactly at c.1: colLen = c.1 + 1. -/
+private lemma colLen_of_isCorner {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c) :
+    μ.colLen c.2 = c.1 + 1 := by
+  have h1 : c.1 < μ.colLen c.2 := YoungDiagram.mem_iff_lt_colLen.mp hc.1
+  have h2 : ¬(c.1 + 1 < μ.colLen c.2) := by
+    rw [← YoungDiagram.mem_iff_lt_colLen]; exact hc.2.2
+  omega
+
+/-- Removing corner c decreases rowLen at row c.1 by 1: from c.2+1 to c.2. -/
+private lemma rowLen_removeCorner_self {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c) :
+    (removeCorner μ c hc).rowLen c.1 = c.2 := by
+  obtain ⟨i, j⟩ := c
+  apply Nat.le_antisymm
+  · -- rowLen ≤ j: (i, j) ∉ removeCorner (it was erased)
+    have h1 : (i, j) ∉ removeCorner μ (i, j) hc := by
+      rw [mem_removeCorner hc]; rintro ⟨-, hne⟩; exact hne rfl
+    have h2 := YoungDiagram.mem_iff_lt_rowLen.not.mp h1
+    -- h2 : ¬(j < rowLen ν i), i.e., rowLen ν i ≤ j
+    omega
+  · -- j ≤ rowLen: if j > 0, show (i, j-1) ∈ removeCorner
+    rcases Nat.eq_zero_or_pos j with rfl | hpos
+    · exact Nat.zero_le _
+    · have hmem : (i, j - 1) ∈ removeCorner μ (i, j) hc := by
+        rw [mem_removeCorner hc]
+        refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by rw [rowLen_of_isCorner hc]; omega), ?_⟩
+        rintro h; exact absurd (congr_arg Prod.snd h) (by omega)
+      have := YoungDiagram.mem_iff_lt_rowLen.mp hmem
+      omega
+
+/-- Removing corner c leaves rowLen unchanged at rows r ≠ c.1. -/
+private lemma rowLen_removeCorner_other {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
+    {r : ℕ} (hr : r ≠ c.1) :
+    (removeCorner μ c hc).rowLen r = μ.rowLen r := by
+  obtain ⟨i, j⟩ := c
+  -- hr : r ≠ i
+  have mem_iff : ∀ k, (r, k) ∈ removeCorner μ (i, j) hc ↔ (r, k) ∈ μ := fun k => by
+    rw [mem_removeCorner hc]
+    exact ⟨And.left, fun h => ⟨h, fun heq => hr (congr_arg Prod.fst heq)⟩⟩
+  apply Nat.le_antisymm
+  · -- rowLen ν r ≤ rowLen μ r: boundary of μ is also not in ν
+    have h1 : (r, μ.rowLen r) ∉ μ := by
+      rw [YoungDiagram.mem_iff_lt_rowLen]; exact lt_irrefl _
+    have h2 : (r, μ.rowLen r) ∉ removeCorner μ (i, j) hc := (mem_iff _).not.mpr h1
+    have h3 := YoungDiagram.mem_iff_lt_rowLen.not.mp h2
+    omega
+  · -- rowLen μ r ≤ rowLen ν r: boundary of ν is also not in μ
+    have h1 : (r, (removeCorner μ (i, j) hc).rowLen r) ∉ removeCorner μ (i, j) hc := by
+      rw [YoungDiagram.mem_iff_lt_rowLen]; exact lt_irrefl _
+    have h2 : (r, (removeCorner μ (i, j) hc).rowLen r) ∉ μ := (mem_iff _).not.mp h1
+    have h3 := YoungDiagram.mem_iff_lt_rowLen.not.mp h2
+    omega
+
+/-- Removing corner c decreases colLen at col c.2 by 1: from c.1+1 to c.1. -/
+private lemma colLen_removeCorner_self {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c) :
+    (removeCorner μ c hc).colLen c.2 = c.1 := by
+  obtain ⟨i, j⟩ := c
+  apply Nat.le_antisymm
+  · -- colLen ≤ i: (i, j) ∉ removeCorner
+    have h1 : (i, j) ∉ removeCorner μ (i, j) hc := by
+      rw [mem_removeCorner hc]; rintro ⟨-, hne⟩; exact hne rfl
+    have h2 := YoungDiagram.mem_iff_lt_colLen.not.mp h1
+    omega
+  · -- i ≤ colLen: if i > 0, show (i-1, j) ∈ removeCorner
+    rcases Nat.eq_zero_or_pos i with rfl | hpos
+    · exact Nat.zero_le _
+    · have hmem : (i - 1, j) ∈ removeCorner μ (i, j) hc := by
+        rw [mem_removeCorner hc]
+        refine ⟨YoungDiagram.mem_iff_lt_colLen.mpr (by rw [colLen_of_isCorner hc]; omega), ?_⟩
+        rintro h; exact absurd (congr_arg Prod.fst h) (by omega)
+      have := YoungDiagram.mem_iff_lt_colLen.mp hmem
+      omega
+
+/-- Removing corner c leaves colLen unchanged at columns s ≠ c.2. -/
+private lemma colLen_removeCorner_other {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
+    {s : ℕ} (hs : s ≠ c.2) :
+    (removeCorner μ c hc).colLen s = μ.colLen s := by
+  obtain ⟨i, j⟩ := c
+  -- hs : s ≠ j
+  have mem_iff : ∀ k, (k, s) ∈ removeCorner μ (i, j) hc ↔ (k, s) ∈ μ := fun k => by
+    rw [mem_removeCorner hc]
+    exact ⟨And.left, fun h => ⟨h, fun heq => hs (congr_arg Prod.snd heq)⟩⟩
+  apply Nat.le_antisymm
+  · -- colLen ν s ≤ colLen μ s
+    have h1 : (μ.colLen s, s) ∉ μ := by
+      rw [YoungDiagram.mem_iff_lt_colLen]; exact lt_irrefl _
+    have h2 : (μ.colLen s, s) ∉ removeCorner μ (i, j) hc := (mem_iff _).not.mpr h1
+    have h3 := YoungDiagram.mem_iff_lt_colLen.not.mp h2
+    omega
+  · -- colLen μ s ≤ colLen ν s
+    have h1 : ((removeCorner μ (i, j) hc).colLen s, s) ∉ removeCorner μ (i, j) hc := by
+      rw [YoungDiagram.mem_iff_lt_colLen]; exact lt_irrefl _
+    have h2 : ((removeCorner μ (i, j) hc).colLen s, s) ∉ μ := (mem_iff _).not.mp h1
+    have h3 := YoungDiagram.mem_iff_lt_colLen.not.mp h2
+    omega
+
+/-- For arm cells (c.1, s) with s < c.2: removing corner c decreases hookLength by 1. -/
+private lemma hookLength_removeCorner_arm {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
+    {s : ℕ} (hs : s < c.2) :
+    hookLength (removeCorner μ c hc) c.1 s + 1 = hookLength μ c.1 s := by
+  obtain ⟨i, j⟩ := c
+  -- hs : s < j
+  have hmem : (i, s) ∈ μ :=
+    YoungDiagram.mem_iff_lt_rowLen.mpr (by rw [rowLen_of_isCorner hc]; omega)
+  have hcol : i < μ.colLen s := YoungDiagram.mem_iff_lt_colLen.mp hmem
+  unfold hookLength armLen legLen
+  rw [rowLen_removeCorner_self hc, colLen_removeCorner_other hc (ne_of_lt hs),
+      rowLen_of_isCorner hc]
+  omega
+
+/-- For leg cells (r, c.2) with r < c.1: removing corner c decreases hookLength by 1. -/
+private lemma hookLength_removeCorner_leg {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
+    {r : ℕ} (hr : r < c.1) :
+    hookLength (removeCorner μ c hc) r c.2 + 1 = hookLength μ r c.2 := by
+  obtain ⟨i, j⟩ := c
+  -- hr : r < i
+  have hmem : (r, j) ∈ μ :=
+    YoungDiagram.mem_iff_lt_colLen.mpr (by rw [colLen_of_isCorner hc]; omega)
+  have hrowlen : j < μ.rowLen r := YoungDiagram.mem_iff_lt_rowLen.mp hmem
+  unfold hookLength armLen legLen
+  rw [colLen_removeCorner_self hc, rowLen_removeCorner_other hc (ne_of_lt hr),
+      colLen_of_isCorner hc]
+  omega
+
+/-- For a corner c, hookLength μ c.1 c.2 = 1 (armLen = 0, legLen = 0). -/
+private lemma hookLength_corner_eq_one {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c) :
+    hookLength μ c.1 c.2 = 1 := by
+  obtain ⟨i, j⟩ := c
+  unfold hookLength armLen legLen
+  rw [rowLen_of_isCorner hc, colLen_of_isCorner hc]
+  omega
+
+/-- For cells that are neither arm nor leg of corner c, hookLength is unchanged by removeCorner. -/
+private lemma hookLength_eq_of_not_arm_leg {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
+    {x : ℕ × ℕ} (hxμ : x ∈ μ) (hxc : x ≠ c)
+    (hxarm : ¬(x.1 = c.1 ∧ x.2 < c.2))
+    (hxleg : ¬(x.1 < c.1 ∧ x.2 = c.2)) :
+    hookLength (removeCorner μ c hc) x.1 x.2 = hookLength μ x.1 x.2 := by
+  obtain ⟨i, j⟩ := c
+  obtain ⟨a, b⟩ := x
+  simp only [Prod.fst, Prod.snd] at hxarm hxleg hxc ⊢
+  -- Derive: a ≠ i
+  have ha : a ≠ i := by
+    intro heq; subst heq
+    push_neg at hxarm
+    have hb_lt : b < μ.rowLen a := YoungDiagram.mem_iff_lt_rowLen.mp hxμ
+    rw [rowLen_of_isCorner hc] at hb_lt
+    -- b < j+1, hxarm says b ≥ j (since it's not true b < j), so b = j, contradicting hxc
+    exact hxc (Prod.ext rfl (by omega))
+  -- Derive: b ≠ j
+  have hb : b ≠ j := by
+    intro heq; subst heq
+    push_neg at hxleg
+    have ha_lt : a < μ.colLen b := YoungDiagram.mem_iff_lt_colLen.mp hxμ
+    rw [colLen_of_isCorner hc] at ha_lt
+    -- a < i+1, hxleg says a ≥ i, so a = i, contradicting hxc
+    exact hxc (Prod.ext (by omega) rfl)
+  -- Now apply removeCorner invariance
+  unfold hookLength armLen legLen
+  rw [rowLen_removeCorner_other hc ha, colLen_removeCorner_other hc hb]
+
+/-- Arm cells (c.1, s) with s < c.2 belong to ν = removeCorner μ c hc. -/
+private lemma arm_mem_nu {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
+    {s : ℕ} (hs : s < c.2) : (c.1, s) ∈ removeCorner μ c hc := by
+  rw [mem_removeCorner]
+  constructor
+  · -- (c.1, s) ∈ μ: rowLen μ c.1 = c.2 + 1 > s
+    exact YoungDiagram.mem_iff_lt_rowLen.mpr (by rw [rowLen_of_isCorner hc]; omega)
+  · -- (c.1, s) ≠ c: their second components differ
+    intro h
+    have : s = c.2 := congr_arg Prod.snd h
+    omega
+
+/-- Leg cells (r, c.2) with r < c.1 belong to ν = removeCorner μ c hc. -/
+private lemma leg_mem_nu {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
+    {r : ℕ} (hr : r < c.1) : (r, c.2) ∈ removeCorner μ c hc := by
+  rw [mem_removeCorner]
+  constructor
+  · -- (r, c.2) ∈ μ: colLen μ c.2 = c.1 + 1 > r
+    exact YoungDiagram.mem_iff_lt_colLen.mpr (by rw [colLen_of_isCorner hc]; omega)
+  · -- (r, c.2) ≠ c: their first components differ
+    intro h
+    have : r = c.1 := congr_arg Prod.fst h
+    omega
+
+/-- The hookProd ratio for a corner c equals the product of h/(h-1) over arm and leg cells.
+    Proof outline:
+    1. hookProd(μ) = 1 × ∏_{x∈ν.cells} hookLength(μ,x)  [mul_prod_erase + corner = 1]
+    2. ratio = ∏_{x∈ν.cells} hookLength(μ,x)/hookLength(ν,x)  [field_simp]
+    3. armCells = {(i,s) : s < j} ⊆ ν.cells  [arm_mem_nu]
+    4. legCells = {(r,j) : r < i} ⊆ ν.cells  [leg_mem_nu], disjoint from armCells
+    5. restCells = ν.cells \ (armCells ∪ legCells): hookLength ratio = 1  [hookLength_eq_of_not_arm_leg]
+    6. ∏_{arm} ratio = ∏_s hookLen(i,s)/(hookLen(i,s)-1)  [hookLength_removeCorner_arm]
+    7. ∏_{leg} ratio = ∏_r hookLen(r,j)/(hookLen(r,j)-1)  [hookLength_removeCorner_leg]
+    Blocked on: Finset.prod_union decomposition of ν.cells (~50 lines). -/
+private lemma hookProd_ratio_formula {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c) :
+    (hookProd μ : ℚ) / hookProd (removeCorner μ c hc) =
+      (∏ s ∈ Finset.range c.2, (hookLength μ c.1 s : ℚ) / (hookLength μ c.1 s - 1)) *
+      (∏ r ∈ Finset.range c.1, (hookLength μ r c.2 : ℚ) / (hookLength μ r c.2 - 1)) := by
+  obtain ⟨i, j⟩ := c
+  simp only [Prod.fst, Prod.snd]
+  set ν := removeCorner μ (i, j) hc with hν_def
+  -- ν.cells = μ.cells.erase (i,j) by definition
+  have hν_cells : ν.cells = μ.cells.erase (i, j) := rfl
+  have hcmem : (i, j) ∈ μ.cells := YoungDiagram.mem_cells.mpr hc.1
+  have hcorner_one : (hookLength μ i j : ℚ) = 1 :=
+    by exact_mod_cast hookLength_corner_eq_one hc
+  -- hookProd μ = ∏_{x ∈ ν.cells} hookLength μ x  (corner factor = 1)
+  have hμ_via_ν : (hookProd μ : ℚ) = ∏ x ∈ ν.cells, (hookLength μ x.1 x.2 : ℚ) := by
+    simp only [hookProd, Nat.cast_prod]
+    rw [← Finset.mul_prod_erase μ.cells (fun x => (hookLength μ x.1 x.2 : ℚ)) hcmem]
+    simp only [Prod.fst, Prod.snd]
+    rw [hcorner_one, one_mul, hν_cells]
+  -- hookProd ν > 0
+  have hνpos : 0 < (hookProd ν : ℚ) := by exact_mod_cast hookProd_pos ν
+  have hν_ne : (hookProd ν : ℚ) ≠ 0 := ne_of_gt hνpos
+  -- Define arm and leg cell finsets
+  let armCells : Finset (ℕ × ℕ) := Finset.image (fun s => (i, s)) (Finset.range j)
+  let legCells : Finset (ℕ × ℕ) := Finset.image (fun r => (r, j)) (Finset.range i)
+  -- arm/leg subsets of ν.cells
+  have harm_sub : armCells ⊆ ν.cells := by
+    intro x hx
+    obtain ⟨s, hs, rfl⟩ := Finset.mem_image.mp hx
+    exact YoungDiagram.mem_cells.mpr (arm_mem_nu hc (Finset.mem_range.mp hs))
+  have hleg_sub : legCells ⊆ ν.cells := by
+    intro x hx
+    obtain ⟨r, hr, rfl⟩ := Finset.mem_image.mp hx
+    exact YoungDiagram.mem_cells.mpr (leg_mem_nu hc (Finset.mem_range.mp hr))
+  -- arm ∩ leg = ∅ (arm cells have first coord i, leg cells have first coord < i)
+  have hdisj : Disjoint armCells legCells := by
+    simp only [armCells, legCells, Finset.disjoint_left, Finset.mem_image, Finset.mem_range]
+    rintro _ ⟨s, _, rfl⟩ ⟨r, hr, h⟩
+    simp [Prod.mk.injEq] at h
+    omega
+  -- [Core sorry: split ν.cells into armCells ∪ legCells ∪ restCells and apply hookLength lemmas]
+  -- The identity follows from:
+  -- ∏_{x∈ν.cells} hookLen(μ,x)/hookLen(ν,x)
+  --   = ∏_{arm} hookLen(μ,i,s)/(hookLen(μ,i,s)-1)   [hookLength_removeCorner_arm]
+  --   × ∏_{leg} hookLen(μ,r,j)/(hookLen(μ,r,j)-1)   [hookLength_removeCorner_leg]
+  --   × ∏_{rest} 1                                    [hookLength_eq_of_not_arm_leg]
+  sorry
+
+
 private lemma hook_walk_identity (μ : YoungDiagram) (hn : 0 < μ.card) :
     ∑ c ∈ (corners μ).attach,
       ((hookProd μ : ℚ) / (hookProd (removeCorner μ c.val (mem_corners.mp c.prop)) : ℚ))
