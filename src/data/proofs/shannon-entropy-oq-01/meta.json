@@ -59,35 +59,40 @@
       "title": "Definitions",
       "summary": "differentialEntropy(f) = -∫ f·ln f, klDivergenceCts(f,g) = ∫ f·ln(f/g).",
       "startLine": 40,
-      "endLine": 49
+      "endLine": 49,
+      "mathContext": "Differential entropy is defined via the Bochner integral: `differentialEntropy f = -∫ x, f x * Real.log (f x)`. The sign convention comes from writing $h(f) = -\\int f(x) \\ln f(x) \\,dx$ where $f(x) \\ln f(x) < 0$ when $f(x) \\in (0,1)$, so the negation gives a positive contribution for spread-out densities. Critically, `Real.log 0 = 0` in Mathlib makes the convention $0 \\cdot \\ln 0 = 0$ automatic — no special case is needed. The KL divergence (relative entropy) `klDivergenceCts f g = ∫ x, f x * Real.log (f x / g x)` measures the \"information gain\" of using $f$ instead of $g$; it equals $h_{\\mathrm{cross}}(f,g) - h(f)$ where $h_{\\mathrm{cross}}$ is cross-entropy. The Bochner integral returns 0 when the function is non-integrable, making both definitions total (well-defined for any $f : \\mathbb{R} \\to \\mathbb{R}$); theorems require integrability hypotheses."
     },
     {
       "id": "gibbs-inequality",
       "title": "Gibbs Inequality",
       "summary": "kl_divergence_continuous_nonneg: D(f||g) ≥ 0. gibbs_inequality_continuous: h(f) ≤ -∫ f·ln g.",
       "startLine": 50,
-      "endLine": 130
+      "endLine": 130,
+      "mathContext": "The continuous Gibbs inequality is proved via a pointwise reduction to the analytic inequality $\\ln t \\leq t - 1$ for $t > 0$. The private lemma `kl_term_bound_cts` proves $p \\cdot \\ln(p/q) \\geq p - q$ for $p, q > 0$: from $\\ln(q/p) \\leq q/p - 1$ (which is $\\ln t \\leq t-1$ at $t = q/p$), multiply both sides by $p$ and negate. `kl_divergence_continuous_nonneg` integrates this bound: $\\int f \\ln(f/g) \\geq \\int (f - g) = 1 - 1 = 0$, using the probability measure conditions $\\int f = 1$ and $\\int g = 1$. The Gibbs inequality `gibbs_inequality_continuous` then follows: $h(f) = -\\int f \\ln f = \\int f \\ln(1/f) = \\int f \\ln(g/f) + \\int f \\ln(1/g) \\leq 0 + (-\\int f \\ln g)$, since $\\int f \\ln(g/f) = -D(f \\| g) \\leq 0$. This is the fundamental inequality of information theory: the entropy of $f$ is bounded above by the cross-entropy with any reference density $g$."
     },
     {
       "id": "invariance",
       "title": "Translation and Scale Invariance",
       "summary": "differentialEntropy_translation_invariant: h(f(·-c)) = h(f). differentialEntropy_scale_equivariant: h((1/|a|)f(·/a)) = h(f) + ln|a|.",
       "startLine": 131,
-      "endLine": 260
+      "endLine": 260,
+      "mathContext": "Two symmetry results characterize differential entropy under affine transformations. **Translation invariance** (`differentialEntropy_translation_invariant`): $h(f(\\cdot - c)) = h(f)$. The proof uses `integral_add_right_eq_self` from Mathlib, which implements the Lebesgue measure invariance $\\int g(x - c) \\,dx = \\int g(x) \\,dx$; applying this with $g(x) = f(x) \\cdot \\ln f(x)$ gives the result immediately. **Scale equivariance** (`differentialEntropy_scale_equivariant`): if $g(x) = (1/|a|) f(x/a)$, then $h(g) = h(f) + \\ln|a|$. The proof uses `Measure.integral_comp_div` (change of variables $x \\to x/a$): $\\int g(x) \\ln g(x) \\,dx = \\frac{1}{|a|} \\int f(y)(\\ln f(y) - \\ln|a|) \\,dy = \\int f \\ln f - \\ln|a|$, giving $h(g) = h(f) + \\ln|a|$. The factor $+\\ln|a|$ reflects that expanding the support by $|a|$ increases uncertainty; for $|a| < 1$ the entropy decreases, consistent with differential entropy being negative for concentrated distributions."
     },
     {
       "id": "gaussian",
       "title": "Gaussian Entropy",
       "summary": "gaussianDifferentialEntropy: h(N(μ,σ²)) = ½ ln(2πeσ²). Proved using Gaussian PDF, normalization, and second moment.",
       "startLine": 261,
-      "endLine": 500
+      "endLine": 500,
+      "mathContext": "The Gaussian PDF is `gaussianPDF μ σ x = (1/(σ * Real.sqrt (2*π))) * Real.exp (-(x-μ)^2 / (2*σ^2))`. The entropy computation `gaussianDifferentialEntropy` evaluates $h(\\mathcal{N}(\\mu, \\sigma^2)) = \\tfrac{1}{2} \\ln(2\\pi e \\sigma^2)$ by splitting the log: $\\ln(\\text{gaussianPDF}(x)) = -\\tfrac{1}{2}\\ln(2\\pi\\sigma^2) - \\tfrac{(x-\\mu)^2}{2\\sigma^2}$. Integrating against $f = \\text{gaussianPDF}$ gives two terms: (1) $-\\int f \\cdot (-\\tfrac{1}{2}\\ln(2\\pi\\sigma^2)) \\,dx = \\tfrac{1}{2}\\ln(2\\pi\\sigma^2)$ (by Gaussian normalization $\\int f = 1$); (2) $-\\int f \\cdot (-(x-\\mu)^2/(2\\sigma^2)) \\,dx = \\mathbb{E}[(X-\\mu)^2]/(2\\sigma^2) = \\sigma^2/(2\\sigma^2) = \\tfrac{1}{2}$ (using the second moment). Combining: $h = \\tfrac{1}{2}\\ln(2\\pi\\sigma^2) + \\tfrac{1}{2} = \\tfrac{1}{2}\\ln(2\\pi e \\sigma^2)$. The second moment computation requires integrating $x^2 e^{-bx^2}$, handled via integration by parts with antiderivative $G(x) = -x/(2b) \\cdot e^{-bx^2}$."
     },
     {
       "id": "max-entropy",
       "title": "Gaussian Maximum Entropy Theorem",
       "summary": "gaussian_max_entropy: among densities with ∫ x²f ≤ σ², h(f) ≤ ½ ln(2πeσ²). Proved via Gibbs inequality with Gaussian reference.",
       "startLine": 501,
-      "endLine": 622
+      "endLine": 622,
+      "mathContext": "`gaussian_max_entropy` proves that the Gaussian uniquely maximizes differential entropy among all distributions with second moment $\\leq \\sigma^2$: if $f$ is a probability density with $\\int x^2 f(x) \\,dx \\leq \\sigma^2$, then $h(f) \\leq \\tfrac{1}{2}\\ln(2\\pi e \\sigma^2)$. The proof is a one-line application of the Gibbs inequality with reference density $g = \\text{gaussianPDF}(0, \\sigma)$: $h(f) \\leq -\\int f \\ln g = \\int f \\left[\\tfrac{x^2}{2\\sigma^2} + \\tfrac{1}{2}\\ln(2\\pi\\sigma^2)\\right] \\,dx = \\tfrac{1}{2\\sigma^2} \\int x^2 f + \\tfrac{1}{2}\\ln(2\\pi\\sigma^2) \\leq \\tfrac{1}{2} + \\tfrac{1}{2}\\ln(2\\pi\\sigma^2) = \\tfrac{1}{2}\\ln(2\\pi e\\sigma^2)$. This is the formal version of the maximum entropy principle, which underlies the Gaussian noise model in information theory: the worst-case noise (maximizing channel uncertainty) under a power constraint is Gaussian."
     }
   ],
   "conclusion": {
