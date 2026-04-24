@@ -114,7 +114,7 @@ theorem asymptotic_flt_Q : AsymptoticFLT ℚ := by
   - The modularity obstruction prevents direct generalization
   - Freitas-Hung-Siksek: 5/6 of real quadratic fields
 
-  2 axioms (FLT over ℚ, Freitas-Hung-Siksek), 0 sorries.
+  1 axiom (flt_over_Q), 0 sorries.
 -/
 
 end FermatsLastTheoremOQ03
