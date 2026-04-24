@@ -156,6 +156,11 @@
       "targetId": "inverse-galois-oq-01",
       "relationship": "sibling",
       "description": "Inverse Galois Problem: Non-Solvable Frontier — independently proves the same biconditionals ($S_n$ solvable $\\iff n \\leq 4$, $A_n$ solvable $\\iff n \\leq 4$, $A_5$ simple) from the Inverse Galois Problem perspective. Where this file uses these results to explain quintic unsolvability (Abel-Ruffini), that entry uses them to delimit which groups can appear as Galois groups over $\\mathbb{Q}$ — two complementary perspectives on the same structural boundary at $n = 4$."
+    },
+    {
+      "targetId": "inverse-galois-oq-06",
+      "relationship": "complementary",
+      "description": "A₅ Realizable over ℚ — the logical complement to this entry's non-solvability theorem. This file proves $A_5$ is the minimal obstruction (simple, non-solvable), while `inverse-galois-oq-06` constructs an explicit quintic $q(x) = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$ with $\\text{Gal}(q/\\mathbb{Q}) \\cong A_5$, proving $A_5$ is realizable. Together: the obstruction $A_5$ not only blocks radical solvability but also concretely occurs as the symmetry group of algebraic roots over $\\mathbb{Q}$."
     }
   ],
   "references": [
