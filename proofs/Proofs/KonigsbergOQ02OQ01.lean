@@ -468,7 +468,124 @@ theorem removeArcList_balanced {V : Type*} [Fintype V] [DecidableEq V]
   omega
 
 -- ============================================================
--- PART VII: Corrected Main Theorem
+-- PART VII: Infrastructure for Hierholzer's Induction
+-- ============================================================
+
+/-- The trivial empty circuit at any vertex v. -/
+private def emptyWalk_at {V : Type*} {D : Digraph V} (v : V) : D.Walk v v where
+  arcs := []
+  arcs_valid _ h := (List.not_mem_nil _ h).elim
+  starts_at h := (h rfl).elim
+  ends_at h := (h rfl).elim
+  consecutive := List.Chain'.nil
+  empty_at _ := rfl
+
+/-- A nodup list of D-arcs has length ≤ D.arcCount. -/
+private theorem nodup_arcs_length_le {V : Type*} [Fintype V] [DecidableEq V]
+    {D : Digraph V} [DecidableRel D.adj] {u v : V}
+    (w : D.Walk u v) (hnodup : w.arcs.Nodup) :
+    w.arcs.length ≤ D.arcCount := by
+  unfold Digraph.arcCount
+  calc w.arcs.length
+      = w.arcs.toFinset.card := (List.toFinset_card_of_nodup hnodup).symm
+    _ ≤ (Finset.univ.filter (fun p : V × V => D.adj p.1 p.2)).card := by
+        apply Finset.card_le_card
+        intro ⟨a, b⟩ hmem
+        simp only [List.mem_toFinset, Finset.mem_filter, Finset.mem_univ, true_and] at *
+        exact w.arcs_valid _ hmem
+
+/-- A nodup circuit whose arc count equals D.arcCount is Eulerian. -/
+private theorem isEulerian_of_length_eq {V : Type*} [Fintype V] [DecidableEq V]
+    {D : Digraph V} [DecidableRel D.adj] {v₀ : V}
+    (C : D.Walk v₀ v₀) (hnodup : C.arcs.Nodup)
+    (hlen : D.arcCount ≤ C.arcs.length) :
+    C.isEulerian := by
+  have hle : C.arcs.length ≤ D.arcCount := nodup_arcs_length_le C hnodup
+  have heq : C.arcs.length = D.arcCount := Nat.le_antisymm hle hlen
+  refine ⟨hnodup, fun a b hadj => ?_⟩
+  -- C.arcs is nodup with length = D.arcCount.
+  -- Every D-arc is in C.arcs because C.arcs.toFinset = D's arc set (same cardinality, one ⊆ other).
+  have hcard : C.arcs.toFinset.card = (Finset.univ.filter (fun p : V × V => D.adj p.1 p.2)).card := by
+    rw [List.toFinset_card_of_nodup hnodup]
+    exact heq
+  have hsub : C.arcs.toFinset ⊆ Finset.univ.filter (fun p : V × V => D.adj p.1 p.2) := by
+    intro ⟨x, y⟩ hmem
+    simp only [List.mem_toFinset, Finset.mem_filter, Finset.mem_univ, true_and] at *
+    exact C.arcs_valid _ hmem
+  have heqset := Finset.eq_of_subset_of_card_le hsub (le_of_eq hcard)
+  have : (a, b) ∈ Finset.univ.filter (fun p : V × V => D.adj p.1 p.2) := by
+    simp [hadj]
+  rw [← heqset] at this
+  exact List.mem_toFinset.mp this
+
+/-- **Key sub-lemma (classical)**: In a balanced digraph, if vertex u has positive
+    outDegree, then there exists a nodup circuit from u with at least one arc.
+
+    Proof sketch (classical maximum argument):
+    - The set of lengths of nodup walks from u is nonempty (contains 0) and bounded
+      by D.arcCount.  Take the maximum m.
+    - The corresponding maximum-length nodup walk W : D.Walk u v is "stuck" at v
+      (all arcs from v are already in W, else we could extend).
+    - By `maximal_balanced_trail_is_circuit`, u = v — so W is a circuit.
+    - Since D.outDegree u > 0 and W is stuck at u = v, all arcs from u are in W,
+      so W.arcs is nonempty. -/
+private theorem nodup_circuit_exists_of_outDeg_pos {V : Type*} [Fintype V] [DecidableEq V]
+    (D : Digraph V) [DecidableRel D.adj]
+    (hbal : ∀ v : V, D.isBalanced v)
+    (u : V) (hout : 0 < D.outDegree u) :
+    ∃ (C : D.Walk u u), C.arcs.Nodup ∧ C.arcs ≠ [] := by
+  -- Classical: take the maximum-length nodup walk from u; it is a circuit.
+  -- The full proof uses Finset.max' on the image of possible walk lengths,
+  -- then applies maximal_balanced_trail_is_circuit to show u = endpoint.
+  sorry
+
+/-- **Key sub-lemma (strong connectivity)**: If D is balanced and strongly connected,
+    and a nodup circuit C does not cover all arcs, then some vertex on C (or v₀
+    if C is empty) has a positive outDegree in the residual `removeArcList D C.arcs`.
+
+    Proof sketch:
+    - Let D' = removeArcList D C.arcs.  D'.arcCount > 0 (some arcs uncovered).
+    - Let V(C) = {v₀} ∪ {vertices appearing in C.arcs}.
+    - Suppose for contradiction every v ∈ V(C) has D'.outDegree v = 0.
+      Then all D-arcs from V(C) are in C.arcs.  Since C.arcs only touches vertices
+      in V(C), no arc leaves V(C) to any w ∉ V(C).
+    - If V(C) ≠ V: strong connectivity is violated (no walk from V(C) to w ∉ V(C)).
+    - If V(C) = V: every vertex's arcs are all in C.arcs, so D.arcCount = C.arcs.length.
+      Contradicts D'.arcCount > 0.
+    - Therefore ∃ v ∈ V(C) with D'.outDegree v > 0.
+    - But v ∈ V(C) means v = v₀ or v appears in C.arcs as a fst or snd. -/
+private theorem vertex_with_unused_arc {V : Type*} [Fintype V] [DecidableEq V]
+    (D : Digraph V) [DecidableRel D.adj]
+    (hbal : ∀ v : V, D.isBalanced v)
+    (hconn : isStronglyConnected D)
+    {v₀ : V} (C : D.Walk v₀ v₀) (hnodup : C.arcs.Nodup)
+    (hextra : C.arcs.length < D.arcCount) :
+    ∃ u ∈ ({v₀} : Finset V) ∪ (C.arcs.map Prod.snd).toFinset,
+      0 < (removeArcList D C.arcs).outDegree u := by
+  sorry
+
+/-- **Walk splitting**: Given a nodup circuit C : D.Walk v₀ v₀ and a vertex u that
+    appears as the second component (arrival) of some arc in C.arcs, we can split C into
+    C1 : D.Walk v₀ u and C2 : D.Walk u v₀ such that:
+    - C.arcs = C1.arcs ++ C2.arcs
+    - C1.arcs and C2.arcs are both nodup
+    - C1.arcs and C2.arcs are disjoint (as sublists of the nodup C.arcs)
+
+    Special case: u = v₀ (not necessarily in C.arcs.map Prod.snd) — split as C1 = C, C2 = empty.
+
+    Proof: find the first index i where C.arcs[i].snd = u.  Take C1 = take(i+1), C2 = drop(i+1).
+    All Walk invariants hold: consecutive splits cleanly, starts/ends_at from arcs structure. -/
+private theorem walk_split_at {V : Type*} (D : Digraph V) {v₀ u : V}
+    (C : D.Walk v₀ v₀) (hnodup : C.arcs.Nodup)
+    (hu : u = v₀ ∨ u ∈ C.arcs.map Prod.snd) :
+    ∃ (C1 : D.Walk v₀ u) (C2 : D.Walk u v₀),
+      C.arcs = C1.arcs ++ C2.arcs ∧
+      C1.arcs.Nodup ∧ C2.arcs.Nodup ∧
+      ∀ a ∈ C1.arcs, a ∉ C2.arcs := by
+  sorry
+
+-- ============================================================
+-- PART VIII: Corrected Main Theorem
 -- ============================================================
 
 /-- **Corrected Directed Eulerian Circuit Sufficiency** (Hierholzer, 1873).
@@ -479,34 +596,99 @@ theorem removeArcList_balanced {V : Type*} [Fintype V] [DecidableEq V]
     The corrected theorem: if D is strongly connected and every vertex is
     balanced (indeg = outdeg), then D has an Eulerian circuit.
 
-    **Proof strategy** (Hierholzer's algorithm, WF induction on uncovered arcs):
+    **Proof** (Hierholzer extension argument):
+    We prove the stronger statement by induction on m = D.arcCount - C.arcs.length:
+    given any nodup circuit C in D, there exists an Eulerian circuit starting at C's base.
 
-    **Key Building Blocks** (all proved above):
-    - `maximal_balanced_trail_is_circuit`: greedy trail from any v₀ in balanced D
-      is always a circuit.
-    - `Walk.splice`: concatenate two circuits at a shared vertex.
-    - `removeArcList_balanced`: residual after removing circuit remains balanced.
-
-    **Induction**:
-    Let `C` be a circuit in D from v₀. We induct on `D.arcCount - C.arcs.length`.
-    - Base: `D.arcCount = C.arcs.length` → C is Eulerian.
-    - Step: Some vertex u on C has unused out-arcs (strong connectivity + balance).
-      Build circuit C' from u in `removeArcList D C.arcs` (balanced by above).
-      Splice C' into C via `Walk.splice`, increasing circuit length. Apply IH.
-
-    **Remaining sorry**: The splice-based WF induction combining these lemmas. -/
+    - Base (m = 0): C is Eulerian (isEulerian_of_length_eq).
+    - Step: Some vertex u ∈ V(C) has unused arcs in D' = removeArcList D C.arcs
+      (vertex_with_unused_arc, using strong connectivity + balance).
+      Build nodup circuit C' at u in D' (nodup_circuit_exists_of_outDeg_pos + balance of D').
+      Split C = C1.splice C2 at u (walk_split_at).
+      New circuit: C1.splice(C'.ofRemoveArcList.splice C2) has length |C| + |C'| > |C|.
+      It is nodup (C1, C', C2 are pairwise arc-disjoint).
+      Apply IH with the longer circuit. -/
 theorem directed_euler_circuit_sufficient_corrected {V : Type*} [Fintype V] [DecidableEq V]
     [Nonempty V]
     (D : Digraph V) [DecidableRel D.adj]
     (hbal : ∀ v : V, D.isBalanced v)
     (hconn : isStronglyConnected D) :
     ∃ (v₀ : V) (w : D.Walk v₀ v₀), w.isEulerian := by
-  -- The remaining sorry is the WF induction combining:
-  -- 1. maximal_balanced_trail_is_circuit (any greedy trail is a circuit)
-  -- 2. Walk.splice (circuit extension at shared vertex)
-  -- 3. removeArcList_balanced (residual remains balanced)
-  -- The induction decreases on (D.arcCount - current_circuit_length).
-  sorry
+  -- We prove the stronger statement with a given circuit C by induction on remaining arcs.
+  suffices extend : ∀ (m : ℕ) {v₀ : V} (C : D.Walk v₀ v₀), C.arcs.Nodup →
+      D.arcCount ≤ C.arcs.length + m → ∃ (w : D.Walk v₀ v₀), w.isEulerian by
+    obtain ⟨v₀⟩ := ‹Nonempty V›
+    exact extend D.arcCount (emptyWalk_at v₀) List.nodup_nil (by simp)
+  intro m
+  induction m with
+  | zero =>
+    intro v₀ C hnodup hle
+    exact ⟨C, isEulerian_of_length_eq C hnodup hle⟩
+  | succ m ih =>
+    intro v₀ C hnodup hle
+    -- Either C is already Eulerian, or there are uncovered arcs.
+    by_cases hcover : D.arcCount ≤ C.arcs.length
+    · exact ⟨C, isEulerian_of_length_eq C hnodup hcover⟩
+    · push_neg at hcover
+      -- Some vertex u on C (or v₀) has unused arcs in the residual D'.
+      let D' := removeArcList D C.arcs
+      haveI : DecidableRel D'.adj := inferInstance
+      obtain ⟨u, hu_on_C, hu_pos⟩ := vertex_with_unused_arc D hbal hconn C hnodup hcover
+      -- D' is balanced (removing a circuit preserves balance).
+      have hbal' : ∀ v, D'.isBalanced v := by
+        apply removeArcList_balanced D C.arcs C.consecutive hnodup
+        · by_cases hempty : C.arcs = []
+          · exact Or.inl hempty
+          · exact Or.inr ⟨hempty, by rw [C.starts_at hempty, C.ends_at hempty]⟩
+        · exact fun a ha => C.arcs_valid a ha
+        · exact hbal
+      -- Build nodup circuit C' at u in D' (lifted to D via ofRemoveArcList).
+      obtain ⟨C'_res, hC'_nodup, hC'_ne⟩ :=
+        nodup_circuit_exists_of_outDeg_pos D' hbal' u hu_pos
+      -- Lift C'_res from D' to D
+      have C' : D.Walk u u := C'_res.ofRemoveArcList
+      have hC'_arcs : C'.arcs = C'_res.arcs := rfl
+      -- C' arcs are all from D' (unused by C) hence disjoint from C.arcs.
+      have hC'_disj : ∀ a ∈ C'.arcs, a ∉ C.arcs := fun ⟨p, q⟩ ha hac =>
+        (C'_res.arcs_valid (p, q) ha).2 hac
+      -- C' is nonempty (re-stated at D level)
+      have hC'_ne_lift : C'.arcs ≠ [] := hC'_arcs ▸ hC'_ne
+      have hC'_nodup_lift : C'.arcs.Nodup := hC'_arcs ▸ hC'_nodup
+      -- Split C at u: C = C1.splice C2.
+      have hu_split : u = v₀ ∨ u ∈ C.arcs.map Prod.snd := by
+        simp only [Finset.mem_union, Finset.mem_singleton, List.mem_toFinset] at hu_on_C
+        exact hu_on_C
+      obtain ⟨C1, C2, hC_split, hC1_nodup, hC2_nodup, hC1_C2_disj⟩ :=
+        walk_split_at D C hnodup hu_split
+      -- Build the extended circuit: C1.splice(C'.splice C2).
+      have C'' : D.Walk v₀ v₀ := C1.splice (C'.splice C2)
+      -- C'' arcs decompose (unfold the splice definition).
+      -- C'' = C1.splice(C'.splice C2), so arcs = C1.arcs ++ (C'.arcs ++ C2.arcs).
+      have hC''_arcs : C''.arcs = C1.arcs ++ (C'.arcs ++ C2.arcs) := by
+        simp only [C'', Digraph.Walk.splice_arcs]
+      -- C'' is nodup: C1, C', C2 are pairwise arc-disjoint.
+      have hC''_nodup : C''.arcs.Nodup := by
+        rw [hC''_arcs, List.nodup_append]
+        refine ⟨hC1_nodup, List.nodup_append.mpr ⟨hC'_nodup_lift, hC2_nodup, ?_⟩, ?_⟩
+        · -- C' and C2 disjoint: C' ⊆ D', C2 ⊆ C.arcs
+          intro a haC' haC2
+          exact hC'_disj a haC' (hC_split ▸ List.mem_append_right _ haC2)
+        · -- C1 and (C' ++ C2) disjoint
+          intro a haC1 ha
+          rw [List.mem_append] at ha
+          rcases ha with haC' | haC2
+          · exact hC'_disj a haC' (hC_split ▸ List.mem_append_left _ haC1)
+          · exact hC1_C2_disj a haC1 haC2
+      -- C'' has strictly more arcs than C.
+      have hC_len : C.arcs.length = C1.arcs.length + C2.arcs.length := by
+        have := congr_arg List.length hC_split; simp [List.length_append] at this; exact this
+      have hC'_pos : 0 < C'.arcs.length := List.length_pos.mpr hC'_ne_lift
+      have hC''_len : C''.arcs.length = C1.arcs.length + C'.arcs.length + C2.arcs.length := by
+        simp [hC''_arcs, List.length_append]
+      have hC''_longer : C.arcs.length < C''.arcs.length := by omega
+      -- Apply IH: D.arcCount ≤ C''.arcs.length + m.
+      apply ih C'' hC''_nodup
+      omega
 
 -- ============================================================
 -- Summary
@@ -518,36 +700,23 @@ theorem directed_euler_circuit_sufficient_corrected {V : Type*} [Fintype V] [Dec
 **Proved (0 sorries)**:
 - `maximal_balanced_trail_is_circuit`: In a balanced digraph, any maximal Nodup
   trail is a closed circuit. (Key sub-lemma of Hierholzer.)
-- `Walk.splice`: Concatenate two walks sharing a vertex. (Infrastructure for
-  Hierholzer's circuit extension step.)
+- `Walk.splice`: Concatenate two walks sharing a vertex.
 - `Walk.splice_nodup`: Splice of arc-disjoint Nodup walks is Nodup.
+- `removeArcList_arcCount`: arcCount of residual = D.arcCount - removed.
+- `removeArcList_balanced`: removing a circuit preserves balance.
+- `nodup_arcs_length_le`: nodup walk arcs bounded by arcCount.
+- `isEulerian_of_length_eq`: nodup circuit of length = arcCount is Eulerian.
+- `directed_euler_circuit_sufficient_corrected`: main theorem (modulo 3 sorry'd sub-lemmas).
 
-**Helper Lemmas (proved)**:
-- `fst_count_eq_outDegree_stuck`: count of arcs with source v = outDegree v
-  (when the "stuck" condition holds)
-- `snd_count_le_inDegree`: count of arcs with target v ≤ inDegree v
-  (for any Nodup trail)
-- `circuit_fst_perm_snd` (private): circuit's fst multiset ~ snd multiset
-
-**Definitions**:
-- `Digraph.isStronglyConnected`: ∀ u v, Nonempty (D.Walk u v)
-- `Digraph.removeArcList`: subgraph removing specified arcs
-- `Walk.ofRemoveArcList`: lift residual walk to parent graph
-
-**Proved (this session)**:
-- `removeArcList_arcCount`: arcCount of residual = D.arcCount - removed
-  (Finset.card_sdiff argument: residual arcs = D_arcs \ listed_arcs)
-- `removeArcList_balanced`: removing a circuit preserves balance at all vertices
-  (circuit_fst_perm_snd → equal per-vertex fst/snd counts → equal subtraction from
-   balanced inDeg/outDeg; Finset.card_image_of_injOn for count-via-image approach)
-
-**Sorry'd (with structured proof roadmap)**:
-- `directed_euler_circuit_sufficient_corrected`: WF induction combining all above
+**Sorry'd sub-lemmas** (3 focused lemmas with proof sketches):
+- `nodup_circuit_exists_of_outDeg_pos`: classical max-length walk argument
+  → gives nodup circuit from any vertex with positive outDeg in balanced D.
+- `vertex_with_unused_arc`: strong connectivity + balance gives vertex on C with unused arcs.
+- `walk_split_at`: list split of a Walk at a vertex in C.arcs.map Prod.snd.
 
 **Bug Found**:
 - `directed_euler_circuit_sufficient` (KonigsbergOQ02.lean line 409) is an axiom
   with a MISSING hypothesis. The corrected version requires strong connectivity.
-  Without it, two disjoint balanced directed graphs form a counterexample.
 -/
 
 #check @isStronglyConnected
