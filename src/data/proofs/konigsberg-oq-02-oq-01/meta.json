@@ -22,9 +22,9 @@
     "dateAdded": "2026-04-24",
     "axiomCount": 0,
     "assumptions": "1 sorry remains: directed_euler_circuit_sufficient_corrected (WF induction on arcCount combining splice + balance lemmas). Supporting lemmas removeArcList_arcCount and removeArcList_balanced are not yet formalized.",
-    "lineCount": 286,
-    "theoremCount": 6,
-    "definitionCount": 1,
+    "lineCount": 805,
+    "theoremCount": 7,
+    "definitionCount": 4,
     "originalContributions": [
       "Bug fix: directed_euler_circuit_sufficient in KonigsbergOQ02 missing isStronglyConnected hypothesis",
       "Digraph.isStronglyConnected: definition of the missing hypothesis with counterexample documentation",
@@ -61,10 +61,10 @@
   },
   "leanFile": {
     "namespace": "KonigsbergOQ02OQ01",
-    "lineCount": 286,
+    "lineCount": 805,
     "axiomCount": 0,
-    "theoremCount": 6,
-    "definitionCount": 1,
+    "theoremCount": 7,
+    "definitionCount": 4,
     "path": "Proofs/KonigsbergOQ02OQ01.lean",
     "sorries": 2,
     "imports": [
