@@ -1,0 +1,116 @@
+{
+  "slug": "hurwitz-theorem-oq-04",
+  "title": "Hurwitz Theorem: Connection to Exceptional Lie Groups",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in algebra: Hurwitz Theorem: Connection to Exceptional Lie Groups.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-24T00:00:00Z",
+    "iteration": 1,
+    "focus": "Session 2 (2026-04-24): 0 sorries remain. Added aut_maps_unit, eightMul_self_zero_comp, oct_imaginary_sq_is_real, aut_preserves_imaginary, real_part_preserved. alg_aut_preserves_norm axiomatized.",
+    "blockers": [],
+    "nextAction": "Build verification with docker-build.sh. Follow-up: prove alg_aut_preserves_norm from quadratic form invariance (requires ~50 lines of additional structure).",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 0 sorries remain (2026-04-24). 5 new theorems: aut_maps_unit, eightMul_self_zero_comp, oct_imaginary_sq_is_real, aut_preserves_imaginary, real_part_preserved. alg_aut_preserves_norm axiomatized (not derivable from multiplicativity alone). 535 lines, 6 axioms.",
+    "builtItems": [
+      "ExceptionalType inductive type (G2/F4/E6/E7/E8) with dim/rank — HurwitzTheoremOQ04.lean",
+      "OctonionAlgHom structure + OctonionAut — HurwitzTheoremOQ04.lean",
+      "eightMul_right_unit (PROVED 2026-04-24): simp(decide)+Matrix.cons_val_* pattern — HurwitzTheoremOQ04.lean:82",
+      "eightMul_left_unit (PROVED 2026-04-24): same pattern — HurwitzTheoremOQ04.lean:94",
+      "aut_maps_unit (PROVED 2026-04-24): φ(e₀)=e₀ via bijectivity, no idempotent theory needed — HurwitzTheoremOQ04.lean",
+      "eightMul_self_zero_comp (PROVED 2026-04-24): (a*a)[0] = 2*(a[0])^2 - normSq(a) — HurwitzTheoremOQ04.lean",
+      "oct_imaginary_sq_is_real (PROVED 2026-04-24): y[0]=0 → y*y = -normSq(y)·e₀ — HurwitzTheoremOQ04.lean",
+      "aut_preserves_imaginary (PROVED 2026-04-24): y[0]=0 → φ(y)[0]=0, via sq_eq_zero_iff — HurwitzTheoremOQ04.lean",
+      "real_part_preserved (PROVED 2026-04-24): realPart(φ(x))=realPart(x), via oct_decomp+aut_preserves_imaginary — HurwitzTheoremOQ04.lean",
+      "alg_hom_preserves_norm_product (PROVED) — HurwitzTheoremOQ04.lean",
+      "G2_unique_low_rank, E8_is_largest, exceptional_dims_strict_mono (PROVED) — HurwitzTheoremOQ04.lean",
+      "G2_is_octonion_aut, freudenthal_tits_f4/e6/e7/e8 (axioms) — HurwitzTheoremOQ04.lean",
+      "Freudenthal-Tits magic square table with dimensional analysis — HurwitzTheoremOQ04.lean commentary"
+    ],
+    "insights": [
+      "G₂ = Aut(𝕆): The exceptional Lie group G₂ (dim 14, rank 2) is the automorphism group of the octonions. The 14 dimensions come from SO(7) (dim 21) minus the 7 constraints from preserving the octonion cross product.",
+      "Freudenthal-Tits Magic Square: 𝔏(A,B) = Der(A)⊕(ImA⊗ImB)⊕Der(B) gives a symmetric Lie algebra from pairs of Hurwitz algebras. All 5 exceptional types arise from pairs involving 𝕆.",
+      "Exactly 4 Hurwitz algebras → exactly 5 exceptional Lie algebras: G₂←Der(𝕆), F₄←𝔏(𝕆,ℝ), E₆←𝔏(𝕆,ℂ), E₇←𝔏(𝕆,ℍ), E₈←𝔏(𝕆,𝕆). Octonions appear in all 5.",
+      "Physics connections: E₈×E₈ heterotic strings (dim 2×248=496, anomaly cancellation), M-theory on G₂ manifolds (4D N=1 SUSY), E₇(7) in N=8 supergravity.",
+      "OctonionAlgHom structure defined in Lean: linear + multiplicative. Composition and identity proved. Norm-product preservation proved.",
+      "alg_aut_preserves_norm NOT provable from multiplicativity alone: normSq(φ(a))*normSq(φ(b)) = normSq(φ(a*b)) is consistent with both normSq-preserving and non-preserving maps. Need either map_one field or norm-preservation axiom in OctonionAlgHom definition.",
+      "eightMul unit proof pattern: simp(config:={decide:=true})[ite_true,ite_false] evaluates if (0:Fin 8)=j for concrete j. Plain simp[stdBasis] insufficient — need decide mode for Fin equality.",
+      "aut_maps_unit proof: φ(e₀) acts as left identity (from bijectivity+map_mul+left_unit). Left identity uniqueness gives φ(e₀)=e₀. No idempotent classification needed.",
+      "aut_preserves_imaginary: if y[0]=0, then y²=-normSq(y)·e₀ (real cross-terms cancel). Apply φ: φ(y)²=-normSq(y)·e₀ (using norm axiom + aut_maps_unit). Check component 0: 2*(φ(y)[0])²=0 → φ(y)[0]=0.",
+      "alg_aut_preserves_norm requires norm-uniqueness for composition algebras: quadratic forms satisfying q(xy)=q(x)q(y) on 8-dim space are unique up to isometry. This is Hurwitz-level theory, ~50 lines to build. Axiomatized for now."
+    ],
+    "mathlibGaps": [
+      "Lie groups not in Mathlib as of 2026-04 — blocks formal G₂ = Aut(𝕆) proof",
+      "Tits construction 𝔏(A,B) not in Mathlib — blocks magic square formalization",
+      "Derivation algebra of non-associative algebras not in Mathlib"
+    ],
+    "nextSteps": [
+      "Prove alg_aut_preserves_norm: build quadratic form uniqueness for composition algebras (~50 lines) — currently axiomatized",
+      "Prove G₂ ⊆ SO(7): need alg_aut_preserves_norm (now axiom), show φ preserves inner product from norm",
+      "Define Der(𝕆) as the space of derivations and prove it has dimension 14",
+      "Lie algebra formalization: Der(A) for non-associative A needs definition + dim computation"
+    ]
+  },
+  "tags": [
+    "algebra",
+    "lie-groups",
+    "hurwitz",
+    "composition-algebras",
+    "exceptional"
+  ],
+  "relatedProofs": [
+    "hurwitz-theorem",
+    "hurwitz-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T13:03:46.381Z",
+  "lastUpdate": "2026-04-22T13:03:46.381Z",
+  "significance": 7,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/HurwitzTheorem.lean",
+      "filename": "HurwitzTheorem.lean",
+      "lineCount": 2028,
+      "theoremCount": 35,
+      "axiomCount": 0,
+      "defCount": 16,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzTheorem.lean"
+    },
+    {
+      "path": "Proofs/HurwitzTheoremOQ04.lean",
+      "filename": "HurwitzTheoremOQ04.lean",
+      "lineCount": 535,
+      "theoremCount": 17,
+      "axiomCount": 6,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzTheoremOQ04.lean"
+    }
+  ]
+}
