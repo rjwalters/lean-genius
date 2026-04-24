@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-oq04-covolume-bridge",
+    "proofId": "minkowski-fundamental-theorem-oq-04",
+    "range": { "startLine": 52, "endLine": 73 },
+    "type": "insight",
+    "title": "Covolume = Fundamental Domain Volume",
+    "content": "The central equivalence `covolume_eq_volume_fundamentalDomain` states that `ENNReal.ofReal L.covolume = volume (ZSpan.fundamentalDomain (L.toModuleBasis n))`. The proof uses three facts chained by `simp`: (1) `ZSpan.volume_fundamentalDomain` says `vol(fundDom b) = ENNReal.ofReal |det(Matrix.of b)|`; (2) `toModuleBasis_matrix_eq` says `Matrix.of (L.toModuleBasis n) = L.basis`; (3) `Lattice.covolume` unfolds to `|L.basis.det|`. Together these show the custom `|det|` formula and the ZSpan fundamental domain volume are the same quantity computed two ways.",
+    "mathContext": "$\\mathrm{covol}(L) = |\\det(B)| = \\mathrm{vol}(\\mathcal{F}_B)$ where $\\mathcal{F}_B = \\{\\sum t_i b_i : t_i \\in [0,1)\\}$ is the fundamental parallelepiped.",
+    "significance": "key",
+    "relatedConcepts": ["fundamental domain", "covolume", "determinant", "ZSpan", "Haar measure"],
+    "prerequisites": ["ZSpan.volume_fundamentalDomain", "Lattice.toModuleBasis", "Lattice.covolume"]
+  },
+  {
+    "id": "ann-oq04-basis-det-ne-zero",
+    "proofId": "minkowski-fundamental-theorem-oq-04",
+    "range": { "startLine": 74, "endLine": 107 },
+    "type": "technique",
+    "title": "Invertibility from Measure Theory",
+    "content": "`basis_det_ne_zero` proves `(Matrix.of b).det ≠ 0` for any `Module.Basis (Fin n) ℝ (Fin n → ℝ)` using measure theory rather than linear algebra. The key is `ZSpan.measure_fundamentalDomain_ne_zero b (μ := volume)`: a lattice fundamental domain always has nonzero Haar measure (it tiles ℝ^n). Then `ZSpan.volume_fundamentalDomain` and `ENNReal.ofReal_ne_zero_iff` convert this to `0 < |det|`, and `abs_pos` gives `det ≠ 0`. This is the inverse construction gateway: it shows `Lattice.ofBasis` is well-typed. The `(μ := volume)` named argument is needed because `ZSpan.measure_fundamentalDomain_ne_zero` has an implicit `Measure` argument that Lean cannot infer from context outside the ZSpan namespace.",
+    "mathContext": "A lattice $\\Lambda \\subset \\mathbb{R}^n$ has $\\mathrm{vol}(\\mathbb{R}^n / \\Lambda) = |\\det B| > 0$ because the fundamental domain tiles $\\mathbb{R}^n$, so $|\\det B| \\neq 0 \\Leftrightarrow B$ invertible.",
+    "significance": "key",
+    "relatedConcepts": ["Haar measure", "fundamental domain", "tiling", "invertibility", "Basis→Lattice"],
+    "prerequisites": ["ZSpan.measure_fundamentalDomain_ne_zero", "ENNReal.ofReal_ne_zero_iff", "abs_pos"]
+  },
+  {
+    "id": "ann-oq04-roundtrip",
+    "proofId": "minkowski-fundamental-theorem-oq-04",
+    "range": { "startLine": 108, "endLine": 132 },
+    "type": "insight",
+    "title": "Roundtrip: Lattice → Basis → Lattice",
+    "content": "The roundtrip theorems confirm the custom API and ZSpan are fully interconvertible. `ofBasis_toModuleBasis` shows `(Lattice.ofBasis n (L.toModuleBasis n)).basis = L.basis` — composing the two direction maps is the identity on basis matrices. `covolume_ofBasis_toModuleBasis` shows covolume is preserved under the roundtrip. The key lemma `toModuleBasis_matrix_eq` (proved in the parent file) is the linchpin: it says `Matrix.of (L.toModuleBasis n) = L.basis`, so `Lattice.ofBasis n (L.toModuleBasis n)` has basis `Matrix.of (L.toModuleBasis n) = L.basis`. The two APIs have identical expressive power.",
+    "mathContext": "The maps $\\mathrm{Lattice} \\xrightarrow{\\mathrm{toModuleBasis}} \\mathrm{Basis} \\xrightarrow{\\mathrm{ofBasis}} \\mathrm{Lattice}$ satisfy $\\mathrm{ofBasis}(\\mathrm{toModuleBasis}(L)).\\mathrm{basis} = L.\\mathrm{basis}$.",
+    "significance": "key",
+    "relatedConcepts": ["API equivalence", "roundtrip identity", "basis matrix", "covolume preservation"],
+    "prerequisites": ["Lattice.toModuleBasis_matrix_eq", "Lattice.ofBasis", "Lattice.covolume"]
+  },
+  {
+    "id": "ann-oq04-is-zlattice",
+    "proofId": "minkowski-fundamental-theorem-oq-04",
+    "range": { "startLine": 133, "endLine": 143 },
+    "type": "concept",
+    "title": "IsZLattice Instance: Unlocking the Ecosystem",
+    "content": "`instIsZLatticeCustom` registers the ZSpan of any custom lattice as an `IsZLattice ℝ` instance via `instIsZLatticeRealSpan`. This one-line instance proof is a gateway: it gives access to the entire `ZLattice` API — `ZLattice.module_free` (the lattice is a free ℤ-module), `ZLattice.rank` (rank equals ambient dimension), `ZLattice.FG` (finite generation) — all for free. This demonstrates that the custom API is fully compatible with the ZLattice ecosystem without any additional work.",
+    "mathContext": "An `IsZLattice ℝ L` instance means $L \\subset \\mathbb{R}^n$ is a discrete, cocompact ℤ-submodule spanning $\\mathbb{R}^n$. All ZLattice theorems (module structure, rank, etc.) apply automatically.",
+    "significance": "key",
+    "relatedConcepts": ["IsZLattice", "ZLattice", "typeclass", "module_free", "discrete cocompact"],
+    "prerequisites": ["instIsZLatticeRealSpan", "Submodule.span", "ZLattice.Basic"]
+  },
+  {
+    "id": "ann-oq04-custom-minkowski-via-zlattice",
+    "proofId": "minkowski-fundamental-theorem-oq-04",
+    "range": { "startLine": 144, "endLine": 192 },
+    "type": "technique",
+    "title": "Custom Minkowski as Consequence of ZSpan Minkowski",
+    "content": "`minkowski_custom_via_zlattice` shows the custom Minkowski theorem follows from the ZSpan-native proof `minkowski_general_lattice_proved`. The bridge requires three conversions: (1) `custom_vol_to_ennreal`: converts the custom volume inequality `hv.volume > criticalVolume n L` to `ENNReal.ofReal |det(Matrix.of (L.toModuleBasis n))| * 2^n < volume S.carrier` using `toModuleBasis_matrix_eq` and careful ENNReal arithmetic; (2) `latticePoints_eq_span`: translates `x ∈ latticePoints n L` (custom span) to `x ∈ ZSpan (L.toModuleBasis n)` (ZSpan); (3) `Subtype.ext`: lifts the nonzero condition from the subtype. The proof demonstrates the custom API is NOT independent — it is a convenient wrapper over the ZSpan framework.",
+    "mathContext": "The ENNReal conversion requires `ENNReal.ofReal_mul`, `ENNReal.ofReal_pow`, and `ENNReal.ofReal_lt_ofReal_iff_of_nonneg` to handle the inequality $|\\det B| \\cdot 2^n < \\mathrm{vol}(S)$, with careful sign conditions.",
+    "significance": "key",
+    "relatedConcepts": ["minkowski_general_lattice_proved", "ENNReal arithmetic", "latticePoints_eq_span", "API reduction"],
+    "prerequisites": ["minkowski_general_lattice_proved", "latticePoints_eq_span", "ENNReal.ofReal_lt_ofReal_iff_of_nonneg", "Subtype.ext"]
+  },
+  {
+    "id": "ann-oq04-api-tradeoffs",
+    "proofId": "minkowski-fundamental-theorem-oq-04",
+    "range": { "startLine": 1, "endLine": 50 },
+    "type": "context",
+    "title": "API Design Trade-offs: Custom vs ZSpan/ZLattice",
+    "content": "The file documents a genuine design choice in Lean formalization. The custom API (`Lattice n`, `latticePoints`, `covolume = |det|`) offers explicit matrix coordinates making it natural for matrix computations, cryptography, and number theory applications. The ZSpan/ZLattice API offers native Mathlib integration — theorems from algebraic geometry, algebraic number theory, and harmonic analysis all speak ZSpan natively. This proof shows the choice is cost-free: the two APIs are mathematically equivalent, and any result proved in one transfers immediately via the bridge lemmas. For new work, ZSpan/ZLattice is preferred for integration; the custom API is preferred when explicit matrix formulas are needed.",
+    "mathContext": "| Feature | Custom | ZSpan/ZLattice | Cost to bridge | \\n|---------|--------|----------------|----------------| \\n| Covolume | $|\\det B|$ | $\\mathrm{vol}(\\mathcal{F})$ | `simp` | \\n| Lattice membership | `latticePoints` | `Submodule.span ℤ` | `latticePoints_eq_span` | \\n| Minkowski bound | `criticalVolume` | ENNReal form | `custom_vol_to_ennreal` |",
+    "significance": "context",
+    "relatedConcepts": ["API design", "Mathlib integration", "formalization strategy", "matrix coordinates"],
+    "prerequisites": ["minkowski-fundamental-theorem", "ZSpan.fundamentalDomain", "IsZLattice"]
+  }
+]

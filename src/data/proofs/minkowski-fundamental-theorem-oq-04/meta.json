@@ -1,0 +1,135 @@
+{
+  "id": "minkowski-fundamental-theorem-oq-04",
+  "title": "Custom Lattice API vs ZLattice: A Comparison",
+  "slug": "minkowski-fundamental-theorem-oq-04",
+  "description": "Answers whether the custom Lattice/ConvexBody API from minkowski-fundamental-theorem is equivalent to Mathlib's ZSpan/ZLattice API. Bridges the two worlds: covolume = fundamental domain volume, Basis → Lattice inverse construction, IsZLattice instance, and custom Minkowski derived from ZSpan Minkowski. All 6 main results proved with 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MinkowskiFundamentalTheoremOQ04.lean",
+    "tags": [
+      "number-theory",
+      "geometry-of-numbers",
+      "minkowski-theorem",
+      "lattices",
+      "zlattice",
+      "api-comparison"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-24",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 193,
+    "theoremCount": 11,
+    "definitionCount": 1,
+    "originalContributions": [
+      "covolume_eq_volume_fundamentalDomain: custom covolume = ZSpan fundamental domain volume",
+      "basis_det_ne_zero: basis invertibility from ZSpan measure theory (module-Basis version)",
+      "Lattice.ofBasis: inverse construction from Module.Basis to custom Lattice",
+      "Lattice.ofBasis_toModuleBasis: roundtrip Lattice → Basis → Lattice preserves basis matrix",
+      "instIsZLatticeCustom: ZSpan of custom lattice is IsZLattice",
+      "minkowski_custom_via_zlattice: custom API Minkowski theorem derived from ZSpan-native proof"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Minkowski's Fundamental Theorem (1889) has been formalized in Lean using two distinct APIs: a custom Lattice/ConvexBody/HasVolume API providing a user-friendly interface with explicit matrix coordinates, and Mathlib's ZSpan/ZLattice API which is fully integrated with the Mathlib ecosystem. This entry establishes that these two APIs are mathematically equivalent and interchangeable.",
+    "problemStatement": "Open Question (minkowski-fundamental-theorem-oq-04): How does the custom Lattice API compare to Mathlib's ZSpan/ZLattice for practical applications?\n\nSpecifically:\n1. Does `Lattice.covolume L = vol(ZSpan.fundamentalDomain(L.toModuleBasis))`?\n2. Can every `Module.Basis` be converted back to a custom `Lattice`?\n3. Is the ZSpan of a custom lattice an `IsZLattice` instance?\n4. Is the custom API Minkowski theorem a consequence of the ZSpan-native proof?\n\nAnswer: YES to all — the two APIs are fully equivalent.",
+    "proofStrategy": "The six main results bridge the two APIs systematically:\n1. Covolume bridge: `ZSpan.volume_fundamentalDomain` gives `vol(fundDom b) = ENNReal.ofReal |det(Matrix.of b)|`, and `toModuleBasis_matrix_eq` gives `Matrix.of(L.toModuleBasis) = L.basis`, so covolume = vol(fundDom).\n2. Invertibility: `ZSpan.measure_fundamentalDomain_ne_zero` (with `volume` as the Haar measure) gives `vol(fundDom b) ≠ 0`, hence `ENNReal.ofReal_ne_zero_iff` and `abs_pos` give `det ≠ 0`.\n3. Inverse construction: `Lattice.ofBasis b` packages `Matrix.of b` with the invertibility from (2).\n4. Roundtrip: `ofBasis_toModuleBasis` uses `toModuleBasis_matrix_eq` from the parent proof.\n5. IsZLattice: `instIsZLatticeRealSpan` from Mathlib's ZLattice.Basic.\n6. Custom Minkowski: convert volume hypothesis to ENNReal, apply `minkowski_general_lattice_proved`, convert lattice membership via `latticePoints_eq_span`.",
+    "keyInsights": [
+      "The covolume identity `|det(L.basis)| = vol(ZSpan.fundamentalDomain(L.toModuleBasis))` is the central equivalence — it shows the two covolume notions agree.",
+      "The `measure_fundamentalDomain_ne_zero` theorem requires explicit provision of `volume` as the Haar measure parameter (it's taken implicit in Mathlib but becomes explicit outside the ZSpan namespace).",
+      "The inverse construction `Lattice.ofBasis` shows the custom API can represent every Module.Basis lattice — the two APIs have the same expressive power.",
+      "The custom Minkowski theorem is NOT independent: it is a direct consequence of `minkowski_general_lattice_proved` via the bridge lemmas, confirming the API equivalence.",
+      "API trade-offs: the custom API provides explicit `|det(M)|` covolumes (useful for matrix computations) while ZSpan/ZLattice gives Mathlib integration (useful for further formalization)."
+    ],
+    "prerequisites": [
+      "minkowski-fundamental-theorem: parent proof with all bridging infrastructure",
+      "ZSpan.fundamentalDomain, volume_fundamentalDomain, measure_fundamentalDomain_ne_zero",
+      "IsZLattice, instIsZLatticeRealSpan",
+      "ENNReal arithmetic (ofReal_ne_zero_iff, ofReal_lt_ofReal_iff_of_nonneg)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "covolume-bridge",
+      "title": "Part I: Covolume = Fundamental Domain Volume",
+      "summary": "covolume_eq_volume_fundamentalDomain and fundamentalDomain_volume_pos. The custom covolume |det(basis)| equals the ZSpan fundamental domain volume, connecting the two covolume notions.",
+      "startLine": 52,
+      "endLine": 73
+    },
+    {
+      "id": "basis-to-lattice",
+      "title": "Part II: Basis → Lattice (Inverse Construction)",
+      "summary": "basis_det_ne_zero (via ZSpan measure theory), Lattice.ofBasis (inverse construction), and simp lemmas ofBasis_basis, covolume_ofBasis.",
+      "startLine": 74,
+      "endLine": 107
+    },
+    {
+      "id": "roundtrip",
+      "title": "Part III: Roundtrip Lattice → Basis → Lattice",
+      "summary": "ofBasis_toModuleBasis (basis matrix preserved), covolume_ofBasis_toModuleBasis (covolume preserved), covolume_ofBasis_eq_fundamentalDomain (two covolume formulas agree).",
+      "startLine": 108,
+      "endLine": 132
+    },
+    {
+      "id": "is-zlattice",
+      "title": "Part IV: IsZLattice Instance",
+      "summary": "instIsZLatticeCustom: The ZSpan of any custom lattice is an IsZLattice ℝ instance, giving access to ZLattice.module_free, ZLattice.rank, FG, etc.",
+      "startLine": 133,
+      "endLine": 143
+    },
+    {
+      "id": "custom-minkowski-via-zlattice",
+      "title": "Part V: Custom Minkowski ← ZSpan Minkowski",
+      "summary": "minkowski_custom_via_zlattice: the custom-API Minkowski theorem follows from MinkowskiProved.minkowski_general_lattice_proved via custom_vol_to_ennreal and latticePoints_eq_span.",
+      "startLine": 144,
+      "endLine": 192
+    }
+  ],
+  "conclusion": {
+    "summary": "The custom Lattice/ConvexBody API and Mathlib's ZSpan/ZLattice API are proved equivalent in all key respects: same covolume, same lattice points, convertible in both directions, and the same Minkowski theorem. The custom API provides user-friendly matrix coordinates; ZSpan/ZLattice provides full Mathlib integration.",
+    "implications": "The equivalence proof validates the custom API design: researchers can use either API depending on their needs. For applications requiring explicit matrix coordinates (cryptography, number theory computations), the custom API is more convenient. For Mathlib integration (formal proofs connecting to the broader ecosystem), ZSpan/ZLattice is preferred. The bridge in minkowski-fundamental-theorem ensures that results proved in either API transfer immediately.",
+    "openQuestions": [
+      "Can the IsZLattice instance be used to derive Minkowski's second theorem (successive minima) for the custom lattices?",
+      "Can the covolume bridge be extended to non-full-rank lattices or lattices in infinite-dimensional spaces?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "minkowski-fundamental-theorem",
+      "relationship": "extends",
+      "description": "Parent proof: provides EuclideanN, Lattice, ConvexBody, toModuleBasis, latticePoints_eq_span, and minkowski_general_lattice_proved"
+    },
+    {
+      "targetId": "minkowski-fundamental-theorem-oq-02",
+      "relationship": "related",
+      "description": "Minkowski class number bound: another application of Mathlib's ZSpan/ZLattice machinery"
+    }
+  ],
+  "mathlibDependencies": [
+    {
+      "theorem": "ZSpan.volume_fundamentalDomain",
+      "description": "vol(fundamentalDomain b) = ENNReal.ofReal |det(Matrix.of b)|",
+      "module": "Mathlib.Algebra.Module.ZLattice.Basic"
+    },
+    {
+      "theorem": "ZSpan.measure_fundamentalDomain_ne_zero",
+      "description": "The fundamental domain has nonzero measure under any Haar measure",
+      "module": "Mathlib.Algebra.Module.ZLattice.Basic"
+    },
+    {
+      "theorem": "instIsZLatticeRealSpan",
+      "description": "The ℤ-span of any basis is an IsZLattice ℝ instance",
+      "module": "Mathlib.Algebra.Module.ZLattice.Basic"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 193,
+    "path": "Proofs/MinkowskiFundamentalTheoremOQ04.lean",
+    "axiomCount": 0,
+    "sorries": 0
+  },
+  "sorries": 0
+}
