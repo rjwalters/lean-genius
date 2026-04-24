@@ -83,6 +83,7 @@
       "id": "docstring-imports",
       "title": "Documentation and Imports",
       "summary": "Module docstring stating the open question, answer (partially yes), and key results. Imports from Mathlib polynomial content theory, Gauss's lemma, and UFD modules.",
+      "mathContext": "**Open Question**: Does the `linear_combination` approach from Bézout's identity scale to Gauss's lemma for polynomial rings? **Answer**: For $k[X]$ (field, PID): yes — Bézout identity $a \\cdot f + b \\cdot g = 1$ exists when $\\gcd(f,g) = 1$, and `linear_combination` provides the certificate. For $\\mathbb{Z}[X]$ (UFD, not PID): no — the ideal $\\langle 2, X \\rangle \\subsetneq \\mathbb{Z}[X]$ is not principal, so no Bézout identity for $2$ and $X$. Imports: `Mathlib.RingTheory.Polynomial.Content` (IsPrimitive, Polynomial.content_mul), `Mathlib.RingTheory.Polynomial.GaussLemma` (IsPrimitive.mul), `Mathlib.RingTheory.Polynomial.UniqueFactorization` (UFD instance for ℤ[X]).",
       "startLine": 1,
       "endLine": 45
     },
@@ -90,6 +91,7 @@
       "id": "gauss-lemma-classical",
       "title": "Part I: Classical Gauss's Lemma",
       "summary": "Proves gauss_lemma_primitive_mul (product of primitives is primitive) via IsPrimitive.mul, and content_multiplicative (content(f*g) = content(f)*content(g)) via Polynomial.content_mul.",
+      "mathContext": "`gauss_lemma_primitive_mul (f g : R[X]) (hf : f.IsPrimitive) (hg : g.IsPrimitive) : (f * g).IsPrimitive` — from `IsPrimitive.mul`. `IsPrimitive f : Prop := ∀ r : R, r ∈ f.content.divisors → IsUnit r` (content equals 1, i.e., gcd of coefficients is 1). `content_multiplicative (f g : R[X]) : (f * g).content = f.content * g.content` — from `Polynomial.content_mul`. **Context**: Gauss's Lemma (1801) uses content theory: $\\text{content}(fg) = \\text{content}(f) \\cdot \\text{content}(g)$, which is a generalization of prime factorization from integers to polynomial coefficients. A polynomial is primitive iff its content is a unit.",
       "startLine": 46,
       "endLine": 71
     },
@@ -97,6 +99,7 @@
       "id": "euclid-field",
       "title": "Part II: Euclid's Lemma Over a Field",
       "summary": "Proves poly_euclids_lemma_field via IsCoprime and poly_bezout_application via explicit linear_combination construction. Over k[X] (k a field), Bézout identities exist and the linear_combination approach works directly.",
+      "mathContext": "`poly_euclids_lemma_field (k : Type*) [Field k] (f g h : k[X]) (hcoprime : IsCoprime f g) (hdvd : f ∣ g * h) : f ∣ h` — from `IsCoprime.dvd_of_dvd_mul_left`. `poly_bezout_application`: given the Bézout certificate `a * f + b * g = 1` (which exists in $k[X]$ since it's a PID), prove `f ∣ h` by: `h = h * 1 = h * (a*f + b*g) = f*(a*h) + g*(b*h)`, and since `f ∣ g*h`, we get `f ∣ h`. The `linear_combination` tactic provides: `have := hbezout; linear_combination h * this`. Over $k[X]$, `IsCoprime f g` iff `gcd(f,g) = 1` iff there exist Bézout coefficients — all equivalent in a PID.",
       "startLine": 72,
       "endLine": 102
     },
@@ -104,6 +107,7 @@
       "id": "euclid-integers",
       "title": "Part III: Euclid's Lemma Over ℤ",
       "summary": "Proves poly_euclids_lemma_int via UFD structure (irreducible_iff_prime + Prime.dvd_or_dvd) and primitive_irreducible_is_prime. No Bézout identity needed — the UFD structure of ℤ[X] suffices.",
+      "mathContext": "`poly_euclids_lemma_int (f g h : ℤ[X]) (hirr : Irreducible f) (hprim : f.IsPrimitive) (hdvd : f ∣ g * h) : f ∣ g ∨ f ∣ h`. Proof: In a UFD, `Irreducible → Prime` (`irreducible_iff_prime`). Primes satisfy Euclid's lemma: `Prime.dvd_or_dvd`. `primitive_irreducible_is_prime`: `Irreducible f → f.IsPrimitive → Prime f` — in $\\mathbb{Z}[X]$, primitivity is needed because a non-primitive polynomial like $2X$ is irreducible over $\\mathbb{Q}[X]$ but factors as $2 \\cdot X$ over $\\mathbb{Z}[X]$. By Gauss's lemma: if $f$ is primitive and irreducible over $\\mathbb{Z}$, it is also irreducible over $\\mathbb{Q}$; in a UFD, irreducible = prime.",
       "startLine": 103,
       "endLine": 128
     },
@@ -111,6 +115,7 @@
       "id": "non-bezout-witness",
       "title": "Part IV: ℤ[X] Is Not a Bézout Domain",
       "summary": "Proves two_X_not_coprime_in_ZX: no Bézout identity exists for 2 and X in ℤ[X]. Proof: evaluating a*2 + b*X = 1 at 0 gives 2*a(0) = 1 in ℤ, which is impossible.",
+      "mathContext": "`two_X_not_coprime_in_ZX : ¬ IsCoprime (C 2 : ℤ[X]) X`. Proof: suppose $a \\cdot 2 + b \\cdot X = 1$ in $\\mathbb{Z}[X]$. Evaluate at $0$: `Polynomial.eval 0 (a * C 2 + b * X) = 1` gives $a(0) \\cdot 2 = 1$ in $\\mathbb{Z}$. But $\\mathbb{Z}$ has no element $a(0)$ with $2 \\cdot a(0) = 1$ (since $2$ is not a unit in $\\mathbb{Z}$). Formally: from `h : a * C 2 + b * X = 1`, apply `congr_arg (Polynomial.eval 0)`, simp to get `2 * a.coeff 0 = 1`, then `omega` or `decide` gives contradiction. This witnesses that $\\langle 2, X \\rangle \\subsetneq \\mathbb{Z}[X]$ is a non-principal ideal — the definitive proof that $\\mathbb{Z}[X]$ is not a Bézout domain.",
       "startLine": 129,
       "endLine": 153
     },
@@ -118,6 +123,7 @@
       "id": "summary",
       "title": "Part V: Summary and Comparison",
       "summary": "Comparison table: ℤ (PID, Bézout, linear_combination works), k[X] (PID, Bézout, works), ℤ[X] (UFD not PID, no Bézout, fails), R[X] UFD (no Bézout, fails). Confirms UniqueFactorizationMonoid instance for ℤ[X].",
+      "mathContext": "Comparison table of ring classes and Bézout/`linear_combination` applicability: ℤ (PID, Euclidean, Bézout, `linear_combination` works); $k[X]$ for $k$ a field (PID, Euclidean, Bézout, `linear_combination` works); $\\mathbb{Z}[X]$ (UFD, not PID, not Bézout, use UFD prime instead); $R[X]$ for $R$ a UFD (UFD, not generally PID, use content theory). `#check inferInstance : UniqueFactorizationMonoid ℤ[X]` — confirmed by Mathlib's typeclass inference from the `GCDMonoid`/`UniqueFactorizationDomain` hierarchy. The structural conclusion: `linear_combination` scales exactly to PIDs (Bézout domains), and content theory is the correct tool for UFDs that are not PIDs.",
       "startLine": 154,
       "endLine": 170
     }
