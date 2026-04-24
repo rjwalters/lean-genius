@@ -342,9 +342,15 @@ theorem kuhn_path_terminates {c : Coloring d N} {K : SpernerTriangulation d N}
       its entry and exit doors — violates Kuhn compatibility (degree ≤ 2).
       This case requires tracking door history per visited simplex (not yet in KuhnState).
 
-    Pending: (1) add "adjacent simplices share a unique facet" axiom to SpernerTriangulation,
-    (2) strengthen KuhnState with per-visited-simplex door history,
-    (3) prove non-revisiting by induction on visited.card. -/
+    **Status** (2026-04-24): `adj_unique_facet` is now in SpernerTriangulation.
+    This closes the s' = sₙ₋₁ (previous simplex) case. Remaining blocker:
+    (1) KuhnState needs per-visited-simplex door history (entry/exit doors),
+    (2) The theorem as stated is false for arbitrary KuhnState (non-FC state with
+        doorDegree = 0 returns immediately without FC) — needs `IsKuhnWalkState` invariant
+        ensuring `state` came from a valid boundary-door initial state.
+
+    **TODO for next session**: Reformulate with proper `IsKuhnWalkState` type-class /
+    inductive predicate, add door history to KuhnState, prove non-revisiting. -/
 theorem kuhn_walk_reaches_fc {c : Coloring d N} {K : SpernerTriangulation d N}
     (hKuhn : IsKuhnCompatible c K)
     (hc : IsSperner c)
@@ -354,6 +360,9 @@ theorem kuhn_walk_reaches_fc {c : Coloring d N} {K : SpernerTriangulation d N}
     (hfuel_sufficient : state.visited.card + (Fintype.card K.Simplex - state.visited.card) =
                         Fintype.card K.Simplex) :
     IsFC c K (kuhnWalk c K hKuhn (Fintype.card K.Simplex - state.visited.card) state) := by
+  -- BLOCKED: As stated, this theorem is false for arbitrary KuhnState.
+  -- Needs: (1) IsKuhnWalkState invariant on `state`, (2) door history in KuhnState,
+  -- (3) boundary-exit analysis using IsSperner + boundary_door_is_last_face.
   sorry
 
 -- ============================================================
@@ -393,7 +402,20 @@ def kuhnPathStart (c : Coloring d N) (K : SpernerTriangulation d N)
     The proof would use `kuhn_walk_reaches_fc` with the initial state
     (current := s₀, entry := k₀, visited := ∅) and fuel = Fintype.card K.Simplex.
 
-    Pending: blocked on `kuhn_walk_reaches_fc` (the non-revisiting invariant). -/
+    **Analysis** (2026-04-24): This theorem as stated may be FALSE for some starting
+    boundary doors. The walk can terminate via "boundary exit" (K.adj sₙ k_out = none)
+    returning a non-FC simplex sₙ. This happens when:
+    - sₙ has two doors: kₙ (interior entry) and k_out = Fin.last d (boundary exit)
+    - All non-k_out vertices of sₙ are on face Fin.last d (boundary_face axiom)
+    - By IsSperner: these vertices have color ≠ Fin.last d
+    - The k_out vertex's color is unconstrained — if ≠ d, then sₙ is non-FC
+
+    The CORRECT statement should be existential:
+    ∃ s₀ k₀ hdoor₀ hbdry₀, IsFC c K (kuhnPathStart c K hKuhn s₀ k₀ hdoor₀ hbdry₀)
+    This follows from parity (hbdry_odd) + the walk-pairing argument + adj_unique_facet.
+
+    **Pending reformulation**: Change to existential form or add hypothesis that
+    this specific starting door leads to FC (not a boundary exit). -/
 theorem kuhnPathStart_is_fc {c : Coloring d N} {K : SpernerTriangulation d N}
     (hKuhn : IsKuhnCompatible c K)
     (hc : IsSperner c)
@@ -403,6 +425,8 @@ theorem kuhnPathStart_is_fc {c : Coloring d N} {K : SpernerTriangulation d N}
     (hdoor₀ : isDoorAt c K s₀ k₀)
     (hbdry₀ : K.adj s₀ k₀ = none) :
     IsFC c K (kuhnPathStart c K hKuhn s₀ k₀ hdoor₀ hbdry₀) := by
+  -- BLOCKED: As stated, theorem may be false (walk can terminate at boundary exit non-FC).
+  -- Needs: reformulation to existential, or add `h_no_bdry_exit` hypothesis on the walk.
   sorry
 
 end SpernerNDimOQ04

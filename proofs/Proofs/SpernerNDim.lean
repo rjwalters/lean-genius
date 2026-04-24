@@ -108,6 +108,12 @@ structure SpernerTriangulation (d N : ℕ) where
     (Finset.univ.erase k).image (vertices s) =
     (Finset.univ.erase k').image (vertices s')
   adj_ne : ∀ s k s' k', adj s k = some (s', k') → s ≠ s'
+  /-- Unique facet adjacency: two distinct facets of a simplex cannot be adjacent to the
+      same neighbor. If `adj s k₁ = some (s', ...)` and `adj s k₂ = some (s', ...)`,
+      then `k₁ = k₂`. True for all geometric simplicial complexes: two d-simplices share
+      at most one common (d-1)-face. Used in Kuhn algorithm non-revisiting proofs. -/
+  adj_unique_facet : ∀ s k₁ k₂ s' k₁' k₂',
+      adj s k₁ = some (s', k₁') → adj s k₂ = some (s', k₂') → k₁ = k₂
   boundary_face : ∀ s (k : Fin (d + 1)), adj s k = none →
     ∀ j : Fin (d + 1), j ≠ k → onFace (vertices s j) k
 
