@@ -158,6 +158,16 @@
       "targetId": "pascals-hexagon",
       "relationship": "related",
       "description": "Pascal's hexagon theorem — another structural property of Pascal's triangle; this file derives Pascal's rule from Vandermonde"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-03",
+      "relationship": "related",
+      "description": "q-Multinomial Coefficients and the q-Multinomial Theorem — the $q$-analogue of Vandermonde's identity: $\\binom{m+n}{r}_q = \\sum_k q^{k(m-k)} \\binom{m}{k}_q \\binom{n}{r-k}_q$, where $\\binom{n}{k}_q$ are Gaussian binomial coefficients. As $q \\to 1$, this recovers the classical Vandermonde convolution. The $q$-version counts lattice paths weighted by area, providing a combinatorial $q$-deformation of the coefficient-extraction proof used here."
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Multinomial Distribution and Moment-Generating Function — probabilistic application of the multinomial theorem. The Vandermonde convolution $\\binom{m+n}{r} = \\sum_k \\binom{m}{k}\\binom{n}{r-k}$ is the special case of MGF convolution: the sum of independent $\\mathrm{Bin}(m,p)$ and $\\mathrm{Bin}(n,p)$ is $\\mathrm{Bin}(m+n,p)$, with coefficients matching the Vandermonde sum. Both entries use the same coefficient-extraction technique applied to generating functions."
     }
   ],
   "sorries": 0
