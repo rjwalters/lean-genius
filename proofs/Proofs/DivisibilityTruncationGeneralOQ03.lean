@@ -133,15 +133,34 @@ The Euclidean algorithm for gcd(10, d) produces the same quotients as the
 CF expansion of 10/d. The Bezout coefficients (gcdA(10,d), gcdB(10,d))
 equal the numerator/denominator of the last CF convergent.
 
-This is a classical equivalence (Hardy-Wright §10.10) that requires
-connecting Mathlib's GenContFract and Nat.xgcd APIs (~200 lines).
-Axiomatized here.
+The CF connection is the conceptual framing, but the actual existential — that a
+natural-number osculator in [0,d) always exists — follows directly from Bezout's
+identity and modular reduction, without needing to construct the CF expansion.
+
+Proof: gcdA(10,d) % d is a non-negative integer in [0,d) that is still an osculator
+(by osculator_mod_d_is_osculator), and its toNat conversion gives the required ℕ.
 -/
-axiom cf_bezout_correspondence (d : ℕ) (hd : 1 < d) (hcop : Nat.Coprime 10 d) :
-    -- The partial quotients of CF(10/d : ℚ) are the Euclidean quotients of gcd(10,d),
-    -- so gcdA(10,d) is the last convergent numerator (up to sign).
-    -- Concrete implication: the minimal osculator = last CF convergent denominator.
-    ∃ n : ℕ, n + 1 ≤ d ∧ IsOsculator d n
+theorem cf_bezout_correspondence (d : ℕ) (hd : 1 < d) (hcop : Nat.Coprime 10 d) :
+    ∃ n : ℕ, n + 1 ≤ d ∧ IsOsculator d n := by
+  -- Basic positivity
+  have hd_pos : 0 < d := Nat.lt_trans Nat.zero_lt_one hd
+  have hd_pos_z : (0 : ℤ) < d := by exact_mod_cast hd_pos
+  have hd_ne_z : (d : ℤ) ≠ 0 := ne_of_gt hd_pos_z
+  -- n₀ = gcdA(10,d) % d is a non-negative integer in [0,d) and is an osculator
+  let n₀ := Nat.gcdA 10 d % (d : ℤ)
+  have hnn : 0 ≤ n₀ := Int.emod_nonneg _ hd_ne_z
+  have hlt : n₀ < (d : ℤ) := Int.emod_lt_of_pos _ hd_pos_z
+  have hosc : IsOsculator d n₀ := osculator_mod_d_is_osculator d hd_pos hcop
+  -- Provide n₀.toNat as the witness
+  refine ⟨n₀.toNat, ?_, ?_⟩
+  · -- n₀.toNat + 1 ≤ d, i.e., n₀.toNat < d
+    have hconv : (n₀.toNat : ℤ) = n₀ := Int.toNat_of_nonneg hnn
+    have : n₀.toNat < d := by exact_mod_cast hconv ▸ hlt
+    omega
+  · -- IsOsculator d n₀.toNat = (d : ℤ) ∣ 10 * ↑n₀.toNat - 1
+    unfold IsOsculator
+    rw [Int.toNat_of_nonneg hnn]
+    exact hosc
 
 -- ============================================================
 -- PART V: Concrete Examples
