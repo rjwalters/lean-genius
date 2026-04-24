@@ -2,7 +2,7 @@
 
 **Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01
 **Last Updated**: 2026-04-24
-**Knowledge Items**: 18
+**Knowledge Items**: 20
 
 Insights accumulated during research on this problem.
 
@@ -17,6 +17,46 @@ symmetric polynomials: `s_λ = det[h_{λᵢ-i+j}]`. The proof route via SSYT and
   3. Biject SSYT ↔ non-intersecting lattice paths (RSK)
   4. Apply LGV: det[e(Aᵢ,Bⱼ)] = weighted NI-path count
   5. Identify the LGV matrix with the Jacobi-Trudi matrix
+
+---
+
+## Session 2026-04-24 (Session 3) — k=0 and k=1 Wired Into Main Theorem
+
+**Mode**: REVISIT
+**Outcome**: progress
+
+### What I Did
+
+- Restructured `jacobi_trudi_ssyt_eq` from a blanket sorry to a 3-way case split
+- k=0 case: proved inline using `det_fin_zero` for LHS and `Unique`/`IsEmpty` pattern for RHS
+- k=1 case: proved inline using `Fin.ext (by omega)` to show `sh = fun _ => sh 0`, then chaining `schurPolynomial_one_row` + `ssytSchurFin_one_row`
+- k≥2 case: still sorry, but now precisely scoped
+- Updated file header comment and docstring to reflect inline proofs
+
+### Key Findings
+
+- **k=0 inline proof**: `Fin.elim0 p.1` eliminates any `p : (i : Fin 0) × Fin (sh i)` for *any* `sh : Fin 0 → ℕ`, not just `Fin.elim0`. The pattern generalizes from `ssytSchurFin_empty`.
+- **k=1 inline proof**: `Fin.ext (by omega)` closes `i.val = 0` for any `i : Fin 1` (since `i.isLt : i.val < 1`); then `congr_arg sh (...)` converts to `sh i = sh ⟨0, _⟩`.
+- **match k with pattern**: Lean 4 specializes `sh` to the correct type in each branch (`Fin 0 → ℕ`, `Fin 1 → ℕ`, `Fin (k+2) → ℕ`), so no type annotation needed.
+- The sorry is now precisely scoped: only the k≥2 RSK case remains.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (313→341 lines)
+  - Updated file header (line 24): status note for `jacobi_trudi_ssyt_eq`
+  - Replaced blanket sorry with 3-case match proof
+  - Updated docstring for `jacobi_trudi_ssyt_eq`
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-01-oq-01/meta.json`: updated lineCount
+
+### Next Steps
+
+1. **Prove `jacobi_trudi_ssyt_eq` for k=2** (the two-row case):
+   - Use `schurPolynomial_two_row` for LHS
+   - For RHS: SSYT of shape (a, b) can be decomposed combinatorially via sign-reversing involution
+   - This is the next incremental target before the general RSK proof
+2. **Full RSK proof** (~300 lines, longer-term):
+   - RSK: SSYTFin n (k+2) sh bijects to NI lattice path tuples
+   - Apply LGV from parent BallotProblemOQ03.lean
 
 ---
 
