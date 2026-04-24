@@ -44,7 +44,7 @@ and n = m gives n!/1 = n!.
 theorem dice_six_rolls_all_different_ari :
     Nat.multinomial {0, 1, 2, 3, 4, 5} (fun _ => 1) *
     (1 : ℕ) = Nat.factorial 6 := by
-  sorry
+  native_decide
 
 /-
 ## Section 2: PMF Support Characterization
