@@ -182,7 +182,7 @@
     "type": "definition",
     "range": {
       "startLine": 115,
-      "endLine": 127
+      "endLine": 116
     },
     "title": "Individual Counting Functions",
     "content": "subsetSumCount and subsetProductCount separately count the distinct integers representable as subset sums and subset products. The axioms assert that the union count $|\\text{sumsOrProducts}(A)|$ is at least each individual count — a trivial consequence of $|X \\cup Y| \\geq \\max(|X|, |Y|)$ for finite sets, but formalized explicitly for convenience.",

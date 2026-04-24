@@ -105,7 +105,7 @@
     "type": "concept",
     "range": {
       "startLine": 136,
-      "endLine": 176
+      "endLine": 150
     },
     "title": "Summary and Main Theorem",
     "content": "**erdos_1079_summary** packages the Bollobás–Thomason theorem and Turán's theorem into a single conjunction. The first conjunct asserts the existence of dense-neighborhood vertices; the second provides the classical Turán bound as context.\n\n**erdos_1079** is the main entry-point theorem, proved directly from the summary axiom. It captures both the positive result (dense neighborhoods exist) and its theoretical foundation (the Turán bound these neighborhoods must exceed).\n\nThe problem is fully SOLVED: Bollobás–Thomason (1981) established the result, and Bondy (1983) identified the max-degree vertex as the canonical witness.",

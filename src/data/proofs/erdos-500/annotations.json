@@ -143,7 +143,7 @@
     "type": "concept",
     "range": {
       "startLine": 45,
-      "endLine": 59
+      "endLine": 58
     },
     "title": "Stubs: Extremal Number, Density, Bounds, and Conjecture (Incomplete)",
     "content": "Lines 45-59 are section header comments and orphaned docstrings marking out the remaining formalization work:\n\n**Turán number** (stub at line 45): `ex3_K4 n` would return the maximum number of edges in a $K_4^{(3)}$-free hypergraph on $n$ vertices, axiomatized with existence (`ex3_K4_achievable`) and optimality (`ex3_K4_optimal`) properties.\n\n**Turán density** (stub at line 49): `turanDensityK4_3` would formalize $\\pi(K_4^{(3)}) = \\lim_{n\\to\\infty} \\text{ex}_3(n)/\\binom{n}{3}$, whose existence is guaranteed by the Katona–Nemetz–Simonovits theorem (1964).\n\n**Turán's lower bound** (stub at line 50): $\\pi \\geq 5/9$ from the 3-partition construction.\n\n**Razborov's upper bound** (stub at line 52): $\\pi \\leq 0.5612$ via flag algebras (2010).\n\n**Turán's conjecture** (stub at line 54): $\\pi = 5/9$ (OPEN since 1941).\n\n**Exact small values** (stub at line 56): $\\text{ex}_3(4) = 3$, $\\text{ex}_3(5) = 7$, $\\text{ex}_3(6) = 13$.",

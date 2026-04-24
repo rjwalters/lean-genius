@@ -27,7 +27,7 @@
     "type": "concept",
     "range": {
       "startLine": 95,
-      "endLine": 146
+      "endLine": 140
     },
     "title": "Non-Representation Proofs and Structural Properties",
     "content": "Proved theorems establishing key structural properties. `nonRepresenting_of_sum_lt`: if $\\sum A < n$, then no subset of $A$ sums to $n$ (since $\\sum B \\leq \\sum A < n$ for $B \\subseteq A$). `maxNonRepr_small_sum`: when the total $\\{1, \\ldots, \\lfloor cn \\rfloor\\}$ sums to less than $n$, the maximum non-representing set is the full range. The documentation notes this replaces an earlier incorrect asymptotic claim — the condition $\\sum < n$ only holds for finitely many $n$ since the sum grows as $\\Theta(c^2 n^2)$. Additional structural results on the relationship between density parameter $c$ and the non-representation threshold.",

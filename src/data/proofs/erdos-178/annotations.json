@@ -309,7 +309,7 @@
     "type": "concept",
     "range": {
       "startLine": 165,
-      "endLine": 175
+      "endLine": 165
     },
     "title": "Main Theorem",
     "content": "**erdos_178:**\n\nComplete resolution of Problem #178:\n\n1. The answer is YES: bounded signing exists for any family (Beck 1981)\n2. Quantitative bound: discrepancy ≤ K · d^(4+ε) (Beck 2017)\n\n**Proof:** Combines beck_1981 and beck_2017 axioms.\n\nThis fully resolves what Erdős called a problem where \"it seems certain the answer is affirmative.\"",
