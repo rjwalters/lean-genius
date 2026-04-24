@@ -43,12 +43,16 @@ For n > 0, n+1 > 0 always, so Nat.factorization_mul applies.
 theorem power2_consecutive_ari (n : ℕ) :
     (n * (n + 1)).factorization 2 =
       n.factorization 2 + (n + 1).factorization 2 := by
-  sorry
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · simp
+  · rw [Nat.factorization_mul hn.ne' (Nat.succ_ne_zero n), Finsupp.add_apply]
 
 /-- The 3-adic valuation of n*(n+1) equals the sum of 3-adic valuations of n and n+1. -/
 theorem power3_consecutive_ari (n : ℕ) :
     (n * (n + 1)).factorization 3 =
       n.factorization 3 + (n + 1).factorization 3 := by
-  sorry
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · simp
+  · rw [Nat.factorization_mul hn.ne' (Nat.succ_ne_zero n), Finsupp.add_apply]
 
 end Erdos933ProblemAristotle

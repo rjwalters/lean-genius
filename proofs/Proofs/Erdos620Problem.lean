@@ -190,7 +190,9 @@ def turanGraph3 (n : ℕ) : SimpleGraph (Fin n) where
   loopless := by intro i h; exact h rfl
 
 theorem turan_is_K4Free (n : ℕ) : K4Free (turanGraph3 n) := by
-  sorry
+  rintro ⟨a, b, c, d, -, -, -, -, -, -, hab, hac, had, hbc, hbd, hcd⟩
+  simp only [turanGraph3] at hab hac had hbc hbd hcd
+  omega
 
 /- ## Part VIII: Ramsey Connection -/
 
