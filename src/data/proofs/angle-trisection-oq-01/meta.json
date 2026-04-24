@@ -95,6 +95,16 @@
       "targetId": "abel-ruffini-galois-extensions",
       "relationship": "related",
       "description": "Abel-Ruffini uses solvability of Galois groups; constructibility uses a different criterion (degree is power of 2). Both are applications of Galois theory to classical impossibility theorems"
+    },
+    {
+      "targetId": "angle-trisection-cos-20-gal",
+      "relationship": "application",
+      "description": "Direct application of this entry's non-constructibility criterion: $|\\text{Gal}(8X^3-6X-1/\\mathbb{Q})| = 3$ (proved in `angle-trisection-cos-20-gal`), so the degree is 3, which has the odd prime factor 3, and $\\cos(20°)$ is not constructible. The companion entry provides the verified |Gal| = 3 result that was previously assumed as an axiom."
+    },
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "contrast",
+      "description": "Constructibility (degree must be a power of 2) is a strictly stronger requirement than radical solvability. $\\cos(20°)$ has a degree-3 irreducible minimal polynomial and a cyclic Galois group $\\mathbb{Z}/3\\mathbb{Z}$ — it IS expressible by radicals (Cardano's cubic formula applies via the `solution-of-cubic` entry), but is NOT constructible. This entry's criterion explains why: degree 3 has the odd prime factor 3, disqualifying it from the tower of degree-2 extensions needed for constructibility."
     }
   ],
   "sections": [

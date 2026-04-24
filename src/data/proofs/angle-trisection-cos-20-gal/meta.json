@@ -122,6 +122,16 @@
       "targetId": "angle-trisection-oq-04",
       "relationship": "sibling",
       "description": "Explores the tool hierarchy question for angle trisection with marked rulers and origami"
+    },
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "related",
+      "description": "Cardano's cubic formula (Wiedijk #37) applies to 8X³−6X−1: since the Galois group $\\mathbb{Z}/3\\mathbb{Z}$ of order 3 is solvable, $\\cos(20°)$ IS expressible by radicals — the radical formula gives the roots via cube roots of complex numbers (the casus irreducibilis where all three roots are real yet the cube root formula requires complex intermediate steps). The impossibility result in this entry is compass-and-straightedge constructibility (requires a degree-2 power tower), which is strictly stronger than radical inexpressibility."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-03",
+      "relationship": "related",
+      "description": "Galois's solvability criterion: a root is expressible by radicals iff its Galois group is solvable. This entry proves $|\\text{Gal}(8X^3-6X-1/\\mathbb{Q})| = 3 \\Rightarrow \\text{Gal} \\cong \\mathbb{Z}/3\\mathbb{Z}$, which is abelian hence solvable. By the solvability criterion, $\\cos(20°)$ IS expressible by radicals (Cardano applies) — the angle trisection impossibility is about the stronger requirement of compass-and-straightedge constructibility (towers of degree-2 extensions), not radical expressibility."
     }
   ],
   "leanFile": {
