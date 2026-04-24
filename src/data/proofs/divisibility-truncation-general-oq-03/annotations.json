@@ -69,6 +69,75 @@
     ]
   },
   {
+    "id": "ann-divtrunc-oq03-bezout-rule",
+    "proofId": "divisibility-truncation-general-oq-03",
+    "range": {
+      "startLine": 47,
+      "endLine": 65
+    },
+    "type": "technique",
+    "title": "Canonical Divisibility Rule via Delegation to OQ-01",
+    "content": "`bezout_osculator_rule` shows `d | n ↔ d | ⌊n/10⌋ + gcdA(10,d)·(n%10)` by directly calling `unified_osculator` from the OQ-01 module. Two arguments are passed: (1) `hcop.isCoprime.symm` converts `Nat.Coprime 10 d` to `IsCoprime d 10` (the argument order required by `unified_osculator`); (2) `bezout_gives_osculator d hcop` provides the osculator witness. The entire divisibility algebra is delegated — OQ-03 contributes only the identification of the canonical osculator.",
+    "mathContext": "This is a modular architecture: OQ-01 proves the abstract rule $d \\mid n \\iff d \\mid \\lfloor n/10 \\rfloor + c \\cdot (n \\bmod 10)$ for any osculator $c$. OQ-03 identifies the canonical $c = \\text{gcdA}(10,d)$. Together: the Bézout coefficient IS the divisibility osculator.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "unified_osculator",
+      "Nat.Coprime.isCoprime",
+      "IsCoprime.symm"
+    ],
+    "prerequisites": [
+      "Divisibility truncation rule (OQ-01)",
+      "Nat.Coprime vs IsCoprime in Mathlib"
+    ]
+  },
+  {
+    "id": "ann-divtrunc-oq03-isosculator",
+    "proofId": "divisibility-truncation-general-oq-03",
+    "range": {
+      "startLine": 66,
+      "endLine": 81
+    },
+    "type": "definition",
+    "title": "IsOsculator: Formal Definition and Closure Properties",
+    "content": "`IsOsculator d c` is defined as the `Prop`: `(d : ℤ) ∣ 10 * c - 1`. Being a bare `Prop` (not a structure) keeps proofs as pure divisibility witnesses. `osculator_shift` shows the osculator set is closed under translation by `d`: the identity `10(c+d) - 1 = (10c-1) + 10d` decomposes into a known divisor plus `d | 10d`. `osculator_congr` generalizes: any `c'` with `d | c' - c` is also an osculator, via `10c' - 1 = (10c-1) + 10(c'-c)`.",
+    "mathContext": "The set of $d$-osculators is the residue class $\\{c_0 + kd : k \\in \\mathbb{Z}\\}$ where $c_0 \\equiv 10^{-1} \\pmod{d}$. Equivalently, it is a coset of $d\\mathbb{Z}$ in $\\mathbb{Z}$. `osculator_shift` says this coset is closed under $+d$; `osculator_congr` says it is closed under arbitrary congruence shifts.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "dvd_add",
+      "dvd_mul_of_dvd_right",
+      "Prop vs structure in Lean 4"
+    ],
+    "prerequisites": [
+      "Integer divisibility",
+      "Modular arithmetic in ℤ"
+    ]
+  },
+  {
+    "id": "ann-divtrunc-oq03-reduction",
+    "proofId": "divisibility-truncation-general-oq-03",
+    "range": {
+      "startLine": 91,
+      "endLine": 123
+    },
+    "type": "technique",
+    "title": "Canonical Reduction: Three Theorems Pinning the Unique Representative",
+    "content": "Part III works in three steps. (1) `osculator_mod_d_is_osculator`: applies `osculator_congr` using `d | gcdA(10,d) - gcdA(10,d)%d`, which follows from `Int.ediv_add_emod` rearranged via `linarith`. (2) `osculator_mod_d_bounded`: `Int.emod_nonneg` + `Int.emod_lt_of_pos` give `0 ≤ r < d` as integers; `Int.natAbs_of_nonneg` converts to natural number bound. (3) `canonical_osculator_unique`: chains two applications of `osculator_unique_mod` — `d | c - gcdA` and `d | gcdA - gcdA%d` — then combines with `dvd_add` using the ring identity `c - gcdA%d = (c - gcdA) + (gcdA - gcdA%d)`.",
+    "mathContext": "The Euclidean (non-negative) remainder satisfies $0 \\le r < d$ when $d > 0$. In Lean 4, `Int.emod` implements this: `Int.emod_nonneg : 0 < d → 0 ≤ a % d` and `Int.emod_lt_of_pos : 0 < d → a % d < d`. Converting to `ℕ` uses `Int.toNat_of_nonneg` with the non-negativity proof.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Int.ediv_add_emod",
+      "Int.emod_nonneg",
+      "Int.emod_lt_of_pos",
+      "Int.natAbs_of_nonneg",
+      "dvd_add"
+    ],
+    "prerequisites": [
+      "Int.emod (Euclidean mod) vs Nat.mod",
+      "linarith tactic",
+      "exact_mod_cast for integer casts"
+    ]
+  },
+  {
     "id": "ann-divtrunc-oq03-concrete",
     "proofId": "divisibility-truncation-general-oq-03",
     "range": {
