@@ -47,7 +47,8 @@
       "The dissection-packing bridge transfers impossibility: if any distinct-size perfect packing existed, lifting its coverage would yield a distinct-size dissection — contradicting Wiedijk #82. So distinct-size packings must always leave gaps.",
       "The infinite descent argument is the geometric core: in any all-different-size dissection, the smallest cube on each floor is bounded above by strictly smaller cubes (all neighbors are larger). This produces an infinite strictly decreasing sequence of side lengths in a finite set — contradiction.",
       "The 2D vs 3D contrast is sharp: squared squares exist (Sprague 1939; smallest has 21 pieces of side 112), but cubed cubes provably do not. The 3D proof fails in 2D because the covering argument for the top face breaks down.",
-      "Three original axioms were eliminated: two volume-bound axioms (deleted as unused), one de Bruijn axiom (replaced with a correct formulation and proved). The 3 original unjustified axioms are now 0, with only 2 clearly-scoped geometric sorries remaining."
+      "Three original axioms were eliminated: two volume-bound axioms (deleted as unused), one de Bruijn axiom (replaced with a correct formulation and proved). The 3 original unjustified axioms are now 0, with only 2 clearly-scoped geometric sorries remaining.",
+      "Two distinct proof paths from coverage to impossibility: Path A (chains) builds a decreasing sequence of cubes of length n for any n via `descent_chains_from_coverage`, then uses `chain_length_bounded` for contradiction — conceptually clean but requires the chain machinery. Path B (direct) bypasses chains entirely: take the global minimum cube, show it doesn't reach the top, get a strictly smaller cube from `exists_smaller_cube`, derive contradiction from minimality via `linarith`. Path B is shorter and avoids the chain abstraction layer."
     ],
     "prerequisites": [
       "Cube dissection impossibility (DissectionOfCubes.lean base file)",
@@ -174,7 +175,22 @@
     {
       "targetId": "dissection-of-cubes",
       "relationship": "extends",
-      "description": "Base cube dissection impossibility; this file connects to packing problems and gives geometric proof approach"
+      "description": "Base cube dissection impossibility (Wiedijk #82); this file relaxes to packing problems, formalizes the coverage predicate, and gives a geometric descent proof approach as an alternative to the base axiom"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question exploring the harmonic series proof path: no natural-number solution to Σ 1/kᵢ³ = 1 with distinct kᵢ — the algebraic analogue of this file's geometric descent approach"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "related",
+      "description": "The deleted volume-bound axioms (packing_volume_bound, dissection_volume_exact) would require Lebesgue measure theory to prove rigorously — measure additivity on disjoint sets plus a covering argument"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling open question on the de Bruijn divisibility approach; this file corrects the original unsound de Bruijn axiom (↔ True) and provides the proper CanTileWithBrick formulation"
     }
   ],
   "sorries": 2
