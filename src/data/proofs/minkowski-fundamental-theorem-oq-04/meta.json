@@ -6,7 +6,7 @@
   "openQuestionIndex": 4,
   "description": "A formal comparison between the custom Lattice API used in the parent Minkowski proof and Mathlib's ZSpan/ZLattice infrastructure. The central goal is to prove the equivalence: the custom covolume |det(L.basis)| equals the ZSpan fundamental domain volume. Also constructs the inverse map (Module.Basis → Lattice) and shows the ZSpan-native Minkowski theorem implies the custom-API version. The covolume bridge theorem and round-trip lemma are proved; two theorems remain as sorries.",
   "meta": {
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/MinkowskiFundamentalTheoremOQ04.lean",
     "tags": ["number-theory", "lattices", "mathlib", "geometry-of-numbers", "api-comparison"],
     "badge": "wip",

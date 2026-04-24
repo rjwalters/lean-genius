@@ -13,7 +13,7 @@ the parent Minkowski proof and Mathlib's ZSpan/ZLattice infrastructure.
 3. `Lattice.ofBasis`: every Module.Basis gives a custom Lattice
 4. `minkowski_custom_via_zlattice`: custom Minkowski follows from ZSpan version
 
-## Status: 4 sorries
+## Status: 2 sorries
 -/
 
 import Mathlib
