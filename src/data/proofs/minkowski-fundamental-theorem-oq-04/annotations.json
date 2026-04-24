@@ -29,11 +29,11 @@
     "range": { "startLine": 40, "endLine": 48 },
     "type": "technique",
     "title": "Basis Determinant Nonzero (Sorry Gap)",
-    "content": "The lemma `basis_det_ne_zero` asserts that for any `Module.Basis (Fin n) ℝ (Fin n → ℝ)`, the matrix formed by the basis vectors has nonzero determinant. This is mathematically obvious (basis vectors are linearly independent by definition, so the matrix is invertible), but bridging the abstract `Basis` definition to the concrete `Matrix.det ≠ 0` statement requires finding the right Mathlib API path. Likely candidates: `Basis.det_ne_zero`, `isUnit_of_det_ne_zero`, or `LinearMap.det_ne_zero_iff_injective` applied to the linear map whose matrix is `Matrix.of (fun i => b i)`. This sorry is the main technical gap in the file.",
-    "mathContext": "For $b : \\mathrm{Basis}(\\mathrm{Fin}\\,n, \\mathbb{R}, \\mathrm{Fin}\\,n \\to \\mathbb{R})$, let $B \\in \\mathbf{M}_{n\\times n}(\\mathbb{R})$ with $B_{ij} = b_i(e_j)$. Since $b$ is a basis, $\\{b_0, \\ldots, b_{n-1}\\}$ are linearly independent, so $\\det(B) \\neq 0$. In Lean: `Basis.linearIndependent` + `linearIndependent_iff_matrix` + `det_ne_zero_iff_isUnit`.",
+    "content": "The lemma `basis_det_ne_zero` asserts that for any `Module.Basis (Fin n) ℝ (Fin n → ℝ)`, the matrix formed by the basis vectors has nonzero determinant. Mathematically this is immediate: basis vectors are linearly independent, so the matrix is invertible, so its determinant is nonzero. The concrete Lean proof uses the change-of-basis identity: let `e = Pi.basisFun ℝ (Fin n)` be the standard basis. Then `b.toMatrix e * e.toMatrix b = 1` (Basis.toMatrix_mul_toMatrix_flip). Now `e.toMatrix b = (Matrix.of b)ᵀ` since `(Pi.basisFun ℝ (Fin n)).repr (b j) i = (b j) i = (Matrix.of b)ᵀ i j`. Substituting: `b.toMatrix e * (Matrix.of b)ᵀ = 1`, so `det(b.toMatrix e) * det((Matrix.of b)ᵀ) = 1 ≠ 0`. Since `det((Matrix.of b)ᵀ) = det(Matrix.of b)` (Matrix.det_transpose), we get `det(Matrix.of b) ≠ 0`. The sorry reflects that this four-step chain has not yet been assembled in Lean.",
+    "mathContext": "For $b : \\mathrm{Basis}(\\mathrm{Fin}\\,n, \\mathbb{R}, \\mathrm{Fin}\\,n \\to \\mathbb{R})$, let $B \\in \\mathbf{M}_{n\\times n}(\\mathbb{R})$ with $B_{ij} = b(i)(j)$. Proof: $e.\\mathrm{toMatrix}\\,b = B^\\top$ (by `Pi.basisFun_repr`) $\\Rightarrow$ $b.\\mathrm{toMatrix}\\,e \\cdot B^\\top = I$ (by `Basis.toMatrix_mul_toMatrix_flip`) $\\Rightarrow$ $\\det(b.\\mathrm{toMatrix}\\,e) \\cdot \\det(B) = 1$ (by `Matrix.det_transpose`) $\\Rightarrow$ $\\det(B) \\neq 0$.",
     "significance": "key",
-    "relatedConcepts": ["linear independence", "matrix invertibility", "Module.Basis"],
-    "prerequisites": ["Basis.linearIndependent", "Matrix.det_ne_zero_iff_isUnit", "LinearMap.det"]
+    "relatedConcepts": ["change-of-basis matrix", "linear independence", "Pi.basisFun", "matrix transpose", "determinant product formula"],
+    "prerequisites": ["Basis.toMatrix_mul_toMatrix_flip", "Pi.basisFun_repr", "Matrix.det_transpose", "Matrix.det_mul"]
   },
   {
     "id": "ann-oq04-basis-to-lattice",
