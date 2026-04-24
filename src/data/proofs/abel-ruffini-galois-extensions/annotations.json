@@ -165,7 +165,7 @@
     "type": "insight",
     "title": "Klein Four-Group and A₄ Solvability",
     "content": "A₄ is proved solvable via the Klein four-group $V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\}$. The Lean proof defines $V_4$ as the set of elements $x$ in $A_4$ satisfying $x^2 = e$, proves $V_4 \\trianglelefteq A_4$ (by `native_decide`), and uses the short exact sequence $1 \\to V_4 \\to A_4 \\to A_4/V_4 \\to 1$. Both $V_4 \\cong \\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$ (abelian) and $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (cyclic) are solvable. This construction is the only way to prove $A_4$ solvable — $A_4$ itself is non-abelian.",
-    "mathContext": "$V_4 = \\ker(A_4 \\to A_4) \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$ (Klein four-group). $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$. Solvability chain: $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$, with abelian factors $V_4/\\{e\\} \\cong V_4$, $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$, $S_4/A_4 \\cong \\mathbb{Z}/2\\mathbb{Z}$.",
+    "mathContext": "$V_4 = \\{x \\in A_4 : x^2 = e\\} \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$ (Klein four-group — all even permutations of order $\\leq 2$). $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$. Solvability chain: $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$, with abelian factors $V_4/\\{e\\} \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$, $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$, $S_4/A_4 \\cong \\mathbb{Z}/2\\mathbb{Z}$. The Lean proof defines $V_4$ as `{x | x.1 * x.1 = 1}` in `alternatingGroup (Fin 4)` and verifies normality via `native_decide`.",
     "significance": "key",
     "relatedConcepts": [
       "Klein four-group",
