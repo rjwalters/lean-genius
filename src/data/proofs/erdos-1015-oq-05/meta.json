@@ -76,35 +76,40 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 36,
-      "summary": "Module header with imports, docstring, and namespace setup."
+      "summary": "Module header with imports, docstring, and namespace setup. Identifies which 2 of 8 axioms in Erdos1015Problem.lean can be eliminated: ramseyNumber (via Nat.find) and ramsey_upper_bound (via Erdős-Szekeres). The 6 remaining require Moon (1966), Burr-Erdős-Spencer (1975), and the probabilistic method.",
+      "mathContext": "The parent `Erdos1015Problem.lean` has 8 `axiom` declarations. This file eliminates 2 by converting them to proved theorems, reducing the axiomatic weight from 8 to 6. The Erdős-Szekeres bound $R(r,s) \\leq \\binom{r+s-2}{r-1}$ (1935) is the key proved result; `ramseyNumber` was always a definition (not a mathematical assumption). The `private` helper `ramsey_exists` wraps the existence theorem from `RamseysTheorem.lean` for use with `Nat.find`."
     },
     {
       "id": "ramsey-number-def",
       "title": "§1. Ramsey Number: Proper Definition",
       "startLine": 37,
       "endLine": 108,
-      "summary": "Replaces the axiomatized ramseyNumber with a proper Nat.find definition. Proves ramseyNumber_spec (Ramsey property holds), ramseyNumber_le_of (minimality), and HasRamseyProperty_mono (monotonicity: Ramsey property propagates to larger vertex sets via Finset embeddings)."
+      "summary": "Replaces the axiomatized ramseyNumber with a proper Nat.find definition. Proves ramseyNumber_spec (Ramsey property holds), ramseyNumber_le_of (minimality), and HasRamseyProperty_mono (monotonicity: Ramsey property propagates to larger vertex sets via Finset embeddings).",
+      "mathContext": "$R(r,s) = \\min\\{n : \\text{every 2-coloring of } K_n \\text{ has a red } K_r \\text{ or blue } K_s\\}$. Lean: `ramseyNumber r s = if h : r ≥ 1 ∧ s ≥ 1 then Nat.find (ramsey_exists r s h.1 h.2) else 0`. `ramseyNumber_spec`: `HasRamseyProperty (Fin (ramseyNumber r s)) r s` (from `Nat.find_spec`). `ramseyNumber_le_of`: minimality (any valid $n \\geq R(r,s)$, from `Nat.find_min'`). `HasRamseyProperty_mono`: $n \\leq m \\Rightarrow$ Ramsey property transfers via `Finset` embedding `exists_embedding_of_card_ge`. Known: $R(3,3)=6$, $R(4,4)=18$, $R(5,5)\\in[43,48]$."
     },
     {
       "id": "ramsey-of-add",
       "title": "§2. HasRamseyProperty_of_add",
       "startLine": 109,
       "endLine": 217,
-      "summary": "Key lemma: if HasRamseyProperty n₁ (r-1) s and HasRamseyProperty n₂ r (s-1), then HasRamseyProperty (n₁+n₂) r s. This is the inductive step of the Erdős-Szekeres bound, implementing the pigeonhole argument."
+      "summary": "Key lemma: if HasRamseyProperty n₁ (r-1) s and HasRamseyProperty n₂ r (s-1), then HasRamseyProperty (n₁+n₂) r s. This is the inductive step of the Erdős-Szekeres bound, implementing the pigeonhole argument.",
+      "mathContext": "Ramsey recurrence: $R(r,s) \\leq R(r-1,s) + R(r,s-1)$. Proof: pick vertex $v$ in $K_{n_1+n_2}$; partition remaining $n_1+n_2-1$ vertices into red neighborhood $N^+$ and blue neighborhood $N^-$; `neighborhood_card_sum`: $|N^+| + |N^-| = n_1+n_2-1$; pigeonhole: $|N^+| \\geq n_1$ or $|N^-| \\geq n_2$; Case 1: $N^+$ satisfies $(r-1,s)$ by hypothesis, extend the $(r-1)$-clique with $v$ via `extend_red_clique`; Case 2: analogous for $s$-clique. The proof is 107 lines (the file's longest), reflecting 6 sub-lemmas and full case analysis."
     },
     {
       "id": "ramsey-bound",
-      "title": "§3. Erdős-Szekeres Bound and Upper Bound Proof",
+      "title": "§3. Erdős-Szekeres Bound: ramseyBound and Inductive Proof",
       "startLine": 218,
       "endLine": 285,
-      "summary": "Defines ramseyBound r s = C(r+s-2, r-1). Proves ramseyBound_pascal (Pascal's rule for the recurrence), ramseyBound_HasRamseyProperty (the bound satisfies the Ramsey property), ramseyBound_le_four_pow (C(2t-2,t-1) ≤ 4^t), and ramsey_upper_bound (R(t,t) ≤ 4^t)."
+      "summary": "Defines ramseyBound r s = C(r+s-2, r-1). Proves ramseyBound_pascal (Pascal's rule: C(r+s-2,r-1) = C(r+s-3,r-2) + C(r+s-3,r-1)) and ramseyBound_HasRamseyProperty (strong induction on r+s using HasRamseyProperty_of_add at the Pascal recurrence). Also ramseyBound_le_four_pow: C(2t-2,t-1) ≤ 4^t via choose_le_two_pow.",
+      "mathContext": "`ramseyBound r s = Nat.choose (r+s-2) (r-1)`. `ramseyBound_pascal`: $\\binom{r+s-2}{r-1} = \\binom{r+s-3}{r-2} + \\binom{r+s-3}{r-1}$ (Pascal's rule). `ramseyBound_HasRamseyProperty`: strong induction on $r+s$ with `generalizing r s`; recursive step applies `HasRamseyProperty_of_add` at the Pascal recurrence; base cases $r=1$ or $s=1$ use `ramsey_one_left/right`. `ramseyBound_le_four_pow`: $\\binom{2t-2}{t-1} \\leq 2^{2t-2} = 4^{t-1} \\leq 4^t$ via `choose_le_two_pow : C(n,k) ≤ 2^n`."
     },
     {
-      "id": "section-286",
-      "title": "§3. Erdős-Szekeres Bound and Upper Bound Proof (continued)",
+      "id": "ramsey-upper-bound-final",
+      "title": "§4. ramsey_upper_bound and Axiom Summary",
       "startLine": 286,
       "endLine": 353,
-      "summary": "Continuation of §3. Erdős-Szekeres Bound and Upper Bound Proof."
+      "summary": "Proves ramsey_upper_bound: R(t,t) ≤ 4^t for t ≥ 1 by chaining ramseyNumber ≤ ramseyBound (from ramseyNumber_le_ramseyBound) and ramseyBound ≤ 4^t (from ramseyBound_le_four_pow). Handles t=0 separately. Closes with §5 axiom elimination summary table and #check verification of all four theorems.",
+      "mathContext": "Chain: $R(t,t) \\leq \\binom{2t-2}{t-1} \\leq 2^{2t-2} = 4^{t-1} \\leq 4^t$. `ramseyNumber_le_ramseyBound`: since `ramseyBound` has the Ramsey property (§3), minimality of `ramseyNumber` gives the inequality. `ramsey_upper_bound_all`: case split on $t=0$ ($R(0,0)=0 \\leq 1$) and $t \\geq 1$ (main bound). The bound is far from tight: the Campos-Griffiths-Morris-Sahasrabudhe (2023) breakthrough gives $R(t,t) \\leq (3.993)^t$, the first improvement over $4^t$ since 1935. The lower bound is $R(t,t) \\geq (\\sqrt{2}/e)^t \\cdot t^{1/2}$ (Erdős 1947 probabilistic method)."
     }
   ],
   "conclusion": {
