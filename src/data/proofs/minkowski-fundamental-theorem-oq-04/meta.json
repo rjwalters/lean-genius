@@ -22,5 +22,86 @@
     "latticeEquivBasis: Lattice n ≃ Module.Basis (Fin n) ℝ (Fin n → ℝ) [proved]",
     "covolume_eq_volume_fundamentalDomain: ENNReal.ofReal L.covolume = vol(ZSpan.fundamentalDomain (L.toModuleBasis n)) [not yet formalized — Lattice struct has no covolume field]"
   ],
-  "mathBackground": "The custom Lattice type wraps a basis matrix with an invertibility condition. Mathlib's ZSpan approach abstracts this as Submodule.span ℤ (Set.range b) for a Module.Basis b. The central bridge is ZSpan.volume_fundamentalDomain, which shows vol(fundamentalDomain b) = ENNReal.ofReal |(Matrix.of b).det|."
+  "mathBackground": "The custom Lattice type wraps a basis matrix with an invertibility condition. Mathlib's ZSpan approach abstracts this as Submodule.span ℤ (Set.range b) for a Module.Basis b. The central bridge is ZSpan.volume_fundamentalDomain, which shows vol(fundamentalDomain b) = ENNReal.ofReal |(Matrix.of b).det|.",
+  "overview": {
+    "historicalContext": "Minkowski's Theorem (1896) is the cornerstone of the geometry of numbers: any convex, centrally symmetric body in ℝⁿ with volume exceeding 2ⁿ times the covolume of a lattice must contain a nonzero lattice point. In formal mathematics, lattices admit several equivalent representations. Mathlib's canonical ZSpan approach models a rank-n lattice as the integer span of a Module.Basis, while our parent proof uses a more elementary custom Lattice type: an invertible n×n matrix. Both representations capture the same mathematical object, but proving their equivalence formally requires careful Lean 4 API work. This open question — whether the custom Lattice n and Mathlib's Module.Basis (Fin n) ℝ (Fin n → ℝ) are in canonical bijection — arose naturally during the formalization of Minkowski's theorem. Resolving it enables theorem transfer: any result stated in terms of the custom API can be exported to Mathlib's ZLattice/ZSpan framework, and vice versa.",
+    "problemStatement": "Is the custom `Lattice n` structure (an explicit invertible $n \\times n$ matrix over $\\mathbb{R}$) canonically equivalent to Mathlib's `Module.Basis (Fin n) ℝ (Fin n → ℝ)` (an abstract basis for $\\mathbb{R}^n$ as an $\\mathbb{R}$-module)? Formally, is there a bijection $\\varphi : \\text{Lattice}\\, n \\simeq \\text{Basis}(\\text{Fin}\\,n,\\, \\mathbb{R},\\, \\mathbb{R}^n)$ whose forward map is `toModuleBasis` and whose inverse is `latticeOfBasis`?",
+    "proofStrategy": "The equivalence is established via two explicit conversion functions and a proof that they are mutual inverses. The forward map `toModuleBasis` (defined in the parent proof) sends a custom Lattice to a Module.Basis by using the matrix rows as basis vectors. The inverse `latticeOfBasis` (constructed here) wraps a Module.Basis back into a custom Lattice using the matrix `Matrix.of b`. The critical enabling step is `basis_matrix_det_ne_zero`: every basis matrix has nonzero determinant, proved via the change-of-basis product identity `det(b.toMatrix e) · det(Matrix.of b) = 1`. The round-trip identities then follow by reducing to matrix equality.",
+    "keyInsights": [
+      "The entire equivalence hinges on a single key lemma: `basis_matrix_det_ne_zero`. For any `b : Module.Basis (Fin n) ℝ (Fin n → ℝ)`, the matrix `Matrix.of b` (whose $(i,j)$-entry is $b(i)(j)$) has nonzero determinant. The proof uses the Mathlib identity `Basis.toMatrix_mul_toMatrix_flip b e = 1`, which gives $\\det(b.\\text{toMatrix}\\,e) \\cdot \\det(\\text{Matrix.of}\\,b) = 1$, so $\\det(\\text{Matrix.of}\\,b) \\neq 0$.",
+      "Working in `Fin n → ℝ` (the product type) rather than `EuclideanSpace ℝ (Fin n)` (the PiLp type) avoids module-instance complications. For the standard basis `e = Pi.basisFun ℝ (Fin n)`, each `e.repr` is definitionally the coordinate projection, making `e.toMatrix b = (Matrix.of b)ᵀ` provable by `simp`.",
+      "The round-trip identity for Module.Basis (`latticeOfBasis_toModuleBasis`) is proved by showing the two bases agree as matrices: `Matrix.of ((latticeOfBasis b).toModuleBasis n) = Matrix.of b`. Since `Matrix.of` is the identity on `Fin n → Fin n → ℝ`, matrix equality lifts to basis equality coordinate-wise via `DFunLike.ext`.",
+      "The `noncomputable` keyword on `latticeEquivBasis` reflects a mathematical subtlety: while the equivalence is canonical and its construction is explicit, `Lattice.toLinearEquiv` is built from `LinearEquiv.ofBijective`, which uses classical choice to extract a surjectivity witness. The equivalence exists definitively but is not decidably computable.",
+      "The natural completion of this API comparison — a formal proof that `ENNReal.ofReal L.covolume = λ(ZSpan.fundamentalDomain (L.toModuleBasis n))` — remains open because the custom `Lattice` struct has no `covolume` field. The bridge would use `ZSpan.volume_fundamentalDomain` together with `toModuleBasis_matrix_eq` to chain the determinant formulas."
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-setup",
+      "title": "Setup and Open Question",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "File-level documentation stating the open question and its answer. Imports from Mathlib (ZLattice, InnerProductSpace, matrix determinant, Tactic). Namespace and variable declarations. The custom Lattice structure: a matrix together with a proof that its determinant is nonzero."
+    },
+    {
+      "id": "section-key-lemma",
+      "title": "Key Lemma: Basis Matrix Has Nonzero Determinant",
+      "startLine": 45,
+      "endLine": 76,
+      "summary": "Part 1. A helper lemma shows that for the standard basis e = Pi.basisFun ℝ (Fin n), we have e.toMatrix b = (Matrix.of b)ᵀ (proved by simp). The main lemma basis_matrix_det_ne_zero then uses the change-of-basis product identity to conclude det(Matrix.of b) ≠ 0 for any Module.Basis."
+    },
+    {
+      "id": "section-lattice-of-basis",
+      "title": "Converse Conversion: Module.Basis → Lattice n",
+      "startLine": 77,
+      "endLine": 86,
+      "summary": "Part 2. Defines latticeOfBasis, which wraps a Module.Basis into a custom Lattice n by supplying basis_matrix_det_ne_zero as the invertibility witness. Completes the converse direction of the equivalence."
+    },
+    {
+      "id": "section-linear-equiv",
+      "title": "Linear Equivalence and Module Basis Extraction",
+      "startLine": 87,
+      "endLine": 119,
+      "summary": "Part 3. Constructs Lattice.toLinearEquiv (a linear equivalence on Fin n → ℝ via transpose matrix multiplication) and Lattice.toModuleBasis (the forward map, via Pi.basisFun.map). Proves toModuleBasis_matrix_eq: the matrix of the resulting Module.Basis equals the original Lattice basis matrix."
+    },
+    {
+      "id": "section-round-trips",
+      "title": "Round-Trip Identities",
+      "startLine": 121,
+      "endLine": 149,
+      "summary": "Part 4. Proves both round-trip identities: toModuleBasis_latticeOfBasis (the Lattice round-trip, by Lattice.mk.injEq and toModuleBasis_matrix_eq) and latticeOfBasis_toModuleBasis (the Module.Basis round-trip, by reducing to matrix equality via Matrix.of and DFunLike.ext)."
+    },
+    {
+      "id": "section-equivalence",
+      "title": "The Type Equivalence",
+      "startLine": 150,
+      "endLine": 167,
+      "summary": "Part 5. Packages the conversion functions and round-trip identities into latticeEquivBasis : Lattice n ≃ Module.Basis (Fin n) ℝ (Fin n → ℝ), the canonical answer to the open question. The noncomputable equivalence is the main theorem of this file."
+    }
+  ],
+  "conclusion": {
+    "summary": "The file fully proves `Lattice n ≃ Module.Basis (Fin n) ℝ (Fin n → ℝ)`: the custom Lattice type used in the parent Minkowski proof is canonically equivalent to Mathlib's standard basis type. All five key results — basis_matrix_det_ne_zero, latticeOfBasis, the two round-trip identities, and latticeEquivBasis — are proved with zero sorries.",
+    "implications": "The equivalence validates the custom Lattice API as a mathematically sound and independently complete formalization of lattices in ℝⁿ. It enables theorem transfer: any result about the custom Lattice type (such as the main Minkowski theorem) can be restated in terms of Mathlib's ZSpan/ZLattice framework by transporting along latticeEquivBasis. The proof pattern — API equivalence via round-trip lemmas through matrix equality — is a reusable template for comparing different formalization strategies in Lean 4.",
+    "openQuestions": [
+      "Can the covolume bridge be formalized? Specifically, is `ENNReal.ofReal |det L.basis| = λ(ZSpan.fundamentalDomain (L.toModuleBasis n))` provable using `ZSpan.volume_fundamentalDomain` together with `toModuleBasis_matrix_eq`? This would require adding a `covolume` field (or definition) to the custom Lattice type.",
+      "Does the full Minkowski theorem admit a clean Lean 4 proof purely in terms of Mathlib's `ZLattice` and `ZSpan.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`, without reference to the custom Lattice type, once the API equivalence is available?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "minkowski-fundamental-theorem",
+      "relationship": "parent",
+      "description": "The parent proof defining the custom Lattice type, the toModuleBasis conversion, and the main Minkowski theorem proved using the explicit matrix API."
+    },
+    {
+      "id": "minkowski-fundamental-theorem-oq-02",
+      "relationship": "sibling",
+      "description": "OQ-02 derives Minkowski's class number bound for algebraic number fields from the geometry-of-numbers framework, using Mathlib's canonical ZLattice infrastructure."
+    },
+    {
+      "id": "minkowski-theorem",
+      "relationship": "related",
+      "description": "An independent Lean 4 formalization of Minkowski's fundamental theorem, using a different proof architecture and the standard Mathlib ZSpan approach."
+    }
+  ]
 }
