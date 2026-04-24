@@ -352,3 +352,49 @@ directly gives `i = j` for `i j : Fin 1` without needing any extra hypotheses.
    - Show `dens N (g•A) ≤ dens N A + 2*|n|/(2N+1)` (symmetric difference of windows ≤ 2|n|)
    - Show `U.lim (fun N => 2*|n|/(2N+1)) = 0` (converges to 0 along atTop ⊆ U)
    - Conclude `U.lim (dens · (g•A)) = U.lim (dens · A)` via monotonicity of U.lim
+
+---
+
+## Session 2026-04-24 (Session 6) — int_amenable Fully Proved
+
+**Mode**: REVISIT
+**Outcome**: progress — `int_amenable` translation invariance proved (4→3 sorries)
+
+### What I Did
+
+1. Continued from prior session (Session 5) which had proved total mass and additivity
+2. Completed the translation invariance proof via window-shift argument:
+   - `hfilt_card`: Bijection `k ↦ k-n` shows card(filter(g•A) in [-N,N]) = card(filter(A) in [-N-n,N-n])
+   - `hsdiff_fwd`/`hsdiff_rev`: sdiff card = n.natAbs (window shift leaves exactly |n| elements out)
+   - `hcard_bound`: General monotonicity bound via sdiff decomposition
+   - `hdens_fwd`/`hdens_rev`: |dens_N(g•A) - dens_N(A)| ≤ n.natAbs/(2N+1)
+   - `herr_tendsto`: n.natAbs/(2N+1) → 0 via squeeze (lower = 0, upper = n.natAbs/N → 0)
+   - Final le_antisymm using both bounds + ultrafilter convergence
+3. Fixed two Lean4 API bugs:
+   - `Finset.Int.card_fintypeIcc` → `Int.card_Icc` (correct Mathlib lemma name)
+   - `ENNReal.Tendsto.const_mul` condition: `Or.inr hfin` (where `hfin : n.natAbs ≠ ⊤`)
+     because signature is `(hb : b ≠ 0 ∨ a ≠ ∞)`, need right disjunct `a ≠ ∞`
+
+### Key Findings
+
+- `Int.card_Icc : #(Icc a b) = (b + 1 - a).toNat` — correct Mathlib4 name (not Finset.Int.card_fintypeIcc)
+- `ENNReal.Tendsto.const_mul (hm : Tendsto m f (nhds b)) (hb : b ≠ 0 ∨ a ≠ ∞)` — use `Or.inr` to prove `a ≠ ∞`
+- `ENNReal.div_le_div_left (h : a ≤ b) (c : ℝ≥0∞) : c / b ≤ c / a` — correct for window bound
+- `le_of_tendsto_of_tendsto'` works for showing U-limits respect pointwise inequality
+
+### Files Modified
+
+- `proofs/Proofs/LebesgueMeasureOQ06.lean` (+114 lines: int_amenable proof complete)
+- `src/data/proofs/lebesgue-measure-oq-06/meta.json` (lineCount 741→673, sorries still 3)
+- `src/data/research/problems/lebesgue-measure-oq-06.json` (knowledge updated)
+
+### Remaining Sorries (3)
+
+1. `hausdorff_free_subgroup` — Hausdorff 1914, ~300 lines of rotation matrix + number theory
+2. `banach_tarski` — ~800 lines via Hausdorff paradox, requires AC
+3. `banach_tarski_pieces_nonmeasurable` — ~200 lines (can be proved independently via Vitali/Axiom of Choice)
+
+### Status
+
+File: 3 sorries (down from 4 in HEAD). Core framework fully proved.
+Remaining 3 sorries are all HARD established results needing major infrastructure.

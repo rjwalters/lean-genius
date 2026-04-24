@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 4): paradoxical_no_finite_measure proved (sorry eliminated). 4 sorries remain (hausdorff_free_subgroup, banach_tarski, non-measurability, int_amenable).",
+    "progressSummary": "PROGRESS: int_amenable proved (window-shift argument). 3 sorries remain: hausdorff_free_subgroup, banach_tarski, banach_tarski_pieces_nonmeasurable (all HARD).",
     "builtItems": [
       "Equidecomposable (G-equidecomposability, with notation ≃ᴳ[G]) — proofs/Proofs/LebesgueMeasureOQ06.lean:43",
       "IsParadoxical — proofs/Proofs/LebesgueMeasureOQ06.lean:81",
@@ -43,7 +43,8 @@
       "free_group_not_amenable (axiomatized, sorry) — proofs/Proofs/LebesgueMeasureOQ06.lean:276",
       "int_amenable (axiomatized, sorry) — proofs/Proofs/LebesgueMeasureOQ06.lean:271",
       "Gallery entry: src/data/proofs/lebesgue-measure-oq-06/ (meta.json, index.ts, annotations.json)",
-      "paradoxical_no_finite_measure: fully proved in LebesgueMeasureOQ06.lean — no sorry; key lemma: le_add_of_nonneg_right (zero_le _) + disjoint_sdiff_self_right + Set.union_diff_cancel"
+      "paradoxical_no_finite_measure: fully proved in LebesgueMeasureOQ06.lean — no sorry; key lemma: le_add_of_nonneg_right (zero_le _) + disjoint_sdiff_self_right + Set.union_diff_cancel",
+      "int_amenable (lines 263-471): complete proof, 4→3 sorry reduction"
     ],
     "insights": [
       "Banach-Tarski NOT in Mathlib as of 2026-04 — confirmed via search. Available Mathlib pieces: Matrix.orthogonalGroup, FreeGroup, IsometryEquiv, EuclideanSpace.",
@@ -53,7 +54,8 @@
       "Full Banach-Tarski proof estimate: 800-1200 lines. Components: free subgroup matrix verification (number theory), F₂ paradoxical decomposition (word combinatorics), lift to S² (orbit analysis), extend to B³ (cone geometry).",
       "amenability connects to paradox dually: G amenable ↔ no G-set is paradoxical (Tarski). So F₂ not amenable = F₂ paradoxical. SO(3) inherits non-amenability from F₂.",
       "The 2D analogue fails for bounded sets: the isometry group of ℝ² (via SO(2) which is abelian) is amenable — no Banach-Tarski in 2D. The Laczkovich squaring-the-circle uses infinitely many pieces and is a different phenomenon.",
-      "paradoxical_no_finite_measure proved: B∪C ⊆ A (subset inclusion), derive monotonicity μ(B∪C) ≤ μ(A) from finite additivity via decomposition A = (B∪C) ∪ (A\\(B∪C)), sandwich gives μ(A)+μ(A) = μ(A)"
+      "paradoxical_no_finite_measure proved: B∪C ⊆ A (subset inclusion), derive monotonicity μ(B∪C) ≤ μ(A) from finite additivity via decomposition A = (B∪C) ∪ (A\\(B∪C)), sandwich gives μ(A)+μ(A) = μ(A)",
+      "int_amenable (ℤ amenable via Cesàro window-shift) fully proved: uses non-principal ultrafilter U on ℕ, density function dens N A = card(A∩[-N,N])/(2N+1), proves total mass + additivity + translation invariance via window-shift bound |dens_N(g•A) - dens_N(A)| ≤ |n|/(2N+1) → 0 along U"
     ],
     "mathlibGaps": [
       "Banach-Tarski theorem itself not in Mathlib (no formalization as of 2026-04)",

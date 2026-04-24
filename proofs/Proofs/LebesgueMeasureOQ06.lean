@@ -294,13 +294,12 @@ theorem int_amenable : IsAmenable (Multiplicative ℤ) := by
     have hfilt : (Finset.Icc (-(N : ℤ)) N).filter
         (fun k => Multiplicative.ofAdd k ∈ (Set.univ : Set (Multiplicative ℤ))) =
         Finset.Icc (-(N : ℤ)) N := Finset.filter_True_of_mem (fun _ _ => trivial)
-    rw [hfilt, Finset.Int.card_fintypeIcc, Int.toNat_of_nonneg (by omega)]
+    -- Int.card_Icc : #(Icc a b) = (b + 1 - a).toNat
+    -- For Icc (-(N : ℤ)) N: card = (N + 1 - (-(N : ℤ))).toNat = (2*N+1).toNat = 2*N+1
+    rw [hfilt, Int.card_Icc,
+        show (N + 1 - -(N : ℤ)).toNat = 2 * N + 1 from by push_cast; omega]
     push_cast
-    rw [show (2 * (N : ℝ≥0∞) + 1) = (2 * (N : ℝ≥0∞) + 1) from rfl]
-    norm_cast
-    rw [ENNReal.div_self]
-    · norm_cast; omega
-    · norm_cast; omega
+    exact ENNReal.div_self (by norm_cast; omega) (by norm_cast; omega)
   -- Part 2: Finite additivity μ(A ∪ B) = μ(A) + μ(B) for disjoint A, B
   · intro A B hAB
     -- At each N, the equality is exact: dens N (A∪B) = dens N A + dens N B
@@ -352,12 +351,127 @@ theorem int_amenable : IsAmenable (Multiplicative ℤ) := by
         exact ⟨Multiplicative.ofAdd (m - n), ha, by
           simp [Multiplicative.ofAdd_mul, Multiplicative.ofAdd_toAdd]
           congr 1; push_cast; ring⟩
-    -- The window-shift approximation:
-    -- |dens N (g•A) - dens N A| ≤ 2*|n| / (2N+1)
-    -- Because the windows Icc(-N,N) and Icc(-N-n, N-n) differ by ≤ 2|n| elements.
-    -- As N → ∞ (along atTop, hence along U), 2|n|/(2N+1) → 0.
-    -- Since U extends atTop and dens values are non-negative ENNReals:
-    sorry -- Window-shift: 2|n|/(2N+1)→0 along U implies dens·(g•A) and dens·A same U-limit
+    -- Step 1: cardinality bijection via k ↦ k-n
+    have hfilt_card : ∀ N : ℕ,
+        ((Finset.Icc (-(N : ℤ)) N).filter (fun k => Multiplicative.ofAdd k ∈ g • A)).card =
+        ((Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).filter
+          (fun k => Multiplicative.ofAdd k ∈ A)).card := by
+      intro N
+      apply Finset.card_bij (fun k _ => k - n)
+      · intro k hk
+        simp only [Finset.mem_filter, Finset.mem_Icc] at hk ⊢
+        exact ⟨⟨by linarith [hk.1.1], by linarith [hk.1.2]⟩, (h_mem k).mp hk.2⟩
+      · intro k₁ _ k₂ _ h; linarith
+      · intro k hk
+        simp only [Finset.mem_filter, Finset.mem_Icc] at hk ⊢
+        exact ⟨k + n, ⟨⟨by linarith [hk.1.1], by linarith [hk.1.2]⟩,
+          (h_mem (k + n)).mpr (by rw [show (k + n : ℤ) - n = k from by ring]; exact hk.2)⟩,
+          by ring⟩
+    -- Auxiliary: sdiff card = n.natAbs (window shift leaves exactly |n| elements)
+    have hsdiff_fwd : ∀ N : ℕ,
+        (Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n) \ Finset.Icc (-(N : ℤ)) N).card =
+        n.natAbs := by
+      intro N
+      rcases le_or_lt 0 n with hn | hn
+      · rcases eq_or_lt_of_le hn with rfl | hn'
+        · simp
+        · have heq : Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n) \ Finset.Icc (-(N : ℤ)) N =
+                     Finset.Icc (-(N : ℤ) - n) (-(N : ℤ) - 1) := by
+            ext k; simp only [Finset.mem_sdiff, Finset.mem_Icc]; omega
+          rw [heq, Int.card_Icc]; push_cast; omega
+      · have heq : Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n) \ Finset.Icc (-(N : ℤ)) N =
+                   Finset.Icc ((N : ℤ) + 1) ((N : ℤ) - n) := by
+          ext k; simp only [Finset.mem_sdiff, Finset.mem_Icc]; omega
+        rw [heq, Int.card_Icc]; push_cast; omega
+    have hsdiff_rev : ∀ N : ℕ,
+        (Finset.Icc (-(N : ℤ)) N \ Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)).card =
+        n.natAbs := by
+      intro N
+      rcases le_or_lt 0 n with hn | hn
+      · rcases eq_or_lt_of_le hn with rfl | hn'
+        · simp
+        · have heq : Finset.Icc (-(N : ℤ)) N \ Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n) =
+                     Finset.Icc ((N : ℤ) - n + 1) N := by
+            ext k; simp only [Finset.mem_sdiff, Finset.mem_Icc]; omega
+          rw [heq, Int.card_Icc]; push_cast; omega
+      · have heq : Finset.Icc (-(N : ℤ)) N \ Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n) =
+                   Finset.Icc (-(N : ℤ)) (-(N : ℤ) - n - 1) := by
+          ext k; simp only [Finset.mem_sdiff, Finset.mem_Icc]; omega
+        rw [heq, Int.card_Icc]; push_cast; omega
+    -- Step 2: card bound in both directions via sdiff decomposition
+    have hcard_bound : ∀ (S T : Finset ℤ) (A' : Set (Multiplicative ℤ)),
+        (S.filter (fun k => Multiplicative.ofAdd k ∈ A')).card ≤
+        (T.filter (fun k => Multiplicative.ofAdd k ∈ A')).card + (S \ T).card := by
+      intro S T A'
+      have hmono : S.filter (fun k => Multiplicative.ofAdd k ∈ A') ⊆
+          T.filter (fun k => Multiplicative.ofAdd k ∈ A') ∪ (S \ T) := by
+        intro x hx
+        simp only [Finset.mem_filter, Finset.mem_union, Finset.mem_sdiff] at *
+        by_cases hxT : x ∈ T
+        · exact Or.inl ⟨hxT, hx.2⟩
+        · exact Or.inr ⟨hx.1, hxT⟩
+      calc (S.filter (fun k => Multiplicative.ofAdd k ∈ A')).card
+          ≤ (T.filter (fun k => Multiplicative.ofAdd k ∈ A') ∪ (S \ T)).card :=
+            Finset.card_le_card hmono
+        _ ≤ (T.filter (fun k => Multiplicative.ofAdd k ∈ A')).card + (S \ T).card :=
+            Finset.card_union_le _ _
+    -- Step 3: density bounds in both directions
+    have hdens_fwd : ∀ N : ℕ, dens N (g • A) ≤
+        dens N A + (n.natAbs : ℝ≥0∞) / (2 * (N : ℝ≥0∞) + 1) := by
+      intro N
+      simp only [dens]
+      rw [hfilt_card N, ← ENNReal.add_div]
+      apply ENNReal.div_le_div_right
+      have hc := hcard_bound (Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n))
+                              (Finset.Icc (-(N : ℤ)) N) A
+      rw [hsdiff_fwd N] at hc
+      exact_mod_cast hc
+    have hdens_rev : ∀ N : ℕ, dens N A ≤
+        dens N (g • A) + (n.natAbs : ℝ≥0∞) / (2 * (N : ℝ≥0∞) + 1) := by
+      intro N
+      simp only [dens]
+      rw [hfilt_card N, ← ENNReal.add_div]
+      apply ENNReal.div_le_div_right
+      have hc := hcard_bound (Finset.Icc (-(N : ℤ)) N)
+                              (Finset.Icc (-(N : ℤ) - n) ((N : ℤ) - n)) A
+      rw [hsdiff_rev N] at hc
+      exact_mod_cast hc
+    -- Step 4: error term n.natAbs/(2N+1) → 0 along atTop via squeeze
+    have herr_tendsto : Filter.Tendsto (fun N : ℕ => (n.natAbs : ℝ≥0∞) / (2 * ↑N + 1))
+        Filter.atTop (nhds 0) := by
+      -- ENNReal.natCast_ne_top: (n.natAbs : ℝ≥0∞) ≠ ⊤ since it's a finite ℕ cast
+      have hfin : (n.natAbs : ℝ≥0∞) ≠ ⊤ := ENNReal.natCast_ne_top _
+      apply tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds
+      · -- upper bound: n.natAbs * N⁻¹ → 0
+        -- ENNReal.Tendsto.const_mul signature: (hm : Tendsto m f (nhds b)) (hb : b ≠ 0 ∨ a ≠ ∞)
+        -- Here: b = 0 (limit of N⁻¹), a = n.natAbs (constant).
+        -- Condition: 0 ≠ 0 ∨ n.natAbs ≠ ∞. Use Or.inr (right: a ≠ ∞ = n.natAbs ≠ ⊤)
+        have h0 : (0 : ℝ≥0∞) = (n.natAbs : ℝ≥0∞) * 0 := (mul_zero _).symm
+        rw [h0]
+        exact ENNReal.Tendsto.const_mul ENNReal.tendsto_inv_nat_nhds_zero (Or.inr hfin)
+      · exact Filter.eventually_of_forall (fun _ => zero_le _)
+      · -- n.natAbs/(2N+1) ≤ n.natAbs * N⁻¹ = n.natAbs / N (since N ≤ 2N+1)
+        filter_upwards with N
+        rw [← ENNReal.div_eq_mul_inv]
+        exact ENNReal.div_le_div_left (by norm_cast; omega) _
+    -- Step 5: le_antisymm using both density bounds
+    apply le_antisymm
+    · -- U.lim(dens·(g•A)) ≤ U.lim(dens·A)
+      have htend_err : Filter.Tendsto
+          (fun N => dens N A + (n.natAbs : ℝ≥0∞) / (2 * ↑N + 1))
+          U.toFilter (nhds (U.lim (dens · A) + 0)) :=
+        (Ultrafilter.tendsto_nhds_lim rfl).add
+          (herr_tendsto.mono_left (Ultrafilter.of_le Filter.atTop))
+      rw [add_zero] at htend_err
+      exact le_of_tendsto_of_tendsto' (Ultrafilter.tendsto_nhds_lim rfl) htend_err hdens_fwd
+    · -- U.lim(dens·A) ≤ U.lim(dens·(g•A))
+      have htend_err_rev : Filter.Tendsto
+          (fun N => dens N (g • A) + (n.natAbs : ℝ≥0∞) / (2 * ↑N + 1))
+          U.toFilter (nhds (U.lim (dens · (g • A)) + 0)) :=
+        (Ultrafilter.tendsto_nhds_lim rfl).add
+          (herr_tendsto.mono_left (Ultrafilter.of_le Filter.atTop))
+      rw [add_zero] at htend_err_rev
+      exact le_of_tendsto_of_tendsto' (Ultrafilter.tendsto_nhds_lim rfl) htend_err_rev hdens_rev
 
 /-- Words starting with generator g (as positive or inverse letter).
     NOTE: Mathlib convention: (g, true) = positive generator, (g, false) = inverse.
