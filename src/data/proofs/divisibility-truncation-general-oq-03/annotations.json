@@ -9,43 +9,17 @@
     "type": "insight",
     "title": "Bézout Identity Directly Gives the Osculator",
     "content": "`bezout_gives_osculator` extracts the osculator from Mathlib's `Nat.gcd_eq_gcd_ab` identity: `gcd(10,d) = 10·gcdA(10,d) + d·gcdB(10,d)`. When `gcd(10,d) = 1` (i.e., d coprime to 10), this gives `1 = 10·gcdA(10,d) + d·gcdB(10,d)`, rearranging to `d | 10·gcdA(10,d) − 1`. The proof uses `linear_combination -hbez` to close the divisibility goal. This is the key observation: the osculator IS the Bézout coefficient, no further construction needed.",
-    "mathContext": "The modular inverse of 10 mod $d$ is exactly $\\text{gcdA}(10,d) \\bmod d$. The Bézout identity certifies this directly: if $1 = 10a + db$, then $10a \\equiv 1 \\pmod{d}$, so $a$ is the inverse and $d \\mid 10a - 1$. The `linear_combination` tactic closes the goal by providing the linear witness $-\\text{gcdB}(10,d)$.",
+    "mathContext": "The modular inverse of 10 mod d is exactly `gcdA(10,d) mod d`. The Bézout identity certifies this directly: if `1 = 10a + db`, then `10a ≡ 1 (mod d)`, so `a` is the inverse and `d | 10a − 1`.",
     "significance": "key",
     "relatedConcepts": [
       "Nat.gcd_eq_gcd_ab",
       "Nat.gcdA",
-      "linear_combination",
-      "modular inverse"
+      "linear_combination"
     ],
     "prerequisites": [
       "Bézout's identity",
       "Modular inverses",
       "Nat.Coprime"
-    ]
-  },
-  {
-    "id": "ann-divtrunc-oq03-osculator-def-structure",
-    "proofId": "divisibility-truncation-general-oq-03",
-    "range": {
-      "startLine": 59,
-      "endLine": 80
-    },
-    "type": "definition",
-    "title": "IsOsculator Definition and Algebraic Structure Lemmas",
-    "content": "`def IsOsculator (d : ℕ) (c : ℤ) : Prop := (d : ℤ) ∣ 10 * c − 1` cleanly defines the osculator condition. Three supporting lemmas establish the algebraic structure:\n\n**`bezout_is_osculator`**: A one-line corollary — `gcdA(10,d)` satisfies `IsOsculator d (gcdA 10 d)` by direct application of `bezout_gives_osculator`. This acts as the named introduction rule.\n\n**`osculator_shift`**: Adding `d` to any osculator yields another osculator: if `d | 10c − 1`, then `d | 10(c+d) − 1 = (10c−1) + 10d`. The proof rewrites `10*(c+d)−1 = (10c−1) + 10d` by `ring`, then applies `dvd_add h (dvd_mul_of_dvd_right (dvd_refl d) 10)`.\n\n**`osculator_congr`**: If `c' ≡ c (mod d)` and `c` is an osculator, so is `c'`. Rewrites `10c'−1 = (10c−1) + 10(c'−c)` by `ring`, then applies `dvd_add` with the two divisibility hypotheses. Together these show: osculators form a coset $c_0 + d\\mathbb{Z}$ in $\\mathbb{Z}$.",
-    "mathContext": "The set $\\{c \\in \\mathbb{Z} : d \\mid 10c - 1\\}$ is a coset of $d\\mathbb{Z}$: it equals $c_0 + d\\mathbb{Z}$ for any fixed osculator $c_0$. `osculator_shift` shows $+d$ maps osculators to osculators (generating the coset structure); `osculator_congr` generalizes to arbitrary multiples of $d$. Together they prove: the osculators are exactly $\\{c_0 + kd : k \\in \\mathbb{Z}\\}$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "IsOsculator",
-      "dvd_add",
-      "dvd_mul_of_dvd_right",
-      "coset",
-      "modular equivalence"
-    ],
-    "prerequisites": [
-      "Integer divisibility in Mathlib",
-      "dvd_add lemma",
-      "ring tactic"
     ]
   },
   {
@@ -57,45 +31,18 @@
     },
     "type": "insight",
     "title": "Osculator Uniqueness via Coprimality: IsCoprime.dvd_of_dvd_mul_left",
-    "content": "`osculator_unique_mod` shows any two osculators c, c' satisfy `d | c − c'`. Proof: if `d | 10c − 1` and `d | 10c' − 1`, then `d | 10(c − c')` (by `dvd_sub`). Since `gcd(10,d) = 1` (coprimality), `IsCoprime.dvd_of_dvd_mul_left` gives `d | c − c'`. This is the crucial coprimality cancellation: `gcd(10,d) = 1` allows removing the factor 10 from the divisibility.",
-    "mathContext": "In $\\mathbb{Z}$, if $a \\mid bc$ and $\\gcd(a,b) = 1$, then $a \\mid c$. Here: $d \\mid 10(c-c')$ and $\\gcd(d,10) = 1$ (the `.symm` is needed because Mathlib's `IsCoprime.dvd_of_dvd_mul_left` expects the coprimality in a specific order) gives $d \\mid (c-c')$. The result confirms the coset structure: any two osculators differ by a multiple of $d$.",
+    "content": "`osculator_unique_mod` shows any two osculators c, c' satisfy `d | c − c'`. Proof: if `d | 10c − 1` and `d | 10c' − 1`, then `d | 10(c − c')`. Since `gcd(10,d) = 1` (coprimality), `IsCoprime.dvd_of_dvd_mul_left` gives `d | c − c'`. This is the crucial coprimality cancellation: `gcd(10,d) = 1` allows removing the factor 10 from the divisibility.",
+    "mathContext": "In a UFD (or any integral domain), if `a | bc` and `gcd(a,b) = 1`, then `a | c`. Here: `d | 10(c−c')` and `gcd(d,10) = 1` (note: symmetry of coprimality is used via `.symm`) gives `d | (c−c')`.",
     "significance": "key",
     "relatedConcepts": [
       "IsCoprime.dvd_of_dvd_mul_left",
       "Nat.Coprime.isCoprime",
-      "dvd_sub",
-      "coprimality cancellation"
+      "dvd_sub"
     ],
     "prerequisites": [
       "IsCoprime in Mathlib",
       "Divisibility and coprimality",
       "Nat.Coprime.symm"
-    ]
-  },
-  {
-    "id": "ann-divtrunc-oq03-reduction",
-    "proofId": "divisibility-truncation-general-oq-03",
-    "range": {
-      "startLine": 91,
-      "endLine": 123
-    },
-    "type": "concept",
-    "title": "Modular Reduction: Three Theorems Pinning the Canonical Representative",
-    "content": "Part III reduces the integer osculator to the canonical representative in $[0,d)$. Three theorems build on each other:\n\n**`osculator_mod_d_is_osculator`**: `gcdA(10,d) % d` is still an osculator. Strategy: apply `osculator_congr` with the congruence `gcdA(10,d) % d ≡ gcdA(10,d) (mod d)`. The congruence witness is `⟨-(gcdA 10 d / d), proof⟩` derived from `Int.ediv_add_emod` (the division-with-remainder identity `q*d + r = n`) and closed by `linarith`.\n\n**`osculator_mod_d_bounded`**: The reduced osculator has `(gcdA(10,d) % d).natAbs < d`. Uses `Int.emod_nonneg` (remainder ≥ 0 when divisor ≠ 0) and `Int.emod_lt_of_pos` (remainder < divisor when positive). `Int.natAbs_of_nonneg` converts the non-negative integer to `natAbs`, then `exact_mod_cast` closes the cast.\n\n**`canonical_osculator_unique`**: Every osculator $c$ satisfies $d \\mid c - (\\text{gcdA}(10,d) \\bmod d)$. Chains three divisibility facts: $d \\mid c - \\text{gcdA}$, $d \\mid \\text{gcdA} - (\\text{gcdA} \\bmod d)$ (both from `osculator_unique_mod`), then combines via `dvd_add` with the algebraic identity $c - r = (c - a) + (a - r)$.",
-    "mathContext": "The three theorems together prove: $\\text{gcdA}(10,d) \\bmod d$ is the unique osculator in $[0,d)$. This is the canonical representative of the coset $\\{c : d \\mid 10c - 1\\}$ in $[0,d)$. The reduction uses the key identity $n = d \\cdot (n / d) + (n \\bmod d)$ (`Int.ediv_add_emod`) to express the congruence witness.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Int.ediv_add_emod",
-      "Int.emod_nonneg",
-      "Int.emod_lt_of_pos",
-      "Int.natAbs_of_nonneg",
-      "linarith",
-      "canonical representative"
-    ],
-    "prerequisites": [
-      "osculator_congr",
-      "osculator_unique_mod",
-      "Int.emod properties in Mathlib"
     ]
   },
   {
@@ -108,20 +55,17 @@
     "type": "insight",
     "title": "Existential Proof Without Continued Fractions",
     "content": "`cf_bezout_correspondence` was originally planned as ~200 lines connecting `GenContFract` and `Nat.xgcd`. The actual proof is ~20 lines: (1) `n₀ := gcdA(10,d) % d` is a non-negative integer in [0,d) (by `Int.emod_nonneg` and `Int.emod_lt_of_pos`); (2) it is still an osculator (by `osculator_mod_d_is_osculator`); (3) `Int.toNat n₀` is the ℕ witness. The `refine ⟨n₀.toNat, ?_, ?_⟩` pattern splits into the bound `n₀.toNat < d` and the osculator property. `omega` closes the bound after casting back via `Int.toNat_of_nonneg`.",
-    "mathContext": "The existential $\\exists n \\in \\mathbb{N},\\ n < d \\wedge d \\mid 10n - 1$ does not require knowing WHICH convergent of $10/d$ equals $n$. It only needs: a valid osculator exists, and it can be reduced to $[0,d)$. The CF connection is informative but not proof-essential for this particular statement. The theorem statement uses `n + 1 ≤ d` (equivalent to `n < d` for naturals) to avoid the `Nat.lt` vs `Nat.le` coercion friction.",
+    "mathContext": "The existential $\\exists n \\in \\mathbb{N},\\ n < d \\wedge d \\mid 10n - 1$ does not require knowing WHICH convergent of $10/d$ equals $n$. It only needs: a valid osculator exists, and it can be reduced to $[0,d)$. The CF connection is informative but not proof-essential for this particular statement.",
     "significance": "key",
     "relatedConcepts": [
       "Int.emod_nonneg",
       "Int.emod_lt_of_pos",
-      "Int.toNat_of_nonneg",
-      "continued fractions",
-      "CF convergents"
+      "Int.toNat_of_nonneg"
     ],
     "prerequisites": [
       "Int.emod properties",
       "Int.toNat conversion",
-      "omega tactic",
-      "osculator_mod_d_is_osculator"
+      "omega tactic"
     ]
   },
   {
@@ -129,24 +73,21 @@
     "proofId": "divisibility-truncation-general-oq-03",
     "range": {
       "startLine": 169,
-      "endLine": 221
+      "endLine": 203
     },
     "type": "example",
-    "title": "Concrete Divisibility Tests: d = 7, 11, 13, 17, 19 and Summary",
-    "content": "Five concrete examples instantiate the general theory, each in two steps:\n\n1. **Osculator verification**: `norm_num` checks the osculator condition `IsOsculator d c` (i.e., `d | 10c − 1`) after unfolding the definition. E.g., `osculator_seven : IsOsculator 7 (−2)` checks $7 \\mid 10(-2)-1 = -21$.\n\n2. **Divisibility test**: `unified_osculator` from OQ-01 converts each verified osculator into the truncation rule `d | n ↔ d | (n/10) + c·(n%10)`. The coprimality hypothesis is discharged by `norm_num [Int.isCoprime_iff_gcd_eq_one]`.\n\nThe five osculators: $d=7 \\mapsto c=-2$ ($10(-2)-1=-21=-3\\cdot 7$); $d=11 \\mapsto c=-1$ (alternating digit sum, since $10(-1)-1=-11$); $d=13 \\mapsto c=4$ ($10(4)-1=39=3\\cdot 13$); $d=17 \\mapsto c=-5$ ($10(-5)-1=-51=-3\\cdot 17$); $d=19 \\mapsto c=2$ ($10(2)-1=19$).\n\n**Part VI Summary**: `canonical_divisibility_test` is just `bezout_osculator_rule` under a more memorable name. The trailing `#check` statements serve as self-documentation — Lean's kernel verifies the type signatures, confirming the proof is complete.",
-    "mathContext": "Each concrete osculator is $\\text{gcdA}(10,d) \\bmod d$: for $d=7$, $\\gcd(10,7)=1$ and $\\text{gcdA}(10,7) = -2 \\equiv 5 \\pmod{7}$; both $-2$ and $5$ are valid osculators. The alternating digit sum rule for $d=11$ (c=−1) is a classical result: $10 \\equiv -1 \\pmod{11}$, so $10n_k \\equiv -n_k$ and the alternating sum rule follows directly.",
+    "title": "Concrete Divisibility Tests: d = 7, 11, 13, 19",
+    "content": "Five concrete examples instantiate the general theory: `osculator_seven : IsOsculator 7 (−2)` means 7 | 10·(−2) − 1 = −21, checked by `norm_num`. The corresponding divisibility test `div_by_seven`: `7 | n ↔ 7 | (n/10) − 2·(n%10)` applies `unified_osculator` from OQ-01. The d=11 case (c=−1) gives the classical alternating digit sum rule. Each osculator is verified by `norm_num` after unfolding `IsOsculator`.",
+    "mathContext": "Concrete osculators: 7↔−2 (or +5), 11↔−1 (alternating digit sum), 13↔4, 17↔−5, 19↔2. These are precisely the values of `gcdA(10,d) mod d` for each d, confirming the general theorem.",
     "significance": "supporting",
     "relatedConcepts": [
       "unified_osculator",
       "norm_num",
-      "Int.isCoprime_iff_gcd_eq_one",
-      "alternating digit sum",
-      "canonical_divisibility_test"
+      "Int.isCoprime_iff_gcd_eq_one"
     ],
     "prerequisites": [
       "Divisibility truncation rule",
-      "norm_num for arithmetic",
-      "unified_osculator from OQ-01"
+      "norm_num for arithmetic"
     ]
   }
 ]
