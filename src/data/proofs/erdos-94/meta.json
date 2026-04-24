@@ -145,16 +145,8 @@
       "title": "Erdős-Fishburn Conjecture",
       "summary": "Defines `ErdosFishburnConjecture : Prop` — regular $n$-gon maximizes $\\sum f(u)^2$ for large $n$. States `conjecture_small_cases` for $n \\leq 10$ (sorry).",
       "startLine": 147,
-      "endLine": 159,
+      "endLine": 152,
       "mathContext": "Formal definition: Defines `ErdosFishburnConjecture : Prop` — regular $n$-gon maximizes $\\sum f(u)^2$ for large $n$. States `conjecture_small_cases` for $n \\leq 10$ (sorry)."
-    },
-    {
-      "id": "connections",
-      "title": "Connections",
-      "summary": "Defines `numDistinctDistances`, `maxMultiplicity`, `unitDistanceCount`. States convex bounds: $|d(P)| \\leq \\lfloor n/2 \\rfloor + 1$, $\\max f(u) \\leq 2n$, $f(1) \\leq 2n - 2$ (all sorry).",
-      "startLine": 160,
-      "endLine": 433,
-      "mathContext": "Formal definition: Defines `numDistinctDistances`, `maxMultiplicity`, `unitDistanceCount`. States convex bounds: $|d(P)| \\leq \\lfloor n/2 \\rfloor + 1$, $\\max f(u) \\leq 2n$, $f(1) \\leq 2n - 2$ (all sorry)."
     }
   ],
   "conclusion": {
