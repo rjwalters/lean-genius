@@ -78,7 +78,8 @@
     "erdos-1035",
     "erdos-1036",
     "erdos-1037",
-    "erdos-1038"
+    "erdos-1038",
+    "erdos-1039"
   ],
   "references": {
     "papers": [],
@@ -137,11 +138,11 @@
     {
       "path": "Proofs/Erdos1033Problem.lean",
       "filename": "Erdos1033Problem.lean",
-      "lineCount": 441,
+      "lineCount": 1019,
       "theoremCount": 16,
       "axiomCount": 3,
       "defCount": 17,
-      "sorryCount": 5,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1033Problem.lean"
     },
@@ -221,6 +222,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1038Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1039Problem.lean",
+      "filename": "Erdos1039Problem.lean",
+      "lineCount": 304,
+      "theoremCount": 9,
+      "axiomCount": 5,
+      "defCount": 16,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1039Problem.lean"
     },
     {
       "path": "Proofs/Erdos103OQ01.lean",

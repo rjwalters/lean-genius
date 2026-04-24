@@ -50,7 +50,8 @@
     "lebesgue-measure-oq-01-oq-01",
     "lebesgue-measure-oq-02",
     "lebesgue-measure-oq-03",
-    "lebesgue-measure-oq-03-oq-01"
+    "lebesgue-measure-oq-03-oq-01",
+    "lebesgue-measure-oq-06"
   ],
   "references": {
     "papers": [],
@@ -126,6 +127,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ06.lean",
+      "filename": "LebesgueMeasureOQ06.lean",
+      "lineCount": 564,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ06.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ06Aristotle.lean",
+      "filename": "LebesgueMeasureOQ06Aristotle.lean",
+      "lineCount": 76,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ06Aristotle.lean"
     }
   ]
 }
