@@ -284,3 +284,58 @@ The sorry count increased by 1 (net) because:
 2. **Implement GNW proof sketch**: Define hook walk probability P(start→corner c) and show
    Σ_c P = 1 implies Σ_c hookProd(μ)/hookProd(μ\c) = n
 3. **Archive sessions**: knowledge.md is >500 lines; archive sessions 5-11 to sessions/ subdir
+
+---
+
+## Session 2026-04-24 (Session 17) — arm_mem_nu/leg_mem_nu + hookProd_ratio partial proof
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: PROGRESS — 2 new proved lemmas; hookProd_ratio_formula fleshed out to ~90% complete
+
+### What I Did
+
+1. Added `arm_mem_nu`: for corner c of μ and s < c.2, proves (c.1, s) ∈ removeCorner μ c hc
+   - Via mem_removeCorner: (c.1,s) ∈ μ (rowLen = c.2+1 > s) and (c.1,s) ≠ c (second coord differs)
+2. Added `leg_mem_nu`: for r < c.1, proves (r, c.2) ∈ removeCorner μ c hc
+   - Via mem_removeCorner: (r,c.2) ∈ μ (colLen = c.1+1 > r) and (r,c.2) ≠ c (first coord differs)
+3. Fleshed out `hookProd_ratio_formula` with a substantial partial proof:
+   - Sets up ν, armCells, legCells definitions
+   - Proves hμ_via_ν: hookProd μ = ∏_{ν.cells} hookLength μ (via mul_prod_erase + corner=1)
+   - Proves hdisj: Disjoint armCells legCells (arm first coord = i, leg first coord < i)
+   - Proves harm_sub: armCells ⊆ ν.cells (via arm_mem_nu)
+   - Proves hleg_sub: legCells ⊆ ν.cells (via leg_mem_nu)
+   - Remaining sorry: Finset.prod splitting over arm ∪ leg ∪ rest (~40 more lines)
+
+### Key Findings
+
+- **mul_prod_erase approach**: After rw [hμQ, ← Finset.mul_prod_erase ... hcmem], the corner
+  factor becomes hookLength_corner_eq_one = 1, giving hookProd μ = ∏_{ν.cells} hookLength μ
+- **Disjointness proof**: arm cells have first coord = i, leg cells first coord < i; they share
+  no element. Proved via Finset.disjoint_left + Prod.mk.injEq + omega.
+- **Remaining sorry analysis**: The Finset.prod splitting step needs:
+  (a) Finset.prod_union applied to armCells ∪ legCells as a subset of ν.cells
+  (b) Finset.prod_image to convert ∏_{armCells} to ∏_{Finset.range j}
+  (c) hookLength_removeCorner_arm/leg to rewrite each factor
+  (d) hookLength_eq_of_not_arm_leg for rest cells (contributing 1)
+  Total: ~40 more lines of Finset.prod manipulation
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (+65 lines: arm_mem_nu, leg_mem_nu, updated hookProd_ratio_formula)
+
+### Sorry Count: 3 (unchanged)
+
+- `hookProd_ratio_formula` (PART XIV): ~90% proved; still sorry for Finset.prod splitting
+- `hook_walk_identity` (PART XIV): sole HLF blocker; needs GNW proof (~200-300 lines)
+- `ni_count_eq_syt_count` (line 235): RSK bijection, FALSE as stated
+- `lgv_det_factors_as_hook_quotient` (line 245): det identity, FALSE as stated
+
+### Next Steps
+
+1. **Complete hookProd_ratio_formula**: The ~40-line Finset.prod split is the only remaining gap.
+   Use Finset.prod_sdiff (s ⊆ t → ∏_t f = ∏_{t\s} f * ∏_s f) to peel off armCells, then legCells.
+   Apply Finset.prod_image (injective fun s => (i,s)) to convert index.
+2. **GNW proof of hook_walk_identity**: Requires ~200-300 lines; probability theory approach.
+   Alternatively, try to prove for specific shapes (2-corner diagrams) as special cases.
+3. **Aristotle submission**: Submit hookProd_ratio_formula (without the prod-split sorry) and
+   arm_mem_nu / leg_mem_nu to Aristotle for verification of the proved parts.

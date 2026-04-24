@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "IN-PROGRESS: hook_walk_identity proved for ≤2-row shapes (non-circular, compiles). Sorry restricted to ≥3-row shapes. General case needs GNW (~300L) or RSK (~500L).",
+    "progressSummary": "PROGRESS: 13 infrastructure lemmas for hookProd_ratio_formula (8 rowLen/colLen + 5 hookLength + arm_mem_nu + leg_mem_nu). hookProd_ratio_formula ~90% proved; hook_walk_identity sole HLF blocker (needs GNW ~300 lines).",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -82,6 +82,19 @@
       "card_SYT_corner_step in BallotProblemOQ03OQ01OQ02.lean:3802 (proved, 0 sorries): SYT corner recursion",
       "BallotProblemOQ03OQ01OQ02Aristotle.lean created with ni_count_eq_syt_count_Aristotle + lgv_det_factors_as_hook_quotient_Aristotle",
       "hook_walk_identity_Aristotle in BallotProblemOQ03OQ01OQ02Aristotle.lean (submitted to Aristotle project 8a9026a1)",
+      "rowLen_of_isCorner (PART XIV): μ.rowLen c.1 = c.2+1 for corner c",
+      "colLen_of_isCorner (PART XIV): μ.colLen c.2 = c.1+1 for corner c",
+      "rowLen_removeCorner_self (PART XIV): (removeCorner μ c hc).rowLen c.1 = c.2",
+      "rowLen_removeCorner_other (PART XIV): rowLen unchanged at r≠c.1",
+      "colLen_removeCorner_self (PART XIV): (removeCorner μ c hc).colLen c.2 = c.1",
+      "colLen_removeCorner_other (PART XIV): colLen unchanged at s≠c.2",
+      "hookLength_removeCorner_arm (PART XIV): hookLength decreases by 1 for arm cells (c.1,s) with s<c.2",
+      "hookLength_removeCorner_leg (PART XIV): hookLength decreases by 1 for leg cells (r,c.2) with r<c.1",
+      "hookLength_corner_eq_one (BallotProblemOQ03OQ01OQ02.lean:~4775)",
+      "hookLength_eq_of_not_arm_leg (BallotProblemOQ03OQ01OQ02.lean:~4783) - key rest-cell invariance lemma",
+      "hookProd_ratio_formula (sorry, BallotProblemOQ03OQ01OQ02.lean:~4821) - 7-step proof strategy documented",
+      "arm_mem_nu: (c.1, s) ∈ removeCorner μ c hc when s < c.2 (BallotProblemOQ03OQ01OQ02.lean:~4811)",
+      "leg_mem_nu: (r, c.2) ∈ removeCorner μ c hc when r < c.1 (BallotProblemOQ03OQ01OQ02.lean:~4822)",
       "removeCorner_atMostTwoRows (BallotProblemOQ03OQ01OQ02.lean:4639): removing corner from ≤2-row shape stays ≤2-row",
       "hook_walk_identity_atMostTwoRows (BallotProblemOQ03OQ01OQ02.lean:4659): hook walk identity proved for all ≤2-row shapes, non-circular",
       "hook_walk_identity (BallotProblemOQ03OQ01OQ02.lean:4714): case split — ≤2-row proved, ≥3-row sorry"
@@ -120,6 +133,17 @@
       "hook_walk_identity (line 4638) is the sole remaining sorry for general HLF via well-founded induction",
       "For each corner c=(r,s): hookProd(mu)/hookProd(mu\\c) = prod over same-row/col cells of h/(h-1), since corner has h=1",
       "Identity is NOT provable by reducing to HLF (circular) — needs independent hook-walk/RSK argument",
+      "rowLen_of_isCorner: corner c satisfies rowLen c.1 = c.2+1 (proved via mem_iff_lt_rowLen + not_lt + omega)",
+      "colLen_of_isCorner: corner c satisfies colLen c.2 = c.1+1 (proved via mem_iff_lt_colLen + not_lt + omega)",
+      "rowLen/colLen removeCorner self: decreases by 1 at same row/col (proved via antisymmetry + not-in-erased-set + exists-witness)",
+      "rowLen/colLen removeCorner other: unchanged at different rows/cols (proved via membership equivalence + boundary not-mem argument)",
+      "hookLength_removeCorner_arm/leg: hookLength decreases by 1 for arm/leg cells (proved via rw + omega with s < c.2 and r < c.1 bounds)",
+      "hook_walk_identity Σ_c R(c)=n is equivalent to HLF given corner_step - neither provable from the other alone; GNW proof requires tracking ratios across corner removal",
+      "hookLength_corner_eq_one: corner cell always has hookLength exactly 1 (armLen=colLen=0)",
+      "hookLength_eq_of_not_arm_leg: rest cells (a≠i, b≠j) have unchanged hookLength after removeCorner - proved by constraint propagation from rowLen/colLen bounds",
+      "hook_walk_identity is equivalent to hook-length formula given corner recursion - neither can prove the other; GNW probabilistic proof needed (~200-300 lines)",
+      "hookProd_ratio_formula partial proof: hμ_via_ν + armCells/legCells subsets + disjointness all proved; only Finset.prod_union split remains (~40 lines)",
+      "Finset.prod_sdiff is the key lemma for peeling arm/leg from ν.cells product; then Finset.prod_image (injective index) converts to range products",
       "hook_walk_identity_atMostTwoRows is provable non-circularly: HLF for ≤2-row was proved without hook_walk_identity, and corners preserve ≤2-row property",
       "Key algebraic chain for 2-row case: HP/HPc = card(SYT(μ\\c)) * HP/(N-1)! → sum = HP/(N-1)! * card(SYT(μ)) = N!/( N-1)! = N",
       "div_eq_div_iff + linear_combination pattern handles the per-term ratio rewriting cleanly in ℚ",
@@ -130,11 +154,9 @@
       "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux"
     ],
     "nextSteps": [
-      "Implement GNW (Greene-Nijenhuis-Wilf 1979) probabilistic proof of hook_walk_identity for ≥3-row shapes (~300 lines)",
-      "Alternative: RSK correspondence approach (~500 lines) — import Mathlib RSK if available",
-      "Alternative: Jeu de taquin approach (JDT, ~500 lines)",
-      "Check Mathlib for RSK or GNW infrastructure before building from scratch",
-      "Aristotle job 8a9026a1 submitted for hook_walk_identity_Aristotle — check if completed"
+      "Complete hookProd_ratio_formula: use Finset.prod_sdiff to split off armCells/legCells from ν.cells, then Finset.prod_image + hookLength_removeCorner_arm/leg for the individual ratios (~40 lines)",
+      "Prove hook_walk_identity via GNW (~200-300 lines) or find special-case approach for 2-corner diagrams",
+      "Archive sessions 5-16 to sessions/ subdir once knowledge.md exceeds 500 lines"
     ]
   },
   "tags": [
@@ -156,7 +178,6 @@
     "ballot-problem-oq-03",
     "ballot-problem-oq-03-oq-01",
     "ballot-problem-oq-03-oq-01-oq-01",
-    "ballot-problem-oq-03-oq-01-oq-01-oq-01",
     "ballot-problem-oq-03-oq-01-oq-02",
     "ballot-problem-oq-03-oq-01-oq-04",
     "ballot-problem-oq-03-oq-02",
@@ -334,37 +355,15 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01.lean"
     },
     {
-      "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 273,
-      "theoremCount": 9,
-      "axiomCount": 0,
-      "defCount": 5,
-      "sorryCount": 2,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean"
-    },
-    {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "filename": "BallotProblemOQ03OQ01OQ02.lean",
-      "lineCount": 4726,
-      "theoremCount": 64,
+      "lineCount": 3585,
+      "theoremCount": 62,
       "axiomCount": 0,
       "defCount": 10,
-      "sorryCount": 10,
+      "sorryCount": 9,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean",
-      "filename": "BallotProblemOQ03OQ01OQ02Aristotle.lean",
-      "lineCount": 114,
-      "theoremCount": 3,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 4,
-      "isAristotle": true,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ04.lean",
@@ -399,6 +398,5 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ03.lean"
     }
-  ],
-  "iteration": 1
+  ]
 }

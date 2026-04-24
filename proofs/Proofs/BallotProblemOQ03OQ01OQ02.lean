@@ -4884,20 +4884,85 @@ private lemma hookLength_eq_of_not_arm_leg {μ : YoungDiagram} {c : ℕ × ℕ} 
   unfold hookLength armLen legLen
   rw [rowLen_removeCorner_other hc ha, colLen_removeCorner_other hc hb]
 
+/-- Arm cells (c.1, s) with s < c.2 belong to ν = removeCorner μ c hc. -/
+private lemma arm_mem_nu {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
+    {s : ℕ} (hs : s < c.2) : (c.1, s) ∈ removeCorner μ c hc := by
+  rw [mem_removeCorner]
+  constructor
+  · -- (c.1, s) ∈ μ: rowLen μ c.1 = c.2 + 1 > s
+    exact YoungDiagram.mem_iff_lt_rowLen.mpr (by rw [rowLen_of_isCorner hc]; omega)
+  · -- (c.1, s) ≠ c: their second components differ
+    intro h
+    have : s = c.2 := congr_arg Prod.snd h
+    omega
+
+/-- Leg cells (r, c.2) with r < c.1 belong to ν = removeCorner μ c hc. -/
+private lemma leg_mem_nu {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
+    {r : ℕ} (hr : r < c.1) : (r, c.2) ∈ removeCorner μ c hc := by
+  rw [mem_removeCorner]
+  constructor
+  · -- (r, c.2) ∈ μ: colLen μ c.2 = c.1 + 1 > r
+    exact YoungDiagram.mem_iff_lt_colLen.mpr (by rw [colLen_of_isCorner hc]; omega)
+  · -- (r, c.2) ≠ c: their first components differ
+    intro h
+    have : r = c.1 := congr_arg Prod.fst h
+    omega
+
 /-- The hookProd ratio for a corner c equals the product of h/(h-1) over arm and leg cells.
-    Proof strategy (for future completion):
-    1. hookProd(μ) = hookLength(μ,c) × ∏_{x∈ν.cells} hookLength(μ,x)  [mul_prod_erase]
-    2. hookLength(μ,c) = 1  [hookLength_corner_eq_one]
-    3. ratio = ∏_{x∈ν.cells} hookLength(μ,x)/hookLength(ν,x)  [prod_div_distrib]
-    4. ν.cells = armCells ∪ legCells ∪ restCells (disjoint)
-    5. On arm cells: hookLength(μ)/hookLength(ν) = h/(h-1)  [hookLength_removeCorner_arm]
-    6. On leg cells: hookLength(μ)/hookLength(ν) = h/(h-1)  [hookLength_removeCorner_leg]
-    7. On rest cells: hookLength(μ)/hookLength(ν) = 1  [hookLength_eq_of_not_arm_leg]
-    Requires ~80 lines of Finset.prod_union decomposition. -/
+    Proof outline:
+    1. hookProd(μ) = 1 × ∏_{x∈ν.cells} hookLength(μ,x)  [mul_prod_erase + corner = 1]
+    2. ratio = ∏_{x∈ν.cells} hookLength(μ,x)/hookLength(ν,x)  [field_simp]
+    3. armCells = {(i,s) : s < j} ⊆ ν.cells  [arm_mem_nu]
+    4. legCells = {(r,j) : r < i} ⊆ ν.cells  [leg_mem_nu], disjoint from armCells
+    5. restCells = ν.cells \ (armCells ∪ legCells): hookLength ratio = 1  [hookLength_eq_of_not_arm_leg]
+    6. ∏_{arm} ratio = ∏_s hookLen(i,s)/(hookLen(i,s)-1)  [hookLength_removeCorner_arm]
+    7. ∏_{leg} ratio = ∏_r hookLen(r,j)/(hookLen(r,j)-1)  [hookLength_removeCorner_leg]
+    Blocked on: Finset.prod_union decomposition of ν.cells (~50 lines). -/
 private lemma hookProd_ratio_formula {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c) :
     (hookProd μ : ℚ) / hookProd (removeCorner μ c hc) =
       (∏ s ∈ Finset.range c.2, (hookLength μ c.1 s : ℚ) / (hookLength μ c.1 s - 1)) *
       (∏ r ∈ Finset.range c.1, (hookLength μ r c.2 : ℚ) / (hookLength μ r c.2 - 1)) := by
+  obtain ⟨i, j⟩ := c
+  simp only [Prod.fst, Prod.snd]
+  set ν := removeCorner μ (i, j) hc with hν_def
+  -- ν.cells = μ.cells.erase (i,j) by definition
+  have hν_cells : ν.cells = μ.cells.erase (i, j) := rfl
+  have hcmem : (i, j) ∈ μ.cells := YoungDiagram.mem_cells.mpr hc.1
+  have hcorner_one : (hookLength μ i j : ℚ) = 1 :=
+    by exact_mod_cast hookLength_corner_eq_one hc
+  -- hookProd μ = ∏_{x ∈ ν.cells} hookLength μ x  (corner factor = 1)
+  have hμ_via_ν : (hookProd μ : ℚ) = ∏ x ∈ ν.cells, (hookLength μ x.1 x.2 : ℚ) := by
+    simp only [hookProd, Nat.cast_prod]
+    rw [← Finset.mul_prod_erase μ.cells (fun x => (hookLength μ x.1 x.2 : ℚ)) hcmem]
+    simp only [Prod.fst, Prod.snd]
+    rw [hcorner_one, one_mul, hν_cells]
+  -- hookProd ν > 0
+  have hνpos : 0 < (hookProd ν : ℚ) := by exact_mod_cast hookProd_pos ν
+  have hν_ne : (hookProd ν : ℚ) ≠ 0 := ne_of_gt hνpos
+  -- Define arm and leg cell finsets
+  let armCells : Finset (ℕ × ℕ) := Finset.image (fun s => (i, s)) (Finset.range j)
+  let legCells : Finset (ℕ × ℕ) := Finset.image (fun r => (r, j)) (Finset.range i)
+  -- arm/leg subsets of ν.cells
+  have harm_sub : armCells ⊆ ν.cells := by
+    intro x hx
+    obtain ⟨s, hs, rfl⟩ := Finset.mem_image.mp hx
+    exact YoungDiagram.mem_cells.mpr (arm_mem_nu hc (Finset.mem_range.mp hs))
+  have hleg_sub : legCells ⊆ ν.cells := by
+    intro x hx
+    obtain ⟨r, hr, rfl⟩ := Finset.mem_image.mp hx
+    exact YoungDiagram.mem_cells.mpr (leg_mem_nu hc (Finset.mem_range.mp hr))
+  -- arm ∩ leg = ∅ (arm cells have first coord i, leg cells have first coord < i)
+  have hdisj : Disjoint armCells legCells := by
+    simp only [armCells, legCells, Finset.disjoint_left, Finset.mem_image, Finset.mem_range]
+    rintro _ ⟨s, _, rfl⟩ ⟨r, hr, h⟩
+    simp [Prod.mk.injEq] at h
+    omega
+  -- [Core sorry: split ν.cells into armCells ∪ legCells ∪ restCells and apply hookLength lemmas]
+  -- The identity follows from:
+  -- ∏_{x∈ν.cells} hookLen(μ,x)/hookLen(ν,x)
+  --   = ∏_{arm} hookLen(μ,i,s)/(hookLen(μ,i,s)-1)   [hookLength_removeCorner_arm]
+  --   × ∏_{leg} hookLen(μ,r,j)/(hookLen(μ,r,j)-1)   [hookLength_removeCorner_leg]
+  --   × ∏_{rest} 1                                    [hookLength_eq_of_not_arm_leg]
   sorry
 
 
