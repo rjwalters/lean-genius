@@ -339,3 +339,71 @@ The sorry count increased by 1 (net) because:
    Alternatively, try to prove for specific shapes (2-corner diagrams) as special cases.
 3. **Aristotle submission**: Submit hookProd_ratio_formula (without the prod-split sorry) and
    arm_mem_nu / leg_mem_nu to Aristotle for verification of the proved parts.
+
+---
+
+## Session 2026-04-24 (Session 18) — hookProd_ratio_formula COMPLETED
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: PROGRESS — `hookProd_ratio_formula` proved (0 sorries); 1 sorry eliminated
+
+### What I Did
+
+1. Completed the `hookProd_ratio_formula` proof: replaced the remaining sorry with a ~90-line proof
+2. Strategy: avoided `Finset.prod_div_distrib` on CommGroupWithZero complications by first proving
+   a ℕ product equality (`key_nat`), then casting to ℚ, then applying field division lemmas
+3. PR: rjwalters/lean-genius#12358 on `feature/researcher-10`
+
+### Key Proof Steps
+
+1. **`key_nat` (ℕ equality)**: Avoids division entirely by proving:
+   `hookProd μ × ∏_s hookLen(ν,i,s) × ∏_r hookLen(ν,r,j) = hookProd ν × ∏_s hookLen(μ,i,s) × ∏_r hookLen(μ,r,j)`
+   Strategy: split ν.cells = armCells ∪ legCells ∪ restCells via `Finset.union_sdiff_of_subset`,
+   then apply `Finset.prod_union` (twice) and `Finset.prod_congr rfl hrest_inv` (rest cells equal),
+   then `ring` to cancel.
+
+2. **`harm_diff` / `hleg_diff`**: `hookLength ν i s = hookLength μ i s - 1` in ℚ, proved by
+   casting `hookLength_removeCorner_arm/leg` (ℕ: `hν + 1 = hμ`) via `exact_mod_cast` + `linarith`.
+
+3. **`hrest_inv`**: `hookLength ν x = hookLength μ x` for cells in restCells. Used `mem_sdiff` to
+   extract `x ∉ armCells ∪ legCells`, then `hookLength_eq_of_not_arm_leg` with proof that
+   arm/leg membership would put x in the excluded union.
+
+4. **Final combination**: `Finset.prod_div_distrib` (×2) rewrites product-of-ratios to ratio-of-products;
+   `harm_prod_eq` / `hleg_prod_eq` rewrites (hμ-1) denominators to hν values;
+   `div_mul_div_comm` combines the two quotients; `div_eq_div_iff` cross-multiplies;
+   `linear_combination key_Q` closes.
+
+### Key Findings
+
+- **ℕ equality sidesteps ℚ product complexity**: Rather than working with `∏ x / ∏ y` in ℚ
+  (requiring CommGroupWithZero or field instances), prove the cross-multiplication equality in ℕ
+  first, then cast. This avoids `prod_div_distrib` until the very last step.
+- **`Finset.prod_image` injection pattern**: `fun a _ b _ h => (Prod.mk.inj h).2` for
+  `fun s => (i, s)` injectivity (take `.2` of Prod.mk.inj); `.1` for `fun r => (r, j)`.
+- **`Prod.ext h1.symm rfl`**: Proves `(i, x.2) = x` given `h1 : x.1 = i`.
+- **`disjoint_sdiff_self_right`**: Proves `Disjoint s (t \ s)` for `restCells = ν.cells \ (armCells ∪ legCells)`.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (5056 → 5146 lines, hookProd_ratio_formula proved)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md` (this file)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` (knowledge updated)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json` (lineCount 5146, sorries 4)
+- PR: rjwalters/lean-genius#12358
+
+### Sorry Count: 5 → 4
+
+- `hookProd_ratio_formula` (PART XIV): **PROVED** ✓
+- `hook_walk_identity` (PART XIV line ~5067): ≥3-row case, needs GNW proof (~200-300 lines)
+- `ni_count_eq_syt_count` (line 219): RSK bijection, FALSE as stated
+- `lgv_det_factors_as_hook_quotient` (line 235): det identity, FALSE as stated
+- `hook_length_formula` (line 245): depends on the two above (FALSE as stated)
+
+### Next Steps
+
+1. **hook_walk_identity ≥3-row case**: The identity `Σ_{c ∈ corners(μ)} hookProd(μ)/hookProd(μ\c) = μ.card`
+   requires either the GNW probabilistic hook walk proof (~200-300 lines) or showing equivalence
+   to HLF itself (circular without external proof). The `hookProd_ratio_formula` now provides the
+   ratio factorization needed as input. The 2-row case is already proved in `hook_walk_identity_atMostTwoRows`.
+2. **Archive sessions**: knowledge.md is >500 lines; archive sessions 5-17 to sessions/ subdir.

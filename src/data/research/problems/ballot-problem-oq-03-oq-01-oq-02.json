@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 13 infrastructure lemmas for hookProd_ratio_formula (8 rowLen/colLen + 5 hookLength + arm_mem_nu + leg_mem_nu). hookProd_ratio_formula ~90% proved; hook_walk_identity sole HLF blocker (needs GNW ~300 lines).",
+    "progressSummary": "PROGRESS: hookProd_ratio_formula proved (session 18); 4 sorries remain (hook_walk_identity ≥3-row + 3 legacy)",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -97,7 +97,8 @@
       "leg_mem_nu: (r, c.2) ∈ removeCorner μ c hc when r < c.1 (BallotProblemOQ03OQ01OQ02.lean:~4822)",
       "removeCorner_atMostTwoRows (BallotProblemOQ03OQ01OQ02.lean:4639): removing corner from ≤2-row shape stays ≤2-row",
       "hook_walk_identity_atMostTwoRows (BallotProblemOQ03OQ01OQ02.lean:4659): hook walk identity proved for all ≤2-row shapes, non-circular",
-      "hook_walk_identity (BallotProblemOQ03OQ01OQ02.lean:4714): case split — ≤2-row proved, ≥3-row sorry"
+      "hook_walk_identity (BallotProblemOQ03OQ01OQ02.lean:4714): case split — ≤2-row proved, ≥3-row sorry",
+      "hookProd_ratio_formula: proved 0-sorry in BallotProblemOQ03OQ01OQ02.lean session 18"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -147,16 +148,19 @@
       "hook_walk_identity_atMostTwoRows is provable non-circularly: HLF for ≤2-row was proved without hook_walk_identity, and corners preserve ≤2-row property",
       "Key algebraic chain for 2-row case: HP/HPc = card(SYT(μ\\c)) * HP/(N-1)! → sum = HP/(N-1)! * card(SYT(μ)) = N!/( N-1)! = N",
       "div_eq_div_iff + linear_combination pattern handles the per-term ratio rewriting cleanly in ℚ",
-      "General (≥3-row) case still requires GNW probabilistic proof (~300 lines) or RSK (~500 lines) — not buildable in a single session"
+      "General (≥3-row) case still requires GNW probabilistic proof (~300 lines) or RSK (~500 lines) — not buildable in a single session",
+      "hookProd_ratio_formula proved using ℕ-equality-then-cast strategy: key_nat avoids division, then linear_combination key_Q closes after prod_div_distrib",
+      "Finset.prod_image injectivity: .2 for (i,s) image, .1 for (r,j) image; Prod.ext h.symm rfl proves (i,x.2)=x from x.1=i",
+      "disjoint_sdiff_self_right proves Disjoint s (t\\s) for restCells=ν.cells\\(arm∪leg)"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
       "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux"
     ],
     "nextSteps": [
-      "Complete hookProd_ratio_formula: use Finset.prod_sdiff to split off armCells/legCells from ν.cells, then Finset.prod_image + hookLength_removeCorner_arm/leg for the individual ratios (~40 lines)",
-      "Prove hook_walk_identity via GNW (~200-300 lines) or find special-case approach for 2-corner diagrams",
-      "Archive sessions 5-16 to sessions/ subdir once knowledge.md exceeds 500 lines"
+      "Prove hook_walk_identity ≥3-row case: needs GNW probabilistic hook walk (~200-300 lines)",
+      "Archive sessions 5-17 to sessions/ subdir (knowledge.md >500 lines)",
+      "Fix ni_count_eq_syt_count statement (RSK bijection, FALSE as stated)"
     ]
   },
   "tags": [

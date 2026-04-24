@@ -1,0 +1,114 @@
+{
+  "id": "divisibility-truncation-general-oq-03",
+  "title": "Divisibility Osculators: Bézout Coefficients Are Canonical Osculators",
+  "slug": "divisibility-truncation-general-oq-03",
+  "description": "A complete Lean 4 proof that the divisibility osculator for d — the integer c with d | 10c−1 used in truncation divisibility tests — arises canonically from the extended Euclidean algorithm. Proves: Bézout coefficients gcdA(10,d) form a valid osculator; osculators are unique mod d; the canonical representative gcdA(10,d) mod d lies in [0,d); and the existence theorem (cf_bezout_correspondence). Includes concrete divisibility tests for d ∈ {7, 11, 13, 17, 19}. All results: 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DivisibilityTruncationGeneralOQ03.lean",
+    "tags": [
+      "number-theory",
+      "divisibility",
+      "euclidean-algorithm",
+      "modular-arithmetic",
+      "elementary-number-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-24",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using only Mathlib.",
+    "lineCount": 221,
+    "theoremCount": 22,
+    "definitionCount": 1,
+    "originalContributions": [
+      "bezout_gives_osculator: gcdA(10,d) is a valid osculator when gcd(10,d)=1, via Bézout identity",
+      "cf_bezout_correspondence: existence theorem — ∃ n ∈ ℕ with n < d and d | 10n−1, proved directly from Bézout + modular reduction without continued fractions",
+      "canonical_divisibility_test: complete pipeline d | n ↔ d | ⌊n/10⌋ + gcdA(10,d)·(n mod 10)",
+      "osculator_unique_mod: all osculators are congruent mod d, proved via coprimality of 10 and d"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Divisibility tests by truncation — replacing n by ⌊n/10⌋ + c·(n mod 10) — have been known since at least the 19th century. The key parameter c is called the 'osculator' for d. For d=7, c=−2 (or +5); for d=11, c=−1 (alternating digit sum); for d=13, c=4. The osculator c satisfies d | 10c − 1, i.e., c ≡ 10⁻¹ (mod d). The connection to the Euclidean/CF algorithm is classical: the convergents of the CF expansion of 10/d give the successive approximations to 10⁻¹ mod d.",
+    "problemStatement": "For d coprime to 10, the divisibility test by truncation uses an 'osculator' c ∈ ℤ with d | 10c − 1 (i.e., c ≡ 10⁻¹ mod d). **OQ-03**: Show that c arises canonically from the extended Euclidean algorithm (equivalently, as a convergent denominator in the CF expansion of 10/d). Formalize the full pipeline: Bézout coefficient → canonical osculator → divisibility test.",
+    "proofStrategy": "**Step 1 (Bézout gives osculator)**: The Bézout identity `1 = 10·gcdA(10,d) + d·gcdB(10,d)` rearranges to `d | 10·gcdA(10,d) − 1`. So `gcdA(10,d)` is an osculator directly.\n\n**Step 2 (Uniqueness mod d)**: If c, c' are both osculators, then `d | 10(c−c')`. Since gcd(10,d)=1, `d | c−c'`. So osculators are unique mod d.\n\n**Step 3 (Canonical representative)**: `gcdA(10,d) % d` is still an osculator (by `osculator_congr`), lies in [0,d), and is the unique such representative.\n\n**Step 4 (Existence theorem)**: The reduced osculator `gcdA(10,d) % d`, converted via `Int.toNat`, gives a natural number in {0,...,d−1} that is an osculator. This proves `cf_bezout_correspondence` without constructing continued fractions.\n\n**Key insight**: The existential `∃ n : ℕ, n < d ∧ IsOsculator d n` is much weaker than the full CF connection — it follows from Bézout alone.",
+    "keyInsights": [
+      "The axiom cf_bezout_correspondence was originally ~200 lines connecting GenContFract and Nat.xgcd. The actual existential conclusion follows in ~20 lines from Bézout + emod, with no CF construction needed.",
+      "osculator_unique_mod uses IsCoprime.dvd_of_dvd_mul_left: if d | 10(c−c') and gcd(10,d)=1, then d | (c−c'). This is the critical coprimality argument.",
+      "The reduction Int.emod_nonneg and Int.emod_lt_of_pos, combined with Int.toNat_of_nonneg, converts the integer osculator to a natural number witness without any Nat.cast hassle.",
+      "Concrete examples (d=7,11,13,19) connect abstract results to familiar divisibility tests: 7|n ↔ 7|(n/10 − 2·(n%10)), 11|n ↔ 11|(n/10 − (n%10)) (alternating sum)."
+    ],
+    "prerequisites": [
+      "Bézout's identity (Nat.gcd_eq_gcd_ab in Mathlib)",
+      "IsCoprime.dvd_of_dvd_mul_left for coprimality argument",
+      "Int.emod_nonneg, Int.emod_lt_of_pos for modular reduction",
+      "Divisibility truncation parent proof (DivisibilityTruncationGeneralOQ01)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "bezout-osculator",
+      "title": "Part I: Bézout Coefficients Give Osculators",
+      "startLine": 36,
+      "endLine": 65,
+      "summary": "bezout_ten: Bézout identity 1 = 10·gcdA(10,d) + d·gcdB(10,d). bezout_gives_osculator: gcdA(10,d) is a valid osculator. bezout_osculator_rule: canonical divisibility test d | n ↔ d | ⌊n/10⌋ + gcdA·(n%10). IsOsculator definition: d | 10c−1."
+    },
+    {
+      "id": "equivalence-classes",
+      "title": "Part II: Osculator Equivalence Classes",
+      "startLine": 66,
+      "endLine": 89,
+      "summary": "osculator_shift: shifting c by d preserves osculator property. osculator_congr: c' ≡ c (mod d) and c osculator ⟹ c' osculator. osculator_unique_mod: all osculators are congruent mod d (via IsCoprime.dvd_of_dvd_mul_left)."
+    },
+    {
+      "id": "reduction-mod-d",
+      "title": "Part III: Reduction Mod d",
+      "startLine": 91,
+      "endLine": 123,
+      "summary": "osculator_mod_d_is_osculator: gcdA(10,d) % d is still an osculator. osculator_mod_d_bounded: |gcdA(10,d) % d| < d. canonical_osculator_unique: every osculator ≡ gcdA(10,d) mod d."
+    },
+    {
+      "id": "cf-connection",
+      "title": "Part IV: Existence Theorem (cf_bezout_correspondence)",
+      "startLine": 125,
+      "endLine": 163,
+      "summary": "cf_bezout_correspondence: ∃ n : ℕ, n < d ∧ IsOsculator d n. Proof: gcdA(10,d) % d is non-negative, < d, and still an osculator. Convert via Int.toNat. Key insight: the existential follows from Bézout alone, no continued fractions needed."
+    },
+    {
+      "id": "concrete-examples",
+      "title": "Part V: Concrete Examples and Summary",
+      "startLine": 165,
+      "endLine": 221,
+      "summary": "Divisibility tests for d = 7 (c=−2), 11 (c=−1, alternating sum), 13 (c=4), 19 (c=2), 17 (c=−5). canonical_divisibility_test: full pipeline summary. #check self-verification."
+    }
+  ],
+  "conclusion": {
+    "summary": "The divisibility osculator for any d coprime to 10 is exactly the Bézout coefficient gcdA(10,d), reduced mod d. The proof is 0 sorries, 0 axioms, using only standard Mathlib integer arithmetic and coprimality lemmas. The key insight is that the existential (∃ n ∈ [0,d) osculator) follows immediately from Bézout + emod, making the CF connection conceptually illuminating but not formally needed for the existence claim.",
+    "implications": "This completes the formal foundation for truncation divisibility rules: d | n ↔ d | ⌊n/10⌋ + c·(n%10) where c = gcdA(10,d) mod d. The proof is entirely constructive — given d, compute gcdA(10,d), reduce mod d, and the result is the canonical osculator. This can be iterated to get multi-step divisibility tests.",
+    "openQuestions": [
+      "Generalize to base b: is there an analogous osculator c with d | b·c − 1 for any base b coprime to d? The Bézout argument generalizes directly.",
+      "The CF connection: the actual Mathlib proof that gcdA(10,d) equals a convergent denominator in the CF expansion of 10/d. This would require formalizing GenContFract for rational numbers."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "divisibility-truncation-general",
+      "relationship": "extends",
+      "description": "Extends the parent divisibility truncation theorem with the canonical Bézout/osculator construction."
+    },
+    {
+      "targetId": "divisibility-truncation-general-oq-01",
+      "relationship": "uses",
+      "description": "Imports unified_osculator from OQ-01 for the concrete divisibility test applications."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 221,
+    "path": "Proofs/DivisibilityTruncationGeneralOQ03.lean",
+    "axiomCount": 0,
+    "sorries": 0
+  },
+  "sorries": 0
+}

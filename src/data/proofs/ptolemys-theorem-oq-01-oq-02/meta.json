@@ -64,7 +64,7 @@
     {
       "title": "Cauchy-Schwarz Bound",
       "startLine": 72,
-      "endLine": 80,
+      "endLine": 83,
       "description": "For unit vectors in a real inner product space, Cauchy-Schwarz gives ⟨a,b⟩ ∈ [-1,1]. Uses abs_real_inner_le_norm.",
       "summary": "inner_unit_mem_Icc: ⟨a,b⟩ ∈ [-1,1] for unit vectors",
       "id": "cauchy-schwarz",
@@ -73,7 +73,7 @@
     {
       "title": "Chord-Arc Identity",
       "startLine": 84,
-      "endLine": 152,
+      "endLine": 143,
       "description": "Key lemma: ‖a−b‖ = 2·sin(arccos(⟨a,b⟩)/2) for unit sphere points. Proved by showing both sides are non-negative and squaring both sides.",
       "summary": "unit_sphere_chord_via_sin: Euclidean chord = 2·sin(half arc)",
       "id": "chord-arc",
@@ -81,8 +81,8 @@
     },
     {
       "title": "Spherical Ptolemy Theorem",
-      "startLine": 156,
-      "endLine": 220,
+      "startLine": 144,
+      "endLine": 204,
       "description": "Main theorem: for four unit-sphere points on a common circle with crossing diagonals, the spherical Ptolemy equality holds. Derives from Euclidean Ptolemy by chord-arc substitution and dividing by 4.",
       "summary": "spherical_ptolemy: sin-product equality for unit sphere cyclic quadrilateral",
       "id": "spherical-ptolemy",
@@ -90,12 +90,21 @@
     },
     {
       "title": "Hyperbolic Case Survey",
-      "startLine": 222,
-      "endLine": 265,
+      "startLine": 205,
+      "endLine": 261,
       "description": "Detailed mathematical survey of the hyperbolic Ptolemy theorem in the Poincaré disk model. Explains why the conformal factors don't cancel cleanly for interior points, and outlines the infrastructure needed (~800-1200 lines).",
       "summary": "Survey: hyperbolic Ptolemy via Poincaré disk, conformal factors, unified κ-geometry statement",
       "id": "hyperbolic-survey",
       "mathContext": "In the Poincaré disk $D = \\{z \\in \\mathbb{C} : |z| < 1\\}$, the hyperbolic chord-arc identity is:\n$$\\sinh(d_H(a,b)/2) = \\frac{|a-b|}{\\sqrt{(1-|a|^2)(1-|b|^2)}}$$\n\nFor four points on a common **hyperbolic circle** (which is also a Euclidean circle inside $D$), the Euclidean Ptolemy theorem applies to the complex coordinates. However, the conformal factors $\\sqrt{(1-|x|^2)(1-|y|^2)}$ do **not** cancel uniformly — unlike the spherical case where $\\|a\\| = \\|b\\| = 1$ makes all factors equal to 1.\n\nThe unified curvature-$\\kappa$ Ptolemy theorem: define $\\text{sn}_\\kappa(t) = \\sin(\\sqrt{\\kappa}\\cdot t)/\\sqrt{\\kappa}$ (spherical), $t$ (Euclidean), or $\\sinh(\\sqrt{|\\kappa|}\\cdot t)/\\sqrt{|\\kappa|}$ (hyperbolic). Then for cyclic quadrilaterals in $\\kappa$-geometry: $\\text{sn}_\\kappa(d(a,c)/2)\\cdot\\text{sn}_\\kappa(d(b,d)/2) = \\text{sn}_\\kappa(d(a,b)/2)\\cdot\\text{sn}_\\kappa(d(c,d)/2) + \\text{sn}_\\kappa(d(a,d)/2)\\cdot\\text{sn}_\\kappa(d(b,c)/2)$."
+    },
+    {
+      "title": "Summary",
+      "startLine": 262,
+      "endLine": 270,
+      "description": "#check commands verify both exported theorems; end SphericalPtolemy closes the namespace.",
+      "summary": "Summary: #check spherical_ptolemy, unit_sphere_chord_via_sin; end namespace",
+      "id": "summary",
+      "mathContext": "The two public theorems: `SphericalPtolemy.unit_sphere_chord_via_sin` (chord-arc identity for unit sphere) and `SphericalPtolemy.spherical_ptolemy` (spherical Ptolemy equality). Both can be imported and used by downstream proofs via `import Proofs.PtolemysTheoremOQ01OQ02`."
     }
   ],
   "overview": {
@@ -104,11 +113,13 @@
     "text": "The spherical Ptolemy theorem is an elegant consequence of the Euclidean version via the chord-arc identity. Four points on the unit sphere satisfying the cyclic condition satisfy a multiplicative sine equality for their pairwise arc distances — the spherical analogue of the product-of-chords equality.",
     "proofStrategy": "**Step 1** (Chord-Arc Identity): For unit sphere points a, b, ‖a−b‖ = 2·sin(arccos(⟨a,b⟩)/2).\n\nProve by squaring both sides and using:\n- ‖a−b‖² = 2 − 2⟨a,b⟩  (from norm_sub_sq_real)\n- (2sin(θ/2))² = 2(1−cosθ)  (from cos_two_mul with θ = arccos(⟨a,b⟩))\n- Both sides non-negative → equal (via Real.sqrt_sq)\n\n**Step 2** (Apply Euclidean Ptolemy): ptolemys_theorem gives ‖a-b‖·‖c-d‖ + ‖b-c‖·‖a-d‖ = ‖a-c‖·‖b-d‖.\n\n**Step 3** (Substitute and cancel): Replace each norm by 2·sin(arc/2), giving 4·(sin_ab·sin_cd + sin_bc·sin_ad) = 4·sin_ac·sin_bd. Divide by 4.",
     "keyInsights": [
-      "The chord-arc identity ‖a−b‖ = 2·sin(arccos(⟨a,b⟩)/2) is the bridge between Euclidean and spherical Ptolemy",
-      "The factor of 4 cancels cleanly because all points are on the UNIT sphere (‖x‖ = 1), unlike the hyperbolic case where conformal factors depend on the point",
-      "V as its own NormedAddTorsor (via SeminormedAddCommGroup.toNormedAddTorsor) lets us apply the abstract Euclidean Ptolemy theorem directly in the inner product space",
-      "linear_combination (-(1/4)·h_eucl) is the cleanest proof tactic for the division-by-4 step in a ring",
-      "The spherical Ptolemy theorem is the κ=1 case of the unified curvature-κ Ptolemy theorem; κ=0 (Euclidean) is in Mathlib; κ=-1 (hyperbolic) requires ~1000 lines of new infrastructure"
+      "The chord-arc identity $\\|a-b\\| = 2\\sin(\\arccos(\\langle a,b\\rangle)/2)$ is the bridge between Euclidean and spherical Ptolemy. It converts a Euclidean distance into a trigonometric expression of the geodesic arc distance $d_S(a,b) = \\arccos(\\langle a,b\\rangle)$, enabling direct substitution into the Euclidean Ptolemy equality.",
+      "The factor-of-4 cancellation is the key structural simplification: every chord $\\|x-y\\| = 2\\sin(d_S/2)$ contributes a factor of 2, and $2 \\times 2 = 4$ appears on both sides of the Euclidean equality $4(s_{ab}s_{cd} + s_{bc}s_{ad}) = 4s_{ac}s_{bd}$, yielding the clean spherical form after dividing. In the hyperbolic case, conformal factors $(1-|x|^2)^{1/2}$ appear in the denominator and do NOT cancel symmetrically.",
+      "The proof works in **any real inner product space** — including infinite-dimensional Hilbert spaces — not just $\\mathbb{R}^n$. The abstract setup $V : \\text{NormedAddCommGroup} + \\text{InnerProductSpace}\\,\\mathbb{R}$ means the theorem applies to function spaces such as $L^2([0,1])$, making it genuinely more general than the classical statement for $S^2 \\subset \\mathbb{R}^3$.",
+      "Using $V$ as its own `NormedAddTorsor` (via `SeminormedAddCommGroup.toNormedAddTorsor`) lets the abstract Euclidean Ptolemy theorem from Mathlib apply directly in the inner product space without embedding into an affine space. `dist x y = ‖x - y‖` holds in this self-torsor, enabling the `dist_eq_norm` rewrite.",
+      "`linear_combination -(1/4 : ℝ) * h_eucl` is the Lean tactic that captures the algebraic division-by-4 step. It asserts that `lhs - rhs = -(1/4) * (h_eucl_lhs - h_eucl_rhs)` and verifies this by `ring` — this 3-line substitution encodes the entire proof step in a single structured tactic call.",
+      "The spherical Ptolemy theorem is the $\\kappa = 1$ case of the **unified curvature-$\\kappa$ Ptolemy theorem** for constant-curvature spaces. The $\\kappa = 0$ (Euclidean) case is in Mathlib; the $\\kappa = -1$ (hyperbolic) case requires Poincaré disk metric infrastructure (~800-1200 lines). The three cases form a complete picture of Ptolemy-type theorems in the three constant-curvature geometries.",
+      "The chord-arc identity `unit_sphere_chord_via_sin` has independent significance beyond this proof: it converts between the two natural metrics on $S^n$ — the chord metric $\\|a-b\\|$ (inherited from $\\mathbb{R}^{n+1}$) and the geodesic arc metric $\\arccos(\\langle a, b \\rangle)$. The identity $\\|a-b\\| = 2\\sin(d_S(a,b)/2)$ is the analog of the flat identity $|a-b| = d_E(a,b)$, and could be contributed to Mathlib as a standalone lemma for sphere geometry."
     ],
     "prerequisites": [
       "Real inner product spaces and their metric structure",
@@ -149,18 +160,52 @@
       "targetId": "ptolemys-complex-proof-oq-02",
       "relationship": "related",
       "description": "The sine addition formula was derived from Ptolemy (PtolemysComplexProofOQ02.lean). The spherical Ptolemy theorem here generalizes that construction: the quadrilateral (1, exp(2αi), -1, exp(-2βi)) lies on the unit circle S¹ ⊂ S², and the spherical Ptolemy theorem applied to it recovers the sine addition formula as a special case."
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "The Cauchy-Schwarz inequality $|\\langle a, b \\rangle| \\leq \\|a\\| \\cdot \\|b\\|$ is the first step of this proof (via `inner_unit_mem_Icc`): it ensures that $\\langle a, b \\rangle \\in [-1, 1]$ for unit vectors, so that $\\arccos(\\langle a, b \\rangle)$ is well-defined. Without this domain check, the half-angle trigonometric identities and `Real.cos_arccos` cannot be applied."
+    },
+    {
+      "targetId": "spherical-law-of-cosines",
+      "relationship": "related",
+      "description": "The spherical law of cosines $\\cos c = \\cos a \\cos b + \\sin a \\sin b \\cos C$ (for arc-length sides $a, b, c$ of a spherical triangle) follows from the inner product formula $\\langle u, v \\rangle = \\cos(d_S(u,v))$. The chord-arc identity `unit_sphere_chord_via_sin` proved here connects $\\|u - v\\|$ to $\\sin(d_S(u,v)/2)$, which is the half-angle form of the spherical distance — and the spherical law of cosines can be recovered as a degenerate case of the spherical Ptolemy theorem when one 'quadrilateral' degenerates to a triangle. This connection is mentioned in the `openQuestions` of this entry."
+    },
+    {
+      "targetId": "spherical-law-of-sines",
+      "relationship": "related",
+      "description": "The spherical law of sines $\\sin a / \\sin A = \\sin b / \\sin B = \\sin c / \\sin C$ is the companion theorem to the spherical law of cosines on the unit sphere. Both the spherical Ptolemy theorem and the spherical law of sines concern ratios of $\\sin(d_S/2)$ (or $\\sin(d_S)$) for points on the unit sphere. The sine values appear in the same half-angle form $\\sin(\\arccos(\\langle x, y \\rangle)/2)$ used by the chord-arc identity `unit_sphere_chord_via_sin` — making this formalization directly applicable as a foundation for formalizing the spherical law of sines."
+    },
+    {
+      "targetId": "ptolemys-theorem-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Ptolemy Converse for unit-circle points: equality characterizes cyclic order. The spherical Ptolemy theorem proved here extends the forward direction (cyclic → Ptolemy equality) to the sphere; this OQ-01-OQ-01 sibling entry proves the converse (Ptolemy equality → cyclic order) for S¹ ⊂ S². Together they characterize concyclicity on the sphere: the Ptolemy equality holds if and only if the four points lie on a common great circle arc in a given order."
     }
   ],
   "references": [
     {
-      "authors": "Beardon, A.F. and Minda, D.",
+      "authors": ["I. Todhunter"],
+      "title": "Spherical Trigonometry for the Use of Colleges and Schools",
+      "year": "1886",
+      "venue": "Macmillan and Co., London (5th edition)",
+      "note": "Classical textbook on spherical trigonometry. Chapter XIV covers the spherical analogue of Ptolemy's theorem and its connection to the spherical law of cosines and four-point formulae on the sphere. The chord-arc identity ‖a−b‖ = 2R·sin(d_sphere(a,b)/(2R)) appears implicitly in the treatment of arc-chord relationships."
+    },
+    {
+      "authors": ["M. Berger"],
+      "title": "Geometry (Volumes I and II)",
+      "year": "1987",
+      "venue": "Springer Universitext",
+      "note": "Volume II, Chapter 18: spherical geometry including the metric structure of S^n as a Riemannian manifold. The chord-arc identity and the relationship between Euclidean and spherical distance are treated in the context of the round metric. Standard reference for inner-product-space formulations of spherical geometry."
+    },
+    {
+      "authors": ["A. F. Beardon", "D. Minda"],
       "title": "A multi-point Schwarz-Pick lemma",
       "year": "2007",
       "venue": "Journal d'Analyse Mathématique, vol. 92, pp. 81-104",
       "note": "Establishes a framework for Ptolemy-type inequalities in hyperbolic metric spaces and metric spaces with bounded curvature."
     },
     {
-      "authors": "Buckley, S.M., Herron, D.A., and Xie, X.",
+      "authors": ["S. M. Buckley", "D. A. Herron", "X. Xie"],
       "title": "Metric space inversions, quasihyperbolic distance, and uniform spaces",
       "year": "2008",
       "venue": "Indiana University Mathematics Journal, vol. 57, no. 2, pp. 837-890",
