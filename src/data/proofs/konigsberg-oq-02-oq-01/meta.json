@@ -129,13 +129,5 @@
       "description": "Original Königsberg bridges undirected case"
     }
   ],
-  "sorries": [
-    {
-      "id": "directed_euler_circuit_sufficient_corrected",
-      "description": "Main Hierholzer WF induction combining all proved sub-lemmas (splice + balance + arcCount)",
-      "type": "main_theorem",
-      "difficulty": "hard",
-      "proofSketch": "WF induction on D.arcCount - circuit.arcs.length; greedy trail → circuit (maximal_balanced_trail_is_circuit); extend via splice if not Eulerian; use removeArcList_balanced + removeArcList_arcCount for termination"
-    }
-  ]
+  "sorries": 1
 }
