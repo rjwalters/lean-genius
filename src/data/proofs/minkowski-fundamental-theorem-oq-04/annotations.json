@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-oq04-context",
+    "proofId": "minkowski-fundamental-theorem-oq-04",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "context",
+    "title": "Why Formal API Comparison Matters",
+    "content": "The file header announces four bridge results between the parent proof's custom `Lattice n` type and Mathlib's `ZSpan`/`ZLattice` infrastructure. The import of `Proofs.MinkowskiFundamentalTheorem` brings in the custom `Lattice`, `covolume`, and `toModuleBasis` definitions. The namespace `MinkowskiOQ04` and the universe variable `{n : ℕ} [NeZero n]` scope all subsequent definitions to $n$-dimensional lattices.\n\nIn a formal mathematics library, two representations of the same concept can diverge silently: users pick one API or the other, and their results become incompatible. The parent proof used a concrete basis matrix approach (explicit, easy to start with), while Mathlib developed the `ZSpan`/`ZLattice` tower for number fields and sphere packing. Without a bridge, neither side can use the other's theorems.",
+    "mathContext": "Two encodings of the same object — a full-rank lattice $\\Lambda \\subset \\mathbb{R}^n$:\n- **Custom**: `Lattice n` = `{ basis : Matrix (Fin n) (Fin n) ℝ, basis_invertible : basis.det ≠ 0 }`, covolume $= |\\det(\\mathrm{basis})|$\n- **Mathlib**: `Module.Basis (Fin n) ℝ (Fin n → ℝ)` paired with `ZSpan b = \\mathrm{span}_{\\mathbb{Z}}(\\mathrm{Set.range}(b))$, volume via `ZSpan.volume_fundamentalDomain`",
+    "significance": "context",
+    "relatedConcepts": ["Lattice", "ZSpan", "Module.Basis", "covolume", "fundamental domain", "API design"],
+    "prerequisites": ["minkowski-fundamental-theorem", "ZLattice.Basic", "GeometryOfNumbers"]
+  },
+  {
+    "id": "ann-oq04-covolume",
+    "proofId": "minkowski-fundamental-theorem-oq-04",
+    "range": { "startLine": 28, "endLine": 37 },
+    "type": "theorem",
+    "title": "Covolume = Fundamental Domain Volume (Proved)",
+    "content": "This is the central quantitative bridge. The custom covolume `|det(L.basis)|` is proved equal to the Lebesgue measure of Mathlib's ZSpan fundamental parallelotope. The proof is a single `rw` tactic chaining three lemmas:\n\n1. `Lattice.covolume` unfolds the custom covolume to `|det(L.basis)|`\n2. `ZSpan.volume_fundamentalDomain` states: for any `Module.Basis b`, `μ(fundamentalDomain b) = ENNReal.ofReal |det(Matrix.of b)|`\n3. `toModuleBasis_matrix_eq` (from parent): `Matrix.of (L.toModuleBasis n) = L.basis`\n\nSubstituting (3) into (2) and comparing with (1): both sides equal `ENNReal.ofReal |det(L.basis)|`. Done.",
+    "mathContext": "$$\\mathrm{ENNReal.ofReal}(|\\det(L.\\mathrm{basis})|) = \\mu\\bigl(\\mathcal{F}(L.\\mathrm{toModuleBasis}\\,n)\\bigr)$$\nwhere $\\mathcal{F}(b) = \\{\\sum_i t_i b_i : 0 \\le t_i < 1\\}$ is the half-open fundamental parallelotope and $\\mu$ is Lebesgue measure on $\\mathbb{R}^n$. The `ENNReal.ofReal` wrapper converts the nonneg real $|\\det|$ to the extended nonneg reals used by `MeasureTheory.volume`.",
+    "significance": "critical",
+    "relatedConcepts": ["ZSpan.volume_fundamentalDomain", "toModuleBasis_matrix_eq", "ENNReal.ofReal", "fundamental parallelotope", "Lebesgue measure"],
+    "prerequisites": ["Lattice.covolume", "Lattice.toModuleBasis", "ZSpan.fundamentalDomain"]
+  },
+  {
+    "id": "ann-oq04-basis-det",
+    "proofId": "minkowski-fundamental-theorem-oq-04",
+    "range": { "startLine": 39, "endLine": 47 },
+    "type": "technique",
+    "title": "Basis Determinant Nonzero: The Transpose Trick (sorry)",
+    "content": "The theorem `basis_det_ne_zero` asks: if $b_0, \\ldots, b_{n-1}$ form a Lean `Module.Basis` (hence linearly independent), must `(Matrix.of b).det ≠ 0`? Yes — and the key insight is to work with the **transpose** of the basis matrix.\n\nThe matrix `M = Matrix.of (fun i => b i)` has rows `b 0, ..., b (n-1)`. Its transpose `Mᵀ` acts as the coordinatization map: $(M^\\top v)_i = \\sum_j M_{ji} v_j = \\sum_j b_j(i) \\cdot v_j = (\\sum_j v_j b_j)(i) = (b.\\mathtt{equivFun.symm}\\, v)(i)$. Since `b.equivFun.symm` is a linear isomorphism (bijective), `Mᵀ` is invertible with nonzero determinant. Since $\\det(M^\\top) = \\det(M)$, the original matrix also has nonzero determinant.\n\nThis theorem is the load-bearing lemma for `Lattice.ofBasis` — the custom `Lattice` structure requires an explicit `basis_invertible : basis.det ≠ 0` field.",
+    "mathContext": "$(M^\\top v)_i = b.\\mathrm{equivFun.symm}(v)(i)$ where $b.\\mathrm{equivFun.symm}(v) = \\sum_j v_j b_j$ is the coordinatization inverse. Since $b.\\mathrm{equivFun.symm}$ is invertible, $\\det(M^\\top) \\ne 0$, hence $\\det(M) = \\det(M^\\top) \\ne 0$. Lean path: `Module.Basis.equivFun` → `LinearEquiv.isUnit_linearMap` → `Matrix.isUnit_iff_isUnit_det` → `isUnit_iff_ne_zero`.",
+    "significance": "key",
+    "relatedConcepts": ["linear independence", "basis matrix", "determinant", "transpose", "LinearEquiv", "Module.Basis.equivFun"],
+    "prerequisites": ["Module.Basis.equivFun", "Matrix.det_transpose", "LinearEquiv.isUnit_linearMap"]
+  },
+  {
+    "id": "ann-oq04-inverse-map",
+    "proofId": "minkowski-fundamental-theorem-oq-04",
+    "range": { "startLine": 49, "endLine": 63 },
+    "type": "definition",
+    "title": "Lattice.ofBasis: The Inverse Map and Round-Trip (Proved)",
+    "content": "`Lattice.ofBasis` constructs the inverse to `Lattice.toModuleBasis`: given a Mathlib `Module.Basis b`, it produces a custom `Lattice n` with:\n- `basis := Matrix.of (fun i => b i)` (the basis matrix)\n- `basis_invertible := basis_det_ne_zero b` (nonzero determinant from Part 2)\n\nThe `noncomputable` annotation is required because `Module.Basis` uses classical axioms (non-constructive existence of a basis).\n\nThe round-trip theorem `ofBasis_toModuleBasis` proves that `Matrix.of ((ofBasis b).toModuleBasis n) = Matrix.of (fun i => b i)`. This follows in one step from `toModuleBasis_matrix_eq` applied to `Lattice.ofBasis b`: since `(ofBasis b).basis = Matrix.of b`, the identity collapses immediately.\n\nTogether, `toModuleBasis` and `ofBasis` form a formal isomorphism between the custom `Lattice n` type and `Module.Basis (Fin n) ℝ (Fin n → ℝ)` — the two APIs encode exactly the same mathematical structure.",
+    "mathContext": "Round-trip proof: `Matrix.of ((ofBasis b).toModuleBasis n)` $\\xrightarrow{\\mathrm{toModuleBasis\\_matrix\\_eq}}$ `(ofBasis b).basis` $=$ `Matrix.of (fun i => b i)` ✓. The `ofBasis` direction uses the constructive data `basis_det_ne_zero b` (sorry), so it depends on the sorry but the round-trip itself is proved assuming that dependency.",
+    "significance": "key",
+    "relatedConcepts": ["Lattice.toModuleBasis", "toModuleBasis_matrix_eq", "round-trip isomorphism", "noncomputable", "Module.Basis"],
+    "prerequisites": ["Lattice.toModuleBasis from parent", "toModuleBasis_matrix_eq from parent", "basis_det_ne_zero (sorry)"]
+  },
+  {
+    "id": "ann-oq04-minkowski",
+    "proofId": "minkowski-fundamental-theorem-oq-04",
+    "range": { "startLine": 65, "endLine": 84 },
+    "type": "insight",
+    "title": "Custom Minkowski via ZSpan: The Formal Guarantee (sorry)",
+    "content": "`minkowski_custom_via_zlattice` restates Minkowski's fundamental theorem in the Mathlib-native `Fin n → ℝ` setting: given a custom `Lattice L`, a convex centrally symmetric `S ⊆ ℝⁿ` with `vol(S) > 2ⁿ × covolume(L)`, there exists a nonzero `v ∈ S` with `v ∈ span ℤ {b₀, …, bₙ₋₁}` (the ZSpan of the custom lattice's basis).\n\nThe planned proof chains:\n1. Apply `covolume_eq_volume_fundamentalDomain` to convert `ENNReal.ofReal (2^n * L.covolume) < volume S` into the equivalent `2^n * μ(fundamentalDomain (toModuleBasis L)) < volume S`\n2. Apply Mathlib's `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` to get the lattice point\n3. The `IsZLattice` instance (from `ZSpan.isZLattice` applied to `toModuleBasis L`) provides the required structure\n\nThis theorem is the **formal guarantee** that the custom gallery API is ultimately backed by the same Mathlib theorem used in number field applications.",
+    "mathContext": "The proof path: `minkowski_custom_via_zlattice` → `covolume_eq_volume_fundamentalDomain` (Part 1, proved) → `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` (Mathlib) → pigeonhole for measures via `ZSpan.isAddFundamentalDomain`. The lattice points are `Submodule.span ℤ (Set.range (L.toModuleBasis n))`, which equals the custom `latticePoints n L` by `latticePoints_eq_span` from the parent.",
+    "significance": "critical",
+    "relatedConcepts": ["Minkowski theorem", "covolume_eq_volume_fundamentalDomain", "exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure", "ZSpan.isZLattice", "latticePoints_eq_span"],
+    "prerequisites": ["covolume_eq_volume_fundamentalDomain (Part 1)", "latticePoints_eq_span from parent", "ZSpan.isZLattice", "IsZLattice typeclass"]
+  }
+]
