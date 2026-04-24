@@ -20,7 +20,7 @@ as determinants of complete homogeneous symmetric polynomials:
 - `schurPolynomial_two_row`: proved (det_fin_two computation)
 - `schurPolynomial_one_row_at_one`: proved (monomial counting via Sym.card_sym_eq_choose)
 - `ssytSchurFin_empty`: proved (unique empty SSYT, empty product = 1)
-- `ssytSchurFin_one_row`: open (k=1 case of Jacobi-Trudi via Sym bijection)
+- `ssytSchurFin_one_row`: proved (k=1 case: bijection SSYTFin n 1 (fun _ => m) ≃ Sym (Fin n) m)
 - `jacobi_trudi_ssyt_eq`: open (general case; requires RSK correspondence, ~300 lines)
 -/
 
@@ -28,6 +28,8 @@ import Mathlib.RingTheory.MvPolynomial.Symmetric.Defs
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.Data.Sym.Card
 import Mathlib.Data.Fintype.BigOperators
+import Mathlib.Data.Multiset.Sort
+import Mathlib.Algebra.BigOperators.Fin
 import Proofs.BallotProblemOQ03OQ01OQ01
 
 open MvPolynomial Matrix Finset
@@ -237,17 +239,56 @@ Connection: ssytSchurFin n 1 (fun _ => m) = hsymm (Fin n) R m = schurPolynomial_
 theorem ssytSchurFin_one_row (n m : ℕ) :
     ssytSchurFin (R := R) n 1 (fun _ => m) = hsymm (Fin n) R m := by
   -- Strategy:
-  -- (1) Define bijection φ : SSYTFin n 1 (fun _ => m) ≃ Sym (Fin n) m
-  --     via T ↦ Multiset.ofList (List.ofFn (fun j => T.1 ⟨⟨0,_⟩, j⟩))
-  -- (2) Show weight preservation: T.weight = (φ T).val.map X |>.prod
-  --     Key: ∏ p : (i : Fin 1) × Fin m, X (T.1 p)
-  --        = ∏ j : Fin m, X (T.1 ⟨⟨0,_⟩, j⟩)   (since Fin 1 = {⟨0,_⟩})
-  --        = (List.ofFn (fun j => T.1 ⟨⟨0,_⟩, j⟩)).map X |>.prod   (List.prod_ofFn)
-  --        = (Multiset.ofList ...).map X |>.prod
-  -- (3) Conclude via Equiv.sum_comp
-  -- Key tool from Mathlib: List.sortedLE_ofFn_iff (Monotone ↔ sorted list)
-  -- ensures the backward direction gives well-formed SSYT
-  sorry
+  -- Build bijection ψ : SSYTFin n 1 (fun _ => m) ≃ Sym (Fin n) m
+  --   via T ↦ Multiset.ofList (List.ofFn (T.1 ⟨0, ·⟩))
+  -- Inverse: s ↦ fill row 0 with sorted representative of s
+  -- Key: row 0 is already sorted (SSYT weak-row condition) so
+  --   sort(ofFn(T.row0)) = ofFn(T.row0) by mergeSort_eq_self
+  -- Weight preservation: ∏ j, X(T⟨0,j⟩) = (ofFn(T.row0)).map X).prod
+  simp only [ssytSchurFin, hsymm]
+  -- Bijection ψ
+  let ψ : SSYTFin n 1 (fun _ => m) ≃ Sym (Fin n) m :=
+    { toFun := fun T => ⟨(List.ofFn (fun j : Fin m => T.1 ⟨0, j⟩) : List _), by
+          simp [Multiset.card_ofList]⟩
+      invFun := fun s =>
+        have hlen : (s.1.sort (· ≤ ·)).length = m :=
+          (Multiset.length_sort (· ≤ ·) s.1).trans s.2
+        ⟨fun p => (s.1.sort (· ≤ ·))[p.2.val]'(hlen ▸ p.2.isLt),
+         ⟨fun _ j1 j2 hlt =>
+            ((Multiset.pairwise_sort (· ≤ ·) s.1).sortedLE).getElem_le_getElem_of_le
+              (hlen ▸ j1.isLt) (hlen ▸ j2.isLt)
+              (le_of_lt (Fin.lt_iff_val_lt_val.mp hlt)),
+          fun i1 i2 _ _ _ hlt =>
+            absurd (Fin.lt_iff_val_lt_val.mp hlt)
+              (by have := i1.isLt; have := i2.isLt; omega)⟩⟩
+      left_inv := fun T => by
+        apply Subtype.ext; funext p
+        obtain ⟨⟨i, hi⟩, j⟩ := p
+        have hi0 : i = 0 := Nat.lt_one_iff.mp hi; subst hi0
+        have hmono : Monotone (fun j' : Fin m => T.1 ⟨⟨0, hi⟩, j'⟩) :=
+          fun j1 j2 h => h.lt_or_eq.elim (T.2.1 ⟨0, hi⟩ j1 j2) (fun h => h ▸ le_refl _)
+        have hpw := (List.sortedLE_ofFn_iff.mpr hmono).pairwise
+        simp only [show (↑(List.ofFn (fun j' : Fin m => T.1 ⟨⟨0, hi⟩, j'⟩)) : Multiset _)
+              .sort (· ≤ ·) = List.ofFn (fun j' : Fin m => T.1 ⟨⟨0, hi⟩, j'⟩) from by
+            rw [Multiset.coe_sort]; exact List.mergeSort_eq_self hpw]
+        simp [List.getElem_ofFn]
+      right_inv := fun s => by
+        apply Subtype.ext
+        have hlen : (s.1.sort (· ≤ ·)).length = m :=
+          (Multiset.length_sort (· ≤ ·) s.1).trans s.2
+        have hL : List.ofFn (fun j : Fin m => (s.1.sort (· ≤ ·))[j.val]'(hlen ▸ j.isLt)) =
+            s.1.sort (· ≤ ·) :=
+          List.ext_getElem (by simp [hlen]) (fun i _ _ => by simp [List.getElem_ofFn])
+        show (↑(List.ofFn (fun j : Fin m =>
+              (s.1.sort (· ≤ ·))[j.val]'(hlen ▸ j.isLt))) : Multiset _) = s.1
+        rw [hL]
+        exact_mod_cast Multiset.sort_eq (· ≤ ·) s.1 }
+  refine Fintype.sum_equiv ψ _ _ fun T => ?_
+  simp only [SSYTFin.weight, Fintype.prod_sigma, Fin.prod_univ_one]
+  -- Goal: ∏ j, X (T.1 ⟨0, j⟩) = ((ψ T).1.map X).prod
+  show ∏ j : Fin m, X (T.1 ⟨(0 : Fin 1), j⟩) =
+    (↑(List.ofFn (fun j : Fin m => T.1 ⟨(0 : Fin 1), j⟩)) : Multiset _).map X |>.prod
+  simp [Multiset.map_coe, Multiset.prod_coe, List.map_ofFn, prod_ofFn]
 
 /-
 ### Main Theorem: Jacobi-Trudi = SSYT Sum (Open for k ≥ 2)
@@ -259,7 +300,7 @@ theorem ssytSchurFin_one_row (n m : ℕ) :
     `JacobiTrudi.schurPolynomial k sh = ssytSchurFin n k sh`
 
     - k = 0: proved by `ssytSchurFin_empty` + `schurPolynomial_empty`
-    - k = 1: open — see `ssytSchurFin_one_row`
+    - k = 1: proved — `ssytSchurFin_one_row` (bijection with Sym via sorted reps)
     - k ≥ 2: open — requires RSK correspondence (~300 lines):
         (1) RSK: SSYT of shape sh ↔ NI lattice path tuples for the LGV configuration
         (2) LGV: det[e(Aᵢ,Bⱼ)] = signed sum over path tuples (parent proof)
