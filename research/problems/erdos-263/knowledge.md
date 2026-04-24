@@ -416,3 +416,34 @@ folklore growth — witnessing with doubleExp). Since `doubleExp_superexponentia
 1. Prove `doubleExp_superexponential`: (2^{2^n})^{1/n} = 2^{2^n/n} → ∞ since 2^n/n → ∞
 2. Prove `factorial_no_folklore_growth`: (n!)^{1/2^n} → 1 ≠ ∞ (Stirling or direct estimate)
 3. Submit remaining deep sorries to Aristotle (folklore, KT condition, positive condition)
+
+## Session 2026-04-24 (Session 10) — Port Aristotle proofs (7→5 sorries)
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: progress — ported 2 proofs to Erdos263Aristotle.lean, eliminating 2 sorries
+
+### What I Did
+
+- Identified discrepancy: Erdos263Aristotle.lean had sorries for `doubleExp_tail_pos` and
+  `doubleExp_tail_bound`, but both had been proved in Stubs/Erdos263Problem.lean in sessions 5-8.
+- Ported both proofs to the Aristotle companion file:
+  - `doubleExp_tail_pos`: geometric comparison with (1/2)^k via nat_le_two_pow
+  - `doubleExp_tail_bound`: full D*tail < 1/(D-1) via geometric series r=1/D²
+- All 3 Aristotle targets now 0-sorry (`tsum_split_at` was already proved)
+
+### Current State
+- 4 deep sorries in Erdos263Problem.lean (all BLOCKED — require non-Mathlib mathematics):
+  1. `folklore_irrationality`: Mahler criterion (requires analytic number theory ~200+ lines)
+  2. `kovac_tao_not_irrationality`: Kovač-Tao 2024 Egyptian fraction construction
+  3. `positive_condition_irrationality`: liminf analysis
+  4. `truncation_insufficient`: needs a proved irrationality sequence as witness
+- 0 sorries in Erdos263Aristotle.lean (complete)
+
+### Assessment
+Problem is BLOCKED on all remaining sorries. No tractable path forward until:
+- `folklore_irrationality` gets a Mathlib proof, OR
+- An alternative irrationality sequence is identified with elementary proof
+
+### Next Steps
+- Update problem phase to BLOCKED
+- No more tractable work remaining this session

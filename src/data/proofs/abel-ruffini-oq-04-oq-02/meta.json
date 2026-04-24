@@ -194,7 +194,7 @@
     {
       "targetId": "general-quartic",
       "relationship": "complementary",
-      "description": "Ferrari's quartic formula (1540) exists because $S_4$ is solvable — this entry's `s4_solvable` proof certifies this. The three-step derived series $S_4 \\rhd A_4 \\rhd V_4 \\rhd \\{e\\}$ (with the Klein four-group $V_4$ as the crucial intermediate) corresponds to the three nested radical extractions in Ferrari's method: depressing to a resolvent cubic, then extracting square roots. The Klein four-group's role is subtle: $V_4 \\trianglelefteq S_4$ but $V_4 \\not\\trianglelefteq A_4$ is false (it is normal in $A_4$ too), making it the key that unlocks the extra solvability step unavailable to $S_5$."
+      "description": "Ferrari's quartic formula (1540) exists because $S_4$ is solvable — this entry's `s4_solvable` proof certifies this. The three-step derived series $S_4 \\rhd A_4 \\rhd V_4 \\rhd \\{e\\}$ (with the Klein four-group $V_4$ as the crucial intermediate) corresponds to the three nested radical extractions in Ferrari's method: depressing to a resolvent cubic, then extracting square roots. The Klein four-group is normal in both $S_4$ and $A_4$: $V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$. This double normality means $[A_4, A_4] = V_4 \\subsetneq A_4$, allowing the derived series to progress past $A_4$ — the extra step unavailable to $S_5$, where $A_5$ is simple so $[A_5, A_5] = A_5$ and the series stalls."
     },
     {
       "targetId": "solution-of-cubic-oq-03",

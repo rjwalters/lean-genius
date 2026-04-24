@@ -7,22 +7,22 @@
       "startLine": 1,
       "endLine": 26
     },
-    "title": "Problem Overview",
-    "content": "Erdős Problem #883: Cycles in the Coprime Graph. Two questions about G(A) for large A subset of {1,...,n}: (1) all odd cycles of length at most n/3+1? (Open) (2) complete (1,l,l) tripartite subgraphs? (Solved by Sárkőzy 1999). Threshold floor(n/2)+floor(n/3)-floor(n/6) is tight.",
-    "mathContext": "From Erdős-Sárkőzy [ErSa97] and Sárkőzy [Sa99]. Connects number theory and extremal graph theory through coprimality.",
+    "title": "Problem Overview: Two Questions About Cycles in the Coprime Graph",
+    "content": "The module header states Erdős Problem #883 with its two questions and their resolution status. Q1 (open): above the threshold, does G(A) contain ALL odd cycles of length at most n/3+1? Q2 (solved): does the same threshold guarantee a complete (1,ℓ,ℓ) tripartite subgraph? The reference [ErSa97] is Erdős-Sárkőzy 'On cycles in the coprime graph of integers', Acta Math. Hungar. 75 (1997). [Sa99] is Sárkőzy 'Complete tripartite subgraphs in the coprime graph of integers', Discrete Math. 1999. The threshold floor(n/2)+floor(n/3)-floor(n/6) is approximately 2n/3 — roughly two-thirds of the integers up to n. The extremal set (multiples of 2 or 3) shows the threshold is tight: it hits the threshold exactly but has no triangles.",
+    "mathContext": "Let $G(A)$ be the coprime graph on $A \\subseteq \\{1, \\ldots, n\\}$: vertices $a, b \\in A$ are adjacent iff $\\gcd(a, b) = 1$.\n\n**Threshold**: $T(n) = \\lfloor n/2 \\rfloor + \\lfloor n/3 \\rfloor - \\lfloor n/6 \\rfloor \\approx \\frac{2n}{3}$.\n\n**Q1** (open): $|A| > T(n) \\Rightarrow G(A)$ contains all odd cycles of length $\\leq n/3 + 1$?\n\n**Q2** (solved): $|A| > T(n) \\Rightarrow G(A)$ contains a complete $K_{1,\\ell,\\ell}$ tripartite subgraph for $\\ell \\gg \\log n / \\log \\log n$?",
     "significance": "key",
     "relatedConcepts": [
       "coprime graph",
-      "cycle detection",
-      "extremal combinatorics"
+      "Erdős #883",
+      "cycle detection in graphs",
+      "extremal combinatorics",
+      "threshold phenomena"
     ],
-    "tags": [
-      "coprime-graph",
-      "extremal-graph-theory",
-      "number-theory",
-      "partially-solved"
-    ],
-    "prerequisites": []
+    "prerequisites": [
+      "SimpleGraph in Mathlib (Combinatorics.SimpleGraph.Basic)",
+      "Nat.Coprime predicate",
+      "Finset and Fintype"
+    ]
   },
   {
     "id": "erdos-883-coprime-graph",
@@ -32,47 +32,48 @@
       "startLine": 38,
       "endLine": 64
     },
-    "title": "Coprime Graph and Threshold",
-    "content": "coprimeGraph(A): SimpleGraph on A where Adj a b iff a,b in A, a != b, and Nat.Coprime a b. threshold(n) = n/2 + n/3 - n/6. threshold_eq_divisible_2_or_3 (axiom): threshold equals count of integers at most n divisible by 2 or 3.",
-    "mathContext": "Uses Mathlib's SimpleGraph. The threshold arises from inclusion-exclusion on multiples of 2 and 3.",
+    "title": "Coprime Graph and the Threshold: Inclusion-Exclusion Formula",
+    "content": "coprimeGraph(A) defines a SimpleGraph where `Adj a b := a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ Nat.Coprime a b`. The Lean definition explicitly encodes membership in A, distinctness, and coprimality; the `symm` and `loopless` fields are required by Mathlib's SimpleGraph structure. The threshold function `threshold n := n / 2 + n / 3 - n / 6` is proved equal to itself by `rfl` in `threshold_by_inclusion_exclusion`. The threshold equals the count of integers in {1,...,n} divisible by 2 or 3 (by inclusion-exclusion: |mult of 2| + |mult of 3| - |mult of lcm(2,3) = 6|). Asymptotically, T(n) = n/2 + n/3 - n/6 = 3n/6 + 2n/6 - n/6 = 4n/6 = 2n/3.",
+    "mathContext": "$G(A).\\mathrm{Adj}(a,b) \\iff a \\in A \\wedge b \\in A \\wedge a \\neq b \\wedge \\gcd(a,b) = 1$.\n\nThreshold formula by inclusion-exclusion:\n$$T(n) = |\\{m \\leq n : 2 \\mid m\\}| + |\\{m \\leq n : 3 \\mid m\\}| - |\\{m \\leq n : 6 \\mid m\\}| = \\left\\lfloor \\frac{n}{2} \\right\\rfloor + \\left\\lfloor \\frac{n}{3} \\right\\rfloor - \\left\\lfloor \\frac{n}{6} \\right\\rfloor \\approx \\frac{2n}{3}.$$",
     "significance": "key",
     "relatedConcepts": [
-      "SimpleGraph",
+      "SimpleGraph (Mathlib)",
       "Nat.Coprime",
-      "inclusion-exclusion"
+      "inclusion-exclusion principle",
+      "threshold for graph properties"
     ],
-    "tags": [
-      "simple-graph",
-      "coprimality",
-      "inclusion-exclusion",
-      "threshold"
-    ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "SimpleGraph structure fields (symm, loopless)",
+      "Nat.Coprime definition",
+      "Inclusion-exclusion counting"
+    ]
   },
   {
     "id": "erdos-883-extremal",
     "proofId": "erdos-883",
-    "type": "definition",
+    "type": "insight",
     "range": {
       "startLine": 65,
       "endLine": 84
     },
-    "title": "Extremal Set",
-    "content": "extremalSet(n): integers at most n divisible by 2 or 3. extremal_set_triangle_free (axiom): no triangles in G(extremalSet), since any two elements share a common factor (2 or 3). Shows the threshold is tight.",
-    "mathContext": "By pigeonhole among {2,3}, at least one pair in any triple shares a prime factor, preventing coprimality.",
+    "title": "Extremal Set: Multiples of 2 or 3 Are Triangle-Free at the Threshold",
+    "content": "The extremalSet(n) — integers in {1,...,n} divisible by 2 or 3 — has exactly T(n) elements (it achieves the threshold) but contains no triangle in G. The triangle-free argument: any three elements from extremalSet all have prime factors from {2, 3}. By the pigeonhole principle on {2, 3}, among any three elements of the extremal set, at least two must share a common prime factor (either 2 divides both, or 3 divides both). Sharing a prime factor means gcd ≥ 2 ≠ 1, so those two are not coprime and not adjacent in G. Hence no triangle exists. This proves the threshold is TIGHT: you need strictly more than T(n) elements to guarantee triangles (and longer cycles).",
+    "mathContext": "$\\mathrm{extremalSet}(n) = \\{m \\in \\{1,\\ldots,n\\} : 2 \\mid m \\vee 3 \\mid m\\}$, $|\\mathrm{extremalSet}(n)| = T(n)$.\n\nTriangle-free proof: For $a, b, c \\in \\mathrm{extremalSet}$, each is divisible by 2 or 3. By pigeonhole on $\\{2, 3\\}$, two of $\\{a, b, c\\}$ share a prime divisor $p \\in \\{2, 3\\}$, so $\\gcd(a, b) \\geq p > 1$ — they are not coprime, so not adjacent. Hence no triangle. Tightness: for $|A| = T(n)$, taking $A = \\mathrm{extremalSet}$ gives a triangle-free graph, so the threshold is exact.",
     "significance": "key",
     "relatedConcepts": [
-      "extremal construction",
+      "pigeonhole principle",
       "triangle-free graphs",
-      "pigeonhole"
+      "extremal construction",
+      "Turán-type tightness",
+      "coprimality threshold"
     ],
-    "tags": [
-      "extremal-construction",
-      "triangle-free",
-      "pigeonhole",
-      "divisibility"
-    ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.filter",
+      "dvd predicate in Lean",
+      "pigeonhole on 2-element sets",
+      "threshold definition"
+    ]
   },
   {
     "id": "erdos-883-erdos-sarkozy",
@@ -82,22 +83,21 @@
       "startLine": 85,
       "endLine": 99
     },
-    "title": "Erdős-Sárkőzy Theorem (1997)",
-    "content": "erdos_sarkozy_odd_cycles (axiom): if |A| > threshold(n), then G(A) contains all odd cycles of length at most cn for some absolute constant c > 0. Partial answer to Question 1.",
-    "mathContext": "From Erdős-Sárkőzy [ErSa97]. The proof uses counting arguments and properties of coprime pairs.",
+    "title": "Erdős-Sárkőzy (1997): Odd Cycles of Length ≤ cn Exist Above Threshold",
+    "content": "The axiom erdos_sarkozy_odd_cycles states: for A ⊆ {1,...,n} with |A| > T(n), there exists an absolute constant c > 0 such that G(A) contains all odd cycles of length at most cn. The type signature returns `∃ c : ℚ, c > 0 ∧ ∀ k ≥ 3, k odd, k ≤ c*n → ∃ cycle, ...`. This is axiomatized rather than proved because the original Erdős-Sárkőzy argument uses analytical number theory (counting coprime pairs, density arguments) that would require substantial Mathlib infrastructure. The existence of c > 0 is existential — the theorem doesn't fix c. The gap between 'some c > 0' (Erdős-Sárkőzy) and 'c = 1/3' (Question 1) represents the open part of Problem #883.",
+    "mathContext": "Erdős-Sárkőzy [ErSa97]: $|A| > T(n) \\Rightarrow \\exists c > 0, \\forall k \\geq 3$ odd with $k \\leq cn$: $G(A)$ contains an odd $k$-cycle.\n\nThe axiom type: for $n \\geq 1$, $A \\subseteq \\{0,\\ldots,n\\}$, $|A| > T(n)$:\n$$\\exists c \\in \\mathbb{Q}_{>0},\\ \\forall k \\geq 3,\\ k \\text{ odd},\\ k \\leq cn:\\ \\exists \\text{ coprime cycle of length } k \\text{ in } A.$$",
     "significance": "key",
     "relatedConcepts": [
-      "odd cycles",
-      "counting arguments",
-      "coprime pairs"
+      "axiomatized theorem",
+      "odd cycles in dense graphs",
+      "existential constant",
+      "Erdős-Sárkőzy 1997"
     ],
-    "tags": [
-      "odd-cycles",
-      "erdos-sarkozy",
-      "counting-arguments",
-      "coprime-pairs"
-    ],
-    "prerequisites": []
+    "prerequisites": [
+      "isCoprimeCycle definition",
+      "threshold (n : ℕ) definition",
+      "Lean axiom keyword semantics"
+    ]
   },
   {
     "id": "erdos-883-question1",
@@ -107,22 +107,21 @@
       "startLine": 100,
       "endLine": 121
     },
-    "title": "Question 1 (Open)",
-    "content": "erdos_883_question_1: if |A| > threshold(n), does G(A) contain all odd cycles of length at most n/3 + 1? Asks for the specific constant 1/3, stronger than Erdős-Sárkőzy. Status: OPEN.",
-    "mathContext": "The optimal constant replacing c in Erdős-Sárkőzy is not known. The 1/3 bound would be sharp.",
+    "title": "Question 1 (Open): The 1/3 Constant for All Short Odd Cycles",
+    "content": "erdos_883_question_1 is defined as a Prop (not proved): it asks whether |A| > T(n) guarantees odd cycles of ALL lengths up to n/3+1. This is strictly stronger than Erdős-Sárkőzy (which only guarantees lengths up to cn for some unspecified c, which may be much less than 1/3). The constant 1/3 comes from the structure of the extremal set: multiples of 6 in {1,...,n} have count about n/6, and building cycles through multiples of 2 and 3 alternately requires length proportional to n/3. The open status means this Prop has no Lean proof; it is stated as a definition (the property, if true) rather than an axiom (asserting it). `question_1_open` is a docstring annotation, not a declaration.",
+    "mathContext": "$\\mathrm{erdos883Q1}(n, A) := A \\subseteq \\{0,\\ldots,n\\} \\to |A| > T(n) \\to \\forall k \\geq 3$ odd with $k \\leq n/3+1$: $G(A)$ contains an odd $k$-cycle.\n\nGap: Erdős-Sárkőzy gives some $c > 0$; Q1 conjectures $c = 1/3$ suffices. The extremal structure suggests $1/3$ is near-optimal: the longest cycle in the extremal set has length $O(n^{1/2})$, far less than $n/3$.",
     "significance": "key",
     "relatedConcepts": [
-      "open problem",
-      "optimal constant",
-      "odd cycles"
+      "open problem formalization",
+      "Lean Prop vs axiom",
+      "cycle length bound 1/3",
+      "Q1 vs Q2 comparison"
     ],
-    "tags": [
-      "open-problem",
-      "odd-cycles",
-      "optimal-constant",
-      "conjecture"
-    ],
-    "prerequisites": []
+    "prerequisites": [
+      "erdos_883_question_1 as a Prop definition",
+      "isCoprimeCycle",
+      "Erdős-Sárkőzy partial result"
+    ]
   },
   {
     "id": "erdos-883-sarkozy",
@@ -132,45 +131,48 @@
       "startLine": 122,
       "endLine": 153
     },
-    "title": "Sárkőzy's Theorem (1999)",
-    "content": "hasTripartite G A ell: a (1,l,l) tripartite subgraph with central vertex v and disjoint sets S,T of size l, all adjacent to v. sarkozy_tripartite (axiom): for large n, above threshold guarantees l > 0 with l proportional to log n / log log n. Solves Question 2.",
-    "mathContext": "From Sárkőzy [Sa99]. The l bound comes from estimates on coprime pairs in dense sets.",
+    "title": "Sárkőzy (1999): Complete (1,ℓ,ℓ) Tripartite Subgraphs Exist",
+    "content": "hasTripartite G A ell formalizes the existence of a (1,ℓ,ℓ) structure: a central vertex v adjacent to two disjoint sets S and T of size ℓ each. Importantly, the definition does NOT require edges between S and T — it is a (1,ℓ,ℓ)-bistar, not a full K_{1,ℓ,ℓ}. The Lean definition: `∃ v ∈ A, ∃ S T ⊆ A, |S|=ℓ, |T|=ℓ, S∩T=∅, v∉S∪T, v adj all of S, v adj all of T`. The axiom sarkozy_tripartite requires n ≥ 1000 (a lower bound for 'sufficiently large'), asserts ℓ > 0, and comments that the asymptotic bound is ℓ ≫ log n / log log n. This solves Q2: yes, such structure always exists above the threshold for large n.",
+    "mathContext": "$\\mathrm{hasTripartite}(G, A, \\ell) \\iff \\exists v \\in A,\\ \\exists S, T \\subseteq A,\\ |S|=|T|=\\ell,\\ S \\cap T = \\emptyset,\\ v \\notin S \\cup T,$\n$\\quad \\forall s \\in S: v \\sim s,\\ \\forall t \\in T: v \\sim t.$\n\n(Note: no edges required between $S$ and $T$.)\n\nSárkőzy [Sa99]: for $n \\geq n_0$, $|A| > T(n) \\Rightarrow \\exists \\ell \\gg \\log n / \\log \\log n$ with $\\mathrm{hasTripartite}(G(A), A, \\ell)$.",
     "significance": "key",
     "relatedConcepts": [
-      "tripartite graphs",
-      "Sárkőzy",
-      "solved"
+      "complete bipartite subgraph",
+      "star graph structure",
+      "Sárkőzy 1999 result",
+      "dense subgraph guarantees",
+      "log n / log log n asymptotic"
     ],
-    "tags": [
-      "tripartite-subgraph",
-      "sarkozy",
-      "solved",
-      "dense-sets"
-    ],
-    "prerequisites": []
+    "prerequisites": [
+      "hasTripartite definition",
+      "Disjoint (Finset) in Mathlib",
+      "sarkozy_tripartite axiom",
+      "coprimeGraph.Adj"
+    ]
   },
   {
     "id": "erdos-883-main",
     "proofId": "erdos-883",
-    "type": "insight",
+    "type": "concept",
     "range": {
       "startLine": 154,
       "endLine": 194
     },
-    "title": "Main Results",
-    "content": "erdos_883_question_2_solved (proved): Q2 answered via sarkozy_tripartite. erdos_883_partial (proved): Q1 partial progress via erdos_sarkozy_odd_cycles. erdos_883 (proved): main theorem combining Q2 solution.",
-    "mathContext": "Three proved theorems using the axiomatized results. Q2 fully solved, Q1 partially solved.",
+    "title": "Main Results: Q2 Solved, Q1 Partial — All via Axiom Delegation",
+    "content": "The three proved theorems are thin wrappers around the two axioms. `erdos_883_question_2_solved` introduces n, hn (n≥1000), A, hA, hsize and applies sarkozy_tripartite directly — a one-line proof. `erdos_883_partial` applies erdos_sarkozy_odd_cycles in the same manner. `erdos_883` repeats the Q2 statement again, also by sarkozy_tripartite. The formalization's value is in making the axiom assumptions explicit and showing which results follow from which: Q2 is fully captured by the sarkozy_tripartite axiom; Q1 partial progress is fully captured by erdos_sarkozy_odd_cycles. The 0-sorry, 2-axiom structure is honest about exactly where the mathematical content lies.",
+    "mathContext": "All three theorems reduce to `exact axiom_name args`:\n- $\\mathtt{erdos\\_883\\_question\\_2\\_solved}$: $\\forall n \\geq 1000, |A| > T(n) \\Rightarrow \\exists \\ell > 0, \\mathrm{hasTripartite}(G(A), A, \\ell)$. Proof: `exact sarkozy_tripartite n A hn hA hsize`.\n- $\\mathtt{erdos\\_883\\_partial}$: $\\forall n \\geq 1, |A| > T(n) \\Rightarrow \\exists c > 0, \\ldots$ Proof: `exact erdos_sarkozy_odd_cycles n A hn hA hsize`.\n- $\\mathtt{erdos\\_883}$: repeats Q2. Proof: same as `question_2_solved`.",
     "significance": "key",
     "relatedConcepts": [
-      "partially solved",
-      "proved theorems"
+      "axiom delegation pattern",
+      "theorem = axiom application",
+      "Q1 vs Q2 resolution status",
+      "exact tactic in Lean"
     ],
-    "tags": [
-      "main-result",
-      "partially-solved",
-      "proved-theorems"
-    ],
-    "prerequisites": []
+    "prerequisites": [
+      "sarkozy_tripartite axiom",
+      "erdos_sarkozy_odd_cycles axiom",
+      "exact tactic",
+      "function application in Lean"
+    ]
   },
   {
     "id": "erdos-883-properties",
@@ -180,21 +182,22 @@
       "startLine": 195,
       "endLine": 216
     },
-    "title": "Coprime Graph Properties",
-    "content": "coprime_graph_chromatic (axiom): placeholder for high chromatic number. isCoprimeCycle: a cycle where consecutive pairs are coprime. triangles_above_threshold (axiom): for n >= 10, above threshold guarantees a triangle.",
-    "mathContext": "Supporting properties of the coprime graph. Triangles are the simplest odd cycle case.",
+    "title": "Supporting Properties: Chromatic Number, isCoprimeCycle, Inclusion-Exclusion",
+    "content": "`isCoprimeCycle` formalizes a cycle as a List where every consecutive pair (including the last-to-first wrap) satisfies Nat.Coprime. The `threshold_by_inclusion_exclusion` theorem proves `threshold n = n / 2 + n / 3 - n / 6` by `rfl` — the definition and the formula are definitionally equal. Two axiom placeholders appear: `coprime_graph_chromatic` (chromatic number ≥ 3 above threshold — a consequence of odd cycles by the chromatic polynomial argument) and `triangles_above_threshold` (n ≥ 10, above threshold → triangle exists — the base case of the cycle question). The `threshold_by_inclusion_exclusion` `rfl` proof shows the definition was written to match the formula directly.",
+    "mathContext": "$\\mathrm{isCoprimeCycle}(\\mathtt{cycle}) \\iff |\\mathtt{cycle}| \\geq 3 \\wedge \\forall i: \\gcd(\\mathtt{cycle}[i], \\mathtt{cycle}[(i+1)\\%|\\mathtt{cycle}|]) = 1$.\n\n$\\mathtt{threshold\\_by\\_IE}: T(n) = n/2 + n/3 - n/6$ (proved by `rfl`).\n\n$\\chi(G(A)) \\geq 3$ for $|A| > T(n)$ (axiom): any graph with an odd cycle is not 2-colorable, so chromatic number $\\geq 3$. The full chromatic number of the coprime graph on $\\{1,\\ldots,n\\}$ is approximately $\\pi(n)/2$ (Pach-Sharir).",
     "significance": "supporting",
     "relatedConcepts": [
-      "chromatic number",
-      "coprime cycles",
-      "triangles"
+      "isCoprimeCycle definition",
+      "chromatic number lower bound",
+      "threshold_by_inclusion_exclusion",
+      "graph coloring",
+      "Nat.Coprime cycle chains"
     ],
-    "tags": [
-      "chromatic-number",
-      "coprime-cycles",
-      "triangles",
-      "graph-properties"
-    ],
-    "prerequisites": []
+    "prerequisites": [
+      "List.get and List.length",
+      "Fin arithmetic for cycle indices",
+      "omega for modular index bounds",
+      "rfl tactic for definitional equality"
+    ]
   }
 ]

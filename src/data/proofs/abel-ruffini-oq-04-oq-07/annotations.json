@@ -1,5 +1,54 @@
 [
   {
+    "id": "br-imports",
+    "proofId": "abel-ruffini-oq-04-oq-07",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 4
+    },
+    "title": "Mathlib Imports: Three Mathematical Domains",
+    "content": "The four imports delineate the three mathematical domains this file spans:\n\n1. **Algebra** (`Polynomial.Basic`, `Order.Ring.Basic`): polynomial arithmetic over rings and ordered-ring properties. `Algebra.Order.Ring.Basic` provides `Odd.strictMono_pow` — the theorem that $f(x) = x^n$ for odd $n$ is strictly monotone on any linearly ordered ring — which is the engine behind both the uniqueness of the Bring radical and its anti-monotonicity.\n\n2. **Topology** (`Topology.Order.IntermediateValue`): the intermediate value theorem for continuous functions. `intermediate_value_Icc` states that a continuous function on $[a, b]$ taking values of opposite signs must have a zero — the key ingredient for proving that $x^5 + x + t = 0$ has a real solution for every $t \\in \\mathbb{R}$.\n\n3. **Tactics** (`Mathlib.Tactic`): the full Mathlib tactic library. The proofs use `linear_combination` (polynomial identity verification), `linarith` (linear arithmetic for bound checks), `ring` (ring identities), `simp` with specific lemmas, and `exact`/`intro`.",
+    "mathContext": "`Odd.strictMono_pow`: if $n$ is odd then $x \\mapsto x^n$ is strictly monotone on any `LinearOrderedRing`. Applied here with $n = 5$: $x_1 < x_2 \\Rightarrow x_1^5 < x_2^5$. Combined with $x_1 < x_2 \\Rightarrow x_1 < x_2$ (identity), this gives strict monotonicity of $x \\mapsto x^5 + x$.\n\n`intermediate_value_Icc`: if $f : [a, b] \\to \\mathbb{R}$ is continuous, $f(a) \\leq v \\leq f(b)$, then $\\exists c \\in [a, b], f(c) = v$. The file uses this with $a = -(|t|+1)$, $b = |t|+1$, $v = -t$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Odd.strictMono_pow",
+      "intermediate_value_Icc",
+      "linear_combination tactic",
+      "polynomial arithmetic"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib library structure",
+      "ordered rings",
+      "topological spaces"
+    ]
+  },
+  {
+    "id": "br-namespace",
+    "proofId": "abel-ruffini-oq-04-oq-07",
+    "type": "concept",
+    "range": {
+      "startLine": 79,
+      "endLine": 84
+    },
+    "title": "Namespace and Section Setup",
+    "content": "`noncomputable section` is required because the Bring radical definition uses classical choice (`Classical.choice`) to extract the unique root proven to exist by the IVT. In Lean 4's constructive type theory, existence proofs are not automatically algorithms — `Classical.choice` converts an existence proof `∃ x, P x` into a term of type `{x // P x}`, but this extraction is non-constructive (no algorithm is produced). The `BringJerrardReduction` namespace scopes the 14 theorems and 4 definitions in this file, preventing name collisions with other Mathlib or gallery entries. `open Polynomial` brings `Polynomial.C`, `Polynomial.X`, `Polynomial.aeval`, and polynomial constructor notation into scope without qualification.",
+    "mathContext": "`Classical.choice` converts $\\exists x : \\alpha, P\\, x$ into a term of type $\\alpha$ satisfying $P$. In the Bring radical definition: `bringRadical t := Classical.choice (bringRad_exists t)` where `bringRad_exists t : ∃ x : ℝ, x^5 + x + t = 0`. The resulting `bringRadical : ℝ → ℝ` is not computable in the constructive sense — there is no algorithm to extract it from the proof — but it exists as a mathematical function and all its properties can be proved from the existence and uniqueness theorems.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Classical.choice in Lean",
+      "noncomputable vs computable",
+      "namespace in Lean",
+      "open directive"
+    ],
+    "prerequisites": [
+      "Lean 4 type theory",
+      "Classical logic vs constructive logic",
+      "Polynomial namespace"
+    ]
+  },
+  {
     "id": "br-context",
     "proofId": "abel-ruffini-oq-04-oq-07",
     "type": "concept",
