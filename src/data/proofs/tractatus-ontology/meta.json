@@ -66,112 +66,128 @@
       "title": "Preamble",
       "startLine": 1,
       "endLine": 69,
-      "summary": "Module imports, documentation header introducing the formalization scope, and design decisions documenting modeling choices."
+      "summary": "Module imports, documentation header introducing the formalization scope, and design decisions documenting modeling choices.",
+      "mathContext": "The preamble imports `Mathlib.Tactic` and opens the `Tractatus` namespace, establishing the classical-logic environment used throughout. It documents the three core design decisions: opaque types for ontological primitives (objects $O$ and states of affairs $S$), worlds encoded as predicates $w : S \\to \\text{Prop}$, and propositions as an inductive datatype. These choices mirror standard Kripke-style model theory while staying close to Wittgenstein's own picture-theoretic semantics."
     },
     {
       "id": "objects",
       "title": "Objects (TLP 2.02)",
       "startLine": 72,
       "endLine": 85,
-      "summary": "Objects as an abstract variable type — simple, structureless entities."
+      "summary": "Objects as an abstract variable type — simple, structureless entities.",
+      "mathContext": "Objects are introduced via `variable (O : Type*)`, making $O$ a universally quantified type parameter throughout the file. No structure is imposed on $O$: there are no relations, no equality constraints, no cardinality assumptions. This encodes TLP 2.02 — objects are simple, substance-like entities whose only mathematical role is to serve as arguments in states of affairs."
     },
     {
       "id": "states-of-affairs",
       "title": "States of Affairs (TLP 2.01)",
       "startLine": 87,
       "endLine": 102,
-      "summary": "States of affairs (Sachverhalte) as an abstract type of possible combinations."
+      "summary": "States of affairs (Sachverhalte) as an abstract type of possible combinations.",
+      "mathContext": "States of affairs are introduced via `variable (S : Type*)`, a second universally quantified type parameter representing possible combinations of objects (Sachverhalte in TLP 2.01). The type $S$ is left entirely abstract: no combinatorial structure linking $S$ to $O$ is imposed at this level, since the Lean formalization works with the logical space directly. The set of all elements of $S$ forms the logical space $\\mathcal{L} = \\{s : S\\}$ of possible elementary situations."
     },
     {
       "id": "worlds",
       "title": "Worlds (TLP 1, 1.1, 2.04)",
       "startLine": 104,
       "endLine": 118,
-      "summary": "Worlds as predicates determining which states of affairs obtain."
+      "summary": "Worlds as predicates determining which states of affairs obtain.",
+      "mathContext": "A world is defined as `def World (S : Type*) := S → Prop`, i.e., a predicate $w : S \\to \\text{Prop}$ that selects which states of affairs obtain. This encodes TLP 1 ('The world is everything that is the case') and TLP 2.04 ('The totality of obtaining states of affairs is the world'). The actual world is one such predicate; the logical space is the powerset $\\mathcal{P}(S)$, each element being a possible world."
     },
     {
       "id": "independence",
       "title": "Independence Structure (TLP 2.061-2.062)",
       "startLine": 120,
       "endLine": 144,
-      "summary": "IndependentWorlds typeclass and its default instance for the free Boolean cube."
+      "summary": "IndependentWorlds typeclass and its default instance for the free Boolean cube.",
+      "mathContext": "The `IndependentWorlds` typeclass asserts that for any assignment $f : S \\to \\text{Prop}$ there exists a world $w : S \\to \\text{Prop}$ such that $\\forall s,\\, w(s) \\leftrightarrow f(s)$. This encodes TLP 2.061–2.062: states of affairs are independent of one another, so any combination can obtain. The default instance for `World S` is trivial — the assignment itself IS the world — giving the free Boolean cube $\\{0,1\\}^S$ as the canonical model of full independence."
     },
     {
       "id": "propositions",
       "title": "Propositions (TLP 4.21, 5)",
       "startLine": 146,
       "endLine": 161,
-      "summary": "Inductive type for propositions: elementary, negation, conjunction."
+      "summary": "Inductive type for propositions: elementary, negation, conjunction.",
+      "mathContext": "Propositions form an inductive type `Proposition S` with three constructors: `elementary : S → Proposition S` (atomic propositions picturing single states of affairs), `neg : Proposition S → Proposition S` (negation), and `conj : Proposition S → Proposition S → Proposition S` (conjunction). This is the minimal truth-functional basis consistent with TLP 4.21 and TLP 5: all other connectives are defined terms, and every proposition is ultimately a truth-function of elementaries."
     },
     {
       "id": "derived-connectives",
       "title": "Derived Connectives (TLP 5.101)",
       "startLine": 163,
       "endLine": 189,
-      "summary": "Disjunction, implication, biconditional, and NAND defined from negation and conjunction."
+      "summary": "Disjunction, implication, biconditional, and NAND defined from negation and conjunction.",
+      "mathContext": "The four derived connectives are: $p \\lor q := \\neg(\\neg p \\land \\neg q)$ (De Morgan disjunction), $p \\to q := \\neg p \\lor q$ (material conditional), $p \\leftrightarrow q := (p \\to q) \\land (q \\to p)$ (biconditional), and $p \\mid q := \\neg(p \\land q)$ (Sheffer NAND). These definitions implement TLP 5.101's truth-table analysis and TLP 5.5's claim that all truth-functions arise from a single binary operation. No new constructors are added to the inductive type; the derivations are purely definitional."
     },
     {
       "id": "evaluation",
       "title": "Semantic Evaluation (TLP 2.21, 4.06)",
       "startLine": 191,
       "endLine": 228,
-      "summary": "Recursive truth-value evaluation of propositions relative to worlds, including Bool-valued evaluator and correctness bridge theorem."
+      "summary": "Recursive truth-value evaluation of propositions relative to worlds, including Bool-valued evaluator and correctness bridge theorem.",
+      "mathContext": "The function `eval : Proposition S → World S → Prop` is defined by structural recursion: `(elementary s).eval w = w s`, `(neg p).eval w = ¬ p.eval w`, `(conj p q).eval w = p.eval w ∧ q.eval w`. A parallel Bool-valued evaluator `evalB : Proposition S → World S → Bool` uses `decide` to return decidable truth values. The bridge theorem `evalB_correct` proves `evalB p w = true ↔ eval p w`, connecting the computational and propositional semantics."
     },
     {
       "id": "tautology-contradiction",
       "title": "Tautology and Contradiction (TLP 4.46, 6.1)",
       "startLine": 229,
       "endLine": 252,
-      "summary": "Definitions of tautology (true in all worlds), contradiction (false in all worlds), and nontrivial propositions."
+      "summary": "Definitions of tautology (true in all worlds), contradiction (false in all worlds), and nontrivial propositions.",
+      "mathContext": "`IsTautology p` is defined as `∀ w : World S, p.eval w` and `IsContradiction p` as `∀ w : World S, ¬ p.eval w`. A proposition is `IsNontrivial` if it is neither a tautology nor a contradiction — i.e., it has at least one verifying world and at least one falsifying world. These definitions formalize TLP 4.46 ('The simplest cases of tautology are...') and TLP 6.1 ('The propositions of logic are tautologies')."
     },
     {
       "id": "general-world-models",
       "title": "General World Models",
       "startLine": 253,
       "endLine": 341,
-      "summary": "WorldModel structure parameterizing semantics over arbitrary world collections. Includes freeModel, evalM, IsTautologyM, IsContradictionM, generalized compositionality (main result), and a compatibility lemma proving evalM over freeModel equals the original eval."
+      "summary": "WorldModel structure parameterizing semantics over arbitrary world collections. Includes freeModel, evalM, IsTautologyM, IsContradictionM, generalized compositionality (main result), and a compatibility lemma proving evalM over freeModel equals the original eval.",
+      "mathContext": "A `WorldModel S` is a structure `⟨W, holds⟩` where `W : Type*` is the world carrier and `holds : W → S → Prop` is the satisfaction relation, abstracting $\\models$ from any fixed representation. The free model `freeModel S : WorldModel S` sets `W = World S` and `holds w s = w s`. The generalized evaluator `evalM M p w` recurses on `Proposition S` using `M.holds`, and `truth_functional_compositionality_gen` proves that worlds indistinguishable on atomics evaluate all compounds identically — the main result for arbitrary $M$."
     },
     {
       "id": "main-theorems",
       "title": "Main Theorems",
       "startLine": 343,
       "endLine": 558,
-      "summary": "Core theorems 1-13: compositionality (main result), independence, bivalence, connective semantics, and NAND functional completeness."
+      "summary": "Core theorems 1-13: compositionality (main result), independence, bivalence, connective semantics, and NAND functional completeness.",
+      "mathContext": "The thirteen main theorems cover: (1) `truth_functional_compositionality` — if $w_1$ and $w_2$ agree on all $s : S$ then $p.\\text{eval}\\, w_1 \\leftrightarrow p.\\text{eval}\\, w_2$; (2) `elementary_independence` — for any $f : S \\to \\text{Prop}$ there exists $w$ with $w(s) \\leftrightarrow f(s)$; (3) `bivalence` — $p.\\text{eval}\\, w \\lor \\neg p.\\text{eval}\\, w$ for all $w$; through (13) `nand_functional_completeness` — every truth-function expressible by `neg`/`conj` is also expressible using only NAND ($\\uparrow$), formalizing TLP 5.5. The section also proves classical tautologies including $p \\lor \\neg p$ and De Morgan laws."
     },
     {
       "id": "constrained-models",
       "title": "Constrained World Models",
       "startLine": 560,
       "endLine": 648,
-      "summary": "Abstract constrained model (ConstrainedWorld with constrained_independence_fails, main result) and concrete weather model (WeatherFacts with weather_independence_fails). Both demonstrate that independence is a modeling choice, not a logical law."
+      "summary": "Abstract constrained model (ConstrainedWorld with constrained_independence_fails, main result) and concrete weather model (WeatherFacts with weather_independence_fails). Both demonstrate that independence is a modeling choice, not a logical law.",
+      "mathContext": "`ConstrainedWorld S a b` is a subtype `{w : World S // w a → w b}` imposing the constraint that state $a$ obtaining forces state $b$ to obtain. The theorem `constrained_independence_fails` proves $\\neg \\forall f : S \\to \\text{Prop},\\, \\exists cw : \\text{ConstrainedWorld}\\, S\\, a\\, b,\\, \\forall s,\\, cw(s) \\leftrightarrow f(s)$ — no world in the constrained model can make $a$ true and $b$ false. The weather model concretizes this with `WeatherFacts = {rain, clouds}` and the constraint `rain → clouds`, proving `weather_independence_fails`."
     },
     {
       "id": "concrete-examples",
       "title": "Concrete Examples",
       "startLine": 650,
       "endLine": 698,
-      "summary": "TwoFacts instantiation with rain/snow, Prop-valued and Bool-valued evaluation examples."
+      "summary": "TwoFacts instantiation with rain/snow, Prop-valued and Bool-valued evaluation examples.",
+      "mathContext": "`TwoFacts` is an inductive type with constructors `rain` and `snow`, giving a two-element type $S = \\{\\text{rain}, \\text{snow}\\}$ that concretely inhabits the abstract $S$ parameter. Example worlds are defined by specifying which subset of `{rain, snow}` obtains, and specific propositions such as `elementary .rain` and `conj (elementary .rain) (elementary .snow)` are evaluated both with `eval` (Prop-valued) and `evalB` (Bool-valued), illustrating the bridge theorem with ground-level computations."
     },
     {
       "id": "structural-vs-semantic",
       "title": "Structural vs Semantic Equivalence (TLP 4.0141)",
       "startLine": 700,
       "endLine": 1007,
-      "summary": "Defines structural (structEq), semantic (semEq), and logical-form (formEq via Equiv.Perm) equivalence. Proves formEq is an equivalence relation, establishes strict hierarchy structEq < formEq < semEq, and proves the divergence theorem structEq_ne_semEq (main result)."
+      "summary": "Defines structural (structEq), semantic (semEq), and logical-form (formEq via Equiv.Perm) equivalence. Proves formEq is an equivalence relation, establishes strict hierarchy structEq < formEq < semEq, and proves the divergence theorem structEq_ne_semEq (main result).",
+      "mathContext": "Three equivalence relations are defined on `Proposition S`: `structEq` (syntactic identity up to the inductive tree), `semEq p q` ($\\forall w,\\, p.\\text{eval}\\,w \\leftrightarrow q.\\text{eval}\\,w$, truth-table equality), and `formEq p q` ($\\exists \\sigma : \\text{Equiv.Perm}\\, S,\\, \\forall w,\\, p.\\text{eval}\\,w \\leftrightarrow q.\\text{eval}\\,(w \\circ \\sigma)$, isomorphism of truth-table patterns). The strict hierarchy $\\text{structEq} \\subsetneq \\text{formEq} \\subsetneq \\text{semEq}$ is witnessed by: `elementary .rain` vs `elementary .snow` (formEq but not structEq) and `neg (neg (elementary s))` vs `elementary s` (semEq but not formEq), formalizing TLP 4.0141."
     },
     {
       "id": "expresses-and-classification",
       "title": "The expresses Relation and Analytical Decomposition",
       "startLine": 1008,
       "endLine": 1070,
-      "summary": "The expresses relation (TLP 4.12) bridging object and meta language, and a three-way classification of all results: core invariants, model assumptions, and formal limits."
+      "summary": "The expresses relation (TLP 4.12) bridging object and meta language, and a three-way classification of all results: core invariants, model assumptions, and formal limits.",
+      "mathContext": "The `expresses` relation is defined as `expresses p w ↔ p.eval w`, connecting a proposition $p$ to the worlds in which it holds — the formal correlate of TLP 4.12 ('A proposition shows how things stand if it is true'). A three-way classification partitions all proved results: (1) core invariants (compositionality, independence, bivalence) that hold in the free model; (2) model assumptions (independence failure in constrained models) that are contingent on the choice of $W$; and (3) formal limits (the silence theorem, the limits of expressibility) that hold at the meta-level about what `expresses` can and cannot capture."
     },
     {
       "id": "limits",
       "title": "The Limits of Formalization (TLP 6.54, 7)",
       "startLine": 1071,
       "endLine": 1230,
-      "summary": "World-constant triviality lemma, saying/showing triviality theorem, contingent propositions theorem, nontrivial predicate theorems, proposition seven, nontrivial expressibility theorems, the ladder of TLP 6.54, and the axiom of silence."
+      "summary": "World-constant triviality lemma, saying/showing triviality theorem, contingent propositions theorem, nontrivial predicate theorems, proposition seven, nontrivial expressibility theorems, the ladder of TLP 6.54, and the axiom of silence.",
+      "mathContext": "The silence theorem proves that any proposition constant across all worlds — i.e., $\\forall w_1 w_2,\\, p.\\text{eval}\\,w_1 \\leftrightarrow p.\\text{eval}\\,w_2$ — is either a tautology or a contradiction, never genuinely contingent. The `saying_showing_triviality` theorem formalizes that truth-functional propositions cannot express the structural features they show (TLP 4.1212). The section culminates in `axiom silence : True` — a deliberate Lean `axiom` declaration encoding TLP 7 ('Whereof one cannot speak, thereof one must be silent') as a formal gesture: axiomatic, trivially true, yet irreducible to any proof."
     }
   ],
   "conclusion": {
