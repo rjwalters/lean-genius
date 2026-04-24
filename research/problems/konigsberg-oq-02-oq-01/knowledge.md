@@ -115,28 +115,25 @@ Remaining: `directed_euler_circuit_sufficient_corrected` (1 sorry: WF induction)
 ## Session 2026-04-24 (Session 5) — API Bug Fixes for 0-Sorry Build
 
 **Mode**: REVISIT (continuing session 4)
-**Outcome**: progress — fixed 6 API bugs in the 0-sorry proof; awaiting Docker build verification
+**Outcome**: progress — fixed 7 API bugs in the 0-sorry proof; Docker build running
 
 ### What Was Done
-- Fixed `Nat.eq_zero_of_nonpos` → `omega` (doesn't exist)
 - Fixed `List.append_ne_nil_of_right` → `by simp` (doesn't exist)
-- Fixed `Nat.not_lt.mp` + nonexistent `Nat.eq_zero_of_nonpos` → `omega` tactic in h_zero
+- Fixed `Nat.eq_zero_of_nonpos` → `omega` tactic in h_zero (doesn't exist)
 - Fixed `h_VC_closed` anonymous constructor `⟨v, ...⟩` → `List.mem_map.mpr ⟨(v, x), ..., rfl⟩` (wrong witness type)
-- Fixed `hempty` case in cons branch of h_walk_in_VC: removed broken `.symm.trans (...)`, used `subst` + `simp`
-- Fixed `starts_at` case in cons branch: replaced `hchain.rel_head?` (nonexistent) with `cases tl` + `(List.chain'_cons.mp hchain).1.symm` (using `isChain_cons_cons` alias)
+- Fixed `hempty` case in cons branch of h_walk_in_VC: used `subst` + `simp` instead of broken `.symm.trans`
+- Fixed `starts_at` case: replaced nonexistent `hchain.rel_head?` with `cases tl; exact (List.chain'_cons.mp hchain).1.symm`
 - Fixed missing `rw [← List.toFinset_card_of_nodup hnodup]` in h_arc_bound before `apply Finset.card_le_card`
-- Fixed `List.Chain'.nil` → `IsChain.nil` (no `Chain'.nil` constructor alias exists in batteries/Mathlib)
+- Fixed `List.Chain'.nil` → `IsChain.nil` (no `Chain'.nil` constructor alias exists)
 
 ### Key API Facts Discovered
 - `List.chain'_cons` = `isChain_cons_cons` (deprecated alias): `IsChain R (a :: b :: l) ↔ R a b ∧ IsChain R (b :: l)` — gives direct `.1` access, NO `head?` wrapper
-- `List.Chain'.nil` has NO deprecated alias (unlike `Chain'.tail`, `Chain'.rel_head`, `chain'_cons`); use `IsChain.nil` instead
+- `List.Chain'.nil` has NO deprecated alias; use `IsChain.nil` instead
 - `Chain' := (IsChain · ·)` is a `def`, not an `abbrev`/`inductive`; constructors live in `IsChain` namespace
-- `List.toFinset_card_of_nodup : l.Nodup → l.toFinset.card = l.length` (in Mathlib.Data.Finset.Card)
-- `List.mem_getLast?_eq_getLast : x ∈ l.getLast? → ∃ h, x = getLast l h` (exists in Mathlib)
-- `Option` membership: `a ∈ some b ↔ some b = some a` (so `a = b` after `Option.some.injEq`)
-- `List.disjoint_take_drop : l.Nodup → m ≤ n → Disjoint (l.take m) (l.drop n)` (in Batteries)
+- `List.toFinset_card_of_nodup : l.Nodup → l.toFinset.card = l.length` needed before `Finset.card_le_card` when goal uses `.length`
+- Option membership: `b ∈ some (v,x)` → after simp → `(v,x) = b` (reversed convention); use `← hb` to rewrite
 
-### Status: Awaiting Docker build to confirm all API fixes compile cleanly
+### Status: Build pending Docker verification
 
 ---
 
@@ -149,6 +146,11 @@ Remaining: `directed_euler_circuit_sufficient_corrected` (1 sorry: WF induction)
 - `removeArcList` as standalone def avoids namespace conflicts with `Digraph` dot notation
 - `Finset.card_image_of_injOn` avoids needing `List.Nodup.map` (which may not exist)
 - cmf bridge: `(l.map f).count b = (l.filter (fun a => decide (f a = b))).length` — inline list induction
+- `List.chain'_cons` (= `isChain_cons_cons`): gives `R a b ∧ Chain' (b :: l)` directly — no `head?` wrapper
+- `Chain' := (IsChain · ·)` is a `def`; constructors under `IsChain` namespace (`IsChain.nil`, not `Chain'.nil`)
+- `List.toFinset_card_of_nodup` needed when comparing `Finset.card` with `List.length`
+- Option membership convention: `b ∈ some (v,x)` means `(v,x) = b` after simp (reversed)
+- WF induction on `D.arcCount - C.arcs.length` is the right measure for Hierholzer splicing
 
 ---
 
@@ -157,3 +159,7 @@ Remaining: `directed_euler_circuit_sufficient_corrected` (1 sorry: WF induction)
 - `List.count_map_eq_length_filter`: does not exist in current Mathlib — use inline cmf bridge
 - `List.Nodup.map_of_injOn`: unreliable — use `Finset.card_image_of_injOn` instead
 - `Digraph.removeArcList` with dot notation: namespace resolution fails — use standalone def
+- `Nat.eq_zero_of_nonpos`: does not exist — use `omega`
+- `List.append_ne_nil_of_right`: does not exist — use `by simp`
+- `List.Chain'.nil`: no deprecated alias — use `IsChain.nil`
+- `hchain.rel_head?`: does not exist — use `(List.chain'_cons.mp hchain).1`
