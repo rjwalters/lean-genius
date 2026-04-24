@@ -306,6 +306,11 @@
       "description": "Proves complete solvability characterizations: $S_n$ and $A_n$ are solvable iff $n \\leq 4$, and $[S_5, S_5] = A_5$ (the derived series step that makes $S_5$ non-solvable). Directly formalizes the group-theoretic facts underlying Abel-Ruffini's impossibility at degree 5"
     },
     {
+      "targetId": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "Sylow's theorems (Wiedijk #72) provide the group-theoretic machinery underlying the simplicity of A₅ — the cornerstone of Abel-Ruffini's impossibility. Sylow counting for A₅ (order 60 = 2²·3·5) shows the five-Sylow subgroup count must satisfy n₅ ≡ 1 (mod 5) and n₅ ∣ 12, giving n₅ ∈ {1, 6}; n₅ = 1 would make the Sylow 5-subgroup normal in A₅, contradicting simplicity, so n₅ = 6. The conjugacy class approach used in `alternatingGroup.isSimpleGroup_five` directly instantiates the same structural constraints that Sylow's theorems systematize for all finite groups."
+    },
+    {
       "targetId": "lagrange-theorem",
       "relationship": "foundational",
       "description": "Lagrange's theorem on subgroup orders underpins the group-theoretic machinery: the derived series, composition factors, and index calculations used to analyze S₅ and A₅"
