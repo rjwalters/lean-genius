@@ -642,10 +642,755 @@ theorem hook_length_formula_one_col (n : ℕ) :
   rw [hcard, one_mul, hookProd_oneColYD]
 
 -- ============================================================
--- PART VII: Numerical Verification
+-- PART VIc: Hook-Length Formula for Generalized Hook Shapes [a, 1^b]
 -- ============================================================
--- Verify the hook-length formula for specific shapes via norm_num.
--- hookProd computation: ∏ hook lengths over all cells.
+
+/-
+  A *generalized hook shape* gHookYD a b (a ≥ 1, b ≥ 0) has:
+  - Row 0 of length a  (horizontal arm)
+  - Rows 1, ..., b each of length 1  (vertical leg)
+  - Total cells: n = a + b
+
+  Hook lengths:
+    h(0,0) = a + b        (corner of the L)
+    h(0,j) = a - j        for j = 1, ..., a-1   (arm cells)
+    h(i,0) = b + 1 - i    for i = 1, ..., b      (leg cells)
+
+  Hook product: hookProd = (a+b) · (a-1)! · b!
+
+  SYT count: card(SYT(gHookYD a b)) = C(a+b-1, a-1)
+  Bijection: SYT ↔ (a-1)-subsets of {2,...,a+b}, where the subset
+  records which entries go in row 0 (positions 1,...,a-1).
+
+  HLF: C(a+b-1, a-1) × (a+b) × (a-1)! × b! = (a+b)!
+
+  Special cases:
+  - gHookYD a 0 = oneRowYD a   (row shape, already proved)
+  - gHookYD 1 b = oneColYD (b+1) (column shape, already proved)
+  - gHookYD a 1 = hookShapeYD (a-1) (hook shape, already proved)
+  - gHookYD a b with a≥2, b≥2: NEW cases
+-/
+
+/-- Generalized hook shape: row 0 of length a ≥ 1, rows 1..b each of length 1. -/
+private def gHookYD (a b : ℕ) (ha : 0 < a) : YoungDiagram where
+  cells := (Finset.range a).image (Prod.mk 0) ∪
+           (Finset.Ico 1 (b + 1)).image (fun i => (i, 0))
+  isLowerSet := by
+    intro ⟨x, y⟩ ⟨u, v⟩ huv hmem
+    simp only [Finset.mem_coe, Finset.mem_union, Finset.mem_image, Finset.mem_range,
+               Finset.mem_Ico, Prod.mk.injEq] at hmem ⊢
+    simp only [Prod.mk_le_mk] at huv
+    obtain ⟨hxu, hyv⟩ := huv
+    rcases hmem with ⟨k, hk, rfl, rfl⟩ | ⟨k, ⟨hk1, hk2⟩, rfl, rfl⟩
+    · -- (u,v) = (0, k) with k < a; x ≤ 0 so x = 0; y ≤ k < a
+      left; exact ⟨y, by omega, Nat.eq_zero_of_le_zero hxu |>.symm, by omega⟩
+    · -- (u,v) = (k, 0) with 1 ≤ k ≤ b; y ≤ 0 so y = 0; x ≤ k ≤ b
+      have hy0 : y = 0 := Nat.le_zero.mp hyv
+      subst hy0
+      by_cases hx0 : x = 0
+      · subst hx0; left; exact ⟨0, ha, rfl, rfl⟩
+      · right; exact ⟨x, ⟨Nat.pos_of_ne_zero hx0, by omega⟩, rfl, rfl⟩
+
+private lemma mem_gHookYD {a b : ℕ} {ha : 0 < a} {i j : ℕ} :
+    (i, j) ∈ gHookYD a b ha ↔ (i = 0 ∧ j < a) ∨ (1 ≤ i ∧ i ≤ b ∧ j = 0) := by
+  simp only [gHookYD, YoungDiagram.mem_mk, Finset.mem_union, Finset.mem_image,
+             Finset.mem_range, Finset.mem_Ico, Prod.mk.injEq]
+  constructor
+  · rintro (⟨k, hk, rfl, rfl⟩ | ⟨k, ⟨hk1, hk2⟩, rfl, rfl⟩)
+    · left; exact ⟨rfl, hk⟩
+    · right; exact ⟨hk1, by omega, rfl⟩
+  · rintro (⟨rfl, hj⟩ | ⟨hi1, hi2, rfl⟩)
+    · left; exact ⟨j, hj, rfl, rfl⟩
+    · right; exact ⟨i, ⟨hi1, by omega⟩, rfl, rfl⟩
+
+private lemma gHookYD_card (a b : ℕ) (ha : 0 < a) : (gHookYD a b ha).card = a + b := by
+  unfold YoungDiagram.card gHookYD
+  rw [Finset.card_union_of_disjoint]
+  · rw [Finset.card_image_of_injective _ (fun p q h => (Prod.mk.inj h).2),
+        Finset.card_image_of_injective _ (fun p q h => (Prod.mk.inj h).1),
+        Finset.card_range, Finset.card_Ico]
+    omega
+  · apply Finset.disjoint_left.mpr
+    intro ⟨x, y⟩ hx hy
+    simp only [Finset.mem_image, Finset.mem_range, Prod.mk.injEq] at hx hy
+    obtain ⟨_, _, rfl, rfl⟩ := hx
+    obtain ⟨_, ⟨h1, _⟩, rfl, _⟩ := hy
+    omega
+
+-- gHookYD a 0 = oneRowYD a
+private lemma gHookYD_zero_eq_oneRowYD (a : ℕ) (ha : 0 < a) :
+    gHookYD a 0 ha = oneRowYD a := by
+  ext ⟨i, j⟩
+  simp only [YoungDiagram.mem_mk, mem_gHookYD, mem_oneRowYD, Finset.mem_Ico]
+  constructor
+  · rintro (⟨rfl, hj⟩ | ⟨h1, h2, _⟩); exact ⟨rfl, hj⟩; omega
+  · rintro ⟨rfl, hj⟩; left; exact ⟨rfl, hj⟩
+
+-- gHookYD 1 b ha = oneColYD (b+1)
+private lemma gHookYD_one_eq_oneColYD (b : ℕ) :
+    gHookYD 1 b (Nat.one_pos) = oneColYD (b + 1) := by
+  ext ⟨i, j⟩
+  simp only [YoungDiagram.mem_mk, mem_gHookYD, mem_oneColYD]
+  constructor
+  · rintro (⟨rfl, hj⟩ | ⟨hi1, hi2, rfl⟩)
+    · exact ⟨by omega, by omega⟩
+    · exact ⟨by omega, rfl⟩
+  · rintro ⟨hi, rfl⟩
+    rcases Nat.eq_or_gt_of_le (Nat.zero_le i) with rfl | hpos
+    · left; exact ⟨rfl, Nat.one_pos⟩
+    · right; exact ⟨hpos, by omega, rfl⟩
+
+-- Row/column lengths for gHookYD
+private lemma rowLen_gHookYD_zero (a b : ℕ) (ha : 0 < a) :
+    (gHookYD a b ha).rowLen 0 = a := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]
+    simp [mem_gHookYD]
+  · cases a with
+    | zero => omega
+    | succ a =>
+      have := YoungDiagram.mem_iff_lt_rowLen.mp
+        (mem_gHookYD.mpr (Or.inl ⟨rfl, Nat.lt_succ_self a⟩))
+      omega
+
+private lemma rowLen_gHookYD_succ (a b : ℕ) (ha : 0 < a) {i : ℕ} (hi : 0 < i) (hib : i ≤ b) :
+    (gHookYD a b ha).rowLen i = 1 := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]
+    simp [mem_gHookYD]; omega
+  · have := YoungDiagram.mem_iff_lt_rowLen.mp
+      (mem_gHookYD.mpr (Or.inr ⟨hi, hib, rfl⟩))
+    omega
+
+private lemma colLen_gHookYD_zero (a b : ℕ) (ha : 0 < a) :
+    (gHookYD a b ha).colLen 0 = b + 1 := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]
+    simp [mem_gHookYD]; omega
+  · cases b with
+    | zero =>
+      have := YoungDiagram.mem_iff_lt_colLen.mp
+        (mem_gHookYD.mpr (Or.inl ⟨rfl, ha⟩))
+      omega
+    | succ b =>
+      have := YoungDiagram.mem_iff_lt_colLen.mp
+        (mem_gHookYD.mpr (Or.inr ⟨Nat.succ_pos b, le_refl _, rfl⟩))
+      omega
+
+private lemma colLen_gHookYD_pos (a b : ℕ) (ha : 0 < a) {j : ℕ} (hj : 0 < j) (hja : j < a) :
+    (gHookYD a b ha).colLen j = 1 := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]
+    simp [mem_gHookYD]; omega
+  · have := YoungDiagram.mem_iff_lt_colLen.mp
+      (mem_gHookYD.mpr (Or.inl ⟨rfl, hja⟩))
+    omega
+
+-- Hook lengths for gHookYD
+private lemma hookLength_gHookYD_00 (a b : ℕ) (ha : 0 < a) :
+    hookLength (gHookYD a b ha) 0 0 = a + b := by
+  have hcell : (0, 0) ∈ gHookYD a b ha := mem_gHookYD.mpr (Or.inl ⟨rfl, ha⟩)
+  have heq := hookLength_add_eq (gHookYD a b ha) hcell
+  rw [rowLen_gHookYD_zero, colLen_gHookYD_zero] at heq; omega
+
+private lemma hookLength_gHookYD_row (a b : ℕ) (ha : 0 < a) {j : ℕ}
+    (hj : 0 < j) (hja : j < a) :
+    hookLength (gHookYD a b ha) 0 j = a - j := by
+  have hcell : (0, j) ∈ gHookYD a b ha := mem_gHookYD.mpr (Or.inl ⟨rfl, hja⟩)
+  have heq := hookLength_add_eq (gHookYD a b ha) hcell
+  rw [rowLen_gHookYD_zero, colLen_gHookYD_pos ha hj hja] at heq; omega
+
+private lemma hookLength_gHookYD_col (a b : ℕ) (ha : 0 < a) {i : ℕ}
+    (hi : 0 < i) (hib : i ≤ b) :
+    hookLength (gHookYD a b ha) i 0 = b + 1 - i := by
+  have hcell : (i, 0) ∈ gHookYD a b ha := mem_gHookYD.mpr (Or.inr ⟨hi, hib, rfl⟩)
+  have heq := hookLength_add_eq (gHookYD a b ha) hcell
+  rw [rowLen_gHookYD_succ a b ha hi hib, colLen_gHookYD_zero] at heq; omega
+
+/-- Hook product of gHookYD a b equals (a+b) * (a-1)! * b! -/
+private theorem hookProd_gHookYD (a b : ℕ) (ha : 0 < a) :
+    hookProd (gHookYD a b ha) = (a + b) * (a - 1).factorial * b.factorial := by
+  -- Split cells: {(0,0)} ∪ {(0,j) : 1≤j<a} ∪ {(i,0) : 1≤i≤b}
+  have hcells : (gHookYD a b ha).cells =
+      {(0,0)} ∪ (Finset.Ico 1 a).image (Prod.mk 0) ∪
+      (Finset.Ico 1 (b+1)).image (fun i => (i, 0)) := by
+    ext ⟨i, j⟩
+    simp only [Finset.mem_union, Finset.mem_singleton, Finset.mem_image,
+               Finset.mem_Ico, Prod.mk.injEq, YoungDiagram.mem_cells, mem_gHookYD]
+    constructor
+    · rintro (⟨rfl, hj⟩ | ⟨hi, hib, rfl⟩)
+      · rcases Nat.eq_or_gt_of_le (Nat.zero_le j) with rfl | hpos
+        · left; left; exact ⟨rfl, rfl⟩
+        · left; right; exact ⟨j, ⟨hpos, hj⟩, rfl, rfl⟩
+      · right; exact ⟨i, ⟨hi, by omega⟩, rfl, rfl⟩
+    · rintro ((⟨rfl, rfl⟩ | ⟨k, ⟨hk1, hk2⟩, rfl, rfl⟩) | ⟨k, ⟨hk1, hk2⟩, rfl, rfl⟩)
+      · left; exact ⟨rfl, ha⟩
+      · left; exact ⟨rfl, hk2⟩
+      · right; exact ⟨hk1, by omega, rfl⟩
+  -- Disjointness of the three parts
+  have hdisj1 : Disjoint ({(0, 0)} : Finset (ℕ × ℕ))
+      ((Finset.Ico 1 a).image (Prod.mk 0)) :=
+    Finset.disjoint_left.mpr (by simp [Finset.mem_image, Finset.mem_Ico, Prod.mk.injEq])
+  have hdisj2 : Disjoint ({(0, 0)} ∪ (Finset.Ico 1 a).image (Prod.mk 0))
+      ((Finset.Ico 1 (b+1)).image (fun i => (i, 0))) :=
+    Finset.disjoint_left.mpr (by
+      simp only [Finset.mem_union, Finset.mem_singleton, Finset.mem_image,
+                 Finset.mem_Ico, Prod.mk.injEq]
+      intro ⟨x, y⟩ hx hy
+      obtain ⟨k, ⟨hk1, _⟩, rfl, rfl⟩ := hy
+      rcases hx with ⟨h1, h2⟩ | ⟨_, ⟨h1, _⟩, rfl, _⟩ <;> omega)
+  -- Compute hookProd by splitting
+  unfold hookProd
+  rw [hcells]
+  rw [Finset.prod_union hdisj2, Finset.prod_union hdisj1]
+  simp only [Finset.prod_singleton]
+  rw [hookLength_gHookYD_00 a b ha]
+  -- Row arm product: ∏_{j=1}^{a-1} (a-j) = (a-1)!
+  have hrow : ∏ j ∈ Finset.Ico 1 a,
+      hookLength (gHookYD a b ha) (Prod.mk 0 j).1 (Prod.mk 0 j).2 =
+      (a - 1).factorial := by
+    simp only [Prod.fst, Prod.snd]
+    rw [Finset.prod_image (fun p _ q _ h => (Prod.mk.inj h).2)]
+    simp only [Prod.fst, Prod.snd]
+    rw [Finset.prod_congr rfl (fun j hj => by
+      rw [hookLength_gHookYD_row a b ha (Finset.mem_Ico.mp hj).1 (Finset.mem_Ico.mp hj).2])]
+    -- ∏_{j∈Ico 1 a} (a-j) = ∏_{k∈range (a-1)} (a-1-k) = (a-1)!
+    rw [show Finset.Ico 1 a = (Finset.range (a-1)).image (· + 1) from by
+      ext k; simp [Finset.mem_Ico, Finset.mem_range]; omega]
+    rw [Finset.prod_image (fun p _ q _ h => by omega)]
+    rw [Finset.prod_congr rfl (fun k hk => by
+      simp; omega)]
+    rw [← Nat.descFactorial_eq_prod_range]
+    exact Nat.descFactorial_self (a - 1)
+  -- Column leg product: ∏_{i=1}^{b} (b+1-i) = b!
+  have hcol : ∏ i ∈ Finset.Ico 1 (b + 1),
+      hookLength (gHookYD a b ha) ((fun k => (k, 0)) i).1 ((fun k => (k, 0)) i).2 =
+      b.factorial := by
+    simp only [Prod.fst, Prod.snd]
+    rw [Finset.prod_image (fun p _ q _ h => (Prod.mk.inj h).1)]
+    simp only [Prod.fst, Prod.snd]
+    rw [Finset.prod_congr rfl (fun i hi => by
+      rw [hookLength_gHookYD_col a b ha (Finset.mem_Ico.mp hi).1
+        (by have := (Finset.mem_Ico.mp hi).2; omega)])]
+    rw [show Finset.Ico 1 (b+1) = (Finset.range b).image (· + 1) from by
+      ext k; simp [Finset.mem_Ico, Finset.mem_range]; omega]
+    rw [Finset.prod_image (fun p _ q _ h => by omega)]
+    rw [Finset.prod_congr rfl (fun k hk => by simp; omega)]
+    rw [← Nat.descFactorial_eq_prod_range]
+    exact Nat.descFactorial_self b
+  rw [hrow, hcol]
+  ring
+
+-- ========================
+-- Corner characterization for gHookYD
+-- ========================
+
+private lemma isCorner_gHook_top (a b : ℕ) (ha : 0 < a) (ha2 : 1 < a) :
+    isCorner (gHookYD a b ha) (0, a - 1) := by
+  refine ⟨mem_gHookYD.mpr (Or.inl ⟨rfl, by omega⟩), ?_, ?_⟩
+  · simp [mem_gHookYD]; omega
+  · simp [mem_gHookYD]; omega
+
+private lemma isCorner_gHook_bot (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
+    isCorner (gHookYD a b ha) (b, 0) := by
+  refine ⟨mem_gHookYD.mpr (Or.inr ⟨hb, le_refl _, rfl⟩), ?_, ?_⟩
+  · simp [mem_gHookYD]; omega
+  · simp [mem_gHookYD]; omega
+
+-- removeCorner identities
+private lemma removeCorner_gHook_top (a b : ℕ) (ha : 0 < a) (ha2 : 1 < a)
+    (hc : isCorner (gHookYD a b ha) (0, a - 1)) :
+    removeCorner (gHookYD a b ha) (0, a - 1) hc = gHookYD (a - 1) b (by omega) := by
+  ext ⟨i, j⟩
+  rw [mem_removeCorner hc, mem_gHookYD, mem_gHookYD]
+  constructor
+  · rintro ⟨hmem, hne⟩
+    rcases hmem with ⟨rfl, hj⟩ | ⟨hi1, hi2, rfl⟩
+    · left; refine ⟨rfl, ?_⟩
+      simp only [Prod.mk.injEq, true_and] at hne; omega
+    · right; exact ⟨hi1, hi2, rfl⟩
+  · rintro (⟨rfl, hj⟩ | ⟨hi1, hi2, rfl⟩)
+    · exact ⟨Or.inl ⟨rfl, by omega⟩, by simp [Prod.mk.injEq]; omega⟩
+    · exact ⟨Or.inr ⟨hi1, hi2, rfl⟩, by simp [Prod.mk.injEq]; omega⟩
+
+private lemma removeCorner_gHook_bot (a b : ℕ) (ha : 0 < a) (hb : 0 < b)
+    (hc : isCorner (gHookYD a b ha) (b, 0)) :
+    removeCorner (gHookYD a b ha) (b, 0) hc = gHookYD a (b - 1) ha := by
+  ext ⟨i, j⟩
+  rw [mem_removeCorner hc, mem_gHookYD, mem_gHookYD]
+  constructor
+  · rintro ⟨hmem, hne⟩
+    rcases hmem with ⟨rfl, hj⟩ | ⟨hi1, hi2, rfl⟩
+    · left; exact ⟨rfl, hj⟩
+    · right; refine ⟨hi1, ?_, rfl⟩
+      simp only [Prod.mk.injEq, and_true] at hne; omega
+  · rintro (⟨rfl, hj⟩ | ⟨hi1, hi2, rfl⟩)
+    · exact ⟨Or.inl ⟨rfl, hj⟩, by simp [Prod.mk.injEq]; omega⟩
+    · exact ⟨Or.inr ⟨hi1, by omega, rfl⟩, by simp [Prod.mk.injEq]; omega⟩
+
+-- ========================
+-- SYT count for gHookYD: max entry location
+-- ========================
+
+/-- In any SYT of gHookYD a b (a≥2, b≥1), the max entry a+b is at
+    (0, a-1) (top-right of row 0) or (b, 0) (bottom of column 0). -/
+private lemma gHook_max_at_corner (a b : ℕ) (ha2 : 1 < a) (hb : 0 < b)
+    (T : StandardYoungTableau (gHookYD a b (by omega : 0 < a))) :
+    T.entry (0, a - 1) = a + b ∨ T.entry (b, 0) = a + b := by
+  have ha : 0 < a := by omega
+  have hcard : (gHookYD a b ha).card = a + b := gHookYD_card a b ha
+  -- T.entry is a bijection on cells to {1,...,n}, so surjective
+  have himage_eq : (gHookYD a b ha).cells.image T.entry = Finset.Icc 1 (a + b) := by
+    apply Finset.eq_of_subset_of_card_le
+    · intro k hk
+      obtain ⟨c, hc, rfl⟩ := Finset.mem_image.mp hk
+      exact Finset.mem_Icc.mpr (T.entry_range c (YoungDiagram.mem_cells.mp hc) |>.imp_right
+        (hcard ▸ ·))
+    · rw [Finset.card_Icc]
+      rw [Finset.card_image_of_injOn (fun c₁ hc₁ c₂ hc₂ h =>
+        T.entry_injOn c₁ c₂ (YoungDiagram.mem_cells.mp hc₁)
+          (YoungDiagram.mem_cells.mp hc₂) h)]
+      simp [hcard]
+  -- a+b ∈ image, so some cell maps to a+b
+  have hab_in : a + b ∈ (gHookYD a b ha).cells.image T.entry := by
+    rw [himage_eq]; simp
+  obtain ⟨c, hc_cell, hc_eq⟩ := Finset.mem_image.mp hab_in
+  have hc_mem := YoungDiagram.mem_cells.mp hc_cell
+  -- c must be a corner (entry a+b means no cells to the right or below)
+  have hright : (c.1, c.2 + 1) ∉ gHookYD a b ha := by
+    intro h; have := T.row_strict c.1 c.2 (c.2 + 1) hc_mem h (Nat.lt_succ_self _)
+    rw [hc_eq, hcard] at this; exact absurd this (Nat.lt_irrefl _)
+  have hbelow : (c.1 + 1, c.2) ∉ gHookYD a b ha := by
+    intro h; have := T.col_strict c.1 (c.1 + 1) c.2 hc_mem h (Nat.lt_succ_self _)
+    rw [hc_eq, hcard] at this; exact absurd this (Nat.lt_irrefl _)
+  -- c must be (0, a-1) or (b, 0)
+  rcases mem_gHookYD.mp hc_mem with ⟨h0, hj⟩ | ⟨hi1, hi2, h0⟩
+  · left
+    have hja : c.2 = a - 1 := by
+      simp [mem_gHookYD, h0] at hright; omega
+    rw [← hc_eq]; congr 1; exact Prod.ext h0 hja
+  · right
+    have hib : c.1 = b := by
+      simp [mem_gHookYD, h0] at hbelow; omega
+    rw [← hc_eq]; congr 1; exact Prod.ext hib h0
+
+-- ========================
+-- Step lemma: SYT count recursion
+-- ========================
+
+/-- Membership in gHookYD (a-1) b implies membership in gHookYD a b. -/
+private lemma mem_gHookYD_top_mono {a b : ℕ} {ha : 0 < a} {ha1 : 0 < a - 1}
+    (c : ℕ × ℕ) (hc : c ∈ gHookYD (a - 1) b ha1) : c ∈ gHookYD a b ha := by
+  rcases mem_gHookYD.mp hc with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+  · exact mem_gHookYD.mpr (Or.inl ⟨hi, by omega⟩)
+  · exact mem_gHookYD.mpr (Or.inr ⟨hi1, hi2, rfl⟩)
+
+/-- Membership in gHookYD a (b-1) implies membership in gHookYD a b. -/
+private lemma mem_gHookYD_bot_mono {a b : ℕ} {ha : 0 < a} (hb : 0 < b)
+    (c : ℕ × ℕ) (hc : c ∈ gHookYD a (b - 1) ha) : c ∈ gHookYD a b ha := by
+  rcases mem_gHookYD.mp hc with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+  · exact mem_gHookYD.mpr (Or.inl ⟨hi, hj⟩)
+  · exact mem_gHookYD.mpr (Or.inr ⟨hi1, by omega, rfl⟩)
+
+/-- Corner step for gHookYD (a≥2, b≥1):
+    card(SYT(gHookYD a b)) = card(SYT(gHookYD (a-1) b)) + card(SYT(gHookYD a (b-1))) -/
+private lemma card_SYT_gHookYD_step (a b : ℕ) (ha2 : 1 < a) (hb : 0 < b) :
+    Fintype.card (StandardYoungTableau (gHookYD a b (by omega : 0 < a))) =
+    Fintype.card (StandardYoungTableau (gHookYD (a - 1) b (by omega : 0 < a - 1))) +
+    Fintype.card (StandardYoungTableau (gHookYD a (b - 1) (by omega : 0 < a))) := by
+  have ha : 0 < a := by omega
+  have ha1 : 0 < a - 1 := by omega
+  have max_loc : ∀ T : StandardYoungTableau (gHookYD a b ha),
+      T.entry (0, a - 1) = a + b ∨ T.entry (b, 0) = a + b :=
+    fun T => gHook_max_at_corner a b ha2 hb T
+  rw [← Fintype.card_sum]
+  apply Fintype.card_congr
+  exact {
+    toFun := fun T =>
+      if hT : T.entry (0, a - 1) = a + b then
+        Sum.inl {
+          entry := fun c => if c ∈ gHookYD (a - 1) b ha1 then T.entry c else 0
+          entry_zero := fun c hc => by simp [hc]
+          entry_range := fun c hc => by
+            simp only [hc, ↓reduceIte]
+            have hmem := mem_gHookYD_top_mono c hc
+            refine ⟨(T.entry_range c hmem).1, ?_⟩
+            have hne : T.entry c ≠ a + b := fun heq =>
+              absurd (T.entry_injOn c (0, a - 1) hmem
+                (mem_gHookYD.mpr (Or.inl ⟨rfl, by omega⟩)) (heq.trans hT.symm))
+                (by rcases mem_gHookYD.mp hc with ⟨hi, hj⟩ | ⟨hi1, _, rfl⟩
+                    · intro h; exact absurd ((Prod.mk.inj h).2) (by omega)
+                    · intro h; exact absurd ((Prod.mk.inj h).1) (by omega))
+            have hle := (T.entry_range c hmem).2
+            rw [gHookYD_card] at hle; rw [gHookYD_card]; omega
+          entry_injOn := fun c₁ c₂ hc₁ hc₂ h => by
+            simp only [hc₁, hc₂, ↓reduceIte] at h
+            exact T.entry_injOn c₁ c₂ (mem_gHookYD_top_mono c₁ hc₁)
+              (mem_gHookYD_top_mono c₂ hc₂) h
+          row_strict := fun i j₁ j₂ hc₁ hc₂ hlt => by
+            simp only [hc₁, hc₂, ↓reduceIte]
+            exact T.row_strict i j₁ j₂ (mem_gHookYD_top_mono _ hc₁)
+              (mem_gHookYD_top_mono _ hc₂) hlt
+          col_strict := fun i₁ i₂ j hc₁ hc₂ hlt => by
+            simp only [hc₁, hc₂, ↓reduceIte]
+            exact T.col_strict i₁ i₂ j (mem_gHookYD_top_mono _ hc₁)
+              (mem_gHookYD_top_mono _ hc₂) hlt }
+      else
+        Sum.inr {
+          entry := fun c => if c ∈ gHookYD a (b - 1) ha then T.entry c else 0
+          entry_zero := fun c hc => by simp [hc]
+          entry_range := fun c hc => by
+            simp only [hc, ↓reduceIte]
+            have hmem := mem_gHookYD_bot_mono hb c hc
+            have hT' := (max_loc T).resolve_left hT
+            refine ⟨(T.entry_range c hmem).1, ?_⟩
+            have hne : T.entry c ≠ a + b := fun heq =>
+              absurd (T.entry_injOn c (b, 0) hmem
+                (mem_gHookYD.mpr (Or.inr ⟨hb, le_refl _, rfl⟩)) (heq.trans hT'.symm))
+                (by rcases mem_gHookYD.mp hc with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                    · intro h; exact absurd ((Prod.mk.inj h).1) (by omega)
+                    · intro h; exact absurd ((Prod.mk.inj h).1) (by omega))
+            have hle := (T.entry_range c hmem).2
+            rw [gHookYD_card] at hle; rw [gHookYD_card]; omega
+          entry_injOn := fun c₁ c₂ hc₁ hc₂ h => by
+            simp only [hc₁, hc₂, ↓reduceIte] at h
+            exact T.entry_injOn c₁ c₂ (mem_gHookYD_bot_mono hb c₁ hc₁)
+              (mem_gHookYD_bot_mono hb c₂ hc₂) h
+          row_strict := fun i j₁ j₂ hc₁ hc₂ hlt => by
+            simp only [hc₁, hc₂, ↓reduceIte]
+            exact T.row_strict i j₁ j₂ (mem_gHookYD_bot_mono hb _ hc₁)
+              (mem_gHookYD_bot_mono hb _ hc₂) hlt
+          col_strict := fun i₁ i₂ j hc₁ hc₂ hlt => by
+            simp only [hc₁, hc₂, ↓reduceIte]
+            exact T.col_strict i₁ i₂ j (mem_gHookYD_bot_mono hb _ hc₁)
+              (mem_gHookYD_bot_mono hb _ hc₂) hlt }
+    invFun := fun x => match x with
+      | Sum.inl T₁ => {
+          entry := fun c => if c = (0, a - 1) then a + b else T₁.entry c
+          entry_zero := fun c hc => by
+            have hne : c ≠ (0, a - 1) := fun h =>
+              hc (h ▸ mem_gHookYD.mpr (Or.inl ⟨rfl, by omega⟩))
+            rw [if_neg hne]
+            exact T₁.entry_zero c fun hc₁ => hc (mem_gHookYD_top_mono c hc₁)
+          entry_range := fun c hc => by
+            by_cases hce : c = (0, a - 1)
+            · simp only [hce, ↓reduceIte]; rw [gHookYD_card]; exact ⟨by omega, le_refl _⟩
+            · rw [if_neg hce]
+              have hcμ₁ : c ∈ gHookYD (a - 1) b ha1 := by
+                rcases mem_gHookYD.mp hc with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi, by
+                    have := fun heq => hce (Prod.ext hi heq); omega⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, hi2, rfl⟩)
+              have hr := T₁.entry_range c hcμ₁
+              rw [gHookYD_card] at hr; rw [gHookYD_card]; omega
+          entry_injOn := fun c₁ c₂ hc₁ hc₂ h => by
+            simp only at h
+            by_cases h₁ : c₁ = (0, a - 1) <;> by_cases h₂ : c₂ = (0, a - 1)
+            · rw [h₁, h₂]
+            · simp only [h₁, ↓reduceIte, if_neg h₂] at h
+              have hcμ₂ : c₂ ∈ gHookYD (a - 1) b ha1 := by
+                rcases mem_gHookYD.mp hc₂ with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi, by
+                    have := fun heq => h₂ (Prod.ext hi heq); omega⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, hi2, rfl⟩)
+              have := (T₁.entry_range c₂ hcμ₂).2
+              rw [gHookYD_card] at this; omega
+            · simp only [if_neg h₁, h₂, ↓reduceIte] at h
+              have hcμ₁ : c₁ ∈ gHookYD (a - 1) b ha1 := by
+                rcases mem_gHookYD.mp hc₁ with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi, by
+                    have := fun heq => h₁ (Prod.ext hi heq); omega⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, hi2, rfl⟩)
+              have := (T₁.entry_range c₁ hcμ₁).2
+              rw [gHookYD_card] at this; omega
+            · simp only [if_neg h₁, if_neg h₂] at h
+              have hcμ₁ : c₁ ∈ gHookYD (a - 1) b ha1 := by
+                rcases mem_gHookYD.mp hc₁ with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi, by
+                    have := fun heq => h₁ (Prod.ext hi heq); omega⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, hi2, rfl⟩)
+              have hcμ₂ : c₂ ∈ gHookYD (a - 1) b ha1 := by
+                rcases mem_gHookYD.mp hc₂ with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi, by
+                    have := fun heq => h₂ (Prod.ext hi heq); omega⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, hi2, rfl⟩)
+              exact T₁.entry_injOn c₁ c₂ hcμ₁ hcμ₂ h
+          row_strict := fun i j₁ j₂ hc₁ hc₂ hlt => by
+            simp only
+            split_ifs with h₁ h₂
+            · have := (Prod.ext_iff.mp h₁).2; have := (Prod.ext_iff.mp h₂).2; omega
+            · have hi₁ := (Prod.ext_iff.mp h₁).1; have hj₁ := (Prod.ext_iff.mp h₁).2
+              rcases mem_gHookYD.mp hc₂ with ⟨_, hj₂⟩ | ⟨hi₂, _, _⟩ <;> omega
+            · have hi := (Prod.ext_iff.mp h₂).1; have hj₂ := (Prod.ext_iff.mp h₂).2
+              have hcμ₁ : (i, j₁) ∈ gHookYD (a - 1) b ha1 :=
+                mem_gHookYD.mpr (Or.inl ⟨hi, by omega⟩)
+              have := (T₁.entry_range _ hcμ₁).2; rw [gHookYD_card] at this; omega
+            · have hcμ₁ : (i, j₁) ∈ gHookYD (a - 1) b ha1 := by
+                rcases mem_gHookYD.mp hc₁ with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi, by
+                    have := fun heq => h₁ (Prod.ext hi heq); omega⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, hi2, rfl⟩)
+              have hcμ₂ : (i, j₂) ∈ gHookYD (a - 1) b ha1 := by
+                rcases mem_gHookYD.mp hc₂ with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi, by
+                    have := fun heq => h₂ (Prod.ext hi heq); omega⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, hi2, rfl⟩)
+              exact T₁.row_strict i j₁ j₂ hcμ₁ hcμ₂ hlt
+          col_strict := fun i₁ i₂ j hc₁ hc₂ hlt => by
+            simp only
+            split_ifs with h₁ h₂
+            · exact absurd hlt (by
+                have := (Prod.ext_iff.mp h₁).1; have := (Prod.ext_iff.mp h₂).1; omega)
+            · have hja := (Prod.ext_iff.mp h₁).2; have hi₁ := (Prod.ext_iff.mp h₁).1
+              -- (i₁, j) = (0, a-1); need (i₂, j) ∈ gHookYD a b with i₂ > 0 and j = a-1
+              rcases mem_gHookYD.mp hc₂ with ⟨hi₂, _⟩ | ⟨_, _, hj₂⟩
+              · omega  -- i₂ = 0 < i₂ impossible
+              · omega  -- j = 0 but j = a-1 ≥ 1 since a ≥ 2
+            · exact absurd hlt (by have := (Prod.ext_iff.mp h₂).1; omega)
+            · have hcμ₁ : (i₁, j) ∈ gHookYD (a - 1) b ha1 := by
+                rcases mem_gHookYD.mp hc₁ with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi, by
+                    have := fun heq => h₁ (Prod.ext hi heq); omega⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, hi2, rfl⟩)
+              have hcμ₂ : (i₂, j) ∈ gHookYD (a - 1) b ha1 := by
+                rcases mem_gHookYD.mp hc₂ with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi, by
+                    have := fun heq => h₂ (Prod.ext hi heq); omega⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, hi2, rfl⟩)
+              exact T₁.col_strict i₁ i₂ j hcμ₁ hcμ₂ hlt }
+      | Sum.inr T₂ => {
+          entry := fun c => if c = (b, 0) then a + b else T₂.entry c
+          entry_zero := fun c hc => by
+            have hne : c ≠ (b, 0) := fun h =>
+              hc (h ▸ mem_gHookYD.mpr (Or.inr ⟨hb, le_refl _, rfl⟩))
+            rw [if_neg hne]
+            exact T₂.entry_zero c fun hc₁ => hc (mem_gHookYD_bot_mono hb c hc₁)
+          entry_range := fun c hc => by
+            by_cases hce : c = (b, 0)
+            · simp only [hce, ↓reduceIte]; rw [gHookYD_card]; exact ⟨by omega, le_refl _⟩
+            · rw [if_neg hce]
+              have hcμ₂ : c ∈ gHookYD a (b - 1) ha := by
+                rcases mem_gHookYD.mp hc with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi, hj⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, by
+                    have := fun heq => hce (Prod.ext heq rfl); omega, rfl⟩)
+              have hr := T₂.entry_range c hcμ₂
+              rw [gHookYD_card] at hr; rw [gHookYD_card]; omega
+          entry_injOn := fun c₁ c₂ hc₁ hc₂ h => by
+            simp only at h
+            by_cases h₁ : c₁ = (b, 0) <;> by_cases h₂ : c₂ = (b, 0)
+            · rw [h₁, h₂]
+            · simp only [h₁, ↓reduceIte, if_neg h₂] at h
+              have hcμ₂ : c₂ ∈ gHookYD a (b - 1) ha := by
+                rcases mem_gHookYD.mp hc₂ with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi, hj⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, by
+                    have := fun heq => h₂ (Prod.ext heq rfl); omega, rfl⟩)
+              have := (T₂.entry_range c₂ hcμ₂).2
+              rw [gHookYD_card] at this; omega
+            · simp only [if_neg h₁, h₂, ↓reduceIte] at h
+              have hcμ₁ : c₁ ∈ gHookYD a (b - 1) ha := by
+                rcases mem_gHookYD.mp hc₁ with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi, hj⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, by
+                    have := fun heq => h₁ (Prod.ext heq rfl); omega, rfl⟩)
+              have := (T₂.entry_range c₁ hcμ₁).2
+              rw [gHookYD_card] at this; omega
+            · simp only [if_neg h₁, if_neg h₂] at h
+              have hcμ₁ : c₁ ∈ gHookYD a (b - 1) ha := by
+                rcases mem_gHookYD.mp hc₁ with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi, hj⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, by
+                    have := fun heq => h₁ (Prod.ext heq rfl); omega, rfl⟩)
+              have hcμ₂ : c₂ ∈ gHookYD a (b - 1) ha := by
+                rcases mem_gHookYD.mp hc₂ with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi, hj⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, by
+                    have := fun heq => h₂ (Prod.ext heq rfl); omega, rfl⟩)
+              exact T₂.entry_injOn c₁ c₂ hcμ₁ hcμ₂ h
+          row_strict := fun i j₁ j₂ hc₁ hc₂ hlt => by
+            simp only
+            split_ifs with h₁ h₂
+            · have := (Prod.ext_iff.mp h₁).2; have := (Prod.ext_iff.mp h₂).2; omega
+            · have hi₁ := (Prod.ext_iff.mp h₁).1; have hj₁ := (Prod.ext_iff.mp h₁).2
+              -- (i, j₁) = (b, 0), so j₁ = 0. (i, j₂) ∈ gHookYD a b with j₂ > 0.
+              -- gHookYD cells with i = b: only (b, 0). So j₂ = 0, contradiction with j₁ < j₂.
+              rcases mem_gHookYD.mp hc₂ with ⟨hi₂, _⟩ | ⟨_, hi₂, hj₂⟩
+              · omega  -- i = 0 but i = b ≥ 1
+              · omega  -- j₂ = 0 but j₂ > j₁ = 0
+            · have hi := (Prod.ext_iff.mp h₂).1; have hj₂ := (Prod.ext_iff.mp h₂).2
+              have hcμ₁ : (i, j₁) ∈ gHookYD a (b - 1) ha := by
+                rcases mem_gHookYD.mp hc₁ with ⟨hi', hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi', hj⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, by
+                    have := fun heq => h₂ (Prod.ext heq rfl); omega, rfl⟩)
+              have := (T₂.entry_range _ hcμ₁).2; rw [gHookYD_card] at this; omega
+            · have hcμ₁ : (i, j₁) ∈ gHookYD a (b - 1) ha := by
+                rcases mem_gHookYD.mp hc₁ with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi, hj⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, by
+                    have := fun heq => h₁ (Prod.ext heq rfl); omega, rfl⟩)
+              have hcμ₂ : (i, j₂) ∈ gHookYD a (b - 1) ha := by
+                rcases mem_gHookYD.mp hc₂ with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi, hj⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, by
+                    have := fun heq => h₂ (Prod.ext heq rfl); omega, rfl⟩)
+              exact T₂.row_strict i j₁ j₂ hcμ₁ hcμ₂ hlt
+          col_strict := fun i₁ i₂ j hc₁ hc₂ hlt => by
+            simp only
+            split_ifs with h₁ h₂
+            · exact absurd hlt (by
+                have := (Prod.ext_iff.mp h₁).1; have := (Prod.ext_iff.mp h₂).1; omega)
+            · have hi₁ := (Prod.ext_iff.mp h₁).1; have hj₁ := (Prod.ext_iff.mp h₁).2
+              -- (i₁, j) = (b, 0): i₁ = b, j = 0; i₂ > b; (i₂, 0) ∉ gHookYD a b
+              exact absurd (mem_gHookYD.mp hc₂)
+                (by rintro (⟨hi₂, _⟩ | ⟨_, hi₂_le, _⟩) <;> omega)
+            · exact absurd hlt (by have := (Prod.ext_iff.mp h₂).1; omega)
+            · have hcμ₁ : (i₁, j) ∈ gHookYD a (b - 1) ha := by
+                rcases mem_gHookYD.mp hc₁ with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi, hj⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, by
+                    have := fun heq => h₁ (Prod.ext heq rfl); omega, rfl⟩)
+              have hcμ₂ : (i₂, j) ∈ gHookYD a (b - 1) ha := by
+                rcases mem_gHookYD.mp hc₂ with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+                · exact mem_gHookYD.mpr (Or.inl ⟨hi, hj⟩)
+                · exact mem_gHookYD.mpr (Or.inr ⟨hi1, by
+                    have := fun heq => h₂ (Prod.ext heq rfl); omega, rfl⟩)
+              exact T₂.col_strict i₁ i₂ j hcμ₁ hcμ₂ hlt }
+    left_inv := fun T => by
+      apply StandardYoungTableau.ext; intro c
+      by_cases hT : T.entry (0, a - 1) = a + b
+      · simp only [dif_pos hT]
+        simp only
+        split_ifs with hce hcr
+        · rw [hce]; exact hT.symm
+        · rfl
+        · symm; apply T.entry_zero; intro hcμ
+          -- c ∉ gHookYD (a-1) b and c ≠ (0,a-1) → c ∉ gHookYD a b → False
+          rcases mem_gHookYD.mp hcμ with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+          · exact hcr (mem_gHookYD.mpr (Or.inl ⟨hi, by
+              have := fun heq => hce (Prod.ext hi heq); omega⟩))
+          · exact hcr (mem_gHookYD.mpr (Or.inr ⟨hi1, hi2, rfl⟩))
+      · simp only [dif_neg hT]
+        simp only
+        split_ifs with hce hcr
+        · rw [hce]; exact ((max_loc T).resolve_left hT).symm
+        · rfl
+        · symm; apply T.entry_zero; intro hcμ
+          rcases mem_gHookYD.mp hcμ with ⟨hi, hj⟩ | ⟨hi1, hi2, rfl⟩
+          · exact hcr (mem_gHookYD.mpr (Or.inl ⟨hi, hj⟩))
+          · exact hcr (mem_gHookYD.mpr (Or.inr ⟨hi1, by
+              have := fun heq => hce (Prod.ext heq rfl); omega, rfl⟩))
+    right_inv := fun x => by
+      match x with
+      | Sum.inl T₁ =>
+        -- invFun (Sum.inl T₁) has entry (0, a-1) = a+b (since (0,a-1) = (0,a-1))
+        have hentry_top : (if (0, a - 1) = (0, a - 1) then (a + b : ℕ) else T₁.entry (0, a - 1))
+            = a + b := if_pos rfl
+        simp only [dif_pos hentry_top]
+        congr 1
+        apply StandardYoungTableau.ext; intro c
+        simp only
+        split_ifs with hcr hce
+        · -- c ∈ gHookYD (a-1) b and c = (0,a-1): impossible since (0,a-1) ∉ gHookYD (a-1) b
+          exfalso; rw [hce] at hcr
+          exact absurd hcr (by simp [mem_gHookYD]; omega)
+        · rfl  -- c ∈ gHookYD (a-1) b, c ≠ (0,a-1): entry = T₁.entry c
+        · -- c ∉ gHookYD (a-1) b: entry = 0 = T₁.entry c
+          symm; apply T₁.entry_zero; exact hcr
+      | Sum.inr T₂ =>
+        -- invFun (Sum.inr T₂) has entry (0, a-1) = T₂.entry (0, a-1) < a+b
+        have hne_corner : (0, a - 1) ≠ (b, 0) := by
+          intro h; have := (Prod.mk.inj h).1; omega
+        have hentry_ne : ¬(if (0, a - 1) = (b, 0) then (a + b : ℕ) else T₂.entry (0, a - 1))
+            = a + b := by
+          rw [if_neg hne_corner]
+          have := (T₂.entry_range (0, a - 1)
+            (mem_gHookYD.mpr (Or.inl ⟨rfl, by omega⟩))).2
+          rw [gHookYD_card] at this; omega
+        simp only [dif_neg hentry_ne]
+        congr 1
+        apply StandardYoungTableau.ext; intro c
+        simp only
+        split_ifs with hcr hce
+        · exfalso; rw [hce] at hcr
+          exact absurd hcr (by simp [mem_gHookYD]; omega)
+        · rfl
+        · symm; apply T₂.entry_zero; exact hcr
+  }
+
+-- ========================
+-- SYT count for gHookYD: by double induction
+-- ========================
+
+/-- card(SYT(gHookYD a b)) = C(a+b-1, b).
+    Proved by double induction on b (outer) and a (inner).
+    Base b=0: card=1=C(a-1,0). Base a=1: card=1=C(b,b).
+    Step a≥2,b≥1: corner recursion gives card(a,b)=card(a-1,b)+card(a,b-1), Pascal closes. -/
+private lemma card_SYT_gHookYD (a b : ℕ) (ha : 0 < a) :
+    Fintype.card (StandardYoungTableau (gHookYD a b ha)) = Nat.choose (a + b - 1) b := by
+  induction b generalizing a with
+  | zero =>
+    rw [gHookYD_zero_eq_oneRowYD a ha]
+    rw [Fintype.card_eq_one_iff.mpr ⟨oneRowSYT a, oneRowSYT_unique a⟩]
+    simp [Nat.choose_zero_right]
+  | succ b ihb =>
+    -- Inner induction on a
+    induction a with
+    | zero => omega
+    | succ a iha =>
+      rcases Nat.eq_zero_or_pos a with rfl | ha_pos
+      · -- a = 0, so a+1 = 1: gHookYD 1 (b+1) = oneColYD (b+2)
+        rw [gHookYD_one_eq_oneColYD (b + 1)]
+        rw [Fintype.card_eq_one_iff.mpr ⟨oneColSYT (b + 2), oneColSYT_unique (b + 2)⟩]
+        simp [Nat.choose_self]
+      · -- a ≥ 1, so a+1 ≥ 2: use step lemma
+        have ha_succ_pos : 0 < a + 1 := Nat.succ_pos a
+        have ha2 : 1 < a + 1 := Nat.lt_of_lt_of_le Nat.one_pos (Nat.le_of_succ_le_succ (Nat.succ_le_succ ha_pos))
+        rw [card_SYT_gHookYD_step (a + 1) (b + 1) ha2 (Nat.succ_pos b)]
+        -- After step: card(gHookYD a (b+1) ha_pos) + card(gHookYD (a+1) b ha_succ_pos)
+        -- = C(a+b, b+1) + C(a+b, b)  [by iha and ihb]
+        -- = C(a+b+1, b+1)  [Pascal]
+        have h1 : Fintype.card (StandardYoungTableau (gHookYD a (b + 1) ha_pos)) =
+            Nat.choose (a + b) (b + 1) := by
+          have := iha ha_pos
+          simp only [show a + (b + 1) - 1 = a + b from by omega] at this
+          exact this
+        have h2 : Fintype.card (StandardYoungTableau (gHookYD (a + 1) b ha_succ_pos)) =
+            Nat.choose (a + b) b := by
+          have := ihb (a + 1) ha_succ_pos
+          simp only [show a + 1 + b - 1 = a + b from by omega] at this
+          exact this
+        simp only [show (a + 1) - 1 = a from Nat.succ_sub_one a]
+        rw [h1, h2]
+        simp only [show a + 1 + (b + 1) - 1 = a + b + 1 from by omega]
+        rw [Nat.choose_succ_succ (a + b) b]
+        ring
+
+-- ========================
+-- HLF for gHookYD
+-- ========================
+
+/-- **Hook-length formula for generalized hook shapes.**
+    card(SYT(gHookYD a b)) × hookProd(gHookYD a b) = (a+b)!
+    Proof: C(a+b-1,b) × (a+b) × (a-1)! × b! = (a+b)! via choose identity. -/
+private theorem hook_length_formula_gHookYD (a b : ℕ) (ha : 0 < a) :
+    Fintype.card (StandardYoungTableau (gHookYD a b ha)) * hookProd (gHookYD a b ha) =
+    (gHookYD a b ha).card.factorial := by
+  rw [gHookYD_card, card_SYT_gHookYD a b ha, hookProd_gHookYD a b ha]
+  -- Goal: C(a+b-1, b) * ((a+b) * (a-1)! * b!) = (a+b)!
+  -- Use C(n, k) * k! * (n-k)! = n! with n=a+b-1, k=b
+  have hkey : Nat.choose (a + b - 1) b * b.factorial * (a - 1).factorial =
+      (a + b - 1).factorial := by
+    have h := Nat.choose_mul_factorial_mul_factorial (n := a + b - 1) (k := b) (by omega)
+    rw [show a + b - 1 - b = a - 1 from by omega] at h
+    linarith
+  calc Nat.choose (a + b - 1) b * ((a + b) * (a - 1).factorial * b.factorial)
+      = Nat.choose (a + b - 1) b * b.factorial * (a - 1).factorial * (a + b) := by ring
+    _ = (a + b - 1).factorial * (a + b) := by rw [hkey]
+    _ = (a + b).factorial := by
+        conv_rhs => rw [show a + b = a + b - 1 + 1 from by omega]
+        rw [Nat.factorial_succ]; ring
 
 /-- Shape (2,1): 3 cells, hook lengths {3,1,1}, hookProd=3, f^λ = 3!/3 = 2. -/
 example : (3 : ℕ).factorial / 3 = 2 := by norm_num
