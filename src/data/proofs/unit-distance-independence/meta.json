@@ -38,7 +38,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Hadwiger-Nelson problem (1950) asks: what is the chromatic number χ(ℝ²) of the plane, where two points are connected if they are unit distance apart? The answer must lie between 4 (upper bound proved via hexagonal tiling prior to 2018) and 7. In 2018, amateur mathematician Aubrey de Grey shocked the mathematical community by constructing a graph with 1581 vertices embedded in the plane with no two adjacent vertices at unit distance, proving χ(ℝ²) ≥ 5. This formalization develops the independence number theory and axiomatizes the Hadwiger-Nelson bounds.",
+    "historicalContext": "The Hadwiger-Nelson problem (1950) asks: what is the chromatic number χ(ℝ²) of the plane, where two points are connected if they are unit distance apart? The answer must lie between 4 (upper bound proved via hexagonal tiling prior to 2018) and 7. In 2018, amateur mathematician Aubrey de Grey shocked the mathematical community by constructing a graph with 1581 vertices embedded in the plane with no two adjacent vertices at unit distance, proving χ(ℝ²) ≥ 5. This formalization develops the independence number theory and axiomatizes the Hadwiger-Nelson bounds.\n\nThe problem was posed by Edward Nelson in 1950 and independently by Hugo Hadwiger. The initial bounds 4 ≤ χ(ℝ²) ≤ 7 were established quickly: the upper bound 7 via a hexagonal tiling argument, the lower bound 4 via the Moser spindle (a 4-chromatic 7-vertex unit distance graph constructed by William and Leo Moser in 1961). The gap 4 ≤ χ(ℝ²) ≤ 7 persisted unchanged for 57 years, becoming one of the most famous unsolved problems in combinatorial geometry.\n\nIn April 2018, **Aubrey de Grey** — better known as a biogerontologist than a mathematician — announced a 1581-vertex unit distance graph with chromatic number 5, improving the lower bound to 5. The result was verified computationally and improved shortly after by others; within weeks, the graph was reduced to 553 vertices. De Grey's breakthrough, shared on social media before formal publication, sparked a massive collaborative effort (the Polymath project) to understand and extend the result. As of 2026, the exact value of χ(ℝ²) ∈ {5, 6, 7} remains unknown.\n\nThe **fractional chromatic number** χ_f(ℝ²) is known to lie in [3.5, 4]: Frankl and Wilson (1981) proved χ_f(ℝ²) ≥ 4 using linear algebra over finite fields (showing that a measurable set avoiding unit distances has density ≤ 1/4), while the hexagonal tiling gives χ_f ≤ 4. The integrality gap between the fractional and integer chromatic numbers encodes the difficulty of the Hadwiger-Nelson problem.",
     "problemStatement": "What is the chromatic number of the unit distance graph on ℝ²? Prove that 5 ≤ χ(ℝ²) ≤ 7 and develop the independence number theory that relates chromatic and independence numbers.",
     "text": "The unit distance graph G on ℝ² has χ(G) ≤ 7: use a hexagonal tiling where each hexagon has diameter slightly less than 1, color the 7 hexagon types in a repeating pattern. No two points in the same color class are unit distance apart. For the lower bound χ(G) ≥ 5: de Grey's 2018 construction provides a subgraph with chromatic number 5, improving the previous lower bound of 4. The independence number α(G') for finite point sets G' bounds chromatic number via α(G') ≥ |V|/χ(G').",
     "proofStrategy": "Part I develops abstract independence theory. Part II defines the unit distance graph and independence sets in ℝ². Part III proves structural bounds: α ≥ |V|/χ. Part IV axiomatizes the Hadwiger-Nelson bounds. The Moser spindle construction demonstrates a 4-chromatic subgraph.",
@@ -47,7 +47,8 @@
       "The 7-coloring of ℝ² uses a hexagonal tiling — the hexagonal close-packing achieves 7 colors",
       "De Grey's 2018 construction: a 1581-vertex graph embeddable in ℝ² with χ=5, proving χ(ℝ²)≥5",
       "This remains one of the most famous open problems: is χ(ℝ²) = 5, 6, or 7?",
-      "The problem connects to the fractional chromatic number χ_f(ℝ²) ≈ 3.5 (proved Frankl-Wilson 1981)"
+      "The problem connects to the fractional chromatic number χ_f(ℝ²) ≈ 3.5 (proved Frankl-Wilson 1981)",
+      "**The rational plane vs the real plane**: The chromatic number of the rational plane $\\chi(\\mathbb{Q}^2)$ (where two rational-coordinate points are adjacent if their distance is exactly 1) equals 4 — proved using a 4-coloring based on the parity of numerators when coordinates are in lowest terms (Woodall 1973, Falconer 1981). The real plane requires at least 5 colors (de Grey 2018). This contrast shows that the irrationality of unit distances is essential: the Moser spindle — the 4-chromatic 7-vertex unit distance graph used to prove $\\chi(\\mathbb{R}^2) \\geq 4$ before de Grey — cannot be embedded with all vertices at rational coordinates, because the spindle's unit distances involve $\\sqrt{3}$. De Grey's leap from 4 to 5 required a carefully constructed 1581-vertex graph exploiting irrational unit distance chains."
     ],
     "prerequisites": [
       "Graph theory: chromatic numbers, independent sets, colorings",
@@ -80,6 +81,26 @@
       "targetId": "ramseys-theorem",
       "relationship": "related",
       "description": "Both study colorings of combinatorial structures; Ramsey is about graph colorings, Hadwiger-Nelson is about plane colorings"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "companion",
+      "description": "Both are famous chromatic number problems about coloring geometric or combinatorial structures: the four-color theorem proves χ(planar graphs) ≤ 4 and the Hadwiger-Nelson problem asks for χ(ℝ²) — the plane as a unit distance graph; the 4CT was solved in 1976 while the Hadwiger-Nelson problem remains open after 75 years"
+    },
+    {
+      "targetId": "lovasz-local-lemma",
+      "relationship": "related",
+      "description": "The Lovász Local Lemma gives a probabilistic method for showing proper colorings exist when event dependencies are sparse; it applies to unit distance graphs via the fractional relaxation: if each neighborhood has few vertices, LLL guarantees a proper coloring, complementing the explicit construction approach of Hadwiger-Nelson"
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "foundational",
+      "description": "Euler's polyhedral formula V − E + F = 2 is foundational for planar graph theory and underlies the proof infrastructure of the four-color theorem, which in turn provides the upper bound context for the Hadwiger-Nelson problem; both the 4CT and Hadwiger-Nelson explore how geometric constraints bound chromatic numbers"
+    },
+    {
+      "targetId": "picks-theorem",
+      "relationship": "related",
+      "description": "Pick's theorem counts lattice points in polygons using area, while the Hadwiger-Nelson problem concerns unit distances in the plane — both reveal how the integer/rational structure of the plane differs from real-valued geometry; the chromatic number of the rational plane χ(ℚ²) = 4 is known, while χ(ℝ²) ≥ 5 requires irrational coordinates (de Grey 2018)"
     }
   ],
   "sections": [
