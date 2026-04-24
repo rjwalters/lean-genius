@@ -119,12 +119,13 @@ theorem integral_indicator_prod_eq
       μ[X (k + 1) | (ℱ μ X hX_meas) k] ω := by
     apply condExp_mul_of_stronglyMeasurable_left
     · exact indicator_gt_sm μ X hX_meas τ hτ k
-    · -- Product is integrable: bounded indicator * integrable X(k+1)
-      apply Integrable.mul_of_le_left (X_integrable μ X hX_meas hX_ident hX_int (k+1))
-      · exact (indicator_gt_sm μ X hX_meas τ hτ k).mono (Filtration.le _ _) |>.aestronglyMeasurable
-      · filter_upwards with ω
-        simp only [Set.indicator_apply, apply_ite, Pi.one_apply]
-        split_ifs <;> norm_num
+    · -- Product is integrable: |indicator * X(k+1)| ≤ |X(k+1)|
+      exact (X_integrable μ X hX_meas hX_ident hX_int (k+1)).mono
+        (((indicator_gt_sm μ X hX_meas τ hτ k).mono (Filtration.le _ _)).aestronglyMeasurable.mul
+          (hX_meas (k+1)).aestronglyMeasurable)
+        (ae_of_all μ fun ω => by
+          simp only [Set.indicator_apply, Pi.one_apply, norm_mul]
+          split_ifs <;> simp)
     · exact X_integrable μ X hX_meas hX_ident hX_int (k+1)
   -- Step 3: E[X(k+1) | ℱ_k] = E[X(k+1)] = E[X 0]
   have indep_eq : μ[X (k + 1) | (ℱ μ X hX_meas) k] =ᵐ[μ] fun _ => μ[X (k + 1)] := by
@@ -141,15 +142,12 @@ theorem integral_indicator_prod_eq
   rw [tower]
   rw [integral_congr_ae condexp_eq]
   -- E[1_{τ>k} * E[X 0]] = E[X 0] * P(τ > k)
-  rw [integral_mul_right]
-  · ring_nf
-    rw [mul_comm, ← measureReal_def]
-    congr 1
-    rw [integral_indicator (measurableSet_of_stronglyMeasurable
-      ((indicator_gt_sm μ X hX_meas τ hτ k).mono (Filtration.le _ _)))]
-    simp [integral_const]
-  · exact (indicator_gt_sm μ X hX_meas τ hτ k).mono
-      (Filtration.le _ _) |>.aestronglyMeasurable
+  rw [integral_mul_const]
+  ring_nf
+  rw [mul_comm, ← measureReal_def]
+  congr 1
+  rw [integral_indicator ((ℱ μ X hX_meas).le k (stopping_gt_measurable μ X hX_meas τ hτ k))]
+  simp [integral_const]
 
 /-! ### Tail Sum Formula -/
 
@@ -163,23 +161,127 @@ theorem nat_cast_eq_tsum_indicator (n : ℕ) :
     simp only [Finset.mem_range, not_lt] at hk
     exact Set.indicator_of_not_mem (by simp [hk.not_lt])
 
-/-- **Tail Sum Formula**: E[τ] = ∑' k, P(τ > k).
-    This axiom captures the standard fact that for a ℕ-valued r.v. with finite mean,
-    the expectation equals the sum of tail probabilities. -/
-axiom integral_tau_eq_tsum_prob
+-- ENNReal tail sum formula: ∫⁻ (τ ω : ℝ≥0∞) ∂μ = ∑' k, μ{k < τ}
+private lemma lintegral_nat_eq_tsum_prob (τ : Ω → ℕ) (hτ_meas : Measurable τ) :
+    ∫⁻ ω, (τ ω : ℝ≥0∞) ∂μ = ∑' k : ℕ, μ {ω | k < τ ω} := by
+  -- Rewrite τ(ω) as ∑' k, 1_{k < τ(ω)} pointwise (using Ω-indexed indicator to match lintegral_indicator_one)
+  have heq : ∀ ω, (τ ω : ℝ≥0∞) = ∑' k : ℕ, {ω' | k < τ ω'}.indicator (1 : Ω → ℝ≥0∞) ω := by
+    intro ω
+    rw [tsum_eq_sum (s := Finset.range (τ ω))]
+    · -- Each term: indicator is 1 for k < τ ω, 0 otherwise
+      simp only [Set.indicator_apply, Set.mem_setOf_eq, Pi.one_apply]
+      rw [Finset.sum_congr rfl (fun k hk => if_pos (Finset.mem_range.mp hk))]
+      simp [Finset.sum_const, Finset.card_range, Nat.smul_one_eq_cast]
+    · -- Outside range: indicator = 0
+      intro k hk
+      simp only [Finset.mem_range, not_lt] at hk
+      exact Set.indicator_of_not_mem (not_lt.mpr hk) _
+  simp_rw [heq]
+  rw [lintegral_tsum (fun k =>
+      (measurable_const.indicator (measurableSet_lt measurable_const hτ_meas)).aemeasurable)]
+  simp_rw [lintegral_indicator_one (measurableSet_lt measurable_const hτ_meas)]
+
+/-- **Tail Sum Formula**: E[τ] = ∑' k, P(τ > k). -/
+theorem integral_tau_eq_tsum_prob
     (τ : Ω → ℕ) (hτ_meas : Measurable τ) (hτ_int : Integrable (fun ω => (τ ω : ℝ)) μ) :
-    ∫ ω, (τ ω : ℝ) ∂μ = ∑' k : ℕ, μ.real {ω | k < τ ω}
+    ∫ ω, (τ ω : ℝ) ∂μ = ∑' k : ℕ, μ.real {ω | k < τ ω} := by
+  rw [integral_eq_lintegral_of_nonneg_ae (ae_of_all μ fun ω => Nat.cast_nonneg _) hτ_int.1]
+  simp_rw [ENNReal.ofReal_natCast]
+  rw [lintegral_nat_eq_tsum_prob μ τ hτ_meas]
+  rw [ENNReal.tsum_toReal_eq (fun k => measure_ne_top μ _)]
+  congr 1; ext k; rfl
 
 /-! ### Fubini Step -/
 
-/-- **Fubini-Tonelli for stopped sums**: The integral of a stopped sum equals
-    the sum of integrals of indicator-weighted terms.
-    Requires: X integrable, stopping time measurable, E[τ] < ∞ for summability. -/
-axiom integral_sum_range_eq_tsum
+-- Norm version of integral_indicator_prod_eq: E[1_{τ>k} · ‖X(k+1)‖] = E[‖X₀‖] · P(τ > k)
+private lemma integral_indicator_norm_eq
     (τ : Ω → ℕ) (hτ : IsStoppingTime (ℱ μ X hX_meas) τ)
-    (hτ_meas : Measurable τ) (hτ_int : Integrable (fun ω => (τ ω : ℝ)) μ) :
+    [SigmaFiniteFiltration μ (ℱ μ X hX_meas)] (k : ℕ) :
+    ∫ ω, ‖Set.indicator {ω' | k < τ ω'} (1 : Ω → ℝ) ω * X (k + 1) ω‖ ∂μ =
+      (∫ ω, ‖X 0 ω‖ ∂μ) * μ.real {ω | k < τ ω} := by
+  -- ‖indicator * X(k+1)‖ = indicator * ‖X(k+1)‖ (since indicator ∈ {0, 1})
+  have norm_eq : ∀ ω, ‖Set.indicator {ω' | k < τ ω'} (1 : Ω → ℝ) ω * X (k + 1) ω‖ =
+      Set.indicator {ω' | k < τ ω'} (1 : Ω → ℝ) ω * ‖X (k + 1) ω‖ := fun ω => by
+    simp only [Set.indicator_apply, Pi.one_apply]
+    split_ifs <;> simp
+  simp_rw [norm_eq]
+  -- Tower property
+  have tower : ∫ ω, Set.indicator {ω' | k < τ ω'} (1 : Ω → ℝ) ω * ‖X (k + 1) ω‖ ∂μ =
+      ∫ ω, μ[fun ω => Set.indicator {ω' | k < τ ω'} (1 : Ω → ℝ) ω * ‖X (k + 1) ω‖ |
+          (ℱ μ X hX_meas) k] ω ∂μ :=
+    (integral_condExp (Filtration.le _ _)).symm
+  -- Pull-out: E[indicator * ‖X(k+1)‖ | ℱ_k] = indicator * E[‖X(k+1)‖ | ℱ_k]
+  have pullout : μ[fun ω => Set.indicator {ω' | k < τ ω'} (1 : Ω → ℝ) ω * ‖X (k + 1) ω‖ |
+        (ℱ μ X hX_meas) k] =ᵐ[μ]
+      fun ω => Set.indicator {ω' | k < τ ω'} (1 : Ω → ℝ) ω *
+        μ[‖X (k + 1)‖ | (ℱ μ X hX_meas) k] ω := by
+    apply condExp_mul_of_stronglyMeasurable_left
+    · exact indicator_gt_sm μ X hX_meas τ hτ k
+    · exact ((X_integrable μ X hX_meas hX_ident hX_int (k+1)).norm).mono
+        (((indicator_gt_sm μ X hX_meas τ hτ k).mono (Filtration.le _ _)).aestronglyMeasurable.mul
+          (hX_meas (k+1)).norm.aestronglyMeasurable)
+        (ae_of_all μ fun ω => by
+          simp only [Set.indicator_apply, Pi.one_apply, norm_mul, Real.norm_norm]
+          split_ifs <;> simp)
+    · exact (X_integrable μ X hX_meas hX_ident hX_int (k+1)).norm
+  -- Independence: E[‖X(k+1)‖ | ℱ_k] = E[‖X(k+1)‖] = E[‖X₀‖]
+  have norm_indep : μ[‖X (k + 1)‖ | (ℱ μ X hX_meas) k] =ᵐ[μ] fun _ => μ[‖X (k + 1)‖] :=
+    condExp_indep_eq (hX_meas (k+1)).measurable.comap_le (Filtration.le _ _)
+      (measurable_norm.comp (comap_measurable (X (k+1)))).stronglyMeasurable
+      (hX_indep.indep_comap_natural_of_lt hX_meas (Nat.lt_succ_self k))
+  have norm_ident : μ[‖X (k + 1)‖] = ∫ ω, ‖X 0 ω‖ ∂μ :=
+    ((hX_ident (k+1)).comp measurable_norm).integral_eq
+  -- Combine
+  have condexp_eq : μ[fun ω => Set.indicator {ω' | k < τ ω'} (1 : Ω → ℝ) ω * ‖X (k + 1) ω‖ |
+        (ℱ μ X hX_meas) k] =ᵐ[μ]
+      fun ω => Set.indicator {ω' | k < τ ω'} (1 : Ω → ℝ) ω * ∫ ω, ‖X 0 ω‖ ∂μ := by
+    filter_upwards [pullout, norm_indep] with ω h1 h2
+    rw [h1, h2, norm_ident]
+  rw [tower, integral_congr_ae condexp_eq, integral_mul_const]
+  ring_nf
+  rw [mul_comm, ← measureReal_def]
+  congr 1
+  rw [integral_indicator ((ℱ μ X hX_meas).le k (stopping_gt_measurable μ X hX_meas τ hτ k))]
+  simp [integral_const]
+
+/-- **Fubini-Tonelli for stopped sums** -/
+theorem integral_sum_range_eq_tsum
+    (τ : Ω → ℕ) (hτ : IsStoppingTime (ℱ μ X hX_meas) τ)
+    (hτ_meas : Measurable τ) (hτ_int : Integrable (fun ω => (τ ω : ℝ)) μ)
+    [SigmaFiniteFiltration μ (ℱ μ X hX_meas)] :
     ∫ ω, ∑ k in Finset.range (τ ω), X (k + 1) ω ∂μ =
-      ∑' k : ℕ, ∫ ω, Set.indicator {ω' | k < τ ω'} (1 : Ω → ℝ) ω * X (k + 1) ω ∂μ
+      ∑' k : ℕ, ∫ ω, Set.indicator {ω' | k < τ ω'} (1 : Ω → ℝ) ω * X (k + 1) ω ∂μ := by
+  -- Rewrite stopped sum as tsum of indicator terms (pointwise)
+  have sum_eq : ∀ ω, ∑ k in Finset.range (τ ω), X (k + 1) ω =
+      ∑' k : ℕ, Set.indicator {ω' | k < τ ω'} (1 : Ω → ℝ) ω * X (k + 1) ω := fun ω => by
+    rw [tsum_eq_sum (s := Finset.range (τ ω))]
+    · apply Finset.sum_congr rfl; intro k hk
+      rw [Set.indicator_of_mem (Finset.mem_range.mp hk), Pi.one_apply, one_mul]
+    · intro k hk
+      simp only [Finset.mem_range, not_lt] at hk
+      rw [Set.indicator_of_not_mem (not_lt.mpr hk), Pi.zero_apply, zero_mul]
+  -- LHS = ∫ ∑' indicator * X
+  rw [integral_congr_ae (ae_of_all μ sum_eq)]
+  -- Summability of norm integrals: ∑ E[‖F k‖] ≤ E[‖X₀‖] · E[τ] < ∞
+  have hτ_ne_top : ∑' k : ℕ, μ {ω | k < τ ω} ≠ ∞ := by
+    rw [← lintegral_nat_eq_tsum_prob μ τ hτ_meas]
+    simp_rw [show ∀ ω, (τ ω : ℝ≥0∞) = ‖(τ ω : ℝ)‖ₑ from fun ω => (enorm_natCast (τ ω)).symm]
+    exact hτ_int.hasFiniteIntegral.ne
+  have norm_sum : Summable fun k => ∫ ω, ‖Set.indicator {ω' | k < τ ω'} (1 : Ω → ℝ) ω *
+      X (k + 1) ω‖ ∂μ := by
+    have norm_bound := fun k => integral_indicator_norm_eq μ X hX_meas hX_indep hX_ident hX_int
+        τ hτ k
+    simp_rw [norm_bound]
+    exact (ENNReal.summable_toReal hτ_ne_top).mul_left _
+  -- Apply Fubini: ∫ ∑' F = ∑' ∫ F
+  exact (integral_tsum_of_summable_integral_norm
+    (fun k => (X_integrable μ X hX_meas hX_ident hX_int (k+1)).mono
+      (((indicator_gt_sm μ X hX_meas τ hτ k).mono (Filtration.le _ _)).aestronglyMeasurable.mul
+        (hX_meas (k+1)).aestronglyMeasurable)
+      (ae_of_all μ fun ω => by
+        simp only [Set.indicator_apply, Pi.one_apply, norm_mul]
+        split_ifs <;> simp))
+    norm_sum).symm
 
 /-! ### Wald's Identity -/
 
