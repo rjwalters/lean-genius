@@ -1,0 +1,59 @@
+{
+  "slug": "abel-ruffini-galois-extensions-oq-04",
+  "title": "Jordan-Hölder Uniqueness Theorem: Composition Factors of Finite Groups in Lean",
+  "phase": "ACT",
+  "status": "in-progress",
+  "tier": "A",
+  "path": "src/data/proofs/abel-ruffini-galois-extensions-oq-04/meta.json",
+  "problemStatement": "Instantiate Mathlib's JordanHolderLattice typeclass for Subgroup G and derive the Jordan-Hölder uniqueness theorem for groups. Mathlib has CompositionSeries.jordan_holder as an abstract theorem, but the concrete instance for Subgroup G is a TODO in Mathlib.Order.JordanHolder.",
+  "knownResults": [
+    "CompositionSeries.jordan_holder in Mathlib: abstract Jordan-Hölder for any JordanHolderLattice",
+    "JordanHolderLattice requires three axioms: sup_eq_of_isMaximal, isMaximal_inf_left_of_isMaximal_sup, second_iso",
+    "Noether second isomorphism theorem: quotientInfEquivProdNormalizerQuotient in Mathlib",
+    "quotientKerEquivOfSurjective for first isomorphism theorem"
+  ],
+  "currentState": "JordanHolderLattice (Subgroup G) instance 5/6 proved (1 sorry in maximality step of isMaximal_inf_left_of_isMaximal_sup). sup_eq_of_isMaximal, second_iso, iso_symm, iso_trans all proved.",
+  "knowledge": {
+    "progressSummary": "PROGRESS: sup_eq_of_isMaximal proved, second_iso proved via first iso theorem avoiding sup_comm rewrite failure. 1 sorry remains in isMaximal_inf_left_of_isMaximal_sup maximality step.",
+    "builtItems": [
+      "IsMaxNorm predicate: maximal normal subgroup (H < K, H relatively normal in K, maximality condition)",
+      "GroupQuotIso predicate: quotient isomorphism with explicit Normal witnesses",
+      "le_normalizer_of_normal_in_sup: K ≤ H.normalizer when H.subgroupOf(H⊔K) is Normal",
+      "sup_eq_of_isMaximal proved: uses subgroupOf_sup + maximality applied twice",
+      "second_iso proved: φ = mk' ∘ inclusion le_sup_right via first iso theorem; ker = (x⊓y).subgroupOf y; surjectivity via hn_sup.conj_mem",
+      "iso_symm proved: MulEquiv.symm",
+      "iso_trans proved: MulEquiv.trans",
+      "isMaximal_inf_left_of_isMaximal_sup: x⊓y < x proved, Normal proved; maximality 1 sorry"
+    ],
+    "insights": [
+      "rw [sup_comm y x] fails at quotient type (x ⊔ y) ⧸ x.subgroupOf(x ⊔ y) with 'motive not type correct' — Normal typeclass depends on rewritten term",
+      "Fix for sup_comm: construct isomorphism directly using φ = mk' ∘ inclusion le_sup_right, avoiding any rewrite of the quotient type",
+      "subgroupOf_sup: (A ⊔ B).subgroupOf C = A.subgroupOf C ⊔ B.subgroupOf C — key for sup_eq_of_isMaximal",
+      "GroupQuotIso carries explicit hn1/hn2 Normal witnesses so haveI can instantiate them before MulEquiv construction",
+      "normal_subgroupOf_iff_le_normalizer: (H.subgroupOf K).Normal ↔ K ≤ H.normalizer (when H ≤ K)",
+      "inf_subgroupOf_right: (H ⊓ K).subgroupOf K = H.subgroupOf K",
+      "isMaximal_inf_left_of_isMaximal_sup maximality step: needs simplicity of (x⊔y)/y transferred to x/(x⊓y) via second_iso; this is a HARD sorry for Aristotle"
+    ],
+    "mathlibGaps": [
+      "JordanHolderLattice (Subgroup G) instance: marked as TODO in Mathlib.Order.JordanHolder"
+    ],
+    "nextSteps": [
+      "Close maximality sorry in isMaximal_inf_left_of_isMaximal_sup: use IsSimpleGroup transfer through second_iso MulEquiv",
+      "Submit maximality sorry to Aristotle (HARD classification)",
+      "Contribute JordanHolderLattice (Subgroup G) to Mathlib after proof is complete"
+    ]
+  },
+  "tags": ["algebra", "group-theory", "finite-groups", "jordan-holder", "composition-series", "lattice-theory"],
+  "relatedProofs": [
+    "abel-ruffini-galois-extensions",
+    "abel-ruffini-oq-04"
+  ],
+  "references": [
+    "Mathlib.Order.JordanHolder",
+    "Mathlib.GroupTheory.QuotientGroup.Basic",
+    "Mathlib.GroupTheory.Subgroup.Simple"
+  ],
+  "started": "2026-04-24",
+  "significance": 8,
+  "leanFiles": ["Proofs/AbelRuffiniGaloisExtensionsOQ04.lean"]
+}
