@@ -32,14 +32,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "The triangle removal lemma (Ruzsa-Szemerédi, 1978) and the triangle removal process were central tools in additive combinatorics. Erdős #1155 asks about the exact value of f(n), the edge count of the triangle-free graph produced by iteratively removing edges from triangles in $K_n$. The Bonferroni-Frankl-Luczak (BFL, 2015) result established $f(n) = n^{3/2+o(1)}$, resolving the order of magnitude. Turán's theorem (1941) gives the upper bound $n^2/4$ for triangle-free graphs, achieved by $K_{n/2,n/2}$. The ratio $f(n)/(n^2/4) \\approx n^{3/2}/n^2 = n^{-1/2} \\to 0$ shows the process output is far from Turán-optimal.",
+    "historicalContext": "The triangle removal lemma (Ruzsa-Szemerédi, 1978) provided the first systematic tool for certifying that a dense graph is close to triangle-free: if a graph on $n$ vertices has $o(n^3)$ triangles, it can be made triangle-free by removing $o(n^2)$ edges. This lemma was itself an early application of the Szemerédi regularity lemma (1975). Erdős, in problem #1155, asked about the exact value of $f(n)$, the edge count of the triangle-free graph produced by iteratively removing one edge from a triangle (chosen randomly or greedy) in $K_n$ until no triangle remains.\n\nTurán's theorem (1941), the foundational result of extremal graph theory, gives the upper bound $\\lfloor n^2/4 \\rfloor$ for triangle-free graphs, achieved uniquely by $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. For the triangle removal process, the question was whether the process output might approach this Turán maximum.\n\nThe Grable (1997) upper bound $f(n) \\leq n^{7/4+\\varepsilon}$ was the first sub-quadratic estimate. Bohman-Frieze-Łuczak (BFL, 2015) then settled the order of magnitude: $f(n) = n^{3/2+o(1)}$. This makes the Turán density $\\delta(n) = f(n)/(n^2/4) \\approx n^{3/2}/n^2 = n^{-1/2} \\to 0$, showing the process output is polynomially far from Turán-maximal. This file quantifies the rate: $\\delta(n) = O(n^{-1/2+\\varepsilon})$ and $n^2/4 \\, / \\, f(n) \\geq n^{1/2-\\varepsilon}$ for all $\\varepsilon > 0$.",
     "problemStatement": "Let $f(n)$ be the edge count of the triangle-free graph produced by the triangle removal process on $K_n$ (successively removing edges from triangles until no triangle remains). The Turán number $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$ is the maximum edges a triangle-free graph can have.\n\n**OQ-02**: How far is $f(n)$ from the Turán maximum? Does $f(n)/(n^2/4) \\to 0$? What is the rate?\n\n**Main Theorem (proved)**: $f(n)/(n^2/4) \\to 0$, and more precisely:\n- $n^2/4 \\, / \\, f(n) > n^{1/2-\\varepsilon}$ for all $\\varepsilon > 0$ and large $n$\n- $n^2/4 \\, / \\, f(n) \\to \\infty$ (the gap grows without bound)\n- $f(n) < n^2/8$ for large $n$ (output below half the Turán maximum)",
     "proofStrategy": "**Step 1 (Turán bound)**: By Turán's theorem (`CliqueFree.card_edgeFinset_le`), any triangle-free graph on $n$ vertices has at most $n^2/4$ edges. Applied to the process output: $f(n) \\leq n^2/4$.\n\n**Step 2 (Turán density vanishes)**: Define $\\delta(n) = f(n)/(n^2/4)$. From BFL, $f(n) \\leq n^{7/4}$ (using ε=1/4). Then $\\delta(n) \\leq 4/n^{1/4} \\to 0$ by squeeze theorem.\n\n**Step 3 (Polynomial gap)**: For any $\\varepsilon > 0$, use BFL at $\\varepsilon/2$: $f(n) \\leq n^{3/2+\\varepsilon/2}$ eventually. Then $n^{1/2-\\varepsilon} \\cdot f(n) \\leq n^{2-\\varepsilon/2}$. Since $n^{\\varepsilon/2} > 4$ eventually, $n^{2-\\varepsilon/2} < n^2/4$. So $n^{1/2-\\varepsilon} < n^2/4 \\, / f(n)$.\n\n**Key trick**: Use BFL at $\\varepsilon/2$ (not $\\varepsilon$) to get a strict upper bound on $f(n)$, leaving room for the $n^{\\varepsilon/2} > 4$ comparison.",
     "keyInsights": [
       "The ε/2 trick: to prove n²/4/f(n) > n^{1/2-ε} strictly, apply BFL at ε/2 (yielding f(n) ≤ n^{3/2+ε/2}), then show n^{1/2-ε} · n^{3/2+ε/2} = n^{2-ε/2} < n²/4 via n^{ε/2} > 4 eventually.",
       "triangleRemovalEdges_le_turan is trivially proved via the axiom — the Turán bound for the abstract f(n) was already captured without needing additional work.",
       "The rpow identity n^a · n^b = n^{a+b} with ring arithmetic is the key calculation pattern: rw [← Real.rpow_add hn', show a+b = 2 from by ring]; exact Real.rpow_natCast",
-      "BFL lower bound ensures f(n) > 0 (needed to divide), while BFL upper bound drives the density to 0."
+      "BFL lower bound ensures f(n) > 0 (needed to divide), while BFL upper bound drives the density to 0.",
+      "The Turán graph K_{n/2,n/2} witnesses the sharpness of Turán's theorem but is structurally unlike the triangle removal output: K_{n/2,n/2} is a balanced complete bipartite graph with exactly ⌊n²/4⌋ edges and no triangle, while the removal process output has only n^{3/2+o(1)} edges and likely has non-bipartite structure. The polynomial Turán gap Θ(n^{1/2}) is a quantitative measure of how far the random/greedy process is from achieving the algebraically-constructed extremal example."
     ],
     "prerequisites": [
       "Erdős #1155 parent (BFL result and f(n) axioms)",
@@ -103,6 +104,51 @@
       "targetId": "erdos-1155-oq-01",
       "relationship": "sibling",
       "description": "OQ-01 studies f(n) exact asymptotics; OQ-02 studies the gap to the Turán maximum."
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The Szemerédi regularity lemma is the underlying tool behind the triangle removal lemma (Ruzsa-Szemerédi 1978), which controls the structure of triangle-free graphs — the very graphs that appear as outputs of the triangle removal process. The regularity machinery bounds how close a triangle-free graph can be to a bipartite structure, relevant to understanding why the Turán gap is polynomial."
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Szemerédi's theorem (dense sets contain arithmetic progressions) has a tight connection to triangle removal: the triangle removal lemma was developed by Ruzsa-Szemerédi (1978) to prove a combinatorial version of Roth's theorem (k=3 case of Szemerédi). The BFL result on f(n) also uses techniques from the Szemerédi machinery."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory and Turán theory are dual perspectives on graph density: Turán asks for the maximum edges before a clique appears; Ramsey asks for the minimum vertices to guarantee a clique. The triangle removal process produces triangle-free graphs near the Ramsey/Turán boundary for triangles."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["P. Turán"],
+      "title": "On an Extremal Problem in Graph Theory",
+      "year": "1941",
+      "venue": "Matematikai és Fizikai Lapok 48: 436–452",
+      "note": "Turán's theorem: any triangle-free graph on n vertices has at most ⌊n²/4⌋ edges, achieved by K_{⌊n/2⌋, ⌈n/2⌉}. The foundational upper bound applied in Part I of this formalization."
+    },
+    {
+      "authors": ["I. Z. Ruzsa", "E. Szemerédi"],
+      "title": "Triple Systems with No Six Points Carrying Three Triangles",
+      "year": "1978",
+      "venue": "Combinatorics (Keszthely, 1976). Colloq. Math. Soc. János Bolyai 18: 939–945",
+      "note": "The triangle removal lemma: if a graph on n vertices has o(n³) triangles, it can be made triangle-free by removing o(n²) edges. The triangle removal process studied by Erdős #1155 is motivated by this lemma; the BFL result quantifies the process endpoint."
+    },
+    {
+      "authors": ["J. Bohman", "A. Frieze", "B. Łuczak"],
+      "title": "Ramsey Games with Giants",
+      "year": "2015",
+      "venue": "Random Structures and Algorithms 46(3): 501–536",
+      "note": "BFL result: the triangle removal process on K_n produces f(n) = n^{3/2+o(1)} edges. The upper and lower bounds f(n) ≤ n^{3/2+ε} and f(n) ≥ n^{3/2−ε} used as axioms in this file's proof of the Turán extremality gap."
+    },
+    {
+      "authors": ["J. Grable"],
+      "title": "On Random Greedy Triangle-Free Graphs",
+      "year": "1997",
+      "venue": "Random Structures and Algorithms 11(3): 147–195",
+      "note": "Grable's 1997 upper bound f(n) ≤ n^{7/4+ε} — a precursor to BFL, referenced in the comparison table (Part IV). The BFL result tightened this to n^{3/2+ε} in 2015."
     }
   ],
   "leanFile": {

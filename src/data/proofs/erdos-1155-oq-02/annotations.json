@@ -1,15 +1,116 @@
 [
   {
+    "id": "ann-oq02-module-header",
+    "proofId": "erdos-1155-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 52
+    },
+    "type": "context",
+    "title": "Module Header: Problem Setup and Axiom Declarations",
+    "content": "The module docstring frames the question: given the triangle removal process output has $f(n) = n^{3/2+o(1)}$ edges (BFL 2015) and Turán's theorem gives $n^2/4$ as the triangle-free maximum, how large is the gap $n^2/4 \\, / \\, f(n)$? The file imports Mathlib's `Combinatorics.SimpleGraph.Extremal.Turan` (containing `CliqueFree.card_edgeFinset_le`) and `Analysis.SpecialFunctions.Pow.Real` (rpow arithmetic), then imports `Proofs.Erdos1155OQ01` to inherit the BFL axioms and `triangleRemovalEdges` definition.\n\nLines 40–50 contain the docstring for Part I, explaining Mathlib's formulation of Turán's theorem: `CliqueFree.card_edgeFinset_le` with `r=2` gives a bound with residue correction terms (`(n%2)^2/4 + C(n%2, 2)`), which simplify to $\\lfloor n^2/4 \\rfloor$ for `n%2 ∈ {0,1}`.",
+    "mathContext": "$\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$ (Turán 1941). In Lean: `CliqueFree.card_edgeFinset_le (r := 2)` gives $|E| \\leq (n^2 - (n \\mod 2)^2)/4 + \\binom{n \\mod 2}{2}$. For $n \\mod 2 \\in \\{0,1\\}$: $\\binom{n \\mod 2}{2} = 0$ and $(n \\mod 2)^2 \\leq n^2$, so the bound reduces to $\\lfloor n^2/4 \\rfloor \\leq n^2/4$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "CliqueFree.card_edgeFinset_le",
+      "triangleRemovalEdges",
+      "bfl_upper_bound",
+      "bfl_lower_bound",
+      "Erdos1155OQ01"
+    ],
+    "prerequisites": [
+      "Erdős #1155 parent formalization",
+      "BFL axioms for f(n)",
+      "Turán's theorem statement",
+      "Lean 4 import system"
+    ]
+  },
+  {
+    "id": "ann-oq02-density-definition",
+    "proofId": "erdos-1155-oq-02",
+    "range": {
+      "startLine": 91,
+      "endLine": 129
+    },
+    "type": "definition",
+    "title": "Turán Density Definition and Basic Properties",
+    "content": "The `turanDensity` function is defined noncomputably (line 104): $\\delta(n) = f(n) / (n^2/4)$ for $n > 0$, and $0$ for $n = 0$ (to avoid division by zero). Three foundational lemmas follow:\n\n- **`turanDensity_eq`** (lines 108–113): $\\delta(n) = 4f(n)/n^2$, proved by `field_simp` after establishing $n^2 \\neq 0$ via `positivity`. This equivalent form is algebraically convenient since it avoids nested division.\n\n- **`turanDensity_mem_Icc`** (lines 115–128): $\\delta(n) \\in [0,1]$ for all $n$. Lower bound: $f(n) \\geq 0$ (`triangleRemovalEdges_nonneg`). Upper bound: $f(n) \\leq n^2/4$ (`triangleRemovalEdges_le_turan_exact` axiom). The `div_le_one` rewrite reduces $\\delta(n) \\leq 1$ to $f(n) \\leq n^2/4$.\n\nThese three lemmas are infrastructure for the main squeeze argument in `turanDensity_tendsto_zero`.",
+    "mathContext": "$\\delta(n) = f(n) / (n^2/4) \\in [0,1]$. The [0,1] bound uses $0 \\leq f(n) \\leq n^2/4$. The equivalent form $\\delta(n) = 4f(n)/n^2$ is obtained by clearing the denominator $n^2/4 \\cdot (n^2) = n^2/4 \\cdot n^2/n^2 \\cdot n^2$... actually just $4f(n)/n^2 = f(n)/(n^2/4)$ since dividing by $n^2/4$ is the same as multiplying by $4/n^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "turanDensity",
+      "triangleRemovalEdges_nonneg",
+      "triangleRemovalEdges_le_turan_exact",
+      "div_le_one",
+      "positivity"
+    ],
+    "prerequisites": [
+      "f(n) axioms (nonneg, Turán bound)",
+      "Real division API",
+      "noncomputable definitions in Lean"
+    ]
+  },
+  {
+    "id": "ann-oq02-not-extremal",
+    "proofId": "erdos-1155-oq-02",
+    "range": {
+      "startLine": 160,
+      "endLine": 208
+    },
+    "type": "insight",
+    "title": "Process Output Below Half the Turán Maximum, and Comparison Table",
+    "content": "**`process_not_turan_extremal`** (lines 174–188): proves $f(n) < n^2/8$ for large $n$. The proof applies `bfl_upper_bound (1/4)` (i.e., $f(n) \\leq n^{7/4}$ eventually) and uses `Filter.eventually_gt_atTop 8` to get $n > 8$. The chain: $f(n) \\leq n^{7/4} < n^2/8$. The last step uses `Real.rpow_lt_rpow_of_exponent_lt` with $7/4 < 2$ and then `linarith` with `Real.rpow_pos_of_pos` to close the comparison $n^{7/4} < n^2/8$.\n\n**Comparison table** (lines 193–207): The Part IV docstring contains a summary table of bounds by order:\n\n| Bound | Order | Source |\n|---|---|---|\n| Turán maximum | $n^2/4$ | Turán (1941) |\n| Grable upper | $n^{7/4+\\varepsilon}$ | Grable (1997) |\n| BFL upper | $n^{3/2+\\varepsilon}$ | BFL (2015) |\n| Conjectured $f(n)$ | $\\asymp n^{3/2}$ | Erdős #1155 |\n| BFL lower | $n^{3/2-\\varepsilon}$ | BFL (2015) |\n\nThis table contextualizes the Turán gap: $n^2/4 \\gg f(n) = n^{3/2+o(1)}$, with the gap $\\sim n^{1/2}$.",
+    "mathContext": "$f(n) < n^2/8$ eventually. Proof: $f(n) \\leq n^{7/4}$ (BFL, $\\varepsilon=1/4$) and $n^{7/4} < n^2/8$ for $n > 8$ (since $n^{7/4} \\cdot n^{1/4} = n^2$ and $n^{1/4} > 8$ eventually, giving $n^{7/4} < n^2/8$). The factor $n^2/8 = (n^2/4)/2$ means the process produces fewer than half the Turán-maximal edges.",
+    "significance": "key",
+    "relatedConcepts": [
+      "process_not_turan_extremal",
+      "bfl_upper_bound",
+      "Real.rpow_lt_rpow_of_exponent_lt",
+      "turanGraph",
+      "Grable bound"
+    ],
+    "prerequisites": [
+      "BFL upper bound at ε=1/4",
+      "n^{7/4} < n^2/8 for large n",
+      "Filter.eventually_gt_atTop"
+    ]
+  },
+  {
+    "id": "ann-oq02-turan-graph-maximal",
+    "proofId": "erdos-1155-oq-02",
+    "range": {
+      "startLine": 246,
+      "endLine": 270
+    },
+    "type": "concept",
+    "title": "Turán Graph K_{n/2,n/2} is Triangle-Free",
+    "content": "`turan_graph_r2_is_maximal` (lines 263–265): the `turanGraph n 2` (the balanced complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$) is triangle-free. The proof is a one-liner: `turanGraph_cliqueFree (by norm_num)`, where the `norm_num` proof establishes the necessary bound `2 ≤ 2`. This theorem grounds the abstract discussion of Turán-extremal graphs: $K_{n/2,n/2}$ is the concrete extremal example that achieves $n^2/4$ edges.\n\nThe juxtaposition with `turan_bfl_exponent_gap` (immediately following) is intentional: the Turán graph achieves $n^2/4$, while the process output has only $n^{3/2+o(1)}$ edges — the gap is $n^{1/2}/4$. Formally verifying that $K_{n/2,n/2}$ is triangle-free is the anchor point for the comparison.",
+    "mathContext": "`turanGraph n 2` in Mathlib is the complete $r$-partite graph with $n$ vertices and $r = 2$ parts — the balanced complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. `CliqueFree 3` means no triangle. `turanGraph_cliqueFree` from Mathlib proves `(turanGraph n r).CliqueFree (r+1)`, so for $r=2$ it gives triangle-free ($r+1=3$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "turanGraph",
+      "turanGraph_cliqueFree",
+      "SimpleGraph.CliqueFree",
+      "Turán number ex(n, K₃)",
+      "complete bipartite graph"
+    ],
+    "prerequisites": [
+      "turanGraph definition in Mathlib",
+      "CliqueFree.card_edgeFinset_le",
+      "Turán's theorem"
+    ]
+  },
+  {
     "id": "ann-oq02-turan-bound",
     "proofId": "erdos-1155-oq-02",
     "range": {
       "startLine": 53,
-      "endLine": 70
+      "endLine": 90
     },
     "type": "insight",
-    "title": "Turán's Theorem via Mathlib: CliqueFree.card_edgeFinset_le",
-    "content": "`turan_triangle_free_bound` applies Mathlib's `CliqueFree.card_edgeFinset_le` with `r=2` to get the triangle-free edge bound. The Mathlib statement gives `#G.edgeFinset ≤ (n² − (n mod 2)²)/(2·2) + C(n mod 2, 2)`. For `n mod 2 ∈ {0, 1}`, we have `C(n mod 2, 2) = 0`, reducing to `(n² − (n mod 2)²)/4 ≤ n²/4`. The `omega` tactic closes the arithmetic after simplification.",
-    "mathContext": "Turán (1941): the triangle-free graph on $n$ vertices with the most edges is the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ with $\\lfloor n^2/4 \\rfloor$ edges. In Lean, `SimpleGraph.CliqueFree 3` is triangle-free.",
+    "title": "Turán's Theorem via Mathlib and the Connecting Axiom",
+    "content": "`turan_triangle_free_bound` (lines 53–70) applies Mathlib's `CliqueFree.card_edgeFinset_le` with `r=2` to get the triangle-free edge bound. The Mathlib statement gives `#G.edgeFinset ≤ (n² − (n mod 2)²)/(2·2) + C(n mod 2, 2)`. For `n mod 2 ∈ {0, 1}`, we have `C(n mod 2, 2) = 0`, reducing to `(n² − (n mod 2)²)/4 ≤ n²/4`. The `omega` tactic closes the arithmetic after simplification.\n\n`triangleRemovalEdges_le_turan` (lines 77–79) applies this to the abstract $f(n)$ via the bridging axiom. The key separation of concerns: the concrete `turan_triangle_free_bound` handles the graph theory (any triangle-free SimpleGraph), while `triangleRemovalEdges_le_turan_exact` (line 84) axiomatizes the missing link that the triangle removal process output is triangle-free and $f(n)$ counts its edges. This axiom is the seventh of the seven axioms in this file.",
+    "mathContext": "Turán (1941): the triangle-free graph on $n$ vertices with the most edges is the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ with $\\lfloor n^2/4 \\rfloor$ edges. In Lean, `SimpleGraph.CliqueFree 3` is triangle-free. The axiom `triangleRemovalEdges_le_turan_exact` captures: triangle removal output has $\\leq n^2/4$ edges — deferred because it requires formalizing the concrete graph construction for the process.",
     "significance": "key",
     "relatedConcepts": [
       "SimpleGraph.CliqueFree.card_edgeFinset_le",
@@ -50,7 +151,7 @@
     "proofId": "erdos-1155-oq-02",
     "range": {
       "startLine": 271,
-      "endLine": 307
+      "endLine": 314
     },
     "type": "technique",
     "title": "The ε/2 Trick for Sharp BFL Bounds",
