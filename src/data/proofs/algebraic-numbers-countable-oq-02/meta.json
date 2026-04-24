@@ -22,6 +22,7 @@
     "lineCount": 192,
     "assumptions": "",
     "mathlib_version": "4.26.0",
+    "dateAdded": "2026-04-04",
     "originalContributions": [
       "reals_not_countable: ¬ Countable ℝ (main theorem)",
       "no_surjection_nat_to_real: ¬∃ f : ℕ → ℝ, Function.Surjective f",
@@ -77,7 +78,10 @@
       "Function.Surjective.countable is the key lemma: a surjection ℕ → ℝ would make ℝ countable (codomain of surjection from countable domain is countable).",
       "The diagonal argument is realized abstractly as Cardinal.cantor κ : κ < 2^κ, instantiated at κ = ℵ₀ to give ℵ₀ < 𝔠 = #ℝ.",
       "Set.countable_univ_iff bridges Set.Countable (set-level) and Countable (type-level) for the universal set.",
-      "The proof of transcendentals_uncountable uses Classical.em for the non-constructive step 'every real is either algebraic or transcendental'. This excluded-middle application is unavoidable: constructively, we cannot decide algebraicity for arbitrary reals, but classically it partitions ℝ into two complementary countable/uncountable classes."
+      "The proof of transcendentals_uncountable uses Classical.em for the non-constructive step 'every real is either algebraic or transcendental'. This excluded-middle application is unavoidable: constructively, we cannot decide algebraicity for arbitrary reals, but classically it partitions ℝ into two complementary countable/uncountable classes.",
+      "The two proofs in this file (cardinal-bounds proof via mk_real and diagonal-connection via Cardinal.cantor) are the same theorem stated in two logical frameworks: the abstract categorical version (κ < 2^κ for any cardinal κ) and the concrete combinatorial version (no surjection ℕ → BinarySeq). Their equivalence is witnessed by 𝔠 = #ℝ = #(ℕ → Bool) = 2^ℵ₀.",
+      "The 'paradox' this entry resolves: before Cantor 1874, mathematicians might have assumed all infinite sets have the same size (both ℕ and ℝ are infinite). Cantor showed the infinite comes in different sizes — ℵ₀ < 𝔠 < 2^𝔠 < ⋯ — launching the theory of transfinite cardinal arithmetic. This entry is the first step in that hierarchy.",
+      "The transcendentals_uncountable proof illustrates a general cardinality argument: if A = B ∪ C and A is uncountable while B is countable, then C must be uncountable. Here A = ℝ, B = algebraic reals (countable by the parent entry), C = transcendental reals. No explicit transcendental number is needed — the argument is purely set-cardinality."
     ],
     "prerequisites": [
       "AlgebraicNumbersCountable (Proofs/AlgebraicNumbersCountable.lean): algebraic reals are countable — used in transcendentals_uncountable",
@@ -134,10 +138,12 @@
   ],
   "conclusion": {
     "summary": "This formalization proves ¬ Countable ℝ (Cantor's 1874 result) using cardinal arithmetic: #ℝ = 𝔠 = 2^ℵ₀ > ℵ₀. It also proves that transcendental reals are uncountable, completing Cantor's 1874 argument. The proof is 192 lines with 0 sorries and 0 axioms, using Mathlib's Cardinal.mk_real and Set.countable_univ_iff.",
-    "implications": "Together with AlgebraicNumbersCountable.lean (algebraic reals are countable), this proves Cantor's full 1874 result: algebraic numbers are countable, ℝ is uncountable, so 'most' reals are transcendental. The abstract version (Cardinal.cantor) and the concrete version (no surjection ℕ → BinarySeq from CantorDiagonalization.lean) are two expressions of the same diagonal argument.",
+    "implications": "1. **Transcendental numbers exist in abundance**: Before Cantor 1874, the only known transcendental was $e$ (Hermite 1873). This entry proves transcendentals are uncountable — far 'more numerous' than the countable algebraic numbers — without constructing a single one. The philosophical impact: most real numbers cannot be expressed by any algebraic formula.\n\n2. **Cardinality hierarchy inaugurated**: The strict inequality $\\aleph_0 < 2^{\\aleph_0}$ is the first step in Cantor's transfinite hierarchy. Whether $\\aleph_1 = 2^{\\aleph_0}$ is the Continuum Hypothesis (CH), independent of ZFC by Gödel (1940) and Cohen (1963).\n\n3. **Diagonalization as a universal proof technique**: The diagonal argument (Cardinal.cantor here) appears throughout mathematics and computer science: Turing's halting problem undecidability, Gödel's incompleteness, and the impossibility of a universal simulation all use diagonal arguments.\n\n4. **Constructive vs. classical mathematics**: The transcendentals_uncountable proof requires Classical.em — constructively, algebraicity of arbitrary reals is undecidable. The classical proof reveals a tension: we know 'most' reals are transcendental, yet constructing specific ones requires deep work (Liouville 1844, Hermite 1873, Lindemann 1882).",
     "openQuestions": [
-      "Prove #transcendentalReals = 𝔠 (transcendentals have the same cardinality as ℝ, since ℵ₀ + 𝔠 = 𝔠)",
-      "Formalize Cantor's 1874 nested interval construction directly as an alternative proof of ¬Countable ℝ"
+      "Prove $\\#\\text{transcendentalReals} = \\mathfrak{c}$ (transcendentals have the same cardinality as $\\mathbb{R}$, since $\\aleph_0 + \\mathfrak{c} = \\mathfrak{c}$ by cardinal arithmetic)",
+      "**[Addressed in `algebraic-numbers-countable-oq-02-oq-02`]** Formalize Cantor's 1874 nested interval construction directly as an alternative proof of $\\neg$Countable $\\mathbb{R}$",
+      "Formalize the independence of the Continuum Hypothesis from ZFC — this entry proves $\\aleph_0 < 2^{\\aleph_0}$ but cannot establish where $2^{\\aleph_0}$ sits in the $\\aleph$-hierarchy without additional axioms",
+      "Prove the set of computable real numbers is countable (computable reals are defined by Turing machine programs, which are countable), completing the hierarchy: computable $\\subset$ algebraic $\\subset \\mathbb{R}$ with cardinalities $\\aleph_0, \\aleph_0, \\mathfrak{c}$"
     ]
   },
   "crossReferences": [
@@ -150,6 +156,36 @@
       "targetId": "cantor-diagonalization",
       "relationship": "related",
       "description": "The concrete diagonal argument: no surjection ℕ → BinarySeq = (ℕ → Bool)"
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Cantor's original 1874 nested-intervals proof of $\\neg$Countable $\\mathbb{R}$: given any sequence $(x_n)_{n \\in \\mathbb{N}}$ of reals, construct a sequence of nested closed intervals $[a_n, b_n] \\ni x_n^c$ converging to a point $x^* \\notin \\{x_n\\}$. This entry uses the modern cardinal-bounds proof; oq-02-oq-02 gives the original constructive-flavored argument from the same 1874 paper."
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "foundational",
+      "description": "Cantor's theorem $|P(A)| > |A|$ is the abstract form of the diagonal argument. Instantiated at $A = \\mathbb{N}$: $|P(\\mathbb{N})| = 2^{\\aleph_0} = \\mathfrak{c} > \\aleph_0$. This entry's key inequality $\\aleph_0 < \\mathfrak{c}$ is a special case of Cantor's theorem with $A = \\mathbb{N}$ and the identification $\\mathbb{R} \\cong P(\\mathbb{N})$ (up to cardinality)."
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "complementary",
+      "description": "The first concrete member of the uncountable transcendental complement proved in this entry. Hermite (1873) proved $e$ is transcendental one year before Cantor's 1874 paper established that transcendentals are uncountable. Together: this entry proves transcendentals are 'almost all' reals; `e-transcendental` proves the first specific example lies in that majority."
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "complementary",
+      "description": "Transcendence of $\\pi$ (Lindemann 1882): another specific member of the uncountable transcendental complement. The Lindemann-Weierstrass theorem, which implies both $e$ and $\\pi$ are transcendental, is the deepest result in the gallery linking this entry's abstract uncountability claim to explicit examples."
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "complementary",
+      "description": "Liouville's constructive approach (1844) to transcendental numbers: numbers too well approximated by rationals cannot be algebraic. This gives explicit transcendentals (Liouville numbers like $\\sum 10^{-k!}$) without using cardinality. The dual perspectives — Cantor's cardinality argument (this entry) and Liouville's Diophantine approximation — are the two founding strategies of transcendence theory."
+    },
+    {
+      "targetId": "schroeder-bernstein",
+      "relationship": "foundational",
+      "description": "The Schröder-Bernstein theorem ($|A| \\leq |B|$ and $|B| \\leq |A|$ implies $|A| = |B|$) underpins the cardinal arithmetic used here. The proof that $\\#\\mathbb{R} = 2^{\\aleph_0}$ uses injections in both directions between $\\mathbb{R}$ and the Cantor set (a subset of $[0,1]$), with Schröder-Bernstein giving the cardinality equality from two injections."
     }
   ],
   "sorries": 0,
