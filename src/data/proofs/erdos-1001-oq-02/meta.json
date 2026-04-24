@@ -90,7 +90,8 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 74,
-      "summary": "Module header with imports, docstring, and namespace setup."
+      "summary": "Module header with imports, docstring, and namespace setup.",
+      "mathContext": "The open question: $S(N,A,c) = \\frac{1}{N}\\#\\{1 \\leq n \\leq N : \\{n\\alpha\\} \\in [0, A)\\}$ converges to $f(A,c) = A$ (or the ESP value) by Kesten-Sós; this file asks for the *rate* $|S(N,A,c) - f(A,c)|$. The EST regime ($0 < A < c/(1+c^2)$, approximation intervals disjoint) enables the reduction to a weighted Euler totient sum: $S(N,A,c) = 2A \\sum_{y=N}^{cN} \\varphi(y)/y^2 + O(A/N)$. By Mertens ($\\sum_{y \\leq x} \\varphi(y)/y^2 \\sim (6/\\pi^2)\\log x$) and Abel summation, the error is $O(A \\log N / N)$. Imports `Proofs.Erdos1001Problem` for the parent $S(N,A,c)$ infrastructure and `Mathlib` for `Nat.totient`, `Real.log`, and asymptotic analysis."
     },
     {
       "id": "weighted-totient-sum",
