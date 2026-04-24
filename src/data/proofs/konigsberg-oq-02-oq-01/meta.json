@@ -18,7 +18,7 @@
       "hierholzer"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 2,
     "dateAdded": "2026-04-24",
     "axiomCount": 0,
     "assumptions": "1 sorry remains: directed_euler_circuit_sufficient_corrected (WF induction on arcCount combining splice + balance lemmas). Supporting lemmas removeArcList_arcCount and removeArcList_balanced are not yet formalized.",
@@ -66,7 +66,7 @@
     "theoremCount": 6,
     "definitionCount": 1,
     "path": "Proofs/KonigsbergOQ02OQ01.lean",
-    "sorries": 1,
+    "sorries": 2,
     "imports": [
       "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
       "Mathlib.Tactic",
@@ -129,5 +129,5 @@
       "description": "Original Königsberg bridges undirected case"
     }
   ],
-  "sorries": 1
+  "sorries": 2
 }
