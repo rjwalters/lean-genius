@@ -89,6 +89,23 @@ theorem odds_construction' (n : ℕ) :
       A ⊆ Finset.range (n + 1) ∧
       isSumFree A ∧
       A.card ≥ n / 2 := by
-  sorry
+  refine ⟨(Finset.range (n + 1)).filter (· % 2 = 1), Finset.filter_subset _ _, ?_, ?_⟩
+  · -- sum-free: odd + odd = even, never odd
+    intro a b c ha hb hc habc
+    simp only [Finset.mem_filter] at ha hb hc
+    omega
+  · -- card: count of odds in {0,...,n} equals (n+1)/2 ≥ n/2
+    have key : ∀ m, ((Finset.range m).filter (· % 2 = 1)).card = m / 2 := by
+      intro m
+      induction m with
+      | zero => simp
+      | succ k ih =>
+        rw [Finset.range_succ, Finset.filter_insert]
+        split_ifs with hmod
+        · rw [Finset.card_insert_of_not_mem (by simp [Finset.mem_filter, Finset.mem_range])]
+          omega
+        · omega
+    have := key (n + 1)
+    omega
 
 end Erdos877.Aristotle
