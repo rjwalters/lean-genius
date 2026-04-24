@@ -2,7 +2,7 @@
   "id": "wilsons-theorem-oq-02",
   "title": "Gauss-Wilson Theorem: Product of Units and Cyclic Groups",
   "slug": "wilsons-theorem-oq-02",
-  "description": "Formalizes the Gauss-Wilson theorem: ∏(ℤ/nℤ)* = -1 iff (ℤ/nℤ)* is cyclic, proved via involution lemma and self-inverse classification. Full proof that cyclic → product = -1 and non-cyclic → product = 1. Verifies Gauss-Wilson for all n ≤ 300 and confirms no Wilson primes between 14 and 100. 20 theorems, 0 axioms.",
+  "description": "Formalizes the Gauss-Wilson theorem: ∏(ℤ/nℤ)* = -1 iff (ℤ/nℤ)* is cyclic, proved via involution lemma and self-inverse classification. Full proof that cyclic → product = -1 and non-cyclic → product = 1. Verifies Gauss-Wilson for all n ≤ 300 and confirms no Wilson primes between 14 and 100. 21 theorems, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -21,8 +21,8 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified.",
-    "lineCount": 462,
-    "theoremCount": 20,
+    "lineCount": 426,
+    "theoremCount": 21,
     "definitionCount": 8,
     "originalContributions": [
       "selfInverse_units_eq_pair: in a cyclic group with n≥3, {x | x²=1} = {1,-1} exactly",
@@ -56,7 +56,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Gauss-Wilson theorem proved abstract and concrete: ∏(ℤ/nℤ)* = -1 ↔ IsCyclic (ZMod n)ˣ, via involution product lemma, self-inverse classification in cyclic groups, Klein-four argument for non-cyclic case, and Finset.prod_nbij bridge. Computationally verified for n ≤ 300; no Wilson primes in [14, 100]. 20 theorems, 8 definitions, 462 lines, 0 axioms.",
+    "summary": "Gauss-Wilson theorem proved abstract and concrete: ∏(ℤ/nℤ)* = -1 ↔ IsCyclic (ZMod n)ˣ, via involution product lemma, self-inverse classification in cyclic groups, Klein-four argument for non-cyclic case, and Finset.prod_nbij bridge. Computationally verified for n ≤ 300; no Wilson primes in [14, 100]. 21 theorems, 8 definitions, 426 lines, 0 axioms.",
     "implications": "The Gauss-Wilson theorem is the algebraic foundation for primitive root theory: (ℤ/nℤ)* cyclic iff primitive roots exist mod n, characterizing the n where the discrete logarithm is well-defined. The involution product lemma is a general technique applicable to any finite abelian group product computation. The companion WilsonsTheoremOQ02Ext provides the non-cyclic case via a fixed-point-free involution with constant pair product — a technique applicable beyond this setting.",
     "openQuestions": [
       "Are there infinitely many Wilson primes? Equivalent to: are there infinitely many p with p | B_{p-1}?",
@@ -67,7 +67,7 @@
   },
   "leanFile": {
     "namespace": "WilsonsTheoremGeneralizationOQ02",
-    "lineCount": 462,
+    "lineCount": 426,
     "axiomCount": 0,
     "theoremCount": 21,
     "definitionCount": 8,

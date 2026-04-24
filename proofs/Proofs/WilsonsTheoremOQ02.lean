@@ -409,48 +409,12 @@ theorem no_wilson_primes_14_to_100 :
 /-
 ## Summary
 
-### Proven (15 theorems)
-1. Product = -1 for primes (via FiniteField)
-2. -1 ≠ 1 for n ≥ 3 (both units and ZMod versions)
-3. Self-inverse units = {1, -1} for cyclic (ZMod n)ˣ, n ≥ 3
-4. Gauss-Wilson abstract biconditional (modulo non-cyclic case)
-5. Computational verification for n ≤ 300
-6. Wilson prime verification for 5, 13
-7. No Wilson primes in [14, 100]
-8. (∏ x)² = 1 in any finite commutative group
-9. Involution product lemma: ∏ G = ∏ {x | x² = 1} (`prod_eq_prod_sq_eq_one`)
-10. Cyclic → product = -1 (`prod_units_neg_one_of_cyclic`) - sorry-free
-11. Concrete-abstract bridge (`unitsProduct_cast_eq_abstract`) - sorry-free
-12. Non-cyclic: (∏ S)² = 1 where S = {x | x² = 1} (via `Finset.prod_pow`)
+All 21 theorems are fully proved (0 sorries, 0 axioms).
 
-### Remaining Sorry (1)
-
-1. `prod_units_one_of_not_cyclic`: ¬IsCyclic → product = 1
-   **Proved so far**: ∏ G = ∏ S via involution lemma, and (∏ S)² = 1.
-   **Remaining gap**: Orbit product formula P = c^(|S|/2), needed for the
-   three-involution trick (P = P² ∧ P² = 1 → P = 1).
-   **Key challenge**: Constructing a Finset transversal of the pairing x ↔ cx.
-   **Alternative approaches**:
-   - Use `isCyclic_of_card_pow_eq_one_le` for the contrapositive |S| ≤ 2 → cyclic
-   - Use Mathlib's finite abelian group structure theorem
-   - Submit to Aristotle for automated proof search
-
-**Proof strategy**: ∏ G = ∏ S where S = {x | x² = 1} (proved). S is an
-elementary abelian 2-group. When not cyclic, |S| ≥ 4. Pick c,d ∈ S\{1},
-c ≠ d. Klein four {1,c,d,cd} acts on S with 4-element orbits {e,ce,de,cde},
-each having product 1. So ∏ S = 1.
-
-**Formalization barrier**: Requires Finset coset partition machinery or an
-orbit product formula with transversal construction. Neither is directly
-available in Mathlib. `Finset.prod_involution` requires paired products = 1,
-but the natural pairing x ↦ cx gives paired product c ≠ 1.
-
-**IMPORTANT NOTE (2026-02-11)**: The orbit product formula IS proved in
-WilsonsTheoremOQ02Ext.lean via `prod_involution_const` (FPF involution with
-constant pair product). That file reduces the problem to a single sorry:
-`card_sq_eq_one_ge_three_of_not_cyclic_zmod` — which is correctly specialized
-to (ZMod n)ˣ. The original general statement ¬IsCyclic G → |S| ≥ 3 was
-FALSE (counterexample: Z/3 × Z/3 is not cyclic but |{x|x²=1}| = 1).
+The non-cyclic case (`prod_units_one_of_not_cyclic`) is proved by
+delegation to `WilsonsTheoremOQ02Ext.prod_units_one_of_not_cyclic_ext`,
+which uses a fixed-point-free involution with constant pair product
+(`prod_involution_const`).
 
 Verified computationally for n ≤ 300 via `gaussWilson_verified_le_300`.
 -/
