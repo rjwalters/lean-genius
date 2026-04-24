@@ -59,7 +59,7 @@
       },
       {
         "id": "abel-ruffini-oq-04",
-        "relationship": "Sub-entry exposing the complete proof chain from A₅ simplicity through S₅ non-solvability to Abel-Ruffini"
+        "relationship": "Sub-entry: eight individually verifiable theorems tracing A₅ simplicity → S₅ non-solvability → Abel-Ruffini, with `five_is_the_threshold` as the precise formal boundary statement"
       },
       {
         "id": "abel-ruffini-oq-04-oq-01",
@@ -238,7 +238,7 @@
     {
       "targetId": "abel-ruffini-oq-04",
       "relationship": "extended-by",
-      "description": "OQ-04 exposes the internal proof chain from A₅ simplicity to Abel-Ruffini as individually named theorems with pedagogical documentation"
+      "description": "Exposes the A₅→S₅ non-solvability proof chain as eight individually verifiable named theorems: `a5_is_simple` (A₅ is a simple group), `symmetric_not_solvable` (Sₙ not solvable for n ≥ 5, with the ℕ→Cardinal coercion bridge made explicit), concrete instantiations `s5_not_solvable`, `s6_not_solvable`, `s7_not_solvable`, solvable contrasts `s0_solvable` and `s1_solvable`, and `five_is_the_threshold` (IsSolvable S₁ ∧ ¬IsSolvable S₅ — the precise formal statement of the degree-5 boundary). A five-step annotated proof chain in comments traces A₅ simplicity → non-abelian simple ⟹ perfect → derived series stabilizes → Sₙ not solvable → Abel-Ruffini contrapositive, at a pedagogical depth unavailable in this entry's concise Mathlib wrappers"
     },
     {
       "targetId": "abel-ruffini-oq-04-oq-01",
