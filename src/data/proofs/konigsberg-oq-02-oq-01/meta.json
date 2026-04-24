@@ -21,7 +21,7 @@
     "sorries": 1,
     "dateAdded": "2026-04-24",
     "axiomCount": 0,
-    "assumptions": "1 sorry remains: directed_euler_circuit_sufficient_corrected (WF induction on arcCount combining splice + balance lemmas). Supporting lemmas removeArcList_arcCount and removeArcList_balanced are now fully proved.",
+    "assumptions": "1 sorry remains: directed_euler_circuit_sufficient_corrected (WF induction on arcCount combining splice + balance lemmas). Supporting lemmas removeArcList_arcCount and removeArcList_balanced are not yet formalized.",
     "lineCount": 286,
     "theoremCount": 6,
     "definitionCount": 1,
@@ -47,7 +47,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Key infrastructure for Hierholzer's algorithm proved: maximal trail sub-lemma (0 sorries), Walk.splice (0 sorries), removeArcList_arcCount (0 sorries), removeArcList_balanced (0 sorries). 1 sorry remains for the WF induction combining all proved sub-lemmas.",
+    "summary": "Key infrastructure proved: maximal trail sub-lemma (0 sorries), degree counting lemmas fst_count_eq_outDegree_stuck and snd_count_le_inDegree (0 sorries). 1 sorry remains for the full Hierholzer WF induction (directed_euler_circuit_sufficient_corrected); Walk.splice and removeArcList_arcCount/removeArcList_balanced are not yet formalized.",
     "implications": [
       "Fixes bug in KonigsbergOQ02 directed Eulerian sufficiency axiom",
       "Walk.splice enables circuit extension proofs beyond this result",
