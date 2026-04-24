@@ -36,7 +36,7 @@
     ],
     "dateAdded": "2026-04-22",
     "axiomCount": 0,
-    "lineCount": 480,
+    "lineCount": 507,
     "assumptions": "3 sorries remaining (kuhnWalk non-revisiting, walk pairing existential, kuhnPathStart universal). 0 axiom declarations.",
     "mathlib_version": "4.26.0"
   },
@@ -167,7 +167,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization establishes the complete infrastructure for Kuhn's constructive proof of n-dimensional Sperner's lemma with 0 sorries. Proved: door counting (fc_door_count_eq_one, nonfc_door_count_zero_or_two, nonfc_with_door_has_unique_exit), FC existence (kuhn_path_terminates via parity), and the key non-revisiting lemma (kuhn_walk_result_not_in_visited). The full constructive termination theorem (walk always reaches FC) requires door-graph acyclicity — an open formalization challenge.",
+    "summary": "This formalization establishes the infrastructure for Kuhn's constructive proof of n-dimensional Sperner's lemma. Fully proved: door counting (fc_door_count_eq_one, nonfc_door_count_zero_or_two, nonfc_with_door_has_unique_exit), FC existence (kuhn_path_terminates via parity), and the key non-revisiting lemma (kuhn_walk_result_not_in_visited). 3 sorries remain for the full constructive termination theorem: general non-revisiting (kuhn_walk_reaches_fc), existence via walk-pairing (kuhnPathStart_finds_fc_existential), and the universal version (kuhnPathStart_is_fc, possibly false as stated). Door-graph acyclicity is the open formalization challenge.",
     "implications": "Kuhn's 1968 result is historically significant as the first polynomial-time algorithm for finding a fully-colored simplex. Path-following algorithms descended from Kuhn's work underlie Scarf's algorithm for computing approximate fixed points, the Lemke-Howson algorithm for Nash equilibrium computation, and the entire field of complementary pivot algorithms. The door-graph framework is essentially the same as the directed graph implicit in the PPAD complexity class (Papadimitriou 1994): a source vertex (boundary door) of in-degree 0 and out-degree 1, with all other vertices having in-degree = out-degree = 1. The abstract formulation using IsKuhnCompatible applies to any Sperner triangulation satisfying the degree bound, including Freudenthal triangulations and simplicial complexes arising in topological data analysis (TDA). In TDA, Sperner-colored subdivisions appear in persistent homology computations, where fully-colored simplices correspond to birth/death pairs in the barcode. The non-revisiting invariant proved here (paths in the door graph contain no cycles involving boundary vertices) is also the key property that makes all these pivot algorithms run in polynomial time.",
     "openQuestions": [
       "Can the non-revisiting invariant (the door graph component containing a boundary door is a path) be proved in Lean 4 using graph theory from Mathlib?",
@@ -241,10 +241,10 @@
       "BigOperators"
     ],
     "namespace": "SpernerNDimOQ04",
-    "lineCount": 480,
+    "lineCount": 507,
     "axiomCount": 0,
-    "theoremCount": 9,
-    "definitionCount": 5,
+    "theoremCount": 14,
+    "definitionCount": 6,
     "sorries": 3
   },
   "sorries": 3
