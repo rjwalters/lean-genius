@@ -81,7 +81,7 @@ export interface ProofOverview {
 
 export interface ProofConclusion {
   summary: string
-  implications: string
+  implications: string | string[]
   openQuestions?: string[]
   alternativeInterpretation?: AlternativeInterpretation
 }
