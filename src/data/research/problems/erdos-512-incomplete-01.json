@@ -1,6 +1,6 @@
 {
   "slug": "erdos-512-incomplete-01",
-  "title": "Erdős #512 — Fill Measure Theory Gaps in Littlewood Conjecture Formalization",
+  "title": "Erd\u0151s #512 \u2014 Fill Measure Theory Gaps in Littlewood Conjecture Formalization",
   "phase": "ACT",
   "status": "active",
   "tier": "A",
@@ -9,20 +9,20 @@
     "formal": "\\int_0^1 \\left|\\sum_{n \\in A} e^{2\\pi i n\\theta}\\right| d\\theta \\geq c \\cdot \\log N",
     "plain": "Fill 2 remaining sorry gaps in the Littlewood conjecture formalization: expSumNorm_continuous and L1norm_le_card in the Aristotle companion file.",
     "whyMatters": [
-      "Closes concrete sorry gaps in Erdős #512 gallery proof",
+      "Closes concrete sorry gaps in Erd\u0151s #512 gallery proof",
       "Improves gallery integrity for a flagship formalization",
       "Demonstrates Fourier analysis + integration Mathlib API patterns"
     ]
   },
   "knownResults": {
     "proven": [
-      "expSum_bound: |expSum A θ| ≤ A.card (triangle inequality)",
-      "L1norm_upper_bound: ∫₀¹ |expSum| dθ ≤ A.card (already proved in main file)",
+      "expSum_bound: |expSum A \u03b8| \u2264 A.card (triangle inequality)",
+      "L1norm_upper_bound: \u222b\u2080\u00b9 |expSum| d\u03b8 \u2264 A.card (already proved in main file)",
       "expTwoPiI_norm: |e(x)| = 1",
       "expTwoPiI_periodic: e(x+1) = e(x)"
     ],
     "open": [
-      "L2_norm (Parseval): ∫₀¹ |expSum A θ|² dθ = A.card"
+      "L2_norm (Parseval): \u222b\u2080\u00b9 |expSum A \u03b8|\u00b2 d\u03b8 = A.card"
     ],
     "goal": "Close Aristotle companion sorries and optionally prove Parseval"
   },
@@ -40,21 +40,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 2/2 Aristotle sorries closed (expSumNorm_continuous, L1norm_le_card); L2_norm (Parseval) remains in main file",
+    "progressSummary": "PROGRESS: Aristotle sorries closed; L2_norm proof structured (1 sorry: normSq double-sum expansion in expSumNorm_sq_double)",
     "builtItems": [
-      "expSumNorm_continuous (A) : Continuous (expSumNorm A) — Erdos512Aristotle.lean",
-      "L1norm_le_card (A) : ∫₀¹ expSumNorm A θ ≤ A.card — Erdos512Aristotle.lean"
+      "expSumNorm_continuous (A) : Continuous (expSumNorm A) \u2014 Erdos512Aristotle.lean",
+      "L1norm_le_card (A) : \u222b\u2080\u00b9 expSumNorm A \u03b8 \u2264 A.card \u2014 Erdos512Aristotle.lean",
+      "expTwoPiI_conj (PROVED): conj(e(n\u03b8)) = e(-n\u03b8) \u2014 Erdos512Problem.lean",
+      "integral_cos_character (PROVED): \u222b\u2080\u00b9 cos(2\u03c0k\u03b8)d\u03b8 = [k=0] \u2014 Erdos512Problem.lean",
+      "L2_norm proof skeleton (1 sorry remaining) \u2014 Erdos512Problem.lean"
     ],
     "insights": [
       "expSumNorm_continuous uses Complex.continuous_abs.comp + continuous_finset_sum + fun_prop",
       "L1norm_le_card follows from continuity + setIntegral_mono_on (mirrors main file inline proof at lines 105-131)",
-      "L2_norm (Parseval) requires character orthogonality: ∫₀¹ e^{2πikθ} dθ = [k=0] — harder",
-      "The Aristotle companion header is outdated: L1norm_upper_bound in main file was already proved, only L2_norm remains there"
+      "L2_norm (Parseval) requires character orthogonality: \u222b\u2080\u00b9 e^{2\u03c0ik\u03b8} d\u03b8 = [k=0] \u2014 harder",
+      "The Aristotle companion header is outdated: L1norm_upper_bound in main file was already proved, only L2_norm remains there",
+      "L2_norm proof strategy: expSumNorm_sq_double + integral_cos_character + diagonal count",
+      "integral_cos_character proved: \u222b\u2080\u00b9 cos(2\u03c0k\u03b8)d\u03b8 = [k=0] via intervalIntegral.integral_cos_mul + sin(2\u03c0k)=0",
+      "Parseval's L2_norm main proof structured: swap integral/sum + apply character orthogonality + simp sub_eq_zero",
+      "Remaining sorry: expSumNorm_sq_double normSq double-sum algebraic identity \u2014 |\u2211e(m\u03b8)|\u00b2 = \u2211_{m,n} cos(2\u03c0(m-n)\u03b8)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "L2_norm: prove via double sum expansion + ∫₀¹ expTwoPiI(k*θ) dθ = [k=0] for k:ℤ",
-      "Check Mathlib for Complex.integral_exp or Fourier character orthogonality on [0,1]"
+      "Prove expSumNorm_sq_double: normSq(\u2211_m e(m\u03b8)) = \u2211_{m,n} cos(2\u03c0(m-n)\u03b8) [ring identity with mul_comm + Complex.normSq_apply]",
+      "Try: simp [Complex.normSq_apply, Complex.re_sum, Complex.mul_re, expTwoPiI_conj, expTwoPiI_add]",
+      "Aristotle candidate: expSumNorm_sq_double (HARD normSq algebraic identity)"
     ]
   },
   "tags": [
