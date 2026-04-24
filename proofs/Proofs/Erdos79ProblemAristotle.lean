@@ -40,7 +40,7 @@ a finite type with decidable equality.
 
 /-- The complete graph on 4 vertices has exactly 6 edges. -/
 theorem K4_edge_count_ari : edgeCount (completeGraph 4) = 6 := by
-  sorry
+  native_decide
 
 /-
 ## Section 2: Antichain Property
@@ -59,6 +59,7 @@ theorem minimal_form_antichain_ari :
     ∀ G H : SimpleGraph ℕ,
     isMinimallyNonLinear G → isMinimallyNonLinear H →
     G ≠ H → ¬ isProperSubgraph G H ∧ ¬ isProperSubgraph H G := by
-  sorry
+  intro G H ⟨hGsup, hGmin⟩ ⟨hHsup, hHmin⟩ _
+  exact ⟨fun hGH => hGsup (hHmin G hGH), fun hHG => hHsup (hGmin H hHG)⟩
 
 end Erdos79ProblemAristotle

@@ -192,7 +192,7 @@ include triangles, paths, and matchings - all Ramsey size linear.
 
 /-- K₄ has 6 edges. -/
 theorem K4_edge_count : edgeCount (completeGraph 4) = 6 := by
-  sorry
+  native_decide
 
 /-- K₃ (triangle) is Ramsey size linear. -/
 /-- Paths are Ramsey size linear. -/
@@ -208,7 +208,8 @@ theorem minimal_form_antichain :
     ∀ G H : SimpleGraph ℕ,
     isMinimallyNonLinear G → isMinimallyNonLinear H →
     G ≠ H → ¬ isProperSubgraph G H ∧ ¬ isProperSubgraph H G := by
-  sorry
+  intro G H ⟨hGsup, hGmin⟩ ⟨hHsup, hHmin⟩ _
+  exact ⟨fun hGH => hGsup (hHmin G hGH), fun hHG => hHsup (hGmin H hHG)⟩
 
 /-
 ## Summary
