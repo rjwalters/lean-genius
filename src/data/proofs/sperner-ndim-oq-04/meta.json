@@ -20,8 +20,8 @@
       "door-graph",
       "advanced"
     ],
-    "badge": "original",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 3,
     "originalContributions": [
       "Definition of door degree and IsKuhnCompatible for abstract Sperner triangulations",
       "Proof that FC simplices have exactly 1 door under Kuhn compatibility",
@@ -32,12 +32,18 @@
       "Definition of KuhnState structure for path-following algorithm",
       "Definition of kuhnWalk with fuel parameter (termination by fuel bound)",
       "Definition of kuhnPathStart as entry point for boundary door",
-      "Preservation of door property across adjacency steps (door_transfer application)"
+      "Preservation of door property across adjacency steps (door_transfer application)",
+      "Proof of kuhn_three_doors_contradiction: 3 distinct doors at a simplex → contradiction with IsKuhnCompatible (doorDegree ≥ 3)",
+      "Definition of DoorRecord (K.Simplex → Option (Fin (d+1) × Fin (d+1))) tracking entry/exit doors per visited simplex",
+      "Definition of WalkValid (5-field invariant: has_record, doors_valid, entry_from_chain, exit_to_chain, pred_spec)",
+      "Proof of walkValid_init: initial boundary-door state satisfies WalkValid",
+      "Proof of kuhn_step_nonrevisit: KEY non-revisiting theorem — under WalkValid, K.adj current k_out = some(s',k') implies s' ∉ visited ∪ {current}",
+      "Proof of walkValid_step: WalkValid is preserved by one Kuhn step"
     ],
     "dateAdded": "2026-04-22",
     "axiomCount": 0,
-    "lineCount": 507,
-    "assumptions": "0 sorries (down from 3: all proved). 0 Lean axiom declarations. Proof is conditional on: (1) IsKuhnCompatible hypothesis (door degree ≤ 2 per simplex — not all triangulations satisfy this), (2) SpernerTriangulation abstract axioms (adj_symm, adj_vertices, adj_unique_facet, boundary_face), (3) IsSperner coloring hypothesis, (4) odd boundary door count (hbdry_odd). Open mathematical question: constructive FC-termination (that kuhnPathStart actually reaches an FC simplex) is documented but not encoded as a sorry.",
+    "lineCount": 779,
+    "assumptions": "3 sorries remaining: (1) kuhn_walk_reaches_fc: boundary-exit ruling-out only (non-revisiting part now proved); (2) kuhnPathStart_finds_fc_existential: walk-pairing τ∘τ=id involution; (3) kuhnPathStart_is_fc: acknowledged false as universal (documented). 0 axiom declarations.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -167,7 +173,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization establishes the infrastructure for Kuhn's constructive proof of n-dimensional Sperner's lemma. All 0 sorries (down from 3). Fully proved: door counting (fc_door_count_eq_one, nonfc_door_count_zero_or_two, nonfc_with_door_has_unique_exit), FC existence (kuhn_path_terminates via parity), the key non-revisiting lemma (kuhn_walk_result_not_in_visited), and kuhnPathStart_not_in_empty. Open mathematical question (not encoded as sorry): proving that kuhnPathStart always terminates at an FC simplex (vs. a boundary exit) requires door-graph acyclicity, which depends on adj_unique_facet and per-simplex door history.",
+    "summary": "This formalization establishes the infrastructure for Kuhn's constructive proof of n-dimensional Sperner's lemma. Fully proved (Session 4): door counting, FC existence (kuhn_path_terminates via parity), and the non-revisiting invariant (kuhn_step_nonrevisit + WalkValid: walk never revisits any simplex). The WalkValid invariant (5 fields) enables adj_unique_facet to fire in both the predecessor and non-predecessor cases. 3 sorries remain: (1) kuhn_walk_reaches_fc: only boundary-exit ruling-out (parity/involution); (2) kuhnPathStart_finds_fc_existential: walk-pairing τ∘τ=id; (3) kuhnPathStart_is_fc: false as universal, documented. The hard combinatorial core (non-revisiting) is complete.",
     "implications": "Kuhn's 1968 result is historically significant as the first polynomial-time algorithm for finding a fully-colored simplex. Path-following algorithms descended from Kuhn's work underlie Scarf's algorithm for computing approximate fixed points, the Lemke-Howson algorithm for Nash equilibrium computation, and the entire field of complementary pivot algorithms. The door-graph framework is essentially the same as the directed graph implicit in the PPAD complexity class (Papadimitriou 1994): a source vertex (boundary door) of in-degree 0 and out-degree 1, with all other vertices having in-degree = out-degree = 1. The abstract formulation using IsKuhnCompatible applies to any Sperner triangulation satisfying the degree bound, including Freudenthal triangulations and simplicial complexes arising in topological data analysis (TDA). In TDA, Sperner-colored subdivisions appear in persistent homology computations, where fully-colored simplices correspond to birth/death pairs in the barcode. The non-revisiting invariant proved here (paths in the door graph contain no cycles involving boundary vertices) is also the key property that makes all these pivot algorithms run in polynomial time.",
     "openQuestions": [
       "Can the non-revisiting invariant (the door graph component containing a boundary door is a path) be proved in Lean 4 using graph theory from Mathlib?",
@@ -241,11 +247,11 @@
       "BigOperators"
     ],
     "namespace": "SpernerNDimOQ04",
-    "lineCount": 507,
+    "lineCount": 779,
     "axiomCount": 0,
-    "theoremCount": 14,
-    "definitionCount": 6,
-    "sorries": 0
+    "theoremCount": 20,
+    "definitionCount": 8,
+    "sorries": 3
   },
-  "sorries": 0
+  "sorries": 3
 }
