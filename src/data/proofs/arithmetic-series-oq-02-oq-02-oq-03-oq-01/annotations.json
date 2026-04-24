@@ -1,5 +1,32 @@
 [
   {
+    "id": "ann-polya-header",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "Module Overview: Pólya Enumeration via Cyclic Group Actions",
+    "content": "This file addresses OQ-01 from `arithmetic-series-oq-02-oq-02-oq-03`: 'Can the generating function approach be extended to prove Pólya's enumeration theorem?' The answer is yes, using a clean algebraic formulation: the cyclic group $C_n = \\mathbb{Z}/n\\mathbb{Z}$ acts on $k$-colorings of $n$-bead necklaces, and Burnside's lemma from Mathlib counts the orbits.\n\n**The file's core hierarchy**: This is a 6-part proof:\n- §1: Clean axiom-free group action via `ZMod n → Fin k` colorings\n- §2: Fixed-point counts for the concrete case (binary 4-necklaces)\n- §3: Burnside's lemma gives 6 distinct binary 4-necklaces\n- §4: Pólya formula `n·|Necklaces(n,2)| = Σ_{d|n} φ(d)·2^{n/d}` verified for n=2,3,4,6\n- §5: General theorem `polya_enumeration_theorem_CN` proved (0 sorries)\n- §6: Binary necklace sequence [2,3,4,6,8,14] verified as OEIS A000029\n\n**Mathematical background**: The cycle index of $C_n$ is $Z(C_n; k, k, \\ldots) = \\frac{1}{n}\\sum_{r=0}^{n-1} k^{\\gcd(r,n)}$. Grouping by gcd value $d = \\gcd(r,n)$: there are exactly $\\varphi(n/d)$ values of $r$ with $\\gcd(r,n) = d$, so\n$$Z(C_n; k) = \\frac{1}{n}\\sum_{d \\mid n} \\varphi(n/d) \\cdot k^d = \\frac{1}{n}\\sum_{d' \\mid n} \\varphi(d') \\cdot k^{n/d'}$$\nwhere the last equality is the substitution $d' = n/d$.\n\n**Key design choice**: `ZMod n → Fin k` over `Fin n → Fin k` — the ZMod type carries additive group structure natively, making the rotation action `(r +ᵥ c)(i) = c(i-r)` provably an action in one line (`sub_sub`).\n\n**Imports**: `Mathlib.GroupTheory.GroupAction.Quotient` (Burnside's lemma), `Mathlib.Data.Nat.Totient` (Euler's φ), `Proofs.BurnsideCountingOQ03` (cycle structure theorem `polya_cyclic_fixed_count` and totient grouping `polya_sum_identity`).",
+    "mathContext": "Pólya's enumeration theorem (1937): $|\\text{Necklaces}(n,k)| = \\frac{1}{n}\\sum_{d \\mid n} \\varphi(d) \\cdot k^{n/d}$. Proved for cyclic groups $C_n$ via Burnside's lemma: $n \\cdot |\\text{Orbits}| = \\sum_{r=0}^{n-1} |\\text{Fix}(r)| = \\sum_{r=0}^{n-1} k^{\\gcd(r,n)} = \\sum_{d \\mid n} \\varphi(d) \\cdot k^{n/d}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pólya enumeration theorem",
+      "Burnside's lemma",
+      "cycle index",
+      "ZMod colorings",
+      "Euler's totient function",
+      "BurnsideCountingOQ03"
+    ],
+    "prerequisites": [
+      "group actions and orbits",
+      "Burnside's lemma",
+      "Euler's totient function",
+      "ZMod arithmetic in Lean 4"
+    ]
+  },
+  {
     "id": "ann-polya-zmod-action",
     "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
     "range": {
@@ -105,12 +132,12 @@
     "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
     "range": {
       "startLine": 281,
-      "endLine": 324
+      "endLine": 466
     },
     "type": "technique",
-    "title": "General Pólya Theorem: Proof via Cycle Structure from BurnsideCountingOQ03",
-    "content": "The general Pólya theorem `polya_enumeration_theorem_CN` is fully proved (0 sorries) by composing three lemmas, with the cycle structure result imported from `Proofs.BurnsideCountingOQ03`:\n\n**(1) Burnside**: $n \\cdot |\\text{Orbits}| = \\sum_{r \\in \\mathbb{Z}/n\\mathbb{Z}} |\\text{Fix}(r)|$ — from Mathlib's `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group`.\n\n**(2) Cycle structure** (from `BurnsideCountingOQ03.polya_cyclic_fixed_count`): $|\\text{Fix}(r)| = k^{\\gcd(r.\\text{val},n)}$. A coloring $c$ is fixed by rotation $r$ iff $c(i-r) = c(i)$ for all $i$, which forces $c$ to be periodic with period $\\gcd(r,n)$. Thus $c$ is completely determined by its values on any $\\gcd(r,n)$ consecutive positions — giving exactly $k^{\\gcd(r,n)}$ fixed colorings.\n\n**(3) Totient grouping** (from `BurnsideCountingOQ03.polya_sum_identity`): $\\sum_{r \\in \\mathbb{Z}/n\\mathbb{Z}} k^{\\gcd(r,n)} = \\sum_{d|n} \\varphi(n/d) \\cdot k^d = \\sum_{d'|n} \\varphi(d') \\cdot k^{n/d'}$. This groups rotations by their gcd with $n$: there are exactly $\\varphi(n/d)$ rotations with $\\gcd(r,n) = d$, and substituting $d' = n/d$ yields the standard Pólya divisor sum.",
-    "mathContext": "Key: $|\\text{Fix}(r)| = k^{\\gcd(r.\\text{val},n)}$ because fixed colorings are exactly those periodic with period $\\gcd(r,n)$. Totient identity: $\\sum_{r=0}^{n-1} k^{\\gcd(r,n)} = \\sum_{d \\mid n} \\varphi(d) \\cdot k^{n/d}$ (grouping by gcd value $d' = n/d$, using $|\\{r : \\gcd(r,n) = d\\}| = \\varphi(n/d)$).",
+    "title": "General Pólya Theorem: Four-Step Proof via Cycle Structure from BurnsideCountingOQ03",
+    "content": "The general Pólya theorem `polya_enumeration_theorem_CN` (lines 390-464) is fully proved (0 sorries) by composing four steps. The section also contains helper divisibility theorems (lines 296-300) and two private bridging lemmas (lines 315-388) that adapt between Lean's type representations.\n\n**Private bridge lemmas** (lines 315-388): Two technical lemmas handle the ZMod↔Fin type gap that arises because `BurnsideCountingOQ03` uses `Fin n → Fin k` colorings while this file uses `ZMod n → Fin k`:\n- `vadd_apply` (line 315): Makes `(r +ᵥ c) i = c (i - r)` explicit for the elaborator (the `cyclicAction` structure definition makes this definitional, but pattern matching requires an explicit lemma).\n- `fixedBy_card_eq_polya` (lines 322-388): Proves `|fixedBy (ofAdd r)| = k^gcd(n, r.val)` by: (1) converting `MulAction.fixedBy` to `{c // IsRotFixed}` via an identity equiv; (2) converting `ZMod (n'+1) → Fin k` fixedness to `Fin (n'+1) → Fin k` fixedness via a careful Fin.ext equivalence using `vadd_apply` and `ZMod.val_sub`; (3) applying `BurnsideCountingOQ03.polya_cyclic_fixed_count`. The case analysis `obtain ⟨n', rfl⟩ : ∃ n', n = n' + 1` is needed because `ZMod n` has `Fin n` definitionally only when `n = n' + 1`.\n\n**Four-step proof** (lines 390-464):\n1. **Burnside**: $n \\cdot |\\text{Necklaces}| = \\sum_{r} |\\text{Fix}(r)|$ from `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group`. The `Fintype.sum_equiv` over `ZMod n ≃ Multiplicative (ZMod n)` bridges the summation variable types.\n2. **Cycle structure**: $|\\text{Fix}(r)| = k^{\\gcd(r,n)}$ via `fixedBy_card_eq_polya`, giving `step2: n * necklaceCount n k = ∑ r : ZMod n, k^gcd(n, r.val)`.\n3. **ZMod→Fin reindexing**: $\\sum_{r : \\mathbb{Z}/n\\mathbb{Z}} k^{\\gcd(r,n)} = \\sum_{r : \\text{Fin}\\,n} k^{\\gcd(r,n)}$ via an explicit `Fintype.sum_equiv` with the `ZMod n ≃ Fin n` equivalence (using `ZMod.natCast_val` and `ZMod.val_natCast`).\n4. **Totient reindexing**: $\\sum_{d|n} \\varphi(n/d) \\cdot k^d = \\sum_{d|n} \\varphi(d) \\cdot k^{n/d}$ via `Finset.sum_nbij` with the involution $d \\mapsto n/d$ on divisors of $n$. The bijectivity uses `Nat.div_dvd_of_dvd` and `Nat.div_div_self`.",
+    "mathContext": "Key: $|\\text{Fix}(r)| = k^{\\gcd(r.\\text{val},n)}$ because fixed colorings are exactly those periodic with period $\\gcd(r,n)$. Totient identity: $\\sum_{r=0}^{n-1} k^{\\gcd(r,n)} = \\sum_{d \\mid n} \\varphi(d) \\cdot k^{n/d}$ (grouping by gcd value $d' = n/d$, using $|\\{r : \\gcd(r,n) = d\\}| = \\varphi(n/d)$). The final reindexing is $d \\mapsto n/d$ on divisors: $\\sum_{d \\mid n} \\varphi(n/d) \\cdot k^d = \\sum_{d' \\mid n} \\varphi(d') \\cdot k^{n/d'}$ because $d \\mid n \\Leftrightarrow n/d \\mid n$ and $\\varphi(n/(n/d)) = \\varphi(d)$.",
     "significance": "key",
     "relatedConcepts": [
       "cycle structure of permutations",
@@ -132,8 +159,8 @@
     "id": "ann-polya-sequence",
     "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
     "range": {
-      "startLine": 326,
-      "endLine": 365
+      "startLine": 468,
+      "endLine": 507
     },
     "type": "concept",
     "title": "OEIS A000029: Binary Necklace Sequence",
