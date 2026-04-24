@@ -1,6 +1,7 @@
 import Proofs.PtolemysComplexProof
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.SpecialFunctions.Complex.Arg
 import Mathlib.Tactic
 
 /-!
@@ -68,12 +69,14 @@ private lemma unit_star_eq_inv (z : ℂ) (hz : ‖z‖ = 1) : starRingEnd ℂ z 
   have hne : z ≠ 0 := by intro h; simp [h] at hz
   -- z * starRingEnd ℂ z = normSq z = 1
   have hmul : z * starRingEnd ℂ z = 1 := by
-    have h1 : z * starRingEnd ℂ z = (Complex.normSq z : ℂ) := by
-      rw [mul_comm]
-      exact_mod_cast Complex.mul_conj z
+    have h1 : z * starRingEnd ℂ z = (Complex.normSq z : ℂ) := Complex.mul_conj z
     rw [h1]
-    norm_cast
-    rw [Complex.normSq_eq_abs, ← Complex.norm_eq_abs, hz, one_pow]
+    have hnSq : Complex.normSq z = 1 := by
+      have habs : Complex.abs z = 1 := by rwa [← Complex.norm_eq_abs]
+      have := Complex.sq_abs z  -- Complex.abs z ^ 2 = Complex.normSq z
+      rw [habs, one_pow] at this
+      exact this.symm
+    exact_mod_cast hnSq
   exact mul_left_cancel₀ hne (hmul.trans (mul_inv_cancel₀ hne).symm)
 
 -- ============================================================
@@ -107,11 +110,13 @@ theorem unit_circle_ptolemy_ratio_real (z₁ z₂ z₃ z₄ : ℂ)
              unit_star_eq_inv z₃ h₃, unit_star_eq_inv z₄ h₄]
   -- Both sides are equal: clear denominators via field_simp, close with ring
   have inv_ne12 : z₁⁻¹ - z₂⁻¹ ≠ 0 := by
-    simp [sub_ne_zero, ne12, ne1, ne2]
-    intro h; exact ne12 (by field_simp [ne1, ne2]; linear_combination z₁ * z₂ * h)
+    rw [sub_ne_zero]
+    exact fun heq => ne12 (sub_eq_zero.mpr
+      (by have := congr_arg Inv.inv heq; simp only [inv_inv] at this; exact this))
   have inv_ne34 : z₃⁻¹ - z₄⁻¹ ≠ 0 := by
-    simp [sub_ne_zero, ne34, ne3, ne4]
-    intro h; exact ne34 (by field_simp [ne3, ne4]; linear_combination z₃ * z₄ * h)
+    rw [sub_ne_zero]
+    exact fun heq => ne34 (sub_eq_zero.mpr
+      (by have := congr_arg Inv.inv heq; simp only [inv_inv] at this; exact this))
   rw [div_eq_div_iff (mul_ne_zero inv_ne12 inv_ne34) hdenom]
   field_simp [ne1, ne2, ne3, ne4]
   ring
@@ -127,9 +132,9 @@ theorem unit_circle_ptolemy_ratio_is_real (z₁ z₂ z₃ z₄ : ℂ)
   -- From conj R = R, we get R.im = 0, so R = ↑R.re
   have him : R.im = 0 := by
     have := congr_arg Complex.im hconj
-    simp [Complex.im_conj] at this
+    simp [Complex.conj_im] at this
     linarith
-  exact ⟨R.re, by exact_mod_cast (Complex.re_add_im R ▸ by simp [him])⟩
+  exact ⟨R.re, Complex.ext (by simp) (by simp [him])⟩
 
 -- ============================================================
 -- PART 3: Positivity for Counterclockwise Ordering
@@ -164,38 +169,40 @@ private lemma exp_diff_factor (α β : ℝ) :
         Complex.exp (↑((α + β) / 2) * Complex.I)).re =
         -2 * Real.sin ((α - β) / 2) * Real.sin ((α + β) / 2) := by
       have h1 : (2 * Complex.I * ↑(Real.sin ((α - β) / 2))).re = 0 := by
-        simp [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
+        simp only [Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
               Complex.I_re, Complex.I_im]
+        ring
       have h2 : (2 * Complex.I * ↑(Real.sin ((α - β) / 2))).im =
           2 * Real.sin ((α - β) / 2) := by
-        simp [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
+        simp only [Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
               Complex.I_re, Complex.I_im]
+        ring
       rw [Complex.mul_re, h1, h2, exp_mul_I_re, exp_mul_I_im]; ring
     rw [hrhs]
     -- cos α - cos β = -2·sin((α-β)/2)·sin((α+β)/2)  [product-to-sum]
-    have ha : α = (α + β) / 2 + (α - β) / 2 := by ring
-    have hb : β = (α + β) / 2 - (α - β) / 2 := by ring
-    nth_rw 1 [ha]; nth_rw 1 [hb]
-    rw [Real.cos_add, Real.cos_sub]; ring
+    have hca : Real.cos α = Real.cos ((α + β) / 2 + (α - β) / 2) := by congr 1; ring
+    have hcb : Real.cos β = Real.cos ((α + β) / 2 - (α - β) / 2) := by congr 1; ring
+    rw [hca, hcb, Real.cos_add, Real.cos_sub]; ring
   · -- Imaginary part: sin α - sin β = Im(2I·s·exp(im)) = 2·s·cos(m)
     rw [Complex.sub_im, exp_mul_I_im, exp_mul_I_im]
     have hrhs : (2 * Complex.I * ↑(Real.sin ((α - β) / 2)) *
         Complex.exp (↑((α + β) / 2) * Complex.I)).im =
         2 * Real.sin ((α - β) / 2) * Real.cos ((α + β) / 2) := by
       have h1 : (2 * Complex.I * ↑(Real.sin ((α - β) / 2))).re = 0 := by
-        simp [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
+        simp only [Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
               Complex.I_re, Complex.I_im]
+        ring
       have h2 : (2 * Complex.I * ↑(Real.sin ((α - β) / 2))).im =
           2 * Real.sin ((α - β) / 2) := by
-        simp [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
+        simp only [Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
               Complex.I_re, Complex.I_im]
+        ring
       rw [Complex.mul_im, h1, h2, exp_mul_I_re, exp_mul_I_im]; ring
     rw [hrhs]
     -- sin α - sin β = 2·sin((α-β)/2)·cos((α+β)/2)  [product-to-sum]
-    have ha : α = (α + β) / 2 + (α - β) / 2 := by ring
-    have hb : β = (α + β) / 2 - (α - β) / 2 := by ring
-    nth_rw 1 [ha]; nth_rw 1 [hb]
-    rw [Real.sin_add, Real.sin_sub]; ring
+    have hsa : Real.sin α = Real.sin ((α + β) / 2 + (α - β) / 2) := by congr 1; ring
+    have hsb : Real.sin β = Real.sin ((α + β) / 2 - (α - β) / 2) := by congr 1; ring
+    rw [hsa, hsb, Real.sin_add, Real.sin_sub]; ring
 
 -- Helper: sin is negative on (-π, 0)
 private lemma sin_neg_of_neg_of_neg_pi_lt {x : ℝ} (hx : x < 0) (hx' : -Real.pi < x) :
@@ -299,13 +306,18 @@ lemma ptolemy_ratio_pos_of_ccw (z₁ z₂ z₃ z₄ : ℂ)
     congr 1; push_cast; ring
   -- Substitute factorizations and the phase identity, then close by field arithmetic
   rw [hf23, hf14, hf12, hf34]
-  have hE_ne : Complex.exp (↑((θ₁ + θ₂) / 2) * Complex.I) *
-               Complex.exp (↑((θ₃ + θ₄) / 2) * Complex.I) ≠ 0 :=
-    mul_ne_zero (Complex.exp_ne_zero _) (Complex.exp_ne_zero _)
-  -- Both products equal (2I)²·(sine product)·E; cancel (2I)² and E
+  -- Isolate E₂₃ * E₁₄ on the LHS, then apply hE to get E₁₂ * E₃₄
   -- Goal: (2I·s₂₃·E₂₃)·(2I·s₁₄·E₁₄) = ↑(s₂₃·s₁₄/(s₁₂·s₃₄))·((2I·s₁₂·E₁₂)·(2I·s₃₄·E₃₄))
-  push_cast [div_mul_cancel₀ _ hden_ne]
-  rw [hE]
+  have lhs_eq : (2 * Complex.I * ↑s₂₃ * Complex.exp (↑((θ₂ + θ₃) / 2) * Complex.I)) *
+                (2 * Complex.I * ↑s₁₄ * Complex.exp (↑((θ₁ + θ₄) / 2) * Complex.I)) =
+                -4 * ↑s₂₃ * ↑s₁₄ *
+                (Complex.exp (↑((θ₂ + θ₃) / 2) * Complex.I) *
+                 Complex.exp (↑((θ₁ + θ₄) / 2) * Complex.I)) := by ring
+  rw [lhs_eq, hE]
+  push_cast
+  have hs₁₂_C : (↑s₁₂ : ℂ) ≠ 0 := by exact_mod_cast ne_of_gt (neg_pos.mpr hs₁₂_neg)
+  have hs₃₄_C : (↑s₃₄ : ℂ) ≠ 0 := by exact_mod_cast ne_of_gt (neg_pos.mpr hs₃₄_neg)
+  field_simp [hs₁₂_C, hs₃₄_C]
   ring
 
 -- ============================================================
@@ -365,7 +377,6 @@ lemma ptolemy_iff_normalized (z₁ z₂ z₃ z₄ c : ℂ) (r : ℝ) (hr : 0 < r
     linarith [mul_pos hr_pos hr_pos, h]
   · intro h
     have hr_pos : 0 < r := hr
-    have key := mul_left_cancel₀ (ne_of_gt (mul_pos hr_pos hr_pos))
     field_simp [ne_of_gt hr_pos] at h
     linarith [mul_pos hr_pos hr_pos, h]
 
@@ -392,7 +403,7 @@ theorem ptolemy_equality_for_concyclic (z₁ z₂ z₃ z₄ : ℂ)
       (hccw : IsCCWOrder ((z₁-c)/r) ((z₂-c)/r) ((z₃-c)/r) ((z₄-c)/r)),
       ‖z₁ - z₃‖ * ‖z₂ - z₄‖ = ‖z₁ - z₂‖ * ‖z₃ - z₄‖ + ‖z₂ - z₃‖ * ‖z₁ - z₄‖ := by
   intro c r hr hdenom hnumer hccw
-  obtain ⟨_, _, _, hc1, hc2, hc3, hc4⟩ := hcyc.choose_spec.choose_spec
+  obtain ⟨_, hc1, hc2, hc3, hc4⟩ := hcyc.choose_spec.choose_spec
   -- Normalized points are on the unit circle
   have w₁_unit : ‖(z₁ - c) / (r : ℂ)‖ = 1 := concyclic_normalize_to_unit z₁ c r hr hc1
   have w₂_unit : ‖(z₂ - c) / (r : ℂ)‖ = 1 := concyclic_normalize_to_unit z₂ c r hr hc2
@@ -428,8 +439,9 @@ example :
     ‖(1 : ℂ) - (-1)‖ * ‖Complex.I - (-Complex.I)‖ =
     ‖(1 : ℂ) - Complex.I‖ * ‖(-1 : ℂ) - (-Complex.I)‖ +
     ‖Complex.I - (-1 : ℂ)‖ * ‖(1 : ℂ) - (-Complex.I)‖ := by
-  norm_num [Complex.norm_eq_abs, Complex.abs_apply, Complex.normSq_apply,
-            Complex.ext_iff, Real.sqrt_eq_iff_sq_eq]
+  simp only [Complex.norm_eq_abs, map_add, map_sub, map_neg, map_one,
+             Complex.abs_I, Complex.abs_one, Complex.abs_neg]
+  norm_num [Complex.abs_apply, Complex.normSq_apply]
 
 /-- For non-concyclic points, Ptolemy inequality is strict.
     Points 0, 1, 2, i are NOT all concyclic (one lies on the x-axis, not on the circle
@@ -439,7 +451,7 @@ example :
     ‖(0 : ℂ) - 1‖ * ‖(2 : ℂ) - Complex.I‖ +
     ‖(1 : ℂ) - 2‖ * ‖(0 : ℂ) - Complex.I‖ := by
   norm_num [Complex.norm_eq_abs, Complex.abs_apply, Complex.normSq_apply]
-  nlinarith [Real.sq_sqrt (show (2 : ℝ) ≥ 0 by norm_num),
+  nlinarith [Real.sq_sqrt (show (0 : ℝ) ≤ 2 by norm_num),
              Real.sqrt_pos.mpr (show (0 : ℝ) < 2 by norm_num),
              Real.sqrt_pos.mpr (show (0 : ℝ) < 5 by norm_num)]
 
