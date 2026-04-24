@@ -5,10 +5,12 @@ We extend the formalization of Erdős Problem #249 (Is Σ φ(n)/2^n irrational?)
 with tighter bounds on the series value.
 
 Main results:
-- Computation of terms for n = 3, 4, 5, 6
-- Strict bounds: 5/4 < totientPowerSum < 3/2
+- Computation of terms for n = 3, 4, 5, 6, 7, 8, 9, 10
+- Strict bounds: 87/64 < totientPowerSum < 351/256
+  (interval width 3/256 ≈ 0.012; true value ≈ 1.368)
 - The sum is not a rational with denominator dividing 4
   (subsumes: not an integer, not a half-integer)
+- The sum is not equal to 4/3
 - Strict upper bound < 2 via comparison with Σ n/2^n
 
 All results proved from Mathlib with 0 axioms and 0 sorries.
@@ -203,23 +205,99 @@ theorem totientPowerSum_not_quarter_int :
   omega
 
 -- ══════════════════════════════════════════════════════════════════
+-- § Tighter Interval: (87/64, 351/256)
+-- ══════════════════════════════════════════════════════════════════
+
+/-- φ(7) = 6 (since 7 is prime), so the n = 7 term is 6/128 = 3/64. -/
+theorem termFn_seven : termFn 7 = 3 / 64 := by
+  unfold termFn
+  simp [Nat.totient_prime (show Nat.Prime 7 by norm_num)]
+  norm_num
+
+/-- φ(8) = 4 (since 8 = 2³), so the n = 8 term is 4/256 = 1/64. -/
+theorem termFn_eight : termFn 8 = 1 / 64 := by
+  unfold termFn
+  have : Nat.totient 8 = 4 := by native_decide
+  rw [this]; norm_num
+
+/-- φ(9) = 6 (since 9 = 3²), so the n = 9 term is 6/512 = 3/256. -/
+theorem termFn_nine : termFn 9 = 3 / 256 := by
+  unfold termFn
+  have : Nat.totient 9 = 6 := by native_decide
+  rw [this]; norm_num
+
+/-- φ(10) = 4 (since 10 = 2·5), so the n = 10 term is 4/1024 = 1/256. -/
+theorem termFn_ten : termFn 10 = 1 / 256 := by
+  unfold termFn
+  have : Nat.totient 10 = 4 := by native_decide
+  rw [this]; norm_num
+
+/-- Extended partial sum: first 11 terms (n = 0, ..., 10) sum to 87/64.
+    Decimal: 87/64 = 1.359375. -/
+theorem partial_sum_11 :
+    Finset.sum (Finset.range 11) termFn = 87 / 64 := by
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero]
+  rw [termFn_zero, termFn_one, termFn_two, termFn_three, termFn_four, termFn_five, termFn_six,
+      termFn_seven, termFn_eight, termFn_nine, termFn_ten]
+  norm_num
+
+/-- Partial sum of the comparison series through 11 terms:
+    ∑_{n=0}^{10} n*(1/2)^n = 509/256. -/
+private theorem comparison_partial_sum_11 :
+    Finset.sum (Finset.range 11) (fun n : ℕ => (n : ℝ) * (1 / 2) ^ n) = 509 / 256 := by
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero]
+  norm_num
+
+/-- **Tighter lower bound**: ∑ φ(n)/2^n > 87/64.
+
+    Proof: the partial sum of the first 11 terms (n = 0..10) equals 87/64,
+    and all remaining terms are non-negative. -/
+theorem totientPowerSum_gt_87_64 : totientPowerSum > 87 / 64 := by
+  unfold totientPowerSum
+  have h := sum_le_hasSum (Finset.range 11)
+    (fun b _ => termFn_nonneg b) totientPowerSum_summable.hasSum
+  linarith [partial_sum_11]
+
+/-- **Tighter upper bound**: ∑ φ(n)/2^n < 351/256.
+
+    Strategy: split both series at n = 11.
+    The tail of our series is bounded by the comparison tail:
+      ∑_{n≥11} φ(n)/2^n ≤ ∑_{n≥11} n/2^n = 2 - 509/256 = 3/256
+    So the total ≤ 87/64 + 3/256 = 351/256. -/
+theorem totientPowerSum_lt_351_256 : totientPowerSum < 351 / 256 := by
+  have h_our := totientPowerSum_summable.hasSum.nat_add 11
+  have h_comp := hasSum_n_mul_half.nat_add 11
+  have h := hasSum_le (fun j => termFn_le_comp (j + 11)) h_our h_comp
+  rw [partial_sum_11, comparison_partial_sum_11] at h
+  unfold totientPowerSum
+  linarith
+
+/-- The sum is not equal to 4/3.
+
+    Since 87/64 > 4/3 (equivalently, 87·3 > 4·64, i.e. 261 > 256),
+    the lower bound rules out 4/3. -/
+theorem totientPowerSum_ne_four_thirds : totientPowerSum ≠ 4 / 3 := by
+  have h := totientPowerSum_gt_87_64
+  intro heq; rw [heq] at h; norm_num at h
+
+-- ══════════════════════════════════════════════════════════════════
 -- § Summary
 -- ══════════════════════════════════════════════════════════════════
 
 /-
-**Tight bounds**: 5/4 < ∑ φ(n)/2^n < 3/2
+**Tight bounds**: 87/64 < ∑ φ(n)/2^n < 351/256
 
-The sum is:
-- Strictly greater than 5/4 (from partial sum with 7 terms)
-- Strictly less than 3/2 (from tail splitting at n = 6)
-- Not an integer (since 5/4 < x < 2 has only candidate 1, excluded)
-- Not a half-integer (since 5/4 < x < 3/2 excludes 3/2)
-- Not a quarter-integer (since (5/4, 6/4) contains no multiples of 1/4)
-- Positive (> 1)
+The sum (≈ 1.368) is:
+- Strictly greater than 87/64 = 1.359375 (from partial sum with 11 terms)
+- Strictly less than 351/256 ≈ 1.371 (from tail splitting at n = 11)
+- Not an integer (follows from 87/64 > 1 and 351/256 < 2)
+- Not a half-integer (3/2 = 384/256 > 351/256)
+- Not a quarter-integer (the interval (87/64, 351/256) = (348/256, 351/256) contains
+  no multiple of 1/4, since 5/4 = 320/256 < 348/256 and 6/4 = 384/256 > 351/256)
+- Not equal to 4/3 (since 4/3 = 256/192 < 87/64 = 261/192)
 
-**Status**: OPEN — irrationality still unknown, but the value is now pinned
-to the interval (5/4, 3/2) and confirmed to not be a rational with
-denominator dividing 4.
+**Status**: OPEN — irrationality still unknown, but the value is pinned
+to the narrow interval (87/64, 351/256) of width 3/256 ≈ 0.012.
 -/
 
 end Erdos249OQ01
