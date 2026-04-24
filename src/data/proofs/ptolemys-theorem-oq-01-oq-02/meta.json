@@ -175,37 +175,18 @@
       "targetId": "spherical-law-of-sines",
       "relationship": "related",
       "description": "The spherical law of sines $\\sin a / \\sin A = \\sin b / \\sin B = \\sin c / \\sin C$ is the companion theorem to the spherical law of cosines on the unit sphere. Both the spherical Ptolemy theorem and the spherical law of sines concern ratios of $\\sin(d_S/2)$ (or $\\sin(d_S)$) for points on the unit sphere. The sine values appear in the same half-angle form $\\sin(\\arccos(\\langle x, y \\rangle)/2)$ used by the chord-arc identity `unit_sphere_chord_via_sin` — making this formalization directly applicable as a foundation for formalizing the spherical law of sines."
-    },
-    {
-      "targetId": "ptolemys-theorem-oq-01-oq-01",
-      "relationship": "sibling",
-      "description": "Ptolemy Converse for unit-circle points: equality characterizes cyclic order. The spherical Ptolemy theorem proved here extends the forward direction (cyclic → Ptolemy equality) to the sphere; this OQ-01-OQ-01 sibling entry proves the converse (Ptolemy equality → cyclic order) for S¹ ⊂ S². Together they characterize concyclicity on the sphere: the Ptolemy equality holds if and only if the four points lie on a common great circle arc in a given order."
     }
   ],
   "references": [
     {
-      "authors": ["I. Todhunter"],
-      "title": "Spherical Trigonometry for the Use of Colleges and Schools",
-      "year": "1886",
-      "venue": "Macmillan and Co., London (5th edition)",
-      "note": "Classical textbook on spherical trigonometry. Chapter XIV covers the spherical analogue of Ptolemy's theorem and its connection to the spherical law of cosines and four-point formulae on the sphere. The chord-arc identity ‖a−b‖ = 2R·sin(d_sphere(a,b)/(2R)) appears implicitly in the treatment of arc-chord relationships."
-    },
-    {
-      "authors": ["M. Berger"],
-      "title": "Geometry (Volumes I and II)",
-      "year": "1987",
-      "venue": "Springer Universitext",
-      "note": "Volume II, Chapter 18: spherical geometry including the metric structure of S^n as a Riemannian manifold. The chord-arc identity and the relationship between Euclidean and spherical distance are treated in the context of the round metric. Standard reference for inner-product-space formulations of spherical geometry."
-    },
-    {
-      "authors": ["A. F. Beardon", "D. Minda"],
+      "authors": "Beardon, A.F. and Minda, D.",
       "title": "A multi-point Schwarz-Pick lemma",
       "year": "2007",
       "venue": "Journal d'Analyse Mathématique, vol. 92, pp. 81-104",
       "note": "Establishes a framework for Ptolemy-type inequalities in hyperbolic metric spaces and metric spaces with bounded curvature."
     },
     {
-      "authors": ["S. M. Buckley", "D. A. Herron", "X. Xie"],
+      "authors": "Buckley, S.M., Herron, D.A., and Xie, X.",
       "title": "Metric space inversions, quasihyperbolic distance, and uniform spaces",
       "year": "2008",
       "venue": "Indiana University Mathematics Journal, vol. 57, no. 2, pp. 837-890",
