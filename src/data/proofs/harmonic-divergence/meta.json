@@ -64,7 +64,9 @@
       "The divergence is extraordinarily slow: $H_n \\approx \\ln n + \\gamma$ with $\\gamma \\approx 0.5772$, so reaching $H_n = 100$ requires $\\approx e^{100} \\approx 10^{43}$ terms",
       "The harmonic series sits at the exact convergence boundary: $\\sum 1/n^p$ converges for all $p > 1$ (including the Basel series $\\sum 1/n^2 = \\pi^2/6$) but diverges at $p = 1$",
       "Logarithmic connection: $H_n \\sim \\ln n$ underlies the natural logarithm's role in number theory — Euler's theorem that $\\sum_{p \\text{ prime}} 1/p$ diverges (proved analogously) is a key step toward the prime number theorem",
-      "The Euler-Mascheroni constant $\\gamma = \\lim_{n\\to\\infty}(H_n - \\ln n)$ is one of the most mysterious constants in mathematics; whether it is rational, algebraic, or transcendental is unknown"
+      "The Euler-Mascheroni constant $\\gamma = \\lim_{n\\to\\infty}(H_n - \\ln n)$ is one of the most mysterious constants in mathematics; whether it is rational, algebraic, or transcendental is unknown",
+      "**Kempner-Irwin phenomenon (1914)**: Remove from the harmonic series all terms $1/n$ where the decimal representation of $n$ contains the digit '9'. The remaining series converges! Kempner proved the sum is less than 23. This seems paradoxical — infinitely many terms remain, each positive — until one notices that among $n$-digit integers, only $9^n$ avoid the digit '9', which is exponentially sparse in $10^n$. More generally, removing all integers containing any fixed finite string makes the series converge: the density of 'string-free' integers is zero, so their reciprocal sum is finite. This sharply illustrates that harmonic divergence is a density phenomenon — the terms $1/n$ are barely summable, and removing a zero-density subsequence of indices tips the balance to convergence.",
+      "**The p-series as the exact exponent boundary**: The slightest strengthening — $\\sum 1/n^{1+\\epsilon}$ for any $\\epsilon > 0$ — gives convergence. But the boundary is not the only subtlety: $\\sum 1/(n \\log n)$ diverges (`harmonic-divergence-oq-02`), while $\\sum 1/(n (\\log n)^{1+\\epsilon})$ converges, creating an infinite hierarchy of divergence rates between $1/n^1$ (harmonic) and $1/n^{1+\\epsilon}$ (p-series). The Cauchy condensation test (`harmonic-divergence-oq-04`) provides the systematic framework for navigating this hierarchy, showing that $\\sum f(n)$ and $\\sum 2^k f(2^k)$ have the same convergence behavior for monotone decreasing $f$ — Oresme's grouping argument generalized."
     ],
     "prerequisites": [
       "Real analysis and series convergence",
@@ -147,6 +149,13 @@
       "year": "1734",
       "venue": "Commentarii academiae scientiarum Petropolitanae",
       "note": "Computed the asymptotic expansion H_n ~ ln(n) + γ, introducing the Euler-Mascheroni constant γ ≈ 0.5772"
+    },
+    {
+      "authors": "Kempner, A. J.",
+      "title": "A curious convergent series",
+      "year": "1914",
+      "venue": "American Mathematical Monthly, 21(2), 48–50",
+      "note": "Proves that the subseries of 1/n where n contains no digit '9' converges (sum < 23), despite infinitely many remaining terms. This Kempner-Irwin series demonstrates that harmonic divergence is a density phenomenon — removing a zero-density set of indices tips the balance to convergence"
     }
   ],
   "crossReferences": [
@@ -184,6 +193,21 @@
       "targetId": "stirling-formula",
       "relationship": "related",
       "description": "Both $H_n = \\ln n + \\gamma + O(1/n)$ and $\\ln(n!) = n\\ln n - n + O(\\ln n)$ are logarithmic estimates proved by Euler-Maclaurin summation"
+    },
+    {
+      "targetId": "harmonic-divergence-oq-01",
+      "relationship": "extended-by",
+      "description": "Sub-entry formalizing the Euler-Mascheroni constant $\\gamma = \\lim(H_n - \\ln n) \\approx 0.5772$: convergence and monotonicity of the defining sequences, log bounds $\\ln(n) \\leq H_n \\leq 1 + \\ln(n)$, Theisinger's theorem ($H_n \\notin \\mathbb{Z}$ for $n \\geq 2$), and the sandwich sequences converging to $\\gamma$. Directly addresses the open question in this entry about $\\gamma$'s arithmetical nature"
+    },
+    {
+      "targetId": "harmonic-divergence-oq-02",
+      "relationship": "extended-by",
+      "description": "Proves $\\sum 1/(n \\log n) = \\infty$ via the Cauchy condensation test — the condensed series $\\sum 1/(k \\log 2)$ is a rescaled harmonic series. This is the first element of the hierarchy of divergent series slower than the harmonic series, directly addressing the open question in this entry about $\\sum 1/(n \\log n)$"
+    },
+    {
+      "targetId": "harmonic-divergence-oq-04",
+      "relationship": "extended-by",
+      "description": "Generalizes Oresme's 14th-century grouping argument to the Cauchy condensation test: for monotone decreasing non-negative $f$, $\\sum f(n) < \\infty$ iff $\\sum 2^k f(2^k) < \\infty$. This makes Oresme's proof — which is exactly the condensation test applied to $f(n) = 1/n$ with $2^k f(2^k) = 1/2$ — the archetype for an entire convergence theory"
     }
   ],
   "leanFile": {
