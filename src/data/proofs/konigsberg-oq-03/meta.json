@@ -170,44 +170,34 @@
   ],
   "crossReferences": [
     {
-      "proofId": "konigsberg",
-      "relationship": "parent",
+      "targetId": "konigsberg",
+      "relationship": "extends",
       "description": "Königsberg Bridges Problem — the original Eulerian impossibility proof whose theorem this file generalizes to hypergraphs and infinite graphs."
     },
     {
-      "proofId": "konigsberg-oq-01",
-      "relationship": "sibling",
+      "targetId": "konigsberg-oq-01",
+      "relationship": "related",
       "description": "Eulerian Circuits in Finite Graphs — the positive characterization (connected + all even degrees) that serves as the baseline for both generalizations in this file."
     },
     {
-      "proofId": "konigsberg-oq-02",
-      "relationship": "sibling",
+      "targetId": "konigsberg-oq-02",
+      "relationship": "related",
       "description": "Directed Euler Paths — the directed analogue (in-degree = out-degree condition) that parallels the undirected theory extended here."
     },
     {
-      "proofId": "konigsberg-oq-03-oq-02",
-      "relationship": "child",
+      "targetId": "konigsberg-oq-03-oq-02",
+      "relationship": "related",
       "description": "Infinite Paths in Graphs: ℕ-Indexed Formalization — provides the foundational BiInfiniteWalk and InfiniteWalk definitions needed to formalize HasInfiniteEulerPath and HasOneWayEulerPath in this file."
     },
     {
-      "proofId": "konigsberg-oq-04",
-      "relationship": "sibling",
-      "description": "The BEST Theorem (de Bruijn-van Aardenne-Ehrenfest-Smith-Tutte): counts directed Eulerian circuits as a product of in-degrees, tree counts, and arborescences. While this entry asks *whether* hypergraph Euler tours exist (NP-complete), OQ-04 asks *how many* Eulerian circuits exist in the simpler directed case — the decision vs. counting complexity gap"
+      "targetId": "konigsberg-oq-04",
+      "relationship": "related",
+      "description": "The BEST Theorem (de Bruijn-van Aardenne-Ehrenfest-Smith-Tutte): counts directed Eulerian circuits as a product of in-degrees, tree counts, and arborescences. While this entry asks *whether* hypergraph Euler tours exist (NP-complete), OQ-04 asks *how many* Eulerian circuits exist in the simpler directed case — the decision vs. counting complexity gap."
     },
     {
-      "proofId": "ramseys-theorem",
+      "targetId": "ramseys-theorem",
       "relationship": "related",
-      "description": "Ramsey theory studies unavoidable structure in large hypergraphs: the hypergraph Ramsey number $R(r; k_1, \\ldots, k_t)$ for $r$-uniform hypergraphs parallels the graph case. The NP-completeness of Euler tours in $r$-uniform hypergraphs (Lonc-Naroski 2010) is part of the broader story of how classical P-time graph problems become NP-hard when edges gain dimension — a phenomenon Ramsey theory also exhibits"
-    },
-    {
-      "proofId": "szemeredi-hypergraph-core",
-      "relationship": "related",
-      "description": "Szemerédi's regularity lemma and its hypergraph generalization (Gowers 2007, Rödl-Schacht 2007) provide the structural theory of dense $r$-uniform hypergraphs. While the Euler tour problem asks about traversal structure (an edge-ordering question), the hypergraph regularity lemma analyzes density structure — but both reveal how $r \\geq 3$ hypergraphs are fundamentally harder than graphs. The regularity lemma's partition structure is used in Lonc-Naroski's NP-completeness reduction as the underlying combinatorial framework"
-    },
-    {
-      "proofId": "euler-polyhedral-formula",
-      "relationship": "related",
-      "description": "Euler's polyhedral formula $V - E + F = 2$ and the Königsberg bridges theorem are Euler's two foundational contributions to graph-topological mathematics. The polyhedral formula is topological (genus 0 surfaces), while the Königsberg theorem is combinatorial (parity of degrees). This file's generalization to infinite graphs and hypergraphs shows that the Königsberg degree condition is more robust under generalization than the polyhedral formula, which fails for higher-genus surfaces. Both results use the same underlying principle — counting parities in a global object from local data — but respond differently to infinite and hypergraph extensions"
+      "description": "Ramsey theory studies unavoidable structure in large hypergraphs: the hypergraph Ramsey number $R(r; k_1, \\ldots, k_t)$ for $r$-uniform hypergraphs parallels the graph case. The NP-completeness of Euler tours in $r$-uniform hypergraphs (Lonc-Naroski 2010) is part of the broader story of how classical P-time graph problems become NP-hard when edges gain dimension — a phenomenon Ramsey theory also exhibits."
     }
   ],
   "references": [
