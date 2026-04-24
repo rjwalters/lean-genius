@@ -48,6 +48,33 @@
     ]
   },
   {
+    "id": "ann-ymtmoq01-sc-physics",
+    "proofId": "yang-mills-transfer-matrix-oq-01",
+    "range": {
+      "startLine": 143,
+      "endLine": 166
+    },
+    "type": "context",
+    "title": "Why Strong Coupling Eigenvalues Are L-Independent: Physical Mechanism",
+    "content": "The critical physics insight is stated here before the formal definitions: in the strong coupling limit (g² → ∞), the electric term T_E = exp(-ag²/2 · ∑E²) dominates the transfer matrix. The eigenstates of T_E are classified by irreducible representations of SU(N) — the trivial rep (vacuum) and the fundamental rep (first excited state). The Casimir eigenvalue C₂(fund) = (N²-1)/(2N) is a purely algebraic constant of the gauge group, with no dependence on the spatial volume L. The physical picture: strong coupling confines gauge dynamics within single plaquettes (single links), making inter-plaquette correlations exponentially suppressed. The gap is set by the electric energy scale ag²C₂/2, not by global lattice geometry. This is why the eigenvalues λ₀ = 1 and λ₁ = exp(-ag²C₂/2) are volume-independent.",
+    "mathContext": "$T \\approx T_E = \\exp\\!\\bigl(-\\tfrac{ag^2}{2}\\sum_{\\text{links}}E^2\\bigr)$. Casimir values: $C_2^{\\mathrm{SU}(N)}(\\text{fund}) = \\frac{N^2-1}{2N}$. For $\\mathrm{SU}(2)$: $C_2 = \\tfrac{3}{4}$; for $\\mathrm{SU}(3)$: $C_2 = \\tfrac{4}{3}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "strong coupling expansion",
+      "electric energy dominance",
+      "representation theory",
+      "Casimir invariant",
+      "confinement",
+      "plaquette localization"
+    ],
+    "prerequisites": [
+      "representation theory of SU(N)",
+      "transfer matrix formalism",
+      "Casimir eigenvalue",
+      "strong coupling limit"
+    ]
+  },
+  {
     "id": "ann-ymtmoq01-sc-params",
     "proofId": "yang-mills-transfer-matrix-oq-01",
     "range": {
