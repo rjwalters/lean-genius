@@ -45,7 +45,8 @@
       "The inner_decomposition theorem is the key algebraic lemma: it holds for any unit vector n, not just C, making the proof modular and reusable",
       "The degenerate case (A = C, i.e., b = 0) is handled gracefully: proj\u22a5(C, C) = 0, so the cross term vanishes and the formula reduces to cos(c) = cos(a)\u00b71 = cos(a), consistent with b = 0",
       "The planar law of cosines emerges in the small-angle limit via Taylor expansion: 1 - c\u00b2/2 \u2248 (1 - b\u00b2/2)(1 - a\u00b2/2) + ab\u00b7cos(C) simplifies to c\u00b2 \u2248 a\u00b2 + b\u00b2 - 2ab\u00b7cos(C)",
-      "The nlinarith tactic closes the norm = sin step by providing hints sq_nonneg(\u2016proj\u22a5\u2016 - sin) and sq_nonneg(\u2016proj\u22a5\u2016 + sin): from a\u00b2 = b\u00b2 and a,b \u2265 0, these hints let nlinarith infer (a-b)(a+b) = 0 with a+b > 0 unless both are 0, forcing a = b"
+      "The nlinarith tactic closes the norm = sin step by providing hints sq_nonneg(\u2016proj\u22a5\u2016 - sin) and sq_nonneg(\u2016proj\u22a5\u2016 + sin): from a\u00b2 = b\u00b2 and a,b \u2265 0, these hints let nlinarith infer (a-b)(a+b) = 0 with a+b > 0 unless both are 0, forcing a = b",
+      "**Curvature-universality of the approach**: The inner product decomposition $\\langle u, v \\rangle = \\langle u, n \\rangle \\langle v, n \\rangle + \\langle \\text{proj}_{\\perp}(u, n), \\text{proj}_{\\perp}(v, n) \\rangle$ works because $S^2 \\subset \\mathbb{R}^3$ inherits the ambient inner product. For hyperbolic space $H^2$, the analogous formula uses the Minkowski inner product $\\langle u, v \\rangle_{1,2} = -u_0 v_0 + u_1 v_1 + u_2 v_2$ and $H^2 \\subset \\mathbb{R}^{1,2}$, yielding $\\cosh(c) = \\cosh(a)\\cosh(b) - \\sinh(a)\\sinh(b)\\cos(C)$ — the hyperbolic law of cosines. The same algebraic structure (Gram-Schmidt in the ambient space) unifies both, with curvature $K = +1$ giving trig functions and $K = -1$ giving hyperbolic functions."
     ],
     "prerequisites": [
       "Inner product spaces and EuclideanSpace in Mathlib",
@@ -58,10 +59,11 @@
     "summary": "This 341-line formalization proves the spherical law of cosines in full generality using Lean 4 and Mathlib's inner product space infrastructure. The proof is self-contained and machine-verified, with 24 theorems covering the complete development from unit vectors and arc lengths through the main theorem and its degenerate cases.",
     "implications": "The formalization demonstrates that spherical trigonometry can be cleanly embedded in the linear algebra framework of inner product spaces, with arc lengths defined via arccos of inner products. The key inner_decomposition lemma has broad applicability beyond the spherical law of cosines, applying to any Gram-Schmidt decomposition in a real inner product space. The connection to the planar law of cosines illuminates the relationship between spherical and Euclidean geometry.",
     "openQuestions": [
-      "Formalize the spherical law of sines: sin(a)/sin(A) = sin(b)/sin(B) = sin(c)/sin(C) for the angles A, B, C at each vertex",
-      "Prove the spherical excess formula: the sum of angles of a spherical triangle exceeds \u03c0 by the solid angle (area) of the triangle",
-      "Formalize the dual spherical law of cosines: cos(C) = -cos(A)cos(B) + sin(A)sin(B)cos(c)",
-      "Connect to differential geometry: the spherical law of cosines as a special case of the Gauss equation for surfaces of constant curvature K = 1"
+      "**[Addressed in `spherical-law-of-sines`]** The spherical law of sines — $\\sin(a)/\\sin(A) = \\sin(b)/\\sin(B) = \\sin(c)/\\sin(C)$ for the opposite angles A, B, C at each vertex — is formalized in the companion gallery entry `spherical-law-of-sines` using cross products and dihedral angle structure.",
+      "Prove the spherical excess formula: the sum of angles of a spherical triangle exceeds $\\pi$ by the solid angle (area) of the triangle. That is, $A + B + C - \\pi = \\text{area}(\\triangle)$, where area is measured in steradians. This is the Girard-Euler theorem, connecting spherical geometry to solid angle computation.",
+      "Formalize the dual spherical law of cosines: $\\cos(C) = -\\cos(A)\\cos(B) + \\sin(A)\\sin(B)\\cos(c)$ — the angular version expressing side lengths in terms of angles. Together with the current theorem, this gives the complete spherical law of cosines system connecting sides and angles of spherical triangles.",
+      "Connect to differential geometry: the spherical law of cosines as a special case of the Gauss equation for surfaces with constant Gaussian curvature $K = 1$. The corresponding formula for $K = -1$ (hyperbolic space) replaces trigonometric with hyperbolic functions: $\\cosh(c) = \\cosh(a)\\cosh(b) - \\sinh(a)\\sinh(b)\\cos(C)$.",
+      "Formalize the haversine formula: $\\text{hav}(c) = \\text{hav}(a-b) + \\sin(a)\\sin(b)\\text{hav}(C)$, where $\\text{hav}(\\theta) = \\sin^2(\\theta/2)$, which is the numerically stable version of the spherical law of cosines for computing great-circle distances. Applications to navigation and GPS coordinate systems make this a practically important variant to formalize."
     ]
   },
   "sections": [
@@ -112,7 +114,27 @@
     {
       "targetId": "law-of-cosines",
       "relationship": "generalizes",
-      "description": "The spherical law of cosines reduces to the planar law of cosines (Wiedijk #94) in the small-angle limit via Taylor approximation"
+      "description": "The spherical law of cosines reduces to the planar law of cosines (Wiedijk #94) in the small-angle limit: cos(c) = cos(a)cos(b) + sin(a)sin(b)cos(C) becomes c² ≈ a² + b² - 2ab·cos(C) via Taylor approximation"
+    },
+    {
+      "targetId": "spherical-law-of-sines",
+      "relationship": "complementary",
+      "description": "The companion spherical law of sines sin(a)/sin(A) = sin(b)/sin(B) = sin(c)/sin(C) — formalized in the gallery using cross products — gives the complete set of spherical triangle relations alongside the law of cosines"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem is the special case of the spherical law of cosines when C = π/2: cos(c) = cos(a)·cos(b). In the flat (Euclidean) limit a,b → 0, this becomes c² = a² + b² — the familiar Pythagorean theorem"
+    },
+    {
+      "targetId": "cevas-theorem-non-euclidean",
+      "relationship": "related",
+      "description": "Ceva's theorem in non-Euclidean (spherical and hyperbolic) geometry uses the same unit sphere infrastructure and spherical trigonometry that underpins the spherical law of cosines — both formalize classical triangle geometry on the sphere S²"
+    },
+    {
+      "targetId": "law-of-sines-oq-06",
+      "relationship": "related",
+      "description": "The planar law of sines formalized via InnerProductGeometry.angle — the Euclidean counterpart to the spherical law of sines, which together with the spherical law of cosines forms the complete spherical triangle toolkit"
     }
   ],
   "leanFile": {
