@@ -43,47 +43,80 @@ chebyshev_lebesgue_growth [sorry] + divergence_from_lebesgue_growth [sorry]
 - `chebyshevNode_injective`: nodes are distinct
 - `n_mul_chebyshevAngle`, `chebyshevAngle_pos`, `chebyshevAngle_lt_pi`, etc. [arithmetic helpers]
 
-## Hard Sorries Remaining (4 in main file)
+## Sorries Remaining (2 in main file, as of 2026-04-24)
 
-### 1. `lagrange_basis_chebyshev_formula` [BLOCKED]
-Requires: Chebyshev product formula T_n(x) = 2^{n-1}·Π_{k=0}^{n-1}(x - cos φₖ).
-**NOT in Mathlib v4.26.0**. This blocks lemmas 2 and 3.
+### 1. `chebyshev_trig_sum_lb` (line 760) — HARD, strategy known
+**Goal**: ∃ C₂ > 0, ∀ n ≥ 1, C₂·n·log(n+1) ≤ Σₖ sin(φₖ)/|x - cos φₖ|
 
-### 2. `chebyshev_lebesgue_eq` [BLOCKED by #1]
-Reduces Λₙ(cos θ) to a trigonometric sum. Follows from #1.
+**Proof strategy** (see docstring in file, ~200 lines):
+- Let θ = πp/q (fixed), φₖ = (2k+1)π/(2n) (Chebyshev nodes)
+- Since sin(θ) > 0 for x = cos(θ) ∈ (-1,1) and p,q odd, we have x ≠ ±1
+- Nearest node k₀: choose k₀ with |φₖ₀ - θ| ≤ π/(2n)
+- Lipschitz: |cos θ - cos φₖ| ≤ |θ - φₖ| (cos is 1-Lipschitz)
+- Node spacing: |θ - φₖ₀₊ⱼ| ≈ j·π/n for |j| ≤ n/2
+- For nodes near k₀: sin(φₖ) ≥ sin(θ)/2 (continuity of sin)
+- Harmonic sum: Σⱼ₌₁^{n/2} 1/j ≥ log(n/2 + 1) by `log_add_one_le_harmonic`
+- Combining: S_n ≥ (n·sin(θ)/2π)·log(n/2+1) = C₂·n·log(n+1) up to constants
+- **Case x = ±1** (θ = 0 or π, sin(θ) = 0): requires separate cot argument
+  - p,q both odd ⟹ cos(πp/q) = cos(odd·π/odd) ≠ ±1 for any valid p,q
+  - So this case never occurs in our hypotheses — may simplify the proof
 
-### 3. `chebyshev_lebesgue_growth` [BLOCKED by #1, #2]
-Main result: Λₙ(cos(πp/q)) → ∞. Proof outline known:
-- Along n = mq: |cos(nπp/q)| = 1 (already proved: cos_rational_pi_nonzero_along_multiples)
-- Lower bound: Σₖ sin(φₖ)/|cos(πp/q) - cos φₖ| ≥ C·log(n)
-- Blocked by needing formula from #1.
+**Mathlib tools available**:
+- `Real.log_add_one_le_harmonic` or `Finset.log_le_sum_one_div` for harmonic bound
+- `Real.abs_cos_sub_cos_le` or manual Lipschitz via MVT
+- `Real.sin_pos_of_pos_of_lt_pi` for sin(φₖ) > 0
 
-### 4. `divergence_from_lebesgue_growth` [OPEN, proof sketch has gap]
-Statement: Λₙ(x) → ∞ ⟹ ∃ continuous f, Lₙf(x) → +∞.
+### 2. `divergence_from_lebesgue_growth` (line 838) — OPEN, fundamental gap
+**Goal**: Λₙ(x) → +∞ ⟹ ∃ continuous f, Lₙf(x) → +∞ (full sequence)
 
-Proof sketch in file gives lacunary construction: f = Σₖ (1/k²) fₙₖ.
-**Gap**: Cross terms in the lacunary series can dominate: Σⱼ≠ₖ (1/j²) Λₙₖ(x) ≥ Λₙₖ(x)·(π²/6-1/k²) >> Λₙₖ(x)/k².
-Fix requires de-correlation: |Lₙₖ(fₙⱼ)(x)| << Λₙₖ(x) for nₖ >> nⱼ.
-Estimated: 200+ lines, needs analysis of Chebyshev interpolation between different grids.
+**Fundamental gap**: Banach-Steinhaus / UBP gives `∃ f continuous, lim sup_n |Lₙf(x)| = ∞`,
+NOT `lim_n Lₙf(x) = +∞` (signed, full sequence).
 
-**Alternative**: Baire category gives lim sup = ∞, but NOT full divergence (lim = ∞).
-May need to reconsider whether the axiom statement is too strong.
+**Lacunary construction issues**: f = Σₖ (1/k²) fₙₖ where fₙₖ chosen so Lₙₖ(fₙₖ)(x) = Λₙₖ(x).
+Cross terms: Lₙₖ(fₙⱼ)(x) for j ≠ k could dominate. Need |Lₙₖ(fₙⱼ)(x)| << Λₙₖ(x)/k² for all j < k,
+which requires precise control on how Chebyshev interpolation at degree nₖ sees basis functions
+for nⱼ << nₖ. This is ~300+ lines of analysis.
 
-## Session 2026-04-22 — Results
+**Recommended action**: Weaken the sorry statement to lim sup version:
+```lean
+-- Weaker (provable by Baire/UBP):
+theorem divergence_from_lebesgue_growth' (x : ℝ) (...) :
+    ∃ f : ℝ → ℝ, Continuous f ∧
+      Filter.Tendsto (fun n => ‖chebyshevInterp n f x‖) Filter.atTop Filter.atTop
+-- This follows from Banach-Steinhaus directly
+```
+The current statement with `M < Lₙf(x)` (signed divergence) may require full lacunary argument.
+
+## Session 2026-04-22 — Results (archived)
 
 **Outcome**: progress  
 **Sorries closed**: 5 (chebyshevNode_is_root ×2, chebyshevNode_injective ×2, cos_odd_half_pi)
-**Companion file**: now 0 sorries
-**Main file**: 4 sorries remain (all blocked by Chebyshev product formula or hard lacunary construction)
+**Companion file**: now 0 sorries  
+**Main file**: 4 sorries → 2 sorries (sessions 5-11 progress restored in PR #12153)
 
-**Key proofs**:
-- `cos_odd_half_pi`: `rw [h, cos_add, cos_pi_div_two, mul_zero, sin_nat_mul_pi, ...]`
-- `chebyshevNode_is_root`: simp [chebyshev_T_at_cos], arithmetic cast manipulation, cos_odd_half_pi
-- `chebyshevNode_injective`: strictAntiOn_cos.injOn on angles in (0,π)
+## Session 2026-04-24 (this session) — Analysis
 
-## Next Steps
+**Outcome**: documented (no proof changes)  
+**Mode**: Deep analysis of 2 remaining sorries
 
-1. Check if Mathlib v4.27+ adds the Chebyshev product formula
-2. Consider building the product formula locally (~100-150 lines, tractable)
-3. Assess whether `divergence_from_lebesgue_growth` as stated is provable (vs. lim sup version)
-4. Alternative: Baire category argument for weaker divergence statement
+### What I Did
+- Read Erdos1151OQ04.lean lines 740–850 to understand current proof structure
+- Confirmed chebyshev_lebesgue_growth is PROVED (wraps chebyshev_lebesgue_lb which uses sorry #1)
+- Analyzed sorry #1 (chebyshev_trig_sum_lb): proof strategy is clear, ~200 lines, no fundamental blocks
+- Analyzed sorry #2 (divergence_from_lebesgue_growth): identified fundamental gap in axiom statement
+  - UBP gives lim sup = ∞, not lim = +∞ (signed)
+  - Lacunary construction requires cross-term de-correlation (~300+ lines)
+  - Recommended weakening the sorry to lim sup version
+
+### Key Findings
+- Proof of sorry #1 is TRACTABLE but requires careful case analysis and harmonic sum estimates
+- Sorry #2 has a genuine mathematical gap: the current statement may be stronger than what UBP gives
+- p, q both odd ⟹ cos(πp/q) ∉ {±1}, so the degenerate case in sorry #1 never applies
+- The main theorem `erdos_1941_divergence_from_growth` is proved — only the two intermediate lemmas remain
+
+### Next Steps
+1. Attempt sorry #1 (`chebyshev_trig_sum_lb`): Use Lipschitz + harmonic sum, ~200 lines
+   - Start with `have hsin_pos : 0 < Real.sin (↑p * Real.pi / ↑q)` from p,q odd hypotheses
+   - Use `Finset.sum_div_le_harmonic` or manual Σ 1/j ≥ log bound
+2. For sorry #2: consider weakening to lim sup = ∞ first (provable), then escalate to full divergence
+3. If sorry #1 is proved, the full proof reduces to sorry #2 alone
