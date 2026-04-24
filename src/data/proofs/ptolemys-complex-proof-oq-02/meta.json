@@ -17,7 +17,7 @@
       "intermediate"
     ],
     "proofRepoPath": "Proofs/PtolemysComplexProofOQ02.lean",
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -44,18 +44,23 @@
         "theorem": "Real.sin_pos_of_pos_of_lt_pi",
         "description": "sin θ > 0 for θ ∈ (0, π): positivity of sine used throughout",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
+      },
+      {
+        "theorem": "Real.sin_add",
+        "description": "sin(α+β) = sinα cosβ + cosα sinβ: used inside norm_exp_diff to establish the key diagonal chord length ‖exp(2αI) − exp(−2βI)‖ = 2sin(α+β)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       }
     ],
     "originalContributions": [
-      "Machine verification of Ptolemy's classical derivation of the sine addition formula (c. 150 AD), closing the historical loop on 1850 years of mathematics",
-      "Complete chord-length calculus: five lemmas computing ‖z₁-z₂‖, ‖z₂-z₃‖, ‖z₃-z₄‖, ‖z₁-z₄‖, ‖z₂-z₄‖ for the specific quadrilateral",
+      "Formal infrastructure connecting Ptolemy's classical derivation route to Mathlib's sine addition formula: CCW order verification, chord-length calculus, and Ptolemy equality substitution",
+      "Complete chord-length calculus: five lemmas computing ‖z₁-z₂‖, ‖z₂-z₃‖, ‖z₃-z₄‖, ‖z₁-z₄‖, ‖z₂-z₄‖ for the specific quadrilateral (1, exp(2αI), −1, exp(−2βI))",
       "CCW order verification via IsCCWOrder, connecting the trig setup to the algebraic Ptolemy equality machinery from PtolemysTheoremOQ01",
       "Non-degeneracy proofs showing none of the four unit-circle points coincide for α, β ∈ (0, π/4)"
     ],
     "dateAdded": "2026-04-24",
     "axiomCount": 0,
     "lineCount": 351,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "Core result derived via Mathlib's Real.sin_add (line 199 of PtolemysComplexProofOQ02.lean): the key chord-length lemma norm_exp_diff uses Real.sin_add to establish ‖exp(2αI) − exp(−2βI)‖ = 2sin(α+β). All other steps — Ptolemy equality application, CCW order verification, remaining chord lemmas, and non-degeneracy conditions — are independently formalized. 0 axiom declarations, 0 sorries."
   },
   "overview": {
     "historicalContext": "Claudius Ptolemy (c. 150 AD) used his theorem on chords of circles to compute trigonometric tables in the *Almagest*. The argument is simple: inscribe a specific cyclic quadrilateral in a unit circle, apply the equality $|AC|\\cdot|BD| = |AB|\\cdot|CD| + |BC|\\cdot|DA|$, and read off the sine addition formula from the resulting equation. This was the standard derivation of $\\sin(\\alpha+\\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$ for 1500 years, before Euler introduced the exponential form $e^{i(\\alpha+\\beta)} = e^{i\\alpha}e^{i\\beta}$ which makes it a one-line calculation. This file machine-verifies the classical argument, using complex numbers to represent the unit circle and building on `PtolemysTheoremOQ01.lean` for the Ptolemy equality machinery.",
