@@ -5056,6 +5056,130 @@ private lemma hookProd_ratio_formula {μ : YoungDiagram} {c : ℕ × ℕ} (hc : 
   linear_combination key_Q
 
 
+-- ============================================================
+-- Hook walk identity for generalized hook shapes [a, 1^b] (PART XIVb)
+-- ============================================================
+
+/-- Any corner of gHookYD a b ha (with b ≥ 1) is either (0, a-1) with a ≥ 2, or (b, 0).
+    Proof: corners must be at row ends; row 0 ends at a-1, column 0 ends at b.
+    When a=1: (0,0) has leg neighbor (1,0), so only (b,0) is a corner. -/
+private lemma corners_gHookYD_cases (a b : ℕ) (ha : 0 < a) (hb : 0 < b) {c : ℕ × ℕ}
+    (hc : isCorner (gHookYD a b ha) c) :
+    (c = (0, a - 1) ∧ 1 < a) ∨ c = (b, 0) := by
+  obtain ⟨i, j⟩ := c
+  obtain ⟨hmem, hright, hbelow⟩ := hc
+  rcases mem_gHookYD.mp hmem with ⟨hi0, hj⟩ | ⟨hi1, hi2, hj0⟩
+  · -- (i, j) with i = 0, j < a
+    subst hi0
+    -- hright: (0, j+1) ∉ μ → j+1 ≥ a → j = a-1
+    have hja : j = a - 1 := by
+      have : ¬(j + 1 < a) := fun hlt =>
+        hright (mem_gHookYD.mpr (Or.inl ⟨rfl, hlt⟩))
+      omega
+    subst hja
+    left
+    refine ⟨rfl, ?_⟩
+    -- hbelow: (1, a-1) ∉ μ; but if a=1 then (1,0) ∈ μ (since b≥1), contradiction
+    by_contra hle
+    push_neg at hle
+    have ha1 : a = 1 := Nat.le_antisymm hle ha
+    subst ha1
+    -- a-1 = 0, so (0, 0) ∈ μ and (1, 0) ∈ μ (since b ≥ 1)
+    exact hbelow (mem_gHookYD.mpr (Or.inr ⟨Nat.one_pos, hb, rfl⟩))
+  · -- (i, j) with 1 ≤ i ≤ b, j = 0
+    subst hj0
+    right
+    -- hbelow: (i+1, 0) ∉ μ → i+1 > b → i = b
+    have hib : i = b := by
+      have : ¬(i + 1 ≤ b) := fun hle =>
+        hbelow (mem_gHookYD.mpr (Or.inr ⟨by omega, hle, rfl⟩))
+      omega
+    exact ⟨hib, rfl⟩
+
+/-- The hook walk identity for generalized hook shapes [a, 1^b] with b ≥ 1.
+    Non-circular proof: hook_length_formula_gHookYD is proved independently,
+    and removing a corner of gHookYD a b gives another gHookYD shape.
+    Extends hook_walk_identity_atMostTwoRows to cover ≥3-row hook shapes. -/
+private lemma hook_walk_identity_gHookYD (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
+    ∑ c ∈ (corners (gHookYD a b ha)).attach,
+      ((hookProd (gHookYD a b ha) : ℚ) /
+       (hookProd (removeCorner (gHookYD a b ha) c.val
+         (mem_corners.mp c.prop)) : ℚ))
+    = ((gHookYD a b ha).card : ℚ) := by
+  have hHP : (hookProd (gHookYD a b ha) : ℚ) ≠ 0 := hookProdQ_ne_zero _
+  have hN : (gHookYD a b ha).card = a + b := gHookYD_card a b ha
+  have hpos : 0 < (gHookYD a b ha).card := by rw [hN]; omega
+  have hfact : (((gHookYD a b ha).card - 1).factorial : ℚ) ≠ 0 :=
+    Nat.cast_ne_zero.mpr (Nat.factorial_pos _).ne'
+  -- HLF for μ (proved independently, without hook_walk_identity)
+  have hμ : (Fintype.card (StandardYoungTableau (gHookYD a b ha)) : ℚ) *
+      hookProd (gHookYD a b ha) = (gHookYD a b ha).card.factorial :=
+    by exact_mod_cast hook_length_formula_gHookYD a b ha
+  -- Corner step: card(SYT(μ)) = Σ_c card(SYT(μ\c))
+  have hstepQ : (Fintype.card (StandardYoungTableau (gHookYD a b ha)) : ℚ) =
+      ∑ cx ∈ (corners (gHookYD a b ha)).attach,
+        (Fintype.card (StandardYoungTableau
+          (removeCorner (gHookYD a b ha) cx.val (mem_corners.mp cx.prop))) : ℚ) :=
+    by exact_mod_cast card_SYT_corner_step (gHookYD a b ha) hpos
+  -- HLF for each removeCorner: a corner removal gives another gHookYD shape
+  have hμc : ∀ cx : { x // x ∈ corners (gHookYD a b ha) },
+      (Fintype.card (StandardYoungTableau
+        (removeCorner (gHookYD a b ha) cx.val (mem_corners.mp cx.prop))) : ℚ) *
+      (hookProd (removeCorner (gHookYD a b ha) cx.val (mem_corners.mp cx.prop)) : ℚ) =
+      (((gHookYD a b ha).card - 1).factorial : ℚ) := by
+    intro ⟨c, hcx⟩
+    have hcorner : isCorner (gHookYD a b ha) c := mem_corners.mp hcx
+    rcases corners_gHookYD_cases a b ha hb hcorner with ⟨hceq, ha2⟩ | hceq
+    · -- c = (0, a-1): removeCorner = gHookYD (a-1) b h'
+      subst hceq
+      rw [removeCorner_gHook_top a b ha ha2 hcorner]
+      have hlf : Fintype.card (StandardYoungTableau (gHookYD (a - 1) b (by omega))) *
+          hookProd (gHookYD (a - 1) b (by omega)) =
+          (gHookYD (a - 1) b (by omega)).card.factorial :=
+        hook_length_formula_gHookYD (a - 1) b (by omega)
+      rw [gHookYD_card] at hlf
+      have hfact_eq : a - 1 + b = (gHookYD a b ha).card - 1 := by rw [hN]; omega
+      rw [hfact_eq] at hlf
+      exact_mod_cast hlf
+    · -- c = (b, 0): removeCorner = gHookYD a (b-1) ha
+      subst hceq
+      rw [removeCorner_gHook_bot a b ha hb hcorner]
+      have hlf : Fintype.card (StandardYoungTableau (gHookYD a (b - 1) ha)) *
+          hookProd (gHookYD a (b - 1) ha) =
+          (gHookYD a (b - 1) ha).card.factorial :=
+        hook_length_formula_gHookYD a (b - 1) ha
+      rw [gHookYD_card] at hlf
+      have hfact_eq : a + (b - 1) = (gHookYD a b ha).card - 1 := by rw [hN]; omega
+      rw [hfact_eq] at hlf
+      exact_mod_cast hlf
+  -- μ.card! = μ.card × (μ.card-1)! as rationals
+  have hfact_succ : ((gHookYD a b ha).card.factorial : ℚ) =
+      ((gHookYD a b ha).card : ℚ) * (((gHookYD a b ha).card - 1).factorial : ℚ) := by
+    cases hcard : (gHookYD a b ha).card with
+    | zero => rw [hN] at hcard; omega
+    | succ n =>
+      rw [show (gHookYD a b ha).card - 1 = n by omega,
+          show (gHookYD a b ha).card = n + 1 from hcard, Nat.factorial_succ]
+      push_cast; ring
+  -- Each summand: HP/HPc = card(SYT(μ\c)) × HP/(N-1)!
+  have hterm : ∀ cx : { x // x ∈ corners (gHookYD a b ha) },
+      (hookProd (gHookYD a b ha) : ℚ) /
+      (hookProd (removeCorner (gHookYD a b ha) cx.val (mem_corners.mp cx.prop)) : ℚ) =
+      (Fintype.card (StandardYoungTableau
+        (removeCorner (gHookYD a b ha) cx.val (mem_corners.mp cx.prop))) : ℚ) *
+      ((hookProd (gHookYD a b ha) : ℚ) / (((gHookYD a b ha).card - 1).factorial : ℚ)) := by
+    intro ⟨c, hcx⟩
+    have hHPc :
+        (hookProd (removeCorner (gHookYD a b ha) c (mem_corners.mp hcx)) : ℚ) ≠ 0 :=
+      hookProdQ_ne_zero _
+    have hIHc := hμc ⟨c, hcx⟩
+    rw [mul_div_assoc, div_eq_div_iff hHPc hfact]
+    linear_combination -(hookProd (gHookYD a b ha) : ℚ) * hIHc
+  -- Assemble: same algebra as hook_walk_identity_atMostTwoRows
+  simp_rw [hterm]
+  rw [← Finset.sum_mul, ← hstepQ, mul_div_assoc, hμ, hfact_succ]
+  field_simp [hfact]
+
 private lemma hook_walk_identity (μ : YoungDiagram) (hn : 0 < μ.card) :
     ∑ c ∈ (corners μ).attach,
       ((hookProd μ : ℚ) / (hookProd (removeCorner μ c.val (mem_corners.mp c.prop)) : ℚ))
@@ -5063,8 +5187,12 @@ private lemma hook_walk_identity (μ : YoungDiagram) (hn : 0 < μ.card) :
   by_cases h2 : μ.rowLen 2 = 0
   · -- At-most-2-row case: proved non-circularly
     exact hook_walk_identity_atMostTwoRows μ h2 hn
-  · -- ≥3-row case: requires hook walk combinatorics (GNW ~300 lines or RSK ~500 lines)
-    sorry
+  · -- ≥3-row: check if μ is a generalized hook shape [a, 1^b]
+    by_cases hghook : ∃ (a b : ℕ) (ha : 0 < a) (hb : 0 < b), μ = gHookYD a b ha
+    · obtain ⟨a, b, ha, hb, rfl⟩ := hghook
+      exact hook_walk_identity_gHookYD a b ha hb
+    · -- General ≥3-row, non-gHookYD case: requires GNW hook walk (~300 lines)
+      sorry
 
 /-- The general hook-length formula in ℚ, proved by well-founded recursion on μ.card.
     Uses card_SYT_corner_step (Part XIII) + hook_walk_identity. -/
