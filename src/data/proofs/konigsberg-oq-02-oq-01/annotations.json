@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-konig-oq01-header",
+    "proofId": "konigsberg-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "context",
+    "title": "Bug Discovery: Missing Strong Connectivity Hypothesis",
+    "content": "This file opens with a striking admission: the axiom `directed_euler_circuit_sufficient` in the parent KonigsbergOQ02.lean is **incorrectly stated**. It asserts that balance alone (indeg = outdeg at every vertex) suffices for an Eulerian circuit, but this is wrong.\n\nThe counterexample is immediate: take two disjoint directed triangles on six vertices. Each triangle is balanced — every vertex has indeg 1 and outdeg 1 — but any trail must stay within one triangle and can never reach the other. No Eulerian circuit exists spanning both components.\n\nThe fix is the **strong connectivity** hypothesis: every vertex must be reachable from every other. This file adds that definition (`Digraph.isStronglyConnected`) and restates the theorem correctly.",
+    "mathContext": "**Counterexample to balance-only sufficiency**: Let $V = \\{A, B, C, D, E, F\\}$ with arcs $A \\to B \\to C \\to A$ and $D \\to E \\to F \\to D$. Then $\\mathrm{indeg}(v) = \\mathrm{outdeg}(v) = 1$ for all $v$, but no walk can go from $A$ to $D$ since the two triangles are disconnected. The graph has no Eulerian circuit.",
+    "significance": "key",
+    "relatedConcepts": ["strong-connectivity", "euler-circuit", "counterexample", "balance-condition"],
+    "prerequisites": ["directed-graph", "indegree", "outdegree", "Eulerian-circuit"]
+  },
+  {
+    "id": "ann-konig-oq01-path-eq",
+    "proofId": "konigsberg-oq-02-oq-01",
+    "range": { "startLine": 39, "endLine": 79 },
+    "type": "technique",
+    "title": "Path Equation: First and Second Components",
+    "content": "The auxiliary lemmas `chain_tail_fst_eq_dropLast_snd` and `path_fst_snd_eq` capture a fundamental structural property of chain walks: **the sequence of arc endpoints forms a consistent path**.\n\nFor a valid walk (where the target of each arc equals the source of the next), the list of arc sources and the list of arc targets differ by exactly the walk's start and end vertices. Concretely, prepending the start to the target list gives the same sequence as appending the end to the source list.\n\nThese lemmas must be reproved here because they are `private` in KonigsbergOQ02 — an example of how Lean's privacy mechanism (appropriately) prevents importing internal lemmas, sometimes requiring duplication.",
+    "mathContext": "For a non-empty walk with arcs $[(u_0, v_0), (u_1, v_1), \\ldots, (u_{n-1}, v_{n-1})]$ satisfying $v_i = u_{i+1}$, the path equation is:\n$$[u_0] \\mathbin{++} [v_0, v_1, \\ldots, v_{n-1}] = [u_0, u_1, \\ldots, u_{n-1}] \\mathbin{++} [v_{n-1}]$$\nEquivalently: $[\\mathrm{start}] \\mathbin{++} \\mathrm{map\\ snd}(arcs) = \\mathrm{map\\ fst}(arcs) \\mathbin{++} [\\mathrm{end}]$. For a **circuit** (start = end), the two sides are equal as multisets, giving $\\mathrm{map\\ fst}(arcs) \\sim \\mathrm{map\\ snd}(arcs)$ — the `circuit_fst_perm_snd` result from KonigsbergOQ02.",
+    "significance": "supporting",
+    "relatedConcepts": ["chain-walk", "arc-endpoints", "list-lemmas", "path-equation"],
+    "prerequisites": ["directed-graph", "Walk", "List.Chain'"]
+  },
+  {
+    "id": "ann-konig-oq01-strong-conn",
+    "proofId": "konigsberg-oq-02-oq-01",
+    "range": { "startLine": 80, "endLine": 94 },
+    "type": "definition",
+    "title": "Digraph.isStronglyConnected — The Missing Hypothesis",
+    "content": "The definition `Digraph.isStronglyConnected` captures the connectivity requirement that must be added to the balance condition for directed Eulerian circuits. A digraph is strongly connected if **every vertex is reachable from every other vertex** via a directed walk.\n\nThis is strictly stronger than ordinary (undirected) connectivity. A directed graph can be connected as an undirected graph while failing strong connectivity — for instance, a directed path $A \\to B \\to C$ has no walk from $C$ to $A$.\n\nThe formalization uses `Nonempty (D.Walk u v)` rather than an explicit existence statement, keeping it compatible with Lean's typeclass inference while being equivalent for constructive purposes.",
+    "mathContext": "**Definition**: A digraph $D = (V, A)$ is strongly connected if $\\forall u, v \\in V,\\ \\exists$ a directed walk from $u$ to $v$.\n\n**Lean encoding**: `∀ u v : V, Nonempty (D.Walk u v)`\n\n**Relation to undirected connectivity**: Strong connectivity implies weak connectivity (treating arcs as undirected edges), but not vice versa. The directed triangle $A \\to B \\to C \\to A$ is strongly connected; the directed path $A \\to B \\to C$ is only weakly connected.",
+    "significance": "key",
+    "relatedConcepts": ["strong-connectivity", "reachability", "directed-walk", "weak-connectivity"],
+    "prerequisites": ["directed-graph", "Walk", "Fintype"]
+  },
+  {
+    "id": "ann-konig-oq01-counting",
+    "proofId": "konigsberg-oq-02-oq-01",
+    "range": { "startLine": 96, "endLine": 154 },
+    "type": "technique",
+    "title": "Degree Counting for Nodup Trails",
+    "content": "Two private lemmas establish the degree bounds central to Hierholzer's argument:\n\n**`fst_count_eq_outDegree_stuck`**: If every out-arc from vertex $v$ appears in a Nodup trail (the \"stuck\" condition), then the count of arcs with source $v$ exactly equals `outDegree(v)`. This is proved by converting the filtered list to a finset (exploiting Nodup to preserve cardinality) and matching it bijectively with the out-neighbor set.\n\n**`snd_count_le_inDegree`**: For any Nodup trail, the count of arcs with target $v$ is at most `inDegree(v)`. The Nodup condition ensures each in-neighbor contributes at most one arc, giving the inequality via a finset cardinality argument.\n\nTogether, these two bounds form the arithmetic backbone of the maximal trail sub-lemma.",
+    "mathContext": "Let $w$ be a Nodup trail with arc multiset $A_w$. Then:\n- If $\\forall x.\\ D.\\mathrm{adj}(v, x) \\Rightarrow (v, x) \\in A_w$: $|\\{a \\in A_w : a.1 = v\\}| = \\mathrm{outdeg}(v)$\n- Always: $|\\{a \\in A_w : a.2 = v\\}| \\leq \\mathrm{indeg}(v)$\n\nThe Nodup condition is **essential** for the equality in the first statement: without it, duplicated arcs could inflate the count while the degree is still finite. The inequality in the second statement also relies on Nodup to prevent double-counting at each in-neighbor.",
+    "significance": "supporting",
+    "relatedConcepts": ["outdegree", "indegree", "Nodup", "finset-cardinality", "stuck-condition"],
+    "prerequisites": ["degree-sequence", "Finset", "List.Nodup", "directed-graph"]
+  },
+  {
+    "id": "ann-konig-oq01-maximal-trail",
+    "proofId": "konigsberg-oq-02-oq-01",
+    "range": { "startLine": 156, "endLine": 214 },
+    "type": "theorem",
+    "title": "maximal_balanced_trail_is_circuit — Heart of Hierholzer",
+    "content": "This is the mathematical centerpiece of the file, **proved with 0 sorries**. It shows that in a balanced digraph, any Nodup trail that cannot be extended (a \"maximal\" trail) must be a **closed circuit** — it ends at its starting vertex.\n\nThe proof is a beautiful counting argument:\n1. Apply `path_fst_snd_eq` to get the list equation `[u] ++ map snd = map fst ++ [v₀]`\n2. Count occurrences of `v₀` on both sides\n3. On the right: `fst_count = outDeg(v₀)` by the stuck condition\n4. On the left: `snd_count ≤ inDeg(v₀) = outDeg(v₀)` by balance and the Nodup bound\n5. From the equation: `count(v₀, [u]) + snd_count = outDeg(v₀) + 1`, so `count(v₀, [u]) ≥ 1`, which forces `u = v₀`\n\nThis lemma is the reason Hierholzer's algorithm works: greedy trail extension is guaranteed to produce a circuit, not just a path.",
+    "mathContext": "**Statement**: Let $w$ be a Nodup trail from $u$ to $v_0$ in balanced digraph $D$ such that every out-arc from $v_0$ is in $w$ (stuck condition). Then $u = v_0$.\n\n**Proof via the path equation**: Count $v_0$ in $[u] \\mathbin{++} \\mathrm{map\\ snd}(arcs) = \\mathrm{map\\ fst}(arcs) \\mathbin{++} [v_0]$:\n$$\\#_{v_0}([u]) + \\underbrace{\\#_{v_0}(\\mathrm{snd})}_{\\leq \\mathrm{indeg}(v_0) = \\mathrm{outdeg}(v_0)} = \\underbrace{\\#_{v_0}(\\mathrm{fst})}_{= \\mathrm{outdeg}(v_0)} + 1$$\nSo $\\#_{v_0}([u]) \\geq 1$, hence $u = v_0$. $\\square$",
+    "significance": "critical",
+    "relatedConcepts": ["Hierholzer-algorithm", "maximal-trail", "Eulerian-circuit", "balance-condition", "counting-argument"],
+    "prerequisites": ["Walk", "isBalanced", "outDegree", "inDegree", "Nodup"]
+  },
+  {
+    "id": "ann-konig-oq01-main-theorem",
+    "proofId": "konigsberg-oq-02-oq-01",
+    "range": { "startLine": 216, "endLine": 286 },
+    "type": "theorem",
+    "title": "Corrected Eulerian Sufficiency — Outstanding WF Induction",
+    "content": "The corrected theorem `directed_euler_circuit_sufficient_corrected` assembles all the sub-lemmas into the full Hierholzer argument. It adds the missing `hconn : D.isStronglyConnected` hypothesis and combines it with balance to assert existence of an Eulerian circuit.\n\nThe **proof strategy** is clear from the docstring: greedy trail extension gives a circuit (by `maximal_balanced_trail_is_circuit`); if not Eulerian, strong connectivity guarantees a shared vertex with unused out-arcs; a new sub-circuit can be built in the residual subgraph and spliced in; well-founded induction on uncovered arc count terminates.\n\nThe sorry marks where the WF induction machinery — Walk.splice (circuit concatenation) and balance preservation under arc removal — still needs formal development. The key mathematical idea is fully captured by the proved sub-lemma.",
+    "mathContext": "**Corrected statement**: If $D$ is strongly connected and $\\forall v,\\ \\mathrm{indeg}(v) = \\mathrm{outdeg}(v)$, then $\\exists v_0,\\ \\exists W: D.\\mathrm{Walk}(v_0, v_0),\\ W.\\mathrm{isEulerian}$.\n\n**WF measure** (for the pending induction): $|A(D)| - |\\mathrm{arcs}(C)|$ where $C$ is the current circuit. Each splice strictly reduces uncovered arcs, so the measure is well-founded.\n\n**Relation to undirected case**: The undirected Eulerian circuit theorem (Euler 1736) has a simpler proof — one just needs connectivity and even-degree — because undirected walks can reverse direction. Directed graphs require both balance *and* strong connectivity.",
+    "significance": "key",
+    "relatedConcepts": ["well-founded-induction", "Walk-splice", "residual-subgraph", "Hierholzer-algorithm", "Eulerian-circuit"],
+    "prerequisites": ["strong-connectivity", "balance-condition", "maximal_balanced_trail_is_circuit", "WF-induction"]
+  }
+]
