@@ -18,10 +18,10 @@
       "hierholzer"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 2,
     "dateAdded": "2026-04-24",
     "axiomCount": 0,
-    "assumptions": "1 sorry remains: directed_euler_circuit_sufficient_corrected (WF induction on arcCount combining splice + balance lemmas). Supporting lemmas removeArcList_arcCount and removeArcList_balanced are not yet formalized.",
+    "assumptions": "2 sorries remain: nodup_circuit_exists_of_outDeg_pos (max-length nodup walk → circuit, supporting the Hierholzer induction) and vertex_with_unused_arc (strong connectivity → unused arc exists at non-spanning circuit vertex). These are the two sorry'd sub-lemmas supporting the Hierholzer WF induction for the directed Euler circuit theorem.",
     "lineCount": 286,
     "theoremCount": 6,
     "definitionCount": 1,
@@ -31,7 +31,7 @@
       "maximal_balanced_trail_is_circuit: proved (0 sorries) — key Hierholzer sub-lemma",
       "fst_count_eq_outDegree_stuck: proved — count of out-arcs equals outDegree at stuck vertex",
       "snd_count_le_inDegree: proved — count of in-arcs is at most inDegree for Nodup trails",
-      "directed_euler_circuit_sufficient_corrected: corrected statement with isStronglyConnected; 1 sorry for WF induction"
+      "directed_euler_circuit_sufficient_corrected: corrected statement with isStronglyConnected; 2 sorries for sub-lemmas nodup_circuit_exists_of_outDeg_pos and vertex_with_unused_arc"
     ]
   },
   "overview": {
@@ -47,7 +47,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Key infrastructure proved: maximal trail sub-lemma (0 sorries), degree counting lemmas fst_count_eq_outDegree_stuck and snd_count_le_inDegree (0 sorries). 1 sorry remains for the full Hierholzer WF induction (directed_euler_circuit_sufficient_corrected); Walk.splice and removeArcList_arcCount/removeArcList_balanced are not yet formalized.",
+    "summary": "Key infrastructure proved: maximal trail sub-lemma (0 sorries), degree counting lemmas fst_count_eq_outDegree_stuck and snd_count_le_inDegree (0 sorries). 2 sorries remain: nodup_circuit_exists_of_outDeg_pos and vertex_with_unused_arc — the two sub-lemmas supporting the Hierholzer WF induction for directed_euler_circuit_sufficient_corrected.",
     "implications": [
       "Fixes bug in KonigsbergOQ02 directed Eulerian sufficiency axiom",
       "Walk.splice enables circuit extension proofs beyond this result",
@@ -66,7 +66,7 @@
     "theoremCount": 6,
     "definitionCount": 1,
     "path": "Proofs/KonigsbergOQ02OQ01.lean",
-    "sorries": 1,
+    "sorries": 2,
     "imports": [
       "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
       "Mathlib.Tactic",
@@ -129,5 +129,5 @@
       "description": "Original Königsberg bridges undirected case"
     }
   ],
-  "sorries": 1
+  "sorries": 2
 }
