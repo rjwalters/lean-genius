@@ -10,8 +10,48 @@ The Shapley-Folkman Lemma states: any point in the convex hull of a Minkowski su
 of N sets in ℝ^d can be decomposed so that at most d summands come from convex hulls
 rather than the original sets.
 
-Current status: `shapley_folkman`, `sum_close_to_convexHull`, `repeated_sum_nearly_convex`
-all proved (0 sorries). `reduce_excess_by_one` has 1 sorry remaining (Step 6 perturbation).
+Current status: **COMPLETE — 0 sorries. Docker build passes. PR #12242 open.**
+
+---
+
+## Session 2026-04-24 (Session 10) — Proof Complete: All Sorries Eliminated
+
+**Mode**: REVISIT
+**Outcome**: COMPLETED — 0 sorries, Docker build passes, PR rjwalters/lean-genius#12242 created
+
+### What I Did
+
+Complete rewrite of `proofs/Proofs/ShapleyFolkman.lean` using WF induction on `minCaraDepth`:
+
+1. **New infrastructure**: `minCaraDepth s x` = `sInf {n | ∃ f w with n vertices reprenting x from s}`. Supporting lemmas: `minCaraDepth_le_of_repr`, `minCaraDepth_ge_two`, `binary_repr_depth`.
+
+2. **`binary_repr_depth`**: If `x ∈ conv(s) \ s`, produces `x = tv•a + (1-tv)•bv` with `a ∈ s`, `bv ∈ conv(s)`, `tv ∈ (0,1)`, and `minCaraDepth s bv ≤ minCaraDepth s x - 1`.
+
+3. **WF induction**: `reduce_excess_by_one` now uses `Nat.strongRecOn n` where `n = ∑_{j ∈ excessIndices D₁} minCaraDepth (S j) (D₁.point j)`. Each step applies `binary_repr_depth` to one excess vertex, strictly reducing total depth.
+
+4. **Key type coercion fixes**:
+   - `Nat.sInf {...}` doesn't exist — use bare `sInf {...}`
+   - `rw [hcast] at f_min w_min ...` creates `✝`-renamed vars breaking hypothesis references — use `obtain ⟨f, w, ...⟩ : T := by have h := Nat.sInf_mem ...; rwa [show sInf {...} = K from hK] at h`
+   - `haveI` creates opaque instance ≠ obtained instance — use `letI` for transparent binding
+   - `Finset.single_le_sum` needs `f :=` named argument for function inference
+
+### Key Findings
+
+**The WF measure**: Total `minCaraDepth` over excess indices. Each step of `binary_repr_depth` gives `depth(bv) ≤ depth(x) - 1`, so the sum decreases by ≥ 1.
+
+**Fin type casting pattern** (critical for any future Lean 4 sInf proof):
+```lean
+obtain ⟨f, w, hf, hw, hs, he⟩ : ∃ (f : Fin K → E) (w : Fin K → ℝ), ... := by
+  have h := Nat.sInf_mem hnonempty
+  rwa [show sInf {n | ...} = K from hK] at h
+```
+This avoids `rw at var` creating `✝`-split variable pairs that break hypothesis references.
+
+### Files Modified
+- `proofs/Proofs/ShapleyFolkman.lean`: complete rewrite (648 insertions, 314 deletions)
+
+### PR
+- rjwalters/lean-genius#12242 — `research/shapley-folkman-complete` branch, `research` label
 
 ---
 

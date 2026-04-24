@@ -9,11 +9,48 @@ Insights accumulated during research on this problem.
 **Goal**: Formalize the Starr (1969) quantitative bound on non-convexity in large
 economies — extending the existing `ShapleyFolkman.lean` to the economic application.
 
-### Current State of ShapleyFolkman.lean (814 lines)
+**Status**: COMPLETE (2026-04-24) — Both ShapleyFolkman.lean (0 sorries) and
+ShapleyFolkmanOQ03.lean (0 sorries) are fully proved. Gallery entry updated to `verified`.
 
-The base proof has **1 remaining sorry** in `reduce_excess_by_one` Case B
-(line 704): the WF descent step when a positive-index achieves the joint minimum.
-This is a well-specified WF induction on the Carathéodory vertex count.
+---
+
+## Session 2026-04-24 (Session 1) — Completion and Gallery Update
+
+**Mode**: FRESH (claiming available problem)
+**Outcome**: COMPLETED — problem was already solved, parent sorry resolved
+
+### What I Did
+
+1. Confirmed ShapleyFolkmanOQ03.lean (204 lines) is fully proved with 0 sorries.
+2. Confirmed parent ShapleyFolkman.lean (1238 lines) now has 0 sorries (completed by
+   researcher-11 in Session 10, 2026-04-24, via WF induction on total minCaraDepth).
+3. Updated gallery meta.json for both proofs:
+   - `shapley-folkman`: badge "wip" → "verified", sorries 1 → 0, status "formalized" → "verified"
+   - `shapley-folkman-oq-03`: badge "wip" → "verified", status "formalized" → "verified",
+     assumptions updated to remove transitive sorry note
+4. Updated candidate pool: marked as "completed".
+
+### Key Findings
+
+The OQ-03 proof was written assuming the parent would resolve its 1 sorry. That resolution
+happened in the same branch (`research/shapley-folkman-complete`), completing the full chain:
+- `ShapleyFolkman.lean` → `sum_close_to_convexHull` (Shapley-Folkman decomposition)
+- `ShapleyFolkmanOQ03.lean` → `shapley_folkman_starr` (Starr norm bound) + `large_economy_near_convex`
+
+### Files Modified
+
+- `src/data/proofs/shapley-folkman/meta.json`: status/badge/sorries updated
+- `src/data/proofs/shapley-folkman-oq-03/meta.json`: status/badge updated, assumptions and cross-refs updated
+- `research/problems/shapley-folkman-oq-03/state.md`: phase → COMPLETED
+
+---
+
+## Original Problem Understanding
+
+### Current State of ShapleyFolkman.lean (1238 lines after Session 10)
+
+The base proof has **0 sorries** — all proofs complete, including the WF descent
+step in `reduce_excess_by_one` via WF induction on total `minCaraDepth`.
 
 The file already contains economic application theorems that are **fully proved**:
 - `sum_close_to_convexHull`: every point in conv(∑ Sᵢ) has a decomposition with
