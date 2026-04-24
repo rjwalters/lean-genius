@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1126-oq-01-oq-04",
-  "title": "Can the remaining sorry (almost Jensen → almost additive) be resolved using M...",
+  "title": "Can the remaining sorry (almost Jensen \u2192 almost additive) be resolved using M...",
   "phase": "ORIENT",
   "status": "active",
   "tier": "C",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 7: Proved 3 null-set preservation lemmas (fst, snd, double). 1 sorry remains: ae_double_of_almost_jensen (Fubini section extraction). 5 axioms unchanged.",
+    "progressSummary": "Session 8: Backported volume_preimage_double_null proof from Aristotle companion \u2192 removed 1 axiom. Remaining: ae_double_of_almost_jensen (private axiom, Fubini section extraction), 5 non-private axioms.",
     "builtItems": [
       "Surveyed proof requirements: identified 5-step proof strategy via Fubini sections",
       "Identified Mathlib infrastructure: integral_prod, prod_right_ae, Measure.prod",
@@ -41,38 +41,40 @@
       "Added volume_preimage_snd_null helper lemma (sorry)",
       "Added ae_double_of_almost_jensen helper lemma (sorry, key Fubini step)",
       "Created Erdos1126OQ01Aristotle.lean companion file",
-      "Proved volume_preimage_fst_null: measurable superset B ⊇ S, monotonicity, Measure.prod_prod",
+      "Proved volume_preimage_fst_null: measurable superset B \u2287 S, monotonicity, Measure.prod_prod",
       "Proved volume_preimage_snd_null: symmetric to fst",
-      "Proved volume_preimage_double_null: scalar multiplication (2•·), Set.preimage_smul₀, addHaar_smul"
+      "Proved volume_preimage_double_null: scalar multiplication (2\u2022\u00b7), Set.preimage_smul\u2080, addHaar_smul",
+      "Eliminated private axiom volume_preimage_double_null: replaced with lemma via Measure.quasiMeasurePreserving_smul (line 187\u2192189 in Erdos1126OQ01Problem.lean)"
     ],
     "insights": [
       "The sorry requires proving g(x+y) = g(x)+g(y) a.e. where g(x)=f(x)-f(0) satisfies almost Jensen.",
-      "Step 1: Scale substitution (u,v)=(2x,2y) gives g(x+y)=(g(2x)+g(2y))/2 a.e. — uses null set preservation under linear maps.",
-      "Step 2: Need g(2z)=2g(z) a.e. — this is the HARD step. Cannot simply \"set y=0\" in 2D ae condition.",
-      "Step 3: Fubini section extraction: for a.e. b, Jensen holds for a.e. (a,b). Pick good b₀. This gives g((a+b₀)/2)=(g(a)+g(b₀))/2 for a.e. a.",
+      "Step 1: Scale substitution (u,v)=(2x,2y) gives g(x+y)=(g(2x)+g(2y))/2 a.e. \u2014 uses null set preservation under linear maps.",
+      "Step 2: Need g(2z)=2g(z) a.e. \u2014 this is the HARD step. Cannot simply \"set y=0\" in 2D ae condition.",
+      "Step 3: Fubini section extraction: for a.e. b, Jensen holds for a.e. (a,b). Pick good b\u2080. This gives g((a+b\u2080)/2)=(g(a)+g(b\u2080))/2 for a.e. a.",
       "Step 4: From step 3 with affine substitution, derive g(2z)=2g(z) for a.e. z via algebraic manipulation.",
       "Step 5: Combine steps 1+4: g(x+y) = (2g(x)+2g(y))/2 = g(x)+g(y) a.e.",
       "Mathlib infrastructure available: integral_prod (Fubini), prod_right_ae (ae sections), Measure.prod (product measures).",
-      "The IsDerivation definition only includes Leibniz rule (not additivity) — continuous_derivation_is_zero axiom may be harder to prove than expected.",
+      "The IsDerivation definition only includes Leibniz rule (not additivity) \u2014 continuous_derivation_is_zero axiom may be harder to prove than expected.",
       "The file has 6 axioms, all deep results. Only almost_jensen_stability could become derivable if the sorry is proved.",
-      "Null set preservation under (x,y)↦(2x,2y): Lebesgue measure scales as volume(T⁻¹(N)) = volume(N)/|det T| = 0. In Mathlib: MeasureTheory.Measure.addHaar_smul or similar.",
+      "Null set preservation under (x,y)\u21a6(2x,2y): Lebesgue measure scales as volume(T\u207b\u00b9(N)) = volume(N)/|det T| = 0. In Mathlib: MeasureTheory.Measure.addHaar_smul or similar.",
       "Key algebraic identity: if g satisfies a.e. Jensen with g(0)=0, and we know g(2z)=2g(z) a.e., then g(x+y)=(g(2x)+g(2y))/2=g(x)+g(y) a.e.",
       "The proof decomposes into: (1) scaling substitution f(x+y)=(f(2x)+f(2y))/2, (2) ae double lemma f(2z)=2f(z)-f(0), (3) linarith combination.",
       "The ae double lemma is the ONLY step requiring Fubini. Everything else is algebraic with null-set unions.",
-      "Null set for the combined proof: M = T⁻¹(N) ∪ (N_d × ℝ) ∪ (ℝ × N_d) where T(x,y)=(2x,2y).",
-      "Proved volume_preimage_fst_null: Prod.fst⁻¹(S) = S ×ˢ univ, use measurable superset + Measure.prod_prod + zero_mul",
-      "Proved volume_preimage_snd_null: symmetric via Prod.snd⁻¹(S) = univ ×ˢ S + mul_zero",
-      "Proved volume_preimage_double_null: map is (2:ℝ)•·, use Set.preimage_smul₀ + Measure.addHaar_smul + mul_zero",
-      "Session 7: Proved 3 null-set lemmas. Only ae_double_of_almost_jensen sorry remains (Fubini section extraction)."
+      "Null set for the combined proof: M = T\u207b\u00b9(N) \u222a (N_d \u00d7 \u211d) \u222a (\u211d \u00d7 N_d) where T(x,y)=(2x,2y).",
+      "Proved volume_preimage_fst_null: Prod.fst\u207b\u00b9(S) = S \u00d7\u02e2 univ, use measurable superset + Measure.prod_prod + zero_mul",
+      "Proved volume_preimage_snd_null: symmetric via Prod.snd\u207b\u00b9(S) = univ \u00d7\u02e2 S + mul_zero",
+      "Proved volume_preimage_double_null: map is (2:\u211d)\u2022\u00b7, use Set.preimage_smul\u2080 + Measure.addHaar_smul + mul_zero",
+      "Session 7: Proved 3 null-set lemmas. Only ae_double_of_almost_jensen sorry remains (Fubini section extraction).",
+      "volume_preimage_double_null was axiomatized in main file but already proved in Aristotle companion using Measure.quasiMeasurePreserving_smul \u2014 backporting it eliminated one axiom"
     ],
     "mathlibGaps": [
-      "Need ae_ae_of_ae_prod or prod_right_ae for ℝ² Lebesgue measure → ae sections",
-      "Need null set preservation under affine maps (linear isomorphisms of ℝ²)",
+      "Need ae_ae_of_ae_prod or prod_right_ae for \u211d\u00b2 Lebesgue measure \u2192 ae sections",
+      "Need null set preservation under affine maps (linear isomorphisms of \u211d\u00b2)",
       "May need filter_upwards for combining multiple ae conditions"
     ],
     "nextSteps": [
-      "Prove ae_double_of_almost_jensen: use Fubini section extraction (ae_ae_of_ae_prod) to get good y₀, then algebraic manipulation",
-      "Alternatively, submit ae_double_of_almost_jensen to Aristotle if the Fubini argument is too complex"
+      "ae_double_of_almost_jensen requires Fubini section extraction \u2014 show for a.e. z: (2z,0) not in null set N, enabling f(z)=(f(2z)+f(0))/2",
+      "Alternatively, try proving ae_double_of_almost_jensen via ae_ae_of_ae_prod from Mathlib.MeasureTheory.Measure.Prod"
     ],
     "markdown": "# Knowledge Base: erdos-1126-oq-01-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

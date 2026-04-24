@@ -182,10 +182,13 @@ theorem jensen_iff_additive_shifted (f : ℝ → ℝ) :
 These decompose the measure-theoretic components into clean, targeted statements. -/
 
 /-- Preimage of a null set under (x,y) ↦ (2x,2y) is null.
-Lebesgue measure scales as |det|⁻¹ under invertible linear maps; here det = 4.
-Axiomatized due to Mathlib 4.26 API compatibility for product-space smul scaling. -/
-private axiom volume_preimage_double_null {N : Set (ℝ × ℝ)} (hN : volume N = 0) :
-    volume ((fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) ⁻¹' N) = 0
+Lebesgue measure is quasi-invariant under scalar multiplication by 2. -/
+private lemma volume_preimage_double_null {N : Set (ℝ × ℝ)} (hN : volume N = 0) :
+    volume ((fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) ⁻¹' N) = 0 := by
+  have heq : (fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) = ((2 : ℝ) • ·) := by
+    ext ⟨a, b⟩ <;> simp [smul_eq_mul]
+  rw [heq]
+  exact (Measure.quasiMeasurePreserving_smul volume (two_ne_zero : (2 : ℝ) ≠ 0)).preimage_null hN
 
 /-- Preimage of a 1D null set under first projection is null in ℝ².
 S × ℝ has volume volume(S) · volume(ℝ) = 0 · ∞ = 0. -/
