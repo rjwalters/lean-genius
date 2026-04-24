@@ -1,0 +1,186 @@
+{
+  "id": "ptolemys-complex-proof-oq-02",
+  "title": "Ptolemy's Theorem → Sine Addition Formula",
+  "slug": "ptolemys-complex-proof-oq-02",
+  "description": "The classical derivation: Ptolemy's equality applied to (1, exp(2α·i), −1, exp(−2β·i)) on the unit circle gives sin(α+β) = sinα cosβ + cosα sinβ, machine-verifying the argument Ptolemy used 1850 years ago.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ptolemy%27s_theorem#Corollaries",
+    "date": "2026-04-24",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "complex-analysis",
+      "ptolemy",
+      "trigonometry",
+      "sine-addition",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/PtolemysComplexProofOQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.norm_exp_ofReal_mul_I",
+        "description": "‖exp(θ·I)‖ = 1: unit circle points have norm 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "Complex.exp_pi_mul_I",
+        "description": "exp(π·I) = −1: Euler's formula at π",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "Complex.exp_two_pi_mul_I",
+        "description": "exp(2π·I) = 1: periodicity of complex exponential",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "Real.cos_two_mul",
+        "description": "cos(2θ) = 2cos²θ − 1: double angle formula used in chord length calculations",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.sin_pos_of_pos_of_lt_pi",
+        "description": "sin θ > 0 for θ ∈ (0, π): positivity of sine used throughout",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
+      }
+    ],
+    "originalContributions": [
+      "Machine verification of Ptolemy's classical derivation of the sine addition formula (c. 150 AD), closing the historical loop on 1850 years of mathematics",
+      "Complete chord-length calculus: five lemmas computing ‖z₁-z₂‖, ‖z₂-z₃‖, ‖z₃-z₄‖, ‖z₁-z₄‖, ‖z₂-z₄‖ for the specific quadrilateral",
+      "CCW order verification via IsCCWOrder, connecting the trig setup to the algebraic Ptolemy equality machinery from PtolemysTheoremOQ01",
+      "Non-degeneracy proofs showing none of the four unit-circle points coincide for α, β ∈ (0, π/4)"
+    ],
+    "dateAdded": "2026-04-24",
+    "axiomCount": 0,
+    "lineCount": 351,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+  },
+  "overview": {
+    "historicalContext": "Claudius Ptolemy (c. 150 AD) used his theorem on chords of circles to compute trigonometric tables in the *Almagest*. The argument is simple: inscribe a specific cyclic quadrilateral in a unit circle, apply the equality $|AC|\\cdot|BD| = |AB|\\cdot|CD| + |BC|\\cdot|DA|$, and read off the sine addition formula from the resulting equation. This was the standard derivation of $\\sin(\\alpha+\\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$ for 1500 years, before Euler introduced the exponential form $e^{i(\\alpha+\\beta)} = e^{i\\alpha}e^{i\\beta}$ which makes it a one-line calculation. This file machine-verifies the classical argument, using complex numbers to represent the unit circle and building on `PtolemysTheoremOQ01.lean` for the Ptolemy equality machinery.",
+    "problemStatement": "**Open Question from PtolemysTheoremOQ01.lean**:\n\nThe Ptolemy equality machinery (`ptolemy_equality_for_unit_circle_ccw`) was built to handle four CCW-ordered unit-circle points. The natural question: does applying it to a specific well-chosen quadrilateral yield a classical trigonometric identity as a corollary?",
+    "text": "For α, β ∈ (0, π/4) with α + β < π/2, the four points (1, exp(2α·i), −1, exp(−2β·i)) on the unit circle satisfy Ptolemy's equality, which after computing all six chord lengths simplifies to sin(α+β) = sinα cosβ + cosα sinβ.",
+    "proofStrategy": "**The classical four steps**:\n1. **Choose the quadrilateral**: Place $z_1 = 1$, $z_2 = e^{2\\alpha i}$, $z_3 = -1$, $z_4 = e^{-2\\beta i}$ on the unit circle.\n2. **Compute chord lengths** (five supporting lemmas):\n   - $|z_1 - z_2| = 2\\sin\\alpha$ (using $|1 - e^{2\\alpha i}|^2 = 2 - 2\\cos 2\\alpha = 4\\sin^2\\alpha$)\n   - $|z_2 - z_3| = 2\\cos\\alpha$ (using $|e^{2\\alpha i} + 1|^2 = 2 + 2\\cos 2\\alpha = 4\\cos^2\\alpha$)\n   - $|z_3 - z_4| = 2\\cos\\beta$ (by symmetry under $\\beta \\mapsto \\beta$)\n   - $|z_1 - z_4| = 2\\sin\\beta$ (using $|1 - e^{-2\\beta i}|^2 = 2 - 2\\cos(-2\\beta) = 4\\sin^2\\beta$)\n   - $|z_2 - z_4| = 2\\sin(\\alpha+\\beta)$ (the key diagonal)\n   - $|z_1 - z_3| = |1 - (-1)| = 2$ (trivial)\n3. **Verify CCW order** ($\\theta_1=0 < \\theta_2=2\\alpha < \\theta_3=\\pi < \\theta_4=2\\pi-2\\beta < 2\\pi$)\n4. **Apply Ptolemy** and simplify: $2 \\cdot 2\\sin(\\alpha+\\beta) = 2\\sin\\alpha \\cdot 2\\cos\\beta + 2\\cos\\alpha \\cdot 2\\sin\\beta$.",
+    "keyInsights": [
+      "The choice of angles θ₁=0, θ₂=2α, θ₃=π, θ₄=2π−2β is designed so that each chord length is a pure sine or cosine of α or β.",
+      "The factor of 2 appears everywhere because the quadrilateral lives on a unit circle: chord = 2sin(half-angle).",
+      "The key diagonal ‖exp(2αI) − exp(−2βI)‖ = 2sin(α+β) is the 'output' — it encodes sin(α+β) because the angle between the two exponentials is 2α − (−2β) = 2(α+β).",
+      "The CCW order verification uses the angle parametrization: exp(πI) = −1 (Mathlib: Complex.exp_pi_mul_I) and exp((2π−2β)I) = exp(−2βI) (periodicity: Complex.exp_two_pi_mul_I).",
+      "The proof is self-contained given PtolemysTheoremOQ01 — it uses ptolemy_equality_for_unit_circle_ccw as a black box, substitutes the chord distances, and closes with linarith."
+    ],
+    "prerequisites": [
+      "Ptolemy's equality for unit-circle points in CCW order (PtolemysTheoremOQ01.lean)",
+      "Complex exponential and its norm on the unit circle",
+      "Double-angle and sum-to-product trigonometric identities"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header: Classical Derivation Setup",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Header describes the classical Ptolemy → sine addition derivation. Four imports: PtolemysTheoremOQ01 (for ptolemy_equality_for_unit_circle_ccw, IsCCWOrder), trigonometric basics, complex analysis, and Tactic. The open statement brings Real and Complex into scope. The namespace PtolemysComplexProofOQ02 contains all lemmas.",
+      "mathContext": "The proof strategy is Ptolemy's original: choose z₁=1, z₂=exp(2αI), z₃=−1, z₄=exp(−2βI) on the unit circle. For α,β ∈ (0,π/4), these are in CCW order with angles 0 < 2α < π < 2π−2β < 2π. The Ptolemy equality for these four points gives sin(α+β) = sinα cosβ + cosα sinβ."
+    },
+    {
+      "id": "sec-chord-lemmas",
+      "title": "Section I: Chord Length Lemmas",
+      "startLine": 48,
+      "endLine": 208,
+      "summary": "Five public lemmas compute all chord lengths needed for the Ptolemy substitution. Each uses the squared-norm approach: compute ‖z‖² via Complex.normSq, simplify using double-angle formulas, then extract the positive square root using nlinarith. Private helpers normSq_one_sub_exp and norm_sq_one_sub_exp provide the base case ‖1 − exp(θI)‖² = 2 − 2cosθ.",
+      "mathContext": "The key identity: $|1 - e^{i\\theta}|^2 = (1 - \\cos\\theta)^2 + \\sin^2\\theta = 2 - 2\\cos\\theta$. Using $\\cos 2\\alpha = 1 - 2\\sin^2\\alpha$: $|1 - e^{2\\alpha i}|^2 = 4\\sin^2\\alpha$. For the diagonal: $|e^{2\\alpha i} - e^{-2\\beta i}|^2 = 2 - 2\\cos(2\\alpha+2\\beta) = 4\\sin^2(\\alpha+\\beta)$."
+    },
+    {
+      "id": "sec-ccw",
+      "title": "Section II: CCW Order Verification",
+      "startLine": 209,
+      "endLine": 244,
+      "summary": "Proves IsCCWOrder 1 (exp(2αI)) (−1) (exp(−2βI)) by exhibiting the angle parametrization θ₁=0, θ₂=2α, θ₃=π, θ₄=2π−2β. The verification uses Complex.exp_zero (z₁=1), rfl (z₂), Complex.exp_pi_mul_I (z₃=−1), and Complex.exp_two_pi_mul_I for the periodicity identity exp((2π−2β)I) = exp(−2βI).",
+      "mathContext": "The CCW angle conditions: 0 < 2α (from hα), 2α < π (from hα' < π/2), π < 2π−2β (from hβ > 0), 2π−2β < 2π (from hβ > 0). The periodicity step: exp((2π−2β)I) = exp(−2βI · exp(2πI)) = exp(−2βI)·1 = exp(−2βI)."
+    },
+    {
+      "id": "sec-nondeg",
+      "title": "Section III: Non-Degeneracy Conditions",
+      "startLine": 246,
+      "endLine": 284,
+      "summary": "Two private lemmas prove the denominator product (z₁−z₂)(z₃−z₄) ≠ 0 and numerator product (z₂−z₃)(z₁−z₄) ≠ 0. Each factor is shown nonzero by contradiction: if it were zero, the corresponding chord length would be 0, but the chord lemmas give it as 2sinθ > 0 or 2cosθ > 0 for the given ranges.",
+      "mathContext": "Non-degeneracy is needed for ptolemy_equality_for_unit_circle_ccw. The conditions ‖z_i − z_j‖ > 0 are proved using the chord length lemmas together with Real.sin_pos_of_pos_of_lt_pi and Real.cos_pos_of_mem_Ioo."
+    },
+    {
+      "id": "sec-main",
+      "title": "Section IV: Main Theorem — sin(α+β) = sinα cosβ + cosα sinβ",
+      "startLine": 286,
+      "endLine": 351,
+      "summary": "sin_add_from_ptolemy: the main theorem. Sets up the four unit-circle points, gathers unit-circle membership, CCW order, and non-degeneracy conditions, applies ptolemy_equality_for_unit_circle_ccw, then substitutes all six chord lengths (d13=2, d24=2sin(α+β), d12=2sinα, d34=2cosβ, d23=2cosα, d14=2sinβ) into Ptolemy's equality, giving 4sin(α+β) = 4(sinα cosβ + cosα sinβ), closed by linarith.",
+      "mathContext": "The Ptolemy equality after substitution is $2 \\cdot 2\\sin(\\alpha+\\beta) = 2\\sin\\alpha \\cdot 2\\cos\\beta + 2\\cos\\alpha \\cdot 2\\sin\\beta$, i.e., $4\\sin(\\alpha+\\beta) = 4(\\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta)$. Since $\\sin(\\alpha+\\beta) > 0$, we divide by 4 to get the result — but `linarith` handles this directly without division."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ptolemys-complex-proof-oq-01",
+      "relationship": "uses",
+      "description": "Imports IsCCWOrder and ptolemy_equality_for_unit_circle_ccw from PtolemysTheoremOQ01.lean to apply Ptolemy's equality."
+    },
+    {
+      "targetId": "ptolemys-complex-proof",
+      "relationship": "uses",
+      "description": "PtolemysComplexProof.lean provides ptolemy_equality_of_proportional which underlies the Ptolemy equality chain."
+    },
+    {
+      "targetId": "ptolemys-theorem",
+      "relationship": "related",
+      "description": "PtolemysTheorem.lean proves the same result via Euclidean geometry. The complex-number proof in this file is closer to Ptolemy's original chord-table derivation."
+    }
+  ],
+  "conclusion": {
+    "summary": "Machine-verified: Ptolemy's classical derivation of sin(α+β) = sinα cosβ + cosα sinβ from the cyclic quadrilateral (1, exp(2αI), −1, exp(−2βI)). Five chord-length lemmas compute all distances; CCW order is verified from the angle parametrization; Ptolemy's equality substitutes to give the formula. 0 sorries, 0 axioms.",
+    "implications": "**Historical Significance**: Ptolemy computed the first trigonometric tables by applying his theorem to specific cyclic quadrilaterals. The sine addition formula was his main tool, used repeatedly to build the *Almagest* chord tables. This formalization closes the historical loop: the argument that Ptolemy used c. 150 AD to compute planetary positions is now machine-verified in Lean 4.\n\n**Mathematical Significance**: The proof exhibits a clean modular structure: the algebraic Ptolemy machinery (inequality → equality → CCW characterization) in PtolemysComplexProof/OQ01 is completely decoupled from the trigonometric application here. The five chord lemmas are reusable for other Ptolemy-based trig derivations.",
+    "openQuestions": [
+      "Can the same quadrilateral approach yield cos(α+β) = cosα cosβ − sinα sinβ by a symmetric choice of four points?",
+      "Do the chord-length lemmas generalize to any cyclic quadrilateral on a circle of radius r, giving the full Ptolemy theorem for arbitrary triangles (law of cosines via Ptolemy)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.PtolemysTheoremOQ01",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Complex", "Real"],
+    "namespace": "PtolemysComplexProofOQ02",
+    "lineCount": 351,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "substantiveTheoremCount": 1,
+    "duplicateTheorems": 0,
+    "definitionCount": 0,
+    "path": "Proofs/PtolemysComplexProofOQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Claudius Ptolemy",
+      "title": "Almagest (Μαθηματικὴ Σύνταξις)",
+      "year": "c. 150 AD",
+      "note": "Book I: original chord-table derivation using the cyclic quadrilateral theorem"
+    },
+    {
+      "authors": "Glen Van Brummelen",
+      "title": "The Mathematics of the Heavens and the Earth: The Early History of Trigonometry",
+      "year": "2009",
+      "note": "Princeton University Press. Chapter 2: Ptolemy's derivation of the sine addition formula"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sin_add_from_ptolemy",
+      "type": "core",
+      "description": "For α, β ∈ (0, π/4) with α+β < π/2: sin(α+β) = sinα cosβ + cosα sinβ, proved via Ptolemy's theorem",
+      "leanType": "(α β : ℝ) → 0 < α → α < π/4 → 0 < β → β < π/4 → α+β < π/2 → sin(α+β) = sin α * cos β + cos α * sin β"
+    }
+  ],
+  "sorries": 0
+}

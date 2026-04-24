@@ -84,14 +84,6 @@ theorem ptolemy_inequality (z₁ z₂ z₃ z₄ : ℂ) :
 -- PART 3: Alternative Formulations
 -- ============================================================
 
-/-- Ptolemy's inequality using Complex.abs instead of ‖·‖. -/
-theorem ptolemy_inequality_abs (z₁ z₂ z₃ z₄ : ℂ) :
-    Complex.abs (z₁ - z₃) * Complex.abs (z₂ - z₄) ≤
-    Complex.abs (z₁ - z₂) * Complex.abs (z₃ - z₄) +
-    Complex.abs (z₂ - z₃) * Complex.abs (z₁ - z₄) := by
-  simp only [← Complex.norm_eq_abs]
-  exact ptolemy_inequality z₁ z₂ z₃ z₄
-
 /-- Ptolemy's inequality in terms of metric distance.
 This connects the complex-number proof directly to the classical geometric statement:
   dist(A,C) · dist(B,D) ≤ dist(A,B) · dist(C,D) + dist(B,C) · dist(A,D) -/
@@ -149,6 +141,5 @@ example : (2 : ℝ) = 1 * 1 + 1 * 1 := by norm_num
 #check @ptolemy_algebraic_identity
 #check @ptolemy_complex_identity
 #check @ptolemy_inequality
-#check @ptolemy_inequality_abs
 #check @ptolemy_inequality_dist
 #check @ptolemy_equality_of_proportional
