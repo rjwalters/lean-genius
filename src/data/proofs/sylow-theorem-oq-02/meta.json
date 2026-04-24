@@ -116,13 +116,23 @@
     },
     {
       "targetId": "sylow-theorem-oq-01",
-      "relationship": "sibling",
-      "description": "Uses the counting formula n_p = [G : N_G(P)] implicitly to bound Sylow numbers and classify pq-groups."
+      "relationship": "application",
+      "description": "Classification of groups of order $pq$ via Sylow's theorems: the primary application of the normality criterion $n_p = 1 \\iff P \\trianglelefteq G$. The proof that $|G| = pq$ with $p < q$ forces $n_q = 1$ (using $n_q \\mid p$ and $n_q \\equiv 1 \\pmod{q}$ with $p < q$), so the Sylow $q$-subgroup is normal — exactly the formula $n_q = [G : N_G(Q)]$ applied to constrain the index and hence force uniqueness."
     },
     {
       "targetId": "sylow-theorems-oq-02",
       "relationship": "generalization",
       "description": "Profinite generalization of these finite-group results using axiomatized Serre existence and conjugacy."
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "uses",
+      "description": "The comprehensive Sylow theorems entry: Sylow I (existence), II (conjugacy, i.e., `orbit_eq_top`), and III (congruence). This entry's orbit enumeration proof relies on Sylow II for transitivity and Sylow III for the congruence `n_p ≡ 1 (mod p)`, both of which are the key Mathlib APIs used here."
+    },
+    {
+      "targetId": "sylow-theorem-oq-04",
+      "relationship": "application",
+      "description": "Simplicity of $A_5$ via Sylow counting: another direct application of the normality criterion. The proof shows that for each prime $p \\in \\{2, 3, 5\\}$ dividing $|A_5| = 60$, the Sylow $p$-subgroup count $n_p > 1$ (i.e., no Sylow subgroup is normal), which forces $A_5$ to have no proper normal subgroups. The formula $n_p = [G : N_G(P)]$ is the mechanism: computing $n_p$ via index constraints establishes $n_p \\neq 1$."
     }
   ],
   "leanFile": {
