@@ -253,7 +253,7 @@
     "area-of-circle-oq-05": {
       "auditCount": 2,
       "issues": [
-        "sorries 1→0, status formalized→verified, badge wip→mathlib (sorry was completed)"
+        "sorries 1\u21920, status formalized\u2192verified, badge wip\u2192mathlib (sorry was completed)"
       ],
       "lastAudited": "2026-04-03T09:33:04Z",
       "result": "issues-fixed"
@@ -1454,7 +1454,7 @@
     "descartes-rule-of-signs-oq-02": {
       "auditCount": 4,
       "issues": [
-        "PR #6448: sorries 2→0, lineCount 552→698"
+        "PR #6448: sorries 2\u21920, lineCount 552\u2192698"
       ],
       "lastAudited": "2026-04-03T22:10:54Z",
       "result": "clean"
@@ -5868,9 +5868,9 @@
     },
     "erdos-512": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
-      "result": "issues-fixed"
+      "auditCount": 3,
+      "lastAudited": "2026-04-24T05:03:47Z",
+      "result": "issues-found"
     },
     "erdos-513": {
       "agentId": "auditor-cycle-20-batch",
@@ -7267,7 +7267,7 @@
     "erdos-719": {
       "auditCount": 4,
       "issues": [
-        "PR #6447: sorries 2→1, lineCount 175→196"
+        "PR #6447: sorries 2\u21921, lineCount 175\u2192196"
       ],
       "lastAudited": "2026-04-03T17:35:38Z",
       "result": "clean"
@@ -7455,7 +7455,7 @@
     "erdos-746": {
       "auditCount": 6,
       "issues": [
-        "PR #6440: sorry count 3→4",
+        "PR #6440: sorry count 3\u21924",
         "Issue #6441: 9 vacuous True stubs",
         "https://github.com/rjwalters/lean-genius/pull/8651"
       ],
@@ -11899,7 +11899,7 @@
       "lastAudited": "2026-04-05T12:44:33Z",
       "result": "issues-fixed",
       "issues": [
-        "lineCount 98→112, theoremCount 7→8 (enricher used stale counts)"
+        "lineCount 98\u2192112, theoremCount 7\u21928 (enricher used stale counts)"
       ]
     },
     "arithmetic-series-oq-02-oq-04-oq-01-oq-03": {
