@@ -3523,7 +3523,7 @@ private lemma two_row_hook_identity (a b : ℕ) (hab : b ≤ a) :
 /-- **Hook-length formula for general 2-row Young diagrams.**
     For a ≥ b ≥ 0: card(SYT([a,b])) × hookProd([a,b]) = (a+b)!
     Generalizes hook_length_formula_two_rect (a=b=m case).
-    [Conditional on card_SYT_twoRowYD which is sorry] -/
+    [card_SYT_twoRowYD is proved by WF induction in this file] -/
 theorem hook_length_formula_two_row_gen (a b : ℕ) (hab : b ≤ a) :
     Fintype.card (StandardYoungTableau (twoRowYD a b hab)) *
     hookProd (twoRowYD a b hab) =

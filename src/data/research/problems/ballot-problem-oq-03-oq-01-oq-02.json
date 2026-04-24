@@ -33,10 +33,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-21T13:45:00Z",
-    "iteration": 1,
-    "focus": "card_SYT_twoRectYD via ballot bijection (Catalan number bijection for 2×m SYT)",
-    "blockers": [],
-    "nextAction": "OBSERVE: Read BallotProblemOQ03OQ02.lean to understand n×n LGV types and theorem interface",
+    "iteration": 4,
+    "focus": "General hook_length_formula: 3 sorries remain. 2-row case fully proved. Corner step proved. Aristotle companion created for LGV sorries.",
+    "blockers": [
+      "ni_count_eq_syt_count: RSK/Fomin bijection ~200 lines",
+      "lgv_det_factors_as_hook_quotient: Vandermonde det identity ~200 lines"
+    ],
+    "nextAction": "Attempt ni_count_eq_syt_count via Fomin growth diagram approach",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -44,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: card_SYT_twoRectYD and hook_length_formula_two_rect proved (0 sorries). General hook_length_formula still has 3 sorries.",
+    "progressSummary": "ACT: hook_length_formula proved for all ≤2-row Young diagrams (hook_length_formula_atMostTwoRows). card_SYT_corner_step proved. General HLF: 3 sorries (main + 2 LGV helpers). Aristotle companion created.",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -67,7 +70,17 @@
       "lRefl/firstAbove/badBarrier: Lindstrom reflection infrastructure (lines 1572-2616)",
       "ballot_finset_card: |ballot m-subsets| = Cn m proved (line 2620)",
       "card_SYT_twoRectYD: card SYT(twoRectYD m) = Cn m proved 0 sorries (line 2708)",
-      "hook_length_formula_two_rect: card * hookProd = (2m)! proved 0 sorries (line 2716)"
+      "hook_length_formula_two_rect: card * hookProd = (2m)! proved 0 sorries (line 2716)",
+      "hook_length_formula_atMostTwoRows in BallotProblemOQ03OQ01OQ02.lean:3578 (proved, 0 sorries): HLF for all ≤2-row shapes",
+      "card_SYT_twoRowYD in BallotProblemOQ03OQ01OQ02.lean:3450 (proved, 0 sorries): WF induction on a+b",
+      "hook_length_formula_two_row_gen in BallotProblemOQ03OQ01OQ02.lean:3527 (proved): HLF for general 2-row [a,b]",
+      "card_SYT_corner_step in BallotProblemOQ03OQ01OQ02.lean:3802 (proved, 0 sorries): SYT corner recursion",
+      "BallotProblemOQ03OQ01OQ02Aristotle.lean created with ni_count_eq_syt_count_Aristotle + lgv_det_factors_as_hook_quotient_Aristotle",
+      "hook_length_formula_atMostTwoRows in BallotProblemOQ03OQ01OQ02.lean:3578 (proved, 0 sorries): HLF for all ≤2-row shapes",
+      "card_SYT_twoRowYD in BallotProblemOQ03OQ01OQ02.lean:3450 (proved, 0 sorries): WF induction on a+b",
+      "hook_length_formula_two_row_gen in BallotProblemOQ03OQ01OQ02.lean:3527 (proved): HLF for general 2-row [a,b]",
+      "card_SYT_corner_step in BallotProblemOQ03OQ01OQ02.lean:3802 (proved, 0 sorries): SYT corner recursion",
+      "BallotProblemOQ03OQ01OQ02Aristotle.lean created with ni_count_eq_syt_count_Aristotle + lgv_det_factors_as_hook_quotient_Aristotle"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -94,17 +107,21 @@
       "Direct Finset bijection SYT(m,m) ↔ ballot m-subsets cleaner than ballot-path approach: row-0 entries form ballot Finset naturally",
       "BallotProblemOQ03OQ02 nil case fix: List.countP_nil + subst needed for take_at_column_entry and take_east_count_within_column",
       "Lindstrom reflection principle: bad m-subsets ↔ (m+1)-subsets gives ballot count = C(2m,m) - C(2m,m+1) = Cn m",
-      "Direct Finset bijection SYT(m,m) ↔ ballot m-subsets cleaner than ballot-path approach: row-0 entries form ballot Finset naturally"
+      "Direct Finset bijection SYT(m,m) ↔ ballot m-subsets cleaner than ballot-path approach: row-0 entries form ballot Finset naturally",
+      "card_SYT_twoRowYD proved by WF induction on a+b: base b=0 (oneRowYD), step uses corner recursion + Pascal + catalan_eq_ballot",
+      "hook_length_formula_two_row_gen proved: uses card_SYT_twoRowYD + two_row_hook_identity + hookProd_twoRowYD",
+      "hook_length_formula_atMostTwoRows: any mu with rowLen(2)=0 is twoRowYD (rowLen 0) (rowLen 1); hook formula applies directly",
+      "card_SYT_corner_step proved: card(SYT(mu)) = sum_c card(SYT(mu\\c)) for non-empty mu (via extendSYT/restrictSYT bijection)",
+      "General hook_length_formula via corner induction requires hook walk identity: sum_c hookProd(mu)/hookProd(mu\\c) = n — lives in Q not N"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
       "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux"
     ],
     "nextSteps": [
-      "Prove card_SYT_twoRectYD via ballot bijection: define SYT(2×m) ↔ {S ⊂ {1..2m} : |S|=m, ballot condition}",
-      "This unblocks hook_length_formula_two_rect which is already proved conditional on card_SYT_twoRectYD",
-      "Consider corner-cell induction formula f^λ = Σ_{corners c} f^{λ\\c} for general hook-length formula",
-      "All 4 deep sorries (ni_count, lgv_det, card_SYT_twoRect, hook_formula) require 200-300 lines each"
+      "Prove ni_count_eq_syt_count: Fomin growth diagram bijection SYT(mu) <-> NI-paths in youngLGVConfig (~200 lines)",
+      "Prove lgv_det_factors_as_hook_quotient: det(pathMatrix) * hookProd = n! via Vandermonde-type identity (~200 lines)",
+      "Alternative: prove hook walk identity sum_c hookProd(mu)/hookProd(mu\\c) = n in Q, then derive HLF by induction"
     ]
   },
   "tags": [
