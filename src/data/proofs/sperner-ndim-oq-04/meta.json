@@ -44,7 +44,7 @@
     "historicalContext": "Harold Kuhn (1968) gave the first algorithmic proof of Sperner's lemma, showing that a fully-colored simplex can be found in polynomial time by path-following in the door graph. This constructive approach contrasts with the combinatorial parity argument of Cohen (1967), which proves existence by counting doors modulo 2 but gives no algorithm to find one. The same year, Herbert Scarf (1967) independently developed a pivoting algorithm for computing approximate fixed points, also based on door-traversal in simplicial subdivisions — the two methods are closely related.\n\nKuhn's algorithm belongs to the broader family of **complementary pivot algorithms**: algorithms that follow a unique path determined by local complementarity or door conditions. Lemke and Howson (1964) had already used this idea for Nash equilibrium computation, following edges of the Nash equilibrium polytope. The realization that Sperner-type path-following and Nash equilibrium computation share the same combinatorial structure eventually led to the PPAD complexity class (Papadimitriou, 1994), which captures all problems reducible to finding a degree-1 vertex in a directed graph on an exponentially large implicit structure. Sperner's lemma is PPAD-complete, so Kuhn's constructive proof is, in complexity-theoretic terms, a PPAD algorithm.",
     "problemStatement": "For a Sperner-colored abstract triangulation satisfying the Kuhn compatibility axiom (door degree ≤ 2), starting from a boundary door, construct an explicit path through the door adjacency graph that terminates at a fully-colored simplex.",
     "text": "Kuhn's algorithm provides a constructive proof of Sperner's lemma: follow the unique path in the door graph from a boundary door to reach a fully-colored simplex.",
-    "proofStrategy": "The proof has three layers:\n\n1. **Door degree analysis** (fully proved): Under the Kuhn compatibility axiom (degree ≤ 2) and the abstract door parity theorem:\n   - FC simplices have odd degree ≤ 2, so degree = 1\n   - Non-FC simplices have even degree ≤ 2, so degree = 0 or 2\n\n2. **Unique exit lemma** (fully proved): A non-FC simplex with an entry door has exactly one other door (existsUnique), proved via Finset.card_eq_two and membership analysis.\n\n3. **Path termination** (stated, sorry): The Kuhn walk starting from a boundary door terminates at an FC simplex. Requires the non-revisiting invariant: the door graph component containing a boundary vertex is a path (not a cycle), because cycles in the door graph would contradict the boundary structure.",
+    "proofStrategy": "The proof has three layers:\n\n1. **Door degree analysis** (fully proved): Under the Kuhn compatibility axiom (degree ≤ 2) and the abstract door parity theorem:\n   - FC simplices have odd degree ≤ 2, so degree = 1\n   - Non-FC simplices have even degree ≤ 2, so degree = 0 or 2\n\n2. **Unique exit lemma** (fully proved): A non-FC simplex with an entry door has exactly one other door (existsUnique), proved via Finset.card_eq_two and membership analysis.\n\n3. **Path non-revisiting** (fully proved): The Kuhn walk never returns a previously visited simplex (kuhn_walk_result_not_in_visited, proved by structural induction on fuel). **Open**: proving that the walk REACHES an FC simplex (not merely avoids revisits) requires door-graph acyclicity — that paths from boundary doors are acyclic — which depends on the adj_unique_facet geometric axiom in SpernerTriangulation.",
     "keyInsights": [
       "The abstract door parity theorem (FC ↔ odd door count) combined with the degree bound directly gives exact door counts: 1 for FC, 0 or 2 for non-FC",
       "The unique exit lemma (existsUnique) is the formal statement that Kuhn's algorithm is deterministic: each step has a unique next state",
@@ -241,9 +241,9 @@
       "BigOperators"
     ],
     "namespace": "SpernerNDimOQ04",
-    "lineCount": 408,
+    "lineCount": 480,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 5,
     "sorries": 0
   },
