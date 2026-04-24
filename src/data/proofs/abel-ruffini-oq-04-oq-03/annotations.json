@@ -1,5 +1,55 @@
 [
   {
+    "id": "ann-module-doc",
+    "proofId": "abel-ruffini-oq-04-oq-03",
+    "range": {
+      "startLine": 6,
+      "endLine": 39
+    },
+    "type": "concept",
+    "title": "Module Documentation: What Is Proved vs Axiomatized",
+    "content": "The module documentation is unusually transparent about the asymmetry in formalization: the forward direction of Galois's criterion is fully machine-checked via Mathlib, while the reverse direction is explicitly axiomatized with a detailed explanation of why.\n\nThis is an exemplary approach for a gallery entry at the Mathlib frontier: rather than hiding the gap with vague language or using `sorry`, the file states the axiom clearly (`axiom solvableGal_implies_solvableByRad`) and documents exactly what mathematical ingredient is missing (Kummer theory for cyclic extensions). A reader can see at a glance what is proved and what is assumed.\n\nThe three cited references (Galois 1831, Lang 2002, Mathlib) trace the mathematical lineage: from the original memoir through the standard modern treatment to the machine-checked partial result. The ✅/❌ notation in the module doc provides an immediate visual summary of provability status, a pattern worth adopting for other axiomatized gallery entries.",
+    "mathContext": "The asymmetry: $\\text{IsSolvableByRad}\\,F\\,\\alpha \\Rightarrow \\text{IsSolvable}(q.\\text{Gal})$ is proved via Mathlib's radical tower filtration (each step $K_i \\to K_i(\\sqrt[n]{a})$ contributes a cyclic quotient to the Galois group). The reverse $\\text{IsSolvable}(q.\\text{Gal}) \\Rightarrow \\text{IsSolvableByRad}\\,F\\,\\alpha$ requires Kummer's theorem: a cyclic degree-$p$ extension of $K$ (where $K \\ni \\zeta_p$) equals $K(\\sqrt[p]{\\beta})$ for some $\\beta \\in K$. Without this, one cannot convert a composition series $1 = G_k \\trianglelefteq \\cdots \\trianglelefteq G_0 = \\text{Gal}(q)$ into a radical tower.",
+    "significance": "context",
+    "relatedConcepts": [
+      "axiom vs sorry in Lean",
+      "Mathlib frontier",
+      "Kummer theory",
+      "research transparency",
+      "IsSolvableByRad"
+    ],
+    "prerequisites": [
+      "Lean 4 axiom declarations",
+      "radical extensions",
+      "cyclic Galois extensions"
+    ]
+  },
+  {
+    "id": "ann-setup",
+    "proofId": "abel-ruffini-oq-04-oq-03",
+    "range": {
+      "startLine": 41,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Namespace, Variables, and Proof Context",
+    "content": "The preamble establishes the general field-extension context for Galois's criterion. `noncomputable section` is required because field-theoretic constructions (splitting fields, Galois groups) are defined by non-constructive existence principles in Lean 4's type theory — they exist but cannot be algorithmically computed in general.\n\nThe `set_option linter.unusedVariables false` suppresses warnings for the generic variables `F` and `E` that appear in scope but are not used in every theorem (since some theorems add extra constraints like `[CharZero F]`).\n\nThe `open Polynomial` directive brings polynomial operations and constructors into scope without qualification, reducing syntactic noise in theorem statements. The separator comment `PART 1: Forward Direction (Proved — from Mathlib)` is the first of five part-separators organizing the file's logical flow.",
+    "mathContext": "Variables: $F$ ranges over all fields (for the forward direction and contrapositive, which need no characteristic hypothesis); $E/F$ is a field extension with $\\text{[Algebra}\\,F\\,E]$ (an algebra structure, i.e., a ring homomorphism $F \\to E$). The `[CharZero F]` typeclass is added locally in theorems that need it (axiom, galois_criterion, galois_criterion_rationals, solvable_gal_means_radical_formula, abel_ruffini_as_galois_special_case). The `GaloisCriterion` namespace isolates the six declarations from the global Mathlib namespace.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "noncomputable in Lean",
+      "field extension",
+      "CharZero",
+      "namespace in Lean",
+      "open directive"
+    ],
+    "prerequisites": [
+      "Lean 4 type class system",
+      "field theory basics",
+      "algebra structures in Mathlib"
+    ]
+  },
+  {
     "id": "ann-imports",
     "proofId": "abel-ruffini-oq-04-oq-03",
     "range": {
