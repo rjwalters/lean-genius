@@ -216,3 +216,32 @@ directly gives `i = j` for `i j : Fin 1` without needing any extra hypotheses.
    - Prove additivity: f_N is additive → U-limit is additive (Filter.Tendsto preserves + for ℝ≥0∞)
    - Prove left-invariance: f_N(g•A) - f_N(A) ≤ 2|g|/(2N+1) → U-limit equalizes
 2. If int_amenable proved: only 3 hard sorries remain (hausdorff, banach_tarski, non-measurability)
+
+---
+
+## Session 2026-04-24 (Session 13) — free_group_not_amenable Proved
+
+**Mode**: REVISIT
+**Outcome**: completed — `free_group_not_amenable` proved with 0 sorries
+
+### What I Did
+- Fixed boolean convention bug from session 12: Mathlib uses `(g, true)` for positive generators, `(g, false)` for inverses (from `toWord_of : (of a).toWord = [(a, true)]`)
+- Used `FreeGroup.startsWith_mk_mul` from Mathlib's new `Orbit.lean` to prove cover lemmas cleanly
+- Proved disjointness via `IsReduced`: if `w` starts with `(g,true)` AND `w = (of g) * v` with `v` starting with `(g,false)`, then `v.toWord` would contain adjacent `(g,false)::(g,true)`, contradicting `IsReduced`
+- Fixed 7 type errors from the previous session including `smul_eq_mul`, `Option.some.inj`, disjointness pair ordering, `le_add_right le_rfl`, `subst`+`rfl` pattern for rcases goals
+- Also fixed 3 pre-existing build errors: `equidecomposable_refl` (iUnion_const), `ennreal_add_self_eq_self` (ENNReal.lt_add_right), `paradoxical_no_finite_measure` (notation precedence)
+- Build: ✓ exit code 0, only `sorry` warnings from intentionally axiomatized SO(3)/Banach-Tarski theorems
+
+### Key Findings
+- `FreeGroup.startsWith_mk_mul w h : mk [w] * g ∈ startsWith w` when `g ∉ startsWith (w.1, !w.2)` — perfect for cover lemma
+- After `rcases pattern : expr with ...`, bound variables get substituted into goals; use `subst` then `rfl` not the original hypothesis
+- `ENNReal.lt_add_right (ha : a ≠ ⊤) (hb : b ≠ 0) : a < a + b` — better than `lift` for ENNReal inequalities
+- `Set.iUnion_const : (⋃ _ : ι, s) = s` — use `simp only [Set.iUnion_const]` for `A = ⋃ i : Fin 1, A` goals
+
+### Files Modified
+- `proofs/Proofs/LebesgueMeasureOQ06.lean`: lines 273–468 (new proof infrastructure + 0-sorry theorem)
+- `src/data/research/problems/lebesgue-measure-oq-06.json`: knowledge updated
+
+### Next Steps
+1. Prove `int_amenable` via ultrafilter Banach limit (~100 lines, tractable)
+2. PR #12160 to be deployed
