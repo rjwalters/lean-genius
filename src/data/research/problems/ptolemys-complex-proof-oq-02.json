@@ -1,0 +1,102 @@
+{
+  "slug": "ptolemys-complex-proof-oq-02",
+  "title": "Ptolemy Theorem — Sine Addition Formula via Chord Tables",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\sin(\\alpha + \\beta) = \\sin \\alpha \\cos \\beta + \\cos \\alpha \\sin \\beta",
+    "plain": "Ptolemy originally used his theorem to build chord tables (ancient analogs of sine tables).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-24T00:00:00+02:00",
+    "iteration": 2,
+    "focus": "Proof complete. 0 sorries, 0 axioms.",
+    "blockers": [],
+    "nextAction": "File PR and release lock.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: sin(α+β) = sinα cosβ + cosα sinβ proved via Ptolemy's theorem. File: proofs/Proofs/PtolemysComplexProofOQ02.lean. 0 sorries, 0 axioms.",
+    "builtItems": [
+      "sin_add_from_ptolemy: main theorem proving sin(α+β) = sinα cosβ + cosα sinβ via Ptolemy (PtolemysComplexProofOQ02.lean:299)",
+      "norm_one_sub_exp_two_alpha: ‖1 − exp(2αI)‖ = 2 sinα for α ∈ (0, π/2) (PtolemysComplexProofOQ02.lean:71)",
+      "norm_exp_two_alpha_sub_neg_one: ‖exp(2αI) − (−1)‖ = 2 cosα for α ∈ (0, π/2) (PtolemysComplexProofOQ02.lean:97)",
+      "norm_neg_one_sub_exp_neg_two_beta: ‖(−1) − exp(−2βI)‖ = 2 cosβ for β ∈ (0, π/2) (PtolemysComplexProofOQ02.lean:136)",
+      "norm_one_sub_exp_neg_two_beta: ‖1 − exp(−2βI)‖ = 2 sinβ for β ∈ (0, π/2) (PtolemysComplexProofOQ02.lean:166)",
+      "norm_exp_diff: ‖exp(2αI) − exp(−2βI)‖ = 2 sin(α+β) for α+β < π/2 (PtolemysComplexProofOQ02.lean:179)",
+      "PtolemysTheoremOQ01.lean: complete proof of ptolemy_equality_for_unit_circle_ccw, ptolemy_ratio_pos_of_ccw, IsCCWOrder via trig factorization"
+    ],
+    "insights": [
+      "The quadrilateral (1, exp(2αI), −1, exp(−2βI)) is the classical choice from Ptolemy's Almagest for deriving the sine addition formula",
+      "CCW order follows directly from angle ordering: 0 < 2α < π < 2π−2β < 2π",
+      "The key diagonal is ‖exp(2αI) − exp(−2βI)‖ = 2sin(α+β): the 'output' encoding sin(α+β)",
+      "nlinarith with [sq_nonneg (x - c), sq_nonneg (x + c)] is the canonical way to extract positive square roots in Lean",
+      "The exp_diff_factor lemma (exp(iα) − exp(iβ) = 2I sin((α−β)/2) exp(i(α+β)/2)) is the key factorization for the ptolemy_ratio_pos_of_ccw proof",
+      "Complex.exp_pi_mul_I and Complex.exp_two_pi_mul_I are the API for exp(πI)=−1 and exp(2πI)=1 in Mathlib"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Possible OQ-03: prove cos(α+β) = cosα cosβ − sinα sinβ via a symmetric choice of four unit-circle points",
+      "Possible OQ-04: connect to law of cosines via Ptolemy applied to inscribed triangles"
+    ],
+    "markdown": "# Knowledge Base: ptolemys-complex-proof-oq-02\n\n## COMPLETED 2026-04-24\n\nProved sin(α+β) = sinα cosβ + cosα sinβ via Ptolemy's theorem.\nFile: proofs/Proofs/PtolemysComplexProofOQ02.lean (351 lines, 0 sorries, 0 axioms)\n"
+  },
+  "tags": [
+    "geometry",
+    "trigonometry",
+    "ptolemy",
+    "complex-analysis",
+    "historical",
+    "sine-addition-formula"
+  ],
+  "relatedProofs": [
+    "ptolemys-complex-proof",
+    "ptolemys-complex-proof-oq-01",
+    "ptolemys-complex-proof-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T15:58:45+02:00",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/PtolemysComplexProof.lean",
+      "filename": "PtolemysComplexProof.lean",
+      "lineCount": 155,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysComplexProof.lean"
+    },
+    {
+      "path": "Proofs/PtolemysComplexProofOQ01.lean",
+      "filename": "PtolemysComplexProofOQ01.lean",
+      "lineCount": 136,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysComplexProofOQ01.lean"
+    }
+  ]
+}
