@@ -396,6 +396,11 @@
       "description": "Formalizes the Mathieu group $M_{23}$ — the only sporadic simple group not yet known to be a Galois group over $\\mathbb{Q}$. Proves $M_{23}$ is perfect ($[M_{23}, M_{23}] = M_{23}$), non-solvable (so Shafarevich's theorem, which covers only solvable groups, does not apply), with $|M_{23}| = 2^7 \\cdot 3^2 \\cdot 5 \\cdot 7 \\cdot 11 \\cdot 23$. Directly instantiates the open Inverse Galois Problem discussed in this entry's implications: while Shafarevich proved every solvable group is a Galois group over $\\mathbb{Q}$, non-solvable sporadic groups like $M_{23}$ remain an active open frontier"
     },
     {
+      "targetId": "sylow-theorem-oq-02",
+      "relationship": "foundational",
+      "description": "Formalizes the orbit enumeration formula $n_p = [G : N_G(P)]$ via the orbit-stabilizer theorem: all Sylow $p$-subgroups form a single conjugation orbit $\\{gPg^{-1} \\mid g \\in G\\}$, and the normality criterion $n_p = 1 \\Leftrightarrow P \\trianglelefteq G$ is proved explicitly. This is the precise mechanism underlying the Sylow counting argument for $A_5$ simplicity: $n_5$ divides 12 and $n_5 \\equiv 1 \\pmod 5$ forces $n_5 \\in \\{1, 6\\}$; the criterion $n_5 = 1 \\Rightarrow P_5 \\trianglelefteq A_5$ contradicts simplicity, so $n_5 = 6$. `sylow-theorem-oq-04` applies this formula concretely to $A_5$; this entry establishes the formula in full generality."
+    },
+    {
       "targetId": "sylow-theorem-oq-04",
       "relationship": "complementary",
       "description": "Constructs from scratch the Sylow-theoretic proof that $A_5$ (order $60 = 2^2 \\cdot 3 \\cdot 5$) is simple: computes Sylow numbers $n_2 = 5$, $n_3 = 10$, $n_5 = 6$ by exhaustive enumeration, shows no Sylow subgroup is normal, and confirms simplicity via conjugacy class analysis. This is the group-theoretic keystone of Abel-Ruffini: the Lean proof in this entry delegates $A_5$ simplicity to Mathlib's `alternatingGroup.isSimpleGroup_five`, while `sylow-theorem-oq-04` provides the elementary first-principles verification — together they demonstrate how the same mathematical fact can be accessed at both foundational and library levels"
