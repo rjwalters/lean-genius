@@ -120,14 +120,14 @@
   },
   "crossReferences": [
     {
-      "targetId": "yang-mills-transfer-matrix",
       "relationship": "extends",
-      "description": "OQ-01 from the transfer matrix proof: does the finite-volume mass gap Δ_L survive L → ∞?"
+      "description": "OQ-01 from the transfer matrix proof: does the finite-volume mass gap Δ_L survive L → ∞?",
+      "proofId": "yang-mills-transfer-matrix"
     },
     {
-      "targetId": "yang-mills-lattice-oq-01",
       "relationship": "related",
-      "description": "The continuum limit OQ: does the gap survive a → 0? Both OQs together constitute the Millennium Prize problem."
+      "description": "The continuum limit OQ: does the gap survive a → 0? Both OQs together constitute the Millennium Prize problem.",
+      "proofId": "yang-mills-lattice-oq-01"
     }
   ],
   "leanFile": {
@@ -141,14 +141,21 @@
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
       "Mathlib.Analysis.SpecialFunctions.Exp"
     ],
-    "opens": ["Real", "Set", "Filter", "Topology"],
+    "opens": [
+      "Real",
+      "Set",
+      "Filter",
+      "Topology"
+    ],
     "path": "Proofs/YangMillsTransferMatrixOQ01.lean",
     "sorries": 0
   },
   "references": [
     {
       "key": "Seiler82",
-      "authors": ["E. Seiler"],
+      "authors": [
+        "E. Seiler"
+      ],
       "title": "Gauge Theories as a Problem of Constructive Quantum Field Theory and Statistical Mechanics",
       "venue": "Lecture Notes in Physics 159, Springer-Verlag",
       "year": "1982",
@@ -156,7 +163,10 @@
     },
     {
       "key": "OS78",
-      "authors": ["K. Osterwalder", "R. Seiler"],
+      "authors": [
+        "K. Osterwalder",
+        "R. Seiler"
+      ],
       "title": "Gauge Field Theories on the Lattice",
       "venue": "Annals of Physics",
       "year": "1978",
@@ -166,7 +176,11 @@
     },
     {
       "key": "BFS79",
-      "authors": ["D. Brydges", "J. Fröhlich", "E. Seiler"],
+      "authors": [
+        "D. Brydges",
+        "J. Fröhlich",
+        "E. Seiler"
+      ],
       "title": "On the Construction of Quantized Gauge Fields I",
       "venue": "Annals of Physics",
       "year": "1979",
@@ -176,7 +190,10 @@
     },
     {
       "key": "JW00",
-      "authors": ["A. Jaffe", "E. Witten"],
+      "authors": [
+        "A. Jaffe",
+        "E. Witten"
+      ],
       "title": "Quantum Yang-Mills Theory",
       "venue": "Clay Mathematics Institute Millennium Prize Problems",
       "year": "2000",
