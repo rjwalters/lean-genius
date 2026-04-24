@@ -8,7 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/135",
     "date": "",
     "status": "axiomatized",
-    "proofRepoPath": "Proofs/Stubs/Erdos135Problem.lean",
+    "proofRepoPath": "Proofs/Erdos135Problem.lean",
     "tags": [
       "erdos",
       "discrete-geometry",
@@ -16,14 +16,14 @@
       "disproved"
     ],
     "badge": "axiom",
-    "sorries": 6,
+    "sorries": 0,
     "erdosNumber": 135,
     "erdosUrl": "https://erdosproblems.com/135",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$250",
     "axiomCount": 5,
-    "lineCount": 392,
-    "assumptions": "5 axioms: erdos_135_false (the five-distance conjecture is false, Tao 2024), tao_counterexample (Tao's explicit randomized parabola counterexample), tao_avoids_parallelograms (parabola construction avoids parallelograms), randomized_parabola_works (full randomized construction works), guth_katz_lower_bound (any n points have ≥ cn/√(log n) distinct distances, Guth-Katz 2015). 6 sorries.",
+    "lineCount": 146,
+    "assumptions": "5 axioms: erdos_135_false (the five-distance conjecture is false, Tao 2024), tao_counterexample (Tao's explicit randomized parabola counterexample), guth_katz_lower_bound (any n points determine ≥ cn/√(log n) distinct distances, Guth-Katz 2015), parallelogram_few_distances (parallelograms determine ≤ 3 distances), tao_avoids_parallelograms (five-distance sets contain no parallelogram). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -128,7 +128,10 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib"
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Analysis.Convex.Hull",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
     ],
     "opens": [
       "Set",
@@ -137,12 +140,12 @@
       "Real"
     ],
     "namespace": "Erdos135",
-    "lineCount": 392,
+    "lineCount": 146,
     "axiomCount": 5,
-    "theoremCount": 5,
-    "definitionCount": 11,
-    "path": "Proofs/Stubs/Erdos135Problem.lean",
-    "sorries": 6
+    "theoremCount": 3,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos135Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -175,5 +178,5 @@
       "note": "Original paper posing the four points, five distances problem"
     }
   ],
-  "sorries": 6
+  "sorries": 0
 }
