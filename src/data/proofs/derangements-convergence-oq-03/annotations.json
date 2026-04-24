@@ -46,28 +46,80 @@
     ]
   },
   {
-    "id": "ann-dcoq03-main",
+    "id": "ann-dcoq03-main-setup",
     "proofId": "derangements-convergence-oq-03",
     "range": {
       "startLine": 44,
-      "endLine": 88
+      "endLine": 53
     },
-    "type": "theorem",
-    "title": "derangements_eq_round: D(n) = round(n!/e) for n ≥ 2",
-    "content": "The main theorem proves (numDerangements n : ℤ) = round(n! · rexp(-1)) for n ≥ 2. The proof has two phases:\n\n**Phase 1 (lines 54-72)**: Establish |D(n) − x| < 1/2 where x = n!/e. (1) Apply `derangements_convergence_rate n` to get |D(n)/n! − e⁻¹| ≤ 1/(n+1)!. (2) Rewrite the left side as |D(n) − x|/n! via field manipulation (abs_div, abs_of_pos). (3) Use div_le_iff to multiply both sides by n!, getting |D(n) − x| ≤ n!/(n+1)! = 1/(n+1) via the helper lemma. (4) From n ≥ 2: n+1 > 2, so 1/(n+1) < 1/2 via one_div_lt_one_div_of_lt.\n\n**Phase 2 (lines 74-86)**: Conclude D(n) = round(x). (1) Rewrite with round_eq: round x = ⌊x + 1/2⌋. (2) Apply floor_eq_iff: ⌊r⌋ = z ↔ z ≤ r ∧ r < z + 1. (3) Use abs_lt to split |D − x| < 1/2 into D − x < 1/2 and -(1/2) < D − x. (4) Both halves close with push_cast + linarith.",
-    "mathContext": "Let $x = n!/e$. Step 1: $|D(n)/n! - e^{-1}| \\leq 1/(n+1)!$, so $|D(n) - x| \\leq 1/(n+1) < 1/2$ for $n \\geq 2$. Step 2: Since $D(n) \\in \\mathbb{Z}$ and $|D(n) - x| < 1/2$, we have $\\lfloor x + 1/2 \\rfloor = D(n)$, i.e., $\\text{round}(x) = D(n)$.",
+    "type": "technique",
+    "title": "Main Theorem: Variable Setup and Factorial Positivity",
+    "content": "The main theorem proof opens by establishing two reusable facts:\n\n1. `hfact_pos : 0 < n.factorial` — factorial positivity, needed to apply `div_le_iff` (multiplying an inequality by a positive real preserves direction). Proved via `Nat.cast_pos.mpr n.factorial_pos`.\n\n2. `x : ℝ := n.factorial * rexp(-1)` — the target value $n!/e$, named via the `set` tactic. The `set x := ... with hx_def` form both introduces the abbreviation and generates `hx_def : x = n! · rexp(-1)` for rewrites. This avoids repeating the compound expression throughout the proof.\n\nThis setup-before-argue pattern is idiomatic in Lean: establish basic properties once, reference by name throughout.",
+    "mathContext": "The `set` tactic introduces $x = n!/e = n! \\cdot e^{-1}$. The goal becomes showing `(numDerangements n : ℤ) = round x`.\n\nFactorial positivity `0 < n! : ℝ` enables `div_le_iff hfact_pos`: for $b > 0$, $a/b \\leq c \\iff a \\leq c \\cdot b$. Used to convert the rate bound from division form to absolute form.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "set tactic",
+      "Nat.factorial_pos",
+      "Nat.cast_pos",
+      "div_le_iff"
+    ],
+    "prerequisites": [
+      "Lean 4 `set` tactic",
+      "Nat.cast_pos: 0 < (n : ℝ) ↔ 0 < n",
+      "div_le_iff: a/b ≤ c ↔ a ≤ c*b for b > 0"
+    ]
+  },
+  {
+    "id": "ann-dcoq03-analytic",
+    "proofId": "derangements-convergence-oq-03",
+    "range": {
+      "startLine": 54,
+      "endLine": 72
+    },
+    "type": "technique",
+    "title": "Phase 1: The Analytic Bound — |D(n) − n!/e| < 1/2",
+    "content": "Phase 1 proves `hlt : |(numDerangements n : ℝ) - x| < 1/2` through four steps:\n\n**Step 1**: Apply `derangements_convergence_rate n` to get `hrate : |D(n)/n! − e⁻¹| ≤ 1/(n+1)!`.\n\n**Step 2** (`hmul`): Rewrite the left side as `|D(n) − x|/n!`. The inner rewrite `D/n! − e⁻¹ = (D − x)/n!` uses `field_simp` (with `hx_def`). Then `abs_div` and `abs_of_pos hfact_pos` extract $n!$: `|a/n!| = |a|/n!`.\n\n**Step 3**: Apply `div_le_iff hfact_pos` to multiply both sides by $n!$, yielding `|D(n) − x| ≤ n!·(1/(n+1)!)`. Rewrite via `factorial_mul_one_div_factorial_succ` to get `|D(n) − x| ≤ 1/(n+1)`.\n\n**Step 4**: From `hn : 2 ≤ n`, derive `hn3 : 2 < n+1` and apply `one_div_lt_one_div_of_lt` to get `1/(n+1) < 1/2`. The `calc` block chains: `|D − x| ≤ n!·(1/(n+1)!) = 1/(n+1) < 1/2`.",
+    "mathContext": "The core chain:\n$$|D(n) - x| \\leq n! \\cdot \\frac{1}{(n+1)!} = \\frac{1}{n+1} < \\frac{1}{2}$$\nwhere the last step uses $n \\geq 2 \\Rightarrow n+1 \\geq 3 > 2 \\Rightarrow 1/(n+1) < 1/2$.\n\nThe division manipulation: $|D/n! - e^{-1}| = |(D - x)/n!| = |D - x|/n!$, then multiply both sides of $|D-x|/n! \\leq 1/(n+1)!$ by $n! > 0$.",
     "significance": "key",
     "relatedConcepts": [
       "derangements_convergence_rate",
+      "abs_div",
+      "abs_of_pos",
+      "div_le_iff",
+      "one_div_lt_one_div_of_lt",
+      "factorial_mul_one_div_factorial_succ",
+      "calc tactic"
+    ],
+    "prerequisites": [
+      "alternating series estimation theorem",
+      "absolute value arithmetic: |a/b| = |a|/|b| for b > 0",
+      "div_le_iff for positive denominators"
+    ]
+  },
+  {
+    "id": "ann-dcoq03-rounding",
+    "proofId": "derangements-convergence-oq-03",
+    "range": {
+      "startLine": 73,
+      "endLine": 87
+    },
+    "type": "technique",
+    "title": "Phase 2: From Analytic Bound to Rounding Identity",
+    "content": "Phase 2 converts `hlt : |D(n) - x| < 1/2` into `D(n) = round(x)` using Mathlib's floor/round API:\n\n**Reduction**: `round_eq` rewrites `round x = ⌊x + 1/2⌋`. Proved by `symm` + `floor_eq_iff.mpr`.\n\n**Split by `floor_eq_iff`**: Two goals:\n- `(D : ℝ) ≤ x + 1/2`\n- `x + 1/2 < (D : ℝ) + 1`\n\n**Unpack `abs_lt`**: `habs := abs_lt.mp hlt` gives `habs.1 : -(1/2) < D - x` and `habs.2 : D - x < 1/2`.\n\n**Close by `linarith`**: After `push_cast` (ℤ → ℝ coercion):\n- Upper: `linarith [habs.2]` from $D - x < 1/2 \\Rightarrow D \\leq x + 1/2$\n- Lower: `linarith [habs.1]` from $-(1/2) < D - x \\Rightarrow x + 1/2 < D + 1$",
+    "mathContext": "$D = \\text{round}(x) \\iff D = \\lfloor x + 1/2 \\rfloor \\iff D \\leq x + 1/2 < D + 1$.\n\nThe two `linarith` goals use:\n- $D - x < 1/2 \\Rightarrow D < x + 1/2 \\Rightarrow D \\leq x + 1/2$ (upper)\n- $-(1/2) < D - x \\Rightarrow x - 1/2 < D \\Rightarrow x + 1/2 < D + 1$ (lower)",
+    "significance": "key",
+    "relatedConcepts": [
       "round_eq",
       "floor_eq_iff",
       "abs_lt",
-      "one_div_lt_one_div_of_lt"
+      "push_cast",
+      "linarith"
     ],
     "prerequisites": [
-      "derangements_convergence_rate from DerangementsConvergence.lean",
-      "Mathlib round and floor API",
-      "absolute value arithmetic in Lean 4"
+      "round_eq: round x = ⌊x + 1/2⌋",
+      "floor_eq_iff: ⌊r⌋ = z ↔ z ≤ r ∧ r < z + 1",
+      "abs_lt: |a| < b ↔ -b < a ∧ a < b",
+      "integer-to-real coercion via push_cast"
     ]
   }
 ]
