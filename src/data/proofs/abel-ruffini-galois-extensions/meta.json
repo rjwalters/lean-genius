@@ -218,6 +218,24 @@
       "year": "1963",
       "venue": "Pacific Journal of Mathematics 13(3): 775–1029",
       "note": "Every finite group of odd order is solvable — directly constrains the classification: A₅ (order 60, even) is the smallest non-solvable group, consistent with Feit-Thompson since all odd-order groups are solvable. Referenced in the conclusion implications."
+    },
+    {
+      "authors": [
+        "I. R. Shafarevich"
+      ],
+      "title": "Construction of Fields of Algebraic Numbers with Given Solvable Galois Group",
+      "year": "1954",
+      "venue": "Izvestiya Akademii Nauk SSSR. Seriya Matematicheskaya 18(6): 525–578",
+      "note": "Proves every finite solvable group is realizable as Gal(K/ℚ) for some algebraic number field K — the converse complement to Abel-Ruffini: while Abel-Ruffini limits solvable-by-radicals polynomials to those with solvable Galois group, Shafarevich shows every solvable group occurs. Referenced in the conclusion implications of this file; English translation in AMS Translations (2)2 (1956), 227–282."
+    },
+    {
+      "authors": [
+        "The mathlib Community"
+      ],
+      "title": "Mathlib4: A Unified Library of Mathematics Formalized in Lean 4",
+      "year": "2024",
+      "venue": "https://github.com/leanprover-community/mathlib4",
+      "note": "The Lean 4 mathematical library providing the core infrastructure for this formalization: `IsSolvable`, `solvable_of_ker_le_range`, `Equiv.Perm.not_solvable`, `alternatingGroup.isSimpleGroup_five`, `solvableByRad.isSolvable'`, and `IsGalois.card_aut_eq_finrank`. This file's `badge: mathlib` indicates that the main solvability biconditional is proved by combining Mathlib results rather than from scratch."
     }
   ],
   "sections": [
