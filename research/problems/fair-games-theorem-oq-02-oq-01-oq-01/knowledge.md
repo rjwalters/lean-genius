@@ -16,6 +16,42 @@ alongside Doob's OST using the same Mathlib infrastructure.
 
 ---
 
+## Session 2026-04-24 (Session 2) - Eliminated Both Axioms → Verified
+
+**Mode**: REVISIT
+**Outcome**: completed (verified, 0 sorries, 0 axioms)
+
+### What I Did
+- Replaced `axiom integral_tau_eq_tsum_prob` with a complete Lean 4 proof:
+  - Key path: `integral_eq_lintegral_of_nonneg_ae` → `ENNReal.ofReal_natCast` → `lintegral_nat_eq_tsum_prob` → `ENNReal.tsum_toReal_eq`
+  - Private helper `lintegral_nat_eq_tsum_prob`: uses `lintegral_tsum` (Tonelli) after rewriting
+    τ(ω) as ∑' k, {ω' | k < τ ω'}.indicator 1 ω (Ω-indexed indicator, avoids type confusion)
+  - Key insight: use Ω-indexed indicator form `{ω' | k < τ ω'}.indicator 1 ω` (not ℕ-indexed)
+    to match `lintegral_indicator_one`'s expected form exactly
+
+- Replaced `axiom integral_sum_range_eq_tsum` with a complete Lean 4 proof:
+  - Key tools: `integral_tsum_of_summable_integral_norm` for Fubini, `ENNReal.summable_toReal` for summability
+  - Private helper `integral_indicator_norm_eq`: proves E[‖1_{τ>k}·X(k+1)‖] = E[‖X₀‖]·P(τ>k)
+    using the same tower/pull-out/independence argument as `integral_indicator_prod_eq`
+  - Summability: ∑ E[‖F_k‖] = E[‖X₀‖] · ∑ P(τ>k) = E[‖X₀‖] · E[τ] < ∞
+
+### Key Findings
+- **ENNReal tail sum**: The correct path is via `lintegral_tsum` (Tonelli in ℝ≥0∞, requires only
+  AEMeasurable) followed by `lintegral_indicator_one`. The Ω-indexed indicator form is essential.
+- **Fubini tool**: `integral_tsum_of_summable_integral_norm` (not `integral_tsum`) requires
+  summability of ∫‖f_k‖ rather than absolute convergence of each f_k separately.
+- **Summability chain**: ∑ ∫‖F_k‖ = E[‖X₀‖] · ∑ P(τ>k) = finite because E[τ] = ∑ P(τ>k) < ∞.
+  `ENNReal.summable_toReal` converts ∑ μ{k < τ} ≠ ∞ to Summable (fun k => μ.real {k < τ}).
+- **Type subtlety**: `lintegral_indicator_one` expects `s.indicator 1 ω` where s ⊂ Ω.
+  Using `{k' : ℕ | k' < τ ω}.indicator 1 k` (ℕ-indexed) introduces a type mismatch.
+  Solution: reformulate using `{ω' : Ω | k < τ ω'}.indicator 1 ω` directly.
+
+### Files Modified
+- `proofs/Proofs/FairGamesTheoremOQ02OQ01OQ01.lean` (expanded, 361 lines: +102 lines of proofs)
+- `src/data/proofs/fair-games-theorem-oq-02-oq-01-oq-01/meta.json` (updated: verified, axiomCount=0)
+
+---
+
 ## Session 2026-04-24 (Session 1) - Complete Axiomatization
 
 **Mode**: FRESH
@@ -70,6 +106,12 @@ alongside Doob's OST using the same Mathlib infrastructure.
   standard elementary proof and translates well to Lean. Each term factors by independence.
 - **iIndepFun vs Indep**: Use `iIndepFun` (mutual independence of the sequence) rather than pairwise
   `Indep`. Mathlib's `iIndepFun.condExp_natural_ae_eq_of_lt` directly gives E[X(k+1)|ℱ_k] = E[X₀].
+- **Tail sum in Lean**: The ENNReal route `lintegral_tsum` + `lintegral_indicator_one` is clean.
+  The critical step is rewriting τ(ω) as ∑' k, {ω' | k < τ ω'}.indicator 1 ω (Ω-indexed!) first.
+  Using a ℕ-indexed indicator ({k' | k' < τ ω}) causes type mismatch with lintegral_indicator_one.
+- **Fubini in Lean**: `integral_tsum_of_summable_integral_norm` handles ∫∑' = ∑'∫ cleanly
+  once summability of norms is established. `ENNReal.summable_toReal` is the bridge from
+  ∑ μ{k < τ} ≠ ∞ (from finite E[τ]) to Summable (real-valued norms).
 
 ---
 
@@ -79,3 +121,6 @@ alongside Doob's OST using the same Mathlib infrastructure.
   for this requires E[τ] < ∞ and uniform integrability. The indicator approach avoids this machinery.
 - **Direct `integral_sum`**: Trying to swap sum and integral without explicit Fubini axiom failed at
   the summability hypothesis — need the summable auxiliary result first.
+- **ℕ-indexed indicator for tail sum**: `{k' : ℕ | k' < τ ω}.indicator 1 k` is definitionally equal
+  to `{ω' | k < τ ω'}.indicator 1 ω` but causes type confusion with lintegral_indicator_one.
+  Always use the Ω-indexed form in lintegral arguments.

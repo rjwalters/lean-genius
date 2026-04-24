@@ -1,6 +1,6 @@
 {
   "slug": "fair-games-theorem-oq-02-oq-01-oq-01",
-  "title": "Fair Games \u2014 Wald's Identity Formalization via Mathlib",
+  "title": "Fair Games — Wald's Identity Formalization via Mathlib",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "B",
@@ -29,37 +29,44 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: All 11 Aristotle sorries closed (0 remaining). Main file 0 sorries. Aristotle companion 0 sorries.",
+    "progressSummary": "VERIFIED: Both axioms eliminated. 0 sorries, 0 axioms. Proof is fully machine-checked.",
     "builtItems": [
       "stoppedValue_const: proved via simp [stoppedValue] (FairGamesTheoremOQ03Aristotle.lean)",
       "stoppedValue_eq_of_le: proved via simp [stoppedValue, min_eq_left h]",
-      "isStoppingTime_const: proved via MeasureTheory.isStoppingTime_const \u2131 N",
-      "isStoppingTime_min: proved via h\u03c4.min h\u03c0",
+      "isStoppingTime_const: proved via MeasureTheory.isStoppingTime_const ℱ N",
+      "isStoppingTime_min: proved via hτ.min hπ",
       "martingale_stopped_integral_eq: proved via sub/supermartingale sandwich",
       "martingale_stopped_eq_initial: proved via sub/supermartingale sandwich + stoppedValue_const",
       "measure_toReal_le_one: proved via ENNReal.toReal_le_one.mpr prob_le_one",
       "stoppedValue_measurable proved via stronglyMeasurable_stoppedValue_of_le (FairGamesTheoremOQ03Aristotle.lean:40)",
       "stoppedValue_integrable proved via integrable_stoppedValue (FairGamesTheoremOQ03Aristotle.lean:66)",
       "maximal_set_measurable proved via biUnion (FairGamesTheoremOQ03Aristotle.lean:150)",
-      "doob_maximal_real_of_nnreal proved via maximal_ineq calc chain (FairGamesTheoremOQ03Aristotle.lean:118)"
+      "doob_maximal_real_of_nnreal proved via maximal_ineq calc chain (FairGamesTheoremOQ03Aristotle.lean:118)",
+      "lintegral_nat_eq_tsum_prob: private lemma proving ENNReal tail sum via lintegral_tsum (line 165)",
+      "integral_tau_eq_tsum_prob: full proof replacing axiom (line 185)",
+      "integral_indicator_norm_eq: norm version helper (line 197)",
+      "integral_sum_range_eq_tsum: full Fubini proof replacing axiom (line 248)"
     ],
     "insights": [
-      "FairGamesTheoremOQ03.lean is complete (0 sorries) \u2014 main theorems fully proved without Wald infrastructure",
+      "FairGamesTheoremOQ03.lean is complete (0 sorries) — main theorems fully proved without Wald infrastructure",
       "Aristotle companion has 11 sorries for routine supporting lemmas",
-      "isStoppingTime_const in Mathlib: MeasureTheory.isStoppingTime_const \u2131 N",
-      "IsStoppingTime.min: h\u03c4.min h\u03c0 proves minimum of two stopping times is a stopping time",
+      "isStoppingTime_const in Mathlib: MeasureTheory.isStoppingTime_const ℱ N",
+      "IsStoppingTime.min: hτ.min hπ proves minimum of two stopping times is a stopping time",
       "measure_toReal_le_one: ENNReal.toReal_le_one.mpr prob_le_one works",
       "martingale_stopped_integral_eq proof: sub/supermartingale sandwich from main file",
       "martingale_stopped_eq_initial: same proof as any_bounded_strategy_preserves_expectation",
-      "stoppedValue_measurable: use Adapted.progMeasurable_of_discrete (\u2115 has DiscreteTopology) \u2192 stronglyMeasurable_stoppedValue_of_le + .mono (\u2131.le N)",
-      "stoppedValue_integrable: Mathlib has integrable_stoppedValue (LocallyFiniteOrderBot \u03b9) directly \u2014 one-liner",
+      "stoppedValue_measurable: use Adapted.progMeasurable_of_discrete (ℕ has DiscreteTopology) → stronglyMeasurable_stoppedValue_of_le + .mono (ℱ.le N)",
+      "stoppedValue_integrable: Mathlib has integrable_stoppedValue (LocallyFiniteOrderBot ι) directly — one-liner",
       "maximal_set_measurable: biUnion over Finset.range(N+1) of preimage sets; each measurable via submartingale.adapted.measurable.mono (filtration le)",
-      "doob_maximal_real_of_nnreal: same proof as doobs_maximal_inequality in main file; set equality via Finset.le_sup_iff then NNReal calc chain"
+      "doob_maximal_real_of_nnreal: same proof as doobs_maximal_inequality in main file; set equality via Finset.le_sup_iff then NNReal calc chain",
+      "Tail sum formula proof: use lintegral_tsum + lintegral_indicator_one with Omega-indexed indicator (not N-indexed)",
+      "Fubini proof: integral_tsum_of_summable_integral_norm + ENNReal.summable_toReal from finite E[tau]",
+      "Both axioms from Session 1 are now provable with Mathlib probability infrastructure"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Graduate to completed status \u2014 all sorries resolved",
-      "Consider submitting to gallery as a formal proof"
+      "Consider extending to continuous-time stopping times (tau: Omega -> R>=0)",
+      "Consider proving for martingales beyond iid (Doob-Wald generalization)"
     ],
     "markdown": "# Knowledge Base: fair-games-theorem-oq-02-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
