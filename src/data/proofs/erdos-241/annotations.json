@@ -147,7 +147,7 @@
     "type": "insight",
     "range": {
       "startLine": 123,
-      "endLine": 132
+      "endLine": 123
     },
     "title": "B₃ Examples and Trivial Bound",
     "content": "{1,5,14,30} is a B₃ set — all 20 ordered triple sums are distinct. Note: the set {1,2,4,8} is NOT B₃ since $1+1+4 = 2+2+2 = 6$. The trivial counting argument: the $\\binom{k+2}{3}$ distinct ordered sums from a $k$-element set must fit in {3,...,3N}, giving $k = O(N^{1/3})$.",

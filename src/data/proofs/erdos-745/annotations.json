@@ -245,23 +245,5 @@
     ],
     "mathContext": "See annotation content for formal details of summary and comparison",
     "prerequisites": []
-  },
-  {
-    "id": "ann-e745-answer",
-    "proofId": "erdos-745",
-    "range": {
-      "startLine": 299,
-      "endLine": 327
-    },
-    "type": "concept",
-    "title": "The Final Answer",
-    "content": "**erdos_745_answer:**\n\nErdős Problem #745 is SOLVED.\n\nThe second largest component of G(n, 1/n) has size **Θ(log n)** almost surely.\n\n**Historical significance:**\n- Erdős asked this question in the 1970s\n- He conjectured the answer was O(log n)\n- Komlós, Sulyok, and Szemerédi confirmed this in 1980\n- The result is now a cornerstone of random graph theory",
-    "significance": "key",
-    "relatedConcepts": [
-      "Solved problems",
-      "Random graph milestones"
-    ],
-    "mathContext": "See annotation content for formal details of the final answer",
-    "prerequisites": []
   }
 ]

@@ -122,7 +122,7 @@
     "type": "concept",
     "range": {
       "startLine": 119,
-      "endLine": 135
+      "endLine": 131
     },
     "title": "Main Result and Question Answers",
     "content": "The `counting_argument` axiom formalizes the key division: $A_1(N) \\geq A(N) / 2^{(1+\\varepsilon)\\sqrt{N}}$. Combining with the Saxton-Thomason lower bound gives `erdos_862_main`: $A_1(N) \\geq 2^{(0.16-\\varepsilon)\\sqrt{N}}$. Then `question2_positive` shows $A_1(N) > 2^{N^c}$ for $c < 1/2$ (since $0.16\\sqrt{N} = 0.16 N^{1/2} > N^c$ for $c < 1/2$), and `question1_negative` shows $A_1(N)$ is NOT $< 2^{o(\\sqrt{N})}$ (since $2^{0.16\\sqrt{N}}$ violates the universal quantifier at $c = 0.16$).",

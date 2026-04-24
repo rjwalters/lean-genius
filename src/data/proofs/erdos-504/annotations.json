@@ -167,7 +167,7 @@
     "type": "concept",
     "range": {
       "startLine": 184,
-      "endLine": 219
+      "endLine": 217
     },
     "title": "Optimal Configurations and Convex Position",
     "content": "Regular n-gon vertices are defined via cos/sin on the unit circle. For N = 2^k, the regular polygon achieves the optimal (minimum) maximum angle (regularNGon_optimal). The isConvexPosition predicate (axiomatized) captures when all points are on the convex hull. Optimal configurations achieving α_N are always in convex position (optimal_is_convex).",

@@ -291,7 +291,7 @@
     "type": "concept",
     "range": {
       "startLine": 238,
-      "endLine": 253
+      "endLine": 238
     },
     "title": "Summary: Complete Resolution",
     "content": "Four concluding theorems: `erdos_523` and `erdos_523_solved` both assert `ErdosQuestion523` (forwarding from `erdos_523_answer`). `erdos_523_constant` witnesses $C = 1$ explicitly. `erdos_523_main` packages `halasz_theorem`. The problem is completely solved: $\\max_{|z|=1} |\\sum \\varepsilon_k z^k| = (1 + o(1))\\sqrt{n \\log n}$ almost surely.",
