@@ -59,7 +59,7 @@
     ]
   },
   "conclusion": {
-    "summary": "A complete, axiom-free formalization of the 2×2 LGV Lemma with a novel proof of the Crossing Lemma via column entry order analysis. The Lindström involution is fully constructed and proved to be a sign-reversing bijection on intersecting path pairs. 138 theorems, 0 axioms, 0 sorries across 2878 lines.",
+    "summary": "A complete, axiom-free formalization of the 2×2 LGV Lemma with a novel proof of the Crossing Lemma via column entry order analysis. The Lindström involution is fully constructed and proved to be a sign-reversing bijection on intersecting path pairs. 138 theorems, 0 axioms, 0 sorries across 2922 lines.",
     "implications": "The LGV Lemma is a cornerstone of algebraic combinatorics, used in proofs of the hook-length formula, Schur polynomial identities, and determinantal point processes. This formalization provides Lean 4 infrastructure for lattice path arguments that can be extended to the general LGV lemma (arbitrary path systems) and to applications in representation theory.",
     "openQuestions": [
       "Generalize to the full n×n LGV lemma (n path pairs)",
