@@ -74,86 +74,74 @@
       "**Tail sum formula**: For a ℕ-valued r.v. τ, E[τ] = ∑_{k≥0} P(τ > k). The arithmetic identity (n : ℝ) = ∑' k, 1_{k < n} is proved directly in Lean (nat_cast_eq_tsum_indicator). The full E[τ] = ∑ P(τ > k) form is axiomatized (integral_tau_eq_tsum_prob) as it requires Fubini/dominated convergence in infinite measure.",
       "**Wald vs. OST**: The Optional Stopping Theorem (FairGamesTheoremOQ02OQ01) computes E[X_τ] — the expected value of the process *at* the stopping time. Wald's Identity computes E[∑ X_k] — the expected *cumulative sum* up to stopping. Together they answer: what is the expected terminal state (OST) and what is the expected total path cost (Wald)?"
     ],
-    "sections": [
-      {
-        "id": "sec-setup",
-        "title": "Setup: Imports and Natural Filtration",
-        "startLine": 1,
-        "endLine": 68,
-        "description": "Module header explaining Wald's Identity, the i.i.d. + stopping time setup, and the natural filtration definition ℱ = Filtration.natural X hX_meas.",
-        "theorems": []
-      },
-      {
-        "id": "sec-measurability",
-        "title": "Measurability Lemmas",
-        "startLine": 70,
-        "endLine": 93,
-        "description": "Establishes that {τ > k} is ℱ_k-measurable (stopping_gt_measurable), 1_{τ>k} is ℱ_k-StronglyMeasurable (indicator_gt_sm), and all X_n are integrable by IdentDistrib (X_integrable).",
-        "theorems": [
-          "stopping_gt_measurable",
-          "indicator_gt_sm",
-          "X_integrable"
-        ]
-      },
-      {
-        "id": "sec-core-independence",
-        "title": "Core Independence Computation",
-        "startLine": 95,
-        "endLine": 153,
-        "description": "Proves E[1_{τ>k} · X_{k+1}] = E[X₀] · P(τ > k) via a three-step conditional expectation argument: tower property, pull-out, and independence.",
-        "theorems": [
-          "integral_indicator_prod_eq"
-        ]
-      },
-      {
-        "id": "sec-tail-sum",
-        "title": "Tail Sum Formula",
-        "startLine": 155,
-        "endLine": 183,
-        "description": "Proves the arithmetic identity (n : ℝ) = ∑' k, 1_{k < n}, then axiomatizes the tail sum formula E[τ] = ∑_k P(τ > k) and the Fubini step for stopped sums.",
-        "theorems": [
-          "nat_cast_eq_tsum_indicator",
-          "integral_tau_eq_tsum_prob",
-          "integral_sum_range_eq_tsum"
-        ]
-      },
-      {
-        "id": "sec-wald",
-        "title": "Wald's Identity and Corollaries",
-        "startLine": 186,
-        "endLine": 259,
-        "description": "Assembles Wald's Identity from the pieces. Provides two corollaries: bounded stopping times (no Fubini axiom needed) and zero-mean processes (Gambler's Ruin).",
-        "theorems": [
-          "wald_identity",
-          "wald_identity_bounded",
-          "wald_zero_mean_gives_zero_drift"
-        ]
-      }
-    ],
-    "conclusion": {
-      "summary": "Wald's Identity is formalized in Lean 4 using Mathlib's probability infrastructure. The proof introduces seven theorems: three measurability lemmas, a core independence computation, an arithmetic tail sum identity, and the main result with two corollaries. Two axioms remain for Fubini-Tonelli and the full tail sum formula.",
-      "implications": "Wald's Identity is the expected-sample-size formula for sequential tests (SPRT). Formalizing it opens the path to verified analysis of sequential statistical algorithms in Lean. The zero-mean corollary connects directly to Gambler's Ruin: E[total drift up to stopping] = 0, complementing the OST result that E[fortune at stopping] = initial fortune.",
-      "openQuestions": [
-        "Can integral_tau_eq_tsum_prob be proved using Mathlib's MeasureTheory.integral_eq_tsum or lintegral layer-cake formula?",
-        "Can integral_sum_range_eq_tsum be proved using Mathlib's MeasureTheory.integral_finset_sum with dominated convergence?",
-        "Can the formalization be extended to stopping times taking values in ℝ≥0 rather than ℕ, using Mathlib's continuous-time filtration?"
-      ]
+    "prerequisites": [
+      "Abraham Wald's sequential analysis (1945)",
+      "Doob's Optional Stopping Theorem (FairGamesTheoremOQ02OQ01)",
+      "Mathlib conditional expectation (ConditionalExpectation.Basic)",
+      "Mathlib independence (iIndepFun, iIndepFun.condExp_natural_ae_eq_of_lt)",
+      "Fubini-Tonelli theorem and dominated convergence"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-setup",
+      "title": "Setup: Imports and Natural Filtration",
+      "startLine": 1,
+      "endLine": 68,
+      "summary": "Module header explaining Wald's Identity, the i.i.d. + stopping time setup, and the natural filtration definition ℱ = Filtration.natural X hX_meas."
+    },
+    {
+      "id": "sec-measurability",
+      "title": "Measurability Lemmas",
+      "startLine": 70,
+      "endLine": 93,
+      "summary": "Establishes that {τ > k} is ℱ_k-measurable (stopping_gt_measurable), 1_{τ>k} is ℱ_k-StronglyMeasurable (indicator_gt_sm), and all X_n are integrable by IdentDistrib (X_integrable)."
+    },
+    {
+      "id": "sec-core-independence",
+      "title": "Core Independence Computation",
+      "startLine": 95,
+      "endLine": 153,
+      "summary": "Proves E[1_{τ>k} · X_{k+1}] = E[X₀] · P(τ > k) via a three-step conditional expectation argument: tower property, pull-out, and independence (integral_indicator_prod_eq)."
+    },
+    {
+      "id": "sec-tail-sum",
+      "title": "Tail Sum Formula",
+      "startLine": 155,
+      "endLine": 183,
+      "summary": "Proves the arithmetic identity (n : ℝ) = ∑' k, 1_{k < n}, then axiomatizes the tail sum formula E[τ] = ∑_k P(τ > k) and the Fubini step for stopped sums."
+    },
+    {
+      "id": "sec-wald",
+      "title": "Wald's Identity and Corollaries",
+      "startLine": 186,
+      "endLine": 259,
+      "summary": "Assembles Wald's Identity from the four pieces. Provides two corollaries: bounded stopping times (no Fubini axiom needed) and zero-mean processes (Gambler's Ruin connection)."
     }
+  ],
+  "conclusion": {
+    "summary": "Wald's Identity is formalized in Lean 4 using Mathlib's probability infrastructure. The proof introduces seven theorems: three measurability lemmas, a core independence computation, an arithmetic tail sum identity, and the main result with two corollaries. Two axioms remain for Fubini-Tonelli and the full tail sum formula.",
+    "implications": "Wald's Identity is the expected-sample-size formula for sequential tests (SPRT). Formalizing it opens the path to verified analysis of sequential statistical algorithms in Lean. The zero-mean corollary connects directly to Gambler's Ruin: E[total drift up to stopping] = 0, complementing the OST result that E[fortune at stopping] = initial fortune.",
+    "openQuestions": [
+      "Can integral_tau_eq_tsum_prob be proved using Mathlib's MeasureTheory.integral_eq_tsum or lintegral layer-cake formula?",
+      "Can integral_sum_range_eq_tsum be proved using Mathlib's MeasureTheory.integral_finset_sum with dominated convergence?",
+      "Can the formalization be extended to stopping times taking values in ℝ≥0 rather than ℕ, using Mathlib's continuous-time filtration?"
+    ]
   },
   "crossReferences": [
     {
-      "id": "fair-games-theorem",
-      "relationship": "foundational",
-      "description": "Parent problem: Gambler's Ruin and the fundamental fair-games question that motivates the stopping-time framework."
+      "targetId": "fair-games-theorem",
+      "relationship": "extends",
+      "description": "Parent proof: Gambler's Ruin and the fundamental fair-games question that motivates the stopping-time framework."
     },
     {
-      "id": "fair-games-theorem-oq-02-oq-01",
-      "relationship": "foundational",
-      "description": "Doob's Optional Stopping Theorem formalization — the sibling result that computes E[X_τ]. Provides the Mathlib filtration infrastructure reused in this proof."
+      "targetId": "fair-games-theorem-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Doob's Optional Stopping Theorem — the sibling result that computes E[X_τ]. Provides the Mathlib filtration infrastructure reused in this proof."
     },
     {
-      "id": "fair-games-theorem-oq-02",
-      "relationship": "sibling",
+      "targetId": "fair-games-theorem-oq-02",
+      "relationship": "related",
       "description": "Random walk and martingale theory. The zero-mean corollary here (wald_zero_mean_gives_zero_drift) is the total-drift companion to the OST's terminal-value result."
     }
   ],
