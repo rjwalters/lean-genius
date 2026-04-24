@@ -1,0 +1,28 @@
+{
+  "slug": "area-of-circle-oq-01-oq-03-oq-01-oq-03",
+  "title": "Remove change-of-variables axioms: use MeasureTheory.integral_image_eq_integral_abs_deriv_smul",
+  "type": "axiom-elimination",
+  "status": "available",
+  "tier": "B",
+  "significance": 7,
+  "tractability": 7,
+  "tags": [
+    "measure-theory",
+    "real-analysis",
+    "axiom-elimination",
+    "arc-length",
+    "reparametrization",
+    "isoperimetric"
+  ],
+  "selectedDate": "2026-04-24",
+  "description": "The source proof area-of-circle-oq-01-oq-03-oq-01 (Arc-Length Reparametrization for Smooth Closed Curves) uses axiom declarations for change-of-variables steps in the circumference integral. Replace these with Mathlib's MeasureTheory.integral_image_eq_integral_abs_deriv_smul, which handles measure-preserving change of variables with absolute derivative. This continues the axiom-elimination pattern established by the LP duality synthesis.",
+  "concreteFirstStep": "1. Read src/data/proofs/area-of-circle-oq-01-oq-03-oq-01/meta.json to identify which axiom declarations need elimination. 2. Search Mathlib4 for MeasureTheory.integral_image_eq_integral_abs_deriv_smul and read its signature. 3. Check that arc-length reparametrization satisfies the hypotheses (C1, injective, nonzero derivative). 4. Write the proof replacing the axiom with a formal derivation using IFT + change-of-variables.",
+  "relatedProofs": [
+    "area-of-circle-oq-01-oq-03-oq-01",
+    "area-of-circle-oq-01",
+    "cauchy-schwarz-integral-lp-duality-synthesis"
+  ],
+  "selectedBy": "seeker (2026-04-24)",
+  "compositeScore": 77,
+  "phase": "OBSERVE"
+}
