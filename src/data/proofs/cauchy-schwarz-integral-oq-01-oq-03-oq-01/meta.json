@@ -73,7 +73,8 @@
       "**1/p vs p**: The Lean convention uses `ENNReal.toReal_ofReal` and `one_div` to convert the exponent from the eLpNorm form to the lintegral form. This is a notational detail but critical for proof correctness.",
       "**Product Membership is the Real Payoff**: `memLp_mul_of_memLp_ofReal` is why practitioners care about Hölder. It directly answers: 'If I know f ∈ Lp and g ∈ Lq, is fg integrable?' Yes, and this proof makes it a two-line calculation.",
       "**NormedField Generality**: The theorem is stated for any NormedField 𝕜, not just ℝ or ℂ. This is automatic — the only field property used is nnnorm multiplicativity, which holds in any NormedField.",
-      "**Two-Level Architecture**: Mathlib's Lp theory has lintegral-level and eLpNorm-level lemmas. OQ-03 works at the lower level; this file bridges to the upper level, making Hölder accessible to all eLpNorm-based arguments."
+      "**Two-Level Architecture**: Mathlib's Lp theory has lintegral-level and eLpNorm-level lemmas. OQ-03 works at the lower level; this file bridges to the upper level, making Hölder accessible to all eLpNorm-based arguments.",
+      "**Lp Duality via Hölder**: The inequality eLpNorm(fg,1) ≤ eLpNorm(f,p)·eLpNorm(g,q) says the bilinear pairing ⟨f,g⟩ = ∫fg dμ is bounded on Lp × Lq. This is the key step in proving the Riesz representation theorem (Lp* ≅ Lq for 1 ≤ p < ∞): the map g ↦ ⟨·,g⟩ is an isometric embedding Lq → (Lp)*. Hölder at the eLpNorm level (this file) is exactly the right form for these functional-analytic arguments."
     ],
     "prerequisites": [
       "Lp spaces: Memℒp f p μ, AEStronglyMeasurable, eLpNorm",
@@ -129,7 +130,9 @@
     "implications": "**Why This Matters**\n\n1. **Standard API**: The eLpNorm form is what Mathlib uses in all Lp space theorems (completeness, duality, Riesz representation). Hölder at this level is directly applicable.\n\n2. **Membership Criterion**: `memLp_mul_of_memLp_ofReal` is a practical theorem: it gives a sufficient condition for integrability of a product. This is used constantly in PDE, harmonic analysis, and functional analysis proofs.\n\n3. **Complete Formalization Chain**: OQ-01 (real lintegral) → OQ-03 (NormedField lintegral) → OQ-03-OQ-01 (NormedField eLpNorm) forms a complete three-level hierarchy covering all Mathlib Hölder formulations.",
     "openQuestions": [
       "Can the Hölder inequality be lifted further to the Bochner integral (∫ f dμ in a Banach space) for Banach-space-valued Lp functions?",
-      "Is there a clean eLpNorm form of Young's convolution inequality in Mathlib, and can it be proved analogously?"
+      "Is there a clean eLpNorm form of Young's convolution inequality in Mathlib, and can it be proved analogously?",
+      "Can the Minkowski inequality (triangle inequality for Lp norms: eLpNorm(f+g) ≤ eLpNorm(f) + eLpNorm(g)) be proved at the eLpNorm level in Lean? Mathlib has it at the lintegral level; lifting requires a similar bridge strategy to this file.",
+      "Can the Riesz-Thorin interpolation theorem (if T is bounded on Lp₀ and Lp₁ then T is bounded on Lp for p₀ < p < p₁) be formalized? It requires complex interpolation and the three-lines theorem, which would be new Mathlib infrastructure."
     ]
   },
   "crossReferences": [
@@ -150,8 +153,15 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["MeasureTheory", "ENNReal", "NNReal", "Real"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "ENNReal",
+      "NNReal",
+      "Real"
+    ],
     "namespace": "HolderELpNorm",
     "lineCount": 176,
     "axiomCount": 0,

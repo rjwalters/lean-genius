@@ -124,5 +124,32 @@
       "Lp spaces",
       "Mathlib Lp API"
     ]
+  },
+  {
+    "id": "ann-oq03-oq01-duality",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 86,
+      "endLine": 145
+    },
+    "type": "insight",
+    "title": "Lp Duality: Hölder as the Key Step in Riesz Representation",
+    "content": "The eLpNorm form of Hölder's inequality is the analytical engine behind **Lp duality** — the identification $(L^p)^* \\cong L^q$ for conjugate exponents.\n\n**The duality argument**:\n1. For $g \\in L^q(\\mu)$, define $T_g : L^p(\\mu) \\to \\mathbb{k}$ by $T_g(f) = \\int fg \\, d\\mu$\n2. By `memLp_mul_of_memLp_ofReal`, the product $fg \\in L^1(\\mu)$, so the integral is finite\n3. By `holder_normedField_eLpNorm`, $|T_g(f)| = |\\int fg| \\leq \\text{eLpNorm}(fg,1) \\leq \\text{eLpNorm}(f,p) \\cdot \\text{eLpNorm}(g,q)$\n4. So $\\|T_g\\|_{(L^p)^*} \\leq \\|g\\|_{L^q}$ — $T_g$ is a bounded linear functional\n5. The Riesz representation theorem (not in this file, but relying on this infrastructure) shows the map $g \\mapsto T_g$ is an isometric isomorphism $L^q \\to (L^p)^*$\n\n**Why eLpNorm matters**: The Riesz representation theorem is stated in terms of `Memℒp` (Lp membership) and `eLpNorm` (Lp norm). The lintegral form of Hölder (OQ-03) is not directly applicable to Riesz representation proofs — the eLpNorm form (this file) is.",
+    "mathContext": "Riesz representation: $(L^p(\\mu))^* \\cong L^q(\\mu)$ for $1 \\le p < \\infty$, $1/p + 1/q = 1$. The isometric embedding $\\iota : L^q \\hookrightarrow (L^p)^*$ is $\\iota(g)(f) = \\int f \\cdot g \\, d\\mu$. By Hölder: $|\\iota(g)(f)| \\le \\|f\\|_p \\cdot \\|g\\|_q$, so $\\|\\iota(g)\\|_{(L^p)^*} \\le \\|g\\|_q$. The reverse inequality (isometry) requires the Hahn-Banach theorem or an explicit maximizer construction. In Mathlib: `MeasureTheory.Lp.inner_le_eLpNorm` and the `inner_product_space` instance on $L^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lp duality",
+      "Riesz representation theorem",
+      "bounded linear functionals",
+      "dual space",
+      "Banach space duality",
+      "Hahn-Banach theorem"
+    ],
+    "prerequisites": [
+      "Hölder inequality (this file)",
+      "Memℒp and eLpNorm",
+      "functional analysis",
+      "dual Banach spaces"
+    ]
   }
 ]
