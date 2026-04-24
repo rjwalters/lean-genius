@@ -1,0 +1,208 @@
+{
+  "id": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01",
+  "title": "ℤ[X,Y] is NOT a Principal Ideal Ring",
+  "slug": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01",
+  "description": "Proves that ℤ[X,Y] = MvPolynomial (Fin 2) ℤ is NOT a principal ideal ring (PIR). The ideal I = (2, X₀) is shown to be proper (1 ∉ I via constantCoeff: any 2a + X₀b maps to 2·constantCoeff(a), which cannot equal 1 in ℤ) and non-principal (if I = (f), then totalDegree_mul_of_isDomain gives totalDegree(f) = 0, so f = C c with c ∣ 2; then C c ∣ X₀ forces c ∣ 1, making C c a unit and I = ⊤, contradiction). Combined with the parent result that ℤ[X,Y] is a UFD, this establishes UFD strictly weaker than PIR.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ01OQ01OQ01OQ01.lean",
+    "parentProofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01",
+    "tags": [
+      "algebra",
+      "polynomial-rings",
+      "not-PID",
+      "multivariate",
+      "ideal-theory",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. All results from Mathlib's IsPrincipalIdealRing, Ideal.span, MvPolynomial typeclasses.",
+    "dateAdded": "2026-04-24",
+    "lineCount": 192,
+    "theoremCount": 8,
+    "definitionCount": 3,
+    "mathlibDependencies": [
+      {
+        "theorem": "MvPolynomial.constantCoeff",
+        "description": "Ring hom ZXY →+* ℤ evaluating all variables at 0; constantCoeff(X i) = 0",
+        "module": "Mathlib.Algebra.MvPolynomial.Basic"
+      },
+      {
+        "theorem": "MvPolynomial.totalDegree_eq_zero_iff_eq_C",
+        "description": "totalDegree 0 iff polynomial is a constant C c",
+        "module": "Mathlib.Algebra.MvPolynomial.Degrees"
+      },
+      {
+        "theorem": "MvPolynomial.totalDegree_mul_of_isDomain",
+        "description": "EXACT equality totalDegree(f*g) = totalDegree(f) + totalDegree(g) for nonzero f,g over a domain",
+        "module": "Mathlib.RingTheory.MvPolynomial.MonomialOrder.DegLex"
+      },
+      {
+        "theorem": "Int.isUnit_of_dvd_one",
+        "description": "c | 1 in ℤ implies c is a unit",
+        "module": "Mathlib.Data.Int.Units"
+      },
+      {
+        "theorem": "IsUnit.map",
+        "description": "Ring homomorphisms preserve units",
+        "module": "Mathlib.Algebra.Group.Units.Basic"
+      },
+      {
+        "theorem": "IsPrincipalIdealRing.principal",
+        "description": "In a PIR, every ideal is principal",
+        "module": "Mathlib.RingTheory.PrincipalIdealDomain"
+      }
+    ],
+    "originalContributions": [
+      "not_isPrincipalIdealRing: ¬IsPrincipalIdealRing (MvPolynomial (Fin 2) ℤ)",
+      "I_not_principal: ¬Submodule.IsPrincipal (Ideal.span {C 2, X 0})",
+      "one_not_mem_I: (1 : MvPolynomial (Fin 2) ℤ) ∉ I",
+      "dvd_gen2_is_const: if f | C 2 then f = C c with c | 2",
+      "isUnit_of_C_dvd_genX: if C c | X 0 then IsUnit c",
+      "ufd_not_pir_distinction: UFD ∧ ¬PIR for ℤ[X,Y]"
+    ],
+    "prerequisites": [
+      "Principal ideal rings and domains",
+      "MvPolynomial (multivariate polynomial rings)",
+      "Ideal theory (Ideal.span, Submodule.IsPrincipal)",
+      "Ring homomorphisms and kernels",
+      "totalDegree for multivariate polynomials"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The question of which polynomial rings are PIDs or PIRs is central to commutative algebra. Gauss (1801) proved ℤ is a UFD; Gauss's lemma gives UFD → R[X] is a UFD, so ℤ[X] is a UFD. However ℤ[X] is NOT a PID: the ideal (2, X) is not principal. For ℤ[X,Y], the same witness works. This is a foundational distinction: UFD is strictly weaker than PID. Noether (1920s) and Krull systematized this hierarchy: PID → UFD → GCD domain → integral domain. The proof here via the ring map ℤ[X,Y] → ℤ/2ℤ is the standard modern proof, credited to the general theory of maximal ideals and quotient rings.",
+    "problemStatement": "Is ℤ[X,Y] a principal ideal ring? (Answer: No.)",
+    "text": "ℤ[X,Y] is NOT a principal ideal ring: the ideal (2, X) is a proper non-principal ideal.",
+    "proofStrategy": "Witness I = (2, X₀). Step 1: I ≠ ⊤ via constantCoeff : ℤ[X,Y] → ℤ (evaluates all vars at 0): any element 2a + X₀b maps to 2·constantCoeff(a), which is even, so cannot equal 1. Step 2: I not principal: if I = (f), then f | C 2. Since f ≠ 0 and g := 2/f ≠ 0, totalDegree_mul_of_isDomain gives totalDegree(f) + totalDegree(g) = totalDegree(C 2) = 0, so totalDegree(f) = 0, hence f = C c with c | 2. Then C c | X₀, extracting the X₀-coefficient gives 1 = c · coeff(X₀, g), so c | 1, so c is a unit. Then C c is a unit (via IsUnit.map), so (C c) = ⊤, contradicting I ≠ ⊤.",
+    "keyInsights": [
+      "constantCoeff : ZXY →+* ℤ maps any 2a + X₀b to 2·constantCoeff(a), which is even; omega closes 2k = 1 is impossible",
+      "totalDegree_mul_of_isDomain (EXACT equality, not ≤) for nonzero f,g over a domain: totalDegree(f) + totalDegree(g) = totalDegree(C 2) = 0 forces both to 0",
+      "totalDegree_eq_zero_iff_eq_C converts degree 0 to f = C (constantCoeff f)",
+      "Coefficient extraction: C c * g = X₀ → c * coeff(X₀, g) = 1, so c | 1 in ℤ, so IsUnit c",
+      "IsUnit.map lifts units ℤ → ℤ[X,Y] via the ring hom C : ℤ →+* ℤ[X,Y]",
+      "Ideal.span_singleton_eq_top: ⟨u⟩ = ⊤ iff u is a unit"
+    ],
+    "prerequisites": [
+      "Principal ideal ring definition",
+      "MvPolynomial and totalDegree",
+      "Ring homomorphism theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Docstring explaining the proof strategy (ideal (2,X) is proper and non-principal). Imports Mathlib and the parent UFD proof. Opens MvPolynomial namespace."
+    },
+    {
+      "id": "sec-ideal",
+      "title": "The ideal I = (2, X)",
+      "startLine": 36,
+      "endLine": 56,
+      "summary": "Defines gen2 = C 2, genX = X (0 : Fin 2), and I = Ideal.span {gen2, genX}."
+    },
+    {
+      "id": "sec-proper",
+      "title": "Step 1: I is proper (φ witness)",
+      "startLine": 57,
+      "endLine": 88,
+      "summary": "Proves one_not_mem_I: applies constantCoeff (ring hom ZXY → ℤ, X i ↦ 0) to 1 = 2a + X₀b to get 1 = 2·constantCoeff(a), which omega refutes. Derives I_ne_top: I ≠ ⊤."
+    },
+    {
+      "id": "sec-const",
+      "title": "Step 2: f | C 2 implies f is a constant",
+      "startLine": 89,
+      "endLine": 123,
+      "summary": "dvd_gen2_totalDeg_zero (private): uses totalDegree_mul_of_isDomain (exact equality) + gen2 has degree 0, so omega gives totalDegree f = 0. dvd_gen2_is_const: totalDegree_eq_zero_iff_eq_C gives f = C(constantCoeff f); apply constantCoeff to gen2 = f*g to get c | 2."
+    },
+    {
+      "id": "sec-unit",
+      "title": "Step 3: C c | X implies c is a unit",
+      "startLine": 124,
+      "endLine": 151,
+      "summary": "isUnit_of_C_dvd_genX: extract X₀-coefficient from C c * g = X 0, get 1 = c * coeff, so c | 1, hence IsUnit c. isUnit_C_of_isUnit: lift via IsUnit.map."
+    },
+    {
+      "id": "sec-main",
+      "title": "Main Theorems",
+      "startLine": 152,
+      "endLine": 199,
+      "summary": "I_not_principal, not_isPrincipalIdealRing, exists_non_principal_ideal, ufd_not_pir_distinction."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "ℤ[X,Y] is a UFD (the complementary positive result)"
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-01",
+      "relationship": "grandparent",
+      "description": "ℤ[X] is a UFD (Gauss's lemma)"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's Identity"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete proof that ℤ[X,Y] is not a PIR, with 0 sorries and 0 axioms, using the ideal (2,X) as witness.",
+    "implications": "Establishes the strict inequality PID < UFD in the ring hierarchy. ℤ[X,Y] is the canonical example of a UFD that is not a PID.",
+    "openQuestions": [
+      "Can we formalize the Nullstellensatz for ℤ[X,Y]?",
+      "Can we classify which polynomial rings R[X₁,...,Xₙ] are PIRs?"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "not_isPrincipalIdealRing",
+      "type": "core",
+      "description": "ℤ[X,Y] is NOT a principal ideal ring",
+      "leanType": "¬IsPrincipalIdealRing (MvPolynomial (Fin 2) ℤ)"
+    },
+    {
+      "name": "I_not_principal",
+      "type": "core",
+      "description": "The ideal (2, X) is not a principal ideal in ℤ[X,Y]",
+      "leanType": "¬Submodule.IsPrincipal (Ideal.span {gen2, genX})"
+    },
+    {
+      "name": "ufd_not_pir_distinction",
+      "type": "corollary",
+      "description": "ℤ[X,Y] is a UFD but NOT a principal ideal ring",
+      "leanType": "UniqueFactorizationMonoid (MvPolynomial (Fin 2) ℤ) ∧ ¬IsPrincipalIdealRing (MvPolynomial (Fin 2) ℤ)"
+    },
+    {
+      "name": "exists_non_principal_ideal",
+      "type": "corollary",
+      "description": "There exists a proper non-principal ideal in ℤ[X,Y]",
+      "leanType": "∃ J : Ideal (MvPolynomial (Fin 2) ℤ), J ≠ ⊤ ∧ ¬Submodule.IsPrincipal J"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.BezoutIdentityOQ02OQ01OQ01OQ01"
+    ],
+    "opens": [
+      "MvPolynomial"
+    ],
+    "namespace": "NotPID",
+    "lineCount": 192,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 3,
+    "path": "Proofs/BezoutIdentityOQ02OQ01OQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
