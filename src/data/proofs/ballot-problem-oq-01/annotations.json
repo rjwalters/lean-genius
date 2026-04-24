@@ -76,7 +76,7 @@
     },
     "type": "concept",
     "title": "Permutation Characterization and Finiteness",
-    "content": "Every element of kCountedSequence is a permutation of the canonical witness `replicate a 1 ++ replicate b (-k)`. This is proved using `List.perm_iff_count` — two lists are permutations iff they have the same count for every element. The proof handles three cases: $x = 1$ (use $h_1$), $x = -k$ (use $h_2$), and $x \\notin \\{1, -k\\}$ (both counts are zero).\n\nThis characterization immediately gives **finiteness**: the set of permutations of a finite list is finite, so `kCountedSequence` inherits `Set.Finite`.",
+    "content": "Every element of kCountedSequence is a permutation of the canonical witness `replicate a 1 ++ replicate b (-k)`. This is proved using `List.perm_iff_count` \u2014 two lists are permutations iff they have the same count for every element. The proof handles three cases: $x = 1$ (use $h_1$), $x = -k$ (use $h_2$), and $x \\notin \\{1, -k\\}$ (both counts are zero).\n\nThis characterization immediately gives **finiteness**: the set of permutations of a finite list is finite, so `kCountedSequence` inherits `Set.Finite`.",
     "mathContext": "$$l \\in \\text{kCountedSequence}(k,a,b) \\iff l \\sim \\underbrace{[1, \\ldots, 1]}_{a} \\mathbin{\\|} \\underbrace{[-k, \\ldots, -k]}_{b}$$",
     "significance": "key",
     "relatedConcepts": [
@@ -168,7 +168,7 @@
     },
     "type": "concept",
     "title": "Prefix Sum Relation for Rotations",
-    "content": "The key structural lemma for the cycle lemma. For rotation starting at position $i$, the prefix sum at position $j$ decomposes into two cases depending on whether $i + j$ wraps around. The non-wrapping case uses `take_drop_sum`, while the wrapping case involves `List.take_append` and a careful re-indexing via `List.take_take`.\n\nThis lemma is the technical heart of the file — it connects the combinatorial structure of rotations to the analytic property of prefix sums.",
+    "content": "The key structural lemma for the cycle lemma. For rotation starting at position $i$, the prefix sum at position $j$ decomposes into two cases depending on whether $i + j$ wraps around. The non-wrapping case uses `take_drop_sum`, while the wrapping case involves `List.take_append` and a careful re-indexing via `List.take_take`.\n\nThis lemma is the technical heart of the file \u2014 it connects the combinatorial structure of rotations to the analytic property of prefix sums.",
     "mathContext": "$$\\sigma_{\\text{rot}(i)}(j) = \\begin{cases} \\sigma(i+j) - \\sigma(i) & i+j \\leq n \\\\ \\sigma(i+j-n) + S - \\sigma(i) & i+j > n \\end{cases}$$",
     "significance": "key",
     "relatedConcepts": [
@@ -192,7 +192,7 @@
     },
     "type": "theorem",
     "title": "Good Rotations and Decidability",
-    "content": "A rotation is **good** if all prefix sums of the rotated sequence are strictly positive — equivalently, if the corresponding vote counting always has A leading with more than $k$ times B's votes. The `isGoodRotation` predicate is made `Decidable` by reducing to a finite conjunction over $j \\in [1, n]$, enabling `native_decide` verification of concrete examples.\n\n`goodRotations l` collects all good starting positions as a `Finset ℕ`.",
+    "content": "A rotation is **good** if all prefix sums of the rotated sequence are strictly positive \u2014 equivalently, if the corresponding vote counting always has A leading with more than $k$ times B's votes. The `isGoodRotation` predicate is made `Decidable` by reducing to a finite conjunction over $j \\in [1, n]$, enabling `native_decide` verification of concrete examples.\n\n`goodRotations l` collects all good starting positions as a `Finset \u2115`.",
     "mathContext": "$$\\text{goodRotations}(l) = \\{i < |l| \\mid \\forall\\, 0 < j \\leq |l|,\\; \\sigma_{\\text{rot}(i)}(j) > 0\\}$$",
     "significance": "key",
     "relatedConcepts": [

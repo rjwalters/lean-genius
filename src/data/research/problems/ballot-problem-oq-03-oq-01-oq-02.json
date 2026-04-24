@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 2-row case fully done via characterization; 3 sorries remain for 3+ row general case (LGV chain has fundamental disconnect issue)",
+    "progressSummary": "PROGRESS: card_SYT_twoRectYD and hook_length_formula_two_rect proved (0 sorries). General hook_length_formula still has 3 sorries.",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -65,19 +65,9 @@
       "hook_length_formula_two_rect: card * hookProd = (2m)! proved 0 sorries (line 2716)",
       "sytBallotEquiv m : SYT(twoRectYD m) ≃ ballot m-subsets of Fin(2m) (BallotProblemOQ03OQ01OQ02.lean:1503)",
       "lRefl/firstAbove/badBarrier: Lindstrom reflection infrastructure (lines 1572-2616)",
+      "ballot_finset_card: |ballot m-subsets| = Cn m proved (line 2620)",
       "card_SYT_twoRectYD: card SYT(twoRectYD m) = Cn m proved 0 sorries (line 2708)",
-      "twoRowYD a b hab: general 2-row YoungDiagram [a,b] for a≥b (BallotProblemOQ03OQ01OQ02.lean:2728)",
-      "hookProd_twoRowYD: hookProd([a,b]) = (a+1).descFactorial b × (a-b)! × b! proved 0 sorries (line 2800)",
-      "two_row_hook_identity: ballotSeqCount(a+1,b) × hookProd([a,b]) = (a+b)! proved 0 sorries (line 2930)",
-      "hook_length_formula_two_row_gen: card×hookProd=(a+b)! proved conditional on card_SYT_twoRowYD (line 2985)",
-      "mem_of_twoRowYD_pred / mem_of_twoRowYD_pred2: membership lifting from sub-shapes (BallotProblemOQ03OQ01OQ02.lean:2993-3007)",
-      "restrictSYT0 / restrictSYT1: restrict SYT to sub-shape when max entry at corner (BallotProblemOQ03OQ01OQ02.lean:3011-3075)",
-      "extendSYT0 / extendSYT1: extend SYT by adding corner cell with max entry a+b (BallotProblemOQ03OQ01OQ02.lean:3078-3284)",
-      "card_SYT_twoRowYD_step: Pascal step card(SYT[a,b]) = card(SYT[a-1,b]) + card(SYT[a,b-1]) via Fintype.card_congr Equiv (BallotProblemOQ03OQ01OQ02.lean:3290-3442)",
-      "card_SYT_twoRowYD: card(SYT[a,b]) = ballotSeqCount(a+1,b) proved by strong induction, 0 sorries (BallotProblemOQ03OQ01OQ02.lean:3450-3466)",
-      "hook_length_formula_two_row_gen: card × hookProd = (a+b)! proved 0 sorries for all a≥b (BallotProblemOQ03OQ01OQ02.lean:3527-3532)",
-      "eq_twoRowYD_of_atMostTwoRows (BallotProblemOQ03OQ01OQ02.lean:3557): 2-row characterization lemma",
-      "hook_length_formula_atMostTwoRows (BallotProblemOQ03OQ01OQ02.lean:3575): HLF for all 2-row YoungDiagrams"
+      "hook_length_formula_two_rect: card * hookProd = (2m)! proved 0 sorries (line 2716)"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -103,25 +93,18 @@
       "Lindstrom reflection principle: bad m-subsets ↔ (m+1)-subsets gives ballot count = C(2m,m) - C(2m,m+1) = Cn m",
       "Direct Finset bijection SYT(m,m) ↔ ballot m-subsets cleaner than ballot-path approach: row-0 entries form ballot Finset naturally",
       "BallotProblemOQ03OQ02 nil case fix: List.countP_nil + subst needed for take_at_column_entry and take_east_count_within_column",
-      "hookProd for general [a,b] splits into 3 groups: b! (row-1) × (a+1).descFactorial(b) (row-0 cells in cols 0..b-1) × (a-b)! (row-0 cells in cols b..a-1)",
-      "ballot_formula connects ballotSeqCount(a+1,b) to C(a+b+1,a+1) × (a+1-b); combined with choose identity gives two_row_hook_identity",
-      "Nat.eq_of_mul_eq_mul_right enables cancellation of (a+1-b)*(a+b+1) from both sides",
-      "Corner bijection for SYT([a,b]): max entry a+b is at corner (0,a-1) or (1,b-1). Removing it gives Equiv SYT([a,b]) ≃ SYT([a-1,b]) ⊕ SYT([a,b-1])",
-      "Surjectivity argument: injective T.entry on μ.cells with card=a+b and range ⊆ {1,...,a+b} → image = {1,...,a+b} by Finset.eq_of_subset_of_card_le",
-      "Corner identification: c is a corner iff (c.1,c.2+1) ∉ μ; for twoRowYD a b with b<a, corners are (0,a-1) and (1,b-1)",
-      "dif_pos/dif_neg patterns for Equiv.left_inv/right_inv with dependent if-then-else",
-      "split_ifs + Prod.ext_iff decomposition for row_strict/col_strict in restrict/extend SYT",
-      "Session 11: eq_twoRowYD_of_atMostTwoRows — any YoungDiagram with rowLen 2 = 0 equals twoRowYD (rowLen 0) (rowLen 1); proved via cell membership + anti-monotonicity",
-      "The LGV chain sorry theorems (ni_count_eq_syt_count, lgv_det_factors_as_hook_quotient) are FALSE as stated: μ appears as a free parameter unrelated to the LGV config (r,σ,m). The fundamental disconnect means these cannot be proved without restructuring the statements."
+      "Lindstrom reflection principle: bad m-subsets ↔ (m+1)-subsets gives ballot count = C(2m,m) - C(2m,m+1) = Cn m",
+      "Direct Finset bijection SYT(m,m) ↔ ballot m-subsets cleaner than ballot-path approach: row-0 entries form ballot Finset naturally"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
       "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux"
     ],
     "nextSteps": [
-      "Fix lgv_det_factors_as_hook_quotient: add hypothesis μ = YoungDiagram.ofRowLens (List.map (fun i => m - σ(r-1-i)) (Fin r)) to connect μ to (r,σ,m)",
-      "Try corner-cell induction approach for 3+ row shapes: f^λ = Σ_{corners c} f^{λ\\c} (hook walk identity needed)",
-      "Consider proving HLF for 3-col shapes (at most 3 columns) via transpose of 3-row result"
+      "Prove card_SYT_twoRectYD via ballot bijection: define SYT(2×m) ↔ {S ⊂ {1..2m} : |S|=m, ballot condition}",
+      "This unblocks hook_length_formula_two_rect which is already proved conditional on card_SYT_twoRectYD",
+      "Consider corner-cell induction formula f^λ = Σ_{corners c} f^{λ\\c} for general hook-length formula",
+      "All 4 deep sorries (ni_count, lgv_det, card_SYT_twoRect, hook_formula) require 200-300 lines each"
     ]
   },
   "tags": [
@@ -143,9 +126,7 @@
     "ballot-problem-oq-03",
     "ballot-problem-oq-03-oq-01",
     "ballot-problem-oq-03-oq-01-oq-01",
-    "ballot-problem-oq-03-oq-01-oq-01-oq-01",
     "ballot-problem-oq-03-oq-01-oq-02",
-    "ballot-problem-oq-03-oq-01-oq-04",
     "ballot-problem-oq-03-oq-02",
     "ballot-problem-oq-03-oq-03"
   ],
@@ -268,7 +249,7 @@
     {
       "path": "Proofs/BallotProblemOQ01OQ04OQ01.lean",
       "filename": "BallotProblemOQ01OQ04OQ01.lean",
-      "lineCount": 1165,
+      "lineCount": 1102,
       "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 3,
@@ -301,7 +282,7 @@
     {
       "path": "Proofs/BallotProblemOQ03.lean",
       "filename": "BallotProblemOQ03.lean",
-      "lineCount": 2923,
+      "lineCount": 2879,
       "theoremCount": 119,
       "axiomCount": 0,
       "defCount": 31,
@@ -321,42 +302,20 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01.lean"
     },
     {
-      "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 131,
-      "theoremCount": 7,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 6,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean"
-    },
-    {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "filename": "BallotProblemOQ03OQ01OQ02.lean",
-      "lineCount": 3585,
-      "theoremCount": 62,
+      "lineCount": 1260,
+      "theoremCount": 48,
       "axiomCount": 0,
-      "defCount": 10,
-      "sorryCount": 9,
+      "defCount": 9,
+      "sorryCount": 8,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
     },
     {
-      "path": "Proofs/BallotProblemOQ03OQ01OQ04.lean",
-      "filename": "BallotProblemOQ03OQ01OQ04.lean",
-      "lineCount": 183,
-      "theoremCount": 10,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ04.lean"
-    },
-    {
       "path": "Proofs/BallotProblemOQ03OQ02.lean",
       "filename": "BallotProblemOQ03OQ02.lean",
-      "lineCount": 2512,
+      "lineCount": 2315,
       "theoremCount": 28,
       "axiomCount": 0,
       "defCount": 23,

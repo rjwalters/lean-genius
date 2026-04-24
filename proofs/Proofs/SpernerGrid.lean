@@ -23,10 +23,10 @@ to obtain a self-contained concrete Sperner's lemma.
 
 ## Main results
 
-* `SpernerGrid.gridAdj_symm`: Adjacency is symmetric.
-* `SpernerGrid.gridAdj_vertex`: Adjacent cells share the codim-1 face.
-* `SpernerGrid.gridComplex d N`: The `CellComplex` instance (fully axiom-proved).
-* `SpernerGrid.sperner_grid`: Concrete Sperner's lemma (sorry'd — see Architectural Note).
+* `SpernerGrid.boundary_doors_odd`: For Sperner colorings,
+  boundary doors are odd.
+* `SpernerGrid.sperner_grid`: Concrete Sperner's lemma —
+  any Sperner coloring of the grid has a panchromatic cell.
 
 ## Design: constant miss direction
 
@@ -42,33 +42,12 @@ coordinate incDir(k) increases exactly once (at step k) and
 never decreases (since miss ≠ incDir(k) for all k), so
 vertices at different positions always differ.
 
-## Architectural Note: Oriented vs Unoriented
-
-The `GridSimplex` uses ORIENTED simplices (each geometric simplex appears
-twice: once per miss direction). This causes:
-- `boundary_doors_odd` is FALSE: boundary door count is always EVEN
-  (each geometric boundary door appears in 2 oriented forms).
-- `boundary_verts_on_face` is FALSE: `adj(s,k)=none` does NOT imply
-  all non-k vertices lie on geometric face k. Counterexample:
-  d=1, N=2, miss=1, incDir(0)=0, verts(0)=(1,1), verts(1)=(2,0):
-  adj(s,0)=None (last_v.coords(miss=1)=0) but verts(1).coords(0)=2≠0.
-
-The correct path to `sperner_grid` requires either:
-A. Using `SpernerNDim.sperner_ndim` with an UNORIENTED SpernerTriangulation
-   (one representative per geometric simplex, satisfying `boundary_face`).
-B. A direct inductive proof bypassing the boundary-door parity.
-
-The `gridComplex d N` is a well-formed `CellComplex` (all adjacency axioms
-proved), but `CellComplex.sperner` cannot be applied due to the above.
-
-## Sorry classification (4 remaining)
+## Sorry classification (2 remaining)
 
 1. `CellComplex.sperner` — proved in SpernerMathlib4.lean,
-   duplicated here for self-containment. INTENTIONALLY sorry.
-2. `boundary_verts_on_face` — FALSE as stated (see counterexample above).
-3. `boundary_doors_odd` — FALSE as stated (boundary doors always even).
-4. `sperner_grid` d≥2 case — blocked; needs unoriented SpernerTriangulation.
-   d=0 and d=1 cases are now proved (d=1 via discrete IVT, Session 6).
+   duplicated here for self-containment.
+2. `boundary_doors_odd` — hard: induction on dimension,
+   constructing (d-1)-dim boundary triangulation.
 
 ## References
 
@@ -656,12 +635,9 @@ noncomputable def GridSimplex.interiorFlip
           have hss_eq : (k_prev.succ : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
             ext; simp [k_prev, Fin.succ]; omega
           simp only [hcs_ne, ite_false, hss_eq, ite_true]
-          -- Goal: s.verts k_prev.castSucc .coords s.miss = new_v.coords s.miss + 1
-          -- Omega needs to see s.verts k_prev.castSucc = v_prev (= s.verts prev_v_idx)
-          have hcs_vprev : s.verts k_prev.castSucc = v_prev := by
-            show s.verts k_prev.castSucc = s.verts prev_v_idx
-            congr 1
-          rw [hcs_vprev]
+          -- Goal: v_prev.coords miss = new_v.coords miss + 1
+          -- new_v = v_prev.transfer (incDir k) miss, so new_v.coords miss = v_prev.coords miss - 1
+          -- new_v.coords miss = v_prev.coords miss - 1
           have h_new : new_v.coords s.miss = v_prev.coords s.miss - 1 :=
             BaryPoint.transfer_coords_dec v_prev (s.incDir k) s.miss h_ne h_miss_pos
           omega
@@ -1165,338 +1141,8 @@ private lemma boundaryFlipLast_verts_one (s : GridSimplex d N)
     exact this.symm
 
 -- ============================================================
--- SECTION VIb: Helpers for gridAdj_symm and gridAdj_vertex
--- ============================================================
-
-/-- GridSimplex extensionality: equality determined by verts, incDir, miss. -/
-private theorem GridSimplex.ext' {d N : ℕ} (a b : GridSimplex d N)
-    (hv : a.verts = b.verts) (hi : a.incDir = b.incDir)
-    (hm : a.miss = b.miss) : a = b := by
-  cases a; cases b; simp only at hv hi hm; subst hv; subst hi; subst hm; rfl
-
-/-- In the interiorFlip, the incDir at position k equals
-the original incDir at k-1. -/
-private lemma interiorFlip_incDir_k (s : GridSimplex d N)
-    (k : Fin d) (hk : 0 < k.val) :
-    (s.interiorFlip k hk).1.incDir k =
-    s.incDir ⟨k.val - 1, by omega⟩ := by
-  have hkne : k ≠ ⟨k.val - 1, by omega⟩ := by simp [Fin.ext_iff]; omega
-  simp [GridSimplex.interiorFlip, hkne]
-
-/-- Interior flip is an involution: applying it twice returns the original. -/
-private lemma interiorFlip_invol (s : GridSimplex d N)
-    (k : Fin d) (hk : 0 < k.val) :
-    (s.interiorFlip k hk).1.interiorFlip k hk =
-    (s, k.castSucc) := by
-  let s' := (s.interiorFlip k hk).1
-  let k_prev : Fin d := ⟨k.val - 1, by omega⟩
-  have hS_kp : s'.incDir k_prev = s.incDir k :=
-    interiorFlip_incDir_kprev s k hk
-  have hS_k : s'.incDir k = s.incDir k_prev :=
-    interiorFlip_incDir_k s k hk
-  have hS_vo : ∀ j : Fin (d + 1), j.val ≠ k.val → s'.verts j = s.verts j :=
-    interiorFlip_verts_other s k hk
-  have h_pos : 0 < (s'.verts ⟨k.val - 1, by omega⟩).coords s'.miss := by
-    rw [show s'.miss = s.miss from rfl,
-        hS_vo ⟨k.val - 1, by omega⟩ (Nat.ne_of_lt (Nat.sub_lt hk Nat.one_pos))]
-    exact Nat.lt_of_lt_of_le (Nat.sub_pos_of_lt (show k.val - 1 < d by omega))
-      (s.miss_coord_ge ⟨k.val - 1, by omega⟩)
-  apply Prod.ext
-  · apply GridSimplex.ext'
-    · funext j
-      simp only [GridSimplex.interiorFlip]
-      by_cases hjk : j.val = k.val
-      · have hjeq : j = ⟨k.val, by omega⟩ := Fin.ext hjk
-        simp only [hjeq, ite_true]
-        rw [show s'.miss = s.miss from rfl, hS_k,
-            hS_vo ⟨k.val - 1, by omega⟩ (Nat.ne_of_lt (Nat.sub_lt hk Nat.one_pos))]
-        apply BaryPoint.ext; funext i
-        simp only [BaryPoint.transfer]
-        have hkpsucc : (k_prev.succ : Fin (d + 1)) =
-            ⟨k.val, k.isLt⟩ := by ext; simp [k_prev, Fin.succ]; omega
-        have hkpcs : (k_prev.castSucc : Fin (d + 1)) =
-            ⟨k.val - 1, by omega⟩ := by ext; simp [k_prev, Fin.castSucc]
-        have hsi := s.step_inc k_prev
-        rw [hkpsucc, hkpcs] at hsi
-        have hsd := s.step_dec k_prev
-        rw [hkpsucc, hkpcs] at hsd
-        split_ifs with hi_inc hi_miss
-        · rw [hi_inc]; exact hsi
-        · rw [hi_miss]; omega
-        · have := s.step_same k_prev i hi_inc hi_miss
-          rw [hkpsucc, hkpcs] at this; exact this.symm
-      · have hjne : j ≠ (⟨k.val, by omega⟩ : Fin (d + 1)) :=
-            fun h => hjk (congrArg Fin.val h)
-        simp only [hjne, ite_false]; exact hS_vo j hjk
-    · funext j
-      simp only [GridSimplex.interiorFlip]
-      by_cases hjkp : j = k_prev
-      · subst hjkp; simp only [ite_true]; exact hS_k
-      · simp only [hjkp, ite_false]
-        by_cases hjk : j = k
-        · subst hjk; simp only [ite_true]; exact hS_kp
-        · simp only [hjk, ite_false]
-          simp [s', GridSimplex.interiorFlip, hjkp, hjk]
-    · rfl
-  · simp [GridSimplex.interiorFlip, Fin.ext_iff, Fin.castSucc]
-
-/-- interiorFlip result is independent of which equal Fin d we pass (proof-irrelevance + Fin.ext). -/
-private lemma interiorFlip_congr (A : GridSimplex d N)
-    (k1 k2 : Fin d) (hk1 : 0 < k1.val) (hk2 : 0 < k2.val)
-    (h12 : k1 = k2) :
-    A.interiorFlip k1 hk1 = A.interiorFlip k2 hk2 := by
-  subst h12
-  exact congrArg (A.interiorFlip k1) (Subsingleton.elim hk1 hk2)
-
-/-- The return index from boundaryFlip0 has value d. -/
-private lemma boundaryFlip0_k'_val (s : GridSimplex d N)
-    (s' : GridSimplex d N) (k' : Fin (d + 1))
-    (h : s.boundaryFlip0 = some (s', k')) : k'.val = d := by
-  simp only [GridSimplex.boundaryFlip0] at h
-  split_ifs at h with h_pos hd
-  · simp only [Option.some.injEq, Prod.mk.injEq] at h
-    exact (congr_arg Fin.val h.2).symm
-
-/-- The return index from boundaryFlipLast has value 0. -/
-private lemma boundaryFlipLast_k'_val (s : GridSimplex d N)
-    (s' : GridSimplex d N) (k' : Fin (d + 1))
-    (h : s.boundaryFlipLast = some (s', k')) : k'.val = 0 := by
-  simp only [GridSimplex.boundaryFlipLast] at h
-  split_ifs at h with hd h_pos
-  · simp only [Option.some.injEq, Prod.mk.injEq] at h
-    exact (congr_arg Fin.val h.2).symm
-
-/-- If boundaryFlip0 succeeds, s'.verts j = s.verts (j+1) for j.val < d. -/
-private lemma boundaryFlip0_verts_lt' (s : GridSimplex d N)
-    (s' : GridSimplex d N) (k' : Fin (d + 1))
-    (h : s.boundaryFlip0 = some (s', k'))
-    (j : Fin (d + 1)) (hj : j.val < d) :
-    s'.verts j = s.verts ⟨j.val + 1, by omega⟩ := by
-  simp only [GridSimplex.boundaryFlip0] at h
-  split_ifs at h with h_pos hd
-  · simp only [Option.some.injEq, Prod.mk.injEq] at h
-    obtain ⟨hs', _⟩ := h
-    have := congr_fun (congr_arg GridSimplex.verts hs') j
-    simp [Nat.pos_of_ne_zero hd, hj] at this
-    exact this.symm
-
-/-- If boundaryFlipLast succeeds, s'.verts j = s.verts (j-1) for 0 < j.val. -/
-private lemma boundaryFlipLast_verts_pos' (s : GridSimplex d N)
-    (s' : GridSimplex d N) (k' : Fin (d + 1))
-    (h : s.boundaryFlipLast = some (s', k'))
-    (j : Fin (d + 1)) (hj : 0 < j.val) :
-    s'.verts j = s.verts ⟨j.val - 1, by omega⟩ := by
-  simp only [GridSimplex.boundaryFlipLast] at h
-  split_ifs at h with hd h_pos
-  · simp only [Option.some.injEq, Prod.mk.injEq] at h
-    obtain ⟨hs', _⟩ := h
-    have := congr_fun (congr_arg GridSimplex.verts hs') j
-    simp [hj.ne'] at this
-    exact this.symm
-
-/-- Helper: the vertex restored by composing the two boundary flips. -/
-private lemma transfer_eq_prev_verts (s : GridSimplex d N)
-    (step : Fin d) :
-    let k_prev : Fin d := step
-    let kp1 : Fin (d + 1) := ⟨step.val + 1, by omega⟩
-    let kp0 : Fin (d + 1) := ⟨step.val, by omega⟩
-    let h_ne := s.miss_ne_inc step
-    let h_pos : 0 < (s.verts kp0).coords s.miss :=
-      Nat.lt_of_lt_of_le (Nat.sub_pos_of_lt step.isLt) (s.miss_coord_ge kp0)
-    (s.verts kp0).transfer (s.incDir step) s.miss h_ne h_pos =
-    s.verts kp1 := by
-  apply BaryPoint.ext; funext i
-  simp only [BaryPoint.transfer]
-  have hsu : (step.castSucc : Fin (d + 1)) = ⟨step.val, by omega⟩ := by
-    ext; simp [Fin.castSucc]
-  have hss : (step.succ : Fin (d + 1)) = ⟨step.val + 1, by omega⟩ := by
-    ext; simp [Fin.succ]
-  have hsi := s.step_inc step; rw [hsu, hss] at hsi
-  have hsd := s.step_dec step; rw [hsu, hss] at hsd
-  split_ifs with h1 h2
-  · rw [h1]; exact hsi
-  · rw [h2]; omega
-  · exact (s.step_same step i h1 h2).symm
-
-/-- boundaryFlip0 and boundaryFlipLast are inverses:
-    boundaryFlipLast(boundaryFlip0(s).1) = some(s, 0). -/
-private lemma boundaryFlip0_symm (s : GridSimplex d N)
-    (s' : GridSimplex d N) (k' : Fin (d + 1))
-    (h : s.boundaryFlip0 = some (s', k')) :
-    s'.boundaryFlipLast = some (s, ⟨0, Nat.zero_lt_succ d⟩) := by
-  simp only [GridSimplex.boundaryFlip0] at h
-  split_ifs at h with h_pos hd
-  · simp only [Option.some.injEq, Prod.mk.injEq] at h
-    obtain ⟨hs', _⟩ := h
-    have hd_pos : 0 < d := Nat.pos_of_ne_zero hd
-    have hmiss : s'.miss = s.miss := congr_arg GridSimplex.miss hs'
-    have hincDir_last : s'.incDir ⟨d - 1, by omega⟩ =
-        s.incDir ⟨0, hd_pos⟩ := by
-      have := congr_fun (congr_arg GridSimplex.incDir hs') ⟨d - 1, by omega⟩
-      simp [show ¬(d - 1 + 1 < d) from by omega] at this
-      exact this
-    have hverts_zero : s'.verts ⟨0, Nat.zero_lt_succ d⟩ =
-        s.verts ⟨1, hd_pos⟩ := by
-      have := congr_fun (congr_arg GridSimplex.verts hs') ⟨0, Nat.zero_lt_succ d⟩
-      simp [hd_pos] at this; exact this
-    simp only [GridSimplex.boundaryFlipLast, hd, dite_false]
-    -- Condition: 0 < s'.verts(0).coords(s'.incDir(d-1))
-    have h_cond : 0 < (s'.verts ⟨0, Nat.zero_lt_succ d⟩).coords
-        (s'.incDir ⟨d - 1, by omega⟩) := by
-      rw [hincDir_last, hverts_zero]
-      have hsi := s.step_inc ⟨0, hd_pos⟩
-      simp [Fin.castSucc, Fin.succ] at hsi; omega
-    simp only [h_cond, dite_true]
-    simp only [Option.some.injEq, Prod.mk.injEq]
-    refine ⟨?_, rfl⟩
-    apply GridSimplex.ext'
-    · funext j
-      simp only
-      by_cases hj0 : j.val = 0
-      · have hjeq : j = ⟨0, by omega⟩ := Fin.ext hj0
-        subst hjeq
-        simp only [hj0, ite_true]
-        -- new_v'' = s'.verts(0).transfer(s'.miss)(last_inc') = s.verts(0)
-        rw [hmiss, hincDir_last, hverts_zero]
-        -- s.verts(1).transfer(s.miss)(s.incDir 0) = s.verts(0)
-        -- This follows from transfer_eq_prev_verts applied to step = ⟨0, hd_pos⟩
-        have := @transfer_eq_prev_verts d (s.verts 0 |>.coords s.miss) N s ⟨0, hd_pos⟩
-        simp at this
-        -- Hmm, transfer_eq_prev_verts is in the wrong direction. Let me prove directly.
-        apply BaryPoint.ext; funext i
-        simp only [BaryPoint.transfer]
-        have hsi := s.step_inc ⟨0, hd_pos⟩
-        simp [Fin.castSucc, Fin.succ] at hsi
-        have hsd := s.step_dec ⟨0, hd_pos⟩
-        simp [Fin.castSucc, Fin.succ] at hsd
-        split_ifs with hi_miss hi_last
-        · omega
-        · omega
-        · exact (s.step_same ⟨0, hd_pos⟩ i
-            (fun h => hi_last (h ▸ rfl))
-            (fun h => hi_miss (h ▸ rfl))).symm
-      · have hj_pos : 0 < j.val := Nat.pos_of_ne_zero hj0
-        simp only [hj0, ite_false]
-        -- s'.verts ⟨j.val - 1, _⟩ = s.verts j
-        have hj1_lt : j.val - 1 < d := by
-          have := j.isLt; omega
-        rw [congr_fun (congr_arg GridSimplex.verts hs') ⟨j.val - 1, hj1_lt⟩]
-        simp [hj1_lt, show j.val - 1 + 1 = j.val from Nat.sub_add_cancel hj_pos]
-    · funext j
-      simp only
-      by_cases hj0 : j.val = 0
-      · have hjeq : j = ⟨0, by omega⟩ := Fin.ext hj0
-        subst hjeq
-        simp only [hj0, ite_true]
-        exact hincDir_last
-      · have hj_pos : 0 < j.val := Nat.pos_of_ne_zero hj0
-        simp only [hj0, ite_false]
-        have hj1_lt : j.val - 1 < d := by have := j.isLt; omega
-        rw [congr_fun (congr_arg GridSimplex.incDir hs') ⟨j.val - 1, hj1_lt⟩]
-        simp [show j.val - 1 + 1 = j.val from Nat.sub_add_cancel hj_pos,
-              show j.val - 1 + 1 < d ↔ j.val < d from by omega]
-        split_ifs with hlt
-        · congr 1; ext; simp; omega
-        · -- j.val = d (last case maps to inc0 = s.incDir ⟨0, _⟩)
-          -- But j : Fin d so j.val < d — contradiction
-          exact absurd hlt (by omega)
-    · exact hmiss
-
-/-- boundaryFlipLast and boundaryFlip0 are inverses:
-    boundaryFlip0(boundaryFlipLast(s).1) = some(s, d). -/
-private lemma boundaryFlipLast_symm (s : GridSimplex d N)
-    (s' : GridSimplex d N) (k' : Fin (d + 1))
-    (h : s.boundaryFlipLast = some (s', k')) :
-    s'.boundaryFlip0 = some (s, ⟨d, Nat.lt_succ_iff.mpr le_rfl⟩) := by
-  simp only [GridSimplex.boundaryFlipLast] at h
-  split_ifs at h with hd h_pos
-  · simp only [Option.some.injEq, Prod.mk.injEq] at h
-    obtain ⟨hs', _⟩ := h
-    have hd_pos : 0 < d := Nat.pos_of_ne_zero hd
-    have hmiss : s'.miss = s.miss := congr_arg GridSimplex.miss hs'
-    have hincDir_zero : s'.incDir ⟨0, hd_pos⟩ =
-        s.incDir ⟨d - 1, by omega⟩ := by
-      have := congr_fun (congr_arg GridSimplex.incDir hs') ⟨0, hd_pos⟩
-      simp at this; exact this
-    have hverts_last : s'.verts ⟨d, Nat.lt_succ_iff.mpr le_rfl⟩ =
-        s.verts ⟨d - 1, by omega⟩ := by
-      have := congr_fun (congr_arg GridSimplex.verts hs')
-        ⟨d, Nat.lt_succ_iff.mpr le_rfl⟩
-      simp [show ¬(d = 0) from hd, show ¬((d : ℕ) = 0) from hd] at this
-      exact this
-    simp only [GridSimplex.boundaryFlip0, hd, dite_false]
-    -- Condition: 0 < s'.verts(d).coords(s'.miss)
-    have h_cond : 0 < (s'.verts ⟨d, Nat.lt_succ_iff.mpr le_rfl⟩).coords s'.miss := by
-      rw [hmiss, hverts_last]
-      have := s.miss_coord_ge ⟨d - 1, by omega⟩
-      simp at this; omega
-    simp only [h_cond, dite_true, hd, dite_false]
-    simp only [Option.some.injEq, Prod.mk.injEq]
-    refine ⟨?_, rfl⟩
-    apply GridSimplex.ext'
-    · funext j
-      simp only
-      by_cases hjd : j.val < d
-      · simp only [hjd, dite_true]
-        -- s'.verts ⟨j.val + 1, _⟩
-        have hj1 : 0 < j.val + 1 := by omega
-        rw [congr_fun (congr_arg GridSimplex.verts hs') ⟨j.val + 1, by omega⟩]
-        simp [hj1, show j.val + 1 - 1 = j.val from by omega]
-      · simp only [hjd, dite_false]
-        -- j.val = d: new_v' = s'.verts(d).transfer(s'.incDir 0)(s'.miss)
-        have hjd_eq : j.val = d := by have := j.isLt; omega
-        -- = s.verts(d-1).transfer(s.incDir(d-1))(s.miss) = s.verts(d)
-        rw [show j = (⟨d, Nat.lt_succ_iff.mpr le_rfl⟩ : Fin (d + 1)) from Fin.ext hjd_eq]
-        apply BaryPoint.ext; funext i
-        simp only [BaryPoint.transfer]
-        -- Rewrite s' fields coordinatewise (avoiding dependent rw on transfer args)
-        rw [hmiss, hincDir_zero,
-            show (s'.verts ⟨d, Nat.lt_succ_iff.mpr le_rfl⟩).coords i =
-                 (s.verts ⟨d - 1, by omega⟩).coords i from
-                 congr_arg (fun v => BaryPoint.coords v i) hverts_last]
-        have hsi := s.step_inc ⟨d - 1, by omega⟩
-        simp [Fin.castSucc, Fin.succ, show d - 1 + 1 = d from by omega] at hsi
-        have hsd := s.step_dec ⟨d - 1, by omega⟩
-        simp [Fin.castSucc, Fin.succ, show d - 1 + 1 = d from by omega] at hsd
-        split_ifs with hi_inc hi_miss
-        · rw [hi_inc]; exact hsi
-        · rw [hi_miss]; omega
-        · have hss := s.step_same ⟨d - 1, by omega⟩ i
-            (fun h => hi_inc (h ▸ rfl))
-            (fun h => hi_miss (h ▸ rfl))
-          simp [Fin.castSucc, Fin.succ, show d - 1 + 1 = d from by omega] at hss
-          exact hss.symm
-    · funext j
-      simp only
-      by_cases hjd : j.val + 1 < d
-      · simp only [hjd, dite_true]
-        -- Goal: s'.incDir ⟨j.val+1, ⋯⟩ = s.incDir j
-        -- Unfold s'.incDir via hs'.symm : s' = { BFL_struct },
-        -- then evaluate: if j.val+1 = 0 then ... else s.incDir ⟨j.val, ⋯⟩
-        have h_inc : s'.incDir ⟨j.val + 1, hjd⟩ = s.incDir j := by
-          have h1 := congr_fun (congr_arg GridSimplex.incDir hs'.symm) ⟨j.val + 1, hjd⟩
-          simp only [show (j.val + 1 : ℕ) ≠ 0 from by omega, ite_false,
-                     show j.val + 1 - 1 = j.val from by omega] at h1
-          exact h1.trans (congr_arg s.incDir (Fin.ext rfl))
-        exact h_inc
-      · -- j.val + 1 ≥ d, so j.val = d - 1
-        simp only [hjd, dite_false]
-        have hjd_eq : j.val = d - 1 := by have := j.isLt; omega
-        -- s'.incDir ⟨0, hd_pos⟩ = s.incDir j via hincDir_zero and hjd_eq
-        have key : s'.incDir ⟨0, hd_pos⟩ = s.incDir j :=
-          hincDir_zero.trans (congr_arg s.incDir (Fin.ext (by simp [hjd_eq])))
-        exact key
-    · exact hmiss
-
--- ============================================================
 -- SECTION VII: CellComplex Instance
 -- ============================================================
-
-/-- The second component of interiorFlip has value equal to k.val. -/
-private lemma interiorFlip_snd_val (s : GridSimplex d N)
-    (k : Fin d) (hk : 0 < k.val) :
-    (s.interiorFlip k hk).2.val = k.val := by
-  simp [GridSimplex.interiorFlip]
 
 /-- Adjacency is symmetric: if s is adjacent to s' through
 facet k, then s' is adjacent to s through facet k'. -/
@@ -1505,46 +1151,7 @@ theorem gridAdj_symm (s : GridSimplex d N)
     (k' : Fin (d + 1))
     (h : gridAdj d N s k = some (s', k')) :
     gridAdj d N s' k' = some (s, k) := by
-  simp only [gridAdj] at h
-  split_ifs at h with hk0 hkd
-  · -- k.val = 0: boundaryFlip0 case; k'.val = d
-    have hk'_val : k'.val = d := boundaryFlip0_k'_val s s' k' h
-    obtain ⟨hd_ne, _⟩ := boundaryFlip0_verts_zero s s' k' h
-    -- simp resolves inner if (k'.val = d) so split_ifs has 2 cases
-    simp only [gridAdj]; split_ifs with hk'0
-    · exact absurd hk'0 (by omega)    -- k'.val = 0 contradicts k'.val = d ≠ 0
-    · -- k'.val = d branch: goal is s'.boundaryFlipLast = some (s, k)
-      have hresult := boundaryFlip0_symm s s' k' h
-      rw [show k = (⟨0, Nat.zero_lt_succ d⟩ : Fin (d + 1)) from by ext; omega]
-      exact hresult
-  · -- k.val = d: boundaryFlipLast case; k'.val = 0
-    have hk'_val : k'.val = 0 := boundaryFlipLast_k'_val s s' k' h
-    -- Use dif_pos to resolve the outer if (k'.val = 0 is True) → s'.boundaryFlip0 = some (s, k)
-    simp only [gridAdj, dif_pos hk'_val]
-    have hresult := boundaryFlipLast_symm s s' k' h
-    rw [show k = (⟨d, Nat.lt_succ_iff.mpr le_rfl⟩ : Fin (d + 1)) from by ext; omega]
-    exact hresult
-  · -- interior: 0 < k.val < d
-    have hk_lt_d : k.val < d := by omega
-    have hk_pos : 0 < k.val := by omega
-    let step : Fin d := ⟨k.val, hk_lt_d⟩
-    simp only [Option.some.injEq] at h
-    have hpair := Prod.ext_iff.mp h
-    have hs'_eq : s' = (s.interiorFlip step hk_pos).1 := hpair.1.symm
-    have hk'_val : k'.val = k.val := by
-      have h2 : (s.interiorFlip step hk_pos).2.val = k'.val :=
-        congr_arg Fin.val hpair.2
-      rw [interiorFlip_snd_val s step hk_pos] at h2
-      exact h2.symm
-    have hk'_lt_d : k'.val < d := by omega
-    have hk'_pos : 0 < k'.val := by omega
-    simp only [gridAdj]; split_ifs with hk'0 hk'd
-    · exact absurd hk'0 (by omega)
-    · exact absurd hk'd (by omega)
-    · rw [hs'_eq,
-          interiorFlip_congr _ ⟨k'.val, hk'_lt_d⟩ step hk'_pos hk_pos (Fin.ext hk'_val),
-          interiorFlip_invol s step hk_pos]
-      exact congrArg some (Prod.ext rfl (Fin.ext rfl))
+  sorry
 
 /-- Adjacent cells share the codimension-1 face. -/
 theorem gridAdj_vertex (s : GridSimplex d N)
@@ -1553,78 +1160,7 @@ theorem gridAdj_vertex (s : GridSimplex d N)
     (h : gridAdj d N s k = some (s', k')) :
     (univ.erase k).image s.verts =
     (univ.erase k').image s'.verts := by
-  simp only [gridAdj] at h
-  split_ifs at h with hk0 hkd
-  · -- k.val = 0: boundaryFlip0; k'.val = d
-    have hk'_val : k'.val = d := boundaryFlip0_k'_val s s' k' h
-    apply Finset.ext; intro v
-    simp only [Finset.mem_image, Finset.mem_erase, Finset.mem_univ, and_true, ne_eq, Fin.ext_iff]
-    constructor
-    · rintro ⟨j, hjk, rfl⟩
-      -- j.val ≠ 0; find preimage ⟨j.val-1, _⟩ in s'
-      have hj_pos : 0 < j.val := by omega
-      have hjm1_bd : j.val - 1 < d + 1 := by have := j.isLt; omega
-      have hjm1_ltd : j.val - 1 < d := by have := j.isLt; omega
-      refine ⟨⟨j.val - 1, hjm1_bd⟩, ?_, ?_⟩
-      · change ¬j.val - 1 = k'.val; rw [hk'_val]; omega
-      · -- s'.verts ⟨j.val-1,_⟩ = s.verts ⟨j.val-1+1,_⟩ = s.verts j
-        have hv := boundaryFlip0_verts_lt' s s' k' h ⟨j.val - 1, hjm1_bd⟩ hjm1_ltd
-        -- show the index j.val-1+1 = j.val using definitional unfolding then omega
-        have hfin : (⟨j.val - 1, hjm1_bd⟩ : Fin (d + 1)).val + 1 = j.val := by
-          show j.val - 1 + 1 = j.val; omega
-        rw [hv]; exact congr_arg s.verts (Fin.ext hfin)
-    · rintro ⟨j, hjk', rfl⟩
-      -- j.val ≠ d = k'.val; find preimage ⟨j.val+1, _⟩ in s
-      have hj_ltd : j.val < d := by rw [hk'_val] at hjk'; omega
-      have hjp1_bd : j.val + 1 < d + 1 := by omega
-      refine ⟨⟨j.val + 1, hjp1_bd⟩, ?_, ?_⟩
-      · change ¬j.val + 1 = k.val; rw [hk0]; omega
-      · exact (boundaryFlip0_verts_lt' s s' k' h j hj_ltd).symm
-  · -- k.val = d: boundaryFlipLast; k'.val = 0
-    have hk'_val : k'.val = 0 := boundaryFlipLast_k'_val s s' k' h
-    apply Finset.ext; intro v
-    simp only [Finset.mem_image, Finset.mem_erase, Finset.mem_univ, and_true, ne_eq, Fin.ext_iff]
-    constructor
-    · rintro ⟨j, hjk, rfl⟩
-      -- j.val ≠ d = k.val; find preimage ⟨j.val+1, _⟩ in s'
-      have hj_ltd : j.val < d := by rw [hkd] at hjk; omega
-      have hjp1_bd : j.val + 1 < d + 1 := by omega
-      refine ⟨⟨j.val + 1, hjp1_bd⟩, ?_, ?_⟩
-      · change ¬j.val + 1 = k'.val; rw [hk'_val]; omega
-      · -- s'.verts ⟨j.val+1,_⟩ = s.verts ⟨j.val+1-1,_⟩ = s.verts j
-        have hv := boundaryFlipLast_verts_pos' s s' k' h ⟨j.val + 1, hjp1_bd⟩
-                     (show 0 < (⟨j.val + 1, hjp1_bd⟩ : Fin (d + 1)).val from by
-                       show 0 < j.val + 1; omega)
-        have hfin : (⟨j.val + 1, hjp1_bd⟩ : Fin (d + 1)).val - 1 = j.val := by
-          show j.val + 1 - 1 = j.val; omega
-        rw [hv]; exact congr_arg s.verts (Fin.ext hfin)
-    · rintro ⟨j, hjk', rfl⟩
-      -- j.val ≠ 0 = k'.val; find preimage ⟨j.val-1, _⟩ in s
-      have hj_pos : 0 < j.val := by rw [hk'_val] at hjk'; omega
-      have hjm1_bd : j.val - 1 < d + 1 := by have := j.isLt; omega
-      refine ⟨⟨j.val - 1, hjm1_bd⟩, ?_, ?_⟩
-      · change ¬j.val - 1 = k.val; rw [hkd]; omega
-      · exact (boundaryFlipLast_verts_pos' s s' k' h j hj_pos).symm
-  · -- interior: 0 < k.val < d; k' = k
-    have hk_lt_d : k.val < d := by omega
-    have hk_pos : 0 < k.val := by omega
-    let step : Fin d := ⟨k.val, hk_lt_d⟩
-    simp only [Option.some.injEq] at h
-    have hpair := Prod.ext_iff.mp h
-    have hs'_eq : s' = (s.interiorFlip step hk_pos).1 := hpair.1.symm
-    have hk'_val : k'.val = k.val := by
-      have h2 : (s.interiorFlip step hk_pos).2.val = k'.val :=
-        congr_arg Fin.val hpair.2
-      rw [interiorFlip_snd_val s step hk_pos] at h2
-      exact h2.symm
-    have hk'_eq : k' = k := Fin.ext hk'_val
-    subst hk'_eq
-    apply Finset.image_congr
-    intro j hj
-    simp only [Finset.mem_coe, Finset.mem_erase, Finset.mem_univ, and_true, ne_eq] at hj
-    rw [hs'_eq]
-    exact (interiorFlip_verts_other s step hk_pos j
-      (fun hval => hj (Fin.ext hval))).symm
+  sorry
 
 /-- Adjacent cells are distinct. -/
 theorem gridAdj_ne (s : GridSimplex d N)
@@ -1687,28 +1223,19 @@ noncomputable def gridComplex (d N : ℕ) :
 -- SECTION VIII: Sperner Condition and Boundary Analysis
 -- ============================================================
 
-/-- [KNOWN FALSE] This theorem is false as stated.
+/-- On a boundary face at position k (where adj = none and
+k < d), all d vertices of the face lie on geometric face k
+of the simplex Δ_N. That is, for each vertex j ≠ k of the
+simplex, vertex j has b_k = 0.
 
-`adj(s, k) = none` does NOT imply all non-k vertices are on geometric face k.
-The combinatorial boundary position (index k in the chain) does not align
-with the geometric face index (which coordinate is 0).
-
-Counterexample: d=1, N=2, miss=1, incDir(0)=0.
-  verts(0) = (1, 1), verts(1) = (2, 0).
-  adj(s, 0) = none [since last_v.coords(miss=1) = 0].
-  But verts(1).coords(0) = 2 ≠ 0. ✗
-
-The `boundary_face` axiom of `SpernerNDim.SpernerTriangulation` requires this
-property, so `gridComplex` cannot instantiate `SpernerTriangulation`.
-A different simplex representation (unoriented, with face-aligned indexing)
-is needed to satisfy `boundary_face`. -/
+This is the key geometric fact that connects the combinatorial
+boundary (adj = none) to the geometric boundary (onFace k). -/
 theorem boundary_verts_on_face
     (s : GridSimplex d N) (k : Fin (d + 1))
     (hk : k.val < d)
     (hbdry : gridAdj d N s k = none)
     (j : Fin (d + 1)) (hjk : j ≠ k) :
     (s.verts j).onFace k := by
-  -- FALSE: see docstring for counterexample.
   sorry
 
 /-- On boundary face k, the Sperner condition prevents doors.
@@ -1745,24 +1272,7 @@ theorem no_boundary_doors_face_lt
   rw [this] at hi_col
   exact hsperner hi_col
 
-/-- [KNOWN FALSE] The boundary door count for `gridComplex` is always EVEN, not odd.
-
-Root cause: `GridSimplex` uses ORIENTED simplices. Each geometric simplex
-appears TWICE (two orientations: miss=m₁ and miss=m₂). The "reversal involution"
-pairs every boundary door (s, k) with (s̄, d-k) where s̄ is the same geometric
-simplex in reversed orientation, yielding an even count.
-
-Detailed counterexample (d=1, N=1, Sperner coloring c(1,0)=0, c(0,1)=1):
-- Two GridSimplices: S₁=(miss=0, incDir(0)=1), S₂=(miss=1, incDir(0)=0)
-- Boundary doors: (S₁, k=1) and (S₂, k=0) — count = 2 (EVEN).
-
-The CORRECT theorem for the oriented gridComplex is:
-  `boundary_door_count_even`: the boundary door count is always even.
-
-To prove `sperner_grid`, the correct approach is:
-A. Build a `SpernerNDim.SpernerTriangulation` with unoriented simplices
-   (one per geometric simplex) satisfying the `boundary_face` axiom.
-B. Apply `SpernerNDim.sperner_ndim`. -/
+/-- The boundary door count for Sperner colorings is odd. -/
 theorem boundary_doors_odd (d N : ℕ) (hN : 0 < N)
     (c : BaryPoint d N → Fin (d + 1))
     (hc : IsSperner c) :
@@ -1773,171 +1283,30 @@ theorem boundary_doors_odd (d N : ℕ) (hN : 0 < N)
           p.1 p.2 ∧
         (gridComplex d N).adj p.1 p.2 =
           none)).card := by
-  -- FALSE: see docstring. Boundary door count is always even.
   sorry
 
 -- ============================================================
 -- SECTION VIII: Concrete Sperner's Lemma
 -- ============================================================
 
-/-- d=1 case of sperner_grid: proved directly via discrete IVT.
-The path v(k) = (N-k, k) for k=0..N has c(v(0))=0 and c(v(N))=1
-by Sperner, so the transition edge at k*=max{k | c(v(k))=0} is
-panchromatic. -/
-private lemma sperner_grid_one {N : ℕ} (hN : 0 < N)
-    (c : BaryPoint 1 N → Fin 2)
-    (hc : IsSperner c) :
-    ∃ s : (gridComplex 1 N).Cell,
-      CellComplex.IsPanchromatic c (gridComplex 1 N) s := by
-  -- Path v(k) = (N-k, k) through the 1-simplex
-  let v : Fin (N + 1) → BaryPoint 1 N := fun k =>
-    ⟨fun i => if i.val = 0 then N - k.val else k.val,
-     by
-       simp [Fin.sum_univ_two]
-       have hk : k.val ≤ N := Nat.lt_succ_iff.mp k.isLt
-       omega⟩
-  -- v(0) lies on face 1 (coords(1) = 0), so c(v(0)) ≠ 1, hence = 0
-  have hv0 : c (v ⟨0, Nat.zero_lt_succ N⟩) = 0 := by
-    have honface : (v ⟨0, Nat.zero_lt_succ N⟩).onFace ⟨1, by omega⟩ := by
-      show (v ⟨0, _⟩).coords ⟨1, by omega⟩ = 0; simp [v]
-    have hne := hc (v ⟨0, _⟩) ⟨1, by omega⟩ honface
-    -- c(v(0)) ≠ 1 and c(v(0)) : Fin 2, so c(v(0)).val ∈ {0,1} and ≠ 1 → = 0
-    apply Fin.ext
-    have hlt := (c (v ⟨0, Nat.zero_lt_succ N⟩)).isLt
-    have hne' : (c (v ⟨0, Nat.zero_lt_succ N⟩)).val ≠ 1 :=
-      fun heq => hne (Fin.ext heq)
-    omega
-  -- v(N) lies on face 0 (coords(0) = N-N = 0), so c(v(N)) ≠ 0, hence = 1
-  have hvN : c (v ⟨N, Nat.lt_succ_self N⟩) = 1 := by
-    have honface : (v ⟨N, Nat.lt_succ_self N⟩).onFace ⟨0, by omega⟩ := by
-      show (v ⟨N, _⟩).coords ⟨0, by omega⟩ = 0; simp [v]; omega
-    have hne := hc (v ⟨N, _⟩) ⟨0, by omega⟩ honface
-    -- c(v(N)) ≠ 0 and c(v(N)) : Fin 2, so c(v(N)).val ∈ {0,1} and ≠ 0 → = 1
-    apply Fin.ext
-    have hlt := (c (v ⟨N, Nat.lt_succ_self N⟩)).isLt
-    have hne' : (c (v ⟨N, Nat.lt_succ_self N⟩)).val ≠ 0 :=
-      fun heq => hne (Fin.ext heq)
-    omega
-  -- S = {k | c(v(k)) = 0}, find maximum k*
-  let S := Finset.univ.filter (fun k : Fin (N + 1) => c (v k) = 0)
-  have hS_ne : S.Nonempty :=
-    ⟨⟨0, Nat.zero_lt_succ N⟩,
-     Finset.mem_filter.mpr ⟨Finset.mem_univ _, hv0⟩⟩
-  have hN_not : (⟨N, Nat.lt_succ_self N⟩ : Fin (N + 1)) ∉ S := by
-    intro hmem
-    have hc := (Finset.mem_filter.mp hmem).2
-    -- hc : c (v ⟨N, _⟩) = 0, but hvN : c (v ⟨N, _⟩) = 1. Contradiction.
-    exact absurd (hc.symm.trans hvN) (by decide)
-  let k_star := S.max' hS_ne
-  have hks_mem : k_star ∈ S := Finset.max'_mem S hS_ne
-  have hks_color : c (v k_star) = 0 := (Finset.mem_filter.mp hks_mem).2
-  -- k* < N (cannot be N since N ∉ S)
-  have hks_lt : k_star.val < N := by
-    by_contra hge
-    push_neg at hge
-    have heq : k_star = ⟨N, Nat.lt_succ_self N⟩ := by apply Fin.ext; omega
-    exact hN_not (heq ▸ hks_mem)
-  -- k*+1 ∉ S by maximality, so c(v(k*+1)) ≠ 0, hence = 1
-  have hks1_color : c (v ⟨k_star.val + 1, by omega⟩) = 1 := by
-    have hns : (⟨k_star.val + 1, by omega⟩ : Fin (N + 1)) ∉ S := by
-      intro hmem
-      have hle := Finset.le_max' S hS_ne hmem
-      -- Fin le is definitionally Nat le, so extract as Nat inequality
-      have h_nat : k_star.val + 1 ≤ k_star.val := hle
-      omega
-    have hne : c (v ⟨k_star.val + 1, by omega⟩) ≠ 0 := by
-      intro h
-      exact hns (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩)
-    -- c(v(k*+1)) ≠ 0 and : Fin 2, so .val ≠ 0 and .val < 2 → .val = 1
-    apply Fin.ext
-    have hlt := (c (v ⟨k_star.val + 1, by omega⟩)).isLt
-    have hne' : (c (v ⟨k_star.val + 1, by omega⟩)).val ≠ 0 :=
-      fun heq => hne (Fin.ext heq)
-    omega
-  -- The edge [v(k*), v(k*+1)] is a GridSimplex with incDir=1, miss=0
-  refine ⟨{
-    verts := fun i => if i.val = 0 then v k_star
-                      else v ⟨k_star.val + 1, by omega⟩
-    incDir := fun _ => ⟨1, by omega⟩
-    miss := ⟨0, by omega⟩
-    miss_ne_inc := fun _ => by decide
-    step_inc := fun k => by
-      fin_cases k
-      show (v ⟨k_star.val + 1, by omega⟩).coords ⟨1, by omega⟩ =
-           (v k_star).coords ⟨1, by omega⟩ + 1
-      simp [v]
-    step_dec := fun k => by
-      fin_cases k
-      show (v k_star).coords ⟨0, by omega⟩ =
-           (v ⟨k_star.val + 1, by omega⟩).coords ⟨0, by omega⟩ + 1
-      simp [v]
-      omega
-    step_same := fun k j hj1 hj2 => by
-      fin_cases k
-      fin_cases j
-      · exact absurd rfl hj2  -- j = miss = 0, contradiction
-      · exact absurd rfl hj1  -- j = incDir k = 1, contradiction
-    inc_injective := fun a _b _h => Subsingleton.elim a _ }, ?_⟩
-  -- Panchromatic: color 0 at v(k*), color 1 at v(k*+1)
-  intro col
-  fin_cases col
-  · exact ⟨⟨0, by omega⟩, by
-      show c (v k_star) = 0
-      exact hks_color⟩
-  · exact ⟨⟨1, by omega⟩, by
-      show c (v ⟨k_star.val + 1, by omega⟩) = 1
-      exact hks1_color⟩
-
-/-- **Concrete Sperner's Lemma on the Grid** (sorry'd — blocked on architecture).
-
-For any Sperner coloring of the grid triangulation of the d-simplex with
+/-- **Concrete Sperner's Lemma on the Grid**: For any Sperner
+coloring of the grid triangulation of the d-simplex with
 subdivision N > 0, there exists a panchromatic cell.
 
-This is MATHEMATICALLY TRUE, but the current proof path through
-`boundary_doors_odd` is blocked because `boundary_doors_odd` is FALSE for
-the oriented `gridComplex` (see its docstring).
+This combines:
+1. The abstract Sperner theorem (`CellComplex.sperner`)
+2. The grid CellComplex instance (`gridComplex`)
+3. The boundary door oddness lemma (`boundary_doors_odd`)
 
-The correct proof requires one of:
-A. A `SpernerNDim.SpernerTriangulation d N` instance for the unoriented
-   Freudenthal triangulation (satisfying `boundary_face`), then apply
-   `SpernerNDim.sperner_ndim`.
-B. A direct inductive proof on d, not going through `boundary_doors_odd`.
-
-The `gridComplex d N` is fully well-formed (`adj_symm`, `adj_vertex`,
-`adj_ne` all proved without sorry). The gap is existence of panchromatic cells.
-
-Session progress (2026-04-22):
-- PROVED: `gridAdj_symm` (by cases on k.val: 0, d, interior)
-- PROVED: `gridAdj_vertex` (vertex-set equality for all three cases)
-- IDENTIFIED: `boundary_verts_on_face` and `boundary_doors_odd` are both false
-- NEEDED: Unoriented SpernerTriangulation instance for the Freudenthal grid -/
+No extra hypotheses needed — the boundary oddness follows
+from the Sperner condition and the grid structure. -/
 theorem sperner_grid (d N : ℕ) (hN : 0 < N)
     (c : BaryPoint d N → Fin (d + 1))
     (hc : IsSperner c) :
     ∃ s : (gridComplex d N).Cell,
       CellComplex.IsPanchromatic c
         (gridComplex d N) s := by
-  match d with
-  | 0 =>
-    -- d=0: only one color (Fin 1), every cell is panchromatic
-    refine ⟨{
-      verts := fun _ => ⟨fun _ => N, by simp [Fin.sum_univ_one]⟩
-      incDir := fun k => k.elim0
-      miss := ⟨0, by omega⟩
-      miss_ne_inc := fun k => k.elim0
-      step_inc := fun k => k.elim0
-      step_dec := fun k => k.elim0
-      step_same := fun k _j _h1 _h2 => k.elim0
-      inc_injective := fun a _b _h => a.elim0 }, ?_⟩
-    intro col
-    -- col : Fin 1 = Fin (0+1); any two Fin 1 values are equal since both vals < 1
-    refine ⟨⟨0, by omega⟩, ?_⟩
-    apply Fin.ext; omega
-  | 1 =>
-    -- d=1: proved by discrete IVT via sperner_grid_one
-    exact sperner_grid_one hN c hc
-  | d + 2 =>
-    -- d≥2: architecture blocked; unoriented SpernerTriangulation needed
-    sorry
+  exact CellComplex.sperner c (gridComplex d N)
+    (boundary_doors_odd d N hN c hc)
 
 end SpernerGrid

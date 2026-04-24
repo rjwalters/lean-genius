@@ -1,106 +1,60 @@
 {
   "slug": "shapley-folkman-oq-03",
-  "title": "Shapley-Folkman-Starr Theorem: Large Markets Are Approximately Convex",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "title": "Shapley-Folkman Theorem: Economic Application Formalization",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "theorem shapley_folkman_starr [FiniteDimensional ℝ E] {ι : Type*} [DecidableEq ι] {S : ι → Set E} {t : Finset ι} (hne : ∀ i ∈ t, (S i).Nonempty) (δ : ℝ) (hδ : 0 ≤ δ) (hdiam : ∀ i ∈ t, ∀ s₁ ∈ S i, ∀ s₂ ∈ S i, dist s₁ s₂ ≤ δ) {x : E} (hx : x ∈ convexHull ℝ (∑ i ∈ t, S i)) : ∃ x' ∈ ∑ i ∈ t, S i, dist x x' ≤ (Module.finrank ℝ E : ℝ) * δ",
-    "plain": "For sets {Sᵢ} in a finite-dimensional normed space with pairwise distances bounded by δ, any point x in the convex hull of their Minkowski sum has an approximant x' in the actual sum with ‖x - x'‖ ≤ dim(E)·δ. The bound is independent of the number of summands.",
-    "whyMatters": [
-      "Validates the use of convex analysis in large market equilibrium theory (Starr 1969, Arrow-Hahn 1971)",
-      "Per-agent error d·δ/n → 0 as n → ∞: large markets are approximately competitive regardless of individual non-convexities",
-      "Foundational for ε-equilibrium theory in mathematical economics"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Shapley-Folkman Theorem: Economic Application Formalization.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "convexHull_dist_le: p ∈ conv(S) and S ⊆ B(q,δ) → dist(p,q) ≤ δ",
-      "convexHull_dist_le_diam: diameter-based corollary",
-      "shapley_folkman_starr: dist(x, ΣSᵢ) ≤ dim(E)·δ for x ∈ conv(ΣSᵢ)",
-      "large_economy_near_convex: n-agent corollary, error ≤ dim(E)·δ independent of n",
-      "no_excess_for_convex: convex summands contribute zero error"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Proved. 0 sorries, 0 local axioms. Depends on 3 assumptions from parent ShapleyFolkman.lean."
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-04-23",
+    "phase": "NEW",
+    "since": "2026-04-22T13:03:46.506Z",
     "iteration": 1,
-    "focus": "Complete — all theorems proved, gallery data created",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Potential follow-up: eliminate the 3 parent sorries in ShapleyFolkman.lean",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Starr's economic application of Shapley-Folkman formalized. 5 theorems/lemmas, 0 sorries, 0 local axioms.",
-    "builtItems": [
-      "convexHull_dist_le: distance lemma via convexHull_min + convex_closedBall (ShapleyFolkmanOQ03.lean:54)",
-      "convexHull_dist_le_diam: diameter corollary (ShapleyFolkmanOQ03.lean:73)",
-      "shapley_folkman_starr: main theorem, ≤ dim(E)·δ bound (ShapleyFolkmanOQ03.lean:98)",
-      "large_economy_near_convex: n-agent corollary (ShapleyFolkmanOQ03.lean:176)",
-      "no_excess_for_convex: zero error for convex summands (ShapleyFolkmanOQ03.lean:199)"
-    ],
-    "insights": [
-      "convexHull_min is the key Mathlib lemma: conv(S) is the smallest convex set containing S",
-      "Finset.sum_subset handles term cancellation (f(i) = g(i) for non-excess i) cleanly",
-      "The refine ⟨g, ?_, rfl⟩ + intro pattern avoids implicit lambda issues with Set.mem_finset_sum",
-      "large_economy_near_convex reduces to shapley_folkman_starr via Finset.sum_const + Fintype.card_fin",
-      "Dim bound is tight: d·δ depends only on dim(E), not on number of summands"
-    ],
-    "mathlibGaps": [
-      "3 sorries remain in parent ShapleyFolkman.lean (sum rearrangement + two supporting lemmas)"
-    ],
-    "nextSteps": [
-      "Eliminate parent sorries: (1) sum rearrangement over range of embedding, (2-3) two supporting lemmas"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
   "tags": [
     "economics",
     "convex-analysis",
     "shapley-folkman",
-    "game-theory",
     "epsilon-equilibrium",
     "formalization"
   ],
   "relatedProofs": [
-    "shapley-folkman",
-    "shapley-folkman-oq-03"
+    "shapley-folkman"
   ],
   "references": {
-    "papers": [
-      "Starr, R.M. (1969): Quasi-Equilibria in Markets with Non-Convex Preferences, Econometrica",
-      "Shapley, L.S. and Folkman, J. (1967): Unpublished correspondence (appendix in Starr 1969)"
-    ],
+    "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.Analysis.Normed.Module.Convex",
-      "Mathlib.Analysis.Convex.Hull",
-      "Mathlib.Topology.Algebra.Module.Basic"
-    ]
+    "mathlib": []
   },
   "started": "2026-04-22T13:03:46.506Z",
-  "lastUpdate": "2026-04-23T00:00:00.000Z",
-  "significance": 8,
-  "tractability": 7,
+  "lastUpdate": "2026-04-22T13:03:46.506Z",
+  "significance": 7,
+  "tractability": 6,
   "leanFiles": [
-    {
-      "path": "Proofs/ShapleyFolkmanOQ03.lean",
-      "filename": "ShapleyFolkmanOQ03.lean",
-      "lineCount": 203,
-      "theoremCount": 5,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkmanOQ03.lean"
-    },
     {
       "path": "Proofs/ShapleyFolkman.lean",
       "filename": "ShapleyFolkman.lean",
@@ -108,9 +62,20 @@
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 3,
+      "sorryCount": 4,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkman.lean"
+    },
+    {
+      "path": "Proofs/ShapleyFolkmanAristotle.lean",
+      "filename": "ShapleyFolkmanAristotle.lean",
+      "lineCount": 87,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkmanAristotle.lean"
     }
   ]
 }

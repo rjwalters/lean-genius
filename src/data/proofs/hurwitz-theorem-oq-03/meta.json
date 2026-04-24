@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-02",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/HurwitzTheorem.lean",
     "tags": [
       "algebra",
@@ -22,7 +22,7 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 0,
     "assumptions": "1 sorry: hurwitz_only_if — if an n-square identity exists, then n ∈ {1,2,4,8} (n=3 case proved; n∉{1,2,3,4,8} cases pending Clifford/Radon-Hurwitz argument). The converse (identities exist for n ∈ {1,2,4,8}) is fully proved. No axiom declarations.",
-    "lineCount": 2042,
+    "lineCount": 1973,
     "theoremCount": 32,
     "definitionCount": 15,
     "originalContributions": [
@@ -67,7 +67,7 @@
   },
   "leanFile": {
     "namespace": "HurwitzTheorem",
-    "lineCount": 2042,
+    "lineCount": 1973,
     "axiomCount": 0,
     "theoremCount": 33,
     "definitionCount": 15,

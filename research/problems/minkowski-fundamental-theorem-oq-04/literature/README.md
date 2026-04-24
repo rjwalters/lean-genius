@@ -7,10 +7,8 @@ This directory contains:
 
 ## Related Gallery Proofs
 
-- `minkowski-fundamental-theorem`: The parent proof using the custom Lattice API
+[List proofs from src/data/proofs/ that relate to this problem]
 
 ## External References
 
-- Mathlib4: `Mathlib.Algebra.Module.ZLattice.Basic` — ZLattice definition
-- Mathlib4: `Mathlib.Algebra.Module.ZLattice.Covolume` — covolume API
-- Minkowski, H. (1891). *Geometrie der Zahlen* — Original text
+[Papers, books, online resources]

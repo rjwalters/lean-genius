@@ -547,12 +547,10 @@
       "result": "clean"
     },
     "birch-swinnerton-dyer": {
-      "auditCount": 6,
-      "issues": [
-        "True-stub defs (p_adic_L_function, HeegnerPointExists, p_adic_height_pairing) added to meta.assumptions"
-      ],
-      "lastAudited": "2026-04-23T19:45:00Z",
-      "result": "issues-fixed"
+      "auditCount": 5,
+      "issues": [],
+      "lastAudited": "2026-04-05T16:13:12Z",
+      "result": "issues-found"
     },
     "birthday-problem": {
       "auditCount": 2,
@@ -6503,12 +6501,10 @@
       "result": "clean"
     },
     "erdos-606-oq-03": {
-      "auditCount": 3,
-      "issues": [
-        "badge axiom->wip (fixed by PR #11028)"
-      ],
-      "lastAudited": "2026-04-23T19:45:00Z",
-      "result": "issues-fixed"
+      "auditCount": 2,
+      "issues": [],
+      "lastAudited": "2026-04-05T17:40:29Z",
+      "result": "issues-found"
     },
     "erdos-607": {
       "agentId": "auditor-cycle-20-batch",
@@ -9410,9 +9406,9 @@
       "result": "clean"
     },
     "fundamental-arithmetic-oq-02": {
-      "auditCount": 2,
+      "auditCount": 1,
       "issues": [],
-      "lastAudited": "2026-04-23T22:43:05Z",
+      "lastAudited": "2026-04-03T05:20:33Z",
       "result": "clean"
     },
     "fundamental-theorem-algebra": {
@@ -10914,12 +10910,9 @@
       "result": "clean"
     },
     "weak-goldbach": {
-      "auditCount": 3,
-      "lastAudited": "2026-04-23T19:45:00Z",
-      "result": "issues-fixed",
-      "issues": [
-        "True-stub theorems acknowledged in meta.assumptions (fixed by PR #9874)"
-      ]
+      "auditCount": 2,
+      "lastAudited": "2026-04-05T16:13:12Z",
+      "result": "issues-found"
     },
     "wilsons-theorem": {
       "auditCount": 2,
@@ -11049,20 +11042,20 @@
       "issues": []
     },
     "cayley-hamilton-minpoly-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-23T19:37:59Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T05:51:41Z",
       "result": "clean",
       "issues": []
     },
     "cayley-hamilton-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-23T19:37:59Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T05:51:41Z",
       "result": "clean",
       "issues": []
     },
     "cayley-hamilton-oq-02": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-23T19:37:59Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T05:51:41Z",
       "result": "clean",
       "issues": []
     },
@@ -11073,8 +11066,8 @@
       "issues": []
     },
     "cube-root-2-irrational": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-23T19:37:59Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T05:51:41Z",
       "result": "clean",
       "issues": []
     },
@@ -11127,26 +11120,26 @@
       "issues": []
     },
     "inclusion-exclusion-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-23T19:37:59Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T05:51:42Z",
       "result": "clean",
       "issues": []
     },
     "infinitude-primes-4k1": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-23T19:37:59Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T05:51:42Z",
       "result": "clean",
       "issues": []
     },
     "infinitude-primes-4k3": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-23T19:37:59Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T05:51:42Z",
       "result": "clean",
       "issues": []
     },
     "intermediate-value-theorem-oq-02": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-23T19:37:59Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T05:51:42Z",
       "result": "clean",
       "issues": []
     },
@@ -12946,28 +12939,6 @@
     "yang-mills-lattice-oq-01": {
       "auditCount": 1,
       "lastAudited": "2026-04-23T18:43:37Z",
-      "result": "clean",
-      "issues": []
-    },
-    "ballot-problem-oq-03-oq-01-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-23T20:36:02Z",
-      "result": "issues-fixed",
-      "issues": [
-        "sorries 1->0: fixed by PR #12063"
-      ]
-    },
-    "cauchy-schwarz-integral-oq-01-oq-03-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-23T20:36:08Z",
-      "result": "issues-fixed",
-      "issues": [
-        "status verified->formalized: fixed by PR #11994"
-      ]
-    },
-    "minkowski-fundamental-theorem-oq-04": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-24T00:52:14Z",
       "result": "clean",
       "issues": []
     }

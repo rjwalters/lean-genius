@@ -61,8 +61,29 @@
       "Caratheodory's theorem (points in convex hull need at most d+1 vertices)",
       "Affine independence and dimension"
     ],
-    "lineCount": 904,
+    "lineCount": 809,
     "mathlib_version": "4.26.0",
+    "leanFile": {
+      "imports": [
+        "Mathlib.Analysis.Convex.Caratheodory",
+        "Mathlib.Analysis.Convex.Combination",
+        "Mathlib.Analysis.Convex.Hull",
+        "Mathlib.LinearAlgebra.AffineSpace.Independent",
+        "Mathlib.LinearAlgebra.Dimension.Finrank",
+        "Mathlib.Order.Filter.Basic",
+        "Mathlib.Data.Finset.Pointwise"
+      ],
+      "opens": [
+        "Set",
+        "Finset",
+        "Pointwise"
+      ],
+      "namespace": "ShapleyFolkman",
+      "lineCount": 629,
+      "axiomCount": 0,
+      "theoremCount": 6,
+      "definitionCount": 2
+    },
     "relatedProblems": []
   },
   "overview": {
@@ -179,16 +200,13 @@
       "description": "Both are existence theorems with deep applications in mathematical economics. Brouwer's theorem proves Nash equilibrium existence; Shapley-Folkman justifies convex relaxation in general equilibrium theory"
     }
   ],
-  "mainTheorems": [
-    {
-      "name": "shapley_folkman",
-      "type": "core",
-      "description": "At most dim(E) summands in a Minkowski sum decomposition need convexification",
-      "leanType": "Decomposition S t x -> d.excessIndices.card <= Module.finrank R E"
-    }
-  ],
-  "sorries": 1,
   "leanFile": {
+    "lineCount": 809,
+    "structureCount": 1,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "lemmaCount": 0,
+    "defCount": 1,
     "imports": [
       "Mathlib.Analysis.Convex.Caratheodory",
       "Mathlib.Analysis.Convex.Combination",
@@ -203,12 +221,36 @@
       "Finset",
       "Pointwise"
     ],
-    "namespace": "ShapleyFolkman",
-    "lineCount": 904,
-    "axiomCount": 0,
-    "theoremCount": 8,
-    "definitionCount": 1,
-    "sorries": 1,
-    "path": "Proofs/ShapleyFolkman.lean"
-  }
+    "mainTheorems": [
+      {
+        "name": "shapley_folkman",
+        "type": "core",
+        "description": "Main lemma: at most finrank(R, E) summands need convexification",
+        "leanType": "[FiniteDimensional R E] -> Decomposition S t x -> d.excessIndices.card <= Module.finrank R E"
+      },
+      {
+        "name": "sum_close_to_convexHull",
+        "type": "corollary",
+        "description": "Shapley-Folkman-Starr qualitative form",
+        "leanType": "x in conv(sum Si) -> exists f, excess <= finrank"
+      },
+      {
+        "name": "repeated_sum_nearly_convex",
+        "type": "corollary",
+        "description": "Economic form: n-fold sum nearly convex",
+        "leanType": "x in conv(n * S) -> exists f, excess <= finrank"
+      }
+    ],
+    "path": "Proofs/ShapleyFolkman.lean",
+    "sorries": 1
+  },
+  "mainTheorems": [
+    {
+      "name": "shapley_folkman",
+      "type": "core",
+      "description": "At most dim(E) summands in a Minkowski sum decomposition need convexification",
+      "leanType": "Decomposition S t x -> d.excessIndices.card <= Module.finrank R E"
+    }
+  ],
+  "sorries": 1
 }
