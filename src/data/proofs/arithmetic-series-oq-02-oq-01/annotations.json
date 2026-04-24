@@ -8,7 +8,7 @@
     },
     "type": "definition",
     "title": "Gaussian Binomial Coefficient via q-Pascal's Rule",
-    "content": "The Gaussian binomial coefficient qBinom q n k is defined recursively using q-Pascal's rule: any element of the top row equals 1, the extra-diagonal elements vanish, and the interior follows [n+1 choose k+1]_q = q^{k+1}\u00b7[n choose k+1]_q + [n choose k]_q. The noncomputable tag is needed because Lean cannot decide which branch applies from types alone; the definition works in any commutative ring R, not just in \u2115 or \u2124.",
+    "content": "The Gaussian binomial coefficient qBinom q n k is defined recursively using q-Pascal's rule: any element of the top row equals 1, the extra-diagonal elements vanish, and the interior follows [n+1 choose k+1]_q = q^{k+1}·[n choose k+1]_q + [n choose k]_q. The noncomputable tag is needed because Lean cannot decide which branch applies from types alone; the definition works in any commutative ring R, not just in ℕ or ℤ.",
     "mathContext": "$\\binom{n}{k}_q$ defined by: $\\binom{n}{0}_q = 1$, $\\binom{0}{k+1}_q = 0$, $\\binom{n+1}{k+1}_q = q^{k+1}\\binom{n}{k+1}_q + \\binom{n}{k}_q$",
     "significance": "key",
     "relatedConcepts": [
@@ -30,7 +30,7 @@
       "startLine": 38,
       "endLine": 45
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Boundary Conditions: Top Row and Left Column",
     "content": "Two @[simp] lemmas establish the fundamental boundary conditions for the q-Pascal triangle. qBinom_zero_right proves [n choose 0]_q = 1 for all n (the top row is all ones), while qBinom_zero_succ confirms [0 choose k+1]_q = 0 (the left column beyond the diagonal is zero). These are direct from the definition; the `cases n` tactic handles n = 0 vs n+1 separately. Marking as @[simp] lets Lean discharge these goals automatically in later proofs.",
     "mathContext": "$\\binom{n}{0}_q = 1$ for all $n$; $\\binom{0}{k+1}_q = 0$ for all $k$",
@@ -76,7 +76,7 @@
       "startLine": 61,
       "endLine": 70
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Vanishing: [n choose k]_q = 0 when k > n",
     "content": "This is the q-analog of the fact that C(n,k) = 0 whenever k > n. The proof is by induction on n, using qBinom_succ_succ to unroll the recurrence and then applying the induction hypothesis twice (for both upper-left and upper terms). The two IH applications require careful omega-arithmetic to derive n < k+1 and n < k from the main hypothesis n+1 < k+1. The @[simp] attribute allows Lean's simplifier to automatically eliminate these zero terms in later proofs.",
     "mathContext": "If $k > n$ then $\\binom{n}{k}_q = 0$",
@@ -100,7 +100,7 @@
     },
     "type": "concept",
     "title": "Diagonal Identity: [n choose n]_q = 1",
-    "content": "The diagonal of the q-Pascal triangle is identically 1, just as C(n,n) = 1 in ordinary combinatorics. The proof by induction peels off [n+1 choose n+1]_q = q^{n+1}\u00b7[n choose n+1]_q + [n choose n]_q, then uses qBinom_eq_zero_of_lt to kill the first term (since n < n+1), and the IH to simplify [n choose n]_q = 1. Combinatorially, there is exactly one way to choose an n-dimensional subspace of an n-dimensional space over any field.",
+    "content": "The diagonal of the q-Pascal triangle is identically 1, just as C(n,n) = 1 in ordinary combinatorics. The proof by induction peels off [n+1 choose n+1]_q = q^{n+1}·[n choose n+1]_q + [n choose n]_q, then uses qBinom_eq_zero_of_lt to kill the first term (since n < n+1), and the IH to simplify [n choose n]_q = 1. Combinatorially, there is exactly one way to choose an n-dimensional subspace of an n-dimensional space over any field.",
     "mathContext": "$\\binom{n}{n}_q = 1$ for all $n \\geq 0$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -122,7 +122,7 @@
     },
     "type": "insight",
     "title": "q=1 Specialization Recovers Ordinary Binomial Coefficients",
-    "content": "This theorem confirms that qBinom is a genuine q-deformation: setting q = 1 in \u2124 returns exactly Nat.choose n k (when k \u2264 n). The proof is an intricate induction requiring case analysis: when k+1 \u2264 n both IH instances apply cleanly; when k = n only one term survives via the vanishing lemma. The arithmetic connecting qBinom q (n+1) (k+1) at q=1 to Nat.choose uses `linarith [Nat.choose_succ_succ n k]`, the Lean statement of Pascal's rule for ordinary binomials. The hypothesis k \u2264 n is necessary: for k > n, both sides are 0 but the Nat.choose definition diverges from qBinom's for out-of-range inputs.",
+    "content": "This theorem confirms that qBinom is a genuine q-deformation: setting q = 1 in ℤ returns exactly Nat.choose n k (when k ≤ n). The proof is an intricate induction requiring case analysis: when k+1 ≤ n both IH instances apply cleanly; when k = n only one term survives via the vanishing lemma. The arithmetic connecting qBinom q (n+1) (k+1) at q=1 to Nat.choose uses `linarith [Nat.choose_succ_succ n k]`, the Lean statement of Pascal's rule for ordinary binomials. The hypothesis k ≤ n is necessary: for k > n, both sides are 0 but the Nat.choose definition diverges from qBinom's for out-of-range inputs.",
     "mathContext": "For $k \\leq n$: $\\binom{n}{k}_1 = \\binom{n}{k}$ (ordinary binomial). Uses ordinary Pascal: $\\binom{n+1}{k+1} = \\binom{n}{k+1} + \\binom{n}{k}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -134,7 +134,7 @@
     "prerequisites": [
       "Nat.choose_succ_succ (Pascal's rule)",
       "induction on n with k generalizing",
-      "case splitting on k \u2264 n vs k = n"
+      "case splitting on k ≤ n vs k = n"
     ]
   },
   {
@@ -168,9 +168,9 @@
       "startLine": 132,
       "endLine": 142
     },
-    "type": "technique",
+    "type": "concept",
     "title": "q-Simplicial Recurrence: Bridge to q-Pascal's Rule",
-    "content": "This recurrence qS(k+1, n+1) = q^{k+1}\u00b7qS(k+1, n) + qS(k, n+1) is the key lemma used in the inductive step of qHockeyStick. The proof works by translating indices via ring arithmetic: n+1+(k+1) = (n+(k+1))+1 and similar identities allow the goal to be rewritten as qBinom_succ_succ applied at a specific index pair. At q=1 this becomes S(k+1, n+1) = S(k+1, n) + S(k, n+1), which is exactly the simplicial recurrence from ArithmeticSeriesOQ02. The Lean proof is three lines \u2014 all work is done by ring normalization plus a single rewrite.",
+    "content": "This recurrence qS(k+1, n+1) = q^{k+1}·qS(k+1, n) + qS(k, n+1) is the key lemma used in the inductive step of qHockeyStick. The proof works by translating indices via ring arithmetic: n+1+(k+1) = (n+(k+1))+1 and similar identities allow the goal to be rewritten as qBinom_succ_succ applied at a specific index pair. At q=1 this becomes S(k+1, n+1) = S(k+1, n) + S(k, n+1), which is exactly the simplicial recurrence from ArithmeticSeriesOQ02. The Lean proof is three lines — all work is done by ring normalization plus a single rewrite.",
     "mathContext": "$\\binom{n+1+k+1}{k+1}_q = q^{k+1}\\binom{n+k+1}{k+1}_q + \\binom{n+1+k}{k}_q$",
     "significance": "key",
     "relatedConcepts": [
@@ -194,7 +194,7 @@
     },
     "type": "insight",
     "title": "q-Hockey Stick: Induction with Exponent Factorization",
-    "content": "The central theorem. The sum \u2211_{j=0}^{N} q^{(N-j)(k+1)} \u00b7 [j+k choose k]_q telescopes to [N+k+1 choose k+1]_q. The proof is by induction on N. The base case N=0 is trivial (single term, exponent 0). In the inductive step, the sum splits into the last term j=N+1 (which has exponent 0, giving qS(k, N+1)) plus the remaining sum. The key move is the exponent identity (N+1-j)(k+1) = (N-j)(k+1) + (k+1), which allows factoring q^{k+1} out of all N+1 earlier terms via Finset.sum_congr and Finset.mul_sum. The IH then identifies the factored sum as q^{k+1}\u00b7qS(k+1, N), and qSimplicial_succ_recurrence combines q^{k+1}\u00b7qS(k+1,N) + qS(k, N+1) = qS(k+1, N+1).",
+    "content": "The central theorem. The sum ∑_{j=0}^{N} q^{(N-j)(k+1)} · [j+k choose k]_q telescopes to [N+k+1 choose k+1]_q. The proof is by induction on N. The base case N=0 is trivial (single term, exponent 0). In the inductive step, the sum splits into the last term j=N+1 (which has exponent 0, giving qS(k, N+1)) plus the remaining sum. The key move is the exponent identity (N+1-j)(k+1) = (N-j)(k+1) + (k+1), which allows factoring q^{k+1} out of all N+1 earlier terms via Finset.sum_congr and Finset.mul_sum. The IH then identifies the factored sum as q^{k+1}·qS(k+1, N), and qSimplicial_succ_recurrence combines q^{k+1}·qS(k+1,N) + qS(k, N+1) = qS(k+1, N+1).",
     "mathContext": "$\\sum_{j=0}^{N} q^{(N-j)(k+1)} \\binom{j+k}{k}_q = \\binom{N+k+1}{k+1}_q$. Key step: $(N+1-j)(k+1) = (N-j)(k+1) + (k+1)$, so $q^{(N+1-j)(k+1)} = q^{k+1} \\cdot q^{(N-j)(k+1)}$.",
     "significance": "key",
     "relatedConcepts": [

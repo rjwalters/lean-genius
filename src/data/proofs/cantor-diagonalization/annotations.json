@@ -257,7 +257,7 @@
     "title": "Visualizing the Diagonal",
     "content": "The comment shows the diagonal argument visually. Imagine an infinite table where row $n$ is sequence $f(n)$.\n\nThe diagonal elements are $f(0)(0), f(1)(1), f(2)(2), \\ldots$\n\nFlipping each gives a sequence that differs from:\n- Row 0 at column 0\n- Row 1 at column 1\n- Row $n$ at column $n$\n\nSo the flipped diagonal cannot be any row in the table!",
     "mathContext": "The infinite matrix picture: row $n$ is the binary sequence $f(n) = (f(n)(0), f(n)(1), f(n)(2), \\ldots)$. The **diagonal** entries are $f(0)(0), f(1)(1), f(2)(2), \\ldots$ — one entry from each row, taken from the 'main diagonal' of the matrix. Flipping each diagonal entry gives $\\lnot f(0)(0), \\lnot f(1)(1), \\ldots$ — the diagonal sequence. It differs from row $n$ at column $n$ by construction. This visual is not a doc comment in the traditional sense — it is the `/- ## Visualization ... -/` section (lines 153–168), which is a section docstring. It contains no Lean declarations, only the ASCII art. The original argument in Cantor's 1891 paper used exactly this table picture, and this section preserves that pedagogical tradition.",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": [
       "diagonal definition",
       "binary sequences as infinite matrices"

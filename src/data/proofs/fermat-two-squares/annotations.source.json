@@ -5,7 +5,7 @@
     "anchor": {
       "type": "imports"
     },
-    "type": "context",
+    "type": "insight",
     "title": "Mathlib Imports",
     "content": "This proof uses Mathlib's `SumTwoSquares` module which contains the main characterization theorem `Nat.Prime.sq_add_sq`. This theorem has been proved in two independent ways in Mathlib: via Zagier's elegant involution argument and via factorization in Gaussian integers.",
     "mathContext": "Mathlib provides `Nat.Prime.sq_add_sq` which states: for a prime p, there exist a,b with a^2 + b^2 = p iff p % 4 is not 3.",

@@ -87,7 +87,7 @@
       "startLine": 63,
       "endLine": 69
     },
-    "type": "technique",
+    "type": "concept",
     "title": "S₃ Solvable: Derived Series Verified by decide",
     "content": "Solvability of S₃ is proved by unfolding `isSolvable_def` (which is `∃ n, derivedSeries G n = ⊥`) and providing the witness `n = 2`, verified by `decide`. The decidability of `derivedSeries G n = ⊥` for finite groups follows from the finite computability of commutator subgroups. With |S₃| = 6, Lean can exhaustively verify that the second derived subgroup is trivial: `[S₃, S₃] = A₃ ≅ ℤ/3ℤ` and `[A₃, A₃] = {e}`.",
     "mathContext": "Derived series of $S_3$: $S_3^{(0)} = S_3$ (order 6), $S_3^{(1)} = [S_3, S_3] = A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (order 3), $S_3^{(2)} = [A_3, A_3] = \\{e\\}$. Composition factors: $\\mathbb{Z}/2\\mathbb{Z}$ and $\\mathbb{Z}/3\\mathbb{Z}$, both cyclic of prime order.",
@@ -112,7 +112,7 @@
       "startLine": 78,
       "endLine": 82
     },
-    "type": "technique",
+    "type": "concept",
     "title": "S₄ Solvable: native_decide for the Klein Four-Group Chain",
     "content": "S₄ (order 24) requires `native_decide` instead of `decide` because the computation is too large for the kernel's definitional reduction. The witness `n = 3` encodes the three-step derived series: S₄ ⊵ A₄ ⊵ V₄ ⊵ {e}. Here V₄ = {e, (12)(34), (13)(24), (14)(23)} is the Klein four-group (normal in S₄, the unique such subgroup of order 4). The third derived subgroup `[V₄, V₄] = {e}` since V₄ is abelian, completing the series.",
     "mathContext": "Derived series of $S_4$: $S_4^{(0)} = S_4$ (order 24), $S_4^{(1)} = A_4$ (order 12), $S_4^{(2)} = [A_4, A_4] = V_4 \\cong \\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$ (order 4), $S_4^{(3)} = \\{e\\}$. Composition factors: $\\mathbb{Z}/2\\mathbb{Z}$, $\\mathbb{Z}/3\\mathbb{Z}$, $\\mathbb{Z}/2\\mathbb{Z}$, $\\mathbb{Z}/2\\mathbb{Z}$ — all cyclic of prime order.",

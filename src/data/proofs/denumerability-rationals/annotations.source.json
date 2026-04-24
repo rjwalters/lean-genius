@@ -57,7 +57,7 @@
       "name": "rationals_denumerable",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cantor's Classical Statement",
     "content": "The classical formulation: there exists a bijection f : ℕ ≃ ℚ. The proof provides the equivalence from `Denumerable.eqv` and extracts bijectivity via `Equiv.bijective`. This wraps the type-theoretic `Equiv` into the more familiar set-theoretic language of bijections.",
     "summary": "Existence of a bijection ℕ ≃ ℚ, proved by extracting bijectivity from the Denumerable equivalence.",
@@ -156,7 +156,7 @@
       "name": "card_rat_eq_aleph0",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Cardinal Equality: |ℚ| = ℵ₀",
     "content": "In cardinal arithmetic, |ℚ| = ℵ₀. The proof uses Cardinal.mk_denumerable which states that any Denumerable type has cardinality ℵ₀. The second theorem card_rat_eq_card_nat shows |ℚ| = |ℕ| by rewriting both sides to ℵ₀. This bridges the type-theoretic view (Denumerable typeclass) with the set-theoretic view (Cardinal.aleph0).",
     "summary": "Cardinal.mk ℚ = ℵ₀ = Cardinal.mk ℕ, bridging type-theoretic and set-theoretic perspectives.",
