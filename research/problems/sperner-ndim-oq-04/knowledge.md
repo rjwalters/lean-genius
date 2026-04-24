@@ -4,7 +4,7 @@
 
 Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following in the door adjacency graph. Key goal: starting from a boundary door, follow the unique path to reach a fully-colored simplex.
 
-**Status**: ACT — 3 sorries → 2 sorries. `kuhn_path_terminates` proved via `sperner_ndim`.
+**Status**: ACT — Non-revisiting FULLY PROVED (Session 4). 3 sorries remain (reduced from boundary-exit + non-revisiting to boundary-exit + walk-pairing only).
 **Gallery entry**: `src/data/proofs/sperner-ndim-oq-04/`
 **Lean file**: `proofs/Proofs/SpernerNDimOQ04.lean`
 
@@ -138,3 +138,58 @@ Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following
 
 1. `kuhn_walk_reaches_fc` — FALSE as stated; needs reformulation with IsKuhnWalkState invariant
 2. `kuhnPathStart_is_fc` — Potentially FALSE; needs reformulation to existential form
+
+---
+
+## Session 2026-04-24 (Session 4) — Non-Revisiting Proof Complete
+
+**Mode**: FRESH (continuing from Session 3)
+**Outcome**: KEY progress — non-revisiting FULLY PROVED via WalkValid invariant
+
+### What I Did
+
+1. Designed `WalkValid` invariant (5 properties: has_record, doors_valid, entry_from_chain, exit_to_chain, pred_spec) that tracks (k_in, k_out) per visited simplex + predecessor identification
+2. Proved `kuhn_three_doors_contradiction`: 3 distinct doors at same simplex → contradiction with Kuhn-compat (via doorDegree ≥ 3)
+3. Proved `walkValid_init`: initial boundary-door state with empty visited satisfies WalkValid
+4. Proved `kuhn_step_nonrevisit`: KEY theorem — under WalkValid, `K.adj current k_out = some(s', k')` implies `s' ∉ visited ∪ {current}`. Proof splits on predecessor vs non-predecessor case.
+5. Proved `walkValid_step`: WalkValid preserved by one Kuhn step (updates pred, door record)
+6. Reformulated `kuhn_walk_reaches_fc` to clarify: non-revisiting is now PROVED; only boundary-exit ruling-out remains
+7. Updated `kuhnPathStart_finds_fc_existential` with complete proof strategy (τ involution needs walk reversibility)
+8. Updated module header, file grew to 779 lines
+
+### Key Findings
+
+- **Non-revisiting proof structure**: Case split on exit_to_chain:
+  (a) Predecessor case (exit_to_chain says s' = current): `kuhnWalk_no_immediate_back` gives contradiction directly (k_out = state.entry, but hne_entry: k_out ≠ state.entry)
+  (b) Non-predecessor case (exit_to_chain says s_out ∈ visited): 3 distinct doors at s':
+    - k' ≠ k_out_s: adj_unique_facet (different neighbors, s_out ≠ current via current ∉ visited)
+    - k' ≠ k_in_s: adj_unique_facet (boundary case: k_in_s = none ≠ k'; interior case: s_prev ∈ visited ≠ current)
+    - k_in_s ≠ k_out_s: from doors_valid invariant
+- **WalkValid is the right invariant**: The exit_to_chain/entry_from_chain properties exactly capture what's needed for adj_unique_facet to fire, without needing the full walk sequence
+- **Remaining sorry scope**: Only boundary-exit termination (global parity) and walk-reversibility (τ∘τ=id) remain. Non-revisiting — the harder part — is done.
+- **kuhnPathStart_is_fc (universal) confirmed FALSE**: documented in proof comments; correct statement is existential
+
+### Files Modified
+
+- `proofs/Proofs/SpernerNDimOQ04.lean` (MODIFIED: +272 lines, to 779 total; 6 new proved theorems)
+- `src/data/research/problems/sperner-ndim-oq-04.json` (UPDATED knowledge)
+
+### Proved This Session
+
+5. `kuhn_three_doors_contradiction` — 3 distinct doors → contradiction with Kuhn-compat
+6. DoorRecord / WalkValid — invariant types for walk correctness
+7. `walkValid_init` — initial state validity  
+8. `kuhn_step_nonrevisit` — **KEY**: walk never revisits under WalkValid
+9. `walkValid_step` — WalkValid preserved at each step
+
+### Remaining Sorries (3)
+
+1. `kuhn_walk_reaches_fc` — boundary-exit ruling-out (parity argument); non-revisiting part DONE
+2. `kuhnPathStart_finds_fc_existential` — walk-pairing τ∘τ=id (walk reversibility); non-revisiting part DONE
+3. `kuhnPathStart_is_fc` — FALSE as stated (acknowledged); keep as sorry with documentation
+
+### Next Steps
+
+1. **Prove walk reversibility**: if walk from (s₀,k₀) ends at (sₙ, k_out_n), walk from (sₙ, k_out_n) ends at (s₀, k₀). Follows from: all interior simplices have exactly 2 doors (proved), and Kuhn step is unique exit.
+2. **Complete kuhnPathStart_finds_fc_existential**: apply even_card_fpf_invol (already proved) once τ is formalized
+3. **Global parity for kuhn_walk_reaches_fc**: separately or from existential
