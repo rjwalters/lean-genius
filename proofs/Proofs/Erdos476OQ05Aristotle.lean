@@ -1,30 +1,4 @@
-/-
-Aristotle targets for Erdős Problem #476 OQ05 (Vosper's Theorem)
-
-One key unproved lemma from the Vosper proof (Aristotle target):
-  1. vosper_case1_exists  — find a non-redundant element in A (SORRY 1/1)
-
-Note: vosper_ap_sdiff_card was proved in Erdos476OQ05Problem.lean and removed from this companion.
-
-This is a HARD lemma — a known mathematical result needing Lean formalization.
-See Erdos476OQ05Problem.lean for the full Vosper proof context.
-
-Mathematical context:
-  Vosper's Theorem (1956): If |A+B| = |A|+|B|-1 < p in Z/pZ (p prime), |A|,|B| ≥ 2,
-  then A and B are arithmetic progressions with the same common difference d.
-
-  Proof structure:
-    - Induction on |A|. Base case |A|=2 proved (vosper_base).
-    - Inductive step: find a₀ ∈ A with |(A\{a₀})+B| = |A|+|B|-2 (SORRY 1).
-    - Apply IH to A\{a₀} and B, get APs with diff d.
-    - Show A is also AP: |A \ A.image(·+d)| = 1 (SORRY 2), apply ap_of_near_periodic.
--/
-import Mathlib.Combinatorics.Additive.CauchyDavenport
-import Mathlib.Data.ZMod.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.NAry
-import Mathlib.Tactic.IntervalCases
-import Mathlib.Tactic.Ring
+import Mathlib
 
 open Finset Function
 open scoped Pointwise
@@ -33,111 +7,68 @@ namespace Erdos476OQ05Aristotle
 
 variable {p : ℕ} [hp : Fact p.Prime]
 
-/- ###Definitions (matching Erdos476OQ05Problem.lean) -/
+/-
+Cauchy-Davenport lower bound for erase+sumset: |(A\{a₀})+B| ≥ |A|+|B|-2 when |A|≥2, |B|≥1.
+-/
+lemma erase_add_card_ge (A B : Finset (ZMod p)) (a₀ : ZMod p) (ha₀ : a₀ ∈ A)
+    (hA : 2 ≤ A.card) (hB : 1 ≤ B.card) (hlt : A.card + B.card - 1 < p) :
+    A.card + B.card - 2 ≤ (A.erase a₀ + B).card := by
+  -- By ZMod.cauchy_davenport:
+  have h_cauchy_davenport : (p ⊓ (Finset.card (A.erase a₀) + Finset.card B - 1)) ≤ Finset.card ((A.erase a₀) + B) := by
+    apply_rules [ ZMod.cauchy_davenport ];
+    · exact hp.1;
+    · exact Finset.card_pos.mp ( by rw [ Finset.card_erase_of_mem ha₀ ] ; omega );
+    · exact Finset.card_pos.mp hB;
+  grind +qlia
 
-/-- An arithmetic progression in ZMod p starting at `a` with difference `d` -/
-def IsArithmeticProgression (A : Finset (ZMod p)) (a d : ZMod p) : Prop :=
-  A = (Finset.range A.card).image (fun (i : ℕ) => a + (i : ZMod p) * d)
+/-
+Upper bound: |(A\{a₀})+B| ≤ |A+B|.
+-/
+lemma erase_add_card_le (A B : Finset (ZMod p)) (a₀ : ZMod p) :
+    (A.erase a₀ + B).card ≤ (A + B).card := by
+  exact Finset.card_le_card ( Finset.add_subset_add_right ( Finset.erase_subset _ _ ) )
 
-/- ###Helper lemmas (proved in Erdos476OQ05Problem.lean, restated here for Aristotle) -/
-
-lemma shift_card_eq (B : Finset (ZMod p)) (d : ZMod p) :
-    (B.image (· + d)).card = B.card := by
-  apply Finset.card_image_of_injective
-  intro x y hxy
-  have h := congrArg (· - d) hxy
-  simp only [add_sub_cancel_right] at h
-  exact h
-
-/-- If A is an AP with diff d and has ≥ 2 elements, then d ≠ 0. -/
-lemma d_ne_zero_of_isAP {A : Finset (ZMod p)} {a d : ZMod p}
-    (hA : IsArithmeticProgression A a d) (hcard : 2 ≤ A.card) : d ≠ 0 := by
-  intro hd
-  have hAcard : A.card ≤ 1 := by
-    rw [Finset.card_le_one]
-    intro x hx y hy
-    rw [IsArithmeticProgression, hd] at hA
-    simp only [mul_zero, add_zero] at hA
-    rw [hA] at hx hy
-    simp only [Finset.mem_image, Finset.mem_range] at hx hy
-    obtain ⟨_, _, rfl⟩ := hx
-    obtain ⟨_, _, rfl⟩ := hy
-    rfl
-  omega
-
-/-- Key: if B \ B.image(·+d) has exactly 1 element and d ≠ 0 and |B| < p, then B is an AP. -/
-lemma ap_of_near_periodic {B : Finset (ZMod p)} {d : ZMod p}
-    (hd : d ≠ 0) (hlt : B.card < p)
-    (h : (B \ (B.image (· + d))).card = 1) :
-    ∃ b₀ : ZMod p, IsArithmeticProgression B b₀ d := by
-  sorry -- This is proved in Erdos476OQ05Problem.lean; restated for context
-
-/-- The pointwise sum of two AP-sets equals the expected range image. -/
-lemma add_isAP_eq {A B : Finset (ZMod p)} {a b d : ZMod p}
-    (hA : IsArithmeticProgression A a d) (hB : IsArithmeticProgression B b d)
-    (hApos : 0 < A.card) (hBpos : 0 < B.card) :
-    A + B = (Finset.range (A.card + B.card - 1)).image (fun (k : ℕ) => (a + b) + (k : ZMod p) * d) := by
-  apply Finset.Subset.antisymm
-  · -- Forward: A + B ⊆ range.image
-    intro x hx
-    simp only [Finset.mem_add] at hx
-    obtain ⟨xa, hxaA, xb, hxbB, rfl⟩ := hx
-    rw [hA] at hxaA; rw [hB] at hxbB
-    simp only [Finset.mem_image, Finset.mem_range] at hxaA hxbB
-    obtain ⟨i, hi, rfl⟩ := hxaA
-    obtain ⟨j, hj, rfl⟩ := hxbB
-    simp only [Finset.mem_image, Finset.mem_range]
-    refine ⟨i + j, by omega, ?_⟩
-    simp only [Nat.cast_add]; ring
-  · -- Reverse: range.image ⊆ A + B
-    intro x hx
-    simp only [Finset.mem_image, Finset.mem_range] at hx
-    obtain ⟨k, hk, rfl⟩ := hx
-    let i := min k (A.card - 1)
-    let j := k - i
-    have hi : i < A.card := Nat.lt_of_le_of_lt (Nat.min_le_right _ _) (Nat.sub_lt hApos Nat.one_pos)
-    have hj : j < B.card := by
-      simp only [i, j]
-      rcases le_or_gt k (A.card - 1) with h | h
-      · simp [Nat.min_eq_left h]; exact Finset.card_pos.mp hBpos
-      · have : min k (A.card - 1) = A.card - 1 := Nat.min_eq_right (by omega)
-        simp [this]; omega
-    have h_ij : i + j = k := by simp only [i, j]; omega
-    simp only [Finset.mem_add]
-    refine ⟨a + (i : ZMod p) * d, ?_, b + (j : ZMod p) * d, ?_, ?_⟩
-    · rw [hA]; simp only [Finset.mem_image, Finset.mem_range]; exact ⟨i, hi, rfl⟩
-    · rw [hB]; simp only [Finset.mem_image, Finset.mem_range]; exact ⟨j, hj, rfl⟩
-    · have hk : (k : ZMod p) = (i : ZMod p) + j := by
-        have h := congrArg (Nat.cast (R := ZMod p)) h_ij.symm
-        rwa [Nat.cast_add] at h
-      rw [hk]; ring
-
-/-- Sum of two APs with same diff is an AP, given CD equality. -/
-lemma isAP_sum {A B : Finset (ZMod p)} {a b d : ZMod p}
-    (hA : IsArithmeticProgression A a d) (hB : IsArithmeticProgression B b d)
-    (hApos : 0 < A.card) (hBpos : 0 < B.card)
-    (hABcard : (A + B).card = A.card + B.card - 1) :
-    IsArithmeticProgression (A + B) (a + b) d := by
-  unfold IsArithmeticProgression
-  rw [hABcard]
-  exact add_isAP_eq hA hB hApos hBpos
-
-/- ###SORRY 1: Case 1 existence (key lemma for Vosper inductive step) -/
-
-/-- **Vosper Case 1 Existence**: In the inductive step of Vosper's theorem,
-    there exists a₀ ∈ A such that removing a₀ gives CD equality for A\{a₀}+B.
-
-    Proof strategy: By contradiction, if all a ∈ A are "redundant" (Case 2), then:
-    - Every x ∈ A+B has at least 2 representations from A×B.
-    - Counting: |A|·|B| ≥ 2·|A+B| = 2(|A|+|B|-1), i.e., (|A|-2)(|B|-2) ≥ 2.
-    - This fails for (|A|-2)(|B|-2) < 2 (|B|=2 always, |A|=3,|B|=3).
-    - For the general case with (|A|-2)(|B|-2) ≥ 2: apply the "iterative removal"
-      argument showing A+B = {a*}+B for any singleton, contradicting |A+B| > |B|. -/
-theorem vosper_case1_exists (A B : Finset (ZMod p))
-    (hA3 : 2 < A.card) (hB : 2 ≤ B.card)
+/-
+If some b₀ ∈ B is "non-redundant" (removing it decreases the sumset),
+    then the new element gives a non-redundant a₀ ∈ A.
+-/
+lemma non_redundant_b_gives_a (A B : Finset (ZMod p)) (b₀ : ZMod p) (hb₀ : b₀ ∈ B)
+    (hA : 2 ≤ A.card) (hB : 2 ≤ B.card)
     (h : (A + B).card = A.card + B.card - 1)
-    (hlt : A.card + B.card - 1 < p) :
+    (hlt : A.card + B.card < p)
+    (hcard : (A + B.erase b₀).card = A.card + B.card - 2) :
     ∃ a₀ ∈ A, ((A.erase a₀) + B).card = A.card + B.card - 2 := by
-  sorry
+  -- Since A + B = (A + B.erase b₀) ∪ (A + {b₀}) and the sets differ by 1 in cardinality, there is exactly 1 element y in (A + {b₀}) \ (A + B.erase b₀).
+  obtain ⟨y, hy⟩ : ∃ y ∈ A + {b₀}, y ∉ A + B.erase b₀ := by
+    contrapose! h;
+    have h_subset : A + B ⊆ A + B.erase b₀ := by
+      simp_all +decide [ Finset.subset_iff, Finset.mem_add ];
+      grind;
+    exact ne_of_lt ( lt_of_le_of_lt ( Finset.card_le_card h_subset ) ( by omega ) );
+  -- Let $a₀$ be such that $y = a₀ + b₀$.
+  obtain ⟨a₀, ha₀⟩ : ∃ a₀ ∈ A, y = a₀ + b₀ := by
+    rw [ Finset.mem_add ] at hy ; aesop;
+  -- So y ∉ (A.erase a₀) + B, meaning (A.erase a₀) + B ⊊ A + B.
+  have h_strict_subset : (A.erase a₀ + B) ⊂ A + B := by
+    simp_all +decide [ Finset.ssubset_def, Finset.subset_iff ];
+    simp_all +decide [ Finset.mem_add ];
+    grind;
+  -- Since (A.erase a₀) + B ⊆ A + B and y ∉ (A.erase a₀) + B:
+  have h_card_le : (A.erase a₀ + B).card ≤ (A + B).card - 1 := by
+    exact Nat.le_sub_one_of_lt ( Finset.card_lt_card h_strict_subset );
+  exact ⟨ a₀, ha₀.1, le_antisymm ( by omega ) ( by have := erase_add_card_ge A B a₀ ha₀.1 hA ( by linarith ) ( by omega ) ; omega ) ⟩
+
+/-
+In the all-redundant case, the counting argument gives (|A|-2)(|B|-2) ≥ 2,
+    which is false for |B| = 2.
+-/
+lemma all_redundant_contradiction_B2 (A B : Finset (ZMod p))
+    (hA3 : 2 < A.card) (hB : B.card = 2)
+    (h : (A + B).card = A.card + B.card - 1)
+    (hlt : A.card + B.card < p)
+    (hredundant : ∀ b₀ ∈ B, (A + B.erase b₀).card = A.card + B.card - 1) :
+    False := by
+  obtain ⟨ b₁, b₂, hb₁, hb₂, hne ⟩ := Finset.card_eq_two.mp hB;
+  simp_all +decide [ Finset.sum_add_distrib ]
 
 end Erdos476OQ05Aristotle

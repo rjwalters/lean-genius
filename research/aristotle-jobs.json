@@ -3440,12 +3440,14 @@
       "file": "proofs/Proofs/Erdos476OQ05Aristotle.lean",
       "problem_id": "erdos-476-oq-05",
       "submitted": "2026-04-23T00:00:00Z",
-      "status": "submitted",
+      "status": "integrated",
       "sorries": [
         "vosper_case1_exists",
         "ap_of_near_periodic"
       ],
-      "notes": "Case 1 existence: find a₀∈A with |(A\\{a₀})+B|=|A|+|B|-2. Hard counting argument. ap_of_near_periodic is restated for context (proved in main file)."
+      "notes": "Case 1 existence: find a₀∈A with |(A\\{a₀})+B|=|A|+|B|-2. Hard counting argument. ap_of_near_periodic is restated for context (proved in main file).",
+      "outcome": "0 sorries remaining",
+      "theorems_proved": 2
     },
     {
       "project_id": "fc4ab19a-b8c8-4494-a33a-6753d0846757",
@@ -3590,11 +3592,12 @@
       "file": "proofs/Proofs/AngleTrisectionOQ02OQ04OQ01Aristotle.lean",
       "problem_id": "angletrisectionoq02oq04oq01",
       "submitted": "2026-04-23T18:24:37Z",
-      "status": "submitted",
+      "status": "blocked",
       "preprocessed": true,
       "preprocessing_log": "Converted 1 /-! docstrings to /-",
       "companion_file": true,
-      "notes": "Companion file submission (T1)"
+      "notes": "Companion file submission (T1)",
+      "outcome": "Safety check failed: possible file mismatch (see issue #8061)"
     }
   ]
 }
