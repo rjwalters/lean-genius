@@ -23,12 +23,7 @@
     exponential sums" (1981)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Complex.Exponential
-import Mathlib.Data.Finset.Basic
-import Mathlib.Analysis.SpecialFunctions.Complex.Log
-import Mathlib.MeasureTheory.Integral.Bochner
+import Mathlib
 
 open Real Complex MeasureTheory
 
@@ -188,10 +183,115 @@ def hardyConnection : Prop :=
 ## Part VIII: Related Results
 -/
 
-/-- The L² norm of exponential sums is exactly √N (by Parseval). -/
+/-
+Supporting lemmas for L2_norm (Parseval's theorem via character orthogonality).
+-/
+
+/-- Complex conjugate of expTwoPiI(x) is expTwoPiI(-x). -/
+private lemma expTwoPiI_conj (x : ℝ) :
+    starRingEnd ℂ (expTwoPiI x) = expTwoPiI (-x) := by
+  simp only [expTwoPiI, starRingEnd_apply, Complex.star_def]
+  rw [← Complex.exp_conj]
+  congr 1
+  simp only [map_mul, map_ofNat, Complex.conj_ofReal, Complex.conj_I]
+  push_cast; ring
+
+/-- expTwoPiI(n·θ) · conj(expTwoPiI(m·θ)) = expTwoPiI((n−m)·θ). -/
+private lemma expTwoPiI_mul_conj (n m : ℤ) (θ : ℝ) :
+    expTwoPiI (↑n * θ) * starRingEnd ℂ (expTwoPiI (↑m * θ)) =
+    expTwoPiI ((↑n - ↑m) * θ) := by
+  rw [expTwoPiI_conj, ← expTwoPiI_add]
+  congr 1; push_cast; ring
+
+/-- The real part of expTwoPiI(k·θ) equals cos(2π·k·θ). -/
+private lemma expTwoPiI_re (k : ℤ) (θ : ℝ) :
+    (expTwoPiI (↑k * θ)).re = Real.cos (2 * π * k * θ) := by
+  unfold expTwoPiI
+  have h : (2 : ℂ) * ↑π * ↑((k : ℝ) * θ) * I = ↑(2 * π * (k : ℝ) * θ) * I := by
+    push_cast; ring
+  rw [h]
+  exact Complex.exp_ofReal_mul_I_re _
+
+/-- normSq z = (z * starRingEnd ℂ z).re -/
+private lemma normSq_eq_mul_conj_re (z : ℂ) :
+    Complex.normSq z = (z * starRingEnd ℂ z).re := by
+  rw [starRingEnd_apply, Complex.star_def, Complex.mul_conj]
+  simp [Complex.ofReal_re]
+
+/-- (expSumNorm A θ)² = ∑_{(n,m)∈A×A} (expTwoPiI((n−m)·θ)).re -/
+private lemma expSumNorm_sq_eq (A : Finset ℤ) (θ : ℝ) :
+    (expSumNorm A θ)^2 =
+    ∑ p ∈ A ×ˢ A, (expTwoPiI ((↑p.1 - ↑p.2) * θ)).re := by
+  unfold expSumNorm expSum
+  rw [Complex.sq_abs, normSq_eq_mul_conj_re, map_sum, Finset.mul_sum]
+  simp_rw [Finset.sum_mul, expTwoPiI_mul_conj, Complex.re_sum]
+  rw [Finset.sum_comm]
+  exact (Finset.sum_product (fun p : ℤ × ℤ => (expTwoPiI ((↑p.1 - ↑p.2) * θ)).re)).symm
+
+/-- Character orthogonality: ∫₀¹ cos(2πkθ) dθ = [k=0] -/
+private lemma char_ortho (k : ℤ) :
+    ∫ θ in Set.Icc (0:ℝ) 1, Real.cos (2 * π * ↑k * θ) =
+    if k = 0 then 1 else 0 := by
+  by_cases hk : k = 0
+  · simp [hk]
+  · rw [if_neg hk]
+    have hck : (2 * π * (k : ℝ)) ≠ 0 :=
+      mul_ne_zero (mul_ne_zero two_ne_zero Real.pi_ne_zero) (Int.cast_ne_zero.mpr hk)
+    -- Rewrite Set.Icc integral as interval integral
+    have hconv : ∫ θ in Set.Icc (0:ℝ) 1, Real.cos (2 * π * ↑k * θ) =
+        ∫ θ in (0:ℝ)..1, Real.cos (2 * π * ↑k * θ) :=
+      (MeasureTheory.integral_Icc_eq_integral_Ioc (μ := MeasureTheory.volume)).trans
+        (intervalIntegral.integral_of_le (by norm_num : (0:ℝ) ≤ 1)).symm
+    rw [hconv]
+    -- Antiderivative: d/dθ [sin(2πkθ)/(2πk)] = cos(2πkθ)
+    have hderiv : ∀ θ ∈ Set.uIcc (0:ℝ) 1,
+        HasDerivAt (fun t => Real.sin (2 * π * ↑k * t) / (2 * π * ↑k))
+                  (Real.cos (2 * π * ↑k * θ)) θ := by
+      intro θ _
+      have h1 : HasDerivAt (fun t => 2 * π * (k : ℝ) * t) (2 * π * (k : ℝ)) θ := by
+        have := (hasDerivAt_id θ).const_mul (2 * π * (k : ℝ))
+        simpa using this
+      have h2 : HasDerivAt (fun t => Real.sin (2 * π * (k : ℝ) * t))
+          (Real.cos (2 * π * (k : ℝ) * θ) * (2 * π * (k : ℝ))) θ := by
+        have h := (Real.hasDerivAt_sin (2 * π * (k : ℝ) * θ)).comp θ h1
+        simpa [Function.comp] using h
+      have h3 := h2.div_const (2 * π * (k : ℝ))
+      rwa [mul_div_cancel_right₀ _ hck] at h3
+    rw [intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv
+        ((Real.continuous_cos.comp (continuous_const.mul
+          continuous_id')).continuousOn.intervalIntegrable)]
+    -- sin(2πk·1)/(2πk) - sin(2πk·0)/(2πk) = 0
+    simp only [mul_one, mul_zero, Real.sin_zero, zero_div, sub_zero]
+    have hsin : Real.sin (2 * π * (k : ℝ)) = 0 := by
+      have h : 2 * π * (k : ℝ) = ↑(2 * k : ℤ) * π := by push_cast; ring
+      rw [h]; exact Real.sin_int_mul_pi (2 * k)
+    simp [hsin, hck]
+
+/-- Orthogonality: ∫₀¹ (expTwoPiI((n−m)·θ)).re dθ = [n=m] -/
+private lemma integral_expTwoPiI_orthog (n m : ℤ) :
+    ∫ θ in Set.Icc (0:ℝ) 1, (expTwoPiI ((↑n - ↑m) * θ)).re = if n = m then 1 else 0 := by
+  have heq : ∀ θ : ℝ, (expTwoPiI ((↑n - ↑m) * θ)).re = Real.cos (2 * π * ↑(n - m) * θ) := by
+    intro θ
+    unfold expTwoPiI
+    have h : (2 : ℂ) * ↑π * ↑((↑n - ↑m : ℝ) * θ) * I = ↑(2 * π * ↑(n - m) * θ) * I := by
+      push_cast; ring
+    rw [h]; exact Complex.exp_ofReal_mul_I_re _
+  simp_rw [heq, char_ortho]
+  simp [Int.sub_eq_zero]
+
+/-- **Parseval's theorem for exponential sums:**
+    The L² norm of ∑_{n∈A} e(nθ) over [0,1] equals |A|. -/
 theorem L2_norm (A : Finset ℤ) :
     ∫ θ in Set.Icc 0 1, (expSumNorm A θ)^2 = A.card := by
-  sorry -- Parseval's theorem
+  simp_rw [expSumNorm_sq_eq]
+  have hint : ∀ p ∈ A ×ˢ A, IntegrableOn
+      (fun θ => (expTwoPiI ((↑p.1 - ↑p.2) * θ)).re) (Set.Icc 0 1) := fun p _ =>
+    (Complex.continuous_re.comp (Complex.continuous_exp.comp (by fun_prop))
+      ).continuousOn.integrableOn_compact isCompact_Icc
+  rw [integral_finset_sum _ hint]
+  simp_rw [integral_expTwoPiI_orthog]
+  -- Count diagonal: ∑_{(n,m)∈A×A} [n=m] = |A|
+  simp [Finset.sum_product, Finset.sum_ite_eq, Finset.card_eq_sum_ones, eq_comm]
 
 /-- L¹ vs L² comparison: log N ≤ L¹ while L² = √N. -/
 def L1_vs_L2_comparison : Prop :=
@@ -213,7 +313,6 @@ def flatPolynomialProblem : Prop :=
 noncomputable def weightedExpSum (A : Finset ℤ) (w : ℤ → ℂ) (θ : ℝ) : ℂ :=
   A.sum (fun n => w n * expTwoPiI (n * θ))
 
-/-- For unit weights, the L¹ norm is at least c log N. -/
 /-- Generalization to higher-dimensional character sums. -/
 def higherDimensionalGeneralization : Prop :=
   -- Similar bounds exist for sums over ℤᵈ
@@ -260,8 +359,7 @@ theorem erdos_512_solved :
   ⟨erdos_512, trivial⟩
 
 /-- Both proofs establish the same result. -/
-theorem konyagin_equals_mps :
-    konyagin_theorem ↔ mcgehee_pigno_smith_theorem := by
-  constructor <;> (intro _; exact mcgehee_pigno_smith_theorem)
+theorem konyagin_equals_mps : LittlewoodConjecture :=
+  konyagin_theorem
 
 end Erdos512
