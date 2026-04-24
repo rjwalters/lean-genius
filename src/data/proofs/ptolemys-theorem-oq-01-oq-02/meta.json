@@ -18,7 +18,7 @@
       "inner-product-space",
       "chord-arc-formula"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -56,7 +56,7 @@
     "dateAdded": "2026-04-24",
     "axiomCount": 0,
     "lineCount": 270,
-    "assumptions": "0 axioms. 0 sorries. Assumes: Cospherical condition (points on common circle), angle conditions for diagonal crossing, unit sphere (‖a‖=‖b‖=‖c‖=‖d‖=1).",
+    "assumptions": "0 axioms. 0 sorries. Core result via Mathlib bridge: uses EuclideanGeometry.mul_dist_add_mul_dist_eq_mul_dist_of_cospherical (Euclidean Ptolemy). Assumes: Cospherical condition (points on common circle), angle conditions for diagonal crossing, unit sphere (‖a‖=‖b‖=‖c‖=‖d‖=1).",
     "mathlib_version": "4.26.0",
     "parentProof": "ptolemys-theorem-oq-01"
   },
