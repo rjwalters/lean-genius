@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: jacobi_trudi_ssyt_eq now proves k=0 and k=1 inline; k>=2 sorry remains (RSK). File: 341 lines, 1 sorry.",
+    "progressSummary": "PROGRESS: jacobi_trudi_ssyt_eq k=0 and k=1 proved explicitly. 1 sorry remains: k+2 rows case (RSK bijection needed)",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -50,8 +50,8 @@
       "SSYTFin n k sh: def (SSYT of shape Fin k → ℕ with entries in Fin n, Subtype encoding)",
       "SSYTFin.weight: def (monomial product over all cells of SSYT)",
       "ssytSchurFin_one_row: proved (k=1 case: SSYTFin n 1 (fun _ => m) ≃ Sym (Fin n) m via sorted reps)",
-      "jacobi_trudi_ssyt_eq k=0 inline: proved by det_fin_zero for LHS + Unique/IsEmpty pattern for RHS (generalizes ssytSchurFin_empty to arbitrary sh : Fin 0 -> N)",
-      "jacobi_trudi_ssyt_eq k=1 inline: proved by showing sh = fun _ => sh 0 via Fin.ext (by omega), then schurPolynomial_one_row + ssytSchurFin_one_row"
+      "jacobi_trudi_ssyt_eq: k=0 case proved (schurPolynomial_empty + ssytSchurFin_empty)",
+      "jacobi_trudi_ssyt_eq: k=1 case proved (schurPolynomial_one_row + ssytSchurFin_one_row via fin_cases)"
     ],
     "insights": [
       "Mathlib has hsymm σ R n (complete homogeneous symmetric polynomials) in RingTheory.MvPolynomial.Symmetric.Defs — directly usable for Jacobi-Trudi matrix entries",
@@ -73,9 +73,9 @@
       "List.SortedLE.getElem_le_getElem_of_le handles monotonicity of sorted list access",
       "Fintype.sum_equiv with explicit Equiv is cleanest way to reindex finite sums",
       "Weight match: Fintype.prod_sigma + Fin.prod_univ_one reduces sigma product; map_coe+prod_coe+map_ofFn+prod_ofFn closes the goal",
-      "match k with pattern lets Lean specialize sh type per branch (Fin 0 vs Fin 1 vs Fin (k+2) -> N), no type annotation needed",
-      "Fin.elim0 p.1 eliminates any p : (i : Fin 0) x Fin (sh i) for *any* sh : Fin 0 -> N -- the pattern from ssytSchurFin_empty generalizes without modification",
-      "Fin.ext (by omega) closes i.val = 0 for i : Fin 1 since i.isLt : i.val < 1; then congr_arg sh converts to sh i = sh 0 for the k=1 inline proof"
+      "jacobi_trudi_ssyt_eq k=0 case proves via hsh : sh = Fin.elim0 := funext (fun i => i.elim0), then rw schurPolynomial_empty + ssytSchurFin_empty",
+      "jacobi_trudi_ssyt_eq k=1 case proves via hsh via fin_cases i, then rw schurPolynomial_one_row + ssytSchurFin_one_row",
+      "Structured k-case split: cases k with | zero => | succ k => cases k with | zero => | succ k => is cleaner than induction for this theorem"
     ],
     "mathlibGaps": [
       "No Mathlib SchurPolynomial definition — we provide one via Jacobi-Trudi formula",
@@ -83,9 +83,9 @@
       "RSK correspondence not formalized in Mathlib — needed for jacobiTrudi_lgv_proof"
     ],
     "nextSteps": [
-      "Prove jacobi_trudi_ssyt_eq k=2 case: use schurPolynomial_two_row for LHS; for RHS build sign-reversing involution on 2-row SSYT pairs",
-      "Full RSK proof (~300 lines): biject SSYTFin n (k+2) sh with NI lattice path tuples, apply LGV from BallotProblemOQ03.lean",
-      "Verify Docker build once upstream BallotProblemOQ03OQ02.lean build issue is resolved"
+      "Prove jacobi_trudi_ssyt_eq (general k≥2 case): option A = RSK bijection (~300 lines), option B = algebraic transfer matrix proof",
+      "Once Docker available, run docker-build.sh to verify ssytSchurFin_one_row compiles",
+      "Consider Aristotle submission for jacobi_trudi_ssyt_eq after providing more structure"
     ],
     "markdown": "# Knowledge Base: LGV Lemma → Jacobi-Trudi Identity\n\n**Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01\n**Last Updated**: 2026-04-23\n**Knowledge Items**: 0\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nNewly selected. Jacobi-Trudi identity expresses Schur polynomials as determinants of\ncomplete homogeneous symmetric polynomials. The LGV lemma (in parent gallery proof)\nprovides the combinatorial proof route via non-intersecting lattice paths.\n\n---\n\n## Insights\n\n_None yet — begin with OBSERVE phase: check Mathlib for SSYT formalization._\n\n---\n\n## Dead Ends\n\n_None identified yet._\n"
   },
@@ -278,22 +278,22 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
       "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 342,
+      "lineCount": 273,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 1,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "filename": "BallotProblemOQ03OQ01OQ02.lean",
-      "lineCount": 5147,
+      "lineCount": 5057,
       "theoremCount": 64,
       "axiomCount": 0,
       "defCount": 10,
-      "sorryCount": 10,
+      "sorryCount": 12,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
     },

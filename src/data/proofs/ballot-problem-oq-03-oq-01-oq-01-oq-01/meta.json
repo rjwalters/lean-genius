@@ -22,8 +22,8 @@
     "sorries": 1,
     "dateAdded": "2026-04-23",
     "axiomCount": 0,
-    "assumptions": "1 sorry for the open case: jacobi_trudi_ssyt_eq: general Jacobi-Trudi equality schurPolynomial = ssytSchurFin via RSK correspondence (~300 lines) for k \u2265 2. k=0 and k=1 cases proved inline. All other theorems proved: symmetry (AlgHom.map_det), base cases, two-row formula, hook-length evaluation, SSYT k=0 base case (unique empty SSYT, empty product = 1), SSYT k=1 case (bijection SSYTFin n 1 (fun _ => m) \u2248 Sym (Fin n) m via sorted multiset representatives).",
-    "lineCount": 341,
+    "assumptions": "1 sorry for the open case: jacobi_trudi_ssyt_eq k\u22652 via RSK correspondence (~300-400 lines). k=0 and k=1 cases proved explicitly in the theorem.",
+    "lineCount": 313,
     "theoremCount": 10,
     "definitionCount": 5,
     "originalContributions": [
@@ -78,7 +78,7 @@
       "Finset"
     ],
     "namespace": "JacobiTrudi",
-    "lineCount": 341,
+    "lineCount": 345,
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 5,
