@@ -383,7 +383,7 @@
     "type": "concept",
     "range": {
       "startLine": 181,
-      "endLine": 188
+      "endLine": 182
     },
     "title": "Example: C(10,5) = 252 Not Squarefree",
     "content": "$\\binom{10}{5} = 252 = 2^2 \\times 3^2 \\times 7$ is divisible by both $4$ and $9$, hence not squarefree. This is the smallest case ($n = 5$), proved by `native_decide` and `norm_num`.",

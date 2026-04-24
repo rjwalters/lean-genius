@@ -82,105 +82,120 @@
       "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 41,
-      "summary": "Module header with the full problem statement, known results (ELRSS 1999, Pham-Zakharov 2024, Csaba, Straus), and references to [Er75b], [ELRSS99], [PhZa24], [Gu04]."
+      "summary": "Module header with the full problem statement, known results (ELRSS 1999, Pham-Zakharov 2024, Csaba, Straus), and references to [Er75b], [ELRSS99], [PhZa24], [Gu04].",
+      "mathContext": "Erdős Problem #131 asks for the maximum size $F(N)$ of a subset $A \\subseteq \\{1, \\ldots, N\\}$ such that no element of $A$ divides the sum of two or more other distinct elements of $A$. The known bounds at the time of formalization are $F(N) \\gg N^{1/5}$ (Csaba), $F(N) \\leq N^{1/4+o(1)}$ (Pham–Zakharov 2024), and the older Straus construction giving $F(N) \\geq \\exp((\\sqrt{2/\\log 2}+o(1))\\sqrt{\\log N})$. The problem connects non-dividing sets to non-averaging sets and, via Fourier analysis, to cap sets in $\\mathbb{F}_3^n$."
     },
     {
       "id": "sec-definitions",
       "title": "Basic Definitions",
       "startLine": 43,
       "endLine": 68,
-      "summary": "Defines IsNonDividing and IsNonDividingAlt, proves the implication Alt → Standard (nondividingAlt_implies_nondividing), with docstring explaining the counterexample {2,4}."
+      "summary": "Defines IsNonDividing and IsNonDividingAlt, proves the implication Alt → Standard (nondividingAlt_implies_nondividing), with docstring explaining the counterexample {2,4}.",
+      "mathContext": "A set $A \\subseteq \\mathbb{N}$ is defined as \\emph{non-dividing} if for every $a \\in A$ there is no subset $S \\subseteq A \\setminus \\{a\\}$ with $|S| \\geq 2$ such that $a \\mid \\sum_{b \\in S} b$. The alternative definition \\emph{IsNonDividingAlt} requires that $a \\nmid \\sum_{b \\in S} b$ for every nonempty $S \\subseteq A \\setminus \\{a\\}$, removing the cardinality-2 threshold. The theorem \\texttt{nondividingAlt\\_implies\\_nondividing} establishes that $\\mathrm{IsNonDividingAlt}(A) \\Rightarrow \\mathrm{IsNonDividing}(A)$, with the converse failing as shown by the counterexample $\\{2, 4\\}$."
     },
     {
       "id": "sec-counterexample",
       "title": "Counterexample: Separation of Definitions",
       "startLine": 70,
       "endLine": 86,
-      "summary": "nondividing_not_iff_alt exhibits {2,4} as a non-dividing set that is NOT non-dividing-alt, proving the two definitions are inequivalent."
+      "summary": "nondividing_not_iff_alt exhibits {2,4} as a non-dividing set that is NOT non-dividing-alt, proving the two definitions are inequivalent.",
+      "mathContext": "The set $\\{2, 4\\}$ satisfies $\\mathrm{IsNonDividing}$ vacuously: the only subset $S \\subseteq \\{2,4\\} \\setminus \\{a\\}$ of size $\\geq 2$ is the empty collection, so the condition holds trivially. However, it fails $\\mathrm{IsNonDividingAlt}$ because $2 \\mid 4$ (the singleton subset $\\{4\\}$ witnesses the violation). This formal counterexample proves that $\\mathrm{IsNonDividing} \\not\\Leftrightarrow \\mathrm{IsNonDividingAlt}$, establishing a strict logical hierarchy between the two predicates."
     },
     {
       "id": "sec-nonaveraging",
       "title": "Non-Dividing Implies Non-Averaging",
       "startLine": 87,
       "endLine": 104,
-      "summary": "Defines IsNonAveraging and proves nondividing_implies_nonaveraging: if a = (Σbᵢ)/k then a|Σbᵢ, so non-dividing is strictly stronger than non-averaging."
+      "summary": "Defines IsNonAveraging and proves nondividing_implies_nonaveraging: if a = (Σbᵢ)/k then a|Σbᵢ, so non-dividing is strictly stronger than non-averaging.",
+      "mathContext": "A set $A$ is \\emph{non-averaging} if no element $a \\in A$ equals the arithmetic mean of a nonempty subset of $A \\setminus \\{a\\}$, i.e., there is no $S \\subseteq A \\setminus \\{a\\}$ with $a = \\frac{1}{|S|}\\sum_{b \\in S} b$. The key bridge is: if $a = \\frac{\\sum_{b \\in S} b}{|S|}$, then $a \\cdot |S| = \\sum_{b \\in S} b$, so $a \\mid \\sum_{b \\in S} b$. Thus $\\mathrm{IsNonDividing}(A) \\Rightarrow \\mathrm{IsNonAveraging}(A)$, enabling Fourier-analytic bounds on non-averaging sets (such as those derived from cap set results) to be transferred to non-dividing sets."
     },
     {
       "id": "sec-F-function",
       "title": "The Extremal Function F(N)",
       "startLine": 106,
       "endLine": 123,
-      "summary": "Defines F(N) as the supremum of cardinalities over non-dividing subsets of {1,...,N} (noncomputable). Proves F_monotonic: N ≤ M implies F(N) ≤ F(M)."
+      "summary": "Defines F(N) as the supremum of cardinalities over non-dividing subsets of {1,...,N} (noncomputable). Proves F_monotonic: N ≤ M implies F(N) ≤ F(M).",
+      "mathContext": "The extremal function $F(N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\, \\mathrm{IsNonDividing}(A)\\}$ is defined in Lean as a noncomputable supremum over all finite subsets of $\\{1,\\ldots,N\\}$. The monotonicity result $F(N) \\leq F(M)$ for $N \\leq M$ follows from the fact that every non-dividing subset of $\\{1,\\ldots,N\\}$ is also a non-dividing subset of $\\{1,\\ldots,M\\}$, so the supremum over the larger ambient set is at least as large. This function is the central quantity that Erdős's problem asks to estimate."
     },
     {
       "id": "sec-pham-zakharov",
       "title": "Upper Bound: Pham-Zakharov 2024",
       "startLine": 125,
       "endLine": 165,
-      "summary": "Axiomatizes pham_zakharov_upper_bound (F(N) ≤ N^{1/4+o(1)}). Proves original_question_answered_no: Erdős's question 'Is F(N) > N^{1/2-o(1)}?' is answered NO via a real-analysis contradiction."
+      "summary": "Axiomatizes pham_zakharov_upper_bound (F(N) ≤ N^{1/4+o(1)}). Proves original_question_answered_no: Erdős's question 'Is F(N) > N^{1/2-o(1)}?' is answered NO via a real-analysis contradiction.",
+      "mathContext": "The Pham–Zakharov 2024 result is axiomatized as: for every $\\varepsilon > 0$ there exists $N_0$ such that for all $N \\geq N_0$, $F(N) \\leq N^{1/4+\\varepsilon}$. Erdős's original question asked whether $F(N) > N^{1/2-o(1)}$, i.e., whether there exists $\\delta > 0$ and infinitely many $N$ with $F(N) \\geq N^{1/2-\\delta}$. The theorem \\texttt{original\\_question\\_answered\\_no} derives a contradiction from both hypotheses using the real-power inequality $N^{1/4+\\varepsilon} < N^{1/2-\\delta}$ when $\\varepsilon < \\delta - 1/4$ and $N$ is sufficiently large, formally closing Erdős's question in the negative."
     },
     {
       "id": "sec-lower-bounds",
       "title": "Lower Bounds: Csaba and Straus",
       "startLine": 167,
       "endLine": 211,
-      "summary": "Axiomatizes csaba_lower_bound (F(N) ≫ N^{1/5}). Proves bounds on log 2 via Taylor approximations to exp, establishing the Straus constant √(2/log 2) ∈ (1.6, 1.8)."
+      "summary": "Axiomatizes csaba_lower_bound (F(N) ≫ N^{1/5}). Proves bounds on log 2 via Taylor approximations to exp, establishing the Straus constant √(2/log 2) ∈ (1.6, 1.8).",
+      "mathContext": "Csaba's lower bound, axiomatized as $F(N) \\gg N^{1/5}$, shows that non-dividing sets can be polynomially large in $N$. The Straus construction gives the stronger subexponential lower bound $F(N) \\geq \\exp\\!\\left((\\sqrt{2/\\log 2}+o(1))\\sqrt{\\log N}\\right)$; the constant $c = \\sqrt{2/\\log 2}$ is verified to lie in $(1.6, 1.8)$ by bounding $\\log 2$ via Taylor polynomial approximations to the exponential: $e^{0.6} > 1.8$ and $e^{0.8} < 2.3$ suffice to trap $\\log 2$ and hence $\\sqrt{2/\\log 2}$. Together the bounds give the sandwich $N^{1/5} \\ll F(N) \\leq N^{1/4+o(1)}$."
     },
     {
       "id": "sec-open-question",
       "title": "The Open Question and Erdős's Original Conjecture",
       "startLine": 213,
       "endLine": 295,
-      "summary": "States erdos_131_open_question. Proves erdos_original_conjecture_false: Erdős's original belief F(N) < (log N)^O(1) is refuted by Csaba's polynomial lower bound via log ≤ x^δ/δ."
+      "summary": "States erdos_131_open_question. Proves erdos_original_conjecture_false: Erdős's original belief F(N) < (log N)^O(1) is refuted by Csaba's polynomial lower bound via log ≤ x^δ/δ.",
+      "mathContext": "Erdős originally conjectured that $F(N) = (\\log N)^{O(1)}$, i.e., non-dividing sets are at most polylogarithmic in size. The theorem \\texttt{erdos\\_original\\_conjecture\\_false} formally refutes this: by the elementary inequality $\\log x \\leq x^\\delta/\\delta$ for $\\delta > 0$, any polylogarithmic bound $(\\log N)^C \\leq N^{C\\delta}/\\delta^C$ can be made smaller than $N^{1/5}$ for $\\delta$ small and $N$ large, contradicting Csaba's lower bound. The open question \\texttt{erdos\\_131\\_open\\_question} asserts that the exact asymptotic of $F(N)$ — whether it is closer to $N^{1/5}$, to $N^{1/4}$, or to the Straus subpolynomial — remains unknown."
     },
     {
       "id": "sec-small-examples",
       "title": "Small Examples",
       "startLine": 297,
       "endLine": 338,
-      "summary": "singleton_nondividing, two_three_nondividing (vacuous), primes_not_nondividing ({2,3,5} fails since 2|8), two_four_five_nondividing ({2,4,5} works, giving F(5) ≥ 3)."
+      "summary": "singleton_nondividing, two_three_nondividing (vacuous), primes_not_nondividing ({2,3,5} fails since 2|8), two_four_five_nondividing ({2,4,5} works, giving F(5) ≥ 3).",
+      "mathContext": "Every singleton $\\{a\\}$ is non-dividing vacuously, and $\\{2, 3\\}$ is non-dividing because there is no two-element subset of each complement to form a sum. The set $\\{2, 3, 5\\}$ fails: $2 \\mid (3 + 5) = 8$, so it is not non-dividing. In contrast, $\\{2, 4, 5\\}$ passes all checks — $2 \\nmid 9$, $4 \\nmid 7$, $5 \\nmid 6$ — establishing $F(5) \\geq 3$. These small concrete examples ground the abstract definitions and calibrate the boundary between valid and invalid non-dividing sets."
     },
     {
       "id": "sec-structural",
       "title": "Structural Results",
       "startLine": 340,
       "endLine": 377,
-      "summary": "one_not_in_large_nondividing: 1 cannot appear in a non-dividing set of size ≥ 3. two_in_nondividing_bound: if 2 ∈ A, then |A| ≤ 3 (parity constraint via pigeonhole)."
+      "summary": "one_not_in_large_nondividing: 1 cannot appear in a non-dividing set of size ≥ 3. two_in_nondividing_bound: if 2 ∈ A, then |A| ≤ 3 (parity constraint via pigeonhole).",
+      "mathContext": "The element $1$ is universally excluded from non-dividing sets of size $\\geq 3$: since $1$ divides every positive integer, $1 \\mid (a + b)$ for any $a, b \\in A \\setminus \\{1\\}$, violating the non-dividing condition as soon as $|A| \\geq 3$. For the element $2$: if $2 \\in A$ and $|A| \\geq 4$, then $A \\setminus \\{2\\}$ contains at least three elements; by the pigeonhole principle, two of them share the same parity, and their sum is even, so $2 \\mid (x + y)$, a contradiction. These structural theorems show large non-dividing sets must avoid $\\{1, 2\\}$."
     },
     {
       "id": "sec-nonavg-connection",
       "title": "Connection to Non-Averaging Sets",
       "startLine": 379,
       "endLine": 410,
-      "summary": "Defines g(N) (max non-averaging subset size). Proves F_le_g (F(N) ≤ g(N)) and pham_zakharov_chain: bounds on g transfer to F via the implication non-dividing → non-averaging."
+      "summary": "Defines g(N) (max non-averaging subset size). Proves F_le_g (F(N) ≤ g(N)) and pham_zakharov_chain: bounds on g transfer to F via the implication non-dividing → non-averaging.",
+      "mathContext": "The auxiliary function $g(N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\, \\mathrm{IsNonAveraging}(A)\\}$ counts maximum non-averaging sets. Since every non-dividing set is non-averaging, every non-dividing subset of $\\{1,\\ldots,N\\}$ is also counted by $g(N)$, giving $F(N) \\leq g(N)$. Non-averaging sets in integers were studied by Szemerédi–Alon–Ruzsa and connect to cap sets in $\\mathbb{F}_3^n$ via the Fourier-analytic method: bounds $g(N) \\leq N^{1/4+o(1)}$ propagate to $F(N)$ through this chain, which is what the Pham–Zakharov argument exploits."
     },
     {
       "id": "sec-hard-to-find",
       "title": "Constructive Difficulty",
       "startLine": 412,
       "endLine": 426,
-      "summary": "nondividing_hard_to_find: {3,5,7} fails (3|12) and {3,7,11} fails (3|18), illustrating why constructing large non-dividing sets is non-trivial."
+      "summary": "nondividing_hard_to_find: {3,5,7} fails (3|12) and {3,7,11} fails (3|18), illustrating why constructing large non-dividing sets is non-trivial.",
+      "mathContext": "The set $\\{3, 5, 7\\}$ fails the non-dividing condition because $3 \\mid (5 + 7) = 12$; similarly $\\{3, 7, 11\\}$ fails because $3 \\mid (7 + 11) = 18$. These failures demonstrate that even among odd numbers — which one might hope avoid the parity obstruction — pairs of elements can conspire to produce sums divisible by a third element. The difficulty of constructing large non-dividing sets supports the Pham–Zakharov upper bound and illustrates why the extremal structure must be arithmetically intricate."
     },
     {
       "id": "sec-parity",
       "title": "Parity Constraint for Sets Containing 2",
       "startLine": 428,
       "endLine": 466,
-      "summary": "two_in_nondividing_bound (repeated for context): if 2 ∈ A and A is non-dividing, then |A| ≤ 3, proved via parity pigeonhole on A \\ {2}."
+      "summary": "two_in_nondividing_bound (repeated for context): if 2 ∈ A and A is non-dividing, then |A| ≤ 3, proved via parity pigeonhole on A \\ {2}.",
+      "mathContext": "This section gives a detailed parity argument: if $2 \\in A$ and $|A| \\geq 4$, then $B = A \\setminus \\{2\\}$ has at least 3 elements. The integers $\\{1, 2, \\ldots, N\\}$ split into even and odd residues modulo 2; by pigeonhole on $B$, at least two elements $x, y \\in B$ satisfy $x \\equiv y \\pmod{2}$, so $x + y \\equiv 0 \\pmod{2}$, meaning $2 \\mid x + y$. Since $x, y \\in A \\setminus \\{2\\}$, this violates the non-dividing condition for $a = 2$, giving a contradiction. The conclusion is that any non-dividing set containing $2$ has $|A| \\leq 3$."
     },
     {
       "id": "sec-four-element",
       "title": "Four-Element Example and Helper Lemma",
       "startLine": 468,
       "endLine": 518,
-      "summary": "Helper lemma nondividing_three_subset reduces checking to full+pair sums. three_five_eleven_eighteen_nondividing verifies {3,5,11,18} is non-dividing (F(18) ≥ 4)."
+      "summary": "Helper lemma nondividing_three_subset reduces checking to full+pair sums. three_five_eleven_eighteen_nondividing verifies {3,5,11,18} is non-dividing (F(18) ≥ 4).",
+      "mathContext": "The lemma \\texttt{nondividing\\_three\\_subset} provides a decision procedure for 4-element non-dividing sets: it suffices to check that for each element $a$ in the set, $a$ does not divide any pairwise sum or the total sum of the remaining three elements, reducing $2^3 - 1 = 7$ subset checks per element to just 4 checks. Applying this to $\\{3, 5, 11, 18\\}$: all 16 divisibility conditions fail (e.g., $3 \\nmid 34$, $5 \\nmid 32$, $11 \\nmid 26$, $18 \\nmid 19$), establishing $F(18) \\geq 4$. This is a rare verified 4-element non-dividing set, complementing the negative examples."
     },
     {
       "id": "sec-exponent-gaps",
       "title": "Exponent Comparisons",
       "startLine": 520,
       "endLine": 529,
-      "summary": "quarter_lt_half (1/4 < 1/2), fifth_lt_quarter (1/5 < 1/4), polynomial_exponent_gap (1/4 - 1/5 = 1/20): formalizing the numeric relationships between known bound exponents."
+      "summary": "quarter_lt_half (1/4 < 1/2), fifth_lt_quarter (1/5 < 1/4), polynomial_exponent_gap (1/4 - 1/5 = 1/20): formalizing the numeric relationships between known bound exponents.",
+      "mathContext": "The known polynomial exponents for $F(N)$ are $1/5$ (Csaba lower bound), $1/4$ (Pham–Zakharov upper bound), and $1/2$ (Erdős's original threshold question). The formal inequalities $1/5 < 1/4 < 1/2$ and the gap computation $1/4 - 1/5 = 1/20$ are verified in Lean as real-number arithmetic lemmas. These facts underpin the real-analysis arguments in earlier sections (e.g., to show $N^{1/4+\\varepsilon} < N^{1/2-\\delta}$ for small $\\varepsilon$) and make explicit that the current bounds leave an exponent uncertainty of $1/20$, representing the main open problem for $F(N)$."
     }
   ],
   "sorries": 0

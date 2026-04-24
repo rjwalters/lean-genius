@@ -150,7 +150,7 @@
     "type": "concept",
     "range": {
       "startLine": 90,
-      "endLine": 106
+      "endLine": 97
     },
     "title": "Singleton Validity and Reciprocal Sum",
     "content": "`singleton_satisfies_lcm`: any singleton $\\{a\\}$ with $a \\in \\{1,\\ldots,n\\}$ and $a > 0$ satisfies the LCM condition vacuously (no distinct pairs). Proved by `Finset.mem_singleton` + `subst` + `absurd`. `reciprocal_sum_singleton`: $\\sum_{x \\in \\{a\\}} 1/x = 1/a$, proved by `simp`.",

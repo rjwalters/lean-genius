@@ -142,6 +142,58 @@ File now compiles with exactly 5 intentional `sorry`s:
 
 ---
 
+## Session 2026-04-24 (Session 4) — Prove paradoxical_no_finite_measure
+
+**Mode**: REVISIT
+**Outcome**: progress — 1 sorry eliminated (sorries 5→4 in file; meta.json updated 6→4)
+
+### What I Did
+
+1. Identified that meta.json was stale (said 6 sorries; `free_group_not_amenable` already proved in commit d918715417)
+2. Proved the `paradoxical_no_finite_measure` sorry using monotonicity from finite additivity
+3. Verified build: file compiles with 4 remaining sorries (hausdorff_free_subgroup, banach_tarski, banach_tarski_pieces_nonmeasurable, int_amenable)
+4. Updated meta.json (sorries 6→4), knowledge JSON
+
+### Key Findings
+
+- `le_add_of_nonneg_right (zero_le _)` is the correct Lean 4 idiom (not `le_add_right _ _` which has wrong arity)
+- `le_add_right` in this Mathlib version takes a proof `h : a ≤ b` as first arg and returns `a ≤ b + c`
+- Monotonicity of μ from finite additivity: `μ(B∪C) ≤ μ(A)` via `A = (B∪C) ∪ (A\(B∪C))`, then `le_add_of_nonneg_right`
+- `disjoint_sdiff_self_right : Disjoint a (b \ a)` is correct for the decomposition
+- `Set.union_diff_cancel h_bc_sub_a : (B∪C) ∪ (A\(B∪C)) = A` closes the calc chain
+
+### Proof Strategy (Sandwich)
+
+```
+μ(B∪C) ≤ μ(A)           [monotonicity from B∪C ⊆ A + finite additivity]
+μ(A) ≤ μ(A) + μ(A)      [trivially, le_add_of_nonneg_right]
+μ(A) + μ(A) = μ(B∪C)    [from hBCunion, since μ(B)=μ(A), μ(C)=μ(A)]
+→ μ(A) + μ(A) = μ(A)    [antisymmetry + hBCunion ▸ hMonotone]
+→ μ(A) = 0 ∨ μ(A) = ⊤  [ennreal_add_self_eq_self]
+```
+
+### Files Modified
+
+- `proofs/Proofs/LebesgueMeasureOQ06.lean` (sorry eliminated in `paradoxical_no_finite_measure`)
+- `src/data/proofs/lebesgue-measure-oq-06/meta.json` (sorries 6→4)
+- `src/data/research/problems/lebesgue-measure-oq-06.json` (updated knowledge)
+
+### Remaining Sorries (4)
+
+1. `hausdorff_free_subgroup` — Hausdorff 1914, ~300 lines of rotation matrix + number-theoretic argument
+2. `banach_tarski` — Banach-Tarski 1924, ~800 lines, requires Axiom of Choice
+3. `banach_tarski_pieces_nonmeasurable` — classical corollary (~200 lines)
+4. `int_amenable` — ℤ amenable via Cesàro means/ultrafilter Banach limit (~100 lines)
+
+### Next Steps
+
+1. **int_amenable** via ultrafilter Banach limit (~100 lines): most tractable remaining sorry
+   - `let U := Ultrafilter.of Filter.atTop`
+   - `μ A := U.lim (fun N => card(Finset.Icc (-N) N |>.filter (· ∈ A)) / (2N+1))`
+   - Prove additivity + left-invariance from Cesàro mean convergence
+
+---
+
 ## Dead Ends
 
 ### `equidecomposable_refl` with `[MulAction.IsPretransitive G α]`

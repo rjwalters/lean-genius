@@ -42,21 +42,24 @@
       "title": "Open Question Header and Imports",
       "startLine": 1,
       "endLine": 44,
-      "summary": "Documents the open question: unify three separate power mean monotonicity results — positive r (AmgmInequalityOQ03), negative r (AmgmInequalityOQ03), and crossing-zero r < 0 < s (AmgmInequalityOQ03OQ02OQ01) — into a single theorem covering all r ≤ s including the boundary r = 0 where M_0 = GM. Imports the parent file and opens its namespace."
+      "summary": "Documents the open question: unify three separate power mean monotonicity results — positive r (AmgmInequalityOQ03), negative r (AmgmInequalityOQ03), and crossing-zero r < 0 < s (AmgmInequalityOQ03OQ02OQ01) — into a single theorem covering all r ≤ s including the boundary r = 0 where M_0 = GM. Imports the parent file and opens its namespace.",
+      "mathContext": "The three parent theorems: (1) `power_mean_monotone_pos`: $0 < r \\leq s \\Rightarrow M_r \\leq M_s$ from `AmgmInequalityOQ03`. (2) `power_mean_monotone_neg`: $r \\leq s < 0 \\Rightarrow M_r \\leq M_s$ from `AmgmInequalityOQ03`. (3) `power_mean_monotone_cross`: $r < 0 < s \\Rightarrow M_r \\leq M_s$ from `AmgmInequalityOQ03OQ02OQ01`. Gap: all three require $r \\neq 0$ and $s \\neq 0$. The geometric mean $M_0 := \\prod_i z_i^{w_i}$ satisfies $M_0 = \\lim_{r \\to 0} M_r$ (by L'Hôpital). This file fills the gap with a `dite`-based extended definition and a four-case proof of full monotonicity."
     },
     {
       "id": "definition",
       "title": "Extended Power Mean Definition and Simp Lemmas",
       "startLine": 48,
       "endLine": 64,
-      "summary": "Defines `extWeightedPowerMean (r : ℝ) : ℝ` using a dependent if (`dite`): returns `weightedGeomMean s w z` when r = 0 (the limit case), and `weightedPowerMean s w z r h` (requiring `h : r ≠ 0`) otherwise. The two `@[simp]` lemmas `extWeightedPowerMean_zero` and `extWeightedPowerMean_of_ne_zero` unfold the `dite` in each branch, enabling clean case-analysis in subsequent proofs."
+      "summary": "Defines `extWeightedPowerMean (r : ℝ) : ℝ` using a dependent if (`dite`): returns `weightedGeomMean s w z` when r = 0 (the limit case), and `weightedPowerMean s w z r h` (requiring `h : r ≠ 0`) otherwise. The two `@[simp]` lemmas `extWeightedPowerMean_zero` and `extWeightedPowerMean_of_ne_zero` unfold the `dite` in each branch, enabling clean case-analysis in subsequent proofs.",
+      "mathContext": "`extWeightedPowerMean (s : Finset ι) (w z : ι → ℝ) (r : ℝ) : ℝ := if h : r = 0 then weightedGeomMean s w z else weightedPowerMean s w z r h`. The `dite` (dependent if-then-else) carries the proof `h : r = 0` or `h : r ≠ 0` into each branch, which is needed because `weightedPowerMean` requires an explicit proof that $r \\neq 0$. `@[simp] extWeightedPowerMean_zero`: `extWeightedPowerMean ... 0 = weightedGeomMean ...` — reduces `dite` when `r = 0`. `@[simp] extWeightedPowerMean_of_ne_zero (h : r ≠ 0)`: `extWeightedPowerMean ... r = weightedPowerMean ... r h` — reduces `dite` when `h : r ≠ 0` is available."
     },
     {
       "id": "unified-monotonicity",
       "title": "Unified Monotonicity Theorem: Four-Case Proof",
       "startLine": 66,
       "endLine": 104,
-      "summary": "Proves `extWeightedPowerMean_monotone`: for all r ≤ t (no sign restriction), M_r ≤ M_t. Four-case proof via `rcases eq_or_ne r 0` and `rcases eq_or_ne t 0`: (r=t=0) both sides equal GM, trivial; (r=0, t≠0) t > 0 from arithmetic, delegates to `geom_mean_le_power_mean_pos`; (r≠0, t=0) r < 0 from arithmetic, delegates to `power_mean_le_geom_mean_neg`; (r≠0, t≠0) delegates to `power_mean_monotone_all` from the parent."
+      "summary": "Proves `extWeightedPowerMean_monotone`: for all r ≤ t (no sign restriction), M_r ≤ M_t. Four-case proof via `rcases eq_or_ne r 0` and `rcases eq_or_ne t 0`: (r=t=0) both sides equal GM, trivial; (r=0, t≠0) t > 0 from arithmetic, delegates to `geom_mean_le_power_mean_pos`; (r≠0, t=0) r < 0 from arithmetic, delegates to `power_mean_le_geom_mean_neg`; (r≠0, t≠0) delegates to `power_mean_monotone_all` from the parent.",
+      "mathContext": "`extWeightedPowerMean_monotone (hrt : r ≤ t) : extWeightedPowerMean s w z r ≤ extWeightedPowerMean s w z t`. Four cases via `rcases eq_or_ne r 0, eq_or_ne t 0`: **(r=0, t=0)**: `le_refl` after `simp`. **(r=0, t≠0)**: `t > 0` follows from `r = 0 ≤ t` and `t ≠ 0` via `lt_of_le_of_ne`; use `geom_mean_le_power_mean_pos` (from parent): GM $\\leq M_t$ for $t > 0$. **(r≠0, t=0)**: `r < 0` from `r ≤ 0` and `r ≠ 0`; use `power_mean_le_geom_mean_neg`: $M_r \\leq$ GM for $r < 0$. **(r≠0, t≠0)**: `power_mean_monotone_all hr ht hrt` from parent. The `simp [extWeightedPowerMean_zero, extWeightedPowerMean_of_ne_zero]` lemmas reduce the extended definition in each case."
     },
     {
       "id": "corollary-hm-gm-am",

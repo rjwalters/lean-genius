@@ -5870,7 +5870,12 @@
       "agentId": "auditor-cycle-20-batch",
       "auditCount": 3,
       "lastAudited": "2026-04-24T05:03:47Z",
-      "result": "issues-found"
+      "result": "issues-fixed",
+      "issuesFixed": [
+        "stale originalContributions items (#12149)",
+        "annotation L1norm_upper_bound incorrectly labelled (sorry) \u2014 proved",
+        "annotation L2_norm incorrectly labelled (sorry) \u2014 proved pending expSumNorm_sq_double; range updated to 257-295"
+      ]
     },
     "erdos-513": {
       "agentId": "auditor-cycle-20-batch",
@@ -12974,6 +12979,12 @@
       "auditCount": 1,
       "lastAudited": "2026-04-24T04:27:46Z",
       "result": "clean",
+      "issues": []
+    },
+    "konigsberg-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-24T09:11:12Z",
+      "result": "issues-fixed",
       "issues": []
     }
   },

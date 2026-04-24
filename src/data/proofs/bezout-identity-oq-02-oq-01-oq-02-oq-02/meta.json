@@ -85,28 +85,32 @@
       "title": "Part 1: ℤ[i] as Euclidean Domain and UFD",
       "startLine": 32,
       "endLine": 41,
-      "summary": "Confirms EuclideanDomain, UniqueFactorizationMonoid, IsPrincipalIdealRing, and Irreducible ↔ Prime for GaussianInt via inferInstance and Mathlib's instance chain."
+      "summary": "Confirms EuclideanDomain, UniqueFactorizationMonoid, IsPrincipalIdealRing, and Irreducible ↔ Prime for GaussianInt via inferInstance and Mathlib's instance chain.",
+      "mathContext": "`#check (inferInstance : EuclideanDomain GaussianInt)` — Mathlib provides this via `GaussianInt.instEuclideanDomain`, using the norm $N(a+bi) = a^2+b^2$ as the Euclidean degree function. The division algorithm: given $z, w \\in \\mathbb{Z}[i]$ with $w \\neq 0$, compute $z/w \\in \\mathbb{C}$ and round to the nearest Gaussian integer $q$; the remainder $r = z - qw$ satisfies $N(r) < N(w)$. From `EuclideanDomain`: `PrincipalIdealRing` (every ideal is principal) $\\Rightarrow$ `GCDMonoid` $\\Rightarrow$ `UniqueFactorizationMonoid` $\\Rightarrow$ `irreducible_iff_prime` (in UFDs, all confirmed by `inferInstance`)."
     },
     {
       "id": "sec-norm",
       "title": "Part 2: The Norm Function",
       "startLine": 43,
       "endLine": 59,
-      "summary": "gaussian_norm_formula: norm(a+bi) = a²+b². norm_mul_eq: norm is multiplicative. is_unit_iff_norm_one: IsUnit z ↔ norm(z).natAbs = 1. norm_conj_eq: conjugation preserves norm."
+      "summary": "gaussian_norm_formula: norm(a+bi) = a²+b². norm_mul_eq: norm is multiplicative. is_unit_iff_norm_one: IsUnit z ↔ norm(z).natAbs = 1. norm_conj_eq: conjugation preserves norm.",
+      "mathContext": "In Mathlib's `GaussianInt` (which is `Zsqrtd (-1)`): `Zsqrtd.norm z = z.re^2 - (-1) * z.im^2 = z.re^2 + z.im^2`. `gaussian_norm_formula (a b : ℤ) : Zsqrtd.norm ⟨a, b⟩ = a^2 + b^2`. `norm_mul_eq (z w : GaussianInt) : Zsqrtd.norm (z * w) = Zsqrtd.norm z * Zsqrtd.norm w` (from `Zsqrtd.norm_mul`; algebraically: Brahmagupta-Fibonacci identity). `is_unit_iff_norm_one (z : GaussianInt) : IsUnit z ↔ (Zsqrtd.norm z).natAbs = 1` — the units of $\\mathbb{Z}[i]$ are $\\{\\pm 1, \\pm i\\}$, each with norm 1. `norm_conj_eq`: $N(\\bar{z}) = N(z)$."
     },
     {
       "id": "sec-classification",
       "title": "Part 3: Gaussian Prime Classification (Backward Direction)",
       "startLine": 60,
       "endLine": 154,
-      "summary": "prime_of_prime_natAbs_norm: elements with prime norm are prime (covers 1+i and split primes). inert_prime: rational primes p ≡ 3 (mod 4) remain prime in ℤ[i] (uses sum-of-squares impossibility mod 4 via ZMod 4 decide)."
+      "summary": "prime_of_prime_natAbs_norm: elements with prime norm are prime (covers 1+i and split primes). inert_prime: rational primes p ≡ 3 (mod 4) remain prime in ℤ[i] (uses sum-of-squares impossibility mod 4 via ZMod 4 decide).",
+      "mathContext": "`prime_of_prime_natAbs_norm (z : GaussianInt) (h : Nat.Prime (Zsqrtd.norm z).natAbs) : Prime z`. Proof: if $z = a \\cdot b$, then $N(z) = N(a) \\cdot N(b)$; since $N(z)$ is prime, either $N(a) = 1$ (a unit) or $N(b) = 1$ (b unit). `inert_prime (p : ℕ) (hp : Nat.Prime p) (hmod : p % 4 = 3) : Prime (↑p : GaussianInt)`. Proof: if $p = a \\cdot b$, then $p^2 = N(a) \\cdot N(b)$; so $N(a) \\in \\{1, p, p^2\\}$. $N(a) = p$ would mean $a.re^2 + a.im^2 = p \\equiv 3 \\pmod{4}$ — but squares mod 4 are 0 or 1, so their sum is at most 2, contradiction. `decide : ∀ x y : ZMod 4, x^2 + y^2 ≠ 3` closes this case mechanically."
     },
     {
       "id": "sec-examples",
       "title": "Part 4: Concrete Examples",
       "startLine": 155,
       "endLine": 193,
-      "summary": "1+i prime (norm 2, ramified); 2+i, 2+3i prime (norms 5, 13; split primes); 3 and 7 inert (≡ 3 mod 4). Factorizations: 2 = -i·(1+i)², 5 = (2+i)·(2-i), 13 = (2+3i)·(2-3i), all verified by decide."
+      "summary": "1+i prime (norm 2, ramified); 2+i, 2+3i prime (norms 5, 13; split primes); 3 and 7 inert (≡ 3 mod 4). Factorizations: 2 = -i·(1+i)², 5 = (2+i)·(2-i), 13 = (2+3i)·(2-3i), all verified by decide.",
+      "mathContext": "**Ramified**: $N(1+i) = 1^2 + 1^2 = 2$ (prime) $\\Rightarrow$ $1+i$ is prime by `prime_of_prime_natAbs_norm`. Factorization: $2 = (1+i)(1-i) = -i(1+i)^2$ (since $1-i = -i(1+i)$). **Split** ($p \\equiv 1 \\pmod{4}$): $N(2+i) = 4+1 = 5$, $N(2+3i) = 4+9 = 13$; both prime $\\Rightarrow$ both are Gaussian primes. Factorizations: $5 = (2+i)(2-i)$, $13 = (2+3i)(2-3i)$. **Inert** ($p \\equiv 3 \\pmod{4}$): $3 \\equiv 3$, $7 \\equiv 3 \\pmod{4}$ $\\Rightarrow$ $3, 7 \\in \\mathbb{Z}$ remain prime in $\\mathbb{Z}[i]$ by `inert_prime`. All factorizations verified by `decide` (kernel computation in $\\mathbb{Z}[i]$)."
     }
   ],
   "conclusion": {

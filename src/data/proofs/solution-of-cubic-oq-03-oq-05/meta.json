@@ -92,28 +92,32 @@
       "title": "Product Expansion of Linear Factors",
       "startLine": 22,
       "endLine": 35,
-      "summary": "Proves the key algebraic identity: (x-r₁)(x-r₂)(x-r₃) = x³ - (r₁+r₂+r₃)x² + (r₁r₂+r₁r₃+r₂r₃)x - r₁r₂r₃. The proof is a single `ring` call — purely computational in the polynomial ring over R."
+      "summary": "Proves the key algebraic identity: (x-r₁)(x-r₂)(x-r₃) = x³ - (r₁+r₂+r₃)x² + (r₁r₂+r₁r₃+r₂r₃)x - r₁r₂r₃. The proof is a single `ring` call — purely computational in the polynomial ring over R.",
+      "mathContext": "`cubic_factor_expansion (r₁ r₂ r₃ : R) : (X - C r₁) * (X - C r₂) * (X - C r₃) = X^3 - C(r₁+r₂+r₃)*X^2 + C(r₁r₂+r₁r₃+r₂r₃)*X - C(r₁r₂r₃)` — proved by `ring`. In Lean's `Polynomial R`, `X` is the indeterminate and `C r` is the constant polynomial $r$. The `ring` tactic verifies this in any commutative ring, working in the polynomial ring $R[X]$. This is the key lemma that all three Vieta proofs rely on via coefficient extraction."
     },
     {
       "id": "sec-vieta-three",
       "title": "Three Vieta Formulas",
       "startLine": 37,
       "endLine": 78,
-      "summary": "Proves each Vieta formula separately: vieta_sigma1 (a = -(r₁+r₂+r₃)), vieta_sigma2 (b = r₁r₂+r₁r₃+r₂r₃), vieta_sigma3 (c = -r₁r₂r₃). Each proof extracts the coefficient at degree 2, 1, 0 respectively using congr_arg + Polynomial.coeff + simp + linarith."
+      "summary": "Proves each Vieta formula separately: vieta_sigma1 (a = -(r₁+r₂+r₃)), vieta_sigma2 (b = r₁r₂+r₁r₃+r₂r₃), vieta_sigma3 (c = -r₁r₂r₃). Each proof extracts the coefficient at degree 2, 1, 0 respectively using congr_arg + Polynomial.coeff + simp + linarith.",
+      "mathContext": "Proof pattern for each formula: (1) Apply `congr_arg (Polynomial.coeff · k)` to the hypothesis `h : X^3 + C a * X^2 + C b * X + C c = (X - C r₁) * (X - C r₂) * (X - C r₃)`. (2) Simplify via `Polynomial.coeff_add`, `Polynomial.coeff_C_mul`, `Polynomial.coeff_X_pow`, etc. (3) Close with `linarith` or `ring`. `vieta_sigma1` (degree 2 coefficient): $[X^2](\\text{LHS}) = a$, $[X^2](\\text{RHS}) = -(r_1+r_2+r_3)$. `vieta_sigma2` (degree 1): $b = r_1r_2 + r_1r_3 + r_2r_3$. `vieta_sigma3` (degree 0): $c = -r_1r_2r_3$."
     },
     {
       "id": "sec-combined",
       "title": "Combined Vieta's Theorem",
       "startLine": 80,
       "endLine": 95,
-      "summary": "Packages all three Vieta formulas into a single conjunction: vieta_cubic proves a = -(r₁+r₂+r₃) ∧ b = r₁r₂+r₁r₃+r₂r₃ ∧ c = -r₁r₂r₃. The proof assembles the three individual results into a triple using angle brackets."
+      "summary": "Packages all three Vieta formulas into a single conjunction: vieta_cubic proves a = -(r₁+r₂+r₃) ∧ b = r₁r₂+r₁r₃+r₂r₃ ∧ c = -r₁r₂r₃. The proof assembles the three individual results into a triple using angle brackets.",
+      "mathContext": "`vieta_cubic (h : X^3 + C a * X^2 + C b * X + C c = (X - C r₁) * (X - C r₂) * (X - C r₃)) : a = -(r₁+r₂+r₃) ∧ b = r₁r₂+r₁r₃+r₂r₃ ∧ c = -r₁r₂r₃ := ⟨vieta_sigma1 h, vieta_sigma2 h, vieta_sigma3 h⟩`. This is the canonical formulation connecting the elementary symmetric polynomials $e_1 = r_1+r_2+r_3$, $e_2 = r_1r_2+r_1r_3+r_2r_3$, $e_3 = r_1r_2r_3$ to the polynomial coefficients (up to sign). The conjunction form is convenient for pattern matching in downstream proofs using Newton's identities or discriminant calculations."
     },
     {
       "id": "sec-roots",
       "title": "Roots Satisfy the Polynomial",
       "startLine": 97,
       "endLine": 111,
-      "summary": "Proves that if the cubic factors as (x-r₁)(x-r₂)(x-r₃), then evaluating at r₁ gives 0. The proof rewrites using the factorization and evaluates the product: (r₁-r₁)·(r₁-r₂)·(r₁-r₃) = 0·(···) = 0."
+      "summary": "Proves that if the cubic factors as (x-r₁)(x-r₂)(x-r₃), then evaluating at r₁ gives 0. The proof rewrites using the factorization and evaluates the product: (r₁-r₁)·(r₁-r₂)·(r₁-r₃) = 0·(···) = 0.",
+      "mathContext": "`root_satisfies_poly (h : X^3 + C a * X^2 + C b * X + C c = (X - C r₁) * (X - C r₂) * (X - C r₃)) : Polynomial.eval r₁ (X^3 + C a * X^2 + C b * X + C c) = 0`. Proof: `rw [h]; simp [Polynomial.eval_mul, Polynomial.eval_sub, sub_self]` — evaluating $(r_1 - r_1) = 0$ kills the first factor. This is the reverse direction of the factor theorem: $p(r_i) = 0$ iff $(X - r_i) \\mid p$. Here we prove it directly from the factored form, avoiding the general factor theorem. In Lean, `Polynomial.eval r₁ (X - C r₁) = r₁ - r₁ = 0` by `simp`."
     }
   ],
   "conclusion": {

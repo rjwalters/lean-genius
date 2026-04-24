@@ -45,42 +45,48 @@
       "title": "Module Header: Finset-MeasureTheory Bridge Context",
       "startLine": 1,
       "endLine": 17,
-      "summary": "Documents the two probability frameworks (Finset-based and MeasureTheory), the goal of bridging them, and the parent proof. The comparison Finset vs MeasureTheory provides the motivation for each part."
+      "summary": "Documents the two probability frameworks (Finset-based and MeasureTheory), the goal of bridging them, and the parent proof. The comparison Finset vs MeasureTheory provides the motivation for each part.",
+      "mathContext": "Two probability frameworks in Lean: **Finset-based** (gallery style) — $P(A) = |A|/|\\Omega|$, $\\mathbb{E}[X] = \\sum_{\\omega} X(\\omega) / |\\Omega|$ using `Finset.sum` and division in $\\mathbb{R}$; **MeasureTheory** (Mathlib) — $P(A) = \\mu(A)$ for a probability measure $\\mu$ with $\\mu(\\Omega) = 1$, $\\mathbb{E}[X] = \\int X\\, d\\mu$ via the Bochner integral. The bridge: take $\\mu = (|\\Omega|)^{-1} \\cdot \\text{count}$ (counting measure scaled to probability). Imports `Mathlib` for `MeasureTheory.Measure.Count`, `MeasureTheory.Integral.Bochner`, and `MeasureTheory.Measure.ProbabilityMeasure`."
     },
     {
       "id": "uniform-measure",
       "title": "Part I: Uniform Probability Measure on Finite Types",
       "startLine": 19,
       "endLine": 37,
-      "summary": "Proves `counting_measure_is_uniform` (Measure.count of univ = card α). Defines `uniformProbMeasure α` as `(card α)⁻¹ • Measure.count`, the uniform probability measure on a finite type."
+      "summary": "Proves `counting_measure_is_uniform` (Measure.count of univ = card α). Defines `uniformProbMeasure α` as `(card α)⁻¹ • Measure.count`, the uniform probability measure on a finite type.",
+      "mathContext": "`uniformProbMeasure (α : Type*) [Fintype α] [Nonempty α] : Measure α := (Fintype.card α : ℝ≥0∞)⁻¹ • Measure.count`. The `ℝ≥0∞` coercion is needed because `Measure` in Mathlib is valued in extended non-negative reals. `counting_measure_is_uniform`: `Measure.count (Finset.univ : Finset α) = Fintype.card α`, the basic fact that the counting measure of all elements equals the cardinality. The `• (smul)` scaling by $(\\text{card}\\, \\alpha)^{-1}$ normalizes total mass: $\\mu_{\\text{unif}}(\\Omega) = (\\text{card}\\, \\alpha)^{-1} \\cdot \\text{card}\\, \\alpha = 1$."
     },
     {
       "id": "expectation-bridge",
       "title": "Part II: Finset Expectation = Measure-Theoretic Integral",
       "startLine": 39,
       "endLine": 51,
-      "summary": "Proves `finset_expectation_eq_integral`: (Σ X a) / card α = ∫ a, X a ∂(uniformProbMeasure α). Uses `integral_smul_measure`, `integral_count`, `ENNReal.toReal_inv`, and the `div_eq_inv_mul` identity."
+      "summary": "Proves `finset_expectation_eq_integral`: (Σ X a) / card α = ∫ a, X a ∂(uniformProbMeasure α). Uses `integral_smul_measure`, `integral_count`, `ENNReal.toReal_inv`, and the `div_eq_inv_mul` identity.",
+      "mathContext": "`finset_expectation_eq_integral`: $\\frac{\\sum_{a : \\alpha} X(a)}{|\\alpha|} = \\int_\\alpha X\\, d\\mu_{\\text{unif}}$. Proof chain: $\\int X\\, d\\mu_{\\text{unif}} = \\int X\\, d((|\\alpha|)^{-1} \\cdot \\text{count}) = (|\\alpha|)^{-1} \\int X\\, d(\\text{count}) = (|\\alpha|)^{-1} \\sum_a X(a)$. Key lemmas: `integral_smul_measure` (scalar comes outside integral), `integral_count` (counting measure integral = finset sum over univ), `ENNReal.toReal_inv` (converts $(|\\alpha|)^{-1}$ from $\\mathbb{R}_{\\geq 0}^\\infty$ to $\\mathbb{R}$). The bridge makes Finset expectation notation interchangeable with the Bochner integral throughout the gallery."
     },
     {
       "id": "first-moment",
       "title": "Part III: First Moment Method in MeasureTheory",
       "startLine": 53,
       "endLine": 95,
-      "summary": "Proves `first_moment_method`: for ℕ-valued measurable integrable X with E[X] < 1, P(X=0) > 0. Proof by contradiction using `ae_iff`, `integral_mono_ae`, and `measure_univ = 1` from IsProbabilityMeasure."
+      "summary": "Proves `first_moment_method`: for ℕ-valued measurable integrable X with E[X] < 1, P(X=0) > 0. Proof by contradiction using `ae_iff`, `integral_mono_ae`, and `measure_univ = 1` from IsProbabilityMeasure.",
+      "mathContext": "**First moment method**: if $\\mathbb{E}[X] < 1$ for an $\\mathbb{N}$-valued random variable $X$, then $P(X = 0) > 0$ (i.e., some outcome is zero). Proof by contradiction: assume $P(X=0) = 0$, i.e., $\\mu(\\{\\omega : X(\\omega) = 0\\}) = 0$. Then $X \\geq 1$ almost everywhere (via `ae_iff` converting the null set to an a.e. bound). By `integral_mono_ae`, $\\mathbb{E}[X] \\geq \\mathbb{E}[1] = \\mu(\\Omega) = 1$ (using `IsProbabilityMeasure.measure_univ = 1`). This contradicts $\\mathbb{E}[X] < 1$. The `IsProbabilityMeasure` hypothesis on $\\mu$ is essential — without total mass 1, $\\mathbb{E}[1]$ might not equal 1."
     },
     {
       "id": "linearity",
       "title": "Part IV: Linearity of Expectation (One-Liner)",
       "startLine": 97,
       "endLine": 110,
-      "summary": "Proves `linearity_of_expectation` by `integral_add hX hY` — a one-liner showing that linearity is directly Mathlib's integral_add for integrable functions."
+      "summary": "Proves `linearity_of_expectation` by `integral_add hX hY` — a one-liner showing that linearity is directly Mathlib's integral_add for integrable functions.",
+      "mathContext": "`linearity_of_expectation`: $\\mathbb{E}[X + Y] = \\mathbb{E}[X] + \\mathbb{E}[Y]$, proved in one line by `integral_add hX hY`. Here `hX : Integrable X μ` and `hY : Integrable Y μ` are the integrability hypotheses ensuring the Bochner integrals are well-defined. In Mathlib, linearity of the Bochner integral is `MeasureTheory.integral_add`. This one-liner is a pedagogical contrast to the elementary proof (distributing a finite sum), which requires no analog in the measure-theoretic setting — linearity is definitional. The `Integrable` constraint prevents pathological cases like $\\int \\infty \\cdot d\\mu - \\int \\infty \\cdot d\\mu$ being indeterminate."
     },
     {
       "id": "indicators",
       "title": "Part V: Indicator Random Variables",
       "startLine": 111,
       "endLine": 119,
-      "summary": "Defines `indicatorRV A = A.indicator (fun _ => 1)`. Proves `expectation_indicator`: ∫ ω, 1_A(ω) ∂μ = (μ A).toReal using `integral_indicator hA`."
+      "summary": "Defines `indicatorRV A = A.indicator (fun _ => 1)`. Proves `expectation_indicator`: ∫ ω, 1_A(ω) ∂μ = (μ A).toReal using `integral_indicator hA`.",
+      "mathContext": "`indicatorRV (A : Set α) : α → ℝ := A.indicator (fun _ => 1)` is the $\\{0,1\\}$-valued random variable $\\mathbf{1}_A$ that is 1 on $A$ and 0 off $A$. `expectation_indicator`: $\\mathbb{E}[\\mathbf{1}_A] = P(A)$. Formally: $\\int_\\Omega \\mathbf{1}_A\\, d\\mu = (\\mu(A))_{\\mathbb{R}}$ (the `.toReal` conversion from $\\mathbb{R}_{\\geq 0}^\\infty$ to $\\mathbb{R}$). Proved via `integral_indicator hA` where `hA : MeasurableSet A`. This is the fundamental connection between indicator random variables and probabilities, underpinning the Erdős probabilistic method: to show $P(A) > 0$, compute $\\mathbb{E}[\\mathbf{1}_A] = P(A)$ and use linearity to relate it to $\\mathbb{E}[\\mathbf{1}_{A_1} + \\cdots + \\mathbf{1}_{A_k}]$."
     }
   ],
   "conclusion": {

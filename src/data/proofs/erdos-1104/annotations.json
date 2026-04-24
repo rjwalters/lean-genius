@@ -184,7 +184,7 @@
     "type": "concept",
     "range": {
       "startLine": 176,
-      "endLine": 201
+      "endLine": 196
     },
     "title": "Mycielski Construction",
     "content": "The Mycielski graph M_k is a classical construction of triangle-free graphs with chromatic number exactly k. Starting from K₁, each step adds a 'shadow' vertex for each existing vertex plus one universal vertex, preserving triangle-freeness while increasing the chromatic number by 1. M_k has 3·2^{k−2} − 1 vertices for k ≥ 2. This gives the weak lower bound f(3·2^{k−2} − 1) ≥ k, which grows as f(n) ≥ Ω(log n / log log n)—far weaker than the true Θ(√(n/log n)) bound from probabilistic methods.",

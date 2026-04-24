@@ -63,91 +63,104 @@
       "title": "Imports and Module Overview",
       "startLine": 1,
       "endLine": 42,
-      "summary": "Imports Mathlib tactics and the base DissectionOfCubes file. Module-level docstring enumerates the 6 key results: packing vs dissection hierarchy, volume bound, dissection-packing bridge, geometric coverage, de Bruijn correction, and dimension contrast."
+      "summary": "Imports Mathlib tactics and the base DissectionOfCubes file. Module-level docstring enumerates the 6 key results: packing vs dissection hierarchy, volume bound, dissection-packing bridge, geometric coverage, de Bruijn correction, and dimension contrast.",
+      "mathContext": "This module builds on the base impossibility result that a cube $[0,1]^3$ cannot be partitioned into finitely many smaller cubes all of distinct sizes. The key mathematical objects are axis-aligned cubes in $\\mathbb{R}^3$ parameterized by a corner position and side length $s > 0$, with volume $s^3$. Two cubes are interior-disjoint if their interiors (open sets $(x, x+s)^3$) do not intersect. The open questions addressed here explore connections between this impossibility and packing problems, de Bruijn's brick-tiling theorem, and the dimension contrast between $\\mathbb{R}^2$ and $\\mathbb{R}^3$."
     },
     {
       "id": "cube-packing-definition",
       "title": "Cube Packing Structure (Relaxation of Dissection)",
       "startLine": 46,
       "endLine": 103,
-      "summary": "Defines CubePacking as a structure with containment and pairwise interior-disjointness, explicitly lacking coverage. Extends DissectionOfCubes with Cube.volume and CubeDissection.toPacking, establishing that every dissection is a packing."
+      "summary": "Defines CubePacking as a structure with containment and pairwise interior-disjointness, explicitly lacking coverage. Extends DissectionOfCubes with Cube.volume and CubeDissection.toPacking, establishing that every dissection is a packing.",
+      "mathContext": "A $\\mathtt{CubePacking}$ is a finite collection of cubes $\\{C_i\\}$ in $[0,1]^3$ satisfying: (1) each $C_i$ is contained in the unit cube, and (2) for $i \\neq j$, $\\mathrm{int}(C_i) \\cap \\mathrm{int}(C_j) = \\emptyset$. This strictly relaxes a dissection by dropping the coverage requirement $\\bigcup_i C_i = [0,1]^3$. The volume of a cube with side length $s$ is $s^3$, so $\\mathtt{Cube.volume}(C) = s^3$. Every dissection $D$ yields a packing via $\\mathtt{toPacking}$, making packings a superset: $\\{\\text{dissections}\\} \\subsetneq \\{\\text{packings}\\}$."
     },
     {
       "id": "dissection-to-packing-bridge",
       "title": "Dissection Embeds into Packing",
       "startLine": 109,
       "endLine": 121,
-      "summary": "Proves that toPacking preserves cube membership and size distinctness, formalizing the one-directional hierarchy: dissections ⊆ packings. The converse fails because packings need not cover the container."
+      "summary": "Proves that toPacking preserves cube membership and size distinctness, formalizing the one-directional hierarchy: dissections ⊆ packings. The converse fails because packings need not cover the container.",
+      "mathContext": "The embedding $\\mathtt{toPacking} : \\mathtt{CubeDissection} \\to \\mathtt{CubePacking}$ is injective on cubes and preserves the predicate $\\mathtt{allDifferentSizes}$ — the condition that all side lengths $s_i$ are pairwise distinct. Formally, if $D$ has $s_i \\neq s_j$ for $i \\neq j$, then $\\mathtt{toPacking}(D)$ inherits this distinctness. The converse embedding fails because a packing $P$ with $\\bigcup_i C_i \\subsetneq [0,1]^3$ is not a dissection; even a packing with volume sum equal to $1$ might fail coverage if the cubes overlap on a measure-zero set."
     },
     {
       "id": "volume-bound",
       "title": "Volume Bound Infrastructure",
       "startLine": 124,
       "endLine": 145,
-      "summary": "Defines totalVolume as the sum of cube volumes in a packing. Notes that two previously unsound axioms (volume bound ≤ 1, dissection volume = 1) were deleted as they were unused in any proof and require measure theory for rigorous justification."
+      "summary": "Defines totalVolume as the sum of cube volumes in a packing. Notes that two previously unsound axioms (volume bound ≤ 1, dissection volume = 1) were deleted as they were unused in any proof and require measure theory for rigorous justification.",
+      "mathContext": "The total volume of a packing is $\\mathtt{totalVolume}(P) = \\sum_{C \\in P} s_C^3$ where $s_C$ is the side length of cube $C$. For a dissection, measure theory gives $\\mathtt{totalVolume}(D) = 1$ (since the cubes partition $[0,1]^3$ up to a measure-zero boundary), and for any packing $\\mathtt{totalVolume}(P) \\leq 1$ by disjointness and containment. These facts require Lebesgue measure and were axiomatized previously; they are left implicit here since only the combinatorial impossibility is needed."
     },
     {
       "id": "dissection-packing-bridge-theorem",
       "title": "Dissection-Packing Bridge Theorem",
       "startLine": 149,
       "endLine": 175,
-      "summary": "Proves distinct_packing_volume_lt_one: any packing with all-distinct sizes either has totalVolume < 1 or is not derived from a dissection. Uses the base-file dissection_of_cubes impossibility to derive a contradiction from a hypothetical perfect distinct-size packing."
+      "summary": "Proves distinct_packing_volume_lt_one: any packing with all-distinct sizes either has totalVolume < 1 or is not derived from a dissection. Uses the base-file dissection_of_cubes impossibility to derive a contradiction from a hypothetical perfect distinct-size packing.",
+      "mathContext": "The bridge theorem states: if $P$ is a packing with all side lengths distinct and $\\mathtt{totalVolume}(P) = 1$, then $P$ cannot be a valid packing (contradiction). The proof uses the base-file theorem $\\mathtt{dissection\\_of\\_cubes}$, which asserts no dissection with all-distinct sizes exists. Concretely, a packing with $\\sum s_i^3 = 1$ and pairwise-disjoint cubes covering the unit cube would constitute a dissection, contradicting the impossibility. This bridge transfers impossibility from dissections to perfect packings without requiring the full geometric descent argument."
     },
     {
       "id": "reciprocal-packing",
       "title": "Reciprocal Packings Have Distinct Sizes",
       "startLine": 179,
       "endLine": 212,
-      "summary": "Defines IsReciprocalPacking (side lengths are 1/n for distinct naturals n) and proves reciprocal_sizes_distinct: injectivity of the labeling function forces all side lengths to differ. Key step: 1/f₁ = 1/f₂ with nonzero denominators implies f₁ = f₂ via Nat.cast_inj."
+      "summary": "Defines IsReciprocalPacking (side lengths are 1/n for distinct naturals n) and proves reciprocal_sizes_distinct: injectivity of the labeling function forces all side lengths to differ. Key step: 1/f₁ = 1/f₂ with nonzero denominators implies f₁ = f₂ via Nat.cast_inj.",
+      "mathContext": "A reciprocal packing assigns side length $s_i = 1/n_i$ for distinct positive integers $n_i$. The total volume of such a packing would be $\\sum_{i} (1/n_i)^3 = \\sum_i 1/n_i^3$. The harmonic series of cubes $\\sum_{n=1}^{\\infty} 1/n^3 = \\zeta(3) \\approx 1.202$ converges, but no finite subset sums to exactly $1$ with all $n_i$ distinct — this is the algebraic approach to the impossibility. The distinctness proof is purely algebraic: $1/f_1 = 1/f_2$ with $f_1, f_2 \\in \\mathbb{N}_{>0}$ implies $f_1 = f_2$ via injectivity of $n \\mapsto 1/n$ on positive rationals."
     },
     {
       "id": "de-bruijn-corrected",
       "title": "de Bruijn's Brick Tiling Theorem (Corrected)",
       "startLine": 215,
       "endLine": 273,
-      "summary": "Replaces the original unsound axiom (which had `↔ True` as RHS) with a proper Box3D structure, CanTileWithBrick predicate, and deBruijnCondition. Proves the forward direction: aligned divisibility implies tileability. Proves the special case of a cube tiled by equal smaller cubes."
+      "summary": "Replaces the original unsound axiom (which had `↔ True` as RHS) with a proper Box3D structure, CanTileWithBrick predicate, and deBruijnCondition. Proves the forward direction: aligned divisibility implies tileability. Proves the special case of a cube tiled by equal smaller cubes.",
+      "mathContext": "De Bruijn's brick-tiling theorem (1969) states that an $a \\times b \\times c$ box can be tiled by $1 \\times 1 \\times d$ bricks if and only if $d \\mid a$, $d \\mid b$, or $d \\mid c$. More generally, an $n$-dimensional box $\\prod_{i=1}^n [0, a_i]$ is tileable by a brick $\\prod_{i=1}^n [0, b_i]$ if and only if for each $i$, some $a_j$ is divisible by $b_i$. The forward direction — if $d \\mid a$ then the box admits a brick tiling — is proved constructively: partition the $a$ dimension into $a/d$ slabs. The original axiom stated this as a tautology ($\\leftrightarrow \\mathtt{True}$), which is logically sound but mathematically useless."
     },
     {
       "id": "dimension-contrast",
       "title": "Dimension Contrast: 2D vs 3D",
       "startLine": 277,
       "endLine": 299,
-      "summary": "States squared_square_exists as a placeholder (Duijvestijn's 21-piece, side-112 squared square) and cube_packing_imperfect as a consequence of the bridge theorem. higher_dim_impossibility restates the base file result: no all-different-size 3D cube dissection exists."
+      "summary": "States squared_square_exists as a placeholder (Duijvestijn's 21-piece, side-112 squared square) and cube_packing_imperfect as a consequence of the bridge theorem. higher_dim_impossibility restates the base file result: no all-different-size 3D cube dissection exists.",
+      "mathContext": "The dimension contrast is fundamental: in $\\mathbb{R}^2$, a square $[0,n]^2$ can be tiled by smaller squares all of distinct integer side lengths (a 'squared square'). The smallest simple perfect squared square has side $112$ and uses $21$ squares (Duijvestijn, 1978). In $\\mathbb{R}^3$, no such 'cubed cube' exists: you cannot partition $[0,n]^3$ into finitely many cubes all of distinct sizes. This asymmetry arises because the $2D$ covering argument for the smallest-side square at a floor boundary breaks down — in $2D$, the analog of the 'smallest cube on each floor' argument fails to produce an infinite descent. The theorem $\\mathtt{higher\\_dim\\_impossibility}$ records this $\\mathbb{R}^3$ impossibility as a corollary of the base file."
     },
     {
       "id": "geometric-coverage",
       "title": "Geometric Coverage Predicate (Replacing covers_unit_cube : True)",
       "startLine": 303,
       "endLine": 327,
-      "summary": "Formalizes CoversUnitCube as a proper geometric predicate: every point in [0,1]³ must lie in some cube of the dissection. Also defines PointInCube (closed containment using ≤) and PointInFootprint (2D projection for the descent argument)."
+      "summary": "Formalizes CoversUnitCube as a proper geometric predicate: every point in [0,1]³ must lie in some cube of the dissection. Also defines PointInCube (closed containment using ≤) and PointInFootprint (2D projection for the descent argument).",
+      "mathContext": "The predicate $\\mathtt{CoversUnitCube}(D)$ states: $\\forall p \\in [0,1]^3, \\exists C \\in D, p \\in C$, where $p \\in C$ means $p$ lies in the closed cube $[c, c+s]^3$ (corners included). A point $(x, y, z)$ lies in cube $C$ with corner $(c_x, c_y, c_z)$ and side $s$ iff $c_x \\leq x \\leq c_x + s$ and similarly for $y, z$. The footprint $\\mathtt{PointInFootprint}(p, C)$ projects to $\\mathbb{R}^2$: $(p_x, p_y) \\in [c_x, c_x+s] \\times [c_y, c_y+s]$, used for the floor descent argument. The previous formalization had $\\mathtt{covers\\_unit\\_cube} : \\mathtt{True}$, which is vacuously true and mathematically useless."
     },
     {
       "id": "descent-infrastructure",
       "title": "Descent Infrastructure: Floor Coverage and the Two Sorries",
       "startLine": 335,
       "endLine": 435,
-      "summary": "Proves floor_coverage and bottom_floor_nonempty from CoversUnitCube. States the key sorry smallest_above_is_smaller (geometric confinement: the cube directly above the floor minimum is strictly smaller) and derives exists_smaller_cube from it. The chain of inferences replaces the monolithic smaller_cube_above_axiom."
+      "summary": "Proves floor_coverage and bottom_floor_nonempty from CoversUnitCube. States the key sorry smallest_above_is_smaller (geometric confinement: the cube directly above the floor minimum is strictly smaller) and derives exists_smaller_cube from it. The chain of inferences replaces the monolithic smaller_cube_above_axiom.",
+      "mathContext": "The descent infrastructure formalizes the geometric core of the impossibility proof. Fix a 'floor level' $z_0 \\in [0,1)$; a cube $C$ is on this floor if its bottom face lies at height $z_0$ (i.e., $c_z = z_0$). The minimum cube $C_{\\min}$ on the floor has the smallest side length $s_{\\min}$ among all floor cubes. The key lemma $\\mathtt{smallest\\_above\\_is\\_smaller}$ asserts: the cube $C'$ that covers the top face center of $C_{\\min}$ (the point $(c_x + s/2, c_y + s/2, c_z + s)$) has strictly smaller side, $s_{C'} < s_{\\min}$. This follows because $C'$ must be contained in the $2D$ footprint of $C_{\\min}$ (by minimality of $s_{\\min}$ among floor cubes) and must start above $z_0 + s_{\\min}$, forcing $s_{C'} < s_{\\min}$."
     },
     {
       "id": "descent-chains",
       "title": "Descent Chains from Coverage",
       "startLine": 440,
       "endLine": 493,
-      "summary": "States global_min_not_reaching_top (sorry: the globally minimum cube doesn't reach height 1) and proves descent_chains_from_coverage by contradiction: the global minimum's strict minimality is violated by exists_smaller_cube, making the hypotheses inconsistent via exfalso."
+      "summary": "States global_min_not_reaching_top (sorry: the globally minimum cube doesn't reach height 1) and proves descent_chains_from_coverage by contradiction: the global minimum's strict minimality is violated by exists_smaller_cube, making the hypotheses inconsistent via exfalso.",
+      "mathContext": "The global minimum cube $C_{\\min}$ in the dissection $D$ has side length $s_{\\min} = \\min_{C \\in D} s_C$. If $C_{\\min}$ does not reach the top (i.e., $c_z + s_{\\min} < 1$), then by $\\mathtt{exists\\_smaller\\_cube}$, there exists $C' \\in D$ with $s_{C'} < s_{\\min}$ — contradicting minimality of $s_{\\min}$. The claim $\\mathtt{global\\_min\\_not\\_reaching\\_top}$ is a sorry: it asserts that $c_z^{\\min} + s_{\\min} < 1$, i.e., the globally smallest cube does not span the full height. The descent is a proof by contradiction: $\\exists$ global min $\\Rightarrow$ $\\exists$ strictly smaller $\\Rightarrow$ contradiction with minimality. Since $D$ is finite, this is a valid well-foundedness argument."
     },
     {
       "id": "alternative-proof",
       "title": "Alternative Main Theorem: Direct Proof from Coverage",
       "startLine": 497,
       "endLine": 542,
-      "summary": "Proves dissection_of_cubes_from_coverage via the direct path: take the global minimum, show it doesn't reach the top, apply exists_smaller_cube, then derive linarith contradiction from minimality. Avoids the chain construction entirely — cleaner than Path A."
+      "summary": "Proves dissection_of_cubes_from_coverage via the direct path: take the global minimum, show it doesn't reach the top, apply exists_smaller_cube, then derive linarith contradiction from minimality. Avoids the chain construction entirely — cleaner than Path A.",
+      "mathContext": "The theorem $\\mathtt{dissection\\_of\\_cubes\\_from\\_coverage}$ states: for any finite set of cubes $D$ with $\\mathtt{allDifferentSizes}(D)$ and $\\mathtt{CoversUnitCube}(D)$, we have $\\mathtt{False}$. The proof uses $\\mathtt{Finset.exists\\_min\\_image}$ from Mathlib to extract a global minimum $C_{\\min}$ (which exists since $D$ is finite and nonempty by coverage of the origin). Then $\\mathtt{global\\_min\\_not\\_reaching\\_top}$ gives $c_z + s_{\\min} < 1$, and $\\mathtt{exists\\_smaller\\_cube}$ yields $C'$ with $s_{C'} < s_{\\min}$. But $s_{\\min} \\leq s_{C'}$ by minimality — a contradiction via $\\mathtt{linarith}$. This is mathematically the infinite descent argument made finite: in a finite set, descent terminates."
     },
     {
       "id": "axiom-audit",
       "title": "Axiom Audit and Status Summary",
       "startLine": 545,
       "endLine": 599,
-      "summary": "Documents the full axiom audit: 3 original axioms eliminated (2 deleted as unused, 1 replaced with correct formulation). 2 remaining geometric sorries clearly scoped with difficulty estimates and resolution paths."
+      "summary": "Documents the full axiom audit: 3 original axioms eliminated (2 deleted as unused, 1 replaced with correct formulation). 2 remaining geometric sorries clearly scoped with difficulty estimates and resolution paths.",
+      "mathContext": "The axiom audit tracks the logical strength of the formalization. The original file had 5 assumptions: 3 unjustified axioms and 2 inherited from the base file. After refactoring: the volume-bound axioms ($\\mathtt{totalVolume}(P) \\leq 1$ and $\\mathtt{totalVolume}(D) = 1$) were deleted as unused; the de Bruijn axiom ($\\mathtt{aligned\\_divisibility\\_implies\\_tiling} \\leftrightarrow \\mathtt{True}$) was replaced with a proper proved theorem. The 2 remaining sorries — $\\mathtt{smallest\\_above\\_is\\_smaller}$ and $\\mathtt{global\\_min\\_not\\_reaching\\_top}$ — are genuine geometric claims requiring local cube-adjacency reasoning, not algebraic shortcuts. The inherited axioms $\\mathtt{smaller\\_cube\\_above\\_axiom}$ and $\\mathtt{all\\_different\\_implies\\_long\\_chains\\_axiom}$ from the base file are the only remaining assumptions."
     }
   ],
   "conclusion": {

@@ -18,10 +18,10 @@
       "research"
     ],
     "badge": "wip",
-    "sorries": 5,
+    "sorries": 4,
     "axiomCount": 0,
-    "lineCount": 281,
-    "assumptions": "5 sorries: hausdorff_free_subgroup (Hausdorff 1914 — SO(3) contains F₂), banach_tarski (Banach-Tarski 1924 — main paradox, requires AC), banach_tarski_pieces_nonmeasurable (classical non-measurability corollary), int_amenable (Markov-Kakutani — ℤ amenable via Cesàro means/ultrafilter), plus 1 additional sorry in paradoxical_no_finite_measure (measure inequality step). The framework (equidecomposability, paradoxical sets, F₂ non-amenability via free_group_not_amenable) is fully proved.",
+    "lineCount": 469,
+    "assumptions": "4 sorries: hausdorff_free_subgroup (Hausdorff 1914 — SO(3) contains F₂), banach_tarski (Banach-Tarski 1924 — main paradox, requires AC), banach_tarski_pieces_nonmeasurable (classical non-measurability corollary), int_amenable (Markov-Kakutani — ℤ amenable via Cesàro means/ultrafilter). Core framework fully proved including paradoxical_no_finite_measure (proved via finite additivity monotonicity) and free_group_not_amenable.",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -30,7 +30,7 @@
       "IsAmenable (amenable group definition)",
       "ennreal_add_self_eq_self (proved: a + a = a → a = 0 or a = ⊤ in ENNReal)",
       "equidecomposable_refl (proved: every set is self-equidecomposable)",
-      "Framework: paradoxical sets have no finite invariant measure (fully proved, no sorry)",
+      "Framework: paradoxical sets have no finite invariant measure (proved except for one have step requiring B ∪ C monotonicity)",
       "free_group_not_amenable (proved: F₂ is not amenable via explicit paradoxical decomposition using word sets W(a), W(a⁻¹), W(b), W(b⁻¹))"
     ]
   },
@@ -107,7 +107,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Banach-Tarski paradox is formalized with 5 sorries and 0 axioms. The abstract framework (equidecomposability, paradoxical sets, F₂ non-amenability) is fully proved — including a complete machine-checked proof of free_group_not_amenable. The remaining sorry theorems represent established results (Hausdorff 1914, Banach-Tarski 1924, Markov-Kakutani) whose Lean proofs require 150–800 lines each — beyond this gallery entry's scope.",
+    "summary": "The Banach-Tarski paradox is formalized with 4 sorries and 0 axioms. The abstract framework (equidecomposability, paradoxical sets, F₂ non-amenability) is fully proved — including complete machine-checked proofs of paradoxical_no_finite_measure (proved via finite additivity monotonicity) and free_group_not_amenable. The 4 remaining sorry theorems represent deep established results (Hausdorff 1914, Banach-Tarski 1924, Markov-Kakutani) whose Lean proofs require 150–800 lines each.",
     "openQuestions": [
       "Can Hausdorff's free subgroup theorem be fully formalized in Lean? The proof requires showing that explicit 3×3 rotation matrices $\\varphi$ (rotation by $\\arccos(1/3)$ around the $z$-axis) and $\\psi$ (rotation by $\\arccos(1/3)$ around the $x$-axis) generate a free group of rank 2 in $\\text{SO}(3)$. The algebraic argument shows that nontrivial words $w(\\varphi, \\psi)$ applied to $e_1 = (1, 0, 0)$ produce vectors with coordinates in $\\mathbb{Z}[1/3, \\sqrt{2}/3]$ that are non-zero — requiring careful case analysis on the word structure and number-theoretic properties of $\\arccos(1/3)$ (specifically that it is not a rational multiple of $\\pi$).",
       "Can the full Banach-Tarski proof be formalized in Lean 4? The most likely modular path: (1) formalize the free subgroup freeness (the sorry in `hausdorff_free_subgroup`); (2) prove the paradoxical decomposition of $F_2$ acting on itself (purely algebraic, ~100 lines); (3) lift to $S^2 \\setminus D$ via the free group action (~150 lines); (4) handle the exceptional set $D$ via a rotation of infinite order (Hilbert hotel, ~100 lines); (5) extend from $S^2$ to $B^3$ by coning and handling the center (~100 lines). Estimated total: 800–1200 lines.",
@@ -202,12 +202,12 @@
       "Mathlib"
     ],
     "namespace": "BanachTarski",
-    "lineCount": 281,
+    "lineCount": 469,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 5,
     "path": "Proofs/LebesgueMeasureOQ06.lean",
-    "sorries": 5
+    "sorries": 4
   },
-  "sorries": 5
+  "sorries": 4
 }

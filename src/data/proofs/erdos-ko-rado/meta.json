@@ -2,7 +2,7 @@
   "id": "erdos-ko-rado",
   "title": "Erdős-Ko-Rado Theorem and Extremal Set Family Extensions",
   "slug": "erdos-ko-rado",
-  "description": "Formalizes the Erdős-Ko-Rado theorem via Katona's cyclic permutation proof: any intersecting family of k-subsets of an n-element set (n≥2k) has at most C(n-1,k-1) elements. Extends to t-intersecting (Frankl), Hilton-Milner, cross-intersecting (Bollobás), EKR for permutations, and the Sunflower lemma. 16 theorems, 8 axioms.",
+  "description": "Formalizes the Erdős-Ko-Rado theorem via Katona's cyclic permutation proof: any intersecting family of k-subsets of an n-element set (n≥2k) has at most C(n-1,k-1) elements. Extends to t-intersecting (Frankl), Hilton-Milner, cross-intersecting (Bollobás), EKR for permutations, and the Sunflower lemma. 15 theorems, 9 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -19,10 +19,10 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 8,
-    "assumptions": "8 axioms for the combinatorial double-counting lemmas and deep extension theorems: at_most_k_intersecting_cyclic_intervals (key lemma: at most k of n cyclic intervals are pairwise intersecting), double_counting_bound (the main Katona double-count giving |A|≤C(n-1,k-1)), frankl_t_intersecting (Frankl's theorem on t-intersecting families), hilton_milner (Hilton-Milner 1967: non-star bound), bollobas_set_pairs (Bollobás set-pairs inequality, now with correct hypotheses), pyber_cross_intersecting (Pyber 1986: cross-intersecting sum bound), ekr_for_permutations (Ellis-Friedgut-Pilpel 2011), sunflower_lemma (Erdős-Ko 1961 sunflower bound). Previously degenerate axioms (set_appears_in_cyclic_orders, improved_sunflower_lemma, cross_intersecting_bound) have been proved, and tstar_achieves_frankl_bound proved via bijection.",
+    "axiomCount": 9,
+    "assumptions": "9 axioms for the combinatorial double-counting lemmas and deep extension theorems: at_most_k_intersecting_cyclic_intervals (key lemma: at most k of n cyclic intervals are pairwise intersecting), double_counting_bound (the main Katona double-count giving |A|≤C(n-1,k-1)), frankl_t_intersecting (Frankl's theorem on t-intersecting families), hilton_milner (Hilton-Milner 1967: non-star bound), bollobas_set_pairs (Bollobás set-pairs inequality, now with correct hypotheses), pyber_cross_intersecting (Pyber 1986: cross-intersecting sum bound), ekr_for_permutations (Ellis-Friedgut-Pilpel 2011), sunflower_lemma (Erdős-Ko 1961 sunflower bound), coset_size (the permutation coset {σ : σ(i)=j} has exactly (n-1)! elements — replaces a degenerate 1+1=2 stub). Previously degenerate axioms (set_appears_in_cyclic_orders, improved_sunflower_lemma, cross_intersecting_bound) have been proved, and tstar_achieves_frankl_bound proved via bijection.",
     "lineCount": 745,
-    "theoremCount": 16,
+    "theoremCount": 15,
     "definitionCount": 14,
     "originalContributions": [
       "IsIntersectingFamily: predicate for k-uniform intersecting families",
@@ -54,7 +54,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős-Ko-Rado theorem formalized via Katona's cyclic proof, with extensions to t-intersecting (Frankl), Hilton-Milner, cross-intersecting, permutations, and Sunflower lemma. Deep combinatorial lemmas remain axiomatized; degenerate axioms eliminated and t-star bound proved. 16 theorems, 14 definitions, 745 lines, 8 axioms.",
+    "summary": "Erdős-Ko-Rado theorem formalized via Katona's cyclic proof, with extensions to t-intersecting (Frankl), Hilton-Milner, cross-intersecting, permutations, and Sunflower lemma. Deep combinatorial lemmas remain axiomatized; degenerate stubs eliminated and t-star bound proved. 15 theorems, 14 definitions, 745 lines, 9 axioms.",
     "implications": "EKR is the foundation of extremal set theory. Completing the proof (specifically the cyclic interval lemma) would give one of the most elegant combinatorial results fully verified in Lean 4.",
     "openQuestions": [
       "Prove at_most_k_intersecting_cyclic_intervals: at most k of the n cyclic intervals of length k in a cycle of n≥2k are pairwise intersecting — this is the key remaining lemma for a fully-proved Katona argument",
@@ -66,8 +66,8 @@
   "leanFile": {
     "namespace": "ErdosKoRado",
     "lineCount": 745,
-    "axiomCount": 8,
-    "theoremCount": 16,
+    "axiomCount": 9,
+    "theoremCount": 15,
     "definitionCount": 14,
     "path": "Proofs/ErdosKoRado.lean",
     "sorries": 0
@@ -151,7 +151,7 @@
       "title": "Part V: EKR for Permutations (Ellis-Friedgut-Pilpel 2011)",
       "startLine": 533,
       "endLine": 567,
-      "summary": "PermIntersecting σ τ: ∃ i, σ i = τ i. IsIntersectingPermFamily: all pairs intersect. PermCoset i j: {σ : σ i = j} — all permutations mapping i to j. ekr_for_permutations axiom (Deza-Frankl 1977 conjecture, EFP 2011 proof): |A| ≤ (n-1)! for intersecting permutation families of Equiv.Perm (Fin n). coset_size: placeholder documenting the coset has (n-1)! elements.",
+      "summary": "PermIntersecting σ τ: ∃ i, σ i = τ i. IsIntersectingPermFamily: all pairs intersect. PermCoset i j: {σ : σ i = j} — all permutations mapping i to j. ekr_for_permutations axiom (Deza-Frankl 1977 conjecture, EFP 2011 proof): |A| ≤ (n-1)! for intersecting permutation families of Equiv.Perm (Fin n). coset_size axiom: (Finset.univ.filter (σ => σ i = j)).card = (n-1)! — the coset has exactly (n-1)! elements (replaces degenerate 1+1=2 stub).",
       "mathContext": "The Deza-Frankl conjecture (1977) asked if the EKR theorem extends to permutations: is the maximum intersecting family a 'coset' {σ : σ(i)=j}? Ellis-Friedgut-Pilpel (2011) proved this using the representation theory of Sₙ: eigenvectors of the Cayley graph of Sₙ on transpositions bound the Fourier expansion of the characteristic function of A. The proof is fundamentally spectral and does not use Katona's cyclic argument."
     },
     {

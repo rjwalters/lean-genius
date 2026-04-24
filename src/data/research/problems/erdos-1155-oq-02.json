@@ -21,7 +21,7 @@
     "iteration": 1,
     "focus": "Formalizing Turán density vanishing and quantitative gap bounds.",
     "blockers": [],
-    "nextAction": "Prove turanDensity_tendsto_zero by threshold argument from BFL.",
+    "nextAction": "Prove turan_bfl_exponent_gap: needs BFL lower bound n^{3/2-ε} ≤ f(n) (axiomatized in parent).",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,30 +29,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 249-line Lean file created. turan_triangle_free_bound (proved), turanDensity definition + membership in [0,1] (proved), process_not_turan_extremal (proved via n^{7/4} < n²/8 for large n). 2 sorries remain: turanDensity_tendsto_zero, turan_gap_diverges. 1 axiom: triangleRemovalEdges_le_turan_exact.",
+    "progressSummary": "PROGRESS: 290-line Lean file. 2 sorries remain (turan_triangle_free_bound, turan_bfl_exponent_gap). turanDensity_tendsto_zero PROVED (squeeze via 4/n^{1/4} → 0). turan_gap_diverges PROVED (lower bound (1/8)n^{1/4} → ∞ via BFL). 2 axioms: bfl_upper_bound, triangleRemovalEdges_le_turan_exact.",
     "builtItems": [
-      "turan_triangle_free_bound in Erdos1155OQ02.lean:53 — CliqueFree 3 graph has ≤ n²/4 edges",
+      "turan_triangle_free_bound in Erdos1155OQ02.lean:53 — CliqueFree 3 graph has ≤ n²/4 edges (1 sorry)",
       "turanDensity def in Erdos1155OQ02.lean:112 — f(n)/(n²/4), noncomputable",
       "turanDensity_eq in Erdos1155OQ02.lean:116 — turanDensity n = 4·f(n)/n²",
       "turanDensity_mem_Icc in Erdos1155OQ02.lean:123 — turanDensity n ∈ [0,1]",
-      "process_not_turan_extremal in Erdos1155OQ02.lean:173 — eventually f(n) < n²/8",
-      "turan_graph_r2_is_maximal in Erdos1155OQ02.lean:229 — turanGraph n 2 is triangle-free"
+      "turanDensity_tendsto_zero in Erdos1155OQ02.lean:140 — PROVED via squeeze: 0 ≤ δ(n) ≤ 4/n^{1/4} → 0",
+      "process_not_turan_extremal in Erdos1155OQ02.lean:183 — eventually f(n) < n²/8 (proved)",
+      "turan_gap_diverges in Erdos1155OQ02.lean:218 — PROVED via (1/8)n^{1/4} ≤ n²/4/(f(n)+1) using BFL",
+      "turan_graph_r2_is_maximal in Erdos1155OQ02.lean:271 — turanGraph n 2 is triangle-free"
     ],
     "insights": [
-      "process_not_turan_extremal proved via calc: f(n) ≤ n^{7/4} (BFL ε=1/4) < n²/8 for n>8, since n^{7/4}/n² = n^{-1/4} → 0",
-      "turanDensity_tendsto_zero requires threshold: for ε > 0, find N s.t. n^{7/4} < ε·n²/4 for all n≥N — technical but elementary",
-      "turan_triangle_free_bound uses CliqueFree.card_edgeFinset_le with r=2, requires n%2 choose 2 = 0 fact",
-      "triangleRemovalEdges_le_turan_exact is axiomatized: connecting abstract f(n) to concrete CliqueFree graph requires ~100 lines of graph construction",
-      "turan_gap_diverges: n²/4 / (f(n)+1) → ∞ follows from BFL lower bound n^{3/2-ε}, but lower bound not yet in OQ01 parent",
-      "Turán gap is polynomial: n²/4 / n^{3/2} = n^{1/2}/4 → ∞ — stronger than density-zero statement"
+      "turanDensity_tendsto_zero: squeeze proof — 0 ≤ turanDensity n ≤ 4/n^{1/4} → 0. Key: f(n)*n^{1/4} ≤ n^{7/4}*n^{1/4} = n² via Real.rpow_add + Real.rpow_natCast",
+      "turan_gap_diverges: lower bound via tendsto_atTop_mono'. Key step: n²/4/(2*n^{7/4}) = (1/8)*n^{1/4} proved with field_simp + ring after establishing n^{7/4}*n^{1/4}=n²",
+      "turan_triangle_free_bound uses CliqueFree.card_edgeFinset_le with r=2; sorry for connecting abstract f(n) to graph construction",
+      "triangleRemovalEdges_le_turan_exact is axiomatized: connecting abstract f(n) to concrete CliqueFree graph requires ~100 lines",
+      "Turán gap is polynomial: n²/4 / n^{3/2} = n^{1/2}/4 → ∞ — stronger than density-zero statement",
+      "Real.rpow_add requires positivity of base: (0:ℝ) < n needed before applying the identity"
     ],
     "mathlibGaps": [
       "No direct way to connect abstract triangleRemovalEdges function to a concrete CliqueFree SimpleGraph — requires axiom"
     ],
     "nextSteps": [
-      "Prove turanDensity_tendsto_zero: filter_upwards on bfl_upper_bound ε=1/4 + threshold N where n^{-1/4} < ε for all n≥N",
-      "Prove turan_gap_diverges: needs bfl_lower_bound in parent or inline bound n^{3/2-ε} ≤ f(n)",
-      "Consider graduate to gallery once sorries filled"
+      "turan_bfl_exponent_gap (line 277): n²/4/f(n) > n^{1/2-ε} — needs BFL lower bound n^{3/2-ε} ≤ f(n) which is axiomatized in parent",
+      "turan_triangle_free_bound sorry: ~100 lines to connect f(n) to concrete triangle-free graph via construction",
+      "Consider graduating to gallery after resolving the turan_triangle_free_bound sorry"
     ]
   },
   "tags": [
@@ -72,18 +74,18 @@
     "mathlib": []
   },
   "started": "2026-04-24T00:00:00.000Z",
-  "lastUpdate": "2026-04-24T00:00:00.000Z",
+  "lastUpdate": "2026-04-24T12:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1155OQ02.lean",
       "filename": "Erdos1155OQ02.lean",
-      "lineCount": 249,
-      "theoremCount": 11,
+      "lineCount": 290,
+      "theoremCount": 13,
       "axiomCount": 2,
       "defCount": 1,
-      "sorryCount": 3,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ02.lean"
     }

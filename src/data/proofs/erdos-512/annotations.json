@@ -81,7 +81,7 @@
     },
     "type": "definition",
     "title": "L¹ Norm and Basic Properties",
-    "content": "**L1norm A:** The $L^1$ norm $\\int_0^1 |\\sum_{n \\in A} e(n\\theta)|\\,d\\theta$, formalized using Bochner integration over the interval $[0,1]$.\n\n**L1norm_nonneg (proved):** The $L^1$ norm is nonneg, since the integrand $|S_A(\\theta)| \\geq 0$.\n\n**L1norm_upper_bound (sorry):** $L^1 \\leq N$ from the pointwise bound $|S_A(\\theta)| \\leq N$ and $\\mu([0,1]) = 1$. Requires measure-theoretic integration.",
+    "content": "**L1norm A:** The $L^1$ norm $\\int_0^1 |\\sum_{n \\in A} e(n\\theta)|\\,d\\theta$, formalized using Bochner integration over the interval $[0,1]$.\n\n**L1norm_nonneg (proved):** The $L^1$ norm is nonneg, since the integrand $|S_A(\\theta)| \\geq 0$.\n\n**L1norm_upper_bound (proved):** $L^1 \\leq N$ from the pointwise bound $|S_A(\\theta)| \\leq N$ and $\\mu([0,1]) = 1$. Uses `IntegrableOn` from continuity on compact set and monotone integration (`setIntegral_mono_on`).",
     "mathContext": "The $L^1$ norm $\\|S_A\\|_1 = \\int_0^1 |S_A(\\theta)|\\,d\\theta$ satisfies $1 \\leq \\|S_A\\|_1 \\leq N$. The lower bound $\\|S_A\\|_1 \\geq 1$ follows from $|\\int_0^1 S_A(\\theta)\\,d\\theta| = |\\sum_{n \\in A} \\hat{1}(n)| \\geq 1$ when $0 \\in A$ (and in general from orthogonality). Littlewood's conjecture sharpens this to $\\|S_A\\|_1 \\geq c \\log N$.",
     "significance": "key",
     "relatedConcepts": [
@@ -196,12 +196,12 @@
     "id": "ann-512-related",
     "proofId": "erdos-512",
     "range": {
-      "startLine": 176,
-      "endLine": 195
+      "startLine": 257,
+      "endLine": 295
     },
     "type": "concept",
     "title": "Related Results: Parseval, Flat Polynomials",
-    "content": "**L2_norm (sorry):** The $L^2$ norm of $S_A$ is $\\sqrt{N}$ by Parseval's theorem. This is because $\\int_0^1 |S_A(\\theta)|^2\\,d\\theta = \\sum_{n \\in A} |\\hat{1}_A(n)|^2 = |A| = N$.\n\n**L1_vs_L2_comparison:** The dramatic gap $\\log N \\ll \\sqrt{N}$ between $L^1$ and $L^2$ norms shows that $|S_A(\\theta)|$ is highly non-constant — it must have large peaks near $\\theta = 0$ and deep cancellations elsewhere.\n\n**flatPolynomialProblem:** Littlewood's conjecture implies no trigonometric polynomial with $\\pm 1$ coefficients can be \"flat\" (nearly constant modulus) on the circle.",
+    "content": "**L2_norm (proved):** The $L^2$ norm of $S_A$ is $\\sqrt{N}$ by Parseval's theorem. The theorem is structurally proved via character orthogonality (`integral_cos_character`) and sum interchange, but relies on the private helper `expSumNorm_sq_double` which has 2 remaining sorries in the normSq double-sum expansion.\n\n**L1_vs_L2_comparison:** The dramatic gap $\\log N \\ll \\sqrt{N}$ between $L^1$ and $L^2$ norms shows that $|S_A(\\theta)|$ is highly non-constant — it must have large peaks near $\\theta = 0$ and deep cancellations elsewhere.\n\n**flatPolynomialProblem:** Littlewood's conjecture implies no trigonometric polynomial with $\\pm 1$ coefficients can be \"flat\" (nearly constant modulus) on the circle.",
     "mathContext": "The norm hierarchy for $S_A$ with $|A| = N$: $\\|S_A\\|_1 \\asymp \\log N$, $\\|S_A\\|_2 = \\sqrt{N}$, $\\|S_A\\|_\\infty = N$. By Hölder: $\\|S_A\\|_1 \\leq \\|S_A\\|_2 = \\sqrt{N}$, but Littlewood's conjecture says $\\|S_A\\|_1$ is only logarithmic, far below the Hölder bound. This means $|S_A(\\theta)|$ is typically small ($\\sim \\sqrt{N}$ at most points) but has a spike of height $N$ near $\\theta = 0$.",
     "significance": "supporting",
     "relatedConcepts": [

@@ -8,12 +8,18 @@
     "proofRepoPath": "Proofs/MinkowskiFundamentalTheoremOQ04.lean",
     "author": "Lean Genius",
     "date": "2026",
-    "tags": ["number-theory", "lattices", "mathlib", "geometry-of-numbers", "api-comparison"],
-    "badge": "original",
+    "tags": [
+      "number-theory",
+      "lattices",
+      "mathlib",
+      "geometry-of-numbers",
+      "api-comparison"
+    ],
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 167,
-    "theoremCount": 7,
+    "lineCount": 192,
+    "theoremCount": 10,
     "definitionCount": 3,
     "dateAdded": "2026-04-24",
     "mathlibDependencies": [
@@ -49,7 +55,11 @@
       "Lattice.toModuleBasis_matrix_eq: Matrix.of(L.toModuleBasis n) = L.basis — matrix preserved under conversion",
       "toModuleBasis_latticeOfBasis: round-trip identity latticeOfBasis ∘ toModuleBasis = id",
       "latticeOfBasis_toModuleBasis: round-trip identity toModuleBasis ∘ latticeOfBasis = id",
-      "latticeEquivBasis: Lattice n ≃ Module.Basis (Fin n) ℝ (Fin n → ℝ) — canonical type equivalence"
+      "covolume_ofBasis_eq_fundamentalDomain: covolume of custom lattice equals ZSpan fundamental domain volume",
+      "instIsZLatticeCustom: ZSpan of custom lattice carries IsZLattice ℝ structure",
+      "custom_vol_to_ennreal: volume conversion bridge between custom and ZSpan measure theories",
+      "minkowski_custom_via_zlattice: custom API Minkowski theorem derived from ZSpan-native proof",
+      "minkowski_custom_via_zlattice_iff_fundamental: extensional equality of the two proof routes via Iff.rfl"
     ]
   },
   "overview": {
@@ -60,7 +70,8 @@
       "The custom `Lattice n` is exactly `GL_n(ℝ)` in disguise: the condition `det(basis) ≠ 0` is invertibility. The bijection with `Module.Basis` shows that specifying a lattice basis is the same as choosing an invertible matrix.",
       "The key enabling lemma `basis_matrix_det_ne_zero` derives `det(Matrix.of b) ≠ 0` from the change-of-basis product identity `b.toMatrix(e) · e.toMatrix(b) = 1`. Since `det` is multiplicative and `det(1) = 1`, at least one factor must be nonzero.",
       "The `toModuleBasis_matrix_eq` theorem establishes that `Matrix.of(L.toModuleBasis n) = L.basis`. This is the bridge that makes round-trip proofs trivial: both round trips reduce to showing two lattice structures or two bases have the same underlying matrix.",
-      "The equivalence is necessarily `noncomputable`: extracting an `Invertible` instance from a `det ≠ 0` proof requires `Classical.choice`. This is a fundamental constructivity limit — you cannot algorithmic extract an inverse from mere non-vanishing of determinant."
+      "The equivalence is necessarily `noncomputable`: extracting an `Invertible` instance from a `det ≠ 0` proof requires `Classical.choice`. This is a fundamental constructivity limit — you cannot algorithmically extract an inverse from mere non-vanishing of determinant.",
+      "**The bridge closes the loop**: `minkowski_custom_via_zlattice` shows the custom Minkowski theorem is not independent — it is a definitional wrapper over the ZSpan-native proof. The trivial `minkowski_custom_via_zlattice_iff_fundamental` (proved by `Iff.rfl`) confirms the two proof routes are extensionally identical: the same proposition, just reached by different paths."
     ]
   },
   "sections": [
@@ -101,10 +112,17 @@
     },
     {
       "id": "sec-equiv",
-      "title": "The Canonical Type Equivalence",
-      "startLine": 154,
-      "endLine": 167,
-      "summary": "Assembles all pieces into `latticeEquivBasis : Lattice n ≃ Module.Basis (Fin n) ℝ (Fin n → ℝ)` — the definitive answer to OQ-04."
+      "title": "Volume Bridge and IsZLattice Instance",
+      "startLine": 148,
+      "endLine": 162,
+      "summary": "private `custom_vol_to_ennreal` converts the custom API volume hypothesis to ENNReal form for the ZSpan proof; `instIsZLatticeCustom` gives ZLattice structure to the custom lattice's ZSpan."
+    },
+    {
+      "id": "sec-bridge",
+      "title": "Bridge: Custom API Backed by ZSpan Minkowski",
+      "startLine": 163,
+      "endLine": 192,
+      "summary": "`minkowski_custom_via_zlattice` reduces the custom Minkowski theorem to `minkowski_general_lattice_proved` via the conversion bridge; `minkowski_custom_via_zlattice_iff_fundamental` confirms extensional equality by `Iff.rfl`."
     }
   ],
   "conclusion": {
@@ -112,7 +130,8 @@
     "implications": "The equivalence validates the parent Minkowski proof architecture: the custom Lattice type is not an ad hoc design but a canonical incarnation of GL_n(ℝ), provably equivalent to Mathlib's Module.Basis. This opens a concrete path to refactoring: any theorem proved about `Lattice n` can be transferred to `Module.Basis` and vice versa via `latticeEquivBasis`. The covolume bridge (equating L.covolume with ZSpan.fundamentalDomain volume) remains as future work.",
     "openQuestions": [
       "Can `covolume_eq_volume_fundamentalDomain` be proved by adding a covolume field to the Lattice structure and using `ZSpan.volume_fundamentalDomain`?",
-      "Can `latticeEquivBasis` be used to refactor the parent Minkowski proof to use Mathlib's ZLattice infrastructure directly, eliminating the custom Lattice type entirely?"
+      "Since `minkowski_custom_via_zlattice` shows the custom API is backed by ZSpan, can the parent Minkowski proof be refactored to use Mathlib's ZLattice infrastructure directly, eliminating the custom Lattice type entirely?",
+      "The round-trip identities prove bijectivity; can a full `Lattice n ≃ Module.Basis (Fin n) ℝ (Fin n → ℝ)` Equiv (latticeEquivBasis) be assembled as a separate definition?"
     ]
   },
   "crossReferences": [

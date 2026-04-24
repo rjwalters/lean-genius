@@ -46,49 +46,56 @@
       "title": "Part I: k-AP-Free Sets and Equivalence with APFree",
       "startLine": 1,
       "endLine": 65,
-      "summary": "Defines `IsKAPFreeZMod A k` using Fin k as AP index. Proves `apFree_of_isKAPFreeZMod_three` and `isKAPFreeZMod_three_of_apFree` — the equivalence with Szemeredi.Roth.APFree for k=3 — using fin_cases on Fin 3."
+      "summary": "Defines `IsKAPFreeZMod A k` using Fin k as AP index. Proves `apFree_of_isKAPFreeZMod_three` and `isKAPFreeZMod_three_of_apFree` — the equivalence with Szemeredi.Roth.APFree for k=3 — using fin_cases on Fin 3.",
+      "mathContext": "`IsKAPFreeZMod A k`: $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ contains no $k$-term AP, i.e., $\\nexists x, d \\neq 0: \\{x, x+d, \\ldots, x+(k-1)d\\} \\subseteq A$. Encoded as $\\forall x\\, d \\neq 0,\\, \\lnot (\\forall i : \\text{Fin}\\, k,\\, x + i \\cdot d \\in A)$. The equivalence `apFree_of_isKAPFreeZMod_three`/`isKAPFreeZMod_three_of_apFree` bridges this to Mathlib's `Szemeredi.Roth.APFree` (which uses a different encoding), proved by `fin_cases` on `Fin 3` to handle all cases $i \\in \\{0, 1, 2\\}$."
     },
     {
       "id": "gowers-norms",
       "title": "Parts II-III: Gowers Norms and k-AP Counting Operator",
       "startLine": 67,
       "endLine": 135,
-      "summary": "Defines `hypercubeShift h ω = Σᵢ (if ω i then h i else 0)`, `conjugateByWeight ω z` (conjugates when Hamming weight is odd), `gowersNorm N s f` (U^s norm via hypercube average), and `kAPCount k f` (arithmetic progression counting operator as double average over (x,d))."
+      "summary": "Defines `hypercubeShift h ω = Σᵢ (if ω i then h i else 0)`, `conjugateByWeight ω z` (conjugates when Hamming weight is odd), `gowersNorm N s f` (U^s norm via hypercube average), and `kAPCount k f` (arithmetic progression counting operator as double average over (x,d)).",
+      "mathContext": "**Gowers $U^s$ norm**: $\\|f\\|_{U^s}^{2^s} = \\mathbb{E}_{x, h_1, \\ldots, h_s} \\prod_{\\omega \\in \\{0,1\\}^s} \\mathcal{C}^{|\\omega|} f(x + \\omega_1 h_1 + \\cdots + \\omega_s h_s)$ where $\\mathcal{C}$ is complex conjugation (applied when $|\\omega| = \\sum_i \\omega_i$ is odd). Lean encoding: `hypercubeShift h ω = Σ i, if ω i then h i else 0` gives the corner $x + \\omega \\cdot \\mathbf{h}$; `conjugateByWeight ω z = if Odd |ω| then conj z else z`. **k-AP counting operator**: `kAPCount k f = E_{x,d} ∏_{i<k} f_i(x + i·d)` — the normalized count of $k$-APs weighted by $f_0, \\ldots, f_{k-1}$."
     },
     {
       "id": "von-neumann-axiom",
       "title": "Part IV: Generalized von Neumann Theorem (Axiom)",
       "startLine": 137,
       "endLine": 170,
-      "summary": "Axiom `generalized_von_neumann`: |kAPCount k f| ≤ gowersNorm N (k-1) (f 0) when each |f i x| ≤ 1. The docstring explains the Gowers-Cauchy-Schwarz inequality needed for the proof."
+      "summary": "Axiom `generalized_von_neumann`: |kAPCount k f| ≤ gowersNorm N (k-1) (f 0) when each |f i x| ≤ 1. The docstring explains the Gowers-Cauchy-Schwarz inequality needed for the proof.",
+      "mathContext": "**Generalized von Neumann theorem**: $|\\Lambda_k(f_0, \\ldots, f_{k-1})| \\leq \\min_i \\|f_i\\|_{U^{k-1}}$ where $\\Lambda_k$ is the $k$-AP counting operator and $\\|\\cdot\\|_{U^{k-1}}$ is the Gowers $(k-1)$-norm. Proved via iterative Cauchy-Schwarz on the hypercube: each application squares one function while halving the number of free parameters, until only one function remains — giving control by the $U^{k-1}$ norm. For $k=3$ this is $|\\Lambda_3(f,g,h)| \\leq \\|f\\|_{U^2}$ (Fourier $L^4$ norm), the key step in Roth's theorem."
     },
     {
       "id": "density-increment-axiom",
       "title": "Parts V-VI: Inverse Theorem + Density Increment for k≥3 (Axiom)",
       "startLine": 171,
       "endLine": 225,
-      "summary": "Docstring for the inverse theorem (U^{k-1} large → nilsequence correlation). Axiom `density_increment_kAP`: k-AP-free A with density δ has a subprogression A' with higher density and still k-AP-free."
+      "summary": "Docstring for the inverse theorem (U^{k-1} large → nilsequence correlation). Axiom `density_increment_kAP`: k-AP-free A with density δ has a subprogression A' with higher density and still k-AP-free.",
+      "mathContext": "**Inverse theorem** (Green-Tao-Ziegler 2012): $\\|f\\|_{U^{k-1}} \\geq \\varepsilon$ implies $\\langle f, \\phi \\rangle \\geq \\delta(\\varepsilon)$ for some $(k-2)$-step nilsequence $\\phi$. This is the deep structure theorem converting Gowers norm control into correlation with algebraically structured functions. **Density increment** (axiom): if $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ is $k$-AP-free with density $\\delta$, then $\\exists$ subprogression $P$ of length $M \\geq N^c$ with $\\delta(A \\cap P) \\geq \\delta + g(\\delta, k) > \\delta$. For $k \\geq 4$ the function $g$ is tower-type; for $k=3$, $g(\\delta,3) = \\delta^2/100$ (Roth)."
     },
     {
       "id": "szemeredi-sorry",
       "title": "Part VII: Szemerédi from Density Increment (Sorry)",
       "startLine": 226,
       "endLine": 245,
-      "summary": "Theorem `szemeredi_from_density_increment` has a sorry. The docstring explains the blocker: density_increment_kAP gives δ' > δ but not a quantitative lower bound δ' ≥ δ + g(δ,k) needed for the iteration to terminate in bounded steps."
+      "summary": "Theorem `szemeredi_from_density_increment` has a sorry. The docstring explains the blocker: density_increment_kAP gives δ' > δ but not a quantitative lower bound δ' ≥ δ + g(δ,k) needed for the iteration to terminate in bounded steps.",
+      "mathContext": "The density increment argument: start with $\\delta_0 = \\delta$; at step $i$, find a subprogression with $\\delta_{i+1} \\geq \\delta_i + g(\\delta_i)$. Since density $\\leq 1$, the iteration terminates after $\\leq 1/g(\\delta)$ steps. The sorry is at the **quantitative bound**: the axiom gives $\\delta' > \\delta$ but not $\\delta' \\geq \\delta + g(\\delta)$ for a specific explicit function $g$. Without $g$, one cannot bound the number of iterations and prove finiteness. For $k=3$: $g(\\delta) = \\delta^2/100$ gives termination in $\\leq 100/\\delta^2$ steps, giving Szemerédi's bound $r_3(N) \\leq N/(\\log\\log N)^c$."
     },
     {
       "id": "k3-proved",
       "title": "Part VIII: k=3 Case Proved from RothTheorem.lean",
       "startLine": 247,
       "endLine": 270,
-      "summary": "Theorem `density_increment_k3_explicit` (no axioms, no sorry): translates between k-AP notions, applies Szemeredi.Roth.density_increment_lemma, and produces A' with δ' ≥ δ + δ²/100 and still 3-AP-free."
+      "summary": "Theorem `density_increment_k3_explicit` (no axioms, no sorry): translates between k-AP notions, applies Szemeredi.Roth.density_increment_lemma, and produces A' with δ' ≥ δ + δ²/100 and still 3-AP-free.",
+      "mathContext": "`density_increment_k3_explicit`: for 3-AP-free $A$ with density $\\delta$, $\\exists$ subprogression $A' \\subseteq \\mathbb{Z}/M\\mathbb{Z}$ with $M \\geq N^c$ and density $\\delta' \\geq \\delta + \\delta^2/100$. Proved (0 axioms, 0 sorries) by translating `IsKAPFreeZMod A 3` to `Szemeredi.Roth.APFree` (via the Part I equivalence) and applying `Szemeredi.Roth.density_increment_lemma` from Mathlib. The explicit bound $\\delta^2/100$ enables the iteration to terminate in $\\leq 100/\\delta^2$ steps, giving Szemerédi's quantitative bound for $k=3$."
     },
     {
       "id": "comparison",
       "title": "Part IX: k=3 vs k≥4 Comparison",
       "startLine": 272,
       "endLine": 277,
-      "summary": "Markdown comparison table: k=3 uses U²=Fourier L⁴ with explicit δ²/100 increment; k≥4 uses U^{k-1} with tower-type c(δ,k). Documents proof length (~1400 lines for k=3 proved; ~5000+ estimated for k≥4)."
+      "summary": "Markdown comparison table: k=3 uses U²=Fourier L⁴ with explicit δ²/100 increment; k≥4 uses U^{k-1} with tower-type c(δ,k). Documents proof length (~1400 lines for k=3 proved; ~5000+ estimated for k≥4).",
+      "mathContext": "$k=3$ (Roth): $\\|f\\|_{U^2} = \\|\\hat{f}\\|_{\\ell^4}^{1/2}$ (Fourier $L^4$ norm); inverse theorem is just 'large $U^2$ iff large Fourier coefficient'; density increment $\\delta^2/100$ is polynomial; total proof $\\approx 1400$ lines. $k \\geq 4$ (Szemerédi/Gowers): $\\|f\\|_{U^{k-1}}$ is not Fourier; inverse theorem requires $(k-2)$-step nilsequences (Green-Tao-Ziegler); density increment $c(\\delta,k)$ is tower-type ($k$-fold exponential in $1/\\delta$); estimated $5000+$ Lean lines. The table documents why $k=3$ is proved here while $k \\geq 4$ requires the two axioms."
     }
   ],
   "conclusion": {

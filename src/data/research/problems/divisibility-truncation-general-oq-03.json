@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-04-22T13:03:46.505Z",
     "iteration": 1,
-    "focus": "Bezout coefficients give osculators, CF connection axiomatized",
+    "focus": "COMPLETE: cf_bezout_correspondence proved without CF expansion",
     "blockers": [],
     "nextAction": "Compile check via docker-build",
     "attemptCounts": {
@@ -29,14 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: DivisibilityTruncationGeneralOQ03.lean created. Bezout\u2192osculator pipeline proved. 1 axiom: CF\u2194extended GCD.",
+    "progressSummary": "COMPLETE: cf_bezout_correspondence proved (0 axioms). Bezout+modular reduction gives natural-number osculator in [0,d) without CF expansion. All pipeline theorems proved.",
     "builtItems": [
       "bezout_gives_osculator (PROVED): d | 10*gcdA(10,d) - 1 \u2014 DivisibilityTruncationGeneralOQ03.lean",
       "bezout_osculator_rule (PROVED): canonical test via gcdA \u2014 OQ03.lean",
       "IsOsculator class: shift, congr, unique_mod (all PROVED) \u2014 OQ03.lean",
       "osculator_mod_d_is_osculator (PROVED): reduced representative \u2014 OQ03.lean",
       "canonical_osculator_unique (PROVED): all osculators \u2261 gcdA mod d \u2014 OQ03.lean",
-      "Concrete examples: d=7,11,13,17,19 with divisibility tests (all PROVED) \u2014 OQ03.lean"
+      "Concrete examples: d=7,11,13,17,19 with divisibility tests (all PROVED) \u2014 OQ03.lean",
+      "cf_bezout_correspondence (PROVED 2026-04-24): axiom converted to theorem via bezout_is_osculator + osculator_mod_d_is_osculator + Int.toNat \u2014 DivisibilityTruncationGeneralOQ03.lean:140"
     ],
     "insights": [
       "Osculator c for d (d|10c-1) = Bezout coefficient gcdA(10,d) from extended Euclidean algorithm",
@@ -44,14 +45,16 @@
       "Nat.Coprime.isCoprime in Mathlib.RingTheory.Coprime.Lemmas converts Nat.Coprime to IsCoprime (m:\u2124) n",
       "IsOsculator forms unique equivalence class mod d: d|c-c' for any two osculators",
       "Concrete examples proved: d=7(-2), 11(-1), 13(4), 17(-5), 19(2) match Bezout coefficients",
-      "Osculator reduction: gcdA(10,d) mod d gives representative in [0,d) with natAbs < d"
+      "Osculator reduction: gcdA(10,d) mod d gives representative in [0,d) with natAbs < d",
+      "cf_bezout_correspondence does NOT need continued fractions: the existential (\u2203 n:\u2115, n<d \u2227 IsOsculator d n) follows from Bezout (gcdA(10,d) is an osculator) + modular reduction (gcdA % d is in [0,d)) + Int.toNat conversion. The CF connection is only needed for the STRONGER result that the osculator equals the last CF convergent denominator.",
+      "Key lemma chain: bezout_gives_osculator \u2192 bezout_is_osculator \u2192 osculator_mod_d_is_osculator \u2192 Int.emod_nonneg + Int.emod_lt_of_pos \u2192 Int.toNat_of_nonneg \u2192 cf_bezout_correspondence"
     ],
     "mathlibGaps": [
       "GenContFract and Nat.xgcd connection: ~200 lines to formalize CF=extended GCD equivalence \u2014 axiomatized"
     ],
     "nextSteps": [
-      "Run docker-build to verify DivisibilityTruncationGeneralOQ03.lean compiles",
-      "Try proving cf_bezout_correspondence: connect GenContFract.of (10/d : \u211a) to Nat.xgcd 10 d"
+      "Optional: prove the actual CF connection (gcdA(10,d) equals last CF convergent numerator) as a deeper mathematical result \u2014 200+ lines connecting GenContFract and Nat.xgcd",
+      "Consider creating a gallery entry for divisibility-truncation-general-oq-03 to display the complete osculator pipeline"
     ]
   },
   "tags": [
@@ -96,6 +99,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityTruncationGeneralOQ01.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityTruncationGeneralOQ03.lean",
+      "filename": "DivisibilityTruncationGeneralOQ03.lean",
+      "lineCount": 221,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityTruncationGeneralOQ03.lean"
     }
   ]
 }

@@ -287,7 +287,7 @@
     "type": "concept",
     "range": {
       "startLine": 247,
-      "endLine": 295
+      "endLine": 270
     },
     "title": "Main Results: erdos_134_solved and erdos_134_main",
     "content": "**erdos_134_solved** (PROVED): Derives `erdosGyarfasConjecture` directly from `alon_implies_conjecture`. A one-line proof establishing the conjecture is true.\n\n**erdos_134_main** (PROVED): Packages both results as a conjunction:\n1. The conjecture is true (from alon_implies_conjecture)\n2. The stronger O(n^{2-ε}) bound (from alon_theorem)\n\nThe proof uses `constructor` to split the conjunction, then `obtain ⟨C, hC, N, hN⟩ := alon_theorem ε hε` to destructure Alon's theorem and extract the constants. These are the only two proved (non-axiom) theorems in the file.",

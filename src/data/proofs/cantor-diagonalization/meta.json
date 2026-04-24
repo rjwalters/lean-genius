@@ -54,6 +54,10 @@
       {
         "id": "cantor-diagonalization-oq-02",
         "relationship": "Extension of cantor diagonalization"
+      },
+      {
+        "id": "cantor-diagonalization-oq-04",
+        "relationship": "The retraction formulation of Lawvere's fixed-point theorem — if a type Y codes its own endomorphisms via encode/decode with decode ∘ encode = id, then every f : Y → Y has a fixed point, complementing the surjection version in oq-03"
       }
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
@@ -263,6 +267,16 @@
       "targetId": "liouville-theorem",
       "relationship": "related",
       "description": "Liouville's theorem provides explicit transcendental numbers (well-approximable by rationals), whose existence can also be proved via the countability of algebraic numbers and the uncountability of reals (a Cantor argument). The Liouville numbers are themselves uncountable — a specific uncountable subset of the transcendentals."
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "complementary",
+      "description": "The companion result from Cantor's landmark 1874 paper *Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen*: algebraic numbers are countable ($|\\text{Alg}| = \\aleph_0$) while the reals are uncountable ($|\\mathbb{R}| = 2^{\\aleph_0}$). Both results appeared together in the same paper and together imply that 'almost all' real numbers (in the cardinality sense) are transcendental — Cantor proved the existence of transcendental numbers by cardinality before any systematic method for constructing them was known. The two formalizations are direct companions, formalizing the two halves of that seminal paper."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-04",
+      "relationship": "extended-by",
+      "description": "The retraction version of Lawvere's fixed-point theorem: if a type $Y$ encodes its own endomorphisms via a section-retraction pair (decode $\\circ$ encode $= \\mathrm{id}$), then every endomorphism $f: Y \\to Y$ has a fixed point. This complements the surjection version in `cantor-diagonalization-oq-03`: the surjection form requires $e: A \\twoheadrightarrow (A \\to B)$; the retraction form replaces the surjection hypothesis with an explicit encode/decode structure. Cantor's theorem (no surjection $\\mathbb{N} \\twoheadrightarrow (\\mathbb{N} \\to \\text{Bool})$) instantiates the surjection form; the retraction form captures the same impossibility through the dual structure."
     }
   ],
   "alternativeInterpretation": {

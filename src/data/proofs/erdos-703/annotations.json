@@ -382,7 +382,7 @@
     "content": "Combined statement: the main question is answered YES (via Frankl-Rödl) and T(n,0) = 2^{n-1}. The proof uses frankl_rodl_1987 for the main question and T_n_0 for the trivial case. This theorem ties together the entire formalization.",
     "range": {
       "startLine": 258,
-      "endLine": 266
+      "endLine": 259
     },
     "significance": "key",
     "mathContext": "The combined result packages the solution to Erdős #703 with the base case. The structure `mainQuestion ∧ (∀ n, n ≥ 1 → T n 0 = 2^{n-1})` shows that the formalization captures both the main theorem (Frankl-Rödl) and its starting point (the classical intersecting family bound). The final `erdos_703 : mainQuestion := frankl_rodl_1987` gives the clean statement.",

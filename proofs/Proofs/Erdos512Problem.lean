@@ -210,21 +210,34 @@ private lemma expTwoPiI_conj (n : ℤ) (θ : ℝ) :
 private lemma expSumNorm_sq_double (A : Finset ℤ) (θ : ℝ) :
     (expSumNorm A θ)^2 =
       ∑ mn in A ×ˢ A, Real.cos (2 * Real.pi * ((mn.1 : ℝ) - (mn.2 : ℝ)) * θ) := by
-  -- (expSumNorm A θ)^2 = normSq (expSum A θ) (as ℝ)
-  have h_sq : (expSumNorm A θ)^2 = Complex.normSq (expSum A θ) := by
-    simp [expSumNorm, ← Complex.normSq_eq_abs, Complex.normSq_apply, Complex.sq_abs]
-  rw [h_sq]
-  -- normSq(∑_m e(mθ)) = re((∑_m e(mθ))*(∑_n e(-nθ)))
-  -- = ∑_{m,n} re(e(mθ)*e(-nθ)) = ∑_{m,n} re(e((m-n)θ)) = ∑_{m,n} cos(2π(m-n)θ)
-  simp only [expSum, Complex.normSq_apply]
-  rw [show ∀ z : ℂ, z.re^2 + z.im^2 =
-        ((A.sum (fun m => expTwoPiI ((m : ℝ) * θ))) *
-         (A.sum (fun n => starRingEnd ℂ (expTwoPiI ((n : ℝ) * θ))))).re by
-        intro z
-        simp only [Complex.normSq_apply] -- hmm circular
-        sorry]
-  -- Expand using expTwoPiI_conj and multiplicativity
-  sorry
+  -- Step 1: |S|^2 = (S * conj S).re
+  have key : (expSumNorm A θ)^2 = (expSum A θ * starRingEnd ℂ (expSum A θ)).re := by
+    rw [expSumNorm, Complex.sq_abs]
+    simp only [Complex.normSq_apply, Complex.mul_re, starRingEnd_apply,
+               Complex.conj_re, Complex.conj_im]
+    ring
+  rw [key]
+  -- Step 2: Distribute conj over sum, apply expTwoPiI_conj
+  simp_rw [expSum, map_sum (starRingEnd ℂ), expTwoPiI_conj]
+  -- Step 3: Expand product of sums
+  rw [Finset.sum_mul]
+  rw [Complex.re_sum]
+  simp_rw [Finset.mul_sum, Complex.re_sum]
+  -- Step 4: Convert Σ_m Σ_n to Σ_{(m,n) ∈ A×A}
+  rw [← Finset.sum_product']
+  -- Step 5: Each term: Re(e(mθ) * e(-nθ)) = cos(2π(m-n)θ)
+  congr 1
+  ext ⟨m, n⟩
+  have hmul : expTwoPiI ((m : ℝ) * θ) * expTwoPiI ((-(n : ℝ)) * θ) =
+              expTwoPiI (((m : ℝ) - (n : ℝ)) * θ) := by
+    rw [← expTwoPiI_add]; congr 1; ring
+  have hre : ∀ x : ℝ, (expTwoPiI x).re = Real.cos (2 * Real.pi * x) := fun x => by
+    simp only [expTwoPiI]
+    rw [show ((2 : ℂ) * ↑π * ↑x * I) = ↑(2 * Real.pi * x) * I from by push_cast; ring]
+    rw [Complex.exp_mul_I]
+    simp [Complex.add_re, Complex.ofReal_re, Complex.mul_re, Complex.I_re, Complex.ofReal_im]
+  rw [hmul, hre]
+  congr 1; ring
 
 /-- **Character orthogonality on [0,1]** for k : ℤ:
     ∫₀¹ cos(2πkθ) dθ = if k = 0 then 1 else 0.

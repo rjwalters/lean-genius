@@ -361,23 +361,5 @@
       "convergence"
     ],
     "prerequisites": []
-  },
-  {
-    "id": "ann-e967-summary",
-    "proofId": "erdos-967",
-    "range": {
-      "startLine": 245,
-      "endLine": 252
-    },
-    "type": "concept",
-    "title": "Summary Theorem",
-    "content": "**Theorem erdos_967_summary:**\n\n1. The Erdős-Ingham conjecture (1964) is FALSE for infinite sequences\n2. Yip (2025) provided counterexamples for every nonzero t\n3. The finite sequence case remains OPEN\n4. The {2,3,5} case connects to the Four Exponentials conjecture",
-    "significance": "key",
-    "mathContext": "See annotation content for formal details of summary theorem",
-    "relatedConcepts": [
-      "Lean 4 formalization",
-      "mathematical proof"
-    ],
-    "prerequisites": []
   }
 ]

@@ -139,21 +139,31 @@ theorem turanDensity_mem_Icc (n : ℕ) :
     Proof: from BFL, f(n) = n^{3/2+o(1)}, so δ(n) = n^{-1/2+o(1)} → 0. -/
 theorem turanDensity_tendsto_zero :
     Filter.Tendsto turanDensity atTop (nhds 0) := by
-  -- δ(n) = 4·f(n)/n² ≤ 4·n^{3/2+ε}/n² = 4·n^{-1/2+ε} → 0 for ε < 1/2
-  -- Use BFL upper bound with ε = 1/4: f(n) ≤ n^{7/4} eventually
-  -- Then δ(n) ≤ 4·n^{7/4}/n² = 4·n^{-1/4} → 0.
-  rw [Filter.tendsto_nhds_zero]
-  intro ε hε
-  -- We use BFL: eventually f(n) ≤ n^{3/2+1/4} = n^{7/4}
-  have hbfl := bfl_upper_bound (ε := 1/4) (by norm_num)
-  filter_upwards [hbfl, Filter.eventually_gt_atTop 0] with n hfn hn
-  rw [Real.norm_of_nonneg (turanDensity_mem_Icc n).1]
-  unfold turanDensity
-  rw [if_neg (Nat.pos_iff_ne_zero.mp hn)]
-  rw [div_lt_iff (by positivity)]
-  -- Need: f(n) < ε * (n²/4) i.e. 4·f(n)/n² < ε
-  -- Since f(n) ≤ n^{7/4} and ε·n²/4 ≥ some threshold:
-  sorry -- technical: bfl bound + threshold argument
+  -- Squeeze: 0 ≤ turanDensity n ≤ 4/n^{1/4} → 0
+  -- Upper bound follows from BFL: f(n) ≤ n^{7/4} and f(n)*n^{1/4} ≤ n^{7/4}*n^{1/4} = n²
+  -- Squeeze with 4/n^{1/4} which tends to 0 since n^{1/4} → ∞.
+  have hn14_atTop : Filter.Tendsto (fun n : ℕ => (n : ℝ)^(1/4 : ℝ)) atTop atTop :=
+    (Real.tendsto_rpow_atTop (by norm_num : (0:ℝ) < 1/4)).comp tendsto_natCast_atTop_atTop
+  apply tendsto_of_tendsto_of_tendsto_of_le_of_le
+    (tendsto_const_nhds (b := (0:ℝ)))
+    ((tendsto_const_nhds (b := (4:ℝ))).div_atTop hn14_atTop)
+  · exact eventually_of_forall (fun n => (turanDensity_mem_Icc n).1)
+  · filter_upwards [bfl_upper_bound (1/4 : ℝ) (by norm_num), eventually_gt_atTop 0] with n hfn hn
+    unfold turanDensity
+    rw [if_neg (Nat.pos_iff_ne_zero.mp hn)]
+    have hn' : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+    have hfn' : triangleRemovalEdges n ≤ (n : ℝ)^(7/4 : ℝ) := by
+      have h : (3/2 + 1/4 : ℝ) = 7/4 := by norm_num
+      rwa [h] at hfn
+    rw [div_le_div_iff (by positivity) (Real.rpow_pos_of_pos hn' _)]
+    -- Goal: f(n) * n^{1/4} ≤ 4 * (n²/4) = n²
+    calc triangleRemovalEdges n * (n : ℝ)^(1/4 : ℝ)
+        ≤ (n : ℝ)^(7/4 : ℝ) * (n : ℝ)^(1/4 : ℝ) :=
+          mul_le_mul_of_nonneg_right hfn' (le_of_lt (Real.rpow_pos_of_pos hn' _))
+      _ = (n : ℝ)^2 := by
+          rw [← Real.rpow_add hn', show (7/4 : ℝ) + 1/4 = 2 from by norm_num]
+          exact Real.rpow_natCast (n : ℝ) 2
+      _ = 4 * ((n : ℝ)^2 / 4) := by ring
 
 -- ============================================================
 -- PART III: Process Not Turán-Extremal
@@ -204,11 +214,43 @@ The Turán bound n²/4 is ≫ f(n) = n^{3/2+o(1)}.
 The "Turán gap" is polynomial: n²/4 / n^{3/2} = n^{1/2}/4 → ∞.
 -/
 
-/-- The Turán gap grows without bound: n²/4 / f(n) → ∞ (assuming BFL lower bound). -/
+/-- The Turán gap grows without bound: n²/4 / f(n) → ∞ (using BFL upper bound). -/
 theorem turan_gap_diverges :
     Filter.Tendsto (fun n : ℕ => (n : ℝ)^2 / 4 / (triangleRemovalEdges n + 1)) atTop atTop := by
-  -- (n²/4) / (n^{3/2+ε}+1) ≥ (n²/4) / (2·n^{3/2+ε}) = n^{1/2-ε}/8 → ∞ for ε < 1/2
-  sorry -- requires bfl_lower_bound + tendsto argument
+  -- Lower bound: n²/4/(f(n)+1) ≥ (1/8)*n^{1/4} eventually (BFL: f(n) ≤ n^{7/4})
+  -- For n ≥ 1: n^{7/4} ≥ 1, so f(n)+1 ≤ n^{7/4}+1 ≤ 2*n^{7/4}
+  -- Hence n²/4/(f(n)+1) ≥ n²/(8*n^{7/4}) = n^{1/4}/8 → ∞.
+  have hn14_atTop : Filter.Tendsto (fun n : ℕ => (n : ℝ)^(1/4 : ℝ)) atTop atTop :=
+    (Real.tendsto_rpow_atTop (by norm_num : (0:ℝ) < 1/4)).comp tendsto_natCast_atTop_atTop
+  -- (1/8) * n^{1/4} → ∞
+  have h_lb_atTop : Filter.Tendsto (fun n : ℕ => (1/8 : ℝ) * (n : ℝ)^(1/4 : ℝ)) atTop atTop :=
+    Tendsto.const_mul_atTop (by norm_num : (0:ℝ) < 1/8) hn14_atTop
+  apply tendsto_atTop_mono' atTop _ h_lb_atTop
+  filter_upwards [bfl_upper_bound (1/4 : ℝ) (by norm_num), eventually_gt_atTop 0] with n hfn hn
+  have hn' : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+  have hfn' : triangleRemovalEdges n ≤ (n : ℝ)^(7/4 : ℝ) := by
+    have h : (3/2 + 1/4 : ℝ) = 7/4 := by norm_num
+    rwa [h] at hfn
+  have hn74_ge1 : (1 : ℝ) ≤ (n : ℝ)^(7/4 : ℝ) := by
+    calc (1 : ℝ) = (1 : ℝ)^(7/4 : ℝ) := (Real.one_rpow _).symm
+      _ ≤ (n : ℝ)^(7/4 : ℝ) :=
+          Real.rpow_le_rpow (le_refl 1) (by exact_mod_cast hn) (by norm_num)
+  -- f(n)+1 ≤ 2*n^{7/4}
+  have hfp1 : triangleRemovalEdges n + 1 ≤ 2 * (n : ℝ)^(7/4 : ℝ) := by linarith
+  -- n^{7/4} * n^{1/4} = n²
+  have hn2_eq : (n : ℝ)^(7/4 : ℝ) * (n : ℝ)^(1/4 : ℝ) = (n : ℝ)^2 := by
+    rw [← Real.rpow_add hn', show (7/4 : ℝ) + 1/4 = 2 from by norm_num]
+    exact Real.rpow_natCast (n : ℝ) 2
+  -- n²/4/(2*n^{7/4}) = (1/8)*n^{1/4}
+  have key : (n : ℝ)^2 / 4 / (2 * (n : ℝ)^(7/4 : ℝ)) = (1/8 : ℝ) * (n : ℝ)^(1/4 : ℝ) := by
+    have h74_ne : (n : ℝ)^(7/4 : ℝ) ≠ 0 := ne_of_gt (Real.rpow_pos_of_pos hn' _)
+    rw [div_div, ← hn2_eq]
+    field_simp [h74_ne]
+    ring
+  rw [← key]
+  have h1 : 0 < triangleRemovalEdges n + 1 := by linarith [triangleRemovalEdges_nonneg n]
+  rw [div_le_div_iff (by positivity : (0 : ℝ) < 2 * (n : ℝ)^(7/4 : ℝ)) h1]
+  exact mul_le_mul_of_nonneg_left hfp1 (by positivity)
 
 -- ============================================================
 -- PART V: Structural Consequence

@@ -92,91 +92,104 @@
       "title": "Module Header and Status",
       "startLine": 1,
       "endLine": 43,
-      "summary": "Documents the 14-part structure covering σ values, primes, classification, amicable pairs, abundancy, divisor count, σ₂, bounds, connections to RH, multiplicativity, prime power formula, factorization computation, and minimality. Imports Mathlib and opens SumOfDivisors namespace."
+      "summary": "Documents the 14-part structure covering σ values, primes, classification, amicable pairs, abundancy, divisor count, σ₂, bounds, connections to RH, multiplicativity, prime power formula, factorization computation, and minimality. Imports Mathlib and opens SumOfDivisors namespace.",
+      "mathContext": "The sum-of-divisors function $\\sigma(n) = \\sum_{d \\mid n} d$ is one of the central objects in multiplicative number theory. It generalizes to $\\sigma_k(n) = \\sum_{d \\mid n} d^k$, with $\\sigma_0(n)$ counting divisors and $\\sigma_1(n) = \\sigma(n)$ summing them. Mathlib formalizes this as $\\mathtt{ArithmeticFunction.sigma}\\, k\\, n$. This module builds a comprehensive Lean 4 library around $\\sigma$: concrete evaluations, algebraic structure (multiplicativity), classification theory, and connections to deep open problems like the odd perfect number question and Robin's inequality linking $\\sigma$ to the Riemann Hypothesis."
     },
     {
       "id": "sec-sigma-concrete",
       "title": "Part 1: Concrete σ Values",
       "startLine": 44,
       "endLine": 91,
-      "summary": "Verifies σ(1) through σ(10), σ(12), σ(28), σ(100) using native_decide. Establishes the empirical foundation: σ(6)=12, σ(28)=56 (perfect numbers), σ(12)=28 (abundant)."
+      "summary": "Verifies σ(1) through σ(10), σ(12), σ(28), σ(100) using native_decide. Establishes the empirical foundation: σ(6)=12, σ(28)=56 (perfect numbers), σ(12)=28 (abundant).",
+      "mathContext": "Concrete values anchor the theory: $\\sigma(1) = 1$ (only divisor is $1$), $\\sigma(p) = p+1$ for primes (divisors $\\{1, p\\}$), $\\sigma(4) = 1+2+4 = 7$, $\\sigma(6) = 1+2+3+6 = 12$, and $\\sigma(28) = 1+2+4+7+14+28 = 56$. The equalities $\\sigma(6) = 2 \\cdot 6$ and $\\sigma(28) = 2 \\cdot 28$ witness that $6$ and $28$ are perfect numbers. Similarly $\\sigma(12) = 1+2+3+4+6+12 = 28 > 24 = 2 \\cdot 12$ witnesses abundance. These values are verified by $\\mathtt{native\\_decide}$, which reduces the goal to a decision procedure evaluated at compile time."
     },
     {
       "id": "sec-sigma-primes",
       "title": "Parts 2: σ on Primes",
       "startLine": 92,
       "endLine": 123,
-      "summary": "Verifies σ(p) = p+1 for p = 2,3,5,7,11,13 by native_decide, then proves the general theorem for all primes using sigma_apply_prime_pow + simp + linarith."
+      "summary": "Verifies σ(p) = p+1 for p = 2,3,5,7,11,13 by native_decide, then proves the general theorem for all primes using sigma_apply_prime_pow + simp + linarith.",
+      "mathContext": "For a prime $p$, the divisors of $p$ are exactly $\\{1, p\\}$, so $\\sigma(p) = 1 + p = p + 1$. This is a special case of the prime power formula: $\\sigma(p^1) = \\sum_{i=0}^{1} p^i = 1 + p$. The general proof uses Mathlib's $\\mathtt{sigma\\_apply\\_prime\\_pow}$, which gives $\\sigma(p^k) = \\sum_{i=0}^{k} p^i$ for any prime $p$ and $k \\geq 0$. At $k=1$ this simplifies to $1 + p^1 = p + 1$ via $\\mathtt{simp}$ and $\\mathtt{linarith}$. This theorem is used throughout the classification section since all primes are deficient: $\\sigma(p) = p + 1 < 2p$ for $p \\geq 2$."
     },
     {
       "id": "sec-classification",
       "title": "Part 3: Number Classification (Deficient/Perfect/Abundant)",
       "startLine": 124,
       "endLine": 194,
-      "summary": "Defines IsDeficient, IsPerfect, IsAbundant predicates. Proves primes and powers of 2 are deficient; 6, 28, 496 are perfect; 12, 18, 20, 24 are abundant. Uses native_decide for all concrete verifications."
+      "summary": "Defines IsDeficient, IsPerfect, IsAbundant predicates. Proves primes and powers of 2 are deficient; 6, 28, 496 are perfect; 12, 18, 20, 24 are abundant. Uses native_decide for all concrete verifications.",
+      "mathContext": "The three classification predicates partition the positive integers by comparing $\\sigma(n)$ with $2n$: $\\mathtt{IsDeficient}(n) \\iff \\sigma(n) < 2n$, $\\mathtt{IsPerfect}(n) \\iff \\sigma(n) = 2n$, and $\\mathtt{IsAbundant}(n) \\iff \\sigma(n) > 2n$. Equivalently, $n$ is perfect when $n$ equals the sum of its proper divisors. Primes are deficient because $\\sigma(p) = p+1 < 2p$. Powers of $2$ are deficient: $\\sigma(2^k) = 2^{k+1} - 1 < 2^{k+1}$. The three known perfect numbers in this file are $6 = 2^1(2^2-1)$, $28 = 2^2(2^3-1)$, and $496 = 2^4(2^5-1)$, all of the Euclid–Euler form $2^{p-1}(2^p-1)$ with $2^p-1$ prime."
     },
     {
       "id": "sec-classification-theory",
       "title": "Part 4: Classification Theory (Exhaustive and Exclusive)",
       "startLine": 195,
       "endLine": 217,
-      "summary": "Proves classification_exhaustive (every n is one of the three types) and three exclusivity theorems. All proved by omega after unfolding definitions — trichotomy of σ(n) vs 2n."
+      "summary": "Proves classification_exhaustive (every n is one of the three types) and three exclusivity theorems. All proved by omega after unfolding definitions — trichotomy of σ(n) vs 2n.",
+      "mathContext": "The classification is a partition: for any $n > 0$, exactly one of $\\sigma(n) < 2n$, $\\sigma(n) = 2n$, $\\sigma(n) > 2n$ holds. This is the trichotomy of the natural numbers (or integers), so after unfolding the definitions, all goals reduce to $\\mathtt{omega}$ — the linear arithmetic decision procedure. The exclusivity theorems are: $\\mathtt{IsPerfect}(n) \\to \\neg\\mathtt{IsDeficient}(n)$, $\\mathtt{IsAbundant}(n) \\to \\neg\\mathtt{IsPerfect}(n)$, and $\\mathtt{IsDeficient}(n) \\to \\neg\\mathtt{IsAbundant}(n)$. Together with exhaustivity, these confirm the predicates form a partition of $\\mathbb{N}_{>0}$."
     },
     {
       "id": "sec-amicable",
       "title": "Part 5: Amicable Numbers",
       "startLine": 218,
       "endLine": 259,
-      "summary": "Defines AreAmicable. Verifies σ(220)=504, σ(284)=504 (Pythagorean pair) and σ(1184)=2394, σ(1210)=2394 (Paganini's pair) by native_decide, then proves amicability by omega."
+      "summary": "Defines AreAmicable. Verifies σ(220)=504, σ(284)=504 (Pythagorean pair) and σ(1184)=2394, σ(1210)=2394 (Paganini's pair) by native_decide, then proves amicability by omega.",
+      "mathContext": "Two distinct numbers $m, n$ form an amicable pair if $\\sigma(m) = m + n$ and $\\sigma(n) = m + n$, i.e., each is the sum of the proper divisors of the other. The condition $\\sigma(m) = \\sigma(n) = m + n$ is symmetric: $(m, n)$ amicable iff $(n, m)$ amicable. For the Pythagorean pair: $220 = 2^2 \\cdot 5 \\cdot 11$ and $284 = 2^2 \\cdot 71$, with $\\sigma(220) = \\sigma(284) = 504 = 220 + 284$. For Paganini's pair: $1184 = 2^5 \\cdot 37$ and $1210 = 2 \\cdot 5 \\cdot 11^2$, with $\\sigma(1184) = \\sigma(1210) = 2394 = 1184 + 1210$. These are verified numerically by $\\mathtt{native\\_decide}$ and then the amicability condition is discharged by $\\mathtt{omega}$."
     },
     {
       "id": "sec-abundancy",
       "title": "Part 6: Abundancy Index",
       "startLine": 260,
       "endLine": 287,
-      "summary": "Defines abundancy index σ(n)/n as a rational number. Proves perfect ↔ abundancy = 2 (for n > 0) via field_simp + exact_mod_cast + omega."
+      "summary": "Defines abundancy index σ(n)/n as a rational number. Proves perfect ↔ abundancy = 2 (for n > 0) via field_simp + exact_mod_cast + omega.",
+      "mathContext": "The abundancy index of $n$ is the rational number $I(n) = \\sigma(n)/n$. It satisfies $I(n) \\geq 1$ for all $n \\geq 1$ (since $n \\mid n$ contributes $n$ to $\\sigma(n)$), with $I(1) = 1$ and $I(p) = (p+1)/p$ for primes. The classification becomes: $n$ is deficient iff $I(n) < 2$, perfect iff $I(n) = 2$, abundant iff $I(n) > 2$. Multiplicativity of $\\sigma$ implies that $I(mn) = I(m) \\cdot I(n)$ when $\\gcd(m,n)=1$. The formal proof that $\\mathtt{IsPerfect}(n) \\leftrightarrow I(n) = 2$ unfolds as $\\sigma(n) = 2n \\leftrightarrow \\sigma(n)/n = 2$, proved by $\\mathtt{field\\_simp}$ (clearing the denominator $n > 0$) and $\\mathtt{omega}$."
     },
     {
       "id": "sec-divisor-count",
       "title": "Parts 7-8: Divisor Count and σ₂",
       "startLine": 288,
       "endLine": 326,
-      "summary": "Computes d(n) = σ_0(n) (divisor count) for n=1,2,4,6,12,1024 and σ_2(n) (sum of squared divisors) for n=1,2,6 by native_decide."
+      "summary": "Computes d(n) = σ_0(n) (divisor count) for n=1,2,4,6,12,1024 and σ_2(n) (sum of squared divisors) for n=1,2,6 by native_decide.",
+      "mathContext": "The family $\\sigma_k(n) = \\sum_{d \\mid n} d^k$ generalizes $\\sigma$: $\\sigma_0(n) = d(n)$ counts divisors, $\\sigma_1(n) = \\sigma(n)$ sums them, and $\\sigma_2(n)$ sums their squares. All are multiplicative. Representative values: $d(12) = 6$ (divisors $1,2,3,4,6,12$), $d(1024) = d(2^{10}) = 11$. For $\\sigma_2$: $\\sigma_2(6) = 1^2 + 2^2 + 3^2 + 6^2 = 1 + 4 + 9 + 36 = 50$. The Dirichlet series encode the generating functions: $\\sum_{n=1}^\\infty d(n)/n^s = \\zeta(s)^2$ and $\\sum_{n=1}^\\infty \\sigma(n)/n^s = \\zeta(s)\\zeta(s-1)$, connecting these functions to the Riemann zeta function."
     },
     {
       "id": "sec-bounds",
       "title": "Part 9: Key Bounds",
       "startLine": 327,
       "endLine": 368,
-      "summary": "Proves σ(n) ≥ n for n ≥ 1 (using n ∈ divisors) and σ(n) > n for n > 1 (using {1,n} ⊆ divisors, Finset.sum_pair). General proofs use Finset.single_le_sum and sum_le_sum_of_subset."
+      "summary": "Proves σ(n) ≥ n for n ≥ 1 (using n ∈ divisors) and σ(n) > n for n > 1 (using {1,n} ⊆ divisors, Finset.sum_pair). General proofs use Finset.single_le_sum and sum_le_sum_of_subset.",
+      "mathContext": "The lower bounds on $\\sigma$ reflect the structure of divisors. For $n \\geq 1$: since $n \\mid n$, we have $n \\in \\{d : d \\mid n\\}$, so $\\sigma(n) = \\sum_{d \\mid n} d \\geq n$ by $\\mathtt{Finset.single\\_le\\_sum}$. For $n > 1$: both $1$ and $n$ are divisors and $1 \\neq n$, so $\\sigma(n) \\geq 1 + n > n$ using $\\mathtt{Finset.sum\\_pair}$. Upper bounds are subtler: by Gronwall's theorem, $\\limsup_{n \\to \\infty} \\sigma(n)/(n \\ln \\ln n) = e^\\gamma \\approx 1.7811$, where $\\gamma$ is the Euler–Mascheroni constant. These bounds are foundational for all classification results since $\\sigma(n) \\geq n$ implies $I(n) \\geq 1$."
     },
     {
       "id": "sec-connections",
       "title": "Part 10: Connections to Robin's Inequality and RH",
       "startLine": 369,
       "endLine": 384,
-      "summary": "Documentation section: Robin's inequality (σ(n) < e^γ n ln(ln(n)) for n ≥ 5041 iff RH), Gronwall's theorem (lim sup = e^γ), Ramanujan highly composite numbers. No Lean proofs — theoretical context only."
+      "summary": "Documentation section: Robin's inequality (σ(n) < e^γ n ln(ln(n)) for n ≥ 5041 iff RH), Gronwall's theorem (lim sup = e^γ), Ramanujan highly composite numbers. No Lean proofs — theoretical context only.",
+      "mathContext": "Robin's theorem (1984) gives a remarkable equivalence: the Riemann Hypothesis holds if and only if $\\sigma(n) < e^\\gamma n \\ln(\\ln(n))$ for all $n > 5040$, where $\\gamma \\approx 0.5772$ is the Euler–Mascheroni constant and $e^\\gamma \\approx 1.7811$. The inequality is known to hold for all $n \\leq 5040$ (verified by exhaustion) and for all $n > 5040$ conditionally on RH. Gronwall's theorem (1913) gives the complementary asymptotic: $\\limsup_{n \\to \\infty} \\sigma(n) / (n \\ln \\ln n) = e^\\gamma$. The extremal cases are Colossally abundant numbers (Ramanujan's highly composite numbers), which saturate the bound. This deep connection places $\\sigma$ at the intersection of elementary and analytic number theory."
     },
     {
       "id": "sec-multiplicativity",
       "title": "Part 11: Multiplicativity of σ",
       "startLine": 385,
       "endLine": 419,
-      "summary": "Proves σ_k is multiplicative (one-line from isMultiplicative_sigma) and the coprime product formula σ(mn) = σ(m)σ(n). Demonstrates with examples: σ(6)=σ(2)σ(3), σ(12)=σ(4)σ(3), σ(30)=σ(2)σ(15)."
+      "summary": "Proves σ_k is multiplicative (one-line from isMultiplicative_sigma) and the coprime product formula σ(mn) = σ(m)σ(n). Demonstrates with examples: σ(6)=σ(2)σ(3), σ(12)=σ(4)σ(3), σ(30)=σ(2)σ(15).",
+      "mathContext": "An arithmetic function $f : \\mathbb{N} \\to \\mathbb{N}$ is multiplicative if $f(1) = 1$ and $f(mn) = f(m)f(n)$ whenever $\\gcd(m,n) = 1$. The function $\\sigma$ is multiplicative, which follows from the fact that $\\sigma = \\mathbf{1} * \\mathrm{id}$ (Dirichlet convolution of the constant-$1$ function with the identity), and Dirichlet convolution of multiplicative functions is multiplicative. In Lean, this is $\\mathtt{isMultiplicative\\_sigma}$. The coprime product formula $\\sigma(mn) = \\sigma(m)\\sigma(n)$ for $\\gcd(m,n) = 1$ reduces computation to prime powers: $\\sigma(2^2 \\cdot 3) = \\sigma(4) \\cdot \\sigma(3) = 7 \\cdot 4 = 28$. This is the key reduction that makes $\\sigma$ tractable."
     },
     {
       "id": "sec-prime-power",
       "title": "Parts 12-13: σ on Prime Powers and Factorization",
       "startLine": 420,
       "endLine": 503,
-      "summary": "Proves σ(p^k) = Σ_{i=0}^k p^i by sigma_apply_prime_pow. Specializes to k=1,2,3. Demonstrates factorization-based computation: σ(12) = (1+2+4)(1+3) = 28, σ(30) = (1+2)(1+3)(1+5) = 72."
+      "summary": "Proves σ(p^k) = Σ_{i=0}^k p^i by sigma_apply_prime_pow. Specializes to k=1,2,3. Demonstrates factorization-based computation: σ(12) = (1+2+4)(1+3) = 28, σ(30) = (1+2)(1+3)(1+5) = 72.",
+      "mathContext": "The prime power formula is $\\sigma(p^k) = \\sum_{i=0}^{k} p^i = \\frac{p^{k+1}-1}{p-1}$ (a geometric series). This follows because the divisors of $p^k$ are exactly $\\{1, p, p^2, \\ldots, p^k\\}$. Specializations: $\\sigma(p^2) = 1 + p + p^2$ and $\\sigma(p^3) = 1 + p + p^2 + p^3$. Combined with multiplicativity, this gives a closed-form formula from the prime factorization: if $n = p_1^{a_1} \\cdots p_r^{a_r}$ then $\\sigma(n) = \\prod_{i=1}^r \\frac{p_i^{a_i+1}-1}{p_i-1}$. For example $\\sigma(30) = \\sigma(2)\\sigma(3)\\sigma(5) = 3 \\cdot 4 \\cdot 6 = 72$. In Lean, $\\mathtt{sigma\\_apply\\_prime\\_pow}$ provides the Finset sum form used to prove each specialization."
     },
     {
       "id": "sec-smallest-abundant",
       "title": "Part 14: 12 is the Smallest Abundant Number",
       "startLine": 504,
       "endLine": 547,
-      "summary": "Proves not_abundant_lt_12 (∀ 0<n<12, ¬IsAbundant n) by interval_cases + native_decide, then twelve_smallest_abundant combining this with twelve_is_abundant."
+      "summary": "Proves not_abundant_lt_12 (∀ 0<n<12, ¬IsAbundant n) by interval_cases + native_decide, then twelve_smallest_abundant combining this with twelve_is_abundant.",
+      "mathContext": "To prove $12$ is the smallest abundant number, two facts are needed: (1) $12$ is abundant ($\\sigma(12) = 28 > 24 = 2 \\cdot 12$), and (2) no $n$ with $1 \\leq n < 12$ is abundant. The proof of (2) uses $\\mathtt{interval\\_cases}\\, n$, which case-splits the goal into 11 subgoals for $n = 1, 2, \\ldots, 11$; each is dispatched by $\\mathtt{native\\_decide}$ verifying $\\sigma(n) \\leq 2n$. The combined theorem $\\mathtt{twelve\\_smallest\\_abundant}$ states $\\forall m, 0 < m \\to \\mathtt{IsAbundant}(m) \\to m \\geq 12$, established by contrapositive: if $m < 12$ then $m$ is not abundant. The density of abundant numbers is approximately $24.76\\%$ of all positive integers (Deléglise, 1998)."
     }
   ],
   "sorries": 0

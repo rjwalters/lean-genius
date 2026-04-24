@@ -224,7 +224,7 @@
     "type": "concept",
     "range": {
       "startLine": 78,
-      "endLine": 87
+      "endLine": 80
     },
     "title": "Erdos Problem 346: Convergence to the Golden Ratio",
     "content": "The conjecture states: if a sequence is **lacunary**, **strongly complete**, and **fragile**, then a_{n+1}/a_n converges to **phi = (1 + sqrt(5))/2**. Formally, for every delta > 0, there exists n_0 such that |a_{n+1}/a_n - phi| < delta for all n >= n_0. This would mean that the golden ratio is the unique growth rate compatible with all three properties simultaneously.",

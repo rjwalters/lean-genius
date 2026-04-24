@@ -50,6 +50,10 @@
       {
         "id": "cantors-theorem-oq-02",
         "relationship": "Formalizes Lawvere's fixed-point theorem — the categorical generalization of Cantor's diagonal argument that unifies Cantor, Gödel, and Turing under one cartesian closed category framework"
+      },
+      {
+        "id": "cantors-theorem-oq-03",
+        "relationship": "Explores a hierarchy of diagonal arguments of increasing generality: Lawvere's uniform dodge, the Coordinate Diagonal (pointwise), and König's Principle ($\\sum \\kappa_i < \\prod \\lambda_i$) — with Cantor's theorem as a special case"
       }
     ],
     "mathlib_version": "4.26.0"
@@ -203,6 +207,21 @@
       "targetId": "liouville-theorem",
       "relationship": "related",
       "description": "Liouville's construction of the first explicit transcendental number (1844) via rational approximation complements Cantor's theorem: Cantor shows transcendental numbers exist (in fact $|\\text{transcendentals}| = |\\mathbb{R}|$ since algebraic numbers are countable), while Liouville constructs a specific witness. This parallels the constructive nature of Cantor's own theorem — `cantor_witness` produces an explicit set not in any function's range"
+    },
+    {
+      "targetId": "cantors-theorem-oq-03",
+      "relationship": "extended-by",
+      "description": "Explores a hierarchy of diagonal arguments beyond the basic $|A| < |\\mathcal{P}(A)|$: Lawvere's uniform fixed-point-free dodge (the categorical core), the Coordinate Diagonal (pointwise dodge), and König's Principle ($\\sum_{i} \\kappa_i < \\prod_{i} \\lambda_i$ when $\\kappa_i < \\lambda_i$). König's Principle is a genuine generalization: setting all $\\kappa_i = |A_i|$ and $\\lambda_i = |\\mathcal{P}(A_i)|$ recovers a product-form of Cantor's theorem, while the Coordinate Diagonal is the special single-set case. Together with `cantors-theorem-oq-01` (beth tower) and `cantors-theorem-oq-02` (Lawvere CCC), this forms a complete sub-cluster on the diagonal argument and its generalizations"
+    },
+    {
+      "targetId": "godel-first-incompleteness-oq01",
+      "relationship": "thematic",
+      "description": "Gödel's First Incompleteness Theorem via a non-vacuous axiomatic proof: any consistent, sufficiently expressive formal system contains true statements it cannot prove. The self-referential structure — the Gödel sentence 'This statement is unprovable' — is the arithmetic analog of Cantor's diagonal set $\\{x \\mid x \\notin f(x)\\}$. Both construct a self-excluding object: Cantor's set excludes itself from any function's range; Gödel's sentence excludes itself from any consistent theory's theorems. Lawvere's fixed-point theorem (formalized in `cantors-theorem-oq-02`) unifies both as instances of the same categorical principle"
+    },
+    {
+      "targetId": "godel-second-incompleteness-oq02",
+      "relationship": "thematic",
+      "description": "Gödel's Second Incompleteness Theorem: no consistent system can prove its own consistency. This is a consequence of the same diagonal structure — if a system $T$ could prove $\\text{Con}(T)$, the First Incompleteness argument would formalize inside $T$ to derive a contradiction. The second theorem directly connects to Cantor's theorem via Hilbert's program: Hilbert sought to formalize all of mathematics and prove its consistency from within — the diagonal argument (in Cantor's form) and Gödel's form show this is impossible: neither set theory can be 'completed' (no largest cardinal) nor arithmetic can be 'closed' (no self-consistency proof)"
     }
   ],
   "references": [

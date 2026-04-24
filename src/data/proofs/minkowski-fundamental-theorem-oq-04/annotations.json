@@ -174,29 +174,81 @@
     ]
   },
   {
-    "id": "ann-oq04-final-equiv",
+    "id": "ann-oq04-vol-conversion",
     "proofId": "minkowski-fundamental-theorem-oq-04",
     "range": {
-      "startLine": 154,
-      "endLine": 167
+      "startLine": 148,
+      "endLine": 162
     },
-    "type": "insight",
-    "title": "The Canonical Type Equivalence",
-    "content": "The definition latticeEquivBasis assembles the two conversion functions and the two round-trip proofs into a Lean 4 Equiv: toFun = L.toModuleBasis n, invFun = latticeOfBasis n b, left_inv = toModuleBasis_latticeOfBasis, right_inv = latticeOfBasis_toModuleBasis. This is the definitive, machine-verified answer to OQ-04: the custom Lattice n type and Mathlib's Module.Basis (Fin n) ℝ (Fin n → ℝ) are in canonical bijection. Because it is marked noncomputable (inheriting from latticeOfBasis), it lives in the classical universe — but it is fully proved and contains no sorries.",
-    "mathContext": "$\\mathtt{latticeEquivBasis} : \\mathtt{Lattice}\\,n \\simeq \\mathrm{Module.Basis}(\\mathrm{Fin}\\,n,\\,\\mathbb{R},\\,\\mathrm{Fin}\\,n \\to \\mathbb{R})$. In classical logic, $\\mathrm{GL}_n(\\mathbb{R}) \\simeq \\mathtt{Lattice}\\,n \\simeq \\mathrm{Module.Basis}(\\mathrm{Fin}\\,n, \\mathbb{R}, \\mathrm{Fin}\\,n \\to \\mathbb{R})$, where the first bijection maps $A$ to $(A, \\det A \\neq 0)$.",
-    "significance": "key",
+    "type": "technique",
+    "title": "Volume Conversion: Bridging Custom and ZSpan Measure Theories",
+    "content": "The private helper `custom_vol_to_ennreal` bridges the two volume representations: the custom API's `criticalVolume` (using `Lattice.covolume` and a real-valued volume) and the ZSpan-native form using `ENNReal.ofReal |det|`. This conversion is needed because `minkowski_general_lattice_proved` expects ENNReal volumes, while the custom API provides real-valued comparisons.\n\nThe proof rewrites `L.toModuleBasis_matrix_eq` (matrix equality from OQ-04's key lemma), then converts the real product `|det| * 2^n` to ENNReal form using `ENNReal.ofReal_mul`, `ENNReal.ofReal_pow`, and `ENNReal.ofReal_ofNat`. The final step uses the monotonicity of `ENNReal.ofReal` to transfer the strict inequality.",
+    "mathContext": "The conversion handles $\\mathrm{ENNReal.ofReal}(|\\det(L.\\mathrm{basis})|) \\cdot 2^n < \\mathrm{vol}(S)$ in ENNReal form. The key rewrite is:\n$$\\mathrm{ENNReal.ofReal}(|\\det| \\cdot 2^n) = \\mathrm{ENNReal.ofReal}(|\\det|) \\cdot (\\mathrm{ENNReal.ofReal}\\,2)^n$$\nusing the multiplicativity of `ENNReal.ofReal` on nonnegative reals.",
+    "significance": "supporting",
     "relatedConcepts": [
-      "Equiv",
-      "type equivalence",
-      "noncomputable",
-      "API interoperability",
-      "geometry of numbers"
+      "ENNReal",
+      "measure-theory",
+      "criticalVolume",
+      "covolume",
+      "volume-conversion"
     ],
     "prerequisites": [
-      "latticeOfBasis",
-      "Lattice.toModuleBasis",
-      "toModuleBasis_latticeOfBasis",
-      "latticeOfBasis_toModuleBasis"
+      "Lattice.covolume",
+      "criticalVolume",
+      "ENNReal.ofReal_mul",
+      "Lattice.toModuleBasis_matrix_eq"
+    ]
+  },
+  {
+    "id": "ann-oq04-minkowski-bridge",
+    "proofId": "minkowski-fundamental-theorem-oq-04",
+    "range": {
+      "startLine": 163,
+      "endLine": 183
+    },
+    "type": "theorem",
+    "title": "Bridge Theorem: Custom API Backed by ZSpan-Native Minkowski",
+    "content": "The theorem `minkowski_custom_via_zlattice` is the architectural culmination of OQ-04: it shows the custom Minkowski API is not a parallel universe but a **convenient wrapper** over the ZSpan-native proof `minkowski_general_lattice_proved`.\n\nThe proof chain:\n1. Convert the volume hypothesis via `custom_vol_to_ennreal`\n2. Apply `minkowski_general_lattice_proved` with `L.toModuleBasis n` and the convex body's carrier\n3. Translate back: ZSpan lattice points (`ZSpan.latticePoints`) become custom lattice points via `latticePoints_eq_span`\n\nThis demonstrates that the custom Lattice n infrastructure is *sound*: every theorem provable in the custom API is derivable from Mathlib's ZLattice theory.",
+    "mathContext": "The bridge closes the logical loop: if $\\mathrm{vol}(S) > 2^n \\cdot |\\det(L)|$, then:\n1. `custom_vol_to_ennreal` gives $\\mathrm{ENNReal.ofReal}(|\\det(L.\\mathrm{toModuleBasis})|) \\cdot 2^n < \\mathrm{vol}(S.\\mathrm{carrier})$\n2. `minkowski_general_lattice_proved` yields $\\exists x \\in S \\cap \\mathbb{Z}^n_{L},\\ x \\neq 0$\n3. `latticePoints_eq_span` translates $\\mathbb{Z}^n_L$ (ZSpan form) to `latticePoints n L` (custom form)",
+    "significance": "key",
+    "relatedConcepts": [
+      "Minkowski-theorem",
+      "ZSpan",
+      "latticePoints",
+      "API-interoperability",
+      "minkowski_general_lattice_proved"
+    ],
+    "prerequisites": [
+      "custom_vol_to_ennreal",
+      "minkowski_general_lattice_proved",
+      "latticePoints_eq_span",
+      "ConvexBody",
+      "Lattice.toModuleBasis"
+    ]
+  },
+  {
+    "id": "ann-oq04-extensional-eq",
+    "proofId": "minkowski-fundamental-theorem-oq-04",
+    "range": {
+      "startLine": 185,
+      "endLine": 192
+    },
+    "type": "insight",
+    "title": "Extensional Equality: Two Proof Routes Are Interchangeable",
+    "content": "The theorem `minkowski_custom_via_zlattice_iff_fundamental` is proved by `Iff.rfl` — the two sides of the biconditional are definitionally equal (the same proposition). This is a **sanity check** rather than a deep result: both `minkowski_fundamental` and `minkowski_custom_via_zlattice` prove exactly the same statement.\n\nThe triviality of the proof (`Iff.rfl`) confirms that the two routes are *extensionally identical*: they prove the same proposition, just via different proof terms (one using the custom API machinery, one using the ZSpan bridge). In Lean 4's type theory, propositional proof irrelevance makes them equal as proofs too.",
+    "mathContext": "Proof irrelevance in Lean 4: for any proposition $P$, all proofs of $P$ are definitionally equal. So if $h_1 : P$ and $h_2 : P$, then `h_1 = h_2` holds by `rfl`. The `Iff.rfl` here reflects that `(P → Q) ↔ (P → Q)` is definitionally true for any $P, Q$ — no computation needed.",
+    "significance": "context",
+    "relatedConcepts": [
+      "proof-irrelevance",
+      "Iff.rfl",
+      "extensional-equality",
+      "propositional-equality",
+      "API-equivalence"
+    ],
+    "prerequisites": [
+      "minkowski_fundamental",
+      "minkowski_custom_via_zlattice",
+      "Iff.rfl"
     ]
   }
 ]

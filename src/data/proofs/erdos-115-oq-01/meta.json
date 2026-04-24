@@ -64,35 +64,40 @@
       "title": "Background and Imports",
       "startLine": 1,
       "endLine": 30,
-      "summary": "Problem statement: rate of o(1) correction in max|p'| ≤ (1/2+o(1))n² on connected lemniscates. References: Eremenko-Lempert, Pommerenke, erdosproblems.com/115."
+      "summary": "Problem statement: rate of o(1) correction in max|p'| ≤ (1/2+o(1))n² on connected lemniscates. References: Eremenko-Lempert, Pommerenke, erdosproblems.com/115.",
+      "mathContext": "**Erdős #115** (open): for a degree-$n$ polynomial $p$ on its connected lemniscate $L = \\{z : |p(z)| = 1\\}$, what is the exact rate of $\\delta(n) = \\sup\\{\\max_L |p'|/n^2 - 1/2\\}$? Eremenko-Lempert (2000): $\\max_L |p'| \\leq (1/2 + o(1))n^2$, sharp due to Chebyshev polynomials $T_n$. The $1/2$ is the Bernstein-Markov constant for connected lemniscates. Context: Markov brothers (1892): $\\max_{[-1,1]} |p'| \\leq n^2 \\max_{[-1,1]} |p|$ (extremal: $T_n$). Pommerenke (1959): $\\max|p'| \\leq (e/2)n^2 \\approx 1.359 n^2$. Eremenko-Lempert (2000): sharp $1/2$ constant with $o(1)$ correction."
     },
     {
       "id": "setup",
       "title": "Setup: Axiomatized Polynomial Geometry",
       "startLine": 32,
       "endLine": 85,
-      "summary": "Axiomatizes ComplexPoly, IsLemniscateConnected, maxDerivOnLemniscate, maxDeriv_nonneg, eremenko_lempert, chebyshev_poly/connected/asymptotic. Defines correctionTerm and axiomatizes supCorrection, supCorrection_upper, correction_tends_to_zero."
+      "summary": "Axiomatizes ComplexPoly, IsLemniscateConnected, maxDerivOnLemniscate, maxDeriv_nonneg, eremenko_lempert, chebyshev_poly/connected/asymptotic. Defines correctionTerm and axiomatizes supCorrection, supCorrection_upper, correction_tends_to_zero.",
+      "mathContext": "`ComplexPoly n := Polynomial ℂ` with `natDegree = n`. `IsLemniscateConnected p`: the set $\\{z : |p(z)| = 1\\}$ is connected in $\\mathbb{C}$. `maxDerivOnLemniscate p`: $\\sup_{L_p} |p'|$. Axioms: `eremenko_lempert (p : ComplexPoly n) (h : IsLemniscateConnected p) : maxDerivOnLemniscate p ≤ (1/2 + correctionTerm n) * n^2`. `chebyshev_asymptotic`: $\\text{maxDerivOnLemniscate}(T_n) / n^2 \\to 1/2$ as $n \\to \\infty$. `supCorrection n = sSup \\{x - 1/2 : x = \\text{maxDerivOnLemniscate}(p)/n^2, \\text{connected}(p)\\}`. `correction_tends_to_zero`: $\\text{supCorrection}(n) \\to 0$."
     },
     {
       "id": "rate-hypotheses",
       "title": "Possible Asymptotic Rates",
       "startLine": 87,
       "endLine": 117,
-      "summary": "Defines four rate hypotheses as propositions: IsRateInverseN (O(1/n)), IsRateInverseLogN (O(1/log n)), IsRateInverseSqrtN (O(1/√n)), IsRatePowerDecay α (O(n^{-α})). These are the candidates for the true rate of δ(n)."
+      "summary": "Defines four rate hypotheses as propositions: IsRateInverseN (O(1/n)), IsRateInverseLogN (O(1/log n)), IsRateInverseSqrtN (O(1/√n)), IsRatePowerDecay α (O(n^{-α})). These are the candidates for the true rate of δ(n).",
+      "mathContext": "`IsRateInverseN : Prop := ∃ C > 0, ∀ n ≥ 1, supCorrection n ≤ C / n`. `IsRateInverseSqrtN : Prop := ∃ C > 0, ∀ n ≥ 1, supCorrection n ≤ C / Real.sqrt n`. `IsRateInverseLogN : Prop := ∃ C > 0, ∀ n ≥ 1, supCorrection n ≤ C / Real.log n`. `IsRatePowerDecay (α : ℝ) (hα : 0 < α) : Prop := ∃ C > 0, ∀ n ≥ 1, supCorrection n ≤ C * n^(−α)`. Rate hierarchy: $O(1/n) \\Rightarrow O(1/\\sqrt{n}) \\Rightarrow O(1/\\log n)$ for large $n$. The open question: which is the true rate of $\\delta(n) = \\text{supCorrection}(n)$?"
     },
     {
       "id": "rate-hierarchy",
       "title": "Rate Hierarchy and Pommerenke Bound",
       "startLine": 119,
       "endLine": 152,
-      "summary": "power_decay_implies_o1 proves consistency of any power rate with the o(1) conclusion. PommerenkeCorrectionBound defines the (e/2-1/2) ≈ 0.859 uniform bound. chebyshev_achieves_bound (proved via chebyshev_asymptotic) shows Chebyshev polynomials have correction approaching 0 from below."
+      "summary": "power_decay_implies_o1 proves consistency of any power rate with the o(1) conclusion. PommerenkeCorrectionBound defines the (e/2-1/2) ≈ 0.859 uniform bound. chebyshev_achieves_bound (proved via chebyshev_asymptotic) shows Chebyshev polynomials have correction approaching 0 from below.",
+      "mathContext": "`power_decay_implies_o1 (α : ℝ) (hα : 0 < α) (h : IsRatePowerDecay α hα) : Filter.Tendsto supCorrection Filter.atTop (nhds 0)` — any power decay implies the $o(1)$ conclusion. Proof: $n^{-\\alpha} \\to 0$, so $C \\cdot n^{-\\alpha} \\to 0$, and $\\text{supCorrection}(n) \\leq C \\cdot n^{-\\alpha}$ gives the squeeze. `PommerenkeCorrectionBound : ∀ n, supCorrection n ≤ Real.exp 1 / 2 - 1/2` — the Pommerenke uniform upper bound $(e-1)/2 \\approx 0.859$. `chebyshev_achieves_bound` (from `chebyshev_asymptotic`): the Chebyshev correction approaches 0, confirming the $1/2$ constant is sharp and $\\delta(n) \\to 0$."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 154,
       "endLine": 176,
-      "summary": "Documents the 11 axioms and 3+ proved theorems. Rate hierarchy proofs (inverseN_implies_inverseSqrtN, inverseN_implies_inverseLogN) and Chebyshev lower bound are the main verified results."
+      "summary": "Documents the 11 axioms and 3+ proved theorems. Rate hierarchy proofs (inverseN_implies_inverseSqrtN, inverseN_implies_inverseLogN) and Chebyshev lower bound are the main verified results.",
+      "mathContext": "**Proved theorems (no axioms)**: `inverseN_implies_inverseSqrtN : IsRateInverseN → IsRateInverseSqrtN` (since $1/n \\leq 1/\\sqrt{n}$ for $n \\geq 1$). `inverseN_implies_inverseLogN : IsRateInverseN → IsRateInverseLogN` (since $1/n \\leq 1/\\log n$ for large $n$). `power_decay_implies_o1`. `PommerenkeCorrectionBound`. `chebyshev_achieves_bound`. **11 axioms**: `ComplexPoly` (3 definitional), `maxDeriv_nonneg`, `eremenko_lempert`, `chebyshev_poly/connected/asymptotic` (3), `supCorrection`, `supCorrection_upper`, `correction_tends_to_zero`. The open question `IsRateInverseN ∨ IsRateInverseSqrtN ∨ IsRateInverseLogN ∨ ∃ α, IsRatePowerDecay α` is left unanswered."
     }
   ],
   "conclusion": {

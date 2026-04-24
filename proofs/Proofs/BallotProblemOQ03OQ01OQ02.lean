@@ -4608,4 +4608,118 @@ theorem card_SYT_corner_step (μ : YoungDiagram) (hn : 0 < μ.card) :
       exact (cast_heq (congrArg StandardYoungTableau hyd) _).symm.trans (heq_of_eq hEq)
   }
 
+-- ============================================================
+-- PART XIV: General Hook-Length Formula via Corner Induction
+-- ============================================================
+
+/-
+  We prove the general hook-length formula by well-founded recursion on μ.card,
+  using the corner recursion (card_SYT_corner_step) and the hook walk identity.
+
+  The hook walk identity (Frame-Robinson-Thrall 1954):
+    Σ_{c ∈ corners(μ)} hookProd(μ) / hookProd(μ\c) = μ.card   (in ℚ)
+
+  For each corner c = (i,j): removing c decreases hook lengths in row(c) and
+  col(c) each by 1. The sum of all such ratio products equals n = μ.card.
+
+  Proof structure (n = μ.card):
+    card(SYT(μ)) * hookProd(μ)
+    = (Σ_c card(SYT(μ\c))) * hookProd(μ)         [card_SYT_corner_step]
+    = Σ_c [(n-1)! * hookProd(μ)/hookProd(μ\c)]   [IH: card(SYT(μ\c))*hookProd(μ\c)=(n-1)!]
+    = (n-1)! * Σ_c hookProd(μ)/hookProd(μ\c)
+    = (n-1)! * n = n!                             [hook_walk_identity]
+-/
+
+/-- The hook walk identity: sum over corners c of hookProd(μ)/hookProd(μ\c) equals μ.card.
+    For each corner c = (i,j): removing c decreases each hook length in row i (left of c)
+    and col j (above c) by exactly 1. The sum of resulting ratios telescopes to μ.card.
+    Verified for: empty, 1-row, 1-col, 2-row, generalized hook shapes.
+    [OPEN: general proof requires hook walk combinatorics (~300 lines)] -/
+private lemma hook_walk_identity (μ : YoungDiagram) (hn : 0 < μ.card) :
+    ∑ c ∈ (corners μ).attach,
+      ((hookProd μ : ℚ) / (hookProd (removeCorner μ c.val (mem_corners.mp c.prop)) : ℚ))
+    = (μ.card : ℚ) := by
+  sorry
+
+/-- hookProd is nonzero in ℚ. -/
+private lemma hookProdQ_ne_zero (μ : YoungDiagram) : (hookProd μ : ℚ) ≠ 0 :=
+  Nat.cast_ne_zero.mpr (hookProd_pos μ).ne'
+
+/-- The general hook-length formula in ℚ, proved by well-founded recursion on μ.card.
+    Uses card_SYT_corner_step (Part XIII) + hook_walk_identity. -/
+private lemma hook_length_formula_Q (ν : YoungDiagram) :
+    (Fintype.card (StandardYoungTableau ν) : ℚ) * hookProd ν = ν.card.factorial := by
+  rcases Nat.eq_zero_or_pos ν.card with h0 | hpos
+  · -- ν.card = 0 → ν = ⊥ (empty diagram)
+    have hνbot : ν = ⊥ :=
+      YoungDiagram.ext ((Finset.card_eq_zero.mp h0).trans YoungDiagram.cells_bot.symm)
+    subst hνbot
+    simp [Fintype.card_eq_one_iff.mpr ⟨emptyTableau,
+      fun T => StandardYoungTableau.ext
+        fun c => (T.entry_zero c (YoungDiagram.notMem_bot c)).trans rfl⟩,
+      hookProd_empty]
+  · -- ν.card > 0: corner recursion + IH
+    -- Apply corner recursion: card(SYT ν) = Σ_c card(SYT(ν\c))
+    have hstep := card_SYT_corner_step ν hpos
+    -- IH for each corner (recursive call, terminates since removeCorner.card < ν.card)
+    have hIH : ∀ (cx : { x // x ∈ corners ν }),
+        (Fintype.card (StandardYoungTableau
+          (removeCorner ν cx.val (mem_corners.mp cx.prop))) : ℚ) *
+        hookProd (removeCorner ν cx.val (mem_corners.mp cx.prop)) =
+        (ν.card - 1).factorial := fun ⟨c, hc⟩ => by
+      have hrc := hook_length_formula_Q (removeCorner ν c (mem_corners.mp hc))
+      rwa [removeCorner_card (mem_corners.mp hc)] at hrc
+    -- Main ℚ calculation
+    have hstepQ : (Fintype.card (StandardYoungTableau ν) : ℚ) =
+        ∑ c ∈ (corners ν).attach,
+          (Fintype.card (StandardYoungTableau
+            (removeCorner ν c.val (mem_corners.mp c.prop))) : ℚ) :=
+      by exact_mod_cast hstep
+    calc (Fintype.card (StandardYoungTableau ν) : ℚ) * hookProd ν
+        -- Step 1: substitute corner step
+        = ∑ c ∈ (corners ν).attach,
+            ((Fintype.card (StandardYoungTableau
+              (removeCorner ν c.val (mem_corners.mp c.prop))) : ℚ) * hookProd ν) := by
+            rw [hstepQ, Finset.sum_mul]
+      -- Step 2: rewrite each summand via IH: card(SYT(ν\c)) = (ν.card-1)! / hookProd(ν\c)
+      _ = ∑ c ∈ (corners ν).attach,
+            ((ν.card - 1).factorial *
+              ((hookProd ν : ℚ) /
+                hookProd (removeCorner ν c.val (mem_corners.mp c.prop)))) := by
+            congr 1; ext ⟨c, hc⟩
+            have hne := hookProdQ_ne_zero (removeCorner ν c (mem_corners.mp hc))
+            have hIH_c := hIH ⟨c, hc⟩
+            field_simp [hne]
+            linear_combination (hookProd ν : ℚ) * hIH_c
+      -- Step 3: factor out (ν.card-1)!
+      _ = (ν.card - 1).factorial * ∑ c ∈ (corners ν).attach,
+            ((hookProd ν : ℚ) /
+              hookProd (removeCorner ν c.val (mem_corners.mp c.prop))) := by
+            rw [Finset.mul_sum]
+      -- Step 4: hook_walk_identity: Σ_c ratio = ν.card
+      _ = (ν.card - 1).factorial * ν.card := by
+            rw [hook_walk_identity ν hpos]
+      -- Step 5: (ν.card-1)! * ν.card = ν.card!
+      _ = ν.card.factorial := by
+            cases hcard : ν.card with
+            | zero => omega
+            | succ n =>
+              simp only [Nat.succ_sub_one]
+              push_cast [Nat.factorial_succ]
+              ring
+termination_by ν.card
+decreasing_by
+  -- The recursive call is on removeCorner ν c _ which has card = ν.card - 1 < ν.card
+  simp only [removeCorner_card (mem_corners.mp (by assumption : _ ∈ corners ν))]
+  omega
+
+/-- **General Hook-Length Formula (Frame-Robinson-Thrall 1954).**
+    For any Young diagram μ: card(SYT(μ)) × hookProd(μ) = μ.card!
+    Proof: well-founded induction using card_SYT_corner_step + hook_walk_identity.
+    The sole remaining sorry is hook_walk_identity (verified for all special cases;
+    general proof requires hook walk combinatorics, ~300 lines). -/
+theorem hook_length_formula_general (μ : YoungDiagram) :
+    Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.card.factorial := by
+  exact_mod_cast hook_length_formula_Q μ
+
 end HookLengthFormula

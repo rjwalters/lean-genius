@@ -149,6 +149,111 @@
     ]
   },
   {
+    "id": "ann-ch01-congruence",
+    "proofId": "cayley-hamilton-oq-01",
+    "range": {
+      "startLine": 165,
+      "endLine": 189
+    },
+    "type": "insight",
+    "title": "Congruence Modulo Minpoly: Polynomial Equivalence Classes",
+    "content": "Part 4 establishes that polynomial evaluation on a matrix induces an equivalence relation on $K[X]$: $f \\sim g$ iff $f(M) = g(M)$, which is precisely congruence modulo $\\mu_M$. The two theorems formalize the two directions:\n\n`congruence_mod_minpoly`: If $f \\bmod \\mu_M = g \\bmod \\mu_M$ (same remainder), then $f(M) = g(M)$. Proof: apply `aeval_eq_aeval_mod_minpoly` to both $f$ and $g$, then use the hypothesis.\n\n`aeval_eq_iff_minpoly_dvd_sub`: $f(M) = g(M) \\iff \\mu_M \\mid (f - g)$. Proof: $f(M) = g(M) \\iff (f - g)(M) = 0 \\iff \\mu_M \\mid (f - g)$ by `annihilator_iff_minpoly_dvd`. The `sub_eq_zero` and `map_sub` rewrites handle the algebraic bookkeeping.\n\nThese two theorems make `K[M] \\cong K[X]/(\\mu_M)` explicit: two polynomials define the same matrix function iff they're in the same coset of $(\\mu_M)$.",
+    "mathContext": "The quotient map $\\pi : K[X] \\to K[X]/(\\mu_M)$ is the evaluation map $f \\mapsto f(M)$: its kernel is $(\\mu_M) = \\text{Ann}(M)$. By the first isomorphism theorem for rings: $K[X]/(\\mu_M) \\cong K[M]$ as $K$-algebras. The dimension of $K[M]$ over $K$ is exactly $\\deg(\\mu_M) \\leq n$, with basis $\\{I, M, \\ldots, M^{d-1}\\}$ where $d = \\deg(\\mu_M)$. Congruence modulo $\\mu_M$ is the standard equivalence relation for this quotient: $f \\equiv g \\pmod{\\mu_M} \\iff \\mu_M \\mid (f - g) \\iff f(M) = g(M)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quotient ring",
+      "first isomorphism theorem",
+      "polynomial congruence",
+      "K[M] as quotient ring",
+      "kernel of ring homomorphism"
+    ],
+    "prerequisites": [
+      "aeval_eq_aeval_mod_minpoly",
+      "annihilator_iff_minpoly_dvd",
+      "map_sub",
+      "sub_eq_zero"
+    ]
+  },
+  {
+    "id": "ann-ch01-comparison",
+    "proofId": "cayley-hamilton-oq-01",
+    "range": {
+      "startLine": 224,
+      "endLine": 271
+    },
+    "type": "insight",
+    "title": "Minpoly vs Charpoly: Why Minpoly Reduction is Always at Least as Good",
+    "content": "Part 6 makes precise the comparison between two reduction strategies for matrix polynomial evaluation:\n\n- **Charpoly strategy** (Cayley-Hamilton): reduce $f$ modulo $\\chi_M$ (degree $n$); remainder has degree $< n$\n- **Minpoly strategy** (this file): reduce $f$ modulo $\\mu_M$ (degree $d \\leq n$); remainder has degree $< d$\n\nSince $\\mu_M \\mid \\chi_M$, the minpoly strategy is always at least as good. The key theorem `charpoly_mod_refines_to_minpoly` makes this concrete: $(f \\bmod \\chi_M)(M) = (f \\bmod \\mu_M)(M)$. For nonderogatory matrices ($d = n$), the strategies coincide. For derogatory matrices (e.g., $cI$ where $d = 1$), the minpoly strategy eliminates all but a constant term.\n\nThe proof of `charpoly_mod_refines_to_minpoly` is elegant: both $(f \\bmod \\chi_M)(M)$ and $(f \\bmod \\mu_M)(M)$ equal $f(M)$ by the respective reduction theorems, so they're equal to each other.\n\n`minpoly_degree_pos` uses `Matrix.isIntegral`: every matrix satisfies a nonzero polynomial (its charpoly), making $\\mu_M$ well-defined with positive degree.",
+    "mathContext": "Divisibility chain: $\\mu_M \\mid \\chi_M$ (by Cayley-Hamilton + annihilator ideal). Degree chain: $0 < d = \\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$. Efficiency: computing $f(M)$ via minpoly requires $d$ matrix multiplications (via Horner's method on the reduced polynomial of degree $< d$), vs $n$ for charpoly. For block-diagonal matrices with repeated eigenvalues: $\\mu_M = \\text{lcm}(\\mu_{M_1}, \\ldots, \\mu_{M_r})$ where $M_i$ are the diagonal blocks; all eigenvalues appearing with multiplicity-1 Jordan blocks contribute degree-1 factors to $\\chi_M$ but not to $\\mu_M$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cayley-Hamilton theorem",
+      "nonderogatory matrices",
+      "matrix function computation",
+      "Horner's method",
+      "degree bounds"
+    ],
+    "prerequisites": [
+      "minpoly_dvd_charpoly",
+      "Polynomial.natDegree_le_of_dvd",
+      "Matrix.charpoly_natDegree_eq_dim",
+      "minpoly.natDegree_pos",
+      "Matrix.isIntegral"
+    ]
+  },
+  {
+    "id": "ann-ch01-poly-ids",
+    "proofId": "cayley-hamilton-oq-01",
+    "range": {
+      "startLine": 332,
+      "endLine": 365
+    },
+    "type": "technique",
+    "title": "Polynomial Identities via Annihilator Theory: The Universal Template",
+    "content": "Part 9 makes the pattern for all annihilator arguments explicit. Every theorem in Parts 7-10 follows the same template:\n\n1. **Find a witness**: Exhibit a polynomial $q$ such that $q(M) = 0$ (either by direct computation or by construction from the matrix's defining property)\n2. **Apply minimality**: Invoke `minpoly.dvd` to conclude $\\mu_M \\mid q$  3. **Use degree/factorization**: The structure of $q$ constrains $\\mu_M$\n\nPart 9 provides the building blocks for step 2 in different forms:\n- `aeval_eq_of_minpoly_dvd_diff`: witness form — given $f - g = \\mu_M \\cdot h$, conclude $f(M) = g(M)$ directly (avoids going through the iff)\n- `minpoly_multiple_annihilates`: $\\forall q$, $(\\mu_M \\cdot q)(M) = 0$ — the ideal closure property stated for direct use\n- `annihilating_degree_ge_minpoly`: **minimality** — any nonzero annihilating polynomial $f$ satisfies $\\deg(f) \\geq \\deg(\\mu_M)$, used to pin down $\\mu_M$ exactly",
+    "mathContext": "`annihilating_degree_ge_minpoly` formalizes: if $f(M) = 0$ and $f \\neq 0$, then $\\deg(f) \\geq \\deg(\\mu_M)$. Proof: `minpoly.dvd K M hf_ann` gives $\\mu_M \\mid f$; `Polynomial.natDegree_le_of_dvd` gives $\\deg(\\mu_M) \\leq \\deg(f)$. This is the converse of minimality: $\\mu_M$ is not just *an* annihilating polynomial, it is the *unique monic* annihilating polynomial of minimal degree. Together with `minpoly_multiple_annihilates`, this gives the complete picture: $\\text{Ann}(M) = (\\mu_M)$, the ideal generated by the unique degree-minimal monic annihilator.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "annihilator ideal",
+      "minpoly.dvd",
+      "degree minimality",
+      "ideal membership",
+      "PID"
+    ],
+    "prerequisites": [
+      "minpoly.dvd",
+      "Polynomial.natDegree_le_of_dvd",
+      "annihilator_iff_minpoly_dvd",
+      "map_mul",
+      "zero_mul"
+    ]
+  },
+  {
+    "id": "ann-ch01-summary",
+    "proofId": "cayley-hamilton-oq-01",
+    "range": {
+      "startLine": 405,
+      "endLine": 447
+    },
+    "type": "context",
+    "title": "Summary and Verification: Catalog of 30 Theorems",
+    "content": "The summary docstring (lines 409-440) catalogs all 30 theorems in 6 categories. The four `#check` commands verify the principal theorems compile correctly and exhibit their full Lean types to the reader — a common documentation pattern in Lean 4 proof files.\n\nThe summary reveals the modular architecture: the file builds upward from three foundational results (`aeval_eq_aeval_mod_minpoly`, `annihilator_iff_minpoly_dvd`, `power_eq_aeval_mod_minpoly`) to 27 derived theorems organized into thematic sections. Each section uses at most 2-3 Mathlib lemmas as input, with the rest proved by composition.\n\nThe `end CayleyHamiltonOQ01` closes the namespace, making all theorems accessible as `CayleyHamiltonOQ01.aeval_eq_aeval_mod_minpoly` etc. from other files. The companion file `CayleyHamilton.lean` (the Cayley-Hamilton theorem itself) is an import dependency for `Matrix.aeval_self_charpoly`, which appears in `charpoly_mod_refines_to_minpoly`.",
+    "mathContext": "The 30 theorems partition into: (1) core reduction (2 theorems), (2) degree bounds (5 theorems), (3) annihilator ideal (6 theorems), (4) congruence (2 theorems), (5) power reduction (2 theorems), (6) comparison with charpoly (4 theorems), (7) special cases — scalar, identity, zero, nilpotent (7 theorems), (8) polynomial identities (3 theorems), (9) idempotent/involutory (4 theorems). Together they formalize $K[M] \\cong K[X]/(\\mu_M)$ and its consequences, complementing the Cayley-Hamilton theorem ($\\chi_M(M) = 0$) with the sharper $\\mu_M(M) = 0$ and the full reduction theory.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Lean 4 namespace",
+      "proof architecture",
+      "Cayley-Hamilton theorem",
+      "aeval_eq_aeval_mod_minpoly",
+      "annihilator_iff_minpoly_dvd"
+    ],
+    "prerequisites": [
+      "Lean 4 #check command",
+      "namespace scoping",
+      "CayleyHamilton.lean"
+    ]
+  },
+  {
     "id": "ann-ch01-idempotent",
     "proofId": "cayley-hamilton-oq-01",
     "range": {

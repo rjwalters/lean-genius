@@ -19,9 +19,9 @@
     "phase": "ACT",
     "since": "2026-04-24T00:00:00Z",
     "iteration": 1,
-    "focus": "G₂=Aut(𝕆) + Freudenthal-Tits magic square formalized. Structural results proved. 3 sorries remain.",
+    "focus": "eightMul unit identities proved (2026-04-24). 2 sorries remain: alg_aut_preserves_norm, real_part_preserved.",
     "blockers": [],
-    "nextAction": "Build docker to verify compilation; attempt eightMul unit identity proofs",
+    "nextAction": "Prove alg_aut_preserves_norm: add map_one to OctonionAlgHom or axiomatize norm preservation for automorphisms.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,10 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created HurwitzTheoremOQ04.lean. Formalized OctonionAlgHom/Aut structure, proved norm-product preservation. Axiomatized G₂=Aut(𝕆) and Freudenthal-Tits magic square. Proved structural results (G2_unique_low_rank, E8_is_largest, dimension chain). Two computational sorries (eightMul unit identities).",
+    "progressSummary": "PROGRESS: eightMul_right_unit + eightMul_left_unit PROVED (2026-04-24, simp+decide pattern). 2 sorries remain: alg_aut_preserves_norm, real_part_preserved. Key: alg_aut_preserves_norm not provable from just multiplicativity — needs map_one or norm-preservation as axiom.",
     "builtItems": [
       "ExceptionalType inductive type (G2/F4/E6/E7/E8) with dim/rank — HurwitzTheoremOQ04.lean",
       "OctonionAlgHom structure + OctonionAut — HurwitzTheoremOQ04.lean",
+      "eightMul_right_unit (PROVED 2026-04-24): simp(decide)+Matrix.cons_val_* pattern — HurwitzTheoremOQ04.lean:82",
+      "eightMul_left_unit (PROVED 2026-04-24): same pattern — HurwitzTheoremOQ04.lean:94",
       "alg_hom_preserves_norm_product (PROVED) — HurwitzTheoremOQ04.lean",
       "G2_unique_low_rank, E8_is_largest, exceptional_dims_strict_mono (PROVED) — HurwitzTheoremOQ04.lean",
       "G2_is_octonion_aut, freudenthal_tits_f4/e6/e7/e8 (axioms) — HurwitzTheoremOQ04.lean",
@@ -43,7 +45,9 @@
       "Freudenthal-Tits Magic Square: 𝔏(A,B) = Der(A)⊕(ImA⊗ImB)⊕Der(B) gives a symmetric Lie algebra from pairs of Hurwitz algebras. All 5 exceptional types arise from pairs involving 𝕆.",
       "Exactly 4 Hurwitz algebras → exactly 5 exceptional Lie algebras: G₂←Der(𝕆), F₄←𝔏(𝕆,ℝ), E₆←𝔏(𝕆,ℂ), E₇←𝔏(𝕆,ℍ), E₈←𝔏(𝕆,𝕆). Octonions appear in all 5.",
       "Physics connections: E₈×E₈ heterotic strings (dim 2×248=496, anomaly cancellation), M-theory on G₂ manifolds (4D N=1 SUSY), E₇(7) in N=8 supergravity.",
-      "OctonionAlgHom structure defined in Lean: linear + multiplicative. Composition and identity proved. Norm-product preservation proved."
+      "OctonionAlgHom structure defined in Lean: linear + multiplicative. Composition and identity proved. Norm-product preservation proved.",
+      "alg_aut_preserves_norm NOT provable from multiplicativity alone: normSq(φ(a))*normSq(φ(b)) = normSq(φ(a*b)) is consistent with both normSq-preserving and non-preserving maps. Need either map_one field or norm-preservation axiom in OctonionAlgHom definition.",
+      "eightMul unit proof pattern: simp(config:={decide:=true})[ite_true,ite_false] evaluates if (0:Fin 8)=j for concrete j. Plain simp[stdBasis] insufficient — need decide mode for Fin equality."
     ],
     "mathlibGaps": [
       "Lie groups not in Mathlib as of 2026-04 — blocks formal G₂ = Aut(𝕆) proof",
@@ -51,10 +55,10 @@
       "Derivation algebra of non-associative algebras not in Mathlib"
     ],
     "nextSteps": [
-      "Add eightMul_right_unit/left_unit proofs (computational, funext+fin_cases+simp+ring)",
-      "Prove alg_aut_preserves_norm using invertibility + left/right inverse structure",
+      "alg_aut_preserves_norm: add map_one field to OctonionAlgHom OR axiomatize — norm preservation NOT derivable from multiplicativity alone",
+      "real_part_preserved: depends on alg_aut_preserves_norm and φ(e₀)=e₀",
       "Define Der(𝕆) as the space of derivations and prove it has dimension 14",
-      "Prove G₂ ⊆ SO(7) once norm preservation is established"
+      "Prove G₂ ⊆ SO(7) once alg_aut_preserves_norm is established"
     ]
   },
   "tags": [
@@ -92,11 +96,11 @@
     {
       "path": "Proofs/HurwitzTheoremOQ04.lean",
       "filename": "HurwitzTheoremOQ04.lean",
-      "lineCount": 426,
-      "theoremCount": 12,
+      "lineCount": 430,
+      "theoremCount": 14,
       "axiomCount": 5,
       "defCount": 8,
-      "sorryCount": 3,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzTheoremOQ04.lean"
     }

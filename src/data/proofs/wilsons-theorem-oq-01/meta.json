@@ -98,77 +98,88 @@
       "title": "Factorial Infrastructure",
       "startLine": 58,
       "endLine": 80,
-      "description": "factorial_eq_Icc_prod expresses n! as a Finset.Icc product; distinct_factors_dvd_factorial proves a·b | n! when a,b are distinct elements of {1,...,n}."
+      "summary": "factorial_eq_Icc_prod expresses n! as a Finset.Icc product; distinct_factors_dvd_factorial proves a·b | n! when a,b are distinct elements of {1,...,n}.",
+      "mathContext": "$n! = \\prod_{k \\in \\{1,\\ldots,n\\}} k = \\mathrm{Finset.Icc}\\,1\\,n$ product. Key lemma $\\texttt{distinct\\_factors\\_dvd\\_factorial}$: if $a,b \\in \\{1,\\ldots,n\\}$ with $a \\neq b$, then $a \\cdot b \\mid n!$ — both factors appear with distinct indices in the product, so their product divides the overall product."
     },
     {
       "id": "sec-wq01-composite",
       "title": "Composite Factorial Vanishing",
       "startLine": 88,
       "endLine": 131,
-      "description": "composite_factorial_dvd: for composite n > 4, n | (n-1)!. Case split on n = p² vs n = p·q (p≠q). composite_factorial_zero: ZMod formulation."
+      "summary": "composite_factorial_dvd: for composite n > 4, n | (n-1)!. Case split on n = p² vs n = p·q (p≠q). composite_factorial_zero: ZMod formulation.",
+      "mathContext": "$\\texttt{composite\\_factorial\\_dvd}$: $n$ composite, $n > 4 \\Rightarrow n \\mid (n-1)!$. Two cases: (1) $n = p^2$ ($p \\geq 3$ prime): $p$ and $2p$ are distinct elements of $\\{1,\\ldots,n-1\\}$ (since $2p \\leq p^2 - 1$ for $p \\geq 3$), so $p \\cdot 2p = 2p^2 \\equiv 0 \\pmod{p^2}$. (2) $n = ab$ with $a \\neq b$ ($a,b > 1$): $a,b \\in \\{1,\\ldots,n-1\\}$ distinct, so $ab = n \\mid (n-1)!$ by $\\texttt{distinct\\_factors\\_dvd\\_factorial}$."
     },
     {
       "id": "sec-wq01-classification",
       "title": "Special Cases and Complete Trichotomy",
       "startLine": 138,
       "endLine": 187,
-      "description": "factorial_mod_four (n=4: 3!≡2), small prime/composite verifications, wilson_complete_classification (trichotomy for n≥2), prime_iff_factorial_neg_one (biconditional primality test)."
+      "summary": "factorial_mod_four (n=4: 3!≡2), small prime/composite verifications, wilson_complete_classification (trichotomy for n≥2), prime_iff_factorial_neg_one (biconditional primality test).",
+      "mathContext": "$\\texttt{wilson\\_complete\\_classification}$: for $n \\geq 2$, $(n-1)! \\bmod n \\in \\{-1, 2, 0\\}$ according to: $-1$ if $n$ is prime, $2$ if $n = 4$, $0$ if $n$ is composite and $n > 4$. Special case: $3! = 6 \\equiv 2 \\pmod{4}$ — the unique exception where neither Wilson's formula nor divisibility holds. Biconditional: $n$ prime $\\iff (n-1)! \\equiv -1 \\pmod{n}$."
     },
     {
       "id": "sec-wq01-quotient",
       "title": "Wilson Quotient",
       "startLine": 193,
       "endLine": 224,
-      "description": "wilsonQuotient definition, prime_dvd_factorial_succ (p | (p-1)!+1), wilsonQuotient_mul, wilsonQuotient_pos. Computed values for p = 2,3,5,7,11,13."
+      "summary": "wilsonQuotient definition, prime_dvd_factorial_succ (p | (p-1)!+1), wilsonQuotient_mul, wilsonQuotient_pos. Computed values for p = 2,3,5,7,11,13.",
+      "mathContext": "Wilson quotient $W_p = ((p-1)! + 1) / p \\in \\mathbb{N}$ — an integer since $p \\mid (p-1)! + 1$ by Wilson's theorem. $\\texttt{wilsonQuotient\\_pos}$: $W_p \\geq 1$ (since $(p-1)! + 1 \\geq p$). A prime $p$ is a Wilson prime iff $p \\mid W_p$. Values: $W_2 = 1$, $W_3 = 1$, $W_5 = 5$, $W_7 = 103$, $W_{11} = 329891$, $W_{13} = 428731$."
     },
     {
       "id": "sec-wq01-wilson-primes",
       "title": "Wilson Primes",
       "startLine": 230,
       "endLine": 269,
-      "description": "IsWilsonPrime definition (p² | (p-1)!+1), isWilsonPrime_iff_quotient, five_is_wilson_prime, thirteen_is_wilson_prime, and non-Wilson primes (2,3,7,11)."
+      "summary": "IsWilsonPrime definition (p² | (p-1)!+1), isWilsonPrime_iff_quotient, five_is_wilson_prime, thirteen_is_wilson_prime, and non-Wilson primes (2,3,7,11).",
+      "mathContext": "$\\texttt{IsWilsonPrime}\\,p$: $p^2 \\mid (p-1)! + 1$, equivalently $p \\mid W_p$. Verified: $5^2 = 25 \\mid 4! + 1 = 25$ ✓; $13^2 = 169 \\mid 12! + 1$ ✓. Non-Wilson: $2^2 = 4 \\nmid 1 + 1 = 2$, $7^2 = 49 \\nmid 720 + 1 = 721$. Known Wilson primes: 5, 13, 563 (Goldberg 1953); no fourth found below $2 \\times 10^{13}$."
     },
     {
       "id": "sec-wq01-units-product",
       "title": "Units Product and Gauss-Wilson Form",
       "startLine": 280,
       "endLine": 372,
-      "description": "unitsProduct definition, hasGaussWilsonForm decidable check, gaussWilsonCheck verification procedure, gaussWilson_verified_le_50 and extended computational checks."
+      "summary": "unitsProduct definition, hasGaussWilsonForm decidable check, gaussWilsonCheck verification procedure, gaussWilson_verified_le_50 and extended computational checks.",
+      "mathContext": "$\\texttt{unitsProduct}\\,n = \\prod_{a \\in (\\mathbb{Z}/n\\mathbb{Z})^*} a \\in \\mathbb{Z}/n\\mathbb{Z}$. Gauss-Wilson form: $n \\in \\{1, 2, 4, p^k, 2p^k\\}$ for odd prime $p$. The decidable predicate $\\texttt{hasGaussWilsonForm}\\,n$ checks this form. Computationally verified for $n \\leq 50$: $\\texttt{unitsProduct}\\,n \\equiv -1 \\pmod{n}$ iff $n$ is in the Gauss-Wilson family."
     },
     {
       "id": "sec-wq01-bridge-factorial",
       "title": "Bridge: Units Product ↔ Factorial for Primes",
       "startLine": 383,
       "endLine": 440,
-      "description": "prime_coprime_iff_pos, unitsProduct_eq_factorial (for primes, unitsProduct = (p-1)!), unitsProduct_prime (Wilson's theorem via unitsProduct), wilson_product_form (Mathlib ZMod.prod_Ico_one_prime)."
+      "summary": "prime_coprime_iff_pos, unitsProduct_eq_factorial (for primes, unitsProduct = (p-1)!), unitsProduct_prime (Wilson's theorem via unitsProduct), wilson_product_form (Mathlib ZMod.prod_Ico_one_prime).",
+      "mathContext": "For prime $p$: $(\\mathbb{Z}/p\\mathbb{Z})^* = \\{1, 2, \\ldots, p-1\\}$ (every nonzero residue is a unit), so $\\texttt{unitsProduct}\\,p = (p-1)! \\bmod p$. The bridge $\\texttt{unitsProduct\\_eq\\_factorial}$ uses Mathlib's $\\texttt{ZMod.prod\\_Ico\\_one\\_prime}$ to give $(p-1)! \\equiv \\prod_{a \\in (\\mathbb{Z}/p\\mathbb{Z})^*} a \\equiv -1 \\pmod{p}$."
     },
     {
       "id": "sec-wq01-sqrt-unity",
       "title": "Square Roots of Unity Analysis",
       "startLine": 454,
       "endLine": 494,
-      "description": "sqRootsOfUnity definition, sqRootsOfUnity_prime_card (primes have 2 sq roots), examples for odd prime powers and 2p^k, sqRoot_gaussWilson_le_100 classification."
+      "summary": "sqRootsOfUnity definition, sqRootsOfUnity_prime_card (primes have 2 sq roots), examples for odd prime powers and 2p^k, sqRoot_gaussWilson_le_100 classification.",
+      "mathContext": "$\\texttt{sqRootsOfUnity}\\,n = \\{a \\in (\\mathbb{Z}/n\\mathbb{Z})^* : a^2 = 1\\}$. For prime $p$: $|\\texttt{sqRootsOfUnity}\\,p| = 2$ (only $\\pm 1$, since $X^2 - 1$ has at most 2 roots mod $p$). For Gauss-Wilson $n$ (cyclic unit group): also exactly 2 square roots of unity. For other $n$: more than 2 (e.g., $n = 8$: $\\{1, 3, 5, 7\\}$ all satisfy $a^2 \\equiv 1$), so $\\prod (\\mathbb{Z}/n\\mathbb{Z})^* \\neq -1$."
     },
     {
       "id": "sec-wq01-involution",
       "title": "Involution-Product Structure",
       "startLine": 504,
       "endLine": 513,
-      "description": "selfInverseProductCheck verifies ∏units = ∏{self-inverse} (mod n) — the pairing argument. selfInverse_product_le_100 computational verification."
+      "summary": "selfInverseProductCheck verifies ∏units = ∏{self-inverse} (mod n) — the pairing argument. selfInverse_product_le_100 computational verification.",
+      "mathContext": "Pairing argument: for $a \\in (\\mathbb{Z}/n\\mathbb{Z})^*$ with $a \\neq a^{-1}$, pair $a$ with $a^{-1}$ — they cancel in $\\prod$. Only self-inverse elements $\\{a : a^2 = 1\\}$ contribute. So $\\prod_{(\\mathbb{Z}/n\\mathbb{Z})^*} a = \\prod_{a^2 = 1} a$. When $(\\mathbb{Z}/n\\mathbb{Z})^*$ is cyclic: self-inverse elements are only $\\pm 1$, so $\\prod = (-1)(1) = -1$."
     },
     {
       "id": "sec-wq01-gauss-wilson-abstract",
       "title": "Abstract Gauss-Wilson Classification",
       "startLine": 576,
       "endLine": 591,
-      "description": "isCyclic_units_iff_gaussWilson: restates Mathlib's ZMod.isCyclic_units_iff as (ℤ/nℤ)* cyclic iff n = 4 or n = p^k or n = 2p^k (odd prime p). Case analysis over Mathlib output."
+      "summary": "isCyclic_units_iff_gaussWilson: restates Mathlib's ZMod.isCyclic_units_iff as (ℤ/nℤ)* cyclic iff n ∈ {1,2,4,p^k,2p^k} (odd prime p). Case analysis over Mathlib output.",
+      "mathContext": "$\\texttt{isCyclic\\_units\\_iff\\_gaussWilson}$: $(\\mathbb{Z}/n\\mathbb{Z})^*$ is cyclic $\\iff n \\in \\{1, 2, 4, p^k, 2p^k\\}$ (odd prime $p$, $k \\geq 1$). This restates Mathlib's $\\texttt{ZMod.isCyclic\\_units\\_iff}$ via case analysis on the Mathlib classification output. Cyclic group $\\Leftrightarrow$ primitive root exists $\\Leftrightarrow$ exactly 2 square roots of unity $\\Leftrightarrow$ product of units $= -1$."
     },
     {
       "id": "sec-wq01-gauss-wilson-main",
       "title": "Main Theorem: Gauss-Wilson Classification",
       "startLine": 639,
       "endLine": 687,
-      "description": "natCast_sub_one_eq_neg_one' bridge, unitsProduct_eq_neg_one_iff_cyclic (concrete ↔ abstract via OQ02), prime_odd_iff_ne_two, gaussWilson_classification: the complete main theorem."
+      "summary": "natCast_sub_one_eq_neg_one' bridge, unitsProduct_eq_neg_one_iff_cyclic (concrete ↔ abstract via OQ02), prime_odd_iff_ne_two, gaussWilson_classification: the complete main theorem.",
+      "mathContext": "$\\texttt{gaussWilson\\_classification}$: $\\prod_{a \\in (\\mathbb{Z}/n\\mathbb{Z})^*} a \\equiv -1 \\pmod{n} \\iff n \\in \\{1, 2, 4, p^k, 2p^k\\}$ (odd prime $p$). Chain: $\\prod = -1 \\iff$ exactly 2 self-inverse elements $\\iff (\\mathbb{Z}/n\\mathbb{Z})^*$ cyclic $\\iff n \\in \\{1,2,4,p^k,2p^k\\}$. The bridge $\\texttt{unitsProduct\\_eq\\_neg\\_one\\_iff\\_cyclic}$ connects the concrete factorial product to the abstract cyclicity via OQ02's framework."
     }
   ],
   "sorries": 0

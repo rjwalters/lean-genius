@@ -18,9 +18,9 @@
       "regularity-lemma"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 2,
     "axiomCount": 0,
-    "assumptions": "0 axioms. 1 sorry: roth_via_triangle_removal (the quantitative connection between the edge-disjointness lower bound and the triangle removal lemma). The RS graph construction, triangle-AP correspondence, edge-disjointness, and edge removal lower bound are all fully proved.",
+    "assumptions": "0 axioms. 2 sorries in private helper lemmas: rs_tc_ap_free_le (triangle count upper bound: AP-free A gives ≤ 6|A|N ordered triangles) and rs_removal_lb (edge removal lower bound: |R| ≥ |A|N in finite graph setting). The RS graph construction, triangle-AP correspondence, AP-freeness forcing trivial triples, edge uniqueness, ap_free_triangle_exists, ap_free_min_removal, and roth_proofs_agree are all fully proved. roth_via_triangle_removal itself is complete but calls these two sorry'd helpers.",
     "dateAdded": "2026-03-29",
     "mathlibDependencies": [
       {
@@ -47,8 +47,8 @@
       "Edge-disjointness lower bound: edge removal requires >= |A|N edges",
       "Statement of Roth's theorem via triangle removal as alternative to Fourier proof"
     ],
-    "lineCount": 357,
-    "theoremCount": 13,
+    "lineCount": 465,
+    "theoremCount": 16,
     "definitionCount": 4,
     "mathlib_version": "4.26.0"
   },
@@ -106,8 +106,8 @@
       "id": "roth-via-trl",
       "title": "Part IV: Roth's Theorem via Triangle Removal",
       "startLine": 270,
-      "endLine": 353,
-      "summary": "Proves ap_free_min_removal: edge removal to make G triangle-free requires hitting every triangle (0 sorries). States roth_via_triangle_removal: the full Roth theorem from TRL (1 sorry — quantitative connection). Proves roth_proofs_agree: Fourier proof implies TRL proof.",
+      "endLine": 465,
+      "summary": "Contains 2 sorry'd private helpers: rs_tc_ap_free_le (triangle count upper bound ≤ 6|A|N) and rs_removal_lb (edge removal lower bound |R| ≥ |A|N in finite setting). Proves ap_free_min_removal: hitting every edge-disjoint triangle requires R to intersect each (0 sorries — uses fully proved ap_free_triangle_exists). Proves roth_via_triangle_removal: full Roth theorem via TRL (0 sorries in theorem itself, but calls the 2 sorry'd helpers above). Proves roth_proofs_agree: Fourier proof implies TRL proof.",
       "mathContext": "Edge-disjoint triangles $\\implies$ $|R| \\geq |A| \\cdot N$. Triangle removal lemma: $|R| \\leq \\delta' \\cdot 9N^2$. Contradiction for $|A| \\geq \\delta N$."
     }
   ],
@@ -129,7 +129,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the Ruzsa-Szemerédi (1978) construction encoding 3-APs as triangles, with fully proved edge-disjointness and edge removal lower bounds. The quantitative TRL connection remains as a sorry.",
+    "summary": "Formalizes the Ruzsa-Szemerédi (1978) construction encoding 3-APs as triangles, with fully proved edge-disjointness. Two sorries remain in private helpers: rs_tc_ap_free_le (triangle count bound) and rs_removal_lb (edge removal lower bound in finite setting).",
     "implications": "This formalization provides:\n\n1. **Explicit RS Graph**: A reusable tripartite graph encoding for 3-AP problems.\n2. **Two-Proof Gallery**: The gallery now showcases both proofs of Roth's theorem (Fourier and graph-theoretic), demonstrating the deep connection between harmonic analysis and graph theory in additive combinatorics.\n3. **Edge-Disjointness Framework**: The proved structure (AP-free ⇒ edge-disjoint triangles) is the key lemma for the TRL approach.",
     "openQuestions": [
       "Complete the quantitative TRL connection (interface with triangle_removal_quantitative)",
@@ -180,12 +180,12 @@
       "Finset"
     ],
     "namespace": "Szemeredi.Roth.TriangleRemoval",
-    "lineCount": 357,
+    "lineCount": 465,
     "axiomCount": 0,
-    "theoremCount": 13,
+    "theoremCount": 16,
     "definitionCount": 4,
     "path": "Proofs/RothTriangleRemoval.lean",
-    "sorries": 1
+    "sorries": 2
   },
-  "sorries": 1
+  "sorries": 2
 }
