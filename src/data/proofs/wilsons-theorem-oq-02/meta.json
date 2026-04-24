@@ -97,77 +97,99 @@
       "title": "Abstract Units Product and Prime Case",
       "startLine": 44,
       "endLine": 62,
-      "description": "abstractUnitsProduct definition. prod_units_eq_neg_one_prime: Wilson's theorem via Mathlib's FiniteField.prod_univ_units_id_eq_neg_one. units_val_prod helper for coercing products."
+      "description": "abstractUnitsProduct definition. prod_units_eq_neg_one_prime: Wilson's theorem via Mathlib's FiniteField.prod_univ_units_id_eq_neg_one. units_val_prod helper for coercing products.",
+      "summary": "Defines abstractUnitsProduct n = ∏ x : (ZMod n)ˣ, (x : ZMod n) and proves Wilson's theorem (prime case) by invoking Mathlib's FiniteField.prod_univ_units_id_eq_neg_one. units_val_prod bridges the abstract units product to ZMod arithmetic.",
+      "mathContext": "$\\text{abstractUnitsProduct}(n) := \\prod_{x \\in (\\mathbb{Z}/n\\mathbb{Z})^\\times} x \\in \\mathbb{Z}/n\\mathbb{Z}$. For prime $p$: $\\prod_{x \\in (\\mathbb{Z}/p\\mathbb{Z})^\\times} x = -1$ via $\\texttt{FiniteField.prod\\_univ\\_units\\_id\\_eq\\_neg\\_one}$, reducing Wilson's theorem to a single Mathlib finite-field lemma without manual inverse-pairing."
     },
     {
       "id": "sec-wq02-self-inverse",
       "title": "Self-Inverse Elements and Their Structure",
       "startLine": 69,
       "endLine": 75,
-      "description": "sq_eq_one_iff_eq_inv (x²=1 iff x=x⁻¹), selfInverseUnits definition (Finset.univ.filter for x²=1 elements)."
+      "description": "sq_eq_one_iff_eq_inv (x²=1 iff x=x⁻¹), selfInverseUnits definition (Finset.univ.filter for x²=1 elements).",
+      "summary": "Proves sq_eq_one_iff_eq_inv: in any commutative group, x² = 1 iff x = x⁻¹. Defines selfInverseUnits n = Finset.univ.filter (fun x => x ^ 2 = 1) as the subfinset of order-≤2 units.",
+      "mathContext": "$x^2 = 1 \\iff x = x^{-1}$ in any commutative group (since $x \\cdot x = 1 \\iff x = x^{-1}$). $\\text{selfInverseUnits}(n) = \\{x \\in (\\mathbb{Z}/n\\mathbb{Z})^\\times : x^2 = 1\\}$. These are the fixed points of the involution $a \\mapsto a^{-1}$; all other elements pair up as $(a, a^{-1})$ with $a \\neq a^{-1}$, contributing product 1."
     },
     {
       "id": "sec-wq02-neg-one-ne-one",
       "title": "Distinctness of -1 and 1 for n≥3",
       "startLine": 82,
       "endLine": 107,
-      "description": "neg_one_ne_one_units and neg_one_ne_one_zmod for n≥3. Proved by showing n | -2 forces n ≤ 2 via Int.le_of_dvd."
+      "description": "neg_one_ne_one_units and neg_one_ne_one_zmod for n≥3. Proved by showing n | -2 forces n ≤ 2 via Int.le_of_dvd.",
+      "summary": "Proves neg_one_ne_one_units and neg_one_ne_one_zmod: for n ≥ 3, -1 ≠ 1 in (ZMod n)ˣ and ZMod n respectively. The key: if -1 = 1 then n | 2, which forces n ≤ 2 via Int.le_of_dvd, contradicting n ≥ 3.",
+      "mathContext": "In $\\mathbb{Z}/n\\mathbb{Z}$: $-1 = 1 \\iff n \\mid 2 \\iff n \\in \\{1, 2\\}$. For $n \\geq 3$: $-1 \\neq 1$, so $|\\{1,-1\\}| = 2$. Proof: $-1 = 1$ in $\\mathbb{Z}/n\\mathbb{Z}$ means $n \\mid (-1-1) = -2$, hence $n \\leq 2$ by $\\texttt{Int.le\\_of\\_dvd}$, contradicting $n \\geq 3$."
     },
     {
       "id": "sec-wq02-cyclic-infra",
       "title": "Cyclic Group Infrastructure",
       "startLine": 114,
       "endLine": 141,
-      "description": "isCyclic_units_prime (IsCyclic for prime ZMod), card_sq_eq_one_le_two (|{x|x²=1}| ≤ 2 for cyclic groups), selfInverse_units_eq_pair ({x|x²=1} = {1,-1} for cyclic n≥3)."
+      "description": "isCyclic_units_prime (IsCyclic for prime ZMod), card_sq_eq_one_le_two (|{x|x²=1}| ≤ 2 for cyclic groups), selfInverse_units_eq_pair ({x|x²=1} = {1,-1} for cyclic n≥3).",
+      "summary": "Proves three lemmas: isCyclic_units_prime (prime → (ZMod p)ˣ is cyclic), card_sq_eq_one_le_two (cyclic → at most 2 solutions to x²=1), and selfInverse_units_eq_pair (cyclic + n≥3 → {x|x²=1} = {1,-1} via sandwich argument).",
+      "mathContext": "For cyclic $(\\mathbb{Z}/n\\mathbb{Z})^\\times$: the number of solutions to $x^k = 1$ divides $k$ (since subgroups of cyclic groups are unique of each order), so $|\\{x : x^2=1\\}| \\leq 2$. Combined with $\\{1,-1\\} \\subseteq \\{x:x^2=1\\}$ and $|-1 \\neq 1|$ for $n \\geq 3$: sandwich gives $\\{x:x^2=1\\} = \\{1,-1\\}$ exactly. Via $\\texttt{IsCyclic.card\\_pow\\_eq\\_one\\_le}$."
     },
     {
       "id": "sec-wq02-klein-four",
       "title": "Klein-Four Building Block",
       "startLine": 148,
       "endLine": 173,
-      "description": "mul_sq_eq_one_of_sq_eq_one (closure under order-2 multiplication), prod_klein_four (product of {1,a,b,ab} = 1 when a²=b²=1). Key lemma for the non-cyclic case."
+      "description": "mul_sq_eq_one_of_sq_eq_one (closure under order-2 multiplication), prod_klein_four (product of {1,a,b,ab} = 1 when a²=b²=1). Key lemma for the non-cyclic case.",
+      "summary": "Proves mul_sq_eq_one_of_sq_eq_one (the self-inverse elements form a subgroup: if a²=b²=1 then (ab)²=1) and prod_klein_four: for the Klein-four subgroup {1,a,b,ab} with a²=b²=1 and a,b,ab pairwise distinct, the product equals 1.",
+      "mathContext": "The Klein-four group $V_4 = \\{1, a, b, ab\\}$ satisfies $a^2 = b^2 = (ab)^2 = 1$ and all elements are self-inverse. Its product: $1 \\cdot a \\cdot b \\cdot ab = (a \\cdot a)(b \\cdot b) = 1$. For non-cyclic $(\\mathbb{Z}/n\\mathbb{Z})^\\times$: since $|\\{x:x^2=1\\}| \\geq 4$ (non-cyclic has more than 2 square roots of unity), the product over $\\{x:x^2=1\\}$ equals $1$, giving $\\prod G = 1$."
     },
     {
       "id": "sec-wq02-involution-lemma",
       "title": "Involution Product Lemma",
       "startLine": 181,
       "endLine": 230,
-      "description": "prod_univ_sq_eq_one ((∏G)² = 1 via bijection g↦g⁻¹), prod_eq_prod_sq_eq_one (∏G = ∏{x|x²=1} via Finset.prod_involution). The structural heart of the theorem."
+      "description": "prod_univ_sq_eq_one ((∏G)² = 1 via bijection g↦g⁻¹), prod_eq_prod_sq_eq_one (∏G = ∏{x|x²=1} via Finset.prod_involution). The structural heart of the theorem.",
+      "summary": "Proves prod_univ_sq_eq_one ((∏G)² = 1 via the bijection g ↦ g⁻¹ pairing all elements) and prod_eq_prod_sq_eq_one (∏G = ∏{x|x²=1}): non-self-inverse elements cancel in inverse pairs via Finset.prod_involution. This is the structural core enabling both the cyclic and non-cyclic product computations.",
+      "mathContext": "For any finite commutative group $G$: $\\prod_{g \\in G} g = \\prod_{\\substack{x \\in G \\\\ x^2=1}} x$. Proof: apply $\\texttt{Finset.prod\\_involution}$ with the involution $\\sigma(a) = a^{-1}$. Fixed points: $\\{a : a = a^{-1}\\} = \\{a : a^2 = 1\\}$. Non-fixed pairs $(a, a^{-1})$ contribute $a \\cdot a^{-1} = 1$. So only self-inverse elements contribute to the product. Separately, $(\\prod_G g)^2 = \\prod_G g \\cdot \\prod_G g^{-1} = 1$ since $g \\mapsto g^{-1}$ is a bijection."
     },
     {
       "id": "sec-wq02-cyclic-noncyclic",
       "title": "Cyclic and Non-Cyclic Product Formulas",
       "startLine": 238,
       "endLine": 268,
-      "description": "prod_units_neg_one_of_cyclic (cyclic n≥3 → ∏ = -1 via involution + {1,-1}), prod_units_one_of_not_cyclic (non-cyclic → ∏ = 1 via WilsonsTheoremOQ02Ext)."
+      "description": "prod_units_neg_one_of_cyclic (cyclic n≥3 → ∏ = -1 via involution + {1,-1}), prod_units_one_of_not_cyclic (non-cyclic → ∏ = 1 via WilsonsTheoremOQ02Ext).",
+      "summary": "Assembles the two directions: prod_units_neg_one_of_cyclic chains involution lemma → selfInverse_units_eq_pair → ∏{1,-1} = -1. prod_units_one_of_not_cyclic delegates to WilsonsTheoremOQ02Ext (fixed-point-free involution argument for non-cyclic case).",
+      "mathContext": "Cyclic, $n \\geq 3$: $\\prod_{(\\mathbb{Z}/n\\mathbb{Z})^\\times} x \\xrightarrow{\\text{invol.}} \\prod_{x^2=1} x = \\prod_{\\{1,-1\\}} x = 1 \\cdot (-1) = -1$. Non-cyclic: $|\\{x:x^2=1\\}| \\geq 4$ (non-cyclic has $\\geq 4$ square roots of unity), the product over $\\{x:x^2=1\\}$ splits into pairs each with product $1$ (via fixed-point-free involution in OQ02Ext), giving $\\prod = 1$. Together these give the complete biconditional."
     },
     {
       "id": "sec-wq02-gauss-wilson-abstract",
       "title": "Gauss-Wilson Abstract Biconditional",
       "startLine": 276,
       "endLine": 285,
-      "description": "gaussWilson_abstract: for n≥3, ∏(ZMod n)ˣ = -1 iff IsCyclic (ZMod n)ˣ. The main theorem combining both directions."
+      "description": "gaussWilson_abstract: for n≥3, ∏(ZMod n)ˣ = -1 iff IsCyclic (ZMod n)ˣ. The main theorem combining both directions.",
+      "summary": "Proves gaussWilson_abstract: for n ≥ 3, the abstract units product ∏(ZMod n)ˣ = -1 iff (ZMod n)ˣ is cyclic. Forward direction by contradiction (non-cyclic gives product = 1 ≠ -1); backward direction by prod_units_neg_one_of_cyclic.",
+      "mathContext": "$\\forall n \\geq 3: \\prod_{x \\in (\\mathbb{Z}/n\\mathbb{Z})^\\times} x = -1 \\iff (\\mathbb{Z}/n\\mathbb{Z})^\\times \\text{ is cyclic}$. $(\\Leftarrow)$: cyclic $\\Rightarrow$ product $= -1$ by $\\texttt{prod\\_units\\_neg\\_one\\_of\\_cyclic}$. $(\\Rightarrow)$: if $\\neg$cyclic, product $= 1$ by $\\texttt{prod\\_units\\_one\\_of\\_not\\_cyclic}$; since $-1 \\neq 1$ for $n \\geq 3$, product $= -1$ implies cyclic by contrapositive."
     },
     {
       "id": "sec-wq02-bridge",
       "title": "Concrete-Abstract Bridge",
       "startLine": 296,
       "endLine": 321,
-      "description": "unitsProduct concrete definition, unitsProduct_cast_eq_abstract: (unitsProduct n : ZMod n) = ∏(ZMod n)ˣ via Finset.prod_nbij with bijection x ↦ ZMod.val(x)."
+      "description": "unitsProduct concrete definition, unitsProduct_cast_eq_abstract: (unitsProduct n : ZMod n) = ∏(ZMod n)ˣ via Finset.prod_nbij with bijection x ↦ ZMod.val(x).",
+      "summary": "Defines unitsProduct n as the concrete Finset product over {a < n | Nat.Coprime a n} and proves unitsProduct_cast_eq_abstract: casting to ZMod n equals the abstract group product ∏(ZMod n)ˣ. Uses Finset.prod_nbij with bijection x ↦ ZMod.val(x).",
+      "mathContext": "$\\text{unitsProduct}(n) := \\prod_{\\substack{a < n \\\\ \\gcd(a,n)=1}} a \\in \\mathbb{N}$. Bridge: $(\\text{unitsProduct}(n) : \\mathbb{Z}/n\\mathbb{Z}) = \\prod_{x \\in (\\mathbb{Z}/n\\mathbb{Z})^\\times} x$ (abstract units product). Bijection: $(\\mathbb{Z}/n\\mathbb{Z})^\\times \\xrightarrow{\\text{val}} \\{a < n : \\gcd(a,n)=1\\}$ via $\\texttt{ZMod.val}$, $\\texttt{ZMod.unitOfCoprime}$; reindexed via $\\texttt{Finset.prod\\_nbij}$. Imported by OQ01 to connect concrete modular arithmetic to gaussWilson_abstract."
     },
     {
       "id": "sec-wq02-computation",
       "title": "Computational Verification to n≤300",
       "startLine": 340,
       "endLine": 366,
-      "description": "hasGaussWilsonForm, gaussWilsonCheck definitions. gaussWilson_verified_le_250 and gaussWilson_verified_le_300 via native_decide."
+      "description": "hasGaussWilsonForm, gaussWilsonCheck definitions. gaussWilson_verified_le_250 and gaussWilson_verified_le_300 via native_decide.",
+      "summary": "Defines hasGaussWilsonForm n (decidable check: n = 1, 2, 4, or n = p^k or 2p^k for odd prime p) and gaussWilsonCheck n (unitsProduct ≡ -1 iff hasGaussWilsonForm). Proves gaussWilson_verified_le_250 and gaussWilson_verified_le_300 by native_decide exhaustive computation.",
+      "mathContext": "$\\texttt{hasGaussWilsonForm}(n)$: decidable predicate for $n \\in \\{1,2,4,p^k,2p^k\\}$ (odd prime $p$). $\\texttt{gaussWilsonCheck}(n)$: verifies $\\prod_{\\gcd(a,n)=1} a \\equiv -1 \\pmod{n} \\iff \\texttt{hasGaussWilsonForm}(n)$. $\\texttt{native\\_decide}$ compiles to native code for fast exhaustive verification: confirms the theorem for all $n \\leq 300$ without a single algebraic argument — a computational certificate complementing the abstract proof."
     },
     {
       "id": "sec-wq02-wilson-primes",
       "title": "Wilson Primes: Definitions and Verification",
       "startLine": 390,
       "endLine": 407,
-      "description": "wilsonQuotient, IsWilsonPrime definitions. five_is_wilson_prime, thirteen_is_wilson_prime verified. no_wilson_primes_14_to_100 via native_decide over Fin 101."
+      "description": "wilsonQuotient, IsWilsonPrime definitions. five_is_wilson_prime, thirteen_is_wilson_prime verified. no_wilson_primes_14_to_100 via native_decide over Fin 101.",
+      "summary": "Defines wilsonQuotient p = ((p-1)! + 1) / p and IsWilsonPrime p (p² | (p-1)! + 1). Verifies five_is_wilson_prime and thirteen_is_wilson_prime by norm_num. Proves no_wilson_primes_14_to_100 via native_decide over Fin 101: no Wilson prime exists in [14, 100].",
+      "mathContext": "$W_p := \\frac{(p-1)!+1}{p}$ (Wilson quotient, always a positive integer by Wilson's theorem for primes). $p$ is a Wilson prime iff $p \\mid W_p$ iff $p^2 \\mid (p-1)!+1$. Verified: $W_5 = 5$, $W_{13} = 13$ (Wilson primes). $\\texttt{native\\_decide}$: for all primes $p \\in [14,100]$, $p^2 \\nmid (p-1)!+1$. Known Wilson primes: $\\{5, 13, 563\\}$ — no fourth is known; search extended to $\\approx 2 \\times 10^{13}$."
     }
   ],
   "sorries": 0
