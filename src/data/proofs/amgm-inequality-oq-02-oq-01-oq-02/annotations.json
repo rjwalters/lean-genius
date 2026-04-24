@@ -16,7 +16,10 @@
       "LinearOrder",
       "lt_or_gt_of_ne",
       "Finset.disjoint_filter",
-      "upper/lower triangular"
+      "upper/lower triangular",
+      "amgm-inequality-oq-02-oq-01",
+      "amgm-inequality-oq-02",
+      "amgm-inequality"
     ],
     "prerequisites": [
       "Lean LinearOrder typeclass",
@@ -91,7 +94,10 @@
       "Finset.sum_union",
       "two_mul",
       "upper_lower_disjoint",
-      "Newton-Girard"
+      "Newton-Girard",
+      "amgm-inequality-oq-02-oq-01",
+      "vietas-formulas",
+      "cauchy-schwarz"
     ],
     "prerequisites": [
       "sum_lower_eq_sum_upper",
@@ -117,7 +123,11 @@
       "Newton-Girard identity",
       "p₂ = e₁² − 2e₂",
       "power sums",
-      "AM-GM inequality"
+      "AM-GM inequality",
+      "amgm-inequality",
+      "amgm-inequality-oq-02",
+      "amgm-inequality-oq-02-oq-01",
+      "vietas-formulas"
     ],
     "prerequisites": [
       "parent proof (sq_sum_eq_diag_plus_offdiag)",
