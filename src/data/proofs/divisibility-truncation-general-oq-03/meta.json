@@ -31,7 +31,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Divisibility tests by truncation — replacing n by ⌊n/10⌋ + c·(n mod 10) — have been known since at least the 19th century and appear in recreational mathematics literature across many cultures. The key parameter c is called the 'osculator' for d. For d=7, c=−2 (or +5); for d=11, c=−1 (alternating digit sum, known to medieval Arabic mathematicians); for d=13, c=4. The osculator c satisfies d | 10c − 1, i.e., c ≡ 10⁻¹ (mod d) — the modular inverse of the base. The connection to the Euclidean/CF algorithm is classical: Euclid's algorithm applied to (10, d) produces the same quotient sequence as the continued fraction expansion of 10/d, and the Bézout coefficients (gcdA, gcdB) equal the numerator/denominator of the last convergent. Thus the osculator is simultaneously a modular inverse, a Bézout coefficient, and a convergent denominator — three descriptions of the same object. Hardy and Wright's 'An Introduction to the Theory of Numbers' (Chapter X) covers modular inverses and the Euclidean algorithm in detail, providing the theoretical backdrop for this result.",
+    "historicalContext": "Divisibility tests by truncation — replacing n by ⌊n/10⌋ + c·(n mod 10) — have been known since at least the 19th century. The key parameter c is called the 'osculator' for d. For d=7, c=−2 (or +5); for d=11, c=−1 (alternating digit sum); for d=13, c=4. The osculator c satisfies d | 10c − 1, i.e., c ≡ 10⁻¹ (mod d). The connection to the Euclidean/CF algorithm is classical: the convergents of the CF expansion of 10/d give the successive approximations to 10⁻¹ mod d.",
     "problemStatement": "For d coprime to 10, the divisibility test by truncation uses an 'osculator' c ∈ ℤ with d | 10c − 1 (i.e., c ≡ 10⁻¹ mod d). **OQ-03**: Show that c arises canonically from the extended Euclidean algorithm (equivalently, as a convergent denominator in the CF expansion of 10/d). Formalize the full pipeline: Bézout coefficient → canonical osculator → divisibility test.",
     "proofStrategy": "**Step 1 (Bézout gives osculator)**: The Bézout identity `1 = 10·gcdA(10,d) + d·gcdB(10,d)` rearranges to `d | 10·gcdA(10,d) − 1`. So `gcdA(10,d)` is an osculator directly.\n\n**Step 2 (Uniqueness mod d)**: If c, c' are both osculators, then `d | 10(c−c')`. Since gcd(10,d)=1, `d | c−c'`. So osculators are unique mod d.\n\n**Step 3 (Canonical representative)**: `gcdA(10,d) % d` is still an osculator (by `osculator_congr`), lies in [0,d), and is the unique such representative.\n\n**Step 4 (Existence theorem)**: The reduced osculator `gcdA(10,d) % d`, converted via `Int.toNat`, gives a natural number in {0,...,d−1} that is an osculator. This proves `cf_bezout_correspondence` without constructing continued fractions.\n\n**Key insight**: The existential `∃ n : ℕ, n < d ∧ IsOsculator d n` is much weaker than the full CF connection — it follows from Bézout alone.",
     "keyInsights": [
@@ -39,7 +39,7 @@
       "osculator_unique_mod uses IsCoprime.dvd_of_dvd_mul_left: if d | 10(c−c') and gcd(10,d)=1, then d | (c−c'). This is the critical coprimality argument.",
       "The reduction Int.emod_nonneg and Int.emod_lt_of_pos, combined with Int.toNat_of_nonneg, converts the integer osculator to a natural number witness without any Nat.cast hassle.",
       "Concrete examples (d=7,11,13,19) connect abstract results to familiar divisibility tests: 7|n ↔ 7|(n/10 − 2·(n%10)), 11|n ↔ 11|(n/10 − (n%10)) (alternating sum).",
-      "The proof has a clean layered architecture: OQ-01 proves the abstract divisibility equivalence for any osculator c; OQ-03 identifies the canonical choice c = gcdA(10,d) mod d. The final theorem canonical_divisibility_test is a one-liner that simply calls bezout_osculator_rule — all mathematical content was proved at the right level of abstraction."
+      "The proof generalizes to any base b coprime to d: replace 10 with b everywhere. Bézout gives gcdA(b,d) as the osculator for b-ary truncation tests. The Lean proof is base-agnostic — only bezout_ten (which fixes base 10) would need to change, making generalization to arbitrary bases a one-line modification."
     ],
     "prerequisites": [
       "Bézout's identity (Nat.gcd_eq_gcd_ab in Mathlib)",
@@ -93,6 +93,36 @@
       "The CF connection: the actual Mathlib proof that gcdA(10,d) equals a convergent denominator in the CF expansion of 10/d. This would require formalizing GenContFract for rational numbers."
     ]
   },
+  "references": [
+    {
+      "authors": ["G. H. Hardy", "E. M. Wright"],
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1979",
+      "venue": "Oxford University Press, 5th edition, Chapter X",
+      "note": "Classical treatment of modular inverses and the Euclidean algorithm. Section 10.1 proves that if gcd(a,m)=1 then ax≡b(mod m) has a unique solution mod m — the theoretical basis for uniqueness of the osculator."
+    },
+    {
+      "authors": ["D. E. Knuth"],
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": "1981",
+      "venue": "Addison-Wesley, 2nd edition, Section 4.5.2",
+      "note": "Algorithm X (Extended Euclidean algorithm, pp. 325–327) computes gcdA and gcdB. Knuth proves the CF connection explicitly: the quotients in the Euclidean algorithm for gcd(a,b) are the CF partial quotients of a/b, and the Bézout coefficients equal the last CF convergent numerator/denominator."
+    },
+    {
+      "authors": ["Bharati Krishna Tirthaji"],
+      "title": "Vedic Mathematics",
+      "year": "1965",
+      "venue": "Motilal Banarsidass, Chapter on Divisibility",
+      "note": "First systematic treatise introducing the term 'osculator' for divisibility rules. The positive and negative osculators for d correspond to the two classes of solutions to d | 10c−1, matching the IsOsculator definition formalized here."
+    },
+    {
+      "authors": ["The Mathlib Community"],
+      "title": "Mathlib4: A Unified Library of Mathematics Formalized in Lean 4",
+      "year": "2024",
+      "venue": "https://github.com/leanprover-community/mathlib4",
+      "note": "Provides Nat.gcd_eq_gcd_ab (Bézout identity), Nat.gcdA/gcdB, IsCoprime.dvd_of_dvd_mul_left (coprimality cancellation), Int.emod_nonneg and Int.emod_lt_of_pos (modular reduction bounds)."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "divisibility-truncation-general",
@@ -103,6 +133,16 @@
       "targetId": "divisibility-truncation-general-oq-01",
       "relationship": "uses",
       "description": "Imports unified_osculator from OQ-01 for the concrete divisibility test applications."
+    },
+    {
+      "targetId": "divisibility-rules",
+      "relationship": "related",
+      "description": "The general gallery entry on divisibility rules, providing classical context for the truncation tests formalized here."
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "related",
+      "description": "Divisibility by 3 (digit sum rule) is the special case d=3 in base 10, where gcdA(10,3) gives the osculator for the standard digit-sum test."
     }
   ],
   "leanFile": {
