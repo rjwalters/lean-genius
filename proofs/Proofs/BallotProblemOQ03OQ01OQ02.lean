@@ -4847,6 +4847,59 @@ private lemma hookLength_removeCorner_leg {μ : YoungDiagram} {c : ℕ × ℕ} (
       colLen_of_isCorner hc]
   omega
 
+/-- For a corner c, hookLength μ c.1 c.2 = 1 (armLen = 0, legLen = 0). -/
+private lemma hookLength_corner_eq_one {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c) :
+    hookLength μ c.1 c.2 = 1 := by
+  obtain ⟨i, j⟩ := c
+  unfold hookLength armLen legLen
+  rw [rowLen_of_isCorner hc, colLen_of_isCorner hc]
+  omega
+
+/-- For cells that are neither arm nor leg of corner c, hookLength is unchanged by removeCorner. -/
+private lemma hookLength_eq_of_not_arm_leg {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
+    {x : ℕ × ℕ} (hxμ : x ∈ μ) (hxc : x ≠ c)
+    (hxarm : ¬(x.1 = c.1 ∧ x.2 < c.2))
+    (hxleg : ¬(x.1 < c.1 ∧ x.2 = c.2)) :
+    hookLength (removeCorner μ c hc) x.1 x.2 = hookLength μ x.1 x.2 := by
+  obtain ⟨i, j⟩ := c
+  obtain ⟨a, b⟩ := x
+  simp only [Prod.fst, Prod.snd] at hxarm hxleg hxc ⊢
+  -- Derive: a ≠ i
+  have ha : a ≠ i := by
+    intro heq; subst heq
+    push_neg at hxarm
+    have hb_lt : b < μ.rowLen a := YoungDiagram.mem_iff_lt_rowLen.mp hxμ
+    rw [rowLen_of_isCorner hc] at hb_lt
+    -- b < j+1, hxarm says b ≥ j (since it's not true b < j), so b = j, contradicting hxc
+    exact hxc (Prod.ext rfl (by omega))
+  -- Derive: b ≠ j
+  have hb : b ≠ j := by
+    intro heq; subst heq
+    push_neg at hxleg
+    have ha_lt : a < μ.colLen b := YoungDiagram.mem_iff_lt_colLen.mp hxμ
+    rw [colLen_of_isCorner hc] at ha_lt
+    -- a < i+1, hxleg says a ≥ i, so a = i, contradicting hxc
+    exact hxc (Prod.ext (by omega) rfl)
+  -- Now apply removeCorner invariance
+  unfold hookLength armLen legLen
+  rw [rowLen_removeCorner_other hc ha, colLen_removeCorner_other hc hb]
+
+/-- The hookProd ratio for a corner c equals the product of h/(h-1) over arm and leg cells.
+    Proof strategy (for future completion):
+    1. hookProd(μ) = hookLength(μ,c) × ∏_{x∈ν.cells} hookLength(μ,x)  [mul_prod_erase]
+    2. hookLength(μ,c) = 1  [hookLength_corner_eq_one]
+    3. ratio = ∏_{x∈ν.cells} hookLength(μ,x)/hookLength(ν,x)  [prod_div_distrib]
+    4. ν.cells = armCells ∪ legCells ∪ restCells (disjoint)
+    5. On arm cells: hookLength(μ)/hookLength(ν) = h/(h-1)  [hookLength_removeCorner_arm]
+    6. On leg cells: hookLength(μ)/hookLength(ν) = h/(h-1)  [hookLength_removeCorner_leg]
+    7. On rest cells: hookLength(μ)/hookLength(ν) = 1  [hookLength_eq_of_not_arm_leg]
+    Requires ~80 lines of Finset.prod_union decomposition. -/
+private lemma hookProd_ratio_formula {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c) :
+    (hookProd μ : ℚ) / hookProd (removeCorner μ c hc) =
+      (∏ s ∈ Finset.range c.2, (hookLength μ c.1 s : ℚ) / (hookLength μ c.1 s - 1)) *
+      (∏ r ∈ Finset.range c.1, (hookLength μ r c.2 : ℚ) / (hookLength μ r c.2 - 1)) := by
+  sorry
+
 
 private lemma hook_walk_identity (μ : YoungDiagram) (hn : 0 < μ.card) :
     ∑ c ∈ (corners μ).attach,
