@@ -637,11 +637,10 @@ axiom ekr_for_permutations {n : ℕ} (hn : n ≥ 2)
     (hA : IsIntersectingPermFamily A) :
     A.card ≤ (n - 1).factorial
 
-/-- A coset achieves the EKR bound for permutations -/
-theorem coset_size (n : ℕ) (hn : n ≥ 1) (i j : Fin n) :
-    -- The coset {σ : σ(i) = j} has (n-1)! elements
-    -- (choose values for the other n-1 positions freely)
-    (1 : ℕ) + 1 = 2 := rfl
+/-- A coset achieves the EKR bound for permutations:
+    the set {σ : σ(i) = j} has exactly (n-1)! elements. -/
+axiom coset_size (n : ℕ) (hn : n ≥ 1) (i j : Fin n) :
+    (Finset.univ.filter (fun σ : Equiv.Perm (Fin n) => σ i = j)).card = (n - 1).factorial
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART VI: SUNFLOWER LEMMA AND THE ERDŐS-KO-RADO SUNFLOWER CONNECTION
