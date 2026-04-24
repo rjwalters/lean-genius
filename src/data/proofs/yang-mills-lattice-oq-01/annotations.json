@@ -101,6 +101,28 @@
     ]
   },
   {
+    "id": "ym-lattice-oq01-corr-length",
+    "proofId": "yang-mills-lattice-oq-01",
+    "range": { "startLine": 165, "endLine": 218 },
+    "type": "insight",
+    "title": "Correlation Length and the Mass Gap–ξ Reciprocal Relation",
+    "content": "The correlation length ξ = 1/(-log(λ₁/λ₀)) measures how quickly the Schwinger function S₂(x,y) decays with temporal separation. The theorem mass_gap_times_corr_length establishes the exact reciprocal relation: Δ·ξ·a = 1, meaning a larger mass gap corresponds to a shorter correlation length and vice versa. This is the lattice encoding of the physical principle that a massive particle has a finite interaction range. The continuum limit requires ξ → ∞ in lattice units (a → 0) while the physical mass gap Δ stays finite — this is a second-order phase transition. The proof uses algebraic cancellation: (L/a)·(a/L) = 1 after unfolding the definition of correlationLengthLog.",
+    "mathContext": "$\\xi = 1/(-\\ln(\\lambda_1/\\lambda_0)) > 0$ when $\\lambda_1 < \\lambda_0$. Reciprocal: $\\Delta \\cdot \\xi \\cdot a = \\frac{-\\ln(\\lambda_1/\\lambda_0)}{a} \\cdot a \\cdot \\frac{1}{-\\ln(\\lambda_1/\\lambda_0)} = 1$. As $a \\to 0$: $\\xi \\to \\infty$ (long-range correlations), but $\\Delta = 1/(\\xi \\cdot a)$ stays finite if $a \\cdot \\xi \\to \\text{const}$ (renormalization group running).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "correlation length",
+      "mass gap",
+      "continuum limit",
+      "second-order phase transition",
+      "renormalization group"
+    ],
+    "prerequisites": [
+      "Real.log_neg",
+      "OSTransferMatrix",
+      "spectral gap"
+    ]
+  },
+  {
     "id": "ym-lattice-oq01-reconstruction-axiom",
     "proofId": "yang-mills-lattice-oq-01",
     "range": {
