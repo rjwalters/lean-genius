@@ -202,7 +202,7 @@
       "Can the Polymath 8b axiom be reduced to a statement provable from Mathlib's sieve theory infrastructure?",
       "Can the Elliott-Halberstam conjecture be formalized as an axiom-free statement (as it's a conjecture, not a theorem)?",
       "Can the exact 246 bound be verified constructively by finding the optimal 50-admissible-tuple and verifying Maynard's sieve applies?",
-      "Can the Bombieri-Vinogradov theorem be formalized in Lean/Mathlib? This is the key analytic ingredient missing from the proof chain — Zhang's breakthrough required a weakened variant (BV with smooth moduli), and its formalization would bring the bounded gaps proof significantly closer to axiom-free.",
+      "**[Assessed in `bounded-prime-gaps-oq-04`]** Can the Bombieri-Vinogradov theorem be formalized in Lean/Mathlib? This is the key analytic ingredient missing from the proof chain — Zhang's breakthrough required a weakened variant (BV with smooth moduli), and its formalization would bring the bounded gaps proof significantly closer to axiom-free. The companion entry `bounded-prime-gaps-oq-04` provides a detailed formalizability assessment, and `bounded-prime-gaps-oq-04-oq-01` formalizes the Pólya-Vinogradov inequality as the foundational character sum estimate.",
       "Can Firoozbakht's conjecture ($p_n^{1/n}$ strictly decreasing, verified to $10^{18}$) be connected to the bounded gaps formalization? If true, it implies Cramér's conjecture ($g(n) = O((\\log p_n)^2)$) — a far stronger result than the Polymath bound of 246 for infinitely many gaps."
     ]
   },
@@ -271,6 +271,21 @@
       "targetId": "legendre-partial",
       "relationship": "related",
       "description": "Legendre conjectured (c. 1808) that there is a prime between consecutive perfect squares $n^2$ and $(n+1)^2$, implying prime gaps grow at most as $2n + 1$. While Legendre's conjecture remains open, the bounded prime gaps theorem gives the complementary result: infinitely often, consecutive primes are within 246 of each other — capturing the opposite extreme of prime gap behavior"
+    },
+    {
+      "targetId": "bounded-prime-gaps-oq-01",
+      "relationship": "extended-by",
+      "description": "Optimal Admissible Tuples and Gap Bounds — investigates the parity constraints and optimality conditions on admissible $k$-tuples that determine the precise 246 bound. The main entry proves admissibility for specific tuples up to 50-elements; this sub-entry formalizes the non-admissibility criteria (parity obstructions), the role of Engelsma's $2013$ computer search establishing no admissible 50-tuple fits in diameter $< 246$, and the optimization problem connecting tuple size to gap bounds in the Maynard-Tao framework"
+    },
+    {
+      "targetId": "bounded-prime-gaps-oq-04",
+      "relationship": "extended-by",
+      "description": "Bombieri-Vinogradov Theorem: Formalizability Assessment — directly addresses this entry's open question about formalizing BV in Lean/Mathlib. BV states that primes are equidistributed in arithmetic progressions on average over moduli $q \\leq x^{1/2} / (\\log x)^B$, replacing the Generalized Riemann Hypothesis for most applications. Zhang's proof used a weakened smooth-moduli variant; full BV formalization would bring the bounded gaps proof significantly closer to axiom-free. `bounded-prime-gaps-oq-04` assesses the feasibility and identifies the specific analytic machinery (character sums, large sieve, Fourier analysis on $\\mathbb{Z}/q\\mathbb{Z}$) that would be needed"
+    },
+    {
+      "targetId": "bounded-prime-gaps-oq-04-oq-01",
+      "relationship": "related",
+      "description": "Pólya-Vinogradov Inequality — the foundational character sum estimate $|\\sum_{n=M}^{M+N} \\chi(n)| \\leq \\sqrt{q} \\log q$ for non-principal Dirichlet characters $\\chi$ mod $q$. This is the analytic bedrock beneath the Bombieri-Vinogradov theorem: BV uses a variant with averaging over characters, and Pólya-Vinogradov provides the individual-character bound. In the prime gaps hierarchy, BV $\\Rightarrow$ Zhang's sieve $\\Rightarrow$ bounded gaps 246; Pólya-Vinogradov is one step further down the analytic chain supporting this result"
     }
   ],
   "leanFile": {
