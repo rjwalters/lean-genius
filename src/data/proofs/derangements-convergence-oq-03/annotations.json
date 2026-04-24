@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-dcoq03-setup",
+    "proofId": "derangements-convergence-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "concept",
+    "title": "Proof Strategy and Setup",
+    "content": "The opening block comment serves as an executable specification: it states the theorem, outlines the three-step proof strategy (rate bound → strict bound → rounding characterisation), and lists the key Mathlib lemmas used. This style of self-documenting Lean code makes the mathematical argument immediately readable.\n\nThe file imports the full `Mathlib` library and the companion module `Proofs.DerangementsConvergence`, which supplies `derangements_convergence_rate` — the alternating-series rate bound |D(n)/n! − e⁻¹| ≤ 1/(n+1)!. The `open` declarations bring in `Nat`, `Real`, `Filter`, and `Topology` — scoping the factorial function, real exponential, and filter-limit API into the global namespace.",
+    "mathContext": "The proof reduces to two well-known Mathlib results:\n- `round_eq`: $\\text{round}(x) = \\lfloor x + 1/2 \\rfloor$\n- `floor_eq_iff`: $\\lfloor r \\rfloor = z \\iff z \\leq r < z+1$\n\nCombined, they reduce 'D(n) = round(n!/e)' to two linear inequalities: $D(n) \\leq n!/e + 1/2$ and $n!/e + 1/2 < D(n) + 1$. Both follow from $|D(n) - n!/e| < 1/2$ via `abs_lt`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "derangements_convergence_rate",
+      "round_eq",
+      "floor_eq_iff",
+      "DerangementsConvergence module"
+    ],
+    "prerequisites": [
+      "alternating series estimation theorem",
+      "Lean 4 namespace and open declarations",
+      "Mathlib real analysis API"
+    ]
+  },
+  {
     "id": "ann-dcoq03-helper",
     "proofId": "derangements-convergence-oq-03",
     "range": {

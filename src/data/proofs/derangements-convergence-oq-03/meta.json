@@ -53,15 +53,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "The derangement number D(n) counts permutations with no fixed points. The classical formula D(n) = n! · Σ_{k=0}^n (−1)^k/k! leads immediately to D(n)/n! → e⁻¹ as n → ∞ (Montmort 1708, Euler 1751). A sharper consequence: since n!/e is never an integer (e is transcendental), the nearest integer to n!/e is uniquely determined, and it equals D(n) for all n ≥ 2. This elegant rounding characterisation is a standard result in combinatorics.",
+    "historicalContext": "The derangement problem — counting permutations of $n$ elements with no fixed point — was first posed and solved by Pierre Rémond de Montmort in 1708 in his *Essay d'analyse sur les jeux de hazard* (Essay on the Analysis of Games of Chance), where he called it the *problème des rencontres* (problem of coincidences). Montmort derived the exact formula $D(n) = n! \\sum_{k=0}^{n} (-1)^k/k!$ by inclusion-exclusion: subtract the permutations fixing at least one point, add back those fixing at least two, and so on. Nicolaus Bernoulli independently discovered the same formula around the same time, and Leonhard Euler extended the analysis in his 1751 paper *Calcul de la probabilité dans le jeu de rencontre*, connecting the limiting ratio $D(n)/n! \\to e^{-1}$ to the base of natural logarithms.\n\nThe convergence $D(n)/n! \\to e^{-1}$ is strikingly fast: the error is bounded by $1/(n+1)!$ by the alternating series estimation theorem, since the partial sums $\\sum_{k=0}^{n}(-1)^k/k!$ alternate above and below $e^{-1}$. This super-exponential rate of convergence implies a rounding characterisation: for $n \\geq 2$, the error $|D(n) - n!/e| \\leq 1/(n+1) < 1/2$, making $D(n)$ the unique integer nearest to $n!/e$. The formula $D(n) = \\text{round}(n!/e)$ is a standard result in combinatorics textbooks, notable for its elegance and the implicit role of transcendence theory: since $e$ is transcendental (Hermite, 1873), $n!/e$ is never a half-integer, so there is never any ambiguity in the rounding.",
     "problemStatement": "**OQ-03 of derangements-convergence**\n\nProve that for n ≥ 2, the number of derangements D(n) equals the nearest integer to n!/e:\n\n  D(n) = round(n! · e⁻¹)\n\nEquivalently: |D(n) − n!/e| < 1/2 for all n ≥ 2.",
     "text": "For n ≥ 2, (numDerangements n : ℤ) = round((n! : ℝ) · rexp(-1)).",
     "proofStrategy": "**Three steps:**\n1. **Rate bound**: From `derangements_convergence_rate` (DerangementsConvergence.lean): |D(n)/n! − e⁻¹| ≤ 1/(n+1)!. Multiply both sides by n! to get |D(n) − n!/e| ≤ 1/(n+1).\n2. **Strict bound**: For n ≥ 2: n+1 ≥ 3 > 2, so 1/(n+1) < 1/2. Therefore |D(n) − n!/e| < 1/2.\n3. **Rounding characterisation**: D(n) is an integer with |D(n) − x| < 1/2 where x = n!/e, so D(n) = round(x). The proof uses `round_eq` (round x = ⌊x + 1/2⌋) and `floor_eq_iff` to reduce to two linear inequalities, closed by `linarith`.",
     "keyInsights": [
-      "The multiplication n! × (1/(n+1)!) = 1/(n+1) is the key computation — the helper lemma factorial_mul_one_div_factorial_succ provides this in a form that linarith can use",
-      "The condition n ≥ 2 is tight: at n=1, D(1)=0 and 1!/e ≈ 0.368, and round(0.368) = 0, so the result holds — but the bound 1/(n+1) = 1/2 is not strict. The proof uses n+1 > 2 to get strict inequality.",
-      "The rounding characterisation bypasses the need to compute round(n!/e) explicitly: knowing |D(n) − n!/e| < 1/2 and D(n) ∈ ℤ uniquely determines D(n) = round(n!/e)",
-      "Using abs_lt to split |D − x| < 1/2 into two half-open intervals, then linarith closes both halves independently"
+      "**Alternating series as the engine**: The formula $D(n)/n! = \\sum_{k=0}^{n}(-1)^k/k!$ is a partial sum of the alternating series for $e^{-1}$. The alternating series estimation theorem (Leibniz criterion) gives $|D(n)/n! - e^{-1}| \\leq 1/(n+1)!$ — a bound of super-exponential decay. This is the core input (`derangements_convergence_rate`) that everything else rests on.",
+      "**The factorial bridge**: The helper lemma `factorial_mul_one_div_factorial_succ` converts the rate bound from ratio form ($|D/n! - e^{-1}| \\leq 1/(n+1)!$) to absolute form ($|D - n!/e| \\leq 1/(n+1)$) via the exact computation $n! \\cdot (1/(n+1)!) = 1/(n+1)$. Without this algebraic step, `linarith` cannot close the goal directly.",
+      "**n ≥ 2 is a proof artifact, not a mathematical boundary**: The result $D(n) = \\text{round}(n!/e)$ actually holds for $n \\geq 1$ (at $n=1$: $D(1)=0$, $1!/e \\approx 0.368$, $\\text{round}(0.368)=0$ ✓). The proof uses $1/(n+1) < 1/2$, requiring $n+1 > 2$. For $n=1$ the bound $1/(n+1) = 1/2$ is not strictly less than $1/2$, so a different argument would be needed. At $n=0$: $D(0)=1$, $0!/e = 1/e \\approx 0.368$, $\\text{round}(0.368)=0 \\neq 1$ — so $n=0$ genuinely fails.",
+      "**Transcendence makes rounding unambiguous**: $D(n) = \\text{round}(n!/e)$ would be undefined if $n!/e$ were a half-integer ($n!/e \\in \\mathbb{Z} + 1/2$). Since $e$ is transcendental (Hermite, 1873), $e$ satisfies no polynomial equation over $\\mathbb{Q}$, and in particular $n!/e$ is irrational for all $n \\geq 1$. The stronger statement needed — $n!/e$ is never a half-integer — follows because $2n!/e$ is irrational. This makes the rounding unambiguous without any case analysis.",
+      "**Two-phase proof architecture**: Phase 1 (analytic) establishes $|D(n) - n!/e| < 1/2$ using real analysis; Phase 2 (algebraic) converts this into the floor identity $D(n) = \\lfloor n!/e + 1/2 \\rfloor$ using `round_eq`, `floor_eq_iff`, and `abs_lt`. The separation cleanly isolates the analytic from the algebraic reasoning, with `linarith` closing the final linear arithmetic goals."
     ],
     "prerequisites": [
       "derangements_convergence_rate from DerangementsConvergence.lean",
@@ -91,25 +92,37 @@
     {
       "targetId": "derangements-convergence",
       "relationship": "uses",
-      "description": "Imports derangements_convergence_rate: |D(n)/n! - e⁻¹| ≤ 1/(n+1)! via alternating series estimation"
+      "description": "Imports `derangements_convergence_rate`: |D(n)/n! − e⁻¹| ≤ 1/(n+1)! via the alternating series estimation theorem. This is the core analytic input that drives the entire proof."
     },
     {
       "targetId": "derangements-convergence-oq-01",
       "relationship": "sibling",
-      "description": "Sibling: proves P(X_n = k) → e⁻¹/k! (Poisson(1) marginals); this file proves the rounding characterisation of D(n)"
+      "description": "Sibling: proves that the marginal distributions of random derangements converge to Poisson(1), i.e., P(X_n = k) → e⁻¹/k!. Uses the same convergence rate from DerangementsConvergence but applies it to probability rather than the rounding characterisation."
     },
     {
       "targetId": "derangements",
+      "relationship": "parent",
+      "description": "Root entry: establishes the basic derangement definitions, the inclusion-exclusion formula D(n) = n! Σ_{k=0}^n (-1)^k/k!, and key recurrences D(n) = (n-1)(D(n-1)+D(n-2))."
+    },
+    {
+      "targetId": "e-transcendental",
       "relationship": "related",
-      "description": "Root: basic derangement definitions D(n) = n! Σ(-1)^k/k! and inclusion-exclusion formula"
+      "description": "Hermite's theorem (1873) that e is transcendental underlies the well-definedness of round(n!/e): since e is transcendental, n!/e is irrational for all n ≥ 1, so n!/e is never a half-integer and rounding is always unambiguous. The formula D(n) = round(n!/e) implicitly depends on this transcendence result."
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "The Hermite-Lindemann theorem (1882) — e^α is transcendental for nonzero algebraic α — subsumes Hermite's 1873 proof of e's transcendence. Since D(n) = round(n!/e) implicitly requires e ≢ rational, this transcendence result underpins the formula's well-definedness."
     }
   ],
   "conclusion": {
     "summary": "Machine-verified: for all n ≥ 2, D(n) = round(n!/e). The proof extracts a strict rounding bound from the alternating-series rate estimate, showing |D(n) − n!/e| < 1/2, which uniquely characterises D(n) as the nearest integer. Zero sorries, zero axioms.",
     "implications": "**Computational convenience**: This gives a simple formula for D(n): compute n!/e and round to the nearest integer. For large n, floating-point arithmetic with sufficient precision gives D(n) exactly.\\n\\n**Tightness**: The bound 1/(n+1) approaches 1/2 from above as the bound deteriorates for n → 1 (at n = 2: 1/3, at n = 1: 1/2 exactly). The condition n ≥ 2 is tight for the strict inequality.\\n\\n**Connection to transcendence**: The rounding never ties (D(n) is never a half-integer offset from n!/e) because e is transcendental, so n!/e is never a half-integer.",
     "openQuestions": [
-      "Prove the analogous result for subfactorials: D(n) = ⌊n!/e + 1/2⌋ (equivalent formulation via floor)",
-      "Extend to generalised derangements: D_k(n) (permutations with no k-cycles of a fixed type) — does a similar rounding characterisation hold?"
+      "**Tighten the n ≥ 2 boundary**: Prove that D(n) = round(n!/e) also holds for n = 1 (currently true but the proof's 1/(n+1) < 1/2 argument fails at n=1). A direct case analysis or a different bound would extend the result to all n ≥ 1.",
+      "**Generalised derangements**: A *k-derangement* is a permutation with no k-cycle. For complete bipartite graphs and other combinatorial structures, analogous counting formulas with exponential convergence exist. Do similar rounding characterisations hold — and if so, which transcendence result is needed to ensure unambiguous rounding?",
+      "**Formalize the transcendence connection**: The proof uses `derangements_convergence_rate` as a black box. A companion result that `n!/e` is never a half-integer (needed to prove the formula makes sense without case analysis) would require formalizing a consequence of Hermite's transcendence theorem. Can Lean's existing transcendence infrastructure (`e-transcendental`) be used to prove `∀ n : ℕ, ∀ k : ℤ, 2 * n! * rexp(-1) ≠ 2*k + 1`?",
+      "**Best bound**: The proof uses 1/(n+1) < 1/2 (valid for n ≥ 2). The actual error |D(n) − n!/e| equals 1/(n+1)! · n! = 1/(n+1) only when n=0 or n=1 — for larger n, the error is exactly the next alternating term, which decays much faster. Can the proof be tightened to give the best possible bound, and does this imply the formula holds for n ≥ 1 without special-casing?"
     ]
   },
   "mainTheorems": [
