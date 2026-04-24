@@ -547,10 +547,69 @@ theorem vosper (A B : Finset (ZMod p)) (hA : 2 ≤ A.card) (hB : 2 ≤ B.card)
     --                 Inclusion gives |(A.erase a)+B| ≤ |A+B| = |A|+|B|-1.
     -- If ALL a are redundant (Case 2 for all), a counting argument fails. So ∃ Case 1.
     obtain ⟨a₀, ha₀A, hcase1⟩ : ∃ a₀ ∈ A, ((A.erase a₀) + B).card = A.card + B.card - 2 := by
-      -- Proof by contradiction: assume all a ∈ A give Case 2 (|(A.erase a)+B| = |A|+|B|-1).
-      -- Then |A|·|B| ≥ 2(|A|+|B|-1), which fails for small |A|,|B| and small p values.
-      -- For the general case, the iterative removal argument gives the contradiction.
-      sorry -- [SORRY 1/2] Case 1 existence: counting argument or iterative removal
+      by_contra hall
+      push_neg at hall
+      -- Every a ∈ A is redundant: cardinality is pinched between CD lower bound and inclusion upper bound
+      have hredA_card : ∀ a ∈ A, (A.erase a + B).card = A.card + B.card - 1 := by
+        intro a haA
+        have hlo : A.card + B.card - 2 ≤ (A.erase a + B).card := by
+          have hCD : p ⊓ ((A.erase a).card + B.card - 1) ≤ (A.erase a + B).card :=
+            ZMod.cauchy_davenport hp.1
+              (Finset.card_pos.mp (by rw [Finset.card_erase_of_mem haA]; omega))
+              (Finset.card_pos.mp (by omega))
+          simp only [Finset.card_erase_of_mem haA, Nat.inf_eq_min] at hCD
+          omega
+        have hhi : (A.erase a + B).card ≤ A.card + B.card - 1 :=
+          (Finset.card_le_card (Finset.add_subset_add_right (Finset.erase_subset _ _))).trans_eq h
+        have hne := hall a haA
+        omega
+      -- Cardinality equality + inclusion → set equality
+      have hredA : ∀ a ∈ A, A.erase a + B = A + B := fun a haA =>
+        Finset.eq_of_subset_of_card_le
+          (Finset.add_subset_add_right (Finset.erase_subset _ _))
+          (h.trans (hredA_card a haA).symm).le
+      -- Case split on |B|
+      by_cases hB2 : B.card = 2
+      · -- |B| = 2: orbit argument — A closed under +d forces |A| ≥ p, contradicting |A| < p
+        have hA_lt_p : A.card < p := by omega
+        obtain ⟨b₁, b₂, hne_b, hB_eq⟩ := Finset.card_eq_two.mp hB2
+        have hb₁B : b₁ ∈ B := by rw [hB_eq]; exact Finset.mem_insert_self b₁ _
+        have hd : b₁ - b₂ ≠ 0 := sub_ne_zero.mpr hne_b
+        -- A is closed under translation by d = b₁ - b₂
+        have hclosed : ∀ a ∈ A, a + (b₁ - b₂) ∈ A := by
+          intro a haA
+          have hmem : a + b₁ ∈ A.erase a + B := by
+            rw [hredA a haA]; exact Finset.mem_add.mpr ⟨a, haA, b₁, hb₁B, rfl⟩
+          obtain ⟨a', ha'er, b', hb'B, heq⟩ := Finset.mem_add.mp hmem
+          rw [Finset.mem_erase] at ha'er
+          rw [hB_eq, Finset.mem_insert, Finset.mem_singleton] at hb'B
+          rcases hb'B with rfl | rfl
+          · exact absurd (add_right_cancel heq) ha'er.1
+          · have ha'_val : a' = a + (b₁ - b₂) := by linear_combination heq
+            rw [← ha'_val]; exact ha'er.2
+        -- The d-orbit of any a₀ ∈ A has p distinct elements all in A → |A| ≥ p
+        obtain ⟨a₀, ha₀A⟩ := Finset.card_pos.mp (by omega : 0 < A.card)
+        have horbit_nat : ∀ k : ℕ, a₀ + (k : ZMod p) * (b₁ - b₂) ∈ A := by
+          intro k
+          induction k with
+          | zero => simpa using ha₀A
+          | succ n ih =>
+            have := hclosed _ ih
+            convert this using 1
+            push_cast; ring
+        have horbit : ∀ k : Fin p, a₀ + (k : ZMod p) * (b₁ - b₂) ∈ A :=
+          fun k => horbit_nat k.val
+        have himg_card : (Finset.univ.image (fun k : Fin p =>
+            a₀ + (k : ZMod p) * (b₁ - b₂))).card = p := by
+          rw [Finset.card_image_of_injective _ (zmod_orbit_injective hd),
+              Finset.card_univ, Fintype.card_fin]
+        have himg_sub : (Finset.univ.image (fun k : Fin p =>
+            a₀ + (k : ZMod p) * (b₁ - b₂))) ⊆ A :=
+          fun _ hx => by obtain ⟨j, _, rfl⟩ := Finset.mem_image.mp hx; exact horbit j
+        linarith [Finset.card_le_card himg_sub]
+      · -- |B| ≥ 3: requires additive structure theory (period/Freiman/stabilizer)
+        have hB3 : 3 ≤ B.card := by omega
+        sorry -- [HARD] |B| ≥ 3 all-redundant contradiction requires Freiman-Ruzsa or stabilizer theory
     -- Step 2: Apply IH recursively to A' = A.erase a₀ and B.
     have hA'card : (A.erase a₀).card = A.card - 1 := Finset.card_erase_of_mem ha₀A
     have hA'2 : 2 ≤ (A.erase a₀).card := by omega
