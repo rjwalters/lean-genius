@@ -107,22 +107,25 @@
       "startLine": 281,
       "endLine": 324
     },
-    "type": "concept",
-    "title": "The 1 Sorry: Cycle Structure Theorem for Cyclic Actions",
-    "content": "The general Pólya theorem `polya_enumeration_theorem_CN` is stated but left with 1 sorry. The docstring explains the three-step proof outline: (1) Burnside: n·|Orbits| = Σ_{r: ZMod n} |Fix(r)|; (2) cycle structure: |Fix(r)| = k^{gcd(r.val,n)} — a coloring is fixed by rotation r iff it has period gcd(r,n), i.e., it is determined by its values on gcd(r,n) positions; (3) grouping: Σ_{r: ZMod n} k^{gcd(r,n)} = Σ_{d|n} (number of r with gcd(r,n)=d) · k^d = Σ_{d|n} φ(n/d)·k^d = Σ_{d'|n} φ(d')·k^{n/d'} (substituting d' = n/d). Step (2) is the key missing formalization in Mathlib 4.26.",
-    "mathContext": "Missing key: $|\\{c \\in (\\mathbb{Z}/n\\mathbb{Z} \\to \\text{Fin}\\,k) : c(i-r) = c(i)\\, \\forall i\\}| = k^{\\gcd(r,n)}$. The fixed colorings are exactly those periodic with period $\\gcd(r,n)$, determined by their values on any $\\gcd(r,n)$ consecutive positions.",
-    "significance": "supporting",
+    "type": "technique",
+    "title": "General Pólya Theorem: Proof via Cycle Structure from BurnsideCountingOQ03",
+    "content": "The general Pólya theorem `polya_enumeration_theorem_CN` is fully proved (0 sorries) by composing three lemmas, with the cycle structure result imported from `Proofs.BurnsideCountingOQ03`:\n\n**(1) Burnside**: $n \\cdot |\\text{Orbits}| = \\sum_{r \\in \\mathbb{Z}/n\\mathbb{Z}} |\\text{Fix}(r)|$ — from Mathlib's `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group`.\n\n**(2) Cycle structure** (from `BurnsideCountingOQ03.polya_cyclic_fixed_count`): $|\\text{Fix}(r)| = k^{\\gcd(r.\\text{val},n)}$. A coloring $c$ is fixed by rotation $r$ iff $c(i-r) = c(i)$ for all $i$, which forces $c$ to be periodic with period $\\gcd(r,n)$. Thus $c$ is completely determined by its values on any $\\gcd(r,n)$ consecutive positions — giving exactly $k^{\\gcd(r,n)}$ fixed colorings.\n\n**(3) Totient grouping** (from `BurnsideCountingOQ03.polya_sum_identity`): $\\sum_{r \\in \\mathbb{Z}/n\\mathbb{Z}} k^{\\gcd(r,n)} = \\sum_{d|n} \\varphi(n/d) \\cdot k^d = \\sum_{d'|n} \\varphi(d') \\cdot k^{n/d'}$. This groups rotations by their gcd with $n$: there are exactly $\\varphi(n/d)$ rotations with $\\gcd(r,n) = d$, and substituting $d' = n/d$ yields the standard Pólya divisor sum.",
+    "mathContext": "Key: $|\\text{Fix}(r)| = k^{\\gcd(r.\\text{val},n)}$ because fixed colorings are exactly those periodic with period $\\gcd(r,n)$. Totient identity: $\\sum_{r=0}^{n-1} k^{\\gcd(r,n)} = \\sum_{d \\mid n} \\varphi(d) \\cdot k^{n/d}$ (grouping by gcd value $d' = n/d$, using $|\\{r : \\gcd(r,n) = d\\}| = \\varphi(n/d)$).",
+    "significance": "key",
     "relatedConcepts": [
-      "sorry in Lean 4",
       "cycle structure of permutations",
       "periodic colorings",
       "gcd and cycles",
-      "Mathlib TODO"
+      "BurnsideCountingOQ03",
+      "totient grouping",
+      "Pólya sum identity",
+      "polya_cyclic_fixed_count"
     ],
     "prerequisites": [
       "permutation cycle structure",
       "periodic sequences",
-      "gcd arithmetic"
+      "gcd arithmetic",
+      "Euler totient function"
     ]
   },
   {

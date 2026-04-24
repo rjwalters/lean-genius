@@ -252,6 +252,16 @@
       "targetId": "stirling-formula",
       "relationship": "related",
       "description": "Stirling's approximation $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ relies on MVT-type estimates to control the error in the trapezoidal approximation of $\\ln(n!) = \\sum \\ln k \\approx \\int_1^n \\ln x\\,dx$. The Euler-Maclaurin formula, which refines this, uses higher-order MVT (Taylor remainder) at each step"
+    },
+    {
+      "targetId": "mean-value-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Taylor's Theorem with Lagrange Remainder — the direct quantitative strengthening of MVT: instead of $f(b) - f(a) = f'(c)(b-a)$ for one intermediate point, Taylor gives $f(b) = f(a) + f'(a)(b-a) + \\cdots + \\frac{f^{(n)}(a)}{n!}(b-a)^n + \\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$ for some $c$. The Lagrange remainder $R_n = \\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$ is the MVT applied to the $n$-th order error, making MVT the $n=0$ base case of Taylor's theorem."
+    },
+    {
+      "targetId": "mean-value-theorem-oq-03",
+      "relationship": "extends",
+      "description": "Vector-Valued Mean Value Inequality — the multivariable extension: for $f : \\mathbb{R}^n \\to \\mathbb{R}^m$, the scalar MVT fails (no point where $f'(c)(b-a) = f(b) - f(a)$ in general), but the inequality $\\|f(b) - f(a)\\| \\leq \\sup_{c \\in [a,b]} \\|f'(c)\\| \\cdot \\|b - a\\|$ holds. This OQ proves the vector-valued version in Lean, the generalization used in numerical analysis and optimal control where equality is unavailable."
     }
   ],
   "leanFile": {
