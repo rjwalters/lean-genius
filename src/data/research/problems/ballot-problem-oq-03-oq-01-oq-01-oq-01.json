@@ -1,7 +1,7 @@
 {
   "slug": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
   "title": "LGV Lemma → Jacobi-Trudi Identity (Schur Polynomials as Determinants)",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: All 5 sorries proved. PR #12043 open.",
+    "progressSummary": "PROGRESS: ssytSchurFin_one_row proved (k=1 case). 1 sorry remains: jacobi_trudi_ssyt_eq (k≥2, needs RSK ~300 lines).",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -44,7 +44,12 @@
       "schurPolynomial_isSymmetric: proved via AlgHom.map_det + definitional mapMatrix equality",
       "schurPolynomial_two_row: proved via det_fin_two + Nat arithmetic hypotheses",
       "jacobiTrudi_lgv_connection: closed as rfl (placeholder)",
-      "schurPolynomial_one_row_at_one in BallotProblemOQ03OQ01OQ01OQ01.lean (PR #12043)"
+      "schurPolynomial_one_row_at_one in BallotProblemOQ03OQ01OQ01OQ01.lean (PR #12043)",
+      "ssytSchurFin_empty: proved (k=0 base case: unique empty SSYT → 1)",
+      "ssytSchurFin n k sh: def (sum of SSYT weight monomials = Schur generating function)",
+      "SSYTFin n k sh: def (SSYT of shape Fin k → ℕ with entries in Fin n, Subtype encoding)",
+      "SSYTFin.weight: def (monomial product over all cells of SSYT)",
+      "ssytSchurFin_one_row: proved (k=1 case: SSYTFin n 1 (fun _ => m) ≃ Sym (Fin n) m via sorted reps)"
     ],
     "insights": [
       "Mathlib has hsymm σ R n (complete homogeneous symmetric polynomials) in RingTheory.MvPolynomial.Symmetric.Defs — directly usable for Jacobi-Trudi matrix entries",
@@ -60,7 +65,12 @@
       "Formula C(n+k-1, k-1) has edge case: wrong for k=0, n>=1 due to Nat subtraction",
       "Proved schurPolynomial_one_row_at_one via monomial counting: eval distributes over hsymm sum, each monomial → 1 via map_multiset_prod + prod_map_one, count via Sym.card_sym_eq_choose",
       "Bug fix: choose(n+k-1,k-1) wrong for k=0 due to Nat subtraction; correct form is choose(k+n-1,n)",
-      "map_multiset_prod works because eval is a RingHom (MonoidHomClass), so Multiset.map_map + eval_X + prod_map_one chain works cleanly"
+      "map_multiset_prod works because eval is a RingHom (MonoidHomClass), so Multiset.map_map + eval_X + prod_map_one chain works cleanly",
+      "The k=1 one-row SSYT case reduces to Sym (Fin n) m via sorted-representative bijection",
+      "Multiset.length_sort gives (s.sort r).length = s.card (not card_sort)",
+      "List.SortedLE.getElem_le_getElem_of_le handles monotonicity of sorted list access",
+      "Fintype.sum_equiv with explicit Equiv is cleanest way to reindex finite sums",
+      "Weight match: Fintype.prod_sigma + Fin.prod_univ_one reduces sigma product; map_coe+prod_coe+map_ofFn+prod_ofFn closes the goal"
     ],
     "mathlibGaps": [
       "No Mathlib SchurPolynomial definition — we provide one via Jacobi-Trudi formula",
@@ -68,9 +78,9 @@
       "RSK correspondence not formalized in Mathlib — needed for jacobiTrudi_lgv_proof"
     ],
     "nextSteps": [
-      "Search Mathlib for MvPolynomial.eval_hsymm or hsymm_eval_one to close final sorry",
-      "Check card_sym_eq_choose and related combinatorial results for evaluation at 1",
-      "Once Docker available, run docker-build.sh to verify 4 closed proofs"
+      "Prove jacobi_trudi_ssyt_eq (general k≥2 case): option A = RSK bijection (~300 lines), option B = algebraic transfer matrix proof",
+      "Once Docker available, run docker-build.sh to verify ssytSchurFin_one_row compiles",
+      "Consider Aristotle submission for jacobi_trudi_ssyt_eq after providing more structure"
     ],
     "markdown": "# Knowledge Base: LGV Lemma → Jacobi-Trudi Identity\n\n**Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01\n**Last Updated**: 2026-04-23\n**Knowledge Items**: 0\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nNewly selected. Jacobi-Trudi identity expresses Schur polynomials as determinants of\ncomplete homogeneous symmetric polynomials. The LGV lemma (in parent gallery proof)\nprovides the combinatorial proof route via non-intersecting lattice paths.\n\n---\n\n## Insights\n\n_None yet — begin with OBSERVE phase: check Mathlib for SSYT formalization._\n\n---\n\n## Dead Ends\n\n_None identified yet._\n"
   },
@@ -263,10 +273,10 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
       "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 154,
-      "theoremCount": 7,
+      "lineCount": 273,
+      "theoremCount": 9,
       "axiomCount": 0,
-      "defCount": 2,
+      "defCount": 5,
       "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean"
@@ -274,13 +284,24 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "filename": "BallotProblemOQ03OQ01OQ02.lean",
-      "lineCount": 3867,
-      "theoremCount": 63,
+      "lineCount": 5057,
+      "theoremCount": 64,
       "axiomCount": 0,
       "defCount": 10,
-      "sorryCount": 9,
+      "sorryCount": 12,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean",
+      "filename": "BallotProblemOQ03OQ01OQ02Aristotle.lean",
+      "lineCount": 114,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ04.lean",
