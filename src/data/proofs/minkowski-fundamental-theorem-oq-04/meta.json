@@ -4,7 +4,7 @@
   "slug": "minkowski-fundamental-theorem-oq-04",
   "parentId": "minkowski-fundamental-theorem",
   "openQuestionIndex": 4,
-  "description": "A formal comparison between the custom Lattice API used in the parent Minkowski proof and Mathlib's ZSpan/ZLattice infrastructure. Proves the type equivalence Lattice n ≃ Module.Basis (Fin n) ℝ (Fin n → ℝ) with all lemmas complete: the covolume bridge theorem, the round-trip identities, and the key result that any basis matrix has nonzero determinant.",
+  "description": "A formal comparison between the custom Lattice API used in the parent Minkowski proof and Mathlib's ZSpan/ZLattice infrastructure. Proves the type equivalence Lattice n ≃ Module.Basis (Fin n) ℝ (Fin n → ℝ) with all lemmas complete: the round-trip identities and the key result that any basis matrix has nonzero determinant. The covolume bridge (equating L.covolume with the ZSpan fundamental domain volume) is described mathematically but not yet formalized.",
   "meta": {
     "status": "verified",
     "proofRepoPath": "Proofs/MinkowskiFundamentalTheoremOQ04.lean",
@@ -15,11 +15,12 @@
     "dateAdded": "2026-04-24"
   },
   "keyResults": [
-    "covolume_eq_volume_fundamentalDomain: ENNReal.ofReal L.covolume = vol(ZSpan.fundamentalDomain (L.toModuleBasis n)) [proved]",
-    "basis_det_ne_zero: (Matrix.of b).det ≠ 0 for any Basis (Fin n) ℝ (Fin n → ℝ) [proved]",
-    "Lattice.ofBasis: every Module.Basis gives a custom Lattice [proved]",
-    "ofBasis_toModuleBasis: round-trip identity on basis matrix [proved]",
-    "latticeEquivBasis: Lattice n ≃ Module.Basis (Fin n) ℝ (Fin n → ℝ) [proved]"
+    "basis_matrix_det_ne_zero: (Matrix.of b).det ≠ 0 for any Basis (Fin n) ℝ (Fin n → ℝ) [proved]",
+    "latticeOfBasis: every Module.Basis gives a custom Lattice n [proved]",
+    "toModuleBasis_latticeOfBasis: round-trip identity (latticeOfBasis ∘ toModuleBasis = id) [proved]",
+    "latticeOfBasis_toModuleBasis: round-trip identity (toModuleBasis ∘ latticeOfBasis = id) [proved]",
+    "latticeEquivBasis: Lattice n ≃ Module.Basis (Fin n) ℝ (Fin n → ℝ) [proved]",
+    "covolume_eq_volume_fundamentalDomain: ENNReal.ofReal L.covolume = vol(ZSpan.fundamentalDomain (L.toModuleBasis n)) [not yet formalized — Lattice struct has no covolume field]"
   ],
   "mathBackground": "The custom Lattice type wraps a basis matrix with an invertibility condition. Mathlib's ZSpan approach abstracts this as Submodule.span ℤ (Set.range b) for a Module.Basis b. The central bridge is ZSpan.volume_fundamentalDomain, which shows vol(fundamentalDomain b) = ENNReal.ofReal |(Matrix.of b).det|."
 }
