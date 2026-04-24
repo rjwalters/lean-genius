@@ -1,25 +1,30 @@
 # Research State: konigsberg-oq-02-oq-01
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-04-23T19:15:35+02:00
-**Iteration**: 1
+**Since**: 2026-04-24T04:30:00+02:00
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Hierholzer's algorithm infrastructure. Key sub-lemma and splice proved. 3 sorries remain.
 
 ## Active Approach
-None yet.
+WF induction on `D.arcCount - current_circuit_length`:
+1. `maximal_balanced_trail_is_circuit` (proved) — greedy trail is a circuit
+2. `Walk.splice` (proved) — circuit extension at shared vertex
+3. `removeArcList_balanced` (sorry) — residual remains balanced after removing circuit
+4. Main WF induction (sorry) — combine above in Hierholzer loop
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1 (Hierholzer WF induction)
 
 ## Blockers
-None.
+- `removeArcList_balanced`: needs `circuit_fst_perm_snd` count argument (medium difficulty)
+- WF induction: straightforward once `removeArcList_balanced` is proved
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+Prove `removeArcList_balanced` using `circuit_fst_perm_snd` (already proved as private lemma in same file).
+Then complete Hierholzer WF induction.
