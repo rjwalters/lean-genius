@@ -22,7 +22,7 @@
     "dateAdded": "2026-04-24",
     "axiomCount": 0,
     "assumptions": "3 sorries remain: (1) removeArcList_arcCount (arcCount formula for residual subgraph), (2) removeArcList_balanced (balance preserved after removing a circuit), (3) directed_euler_circuit_sufficient_corrected (WF induction combining splice + balance lemmas). The key sub-lemma (maximal trail is circuit) and Walk.splice are fully proved.",
-    "lineCount": 436,
+    "lineCount": 992,
     "theoremCount": 8,
     "definitionCount": 5,
     "originalContributions": [
@@ -61,7 +61,7 @@
   },
   "leanFile": {
     "namespace": "KonigsbergOQ02OQ01",
-    "lineCount": 436,
+    "lineCount": 992,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 5,

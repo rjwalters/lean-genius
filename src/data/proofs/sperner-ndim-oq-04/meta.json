@@ -36,7 +36,7 @@
     ],
     "dateAdded": "2026-04-22",
     "axiomCount": 0,
-    "lineCount": 408,
+    "lineCount": 480,
     "assumptions": "2 sorries: (1) kuhn_walk_reaches_fc — as stated FALSE for arbitrary KuhnState; needs reformulation with IsKuhnWalkState invariant + door history; adj_unique_facet (now in SpernerTriangulation) closes the previous-simplex revisit case. (2) kuhnPathStart_is_fc — as stated potentially FALSE (walk can terminate at boundary-exit non-FC); needs reformulation to existential form.",
     "mathlib_version": "4.26.0"
   },
@@ -235,7 +235,7 @@
       "BigOperators"
     ],
     "namespace": "SpernerNDimOQ04",
-    "lineCount": 408,
+    "lineCount": 480,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 5,
