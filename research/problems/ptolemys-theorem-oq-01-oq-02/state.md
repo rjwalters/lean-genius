@@ -1,25 +1,25 @@
 # Research State: ptolemys-theorem-oq-01-oq-02
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-04-22T16:06:35+02:00
-**Iteration**: 1
+**Since**: 2026-04-24T00:00:00+02:00
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Proof complete. PR filed.
 
 ## Active Approach
-None yet.
+Spherical Ptolemy via chord-arc identity: unit sphere chord ‖a−b‖ = 2·sin(arccos(⟨a,b⟩)/2).
+Euclidean Ptolemy → substitution → divide by 4.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Blockers
 None.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+None — proof is complete.
