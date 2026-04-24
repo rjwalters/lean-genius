@@ -1,5 +1,154 @@
 [
   {
+    "id": "ann-module-overview",
+    "proofId": "dissection-of-cubes-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 42
+    },
+    "type": "context",
+    "title": "Module Overview: Packing as Dissection Relaxation",
+    "content": "This file extends DissectionOfCubes.lean (Wiedijk #82 base impossibility) with a richer analysis of packing problems. The module docstring enumerates 6 key results: (1) the packing/dissection hierarchy (packings relax coverage), (2) volume bound infrastructure, (3) the dissection-packing bridge theorem, (4) geometric coverage formalization (replacing `covers_unit_cube : True`), (5) corrected de Bruijn tiling formulation, (6) the 2D vs 3D dimension contrast. The `open DissectionOfCubes` namespace on line 43 imports the base impossibility result `dissection_of_cubes` that drives most of the new theorems.",
+    "mathContext": "Architecture: $\\mathtt{DissectionOfCubes.lean}$ (base file) $\\hookrightarrow$ $\\mathtt{DissectionOfCubesOQ03.lean}$ (this file). The base file proves the core impossibility $\\mathtt{dissection\\_of\\_cubes}: \\forall d, d.\\mathrm{cubes}.\\mathrm{Nonempty} \\to \\neg d.\\mathrm{allDifferentSizes}$, leaving $\\mathtt{covers\\_unit\\_cube} := \\mathtt{True}$ as a placeholder. This file replaces that placeholder with a proper geometric predicate and builds the packing infrastructure on top.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "DissectionOfCubes base file",
+      "Wiedijk #82",
+      "proof architecture",
+      "modular formalization"
+    ],
+    "prerequisites": [
+      "DissectionOfCubes.lean",
+      "Mathlib.Tactic",
+      "Lean 4 namespaces"
+    ]
+  },
+  {
+    "id": "ann-dissection-embeds-packing",
+    "proofId": "dissection-of-cubes-oq-03",
+    "range": {
+      "startLine": 109,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Every Dissection is a Packing: The Embedding Theorems",
+    "content": "Two short theorems formalize the inclusion dissection ⊆ packing. `dissection_packing_cubes` proves d.toPacking.cubes = d.cubes by `rfl` — the coercion simply forgets the coverage field, so the cube sets are definitionally equal. `dissection_packing_preserves_sizes` proves the allDifferentSizes property is preserved in both directions: it unfolds both definitions and applies `simp [CubeDissection.toPacking]`. The biconditional (↔) rather than just the forward direction (→) is important for the bridge theorem: it lets the bridge pull the distinctness hypothesis from the packing back to the dissection.",
+    "mathContext": "$\\mathrm{diss} \\hookrightarrow \\mathrm{pack}$: every $\\mathtt{CubeDissection}$ embeds into a $\\mathtt{CubePacking}$ via $\\mathtt{toPacking}$. Formally: $d.\\mathtt{toPacking}.\\mathtt{cubes} = d.\\mathtt{cubes}$ (by $\\mathtt{rfl}$) and $d.\\mathtt{toPacking}.\\mathtt{allDifferentSizes} \\Leftrightarrow d.\\mathtt{allDifferentSizes}$. The reverse inclusion fails: packings need not cover $[0,1]^3$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "CubeDissection.toPacking coercion",
+      "allDifferentSizes predicate",
+      "functor from dissections to packings"
+    ],
+    "prerequisites": [
+      "CubeDissection structure",
+      "CubePacking structure",
+      "toPacking coercion"
+    ]
+  },
+  {
+    "id": "ann-volume-bound-infra",
+    "proofId": "dissection-of-cubes-oq-03",
+    "range": {
+      "startLine": 124,
+      "endLine": 145
+    },
+    "type": "definition",
+    "title": "Volume Infrastructure: totalVolume and the Deleted Axioms",
+    "content": "`CubePacking.totalVolume` computes the sum of cube volumes in a packing as `p.cubes.sum Cube.volume` — a Finset sum of the volume function `s³` over all cubes. Two axioms that appeared in an earlier version of the file were deleted: `packing_volume_bound` (total volume ≤ 1) and `dissection_volume_exact` (total volume = 1 for dissections). Both were deleted because (1) they are unused in any proof in the file, and (2) their rigorous proofs would require Lebesgue measure theory for the disjointness-implies-non-overlap part. Deleting unused axioms is an axiom hygiene improvement — they looked like soundness gaps without contributing any proofs.",
+    "mathContext": "$\\mathtt{totalVolume}(P) = \\sum_{c \\in P.\\mathtt{cubes}} c.\\mathtt{side}^3$. The informal claims: $\\mathtt{totalVolume}(P) \\leq 1$ for any packing (cubes fit inside $[0,1]^3$ and are disjoint) and $\\mathtt{totalVolume}(D) = 1$ for any dissection (exact coverage). Both require measure-theoretic infrastructure: additivity of volume on disjoint sets plus a covering argument.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.sum",
+      "Cube.volume",
+      "Lebesgue measure",
+      "axiom hygiene",
+      "unused axiom deletion"
+    ],
+    "prerequisites": [
+      "Cube.volume = side^3",
+      "Finset.sum in Lean 4",
+      "Lebesgue measure theory (for proper proof)"
+    ]
+  },
+  {
+    "id": "ann-dimension-contrast",
+    "proofId": "dissection-of-cubes-oq-03",
+    "range": {
+      "startLine": 277,
+      "endLine": 299
+    },
+    "type": "insight",
+    "title": "2D vs 3D Contrast: Squared Squares Exist, Cubed Cubes Don't",
+    "content": "The sharpest philosophical point of this file: the same impossibility question has opposite answers in 2D and 3D. `squared_square_exists` is a placeholder (proved as `1 + 1 = 2`) that references the positive 2D result: Duijvestijn's 1978 computer search found the smallest simple perfect squared square (21 squares, side 112). `cube_packing_imperfect` packages the bridge theorem as a universally quantified statement — a consequence of `distinct_packing_volume_lt_one`. `higher_dim_impossibility` directly restates the base file impossibility. The 3D proof fails in 2D because the geometric descent argument requires each corner of a 3D floor to be covered by a cube with a larger footprint — in 2D, the 'top edge' covering argument breaks down at the corners.",
+    "mathContext": "2D: $\\exists$ a perfect squared square (finitely many distinct squares tiling a square). The Sprague 1939 construction has 55 squares; Duijvestijn 1978 found the minimal: 21 squares in a $112 \\times 112$ square.\n3D: $\\nexists$ a perfect cubed cube (Wiedijk #82). The key asymmetry: in 3D, covering the boundary of the minimum cube's top face requires smaller cubes from all sides, enabling the infinite descent. In 2D, the corners of the minimum square's top edge can be shared with adjacent squares that are not smaller.",
+    "significance": "key",
+    "relatedConcepts": [
+      "perfect squared square",
+      "Duijvestijn 1978",
+      "Sprague 1939",
+      "dimension contrast",
+      "squared square vs cubed cube"
+    ],
+    "prerequisites": [
+      "distinct_packing_volume_lt_one",
+      "dissection_of_cubes (base file)",
+      "2D vs 3D geometric descent"
+    ]
+  },
+  {
+    "id": "ann-descent-chains",
+    "proofId": "dissection-of-cubes-oq-03",
+    "range": {
+      "startLine": 440,
+      "endLine": 493
+    },
+    "type": "concept",
+    "title": "Descent Chains: Path A and the sorry-free exfalso Route",
+    "content": "`global_min_not_reaching_top` is the second of the two geometric sorries: the globally smallest cube cannot reach height 1 (z + side < 1). The proof sketch in the docstring distinguishes two sub-cases: if c_min.z = 0 and side = 1, then c_min is the only cube (filling the whole container), but exists_smaller_cube would give a contradiction; if c_min.z > 0, the cubes below constrain the geometry. `descent_chains_from_coverage` proves `∀ n, hasDecreasingChain d n` entirely by `exfalso` — it never constructs a chain at all. Instead: take the global minimum c_min, show it doesn't reach the top, apply exists_smaller_cube to get a strictly smaller c', but hc_min_le says c_min.side ≤ c'.side — contradiction via linarith. This proves universally quantified chain lengths vacuously from the contradiction.",
+    "mathContext": "Let $c^* = \\arg\\min_{c \\in d.\\mathrm{cubes}} c.\\mathrm{side}$. Path A chain logic: $\\mathtt{hasDecreasingChain}(d, n) \\Leftarrow \\mathtt{descent\\_chains\\_from\\_coverage}(d, \\ldots)$. The `exfalso` proof: $c^*$ is minimal $\\Rightarrow$ $c^*.z + c^*.\\mathrm{side} < 1$ (sorry) $\\Rightarrow$ $\\exists c'$ with $c'.\\mathrm{side} < c^*.\\mathrm{side}$ (from `exists_smaller_cube`) $\\Rightarrow$ $c^*.\\mathrm{side} \\leq c'.\\mathrm{side}$ (minimality) $\\Rightarrow$ contradiction. The universally quantified conclusion $\\forall n, P(n)$ follows trivially from `False.elim`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "hasDecreasingChain",
+      "exfalso tactic",
+      "global minimum descent",
+      "vacuous universals from contradiction",
+      "exists_smaller_cube"
+    ],
+    "prerequisites": [
+      "global_min_not_reaching_top (sorry)",
+      "exists_smaller_cube",
+      "Finset.exists_min_image",
+      "hasDecreasingChain definition"
+    ]
+  },
+  {
+    "id": "ann-axiom-audit",
+    "proofId": "dissection-of-cubes-oq-03",
+    "range": {
+      "startLine": 545,
+      "endLine": 599
+    },
+    "type": "concept",
+    "title": "Axiom Audit: From 3 Unsound Axioms to 2 Scoped Sorries",
+    "content": "The axiom audit documents the net reduction from 3 original OQ03 axioms to 0, with 2 geometric sorries remaining. The 3 eliminated axioms: (1) `packing_volume_bound` — deleted as unused, (2) `dissection_volume_exact` — deleted as unused, (3) `debruijn_brick_tiling` — was `↔ True` (vacuously true, mathematically meaningless), replaced with proper Box3D/CanTileWithBrick formulation and proved forward direction. The 2 remaining sorries (`smallest_above_is_smaller` and `global_min_not_reaching_top`) have clear scoping and documented difficulty estimates. The audit also shows that `all_different_implies_long_chains_axiom` from the base file is now derivable from `exists_smaller_cube` + coverage — reducing from 2 base-file axioms to 1 (only `smaller_cube_above_axiom` remains genuinely hard).",
+    "mathContext": "Axiom hygiene principle: an `axiom` with `↔ True` RHS is equivalent to `theorem x : True := trivial` — it proves nothing and assumes nothing, but misleads readers into thinking something is asserted. The correct fix: replace with a genuine predicate and prove the forward direction. Net result: 3 OQ03 axioms → 0; 2 base axioms → 1 derivable + 1 scoped sorry. The 2 remaining sorries are classified by difficulty (HARD: geometric confinement; MEDIUM: global minimum geometry) with explicit resolution paths.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "axiom hygiene",
+      "sorry vs axiom",
+      "debruijn_brick_tiling fix",
+      "all_different_implies_long_chains derivation",
+      "sorry classification"
+    ],
+    "prerequisites": [
+      "smallest_above_is_smaller (sorry)",
+      "global_min_not_reaching_top (sorry)",
+      "de Bruijn corrected formulation",
+      "axiom vs sorry distinction in Lean 4"
+    ]
+  },
+  {
     "id": "ann-cube-packing-structure",
     "proofId": "dissection-of-cubes-oq-03",
     "range": {
