@@ -59,7 +59,7 @@
     "openQuestions": [
       "**[Addressed in `hermite-lindemann`]** Formalize the Lindemann-Weierstrass theorem: if $\\alpha_1, \\ldots, \\alpha_n$ are distinct algebraic numbers, then $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are linearly independent over $\\mathbb{Q}$. This implies both $e$ and $\\pi$ are transcendental \u2014 Hermite (1873) proved $e$, Lindemann (1882) proved $\\pi$ using the same method.",
       "**[Addressed in `algebraic-numbers-countable-oq-02`]** Prove in Lean 4 that $\\mathbb{R}$ is uncountable, completing the 1874 paper. The companion entry `algebraic-numbers-countable-oq-02` formalizes the diagonal argument ($|\\mathbb{R}| = 2^{\\aleph_0} > \\aleph_0$); `algebraic-numbers-countable-oq-02-oq-02` provides Cantor's original nested intervals proof from the same paper.",
-      "Formalize the Gelfond-Schneider theorem: if $\\alpha$ is algebraic ($\\alpha \\neq 0, 1$) and $\\beta$ is irrational algebraic, then $\\alpha^\\beta$ is transcendental. This implies $2^{\\sqrt{2}}$ is transcendental (Hilbert's seventh problem, solved 1934). A Lean proof would require formalizing complex exponentials and the auxiliary function method.",
+      "**[Addressed in `gelfond-schneider`]** Formalize the Gelfond-Schneider theorem: if $\\alpha$ is algebraic ($\\alpha \\neq 0, 1$) and $\\beta$ is irrational algebraic, then $\\alpha^\\beta$ is transcendental. This implies $2^{\\sqrt{2}}$ is transcendental (Hilbert's seventh problem, solved 1934). The companion entry `gelfond-schneider` formalizes this result, proving $2^{\\sqrt{2}}$ is transcendental as a direct application.",
       "Formalize Baker's theorem (1966): if $\\log \\alpha_1, \\ldots, \\log \\alpha_n$ are linearly independent over $\\mathbb{Q}$ for nonzero algebraic $\\alpha_i$, then they are linearly independent over $\\overline{\\mathbb{Q}}$. Baker's theorem is the most powerful tool in transcendence theory, implying effective lower bounds for linear forms in logarithms.",
       "Formalize Cantor's original height function proof (1874): define $H(a_0 + a_1 x + \\cdots + a_n x^n) = n + |a_0| + \\cdots + |a_n|$, show each height $H = k$ contains finitely many polynomials each with finitely many roots, and the resulting enumeration covers all algebraic numbers. This would give an explicit bijection $\\mathbb{N} \\to$ algebraic numbers, complementing the abstract Mathlib-based proofs."
     ]
@@ -150,6 +150,26 @@
       "targetId": "denumerability-rationals",
       "relationship": "foundational",
       "description": "Countability of $\\mathbb{Q}$ is the degree-1 base case of the algebraic stratification: $\\text{alg}_1(\\mathbb{R}) = \\mathbb{Q}$ (the algebraic reals of exact degree 1 are precisely the rationals, since they are roots of linear polynomials $ax + b$ with $a, b \\in \\mathbb{Q}$). The degree stratification $\\text{Alg}(\\mathbb{R}) = \\bigcup_{d \\geq 1} \\text{alg}_d(\\mathbb{R})$ is a countable union starting from this $\\mathbb{Q} = \\text{alg}_1$, and the countability of $\\mathbb{Q}$ proved in denumerability-rationals is the prototype for the countability of each degree-$d$ stratum by the same finite-polynomial-coefficient argument."
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "complementary",
+      "description": "Liouville's Theorem on Transcendental Numbers — the constructive complement to Cantor's cardinality argument. Liouville (1844) showed that algebraic numbers of degree $d$ cannot be approximated by rationals to better than order $1/q^d$; numbers violating this bound (like $\\sum_{k=1}^{\\infty} 10^{-k!}$) must be transcendental. This gives explicit examples, whereas Cantor's 1874 argument (formalized here) proves transcendentals are cardinality-'most' of $\\mathbb{R}$ without constructing any. The two approaches are dual: the Lean formalization here uses Mathlib's `Algebraic.countable` to bypass constructive enumeration, while `liouville-theorem` formalizes the Diophantine approximation criterion. Together they represent the two founding strategies of transcendence theory — counting vs. construction."
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "implication",
+      "description": "Transcendence of $e$ — the first concrete member of the uncountable transcendental complement. Hermite (1873), one year before Cantor's 1874 paper, proved $e$ is transcendental by showing it is not a root of any nonzero rational polynomial. This entry proves that transcendentals are cardinality-'most' reals; `e-transcendental` proves $e$ specifically lies in that complement. The contrast is instructive: Cantor's argument establishes the transcendental complement is uncountable without naming a single element, while Hermite's proof identifies $e$ without using cardinality. Both results were needed to understand the landscape: existence, prevalence, and specific examples."
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "implication",
+      "description": "Transcendence of $\\pi$ — Lindemann (1882) applied Hermite's exponential method to prove $\\pi$ transcendental, settling the ancient question of circle squaring. The Lindemann-Weierstrass theorem generalizes both: if $\\alpha_1, \\ldots, \\alpha_n$ are distinct algebraic numbers, then $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are linearly independent over $\\mathbb{Q}$. Since $e^{i\\pi} = -1$ (Euler's identity) and $-1$ is algebraic, $i\\pi$ cannot be algebraic — hence $\\pi$ is transcendental. Together with this entry's proof that algebraic numbers are countable and $\\mathbb{R}$ is uncountable, `pi-transcendental` shows that $\\pi$ is among the uncountable majority."
+    },
+    {
+      "targetId": "gelfond-schneider",
+      "relationship": "implication",
+      "description": "The Gelfond-Schneider theorem: if $\\alpha$ is algebraic ($\\alpha \\neq 0, 1$) and $\\beta$ is irrational algebraic, then $\\alpha^\\beta$ is transcendental. Proved independently by Gelfond and Schneider (1934), solving Hilbert's seventh problem: $2^{\\sqrt{2}}$ (Hilbert's example) is transcendental. This is the most powerful consequence of algebraic countability formalized in the gallery: any number constructed by exponentiating an algebraic base to an irrational algebraic power must lie in the transcendental complement whose existence this entry establishes by cardinality. This open question was listed in this entry's `openQuestions` and has since been formalized."
     }
   ],
   "references": [

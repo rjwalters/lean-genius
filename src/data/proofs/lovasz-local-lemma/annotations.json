@@ -14,7 +14,10 @@
     "relatedConcepts": [
       "probabilistic method",
       "bad event avoidance",
-      "symmetric LLL"
+      "symmetric LLL",
+      "hypergraph 2-coloring",
+      "ramsey-r4k-extensions",
+      "ramseys-theorem"
     ],
     "prerequisites": [
       "pow_pos",
@@ -38,7 +41,9 @@
       "Finset.prod_pos",
       "Finset.prod_le_one",
       "LLL condition",
-      "dependency neighborhood"
+      "dependency neighborhood",
+      "Shearer's theorem",
+      "lovasz-local-lemma-oq-02"
     ],
     "prerequisites": [
       "Finset.prod_pos",
@@ -62,7 +67,9 @@
       "k-SAT",
       "probabilistic method",
       "random k-CNF",
-      "satisfiability"
+      "satisfiability",
+      "constraint satisfaction",
+      "Moser-Tardos algorithm"
     ],
     "prerequisites": [
       "pow2_plus_one_le",

@@ -102,7 +102,39 @@ Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following
 
 ### Next Steps
 
-1. **Add unique-facet axiom to SpernerTriangulation**: `∀ s k₁ k₂ s' k₁' k₂', K.adj s k₁ = some (s', k₁') → K.adj s k₂ = some (s', k₂') → k₁ = k₂`
-2. **Strengthen KuhnState**: Add per-visited-simplex entry/exit door records (path invariant)
-3. **Prove kuhnWalk_never_revisits**: Using the two additions above
-4. **Then kuhn_walk_reaches_fc and kuhnPathStart_is_fc** follow from non-revisiting
+1. ~~Add unique-facet axiom to SpernerTriangulation~~ **DONE** (2026-04-24)
+2. **Reformulate kuhnPathStart_is_fc** to existential: `∃ s₀ k₀ ..., IsFC c K (kuhnPathStart ...)`
+3. **Reformulate kuhn_walk_reaches_fc** with `IsKuhnWalkState` invariant ensuring valid boundary-door walk
+4. **Add door history to KuhnState**: `List (Simplex × Fin(d+1) × Fin(d+1))` for entry/exit per visited simplex
+5. **Prove kuhnWalk_never_revisits** using adj_unique_facet + door history
+
+---
+
+## Session 2026-04-24 (Session 3) — Mathematical Analysis + adj_unique_facet
+
+**Mode**: FRESH (continued from Session 2)
+**Outcome**: Infrastructure progress; 0 sorries closed
+
+### What I Did
+
+1. Deep analysis of `kuhn_walk_reaches_fc` and `kuhnPathStart_is_fc`
+2. Added `adj_unique_facet` to SpernerTriangulation: closes the previous-simplex revisit case
+3. Found that both theorems as stated are incorrect and need reformulation
+4. Updated docstrings in SpernerNDimOQ04.lean with correct analysis
+
+### Key Findings
+
+- **`kuhnPathStart_is_fc` may be FALSE**: Walk can exit via K.adj sₙ k_out = none, returning non-FC sₙ. All non-k_out vertices are on face Fin.last d with color ≠ d (IsSperner). The k_out vertex's color is unconstrained — if ≠ d, sₙ is non-FC. Correct form: existential over starting boundary doors.
+- **`kuhn_walk_reaches_fc` is FALSE for arbitrary KuhnState**: e.g. non-FC state with doorDegree = 0 returns immediately (non-FC). Needs `IsKuhnWalkState` predicate.
+- **`adj_unique_facet` closes j = n-2 case**: If walk would revisit sₙ₋₁, then K.adj sₙ k_out = some(sₙ₋₁, ?) and K.adj sₙ kₙ = some(sₙ₋₁, ?) by adj_symm. So k_out = kₙ by adj_unique_facet, contradicting k_out ≠ kₙ. ✓
+- **3-cycles consistent with adj_unique_facet + Kuhn compatibility**: Preventing all cycles is a geometric property of Δd, not derivable from abstract axioms.
+
+### Files Modified
+
+- `proofs/Proofs/SpernerNDim.lean` (added `adj_unique_facet` to SpernerTriangulation)
+- `proofs/Proofs/SpernerNDimOQ04.lean` (improved docstrings with correct analysis)
+
+### Remaining Sorries (2)
+
+1. `kuhn_walk_reaches_fc` — FALSE as stated; needs reformulation with IsKuhnWalkState invariant
+2. `kuhnPathStart_is_fc` — Potentially FALSE; needs reformulation to existential form

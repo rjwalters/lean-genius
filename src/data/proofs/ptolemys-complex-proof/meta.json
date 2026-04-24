@@ -42,7 +42,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Ptolemy proved his theorem geometrically in the *Almagest* (c. 150 AD) for a practical astronomical purpose: constructing a table of chords, the ancient predecessor to the modern sine function. Applied to a circle of diameter 1, Ptolemy's theorem directly yields the sine addition formula $\\sin(\\alpha + \\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$, which Ptolemy used to compute chord lengths. The classical proof works by constructing an auxiliary point on the circumscribed circle and invoking similar triangles.\n\nThe complex-number proof is a 19th-century innovation that could not have existed before Argand (1806) and Gauss (1831) gave geometric interpretations of $\\mathbb{C}$. Once points in the Euclidean plane are identified with complex numbers, Ptolemy's inequality becomes a consequence of two purely analytic facts: multiplicativity of the complex modulus ($|ab| = |a||b|$) and the triangle inequality ($|a+b| \\leq |a| + |b|$). The key algebraic identity $(z_1 - z_3)(z_2 - z_4) = (z_1 - z_2)(z_3 - z_4) + (z_2 - z_3)(z_1 - z_4)$ holds in any commutative ring, revealing that Ptolemy is fundamentally algebraic — the geometry enters only through the norm.",
+    "historicalContext": "Ptolemy proved his theorem geometrically in the *Almagest* (c. 150 AD) for a practical astronomical purpose: constructing a table of chords, the ancient predecessor to the modern sine function. Applied to a circle of diameter 1, Ptolemy's theorem directly yields the sine addition formula $\\sin(\\alpha + \\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$, which Ptolemy used to compute chord lengths. The classical proof works by constructing an auxiliary point on the circumscribed circle and invoking similar triangles.\n\nThe complex-number proof is a 19th-century innovation that could not have existed before Argand (1806) and Gauss (1831) gave geometric interpretations of $\\mathbb{C}$. Once points in the Euclidean plane are identified with complex numbers, Ptolemy's inequality becomes a consequence of two purely analytic facts: multiplicativity of the complex modulus ($|ab| = |a||b|$) and the triangle inequality ($|a+b| \\leq |a| + |b|$). The key algebraic identity $(z_1 - z_3)(z_2 - z_4) = (z_1 - z_2)(z_3 - z_4) + (z_2 - z_3)(z_1 - z_4)$ holds in any commutative ring, revealing that Ptolemy is fundamentally algebraic — the geometry enters only through the norm.\n\nThe connection between Ptolemy's theorem and trigonometry is deeper than historical accident. The fundamental theorem of cyclic quadrilaterals was designed specifically to compute chord lengths: inscribing a quadrilateral with one diagonal as the diameter of a unit circle and applying Ptolemy's equality yields the sine addition formula $\\sin(\\alpha+\\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$. Ptolemy used this iteratively to construct his famous chord table in the Almagest, computing chord values at intervals of $\\frac{1}{2}°$ — effectively the first comprehensive trigonometric table in history.\n\nThe complex-number proof, being fundamentally about the normed algebra $(\\mathbb{C}, |\\cdot|)$, admits immediate generalizations. Ptolemy-type inequalities hold in any metric space where distances arise from a normed algebra. The equality condition, characterized by concyclicity (four points on a common circle), is preserved under Möbius transformations — which map circles to circles and preserve cross-ratios. This places Ptolemy's theorem squarely in **inversive geometry**, where it becomes a statement about the M\\\"obius group action on the Riemann sphere $\\hat{\\mathbb{C}}$.",
     "problemStatement": "**Ptolemy's Inequality (Complex Number Proof)**:\n\nFor any four points $z_1, z_2, z_3, z_4 \\in \\mathbb{C}$:\n\n$$|z_1 - z_3| \\cdot |z_2 - z_4| \\leq |z_1 - z_2| \\cdot |z_3 - z_4| + |z_2 - z_3| \\cdot |z_1 - z_4|$$\n\nwith equality if and only if the four points are concyclic.",
     "text": "The algebraic identity (z₁-z₃)(z₂-z₄) = (z₁-z₂)(z₃-z₄) + (z₂-z₃)(z₁-z₄) combined with the triangle inequality gives Ptolemy's inequality over ℂ",
     "proofStrategy": "The proof has two components:\n1. **Algebraic identity**: $(z_1-z_3)(z_2-z_4) = (z_1-z_2)(z_3-z_4) + (z_2-z_3)(z_1-z_4)$ holds in any commutative ring, proved by `ring`.\n2. **Ptolemy's inequality**: Taking norms of both sides, the LHS becomes $\\|z_1-z_3\\| \\cdot \\|z_2-z_4\\|$ by multiplicativity of norm (`norm_mul`). The RHS is bounded above by $\\|z_1-z_2\\| \\cdot \\|z_3-z_4\\| + \\|z_2-z_3\\| \\cdot \\|z_1-z_4\\|$ via the triangle inequality (`norm_add_le`) and multiplicativity.",
@@ -51,7 +51,8 @@
       "The entire proof of Ptolemy's inequality is three steps: multiplicativity of norm, the algebraic identity, and the triangle inequality. This is arguably the shortest known proof.",
       "This approach yields the inequality form (≤) rather than equality. Equality requires the additional geometric condition that the four points are concyclic, which corresponds to the equality case of the triangle inequality.",
       "The proof reveals a contrast with the geometric approach: the Mathlib cospherical formulation proves equality directly for concyclic points, while the complex-number proof naturally gives the inequality for all four-point configurations.",
-      "The equality condition has a deep connection to the theory of Möbius transformations. The equality $\\|z_1-z_3\\|\\cdot\\|z_2-z_4\\| = \\|z_1-z_2\\|\\cdot\\|z_3-z_4\\| + \\|z_2-z_3\\|\\cdot\\|z_1-z_4\\|$ holds exactly when the cross-ratio $(z_1-z_2)(z_3-z_4)/[(z_2-z_3)(z_1-z_4)]$ is a positive real number. Since Möbius transformations preserve cross-ratios and map circles to circles, concyclicity is a Möbius-invariant property — the complex-number proof thus operates naturally within inversive geometry."
+      "The equality condition has a deep connection to the theory of Möbius transformations. The equality $\\|z_1-z_3\\|\\cdot\\|z_2-z_4\\| = \\|z_1-z_2\\|\\cdot\\|z_3-z_4\\| + \\|z_2-z_3\\|\\cdot\\|z_1-z_4\\|$ holds exactly when the cross-ratio $(z_1-z_2)(z_3-z_4)/[(z_2-z_3)(z_1-z_4)]$ is a positive real number. Since Möbius transformations preserve cross-ratios and map circles to circles, concyclicity is a Möbius-invariant property — the complex-number proof thus operates naturally within inversive geometry.",
+      "**Historical connection to the sine function**: Ptolemy proved his theorem to construct *chord tables* — the ancient precursor to the modern sine function. A chord of central angle $2\\alpha$ in a circle of diameter 1 has length $\\sin\\alpha$ in modern notation. Ptolemy's theorem applied to a cyclic quadrilateral with a diameter as one diagonal gives $\\sin(\\alpha+\\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$ directly — the sine addition formula. This means Ptolemy's 150 AD geometric theorem was the computational engine for the first trigonometric tables, centuries before the sine function was named."
     ],
     "prerequisites": [
       "Complex number arithmetic",
@@ -122,6 +123,26 @@
       "targetId": "ptolemys-theorem",
       "relationship": "alternate-proof",
       "description": "PtolemysTheorem.lean proves equality for cospherical points using Mathlib's geometric approach. This file proves the inequality for arbitrary points using the algebraic/complex-number approach."
+    },
+    {
+      "targetId": "napoleons-theorem",
+      "relationship": "companion",
+      "description": "Both use complex number coordinates to transform classical Euclidean geometry into algebraic identities — Napoleon's theorem via a rotation identity, Ptolemy's theorem via the triangle inequality applied to an algebraic identity over any commutative ring"
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "foundational",
+      "description": "Ptolemy's inequality is a direct application of the triangle inequality in ℂ: the proof uses norm_add_le (|a+b| ≤ |a|+|b|) to bound the norm of the algebraic identity LHS by the sum of norms of the two RHS terms; the triangle inequality is the geometric core of the proof"
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "Both are classical theorems of Euclidean geometry relating side lengths of geometric figures — the law of cosines for triangles, Ptolemy's theorem for cyclic quadrilaterals; both reduce to algebraic identities over ℂ and specialize to the Pythagorean theorem when angles are right"
+    },
+    {
+      "targetId": "law-of-sines-oq-06",
+      "relationship": "related",
+      "description": "Ptolemy's theorem (equality case) applied to cyclic quadrilaterals inscribed in a circle of radius R directly yields the law of sines: the diagonal of a cyclic quadrilateral with one diagonal as a diameter equals 2R·sin(angle), recovering a/sin(A) = 2R; the two theorems are classically paired in the study of cyclic quadrilaterals"
     }
   ],
   "conclusion": {

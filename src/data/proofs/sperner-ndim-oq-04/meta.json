@@ -31,12 +31,13 @@
       "Definition of KuhnState structure for path-following algorithm",
       "Definition of kuhnWalk with fuel parameter (termination by fuel bound)",
       "Definition of kuhnPathStart as entry point for boundary door",
-      "Preservation of door property across adjacency steps (door_transfer application)"
+      "Preservation of door property across adjacency steps (door_transfer application)",
+      "adj_unique_facet field added to SpernerTriangulation (geometric axiom: two d-simplices share at most one (d-1)-face, 2026-04-24)"
     ],
     "dateAdded": "2026-04-22",
     "axiomCount": 0,
     "lineCount": 408,
-    "assumptions": "2 sorries: (1) kuhn_walk_reaches_fc — walk correctness requires non-revisiting invariant (detailed proof sketch provided: needs 'adjacent simplices share unique facet' axiom + door history in KuhnState), (2) kuhnPathStart_is_fc — constructive correctness, depends on kuhn_walk_reaches_fc. The non-sorry content includes fc_door_count_eq_one, nonfc_door_count_zero_or_two, nonfc_with_door_has_unique_exit, and kuhn_path_terminates (proved via sperner_ndim).",
+    "assumptions": "2 sorries: (1) kuhn_walk_reaches_fc — as stated FALSE for arbitrary KuhnState; needs reformulation with IsKuhnWalkState invariant + door history; adj_unique_facet (now in SpernerTriangulation) closes the previous-simplex revisit case. (2) kuhnPathStart_is_fc — as stated potentially FALSE (walk can terminate at boundary-exit non-FC); needs reformulation to existential form.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

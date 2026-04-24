@@ -394,6 +394,16 @@
       "targetId": "inverse-galois-oq-02",
       "relationship": "related",
       "description": "Formalizes the Mathieu group $M_{23}$ — the only sporadic simple group not yet known to be a Galois group over $\\mathbb{Q}$. Proves $M_{23}$ is perfect ($[M_{23}, M_{23}] = M_{23}$), non-solvable (so Shafarevich's theorem, which covers only solvable groups, does not apply), with $|M_{23}| = 2^7 \\cdot 3^2 \\cdot 5 \\cdot 7 \\cdot 11 \\cdot 23$. Directly instantiates the open Inverse Galois Problem discussed in this entry's implications: while Shafarevich proved every solvable group is a Galois group over $\\mathbb{Q}$, non-solvable sporadic groups like $M_{23}$ remain an active open frontier"
+    },
+    {
+      "targetId": "sylow-theorem-oq-04",
+      "relationship": "complementary",
+      "description": "Constructs from scratch the Sylow-theoretic proof that $A_5$ (order $60 = 2^2 \\cdot 3 \\cdot 5$) is simple: computes Sylow numbers $n_2 = 5$, $n_3 = 10$, $n_5 = 6$ by exhaustive enumeration, shows no Sylow subgroup is normal, and confirms simplicity via conjugacy class analysis. This is the group-theoretic keystone of Abel-Ruffini: the Lean proof in this entry delegates $A_5$ simplicity to Mathlib's `alternatingGroup.isSimpleGroup_five`, while `sylow-theorem-oq-04` provides the elementary first-principles verification — together they demonstrate how the same mathematical fact can be accessed at both foundational and library levels"
+    },
+    {
+      "targetId": "sylow-theorems-oq-04",
+      "relationship": "complementary",
+      "description": "An independent Sylow-based formalization of $A_5$ simplicity via conjugacy class arithmetic: the five conjugacy classes of $A_5$ have sizes $\\{1, 12, 12, 15, 20\\}$ summing to 60, and none of the proper subsets including $\\{1\\}$ is closed under conjugation, ruling out any proper nontrivial normal subgroup. This corroborates the $A_5$ simplicity that drives the non-solvability of $S_5$ in this entry, and illustrates the combinatorial power of Sylow theory: the same impossibility result proved via group orders and counting is the foundation of the algebraic impossibility of solving quintics by radicals"
     }
   ],
   "references": [
