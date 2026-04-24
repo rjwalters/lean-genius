@@ -297,3 +297,58 @@ directly gives `i = j` for `i j : Fin 1` without needing any extra hypotheses.
 ### Next Steps
 1. Prove `int_amenable` via ultrafilter Banach limit (~100 lines, tractable)
 2. PR #12160 to be deployed
+
+---
+
+## Session 2026-04-24 (Session 5) — Regression Fix + int_amenable Partial Proof
+
+**Mode**: REVISIT
+**Outcome**: progress — regression fixed (paradoxical_no_finite_measure), int_amenable partially proved
+
+### What I Did
+
+1. **Fixed regression from 51c4eb91fa**: Commit 51c4eb91fa accidentally replaced the working
+   `paradoxical_no_finite_measure` proof with a `sorry`. Restored the proof:
+   - `h_bc_sub_a : B ∪ C ⊆ A` from `Set.union_subset`
+   - `hMonotone : μ(B∪C) ≤ μ(A)` via `calc + disjoint_sdiff_self_right + Set.union_diff_cancel`
+   - `le_antisymm (hBCunion ▸ hMonotone) (le_add_of_nonneg_right (zero_le _))`
+
+2. **Proved int_amenable total mass and additivity** via ultrafilter Cesàro construction:
+   - Uses `U : Ultrafilter ℕ := Ultrafilter.of Filter.atTop` (non-principal)
+   - `dens N A = card(A ∩ Finset.Icc(-N,N)) / (2N+1)` in ENNReal
+   - `μ A = U.lim (dens · A)` (ENNReal is compact T2, so ultrafilter lim exists)
+   - Total mass: `dens N univ = 1` → `μ(univ) = Ultrafilter.lim_const 1` ✓
+   - Additivity: `dens N (A∪B) = dens N A + dens N B` exactly for disjoint A,B →
+     `Ultrafilter.tendsto_nhds_lim + Tendsto.add + tendsto_nhds_unique` ✓
+
+3. **Translation invariance remains sorry**: The window-shift argument:
+   - `dens N (g•A) - dens N A` ≤ `2|n|/(2N+1)` where n = toAdd g
+   - This ratio → 0 along atTop (and hence along U ⊇ atTop)
+   - Need: `U.lim f = U.lim g` when `|f N - g N| → 0` in ENNReal
+
+### Key Findings
+
+- `Ultrafilter.tendsto_nhds_lim` gives `Filter.Tendsto f U.toFilter (nhds (U.lim f))` for compact T2 spaces
+- `Filter.Tendsto.add` distributes over ultrafilter limits (continuous addition in ENNReal)
+- `tendsto_nhds_unique` ensures limit uniqueness for T2 spaces
+
+### Files Modified
+
+- `proofs/Proofs/LebesgueMeasureOQ06.lean`:
+  - Line 130-143: paradoxical_no_finite_measure sorry → proof
+  - Lines 263-360: int_amenable expanded from 1 sorry to partial proof (1 sorry for translation invariance)
+- `src/data/research/problems/lebesgue-measure-oq-06.json`: knowledge updated
+
+### Remaining Sorries (4)
+
+1. `hausdorff_free_subgroup` — Hausdorff 1914, ~300 lines of rotation matrix argument
+2. `banach_tarski` — ~800 lines via Hausdorff paradox
+3. `banach_tarski_pieces_nonmeasurable` — ~200 lines
+4. `int_amenable` translation invariance — ~50 lines: window-shift + U-limit convergence
+
+### Next Steps
+
+1. Prove int_amenable translation invariance:
+   - Show `dens N (g•A) ≤ dens N A + 2*|n|/(2N+1)` (symmetric difference of windows ≤ 2|n|)
+   - Show `U.lim (fun N => 2*|n|/(2N+1)) = 0` (converges to 0 along atTop ⊆ U)
+   - Conclude `U.lim (dens · (g•A)) = U.lim (dens · A)` via monotonicity of U.lim
