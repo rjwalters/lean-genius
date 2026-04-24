@@ -128,13 +128,19 @@ theorem paradoxical_no_finite_measure (G : Type*) [Group G] [MulAction G α]
   -- And the equidecomposability gives μ(A) = μ(B) + μ(C) = 2·μ(A)
   -- So μ(A) = 2·μ(A) → μ(A) = 0 or ∞
   have h2 : μ A + μ A = μ A := by
-    -- Need: μ(A) ≥ μ(B ∪ C) (since B ∪ C ⊆ A)
-    -- This requires monotonicity of μ which follows from finite additivity
-    -- For now, we assume B ∪ C = A (in the classical paradox, B ∪ C ⊊ A but
-    -- equidecomposability compensates; the full argument uses covering numbers)
-    -- In the canonical formulation: A is equidecomposable to B ∪ C ∪ {center}
-    -- and the center has measure 0. We simplify by assuming B ∪ C = A here.
-    sorry -- Full proof: B ∪ C ⊆ A, μ(B ∪ C) ≤ μ(A) ≤ μ(A) + μ(A) = μ(B ∪ C)
+    -- B ∪ C ⊆ A (from hBA, hCA)
+    have h_bc_sub_a : B ∪ C ⊆ A := Set.union_subset hBA hCA
+    -- Monotonicity: μ(B ∪ C) ≤ μ(A), derived from finite additivity
+    -- via decomposition A = (B ∪ C) ∪ (A \ (B ∪ C))
+    have hMonotone : μ (B ∪ C) ≤ μ A := by
+      calc μ (B ∪ C)
+          ≤ μ (B ∪ C) + μ (A \ (B ∪ C)) := le_add_of_nonneg_right (zero_le _)
+        _ = μ ((B ∪ C) ∪ (A \ (B ∪ C))) :=
+            (hμ_add _ _ disjoint_sdiff_self_right).symm
+        _ = μ A := by rw [Set.union_diff_cancel h_bc_sub_a]
+    -- Sandwich: μ(B ∪ C) ≤ μ(A) ≤ μ(A) + μ(A) = μ(B ∪ C)
+    -- gives equality μ(A) = μ(A) + μ(A)
+    exact le_antisymm (hBCunion ▸ hMonotone) (le_add_of_nonneg_right (zero_le _))
   -- From h2: μ(A) = 0 or μ(A) = ∞
   rcases ennreal_add_self_eq_self h2 with h | h
   · exact Or.inl h
