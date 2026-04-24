@@ -198,6 +198,21 @@
       "targetId": "ramseys-theorem",
       "relationship": "related",
       "description": "Ramsey theory studies unavoidable structure in large hypergraphs: the hypergraph Ramsey number $R(r; k_1, \\ldots, k_t)$ for $r$-uniform hypergraphs parallels the graph case. The NP-completeness of Euler tours in $r$-uniform hypergraphs (Lonc-Naroski 2010) is part of the broader story of how classical P-time graph problems become NP-hard when edges gain dimension — a phenomenon Ramsey theory also exhibits."
+    },
+    {
+      "targetId": "p-vs-np",
+      "relationship": "related",
+      "description": "P vs NP Millennium Prize Problem — the Lonc-Naroski (2010) result that deciding Euler tour existence in $r$-uniform hypergraphs ($r \\geq 3$) is NP-complete is a concrete instance of the P ≠ NP landscape the Millennium Prize seeks to resolve. The sharp complexity jump at $r = 3$ — from $O(|V|+|E|)$ decidability for $r = 2$ to NP-completeness for $r \\geq 3$ — illustrates exactly the kind of boundary that makes P vs NP so central: a single additional dimension in the edge structure collapses tractability. The transition system reduction to 3-SAT encodes boolean satisfiability inside a combinatorial path problem, showing how the hardest problems in NP embed naturally in seemingly geometric questions."
+    },
+    {
+      "targetId": "szemeredi-hypergraph-core",
+      "relationship": "related",
+      "description": "Hypergraph Regularity Core Definitions — both entries formalize $r$-uniform hypergraph structures. The Szemerédi regularity lemma for hypergraphs (Gowers 2007) provides a structural decomposition that yields quasi-random degree distributions in dense $r$-uniform hypergraphs. For Euler tour existence in dense regular hypergraphs, the degree divisibility conditions ($(r-1) \\mid \\deg(v)$) become nearly automatic by regularity, pushing the difficulty to the transition system structure. The `RUniformHypergraph` definition here and the $k$-uniform hypergraph type in `szemeredi-hypergraph-core` are parallel formalizations of the same mathematical object in different mathematical contexts."
+    },
+    {
+      "targetId": "konigsberg-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Hierholzer's Algorithm — Directed Eulerian Circuit: provides a constructive Lean formalization of Euler circuit existence in directed graphs, with the corrected strong-connectivity hypothesis. While this entry shows that hypergraph Euler tour *existence* is NP-complete, Hierholzer's algorithm demonstrates that once existence is guaranteed by the degree condition, construction is efficient. The contrast is instructive: for $r$-uniform hypergraphs ($r \\geq 3$), even deciding existence is NP-hard, whereas for ordinary directed graphs the constructive algorithm runs in linear time — illustrating how dimension interacts with both the decision and construction aspects of Eulerian traversal."
     }
   ],
   "references": [
