@@ -133,9 +133,9 @@
       "id": "general-statement",
       "title": "§5: General Pólya Theorem (proved)",
       "startLine": 281,
-      "endLine": 324,
-      "summary": "Proves polya_enumeration_theorem_CN: n · necklaceCount n k = Σ_{d|n} φ(d) · k^{n/d}. The proof uses Burnside + cycle structure + totient grouping. Fully proved (0 sorries).",
-      "mathContext": "$n \\cdot |\\text{Necklaces}(n,k)| = \\sum_{d|n} \\varphi(d) \\cdot k^{n/d}$. Proof gap: need $|\\text{Fix}(r)| = k^{\\gcd(r,n)}$ for all $r \\in \\mathbb{Z}/n\\mathbb{Z}$.",
+      "endLine": 466,
+      "summary": "Proves polya_enumeration_theorem_CN: n · necklaceCount n k = Σ_{d|n} φ(d) · k^{n/d}. Includes two private bridge lemmas (vadd_apply, fixedBy_card_eq_polya) adapting between ZMod and Fin representations, plus the 4-step proof: Burnside + cycle structure + ZMod→Fin reindexing + totient involution. Fully proved (0 sorries).",
+      "mathContext": "$n \\cdot |\\text{Necklaces}(n,k)| = \\sum_{d|n} \\varphi(d) \\cdot k^{n/d}$. The reindexing $d \\mapsto n/d$ on divisors (an involution) converts $\\sum_{d|n} \\varphi(n/d) \\cdot k^d$ to the standard Pólya form.",
       "theorems": [
         "polya_enumeration_theorem_CN"
       ]
@@ -143,8 +143,8 @@
     {
       "id": "generating-function-connection",
       "title": "§6: Connection to Generating Functions",
-      "startLine": 326,
-      "endLine": 365,
+      "startLine": 468,
+      "endLine": 507,
       "summary": "Defines necklaceSeq = [2,3,4,6,8,14] and proves it matches necklaceCount 1..6 2. Discusses the open question of connecting Pólya enumeration to generating functions and cyclotomic polynomials.",
       "mathContext": "The generating function $P(x) = \\sum_{n \\geq 1} |\\text{Necklaces}(n,2)| \\cdot x^n = 2x + 3x^2 + 4x^3 + 6x^4 + \\cdots$ (OEIS A000029). Connection to cyclotomic polynomials: the cycle index of $C_n$ has product formula $Z(C_n) = \\frac{1}{n}\\sum_{d|n} \\varphi(d) \\cdot x_d^{n/d}$.",
       "theorems": [
