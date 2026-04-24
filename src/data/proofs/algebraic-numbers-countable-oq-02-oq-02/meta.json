@@ -152,6 +152,21 @@
       "targetId": "cantors-theorem",
       "relationship": "generalization",
       "description": "Cantor's general theorem |X| < |P(X)| applied to X = ℕ gives |ℕ| < |P(ℕ)| ≅ |ℝ|, furnishing the cardinality-theoretic explanation for why ℝ is uncountable. The nested interval proof here provides an explicit constructive witness; Cantor's theorem provides the abstract size comparison underlying all such results."
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "implication",
+      "description": "The combined force of the nested intervals proof (ℝ uncountable) and the parent entry (algebraic numbers countable) is that transcendental numbers exist and are uncountable. `e-transcendental` proves $e$ is one specific transcendental — the first historically, predating Cantor's uncountability argument by one year (Hermite 1873). This entry proves the transcendental complement is vast; `e-transcendental` proves the first member of that complement."
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "complementary",
+      "description": "Liouville's construction (1844) gives explicit transcendental numbers via Diophantine approximation, 30 years before Cantor's nested interval argument. Liouville's approach: numbers that are 'too well approximated' by rationals cannot be algebraic, giving explicit witnesses like $\\sum_{k=1}^\\infty 10^{-k!}$. This entry provides the abstract existence proof (transcendentals are uncountable); Liouville provides constructive witnesses. Together they represent the non-constructive and constructive faces of transcendence theory."
+    },
+    {
+      "targetId": "schroeder-bernstein",
+      "relationship": "foundational",
+      "description": "The Schröder-Bernstein theorem (injections in both directions imply a bijection) is the key tool for establishing cardinality equalities like $|\\mathbb{R}| = 2^{\\aleph_0}$. The nested interval construction here avoids needing this theorem directly, but the related cardinality-based proof in the parent entry (algebraic-numbers-countable-oq-02) uses cardinal arithmetic built on Schröder-Bernstein."
     }
   ],
   "leanFile": {
@@ -204,6 +219,20 @@
       "year": "1874",
       "venue": "Journal für die reine und angewandte Mathematik, 77",
       "note": "Pages 258-262. First proof of ℝ uncountability using nested intervals."
+    },
+    {
+      "authors": "Cantor, Georg",
+      "title": "Über eine elementare Frage der Mannigfaltigkeitslehre",
+      "year": "1891",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung, 1",
+      "note": "Pages 75-78. The diagonal argument (1891) — Cantor's second and more famous proof of ℝ uncountability, using a direct diagonalization instead of nested intervals."
+    },
+    {
+      "authors": "Moschovakis, Yiannis N.",
+      "title": "Descriptive Set Theory",
+      "year": "2009",
+      "venue": "Mathematical Surveys and Monographs 155, American Mathematical Society, 2nd edition",
+      "note": "Chapter 2: Polish spaces, perfect sets, and the Baire Category Theorem. The nested interval construction here generalizes (as noted in keyInsights) to the Baire category theorem for perfect Polish spaces."
     }
   ],
   "sorries": 0
