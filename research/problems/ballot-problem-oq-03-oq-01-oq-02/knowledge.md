@@ -407,3 +407,50 @@ The sorry count increased by 1 (net) because:
    to HLF itself (circular without external proof). The `hookProd_ratio_formula` now provides the
    ratio factorization needed as input. The 2-row case is already proved in `hook_walk_identity_atMostTwoRows`.
 2. **Archive sessions**: knowledge.md is >500 lines; archive sessions 5-17 to sessions/ subdir.
+
+---
+
+## Session 2026-04-24 (Session 19) — Hook Walk Identity for Generalized Hook Shapes
+
+**Mode**: REVISIT (RICH knowledge tier, score 106)
+**Outcome**: PROGRESS — `hook_walk_identity_gHookYD` proved; sorry scope reduced
+
+### What I Did
+
+1. Identified the non-circular proof path: `hook_length_formula_gHookYD` (proved independently in
+   Session 14 via combinatorial formula) enables proving `hook_walk_identity_gHookYD` without
+   circularity — the same algebraic pattern as `hook_walk_identity_atMostTwoRows`.
+2. Added `corners_gHookYD_cases` (~40 lines): characterizes all corners of `gHookYD a b ha`
+   (with b ≥ 1) as either `(0, a-1)` with `a ≥ 2` (top-right), or `(b, 0)` (bottom-left).
+3. Added `hook_walk_identity_gHookYD` (~90 lines): non-circular proof of hook walk identity for
+   all `[a, 1^b]` shapes. Algebraic strategy mirrors `hook_walk_identity_atMostTwoRows`.
+4. Updated `hook_walk_identity` dispatcher: sorry now covers only ≥3-row non-gHookYD shapes.
+5. PR: rjwalters/lean-genius#12381
+
+### Key Findings
+
+- **Non-circular path via gHookYD**: `hook_length_formula_gHookYD` (session 14) is the independent
+  HLF source — no circularity with `hook_walk_identity`.
+- **a = 1 edge case**: When `a = 1`, `(0, 0)` has `(1, 0) ∈ gHookYD` (b ≥ 1), so NOT a top-right corner.
+- **Remaining sorry scope**: ≥3-row shapes that are NOT [a,1^b] — e.g., [3,2,1], [4,3,2] — require GNW.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (5146 → 5274 lines, PART XIVb added)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md` (this file)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` (knowledge updated)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json` (lineCount 5274)
+- PR: rjwalters/lean-genius#12381
+
+### Sorry Count: 4 (unchanged count, reduced scope)
+
+- `hook_walk_identity` (PART XIV): sorry now covers only ≥3-row non-gHookYD shapes
+- `ni_count_eq_syt_count` (line 219): RSK bijection, FALSE as stated
+- `lgv_det_factors_as_hook_quotient` (line 235): det identity, FALSE as stated
+- `hook_length_formula` (line 245): depends on the two above (FALSE as stated)
+
+### Next Steps
+
+1. **GNW hook walk for ≥3-row non-gHookYD shapes**: ~200-300 Lean lines (probabilistic proof).
+2. **Simpler stepping stone**: prove `hook_walk_identity` for shapes with exactly 3 rows.
+3. **Archive sessions**: knowledge.md now >600 lines; archive sessions 5-18 to sessions/ subdir.
