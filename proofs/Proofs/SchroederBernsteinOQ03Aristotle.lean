@@ -35,11 +35,15 @@ lemma partialInverse_partrec {g : ℕ → ℕ} (hg : Computable g) :
     If n ∈ partialInverse g m, then g n = m. -/
 lemma partialInverse_spec {g : ℕ → ℕ} (hg_inj : Injective g)
     {m n : ℕ} (h : n ∈ partialInverse g m) : g n = m := by
-  sorry
+  unfold partialInverse at h
+  exact of_decide_eq_true (Nat.rfind_spec h)
 
 /-- If m is in the range of g, the partial inverse is defined at m. -/
 lemma partialInverse_dom {g : ℕ → ℕ} {m : ℕ} (hm : ∃ k, g k = m) :
     (partialInverse g m).Dom := by
-  sorry
+  unfold partialInverse
+  obtain ⟨k, hk⟩ := hm
+  obtain ⟨n, hn, -⟩ := Nat.rfind_min' (p := fun n => decide (g n = m)) (by simp [hk])
+  exact Part.dom_iff_mem.mpr ⟨n, hn⟩
 
 end SchroederBernsteinOQ03.Aristotle

@@ -46,6 +46,8 @@ but only 3 residues (0, 1, 2) exist — contradiction by omega.
     4. All four are < 3 (by Nat.mod_lt with divisor 3).
     5. Four pairwise-distinct naturals all < 3 is impossible: omega. -/
 theorem turan_is_K4Free (n : ℕ) : Erdos620.K4Free (Erdos620.turanGraph3 n) := by
-  sorry
+  rintro ⟨a, b, c, d, -, -, -, -, -, -, hab, hac, had, hbc, hbd, hcd⟩
+  simp only [Erdos620.turanGraph3] at hab hac had hbc hbd hcd
+  omega
 
 end Erdos620.Aristotle
