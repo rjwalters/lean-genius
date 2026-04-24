@@ -1,0 +1,55 @@
+{
+  "slug": "abel-ruffini-galois-extensions-oq-04",
+  "title": "Jordan-Hölder Uniqueness Theorem: Composition Factors of Finite Groups in Lean",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall (G : Type*) [Group G] [Finite G] (s t : CompositionSeries G), s.length = t.length \\land \\text{Multiset.map factors s} \\cong \\text{Multiset.map factors t}",
+    "plain": "State and prove the Jordan-Hölder uniqueness theorem in Lean: the composition factors of any finite group are unique up to permutation and isomorphism. Instantiate for $S_4$ to make the $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$ chain provably the unique solvability witness.",
+    "whyMatters": [
+      "Foundational theorem of finite group theory, underpinning CFSG",
+      "Makes the solvability criterion for Abel-Ruffini concrete and machine-verified",
+      "Completes the bidirectional story: not just that S₄ is solvable, but that its composition factors are uniquely the abelian groups Z/2, Z/2, Z/3, Z/2"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Mathlib has CompositionSeries and JordanHolderModule infrastructure",
+      "Parent proof abel-ruffini-galois-extensions uses composition series implicitly"
+    ],
+    "open": [
+      "Explicit named Jordan-Hölder uniqueness theorem for groups (not just modules)",
+      "Concrete instantiation for S₄ with named composition factors"
+    ],
+    "goal": "State jordan_holder_uniqueness as a standalone theorem and instantiate for S₄"
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-24T07:10:42.000Z",
+    "iteration": 1,
+    "focus": "Initial problem understanding and Mathlib survey.",
+    "blockers": [],
+    "nextAction": "Search Mathlib.GroupTheory.CompositionSeries and JordanHolder for existing uniqueness theorem.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "parentProof": "abel-ruffini-galois-extensions",
+  "relatedProofs": [
+    "abel-ruffini-oq-04",
+    "abel-ruffini-oq-04-oq-02",
+    "sylow-theorem"
+  ],
+  "mathlibModules": [
+    "Mathlib.GroupTheory.CompositionSeries",
+    "Mathlib.GroupTheory.JordanHolder",
+    "Mathlib.GroupTheory.SolvableGroup",
+    "Mathlib.GroupTheory.SpecificGroups.Alternating"
+  ],
+  "selectedBy": "seeker",
+  "selectedAt": "2026-04-24T07:10:42.000Z"
+}
