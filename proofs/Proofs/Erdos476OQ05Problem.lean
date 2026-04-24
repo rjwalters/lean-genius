@@ -3,8 +3,8 @@ Erdős Problem #476, Open Question 5: Vosper's Theorem (1956)
 
 Source: Follow-up to erdos-476 (Erdős-Heilbronn conjecture)
 Status: PARTIAL — ap_of_near_periodic proved (orbit-cardinality argument);
-                   vosper_base proved; vosper_ap_sdiff_card structured (hpos sorry);
-                   isAP_sdiff_card proved; vosper_case1_exists sorryed
+                   vosper_base proved; vosper_ap_sdiff_card proved (hpos proved, Session 20);
+                   isAP_sdiff_card proved; vosper_case1_exists sorryed [1 sorry remains]
 
 Statement (Vosper 1956):
 Let p be prime, A, B ⊆ Z/pZ with |A|, |B| ≥ 2.
@@ -245,7 +245,174 @@ private lemma vosper_ap_sdiff_card
     omega
   -- Position analysis: a₀ is a₁-d (predecessor) or a₁+|A'|*d (successor)
   have hpos : a₀ = a₁ - d ∨ a₀ = a₁ + ((A.erase a₀).card : ZMod p) * d := by
-    sorry -- HARD: position analysis from |{a₀}+B \ (A'+B)| = 1, both APs with diff d
+    -- Unfold AP definitions to use index-set representation
+    unfold IsArithmeticProgression at hAP_a₀B hAP_A'B
+    rw [hcard_a₀B] at hAP_a₀B
+    -- Bounds needed for injectivity of nat-cast
+    have hBlt : B.card < p := by omega
+    have hn₂lt : (A.erase a₀).card + B.card - 1 < p := by rw [hA'card]; omega
+    -- The AP₁ map i ↦ a₀+b₀+i*d is injective on range(B.card)
+    have hAP₁_inj : ∀ i j : ℕ, i < B.card → j < B.card →
+        a₀ + b₀ + (i : ZMod p) * d = a₀ + b₀ + (j : ZMod p) * d → i = j := by
+      intro i j hi hj heq
+      have h1 : (i : ZMod p) = (j : ZMod p) := mul_right_cancel₀ hd (add_left_cancel heq)
+      have h2 := congrArg ZMod.val h1
+      simp only [ZMod.val_natCast, Nat.mod_eq_of_lt (Nat.lt_trans hi hBlt),
+                 Nat.mod_eq_of_lt (Nat.lt_trans hj hBlt)] at h2
+      omega
+    -- The AP₂ map j ↦ a₁+b₀+j*d is injective on range(n₂)
+    have hAP₂_inj : ∀ i j : ℕ, i < (A.erase a₀).card + B.card - 1 →
+        j < (A.erase a₀).card + B.card - 1 →
+        a₁ + b₀ + (i : ZMod p) * d = a₁ + b₀ + (j : ZMod p) * d → i = j := by
+      intro i j hi hj heq
+      have h1 : (i : ZMod p) = (j : ZMod p) := mul_right_cancel₀ hd (add_left_cancel heq)
+      have h2 := congrArg ZMod.val h1
+      simp only [ZMod.val_natCast, Nat.mod_eq_of_lt (Nat.lt_trans hi hn₂lt),
+                 Nat.mod_eq_of_lt (Nat.lt_trans hj hn₂lt)] at h2
+      omega
+    -- Extract the unique missing element y
+    obtain ⟨y, hy⟩ := Finset.card_eq_one.mp h_sdiff_one
+    have hy_AP₁ : y ∈ ({a₀} + B : Finset _) :=
+      Finset.mem_of_mem_sdiff (hy ▸ Finset.mem_singleton_self y)
+    have hy_notAP₂ : y ∉ (A.erase a₀) + B :=
+      (Finset.mem_sdiff.mp (hy ▸ Finset.mem_singleton_self y)).2
+    -- All other elements of AP₁ are in AP₂
+    have hothers : ∀ z ∈ ({a₀} + B : Finset _), z ≠ y → z ∈ (A.erase a₀) + B := by
+      intro z hz hne
+      by_contra hznot
+      exact hne (Finset.mem_singleton.mp (hy ▸ Finset.mem_sdiff.mpr ⟨hz, hznot⟩))
+    -- y = a₀+b₀+m*d for some m < B.card
+    rw [hAP_a₀B] at hy_AP₁
+    obtain ⟨m, hm_range, hm_eq⟩ := Finset.mem_image.mp hy_AP₁
+    rw [Finset.mem_range] at hm_range
+    -- Helper: AP₂ membership gives explicit index
+    have inAP₂ : ∀ z ∈ (A.erase a₀) + B, ∃ j < (A.erase a₀).card + B.card - 1,
+        z = a₁ + b₀ + (j : ZMod p) * d := by
+      intro z hz
+      rw [hAP_A'B] at hz
+      obtain ⟨j, hj, hje⟩ := Finset.mem_image.mp hz
+      exact ⟨j, Finset.mem_range.mp hj, hje.symm⟩
+    -- Helper: y ∉ AP₂ means a₁+b₀+j*d ≠ a₀+b₀+m*d for all j < n₂
+    have hy_notAP₂_idx : ∀ j < (A.erase a₀).card + B.card - 1,
+        a₁ + b₀ + (j : ZMod p) * d ≠ y := by
+      intro j hj heq
+      exact hy_notAP₂ (by rw [hAP_A'B]; exact Finset.mem_image.mpr ⟨j, Finset.mem_range.mpr hj, heq.symm⟩)
+    -- Case split: m = 0, m = B.card-1, or interior
+    rcases Nat.lt_or_eq_of_le (Nat.zero_le m) with hm_pos | rfl
+    · -- m ≥ 1 case
+      rcases Nat.lt_or_eq_of_le (Nat.lt_succ_iff.mp hm_range) with hm_int | rfl
+      · -- 0 < m < B.card-1: INTERIOR CASE → contradiction
+        -- (proof: both (m-1) and (m+1) are non-missing indices, giving j=n₂-1 and k=0,
+        --  then linear combination yields (|A'|+|B|)*d = 0, contradicting n₂+1 < p and d≠0)
+        exfalso
+        -- index m-1 not missing → a₀+b₀+(m-1)*d ∈ AP₂ at some j with j = n₂-1
+        have hpred_ne : a₀ + b₀ + ((m - 1 : ℕ) : ZMod p) * d ≠ y := by
+          intro heq
+          exact absurd (hAP₁_inj _ _ (by omega) hm_range heq.symm) (by omega)
+        have hpred_AP₁ : a₀ + b₀ + ((m - 1 : ℕ) : ZMod p) * d ∈ ({a₀} + B : Finset _) := by
+          rw [hAP_a₀B]; exact Finset.mem_image.mpr ⟨m - 1, Finset.mem_range.mpr (by omega), rfl⟩
+        obtain ⟨j, hj_lt, hj_eq⟩ := inAP₂ _ (hothers _ hpred_AP₁ hpred_ne)
+        -- j must be n₂-1 (otherwise a₀+b₀+m*d would be in AP₂ via index j+1)
+        have hj_max : j = (A.erase a₀).card + B.card - 2 := by
+          by_contra hj_ne
+          have hj_lt' : j + 1 < (A.erase a₀).card + B.card - 1 := by omega
+          have hym_eq : a₁ + b₀ + ((j + 1 : ℕ) : ZMod p) * d = y := by
+            rw [← hm_eq]
+            have hcast : ((j + 1 : ℕ) : ZMod p) = (j : ZMod p) + 1 := by push_cast; ring
+            have hm_cast : (m : ZMod p) = ((m - 1 : ℕ) : ZMod p) + 1 := by
+              push_cast [Nat.sub_add_cancel hm_pos]; ring
+            linear_combination hj_eq + hm_cast * d - hcast * d
+          exact hy_notAP₂_idx _ hj_lt' hym_eq
+        -- index m+1 not missing → a₀+b₀+(m+1)*d ∈ AP₂ at some k with k = 0
+        have hsucc_ne : a₀ + b₀ + ((m + 1 : ℕ) : ZMod p) * d ≠ y := by
+          intro heq
+          exact absurd (hAP₁_inj _ _ (by omega) hm_range heq.symm) (by omega)
+        have hsucc_AP₁ : a₀ + b₀ + ((m + 1 : ℕ) : ZMod p) * d ∈ ({a₀} + B : Finset _) := by
+          rw [hAP_a₀B]; exact Finset.mem_image.mpr ⟨m + 1, Finset.mem_range.mpr (by omega), by push_cast; ring⟩
+        obtain ⟨k, hk_lt, hk_eq⟩ := inAP₂ _ (hothers _ hsucc_AP₁ hsucc_ne)
+        -- k must be 0 (otherwise a₀+b₀+m*d would be in AP₂ via index k-1)
+        have hk_zero : k = 0 := by
+          by_contra hk_ne
+          have hym_eq2 : a₁ + b₀ + ((k - 1 : ℕ) : ZMod p) * d = y := by
+            rw [← hm_eq]
+            have hcast : ((k - 1 : ℕ) : ZMod p) = (k : ZMod p) - 1 := by
+              push_cast [Nat.sub_add_cancel (Nat.pos_of_ne_zero hk_ne)]; ring
+            have hm_cast : (m : ZMod p) = ((m + 1 : ℕ) : ZMod p) - 1 := by push_cast; ring
+            linear_combination hk_eq + hm_cast * d - hcast * d
+          exact hy_notAP₂_idx _ (by omega) hym_eq2
+        -- From j = n₂-1 and k = 0: derive (|A'|+|B|)*d = 0
+        rw [hj_max] at hj_eq; rw [hk_zero] at hk_eq
+        -- hj_eq : a₁+b₀+((n₂-1):ZMod p)*d = a₀+b₀+((m-1):ℕ)*d
+        -- hk_eq : a₁+b₀+(0:ZMod p)*d = a₀+b₀+((m+1):ℕ)*d
+        have hderiv : ((A.erase a₀).card + B.card : ZMod p) * d = 0 := by
+          have hcast_n₂ : ((A.erase a₀).card + B.card - 2 : ℕ) + 2 = (A.erase a₀).card + B.card := by
+            rw [hA'card]; omega
+          have : ((A.erase a₀).card + B.card - 2 + 2 : ℕ) = (A.erase a₀).card + B.card := hcast_n₂
+          have hcast_sum : ((A.erase a₀).card + B.card : ZMod p) =
+              ((A.erase a₀).card + B.card - 2 : ℕ) + (2 : ZMod p) := by
+            push_cast [← hcast_n₂]; ring
+          rw [hcast_sum]
+          linear_combination hj_eq - hk_eq
+        -- (|A'|+|B|)*d = 0 with d≠0 implies p ∣ (|A'|+|B|), but |A'|+|B| < p
+        have hlt' : (A.erase a₀).card + B.card < p := by rw [hA'card]; omega
+        have hne : ((A.erase a₀).card + B.card : ZMod p) ≠ 0 := by
+          rw [ZMod.natCast_zmod_eq_zero_iff_dvd]
+          intro hdvd
+          have := Nat.le_of_dvd (by omega) hdvd
+          omega
+        exact hne (mul_right_cancel₀ hd (by rw [hderiv, zero_mul]))
+      · -- m = B.card-1: LAST ELEMENT missing → a₀ = a₁+|A'|*d
+        right
+        -- index m-1 = B.card-2 not missing (since m = B.card-1 and B.card ≥ 2)
+        have hpred_ne : a₀ + b₀ + ((B.card - 2 : ℕ) : ZMod p) * d ≠ y := by
+          intro heq
+          exact absurd (hAP₁_inj _ _ (by omega) hm_range heq.symm) (by omega)
+        have hpred_AP₁ : a₀ + b₀ + ((B.card - 2 : ℕ) : ZMod p) * d ∈ ({a₀} + B : Finset _) := by
+          rw [hAP_a₀B]
+          exact Finset.mem_image.mpr ⟨B.card - 2, Finset.mem_range.mpr (by omega), rfl⟩
+        obtain ⟨j, hj_lt, hj_eq⟩ := inAP₂ _ (hothers _ hpred_AP₁ hpred_ne)
+        -- j = n₂-1 (otherwise a₀+b₀+(B.card-1)*d = y would be in AP₂ via index j+1)
+        have hj_max : j = (A.erase a₀).card + B.card - 2 := by
+          by_contra hj_ne
+          have hj_lt' : j + 1 < (A.erase a₀).card + B.card - 1 := by omega
+          have hym_eq : a₁ + b₀ + ((j + 1 : ℕ) : ZMod p) * d = y := by
+            rw [← hm_eq]
+            have hcast_j : ((j + 1 : ℕ) : ZMod p) = (j : ZMod p) + 1 := by push_cast; ring
+            have hcast_m : (B.card - 1 : ZMod p) = ((B.card - 2 : ℕ) : ZMod p) + 1 := by
+              push_cast [Nat.sub_add_cancel (by omega : 2 ≤ B.card)]; ring
+            linear_combination hj_eq + hcast_m * d - hcast_j * d
+          exact hy_notAP₂_idx _ hj_lt' hym_eq
+        -- From hj_eq with j = n₂-1: a₀+b₀+(B.card-2)*d = a₁+b₀+(|A'|+|B|-2)*d
+        rw [hj_max] at hj_eq
+        -- Conclusion: a₀ = a₁+|A'|*d
+        have hcast_n : (A.erase a₀).card + B.card - 2 = (A.erase a₀).card + (B.card - 2) := by omega
+        linear_combination hj_eq
+    · -- m = 0: FIRST ELEMENT missing → a₀ = a₁-d
+      left
+      -- index 1 is not missing (B.card ≥ 2)
+      have h1_ne : a₀ + b₀ + (1 : ZMod p) * d ≠ y := by
+        rw [← hm_eq]
+        simp only [Nat.cast_zero, zero_mul, add_zero, one_mul]
+        intro h; exact hd (add_left_cancel h)
+      have h1_AP₁ : a₀ + b₀ + (1 : ZMod p) * d ∈ ({a₀} + B : Finset _) := by
+        rw [hAP_a₀B]
+        exact Finset.mem_image.mpr ⟨1, Finset.mem_range.mpr (by omega), by push_cast; ring⟩
+      obtain ⟨j, hj_lt, hj_eq⟩ := inAP₂ _ (hothers _ h1_AP₁ h1_ne)
+      rcases Nat.eq_zero_or_pos j with rfl | hj_pos
+      · -- j = 0: a₁+b₀ = a₀+b₀+d → a₀ = a₁-d
+        simp only [Nat.cast_zero, zero_mul, add_zero] at hj_eq
+        linear_combination -hj_eq
+      · -- j ≥ 1: a₁+b₀+(j-1)*d = a₀+b₀ ∈ AP₂, contradicting a₀+b₀ ∉ AP₂
+        exfalso
+        -- a₀+b₀ = y (since m = 0, y = a₀+b₀+0*d = a₀+b₀)
+        have hy_val : y = a₀ + b₀ := by rw [← hm_eq]; simp
+        -- a₁+b₀+(j-1)*d = a₀+b₀ = y
+        have hpred_eq_y : a₁ + b₀ + ((j - 1 : ℕ) : ZMod p) * d = y := by
+          rw [hy_val]
+          have hcast_j : ((j - 1 : ℕ) : ZMod p) = (j : ZMod p) - 1 := by
+            push_cast [Nat.sub_add_cancel hj_pos]; ring
+          linear_combination hj_eq - hcast_j * d
+        exact hy_notAP₂_idx _ (by omega) hpred_eq_y
   -- In each case A is an AP with diff d, so |A \ A.image(·+d)| = 1 by isAP_sdiff_card
   rcases hpos with ha₀_pred | ha₀_succ
   · -- Case: a₀ = a₁ - d (predecessor of AP A'); A = AP(a₀, d, |A|)

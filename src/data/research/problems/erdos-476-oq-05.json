@@ -1,13 +1,13 @@
 {
   "slug": "erdos-476-oq-05",
-  "title": "Erd\u0151s #476: Structure of Cauchy-Davenport Extremal Sets (Vosper's Theorem)",
+  "title": "Erdős #476: Structure of Cauchy-Davenport Extremal Sets (Vosper's Theorem)",
   "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "theorem vosper (p : \u2115) [hp : Fact (Nat.Prime p)] (A B : Finset (ZMod p)) (hA : 2 \u2264 A.card) (hB : 2 \u2264 B.card) (h : (A + B).card = A.card + B.card - 1) (hlt : A.card + B.card - 1 < p) : \u2203 (d : ZMod p) (a b : ZMod p), IsArithmeticProgression A a d \u2227 IsArithmeticProgression B b d",
-    "plain": "Vosper's theorem (1956): if equality holds in the Cauchy-Davenport bound |A+B| = |A|+|B|-1 for non-trivial A,B \u2286 Z/pZ, then A and B are arithmetic progressions with the same common difference d.",
+    "formal": "theorem vosper (p : ℕ) [hp : Fact (Nat.Prime p)] (A B : Finset (ZMod p)) (hA : 2 ≤ A.card) (hB : 2 ≤ B.card) (h : (A + B).card = A.card + B.card - 1) (hlt : A.card + B.card - 1 < p) : ∃ (d : ZMod p) (a b : ZMod p), IsArithmeticProgression A a d ∧ IsArithmeticProgression B b d",
+    "plain": "Vosper's theorem (1956): if equality holds in the Cauchy-Davenport bound |A+B| = |A|+|B|-1 for non-trivial A,B ⊆ Z/pZ, then A and B are arithmetic progressions with the same common difference d.",
     "whyMatters": [
       "Completes the Cauchy-Davenport theorem with a structural characterization of extremizers",
       "Cornerstone of additive combinatorics: characterizes when sumsets are minimally small",
@@ -16,7 +16,7 @@
   },
   "knownResults": {
     "proven": [
-      "erdos-476: Cauchy-Davenport lower bound |A+B| \u2265 min(p, |A|+|B|-1) (verified, 0 sorries)"
+      "erdos-476: Cauchy-Davenport lower bound |A+B| ≥ min(p, |A|+|B|-1) (verified, 0 sorries)"
     ],
     "open": [
       "Vosper's theorem: equality case structure",
@@ -38,42 +38,44 @@
     }
   },
   "knowledge": {
-    "progressSummary": "IN-PROGRESS: 2 sorries remain (hpos, vosper_case1_exists). Both formulated as standalone lemmas in Aristotle companion and submitted for overnight processing.",
+    "progressSummary": "IN-PROGRESS: 1 sorry remains (vosper_case1_exists, Case 1 existence). hpos proved in Session 20 via 3-way case split + ZMod arithmetic. Aristotle job a5594e66 running on case1_exists.",
     "builtItems": [
-      "isAP_sdiff_card: proved A\\A.image(\u00b7+d)={a} for AP(a,d) with d\u22600, |A|<p \u2014 key: start a has no predecessor (Erdos476OQ05Problem.lean:153)",
-      "vosper_ap_sdiff_card: structured proof using isAP_sdiff_card, hunion, h_sdiff_one \u2014 only hpos (position analysis) remains (Erdos476OQ05Problem.lean:207)",
-      "vosper_base: fully proved \u2014 base case |A|=2 using card arithmetic and Finset.card_inter_add_card_sdiff",
-      "ap_of_near_periodic: proved \u2014 B\\B.image(\u00b7+d)={b} and d\u22600 implies B is AP starting at b",
-      "hpos position analysis (vosper_ap_sdiff_card): predecessor/successor case analysis \u2014 proofs/Proofs/Erdos476OQ05Problem.lean:248-450",
+      "isAP_sdiff_card: proved A\\A.image(·+d)={a} for AP(a,d) with d≠0, |A|<p — key: start a has no predecessor (Erdos476OQ05Problem.lean:153)",
+      "vosper_ap_sdiff_card: structured proof using isAP_sdiff_card, hunion, h_sdiff_one — only hpos (position analysis) remains (Erdos476OQ05Problem.lean:207)",
+      "vosper_base: fully proved — base case |A|=2 using card arithmetic and Finset.card_inter_add_card_sdiff",
+      "ap_of_near_periodic: proved — B\\B.image(·+d)={b} and d≠0 implies B is AP starting at b",
+      "hpos position analysis (vosper_ap_sdiff_card): predecessor/successor case analysis — proofs/Proofs/Erdos476OQ05Problem.lean:248-450",
       "Erdos476OQ05Aristotle.lean: ap_sdiff_endpoint lemma (sorry, submitted to Aristotle)",
-      "Erdos476OQ05Aristotle.lean: case1_exists lemma (sorry with partial proof sketch, submitted to Aristotle)"
+      "Erdos476OQ05Aristotle.lean: case1_exists lemma (sorry with partial proof sketch, submitted to Aristotle)",
+      "hpos proved: a₀=a₁-d OR a₀=a₁+|A'|·d, via 3-way case split on missing AP index (Erdos476OQ05Problem.lean:248-420, Session 20)"
     ],
     "insights": [
-      "Vosper 1956: equality |A+B|=|A|+|B|-1 (with |A|,|B|\u22652, |A|+|B|\u2264p) \u2194 A,B are APs with same common difference",
+      "Vosper 1956: equality |A+B|=|A|+|B|-1 (with |A|,|B|≥2, |A|+|B|≤p) ↔ A,B are APs with same common difference",
       "Edge cases: |A|=1 or |B|=1 give trivial equality with no structure constraint",
       "Proof structure: induction on |A|, removing one element and applying CD to smaller set",
-      "AP in Z/pZ: set {a, a+d, a+2d, ..., a+(k-1)d} mod p; d\u22600 since p is prime",
+      "AP in Z/pZ: set {a, a+d, a+2d, ..., a+(k-1)d} mod p; d≠0 since p is prime",
       "Recursive theorem with termination_by A.card works cleanly for vosper induction",
       "Case 1 existence proved by contradiction: if all a in A give Case 2, counting gives |A|*|B| >= 2(|A|+|B|-1) which fails for small sizes",
       "AP extension: |{a0}+B minus A-prime+B|=1 forces a0 to be adjacent to A-prime (predecessor or successor)",
-      "isAP_sdiff_card key insight: in AP(a,d), start a has no d-predecessor; any predecessor y=a+(j:ZMod p)*d would require (j+1)*d=0, but j+1<=|A|<p so p\u2224j+1",
-      "Finset.card_inter_add_card_sdiff (not card_sdiff_add_card_inter) is the correct Mathlib lemma: (s\u2229t).card+(s\\t).card=s.card",
-      "subst ha where ha:a=a\u2080 in Lean 4 eliminates a\u2080 from context, not a \u2014 use rw [ha] instead when a\u2080 is needed downstream",
-      "Docker lean-mathlib-cache has stale oleans causing ring/push_cast/linear_combination to fail as unknown tactic \u2014 pre-existing environment issue",
-      "hpos (position analysis in vosper_ap_sdiff_card) proved via linear_combination \u2014 ZMod p ring algebra, not linarith",
+      "isAP_sdiff_card key insight: in AP(a,d), start a has no d-predecessor; any predecessor y=a+(j:ZMod p)*d would require (j+1)*d=0, but j+1<=|A|<p so p∤j+1",
+      "Finset.card_inter_add_card_sdiff (not card_sdiff_add_card_inter) is the correct Mathlib lemma: (s∩t).card+(s\\t).card=s.card",
+      "subst ha where ha:a=a₀ in Lean 4 eliminates a₀ from context, not a — use rw [ha] instead when a₀ is needed downstream",
+      "Docker lean-mathlib-cache has stale oleans causing ring/push_cast/linear_combination to fail as unknown tactic — pre-existing environment issue",
+      "hpos (position analysis in vosper_ap_sdiff_card) proved via linear_combination — ZMod p ring algebra, not linarith",
       "linarith is inapplicable in ZMod p (not ordered ring); linear_combination (CommRing tactic) works in any ring",
       "Set.InjOn is the correct Lean 4 Mathlib name (not Function.InjOn) for set injectivity",
       "import Mathlib.Tactic required for linear_combination and push_cast; Mathlib.Tactic.IntervalCases insufficient",
       "ap_sdiff_endpoint lemma formulated: two APs with same diff, |AP1\\AP2|=1 forces start1=start2-d or start1=start2+(m-n+1)*d",
       "vosper_case1_exists: counting argument shows (|A|-2)(|B|-2)>=2 when all elements redundant; fails for |A|=3,|B|<=3 but not |B|>=4; ZMod prime structure needed for general case",
-      "Submitted ap_sdiff_endpoint and case1_exists to Aristotle companion for overnight processing"
+      "Submitted ap_sdiff_endpoint and case1_exists to Aristotle companion for overnight processing",
+      "Interior contradiction: (|A'|+|B|)·d=0 in ZMod p refuted since |A'|+|B|<p via ZMod.natCast_zmod_eq_zero_iff_dvd+Nat.le_of_dvd",
+      "AP map injectivity via ZMod.val_natCast+Nat.mod_eq_of_lt: need val_cast+cast_inj chain for ZMod index uniqueness"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Retrieve ap_sdiff_endpoint proof from Aristotle when complete",
-      "Retrieve case1_exists proof from Aristotle when complete",
-      "After both proofs retrieved, integrate into vosper_ap_sdiff_card and vosper theorems",
-      "Build full proof of vosper main theorem once sorries resolved"
+      "Check Aristotle job a5594e66 for case1_exists result",
+      "If Aristotle fails: double-counting argument proves |A|=|B|=3 case (card_eq_sum_card_fiberwise)",
+      "Larger |A|,|B|: shifting/compression methods needed (not in Mathlib)"
     ]
   },
   "tags": [
@@ -94,7 +96,7 @@
   "references": {
     "papers": [
       "Vosper, A.G. (1956): The fraction of subsets of integers summing to a given value",
-      "Nathanson, M.B. Additive Number Theory: Inverse Problems, \u00a72.4"
+      "Nathanson, M.B. Additive Number Theory: Inverse Problems, §2.4"
     ],
     "urls": [],
     "mathlib": [
