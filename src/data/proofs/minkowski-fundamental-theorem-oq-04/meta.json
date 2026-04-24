@@ -22,5 +22,6 @@
     "latticeEquivBasis: Lattice n ≃ Module.Basis (Fin n) ℝ (Fin n → ℝ) [proved]",
     "covolume_eq_volume_fundamentalDomain: ENNReal.ofReal L.covolume = vol(ZSpan.fundamentalDomain (L.toModuleBasis n)) [not yet formalized — Lattice struct has no covolume field]"
   ],
-  "mathBackground": "The custom Lattice type wraps a basis matrix with an invertibility condition. Mathlib's ZSpan approach abstracts this as Submodule.span ℤ (Set.range b) for a Module.Basis b. The central bridge is ZSpan.volume_fundamentalDomain, which shows vol(fundamentalDomain b) = ENNReal.ofReal |(Matrix.of b).det|."
+  "mathBackground": "The custom Lattice type wraps a basis matrix with an invertibility condition. Mathlib's ZSpan approach abstracts this as Submodule.span ℤ (Set.range b) for a Module.Basis b. The central bridge is ZSpan.volume_fundamentalDomain, which shows vol(fundamentalDomain b) = ENNReal.ofReal |(Matrix.of b).det|.",
+  "sorries": 0
 }
