@@ -105,7 +105,7 @@
       "name": "primes_infinite_via_bertrand",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Infinitude of Primes (Alternative Proof)",
     "content": "Bertrand's Postulate provides yet another proof that there are infinitely many primes:\n\n1. Given any $n$, apply Bertrand to get prime $p$ with $n < p$\n2. This prime $p > n$\n3. Since $n$ was arbitrary, primes are unbounded\n4. Therefore there are infinitely many primes\n\nThis is distinct from Euclid's factorial argument, showing how the same result can arise from different perspectives.",
     "mathContext": "The Lean proof uses `cases' n with n` to split on $n = 0$ vs $n = k+1$. Base: `⟨2, Nat.prime_two, by omega⟩` provides $p = 2 > 0$. Inductive: `bertrand_postulate (n+1) (by omega)` gives $\\exists p, \\text{Prime}(p) \\land n+1 < p \\land p \\leq 2(n+1)$; `obtain ⟨p, hp_prime, hp_gt, _⟩` destructs it, discarding the upper bound. The companion `no_largest_prime_via_bertrand` uses contradiction: assuming a largest prime $p$, `primes_infinite_via_bertrand p` gives $q > p$, then `h_largest q hq_prime` gives $q \\leq p$, and `omega` closes $q > p \\land q \\leq p$. This gives an *explicit* witness — stronger than Euclid, which only shows existence.",
@@ -131,7 +131,7 @@
       "name": "bertrand_large",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős's Central Binomial Approach",
     "content": "For large $n$ (≥ 512), the proof analyzes the **central binomial coefficient** $\\binom{2n}{n}$:\n\n1. **Lower bound**: $\\binom{2n}{n} > \\frac{4^n}{2n}$\n\n2. **Upper bound (if no prime in $(n, 2n]$)**: The prime factorization is constrained by primes ≤ $n$\n\n3. **Contradiction**: These bounds conflict for $n \\geq 512$\n\nThe key insight: primes in $(n, 2n]$ divide $\\binom{2n}{n}$ exactly once, so their absence shrinks the factorization.",
     "mathContext": "Write $\\binom{2n}{n} = \\prod_p p^{v_p}$ where $v_p(\\binom{2n}{n}) = \\sum_{k \\geq 1}(\\lfloor 2n/p^k \\rfloor - 2\\lfloor n/p^k \\rfloor) \\leq \\lfloor \\log_p(2n) \\rfloor$ (Kummer's theorem). If no prime lies in $(n, 2n]$: primes $p > 2n/3$ have $v_p = 0$ (Legendre's formula); primes $p \\leq \\sqrt{2n}$ contribute $\\leq (2n)^{\\sqrt{2n}}$; primes $\\sqrt{2n} < p \\leq 2n/3$ contribute $\\leq p < 2n/3$. Combining: $\\binom{2n}{n} \\leq (2n)^{\\sqrt{2n}} \\cdot 4^{2n/3}$, which is $< 4^n/(2n)$ for $n \\geq 512$. In Lean: `Nat.exists_prime_lt_and_le_two_mul_eventually n hn` delegates to Mathlib's machine-verified version.",
@@ -184,7 +184,7 @@
     "title": "Beyond Bertrand: The Prime Number Theorem",
     "content": "Bertrand's Postulate is a \"first step\" toward understanding prime distribution. The **Prime Number Theorem** (1896) goes further:\n\n$$\\pi(x) \\sim \\frac{x}{\\ln x}$$\n\nThis tells us *how many* primes exist below $x$, not just that primes exist in certain ranges.\n\nFor the interval $(n, 2n]$, the PNT predicts roughly $n/\\ln n$ primes—far more than Bertrand's guaranteed minimum of 1.",
     "mathContext": "PNT gives $\\pi(2n) - \\pi(n) \\sim n/\\log n$, so the interval $(n, 2n]$ contains approximately $n/\\log n$ primes for large $n$ — exponentially more than Bertrand's guaranteed minimum of 1. Equivalently, Bertrand proves only $\\pi(x) > \\pi(x/2)$ for $x \\geq 2$. The Riemann Hypothesis would imply $p_{n+1} - p_n = O(\\sqrt{p_n}\\log p_n)$, far stronger than Bertrand's $p_{n+1} \\leq 2p_n$. This section (lines 143–154) is a doc comment only — no machine-checked Lean — contextualizing Bertrand in the hierarchy: Chebyshev $\\to$ Bertrand $\\to$ Mertens theorems $\\to$ PNT $\\to$ GRH.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Prime Number Theorem",
       "asymptotic analysis",

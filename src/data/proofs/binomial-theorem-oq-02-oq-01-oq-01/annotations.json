@@ -151,11 +151,11 @@
       "startLine": 170,
       "endLine": 247
     },
-    "type": "context",
+    "type": "insight",
     "title": "Mathlib Integration Feasibility Analysis and Dice Roll Example",
     "content": "Lines 174-202 provide a structured feasibility analysis for contributing the multinomial PMF to Mathlib. The analysis identifies what Mathlib already has: `PMF` type with tsum normalization, `Nat.multinomial` coefficients, `Finset.sum_pow_eq_sum_piAntidiag` (the multinomial theorem), and `ENNReal` arithmetic. What needs to be built: (1) the `Composition` `Fintype` instance (~50 lines via piAntidiag), (2) ENNReal multinomial theorem lift (~30 lines), (3) PMF construction (~20 lines), (4) marginal extraction (~100 lines). Estimated total: 200-300 lines for a complete Mathlib contribution.\n\nLines 211-214 give a concrete dice example: `dice_six_rolls_all_different` (sorry) — the probability of seeing all 6 distinct faces in 6 rolls of a fair die. The Lean statement verifies `Nat.multinomial {0,...,5} (fun _ => 1) * 1 = 6!`: the multinomial coefficient when all counts equal 1 is exactly n! (the number of permutations).\n\nLines 244-245 use `#check` to verify that `multinomialPMF` and `multinomial_marginal_binomial` have the expected polymorphic types, confirming Lean's type checker accepts the definitions despite the underlying sorries.",
     "mathContext": "Dice example: $P(\\text{all distinct in 6 rolls of fair die}) = \\frac{6!}{1!^6} \\cdot \\left(\\frac{1}{6}\\right)^6 = \\frac{720}{46656} = \\frac{5}{324} \\approx 1.54\\%$. This is a birthday-problem variant: with $n = k$ trials and categories, the probability of a perfect cover decreases as $n! / n^n$; by Stirling, $n!/n^n \\approx (e/n)^n \\cdot \\sqrt{2\\pi n}$. The Fintype strategy for `Composition α s n`: define a Lean `Equiv` between `Composition α s n` and the Finset `s.piAntidiag n` via `{counts | sum = n}`. Since `Finset.piAntidiag s n` is computable and finite, `Composition` inherits `Fintype` via `Fintype.ofEquiv`. The `#check` command is a non-sorry type-checking tool: it verifies the universe and typeclass constraints without requiring a closed proof term.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib contribution",
       "Finset.piAntidiag",

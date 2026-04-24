@@ -6,7 +6,7 @@
       "startLine": 5,
       "endLine": 60
     },
-    "type": "context",
+    "type": "insight",
     "title": "The Oldest Algorithm",
     "content": "The Euclidean algorithm is arguably the oldest non-trivial algorithm still in common use:\n\n$$\\gcd(a, b) = \\gcd(b, a \\mod b)$$\n\n**Why it matters**:\n- Over 2,300 years old (Euclid's Elements, c. 300 BCE)\n- Foundation of modern cryptography (RSA, Diffie-Hellman)\n- Remarkably efficient: O(log min(a, b)) steps\n- Extends to polynomials, Gaussian integers, and more\n\nThe algorithm terminates because $a \\mod b < b$, giving a strictly decreasing sequence.",
     "mathContext": "In Lean 4 / Mathlib, `Nat.gcd` is defined by well-founded recursion on `b`: `Nat.gcd a 0 = a` and `Nat.gcd a (b+1) = Nat.gcd (b+1) (a % (b+1))`. The key Mathlib theorems are `Nat.gcd_rec : Nat.gcd a b = Nat.gcd b (a % b)` and `Nat.gcd_dvd_left`, `Nat.gcd_dvd_right`, `Nat.dvd_gcd`. Termination follows from `Nat.mod_lt : 0 < b → a % b < b`, which provides the decreasing measure. Complexity: Lamé (1844) proved the step count is at most $5 \\lfloor \\log_{10}(\\min(a,b)) \\rfloor + 1$.",

@@ -142,13 +142,20 @@
       "type": "section-doc",
       "contains": "More Example Proofs with Rich Tactic Sequences"
     },
-    "type": "context",
+    "type": "insight",
     "title": "Pedagogical Tactic Examples",
     "content": "This section contains six standalone educational theorems demonstrating core Lean 4 proof techniques. These are NOT part of the main irrationality argument — they serve as a teaching supplement showing how different tactic paradigms apply to simple mathematical facts:\n\n- **`int_sq_nonneg`**: `by_cases` on sign of $n$; uses `sq_nonneg` and `sq_pos_of_neg`. Demonstrates case splitting on a decidable condition.\n- **`sq_add_formula`**: $(a+b)^2 = a^2 + 2ab + b^2$; closed by `ring`. Shows algebraic identity verification.\n- **`imp_trans`**: If $P \\to Q$ and $Q \\to R$, then $P \\to R$; proved by `intro`/`apply` chains. Demonstrates basic propositional logic.\n- **`not_and_iff_or_not`**: De Morgan's law $\\neg(P \\wedge Q) \\iff \\neg P \\vee \\neg Q$; proved with `by_cases` and `cases`. Shows logical equivalence reasoning.\n- **`add_zero_nat`**: $n + 0 = n$; proved by `induction` with `rfl` and `simp`. Demonstrates structural induction on `ℕ`.\n- **`exists_gt_nat`**: $\\forall n \\in \\mathbb{N}, \\exists m > n$; proved via `use n + 1` and `omega`. Shows existential witness construction.",
     "mathContext": "These examples illustrate the main Lean 4 proof paradigms: (1) case analysis (`by_cases`, `by_contra`), (2) algebraic automation (`ring`, `omega`), (3) structural induction (`induction ... with`), (4) existential/universal reasoning (`use`, `intro`), and (5) logical connective manipulation (`constructor`, `cases`). Collectively they show that Lean 4 proofs span a spectrum from near-automatic (`ring`, `decide`) to fully explicit (`intro`/`apply` chains).",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": [],
-    "relatedConcepts": ["Lean 4 tactics", "ring tactic", "omega tactic", "by_cases", "induction", "De Morgan's law"]
+    "relatedConcepts": [
+      "Lean 4 tactics",
+      "ring tactic",
+      "omega tactic",
+      "by_cases",
+      "induction",
+      "De Morgan's law"
+    ]
   },
   {
     "id": "ann-sqrt2-squaring",

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 3
     },
-    "type": "context",
+    "type": "insight",
     "title": "Mathlib Imports",
     "content": "This proof uses Mathlib's established definitions for primes and factorials. `Nat.Prime` provides a robust prime definition, `Nat.factorial` gives the factorial function with all its key properties already proven, and `Nat.exists_prime_and_dvd` guarantees that every integer $\\geq 2$ has a prime divisor — the existence result that makes Euclid's construction work.",
     "mathContext": "Mathlib provides `Nat.Prime p` ($p \\geq 2$ and $p$'s only divisors are $1$ and $p$), `n.factorial` ($n! = 1 \\cdot 2 \\cdots n$), `Nat.dvd_factorial` ($0 < k \\leq n \\Rightarrow k \\mid n!$), and `Nat.exists_prime_and_dvd` ($n \\geq 2 \\Rightarrow \\exists p$ prime, $p \\mid n$).",

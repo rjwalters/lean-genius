@@ -3,7 +3,7 @@
     "id": "ann-euler-mascheroni-overview",
     "line": 1,
     "endLine": 31,
-    "type": "context",
+    "type": "insight",
     "title": "42 Theorems on γ: From Convergence to Theisinger to Zeta Connections",
     "body": "This is the most comprehensive formalization of the Euler-Mascheroni constant γ ≈ 0.5772 in this gallery, with 42 theorems organized into 9 topic areas. The constant appears as γ = lim_{n→∞}(H_n − log n) where H_n = 1 + 1/2 + ... + 1/n is the n-th harmonic number. Its arithmetic nature — rational, irrational, or transcendental — is completely unknown despite 300 years of study.\n\nThe module identifies which results are buildable (using standard Mathlib imports) versus documented-only (Gamma/Zeta connections requiring >32GB during `lake build`). This reflects a practical constraint in formal mathematics: some theorems are true but computationally infeasible to compile in automated builds.",
     "mathContext": "γ appears in: the Riemann zeta function via ζ(s) = 1/(s−1) + γ + O(s−1) near s=1; the Gamma function via −Γ'(1) = γ; the prime number theorem via the Mertens theorems; and in the distribution of zeros of the Riemann zeta function. Whether γ ∈ ℚ is equivalent to several Diophantine approximation questions.",
@@ -30,7 +30,10 @@
     "id": "ann-euler-mascheroni-basics",
     "proofId": "harmonic-divergence-oq-01",
     "type": "concept",
-    "range": { "startLine": 33, "endLine": 102 },
+    "range": {
+      "startLine": 33,
+      "endLine": 102
+    },
     "title": "Convergence, Bounds, and Basic Properties of γ",
     "content": "This section (the largest in the file) proves the foundational properties of γ:\n\n**Convergence**: Both γ_seq (increasing, H_n − log(n+1)) and γ_seq' (decreasing, H_n − log n) converge to γ, delegating to Mathlib's `Real.tendsto_eulerMascheroniSeq` and `Real.tendsto_eulerMascheroniSeq'`.\n\n**Monotonicity**: γ_seq is strictly increasing, γ_seq' is strictly decreasing, and γ_seq(m) < γ_seq'(n) for all m, n.\n\n**Bounds**: `one_half_lt_γ`: 1/2 < γ (from `Real.one_half_lt_eulerMascheroniConstant`). `γ_lt_two_thirds`: γ < 2/3. Together: γ ∈ (1/2, 2/3).\n\n**Consequences**: γ > 0, γ ≠ 0, γ ≠ 1, γ ∈ (0,1), γ ≠ any integer. Boundary values γ_seq(0) = 0, γ_seq'(1) = 1. Also: harmonic divergence wrappers, exp(γ) bounds (1 < exp(γ) < exp(1)), and harmonic recurrence H_{n+1} = H_n + 1/(n+1).",
     "mathContext": "The bounds $1/2 < \\gamma < 2/3$ can be verified computationally: $\\gamma \\approx 0.5772156649...$. The sandwich $\\gamma_{\\text{seq}}(n) < \\gamma < \\gamma_{\\text{seq}}'(n)$ gives: at $n=1$, $\\gamma_{\\text{seq}}(1) = 1 - \\log 2 \\approx 0.307$ and $\\gamma_{\\text{seq}}'(1) = 1 \\approx 1.000$. At $n=5$: lower $\\approx 0.548$, upper $\\approx 0.748$, showing convergence toward the true value.",
@@ -51,7 +54,10 @@
     "id": "ann-euler-mascheroni-log-bounds",
     "proofId": "harmonic-divergence-oq-01",
     "type": "theorem",
-    "range": { "startLine": 103, "endLine": 126 },
+    "range": {
+      "startLine": 103,
+      "endLine": 126
+    },
     "title": "Log Bounds: log(n+1) ≤ H_n ≤ 1 + log(n)",
     "content": "Four log-harmonic inequalities, all delegating to `Mathlib.NumberTheory.Harmonic.Bounds`:\n\n1. `harmonic_lower_log`: log(n+1) ≤ H_n — the harmonic sum exceeds the integral ∫₁ⁿ⁺¹ 1/x dx = log(n+1).\n2. `harmonic_upper_log`: H_n ≤ 1 + log(n) — the harmonic sum is bounded by 1 + ∫₁ⁿ 1/x dx = 1 + log(n).\n3. `harmonic_sum_eq`: H_n = Σ_{i=1}^n 1/i as a sum over Finset.Icc 1 n (alternate formulation).\n4. Real extensions for non-integer y: log(y) ≤ H_{⌊y⌋} and H_{⌊y⌋} ≤ 1 + log(y) for y ≥ 1.\n\nThese bounds connect the discrete harmonic series to continuous logarithm via the integral comparison: each term 1/k lies between ∫_{k-1}^k 1/x dx and ∫_k^{k+1} 1/x dx.",
     "mathContext": "The integral comparison: $\\int_1^{n+1} \\frac{dx}{x} \\leq \\sum_{k=1}^n \\frac{1}{k} \\leq 1 + \\int_1^n \\frac{dx}{x}$, i.e., $\\log(n+1) \\leq H_n \\leq 1 + \\log n$. Combined with the definition $\\gamma = \\lim(H_n - \\log n)$, these give $\\log(n+1) - \\log n \\leq H_n - \\log n \\leq 1$, confirming $0 < \\gamma \\leq 1$. The upper bound $1 + \\log n$ vs the asymptotic $H_n \\sim \\log n + \\gamma + 1/(2n) - ...$ shows the error is exactly $\\gamma$ plus lower-order terms.",

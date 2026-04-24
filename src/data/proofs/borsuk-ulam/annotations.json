@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 50
     },
-    "type": "context",
+    "type": "insight",
     "title": "Imports, Documentation, and Setup",
     "content": "Six Mathlib imports provide the topological and analytic foundations:\n- `Topology.Basic` and `MetricSpace.Basic`: Continuity, open/closed sets, metric sphere definition\n- `Compactness.Compact` and `Connected.PathConnected`: Compactness and path-connectedness\n- `InnerProductSpace.Basic` and `PiL2`: Inner product on `EuclideanSpace ℝ (Fin n)` and its norm\n\nThe module docstring outlines the proof strategy: define the gadget function $g(x) = f(x) - f(-x)$, show it's odd and continuous, then invoke the topological impossibility of an odd nonzero map $S^n \\to \\mathbb{R}^n$. The file axiomatizes the covering space argument, which requires algebraic topology beyond Mathlib's current scope.\n\nThe file has 0 sorries but 1 axiom (`no_continuous_odd_nonzero_on_sphere`), which encodes the deep topological obstruction from covering space theory.",
     "mathContext": "The formalization models $S^n$ as `Metric.sphere 0 1` in `EuclideanSpace \\mathbb{R} (\\text{Fin}\\;(n+1))$, using the $\\ell^2$ norm $\\|x\\| = \\sqrt{\\sum x_i^2}$.",
@@ -102,7 +102,7 @@
       "startLine": 102,
       "endLine": 104
     },
-    "type": "technique",
+    "type": "concept",
     "title": "The Gadget Function: The Heart of the Proof",
     "content": "The **gadget function** is the proof's key construction. Given $f: S^n \\to \\mathbb{R}^n$, define:\n$$g(x) = f(x) - f(-x)$$\n\n**The crucial property** — $g$ is **odd**:\n$$g(-x) = f(-x) - f(x) = -(f(x) - f(-x)) = -g(x)$$\n\nThe Lean proof of `gadget_odd` is elegant: `simp only [gadget, antipode, neg_neg, neg_sub]` unfolds definitions and uses $-(-x) = x$ and $a - b = -(b - a)$.\n\n**Strategy shift**: If no antipodal pair exists, $g$ is everywhere nonzero on $S^n$. We can normalize: $h(x) = g(x)/\\|g(x)\\|: S^n \\to S^{n-1}$ is continuous and odd. But no such map can exist! This reframing connects point-set topology to covering space theory.",
     "mathContext": "$g(x) = f(x) - f(-x)$, $g(-x) = -g(x)$. If $g(x) \\neq 0$ on $S^n$, normalize: $h = g/\\|g\\|: S^n \\to S^{n-1}$ is odd.",
@@ -126,7 +126,7 @@
       "startLine": 131,
       "endLine": 136
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Normalization Preserves Oddness",
     "content": "**normalizeOnSphere**: Given $h$ nonzero on $S^n$, the normalization $\\hat{h}(x) = h(x)/\\|h(x)\\|$ maps into $S^{n-1}$.\n\n**Key lemma** `normalizeOnSphere_odd`: If $h$ is odd, so is $\\hat{h}$:\n$$\\hat{h}(-x) = \\frac{h(-x)}{\\|h(-x)\\|} = \\frac{-h(x)}{\\|-h(x)\\|} = \\frac{-h(x)}{\\|h(x)\\|} = -\\hat{h}(x)$$\n\nThe Lean proof uses `norm_neg` ($\\|-v\\| = \\|v\\|$) and `smul_neg` ($c \\cdot (-v) = -(c \\cdot v)$). This preserves the $\\mathbb{Z}/2\\mathbb{Z}$-equivariance through normalization, which is essential for the descent to projective spaces.",
     "mathContext": "$\\hat{h}(x) = \\|h(x)\\|^{-1} \\cdot h(x)$, $\\hat{h}(-x) = -\\hat{h}(x)$ since $\\|-v\\| = \\|v\\|$",
