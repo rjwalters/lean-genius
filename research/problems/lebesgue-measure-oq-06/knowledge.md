@@ -352,3 +352,45 @@ directly gives `i = j` for `i j : Fin 1` without needing any extra hypotheses.
    - Show `dens N (g•A) ≤ dens N A + 2*|n|/(2N+1)` (symmetric difference of windows ≤ 2|n|)
    - Show `U.lim (fun N => 2*|n|/(2N+1)) = 0` (converges to 0 along atTop ⊆ U)
    - Conclude `U.lim (dens · (g•A)) = U.lim (dens · A)` via monotonicity of U.lim
+
+---
+
+## Session 2026-04-24 (Session 14) — Fix int_amenable nlinarith issue
+
+**Mode**: FRESH (claimed available slot)
+**Outcome**: completed — replaced broken nlinarith-for-ENNReal proof with correct version
+
+### What I Did
+
+1. **Identified bug in main branch**: The int_amenable translation invariance proof (merged
+   in PR #12256) contained two `nlinarith` calls for `ℝ≥0∞` inequalities, which always
+   fail (nlinarith only works for linear ordered fields, not ENNReal with its `⊤` element).
+   
+2. **Applied cleaner proof from feature/lebesgue-int-amenable branch**:
+   - Bijection k ↦ k-n (simpler than the k ↦ k+n approach in main)
+   - Uses `Int.card_Icc` for explicit cardinality computation with cases on sign of n
+   - Error term convergence proved via ℝ limit + `ENNReal.tendsto_ofReal` (no nlinarith)
+   - Squeeze via `le_of_tendsto_of_tendsto` + `Filter.Eventually.of_forall`
+   
+3. **Key improvement — h_err_tendsto**:
+   - First proves `absn/ℝ(2N+1) → 0` in ℝ (where linarith works)
+   - Converts to ENNReal via `ENNReal.ofReal_div_of_pos` + `ENNReal.tendsto_ofReal`
+   - Avoids problematic `nlinarith` and `ENNReal.le_toNNReal_add` approach
+
+### Key Findings
+
+- `nlinarith` NEVER works for `ℝ≥0∞` — always use ENNReal-specific lemmas
+- Correct pattern for ENNReal convergence-to-0: prove in ℝ first, lift via `ENNReal.tendsto_ofReal`
+- `tendsto_const_nhds.div_atTop` proves constant/atTop → 0 in ℝ
+- `Filter.Tendsto.mono_left` lifts atTop-tendsto to U.toFilter-tendsto (since U ⊇ atTop)
+
+### Files Modified
+
+- `proofs/Proofs/LebesgueMeasureOQ06.lean`: 741 → 735 lines (nlinarith-free int_amenable)
+- `src/data/proofs/lebesgue-measure-oq-06/meta.json`: lineCount 741→735, updated assumptions
+
+### Remaining Sorries (3)
+
+1. `hausdorff_free_subgroup` — Hausdorff 1914, ~300 lines of rotation matrix + number theory
+2. `banach_tarski` — Banach-Tarski 1924, ~800 lines, requires AC
+3. `banach_tarski_pieces_nonmeasurable` — ~200 lines, depends on banach_tarski (Vitali set not in Mathlib)
