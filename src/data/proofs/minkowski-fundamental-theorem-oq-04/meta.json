@@ -64,6 +64,7 @@
       "The custom `Lattice n` is exactly `GL_n(ℝ)` in disguise: the condition `det(basis) ≠ 0` is invertibility. The bijection with `Module.Basis` shows that specifying a lattice basis is the same as choosing an invertible matrix.",
       "The key enabling lemma `basis_matrix_det_ne_zero` derives `det(Matrix.of b) ≠ 0` from the change-of-basis product identity `b.toMatrix(e) · e.toMatrix(b) = 1`. Since `det` is multiplicative and `det(1) = 1`, at least one factor must be nonzero.",
       "The `toModuleBasis_matrix_eq` theorem establishes that `Matrix.of(L.toModuleBasis n) = L.basis`. This is the bridge that makes round-trip proofs trivial: both round trips reduce to showing two lattice structures or two bases have the same underlying matrix.",
+<<<<<<< HEAD
       "The equivalence is necessarily `noncomputable`: extracting an `Invertible` instance from a `det ≠ 0` proof requires `Classical.choice`. This is a fundamental constructivity limit — you cannot algorithmically extract an inverse from mere non-vanishing of determinant.",
       "**The bridge closes the loop**: `minkowski_custom_via_zlattice` shows the custom Minkowski theorem is not independent — it is a definitional wrapper over the ZSpan-native proof. The trivial `minkowski_custom_via_zlattice_iff_fundamental` (proved by `Iff.rfl`) confirms the two proof routes are extensionally identical: the same proposition, just reached by different paths."
     ]
