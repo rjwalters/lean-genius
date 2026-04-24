@@ -42,7 +42,8 @@
       "Classification by omega: `IsDeficient ∨ IsPerfect ∨ IsAbundant` and all exclusivity theorems reduce to trichotomy of σ(n) vs 2n, closed entirely by the `omega` tactic",
       "Amicable pairs encode a symmetric relation: (m,n) amicable ↔ σ(m)=σ(n)=m+n; the Pythagorean pair (220,284) and Paganini's pair (1184,1210) are both machine-verified",
       "Minimality via interval_cases: proving 12 is the smallest abundant number uses Lean's `interval_cases` to case-split over all n∈{1,...,11}, verifying each by native_decide",
-      "Robin's inequality connects σ to the Riemann Hypothesis: σ(n) < e^γ n ln(ln(n)) for all n > 5040 iff RH holds — the properties formalized here are the starting point for this deep connection"
+      "Robin's inequality connects σ to the Riemann Hypothesis: σ(n) < e^γ n ln(ln(n)) for all n > 5040 iff RH holds — the properties formalized here are the starting point for this deep connection",
+      "The Euclid-Euler theorem characterizes even perfect numbers: n is even perfect iff n = 2^(p-1)(2^p-1) where 2^p-1 is prime. The proof uses multiplicativity: σ(2^(p-1)(2^p-1)) = σ(2^(p-1)) · σ(2^p-1) = (2^p-1) · 2^p = 2n. Exactly 51 Mersenne primes are known, giving 51 known perfect numbers — all even. Whether odd perfect numbers exist is 2000+ years unsolved"
     ],
     "prerequisites": [
       "Arithmetic functions: multiplicative functions, Dirichlet convolution",
@@ -54,10 +55,10 @@
     "summary": "Sum of divisors function fully formalized: concrete values, multiplicativity, prime power formula, complete number classification (deficient/perfect/abundant with exhaustivity and exclusivity), amicable pairs (220,284) and (1184,1210), 12 as smallest abundant. 81 theorems, 549 lines, 0 axioms.",
     "implications": "This formalization provides the algebraic infrastructure for one of number theory's richest subjects. The multiplicativity of σ connects via Dirichlet series to ζ(s)ζ(s-1), linking divisor sums to the Riemann zeta function. Robin's theorem (1984) shows σ(n) < e^γ n ln(ln(n)) for n > 5040 iff RH holds — a startling connection between a simple arithmetic function and the most famous open problem in mathematics. The classification into deficient/perfect/abundant has been studied since Nicomachus (~100 CE), yet the question of odd perfect numbers remains unsolved after 2000 years of effort.",
     "openQuestions": [
-      "Are there odd perfect numbers? This 2000-year-old problem remains unsolved; any odd perfect number must be > 10^1500 and have at least 101 prime factors",
-      "Are there infinitely many perfect numbers? Equivalent to asking whether there are infinitely many Mersenne primes (open)",
-      "Formalize Euler's theorem: every even perfect number has the form 2^(p-1)(2^p-1) where 2^p-1 is prime — this would complete the classification of even perfect numbers",
-      "Formalize Robin's inequality: prove σ(n) < e^γ n ln(ln(n)) for small n and connect it to the Riemann Hypothesis formalization"
+      "Are there odd perfect numbers? Any odd perfect number must satisfy n > 10^1500 and have at least 101 prime factors (Ochem-Rao 2012). In Lean, formalizing even the simplest constraint — that an odd perfect number must have a prime factor ≡ 1 (mod 4) — would require connecting σ(p^a) ≡ 0 (mod 4) conditions to the perfect number equation σ(n) = 2n",
+      "Formalize Euler's converse theorem: every even perfect number has the form 2^(p-1)(2^p-1) where 2^p-1 is prime. Euclid's direction (⟸) follows immediately from `sigma_mul_coprime` and the prime power formula; Euler's direction (⟹) requires showing that if 2^(p-1)(2^p-1) is perfect, then 2^p-1 must be prime (a divisibility argument on the structure of even numbers). This bidirectional classification is the starting point for the `perfect-numbers` gallery entry",
+      "Formalize Robin's inequality: σ(n) < e^γ n ln(ln(n)) for n ≤ 5040 by computation (verifiable by `native_decide` on a bounded range), and state the equivalence with RH as an axiom for the gallery entry on the Riemann Hypothesis. The threshold n = 5040 corresponds to the highly composite number 7! with the largest known ratio σ(n)/(n ln ln n)",
+      "Formalize Gronwall's theorem: lim sup_{n→∞} σ(n)/(n ln ln n) = e^γ. This is an asymptotic statement requiring real analysis (limsup of a sequence). The upper bound follows from Dirichlet series estimates; the lower bound requires constructing highly composite numbers achieving σ(n)/n close to e^γ ln ln n. Formalizing either direction in Lean would require connecting `ArithmeticFunction.sigma` to the Mathlib analysis library"
     ]
   },
   "leanFile": {
@@ -71,19 +72,39 @@
   },
   "crossReferences": [
     {
+      "targetId": "perfect-numbers",
+      "relationship": "extended-by",
+      "description": "The gallery entry `perfect-numbers` explores the classification σ(n) = 2n further: Euclid's theorem (2^(p-1)(2^p-1) is perfect when 2^p-1 is prime) and Euler's converse (every even perfect number has this Mersenne form). This entry's `IsPerfect` predicate and `abundancy_two_iff_perfect` are the algebraic foundations on which the perfect-numbers entry builds"
+    },
+    {
       "targetId": "wilsons-theorem",
       "relationship": "related",
-      "description": "both study multiplicative arithmetic properties of integers; Wilson via (p-1)! ≡ -1 (mod p), this via divisor sums"
+      "description": "Wilson's theorem and σ both study multiplicative properties of integers via the prime factorization: Wilson characterizes primes via (p-1)! ≡ -1 (mod p), while σ(p) = p+1 characterizes primes as precisely the deficient-by-one numbers. Both are formalized in terms of Nat.Prime and proved using Mathlib's arithmetic infrastructure"
     },
     {
       "targetId": "riemann-hypothesis",
       "relationship": "related",
-      "description": "Robin's theorem makes σ directly relevant to RH: σ(n) < e^γ n ln(ln(n)) for n > 5040 iff RH holds"
+      "description": "Robin's theorem (1984) connects σ directly to the Riemann Hypothesis: σ(n) < e^γ n ln(ln(n)) for all n > 5040 if and only if RH holds. The properties of σ formalized here — bounds, multiplicativity, values at prime powers — form the computational foundation for verifying Robin's inequality on small n and understanding its asymptotic behavior"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The Fundamental Theorem of Arithmetic (unique prime factorization) is the structural bedrock of the multiplicativity theorem `sigma_mul_coprime`: σ(p₁^a₁ · ... · pₖ^aₖ) = σ(p₁^a₁) · ... · σ(pₖ^aₖ) because distinct prime powers are always coprime. Without unique factorization, the coprimality argument for decomposing σ would fail"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Every prime p is deficient: σ(p) = p+1 < 2p. The infinitude of primes (Euclid, ~300 BCE) implies there are infinitely many deficient numbers via primes alone. Conversely, the density of abundant numbers (positive lower density in the integers) and perfect numbers (exactly 51 known, all even) contrasts sharply with the density of primes via the prime number theorem"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The Prime Number Theorem (π(x) ~ x/ln(x)) governs the distribution of deficient numbers (primes are all deficient) and interacts with Gronwall's theorem: lim sup σ(n)/(n ln ln n) = e^γ, where the supremum is achieved by highly composite numbers rather than primes. The two extremes — primes (σ(p)/p → 1) and highly composite numbers (σ(n)/n → e^γ) — frame the range of σ(n)/n"
     },
     {
       "targetId": "dirichlets-theorem",
       "relationship": "related",
-      "description": "Dirichlet series Σ σ(n)/n^s = ζ(s)ζ(s-1) connects σ to the analytic methods of this area"
+      "description": "Dirichlet's theorem on primes in arithmetic progressions connects to σ via the Dirichlet series Σ σ(n)/n^s = ζ(s)ζ(s-1), converging for Re(s) > 2. The Euler product expansion of ζ(s) uses unique prime factorization — the same structural fact that makes σ multiplicative. Dirichlet series identities for arithmetic functions (σ, d, φ) are the analytic backbone of multiplicative number theory"
     }
   ],
   "sections": [
