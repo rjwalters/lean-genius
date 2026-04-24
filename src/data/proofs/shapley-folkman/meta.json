@@ -7,7 +7,7 @@
     "author": "Shapley & Folkman (formalized in Lean 4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Shapley%E2%80%93Folkman_lemma",
     "date": "1966",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/ShapleyFolkman.lean",
     "tags": [
       "convex-analysis",
@@ -15,8 +15,8 @@
       "combinatorics",
       "intermediate"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "convexHull_eq_union",
@@ -54,14 +54,14 @@
     ],
     "dateAdded": "2026-03-27",
     "axiomCount": 0,
-    "assumptions": "None. The lemma is a theorem of convex geometry with no additional axioms beyond Mathlib foundations. All sorries represent provable goals awaiting formal proof completion.",
+    "assumptions": "None. 0 sorries, 0 axioms. Fully machine-checked in Lean 4 via WF induction on total minCaraDepth. All proofs are complete with no sorry placeholders.",
     "prerequisites": [
       "Convex sets and convex hulls",
       "Minkowski (pointwise) addition of sets",
       "Caratheodory's theorem (points in convex hull need at most d+1 vertices)",
       "Affine independence and dimension"
     ],
-    "lineCount": 904,
+    "lineCount": 1238,
     "mathlib_version": "4.26.0",
     "leanFile": {
       "imports": [
@@ -188,7 +188,7 @@
     "summary": "The Shapley-Folkman lemma demonstrates that the Minkowski sum of many sets in finite-dimensional space is 'nearly convex': the non-convexity of the sum is controlled by the ambient dimension, not by the number of summands.",
     "implications": "**Theoretical Significance**:\n\n1. **MATHEMATICAL ECONOMICS**: The lemma is the mathematical engine behind core convergence theorems and the existence of approximate competitive equilibria. In an economy with many agents, even if individual preferences are non-convex (indivisible goods, increasing returns), the aggregate economy behaves as if preferences were convex.\n\n2. **OPTIMIZATION**: In non-convex optimization, the Shapley-Folkman lemma justifies convex relaxation: the gap between a sum of non-convex problems and its convex relaxation is bounded by dimension, not problem size. This underpins decomposition methods in large-scale optimization.\n\n3. **CONVEX GEOMETRY**: The lemma completes a trio with Caratheodory's and Radon's theorems, all proved by the same affine-dependence reduction technique. Together they characterize how dimension controls convex structure.\n\n4. **MEASURE THEORY**: Lyapunov's theorem (the range of a vector measure is convex) can be seen as an infinite-dimensional limit of Shapley-Folkman, where infinitely many 'small' non-convex sets sum to an exactly convex set.",
     "openQuestions": [
-      "Can the sorries be eliminated using Aristotle proof search, completing a fully verified formalization?",
+      "Can the proof be extended to infinite-dimensional Hilbert spaces, where finrank is replaced by a suitable dimension notion?",
       "Can the quantitative Shapley-Folkman-Starr bound (Hausdorff distance version) be formalized using Mathlib's metric space infrastructure?",
       "Is there a clean formalization of the economic application: existence of epsilon-equilibria in exchange economies with non-convex preferences?"
     ]
@@ -201,7 +201,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 904,
+    "lineCount": 1238,
     "structureCount": 1,
     "axiomCount": 0,
     "theoremCount": 8,
@@ -242,7 +242,7 @@
       }
     ],
     "path": "Proofs/ShapleyFolkman.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "mainTheorems": [
     {

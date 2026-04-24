@@ -1,7 +1,7 @@
 {
   "slug": "shapley-folkman-oq-03",
   "title": "Shapley-Folkman Theorem: Economic Application Formalization",
-  "phase": "NEW",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,9 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: 0 sorries in OQ03 file. Parent ShapleyFolkman.lean also 0 sorries (completed 2026-04-24). Gallery badge updated to verified.",
+    "builtItems": [
+      "Gallery meta.json updated to verified status (2026-04-24)"
+    ],
+    "insights": [
+      "Parent ShapleyFolkman.lean proved 0 sorries 2026-04-24 via WF induction on total minCaraDepth — completes the full proof chain to Starr economic theorem"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -43,7 +47,8 @@
     "formalization"
   ],
   "relatedProofs": [
-    "shapley-folkman"
+    "shapley-folkman",
+    "shapley-folkman-oq-03"
   ],
   "references": {
     "papers": [],
@@ -58,7 +63,7 @@
     {
       "path": "Proofs/ShapleyFolkman.lean",
       "filename": "ShapleyFolkman.lean",
-      "lineCount": 810,
+      "lineCount": 905,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 1,
@@ -69,7 +74,7 @@
     {
       "path": "Proofs/ShapleyFolkmanAristotle.lean",
       "filename": "ShapleyFolkmanAristotle.lean",
-      "lineCount": 87,
+      "lineCount": 82,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 0,

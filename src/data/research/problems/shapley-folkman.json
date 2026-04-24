@@ -1,12 +1,12 @@
 {
   "slug": "shapley-folkman",
   "title": "Shapley-Folkman Lemma",
-  "phase": "ACT",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
   "path": "full",
   "knowledge": {
-    "progressSummary": "PROGRESS: 3→1 sorry: proved convexHull_not_mem_requires_two (eq_pos_convex_span_of_mem_convexHull + card analysis) and binary_repr_of_mem_convexHull_not_mem (Fin.sum_univ_succ + centerMass). Remaining: Sub-case B2 needs WF descent on caraDepth",
+    "progressSummary": "COMPLETE: 0 sorries. WF induction on total minCaraDepth. Docker build passes. PR #12242.",
     "insights": [
       "reduce_excess_by_one is the mathematical core — requires: (1) linear dependence of d+1 direction vectors via finrank, (2) perturbation ε construction from boundary distances, (3) verification that new points remain in convex hulls",
       "sum_close_to_convexHull needs convexHull(∑ Sᵢ) = ∑ convexHull(Sᵢ) from Mathlib (check Mathlib.Analysis.Convex.Combination for sum identity)",
