@@ -53,7 +53,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The derangement number D(n) counts permutations with no fixed points. The classical formula D(n) = n! · Σ_{k=0}^n (−1)^k/k! leads immediately to D(n)/n! → e⁻¹ as n → ∞ (Montmort 1708, Euler 1751). A sharper consequence: since n!/e is never an integer (e is transcendental), the nearest integer to n!/e is uniquely determined, and it equals D(n) for all n ≥ 2. This elegant rounding characterisation is a standard result in combinatorics.",
+    "historicalContext": "The study of derangements — permutations with no fixed points — began with Pierre de Montmort's 1708 analysis of the card game 'Jeu du Treize', where he derived the formula D(n) = n! · Σ_{k=0}^n (−1)^k/k!. Leonhard Euler independently studied the problem in 1751, and the formula leads directly to D(n)/n! → e⁻¹ as n → ∞ by the Taylor series for e⁻¹. The rounding characterization D(n) = round(n!/e) is an immediate strengthening: since the alternating series Σ (−1)^k/k! converges with error bounded by the first omitted term, |D(n)/n! − e⁻¹| ≤ 1/(n+1)!, and multiplying by n! gives |D(n) − n!/e| ≤ 1/(n+1) < 1/2 for n ≥ 2. A subtle point: the rounding never ties (D(n) is never a half-integer away from n!/e) because e is transcendental — in particular, e is irrational, so n!/e is never a half-integer for any n. Charles Hermite proved the transcendence of e in 1873. The connection between the derangement rounding formula and e's transcendence is a satisfying example of transcendence theory entering a purely combinatorial statement.",
     "problemStatement": "**OQ-03 of derangements-convergence**\n\nProve that for n ≥ 2, the number of derangements D(n) equals the nearest integer to n!/e:\n\n  D(n) = round(n! · e⁻¹)\n\nEquivalently: |D(n) − n!/e| < 1/2 for all n ≥ 2.",
     "text": "For n ≥ 2, (numDerangements n : ℤ) = round((n! : ℝ) · rexp(-1)).",
     "proofStrategy": "**Three steps:**\n1. **Rate bound**: From `derangements_convergence_rate` (DerangementsConvergence.lean): |D(n)/n! − e⁻¹| ≤ 1/(n+1)!. Multiply both sides by n! to get |D(n) − n!/e| ≤ 1/(n+1).\n2. **Strict bound**: For n ≥ 2: n+1 ≥ 3 > 2, so 1/(n+1) < 1/2. Therefore |D(n) − n!/e| < 1/2.\n3. **Rounding characterisation**: D(n) is an integer with |D(n) − x| < 1/2 where x = n!/e, so D(n) = round(x). The proof uses `round_eq` (round x = ⌊x + 1/2⌋) and `floor_eq_iff` to reduce to two linear inequalities, closed by `linarith`.",
@@ -61,7 +61,9 @@
       "The multiplication n! × (1/(n+1)!) = 1/(n+1) is the key computation — the helper lemma factorial_mul_one_div_factorial_succ provides this in a form that linarith can use",
       "The condition n ≥ 2 is tight: at n=1, D(1)=0 and 1!/e ≈ 0.368, and round(0.368) = 0, so the result holds — but the bound 1/(n+1) = 1/2 is not strict. The proof uses n+1 > 2 to get strict inequality.",
       "The rounding characterisation bypasses the need to compute round(n!/e) explicitly: knowing |D(n) − n!/e| < 1/2 and D(n) ∈ ℤ uniquely determines D(n) = round(n!/e)",
-      "Using abs_lt to split |D − x| < 1/2 into two half-open intervals, then linarith closes both halves independently"
+      "Using abs_lt to split |D − x| < 1/2 into two half-open intervals, then linarith closes both halves independently",
+      "The transcendence connection: the rounding D(n) = round(n!/e) never results in a tie (i.e., n!/e is never a half-integer) because e is transcendental (Hermite, 1873) — in particular, e is irrational, so n!/e ∉ (1/2)ℤ. The gallery entry `e-transcendental` formalizes Hermite's transcendence proof. This combinatorial result thus implicitly relies on deep analytic number theory.",
+      "The alternating series estimation theorem is the hidden engine: since D(n)/n! = Σ_{k=0}^n (−1)^k/k! is a partial sum of the alternating series for e⁻¹ = Σ (−1)^k/k!, the error |D(n)/n! − e⁻¹| equals the absolute value of the first omitted term 1/(n+1)! by the alternating series bound. This tight bound (not just O(1/(n+1)!)) is what makes the proof work with a clean strict inequality."
     ],
     "prerequisites": [
       "derangements_convergence_rate from DerangementsConvergence.lean",
@@ -70,6 +72,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module docstring explaining the rounding characterisation D(n) = round(n!/e) and the three-step proof strategy. Imports Mathlib and Proofs.DerangementsConvergence (for derangements_convergence_rate). Opens Nat, Real, Filter, Topology. Namespace DerangementsConvergenceOQ03.",
+      "mathContext": "The module imports form the mathematical foundation: `derangements_convergence_rate` (from DerangementsConvergence.lean) provides $|D(n)/n! - e^{-1}| \\leq 1/(n+1)!$; `round_eq` and `floor_eq_iff` (from Mathlib) provide the rounding API; `abs_lt` unpacks absolute value inequalities."
+    },
     {
       "id": "sec-helper",
       "title": "Helper Lemma: Factorial Simplification",
@@ -102,6 +112,21 @@
       "targetId": "derangements",
       "relationship": "related",
       "description": "Root: basic derangement definitions D(n) = n! Σ(-1)^k/k! and inclusion-exclusion formula"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Hermite's proof (1873) that e is transcendental implies in particular that e is irrational, so n!/e is never a half-integer for any n. This is why the rounding D(n) = round(n!/e) never ties — a hidden transcendence-theory input to a combinatorial theorem."
+    },
+    {
+      "targetId": "derangements-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling entry proving the convergence rate |D(n)/n! − e⁻¹| ≤ 1/(n+1)! — the rate bound that this entry imports as `derangements_convergence_rate` and uses to establish |D(n) − n!/e| < 1/2."
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "foundational",
+      "description": "The derangement formula D(n) = n! · Σ_{k=0}^n (−1)^k/k! is derived via inclusion-exclusion: subtract from n! all permutations fixing at least one point. This is the foundational formula from which the convergence to e⁻¹ and the rounding characterization both flow."
     }
   ],
   "conclusion": {

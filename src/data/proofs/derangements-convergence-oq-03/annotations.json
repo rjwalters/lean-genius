@@ -1,5 +1,30 @@
 [
   {
+    "id": "ann-dcoq03-header",
+    "proofId": "derangements-convergence-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "concept",
+    "title": "Module Overview: The Rounding Characterization of Derangements",
+    "content": "This module proves that D(n) = round(n!/e) for all n ≥ 2. The module docstring explains the three-step proof strategy: (1) apply `derangements_convergence_rate` to get |D(n)/n! - e⁻¹| ≤ 1/(n+1)!; (2) multiply by n! to get |D(n) - n!/e| ≤ 1/(n+1) < 1/2 for n ≥ 2; (3) use `round_eq` and `floor_eq_iff` to conclude D(n) = round(n!/e). The imports bring in all of Mathlib and the parent file `DerangementsConvergence`, which provides `derangements_convergence_rate`. The `open` declarations (Nat, Real, Filter, Topology) make standard names available without qualification.",
+    "mathContext": "The rounding characterization: $D(n) = \\text{round}(n!/e)$ follows from $|D(n) - n!/e| < 1/2$. In Lean, `round` is defined as $\\text{round}\\,x = \\lfloor x + 1/2 \\rfloor$ (`round_eq`), so the characterization reduces to $\\lfloor n!/e + 1/2 \\rfloor = D(n)$, proved via `floor_eq_iff`: $\\lfloor r \\rfloor = z \\Leftrightarrow z \\leq r < z + 1$. The key input is the alternating series bound from `DerangementsConvergence.derangements_convergence_rate`: $|D(n)/n! - e^{-1}| \\leq 1/(n+1)!$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "numDerangements",
+      "derangements_convergence_rate",
+      "round_eq",
+      "floor_eq_iff",
+      "alternating series estimation"
+    ],
+    "prerequisites": [
+      "DerangementsConvergence.lean and its derangements_convergence_rate lemma",
+      "Mathlib round and floor API",
+      "rexp: the real exponential function in Lean 4"
+    ]
+  },
+  {
     "id": "ann-dcoq03-helper",
     "proofId": "derangements-convergence-oq-03",
     "range": {
