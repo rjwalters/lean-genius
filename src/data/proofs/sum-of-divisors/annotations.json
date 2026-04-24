@@ -188,27 +188,202 @@
     ]
   },
   {
+    "id": "ann-module-header",
+    "proofId": "sum-of-divisors",
+    "range": {
+      "startLine": 1,
+      "endLine": 43
+    },
+    "type": "context",
+    "title": "Module Overview: σ Properties and Classification in 14 Parts",
+    "content": "The module header documents a 14-part development of the sum of divisors function σ(n) = Σ_{d|n} d, building from concrete computed values through general structural theorems to historical and analytical connections. The file is organized pedagogically: Parts 1–2 establish empirical evidence (specific σ values), Parts 3–6 classify numbers and compute related functions, Parts 7–10 prove general bounds and connections, and Parts 11–14 develop the algebraic theory (multiplicativity, prime power formula, factorization computation, and minimality).\n\nThe mathematical foundation is Mathlib's `ArithmeticFunction.sigma`: `sigma k n = Σ_{d|n} d^k`. This file uses `sigma 1` (ordinary sum of divisors), `sigma 0` (divisor count d(n)), and `sigma 2` (sum of squared divisors). Opening both `Nat` and `ArithmeticFunction` gives access to divisor-theoretic APIs throughout.",
+    "mathContext": "$\\sigma_k(n) = \\sum_{d \\mid n} d^k$. Special cases: $\\sigma_0(n) = d(n)$ (divisor count), $\\sigma_1(n) = \\sigma(n)$ (sum of divisors), $\\sigma_2(n)$ (sum of squared divisors). These are the first three members of the Dirichlet series family $\\sum_{n=1}^\\infty \\sigma_k(n) n^{-s} = \\zeta(s)\\zeta(s-k)$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "arithmetic functions",
+      "Dirichlet series",
+      "multiplicative functions",
+      "sigma_k generalization"
+    ],
+    "prerequisites": [
+      "ArithmeticFunction.sigma",
+      "Nat.divisors",
+      "Mathlib import system"
+    ]
+  },
+  {
+    "id": "ann-sigma-primes-specific",
+    "proofId": "sum-of-divisors",
+    "range": {
+      "startLine": 92,
+      "endLine": 117
+    },
+    "type": "concept",
+    "title": "Part 2: σ(p) = p+1 Verified for Six Specific Primes",
+    "content": "Before proving the general theorem, Part 2 verifies σ(p) = p+1 for the first six primes {2, 3, 5, 7, 11, 13} using `native_decide`. Each theorem is stated as `sigma 1 p = p + 1` in the form Lean uses for the general formula (matching the output of `sigma_apply_prime_pow`), making the transition to the general proof natural.\n\nThese specific verifications serve two purposes: they build intuition about why σ(p) = p+1 (the only divisors of a prime are 1 and p itself), and they provide immediately usable lemmas that the later factorization examples can reference directly without invoking the general theorem. The pattern also illustrates `native_decide` at its strongest — verifiable computation that would be tedious to prove by hand.",
+    "mathContext": "$p$ prime $\\Rightarrow$ divisors$(p) = \\{1, p\\}$ $\\Rightarrow$ $\\sigma(p) = 1 + p$.\nVerified: $\\sigma(2) = 3, \\sigma(3) = 4, \\sigma(5) = 6, \\sigma(7) = 8, \\sigma(11) = 12, \\sigma(13) = 14$.\nAll primes are deficient since $\\sigma(p) = p + 1 < 2p$ for $p \\geq 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "prime factorization",
+      "native_decide",
+      "deficient numbers",
+      "sigma_apply_prime_pow"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "ArithmeticFunction.sigma",
+      "native_decide tactic"
+    ]
+  },
+  {
+    "id": "ann-abundancy-index",
+    "proofId": "sum-of-divisors",
+    "range": {
+      "startLine": 260,
+      "endLine": 287
+    },
+    "type": "definition",
+    "title": "Abundancy Index: σ(n)/n as a Rational Characterization of Perfection",
+    "content": "The abundancy index `abundancy n = σ(n)/n : ℚ` is the ratio of the divisor sum to n itself. It provides a scale-independent measure of how 'divisor-rich' a number is: deficient numbers have abundancy < 2, perfect numbers have abundancy = 2, and abundant numbers have abundancy > 2.\n\nThe theorem `perfect_iff_abundancy_two` proves: n > 0 → (IsPerfect n ↔ abundancy n = 2). The proof uses `field_simp` and `exact_mod_cast` to work with the rational equation σ(n)/n = 2, then `omega` for the natural number arithmetic. The `noncomputable` annotation marks `abundancy` as using real division (rational, noncomputable in Lean's kernel).\n\nThe abundancy index appears naturally in the theory of perfect and amicable numbers: (m, n) is amicable iff σ(m)/m + σ(n)/n = ... Wait, more precisely: abundancy(m) = abundancy(n) = (m+n)/m when gcd(m,n)=1 is not necessarily required. The abundance index is used in the theory of quasi-perfect and multiperfect numbers (σ(n) = kn for integer k ≥ 2).",
+    "mathContext": "$$\\text{abundancy}(n) = \\frac{\\sigma(n)}{n} \\in \\mathbb{Q}$$\nClassification: deficient $\\Leftrightarrow$ abundancy $< 2$, perfect $\\Leftrightarrow$ abundancy $= 2$, abundant $\\Leftrightarrow$ abundancy $> 2$.\nFor Mersenne perfect numbers: $\\text{abundancy}(2^{p-1}(2^p-1)) = \\frac{(2^p-1)(2^p)}{2^{p-1}(2^p-1)} = 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "perfect numbers",
+      "multiperfect numbers",
+      "quasi-perfect numbers",
+      "rational division in Lean",
+      "field_simp"
+    ],
+    "prerequisites": [
+      "IsDeficient / IsPerfect / IsAbundant predicates",
+      "rational number arithmetic in Lean",
+      "exact_mod_cast tactic"
+    ]
+  },
+  {
+    "id": "ann-divisor-count-sigma2",
+    "proofId": "sum-of-divisors",
+    "range": {
+      "startLine": 288,
+      "endLine": 326
+    },
+    "type": "concept",
+    "title": "Parts 7–8: Divisor Count d(n) and Sum of Squared Divisors σ₂",
+    "content": "Parts 7 and 8 compute two related arithmetic functions using the same `sigma k` infrastructure:\n\n**Divisor count d(n) = σ₀(n)** (`sigma 0 n`): Counts the number of divisors. Key computed values: d(1)=1, d(2)=2, d(4)=3, d(6)=4, d(12)=6, d(1024)=11. Note d(2^10) = 11 = 10+1, which is the general formula d(p^k) = k+1 for prime powers. Highly composite numbers (1, 2, 4, 6, 12, 24, ...) maximize d(n) for their size — these are Ramanujan's highly composite numbers mentioned in Part 10.\n\n**Sum of squared divisors σ₂(n)** (`sigma 2 n`): Key values: σ₂(1)=1, σ₂(2)=5, σ₂(6)=50. The general formula is σ₂(p^k) = (p^(2k+2)-1)/(p²-1). Both functions inherit multiplicativity from `isMultiplicative_sigma`.",
+    "mathContext": "$$d(n) = \\sigma_0(n) = \\sum_{d|n} 1, \\quad \\sigma_2(n) = \\sum_{d|n} d^2$$\nDirichlet series: $\\sum_{n=1}^\\infty d(n) n^{-s} = \\zeta(s)^2$ and $\\sum_{n=1}^\\infty \\sigma_2(n) n^{-s} = \\zeta(s)\\zeta(s-2)$.\nFor prime powers: $d(p^k) = k+1$, $\\sigma_2(p^k) = 1 + p^2 + p^4 + \\cdots + p^{2k} = \\frac{p^{2k+2}-1}{p^2-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "divisor count function",
+      "highly composite numbers",
+      "Dirichlet series",
+      "Ramanujan",
+      "sigma k generalization"
+    ],
+    "prerequisites": [
+      "ArithmeticFunction.sigma k",
+      "native_decide",
+      "isMultiplicative_sigma"
+    ]
+  },
+  {
+    "id": "ann-sigma-lower-bound",
+    "proofId": "sum-of-divisors",
+    "range": {
+      "startLine": 327,
+      "endLine": 347
+    },
+    "type": "concept",
+    "title": "Part 9: σ(n) ≥ n for All n ≥ 1",
+    "content": "The basic lower bound `sigma_ge_self : ∀ n ≥ 1, σ(n) ≥ n` is proved by observing that n is always a divisor of itself, so the divisor sum includes n as one term. In Lean: n ∈ n.divisors (proved via `Nat.mem_divisors` with `n ∣ n` and `n ≠ 0`), then `Finset.single_le_sum` gives σ(n) = Σ_{d|n} d ≥ n.\n\nThis lower bound, combined with the strict inequality `sigma_gt_self : ∀ n > 1, σ(n) > n`, shows that every n > 1 is non-deficient-with-equality: n divides σ(n) - n (the aliquot sum) only when n = 1. The bound σ(n) ≥ n means perfect numbers satisfy σ(n) = 2n exactly at the minimum of the abundant side — no 'slack' exists.",
+    "mathContext": "$$\\sigma(n) \\geq n \\quad (\\text{since } n \\in \\{d : d \\mid n\\})$$\n$$\\sigma(n) > n \\quad \\text{for } n > 1 \\quad (\\text{since also } 1 \\mid n, 1 \\neq n)$$\nThese bounds are tight: $\\sigma(1) = 1$ achieves equality in the first, and no $n > 1$ achieves equality in the second (that would require divisors$(n) = \\{n\\}$, impossible since $1 \\mid n$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.single_le_sum",
+      "Nat.mem_divisors",
+      "aliquot sum",
+      "perfect number boundary"
+    ],
+    "prerequisites": [
+      "Finset.single_le_sum",
+      "Nat.divisors membership",
+      "dvd_refl"
+    ]
+  },
+  {
+    "id": "ann-connections-rh",
+    "proofId": "sum-of-divisors",
+    "range": {
+      "startLine": 369,
+      "endLine": 385
+    },
+    "type": "insight",
+    "title": "Part 10: Robin's Inequality, Gronwall's Theorem, and the RH Connection",
+    "content": "Part 10 is a commentary section (no Lean proofs) documenting three deep connections of σ to advanced mathematics:\n\n**Robin's Inequality (1984)**: σ(n) < e^γ · n · ln(ln(n)) for all n > 5040, where γ ≈ 0.5772 is the Euler-Mascheroni constant. Remarkably, Robin proved this is *equivalent* to the Riemann Hypothesis. The threshold 5040 = 7! is special: σ(5040)/5040 is one of the largest known values of σ(n)/n, and verifying Robin's inequality for n ≤ 5040 by computation leaves the infinite tail equivalent to RH.\n\n**Gronwall's Theorem (1913)**: lim sup_{n→∞} σ(n)/(n ln(ln(n))) = e^γ ≈ 1.7811. This shows the bound in Robin's inequality is tight — not improvable by a constant factor.\n\n**Ramanujan's Highly Composite Numbers**: Numbers where d(n) > d(m) for all m < n (sequence 1, 2, 4, 6, 12, 24, 36, ...) maximize both d(n) and, often, σ(n)/n. These are the 'opposite extreme' from primes — maximally composite rather than minimally composite.",
+    "mathContext": "**Robin's inequality** (equivalent to RH): $\\sigma(n) < e^\\gamma n \\ln\\!\\ln n$ for all $n > 5040$.\n**Gronwall**: $\\limsup_{n \\to \\infty} \\frac{\\sigma(n)}{n \\ln\\!\\ln n} = e^\\gamma$.\n**Dirichlet series**: $\\sum_{n=1}^\\infty \\frac{\\sigma(n)}{n^s} = \\zeta(s)\\zeta(s-1)$, convergent for $\\Re(s) > 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Riemann Hypothesis",
+      "Euler-Mascheroni constant",
+      "Gronwall's theorem",
+      "Ramanujan highly composite numbers",
+      "Robin's inequality"
+    ],
+    "prerequisites": [
+      "Riemann zeta function",
+      "Euler-Mascheroni constant γ",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-factorization-examples",
+    "proofId": "sum-of-divisors",
+    "range": {
+      "startLine": 470,
+      "endLine": 504
+    },
+    "type": "technique",
+    "title": "Part 13: Computing σ via Prime Factorization",
+    "content": "Parts 12–13 demonstrate the full algorithmic power of multiplicativity + the prime power formula: given any n = p₁^a₁ · p₂^a₂ · ... · pₖ^aₖ, compute σ(n) = σ(p₁^a₁) · ... · σ(pₖ^aₖ) = Π_i (Σ_{j=0}^{a_i} p_i^j).\n\nTwo explicit examples:\n- **σ(12)**: 12 = 2² · 3, so σ(12) = σ(4) · σ(3) = (1+2+4) · (1+3) = 7 · 4 = 28. The Lean proof `sigma_twelve_via_factorization` writes this as `sigma 1 12 = (1+2+2²) · (1+3)` and uses `rw [h12, sigma_mul_coprime, sigma_prime_pow_two, sigma_prime]` for the Coprime(4,3) factorization.\n\n- **σ(30)**: 30 = 2 · 3 · 5, so σ(30) = σ(2) · σ(3) · σ(5) = 3 · 4 · 6 = 72. The proof applies `sigma_mul_coprime` twice — first for (2, 15), then for (3, 5) — and invokes `sigma_prime` for each factor.\n\nThese examples show that σ is entirely computable from the prime factorization, reducing σ for any n (however large) to evaluating geometric sums at each prime power.",
+    "mathContext": "$$\\sigma(12) = \\sigma(2^2 \\cdot 3) = \\sigma(2^2) \\cdot \\sigma(3) = (1+2+4)(1+3) = 7 \\cdot 4 = 28$$\n$$\\sigma(30) = \\sigma(2 \\cdot 3 \\cdot 5) = \\sigma(2)\\sigma(3)\\sigma(5) = 3 \\cdot 4 \\cdot 6 = 72$$\nGeneral: $\\sigma(p_1^{a_1} \\cdots p_k^{a_k}) = \\prod_{i=1}^k \\frac{p_i^{a_i+1}-1}{p_i-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "prime factorization",
+      "geometric series formula",
+      "Nat.Coprime",
+      "sigma_prime_pow",
+      "multiplicative arithmetic"
+    ],
+    "prerequisites": [
+      "sigma_mul_coprime",
+      "sigma_prime_pow_two",
+      "sigma_prime",
+      "Nat.Coprime (native_decide)"
+    ]
+  },
+  {
     "id": "ann-smallest-abundant",
     "proofId": "sum-of-divisors",
     "range": {
       "startLine": 505,
-      "endLine": 521
+      "endLine": 547
     },
     "type": "concept",
-    "title": "12 is the Smallest Abundant Number: interval_cases Minimality",
-    "content": "The minimality proof that 12 is the smallest abundant number combines `twelve_is_abundant` with `not_abundant_lt_12`. The latter uses `interval_cases n` — a Lean tactic that case-splits on all possible values of n in a bounded integer interval — generating 11 subgoals (n=1 through n=11), each closed by `simp_all` and `native_decide`. This combination of finite case analysis and computation is the standard Lean pattern for minimality proofs over small integer ranges.",
-    "mathContext": "$$12 = 2^2 \\cdot 3 \\text{ is the smallest abundant number: } \\sigma(12) = 28 > 24 = 2\\cdot 12$$\nFor all $n \\in \\{1,\\ldots,11\\}$: $\\sigma(n) \\leq 2n$ (verified case by case).",
+    "title": "Part 14: 12 is the Smallest Abundant Number — Minimality via interval_cases",
+    "content": "The minimality proof that 12 is the smallest abundant number uses two complementary results:\n\n1. **`not_abundant_lt_12`**: For every n with 0 < n < 12, ¬IsAbundant n. The proof uses `interval_cases n`, which case-splits on n ∈ {1,...,11} and generates 11 subgoals, each closed by `simp_all` and `native_decide`. This is the standard Lean pattern for exhaustive minimality proofs over small integer ranges.\n\n2. **`twelve_smallest_abundant`**: Combines `twelve_is_abundant` (from Part 3) with `not_abundant_lt_12` into the final theorem: IsAbundant 12 ∧ ∀ n, 0 < n → n < 12 → ¬IsAbundant n.\n\nHistorically, 12 = 2² · 3 is the smallest number with σ(12) = 28 > 24 = 2·12. The next abundant numbers are 18, 20, 24 — all even. The smallest odd abundant number is 945 = 3³ · 5 · 7, discovered in the Middle Ages and not provably minimal until modern computer verification. The formalization here for n < 12 uses exactly 11 native_decide calls, illustrating how verification replaces open-ended search for small bounds.",
+    "mathContext": "$$12 = 2^2 \\cdot 3: \\quad \\sigma(12) = (1+2+4)(1+3) = 28 > 24 = 2 \\cdot 12$$\nFor $n \\in \\{1,\\ldots,11\\}$: the deficient values are $1, 2, 3, 4, 5, 7, 8, 9, 10, 11$ ($\\sigma(n) < 2n$) and perfect value is $6$ ($\\sigma(6)=12=2\\cdot 6$). No abundant values exist below 12.\nSmallest odd abundant: $\\sigma(945) = \\sigma(3^3)\\sigma(5)\\sigma(7) = 40 \\cdot 6 \\cdot 8 = 1920 > 1890 = 2 \\cdot 945$.",
     "significance": "key",
     "relatedConcepts": [
       "interval_cases tactic",
       "minimality proof",
-      "bounded exhaustive search",
+      "odd abundant numbers",
+      "exhaustive case analysis",
       "abundant numbers"
     ],
     "prerequisites": [
       "interval_cases (Mathlib tactic)",
       "native_decide",
-      "twelve_is_abundant"
+      "twelve_is_abundant",
+      "IsAbundant predicate"
     ]
   }
 ]
