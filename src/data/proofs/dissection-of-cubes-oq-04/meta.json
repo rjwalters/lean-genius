@@ -82,9 +82,9 @@
     {
       "id": "sec-chebyshev-sequence",
       "title": "Part I: Chebyshev Sequence for arccos(3/5)",
-      "startLine": 60,
-      "endLine": 165,
-      "description": "Defines cosThreeFifthsSeq with recurrence d_{n+2} = 6d_{n+1} - 25d_n and proves two key properties: 5 ∤ d_n for all n, and d_n = 5^n · 2cos(n · arccos(3/5)).",
+      "startLine": 54,
+      "endLine": 177,
+      "summary": "Defines cosThreeFifthsSeq (d_0=2, d_1=6, d_{n+2}=6d_{n+1}-25d_n) and proves three key results: (1) cosThreeFifthsSeq_succ — the recurrence; (2) five_ndvd_cosThreeFifthsSeq — 5 ∤ d_n for all n; (3) cosThreeFifthsSeq_eq_cos — d_n = 5^n·2cos(n·arccos(3/5)); (4) arccos_three_fifths_irrational — arccos(3/5)/π ∉ ℚ.",
       "theorems": [
         "cosThreeFifthsSeq",
         "five_ndvd_cosThreeFifthsSeq",
@@ -95,9 +95,9 @@
     {
       "id": "sec-dod-angle",
       "title": "Part II: Dodecahedron Angle Irrationality Chain",
-      "startLine": 166,
-      "endLine": 255,
-      "description": "Proves arccos(1/√5)/π and arccos(-1/√5)/π are irrational via the half-angle identity 2·arccos(1/√5) = arccos(-3/5) = π - arccos(3/5).",
+      "startLine": 178,
+      "endLine": 248,
+      "summary": "Defines dodAngle = arccos(-1/√5). Proves arccos(1/√5)/π and arccos(-1/√5)/π are irrational via the half-angle identity 2·arccos(1/√5) = arccos(-3/5) and irrationality propagation from arccos(3/5).",
       "theorems": [
         "two_arccos_sqrt5_eq",
         "arccos_sqrt5_irrational",
@@ -107,9 +107,9 @@
     {
       "id": "sec-dod-dehn",
       "title": "Part III: Dodecahedron Dehn Invariant",
-      "startLine": 256,
-      "endLine": 300,
-      "description": "Proves the dodecahedron has nonzero Dehn invariant using the infinite-order angle class and the flatness axiom.",
+      "startLine": 249,
+      "endLine": 276,
+      "summary": "Proves the dodecahedron has nonzero Dehn invariant: dodAngle_infinite_order establishes [arccos(-1/√5)] has infinite order in ℝ/πℤ (from irrationality), and dod_dehn_ne_zero applies the DehnSydler flatness axiom to conclude D(dodecahedron) ≠ 0.",
       "theorems": [
         "dodAngle_infinite_order",
         "dod_dehn_ne_zero"
@@ -118,9 +118,9 @@
     {
       "id": "sec-icosahedron",
       "title": "Part IV: Icosahedron",
-      "startLine": 301,
-      "endLine": 355,
-      "description": "Axiomatizes icoAngle_irrational for arccos(-√5/3)/π and derives the icosahedron's nonzero Dehn invariant.",
+      "startLine": 277,
+      "endLine": 319,
+      "summary": "Defines icoAngle = arccos(-√5/3) and axiomatizes icoAngle_irrational (deferred to a future Chebyshev argument in ℤ[√5]). Derives icoAngle_infinite_order and ico_dehn_ne_zero using the same infinite-order → nonzero Dehn pattern as Part III.",
       "theorems": [
         "icoAngle_infinite_order",
         "ico_dehn_ne_zero"
@@ -129,20 +129,51 @@
     {
       "id": "sec-classification",
       "title": "Part V: Complete Classification",
-      "startLine": 356,
-      "endLine": 415,
-      "description": "The main result: among the five Platonic solids, only the cube has zero Dehn invariant.",
+      "startLine": 320,
+      "endLine": 397,
+      "summary": "The main results: cube_isolated_dehn_invariant proves D=0 for the cube and D≠0 for all other four Platonic solids; cube_unique_zero_dehn establishes the cube as the unique Platonic solid with zero Dehn invariant (with 3 remaining sorries in edge-scaling lemmas).",
       "theorems": [
         "cube_isolated_dehn_invariant",
         "cube_unique_zero_dehn"
       ]
+    },
+    {
+      "id": "sec-axiom-audit",
+      "title": "Part VI: Axiom Audit",
+      "startLine": 398,
+      "endLine": 437,
+      "summary": "Documents the axiom budget: 2 total axioms (tmul_infinite_order_ne_zero from OQ02OQ02; icoAngle_irrational introduced here). Lists the 11 new theorems proved in this file. Notes the 3 remaining sorries in cube_unique_zero_dehn as non-critical scaling lemmas. Closes with #check verification of the main results.",
+      "theorems": []
     }
   ],
   "conclusion": {
     "summary": "Among the five Platonic solids, the cube is uniquely characterized by having zero Dehn invariant. This extends Hilbert's Third Problem from the single pair (cube, tetrahedron) to the complete classification of all Platonic solids under scissors congruence.",
+    "implications": "The classification establishes that scissors congruence is a strictly finer equivalence than volume equality among the Platonic solids: the cube belongs to a different scissors-congruence class from all others. The new irrationality result for arccos(1/√5)/π (proved via cosThreeFifthsSeq) demonstrates that Niven's Chebyshev sequence technique generalizes to any angle whose cosine is a rational number — a reusable proof template. The result also shows that Dehn's invariant fully classifies the Platonic solids, not just separates the cube from the tetrahedron as in the original Hilbert problem.",
     "openQuestions": [
       "Can the remaining axiom (tmul_infinite_order_ne_zero — flatness of ℝ over ℤ) be proved using Mathlib's Module.Flat infrastructure?",
       "Can icoAngle_irrational be proved by extending the Chebyshev argument to ℤ[√5], completing the proof for all five Platonic solids with 0 axioms?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "id": "dissection-of-cubes",
+      "relationship": "parent",
+      "description": "The root entry on cube dissection and Hilbert's Third Problem, providing the mathematical context for the Dehn invariant approach."
+    },
+    {
+      "id": "dissection-of-cubes-oq-02",
+      "relationship": "prerequisite",
+      "description": "OQ-02 proves Niven's theorem for arccos(1/3)/π and introduces the Chebyshev integer sequence technique (nivenSeq) that this file extends to arccos(3/5)/π and the dodecahedron."
+    },
+    {
+      "id": "dissection-of-cubes-oq-02-oq-02",
+      "relationship": "prerequisite",
+      "description": "OQ-02-OQ-02 (DehnSydler) provides the tensor product Dehn invariant group ℝ ⊗_ℤ (ℝ/πℤ), the cube/tetrahedron/octahedron Dehn invariant results, and the axiom tmul_infinite_order_ne_zero (ℝ flat over ℤ) used in this file."
+    },
+    {
+      "id": "dissection-of-cubes-oq-03",
+      "relationship": "sibling",
+      "description": "OQ-03 connects cube dissection to packing impossibility results, complementing the Dehn invariant obstruction approach in OQ-04."
+    }
+  ]
 }

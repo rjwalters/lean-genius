@@ -24,6 +24,18 @@
     "prerequisites": ["Prime.dvd_or_dvd", "Int.Prime"]
   },
   {
+    "id": "ann-cos-seq-verification",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": { "startLine": 112, "endLine": 177 },
+    "type": "technique",
+    "title": "Cosine Verification and Irrationality Proof",
+    "content": "Two key theorems complete Part I. `cosThreeFifthsSeq_eq_cos` (lines 112–141) proves by strong induction that d_n = 5^n · 2cos(n · arccos(3/5)) for all n. The inductive step applies the real cosine addition formula `cos((n+2)θ) = 2cosθ · cos((n+1)θ) − cos(nθ)` with cosθ = 3/5, scales by 5^{n+2}, and uses the recurrence definition. `arccos_three_fifths_irrational` (lines 142–177) proves arccos(3/5)/π ∉ ℚ by contradiction: if arccos(3/5)/π = p/q with q > 0, then n = q·den gives cos(n · arccos(3/5)) = cos(p·π) = ±1, so d_n = ±2 · 5^n. But by `five_ndvd_cosThreeFifthsSeq`, 5 ∤ d_n — yet 5^n | d_n when n ≥ 1 (since d_n = ±2·5^n), contradiction.",
+    "mathContext": "Cosine verification: $d_n = 5^n \\cdot 2\\cos(n\\theta)$ with $\\theta = \\arccos(3/5)$. Irrationality: if $\\theta/\\pi = p/q \\in \\mathbb{Q}$ with $q > 0$, then $\\cos(q\\theta) = \\cos(p\\pi) = \\pm 1$, so $d_q = 5^q \\cdot 2\\cos(q\\theta) = \\pm 2 \\cdot 5^q$. But `five_ndvd_cosThreeFifthsSeq` gives $5 \\nmid d_q$, contradicting $5 \\mid \\pm 2 \\cdot 5^q$ for $q \\geq 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Chebyshev polynomials", "Niven's theorem", "contradiction by divisibility", "cosine addition formula"],
+    "prerequisites": ["cosThreeFifthsSeq", "five_ndvd_cosThreeFifthsSeq", "Real.cos_add", "Real.cos_nat_mul"]
+  },
+  {
     "id": "ann-half-angle-identity",
     "proofId": "dissection-of-cubes-oq-04",
     "range": { "startLine": 196, "endLine": 228 },
@@ -46,6 +58,18 @@
     "significance": "key",
     "relatedConcepts": ["arccos_neg", "irrationality propagation", "rational arithmetic"],
     "prerequisites": ["arccos_three_fifths_irrational", "two_arccos_sqrt5_eq", "Real.arccos_neg"]
+  },
+  {
+    "id": "ann-dehn-invariant-machinery",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": { "startLine": 249, "endLine": 319 },
+    "type": "technique",
+    "title": "Dehn Invariant Machinery: Infinite Order to Nonzero",
+    "content": "Parts III and IV share a common proof template for showing a solid has nonzero Dehn invariant. First, the `*_infinite_order` theorem uses angle irrationality to show the angle class `[θ] ∈ ℝ/πℤ` has infinite order in the additive group (if `n · [θ] = 0` in ℝ/πℤ then `n · θ = k · π` for some integer k, but then `θ/π = k/n ∈ ℚ`, contradicting irrationality). Second, the `*_dehn_ne_zero` theorem uses this infinite order together with `tmul_infinite_order_ne_zero` (the axiom that ℝ is flat over ℤ, from OQ02OQ02) to conclude `a ⊗ [θ] ≠ 0` in `ℝ ⊗_ℤ (ℝ/πℤ)` for any `a > 0`. The icosahedron (PART IV) uses the same template but with `icoAngle_irrational` axiomatized rather than proved.",
+    "mathContext": "For solid angle $\\theta$ with $\\theta/\\pi \\notin \\mathbb{Q}$: suppose $n \\cdot [\\theta] = 0$ in $\\mathbb{R}/\\pi\\mathbb{Z}$, so $n\\theta \\in \\pi\\mathbb{Z}$, i.e., $\\theta/\\pi = k/n \\in \\mathbb{Q}$ — contradiction. So $[\\theta]$ has infinite order. By flatness (tmul_infinite_order_ne_zero): $a > 0 \\Rightarrow a \\otimes [\\theta] \\neq 0$ in $\\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$. Then $D(\\text{solid}) = (\\text{edge length}) \\otimes [\\theta] \\neq 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Dehn invariant", "tmul_infinite_order_ne_zero", "infinite order in ℝ/πℤ", "ℝ flat over ℤ", "scissors congruence obstruction"],
+    "prerequisites": ["dodAngle_irrational", "icoAngle_irrational", "DehnSydler.tmul_infinite_order_ne_zero", "DissectionOfCubesOQ02OQ02"]
   },
   {
     "id": "ann-classification-table",
