@@ -18,10 +18,10 @@
       "representation-theory"
     ],
     "badge": "wip",
-    "sorries": 0,
+    "sorries": 2,
     "dateAdded": "2026-04-23",
     "axiomCount": 0,
-    "assumptions": "0 sorries. All theorems proved: jacobiTrudiMatrix_entry_isSymmetric (split_ifs + hsymm_isSymmetric), schurPolynomial_isSymmetric (AlgHom.map_det), schurPolynomial_two_row (det_fin_two expansion), schurPolynomial_one_row_at_one (proved), jacobiTrudi_lgv_connection (proved as tautology rfl — placeholder until RSK is formalized). Base cases (empty, one_row) are proved.",
+    "assumptions": "2 open sorries: ssytSchurFin_one_row (bijection SSYT→Sym, requires sorted-multiset bijection proof, line 251) and jacobi_trudi_ssyt_eq (general k≥2 case, requires RSK correspondence, line 283).",
     "lineCount": 178,
     "theoremCount": 7,
     "definitionCount": 2,
@@ -54,8 +54,8 @@
     ]
   },
   "conclusion": {
-    "summary": "Defines Schur polynomials via the Jacobi-Trudi formula and proves base cases, symmetry, and the two-row formula. 0 sorries remain. The LGV combinatorial connection is a tautology placeholder pending RSK correspondence (~400 lines).",
-    "implications": "This provides the first Lean 4 definition of Schur polynomials via the Jacobi-Trudi formula, which is the algebraically canonical definition connecting them to the representation theory of GL(n). All theorems are proved (0 sorries). The LGV placeholder (RSK + SSYT, ~400 lines) is the outstanding research item. A completed formalization would unlock: the Pieri rule $s_\\lambda h_n = \\sum_\\mu s_\\mu$, the Murnaghan-Nakayama rule for character values, and connections to Schubert calculus. Schur polynomials are the backbone of algebraic combinatorics — once formalized, they would serve as building blocks for representation-theoretic calculations across the gallery.",
+    "summary": "Defines Schur polynomials via the Jacobi-Trudi formula and proves base cases, symmetry, and the two-row formula. 2 sorries remain: ssytSchurFin_one_row (bijection SSYT→Sym) and jacobi_trudi_ssyt_eq (general k≥2, requires RSK correspondence).",
+    "implications": "This provides the first Lean 4 definition of Schur polynomials via the Jacobi-Trudi formula, which is the algebraically canonical definition connecting them to the representation theory of GL(n). 2 sorries remain (ssytSchurFin_one_row and jacobi_trudi_ssyt_eq). The RSK correspondence (~400 lines) is the outstanding research item. A completed formalization would unlock: the Pieri rule $s_\\lambda h_n = \\sum_\\mu s_\\mu$, the Murnaghan-Nakayama rule for character values, and connections to Schubert calculus. Schur polynomials are the backbone of algebraic combinatorics — once formalized, they would serve as building blocks for representation-theoretic calculations across the gallery.",
     "openQuestions": [
       "Formalize the RSK correspondence and SSYT→NI-path bijection to prove jacobiTrudi_lgv_proof",
       "Prove the Pieri rule: s_λ * h_n = Σ_{μ} s_μ where μ ranges over partitions obtained by adding n boxes to λ"
@@ -78,7 +78,7 @@
     "theoremCount": 7,
     "definitionCount": 2,
     "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
-    "sorries": 0
+    "sorries": 2
   },
   "crossReferences": [
     {
@@ -165,5 +165,5 @@
       "mathContext": "Full proof requires: (1) SSYT type and weight function (~100 lines), (2) RSK bijection SSYT ↔ NI paths (~200 lines), (3) weight matching with the LGV edge weights from the parent proof (~100 lines). The placeholder states `schurPolynomial k sh = schurPolynomial k sh` (tautology) until SSYT generating function is defined."
     }
   ],
-  "sorries": 0
+  "sorries": 2
 }
