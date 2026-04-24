@@ -351,28 +351,27 @@
     "proofId": "abel-ruffini-galois-extensions",
     "range": {
       "startLine": 219,
-      "endLine": 248
+      "endLine": 235
     },
     "type": "insight",
-    "title": "Galois Group Order = Extension Degree, and Subgroup Solvability",
-    "content": "Two foundational results linking abstract Galois theory to concrete computation. (1) `galois_group_order`: for a finite Galois extension $E/F$, the order of the automorphism group $|\\text{Aut}(E/F)|$ equals the extension degree $[E:F]$. This is `IsGalois.card_aut_eq_finrank` — the fundamental theorem of Galois theory in numerical form. In the context of Abel-Ruffini, it means that a quintic with Galois group $S_5$ necessarily generates a degree-120 extension (since $|S_5| = 120$), which cannot be built from a radical tower (each step of which is a prime-degree extension). (2) `subgroup_solvable_of_solvable`: subgroups of solvable groups are solvable, proved trivially by `inferInstance` — Mathlib's typeclass system automatically derives `IsSolvable H` from `IsSolvable G` whenever $H \\leq G$. This closure property is essential: to conclude the Galois group of a subextension is solvable, one only needs to know the top group is solvable.",
-    "mathContext": "$|\\text{Gal}(E/F)| = [E:F]$ for finite Galois extensions (fundamental theorem). Subgroup inheritance: $H \\leq G$, $G$ solvable $\\Rightarrow H$ solvable (the derived series of $H$ is contained in the derived series of $G$: $H^{(k)} \\leq G^{(k)}$). Consequence: if $\\text{Gal}(E/F)$ is solvable, every intermediate subextension $E/K/F$ has solvable Galois group $\\text{Gal}(E/K) \\leq \\text{Gal}(E/F)$.",
+    "title": "Galois Group Order Equals Extension Degree",
+    "content": "The `GaloisProperties` section (Part V, lines 221–235) establishes the fundamental numerical form of Galois theory. `galois_group_order`: for a finite Galois extension $E/F$, the order of the automorphism group $|\\text{Aut}(E/F)|$ equals the extension degree $[E:F]$. This is `IsGalois.card_aut_eq_finrank` — the fundamental theorem of Galois theory stated numerically. In the Abel-Ruffini context, it means that a quintic with Galois group $S_5$ necessarily generates a degree-120 extension (since $|S_5| = 120$), which cannot be built from a radical tower (each step of which multiplies the degree by a prime). The theorem requires both `FiniteDimensional F E` (the extension has finite degree) and `IsGalois F E` (the extension is normal and separable) — both are necessary for the order equality. The numerical form enables computing Galois group orders from extension degrees: if $[E:\\mathbb{Q}] = 120$ and $E/\\mathbb{Q}$ is Galois, then $|\\text{Gal}(E/\\mathbb{Q})| = 120$. Combined with the classification that $S_n$ is not solvable for $n \\geq 5$ (and $|S_5| = 120$), this provides the arithmetic bridge from the degree of a polynomial to the solvability of its Galois group.",
+    "mathContext": "$|\\text{Gal}(E/F)| = [E:F]$ for finite Galois extensions. Equivalently: `Nat.card (E ≃ₐ[F] E) = Module.finrank F E`. Consequence: for a degree-$n$ irreducible polynomial $f$ with splitting field $E$ and Galois extension $E/\\mathbb{Q}$, the Galois group $\\text{Gal}(f/\\mathbb{Q}) \\leq S_n$ has order dividing $n!$. If the extension degree equals $n!$ (e.g., $120 = 5!$ for the companion quintic $x^5 - 4x + 2$), the Galois group is all of $S_n$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Galois group",
       "extension degree",
       "IsGalois",
-      "IsSolvable",
-      "subgroup solvability",
-      "Galois correspondence",
-      "card_aut_eq_finrank"
+      "card_aut_eq_finrank",
+      "radical tower",
+      "fundamental theorem of Galois theory"
     ],
     "prerequisites": [
       "Galois extensions",
       "field extensions",
       "automorphism groups",
-      "solvable groups",
-      "typeclass inference in Lean"
+      "Module.finrank",
+      "IsGalois typeclass"
     ]
   },
   {
