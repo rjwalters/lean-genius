@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: eightMul_right_unit + eightMul_left_unit PROVED (2026-04-24, simp+decide pattern). 2 sorries remain: alg_aut_preserves_norm, real_part_preserved. Key: alg_aut_preserves_norm not provable from just multiplicativity — needs map_one or norm-preservation as axiom.",
+    "progressSummary": "PROGRESS: 0 sorries, 5 axioms. alg_aut_preserves_norm proved (Session 2) via phi_unit_eq_unit + phi_imag_props. real_part_preserved proved. alg_aut_preserves_inner proved (Session 3, polarization). imag_closed_under_aut proved (Session 3). Aut(𝕆) ⊆ O(7) now formalized.",
     "builtItems": [
       "ExceptionalType inductive type (G2/F4/E6/E7/E8) with dim/rank — HurwitzTheoremOQ04.lean",
       "OctonionAlgHom structure + OctonionAut — HurwitzTheoremOQ04.lean",
@@ -46,7 +46,9 @@
       "Exactly 4 Hurwitz algebras → exactly 5 exceptional Lie algebras: G₂←Der(𝕆), F₄←𝔏(𝕆,ℝ), E₆←𝔏(𝕆,ℂ), E₇←𝔏(𝕆,ℍ), E₈←𝔏(𝕆,𝕆). Octonions appear in all 5.",
       "Physics connections: E₈×E₈ heterotic strings (dim 2×248=496, anomaly cancellation), M-theory on G₂ manifolds (4D N=1 SUSY), E₇(7) in N=8 supergravity.",
       "OctonionAlgHom structure defined in Lean: linear + multiplicative. Composition and identity proved. Norm-product preservation proved.",
-      "alg_aut_preserves_norm NOT provable from multiplicativity alone: normSq(φ(a))*normSq(φ(b)) = normSq(φ(a*b)) is consistent with both normSq-preserving and non-preserving maps. Need either map_one field or norm-preservation axiom in OctonionAlgHom definition.",
+      "alg_aut_preserves_norm PROVED via phi_unit_eq_unit (invertibility gives φ(e₀)=e₀) + phi_imag_props (pure imaginary elements preserved) + decomposition a = r·e₀ + w.",
+      "alg_aut_preserves_inner PROVED via polarization: innerProd x y = (normSq(x+y) - normSq x - normSq y)/2, with norm preservation + linearity.",
+      "imag_closed_under_aut: Aut(𝕆) ⊆ O(7) now formalized — automorphisms map Im(𝕆) to Im(𝕆) preserving the inner product.",
       "eightMul unit proof pattern: simp(config:={decide:=true})[ite_true,ite_false] evaluates if (0:Fin 8)=j for concrete j. Plain simp[stdBasis] insufficient — need decide mode for Fin equality."
     ],
     "mathlibGaps": [
@@ -55,10 +57,10 @@
       "Derivation algebra of non-associative algebras not in Mathlib"
     ],
     "nextSteps": [
-      "alg_aut_preserves_norm: add map_one field to OctonionAlgHom OR axiomatize — norm preservation NOT derivable from multiplicativity alone",
-      "real_part_preserved: depends on alg_aut_preserves_norm and φ(e₀)=e₀",
-      "Define Der(𝕆) as the space of derivations and prove it has dimension 14",
-      "Prove G₂ ⊆ SO(7) once alg_aut_preserves_norm is established"
+      "Define Der(𝕆) as the space of derivations (D linear with D(xy)=D(x)y+xD(y)); attempt to show dim = 14",
+      "Formalize 7-dim cross product preservation constraint that characterizes G₂ in SO(7) (~100 lines)",
+      "If Lean gets Lie group theory, replace G2_is_octonion_aut axiom with a proof",
+      "alg_aut_preserves_norm and real_part_preserved are PROVED (Session 2); alg_aut_preserves_inner and imag_closed_under_aut proved (Session 3)"
     ]
   },
   "tags": [

@@ -35,6 +35,10 @@ These four algebras are deeply connected to the exceptional Lie groups through:
   - `normSq_octUnit`: the unit e₀ has norm 1
   - `OctonionAlgHom` forms a monoid (identity, composition)
   - `alg_hom_preserves_norm_product`: φ preserves products of norms
+  - `alg_aut_preserves_norm`: Aut(𝕆) preserves norm (via imaginary decomposition)
+  - `real_part_preserved`: Aut(𝕆) fixes the real part
+  - `alg_aut_preserves_inner`: Aut(𝕆) preserves the inner product (by polarization)
+  - `imag_closed_under_aut`: Aut(𝕆) maps Im(𝕆) to Im(𝕆) — Aut(𝕆) ⊆ O(7)
   - All exceptional type dimension computations
   - `G2_unique_low_rank`: G₂ is the only exceptional Lie algebra of rank < 4
   - `E8_is_largest`: E₈ has the highest dimension (248)
@@ -332,6 +336,24 @@ theorem real_part_preserved (φ : OctonionAut) (x : Fin 8 → ℝ) :
   -- Re(φ(x)) = (r•e₀ + φ(w)) 0 = r + 0 = r = Re(x)
   simp only [realPart, hphi_x, Pi.add_apply, Pi.smul_apply, smul_eq_mul,
              octUnit, stdBasis, ite_true, mul_one, hw_img0, add_zero]
+
+-- ============================================================
+-- PART IIIb: Inner Product and Imaginary Subspace Preservation
+-- ============================================================
+
+/-- Automorphisms preserve the inner product (by polarization from norm preservation).
+    Together with real_part_preserved, this shows Aut(𝕆) ⊆ O(7) acting on Im(𝕆). -/
+theorem alg_aut_preserves_inner (φ : OctonionAut) (x y : Fin 8 → ℝ) :
+    innerProd (φ.map x) (φ.map y) = innerProd x y := by
+  simp only [innerProd_eq_normSq]
+  have h1 : normSq (φ.map x + φ.map y) = normSq (x + y) := by
+    rw [← φ.map_add]; exact alg_aut_preserves_norm φ (x + y)
+  rw [h1, alg_aut_preserves_norm φ x, alg_aut_preserves_norm φ y]
+
+/-- Automorphisms map imaginary octonions to imaginary octonions.
+    (Equivalently, Aut(𝕆) acts on Im(𝕆) ≅ ℝ⁷.) -/
+theorem imag_closed_under_aut (φ : OctonionAut) (x : Fin 8 → ℝ) (hx : x 0 = 0) :
+    (φ.map x) 0 = 0 := (phi_imag_props φ x hx).1
 
 -- ============================================================
 -- PART IV: G₂ as the Automorphism Group of the Octonions

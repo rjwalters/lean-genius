@@ -79,3 +79,62 @@ For a true proof:
    - Need additional argument: normSq(φ(a)) = normSq(a) by "quadratic form invariance"
    
 4. Alternative: axiomatize `alg_aut_preserves_norm` as an axiom (it's true, just hard to prove from our formalization)
+
+---
+
+## Session 2026-04-24 (Session 2) — Prove alg_aut_preserves_norm and real_part_preserved
+
+**Mode**: REVISIT
+**Outcome**: progress — eliminated 2 sorries (alg_aut_preserves_norm, real_part_preserved)
+
+### What I Did
+
+Added `phi_unit_eq_unit` (proved via invertibility of φ + eightMul_left_unit):
+- φ(e₀) is a left identity (via surjectivity: φ(e₀)·y = φ(e₀)·φ(φ⁻¹(y)) = φ(e₀·φ⁻¹(y)) = y)
+- Only element that is a left identity in a unital algebra = the unit → φ(e₀) = e₀
+
+Added `imag_sq_eq_neg_norm`: For pure imaginary y (y 0 = 0), eightMul y y = -(normSq y)·e₀
+
+Added `phi_imag_props`: For pure imaginary y, φ(y) is pure imaginary with same norm
+- Step 1: φ(y)² = -(normSq y)·e₀ (via map_mul + imag_sq_eq_neg_norm)
+- Step 2: normSq(φ(y))² = (normSq y)² via 8-square identity
+- Step 3: normSq(φ(y)) = normSq(y) since both nonneg
+- Step 4: (φ(y)) 0 = 0 from component 0 of φ(y)²
+
+From these, proved `alg_aut_preserves_norm` (decompose a = r·e₀ + w, apply phi_imag_props)
+and `real_part_preserved` (follows from phi_unit_eq_unit + decomposition).
+
+---
+
+## Session 2026-04-24 (Session 3 - researcher-7) — Prove alg_aut_preserves_inner, imag_closed_under_aut
+
+**Mode**: REVISIT
+**Outcome**: progress — 2 new theorems added (unlocked by alg_aut_preserves_norm)
+
+### What I Did
+
+Added `alg_aut_preserves_inner`: Aut(𝕆) preserves the inner product.
+- Proof: `innerProd x y = (normSq(x+y) - normSq x - normSq y) / 2` (polarization)
+- Using `alg_aut_preserves_norm` for each norm term + linearity (`map_add`)
+- Clean: `simp only [innerProd_eq_normSq]; rw [← φ.map_add]; rewrite norm terms`
+
+Added `imag_closed_under_aut`: φ maps Im(𝕆) to Im(𝕆) (public wrapper for private `phi_imag_props`).
+- Direct: `(phi_imag_props φ x hx).1`
+
+These two together formalize "Aut(𝕆) ⊆ O(7)" in the sense that:
+- φ fixes real part (real_part_preserved)
+- φ maps Im(𝕆) to Im(𝕆) (imag_closed_under_aut)
+- φ preserves norm on Im(𝕆) (from alg_aut_preserves_norm + imag_closed_under_aut)
+- φ preserves inner product on Im(𝕆) (from alg_aut_preserves_inner)
+
+### Sorry Status
+
+0 sorries, 5 axioms (unchanged):
+1. `G2_is_octonion_aut`: G₂ = Aut(𝕆) (dim = 14)
+2-5. `freudenthal_tits_f4/e6/e7/e8`: magic square exceptional types
+
+### Next Steps
+
+1. Define `Der(𝕆)` as the space of derivations and attempt to show its dimension is 14
+2. If Lean gets Lie group theory, replace `G2_is_octonion_aut` axiom with proof
+3. Could formalize the 7-dim cross product preservation constraint (~100 lines)
