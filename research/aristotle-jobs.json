@@ -78,9 +78,9 @@
       "problem_id": "erdos-166",
       "submitted": "2026-01-15T08:27:18Z",
       "sorries": [
-        "theorem ramsey_one_left (t : ℕ) (ht : t ≥ 1) : R(1, t) = 1 := by",
-        "theorem ramsey_symmetric (s t : ℕ) : R(s, t) = R(t, s) := by",
-        "theorem ramsey_two_left (t : ℕ) (ht : t ≥ 2) : R(2, t) = t := by"
+        "theorem ramsey_one_left (t : \u2115) (ht : t \u2265 1) : R(1, t) = 1 := by",
+        "theorem ramsey_symmetric (s t : \u2115) : R(s, t) = R(t, s) := by",
+        "theorem ramsey_two_left (t : \u2115) (ht : t \u2265 2) : R(2, t) = t := by"
       ],
       "notes": "Ramsey R(4,k) lower bound - Mattheus-Verstraete 2023",
       "status": "integrated",
@@ -94,8 +94,8 @@
       "problem_id": "erdos-167",
       "submitted": "2026-01-15T08:27:20Z",
       "sorries": [
-        "theorem k4_tight : ∃ (G : SimpleGraph (Fin 4)),",
-        "theorem k5_tight : ∃ (G : SimpleGraph (Fin 5)),",
+        "theorem k4_tight : \u2203 (G : SimpleGraph (Fin 4)),",
+        "theorem k5_tight : \u2203 (G : SimpleGraph (Fin 5)),",
         "theorem trivial_bound (G : SimpleGraph V) :"
       ],
       "notes": "Tuza triangle covering conjecture",
@@ -110,10 +110,10 @@
       "problem_id": "erdos-168",
       "submitted": "2026-01-15T08:27:30Z",
       "sorries": [
-        "theorem better_construction (N : ℕ) :",
-        "theorem density_bounded (N : ℕ) (hN : N ≥ 1) :",
-        "theorem F_monotone (N : ℕ) : F N ≤ F (N + 1) := by",
-        "theorem simple_lower_bound (N : ℕ) (hN : N ≥ 1) :"
+        "theorem better_construction (N : \u2115) :",
+        "theorem density_bounded (N : \u2115) (hN : N \u2265 1) :",
+        "theorem F_monotone (N : \u2115) : F N \u2264 F (N + 1) := by",
+        "theorem simple_lower_bound (N : \u2115) (hN : N \u2265 1) :"
       ],
       "notes": "n 2n 3n free sets - GSW 1977",
       "status": "integrated",
@@ -128,7 +128,7 @@
       "submitted": "2026-01-15T08:27:35Z",
       "sorries": [
         "theorem chromatic_ge_clique {V : Type*} [Fintype V] (G : SimpleGraph V) :",
-        "theorem trivial_upper (n : ℕ) : maxChromaticSegments n ≤ n := by"
+        "theorem trivial_upper (n : \u2115) : maxChromaticSegments n \u2264 n := by"
       ],
       "notes": "Segment intersection chromatic - Pawlik 2014",
       "status": "integrated",
@@ -208,7 +208,7 @@
       "sorries": [
         ""
       ],
-      "notes": "Chromatic subgraphs - Rödl 1977",
+      "notes": "Chromatic subgraphs - R\u00f6dl 1977",
       "status": "integrated",
       "last_check": null,
       "integrated": "2026-01-16"
@@ -312,7 +312,7 @@
         "squarefree_double_odd",
         "squarefree_one"
       ],
-      "notes": "REVISIT: 9 axioms. Main conjectures OPEN. Supporting axioms HARD (Filaseta-Trifonov 1992, Pandey 2024, Erdős 1951, Granville 1998). Build verified.",
+      "notes": "REVISIT: 9 axioms. Main conjectures OPEN. Supporting axioms HARD (Filaseta-Trifonov 1992, Pandey 2024, Erd\u0151s 1951, Granville 1998). Build verified.",
       "status": "failed",
       "last_check": null,
       "outcome": "Aristotle failed to load environment. All sorries converted to axioms. No theorems proved.",
@@ -333,7 +333,7 @@
         "liu_montgomery",
         "penman_uncountable"
       ],
-      "notes": "REVISIT: 8 axioms. SOLVED (Liu-Montgomery 2020). Axioms include de Bruijn-Erdős, Bondy-Simonovits, high degree cycle results. Build verified.",
+      "notes": "REVISIT: 8 axioms. SOLVED (Liu-Montgomery 2020). Axioms include de Bruijn-Erd\u0151s, Bondy-Simonovits, high degree cycle results. Build verified.",
       "status": "failed",
       "last_check": null,
       "outcome": "Aristotle failed to load environment. Unexpected axioms added. No theorems proved.",
@@ -354,7 +354,7 @@
         "harborth_five",
         "kreisel_kurz_seven"
       ],
-      "notes": "REVISIT: 8 axioms. OPEN for general case, n=7 best known. Axioms include Anning-Erdős, Harborth n=5, Kreisel-Kurz n=7, GIP sparsity. Build verified.",
+      "notes": "REVISIT: 8 axioms. OPEN for general case, n=7 best known. Axioms include Anning-Erd\u0151s, Harborth n=5, Kreisel-Kurz n=7, GIP sparsity. Build verified.",
       "status": "failed",
       "last_check": null,
       "outcome": "Aristotle failed to load environment. No theorems proved - all axiomatized.",
@@ -368,8 +368,8 @@
       "sorries": [
         "kovac_tao_all_rationals",
         "stolarsky_conjecture_false",
-        "theorem harmonic_diverges : ¬Summable (fun n : ℕ => (1 : ℝ) / (n + 1)) := by",
-        "theorem sum_reciprocal_squares_summable : Summable (fun n : ℕ => (1 : ℝ) / (n + 1)^2) := by"
+        "theorem harmonic_diverges : \u00acSummable (fun n : \u2115 => (1 : \u211d) / (n + 1)) := by",
+        "theorem sum_reciprocal_squares_summable : Summable (fun n : \u2115 => (1 : \u211d) / (n + 1)^2) := by"
       ],
       "notes": "Standard convergence/divergence results for series",
       "status": "failed",
@@ -391,8 +391,8 @@
         "suk_bound",
         "theorem f_3_value : f 3 = 3 := by",
         "theorem f_4_lb : 4 < f 4 := by",
-        "theorem f_4_ub : f 4 ≤ 5 := by",
-        "theorem f_finite (n : ℕ) (hn : 3 ≤ n) : (CardSet n).Nonempty := by",
+        "theorem f_4_ub : f 4 \u2264 5 := by",
+        "theorem f_finite (n : \u2115) (hn : 3 \u2264 n) : (CardSet n).Nonempty := by",
         "theorem f_three_eq : f 3 = 3 := by"
       ],
       "notes": "5 sorries: Happy Ending Problem - f_3_value, f_4_lb, f_4_ub, f_finite, f_three_eq",
@@ -430,9 +430,9 @@
         "theorem example_binomial_square :",
         "theorem example_trinomial_square :",
         "theorem f_one : f 1 = 1 := by",
-        "theorem f_pos (k : ℕ) (hk : k ≥ 1) : f k ≥ 1 := by",
+        "theorem f_pos (k : \u2115) (hk : k \u2265 1) : f k \u2265 1 := by",
         "theorem f_two : f 2 = 3 := by",
-        "theorem general_divergence (n : ℕ) (hn : n ≥ 1) :",
+        "theorem general_divergence (n : \u2115) (hn : n \u2265 1) :",
         "theorem schinzel_lower_bound :",
         "theorem schinzel_zannier_improved :"
       ],
@@ -450,10 +450,10 @@
         "brownRodl_theorem",
         "erdos303_true",
         "theorem infinitely_many_solutions :",
-        "theorem monochromatic_iff_alt (𝓒 : ℤ → α) (a b c : ℤ) :",
-        "theorem unitFractionEq_iff_alt (a b c : ℤ) (ha : a ≠ 0) (hb : b ≠ 0) (hc : c ≠ 0) :"
+        "theorem monochromatic_iff_alt (\ud835\udcd2 : \u2124 \u2192 \u03b1) (a b c : \u2124) :",
+        "theorem unitFractionEq_iff_alt (a b c : \u2124) (ha : a \u2260 0) (hb : b \u2260 0) (hc : c \u2260 0) :"
       ],
-      "notes": "Monochromatic Unit Fraction Solutions - SOLVED (Brown-Rödl 1991)",
+      "notes": "Monochromatic Unit Fraction Solutions - SOLVED (Brown-R\u00f6dl 1991)",
       "status": "integrated",
       "last_check": null,
       "integrated": "2026-01-19",
@@ -532,7 +532,7 @@
       "status": "integrated",
       "original_sorries": 5,
       "solved_sorries": 3,
-      "notes": "Integrated from batch - 5→3 sorries"
+      "notes": "Integrated from batch - 5\u21923 sorries"
     },
     {
       "project_id": "e8c7f151-cf4a-4257-9ee1-cc564571ebff",
@@ -543,7 +543,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 2,
-      "notes": "Integrated from batch - 3→2 sorries"
+      "notes": "Integrated from batch - 3\u21922 sorries"
     },
     {
       "project_id": "463fd6f9-3344-4387-82fe-0c9a02da0dec",
@@ -554,7 +554,7 @@
       "status": "integrated",
       "original_sorries": 2,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 2→1 sorries"
+      "notes": "Integrated from batch - 2\u21921 sorries"
     },
     {
       "project_id": "4d4f46e7-8d9e-49a3-8943-4c97ee8a241f",
@@ -565,7 +565,7 @@
       "status": "integrated",
       "original_sorries": 5,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 5→1 sorries"
+      "notes": "Integrated from batch - 5\u21921 sorries"
     },
     {
       "project_id": "254112df-e7b4-495b-8be3-2d2617d6d9e6",
@@ -576,7 +576,7 @@
       "status": "integrated",
       "original_sorries": 2,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 2→1 sorries"
+      "notes": "Integrated from batch - 2\u21921 sorries"
     },
     {
       "project_id": "a906ad36-22fc-4cc3-9c05-75bb1642dce8",
@@ -587,7 +587,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 3→1 sorries"
+      "notes": "Integrated from batch - 3\u21921 sorries"
     },
     {
       "project_id": "f5d0f273-819d-49bf-9021-01842b19bafa",
@@ -598,7 +598,7 @@
       "status": "integrated",
       "original_sorries": 5,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 5→1 sorries"
+      "notes": "Integrated from batch - 5\u21921 sorries"
     },
     {
       "project_id": "ca6f73f6-7352-477a-9749-0820bcfd35b4",
@@ -609,7 +609,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 3→1 sorries"
+      "notes": "Integrated from batch - 3\u21921 sorries"
     },
     {
       "project_id": "b01a17b8-e26e-43e4-be75-3aed52544d5f",
@@ -620,7 +620,7 @@
       "status": "integrated",
       "original_sorries": 4,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 4→1 sorries"
+      "notes": "Integrated from batch - 4\u21921 sorries"
     },
     {
       "project_id": "8942450f-e396-4846-97d7-20d51ef5dc57",
@@ -631,7 +631,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 3→1 sorries"
+      "notes": "Integrated from batch - 3\u21921 sorries"
     },
     {
       "project_id": "74278ca0-5769-438b-99fa-24efaa3f8ab9",
@@ -642,7 +642,7 @@
       "status": "integrated",
       "original_sorries": 4,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 4→1 sorries"
+      "notes": "Integrated from batch - 4\u21921 sorries"
     },
     {
       "project_id": "fc551401-f8db-40d2-9c00-d35b6708cb8e",
@@ -653,7 +653,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 3→1 sorries"
+      "notes": "Integrated from batch - 3\u21921 sorries"
     },
     {
       "project_id": "0981c660-3812-4596-b582-37bcd8147b2f",
@@ -664,7 +664,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 3→1 sorries"
+      "notes": "Integrated from batch - 3\u21921 sorries"
     },
     {
       "project_id": "07534fa5-cea1-4211-ac2e-66e3b86304f3",
@@ -675,7 +675,7 @@
       "status": "integrated",
       "original_sorries": 7,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 7→1 sorries"
+      "notes": "Integrated from batch - 7\u21921 sorries"
     },
     {
       "project_id": "b68219bf-f6f6-468d-aaf9-dee153ed25e4",
@@ -686,7 +686,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 3→1 sorries"
+      "notes": "Integrated from batch - 3\u21921 sorries"
     },
     {
       "project_id": "2c0deff5-83dc-45bd-a8dc-7d900c102ea5",
@@ -697,7 +697,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 2,
-      "notes": "Integrated from batch - 3→2 sorries"
+      "notes": "Integrated from batch - 3\u21922 sorries"
     },
     {
       "project_id": "53ad8a5a-cb79-424d-a474-eb6a05318d2c",
@@ -708,7 +708,7 @@
       "status": "integrated",
       "original_sorries": 2,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 2→1 sorries"
+      "notes": "Integrated from batch - 2\u21921 sorries"
     },
     {
       "project_id": "ecfa895b-88ce-4432-aa19-9f0b5db1f88c",
@@ -719,7 +719,7 @@
       "status": "integrated",
       "original_sorries": 11,
       "solved_sorries": 6,
-      "notes": "Integrated from batch - 11→6 sorries"
+      "notes": "Integrated from batch - 11\u21926 sorries"
     },
     {
       "project_id": "5e879a4b-c313-4d93-ada9-41f2dcf2407c",
@@ -730,7 +730,7 @@
       "status": "integrated",
       "original_sorries": 1,
       "solved_sorries": 0,
-      "notes": "Integrated from batch - 1→0 sorries"
+      "notes": "Integrated from batch - 1\u21920 sorries"
     },
     {
       "project_id": "6bcac25f-2091-4639-a3d8-7ff2d53963c1",
@@ -2454,7 +2454,7 @@
       "preprocessing_log": null,
       "companion_file": true,
       "notes": "Companion file submission (T1)",
-      "outcome": "0 sorries remaining (companion file — merge into Erdos247Problem.lean)",
+      "outcome": "0 sorries remaining (companion file \u2014 merge into Erdos247Problem.lean)",
       "theorems_proved": 0
     },
     {
@@ -2989,7 +2989,7 @@
       "preprocessing_log": null,
       "companion_file": true,
       "notes": "Companion file submission (T1)",
-      "outcome": "1 sorries remaining (companion file — merge into Erdos1040Problem.lean)",
+      "outcome": "1 sorries remaining (companion file \u2014 merge into Erdos1040Problem.lean)",
       "theorems_proved": 3
     },
     {
@@ -3002,7 +3002,7 @@
       "preprocessing_log": null,
       "companion_file": true,
       "notes": "Companion file submission (T1)",
-      "outcome": "0 sorries remaining (companion file — merge into Erdos1OQ03Problem.lean)",
+      "outcome": "0 sorries remaining (companion file \u2014 merge into Erdos1OQ03Problem.lean)",
       "theorems_proved": 1
     },
     {
@@ -3122,7 +3122,7 @@
       "sorries": [
         ""
       ],
-      "notes": "End of session: energy_increment_packaging_ari sorry — Finset.sum_union decomposition for block energy comparison",
+      "notes": "End of session: energy_increment_packaging_ari sorry \u2014 Finset.sum_union decomposition for block energy comparison",
       "status": "integrated",
       "last_check": null,
       "outcome": "Already had 0 sorries",
@@ -3316,77 +3316,77 @@
       "project_id": "4bb3ac2d-d948-48ca-8b43-67eb8baecefc",
       "file": null,
       "status": "failed",
-      "notes": "Server COMPLETE but file:null — unrecoverable, size mismatch on retrieval",
+      "notes": "Server COMPLETE but file:null \u2014 unrecoverable, size mismatch on retrieval",
       "submitted": "2026-04-13"
     },
     {
       "project_id": "80f6ff5c-54d1-4d86-844f-c02aa76203d9",
       "file": null,
       "status": "failed",
-      "notes": "Server COMPLETE but file:null — unrecoverable, size mismatch on retrieval",
+      "notes": "Server COMPLETE but file:null \u2014 unrecoverable, size mismatch on retrieval",
       "submitted": "2026-04-13"
     },
     {
       "project_id": "54926dfe-de0f-4200-95ba-7fe50531e284",
       "file": null,
       "status": "failed",
-      "notes": "Server COMPLETE but file:null — unrecoverable, size mismatch on retrieval",
+      "notes": "Server COMPLETE but file:null \u2014 unrecoverable, size mismatch on retrieval",
       "submitted": "2026-04-13"
     },
     {
       "project_id": "1f53b403-353f-45ae-b7e9-2dc77d62de96",
       "file": null,
       "status": "failed",
-      "notes": "Server COMPLETE but file:null — unrecoverable, size mismatch on retrieval",
+      "notes": "Server COMPLETE but file:null \u2014 unrecoverable, size mismatch on retrieval",
       "submitted": "2026-04-13"
     },
     {
       "project_id": "a7d46ece-d317-4e4d-8a7b-f1ce92e6f28e",
       "file": null,
       "status": "failed",
-      "notes": "Server COMPLETE but file:null — unrecoverable, size mismatch on retrieval",
+      "notes": "Server COMPLETE but file:null \u2014 unrecoverable, size mismatch on retrieval",
       "submitted": "2026-04-13"
     },
     {
       "project_id": "7a4c7e49-034a-494c-96e3-c0dcc985cc9b",
       "file": null,
       "status": "failed",
-      "notes": "Server COMPLETE but file:null — unrecoverable, size mismatch on retrieval",
+      "notes": "Server COMPLETE but file:null \u2014 unrecoverable, size mismatch on retrieval",
       "submitted": "2026-04-13"
     },
     {
       "project_id": "5bdd79ee-bc17-4a53-a0d1-2391d47d8bb5",
       "file": null,
       "status": "failed",
-      "notes": "Server COMPLETE but file:null — unrecoverable, size mismatch on retrieval",
+      "notes": "Server COMPLETE but file:null \u2014 unrecoverable, size mismatch on retrieval",
       "submitted": "2026-04-13"
     },
     {
       "project_id": "77a39615-643b-4965-bf77-f7382175da9e",
       "file": null,
       "status": "failed",
-      "notes": "Server COMPLETE but file:null — unrecoverable, size mismatch on retrieval",
+      "notes": "Server COMPLETE but file:null \u2014 unrecoverable, size mismatch on retrieval",
       "submitted": "2026-04-13"
     },
     {
       "project_id": "3328cc74-9e64-4799-9fee-9f4f727e0890",
       "file": null,
       "status": "failed",
-      "notes": "Server COMPLETE but file:null — unrecoverable, size mismatch on retrieval",
+      "notes": "Server COMPLETE but file:null \u2014 unrecoverable, size mismatch on retrieval",
       "submitted": "2026-04-13"
     },
     {
       "project_id": "2a611ba5-5e4a-442b-8770-565631eccd03",
       "file": null,
       "status": "failed",
-      "notes": "Server COMPLETE but file:null — unrecoverable, size mismatch on retrieval",
+      "notes": "Server COMPLETE but file:null \u2014 unrecoverable, size mismatch on retrieval",
       "submitted": "2026-04-13"
     },
     {
       "project_id": "d326ce8e-8706-408b-9f0e-4d1e8cb85b4d",
       "file": null,
       "status": "failed",
-      "notes": "Server COMPLETE but file:null — unrecoverable, size mismatch on retrieval",
+      "notes": "Server COMPLETE but file:null \u2014 unrecoverable, size mismatch on retrieval",
       "submitted": "2026-04-13"
     },
     {
@@ -3445,7 +3445,7 @@
         "vosper_case1_exists",
         "ap_of_near_periodic"
       ],
-      "notes": "Case 1 existence: find a₀∈A with |(A\\{a₀})+B|=|A|+|B|-2. Hard counting argument. ap_of_near_periodic is restated for context (proved in main file).",
+      "notes": "Case 1 existence: find a\u2080\u2208A with |(A\\{a\u2080})+B|=|A|+|B|-2. Hard counting argument. ap_of_near_periodic is restated for context (proved in main file).",
       "outcome": "0 sorries remaining",
       "theorems_proved": 2
     },
@@ -3598,6 +3598,15 @@
       "companion_file": true,
       "notes": "Companion file submission (T1)",
       "outcome": "Safety check failed: possible file mismatch (see issue #8061)"
+    },
+    {
+      "project_id": "1476ea38-a421-41dc-9a8d-a79ba7e007a8",
+      "problem_id": "erdos-476-oq-05",
+      "file": "proofs/Proofs/Erdos476OQ05Aristotle.lean",
+      "status": "submitted",
+      "created": "2026-04-24T12:53:06.658888",
+      "description": "Prove ap_sdiff_endpoint and case1_exists for Vosper theorem",
+      "sorry_count": 2
     }
   ]
 }
