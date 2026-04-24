@@ -65,13 +65,7 @@
     "mathlib_version": "4.26.0",
     "leanFile": {
       "imports": [
-        "Mathlib.Analysis.Convex.Caratheodory",
-        "Mathlib.Analysis.Convex.Combination",
-        "Mathlib.Analysis.Convex.Hull",
-        "Mathlib.LinearAlgebra.AffineSpace.Independent",
-        "Mathlib.LinearAlgebra.Dimension.Finrank",
-        "Mathlib.Order.Filter.Basic",
-        "Mathlib.Data.Finset.Pointwise"
+        "Mathlib"
       ],
       "opens": [
         "Set",
@@ -79,9 +73,9 @@
         "Pointwise"
       ],
       "namespace": "ShapleyFolkman",
-      "lineCount": 629,
+      "lineCount": 1238,
       "axiomCount": 0,
-      "theoremCount": 6,
+      "theoremCount": 8,
       "definitionCount": 2
     },
     "relatedProblems": []
@@ -89,7 +83,7 @@
   "overview": {
     "historicalContext": "The Shapley-Folkman lemma originated in 1966 from an exchange between Lloyd Shapley and Jon Folkman at the RAND Corporation. Shapley posed the question of bounding non-convexity in sums; Folkman provided the proof. The result was not published by either author but was communicated by Ross Starr, who applied it to prove that large economies have near-equilibria even when individual preferences are non-convex.\n\nStartr's 1969 paper 'Quasi-Equilibria in Markets with Non-Convex Preferences' in Econometrica brought the lemma to prominence in economics. The quantitative form (Shapley-Folkman-Starr theorem) bounds the Hausdorff distance between a Minkowski sum and its convex hull.\n\nThe lemma is standard in mathematical economics but remarkably little-known in pure mathematics, despite being elementary. Its proof uses the same Caratheodory reduction technique that underlies Caratheodory's and Radon's theorems. Starr called it 'one of the most useful results in convex analysis' for economics.\n\nAnderson (1978) used it to prove core convergence theorems. Mas-Colell (1978) applied it to existence of competitive equilibria. It remains a workhorse in general equilibrium theory, mechanism design, and optimization.",
     "problemStatement": "**Shapley-Folkman Lemma**: Let $S_1, \\ldots, S_N$ be nonempty subsets of $\\mathbb{R}^d$. For any point $x \\in \\text{conv}(S_1 + S_2 + \\cdots + S_N)$, there exist $x_i \\in \\text{conv}(S_i)$ with $\\sum x_i = x$ such that $x_i \\in S_i$ for all but at most $d$ indices $i$.\n\nEquivalently: the Minkowski sum of convex hulls is 'almost' the convex hull of the Minkowski sum, with the error controlled by the ambient dimension rather than the number of summands.",
-    "text": "A formalization of the Shapley-Folkman lemma in 158 lines. The proof is structured around Caratheodory's reduction: among all decompositions $x = \\sum x_i$ with $x_i \\in \\text{conv}(S_i)$, choose one minimizing total Caratheodory vertices. If more than $d$ summands require convexification ($x_i \\notin S_i$), the excess vertices are affinely dependent (dimension argument), enabling a reduction that contradicts minimality. Includes a `Decomposition` structure recording the summand choices, the main theorem `shapley_folkman` bounding excess indices by `Module.finrank`, and corollaries for the Shapley-Folkman-Starr qualitative bound and the economic application to repeated sums.",
+    "text": "A formalization of the Shapley-Folkman lemma in 1,238 lines. The proof is structured around Caratheodory's reduction: among all decompositions $x = \\sum x_i$ with $x_i \\in \\text{conv}(S_i)$, choose one minimizing total Caratheodory vertices. If more than $d$ summands require convexification ($x_i \\notin S_i$), the excess vertices are affinely dependent (dimension argument), enabling a reduction that contradicts minimality. Includes a `Decomposition` structure recording the summand choices, the main theorem `shapley_folkman` bounding excess indices by `Module.finrank`, and corollaries for the Shapley-Folkman-Starr qualitative bound and the economic application to repeated sums.",
     "proofStrategy": "The proof proceeds by a minimality argument mirroring Caratheodory's theorem:\n\n1. **Existence of decomposition**: Since $x \\in \\sum \\text{conv}(S_i)$, write $x = \\sum x_i$ with $x_i \\in \\text{conv}(S_i)$.\n\n2. **Caratheodory representation**: By Caratheodory's theorem, each $x_i$ is a convex combination of at most $d + 1$ points from $S_i$.\n\n3. **Choose minimal representation**: Among all such decompositions, choose one minimizing the total number of vertices across all Caratheodory representations.\n\n4. **Count excess vertices**: If $x_i \\notin S_i$, then $x_i$ needs at least 2 vertices. Call this index 'excess'. Each excess index contributes $\\geq 1$ extra vertex beyond the 1-vertex minimum.\n\n5. **Dimension bound**: If there are $> d$ excess indices, collect one extra vertex from each. These $> d$ vectors in $\\mathbb{R}^d$ must be affinely dependent.\n\n6. **Reduction via dependence**: The affine dependence lets us shift weights between the excess representations, strictly reducing the total vertex count while maintaining the constraint $\\sum x_i = x$. This contradicts minimality.\n\n7. **Conclusion**: At most $d$ indices can be excess.",
     "keyInsights": [
       "**Dimension controls non-convexity, not the number of sets**: The bound $d = \\dim(E)$ is independent of $N$. Adding more sets to the Minkowski sum does not increase the convexification error. This is why large economies (many agents) are nearly convex even if individual preferences are not.",
