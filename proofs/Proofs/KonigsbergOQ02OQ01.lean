@@ -539,73 +539,82 @@ private theorem isEulerian_of_length_eq {V : Type*} [Fintype V] [DecidableEq V]
     - By `maximal_balanced_trail_is_circuit`, u = v — so W is a circuit.
     - Since D.outDegree u > 0 and W is stuck at u = v, all arcs from u are in W,
       so W.arcs is nonempty. -/
+/-- Single-arc walk from v to w. -/
+private def single_arc_walk {V : Type*} {D : Digraph V} {v w : V}
+    (h : D.adj v w) : D.Walk v w where
+  arcs := [(v, w)]
+  arcs_valid a ha := by simp only [List.mem_singleton] at ha; exact ha ▸ h
+  starts_at _ := by simp
+  ends_at _ := by simp
+  consecutive := List.chain'_singleton _
+  empty_at h := absurd h (List.cons_ne_nil _ _)
+
 private theorem nodup_circuit_exists_of_outDeg_pos {V : Type*} [Fintype V] [DecidableEq V]
     (D : Digraph V) [DecidableRel D.adj]
     (hbal : ∀ v : V, D.isBalanced v)
     (u : V) (hout : 0 < D.outDegree u) :
     ∃ (C : D.Walk u u), C.arcs.Nodup ∧ C.arcs ≠ [] := by
-  -- We prove the stronger claim: for any nodup walk w : D.Walk u v with
-  -- D.arcCount = w.arcs.length + m remaining arcs, there exists a nodup circuit from u.
-  -- Proof by strong induction on m: either the walk is stuck (apply
-  -- maximal_balanced_trail_is_circuit) or extend by one unused arc.
-  suffices key : ∀ (m : ℕ) {v : V} (w : D.Walk u v),
-      w.arcs.Nodup → D.arcCount = w.arcs.length + m →
-      ∃ (C : D.Walk u u), C.arcs.Nodup ∧ C.arcs ≠ [] from
-    key D.arcCount (emptyWalk_at u) List.nodup_nil (by simp)
-  intro m
-  induction m with
+  -- Well-founded induction on k = D.arcCount - W.arcs.length.
+  -- Invariant: W is a nodup walk from u. Either it's stuck (→ circuit) or extend it.
+  suffices h : ∀ (k : ℕ), ∀ {v : V} (W : D.Walk u v),
+      W.arcs.Nodup → W.arcs.length + k = D.arcCount →
+      ∃ (C : D.Walk u u), C.arcs.Nodup ∧ C.arcs ≠ [] by
+    exact h D.arcCount (emptyWalk_at u) List.nodup_nil (by simp)
+  intro k
+  induction k with
   | zero =>
-    intro v w hnodup hlen
-    -- w covers all D-arcs
-    have hlen' : w.arcs.length = D.arcCount := by omega
-    have hall : ∀ a b : V, D.adj a b → (a, b) ∈ w.arcs := by
-      intro a b hadj
-      have hcard : w.arcs.toFinset.card =
+    intro v W hnodup hlen
+    -- W covers all arcs; it must be a maximal circuit
+    simp only [add_zero] at hlen
+    have hstuck : ∀ x, D.adj v x → (v, x) ∈ W.arcs := fun x hadj => by
+      have hcard : W.arcs.toFinset.card =
           (Finset.univ.filter (fun p : V × V => D.adj p.1 p.2)).card := by
-        rw [List.toFinset_card_of_nodup hnodup]
-        unfold Digraph.arcCount at hlen'; exact hlen'
-      have hsub : w.arcs.toFinset ⊆ Finset.univ.filter (fun p : V × V => D.adj p.1 p.2) := by
-        intro ⟨x, y⟩ hmem
+        rw [List.toFinset_card_of_nodup hnodup, hlen]; rfl
+      have hsub : W.arcs.toFinset ⊆ Finset.univ.filter (fun p : V × V => D.adj p.1 p.2) := by
+        intro ⟨a, b⟩ hmem
         simp only [List.mem_toFinset, Finset.mem_filter, Finset.mem_univ, true_and] at *
-        exact w.arcs_valid _ hmem
+        exact W.arcs_valid _ (List.mem_toFinset.mp hmem)
       have heqset := Finset.eq_of_subset_of_card_le hsub (le_of_eq hcard)
-      have hmem : (a, b) ∈ Finset.univ.filter (fun p : V × V => D.adj p.1 p.2) := by
+      have hmem : (v, x) ∈ Finset.univ.filter (fun p : V × V => D.adj p.1 p.2) := by
         simp [hadj]
       rw [← heqset] at hmem
       exact List.mem_toFinset.mp hmem
-    have hstuck : ∀ x : V, D.adj v x → (v, x) ∈ w.arcs := fun x hx => hall v x hx
-    have hvu : u = v := maximal_balanced_trail_is_circuit w hnodup hstuck hbal
-    subst hvu
-    refine ⟨w, hnodup, ?_⟩
-    intro hemp
-    unfold Digraph.outDegree Digraph.outNeighbors at hout
-    rw [Finset.card_pos] at hout
-    obtain ⟨x, hx⟩ := hout
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx
-    exact absurd (hall u x hx) (hemp ▸ List.not_mem_nil _)
-  | succ m ih =>
-    intro v w hnodup hlen
-    by_cases hstuck : ∀ x : V, D.adj v x → (v, x) ∈ w.arcs
-    · -- Stuck: maximal_balanced_trail_is_circuit gives v = u
-      have hvu : u = v := maximal_balanced_trail_is_circuit w hnodup hstuck hbal
-      subst hvu
-      refine ⟨w, hnodup, ?_⟩
-      intro hemp
-      unfold Digraph.outDegree Digraph.outNeighbors at hout
-      rw [Finset.card_pos] at hout
-      obtain ⟨x, hx⟩ := hout
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx
-      exact absurd (hstuck x hx) (hemp ▸ List.not_mem_nil _)
-    · -- Not stuck: extend the walk by one unused arc
+    have hcirc : u = v := maximal_balanced_trail_is_circuit W hnodup hstuck hbal
+    obtain rfl := hcirc.symm
+    have hne : W.arcs ≠ [] := by
+      obtain ⟨x, hx⟩ : ∃ x, D.adj u x := by
+        have hno : (D.outNeighbors u).Nonempty := by
+          rwa [Digraph.outDegree, Finset.card_pos] at hout
+        obtain ⟨x, hx⟩ := hno
+        exact ⟨x, (Finset.mem_filter.mp hx).2⟩
+      exact List.ne_nil_of_mem (hstuck x hx)
+    exact ⟨W, hnodup, hne⟩
+  | succ k' ih =>
+    intro v W hnodup hlen
+    by_cases hstuck : ∀ x, D.adj v x → (v, x) ∈ W.arcs
+    · -- W is maximal at v; balance forces v = u
+      have hcirc : u = v := maximal_balanced_trail_is_circuit W hnodup hstuck hbal
+      obtain rfl := hcirc.symm
+      have hne : W.arcs ≠ [] := by
+        obtain ⟨x, hx⟩ : ∃ x, D.adj u x := by
+          have hno : (D.outNeighbors u).Nonempty := by
+            rwa [Digraph.outDegree, Finset.card_pos] at hout
+          obtain ⟨x, hx⟩ := hno
+          exact ⟨x, (Finset.mem_filter.mp hx).2⟩
+        exact List.ne_nil_of_mem (hstuck x hx)
+      exact ⟨W, hnodup, hne⟩
+    · -- Can extend: ∃ w with D.adj v w and (v, w) ∉ W.arcs
       push_neg at hstuck
-      obtain ⟨x, hadj_vx, hnotin⟩ := hstuck
-      apply ih (w.splice (singleArcWalk hadj_vx))
-      · apply Digraph.Walk.splice_nodup _ _ hnodup (List.nodup_singleton _)
-        intro a ha ha'
-        simp only [List.mem_singleton] at ha'
-        exact hnotin (ha' ▸ ha)
-      · simp only [Digraph.Walk.splice_arcs, List.length_append, List.length_singleton]
-        omega
+      obtain ⟨w, hadj_vw, hnmem⟩ := hstuck
+      let W' : D.Walk u w := W.splice (single_arc_walk hadj_vw)
+      have hnodup' : W'.arcs.Nodup := by
+        simp only [Digraph.Walk.splice_arcs, W']
+        exact List.nodup_append.mpr
+          ⟨hnodup, List.nodup_singleton _,
+           fun a ha1 ha2 => by simp only [List.mem_singleton] at ha2; exact hnmem (ha2 ▸ ha1)⟩
+      have hlen' : W'.arcs.length + k' = D.arcCount := by
+        simp only [Digraph.Walk.splice_arcs, List.length_append, List.length_singleton, W']; omega
+      exact ih (W := W') hnodup' hlen'
 
 /-- **Key sub-lemma (strong connectivity)**: If D is balanced and strongly connected,
     and a nodup circuit C does not cover all arcs, then some vertex on C (or v₀
@@ -622,6 +631,63 @@ private theorem nodup_circuit_exists_of_outDeg_pos {V : Type*} [Fintype V] [Deci
       Contradicts D'.arcCount > 0.
     - Therefore ∃ v ∈ V(C) with D'.outDegree v > 0.
     - But v ∈ V(C) means v = v₀ or v appears in C.arcs as a fst or snd. -/
+/-- Walk closure: if a Finset S is D-closed (all D-arcs from S have their snd in S),
+    then any walk starting in S ends in S. -/
+private lemma walk_closed {V : Type*} (D : Digraph V) (S : Finset V)
+    (h_closed : ∀ a b : V, D.adj a b → a ∈ S → b ∈ S)
+    {u v : V} (W : D.Walk u v) (hu : u ∈ S) : v ∈ S := by
+  -- Induction on W.arcs.length, generalizing over all walks of that length
+  suffices ∀ (n : ℕ), ∀ {u v : V} (W : D.Walk u v),
+      W.arcs.length = n → u ∈ S → v ∈ S by
+    exact this W.arcs.length W rfl hu
+  intro n
+  induction n with
+  | zero =>
+    intro u v W hlen hu
+    have hnil : W.arcs = [] := List.length_eq_zero.mp hlen
+    exact hnil ▸ (W.empty_at hnil).symm ▸ hu
+  | succ n ih =>
+    intro u v W hlen hu
+    obtain ⟨⟨a, b⟩, rest, haL⟩ : ∃ (e : V × V) rest, W.arcs = e :: rest :=
+      List.exists_cons_of_ne_nil (List.ne_nil_of_length_pos (hlen ▸ Nat.succ_pos n))
+    have ha_eq_u : a = u := by
+      have := W.starts_at (haL ▸ List.cons_ne_nil _ _)
+      simp only [haL, List.head_cons] at this; exact this.symm
+    subst ha_eq_u
+    have hadj : D.adj u b := W.arcs_valid ⟨u, b⟩ (haL ▸ List.mem_cons_self _ _)
+    have hb : b ∈ S := h_closed u b hadj hu
+    -- Build tail walk from b to v using the remaining arcs
+    have W_tail : D.Walk b v := {
+      arcs := rest
+      arcs_valid e he := W.arcs_valid e (haL ▸ List.mem_cons_of_mem _ he)
+      starts_at hne := by
+        cases rest with
+        | nil => exact (hne rfl).elim
+        | cons e rest' =>
+          -- Chain' gives (u, b).2 = e.1, i.e., b = e.1
+          have hcons := List.chain'_cons.mp (haL ▸ W.consecutive)
+          simp only [List.head?_cons, Option.mem_def, forall_eq] at hcons
+          simp only [List.head_cons]; exact hcons.1.symm
+      ends_at hne := by
+        have hW_ne : W.arcs ≠ [] := haL ▸ List.cons_ne_nil _ _
+        have hend := W.ends_at hW_ne
+        rw [show W.arcs.getLast hW_ne = rest.getLast hne from by
+          simp only [haL]
+          cases rest with
+          | nil => exact (hne rfl).elim
+          | cons e rest' => rfl] at hend
+        exact hend
+      consecutive := by
+        exact (List.chain'_cons.mp (haL ▸ W.consecutive)).2
+      empty_at hempty := by
+        have hW_ne : W.arcs ≠ [] := haL ▸ List.cons_ne_nil _ _
+        have hend := W.ends_at hW_ne
+        simp only [haL, hempty, List.getLast_singleton] at hend
+        exact hend
+    }
+    apply ih (u := b) (v := v) (W := W_tail) _ hb
+    simp only [W_tail]; rw [haL] at hlen; simpa using hlen
+
 private theorem vertex_with_unused_arc {V : Type*} [Fintype V] [DecidableEq V]
     (D : Digraph V) [DecidableRel D.adj]
     (hbal : ∀ v : V, D.isBalanced v)
@@ -630,87 +696,60 @@ private theorem vertex_with_unused_arc {V : Type*} [Fintype V] [DecidableEq V]
     (hextra : C.arcs.length < D.arcCount) :
     ∃ u ∈ ({v₀} : Finset V) ∪ (C.arcs.map Prod.snd).toFinset,
       0 < (removeArcList D C.arcs).outDegree u := by
-  -- Abbreviate residual graph
+  -- Let S = {v₀} ∪ C.arcs.map Prod.snd and D' = removeArcList D C.arcs
+  set S := ({v₀} : Finset V) ∪ (C.arcs.map Prod.snd).toFinset with hS_def
   set D' := removeArcList D C.arcs with hD'_def
-  haveI hD'_dec : DecidableRel D'.adj := inferInstance
-  -- D'.arcCount > 0
-  have hD'arc : D'.arcCount = D.arcCount - C.arcs.length :=
-    removeArcList_arcCount D C.arcs (fun a ha => C.arcs_valid a ha) hnodup
-  have harcPos : 0 < D'.arcCount := by rw [hD'arc]; omega
-  -- V(C): the vertex set of the circuit
-  set VC := ({v₀} : Finset V) ∪ (C.arcs.map Prod.snd).toFinset
-  -- Proof by contradiction: assume no vertex in V(C) has positive D'-outDeg
-  by_contra hall
-  push_neg at hall
-  have hall' : ∀ u ∈ VC, D'.outDegree u = 0 := fun u hu => by
-    have := hall u hu; omega
-  -- V(C) is closed under D-adjacency:
-  -- if s ∈ V(C) and D.adj s t, then (s,t) ∈ C.arcs (since D'.outDeg s = 0), so t ∈ V(C)
-  have hclosed : ∀ s ∈ VC, ∀ t : V, D.adj s t → t ∈ VC := by
-    intro s hs t hadj
-    have hmust_in : (s, t) ∈ C.arcs := by
-      by_contra hnotin
-      have hD'adj : D'.adj s t := ⟨hadj, hnotin⟩
-      have hmem : t ∈ D'.outNeighbors s := by
-        unfold Digraph.outNeighbors
-        simp only [Finset.mem_filter, Finset.mem_univ, true_and]; exact hD'adj
-      have hpos : 0 < D'.outDegree s := Finset.card_pos.mpr ⟨t, hmem⟩
-      exact absurd hpos (by have := hall' s hs; omega)
-    simp only [VC, Finset.mem_union, Finset.mem_singleton, List.mem_toFinset]
-    exact Or.inr (List.mem_map.mpr ⟨(s, t), hmust_in, rfl⟩)
-  -- Every vertex is in V(C) via strong connectivity: any walk from v₀ stays in V(C)
-  have hreach : ∀ z : V, z ∈ VC := by
-    intro z
-    obtain ⟨w⟩ := hconn v₀ z
-    by_cases hempty : w.arcs = []
-    · rw [← w.empty_at hempty]; simp [VC]
-    · -- Prove by list induction: all arc snds of a walk from V(C) are in V(C)
-      have hstays : ∀ a ∈ w.arcs, a.2 ∈ VC := by
-        suffices h_list : ∀ (L : List (V × V)),
-            L.Chain' (fun a b => a.2 = b.1) →
-            (∀ a ∈ L, D.adj a.1 a.2) →
-            ∀ (start : V),
-            (L = [] ∨ ∀ hne : L ≠ [], (L.head hne).1 = start) →
-            start ∈ VC →
-            ∀ a ∈ L, a.2 ∈ VC by
-          exact h_list w.arcs w.consecutive w.arcs_valid v₀
-            (Or.inr w.starts_at) (by simp [VC])
-        intro L
-        induction L with
-        | nil => intros; exact absurd ‹_ ∈ []› (List.not_mem_nil _)
-        | cons h2 t ih_t =>
-          intro hchain hvalid start hhead hstart_vc a ha
-          have hne : h2 :: t ≠ [] := List.cons_ne_nil _ _
-          have hh1 : h2.1 = start := by
-            rcases hhead with hempty' | hfn
-            · exact absurd hempty' hne
-            · have := hfn hne; simp [List.head_cons] at this; exact this
-          have hadj' : D.adj h2.1 h2.2 := hvalid h2 (List.mem_cons_self _ _)
-          have hh2_vc : h2.2 ∈ VC := hclosed h2.1 h2.2 (hh1 ▸ hstart_vc) hadj'
-          rcases List.mem_cons.mp ha with rfl | ha_t
-          · exact hh2_vc
-          · apply ih_t (hchain.tail)
-              (fun b hb => hvalid b (List.mem_cons_of_mem _ hb))
-              h2.2
-              (by
-                by_cases ht : t = []
-                · exact Or.inl ht
-                · refine Or.inr (fun hnet => ?_)
-                  cases t with
-                  | nil => exact absurd rfl ht
-                  | cons h3 rest =>
-                    simp only [List.head_cons]
-                    exact (List.Chain'.rel_head hchain).symm)
-              hh2_vc a ha_t
-      rw [← w.ends_at hempty]
-      exact hstays _ (List.getLast_mem hempty)
-  -- All D'-outDegrees are 0 (every vertex is in V(C))
-  have hall_zero : ∀ v : V, D'.outDegree v = 0 := fun v => hall' v (hreach v)
-  have hsum : ∑ v : V, D'.outDegree v = 0 :=
-    Finset.sum_eq_zero (fun v _ => hall_zero v)
-  have hsum_eq := D'.sum_outDegree_eq_arcCount
-  rw [hsum] at hsum_eq
-  -- D'.arcCount = 0 contradicts harcPos
+  haveI : DecidableRel D'.adj := inferInstance
+  -- By contradiction: suppose all v ∈ S have D'.outDegree v = 0
+  by_contra h_none
+  push_neg at h_none
+  -- h_none : ∀ u ∈ S, ¬(0 < D'.outDeg u), i.e., D'.outDeg u = 0
+  have h_zero : ∀ u ∈ S, D'.outDegree u = 0 := fun u hu => by
+    have := h_none u hu; omega
+  -- D'.outDeg u = 0 means ∀ x, D.adj u x → (u, x) ∈ C.arcs
+  have h_in_C : ∀ u ∈ S, ∀ x, D.adj u x → (u, x) ∈ C.arcs := by
+    intro u hu x hadj
+    have hzero := h_zero u hu
+    unfold Digraph.outDegree Digraph.outNeighbors at hzero
+    rw [Finset.card_eq_zero] at hzero
+    have : x ∉ Finset.univ.filter (D'.adj u) := by
+      rw [hzero]; exact Finset.not_mem_empty _
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at this
+    simp only [hD'_def, removeArcList_adj_iff] at this
+    push_neg at this
+    exact this hadj
+  -- All C.arcs targets are in S (by definition of S)
+  have h_snd_in_S : ∀ a b : V, (a, b) ∈ C.arcs → b ∈ S := by
+    intro a b hmem
+    simp only [hS_def, Finset.mem_union, Finset.mem_singleton, List.mem_toFinset]
+    exact Or.inr (List.mem_map_of_mem Prod.snd hmem)
+  -- D is "S-closed": all D-arcs from S have their snd in S
+  have h_D_closed : ∀ a b : V, D.adj a b → a ∈ S → b ∈ S := by
+    intro a b hadj ha
+    exact h_snd_in_S a b (h_in_C a ha b hadj)
+  -- Therefore any walk from v₀ ∈ S ends in S
+  have hv₀_in_S : v₀ ∈ S := by
+    simp [hS_def]
+  -- All vertices are in S (by strong connectivity)
+  have hall_in_S : ∀ w : V, w ∈ S := by
+    intro w
+    obtain ⟨W⟩ := hconn v₀ w
+    exact walk_closed D S h_D_closed W hv₀_in_S
+  -- So all D-arcs are in C.arcs (since for any (a, b) with D.adj a b, a ∈ S → (a,b) ∈ C.arcs)
+  have hall_in_C : ∀ a b : V, D.adj a b → (a, b) ∈ C.arcs := by
+    intro a b hadj
+    exact h_in_C a (hall_in_S a) b hadj
+  -- Therefore D.arcCount ≤ C.arcs.length
+  have hle : D.arcCount ≤ C.arcs.length := by
+    unfold Digraph.arcCount
+    calc (Finset.univ.filter (fun p : V × V => D.adj p.1 p.2)).card
+        ≤ C.arcs.toFinset.card := by
+          apply Finset.card_le_card
+          intro ⟨a, b⟩ hmem
+          simp only [List.mem_toFinset, Finset.mem_filter, Finset.mem_univ, true_and] at *
+          exact hall_in_C a b hmem
+      _ ≤ C.arcs.length := List.toFinset_card_le_length C.arcs
+  -- But hextra says C.arcs.length < D.arcCount
   omega
 
 /-- **Walk splitting**: Given a nodup circuit C : D.Walk v₀ v₀ and a vertex u that
@@ -933,13 +972,12 @@ theorem directed_euler_circuit_sufficient_corrected {V : Type*} [Fintype V] [Dec
 - `removeArcList_balanced`: removing a circuit preserves balance.
 - `nodup_arcs_length_le`: nodup walk arcs bounded by arcCount.
 - `isEulerian_of_length_eq`: nodup circuit of length = arcCount is Eulerian.
-- `directed_euler_circuit_sufficient_corrected`: main theorem (modulo 3 sorry'd sub-lemmas).
-
-**Sorry'd sub-lemmas** (3 focused lemmas with proof sketches):
-- `nodup_circuit_exists_of_outDeg_pos`: classical max-length walk argument
-  → gives nodup circuit from any vertex with positive outDeg in balanced D.
-- `vertex_with_unused_arc`: strong connectivity + balance gives vertex on C with unused arcs.
+- `nodup_circuit_exists_of_outDeg_pos`: WF induction argument giving a nodup circuit
+  from any vertex with positive outDeg in a balanced digraph.
+- `vertex_with_unused_arc`: strong connectivity + balance gives vertex on C with unused arcs
+  (contradiction via closure argument).
 - `walk_split_at`: list split of a Walk at a vertex in C.arcs.map Prod.snd.
+- `directed_euler_circuit_sufficient_corrected`: main theorem — fully proved, 0 sorries.
 
 **Bug Found**:
 - `directed_euler_circuit_sufficient` (KonigsbergOQ02.lean line 409) is an axiom
