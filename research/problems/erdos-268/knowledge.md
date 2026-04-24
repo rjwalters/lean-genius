@@ -328,3 +328,27 @@ over infinite A ⊆ ℕ with convergent harmonic subseries.
 
 1. If Kovač-Tao 2024 formalization becomes available, replace `harmonicPointSet_path_connected_large` with a proof
 2. Submit Aristotle file sorries for automated proof search
+
+---
+
+## Session 2026-04-24 (Session 7) — Metadata Cleanup: Mark COMPLETED
+
+**Mode**: REVISIT
+**Outcome**: administrative — updated problem JSON and pool status to reflect axiomatized state
+
+### What I Did
+
+1. Reviewed current state: Erdos268Problem.lean has 0 sorries, 2 axioms; all 3 Aristotle files have 0 sorries
+2. Updated `src/data/research/problems/erdos-268.json`: progressSummary to "AXIOMATIZED", status to "completed", phase to "COMPLETED"
+3. Updated `.lean/state/candidate-pool.json`: status to "completed"
+4. No Lean code changes needed — state is already correct
+
+### Sorry Status
+
+**0 sorries, 2 axioms** (unchanged from Session 6):
+1. `erdos_268_solved d`: interior nonemptiness (Kovač 2024)
+2. `harmonicPointSet_path_connected_large d`: IsPathConnected for d≥1 (Kovač-Tao 2024)
+
+### Next Steps
+
+None — this research thread is closed. Future work requires Kovač-Tao 2024 formalization.
