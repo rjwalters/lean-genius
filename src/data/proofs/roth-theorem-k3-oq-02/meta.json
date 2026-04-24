@@ -47,8 +47,8 @@
       "Edge-disjointness lower bound: edge removal requires >= |A|N edges",
       "Statement of Roth's theorem via triangle removal as alternative to Fourier proof"
     ],
-    "lineCount": 357,
-    "theoremCount": 13,
+    "lineCount": 465,
+    "theoremCount": 16,
     "definitionCount": 4,
     "mathlib_version": "4.26.0"
   },
@@ -106,7 +106,7 @@
       "id": "roth-via-trl",
       "title": "Part IV: Roth's Theorem via Triangle Removal",
       "startLine": 270,
-      "endLine": 353,
+      "endLine": 465,
       "summary": "Contains 2 sorry'd private helpers: rs_tc_ap_free_le (triangle count upper bound ≤ 6|A|N) and rs_removal_lb (edge removal lower bound |R| ≥ |A|N in finite setting). Proves ap_free_min_removal: hitting every edge-disjoint triangle requires R to intersect each (0 sorries — uses fully proved ap_free_triangle_exists). Proves roth_via_triangle_removal: full Roth theorem via TRL (0 sorries in theorem itself, but calls the 2 sorry'd helpers above). Proves roth_proofs_agree: Fourier proof implies TRL proof.",
       "mathContext": "Edge-disjoint triangles $\\implies$ $|R| \\geq |A| \\cdot N$. Triangle removal lemma: $|R| \\leq \\delta' \\cdot 9N^2$. Contradiction for $|A| \\geq \\delta N$."
     }
@@ -180,9 +180,9 @@
       "Finset"
     ],
     "namespace": "Szemeredi.Roth.TriangleRemoval",
-    "lineCount": 357,
+    "lineCount": 465,
     "axiomCount": 0,
-    "theoremCount": 13,
+    "theoremCount": 16,
     "definitionCount": 4,
     "path": "Proofs/RothTriangleRemoval.lean",
     "sorries": 2
