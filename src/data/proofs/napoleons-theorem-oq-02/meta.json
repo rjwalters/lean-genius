@@ -142,6 +142,11 @@
       "targetId": "primitive-roots",
       "relationship": "foundational",
       "description": "The primitive root theorem — $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic — underpins cyclotomic theory. The cube root of unity $\\omega = e^{2\\pi i/3}$ used throughout this proof is a primitive 3rd root of unity, the complex analogue: it generates the cyclic group $\\mu_3 = \\{1, \\omega, \\omega^2\\}$ under multiplication. The identity $1+\\omega+\\omega^2 = 0$ (used in every main theorem) is the cyclotomic polynomial $\\Phi_3(x) = x^2+x+1$ evaluated at $x=\\omega$."
+    },
+    {
+      "targetId": "morleys-theorem",
+      "relationship": "related",
+      "description": "Morley's theorem (the angle trisectors of any triangle meet to form an equilateral triangle) is Napoleon's closest sibling: both theorems reveal a hidden equilateral triangle in an arbitrary triangle, both are proved most naturally using complex numbers and roots of unity, and both have spectral interpretations. The DFT filter perspective here — Napoleon maps triangle vertices to a spectrum dominated by the $\\omega^1$ component — raises the natural question whether Morley's trisection construction similarly annihilates higher-frequency components in a suitable complex encoding of the angle trisectors. The parent entry already cross-references them as co-discoverers of equilateral triangles in triangles."
     }
   ],
   "references": [
