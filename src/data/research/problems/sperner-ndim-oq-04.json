@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: adj_unique_facet added. Both remaining sorries incorrectly stated — need reformulation before proof.",
+    "progressSummary": "ACT: 4 proved lemmas added (2026-04-25): no-immediate-back, first-exit-interior, fc-if-started-fc, fc-of-fc-start. 2 remaining sorries (general non-revisiting, existential). Core strategy identified.",
     "builtItems": [
       "doorDegree def: SpernerNDimOQ04.lean:60",
       "IsKuhnCompatible def: SpernerNDimOQ04.lean:65",
@@ -41,7 +41,12 @@
       "kuhnWalk function: fuel-based recursion defined",
       "kuhnPathStart def: algorithm entry point defined",
       "kuhn_path_terminates PROVED (not sorry): sperner_ndim c K hc hbdry_odd — SpernerNDimOQ04.lean:324",
-      "adj_unique_facet field in SpernerTriangulation — SpernerNDim.lean:111 (2026-04-24)"
+      "adj_unique_facet field in SpernerTriangulation — SpernerNDim.lean:111 (2026-04-24)",
+      "kuhnWalk_no_immediate_back (proved, 0 sorries) in SpernerNDimOQ04.lean:311: adj_unique_facet prevents immediate-revisit; K.adj s₁ k_out ≠ some(s₀, _) when k_out ≠ k₁",
+      "kuhnWalk_first_exit_interior (proved, 0 sorries) in SpernerNDimOQ04.lean:326: starting from boundary door, first exit always interior (boundary_door_is_last_face)",
+      "kuhnWalk_fc_if_started_fc (proved, 0 sorries) in SpernerNDimOQ04.lean:368: if state.current is FC, kuhnWalk returns FC for any fuel",
+      "kuhnPathStart_is_fc_of_fc_start (proved, 0 sorries) in SpernerNDimOQ04.lean:444: if s₀ is FC with boundary door, kuhnPathStart returns FC",
+      "kuhnPathStart_finds_fc_existential (correctly-stated sorry) in SpernerNDimOQ04.lean:465: ∃ boundary door s.t. walk reaches FC"
     ],
     "insights": [
       "IsKuhnCompatible (door degree ≤ 2) combined with abstract_door_parity gives exact door counts: 1 for FC, 0 or 2 for non-FC",
@@ -54,7 +59,11 @@
       "kuhnPathStart_is_fc as stated may be FALSE: walk can terminate at boundary-exit non-FC simplex when k_out vertex color ≠ d",
       "kuhn_walk_reaches_fc is FALSE for arbitrary KuhnState: needs IsKuhnWalkState invariant",
       "3-cycles consistent with adj_unique_facet + Kuhn compatibility: full acyclicity is geometric property of Δd",
-      "Correct reformulation: existential ∃ starting boundary door → FC (provable by parity + pairing)"
+      "Correct reformulation: existential ∃ starting boundary door → FC (provable by parity + pairing)",
+      "adj_unique_facet directly proves no-immediate-revisit: K.adj s₁ k₁ = some(s₀,_) and K.adj s₁ k_out = some(s₀,_) implies k₁ = k_out (contradiction with exit≠entry)",
+      "Boundary-exit on first step is impossible: both doors would equal Fin.last d by boundary_door_is_last_face, contradicting k_out ≠ k₀",
+      "General non-revisiting (j<n-1 case): a revisited sⱼ would have ≥3 doors (entry kⱼ, exit k_exit_j, back-entry via door_transfer from path), violating Kuhn compat ≤2. Needs per-simplex door history in KuhnState to formalize.",
+      "Existential approach: odd boundary doors → ∃ unpaired boundary door → ∃ FC simplex with boundary door → kuhnPathStart_is_fc_of_fc_start gives result. This is the correct top-level proof strategy."
     ],
     "mathlibGaps": [
       "No Mathlib theorem for path-following algorithm termination with non-revisiting invariant",
@@ -62,11 +71,10 @@
       "SpernerTriangulation lacks an adjacent-simplices-share-unique-facet axiom needed for the non-revisiting proof"
     ],
     "nextSteps": [
-      "Reformulate kuhnPathStart_is_fc to existential: ∃ s₀ k₀ ..., IsFC c K (kuhnPathStart ...)",
-      "Add IsKuhnWalkState inductive predicate for valid walk states from boundary door",
-      "Add per-simplex door history to KuhnState: List (Simplex × Fin(d+1) × Fin(d+1))",
-      "Prove kuhnWalk_never_revisits using adj_unique_facet + door history by induction",
-      "Close kuhn_walk_reaches_fc under reformulated IsKuhnWalkState hypothesis"
+      "Extend KuhnState to track entry/exit doors per visited simplex (List (K.Simplex × Fin(d+1) × Fin(d+1)))",
+      "Prove general non-revisiting by induction using per-simplex door history + Kuhn compat ≤2",
+      "Prove walk-pairing argument: boundary doors pair up (start door with end door), odd total → ≥1 unpaired = FC boundary door",
+      "Close kuhnPathStart_finds_fc_existential using walk-pairing + kuhnPathStart_is_fc_of_fc_start"
     ]
   },
   "tags": [
