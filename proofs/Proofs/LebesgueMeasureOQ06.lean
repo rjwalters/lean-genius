@@ -128,13 +128,18 @@ theorem paradoxical_no_finite_measure (G : Type*) [Group G] [MulAction G α]
   -- And the equidecomposability gives μ(A) = μ(B) + μ(C) = 2·μ(A)
   -- So μ(A) = 2·μ(A) → μ(A) = 0 or ∞
   have h2 : μ A + μ A = μ A := by
-    -- Need: μ(A) ≥ μ(B ∪ C) (since B ∪ C ⊆ A)
-    -- This requires monotonicity of μ which follows from finite additivity
-    -- For now, we assume B ∪ C = A (in the classical paradox, B ∪ C ⊊ A but
-    -- equidecomposability compensates; the full argument uses covering numbers)
-    -- In the canonical formulation: A is equidecomposable to B ∪ C ∪ {center}
-    -- and the center has measure 0. We simplify by assuming B ∪ C = A here.
-    sorry -- Full proof: B ∪ C ⊆ A, μ(B ∪ C) ≤ μ(A) ≤ μ(A) + μ(A) = μ(B ∪ C)
+    -- B ∪ C ⊆ A since B ⊆ A and C ⊆ A
+    have hBC_sub : B ∪ C ⊆ A := Set.union_subset hBA hCA
+    -- A = (B ∪ C) ∪ (A \ (B ∪ C)) (disjoint decomposition)
+    have hdecomp : A = (B ∪ C) ∪ (A \ (B ∪ C)) := (Set.union_diff_cancel hBC_sub).symm
+    -- Monotonicity: μ(B ∪ C) ≤ μ(A) = μ(B ∪ C) + μ(A \ (B ∪ C)) ≥ μ(B ∪ C)
+    have hBC_le : μ (B ∪ C) ≤ μ A := by
+      conv_rhs => rw [hdecomp]
+      rw [hμ_add _ _ Set.disjoint_sdiff_right]
+      exact le_add_of_nonneg_right (hμ_nonneg _)
+    -- μ A ≤ μ A + μ A (nonneg), and μ A + μ A = μ (B ∪ C) ≤ μ A
+    -- Result: μ A = μ A + μ A (symmetric to what .symm below expects)
+    exact le_antisymm (le_add_of_nonneg_right (hμ_nonneg A)) (hBCunion ▸ hBC_le)
   -- From h2: μ(A) = 0 or μ(A) = ∞
   rcases ennreal_add_self_eq_self h2 with h | h
   · exact Or.inl h
