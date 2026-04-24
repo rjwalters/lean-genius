@@ -365,15 +365,20 @@ theorem kuhn_path_terminates {c : Coloring d N} {K : SpernerTriangulation d N}
   sperner_ndim c K hc hbdry_odd
 
 /-- If the current simplex is FC, kuhnWalk returns it immediately (base case). -/
+/-- Equation lemma: kuhnWalk at FC returns current simplex (used in fc_if_started_fc). -/
+private lemma kuhnWalk_succ_eq_current_of_fc {c : Coloring d N} {K : SpernerTriangulation d N}
+    (hKuhn : IsKuhnCompatible c K) (n : ℕ) (state : KuhnState d N c K)
+    (hfc : IsFC c K state.current) :
+    kuhnWalk c K hKuhn (n + 1) state = state.current := by
+  simp only [kuhnWalk, if_pos hfc]
+
 theorem kuhnWalk_fc_if_started_fc {c : Coloring d N} {K : SpernerTriangulation d N}
     (hKuhn : IsKuhnCompatible c K) (fuel : ℕ) (state : KuhnState d N c K)
     (hfc : IsFC c K state.current) :
     IsFC c K (kuhnWalk c K hKuhn fuel state) := by
   cases fuel with
   | zero => exact hfc
-  | succ n =>
-    simp only [kuhnWalk, if_pos hfc]
-    exact hfc
+  | succ n => rw [kuhnWalk_succ_eq_current_of_fc hKuhn n state hfc]; exact hfc
 
 /-- The Kuhn walk with appropriate fuel finds an FC simplex.
 
