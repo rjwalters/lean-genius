@@ -429,6 +429,21 @@
       "targetId": "descartes-rule-of-signs",
       "relationship": "related",
       "description": "Descartes' rule of signs is a key tool for computing the Galois group of a specific quintic needed to instantiate `not_solvable_by_rad_of_not_solvable_gal`. For $x^5 - x - 1$, the rule shows exactly three positive and zero negative real roots; the polynomial therefore has three real and two complex-conjugate roots. Complex conjugation then contributes a transposition to $\\text{Gal}(x^5-x-1/\\mathbb{Q})$, and combined with the 5-cycle arising from irreducibility over $\\mathbb{F}_2$, forces $\\text{Gal}(x^5-x-1/\\mathbb{Q}) = S_5$ — completing the proof that $x^5 - x - 1$ has roots not expressible by radicals. Root-counting and group theory combine to give the concrete witness this entry's abstract theorem requires"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "The transcendence of $e$ (Hermite, 1873) sits one level above Abel-Ruffini in the expressibility hierarchy discussed in this entry's implications: Abel-Ruffini shows certain algebraic quantities (quintic roots) escape radical expressions, while Hermite's theorem places $e$ outside all algebraic equations over $\\mathbb{Q}$. The progression — irrationality ($\\sqrt{2} \\notin \\mathbb{Q}$) $\\subset$ radical inexpressibility (Abel-Ruffini) $\\subset$ algebraic inexpressibility ($e, \\pi \\notin \\overline{\\mathbb{Q}}$) — marks successive enlargements of the vocabulary of expressibility. Hermite's proof technique (approximating $e$ by rational functions and bounding remainders) is a precursor to Lindemann's 1882 transcendence of $\\pi$, completing the impossibility of squaring the circle"
+    },
+    {
+      "targetId": "gelfond-schneider",
+      "relationship": "related",
+      "description": "The Gelfond-Schneider theorem (Hilbert's 7th problem, resolved 1934) proves $a^b$ is transcendental for algebraic $a \\neq 0, 1$ and algebraic irrational $b$. It occupies the transcendental tier of the expressibility hierarchy where Abel-Ruffini occupies the radical tier: Abel-Ruffini blocks radical representations of certain polynomial roots (group-theoretic obstruction: $S_5$ not solvable), while Gelfond-Schneider blocks algebraic representation of $a^b$ entirely (transcendence barrier). Both results demonstrate that natural-looking expressions — $\\alpha^{1/5}$ for Abel-Ruffini, $2^{\\sqrt{2}}$ for Gelfond-Schneider — escape their respective formal frameworks. Gelfond-Schneider applies directly to the quintic's solution via elliptic modular functions: the Hermite-Klein solution involves $j(\\tau)$ for $\\tau$ algebraic, and the $j$-invariant involves quantities that Gelfond-Schneider classifies as transcendental"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "The eigenvalues of an $n \\times n$ matrix $M$ are the roots of its characteristic polynomial $\\chi_M(\\lambda) = \\det(\\lambda I - M)$, a degree-$n$ polynomial. Abel-Ruffini implies that for $n \\geq 5$, these eigenvalues generally have no closed-form expression in radicals — yet Cayley-Hamilton guarantees $\\chi_M(M) = 0$ regardless. This contrast between algebraic satisfaction (the matrix annihilates its own characteristic polynomial) and radical inexpressibility (the eigenvalues cannot be named by radicals for general $n \\geq 5$) illustrates the distinction between existence (eigenvalues exist in $\\mathbb{C}$ by FTA) and expressibility (they cannot always be written using $+, -, \\times, \\div, \\sqrt[n]{\\phantom{x}}$). Cayley-Hamilton is thus the linear-algebraic dual of Abel-Ruffini: one guarantees a polynomial is satisfied, the other shows the roots of a polynomial need not be expressible in radicals"
     }
   ],
   "references": [
