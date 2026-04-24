@@ -1,8 +1,8 @@
 # Knowledge Base: sylow-theorem-oq-02
 
 **Problem**: Sylow Theorem: Complexity of Finding All Sylow p-Subgroups
-**Last Updated**: 2026-04-23
-**Knowledge Items**: 8
+**Last Updated**: 2026-04-24
+**Knowledge Items**: 11
 
 ---
 
@@ -14,6 +14,34 @@ and its cardinality equals [G : N_G(P)] by the orbit-stabilizer theorem.
 
 The complexity question itself (is SylowEnum in P?) is metamathematical and can't be
 formalized in Lean. Instead we formalize the orbit enumeration procedure.
+
+---
+
+## Session 2026-04-24 (Session 2)
+
+**Mode**: FRESH (re-opened for gallery entry creation)
+**Outcome**: completed — gallery entry created, pool updated to completed
+
+### What I Did
+
+- Discovered pool showed "available" despite problem JSON saying "completed" (sync issue)
+- Found PR #12038 was already MERGED — the orbit file was in main
+- No gallery entry existed at `src/data/proofs/sylow-theorem-oq-02/` despite merged PR
+- Created full gallery entry: meta.json, annotations.json, index.ts
+- Updated candidate pool status to "completed"
+
+### Files Modified
+
+- `src/data/proofs/sylow-theorem-oq-02/meta.json` (created)
+- `src/data/proofs/sylow-theorem-oq-02/annotations.json` (created, 5 annotations)
+- `src/data/proofs/sylow-theorem-oq-02/index.ts` (created)
+
+### Key Findings
+
+- Pool/problem JSON sync issue: pool had "available" but JSON had "completed"
+- Root cause: PR #12038 was merged but gallery entry was never created
+- SylowTheoremOQ02.lean (5 axioms, profinite theory) is a separate entry (sylow-theorems-oq-02)
+- SylowTheoremOQ02Orbit.lean (0 axioms) is the correct proof for this gallery entry
 
 ---
 

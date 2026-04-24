@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: chebyshev_lebesgue_lb proved modulo chebyshev_trig_sum_lb; 2 sorries remain (harmonic sum lb + Banach-Steinhaus gap)",
+    "progressSummary": "2 sorries remain: chebyshev_trig_sum_lb (tractable, ~200 lines) and divergence_from_lebesgue_growth (fundamental gap: lim vs lim sup)",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -73,12 +73,16 @@
       "divergence_from_lebesgue_growth fundamental gap: Banach-Steinhaus only gives lim sup = inf, not lim = +inf; axiom may be overstated",
       "chebyshev_lebesgue_growth reduces to lb sorry via tendsto_atTop_mono — growth theorem itself is proved",
       "Filter.tendsto_atTop_mono pattern: if f ≤ g pointwise and f → ∞ then g → ∞",
-      "let binding in Lean 4 requires explicit unfolding in simp: simp only [vals, ...]"
+      "let binding in Lean 4 requires explicit unfolding in simp: simp only [vals, ...]",
+      "chebyshev_lebesgue_growth is PROVED (not sorry) — wraps chebyshev_lebesgue_lb which assumes sorry #1",
+      "p,q both odd implies cos(pi*p/q) is strictly in (-1,1), so sin argument is nonzero. Case x=+-1 never occurs in hypotheses."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "chebyshev_lebesgue_lb: harmonic sum lower bound for S_n = Σ sin(φₖ)/|cos θ - cos φₖ| ≥ C·n·log(n+1)",
-      "divergence_from_lebesgue_growth: weaken to lim sup = ∞ (Banach-Steinhaus) or find explicit construction"
+      "divergence_from_lebesgue_growth: weaken to lim sup = ∞ (Banach-Steinhaus) or find explicit construction",
+      "Attempt chebyshev_trig_sum_lb: Lipschitz + harmonic sum proof (~200 lines). sin(pi*p/q) > 0 from p,q odd ensures x in (-1,1). Nearest node k0, bound denominator via node spacing pi/n, sum j=1..n/4 terms gives (n*sin(theta)/(2pi))*log(n/4+1).",
+      "Sorry #2 gap documented: UBP/Banach-Steinhaus gives lim sup not lim. Consider weakening divergence_from_lebesgue_growth to lim sup = inf version."
     ]
   },
   "tags": [

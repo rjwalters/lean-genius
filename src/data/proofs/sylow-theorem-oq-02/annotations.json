@@ -1,0 +1,119 @@
+[
+  {
+    "id": "ann-oq02-orbit-covers-all",
+    "proofId": "sylow-theorem-oq-02",
+    "range": {
+      "startLine": 59,
+      "endLine": 71
+    },
+    "type": "insight",
+    "title": "Orbit Covers All Sylow p-Subgroups: orbit G P = ⊤",
+    "content": "`sylow_orbit_is_all` wraps `Sylow.orbit_eq_top P`, which is the Lean statement of Sylow's Second Theorem: the conjugation action of $G$ on the type `Sylow p G` is transitive. The `orbit G P = ⊤` formulation says every Sylow $p$-subgroup lies in the orbit of $P$, i.e., is conjugate to $P$. The `@[simp]` attribute makes this an automatic simplification lemma. `exists_conj_eq` extracts the existential: for any two Sylow $p$-subgroups $P$ and $Q$, there exists $g \\in G$ with $g \\cdot P = Q$. `conj_iso` shows conjugation is a group isomorphism $P \\cong g \\cdot P$, connecting the set-level action to group structure.",
+    "mathContext": "Sylow II: all Sylow $p$-subgroups of a finite group are conjugate. In the MulAction framework, `G` acts on `Sylow p G` by conjugation: `g • P = gPg^{-1}`. Transitivity means there is a single orbit, i.e., `orbit G P = Set.univ = ⊤`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sylow.orbit_eq_top",
+      "Sylow.exists_smul_eq",
+      "Sylow.equivSMul",
+      "MulAction.orbit"
+    ],
+    "prerequisites": [
+      "Sylow's second theorem",
+      "MulAction and orbits in Mathlib",
+      "Conjugation as a group action"
+    ]
+  },
+  {
+    "id": "ann-oq02-stabilizer-normalizer",
+    "proofId": "sylow-theorem-oq-02",
+    "range": {
+      "startLine": 81,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "Stabilizer Equals Normalizer: stab G P = N_G(P)",
+    "content": "`stabilizer_eq_normalizer` wraps `Sylow.stabilizer_eq_normalizer P`. The stabilizer of $P$ under the conjugation action is $\\{g \\in G \\mid g \\cdot P = P\\} = \\{g \\in G \\mid gPg^{-1} = P\\}$, which is exactly the normalizer $N_G(P)$. This is the key bridge: the abstract orbit-stabilizer theorem works with stabilizers, while the counting formula involves normalizers. Identifying them converts orbit-stabilizer into the n_p formula.",
+    "mathContext": "For the conjugation action $g \\cdot P = gPg^{-1}$ on Sylow subgroups: $\\text{stab}_G(P) = \\{g \\mid gPg^{-1} = P\\} = N_G(P)$. In Lean, `stabilizer G P : Subgroup G` and `P.normalizer : Subgroup G` are equal.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sylow.stabilizer_eq_normalizer",
+      "MulAction.stabilizer",
+      "Subgroup.normalizer"
+    ],
+    "prerequisites": [
+      "MulAction stabilizer definition",
+      "Subgroup normalizer definition",
+      "Conjugation action on Sylow subgroups"
+    ]
+  },
+  {
+    "id": "ann-oq02-counting-theorem",
+    "proofId": "sylow-theorem-oq-02",
+    "range": {
+      "startLine": 92,
+      "endLine": 116
+    },
+    "type": "insight",
+    "title": "Main Counting Theorem: n_p = [G : N_G(P)]",
+    "content": "`sylow_count_eq_normalizer_index` is the central result, wrapping `Sylow.card_eq_index_normalizer P`. The proof chain: (1) `orbit G P = Sylow p G` (by `sylow_orbit_is_all`), so `|Sylow p G| = |orbit G P|`; (2) `|orbit G P| = [G : stab G P]` (orbit-stabilizer theorem); (3) `stab G P = N_G(P)` (by `stabilizer_eq_normalizer`). Together: $n_p = [G : N_G(P)]$. `sylowEquivQuotientNormalizer` upgrades this to a bijection `Sylow p G ≃ G ⧸ N_G(P)`, giving the explicit enumeration algorithm: list cosets $gN_G(P)$ and map each to $g \\cdot P$. `sylow_count_dvd_index` adds that $n_p \\mid [G : P]$, the third Sylow constraint in index form.",
+    "mathContext": "Orbit-stabilizer: $|G| = |\\text{orbit}(P)| \\cdot |\\text{stab}(P)|$, so $|\\text{orbit}(P)| = [G : \\text{stab}(P)]$. With orbit $= $ Sylow $p$ $G$ and stab $= N_G(P)$: $n_p = [G : N_G(P)]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sylow.card_eq_index_normalizer",
+      "Sylow.equivQuotientNormalizer",
+      "Sylow.card_dvd_index",
+      "MulAction.orbitEquivQuotientStabilizer"
+    ],
+    "prerequisites": [
+      "Orbit-stabilizer theorem",
+      "Subgroup index",
+      "Nat.card in Mathlib"
+    ]
+  },
+  {
+    "id": "ann-oq02-product-formula",
+    "proofId": "sylow-theorem-oq-02",
+    "range": {
+      "startLine": 127,
+      "endLine": 133
+    },
+    "type": "insight",
+    "title": "Orbit-Stabilizer Product Formula: |G| = n_p × |N_G(P)|",
+    "content": "`sylow_orbit_stabilizer_formula` derives $|G| = n_p \\cdot |N_G(P)|$ from the normalizer index formula. The proof rewrites $n_p = [G : N_G(P)]$ (by `sylow_count_eq_normalizer_index`), then applies `P.normalizer.card_mul_index : |N_G(P)| \\cdot [G : N_G(P)] = |G|`, rearranging with `mul_comm`. This is the group-theoretic orbit-stabilizer theorem in concrete form: the group order factors as the product of the orbit size and the stabilizer size.",
+    "mathContext": "$n_p \\cdot |N_G(P)| = [G : N_G(P)] \\cdot |N_G(P)| = |G|$. The second equality is `Subgroup.card_mul_index`: for any subgroup $H \\leq G$, $|H| \\cdot [G : H] = |G|$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Subgroup.card_mul_index",
+      "Subgroup.index",
+      "Nat.card"
+    ],
+    "prerequisites": [
+      "Lagrange's theorem",
+      "Subgroup index definition"
+    ]
+  },
+  {
+    "id": "ann-oq02-normality-criterion",
+    "proofId": "sylow-theorem-oq-02",
+    "range": {
+      "startLine": 148,
+      "endLine": 165
+    },
+    "type": "insight",
+    "title": "Normality Criterion: n_p = 1 ↔ P ◁ G",
+    "content": "`sylow_unique_iff_normal` proves $n_p = 1 \\iff P \\trianglelefteq G$ using two Mathlib lemmas: `Subgroup.index_eq_one : H.index = 1 ↔ H = ⊤` (index 1 iff the subgroup is the whole group) and `Subgroup.normalizer_eq_top_iff : P.normalizer = ⊤ ↔ P.Normal`. The chain: $n_p = 1 \\iff [G : N_G(P)] = 1 \\iff N_G(P) = G \\iff P \\trianglelefteq G$. `sylow_unique_of_normal` gives the forward direction constructively: if $P$ is normal, then `Nat.card_eq_one` implies `Unique (Sylow p G)`, so every $Q = P$. `smul_eq_of_normal` uses `Sylow.smul_eq_of_normal` to confirm $g \\cdot P = P$ for all $g$ when $P$ is normal.",
+    "mathContext": "$n_p = 1$ iff there is only one Sylow $p$-subgroup. A unique Sylow subgroup must be fixed by all conjugations (since conjugates are also Sylow subgroups), hence normal. Conversely, a normal Sylow $p$-subgroup is its own conjugate, so it is the unique Sylow $p$-subgroup.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Subgroup.index_eq_one",
+      "Subgroup.normalizer_eq_top_iff",
+      "Sylow.smul_eq_of_normal",
+      "Nat.card_eq_one"
+    ],
+    "prerequisites": [
+      "Normal subgroups",
+      "Subgroup index",
+      "Sylow subgroup normality"
+    ]
+  }
+]

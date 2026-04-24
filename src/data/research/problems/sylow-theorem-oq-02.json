@@ -35,18 +35,23 @@
       "SylowTheoremOQ02Orbit.lean: sylow_count_eq_normalizer_index (n_p = [G:N_G(P)])",
       "SylowTheoremOQ02Orbit.lean: sylowEquivQuotientNormalizer (Sylow p G ≃ G/N_G(P))",
       "SylowTheoremOQ02Orbit.lean: sylow_orbit_stabilizer_formula (|G| = n_p × |N_G(P)|)",
-      "SylowTheoremOQ02Orbit.lean: sylow_unique_iff_normal (n_p=1 ↔ P◁G)"
+      "SylowTheoremOQ02Orbit.lean: sylow_unique_iff_normal (n_p=1 ↔ P◁G)",
+      "src/data/proofs/sylow-theorem-oq-02/meta.json: gallery entry with 9 theorems, 0 axioms",
+      "src/data/proofs/sylow-theorem-oq-02/annotations.json: 5 annotations covering all major theorems"
     ],
     "insights": [
       "orbit_eq_top gives all Sylow p-subgroups as single conjugation orbit",
       "stabilizer G P = N_G(P) connects orbit-stabilizer to normalizer theory",
       "card_eq_index_normalizer is the direct Mathlib API for n_p = [G:N_G(P)]",
       "Sylow p G ≃ G / N_G(P) via equivQuotientNormalizer",
-      "n_p = 1 ↔ P ◁ G via Subgroup.index_eq_one + normalizer_eq_top_iff"
+      "n_p = 1 ↔ P ◁ G via Subgroup.index_eq_one + normalizer_eq_top_iff",
+      "Pool/JSON sync issue: pool showed available despite completed JSON — caused by PR #12038 being merged without gallery entry creation",
+      "SylowTheoremOQ02Orbit.lean vs SylowTheoremOQ02.lean are two separate files (orbit = 0 axioms, profinite = 5 axioms)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Nilpotent group corollary: G nilpotent ↔ all Sylow subgroups normal (Mathlib.GroupTheory.Nilpotent)"
+      "Nilpotent group corollary: G nilpotent ↔ all Sylow subgroups normal (Mathlib.GroupTheory.Nilpotent)",
+      "Gallery entry created: src/data/proofs/sylow-theorem-oq-02/ (meta.json, annotations.json, index.ts)"
     ]
   },
   "tags": [
@@ -107,6 +112,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/SylowTheoremOQ02Orbit.lean",
+      "filename": "SylowTheoremOQ02Orbit.lean",
+      "lineCount": 205,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremOQ02Orbit.lean"
     },
     {
       "path": "Proofs/SylowTheoremOQ04.lean",

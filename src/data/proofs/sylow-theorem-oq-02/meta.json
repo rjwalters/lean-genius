@@ -1,0 +1,135 @@
+{
+  "id": "sylow-theorem-oq-02",
+  "title": "Orbit Enumeration of Sylow p-Subgroups: n_p = [G : N_G(P)]",
+  "slug": "sylow-theorem-oq-02",
+  "description": "A complete Lean 4 proof of the orbit-based enumeration of all Sylow p-subgroups of a finite group G. All Sylow p-subgroups form a single conjugation orbit {g·P | g ∈ G}, and their count n_p equals the index of the normalizer [G : N_G(P)] via the orbit-stabilizer theorem. Proves the explicit bijection Sylow p G ≃ G / N_G(P), the orbit-stabilizer formula |G| = n_p × |N_G(P)|, the normality criterion n_p = 1 ↔ P ◁ G, and n_p ≡ 1 (mod p). All results are 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SylowTheoremOQ02Orbit.lean",
+    "tags": [
+      "group-theory",
+      "sylow-theorems",
+      "abstract-algebra",
+      "finite-groups",
+      "orbit-stabilizer"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-24",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 204,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "originalContributions": [
+      "sylow_count_eq_normalizer_index: proves n_p = [G : N_G(P)] directly via orbit-stabilizer theorem",
+      "sylowEquivQuotientNormalizer: explicit bijection Sylow p G ≃ G / N_G(P) giving the enumeration algorithm",
+      "sylow_orbit_stabilizer_formula: |G| = n_p × |N_G(P)| from the orbit-stabilizer product formula",
+      "sylow_unique_iff_normal: n_p = 1 ↔ P ◁ G via Subgroup.index_eq_one + normalizer_eq_top_iff"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Sylow theorems (1872) guarantee existence, conjugacy, and a counting congruence for Sylow $p$-subgroups of finite groups. The orbit-based enumeration — computing $n_p$ via the normalizer index — was systematized by Burnside (1897) and Frobenius, and is the standard algorithmic approach used in computational group theory (GAP, Magma). The orbit-stabilizer theorem connects the abstract conjugacy to a concrete coset enumeration: enumerate cosets $gN_G(P)$ of the normalizer and map each to the conjugate $gPg^{-1}$.",
+    "problemStatement": "Let $G$ be a finite group and $p$ a prime. Let $P$ be any Sylow $p$-subgroup.\n\n**Main Theorem**: The number of Sylow $p$-subgroups satisfies $n_p = [G : N_G(P)]$, where $N_G(P) = \\{g \\in G \\mid gPg^{-1} = P\\}$ is the normalizer of $P$ in $G$.\n\n**Bijective enumeration**: There is an explicit bijection $\\text{Sylow}_p(G) \\simeq G / N_G(P)$, so the cosets of the normalizer enumerate all Sylow $p$-subgroups via $gN_G(P) \\mapsto gPg^{-1}$.\n\n**Product formula**: $|G| = n_p \\cdot |N_G(P)|$.\n\n**Normality criterion**: $n_p = 1$ if and only if $P$ is normal in $G$.",
+    "proofStrategy": "**Step 1 (Orbit covers everything)**: The conjugation action of $G$ on $\\text{Sylow}_p(G)$ is transitive — all Sylow $p$-subgroups are conjugate (Sylow's second theorem). In Lean: `Sylow.orbit_eq_top P : orbit G P = ⊤`.\n\n**Step 2 (Stabilizer = Normalizer)**: The stabilizer of $P$ under conjugation is exactly $N_G(P)$: $g \\cdot P = P$ iff $gPg^{-1} = P$ iff $g \\in N_G(P)$. In Lean: `Sylow.stabilizer_eq_normalizer P`.\n\n**Step 3 (Orbit-Stabilizer)**: By the orbit-stabilizer theorem, $|\\text{orbit}(P)| = [G : \\text{stab}(P)]$. Combined with Steps 1 and 2: $n_p = |\\text{Sylow}_p(G)| = [G : N_G(P)]$. In Lean: `Sylow.card_eq_index_normalizer P`.\n\n**Step 4 (Bijection)**: The orbit-stabilizer bijection specializes to $\\text{Sylow}_p(G) \\simeq G / N_G(P)$ via `Sylow.equivQuotientNormalizer`.\n\n**Step 5 (Normality criterion)**: $n_p = 1$ iff $[G : N_G(P)] = 1$ iff $N_G(P) = G$ (by `Subgroup.index_eq_one`) iff $P \\trianglelefteq G$ (by `Subgroup.normalizer_eq_top_iff`).",
+    "keyInsights": [
+      "The orbit-stabilizer theorem is the key tool: transitivity of the conjugation action (Sylow II) + identification of the stabilizer as N_G(P) immediately gives n_p = [G : N_G(P)] with no additional work.",
+      "The chain Sylow p G ≃ orbit G P ≃ G / stab G P = G / N_G(P) is completely witnessed by existing Mathlib APIs — no new infrastructure is needed.",
+      "The normality criterion n_p = 1 ↔ P ◁ G follows from two Mathlib lemmas: Subgroup.index_eq_one (index 1 iff subgroup equals whole group) and Subgroup.normalizer_eq_top_iff (normalizer equals G iff normal). The index bridges the two.",
+      "sylow_count_congr_one (n_p ≡ 1 mod p) is proved by Sylow's third theorem directly via card_sylow_modEq_one, which is separate from the orbit argument but included for completeness.",
+      "The explicit bijection Sylow p G ≃ G / N_G(P) provides the foundation for computational enumeration algorithms: list all cosets gN_G(P), apply g · − to P to get all conjugates."
+    ],
+    "prerequisites": [
+      "Sylow's three theorems (see sylow-theorem entry)",
+      "Orbit-stabilizer theorem from group actions",
+      "Subgroup index and cosets",
+      "Normal subgroups and normalizer",
+      "MulAction.orbitEquivQuotientStabilizer in Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header: Orbit Enumeration and Main Results",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Documents the orbit-based approach: all Sylow p-subgroups form a single conjugation orbit, so n_p = [G : N_G(P)]. Lists all 9 main results and the key mathematical chain Sylow p G ≃ orbit G P ≃ G / stab G P = G / N_G(P)."
+    },
+    {
+      "id": "orbit-covers-all",
+      "title": "Part I: The Conjugation Orbit Covers All Sylow Subgroups",
+      "startLine": 48,
+      "endLine": 71,
+      "summary": "sylow_orbit_is_all: orbit G P = ⊤ — every Sylow p-subgroup is conjugate to P (wraps Sylow.orbit_eq_top). exists_conj_eq: ∀ Q, ∃ g, g • P = Q (direct corollary). conj_iso: conjugation by g gives a group isomorphism P ≅ g • P."
+    },
+    {
+      "id": "stabilizer-normalizer",
+      "title": "Part II: Orbit-Stabilizer Decomposition",
+      "startLine": 72,
+      "endLine": 84,
+      "summary": "stabilizer_eq_normalizer: stabilizer G P = N_G(P). The stabilizer of P under G-conjugation is the normalizer. This is the key bridge between the abstract orbit-stabilizer theorem and the concrete normalizer theory."
+    },
+    {
+      "id": "counting",
+      "title": "Part III: Counting Sylow p-Subgroups",
+      "startLine": 85,
+      "endLine": 116,
+      "summary": "sylow_count_eq_normalizer_index: n_p = [G : N_G(P)] via orbit-stabilizer. sylowEquivQuotientNormalizer: explicit bijection Sylow p G ≃ G / N_G(P). sylow_count_dvd_index: n_p ∣ [G : P]."
+    },
+    {
+      "id": "product-formula",
+      "title": "Part IV: The Orbit-Stabilizer Product Formula",
+      "startLine": 117,
+      "endLine": 133,
+      "summary": "sylow_orbit_stabilizer_formula: |G| = n_p × |N_G(P)|. Derived from card_mul_index: |N_G(P)| × [G : N_G(P)] = |G|, combined with n_p = [G : N_G(P)]."
+    },
+    {
+      "id": "normality-criterion",
+      "title": "Part V: Normality Criterion",
+      "startLine": 134,
+      "endLine": 165,
+      "summary": "sylow_unique_iff_normal: n_p = 1 ↔ P ◁ G. sylow_unique_of_normal: P ◁ G → unique Sylow p-subgroup (every Q = P). smul_eq_of_normal: P normal → g • P = P (fixed under all conjugations)."
+    },
+    {
+      "id": "count-congruence",
+      "title": "Part VI: The Count Congruence",
+      "startLine": 166,
+      "endLine": 204,
+      "summary": "sylow_count_congr_one: n_p ≡ 1 (mod p), from card_sylow_modEq_one. Summary table of all results with their Mathlib backing."
+    }
+  ],
+  "conclusion": {
+    "summary": "The orbit-based enumeration of Sylow p-subgroups is fully verified with 0 sorries and 0 axioms. The key chain — orbit G P = ⊤ (transitivity), stabilizer = N_G(P), orbit-stabilizer → n_p = [G:N_G(P)] — is cleanly witnessed by Mathlib's Sylow API. The explicit bijection Sylow p G ≃ G / N_G(P) grounds the computational enumeration algorithm.",
+    "implications": "The formula n_p = [G : N_G(P)] is the foundation for all computational Sylow algorithms: to enumerate all Sylow p-subgroups, compute cosets of the normalizer and apply conjugation. This is used in GAP and Magma. The normality criterion n_p = 1 ↔ P ◁ G is the standard test for normal Sylow subgroups and is used extensively in group classification (pq-groups, p²q-groups, simple groups).",
+    "openQuestions": [
+      "Nilpotent group characterization: G is nilpotent if and only if every Sylow p-subgroup is normal (n_p = 1 for all p ∣ |G|). Can this be formalized using Mathlib's GroupTheory.Nilpotent APIs?",
+      "For the profinite case: the analogous result for profinite groups requires Serre's Zorn argument and inverse limit constructions. See sylow-theorems-oq-02 for the axiomatized version."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "sylow-theorem",
+      "relationship": "uses",
+      "description": "The three Sylow theorems are prerequisites; in particular, Sylow II (conjugacy) is orbit_eq_top."
+    },
+    {
+      "targetId": "sylow-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "Uses the counting formula n_p = [G : N_G(P)] implicitly to bound Sylow numbers and classify pq-groups."
+    },
+    {
+      "targetId": "sylow-theorems-oq-02",
+      "relationship": "generalization",
+      "description": "Profinite generalization of these finite-group results using axiomatized Serre existence and conjugacy."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 204,
+    "path": "Proofs/SylowTheoremOQ02Orbit.lean",
+    "axiomCount": 0,
+    "sorries": 0
+  },
+  "sorries": 0
+}
