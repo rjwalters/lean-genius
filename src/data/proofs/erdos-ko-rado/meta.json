@@ -21,7 +21,7 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 9,
     "assumptions": "9 axioms for the combinatorial double-counting lemmas and deep extension theorems: at_most_k_intersecting_cyclic_intervals (key lemma: at most k of n cyclic intervals are pairwise intersecting), double_counting_bound (the main Katona double-count giving |A|≤C(n-1,k-1)), frankl_t_intersecting (Frankl's theorem on t-intersecting families), hilton_milner (Hilton-Milner 1967: non-star bound), bollobas_set_pairs (Bollobás set-pairs inequality, now with correct hypotheses), pyber_cross_intersecting (Pyber 1986: cross-intersecting sum bound), ekr_for_permutations (Ellis-Friedgut-Pilpel 2011), sunflower_lemma (Erdős-Ko 1961 sunflower bound), coset_size (the permutation coset {σ : σ(i)=j} has exactly (n-1)! elements — replaces a degenerate 1+1=2 stub). Previously degenerate axioms (set_appears_in_cyclic_orders, improved_sunflower_lemma, cross_intersecting_bound) have been proved, and tstar_achieves_frankl_bound proved via bijection.",
-    "lineCount": 745,
+    "lineCount": 744,
     "theoremCount": 15,
     "definitionCount": 14,
     "originalContributions": [
@@ -65,7 +65,7 @@
   },
   "leanFile": {
     "namespace": "ErdosKoRado",
-    "lineCount": 745,
+    "lineCount": 744,
     "axiomCount": 9,
     "theoremCount": 15,
     "definitionCount": 14,
