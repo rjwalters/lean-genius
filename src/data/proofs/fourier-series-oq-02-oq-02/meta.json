@@ -83,7 +83,9 @@
       "**Sharp threshold**: The condition α > 1/2 is exactly sharp for the p-series argument: 2α > 1 iff the comparison series converges. At α = 1/2 the series ∑ 1/|n| diverges.",
       "**ℤ-splitting pattern**: `summable_int_iff_summable_nat_and_neg` reduces ℤ summability to two ℕ p-series — a reusable pattern for any symmetric decay bound over ℤ.",
       "**rpow_mul_natCast bridge**: `Real.rpow_mul_natCast hb α 2` gives `b^(α*2) = (b^α)^2`, connecting real and natural number powers without `norm_cast` complications.",
-      "**Cofinite comparison**: `Summable.of_norm_bounded_eventually` allows the n=0 term (where |↑0| = 0 makes K/|n|^β ill-defined) to be excluded — the set {0} is finite hence in cofinite."
+      "**Cofinite comparison**: `Summable.of_norm_bounded_eventually` allows the n=0 term (where |↑0| = 0 makes K/|n|^β ill-defined) to be excluded — the set {0} is finite hence in cofinite.",
+      "**Riemann zeta as the explicit sum bound**: The dominated series $\\sum_{n:\\mathbb{Z},n\\neq 0} K/|n|^{2\\alpha}$ evaluates to $2K\\cdot\\zeta(2\\alpha)$ where $\\zeta$ is the Riemann zeta function. At the critical case $\\alpha = 1$ (Lipschitz functions, $2\\alpha = 2$), this is $2K \\cdot \\pi^2/6 = K\\pi^2/3$ — the Basel problem value. For $\\alpha \\to 1/2^+$ the bound diverges ($\\zeta(1^+) = \\infty$, harmonic series), consistent with the sharpness theorem `holder_half_is_critical_for_pseries`. The elementary p-series proof is thus a special case of the general relation between Fourier coefficient $\\ell^2$ norms and Euler's $\\zeta$ function.",
+      "**Bernstein's theorem as a Cauchy-Schwarz corollary**: Bernstein (1914) proved that $\\alpha > 1/2$ Hölder implies *absolute* convergence $\\sum_{n:\\mathbb{Z}} |\\hat{c}_n| < \\infty$ — a strictly stronger conclusion than square-summability. The derivation uses Cauchy-Schwarz on $\\ell^2$: for any $N$, $\\sum_{0<|n|\\leq N} |\\hat{c}_n| = \\sum_{0<|n|\\leq N} |\\hat{c}_n| \\cdot 1 \\leq (\\sum_{0<|n|\\leq N} n^{2\\alpha}|\\hat{c}_n|^2)^{1/2} \\cdot (\\sum_{0<|n|\\leq N} n^{-2\\alpha})^{1/2}$. The second factor is $\\leq \\sqrt{2\\zeta(2\\alpha)} < \\infty$ (since $2\\alpha > 1$), and the first is bounded by the $\\alpha$-Hölder energy. Thus `fourierCoeff_sq_summable_of_holder_pseries` is the key building block for Bernstein's theorem — formalizing it as a Lean corollary is the third open question of this entry."
     ],
     "prerequisites": [
       "FourierSeriesOQ02.lean: parent proof with quantitative Hölder decay bounds and IsHolderOnCircle definition",
@@ -145,12 +147,37 @@
     {
       "targetId": "fourier-series-oq-02",
       "relationship": "parent",
-      "description": "Parent proof: quantitative Hölder decay ‖ĉ_n‖ ≤ (C/2)(T/2|n|)^α — this entry builds on that bound"
+      "description": "Parent proof: quantitative Hölder decay ‖ĉ_n‖ ≤ (C/2)(T/2|n|)^α — this entry builds directly on that bound to prove square-summability by squaring and applying the p-series test"
     },
     {
       "targetId": "fourier-series-oq-02-oq-01",
       "relationship": "sibling",
-      "description": "Alternative proof of the same result via the L²/Parseval route — shorter but less quantitative"
+      "description": "Alternative proof of the same square-summability result via the L²/Parseval route (continuity → bounded → L² → Parseval identity) — shorter (~15 lines) but less quantitative; this entry's p-series approach gives the explicit rate ≤ K·ζ(2α)"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "foundational",
+      "description": "The sharpness theorem `holder_half_is_critical_for_pseries` (at α=1/2, the p-series argument fails) ultimately relies on harmonic series divergence: the squared bound O(|n|^{-1}) is summable iff the harmonic series converges. The proof routes through `Real.summable_nat_rpow_inv.not.mpr (norm_num : ¬ 1 < 1)` — precisely the criterion for harmonic divergence (p=1 case). This entry's sharpness proof is thus a Lean application of harmonic series divergence to the Fourier setting"
+    },
+    {
+      "targetId": "fourier-series-oq-02-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling studying sharpness of the constant 1/2 in the Hölder decay bound ‖ĉ_n‖ ≤ (1/2)·C·(T/2|n|)^α. While this entry studies the sharp threshold on the Hölder exponent α > 1/2, that entry investigates the sharp multiplicative constant. Together they characterize both dimensions of optimality in the Hölder-Fourier decay"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Cauchy-Schwarz inequality is the key tool in Bernstein's 1914 theorem — the next step beyond this entry. Bernstein proved α > 1/2 Hölder implies absolute convergence ∑|ĉ_n| < ∞ via: (∑|ĉ_n|)² ≤ (∑|ĉ_n|²)·(∑1), suitably generalized. The formalization of Bernstein's theorem as a corollary of `fourierCoeff_sq_summable_of_holder_pseries` using Mathlib's Cauchy-Schwarz for sequences is the third open question of this entry"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel problem establishes ζ(2) = π²/6. This entry's square-summability bound evaluates explicitly to ∑ ‖ĉ_n‖² ≤ 2K·ζ(2α). At α=1 (Lipschitz functions, 2α=2), the dominating sum is 2K·π²/6 = Kπ²/3 — a concrete instance of the Basel identity. The connection reveals that the p-series proof of Fourier coefficient square-summability is a special case of the Riemann zeta function's role in evaluating convergent p-series"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "extends",
+      "description": "Top-level Fourier series entry covering the classical theory: coefficient decay, pointwise convergence, and L² completeness. This entry provides the elementary answer to a sub-question of that cluster: whether square-summability can be established without L² theory for sufficiently regular (α-Hölder, α > 1/2) functions"
     }
   ],
   "leanFile": {

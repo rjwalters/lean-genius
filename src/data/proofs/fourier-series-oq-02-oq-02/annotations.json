@@ -185,12 +185,41 @@
       "Parseval's theorem",
       "proof comparison",
       "elementary vs measure-theoretic proof",
-      "Bessel's inequality"
+      "Bessel's inequality",
+      "fourier-series-oq-02-oq-01"
     ],
     "prerequisites": [
       "FourierSeriesOQ02OQ01 sibling proof",
       "Parseval's theorem",
       "L² Fourier theory"
+    ]
+  },
+  {
+    "id": "ann-fsoq02oq02-bernstein",
+    "proofId": "fourier-series-oq-02-oq-02",
+    "range": {
+      "startLine": 132,
+      "endLine": 226
+    },
+    "type": "concept",
+    "title": "Bernstein's Theorem and the Cauchy-Schwarz Bridge",
+    "content": "Square-summability of Fourier coefficients (`fourierCoeff_sq_summable_of_holder_pseries`) is the stepping stone to Bernstein's 1914 theorem: $\\alpha > 1/2$ Hölder implies *absolute* convergence $\\sum_{n:\\mathbb{Z}} |\\hat{c}_n(f)| < \\infty$. The derivation is a Cauchy-Schwarz argument:\n\n$$\\sum_{0<|n|\\leq N} |\\hat{c}_n| \\leq \\sqrt{\\sum_{0<|n|\\leq N} n^{2\\alpha} |\\hat{c}_n|^2} \\cdot \\sqrt{\\sum_{0<|n|\\leq N} n^{-2\\alpha}}$$\n\nThe second factor is $\\leq \\sqrt{2\\zeta(2\\alpha)} < \\infty$ since $2\\alpha > 1$. The first factor is bounded by the Hölder energy — the $\\alpha$-weighted $\\ell^2$ norm of coefficients, which is finite by Hölder regularity. Taking $N \\to \\infty$ gives absolute convergence.\n\nThe explicit p-series bound from this entry is the quantitative version: $\\sum \\|\\hat{c}_n\\|^2 \\leq |\\hat{c}_0|^2 + 2K \\cdot \\zeta(2\\alpha)$ where $K = (C/2)^2 (T/2)^{2\\alpha}$. At $\\alpha = 1$ (Lipschitz), $\\zeta(2) = \\pi^2/6$ gives the concrete bound $|\\hat{c}_0|^2 + K\\pi^2/3$.",
+    "mathContext": "Bernstein's theorem (1914): $f \\in \\text{Lip}^\\alpha(\\mathbb{T})$ with $\\alpha > 1/2$ $\\Rightarrow$ $\\sum_{n:\\mathbb{Z}} |\\hat{c}_n(f)| < \\infty$. Proof via Cauchy-Schwarz: $\\ell^2(\\text{weights}) \\hookrightarrow \\ell^1$ when the weight sequence is square-summable. The intermediate step is square-summability (`fourierCoeff_sq_summable_of_holder_pseries`), which is this entry's main theorem. The open question in this file asks whether Lean 4 can formalize the Cauchy-Schwarz step using `Finset.inner_mul_le_norm_sq_mul_norm_sq` or `NNNorm.inner_le_nnorm_mul_nnorm`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bernstein's theorem",
+      "Cauchy-Schwarz inequality",
+      "absolute convergence of Fourier series",
+      "Riemann zeta function",
+      "Basel problem",
+      "cauchy-schwarz",
+      "basel-problem",
+      "harmonic-divergence"
+    ],
+    "prerequisites": [
+      "fourierCoeff_sq_summable_of_holder_pseries (this entry)",
+      "Cauchy-Schwarz for series",
+      "Riemann zeta function ζ(2α) for 2α > 1"
     ]
   }
 ]
