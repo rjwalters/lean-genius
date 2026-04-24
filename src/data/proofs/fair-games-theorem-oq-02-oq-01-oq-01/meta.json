@@ -1,0 +1,43 @@
+{
+  "id": "fair-games-theorem-oq-02-oq-01-oq-01",
+  "title": "Wald's Identity: Formalization via Mathlib Integration",
+  "slug": "fair-games-theorem-oq-02-oq-01-oq-01",
+  "description": "Complete formalization of Wald's Identity (1944) using Mathlib's probability infrastructure. Proves E[X₁ + X₂ + ... + X_τ] = E[X₀] · E[τ] for i.i.d. integrable random variables and a stopping time τ with finite expectation. Answers the open question from FairGamesTheoremOQ02OQ01: Yes, Wald's Identity is fully formalizable alongside Doob's OST using the same Mathlib infrastructure.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-24",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/FairGamesTheoremOQ02OQ01OQ01.lean",
+    "tags": [
+      "probability",
+      "martingale",
+      "stopping-time",
+      "wald",
+      "iid",
+      "expectation"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-24",
+    "axiomCount": 2,
+    "assumptions": "Two axioms: (1) integral_tau_eq_tsum_prob: E[τ] = ∑ P(τ > k) (tail sum formula for ℕ-valued r.v.); (2) integral_sum_range_eq_tsum: Fubini-Tonelli for stopped sums (exchange of sum and integral). Both are classical analytic results that hold in the stated generality.",
+    "lineCount": 195,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "originalContributions": [
+      "stopping_gt_measurable: {τ > k} ∈ ℱ_k for stopping times",
+      "indicator_gt_sm: 1_{τ > k} is ℱ_k-StronglyMeasurable",
+      "integral_indicator_prod_eq: E[1_{τ>k} * X(k+1)] = E[X 0] * P(τ > k) via conditional expectation pull-out",
+      "nat_cast_eq_tsum_indicator: arithmetic identity (n : ℝ) = ∑' k, 1_{k < n}",
+      "wald_identity: E[∑_{k<τ} X(k+1)] = E[X 0] * E[τ] (main theorem)",
+      "wald_identity_bounded: Wald's identity for bounded stopping times",
+      "wald_zero_mean_gives_zero_drift: E[sum] = 0 for zero-mean i.i.d. processes"
+    ]
+  },
+  "overview": {
+    "summary": "Wald's Identity (1944) is a fundamental result in sequential analysis and probability theory. It extends the Optional Stopping Theorem by computing the expected cumulative sum of i.i.d. random variables stopped at a random time.",
+    "mathematicalSignificance": "Wald's Identity is foundational for sequential probability ratio tests (SPRT), Wald's sequential analysis, and the analysis of random walks. It connects stopping time theory with the law of large numbers.",
+    "proofApproach": "The indicator decomposition: ∑_{k=1}^τ X_k = ∑_{k≥0} X_{k+1} · 1_{τ > k}. The key is that X_{k+1} is independent of {τ > k} ∈ ℱ_k, allowing E[X_{k+1} · 1_{τ>k}] = E[X₀] · P(τ > k). Fubini and the tail sum formula complete the proof.",
+    "openQuestions": []
+  }
+}

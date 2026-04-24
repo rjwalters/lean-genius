@@ -1,0 +1,32 @@
+{
+  "annotations": [
+    {
+      "id": "independence-key",
+      "type": "mathematical-insight",
+      "title": "The Key Independence Fact",
+      "content": "The heart of Wald's Identity: X_{k+1} is independent of {τ > k}, because {τ > k} ∈ ℱ_k (stopping time condition) while X_{k+1} is independent of ℱ_k (i.i.d. property). This allows factoring E[X_{k+1} · 1_{τ>k}] = E[X_{k+1}] · P(τ > k).",
+      "leanRef": "integral_indicator_prod_eq"
+    },
+    {
+      "id": "pull-out",
+      "type": "technique",
+      "title": "Conditional Expectation Pull-Out",
+      "content": "The proof uses the pull-out property E[fg | m] = f · E[g | m] when f is m-measurable (condExp_mul_of_stronglyMeasurable_left). Combined with E[X_{k+1} | ℱ_k] = E[X_{k+1}] from i.i.d. independence, this yields the factorization.",
+      "leanRef": "condExp_mul_of_stronglyMeasurable_left"
+    },
+    {
+      "id": "tail-sum",
+      "type": "mathematical-connection",
+      "title": "Tail Sum Formula",
+      "content": "The formula E[τ] = ∑_{k≥0} P(τ > k) is the discrete analogue of E[X] = ∫₀^∞ P(X > t) dt (layer cake). For ℕ-valued τ: (τ ω : ℝ) = ∑' k, 1_{k < τ ω} as a finite sum that telescopes to τ ω.",
+      "leanRef": "nat_cast_eq_tsum_indicator"
+    },
+    {
+      "id": "comparison-ost",
+      "type": "mathematical-connection",
+      "title": "Comparison with Optional Stopping Theorem",
+      "content": "While the OST (proved in FairGamesTheoremOQ02OQ01) computes E[X_τ] for a stopped martingale, Wald's Identity computes E[∑_{k≤τ} X_k] for a stopped SUM of i.i.d. variables. They complement each other: OST handles the endpoint, Wald handles the path sum.",
+      "leanRef": "wald_identity"
+    }
+  ]
+}
