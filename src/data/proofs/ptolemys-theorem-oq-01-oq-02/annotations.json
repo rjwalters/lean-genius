@@ -135,5 +135,29 @@
       "Poincaré disk model",
       "sinh and its properties"
     ]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "ptolemys-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 262,
+      "endLine": 270
+    },
+    "type": "concept",
+    "title": "Public API Summary",
+    "content": "The `#check` commands verify that `spherical_ptolemy` and `unit_sphere_chord_via_sin` are accessible as public theorems (not `private`) from the `SphericalPtolemy` namespace. The `end SphericalPtolemy` on the final line closes the namespace.\n\nAfter `import Proofs.PtolemysTheoremOQ01OQ02`, downstream proofs can use:\n- `SphericalPtolemy.unit_sphere_chord_via_sin ha hb : ‖a - b‖ = 2 * sin(arccos(⟨a,b⟩)/2)`\n- `SphericalPtolemy.spherical_ptolemy h_cosph h_apc h_bpd ha hb hc hd : sin(...)·sin(...) = ...`\n\nUnlike `inner_unit_mem_Icc` (which is `private`), these two theorems are exportable and suitable for use in further Ptolemy-related formalizations.",
+    "mathContext": "The `#check` commands in Lean confirm that the given terms have the expected types. For `@spherical_ptolemy`, the `@` makes all implicit arguments explicit, revealing the full type signature:\n```\nspherical_ptolemy : ∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V]\n  {a b c d p : V}, Cospherical {a, b, c, d} → ∠ a p c = π → ∠ b p d = π →\n  ‖a‖ = 1 → ‖b‖ = 1 → ‖c‖ = 1 → ‖d‖ = 1 →\n  sin(arccos⟪a,c⟫_ℝ/2) * sin(arccos⟪b,d⟫_ℝ/2) = ...\n```\nThe universe-polymorphic type variable `V : Type u_1` confirms the theorem holds in any real inner product space.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Lean 4 namespace system",
+      "public API design",
+      "#check command",
+      "universe polymorphism"
+    ],
+    "prerequisites": [
+      "Lean 4 namespace system",
+      "spherical_ptolemy",
+      "unit_sphere_chord_via_sin"
+    ]
   }
 ]
