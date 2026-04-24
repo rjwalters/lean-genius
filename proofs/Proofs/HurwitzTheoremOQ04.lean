@@ -78,13 +78,27 @@ theorem normSq_octUnit : normSq octUnit = 1 := normSq_stdBasis 0
     (stdBasis 0) 0 = 1, (stdBasis 0) j = 0 for j ≠ 0, so each formula reduces to a i.
     This is a ring identity that follows by expanding all 8 components.
     [Computational sorry — provable by: funext i; fin_cases i; simp [eightMul, stdBasis]; ring] -/
+set_option maxHeartbeats 800000 in
 theorem eightMul_right_unit (a : Fin 8 → ℝ) : eightMul a octUnit = a := by
-  sorry
+  funext i
+  fin_cases i <;>
+  simp only [eightMul, octUnit, stdBasis,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.cons_val_three] <;>
+  simp (config := { decide := true }) only [ite_true, ite_false] <;>
+  ring
 
 /-- e₀ is the left identity under octonion multiplication.
     [Computational sorry — provable by: funext i; fin_cases i; simp [eightMul, stdBasis]; ring] -/
+set_option maxHeartbeats 800000 in
 theorem eightMul_left_unit (a : Fin 8 → ℝ) : eightMul octUnit a = a := by
-  sorry
+  funext i
+  fin_cases i <;>
+  simp only [eightMul, octUnit, stdBasis,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.cons_val_three] <;>
+  simp (config := { decide := true }) only [ite_true, ite_false] <;>
+  ring
 
 /-- The norm identity with the unit:
     normSq(eightMul a octUnit) = normSq a * normSq octUnit = normSq a.
