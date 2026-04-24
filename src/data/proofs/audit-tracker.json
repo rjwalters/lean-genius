@@ -12952,14 +12952,18 @@
     "ballot-problem-oq-03-oq-01-oq-01-oq-01": {
       "auditCount": 1,
       "lastAudited": "2026-04-23T20:36:02Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [
+        "sorries 1->0: fixed by PR #12063"
+      ]
     },
     "cauchy-schwarz-integral-oq-01-oq-03-oq-01": {
       "auditCount": 1,
       "lastAudited": "2026-04-23T20:36:08Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [
+        "status verified->formalized: fixed by PR #11994"
+      ]
     }
   },
   "erdos-1097-oq-01": {
