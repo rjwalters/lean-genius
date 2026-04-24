@@ -126,6 +126,11 @@
   ],
   "crossReferences": [
     {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "child",
+      "description": "ℤ[X,Y] is NOT a PIR: the ideal (2, X) is a proper non-principal ideal (complementary negative result)"
+    },
+    {
       "targetId": "bezout-identity-oq-02-oq-01-oq-01",
       "relationship": "parent",
       "description": "R[X] is a UFD when R is a UFD (Gauss's Lemma)"
@@ -150,8 +155,9 @@
     "summary": "Complete proof that ℤ[X,Y] and general multivariate polynomial rings over UFDs are UFDs, with 0 sorries and 0 axioms.",
     "implications": "Provides the foundation for algebraic geometry: polynomial rings over ℤ or fields are the canonical UFDs used as coordinate rings.",
     "openQuestions": [
-      "Can we prove ℤ[X,Y] is NOT a PID? (It's not: (2, X) is not principal.)",
-      "Can we formalize the Nullstellensatz in this multivariate UFD context?"
+      "Now that ℤ[X,Y] is proved NOT a PIR (see child proof), can we classify all polynomial rings R[X₁,...,Xₙ] that ARE PIRs?",
+      "Can we formalize the Nullstellensatz in this multivariate UFD context?",
+      "Can the Fintype σ requirement in MvPolynomial.uniqueFactorizationMonoid be lifted to handle infinite variable sets (e.g., via Kaplansky's theorem)?"
     ]
   },
   "mainTheorems": [
