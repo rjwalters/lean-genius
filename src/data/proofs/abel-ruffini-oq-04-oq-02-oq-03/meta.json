@@ -126,7 +126,8 @@
       "title": "The p-Group → Solvable Chain",
       "startLine": 25,
       "endLine": 35,
-      "summary": "pGroup_isSolvable: IsPGroup p G → IsSolvable G via the two-step Mathlib chain hG.isNilpotent + inferInstance. Covers the 8 prime-power orders below 60: 4, 8, 9, 16, 25, 27, 32, 49."
+      "summary": "pGroup_isSolvable: IsPGroup p G → IsSolvable G via the two-step Mathlib chain hG.isNilpotent + inferInstance. Covers the 8 prime-power orders below 60: 4, 8, 9, 16, 25, 27, 32, 49.",
+      "mathContext": "`pGroup_isSolvable (p : ℕ) (G : Type*) [Group G] [Fintype G] (hG : IsPGroup p G) : IsSolvable G := hG.isNilpotent.isSolvable`. Two Mathlib instances: `IsPGroup.isNilpotent`: a finite $p$-group is nilpotent (proved by center induction — the center $Z(G)$ is non-trivial for any $p$-group, enabling quotient induction). `IsNilpotent → IsSolvable` (instance): a nilpotent group has a central series $1 = G_0 \\trianglelefteq G_1 \\trianglelefteq \\cdots = G$ with $G_{i+1}/G_i \\leq Z(G/G_i)$ abelian — every central series is a subnormal series with abelian factors, so nilpotent implies solvable. Covers prime-power orders $4, 8, 9, 16, 25, 27, 32, 49 < 60$."
     },
     {
       "id": "sec-s5-threshold",
@@ -142,6 +143,7 @@
       "startLine": 44,
       "endLine": 51,
       "summary": "abelian_isSolvable: CommGroup G → IsSolvable G via inferInstance. One line. Covers all 17 prime-order cyclic groups below 60 and the trivial group of order 1.",
+      "mathContext": "`abelian_isSolvable (G : Type*) [CommGroup G] [Fintype G] : IsSolvable G := inferInstance`. In Lean, `CommGroup G` implies `IsSolvable G` via the typeclass `isSolvable_of_comm`: the derived series $G \\supseteq [G,G] = 1$ terminates at length 1 (since abelian groups have trivial commutator subgroup). Covers: order 1 (trivial, $|G| = 1$), and all 17 prime orders $\\{2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59\\}$ below 60 (cyclic groups $\\mathbb{Z}/p\\mathbb{Z}$ are abelian). Combined with `pGroup_isSolvable`, this handles $26$ of the $59$ orders below $60$.",
       "mathContext": "For abelian $G$: the commutator subgroup $[G,G] = 1$, so the derived series $G \\supseteq 1$ has length 1, confirming solvability. Mathlib's `isSolvable_of_comm` provides the typeclass instance."
     },
     {
