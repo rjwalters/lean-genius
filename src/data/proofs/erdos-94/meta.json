@@ -7,8 +7,8 @@
     "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/94",
     "date": "1990s",
-    "status": "formalized",
-    "proofRepoPath": "Proofs/Stubs/Erdos94Problem.lean",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos94Problem.lean",
     "tags": [
       "erdos",
       "geometry",
@@ -18,8 +18,8 @@
       "discrete-geometry",
       "extremal-configuration"
     ],
-    "badge": "wip",
-    "sorries": 12,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 94,
     "erdosUrl": "https://erdosproblems.com/94",
     "erdosProblemStatus": "solved",
@@ -60,9 +60,9 @@
       "ErdosFishburnConjecture: regular n-gon maximizes ∑ f(u)²",
       "convex_distinct_distances/convex_max_multiplicity/convex_unit_distance: related bounds"
     ],
-    "axiomCount": 0,
-    "lineCount": 433,
-    "assumptions": "No axioms. 12 sorries(s) remain in the formalization.",
+    "axiomCount": 8,
+    "lineCount": 152,
+    "assumptions": "8 axioms: convex_implies_no_collinear (convex position implies no three collinear), sum_multiplicities (Σf(u) = C(n,2) identity), fishburn_theorem (O(n³) bound for convex polygons), lefmann_theile_theorem (O(n³) under no-three-collinear, Lefmann-Theile 1995), regularNGon (regular n-gon construction), regularNGon_card (n-gon has n points), regularNGon_convex (n-gon in convex position), regularNGon_cubic (Θ(n³) lower/upper bound for n-gon). See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -171,10 +171,8 @@
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Analysis.Convex.Hull",
       "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Topology.MetricSpace.Basic",
-      "Mathlib.Analysis.Convex.Basic",
       "Mathlib.Tactic"
     ],
     "opens": [
@@ -182,12 +180,12 @@
       "Real"
     ],
     "namespace": "Erdos94",
-    "lineCount": 433,
-    "axiomCount": 0,
-    "theoremCount": 12,
-    "definitionCount": 16,
-    "path": "Proofs/Stubs/Erdos94Problem.lean",
-    "sorries": 12
+    "lineCount": 152,
+    "axiomCount": 8,
+    "theoremCount": 0,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos94Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -220,5 +218,5 @@
       "note": "Comprehensive survey of Erdős-type distance problems including multiplicities in convex polygons"
     }
   ],
-  "sorries": 12
+  "sorries": 0
 }
