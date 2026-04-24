@@ -71,28 +71,32 @@
       "title": "Part I: Key Congruence 1000 ≡ -1 (mod 7)",
       "startLine": 32,
       "endLine": 38,
-      "summary": "Proves 1000 % 7 = 6 by native_decide. This is the single arithmetic fact that enables the 3-digit block alternating sum rule."
+      "summary": "Proves 1000 % 7 = 6 by native_decide. This is the single arithmetic fact that enables the 3-digit block alternating sum rule.",
+      "mathContext": "`one_thousand_mod_seven : 1000 % 7 = 6` — proved by `native_decide`. Since $6 \\equiv -1 \\pmod{7}$, this means $1000 \\equiv -1 \\pmod{7}$, which is the key congruence. Equivalently: $7 \\times 143 = 1001 = 1000 + 1$, so $1000 = 1001 - 1 \\equiv -1$. In `Int.ModEq` notation: `(1000 : ℤ) ≡ -1 [ZMOD 7]`, which is what `seven_modEq_altDigitSum_1000` uses to apply `modEq_alternating_digits_sum` from the parent."
     },
     {
       "id": "sec-div-seven",
       "title": "Part II: Divisibility by 7 and the General Rule",
       "startLine": 40,
       "endLine": 77,
-      "summary": "Proves seven_modEq_altDigitSum_1000 (n ≡ altDigitSum 1000 n mod 7) and the general dvd_iff_dvd_altDigitSum theorem for any d,b with b ≡ -1 (mod d). Instantiates to seven_dvd_iff_altDigitSum."
+      "summary": "Proves seven_modEq_altDigitSum_1000 (n ≡ altDigitSum 1000 n mod 7) and the general dvd_iff_dvd_altDigitSum theorem for any d,b with b ≡ -1 (mod d). Instantiates to seven_dvd_iff_altDigitSum.",
+      "mathContext": "`seven_modEq_altDigitSum_1000 (n : ℕ) : (n : ℤ) ≡ altDigitSum 1000 n [ZMOD 7]` — from `modEq_alternating_digits_sum` in the parent, instantiated at `b = 1000` and the congruence $1000 \\equiv -1 \\pmod{7}$. **General theorem** `dvd_iff_dvd_altDigitSum (d b n : ℕ) (h : b ≡ -1 [ZMOD d]) : d ∣ n ↔ d ∣ altDigitSum b n` — proof: $n \\equiv \\text{altDigitSum}(b, n) \\pmod{d}$, so $d \\mid n - \\text{altDigitSum}$ and $d \\mid n \\iff d \\mid \\text{altDigitSum}$ by `dvd_add`. `seven_dvd_iff_altDigitSum`: instantiate at $d = 7, b = 1000$ using the proved congruence."
     },
     {
       "id": "sec-div-thirteen",
       "title": "Part III: Divisibility by 13 via Alternating 3-Digit Blocks",
       "startLine": 79,
       "endLine": 95,
-      "summary": "Proves 1000 ≡ -1 (mod 13) and derives the divisibility test for 13 using the same 3-digit block sum as for 7."
+      "summary": "Proves 1000 ≡ -1 (mod 13) and derives the divisibility test for 13 using the same 3-digit block sum as for 7.",
+      "mathContext": "`one_thousand_mod_thirteen : 1000 % 13 = 12` — proved by `native_decide`. Since $12 \\equiv -1 \\pmod{13}$: $13 \\times 77 = 1001 = 1000 + 1$. The same base $b = 1000$ works for both 7 and 13 because $\\text{lcm}(7, 13) = 91$ divides $1001 = 7 \\times 11 \\times 13$, making $1000 \\equiv -1$ modulo $7, 11, 13$ simultaneously. `thirteen_dvd_iff_altDigitSum (n : ℕ) : 13 ∣ n ↔ 13 ∣ altDigitSum 1000 n` — proved by `dvd_iff_dvd_altDigitSum` at $d = 13, b = 1000$."
     },
     {
       "id": "sec-div-instances",
       "title": "Part IV: Concrete Examples and Classical Instances (11, 101)",
       "startLine": 97,
       "endLine": 142,
-      "summary": "Concrete native_decide examples for 7. Derives eleven_dvd_iff_altDigitSum (classical rule, b=10) and hundredone_dvd_iff_altDigitSum (b=100). Summary section lists all proved results."
+      "summary": "Concrete native_decide examples for 7. Derives eleven_dvd_iff_altDigitSum (classical rule, b=10) and hundredone_dvd_iff_altDigitSum (b=100). Summary section lists all proved results.",
+      "mathContext": "Concrete examples verified by `native_decide`: $7 \\mid 1001$ (altDigitSum$(1000, 1001) = 1 + 1 = 2$... wait, $1001 = 1 \\cdot 1000 + 1$, so altDigitSum $= 1 - 1 = 0$, $7 \\mid 0$ ✓). **Classical instances**: `eleven_dvd_iff_altDigitSum`: $b = 10$, since $10 \\equiv -1 \\pmod{11}$; the alternating 1-digit sum rule (alternating digit sum divisible by 11). `hundredone_dvd_iff_altDigitSum`: $b = 100$, since $100 \\equiv -1 \\pmod{101}$; the 2-digit block alternating sum rule for 101. These show the general framework covers all classical alternating divisibility rules, unified by $b \\equiv -1 \\pmod{d}$."
     }
   ],
   "conclusion": {
