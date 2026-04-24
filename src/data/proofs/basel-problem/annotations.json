@@ -30,7 +30,7 @@
       "startLine": 6,
       "endLine": 52
     },
-    "type": "context",
+    "type": "insight",
     "title": "Module Overview: The Basel Problem",
     "content": "The module docstring introduces the Basel Problem — one of the most famous results in analysis. Named after the Bernoulli family's home city of Basel, Switzerland, the problem was posed by Pietro Mengoli in 1650: find the exact sum of $\\sum 1/n^2$. Jakob Bernoulli (1689) had bounded the sum between 1 and 2, noting it converges more slowly than the geometric series, but could not find the exact value.\n\nEuler solved it in 1734 at age 27, and this breakthrough launched his career. The approach documented here uses Mathlib's `hasSum_zeta_two`, which proves the result via Bernoulli polynomial theory and Fourier analysis — a modern rigorous approach that avoids the subtlety of Euler's original $\\sin(x)/x$ factorization (which required the Weierstrass factorization theorem, not available until 1876).",
     "mathContext": "The Basel Problem: $\\zeta(2) = \\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6} \\approx 1.6449$. The appearance of $\\pi$ in a sum over integers was shocking to Euler's contemporaries — it revealed a deep connection between number theory and analysis that would later be formalized through the Riemann zeta function $\\zeta(s) = \\sum n^{-s}$.",
@@ -242,7 +242,7 @@
       "startLine": 145,
       "endLine": 161
     },
-    "type": "context",
+    "type": "insight",
     "title": "Numerical Approximation and Convergence Rate",
     "content": "The closing section provides numerical context. The partial sums $S_N = \\sum_{n=1}^{N} 1/n^2$ converge to $\\pi^2/6 \\approx 1.6449$ relatively slowly: $S_{10} \\approx 1.5498$ (6% error), $S_{100} \\approx 1.6350$ (0.6% error), $S_{1000} \\approx 1.6439$ (0.06% error). The error decays as $O(1/N)$ since $\\sum_{n>N} 1/n^2 \\approx \\int_N^{\\infty} x^{-2}\\,dx = 1/N$.\n\nThe `example` declarations computationally verify individual terms: $f(0) = 0$ (the $n = 0$ convention), $f(1) = 1$, $f(2) = 1/4$. These are discharged by `simp` and `norm_num`.",
     "mathContext": "$\\pi^2/6 \\approx 1.6449340668$. The error in the $N$-th partial sum: $\\pi^2/6 - S_N = \\sum_{n>N} 1/n^2 \\sim 1/N$ as $N \\to \\infty$. For faster convergence, Euler used the Euler-Maclaurin formula to accelerate the series.",

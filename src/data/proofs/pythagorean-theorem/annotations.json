@@ -49,7 +49,7 @@
       "startLine": 42,
       "endLine": 55
     },
-    "type": "context",
+    "type": "insight",
     "title": "Euclidean Plane Setup: Vec2 as ℝ²",
     "content": "`Vec2` is defined as `EuclideanSpace ℝ (Fin 2)` — Mathlib's formalization of $\\mathbb{R}^2$ as an inner product space. This single `abbrev` provides: the vector space structure ($+$, scalar $\\cdot$), the inner product $\\langle \\cdot, \\cdot \\rangle$ inherited from `RealInnerProductSpace`, and the Euclidean norm $\\|\\cdot\\|$.\n\nThe `open scoped RealInnerProductSpace` makes the notation $\\langle v, w \\rangle$ available for `@inner ℝ Vec2`. The `set_option linter.unusedVariables false` suppresses warnings from intermediate `#check` declarations used for documentation.",
     "mathContext": "$\\text{Vec2} = \\mathbb{R}^{\\text{Fin}\\,2} \\cong \\mathbb{R}^2$ with inner product $\\langle (x_1, x_2), (y_1, y_2) \\rangle = x_1 y_1 + x_2 y_2$ and norm $\\|(x_1, x_2)\\| = \\sqrt{x_1^2 + x_2^2}$.",
@@ -230,7 +230,7 @@
       "startLine": 158,
       "endLine": 169
     },
-    "type": "context",
+    "type": "insight",
     "title": "Applications: Distance Formula and Higher Dimensions",
     "content": "This docstring connects the abstract theorem to two fundamental applications. The Euclidean distance formula $d = \\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$ is simply the Pythagorean theorem applied to the displacement vector $(x_2-x_1, y_2-y_1)$.\n\nThe higher-dimensional generalization $\\|v_1 + \\cdots + v_k\\|^2 = \\|v_1\\|^2 + \\cdots + \\|v_k\\|^2$ (for mutually perpendicular vectors) is proved as `pythagorean_sum` below. This generalization underpins Parseval's identity in Fourier analysis: the energy of a signal equals the sum of energies of its frequency components.",
     "mathContext": "Distance: $d(P, Q) = \\|\\vec{PQ}\\| = \\sqrt{\\sum_i (q_i - p_i)^2}$. Generalization: for $v_1, \\ldots, v_k$ mutually orthogonal, $\\|\\sum v_i\\|^2 = \\sum \\|v_i\\|^2$. Parseval's identity: $\\|f\\|^2 = \\sum_n |\\hat{f}(n)|^2$.",

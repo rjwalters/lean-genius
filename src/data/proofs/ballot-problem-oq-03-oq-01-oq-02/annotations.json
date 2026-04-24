@@ -175,8 +175,11 @@
   {
     "id": "ann-single-row-col-direct",
     "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": { "startLine": 276, "endLine": 643 },
-    "type": "technique",
+    "range": {
+      "startLine": 276,
+      "endLine": 643
+    },
+    "type": "concept",
     "title": "Direct HLF for 1×n and n×1: Unique SYT and hookProd = n! (No LGV Needed)",
     "content": "Parts VI and VIb prove the hook-length formula for single-row (1×n) and single-column (n×1) shapes directly — no LGV machinery needed. For `oneRowYD n` (lines 291-469): hookLength(0,j) = n−j−1+0+1 = n−j, so hookProd = n×(n-1)×...×1 = n!. The unique SYT is `oneRowSYT n` with entry(0,j) = j+1. The formula: 1 × n! = n! follows by rewriting hcard=1 and hookProd=n!. For `oneColYD n` (lines 486-642): hookLength(i,0) = 0+(n−i−1)+1 = n−i, same product n!. The unique SYT is `oneColSYT n` with entry(i,0) = i+1. Both proofs are fully closed (0 sorries).\n\nThese two cases illustrate that for degenerate shapes (single row/column), SYT theory collapses: the unique filling is forced by the strict-increase conditions. They also validate the hook-length definitions: arm=0 for column-0 cells and leg=0 for row-0 cells simplify cleanly.",
     "mathContext": "For $\\lambda = (n)$ (single row): $h(0,j) = (n-j-1) + 0 + 1 = n-j$. $\\text{hookProd} = \\prod_{j=0}^{n-1} (n-j) = n!$. Unique SYT: entry$(0,j) = j+1$. For $\\lambda = (1^n)$ (single column): $h(i,0) = 0 + (n-i-1) + 1 = n-i$. Same product. These are the row and column transposes of each other; the hook-length formula is symmetric under diagram transposition (since transposing swaps arm and leg, leaving $h(u)$ invariant). The LGV approach would give: for single-row, the LGV config has $r=1$, $\\sigma = (n)$, producing paths from $\\{0\\}$ to $\\{n\\}$ — trivially non-intersecting, giving niTupleCount = C(n,n) = 1 = |SYT|.",
@@ -198,7 +201,10 @@
   {
     "id": "ann-hook-shape-bijection",
     "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": { "startLine": 677, "endLine": 1088 },
+    "range": {
+      "startLine": 677,
+      "endLine": 1088
+    },
     "type": "insight",
     "title": "HLF for Hook-Shape (m+1,1): Explicit Bijection hookSYT: Fin(m+1) → SYT",
     "content": "Part VIII proves the hook-length formula for `hookShapeYD m` — the Young diagram with top row of length m+1 and left column of height 2 (shape (m+1,1), a 'hook'). The proof is a direct bijection rather than LGV.\n\n**Key theorem `hookProd_hookShapeYD`** (line 778): hookProd(hookShapeYD m) = (m+2) × m!. The hook lengths are: (0,0)↦m+1 (arm=m, leg=0), (0,j)↦m+1-j for j=1..m (arm=m-j, leg=0), (1,0)↦1 (arm=0, leg=0). Product: (m+1)×m×...×1×1 = (m+1)! × m! / ... actually = (m+2)×m! by the combinatorial identity.\n\n**card_SYT_hookShapeYD** (line 1069): card(SYT(hookShapeYD m)) = m+1. The explicit bijection `hookSYT m : Fin(m+1) → SYT(hookShapeYD m)` maps index k to the tableau where cell (1,0) gets entry k+1 and the top row gets entries {1,...,m+1} \\ {k+1} in increasing order. The formula: (m+1) × (m+2)×m! = (m+2)!",
@@ -221,7 +227,10 @@
   {
     "id": "ann-two-rect-catalan",
     "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": { "startLine": 1089, "endLine": 2727 },
+    "range": {
+      "startLine": 1089,
+      "endLine": 2727
+    },
     "type": "insight",
     "title": "HLF for 2×m Rectangles via Ballot Bijection and Lindstrom Reflection: C_m × (m+1)! × m! = (2m)!",
     "content": "Part IX (lines 1089-2727) proves the hook-length formula for `twoRectYD m` (two rows each of length m, total 2m cells): card(SYT(m×m)) × hookProd = (2m)!. This is the most complex proof in the file, requiring a full ballot bijection and Lindstrom reflection argument.\n\n**hookProd_twoRectYD** (line 1203): hookProd(twoRectYD m) = (m+1)! × m!. Row-0 hooks: m+1, m, ..., 2, 1 (product = (m+1)!). Row-1 hooks: m, m-1, ..., 1 (product = m!). Total = (m+1)! × m!.\n\n**card_SYT_twoRectYD** (line ~1380, completed in IXb-IXd): card(SYT(twoRectYD m)) = C_m (Catalan number). The proof constructs an explicit bijection SYT(m×m) ↔ ballot sequences of length 2m. Part IXb (lines 1256-1380) builds the forward map (SYT → ballot Finset). Part IXc (lines 1381-1566) constructs the inverse. Part IXd (lines 1567-1741) proves the ballot count = C_m via the Lindstrom reflection principle.\n\n**hook_length_formula_two_rect** (line 2716): C_m × (m+1)! × m! = (2m)! — this is exactly `LGVCorollaries.hook_length_formula_two_row`, delegating to the pre-built LGV infrastructure in BallotProblemOQ03OQ03.",
