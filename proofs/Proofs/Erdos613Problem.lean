@@ -33,9 +33,9 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 def criticalEdgeCount (n : ℕ) : ℕ :=
   (2*n + 1).choose 2 - n.choose 2 - 1
 
-/-- Simplified form: C(2n+1,2) - C(n,2) - 1 = 2n² + n - n(n-1)/2 - 1 -/
+/-- Simplified form: C(2n+1,2) - C(n,2) - 1 = 3n(n+1)/2 - 1 -/
 theorem critical_edge_count_formula (n : ℕ) (hn : n ≥ 1) :
-    criticalEdgeCount n = n * n + n + (n * (n + 1)) / 2 := by
+    criticalEdgeCount n = n * n + n + (n * (n + 1)) / 2 - 1 := by
   sorry
 
 /-- For n = 3: critical count = 9 + 3 + 6 - 1 = 17 -/
