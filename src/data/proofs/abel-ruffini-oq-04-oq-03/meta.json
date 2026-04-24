@@ -5,6 +5,8 @@
   "description": "A root of an irreducible polynomial is solvable by radicals iff its Galois group is solvable. Forward direction proved (Mathlib), reverse axiomatized (needs Kummer theory).",
   "meta": {
     "author": "Galois",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Galois_theory#Solvable_groups_and_solution_by_radicals",
+    "date": "1832",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ03.lean",
     "tags": [
@@ -18,7 +20,38 @@
     "axiomCount": 1,
     "lineCount": 165,
     "assumptions": "1 axiom: solvableGal_implies_solvableByRad (reverse direction, requires Kummer theory for cyclic extensions not yet in Mathlib).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-03-27",
+    "prerequisites": [
+      "Field extensions and Galois groups",
+      "Solvable groups and derived series",
+      "Radical extensions and solvability by radicals",
+      "Kummer theory for cyclic extensions (reverse direction only)"
+    ],
+    "originalContributions": [
+      "Forward direction wrapper: solvableByRad F α → IsSolvable (galois_group q) via Mathlib's solvableByRad.isSolvable'",
+      "Contrapositive: non-solvable Galois group implies not solvable by radicals — immediate corollary yielding Abel-Ruffini",
+      "Full biconditional galois_criterion combining Mathlib's forward direction with the axiomatized reverse direction",
+      "Specialization galois_criterion_Q to the case F = ℚ, the primary case of classical interest",
+      "Explicit axiom for reverse direction with complete Kummer-theoretic proof sketch in the docstring"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "solvableByRad.isSolvable'",
+        "description": "Radical solvability of a root implies solvability of the Galois group",
+        "module": "Mathlib.FieldTheory.AbelRuffini"
+      },
+      {
+        "theorem": "IsSolvable",
+        "description": "Definition of a solvable group via derived series reaching the trivial subgroup",
+        "module": "Mathlib.GroupTheory.Solvable"
+      },
+      {
+        "theorem": "Polynomial.Gal",
+        "description": "Galois group of a polynomial as a subgroup of the symmetric group on its roots",
+        "module": "Mathlib.FieldTheory.Galois.Basic"
+      }
+    ]
   },
   "leanFile": {
     "imports": [
@@ -46,7 +79,9 @@
       "The characteristic 0 hypothesis (or more generally char $F \\nmid |\\operatorname{Gal}(q)|$) is essential for the reverse direction: Kummer theory requires the existence of primitive $n$-th roots of unity. Over fields of characteristic $p$, Artin–Schreier theory replaces Kummer theory for $p$-cyclic extensions, complicating the picture.",
       "Abel–Ruffini is now a corollary: the symmetric group $S_5$ is not solvable (since $A_5$ is the smallest non-abelian simple group and is a normal subgroup of $S_5$), so any polynomial whose Galois group is $S_5$ — e.g., a generic degree-5 polynomial over $\\mathbb{Q}$ — cannot be solved by radicals.",
       "The one-line forward direction proof (`solvableByRad.isSolvable' hq hroot hrad`) reflects the depth of Mathlib's radical tower formalization. The axiomatized reverse direction highlights a genuine Mathlib gap: Kummer theory for cyclic extensions, though classical, is not yet fully mechanized.",
-      "The criterion explains the existence of quadratic, cubic, and quartic formulas: the Galois groups of irreducible polynomials of degree $\\leq 4$ are subgroups of $S_4$, which is solvable (via $S_4 \\supset A_4 \\supset V_4 \\supset \\{e\\}$), so all their roots are expressible by radicals."
+      "The criterion explains the existence of quadratic, cubic, and quartic formulas: the Galois groups of irreducible polynomials of degree $\\leq 4$ are subgroups of $S_4$, which is solvable (via $S_4 \\supset A_4 \\supset V_4 \\supset \\{e\\}$), so all their roots are expressible by radicals.",
+      "The number of nested radical extractions needed to express $\\alpha$ is bounded by the derived length of $\\operatorname{Gal}(q)$: each step $G^{(k)} \\to G^{(k+1)}$ in the derived series corresponds to one radical extraction layer $K_k \\subset K_{k+1} = K_k(\\sqrt[p]{\\beta})$. For cubics (derived length 2) and quartics (derived length 3), this gives tight bounds on formula complexity.",
+      "The Galois group perspective transforms polynomial solvability from a question about root formulas into a question about group structure — a shift that opened the door to abstract algebra. Every subsequent impossibility result in classical geometry and algebra (angle trisection, squaring the circle, compass-and-straightedge constructions) relies on the same Galois-theoretic machinery."
     ]
   },
   "sections": [
@@ -55,66 +90,75 @@
       "title": "Imports",
       "startLine": 1,
       "endLine": 5,
-      "summary": "Imports from Mathlib covering Abel-Ruffini theory, solvable group theory, and Galois theory basics."
+      "summary": "Imports from Mathlib covering Abel-Ruffini theory, solvable group theory, and Galois theory basics.",
+      "mathContext": "Three Mathlib modules span the full scope: $\\texttt{FieldTheory.AbelRuffini}$ provides $\\texttt{solvableByRad.isSolvable'}$, the core theorem that radical solvability implies a solvable Galois group; $\\texttt{GroupTheory.Solvable}$ provides $\\texttt{IsSolvable}$ (defined via the derived series $G^{(0)} \\supset G^{(1)} \\supset \\cdots$ reaching $\\bot$) and $\\texttt{Equiv.Perm.not\\_solvable}$; $\\texttt{FieldTheory.Galois.Basic}$ provides $\\texttt{Polynomial.Gal}$, the Galois group of a polynomial as a subgroup of permutations on its roots."
     },
     {
       "id": "documentation",
       "title": "Module Documentation",
       "startLine": 6,
       "endLine": 39,
-      "summary": "Research context: documents what is proved (forward direction via Mathlib), what is axiomatized (reverse direction, needing Kummer theory), and key references including Galois's 1831 memoir."
+      "summary": "Research context: documents what is proved (forward direction via Mathlib), what is axiomatized (reverse direction, needing Kummer theory), and key references including Galois's 1831 memoir.",
+      "mathContext": "The documentation records a fundamental asymmetry in Mathlib 4.26.0: the forward direction $\\texttt{solvableByRad}\\ \\alpha \\Rightarrow \\texttt{IsSolvable}(\\operatorname{Gal}(q))$ is fully mechanized via the radical tower filtration, while the reverse direction requires Kummer's theorem — that cyclic Galois extensions of degree $n$ over a field containing $\\zeta_n$ are generated by $n$-th roots (i.e., $E = F(\\sqrt[n]{\\beta})$ for some $\\beta \\in F$). Kummer theory, though classical (Kummer 1846, same year as Galois's posthumous publication), is not yet fully formalized in Mathlib for the general case needed here."
     },
     {
       "id": "setup",
       "title": "Namespace and Variable Setup",
       "startLine": 41,
       "endLine": 51,
-      "summary": "Declares the GaloisCriterion namespace with abstract fields F and E, setting up the general field-extension context."
+      "summary": "Declares the GaloisCriterion namespace with abstract fields F and E, setting up the general field-extension context.",
+      "mathContext": "Variables $F : \\texttt{Type*}\\ [\\texttt{Field}\\ F]\\ [\\texttt{CharZero}\\ F]$ and $E : \\texttt{Type*}\\ [\\texttt{Field}\\ E]\\ [\\texttt{Algebra}\\ F\\ E]$ set up a characteristic-zero field extension $E/F$. The $\\texttt{CharZero}$ hypothesis is essential for both directions: the forward direction uses it to ensure that $n$-th power maps are separable, and the reverse direction needs $\\operatorname{char}(F) \\nmid p$ so that primitive $p$-th roots of unity $\\zeta_p$ exist in extensions (required for Kummer theory). Over $\\mathbb{F}_p$-fields, the criterion requires Artin–Schreier theory instead."
     },
     {
       "id": "forward-direction",
       "title": "Part 1: Forward Direction (Proved)",
       "startLine": 52,
       "endLine": 76,
-      "summary": "Proves the forward direction of Galois's criterion: solvability by radicals implies solvability of the Galois group, using Mathlib's solvableByRad.isSolvable'. Includes the contrapositive, which immediately yields the Abel-Ruffini theorem."
+      "summary": "Proves the forward direction of Galois's criterion: solvability by radicals implies solvability of the Galois group, using Mathlib's solvableByRad.isSolvable'. Includes the contrapositive, which immediately yields the Abel-Ruffini theorem.",
+      "mathContext": "$\\texttt{solvableByRad}\\ F\\ \\alpha$ means $\\alpha$ lies in the radical closure $\\bigcup_n F^{\\text{rad}_n}$ built by iterating the adjunction of $n$-th roots. The key step: a radical tower $F = K_0 \\subset K_1 \\subset \\cdots \\subset K_m \\ni \\alpha$ (where each $K_{i+1} = K_i(\\beta_i^{1/n_i})$) induces a filtration $\\operatorname{Gal}(K_m/F) = H_0 \\supset H_1 \\supset \\cdots \\supset H_m = \\{\\operatorname{id}\\}$ with cyclic quotients $H_i/H_{i+1} \\hookrightarrow \\mu_{n_i}$ (roots of unity), making $\\operatorname{Gal}(q)$ solvable. The one-line proof $\\texttt{exact solvableByRad.isSolvable' hq hroot hrad}$ delegates the entire radical tower argument to Mathlib."
     },
     {
       "id": "reverse-direction-axiom",
       "title": "Part 2: Reverse Direction (Axiomatized)",
       "startLine": 79,
       "endLine": 108,
-      "summary": "States and axiomatizes the reverse direction: a solvable Galois group implies solvability by radicals. Explains the required ingredients (composition series, Kummer theory, radical towers) and why this is not yet provable in Mathlib."
+      "summary": "States and axiomatizes the reverse direction: a solvable Galois group implies solvability by radicals. Explains the required ingredients (composition series, Kummer theory, radical towers) and why this is not yet provable in Mathlib.",
+      "mathContext": "The axiom $\\texttt{solvableGal\\_implies\\_solvableByRad}: \\texttt{IsSolvable}(\\operatorname{Gal}(q)) \\Rightarrow \\texttt{solvableByRad}\\ F\\ \\alpha$ encodes Kummer theory. Given a composition series $1 = G_k \\trianglelefteq \\cdots \\trianglelefteq G_0 = \\operatorname{Gal}(q)$ with cyclic quotients $G_{i-1}/G_i \\cong \\mathbb{Z}/p_i\\mathbb{Z}$, one adjoins $\\zeta_{p_i}$ (primitive $p_i$-th root of unity) to the current field and then applies Kummer's theorem: the fixed field of $G_i$ inside the fixed field of $G_{i-1}$ is generated by a $p_i$-th root. Iterating yields the radical tower. The Mathlib gap is precisely the formalization of: 'cyclic Galois extension of degree $p$ over $F \\ni \\zeta_p$ is generated by a $p$-th root.'"
     },
     {
       "id": "full-criterion",
       "title": "Part 3: The Full Iff Criterion",
       "startLine": 109,
       "endLine": 125,
-      "summary": "Combines both directions into the full biconditional galois_criterion: over a characteristic 0 field, a root is solvable by radicals iff its Galois group is solvable."
+      "summary": "Combines both directions into the full biconditional galois_criterion: over a characteristic 0 field, a root is solvable by radicals iff its Galois group is solvable.",
+      "mathContext": "$\\texttt{galois\\_criterion}: \\texttt{solvableByRad}\\ F\\ \\alpha \\leftrightarrow \\texttt{IsSolvable}(\\operatorname{Gal}(q))$. This is the master theorem of classical algebra: it converts the analytic question of radical expressibility (does a formula exist involving $+,-,\\times,\\div,\\sqrt[n]{\\cdot}$?) into the purely algebraic question (is this finite group solvable?). The $\\leftarrow$ direction uses the axiom; the $\\rightarrow$ direction uses Mathlib. Together they give a complete decision procedure in principle — one need only compute the Galois group and check solvability."
     },
     {
       "id": "applications",
       "title": "Part 4: Applications",
       "startLine": 127,
       "endLine": 148,
-      "summary": "Specializes the criterion to ℚ (the primary case of interest) and derives the converse of Abel-Ruffini: solvable Galois group guarantees the existence of a radical formula, explaining quadratic/cubic/quartic formulas."
+      "summary": "Specializes the criterion to ℚ (the primary case of interest) and derives the converse of Abel-Ruffini: solvable Galois group guarantees the existence of a radical formula, explaining quadratic/cubic/quartic formulas.",
+      "mathContext": "$\\texttt{galois\\_criterion\\_Q}$: over $\\mathbb{Q}$, $\\alpha$ is expressible by radicals $\\iff \\operatorname{Gal}(q)$ is solvable. Concrete instances: $\\operatorname{Gal}(\\text{quadratic}) \\subseteq S_2 \\cong \\mathbb{Z}/2\\mathbb{Z}$ (abelian, derived length 1) $\\Rightarrow$ quadratic formula. $\\operatorname{Gal}(\\text{irreducible cubic}) \\in \\{\\mathbb{Z}/3\\mathbb{Z}, S_3\\}$ (both solvable, derived length $\\leq 2$) $\\Rightarrow$ Cardano's cubic formula. $\\operatorname{Gal}(\\text{irreducible quartic}) \\subseteq S_4$ (solvable, derived length $\\leq 3$) $\\Rightarrow$ Ferrari's quartic formula. In all three cases the number of nested radical extractions matches the derived length exactly."
     },
     {
       "id": "abel-ruffini-special-case",
       "title": "Part 5: Abel-Ruffini as Special Case",
       "startLine": 150,
       "endLine": 165,
-      "summary": "Derives Abel-Ruffini from Galois's criterion: an unsolvable Galois group (e.g., S₅) is both necessary and sufficient for non-solvability by radicals, making Galois's criterion the complete characterization."
+      "summary": "Derives Abel-Ruffini from Galois's criterion: an unsolvable Galois group (e.g., S₅) is both necessary and sufficient for non-solvability by radicals, making Galois's criterion the complete characterization.",
+      "mathContext": "Abel-Ruffini as corollary: $S_5$ is not solvable because $[S_5, S_5] = A_5$ and $A_5$ is simple (order 60, smallest non-abelian simple group), so the derived series stalls: $S_5 \\supset A_5 = [A_5, A_5] \\supset \\cdots$ never reaches $\\{e\\}$. By the contrapositive of $\\texttt{galois\\_criterion}$: any $q \\in \\mathbb{Q}[x]$ with $\\operatorname{Gal}(q) \\cong S_5$ has no radical formula for its roots. The bidirectional criterion makes $S_5$-Galois group both necessary and sufficient for non-solvability: it is the complete obstruction, not merely a sufficient condition."
     }
   ],
   "conclusion": {
-    "summary": "This proof formalizes Galois's solvability criterion in Lean 4 with Mathlib: a root of an irreducible polynomial over a characteristic 0 field is solvable by radicals if and only if its Galois group is solvable. The forward direction is fully machine-checked using Mathlib's radical tower theory; the reverse direction is axiomatized, awaiting Kummer theory formalization in Mathlib.",
-    "implications": "Galois's criterion is arguably the most important theorem in classical algebra. It provides a complete decision procedure for the radical solvability of polynomial equations via group theory — transforming an analytic question (existence of a radical formula) into a purely algebraic one (is this group solvable?). The theorem also demonstrates the power of the Galois correspondence, linking field extensions to group-theoretic properties. It subsumes and explains all prior results: why degree ≤ 4 polynomials have formulas, why the general quintic does not, and what the obstruction is in every case. The gap identified in this formalization — Kummer theory — represents an important frontier for Mathlib contributors.",
+    "summary": "This proof formalizes Galois's solvability criterion in Lean 4 with Mathlib: a root of an irreducible polynomial over a characteristic 0 field is solvable by radicals if and only if its Galois group is solvable. The forward direction is fully machine-checked using Mathlib's radical tower theory (solvableByRad.isSolvable'); the reverse direction is axiomatized, clearly documenting the Kummer-theoretic gap that remains in Mathlib 4.26.0.",
+    "implications": "1. **Complete decision procedure**: Galois's criterion transforms the analytic question of radical expressibility into a purely algebraic one — checking group solvability. In principle this is decidable for explicitly given polynomials over ℚ: compute the Galois group (a finite group), then check solvability via derived series.\n\n2. **Unified explanation**: The criterion subsumes all prior results. Quadratic, cubic, and quartic formulas exist because the relevant Galois groups are subgroups of $S_4$, and $S_4$ is solvable. The general quintic has no formula because generic quintic Galois groups are $S_5$, which is not solvable. The number 5 is the exact threshold, determined by $A_5$ being the smallest non-abelian simple group.\n\n3. **Birth of abstract algebra**: Galois's insight — associating a group to a polynomial and reading off algebraic properties — is the paradigm of modern abstract algebra. Every subsequent structure theorem (Sylow's theorems, Jordan-Hölder, representation theory) follows this pattern of encoding analytic or geometric information in algebraic structure.\n\n4. **Mathlib frontier**: The axiomatized reverse direction identifies a concrete gap: Kummer theory for cyclic extensions. Formalizing `solvableGal_implies_solvableByRad` would complete this entry and simultaneously provide Mathlib with a major classical result, enabling mechanized verification of solvability claims for explicit polynomials.",
     "openQuestions": [
       "Can the reverse direction be formally proved in Mathlib once Kummer theory for cyclic extensions is fully formalized? The key missing ingredient is a theorem that cyclic Galois extensions of degree $n$ (over a field containing $\\zeta_n$) are generated by $n$-th roots.",
       "What happens in characteristic $p > 0$? The criterion requires modification: for $p$-cyclic extensions, Artin–Schreier theory (extensions by roots of $x^p - x - a$) replaces Kummer theory. Can a unified statement be formalized in Lean?",
       "The Galois group of a polynomial can be difficult to compute in practice. Are there decision procedures for determining solvability of Galois groups of explicit polynomials that could be mechanized in Lean?",
-      "The inverse Galois problem asks: which finite groups occur as Galois groups over $\\mathbb{Q}$? Every solvable group does (by Shafarevich's theorem), but the full problem remains open for all finite groups."
+      "The inverse Galois problem asks: which finite groups occur as Galois groups over $\\mathbb{Q}$? Every solvable group does (by Shafarevich's theorem), but the full problem remains open for all finite groups.",
+      "Can a 'degree-bound' theorem be formalized: for every $n \\leq 4$, every irreducible $q \\in \\mathbb{Q}[x]$ of degree $n$ has a root expressible using at most $n-1$ nested radical extractions? This would make the criterion quantitative, not just existential."
     ]
   },
   "crossReferences": [
@@ -127,6 +171,66 @@
       "targetId": "abel-ruffini-oq-04",
       "relationship": "extends",
       "description": "Extends the A5 simplicity chain with the converse direction"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02",
+      "relationship": "complementary",
+      "description": "$S_2, S_3, S_4$ are solvable (companion entry): the backward direction of this criterion — solvable Galois group $\\Rightarrow$ solvable by radicals — is the group-theoretic license that guarantees the existence of quadratic, cubic, and quartic formulas. This entry's $\\texttt{galois\\_criterion}$ is the theorem that makes the solvability of $S_n$ ($n \\leq 4$) mathematically consequential for polynomial root-finding."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-01",
+      "relationship": "complementary",
+      "description": "Concrete $S_5$ witness (Gal$(x^5 - 4x + 2) \\cong S_5$, fully verified): the companion entry establishes that a specific irreducible quintic has a non-solvable Galois group. The forward direction of $\\texttt{galois\\_criterion}$ (non-solvable group $\\Rightarrow$ not solvable by radicals) then yields the concrete Abel-Ruffini theorem for $x^5 - 4x + 2$."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "extends",
+      "description": "The comprehensive Galois theory extensions entry (534 lines) formalizes both $S_n$ solvable $\\iff n \\leq 4$ and $A_n$ solvable $\\iff n \\leq 4$, together with $A_5$ simplicity and Galois group order results. It represents the most complete mechanization of the group-theoretic side of this criterion in the gallery."
+    },
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "foundational",
+      "description": "Cardano's cubic formula (1545) is licensed by this criterion: every irreducible cubic $q \\in \\mathbb{Q}[x]$ has $\\operatorname{Gal}(q) \\in \\{\\mathbb{Z}/3\\mathbb{Z}, S_3\\}$, both solvable via derived series of length $\\leq 2$. The two nested radical extractions in Cardano's formula (a square root from the resolvent quadratic, then a cube root) correspond exactly to the two cyclic quotients $\\mathbb{Z}/2\\mathbb{Z}$ and $\\mathbb{Z}/3\\mathbb{Z}$ in $S_3$'s composition series."
+    },
+    {
+      "targetId": "general-quartic",
+      "relationship": "foundational",
+      "description": "Ferrari's quartic formula (1540) is licensed by this criterion: $\\operatorname{Gal}(\\text{generic quartic}) \\subseteq S_4$, which is solvable via the three-step derived series $S_4 \\supset A_4 \\supset V_4 \\supset \\{e\\}$ with the Klein four-group $V_4$ as the critical intermediate. The three nested radical extractions in Ferrari's method correspond to the three cyclic quotients $\\mathbb{Z}/2\\mathbb{Z}, \\mathbb{Z}/3\\mathbb{Z}, \\mathbb{Z}/2\\mathbb{Z}$ in $S_4$'s composition series."
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "Sylow's theorems (1872) provide the structural foundation for the composition factors appearing in the reverse direction of this criterion. The cyclic-of-prime-order quotients $\\mathbb{Z}/p\\mathbb{Z}$ in a solvable group's composition series are precisely the structure Kummer theory needs to construct the corresponding radical extension steps $K_i(\\zeta_p)(\\beta_i^{1/p})/K_i$. Sylow's first theorem guarantees the existence of the relevant $p$-subgroups at each stage."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Stewart, Ian",
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "CRC Press, 4th edition",
+      "note": "Chapters 9-12: solvability by radicals, Galois's criterion, and the classical proof of Abel-Ruffini as a corollary"
+    },
+    {
+      "authors": "Cox, David A.",
+      "title": "Galois Theory",
+      "year": "2012",
+      "venue": "Wiley, 2nd edition",
+      "note": "Theorem 13.4.3 (Galois criterion), Theorem 13.1.1 (forward direction), Section 13.4 (Kummer theory for cyclic extensions)"
+    },
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Graduate Texts in Mathematics 211, Springer, 3rd revised edition",
+      "note": "Chapter VI §7-§9: Galois's solvability criterion, Kummer extensions, and the complete proof of both directions"
+    },
+    {
+      "authors": "Galois, Évariste",
+      "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
+      "year": "1846",
+      "venue": "Journal de mathématiques pures et appliquées (posthumous, ed. Liouville), vol. 11, pp. 381-444",
+      "note": "Original memoir presenting the criterion; written 1831, submitted to the Paris Academy, published posthumously 14 years after Galois's death"
     }
   ],
   "sorries": 0

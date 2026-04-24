@@ -56,7 +56,10 @@
       "native_decide handles S₄ (24 elements) but `decide` times out — the boundary is roughly 6-12 elements for kernel-level computation",
       "The Klein four-group V₄ ◁ S₄ is what makes the quartic solvable: it provides the extra normal subgroup enabling a 3-step derived series",
       "A₅ being simple (order 60, no normal subgroups) is the exact reason n=5 is the unsolvability threshold",
-      "interval_cases elegantly reduces the infinite backward direction (n ≤ 4 → solvable) to 5 decidable finite checks"
+      "interval_cases elegantly reduces the infinite backward direction (n ≤ 4 → solvable) to 5 decidable finite checks",
+      "**Derived series length = number of radical extractions**: Each step $S_n^{(k)} \\to S_n^{(k+1)}$ in the derived series corresponds exactly to one nested radical extraction in the classical formula. $S_3$ has derived length 2 (one cube root inside a square root in Cardano's formula), $S_4$ has derived length 3 (three nested extractions in Ferrari's method). This correspondence is the precise sense in which 'the formula gets more complex as degree increases'.",
+      "**Jordan-Hölder uniqueness**: The Jordan-Hölder theorem guarantees that the composition factors $\\{\\mathbb{Z}/2\\mathbb{Z}, \\mathbb{Z}/3\\mathbb{Z}\\}$ for $S_3$ and $\\{\\mathbb{Z}/2\\mathbb{Z}, \\mathbb{Z}/3\\mathbb{Z}, \\mathbb{Z}/2\\mathbb{Z}, \\mathbb{Z}/2\\mathbb{Z}\\}$ for $S_4$ are invariants of the group — any two composition series of $S_4$ have the same multiset of composition factors. Since all factors are cyclic of prime order (hence abelian), the groups are solvable. For $S_5$, the unavoidable factor is $A_5$ (simple, non-abelian, order 60), and no rearrangement can avoid it.",
+      "**V₄ is the last trick available**: The Klein four-group $V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\}$ is the unique non-cyclic group of order 4 (since cyclic groups of order 4 are $\\mathbb{Z}/4\\mathbb{Z}$). Its normal presence in $A_4$ and $S_4$ is what permits the extra step in the derived series. No analogous structure exists in $A_5$: the only normal subgroups of $A_5$ are $\\{e\\}$ and $A_5$ itself (by simplicity), making no further subdivision possible."
     ],
     "prerequisites": [
       "Group theory (solvable groups, derived series, commutator subgroups)",
@@ -70,7 +73,8 @@
       "title": "Documentation and Imports",
       "startLine": 1,
       "endLine": 43,
-      "summary": "Module docstring documenting the open question, the answer (S₂, S₃, S₄ are all solvable), the proof techniques (CommGroup, decide, native_decide), and references. Imports Mathlib's Solvable, Alternating, and Tactic modules."
+      "summary": "Module docstring documenting the open question, the answer (S₂, S₃, S₄ are all solvable), the proof techniques (CommGroup, decide, native_decide), and references. Imports Mathlib's Solvable, Alternating, and Tactic modules.",
+      "mathContext": "Imports: `GroupTheory.Solvable` supplies `IsSolvable`, `isSolvable_def` ($G$ is solvable $\\iff \\exists n,\\, D^n(G) = \\{e\\}$), and `derivedSeries`; `SpecificGroups.Alternating` provides the $A_5$ simplicity used contrapositively in the forward direction of `solvable_iff_le_four`. The `maxHeartbeats 1600000` increase (4× the default 400000) is required for `native_decide` in `s4_solvable`: computing that `derivedSeries(S_4, 3) = ⊥` requires exhaustive evaluation over $|S_4|^3 = 13824$ permutation triples."
     },
     {
       "id": "s2-solvable",
@@ -109,16 +113,19 @@
       "title": "Degree-by-Degree Picture and Summary",
       "startLine": 112,
       "endLine": 154,
-      "summary": "Convenience corollaries: small_symmetric_solvable (n ≤ 4 → solvable) and large_symmetric_not_solvable (n ≥ 5 → not solvable). Closing summary table showing all symmetric group solvability with proof techniques and derived series lengths."
+      "summary": "Convenience corollaries: small_symmetric_solvable (n ≤ 4 → solvable) and large_symmetric_not_solvable (n ≥ 5 → not solvable). Closing summary table showing all symmetric group solvability with proof techniques and derived series lengths.",
+      "mathContext": "The two directional corollaries present the classification as implications: $n \\leq 4 \\Rightarrow \\text{IsSolvable}(S_n)$ (`small_symmetric_solvable`) and $n \\geq 5 \\Rightarrow \\neg\\text{IsSolvable}(S_n)$ (`large_symmetric_not_solvable`). Together with Galois's theorem ($\\text{IsSolvableByRad}(F, \\alpha) \\Rightarrow \\text{IsSolvable}(q.\\text{Gal})$, where $q = \\text{minpoly}_F(\\alpha)$), these give: if $q$ is a polynomial with $\\text{Gal}(q) \\cong S_n$ for $n \\leq 4$, then its roots are solvable by radicals; if $\\text{Gal}(q) \\cong S_n$ for $n \\geq 5$, they are not."
     }
   ],
   "conclusion": {
-    "summary": "The solvability of Sₙ for n ≤ 4 is proved, completing the picture alongside the non-solvability of S₅+ from the parent. The clean bidirectional theorem solvable_iff_le_four is the highlight.",
-    "implications": "1. **Polynomial solvability**: Combined with Galois theory, this explains exactly which degrees admit radical formulas.\n2. **Complete classification**: The number 5 is the exact threshold, determined by A₅ being the smallest non-abelian simple group.\n3. **Decidability approach**: For finite groups, solvability can be verified computationally (decide/native_decide).",
+    "summary": "The solvability of Sₙ for n ≤ 4 is proved, completing the picture alongside the non-solvability of S₅+ from the parent entry `abel-ruffini-oq-04`. The clean bidirectional theorem `solvable_iff_le_four` is the highlight — a single importable lemma that packages the entire classification for use in any Galois-theoretic argument.\n\nThe proof methodology demonstrates a hierarchy of verification strategies: `inferInstance` for trivial cases ($S_0, S_1$), `decide` for small finite groups ($S_2, S_3$, up to ~6 elements), `native_decide` for medium-sized groups ($S_4$, 24 elements), and abstract Mathlib theorems (`Equiv.Perm.not_solvable`) for the infinite family $n \\geq 5$. This progression reflects the practical limits of computational verification and the power of abstract mathematical structure.",
+    "implications": "1. **Polynomial solvability is now fully classified**: Combined with the Galois bridge (`solvableByRad.isSolvable'` from Mathlib), the classification $S_n$ solvable $\\iff n \\leq 4$ explains exactly which degrees admit radical formulas. For generic polynomials with Galois group $S_n$: degrees 1–4 have radical solutions (quadratic formula, Cardano's cubic, Ferrari's quartic), degree 5+ do not.\n\n2. **A₅ as the minimal obstruction**: The number 5 is not arbitrary — it is determined by $A_5$ (order 60) being the smallest non-abelian simple group. This entry's classification is sharp: $A_4$ has $V_4$ as a normal subgroup (enabling solvability), while $A_5$ has NO proper normal subgroup (blocking it). The classification `small_symmetric_solvable` and `large_symmetric_not_solvable` encode this structural fact as decidable Lean lemmas.\n\n3. **Decidability and computation**: For finite groups, group-theoretic properties like solvability can be computationally verified. The transition from `decide` ($|G| \\leq 12$) to `native_decide` ($|G| \\approx 24$) to abstract proofs illustrates how formal mathematics handles scale: small cases are verified algorithmically, medium cases need compiled computation, and large cases require abstract structure.\n\n4. **Jordan-Hölder and composition factors**: The complete list of composition factors — $\\{\\mathbb{Z}/2, \\mathbb{Z}/3\\}$ for $S_3$ and $\\{\\mathbb{Z}/2, \\mathbb{Z}/3, \\mathbb{Z}/2, \\mathbb{Z}/2\\}$ for $S_4$ — tells the story of which radicals appear in the classical formulas. Each cyclic factor $\\mathbb{Z}/p$ corresponds to a $p$th root extraction. Cardano's formula involves $\\sqrt{\\cdot}$ and $\\sqrt[3]{\\cdot}$ (factors $\\mathbb{Z}/2$ and $\\mathbb{Z}/3$); Ferrari's formula adds nested square roots (two more $\\mathbb{Z}/2$ factors). The Jordan-Hölder theorem guarantees this multiset of factors is canonical — no alternative composition series can avoid them.",
     "openQuestions": [
-      "Can the derived series for S₃ and S₄ be exhibited explicitly (not just by decide) as subgroup towers?",
-      "What about alternating groups: Aₙ solvable iff n ≤ 4? (Same threshold, since Aₙ = [Sₙ, Sₙ])",
-      "Can the general theorem 'finite group of order < 60 is solvable' be formalized?"
+      "**[Partially addressed in `abel-ruffini-oq-04-oq-02-oq-03`]** Can the general theorem 'every finite group of order $< 60$ is solvable' be formalized? The sub-entry `abel-ruffini-oq-04-oq-02-oq-03` addresses this: it proves all finite groups of order $< 60$ are solvable, establishing $A_5$ (order 60) as the minimal non-solvable group. The approach combines $p$-group solvability, Burnside's $p^a q^b$ theorem, and exhaustive case analysis.",
+      "**[Addressed in `abel-ruffini-oq-04-oq-02-oq-02`]** What about alternating groups: $A_n$ solvable iff $n \\leq 4$? The sub-entry `abel-ruffini-oq-04-oq-02-oq-02` formalizes exactly this — $A_n$ solvable $\\iff n \\leq 4$ — with the same obstruction: $A_5$ is simple. Since $A_n = [S_n, S_n]$ for $n \\geq 3$, the solvability threshold for alternating and symmetric groups coincides.",
+      "Can the derived series for $S_3$ and $S_4$ be exhibited as explicit subgroup towers in Lean, not just verified by `decide`? Explicitly constructing $A_3$ as a subgroup of $S_3$ and $V_4$ as a subgroup of $A_4$, verifying normality, and showing that each quotient is abelian — all in tactics rather than decision procedures — would provide a more transparent machine-checked proof that could be read as a complete derivation.",
+      "The `solvable_iff_le_four` classification is proved for the symmetric groups $S_n = \\text{Perm}(\\text{Fin}\\ n)$. What about other infinite families? Can analogues be proved for dihedral groups $D_n$ (solvable for all $n$, since they have cyclic subgroups of index 2), or for the general linear groups $\\text{GL}_n(\\mathbb{F}_p)$ (not solvable for $n \\geq 2$, $p$ prime, $|\\mathbb{F}_p| \\geq 4$)? These would extend the classification paradigm beyond symmetric groups.",
+      "Can the proof be generalized to arbitrary finite Coxeter groups? The symmetric group $S_n$ is the Coxeter group of type $A_{n-1}$. The classification of solvable Coxeter groups is known: all are solvable except the groups containing $A_4$ (of type $A_4$ and higher, $B_n$/$C_n$ for $n \\geq 4$, $D_n$ for $n \\geq 4$, and the exceptional groups $F_4, E_6, E_7, E_8$). Formalizing this would require Coxeter group theory in Lean, which is not yet in Mathlib."
     ]
   },
   "leanFile": {
@@ -188,6 +195,21 @@
       "targetId": "general-quartic",
       "relationship": "complementary",
       "description": "Ferrari's quartic formula (1540) exists because $S_4$ is solvable — this entry's `s4_solvable` proof certifies this. The three-step derived series $S_4 \\rhd A_4 \\rhd V_4 \\rhd \\{e\\}$ (with the Klein four-group $V_4$ as the crucial intermediate) corresponds to the three nested radical extractions in Ferrari's method: depressing to a resolvent cubic, then extracting square roots. The Klein four-group's role is subtle: $V_4 \\trianglelefteq S_4$ but $V_4 \\not\\trianglelefteq A_4$ is false (it is normal in $A_4$ too), making it the key that unlocks the extra solvability step unavailable to $S_5$."
+    },
+    {
+      "targetId": "solution-of-cubic-oq-03",
+      "relationship": "complementary",
+      "description": "Formalizes Vieta's formulas for the three Cardano roots of $x^3 + px + q = 0$ (sum $= 0$, pairwise products $= p$, triple product $= -q$). This is the positive constructive counterpart to this entry's `s3_solvable`: the derived series $S_3 \\rhd A_3 \\cong \\mathbb{Z}/3\\mathbb{Z} \\rhd \\{e\\}$ (two cyclic quotients) corresponds to the two nested radical extractions in Cardano's formula — a square root (from the quadratic discriminant resolvent) and a cube root. Vieta's formulas explicitly identify the symmetric functions of roots that Cardano's formula extracts."
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem — $|H|$ divides $|G|$ for any subgroup $H \\leq G$ — underpins the composition factor analysis. The derived series $S_n^{(0)} \\supset S_n^{(1)} \\supset \\cdots$ produces a chain of subgroups with strictly decreasing orders. Lagrange guarantees that $|S_n^{(k+1)}|$ divides $|S_n^{(k)}|$, so the series must stabilize. For $S_3$: $|S_3| = 6$, $|A_3| = 3$, $|\\{e\\}| = 1$, consistent with 3 \\mid 6 and 1 \\mid 3. For $S_4$: $|S_4| = 24$, $|A_4| = 12$, $|V_4| = 4$, $|\\{e\\}| = 1$."
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "foundational",
+      "description": "Vieta's formulas express the coefficients of a polynomial as elementary symmetric functions of its roots — precisely the functions the Galois group permutes. The Galois group $G \\leq S_n$ acts on the $n$ roots, permuting them while fixing the symmetric functions (the coefficients). The solvability of $S_3$ and $S_4$ — proved in this entry — then licenses the construction of radical formulas: by the Galois correspondence, the cyclic composition factors of the derived series correspond to radical extensions, and Vieta's formulas provide the bridge between the symmetric group action and the polynomial coefficients that appear in Cardano's and Ferrari's formulas."
     }
   ],
   "references": [
