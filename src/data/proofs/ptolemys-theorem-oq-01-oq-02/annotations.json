@@ -1,110 +1,80 @@
 [
   {
-    "id": "ann-imports-header",
+    "id": "ann-header",
     "proofId": "ptolemys-theorem-oq-01-oq-02",
     "range": {
       "startLine": 1,
-      "endLine": 63
+      "endLine": 70
     },
-    "type": "concept",
-    "title": "Module Overview: Spherical Ptolemy via Chord-Arc Identity",
-    "content": "This file proves the spherical Ptolemy theorem by leveraging the Euclidean version already in Mathlib. The key architectural insight: instead of re-proving Ptolemy from scratch in spherical geometry, translate between the two settings using the **chord-arc identity** — a bridge formula relating Euclidean distances to spherical arc distances.\n\nThe proof imports four modules:\n- `Proofs.PtolemysTheorem`: The Euclidean Ptolemy theorem as a NormedAddTorsor wrapper around Mathlib's `mul_dist_add_mul_dist_eq_mul_dist_of_cospherical`\n- `InnerProductSpace.Basic`: For `norm_sub_sq_real` and Cauchy-Schwarz (`abs_real_inner_le_norm`)\n- `Trigonometric.Inverse`: For `Real.cos_arccos`, `Real.arccos_nonneg`, `Real.arccos_le_pi`\n- `Trigonometric.Basic`: For `Real.cos_two_mul`, `Real.sin_sq_add_cos_sq`\n\nThe three theorems are organized as: (1) `inner_unit_mem_Icc` — domain lemma for arccos; (2) `unit_sphere_chord_via_sin` — the chord-arc bridge; (3) `spherical_ptolemy` — the main result via Euclidean Ptolemy + chord-arc + linear_combination. Part 4 surveys the hyperbolic case and explains why it requires substantially more infrastructure.",
-    "mathContext": "The spherical Ptolemy theorem states: for $a, b, c, d$ on the unit sphere $S^{n-1} \\subset V$ (a real inner product space), lying on a common circle with diagonals crossing, the geodesic arc distances satisfy:\n$$\\sin\\frac{d(a,c)}{2}\\cdot\\sin\\frac{d(b,d)}{2} = \\sin\\frac{d(a,b)}{2}\\cdot\\sin\\frac{d(c,d)}{2} + \\sin\\frac{d(a,d)}{2}\\cdot\\sin\\frac{d(b,c)}{2}$$\nwhere $d(x,y) = \\arccos(\\langle x, y \\rangle)$ is the great-circle distance. The bridge to Euclidean Ptolemy is:\n$$\\|x - y\\| = 2\\sin\\left(\\frac{\\arccos(\\langle x, y \\rangle)}{2}\\right)$$\nfor unit vectors $x, y$.",
-    "significance": "key",
+    "type": "context",
+    "title": "Imports and Module Documentation",
+    "content": "Imports `Proofs.PtolemysTheorem` (the Euclidean Ptolemy theorem wrapping Mathlib), `InnerProductSpace.Basic` for `norm_sub_sq_real` and Cauchy-Schwarz, `Trigonometric.Inverse` for `Real.cos_arccos` and `arccos_nonneg`/`arccos_le_pi`, and `Trigonometric.Basic` for `Real.cos_two_mul` and `Real.sin_sq_add_cos_sq`. The module document explains the proof strategy: spherical Ptolemy = Euclidean Ptolemy ÷ 4 after chord-arc substitution.",
+    "mathContext": "The key Mathlib dependency is `EuclideanGeometry.mul_dist_add_mul_dist_eq_mul_dist_of_cospherical` (Wiedijk #95, wrapped in `PtolemysTheorem.lean`). The inner product space imports give access to the Cauchy-Schwarz inequality $|\\langle a, b \\rangle| \\leq \\|a\\| \\cdot \\|b\\|$ and the norm expansion $\\|a - b\\|^2 = \\|a\\|^2 - 2\\langle a, b \\rangle + \\|b\\|^2$. The trigonometric imports provide the half-angle identity: $\\cos(2\\theta) = 2\\cos^2\\theta - 1$ and the inverse function $\\cos(\\arccos x) = x$ for $x \\in [-1, 1]$.",
+    "significance": "context",
     "relatedConcepts": [
-      "Euclidean Ptolemy theorem",
-      "spherical geometry",
-      "chord-arc identity",
-      "inner product space",
       "NormedAddTorsor",
-      "great-circle distance"
+      "inner product space",
+      "Cauchy-Schwarz inequality",
+      "arccos",
+      "double-angle formula"
     ],
     "prerequisites": [
-      "Real inner product spaces and their metric structure",
-      "Euclidean Ptolemy theorem (Mathlib)",
-      "Trigonometric functions: arccos, sin, and their properties",
-      "NormedAddTorsor: abstract affine spaces"
-    ]
-  },
-  {
-    "id": "ann-namespace-setup",
-    "proofId": "ptolemys-theorem-oq-01-oq-02",
-    "range": {
-      "startLine": 65,
-      "endLine": 71
-    },
-    "type": "technical",
-    "title": "Namespace and Variable Declarations",
-    "content": "The `SphericalPtolemy` namespace scopes all definitions. `open Real EuclideanGeometry` provides access to `Real.sin`, `Real.arccos`, `Real.cos_arccos`, etc. without full qualification, and to `Cospherical` and `ptolemys_theorem` from `EuclideanGeometry`.\n\nThe universe-polymorphic variable `V : Type*` with instances `[NormedAddCommGroup V] [InnerProductSpace ℝ V]` means all theorems apply to any real Hilbert space — $\\mathbb{R}^n$, $\\ell^2$, function spaces, etc. The `set_option linter.unusedVariables false` suppresses warnings about hypothesis variables introduced but not used directly (they are used by typeclass instances).",
-    "mathContext": "The inner product space structure on $V$ provides:\n- $\\langle \\cdot, \\cdot \\rangle : V \\times V \\to \\mathbb{R}$ (written `⟪a, b⟫_ℝ` in Lean)\n- $\\|\\cdot\\| : V \\to \\mathbb{R}_{\\geq 0}$ with $\\|v\\|^2 = \\langle v, v \\rangle$\n- Cauchy-Schwarz: $|\\langle a, b \\rangle| \\leq \\|a\\| \\cdot \\|b\\|$\n\nNote that Lean's `NormedAddCommGroup` plus `InnerProductSpace ℝ` together provide both the additive group structure and the inner product; the norm is derived from the inner product.",
-    "significance": "technical",
-    "relatedConcepts": [
-      "InnerProductSpace",
-      "NormedAddCommGroup",
-      "open statement",
-      "variable declarations",
-      "Lean 4 namespace"
-    ],
-    "prerequisites": [
-      "Lean 4 type class system",
-      "Inner product spaces over ℝ",
-      "Lean 4 namespaces and open"
+      "Lean 4 import system",
+      "Mathlib library structure",
+      "real inner product spaces"
     ]
   },
   {
     "id": "ann-cauchy-schwarz",
     "proofId": "ptolemys-theorem-oq-01-oq-02",
     "range": {
-      "startLine": 73,
+      "startLine": 72,
       "endLine": 83
     },
     "type": "technique",
-    "title": "inner_unit_mem_Icc: Domain Lemma for arccos",
-    "content": "`inner_unit_mem_Icc` establishes that the inner product of two unit vectors lies in $[-1, 1]$, the domain of `Real.arccos`. This is a prerequisite for all uses of `Real.cos_arccos` (which requires its argument in $[-1, 1]$) in the chord-arc lemma.\n\nThe proof is a direct application of Cauchy-Schwarz: `abs_real_inner_le_norm a b` gives $|\\langle a, b \\rangle| \\leq \\|a\\| \\cdot \\|b\\| = 1 \\cdot 1 = 1$ after rewriting with `ha : ‖a‖ = 1` and `hb : ‖b‖ = 1`. The conjunction `(-1 ≤ ⟪a,b⟫_ℝ) ∧ (⟪a,b⟫_ℝ ≤ 1)` follows from `|x| ≤ 1 ↔ -1 ≤ x ∧ x ≤ 1`.\n\nThis lemma is `private` — it's a helper used only within the file. The `private` keyword prevents it from leaking into the `SphericalPtolemy` namespace.",
-    "mathContext": "For $a, b \\in V$ with $\\|a\\| = \\|b\\| = 1$:\n$$|\\langle a, b \\rangle| \\leq \\|a\\| \\cdot \\|b\\| = 1$$\nby Cauchy-Schwarz, so $\\langle a, b \\rangle \\in [-1, 1]$.\n\nThis ensures `Real.arccos (⟪a,b⟫_ℝ)` is defined and lies in $[0, \\pi]$:\n- `Real.arccos_nonneg`: $\\arccos(x) \\geq 0$ for $x \\in [-1,1]$\n- `Real.arccos_le_pi`: $\\arccos(x) \\leq \\pi$ for $x \\in [-1,1]$\n\nGeometrically: $\\langle a, b \\rangle = \\cos(\\theta)$ where $\\theta$ is the angle between $a$ and $b$, and angles are in $[0, \\pi]$.",
+    "title": "Cauchy-Schwarz Bound for Unit Vectors",
+    "content": "For unit vectors $a, b$ with $\\|a\\| = \\|b\\| = 1$, `abs_real_inner_le_norm` gives $|\\langle a, b \\rangle| \\leq 1$, so $\\langle a, b \\rangle \\in [-1, 1]$. This is needed to apply `Real.cos_arccos : cos(arccos x) = x for x ∈ [-1,1]` and to ensure `arccos` lies in its proper domain.",
+    "mathContext": "Cauchy-Schwarz for real inner products: $|\\langle a, b \\rangle| \\leq \\|a\\| \\cdot \\|b\\|$. For unit vectors $\\|a\\| = \\|b\\| = 1$, this gives $|\\langle a, b \\rangle| \\leq 1$, i.e., $\\langle a, b \\rangle \\in [-1, 1]$. This is the domain condition for `Real.arccos`, which maps $[-1,1]$ to $[0, \\pi]$. The lemma `inner_unit_mem_Icc` is a `private` helper — it is not part of the public API but is essential for the chord-arc identity below.",
     "significance": "supporting",
     "relatedConcepts": [
       "Cauchy-Schwarz inequality",
-      "abs_real_inner_le_norm",
-      "Real.arccos domain",
-      "unit vector",
-      "private lemma"
+      "arccos domain",
+      "unit sphere",
+      "real inner product"
     ],
     "prerequisites": [
-      "Cauchy-Schwarz inequality in inner product spaces",
-      "absolute value and interval membership",
-      "arccos domain: [-1, 1]"
+      "inner product spaces",
+      "Cauchy-Schwarz inequality",
+      "Real.arccos definition and domain"
     ]
   },
   {
-    "id": "ann-chord-arc-identity",
+    "id": "ann-chord-arc",
     "proofId": "ptolemys-theorem-oq-01-oq-02",
     "range": {
       "startLine": 84,
       "endLine": 143
     },
-    "type": "technique",
-    "title": "unit_sphere_chord_via_sin: The Bridge Formula",
-    "content": "`unit_sphere_chord_via_sin` is the mathematical heart of the proof: it establishes that for two points on the unit sphere, the Euclidean chord length equals twice the sine of half the geodesic arc length. This identity is the bridge between Euclidean and spherical Ptolemy.\n\n**Proof structure**: The proof works by showing both sides are non-negative and their squares are equal.\n\n**Non-negativity**: `norm_nonneg (a-b) ≥ 0` is immediate; `sin(arccos(c)/2) ≥ 0` requires `Real.sin_nonneg_of_nonneg_of_le_pi` with the observation that `arccos(c)/2 ∈ [0, π/2]`.\n\n**Square of left side**: `‖a-b‖² = ‖a‖² - 2⟨a,b⟩ + ‖b‖² = 1 - 2⟨a,b⟩ + 1 = 2 - 2⟨a,b⟩` (from `norm_sub_sq_real`).\n\n**Square of right side**: Using `cos(arccos c) = c` and the double-angle identity `cos(θ) = 2cos²(θ/2) - 1`:\n- Set `c = ⟨a,b⟩`, `θ = arccos(c)`: `c = 2cos²(θ/2) - 1`\n- So `cos²(θ/2) = (1+c)/2` and `sin²(θ/2) = 1 - (1+c)/2 = (1-c)/2`\n- Thus `(2sin(θ/2))² = 4·(1-c)/2 = 2 - 2c = 2 - 2⟨a,b⟩`\n\n**Conclusion**: Both squares equal `2 - 2⟨a,b⟩`, and since both sides are non-negative, `Real.sqrt_sq` completes the proof.",
-    "mathContext": "For $a, b \\in V$ with $\\|a\\| = \\|b\\| = 1$, let $c = \\langle a, b \\rangle$:\n\n$$\\|a-b\\|^2 = \\|a\\|^2 - 2\\langle a,b\\rangle + \\|b\\|^2 = 2 - 2c$$\n\n$$\\left(2\\sin\\frac{\\arccos c}{2}\\right)^2 = 4\\sin^2\\frac{\\arccos c}{2}$$\n\nFrom the double-angle identity $\\cos(\\theta) = 2\\cos^2(\\theta/2) - 1$ with $\\theta = \\arccos c$:\n$$\\cos^2\\frac{\\arccos c}{2} = \\frac{1+c}{2}, \\quad \\sin^2\\frac{\\arccos c}{2} = \\frac{1-c}{2}$$\n\nSo $(2\\sin(\\arccos c/2))^2 = 4 \\cdot \\frac{1-c}{2} = 2 - 2c$.\n\nSince both sides are non-negative and their squares agree:\n$$\\|a-b\\| = 2\\sin\\frac{\\arccos\\langle a,b\\rangle}{2} = 2\\sin\\frac{d_S(a,b)}{2}$$\nwhere $d_S(a,b) = \\arccos(\\langle a,b\\rangle)$ is the geodesic arc distance on $S^{n-1}$.",
+    "type": "definition",
+    "title": "Chord-Arc Identity: ‖a−b‖ = 2·sin(arccos(⟨a,b⟩)/2)",
+    "content": "The core lemma connecting Euclidean chord length to spherical arc distance.\n\n**Setup**: `arccos(⟨a,b⟩) ∈ [0,π]` (from `arccos_nonneg`, `arccos_le_pi`), so `arccos/2 ∈ [0,π/2]` and `sin(arccos/2) ≥ 0`.\n\n**Left square**: `‖a−b‖² = ‖a‖² − 2⟨a,b⟩ + ‖b‖² = 2 − 2⟨a,b⟩` (using `norm_sub_sq_real` and `‖a‖=‖b‖=1`).\n\n**Right square calculation**:\n- `cos(arccos c) = 2cos²(arccos(c)/2) − 1` (double-angle: `cos_two_mul`)\n- Combined with `cos_arccos : cos(arccos c) = c`: `cos²(arccos(c)/2) = (1+c)/2`\n- Pythagorean identity: `sin²(arccos(c)/2) = 1 − (1+c)/2 = (1−c)/2`\n- So `(2sin(arccos(c)/2))² = 4·(1−c)/2 = 2−2c`\n\n**Conclusion**: Both sides non-negative, squares equal → equal, via `Real.sqrt_sq : √(x²) = x for x ≥ 0`.",
+    "mathContext": "For $a, b$ on the unit sphere ($\\|a\\| = \\|b\\| = 1$) in a real inner product space, the geodesic distance is $d_S(a,b) = \\arccos(\\langle a, b \\rangle)$. The chord-arc identity $\\|a - b\\| = 2\\sin(d_S(a,b)/2)$ bridges Euclidean and spherical distance:\n\n$$\\|a-b\\|^2 = 2 - 2\\langle a, b \\rangle$$\n$$\\left(2\\sin\\frac{\\arccos c}{2}\\right)^2 = 4 \\cdot \\frac{1-c}{2} = 2 - 2c$$\n\nwhere $c = \\langle a, b \\rangle$. The derivation uses the half-angle identity $\\sin^2(\\theta/2) = (1 - \\cos\\theta)/2$, which follows from $\\cos(2\\alpha) = 1 - 2\\sin^2\\alpha$. The proof concludes using `Real.sqrt_sq`: since both sides are non-negative and their squares are equal, they must be equal.",
     "significance": "key",
     "relatedConcepts": [
-      "chord-arc identity",
+      "chord length",
+      "geodesic arc distance",
+      "great circle",
       "half-angle formula",
-      "double-angle formula",
-      "cos_two_mul",
-      "Real.sqrt_sq",
-      "norm_sub_sq_real",
-      "spherical distance",
-      "geodesic"
+      "Pythagorean identity",
+      "unit sphere",
+      "double-angle formula"
     ],
     "prerequisites": [
-      "norm_sub_sq_real: ‖x-y‖² expansion",
-      "Real.cos_arccos: cos(arccos x) = x for x ∈ [-1,1]",
-      "Real.cos_two_mul: cos(2θ) = 2cos²θ - 1",
-      "Real.sin_sq_add_cos_sq: Pythagorean identity",
-      "Real.sqrt_sq: √(x²) = x for x ≥ 0",
-      "Real.sin_nonneg_of_nonneg_of_le_pi"
+      "real inner product spaces",
+      "norm and inner product",
+      "Real.arccos and its range",
+      "trigonometric identities",
+      "Real.sqrt_sq"
     ]
   },
   {
@@ -114,25 +84,26 @@
       "startLine": 144,
       "endLine": 204
     },
-    "type": "theorem",
-    "title": "spherical_ptolemy: The Main Theorem",
-    "content": "`spherical_ptolemy` is the culmination: it combines the Euclidean Ptolemy theorem with the chord-arc identity to prove the spherical version. The proof is a six-step calculation:\n\n1. **Euclidean Ptolemy**: `ptolemys_theorem h_cosph h_apc h_bpd` gives `dist(a,b)·dist(c,d) + dist(b,c)·dist(d,a) = dist(a,c)·dist(b,d)` in the NormedAddTorsor sense\n2. **Symmetrize**: `rw [dist_comm d a]` standardizes to `dist a d` throughout\n3. **Unpack `dist`**: `simp only [dist_eq_norm]` converts to `‖·-·‖` norms\n4. **Apply chord-arc**: Six applications of `unit_sphere_chord_via_sin` replace each `‖x-y‖` with `2·sin(arccos(⟨x,y⟩)/2)`\n5. **Rewrite**: `rw [hab, hcd, hbc, had, hac, hbd] at h_eucl` substitutes all six into `h_eucl`\n6. **Divide by 4**: `linear_combination -(1/4 : ℝ) * h_eucl` closes the goal, since `h_eucl` after substitution is `4·(sin_ab·sin_cd + sin_bc·sin_ad) = 4·sin_ac·sin_bd`, and dividing by 4 gives the spherical equality\n\nThe `linear_combination` tactic is ideal here: it reduces the goal to checking a ring identity after multiplying `h_eucl` by `-(1/4)`, which `ring` handles automatically.",
-    "mathContext": "**Hypotheses**:\n- $a, b, c, d \\in V$ with $\\|a\\|=\\|b\\|=\\|c\\|=\\|d\\|=1$ (unit sphere)\n- `Cospherical ({a,b,c,d})`: they lie on a common circle of $V$\n- $\\angle apc = \\pi$ and $\\angle bpd = \\pi$: diagonals $ac$ and $bd$ cross at $p$\n\n**Euclidean Ptolemy** (from Mathlib via `PtolemysTheorem.lean`):\n$$\\|a-b\\|\\cdot\\|c-d\\| + \\|b-c\\|\\cdot\\|a-d\\| = \\|a-c\\|\\cdot\\|b-d\\|$$\n\n**After chord-arc substitution** (each $\\|x-y\\| = 2s_{xy}$ where $s_{xy} = \\sin(\\arccos\\langle x,y\\rangle/2)$):\n$$4s_{ab}s_{cd} + 4s_{bc}s_{ad} = 4s_{ac}s_{bd}$$\n\n**Divide by 4**:\n$$s_{ac}s_{bd} = s_{ab}s_{cd} + s_{ad}s_{bc}$$\n\nThe `linear_combination` check: `goal_lhs - goal_rhs = -(1/4)·(h_eucl_lhs - h_eucl_rhs)` is a ring identity in $\\mathbb{R}$.",
+    "type": "insight",
+    "title": "Spherical Ptolemy Theorem: Main Result",
+    "content": "For four unit-sphere points on a common circle:\n$$\\sin\\frac{d(a,c)}{2}\\cdot\\sin\\frac{d(b,d)}{2} = \\sin\\frac{d(a,b)}{2}\\cdot\\sin\\frac{d(c,d)}{2} + \\sin\\frac{d(a,d)}{2}\\cdot\\sin\\frac{d(b,c)}{2}$$\n\n**Key steps**:\n1. `ptolemys_theorem h_cosph h_apc h_bpd` : Euclidean Ptolemy gives $\\|a-b\\|\\cdot\\|c-d\\| + \\|b-c\\|\\cdot\\|a-d\\| = \\|a-c\\|\\cdot\\|b-d\\|$\n2. `dist_comm d a` : standardize to `dist a d`\n3. `simp [dist_eq_norm]` : convert `dist` to `‖·−·‖` in the self-torsor V\n4. `unit_sphere_chord_via_sin` applied 6 times: each `‖x−y‖ = 2·sin(d(x,y)/2)`\n5. `linear_combination -(1/4)·h_eucl` : the four 4s cancel, giving the spherical equality\n\nThe `linear_combination` tactic checks that `goal_lhs − goal_rhs = −(1/4)·(h_eucl_lhs − h_eucl_rhs)` using `ring`.",
+    "mathContext": "The proof follows a substitution template. Euclidean Ptolemy (in the NormedAddTorsor structure on $V$) gives:\n$$\\|a-b\\|\\cdot\\|c-d\\| + \\|b-c\\|\\cdot\\|a-d\\| = \\|a-c\\|\\cdot\\|b-d\\|$$\nSubstituting the chord-arc identity $\\|x - y\\| = 2\\sin(\\arccos(\\langle x,y\\rangle)/2)$:\n$$(2s_{ab})(2s_{cd}) + (2s_{bc})(2s_{ad}) = (2s_{ac})(2s_{bd})$$\n$$4(s_{ab}s_{cd} + s_{bc}s_{ad}) = 4s_{ac}s_{bd}$$\nDividing by 4 yields the spherical form. The `linear_combination` tactic implements this as a ring identity: the goal minus the Euclidean hypothesis (scaled by $-1/4$) is zero by `ring`. The crucial simplification that makes spherical differ from hyperbolic: all six factors of $\\|x\\| = 1$ make the chord-arc identity uniform — no conformal correction terms.",
     "significance": "key",
     "relatedConcepts": [
-      "Euclidean Ptolemy theorem",
-      "ptolemys_theorem",
-      "Cospherical",
+      "Ptolemy's theorem",
+      "cyclic quadrilateral",
       "NormedAddTorsor",
-      "dist_eq_norm",
+      "Cospherical",
       "linear_combination tactic",
-      "cyclic quadrilateral"
+      "chord-arc substitution",
+      "great circle",
+      "geodesic distance"
     ],
     "prerequisites": [
-      "Euclidean Ptolemy theorem (from Mathlib via PtolemysTheorem.lean)",
-      "unit_sphere_chord_via_sin (previous lemma)",
-      "dist_eq_norm in NormedAddTorsor",
-      "linear_combination tactic for ring identities"
+      "Euclidean Ptolemy theorem",
+      "chord-arc identity (unit_sphere_chord_via_sin)",
+      "NormedAddTorsor structure on V",
+      "linear_combination Lean tactic"
     ]
   },
   {
@@ -140,28 +111,29 @@
     "proofId": "ptolemys-theorem-oq-01-oq-02",
     "range": {
       "startLine": 205,
-      "endLine": 270
+      "endLine": 261
     },
-    "type": "context",
-    "title": "Hyperbolic Ptolemy: Why It's Harder and What's Needed",
-    "content": "Part 4 is a mathematical survey explaining why the proof strategy used for the spherical case does NOT immediately extend to the hyperbolic case, and what infrastructure would be required.\n\n**The key difference**: In the spherical case, $\\|a\\| = \\|b\\| = 1$ makes the chord-arc identity `‖a-b‖ = 2sin(d/2)` uniform — the factor of 2 is the same for all pairs of unit vectors. In the Poincaré disk, the hyperbolic chord-arc identity `sinh(d_H(a,b)/2) = |a-b|/√((1-|a|²)(1-|b|²))` has point-dependent denominators `(1-|x|²)` that do NOT cancel symmetrically for four interior points on a common hyperbolic circle.\n\n**What would work**: If all four points were on the ideal boundary $\\partial D$ (i.e., $|x| = 1$), the denominators become 1 and Euclidean Ptolemy on the unit circle applies directly. For interior points, the statement requires an explicit correction with conformal factors.\n\n**Infrastructure needed**: ~800-1200 lines including Poincaré disk metric, Möbius transformations as hyperbolic isometries, classification of hyperbolic circles (Euclidean circles inside $D$), and the `sinh` chord-arc identity.\n\n**Unified curvature-κ viewpoint**: The function $\\text{sn}_\\kappa(t)$ (spherical `sin`, Euclidean `t`, hyperbolic `sinh`) unifies all three Ptolemy theorems into one statement. The three `#check` statements at the end verify the types of the two proved theorems.",
-    "mathContext": "**Poincaré disk**: $D = \\{z \\in \\mathbb{C} : |z| < 1\\}$ with hyperbolic distance $d_H(a,b) = 2\\text{arctanh}(|\\varphi_a(b)|)$ where $\\varphi_a(b) = (b-a)/(1-\\bar{a}b)$.\n\n**Hyperbolic chord-arc identity**: $\\sinh(d_H(a,b)/2) = |a-b|/\\sqrt{(1-|a|^2)(1-|b|^2)}$\n\n**Why factors don't cancel**: For four points on a hyperbolic circle, the Euclidean Ptolemy equality gives:\n$$|a-b|\\cdot|c-d| + |b-c|\\cdot|a-d| = |a-c|\\cdot|b-d|$$\nSubstituting the chord-arc identity would give:\n$$\\frac{\\sinh(d_H(a,b)/2)\\cdot\\sinh(d_H(c,d)/2)}{\\sqrt{(1-|a|^2)(1-|b|^2)}\\cdot\\sqrt{(1-|c|^2)(1-|d|^2)}} + \\cdots$$\nThe denominators are products like $(1-|a|^2)^{1/2}(1-|b|^2)^{1/2}$, and these cannot be combined into a single factor since $|a|, |b|, |c|, |d|$ are all different.\n\n**Unified statement** (curvature $\\kappa$): $\\text{sn}_\\kappa(d(a,c)/2) \\cdot \\text{sn}_\\kappa(d(b,d)/2) = \\text{sn}_\\kappa(d(a,b)/2)\\cdot\\text{sn}_\\kappa(d(c,d)/2) + \\text{sn}_\\kappa(d(a,d)/2)\\cdot\\text{sn}_\\kappa(d(b,c)/2)$\nwhere $\\text{sn}_\\kappa(t) = \\sin(\\sqrt{\\kappa}\\,t)/\\sqrt{\\kappa}$ ($\\kappa>0$), $t$ ($\\kappa=0$), $\\sinh(\\sqrt{|\\kappa|}\\,t)/\\sqrt{|\\kappa|}$ ($\\kappa<0$).",
+    "type": "concept",
+    "title": "Hyperbolic Case: Mathematical Survey",
+    "content": "The Poincaré disk hyperbolic chord-arc identity is $\\sinh(d_H(a,b)/2) = |a−b|/\\sqrt{(1−|a|^2)(1−|b|^2)}$. Unlike the spherical case where $\\|a\\|=1$ makes the denominator 1 uniformly, the hyperbolic denominators depend on the point. For four interior points of D on a common hyperbolic circle, the factors $\\sqrt{(1−|x|^2)}$ do not cancel symmetrically, making the derivation more complex. Ideal boundary points ($|x|=1$) degenerate to Euclidean Ptolemy on the unit circle.\n\nThe unified curvature-$\\kappa$ framework: $\\text{sn}_\\kappa(t) = \\sin(\\sqrt{\\kappa}t)/\\sqrt{\\kappa}$ (spherical), $t$ (Euclidean), or $\\sinh(\\sqrt{|\\kappa|}t)/\\sqrt{|\\kappa|}$ (hyperbolic). This file proves the $\\kappa=1$ case. Infrastructure needed for $\\kappa=-1$: Poincaré metric, Möbius isometries, hyperbolic circles (~800-1200 lines).",
+    "mathContext": "In the Poincaré disk $D = \\{z \\in \\mathbb{C} : |z| < 1\\}$ with metric $d_H(a,b) = 2\\operatorname{arctanh}(|\\varphi_a(b)|)$ where $\\varphi_a(b) = (b-a)/(1-\\bar{a}b)$, the chord-arc identity is:\n$$\\sinh\\frac{d_H(a,b)}{2} = \\frac{|a-b|}{\\sqrt{(1-|a|^2)(1-|b|^2)}}$$\nFor four points on a common hyperbolic circle, the Euclidean Ptolemy theorem applies to their complex coordinates (since hyperbolic circles are Euclidean circles inside $D$). However, the conformal factors $(1-|x|^2)$ do not cancel unless all four points lie on the ideal boundary $|x|=1$. The unified $\\kappa$-geometry statement uses the generalized sine: $\\operatorname{sn}_\\kappa(t) = \\sin(\\sqrt{\\kappa}\\,t)/\\sqrt{\\kappa}$ for $\\kappa > 0$, $t$ for $\\kappa = 0$, and $\\sinh(\\sqrt{|\\kappa|}\\,t)/\\sqrt{|\\kappa|}$ for $\\kappa < 0$. This file formalizes $\\kappa = 1$; $\\kappa = 0$ is in Mathlib; $\\kappa = -1$ requires new Poincaré disk infrastructure.",
     "significance": "context",
     "relatedConcepts": [
       "Poincaré disk model",
       "hyperbolic geometry",
-      "Möbius transformations",
-      "conformal factor",
+      "Möbius transformation",
       "sinh chord-arc identity",
-      "curvature-κ Ptolemy theorem",
+      "curvature-κ geometry",
+      "Gaussian curvature",
       "CAT(κ) spaces",
-      "ideal boundary"
+      "conformal factor"
     ],
     "prerequisites": [
-      "Poincaré disk metric and hyperbolic distance",
-      "Möbius transformations and hyperbolic isometries",
-      "Real.sinh and Real.arctanh",
-      "Curvature in Riemannian geometry"
+      "complex analysis",
+      "hyperbolic metric",
+      "Möbius transformations",
+      "Poincaré disk model",
+      "sinh and its properties"
     ]
   }
 ]
