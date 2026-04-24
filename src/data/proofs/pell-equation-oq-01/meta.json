@@ -58,35 +58,40 @@
       "title": "Module Header and Research Context",
       "startLine": 1,
       "endLine": 36,
-      "summary": "Documents the research question (distribution of R(D)), the six things proved, and the historical context (Lagrange existence, Lenstra computational survey, Cohen-Lenstra heuristics). Notes the open status."
+      "summary": "Documents the research question (distribution of R(D)), the six things proved, and the historical context (Lagrange existence, Lenstra computational survey, Cohen-Lenstra heuristics). Notes the open status.",
+      "mathContext": "The **Pell regulator** $R(D) = \\log(x_0 + y_0\\sqrt{D})$ where $(x_0, y_0)$ is the fundamental solution to $x^2 - Dy^2 = 1$. The distribution of $R(D)$ as $D$ varies over non-square integers is an open problem: Cohen-Lenstra heuristics predict $R(D)/\\sqrt{D}$ follows a specific distribution related to $L(1, \\chi_D)$ (Dirichlet $L$-function for the quadratic character). Known bounds: $R(D) \\geq \\log(1+\\sqrt{D})$ (trivial), $R(D) = O(\\sqrt{D}\\log D)$ (GRH, Hooley), unconditionally $O(D^{1/2+\\varepsilon})$."
     },
     {
       "id": "regulator-def",
       "title": "Part 1: Pell Norm and Regulator Definitions",
       "startLine": 38,
       "endLine": 75,
-      "summary": "Defines `pellNorm d x y = (x : ℝ) + (y : ℝ) * √(d : ℝ)` and `pellRegulator d a = log(pellNorm d a.x a.y)`. Proves `pellNorm_pos_of_pos` (norm ≥ 1 when x ≥ 1, y ≥ 0) and `pellRegulator_nonneg` (regulator ≥ 0) using `Real.log_nonneg`."
+      "summary": "Defines `pellNorm d x y = (x : ℝ) + (y : ℝ) * √(d : ℝ)` and `pellRegulator d a = log(pellNorm d a.x a.y)`. Proves `pellNorm_pos_of_pos` (norm ≥ 1 when x ≥ 1, y ≥ 0) and `pellRegulator_nonneg` (regulator ≥ 0) using `Real.log_nonneg`.",
+      "mathContext": "`pellNorm d x y = x + y\\sqrt{d}` is the fundamental solution as an element of $\\mathbb{R}$, viewed as the norm of $(x,y) \\in \\mathbb{Z}[\\sqrt{d}]$. `pellRegulator d a = \\log(x + y\\sqrt{d})` is the Pell regulator: since $x^2 - dy^2 = 1$ implies $x + y\\sqrt{d} > 1$ (fundamental solution), $R(D) > 0$. `pellNorm_pos_of_pos`: $x \\geq 1, y \\geq 0 \\Rightarrow x + y\\sqrt{d} \\geq 1$ (proved by `Real.add_sq_le_sq_mul_sq`). `pellRegulator_nonneg`: $R(D) = \\log(\\text{pellNorm}) \\geq 0$ via `Real.log_nonneg` and norm $\\geq 1$."
     },
     {
       "id": "small-solutions",
       "title": "Part 3: Small Regulator — D = n²-1 Cases",
       "startLine": 78,
       "endLine": 113,
-      "summary": "Proves `pell_near_square_solution`: n²-(n²-1)·1²=1 by `ring`, so (n,1) solves Pell for D=n²-1. Proves `pellNorm_near_square`: the norm is n+√(n²-1) by `simp`. These give R(D) = O(log D), the smallest possible regulator."
+      "summary": "Proves `pell_near_square_solution`: n²-(n²-1)·1²=1 by `ring`, so (n,1) solves Pell for D=n²-1. Proves `pellNorm_near_square`: the norm is n+√(n²-1) by `simp`. These give R(D) = O(log D), the smallest possible regulator.",
+      "mathContext": "`pell_near_square_solution`: for $D = n^2 - 1$, the pair $(x,y) = (n,1)$ satisfies $x^2 - Dy^2 = n^2 - (n^2-1)\\cdot 1 = 1$, proved by `ring`. The regulator is $R(n^2-1) = \\log(n + \\sqrt{n^2-1}) \\approx \\log(2n) = O(\\log D)$ — exponentially smaller than the conjectured typical size $O(\\sqrt{D})$. These near-square values $D = 3, 8, 15, 24, 35, \\ldots$ represent the small end of the regulator distribution. By contrast, $R(D) \\geq \\log(1 + \\sqrt{D})$ always (since the fundamental solution satisfies $x_0 \\geq 1$, $y_0 \\geq 1$), so $R(D) = \\Omega(\\log D)$ — the near-square cases are tight for the lower bound."
     },
     {
       "id": "large-solutions",
       "title": "Part 4: Large Regulator — Fermat's D=61",
       "startLine": 115,
       "endLine": 130,
-      "summary": "Proves `fermat_d61_solution`: (1766319049)²-61·(226153980)²=1 by `norm_num`. This verifies the famous large fundamental solution, demonstrating R(61) ≈ 35.1 ≈ 4.5√61."
+      "summary": "Proves `fermat_d61_solution`: (1766319049)²-61·(226153980)²=1 by `norm_num`. This verifies the famous large fundamental solution, demonstrating R(61) ≈ 35.1 ≈ 4.5√61.",
+      "mathContext": "`fermat_d61_solution`: verified by `norm_num` that $(1766319049)^2 - 61 \\cdot (226153980)^2 = 1$. This is the famous case Fermat challenged mathematicians with in 1657. The regulator $R(61) = \\log(1766319049 + 226153980\\sqrt{61}) \\approx 35.1$, which is $\\approx 4.49 \\cdot \\sqrt{61}$ — slightly larger than $\\sqrt{D}$. More dramatically: $D = 661$ has $R(661) \\approx 16.8 \\cdot \\sqrt{661}$, while $D = 9949$ (a prime near $10^4$) can have $R(D)$ as large as $O(D^{0.9})$. The lack of a simple pattern in which $D$ values produce large regulators reflects the deep connection to the distribution of zeros of Dirichlet $L$-functions — a central theme of modern analytic number theory."
     },
     {
       "id": "conjectures",
       "title": "Parts 5-7: Conjectures and Open Questions",
       "startLine": 132,
       "endLine": 195,
-      "summary": "Four Prop definitions: `PellRegulatorBound` (O(√D log D) conjecture with IsFundamental hypothesis), `AverageRegulatorConjecture` (Ces̀aro average via Filter.Tendsto), `DirichletClassNumberFormula` (h(D)·R(D)=√D·L(1,χ_D)/2), `PellPolynomialTime` (polynomial-time solvability open question). None axiomatized."
+      "summary": "Four Prop definitions: `PellRegulatorBound` (O(√D log D) conjecture with IsFundamental hypothesis), `AverageRegulatorConjecture` (Ces̀aro average via Filter.Tendsto), `DirichletClassNumberFormula` (h(D)·R(D)=√D·L(1,χ_D)/2), `PellPolynomialTime` (polynomial-time solvability open question). None axiomatized.",
+      "mathContext": "Four open conjectures formalized as Lean `Prop` definitions (not `axiom`, so they carry no logical weight): **PellRegulatorBound**: $\\forall D \\geq 2$, non-square, if $(x_0,y_0)$ is the fundamental solution then $R(D) = \\log(x_0+y_0\\sqrt{D}) = O(\\sqrt{D}\\log D)$. Formalized with `IsFundamental` hypothesis from Mathlib's `Pell` namespace. **AverageRegulatorConjecture**: $\\frac{1}{X}\\sum_{D \\leq X, \\text{non-sq}} R(D)/\\sqrt{D} \\to c$ as $X \\to \\infty$ for some constant $c > 0$. Uses `Filter.Tendsto` with `Filter.atTop` in Lean. **DirichletClassNumberFormula**: $h(D) \\cdot R(D) = \\frac{\\sqrt{D}}{2} L(1, \\chi_D)$, where $h(D)$ is the class number of $\\mathbb{Q}(\\sqrt{D})$ and $\\chi_D$ is the Kronecker symbol. **PellPolynomialTime**: existence of polynomial-time algorithm for the fundamental solution (Hallgren 2002 proved this using quantum computing; classically open)."
     }
   ],
   "conclusion": {

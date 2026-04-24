@@ -76,7 +76,8 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 35,
-      "summary": "Imports Mathlib. Module docstring and namespace setup."
+      "summary": "Imports Mathlib. Module docstring and namespace setup.",
+      "mathContext": "The alternating series estimation theorem (ASET): for an alternating series $\\sum_{k=0}^{\\infty} (-1)^k a_k$ with $a_k \\geq 0$ monotone decreasing to 0, the error of the $n$-term partial sum is bounded by $a_n$. Applied to sin: $|\\sin x - \\sum_{k=0}^{n-1} \\frac{(-1)^k x^{2k+1}}{(2k+1)!}| \\leq \\frac{|x|^{2n+1}}{(2n+1)!}$ — the **next term** bound. This is $(2n+1)$ times tighter than the Taylor remainder bound $|R_n| \\leq \\frac{|x|^{2n+1}}{(2n)!}$. Imports `Mathlib` for `Real.sin`, `Finset.sum`, `Nat.factorial`, and the alternating series API."
     },
     {
       "id": "sec-ase-abstract",
