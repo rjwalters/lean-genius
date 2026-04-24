@@ -121,30 +121,5 @@
       "abs_lt: |a| < b ↔ -b < a ∧ a < b",
       "push_cast: normalizes numeric casts for linarith"
     ]
-  },
-  {
-    "id": "ann-dcoq03-alternating-series",
-    "proofId": "derangements-convergence-oq-03",
-    "range": {
-      "startLine": 1,
-      "endLine": 88
-    },
-    "type": "insight",
-    "title": "Alternating Series Estimation: The Hidden Mathematical Engine",
-    "content": "The entire proof rests on one deep fact: the derangement formula D(n) = n! · Σ_{k=0}^n (−1)^k/k! is a partial sum of the alternating Taylor series for e⁻¹ = Σ_{k=0}^∞ (−1)^k/k!. The alternating series estimation theorem (Leibniz criterion) states that for a decreasing positive null sequence a_k, the tail error satisfies |Σ_{k>n} (−1)^k a_k| ≤ a_{n+1}. Applied here with a_k = 1/k!, the error is |D(n)/n! − e⁻¹| = |Σ_{k>n} (−1)^k/k!| ≤ 1/(n+1)!.\n\nCritically, this is a **tight** bound: the error is bounded above by the first omitted term 1/(n+1)!, and the actual error is 1/(n+1)! − 1/(n+2)! + ... which is strictly less than 1/(n+1)! but of the same order. This tightness is what allows the final strict inequality |D(n) − n!/e| < 1/2 (not just ≤ 1/2) — the inequality is strict even though the rate bound is non-strict, because 1/(n+1) ≤ 1/3 < 1/2 for n ≥ 2.\n\nThe module does not reprove this theorem from scratch: `derangements_convergence_rate` from `DerangementsConvergence.lean` encapsulates the alternating series argument. The 88-line proof here is almost entirely arithmetic bookkeeping after that single import. The mathematical depth of the theorem is therefore hidden inside the parent module.",
-    "mathContext": "Alternating series estimation (Leibniz, 1682): If $a_0 \\geq a_1 \\geq a_2 \\geq \\ldots$ with $a_k \\to 0$, then $\\left|\\sum_{k=0}^{\\infty}(-1)^k a_k - \\sum_{k=0}^n (-1)^k a_k\\right| \\leq a_{n+1}$. Applied with $a_k = 1/k!$: $|e^{-1} - D(n)/n!| \\leq 1/(n+1)!$. Multiplying by $n!$: $|D(n) - n!/e| \\leq n!/(n+1)! = 1/(n+1)$. For $n \\geq 2$: $1/(n+1) \\leq 1/3 < 1/2$. The **actual error** at $n=2$: $|D(2) - 2!/e| = |1 - 2/e| \\approx 0.264$, versus the bound $1/3 \\approx 0.333$. At $n=3$: $|D(3) - 6/e| = |2 - 6/e| \\approx 0.207$, versus bound $1/4 = 0.25$. The bound is tight but not achieved.",
-    "significance": "key",
-    "relatedConcepts": [
-      "alternating series estimation theorem",
-      "Leibniz criterion",
-      "derangements_convergence_rate",
-      "Taylor series for e⁻¹",
-      "e-transcendental"
-    ],
-    "prerequisites": [
-      "Alternating series estimation theorem (Leibniz criterion)",
-      "Taylor series e⁻¹ = Σ (-1)^k/k!",
-      "derangements formula D(n) = n! Σ_{k=0}^n (-1)^k/k! (from DerangementsConvergence)"
-    ]
   }
 ]
