@@ -7,7 +7,7 @@
     "author": "Ladyzhenskaya (1969)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Navier%E2%80%93Stokes_equations",
     "date": "1969",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/NavierStokes.lean",
     "tags": [
       "pde",
@@ -21,9 +21,9 @@
       "analysis",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "mathlibDependencies": [
       {
         "theorem": "antitoneOn_of_deriv_nonpos",
@@ -60,7 +60,7 @@
     ],
     "dateAdded": "2026-02-28",
     "lineCount": 21111,
-    "assumptions": "None. Formalized with 0 axioms and 0 sorries remain.",
+    "assumptions": "1 structure-encoded assumption: NSSolutionPair2D.stability_estimate (Ladyzhenskaya stability estimate W'(t) ≤ C·E(t)·W(t), the core PDE estimate — mathematically known but not formalized in this file)",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -203,7 +203,7 @@
     ],
     "namespace": "NavierStokesRegularity",
     "lineCount": 21111,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "theoremCount": 845,
     "definitionCount": 104,
     "path": "Proofs/NavierStokes.lean",
