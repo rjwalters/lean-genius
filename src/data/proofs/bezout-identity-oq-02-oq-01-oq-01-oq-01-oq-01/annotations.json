@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-imports-setup",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "context",
+    "title": "Module Header and Setup",
+    "content": "The docstring explains the two-step proof strategy: (1) the ideal I = (2, X₀) is proper via the constantCoeff ring homomorphism, and (2) I is not principal using totalDegree arithmetic. This file depends on the parent UFD proof (BezoutIdentityOQ02OQ01OQ01OQ01.lean), making their combination establish that ℤ[X,Y] is a UFD but not a PIR.",
+    "mathContext": "ℤ[X,Y] = MvPolynomial (Fin 2) ℤ. The abbreviation ZXY is introduced for readability. The namespace NotPID and the MvPolynomial open statement bring the multivariate polynomial API into scope.",
+    "significance": "context",
+    "relatedConcepts": ["MvPolynomial", "IsPrincipalIdealRing", "namespace"],
+    "prerequisites": ["Lean 4 module system", "Mathlib MvPolynomial"]
+  },
+  {
+    "id": "ann-ideal-definition",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 40, "endLine": 52 },
+    "type": "definition",
+    "title": "The Witness Ideal I = (2, X₀)",
+    "content": "Three definitions set up the witness: gen2 = C 2 (the constant polynomial 2), genX = X (0 : Fin 2) (the first variable X₀), and I = Ideal.span {gen2, genX} (the ideal they generate). This ideal is the canonical witness that ℤ[X,Y] is not a PIR — the same ideal (2, X) witnesses the same fact in ℤ[X].",
+    "mathContext": "$I = (2, X_0) = \\{2a + X_0 b \\mid a, b \\in \\mathbb{Z}[X,Y]\\}$. In ℤ[X], the ideal $(2, X)$ was the classical PID-failure witness. Here in ℤ[X,Y] = MvPolynomial (Fin 2) ℤ, the same ideal witnesses the same failure.",
+    "significance": "key",
+    "relatedConcepts": ["Ideal.span", "MvPolynomial.C", "MvPolynomial.X", "witness ideal"],
+    "prerequisites": ["ideal theory", "multivariate polynomial rings"]
+  },
+  {
+    "id": "ann-one-not-mem",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 57, "endLine": 75 },
+    "type": "technique",
+    "title": "Step 1: Properness via the constantCoeff Ring Homomorphism",
+    "content": "The proof that 1 ∉ I uses a parity argument via the ring homomorphism constantCoeff : ZXY →+* ℤ, which evaluates every variable at 0. Since gen2 = C 2 maps to 2 and genX = X 0 maps to 0, any element 2a + X₀b ∈ I maps to 2·constantCoeff(a) — an even number. But constantCoeff(1) = 1, which is odd. The `omega` tactic closes the arithmetic impossibility 2k = 1.",
+    "mathContext": "The ring hom $\\phi: \\mathbb{Z}[X,Y] \\to \\mathbb{Z}$ defined by $X_i \\mapsto 0$ satisfies $\\phi(2a + X_0 b) = 2\\phi(a)$. Since $2\\phi(a) \\equiv 0 \\pmod{2}$ but $\\phi(1) = 1 \\equiv 1 \\pmod{2}$, we get $1 \\notin I$.",
+    "significance": "key",
+    "relatedConcepts": ["MvPolynomial.constantCoeff", "ring homomorphism", "parity argument", "omega tactic"],
+    "prerequisites": ["ring homomorphisms", "Ideal.mem_span_pair"]
+  },
+  {
+    "id": "ann-degree-zero",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 82, "endLine": 103 },
+    "type": "technique",
+    "title": "Step 2a: Total Degree Argument",
+    "content": "The private lemma dvd_gen2_totalDeg_zero is the heart of the non-principality proof. It uses MvPolynomial.totalDegree_mul_of_isDomain, which gives the EXACT equality totalDegree(f*g) = totalDegree(f) + totalDegree(g) when f ≠ 0 and g ≠ 0 over an integral domain. Since totalDegree(C 2) = 0, both f and g must have degree 0. This step crucially depends on ℤ being a domain (NoZeroDivisors).",
+    "mathContext": "For $f, g \\neq 0$ in $\\mathbb{Z}[X,Y]$ (a domain): $\\deg_{\\text{tot}}(fg) = \\deg_{\\text{tot}}(f) + \\deg_{\\text{tot}}(g)$. Since $\\deg_{\\text{tot}}(C 2) = 0$ and $\\mathbb{N}$-subtraction is saturating, both terms must be 0. This is stronger than the inequality $\\deg_{\\text{tot}}(fg) \\leq \\deg_{\\text{tot}}(f) + \\deg_{\\text{tot}}(g)$ which holds in any ring.",
+    "significance": "key",
+    "relatedConcepts": ["totalDegree_mul_of_isDomain", "integral domain", "NoZeroDivisors", "degree arithmetic"],
+    "prerequisites": ["multivariate polynomial degrees", "integral domain theory"]
+  },
+  {
+    "id": "ann-const-divisor",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 104, "endLine": 119 },
+    "type": "technique",
+    "title": "Step 2b: Degree-Zero Polynomials Are Constants",
+    "content": "dvd_gen2_is_const upgrades from 'totalDegree 0' to 'f = C c for some c | 2'. The key lemma totalDegree_eq_zero_iff_eq_C converts degree-0 to the explicit form f = C (constantCoeff f). Applying constantCoeff to the equation gen2 = f * g extracts the integer divisibility: 2 = c · constantCoeff(g), giving c | 2.",
+    "mathContext": "$\\deg_{\\text{tot}}(f) = 0 \\iff f = C(\\phi(f))$ where $\\phi = \\text{constantCoeff}$. Extracting the constant term from $2 = C(c) \\cdot g$ gives $2 = c \\cdot \\phi(g)$ in $\\mathbb{Z}$, so $c \\mid 2$. The divisors of 2 in ℤ are $\\pm 1$ and $\\pm 2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["totalDegree_eq_zero_iff_eq_C", "MvPolynomial.constantCoeff_C", "integer divisibility"],
+    "prerequisites": ["multivariate polynomial degrees", "ring homomorphisms"]
+  },
+  {
+    "id": "ann-unit-from-dvd",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 120, "endLine": 141 },
+    "type": "technique",
+    "title": "Step 3: Unit from Variable Divisibility",
+    "content": "isUnit_of_C_dvd_genX proves that if C c | X₀ in ℤ[X,Y], then c is a unit in ℤ. The key step extracts the coefficient of the monomial X₀ (= Finsupp.single 0 1) from C c * g = X₀. Since coeff_X gives coeff[X₀](X₀) = 1 and coeff_C_mul gives coeff[X₀](C c * g) = c · coeff[X₀](g), we get 1 = c · coeff[X₀](g), so c | 1, hence c is a unit by Int.isUnit_of_dvd_one.",
+    "mathContext": "In $\\mathbb{Z}[X,Y]$: $[X_0^1](C(c) \\cdot g) = c \\cdot [X_0^1](g) = [X_0^1](X_0) = 1$. So $c \\mid 1$ in $\\mathbb{Z}$, meaning $c = \\pm 1$. The companion lemma isUnit_C_of_isUnit then lifts this to IsUnit $(C c)$ via IsUnit.map applied to the ring hom $C: \\mathbb{Z} \\to \\mathbb{Z}[X,Y]$.",
+    "significance": "key",
+    "relatedConcepts": ["MvPolynomial.coeff", "Finsupp.single", "IsUnit", "Int.isUnit_of_dvd_one", "IsUnit.map"],
+    "prerequisites": ["multivariate polynomial coefficients", "units in rings", "ring homomorphisms"]
+  },
+  {
+    "id": "ann-not-principal",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 146, "endLine": 168 },
+    "type": "insight",
+    "title": "Assembly: I is Not Principal",
+    "content": "I_not_principal assembles the three steps into a contradiction. Assuming I = ⟨f⟩ (principal), since gen2 ∈ I and genX ∈ I we get f | gen2 and f | genX. Step 2 gives f = C c with c | 2; step 3 gives c is a unit; step 4 lifts to C c being a unit, so ⟨C c⟩ = ⊤ by Ideal.span_singleton_eq_top, contradicting I ≠ ⊤.",
+    "mathContext": "Formally: if $I = \\langle f \\rangle$ then $f \\mid 2$ and $f \\mid X_0$ in $\\mathbb{Z}[X,Y]$. From $f \\mid 2$: $f = C(c)$ with $c \\mid 2$. From $C(c) \\mid X_0$: $c$ is a unit, so $C(c)$ is a unit. But then $\\langle C(c) \\rangle = \\mathbb{Z}[X,Y]$, i.e., $I = \\top$, contradicting $1 \\notin I$.",
+    "significance": "key",
+    "relatedConcepts": ["Submodule.IsPrincipal", "Ideal.span_singleton_eq_top", "proof by contradiction"],
+    "prerequisites": ["principal ideals", "ideal theory"]
+  },
+  {
+    "id": "ann-main-theorems",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 169, "endLine": 192 },
+    "type": "insight",
+    "title": "Main Results: not_isPrincipalIdealRing and UFD vs PIR Distinction",
+    "content": "The main theorem not_isPrincipalIdealRing is a one-liner: if ℤ[X,Y] were a PIR, IsPrincipalIdealRing.principal would make I principal, contradicting I_not_principal. The corollary ufd_not_pir_distinction pairs this with inferInstance (Mathlib's inference of the UFD instance) to formally establish the strict hierarchy: every PIR is a UFD, but ℤ[X,Y] shows the converse fails.",
+    "mathContext": "The class hierarchy: Field $\\subsetneq$ PID $\\subsetneq$ UFD $\\subsetneq$ GCD Domain $\\subsetneq$ Integral Domain. ℤ[X,Y] certifies the strict inclusion PID $\\subsetneq$ UFD: it is a UFD (by Gauss's lemma, inductively from ℤ being a UFD) but not a PID (by the ideal $(2,X)$ witness). The theorem `ufd_not_pir_distinction : UniqueFactorizationMonoid ZXY ∧ ¬IsPrincipalIdealRing ZXY` makes this conjunction fully machine-checked.",
+    "significance": "key",
+    "relatedConcepts": ["UniqueFactorizationMonoid", "IsPrincipalIdealRing", "ring hierarchy", "Gauss's lemma"],
+    "prerequisites": ["UFD theory", "principal ideal rings", "commutative algebra hierarchy"]
+  }
+]
