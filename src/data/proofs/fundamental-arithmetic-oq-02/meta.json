@@ -31,11 +31,6 @@
         "theorem": "Irreducible",
         "description": "Element is irreducible in a monoid",
         "module": "Mathlib.Algebra.Prime.Basic"
-      },
-      {
-        "theorem": "UniqueFactorizationMonoid",
-        "description": "Unique factorization domain structure",
-        "module": "Mathlib.RingTheory.UniqueFactorizationDomain.Basic"
       }
     ],
     "assumptions": []
@@ -93,7 +88,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization provides a complete, machine-verified proof that $\\mathbb{Z}[\\sqrt{-5}]$ is not a unique factorization domain. Every step — from the multiplicativity of the norm, through the irreducibility of 2 and its non-primality, to the two genuinely distinct factorizations of 6 — is formally verified with zero sorries and zero axioms. The proof demonstrates how elementary norm arguments can resolve deep algebraic questions.",
+    "summary": "The formalization provides a complete, machine-verified proof of the key witness: 2 is irreducible in $\\mathbb{Z}[\\sqrt{-5}]$ but fails to divide $(1+\\sqrt{-5})$, establishing that 2 is irreducible but not prime. Every step — from the multiplicativity of the norm, through the irreducibility of 2 and its non-primality, to the two genuinely distinct factorizations of 6 — is formally verified with zero sorries and zero axioms. This constitutes the formal witness that $\\mathbb{Z}[\\sqrt{-5}]$ is not a UFD (since in a UFD, irreducible implies prime), though the final $\\neg\\text{UniqueFactorizationMonoid}$ statement is not yet formalized in Lean.",
     "implications": "This counterexample lies at the foundation of algebraic number theory. The failure of unique factorization in $\\mathbb{Z}[\\sqrt{-5}]$ directly motivated Kummer's invention of ideal numbers and Dedekind's theory of ideals, which restored unique factorization at the ideal level and became cornerstones of modern algebra. The class group $\\mathrm{Cl}(\\mathbb{Z}[\\sqrt{-5}]) \\cong \\mathbb{Z}/2\\mathbb{Z}$ precisely quantifies the failure. Understanding which rings have unique factorization remains central to number theory, connecting to the Heegner-Stark theorem (only 9 imaginary quadratic fields are PIDs) and the Cohen-Lenstra heuristics on class group statistics.",
     "openQuestions": [
       "Can the full ideal-theoretic unique factorization in the ring of integers of Q(sqrt(-5)) be formalized in Lean 4, showing that every ideal factors uniquely into prime ideals?",
