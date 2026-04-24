@@ -273,6 +273,41 @@ theorem ap_free_triangle_exists {N : ℕ} [NeZero N]
 -- PART IV: ROTH'S THEOREM VIA TRIANGLE REMOVAL
 -- ═══════════════════════════════════════════════════════════════════
 
+/-- The vertex set RSVertex N = Fin 3 × ZMod N has cardinality 3N. -/
+private lemma rsVertex_card {N : ℕ} [NeZero N] :
+    Fintype.card (RSVertex N) = 3 * N := by
+  simp [RSVertex, Fintype.card_prod, Fintype.card_fin, ZMod.card]
+
+/-- When A is AP-free, the RS graph has at most 6·|A|·N ordered triangle triples.
+
+    Proof sketch: When A is AP-free, every triangle has the form
+    {(0,x),(1,x+a),(2,x+2a)} for some a ∈ A and x ∈ ZMod N (by
+    `ap_free_forces_equal`). That gives |A|·N unordered triangles.
+    The `triangleCount` function counts ordered triples, giving ≤ 6·|A|·N. -/
+private lemma rs_tc_ap_free_le {N : ℕ} [NeZero N]
+    (A : Finset (ZMod N)) (hAP : APFree A) (_hOdd : Odd N)
+    [DecidableRel (ruzsaSzemerediGraph A).Adj] :
+    triangleCount (ruzsaSzemerediGraph A) Finset.univ Finset.univ Finset.univ ≤
+    6 * A.card * N := by
+  sorry
+
+/-- When A is AP-free, making the RS graph triangle-free requires removing
+    at least |A|·N directed edge-pairs.
+
+    Proof sketch: The |A|·N triangles {(0,x),(1,x+a),(2,x+2a)} (a ∈ A,
+    x ∈ ZMod N) are pairwise edge-disjoint (proved via `xy_edge_unique_triangle`:
+    each XY-edge lies in exactly one triangle). So R must hit each triangle
+    with a distinct edge, giving |R| ≥ |A|·N. -/
+private lemma rs_removal_lb {N : ℕ} [NeZero N]
+    (A : Finset (ZMod N)) (hAP : APFree A) (_hOdd : Odd N)
+    (R : Finset (RSVertex N × RSVertex N))
+    (hR : ∀ a b c : RSVertex N,
+        ¬((removeEdges (ruzsaSzemerediGraph A) (↑R : Set (RSVertex N × RSVertex N))).Adj a b ∧
+          (removeEdges (ruzsaSzemerediGraph A) (↑R : Set (RSVertex N × RSVertex N))).Adj b c ∧
+          (removeEdges (ruzsaSzemerediGraph A) (↑R : Set (RSVertex N × RSVertex N))).Adj a c)) :
+    A.card * N ≤ R.card := by
+  sorry
+
 /-- **Edge-disjointness**: When A is AP-free, removing edges in R to make
     the RS graph triangle-free requires hitting at least one edge from
     each triangle {(0,x), (1,x+a), (2,x+2a)} for a ∈ A, x ∈ Z/NZ.
@@ -328,15 +363,84 @@ theorem roth_via_triangle_removal (delta : ℝ) (hdelta : 0 < delta) :
     ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ → Odd N →
       ∀ A : Finset (ZMod N),
         (A.card : ℝ) ≥ delta * N → ¬APFree A := by
-  -- Apply the quantitative triangle removal lemma with δ' = δ/18.
-  -- This gives γ > 0 s.t. graphs with ≤ γn³ triangles can be made
-  -- triangle-free by removing ≤ (δ/18)n² edges (Finset pairs).
-  -- For the RS graph on n = 3N vertices with ≤ 6N² triangles:
-  --   6N² ≤ γ(3N)³ = 27γN³  for  N ≥ 6/(27γ)
-  -- TRL gives R with |R| ≤ (δ/18)(3N)² = δN²/2.
-  -- But edge-disjointness forces |R| ≥ |A|N ≥ δN².
-  -- Contradiction: δN² ≤ δN²/2.
-  sorry
+  -- Step 1: Choose rational eps_q = 1/n₀ with n₀ > 18/delta, so 9·eps_q < delta/2.
+  obtain ⟨n₀, hn₀⟩ := exists_nat_gt (18 / delta)
+  have hn₀_pos : (0 : ℕ) < n₀ := by
+    have h : (0 : ℝ) < n₀ := lt_trans (by positivity) hn₀
+    exact_mod_cast h
+  set eps_q : ℚ := 1 / n₀
+  have heps_pos : (0 : ℚ) < eps_q := by
+    apply div_pos one_pos; exact_mod_cast hn₀_pos
+  -- Step 2: Apply the quantitative Triangle Removal Lemma with eps_q.
+  obtain ⟨gamma, hgamma_pos, hTRL⟩ := triangle_removal_quantitative eps_q heps_pos
+  -- Step 3: N₀ := ⌈6/(27·gamma)⌉₊ + 1.
+  refine ⟨⌈(6 : ℚ) / (27 * gamma)⌉₊ + 1, fun N hN hOdd A hdens hAP => ?_⟩
+  -- Setup.
+  have hN_pos : 0 < N := by omega
+  haveI hNz : NeZero N := ⟨Nat.pos_iff_ne_zero.mp hN_pos⟩
+  haveI hDec : DecidableRel (ruzsaSzemerediGraph A).Adj := Classical.decRel _
+  have hNq_pos : (0 : ℚ) < N := by exact_mod_cast hN_pos
+  have hNr_pos : (0 : ℝ) < N := by exact_mod_cast hN_pos
+  -- Step 4: Vertex count as rationals.
+  have hV_card : (Fintype.card (RSVertex N) : ℚ) = 3 * N := by
+    exact_mod_cast rsVertex_card (N := N)
+  -- Step 5: N ≥ 6/(27·gamma) as rationals.
+  have hN_ge_bound : (6 : ℚ) / (27 * gamma) ≤ N := by
+    have hceil : ⌈(6 : ℚ) / (27 * gamma)⌉₊ ≤ N := by omega
+    exact le_trans (Nat.le_ceil _) (by exact_mod_cast hceil)
+  -- Step 6: |A| ≤ N.
+  have hAN : A.card ≤ N := by
+    calc A.card ≤ Finset.univ.card := Finset.card_le_card (Finset.subset_univ _)
+      _ = N := by simp [ZMod.card]
+  -- Step 7: Triangle count ≤ gamma · (3N)³ via AP-freeness.
+  have hTC : triangleCount (ruzsaSzemerediGraph A) Finset.univ Finset.univ Finset.univ ≤
+      6 * A.card * N := rs_tc_ap_free_le A hAP hOdd
+  have hTC_gamma : (triangleCount (ruzsaSzemerediGraph A)
+      Finset.univ Finset.univ Finset.univ : ℚ) ≤
+      gamma * (Fintype.card (RSVertex N) : ℚ) ^ 3 := by
+    rw [hV_card]
+    have hAN_q : (A.card : ℚ) ≤ N := by exact_mod_cast hAN
+    have hAN_q : (A.card : ℚ) ≤ N := by exact_mod_cast hAN
+    have h6_le : (6 : ℚ) ≤ 27 * gamma * N := by
+      have := (div_le_iff (by positivity : (0 : ℚ) < 27 * gamma)).mp hN_ge_bound
+      linarith
+    calc (triangleCount (ruzsaSzemerediGraph A) Finset.univ Finset.univ Finset.univ : ℚ)
+        ≤ 6 * A.card * N := by exact_mod_cast hTC
+      _ ≤ 6 * N * N := by nlinarith [hNq_pos, hAN_q]
+      _ ≤ gamma * (3 * N) ^ 3 := by
+          have hprod : (0 : ℚ) ≤ (27 * gamma * N - 6) * N ^ 2 :=
+            mul_nonneg (by linarith) (sq_nonneg _)
+          nlinarith [sq_nonneg (N : ℚ), mul_pos hgamma_pos hNq_pos, hprod]
+  -- Step 8: Apply TRL to get edge removal set R.
+  obtain ⟨R, hRcard, hRtf⟩ := hTRL (RSVertex N) (ruzsaSzemerediGraph A) hTC_gamma
+  -- Step 9: Lower bound |R| ≥ |A|·N.
+  have hR_lb : A.card * N ≤ R.card := rs_removal_lb A hAP hOdd R hRtf
+  -- Step 10: Upper bound |R| ≤ eps_q·(3N)² as reals.
+  have hRcard_real : (R.card : ℝ) ≤ (eps_q : ℝ) * (3 * N) ^ 2 := by
+    have hq : (R.card : ℚ) ≤ eps_q * (3 * (N : ℚ)) ^ 2 := by rwa [hV_card] at hRcard
+    have hq_r : ((R.card : ℚ) : ℝ) ≤ ((eps_q * (3 * (N : ℚ)) ^ 2 : ℚ) : ℝ) :=
+      Rat.cast_le.mpr hq
+    push_cast at hq_r
+    linarith
+  -- Step 11: 9·eps_q < delta (from n₀ > 18/delta).
+  have h9eps_lt : (9 : ℝ) * (eps_q : ℝ) < delta := by
+    have heps_r : (eps_q : ℝ) = 1 / n₀ := by push_cast [eps_q]; ring
+    have h18 : (18 : ℝ) < delta * n₀ := by rwa [div_lt_iff hdelta] at hn₀
+    rw [heps_r, show (9 : ℝ) * (1 / n₀) = 9 / n₀ from by ring,
+        div_lt_iff (by exact_mod_cast hn₀_pos : (0 : ℝ) < n₀)]
+    linarith
+  -- Step 12: Contradiction via chain of inequalities.
+  -- delta·N² ≤ |A|·N ≤ |R| ≤ 9·eps_q·N² < delta·N²
+  have hR_lb_r : (A.card : ℝ) * N ≤ (R.card : ℝ) := by exact_mod_cast hR_lb
+  have hN2_pos : (0 : ℝ) < N ^ 2 := by positivity
+  have hR9 : (R.card : ℝ) ≤ 9 * (eps_q : ℝ) * N ^ 2 := by
+    have : (eps_q : ℝ) * (3 * N) ^ 2 = 9 * (eps_q : ℝ) * N ^ 2 := by ring
+    linarith [hRcard_real]
+  have hchain : delta * N ^ 2 ≤ 9 * (eps_q : ℝ) * N ^ 2 := by
+    have hLB : delta * N ^ 2 ≤ (A.card : ℝ) * N := by
+      nlinarith [hNr_pos, mul_pos hdelta hNr_pos]
+    linarith
+  linarith [mul_lt_mul_of_pos_right h9eps_lt hN2_pos]
 
 /-- Both proofs of Roth's theorem prove the same statement.
     The Fourier proof (RothTheorem.lean, via Mathlib corners chain)
@@ -351,7 +455,11 @@ theorem roth_proofs_agree :
       ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ → Odd N →
         ∀ A : Finset (ZMod N), (A.card : ℝ) ≥ delta * N → ¬APFree A) := by
   intro h delta hdelta
-  obtain ⟨N₀, hN₀⟩ := h delta hdelta (min 1 (le_of_lt hdelta))
-  exact ⟨N₀, fun N hN _ A hA => hN₀ N hN A hA⟩
+  rcases le_or_lt delta 1 with hle | hgt
+  · obtain ⟨N₀, hN₀⟩ := h delta hdelta hle
+    exact ⟨N₀, fun N hN _ A hA => hN₀ N hN A hA⟩
+  · obtain ⟨N₀, hN₀⟩ := h 1 one_pos le_rfl
+    exact ⟨N₀, fun N hN _ A hA => hN₀ N hN A (by
+      linarith [mul_le_mul_of_nonneg_right (le_of_lt hgt) (Nat.cast_nonneg N)])⟩
 
 end Szemeredi.Roth.TriangleRemoval
