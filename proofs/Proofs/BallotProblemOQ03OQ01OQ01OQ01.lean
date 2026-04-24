@@ -21,7 +21,7 @@ as determinants of complete homogeneous symmetric polynomials:
 - `schurPolynomial_one_row_at_one`: proved (monomial counting via Sym.card_sym_eq_choose)
 - `ssytSchurFin_empty`: proved (unique empty SSYT, empty product = 1)
 - `ssytSchurFin_one_row`: proved (k=1 case: bijection SSYTFin n 1 (fun _ => m) ≃ Sym (Fin n) m)
-- `jacobi_trudi_ssyt_eq`: open (general case; requires RSK correspondence, ~300 lines)
+- `jacobi_trudi_ssyt_eq`: k=0,1 proved inline; k≥2 open (RSK correspondence, ~300 lines)
 -/
 
 import Mathlib.RingTheory.MvPolynomial.Symmetric.Defs
@@ -299,15 +299,43 @@ theorem ssytSchurFin_one_row (n m : ℕ) :
 
     `JacobiTrudi.schurPolynomial k sh = ssytSchurFin n k sh`
 
-    - k = 0: proved by `ssytSchurFin_empty` + `schurPolynomial_empty`
-    - k = 1: proved — `ssytSchurFin_one_row` (bijection with Sym via sorted reps)
+    - k = 0: proved inline — both sides equal 1 (0×0 det; unique empty SSYT)
+    - k = 1: proved inline — both sides equal hsymm (Fin n) R (sh 0) via
+             `schurPolynomial_one_row` + `ssytSchurFin_one_row`
     - k ≥ 2: open — requires RSK correspondence (~300 lines):
         (1) RSK: SSYT of shape sh ↔ NI lattice path tuples for the LGV configuration
-        (2) LGV: det[e(Aᵢ,Bⱼ)] = signed sum over path tuples (parent proof)
+        (2) LGV: det[e(Aᵢ,Bⱼ)] = signed sum over path tuples (parent proof BallotProblemOQ03.lean)
         (3) Weight match: SSYT weight monomial = product of path weights = hsymm product -/
 theorem jacobi_trudi_ssyt_eq (n k : ℕ) (sh : Fin k → ℕ) :
     JacobiTrudi.schurPolynomial (σ := Fin n) (R := R) k sh =
     ssytSchurFin (R := R) n k sh := by
-  sorry
+  match k with
+  | 0 =>
+    -- Both sides equal 1: 0×0 det = 1; unique empty-shape SSYT has weight 1
+    have h1 : schurPolynomial (σ := Fin n) 0 sh = 1 := by
+      simp [schurPolynomial, jacobiTrudiMatrix, det_fin_zero]
+    have h2 : ssytSchurFin (R := R) n 0 sh = 1 := by
+      haveI hempty : IsEmpty ((i : Fin 0) × Fin (sh i)) :=
+        ⟨fun p => Fin.elim0 p.1⟩
+      haveI huniq : Unique (SSYTFin n 0 sh) :=
+        { default := ⟨fun p => Fin.elim0 p.1,
+                      ⟨fun i _ _ _ => Fin.elim0 i, fun i1 _ _ _ _ _ => Fin.elim0 i1⟩⟩
+          uniq := fun ⟨f, _⟩ => Subtype.ext (funext fun p => Fin.elim0 p.1) }
+      simp only [ssytSchurFin, SSYTFin.weight]
+      simp_rw [Finset.prod_empty]
+      exact Finset.sum_unique _
+    rw [h1, h2]
+  | 1 =>
+    -- Both sides equal hsymm (Fin n) R (sh 0)
+    -- sh : Fin 1 → ℕ equals (fun _ => sh 0) since Fin 1 is a subsingleton
+    have hsh : sh = fun _ => sh ⟨0, by omega⟩ :=
+      funext fun i => congr_arg sh (Fin.ext (by omega))
+    rw [hsh, schurPolynomial_one_row, ssytSchurFin_one_row]
+  | k + 2 =>
+    -- k ≥ 2: requires RSK correspondence (~300 lines) or algebraic alternative
+    -- RSK: SSYTFin n (k+2) sh bijects to tuples of non-intersecting lattice paths
+    -- LGV (BallotProblemOQ03.lean): det = weighted count of NI path tuples
+    -- Weight match: SSYT monomial weight = product of path weights = product of hsymm entries
+    sorry
 
 end JacobiTrudi
