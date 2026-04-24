@@ -399,7 +399,7 @@
     "type": "concept",
     "range": {
       "startLine": 240,
-      "endLine": 262
+      "endLine": 251
     },
     "title": "Main Problem Statement",
     "content": "**erdos_784_statement:**\n\nThe complete formalization combining all results:\n\n1. **C = 1:** H₁(x) ≍ x/log x (Ruzsa-Saias)\n2. **C > 1:** H_C(x) ≍ x^{e^{1-C}}/log x (Ruzsa-Weingartner)\n3. **C ≤ 1:** Answer is YES (polynomial-log bound exists)\n4. **C > 1:** Answer is NO (no such bound exists)\n\nThis theorem packages the entire solution.",

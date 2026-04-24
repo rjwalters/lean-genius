@@ -8,14 +8,14 @@
     },
     "type": "concept",
     "title": "Power Mean Family: Overview and Open Question",
-    "content": "The header introduces the weighted power mean family M_r(z,w) and the open question: to fully formalize the monotonicity M_r <= M_s for all r <= s in Lean 4/Mathlib. **Note**: The header's item 7 (line 33) is stale \u2014 it says 'General monotonicity (negative r case) stated as an axiom' but the file actually proves power_mean_monotone_neg (lines 291\u2013343) with no axioms or sorries. The file proves 13 results total including HM \u2264 GM, M_r \u2264 M_s for 0 < r \u2264 s, and M_r \u2264 M_s for r \u2264 s < 0. Only the mixed-sign case (r < 0 < s) remains open. The imports bring in Mathlib.Analysis.MeanInequalities for the weighted AM-GM inequality and Mathlib.Analysis.MeanInequalitiesPow for Jensen's power inequality.",
+    "content": "The header introduces the weighted power mean family M_r(z,w) and the open question: to fully formalize the monotonicity M_r <= M_s for all r <= s in Lean 4/Mathlib. **Note**: The header's item 7 (line 33) is stale — it says 'General monotonicity (negative r case) stated as an axiom' but the file actually proves power_mean_monotone_neg (lines 291–343) with no axioms or sorries. The file proves 13 results total including HM ≤ GM, M_r ≤ M_s for 0 < r ≤ s, and M_r ≤ M_s for r ≤ s < 0. Only the mixed-sign case (r < 0 < s) remains open. The imports bring in Mathlib.Analysis.MeanInequalities for the weighted AM-GM inequality and Mathlib.Analysis.MeanInequalitiesPow for Jensen's power inequality.",
     "mathContext": "$M_r(z,w) = \\left(\\sum_{i} w_i z_i^r\\right)^{1/r}$ for $r \\neq 0$; $M_0 = \\prod_i z_i^{w_i}$ (geometric mean as limit). The chain: $\\text{HM} = M_{-1} \\leq M_0 = \\text{GM} \\leq M_1 = \\text{AM} \\leq M_2 \\leq \\cdots$",
     "significance": "supporting",
     "relatedConcepts": [
       "AM-GM inequality",
       "power means",
       "Jensen's inequality",
-      "Hardy-Littlewood-P\u00f3lya"
+      "Hardy-Littlewood-Pólya"
     ],
     "prerequisites": [
       "weighted inequalities",
@@ -32,7 +32,7 @@
     },
     "type": "concept",
     "title": "Shared Variables: Abstract Index Type and Weight/Value Functions",
-    "content": "The variable block declares the abstract index type \u03b9 (with implicit [DecidableEq \u03b9] and [Fintype \u03b9] from the Finset API), the finite index set s : Finset \u03b9, and the weight and value functions w z : \u03b9 \u2192 \u211d. This polymorphic setup allows the power mean theorems to work for any finite collection of real numbers with any indexing scheme \u2014 a common Mathlib pattern that avoids committing to Fin n or a specific concrete type. The hypotheses on w and z (non-negativity, positivity, weight normalization) are stated in each theorem individually rather than as variable-level assumptions.",
+    "content": "The variable block declares the abstract index type ι (with implicit [DecidableEq ι] and [Fintype ι] from the Finset API), the finite index set s : Finset ι, and the weight and value functions w z : ι → ℝ. This polymorphic setup allows the power mean theorems to work for any finite collection of real numbers with any indexing scheme — a common Mathlib pattern that avoids committing to Fin n or a specific concrete type. The hypotheses on w and z (non-negativity, positivity, weight normalization) are stated in each theorem individually rather than as variable-level assumptions.",
     "mathContext": "The abstract setup: $s \\subseteq \\iota$ (finite index set), $w : \\iota \\to \\mathbb{R}$ (weights, typically $w_i \\geq 0$, $\\sum w_i = 1$), $z : \\iota \\to \\mathbb{R}$ (values, typically $z_i > 0$). All power mean results are parametric in these choices.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -78,7 +78,7 @@
     },
     "type": "theorem",
     "title": "Known Results from Mathlib: M1=AM, AM<=Mp, GM<=AM, GM<=Mp, Jensen",
-    "content": "Four theorems wrap existing Mathlib results. power_mean_one_eq_arith_mean proves M_1 = AM by simp with Real.rpow_one. arith_mean_le_power_mean invokes Real.arith_mean_le_rpow_mean directly. geom_mean_le_arith_mean calls Real.geom_mean_le_arith_mean_weighted. geom_mean_le_power_mean_of_one_le combines the previous two via .trans. jensen_pow_ineq wraps Real.rpow_arith_mean_le_arith_mean_rpow \u2014 this is Jensen's inequality (sum w_i z_i)^p <= sum w_i z_i^p for p >= 1, and is the key tool for power_mean_monotone_pos.",
+    "content": "Four theorems wrap existing Mathlib results. power_mean_one_eq_arith_mean proves M_1 = AM by simp with Real.rpow_one. arith_mean_le_power_mean invokes Real.arith_mean_le_rpow_mean directly. geom_mean_le_arith_mean calls Real.geom_mean_le_arith_mean_weighted. geom_mean_le_power_mean_of_one_le combines the previous two via .trans. jensen_pow_ineq wraps Real.rpow_arith_mean_le_arith_mean_rpow — this is Jensen's inequality (sum w_i z_i)^p <= sum w_i z_i^p for p >= 1, and is the key tool for power_mean_monotone_pos.",
     "mathContext": "Jensen's inequality for convex $t \\mapsto t^p$ ($p \\geq 1$): $\\left(\\sum_i w_i z_i\\right)^p \\leq \\sum_i w_i z_i^p$. Equivalently, $\\text{AM} \\leq M_p$: $\\sum_i w_i z_i \\leq \\left(\\sum_i w_i z_i^p\\right)^{1/p}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -151,7 +151,7 @@
       "endLine": 280
     },
     "type": "theorem",
-    "title": "Duality Identity: M_r(z) = M_{-r}(z\u207b\u00b9)\u207b\u00b9",
+    "title": "Duality Identity: M_r(z) = M_{-r}(z⁻¹)⁻¹",
     "content": "`power_mean_neg_inv` establishes the algebraic identity $M_r(z) = M_{-r}(z^{-1})^{-1}$ by two key steps. First, the sum equality: $(z_i^{-1})^{-r} = z_i^r$ via `inv_rpow` + `rpow_neg` + `inv_inv`. Second, the power equality: $A^{1/r} = (A^{1/(-r)})^{-1}$ since $1/(-r) = -(1/r)$ and `rpow_neg` + `inv_inv`. Helper lemmas `weighted_sum_pos` and `weightedPowerMean_pos` establish the positivity conditions needed for the inversion step. This identity is the key tool for reducing negative-exponent power mean problems to positive-exponent ones.",
     "mathContext": "$M_r(z) = \\left(\\sum w_i z_i^r\\right)^{1/r} = \\left(\\sum w_i (z_i^{-1})^{-r}\\right)^{1/r} = \\left(\\left(\\sum w_i (z_i^{-1})^{-r}\\right)^{1/(-r)}\\right)^{-1} = M_{-r}(z^{-1})^{-1}$. The identity holds for all $r \\neq 0$ and $z_i > 0$.",
     "significance": "key",
@@ -176,9 +176,9 @@
       "endLine": 343
     },
     "type": "theorem",
-    "title": "Power Mean Monotonicity for r \u2264 s < 0 (Dual Argument)",
+    "title": "Power Mean Monotonicity for r ≤ s < 0 (Dual Argument)",
     "content": "`power_mean_monotone_neg` proves $M_r \\leq M_s$ for $r \\leq s < 0$ by a three-step dual argument: (1) negate exponents to get $0 < -s \\leq -r$; (2) apply `power_mean_monotone_pos` to $z^{-1}$ with exponents $-s \\leq -r$ to get $M_{-s}(z^{-1}) \\leq M_{-r}(z^{-1})$; (3) apply `power_mean_neg_inv` to convert back: $M_r(z) = M_{-r}(z^{-1})^{-1} \\leq M_{-s}(z^{-1})^{-1} = M_s(z)$. The inversion step (larger denominator gives smaller reciprocal) uses explicit `calc` blocks with multiplicative algebra to avoid `inv_le_inv_of_le` which was unavailable in the target Lean version.",
-    "mathContext": "For $r \\leq s < 0$: negate to $0 < -s \\leq -r$, apply positive monotonicity to $z^{-1}$: $M_{-s}(z^{-1}) \\leq M_{-r}(z^{-1})$. Invert (larger positive \u2192 smaller reciprocal): $M_{-r}(z^{-1})^{-1} \\leq M_{-s}(z^{-1})^{-1}$. By duality: $M_r(z) \\leq M_s(z)$. Combined with positive case: $M_r \\leq M_s$ for all same-sign $r \\leq s$.",
+    "mathContext": "For $r \\leq s < 0$: negate to $0 < -s \\leq -r$, apply positive monotonicity to $z^{-1}$: $M_{-s}(z^{-1}) \\leq M_{-r}(z^{-1})$. Invert (larger positive → smaller reciprocal): $M_{-r}(z^{-1})^{-1} \\leq M_{-s}(z^{-1})^{-1}$. By duality: $M_r(z) \\leq M_s(z)$. Combined with positive case: $M_r \\leq M_s$ for all same-sign $r \\leq s$.",
     "significance": "key",
     "relatedConcepts": [
       "duality argument",
@@ -197,11 +197,11 @@
     "proofId": "amgm-inequality-oq-03",
     "range": {
       "startLine": 345,
-      "endLine": 373
+      "endLine": 372
     },
     "type": "insight",
     "title": "Interpolation Chain Summary: All Same-Sign Cases Proved",
-    "content": "The summary theorem power_mean_interpolation_summary catalogs the complete status: GM \u2264 AM (Mathlib), AM \u2264 M_p for p \u2265 1 (Mathlib), HM \u2264 GM (new direct proof), M_r \u2264 M_s for 0 < r \u2264 s (new, Jensen), M_r \u2264 M_s for r \u2264 s < 0 (new, duality). The file compiles with 0 axioms and 0 sorries. Only the mixed-sign case (r < 0 < s, crossing the geometric mean limit) remains as a future direction.",
+    "content": "The summary theorem power_mean_interpolation_summary catalogs the complete status: GM ≤ AM (Mathlib), AM ≤ M_p for p ≥ 1 (Mathlib), HM ≤ GM (new direct proof), M_r ≤ M_s for 0 < r ≤ s (new, Jensen), M_r ≤ M_s for r ≤ s < 0 (new, duality). The file compiles with 0 axioms and 0 sorries. Only the mixed-sign case (r < 0 < s, crossing the geometric mean limit) remains as a future direction.",
     "mathContext": "All proved: $\\text{GM} \\leq \\text{AM}$, $\\text{AM} \\leq M_p$ ($p \\geq 1$), $\\text{HM} \\leq \\text{GM}$, $M_r \\leq M_s$ ($0 < r \\leq s$), $M_r \\leq M_s$ ($r \\leq s < 0$). Open: $M_r \\leq M_s$ for $r < 0 < s$.",
     "significance": "supporting",
     "relatedConcepts": [

@@ -185,7 +185,7 @@
     "type": "concept",
     "range": {
       "startLine": 242,
-      "endLine": 289
+      "endLine": 268
     },
     "title": "Summary: Problem SOLVED",
     "content": "Three theorems wrap up the formalization:\n\n- `erdos_226_summary` (**proved**): `ErdosQuestion ∧ GeneralQuestion`\n- `erdos_226` := `erdos_question_affirmative` (alias)\n- `erdos_226_answer` (**proved**): $\\exists$ entire transcendental $f$ preserving rationality — the most explicit statement\n\n**Score**: 4 axioms (Barth-Schneider real/complex, monotone version, no-polynomial), 1 verified theorem (`rationals_countable_dense`), 3 derived theorems, 0 sorries.",
