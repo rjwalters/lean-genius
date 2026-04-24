@@ -1,70 +1,91 @@
 # Knowledge Base: dissection-of-cubes-oq-04
 
-Insights accumulated during research on this problem.
+**Problem**: Dehn Invariants for Platonic Solids: Cube Isolation
+**Last Updated**: 2026-04-24
+**Status**: COMPLETE (axiomCount 2→1; sole remaining axiom is tmul_infinite_order_ne_zero)
 
 ---
 
 ## Problem Understanding
 
-Dissection of Cubes: Connection to Dehn Invariant Impossibility. The proof shows that the cube is the unique polyhedron (among regular solids) with zero Dehn invariant, implying it cannot be dissected into any of the other Platonic solids.
+Prove that among the five Platonic solids, only the cube has zero Dehn invariant.
+Dihedral angles:
+- Cube: π/2 (rational multiple of π → D=0)
+- Tetrahedron: arccos(1/3)   — proved irrational in OQ02
+- Octahedron:  arccos(-1/3)  — proved irrational in OQ02OQ02
+- Dodecahedron: arccos(-1/√5) — proved irrational in OQ04 via Chebyshev mod-5
+- Icosahedron: arccos(-√5/3) — proved irrational in OQ04 this session via coupled ℤ[√5] sequences
 
-The key geometric fact: all regular solid dihedral angles except the cube (π/2) are irrational multiples of π. This is what distinguishes the cube.
+---
+
+## Session 2026-04-24 (Session 1) — Complete: Proved icoAngle_irrational
+
+**Mode**: FRESH
+**Outcome**: completed
+
+### What I Did
+
+- Fixed all 3 sorries in `DissectionOfCubesOQ04Aristotle.lean` using the
+  `tmul_infinite_order_ne_zero` pattern (routine: unfold edgeTerm, mul_ne_zero, *_infinite_order)
+- Proved `icoAngle_irrational` from scratch — converting from `axiom` to a proved `theorem`
+- Reduced axiomCount from 2 to 1 (only tmul_infinite_order_ne_zero remains)
+
+### Key Findings
+
+- **Chebyshev ℤ[√5] approach**: For cos(icoAngle) = -√5/3, define
+  f_n = A_n + B_n·√5 = 3^n·2cos(n·icoAngle) with integer recurrence:
+    A_{n+2} = -10·B_{n+1} - 9·A_n
+    B_{n+2} =  -2·A_{n+1} - 9·B_n
+  Initial values: (A_0,B_0)=(2,0), (A_1,B_1)=(0,-2)
+
+- **Mod-3 invariant**: ¬3|A_{2k} and ¬3|B_{2k+1} for all k.
+  Key tactic: `IsCoprime.dvd_of_dvd_mul_left` to extract divisibility from coprime factor.
+
+- **Inductive structure**: Need both halves of the invariant simultaneously in each step.
+  The successor case proves ¬3|A_{2k+2} first (intermediate `have hA_new`), then uses it
+  for ¬3|B_{2k+3}. A naive `refine ⟨?_, ?_⟩` then second case fails since `hA_new` not in scope.
+
+- **Connection theorem** `icoSeqAB_eq_cos` proved by simultaneous induction on (n, n+1) pairs
+  to avoid needing the n-2 value at step n.
+
+- **Key tactic for algebra**: `linear_combination 2 * ((icoSeqAB (m+1)).2 : ℝ) * hsq`
+  where `hsq : Real.sqrt 5 ^ 2 = 5` closes the LHS identity in icoSeqAB_eq_cos.
+
+- **Parity contradiction**: `Nat.even_or_odd N` splits into even/odd.
+  Even (N=2k): apply icoSeqAB_ndvd k for A_{2k}, contradicting 3|A_N.
+  Odd (N=2k+1): B_N = 0 (from √5 irrationality) → 3|0 = 3|B_{2k+1}, contradicts ndvd.
+
+- **√5 irrationality**: `Nat.Prime.irrational_sqrt (by norm_num : Nat.Prime 5)` — no extra imports.
+
+### Files Modified
+
+- `proofs/Proofs/DissectionOfCubesOQ04Aristotle.lean` — 3 sorries → proved
+- `proofs/Proofs/DissectionOfCubesOQ04.lean` — axiom → proved theorem; Part IV-B added (~150 new lines)
+- `src/data/proofs/dissection-of-cubes-oq-04/meta.json` — axiomCount 2→1, lineCount 432→581, theoremCount 15→22
+- `src/data/research/problems/dissection-of-cubes-oq-04.json` — insights, builtItems, progressSummary
+
+### Next Steps (for future sessions)
+
+1. **tmul_infinite_order_ne_zero** (OQ02OQ02): ℝ flat over ℤ → only remaining axiom.
+   Check if `Module.Flat` in Mathlib now covers `ℝ` as `ℤ`-module.
+2. **Cross-solid comparison**: Can we show D(tetrahedron) ≠ D(icosahedron)?
+   (Not just both nonzero, but D-values in different equivalence classes)
 
 ---
 
 ## Insights
 
-- `DissectionOfCubesOQ04.lean` was already 432 lines with substantial proof infrastructure
-- `cube_unique_zero_dehn` had 3 sorries for edge-count scaling — wrong approach (should use `tmul_infinite_order_ne_zero`)
-- The file already proved: `arccos_three_fifths_irrational`, `dodAngle_irrational`, `five_ndvd_cosThreeFifthsSeq`, `dod_dehn_ne_zero`
-- `icoAngle = arccos(-√5/3)` and the key identity `cos(2·icoAngle) = 1/9`
-- The proof of `icoAngle_irrational` goes via the Chebyshev sequence argument for `arccos(1/9)`
-- Key identity: `arccos(1/9) = 2π - 2·icoAngle` (derived from cos(2·icoAngle) = 1/9)
-- Sequence `d_n` satisfies `d_0=2, d_1=2, d_{n+2}=2d_{n+1}-81d_n` and equals `9^n·2cos(n·arccos(1/9))`
-- If `icoAngle = (p/q)π`, then `cos(q·arccos(1/9))=1`, so `d_q = 2·9^q` — divisible by 3
-- But `d_{n+2} ≡ 2d_{n+1} (mod 3)` with `3 ∤ d_0, d_1`, so `3 ∤ d_n` for all n — contradiction
-
----
-
-## Session 8 (2026-04-26)
-
-**Mode**: REVISIT
-**Outcome**: significant progress — proved `icoAngle_irrational`, reducing axiom count from 2 to 1
-
-### What I Did
-
-1. Identified `icoAngle_irrational` (axiom) as the main remaining target
-2. Designed Chebyshev sequence proof for `arccos(1/9)` irrationality
-3. Proved `cos_two_icoAngle : cos(2 * icoAngle) = 1/9` via double-angle formula
-4. Proved `arccos_one_ninth_eq : arccos(1/9) = 2*π - 2*icoAngle` using `arccos_lt_arccos`
-5. Defined `icoSeq : ℕ → ℤ` with recurrence `d_{n+2} = 2d_{n+1} - 81d_n`
-6. Proved `three_ndvd_icoSeq`: mod-3 induction showing 3 ∤ d_n for all n
-7. Proved `icoSeq_eq_cos`: `(icoSeq n : ℝ) = 9^n * 2*cos(n * arccos(1/9))`
-8. Assembled main contradiction: if icoAngle = (p/q)π, cos(q·arccos(1/9)) = 1 via `cos_int_mul_two_pi`
-9. Then `icoSeq q = 2 * 9^q` (divisible by 3) — contradiction with `three_ndvd_icoSeq`
-
-### Key Lemmas Used
-
-- `cos_two_mul` (Mathlib)
-- `cos_arccos` (Mathlib) — for evaluating `cos(arccos x)`
-- `arccos_lt_arccos` — to bound icoAngle in (π/2, π)
-- `cos_int_mul_two_pi` — `cos(n * 2π) = 1`
-- `Prime.dvd_or_dvd` — used `3 ∤ 2` in mod-3 argument
-
-### Files Modified
-
-- `proofs/Proofs/DissectionOfCubesOQ04.lean` (432 → 557 lines)
-  - Replaced `axiom icoAngle_irrational` with full 115-line proof
-  - Axiom count: 2 → 1 (only `tmul_infinite_order_ne_zero` remains)
-
-### Next Steps
-
-- Verify proof compiles via `docker-build.sh Proofs.DissectionOfCubesOQ04`
-- Attempt `tmul_infinite_order_ne_zero` (flatness of ℝ over ℤ) — harder infrastructure
+1. The Chebyshev ℤ[√5] argument mirrors the Niven/ℤ argument for arccos(1/3)/π but in a
+   quadratic extension. The mod-prime invariant becomes mod-3 on paired integer sequences.
+2. `IsCoprime.dvd_of_dvd_mul_left` extracts divisibility from coprime-factor products.
+3. Simultaneous induction on (n, n+1) pairs avoids needing the n-2 base case explicitly.
+4. `linear_combination` with `sq_sqrt` closes ring-like identities involving √5^2 = 5.
+5. `Nat.Prime.irrational_sqrt` works directly for proving √5 irrational.
+6. In paired induction, prove the first component first as a named `have` before `refine ⟨?_, ?_⟩`.
 
 ---
 
 ## Dead Ends
 
-- Edge-count scaling approach for `cube_unique_zero_dehn` was wrong — `tmul_infinite_order_ne_zero` is the right unifier
-- Trying Chebyshev directly in ℤ[√5] for icoAngle — unnecessary, cos(2·icoAngle)=1/9 reduces to integer sequence
+- Direct `norm_num` for mod-3 invariant inductive step — doesn't handle the symbolic case.
+- Separate `rcases Nat.even_or_odd` without precomputing B_N=0 first — causes circular reasoning.

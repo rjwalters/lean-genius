@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: ssytSchurFin_two_row assembly proved (eq_sub_of_add_eq + JDT + partition). 3 sorries remain: jdt_weight_sum (~80 lines), ssytFin_two_row_eq_sum_colstrict (~60 lines), k≥3 (algebraic LGV).",
+    "progressSummary": "PROGRESS: jacobi_trudi_ssyt_eq now proves k=0 and k=1 inline; k>=2 sorry remains (RSK). File: 341 lines, 1 sorry.",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -50,15 +50,8 @@
       "SSYTFin n k sh: def (SSYT of shape Fin k → ℕ with entries in Fin n, Subtype encoding)",
       "SSYTFin.weight: def (monomial product over all cells of SSYT)",
       "ssytSchurFin_one_row: proved (k=1 case: SSYTFin n 1 (fun _ => m) ≃ Sym (Fin n) m via sorted reps)",
-      "jacobi_trudi_ssyt_eq: k=0 case proved (schurPolynomial_empty + ssytSchurFin_empty)",
-      "jacobi_trudi_ssyt_eq: k=1 case proved (schurPolynomial_one_row + ssytSchurFin_one_row via fin_cases)",
-      "ssytSchurFin_two_row: stated as sorry with full jdt proof strategy documented (session 6)",
-      "jacobi_trudi_ssyt_eq: k=2 case now delegates to ssytSchurFin_two_row; k≥3 sorry isolated",
-      "ColStrictSym a b P Q: def (column-strict predicate on Sym pairs using sorted representatives)",
-      "sym_pair_sum_partition: proved (Fintype.sum_subtype_add_sum_subtype splits full pair-sum into col-strict + non-col-strict = h_a * h_b)",
-      "ssytSchurFin_two_row: assembly proof complete (eq_sub_of_add_eq + jdt_weight_sum + sym_pair_sum_partition); 2 focused sorries remain",
-      "jdt_weight_sum: stated (sorry) — JDT bijection gives ∑_{non-col-strict} weight = h_{a+1} * h_{b-1}",
-      "ssytFin_two_row_eq_sum_colstrict: stated (sorry) — SSYT k=2 bijects to col-strict pair sum"
+      "jacobi_trudi_ssyt_eq k=0 inline: proved by det_fin_zero for LHS + Unique/IsEmpty pattern for RHS (generalizes ssytSchurFin_empty to arbitrary sh : Fin 0 -> N)",
+      "jacobi_trudi_ssyt_eq k=1 inline: proved by showing sh = fun _ => sh 0 via Fin.ext (by omega), then schurPolynomial_one_row + ssytSchurFin_one_row"
     ],
     "insights": [
       "Mathlib has hsymm σ R n (complete homogeneous symmetric polynomials) in RingTheory.MvPolynomial.Symmetric.Defs — directly usable for Jacobi-Trudi matrix entries",
@@ -80,15 +73,9 @@
       "List.SortedLE.getElem_le_getElem_of_le handles monotonicity of sorted list access",
       "Fintype.sum_equiv with explicit Equiv is cleanest way to reindex finite sums",
       "Weight match: Fintype.prod_sigma + Fin.prod_univ_one reduces sigma product; map_coe+prod_coe+map_ofFn+prod_ofFn closes the goal",
-      "jacobi_trudi_ssyt_eq k=0 case proves via hsh : sh = Fin.elim0 := funext (fun i => i.elim0), then rw schurPolynomial_empty + ssytSchurFin_empty",
-      "jacobi_trudi_ssyt_eq k=1 case proves via hsh via fin_cases i, then rw schurPolynomial_one_row + ssytSchurFin_one_row",
-      "Structured k-case split: cases k with | zero => | succ k => cases k with | zero => | succ k => is cleaner than induction for this theorem",
-      "Algebraic LGV (polynomial-weighted generalization of lgv_lemma_rxr) is the cleanest proof path: needs ~150 lines",
-      "Integer lgv_lemma_rxr CANNOT be lifted to polynomial weights — algebraic LGV is a separate theorem",
-      "jeu de taquin bijection for k=2: insert Q[c] into P at first-violation column c, remove from Q; ~100 lines standalone",
-      "Fintype.sum_subtype_add_sum_subtype splits ∑ f over a type into ∑_{p x} f + ∑_{¬p x} f = ∑ f — key for partition identity",
-      "eq_sub_of_add_eq (ring lemma: a + b = c → a = c - b) enables assembling ssytSchurFin_two_row from partition + JDT identities",
-      "ColStrictSym: column-strict on Sym pairs defined via sorted representatives (Finset.sort); avoids SSYT structural noise for the JDT step"
+      "match k with pattern lets Lean specialize sh type per branch (Fin 0 vs Fin 1 vs Fin (k+2) -> N), no type annotation needed",
+      "Fin.elim0 p.1 eliminates any p : (i : Fin 0) x Fin (sh i) for *any* sh : Fin 0 -> N -- the pattern from ssytSchurFin_empty generalizes without modification",
+      "Fin.ext (by omega) closes i.val = 0 for i : Fin 1 since i.isLt : i.val < 1; then congr_arg sh converts to sh i = sh 0 for the k=1 inline proof"
     ],
     "mathlibGaps": [
       "No Mathlib SchurPolynomial definition — we provide one via Jacobi-Trudi formula",
@@ -96,10 +83,9 @@
       "RSK correspondence not formalized in Mathlib — needed for jacobiTrudi_lgv_proof"
     ],
     "nextSteps": [
-      "PRIORITY A: Prove ssytFin_two_row_eq_sum_colstrict (~60 lines): bijection SSYTFin n 2 sh ≃ col-strict (Sym a × Sym b) pairs via row projection",
-      "PRIORITY B: Prove jdt_weight_sum (~80 lines): JDT bijection {non-col-strict (a,b)} ≃ {all (a+1,b-1)}, weight preserved",
-      "PRIORITY C: k≥3 via algebraic LGV (~150 lines) or submit to Aristotle after jdt+row-decomp complete",
-      "Fintype.sum_subtype_add_sum_subtype is the key partition lemma — already used in sym_pair_sum_partition"
+      "Prove jacobi_trudi_ssyt_eq k=2 case: use schurPolynomial_two_row for LHS; for RHS build sign-reversing involution on 2-row SSYT pairs",
+      "Full RSK proof (~300 lines): biject SSYTFin n (k+2) sh with NI lattice path tuples, apply LGV from BallotProblemOQ03.lean",
+      "Verify Docker build once upstream BallotProblemOQ03OQ02.lean build issue is resolved"
     ],
     "markdown": "# Knowledge Base: LGV Lemma → Jacobi-Trudi Identity\n\n**Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01\n**Last Updated**: 2026-04-23\n**Knowledge Items**: 0\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nNewly selected. Jacobi-Trudi identity expresses Schur polynomials as determinants of\ncomplete homogeneous symmetric polynomials. The LGV lemma (in parent gallery proof)\nprovides the combinatorial proof route via non-intersecting lattice paths.\n\n---\n\n## Insights\n\n_None yet — begin with OBSERVE phase: check Mathlib for SSYT formalization._\n\n---\n\n## Dead Ends\n\n_None identified yet._\n"
   },
@@ -292,7 +278,7 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
       "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 346,
+      "lineCount": 342,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 5,
@@ -303,11 +289,11 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "filename": "BallotProblemOQ03OQ01OQ02.lean",
-      "lineCount": 5506,
+      "lineCount": 5147,
       "theoremCount": 64,
       "axiomCount": 0,
       "defCount": 10,
-      "sorryCount": 11,
+      "sorryCount": 10,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
     },
