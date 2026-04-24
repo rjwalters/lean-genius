@@ -21,7 +21,7 @@ as determinants of complete homogeneous symmetric polynomials:
 - `schurPolynomial_one_row_at_one`: proved (monomial counting via Sym.card_sym_eq_choose)
 - `ssytSchurFin_empty`: proved (unique empty SSYT, empty product = 1)
 - `ssytSchurFin_one_row`: proved (k=1 case: bijection SSYTFin n 1 (fun _ => m) ≃ Sym (Fin n) m)
-- `jacobi_trudi_ssyt_eq`: open (general case; requires RSK correspondence, ~300 lines)
+- `jacobi_trudi_ssyt_eq`: k=0 proved, k=1 proved; k≥2 open (RSK bijection ~300-400 lines)
 -/
 
 import Mathlib.RingTheory.MvPolynomial.Symmetric.Defs
@@ -294,20 +294,52 @@ theorem ssytSchurFin_one_row (n m : ℕ) :
 ### Main Theorem: Jacobi-Trudi = SSYT Sum (Open for k ≥ 2)
 -/
 
-/-- **Jacobi-Trudi Identity** (open for k ≥ 2):
+/-- **Jacobi-Trudi Identity** (proved for k = 0,1; open for k ≥ 2):
     The determinant definition equals the SSYT generating function.
 
     `JacobiTrudi.schurPolynomial k sh = ssytSchurFin n k sh`
 
-    - k = 0: proved by `ssytSchurFin_empty` + `schurPolynomial_empty`
-    - k = 1: proved — `ssytSchurFin_one_row` (bijection with Sym via sorted reps)
-    - k ≥ 2: open — requires RSK correspondence (~300 lines):
-        (1) RSK: SSYT of shape sh ↔ NI lattice path tuples for the LGV configuration
-        (2) LGV: det[e(Aᵢ,Bⱼ)] = signed sum over path tuples (parent proof)
-        (3) Weight match: SSYT weight monomial = product of path weights = hsymm product -/
+    - k = 0: **proved** — det of 0×0 matrix = 1 = empty SSYT sum
+      (`schurPolynomial_empty` + `ssytSchurFin_empty`)
+    - k = 1: **proved** — det of 1×1 matrix = h_{sh(0)} = one-row SSYT sum
+      (`schurPolynomial_one_row` + `ssytSchurFin_one_row`)
+    - k ≥ 2: **open** — requires RSK correspondence (~300-400 lines):
+        (1) RSK bijection: SSYTFin n k sh ↔ NI lattice path tuples
+        (2) LGV: det[e(Aᵢ,Bⱼ)] = weighted NI-path-count (parent proof available)
+        (3) Weight match: SSYT weight = product of path weights = hsymm entries -/
 theorem jacobi_trudi_ssyt_eq (n k : ℕ) (sh : Fin k → ℕ) :
     JacobiTrudi.schurPolynomial (σ := Fin n) (R := R) k sh =
     ssytSchurFin (R := R) n k sh := by
-  sorry
+  cases k with
+  | zero =>
+    -- k = 0: empty partition; both sides = 1.
+    -- det of 0×0 matrix = 1 (schurPolynomial_empty);
+    -- sum over unique empty SSYT = 1 (ssytSchurFin_empty).
+    have hsh : sh = Fin.elim0 := funext (fun i => i.elim0)
+    rw [hsh, schurPolynomial_empty, ssytSchurFin_empty]
+  | succ k =>
+    cases k with
+    | zero =>
+      -- k = 1: one-row partition [sh(0)].
+      -- schurPolynomial_one_row: det of 1×1 matrix [[h_{sh(0)}]] = h_{sh(0)}.
+      -- ssytSchurFin_one_row: SSYTFin n 1 (fun _ => sh(0)) ≃ Sym (Fin n) sh(0),
+      --   so the SSYT sum = hsymm (Fin n) R (sh(0)).
+      have hsh : sh = fun _ => sh ⟨0, Nat.lt_succ_self 0⟩ :=
+        funext (fun i => by fin_cases i <;> rfl)
+      rw [hsh, schurPolynomial_one_row, ssytSchurFin_one_row]
+    | succ k =>
+      -- k+2 rows: requires RSK correspondence (open; estimated ~300-400 lines).
+      --
+      -- Proof outline:
+      -- (1) RSK bijection: SSYTFin n (k+2) sh ↔ tuples of NI lattice paths for
+      --     the LGV configuration with sources sᵢ = i, targets tⱼ = sh(j) + j.
+      -- (2) Weight identification: SSYT weight monomial ↦ product of hsymm entries,
+      --     matching the Jacobi-Trudi matrix entry (i,j) = hsymm (sh(i) + j - i).
+      -- (3) LGV lemma: det(path-weight-matrix) = weighted NI-path-count.
+      -- (4) Path-weight-matrix = Jacobi-Trudi matrix (by hsymm path-count formula).
+      --
+      -- The k=0 and k=1 cases above close the induction base.
+      -- See research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01/knowledge.md
+      sorry
 
 end JacobiTrudi

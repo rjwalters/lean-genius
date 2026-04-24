@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: ssytSchurFin_one_row proved (k=1 case). 1 sorry remains: jacobi_trudi_ssyt_eq (k≥2, needs RSK ~300 lines).",
+    "progressSummary": "PROGRESS: jacobi_trudi_ssyt_eq k=0 and k=1 proved explicitly. 1 sorry remains: k+2 rows case (RSK bijection needed)",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -49,7 +49,9 @@
       "ssytSchurFin n k sh: def (sum of SSYT weight monomials = Schur generating function)",
       "SSYTFin n k sh: def (SSYT of shape Fin k → ℕ with entries in Fin n, Subtype encoding)",
       "SSYTFin.weight: def (monomial product over all cells of SSYT)",
-      "ssytSchurFin_one_row: proved (k=1 case: SSYTFin n 1 (fun _ => m) ≃ Sym (Fin n) m via sorted reps)"
+      "ssytSchurFin_one_row: proved (k=1 case: SSYTFin n 1 (fun _ => m) ≃ Sym (Fin n) m via sorted reps)",
+      "jacobi_trudi_ssyt_eq: k=0 case proved (schurPolynomial_empty + ssytSchurFin_empty)",
+      "jacobi_trudi_ssyt_eq: k=1 case proved (schurPolynomial_one_row + ssytSchurFin_one_row via fin_cases)"
     ],
     "insights": [
       "Mathlib has hsymm σ R n (complete homogeneous symmetric polynomials) in RingTheory.MvPolynomial.Symmetric.Defs — directly usable for Jacobi-Trudi matrix entries",
@@ -70,7 +72,10 @@
       "Multiset.length_sort gives (s.sort r).length = s.card (not card_sort)",
       "List.SortedLE.getElem_le_getElem_of_le handles monotonicity of sorted list access",
       "Fintype.sum_equiv with explicit Equiv is cleanest way to reindex finite sums",
-      "Weight match: Fintype.prod_sigma + Fin.prod_univ_one reduces sigma product; map_coe+prod_coe+map_ofFn+prod_ofFn closes the goal"
+      "Weight match: Fintype.prod_sigma + Fin.prod_univ_one reduces sigma product; map_coe+prod_coe+map_ofFn+prod_ofFn closes the goal",
+      "jacobi_trudi_ssyt_eq k=0 case proves via hsh : sh = Fin.elim0 := funext (fun i => i.elim0), then rw schurPolynomial_empty + ssytSchurFin_empty",
+      "jacobi_trudi_ssyt_eq k=1 case proves via hsh via fin_cases i, then rw schurPolynomial_one_row + ssytSchurFin_one_row",
+      "Structured k-case split: cases k with | zero => | succ k => cases k with | zero => | succ k => is cleaner than induction for this theorem"
     ],
     "mathlibGaps": [
       "No Mathlib SchurPolynomial definition — we provide one via Jacobi-Trudi formula",
