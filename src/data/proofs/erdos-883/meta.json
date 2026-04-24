@@ -68,11 +68,12 @@
     "text": "For a large subset A of {1,...,n}, does the coprime graph G(A) contain all short odd cycles? Question 2 SOLVED by Sárkőzy (1999). Question 1 remains open.",
     "proofStrategy": "The formalization defines the coprime graph using SimpleGraph, the threshold via inclusion-exclusion, and the extremal set (multiples of 2 or 3). Erdős-Sárkőzy (odd cycles for cn) and Sárkőzy (tripartite subgraphs) are axiomatized. Three proved theorems: erdos_883_question_2_solved, erdos_883_partial, and erdos_883.",
     "keyInsights": [
-      "Coprime graph: two integers are adjacent iff gcd = 1",
-      "Threshold from inclusion-exclusion: multiples of 2 + multiples of 3 - multiples of 6",
-      "Extremal set (multiples of 2 or 3) has size = threshold but no triangles",
-      "Above threshold, odd cycles of length proportional to n exist (Erdős-Sárkőzy)",
-      "Sárkőzy showed (1,l,l) tripartite subgraphs with l proportional to log n / log log n"
+      "Coprime graph: G(A) has edges exactly where gcd=1 — integer pairs sharing no prime factor. The proportion of coprime pairs in {1,...,n} converges to 6/π² (by Euler product ∏(1-1/p²)), so G({1,...,n}) is dense",
+      "Threshold from inclusion-exclusion: T(n) = ⌊n/2⌋ + ⌊n/3⌋ - ⌊n/6⌋ = |{m≤n: 2|m or 3|m}| ≈ 2n/3 — the count of integers NOT coprime to 6. The threshold is the extremal set size, not just a constant",
+      "The extremal set (multiples of 2 or 3) is triangle-free by pigeonhole: any 3 elements have at least two sharing a prime factor from {2,3}, preventing a coprime triangle. This shows the threshold is tight — one more element forces triangle",
+      "Above threshold, odd cycles of length cn exist (Erdős-Sárkőzy 1997) but the constant c is unspecified. Q1 asks whether c = 1/3 works. The gap between 'some c' and 'c=1/3' is the open mathematical problem",
+      "Sárkőzy's (1,ℓ,ℓ) tripartite result (ℓ ≫ log n / log log n) uses the second moment method on coprime pair counts. The formalization's hasTripartite only requires the central vertex v to be adjacent to both S and T — S and T are not required to be adjacent to each other",
+      "The formalization pattern: 2 axioms + 3 proved theorems, where all proofs are 1-line `exact axiom args`. This is transparent axiom delegation — the Lean code makes explicit that the mathematical content is in the two axioms, and everything else is bookkeeping"
     ],
     "prerequisites": [
       "Graph theory: simple graphs, adjacency, subgraph structure",
@@ -142,12 +143,12 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #883 is PARTIALLY SOLVED. Question 1 (all odd cycles of length at most n/3 + 1) remains open, though Erdős-Sárkőzy proved cycles of length cn exist. Question 2 (tripartite subgraphs) was solved by Sárkőzy (1999).",
-    "implications": "The results connect number theory and extremal graph theory through coprimality. The coprime graph structure above the threshold exhibits rich subgraph structure.",
+    "implications": "The coprime graph on {1,...,n} is a fundamental object connecting multiplicative number theory to extremal graph theory. The threshold 2n/3 arises from the Euler product: the proportion of integers coprime to 6 is φ(6)/6 = 2/6 = 1/3, and the proportion NOT coprime to 6 (divisible by 2 or 3) is 2/3 — precisely the extremal set density. The Sárkőzy tripartite result (ℓ ≫ log n / log log n) connects to the first and second moment methods in probabilistic combinatorics: the number of edges in G(A) above threshold is Θ(n²), and the variance calculations on triangle/path counts give the tripartite bound. The formalization captures the two-tier proof structure: the Lean proofs are thin wrappers (1-2 lines) around the two axioms, making transparent exactly where the hard mathematical content lives.",
     "openQuestions": [
-      "Does the specific constant 1/3 work for Question 1?",
-      "What is the optimal constant c in the Erdős-Sárkőzy theorem?",
-      "Can the log n / log log n bound for l be improved?",
-      "Analogous problems for other arithmetic graphs?"
+      "Prove Question 1: formalize the Erdős-Sárkőzy theorem with the specific constant c = 1/3, i.e., show |A| > T(n) implies G(A) contains all odd cycles up to n/3+1. Would require density arguments for coprime pairs in dense subsets of {1,...,n}.",
+      "Improve the ℓ bound in sarkozy_tripartite: Sárkőzy's ℓ ≫ log n / log log n arises from the pigeonhole method. Can this be strengthened to ℓ = Θ(n^ε) for some ε > 0? No improvement is currently known.",
+      "Deaxiomatize erdos_sarkozy_odd_cycles: formalize the 1997 proof, which uses counting coprime pairs in A above the threshold and density arguments from multiplicative number theory. The key step is showing dense sets contain arithmetic progressions of coprime numbers.",
+      "Formalize the chromatic number: prove χ(G({1,...,n})) ≈ π(n)/2 (Pach-Sharir), where π(n) is the prime-counting function. This would require deeper prime distribution results from Mathlib."
     ]
   },
   "references": [
@@ -163,12 +164,22 @@
     {
       "targetId": "erdos-882",
       "relationship": "related",
-      "description": "Nearby Erdős problem in the combinatorial number theory collection"
+      "description": "Adjacent Erdős problem in the collection — both study graph-theoretic properties of arithmetic subsets of integers"
     },
     {
       "targetId": "ramseys-theorem",
       "relationship": "related",
-      "description": "Both concern structural properties of graphs — Ramsey theory guarantees unavoidable substructures, connecting to the structural constraints studied here"
+      "description": "Ramsey theory guarantees unavoidable substructures in large graphs — Problem #883's cycle and tripartite guarantees above the threshold are a Ramsey-type threshold phenomenon"
+    },
+    {
+      "targetId": "erdos-ko-rado",
+      "relationship": "related",
+      "description": "Another Erdős extremal combinatorics problem with a sharp threshold — both study when a graph property is forced above a critical density"
+    },
+    {
+      "targetId": "fundamental-theorem-arithmetic",
+      "relationship": "foundational",
+      "description": "Coprimality (gcd = 1) is the coprime graph's edge predicate; the multiplicative structure of integers (prime factorization) determines which pairs are coprime and shapes the graph's density above the threshold"
     }
   ],
   "leanFile": {
