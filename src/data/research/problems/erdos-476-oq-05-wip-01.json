@@ -1,0 +1,79 @@
+{
+  "slug": "erdos-476-oq-05-wip-01",
+  "title": "Erdős #476 OQ5 — Complete Vosper's Theorem Inductive Step",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "The proof infrastructure is complete:",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-22T15:58:45+02:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: case1_exists proved for |B|=2 via orbit argument; |B|≥3 branch sorryed as HARD",
+    "builtItems": [
+      "case1_exists |B|=2 branch: fully proved via orbit argument (Erdos476OQ05Problem.lean ~550-609)",
+      "hredA_card lemma inline: ∀ a ∈ A, (A.erase a + B).card = A.card + B.card - 1 from CD + inclusion",
+      "hredA set equality inline: ∀ a ∈ A, A.erase a + B = A + B via Finset.eq_of_subset_of_card_le",
+      "horbit_nat by induction: a₀ + k*(b1-b2) ∈ A for all k : ℕ"
+    ],
+    "insights": [
+      "case1_exists |B|=2 proved: orbit argument shows A closed under +(b1-b2) → |A| ≥ p (contradiction)",
+      "Set equality A.erase(a)+B = A+B follows from: CD lower bound + inclusion upper bound + hall assumption",
+      "Key pattern: Finset.eq_of_subset_of_card_le + cardinality from hredA_card proves set equality",
+      "For |B|≥3: all-redundant contradiction needs Freiman-Ruzsa or stabilizer structure theorem — genuinely hard",
+      "The orbit argument uses zmod_orbit_injective (Fin p → ZMod p injective when d≠0) already in file"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove |B|≥3 all-redundant contradiction — requires period structure / Freiman-Ruzsa theory",
+      "Alternative: build stabilizer theorem (if |A+B|=|A+H| for subgroup H, then A+B = A+H) for ZMod p (trivial: H = {0} or ZMod p)",
+      "Vosper is complete modulo this one sorry — consider submitting |B|≥3 branch to Aristotle"
+    ],
+    "markdown": "# Knowledge Base: erdos-476-oq-05-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "additive-combinatorics",
+    "erdos",
+    "number-theory",
+    "arithmetic-progressions",
+    "cauchy-davenport",
+    "vosper-theorem",
+    "zmod",
+    "completion",
+    "wip"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-47",
+    "erdos-476",
+    "erdos-476-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T15:58:45+02:00",
+  "significance": 7,
+  "tractability": 6
+}
