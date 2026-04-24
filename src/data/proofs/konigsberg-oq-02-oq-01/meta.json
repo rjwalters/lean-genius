@@ -18,10 +18,10 @@
       "hierholzer"
     ],
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 1,
     "dateAdded": "2026-04-24",
     "axiomCount": 0,
-    "assumptions": "3 sorries remain: (1) removeArcList_arcCount (arcCount formula for residual subgraph), (2) removeArcList_balanced (balance preserved after removing a circuit), (3) directed_euler_circuit_sufficient_corrected (WF induction combining splice + balance lemmas). The key sub-lemma (maximal trail is circuit) and Walk.splice are fully proved.",
+    "assumptions": "1 sorry remains: directed_euler_circuit_sufficient_corrected (WF induction on arcCount combining splice + balance lemmas). Supporting lemmas removeArcList_arcCount and removeArcList_balanced are now fully proved.",
     "lineCount": 436,
     "theoremCount": 8,
     "definitionCount": 5,
@@ -32,7 +32,8 @@
       "Walk.splice: proved (0 sorries) — circuit extension operation concatenating two walks",
       "Walk.splice_nodup: proved (0 sorries) — splice of disjoint Nodup walks is Nodup",
       "Digraph.removeArcList: residual subgraph definition for Hierholzer induction",
-      "removeArcList_balanced: sorry — circuit removal preserves balance (proof roadmap provided)"
+      "removeArcList_arcCount: proved — arcCount formula for residual subgraph after arc removal",
+      "removeArcList_balanced: proved — balance preserved after removing a circuit from balanced digraph"
     ]
   },
   "overview": {
@@ -47,7 +48,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Key infrastructure for Hierholzer's algorithm proved: maximal trail sub-lemma (0 sorries), Walk.splice (0 sorries). 3 sorries remain for the WF induction glue and two supporting arithmetic lemmas.",
+    "summary": "Key infrastructure for Hierholzer's algorithm proved: maximal trail sub-lemma (0 sorries), Walk.splice (0 sorries), removeArcList_arcCount (0 sorries), removeArcList_balanced (0 sorries). 1 sorry remains for the WF induction combining all proved sub-lemmas.",
     "implications": [
       "Fixes bug in KonigsbergOQ02 directed Eulerian sufficiency axiom",
       "Walk.splice enables circuit extension proofs beyond this result",
@@ -66,7 +67,7 @@
     "theoremCount": 8,
     "definitionCount": 5,
     "path": "Proofs/KonigsbergOQ02OQ01.lean",
-    "sorries": 3,
+    "sorries": 1,
     "imports": [
       "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
       "Mathlib.Tactic",
@@ -124,24 +125,11 @@
   ],
   "sorries": [
     {
-      "id": "removeArcList_arcCount",
-      "description": "arcCount of residual = D.arcCount - removed arcs length (for Nodup arc list)",
-      "type": "supporting_lemma",
-      "difficulty": "medium"
-    },
-    {
-      "id": "removeArcList_balanced",
-      "description": "Balance preserved when removing a circuit from balanced digraph",
-      "type": "key_lemma",
-      "difficulty": "medium",
-      "proofSketch": "Use circuit_fst_perm_snd to show per-vertex fst/snd counts are equal in circuit, then subtract equal amounts from balanced outDeg/inDeg"
-    },
-    {
       "id": "directed_euler_circuit_sufficient_corrected",
-      "description": "Main Hierholzer WF induction combining splice + balance lemmas",
+      "description": "Main Hierholzer WF induction combining all proved sub-lemmas (splice + balance + arcCount)",
       "type": "main_theorem",
       "difficulty": "hard",
-      "proofSketch": "WF induction on D.arcCount - circuit.arcs.length; greedy trail → circuit (maximal_balanced_trail_is_circuit); extend via splice if not Eulerian"
+      "proofSketch": "WF induction on D.arcCount - circuit.arcs.length; greedy trail → circuit (maximal_balanced_trail_is_circuit); extend via splice if not Eulerian; use removeArcList_balanced + removeArcList_arcCount for termination"
     }
   ]
 }
