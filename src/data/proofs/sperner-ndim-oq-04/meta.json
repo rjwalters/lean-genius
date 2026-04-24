@@ -36,7 +36,7 @@
     ],
     "dateAdded": "2026-04-22",
     "axiomCount": 0,
-    "lineCount": 507,
+    "lineCount": 480,
     "assumptions": "0 sorries (down from 3: all proved). 0 Lean axiom declarations. Proof is conditional on: (1) IsKuhnCompatible hypothesis (door degree ≤ 2 per simplex — not all triangulations satisfy this), (2) SpernerTriangulation abstract axioms (adj_symm, adj_vertices, adj_unique_facet, boundary_face), (3) IsSperner coloring hypothesis, (4) odd boundary door count (hbdry_odd). Open mathematical question: constructive FC-termination (that kuhnPathStart actually reaches an FC simplex) is documented but not encoded as a sorry.",
     "mathlib_version": "4.26.0"
   },
@@ -241,7 +241,7 @@
       "BigOperators"
     ],
     "namespace": "SpernerNDimOQ04",
-    "lineCount": 507,
+    "lineCount": 480,
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 6,
