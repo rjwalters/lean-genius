@@ -62,6 +62,15 @@
   },
   "sections": [
     {
+      "id": "imports-header",
+      "title": "Imports, Module Documentation, and Setup",
+      "startLine": 1,
+      "endLine": 71,
+      "summary": "Four imports: PtolemysTheorem (Euclidean Ptolemy wrapper), InnerProductSpace.Basic (norm_sub_sq_real, Cauchy-Schwarz), Trigonometric.Inverse (arccos), Trigonometric.Basic (cos_two_mul). Module docstring describes the proof strategy: spherical Ptolemy = Euclidean Ptolemy ÷ 4 after chord-arc substitution. Namespace SphericalPtolemy, variable V for real inner product space.",
+      "description": "Module documentation explaining the proof strategy (chord-arc bridge from Euclidean to spherical Ptolemy), imports, namespace, and the variable declaration for an arbitrary real inner product space V. The hyperbolic case survey is explained in the docstring.",
+      "mathContext": "The four imports provide the complete logical foundation: `Proofs.PtolemysTheorem` supplies `ptolemys_theorem` (Euclidean Ptolemy in NormedAddTorsor); `InnerProductSpace.Basic` provides `norm_sub_sq_real` ($\\|x-y\\|^2 = \\|x\\|^2 - 2\\langle x,y\\rangle + \\|y\\|^2$) and `abs_real_inner_le_norm` (Cauchy-Schwarz); `Trigonometric.Inverse` provides `cos_arccos`, `arccos_nonneg`, `arccos_le_pi`; `Trigonometric.Basic` provides `cos_two_mul` (double-angle) and `sin_sq_add_cos_sq` (Pythagorean). The variable $V$ ranges over all real Hilbert spaces."
+    },
+    {
       "title": "Cauchy-Schwarz Bound",
       "startLine": 72,
       "endLine": 80,
@@ -95,7 +104,9 @@
       "description": "Detailed mathematical survey of the hyperbolic Ptolemy theorem in the Poincaré disk model. Explains why the conformal factors don't cancel cleanly for interior points, and outlines the infrastructure needed (~800-1200 lines).",
       "summary": "Survey: hyperbolic Ptolemy via Poincaré disk, conformal factors, unified κ-geometry statement",
       "id": "hyperbolic-survey",
-      "mathContext": "In the Poincaré disk $D = \\{z \\in \\mathbb{C} : |z| < 1\\}$, the hyperbolic chord-arc identity is:\n$$\\sinh(d_H(a,b)/2) = \\frac{|a-b|}{\\sqrt{(1-|a|^2)(1-|b|^2)}}$$\n\nFor four points on a common **hyperbolic circle** (which is also a Euclidean circle inside $D$), the Euclidean Ptolemy theorem applies to the complex coordinates. However, the conformal factors $\\sqrt{(1-|x|^2)(1-|y|^2)}$ do **not** cancel uniformly — unlike the spherical case where $\\|a\\| = \\|b\\| = 1$ makes all factors equal to 1.\n\nThe unified curvature-$\\kappa$ Ptolemy theorem: define $\\text{sn}_\\kappa(t) = \\sin(\\sqrt{\\kappa}\\cdot t)/\\sqrt{\\kappa}$ (spherical), $t$ (Euclidean), or $\\sinh(\\sqrt{|\\kappa|}\\cdot t)/\\sqrt{|\\kappa|}$ (hyperbolic). Then for cyclic quadrilaterals in $\\kappa$-geometry: $\\text{sn}_\\kappa(d(a,c)/2)\\cdot\\text{sn}_\\kappa(d(b,d)/2) = \\text{sn}_\\kappa(d(a,b)/2)\\cdot\\text{sn}_\\kappa(d(c,d)/2) + \\text{sn}_\\kappa(d(a,d)/2)\\cdot\\text{sn}_\\kappa(d(b,c)/2)$."
+      "mathContext": "In the Poincaré disk $D = \\{z \\in \\mathbb{C} : |z| < 1\\}$, the hyperbolic chord-arc identity is:\n$$\\sinh(d_H(a,b)/2) = \\frac{|a-b|}{\\sqrt{(1-|a|^2)(1-|b|^2)}}$$\n\nFor four points on a common **hyperbolic circle** (which is also a Euclidean circle inside $D$), the Euclidean Ptolemy theorem applies to the complex coordinates. However, the conformal factors $\\sqrt{(1-|x|^2)(1-|y|^2)}$ do **not** cancel uniformly — unlike the spherical case where $\\|a\\| = \\|b\\| = 1$ makes all factors equal to 1.\n\nThe unified curvature-$\\kappa$ Ptolemy theorem: define $\\text{sn}_\\kappa(t) = \\sin(\\sqrt{\\kappa}\\cdot t)/\\sqrt{\\kappa}$ (spherical), $t$ (Euclidean), or $\\sinh(\\sqrt{|\\kappa|}\\cdot t)/\\sqrt{|\\kappa|}$ (hyperbolic). Then for cyclic quadrilaterals in $\\kappa$-geometry: $\\text{sn}_\\kappa(d(a,c)/2)\\cdot\\text{sn}_\\kappa(d(b,d)/2) = \\text{sn}_\\kappa(d(a,b)/2)\\cdot\\text{sn}_\\kappa(d(c,d)/2) + \\text{sn}_\\kappa(d(a,d)/2)\\cdot\\text{sn}_\\kappa(d(b,c)/2)$.",
+      "startLine": 222,
+      "endLine": 270
     }
   ],
   "overview": {
@@ -104,11 +115,14 @@
     "text": "The spherical Ptolemy theorem is an elegant consequence of the Euclidean version via the chord-arc identity. Four points on the unit sphere satisfying the cyclic condition satisfy a multiplicative sine equality for their pairwise arc distances — the spherical analogue of the product-of-chords equality.",
     "proofStrategy": "**Step 1** (Chord-Arc Identity): For unit sphere points a, b, ‖a−b‖ = 2·sin(arccos(⟨a,b⟩)/2).\n\nProve by squaring both sides and using:\n- ‖a−b‖² = 2 − 2⟨a,b⟩  (from norm_sub_sq_real)\n- (2sin(θ/2))² = 2(1−cosθ)  (from cos_two_mul with θ = arccos(⟨a,b⟩))\n- Both sides non-negative → equal (via Real.sqrt_sq)\n\n**Step 2** (Apply Euclidean Ptolemy): ptolemys_theorem gives ‖a-b‖·‖c-d‖ + ‖b-c‖·‖a-d‖ = ‖a-c‖·‖b-d‖.\n\n**Step 3** (Substitute and cancel): Replace each norm by 2·sin(arc/2), giving 4·(sin_ab·sin_cd + sin_bc·sin_ad) = 4·sin_ac·sin_bd. Divide by 4.",
     "keyInsights": [
-      "The chord-arc identity ‖a−b‖ = 2·sin(arccos(⟨a,b⟩)/2) is the bridge between Euclidean and spherical Ptolemy",
-      "The factor of 4 cancels cleanly because all points are on the UNIT sphere (‖x‖ = 1), unlike the hyperbolic case where conformal factors depend on the point",
-      "V as its own NormedAddTorsor (via SeminormedAddCommGroup.toNormedAddTorsor) lets us apply the abstract Euclidean Ptolemy theorem directly in the inner product space",
-      "linear_combination (-(1/4)·h_eucl) is the cleanest proof tactic for the division-by-4 step in a ring",
-      "The spherical Ptolemy theorem is the κ=1 case of the unified curvature-κ Ptolemy theorem; κ=0 (Euclidean) is in Mathlib; κ=-1 (hyperbolic) requires ~1000 lines of new infrastructure"
+      "The chord-arc identity ‖a−b‖ = 2·sin(arccos(⟨a,b⟩)/2) is the bridge between Euclidean and spherical Ptolemy — translating Euclidean distances into spherical arc distances through the sine half-angle",
+      "The factor of 4 cancels cleanly because all points are on the UNIT sphere (‖x‖ = 1), unlike the hyperbolic case where conformal factors 1/(1-|x|²) depend on the point and prevent uniform cancellation",
+      "V as its own NormedAddTorsor (via SeminormedAddCommGroup.toNormedAddTorsor) lets us apply the abstract Euclidean Ptolemy theorem directly in the inner product space, treating V as its own affine space where dist(x,y) = ‖x-y‖",
+      "linear_combination (-(1/4)·h_eucl) is the cleanest proof tactic for the division-by-4 step: it instructs Lean to verify that goal_lhs − goal_rhs = -(1/4)·(h_eucl_lhs − h_eucl_rhs) as a ring identity, eliminating the factor of 4 introduced by the chord-arc substitution",
+      "The spherical Ptolemy theorem is the κ=1 case of the unified curvature-κ Ptolemy theorem; κ=0 (Euclidean) is in Mathlib as mul_dist_add_mul_dist_eq_mul_dist_of_cospherical; κ=-1 (hyperbolic) requires ~1000 lines of new infrastructure",
+      "The proof strategy — reduce to Euclidean then substitute — mirrors how Ptolemy himself implicitly knew: ancient astronomers computed star positions on the celestial sphere by relating chord tables (Euclidean) to arc tables (spherical), the same 2sin(θ/2) identity, centuries before it was formalized",
+      "The squaring-and-sqrt technique (show x² = y², both non-negative, conclude x = y) recurs throughout the file: it converts multiplicative identities involving square roots or norms into polynomial ring identities that norm_num and linarith can handle — a foundational proof pattern in Lean formalization of metric geometry",
+      "The `Cospherical` hypothesis and the angle conditions `∠ a p c = π, ∠ b p d = π` are exactly what Mathlib's Euclidean Ptolemy theorem (`mul_dist_add_mul_dist_eq_mul_dist_of_cospherical`) requires. Importing these conditions verbatim from the Euclidean version means the spherical theorem is as general as the Euclidean one — no extra conditions needed beyond what characterizes a cyclic quadrilateral"
     ],
     "prerequisites": [
       "Real inner product spaces and their metric structure",
