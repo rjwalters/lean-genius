@@ -368,32 +368,26 @@ theorem cube_unique_zero_dehn (a : ℝ) (ha : a > 0) :
     (edgeTerm (12 * a) (Real.pi / 2) = 0) ∧
     (∀ x : ℝ, x = tetAngle ∨ x = octAngle ∨ x = dodAngle ∨ x = icoAngle →
       ∀ n : ℕ, 0 < n → edgeTerm (n * a) x ≠ 0) := by
-  constructor
-  · exact cube_dehn_zero a
-  · intro x hx n hn
-    rcases hx with rfl | rfl | rfl | rfl
-    · -- Tetrahedron angle: use tet_dehn_ne_zero
-      intro heq
-      apply tet_dehn_ne_zero (n / 6 * a)  -- scaling argument
-      -- General n: any positive edge term with infinite-order angle is nonzero
-      · positivity
-      · unfold edgeTerm at heq ⊢
-        -- Both are nonzero multiples of the same tensor element
-        intro h
-        exact tet_dehn_ne_zero a ha (by
-          unfold edgeTerm
-          apply tmul_infinite_order_ne_zero (by linarith)
-            tetAngle_infinite_order)
-    · -- Octahedron angle
-      apply oct_dehn_ne_zero a ha
-      -- oct_dehn_ne_zero handles the octahedron case
-      sorry  -- general edge count scaling; see note below
-    · -- Dodecahedron angle
-      apply dod_dehn_ne_zero a ha
-      sorry  -- general edge count scaling
-    · -- Icosahedron angle
-      apply ico_dehn_ne_zero a ha
-      sorry  -- general edge count scaling
+  refine ⟨cube_dehn_zero a, fun x hx n hn => ?_⟩
+  -- n * a ≠ 0 since n > 0 and a > 0
+  have hna : (n : ℝ) * a ≠ 0 :=
+    mul_ne_zero (Nat.cast_pos.mpr hn).ne' ha.ne'
+  rcases hx with rfl | rfl | rfl | rfl
+  · -- Tetrahedron: [tetAngle] has infinite order
+    unfold edgeTerm
+    exact tmul_infinite_order_ne_zero _ _ hna tetAngle_infinite_order
+  · -- Octahedron: angleClass octAngle = -angleClass tetAngle (infinite order preserved)
+    unfold edgeTerm
+    apply tmul_infinite_order_ne_zero _ _ hna
+    intro m hm hzero
+    rw [octAngle_class, smul_neg, neg_eq_zero] at hzero
+    exact tetAngle_infinite_order m hm hzero
+  · -- Dodecahedron: [dodAngle] has infinite order (proved above)
+    unfold edgeTerm
+    exact tmul_infinite_order_ne_zero _ _ hna dodAngle_infinite_order
+  · -- Icosahedron: [icoAngle] has infinite order (proved above via axiom)
+    unfold edgeTerm
+    exact tmul_infinite_order_ne_zero _ _ hna icoAngle_infinite_order
 
 -- ============================================================
 -- PART VI: Axiom Audit
@@ -423,9 +417,10 @@ theorem cube_unique_zero_dehn (a : ℝ) (ha : a > 0) :
 - `ico_dehn_ne_zero` — D(icosahedron) ≠ 0
 - `cube_isolated_dehn_invariant` — Complete classification table
 
-### Sorries in cube_unique_zero_dehn: 3
-- General scaling lemmas for edge terms (non-critical; the main results
-  cube_isolated_dehn_invariant is the key theorem, fully proved)
+### Sorries: 0
+- All sorries eliminated. cube_unique_zero_dehn proved via tmul_infinite_order_ne_zero
+  for each angle uniformly: oct via octAngle_class = -tetAngle, dod/ico via their
+  infinite order theorems.
 -/
 
 -- Verification

@@ -37,8 +37,9 @@ lemma stoppedValue_eq_of_le {Ω : Type*} {m : MeasurableSpace Ω}
 lemma stoppedValue_measurable {Ω : Type*} {m : MeasurableSpace Ω}
     {ℱ : Filtration ℕ m} (f : ℕ → Ω → ℝ) (τ : Ω → ℕ∞)
     (hf : Adapted ℱ f) (hτ : IsStoppingTime ℱ τ) (N : ℕ) (hτN : ∀ ω, τ ω ≤ N) :
-    Measurable (stoppedValue f τ) := by
-  sorry
+    Measurable (stoppedValue f τ) :=
+  (stronglyMeasurable_stoppedValue_of_le hf.progMeasurable_of_discrete hτ hτN).mono
+    (ℱ.le N) |>.measurable
 
 /-
   ## Section 2: IsStoppingTime Helpers for ℕ∞
@@ -61,9 +62,9 @@ lemma isStoppingTime_min {Ω : Type*} {m : MeasurableSpace Ω}
 lemma stoppedValue_integrable {Ω : Type*} {m : MeasurableSpace Ω}
     {μ : Measure Ω} [IsProbabilityMeasure μ]
     {ℱ : Filtration ℕ m} (f : ℕ → Ω → ℝ) (τ : Ω → ℕ∞)
-    (hf : ∀ n, Integrable (f n) μ) (N : ℕ) (hτN : ∀ ω, τ ω ≤ N) :
-    Integrable (stoppedValue f τ) μ := by
-  sorry
+    (hτ : IsStoppingTime ℱ τ) (hf : ∀ n, Integrable (f n) μ) (N : ℕ) (hτN : ∀ ω, τ ω ≤ N) :
+    Integrable (stoppedValue f τ) μ :=
+  integrable_stoppedValue ℕ hτ hf hτN
 
 /-
   ## Section 3: Optional Stopping Integral Helpers
@@ -115,7 +116,30 @@ lemma doob_maximal_real_of_nnreal {Ω : Type*} {m : MeasurableSpace Ω}
     (N : ℕ) (thresh : ℝ) (hthresh : 0 < thresh)
     (s : Set Ω) (hs : s = {ω | ∃ n ≤ N, thresh ≤ f n ω}) :
     thresh * (μ s).toReal ≤ ∫ ω, f N ω ∂μ := by
-  sorry
+  rw [hs]
+  -- Convert to NNReal threshold for Mathlib's maximal_ineq
+  set ε : ℝ≥0 := ⟨thresh, le_of_lt hthresh⟩
+  -- The Mathlib-style set using sup over range
+  set S := {ω | (ε : ℝ) ≤ (Finset.range (N + 1)).sup'
+    Finset.nonempty_range_add_one fun k => f k ω} with hS_def
+  -- Mathlib's ENNReal-valued Doob inequality
+  have hmain := maximal_ineq hf (fun n => hpos n) N (ε := ε)
+  -- Show our set equals the Mathlib set
+  have hset_eq : {ω | ∃ n ≤ N, thresh ≤ f n ω} = S := by
+    ext ω
+    simp only [Set.mem_setOf_eq, hS_def, NNReal.coe_mk,
+      Finset.le_sup'_iff Finset.nonempty_range_add_one,
+      Finset.mem_range, Nat.lt_succ_iff, S]
+  rw [hset_eq]
+  calc thresh * (μ S).toReal
+      = (ε : ℝ≥0∞).toReal * (μ S).toReal := by congr 1; simp [ε]
+    _ = ((ε : ℝ≥0∞) * μ S).toReal := ENNReal.toReal_mul.symm
+    _ ≤ (ENNReal.ofReal (∫ ω in S, f N ω ∂μ)).toReal :=
+        ENNReal.toReal_mono ENNReal.ofReal_ne_top hmain
+    _ = ∫ ω in S, f N ω ∂μ :=
+        ENNReal.toReal_ofReal (integral_nonneg fun ω => hpos N ω)
+    _ ≤ ∫ ω, f N ω ∂μ :=
+        setIntegral_le_integral (hf.integrable N) (eventually_of_forall (hpos N))
 
 /-- The set {ω | ∃ n ≤ N, thresh ≤ f n ω} is measurable for adapted f -/
 lemma maximal_set_measurable {Ω : Type*} {m : MeasurableSpace Ω}
@@ -124,6 +148,18 @@ lemma maximal_set_measurable {Ω : Type*} {m : MeasurableSpace Ω}
     (hf : Submartingale f ℱ μ)
     (N : ℕ) (thresh : ℝ) :
     MeasurableSet {ω | ∃ n ≤ N, thresh ≤ f n ω} := by
-  sorry
+  -- Rewrite as finite union over {0,...,N}
+  have heq : {ω | ∃ n ≤ N, thresh ≤ f n ω} =
+      ⋃ n ∈ Finset.range (N + 1), {ω | thresh ≤ f n ω} := by
+    ext ω
+    simp only [Set.mem_setOf_eq, Set.mem_iUnion, Finset.mem_range]
+    constructor
+    · rintro ⟨n, hn, h⟩; exact ⟨n, Nat.lt_succ_of_le hn, h⟩
+    · rintro ⟨n, hn, h⟩; exact ⟨n, Nat.lt_succ_iff.mp hn, h⟩
+  rw [heq]
+  apply MeasurableSet.biUnion (Finset.toSet_finite _).countable
+  intro n _
+  -- {thresh ≤ f n} is measurable because f n is measurable (adapted, then filtered ≤ ambient)
+  exact measurableSet_le measurable_const ((hf.adapted n).measurable.mono (ℱ.le n))
 
 end FairGamesOQ03.Aristotle
