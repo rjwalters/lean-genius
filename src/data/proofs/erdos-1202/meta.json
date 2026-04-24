@@ -74,35 +74,40 @@
       "title": "Problem Header and Documentation",
       "startLine": 1,
       "endLine": 20,
-      "summary": "Header documenting Erdős Problem #1202, its solved status, and the note about source corruption. Explains what fragments were recoverable (ε, η > 0; k primes; m > √(n log n); k ≫_c m²/(n log n)) and what remains unclear (the precise structural condition on the prime subset)."
+      "summary": "Header documenting Erdős Problem #1202, its solved status, and the note about source corruption. Explains what fragments were recoverable (ε, η > 0; k primes; m > √(n log n); k ≫_c m²/(n log n)) and what remains unclear (the precise structural condition on the prime subset).",
+      "mathContext": "The recoverable parameters: $\\varepsilon, \\eta > 0$ (implicit constants), $k$ primes $p_1 < \\cdots < p_k$, and the quantitative regime $m > \\sqrt{n \\log n}$, $k \\gg_c m^2/(n \\log n)$. The threshold $m^2/(n \\log n)$ is the natural scale for prime pairs: by PNT the number of primes $\\leq n$ is $\\sim n/\\log n$, so the expected prime pair count in $[1,n] \\times [1,m]$ is $\\sim mn/\\log^2 n$; for $m \\sim \\sqrt{n \\log n}$ this gives $\\sim \\sqrt{n/\\log n}$ pairs, precisely the non-trivial threshold."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 27,
       "endLine": 50,
-      "summary": "Three key definitions: `IsPrimeSet` (a Finset ℕ whose elements are all prime), `asympThreshold m n = m²/(n log n)` (the quantitative threshold from the problem), and `growthCondition m n` (the condition m > √(n log n) ensuring the threshold is in the non-trivial range)."
+      "summary": "Three key definitions: `IsPrimeSet` (a Finset ℕ whose elements are all prime), `asympThreshold m n = m²/(n log n)` (the quantitative threshold from the problem), and `growthCondition m n` (the condition m > √(n log n) ensuring the threshold is in the non-trivial range).",
+      "mathContext": "`IsPrimeSet S : Prop := ∀ p ∈ S, Nat.Prime p` — a finite collection of primes. `asympThreshold m n : ℝ := m^2 / (n * Real.log n)` — the characteristic scale; at $m = \\sqrt{n \\log n}$ this equals 1. `growthCondition m n : Prop := m > Real.sqrt (n * Real.log n)` — ensures $m^2 > n \\log n$, so `asympThreshold m n > 1` (non-trivial range). The three definitions together define the setting in which Erdős's threshold result holds."
     },
     {
       "id": "lemmas",
       "title": "Supporting Lemmas",
       "startLine": 52,
       "endLine": 72,
-      "summary": "Two lemmas about the asymptotic threshold: `asympThreshold_pos` proves positivity when m > 0 and n > 1; `asympThreshold_lt_m` proves asympThreshold m n < m under the growth condition, confirming the threshold is non-trivial."
+      "summary": "Two lemmas about the asymptotic threshold: `asympThreshold_pos` proves positivity when m > 0 and n > 1; `asympThreshold_lt_m` proves asympThreshold m n < m under the growth condition, confirming the threshold is non-trivial.",
+      "mathContext": "`asympThreshold_pos`: $m > 0 \\land n > 1 \\Rightarrow m^2/(n \\log n) > 0$ — requires $\\log n > 0$ for $n > 1$ (`Real.log_pos`). `asympThreshold_lt_m`: under `growthCondition m n` (i.e., $m > \\sqrt{n \\log n}$, equivalently $m^2 > n \\log n$), $m^2/(n \\log n) < m$ iff $m > n \\log n / m$ iff $m^2 > n \\log n$ — the growth condition exactly. These two lemmas confirm $0 < m^2/(n \\log n) < m$, placing the threshold strictly between 0 and the input parameter."
     },
     {
       "id": "axiom",
       "title": "Main Axiom: Threshold Result",
       "startLine": 74,
       "endLine": 88,
-      "summary": "The axiom `erdos_1202_threshold` encodes the solved result: ∃ c > 0 such that for all n > 1, m > √(n log n), and prime sets S with |S| ≥ m²/(n log n), there exists T ⊆ S with |T| ≥ c · m²/(n log n) satisfying the structural property. Axiomatized due to source corruption preventing recovery of the exact property."
+      "summary": "The axiom `erdos_1202_threshold` encodes the solved result: ∃ c > 0 such that for all n > 1, m > √(n log n), and prime sets S with |S| ≥ m²/(n log n), there exists T ⊆ S with |T| ≥ c · m²/(n log n) satisfying the structural property. Axiomatized due to source corruption preventing recovery of the exact property.",
+      "mathContext": "`erdos_1202_threshold` (axiom): $\\exists c > 0, \\forall n > 1, m > \\sqrt{n \\log n},\\, \\forall S\\, (\\text{IsPrimeSet}),\\, |S| \\geq m^2/(n \\log n) \\Rightarrow \\exists T \\subseteq S,\\, |T| \\geq c \\cdot m^2/(n \\log n) \\land P(T)$, where $P(T)$ is the unknown structural property. Axiomatized because: (1) the source problem is corrupted so $P$ is unrecoverable; (2) the analytic proof (likely via large sieve or Selberg's $\\Lambda^2$ sieve) requires machinery not yet in Mathlib. The constant $c$ is absolute (independent of $\\varepsilon, \\eta$) based on the $\\gg_c$ notation."
     },
     {
       "id": "theorem",
       "title": "Main Theorem",
       "startLine": 90,
       "endLine": 97,
-      "summary": "Theorem `erdos_1202` states the main result and follows directly from the axiom. The theorem confirms the threshold m²/(n log n) governs the existence of large structured prime subsets, matching the problem's answer on erdosproblems.com."
+      "summary": "Theorem `erdos_1202` states the main result and follows directly from the axiom. The theorem confirms the threshold m²/(n log n) governs the existence of large structured prime subsets, matching the problem's answer on erdosproblems.com.",
+      "mathContext": "`erdos_1202` is a one-line theorem wrapping `erdos_1202_threshold`: given the same hypotheses ($n > 1$, `growthCondition`, `IsPrimeSet S`, $|S| \\geq \\text{asympThreshold}$), it applies the axiom. The theorem serves as the public interface: the axiom provides the witness $c$ and subset $T$, while the theorem confirms the result matches the solved status on erdosproblems.com. Since the structural property $P(T)$ is opaque, this is a 'placeholder theorem' — correct in form but incomplete in mathematical content until the source is recovered."
     }
   ],
   "conclusion": {
