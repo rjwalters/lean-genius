@@ -42,7 +42,8 @@
     "algebraic-numbers"
   ],
   "relatedProofs": [
-    "sqrt2-plus-sqrt3-irrational"
+    "sqrt2-plus-sqrt3-irrational",
+    "sqrt2-plus-sqrt3-irrational-oq-03"
   ],
   "references": {
     "papers": [],
@@ -63,6 +64,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3Irrational.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3IrrationalOQ03.lean",
+      "filename": "Sqrt2PlusSqrt3IrrationalOQ03.lean",
+      "lineCount": 404,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3IrrationalOQ03.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3IrrationalOQ03Aristotle.lean",
+      "filename": "Sqrt2PlusSqrt3IrrationalOQ03Aristotle.lean",
+      "lineCount": 72,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3IrrationalOQ03Aristotle.lean"
     }
   ]
 }

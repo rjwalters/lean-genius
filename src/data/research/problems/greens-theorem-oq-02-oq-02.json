@@ -4,7 +4,7 @@
   "description": "Can the Whitney axiom be proved in Lean using Mathlib's existing `BoundedVariation` and `MeasureTheory.Measure.AbsolutelyContinuous` API?",
   "source": {
     "proofId": "greens-theorem-oq-02",
-    "proofTitle": "Green's Theorem: Minimal Regularity (Lipschitz Curves and L\u00b9 Curl)",
+    "proofTitle": "Green's Theorem: Minimal Regularity (Lipschitz Curves and L¹ Curl)",
     "type": "open-question"
   },
   "category": "extension",
@@ -19,9 +19,82 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "greens-theorem-oq-02"
+    "greens-theorem",
+    "greens-theorem-oq-01",
+    "greens-theorem-oq-01-oq-01",
+    "greens-theorem-oq-02",
+    "greens-theorem-oq-03",
+    "greens-theorem-oq-04"
   ],
   "status": "available",
   "selectedDate": "2026-04-12",
-  "selectedBy": "seeker"
+  "selectedBy": "seeker",
+  "leanFiles": [
+    {
+      "path": "Proofs/GreensTheorem.lean",
+      "filename": "GreensTheorem.lean",
+      "lineCount": 359,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheorem.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01.lean",
+      "filename": "GreensTheoremOQ01.lean",
+      "lineCount": 339,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01.lean",
+      "lineCount": 150,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ02.lean",
+      "filename": "GreensTheoremOQ02.lean",
+      "lineCount": 508,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ03.lean",
+      "filename": "GreensTheoremOQ03.lean",
+      "lineCount": 558,
+      "theoremCount": 31,
+      "axiomCount": 3,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ04.lean",
+      "filename": "GreensTheoremOQ04.lean",
+      "lineCount": 588,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ04.lean"
+    }
+  ]
 }

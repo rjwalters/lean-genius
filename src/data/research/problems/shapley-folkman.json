@@ -63,27 +63,39 @@
     {
       "path": "Proofs/ShapleyFolkman.lean",
       "filename": "ShapleyFolkman.lean",
-      "lineCount": 814,
+      "lineCount": 834,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 4,
+      "sorryCount": 5,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkman.lean"
     },
     {
       "path": "Proofs/ShapleyFolkmanAristotle.lean",
       "filename": "ShapleyFolkmanAristotle.lean",
-      "lineCount": 87,
+      "lineCount": 82,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkmanAristotle.lean"
+    },
+    {
+      "path": "Proofs/ShapleyFolkmanOQ03.lean",
+      "filename": "ShapleyFolkmanOQ03.lean",
+      "lineCount": 204,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkmanOQ03.lean"
     }
   ],
   "relatedProofs": [
-    "shapley-folkman"
+    "shapley-folkman",
+    "shapley-folkman-oq-03"
   ]
 }

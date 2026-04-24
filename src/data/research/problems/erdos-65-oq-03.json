@@ -54,6 +54,7 @@
   "relatedProofs": [
     "erdos-6",
     "erdos-65",
+    "erdos-65-oq-03",
     "erdos-650",
     "erdos-651",
     "erdos-652",
@@ -101,9 +102,9 @@
     {
       "path": "Proofs/Erdos652Problem.lean",
       "filename": "Erdos652Problem.lean",
-      "lineCount": 178,
+      "lineCount": 176,
       "theoremCount": 3,
-      "axiomCount": 3,
+      "axiomCount": 2,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
@@ -168,8 +169,8 @@
       "path": "Proofs/Erdos658Problem.lean",
       "filename": "Erdos658Problem.lean",
       "lineCount": 300,
-      "theoremCount": 7,
-      "axiomCount": 2,
+      "theoremCount": 6,
+      "axiomCount": 3,
       "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,
@@ -196,6 +197,17 @@
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos659Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos65OQ03.lean",
+      "filename": "Erdos65OQ03.lean",
+      "lineCount": 268,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos65OQ03.lean"
     },
     {
       "path": "Proofs/Erdos65Problem.lean",
