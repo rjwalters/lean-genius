@@ -2,7 +2,7 @@
   "id": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
   "title": "Jacobi-Trudi Identity: Schur Polynomials as Determinants of Complete Homogeneous Symmetric Polynomials",
   "slug": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
-  "description": "Defines Schur polynomials via the Jacobi-Trudi determinant formula and the SSYT generating function. Proves key properties (symmetry, base cases, two-row formula, hook-length evaluation, k=0,1 SSYT bijections). The k=2 SSYT equality (ssytSchurFin_two_row) is stated with sorry (jdt bijection ~200 lines); the general k\u22653 case is open (algebraic LGV + RSK ~300 lines).",
+  "description": "Defines Schur polynomials via the Jacobi-Trudi determinant formula and the SSYT generating function. Proves key properties (symmetry, base cases, two-row formula, hook-length evaluation, k=1 SSYT bijection) and defines the SSYT type SSYTFin with k=0 and k=1 base cases proved. The general Jacobi-Trudi = SSYT equality remains open for k \u2265 2 (RSK correspondence, ~300 lines).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-24",
@@ -19,12 +19,12 @@
       "ssyt"
     ],
     "badge": "formalized",
-    "sorries": 2,
+    "sorries": 1,
     "dateAdded": "2026-04-23",
     "axiomCount": 0,
-    "assumptions": "2 sorries: (1) ssytSchurFin_two_row (k=2 case via jdt bijection ~200 lines); (2) jacobi_trudi_ssyt_eq k\u22653 via algebraic LGV + RSK (~300 lines). k=0 and k=1 cases proved explicitly.",
-    "lineCount": 405,
-    "theoremCount": 11,
+    "assumptions": "1 sorry for the open case: jacobi_trudi_ssyt_eq k\u22652 via RSK correspondence (~300-400 lines). k=0 and k=1 cases proved explicitly in the theorem.",
+    "lineCount": 313,
+    "theoremCount": 10,
     "definitionCount": 5,
     "originalContributions": [
       "jacobiTrudiMatrix: the k\u00d7k matrix with entries h_{sh_i + j - i} (or 0 for negative index) \u2014 first Lean 4 Jacobi-Trudi matrix definition",
@@ -58,7 +58,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Defines Schur polynomials via both Jacobi-Trudi formula and SSYT generating function. Proves symmetry, base cases (k=0,1 for both), two-row formula, hook-length evaluation, and k=1 SSYT bijection. 2 sorries: ssytSchurFin_two_row (k=2, jdt bijection) and jacobi_trudi_ssyt_eq k\u22653 (algebraic LGV + RSK).",
+    "summary": "Defines Schur polynomials via both Jacobi-Trudi formula and SSYT generating function. Proves symmetry, base cases (k=0,1 for both definitions), two-row formula, hook-length evaluation, and the k=1 SSYT bijection. 1 sorry: jacobi_trudi_ssyt_eq (general RSK proof for k \u2265 2).",
     "implications": "This provides: (1) the first Lean 4 Jacobi-Trudi matrix definition, (2) the first Lean 4 SSYT type for arbitrary partition shapes with Fintype instance, (3) the first formal statement that det[h_{\u03bb\u1d62-i+j}] = \u03a3_T weight(T) as a meaningful theorem. The remaining sorry precisely identifies the RSK correspondence for k \u2265 2 (~300 lines) as the key missing ingredient. A completed formalization would unlock: the Pieri rule $s_\\lambda h_n = \\sum_\\mu s_\\mu$, the Murnaghan-Nakayama rule, and connections to Schubert calculus via the existing LGV infrastructure in the gallery.",
     "openQuestions": [
       "Prove jacobi_trudi_ssyt_eq (general case, k \u2265 2): RSK correspondence SSYT \u2194 NI lattice path tuples for the LGV configuration, then weight matching with hsymm products"
@@ -78,12 +78,12 @@
       "Finset"
     ],
     "namespace": "JacobiTrudi",
-    "lineCount": 405,
+    "lineCount": 345,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 10,
     "definitionCount": 5,
     "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
-    "sorries": 2
+    "sorries": 1
   },
   "crossReferences": [
     {
@@ -167,8 +167,8 @@
       "startLine": 160,
       "endLine": 272,
       "summary": "Defines SSYTFin (bounded SSYT type with Fintype instance), ssytSchurFin (SSYT generating function), proves ssytSchurFin_empty (k=0), proves ssytSchurFin_one_row (k=1, bijection via sorted multiset reps), and states jacobi_trudi_ssyt_eq (general, sorry for k \u2265 2).",
-      "mathContext": "SSYTFin n k sh = subtype of ((i:Fin k)\u00d7Fin(sh i)\u2192Fin n) satisfying row-weak (weakly increasing rows) and col-strict (strictly increasing columns). Fintype instance via Subtype.fintype (decidable predicates over finite types). ssytSchurFin = \u2211_T T.weight where T.weight = \u220f_p X(T p). k=0 proved by Unique (empty SSYT, both conditions vacuous) + IsEmpty (empty product = 1). k=1 proved via Fintype.sum_equiv with bijection \u03c8: SSYTFin n 1 \u2243 Sym (Fin n) m using List.sortedLE_ofFn_iff (Monotone \u2194 SortedLE). General case (k \u2265 2): RSK correspondence (~300 lines), 2 sorries remain (ssytSchurFin_two_row + jacobi_trudi_ssyt_eq k\u22653)."
+      "mathContext": "SSYTFin n k sh = subtype of ((i:Fin k)\u00d7Fin(sh i)\u2192Fin n) satisfying row-weak (weakly increasing rows) and col-strict (strictly increasing columns). Fintype instance via Subtype.fintype (decidable predicates over finite types). ssytSchurFin = \u2211_T T.weight where T.weight = \u220f_p X(T p). k=0 proved by Unique (empty SSYT, both conditions vacuous) + IsEmpty (empty product = 1). k=1 proved via Fintype.sum_equiv with bijection \u03c8: SSYTFin n 1 \u2243 Sym (Fin n) m using List.sortedLE_ofFn_iff (Monotone \u2194 SortedLE). General case (k \u2265 2): RSK correspondence (~300 lines), 1 sorry remains."
     }
   ],
-  "sorries": 2
+  "sorries": 1
 }
