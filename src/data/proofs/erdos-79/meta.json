@@ -17,7 +17,7 @@
       "extremal-graphs"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 1,
     "erdosNumber": 79,
     "erdosUrl": "https://erdosproblems.com/79",
     "erdosProblemStatus": "solved",
@@ -33,7 +33,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 237,
-    "assumptions": "4 axioms: ramsey_linear_hereditary, K4_not_linear, K4_subgraphs_linear, wigderson_theorem. 3 sorries.",
+    "assumptions": "4 axioms: ramsey_linear_hereditary, K4_not_linear, K4_subgraphs_linear, wigderson_theorem. 1 sorry.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -179,7 +179,7 @@
     "theoremCount": 5,
     "definitionCount": 12,
     "path": "Proofs/Erdos79Problem.lean",
-    "sorries": 3
+    "sorries": 1
   },
   "crossReferences": [
     {
@@ -227,5 +227,5 @@
       "note": "Survey of Ramsey number bounds including size-linearity results"
     }
   ],
-  "sorries": 3
+  "sorries": 1
 }
