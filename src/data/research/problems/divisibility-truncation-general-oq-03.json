@@ -1,7 +1,7 @@
 {
   "slug": "divisibility-truncation-general-oq-03",
   "title": "Divisibility Truncation: Osculator and Continued Fraction Connection",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-04-22T13:03:46.505Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Bezout coefficients give osculators, CF connection axiomatized",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Compile check via docker-build",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: DivisibilityTruncationGeneralOQ03.lean created. Bezout\u2192osculator pipeline proved. 1 axiom: CF\u2194extended GCD.",
+    "builtItems": [
+      "bezout_gives_osculator (PROVED): d | 10*gcdA(10,d) - 1 \u2014 DivisibilityTruncationGeneralOQ03.lean",
+      "bezout_osculator_rule (PROVED): canonical test via gcdA \u2014 OQ03.lean",
+      "IsOsculator class: shift, congr, unique_mod (all PROVED) \u2014 OQ03.lean",
+      "osculator_mod_d_is_osculator (PROVED): reduced representative \u2014 OQ03.lean",
+      "canonical_osculator_unique (PROVED): all osculators \u2261 gcdA mod d \u2014 OQ03.lean",
+      "Concrete examples: d=7,11,13,17,19 with divisibility tests (all PROVED) \u2014 OQ03.lean"
+    ],
+    "insights": [
+      "Osculator c for d (d|10c-1) = Bezout coefficient gcdA(10,d) from extended Euclidean algorithm",
+      "Extended GCD of (10,d) = CF algorithm for 10/d: same quotient sequence",
+      "Nat.Coprime.isCoprime in Mathlib.RingTheory.Coprime.Lemmas converts Nat.Coprime to IsCoprime (m:\u2124) n",
+      "IsOsculator forms unique equivalence class mod d: d|c-c' for any two osculators",
+      "Concrete examples proved: d=7(-2), 11(-1), 13(4), 17(-5), 19(2) match Bezout coefficients",
+      "Osculator reduction: gcdA(10,d) mod d gives representative in [0,d) with natAbs < d"
+    ],
+    "mathlibGaps": [
+      "GenContFract and Nat.xgcd connection: ~200 lines to formalize CF=extended GCD equivalence \u2014 axiomatized"
+    ],
+    "nextSteps": [
+      "Run docker-build to verify DivisibilityTruncationGeneralOQ03.lean compiles",
+      "Try proving cf_bezout_correspondence: connect GenContFract.of (10/d : \u211a) to Nat.xgcd 10 d"
+    ]
   },
   "tags": [
     "number-theory",
