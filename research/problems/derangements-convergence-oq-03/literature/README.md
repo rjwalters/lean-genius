@@ -7,8 +7,16 @@ This directory contains:
 
 ## Related Gallery Proofs
 
-[List proofs from src/data/proofs/ that relate to this problem]
+- `derangements-convergence` — parent proof: sharp error bound |D(n)/n! - e⁻¹| ≤ 1/(n+1)!
+- `derangements-oq-03-oq-02` — sibling: Poisson TV distance convergence
+
+## Mathlib References
+
+- `Mathlib.Algebra.Order.Round` — rounding lemmas: `Int.round`, `Real.round`, `abs_sub_round_le`
+- `Mathlib.Combinatorics.Derangements.Basic` — `Nat.numDerangements` definition
+- `Mathlib.Analysis.SpecialFunctions.ExpDeriv` — `Real.exp 1`
 
 ## External References
 
-[Papers, books, online resources]
+- Montmort (1708): original derangements formula via inclusion-exclusion
+- OEIS A000166: sequence of derangement numbers with the round(n!/e) formula noted

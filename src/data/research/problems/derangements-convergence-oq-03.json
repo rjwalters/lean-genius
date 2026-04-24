@@ -1,0 +1,100 @@
+{
+  "slug": "derangements-convergence-oq-03",
+  "title": "Prove D(n) = round(n!/e) for n≥2 as integer identity",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem derangements_round_eq (n : ℕ) (hn : 2 ≤ n) : (Nat.numDerangements n : ℤ) = Int.round (↑(n !) / Real.exp 1)",
+    "plain": "The number of derangements of n elements equals the nearest integer to n!/e, for n ≥ 2. This is an integer identity following from the sharp error bound |D(n)/n! - e⁻¹| ≤ 1/(n+1)! already proved in the gallery.",
+    "whyMatters": [
+      "Bridges the real-valued convergence theorem to a computationally useful integer formula",
+      "Demonstrates the practical power of the sharp error bound 1/(n+1)! < 1/2 for n ≥ 1",
+      "Template for 'nearest-integer' identities involving transcendental constants",
+      "Direct extension of gallery proof requiring only API assembly in Lean"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "derangements_convergence_rate: |D(n)/n! - e⁻¹| ≤ 1/(n+1)! (gallery)",
+      "numDerangements_eq_factorial_mul_altSum: D(n) = n! · Σ_{k≤n} (-1)^k/k! (gallery)",
+      "Int.round, Real.round with abs_sub_round_le (Mathlib)"
+    ],
+    "open": [
+      "Integer rounding identity itself",
+      "Lean 4 formalization connecting real-valued bound to Int.round"
+    ],
+    "goal": "Prove (Nat.numDerangements n : ℤ) = Int.round (↑(n !) / Real.exp 1) for n ≥ 2"
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-24T10:53:57+02:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly. Locate derangements_convergence_rate in gallery. Find Mathlib round API.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: derangements-convergence-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "combinatorics",
+    "derangements",
+    "integer-rounding",
+    "transcendental-constants",
+    "lean-api",
+    "e-constant"
+  ],
+  "relatedProofs": [
+    "derangements",
+    "derangements-convergence",
+    "derangements-convergence-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Algebra.Order.Round",
+      "Mathlib.Combinatorics.Derangements.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+    ]
+  },
+  "started": "2026-04-24T10:53:57+02:00",
+  "significance": 7,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/DerangementsConvergence.lean",
+      "filename": "DerangementsConvergence.lean",
+      "lineCount": 284,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergence.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ01.lean",
+      "filename": "DerangementsConvergenceOQ01.lean",
+      "lineCount": 153,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ01.lean"
+    }
+  ]
+}

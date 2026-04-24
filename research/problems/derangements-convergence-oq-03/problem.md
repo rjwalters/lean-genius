@@ -1,116 +1,145 @@
-# Problem: D(n) = round(n!/e) Integer Identity for Derangements
+# Problem: D(n) = round(n!/e) as an Integer Identity in Lean
 
 **Slug**: derangements-convergence-oq-03
 **Created**: 2026-04-24
 **Status**: Active
-**Source**: gallery-gap
+**Source**: gallery-gap — from `derangements-convergence` OQ3
 
 ## Problem Statement
 
 ### Formal Statement
 
-$$
-\forall n \geq 2,\quad D(n) = \left\lfloor \frac{n!}{e} + \frac{1}{2} \right\rfloor
-$$
+For all n ≥ 2, the number of derangements equals the nearest integer to n!/e:
 
-where $D(n)$ is the number of derangements of $n$ elements.
+```lean
+theorem derangements_round_eq (n : ℕ) (hn : 2 ≤ n) :
+    (Nat.numDerangements n : ℤ) = Int.round (↑(n !) / Real.exp 1) := ...
+```
+
+Or equivalently, using the Nat rounding direction:
+
+```lean
+theorem derangements_round_eq' (n : ℕ) (hn : 1 ≤ n) :
+    (Nat.numDerangements n : ℝ) = Real.round (↑(n !) / Real.exp 1) := ...
+```
 
 ### Plain Language
 
-The number of derangements of $n$ elements equals the nearest integer to $n!/e$ for $n \geq 2$.
+The count of derangements of n objects (permutations fixing no element) equals
+the nearest integer to n!/e, for n ≥ 2. This is a striking identity because it
+connects a purely combinatorial quantity (an integer) to a transcendental constant.
 
-The chain of reasoning:
-1. $D(n)/n! = \sum_{k=0}^n (-1)^k/k!$ (n-th partial sum of Taylor series for $e^{-1}$)
-2. Alternating series bound: $|D(n)/n! - e^{-1}| \leq 1/(n+1)!$
-3. For $n \geq 2$: $1/(n+1)! \leq 1/6 < 1/2$
-4. Therefore $n!/e$ is within $1/2$ of $D(n)$, so $D(n) = \text{round}(n!/e)$
+For example:
+- D(2) = 1, 2!/e ≈ 0.736, round(0.736) = 1 ✓
+- D(3) = 2, 3!/e ≈ 2.207, round(2.207) = 2 ✓
+- D(4) = 9, 4!/e ≈ 8.829, round(8.829) = 9 ✓
 
 ### Why This Matters
 
-This is the sharpest classical characterization of $D(n)$ for computation and pedagogy.
-It upgrades the real-analytic convergence result to a concrete integer identity.
-The pattern — alternating series bound + integer rounding — recurs across combinatorics.
+- Extends the convergence formalization to a computationally useful integer identity
+- Demonstrates the practical strength of the sharp error bound |D(n)/n! - e⁻¹| ≤ 1/(n+1)!
+- Serves as a template for similar "nearest-integer" formulas involving transcendental constants
+- The gallery proof already has the hard analysis; this bridges it to discrete math
 
 ## Known Results
 
 ### What's Already Proven
 
-- `DerangementsConvergence.lean`: $D(n)/n! \to e^{-1}$ (convergence, fully proved)
-- `DerangementsOQ03.lean`: $|D(n)/n! - e^{-1}| \leq 1/(n+1)!$ (sharp bound, FULLY PROVED)
-- `numDerangements_eq_factorial_mul_altSum`: $D(n) = n! \cdot \sum_{k=0}^n (-1)^k/k!$
-- Mathlib: `Nat.numDerangements`, `numDerangements_tendsto_inv_e`
+- **Gallery**: `derangements_convergence_rate`: |D(n)/n! - e⁻¹| ≤ 1/(n+1)! (the key bound)
+- **Gallery**: `numDerangements_eq_factorial_mul_altSum`: identity D(n) = n! · Σ_{k≤n} (-1)^k/k!
+- **Mathlib**: `Real.round` and `Int.round` with `round_eq`, `abs_sub_round`
+- **Mathlib**: `Int.round_cast`, `Int.abs_sub_round_le`
 
 ### What's Still Open
 
-- Lean proof that $D(n) = \text{round}(n!/e)$ as an integer identity
-- Need to bridge real-analytic bound to a statement about integer rounding
+Formalizing the integer rounding statement itself. The key chain is:
+1. `|D(n)/n! - e⁻¹| ≤ 1/(n+1)!`   (gallery)
+2. `|D(n) - n!/e| ≤ 1/(n+1)`        (multiply by n!)
+3. `1/(n+1) ≤ 1/2` for n ≥ 1         (arithmetic)
+4. `|D(n) - round(n!/e)| < 1/2`       (rounding characterization)
+5. Therefore `D(n) = round(n!/e)`      (integers differing by < 1/2 are equal)
+
+The mathematical argument is complete; the challenge is Lean 4 formalization,
+particularly step 4→5: from a real-valued bound to an integer equality.
 
 ### Our Goal
 
-Prove `numDerangements n = Nat.round (n.factorial / Real.exp 1)` for all `n ≥ 2`,
-or equivalent formulation. The key step is showing `|(D(n) : ℝ) - n!/e| < 1/2`
-follows from the OQ03 bound for `n ≥ 2`.
+Prove `derangements_round_eq` by importing from the gallery and applying the
+rounding characterization from Mathlib.
 
 ## Related Gallery Proofs
 
 | Proof | Relevance | Techniques |
 |-------|-----------|------------|
-| `derangements-convergence` | Parent: D(n)/n! → 1/e convergence | Alternating series |
-| `derangements-oq-03` | Sharp error bound proved in full | Alternating series estimation |
-| `derangements-convergence-oq-01` | Uses derangements rate (as sorry) | Poisson convergence |
+| `derangements-convergence` | Parent: sharp error bound already proved | Alternating series, Taylor |
+| `derangements-oq-03-oq-02` | Sibling: Poisson TV convergence | Probability coupling |
 
 ## Initial Thoughts
 
 ### Potential Approaches
 
-1. **Direct rounding**: Use the bound from `DerangementsOQ03.derangements_convergence_rate`.
-   Show `|n!/e - D(n)| < 1/2` for `n ≥ 2` by combining the error bound with `1/(n+1)! < 1/2`.
-   - Why it might work: All ingredients proven in `DerangementsOQ03.lean`
-   - Risk: Mathlib `Nat.round` API may need specific hypothesis form
+1. **Direct import + round characterization** (recommended)
+   - Import `DerangementsConvergence.derangements_convergence_rate`
+   - Multiply inequality by n! to get |D(n) - n!/e| ≤ 1/(n+1)
+   - Apply `Int.round_eq` or `abs_sub_round_le` from Mathlib
+   - Arithmetic: 1/(n+1) < 1/2 for n ≥ 1
+   - Why it might work: all ingredients exist; purely assembly work
+   - Risk: Lean type coercions (ℕ → ℝ, n! vs (n! : ℝ), Real.round vs Int.round)
 
-2. **Floor formulation**: Prove `D(n) = ⌊n!/e + 1/2⌋` via `Nat.floor` or `Int.floor`.
-   - Why it might work: More standard than round in Mathlib
-   - Risk: Real.exp is transcendental, so n!/e is irrational for n ≥ 1
+2. **Via alternating sum identity**
+   - Use `numDerangements_eq_factorial_mul_altSum` directly
+   - Show the partial sum is within 1/(n+1) of e⁻¹ · n!
+   - Shorter but may duplicate gallery work
 
-3. **Abs distance**: State as `|(numDerangements n : ℤ) - (n!.factorial : ℝ) / Real.exp 1| < 1/2`
-   then derive the rounding conclusion.
+### Key Lean Issues
 
-### Key Difficulties
+- Coercion from `ℕ` to `ℝ`: `Nat.cast_numDerangements`
+- `Real.exp 1` vs `e`: use `Real.exp_one_gt_d9` bounds or exact API
+- `Real.round` (rounds ℝ → ℝ) vs `Int.round` (rounds ℝ → ℤ): choose consistent approach
+- `abs_sub_round_le` in Mathlib: `|x - round x| ≤ 1/2`
 
-- `Real.exp 1` is transcendental — n!/e is irrational, must bound not compute
-- Bridging `D(n) : ℕ` with `n!/e : ℝ` requires careful Nat.cast manipulation
-- Mathlib's `Nat.round` definition: check if it's "round half up" or "banker's rounding"
+### Minimal Key Lemma Chain
 
-### What Would a Proof Need?
+```lean
+-- Step 1: get the real-valued bound
+have h1 : |↑(Nat.numDerangements n) / ↑(n !) - (Real.exp 1)⁻¹| ≤ 1 / ↑(n + 1)! :=
+  derangements_convergence_rate n
 
-- Key lemma: for `n ≥ 2`, `1/(n+1)! < 1/2` (i.e., `(n+1)! > 2`)
-- Key lemma: `|(D(n) : ℝ) - (n.factorial : ℝ) / Real.exp 1| < 1/2`
-- Bridge: multiply both sides of OQ03 bound by `n!`, use `(n+1)! ≥ 6` for `n ≥ 2`
-- Mathlib `Nat.round_eq` or equivalent to conclude
+-- Step 2: multiply by n! to get absolute distance
+have h2 : |↑(Nat.numDerangements n) - ↑(n !) / Real.exp 1| ≤ 1 / ↑(n + 1) := ...
+
+-- Step 3: 1/(n+1) ≤ 1/2 for n ≥ 1
+have h3 : (1 : ℝ) / (n + 1) ≤ 1 / 2 := by norm_cast; omega
+
+-- Step 4: combine with round characterization
+exact Int.round_eq ... h2 h3
+```
 
 ## Tractability Assessment
 
-**Difficulty**: Low-Medium
+**Difficulty**: Easy-Medium
 
 **Justification**:
-- All mathematical steps elementary given the OQ03 bound
-- `DerangementsOQ03.lean` has `derangements_convergence_rate` fully proved
-- Main work: Lean API discovery for rounding + cast manipulation
+- All hard mathematics is already in the gallery proof
+- No new mathematical ideas required
+- Pure Lean API assembly: coercions, norm_cast, field_simp
+- Main challenge: navigating Lean's round/cast API
 
 **Estimated Effort**:
-- Exploration: 1-2 hours (find right Mathlib rounding API)
-- If tractable: 2-4 hours to write the proof
+- Exploration: 1-2 hours (read gallery proof, find Mathlib round lemmas)
+- Implementation: 1-3 hours (assemble the chain)
+- Main risk: subtle type coercion issues in Lean
 
 ## References
 
-### Papers
-- Montmort (1708): first count of D(n)
-- Euler (1751): closed form $D(n) = n! \sum_{k=0}^n (-1)^k/k!$
+### Gallery
+- `Proofs/DerangementsConvergence.lean` — parent proof with sharp error bound
+- `derangements_convergence_rate` — the key lemma to import
 
 ### Mathlib
-- `Mathlib.Combinatorics.Derangements.Finite`: `numDerangements`
-- `Proofs.DerangementsOQ03`: `derangements_convergence_rate`
-- Search: `Nat.round`, `Int.round`, `Real.round`, `Nat.floor`
+- `Mathlib.Algebra.Order.Round` — `Int.round`, `Real.round`, `abs_sub_round_le`
+- `Mathlib.Combinatorics.Derangements.Basic` — `Nat.numDerangements`
+- `Mathlib.Analysis.SpecialFunctions.ExpDeriv` — `Real.exp 1`
 
 ## Metadata
 
@@ -118,13 +147,15 @@ follows from the OQ03 bound for `n ≥ 2`.
 tags:
   - combinatorics
   - derangements
-  - rounding
-  - integer-identity
-  - alternating-series
+  - integer-rounding
+  - transcendental-constants
+  - lean-api
 related_proofs:
   - derangements-convergence
-  - derangements-oq-03
-difficulty: low-medium
+difficulty: easy-medium
 source: gallery-gap
 created: 2026-04-24
 ```
+
+**Significance**: 7/10
+**Tractability**: 8/10

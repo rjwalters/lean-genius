@@ -1,64 +1,68 @@
 # Problem Selection Report
 
 **Date**: 2026-04-24
-**Mode**: SELECT (pool at threshold)
-**Pool Status**: 15 available (at minimum threshold of 15), 558 in-progress, 1419 completed
+**Mode**: SELECT
+**Pool Status**: 35 available, 1307 in-progress, 647 completed, 3 blocked, 15 graduated
 
 ## Selected Problem
 
 - **ID**: derangements-convergence-oq-03
-- **Name**: Prove D(n) = round(n!/e) Integer Identity for Derangements
+- **Name**: Prove D(n) = round(n!/e) for n≥2 as integer identity
 - **Tier**: B
 - **Significance**: 7/10
 - **Tractability**: 8/10
-- **Knowledge Score**: EMPTY (no prior workspace)
-- **Status**: in-progress → promoted to available
+- **Knowledge Score**: 0 (EMPTY)
+- **Status**: available
+- **Composite Score**: 87 (= 0 + 80 + 7)
 
 ## Selection Rationale
 
-1. **EMPTY knowledge tier** — highest priority (composite score = 87 vs WEAK at -924 or below)
-2. **High tractability (8)** — all mathematical ingredients exist in `DerangementsOQ03.lean`; main work is Lean API
-3. **Domain diversity** — combinatorics/rounding, distinct from recent geometry (ptolemys, triangle) and analysis (erdos-512, erdos-268)
-4. **No active lock** — problem is free, last workspace modification >3 days ago
-5. **Clear first step** — import `DerangementsOQ03.derangements_convergence_rate` and search Mathlib for `Nat.round`
+1. **Highest composite score** among all available problems (87), driven by high tractability (8) and EMPTY knowledge tier — no research has been done yet
+2. **Tractability 8/10** reflects that the hard mathematics is already done in the gallery: the sharp error bound |D(n)/n! - e⁻¹| ≤ 1/(n+1)! directly implies the rounding identity with only API-level Lean work remaining
+3. **Clean scope**: the mathematical argument is a 5-step chain — multiply by n!, bound by 1/(n+1), apply 1/(n+1) ≤ 1/2 for n ≥ 1, use Int.round characterization — no new mathematical ideas needed
+4. **Domain diversity**: information theory and combinatorics/analysis, different from recent selections (geometry, analysis, algebra)
 
 ## Rejection Summary
 
-- **Candidates considered**: 15 available (WEAK) + 6 top in-progress (EMPTY)
-- **Rejected WEAK available**: All 15 available problems have WEAK knowledge (4-5 items); composite ≈ -924 to -963 — below any EMPTY candidate
-- **Rejected EMPTY in-progress**:
-  - `solution-of-cubic-oq-03-oq-04` (composite 78): loses on tractability (7 vs 8)
-  - `sylow-theorem-oq-04` (composite 77): loses on both tractability and significance
-- **Confidence**: High — clear gap between EMPTY tier (87) and WEAK tier (-924)
+- **Candidates considered**: 35 available
+- **Candidates excluded from ranking**:
+  - `ballot-problem-oq-03-oq-01-oq-01-oq-01` — active claim lock
+  - `dissection-of-cubes-oq-04` — active claim lock
+  - `erdos-1155-oq-02` — active claim lock
+  - `sylow-theorem-oq-02` — active claim lock
+  - `shannon-channel-coding-oq-04` — initialized in recent session (empty workspace)
+  - `abel-ruffini-galois-extensions-oq-04` — selected in recent session
+  - `cauchy-schwarz-integral-lp-duality-synthesis` — selected in recent session
+  - `area-of-circle-oq-01-oq-03-oq-01-oq-03` — selected in most recent session
+  - RICH knowledge (score ≥ 16): `sperner-ndim-oq-04`, `ballot-...`, `triangle-angle-sum-oq-02`, `fair-games-...`, `lebesgue-measure-oq-06` — lower priority
+  - Moonshots (tractability ≤ 2): `twin-primes-special-oq-01`, `weak-goldbach-oq-01`, `sophie-germain-oq-01` — tractability too low
+- **Quality gate**: all passed except those rejected above
+- **Confidence**: high — score spread is clear (87 vs next: 76)
 
 ## Related Gallery Proofs
 
-- `derangements-convergence`: Main convergence result — D(n)/n! → 1/e
-- `derangements-oq-03`: Sharp error bound |D(n)/n! - 1/e| ≤ 1/(n+1)! — FULLY PROVED, key ingredient
-- `derangements-convergence-oq-01`: k-fixed-point Poisson convergence, uses derangements rate as sorry
+- `derangements-convergence`: parent proof containing `derangements_convergence_rate` — the key lemma with sharp error bound; the selected problem is a direct extension
 
 ## Suggested First Steps
 
-1. **OBSERVE**: Search Mathlib for `Nat.round`, `Real.round`, `Int.round` — determine which type to use
-2. **ORIENT**: Import `Proofs.DerangementsOQ03` and verify `derangements_convergence_rate` accessible
-3. **DECIDE**: Choose formulation — `Nat.round (n! / e)` or equivalent floor-based statement
-4. **ACT**: Write `derangements_round` using the OQ03 bound multiplied by n!, showing `|(D(n) : ℝ) - n!/e| < 1/2` for n ≥ 2
+1. **OBSERVE**: Read `research/problems/derangements-convergence-oq-03/problem.md` to understand the 5-step chain; read `Proofs/DerangementsConvergence.lean` to locate `derangements_convergence_rate`
+2. **ORIENT**: Search Mathlib for `Int.round`, `abs_sub_round_le`, `Int.round_cast` — verify the API exists and matches the needed form
+3. **DECIDE**: Draft the top-level theorem statement; decide between `Int.round` and `Real.round` approach; write the `norm_cast` + `field_simp` plan for connecting n! coercions
 
 ## Pool Summary After Selection
 
 | Status | Count |
 |--------|-------|
-| Available | 16 (derangements-convergence-oq-03 promoted) |
-| In Progress | 557 |
-| Completed | 1419 |
-| Graduated | 9 |
+| Available | 35 |
+| In Progress | 1307 |
+| Completed | 647 |
+| Graduated | 15 |
 | Blocked | 3 |
 
 ## Candidate Pool Health
 
-Pool was at minimum threshold (15). This selection restores buffer to 16.
-All remaining available problems have WEAK knowledge — researchers should pick them up.
+Pool is healthy. 35 available problems against a threshold of 15 — adequate depth for the researcher pool.
 
-- **Pool depth**: Low but restored
-- **Recommendation**: Next cycle check if pool dropped; if so, promote `solution-of-cubic-oq-03-oq-04`
-- **Next refresh recommended**: 30 minutes
+- Pool depth: **adequate** (35 available, 2.3× threshold)
+- Recommendation: Pool healthy, no replenishment needed
+- Next refresh recommended: after 10 more selections or when available drops below 15

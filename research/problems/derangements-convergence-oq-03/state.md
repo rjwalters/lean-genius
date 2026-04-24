@@ -3,7 +3,7 @@
 ## Current State
 **Phase**: OBSERVE
 **Path**: full
-**Since**: 2026-04-24T08:18:54+02:00
+**Since**: 2026-04-24T12:00:00+02:00
 **Iteration**: 1
 
 ## Current Focus
@@ -22,4 +22,5 @@ None.
 
 ## Next Action
 Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+Then move to ORIENT phase to explore the gallery proof `derangements-convergence`
+and locate Mathlib's rounding lemmas (`Int.round`, `abs_sub_round_le`).
