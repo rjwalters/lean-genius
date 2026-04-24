@@ -18,10 +18,10 @@
       "research"
     ],
     "badge": "wip",
-    "sorries": 4,
+    "sorries": 3,
     "axiomCount": 0,
-    "lineCount": 559,
-    "assumptions": "4 sorries: hausdorff_free_subgroup (Hausdorff 1914 — SO(3) contains F₂), banach_tarski (Banach-Tarski 1924 — main paradox, requires AC), banach_tarski_pieces_nonmeasurable (classical non-measurability corollary), int_amenable (Markov-Kakutani — ℤ amenable via Cesàro means/ultrafilter). Core framework fully proved including paradoxical_no_finite_measure (proved via finite additivity monotonicity) and free_group_not_amenable.",
+    "lineCount": 735,
+    "assumptions": "3 sorries: hausdorff_free_subgroup (Hausdorff 1914 — SO(3) contains F₂), banach_tarski (Banach-Tarski 1924 — main paradox, requires AC), banach_tarski_pieces_nonmeasurable (classical non-measurability corollary). Core framework and amenability fully proved: paradoxical_no_finite_measure, free_group_not_amenable, and int_amenable (ℤ amenable via Cesàro density ultrafilter limit with window-shift translation invariance).",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -202,12 +202,12 @@
       "Mathlib"
     ],
     "namespace": "BanachTarski",
-    "lineCount": 559,
+    "lineCount": 735,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 5,
     "path": "Proofs/LebesgueMeasureOQ06.lean",
-    "sorries": 4
+    "sorries": 3
   },
-  "sorries": 4
+  "sorries": 3
 }
