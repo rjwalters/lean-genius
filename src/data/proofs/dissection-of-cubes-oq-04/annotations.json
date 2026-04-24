@@ -58,5 +58,57 @@
     "significance": "main-result",
     "relatedConcepts": ["Platonic solids", "Dehn invariant", "scissors congruence", "Hilbert's third problem"],
     "prerequisites": ["cube_dehn_zero", "tet_dehn_ne_zero", "oct_dehn_ne_zero", "dod_dehn_ne_zero", "ico_dehn_ne_zero"]
+  },
+  {
+    "id": "ann-irrationality-proof",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": {
+      "startLine": 112,
+      "endLine": 177
+    },
+    "type": "technique",
+    "title": "Irrationality by Contradiction: Cosine Identity Forces 5 | d_q",
+    "content": "The theorem `cosThreeFifthsSeq_eq_cos` proves by strong induction that d_n = 5^n · 2cos(n·arccos(3/5)). The base cases are d_0 = 2 = 5^0 · 2cos(0) and d_1 = 6 = 5·(6/5). The inductive step rewrites the recurrence d_{n+2} = 6d_{n+1} - 25d_n using the Chebyshev addition formula cos((m+2)θ) = 2cosθ·cos((m+1)θ) - cos(mθ) via `cos_step`. Then `arccos_three_fifths_irrational` proves irrationality by contradiction: if arccos(3/5)/π = p/q ∈ ℚ, then d_q = 5^q · 2cos(q·arccos(3/5)) = 5^q · 2cos(pπ) = ±2·5^q, which means 5 | d_q. But `five_ndvd_cosThreeFifthsSeq` gives 5 ∤ d_q — contradiction.",
+    "mathContext": "Key chain: $d_q = 5^q \\cdot 2\\cos(q \\cdot \\arccos(3/5)) = 5^q \\cdot 2\\cos(p\\pi) = \\pm 2 \\cdot 5^q$. Then $5^q \\mid d_q$ since $d_q = \\pm 2 \\cdot 5^q$ and $q \\geq 1$. Contradiction with $5 \\nmid d_n$ for all $n$. The proof uses `cos_int_mul_pi` to compute $\\cos(p\\pi) = (-1)^{|p|}$ and `exact_mod_cast` to convert the real equation to an integer equation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Niven's theorem",
+      "proof by contradiction",
+      "cos_int_mul_pi",
+      "exact_mod_cast",
+      "strong induction"
+    ],
+    "prerequisites": [
+      "cosThreeFifthsSeq_eq_cos",
+      "five_ndvd_cosThreeFifthsSeq",
+      "Real.cos_arccos",
+      "cos_step"
+    ]
+  },
+  {
+    "id": "ann-dehn-from-infinite-order",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": {
+      "startLine": 256,
+      "endLine": 318
+    },
+    "type": "technique",
+    "title": "Nonzero Dehn Invariant from Infinite-Order Angle Class",
+    "content": "The passage from angle irrationality to nonzero Dehn invariant uses the same two-step argument for both the dodecahedron and icosahedron. Step 1 (`dodAngle_infinite_order`, `icoAngle_infinite_order`): angle irrationality implies the class [θ] ∈ ℝ/πℤ has infinite order. Proof: if n·[θ] = 0 in ℝ/πℤ, then there exists m ∈ ℤ with n·θ = m·π, so θ/π = m/n ∈ ℚ — contradicting irrationality. Step 2 (`dod_dehn_ne_zero`, `ico_dehn_ne_zero`): the edge term (30a) ⊗ [θ] ≠ 0 in ℝ ⊗_ℤ (ℝ/πℤ) via `tmul_infinite_order_ne_zero` (the ℝ-flatness axiom). The icosahedron version uses the axiomatized `icoAngle_irrational`; the dodecahedron version uses the proved `dodAngle_irrational`.",
+    "mathContext": "Infinite order: if $n \\cdot [\\theta] = 0$ in $\\mathbb{R}/\\pi\\mathbb{Z}$ with $n \\neq 0$, then $n\\theta = m\\pi$ for some $m \\in \\mathbb{Z}$, so $\\theta/\\pi = m/n \\in \\mathbb{Q}$ — contradiction. Nonzero Dehn: $\\ell \\otimes [\\theta] = 0$ in $\\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$ would imply $[\\theta]$ has finite order (by flatness), but it doesn't.",
+    "significance": "key",
+    "relatedConcepts": [
+      "infinite order",
+      "ℝ/πℤ",
+      "tensor product",
+      "flatness",
+      "tmul_infinite_order_ne_zero"
+    ],
+    "prerequisites": [
+      "dodAngle_irrational",
+      "icoAngle_irrational",
+      "tmul_infinite_order_ne_zero",
+      "zsmul_eq_zero_iff"
+    ]
   }
 ]
