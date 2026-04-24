@@ -38,8 +38,7 @@
       "The axiom cf_bezout_correspondence was originally ~200 lines connecting GenContFract and Nat.xgcd. The actual existential conclusion follows in ~20 lines from Bézout + emod, with no CF construction needed.",
       "osculator_unique_mod uses IsCoprime.dvd_of_dvd_mul_left: if d | 10(c−c') and gcd(10,d)=1, then d | (c−c'). This is the critical coprimality argument.",
       "The reduction Int.emod_nonneg and Int.emod_lt_of_pos, combined with Int.toNat_of_nonneg, converts the integer osculator to a natural number witness without any Nat.cast hassle.",
-      "Concrete examples (d=7,11,13,19) connect abstract results to familiar divisibility tests: 7|n ↔ 7|(n/10 − 2·(n%10)), 11|n ↔ 11|(n/10 − (n%10)) (alternating sum).",
-      "The proof generalizes to any base b coprime to d: replace 10 with b everywhere. Bézout gives gcdA(b,d) as the osculator for b-ary truncation tests. The Lean proof is base-agnostic — only bezout_ten (which fixes base 10) would need to change, making generalization to arbitrary bases a one-line modification."
+      "Concrete examples (d=7,11,13,19) connect abstract results to familiar divisibility tests: 7|n ↔ 7|(n/10 − 2·(n%10)), 11|n ↔ 11|(n/10 − (n%10)) (alternating sum)."
     ],
     "prerequisites": [
       "Bézout's identity (Nat.gcd_eq_gcd_ab in Mathlib)",
@@ -93,36 +92,6 @@
       "The CF connection: the actual Mathlib proof that gcdA(10,d) equals a convergent denominator in the CF expansion of 10/d. This would require formalizing GenContFract for rational numbers."
     ]
   },
-  "references": [
-    {
-      "authors": ["G. H. Hardy", "E. M. Wright"],
-      "title": "An Introduction to the Theory of Numbers",
-      "year": "1979",
-      "venue": "Oxford University Press, 5th edition, Chapter X",
-      "note": "Classical treatment of modular inverses and the Euclidean algorithm. Section 10.1 proves that if gcd(a,m)=1 then ax≡b(mod m) has a unique solution mod m — the theoretical basis for uniqueness of the osculator."
-    },
-    {
-      "authors": ["D. E. Knuth"],
-      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
-      "year": "1981",
-      "venue": "Addison-Wesley, 2nd edition, Section 4.5.2",
-      "note": "Algorithm X (Extended Euclidean algorithm, pp. 325–327) computes gcdA and gcdB. Knuth proves the CF connection explicitly: the quotients in the Euclidean algorithm for gcd(a,b) are the CF partial quotients of a/b, and the Bézout coefficients equal the last CF convergent numerator/denominator."
-    },
-    {
-      "authors": ["Bharati Krishna Tirthaji"],
-      "title": "Vedic Mathematics",
-      "year": "1965",
-      "venue": "Motilal Banarsidass, Chapter on Divisibility",
-      "note": "First systematic treatise introducing the term 'osculator' for divisibility rules. The positive and negative osculators for d correspond to the two classes of solutions to d | 10c−1, matching the IsOsculator definition formalized here."
-    },
-    {
-      "authors": ["The Mathlib Community"],
-      "title": "Mathlib4: A Unified Library of Mathematics Formalized in Lean 4",
-      "year": "2024",
-      "venue": "https://github.com/leanprover-community/mathlib4",
-      "note": "Provides Nat.gcd_eq_gcd_ab (Bézout identity), Nat.gcdA/gcdB, IsCoprime.dvd_of_dvd_mul_left (coprimality cancellation), Int.emod_nonneg and Int.emod_lt_of_pos (modular reduction bounds)."
-    }
-  ],
   "crossReferences": [
     {
       "targetId": "divisibility-truncation-general",
@@ -133,16 +102,6 @@
       "targetId": "divisibility-truncation-general-oq-01",
       "relationship": "uses",
       "description": "Imports unified_osculator from OQ-01 for the concrete divisibility test applications."
-    },
-    {
-      "targetId": "divisibility-rules",
-      "relationship": "related",
-      "description": "The general gallery entry on divisibility rules, providing classical context for the truncation tests formalized here."
-    },
-    {
-      "targetId": "divisibility-by-3",
-      "relationship": "related",
-      "description": "Divisibility by 3 (digit sum rule) is the special case d=3 in base 10, where gcdA(10,3) gives the osculator for the standard digit-sum test."
     }
   ],
   "leanFile": {
