@@ -75,16 +75,8 @@ theorem turan_triangle_free_bound {α : Type*} [Fintype α] (G : SimpleGraph α)
 /-- The process output has at most n²/4 edges (Turán bound).
     This is weaker than BFL (n^{3/2+o(1)}) but follows from a purely combinatorial argument. -/
 theorem triangleRemovalEdges_le_turan (n : ℕ) :
-    triangleRemovalEdges n ≤ (n : ℝ)^2 / 4 := by
-  -- triangleRemovalEdges n ≤ n*(n-1)/2 ≤ n²/4 for n ≥ 2
-  -- (using triangleRemovalEdges_le_complete which gives ≤ n*(n-1)/2 ≤ n²/2)
-  have h := triangleRemovalEdges_le_complete n
-  -- n*(n-1)/2 ≤ n²/4 is false for small n but we can use the crude bound
-  -- for the Turán statement, we need the process-specific triangle-free property
-  -- Using the tight Turán bound requires knowing f(n) counts actual graph edges.
-  -- Here we use the available bound: f(n) ≤ n(n-1)/2, which gives f(n) ≤ n²/2.
-  -- The actual Turán bound f(n) ≤ n²/4 is stated as an axiom below.
-  sorry -- Connect abstract f(n) to CliqueFree graph via triangle removal axiom
+    triangleRemovalEdges n ≤ (n : ℝ)^2 / 4 :=
+  triangleRemovalEdges_le_turan_exact n
 
 /-- Axiom: the triangle removal process output is triangle-free with ≤ n²/4 edges.
     This follows from Turán's theorem applied to the concrete output graph.
@@ -279,8 +271,40 @@ theorem turan_bfl_exponent_gap :
     ∀ᶠ (n : ℕ) in atTop,
         (n : ℝ)^2 / 4 / (triangleRemovalEdges n) > (n : ℝ)^(1/2 - ε) := by
   intro ε hε _
-  -- n²/4 / f(n) ≥ n²/(4·n^{3/2+ε}) = n^{1/2-ε}/4 > n^{1/2-ε-log4/logn}
-  sorry -- requires both BFL bounds
+  -- Strategy: use BFL upper bound with ε/2, then squeeze
+  -- f(n) ≤ n^{3/2+ε/2}, f(n) > 0 (BFL lower bound), and n^{ε/2} > 4 eventually
+  -- Then: n²/4 / f(n) ≥ n²/(4·n^{3/2+ε/2}) = n^{1/2-ε/2}/4 > n^{1/2-ε}
+  have hε2 : 0 < ε / 2 := by linarith
+  filter_upwards [bfl_upper_bound (ε/2) hε2, bfl_lower_bound ε hε,
+                  eventually_gt_atTop 0,
+                  ((Real.tendsto_rpow_atTop hε2).comp
+                    tendsto_natCast_atTop_atTop).eventually_gt_atTop 4]
+      with n hup hlo hn hn4
+  have hn' : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+  have hf_pos : 0 < triangleRemovalEdges n :=
+    lt_of_lt_of_le (Real.rpow_pos_of_pos hn' _) hlo
+  rw [gt_iff_lt, lt_div_iff hf_pos]
+  -- Goal: n^{1/2-ε} * f(n) < n²/4
+  -- Step 1: n^{1/2-ε} * f(n) ≤ n^{1/2-ε} * n^{3/2+ε/2} = n^{2-ε/2}
+  have step1 : (n : ℝ)^(1/2 - ε) * triangleRemovalEdges n ≤ (n : ℝ)^(2 - ε/2) :=
+    calc (n : ℝ)^(1/2 - ε) * triangleRemovalEdges n
+        ≤ (n : ℝ)^(1/2 - ε) * (n : ℝ)^(3/2 + ε/2) :=
+          mul_le_mul_of_nonneg_left hup (le_of_lt (Real.rpow_pos_of_pos hn' _))
+      _ = (n : ℝ)^(2 - ε/2) := by
+          rw [← Real.rpow_add hn']
+          congr 1; ring
+  -- Step 2: n^{2-ε/2} < n²/4  (since n^{2-ε/2} * n^{ε/2} = n² and n^{ε/2} > 4)
+  have step2 : (n : ℝ)^(2 - ε/2) < (n : ℝ)^2 / 4 := by
+    have hexp : (n : ℝ)^(2 - ε/2) * (n : ℝ)^(ε/2) = (n : ℝ)^2 := by
+      rw [← Real.rpow_add hn', show (2 - ε/2 + ε/2 : ℝ) = 2 from by ring]
+      exact Real.rpow_natCast (n : ℝ) 2
+    have hpos : (0 : ℝ) < (n : ℝ)^(2 - ε/2) := Real.rpow_pos_of_pos hn' _
+    rw [lt_div_iff (by norm_num : (0:ℝ) < 4)]
+    -- Goal: n^{2-ε/2} * 4 < n²
+    -- From hn4: 4 < n^{ε/2}, and hpos: 0 < n^{2-ε/2}:
+    -- n^{2-ε/2} * 4 < n^{2-ε/2} * n^{ε/2} = n²
+    nlinarith [mul_lt_mul_of_pos_left hn4 hpos, hexp]
+  linarith
 
 -- Self-check
 #check turan_triangle_free_bound
