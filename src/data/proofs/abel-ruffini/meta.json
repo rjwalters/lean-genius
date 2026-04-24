@@ -404,6 +404,16 @@
       "targetId": "sylow-theorems-oq-04",
       "relationship": "complementary",
       "description": "An independent Sylow-based formalization of $A_5$ simplicity via conjugacy class arithmetic: the five conjugacy classes of $A_5$ have sizes $\\{1, 12, 12, 15, 20\\}$ summing to 60, and none of the proper subsets including $\\{1\\}$ is closed under conjugation, ruling out any proper nontrivial normal subgroup. This corroborates the $A_5$ simplicity that drives the non-solvability of $S_5$ in this entry, and illustrates the combinatorial power of Sylow theory: the same impossibility result proved via group orders and counting is the foundation of the algebraic impossibility of solving quintics by radicals"
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "related",
+      "description": "Liouville's theorem (1844) constructs the first explicit transcendental numbers — Liouville numbers such as $\\sum_{k=1}^{\\infty} 10^{-k!}$ — via rational approximation bounds. This sits one level above Abel-Ruffini in the expressibility hierarchy: Abel-Ruffini shows certain algebraic quantities escape radical expressions (middle tier), while Liouville's theorem demonstrates quantities that escape all algebraic equations over $\\mathbb{Q}$ (top tier). The hierarchy $\\mathbb{Q} \\subsetneq \\overline{\\mathbb{Q}}_{\\text{rad}} \\subsetneq \\overline{\\mathbb{Q}} \\subsetneq \\mathbb{C}$ — rationals, radical-solvable algebraics, all algebraics, all complex numbers — has Abel-Ruffini as the gap between the first and second tiers, and Liouville/Hermite-Lindemann as the gap between the second and third"
+    },
+    {
+      "targetId": "solution-of-cubic-oq-05",
+      "relationship": "complementary",
+      "description": "Proves the algebraic bridge between Cardano's cubic formula and Ferrari's quartic method: the Tschirnhaus substitution $m = t - 5p/6$ reduces Ferrari's resolvent cubic to depressed form, so Cardano's formula directly supplies the required resolvent root. This is the last successful resolvent step before Abel-Ruffini's barrier: Lagrange (1770) discovered that the resolvent of a quintic has degree 6 (higher than 5), so no such reduction exists for degree 5. The chain cubic resolvent (degree 2, quadratic formula) → quartic resolvent (degree 3, Cardano) → quintic resolvent (degree 6, no reduction) is the historical precursor to Abel's impossibility proof — formalizing each step clarifies precisely where and why the radical method fails"
     }
   ],
   "references": [

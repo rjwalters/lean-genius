@@ -12,9 +12,11 @@
     "mathContext": "The question: Given $ax^5 + bx^4 + cx^3 + dx^2 + ex + f = 0$, is there a formula for $x$ using only $+, -, \\times, \\div,$ and $\\sqrt[n]{\\phantom{x}}$?\n\nAnswer: No. The Galois group of the generic quintic is $S_5$, which is not solvable ($A_5$ is simple and non-abelian), so no radical formula exists. Specific quintics with solvable Galois groups (e.g., $x^5 - 1$, with cyclic Galois group $\\mathbb{Z}/4\\mathbb{Z}$) can still be solved by radicals.",
     "significance": "key",
     "prerequisites": [
-      "polynomial equations",
-      "field operations",
-      "Wiedijk 100 list"
+      "abstract algebra: groups, fields, and rings",
+      "polynomial rings and irreducibility criteria",
+      "group theory: normal subgroups, quotient groups, derived series",
+      "field extensions and algebraic elements",
+      "the Galois correspondence between subfields and subgroups"
     ],
     "relatedConcepts": [
       "Galois theory",
@@ -343,7 +345,7 @@
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 151,
-      "endLine": 163
+      "endLine": 183
     },
     "type": "insight",
     "title": "Part VI: Why Degree 5 Is the Exact Threshold",
@@ -370,8 +372,8 @@
     "id": "ann-part-vii-historical",
     "proofId": "abel-ruffini",
     "range": {
-      "startLine": 164,
-      "endLine": 185
+      "startLine": 151,
+      "endLine": 183
     },
     "type": "insight",
     "title": "Part VII: The Impossibility Paradigm and Historical Significance",
@@ -391,7 +393,11 @@
       "Turing halting problem",
       "angle trisection",
       "Puiseux series",
-      "elliptic modular functions"
+      "elliptic modular functions",
+      "monodromy groups",
+      "topological Galois theory",
+      "fundamental group of configuration spaces",
+      "branched coverings"
     ]
   }
 ]
