@@ -1,7 +1,7 @@
 {
   "slug": "yang-mills-transfer-matrix-oq-01",
   "title": "yang-mills-transfer-matrix-oq-01",
-  "phase": "ORIENT",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "COMPLETED",
     "since": "2026-03-30T11:35:16-07:00",
     "iteration": 1,
     "focus": "Eliminated 7 routine sorries from Exploration.lean",
@@ -29,9 +29,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 7 routine sorries in YangMills/Exploration.lean (15\u21928). Remaining 8 include MATHLIB-DRIFT issues, a false statement (bv_field_count needs N\u22653 not N\u22652), and a missing hypothesis (quantum_breaks_scale needs g\u22600).",
+    "progressSummary": "PROGRESS: Eliminated 7 routine sorries in YangMills/Exploration.lean (15→8). Remaining 8 include MATHLIB-DRIFT issues, a false statement (bv_field_count needs N≥3 not N≥2), and a missing hypothesis (quantum_breaks_scale needs g≠0).",
     "builtItems": [
-      "Fixed 7 sorry proofs in YangMills/Exploration.lean (15\u21928 sorries)"
+      "Fixed 7 sorry proofs in YangMills/Exploration.lean (15→8 sorries)"
     ],
     "insights": [
       "The YangMills/Exploration.lean file is 28K lines covering extensive QFT formalization",
