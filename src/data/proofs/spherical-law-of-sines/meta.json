@@ -46,7 +46,8 @@
       "The scalar triple product det[A,B,C] = A·(B×C) is cyclic: det[A,B,C] = det[B,C,A] = det[C,A,B], which gives the symmetry among all three ratios",
       "sin²(arcLen u w) = |projPerp(u,w)|² follows from sin(arccos x) = √(1−x²) applied to arcLen u w = arccos(u·w)",
       "The dihedral angle at A is defined as arccos(projPerp(B,A)·projPerp(C,A) / (|projPerp(B,A)|·|projPerp(C,A)|)); its sine squared is computed via sin²(arccos(x)) = 1−x² using Lagrange's identity",
-      "The framework uses Fin 3 → ℝ (function type) throughout, compatible with Mathlib's crossProduct which operates on LinearMap. This avoids the EuclideanSpace machinery needed for inner product norms."
+      "The framework uses Fin 3 → ℝ (function type) throughout, compatible with Mathlib's crossProduct which operates on LinearMap. This avoids the EuclideanSpace machinery needed for inner product norms.",
+      "**Scalar triple product as a spherical area invariant**: The common ratio $\\sin^2(a)/\\sin^2(\\alpha) = \\det[A,B,C]^2 / (\\sin^2(a)\\sin^2(b)\\sin^2(c))$ reveals that $\\det[A,B,C]$ encodes the signed volume of the parallelepiped $OA \\times OB \\times OC$. For the unit sphere, $|\\det[A,B,C]| = $ area of the spherical triangle (by the spherical excess formula), scaled by $\\sin(a)\\sin(b)\\sin(c)$. The cyclic symmetry $\\det[A,B,C] = \\det[B,C,A] = \\det[C,A,B]$ is the algebraic expression of the fact that this volume is a topological invariant of the triangle — the three orderings give the same volume with consistent orientation."
     ],
     "prerequisites": [
       "crossProduct from Mathlib.LinearAlgebra.CrossProduct",
@@ -106,7 +107,27 @@
     {
       "targetId": "spherical-law-of-cosines",
       "relationship": "companion",
-      "description": "The spherical law of cosines and law of sines are the two fundamental identities of spherical trigonometry, both proved using unit vectors in ℝ³"
+      "description": "The spherical law of cosines and law of sines are the two fundamental identities of spherical trigonometry, both proved using unit vectors in ℝ³ — the cosines law relates sides and one angle, while the sines law gives the common ratio linking all sides and opposite angles"
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "generalizes",
+      "description": "The planar law of cosines (Wiedijk #94) is the small-angle limit of the spherical law of cosines; similarly, the planar law of sines a/sin(A) = 2R is the small-angle limit of the spherical law of sines"
+    },
+    {
+      "targetId": "law-of-sines-oq-06",
+      "relationship": "complementary",
+      "description": "The Euclidean law of sines formalized via InnerProductGeometry.angle — the flat-geometry analog that the spherical law of sines reduces to in the small-angle limit"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem underlies the Lagrange identity |u×v|² = |u|²|v|² − (u·v)² used in the proof — this is the dot product version of the Pythagorean relation in inner product spaces"
+    },
+    {
+      "targetId": "cevas-theorem-non-euclidean",
+      "relationship": "related",
+      "description": "Ceva's theorem in non-Euclidean (spherical and hyperbolic) geometry uses the same unit sphere infrastructure (projections, arc lengths, dihedral angles) as the spherical law of sines, applied to cevian concurrency instead of the sine ratio"
     }
   ],
   "sorries": 0,

@@ -35,7 +35,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Lov\u00e1sz Local Lemma was introduced by Erd\u0151s and Lov\u00e1sz in 1975 in the context of graph coloring problems. It provides a non-constructive but powerful tool for proving the existence of combinatorial objects: if 'bad' events are individually unlikely and each event depends on only a bounded number of others, then there exists an outcome avoiding all bad events simultaneously.\n\nThe original proof was existential. Moser and Tardos (2010) gave a remarkable algorithmic version: a simple resampling algorithm terminates in expected polynomial time when the LLL condition holds. This transformed the LLL from a pure existence tool to a practical algorithmic technique.\n\nThe symmetric LLL states: if each event has probability \u2264 p and shares dependencies with at most d others, and p\u00b7(d+1) \u2264 1/e, then all events can be avoided. The threshold T(d) = d^d/(d+1)^{d+1} is the exact boundary, satisfying T(d) \u2264 1/4 for all d \u2265 1.",
+    "historicalContext": "The Lov\u00e1sz Local Lemma was introduced by Erd\u0151s and Lov\u00e1sz in 1975 in the context of graph coloring problems. The original application was to hypergraph 2-coloring (Property B): given a $k$-uniform hypergraph where each hyperedge intersects at most $d$ others, the LLL shows the hypergraph is 2-colorable if $2^{1-k}(d+1) \\leq 1$ — i.e., if $d \\leq 2^{k-1}-1$. This was a dramatic improvement over direct probabilistic arguments.\n\nThe LLL provides a non-constructive but powerful tool for proving the existence of combinatorial objects: if 'bad' events are individually unlikely and each event depends on only a bounded number of others, then there exists an outcome avoiding all bad events simultaneously. The key insight separating LLL from union bound arguments is the 'local' structure — the condition is on each event's neighborhood, not global.\n\nJoel Spencer (1977) proved the symmetric LLL with the optimal $p(d+1) \\leq 1/e$ constant, replacing the original $p(4d) \\leq 1$ bound. Shearer (1985) characterized the exact boundary with a criterion in terms of the dependency graph's independent set polynomial, showing the LLL is not tight. The non-symmetric 'Lopsided LLL' of Erd\u0151s-Spencer (1991) handles negative dependence.\n\nMoser and Tardos (2010) gave a remarkable algorithmic version: their resampling algorithm terminates in expected polynomial time when the LLL condition holds. This transformed the LLL from a pure existence tool to a practical algorithmic technique, with applications to constraint satisfaction, parallel algorithms, and online load balancing. The Moser-Tardos analysis uses entropy arguments: each resampling reduces a potential function related to the log-probability of the witness tree.\n\nThe symmetric LLL states: if each event has probability \u2264 p and shares dependencies with at most d others, and p\u00b7(d+1) \u2264 1/e, then all events can be avoided. The threshold T(d) = d^d/(d+1)^{d+1} is the exact algebraic maximum of x(1-x)^d, satisfying T(d) \u2264 1/4 for all d \u2265 1.",
     "problemStatement": "Given n 'bad' events, each with probability \u2264 p, where each event is independent of all but at most d others, find conditions under which P[no bad event occurs] > 0.\n\n**Symmetric LLL**: If p\u00b7(d+1) \u2264 1/e, then P[\u2229 \u0100\u1d62] > 0.\n\n**General LLL**: If there exist x_i \u2208 [0,1) such that P[A\u1d62] \u2264 x_i \u00b7 \u220f_{j \u2208 \u0393(i)} (1 - x_j) for all i, then P[\u2229 \u0100\u1d62] \u2265 \u220f(1 - x_i) > 0.",
     "proofStrategy": "The formalization avoids measure theory by working with the algebraic core: bounding and positivity of products \u220f(1-x_i). The key results are:\n\n1. **Symmetric bound**: If p\u00b7(d+1) \u2264 1/3 (an algebraic approximation to 1/e), then (1-p)^n > 0 by positivity.\n2. **General LLL**: The avoidance product \u220f(1-x_i) > 0 when each x_i < 1, by Finset.prod_pos.\n3. **Prob bound**: The LLL condition implies prob_i \u2264 x_i via Finset.prod_le_one.\n4. **Threshold**: T(d) = d^d/(d+1)^{d+1} satisfies T(d) \u2264 1/4 by Bernoulli's inequality: (d+1)^d \u2265 2\u00b7d^d.\n5. **Bridge**: threshold_satisfies_lll shows T(d)-bounded probabilities satisfy the general LLL condition with x_i = 1/(d+1).",
     "keyInsights": [
@@ -44,7 +44,8 @@
       "The LLL threshold factorization $T(d) = (1/(d+1)) \\cdot (d/(d+1))^d$ reveals the symmetric $x_i = 1/(d+1)$ assignment: the product over the dependency neighborhood is $(d/(d+1))^{|\\Gamma(i)|}$, bounded below by $(d/(d+1))^d = T(d)/(1/(d+1))$.",
       "The Moser-Tardos resampling bound $\\sum_i x_i/(1-x_i) \\geq 0$ is trivial algebraically (Finset.sum_nonneg + div_nonneg), but it encodes the deep result that the constructive algorithm terminates in finite expected time.",
       "k-SAT: each clause has probability $2^{-k}$ of violation, depends on at most $k \\cdot (2^{k-2}/k) = 2^{k-2}$ others, and LLL condition $2^{-k}(2^{k-2}+1) \\leq 1$ reduces to $2^{k-2}+1 \\leq 2^k$, verified by pow2_plus_one_le.",
-      "The formalization deliberately avoids measure theory: all results are stated over rationals (\u211a) with algebraic positivity arguments, making the proofs accessible without requiring probability space infrastructure."
+      "The formalization deliberately avoids measure theory: all results are stated over rationals (\u211a) with algebraic positivity arguments, making the proofs accessible without requiring probability space infrastructure.",
+      "**Shearer's exact criterion (1985)**: The general LLL condition $P[A_i] \\leq x_i \\prod_{j \\in \\Gamma(i)}(1-x_j)$ is not the most general known condition. Shearer's theorem (1985) characterizes the exact boundary: a set of events $\\{A_i\\}$ can be simultaneously avoided if and only if $P[\\cap_{i \\in S} \\bar{A}_i] > 0$ for all $S \\subseteq [n]$, with an explicit formula involving the dependency graph's independent set polynomial. The LLL is strictly weaker: it is sufficient but not necessary. This gap means the Lean formalization captures only one sufficient condition from a richer theory — `lovasz-local-lemma-oq-02` investigates the algebraic tightness of the symmetric threshold $T(d)$ specifically."
     ],
     "prerequisites": [
       "Probability theory (basic probability spaces, independence)",
@@ -139,6 +140,31 @@
       "targetId": "bertrands-postulate",
       "relationship": "related",
       "description": "Both use probabilistic/counting arguments; Bertrand uses central binomial coefficients while LLL uses avoidance products"
+    },
+    {
+      "targetId": "lovasz-local-lemma-oq-02",
+      "relationship": "extended-by",
+      "description": "Proves algebraic tightness of the LLL threshold: T(d) = d^d/(d+1)^{d+1} is the exact maximum of x·(1-x)^d on [0,1], establishing that T(d) cannot be improved within the symmetric LLL framework"
+    },
+    {
+      "targetId": "ramsey-r4k-extensions",
+      "relationship": "related",
+      "description": "Uses probabilistic method extensions in the same spirit as LLL — bounding Ramsey numbers R(4,k) via random graph arguments and deletion method, which often parallels the LLL approach to avoiding bad configurations simultaneously"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory is the original context motivating LLL: Erdős-Szekeres and Ramsey-type bounds give polynomial lower bounds for R(k,k), while LLL gives exponential improvements by simultaneously avoiding all monochromatic cliques"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "Graph coloring was the original application of the Lovász Local Lemma (Erdős-Lovász 1975): LLL proves that if a graph has maximum degree d and d ≥ 64, then it has list-chromatic number at most d, providing a probabilistic approach to graph coloring that complements the computer-verified Four Color Theorem"
+    },
+    {
+      "targetId": "unit-distance-independence",
+      "relationship": "related",
+      "description": "Independence numbers in unit distance graphs (Hadwiger-Nelson problem, chromatic number of the plane) are naturally analyzed via probabilistic methods: LLL can bound the independence number in regular graphs with bounded maximum degree, complementing the explicit algebraic bounds formalized here"
     }
   ],
   "leanFile": {
