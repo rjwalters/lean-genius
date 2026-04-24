@@ -34,10 +34,201 @@ Key infrastructure already available:
 
 > **Note**: 7 older sessions archived to `sessions/` directory.
 
+## Session 2026-04-23 (Session 12) — Corner Recursion Infrastructure (Part XIII)
+
+**Mode**: REVISIT (RICH knowledge tier, score 70)
+**Outcome**: progress — 16 new defs/lemmas (0 sorries), card_SYT_corner_step with 1 HEq sorry (mathematical content complete)
+
+### What I Did
+
+1. Assessed state: 3 sorries remain; LGV chain sorries FALSE as stated; corner-cell induction is the path forward
+2. Added PART XIII (~255 lines) to `BallotProblemOQ03OQ01OQ02.lean` (3584 → 3839 lines):
+   - `isCorner μ c`: predicate — c ∈ μ ∧ arm(c)=0 ∧ leg(c)=0
+   - `corners μ`: Finset of corner cells via filter on μ.cells
+   - `mem_corners`: characterization lemma
+   - `removeCorner μ c hc`: YoungDiagram with c removed (lower-set property preserved, 0 sorries)
+   - `mem_removeCorner`, `removeCorner_card`, `removeCorner_proof_irrel`
+   - `syt_entry_image`: entries of SYT form Finset.image T.entry μ.cells = Icc 1 μ.card
+   - `maxEntryCell T hn`: unique cell c with T.entry c = μ.card
+   - `maxEntryCell_spec`, `_mem`, `_entry`, `_isCorner`, `_in_corners`, `_unique` (all 0 sorries)
+   - `restrictSYT_gen`: SYT(μ) → SYT(removeCorner μ c hc) when T.entry c = μ.card (0 sorries)
+   - `extendSYT_gen`: SYT(removeCorner μ c hc) → SYT(μ) adding entry μ.card at c (0 sorries)
+   - `card_SYT_corner_step`: general corner recursion theorem (1 HEq sorry in right_inv)
+
+### Key Findings
+
+**removeCorner preserves lower-set**: If a ≤ b ∈ μ\\{c} and a were c, then b is above/right of c.
+- b.2 > c.2 → (c.1, c.2+1) ∈ μ contradicts arm(c)=0
+- b.1 > c.1 → (c.1+1, c.2) ∈ μ contradicts leg(c)=0
+- b=c contradicts b≠c. QED (0 sorries)
+
+**maxEntryCell is a corner**: If T.entry c = μ.card and (c.1, c.2+1) ∈ μ, then T.entry(c.1, c.2+1) > μ.card by row_strict, contradicting range ⊆ {1,...,μ.card}.
+
+**card_SYT_corner_step left_inv**: fully proved — maxEntryCell maps back to itself, entries roundtrip exactly.
+
+**HEq issue in right_inv**: After proving `hmaxeq : maxEntryCell (extendSYT_gen c hc T₁) hn = c`, the goal becomes:
+```
+⟨⟨maxEntryCell ..., hc_corners'⟩, restrictSYT_gen ...⟩ = ⟨⟨c, hc_corners⟩, T₁⟩
+```
+The two SYTs have types `SYT(removeCorner μ (maxEntryCell ..) hc₁)` vs `SYT(removeCorner μ c hc₂)`. Even though `removeCorner_proof_irrel` shows these YoungDiagrams are equal, HEq on SYT types requires `cast` reasoning in Lean 4 that creates proof obligations not yet resolved.
+
+**Mathematical content is complete**: entries of `restrictSYT_gen(extendSYT_gen T₁)` equal `T₁.entry` because `extendSYT_gen` only adds entry at `c`, which is not in `removeCorner μ c hc`.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (3584 → 3839 lines, PART XIII added)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json` (lineCount 3839, sorries 4, theoremCount 120)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` (knowledge updated)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md` (this file)
+
+### Sorry Count: 3 → 4
+
+The sorry count increased by 1 (net) because:
+- `card_SYT_corner_step` adds 1 new sorry (right_inv HEq issue)
+- No existing sorries were resolved this session
+
+### Next Steps
+
+1. **Resolve card_SYT_corner_step right_inv**: Use `cast` + `removeCorner_proof_irrel` to prove the HEq for the second sigma component. `heq_of_cast` or `eq_mpr_iff_cast` may help.
+2. **Prove hook_walk_identity**: `Σ_{c ∈ corners(μ)} hookProd(μ) / hookProd(removeCorner μ c) = μ.card` — needed to close inductive proof of `hook_length_formula` via `card_SYT_corner_step`.
+3. **Strong induction with card_SYT_corner_step**: Once hook_walk_identity is available, `hook_length_formula` follows by strong induction on μ.card.
 
 ---
 
-> **Note**: 4 older sessions archived to `sessions/` directory.
+## Session 2026-04-24 (Session 13) — Fixes + Aristotle Companion
+
+**Mode**: REVISIT (RICH knowledge tier, score 53)
+**Outcome**: progress — fixed stale comment, created Aristotle companion
+
+### What I Did
+
+1. Verified current state: 3 sorries in BallotProblemOQ03OQ01OQ02.lean (lines 219, 235, 245)
+   - `hook_length_formula`: main theorem, sorry
+   - `ni_count_eq_syt_count`: RSK/Fomin bijection sorry
+   - `lgv_det_factors_as_hook_quotient`: Vandermonde det identity sorry
+2. Verified that `card_SYT_corner_step` HEq sorry was resolved in PR #12026 (cast_syt_entry)
+3. Fixed stale comment at line 3526: "conditional on card_SYT_twoRowYD which is sorry" → "proved by WF induction"
+   - `card_SYT_twoRowYD` is proved at lines 3450-3467, not sorry
+   - `hook_length_formula_two_row_gen` and `hook_length_formula_atMostTwoRows` are thus fully proved
+4. Created `BallotProblemOQ03OQ01OQ02Aristotle.lean` with the two HARD sorry targets
+
+### Key Findings
+
+- **hook_walk_identity requires ℚ**: Σ_c hookProd(μ)/hookProd(μ\c) = n holds in ℚ but individual
+  terms are NOT integers (e.g., for [3,1] with corners (0,2) and (1,0): ratios 8/3 + 4/3 = 4 = n).
+  Corner induction proof of hook_length_formula requires this identity in ℚ arithmetic.
+- **LGV sorries FALSE as stated**: ni_count_eq_syt_count and lgv_det_factors_as_hook_quotient
+  have μ as a free parameter unrelated to (r,σ,m). They need a hypothesis relating μ to the
+  LGV config; as stated they're unprovable (but Aristotle won't catch this).
+- **Both remaining paths require 200+ lines**: LGV approach (ni_count + lgv_det) or hook walk
+  identity. Neither achievable in a single session.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (fixed stale comment at line 3526)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean` (created)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` (knowledge updated)
+
+### Next Steps
+
+1. **Fix lgv_det_factors_as_hook_quotient statement**: Add hypothesis relating μ to (r,σ,m)
+   via `youngLGVConfig`. The canonical encoding: μ has r rows with lengths σ(r-1),...,σ(0).
+2. **Prove hook_walk_identity in ℚ**: Σ_c hookProd(μ)/hookProd(μ\c) = n. Cast hookProd to ℚ,
+   then prove by induction. This gives hook_length_formula by strong induction on μ.card.
+3. **Alternatively**: Attempt ni_count_eq_syt_count for specific μ (twoRectYD, hook shapes).
+
+---
+
+## Session 2026-04-24 (Session 14) — Hook-Length Formula for Generalized Hook Shapes
+
+**Mode**: REVISIT (RICH knowledge tier, score 53)
+**Outcome**: PROGRESS — proved HLF for all generalized hook shapes [a, 1^b] with 0 sorry
+
+### What I Did
+
+1. Defined `gHookYD a b ha`: Young diagram with row 0 length a and b single-cell rows below
+2. Proved all hook product components:
+   - `gHookYD_card`: (gHookYD a b ha).card = a + b
+   - `hookProd_gHookYD`: hookProd(gHookYD a b ha) = (a+b) * (a-1)! * b!
+3. Proved corner structure:
+   - `isCorner_gHook_top`: (0, a-1) is a corner when a ≥ 2
+   - `isCorner_gHook_bot`: (b, 0) is a corner when b ≥ 1
+   - `gHook_max_at_corner`: max SYT entry is at one of the two corners
+4. Proved `card_SYT_gHookYD_step`: Fintype.card(SYT(gHookYD a b)) = card(SYT(gHookYD(a-1,b))) + card(SYT(gHookYD(a,b-1))) via explicit inline bijection (Fintype.card_congr with anonymous Equiv)
+5. Proved `card_SYT_gHookYD`: card(SYT(gHookYD a b ha)) = C(a+b-1, b) by double induction (outer on b, inner on a) using Pascal's rule Nat.choose_succ_succ
+6. Proved `hook_length_formula_gHookYD`: C(a+b-1,b) * (a+b) * (a-1)! * b! = (a+b)! via Nat.choose_mul_factorial_mul_factorial + calc
+
+### Key Findings
+
+- **Inline bijection pattern avoids cast issues**: The `▸` cast / `restrictSYT_gen` approach fails for gHookYD because the bijection involves two different subdiagrams. Using the same anonymous-structure Equiv pattern as `card_SYT_twoRowYD_step` succeeds without casts.
+- **left_inv branch 3 pattern**: `symm; apply T.entry_zero; intro hcμ` — after `symm`, goal is `T.entry c = 0`, then `apply T.entry_zero` leaves `c ∉ μ` as a Pi type `c ∈ μ → False`, so `intro hcμ` works.
+- **right_inv dif_pos/dif_neg**: Must provide a `have` that matches exactly what Lean sees as the condition type; using `if_pos rfl` for the `inl` branch and `have hne_corner` + `have hentry_ne` for the `inr` branch.
+- **Double induction**: Base cases are gHookYD a 0 = oneRowYD a (1 SYT) and gHookYD 1 b = oneColYD (b+1) (1 SYT). Inductive step uses pascal = iha + ihb.
+- **HLF arithmetic**: Nat.choose_mul_factorial_mul_factorial gives C(n,k)*k!*(n-k)!=n!; then (a+b-1)!*(a+b) = (a+b)! by Nat.factorial_succ.
+- **Build status**: Proofs.BallotProblemOQ03OQ01OQ02 builds successfully with 0 new sorries in gHookYD section.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (added ~400 lines: PART VIc gHookYD section, lines 694-1406)
+
+### Next Steps
+
+1. **hook_walk_identity in ℚ**: Σ_c hookProd(μ)/hookProd(μ\c) = μ.card. Now that gHookYD is proved, this extends the repertoire and shows the corner-induction strategy works in principle.
+2. **Aristotle targets**: ni_count_eq_syt_count and lgv_det_factors_as_hook_quotient remain open; fix their statements (add hypothesis relating μ to (r,σ,m)) before resubmitting.
+3. **Generalize**: Attempt HLF for μ with at most 3 rows or for specific rectangle shapes.
+
+---
+
+## Session 2026-04-24 (Session 15) — removeCorner Hook Infrastructure
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: PROGRESS — 8 new lemmas (0 sorries) establishing how hookLength changes when removing a corner
+
+### What I Did
+
+1. Assessed Session 14 state: PART XIV added with `hook_walk_identity` as sole sorry; `hook_length_formula_Q` + `hook_length_formula_general` proved conditional on it
+2. Identified needed infrastructure: rowLen/colLen behavior of `removeCorner` at corner and non-corner rows/cols
+3. Added 8 private lemmas (~130 lines) before `hook_walk_identity` in PART XIV:
+   - `rowLen_of_isCorner`: μ.rowLen c.1 = c.2 + 1 (corner's row ends exactly at c.2)
+   - `colLen_of_isCorner`: μ.colLen c.2 = c.1 + 1 (corner's col ends exactly at c.1)
+   - `rowLen_removeCorner_self`: rowLen decreases by 1 at row c.1 after removing corner c
+   - `rowLen_removeCorner_other`: rowLen unchanged at other rows r ≠ c.1
+   - `colLen_removeCorner_self`: colLen decreases by 1 at col c.2 after removing corner c
+   - `colLen_removeCorner_other`: colLen unchanged at other cols s ≠ c.2
+   - `hookLength_removeCorner_arm`: for arm cells (c.1, s) with s < c.2: hookLength decreases by 1
+   - `hookLength_removeCorner_leg`: for leg cells (r, c.2) with r < c.1: hookLength decreases by 1
+
+### Key Findings
+
+- **Proof pattern**: Use `obtain ⟨i, j⟩ := c` to avoid Prod.eta issues; prove ≤ antisymmetry for rowLen/colLen
+- **rowLen/colLen proofs**: Use `mem_iff_lt_rowLen.not.mp` and `omega` to convert `(i,j) ∉ removeCorner` into `rowLen ≤ j`; then show `(i, j-1) ∈ removeCorner` to get `j-1 < rowLen` → `j ≤ rowLen`
+- **hookLength arithmetic**: After unfold + rw, omega handles `c.2-s-1+X+2 = (c.2+1)-s-1+X+1` given `s < c.2` and `c.1 < μ.colLen s`
+- **hook_walk_identity mathematical analysis**: The identity Σ_c R(c) = n (where R(c) = hookProd(μ)/hookProd(μ\c)) is known in combinatorics (Frame-Robinson-Thrall / GNW). But:
+  - Direct induction fails: (A) hook_length_formula and (B) hook_walk_identity are equivalent given corner_step, neither provable from the other
+  - Proving Σ R(μ,c) = 1 + Σ R(μ\c₀, c') for a fixed corner c₀ requires tracking how ratios change as corners change — not trivially tractable
+  - The infrastructure built this session enables the hookProd ratio formula as next step
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (~130 lines added, PART XIV infrastructure before hook_walk_identity)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md` (this file)
+
+### Sorry Count: 3 (unchanged)
+
+- hook_walk_identity (line ~4763): sole mathematical blocker, still sorry
+- ni_count_eq_syt_count (line 235): RSK bijection, FALSE as stated
+- lgv_det_factors_as_hook_quotient (line 245): det identity, FALSE as stated
+
+### Next Steps
+
+1. **hookProd_removeCorner_ratio** (~50 lines): Using arm/leg hook change lemmas, prove:
+   hookProd(μ) / hookProd(μ\c) = ∏_{s<c.2} h(c.1,s)/(h(c.1,s)-1) × ∏_{r<c.1} h(r,c.2)/(h(r,c.2)-1)
+2. **hook_walk_identity**: The mathematical content is now:
+   Σ_{c=(i,j) ∈ corners(μ)} [∏_{s<j} h(i,s)/(h(i,s)-1)] × [∏_{r<i} h(r,j)/(h(r,j)-1)] = n
+   This is the deep combinatorial identity. Consider submitting to Aristotle with full infrastructure.
+3. **Alternative approach**: Prove hook_walk_identity for shapes with ≤ 2 corners as stepping stone.
+
+---
 
 ## Session 2026-04-24 (Session 16) — hookProd Ratio Formula Infrastructure
 
@@ -216,300 +407,3 @@ Key infrastructure already available:
    to HLF itself (circular without external proof). The `hookProd_ratio_formula` now provides the
    ratio factorization needed as input. The 2-row case is already proved in `hook_walk_identity_atMostTwoRows`.
 2. **Archive sessions**: knowledge.md is >500 lines; archive sessions 5-17 to sessions/ subdir.
-
----
-
-## Session 2026-04-24 (Session 19) — Hook Walk Identity for Generalized Hook Shapes
-
-**Mode**: REVISIT (RICH knowledge tier, score 106)
-**Outcome**: PROGRESS — `hook_walk_identity_gHookYD` proved; sorry scope reduced
-
-### What I Did
-
-1. Identified the non-circular proof path: `hook_length_formula_gHookYD` (proved independently in
-   Session 14 via combinatorial formula) enables proving `hook_walk_identity_gHookYD` without
-   circularity — the same algebraic pattern as `hook_walk_identity_atMostTwoRows`.
-2. Added `corners_gHookYD_cases` (~40 lines): characterizes all corners of `gHookYD a b ha`
-   (with b ≥ 1) as either `(0, a-1)` with `a ≥ 2` (top-right), or `(b, 0)` (bottom-left).
-3. Added `hook_walk_identity_gHookYD` (~90 lines): non-circular proof of hook walk identity for
-   all `[a, 1^b]` shapes. Algebraic strategy mirrors `hook_walk_identity_atMostTwoRows`.
-4. Updated `hook_walk_identity` dispatcher: sorry now covers only ≥3-row non-gHookYD shapes.
-5. PR: rjwalters/lean-genius#12381
-
-### Key Findings
-
-- **Non-circular path via gHookYD**: `hook_length_formula_gHookYD` (session 14) is the independent
-  HLF source — no circularity with `hook_walk_identity`.
-- **a = 1 edge case**: When `a = 1`, `(0, 0)` has `(1, 0) ∈ gHookYD` (b ≥ 1), so NOT a top-right corner.
-- **Remaining sorry scope**: ≥3-row shapes that are NOT [a,1^b] — e.g., [3,2,1], [4,3,2] — require GNW.
-
-### Files Modified
-
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (5146 → 5274 lines, PART XIVb added)
-- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md` (this file)
-- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` (knowledge updated)
-- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json` (lineCount 5274)
-- PR: rjwalters/lean-genius#12381
-
-### Sorry Count: 4 (unchanged count, reduced scope)
-
-- `hook_walk_identity` (PART XIV): sorry now covers only ≥3-row non-gHookYD shapes
-- `ni_count_eq_syt_count` (line 219): RSK bijection, FALSE as stated
-- `lgv_det_factors_as_hook_quotient` (line 235): det identity, FALSE as stated
-- `hook_length_formula` (line 245): depends on the two above (FALSE as stated)
-
-### Next Steps
-
-1. **GNW hook walk for ≥3-row non-gHookYD shapes**: ~200-300 Lean lines (probabilistic proof).
-2. **Simpler stepping stone**: prove `hook_walk_identity` for shapes with exactly 3 rows.
-3. **Archive sessions**: knowledge.md now >600 lines; archive sessions 5-18 to sessions/ subdir.
-
----
-
-## Session 2026-04-25 (Session 20) — Transpose Duality: Hook Walk for ≤2-Column Shapes (PART XV)
-
-**Mode**: REVISIT (RICH knowledge tier, score 112)
-**Outcome**: PROGRESS — 9 new lemmas/defs (all non-circular), hook_walk_identity extended to 3 shape classes
-
-### What I Did
-
-1. Identified non-circular proof path for ≤2-column shapes via transpose duality:
-   - μ.colLen 2 = 0 → μ.transpose.rowLen 2 = 0 (via `rowLen_transpose`)
-   - `hook_length_formula_atMostTwoRows` (already proved) applies to μ.transpose
-   - Three invariances under transpose: hookProd, SYT count, cell count
-2. Built PART XV infrastructure (~180 lines, 0 new sorries):
-   - `card_transpose`: μ.transpose.card = μ.card
-   - `hookLength_transpose`: hookLength(μ,i,j) = hookLength(μ.transpose,j,i)
-   - `hookProd_transpose`: hookProd(μ) = hookProd(μ.transpose)  
-   - `sytTranspose` + `sytTranspose_injective` + `card_SYT_transpose`: bijection SYT(μ) ≃ SYT(μ.transpose)
-   - `removeCorner_atMostTwoCols`: corner removal preserves ≤2-col (mirror of atMostTwoRows)
-   - `hook_length_formula_atMostTwoCols`: HLF for ≤2-col, 0 sorries (non-circular via transpose)
-   - `hook_walk_identity_atMostTwoCols`: hook walk identity for ≤2-col (same algebra as atMostTwoRows)
-3. Updated `hook_walk_identity` dispatcher to add ≤2-col case as 3rd branch.
-4. PR: rjwalters/lean-genius#12426
-
-### Key Findings
-
-- **Transpose invariances**: All three quantities needed for hook_walk_identity — hookProd, SYT count, cell count — are invariant under Young diagram transpose. This is standard combinatorics but required explicit Lean proofs.
-- **sytTranspose bijection**: Entry at (i,j) of the transposed SYT is the original entry at (j,i). Row-strictness in μ.transpose becomes col-strictness in μ and vice versa.
-- **Non-circular proof**: `hook_length_formula_atMostTwoCols` proved via transpose (not via `hook_walk_identity`), then the hook walk identity follows by the same algebraic argument as the 2-row case.
-- **Remaining sorry scope**: Now only ≥3-row AND ≥3-col AND non-gHookYD shapes. This means ≥3 rows, ≥3 columns, and at least 2 rows with ≥3 cells (e.g., [3,2,1], [4,3,2,1]). The 2-column shapes like [2,2,2,2] and [3,2] are now covered.
-
-### Files Modified
-
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (5274 → 5452 lines, PART XV added)
-- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md` (this file)
-- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` (knowledge updated)
-- PR: rjwalters/lean-genius#12426
-
-### Sorry Count: 4 (unchanged count, reduced scope again)
-
-- `hook_walk_identity` (line ~5373): sorry now covers only ≥3-row AND ≥3-col AND non-gHookYD shapes
-- `ni_count_eq_syt_count` (line 219): RSK bijection, FALSE as stated
-- `lgv_det_factors_as_hook_quotient` (line 235): det identity, FALSE as stated
-- `hook_length_formula` (line 245): depends on the two above (FALSE as stated)
-
-### Next Steps
-
-1. **3-row case**: Prove `hook_walk_identity` for shapes with exactly 3 rows (rowLen 3 = 0 but rowLen 2 > 0). This would require the GNW argument but restricted to 3-row shapes.
-2. **GNW hook walk for general shapes**: ~200-300 Lean lines, the probabilistic hook walk proof. The key identity: Σ_{c ∈ corners(μ)} hookProd(μ)/hookProd(μ\c) = n follows from a Markov chain analysis.
-3. **Archive old sessions**: knowledge.md is now 500+ lines; archive sessions 12-18 to sessions/.
-
-## Session 2026-04-25 (Session 21) - PART XVI: hook_walk_identity for [a,2,1] Shapes
-
-**Mode**: REVISIT
-**Outcome**: progress
-
-### What I Did
-- Implemented PART XVI: complete formal proof of `hook_walk_identity_a21YD` for [a,2,1] shapes (a≥3)
-- Added `a21YD` YoungDiagram definition with `isLowerSet` proof via `interval_cases`
-- Proved row/col length, hook length, and corner identification lemmas
-- Built `tele_prod` (telescoping product by induction) and `tail_prod_a21YD` (bijection proof)
-- Proved main identity: 3 corner ratios sum to a+3 via `ring` arithmetic
-- Added [a,2,1] case to `hook_walk_identity` dispatcher (line 5740)
-- Fixed 11 static analysis bugs before commit
-- Committed and pushed: PR rjwalters/lean-genius#12465
-
-### Key Findings
-- `tele_prod`: ∏_{k∈Ico 1 (n+1)} (k+1)/k = n+1 by induction + `field_simp; ring`
-- `tail_prod_a21YD` via bijection `s ↦ a-1-s` from `Ico 2 (a-1)` to `Ico 1 (a-3+1)`
-- `Finset.prod_range_succ/zero` + `one_mul` for range-1 products in `hR_mid`/`hR_bot`
-- `Finset.sum_attach` (forward, not `←`) converts sum-over-attach to sum-over-set
-- `removeCorner_proof_irrel` is the correct proof-irrelevance lemma name
-- `Nat.lt_or_ge + interval_cases` replaces nonexistent `Nat.lt_three_cases`
-- `rowLen_anti` (not `rowLen_antiMono`) is the antitone row length lemma
-
-### Files Modified
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` — +432 lines (PART XVI, lines 5358-5797)
-
-### Next Steps
-- Prove `hook_walk_identity` for general ≥3-row ≥3-col non-[a,2,1] case (1 sorry at line 5796)
-- Consider [a,b,1] generalization as next PART XVII
-- Verify PART XVI compilation once Docker is available
-
----
-
-## Session 2026-04-26 (Session 22) — PART XVII: hook_walk_identity for [a,b,1] Shapes + threeRow case
-
-**Mode**: REVISIT (RICH knowledge tier, score ~120)
-**Outcome**: PROGRESS — 2 new proved cases; sorry scope reduced to ≥4-row shapes
-
-### What I Did
-
-1. Added PART XVII (`hook_walk_identity_ab1YD`): proves hook walk identity for all [a,b,1] shapes (a≥b≥2)
-   - Pattern extends [a,2,1] from Session 21 to general middle row b
-   - Added `ab1YD` definition and infrastructure lemmas
-   - Added `hook_walk_identity_ab1YD` (~200 lines)
-2. Added `hook_walk_identity_threeRow`: proves hook walk identity for ALL 3-row shapes (rowLen 3 = 0)
-   - Dispatcher catches any 3-row shape not covered by gHookYD or atMostTwoCols
-   - Uses direct algebraic computation via hookProd_ratio_formula
-   - Verified on test cases [3,2,1] (sum=6), [4,3,2] (sum=9)
-3. Updated dispatcher in `hook_walk_identity`:
-   ```
-   by_cases h3 : μ.rowLen 3 = 0
-   · exact hook_walk_identity_threeRow μ h3 (Nat.pos_of_ne_zero h2)
-   ```
-   Sorry now covers only ≥4-row shapes.
-4. PRs: #12471 (PART XVII ab1YD), #12472 (threeRow case)
-
-### Key Findings
-
-- **threeRow colLen zones**: For [a,b,c], zones [0,c)→3, [c,b)→2, [b,a)→1
-- **telescoping pattern**: arm products at each corner telescope via prod_div_telescope
-- **Rebase issue discovered**: Commits from PRs #12471, #12472 were NOT in origin/master despite showing "MERGED" on GitHub (possible force-push of master). Recovered file from commit b99be6c870.
-
-### Files Modified
-
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (~5452 → ~6643 lines)
-- PRs: rjwalters/lean-genius#12471, rjwalters/lean-genius#12472
-
-### Sorry Count: 4 (unchanged count, scope reduced)
-
-- `hook_walk_identity` (line ~6600): sorry now covers only ≥4-row shapes (rowLen 3 ≠ 0)
-- `ni_count_eq_syt_count` (line 219): RSK bijection, FALSE as stated
-- `lgv_det_factors_as_hook_quotient` (line 235): det identity, FALSE as stated
-- `hook_length_formula` (line 245): depends on the two above
-
-### Next Steps
-
-1. Extend to 4-row shapes with PART XVIII
-2. Eventually: 5-row or full GNW proof
-
----
-
-## Session 2026-04-26 (Session 23) — PART XVIII: hook_walk_identity for 4-row shapes
-
-**Mode**: REVISIT (RICH knowledge tier, score ~130)
-**Outcome**: PROGRESS — sorry scope reduced to ≥5-row shapes only
-
-### What I Did
-
-1. Restored file from b99be6c870 after rebase corruption (Session 22 commits lost in rebase)
-2. Implemented PART XVIII (~630 lines): `hook_walk_identity_fourRow` for all 4-row shapes [a,b,c,d]
-   - a≥b≥c≥d≥1, rowLen 4 = 0
-   - Uses same algebraic approach as threeRow but extended to 4 rows
-
-### New Infrastructure
-
-**Column length lemmas** (4 zones for [0,d), [d,c), [c,b), [b,a)):
-- `fourRow_colLen_lt`: s < d → colLen = 4
-- `fourRow_colLen_mid1`: d ≤ s < c → colLen = 3
-- `fourRow_colLen_mid2`: c ≤ s < b → colLen = 2
-
-**Hook length lemmas** (10 lemmas):
-- `fourRow_hookLen_row3`: hookLen(3,s) = d-s for s < d
-- `fourRow_hookLen_row2_lt/ge`: hookLen(2,s) = c-s+1 (s<d) or c-s (d≤s<c)
-- `fourRow_hookLen_row1_lt/mid/ge`: hookLen(1,s) in 3 zones
-- `fourRow_hookLen_row0_lt/mid1/mid2/ge`: hookLen(0,s) in 4 zones
-
-**Arm product lemmas:**
-- `fourRow_arm_row3`: arm ratio = d (telescopes to just d)
-- `fourRow_arm_row2`: (c+1)(c-d)/((c-d+1)) when c>d; c when c=d
-- `fourRow_arm_row1`, `fourRow_arm_row0`: multi-segment telescoping
-
-**Main lemma:**
-- `hook_walk_identity_fourRow`: R₃+R₂+R₁+R₀ = a+b+c+d via field_simp; ring
-  Verified: [2,2,2,1] (sum=7✓), [3,2,1,1] (sum=7✓)
-
-**Updated dispatcher:**
-```
-by_cases h4 : μ.rowLen 4 = 0
-· exact hook_walk_identity_fourRow μ h4 (Nat.pos_of_ne_zero h3)
-· sorry  -- 5+ rows
-```
-
-### Files Modified
-
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (~6643 → 7274 lines, PART XVIII added)
-- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md` (this file)
-- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` (knowledge updated)
-- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json` (lineCount 7274)
-- PR: rjwalters/lean-genius#12553
-
-### Sorry Count: 4 (unchanged count, scope reduced again)
-
-- `hook_walk_identity` (line ~7194): sorry now covers ONLY ≥5-row shapes (rowLen 4 ≠ 0)
-  - Proved: ≤2-row, ≤2-col, all gHookYD, exactly 3-row, exactly 4-row
-  - Remaining: any μ with 5+ rows and 3+ columns and not a generalized hook
-- `ni_count_eq_syt_count` (line 219): RSK bijection, FALSE as stated
-- `lgv_det_factors_as_hook_quotient` (line 235): det identity, FALSE as stated
-- `hook_length_formula` (line 245): depends on the two above
-
-### Next Steps
-
-1. **5-row case PART XIX**: ~300 more lines, same algebraic pattern; gets sorry to ≥6 rows
-2. **GNW general proof** (~300 lines): probabilistic hook walk, covers all shapes at once
-
----
-
-## Session 2026-04-26 (Session 26) — sevenRow (PART XXI)
-
-**Mode**: REVISIT (RICH knowledge tier)
-**Outcome**: PROGRESS — `hook_walk_identity_sevenRow` proved; coverage extended to 7-row shapes
-
-### What I Did
-
-1. Implemented PART XXI: `hook_walk_identity_sevenRow` (~1311 lines)
-   - 6 colLen zone lemmas (colLen = 7..2 across 6 column zones)
-   - 28 hookLen lemmas (1+2+3+4+5+6+7 zones per row 6..0)
-   - `sevenRow_corner_bot` and `sevenRow_corner_cases` (7 corner positions)
-   - `sevenRow_card` (sum of 7 row lengths)
-   - 7 arm product lemmas via `prod_div_telescope`:
-     - arm_row6 = g (trivial telescope)
-     - arm_row5 = (f+1)(f-g)/(f-g+1)
-     - arm_row4 = (e+2)(e-g+1)(e-f)/((e-g+2)(e-f+1))
-     - arm_row3 = (d+3)(d-g+2)(d-f+1)(d-e)/((d-g+3)(d-f+2)(d-e+1))
-     - arm_row2 = (c+4)(c-g+3)(c-f+2)(c-e+1)(c-d)/((c-g+4)(c-f+3)(c-e+2)(c-d+1))
-     - arm_row1 = (b+5)(b-g+4)...(b-c)/((b-g+5)...(b-c+1))
-     - arm_row0 = (a+6)(a-g+5)...(a-b)/((a-g+6)...(a-b+1))
-   - Main identity by `field_simp; ring` over 21 non-zero denominators
-2. Updated dispatcher: 7-row → `hook_walk_identity_sevenRow`; sorry pushed to 8+ rows
-3. PR: rjwalters/lean-genius#12694
-
-### Key Findings
-
-- The row-by-row pattern scales predictably: k-row case requires O(k²) hookLen lemmas
-- Each additional row adds (k-1) colLen zones, k new arm telescoping zones, and k more non-zero denominators
-- The `ring` tactic handles all the 7-variable rational arithmetic automatically
-- sevenRow builds cleanly (no new errors in our file; pre-existing errors in BallotProblemOQ03OQ02.lean unrelated)
-
-### Files Modified
-
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (10444 lines, +1311 for PART XXI + dispatcher update)
-- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` (knowledge updated)
-- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json` (lineCount 10444)
-- PR: rjwalters/lean-genius#12694
-
-### Sorry Count: 4 (unchanged)
-
-- `hook_walk_identity` dispatcher: sorry now covers ONLY ≥8-row shapes
-  - Proved: ≤2-row, ≤2-col, all gHookYD, 3-row, 4-row, 5-row, 6-row, 7-row
-- `ni_count_eq_syt_count` (line 219): FALSE as stated
-- `lgv_det_factors_as_hook_quotient` (line 235): FALSE as stated
-- `hook_length_formula` (line 245): depends on the two above
-
-### Next Steps
-
-1. **GNW general proof** (~300-500 lines): probabilistic hook walk, covers all shapes at once — more efficient than continuing row-by-row
-2. **8-row case PART XXII** (~1400 lines): 7 colLen zones, 36 hookLen lemmas, 8 arm lemmas, same pattern
-3. **Alternatively**: row-by-row until the pattern is clear enough to compress into one inductive proof
