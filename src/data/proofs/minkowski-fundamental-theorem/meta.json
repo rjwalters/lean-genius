@@ -2,7 +2,7 @@
   "id": "minkowski-fundamental-theorem",
   "title": "Minkowski's Fundamental Theorem (Geometry of Numbers)",
   "slug": "minkowski-fundamental-theorem",
-  "description": "Formalizes Minkowski's Fundamental Theorem (Wiedijk #40): a centrally symmetric convex body in \u211d\u207f with volume strictly greater than 2\u207f times the covolume of a lattice must contain a non-zero lattice point. The proof bridges a custom Lattice/ConvexBody/HasVolume API to Mathlib's exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure via a Lattice.toModuleBasis construction. A separate MinkowskiProved namespace provides direct Mathlib-style proofs for both the integer lattice \u2124\u207f and arbitrary lattices, eliminating all axioms.",
+  "description": "Formalizes Minkowski's Fundamental Theorem (Wiedijk #40): a centrally symmetric convex body in ℝⁿ with volume strictly greater than 2ⁿ times the covolume of a lattice must contain a non-zero lattice point. The proof bridges a custom Lattice/ConvexBody/HasVolume API to Mathlib's exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure via a Lattice.toModuleBasis construction. A separate MinkowskiProved namespace provides direct Mathlib-style proofs for both the integer lattice ℤⁿ and arbitrary lattices, eliminating all axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
@@ -27,27 +27,27 @@
       "Custom Lattice structure with basis matrix and invertibility condition",
       "CentrallySymmetric and ConvexBody types with origin membership theorem",
       "Lattice.toModuleBasis: bridges custom Lattice to Mathlib Module.Basis",
-      "latticePoints_eq_span: identifies custom lattice points with \u2124-span of basis vectors",
+      "latticePoints_eq_span: identifies custom lattice points with ℤ-span of basis vectors",
       "minkowski_fundamental: proved from Mathlib's geometry of numbers via the bridging lemmas",
-      "MinkowskiProved.minkowski_integer_lattice_proved: direct proof for \u2124\u207f using Mathlib types",
+      "MinkowskiProved.minkowski_integer_lattice_proved: direct proof for ℤⁿ using Mathlib types",
       "MinkowskiProved.minkowski_general_lattice_proved: general lattice proof using Module.Basis",
       "fermat_from_minkowski: Fermat's two squares theorem derived (via Mathlib's Nat.Prime.sq_add_sq)"
     ]
   },
   "overview": {
     "historicalContext": "Hermann Minkowski proved his fundamental theorem in 1889, founding the field of Geometry of Numbers. The theorem gives a geometric bridge between the shapes of convex bodies and the arithmetic of lattices. It has far-reaching consequences: Fermat's two-squares theorem, Lagrange's four-squares theorem, the finiteness of the class number in algebraic number theory, Dirichlet's theorem on simultaneous Diophantine approximation, and the theory of optimal sphere packing. The theorem appears as #40 on Freek Wiedijk's list of 100 theorems whose formalization marks milestones in mathematical software.",
-    "problemStatement": "Minkowski's Fundamental Theorem: Let L be a lattice in \u211d\u207f with covolume V (= |det(basis matrix)|). If S \u2286 \u211d\u207f is convex, centrally symmetric (x \u2208 S \u27f9 \u2212x \u2208 S), and has volume(S) > 2\u207f \u00b7 V, then S contains a non-zero point of L.",
-    "proofStrategy": "The classical proof uses the pigeonhole principle: scale S to S/2 (volume 2\u207b\u207f \u00b7 vol(S) > V), translate by all lattice points. Two translates must overlap, and the overlap point yields a non-zero lattice point by convexity and central symmetry. The Lean formalization uses Mathlib's exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure, which implements this argument with full measure-theoretic rigor. The main technical work is bridging the custom Lattice type to Mathlib's Module.Basis by interpreting the basis matrix rows as basis vectors via a LinearEquiv.",
+    "problemStatement": "Minkowski's Fundamental Theorem: Let L be a lattice in ℝⁿ with covolume V (= |det(basis matrix)|). If S ⊆ ℝⁿ is convex, centrally symmetric (x ∈ S ⟹ −x ∈ S), and has volume(S) > 2ⁿ · V, then S contains a non-zero point of L.",
+    "proofStrategy": "The classical proof uses the pigeonhole principle: scale S to S/2 (volume 2⁻ⁿ · vol(S) > V), translate by all lattice points. Two translates must overlap, and the overlap point yields a non-zero lattice point by convexity and central symmetry. The Lean formalization uses Mathlib's exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure, which implements this argument with full measure-theoretic rigor. The main technical work is bridging the custom Lattice type to Mathlib's Module.Basis by interpreting the basis matrix rows as basis vectors via a LinearEquiv.",
     "keyInsights": [
       "Lattice.toLinearEquiv constructs a LinearEquiv from the transpose matrix action, and Lattice.toModuleBasis maps the standard basis through this equivalence",
       "The key bridge lemma toModuleBasis_matrix_eq shows Matrix.of(toModuleBasis) = L.basis, connecting the abstract basis to the original matrix",
       "latticePoints_eq_span uses Submodule.mem_span_range_iff_exists_fun and zsmul_eq_smul_cast to identify integer linear combinations",
-      "The ENNReal arithmetic bridge converts the \u211d-valued volume inequality to the ENNReal measure comparison required by Mathlib",
+      "The ENNReal arithmetic bridge converts the ℝ-valued volume inequality to the ENNReal measure comparison required by Mathlib",
       "fermat_from_minkowski is proved by delegating to Mathlib's Nat.Prime.sq_add_sq, which itself uses geometry of numbers internally",
-      "The two-architecture design \u2014 custom API (Parts 1\u20139) bridged to Mathlib plus direct Mathlib-style proofs (MinkowskiProved) \u2014 provides three independent routes to the theorem: useful for downstream applications requiring either the user-friendly Lattice/ConvexBody interface or the raw Module.Basis form"
+      "The two-architecture design — custom API (Parts 1–9) bridged to Mathlib plus direct Mathlib-style proofs (MinkowskiProved) — provides three independent routes to the theorem: useful for downstream applications requiring either the user-friendly Lattice/ConvexBody interface or the raw Module.Basis form"
     ],
     "prerequisites": [
-      "Measure theory: Lebesgue measure on \u211d\u207f, ENNReal arithmetic",
+      "Measure theory: Lebesgue measure on ℝⁿ, ENNReal arithmetic",
       "Linear algebra: lattices, bases, determinants, covolumes",
       "Convex analysis: convex sets, central symmetry",
       "Mathlib ZSpan and ZLattice modules",
@@ -60,52 +60,58 @@
     "openQuestions": [
       "Can Minkowski's second theorem (on successive minima) be formalized with the same infrastructure?",
       "Can the Minkowski class number bound for algebraic number fields be derived from this formalization?",
-      "Can Blichfeldt's generalization (k+1 lattice points when volume > k \u00b7 2\u207f \u00b7 covolume) be proved?",
+      "Can Blichfeldt's generalization (k+1 lattice points when volume > k · 2ⁿ · covolume) be proved?",
       "How does the custom Lattice API compare to Mathlib's ZLattice for practical applications in number theory?"
     ]
   },
   "sections": [
     {
       "id": "custom-api",
-      "title": "Part 1\u20134: Custom API (EuclideanN, Lattice, ConvexBody, HasVolume)",
+      "title": "Part 1–4: Custom API (EuclideanN, Lattice, ConvexBody, HasVolume)",
       "summary": "Defines EuclideanN, CentrallySymmetric, Lattice (basis matrix + invertibility), covolume, latticePoints, ConvexBody structure, and HasVolume typeclass bridging abstract volume to ENNReal Lebesgue measure.",
       "startLine": 106,
-      "endLine": 240
+      "endLine": 240,
+      "mathContext": "The custom API models geometry-of-numbers at a high level of abstraction. `EuclideanN n = Fin n → ℝ` is the ambient space; using a function type (rather than `EuclideanSpace ℝ (Fin n)`) ensures direct compatibility with Mathlib's `ZSpan` API. `Lattice n` wraps an $n \\times n$ real `basis` matrix with a nonzero-determinant witness `basis_invertible : basis.det ≠ 0`, making it the Lean encoding of $GL_n(\\mathbb{R})$. The `covolume` of lattice $L$ is $|\\det(\\mathrm{basis})|$, the volume of its fundamental domain $[0,1)^n$ mapped through the basis matrix; `Lattice.covolume_pos` shows it is strictly positive. `isLatticeVector L x` asserts $x = \\sum_i c_i b_i$ for integers $c_i$ and basis rows $b_i$; `latticePoints L` is the $\\mathbb{Z}$-module of all such points. `ConvexBody n` bundles a set with proofs of `CentrallySymmetric`, `Convex`, and `Set.Nonempty`; central symmetry implies $0 \\in S$ by convexity (proved in `origin_mem_of_symmetric_nonempty`). `HasVolume n S` is a typeclass supplying `vol : ℝ` and `hv_eq : ENNReal.ofReal vol = MeasureTheory.volume ↑S`, bridging the real-valued volume condition to Mathlib's `ENNReal`-valued Lebesgue measure. `criticalVolume L = 2^n \\cdot \\mathrm{covolume}(L)$ is the threshold: any convex body with volume strictly exceeding this must contain a nonzero lattice point."
     },
     {
       "id": "bridge",
       "title": "Part 4.5: Bridge to Mathlib (toModuleBasis, latticePoints_eq_span)",
-      "summary": "Lattice.toLinearEquiv, toModuleBasis, toModuleBasis_matrix_eq, basisVec_eq_toModuleBasis, and latticePoints_eq_span connect the custom Lattice type to Mathlib's Module.Basis and Submodule.span \u2124.",
+      "summary": "Lattice.toLinearEquiv, toModuleBasis, toModuleBasis_matrix_eq, basisVec_eq_toModuleBasis, and latticePoints_eq_span connect the custom Lattice type to Mathlib's Module.Basis and Submodule.span ℤ.",
       "startLine": 241,
-      "endLine": 312
+      "endLine": 312,
+      "mathContext": "The bridge section is the technical heart of the proof. `Lattice.toLinearEquiv L` constructs a `LinearEquiv (Fin n → ℝ) (Fin n → ℝ)` sending $v \\mapsto L.\\mathrm{basis}^\\top \\cdot v$ — i.e., the transpose of the basis matrix acts as a linear isomorphism (invertible by `basis_invertible`). `Lattice.toModuleBasis L` then pushes the standard `Pi.basisFun ℝ (Fin n)` through this equivalence to obtain a `Module.Basis (Fin n) ℝ (Fin n → ℝ)`, the Mathlib data structure for lattice bases. The crucial lemma `toModuleBasis_matrix_eq` proves `Matrix.of (L.toModuleBasis n) = L.basis`, showing the custom matrix and the Mathlib basis represent the same linear data. `basisVec_eq_toModuleBasis` gives the pointwise version: the $i$-th custom basis vector equals the $i$-th Mathlib basis vector. Finally, `latticePoints_eq_span L` identifies `latticePoints L` with `Submodule.span ℤ (Set.range (L.toModuleBasis n))` — the same set as the $\\mathbb{Z}$-span of the Mathlib basis vectors — via `Submodule.mem_span_range_iff_exists_fun` and `zsmul_eq_smul_cast`. This identification is what allows the main theorem to invoke Mathlib's `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`."
     },
     {
       "id": "main-theorem",
       "title": "Part 5: Minkowski's Fundamental Theorem",
       "summary": "minkowski_fundamental and minkowski_fundamental': proved via Mathlib's exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure with ENNReal arithmetic bridge and latticePoints_eq_span.",
       "startLine": 313,
-      "endLine": 383
+      "endLine": 383,
+      "mathContext": "The main theorem `minkowski_fundamental` states: if $L$ is a lattice with covolume $V$ and $S$ is a convex body with $\\mathrm{vol}(S) > 2^n \\cdot V$, then $S$ contains a nonzero lattice point. The proof calls Mathlib's `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`, which implements the classical pigeonhole argument: scale $S$ by $1/2$ (volume $\\mathrm{vol}(S)/2^n > V$), tile by the fundamental domain of $L$, two tiles must overlap, and their difference lies in $S$ by central symmetry and convexity. The technical bridge is an `ENNReal` arithmetic step converting the hypothesis `vol(S) > criticalVolume L` from `ℝ` to `ENNReal`, using `ENNReal.ofReal_lt_ofReal_iff` and the positivity of the covolume. `minkowski_fundamental'` is a variant with the `HasVolume` hypothesis in Prop form for ease of use. The Lean proof reduces to three steps: bridge the lattice representation (via `latticePoints_eq_span`), bridge the measure hypothesis (via `ENNReal` arithmetic), and invoke the Mathlib API."
     },
     {
       "id": "special-cases",
-      "title": "Part 6\u20137: Integer Lattice and Fermat's Two Squares",
-      "summary": "minkowski_integer_lattice (vol > 2^n for \u2124\u207f), fermat_from_minkowski (every prime p \u2261 1 mod 4 is a sum of two squares, delegated to Nat.Prime.sq_add_sq), and application docstrings for Dirichlet and Lagrange.",
+      "title": "Part 6–7: Integer Lattice and Fermat's Two Squares",
+      "summary": "minkowski_integer_lattice (vol > 2^n for ℤⁿ), fermat_from_minkowski (every prime p ≡ 1 mod 4 is a sum of two squares, delegated to Nat.Prime.sq_add_sq), and application docstrings for Dirichlet and Lagrange.",
       "startLine": 385,
-      "endLine": 470
+      "endLine": 470,
+      "mathContext": "Two applications demonstrate the theorem. `minkowski_integer_lattice` specializes to the standard integer lattice $\\mathbb{Z}^n$ (covolume 1, critical volume $2^n$): any convex body with volume $> 2^n$ contains a nonzero integer point. This is the standard textbook statement. `fermat_from_minkowski` derives Fermat's two-squares theorem: every prime $p \\equiv 1 \\pmod{4}$ is a sum of two squares. The proof delegates entirely to Mathlib's `Nat.Prime.sq_add_sq`, which already uses geometry-of-numbers internally. The delegation is intentional — it shows the formalization connects to Mathlib's existing number theory infrastructure rather than being isolated. Application docstrings describe two more classical consequences: Dirichlet's theorem on simultaneous Diophantine approximation (given $n$ real numbers $\\alpha_i$, there exist integers $p_i, q$ with $q \\leq N^n$ such that $|q\\alpha_i - p_i| < 1/N$) and Lagrange's four-squares theorem (every positive integer is a sum of four squares)."
     },
     {
       "id": "variants",
-      "title": "Part 8\u20139: Blichfeldt Generalization and Significance",
+      "title": "Part 8–9: Blichfeldt Generalization and Significance",
       "summary": "blichfeldt_statement (Prop-valued def for k+1 lattice points), discussion of Minkowski's second theorem (successive minima), and applications to algebraic number theory, cryptography, and coding theory.",
       "startLine": 472,
-      "endLine": 545
+      "endLine": 545,
+      "mathContext": "`blichfeldt_statement k` formalizes Blichfeldt's generalization as a `Prop`: if $\\mathrm{vol}(S) > k \\cdot 2^n \\cdot \\mathrm{covolume}(L)$, then $S$ contains $k+1$ distinct lattice points. The `Prop` (rather than proved `theorem`) form signals this is available as a statement for downstream use but is not proved in this file. The significance section discusses Minkowski's second theorem on successive minima: for each $\\lambda$, define the $i$-th successive minimum $\\lambda_i(L, S)$ as the smallest scaling factor such that $\\lambda_i \\cdot S$ contains $i$ linearly independent lattice points. Minkowski's second theorem states $\\lambda_1 \\cdots \\lambda_n \\cdot \\mathrm{covolume}(L) \\leq 2^n / \\mathrm{vol}(S)$. This finer result, not proved here, quantifies how lattice points are distributed relative to successive dilation of the body."
     },
     {
       "id": "proved-namespace",
-      "title": "Part 10: MinkowskiProved \u2014 Direct Mathlib Proofs",
-      "summary": "stdBasis, stdLattice, stdFundDomain, stdLattice_covolume (= 1), minkowski_integer_lattice_proved (integer lattice, ENNReal hypothesis), and minkowski_general_lattice_proved (arbitrary Module.Basis). Both are thin wrappers over Mathlib in 1\u20132 rewrites.",
+      "title": "Part 10: MinkowskiProved — Direct Mathlib Proofs",
+      "summary": "stdBasis, stdLattice, stdFundDomain, stdLattice_covolume (= 1), minkowski_integer_lattice_proved (integer lattice, ENNReal hypothesis), and minkowski_general_lattice_proved (arbitrary Module.Basis). Both are thin wrappers over Mathlib in 1–2 rewrites.",
       "startLine": 547,
-      "endLine": 662
+      "endLine": 662,
+      "mathContext": "The `MinkowskiProved` namespace provides direct Mathlib-style proofs without the custom API abstraction layer. `stdLattice` is the $\\mathbb{Z}^n$ lattice as a `Submodule ℤ (Fin n → ℝ)` (the $\\mathbb{Z}$-span of the standard basis); `stdFundDomain` is the unit cube $[0,1)^n$. `stdLattice_isAddFundamentalDomain` and `stdLattice_covolume` (= 1) are proved from Mathlib's `ZSpan.isAddFundamentalDomain` and `ZSpan.volume_fundamentalDomain`. `minkowski_integer_lattice_proved` and `minkowski_general_lattice_proved` are thin wrappers over Mathlib's `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`, requiring only 1–2 rewrites. The design philosophy: the custom API (Parts 1–9) provides user-friendly types (`Lattice n`, `ConvexBody n`) suitable for expressing mathematical theorems, while the `MinkowskiProved` namespace shows the same theorems follow directly from Mathlib in minimal code. Both routes have 0 sorries and 0 axioms, giving three independent proof paths to the fundamental theorem."
     }
   ],
   "crossReferences": [

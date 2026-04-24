@@ -116,49 +116,56 @@
       "title": "Points, Lines, and Affine Combinations",
       "startLine": 25,
       "endLine": 105,
-      "description": "Point abbrev (ℝ×ℝ), lineThrough (parametric), areConcurrent (∃ common point), affineComb (D = (1-d)B + dC). Basic lemmas: self_on_line, affineComb_on_line. cevaCondition definition: d·e·f = (1-d)·(1-e)·(1-f)."
+      "description": "Point abbrev (ℝ×ℝ), lineThrough (parametric), areConcurrent (∃ common point), affineComb (D = (1-d)B + dC). Basic lemmas: self_on_line, affineComb_on_line. cevaCondition definition: d·e·f = (1-d)·(1-e)·(1-f).",
+      "mathContext": "The foundational setup encodes Euclidean geometry via coordinates. `Point = ℝ × ℝ` is the ambient plane; `lineThrough A B = {P | ∃ t, P = A + t(B-A)}` is the parametric line — the affine span of two points. The affine combination `affineComb B C d = (1-d)·B + d·C` maps $[0,1]$ to the segment $BC$: at $d=0$ it gives $B$, at $d=1$ it gives $C$, and at $d = BD/(BC)$ it gives the point $D$ dividing $BC$ in ratio $BD:DC = d:(1-d)$. The `cevaCondition d e f` predicate encodes $d \\cdot e \\cdot f = (1-d)(1-e)(1-f)$ — algebraically, this is the condition that the signed ratios $BD/DC \\cdot CE/EA \\cdot AF/FB = 1$ in Ceva's original formulation (using $BD/DC = d/(1-d)$, etc., the product becomes $\\frac{def}{(1-d)(1-e)(1-f)} = 1$). The `areConcurrent` predicate asserts the existence of a common point: $\\exists P, P \\in L_1 \\wedge P \\in L_2 \\wedge P \\in L_3$."
     },
     {
       "id": "sec-ceva01-standard-config",
       "title": "Cevian Configuration and Standard Triangle",
       "startLine": 59,
       "endLine": 161,
-      "description": "GeomCevianConfig structure (A,B,C,d,e,f with positivity bounds). D, E, F definitions via affineComb. cevianAD, cevianBE, cevianCF as lineThrough. stdTriangleConfig (A=(0,0), B=(1,0), C=(0,1)). std_D/E/F coordinate formulas."
+      "description": "GeomCevianConfig structure (A,B,C,d,e,f with positivity bounds). D, E, F definitions via affineComb. cevianAD, cevianBE, cevianCF as lineThrough. stdTriangleConfig (A=(0,0), B=(1,0), C=(0,1)). std_D/E/F coordinate formulas.",
+      "mathContext": "The `GeomCevianConfig` structure packages the six parameters $(A, B, C, d, e, f)$ of a cevian configuration with the positivity constraints $d, e, f \\in (0,1)$. The cevian points are $D = \\text{affineComb}(B,C,d)$, $E = \\text{affineComb}(C,A,e)$, $F = \\text{affineComb}(A,B,f)$ — points dividing $BC$, $CA$, $AB$ at parameters $d$, $e$, $f$ respectively. The **standard triangle** $A = (0,0)$, $B = (1,0)$, $C = (0,1)$ serves as the canonical configuration: it has $D = (1-d, d)$ on $BC$ (the segment from $(1,0)$ to $(0,1)$), $E = (0, 1-e) \\cdot ... $ working out to explicit coordinate formulas. Working with the standard triangle transforms the geometric concurrency question into a purely algebraic computation: do three parametric lines with explicit rational-function coefficients intersect at a common point?"
     },
     {
       "id": "sec-ceva01-forward",
       "title": "Forward Direction: Ceva Condition Implies Concurrency (Standard Triangle)",
       "startLine": 149,
       "endLine": 247,
-      "description": "cevaConcurrencyPoint: explicit intersection ((1-d)(1-e)/w, d(1-e)/w) with w = 1-e+de. w_pos, concurrency_on_AD, concurrency_on_BE, concurrency_on_CF. ceva_geometric_standard main theorem. medians_ceva and medians_concurrent (centroid at (1/3,1/3))."
+      "description": "cevaConcurrencyPoint: explicit intersection ((1-d)(1-e)/w, d(1-e)/w) with w = 1-e+de. w_pos, concurrency_on_AD, concurrency_on_BE, concurrency_on_CF. ceva_geometric_standard main theorem. medians_ceva and medians_concurrent (centroid at (1/3,1/3)).",
+      "mathContext": "The key insight is to **explicitly construct** the concurrency point. For the standard triangle, the intersection of cevians $AD$ and $BE$ is computed by solving two parametric line equations. Setting $A + s(D - A) = B + t(E - B)$ for the standard triangle gives the system: $s \\cdot d = 1 - t$, $s(1-d) = te$. Solving yields the **cevaConcurrencyPoint**: $P = ((1-d)(1-e)/w,\\, d(1-e)/w)$ where $w = (1-d)(1-e) + de(1-e)/e = 1 - e + de$. The positivity of $w$ (proved as `w_pos`) guarantees the formulas are well-defined. The lemmas `concurrency_on_AD`, `concurrency_on_BE`, `concurrency_on_CF` each verify that $P$ lies on the respective cevian by providing the correct parameter value explicitly. The forward direction `ceva_geometric_standard` then shows: IF $d \\cdot e \\cdot f = (1-d)(1-e)(1-f)$, THEN $P \\in CF$. The centroid case (`medians_concurrent`) is $d = e = f = 1/2$: the Ceva condition is $1/8 = 1/8$, and the concurrency point is $(1/3, 1/3)$ — the centroid of the standard triangle."
     },
     {
       "id": "sec-ceva01-converse",
       "title": "Converse and Biconditional (Standard Triangle)",
       "startLine": 249,
       "endLine": 361,
-      "description": "ceva_converse_standard: extract parameters (s,t,u) at common point P, derive u·fd = (1-u)(1-d) and u(1-f+ef) = e, nlinarith to conclude Ceva condition. ceva_iff_standard: biconditional combining both directions."
+      "description": "ceva_converse_standard: extract parameters (s,t,u) at common point P, derive u·fd = (1-u)(1-d) and u(1-f+ef) = e, nlinarith to conclude Ceva condition. ceva_iff_standard: biconditional combining both directions.",
+      "mathContext": "The converse direction — concurrency implies the Ceva condition — requires extracting algebraic relations from the geometric hypothesis. If there exists a common point $P$ on all three cevians, write $P = A + s(D-A)$ on $AD$, $P = B + t(E-B)$ on $BE$, $P = C + u(F-C)$ on $CF$. From the parametric equations at $P$, one derives the relations: $u \\cdot fd = (1-u)(1-d)$ and $u(1-f+ef) = e$. Eliminating $u$ gives $def = (1-d)(1-e)(1-f)$ — the Ceva condition. The Lean proof handles the algebra by `nlinarith` after extracting the parameter equations. The biconditional `ceva_iff_standard` packages both directions. The **biconditional** is the signature result: cevians concurrent $\\iff$ $def = (1-d)(1-e)(1-f)$, which is the geometric realization of Ceva's 1678 theorem."
     },
     {
       "id": "sec-ceva01-affine",
       "title": "Affine Reduction to General Triangle",
       "startLine": 363,
       "endLine": 592,
-      "description": "signedArea, triangleNonDegenerate. AffineMap2D structure + apply + det. affine_preserves_comb, affine_preserves_line, affine_preserves_concurrency. stdToTriangle (maps standard to ABC), triangleToStd (inverse, explicit Cramer formula). ceva_geometric_general via stdToTriangle + ceva_iff_standard."
+      "description": "signedArea, triangleNonDegenerate. AffineMap2D structure + apply + det. affine_preserves_comb, affine_preserves_line, affine_preserves_concurrency. stdToTriangle (maps standard to ABC), triangleToStd (inverse, explicit Cramer formula). ceva_geometric_general via stdToTriangle + ceva_iff_standard.",
+      "mathContext": "**Affine reduction** is the technique for generalizing from the standard triangle to an arbitrary non-degenerate triangle $ABC$. An `AffineMap2D` is a pair $(M, v)$ where $M$ is a $2 \\times 2$ real matrix and $v \\in \\mathbb{R}^2$, acting as $P \\mapsto M \\cdot P + v$. The key properties are: (1) `affine_preserves_comb` — affine maps commute with affine combinations; (2) `affine_preserves_line` — images of lines are lines; (3) `affine_preserves_concurrency` — if $P$ is a common point of three lines, $f(P)$ is a common point of their images. The map `stdToTriangle` sends the standard triangle $(A_0, B_0, C_0) = ((0,0),(1,0),(0,1))$ to an arbitrary triangle $(A, B, C)$: it is the affine map $P \\mapsto P.1 \\cdot (B - A) + P.2 \\cdot (C - A) + A$. The inverse `triangleToStd` is the Cramer formula using the signed area as determinant. Non-degeneracy (`triangleNonDegenerate`) asserts the signed area is nonzero, ensuring the inverse exists. With this setup, `ceva_geometric_general` reduces to the standard case by pulling back through `triangleToStd`."
     },
     {
       "id": "sec-ceva01-general-apps",
       "title": "General Triangle Theorems and Applications",
       "startLine": 593,
       "endLine": 837,
-      "description": "GeneralCevianConfig structure. ceva_general_forward, ceva_converse_general, ceva_iff_general, ceva_general_iff. angle_bisectors_ceva (d=b/(a+b) etc.), angle_bisector_param_pos, angle_bisectors_concurrent (incenter). equilateral_altitudes_ceva, altitude_ceva_algebraic."
+      "description": "GeneralCevianConfig structure. ceva_general_forward, ceva_converse_general, ceva_iff_general, ceva_general_iff. angle_bisectors_ceva (d=b/(a+b) etc.), angle_bisector_param_pos, angle_bisectors_concurrent (incenter). equilateral_altitudes_ceva, altitude_ceva_algebraic.",
+      "mathContext": "`GeneralCevianConfig` generalizes `GeomCevianConfig` to arbitrary triangles via the general affine framework. The applications demonstrate that Ceva's theorem unifies several classical concurrency results. **Medians**: $D$, $E$, $F$ are midpoints ($d=e=f=1/2$); the Ceva condition $1/8 = 1/8$ is trivially satisfied; the concurrency point is the centroid. **Angle bisectors**: by the angle bisector theorem, the bisector from $A$ meets $BC$ at $D$ with $BD/DC = c/b$ where $b = CA$, $c = AB$; this gives $d = c/(b+c)$. The full Ceva product becomes $(c/(b+c)) \\cdot (a/(c+a)) \\cdot (b/(a+b)) = abc / ((a+b)(b+c)(c+a))$ and $(1-d)(1-e)(1-f) = (b/(b+c)) \\cdot (c/(c+a)) \\cdot (a/(a+b)) = abc / ((a+b)(b+c)(c+a))$ — equal, confirming `angle_bisectors_concurrent` (the incenter). **Altitudes**: the altitude from $A$ to $BC$ meets $BC$ at the foot $D$; by coordinate computation, $d = (\\cos B \\cdot BC) / BC = \\cos B$, and the triple product reduces to $\\tan A \\tan B \\tan C$ which equals 1 for any triangle (from $A + B + C = \\pi$)."
     },
     {
       "id": "sec-ceva01-routh",
       "title": "Routh's Theorem: Inner Triangle Area Ratio",
       "startLine": 838,
       "endLine": 907,
-      "description": "routhRatio definition: (def-(1-d)(1-e)(1-f))²/((1-d+de)(1-e+ef)(1-f+fd)). routh_zero_iff_ceva: R=0 iff Ceva condition. routh_medial_thirds: d=e=f=1/3 gives R=1/7 (famous medial inner triangle result)."
+      "description": "routhRatio definition: (def-(1-d)(1-e)(1-f))²/((1-d+de)(1-e+ef)(1-f+fd)). routh_zero_iff_ceva: R=0 iff Ceva condition. routh_medial_thirds: d=e=f=1/3 gives R=1/7 (famous medial inner triangle result).",
+      "mathContext": "**Routh's theorem** (1891) extends Ceva's theorem by computing the area of the inner triangle formed by three cevians that are NOT concurrent. If the Ceva condition fails ($def \\neq (1-d)(1-e)(1-f)$), the three cevians form a small inner triangle. Routh proved its area equals $R \\cdot [ABC]$ where $R = (def - (1-d)(1-e)(1-f))^2 / ((1-d+de)(1-e+ef)(1-f+fd))$. The `routh_zero_iff_ceva` theorem confirms that $R = 0$ precisely when the Ceva condition holds — consistent with the inner triangle degenerating to a point. The famous special case `routh_medial_thirds` ($d = e = f = 1/3$): the cevian points at one-third of each side form inner triangle with area ratio $R = (1/27 - 8/27)^2 / ((2/3)(2/3)(2/3)) = (7/27)^2 \\cdot 27/8 = 49/729 \\cdot 27/8 = ... = 1/7$. This $1/7$ result is proved by `norm_num` after substituting $d = e = f = 1/3$ into the `routhRatio` formula."
     }
   ],
   "sorries": 0

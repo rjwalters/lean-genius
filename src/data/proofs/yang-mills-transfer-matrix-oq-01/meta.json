@@ -77,35 +77,40 @@
       "title": "Part I: Finite-Volume Setup",
       "summary": "Defines FiniteVolumePFData (eigenvalue data for volume L) and finiteVolumeMassGap Δ_L = log(λ₀/λ₁).",
       "startLine": 65,
-      "endLine": 90
+      "endLine": 90,
+      "mathContext": "The transfer matrix $T_L$ for a lattice gauge theory on a $d$-dimensional hypercubic lattice of spatial size $L$ acts on the Hilbert space $\\mathcal{H}_L = L^2(G^{d \\cdot L^d}, d\\mu_{\\mathrm{Haar}})$. By the Perron-Frobenius theorem applied to $T_L$ (which is a positive operator by reflection positivity), it has a unique largest eigenvalue $\\lambda_0(L)$ corresponding to the vacuum state and a second largest eigenvalue $\\lambda_1(L)$ corresponding to the lightest excitation. The `FiniteVolumePFData L` structure abstracts exactly these two eigenvalues: `lambda_0 : ℝ` (h0_pos : > 0), `lambda_1 : ℝ` (h1_pos : > 0), and `h_gap : lambda_0 > lambda_1`. The finite-volume mass gap $\\Delta_L = \\log(\\lambda_0(L)/\\lambda_1(L))/a$ (in physical units) measures the energy of the lightest particle excitation; in temporal lattice units ($a=1$) it equals `finiteVolumeMassGap L pf = Real.log (pf.lambda_0 / pf.lambda_1)`. The open question is whether $\\inf_{L \\geq 1} \\Delta_L > 0$."
     },
     {
       "id": "finite-volume-gap",
       "title": "Part II: Finite-Volume Gap is Always Positive",
       "summary": "Proves finiteVolumeMassGap_pos (Δ_L > 0 for all L) from λ₀ > λ₁ > 0 via log monotonicity. Self-contained, no axioms.",
       "startLine": 91,
-      "endLine": 130
+      "endLine": 130,
+      "mathContext": "The finite-volume gap positivity is unconditional: since $\\lambda_0 > \\lambda_1 > 0$, we have $\\lambda_0/\\lambda_1 > 1$, so $\\Delta_L = \\log(\\lambda_0/\\lambda_1) > 0$ by `Real.log_pos`. Three lemmas characterize the gap: `finiteVolumeMassGap_pos` (proved via `apply Real.log_pos; exact (one_lt_div pf.h1_pos).mpr pf.h_gap`), `mass_gap_from_log_ratio` (the gap equals $-\\log(\\lambda_1/\\lambda_0)$ via `Real.log_div` and a `ring`), and `eigenvalue_ratio_lt_one` (the ratio $r = \\lambda_1/\\lambda_0 < 1$ by `div_lt_one`). The alternative formula $\\Delta_L = -\\log r$ clarifies the infinite-volume limit scenario: if $r(L) \\to 1^-$ as $L \\to \\infty$ (eigenvalues converge), then $\\Delta_L \\to 0$ and the gap closes. The mass gap conjecture states this does NOT happen for Yang-Mills: $r(L)$ stays bounded away from 1 uniformly in $L$."
     },
     {
       "id": "strong-coupling-lindependence",
       "title": "Part III: Strong Coupling — L-Independent Mass Gap (Key Results)",
       "summary": "Constructs strongCouplingPFData with λ₀=1, λ₁=exp(-ag²C₂/2) for any L. Proves the gap formula, L-independence, uniform bound, and SU(2)/SU(3) concrete values.",
       "startLine": 131,
-      "endLine": 340
+      "endLine": 340,
+      "mathContext": "In the strong coupling limit ($g^2 \\to \\infty$), the transfer matrix is dominated by the electric term $T \\approx e^{-aH_E}$ where $H_E = \\frac{g^2}{2}\\sum_{\\ell} E_\\ell^2$ is the color-electric energy. The eigenstates of $H_E$ are group representation multiplets: the vacuum (trivial representation, $C_2 = 0$) has energy 0 and eigenvalue $\\lambda_0 = 1$; the fundamental representation (Casimir $C_2(\\mathrm{fund}) = (N^2-1)/(2N)$) has energy $ag^2 C_2/2$ and eigenvalue $\\lambda_1 = e^{-ag^2 C_2/2}$. Critically, these eigenvalues are purely representation-theoretic and carry NO dependence on the spatial volume $L$. The `StrongCouplingParams` structure packages $(N, g^2, a, C_2)$ with positivity hypotheses. `strongCouplingPFData sc L hL` provides valid `FiniteVolumePFData L` with $\\lambda_0 = 1$ and $\\lambda_1 = \\mathrm{strongCouplingRatio}$ for any $L \\geq 1$. The key chain: `strong_coupling_gap_at_volume` shows $\\Delta_L = ag^2 C_2/2$ exactly; `strong_coupling_gap_L_independent` derives $\\Delta_{L_1} = \\Delta_{L_2}$ for all $L_1, L_2$; `strong_coupling_uniform_bound` gives $\\exists \\varepsilon > 0, \\forall L, \\Delta_L \\geq \\varepsilon$ with $\\varepsilon = ag^2 C_2/2$. Concrete SU(2) and SU(3) values: $C_2 = 3/4$ gives $\\Delta = 3ag^2/8$; $C_2 = 4/3$ gives $\\Delta = 2ag^2/3$. Both are proved by `ring`."
     },
     {
       "id": "volume-scaling",
       "title": "Part IV: Volume Scaling Analysis",
       "summary": "Defines VolumeFamilyPFData and HasUniformMassGap. Proves gap_nondecreasing_from_ratio_condition: if λ₁(L) is non-increasing in L, the gap is non-decreasing.",
       "startLine": 341,
-      "endLine": 430
+      "endLine": 430,
+      "mathContext": "`VolumeFamilyPFData` packages a family $\\{T_L\\}_{L \\geq 1}$ as a function $L \\mapsto \\mathrm{FiniteVolumePFData}\\,L$, and `HasUniformMassGap family ε` asserts $\\varepsilon > 0$ is a lower bound for every $\\Delta_L$ in the family. The theorem `gap_nondecreasing_from_ratio_condition` captures a general monotonicity: if the eigenvalue ratio $r(L) = \\lambda_1(L)/\\lambda_0(L)$ is non-increasing in $L$ (physically: as volume grows, the excited state decays faster relative to the vacuum), then $\\Delta_L = -\\log(r(L))$ is non-decreasing. This follows since $\\log$ is monotone and $r$ non-increasing implies $-\\log(r)$ non-decreasing. The strong coupling family satisfies this trivially: $r(L) = e^{-ag^2 C_2/2}$ is constant in $L$, so both conditions hold with equality. The weak coupling regime requires non-perturbative control of $r(L)$ as $L \\to \\infty$ — the difficulty of the Millennium Prize problem."
     },
     {
       "id": "open-question",
       "title": "Part V: Open Question — General Coupling (Axiomatized)",
       "summary": "Defines InfiniteVolumeMassGapProblem. Axiomatizes strong_coupling_infinite_volume_gap (Seiler 1982). States the open problem for all couplings.",
       "startLine": 431,
-      "endLine": 510
+      "endLine": 510,
+      "mathContext": "`InfiniteVolumeMassGapProblem` formalizes the full open question: for a general lattice Yang-Mills family parameterized by coupling $g^2$ and all volumes $L \\geq 2$, does $\\inf_{L \\geq 2} \\Delta_L > 0$? The axiom `strong_coupling_infinite_volume_gap` encodes Seiler's (1982) cluster expansion theorem, which proves this in the strong coupling regime $\\beta < \\beta_c$ (equivalently $g^2 > g_c^2$) using polymer expansion techniques. Seiler's proof shows that for small $\\beta = 4/g^2$ (high temperature), the correlation functions decay exponentially with a rate that is uniform in $L$, giving the mass gap. This is labeled an axiom because, while proved in the physics literature, it has not been formalized in Lean. The Millennium Prize problem adds two further requirements: (1) weak coupling ($g^2$ small, $\\beta$ large) where perturbative methods break down, and (2) the continuum limit $a \\to 0$ where the lattice spacing vanishes and the theory must recover a Lorentz-invariant quantum field theory with a particle spectrum. These remain completely open."
     }
   ],
   "conclusion": {
