@@ -194,17 +194,74 @@ theorem lll_threshold_no_improvement (d : ℕ) (hd : 0 < d) (ε : ℚ) (hε : 0 
 theorem lllThreshold_strict_maximum (d : ℕ) (hd : 0 < d) (x : ℚ) (hx : 0 ≤ x) (hx1 : x ≤ 1)
     (hne : x ≠ 1 / (↑d + 1)) :
     x * (1 - x)^d < lllThreshold d := by
-  -- Strict inequality when x ≠ optimal point (AM-GM equality case fails)
-  -- Follows from strict AM-GM: equality holds iff all terms are equal,
-  -- i.e., t = (d+1-t)/d, i.e., t = 1, i.e., x = 1/(d+1).
-  have hmax := lllThreshold_is_maximum d hd x hx hx1
-  rcases lt_or_eq_of_le hmax with h | h
-  · exact h
-  · -- equality implies x = 1/(d+1): blocked on the same general AM-GM
-    exfalso
-    -- The AM-GM equality case: x*(1-x)^d = T(d) iff x = 1/(d+1)
-    -- This requires the same general machinery as lllThreshold_is_maximum.
-    sorry
+  -- Direct proof via strict AM-GM: x ≠ 1/(d+1) ↔ weighted AM-GM is strict
+  have key : ((x * (1 - x) ^ d : ℚ) : ℝ) < ((lllThreshold d : ℚ) : ℝ) := by
+    simp only [Rat.cast_mul, Rat.cast_pow, Rat.cast_sub, Rat.cast_one, Rat.cast_natCast,
+               lllThreshold, if_neg (Nat.pos_iff_ne_zero.mp hd)]
+    push_cast
+    set xr : ℝ := (x : ℝ)
+    set dr : ℝ := (d : ℝ)
+    have hxr : 0 ≤ xr := by exact_mod_cast hx
+    have hx1r : xr ≤ 1 := by exact_mod_cast hx1
+    have hdr : 0 < dr := by exact_mod_cast hd
+    have hd1r : 0 < dr + 1 := by linarith
+    have hp2_nn : 0 ≤ (1 - xr) / dr := div_nonneg (by linarith) hdr.le
+    -- Key: xr ≠ (1-xr)/dr because x ≠ 1/(d+1)
+    have hne_r : xr ≠ (1 - xr) / dr := by
+      intro heq
+      have h1 : 1 - xr = xr * dr := (div_eq_iff hdr.ne').mp heq.symm
+      have hxeq : xr = 1 / (dr + 1) := by
+        rw [eq_comm, div_eq_iff hd1r.ne']
+        linarith [show xr * (dr + 1) = xr * dr + xr from by ring, h1]
+      have hx_cast : (x : ℝ) = 1 / ((d : ℝ) + 1) := hxeq
+      exact hne (by exact_mod_cast hx_cast)
+    -- Strict weighted AM-GM on Fin 2 finset
+    have hstrict : xr ^ (1 / (dr + 1)) * ((1 - xr) / dr) ^ (dr / (dr + 1)) < 1 / (dr + 1) := by
+      have hlt := (Real.geom_mean_lt_arith_mean_weighted_iff_of_pos Finset.univ
+          (![1 / (dr + 1), dr / (dr + 1)] : Fin 2 → ℝ)
+          (![xr, (1 - xr) / dr] : Fin 2 → ℝ)
+          (by intro i _; fin_cases i <;>
+              simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;>
+              positivity)
+          (by simp only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one,
+                         Matrix.head_cons]; field_simp [hd1r.ne']; ring)
+          (by intro i _; fin_cases i <;>
+              simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;>
+              [exact hxr; exact hp2_nn])).mpr
+          ⟨0, Finset.mem_univ _, 1, Finset.mem_univ _, by
+            simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+            exact hne_r⟩
+      simp only [Fin.prod_univ_two, Fin.sum_univ_two, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons] at hlt
+      have hAM : 1 / (dr + 1) * xr + dr / (dr + 1) * ((1 - xr) / dr) = 1 / (dr + 1) := by
+        field_simp [hdr.ne', hd1r.ne']; ring
+      linarith
+    -- rpow identity: (xr * ((1-xr)/dr)^d)^{1/(dr+1)} = GM
+    have h_eq : (xr * ((1 - xr) / dr) ^ d) ^ (1 / (dr + 1)) =
+        xr ^ (1 / (dr + 1)) * ((1 - xr) / dr) ^ (dr / (dr + 1)) := by
+      rw [Real.mul_rpow hxr (pow_nonneg hp2_nn d),
+          ← Real.rpow_natCast ((1 - xr) / dr) d, ← Real.rpow_mul hp2_nn]
+      congr 1; push_cast; ring
+    have hlhs_nn : 0 ≤ xr * ((1 - xr) / dr) ^ d := mul_nonneg hxr (pow_nonneg hp2_nn d)
+    -- Raise strict inequality to (dr+1)-th power
+    have h_prod_lt : xr * ((1 - xr) / dr) ^ d < (1 / (dr + 1)) ^ (d + 1) := by
+      have hrpow_nat : (1 / (dr + 1)) ^ (d + 1) = (1 / (dr + 1)) ^ (dr + 1) := by
+        rw [← Real.rpow_natCast]; congr 1; push_cast; ring
+      rw [hrpow_nat]
+      calc xr * ((1 - xr) / dr) ^ d
+          = ((xr * ((1 - xr) / dr) ^ d) ^ (1 / (dr + 1))) ^ (dr + 1) := by
+            rw [← Real.rpow_mul hlhs_nn, div_mul_cancel₀ _ hd1r.ne', Real.rpow_one]
+        _ = (xr ^ (1 / (dr + 1)) * ((1 - xr) / dr) ^ (dr / (dr + 1))) ^ (dr + 1) := by
+            rw [h_eq]
+        _ < (1 / (dr + 1)) ^ (dr + 1) := Real.rpow_lt_rpow (by positivity) hstrict hd1r
+    -- Multiply by dr^d to recover xr*(1-xr)^d
+    calc xr * (1 - xr) ^ d
+        = xr * ((1 - xr) / dr) ^ d * dr ^ d := by
+          rw [mul_assoc, div_pow, div_mul_cancel₀ _ (pow_ne_zero d hdr.ne')]
+      _ < (1 / (dr + 1)) ^ (d + 1) * dr ^ d :=
+          mul_lt_mul_of_pos_right h_prod_lt (pow_pos hdr d)
+      _ = dr ^ d / (dr + 1) ^ (d + 1) := by rw [div_pow, one_pow, div_mul_eq_mul_div, one_mul]
+  exact_mod_cast key
 
 /-- The threshold T(d) satisfies a fixed-point equation:
     T(d) = 1/(d+1) · (1 - 1/(d+1))^d.
