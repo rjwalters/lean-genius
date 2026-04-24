@@ -49,6 +49,31 @@
     ]
   },
   {
+    "id": "ann-abeloq04oq01-int-helpers",
+    "proofId": "abel-ruffini-oq-04-oq-01",
+    "range": {
+      "startLine": 109,
+      "endLine": 143
+    },
+    "type": "definition",
+    "title": "ℤ[X] Helper Lemmas: Degree, NatDegree, Monic — Prerequisites for Eisenstein",
+    "content": "Three private lemmas establish the structural properties of `p_int` needed before the Eisenstein criterion can be applied.\n\n`p_int_degree` (line 113): Proves `p_int.degree = 5` by `compute_degree!` — a Lean tactic that normalizes polynomial degree computations. The result is needed because Eisenstein's criterion requires checking that the coefficient at position $k < \\deg(p)$ is in the prime ideal, which requires knowing $\\deg(p)$ concretely.\n\n`p_int_natDegree` (line 117): Proves `p_int.natDegree = 5`. Lean distinguishes between `degree : WithBot ℕ` (the additive value, with $\\deg(0) = -\\infty = \\bot$) and `natDegree : ℕ` (coercing $-\\infty$ to 0). The Eisenstein API uses `natDegree` for coefficient indices, so both are needed.\n\n`p_int_monic` (lines 121-129): Proves the leading coefficient of `p_int` equals 1 by unfolding the definition and using `norm_num`. Monicity is dual-purpose: it makes `p_int` primitive (GCD of all coefficients is 1, since the leading coefficient 1 is coprime to everything), which is the Eisenstein hypothesis; it also feeds into Gauss's lemma for the $\\mathbb{Z} \\to \\mathbb{Q}$ transfer.\n\nAll three proofs are fully computational — no mathematical insight required, just term unfolding and arithmetic normalization. This is the routine infrastructure that separates clean Lean formalizations from ad-hoc ones: by establishing these canonical lemmas before the main proof, subsequent reasoning can cite them by name rather than repeating computations.",
+    "mathContext": "$\\deg(p_{\\text{int}}) = \\deg(x^5 - 4x + 2) = 5$. Monic: leading coefficient $a_5 = 1$. Primitive: $\\gcd(1, 0, 0, 0, -4, 2) = 1$ (since $1$ is a unit). In Lean: `degree : WithBot ℕ` vs `natDegree : ℕ` distinction — both required for full API coverage.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "polynomial degree",
+      "monic polynomial",
+      "primitive polynomial",
+      "compute_degree! tactic",
+      "WithBot ℕ"
+    ],
+    "prerequisites": [
+      "Polynomial.degree vs natDegree",
+      "Polynomial.Monic definition",
+      "p_int definition"
+    ]
+  },
+  {
     "id": "ann-abeloq04oq01-eisenstein",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
@@ -198,25 +223,29 @@
     "id": "ann-abeloq04oq01-galtoperm5",
     "proofId": "abel-ruffini-oq-04-oq-01",
     "range": {
-      "startLine": 306,
-      "endLine": 336
+      "startLine": 293,
+      "endLine": 340
     },
     "type": "concept",
-    "title": "galToPerm5: Injection Infrastructure from Gal to S₅",
-    "content": "Constructs the faithful injection `galToPerm5 : p.Gal →* Perm(Fin 5)` that embeds the Galois group into $S_5$. The construction is a two-stage composition: (1) `galPermHomAux` maps $\\text{Gal}$ to $\\text{Perm}(\\text{rootSet})$ using `galActionAux` (direct action, avoiding an instance diamond with `galAction` when the splitting field is the target), proved injective via `ext` on root images. (2) `Equiv.permCongr` transfers along the equivalence $\\text{rootSet} \\simeq \\text{Fin}\\;5$ (from `p_rootSet_card`). Also defines `galSign σ = \\text{sign}(\\text{galToPerm5}\\;σ)` for the discriminant argument.",
-    "mathContext": "$\\text{galToPerm5}: \\text{Gal}(p/\\mathbb{Q}) \\hookrightarrow \\text{Perm}(\\text{Fin}\\;5) \\cong S_5$. Composition: $\\text{Gal} \\xrightarrow{\\text{galPermHomAux}} \\text{Perm}(\\text{rootSet}) \\xrightarrow{\\text{permCongr}} \\text{Perm}(\\text{Fin}\\;5)$.",
+    "title": "Part V(c): Galois Infrastructure and galToPerm5 Injection into S₅",
+    "content": "This section (Part V(c), lines 293-340) sets up the full injection machinery from $\\text{Gal}(p/\\mathbb{Q})$ into $S_5$.\n\n**Infrastructure instances** (lines 293-301): Three Lean instance declarations confirm that the splitting field $SF$ is a Galois extension — `Normal ℚ SF` (splitting fields of separable polynomials are normal), `Algebra.IsSeparable ℚ SF` (char 0 implies separable), and `p_splits_fact : Fact (map p).Splits` (the polynomial splits in its own splitting field). These are `inferInstance` proofs — Lean's typeclass synthesis discharges them automatically from existing Mathlib lemmas. Without these instances, `galActionHom` would not typecheck.\n\n**`galPermHomAux`** (lines 303-306): Uses `galActionAux` (the direct Galois group action on the root set, avoiding an instance diamond with `galAction` when the splitting field is the codomain). The `@MulAction.toPermHom _ _ _ (@Polynomial.Gal.galActionAux ℚ _ p)` invocation constructs the homomorphism explicitly rather than going through the synthesized typeclass instance, ensuring no diamond ambiguity.\n\n**`galPermHomAux_injective`** (lines 308-314): Proved via `injective_iff_map_eq_one` and `ext`: if $\\phi(x) = e$ for all $x$ in the root set, then $\\phi = 1$ in $\\text{Gal}$. This is the Galois group's faithful action — distinct automorphisms have distinct effects on roots.\n\n**`galToPerm5`** (lines 316-330): The composite injection $\\text{Gal} \\xrightarrow{\\text{galPermHomAux}} \\text{Perm}(\\text{rootSet}) \\xrightarrow{\\text{permCongr}} \\text{Perm}(\\text{Fin}\\;5)$. The rootEquiv bijection from $\\text{rootSet}$ to $\\text{Fin}\\;5$ is constructed via `Fintype.equivOfCardEq` using `p_rootSet_card`.\n\n**`galSign`** (lines 338-340): Defines $\\text{galSign}(\\sigma) = \\text{sign}(\\text{galToPerm5}(\\sigma)) \\in \\{\\pm 1\\}$ — the parity of the permutation of roots induced by $\\sigma$. This is the key quantity for the discriminant argument: if all $\\sigma$ had `galSign` = $+1$, then $\\Delta$ would be Galois-fixed and hence rational, contradicting $\\Delta^2 < 0$.",
+    "mathContext": "$\\text{galToPerm5}: \\text{Gal}(p/\\mathbb{Q}) \\hookrightarrow \\text{Perm}(\\text{Fin}\\;5) \\cong S_5$. Factored as $\\text{Gal} \\xrightarrow{\\text{galPermHomAux}} \\text{Perm}(\\text{rootSet}) \\xrightarrow{\\text{permCongr}(\\text{rootEquiv})} \\text{Perm}(\\text{Fin}\\;5)$. The `galSign` function extracts the parity: $\\text{galSign}(\\sigma) = \\text{Equiv.Perm.sign}(\\text{galToPerm5}(\\sigma)) \\in \\mathbb{Z}^\\times = \\{\\pm 1\\}$.",
     "significance": "supporting",
     "relatedConcepts": [
       "faithful group action",
       "galActionAux",
       "Equiv.permCongr",
       "MonoidHom composition",
-      "instance diamond avoidance"
+      "instance diamond avoidance",
+      "Galois group sign function",
+      "splitting field normality"
     ],
     "prerequisites": [
       "p_rootSet_card",
       "Galois group action on roots",
-      "Equiv.Perm"
+      "Equiv.Perm",
+      "Normal extensions",
+      "splitting field instances"
     ]
   },
   {
