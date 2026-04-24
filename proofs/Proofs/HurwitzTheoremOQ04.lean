@@ -156,20 +156,134 @@ theorem alg_hom_preserves_norm_product (φ : OctonionAlgHom) (a b : Fin 8 → �
   rw [← φ.map_mul]
   exact (eight_square_identity_norm (φ.map a) (φ.map b)).symm
 
-/-- Any algebra hom fixing e₀ preserves individual norms.
-    Key argument: normSq(φ(a)) = normSq(φ(a)) * normSq(φ(e₀))
-                 = normSq(φ(a * e₀)) = normSq(φ(a)). But first:
-    normSq(φ(a)) * normSq(e₀) = normSq(φ(a * e₀)) = normSq(φ(a))
-    since e₀ is the unit. Combined with normSq(e₀) = 1.
-    MORE PRECISELY: from alg_hom_preserves_norm_product with b = e₀:
-    normSq(φ(a)) * normSq(φ(e₀)) = normSq(φ(a * e₀)) = normSq(φ(a)) * 1.
-    If φ(e₀) = e₀ then normSq(φ(e₀)) = 1, giving normSq(φ(a)) = normSq(φ(a)).
-    The REAL argument requires the automorphism to be surjective:
-    for φ a bijection fixing e₀, use both φ and φ⁻¹ together to show normSq invariance.
-    [Sorry: needs invertibility + formal surjectivity argument] -/
+-- ============================================================
+-- Helper lemmas for norm preservation
+-- ============================================================
+
+/-- normSq expanded as explicit 8-term sum. -/
+private lemma normSq_expand (v : Fin 8 → ℝ) :
+    normSq v = v 0 ^ 2 + v 1 ^ 2 + v 2 ^ 2 + v 3 ^ 2 +
+               v 4 ^ 2 + v 5 ^ 2 + v 6 ^ 2 + v 7 ^ 2 := by
+  simp only [normSq, Fin.sum_univ_succ, Fin.sum_univ_zero]; abel
+
+/-- normSq scales quadratically: normSq(c • v) = c² · normSq(v). -/
+private lemma normSq_smul_gen (c : ℝ) (v : Fin 8 → ℝ) :
+    normSq (c • v) = c ^ 2 * normSq v := by
+  simp only [normSq, Pi.smul_apply, smul_eq_mul, mul_pow]
+  rw [← Finset.mul_sum]
+
+/-- Component 0 of eightMul v v in terms of normSq. -/
+private lemma eightMul_self_zero (v : Fin 8 → ℝ) :
+    (eightMul v v) 0 = 2 * v 0 ^ 2 - normSq v := by
+  simp only [eightMul, Fin.isValue, Matrix.cons_val_zero]
+  rw [normSq_expand]; ring
+
+/-- Any automorphism fixes the unit element: φ(e₀) = e₀.
+    Proof: φ(e₀) is a left identity (via surjectivity of φ), and the unique
+    left identity in an algebra with a right unit must equal the right unit. -/
+private lemma phi_unit_eq_unit (φ : OctonionAut) : φ.map octUnit = octUnit := by
+  -- φ(e₀) acts as a left identity on all elements
+  have hli : ∀ y : Fin 8 → ℝ, eightMul (φ.map octUnit) y = y := fun y => by
+    calc eightMul (φ.map octUnit) y
+        = eightMul (φ.map octUnit) (φ.map (φ.inv.map y)) := by rw [φ.right_inv]
+      _ = φ.map (eightMul octUnit (φ.inv.map y)) := (φ.map_mul octUnit _).symm
+      _ = φ.map (φ.inv.map y) := by rw [eightMul_left_unit]
+      _ = y := φ.right_inv y
+  -- A left identity applied to the right unit gives itself
+  calc φ.map octUnit
+      = eightMul (φ.map octUnit) octUnit := (eightMul_right_unit _).symm
+    _ = octUnit := hli octUnit
+
+/-- For pure imaginary y (y 0 = 0): eightMul y y = -(normSq y) • octUnit.
+    Component 0: y0²-∑k≥1 yk² = -normSq y when y0=0.
+    Components k≥1: 2·y0·yk = 0. -/
+private lemma imag_sq_eq_neg_norm (y : Fin 8 → ℝ) (hy : y 0 = 0) :
+    eightMul y y = -(normSq y) • octUnit := by
+  have hns : normSq y = y 1 ^ 2 + y 2 ^ 2 + y 3 ^ 2 +
+                        y 4 ^ 2 + y 5 ^ 2 + y 6 ^ 2 + y 7 ^ 2 := by
+    rw [normSq_expand, hy]; ring
+  funext j
+  fin_cases j <;>
+  simp only [eightMul, Fin.isValue, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+             Matrix.cons_val_two, Matrix.cons_val_three,
+             Pi.smul_apply, smul_eq_mul, Pi.neg_apply, octUnit, stdBasis,
+             mul_one, mul_zero, ite_true, ite_false, hns, hy, sq,
+             zero_mul, mul_zero] <;>
+  ring
+
+/-- For pure imaginary y (y 0 = 0), φ(y) is also pure imaginary AND has the same norm.
+    Key: φ(y)² = -(normSq y)·e₀. Taking component 0: 2·(φy)0² = 0, so (φy)0 = 0.
+    Then normSq(φ(y))² = (normSq y)² → normSq(φ(y)) = normSq y. -/
+private lemma phi_imag_props (φ : OctonionAut) (y : Fin 8 → ℝ) (hy : y 0 = 0) :
+    (φ.map y) 0 = 0 ∧ normSq (φ.map y) = normSq y := by
+  set v := φ.map y with hv_def
+  -- Step 1: eightMul v v = -(normSq y) • octUnit
+  have hv_sq : eightMul v v = -(normSq y) • octUnit := by
+    have hmul := φ.map_mul y y
+    -- hmul : φ.map (eightMul y y) = eightMul v v
+    rw [imag_sq_eq_neg_norm y hy, φ.map_smul, phi_unit_eq_unit φ] at hmul
+    -- hmul : -(normSq y) • octUnit = eightMul v v
+    exact hmul.symm
+  -- Step 2: normSq(v)^2 = (normSq y)^2
+  have hnorm_sq : normSq v ^ 2 = normSq y ^ 2 := by
+    have h := eight_square_identity_norm v v
+    rw [hv_sq, normSq_smul_gen, normSq_octUnit] at h
+    calc normSq v ^ 2 = normSq v * normSq v := by ring
+      _ = (-(normSq y)) ^ 2 * 1 := h
+      _ = normSq y ^ 2 := by ring
+  -- Step 3: normSq v = normSq y (since both ≥ 0)
+  have hnorm : normSq v = normSq y := by
+    have h1 := normSq_nonneg v
+    have h2 := normSq_nonneg y
+    nlinarith [sq_nonneg (normSq v - normSq y), sq_nonneg (normSq v + normSq y)]
+  -- Step 4: v 0 = 0 from component 0 of hv_sq
+  have hv0 : v 0 = 0 := by
+    have hcomp : (eightMul v v) 0 = -(normSq y) := by
+      have := congr_fun hv_sq (0 : Fin 8)
+      simp only [Pi.smul_apply, smul_eq_mul, Pi.neg_apply, octUnit, stdBasis,
+                 ite_true, mul_one] at this
+      linarith
+    rw [eightMul_self_zero] at hcomp
+    -- hcomp : 2 * v 0 ^ 2 - normSq v = -(normSq y)
+    have : 2 * v 0 ^ 2 = 0 := by linarith [hnorm]
+    nlinarith [sq_nonneg (v 0)]
+  exact ⟨hv0, hnorm⟩
+
+/-- Any algebra automorphism preserves the norm: normSq(φ(a)) = normSq(a).
+    Proof: decompose a = r·e₀ + w (pure imaginary w). Then:
+    - φ(a) = r·e₀ + φ(w) by linearity + phi_unit_eq_unit
+    - normSq(φ(w)) = normSq(w) by phi_imag_props
+    - (φ(w)) 0 = 0 so e₀ ⊥ φ(w), giving normSq(φ(a)) = r² + normSq(w) = normSq(a). -/
 theorem alg_aut_preserves_norm (φ : OctonionAut) (a : Fin 8 → ℝ) :
     normSq (φ.map a) = normSq a := by
-  sorry
+  set r := a 0
+  set w := a - r • octUnit with hw_def
+  have hw0 : w 0 = 0 := by
+    simp only [hw_def, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, octUnit, stdBasis,
+               ite_true, mul_one, sub_self]
+  obtain ⟨hw_img0, hw_norm⟩ := phi_imag_props φ w hw0
+  -- φ(a) = r•e₀ + φ(w)
+  have hphi_a : φ.map a = r • octUnit + φ.map w := by
+    have ha : a = r • octUnit + w := by simp [hw_def]
+    rw [ha, φ.map_add, φ.map_smul, phi_unit_eq_unit]
+  -- Orthogonality: innerProd(r•e₀, w) = r * w 0 = 0
+  have hinp_w : innerProd (r • octUnit) w = 0 := by
+    simp only [innerProd, Pi.smul_apply, smul_eq_mul, octUnit, stdBasis,
+               Fin.sum_univ_succ, Fin.sum_univ_zero, hw0]
+    ring
+  -- Orthogonality: innerProd(r•e₀, φ(w)) = r * (φ(w)) 0 = 0
+  have hinp_phi : innerProd (r • octUnit) (φ.map w) = 0 := by
+    simp only [innerProd, Pi.smul_apply, smul_eq_mul, octUnit, stdBasis,
+               Fin.sum_univ_succ, Fin.sum_univ_zero, hw_img0]
+    ring
+  -- normSq(a) = r² + normSq(w)
+  have ha_norm : normSq a = r ^ 2 + normSq w := by
+    have ha : a = r • octUnit + w := by simp [hw_def]
+    rw [ha, normSq_add, normSq_smul_gen, normSq_octUnit]
+    linarith [hinp_w]
+  -- normSq(φ(a)) = r² + normSq(φ(w)) = r² + normSq(w) = normSq(a)
+  rw [hphi_a, normSq_add, normSq_smul_gen, normSq_octUnit]
+  linarith [hinp_phi, hw_norm, ha_norm]
 
 -- ============================================================
 -- PART III: The Real Part and Conjugation
@@ -198,19 +312,26 @@ theorem octConj_involutive (x : Fin 8 → ℝ) : octConj (octConj x) = x := by
   simp only [octConj]
   fin_cases i <;> simp
 
-/-- Automorphisms fixing e₀ preserve the real part.
-
-    Sketch: Any algebra homomorphism maps e₀ (the unique identity element)
-    to an idempotent. For the octonion algebra (which is a division algebra),
-    the only idempotents are 0 and e₀. An invertible hom must fix e₀.
-    Then: x = Re(x)·e₀ + Im(x), so φ(x) = Re(x)·e₀ + φ(Im(x)),
-    giving Re(φ(x)) = Re(x).
-
-    Formal proof needs: (1) idempotent classification in 𝕆,
-    (2) linearity of Re extraction. -/
+/-- Automorphisms preserve the real part: Re(φ(x)) = Re(x).
+    Proof: x = Re(x)·e₀ + w (pure imaginary w). Then:
+    - φ(x) = Re(x)·e₀ + φ(w) by linearity + phi_unit_eq_unit
+    - (φ(w)) 0 = 0 by phi_imag_props
+    - Re(φ(x)) = (Re(x)·e₀ + φ(w)) 0 = Re(x) + 0 = Re(x) -/
 theorem real_part_preserved (φ : OctonionAut) (x : Fin 8 → ℝ) :
     realPart (φ.map x) = realPart x := by
-  sorry
+  set r := x 0
+  set w := x - r • octUnit with hw_def
+  have hw0 : w 0 = 0 := by
+    simp only [hw_def, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, octUnit, stdBasis,
+               ite_true, mul_one, sub_self]
+  have hw_img0 : (φ.map w) 0 = 0 := (phi_imag_props φ w hw0).1
+  -- φ(x) = r•e₀ + φ(w)
+  have hphi_x : φ.map x = r • octUnit + φ.map w := by
+    have hx : x = r • octUnit + w := by simp [hw_def]
+    rw [hx, φ.map_add, φ.map_smul, phi_unit_eq_unit]
+  -- Re(φ(x)) = (r•e₀ + φ(w)) 0 = r + 0 = r = Re(x)
+  simp only [realPart, hphi_x, Pi.add_apply, Pi.smul_apply, smul_eq_mul,
+             octUnit, stdBasis, ite_true, mul_one, hw_img0, add_zero]
 
 -- ============================================================
 -- PART IV: G₂ as the Automorphism Group of the Octonions
