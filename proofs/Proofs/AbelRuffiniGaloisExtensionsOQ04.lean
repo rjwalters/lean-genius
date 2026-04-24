@@ -201,7 +201,7 @@ noncomputable instance instJordanHolderLatticeSubgroup :
         obtain ⟨a, ha, b, hb, rfl⟩ := Subgroup.mem_sup.mp hg
         refine ⟨⟨b, hb⟩, QuotientGroup.eq.mpr ?_⟩
         simp only [φ, MonoidHom.comp_apply, inclusion_mk, leftRel_apply, mem_subgroupOf]
-        have key := hn_sup.conj_mem
+        have key := hn_sup.conj_mem'
           (show (⟨a, Subgroup.mem_sup_left ha⟩ : (x ⊔ y)) ∈ x.subgroupOf (x ⊔ y)
            from Subgroup.mem_subgroupOf.mpr ha)
           (⟨b, Subgroup.mem_sup_right hb⟩ : (x ⊔ y))
