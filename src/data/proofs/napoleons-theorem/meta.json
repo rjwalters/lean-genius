@@ -107,7 +107,7 @@
     }
   ],
   "overview": {
-    "historicalContext": "Napoleon's theorem is traditionally attributed to Napoleon Bonaparte (1769–1821), who was known to be interested in mathematics and geometry. However, the attribution is likely apocryphal — the theorem was known in various forms in the 18th and 19th centuries, and its earliest published proof is from the 1820s.\n\nThe theorem belongs to the family of 'hidden equilateral triangle' results in elementary geometry, alongside Morley's theorem. While Morley's theorem involves angle trisectors, Napoleon's theorem uses the more accessible construction of equilateral triangles on the sides.\n\nThe result has a beautiful dual: both the outer Napoleon triangle (equilateral triangles constructed outward) and the inner Napoleon triangle (constructed inward) are equilateral, and both share the same centroid as the original triangle.",
+    "historicalContext": "Napoleon's theorem is traditionally attributed to Napoleon Bonaparte (1769–1821), who was known to be interested in mathematics and geometry. However, the attribution is likely apocryphal — the theorem was known in various forms in the 18th and 19th centuries, and its earliest published proof is from the 1820s.\n\nThe theorem belongs to the family of 'hidden equilateral triangle' results in elementary geometry, alongside Morley's theorem. While Morley's theorem involves angle trisectors, Napoleon's theorem uses the more accessible construction of equilateral triangles on the sides.\n\nThe result has a beautiful dual: both the outer Napoleon triangle (equilateral triangles constructed outward) and the inner Napoleon triangle (constructed inward) are equilateral, and both share the same centroid as the original triangle.\n\nNapoleon Bonaparte had genuine mathematical interests: as a student at the École Militaire in Paris (1784–1785), he studied under teachers influenced by Gaspard Monge, and in 1799 he reportedly proved a result about circles (sometimes called Napoleon's theorem on circles). However, the equilateral triangle theorem attributed to him is first recorded in the 1820s, and mathematical historians disagree on whether Napoleon himself discovered it or it was merely named in his honor.\n\nA major generalization, the **Douglas-Neumann theorem** (Jesse Douglas, 1940), extends Napoleon's theorem from triangles to n-gons: starting from any n-gon, construct regular n-gons on each side; the centroids of these regular polygons form a regular n-gon if and only if a specific Fourier frequency of the original vertex sequence vanishes. For n=3, the two 'Fourier modes' of a triangle's vertex sequence correspond to the outer and inner Napoleon triangles. This connects Napoleon's theorem to the **discrete Fourier transform** and to the spectral theory of polygons developed by Neumann (1941) and later revisited in modern polygon geometry.\n\nThe side lengths of the outer and inner Napoleon triangles satisfy the formula $s^2 = (a^2+b^2+c^2)/6 \\pm 2\\Delta/\\sqrt{3}$, where $\\Delta$ is the area of the original triangle. In particular, $\\text{Area}(\\text{outer}) - \\text{Area}(\\text{inner}) = \\text{Area}(\\text{original})$, a beautiful identity connecting the three concentric triangles.",
     "problemStatement": "**Napoleon's Theorem**: Given any triangle ABC, construct equilateral triangles externally on each side. Then the centroids of these three equilateral triangles form an equilateral triangle (the **outer Napoleon triangle**).\n\nSimilarly, if equilateral triangles are constructed internally, their centroids also form an equilateral triangle (the **inner Napoleon triangle**).\n\nBoth Napoleon triangles share the same centroid as the original triangle.",
     "text": "If equilateral triangles are constructed externally on the sides of any triangle, their centroids form an equilateral triangle.",
     "proofStrategy": "The proof uses **complex coordinates** and a **rotation identity**.\n\n1. **Construction**: The centroid of the outer equilateral triangle on side bc is G = (b+c)/2 + i√3(c-b)/6, where b, c ∈ ℂ are the vertices.\n\n2. **Rotation identity**: The key insight is that consecutive difference vectors of Napoleon centroids are related by rotation by -60°:\n   G₃ - G₁ = (G₂ - G₁) · e^{-iπ/3}\n   This is verified by expanding both sides: both reduce to (z₁-z₃)/2 + i√3(2z₂-z₁-z₃)/6, using only √3² = 3 and i² = -1.\n\n3. **Equilaterality**: Since |e^{-iπ/3}| = 1, the rotation identity immediately gives |G₃ - G₁| = |G₂ - G₁|. For the third side, G₃ - G₂ = (G₂ - G₁)(e^{-iπ/3} - 1), and |e^{-iπ/3} - 1| = 1 as well.\n\n4. **Inner variant**: Replacing i with -i in the centroid formula gives the inner Napoleon triangle, with rotation by +60° instead of -60°.",
@@ -116,7 +116,8 @@
       "**Complex coordinate elegance**: The centroid formula G = (b+c)/2 + i√3(c-b)/6 makes the proof purely algebraic",
       "**Dual theorem**: Both outer (rotation -60°) and inner (rotation +60°) Napoleon triangles are equilateral",
       "**Centroid preservation**: The average of Napoleon centroids equals the average of the original vertices, so all three triangles share the same centroid",
-      "**|e^{±iπ/3}| = |e^{±iπ/3} - 1| = 1**: This coincidence (both the rotation and rotation-minus-1 have unit modulus) is why all three sides are equal, not just two"
+      "**|e^{±iπ/3}| = |e^{±iπ/3} - 1| = 1**: This coincidence (both the rotation and rotation-minus-1 have unit modulus) is why all three sides are equal, not just two",
+      "**Douglas-Neumann generalization and DFT**: Napoleon's theorem is the $n=3$ case of a general theorem about $n$-gons: constructing regular $n$-gons on each side and taking centroids yields a regular $n$-gon iff the $(n-1)$-th DFT coefficient of the original vertices is zero. For triangles, the outer Napoleon triangle corresponds to selecting the fundamental frequency $\\omega_3 = e^{-2\\pi i/3}$, and the inner triangle corresponds to $\\bar{\\omega}_3 = e^{2\\pi i/3}$; the rotation by $e^{\\pm i\\pi/3}$ in this proof is the Fourier rotation for the triangle's spectral decomposition."
     ],
     "prerequisites": [
       "Complex numbers and arithmetic in ℂ",
@@ -146,6 +147,26 @@
         "hidden-structure"
       ],
       "targetId": "morleys-theorem"
+    },
+    {
+      "targetId": "ptolemys-complex-proof",
+      "relationship": "companion",
+      "description": "Both Napoleon's theorem and Ptolemy's inequality use complex number coordinates to transform classical geometry theorems into algebraic identities — the rotation identity in Napoleon and the complex modulus inequality in Ptolemy both reduce to absolute value properties of complex multiplication"
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "Both are classical results about arbitrary triangles; the law of cosines gives the metric structure of any triangle while Napoleon's theorem reveals an equilateral structure hidden in the triangle's exterior — together they show the rich geometry lurking in any triangle"
+    },
+    {
+      "targetId": "cevas-theorem",
+      "relationship": "related",
+      "description": "Both are classical Euclidean geometry results about triangles that can be proved algebraically via complex coordinates; Ceva's theorem characterizes concurrent cevians while Napoleon's theorem characterizes centroids of externally-constructed equilateral triangles"
+    },
+    {
+      "targetId": "triangle-angle-sum",
+      "relationship": "foundational",
+      "description": "The triangle angle sum theorem (angles sum to π) is foundational for the equilateral triangle geometry used in Napoleon's construction; the 60° angles of the constructed equilateral triangles give the rotation by e^{±iπ/3} that drives the proof"
     }
   ],
   "sorries": 0,
