@@ -111,19 +111,29 @@
   },
   "crossReferences": [
     {
+      "targetId": "erdos-161",
+      "relationship": "related",
+      "description": "Erdős Problem #161: Almost Monochromatic Subsets in Hypergraph Colorings — the direct hypergraph generalization of this problem, explicitly cited in the module header. $F^{(t)}(n,\\alpha)$ is defined for $t$-uniform hypergraphs exactly as $F(n,\\alpha)$ is for graphs ($t=2$). The jump structure of $F^{(t)}$ as $\\alpha$ varies from 0 to $1/(\\binom{t}{2})$ was solved for $t=3$ by Conlon-Fox-Sudakov (2011): there is exactly one jump, at $\\alpha=0$. For $t=2$ (Problem #563), the corresponding jump question at $\\alpha=0$ connects to the diagonal Ramsey constant, and the precise constant $c_\\alpha$ for $\\alpha>0$ is the open part. This entry is the $t=2$ instance; Problem #161 provides the $t\\geq3$ context."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey's Theorem — the $\\alpha=0$ special case of Problem #563 reduces to diagonal Ramsey theory: $F(n,0)$ is the smallest $m$ such that a 2-coloring of $K_n$ avoids monochromatic $m$-cliques, which is essentially the Ramsey number $R(m,m)$ inverted. Erdős's 1947 probabilistic lower bound $R(m,m) \\geq 2^{m/2}$ translates to $F(n,0) \\geq (1/2)\\log_2 n$, establishing the logarithmic lower bound for the $\\alpha=0$ case. The precise constant $c_0 = 1/2$ (with base-2 logarithm) is known; for $\\alpha>0$ the exact $c_\\alpha$ is the open question of Problem #563."
+    },
+    {
       "targetId": "erdos-1013",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: Ramsey theory, graph theory"
+      "description": "Triangle-Free Chromatic Threshold — both problems use the probabilistic method to establish logarithmic thresholds in $K_n$. Problem #1013 asks for the precise asymptotics of $h_3(k)$ (the smallest $n$ with a triangle-free graph of chromatic number $k$), with known bound $(\\frac{1}{2} - o(1))k^2 \\log k \\leq h_3(k)$. The parallel to Problem #563: both involve the transition from order-of-magnitude estimates (via probabilistic method) to exact asymptotics, and both are about the logarithmic scale of extremal graph parameters."
     },
     {
       "targetId": "erdos-1177",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: Ramsey theory, graph theory"
+      "description": "Chromatic Numbers of Hypergraph Families with Forbidden Subgraphs — Problem #1177 studies $\\mathcal{F}_G(\\kappa)$, the family of 3-uniform hypergraphs with chromatic number $\\kappa$ avoiding subhypergraph $G$. The connection to Problem #563: both problems concern extremal properties of colorings on complete structures ($K_n$ for edges, complete 3-uniform hypergraph for #1177), and both involve chromatic thresholds arising from balanced/unbalanced coloring constraints. Problem #1177's conjectures on bounded witness size and intersection properties are analogs of the logarithmic threshold behavior in Problem #563."
     },
     {
       "targetId": "erdos-151",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: Ramsey theory, graph theory"
+      "description": "Clique Transversal and Triangle-Free Independence — asks whether $\\tau(G) \\leq n - H(n)$ for every $n$-vertex graph $G$, where $\\tau$ is the clique transversal number and $H(n)$ is the triangle-free independence number. The connection to Problem #563: both involve structural properties of $K_n$ colorings related to Ramsey theory. The clique transversal number $\\tau(G)$ and the balanced-coloring threshold $F(n,\\alpha)$ are both threshold functions for graph properties that exhibit logarithmic behavior, illustrating the general principle that extremal graph parameters often scale as $\\Theta(\\log n)$."
     }
   ],
   "sorries": 0

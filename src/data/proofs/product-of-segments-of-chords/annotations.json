@@ -141,10 +141,12 @@
     "type": "example",
     "title": "Worked Examples",
     "content": "**Example 1**: Circle of radius 5, point P at distance 3 from center.\n- Power = $5^2 - 3^2 = 16$\n- For any chord: $PA \\cdot PB = 16$\n- If PA = 2, then PB = 8\n\n**Example 2**: If one chord gives segments 2 and 8:\n- Product = 16\n- Other chord: if PC = 4, then PD = 4\n- (The chord is bisected at P!)\n\n**Example 3**: Segments 1 and 12:\n- Product = 12\n- Other chord: segments could be 2 and 6, or 3 and 4",
+    "mathContext": "Numerical instances of the power formula: for radius $r$ and interior distance $d$, every chord through $P$ has segment product $PA \\cdot PB = r^2 - d^2$. Example 1: $r=5, d=3 \\Rightarrow PA\\cdot PB = 25-9 = 16$. Example 2: bisection ($PA=PB=4$) occurs when $P$ is the midpoint of the chord, i.e., when the chord is perpendicular to the line $OP$.",
     "significance": "supporting",
     "relatedConcepts": [
       "numerical verification",
-      "chord bisection"
+      "chord bisection",
+      "norm_num tactic"
     ]
   },
   {
@@ -157,6 +159,7 @@
     "type": "insight",
     "title": "From Euclid to Steiner",
     "content": "**Euclid (300 BCE)**: The theorem appears as Proposition 35 in Book III of the Elements. Euclid proved it using similar triangles formed by the chords.\n\n**Jakob Steiner (1826)**: Systematized the \"power of a point\" concept, unifying:\n- Intersecting chords (interior point)\n- Two secants (exterior point)\n- Secant and tangent\n- Two tangents\n\nAll are manifestations of the same invariant!",
+    "mathContext": "Euclid's proof (similar triangles): triangles $PAC \\sim PDB$ by the inscribed angle theorem ($\\angle PAC = \\angle PDB$, $\\angle PCA = \\angle PBD$ as angles subtended by the same arc). Similarity ratio gives $PA/PD = PC/PB$, hence $PA \\cdot PB = PC \\cdot PD$. Steiner's unification: $\\text{pow}(P) = \\|P-O\\|^2 - r^2$ is the same quantity for all four cases — interior ($\\text{pow}<0$), exterior ($\\text{pow}>0$), tangent-point ($\\text{pow}=0$).",
     "significance": "supporting",
     "prerequisites": [
       "similar triangles",
@@ -165,7 +168,9 @@
     "relatedConcepts": [
       "history of mathematics",
       "Euclid's Elements",
-      "Jakob Steiner"
+      "Jakob Steiner",
+      "similar triangles",
+      "inscribed angle theorem"
     ]
   }
 ]
