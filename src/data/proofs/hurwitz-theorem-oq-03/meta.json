@@ -102,7 +102,8 @@
       "title": "Module Documentation and Imports",
       "startLine": 1,
       "endLine": 55,
-      "summary": "Extensive docstring covering the theorem statement, historical context (Brahmagupta through Adams), proof strategy for both directions, and connections to physics/topology. Imports full Mathlib for Quaternion, Fin, and linear algebra infrastructure."
+      "summary": "Extensive docstring covering the theorem statement, historical context (Brahmagupta through Adams), proof strategy for both directions, and connections to physics/topology. Imports full Mathlib for Quaternion, Fin, and linear algebra infrastructure.",
+      "mathContext": "**Hurwitz's theorem** (1898): An $n$-square identity $(x_1^2 + \\cdots + x_n^2)(y_1^2 + \\cdots + y_n^2) = z_1^2 + \\cdots + z_n^2$ with each $z_i$ bilinear in $\\mathbf{x}$ and $\\mathbf{y}$ exists if and only if $n \\in \\{1, 2, 4, 8\\}$. The four cases correspond to $\\mathbb{R}$ (trivial), $\\mathbb{C}$ (Brahmagupta-Fibonacci: $(a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2$), $\\mathbb{H}$ (Euler 4-square identity), and $\\mathbb{O}$ (Cayley-Dickson octonions). The algebraic interpretation: $n$-square identities correspond to normed division algebras, and by Hurwitz's theorem the only normed division algebras over $\\mathbb{R}$ are $\\mathbb{R}, \\mathbb{C}, \\mathbb{H}, \\mathbb{O}$. Imports `Mathlib` for `Quaternion.normSq_mul` (the key Lean instance proving the 4-square identity via $\\|pq\\| = \\|p\\|\\|q\\|$ in $\\mathbb{H}$)."
     },
     {
       "id": "definitions",
