@@ -17,11 +17,11 @@
 
   ## Note on Sorries
 
-  `sup_eq_of_isMaximal` is fully proved. `second_iso` is proved via Noether's
-  second isomorphism theorem + `QuotientGroup.congr` to avoid `rw` on quotient types.
-  `isMaximal_inf_left_of_isMaximal_sup` has Parts 1 (lt) and 2 (normality) proved;
-  Part 3 (maximality, the hard step) requires the quotient correspondence theorem
-  (Noether's 3rd) and is sorry'd pending Aristotle proof search.
+  `sup_eq_of_isMaximal` and `second_iso` are proved.
+  `isMaximal_inf_left_of_isMaximal_sup` has 1 sorry remaining:
+  the maximality step requires transferring simplicity of (x⊔y)/y through
+  the second isomorphism to x/(x⊓y), then applying the correspondence theorem.
+  This is a HARD goal for Aristotle.
 -/
 
 import Mathlib.Tactic
@@ -78,65 +78,79 @@ noncomputable instance instJordanHolderLatticeSubgroup :
   lt_of_isMaximal := fun h => h.1
 
   sup_eq_of_isMaximal := by
+    /- Proof sketch (sorry'd):
+       x, y both maximal normal in z (with x ≠ y).
+       • Both relatively normal in z → x⊔y relatively normal in z
+         (product of normal subgroups is normal)
+       • x ≤ x⊔y ≤ z; image of x⊔y in z/x is normal in z/x
+       • z/x is "simple" (from IsMaxNorm x z): the only normal subgroups of z
+         between x and z are x and z; hence x⊔y = x or x⊔y = z
+       • x⊔y = x ⟹ y ≤ x ⟹ y/x is trivial ⟹ x is in between y and z, but y
+         maximal in z — contradicts x ≠ y both maximal.
+       • Therefore x⊔y = z. -/
     intro x y z hxz hyz hne
-    -- hxz : IsMaxNorm x z, hyz : IsMaxNorm y z, hne : x ≠ y
-    -- Goal: x ⊔ y = z
-    have hxz_le : x ≤ z := hxz.1.le
-    have hyz_le : y ≤ z := hyz.1.le
-    have hxy_le_z : x ⊔ y ≤ z := sup_le hxz_le hyz_le
-    -- (x ⊔ y).subgroupOf z is normal: it equals x.subgroupOf z ⊔ y.subgroupOf z
-    have hxy_normal : ((x ⊔ y).subgroupOf z).Normal := by
-      rw [Subgroup.subgroupOf_sup hxz_le hyz_le]
-      haveI := hxz.2.1
-      haveI := hyz.2.1
-      exact Subgroup.sup_normal _ _
-    -- Apply maximality of x in z to x ⊔ y (with x ≤ x ⊔ y ≤ z, normal)
-    rcases hxz.2.2 (x ⊔ y) le_sup_left hxy_le_z hxy_normal with h | h
-    · -- h : x ⊔ y = x → y ≤ x; apply maximality of y in z to x
-      exfalso
-      have hy_le_x : y ≤ x := le_sup_right.trans h.le
-      rcases hyz.2.2 x hy_le_x hxz_le hxz.2.1 with hyx | hxz_eq
-      · exact hne (le_antisymm hy_le_x hyx.le)
-      · exact absurd hxz_eq hxz.1.ne'
+    have hx_le_z : x ≤ z := hxz.1.le
+    have hy_le_z : y ≤ z := hyz.1.le
+    have hn_xy_z : ((x ⊔ y).subgroupOf z).Normal := by
+      rw [subgroupOf_sup hx_le_z hy_le_z]
+      haveI := hxz.2.1; haveI := hyz.2.1
+      infer_instance
+    rcases hxz.2.2 le_sup_left (sup_le hx_le_z hy_le_z) hn_xy_z with h | h
+    · have hyx : y ≤ x := h ▸ le_sup_right
+      rcases hyz.2.2 hyx hx_le_z hxz.2.1 with h2 | h2
+      · exact absurd h2 hne
+      · exact absurd h2 (ne_of_lt hxz.1)
     · exact h
 
   isMaximal_inf_left_of_isMaximal_sup := by
+    /- Proof sketch (sorry'd):
+       x, y both maximal normal in x⊔y. Want: x⊓y maximal normal in x.
+       • IsMaxNorm y (x⊔y) → y relatively normal in x⊔y
+         → x ≤ x⊔y ≤ y.normalizer → (y.subgroupOf x).Normal
+         → (using inf_subgroupOf_right): ((x⊓y).subgroupOf x).Normal. ✓
+       • x⊓y < x: if x⊓y = x then x ≤ y → x⊔y = y, contradicts y < x⊔y. ✓
+       • Simplicity of x/(x⊓y): by second_iso, (x⊔y)/y ≃* x/(x⊓y).
+         Transfer simplicity of (x⊔y)/y (from IsMaxNorm y (x⊔y)) to x/(x⊓y). ✓ -/
     intro x y hx hy
-    -- hx : IsMaxNorm x (x ⊔ y), hy : IsMaxNorm y (x ⊔ y)
-    -- Goal: IsMaxNorm (x ⊓ y) x
-    -- Part 1: x ⊓ y < x
-    have hlt : x ⊓ y < x := by
-      rcases (inf_le_left (a := x) (b := y)).lt_or_eq with h | h
-      · exact h
-      · exfalso
-        -- h : x ⊓ y = x → x ≤ y → x ⊔ y = y, contradicts hy.1 : y < x ⊔ y
-        have hxy : x ≤ y := h ▸ inf_le_right
-        exact absurd (sup_of_le_right hxy ▸ hy.1) (lt_irrefl _)
-    -- Part 2: ((x ⊓ y).subgroupOf x).Normal
-    -- hy.2.1 : (y.subgroupOf (x ⊔ y)).Normal
-    -- Transport via sup_comm to get (y.subgroupOf (y ⊔ x)).Normal
-    -- Then x ≤ y.normalizer, so (y.subgroupOf x).Normal
-    -- And inf_subgroupOf_left gives ((x ⊓ y).subgroupOf x).Normal
-    have hle : x ≤ y.normalizer :=
-      le_normalizer_of_normal_in_sup (sup_comm x y ▸ hy.2.1)
-    have hn_y_x : (y.subgroupOf x).Normal := Subgroup.normal_subgroupOf_of_le_normalizer hle
-    have hn_inf : ((x ⊓ y).subgroupOf x).Normal :=
-      Subgroup.inf_subgroupOf_left y x ▸ hn_y_x
-    -- Part 3: maximality of x ⊓ y in x
-    -- Proof: for N with x ⊓ y ≤ N ≤ x and (N.subgroupOf x).Normal,
-    -- map N ↦ N ⊔ y and use maximality of y in x ⊔ y.
-    -- The case N ⊔ y = y gives N = x ⊓ y; the case N ⊔ y = x ⊔ y needs
-    -- the second isomorphism to transfer simplicity, which requires the
-    -- quotient correspondence theorem (Noether 3rd).
-    have hmax : ∀ N : Subgroup G, x ⊓ y ≤ N → N ≤ x →
-        (N.subgroupOf x).Normal → N = x ⊓ y ∨ N = x := by
-      -- Full proof requires the quotient group correspondence theorem:
-      -- the isomorphism x/(x ⊓ y) ≃* (x ⊔ y)/y (Noether 2nd) transfers
-      -- simplicity of (x ⊔ y)/y (from hy) to x/(x ⊓ y), hence N = x ⊓ y or N = x.
-      -- The N ↦ N ⊔ y approach fails because (N ⊔ y).subgroupOf (x ⊔ y) is not
-      -- generally normal when N is only relatively normal in x (not in x ⊔ y).
-      sorry
-    exact ⟨hlt, hn_inf, hmax⟩
+    refine ⟨?_, ?_, ?_⟩
+    · -- x ⊓ y < x
+      apply lt_of_le_of_ne inf_le_left
+      intro h_eq
+      have hxy : x ≤ y := h_eq ▸ inf_le_right
+      rcases hy.2.2 hxy hx.1.le hx.2.1 with h | h
+      · simp only [h, sup_idem] at hx; exact lt_irrefl _ hx.1
+      · exact absurd h.symm hx.1.ne'
+    · -- (x ⊓ y).subgroupOf x is Normal
+      have hxle_yn : x ≤ y.normalizer := by
+        have := (normal_subgroupOf_iff_le_normalizer le_sup_right).mp hy.2.1
+        exact le_trans le_sup_left this
+      have : (y.subgroupOf x).Normal := normal_subgroupOf_of_le_normalizer hxle_yn
+      rwa [inf_comm, inf_subgroupOf_right]
+    · -- maximality: ∀ N, x ⊓ y ≤ N ≤ x → (N.subgroupOf x).Normal → N = x ⊓ y ∨ N = x
+      intro N hN_lo hN_hi hN_norm
+      -- Use second_iso direction: x/(x⊓y) ≃* (x⊔y)/y
+      -- N/x⊓y is a subquotient; transfer to a subgroup between y and x⊔y
+      -- then use maximality of y in x⊔y
+      -- N⊔y is between y and x⊔y
+      have hNy_le : N ⊔ y ≤ x ⊔ y := sup_le_sup_right hN_hi y
+      have hy_le_Ny : y ≤ N ⊔ y := le_sup_right
+      -- (y.subgroupOf (N⊔y)).Normal: need y normal in N⊔y
+      have hxle_yn : x ≤ y.normalizer := by
+        have := (normal_subgroupOf_iff_le_normalizer le_sup_right).mp hy.2.1
+        exact le_trans le_sup_left this
+      have hN_le_yn : N ≤ y.normalizer := hN_hi.trans hxle_yn
+      have hn_y_Ny : (y.subgroupOf (N ⊔ y)).Normal :=
+        (normal_subgroupOf_iff_le_normalizer hy_le_Ny).mpr
+          (sup_le hN_le_yn (le_normalizer y))
+      -- Apply maximality of y in x⊔y to N⊔y
+      rcases hy.2.2 hy_le_Ny hNy_le hn_y_Ny with h | h
+      · -- N ⊔ y = y → N ≤ y → N = x ⊓ y
+        left
+        have hNy : N ≤ y := le_sup_left.trans (h ▸ le_refl _)
+        exact le_antisymm (le_inf hN_hi hNy) hN_lo
+      · -- N ⊔ y = x ⊔ y: x/(x⊓y) ≃* (x⊔y)/y simple; N normal in x → N = x⊓y or N = x
+        -- (HARD: requires transferring simplicity through second_iso; left as sorry)
+        sorry
 
   Iso := GroupQuotIso
 
@@ -153,55 +167,50 @@ noncomputable instance instJordanHolderLatticeSubgroup :
     rcases f with ⟨e1⟩; rcases g with ⟨e2⟩; exact ⟨e1.trans e2⟩
 
   second_iso := by
-    -- Goal: IsMaximal x (x ⊔ y) → GroupQuotIso (x, x ⊔ y) (x ⊓ y, y)
-    -- i.e. ∃ hn1 hn2, Nonempty ((x ⊔ y) ⧸ x.subgroupOf (x ⊔ y) ≃* y ⧸ (x ⊓ y).subgroupOf y)
+    /- Proof sketch (sorry'd due to Lean 4 "motive not type correct" rewrite issue):
+       Want: GroupQuotIso (x, x ⊔ y) (x ⊓ y, y)
+         = ∃ hn1 hn2, Nonempty ((x ⊔ y) ⧸ x.subgroupOf (x ⊔ y) ≃* y ⧸ (x ⊓ y).subgroupOf y)
+       Strategy:
+       1. hn_sup : (x.subgroupOf (x ⊔ y)).Normal  from  hx.2.1
+       2. hle : y ≤ x.normalizer  from  le_normalizer_of_normal_in_sup hn_sup
+       3. hn_inf : ((x ⊓ y).subgroupOf y).Normal  via  inf_subgroupOf_right + hle
+       4. Noether: quotientInfEquivProdNormalizerQuotient y x hle gives
+            y ⧸ x.subgroupOf y ≃* (y ⊔ x) ⧸ x.subgroupOf (y ⊔ x)
+          After .symm: (y ⊔ x) ⧸ x.subgroupOf (y ⊔ x) ≃* y ⧸ x.subgroupOf y
+       5. Transport along sup_comm (y ⊔ x = x ⊔ y) and inf_subgroupOf_right.
+       Blocked: rw [sup_comm y x] at key fails — "motive not type correct"
+         because quotient type ↥_ ⧸ x.subgroupOf _ has Normal instance
+         depending on the rewritten term; rw cannot abstract this.
+       Fix needed: use MulEquiv.subgroupCongr or direct Quotient.congr construction. -/
     intro x y hx
-    obtain ⟨_, hn_sup, _⟩ := hx
-    -- hn_sup : (x.subgroupOf (x ⊔ y)).Normal
+    have hn_sup : (x.subgroupOf (x ⊔ y)).Normal := hx.2.1
     have hle : y ≤ x.normalizer := le_normalizer_of_normal_in_sup hn_sup
-    -- ((x ⊓ y).subgroupOf y).Normal via inf_subgroupOf_right and normalizer
-    have hn_inf : ((x ⊓ y).subgroupOf y).Normal :=
-      Subgroup.inf_subgroupOf_right x y ▸ Subgroup.normal_subgroupOf_of_le_normalizer hle
+    have hn_inf : ((x ⊓ y).subgroupOf y).Normal := by
+      rw [inf_comm, inf_subgroupOf_right]
+      exact normal_subgroupOf_of_le_normalizer hle
     refine ⟨hn_sup, hn_inf, ?_⟩
-    -- Build: (x ⊔ y) ⧸ x.subgroupOf (x ⊔ y)  ≃*  y ⧸ (x ⊓ y).subgroupOf y
-    -- by composing three equivs:
-    --   e1: (x ⊔ y) ⧸ x.subgroupOf (x ⊔ y)  ≃*  (y ⊔ x) ⧸ x.subgroupOf (y ⊔ x)
-    --       via QuotientGroup.congr + MulEquiv.subgroupCongr (sup_comm x y)
-    --   e2: (y ⊔ x) ⧸ x.subgroupOf (y ⊔ x)  ≃*  y ⧸ x.subgroupOf y
-    --       via (quotientInfEquivProdNormalizerQuotient y x hle).symm
-    --   e3: y ⧸ x.subgroupOf y  ≃*  y ⧸ (x ⊓ y).subgroupOf y
-    --       via quotientMulEquivOfEq (inf_subgroupOf_right x y).symm
-    haveI := hn_sup
-    haveI := hn_inf
-    haveI hn_xy : (x.subgroupOf y).Normal := Subgroup.normal_subgroupOf_of_le_normalizer hle
-    haveI hn_yx : (x.subgroupOf (y ⊔ x)).Normal :=
-      Subgroup.normal_subgroupOf_sup_of_le_normalizer hle
-    -- e1: congr via sup_comm — avoids rw on quotient types using QuotientGroup.congr
-    have he1 : (x.subgroupOf (x ⊔ y)).map (MulEquiv.subgroupCongr (sup_comm x y)) =
-        x.subgroupOf (y ⊔ x) := by
-      apply Subgroup.ext
-      intro ⟨g, hg⟩
-      simp only [Subgroup.mem_map, Subgroup.mem_subgroupOf]
-      constructor
-      · rintro ⟨a, ha, heq⟩
-        have hag : (a : G) = g := by
-          have h := congrArg Subtype.val heq
-          simp only [MulEquiv.subgroupCongr_apply] at h
-          exact h
-        rwa [← hag]
-      · intro hgx
-        exact ⟨⟨g, sup_comm y x ▸ hg⟩, hgx,
-          Subtype.ext (MulEquiv.subgroupCongr_apply (sup_comm x y) ⟨g, sup_comm y x ▸ hg⟩)⟩
-    have e1 : (x ⊔ y : Subgroup G) ⧸ x.subgroupOf (x ⊔ y) ≃*
-              (y ⊔ x : Subgroup G) ⧸ x.subgroupOf (y ⊔ x) :=
-      QuotientGroup.congr (MulEquiv.subgroupCongr (sup_comm x y)) he1
-    -- e2: Noether's second isomorphism theorem, symm direction
-    have e2 : (y ⊔ x : Subgroup G) ⧸ x.subgroupOf (y ⊔ x) ≃* y ⧸ x.subgroupOf y :=
-      (quotientInfEquivProdNormalizerQuotient y x hle).symm
-    -- e3: transport the RHS subgroupOf via inf_subgroupOf_right
-    have e3 : y ⧸ x.subgroupOf y ≃* y ⧸ (x ⊓ y).subgroupOf y :=
-      QuotientGroup.quotientMulEquivOfEq (Subgroup.inf_subgroupOf_right x y).symm
-    exact ⟨(e1.trans e2).trans e3⟩
+    haveI := hn_sup; haveI := hn_inf
+    let φ : y →* (x ⊔ y) ⧸ x.subgroupOf (x ⊔ y) :=
+      (mk' (x.subgroupOf (x ⊔ y))).comp (inclusion le_sup_right)
+    have hker : φ.ker = (x ⊓ y).subgroupOf y := by
+      ext ⟨g, hg⟩
+      simp only [φ, MonoidHom.mem_ker, MonoidHom.comp_apply, inclusion_mk, mk'_apply,
+                 QuotientGroup.eq_one_iff, mem_subgroupOf, mem_inf, hg, and_true]
+    have hφ_surj : Function.Surjective φ := fun q =>
+      q.inductionOn' fun ⟨g, hg⟩ => by
+        obtain ⟨a, ha, b, hb, rfl⟩ := Subgroup.mem_sup.mp hg
+        refine ⟨⟨b, hb⟩, QuotientGroup.eq.mpr ?_⟩
+        simp only [φ, MonoidHom.comp_apply, inclusion_mk, leftRel_apply, mem_subgroupOf]
+        have key := hn_sup.conj_mem'
+          (show (⟨a, Subgroup.mem_sup_left ha⟩ : (x ⊔ y)) ∈ x.subgroupOf (x ⊔ y)
+           from Subgroup.mem_subgroupOf.mpr ha)
+          (⟨b, Subgroup.mem_sup_right hb⟩ : (x ⊔ y))
+        rw [Subgroup.mem_subgroupOf] at key
+        rw [← mul_assoc]; exact key
+    haveI : (φ.ker).Normal := by rw [hker]; infer_instance
+    have e := QuotientGroup.quotientKerEquivOfSurjective φ hφ_surj
+    rw [hker] at e
+    exact ⟨e.symm⟩
 
 -- ============================================================
 -- PART IV: Jordan-Hölder Theorem
