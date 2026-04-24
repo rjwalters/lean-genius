@@ -2,7 +2,7 @@
 
 **Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01
 **Last Updated**: 2026-04-24
-**Knowledge Items**: 18
+**Knowledge Items**: 21
 
 Insights accumulated during research on this problem.
 
@@ -17,6 +17,54 @@ symmetric polynomials: `s_λ = det[h_{λᵢ-i+j}]`. The proof route via SSYT and
   3. Biject SSYT ↔ non-intersecting lattice paths (RSK)
   4. Apply LGV: det[e(Aᵢ,Bⱼ)] = weighted NI-path count
   5. Identify the LGV matrix with the Jacobi-Trudi matrix
+
+---
+
+## Session 2026-04-24 (Session 3) — Main Theorem Case Split: k=0,1 Proved
+
+**Mode**: REVISIT
+**Outcome**: progress
+
+### What I Did
+
+- Replaced the single `sorry` in `jacobi_trudi_ssyt_eq` with a case split on `k`:
+  - k=0: `funext (fun i => i.elim0)` + `rw [hsh, schurPolynomial_empty, ssytSchurFin_empty]`
+  - k=1: `funext (fun i => by fin_cases i <;> rfl)` + `rw [hsh, schurPolynomial_one_row, ssytSchurFin_one_row]`
+  - k≥2: `sorry` with detailed RSK roadmap comment
+- Updated file header and docstring to reflect k=0,1 are proved in the main theorem
+- Updated meta.json (lineCount 313 → 345), knowledge.json (2 new builtItems, 3 new insights)
+- `jacobi_trudi_ssyt_eq` now has explicit proofs for the base cases and a structured sorry
+
+### Key Findings
+
+- **k=0 proof pattern**: `have hsh : sh = Fin.elim0 := funext (fun i => i.elim0)` eliminates `sh`
+  because any function `Fin 0 → ℕ` is eliminated by `i.elim0` (function from empty type is unique)
+- **k=1 proof pattern**: `fin_cases i` for `i : Fin 1` produces exactly one case (i = 0), so `rfl` closes
+  the extensionality goal `sh ⟨i, hi⟩ = sh ⟨0, _⟩`
+- **`cases k with | zero => | succ k => cases k with | zero => | succ k =>`** cleanly handles
+  the 0, 1, k+2 cases without awkward `rcases` patterns
+- **RSK requirement confirmed**: No shortcut exists for k≥2; the combinatorial bijection
+  SSYT ↔ NI-lattice-paths is the only known proof route, estimated 300-400 Lean lines
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (313 → 345 lines)
+  - k=0 case proved in jacobi_trudi_ssyt_eq
+  - k=1 case proved in jacobi_trudi_ssyt_eq
+  - k≥2 sorry with RSK roadmap comment
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-01-oq-01/meta.json` (lineCount, assumptions)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01.json` (insights, builtItems)
+
+### Next Steps
+
+1. **Prove k≥2 case** via RSK bijection (~300-400 lines):
+   - Define `SSYTFin n k sh ↪ NI-path-tuples` (forward map via RSK insertion)
+   - Show bijection is weight-preserving
+   - Apply LGV lemma (available in BallotProblemOQ03OQ02) in weighted form
+2. **Alternative**: Submit to Aristotle after providing more scaffolding (unlikely to succeed
+   without RSK structure, but worth trying after adding more intermediate lemmas)
+3. **Intermediate goal**: Prove `ssytSchurFin_two_row` (k=2 case) as a standalone lemma
+   using the Bender-Knuth / jeu de taquin involution argument
 
 ---
 
