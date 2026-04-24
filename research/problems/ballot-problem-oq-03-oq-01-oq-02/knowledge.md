@@ -339,3 +339,49 @@ The sorry count increased by 1 (net) because:
    Alternatively, try to prove for specific shapes (2-corner diagrams) as special cases.
 3. **Aristotle submission**: Submit hookProd_ratio_formula (without the prod-split sorry) and
    arm_mem_nu / leg_mem_nu to Aristotle for verification of the proved parts.
+
+---
+
+## Session 2026-04-24 (Session 18) — hookProd_ratio_formula PROVED
+
+**Mode**: REVISIT (RICH knowledge tier, score 102)
+**Outcome**: PROGRESS — `hookProd_ratio_formula` proved with 0 sorries (~80 lines)
+
+### What I Did
+
+1. Continued from Session 17; implemented the Finset.prod splitting proof for `hookProd_ratio_formula`
+2. Key steps implemented:
+   - `hνprod`: cast hookProd ν to ∏_{ν.cells} hookLength ν (simp only hookProd + Nat.cast_prod)
+   - `rw [hμ_via_ν, hνprod, ← Finset.prod_div_distrib]`: convert ratio to ∏_{ν.cells} h(μ)/h(ν)
+   - `harm_prod`: ∏_{armCells} = ∏_{s<j} h(i,s)/(h(i,s)-1) via prod_image + hookLength_removeCorner_arm
+   - `hleg_prod`: ∏_{legCells} = ∏_{r<i} h(r,j)/(h(r,j)-1) via prod_image + hookLength_removeCorner_leg
+   - `hleg_sdiff`: legCells ⊆ ν.cells \ armCells for the prod_sdiff splitting
+   - `hrest_prod` = 1: rest cells have unchanged hookLength → ratio = 1 → div_self
+   - `calc` assembles via two applications of Finset.prod_sdiff.symm + ring at the end
+
+### Key Findings
+
+- **Finset.prod_div_distrib**: Requires [DivisionCommMonoid G]. For ℚ: Field → Semifield → CommGroupWithZero → DivisionCommMonoid. Confirmed by Vandermonde.lean usage in Mathlib.
+- **prod_sdiff splitting**: `Finset.prod_sdiff h : (∏_{s₂\s₁} f) * (∏_{s₁} f) = ∏_{s₂} f`. Use `.symm` to split whole product; apply twice for arm/leg/rest decomposition.
+- **hrest_prod = 1**: Uses `hookLength_eq_of_not_arm_leg` + `exact_mod_cast` for ℕ→ℚ coercion of the equality, then `div_self`.
+- **YoungDiagram.mem_cells**: `c ∈ μ.cells ↔ c ∈ μ`; `.mp` direction used to get `x ∈ μ` from `x ∈ μ.cells`.
+- **Finset.mem_erase** gives `a ≠ b ∧ a ∈ s` — used to extract `hxne : x ≠ (i,j)` and `hxμ : x ∈ μ.cells`.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (sorry at line 4966 replaced, +70 lines, total 5121 lines)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` (updated builtItems, progressSummary, nextSteps)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md` (this file)
+
+### Sorry Count: 3 → 4 → 4 (no change net; hookProd_ratio_formula resolved, 3 dead + 1 main remain)
+
+Actually: Session 18 resolved `hookProd_ratio_formula` sorry (previously counted separately).
+- `hook_walk_identity` (≥3-row case, line 5042): sole mathematical blocker, needs GNW ~300 lines
+- Lines 219, 235, 245: dead code sorries (FALSE as stated; do not count mathematically)
+
+### Next Steps
+
+1. **GNW proof of hook_walk_identity** (~200-300 lines): Probabilistic hook walk argument. Define
+   walk probability P(cell→corner c), show Σ_c P(start→c) = 1, derive hook_walk_identity.
+2. **Alternative**: Attempt hook_walk_identity for ≤3 corners as special case.
+3. **Aristotle**: hook_walk_identity is OPEN (not HARD); Aristotle cannot help with genuinely open combinatorial identities. Do not submit.

@@ -4957,13 +4957,78 @@ private lemma hookProd_ratio_formula {μ : YoungDiagram} {c : ℕ × ℕ} (hc : 
     rintro _ ⟨s, _, rfl⟩ ⟨r, hr, h⟩
     simp [Prod.mk.injEq] at h
     omega
-  -- [Core sorry: split ν.cells into armCells ∪ legCells ∪ restCells and apply hookLength lemmas]
-  -- The identity follows from:
-  -- ∏_{x∈ν.cells} hookLen(μ,x)/hookLen(ν,x)
-  --   = ∏_{arm} hookLen(μ,i,s)/(hookLen(μ,i,s)-1)   [hookLength_removeCorner_arm]
-  --   × ∏_{leg} hookLen(μ,r,j)/(hookLen(μ,r,j)-1)   [hookLength_removeCorner_leg]
-  --   × ∏_{rest} 1                                    [hookLength_eq_of_not_arm_leg]
-  sorry
+  -- Express ratio as ∏_{ν.cells} hookLen(μ,x)/hookLen(ν,x) then split arm/leg/rest
+  have hνprod : (hookProd ν : ℚ) = ∏ x ∈ ν.cells, (hookLength ν x.1 x.2 : ℚ) := by
+    simp only [hookProd, Nat.cast_prod]
+  rw [hμ_via_ν, hνprod, ← Finset.prod_div_distrib]
+  -- Arm product: ∏_{armCells} = ∏_{s<j} hookLen(μ,i,s)/(hookLen(μ,i,s)-1)
+  have harm_prod : ∏ x ∈ armCells, ((hookLength μ x.1 x.2 : ℚ) / hookLength ν x.1 x.2) =
+      ∏ s ∈ Finset.range j, ((hookLength μ i s : ℚ) / (hookLength μ i s - 1)) := by
+    rw [show armCells = Finset.image (fun s => (i, s)) (Finset.range j) from rfl]
+    rw [Finset.prod_image (fun a _ b _ h => (Prod.mk.inj h).2)]
+    apply Finset.prod_congr rfl
+    intro s hs
+    simp only [Prod.fst, Prod.snd]
+    have hla := hookLength_removeCorner_arm hc (Finset.mem_range.mp hs)
+    simp only [Prod.fst, Prod.snd] at hla
+    have hνs : (hookLength ν i s : ℚ) = (hookLength μ i s : ℚ) - 1 := by
+      have : (hookLength ν i s : ℚ) + 1 = hookLength μ i s := by exact_mod_cast hla
+      linarith
+    rw [hνs]
+  -- Leg product: ∏_{legCells} = ∏_{r<i} hookLen(μ,r,j)/(hookLen(μ,r,j)-1)
+  have hleg_prod : ∏ x ∈ legCells, ((hookLength μ x.1 x.2 : ℚ) / hookLength ν x.1 x.2) =
+      ∏ r ∈ Finset.range i, ((hookLength μ r j : ℚ) / (hookLength μ r j - 1)) := by
+    rw [show legCells = Finset.image (fun r => (r, j)) (Finset.range i) from rfl]
+    rw [Finset.prod_image (fun a _ b _ h => (Prod.mk.inj h).1)]
+    apply Finset.prod_congr rfl
+    intro r hr
+    simp only [Prod.fst, Prod.snd]
+    have hlr := hookLength_removeCorner_leg hc (Finset.mem_range.mp hr)
+    simp only [Prod.fst, Prod.snd] at hlr
+    have hνr : (hookLength ν r j : ℚ) = (hookLength μ r j : ℚ) - 1 := by
+      have : (hookLength ν r j : ℚ) + 1 = hookLength μ r j := by exact_mod_cast hlr
+      linarith
+    rw [hνr]
+  -- legCells ⊆ ν.cells \ armCells (for prod_sdiff splitting)
+  have hleg_sdiff : legCells ⊆ ν.cells \ armCells :=
+    Finset.subset_sdiff.mpr ⟨hleg_sub, Finset.disjoint_comm.mp hdisj⟩
+  -- Rest product = 1: cells neither arm nor leg have unchanged hookLength
+  have hrest_prod : ∏ x ∈ (ν.cells \ armCells) \ legCells,
+      ((hookLength μ x.1 x.2 : ℚ) / hookLength ν x.1 x.2) = 1 := by
+    apply Finset.prod_eq_one
+    intro x hx
+    have hxna : x ∉ armCells := (Finset.mem_sdiff.mp hx).2
+    have hxnl : x ∉ legCells := (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hx).1).2
+    have hxν : x ∈ ν.cells := (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hx).1).1
+    have hxe := Finset.mem_erase.mp (hν_cells ▸ hxν)
+    have hxμ : x ∈ μ := YoungDiagram.mem_cells.mp hxe.2
+    have hxne : x ≠ (i, j) := hxe.1
+    have hxarm : ¬(x.1 = i ∧ x.2 < j) := by
+      intro ⟨h1, h2⟩
+      exact hxna (Finset.mem_image.mpr ⟨x.2, Finset.mem_range.mpr h2, Prod.ext h1.symm rfl⟩)
+    have hxleg : ¬(x.1 < i ∧ x.2 = j) := by
+      intro ⟨h1, h2⟩
+      exact hxnl (Finset.mem_image.mpr ⟨x.1, Finset.mem_range.mpr h1, Prod.ext rfl h2.symm⟩)
+    have heq := hookLength_eq_of_not_arm_leg hc hxμ hxne hxarm hxleg
+    simp only [Prod.fst, Prod.snd] at heq
+    have hpos : (0 : ℚ) < hookLength μ x.1 x.2 := by exact_mod_cast hookLength_pos μ x.1 x.2
+    have hνeq : (hookLength ν x.1 x.2 : ℚ) = hookLength μ x.1 x.2 := by exact_mod_cast heq
+    rw [hνeq]; exact div_self hpos.ne'
+  -- Assemble via calc: split ν.cells = armCells ∪ legCells ∪ rest
+  calc ∏ x ∈ ν.cells, ((hookLength μ x.1 x.2 : ℚ) / hookLength ν x.1 x.2)
+      = (∏ x ∈ ν.cells \ armCells, ((hookLength μ x.1 x.2 : ℚ) / hookLength ν x.1 x.2)) *
+        (∏ x ∈ armCells, ((hookLength μ x.1 x.2 : ℚ) / hookLength ν x.1 x.2)) :=
+          (Finset.prod_sdiff harm_sub).symm
+    _ = ((∏ x ∈ (ν.cells \ armCells) \ legCells,
+            ((hookLength μ x.1 x.2 : ℚ) / hookLength ν x.1 x.2)) *
+          (∏ x ∈ legCells, ((hookLength μ x.1 x.2 : ℚ) / hookLength ν x.1 x.2))) *
+        (∏ x ∈ armCells, ((hookLength μ x.1 x.2 : ℚ) / hookLength ν x.1 x.2)) := by
+          rw [← Finset.prod_sdiff hleg_sdiff]
+    _ = (1 * ∏ r ∈ Finset.range i, ((hookLength μ r j : ℚ) / (hookLength μ r j - 1))) *
+        (∏ s ∈ Finset.range j, ((hookLength μ i s : ℚ) / (hookLength μ i s - 1))) := by
+          rw [hrest_prod, hleg_prod, harm_prod]
+    _ = (∏ s ∈ Finset.range j, ((hookLength μ i s : ℚ) / (hookLength μ i s - 1))) *
+        (∏ r ∈ Finset.range i, ((hookLength μ r j : ℚ) / (hookLength μ r j - 1))) := by ring
 
 
 private lemma hook_walk_identity (μ : YoungDiagram) (hn : 0 < μ.card) :
