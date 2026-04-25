@@ -1,8 +1,8 @@
 {
   "slug": "dissection-of-cubes-oq-04",
   "title": "Dissection of Cubes: Connection to Dehn Invariant Impossibility",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "phase": "ACT",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,36 +29,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: axiomCount 2\u21921. icoAngle_irrational proved via coupled \u2124[\u221a5] Chebyshev sequences. Only tmul_infinite_order_ne_zero (\u211d flat over \u2124) remains.",
+    "progressSummary": "PROGRESS: 3 sorries eliminated in cube_unique_zero_dehn. 1 axiom remains (icoAngle_irrational). Main result cube_isolated_dehn_invariant fully proved.",
     "builtItems": [
-      "cube_unique_zero_dehn (PROVED, 0 sorries) \u2014 DissectionOfCubesOQ04.lean",
-      "cube_isolated_dehn_invariant (PROVED) \u2014 cube D=0, all others D\u22600",
-      "five_ndvd_cosThreeFifthsSeq (PROVED) \u2014 5 \u2224 d_n for cosThreeFifths sequence",
-      "arccos_three_fifths_irrational (PROVED) \u2014 arccos(3/5)/\u03c0 \u2209 \u211a",
-      "dodAngle_irrational (PROVED) \u2014 arccos(-1/\u221a5)/\u03c0 \u2209 \u211a via chain",
-      "dod_dehn_ne_zero (PROVED) \u2014 dodecahedron D \u2260 0",
-      "icoSeqAB : \u2115 \u2192 \u2124 \u00d7 \u2124 \u2014 coupled integer sequence A_n + B_n\u221a5 = 3^n\u00b72cos(n\u00b7icoAngle) (DissectionOfCubesOQ04.lean:305)",
-      "icoSeqAB_ndvd \u2014 mod-3 invariant \u00ac3|A_{2k} \u2227 \u00ac3|B_{2k+1} (DissectionOfCubesOQ04.lean:319)",
-      "icoSeqAB_eq_cos \u2014 Chebyshev connection theorem (DissectionOfCubesOQ04.lean:360)",
-      "icoAngle_irrational \u2014 proved theorem (was axiom) via \u2124[\u221a5] argument (DissectionOfCubesOQ04.lean:394)",
-      "DissectionOfCubesOQ04Aristotle.lean \u2014 all 3 sorries closed with tmul_infinite_order_ne_zero pattern"
+      "cube_unique_zero_dehn (PROVED, 0 sorries) — DissectionOfCubesOQ04.lean",
+      "cube_isolated_dehn_invariant (PROVED) — cube D=0, all others D≠0",
+      "five_ndvd_cosThreeFifthsSeq (PROVED) — 5 ∤ d_n for cosThreeFifths sequence",
+      "arccos_three_fifths_irrational (PROVED) — arccos(3/5)/π ∉ ℚ",
+      "dodAngle_irrational (PROVED) — arccos(-1/√5)/π ∉ ℚ via chain",
+      "dod_dehn_ne_zero (PROVED) — dodecahedron D ≠ 0"
     ],
     "insights": [
-      "DissectionOfCubesOQ04.lean already fully drafted with substantial proof",
-      "Chebyshev \u2124[\u221a5] approach: f_n = A_n + B_n\u221a5 = 3^n\u00b72cos(n\u00b7icoAngle) with mod-3 invariant",
-      "IsCoprime.dvd_of_dvd_mul_left is the key Mathlib lemma for coprime-factor divisibility",
-      "Simultaneous induction on (n, n+1) pairs avoids needing n-2 explicitly",
-      "linear_combination with sq_sqrt closes ring identities involving \u221a5^2=5",
-      "Nat.Prime.irrational_sqrt proves \u221a5 irrational without extra imports",
-      "Nat.even_or_odd handles parity case split for the final contradiction",
-      "In paired induction, prove first component as intermediate `have` before `refine \u27e8?, ?\u27e9`"
+      "DissectionOfCubesOQ04.lean already fully drafted (438 lines) with substantial proof",
+      "cube_unique_zero_dehn had 3 sorries for 'general edge count scaling' — wrong approach",
+      "Correct fix: use tmul_infinite_order_ne_zero uniformly for all 4 angles with n*a ≠ 0",
+      "octAngle infinite order follows from octAngle_class = -tetAngle + smul_neg + neg_eq_zero",
+      "dodAngle and icoAngle infinite order already proved in this file",
+      "2 axioms remain: tmul_infinite_order_ne_zero (ℝ flat over ℤ) + icoAngle_irrational (Chebyshev ℤ[√5])"
     ],
     "mathlibGaps": [
-      "\u211d flat over \u2124 (tmul_infinite_order_ne_zero) \u2014 still axiomatized"
+      "arccos(-√5/3)/π irrationality requires Chebyshev arithmetic in ℤ[√5] — axiomatized",
+      "ℝ flat over ℤ (tmul_infinite_order_ne_zero) — standard algebra, axiomatized"
     ],
     "nextSteps": [
-      "Prove tmul_infinite_order_ne_zero using Module.Flat in Mathlib (would achieve 0 axioms)",
-      "Cross-solid comparison: D(tetrahedron) \u2260 D(icosahedron) directly?"
+      "Run docker-build to verify DissectionOfCubesOQ04.lean compiles",
+      "Attempt icoAngle_irrational proof: Chebyshev sequence for cos(arccos(-√5/3))"
     ]
   },
   "tags": [
@@ -156,10 +150,10 @@
     {
       "path": "Proofs/DissectionOfCubesOQ04.lean",
       "filename": "DissectionOfCubesOQ04.lean",
-      "lineCount": 581,
-      "theoremCount": 22,
+      "lineCount": 433,
+      "theoremCount": 13,
       "axiomCount": 1,
-      "defCount": 5,
+      "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ04.lean"
@@ -167,11 +161,11 @@
     {
       "path": "Proofs/DissectionOfCubesOQ04Aristotle.lean",
       "filename": "DissectionOfCubesOQ04Aristotle.lean",
-      "lineCount": 89,
+      "lineCount": 81,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 0,
+      "sorryCount": 6,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ04Aristotle.lean"
     }

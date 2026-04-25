@@ -50,7 +50,8 @@
   "tags": [],
   "relatedProofs": [
     "yang-mills",
-    "yang-mills-transfer-matrix"
+    "yang-mills-transfer-matrix",
+    "yang-mills-transfer-matrix-oq-01"
   ],
   "references": {
     "papers": [],
@@ -58,5 +59,18 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:39:05.245Z",
-  "lastUpdate": "2026-03-30T20:30:00Z"
+  "lastUpdate": "2026-03-30T20:30:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/YangMillsTransferMatrixOQ01.lean",
+      "filename": "YangMillsTransferMatrixOQ01.lean",
+      "lineCount": 511,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/YangMillsTransferMatrixOQ01.lean"
+    }
+  ]
 }
