@@ -5387,6 +5387,168 @@ private lemma threeRow_corner_cases {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
   · -- i = 2: corner (2, c-1), always
     right; right; simpa
 
+/-- (1, b-1) is a corner of a 3-row shape when rowLen 2 < rowLen 1. -/
+private lemma threeRow_corner_mid {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
+    (hbc : μ.rowLen 2 < μ.rowLen 1) : isCorner μ (1, μ.rowLen 1 - 1) := by
+  refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
+  · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+  · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+
+/-- (0, a-1) is a corner of a 3-row shape when rowLen 1 < rowLen 0. -/
+private lemma threeRow_corner_top {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
+    (hab : μ.rowLen 1 < μ.rowLen 0) : isCorner μ (0, μ.rowLen 0 - 1) := by
+  refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by omega), ?_, ?_⟩
+  · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+  · intro h; exact absurd (YoungDiagram.mem_iff_lt_rowLen.mp h) (by omega)
+
+/-- A 3-row YoungDiagram has card = rowLen 0 + rowLen 1 + rowLen 2. -/
+private lemma threeRow_card {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0) :
+    μ.card = μ.rowLen 0 + μ.rowLen 1 + μ.rowLen 2 := by
+  have hrows_zero : ∀ i, 3 ≤ i → μ.rowLen i = 0 := fun i hi =>
+    Nat.le_zero.mp (h3 ▸ μ.rowLen_anti 3 i hi)
+  unfold YoungDiagram.card
+  have hcells : μ.cells =
+      (Finset.range (μ.rowLen 0)).image (Prod.mk 0) ∪
+      (Finset.range (μ.rowLen 1)).image (Prod.mk 1) ∪
+      (Finset.range (μ.rowLen 2)).image (Prod.mk 2) := by
+    ext ⟨i, j⟩
+    simp only [YoungDiagram.mem_cells, YoungDiagram.mem_iff_lt_rowLen,
+               Finset.mem_union, Finset.mem_image, Finset.mem_range, Prod.mk.injEq]
+    constructor
+    · intro hlt
+      have hi3 : i < 3 := by
+        by_contra hge; push_neg at hge
+        exact absurd hlt (by rw [hrows_zero i hge]; omega)
+      interval_cases i
+      · left; left; exact ⟨j, hlt, rfl, rfl⟩
+      · left; right; exact ⟨j, hlt, rfl, rfl⟩
+      · right; exact ⟨j, hlt, rfl, rfl⟩
+    · rintro ((⟨k, hk, rfl, rfl⟩ | ⟨k, hk, rfl, rfl⟩) | ⟨k, hk, rfl, rfl⟩)
+      all_goals exact hk
+  have hd1 : Disjoint ((Finset.range (μ.rowLen 0)).image (Prod.mk 0))
+                       ((Finset.range (μ.rowLen 1)).image (Prod.mk 1)) :=
+    Finset.disjoint_left.mpr fun x hx hy => by
+      obtain ⟨_, _, rfl, rfl⟩ := Finset.mem_image.mp hx
+      obtain ⟨_, _, h, _⟩ := Finset.mem_image.mp hy
+      exact absurd h (by norm_num)
+  have hd2 : Disjoint
+      ((Finset.range (μ.rowLen 0)).image (Prod.mk 0) ∪
+       (Finset.range (μ.rowLen 1)).image (Prod.mk 1))
+      ((Finset.range (μ.rowLen 2)).image (Prod.mk 2)) :=
+    Finset.disjoint_left.mpr fun x hx hy => by
+      simp only [Finset.mem_union, Finset.mem_image, Finset.mem_range, Prod.mk.injEq] at hx hy
+      obtain (⟨_, _, rfl, rfl⟩ | ⟨_, _, rfl, rfl⟩) := hx
+      · obtain ⟨_, _, h, _⟩ := hy; exact absurd h (by norm_num)
+      · obtain ⟨_, _, h, _⟩ := hy; exact absurd h (by norm_num)
+  rw [hcells, Finset.card_union_of_disjoint hd2, Finset.card_union_of_disjoint hd1,
+      Finset.card_image_of_injective _ (fun p q h => (Prod.mk.inj h).2),
+      Finset.card_image_of_injective _ (fun p q h => (Prod.mk.inj h).2),
+      Finset.card_image_of_injective _ (fun p q h => (Prod.mk.inj h).2),
+      Finset.card_range, Finset.card_range, Finset.card_range]
+
+/-- Arm product for corner (1, b-1) telescopes to (b+1)(b-c)/(b-c+1). -/
+private lemma threeRow_arm_row1 {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
+    (hbc : μ.rowLen 2 < μ.rowLen 1) :
+    ∏ s ∈ Finset.range (μ.rowLen 1 - 1),
+      ((hookLength μ 1 s : ℚ) / ((hookLength μ 1 s : ℚ) - 1)) =
+    ((μ.rowLen 1 : ℚ) + 1) * ((μ.rowLen 1 : ℚ) - μ.rowLen 2) /
+    ((μ.rowLen 1 : ℚ) - μ.rowLen 2 + 1) := by
+  set b := μ.rowLen 1; set cv := μ.rowLen 2
+  have hcb : cv ≤ b := Nat.le_of_lt hbc
+  have hsplit : Finset.range (b - 1) = Finset.range cv ∪ Finset.Ico cv (b - 1) := by
+    ext k; simp only [Finset.mem_range, Finset.mem_union, Finset.mem_Ico]; omega
+  have hdisj : Disjoint (Finset.range cv) (Finset.Ico cv (b - 1)) :=
+    Finset.disjoint_left.mpr fun _ hk => by
+      simp only [Finset.mem_range, Finset.mem_Ico] at hk ⊢; omega
+  rw [hsplit, Finset.prod_union hdisj]
+  have hconv1 : ∀ s ∈ Finset.range cv,
+      (hookLength μ 1 s : ℚ) / ((hookLength μ 1 s : ℚ) - 1) =
+      ((b : ℚ) + 1 - s) / ((b : ℚ) + 1 - s - 1) := fun s hs => by
+    have hsc : s < cv := Finset.mem_range.mp hs
+    rw [threeRow_hookLen_row1_lt h3 (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)) hsc]
+    push_cast [Nat.cast_sub (show s ≤ b by omega)]; ring
+  rw [Finset.prod_congr rfl hconv1, prod_div_telescope (b + 1) cv (by omega)]
+  have hconv2 : ∀ s ∈ Finset.Ico cv (b - 1),
+      (hookLength μ 1 s : ℚ) / ((hookLength μ 1 s : ℚ) - 1) =
+      ((b : ℚ) - s) / ((b : ℚ) - s - 1) := fun s hs => by
+    have hs_mem := Finset.mem_Ico.mp hs
+    rw [threeRow_hookLen_row1_ge h3 (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        (by omega : μ.rowLen 2 ≤ s)]
+    push_cast [Nat.cast_sub (show s ≤ b - 1 by omega)]; ring
+  rw [Finset.prod_congr rfl hconv2, Finset.prod_Ico_eq_prod_range]
+  have hconv2b : ∀ k ∈ Finset.range (b - 1 - cv),
+      ((b : ℚ) - ↑(cv + k)) / ((b : ℚ) - ↑(cv + k) - 1) =
+      (↑(b - cv) - ↑k) / (↑(b - cv) - ↑k - 1) := fun k _ => by
+    push_cast [Nat.cast_sub hcb]; ring
+  rw [Finset.prod_congr rfl hconv2b, prod_div_telescope (b - cv) (b - 1 - cv) (by omega)]
+  have hbc1 : (b : ℚ) - cv + 1 ≠ 0 := by
+    exact_mod_cast (show (0 : ℤ) < (b : ℤ) - cv + 1 by omega)
+  push_cast [Nat.cast_sub hcb, Nat.cast_sub (show b - 1 - cv ≤ b - cv by omega)]
+  field_simp [hbc1]; push_cast [Nat.cast_sub hcb]; ring
+
+/-- Arm product for corner (0, a-1) telescopes to (a+2)(a-c+1)(a-b)/[(a-c+2)(a-b+1)]. -/
+private lemma threeRow_arm_row0 {μ : YoungDiagram} (h3 : μ.rowLen 3 = 0)
+    (h2 : 0 < μ.rowLen 2) (hab : μ.rowLen 1 < μ.rowLen 0) :
+    ∏ s ∈ Finset.range (μ.rowLen 0 - 1),
+      ((hookLength μ 0 s : ℚ) / ((hookLength μ 0 s : ℚ) - 1)) =
+    ((μ.rowLen 0 : ℚ) + 2) * ((μ.rowLen 0 : ℚ) - μ.rowLen 2 + 1) *
+    ((μ.rowLen 0 : ℚ) - μ.rowLen 1) /
+    (((μ.rowLen 0 : ℚ) - μ.rowLen 2 + 2) * ((μ.rowLen 0 : ℚ) - μ.rowLen 1 + 1)) := by
+  set a := μ.rowLen 0; set b := μ.rowLen 1; set cv := μ.rowLen 2
+  have hba : b ≤ a := Nat.le_of_lt hab
+  have hcb : cv ≤ b := μ.rowLen_anti 1 2 (by omega)
+  have hsplit : Finset.range (a - 1) =
+      Finset.range cv ∪ Finset.Ico cv b ∪ Finset.Ico b (a - 1) := by
+    ext k; simp only [Finset.mem_range, Finset.mem_union, Finset.mem_Ico]; omega
+  have hdisj1 : Disjoint (Finset.range cv) (Finset.Ico cv b) :=
+    Finset.disjoint_left.mpr fun _ hk => by
+      simp only [Finset.mem_range, Finset.mem_Ico] at hk ⊢; omega
+  have hdisj2 : Disjoint (Finset.range cv ∪ Finset.Ico cv b) (Finset.Ico b (a - 1)) :=
+    Finset.disjoint_left.mpr fun _ hk => by
+      simp only [Finset.mem_union, Finset.mem_range, Finset.mem_Ico] at hk ⊢; omega
+  rw [hsplit, Finset.prod_union hdisj2, Finset.prod_union hdisj1]
+  have hconv1 : ∀ s ∈ Finset.range cv,
+      (hookLength μ 0 s : ℚ) / ((hookLength μ 0 s : ℚ) - 1) =
+      ((a : ℚ) + 2 - s) / ((a : ℚ) + 2 - s - 1) := fun s hs => by
+    have hsc : s < cv := Finset.mem_range.mp hs
+    rw [threeRow_hookLen_row0_lt h3 (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)) hsc]
+    push_cast [Nat.cast_sub (show s ≤ a by omega)]; ring
+  rw [Finset.prod_congr rfl hconv1, prod_div_telescope (a + 2) cv (by omega)]
+  have hconv2 : ∀ s ∈ Finset.Ico cv b,
+      (hookLength μ 0 s : ℚ) / ((hookLength μ 0 s : ℚ) - 1) =
+      ((a : ℚ) + 1 - s) / ((a : ℚ) + 1 - s - 1) := fun s hs => by
+    have hs_mem := Finset.mem_Ico.mp hs
+    rw [threeRow_hookLen_row0_mid h3 (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        hs_mem.1 hs_mem.2]
+    push_cast [Nat.cast_sub (show s ≤ a by omega)]; ring
+  rw [Finset.prod_congr rfl hconv2, Finset.prod_Ico_eq_prod_range]
+  have hconv2b : ∀ k ∈ Finset.range (b - cv),
+      ((a : ℚ) + 1 - ↑(cv + k)) / ((a : ℚ) + 1 - ↑(cv + k) - 1) =
+      (↑(a - cv + 1) - ↑k) / (↑(a - cv + 1) - ↑k - 1) := fun k _ => by
+    push_cast [Nat.cast_sub (Nat.le_trans hcb hba)]; ring
+  rw [Finset.prod_congr rfl hconv2b, prod_div_telescope (a - cv + 1) (b - cv) (by omega)]
+  have hconv3 : ∀ s ∈ Finset.Ico b (a - 1),
+      (hookLength μ 0 s : ℚ) / ((hookLength μ 0 s : ℚ) - 1) =
+      ((a : ℚ) - s) / ((a : ℚ) - s - 1) := fun s hs => by
+    have hs_mem := Finset.mem_Ico.mp hs
+    rw [threeRow_hookLen_row0_ge h3 (YoungDiagram.mem_iff_lt_rowLen.mpr (by omega))
+        hs_mem.1]
+    push_cast [Nat.cast_sub (show s ≤ a - 1 by omega)]; ring
+  rw [Finset.prod_congr rfl hconv3, Finset.prod_Ico_eq_prod_range]
+  have hconv3b : ∀ k ∈ Finset.range (a - 1 - b),
+      ((a : ℚ) - ↑(b + k)) / ((a : ℚ) - ↑(b + k) - 1) =
+      (↑(a - b) - ↑k) / (↑(a - b) - ↑k - 1) := fun k _ => by
+    push_cast [Nat.cast_sub hba]; ring
+  rw [Finset.prod_congr rfl hconv3b, prod_div_telescope (a - b) (a - 1 - b) (by omega)]
+  have hd1 : (a : ℚ) - cv + 2 ≠ 0 := by
+    exact_mod_cast (show (0 : ℤ) < (a : ℤ) - cv + 2 by omega)
+  have hd2 : (a : ℚ) - b + 1 ≠ 0 := by
+    exact_mod_cast (show (0 : ℤ) < (a : ℤ) - b + 1 by omega)
+  push_cast [Nat.cast_sub (Nat.le_trans hcb hba), Nat.cast_sub hba, Nat.cast_sub hcb,
+             Nat.cast_sub (show b - cv ≤ a - cv + 1 by omega),
+             Nat.cast_sub (show a - 1 - b ≤ a - b by omega)]
+  field_simp [hd1, hd2]; ring
+
 /-- The hook walk identity for exactly-3-row non-gHookYD Young diagrams.
     Direct computation via hookProd_ratio_formula and telescoping — no HLF used.
     This proof is NON-CIRCULAR: it does not call hook_length_formula_Q or hook_walk_identity. -/
@@ -5395,17 +5557,112 @@ private lemma hook_walk_identity_threeRow (μ : YoungDiagram)
     ∑ c ∈ (corners μ).attach,
       ((hookProd μ : ℚ) / (hookProd (removeCorner μ c.val (mem_corners.mp c.prop)) : ℚ))
     = (μ.card : ℚ) := by
-  -- For each corner c, characterize which of the 3 positions it occupies
-  -- and compute its contribution via hookProd_ratio_formula + telescoping.
-  -- The sum = rowLen 0 + rowLen 1 + rowLen 2 = μ.card (3-row shape).
-  -- [REMAINING WORK: explicit evaluation of each corner's ratio + sum identity]
-  -- The sum is a+b+c = μ.card for any 3-row shape: see analysis in knowledge.md.
-  -- Each ratio computes via hookProd_ratio_formula to:
-  --   R₂ = c * (a-c+3)/(a-c+2) * (b-c+2)/(b-c+1)
-  --   R₁ = (b+1)(b-c)(a-b+2)/[(b-c+1)(a-b+1)]  (if b > c)
-  --   R₀ = (a+2)(a-c+1)(a-b)/[(a-c+2)(a-b+1)]  (if a > b)
-  -- Sum = a+b+c (polynomial identity, verifiable by ring).
-  sorry
+  set a := μ.rowLen 0; set b := μ.rowLen 1; set cv := μ.rowLen 2
+  have hcb : cv ≤ b := μ.rowLen_anti 1 2 (by omega)
+  have hba : b ≤ a := μ.rowLen_anti 0 1 (by omega)
+  have hbot : isCorner μ (2, cv - 1) := threeRow_corner_bot h3 h2
+  have hcard : (μ.card : ℚ) = (a : ℚ) + b + cv := by
+    exact_mod_cast threeRow_card h3
+  rw [hcard]
+  let ratio : ℕ × ℕ → ℚ := fun x =>
+    if hx : isCorner μ x then (hookProd μ : ℚ) / hookProd (removeCorner μ x hx) else 0
+  have hconvert : ∑ c ∈ (corners μ).attach,
+        ((hookProd μ : ℚ) / hookProd (removeCorner μ c.val (mem_corners.mp c.prop))) =
+      ∑ x ∈ corners μ, ratio x := by
+    rw [← Finset.sum_attach (f := ratio)]
+    apply Finset.sum_congr rfl
+    intro cx _
+    exact dif_pos (mem_corners.mp cx.2)
+  have hsub : corners μ ⊆ ({(2, cv - 1), (1, b - 1), (0, a - 1)} : Finset (ℕ × ℕ)) := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    rcases threeRow_corner_cases h3 h2 (mem_corners.mp hx) with ⟨heq, _⟩ | ⟨heq, _⟩ | heq
+    · right; right; exact heq
+    · right; left; exact heq
+    · left; exact heq
+  have hext : ∑ x ∈ corners μ, ratio x =
+      ∑ x ∈ ({(2, cv - 1), (1, b - 1), (0, a - 1)} : Finset (ℕ × ℕ)), ratio x := by
+    apply Finset.sum_subset hsub
+    intro x _ hxnc
+    exact dif_neg (mt mem_corners.mpr hxnc)
+  have hR2 : ratio (2, cv - 1) =
+      (cv : ℚ) * ((a : ℚ) - cv + 3) / ((a : ℚ) - cv + 2) *
+      ((b : ℚ) - cv + 2) / ((b : ℚ) - cv + 1) := by
+    simp only [ratio, dif_pos hbot]
+    rw [hookProd_ratio_formula hbot]
+    simp only [Prod.fst, Prod.snd]
+    rw [threeRow_arm_row2 μ h3 hbot]
+    rw [show Finset.range 2 = {0, 1} from by ext k; simp only [Finset.mem_range,
+          Finset.mem_insert, Finset.mem_singleton]; omega]
+    rw [Finset.prod_insert (by simp), Finset.prod_singleton]
+    have hcv1 : cv - 1 < cv := Nat.sub_lt h2 Nat.one_pos
+    have hmem0 : (0, cv - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    have hmem1 : (1, cv - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+    rw [threeRow_hookLen_row0_lt h3 hmem0 hcv1, threeRow_hookLen_row1_lt h3 hmem1 hcv1]
+    push_cast [Nat.cast_sub (show 1 ≤ cv from h2),
+               Nat.cast_sub (show cv - 1 ≤ a by omega),
+               Nat.cast_sub (show cv - 1 ≤ b by omega)]
+    ring
+  have hR1 : ratio (1, b - 1) =
+      ((b : ℚ) + 1) * ((b : ℚ) - cv) / ((b : ℚ) - cv + 1) *
+      ((a : ℚ) - b + 2) / ((a : ℚ) - b + 1) := by
+    by_cases hbc : cv < b
+    · have hmid : isCorner μ (1, b - 1) := threeRow_corner_mid h3 hbc
+      simp only [ratio, dif_pos hmid]
+      rw [hookProd_ratio_formula hmid]
+      simp only [Prod.fst, Prod.snd]
+      rw [threeRow_arm_row1 h3 hbc,
+          Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
+      have hmem0 : (0, b - 1) ∈ μ := YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      rw [threeRow_hookLen_row0_mid h3 hmem0 (by omega : cv ≤ b - 1) (by omega : b - 1 < b)]
+      push_cast [Nat.cast_sub (show 1 ≤ b by omega),
+                 Nat.cast_sub (show b - 1 ≤ a by omega),
+                 Nat.cast_sub hcb.le]
+      ring
+    · have hbc_eq : b = cv := Nat.le_antisymm (not_lt.mp hbc) hcb
+      have hnotcorner : ¬ isCorner μ (1, b - 1) := by
+        intro ⟨_, _, hbelow⟩
+        apply hbelow
+        exact YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      simp only [ratio, dif_neg hnotcorner]
+      have : (b : ℚ) - cv = 0 := by rw [hbc_eq]; ring
+      rw [this]; ring
+  have hR0 : ratio (0, a - 1) =
+      ((a : ℚ) + 2) * ((a : ℚ) - cv + 1) * ((a : ℚ) - b) /
+      (((a : ℚ) - cv + 2) * ((a : ℚ) - b + 1)) := by
+    by_cases hab : b < a
+    · have htop : isCorner μ (0, a - 1) := threeRow_corner_top h3 hab
+      simp only [ratio, dif_pos htop]
+      rw [hookProd_ratio_formula htop]
+      simp only [Prod.fst, Prod.snd, Finset.prod_range_zero, mul_one]
+      rw [threeRow_arm_row0 h3 h2 hab]
+      ring
+    · have hba_eq : a = b := Nat.le_antisymm (not_lt.mp hab) hba
+      have hnotcorner : ¬ isCorner μ (0, a - 1) := by
+        intro ⟨_, _, hbelow⟩
+        apply hbelow
+        exact YoungDiagram.mem_iff_lt_rowLen.mpr (by omega)
+      simp only [ratio, dif_neg hnotcorner]
+      have : (a : ℚ) - b = 0 := by rw [hba_eq]; ring
+      rw [this]; ring
+  rw [hconvert, hext]
+  have hd1 : (2, cv - 1) ∉ ({(1, b - 1), (0, a - 1)} : Finset (ℕ × ℕ)) := by
+    simp [Prod.mk.injEq]
+  have hd2 : (1, b - 1) ∉ ({(0, a - 1)} : Finset (ℕ × ℕ)) := by
+    simp [Prod.mk.injEq]
+  rw [show ({(2, cv - 1), (1, b - 1), (0, a - 1)} : Finset (ℕ × ℕ)) =
+      insert (2, cv - 1) (insert (1, b - 1) {(0, a - 1)}) from rfl,
+      Finset.sum_insert hd1, Finset.sum_insert hd2, Finset.sum_singleton,
+      hR2, hR1, hR0]
+  have hd_cv2 : (a : ℚ) - cv + 2 ≠ 0 := by
+    exact_mod_cast (show (0 : ℤ) < (a : ℤ) - cv + 2 by omega)
+  have hd_bc1 : (b : ℚ) - cv + 1 ≠ 0 := by
+    exact_mod_cast (show (0 : ℤ) < (b : ℤ) - cv + 1 by omega)
+  have hd_ab1 : (a : ℚ) - b + 1 ≠ 0 := by
+    exact_mod_cast (show (0 : ℤ) < (a : ℤ) - b + 1 by omega)
+  push_cast [Nat.cast_sub (Nat.le_trans hcb hba), Nat.cast_sub hcb, Nat.cast_sub hba]
+  field_simp [hd_cv2, hd_bc1, hd_ab1]
+  ring
 
 -- ============================================================
 -- PART XVI: Hook Walk Identity for [a, 2, 1] Shapes (a ≥ 3)
@@ -6384,10 +6641,3 @@ theorem hook_length_formula_general (μ : YoungDiagram) :
   exact_mod_cast hook_length_formula_Q μ
 
 end HookLengthFormula
-thFormula
-thFormula
-ula_Q μ
-
-end HookLengthFormula
-thFormula
-thFormula
