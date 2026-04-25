@@ -1,8 +1,8 @@
 # Knowledge Base: LGV Lemma → Jacobi-Trudi Identity
 
 **Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01
-**Last Updated**: 2026-04-24
-**Knowledge Items**: 21
+**Last Updated**: 2026-04-25
+**Knowledge Items**: 26
 
 Insights accumulated during research on this problem.
 
@@ -17,6 +17,119 @@ symmetric polynomials: `s_λ = det[h_{λᵢ-i+j}]`. The proof route via SSYT and
   3. Biject SSYT ↔ non-intersecting lattice paths (RSK)
   4. Apply LGV: det[e(Aᵢ,Bⱼ)] = weighted NI-path count
   5. Identify the LGV matrix with the Jacobi-Trudi matrix
+
+---
+
+## Session 2026-04-25 (Session 6) — k=2 Case Split + ssytSchurFin_two_row Framework
+
+**Mode**: REVISIT (RICH knowledge tier, score 53)
+**Outcome**: progress — added `ssytSchurFin_two_row` sorry + isolated k=2 in `jacobi_trudi_ssyt_eq`
+
+### What I Did
+
+1. Added `ssytSchurFin_two_row (n : ℕ) (sh : Fin 2 → ℕ)` as a sorry with full jdt proof
+   strategy documented in comments (the key intermediate goal for k=2).
+2. Restructured `jacobi_trudi_ssyt_eq` to have 4 cases: k=0 (proved), k=1 (proved),
+   k=2 (delegates to `ssytSchurFin_two_row`), k≥3 (sorry).
+3. The main sorry is now precisely scoped: from "k≥2" to "k≥3", with the k=2 path fully
+   documented via jdt bijection.
+
+### Key Findings
+
+- **jdt proof for k=2**: The identity `∑_{non-col-strict (P,Q)} weight = h_{a+1} * h_{b-1}`
+  follows because the jdt bijection maps non-col-strict pairs (a,b) → ALL pairs (a+1,b-1),
+  which generates the full product h_{a+1} * h_{b-1}. Weight is preserved since we just
+  slide Q[c] into P (no weight change: we remove Q[c] from Q and add it to P).
+- **Case structure**: `| succ (succ (succ k)) =>` correctly captures k≥3 (3+ rows).
+- **ssytSchurFin_two_row is the priority**: ~200 lines (row-decomp Equiv + jdt Equiv + weight).
+  The algebraic LGV approach (~300 lines total) remains the path for k≥3.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (345 → ~405 lines, PART VI-VII)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-01-oq-01/meta.json` (sorries 1→2, lineCount, theoremCount)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01.json` (knowledge updated)
+
+### Sorry Count: 1 → 2 (structural, not regression)
+
+- `ssytSchurFin_two_row`: jdt bijection sorry (new, precisely scoped)
+- `jacobi_trudi_ssyt_eq k≥3`: algebraic LGV + RSK (scope reduced from k≥2)
+
+### Next Steps
+
+1. **Prove ssytSchurFin_two_row** (~200 lines):
+   - Define `twoRowEquiv : SSYTFin n 2 sh ≃ {col-strict row-pair}` via row projection
+   - Define jdt bijection: `jdtEquiv : {non-col-strict (P,Q) of shape (a,b)} ≃ rowPairs n (a+1) (b-1)`
+   - Prove weight preservation: `weight(P,Q) = weight(P',Q')` (Q[c] moves P→Q, unchanged total)
+   - Combine: `ssytSchurFin n 2 sh = h_a*h_b - h_{a+1}*h_{b-1} = schurPolynomial_two_row`
+2. **Algebraic LGV for k≥3** (~150 lines): ring-valued version of `lgv_lemma_rxr`
+
+---
+
+## Session 2026-04-25 (Session 5) — Algebraic LGV Identified as Cleaner Path
+
+**Mode**: REVISIT
+**Outcome**: analysis (no code changes)
+
+### What I Did
+
+- Conducted deep analysis of proof options for k≥2: RSK (~300-400 lines), algebraic LGV
+  (~200 lines), jeu de taquin k=2 bijection (~100-150 lines), algebraic recurrence, and
+  specialization arguments
+- Confirmed: Mathlib has NO Jacobi-Trudi, NO RSK, NO polynomial-weighted LGV
+- Confirmed: The existing `lgv_lemma_rxr` (BallotProblemOQ03OQ02.lean) is integer-valued
+  and CANNOT be directly lifted to polynomial weights
+- Identified the ALGEBRAIC LGV as the most modular approach (see Key Findings)
+
+### Key Findings
+
+- **Algebraic LGV is the recommended path**: Rather than building full RSK, build the
+  polynomial-weighted generalization of `lgv_lemma_rxr`. This requires:
+  1. `algebraic_lgv` (~150 lines): for a DAG with edge weights in CommRing R,
+     `∑ NI_tuples, ∏ path_weights = det(weight_matrix)` where
+     `weight_matrix[i][j] = ∑_{paths from sᵢ to tⱼ} path_weight`
+  2. `weighted_path_count_eq_hsymm` (~30 lines): weighted lattice path count from
+     height a to height b = `hsymm (Fin n) R (b-a)`. This follows from identifying
+     weighted paths (sequences of b-a vertical steps labeled by Fin n) with Sym (Fin n) (b-a),
+     which is exactly the one-row SSYT result already proved.
+  3. RSK-for-polynomials (~150 lines): `SSYTFin n k sh ≃ NI-path-tuples` for the
+     standard Jacobi-Trudi configuration, with weight preservation.
+  Total: ~330 lines (vs ~400 for full RSK alone)
+
+- **Integer LGV cannot be lifted**: `lgv_lemma_rxr` is specific to ℕ/ℤ (counts paths).
+  Algebraic LGV is a separate theorem about ring-valued weights; it needs a fresh proof.
+
+- **The k=2 jeu de taquin bijection works mathematically**:
+  Given non-SSYT (P: weakly-inc of len a, Q: weakly-inc of len b) with first violation at c:
+  - c = min{j : P[j] ≥ Q[j]}
+  - P' = P[0..c-1] ++ [Q[c]] ++ P[c..a-1] (insert Q[c] into P at position c)
+  - Q' = Q[0..c-1] ++ Q[c+1..b-1] (remove Q[c] from Q)
+  Claim: weight-preserving bijection {non-SSYT pairs (a,b)} ≃ {all pairs (a+1, b-1)}
+  Proof: P'[c-1] < Q[c] since c is the first violation (P[c-1] < Q[c-1] ≤ Q[c]); P'[c] = Q[c] ≤ P[c] = P'[c+1] ✓
+  But: the INVERSE is non-trivial to define in Lean (need to identify the "inserted" position in P').
+  Estimated ~80-100 lines for k=2, but doesn't generalize easily to k≥3.
+
+- **Algebraic LGV module is more valuable than k=2 special case**: once proved,
+  algebraic_lgv can be reused for other determinantal formulas (e.g., Sylvester, Dodgson condensation)
+
+### Files Modified
+
+- `research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01/knowledge.md` (this file)
+
+### Next Steps
+
+1. **PRIORITY: Build `algebraic_lgv`** in a new file `BallotProblemOQ03AlgebraicLGV.lean`:
+   - Statement: `det(weight_matrix) = ∑ NI_tuples, ∏ path_weights` over CommRing R
+   - Proof: Leibniz expansion + distributivity + sign-reversing involution (same structure as lgv_lemma_rxr but generalized)
+   - Module: can be separate from BallotProblemOQ03OQ01OQ01OQ01.lean
+   
+2. **Then: `weighted_path_count_eq_hsymm`**: Show paths from height a to b correspond to
+   Sym (Fin n) (b-a) (use ssytSchurFin_one_row as a model)
+
+3. **Then: RSK bijection**: Connect SSYTFin n k sh to NI-path-tuples with weight preservation
+
+4. **Alternative quick win**: Prove k=2 case using jeu de taquin bijection (~100 lines)
+   as a standalone theorem, then extend to k≥3 later
 
 ---
 
