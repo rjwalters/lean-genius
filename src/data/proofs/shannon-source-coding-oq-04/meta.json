@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "wip",
-    "sorries": 4,
+    "sorries": 2,
     "mathlibDependencies": [
       {
         "theorem": "Real.log_pow",
@@ -34,6 +34,21 @@
         "theorem": "Nat.multinomial",
         "description": "Multinomial coefficients for type class size formula",
         "module": "Mathlib.Data.Nat.Choose.Multinomial"
+      },
+      {
+        "theorem": "Finset.exists_le_card_fiber_of_mul_le_card_of_maps_to",
+        "description": "Pigeonhole principle for fiber cardinality — used in dominant_type_lower_bound",
+        "module": "Mathlib.Combinatorics.Pigeonhole"
+      },
+      {
+        "theorem": "Finset.prod_univ_sum",
+        "description": "Product of sums equals sum of products over pi-type — used in type_class_size_le_entropy_pow",
+        "module": "Mathlib.Algebra.BigOperators.Pi"
+      },
+      {
+        "theorem": "Finset.prod_fiberwise'",
+        "description": "Regroups product by fiber value — used to show constant probability over type class",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
       }
     ],
     "originalContributions": [
@@ -42,13 +57,13 @@
       "count_types_le: at most (n+1)^k distinct empirical distributions (proved)",
       "total_sequences_eq: k^n total sequences over Fin k alphabet (proved)",
       "empEntropy_eq_shannonEntropy: empirical entropy matches Shannon entropy of normalized type (proved)",
-      "log_typeProb_eq: log-probability of type class weight equals -n * H(Q) (proved)"
+      "log_typeProb_eq: log-probability of type class weight equals -n * H(Q) (proved)",
+      "type_class_size_le_entropy_pow: |T_f| ≤ exp(n H(Q)) via probability argument (proved)",
+      "dominant_type_lower_bound: dominant type class ≥ k^n/(n+1)^k via pigeonhole (proved)"
     ],
     "assumptions": [
       "type_class_size_eq_multinomial: |T_f| = n!/∏(f_i)! (bijection proof omitted, ~60 lines)",
-      "type_class_size_le_entropy_pow: |T_f| ≤ exp(n H(Q)) (requires sum-of-products identity)",
-      "dominant_type_lower_bound: largest type class ≥ k^n/(n+1)^k (pigeonhole)",
-      "source_coding_achievability_mot: formal achievability proof (convergence argument)"
+      "source_coding_achievability_mot: formal achievability proof (requires concentration inequalities)"
     ],
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
@@ -98,10 +113,10 @@
     },
     {
       "id": "type-class-size-bound",
-      "title": "Type Class Size Upper Bound (sorry)",
+      "title": "Type Class Size Upper Bound (proved)",
       "startLine": 159,
-      "endLine": 195,
-      "summary": "type_class_size_le_entropy_pow: |T_f| ≤ exp(n H(Q)). Sorry: requires sum-of-products identity and ENNReal lifting. Also includes type_class_partition (proved).",
+      "endLine": 230,
+      "summary": "type_class_size_le_entropy_pow: |T_f| ≤ exp(n H(Q)) proved via prob_fiberwise' + prod_univ_sum. dominant_type_lower_bound: proved via Finset pigeonhole. type_class_partition: proved.",
       "mathContext": "$|T_f| \\cdot e^{-nH(Q)} \\leq \\sum_{x \\in T_f} Q^n(x) \\leq 1$ since probabilities sum to 1."
     },
     {
@@ -151,6 +166,7 @@
     "imports": [
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
       "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Combinatorics.Pigeonhole",
       "Mathlib.Data.Nat.Choose.Multinomial",
       "Mathlib.Data.Fintype.Card",
       "Mathlib.Tactic"
@@ -161,12 +177,12 @@
       "BigOperators"
     ],
     "namespace": "MethodOfTypes",
-    "lineCount": 247,
+    "lineCount": 352,
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 4,
     "path": "Proofs/ShannonSourceCodingOQ04.lean",
-    "sorries": 4
+    "sorries": 2
   },
   "references": [
     {
@@ -184,5 +200,5 @@
       "note": "Chapter 11 gives a clear exposition of the method of types"
     }
   ],
-  "sorries": 4
+  "sorries": 2
 }
