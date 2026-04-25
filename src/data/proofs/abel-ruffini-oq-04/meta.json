@@ -126,11 +126,6 @@
       "targetId": "abel-ruffini-galois-extensions",
       "relationship": "related",
       "description": "Sister file providing the complete solvability classification of symmetric groups ($S_0$–$S_4$ solvable, $S_n$ solvable $\\iff n \\leq 4$), plus non-commutativity witnesses for $S_3, S_4, S_5, A_4, A_5$ and group order verifications"
-    },
-    {
-      "targetId": "abel-ruffini-oq-04-oq-07",
-      "relationship": "extended-by",
-      "description": "Formalizes the Bring-Jerrard reduction (Tschirnhaus substitution eliminating the $x^4$ term) and the Bring radical $\\text{BR}(t)$ — the unique real root of $x^5 + x + t = 0$, proved via IVT and strict monotonicity. Addresses the open question (listed below) about formalizing 'beyond-radicals' solutions: while Abel-Ruffini rules out the four basic radical operations, $\\text{BR}(t)$ provides a closed-form expression using a transcendental function that is not a radical"
     }
   ],
   "overview": {
@@ -223,7 +218,7 @@
       "Exhibit specific solvable quintics (e.g., x⁵ - 1 with cyclic Galois group) to illustrate the generic/specific distinction — note that the companion entry abel-ruffini-oq-04-oq-01 already provides a concrete *unsolvable* quintic (x⁵ - 4x + 2 with Gal = S₅), so the solvable counterpart would complete the picture",
       "Formalize the effective decision procedure: given a polynomial f ∈ ℚ[x], compute Gal(f/ℚ) as a transitive subgroup of Sₙ and check its solvability — connecting Abel-Ruffini's impossibility to a constructive algorithm",
       "Formalize the Jordan-Hölder theorem applied to Sₙ: show that the composition factors of S₅ are {ℤ/2ℤ, A₅} and prove that a group is solvable iff all its composition factors are cyclic of prime order — giving an alternative proof path for Abel-Ruffini",
-      "**[Formalized in `abel-ruffini-oq-04-oq-07`]** Every quintic can be transformed to the form x⁵ + px + q by Tschirnhaus transformations (Bring-Jerrard reduction), and while this normal form is not solvable by the four basic radicals (Abel-Ruffini), it IS solvable using the Bring radical BR(a) (the unique real root of x⁵ + x + a) — showing that the impossibility is specifically about the four arithmetic radicals, not about closed-form solutions in general. The gallery entry `abel-ruffini-oq-04-oq-07` formalizes the linear Tschirnhaus substitution as a polynomial identity (proved via `linear_combination`) and proves the Bring radical exists and is strictly anti-monotone via IVT and `Odd.strictMono_pow`. Remaining: the full elliptic modular solution (Hermite 1858, Klein 1884) connecting BR(t) to $j(\\tau)$ via hypergeometric functions"
+      "Formalize the Bring-Jerrard reduction: every quintic can be transformed to the form x⁵ + px + q by Tschirnhaus transformations, and while this normal form is not solvable by the four basic radicals (Abel-Ruffini), it IS solvable using the Bring radical BR(a) (the unique real root of x⁵ + x + a) — showing that the impossibility is specifically about the four arithmetic radicals, not about closed-form solutions in general"
     ]
   },
   "leanFile": {

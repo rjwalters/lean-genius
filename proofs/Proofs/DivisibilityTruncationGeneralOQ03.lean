@@ -4,7 +4,7 @@
   Establishes that the divisibility osculator for d (the integer c with d | 10c-1)
   arises canonically from the extended Euclidean algorithm (= CF algorithm for 10/d).
 
-  ## Main Results (0 sorries, 0 axioms)
+  ## Main Results (0 sorries, 1 axiom)
 
   1. bezout_gives_osculator: gcdA(10,d) is a valid osculator when gcd(10,d)=1
   2. osculator_unique_mod: osculators are unique mod d
@@ -123,7 +123,7 @@ theorem canonical_osculator_unique (d : ℕ) (hd : 0 < d) (hcop : Nat.Coprime 10
   rw [heq]; exact dvd_add h2 h3
 
 -- ============================================================
--- PART IV: The CF Connection (Proved)
+-- PART IV: The CF Connection (Axiom)
 -- ============================================================
 
 /-

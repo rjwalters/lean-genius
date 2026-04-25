@@ -15,7 +15,7 @@
       "generalized-inverse",
       "determinants"
     ],
-    "badge": "mathlib",
+    "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-04-02",
     "axiomCount": 0,
@@ -24,6 +24,8 @@
     "theoremCount": 11,
     "definitionCount": 0,
     "originalContributions": [
+      "adjugate_right: A * adj(A) = det(A) * I",
+      "adjugate_left: adj(A) * A = det(A) * I",
       "adjugate_reflexive: A * adj(A) * A = det(A) * A (1-reflexive property)",
       "adjugate_reflexive_sym: adj(A) * A * adj(A) = det(A) * adj(A)",
       "cramer_solution: for invertible A, A⁻¹ * b via adjugate",

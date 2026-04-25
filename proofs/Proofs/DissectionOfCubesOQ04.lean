@@ -274,30 +274,176 @@ theorem dod_dehn_ne_zero (a : ℝ) (ha : a > 0) :
   · exact dodAngle_infinite_order
 
 -- ============================================================
--- PART IV: Icosahedron (Axiomatized)
+-- PART IV: Icosahedron
 -- ============================================================
 
 /-
 The regular icosahedron has 20 triangular faces, 12 vertices, 30 edges.
 Its dihedral angle is arccos(-√5/3) ≈ 138.19°.
 
-Irrationality of arccos(-√5/3)/π: analogous to the dodecahedron argument
-but requires Chebyshev arithmetic in ℤ[√5]. Deferred for now.
+Irrationality of arccos(-√5/3)/π proved via coupled Chebyshev sequences over ℤ[√5].
+Define f_n = 3^n · 2cos(n·θ) where θ = icoAngle and 3·2cos(θ) = -2√5.
+The recurrence f_{n+2} = -2√5·f_{n+1} - 9·f_n decomposes as:
+  A_{n+2} = -10·B_{n+1} - 9·A_n
+  B_{n+2} =  -2·A_{n+1} - 9·B_n
+Mod-3: 3∤A_{2k} and 3∤B_{2k+1}. If θ/π = p/q ∈ ℚ, A_q + B_q·√5 = ±2·3^q.
+Since √5 is irrational, B_q = 0, so 3|A_q — contradicting mod-3.
 -/
 
 /-- The regular icosahedron's dihedral angle.
     (20 triangular faces, 30 edges, dihedral angle ≈ 138.19°) -/
 noncomputable def icoAngle : ℝ := Real.arccos (-Real.sqrt 5 / 3)
 
-/-- The icosahedron's dihedral angle arccos(-√5/3) is an irrational
-multiple of π.
+-- ============================================================
+-- PART IV-B: Coupled integer sequences for icoAngle irrationality
+-- ============================================================
 
-Justification: The irrationality follows from a Chebyshev sequence
-argument. For cos θ = -√5/3, the sequence e_n = 3^n · (√5)^{n mod 2}
-· 2cos(nθ) satisfies an integer recurrence with coefficient 3.
-A mod-3 argument shows 3 ∤ e_n, while rationality of θ/π would
-force 3^q | e_q. Proof deferred due to ℤ[√5] arithmetic complexity. -/
-axiom icoAngle_irrational : ¬∃ q : ℚ, icoAngle = q * Real.pi
+/-- Coupled integer sequence: f_n = 3^n · 2cos(n·icoAngle) = A_n + B_n·√5.
+    Recurrence (from 3·2cos(icoAngle) = -2√5):
+      A_{n+2} = -10·B_{n+1} - 9·A_n
+      B_{n+2} =  -2·A_{n+1} - 9·B_n -/
+def icoSeqAB : ℕ → ℤ × ℤ
+  | 0     => (2, 0)
+  | 1     => (0, -2)
+  | (n+2) => (-10 * (icoSeqAB (n+1)).2 - 9 * (icoSeqAB n).1,
+              -2  * (icoSeqAB (n+1)).1 - 9 * (icoSeqAB n).2)
+
+@[simp] theorem icoSeqAB_zero : icoSeqAB 0 = (2, 0)  := rfl
+@[simp] theorem icoSeqAB_one  : icoSeqAB 1 = (0, -2) := rfl
+theorem icoSeqAB_succ (n : ℕ) :
+    icoSeqAB (n + 2) =
+      (-10 * (icoSeqAB (n+1)).2 - 9 * (icoSeqAB n).1,
+       -2  * (icoSeqAB (n+1)).1 - 9 * (icoSeqAB n).2) := rfl
+
+/-- Mod-3 invariant: ¬3∣A_{2m} and ¬3∣B_{2m+1} for all m. -/
+theorem icoSeqAB_ndvd : ∀ m : ℕ,
+    ¬(3 : ℤ) ∣ (icoSeqAB (2*m)).1 ∧ ¬(3 : ℤ) ∣ (icoSeqAB (2*m+1)).2 := by
+  intro m
+  induction m with
+  | zero => exact ⟨by norm_num [icoSeqAB_zero], by norm_num [icoSeqAB_one]⟩
+  | succ k ih =>
+    obtain ⟨hA, hB⟩ := ih
+    have hA2 : (icoSeqAB (2*k+2)).1 =
+        -10 * (icoSeqAB (2*k+1)).2 - 9 * (icoSeqAB (2*k)).1 := by
+      have : icoSeqAB (2*k+2) = icoSeqAB ((2*k)+2) := by congr 1; ring
+      rw [this, icoSeqAB_succ]
+    have hB3 : (icoSeqAB (2*k+3)).2 =
+        -2 * (icoSeqAB (2*k+2)).1 - 9 * (icoSeqAB (2*k+1)).2 := by
+      have : icoSeqAB (2*k+3) = icoSeqAB ((2*k+1)+2) := by congr 1; ring
+      rw [this, icoSeqAB_succ]
+    have hA_new : ¬(3 : ℤ) ∣ (icoSeqAB (2*k+2)).1 := by
+      rw [hA2]; intro h; apply hB
+      have h9 : (3 : ℤ) ∣ 9 * (icoSeqAB (2*k)).1 := ⟨3 * (icoSeqAB (2*k)).1, by ring⟩
+      have h10 : (3 : ℤ) ∣ 10 * (icoSeqAB (2*k+1)).2 := by
+        obtain ⟨c, hc⟩ := h; obtain ⟨d, hd⟩ := h9; exact ⟨-(c + d), by omega⟩
+      exact (IsCoprime.dvd_of_dvd_mul_left (by norm_num : IsCoprime (3 : ℤ) 10) h10)
+    refine ⟨?_, ?_⟩
+    · rwa [show 2*(k+1) = 2*k+2 by omega]
+    · rw [show 2*(k+1)+1 = 2*k+3 by omega, hB3]; intro h; apply hA_new
+      have h9 : (3 : ℤ) ∣ 9 * (icoSeqAB (2*k+1)).2 := ⟨3 * (icoSeqAB (2*k+1)).2, by ring⟩
+      have h2 : (3 : ℤ) ∣ 2 * (icoSeqAB (2*k+2)).1 := by
+        obtain ⟨c, hc⟩ := h; obtain ⟨d, hd⟩ := h9; exact ⟨-(c + d), by omega⟩
+      exact (IsCoprime.dvd_of_dvd_mul_left (by norm_num : IsCoprime (3 : ℤ) 2) h2)
+
+private lemma sqrt5_le_three : Real.sqrt 5 ≤ 3 := by
+  have hsq : Real.sqrt 5 * Real.sqrt 5 = 5 := Real.mul_self_sqrt (by norm_num)
+  nlinarith [Real.sqrt_nonneg 5]
+
+private lemma cos_icoAngle : Real.cos icoAngle = -Real.sqrt 5 / 3 := by
+  unfold icoAngle
+  apply Real.cos_arccos
+  · rw [neg_div, neg_le_neg_iff, div_le_one (by norm_num : (0:ℝ) < 3)]
+    exact sqrt5_le_three
+  · linarith [div_nonneg (Real.sqrt_nonneg 5) (show (0:ℝ) ≤ 3 by norm_num)]
+
+/-- A_n + B_n·√5 = 3^n · 2cos(n·icoAngle) -/
+theorem icoSeqAB_eq_cos : ∀ n : ℕ,
+    ((icoSeqAB n).1 : ℝ) + (icoSeqAB n).2 * Real.sqrt 5 =
+    (3 : ℝ)^n * (2 * Real.cos (↑n * icoAngle)) := by
+  suffices h : ∀ n : ℕ,
+    ((icoSeqAB n).1 : ℝ) + (icoSeqAB n).2 * Real.sqrt 5 =
+        (3:ℝ)^n * (2 * Real.cos (↑n * icoAngle)) ∧
+    ((icoSeqAB (n+1)).1 : ℝ) + (icoSeqAB (n+1)).2 * Real.sqrt 5 =
+        (3:ℝ)^(n+1) * (2 * Real.cos (↑(n+1) * icoAngle))
+  from fun n => (h n).1
+  intro n
+  induction n with
+  | zero =>
+    refine ⟨?_, ?_⟩
+    · simp [icoSeqAB_zero, Real.cos_zero]
+    · simp only [icoSeqAB_one, Nat.cast_one, pow_one, one_mul]
+      push_cast; rw [cos_icoAngle]; ring
+  | succ m ih =>
+    refine ⟨ih.2, ?_⟩
+    have hlhs : ((icoSeqAB (m+2)).1 : ℝ) + (icoSeqAB (m+2)).2 * Real.sqrt 5 =
+        -2 * Real.sqrt 5 * (((icoSeqAB (m+1)).1 : ℝ) + (icoSeqAB (m+1)).2 * Real.sqrt 5) -
+        9 * (((icoSeqAB m).1 : ℝ) + (icoSeqAB m).2 * Real.sqrt 5) := by
+      rw [icoSeqAB_succ]; push_cast
+      have hsq : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num)
+      linear_combination 2 * ((icoSeqAB (m+1)).2 : ℝ) * hsq
+    rw [hlhs, ih.1, ih.2]
+    have hstep : Real.cos (↑(m + 2) * icoAngle) =
+        2 * Real.cos icoAngle * Real.cos (↑(m + 1) * icoAngle) -
+        Real.cos (↑m * icoAngle) := cos_step icoAngle m
+    conv_rhs => rw [show (2 : ℝ) * Real.cos (↑(m+2) * icoAngle) =
+        2 * (2 * Real.cos icoAngle * Real.cos (↑(m+1) * icoAngle) -
+             Real.cos (↑m * icoAngle)) from by rw [hstep]]
+    rw [cos_icoAngle]; push_cast; ring
+
+/-- arccos(-√5/3)/π is irrational. -/
+theorem icoAngle_irrational : ¬∃ q : ℚ, icoAngle = q * Real.pi := by
+  intro ⟨q, hq⟩
+  set N := q.den
+  have hN_pos : 0 < N := q.pos
+  have hN_ne : (N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hN_pos.ne'
+  have hmul : (N : ℝ) * icoAngle = q.num * Real.pi := by
+    rw [hq, Rat.cast_def]
+    field_simp [hN_ne, show (q.den : ℝ) = N from rfl]; ring
+  have hcos_N : Real.cos ((N : ℝ) * icoAngle) = (-1 : ℝ)^q.num.natAbs := by
+    rw [hmul]; exact cos_int_mul_pi q.num
+  have hseq := icoSeqAB_eq_cos N
+  rw [hcos_N] at hseq
+  have hpm : (-1 : ℝ)^q.num.natAbs = 1 ∨ (-1 : ℝ)^q.num.natAbs = -1 := by
+    induction q.num.natAbs with
+    | zero => left; simp
+    | succ j ihj => rcases ihj with h | h
+      · right; rw [pow_succ, h]; ring
+      · left;  rw [pow_succ, h]; ring
+  have h5_irr : Irrational (Real.sqrt 5) :=
+    Nat.Prime.irrational_sqrt (by norm_num : Nat.Prime 5)
+  have hB_zero : (icoSeqAB N).2 = 0 := by
+    by_contra hne
+    have hB_ne : ((icoSeqAB N).2 : ℝ) ≠ 0 := Int.cast_ne_zero.mpr hne
+    have hint : ∃ z : ℤ, ((icoSeqAB N).2 : ℝ) * Real.sqrt 5 = z := by
+      rcases hpm with h1 | h1 <;> rw [h1] at hseq
+      · exact ⟨2 * (3:ℤ)^N - (icoSeqAB N).1, by push_cast; linarith⟩
+      · exact ⟨-2 * (3:ℤ)^N - (icoSeqAB N).1, by push_cast; linarith⟩
+    obtain ⟨z, hz⟩ := hint
+    have h_sqrt5 : Real.sqrt 5 = (z : ℝ) / (icoSeqAB N).2 := by
+      rw [eq_div_iff hB_ne]; linarith
+    apply h5_irr
+    rw [Set.mem_range]
+    exact ⟨(z : ℚ) / ((icoSeqAB N).2 : ℚ), by
+      rw [Rat.cast_div, Rat.cast_intCast, Rat.cast_intCast]; linarith [h_sqrt5]⟩
+  simp only [hB_zero, Int.cast_zero, zero_mul, add_zero] at hseq
+  have h3_dvd_A : (3 : ℤ) ∣ (icoSeqAB N).1 := by
+    rcases hpm with h1 | h1 <;> rw [h1] at hseq
+    · have hA : (icoSeqAB N).1 = 2 * (3:ℤ)^N := by
+        have : ((icoSeqAB N).1 : ℝ) = 2 * (3:ℝ)^N := by push_cast; linarith
+        exact_mod_cast this
+      rw [hA]; exact dvd_mul_of_dvd_right (dvd_pow_self 3 hN_pos.ne') 2
+    · have hA : (icoSeqAB N).1 = -(2 * (3:ℤ)^N) := by
+        have : ((icoSeqAB N).1 : ℝ) = -(2 * (3:ℝ)^N) := by push_cast; linarith
+        exact_mod_cast this
+      rw [hA]; exact dvd_neg.mpr (dvd_mul_of_dvd_right (dvd_pow_self 3 hN_pos.ne') 2)
+  rcases Nat.even_or_odd N with ⟨k, hk⟩ | ⟨k, hk⟩
+  · apply (icoSeqAB_ndvd k).1
+    have hk2 : 2*k = N := by omega
+    rw [hk2]; exact h3_dvd_A
+  · apply (icoSeqAB_ndvd k).2
+    have : (icoSeqAB (2*k+1)).2 = 0 := by
+      rw [show 2*k+1 = N by omega]; exact hB_zero
+    rw [this]; exact dvd_zero 3
 
 /-- [icoAngle] has infinite order in ℝ/πℤ. -/
 theorem icoAngle_infinite_order :
@@ -396,13 +542,13 @@ theorem cube_unique_zero_dehn (a : ℝ) (ha : a > 0) :
 /-
 ## Axiom Budget
 
-### New axioms introduced in this file: 1
-1. `icoAngle_irrational` — arccos(-√5/3)/π irrational
+### New axioms introduced in this file: 0
+- `icoAngle_irrational` is now a proved theorem (Chebyshev ℤ[√5] argument).
 
 ### Inherited axioms (from OQ02OQ02): 1
 1. `tmul_infinite_order_ne_zero` — ℝ flat over ℤ
 
-### Total axiom count: 2
+### Total axiom count: 1
 
 ### New theorems proved (0 sorries):
 - `five_ndvd_cosThreeFifthsSeq` — 5 ∤ d_n for the new sequence
@@ -413,7 +559,10 @@ theorem cube_unique_zero_dehn (a : ℝ) (ha : a > 0) :
 - `dodAngle_irrational` — arccos(-1/√5)/π ∉ ℚ
 - `dodAngle_infinite_order` — [arccos(-1/√5)] has infinite order
 - `dod_dehn_ne_zero` — D(dodecahedron) ≠ 0
-- `icoAngle_infinite_order` — [arccos(-√5/3)] has infinite order (via axiom)
+- `icoSeqAB_ndvd` — mod-3 invariant for coupled ℤ[√5] Chebyshev sequence
+- `icoSeqAB_eq_cos` — A_n + B_n·√5 = 3^n·2cos(n·icoAngle)
+- `icoAngle_irrational` — arccos(-√5/3)/π ∉ ℚ (proved, not axiom)
+- `icoAngle_infinite_order` — [arccos(-√5/3)] has infinite order
 - `ico_dehn_ne_zero` — D(icosahedron) ≠ 0
 - `cube_isolated_dehn_invariant` — Complete classification table
 

@@ -1,8 +1,8 @@
 {
   "slug": "sperner-ndim-oq-04",
   "title": "n-Dimensional Sperner: Kuhn Path-Following Algorithm Formalization",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOMATIZED: 0 sorries, 1 axiom (kuhn_path_existential_ax). Session 5: removed 2 false theorems (kuhn_walk_reaches_fc, kuhnPathStart_is_fc); axiomatized kuhnPathStart_finds_fc_existential (true but requires walk reversibility τ∘τ=id). Non-revisiting FULLY PROVED (Session 4, kuhn_step_nonrevisit + WalkValid). Walk reversibility remains as mathematical gap in axiom.",
+    "progressSummary": "ACT: Non-revisiting fully proved (Session 4, 2026-04-24). kuhn_step_nonrevisit + WalkValid invariant complete. Remaining sorries: (1) kuhn_walk_reaches_fc: only boundary-exit ruling-out remaining (not non-revisiting); (2) kuhnPathStart_finds_fc_existential: walk-reversibility (τ∘τ=id) for pairing argument. 3 sorries remain from 3 in previous session.",
     "builtItems": [
       "doorDegree def: SpernerNDimOQ04.lean:60",
       "IsKuhnCompatible def: SpernerNDimOQ04.lean:65",
@@ -52,11 +52,7 @@
       "WalkValid structure (5 properties): has_record, doors_valid, entry_from_chain, exit_to_chain, pred_spec — SpernerNDimOQ04.lean:394",
       "walkValid_init (PROVED): initial boundary-door state satisfies WalkValid — SpernerNDimOQ04.lean:420",
       "kuhn_step_nonrevisit (PROVED): KEY non-revisiting theorem — under WalkValid, walk never revisits any simplex — SpernerNDimOQ04.lean:447",
-      "walkValid_step (PROVED): WalkValid preserved by one Kuhn step — SpernerNDimOQ04.lean:529",
-      "kuhn_path_existential_ax (AXIOM, Session 5): Kuhn walk finds FC from some boundary door — SpernerNDimOQ04.lean:708",
-      "kuhnPathStart_finds_fc_existential (PROVED from axiom, Session 5): eliminates sorry, uses kuhn_path_existential_ax — SpernerNDimOQ04.lean:724",
-      "REMOVED kuhn_walk_reaches_fc (Session 5): theorem was FALSE — universal walk correctness is false for some paths",
-      "REMOVED kuhnPathStart_is_fc (Session 5): theorem was FALSE — not all boundary doors reach FC"
+      "walkValid_step (PROVED): WalkValid preserved by one Kuhn step — SpernerNDimOQ04.lean:529"
     ],
     "insights": [
       "IsKuhnCompatible (door degree ≤ 2) combined with abstract_door_parity gives exact door counts: 1 for FC, 0 or 2 for non-FC",
@@ -85,9 +81,10 @@
       "SpernerTriangulation lacks an adjacent-simplices-share-unique-facet axiom needed for the non-revisiting proof"
     ],
     "nextSteps": [
-      "If walk reversibility is later formalized: prove τ∘τ=id by tracking the full walk sequence (sₙ path + unique exit at each non-FC simplex) and showing reversed walk retraces forward walk",
-      "Once walk reversibility is proved, replace kuhn_path_existential_ax with a full proof using even_card_fpf_invol",
-      "Consider contributing adj_unique_facet + Kuhn algorithm formalization to Mathlib as standalone combinatorics contribution"
+      "Extend KuhnState to track entry/exit doors per visited simplex (List (K.Simplex × Fin(d+1) × Fin(d+1)))",
+      "Prove general non-revisiting by induction using per-simplex door history + Kuhn compat ≤2",
+      "Prove walk-pairing argument: boundary doors pair up (start door with end door), odd total → ≥1 unpaired = FC boundary door",
+      "Close kuhnPathStart_finds_fc_existential using walk-pairing + kuhnPathStart_is_fc_of_fc_start"
     ]
   },
   "tags": [
@@ -107,20 +104,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.382Z",
-  "lastUpdate": "2026-04-24T00:00:00.000Z",
+  "lastUpdate": "2026-04-22T00:00:00.000Z",
   "significance": 8,
-  "tractability": 6,
-  "leanFiles": [
-    {
-      "path": "Proofs/SpernerNDimOQ04.lean",
-      "filename": "SpernerNDimOQ04.lean",
-      "lineCount": 734,
-      "theoremCount": 13,
-      "axiomCount": 1,
-      "defCount": 6,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerNDimOQ04.lean"
-    }
-  ]
+  "tractability": 6
 }

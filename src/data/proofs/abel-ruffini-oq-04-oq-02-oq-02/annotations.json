@@ -32,23 +32,19 @@
     },
     "type": "concept",
     "title": "Small Alternating Groups Are Solvable (n ≤ 4)",
-    "content": "Proves solvability for $A_0$ through $A_4$ using four distinct proof strategies, each matching the complexity of the case.\n\n**Trivial cases** ($n \\leq 2$): `a0_solvable`, `a1_solvable`, `a2_solvable` are all `inferInstance` — Lean derives solvability automatically because subsingleton (one-element) groups trivially satisfy the derived series termination condition: $G^{(0)} = G = \\{e\\}$ terminates immediately.\n\n**$A_3$** (cyclic of order 3): `isSolvable_of_comm` converts commutativity to solvability. `decide` verifies commutativity by exhaustive computation over all $3^2 = 9$ element pairs of $A_3 = \\{\\text{id}, (123), (132)\\}$. Since $A_3$ is abelian, its derived subgroup $[A_3, A_3] = \\{e\\}$ terminates immediately at the first step.\n\n**$A_4$** (order 12, non-abelian): A two-step argument. Step 1: establish `hs4 : IsSolvable (Perm (Fin 4))` using `rw [isSolvable_def]; exact ⟨3, by native_decide⟩` — `native_decide` verifies by kernel computation that the 3rd derived subgroup $S_4^{(3)} = \\{e\\}$ (the derived length is exactly 3). Step 2: `exact inferInstance` — Lean's typeclass synthesis automatically derives `IsSolvable (alternatingGroup (Fin 4))` from `hs4`, using the fact that $A_4 \\leq S_4$ and subgroups of solvable groups are solvable (subgroup's derived series is contained in the ambient group's derived series).\n\nThe pattern mirrors the structure of the composition series $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$: the derived length 3 of $S_4$ matches the length of this chain.",
-    "mathContext": "$A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (abelian, $[A_3,A_3] = \\{e\\}$, derived length 1). $A_4$ has composition series $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$ with abelian factors $V_4 \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$, $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$, $S_4/A_4 \\cong \\mathbb{Z}/2\\mathbb{Z}$. Derived lengths: $S_4^{(1)} = A_4$, $S_4^{(2)} = V_4$, $S_4^{(3)} = \\{e\\}$. The Lean proof establishes derived length 3 of $S_4$ by `native_decide`, then inherits solvability to $A_4$ by `inferInstance`.",
+    "content": "Proves solvability for $A_0$ through $A_4$. The trivial cases ($n \\le 2$) use `inferInstance` since these are subsingleton groups. $A_3$ is handled by `isSolvable_of_comm` (abelian groups are solvable) with `decide` for commutativity. $A_4$ uses a two-step argument: first establish $S_4$ is solvable via `native_decide` on the derived series (length 3), then use that subgroups of solvable groups are solvable.",
+    "mathContext": "$A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (abelian, hence solvable). $A_4$ has composition series $A_4 \\trianglerighteq V_4 \\trianglerighteq \\{e\\}$ where $V_4 = \\{\\text{id}, (12)(34), (13)(24), (14)(23)\\} \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$ and $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$. All factors are abelian, so $A_4$ is solvable. The Lean proof avoids computing this series directly, instead deducing solvability from the solvability of the ambient $S_4$.",
     "significance": "key",
     "relatedConcepts": [
       "Klein four-group",
       "derived series",
       "subgroup solvability",
-      "isSolvable_of_subsingleton",
-      "isSolvable_of_comm",
-      "composition series",
-      "derived length"
+      "inferInstance"
     ],
     "prerequisites": [
-      "IsSolvable typeclass",
+      "IsSolvable",
       "isSolvable_of_comm",
-      "native_decide tactic",
-      "subgroup solvability in Lean"
+      "native_decide"
     ]
   },
   {

@@ -27,7 +27,7 @@
       "Fixed-point-free involution parity lemma",
       "Interior door pairing via adjacency involution",
       "Boundary door analysis: Sperner kills doors on face k < d",
-      "Sperner Parity Theorem: FC count \u2261 boundary doors on face d (mod 2)"
+      "Sperner Parity Theorem: FC count ≡ boundary doors on face d (mod 2)"
     ],
     "dateAdded": "2026-03-29",
     "axiomCount": 0,
@@ -36,15 +36,15 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "**Emanuel Sperner** proved his lemma in 1928 (*Neuer Beweis f\u00fcr die Invarianz der Dimensionszahl und des Gebietes*, Hamburg) as a combinatorial tool for a new proof of Brouwer's fixed point theorem. Sperner's original goal was proving the topological invariance of dimension number \u2014 the lemma was a means, not an end. The result states that any \"properly colored\" triangulation of a $d$-simplex must contain a fully-colored simplex.\n\n**D. I. A. Cohen** (1967, J. Comb. Theory) gave the elegant **door-counting** proof formalized here: count all door-facets, pair interior doors (even), and show boundary doors are odd \u2014 no topology needed. This completely combinatorial argument is the basis for this Lean formalization.\n\n**Hans Freudenthal** (1942, Ann. of Math.) introduced the triangulation bearing his name, where each simplex in the grid is indexed by a permutation $\\sigma \\in S_d$; adjacency corresponds to transpositions of adjacent elements. The `SpernerTriangulation` abstract structure here captures the shared axioms of Freudenthal, Kuhn, and all other standard triangulations.\n\n**Harold Kuhn** (1960, IBM J. Res. Dev.) introduced the **path-following (simplicial pivot)** algorithm that makes Sperner constructive: start at a boundary door on face $d$, walk through simplices following the unique opposite door, and terminate at a fully-colored simplex. This algorithm underlies the Scarf (1967) and Lemke-Howson fixed-point algorithms used in equilibrium computation.\n\n**Christos Papadimitriou** (1994) formalized **PPAD-completeness**: computing Brouwer fixed points is complete for the class PPAD (Polynomial Parity Argument on Directed graphs), reflecting that Sperner paths must terminate but finding the endpoint may be hard. Chen and Deng (2009) showed the problem is PPAD-complete even for 2D Lipschitz maps.",
+    "historicalContext": "**Emanuel Sperner** proved his lemma in 1928 (*Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes*, Hamburg) as a combinatorial tool for a new proof of Brouwer's fixed point theorem. Sperner's original goal was proving the topological invariance of dimension number — the lemma was a means, not an end. The result states that any \"properly colored\" triangulation of a $d$-simplex must contain a fully-colored simplex.\n\n**D. I. A. Cohen** (1967, J. Comb. Theory) gave the elegant **door-counting** proof formalized here: count all door-facets, pair interior doors (even), and show boundary doors are odd — no topology needed. This completely combinatorial argument is the basis for this Lean formalization.\n\n**Hans Freudenthal** (1942, Ann. of Math.) introduced the triangulation bearing his name, where each simplex in the grid is indexed by a permutation $\\sigma \\in S_d$; adjacency corresponds to transpositions of adjacent elements. The `SpernerTriangulation` abstract structure here captures the shared axioms of Freudenthal, Kuhn, and all other standard triangulations.\n\n**Harold Kuhn** (1960, IBM J. Res. Dev.) introduced the **path-following (simplicial pivot)** algorithm that makes Sperner constructive: start at a boundary door on face $d$, walk through simplices following the unique opposite door, and terminate at a fully-colored simplex. This algorithm underlies the Scarf (1967) and Lemke-Howson fixed-point algorithms used in equilibrium computation.\n\n**Christos Papadimitriou** (1994) formalized **PPAD-completeness**: computing Brouwer fixed points is complete for the class PPAD (Polynomial Parity Argument on Directed graphs), reflecting that Sperner paths must terminate but finding the endpoint may be hard. Chen and Deng (2009) showed the problem is PPAD-complete even for 2D Lipschitz maps.",
     "problemStatement": "Given any abstract triangulation of the standard d-simplex (with adjacency axioms) and a Sperner coloring of its grid vertices, prove that the number of fully-colored simplices has the same parity as the number of boundary doors on face d. In particular, if boundary doors are odd, a fully-colored simplex exists.",
     "text": "Formalization of Sperner's lemma in arbitrary dimension d for any abstract triangulation satisfying adjacency axioms, using the door-counting parity argument.",
-    "proofStrategy": "The proof uses the door-counting (double-counting) parity argument:\n\n1. **Grid and abstract triangulation**: Define grid points as d-tuples with coordinate sum <= N. Define SpernerTriangulation as a structure with adjacency (adj_symm, adj_vertices, adj_ne, boundary_face).\n\n2. **Abstract door parity**: For any coloring of d+1 elements, the number of door positions (where removing one element leaves a covering of {0,...,d-1}) has the same parity as surjectivity. Proved by case analysis: surjective gives exactly 1 door, non-surjective gives 0 or 2.\n\n3. **Interior door pairing**: The adjacency map is a fixed-point-free involution on interior doors (door_transfer shows adjacent facets share door status). By even_card_fpf_invol, interior doors have even count.\n\n4. **Boundary analysis**: The Sperner condition kills all boundary doors on faces k < d (no_boundary_doors_face_lt). Only boundary doors on face d survive.\n\n5. **Parity theorem**: FC count \u2261 all doors \u2261 interior + boundary \u2261 boundary on face d (mod 2). The main theorem follows when boundary doors on face d are odd.",
+    "proofStrategy": "The proof uses the door-counting (double-counting) parity argument:\n\n1. **Grid and abstract triangulation**: Define grid points as d-tuples with coordinate sum <= N. Define SpernerTriangulation as a structure with adjacency (adj_symm, adj_vertices, adj_ne, boundary_face).\n\n2. **Abstract door parity**: For any coloring of d+1 elements, the number of door positions (where removing one element leaves a covering of {0,...,d-1}) has the same parity as surjectivity. Proved by case analysis: surjective gives exactly 1 door, non-surjective gives 0 or 2.\n\n3. **Interior door pairing**: The adjacency map is a fixed-point-free involution on interior doors (door_transfer shows adjacent facets share door status). By even_card_fpf_invol, interior doors have even count.\n\n4. **Boundary analysis**: The Sperner condition kills all boundary doors on faces k < d (no_boundary_doors_face_lt). Only boundary doors on face d survive.\n\n5. **Parity theorem**: FC count ≡ all doors ≡ interior + boundary ≡ boundary on face d (mod 2). The main theorem follows when boundary doors on face d are odd.",
     "keyInsights": [
-      "The abstract SpernerTriangulation structure captures exactly the properties needed for door-counting: adjacency symmetry, shared vertex sets, distinctness, and boundary identification \u2014 any concrete triangulation satisfying these axioms inherits the theorem for free",
+      "The abstract SpernerTriangulation structure captures exactly the properties needed for door-counting: adjacency symmetry, shared vertex sets, distinctness, and boundary identification — any concrete triangulation satisfying these axioms inherits the theorem for free",
       "The abstract door parity theorem reduces per-simplex analysis to a pure Finset argument about surjectivity: FC simplices contribute 1 door (odd), non-FC simplices contribute 0 or 2 doors (even)",
-      "The involution on interior doors pairs each door with its unique neighbor through the shared facet, using adj_vertices to transfer the door condition \u2014 door status depends only on the vertex set, not on which simplex we view the facet from",
-      "The Sperner condition on face k < d directly prevents color k from appearing among non-k vertices, killing all non-face-d boundary doors \u2014 leaving only face-d boundary doors to determine the FC parity",
+      "The involution on interior doors pairs each door with its unique neighbor through the shared facet, using adj_vertices to transfer the door condition — door status depends only on the vertex set, not on which simplex we view the facet from",
+      "The Sperner condition on face k < d directly prevents color k from appearing among non-k vertices, killing all non-face-d boundary doors — leaving only face-d boundary doors to determine the FC parity",
       "The boundary-odd hypothesis in sperner_ndim separates concerns cleanly: the abstract parity proof is dimension-independent; the inductive discharge of boundary oddness is triangulation-specific and left for concrete instantiations",
       "The Kuhn path-following algorithm (1960) provides a constructive counterpart to this existence proof: following doors from a boundary facet always leads to an FC simplex, connecting Sperner's lemma to PPAD complexity"
     ],
@@ -59,86 +59,85 @@
     {
       "id": "parity-helpers",
       "title": "ZMod 2 Parity Helpers",
-      "startLine": 32,
-      "endLine": 40,
+      "startLine": 34,
+      "endLine": 46,
       "summary": "Basic lemmas for parity arguments: detecting odd numbers from ZMod 2 values.",
       "mathContext": "Infrastructure for the parity arguments used throughout the proof."
     },
     {
       "id": "grid-definitions",
       "title": "Grid Points and Colorings",
-      "startLine": 41,
-      "endLine": 88,
+      "startLine": 48,
+      "endLine": 95,
       "summary": "Defines grid points (Vertex d N), colorings (Coloring d N), the face condition (onFace), and the Sperner boundary condition (IsSperner). Grid points are d-tuples of natural numbers summing to at most N.",
       "mathContext": "The standard d-simplex is subdivided into a grid. Each grid point has d explicit coordinates and one implicit coordinate (N minus the sum). The Sperner condition forbids color k on face k."
     },
     {
       "id": "abstract-triangulation",
       "title": "Abstract Triangulation",
-      "startLine": 89,
-      "endLine": 122,
-      "summary": "Defines the SpernerTriangulation structure: an abstract triangulation with a finite simplex type, vertex assignments, and adjacency (adj) encoding facet pairing. Axioms: adj_symm (symmetric adjacency), adj_vertices (shared vertex sets), adj_ne (distinct simplices), adj_unique_facet (unique facet adjacency), boundary_face (boundary facets lie on simplex faces).",
+      "startLine": 97,
+      "endLine": 127,
+      "summary": "Defines the SpernerTriangulation structure: an abstract triangulation with a finite simplex type, vertex assignments, and adjacency (adj) encoding facet pairing. Axioms: adj_symm (symmetric adjacency), adj_vertices (shared vertex sets), adj_ne (distinct simplices), boundary_face (boundary facets lie on simplex faces).",
       "mathContext": "This abstract structure captures exactly the combinatorial properties needed for the door-counting proof, without committing to any specific triangulation (e.g., Freudenthal). Any concrete triangulation satisfying these axioms admits the Sperner parity theorem."
     },
     {
       "id": "door-fc-definitions",
       "title": "Door and FC Definitions",
-      "startLine": 123,
-      "endLine": 147,
+      "startLine": 129,
+      "endLine": 150,
       "summary": "Defines IsFC (fully-colored: coloring is surjective on simplex vertices) and isDoorAt (door at position k: removing vertex k, remaining d vertices carry all colors {0,...,d-1}). Both are decidable for finite types.",
       "mathContext": "Doors are the counting unit in the parity argument. Each FC simplex has exactly 1 door, each non-FC simplex has 0 or 2 doors."
     },
     {
       "id": "involution-parity",
       "title": "Abstract Involution Parity",
-      "startLine": 148,
-      "endLine": 200,
+      "startLine": 152,
+      "endLine": 203,
       "summary": "Proves that a fixed-point-free involution on a finite set yields even cardinality (even_card_fpf_invol), by strong induction: pick an element, pair with its partner, remove both, recurse.",
       "mathContext": "This is the abstract principle underlying the door-pairing argument: interior doors pair up under the adjacency involution, so the number of interior doors is even."
     },
     {
       "id": "door-parity",
       "title": "Abstract Door Parity",
-      "startLine": 201,
-      "endLine": 394,
+      "startLine": 205,
+      "endLine": 397,
       "summary": "Proves the abstract door parity theorem (abstract_door_parity): for a coloring f : Fin(d+1) -> Fin(d+1), the number of door positions has the same parity as surjectivity. Uses the helper door_parity_all_small for the non-trivial case (d+1 values in d slots, all covered).",
       "mathContext": "The core combinatorial result that FC simplices contribute 1 door (odd) and non-FC simplices contribute 0 or 2 doors (even). The non-trivial case (all colors < d used) is proved by showing exactly one color has multiplicity 2, giving exactly 2 door positions."
     },
     {
       "id": "interior-pairing",
       "title": "Interior Door Pairing",
-      "startLine": 395,
-      "endLine": 471,
+      "startLine": 399,
+      "endLine": 475,
       "summary": "Defines adjMap (the adjacency involution) and proves door_transfer (adjacent facets share door status via shared vertex sets). Proves interior_doors_even: the adjacency map is a fixed-point-free involution on interior doors, so they have even count.",
       "mathContext": "The key bridge between abstract door parity (per-simplex) and the global counting argument. Interior doors cancel in pairs because each interior facet is shared by exactly 2 simplices."
     },
     {
       "id": "boundary-analysis",
       "title": "Boundary Analysis",
-      "startLine": 472,
-      "endLine": 507,
+      "startLine": 477,
+      "endLine": 510,
       "summary": "Proves no_boundary_doors_face_lt (Sperner kills boundary doors on face k < d) and boundary_door_is_last_face (all boundary doors have position = Fin.last d).",
       "mathContext": "On boundary face k < d, the Sperner condition forbids color k on all non-k vertices. Since door condition requires color k to appear, boundary doors on face k < d are impossible. Only face d boundary doors survive."
     },
     {
       "id": "parity-theorem",
       "title": "Parity Theorem and Main Result",
-      "startLine": 508,
-      "endLine": 669,
-      "summary": "Proves the Sperner Parity Theorem (sperner_parity): FC count \u2261 boundary doors on face d (mod 2). Combines per-simplex door parity, product counting, interior door pairing, and boundary analysis. The main theorem (sperner_ndim) concludes: if boundary doors on face d are odd, a fully-colored simplex exists.",
-      "mathContext": "The chain: |FC| % 2 = \u2211 door_count(s) % 2 = |all doors| % 2 = (|interior| + |boundary|) % 2 = |boundary on face d| % 2. The boundary-odd hypothesis is dischargeable by induction for concrete triangulations."
+      "startLine": 512,
+      "endLine": 663,
+      "summary": "Proves the Sperner Parity Theorem (sperner_parity): FC count ≡ boundary doors on face d (mod 2). Combines per-simplex door parity, product counting, interior door pairing, and boundary analysis. The main theorem (sperner_ndim) concludes: if boundary doors on face d are odd, a fully-colored simplex exists.",
+      "mathContext": "The chain: |FC| % 2 = ∑ door_count(s) % 2 = |all doors| % 2 = (|interior| + |boundary|) % 2 = |boundary on face d| % 2. The boundary-odd hypothesis is dischargeable by induction for concrete triangulations."
     }
   ],
   "conclusion": {
     "summary": "This formalization provides a fully verified (0 sorries) abstract n-dimensional Sperner's lemma. The key contributions are: (1) the SpernerTriangulation abstract structure capturing adjacency axioms, (2) the abstract door parity theorem showing FC/non-FC simplices contribute odd/even door counts, (3) interior door pairing via the adjacency involution, (4) boundary analysis showing Sperner kills non-face-d doors, and (5) the Sperner Parity Theorem relating FC count to boundary door count modulo 2.",
-    "implications": "The abstract approach works for ANY triangulation satisfying the axioms, making it suitable for Mathlib contribution (mathlib4#25231). A refactored version following the decomposition suggested by Yael Dillies is under review at mathlib4#38446, splitting the result into an abstract `CellComplex` parity theorem and a separate `Triangulation` \u2192 `CellComplex` bridge. The boundary-odd hypothesis in sperner_ndim is dischargeable by induction for concrete triangulations. This serves as the foundation for an axiom-free Brouwer fixed point theorem via displacement coloring.",
+    "implications": "The abstract approach works for ANY triangulation satisfying the axioms, making it suitable for Mathlib contribution (mathlib4#25231). The boundary-odd hypothesis in sperner_ndim is dischargeable by induction for concrete triangulations. This serves as the foundation for an axiom-free Brouwer fixed point theorem via displacement coloring.",
     "openQuestions": [
-      "**In progress (mathlib4#38446)**: Abstract CellComplex parity theorem and Triangulation bridge under Mathlib review \u2014 follows Yael Dillies's decomposition: (1) prove Sperner for any set family satisfying adjacency axioms, (2) separately show simplicial complexes satisfy those axioms",
-      "Construct a concrete Freudenthal triangulation instance satisfying the adjacency axioms \u2014 the permutation-indexed simplices and transposition-based adjacency are the natural candidate",
-      "Prove boundary-door-oddness by induction on dimension for concrete triangulations \u2014 the face-d restriction of the Freudenthal triangulation is a lower-dimensional Freudenthal grid",
-      "Connect to `Geometry.SimplicialComplex` for the full geometric Sperner theorem \u2014 verify that a Sperner coloring on a triangulation of the standard simplex produces an odd number of boundary doors",
+      "Construct a concrete Freudenthal triangulation instance satisfying SpernerTriangulation axioms — the permutation-indexed simplices and transposition-based adjacency are the natural candidate",
+      "Prove boundary-door-oddness by induction on dimension for concrete triangulations — the face-d restriction of the Freudenthal triangulation is a lower-dimensional Freudenthal grid",
       "Extend to Brouwer's fixed point theorem via displacement coloring: assign vertex $v$ color $k$ for the largest $k$ such that $f(v)_k < v_k$, then an FC simplex converges to a fixed point",
-      "Formalize the Kuhn path-following algorithm constructively: given a boundary door on face d, follow the unique opposite door to reach an FC simplex in at most O(N^d) steps"
+      "Formalize the Kuhn path-following algorithm constructively: given a boundary door on face d, follow the unique opposite door to reach an FC simplex in at most O(N^d) steps",
+      "Contribute SpernerTriangulation and sperner_parity to Mathlib (mathlib4#25231) as the foundation for a Mathlib-native Brouwer fixed point theorem"
     ]
   },
   "crossReferences": [
@@ -202,7 +201,7 @@
     {
       "name": "even_card_fpf_invol",
       "type": "supporting",
-      "description": "A fixed-point-free involution on a finite set has even cardinality, proved by strong induction \u2014 the abstract principle underlying interior door pairing that makes the parity argument work."
+      "description": "A fixed-point-free involution on a finite set has even cardinality, proved by strong induction — the abstract principle underlying interior door pairing that makes the parity argument work."
     }
   ],
   "leanFile": {

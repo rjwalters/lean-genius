@@ -21,11 +21,11 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-22",
-    "axiomCount": 2,
-    "assumptions": "2 axioms: 1. tmul_infinite_order_ne_zero (from OQ02OQ02): ℝ is flat over ℤ — needed to show nonzero tensor products. 2. icoAngle_irrational: arccos(-√5/3)/π is irrational (icosahedron dihedral angle) — proof requires Chebyshev arithmetic in ℤ[√5], deferred. All sorries are now proved (edge count scaling lemmas closed in research session).",
-    "lineCount": 432,
-    "theoremCount": 15,
-    "definitionCount": 4,
+    "axiomCount": 1,
+    "assumptions": "1 axiom: tmul_infinite_order_ne_zero (from OQ02OQ02): ℝ is flat over ℤ — needed to show nonzero tensor products. icoAngle_irrational is now a proved theorem (Chebyshev ℤ[√5] argument), reducing the axiom count from 2 to 1.",
+    "lineCount": 581,
+    "theoremCount": 22,
+    "definitionCount": 5,
     "mathlibDependencies": [
       {
         "theorem": "Real.arccos_le_pi_div_two",
@@ -56,8 +56,13 @@
       "arccos_sqrt5_irrational: arccos(1/√5)/π ∉ ℚ — derived from arccos(3/5) irrationality",
       "dodAngle_irrational: arccos(-1/√5)/π ∉ ℚ — dodecahedron dihedral angle",
       "dod_dehn_ne_zero: D(dodecahedron) ≠ 0 — new nonzero Dehn invariant result",
-      "cube_isolated_dehn_invariant: complete 5-solid classification table (cube isolated)"
-    ]
+      "cube_isolated_dehn_invariant: complete 5-solid classification table (cube isolated)",
+      "icoSeqAB: coupled integer sequence A_n + B_n·√5 = 3^n·2cos(n·icoAngle) with integer recurrence over ℤ[√5]",
+      "icoSeqAB_ndvd: mod-3 invariant ¬3|A_{2k} ∧ ¬3|B_{2k+1} — proved by IsCoprime argument",
+      "icoSeqAB_eq_cos: connection theorem A_n + B_n·√5 = 3^n·2cos(n·icoAngle) — proved by induction using linear_combination",
+      "icoAngle_irrational: arccos(-√5/3)/π ∉ ℚ — proved (was axiom), completing the icosahedron case"
+    ],
+    "description": "Proves that among the five Platonic solids, only the cube has zero Dehn invariant. New results: arccos(1/√5)/π irrational (dodecahedron) via Chebyshev mod-5; arccos(-√5/3)/π irrational (icosahedron) via coupled integer sequences over ℤ[√5]. The cube cannot be obtained by scissors congruence from any other Platonic solid."
   },
   "overview": {
     "historicalContext": "Hilbert's Third Problem (1900) asked whether two polyhedra of equal volume are always scissors congruent. Max Dehn answered NO the same year by introducing the Dehn invariant D(P) ∈ ℝ ⊗_ℤ (ℝ/πℤ) — a sum of edge-length ⊗ [dihedral-angle] terms preserved under cutting. A polyhedron with all rational-multiple-of-π dihedral angles has D = 0; one with even a single irrational angle has D ≠ 0. The cube has 12 edges all at π/2, giving D = 0. The other Platonic solids have irrational dihedral angles: arccos(1/3) (tetrahedron), arccos(-1/3) (octahedron), arccos(-1/√5) (dodecahedron), arccos(-√5/3) (icosahedron). The irrationalities of arccos(1/3)/π and arccos(-1/3)/π were proved in OQ02/OQ02OQ02. This file proves arccos(-1/√5)/π irrational (new) and classifies all five Platonic solids.",
@@ -76,6 +81,9 @@
       "DissectionOfCubesOQ02.lean: Niven's theorem for arccos(1/3)/π, Chebyshev recurrence technique",
       "Real.arccos_neg, Real.arccos_cos, Real.arccos_le_pi_div_two (Mathlib)",
       "Prime.dvd_of_dvd_pow and divisibility arithmetic (Mathlib)"
+    ],
+    "openQuestions": [
+      "Can the remaining axiom (tmul_infinite_order_ne_zero — flatness of ℝ over ℤ) be proved using Mathlib Module.Flat infrastructure?"
     ]
   },
   "sections": [

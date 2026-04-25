@@ -1,0 +1,137 @@
+{
+  "id": "algebraic-numbers-countable-oq-04",
+  "title": "Baker's Theorem: Linear Independence of Logarithms",
+  "slug": "algebraic-numbers-countable-oq-04",
+  "description": "A formalization of Baker's theorem (1966), the most powerful tool in transcendence theory. States that logarithms of algebraic numbers which are linearly independent over ℚ remain linearly independent over the algebraic numbers Q̄. Proves the irrationality of log₂(3) elementarily, derives the transcendence of log₂(3) from Baker, and states the quantitative Baker-Wüstholz lower bounds for linear forms in logarithms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-24",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AlgebraicNumbersCountableOQ04.lean",
+    "tags": [
+      "transcendence-theory",
+      "algebraic-numbers",
+      "logarithms",
+      "linear-independence",
+      "baker-theory",
+      "fields-medal"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-24",
+    "axiomCount": 4,
+    "assumptions": "Four axioms: (1) baker_homogeneous — Baker's qualitative theorem for linear forms in logarithms (Q-independent logs remain Q̄-independent); (2) baker_inhomogeneous — strengthening with algebraic constant β₀; (3) baker_quantitative — effective lower bound B^{-C}; (4) baker_wustholz_bound — Baker-Wüstholz 1993 optimal log(B) exponent. All four encode the unformalized analytic content of Baker's proof (Siegel's lemma + auxiliary function + extrapolation).",
+    "lineCount": 640,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "originalContributions": [
+      "two_pow_ne_three_pow: 2^p ≠ 3^q for positive p, q (proved from Nat.Prime.dvd_of_dvd_pow)",
+      "log2_3_irrational: Irrationality of log₂(3) = log 3 / log 2 (proved elementarily without transcendence theory)",
+      "log2_log3_rat_indep: ℚ-linear independence of {log 2, log 3} (from irrationality of log₂(3))",
+      "log2_3_transcendental: Transcendence of log₂(3) (derived from baker_homogeneous)",
+      "log2_log3_alg_indep: Q̄-linear independence of {log 2, log 3} (direct application of Baker)",
+      "baker_n1_log_independence: log α is not annihilated by nonzero algebraic β (n=1 case of Baker)",
+      "baker_wustholz_bound: Baker-Wüstholz 1993 effective lower bound (state-of-the-art quantitative form)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Alan Baker's 1966 theorem on linear forms in logarithms of algebraic numbers stands as one of the great achievements of 20th-century mathematics. The theorem resolves a question implicit in Hilbert's seventh problem (1900): which linear combinations of logarithms of algebraic numbers can vanish?\n\nThe context is the chain of transcendence results:\n- **1873**: Hermite proves e is transcendental using auxiliary polynomials.\n- **1882**: Lindemann proves π is transcendental, showing e^(iπ) = −1 is impossible for algebraic iπ. Weierstrass generalizes to the Hermite-Lindemann-Weierstrass theorem.\n- **1934**: Gelfond and Schneider independently prove α^β is transcendental for algebraic α ≠ 0,1 and irrational algebraic β. This resolves Hilbert's 7th problem.\n- **1966**: Alan Baker proves that any nonzero linear combination β₁ log α₁ + ··· + βₙ log αₙ with algebraic β_i and Q-independent logs is transcendental. Baker's proof introduces a fundamentally new analytic method — the 'Baker auxiliary function' — that controls the growth of a carefully constructed entire function.\n- **1970**: Baker receives the Fields Medal for this work and its applications.\n- **1993**: Baker and Wüstholz refine the quantitative bounds to log(B) rather than log^{n+1}(B) in the exponent.\n\nBaker's theorem has since become a central engine of effective Diophantine geometry, providing explicit bounds in countless problems that were previously known only to have finitely many solutions.",
+    "problemStatement": "Let α₁, ..., αₙ be nonzero algebraic numbers, and let log denote any fixed branch of the complex logarithm.\n\n**Baker's Theorem (Homogeneous Form)**: If log α₁, ..., log αₙ are linearly independent over ℚ, then for any algebraic numbers β₁, ..., βₙ (not all zero):\n\n  β₁ log α₁ + ··· + βₙ log αₙ ≠ 0.\n\n**Baker's Theorem (Inhomogeneous Form)**: If 1, log α₁, ..., log αₙ are linearly independent over ℚ, then for any algebraic numbers β₀, β₁, ..., βₙ (not all zero):\n\n  β₀ + β₁ log α₁ + ··· + βₙ log αₙ ≠ 0.\n\nEquivalently, the logs that are Q-linearly independent are also Q̄-linearly independent (where Q̄ is the field of algebraic numbers).\n\nThe Lean formalization takes real logarithms of positive real algebraic numbers for clarity, with the complex case following by the same method.",
+    "proofStrategy": "Baker's proof is built on four pillars:\n\n1. **Siegel's Lemma**: Given a system of m homogeneous linear equations in N > m integer unknowns with integer coefficients bounded by A, there exists a nontrivial integer solution with all entries bounded by (mA)^{m/(N-m)}. Used to find polynomial coefficients for the auxiliary function.\n\n2. **Baker's Auxiliary Function**: Construct\n   F(z₀, z₁, ..., zₙ) = ∑ p(k₀, k₁, ..., kₙ) · z₀^k₀ · α₁^(k₁z₁) · ··· · αₙ^(kₙzₙ)\n   with coefficients p chosen by Siegel's lemma so F vanishes to high order at (s, s, ..., s) for s = 0, 1, ..., S.\n\n3. **Extrapolation (Baker's Key Innovation)**: If Λ = β₁ log α₁ + ··· + βₙ log αₙ = 0, then the vanishing propagates: F and its derivatives vanish at increasingly many points. This is proved by an inductive argument using the assumption Λ = 0 to generate new zero points from old ones.\n\n4. **Contradiction via Schwarz Lemma**: The auxiliary function cannot vanish at too many points while staying bounded. The Schwarz lemma (or Jensen's formula) for analytic functions gives an upper bound on zeros that contradicts the lower bound from extrapolation.\n\nFor the Lean formalization, the approach is:\n- State Baker's theorem as an axiom (pending the full analytic machinery)\n- Prove as many consequences as possible within the axiomatized framework\n- Provide the key elementary prerequisite: irrationality of log₂(3)",
+    "keyInsights": [
+      "Baker's theorem is the 'missing link' between linear independence over ℚ and linear independence over Q̄. It says that Q-independence (an elementary condition) implies Q̄-independence (a transcendence condition). This makes algebraic independence of logs equivalent to their rational independence, which is often easy to check.",
+      "The irrationality of log₂(3) = log 3 / log 2 is provable without any transcendence theory, using only unique factorization: if log₂(3) = p/q, then 3^q = 2^p, but the left side has only factor-3 primes and the right side only factor-2 primes. Baker's theorem upgrades this to transcendence of log₂(3).",
+      "Baker's theorem contains both Hermite-Lindemann (n=1 case for the log) and Gelfond-Schneider (Baker for n=1 plus the right setup) as special cases. The n=1 case says: if α is positive algebraic and α ≠ 1, then log α is not annihilated by any nonzero algebraic number — i.e., the multiplicative span of log α over Q̄ is all of ℝ.",
+      "The quantitative form (Baker-Wüstholz 1993) is not just theoretically stronger but practically essential. It converts existence arguments into algorithms: to find all integer solutions to y² = x³ + k, reduce to finding all small linear forms in logarithms, then use Baker-Wüstholz to bound all solutions by an explicit constant.",
+      "The Four Exponentials Conjecture remains open despite Baker's theorem: if z₁, z₂ and w₁, w₂ are each ℚ-linearly independent pairs of complex numbers, then at least one of e^{z_i w_j} is transcendental. Baker proves the Six Exponentials Theorem (three z's, two w's). The gap between 4 and 6 is a fundamental open problem.",
+      "Baker's theorem implies the class number problem for imaginary quadratic fields: ℚ(√-d) has class number 1 only for d = 1, 2, 3, 7, 11, 19, 43, 67, 163. The Baker-Stark proof uses Baker's lower bounds for linear forms in logs of algebraic numbers to show no other d exists."
+    ],
+    "prerequisites": [
+      "Real analysis (logarithms, exponentials, analytic functions)",
+      "Linear algebra (linear independence over fields)",
+      "Algebraic number theory (minimal polynomials, algebraic numbers)",
+      "Basic number theory (unique factorization, Nat.Prime.dvd_of_dvd_pow)",
+      "Siegel's lemma (for the full proof)"
+    ]
+  },
+  "conclusion": {
+    "summary": "This formalization captures Baker's theorem on linear forms in logarithms of algebraic numbers in three axiomatized forms (homogeneous, inhomogeneous, quantitative), derives the transcendence of log₂(3) and the Q̄-linear independence of {log 2, log 3} from Baker's axiom, and proves the irrationality of log₂(3) elementarily using unique factorization.",
+    "implications": "Baker's theorem is the engine of effective Diophantine geometry. Via explicit lower bounds for linear forms in logarithms, it converts 'finitely many solutions' into 'all solutions with |x|, |y| ≤ M for explicit M'. Key applications include: (1) Thue equations f(x,y) = c have all solutions bounded by an effective constant depending on c; (2) Mordell's equation y² = x³ + k — all integer solutions can be found algorithmically for fixed k; (3) S-unit equations — explicit description of all solutions. Beyond number theory: Baker's theorem is used in mathematical logic (decidability of certain theories) and cryptography (logarithm-based discrete log hardness in algebraic groups).",
+    "openQuestions": [
+      "**The Four Exponentials Conjecture**: If z₁, z₂ are ℚ-linearly independent complex numbers and w₁, w₂ are ℚ-linearly independent, then at least one of e^{z₁w₁}, e^{z₁w₂}, e^{z₂w₁}, e^{z₂w₂} is transcendental. Baker's Six Exponentials Theorem is proved; the gap from 6 to 4 remains open.",
+      "**Schanuel's Conjecture**: If z₁, ..., zₙ are ℚ-linearly independent complex numbers, then the transcendence degree of ℚ(z₁, ..., zₙ, e^{z₁}, ..., e^{zₙ}) over ℚ is at least n. This single conjecture implies all known transcendence results including Baker's theorem, Hermite-Lindemann, and Gelfond-Schneider, and would also resolve many open problems.",
+      "**Complete Lean formalization of Baker's theorem**: The proof requires formalizing Siegel's lemma for integer solutions to linear equations, Baker's auxiliary function construction, the extrapolation lemma for derivatives, and Jensen's formula from complex analysis — a substantial but tractable long-term project.",
+      "**Baker-Wüstholz without the Six Exponentials framework**: The Baker-Wüstholz 1993 proof introduces a new approach via the multiplicity estimates of Wüstholz. Formalizing this approach might yield better bounds with less analytic machinery."
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Header: Module Documentation and Historical Context",
+      "startLine": 1,
+      "endLine": 128,
+      "description": "Module header with comprehensive documentation of Baker theorem (1966), historical context from Hermite (1873) through Baker-Wustholz (1993), proof strategy outline (Siegel lemma + auxiliary function + extrapolation + Schwarz), status checklist, and related theorems.",
+      "mathContext": "Baker's key innovation: constructing an auxiliary analytic function F(z) with coefficients from Siegel's lemma, then propagating vanishing via extrapolation, contradicting Schwarz lemma bounds on analytic functions."
+    },
+    {
+      "id": "sec-arithmetic",
+      "title": "Sec 1: Elementary Arithmetic — Irrationality of log2(3)",
+      "startLine": 129,
+      "endLine": 257,
+      "description": "Proves 2^p ≠ 3^q for positive p, q using Nat.Prime.dvd_of_dvd_pow. Derives positivity and nonvanishing of log 2 and log 3. Proves irrationality of log2(3) = log 3 / log 2. Proves Q-linear independence of {log 2, log 3}.",
+      "mathContext": "Central lemma: 2^p ≠ 3^q for p, q >= 1. If 2^p = 3^q then dvd_pow_self gives 2 | 2^p = 3^q, so Nat.Prime.dvd_of_dvd_pow gives 2 | 3, contradicted by decide. Irrationality: rational log2(3) = n/d implies 3^d = 2^n, contradiction."
+    },
+    {
+      "id": "sec-baker-axioms",
+      "title": "Sec 2: Baker Theorem Axiom Catalog",
+      "startLine": 258,
+      "endLine": 363,
+      "description": "Three axioms: baker_homogeneous (Q-independent logs remain Q-bar-independent), baker_inhomogeneous (with constant term), baker_quantitative (explicit lower bound). Each axiom documented with mathematical justification.",
+      "mathContext": "Three axioms encode the unformalized analytic content of Baker's theorem. `baker_homogeneous`: given algebraically independent $\\log\\alpha_1, \\ldots, \\log\\alpha_n$ (over $\\mathbb{Q}$) and nonzero algebraic $\\beta_1, \\ldots, \\beta_n$, we have $\\sum_i \\beta_i \\log\\alpha_i \\neq 0$. `baker_inhomogeneous`: strengthens to include a constant term $\\beta_0$, ruling out $\\beta_0 + \\sum \\beta_i \\log\\alpha_i = 0$. `baker_quantitative`: gives a lower bound $|\\sum_i \\beta_i \\log\\alpha_i| > B^{-C}$ for $B = \\max|\\beta_i|$ and effective $C = C(n, d, A_1, \\ldots, A_n)$. All three encode the analytic core of Baker's proof: Siegel's lemma for auxiliary polynomial coefficients + auxiliary function vanishing + extrapolation + Schwarz lemma contradiction."
+    },
+    {
+      "id": "sec-corollaries",
+      "title": "Sec 3: Key Corollaries from Baker",
+      "startLine": 364,
+      "endLine": 491,
+      "description": "Corollaries: log2(3) is transcendental (Baker n=2 case), Q-bar-linear independence of {log 2, log 3}, n=1 case connecting to Gelfond-Schneider, Four Exponentials Conjecture as main open problem.",
+      "mathContext": "Transcendence of log2(3): assume beta = log2(3) algebraic. Then beta*log2 - log3 = 0 with beta, -1 algebraic and log2, log3 Q-independent. Baker says this sum is nonzero. Contradiction."
+    },
+    {
+      "id": "sec-baker-wustholz",
+      "title": "Sec 4: Baker-Wustholz Quantitative Theorem",
+      "startLine": 540,
+      "endLine": 589,
+      "description": "States Baker-Wustholz 1993 theorem with explicit constant C(n,d). Documents improvement from Baker 1966 to Baker-Wustholz 1993. Applications to Thue equations, Mordell equation, S-unit equations.",
+      "mathContext": "Baker-Wustholz bound: log|Lambda| > -C(n,d) * prod_i log(A_i) * log(B) where C(n,d) = 18*(n+1)! * n^{n+1} * (32d)^{n+2} * log(2nd)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "algebraic-numbers-countable",
+      "relationship": "parent",
+      "description": "Parent entry: Cantor's theorem that algebraic numbers are countable. Baker's theorem concerns the structure of logarithms of algebraic numbers — a deeper property than countability, operating at the level of transcendence theory."
+    },
+    {
+      "id": "hermite-lindemann",
+      "relationship": "foundational",
+      "description": "Hermite-Lindemann-Weierstrass theorem: for nonzero algebraic α, e^α is transcendental. This is the n=1 special case of Baker's inhomogeneous theorem (with α₁ = e and β₁ = α, β₀ = -1, if Λ = α - log(e^α) = 0). Baker's proof method generalizes Hermite's auxiliary polynomial technique to n logarithms."
+    },
+    {
+      "id": "gelfond-schneider",
+      "relationship": "foundational",
+      "description": "Gelfond-Schneider theorem (1934): if α is algebraic, α ≠ 0,1 and β is irrational algebraic, then α^β is transcendental — resolving Hilbert's 7th problem. Baker's theorem generalizes Gelfond-Schneider from one logarithm (log α linearly independent over ℚ implies β log α ≠ 0) to n logarithms, and adds the quantitative lower bound that Gelfond-Schneider lacks."
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "Hermite's 1873 proof that e is transcendental introduced the auxiliary polynomial method that Baker systematized into his proof. The n=1 Baker theorem (baker_n1_log_independence) directly implies: log e = 1 is not annihilated by any nonzero algebraic β, giving transcendence of e by a different route than Hermite's original."
+    }
+  ],
+  "relatedProblems": [
+    { "id": "algebraic-numbers-countable", "label": "Algebraic numbers are countable (parent)" },
+    { "id": "hermite-lindemann", "label": "Hermite-Lindemann: e^α transcendental for algebraic α≠0" },
+    { "id": "gelfond-schneider", "label": "Gelfond-Schneider: α^β transcendental (Hilbert 7th)" },
+    { "id": "e-transcendental", "label": "Transcendence of e (Hermite 1873)" }
+  ]
+}

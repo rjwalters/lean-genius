@@ -197,16 +197,6 @@
       "targetId": "buffons-needle",
       "relationship": "related",
       "description": "Buffon's needle (1733) gives a probabilistic method for computing $\\pi$: $P(\\text{crossing}) = 2\\ell/(\\pi d)$, linking circle geometry to integral geometry"
-    },
-    {
-      "targetId": "leibniz-pi",
-      "relationship": "related",
-      "description": "Leibniz's series $\\pi/4 = 1 - 1/3 + 1/5 - 1/7 + \\cdots$ provides a convergent representation of $\\pi$, complementing this entry's use of $\\pi$ in the area formula $\\pi r^2$. Together they illustrate the two faces of $\\pi$: the geometric ratio (area to radius squared, formalized here via Lebesgue measure) and the analytic constant (limit of alternating series, formalized in Leibniz)."
-    },
-    {
-      "targetId": "picks-theorem",
-      "relationship": "complementary",
-      "description": "Pick's theorem ($A = I + B/2 - 1$ for lattice polygons) gives a combinatorial formula for area, in contrast to this entry's measure-theoretic formula $A = \\pi r^2$ for circles. The two area computations represent fundamentally different techniques: discrete counting (Pick) vs. Lebesgue integration (circle area). Notable distinction: Pick's theorem does not apply to circles (not lattice polygons), while the Lebesgue approach handles arbitrary measurable sets."
     }
   ],
   "leanFile": {

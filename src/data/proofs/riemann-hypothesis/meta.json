@@ -77,9 +77,7 @@
       "**Functional Equation Symmetry:** $\\zeta(s) = 2^s \\pi^{s-1} \\sin(\\pi s/2) \\Gamma(1-s) \\zeta(1-s)$ forces zeros to be symmetric about $\\text{Re}(s) = 1/2$. If $\\rho$ is a zero, so is $1 - \\rho$. RH says they all lie ON the line of symmetry.",
       "**Robin's Arithmetic Formulation:** RH $\\iff \\sigma(n) < e^\\gamma n \\ln\\ln n$ for all $n \\geq 5041$, where $\\sigma(n) = \\sum_{d|n} d$. This converts a complex-analytic hypothesis into a testable inequality about divisor sums.",
       "**Hardy's Infinity Result:** Hardy (1914) proved infinitely many zeros lie on $\\text{Re}(s) = 1/2$, and Selberg (1942) showed a positive proportion do. But proving ALL zeros lie there remains open. Over $10^{13}$ zeros verified computationally.",
-      "**Millennium Prize Implications:** RH implies the best error bounds in the Prime Number Theorem, sharp estimates for prime gaps, and the truth of the Lindelöf hypothesis. Its proof (or disproof) would transform analytic number theory.",
-      "**The K₁₀ Equivalence Network:** This formalization establishes 10 equivalent formulations of RH — Robin's inequality, Mertens bound, Nyman-Beurling, Lagarias, Speiser, Weil positivity, de Bruijn-Newman, Li positivity, BSY integral, and Riesz — with all $\\binom{10}{2} = 45$ pairwise equivalences proved in Lean. This means any one of the 10 conditions implies all the others. Combined with 4 additional integral criteria (Báez-Duarte, Volchkov), the total equivalence network has 91 proved implications — providing 91 distinct formal entry points for a potential proof.",
-      "**Random Matrix Theory Connection:** Montgomery (1973) discovered that the pair correlation of zeta zeros matches the statistics of eigenvalues of random unitary matrices (GUE). This discovery, confirmed numerically by Odlyzko to extraordinary precision, is one of the deepest and most mysterious facts about RH: the zeros of an analytic number-theoretic function behave statistically like eigenvalues of random quantum Hamiltonians. The Keating-Snaith dictionary (2000) uses random matrix theory to predict the correct leading-order asymptotics of zeta moments $\\int_0^T |\\zeta(1/2+it)|^{2k} dt \\sim c_k \\cdot T (\\log T)^{k^2}$, formalized in this entry's moment section."
+      "**Millennium Prize Implications:** RH implies the best error bounds in the Prime Number Theorem, sharp estimates for prime gaps, and the truth of the Lindelöf hypothesis. Its proof (or disproof) would transform analytic number theory."
     ],
     "prerequisites": [
       "Complex analysis (analytic continuation, meromorphic functions, contour integration)",
@@ -308,26 +306,6 @@
       "targetId": "p-vs-np",
       "relationship": "related",
       "description": "Fellow Millennium Prize Problem. If GRH is true, Miller's primality test runs in deterministic polynomial time, providing one of the few known connections between the Riemann Hypothesis and computational complexity. Both problems are among the seven Clay Prize problems"
-    },
-    {
-      "targetId": "poincare-conjecture",
-      "relationship": "thematic",
-      "description": "The Poincaré Conjecture (solved by Perelman, 2003) is the only Clay Millennium Prize Problem to be resolved. As the sole solved problem in the septet, it provides a benchmark for what a proof of RH would mean: just as Perelman's use of Ricci flow with surgery was entirely unexpected, a proof of RH is likely to require radically new techniques beyond the Hilbert-Pólya or Connes spectral approaches currently envisioned"
-    },
-    {
-      "targetId": "yang-mills",
-      "relationship": "thematic",
-      "description": "Fellow Clay Millennium Problem. The Yang-Mills existence and mass gap problem asks for a mathematically rigorous quantum field theory in 4D. The deep connection to RH runs through the Langlands program: automorphic L-functions (the subject of RH's generalization, GRH) arise in the geometric Langlands correspondence, which has roots in gauge theory and the mathematics underlying Yang-Mills"
-    },
-    {
-      "targetId": "hodge-conjecture",
-      "relationship": "thematic",
-      "description": "Fellow Clay Millennium Problem. The Hodge Conjecture concerns the algebraic vs. analytic topology of complex algebraic varieties — classes represented by algebraic cycles. The connection to RH is through L-functions: the zeta function of a smooth projective variety over a finite field satisfies the Riemann Hypothesis (proved by Weil 1949 and Deligne 1974 via étale cohomology), and this finite-field RH is the model for the classical RH about ζ(s)"
-    },
-    {
-      "targetId": "navier-stokes-existence",
-      "relationship": "thematic",
-      "description": "Fellow Clay Millennium Problem. Navier-Stokes existence and smoothness (the question of whether smooth solutions persist globally) and RH share a common trait: both involve showing that certain 'bad' events (blow-up singularities / zeros off the critical line) cannot occur. The analytic tools — Fourier analysis, L² estimates, contour integration — overlap substantially, and resolution of either problem would likely advance the other field"
     },
     {
       "targetId": "fundamental-theorem-algebra",

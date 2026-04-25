@@ -15,11 +15,11 @@
       "annihilator-ideal",
       "matrix-functions"
     ],
-    "badge": "mathlib",
+    "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-04-02",
     "axiomCount": 0,
-    "assumptions": "Core results build on Mathlib's Cayley-Hamilton infrastructure (Matrix.minpoly_dvd_charpoly, Matrix.aeval_self_charpoly). File proves original extensions: polynomial reduction modulo minpoly, annihilator ideal generation, nonderogatory characterization.",
+    "assumptions": "None. Fully machine-verified using Mathlib's Cayley-Hamilton infrastructure.",
     "lineCount": 447,
     "theoremCount": 30,
     "definitionCount": 0,

@@ -6,7 +6,7 @@ Formalize the connection between Hurwitz's theorem (exactly 4 normed division al
 1. G₂ = Aut(𝕆)
 2. Freudenthal-Tits magic square: 𝔏(A,B) = Der(A)⊕(ImA⊗ImB)⊕Der(B)
 
-File: `proofs/Proofs/HurwitzTheoremOQ04.lean` (~730 lines)
+File: `proofs/Proofs/HurwitzTheoremOQ04.lean` (~430 lines)
 
 ---
 
@@ -79,63 +79,3 @@ For a true proof:
    - Need additional argument: normSq(φ(a)) = normSq(a) by "quadratic form invariance"
    
 4. Alternative: axiomatize `alg_aut_preserves_norm` as an axiom (it's true, just hard to prove from our formalization)
-
----
-
-## Session 2026-04-25 (Session 4) — De-axiomatize + Der(𝕆) Lie Algebra
-
-**Mode**: REVISIT (RICH knowledge tier, score 24)
-**Outcome**: PROGRESS — 4 axioms removed (rfl), OctonionDer Lie algebra formalized (0 sorries)
-
-### What I Did
-
-1. **De-axiomatized 4 trivial axioms**: `freudenthal_tits_f4/e6/e7/e8` were `axiom X.dim = N`
-   where `X.dim` is DEFINED as `N`. These are just `rfl` — changed from `axiom` to `theorem ... := rfl`.
-   Axiom count: 5 → 1 (only `G2_is_octonion_aut` remains as genuine axiom).
-
-2. **Added PART IV-b: Der(𝕆)** (~140 lines, 0 sorries):
-   - `eightMul_add_left/right/smul_left/right`: bilinearity helpers extracted from eightSquareIdentity
-   - `OctonionDer` structure: ℝ-linear maps with Leibniz rule D(ab) = D(a)b + aD(b)
-   - `zeroDer`: zero map is a derivation (0 sorries, proved by `fin_cases i; simp [eightMul]; ring`)
-   - `addDer`: sum of two derivations (0 sorries, proved by `rw [D₁.leibniz, D₂.leibniz]; abel`)
-   - `smulDer`: scalar multiple of a derivation (0 sorries, proved by bilinearity rewrites)
-   - `eightMul_sub_left/right`: subtraction linearity (proved via add + smul)
-   - `commDer`: [D₁,D₂] is a derivation (0 sorries, proved via h1/h2 expansions + abel)
-   - `commDer_self_eq_zero`: [D,D] = 0 (0 sorries)
-   - `commDer_antisymm`: [D₁,D₂] = -[D₂,D₁] (0 sorries)
-   - `commDer_jacobi`: [[D₁,D₂],D₃] + [[D₂,D₃],D₁] + [[D₃,D₁],D₂] = 0 (0 sorries, `ring`)
-
-### Key Findings
-
-- **4 axioms were trivially true**: The `freudenthal_tits_*` axioms just said `dim = dim`. No
-  mathematical content. The real mathematical claim (𝔏(𝕆,A) = ExceptionalType) is NOT formalized.
-- **commDer.leibniz proof structure**: The key is to expand D₁(D₂(ab)) and D₂(D₁(ab)) separately
-  using `h1`, `h2`, then use `eightMul_sub_left/right` for subtraction bilinearity, then `abel`.
-  The cross-terms D₂(a)D₁(b) and D₁(a)D₂(b) cancel.
-- **commDer_jacobi by ring**: After unfolding `commDer`, the Jacobi identity becomes an abelian
-  group equation `ring` closes directly.
-- **Lie algebra of Der(𝕆)**: Formalized: Der(𝕆) is closed under commutator [·,·], antisymmetric,
-  satisfies Jacobi. This is the Lie algebra 𝔤₂ = Der(𝕆) at the algebraic level.
-
-### Files Modified
-
-- `proofs/Proofs/HurwitzTheoremOQ04.lean` (583 → 730 lines; PART IV-b added, preamble updated)
-- `src/data/proofs/hurwitz-theorem-oq-04/meta.json` (axiomCount 5 → 1, lineCount 730, theoremCount 31)
-- `src/data/research/problems/hurwitz-theorem-oq-04.json` (knowledge updated)
-
-### Axiom Count: 5 → 1
-
-- ~~freudenthal_tits_f4~~ → `theorem freudenthal_tits_f4 := rfl` ✓
-- ~~freudenthal_tits_e6~~ → `theorem freudenthal_tits_e6 := rfl` ✓
-- ~~freudenthal_tits_e7~~ → `theorem freudenthal_tits_e7 := rfl` ✓
-- ~~freudenthal_tits_e8~~ → `theorem freudenthal_tits_e8 := rfl` ✓
-- `G2_is_octonion_aut`: UNCHANGED (genuinely needs Lie group theory)
-
-### Next Steps
-
-1. **Exhibit 14 explicit derivations** of 𝕆: The space Der(𝕆) has dim 14. We could exhibit
-   specific derivations via cross-product operators L_a,R_b — e.g., D_{ij}(x) = eₙ*(eᵢx)-eᵢ*(eⱼx)
-   for specific basis pairs. ~100 lines.
-2. **Archive sessions 1-3**: Move to sessions/ subdirectory (knowledge.md now >100 lines).
-3. **G2_is_octonion_aut**: Still axiom. Proving it formally requires Lie group theory not in Mathlib.
-   Could reformulate it as a dim(Der(𝕆)) = 14 statement once explicit derivations are exhibited.

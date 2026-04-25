@@ -182,16 +182,6 @@
       "targetId": "abel-ruffini-oq-04-oq-03",
       "relationship": "complementary",
       "description": "Galois's solvability criterion: a root of an irreducible polynomial is expressible by radicals iff its Galois group is solvable. Every algebraic number is a root of some polynomial, but only those whose Galois groups are solvable admit radical expressions. This entry proves all algebraic numbers are 'countably many'; Galois's criterion classifies which ones are 'radically expressible' — a strict countable subcollection (algebraic numbers of degree $\\leq 4$ whose Galois groups are solvable) within the countable algebraic numbers."
-    },
-    {
-      "targetId": "fundamental-theorem-algebra",
-      "relationship": "foundational",
-      "description": "The Fundamental Theorem of Algebra guarantees that every non-zero polynomial $p \\in \\mathbb{C}[X]$ of degree $n$ has exactly $n$ complex roots (counted with multiplicity). Since each algebraic number is a root of some polynomial, FTA is the reason the algebraic numbers are 'well-defined' as a set — every polynomial contributes finitely many algebraic numbers. This entry then shows the resulting infinite union over all polynomials is still countable."
-    },
-    {
-      "targetId": "nth-root-irrational",
-      "relationship": "complementary",
-      "description": "Irrationality of $n$-th roots: $\\sqrt[n]{m}$ is irrational when $m$ is not a perfect $n$-th power. These are specific examples of algebraic numbers (roots of $X^n - m$) that are not rational — showing the algebraic numbers strictly contain the rationals. This entry counts all algebraic numbers in bulk; the irrationality results exhibit specific members of the algebraic-but-not-rational portion."
     }
   ],
   "references": [

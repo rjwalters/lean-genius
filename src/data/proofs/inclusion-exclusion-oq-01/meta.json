@@ -2,7 +2,7 @@
   "id": "inclusion-exclusion-oq-01",
   "title": "Inclusion-Exclusion: Applications to Number Theory and Combinatorics",
   "slug": "inclusion-exclusion-oq-01",
-  "description": "Applies the inclusion-exclusion principle to connect combinatorics and number theory. Proves sieve formulas (2-set and 3-set), Euler's totient via IE sieve (φ(pq)=(p-1)(q-1)), surjection counting (|Surj(n,k)| = Σ (-1)^j C(k,j)(k-j)^n), derangement formula (D(n) = Σ (-1)^k C(n,k)(n-k)!), derangement recurrence, divisor-totient identity (Σ_{d|n} φ(d) = n), and alternating binomial sum. 41 theorems, 5 definitions, 0 axioms.",
+  "description": "Applies the inclusion-exclusion principle to connect combinatorics and number theory. Proves sieve formulas (2-set and 3-set), Euler's totient via IE sieve (φ(pq)=(p-1)(q-1)), surjection counting (|Surj(n,k)| = Σ (-1)^j C(k,j)(k-j)^n), derangement formula (D(n) = Σ (-1)^k C(n,k)(n-k)!), derangement recurrence, divisor-totient identity (Σ_{d|n} φ(d) = n), and alternating binomial sum. 41 theorems, 0 definitions, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -22,7 +22,7 @@
     "assumptions": "None. Fully machine-verified using Mathlib's Nat.totient and Finset.card lemmas.",
     "lineCount": 382,
     "theoremCount": 41,
-    "definitionCount": 5,
+    "definitionCount": 0,
     "originalContributions": [
       "sieve_two / sieve_three: |U \\ (A ∪ B)| and three-set inclusion-exclusion",
       "totient_prime_product: φ(pq) = (p-1)(q-1) for distinct primes via IE sieve",
@@ -66,7 +66,7 @@
     "lineCount": 382,
     "axiomCount": 0,
     "theoremCount": 41,
-    "definitionCount": 5,
+    "definitionCount": 0,
     "path": "Proofs/InclusionExclusionOQ01.lean",
     "sorries": 0
   },

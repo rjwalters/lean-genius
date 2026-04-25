@@ -1,24 +1,15 @@
 [
   {
-    "id": "ann-bido-header",
-    "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01",
-    "range": { "startLine": 1, "endLine": 37 },
-    "type": "context",
-    "title": "Module Header: UFD Extension from Univariate to Multivariate",
-    "content": "The docstring situates this proof in its chain: the parent proof established that R[X] is a UFD when R is a UFD (Gauss's theorem). This file extends that result in two directions: (1) iterating to get ℤ[X][Y] = (ℤ[X])[Y] is a UFD, and (2) using Mathlib's MvPolynomial.uniqueFactorizationMonoid to handle genuine multivariate rings MvPolynomial σ R for any fintype σ. The namespace BezoutIdentityMultivarPoly and open statements bring the Polynomial, MvPolynomial, and UniqueFactorizationMonoid APIs into scope.",
-    "mathContext": "Context: $\\mathbb{Z}[X,Y]$ can be presented as either the iterated ring $\\mathbb{Z}[X][Y] = (\\mathbb{Z}[X])[Y]$ or the genuine bivariate ring $\\text{MvPolynomial}(\\text{Fin}\\,2)(\\mathbb{Z})$. These are isomorphic via $\\text{MvPolynomial.finSuccEquiv}$, and both are UFDs.",
-    "significance": "context",
-    "relatedConcepts": ["BezoutIdentityMultivarPoly namespace", "MvPolynomial", "Polynomial", "UniqueFactorizationMonoid"],
-    "prerequisites": ["Lean 4 namespace system", "Mathlib MvPolynomial API"]
-  },
-  {
     "id": "ann-bido-gauss-lemma-chain",
     "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01",
-    "range": { "startLine": 38, "endLine": 55 },
+    "range": {
+      "startLine": 34,
+      "endLine": 55
+    },
     "type": "concept",
     "title": "Gauss's Lemma Chain: ℤ → ℤ[X] → ℤ[X][Y]",
     "content": "The iterated UFD proof applies Gauss's lemma twice: first to get ℤ[X] is a UFD (Polynomial.uniqueFactorizationMonoid applied to ℤ), then again to get (ℤ[X])[Y] is a UFD (applied to ℤ[X]). Gauss's lemma in this form says: if R is a UFD then R[X] is a UFD, because any primitive polynomial in R[X] is irreducible iff it is irreducible over the fraction field K = Frac(R). The full abstract proof uses that R[X] is a GCD domain (from the content map) and that prime factorization exists for primitive polynomials by Kronecker's algorithm.",
-    "mathContext": "Gauss's lemma: $R$ UFD $\\Rightarrow$ $R[X]$ UFD. Chain: $\\mathbb{Z}$ (UFD) $\\xrightarrow{\\text{Gauss}}$ $\\mathbb{Z}[X]$ (UFD) $\\xrightarrow{\\text{Gauss}}$ $\\mathbb{Z}[X][Y]$ (UFD). Each step uses `Polynomial.uniqueFactorizationMonoid : [UniqueFactorizationMonoid R] → UniqueFactorizationMonoid (Polynomial R)`.",
+    "mathContext": "Gauss's lemma: $R$ UFD $\\Rightarrow$ $R[X]$ UFD. Chain: $\\mathbb{Z}$ (UFD) $\\xrightarrow{\\text{Gauss}}$ $\\mathbb{Z}[X]$ (UFD) $\\xrightarrow{\\text{Gauss}}$ $\\mathbb{Z}[X][Y]$ (UFD). Each step: \\texttt{Polynomial.uniqueFactorizationMonoid} $: [\\text{UniqueFactorizationMonoid}\\,R] \\to \\text{UniqueFactorizationMonoid}\\,(\\text{Polynomial}\\,R)$.",
     "significance": "key",
     "relatedConcepts": [
       "Gauss's lemma",
@@ -35,11 +26,14 @@
   {
     "id": "ann-bido-mvpoly-instance",
     "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01",
-    "range": { "startLine": 57, "endLine": 65 },
+    "range": {
+      "startLine": 57,
+      "endLine": 80
+    },
     "type": "definition",
     "title": "MvPolynomial.uniqueFactorizationMonoid: The Key Mathlib Instance",
-    "content": "The core Mathlib result is MvPolynomial.uniqueFactorizationMonoid: given a UFD R and a Fintype σ, the ring MvPolynomial σ R is a UFD. This instance is proved in Mathlib by induction on the cardinality of σ: the base case is R (σ empty), and the inductive step uses Gauss's lemma together with the isomorphism MvPolynomial (Fin (n+1)) R ≃ MvPolynomial (Fin n) (Polynomial R). The Lean proof for ℤ[X,Y] simply invokes this instance at σ = Fin 2, R = ℤ via inferInstance.",
-    "mathContext": "$[\\text{Fintype}\\,\\sigma][\\text{UniqueFactorizationMonoid}\\,R] \\vdash \\text{UniqueFactorizationMonoid}(\\text{MvPolynomial}\\,\\sigma\\,R)$. Induction step: $\\text{MvPolynomial}(\\text{Fin}(n+1))\\,R \\cong \\text{Polynomial}(\\text{MvPolynomial}(\\text{Fin}\\,n)\\,R)$, then apply Gauss's lemma.",
+    "content": "The core Mathlib result is MvPolynomial.uniqueFactorizationMonoid: given a UFD R and a Fintype σ, the ring MvPolynomial σ R is a UFD. This instance is proved in Mathlib by induction on the cardinality of σ: the base case is R (σ empty), and the inductive step uses Gauss's lemma in the form Polynomial.uniqueFactorizationMonoid together with the isomorphism MvPolynomial (Fin (n+1)) R ≃ MvPolynomial (Fin n) (Polynomial R). The Lean proof for ℤ[X,Y] simply invokes this instance at σ = Fin 2, R = ℤ.",
+    "mathContext": "$[\\text{Fintype}\\,\\sigma]\\,[\\text{UniqueFactorizationMonoid}\\,R] \\vdash \\text{UniqueFactorizationMonoid}\\,(\\text{MvPolynomial}\\,\\sigma\\,R)$. Induction: $\\text{MvPolynomial}\\,(\\text{Fin}\\,(n+1))\\,R \\cong \\text{Polynomial}\\,(\\text{MvPolynomial}\\,(\\text{Fin}\\,n)\\,R)$, then apply Gauss.",
     "significance": "key",
     "relatedConcepts": [
       "MvPolynomial.uniqueFactorizationMonoid",
@@ -54,34 +48,16 @@
     ]
   },
   {
-    "id": "ann-bido-fintype-requirement",
-    "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01",
-    "range": { "startLine": 67, "endLine": 80 },
-    "type": "insight",
-    "title": "Fintype σ Requirement: Why the Variable Set Must Be Finite",
-    "content": "The typeclass [Fintype σ] in mv_poly_over_ufd_is_ufd is not merely a technical convenience — infinitely many variables create genuine problems for the inductive UFD proof. The standard proof inducting on |σ| requires a finite base. However, the theorem remains true for infinite σ: a polynomial in infinitely many variables involves only finitely many, so any element factors in a finite subring MvPolynomial (Fin n) R. Mathlib's instance currently requires Fintype, meaning the infinite case is not yet formalized. Kaplansky's theorem provides an alternative approach that may handle the infinite case.",
-    "mathContext": "For infinite $\\sigma$: any $f \\in \\text{MvPolynomial}\\,\\sigma\\,R$ involves finitely many variables, so $f \\in \\text{MvPolynomial}\\,(s)\\,R$ for some finite $s \\subseteq \\sigma$. The UFD property still holds (by the finite-variables case), but Mathlib's `MvPolynomial.uniqueFactorizationMonoid` requires `[Fintype σ]` for the inductive proof.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Fintype typeclass",
-      "infinite polynomial rings",
-      "Kaplansky UFD theorem",
-      "direct limit of rings"
-    ],
-    "prerequisites": [
-      "Fintype vs Infinite in Lean 4",
-      "MvPolynomial variables as indices",
-      "Kaplansky's UFD characterization"
-    ]
-  },
-  {
     "id": "ann-bido-irred-iff-prime",
     "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01",
-    "range": { "startLine": 81, "endLine": 92 },
+    "range": {
+      "startLine": 82,
+      "endLine": 95
+    },
     "type": "theorem",
     "title": "Irreducible ↔ Prime in ℤ[X,Y]: UFD Characterization",
     "content": "In any UFD, irreducible and prime are equivalent: p is irreducible (not a unit, and p = ab implies a or b is a unit) iff p is prime (p | ab implies p | a or p | b). This is proved via UniqueFactorizationMonoid.irreducible_iff_prime in Mathlib. The equivalence fails in general integral domains: in ℤ[√−5], the element 2 is irreducible but not prime (2 | (1+√−5)(1−√−5) = 6 but 2 ∤ 1±√−5). The UFD property is precisely the condition that makes irreducible = prime, enabling Euclid's lemma.",
-    "mathContext": "In a UFD $R$: $p$ irreducible $\\Leftrightarrow$ $p$ prime. Non-UFD failure: in $\\mathbb{Z}[\\sqrt{-5}]$, $2$ is irreducible but $2 \\mid 6 = (1+\\sqrt{-5})(1-\\sqrt{-5})$ while $2 \\nmid (1\\pm\\sqrt{-5})$. In $\\mathbb{Z}[X,Y]$: Euclid's lemma holds via `zxy_euclid_lemma`.",
+    "mathContext": "In a UFD $R$: $p$ irreducible $\\Leftrightarrow$ $p$ prime. Non-UFD failure: in $\\mathbb{Z}[\\sqrt{-5}]$, $2$ is irreducible but $2 \\mid 6 = (1+\\sqrt{-5})(1-\\sqrt{-5})$ while $2 \\nmid (1\\pm\\sqrt{-5})$. In $\\mathbb{Z}[X,Y]$: Euclid's lemma holds by \\texttt{zxy\\_euclid\\_lemma}.",
     "significance": "key",
     "relatedConcepts": [
       "UniqueFactorizationMonoid.irreducible_iff_prime",
@@ -99,11 +75,14 @@
   {
     "id": "ann-bido-variables-prime",
     "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01",
-    "range": { "startLine": 93, "endLine": 108 },
+    "range": {
+      "startLine": 97,
+      "endLine": 115
+    },
     "type": "insight",
     "title": "Variables Are Prime Elements: X, Y Generate Prime Ideals",
     "content": "Every variable Xᵢ in MvPolynomial σ R (over an integral domain R) is a prime element, proved via MvPolynomial.X_prime. This means the ideal (Xᵢ) is a prime ideal: MvPolynomial σ R / (Xᵢ) ≅ MvPolynomial (σ \\ {i}) R (setting the i-th variable to 0 gives a ring with fewer variables, which is an integral domain). From primality and the UFD property, Xᵢ is also irreducible. In ℤ[X,Y], the prime ideals (X) and (Y) are distinct and non-comparable, reflecting that X and Y are algebraically independent.",
-    "mathContext": "$X_i$ prime in $\\text{MvPolynomial}\\,\\sigma\\,R$: $\\text{MvPolynomial}\\,\\sigma\\,R / (X_i) \\cong \\text{MvPolynomial}(\\sigma \\setminus \\{i\\})\\,R$ (integral domain). Hence $(X_i)$ is prime. By UFD: $X_i$ prime $\\Rightarrow$ $X_i$ irreducible. In $\\mathbb{Z}[X,Y]$: $(X)$ and $(Y)$ are height-1 prime ideals in a 3-dimensional ring ($\\dim \\mathbb{Z}[X,Y] = 3$).",
+    "mathContext": "$X_i$ prime in $\\text{MvPolynomial}\\,\\sigma\\,R$: $\\text{MvPolynomial}\\,\\sigma\\,R / (X_i) \\cong \\text{MvPolynomial}\\,(\\sigma \\setminus \\{i\\})\\,R$ (integral domain). Hence $(X_i)$ is prime. By UFD: $X_i$ prime $\\Rightarrow$ $X_i$ irreducible. In $\\mathbb{Z}[X,Y]$: $(X)$ and $(Y)$ are height-1 prime ideals in a 3-dimensional ring ($\\dim \\mathbb{Z}[X,Y] = 3$).",
     "significance": "supporting",
     "relatedConcepts": [
       "MvPolynomial.X_prime",
@@ -118,13 +97,40 @@
     ]
   },
   {
+    "id": "ann-bido-fintype-requirement",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 57,
+      "endLine": 80
+    },
+    "type": "insight",
+    "title": "Fintype σ Requirement: Why Infinitely Many Variables Break the Proof",
+    "content": "The typeclass [Fintype σ] in mv_poly_over_ufd_is_ufd is not merely a technical convenience — infinitely many variables create genuine problems for the UFD proof. The standard proof inducting on |σ| requires a finite base. However, the theorem remains *true* for infinite σ: a polynomial in infinitely many variables involves only finitely many, so any element factors in a finite subring MvPolynomial (Fin n) R. The Mathlib instance currently requires Fintype, meaning the infinite case is not yet formalized. Kaplansky's theorem provides an alternative approach that may handle the infinite case.",
+    "mathContext": "$\\text{MvPolynomial}\\,\\sigma\\,R$ for infinite $\\sigma$: any $f \\in \\text{MvPolynomial}\\,\\sigma\\,R$ involves finitely many variables, so $f \\in \\text{MvPolynomial}\\,(s)\\,R$ for some finite $s \\subseteq \\sigma$. The UFD property still holds (by the finite-variables case), but Mathlib's \\texttt{MvPolynomial.uniqueFactorizationMonoid} requires $[\\text{Fintype}\\,\\sigma]$ for the inductive proof.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fintype typeclass",
+      "infinite polynomial rings",
+      "Kaplansky UFD theorem",
+      "direct limit of rings"
+    ],
+    "prerequisites": [
+      "Fintype vs Infinite in Lean 4",
+      "MvPolynomial variables as indices",
+      "Kaplansky's UFD characterization"
+    ]
+  },
+  {
     "id": "ann-bido-chain-summary",
     "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01",
-    "range": { "startLine": 109, "endLine": 127 },
+    "range": {
+      "startLine": 109,
+      "endLine": 127
+    },
     "type": "concept",
     "title": "UFD Chain and MvPolynomial.finSuccEquiv Equivalence",
-    "content": "The ufd_chain_summary theorem packages the entire Gauss chain ℤ → ℤ[X] → ℤ[X][Y] → ℤ[X][Y][Z] as a conjunction, all proved by inferInstance (typeclass resolution). The algebraic equivalence MvPolynomial (Fin 2) R ≃ₐ[R] Polynomial (Polynomial R) via MvPolynomial.finSuccEquiv formally justifies equating the iterated univariate ring (ℤ[X])[Y] with the genuine bivariate ring ℤ[X,Y]. This equivalence maps X₀ ↦ X (inner variable) and X₁ ↦ Y (outer variable), preserving the ring structure.",
-    "mathContext": "$\\text{MvPolynomial}(\\text{Fin}\\,2)\\,R \\cong_R \\text{Polynomial}(\\text{Polynomial}\\,R)$ via $X_0 \\mapsto X$, $X_1 \\mapsto Y$. This isomorphism (`MvPolynomial.finSuccEquiv`) connects the two perspectives: iterated univariate vs genuine multivariate. All UFD instances are resolved by `inferInstance` — pure typeclass search.",
+    "content": "The ufd_chain_summary theorem packages the entire Gauss chain ℤ → ℤ[X] → ℤ[X][Y] → ℤ[X][Y][Z] as a conjunction, all proved by inferInstance (typeclass resolution). The comment at line 119-121 notes the algebraic equivalence MvPolynomial (Fin 2) R ≃ₐ[R] Polynomial (Polynomial R) via MvPolynomial.finSuccEquiv, which formally justifies equating the iterated univariate ring (ℤ[X])[Y] with the genuine bivariate ring ℤ[X,Y]. This equivalence maps X₀ ↦ X (inner variable) and X₁ ↦ Y (outer variable), preserving the ring structure.",
+    "mathContext": "$\\text{MvPolynomial}\\,(\\text{Fin}\\,2)\\,R \\cong_R \\text{Polynomial}(\\text{Polynomial}\\,R)$ via $X_0 \\mapsto X$, $X_1 \\mapsto Y$. This isomorphism (\\texttt{MvPolynomial.finSuccEquiv}) connects the two perspectives: iterated univariate vs genuine multivariate.",
     "significance": "supporting",
     "relatedConcepts": [
       "MvPolynomial.finSuccEquiv",

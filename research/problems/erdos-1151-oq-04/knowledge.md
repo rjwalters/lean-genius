@@ -43,38 +43,27 @@ chebyshev_lebesgue_growth [sorry] + divergence_from_lebesgue_growth [sorry]
 - `chebyshevNode_injective`: nodes are distinct
 - `n_mul_chebyshevAngle`, `chebyshevAngle_pos`, `chebyshevAngle_lt_pi`, etc. [arithmetic helpers]
 
-## Sorries Remaining (3 in main file, as of 2026-04-25)
+## Sorries Remaining (2 in main file, as of 2026-04-24)
 
-### 0. `trig_sum_lb_of_cos_eq_neg_one` (line ~850) — HARD, strategy known
-**Goal**: (1/(2π))·n·log(n+1) ≤ Σₖ sin(φₖ)/|(-1) - cos φₖ|
-
-This handles the x = -1 sub-case (e.g., p = q = 1 giving cos(π) = -1).
-
-**Proof strategy**:
-- `sum_term_eq_tan_half_angle`: each term = tan(φₖ/2) = sin(φₖ/2)/cos(φₖ/2)
-- For k = n-1-j (j = 0,...,⌊n/4⌋-1): φₖ = π - (2j+1)π/(2n), so φₖ/2 = π/2 - (2j+1)π/(4n)
-- tan(φₖ/2) = cot((2j+1)π/(4n)) ≥ 1/(2·(2j+1)π/(4n)) = 2n/(π(2j+1)) by `cot_ge_inv_two_mul`
-- Sub-sum: Σⱼ₌₀^{⌊n/4⌋-1} 2n/(π(2j+1)) ≥ (n/π)·log(⌊n/4⌋+1) ≥ C·n·log(n+1)
-
-### 1. `chebyshev_trig_sum_lb` (line ~879) — HARD, strategy known
+### 1. `chebyshev_trig_sum_lb` (line 760) — HARD, strategy known
 **Goal**: ∃ C₂ > 0, ∀ n ≥ 1, C₂·n·log(n+1) ≤ Σₖ sin(φₖ)/|x - cos φₖ|
 
-**CORRECTION**: Previous analysis incorrectly claimed x = cos(πp/q) ≠ ±1 for odd p,q.
-In fact, p = q = 1 gives x = cos(π) = -1. The proof requires two cases:
-
-**Case 1: x = -1** (p/q is an odd integer, e.g., p = q = 1):
-- Use `trig_sum_lb_of_cos_eq_neg_one` directly
-
-**Case 2: x ∈ (-1, 1)** (p/q ∉ ℤ, equivalently sin(πp/q) ≠ 0):
-- Let s = |sin(πp/q)| > 0
-- Nearest node k₀: choose k₀ with |θ - φₖ₀| ≤ π/(2n) where θ = πp/q
-- Lipschitz: |cos θ - cos φₖ| ≤ |θ - φₖ| ≤ j·π/n for k = k₀ + j
-- sin(φₖ) ≥ s/2 for nodes within distance π/(s·n) from k₀
-- Harmonic sum: S_n ≥ (s·n/(2π))·Hₘ ≥ (s·n/(2π))·log(⌊n·s/(2π)⌋+1) ≥ C₂·n·log(n+1)
-- Take C₂ = s²/(4π²)
+**Proof strategy** (see docstring in file, ~200 lines):
+- Let θ = πp/q (fixed), φₖ = (2k+1)π/(2n) (Chebyshev nodes)
+- Since sin(θ) > 0 for x = cos(θ) ∈ (-1,1) and p,q odd, we have x ≠ ±1
+- Nearest node k₀: choose k₀ with |φₖ₀ - θ| ≤ π/(2n)
+- Lipschitz: |cos θ - cos φₖ| ≤ |θ - φₖ| (cos is 1-Lipschitz)
+- Node spacing: |θ - φₖ₀₊ⱼ| ≈ j·π/n for |j| ≤ n/2
+- For nodes near k₀: sin(φₖ) ≥ sin(θ)/2 (continuity of sin)
+- Harmonic sum: Σⱼ₌₁^{n/2} 1/j ≥ log(n/2 + 1) by `log_add_one_le_harmonic`
+- Combining: S_n ≥ (n·sin(θ)/2π)·log(n/2+1) = C₂·n·log(n+1) up to constants
+- **Case x = ±1** (θ = 0 or π, sin(θ) = 0): requires separate cot argument
+  - p,q both odd ⟹ cos(πp/q) = cos(odd·π/odd) ≠ ±1 for any valid p,q
+  - So this case never occurs in our hypotheses — may simplify the proof
 
 **Mathlib tools available**:
-- `Real.log_add_one_le_harmonic` for harmonic bound
+- `Real.log_add_one_le_harmonic` or `Finset.log_le_sum_one_div` for harmonic bound
+- `Real.abs_cos_sub_cos_le` or manual Lipschitz via MVT
 - `Real.sin_pos_of_pos_of_lt_pi` for sin(φₖ) > 0
 
 ### 2. `divergence_from_lebesgue_growth` (line 838) — OPEN, fundamental gap
@@ -122,33 +111,12 @@ The current statement with `M < Lₙf(x)` (signed divergence) may require full l
 ### Key Findings
 - Proof of sorry #1 is TRACTABLE but requires careful case analysis and harmonic sum estimates
 - Sorry #2 has a genuine mathematical gap: the current statement may be stronger than what UBP gives
-- **CORRECTION**: p, q both odd does NOT imply cos(πp/q) ∉ {±1}. Example: p = q = 1 gives cos(π) = -1.
-  The proof needs two cases: x = -1 (use cot/tan bound) and x ∈ (-1,1) (use Lipschitz + sin bound)
-- The main theorem `erdos_1941_divergence_from_growth` is proved — only intermediate lemmas remain
+- p, q both odd ⟹ cos(πp/q) ∉ {±1}, so the degenerate case in sorry #1 never applies
+- The main theorem `erdos_1941_divergence_from_growth` is proved — only the two intermediate lemmas remain
 
 ### Next Steps
-1. Prove `trig_sum_lb_of_cos_eq_neg_one`: harmonic sum via cot ≥ 1/(2t) bound
-2. Prove `chebyshev_trig_sum_lb` using the two-case strategy documented in the file
-3. For sorry #2 (`divergence_from_lebesgue_growth`): weaken to lim sup = ∞ first (provable by UBP)
-
-## Session 2026-04-25 — Helper Lemmas Added
-
-**Outcome**: progress — 5 new proved lemmas, corrected x=-1 analysis  
-**Sorries changed**: 2 → 3 (added `trig_sum_lb_of_cos_eq_neg_one` as an intermediate sorry; structural progress)
-
-### What I Did
-- Corrected mathematical error: x = cos(πp/q) = -1 IS possible (p = q = 1). Two-case proof needed.
-- Added auxiliary lemmas section to `Erdos1151OQ04.lean` (worktree: `feature/researcher-10`):
-  - `cos_ge_half_of_le_pi_div_three`: cos(t) ≥ 1/2 for t ∈ [0, π/3] — from antitoneOn_cos
-  - `cot_ge_inv_two_mul`: cot(t) ≥ 1/(2t) for t ∈ (0, π/3] — from sin(t) ≤ t and cos(t) ≥ 1/2
-  - `sin_div_one_add_cos`: sin(φ)/(1+cos φ) = tan(φ/2) for φ ∈ (0, π) — half-angle formula
-  - `chebyshevAngle_pos_lt_pi`: φₖ = (2k+1)π/(2n) ∈ (0, π) — simple arithmetic
-  - `sum_term_eq_tan_half_angle`: sin(φₖ)/|(-1)-cos(φₖ)| = tan(φₖ/2) — key reduction for x=-1
-  - `trig_sum_lb_of_cos_eq_neg_one` [sorry]: lower bound for x=-1 case
-- Fixed sign error from previous session: |(-1)-cos φ| = 1+cos φ (not 1-cos φ); result is tan (not cot)
-
-### Key Findings
-- `cot_ge_inv_two_mul`: 1/(2t) ≤ cos(t)/sin(t) for t ≤ π/3. Proved via sin(t)≤t and cos(t)≥1/2.
-- `sum_term_eq_tan_half_angle` proof: abs_of_neg + half-angle formula. The `set` tactic was avoided
-  to allow `ring` to close the argument equality `φ/2 = (2k+1)π/(4n)` after `rw [harg]`.
-- Note: `congr 1 <;> ring` does NOT work on sin/cos goals; need explicit `have harg` + `rw [harg]`.
+1. Attempt sorry #1 (`chebyshev_trig_sum_lb`): Use Lipschitz + harmonic sum, ~200 lines
+   - Start with `have hsin_pos : 0 < Real.sin (↑p * Real.pi / ↑q)` from p,q odd hypotheses
+   - Use `Finset.sum_div_le_harmonic` or manual Σ 1/j ≥ log bound
+2. For sorry #2: consider weakening to lim sup = ∞ first (provable), then escalate to full divergence
+3. If sorry #1 is proved, the full proof reduces to sorry #2 alone

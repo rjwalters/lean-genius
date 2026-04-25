@@ -64,7 +64,7 @@ export function ProofConclusion({ proof }: ProofConclusionProps) {
             </h3>
             <div className="bg-green-500/5 rounded-lg p-4 border border-green-500/20">
               <MarkdownMath className="text-foreground/90 leading-relaxed">
-                {Array.isArray(conclusion.implications) ? conclusion.implications.join(' ') : conclusion.implications}
+                {conclusion.implications}
               </MarkdownMath>
             </div>
           </section>

@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: hook_walk_identity_atMostTwoCols proved (session 20); sorry scope reduced to ≥3-row ≥3-col non-gHookYD only; 4 sorries remain",
+    "progressSummary": "PROGRESS: hookProd_ratio_formula proved (session 18); 4 sorries remain (hook_walk_identity ≥3-row + 3 legacy)",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -98,16 +98,7 @@
       "removeCorner_atMostTwoRows (BallotProblemOQ03OQ01OQ02.lean:4639): removing corner from ≤2-row shape stays ≤2-row",
       "hook_walk_identity_atMostTwoRows (BallotProblemOQ03OQ01OQ02.lean:4659): hook walk identity proved for all ≤2-row shapes, non-circular",
       "hook_walk_identity (BallotProblemOQ03OQ01OQ02.lean:4714): case split — ≤2-row proved, ≥3-row sorry",
-      "hookProd_ratio_formula: proved 0-sorry in BallotProblemOQ03OQ01OQ02.lean session 18",
-      "corners_gHookYD_cases (BallotProblemOQ03OQ01OQ02.lean:~5058): characterizes corners of gHookYD a b ha (b≥1) as (0,a-1) with a≥2 OR (b,0)",
-      "hook_walk_identity_gHookYD (BallotProblemOQ03OQ01OQ02.lean:~5100): hook walk identity proved for all [a,1^b] shapes with b≥1, non-circular proof via hook_length_formula_gHookYD",
-      "card_transpose: μ.transpose.card = μ.card (BallotProblemOQ03OQ01OQ02.lean:5198)",
-      "hookLength_transpose: hookLength(μ,i,j) = hookLength(μ.transpose,j,i) (BallotProblemOQ03OQ01OQ02.lean:5205)",
-      "hookProd_transpose: hookProd(μ) = hookProd(μ.transpose) (BallotProblemOQ03OQ01OQ02.lean:5213)",
-      "sytTranspose + sytTranspose_injective + card_SYT_transpose: SYT(μ) ≃ SYT(μ.transpose) (BallotProblemOQ03OQ01OQ02.lean:5231-5275)",
-      "removeCorner_atMostTwoCols: corner removal preserves ≤2-col (BallotProblemOQ03OQ01OQ02.lean:5277)",
-      "hook_length_formula_atMostTwoCols: HLF for ≤2-col shapes, 0 sorries (BallotProblemOQ03OQ01OQ02.lean:5295)",
-      "hook_walk_identity_atMostTwoCols: hook walk identity for ≤2-col shapes (BallotProblemOQ03OQ01OQ02.lean:5306)"
+      "hookProd_ratio_formula: proved 0-sorry in BallotProblemOQ03OQ01OQ02.lean session 18"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -160,23 +151,16 @@
       "General (≥3-row) case still requires GNW probabilistic proof (~300 lines) or RSK (~500 lines) — not buildable in a single session",
       "hookProd_ratio_formula proved using ℕ-equality-then-cast strategy: key_nat avoids division, then linear_combination key_Q closes after prod_div_distrib",
       "Finset.prod_image injectivity: .2 for (i,s) image, .1 for (r,j) image; Prod.ext h.symm rfl proves (i,x.2)=x from x.1=i",
-      "disjoint_sdiff_self_right proves Disjoint s (t\\s) for restCells=ν.cells\\(arm∪leg)",
-      "hook_walk_identity_gHookYD is provable non-circularly because hook_length_formula_gHookYD was independently proved in session 14 via combinatorial formula C(a+b-1,b)",
-      "a=1 edge case in corners_gHookYD: (0,0) is NOT a top-right corner when a=1 because (1,0)∈gHookYD (b≥1) prevents it from being a corner",
-      "hook_walk_identity sorry scope: now covers only ≥3-row shapes that are NOT gHookYD — shapes like [3,2,1], [4,3,2], etc. require GNW probabilistic proof",
-      "Transpose duality: all three key quantities (hookProd, SYT count, cell count) are invariant under YoungDiagram.transpose",
-      "sytTranspose bijection: T.entry(i,j) maps to T.entry(j,i); row-strict ↔ col-strict under transpose",
-      "hook_walk_identity remaining sorry scope narrowed to ≥3-row AND ≥3-col AND non-gHookYD shapes (e.g. [3,2,1], [4,3,2])"
+      "disjoint_sdiff_self_right proves Disjoint s (t\\s) for restCells=ν.cells\\(arm∪leg)"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
       "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux"
     ],
     "nextSteps": [
-      "Prove hook_walk_identity for ≥3-row non-gHookYD shapes via GNW probabilistic hook walk (~200-300 lines)",
-      "Simpler stepping stone: prove hook_walk_identity for shapes with exactly 3 rows",
-      "Fix ni_count_eq_syt_count statement (RSK bijection, FALSE as stated — needs hypothesis relating μ to LGV config)",
-      "Archive sessions 5-18 to sessions/ subdir (knowledge.md >700 lines)"
+      "Prove hook_walk_identity ≥3-row case: needs GNW probabilistic hook walk (~200-300 lines)",
+      "Archive sessions 5-17 to sessions/ subdir (knowledge.md >500 lines)",
+      "Fix ni_count_eq_syt_count statement (RSK bijection, FALSE as stated)"
     ]
   },
   "tags": [
@@ -198,7 +182,6 @@
     "ballot-problem-oq-03",
     "ballot-problem-oq-03-oq-01",
     "ballot-problem-oq-03-oq-01-oq-01",
-    "ballot-problem-oq-03-oq-01-oq-01-oq-01",
     "ballot-problem-oq-03-oq-01-oq-02",
     "ballot-problem-oq-03-oq-01-oq-04",
     "ballot-problem-oq-03-oq-02",
@@ -376,37 +359,15 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01.lean"
     },
     {
-      "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 346,
-      "theoremCount": 9,
-      "axiomCount": 0,
-      "defCount": 5,
-      "sorryCount": 1,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean"
-    },
-    {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "filename": "BallotProblemOQ03OQ01OQ02.lean",
-      "lineCount": 5275,
-      "theoremCount": 64,
+      "lineCount": 3585,
+      "theoremCount": 62,
       "axiomCount": 0,
       "defCount": 10,
-      "sorryCount": 10,
+      "sorryCount": 9,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean",
-      "filename": "BallotProblemOQ03OQ01OQ02Aristotle.lean",
-      "lineCount": 114,
-      "theoremCount": 3,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 4,
-      "isAristotle": true,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ04.lean",

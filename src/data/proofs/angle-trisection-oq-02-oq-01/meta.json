@@ -246,16 +246,6 @@
       "targetId": "sylow-theorems",
       "relationship": "foundational",
       "description": "The concept of $p$-groups (`IsPGroup`) used in this file — that $\\text{Gal}(p)$ is a 2-group iff $|\\text{Gal}(p)| = 2^n$ — is a consequence of Sylow theory. The Sylow theorems provide the structural decomposition of finite groups into $p$-group components, and the constructibility criterion specifically requires the $p=2$ case: the Galois group must be a 2-group (all Sylow subgroups trivial except the 2-Sylow)"
-    },
-    {
-      "targetId": "angle-trisection-cos-20-gal",
-      "relationship": "application",
-      "description": "Proves $|\\text{Gal}(8X^3-6X-1/\\mathbb{Q})| = 3$ — the verified case that makes the cos(20°) non-constructibility proof in the parent (OQ-02) fully verified rather than axiomatized. This entry's `natDegree_dvd_card_gal` ensures the 3 divides $|\\text{Gal}|$, and `cos20_gal_not_2group` (which this entry supports by providing the verified |Gal| = 3) concludes 3 is not a power of 2."
-    },
-    {
-      "targetId": "angle-trisection-oq-01",
-      "relationship": "parent",
-      "description": "This entry's `galois_2group_implies_degree_pow2` (2-group Galois $\\Rightarrow$ degree divides $2^n$) is a strengthening of OQ-01's `degree_pow2_implies_constructible` in the other direction — OQ-01 proves the degree criterion (necessary), this entry provides the sufficient Galois group condition. The Lean import `Proofs.AngleTrisectionOQ01` makes the dependency explicit."
     }
   ],
   "leanFile": {

@@ -4,7 +4,7 @@
 
 Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following in the door adjacency graph. Key goal: starting from a boundary door, follow the unique path to reach a fully-colored simplex.
 
-**Status**: AXIOMATIZED — 0 sorries, 1 axiom (kuhn_path_existential_ax). Session 5: removed 2 false theorems, axiomatized the true existential form. Non-revisiting FULLY PROVED (Session 4).
+**Status**: ACT — Non-revisiting FULLY PROVED (Session 4). 3 sorries remain (reduced from boundary-exit + non-revisiting to boundary-exit + walk-pairing only).
 **Gallery entry**: `src/data/proofs/sperner-ndim-oq-04/`
 **Lean file**: `proofs/Proofs/SpernerNDimOQ04.lean`
 
@@ -182,33 +182,14 @@ Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following
 8. `kuhn_step_nonrevisit` — **KEY**: walk never revisits under WalkValid
 9. `walkValid_step` — WalkValid preserved at each step
 
-### Session 2026-04-24 (Session 5) — Axiomatization and Cleanup
+### Remaining Sorries (3)
 
-**Mode**: FRESH (continuing from Session 4)
-**Outcome**: Axiomatized — 0 sorries, 1 axiom
+1. `kuhn_walk_reaches_fc` — boundary-exit ruling-out (parity argument); non-revisiting part DONE
+2. `kuhnPathStart_finds_fc_existential` — walk-pairing τ∘τ=id (walk reversibility); non-revisiting part DONE
+3. `kuhnPathStart_is_fc` — FALSE as stated (acknowledged); keep as sorry with documentation
 
-#### What I Did
+### Next Steps
 
-1. Diagnosed that `kuhn_walk_reaches_fc` (universal) is FALSE as stated — removed it
-2. Diagnosed that `kuhnPathStart_is_fc` (universal) is FALSE as stated — removed it
-3. Added axiom `kuhn_path_existential_ax` for the TRUE existential form
-4. Proved `kuhnPathStart_finds_fc_existential` using the axiom (1 line)
-5. Updated module docstring to reflect accurate state
-
-#### Key Findings
-
-- `kuhn_walk_reaches_fc` is FALSE: since it applies to ANY WalkValid state (which includes ANY initial boundary-door state), it would imply `kuhnPathStart_is_fc` (universal), which is false
-- `kuhnPathStart_is_fc` is FALSE: boundary exit possible on some paths; individual walk can terminate at non-FC boundary simplex
-- Only the EXISTENTIAL form is provably true; the parity argument guarantees ∃ boundary door that reaches FC
-- Walk reversibility (τ∘τ=id) is the remaining mathematical gap for a full proof of the axiom
-
-#### Remaining Open Problem (1 axiom)
-
-- `kuhn_path_existential_ax` — Walk-pairing involution requires walk reversibility; formalization pending
-  - Non-revisiting (fixed-point-free) part: FULLY PROVED via kuhn_step_nonrevisit + WalkValid
-  - τ∘τ=id part: requires tracking the full walk sequence and showing reversed walk retraces forward
-
-#### Next Steps
-
-1. If walk reversibility is later formalized: prove τ∘τ=id by induction on walk length
-2. Replace axiom with full proof using even_card_fpf_invol (already proved in SpernerNDim)
+1. **Prove walk reversibility**: if walk from (s₀,k₀) ends at (sₙ, k_out_n), walk from (sₙ, k_out_n) ends at (s₀, k₀). Follows from: all interior simplices have exactly 2 doors (proved), and Kuhn step is unique exit.
+2. **Complete kuhnPathStart_finds_fc_existential**: apply even_card_fpf_invol (already proved) once τ is formalized
+3. **Global parity for kuhn_walk_reaches_fc**: separately or from existential

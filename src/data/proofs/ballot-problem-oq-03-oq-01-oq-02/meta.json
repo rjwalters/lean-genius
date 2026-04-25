@@ -2,7 +2,7 @@
   "id": "ballot-problem-oq-03-oq-01-oq-02",
   "title": "Hook-Length Formula for Standard Young Tableaux via LGV",
   "slug": "ballot-problem-oq-03-oq-01-oq-02",
-  "description": "Formalizes the hook-length formula f^λ = n!/∏h(u) for Standard Young Tableaux. Fully proves the formula for single-row (1×n), single-column (n×1), hook-shape ((m+1,1)), 2-row rectangular (m×m), general 2-row [a,b], all generalized hook shapes [a,1^b], and all ≤2-column shapes (via transpose duality). General formula has 4 sorries: 3 via LGV approach + 1 for hook_walk_identity (≥3-row AND ≥3-col AND non-gHookYD case only).",
+  "description": "Formalizes the hook-length formula f^λ = n!/∏h(u) for Standard Young Tableaux. Fully proves the formula for single-row (1×n), single-column (n×1), hook-shape ((m+1,1)), 2-row rectangular (m×m), and general 2-row [a,b] families. General formula has 4 sorries: 3 via LGV approach (RSK bijection, det factorization, main theorem) + 1 for corner induction (hook_walk_identity ≥3-row case). hookProd_ratio_formula now proved (session 18). hook_length_formula_general proved via corner induction modulo hook_walk_identity.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-21",
@@ -22,9 +22,9 @@
     "sorries": 4,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "Four open sorries: (1) hook_length_formula (LGV approach: requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) hook_walk_identity ≥3-row non-gHookYD case (GNW or RSK, ~300 lines; at-most-2-row and all [a,1^b] cases proved; hookProd_ratio_formula fully proved session 18, hook_walk_identity_gHookYD proved session 19). hook_length_formula_general is proved modulo hook_walk_identity via Part XIV corner induction.",
-    "lineCount": 5274,
-    "theoremCount": 164,
+    "assumptions": "Four open sorries: (1) hook_length_formula (LGV approach: requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) hook_walk_identity ≥3-row case (GNW or RSK, ~300 lines; at-most-2-row case proved; hookProd_ratio_formula now fully proved session 18). hook_length_formula_general is proved modulo hook_walk_identity via Part XIV corner induction.",
+    "lineCount": 5146,
+    "theoremCount": 162,
     "definitionCount": 14,
     "originalContributions": [
       "hookLength: hook length at cell (i,j) = armLen + legLen + 1 using YoungDiagram.rowLen and colLen",
@@ -44,9 +44,7 @@
       "hook_length_formula_gHookYD: HLF for all generalized hook shapes [a, 1^b] (card = C(a+b-1,b), proved via double induction + inline bijection, 0 sorries)",
       "hookProd_ratio_formula: hookProd(μ)/hookProd(μ\\c) equals product over arm × product over leg (1 sorry: ~50 lines Finset.prod_union decomposition)",
       "hook_walk_identity: sum over corners c of hookProd(μ)/hookProd(μ\\c) = μ.card — at-most-2-row case proved; ≥3-row case has 1 sorry (~300 lines GNW/RSK)",
-      "hook_length_formula_general: HLF for all Young diagrams via corner induction (proved modulo hook_walk_identity, 0 sorries in the theorem itself)",
-      "corners_gHookYD_cases: characterizes all corners of [a,1^b] as either (0,a-1) with a≥2 or (b,0) (proved, 0 sorries, session 19)",
-      "hook_walk_identity_gHookYD: hook walk identity Σ_c hookProd/hookProd(μ\\c)=|μ| proved for all [a,1^b] with b≥1, non-circular via hook_length_formula_gHookYD (session 19)"
+      "hook_length_formula_general: HLF for all Young diagrams via corner induction (proved modulo hook_walk_identity, 0 sorries in the theorem itself)"
     ]
   },
   "overview": {
@@ -89,7 +87,7 @@
       "LGV"
     ],
     "namespace": "HookLengthFormula",
-    "lineCount": 5452,
+    "lineCount": 5146,
     "axiomCount": 0,
     "sorries": 4,
     "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",

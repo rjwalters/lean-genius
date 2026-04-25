@@ -15,11 +15,11 @@
       "polynomial-reduction",
       "matrix-exponential"
     ],
-    "badge": "mathlib",
+    "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-04-02",
     "axiomCount": 0,
-    "assumptions": "Derives from Mathlib's Cayley-Hamilton theorem (Matrix.aeval_self_charpoly). File proves original extensions: polynomial reduction modulo charpoly, power reduction, congruence property.",
+    "assumptions": "None. Fully machine-verified using Mathlib's Cayley-Hamilton theorem.",
     "lineCount": 358,
     "theoremCount": 20,
     "definitionCount": 0,

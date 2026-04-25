@@ -139,16 +139,6 @@
       "targetId": "fundamental-theorem-algebra",
       "relationship": "complementary",
       "description": "FTA guarantees roots exist in $\\mathbb{C}$; the 2-group criterion determines which algebraic numbers lie in the compass-and-straightedge closure of $\\mathbb{Q}$"
-    },
-    {
-      "targetId": "angle-trisection-cos-20-gal",
-      "relationship": "dependency",
-      "description": "Proves $|\\text{Gal}(8X^3-6X-1/\\mathbb{Q})| = 3$ — the key result used in `cos20_gal_not_2group` to certify $\\cos(20°)$ non-constructible. This companion entry eliminates the `cos20_gal_order` axiom that was previously assumed in this file's predecessor, upgrading the cos(20°) non-constructibility proof from axiomatized to fully verified."
-    },
-    {
-      "targetId": "angle-trisection-oq-01",
-      "relationship": "extended-by",
-      "description": "OQ-01 proves the necessary condition (constructible $\\Rightarrow$ degree divides $2^n$); OQ-02 (this entry) proves the complete biconditional via Galois 2-groups. The derived theorem `galois_2group_implies_degree_pow2` makes the implication OQ-02 $\\Rightarrow$ OQ-01 explicit in Lean."
     }
   ],
   "overview": {
