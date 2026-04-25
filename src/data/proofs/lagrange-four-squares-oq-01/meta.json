@@ -15,11 +15,12 @@
       "quadratic-forms",
       "sums-of-squares"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified.",
+    "mathlibDependencies": [{"theorem": "Nat.sum_four_squares", "description": "Every natural number is a sum of four squares — used as foundation for four_square_exists_bounded", "module": "Mathlib.NumberTheory.SumFourSquares"}],
+    "assumptions": "Core existential result (four_square_exists_bounded) uses Mathlib's Nat.sum_four_squares. Algorithm, bounds, and verification proofs are independently proved.",
     "lineCount": 395,
     "theoremCount": 71,
     "definitionCount": 9,
@@ -31,7 +32,7 @@
       "Representation uniqueness analysis: 1, 2, 3, 5, 6, 7, 8 have unique sorted representations; first multiply-represented numbers identified",
       "isExcludedForm and excluded_form_check_50: detection of the 4^a(8b+7) form (Legendre's three-square theorem criterion)",
       "largest_component_bounds: \u221a(n/4) \u2264 a \u2264 \u221an for sorted representations",
-      "four_square_exists_bounded: Lagrange's theorem with all \u221an component bounds simultaneously"
+      "four_square_exists_bounded: derived from Mathlib's Nat.sum_four_squares, adds \u221an component bounds simultaneously"
     ]
   },
   "overview": {
