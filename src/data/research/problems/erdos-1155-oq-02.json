@@ -67,8 +67,15 @@
     "turan-theory"
   ],
   "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-115",
     "erdos-1155",
-    "erdos-1155-oq-01"
+    "erdos-1155-oq-01",
+    "erdos-1155-oq-01-oq-01",
+    "erdos-1155-oq-01-oq-06",
+    "erdos-1155-oq-01-oq-07",
+    "erdos-1155-oq-02"
   ],
   "references": {
     "papers": [],
@@ -81,15 +88,70 @@
   "tractability": 5,
   "leanFiles": [
     {
+      "path": "Proofs/Erdos1155OQ01.lean",
+      "filename": "Erdos1155OQ01.lean",
+      "lineCount": 412,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1155OQ01OQ01.lean",
+      "filename": "Erdos1155OQ01OQ01.lean",
+      "lineCount": 297,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1155OQ01OQ06.lean",
+      "filename": "Erdos1155OQ01OQ06.lean",
+      "lineCount": 11,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ01OQ06.lean"
+    },
+    {
+      "path": "Proofs/Erdos1155OQ01OQ07.lean",
+      "filename": "Erdos1155OQ01OQ07.lean",
+      "lineCount": 356,
+      "theoremCount": 21,
+      "axiomCount": 3,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ01OQ07.lean"
+    },
+    {
       "path": "Proofs/Erdos1155OQ02.lean",
       "filename": "Erdos1155OQ02.lean",
-      "lineCount": 290,
-      "theoremCount": 13,
-      "axiomCount": 2,
+      "lineCount": 315,
+      "theoremCount": 9,
+      "axiomCount": 1,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1155Problem.lean",
+      "filename": "Erdos1155Problem.lean",
+      "lineCount": 225,
+      "theoremCount": 7,
+      "axiomCount": 6,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155Problem.lean"
     }
   ]
 }
