@@ -454,6 +454,11 @@
       "targetId": "cayley-hamilton",
       "relationship": "related",
       "description": "The eigenvalues of an $n \\times n$ matrix $M$ are the roots of its characteristic polynomial $\\chi_M(\\lambda) = \\det(\\lambda I - M)$, a degree-$n$ polynomial. Abel-Ruffini implies that for $n \\geq 5$, these eigenvalues generally have no closed-form expression in radicals — yet Cayley-Hamilton guarantees $\\chi_M(M) = 0$ regardless. This contrast between algebraic satisfaction (the matrix annihilates its own characteristic polynomial) and radical inexpressibility (the eigenvalues cannot be named by radicals for general $n \\geq 5$) illustrates the distinction between existence (eigenvalues exist in $\\mathbb{C}$ by FTA) and expressibility (they cannot always be written using $+, -, \\times, \\div, \\sqrt[n]{\\phantom{x}}$). Cayley-Hamilton is thus the linear-algebraic dual of Abel-Ruffini: one guarantees a polynomial is satisfied, the other shows the roots of a polynomial need not be expressible in radicals"
+    },
+    {
+      "targetId": "solution-of-cubic-oq-03-oq-05",
+      "relationship": "foundational",
+      "description": "Proves Vieta's formulas for the general cubic $x^3 + ax^2 + bx + c = (x-r_1)(x-r_2)(x-r_3)$ over any commutative ring: $a = -(r_1+r_2+r_3)$, $b = r_1r_2+r_1r_3+r_2r_3$, $c = -r_1r_2r_3$. Machine-verifies the foundational reason Galois groups act by permutations: the polynomial coefficients are the elementary symmetric polynomials $\\sigma_1, \\sigma_2, \\sigma_3$ in the roots, hence invariant under every permutation of the roots — so the Galois group permutes roots while fixing coefficients in the base field. Abel-Ruffini's impossibility for degree $\\geq 5$ amounts to: $S_5$ permutes five roots, but no composition of $+, -, \\times, \\div, \\sqrt[n]{\\phantom{x}}$ can extract individual roots from the symmetric-polynomial data encoded in the four coefficients, precisely because $S_5$ is not solvable. This entry bridges the abstract Abel-Ruffini story to the concrete degree-3 case, illustrating why symmetric polynomial invariance is both what makes Galois theory work (coefficients are symmetric functions) and what prevents radical solving in degree 5 (the symmetry group is too large and non-solvable)"
     }
   ],
   "references": [
