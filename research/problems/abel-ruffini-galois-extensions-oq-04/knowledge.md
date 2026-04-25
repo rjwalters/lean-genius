@@ -14,6 +14,37 @@ in `Mathlib.Order.JordanHolder`. The three required axioms are:
 
 ---
 
+## Session 2026-04-25 (Session 2) — COMPLETED: All 6 fields proved
+
+**Mode**: REVISIT
+**Outcome**: completed — closed final sorry in `isMaximal_inf_left_of_isMaximal_sup`
+
+### What Was Done
+- Identified that the "HARD" sorry (maximality case, N ⊔ y = x ⊔ y) is actually provable by a direct element-wise argument, no simplicity transfer needed:
+  - For any a ∈ x: since N ⊔ y = x ⊔ y, we have a ∈ N ⊔ y
+  - By `Subgroup.mem_sup`: ∃ n ∈ N, b ∈ y, n * b = a
+  - Since n ∈ N ≤ x and a ∈ x: b = n⁻¹ * a ∈ x (closed under mul and inv)
+  - b ∈ x ∩ y = x ⊓ y ≤ N, so b ∈ N
+  - a = n * b ∈ N (N closed under mul)
+  - Hence x ≤ N; combined with N ≤ x: N = x ✓
+- Replaced sorry with 13-line element-wise proof
+- Updated meta.json: status → verified, badge → verified, sorries → 0
+- Key Mathlib lemmas: `Subgroup.mem_sup` (Lattice.lean:592), `Subgroup.mem_inf` (Lattice.lean:233)
+
+### Key Findings
+- The "simplicity transfer" approach mentioned in comments was overcomplicated — a direct lattice argument suffices
+- Element-wise argument is structurally clean: uses only `mem_sup`, `mul_mem`, `inv_mem`, `mem_inf`
+- This closes the JordanHolderLattice (Subgroup G) TODO in Mathlib.Order.JordanHolder
+
+### Files Modified
+- `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ04.lean` (253 lines, 0 sorries)
+- `src/data/proofs/abel-ruffini-galois-extensions-oq-04/meta.json` (status: verified)
+
+### Next Steps
+- None — proof is complete. Candidate for Mathlib contribution.
+
+---
+
 ## Session 2026-04-24 (Session 1) — JordanHolderLattice Instance: 5/6 Proved
 
 **Mode**: FRESH

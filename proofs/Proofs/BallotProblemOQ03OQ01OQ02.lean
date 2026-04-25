@@ -5180,6 +5180,181 @@ private lemma hook_walk_identity_gHookYD (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
   rw [← Finset.sum_mul, ← hstepQ, mul_div_assoc, hμ, hfact_succ]
   field_simp [hfact]
 
+-- ============================================================
+-- PART XV: Transpose Duality and Hook Walk for ≤2-Column Shapes
+-- ============================================================
+
+/-
+  We extend hook_walk_identity to cover shapes with at most 2 columns.
+  Key tools:
+  1. hookProd μ = hookProd μ.transpose  (hook lengths are symmetric under transpose)
+  2. card(SYT μ) = card(SYT μ.transpose)  (bijection via T ↦ sytTranspose T)
+  3. μ.colLen 2 = 0 → μ.transpose.rowLen 2 = 0  (via rowLen_transpose = colLen)
+  4. hook_length_formula_atMostTwoCols: HLF for ≤2-col via transpose + atMostTwoRows
+  5. hook_walk_identity_atMostTwoCols: same algebraic argument using HLF for ≤2-col
+-/
+
+/-- The cell count of μ.transpose equals that of μ (transpose is a bijection on cells). -/
+private lemma card_transpose (μ : YoungDiagram) : μ.transpose.card = μ.card := by
+  simp only [YoungDiagram.card, YoungDiagram.transpose,
+    Equiv.finsetCongr_apply, Finset.card_map]
+
+/-- Hook length at (i,j) in μ equals hook length at (j,i) in μ.transpose.
+    Follows from rowLen_transpose (rowLen of μ.transpose at row j = colLen of μ at col j)
+    and colLen_transpose, combined with the arithmetic definition of hookLength. -/
+private lemma hookLength_transpose (μ : YoungDiagram) (i j : ℕ) :
+    hookLength μ i j = hookLength μ.transpose j i := by
+  unfold hookLength armLen legLen
+  rw [YoungDiagram.rowLen_transpose, YoungDiagram.colLen_transpose]
+  omega
+
+/-- The hook product is invariant under transposition:  ∏_{c ∈ μ} h(c) = ∏_{c ∈ μ.transpose} h(c).
+    Proof: μ.transpose.cells = μ.cells.image Prod.swap (bijection), and h(j,i,μ.transpose) = h(i,j,μ). -/
+private lemma hookProd_transpose (μ : YoungDiagram) : hookProd μ = hookProd μ.transpose := by
+  simp only [hookProd]
+  have hcells : μ.transpose.cells = μ.cells.image Prod.swap := by
+    ext ⟨i, j⟩
+    simp only [YoungDiagram.mem_cells, YoungDiagram.mem_transpose,
+      Finset.mem_image, Prod.exists]
+    exact ⟨fun h => ⟨j, i, h, rfl⟩, fun ⟨a, b, hab, heq⟩ => by
+      simp only [Prod.mk.injEq] at heq
+      obtain ⟨rfl, rfl⟩ := heq
+      exact hab⟩
+  rw [hcells, Finset.prod_image (fun x _ y _ h => Prod.swap_injective h)]
+  apply Finset.prod_congr rfl
+  intro ⟨i, j⟩ _
+  exact (hookLength_transpose μ i j).symm
+
+/-- The transpose of a Standard Young Tableau: if T : SYT(μ), then sytTranspose T : SYT(μ.transpose).
+    The entry at cell (i,j) of the transposed tableau is the entry of T at (j,i).
+    Row-strict in μ.transpose ↔ col-strict in μ (and vice versa). -/
+private def sytTranspose {μ : YoungDiagram} (T : StandardYoungTableau μ) :
+    StandardYoungTableau μ.transpose where
+  entry c := T.entry c.swap
+  entry_zero c hc := T.entry_zero c.swap
+    (by rwa [YoungDiagram.mem_transpose, Prod.swap_swap] at hc)
+  entry_range c hc := by
+    have hmem : c.swap ∈ μ := YoungDiagram.mem_transpose.mp hc
+    have hrange := T.entry_range c.swap hmem
+    exact ⟨hrange.1, hrange.2.trans_eq (card_transpose μ).symm⟩
+  entry_injOn c₁ c₂ hc₁ hc₂ heq :=
+    Prod.swap_injective (T.entry_injOn c₁.swap c₂.swap
+      (YoungDiagram.mem_transpose.mp hc₁) (YoungDiagram.mem_transpose.mp hc₂) heq)
+  row_strict i j₁ j₂ h₁ h₂ hlt :=
+    T.col_strict j₁ j₂ i
+      (YoungDiagram.mem_transpose.mp h₁) (YoungDiagram.mem_transpose.mp h₂) hlt
+  col_strict i₁ i₂ j h₁ h₂ hlt :=
+    T.row_strict j i₁ i₂
+      (YoungDiagram.mem_transpose.mp h₁) (YoungDiagram.mem_transpose.mp h₂) hlt
+
+/-- sytTranspose is injective: if two transposed tableaux agree, the originals agree. -/
+private lemma sytTranspose_injective {μ : YoungDiagram} :
+    Function.Injective (@sytTranspose μ) := by
+  intro T₁ T₂ h
+  apply StandardYoungTableau.ext
+  funext c
+  have : (sytTranspose T₁).entry c.swap = (sytTranspose T₂).entry c.swap :=
+    congrFun (congrArg StandardYoungTableau.entry h) c.swap
+  change T₁.entry c.swap.swap = T₂.entry c.swap.swap at this
+  rwa [Prod.swap_swap, Prod.swap_swap] at this
+
+/-- The number of SYT of shape μ equals the number of SYT of shape μ.transpose.
+    Proof: sytTranspose is injective, and applying it to μ.transpose gives
+    SYT(μ.transpose.transpose) ≃ SYT(μ) via transpose_transpose. -/
+private lemma card_SYT_transpose (μ : YoungDiagram) :
+    Fintype.card (StandardYoungTableau μ) = Fintype.card (StandardYoungTableau μ.transpose) := by
+  apply le_antisymm
+  · exact Fintype.card_le_of_injective sytTranspose sytTranspose_injective
+  · have hle : Fintype.card (StandardYoungTableau μ.transpose) ≤
+               Fintype.card (StandardYoungTableau μ.transpose.transpose) :=
+      Fintype.card_le_of_injective sytTranspose sytTranspose_injective
+    rw [YoungDiagram.transpose_transpose] at hle
+    exact hle
+
+/-- Removing a corner from a ≤2-column diagram preserves the ≤2-column property.
+    Mirror of removeCorner_atMostTwoRows: colLen 2 = 0 iff no cell in column 2;
+    removing a cell can only shrink the diagram. -/
+private lemma removeCorner_atMostTwoCols {μ : YoungDiagram} {c : ℕ × ℕ}
+    (h2 : μ.colLen 2 = 0) (hc : isCorner μ c) :
+    (removeCorner μ c hc).colLen 2 = 0 := by
+  rcases Nat.eq_zero_or_pos ((removeCorner μ c hc).colLen 2) with h | hpos
+  · exact h
+  · exfalso
+    have hmem : (0, 2) ∈ removeCorner μ c hc :=
+      YoungDiagram.mem_iff_lt_colLen.mpr hpos
+    obtain ⟨hmem2, _⟩ := (mem_removeCorner hc).mp hmem
+    have hlt := YoungDiagram.mem_iff_lt_colLen.mp hmem2
+    omega
+
+/-- **Hook-length formula for all YoungDiagrams with at most 2 columns.**
+    Proof: transpose reduces this to hook_length_formula_atMostTwoRows via:
+    - μ.colLen 2 = 0 → μ.transpose.rowLen 2 = 0
+    - hookProd μ = hookProd μ.transpose
+    - card(SYT μ) = card(SYT μ.transpose)
+    - μ.card = μ.transpose.card -/
+private theorem hook_length_formula_atMostTwoCols (μ : YoungDiagram) (h2 : μ.colLen 2 = 0) :
+    Fintype.card (StandardYoungTableau μ) * hookProd μ = μ.card.factorial := by
+  have h2t : μ.transpose.rowLen 2 = 0 := by rw [YoungDiagram.rowLen_transpose]; exact h2
+  have hT := hook_length_formula_atMostTwoRows μ.transpose h2t
+  rw [← card_SYT_transpose, ← hookProd_transpose, ← card_transpose] at hT
+  exact hT
+
+/-- The hook walk identity for at-most-2-column Young diagrams.
+    Non-circular proof: hook_length_formula_atMostTwoCols proved without hook_walk_identity,
+    and removing a corner of a ≤2-col shape gives another ≤2-col shape.
+    Identical algebraic structure to hook_walk_identity_atMostTwoRows. -/
+private lemma hook_walk_identity_atMostTwoCols (μ : YoungDiagram) (h2 : μ.colLen 2 = 0)
+    (hpos : 0 < μ.card) :
+    ∑ c ∈ (corners μ).attach,
+      ((hookProd μ : ℚ) / (hookProd (removeCorner μ c.val (mem_corners.mp c.prop)) : ℚ))
+    = (μ.card : ℚ) := by
+  have hHP : (hookProd μ : ℚ) ≠ 0 := hookProdQ_ne_zero μ
+  have hfact : ((μ.card - 1).factorial : ℚ) ≠ 0 :=
+    Nat.cast_ne_zero.mpr (Nat.factorial_pos _).ne'
+  -- HLF for μ (proved independently, without hook_walk_identity)
+  have hμ : (Fintype.card (StandardYoungTableau μ) : ℚ) * hookProd μ = μ.card.factorial :=
+    by exact_mod_cast hook_length_formula_atMostTwoCols μ h2
+  -- HLF for each removeCorner (stays ≤2-col by removeCorner_atMostTwoCols)
+  have hμc : ∀ cx : { x // x ∈ corners μ },
+      (Fintype.card (StandardYoungTableau
+        (removeCorner μ cx.val (mem_corners.mp cx.prop))) : ℚ) *
+      (hookProd (removeCorner μ cx.val (mem_corners.mp cx.prop)) : ℚ) =
+      ((μ.card - 1).factorial : ℚ) := by
+    intro ⟨c, hcx⟩
+    have h2c := removeCorner_atMostTwoCols h2 (mem_corners.mp hcx)
+    have hlf := hook_length_formula_atMostTwoCols _ h2c
+    rw [removeCorner_card (mem_corners.mp hcx)] at hlf
+    exact_mod_cast hlf
+  -- Corner step over ℚ
+  have hstepQ : (Fintype.card (StandardYoungTableau μ) : ℚ) =
+      ∑ cx ∈ (corners μ).attach,
+        (Fintype.card (StandardYoungTableau
+          (removeCorner μ cx.val (mem_corners.mp cx.prop))) : ℚ) :=
+    by exact_mod_cast card_SYT_corner_step μ hpos
+  -- μ.card! = μ.card × (μ.card − 1)! as rationals
+  have hfact_succ : (μ.card.factorial : ℚ) = (μ.card : ℚ) * ((μ.card - 1).factorial : ℚ) := by
+    cases hcard : μ.card with
+    | zero => omega
+    | succ n =>
+      rw [show μ.card - 1 = n by omega, show μ.card = n + 1 from hcard, Nat.factorial_succ]
+      push_cast; ring
+  -- Each summand: HP/HPc = card(SYT(μ\c)) × (HP/(N-1)!)
+  have hterm : ∀ cx : { x // x ∈ corners μ },
+      (hookProd μ : ℚ) / (hookProd (removeCorner μ cx.val (mem_corners.mp cx.prop)) : ℚ) =
+      (Fintype.card (StandardYoungTableau
+        (removeCorner μ cx.val (mem_corners.mp cx.prop))) : ℚ) *
+      ((hookProd μ : ℚ) / ((μ.card - 1).factorial : ℚ)) := by
+    intro ⟨c, hcx⟩
+    have hHPc : (hookProd (removeCorner μ c (mem_corners.mp hcx)) : ℚ) ≠ 0 :=
+      hookProdQ_ne_zero _
+    have hIHc := hμc ⟨c, hcx⟩
+    rw [mul_div_assoc, div_eq_div_iff hHPc hfact]
+    linear_combination -(hookProd μ : ℚ) * hIHc
+  -- Assemble: rewrite summands, factor, apply corner step, use HLF and factorial identity
+  simp_rw [hterm]
+  rw [← Finset.sum_mul, ← hstepQ, mul_div_assoc, hμ, hfact_succ]
+  field_simp [hfact]
+
 private lemma hook_walk_identity (μ : YoungDiagram) (hn : 0 < μ.card) :
     ∑ c ∈ (corners μ).attach,
       ((hookProd μ : ℚ) / (hookProd (removeCorner μ c.val (mem_corners.mp c.prop)) : ℚ))
@@ -5191,8 +5366,11 @@ private lemma hook_walk_identity (μ : YoungDiagram) (hn : 0 < μ.card) :
     by_cases hghook : ∃ (a b : ℕ) (ha : 0 < a) (hb : 0 < b), μ = gHookYD a b ha
     · obtain ⟨a, b, ha, hb, rfl⟩ := hghook
       exact hook_walk_identity_gHookYD a b ha hb
-    · -- General ≥3-row, non-gHookYD case: requires GNW hook walk (~300 lines)
-      sorry
+    · -- ≥3-row, non-gHookYD: check if μ has at most 2 columns
+      by_cases h2c : μ.colLen 2 = 0
+      · exact hook_walk_identity_atMostTwoCols μ h2c hn
+      · -- General ≥3-row, ≥3-col, non-gHookYD case: requires GNW hook walk (~300 lines)
+        sorry
 
 /-- The general hook-length formula in ℚ, proved by well-founded recursion on μ.card.
     Uses card_SYT_corner_step (Part XIII) + hook_walk_identity. -/
