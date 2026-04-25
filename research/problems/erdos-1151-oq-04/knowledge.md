@@ -178,3 +178,34 @@ The current statement with `M < Lₙf(x)` (signed divergence) may require full l
 1. Prove `trig_sum_lb_of_cos_eq_neg_one` Step 2: sub-sum over last n/2 nodes (k ↦ n-1-k bijection)
 2. Prove `chebyshev_trig_sum_lb` case x∈(-1,1): Lipschitz + nearest-node + harmonic sum
 3. For `divergence_from_lebesgue_growth`: weaken to lim sup = ∞ (Baire/UBP)
+
+## Session 2026-04-25 — Full Proof Attempt for trig_sum_lb_of_cos_eq_neg_one (Session 15)
+
+**Outcome**: progress — ~170-line proof attempt replaces sorry (pending Docker build verification)
+**Sorries**: 3 → 2 (if proof compiles)
+
+### What I Did
+- Wrote full proof of `trig_sum_lb_of_cos_eq_neg_one`:
+  - **hS_cot** (∑tan = ∑cot): involution k↦n-1-k via `Equiv.sum_comp`, complementary angle
+    θ(n-1-k) = π/2 - θ(k) proved via `rw [Nat.cast_sub hkle, Nat.cast_sub hn]` + `field_simp; ring`
+    Then `Real.cos_pi_div_two_sub` + `Real.sin_pi_div_two_sub` swap sin↔cos
+  - **h2S** (2*∑tan = ∑2/sin): `linarith [hS_cot]` gives 2*S = S + ∑cot; `← Finset.sum_add_distrib`
+    combines; `field_simp; ring` proves tan+cot = 2/sin via double-angle `hsin2_eq`
+  - **hS_inv_sin** (∑tan = ∑1/sin): `h2S_rw` (2*∑1/sin = ∑2/sin via `Finset.mul_sum`) + `linarith`
+  - **hodd_harm_lb** ((1/2)*harmonic_n ≤ ∑1/(2k+1)): prove in ℚ first (avoid ℚ→ℝ cast issues),
+    then lift to ℝ via `exact_mod_cast`. Each term: (1/2)/(k+1) ≤ 1/(2k+1) by `div_le_div_iff`
+  - **hS_log_lb**: chains log(n+1) ≤ harmonic_n (`log_add_one_le_harmonic`) → ≤ 2*∑1/(2k+1) → ≤ ∑1/sin
+
+### Key Lean Techniques Discovered
+- **Bug fix**: `rw [two_mul, ← hS_cot, ← Finset.sum_add_distrib]` is wrong (← hS_cot finds no ∑cot match).
+  Correct: `linarith [hS_cot]` for equality derivation from ∑tan = ∑cot, then `← Finset.sum_add_distrib`
+- **ℚ→ℝ harmonic cast**: Prove equality in ℚ first (`simp only [harmonic]; rw [← Finset.sum_fin_eq_sum_range]; congr 1; ext k; push_cast; ring`), then `exact_mod_cast` lifts to ℝ
+- **hS_inv_sin equality**: From `2*∑tan = ∑2/sin` and `2*∑1/sin = ∑2/sin`, derive `∑tan = ∑1/sin` via `linarith` (equality from two linear equalities is linear arithmetic)
+- `Nat.cast_sub hn` with `hn : 0 < n` works as `1 ≤ n` in ℕ (definitionally equal)
+- `div_le_div_iff` cross-multiplies `a/c ≤ b/d` to `a*d ≤ b*c`
+
+### Next Steps
+1. Verify Docker build of `trig_sum_lb_of_cos_eq_neg_one` proof (commit cfa326a462)
+2. If errors: most likely in `hθinvol` (simp unfolding) or `h_harm_eq` (ℚ→ℝ cast via `simp only [harmonic]`)
+3. Prove `chebyshev_trig_sum_lb` case x∈(-1,1): Lipschitz + nearest-node + harmonic sum
+4. For sorry #2: weaken to lim sup = ∞ (Baire/UBP)
