@@ -31,7 +31,7 @@ These four algebras are deeply connected to the exceptional Lie groups through:
 
 ## Contents
 
-- **Proved** (0 sorries):
+- **Proved** (0 sorries, 0 axioms):
   - `normSq_octUnit`: the unit e₀ has norm 1
   - `OctonionAlgHom` forms a monoid (identity, composition)
   - `alg_hom_preserves_norm_product`: φ preserves products of norms
@@ -39,18 +39,18 @@ These four algebras are deeply connected to the exceptional Lie groups through:
   - `real_part_preserved`: Aut(𝕆) fixes the real part
   - `alg_aut_preserves_inner`: Aut(𝕆) preserves the inner product (by polarization)
   - `imag_closed_under_aut`: Aut(𝕆) maps Im(𝕆) to Im(𝕆) — Aut(𝕆) ⊆ O(7)
-  - All exceptional type dimension computations
+  - All exceptional type dimension computations (by `rfl`)
   - `G2_unique_low_rank`: G₂ is the only exceptional Lie algebra of rank < 4
   - `E8_is_largest`: E₈ has the highest dimension (248)
+  - `der_fixes_unit`: every derivation D of 𝕆 satisfies D(e₀) = 0
 
 - **Computational** (proved by `ring`/`simp`):
   - `eightMul_right_unit`: e₀ is the right identity
   - `eightMul_left_unit`: e₀ is the left identity
   - `normSq_octUnit_mul`: normSq norm-product identity with octUnit
 
-- **Axiomatized** (genuinely deep results):
-  - `G2_is_octonion_aut`: G₂ = Aut(𝕆) — requires Lie group theory
-  - ~~`freudenthal_tits_f4/e6/e7/e8`~~: now proved by `rfl` (definitional)
+- **Structures**:
+  - `OctonionDer`: ℝ-linear derivations of 𝕆 satisfying the Leibniz rule
 
 ## References
 - John Baez, "The Octonions", Bull. AMS 39 (2002) — comprehensive survey
@@ -411,13 +411,21 @@ def ExceptionalType.rank : ExceptionalType → ℕ
   | .E7 => 7
   | .E8 => 8
 
-/-- **G₂ is the automorphism group of the octonions.**
+/-!
+### G₂ = Aut(𝕆): Why this is not axiomatized
 
-    Axiomatized: the formal proof requires Lie group theory and an explicit
-    identification of the automorphism group with the 14-dimensional compact
-    simple Lie group of type G₂. -/
-axiom G2_is_octonion_aut :
-    ExceptionalType.G2.dim = Nat.card (OctonionAut)
+A previous version of this file contained:
+```
+axiom G2_is_octonion_aut : ExceptionalType.G2.dim = Nat.card (OctonionAut)
+```
+This axiom is **mathematically false in Lean** because `Nat.card` of an infinite
+type returns 0, not the Lie group dimension 14. The statement reduces to `14 = 0`.
+
+The mathematical content — G₂ ≅ Aut(𝕆) as Lie groups — is true but formalizing it
+requires: (1) Lie group theory (not in Mathlib as of 2026-04), (2) a definition of G₂
+independent of its action on 𝕆, (3) an explicit isomorphism. See Part VIII and Part VII
+for what is formalized and what remains open.
+-/
 
 -- ============================================================
 -- PART V: The Freudenthal-Tits Magic Square
@@ -570,6 +578,52 @@ were admissible, there would be a 6th exceptional type.
 -/
 
 -- ============================================================
+-- PART VIII: Octonion Derivations and Der(𝕆) ≅ 𝔤₂
+-- ============================================================
+
+/-!
+### Derivations of the Octonion Algebra
+
+A **derivation** of an algebra A is an ℝ-linear map D : A → A satisfying the
+Leibniz (product) rule: D(a·b) = D(a)·b + a·D(b) for all a, b ∈ A.
+
+The space of all derivations Der(𝕆) forms a Lie algebra under the commutator
+bracket [D₁, D₂](x) = D₁(D₂(x)) - D₂(D₁(x)).
+
+**Key fact**: Der(𝕆) ≅ 𝔤₂ (the Lie algebra of G₂).
+- dim Der(𝕆) = 14 (verified computationally by SVD of the Leibniz constraints)
+- All derivations are anti-symmetric on Im(𝕆) ≅ ℝ⁷ (Der(𝕆) ⊆ so(7))
+- Der(𝕆) ⊊ so(7) strictly: not all anti-symmetric maps are derivations
+-/
+
+/-- A derivation of the octonion algebra: an ℝ-linear map satisfying
+    the Leibniz product rule D(a·b) = D(a)·b + a·D(b). -/
+structure OctonionDer where
+  /-- The underlying linear map -/
+  map : (Fin 8 → ℝ) → (Fin 8 → ℝ)
+  /-- Additive: D(a + b) = D(a) + D(b) -/
+  map_add : ∀ a b : Fin 8 → ℝ, map (a + b) = map a + map b
+  /-- ℝ-linear: D(r • a) = r • D(a) -/
+  map_smul : ∀ (r : ℝ) (a : Fin 8 → ℝ), map (r • a) = r • map a
+  /-- Leibniz rule: D(a·b) = D(a)·b + a·D(b) -/
+  leibniz : ∀ a b : Fin 8 → ℝ,
+    map (eightMul a b) = eightMul (map a) b + eightMul a (map b)
+
+/-- Every derivation maps the unit element to zero: D(e₀) = 0.
+    Proof: e₀ is idempotent (e₀² = e₀), so by the Leibniz rule,
+    D(e₀) = D(e₀·e₀) = D(e₀)·e₀ + e₀·D(e₀) = D(e₀) + D(e₀),
+    forcing D(e₀) = 0 by cancellation. -/
+theorem der_fixes_unit (D : OctonionDer) : D.map octUnit = 0 := by
+  have h : D.map octUnit = D.map octUnit + D.map octUnit := by
+    have h₁ := D.leibniz octUnit octUnit
+    rw [eightMul_left_unit, eightMul_right_unit, eightMul_left_unit] at h₁
+    exact h₁
+  funext k
+  have hk := congr_fun h k
+  simp only [Pi.add_apply, Pi.zero_apply] at *
+  linarith
+
+-- ============================================================
 -- Summary
 -- ============================================================
 
@@ -577,9 +631,14 @@ were admissible, there would be a 6th exceptional type.
 #check @eightMul_right_unit
 #check @eightMul_left_unit
 #check @alg_hom_preserves_norm_product
+#check @alg_aut_preserves_norm
+#check @real_part_preserved
+#check @alg_aut_preserves_inner
+#check @imag_closed_under_aut
 #check @G2_unique_low_rank
 #check @E8_is_largest
 #check @exceptional_dims_strict_mono
 #check @exceptional_chain
+#check @der_fixes_unit
 
 end HurwitzTheoremOQ04

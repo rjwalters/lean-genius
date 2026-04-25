@@ -2,11 +2,11 @@
   "id": "hurwitz-theorem-oq-04",
   "title": "Hurwitz's Theorem: Connection to Exceptional Lie Groups",
   "slug": "hurwitz-theorem-oq-04",
-  "description": "Formalizes the deep connection between the four normed division algebras (ℝ, ℂ, ℍ, 𝕆) and the five exceptional Lie algebras (G₂, F₄, E₆, E₇, E₈) via the Freudenthal-Tits magic square. Proves that Aut(𝕆) ⊆ O(7) (automorphisms preserve the imaginary subspace and inner product), and axiomatizes G₂ = Aut(𝕆) and the four exceptional types F₄, E₆, E₇, E₈ arising from the magic square construction.",
+  "description": "Formalizes the deep connection between the four normed division algebras (ℝ, ℂ, ℍ, 𝕆) and the five exceptional Lie algebras (G₂, F₄, E₆, E₇, E₈) via the Freudenthal-Tits magic square. Proves that Aut(𝕆) ⊆ O(7) (automorphisms preserve norm, real part, inner product, and imaginary subspace). Introduces OctonionDer structure for derivations and proves Der(𝕆) maps e₀ to 0. All results are axiom-free.",
   "meta": {
     "author": "Lean Genius",
-    "date": "2026-04-24",
-    "status": "axiomatized",
+    "date": "2026-04-25",
+    "status": "verified",
     "proofRepoPath": "Proofs/HurwitzTheoremOQ04.lean",
     "tags": [
       "algebra",
@@ -17,14 +17,14 @@
       "freudenthal-tits",
       "advanced"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-04-24",
-    "axiomCount": 5,
-    "assumptions": "5 axioms: G2_is_octonion_aut (G₂ ≅ Aut(𝕆), requires Lie group theory not yet in Mathlib), freudenthal_tits_f4/e6/e7/e8 (the four exceptional Lie algebra types from the magic square construction). All supporting lemmas (norm preservation, real-part preservation, imaginary-subspace closure) are fully proved.",
-    "lineCount": 583,
-    "theoremCount": 22,
-    "definitionCount": 11,
+    "axiomCount": 0,
+    "assumptions": "None. All results are fully proved: G2_is_octonion_aut was removed (Nat.card of infinite type = 0 ≠ 14; mathematically false in Lean). freudenthal_tits_f4/e6/e7/e8 proved by rfl (definitional). OctonionDer structure and der_fixes_unit added.",
+    "lineCount": 644,
+    "theoremCount": 23,
+    "definitionCount": 12,
     "originalContributions": [
       "OctonionAlgHom / OctonionAut: structures for octonion algebra homomorphisms and automorphisms",
       "alg_aut_preserves_norm: automorphisms preserve the norm (proved via polarization and imaginary decomposition)",
@@ -35,7 +35,9 @@
       "G2_unique_low_rank: G₂ is the unique exceptional algebra of rank < 4",
       "E8_is_largest: E₈ has dimension 248, the largest of all exceptional types",
       "exceptional_dims_strict_mono / exceptional_chain: ordering properties of exceptional types",
-      "Connection between Hurwitz's four admissible dimensions and the five exceptional Lie algebras"
+      "Connection between Hurwitz's four admissible dimensions and the five exceptional Lie algebras",
+      "OctonionDer: structure for ℝ-linear derivations of 𝕆 satisfying the Leibniz rule",
+      "der_fixes_unit: every derivation D of 𝕆 satisfies D(e₀) = 0 (proved by idempotency argument)"
     ]
   },
   "overview": {
@@ -103,7 +105,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization establishes the bridge between Hurwitz's four normed division algebras and the five exceptional Lie algebras. The key proved result is that Aut(𝕆) ⊆ O(7): octonion automorphisms preserve norms, real parts, inner products, and the imaginary subspace — all proved without sorries using algebraic decomposition. The five exceptional Lie algebras (G₂, F₄, E₆, E₇, E₈) are axiomatized via G₂=Aut(𝕆) and the Freudenthal-Tits magic square, with structural properties proved by decidability.",
+    "summary": "This formalization establishes the bridge between Hurwitz's four normed division algebras and the five exceptional Lie algebras. All results are axiom-free. The key proved result is Aut(𝕆) ⊆ O(7): octonion automorphisms preserve norms, real parts, inner products, and the imaginary subspace. The freudenthal_tits_f4/e6/e7/e8 theorems hold by rfl (definitional). The OctonionDer structure formalizes Der(𝕆) and der_fixes_unit proves D(e₀) = 0 for any derivation — the first step toward Der(𝕆) ≅ 𝔤₂.",
     "implications": "The formalization demonstrates that Hurwitz's theorem (n∈{1,2,4,8}) constrains not just composition algebras but the entire exceptional structure of simple Lie algebras: the 4 normed division algebras yield exactly 5 exceptional types. Removing the 16-dimensional case eliminates the possibility of a 6th exceptional Lie algebra. Physical applications include E₈×E₈ heterotic string theory (anomaly cancellation: dim=2×248=496) and M-theory compactification on G₂ manifolds.",
     "openQuestions": [
       "Prove G₂ ≅ Aut(𝕆) formally in Lean: requires Lie group theory (compact simple groups, root systems) not yet in Mathlib as of 2026-04.",
@@ -116,10 +118,10 @@
     "imports": ["Mathlib", "Proofs.HurwitzTheorem"],
     "opens": ["HurwitzTheorem"],
     "namespace": "HurwitzTheoremOQ04",
-    "lineCount": 583,
-    "axiomCount": 5,
-    "theoremCount": 22,
-    "definitionCount": 11,
+    "lineCount": 644,
+    "axiomCount": 0,
+    "theoremCount": 23,
+    "definitionCount": 12,
     "sorries": 0,
     "path": "Proofs/HurwitzTheoremOQ04.lean"
   },

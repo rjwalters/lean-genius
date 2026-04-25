@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 0 sorries, 1 axiom (down from 5). freudenthal_tits_f4/e6/e7/e8 proved by rfl (definitional). G2_is_octonion_aut (dim=14=Nat.card OctonionAut) still requires Lie group theory.",
+    "progressSummary": "PROGRESS: 0 sorries, 0 axioms. OctonionDer structure + der_fixes_unit proved. G2_is_octonion_aut removed (was false: Nat.card = 0 ≠ 14). freudenthal_tits_f4/e6/e7/e8 proved by rfl.",
     "builtItems": [
       "ExceptionalType inductive type (G2/F4/E6/E7/E8) with dim/rank — HurwitzTheoremOQ04.lean",
       "OctonionAlgHom structure + OctonionAut — HurwitzTheoremOQ04.lean",
@@ -42,7 +42,9 @@
       "freudenthal_tits_f4: ExceptionalType.F4.dim = 52, proved by rfl",
       "freudenthal_tits_e6: ExceptionalType.E6.dim = 78, proved by rfl",
       "freudenthal_tits_e7: ExceptionalType.E7.dim = 133, proved by rfl",
-      "freudenthal_tits_e8: ExceptionalType.E8.dim = 248, proved by rfl"
+      "freudenthal_tits_e8: ExceptionalType.E8.dim = 248, proved by rfl",
+      "OctonionDer: structure for ℝ-linear Leibniz maps (derivations of 𝕆) in HurwitzTheoremOQ04.lean",
+      "der_fixes_unit: ∀ D : OctonionDer, D.map octUnit = 0 (proved by idempotency + linarith)"
     ],
     "insights": [
       "G₂ = Aut(𝕆): The exceptional Lie group G₂ (dim 14, rank 2) is the automorphism group of the octonions. The 14 dimensions come from SO(7) (dim 21) minus the 7 constraints from preserving the octonion cross product.",
@@ -55,7 +57,9 @@
       "imag_closed_under_aut: Aut(𝕆) ⊆ O(7) now formalized — automorphisms map Im(𝕆) to Im(𝕆) preserving the inner product.",
       "eightMul unit proof pattern: simp(config:={decide:=true})[ite_true,ite_false] evaluates if (0:Fin 8)=j for concrete j. Plain simp[stdBasis] insufficient — need decide mode for Fin equality.",
       "freudenthal_tits axioms were definitionally true: ExceptionalType.dim was defined with explicit values, so the axioms reduced to rfl",
-      "Only G2_is_octonion_aut remains: needs Nat.card(OctonionAut) = 14 which requires Lie group theory (G2 is 14-dimensional)"
+      "Only G2_is_octonion_aut remains: needs Nat.card(OctonionAut) = 14 which requires Lie group theory (G2 is 14-dimensional)",
+      "G2_is_octonion_aut axiom was false in Lean: Nat.card of infinite type = 0, not 14",
+      "der_maps_imag (D maps Im(𝕆) to Im(𝕆)) is provable via anticommutator formula x·y+y·x = -2·innerProd(x,y)·e₀ for imaginary x,y"
     ],
     "mathlibGaps": [
       "Lie groups not in Mathlib as of 2026-04 — blocks formal G₂ = Aut(𝕆) proof",
@@ -63,10 +67,9 @@
       "Derivation algebra of non-associative algebras not in Mathlib"
     ],
     "nextSteps": [
-      "Define Der(𝕆) as the space of derivations (D linear with D(xy)=D(x)y+xD(y)); attempt to show dim = 14",
-      "Formalize 7-dim cross product preservation constraint that characterizes G₂ in SO(7) (~100 lines)",
-      "If Lean gets Lie group theory, replace G2_is_octonion_aut axiom with a proof",
-      "alg_aut_preserves_norm and real_part_preserved are PROVED (Session 2); alg_aut_preserves_inner and imag_closed_under_aut proved (Session 3)"
+      "Prove der_maps_imag: if x₀=0 then (D.map x)₀=0 (requires anticommutator formula)",
+      "Prove Der(𝕆) ⊆ so(7): derivations are anti-symmetric on Im(𝕆)",
+      "Archive sessions 1-5 to sessions/ subdirectory"
     ]
   },
   "tags": [
