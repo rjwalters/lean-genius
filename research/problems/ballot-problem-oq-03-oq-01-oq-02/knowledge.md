@@ -34,10 +34,201 @@ Key infrastructure already available:
 
 > **Note**: 7 older sessions archived to `sessions/` directory.
 
+## Session 2026-04-23 (Session 12) — Corner Recursion Infrastructure (Part XIII)
+
+**Mode**: REVISIT (RICH knowledge tier, score 70)
+**Outcome**: progress — 16 new defs/lemmas (0 sorries), card_SYT_corner_step with 1 HEq sorry (mathematical content complete)
+
+### What I Did
+
+1. Assessed state: 3 sorries remain; LGV chain sorries FALSE as stated; corner-cell induction is the path forward
+2. Added PART XIII (~255 lines) to `BallotProblemOQ03OQ01OQ02.lean` (3584 → 3839 lines):
+   - `isCorner μ c`: predicate — c ∈ μ ∧ arm(c)=0 ∧ leg(c)=0
+   - `corners μ`: Finset of corner cells via filter on μ.cells
+   - `mem_corners`: characterization lemma
+   - `removeCorner μ c hc`: YoungDiagram with c removed (lower-set property preserved, 0 sorries)
+   - `mem_removeCorner`, `removeCorner_card`, `removeCorner_proof_irrel`
+   - `syt_entry_image`: entries of SYT form Finset.image T.entry μ.cells = Icc 1 μ.card
+   - `maxEntryCell T hn`: unique cell c with T.entry c = μ.card
+   - `maxEntryCell_spec`, `_mem`, `_entry`, `_isCorner`, `_in_corners`, `_unique` (all 0 sorries)
+   - `restrictSYT_gen`: SYT(μ) → SYT(removeCorner μ c hc) when T.entry c = μ.card (0 sorries)
+   - `extendSYT_gen`: SYT(removeCorner μ c hc) → SYT(μ) adding entry μ.card at c (0 sorries)
+   - `card_SYT_corner_step`: general corner recursion theorem (1 HEq sorry in right_inv)
+
+### Key Findings
+
+**removeCorner preserves lower-set**: If a ≤ b ∈ μ\\{c} and a were c, then b is above/right of c.
+- b.2 > c.2 → (c.1, c.2+1) ∈ μ contradicts arm(c)=0
+- b.1 > c.1 → (c.1+1, c.2) ∈ μ contradicts leg(c)=0
+- b=c contradicts b≠c. QED (0 sorries)
+
+**maxEntryCell is a corner**: If T.entry c = μ.card and (c.1, c.2+1) ∈ μ, then T.entry(c.1, c.2+1) > μ.card by row_strict, contradicting range ⊆ {1,...,μ.card}.
+
+**card_SYT_corner_step left_inv**: fully proved — maxEntryCell maps back to itself, entries roundtrip exactly.
+
+**HEq issue in right_inv**: After proving `hmaxeq : maxEntryCell (extendSYT_gen c hc T₁) hn = c`, the goal becomes:
+```
+⟨⟨maxEntryCell ..., hc_corners'⟩, restrictSYT_gen ...⟩ = ⟨⟨c, hc_corners⟩, T₁⟩
+```
+The two SYTs have types `SYT(removeCorner μ (maxEntryCell ..) hc₁)` vs `SYT(removeCorner μ c hc₂)`. Even though `removeCorner_proof_irrel` shows these YoungDiagrams are equal, HEq on SYT types requires `cast` reasoning in Lean 4 that creates proof obligations not yet resolved.
+
+**Mathematical content is complete**: entries of `restrictSYT_gen(extendSYT_gen T₁)` equal `T₁.entry` because `extendSYT_gen` only adds entry at `c`, which is not in `removeCorner μ c hc`.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (3584 → 3839 lines, PART XIII added)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json` (lineCount 3839, sorries 4, theoremCount 120)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` (knowledge updated)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md` (this file)
+
+### Sorry Count: 3 → 4
+
+The sorry count increased by 1 (net) because:
+- `card_SYT_corner_step` adds 1 new sorry (right_inv HEq issue)
+- No existing sorries were resolved this session
+
+### Next Steps
+
+1. **Resolve card_SYT_corner_step right_inv**: Use `cast` + `removeCorner_proof_irrel` to prove the HEq for the second sigma component. `heq_of_cast` or `eq_mpr_iff_cast` may help.
+2. **Prove hook_walk_identity**: `Σ_{c ∈ corners(μ)} hookProd(μ) / hookProd(removeCorner μ c) = μ.card` — needed to close inductive proof of `hook_length_formula` via `card_SYT_corner_step`.
+3. **Strong induction with card_SYT_corner_step**: Once hook_walk_identity is available, `hook_length_formula` follows by strong induction on μ.card.
 
 ---
 
-> **Note**: 4 older sessions archived to `sessions/` directory.
+## Session 2026-04-24 (Session 13) — Fixes + Aristotle Companion
+
+**Mode**: REVISIT (RICH knowledge tier, score 53)
+**Outcome**: progress — fixed stale comment, created Aristotle companion
+
+### What I Did
+
+1. Verified current state: 3 sorries in BallotProblemOQ03OQ01OQ02.lean (lines 219, 235, 245)
+   - `hook_length_formula`: main theorem, sorry
+   - `ni_count_eq_syt_count`: RSK/Fomin bijection sorry
+   - `lgv_det_factors_as_hook_quotient`: Vandermonde det identity sorry
+2. Verified that `card_SYT_corner_step` HEq sorry was resolved in PR #12026 (cast_syt_entry)
+3. Fixed stale comment at line 3526: "conditional on card_SYT_twoRowYD which is sorry" → "proved by WF induction"
+   - `card_SYT_twoRowYD` is proved at lines 3450-3467, not sorry
+   - `hook_length_formula_two_row_gen` and `hook_length_formula_atMostTwoRows` are thus fully proved
+4. Created `BallotProblemOQ03OQ01OQ02Aristotle.lean` with the two HARD sorry targets
+
+### Key Findings
+
+- **hook_walk_identity requires ℚ**: Σ_c hookProd(μ)/hookProd(μ\c) = n holds in ℚ but individual
+  terms are NOT integers (e.g., for [3,1] with corners (0,2) and (1,0): ratios 8/3 + 4/3 = 4 = n).
+  Corner induction proof of hook_length_formula requires this identity in ℚ arithmetic.
+- **LGV sorries FALSE as stated**: ni_count_eq_syt_count and lgv_det_factors_as_hook_quotient
+  have μ as a free parameter unrelated to (r,σ,m). They need a hypothesis relating μ to the
+  LGV config; as stated they're unprovable (but Aristotle won't catch this).
+- **Both remaining paths require 200+ lines**: LGV approach (ni_count + lgv_det) or hook walk
+  identity. Neither achievable in a single session.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (fixed stale comment at line 3526)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean` (created)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` (knowledge updated)
+
+### Next Steps
+
+1. **Fix lgv_det_factors_as_hook_quotient statement**: Add hypothesis relating μ to (r,σ,m)
+   via `youngLGVConfig`. The canonical encoding: μ has r rows with lengths σ(r-1),...,σ(0).
+2. **Prove hook_walk_identity in ℚ**: Σ_c hookProd(μ)/hookProd(μ\c) = n. Cast hookProd to ℚ,
+   then prove by induction. This gives hook_length_formula by strong induction on μ.card.
+3. **Alternatively**: Attempt ni_count_eq_syt_count for specific μ (twoRectYD, hook shapes).
+
+---
+
+## Session 2026-04-24 (Session 14) — Hook-Length Formula for Generalized Hook Shapes
+
+**Mode**: REVISIT (RICH knowledge tier, score 53)
+**Outcome**: PROGRESS — proved HLF for all generalized hook shapes [a, 1^b] with 0 sorry
+
+### What I Did
+
+1. Defined `gHookYD a b ha`: Young diagram with row 0 length a and b single-cell rows below
+2. Proved all hook product components:
+   - `gHookYD_card`: (gHookYD a b ha).card = a + b
+   - `hookProd_gHookYD`: hookProd(gHookYD a b ha) = (a+b) * (a-1)! * b!
+3. Proved corner structure:
+   - `isCorner_gHook_top`: (0, a-1) is a corner when a ≥ 2
+   - `isCorner_gHook_bot`: (b, 0) is a corner when b ≥ 1
+   - `gHook_max_at_corner`: max SYT entry is at one of the two corners
+4. Proved `card_SYT_gHookYD_step`: Fintype.card(SYT(gHookYD a b)) = card(SYT(gHookYD(a-1,b))) + card(SYT(gHookYD(a,b-1))) via explicit inline bijection (Fintype.card_congr with anonymous Equiv)
+5. Proved `card_SYT_gHookYD`: card(SYT(gHookYD a b ha)) = C(a+b-1, b) by double induction (outer on b, inner on a) using Pascal's rule Nat.choose_succ_succ
+6. Proved `hook_length_formula_gHookYD`: C(a+b-1,b) * (a+b) * (a-1)! * b! = (a+b)! via Nat.choose_mul_factorial_mul_factorial + calc
+
+### Key Findings
+
+- **Inline bijection pattern avoids cast issues**: The `▸` cast / `restrictSYT_gen` approach fails for gHookYD because the bijection involves two different subdiagrams. Using the same anonymous-structure Equiv pattern as `card_SYT_twoRowYD_step` succeeds without casts.
+- **left_inv branch 3 pattern**: `symm; apply T.entry_zero; intro hcμ` — after `symm`, goal is `T.entry c = 0`, then `apply T.entry_zero` leaves `c ∉ μ` as a Pi type `c ∈ μ → False`, so `intro hcμ` works.
+- **right_inv dif_pos/dif_neg**: Must provide a `have` that matches exactly what Lean sees as the condition type; using `if_pos rfl` for the `inl` branch and `have hne_corner` + `have hentry_ne` for the `inr` branch.
+- **Double induction**: Base cases are gHookYD a 0 = oneRowYD a (1 SYT) and gHookYD 1 b = oneColYD (b+1) (1 SYT). Inductive step uses pascal = iha + ihb.
+- **HLF arithmetic**: Nat.choose_mul_factorial_mul_factorial gives C(n,k)*k!*(n-k)!=n!; then (a+b-1)!*(a+b) = (a+b)! by Nat.factorial_succ.
+- **Build status**: Proofs.BallotProblemOQ03OQ01OQ02 builds successfully with 0 new sorries in gHookYD section.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (added ~400 lines: PART VIc gHookYD section, lines 694-1406)
+
+### Next Steps
+
+1. **hook_walk_identity in ℚ**: Σ_c hookProd(μ)/hookProd(μ\c) = μ.card. Now that gHookYD is proved, this extends the repertoire and shows the corner-induction strategy works in principle.
+2. **Aristotle targets**: ni_count_eq_syt_count and lgv_det_factors_as_hook_quotient remain open; fix their statements (add hypothesis relating μ to (r,σ,m)) before resubmitting.
+3. **Generalize**: Attempt HLF for μ with at most 3 rows or for specific rectangle shapes.
+
+---
+
+## Session 2026-04-24 (Session 15) — removeCorner Hook Infrastructure
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: PROGRESS — 8 new lemmas (0 sorries) establishing how hookLength changes when removing a corner
+
+### What I Did
+
+1. Assessed Session 14 state: PART XIV added with `hook_walk_identity` as sole sorry; `hook_length_formula_Q` + `hook_length_formula_general` proved conditional on it
+2. Identified needed infrastructure: rowLen/colLen behavior of `removeCorner` at corner and non-corner rows/cols
+3. Added 8 private lemmas (~130 lines) before `hook_walk_identity` in PART XIV:
+   - `rowLen_of_isCorner`: μ.rowLen c.1 = c.2 + 1 (corner's row ends exactly at c.2)
+   - `colLen_of_isCorner`: μ.colLen c.2 = c.1 + 1 (corner's col ends exactly at c.1)
+   - `rowLen_removeCorner_self`: rowLen decreases by 1 at row c.1 after removing corner c
+   - `rowLen_removeCorner_other`: rowLen unchanged at other rows r ≠ c.1
+   - `colLen_removeCorner_self`: colLen decreases by 1 at col c.2 after removing corner c
+   - `colLen_removeCorner_other`: colLen unchanged at other cols s ≠ c.2
+   - `hookLength_removeCorner_arm`: for arm cells (c.1, s) with s < c.2: hookLength decreases by 1
+   - `hookLength_removeCorner_leg`: for leg cells (r, c.2) with r < c.1: hookLength decreases by 1
+
+### Key Findings
+
+- **Proof pattern**: Use `obtain ⟨i, j⟩ := c` to avoid Prod.eta issues; prove ≤ antisymmetry for rowLen/colLen
+- **rowLen/colLen proofs**: Use `mem_iff_lt_rowLen.not.mp` and `omega` to convert `(i,j) ∉ removeCorner` into `rowLen ≤ j`; then show `(i, j-1) ∈ removeCorner` to get `j-1 < rowLen` → `j ≤ rowLen`
+- **hookLength arithmetic**: After unfold + rw, omega handles `c.2-s-1+X+2 = (c.2+1)-s-1+X+1` given `s < c.2` and `c.1 < μ.colLen s`
+- **hook_walk_identity mathematical analysis**: The identity Σ_c R(c) = n (where R(c) = hookProd(μ)/hookProd(μ\c)) is known in combinatorics (Frame-Robinson-Thrall / GNW). But:
+  - Direct induction fails: (A) hook_length_formula and (B) hook_walk_identity are equivalent given corner_step, neither provable from the other
+  - Proving Σ R(μ,c) = 1 + Σ R(μ\c₀, c') for a fixed corner c₀ requires tracking how ratios change as corners change — not trivially tractable
+  - The infrastructure built this session enables the hookProd ratio formula as next step
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (~130 lines added, PART XIV infrastructure before hook_walk_identity)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md` (this file)
+
+### Sorry Count: 3 (unchanged)
+
+- hook_walk_identity (line ~4763): sole mathematical blocker, still sorry
+- ni_count_eq_syt_count (line 235): RSK bijection, FALSE as stated
+- lgv_det_factors_as_hook_quotient (line 245): det identity, FALSE as stated
+
+### Next Steps
+
+1. **hookProd_removeCorner_ratio** (~50 lines): Using arm/leg hook change lemmas, prove:
+   hookProd(μ) / hookProd(μ\c) = ∏_{s<c.2} h(c.1,s)/(h(c.1,s)-1) × ∏_{r<c.1} h(r,c.2)/(h(r,c.2)-1)
+2. **hook_walk_identity**: The mathematical content is now:
+   Σ_{c=(i,j) ∈ corners(μ)} [∏_{s<j} h(i,s)/(h(i,s)-1)] × [∏_{r<i} h(r,j)/(h(r,j)-1)] = n
+   This is the deep combinatorial identity. Consider submitting to Aristotle with full infrastructure.
+3. **Alternative approach**: Prove hook_walk_identity for shapes with ≤ 2 corners as stepping stone.
+
+---
 
 ## Session 2026-04-24 (Session 16) — hookProd Ratio Formula Infrastructure
 
@@ -314,35 +505,3 @@ Key infrastructure already available:
 1. **3-row case**: Prove `hook_walk_identity` for shapes with exactly 3 rows (rowLen 3 = 0 but rowLen 2 > 0). This would require the GNW argument but restricted to 3-row shapes.
 2. **GNW hook walk for general shapes**: ~200-300 Lean lines, the probabilistic hook walk proof. The key identity: Σ_{c ∈ corners(μ)} hookProd(μ)/hookProd(μ\c) = n follows from a Markov chain analysis.
 3. **Archive old sessions**: knowledge.md is now 500+ lines; archive sessions 12-18 to sessions/.
-
-## Session 2026-04-25 (Session 21) - PART XVI: hook_walk_identity for [a,2,1] Shapes
-
-**Mode**: REVISIT
-**Outcome**: progress
-
-### What I Did
-- Implemented PART XVI: complete formal proof of `hook_walk_identity_a21YD` for Young diagrams of shape [a,2,1] with a ≥ 3
-- Added `a21YD` YoungDiagram definition with `isLowerSet` proof via `interval_cases`
-- Proved row/col length lemmas, hook length lemmas, corner identification lemmas
-- Built `tele_prod` (telescoping product by induction) and `tail_prod_a21YD` (bijection proof)
-- Proved main identity: 3 corner ratios sum to a+3 via `ring` arithmetic
-- Added [a,2,1] case to `hook_walk_identity` dispatcher
-- Fixed 11 static analysis bugs before commit (wrong lemma names, tactic misuses, cast issues)
-- Committed and pushed: PR rjwalters/lean-genius#12465
-
-### Key Findings
-- `tele_prod`: ∏_{k∈Ico 1 (n+1)} (k+1)/k = n+1 by simple induction + `field_simp; ring`
-- Tail arm reduction: `tail_prod_a21YD` via bijection `s ↦ a-1-s` from `Ico 2 (a-1)` to `Ico 1 (a-3+1)`
-- `hookProd_ratio_formula` with `Finset.prod_range_succ/zero` works cleanly for range-1 products
-- `Finset.sum_attach` (forward, not `←`) converts `∑ cx ∈ s.attach, f cx.val` to `∑ cx ∈ s, f cx`
-- `removeCorner_proof_irrel` (not `removeCorner_irrel`) is the proof-irrelevance lemma
-- `Nat.lt_or_ge + interval_cases` replaces nonexistent `Nat.lt_three_cases`
-- `rowLen_anti` (not `rowLen_antiMono`) is the antitone row length lemma
-
-### Files Modified
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` — +432 lines (PART XVI, lines 5358-5797)
-
-### Next Steps
-- Prove `hook_walk_identity` for general ≥3-row ≥3-col non-[a,2,1] case (1 sorry remains at line 5796)
-- Verify PART XVI compilation once Docker is available
-- Consider [a,b,1] generalization as next PART XVII

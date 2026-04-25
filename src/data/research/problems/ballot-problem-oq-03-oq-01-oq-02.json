@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: hook_walk_identity_a21YD proved (session 21 / PART XVI); [a,2,1] case in dispatcher added; 1 sorry remains for general ≥3-row ≥3-col non-[a,2,1] case",
+    "progressSummary": "PROGRESS: hook_walk_identity_atMostTwoCols proved (session 20); sorry scope reduced to ≥3-row ≥3-col non-gHookYD only; 4 sorries remain",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -107,17 +107,7 @@
       "sytTranspose + sytTranspose_injective + card_SYT_transpose: SYT(μ) ≃ SYT(μ.transpose) (BallotProblemOQ03OQ01OQ02.lean:5231-5275)",
       "removeCorner_atMostTwoCols: corner removal preserves ≤2-col (BallotProblemOQ03OQ01OQ02.lean:5277)",
       "hook_length_formula_atMostTwoCols: HLF for ≤2-col shapes, 0 sorries (BallotProblemOQ03OQ01OQ02.lean:5295)",
-      "hook_walk_identity_atMostTwoCols: hook walk identity for ≤2-col shapes (BallotProblemOQ03OQ01OQ02.lean:5306)",
-      "a21YD: YoungDiagram for [a,2,1] shapes (a≥3) with isLowerSet proof (BallotProblemOQ03OQ01OQ02.lean:5374)",
-      "mem_a21YD: membership iff at lines 5399-5411",
-      "a21YD_card: card=a+3 at lines 5413-5429",
-      "rowLen/colLen lemmas: zero=a, one=2, two=1, ge3=0; col zero=3, one=2, mid=1, ge_a=0 (lines 5431-5487)",
-      "hookLength lemmas for [a,2,1]: (0,0)=a+2, (0,1)=a, (0,j)=a-j, (1,0)=3, (1,1)=1, (2,0)=1 (lines 5489-5524)",
-      "isCorner/corners lemmas for [a,2,1]: exactly 3 corners at (0,a-1),(1,1),(2,0) (lines 5526-5579)",
-      "tele_prod: telescoping product ∏_{k∈Ico 1 (n+1)} (k+1)/k = n+1 by induction (lines 5582-5593)",
-      "tail_prod_a21YD: ∏_{s∈Ico 2 (a-1)} (a-s)/(a-s-1)=a-2 via bijection (lines 5596-5614)",
-      "hook_walk_identity_a21YD: hook walk identity for [a,2,1] shapes (lines 5619-5723)",
-      "hook_walk_identity dispatcher: [a,2,1] case added at lines 5739-5794"
+      "hook_walk_identity_atMostTwoCols: hook walk identity for ≤2-col shapes (BallotProblemOQ03OQ01OQ02.lean:5306)"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -176,22 +166,17 @@
       "hook_walk_identity sorry scope: now covers only ≥3-row shapes that are NOT gHookYD — shapes like [3,2,1], [4,3,2], etc. require GNW probabilistic proof",
       "Transpose duality: all three key quantities (hookProd, SYT count, cell count) are invariant under YoungDiagram.transpose",
       "sytTranspose bijection: T.entry(i,j) maps to T.entry(j,i); row-strict ↔ col-strict under transpose",
-      "hook_walk_identity remaining sorry scope narrowed to ≥3-row AND ≥3-col AND non-gHookYD shapes (e.g. [3,2,1], [4,3,2])",
-      "[a,2,1] hook_walk_identity proved non-circularly: 3 corners at (0,a-1), (1,1), (2,0) with ratios summing to a+3 by ring",
-      "tail_prod reduction: ∏_{s∈Ico 2 (a-1)} (a-s)/(a-s-1)=a-2 via bijection s↦a-1-s to tele_prod",
-      "tele_prod identity: ∏_{k∈Ico 1 (n+1)} (k+1)/k = n+1 by induction useful for arm product telescoping",
-      "YoungDiagram.rowLen_anti (antitone row lengths) used to show i≥3 → rowLen i=0 for [a,2,1]",
-      "interval_cases tactic required for isLowerSet base case at (2,0) and for hμ_eq case split on i<3"
+      "hook_walk_identity remaining sorry scope narrowed to ≥3-row AND ≥3-col AND non-gHookYD shapes (e.g. [3,2,1], [4,3,2])"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
       "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux"
     ],
     "nextSteps": [
-      "Prove hook_walk_identity for general ≥3-row ≥3-col non-gHookYD case (currently sorry at line 5796)",
-      "Strategy: induction on shape or reduction to simpler cases; consider [a,b,1] generalisation",
-      "Consider [a,b] two-row case as next dispatcher branch after [a,2,1]",
-      "Verify PART XVI compilation once Docker is available"
+      "Prove hook_walk_identity for ≥3-row non-gHookYD shapes via GNW probabilistic hook walk (~200-300 lines)",
+      "Simpler stepping stone: prove hook_walk_identity for shapes with exactly 3 rows",
+      "Fix ni_count_eq_syt_count statement (RSK bijection, FALSE as stated — needs hypothesis relating μ to LGV config)",
+      "Archive sessions 5-18 to sessions/ subdir (knowledge.md >700 lines)"
     ]
   },
   "tags": [
@@ -393,22 +378,22 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
       "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 397,
-      "theoremCount": 10,
+      "lineCount": 346,
+      "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 2,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "filename": "BallotProblemOQ03OQ01OQ02.lean",
-      "lineCount": 5506,
+      "lineCount": 5275,
       "theoremCount": 64,
       "axiomCount": 0,
       "defCount": 10,
-      "sorryCount": 11,
+      "sorryCount": 10,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
     },
