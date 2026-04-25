@@ -42,7 +42,7 @@
     ],
     "dateAdded": "2026-04-22",
     "axiomCount": 1,
-    "lineCount": 779,
+    "lineCount": 734,
     "assumptions": "1 axiom declaration: kuhn_path_existential_ax encodes Kuhn's walk-pairing involution argument (τ∘τ=id via walk reversibility + non-revisiting = no fixed points). Non-revisiting is fully proved (kuhn_step_nonrevisit + WalkValid); walk reversibility is the remaining open formalization step. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
@@ -247,7 +247,7 @@
       "BigOperators"
     ],
     "namespace": "SpernerNDimOQ04",
-    "lineCount": 779,
+    "lineCount": 734,
     "axiomCount": 1,
     "theoremCount": 20,
     "definitionCount": 8,
