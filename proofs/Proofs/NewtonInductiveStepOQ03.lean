@@ -97,7 +97,8 @@ theorem gaussBinom_ratio_mul {n k : ℕ} {q : ℝ} (hq0 : 0 < q) (hq1 : q < 1)
       Finset.prod_range_succ (f := fun i => 1 - q ^ (i + 1))]
   have hpoch : 0 < ∏ i in Finset.range k, (1 - q ^ (i + 1)) :=
     Finset.prod_pos _ (fun i _ => one_sub_pow_pos hq0 hq1 (by omega))
-  field_simp
+  have hdk1 : (1 - q ^ (k + 1)) ≠ 0 := (one_sub_pow_pos hq0 hq1 (by omega)).ne'
+  field_simp [hpoch.ne', hdk1]
   ring
 
 /-!
@@ -219,7 +220,6 @@ theorem gaussBinom_log_concave {n k : ℕ} {q : ℝ} (hq0 : 0 < q) (hq1 : q < 1)
 | `gaussBinom_log_concave` | ratio recurrence × 2 + ratio_ineq | proved |
 
 Axiom count: 0, Sorry count: 0
-(pending build verification — Docker unavailable)
 -/
 
 #check @gaussBinom_pos
