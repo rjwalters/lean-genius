@@ -46,6 +46,58 @@
     ]
   },
   {
+    "id": "ann-dcoq03-setup",
+    "proofId": "derangements-convergence-oq-03",
+    "range": {
+      "startLine": 44,
+      "endLine": 72
+    },
+    "type": "technique",
+    "title": "Step 1: Establishing |D(n) − n!/e| < 1/2",
+    "content": "The proof opens with `set x : ℝ := n.factorial * rexp(-1) with hx_def` — this introduces a name `x` for the target value n!/e and records the definition as `hx_def` for later rewriting. The `set` tactic simultaneously substitutes all occurrences of the expression in the goal.\n\n**Field manipulation (lines 57-62)**: The convergence rate bound gives `|D(n)/n! − e⁻¹| ≤ 1/(n+1)!`. To use this, we rewrite the left side: `|D/n! − e⁻¹| = |D − x|/n!`. The `hmul` sub-proof constructs this equality. The key step is `rw [abs_div, abs_of_pos hfact_pos]` — the absolute value of a quotient is the quotient of absolute values (when the denominator is positive). `abs_of_pos hfact_pos` drops the absolute value around n! since n! > 0.\n\n**Chain of inequalities (lines 69-72)**: After `rw [hmul, div_le_iff hfact_pos] at hrate`, we have `|D − x| ≤ n! · (1/(n+1)!)`. The `calc` block chains three inequalities: (1) `|D − x| ≤ n! · (1/(n+1)!)` from `hrate`; (2) `= 1/(n+1)` from the helper lemma; (3) `< 1/2` from `one_div_lt_one_div_of_lt` applied to `2 < n+1` (since n ≥ 2 gives n+1 ≥ 3 > 2).",
+    "mathContext": "The key field manipulation: $|D/n! - e^{-1}| = |D - x|/n!$ holds because $D/n! - e^{-1} = (D - n! e^{-1})/n! = (D - x)/n!$ and $n! > 0$. Then $|D - x|/n! \\leq 1/(n+1)!$ rearranges to $|D - x| \\leq n!/(n+1)! = 1/(n+1) < 1/2$ for $n \\geq 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "set tactic",
+      "abs_div",
+      "abs_of_pos",
+      "div_le_iff",
+      "one_div_lt_one_div_of_lt",
+      "calc tactic"
+    ],
+    "prerequisites": [
+      "derangements_convergence_rate",
+      "factorial_mul_one_div_factorial_succ helper",
+      "abs arithmetic in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-dcoq03-rounding",
+    "proofId": "derangements-convergence-oq-03",
+    "range": {
+      "startLine": 73,
+      "endLine": 88
+    },
+    "type": "technique",
+    "title": "Step 2: Converting |D − x| < 1/2 to D = round(x)",
+    "content": "With `hlt : |D(n) − x| < 1/2` established, the proof converts this to `D(n) = round(x)` by unfolding Mathlib's rounding definition.\n\n`rw [round_eq]` rewrites `round x` as `⌊x + 1/2⌋`. The goal becomes `D(n) = ⌊x + 1/2⌋`.\n\n`symm` flips the goal to `⌊x + 1/2⌋ = D(n)`, putting it in the form expected by `floor_eq_iff`.\n\n`apply floor_eq_iff.mpr` reduces the goal to two linear arithmetic goals: (a) `D(n) ≤ x + 1/2` and (b) `x + 1/2 < D(n) + 1`. These are exactly the characterization `⌊r⌋ = z ↔ z ≤ r ∧ r < z + 1`.\n\n`abs_lt.mp hlt` unpacks `|D − x| < 1/2` into two directional bounds: `habs.1 : −(1/2) < D − x` and `habs.2 : D − x < 1/2`. Both goals then close with `push_cast` (to align ℤ and ℝ coercions) followed by `linarith`.\n\nThe `push_cast` step is necessary because `D(n)` starts as `(numDerangements n : ℤ)` in the goal but `x` is `ℝ`. Lean needs to unify the coercions before `linarith` can use linear arithmetic.",
+    "mathContext": "The rounding characterization: $\\text{round}(x) = \\lfloor x + 1/2 \\rfloor$. The floor equation: $\\lfloor r \\rfloor = z \\iff z \\leq r < z + 1$. Combined: $\\text{round}(x) = D \\iff D \\leq x + 1/2 < D + 1$, i.e., $|D - x| < 1/2$. So the bound $|D(n) - n!/e| < 1/2$ directly implies $D(n) = \\text{round}(n!/e)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "round_eq",
+      "floor_eq_iff",
+      "abs_lt",
+      "push_cast",
+      "linarith",
+      "symm tactic"
+    ],
+    "prerequisites": [
+      "Mathlib round_eq definition",
+      "floor_eq_iff characterization",
+      "integer-to-real coercion in Lean 4"
+    ]
+  },
+  {
     "id": "ann-dcoq03-main",
     "proofId": "derangements-convergence-oq-03",
     "range": {
