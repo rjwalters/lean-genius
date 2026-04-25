@@ -21,7 +21,7 @@
         "dateAdded": "2026-04-24",
         "axiomCount": 0,
         "assumptions": "",
-        "lineCount": 241,
+        "lineCount": 255,
         "theoremCount": 9,
         "definitionCount": 3,
         "originalContributions": [
@@ -62,7 +62,7 @@
     },
     "leanFile": {
         "namespace": "AbelRuffiniGaloisExtensionsOQ04",
-        "lineCount": 241,
+        "lineCount": 255,
         "axiomCount": 0,
         "theoremCount": 9,
         "definitionCount": 3,
@@ -89,13 +89,13 @@
             "title": "Part II: JordanHolderLattice Instance",
             "startLine": 70,
             "endLine": 210,
-            "summary": "instJordanHolderLatticeSubgroup — fills Mathlib TODO. sup_eq_of_isMaximal proved; isMaximal_inf_left_of_isMaximal_sup 2/3 proved (1 sorry); iso_symm, iso_trans, second_iso all proved"
+            "summary": "instJordanHolderLatticeSubgroup — fills Mathlib TODO. All 3 axioms proved: sup_eq_of_isMaximal, isMaximal_inf_left_of_isMaximal_sup (element-wise Subgroup.mem_sup argument), iso_symm, iso_trans, second_iso. 0 sorries."
         },
         {
             "id": "sec-main-theorem",
             "title": "Part III: Jordan-Hölder Theorem",
             "startLine": 211,
-            "endLine": 241,
+            "endLine": 255,
             "summary": "jordan_holder_subgroups and jordan_holder_finite_groups — delegates to CompositionSeries.jordan_holder once instance is provided"
         }
     ],
