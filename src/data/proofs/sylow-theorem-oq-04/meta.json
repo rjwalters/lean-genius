@@ -119,6 +119,21 @@
       "targetId": "sylow-theorem-oq-01",
       "relationship": "sibling",
       "description": "Another application of Sylow's theorems, classifying groups of order pq."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "foundational",
+      "description": "The simplicity of $A_5$ proved here is the cornerstone obstruction in Abel-Ruffini's impossibility theorem. The Lean proof in `abel-ruffini` delegates this fact to Mathlib's `alternatingGroup.isSimpleGroup_five`; this entry provides an elementary first-principles verification of the same result using explicit Sylow counting ($n_2 = 5, n_3 = 10, n_5 = 6$ for $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$). Together they demonstrate the same mathematical fact at two levels: Mathlib API and elementary group theory."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-04",
+      "relationship": "foundational",
+      "description": "The simplicity of $A_5$ proved here is the exact fact that makes $A_5$ the indecomposable composition factor in $S_5$'s Jordan-Hölder series $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$. The Jordan-Hölder uniqueness theorem (proved in `abel-ruffini-galois-extensions-oq-04` via `JordanHolderLattice`) then certifies that every composition series of $S_5$ must have $A_5$ as a factor — no alternative decomposition avoids the non-abelian simple group. The Sylow counting argument here is the elementary proof of the simplicity that the Jordan-Hölder framework leverages."
+    },
+    {
+      "targetId": "sylow-theorem-oq-02",
+      "relationship": "uses",
+      "description": "The orbit enumeration formula $n_p = [G : N_G(P)]$ from `sylow-theorem-oq-02` is the counting mechanism used here: $n_5 \\equiv 1 \\pmod{5}$ and $n_5 \\mid 12$ forces $n_5 \\in \\{1, 6\\}$, and $n_5 = 1$ would mean the Sylow 5-subgroup is normal — contradicting simplicity. The formula provides the bridge from order constraints to normality."
     }
   ],
   "leanFile": {
