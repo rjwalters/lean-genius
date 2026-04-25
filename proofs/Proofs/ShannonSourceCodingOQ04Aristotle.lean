@@ -3,16 +3,16 @@
   Routine supporting lemmas for automated proof search.
   See ShannonSourceCodingOQ04.lean for the main formalization.
 
-  Targets:
-  - empDist_sum: empirical distribution counts sum to block length n
-  - typeProb_pos: type probability is positive when all empirical counts are positive
-  - typeProb_eq_exp_neg: typeProb = exp(-n H_emp(Q)) via log identity
-  - type_class_size_le_entropy_pow: |T_f| ≤ exp(n H(f/n)) (method of types key bound)
-  - dominant_type_lower_bound: pigeonhole bound on largest type class size
+  PRIMARY TARGET (Session 2):
+  - type_class_size_eq_multinomial: |T_f| = n! / ∏(f i)! (multinomial counting fact)
+
+  Previously proved in main file (included here for context, no sorries):
+  - empDist_sum', typeProb_pos', log_typeProb_eq'
+  Note: type_class_size_le_entropy_pow and dominant_type_lower_bound
+  were proved in the main file (PR #12457); removed from this companion file.
 
   NOT included:
-  - type_class_size_eq_multinomial (requires ~60-line bijection argument)
-  - source_coding_achievability_mot (main theorem; assembles the above)
+  - source_coding_achievability_mot (OPEN: needs LLN/concentration inequalities)
 -/
 import Mathlib
 
@@ -115,41 +115,35 @@ theorem log_typeProb_eq' (n : ℕ) (hn : (n : ℝ) ≠ 0)
     _ = (n : ℝ) * ((f i : ℝ) / n * Real.log ((f i : ℝ) / n)) := by ring
 
 -- ============================================================
--- Target 4: Type class size ≤ exp(n H_emp(Q))
+-- PRIMARY TARGET: Type class size = multinomial coefficient
 -- ============================================================
 
-/-- **Type Class Size Upper Bound** (method of types key lemma).
+/-- **Type class size equals the multinomial coefficient**: |T_f| = n! / ∏(f i)!
 
-    For any type f with ∑ f i = n and all f i > 0:
-      |T_f| ≤ exp(n H(f/n))
+    This is the fundamental counting fact of the method of types (Csiszár-Körner 1981).
 
-    Proof sketch (probability argument):
-    1. Each x ∈ typeClass'(f) satisfies empDist' n x = f (by definition)
-    2. Assign Q-probability: prob(x) = ∏_i (f_i/n)^{f_i} = typeProb' (constant on T_f)
-    3. ∑_{x : Fin n → Fin k} prob(x) ≤ 1 (multinomial normalization)
-    4. ∑_{x ∈ T_f} prob(x) = |T_f| * typeProb' (sum of constant = card times value)
-    5. So |T_f| * typeProb' ≤ 1, hence |T_f| ≤ exp(n H(Q)) = 1/typeProb'. -/
-theorem type_class_size_le_entropy_pow' (n : ℕ) (hn : 0 < n) (f : Fin k → ℕ)
-    (hf : ∑ i, f i = n) (hf_pos : ∀ i, 0 < f i) :
-    ((typeClass' n f hf).card : ℝ) ≤
-    Real.exp ((n : ℝ) * empEntropy' n (Nat.cast_pos.mpr hn).ne' f) := by
-  sorry
+    Proof approach 1 (INDUCTION ON n):
+    - Base n=0: one empty function, multinomial = 0!/1 = 1. ✓
+    - Inductive step: partition T_f by the last element x(Fin.last n).
+      For v with f(v) > 0: {x ∈ T_f | x(n) = v} ≅ T_{f[v ↦ f(v)-1]}
+      via the bijection x ↦ x ∘ Fin.castSucc (drop last element).
+      Pascal identity: multinomial(f) = ∑_{v:f(v)>0} multinomial(f[v↦f(v)-1])
+      follows from: ∏(f i)! * multinomial(f) = n! (multinomial_spec) and
+      ∏(f i)! * multinomial(update f v (f(v)-1)) = f(v) * (n-1)!
+      (since ∏(update f v (f(v)-1) i)! = ∏(f i)! / f(v)).
 
--- ============================================================
--- Target 5: Dominant type class lower bound (pigeonhole)
--- ============================================================
+    Proof approach 2 (PERMUTATION QUOTIENT):
+    - Define canonical sequence C_f : Fin n → Fin k where position j maps to i
+      if ∑_{l<i} f l ≤ j < ∑_{l≤i} f l (sorted multiset arrangement).
+    - Map σ : Equiv.Perm (Fin n) ↦ C_f ∘ σ ∈ T_f.
+    - Fiber over each x ∈ T_f has size ∏(f i)! (permutations within each preimage block).
+    - Therefore |T_f| = n! / ∏(f i)! = multinomial (by multinomial_spec).
 
-/-- **Dominant Type Lower Bound** (pigeonhole principle).
-
-    There exists a type f with ∑ f i = n such that its type class satisfies
-      |T_f| ≥ k^n / (n+1)^k
-
-    Proof: There are k^n total sequences (Fintype.card (Fin n → Fin k) = k^n)
-    and at most (n+1)^k distinct types (each type maps Fin k to {0,...,n}).
-    By pigeonhole, some type class has size ≥ k^n / (n+1)^k. -/
-theorem dominant_type_lower_bound' (n : ℕ) :
-    ∃ f : Fin k → ℕ, ∃ hf : ∑ i, f i = n,
-    k ^ n / (n + 1) ^ k ≤ (typeClass' n f hf).card := by
+    Key lemmas:
+    - Nat.multinomial_spec: ∏(f i)! * multinomial univ f = (∑ f i)! = n!
+    - Fintype.card_perm: (Finset.univ : Finset (Equiv.Perm (Fin n))).card = n! -/
+theorem type_class_size_eq_multinomial (n : ℕ) (f : Fin k → ℕ) (hf : ∑ i, f i = n) :
+    (typeClass' n f hf).card = Nat.multinomial Finset.univ f := by
   sorry
 
 end ShannonSourceCodingOQ04Aristotle
