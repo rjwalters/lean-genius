@@ -138,3 +138,36 @@ These two together formalize "Aut(𝕆) ⊆ O(7)" in the sense that:
 1. Define `Der(𝕆)` as the space of derivations and attempt to show its dimension is 14
 2. If Lean gets Lie group theory, replace `G2_is_octonion_aut` axiom with proof
 3. Could formalize the 7-dim cross product preservation constraint (~100 lines)
+
+---
+
+## Session 2026-04-25 (Session 4) — Eliminate 4 definitional axioms
+
+**Mode**: REVISIT
+**Outcome**: PROGRESS — reduced from 5 axioms to 1 (freudenthal_tits_f4/e6/e7/e8 proved by rfl)
+
+### What I Did
+
+Observed that `ExceptionalType.dim` is defined with explicit values:
+```lean
+def ExceptionalType.dim : ExceptionalType → ℕ
+  | .F4 => 52  | .E6 => 78  | .E7 => 133  | .E8 => 248
+```
+
+So `freudenthal_tits_f4 : ExceptionalType.F4.dim = 52` reduces to `52 = 52` = `rfl`.
+Converted all 4 definitional axioms to `theorem ... := rfl`.
+
+### Results
+
+- 4 axioms → 0 axioms: `freudenthal_tits_f4/e6/e7/e8` all proved by `rfl`
+- 1 axiom remains: `G2_is_octonion_aut` = `14 = Nat.card (OctonionAut)` (requires Lie group theory)
+
+### Files Modified
+
+- `proofs/Proofs/HurwitzTheoremOQ04.lean` (4 axiom → theorem rfl conversions)
+- `src/data/research/problems/hurwitz-theorem-oq-04.json`
+
+### Next Steps
+
+1. `G2_is_octonion_aut`: Nat.card(OctonionAut) = 14 requires showing OctonionAut ≅ G₂ as Lie groups. Not tractable without Lie group formalization in Lean (~2000+ lines or Mathlib addition).
+2. Problem status: appropriately axiomatized with 1 genuine axiom.

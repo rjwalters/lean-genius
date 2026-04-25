@@ -43,14 +43,14 @@ These four algebras are deeply connected to the exceptional Lie groups through:
   - `G2_unique_low_rank`: G₂ is the only exceptional Lie algebra of rank < 4
   - `E8_is_largest`: E₈ has the highest dimension (248)
 
-- **Computational (sorry, provable by ring)**:
+- **Computational** (proved by `ring`/`simp`):
   - `eightMul_right_unit`: e₀ is the right identity
   - `eightMul_left_unit`: e₀ is the left identity
   - `normSq_octUnit_mul`: normSq norm-product identity with octUnit
 
 - **Axiomatized** (genuinely deep results):
-  - `G2_is_octonion_aut`: G₂ = Aut(𝕆)
-  - `freudenthal_tits_f4/e6/e7/e8`: magic square exceptional types
+  - `G2_is_octonion_aut`: G₂ = Aut(𝕆) — requires Lie group theory
+  - ~~`freudenthal_tits_f4/e6/e7/e8`~~: now proved by `rfl` (definitional)
 
 ## References
 - John Baez, "The Octonions", Bull. AMS 39 (2002) — comprehensive survey
@@ -445,31 +445,33 @@ diagram which acts on 8-dimensional representations.
   (the exact formula uses a doubled version to enforce the Jacobi identity)
 -/
 
-/-- Axiom: 𝔏(𝕆, ℝ) is a Lie algebra of type F₄ (dimension 52).
+/-- 𝔏(𝕆, ℝ) is a Lie algebra of type F₄ (dimension 52).
     F₄ = Aut(𝔥₃(𝕆)) where 𝔥₃(𝕆) is the exceptional Jordan algebra.
-    Proof path: Der(𝕆) has dim 14, Im(𝕆)⊗Im(ℝ)=0, Der(ℝ)=0; correction terms
-    from the anti-commutator bracket give extra dimensions. -/
-axiom freudenthal_tits_f4 :
-    ExceptionalType.F4.dim = 52
+    Note: This follows directly from the definition ExceptionalType.dim .F4 = 52. -/
+theorem freudenthal_tits_f4 :
+    ExceptionalType.F4.dim = 52 := rfl
 
-/-- Axiom: 𝔏(𝕆, ℂ) is a Lie algebra of type E₆ (dimension 78).
+/-- 𝔏(𝕆, ℂ) is a Lie algebra of type E₆ (dimension 78).
     E₆ appears as a gauge group in heterotic string theory and has 5-graded
-    decomposition 1+16+dim(so(10))+16+1 = 78. -/
-axiom freudenthal_tits_e6 :
-    ExceptionalType.E6.dim = 78
+    decomposition 1+16+dim(so(10))+16+1 = 78.
+    Note: This follows directly from the definition ExceptionalType.dim .E6 = 78. -/
+theorem freudenthal_tits_e6 :
+    ExceptionalType.E6.dim = 78 := rfl
 
-/-- Axiom: 𝔏(𝕆, ℍ) is a Lie algebra of type E₇ (dimension 133).
+/-- 𝔏(𝕆, ℍ) is a Lie algebra of type E₇ (dimension 133).
     E₇ has a 56-dimensional fundamental representation and appears in
-    M-theory compactification on Calabi-Yau 3-folds. -/
-axiom freudenthal_tits_e7 :
-    ExceptionalType.E7.dim = 133
+    M-theory compactification on Calabi-Yau 3-folds.
+    Note: This follows directly from the definition ExceptionalType.dim .E7 = 133. -/
+theorem freudenthal_tits_e7 :
+    ExceptionalType.E7.dim = 133 := rfl
 
-/-- Axiom: 𝔏(𝕆, 𝕆) is a Lie algebra of type E₈ (dimension 248).
+/-- 𝔏(𝕆, 𝕆) is a Lie algebra of type E₈ (dimension 248).
     The largest exceptional Lie algebra. The E₈ × E₈ heterotic string theory
     satisfies the anomaly cancellation condition dim(G) = 496 = 2 × 248.
-    Viazovska (2016 Fields Medal) used E₈ to solve sphere packing in ℝ⁸. -/
-axiom freudenthal_tits_e8 :
-    ExceptionalType.E8.dim = 248
+    Viazovska (2016 Fields Medal) used E₈ to solve sphere packing in ℝ⁸.
+    Note: This follows directly from the definition ExceptionalType.dim .E8 = 248. -/
+theorem freudenthal_tits_e8 :
+    ExceptionalType.E8.dim = 248 := rfl
 
 -- ============================================================
 -- PART VI: Structural Consequences (Proved)
