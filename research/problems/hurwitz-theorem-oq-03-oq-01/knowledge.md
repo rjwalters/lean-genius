@@ -230,3 +230,48 @@ The remaining sorry covers **even non-admissible n** (n = 6, 10, 12, ...):
 1. **Track Mathlib**: When Bott periodicity for Clifford algebras is formalized, sorry closes directly.
 2. **Gallery status**: Proof maximally complete — 1 sorry, 0 axioms, badge `wip`. No further progress possible without Clifford library.
 3. **Alternative**: Build Artin-Wedderburn for matrix algebras (~200 lines) as stepping stone toward Bott.
+
+---
+
+## Session 2026-04-25 (Session 5) — W-A Available in Mathlib; Proof Path Clarified
+
+**Mode**: REVISIT (continuing claimed problem)
+**Outcome**: PROGRESS — identified W-A theorem in Mathlib, clarified exact blocker
+
+### What I Did
+
+1. Searched Mathlib for Clifford algebra representation theory
+2. Found `IsSimpleRing.exists_algEquiv_matrix_divisionRing` in `Mathlib/RingTheory/SimpleModule/WedderburnArtin.lean`
+3. Found `IsIsotypicOfType.linearEquiv_fun` in `Mathlib/RingTheory/SimpleModule/Isotypic.lean`
+4. Worked out precise proof path for n=6 using W-A + Frobenius + isotypic theory
+5. Updated sorry comment with precise remaining work estimate (~400 lines)
+6. Updated mathlibGaps: reduced from 3 gaps to 2 specific gaps
+
+### Key Findings
+
+**Wedderburn-Artin is in Mathlib (2025 addition)**:
+- `IsSimpleRing.exists_algEquiv_matrix_divisionRing`: simple Artinian algebra ≅ Mₙ(D)
+- `IsSimpleRing.isIsotypic`: any module over simple Artinian ring is isotypic
+- `IsIsotypicOfType.linearEquiv_fun`: finite isotypic module ≅ Sᵏ → finrank divisible by finrank(S)
+
+**Precise proof path for n=6** (requires two Mathlib additions):
+1. Cl(0,5) is simple as ℝ-algebra → ρ: Cl(0,5) → M₆(ℝ) is injective → dim(B)=32
+2. By W-A: B ≅ Mₖ(D), k²·dim_ℝ(D)=32, dim_ℝ(D)∈{1,2,4} (Frobenius)
+3. Only consistent solution: k=4, D=ℂ, simple module dim = 8
+4. ℝ⁶ is B-module → 8 | 6, contradiction
+
+**Remaining Mathlib gaps** (reduced from 3 to 2):
+- Cl(0,5) simplicity: ~200 lines (explicit M₄(ℂ) isomorphism or period-2 induction)
+- Frobenius theorem: ~150 lines
+
+### Files Modified
+
+- `proofs/Proofs/HurwitzTheorem.lean` (updated sorry comment with precise proof path)
+- `src/data/research/problems/hurwitz-theorem-oq-03-oq-01.json`
+- `research/problems/hurwitz-theorem-oq-03-oq-01/knowledge.md`
+
+### Next Steps
+
+1. **If next session has bandwidth**: Implement Frobenius theorem (~150 lines) — standalone utility
+2. **If next session has bandwidth**: Implement Cl(0,5) simplicity via explicit M₄(ℂ) isomorphism (~200 lines)
+3. Both would close the sorry completely for n=6; Bott periodicity closes remaining n

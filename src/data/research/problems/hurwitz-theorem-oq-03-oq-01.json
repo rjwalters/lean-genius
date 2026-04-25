@@ -1,130 +1,147 @@
 {
-    "slug": "hurwitz-theorem-oq-03-oq-01",
-    "title": "Hurwitz Only-If: Clifford Algebra Proof",
+  "slug": "hurwitz-theorem-oq-03-oq-01",
+  "title": "Hurwitz Only-If: Clifford Algebra Proof",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem hurwitz_only_if (N : Type*) [NormedDivisionAlgebra N] : Module.finrank ℝ N ∈ ({1, 2, 4, 8} : Set ℕ) := by sorry",
+    "plain": "Can hurwitz_only_if (the hard direction of Hurwitz's theorem) be proved via Clifford algebra theory and the representation of norm-preserving multiplications? The classical argument uses Radon-Hurwitz numbers: a normed division algebra of dimension n requires Cl(n-1) to have a real representation of dimension n, which forces n ∈ {1,2,4,8}.",
+    "whyMatters": [
+      "Hurwitz's theorem is a landmark result in algebra — fully machine-checked proof is significant",
+      "The Clifford algebra approach is the most conceptual proof",
+      "Connects to K-theory, Bott periodicity, and the Hopf invariant one problem"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Constructions of ℝ, ℂ, ℍ, 𝕆 as normed division algebras (if direction)",
+      "hurwitz-theorem-oq-03: n=8 octonion identity proved constructively (Cayley-Dickson)",
+      "Mathlib: CliffordAlgebra basic API, NormedDivisionAlgebra typeclass"
+    ],
+    "open": [
+      "hurwitz_only_if: no dimension other than 1, 2, 4, 8 is possible",
+      "Radon-Hurwitz numbers not in Mathlib"
+    ],
+    "goal": "Prove hurwitz_only_if, or at minimum prove the n=3 impossibility as a first step"
+  },
+  "currentState": {
     "phase": "ACT",
-    "status": "active",
-    "tier": "B",
-    "path": "full",
-    "problemStatement": {
-        "formal": "theorem hurwitz_only_if (N : Type*) [NormedDivisionAlgebra N] : Module.finrank \u211d N \u2208 ({1, 2, 4, 8} : Set \u2115) := by sorry",
-        "plain": "Can hurwitz_only_if (the hard direction of Hurwitz's theorem) be proved via Clifford algebra theory and the representation of norm-preserving multiplications? The classical argument uses Radon-Hurwitz numbers: a normed division algebra of dimension n requires Cl(n-1) to have a real representation of dimension n, which forces n \u2208 {1,2,4,8}.",
-        "whyMatters": [
-            "Hurwitz's theorem is a landmark result in algebra \u2014 fully machine-checked proof is significant",
-            "The Clifford algebra approach is the most conceptual proof",
-            "Connects to K-theory, Bott periodicity, and the Hopf invariant one problem"
-        ]
-    },
-    "knownResults": {
-        "proven": [
-            "Constructions of \u211d, \u2102, \u210d, \ud835\udd46 as normed division algebras (if direction)",
-            "hurwitz-theorem-oq-03: n=8 octonion identity proved constructively (Cayley-Dickson)",
-            "Mathlib: CliffordAlgebra basic API, NormedDivisionAlgebra typeclass"
-        ],
-        "open": [
-            "hurwitz_only_if: no dimension other than 1, 2, 4, 8 is possible",
-            "Radon-Hurwitz numbers not in Mathlib"
-        ],
-        "goal": "Prove hurwitz_only_if, or at minimum prove the n=3 impossibility as a first step"
-    },
-    "currentState": {
-        "phase": "ACT",
-        "since": "2026-04-22",
-        "iteration": 2,
-        "focus": "Proved crossMat_sq_neg_one, confirmed even-n BLOCKED by missing Clifford algebra library",
-        "blockers": [],
-        "nextAction": "Track Mathlib for Clifford algebra rep theory; current proof is maximally complete",
-        "attemptCounts": {
-            "total": 1,
-            "currentApproach": 1,
-            "approachesTried": 1
-        }
-    },
-    "knowledge": {
-        "progressSummary": "BLOCKED: Even n sorry remains. crossMat_sq_neg_one proved. Blocker: Bott periodicity for Cl(0,n) not in Mathlib. Proof is maximally complete.",
-        "builtItems": [
-            "colMat(nsi, j\u2080): orthogonal matrix from j\u2080-th column of multiplication table (HurwitzTheorem.lean)",
-            "crossMat(nsi, j\u2081, j\u2082) = colMat(j\u2081)\u1d40 \u00d7 colMat(j\u2082): skew-symmetric AND orthogonal (HurwitzTheorem.lean)",
-            "no_odd_nsquare: odd n \u2265 3 \u2192 NSquareIdentity n \u2192 False, via det(M)\u00b2 = (-1)^n = -1 < 0 (HurwitzTheorem.lean)",
-            "hurwitz_only_if: handles n\u2208{1,2,3,4,8} exactly; odd n\u22655 via no_odd_nsquare; 1 sorry for even n\u22656",
-            "crossMat_anticommute: M\u2082M\u2083 + M\u2083M\u2082 = 0 for pairwise distinct crossMat generators \u2014 proves Clifford Cl(n-1) relations (HurwitzTheorem.lean)",
-            "crossMat_sq_neg_one: proved M\u00b2 = -I for any crossMat (HurwitzTheorem.lean:1870)"
-        ],
-        "insights": [
-            "Radon-Hurwitz numbers \u03c1(n): {1,2,2,4,4,4,4,8,9,...} \u2014 forces n\u2208{1,2,4,8}",
-            "Key: left-multiplication L_x for unit x gives isometric linear map \u2192 Clifford representation",
-            "n=3 impossibility: may be more direct (no full Radon-Hurwitz needed)",
-            "colMat(j\u2080) encodes left-multiplication by e_{j\u2080}: (j\u2080-th basis) acts on (k-th basis) \u2192 i-th component",
-            "orthogonality_constraint (column ortho) and orthogonality_constraint_right (row ortho) are key lemmas in HurwitzTheorem.lean",
-            "cross_polarization (Pfister identity) gives \u27e8m(x,a),m(y,b)\u27e9+\u27e8m(x,b),m(y,a)\u27e9=2\u27e8x,y\u27e9\u27e8a,b\u27e9",
-            "crossMat is skew-symmetric because col ortho kills diagonal (j\u2081\u2260j\u2082) and cross_polarization gives M_{jk}+M_{kj}=0",
-            "crossMat is orthogonal: M\u1d40\u00d7M = colMat(j\u2081)\u00d7colMat(j\u2081)\u1d40\u00d7colMat(j\u2082)\u1d40\u00d7colMat(j\u2082) by pulling apart",
-            "Wait - correction: crossMat transMul uses: (M\u1d40\u00d7M)\u1d40 = (col2\u1d40\u00d7col1\u00d7col1\u1d40\u00d7col2) = I using mul_eq_one_comm",
-            "Matrix.mul_eq_one_comm: for square matrices over commutative ring, A*B=1 \u2194 B*A=1",
-            "Odd.neg_one_pow: (-1:R)^n = -1 for Odd n \u2014 used in det contradiction",
-            "Even n case (n=6,10,12,...) requires: Clifford algebra Cl(n-1) has no real representation of dim n \u2014 needs Radon-Hurwitz theory",
-            "crossMat_anticommute establishes anticommuting complex structures M_j satisfying Clifford Cl(0,n-1) relations \u2014 final structural blocker for even n requires Radon-Hurwitz min rep dim bound",
-            "ring fails for non-commutative matrix rings: use abel for additive goals, neg_mul for sign flips",
-            "eight_square_identity_norm: two-step simp pattern needed \u2014 first simp only unfolds defs, second simp (not only) evaluates ![...] i via Matrix.cons_val_* for all 8 indices",
-            "Fixed 5 pre-existing build errors: right_polarization spurious ring, no_odd_nsquare ring for non-comm, Nat.eq_or_ne \u2192 eq_or_ne, eight_square_identity_exists theorem\u2192def, eight_square_identity_norm simp pattern",
-            "Even-n sorry: all paths (halving, volume element, trace/det) require Clifford Bott periodicity. Cl(0,5)\u2245M(4,\u2102) has min rep dim 8>6; Cl(0,9)\u2245M(16,\u211d) has dim 16>10. Table embedded in sorry comment."
-        ],
-        "mathlibGaps": [
-            "Radon-Hurwitz numbers not in Mathlib (as of 2026-04)",
-            "CliffordAlgebra.ofRep: classification of reps via Wedderburn structure theorem",
-            "Bott periodicity for Clifford algebras: Cl(0,n+8) \u2245 Cl(0,n) \u2297 M(16,\u211d)",
-            "Artin-Wedderburn theorem for real semisimple algebras"
-        ],
-        "nextSteps": [
-            "Track Mathlib for Clifford algebra rep theory (Bott periodicity formalization)",
-            "Alternative: build Artin-Wedderburn for matrix algebras (\u223c200 lines) + Cl structure (\u223c800 lines)",
-            "Current state: gallery proof maximally complete without Clifford library",
-            "If Mathlib adds Bott periodicity table: use to close even-n sorry directly",
-            "Consider flagging as BLOCKED with detailed Mathlib issue tracker reference"
-        ],
-        "markdown": ""
-    },
-    "tags": [
-        "algebra",
-        "number-theory",
-        "normed-algebras",
-        "quaternions",
-        "octonions",
-        "Clifford-algebras",
-        "extension"
+    "since": "2026-04-22",
+    "iteration": 2,
+    "focus": "Proved crossMat_sq_neg_one, confirmed even-n BLOCKED by missing Clifford algebra library",
+    "blockers": [],
+    "nextAction": "Track Mathlib for Clifford algebra rep theory; current proof is maximally complete",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "BLOCKED: 2 specific Mathlib gaps identified — Cl(0,5) simplicity + Frobenius theorem. W-A now available. ~400 lines for n=6 once gaps filled.",
+    "builtItems": [
+      "colMat(nsi, j₀): orthogonal matrix from j₀-th column of multiplication table (HurwitzTheorem.lean)",
+      "crossMat(nsi, j₁, j₂) = colMat(j₁)ᵀ × colMat(j₂): skew-symmetric AND orthogonal (HurwitzTheorem.lean)",
+      "no_odd_nsquare: odd n ≥ 3 → NSquareIdentity n → False, via det(M)² = (-1)^n = -1 < 0 (HurwitzTheorem.lean)",
+      "hurwitz_only_if: handles n∈{1,2,3,4,8} exactly; odd n≥5 via no_odd_nsquare; 1 sorry for even n≥6",
+      "crossMat_anticommute: M₂M₃ + M₃M₂ = 0 for pairwise distinct crossMat generators — proves Clifford Cl(n-1) relations (HurwitzTheorem.lean)",
+      "crossMat_sq_neg_one: proved M² = -I for any crossMat (HurwitzTheorem.lean:1870)"
     ],
-    "relatedProofs": [
-        "borsuk-ulam",
-        "cayley-hamilton-minpoly",
-        "hurwitz-theorem",
-        "hurwitz-theorem-oq-03",
-        "hurwitz-theorem-oq-03-oq-01"
+    "insights": [
+      "Radon-Hurwitz numbers ρ(n): {1,2,2,4,4,4,4,8,9,...} — forces n∈{1,2,4,8}",
+      "Key: left-multiplication L_x for unit x gives isometric linear map → Clifford representation",
+      "n=3 impossibility: may be more direct (no full Radon-Hurwitz needed)",
+      "colMat(j₀) encodes left-multiplication by e_{j₀}: (j₀-th basis) acts on (k-th basis) → i-th component",
+      "orthogonality_constraint (column ortho) and orthogonality_constraint_right (row ortho) are key lemmas in HurwitzTheorem.lean",
+      "cross_polarization (Pfister identity) gives ⟨m(x,a),m(y,b)⟩+⟨m(x,b),m(y,a)⟩=2⟨x,y⟩⟨a,b⟩",
+      "crossMat is skew-symmetric because col ortho kills diagonal (j₁≠j₂) and cross_polarization gives M_{jk}+M_{kj}=0",
+      "crossMat is orthogonal: Mᵀ×M = colMat(j₁)×colMat(j₁)ᵀ×colMat(j₂)ᵀ×colMat(j₂) by pulling apart",
+      "Wait - correction: crossMat transMul uses: (Mᵀ×M)ᵀ = (col2ᵀ×col1×col1ᵀ×col2) = I using mul_eq_one_comm",
+      "Matrix.mul_eq_one_comm: for square matrices over commutative ring, A*B=1 ↔ B*A=1",
+      "Odd.neg_one_pow: (-1:R)^n = -1 for Odd n — used in det contradiction",
+      "Even n case (n=6,10,12,...) requires: Clifford algebra Cl(n-1) has no real representation of dim n — needs Radon-Hurwitz theory",
+      "crossMat_anticommute establishes anticommuting complex structures M_j satisfying Clifford Cl(0,n-1) relations — final structural blocker for even n requires Radon-Hurwitz min rep dim bound",
+      "ring fails for non-commutative matrix rings: use abel for additive goals, neg_mul for sign flips",
+      "eight_square_identity_norm: two-step simp pattern needed — first simp only unfolds defs, second simp (not only) evaluates ![...] i via Matrix.cons_val_* for all 8 indices",
+      "Fixed 5 pre-existing build errors: right_polarization spurious ring, no_odd_nsquare ring for non-comm, Nat.eq_or_ne → eq_or_ne, eight_square_identity_exists theorem→def, eight_square_identity_norm simp pattern",
+      "Even-n sorry: all paths (halving, volume element, trace/det) require Clifford Bott periodicity. Cl(0,5)≅M(4,ℂ) has min rep dim 8>6; Cl(0,9)≅M(16,ℝ) has dim 16>10. Table embedded in sorry comment.",
+      "Mathlib HAS Wedderburn-Artin (Apr 2026): IsSimpleRing.exists_algEquiv_matrix_divisionRing in RingTheory/SimpleModule/WedderburnArtin.lean",
+      "Mathlib HAS isotypic decomposition: IsIsotypic, IsIsotypicOfType.linearEquiv_fun in RingTheory/SimpleModule/Isotypic.lean",
+      "Proof path for n=6: (1) Cl(0,5) simple + (2) Frobenius + (3) W-A + (4) isotypic divisibility → 8∤6",
+      "For n=6: k²·dim_ℝ(D) = 32 and k·dim_ℝ(D)|6 → only valid solution is D=ℂ,k=4,dim=8, but 8∤6",
+      "Frobenius theorem (div alg over ℝ ∈ {ℝ,ℂ,ℍ}) NOT in Mathlib - needed for the W-A argument",
+      "Cl(0,5) simplicity NOT in Mathlib - needed to show ρ injective and dim(B)=32"
     ],
-    "references": {
-        "papers": [
-            "Hurwitz (1898): \u00dcber die Komposition der quadratischen Formen",
-            "Adams (1960): On the Non-Existence of Elements of Hopf Invariant One",
-            "Baez (2002): The Octonions \u2014 Bull. AMS"
-        ],
-        "urls": [],
-        "mathlib": [
-            "Mathlib.LinearAlgebra.CliffordAlgebra.Basic",
-            "Mathlib.Analysis.NormedSpace.Algebra",
-            "Mathlib.Algebra.Quaternion"
-        ]
+    "mathlibGaps": [
+      "Cl(0,5) simplicity: prove Cl(0,m) simple for m ≢ 3,7 mod 8 (~200 lines via period-2 doubling or explicit isomorphism)",
+      "Frobenius theorem: finite-dimensional division algebra over ℝ has dim ∈ {1,2,4} (~150 lines)",
+      "Bott periodicity for Clifford algebras (OPTIONAL - W-A route is more efficient)"
+    ],
+    "nextSteps": [
+      "Track Mathlib for Clifford algebra rep theory (Bott periodicity formalization)",
+      "Alternative: build Artin-Wedderburn for matrix algebras (∼200 lines) + Cl structure (∼800 lines)",
+      "Current state: gallery proof maximally complete without Clifford library",
+      "If Mathlib adds Bott periodicity table: use to close even-n sorry directly",
+      "Consider flagging as BLOCKED with detailed Mathlib issue tracker reference"
+    ],
+    "markdown": ""
+  },
+  "tags": [
+    "algebra",
+    "number-theory",
+    "normed-algebras",
+    "quaternions",
+    "octonions",
+    "Clifford-algebras",
+    "extension"
+  ],
+  "relatedProofs": [
+    "borsuk-ulam",
+    "cayley-hamilton-minpoly",
+    "hurwitz-theorem",
+    "hurwitz-theorem-oq-03",
+    "hurwitz-theorem-oq-03-oq-01",
+    "hurwitz-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Hurwitz (1898): Über die Komposition der quadratischen Formen",
+      "Adams (1960): On the Non-Existence of Elements of Hopf Invariant One",
+      "Baez (2002): The Octonions — Bull. AMS"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.CliffordAlgebra.Basic",
+      "Mathlib.Analysis.NormedSpace.Algebra",
+      "Mathlib.Algebra.Quaternion"
+    ]
+  },
+  "started": "2026-04-21",
+  "leanFiles": [
+    {
+      "path": "Proofs/HurwitzTheorem.lean",
+      "filename": "HurwitzTheorem.lean",
+      "lineCount": 2043,
+      "theoremCount": 35,
+      "axiomCount": 0,
+      "defCount": 16,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzTheorem.lean"
     },
-    "started": "2026-04-21",
-    "leanFiles": [
-        {
-            "path": "Proofs/HurwitzTheorem.lean",
-            "filename": "HurwitzTheorem.lean",
-            "lineCount": 2027,
-            "theoremCount": 36,
-            "axiomCount": 0,
-            "defCount": 15,
-            "sorryCount": 1,
-            "isAristotle": false,
-            "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzTheorem.lean"
-        }
-    ],
-    "lastUpdate": "2026-04-23T00:00:00.000Z"
+    {
+      "path": "Proofs/HurwitzTheoremOQ04.lean",
+      "filename": "HurwitzTheoremOQ04.lean",
+      "lineCount": 584,
+      "theoremCount": 16,
+      "axiomCount": 5,
+      "defCount": 8,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzTheoremOQ04.lean"
+    }
+  ],
+  "lastUpdate": "2026-04-23T00:00:00.000Z"
 }

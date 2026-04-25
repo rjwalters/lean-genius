@@ -41,7 +41,9 @@ algebras over ℝ are:
 - [x] Uses Mathlib for quaternion structure
 
 ## Axioms: 0
-## Sorries: 1 (hurwitz_only_if: even n∉{2,4,8} case; needs Clifford/Bott periodicity)
+## Sorries: 1 (hurwitz_only_if: even n∉{2,4,8} case)
+## Blocker: Cl(0,5) simplicity + Frobenius theorem (not in Mathlib Apr 2026)
+## Note: Wedderburn-Artin IS in Mathlib (IsSimpleRing.exists_algEquiv_matrix_divisionRing)
 
 ## Mathlib Dependencies
 - `Quaternion.normSq_mul` : Quaternion norm is multiplicative
@@ -1921,20 +1923,39 @@ theorem hurwitz_only_if (n : ℕ) (hn : n > 0) (nsi : NSquareIdentity n) :
       --    (b) M_j^T M_j = I          [crossMat_transMul]
       --    (c) M_j² = -I              [crossMat_sq_neg_one]
       --    (d) M_j M_k + M_k M_j = 0  [crossMat_anticommute]
-      -- 2. So {M_1,...,M_{n-1}} generate a rep of Cl(0,n-1) on ℝⁿ.
-      -- MISSING STEP (the sole blocker):
-      -- 3. Min faithful real rep dim of Cl(0,n-1) > n for even n ∉ {2,4,8}:
-      --      Cl(0,1) ≅ ℂ        → min dim 2 = 2  ✓ (n=2 admissible)
-      --      Cl(0,3) ≅ ℍ        → min dim 4 = 4  ✓ (n=4 admissible)
-      --      Cl(0,5) ≅ M(4,ℂ)   → min dim 8 > 6  ✗ (n=6 impossible)
-      --      Cl(0,7) ≅ M(8,ℝ)²  → min dim 8 = 8  ✓ (n=8 admissible)
-      --      Cl(0,9) ≅ M(16,ℝ)  → min dim 16 > 10 ✗ (n=10 impossible)
-      -- REQUIRED MATHLIB ADDITIONS (~1000 lines):
-      --   • CliffordAlgebra.ofRep: classifying reps via Wedderburn structure theorem
-      --   • Bott periodicity: Cl(0,n+8) ≅ Cl(0,n) ⊗ M(16,ℝ)
-      --   • Artin-Wedderburn theorem for real semisimple algebras
-      -- None of these are in Mathlib as of April 2026.
-      sorry -- BLOCKED: needs Clifford algebra structure theorem (Bott periodicity + Artin-Wedderburn)
+      -- 2. {M_1,...,M_{n-1}} generate a representation ρ: Cl(0,n-1) → End_ℝ(ℝⁿ).
+      --
+      -- PROOF STRATEGY (formalizable once Mathlib has two more results):
+      --
+      -- Step 3: Cl(0,n-1) is simple as an ℝ-algebra for n ∈ {6,10,14,...}
+      --         (i.e., when n-1 ≡ 1,2,4,5,6 mod 8, excluding n-1 ≡ 3,7 mod 8).
+      --         Since ρ is nonzero (M₁ ≠ 0), simplicity forces ρ injective, so
+      --         dim_ℝ(image(ρ)) = dim_ℝ(Cl(0,n-1)) = 2^(n-1).
+      --
+      -- Step 4: By Wedderburn-Artin (NOW in Mathlib: IsSimpleRing.exists_algEquiv_matrix_divisionRing),
+      --         Cl(0,n-1) ≅ M_k(D) for a division ring D over ℝ.
+      --         The simple module has dim_ℝ = k·dim_ℝ(D).
+      --         By Frobenius (NOT in Mathlib): dim_ℝ(D) ∈ {1,2,4} (D ∈ {ℝ,ℂ,ℍ}).
+      --         From k²·dim_ℝ(D) = 2^(n-1): only (k, dim_ℝ(D)) = (2^((n-1)/2)/√dim_ℝ(D), dim_ℝ(D)).
+      --
+      -- Step 5: ℝⁿ is a Cl(0,n-1)-module, so by isotypic theory
+      --         (IsIsotypic in Mathlib), n must be divisible by k·dim_ℝ(D) = simple-module-dim.
+      --         For n=6: k·dim_ℝ(D) = 8 (since Cl(0,5) ≅ M₄(ℂ), k=4, dim_ℝ(ℂ)=2, 8∤6).
+      --         For n=10: k·dim_ℝ(D) = 16 (Cl(0,9)≅M₁₆(ℝ), k=16, dim_ℝ(ℝ)=1, 16∤10).
+      --         In all non-admissible even cases: the simple module dim > n. Contradiction.
+      --
+      -- MATHLIB STATUS (April 2026):
+      --   ✓ Wedderburn-Artin: IsSimpleRing.exists_algEquiv_matrix_divisionRing [WedderburnArtin.lean]
+      --   ✓ Isotypic decomposition: IsIsotypic, IsIsotypicOfType.linearEquiv_fun [Isotypic.lean]
+      --   ✗ Frobenius theorem: finite-dim div alg over ℝ ∈ {ℝ,ℂ,ℍ} — NOT in Mathlib
+      --   ✗ Clifford algebra simplicity: Cl(0,m) simple for m ≢ 3,7 mod 8 — NOT in Mathlib
+      --
+      -- REMAINING WORK (~400 lines for n=6, ~800 lines for all even n):
+      --   1. Prove Cl(0,5) ≅ M₄(ℂ) via explicit 4×4 complex matrix generators (~200 lines)
+      --      OR prove Cl(0,5) is simple via induction on Clifford period-2 doubling (~200 lines)
+      --   2. Prove Frobenius: D/ℝ finite-dim division algebra → dim ∈ {1,2,4} (~150 lines)
+      --   3. Apply W-A + isotypic to get the divisibility contradiction (~50 lines)
+      sorry -- BLOCKED: needs Cl(0,5) simplicity + Frobenius theorem (neither in Mathlib Apr 2026)
     · -- n is odd: n ∉ {1,3} (handled above), so n ≥ 5 odd
       have hn3 : 3 ≤ n := by
         have hodd' := hodd
