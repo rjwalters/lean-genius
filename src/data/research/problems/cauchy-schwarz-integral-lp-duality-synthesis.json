@@ -6,7 +6,12 @@
   "tier": "A",
   "significance": 8,
   "tractability": 9,
-  "tags": ["synthesis", "functional-analysis", "lp-spaces", "axiom-elimination"],
+  "tags": [
+    "synthesis",
+    "functional-analysis",
+    "lp-spaces",
+    "axiom-elimination"
+  ],
   "proposedDate": "2026-04-23",
   "synthesisOf": [
     "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
@@ -17,5 +22,9 @@
   "sharedLemmas": [
     "riesz_lp_surjective (axiom in OQ01OQ01OQ02, proved as riesz_lp_surjective_from_rn in OQ01OQ01OQ02OQ01)"
   ],
-  "proposedBy": "lean-synthesis agent (2026-04-23)"
+  "proposedBy": "lean-synthesis agent (2026-04-23)",
+  "relatedProofs": [
+    "cauchy-schwarz",
+    "cauchy-schwarz-integral"
+  ]
 }
