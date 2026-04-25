@@ -53,35 +53,40 @@
       "title": "Part I: Bézout Coefficients Give Osculators",
       "startLine": 36,
       "endLine": 65,
-      "summary": "bezout_ten: Bézout identity 1 = 10·gcdA(10,d) + d·gcdB(10,d). bezout_gives_osculator: gcdA(10,d) is a valid osculator. bezout_osculator_rule: canonical divisibility test d | n ↔ d | ⌊n/10⌋ + gcdA·(n%10). IsOsculator definition: d | 10c−1."
+      "summary": "bezout_ten: Bézout identity 1 = 10·gcdA(10,d) + d·gcdB(10,d). bezout_gives_osculator: gcdA(10,d) is a valid osculator. bezout_osculator_rule: canonical divisibility test d | n ↔ d | ⌊n/10⌋ + gcdA·(n%10). IsOsculator definition: d | 10c−1.",
+      "mathContext": "The osculator equation $d \\mid 10c - 1$ says exactly that $c \\equiv 10^{-1} \\pmod{d}$ — the modular inverse of 10 modulo d. Since $\\gcd(10, d) = 1$ (hypothesis), the inverse exists and is unique mod d. The Bézout identity $1 = 10 \\cdot \\text{gcdA}(10,d) + d \\cdot \\text{gcdB}(10,d)$ gives $10 \\cdot \\text{gcdA}(10,d) \\equiv 1 \\pmod{d}$, so $\\text{gcdA}(10,d)$ is the modular inverse directly. The divisibility test $d \\mid n \\iff d \\mid \\lfloor n/10 \\rfloor + c \\cdot (n \\bmod 10)$ follows from $n = 10 \\lfloor n/10 \\rfloor + (n \\bmod 10)$ and $10c \\equiv 1 \\pmod{d}$."
     },
     {
       "id": "equivalence-classes",
       "title": "Part II: Osculator Equivalence Classes",
       "startLine": 66,
       "endLine": 89,
-      "summary": "osculator_shift: shifting c by d preserves osculator property. osculator_congr: c' ≡ c (mod d) and c osculator ⟹ c' osculator. osculator_unique_mod: all osculators are congruent mod d (via IsCoprime.dvd_of_dvd_mul_left)."
+      "summary": "osculator_shift: shifting c by d preserves osculator property. osculator_congr: c' ≡ c (mod d) and c osculator ⟹ c' osculator. osculator_unique_mod: all osculators are congruent mod d (via IsCoprime.dvd_of_dvd_mul_left).",
+      "mathContext": "The set of all osculators for $d$ is exactly the residue class $10^{-1} + d\\mathbb{Z} = \\{c \\in \\mathbb{Z} : c \\equiv 10^{-1} \\pmod{d}\\}$. `osculator_shift` formalizes the coset structure: if $c$ is an osculator, so is $c + kd$ for any $k \\in \\mathbb{Z}$. `osculator_unique_mod` is the other direction: if $c, c'$ are both osculators, then $d \\mid 10(c-c')$ and $\\gcd(10,d)=1$ implies $d \\mid c-c'$. The key Mathlib lemma is `IsCoprime.dvd_of_dvd_mul_left`: if $a \\mid bc$ and $\\gcd(a,b) = 1$ (as `IsCoprime a b`), then $a \\mid c$."
     },
     {
       "id": "reduction-mod-d",
       "title": "Part III: Reduction Mod d",
       "startLine": 91,
       "endLine": 123,
-      "summary": "osculator_mod_d_is_osculator: gcdA(10,d) % d is still an osculator. osculator_mod_d_bounded: |gcdA(10,d) % d| < d. canonical_osculator_unique: every osculator ≡ gcdA(10,d) mod d."
+      "summary": "osculator_mod_d_is_osculator: gcdA(10,d) % d is still an osculator. osculator_mod_d_bounded: |gcdA(10,d) % d| < d. canonical_osculator_unique: every osculator ≡ gcdA(10,d) mod d.",
+      "mathContext": "The canonical osculator is $\\text{gcdA}(10,d) \\bmod d \\in [0,d)$. Lean's `Int.emod` satisfies `Int.emod_nonneg : 0 ≤ n % m` (for `m > 0`) and `Int.emod_lt_of_pos : n % m < m`. This gives the bounds. `osculator_mod_d_is_osculator` uses `osculator_congr`: since $\\text{gcdA}(10,d) \\bmod d \\equiv \\text{gcdA}(10,d) \\pmod{d}$, the reduced value is still an osculator. `canonical_osculator_unique` shows uniqueness: every osculator $c$ satisfies $c \\equiv \\text{gcdA}(10,d) \\pmod{d}$."
     },
     {
       "id": "cf-connection",
       "title": "Part IV: Existence Theorem (cf_bezout_correspondence)",
       "startLine": 125,
       "endLine": 163,
-      "summary": "cf_bezout_correspondence: ∃ n : ℕ, n < d ∧ IsOsculator d n. Proof: gcdA(10,d) % d is non-negative, < d, and still an osculator. Convert via Int.toNat. Key insight: the existential follows from Bézout alone, no continued fractions needed."
+      "summary": "cf_bezout_correspondence: ∃ n : ℕ, n < d ∧ IsOsculator d n. Proof: gcdA(10,d) % d is non-negative, < d, and still an osculator. Convert via Int.toNat. Key insight: the existential follows from Bézout alone, no continued fractions needed.",
+      "mathContext": "The existential $\\exists n \\in \\mathbb{N},\\ n < d \\wedge d \\mid 10n - 1$ is weaker than the full CF-correspondence (which would identify $n$ as a specific convergent denominator). The Lean proof uses $n_0 = \\text{gcdA}(10,d) \\bmod d$: non-negative by `Int.emod_nonneg`, bounded by `Int.emod_lt_of_pos`, an osculator by `osculator_mod_d_is_osculator`. Converting to $\\mathbb{N}$ via `Int.toNat_of_nonneg` (which requires the non-negativity proof) gives the witness. The CF connection (that $n_0$ equals a convergent denominator) is a deeper result requiring `GenContFract` and is not formalized here."
     },
     {
       "id": "concrete-examples",
       "title": "Part V: Concrete Examples and Summary",
       "startLine": 165,
       "endLine": 221,
-      "summary": "Divisibility tests for d = 7 (c=−2), 11 (c=−1, alternating sum), 13 (c=4), 19 (c=2), 17 (c=−5). canonical_divisibility_test: full pipeline summary. #check self-verification."
+      "summary": "Divisibility tests for d = 7 (c=−2), 11 (c=−1, alternating sum), 13 (c=4), 19 (c=2), 17 (c=−5). canonical_divisibility_test: full pipeline summary. #check self-verification.",
+      "mathContext": "Verification: $\\text{gcdA}(10,7) = -2$ (since $1 = 10 \\cdot (-2) + 7 \\cdot 3$); $\\text{gcdA}(10,11) = -1$ (since $1 = 10 \\cdot (-1) + 11 \\cdot 1$); $\\text{gcdA}(10,13) = 4$ (since $1 = 10 \\cdot 4 + 13 \\cdot (-3)$). Each is verified by `norm_num` in Lean. The d=11 case, $c = -1$, gives the alternating digit sum rule: $11 \\mid n \\iff 11 \\mid \\lfloor n/10 \\rfloor - (n \\bmod 10)$, applied recursively gives $11 \\mid n \\iff 11 \\mid d_0 - d_1 + d_2 - \\ldots$ (alternating digit sum)."
     }
   ],
   "conclusion": {
@@ -102,7 +107,29 @@
       "targetId": "divisibility-truncation-general-oq-01",
       "relationship": "uses",
       "description": "Imports unified_osculator from OQ-01 for the concrete divisibility test applications."
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's identity: 1 = 10·gcdA(10,d) + d·gcdB(10,d) is the single foundation for the entire osculator construction. The entry formalizes Bézout's identity in full generality; this entry applies it to the specific pair (10, d) to extract the modular inverse of 10."
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "Chinese Remainder Theorem (constructive): both this entry and CRT use the modular inverse of a base (10 here, moduli in CRT). The osculator c ≡ 10⁻¹ (mod d) is the same construction as the CRT factor — a modular inverse computed via Bézout's identity. The divisibility test is effectively a one-variable version of CRT reconstruction."
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "related",
+      "description": "Divisibility by 3: the simpler digit-sum rule (3 ∣ n ↔ 3 ∣ digit sum). While d=3 is not coprime to 10, the digit sum rule is the limiting case where each digit contributes with coefficient 1 (since 10 ≡ 1 mod 3). The general osculator framework here gives the analogous coefficients for d coprime to 10."
     }
+  ],
+  "relatedProblems": [
+    { "id": "divisibility-truncation-general", "label": "Divisibility truncation: general framework (parent)" },
+    { "id": "divisibility-truncation-general-oq-01", "label": "Unified osculator: OQ-01 (unified_osculator)" },
+    { "id": "bezout-identity", "label": "Bézout's identity (foundational)" },
+    { "id": "chinese-remainder-constructive", "label": "Chinese Remainder Theorem (constructive)" },
+    { "id": "divisibility-by-3", "label": "Divisibility by 3 (digit sum rule)" }
   ],
   "leanFile": {
     "lineCount": 221,
