@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: jacobi_trudi_ssyt_eq k=0 and k=1 proved explicitly. 1 sorry remains: k+2 rows case (RSK bijection needed)",
+    "progressSummary": "PROGRESS: jacobi_trudi_ssyt_eq k=0, k=1, k=2 case-split with ssytSchurFin_two_row (sorry). Reduced main sorry from k≥2 to k≥3. 2 sorries: ssytSchurFin_two_row (jdt bijection ~200 lines) + k≥3 (algebraic LGV + RSK).",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -51,7 +51,9 @@
       "SSYTFin.weight: def (monomial product over all cells of SSYT)",
       "ssytSchurFin_one_row: proved (k=1 case: SSYTFin n 1 (fun _ => m) ≃ Sym (Fin n) m via sorted reps)",
       "jacobi_trudi_ssyt_eq: k=0 case proved (schurPolynomial_empty + ssytSchurFin_empty)",
-      "jacobi_trudi_ssyt_eq: k=1 case proved (schurPolynomial_one_row + ssytSchurFin_one_row via fin_cases)"
+      "jacobi_trudi_ssyt_eq: k=1 case proved (schurPolynomial_one_row + ssytSchurFin_one_row via fin_cases)",
+      "ssytSchurFin_two_row: stated as sorry with full jdt proof strategy documented (session 6)",
+      "jacobi_trudi_ssyt_eq: k=2 case now delegates to ssytSchurFin_two_row; k≥3 sorry isolated"
     ],
     "insights": [
       "Mathlib has hsymm σ R n (complete homogeneous symmetric polynomials) in RingTheory.MvPolynomial.Symmetric.Defs — directly usable for Jacobi-Trudi matrix entries",
@@ -86,10 +88,10 @@
       "RSK correspondence not formalized in Mathlib — needed for jacobiTrudi_lgv_proof"
     ],
     "nextSteps": [
-      "PRIORITY: Build algebraic_lgv in BallotProblemOQ03AlgebraicLGV.lean (~150 lines): det(weight_matrix) = sum NI_tuples prod path_weights over CommRing R",
-      "Then build weighted_path_count_eq_hsymm: paths from height a to b = hsymm (Fin n) R (b-a), using ssytSchurFin_one_row as model",
-      "Then RSK bijection: SSYTFin n k sh ≃ NI-path-tuples with weight preservation",
-      "Alternative: prove k=2 via jeu de taquin (~100 lines) as quick win before general case"
+      "PRIORITY A: Prove ssytSchurFin_two_row via jdt bijection (~200 lines in BallotProblemOQ03OQ01OQ01OQ01.lean): row-decomp Equiv + jdt forward/inverse + weight preservation",
+      "PRIORITY B: Build algebraic_lgv in BallotProblemOQ03AlgebraicLGV.lean (~150 lines): det(weight_matrix) = sum NI_tuples prod path_weights over CommRing R",
+      "Then RSK bijection for k≥3: SSYTFin n k sh ≃ NI-path-tuples with weight preservation (~150 lines)",
+      "jdt proof key: {non-col-strict (P,Q) of shapes (a,b)} ≃ {all (P',Q') of shapes (a+1,b-1)}, weight preserved by construction"
     ],
     "markdown": "# Knowledge Base: LGV Lemma → Jacobi-Trudi Identity\n\n**Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01\n**Last Updated**: 2026-04-23\n**Knowledge Items**: 0\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nNewly selected. Jacobi-Trudi identity expresses Schur polynomials as determinants of\ncomplete homogeneous symmetric polynomials. The LGV lemma (in parent gallery proof)\nprovides the combinatorial proof route via non-intersecting lattice paths.\n\n---\n\n## Insights\n\n_None yet — begin with OBSERVE phase: check Mathlib for SSYT formalization._\n\n---\n\n## Dead Ends\n\n_None identified yet._\n"
   },
@@ -293,11 +295,11 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "filename": "BallotProblemOQ03OQ01OQ02.lean",
-      "lineCount": 5418,
+      "lineCount": 5506,
       "theoremCount": 64,
       "axiomCount": 0,
       "defCount": 10,
-      "sorryCount": 10,
+      "sorryCount": 11,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
     },
