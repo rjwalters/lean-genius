@@ -1,8 +1,8 @@
 # Knowledge Base: LGV Lemma → Jacobi-Trudi Identity
 
 **Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01
-**Last Updated**: 2026-04-24
-**Knowledge Items**: 21
+**Last Updated**: 2026-04-25
+**Knowledge Items**: 24
 
 Insights accumulated during research on this problem.
 
@@ -17,6 +17,73 @@ symmetric polynomials: `s_λ = det[h_{λᵢ-i+j}]`. The proof route via SSYT and
   3. Biject SSYT ↔ non-intersecting lattice paths (RSK)
   4. Apply LGV: det[e(Aᵢ,Bⱼ)] = weighted NI-path count
   5. Identify the LGV matrix with the Jacobi-Trudi matrix
+
+---
+
+## Session 2026-04-25 (Session 5) — Algebraic LGV Identified as Cleaner Path
+
+**Mode**: REVISIT
+**Outcome**: analysis (no code changes)
+
+### What I Did
+
+- Conducted deep analysis of proof options for k≥2: RSK (~300-400 lines), algebraic LGV
+  (~200 lines), jeu de taquin k=2 bijection (~100-150 lines), algebraic recurrence, and
+  specialization arguments
+- Confirmed: Mathlib has NO Jacobi-Trudi, NO RSK, NO polynomial-weighted LGV
+- Confirmed: The existing `lgv_lemma_rxr` (BallotProblemOQ03OQ02.lean) is integer-valued
+  and CANNOT be directly lifted to polynomial weights
+- Identified the ALGEBRAIC LGV as the most modular approach (see Key Findings)
+
+### Key Findings
+
+- **Algebraic LGV is the recommended path**: Rather than building full RSK, build the
+  polynomial-weighted generalization of `lgv_lemma_rxr`. This requires:
+  1. `algebraic_lgv` (~150 lines): for a DAG with edge weights in CommRing R,
+     `∑ NI_tuples, ∏ path_weights = det(weight_matrix)` where
+     `weight_matrix[i][j] = ∑_{paths from sᵢ to tⱼ} path_weight`
+  2. `weighted_path_count_eq_hsymm` (~30 lines): weighted lattice path count from
+     height a to height b = `hsymm (Fin n) R (b-a)`. This follows from identifying
+     weighted paths (sequences of b-a vertical steps labeled by Fin n) with Sym (Fin n) (b-a),
+     which is exactly the one-row SSYT result already proved.
+  3. RSK-for-polynomials (~150 lines): `SSYTFin n k sh ≃ NI-path-tuples` for the
+     standard Jacobi-Trudi configuration, with weight preservation.
+  Total: ~330 lines (vs ~400 for full RSK alone)
+
+- **Integer LGV cannot be lifted**: `lgv_lemma_rxr` is specific to ℕ/ℤ (counts paths).
+  Algebraic LGV is a separate theorem about ring-valued weights; it needs a fresh proof.
+
+- **The k=2 jeu de taquin bijection works mathematically**:
+  Given non-SSYT (P: weakly-inc of len a, Q: weakly-inc of len b) with first violation at c:
+  - c = min{j : P[j] ≥ Q[j]}
+  - P' = P[0..c-1] ++ [Q[c]] ++ P[c..a-1] (insert Q[c] into P at position c)
+  - Q' = Q[0..c-1] ++ Q[c+1..b-1] (remove Q[c] from Q)
+  Claim: weight-preserving bijection {non-SSYT pairs (a,b)} ≃ {all pairs (a+1, b-1)}
+  Proof: P'[c-1] < Q[c] since c is the first violation (P[c-1] < Q[c-1] ≤ Q[c]); P'[c] = Q[c] ≤ P[c] = P'[c+1] ✓
+  But: the INVERSE is non-trivial to define in Lean (need to identify the "inserted" position in P').
+  Estimated ~80-100 lines for k=2, but doesn't generalize easily to k≥3.
+
+- **Algebraic LGV module is more valuable than k=2 special case**: once proved,
+  algebraic_lgv can be reused for other determinantal formulas (e.g., Sylvester, Dodgson condensation)
+
+### Files Modified
+
+- `research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01/knowledge.md` (this file)
+
+### Next Steps
+
+1. **PRIORITY: Build `algebraic_lgv`** in a new file `BallotProblemOQ03AlgebraicLGV.lean`:
+   - Statement: `det(weight_matrix) = ∑ NI_tuples, ∏ path_weights` over CommRing R
+   - Proof: Leibniz expansion + distributivity + sign-reversing involution (same structure as lgv_lemma_rxr but generalized)
+   - Module: can be separate from BallotProblemOQ03OQ01OQ01OQ01.lean
+   
+2. **Then: `weighted_path_count_eq_hsymm`**: Show paths from height a to b correspond to
+   Sym (Fin n) (b-a) (use ssytSchurFin_one_row as a model)
+
+3. **Then: RSK bijection**: Connect SSYTFin n k sh to NI-path-tuples with weight preservation
+
+4. **Alternative quick win**: Prove k=2 case using jeu de taquin bijection (~100 lines)
+   as a standalone theorem, then extend to k≥3 later
 
 ---
 
