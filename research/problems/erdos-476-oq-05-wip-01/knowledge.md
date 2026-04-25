@@ -1,12 +1,50 @@
 # Knowledge Base: erdos-476-oq-05-wip-01
 
+**Last Updated**: 2026-04-25
 Insights accumulated during research on this problem.
+
+---
+
+## Session 2026-04-25 (Session 2) — Counting Argument: |A|=|B|=3 Sub-case Proved
+
+**Mode**: REVISIT
+**Outcome**: progress
+
+### What I Did
+
+- Proved the `|A|=|B|=3` sub-case of the all-redundant contradiction in `Erdos476OQ05Problem.lean`
+- Implemented the counting argument: if all of A is redundant (∀ a, A.erase a + B = A + B), then
+  every x ∈ A+B has ≥ 2 distinct A-representations (r(x) ≥ 2). Double counting gives
+  |A|·|B| ≥ 2·|A+B| = 2(|A|+|B|-1). For |A|=|B|=3: 9 ≥ 10, contradiction.
+- Added `hrep2` (r(x) ≥ 2 for x ∈ A+B), `hsum_eq` (sigma bijection double counting), `hlb` (sum lower bound), `hineq` (counting bound)
+- The sorry now covers only `|A|≥4 or |B|≥4` (not all of `|B|≥3`)
+- Documented that Kneser's theorem is needed for the general case
+
+### Key Findings
+
+- **r(x) ≥ 2 proof**: If only a₁ ∈ A satisfies x-a₁ ∈ B, then x ∉ (A.erase a₁)+B, contradicting the SET equality hredA. Uses `Finset.card_eq_one` + contraposition.
+- **Double counting via sigma bijection**: `(A+B).sigma (fun x => A.filter (fun a => x-a ∈ B))` bijects to `A.product B` via `(x, a) ↦ (a, x-a)`. Used `Finset.card_bij` + `Finset.card_sigma` + `Finset.card_product`.
+- **Kneser barrier for general case**: For |A|≥4 or |B|≥4, the counting bound (|A|-2)(|B|-2) ≥ 2 is SATISFIED (not contradicted), so the counting argument gives no contradiction. Kneser's theorem is needed to derive that full redundancy forces a periodic structure — Kneser is NOT in Mathlib.
+- **Key Lean tactics**: `eq_sub_of_add_eq`, `sub_add_cancel`, `obtain rfl :=`, `congr_arg`
+
+### Files Modified
+
+- `proofs/Proofs/Erdos476OQ05Problem.lean` (809 → 874 lines)
+  - Lines 777-843: replaced single sorry with counting argument (~65 lines)
+  - `|A|=|B|=3` sub-case proved
+  - Still 1 sorry at line 843 for `|A|≥4 or |B|≥4`
+
+### Next Steps
+
+1. **Kneser's theorem**: The remaining sorry needs Kneser. Not in Mathlib. Would require ~200-300 lines of infrastructure. Assessment: BUILD is feasible but high-effort.
+2. **Alternative approach (Schur-like)**: Try Freiman's theorem for the case |A+B|=|A|+|B|-1. May have a more elementary proof path.
+3. **Submit `case1_exists` to Aristotle**: The Aristotle companion has a cleaner version of this lemma. Aristotle might fill in the counting argument part if the infrastructure is right.
 
 ---
 
 ## Problem Understanding
 
-**Goal**: Fill 2 sorries in `Erdos476OQ05Problem.lean` to complete Vosper's theorem.
+**Goal**: Fill the remaining sorry in `Erdos476OQ05Problem.lean` to complete Vosper's theorem.
 
 ### The Two Sorries
 
