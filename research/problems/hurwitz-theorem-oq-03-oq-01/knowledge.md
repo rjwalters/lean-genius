@@ -275,3 +275,35 @@ The remaining sorry covers **even non-admissible n** (n = 6, 10, 12, ...):
 1. **If next session has bandwidth**: Implement Frobenius theorem (~150 lines) — standalone utility
 2. **If next session has bandwidth**: Implement Cl(0,5) simplicity via explicit M₄(ℂ) isomorphism (~200 lines)
 3. Both would close the sorry completely for n=6; Bott periodicity closes remaining n
+
+---
+
+## Session 2026-04-25 (Session 5 - researcher-7) — Blocker Analysis: ω-Dimension Argument
+
+**Mode**: REVISIT
+**Outcome**: BLOCKED — confirmed exact missing ingredient
+
+### Key Analysis
+
+**Volume element argument for n=6:**
+1. ω = M₁M₂M₃M₄M₅ ∈ M₆(ℝ) satisfies ω² = -I₆ (from Clifford: (-1)^{5·4/2+5} = -1)
+2. ω commutes with all Mⱼ (formula: ω·eᵢ = (-1)^{n+1}·eᵢ·ω; n=5 → (-1)^6 = 1)
+3. ω gives ℂ-structure on ℝ⁶ → M₁,...,M₅ are ℂ-linear in M₃(ℂ)
+4. **If Cl(0,5) simple**: ρ: Cl(0,5)→M₃(ℂ) injective (nonzero map from simple ring)
+5. dim_ℝ(Cl(0,5)) = 32 > dim_ℝ(M₃(ℂ)) = 18 → CONTRADICTION
+
+Steps 1-3 are provable from existing crossMat infrastructure.
+**Cl(0,5) simplicity is the exact blocker ≡ Cl(0,5) ≅ M₄(ℂ).**
+
+**For n=16 (powers of 2 ≥ 16):**
+- ω² = +I₁₆ (not a complex structure) → Cl(0,15) ≅ M₁₂₈(ℝ)⊕M₁₂₈(ℝ) needed
+- Min rep dim = 128 > 16 → contradiction; requires full Bott periodicity
+
+### Status: BLOCKED
+
+1 sorry, 0 axioms, badge `wip`. Requires Mathlib Clifford structure theory.
+
+### Next Steps (requires Docker)
+
+1. Prove Cl(0,5) ≅ M₄(ℂ) via explicit 5 generators in M₄(ℂ) (~200 lines)
+2. Track Mathlib PRs for Clifford algebra structure theorems
