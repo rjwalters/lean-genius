@@ -19,7 +19,7 @@
       "ssyt"
     ],
     "badge": "formalized",
-    "sorries": 1,
+    "sorries": 2,
     "dateAdded": "2026-04-23",
     "axiomCount": 0,
     "assumptions": "2 sorries: (1) ssytSchurFin_two_row (k=2 case via jdt bijection ~200 lines); (2) jacobi_trudi_ssyt_eq k\u22653 via algebraic LGV + RSK (~300 lines). k=0 and k=1 cases proved explicitly.",
@@ -167,8 +167,8 @@
       "startLine": 160,
       "endLine": 272,
       "summary": "Defines SSYTFin (bounded SSYT type with Fintype instance), ssytSchurFin (SSYT generating function), proves ssytSchurFin_empty (k=0), proves ssytSchurFin_one_row (k=1, bijection via sorted multiset reps), and states jacobi_trudi_ssyt_eq (general, sorry for k \u2265 2).",
-      "mathContext": "SSYTFin n k sh = subtype of ((i:Fin k)\u00d7Fin(sh i)\u2192Fin n) satisfying row-weak (weakly increasing rows) and col-strict (strictly increasing columns). Fintype instance via Subtype.fintype (decidable predicates over finite types). ssytSchurFin = \u2211_T T.weight where T.weight = \u220f_p X(T p). k=0 proved by Unique (empty SSYT, both conditions vacuous) + IsEmpty (empty product = 1). k=1 proved via Fintype.sum_equiv with bijection \u03c8: SSYTFin n 1 \u2243 Sym (Fin n) m using List.sortedLE_ofFn_iff (Monotone \u2194 SortedLE). General case (k \u2265 2): RSK correspondence (~300 lines), 1 sorry remains."
+      "mathContext": "SSYTFin n k sh = subtype of ((i:Fin k)\u00d7Fin(sh i)\u2192Fin n) satisfying row-weak (weakly increasing rows) and col-strict (strictly increasing columns). Fintype instance via Subtype.fintype (decidable predicates over finite types). ssytSchurFin = \u2211_T T.weight where T.weight = \u220f_p X(T p). k=0 proved by Unique (empty SSYT, both conditions vacuous) + IsEmpty (empty product = 1). k=1 proved via Fintype.sum_equiv with bijection \u03c8: SSYTFin n 1 \u2243 Sym (Fin n) m using List.sortedLE_ofFn_iff (Monotone \u2194 SortedLE). General case (k \u2265 2): RSK correspondence (~300 lines), 2 sorries remain (ssytSchurFin_two_row + jacobi_trudi_ssyt_eq k\u22653)."
     }
   ],
-  "sorries": 1
+  "sorries": 2
 }
