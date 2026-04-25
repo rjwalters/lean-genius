@@ -118,6 +118,30 @@
     ]
   },
   {
+    "id": "ann-newton-oq03-ratio-antitone",
+    "proofId": "newton-inductive-step-oq-03",
+    "range": {
+      "startLine": 119,
+      "endLine": 149
+    },
+    "type": "technique",
+    "title": "Ratio Antitone via Algebraic Identity + q-Power Inequality",
+    "content": "**ratio_ineq** proves $(1-q^{n-k})(1-q^k) \\leq (1-q^{n-k+1})(1-q^{k+1})$, establishing that the consecutive ratio $G(k+1)/G(k) = (1-q^{n-k})/(1-q^{k+1})$ is *antitone* (decreasing) in $k$. The key tool is the helper `expand_ratio_diff`, a pure ring identity, combined with `q_pow_key_ineq`. Setting $A = q^{n-k}$ and $B = q^k$, the identity $(1-Aq)(1-Bq) - (1-A)(1-B) = (1-q)(A+B-AB-ABq)$ transforms the ratio inequality into showing $(1-q)(q^{n-k}+q^k-q^n-q^{n+1}) \\geq 0$, which follows immediately from $1-q > 0$ and the key q-power inequality.",
+    "mathContext": "The algebraic factorization $(1-Aq)(1-Bq)-(1-A)(1-B) = (1-q)(A+B-AB-ABq)$ with $A=q^{n-k}$, $B=q^k$, $AB=q^n$, $ABq=q^{n+1}$ reduces the ratio inequality to $q^{n-k}+q^k \\geq q^n+q^{n+1}$ — exactly `q_pow_key_ineq`. This factorization technique, expressing a difference of products as a single product of a simpler sum, is a standard tool in q-series and combinatorics. The Lean proof uses `linarith` after unfolding both the ring identity and the key inequality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "q-series algebraic identities",
+      "antitone sequences and log-concavity",
+      "Lean 4 linarith tactic",
+      "Chebyshev rearrangement inequality"
+    ],
+    "prerequisites": [
+      "q_pow_key_ineq (lines 107-117)",
+      "expand_ratio_diff ring lemma",
+      "linarith for linear arithmetic over ℝ"
+    ]
+  },
+  {
     "id": "ann-newton-oq03-log-concave",
     "proofId": "newton-inductive-step-oq-03",
     "range": {
