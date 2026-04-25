@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: |A|=|B|=3 all-redundant case proved via counting; 1 sorry remains for |A|≥4 or |B|≥4 (needs Kneser)",
+    "progressSummary": "PROGRESS: |B|=2 and |A|=|B|=3 cases proved; 1 sorry for |A|>=4 or |B|>=4 (Kneser needed)",
     "builtItems": [
       "case1_exists |B|=2 branch: fully proved via orbit argument (Erdos476OQ05Problem.lean ~550-609)",
       "hredA_card lemma inline: ∀ a ∈ A, (A.erase a + B).card = A.card + B.card - 1 from CD + inclusion",
@@ -51,10 +51,13 @@
       "Counting argument only closes |A|=|B|=3 (9 < 10); for |A|≥4 or |B|≥4, the bound (|A|-2)(|B|-2) ≥ 2 holds and Kneser is needed",
       "Kneser theorem for ZMod p: NOT in Mathlib. Building it from scratch needs ~200-300 lines of additive combinatorics infrastructure"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "Kneser theorem for abelian groups (needed for |A|>=4 or |B|>=4 all-redundant contradiction in Vosper induction)"
+    ],
     "nextSteps": [
-      "Build Kneser theorem for ZMod p (~200-300 lines): Stab(A+B) is trivial for prime order groups, so |A+B| ≥ |A|+|B|-1 forces AP structure under full redundancy",
-      "Alternative: try elementary Freiman/Schur approach for the |A|≥4, |B|≥3 sub-case",
+      "Build Kneser theorem for ZMod p (~200-300 lines): since Stab(A+B) is trivial for prime order groups, |A+B| >= |A|+|B|-1 forces AP structure under full redundancy",
+      "Alternative: try elementary Freiman/Schur approach for the |A|>=4, |B|>=3 sub-case",
+      "Key constraint: for tight case |A|=4, |B|=3, each x in A+B has r(x)=2 exactly — may enable direct structural argument without Kneser",
       "If 3+ sessions stuck on Kneser: flag as BLOCKED and release claim"
     ],
     "markdown": "# Knowledge Base: erdos-476-oq-05-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
