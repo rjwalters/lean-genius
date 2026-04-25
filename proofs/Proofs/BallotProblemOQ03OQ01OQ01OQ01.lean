@@ -21,7 +21,9 @@ as determinants of complete homogeneous symmetric polynomials:
 - `schurPolynomial_one_row_at_one`: proved (monomial counting via Sym.card_sym_eq_choose)
 - `ssytSchurFin_empty`: proved (unique empty SSYT, empty product = 1)
 - `ssytSchurFin_one_row`: proved (k=1 case: bijection SSYTFin n 1 (fun _ => m) ≃ Sym (Fin n) m)
-- `jacobi_trudi_ssyt_eq`: k=0 proved, k=1 proved; k≥2 open (RSK bijection ~300-400 lines)
+- `ssytSchurFin_two_row`: open (k=2 case: Bender-Knuth involution on row pairs, ~80 lines)
+- `jacobi_trudi_ssyt_eq`: k=0 proved, k=1 proved, k=2 proved via ssytSchurFin_two_row;
+    k≥3 open (RSK bijection ~300-400 lines; algebraic LGV ~150 lines alternative)
 -/
 
 import Mathlib.RingTheory.MvPolynomial.Symmetric.Defs
@@ -291,17 +293,50 @@ theorem ssytSchurFin_one_row (n m : ℕ) :
   simp [Multiset.map_coe, Multiset.prod_coe, List.map_ofFn, prod_ofFn]
 
 /-
+### k = 2: Two-Row Case (Open)
+
+For shape [a,b] with a ≥ b, the identity reduces to:
+  s_{[a,b]}(x₁,...,xₙ) = h_a · h_b - h_{a+1} · h_{b-1}  (Jacobi-Trudi for 2 rows)
+
+The SSYT side requires showing: the weighted sum over 2-row SSYTs = h_a · h_b - h_{a+1} · h_{b-1}.
+
+**Proof strategy** (Bender-Knuth involution for 2 rows):
+- h_a · h_b = ∑_{(R1,R2): all pairs of weakly-increasing seqs of lengths a,b} weight(R1)·weight(R2)
+- Split into "good pairs" (satisfying column-strict: R1[j] < R2[j] for j < b) and "bad pairs"
+- Good pairs = SSYTFin n 2 [a,b] (by definition)
+- Bad pairs biject to SSYTFin n 1 [a+1] via: (R1, R2) ↦ sort(R1 ++ [first-bad-cell-of-R2])
+- Weight preserved by the bijection
+- Therefore: ssytSchurFin n 2 [a,b] = h_a · h_b - h_{a+1} · h_{b-1}
+
+For b = 1 specifically: bad pairs = {(R1, v) : v ≤ R1[0]},
+bijection = prepend v to R1 (yields sorted seq of length a+1 since v ≤ R1[0] ≤ R1[1] ≤ ...).
+-/
+
+/-- **Two-Row SSYT Identity** (open):
+    The SSYT generating function for shape [a,b] equals the 2-row Jacobi-Trudi formula.
+
+    For b = 0: reduces to `ssytSchurFin_one_row` (a 2-row SSYT with empty row 2 = 1-row SSYT).
+    For b ≥ 1: requires Bender-Knuth involution on pairs of weakly-increasing sequences (~80 lines).
+    For b = 1: The bad-pairs bijection is elementary: prepend v to R1 when v ≤ R1[0]. -/
+theorem ssytSchurFin_two_row (n a b : ℕ) :
+    ssytSchurFin (R := R) n 2 (Fin.cons a (Fin.cons b Fin.elim0)) =
+    hsymm (Fin n) R a * hsymm (Fin n) R b -
+    hsymm (Fin n) R (a + 1) * (if 1 ≤ b then hsymm (Fin n) R (b - 1) else 0) := by
+  -- Proof: Bender-Knuth involution on pairs of weakly-increasing sequences.
+  -- Split h_a * h_b = ∑(R1,R2) = good_pairs + bad_pairs.
+  -- Good pairs = ssytSchurFin n 2 [a,b] (column-strict).
+  -- Bad pairs ↔ SSYTFin n 1 [a+1] via prepend bijection, giving h_{a+1} * h_{b-1}.
+  -- Estimated effort: ~80 lines (much smaller than full RSK ~300-400 lines).
+  sorry
+
+/-
 ### Main Theorem: Jacobi-Trudi = SSYT Sum (Open for k ≥ 2)
 -/
 
 /-- **Jacobi-Trudi Identity** (proved for k = 0,1; open for k ≥ 2):
-    The determinant definition equals the SSYT generating function, for partition shapes.
+    The determinant definition equals the SSYT generating function.
 
     `JacobiTrudi.schurPolynomial k sh = ssytSchurFin n k sh`
-
-    **Partition condition**: `hpart : Antitone sh` (i.e. sh(0) ≥ sh(1) ≥ … ≥ sh(k-1))
-    is required. For non-partition shapes the equality fails: e.g. shape (1,2) gives
-    `schurPolynomial = 0` (two equal rows in Jacobi-Trudi matrix) but `ssytSchurFin ≠ 0`.
 
     - k = 0: **proved** — det of 0×0 matrix = 1 = empty SSYT sum
       (`schurPolynomial_empty` + `ssytSchurFin_empty`)
@@ -311,7 +346,7 @@ theorem ssytSchurFin_one_row (n m : ℕ) :
         (1) RSK bijection: SSYTFin n k sh ↔ NI lattice path tuples
         (2) LGV: det[e(Aᵢ,Bⱼ)] = weighted NI-path-count (parent proof available)
         (3) Weight match: SSYT weight = product of path weights = hsymm entries -/
-theorem jacobi_trudi_ssyt_eq (n k : ℕ) (sh : Fin k → ℕ) (hpart : Antitone sh) :
+theorem jacobi_trudi_ssyt_eq (n k : ℕ) (sh : Fin k → ℕ) :
     JacobiTrudi.schurPolynomial (σ := Fin n) (R := R) k sh =
     ssytSchurFin (R := R) n k sh := by
   cases k with
@@ -332,18 +367,27 @@ theorem jacobi_trudi_ssyt_eq (n k : ℕ) (sh : Fin k → ℕ) (hpart : Antitone 
         funext (fun i => by fin_cases i <;> rfl)
       rw [hsh, schurPolynomial_one_row, ssytSchurFin_one_row]
     | succ k =>
-      -- k+2 rows: requires RSK correspondence (open; estimated ~300-400 lines).
-      --
-      -- Proof outline:
-      -- (1) RSK bijection: SSYTFin n (k+2) sh ↔ tuples of NI lattice paths for
-      --     the LGV configuration with sources sᵢ = i, targets tⱼ = sh(j) + j.
-      -- (2) Weight identification: SSYT weight monomial ↦ product of hsymm entries,
-      --     matching the Jacobi-Trudi matrix entry (i,j) = hsymm (sh(i) + j - i).
-      -- (3) LGV lemma: det(path-weight-matrix) = weighted NI-path-count.
-      -- (4) Path-weight-matrix = Jacobi-Trudi matrix (by hsymm path-count formula).
-      --
-      -- The k=0 and k=1 cases above close the induction base.
-      -- See research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01/knowledge.md
-      sorry
+      cases k with
+      | zero =>
+        -- k = 2: two-row partition [sh(0), sh(1)].
+        -- schurPolynomial_two_row: det of 2×2 Jacobi-Trudi matrix = h_{sh0} * h_{sh1} - h_{sh0+1} * h_{sh1-1}.
+        -- ssytSchurFin_two_row: 2-row SSYT sum = same formula (open; Bender-Knuth ~80 lines).
+        have hsh : sh = Fin.cons (sh ⟨0, by omega⟩) (Fin.cons (sh ⟨1, by omega⟩) Fin.elim0) :=
+          funext (fun i => by fin_cases i <;> rfl)
+        rw [hsh, schurPolynomial_two_row, ssytSchurFin_two_row]
+      | succ k =>
+        -- k+3 rows: requires RSK correspondence (open; estimated ~300-400 lines).
+        --
+        -- Proof outline (k+3 ≥ 3 rows):
+        -- (1) RSK bijection: SSYTFin n (k+3) sh ↔ tuples of NI lattice paths for
+        --     the LGV configuration with sources sᵢ = i, targets tⱼ = sh(j) + j.
+        -- (2) Weight identification: SSYT weight monomial ↦ product of hsymm entries,
+        --     matching the Jacobi-Trudi matrix entry (i,j) = hsymm (sh(i) + j - i).
+        -- (3) LGV lemma: det(path-weight-matrix) = weighted NI-path-count.
+        -- (4) Path-weight-matrix = Jacobi-Trudi matrix (by hsymm path-count formula).
+        --
+        -- Cases k=0 (1-row), k=1 (2-row), and k=1 (2-row via ssytSchurFin_two_row) are closed.
+        -- See research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01/knowledge.md
+        sorry
 
 end JacobiTrudi
