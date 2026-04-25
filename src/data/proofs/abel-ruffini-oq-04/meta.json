@@ -128,6 +128,11 @@
       "description": "Sister file providing the complete solvability classification of symmetric groups ($S_0$–$S_4$ solvable, $S_n$ solvable $\\iff n \\leq 4$), plus non-commutativity witnesses for $S_3, S_4, S_5, A_4, A_5$ and group order verifications"
     },
     {
+      "targetId": "abel-ruffini-galois-extensions-oq-04",
+      "relationship": "complementary",
+      "description": "Instantiates Mathlib's `JordanHolderLattice` typeclass for `Subgroup G`, proving the Jordan-Hölder uniqueness theorem for groups: any two composition series of a finite group have the same multiset of composition factors. Applied to $S_5$, this certifies that the composition series $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$ analyzed in this entry is the *unique* one — Jordan-Hölder guarantees no alternative decomposition can avoid the non-abelian $A_5$ factor. This uniqueness is what makes the degree-5 impossibility absolute: the non-solvability of the derived series (Step 2 in this entry's proof chain) is not an artifact of one particular analysis but a structural necessity enforced by Jordan-Hölder. Together, this entry exposes *why* the derived series fails for $S_5$; the Jordan-Hölder entry proves the uniqueness that makes that failure irrefutable."
+    },
+    {
       "targetId": "abel-ruffini-oq-04-oq-07",
       "relationship": "extended-by",
       "description": "Formalizes the Bring-Jerrard reduction (Tschirnhaus substitution eliminating the $x^4$ term) and the Bring radical $\\text{BR}(t)$ — the unique real root of $x^5 + x + t = 0$, proved via IVT and strict monotonicity. Addresses the open question (listed below) about formalizing 'beyond-radicals' solutions: while Abel-Ruffini rules out the four basic radical operations, $\\text{BR}(t)$ provides a closed-form expression using a transcendental function that is not a radical"
