@@ -872,9 +872,179 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
                    Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) :=
     Finset.sum_congr rfl (fun k _ => sum_term_eq_tan_half_angle n hn k)
   rw [hS_eq]
-  -- Step 2: Pair up terms: k and n-1-k give tan(A) and cot(A), sum = 2/sin(2A).
-  -- Using pairs and 2/sin(t) ≥ 2/t ≥ 4n/(π(2k+1)) gives harmonic sum bound.
-  sorry -- Main challenge: Finset reindexing for sub-sum (k ↔ n-1-k bijection)
+  -- Shorthand for the half-angle θₖ = (2k+1)π/(4n)
+  set θ : Fin n → ℝ := fun k => (2 * k.val + 1 : ℝ) * Real.pi / (4 * n)
+  -- Step 2: Bijection shows ∑ tan(θₖ) = ∑ cot(θₖ)  via involution k ↦ n-1-k
+  -- Key: (2*(n-1-k)+1)π/(4n) = π/2 - θₖ, so cot of that = tan(θₖ)
+  have hS_cot :
+      ∑ k : Fin n, Real.sin (θ k) / Real.cos (θ k) =
+      ∑ k : Fin n, Real.cos (θ k) / Real.sin (θ k) := by
+    -- The involution k ↦ n-1-k on Fin n
+    let invol : Fin n ≃ Fin n := {
+      toFun := fun k => ⟨n - 1 - k.val, by omega⟩
+      invFun := fun k => ⟨n - 1 - k.val, by omega⟩
+      left_inv := fun k => by ext; simp only [Fin.coe_mk]; omega
+      right_inv := fun k => by ext; simp only [Fin.coe_mk]; omega }
+    -- The cot-sum under invol equals itself (bijection)
+    have hinvol_sum : ∑ k : Fin n, (Real.cos (θ (invol k)) / Real.sin (θ (invol k))) =
+                      ∑ k : Fin n, Real.cos (θ k) / Real.sin (θ k) :=
+      Equiv.sum_comp invol (fun k => Real.cos (θ k) / Real.sin (θ k))
+    -- Each tan(θₖ) = cot(θ_{invol k}): complementary angle argument
+    have hfg : ∀ k : Fin n,
+        Real.sin (θ k) / Real.cos (θ k) =
+        Real.cos (θ (invol k)) / Real.sin (θ (invol k)) := by
+      intro k
+      -- θ (invol k) = π/2 - θ k  [since (2(n-1-k)+1)π/(4n) = π/2 - (2k+1)π/(4n)]
+      have hkle : k.val ≤ n - 1 := Nat.lt_succ_iff.mp k.isLt
+      have hcast : ((n - 1 - k.val : ℕ) : ℝ) = (n : ℝ) - 1 - (k.val : ℝ) := by
+        rw [Nat.cast_sub hkle, Nat.cast_sub hn]
+      have hθinvol : θ (invol k) = Real.pi / 2 - θ k := by
+        simp only [θ, invol, Equiv.coe_fn_mk, Fin.coe_mk]
+        rw [hcast]
+        have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+        field_simp
+        ring
+      rw [hθinvol, Real.cos_pi_div_two_sub, Real.sin_pi_div_two_sub]
+    rw [Finset.sum_congr rfl (fun k _ => hfg k), hinvol_sum]
+  -- Step 3: From ∑ tan = ∑ cot, derive 2S = ∑ tan + ∑ cot = ∑ 2/sin(2θₖ)
+  -- so S = ∑ 1/sin((2k+1)π/(2n))
+  have hsin2_pos : ∀ k : Fin n, 0 < Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) := by
+    intro k
+    apply Real.sin_pos_of_pos_of_lt_pi
+    · positivity
+    · have hlt : 2 * k.val + 1 < 2 * n := by omega
+      have hlt' : (2 * k.val + 1 : ℝ) < 2 * n := by exact_mod_cast hlt
+      have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+      rw [div_lt_iff (by positivity)]
+      nlinarith [Real.pi_pos]
+  have hsin_pos : ∀ k : Fin n, 0 < Real.sin (θ k) := by
+    intro k
+    apply Real.sin_pos_of_pos_of_lt_pi
+    · positivity
+    · have ⟨_, hφ_lt⟩ := chebyshevAngle_pos_lt_pi n hn k
+      simp only [θ]; linarith [Real.pi_pos]
+  have hcos_pos : ∀ k : Fin n, 0 < Real.cos (θ k) := by
+    intro k
+    apply Real.cos_pos_of_mem_Ioo
+    simp only [θ]
+    constructor
+    · linarith [Real.pi_pos]
+    · have hlt : 2 * k.val + 1 < 2 * n := by omega
+      have hlt' : (2 * k.val + 1 : ℝ) < 2 * n := by exact_mod_cast hlt
+      have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+      rw [div_lt_div_iff (by positivity) (by positivity)]
+      nlinarith [Real.pi_pos]
+  -- sin(2θₖ) = (2k+1)π/(2n): the double-angle connection
+  have hsin2_eq : ∀ k : Fin n,
+      Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) =
+      2 * Real.sin (θ k) * Real.cos (θ k) := by
+    intro k
+    have key := Real.sin_two_mul (θ k)
+    simp only [θ] at key ⊢
+    have harg : 2 * ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) =
+                (2 * k.val + 1 : ℝ) * Real.pi / (2 * n) := by ring
+    rw [harg] at key; exact key
+  -- S = ∑ 1/sin((2k+1)π/(2n)): from 2S = ∑ tan + ∑ cot = ∑ 2/sin(2θ)
+  have hS_inv_sin :
+      ∑ k : Fin n, Real.sin (θ k) / Real.cos (θ k) =
+      ∑ k : Fin n, 1 / Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) := by
+    -- 2S = S + S = ∑ tan + ∑ cot = ∑ (tan + cot) = ∑ 2/(sin·cos/cos·sin) ... simplified:
+    -- tan(x) + cot(x) = sin/cos + cos/sin = (sin² + cos²)/(sin·cos) = 1/(sin·cos)
+    -- And 1/(sin·cos) = 2/sin(2x), so 2S = ∑ 2/sin(2θ), S = ∑ 1/sin(2θ)
+    have h2S : 2 * ∑ k : Fin n, Real.sin (θ k) / Real.cos (θ k) =
+               ∑ k : Fin n, 2 / Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) := by
+      -- For each k: tan(θk) + cot(θk) = 2/sin(2θk) by double-angle formula
+      have step : ∀ k : Fin n,
+          Real.sin (θ k) / Real.cos (θ k) + Real.cos (θ k) / Real.sin (θ k) =
+          2 / Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) := by
+        intro k
+        have hs := (hsin_pos k).ne'
+        have hc := (hcos_pos k).ne'
+        rw [hsin2_eq k]; field_simp [hs, hc]; ring
+      -- 2 * ∑ tan = ∑ tan + ∑ cot (via hS_cot) = ∑ (tan + cot)
+      have heq1 : 2 * ∑ k : Fin n, Real.sin (θ k) / Real.cos (θ k) =
+                  ∑ k : Fin n, Real.sin (θ k) / Real.cos (θ k) +
+                  ∑ k : Fin n, Real.cos (θ k) / Real.sin (θ k) := by
+        linarith [hS_cot]
+      rw [heq1, ← Finset.sum_add_distrib]
+      exact Finset.sum_congr rfl (fun k _ => step k)
+    -- From h2S and 2*(∑ 1/sin) = ∑ 2/sin, deduce S = ∑ 1/sin by linear arithmetic
+    have h2S_rw : 2 * ∑ k : Fin n, 1 / Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) =
+                  ∑ k : Fin n, 2 / Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) := by
+      rw [Finset.mul_sum]; congr 1; ext k; ring
+    linarith [h2S, h2S_rw]
+  -- Step 4: Bound 1/sin(x) ≥ 1/x ≥ 2n/(π(2k+1)) using sin(x) ≤ x
+  have hS_harm :
+      ∑ k : Fin n, (2 * n : ℝ) / (Real.pi * (2 * k.val + 1)) ≤
+      ∑ k : Fin n, Real.sin (θ k) / Real.cos (θ k) := by
+    rw [hS_inv_sin]
+    apply Finset.sum_le_sum
+    intro k _
+    rw [div_le_div_iff (by positivity) (hsin2_pos k)]
+    -- Goal: 2n * sin((2k+1)π/(2n)) ≤ π * (2k+1)
+    -- Since sin(x) ≤ x: sin((2k+1)π/(2n)) ≤ (2k+1)π/(2n)
+    have hx_pos : 0 < (2 * k.val + 1 : ℝ) * Real.pi / (2 * n) := by positivity
+    have hsin_le : Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) ≤
+                   (2 * k.val + 1 : ℝ) * Real.pi / (2 * n) :=
+      (Real.sin_lt hx_pos).le
+    have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+    calc (2 * n : ℝ) * Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n))
+        ≤ 2 * n * ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) :=
+          mul_le_mul_of_nonneg_left hsin_le (by positivity)
+      _ = Real.pi * (2 * k.val + 1 : ℝ) := by field_simp; ring
+  -- Step 5: Odd harmonic sum ≥ (1/2) log(n+1) via comparison with standard harmonic
+  -- and log_add_one_le_harmonic
+  have hS_log_lb : 1 / (2 * Real.pi) * ((n : ℝ) * Real.log ((n : ℝ) + 1)) ≤
+                   ∑ k : Fin n, (2 * n : ℝ) / (Real.pi * (2 * k.val + 1)) := by
+    rw [div_mul_eq_mul_div, le_div_iff (by positivity : (0 : ℝ) < 2 * Real.pi)]
+    -- Goal: n * log(n+1) ≤ (2π) * ∑ 2n/(π(2k+1))
+    -- = 4n * ∑ 1/(2k+1) ≥ 4n * (1/2) * ∑ 1/(k+1) = 2n * harmonic n ≥ 2n * log(n+1)
+    -- Hmm: need n * log(n+1) ≤ (2π) * ∑ 2n/(π(2k+1)) = 4n * ∑ 1/(2k+1)
+    -- And ∑ 1/(2k+1) ≥ (1/2) harmonic n ≥ (1/2) log(n+1)
+    -- So 4n * ∑ 1/(2k+1) ≥ 4n * (1/2) * log(n+1) = 2n * log(n+1) ≥ n * log(n+1). ✓
+    have hpi_pos := Real.pi_pos
+    have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+    -- ∑ 1/(2k+1) ≥ (1/2) * harmonic n ≥ (1/2) * log(n+1)
+    have hodd_harm_lb : (1 : ℝ) / 2 * (harmonic n : ℝ) ≤
+                        ∑ k : Fin n, (1 : ℝ) / (2 * k.val + 1) := by
+      -- Step A: expand harmonic n as ∑_{k : Fin n} 1/(k+1) in ℝ
+      -- Prove in ℚ first (no cast ambiguity), then lift via exact_mod_cast
+      have h_harm_eq : (harmonic n : ℝ) = ∑ k : Fin n, (1 : ℝ) / ((k.val : ℝ) + 1) := by
+        have hq : harmonic n = ∑ k : Fin n, (1 : ℚ) / ((k.val : ℚ) + 1) := by
+          simp only [harmonic, ← Finset.sum_fin_eq_sum_range]
+          congr 1; ext k; push_cast; ring
+        exact_mod_cast hq
+      -- Step B: each term 1/(2k+1) ≥ (1/2)/(k+1)
+      have h_term : ∀ k : Fin n,
+          (1 : ℝ) / 2 * (1 / ((k.val : ℝ) + 1)) ≤ 1 / (2 * (k.val : ℝ) + 1) := by
+        intro k
+        rw [mul_one_div, div_le_div_iff (by positivity) (by positivity)]
+        linarith
+      -- Combine
+      calc (1 : ℝ) / 2 * (harmonic n : ℝ)
+          = 1 / 2 * ∑ k : Fin n, 1 / ((k.val : ℝ) + 1) := by rw [h_harm_eq]
+        _ = ∑ k : Fin n, 1 / 2 * (1 / ((k.val : ℝ) + 1)) := by rw [Finset.mul_sum]
+        _ ≤ ∑ k : Fin n, 1 / (2 * (k.val : ℝ) + 1) :=
+              Finset.sum_le_sum (fun k _ => h_term k)
+    have hlog_harm := log_add_one_le_harmonic n
+    -- Combine: n * log(n+1) ≤ 2n * log(n+1) ≤ 4n * (1/2) * harmonic n ≤ 4n * ∑ 1/(2k+1)
+    -- = (2π) * ∑ 2n/(π(2k+1))
+    have hrhs : (2 * Real.pi) * ∑ k : Fin n, (2 * n : ℝ) / (Real.pi * (2 * k.val + 1)) =
+                4 * n * ∑ k : Fin n, (1 : ℝ) / (2 * k.val + 1) := by
+      rw [Finset.mul_sum]; congr 1; ext k; field_simp; ring
+    rw [hrhs]
+    have hlog_le : Real.log ((n : ℝ) + 1) ≤ (harmonic n : ℝ) := by exact_mod_cast hlog_harm
+    calc (n : ℝ) * Real.log ((n : ℝ) + 1)
+        ≤ n * (harmonic n : ℝ) :=
+          mul_le_mul_of_nonneg_left hlog_le hn_pos.le
+      _ ≤ n * (2 * ∑ k : Fin n, (1 : ℝ) / (2 * k.val + 1)) := by
+          apply mul_le_mul_of_nonneg_left _ hn_pos.le
+          linarith [hodd_harm_lb]
+      _ ≤ 4 * n * ∑ k : Fin n, (1 : ℝ) / (2 * k.val + 1) := by
+          have hsum_nn : 0 ≤ ∑ k : Fin n, (1 : ℝ) / (2 * k.val + 1) :=
+            Finset.sum_nonneg fun k _ => by positivity
+          nlinarith
+  linarith [hS_harm]
 
 /-! ## Key Lemmas with Sorry -/
 
