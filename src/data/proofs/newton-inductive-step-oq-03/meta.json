@@ -1,0 +1,141 @@
+{
+  "id": "newton-inductive-step-oq-03",
+  "title": "Log-Concavity of Gaussian Binomial Coefficients",
+  "slug": "newton-inductive-step-oq-03",
+  "description": "Formalizes log-concavity of Gaussian binomial coefficients (q-analogs of C(n,k)): gaussBinom n (k+1) q² ≥ gaussBinom n k q · gaussBinom n (k+2) q for q ∈ (0,1) and k+2 ≤ n. Proved via a ratio recurrence and a key q-power inequality.",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_binomial_coefficient",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/NewtonInductiveStepOQ03.lean",
+    "tags": [
+      "combinatorics",
+      "q-analogs",
+      "log-concavity",
+      "gaussian-binomial",
+      "newton-inequality",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 231,
+    "dateAdded": "2026-04-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.prod_pos",
+        "description": "Positivity of finite products",
+        "module": "Mathlib.Algebra.BigOperators.Order"
+      },
+      {
+        "theorem": "pow_le_pow_of_le_one",
+        "description": "Monotone decrease of q^n for q ∈ (0,1)",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "Finset.prod_range_succ",
+        "description": "Unfolding a product over range n+1",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "Definition of qPoch (q-Pochhammer product) and gaussBinom (Gaussian binomial coefficient)",
+      "gaussBinom_pos: Gaussian binomial coefficients are positive for q ∈ (0,1)",
+      "gaussBinom_ratio_mul: ratio recurrence G(k+1)·(1-q^{k+1}) = G(k)·(1-q^{n-k})",
+      "q_pow_key_ineq: q^{n-k} + q^k ≥ q^n + q^{n+1} for q ∈ (0,1), k ≤ n",
+      "ratio_ineq: (1-q^{n-k})(1-q^k) ≤ (1-q^{n-k+1})(1-q^{k+1}) (ratio antitone in k)",
+      "gaussBinom_log_concave: G(k+1)² ≥ G(k)·G(k+2) — the main log-concavity theorem"
+    ],
+    "assumptions": "0 axiom declarations, 0 sorries. Fully machine-checked.",
+    "prerequisites": [
+      "Gaussian binomial coefficients and their recurrence",
+      "q-Pochhammer products",
+      "Monotonicity of q^n for q ∈ (0,1)",
+      "Finset products in Lean 4"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Gaussian binomial coefficients (also called q-binomial coefficients) were introduced by Gauss in the context of counting k-dimensional subspaces of an n-dimensional vector space over a field with q elements. They arise in the theory of q-analogs, quantum groups, and combinatorics of finite fields.\n\nLog-concavity of Gaussian binomial coefficients was established by various authors and is a q-analog of the classical log-concavity of ordinary binomial coefficients C(n,k). The result states that the sequence gaussBinom n k q (for k=0,1,...,n) forms a log-concave sequence for fixed n and q ∈ (0,1).",
+    "problemStatement": "For $q \\in (0,1)$ and natural numbers $k, n$ with $k+2 \\leq n$, define the Gaussian binomial coefficient:\n\n$$\\binom{n}{k}_q = \\frac{\\prod_{i=0}^{k-1}(1-q^{n-i})}{\\prod_{i=1}^{k}(1-q^i)}$$\n\nProve the log-concavity inequality:\n\n$$\\binom{n}{k+1}_q^2 \\geq \\binom{n}{k}_q \\cdot \\binom{n}{k+2}_q$$",
+    "text": "Formalizes log-concavity of Gaussian binomial coefficients for q ∈ (0,1). The proof proceeds via a ratio recurrence relating consecutive Gaussian binomial coefficients and a key monotonicity inequality for q-powers.",
+    "proofStrategy": "1. **Define qPoch and gaussBinom** using Finset.prod over ranges\n2. **Prove positivity** (gaussBinom_pos) via Finset.prod_pos and 1-q^m > 0 for m ≥ 1\n3. **Prove the ratio recurrence** (gaussBinom_ratio_mul): G(k+1)·(1-q^{k+1}) = G(k)·(1-q^{n-k}) via prod_range_succ + field_simp\n4. **Prove the key q-power inequality** (q_pow_key_ineq): q^{n-k}+q^k ≥ q^n+q^{n+1} using pow_le_pow_of_le_one twice\n5. **Prove ratio antitone** (ratio_ineq): expand (1-Aq)(1-Bq)-(1-A)(1-B) = (1-q)(A+B-AB-ABq) by ring, then apply key_ineq\n6. **Prove log-concavity** (gaussBinom_log_concave): use both ratio recurrences to express G1²-G0·G2 as G0·G1·(N0·D2-N1·D1) ≥ 0"
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Gaussian Binomial Coefficients",
+      "startLine": 52,
+      "endLine": 63,
+      "summary": "Definition of qPoch (q-Pochhammer product) and gaussBinom (Gaussian binomial coefficient) using Finset.prod.",
+      "mathContext": "The q-Pochhammer product $[n]_q! = \\prod_{i=1}^n (1-q^i)$ and the Gaussian binomial $\\binom{n}{k}_q = \\prod_{i=0}^{k-1}(1-q^{n-i}) / [k]_q!$ are the q-analogs of factorial and binomial coefficient."
+    },
+    {
+      "id": "positivity",
+      "title": "Positivity for q ∈ (0,1)",
+      "startLine": 65,
+      "endLine": 83,
+      "summary": "Proves gaussBinom n k q > 0 for q ∈ (0,1) and k ≤ n via positivity of each factor 1-q^m.",
+      "mathContext": "For q ∈ (0,1) and m ≥ 1: 1-q^m > 0 since q^m < 1. The product qPoch n q > 0 and the numerator product > 0, so their ratio gaussBinom n k q > 0."
+    },
+    {
+      "id": "ratio-recurrence",
+      "title": "Ratio Recurrence",
+      "startLine": 85,
+      "endLine": 101,
+      "summary": "Proves G(k+1)·(1-q^{k+1}) = G(k)·(1-q^{n-k}) — the multiplication form of G(k+1)/G(k) = (1-q^{n-k})/(1-q^{k+1}).",
+      "mathContext": "The Gaussian binomial satisfies $\\binom{n}{k+1}_q / \\binom{n}{k}_q = (1-q^{n-k}) / (1-q^{k+1})$. This is the q-analog of $(k+1)\\binom{n}{k+1} = (n-k)\\binom{n}{k}$. Proved by unfolding Finset.prod_range_succ and applying field_simp."
+    },
+    {
+      "id": "key-inequality",
+      "title": "Key q-Power Inequality",
+      "startLine": 103,
+      "endLine": 117,
+      "summary": "Proves q^{n-k} + q^k ≥ q^n + q^{n+1} for q ∈ (0,1) and k ≤ n using monotonicity of q^a.",
+      "mathContext": "Since q ∈ (0,1), q^a is decreasing: q^{n-k} ≥ q^n (as n-k ≤ n) and q^k ≥ q^{n+1} (as k ≤ n < n+1). Adding gives the inequality. This is the arithmetically critical step enabling log-concavity."
+    },
+    {
+      "id": "ratio-antitone",
+      "title": "Ratio Antitone",
+      "startLine": 119,
+      "endLine": 148,
+      "summary": "Proves (1-q^{n-k})(1-q^k) ≤ (1-q^{n-k+1})(1-q^{k+1}) — the ratio G(k+1)/G(k) is decreasing in k.",
+      "mathContext": "The algebraic identity (1-Aq)(1-Bq)-(1-A)(1-B) = (1-q)(A+B-AB-ABq) reduces ratio antitone to q_pow_key_ineq with A=q^{n-k}, B=q^k, giving AB = q^n and ABq = q^{n+1}."
+    },
+    {
+      "id": "log-concavity",
+      "title": "Log-Concavity Main Theorem",
+      "startLine": 150,
+      "endLine": 208,
+      "summary": "Main result: G(k+1)² ≥ G(k)·G(k+2) for q ∈ (0,1) and k+2 ≤ n.",
+      "mathContext": "Using ratio recurrences G1·D1 = G0·N0 and G2·D2 = G1·N1, we compute G1²·D1·D2 - G0·G2·D1·D2 = G0·G1·(N0·D2 - N1·D1) ≥ 0 by ratio_ineq. Dividing by D1·D2 > 0 gives G1² ≥ G0·G2. The key step uses linear_combination."
+    }
+  ],
+  "conclusion": {
+    "summary": "We give a complete Lean 4 formalization of log-concavity of Gaussian binomial coefficients with 0 sorries and 0 axioms. The proof formalizes the ratio recurrence, a key q-power monotonicity inequality, and uses linear_combination to close the main algebraic identity.",
+    "implications": "Gaussian binomial coefficients appear in the combinatorics of finite vector spaces (counting k-dimensional subspaces of F_q^n), quantum groups, and q-series identities. The log-concavity property has applications in unimodality of q-analog sequences and the study of symmetric Macdonald polynomials.",
+    "openQuestions": [
+      "Ultra-log-concavity: is the sequence C(n,k)_q · k! / (k!)_q log-concave in a stronger sense?",
+      "Generalize to quantum group q-binomials where q is a root of unity",
+      "Log-concavity of q-Stirling numbers by analogous ratio arguments"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "newton-inductive-step",
+      "relationship": "extends",
+      "description": "q-analog extension: replaces ordinary binomial C(n,k) with Gaussian binomial coefficients; the log-concavity proof strategy parallels the classical Newton inequality"
+    },
+    {
+      "targetId": "newton-inductive-step-oq-01",
+      "relationship": "related",
+      "description": "OQ-01 proves log-concavity of elementary symmetric means; OQ-03 proves the q-analog for Gaussian binomials — both use ratio recurrences and algebraic identities"
+    },
+    {
+      "targetId": "newton-inductive-step-oq-02",
+      "relationship": "related",
+      "description": "OQ-02 formalizes Newton's inequality for general symmetric polynomials; OQ-03 focuses on the q-analog setting"
+    }
+  ]
+}
