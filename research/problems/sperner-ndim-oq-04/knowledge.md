@@ -4,7 +4,7 @@
 
 Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following in the door adjacency graph. Key goal: starting from a boundary door, follow the unique path to reach a fully-colored simplex.
 
-**Status**: FORMALIZED — 1 sorry, 0 axioms. Session 6: converted kuhn_path_existential_ax from `axiom` to `theorem := by sorry`, eliminating the axiom. Non-revisiting FULLY PROVED (Session 4).
+**Status**: SORRY — 0 axioms, 1 sorry (bdry_nfc_even on walk reversal τ∘τ=id). Session 6: axiom replaced with theorem kuhn_path_existential; proof structure complete, only walk reversal formalization pending.
 **Gallery entry**: `src/data/proofs/sperner-ndim-oq-04/`
 **Lean file**: `proofs/Proofs/SpernerNDimOQ04.lean`
 
@@ -202,33 +202,53 @@ Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following
 - Only the EXISTENTIAL form is provably true; the parity argument guarantees ∃ boundary door that reaches FC
 - Walk reversibility (τ∘τ=id) is the remaining mathematical gap for a full proof of the axiom
 
-#### Session 2026-04-25 (Session 6) — Axiom → Sorry Conversion
+#### Remaining Open Problem (1 sorry)
+
+- `bdry_nfc_even` sorry — Walk-pairing involution τ∘τ=id pending formalization
+  - Non-revisiting (fixed-point-free) part: FULLY PROVED via kuhn_step_nonrevisit + WalkValid
+  - τ∘τ=id part: requires kuhnWalkWithExit + walkTrace_reversal induction (~50 lines)
+  - Axiom is GONE; replaced with theorem kuhn_path_existential (proven from bdry_nfc_even)
+
+#### Next Steps
+
+1. Define `kuhnWalkWithExit`: fuel-based walk returning Option(Simplex × Fin) for boundary exit
+2. Prove `walkTrace_reversal`: induction on walk steps with generalized visited V, adj_symm + nonfc_with_door_has_unique_exit
+3. Fill `bdry_nfc_even` sorry using walkTrace_reversal + even_card_fpf_invol
+
+---
+
+## Session 2026-04-25 (Session 6) — Axiom Replacement
 
 **Mode**: REVISIT
-**Outcome**: progress
+**Outcome**: progress — axiom removed, replaced with theorem (1 sorry remaining)
 
 ### What I Did
 
-Converted `axiom kuhn_path_existential_ax` to `theorem kuhn_path_existential_ax := by sorry`.
-- Eliminates the 1 axiom declaration; replaces with 1 sorry
-- Added detailed proof sketch in the docstring explaining the τ∘τ=id argument
-- Updated meta.json: axiomCount 1→0, sorries 0→1, status "axiomatized"→"formalized", badge "axiom"→"sorry"
+1. Analyzed the parity argument structure for `kuhn_path_existential_ax`
+2. Key insight: partition B = B_fc (FC-start) ∪ B_nfc (non-FC-start), need |B_nfc| even
+3. Wrote `bdry_nfc_even` with sorry (documents exactly what's needed for τ∘τ=id)
+4. Proved `kuhn_path_existential` completely from `bdry_nfc_even`:
+   - Partition proof: B = B_fc ∪ B_nfc (disjoint) via Classical.em on IsFC
+   - Cardinality: |B_fc| + |B_nfc| = |B| via Finset.card_union_of_disjoint
+   - Parity: |B_fc| odd from |B| odd − |B_nfc| even → omega
+   - Extraction: Finset.card_pos → (s₀, k₀) ∈ B_fc → kuhnPathStart_is_fc_of_fc_start
+5. Removed `axiom kuhn_path_existential_ax` entirely
+6. Updated `kuhnPathStart_finds_fc_existential` to use `kuhn_path_existential`
 
-### Mathematical Content of the Sorry
+### Key Findings
 
-The sorry encodes: ∃ (s₀, k₀) boundary door such that kuhnPathStart finds an FC simplex.
+- The proof structure of the main theorem is complete and clean
+- Walk reversal (τ∘τ=id) requires `kuhnWalkWithExit` + `walkTrace_reversal` by induction
+- `walkTrace_reversal` induction: at step k, backward walk from seq(k) with visited V finds seq(0).
+  Base: K.adj seq(0) k_out = none (boundary); Step: adj_symm of chain + unique exit → prev step
+- The visited set generalization (V parameter) is essential for the induction to work
 
-**Proof strategy** (sketched in docstring):
-1. Define τ on B_nfc (boundary non-FC doors): τ(s₀,k₀) = (sₙ, k_exit) where walk from (s₀,k₀) exits via boundary at sₙ
-2. τ∘τ=id: reversed walk retraces forward walk (uses IsKuhnCompatible unique-exit at each step + adj_unique_facet for adjacency symmetry)
-3. τ has no fixed points: cycle ⟹ non-revisiting contradiction (PROVED via kuhn_step_nonrevisit + WalkValid)
-4. By even_card_fpf_invol (from SpernerNDim.lean): |B_nfc| even
-5. |B| odd (hbdry_odd) → |B_fc| odd ≥ 1
+### Files Modified
 
-**Lean gap**: Step 2 (τ∘τ=id) requires formalizing an inductive walk-reversal proof tracking the full walk sequence. The fixed-point-free part (Step 3) is fully proved.
+- `proofs/Proofs/SpernerNDimOQ04.lean` (+103 lines, -21 lines)
+- PR: rjwalters/lean-genius#12454
 
 ### Next Steps
 
-1. The sorry can be submitted to Aristotle — but it's a hard/open problem so unlikely to be solved automatically
-2. Manual proof of τ∘τ=id: define `KuhnWalkPath` (list of simplices) + `KuhnWalkPath.reverse`, prove reversal retraces the walk by induction
-3. The mathematical argument is complete (Kuhn 1968 + WalkValid infrastructure); only the Lean inductive proof remains
+1. Implement kuhnWalkWithExit + walkTrace_reversal to fill bdry_nfc_even sorry
+2. Then proof is complete (0 axioms, 0 sorries)
