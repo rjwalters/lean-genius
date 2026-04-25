@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "ann-header",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "context",
+    "title": "Module Overview: Filling a Mathlib TODO",
+    "content": "This module header serves dual purposes. First, it describes the mathematical goal: instantiate `JordanHolderLattice (Subgroup G)` and derive the Jordan-Hölder uniqueness theorem for groups. Second, it documents a historical technical artifact: as of the time of writing, the docstring notes that `isMaximal_inf_left_of_isMaximal_sup` had 1 sorry remaining 'requiring transferring simplicity through the second isomorphism.' This sorry was subsequently resolved by the element-wise argument (see `ann-inf-max`) — the docstring was not updated but the code is fully proved. This illustrates a common pattern in formal mathematics development: docstrings describing proof strategies or difficulties become outdated when better approaches are found.",
+    "mathContext": "The `JordanHolderLattice` typeclass in Mathlib (defined in `Mathlib.Order.JordanHolder`) provides an abstract framework for the Jordan-Hölder theorem: a type $\\alpha$ with a lattice structure, a predicate `IsMaximal` (analogous to 'maximal normal pair'), a relation `Iso` (isomorphism of composition factors), and three axioms. Once instantiated for `Subgroup G`, the abstract theorem `CompositionSeries.jordan_holder` gives Jordan-Hölder for groups at no extra cost. The Mathlib file has a comment 'TODO: add `JordanHolderLattice (Subgroup G)` instance' — this file provides it.",
+    "significance": "context",
+    "relatedConcepts": ["JordanHolderLattice", "Mathlib contribution", "composition series", "CompositionSeries.jordan_holder"],
+    "prerequisites": ["Lean 4 typeclass system", "Mathlib library structure"]
+  },
+  {
+    "id": "ann-imports",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 27, "endLine": 35 },
+    "type": "context",
+    "title": "Import Strategy: Mathlib Building Blocks",
+    "content": "The proof imports four Mathlib components: `JordanHolder` (the abstract JordanHolderLattice typeclass and CompositionSeries machinery), `QuotientGroup.Basic` (quotient group construction and first isomorphism theorem), `Subgroup.Simple` (simple group definition needed for composition factor reasoning), and the parent `AbelRuffiniGaloisExtensions` file which provides the broader Abel-Ruffini framework. The `Mathlib.Tactic` import brings in the full tactic library. This minimal import footprint reflects the self-contained nature of the instance construction.",
+    "mathContext": "The `JordanHolderLattice` typeclass in Mathlib abstracts the lattice-theoretic content of the Jordan-Hölder theorem: a type $\\alpha$ equipped with a notion of 'maximal' pairs and 'isomorphic' pairs of intervals, satisfying three axioms that guarantee the uniqueness result. The typeclass was designed to work uniformly for groups, modules, and other algebraic structures.",
+    "significance": "context",
+    "relatedConcepts": ["JordanHolderLattice typeclass", "first isomorphism theorem", "composition series"],
+    "prerequisites": ["Lean 4 import system", "Mathlib typeclass hierarchy"]
+  },
+  {
+    "id": "ann-ismaxnorm",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 43, "endLine": 52 },
+    "type": "definition",
+    "title": "IsMaxNorm: Maximal Normal Subgroup Predicate",
+    "content": "The `IsMaxNorm H K` predicate captures the notion of H being a maximal normal subgroup of K. It requires three conditions: (1) strict containment H < K, (2) H is relatively normal in K (meaning H.subgroupOf K is Normal, i.e., H is normal when viewed as a subgroup of K), and (3) the interval [H, K] has no intermediate normal-in-K subgroups (maximality). This is equivalent to the quotient K/H being a simple group, but avoids the typeclass complications that arise when working directly with quotient types in Lean 4.",
+    "mathContext": "Formally: $\\text{IsMaxNorm}(H, K) :\\Leftrightarrow H < K \\;\\wedge\\; (H/_{K} \\text{ is Normal}) \\;\\wedge\\; \\forall N,\\, H \\leq N \\leq K \\to (N/_{K} \\text{ Normal}) \\to N = H \\vee N = K$. The predicate avoids `IsSimpleGroup (K \\mathbin{⧸} H)` because working with the quotient type directly requires `H.Normal` as a typeclass instance, creating dependency issues in the JordanHolderLattice axiom proofs.",
+    "significance": "key",
+    "relatedConcepts": ["normal subgroup", "maximal subgroup", "simple group", "composition factor", "subgroupOf"],
+    "prerequisites": ["group theory", "normal subgroup", "quotient group"]
+  },
+  {
+    "id": "ann-groupquotiso",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 54, "endLine": 58 },
+    "type": "definition",
+    "title": "GroupQuotIso: Quotient Isomorphism with Normal Witnesses",
+    "content": "The `GroupQuotIso` predicate encodes an isomorphism K₁/H₁ ≃* K₂/H₂ together with the Normal typeclass witnesses needed to form those quotients. This design is crucial: in Lean 4, the quotient type `G ⧸ H` requires `H.Normal` as a typeclass instance. By packaging the Normal evidence explicitly inside the predicate, the proofs of iso_symm and iso_trans can use `haveI` to introduce the instances before constructing the equivalences, avoiding 'failed to synthesize Normal' errors.",
+    "mathContext": "The predicate stores: existential witnesses $\\text{hn}_1 : (H_1)_K^{\\text{rel}}\\text{ Normal}$, $\\text{hn}_2 : (H_2)_{K_2}^{\\text{rel}}\\text{ Normal}$, and a Nonempty term of type $K_1 \\mathbin{⧸} (H_1)_{K_1} \\simeq_* K_2 \\mathbin{⧸} (H_2)_{K_2}$. The `Nonempty` wrapper (rather than a bare equivalence) allows Prop-valued storage without requiring `Classical.choice` at use sites.",
+    "significance": "key",
+    "relatedConcepts": ["MulEquiv", "quotient group", "typeclass instance", "Normal subgroup", "Nonempty"],
+    "prerequisites": ["Lean 4 typeclass system", "quotient group construction", "group isomorphism"]
+  },
+  {
+    "id": "ann-normalizer-lemma",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 64, "endLine": 67 },
+    "type": "technique",
+    "title": "Key Normalizer Lemma: Normal-in-Sup Implies Normalizer Bound",
+    "content": "This one-line lemma is a key bridge used repeatedly in the instance proofs. It states: if H is relatively normal in H⊔K (meaning H.subgroupOf(H⊔K) is Normal), then K ≤ H.normalizer. The proof chains two inequalities: le_sup_right gives K ≤ H⊔K, and normal_subgroupOf_iff_le_normalizer converts the normality condition into the normalizer bound. This lemma abstracts a pattern that would otherwise need to be repeated in isMaximal_inf_left_of_isMaximal_sup and second_iso.",
+    "mathContext": "If $H \\trianglelefteq_{H \\vee K} H \\vee K$ (H is relatively normal in $H \\vee K$), then every $k \\in K \\subseteq H \\vee K$ normalizes $H$, i.e., $kHk^{-1} = H$. Formally: $K \\leq H \\vee K \\leq N_G(H)$. This is used to establish that y normalizes x when building the second isomorphism.",
+    "significance": "supporting",
+    "relatedConcepts": ["normalizer", "normal_subgroupOf_iff_le_normalizer", "relative normality", "subgroupOf"],
+    "prerequisites": ["normalizer of a subgroup", "relative normal subgroups"]
+  },
+  {
+    "id": "ann-instance-decl",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 73, "endLine": 78 },
+    "type": "insight",
+    "title": "Filling the Mathlib TODO: JordanHolderLattice Instance",
+    "content": "The `noncomputable instance` declaration fills a gap explicitly marked as TODO in Mathlib.Order.JordanHolder. The `noncomputable` annotation is required because the instance uses classical existence reasoning (via `quotientKerEquivOfSurjective` and `Nonempty`). The `IsMaximal := IsMaxNorm` and `lt_of_isMaximal := fun h => h.1` fields are trivial — the substantive work is in the three axioms: `sup_eq_of_isMaximal`, `isMaximal_inf_left_of_isMaximal_sup`, and `second_iso`.",
+    "mathContext": "The `JordanHolderLattice` typeclass has signature: $\\{\\alpha\\}[\\text{Lattice}\\,\\alpha]$, with fields `IsMaximal : \\alpha \\to \\alpha \\to \\text{Prop}` (what it means for an interval to be a composition factor), `Iso : \\alpha \\times \\alpha \\to \\alpha \\times \\alpha \\to \\text{Prop}` (factor isomorphism), and the three axioms. For $\\alpha = \\text{Subgroup}\\,G$, the lattice structure is given by subgroup inclusion, sup = generated subgroup, inf = intersection.",
+    "significance": "key",
+    "relatedConcepts": ["JordanHolderLattice", "typeclass instance", "Mathlib contribution", "CompositionSeries"],
+    "prerequisites": ["Lean 4 typeclass system", "lattice theory", "Mathlib Jordan-Hölder framework"]
+  },
+  {
+    "id": "ann-sup-eq",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 80, "endLine": 103 },
+    "type": "technique",
+    "title": "sup_eq_of_isMaximal: Distinct Maximals Generate the Full Group",
+    "content": "This axiom states: if x and y are both maximal normal in z (with x ≠ y), then x ⊔ y = z. The proof works by first showing x⊔y is relatively normal in z (using `subgroupOf_sup` and the normality of x and y separately), then applying x's maximality condition to the chain x ≤ x⊔y ≤ z. This gives either x⊔y = x or x⊔y = z. The case x⊔y = x would mean y ≤ x, but then applying y's maximality to the chain y ≤ x ≤ z gives either y = x (contradiction with hne) or x = z (contradiction with hxz.1).",
+    "mathContext": "This is the group-theoretic diamond lemma: if $x, y \\trianglelefteq_{\\max} z$ and $x \\neq y$, then $x \\vee y = z$ and $x \\wedge y$ is maximal in both $x$ and $y$ with quotient factors swapped. The key Mathlib lemma `subgroupOf_sup` provides $(A \\vee B)/_{C} = (A/_{C}) \\vee (B/_{C})$, which combined with the fact that a join of two normal subgroups is normal gives the normality of $x \\vee y$ in $z$.",
+    "significance": "key",
+    "relatedConcepts": ["lattice diamond lemma", "subgroupOf_sup", "maximality", "sup_le"],
+    "prerequisites": ["normal subgroup lattice", "maximality arguments", "subgroupOf"]
+  },
+  {
+    "id": "ann-inf-max",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 105, "endLine": 167 },
+    "type": "technique",
+    "title": "isMaximal_inf_left_of_isMaximal_sup: The Diamond's Other Half",
+    "content": "This axiom proves: if x and y are both maximal normal in x⊔y, then x⊓y is maximal normal in x. The proof establishes three goals. (1) x⊓y < x: if equality held, x ≤ y, making x⊔y = y, contradicting y < x⊔y. (2) (x⊓y).subgroupOf x is Normal: follows from y normalizing x (since y is normal in x⊔y, hence y ≤ x.normalizer), then `inf_subgroupOf_right` converts normality. (3) Maximality: for N with x⊓y ≤ N ≤ x, consider N⊔y between y and x⊔y; apply y's maximality to get N⊔y = y (so N ≤ y, then N = x⊓y) or N⊔y = x⊔y (element-wise argument: every a ∈ x decomposes as n*b with n ∈ N, b ∈ y; then b ∈ x∩y ≤ N, so a ∈ N, giving N = x).",
+    "mathContext": "The element-wise argument in the maximality case is the key insight: if $N \\vee y = x \\vee y$ and $a \\in x$, write $a = nb$ with $n \\in N, b \\in y$. Then $b = n^{-1}a \\in x$ (since $n \\in N \\leq x$) and $b \\in y$, so $b \\in x \\wedge y \\leq N$, giving $a = nb \\in N$. This avoids needing the second isomorphism $(x \\vee y)/y \\simeq x/(x \\wedge y)$ for the maximality step — a direct set-membership argument suffices.",
+    "significance": "key",
+    "relatedConcepts": ["lattice diamond lemma", "inf_subgroupOf_right", "normal_subgroupOf_of_le_normalizer", "Subgroup.mem_sup"],
+    "prerequisites": ["subgroup intersection", "normalizer", "maximality in lattices", "Subgroup.mem_sup decomposition"]
+  },
+  {
+    "id": "ann-iso-symm-trans",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 169, "endLine": 181 },
+    "type": "technique",
+    "title": "iso_symm and iso_trans: Equivalence Relation Structure on GroupQuotIso",
+    "content": "The `Iso` field of JordanHolderLattice must be an equivalence relation (up to the typeclass's requirements). `iso_symm` reverses the isomorphism using `MulEquiv.symm` lifted through `Nonempty.map`. `iso_trans` composes two isomorphisms using `MulEquiv.trans`, with careful `haveI` placement to introduce both sets of Normal instances before the `rcases` destructs the Nonempty witnesses. The `rintro ⟨_, _⟩` pattern destructs the product pairs (X.1, X.2) on the left-hand side.",
+    "mathContext": "These proofs verify that $\\simeq_*$ (group isomorphism) is symmetric and transitive on quotient pairs. For `iso_trans`: given $K_1/H_1 \\simeq_* K_2/H_2$ and $K_2/H_2 \\simeq_* K_3/H_3$, produce $K_1/H_1 \\simeq_* K_3/H_3$ by composing via `MulEquiv.trans`. The `Nonempty` wrapping requires extracting witnesses with `rcases ⟨e1⟩` before composing.",
+    "significance": "supporting",
+    "relatedConcepts": ["MulEquiv.symm", "MulEquiv.trans", "Nonempty.map", "equivalence relation"],
+    "prerequisites": ["group isomorphism", "Lean 4 pattern matching", "Nonempty type"]
+  },
+  {
+    "id": "ann-second-iso",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 183, "endLine": 227 },
+    "type": "technique",
+    "title": "second_iso: Noether's Second Isomorphism via Direct Map Construction",
+    "content": "The second isomorphism theorem in this context states: if x is maximal normal in x⊔y, then (x⊔y)/x ≃* y/(x⊓y). The proof constructs a direct map φ : y →* (x⊔y)/x by composing inclusion le_sup_right with the quotient map mk'. The kernel of φ is computed to be (x⊓y).subgroupOf y (by a membership calculation), and surjectivity follows by decomposing any element of x⊔y as a product from x and y, then showing the x-part is in the kernel. The first isomorphism theorem `quotientKerEquivOfSurjective` then gives the isomorphism. This avoids `rw [sup_comm y x]` which fails with 'motive not type correct' due to Normal typeclass dependency on the rewritten term.",
+    "mathContext": "Noether's second isomorphism theorem: for $H, K \\leq G$ with $H \\leq N_G(K)$, we have $HK/H \\simeq_* K/(H \\cap K)$. Here $x$ plays the role of $H$, $y$ plays $K$. The direct construction $\\varphi: y \\to (x \\vee y)/x$, $\\varphi(b) = bx$, has $\\ker\\varphi = x \\wedge y$ and is surjective when $y$ normalizes $x$. The first isomorphism theorem gives $y/\\ker\\varphi \\simeq_* \\text{im}(\\varphi) = (x \\vee y)/x$.",
+    "significance": "key",
+    "relatedConcepts": ["second isomorphism theorem", "first isomorphism theorem", "quotientKerEquivOfSurjective", "mk'", "sup_comm rewrite failure"],
+    "prerequisites": ["Noether isomorphism theorems", "quotient group homomorphism", "kernel computation", "surjectivity of quotient maps"]
+  },
+  {
+    "id": "ann-jordan-holder",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 233, "endLine": 247 },
+    "type": "insight",
+    "title": "Jordan-Hölder Theorem: One-Line Delegation",
+    "content": "With the JordanHolderLattice instance in place, the Jordan-Hölder theorem for groups reduces to a single call to `CompositionSeries.jordan_holder` from Mathlib. This demonstrates the power of the typeclass abstraction: once the three axioms are verified for (Subgroup G), the full Jordan-Hölder machinery — which works for any JordanHolderLattice — applies automatically. The `jordan_holder_finite_groups` variant specializes to finite groups (the hypotheses require finite G implicitly through CompositionSeries termination), delegating immediately to the general version.",
+    "mathContext": "The Jordan-Hölder theorem for groups: if $G$ has composition series $1 = H_0 \\trianglelefteq \\cdots \\trianglelefteq H_n = G$ and $1 = K_0 \\trianglelefteq \\cdots \\trianglelefteq K_m = G$, then $n = m$ and there exists a permutation $\\sigma$ of $\\{0,\\ldots,n-1\\}$ such that $H_{i+1}/H_i \\simeq K_{\\sigma(i)+1}/K_{\\sigma(i)}$ for all $i$. This is the group-theoretic analogue of the uniqueness of prime factorization in $\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": ["CompositionSeries", "CompositionSeries.jordan_holder", "composition factors", "Schreier refinement theorem"],
+    "prerequisites": ["composition series", "normal series", "Jordan-Hölder theorem statement"]
+  }
+]
