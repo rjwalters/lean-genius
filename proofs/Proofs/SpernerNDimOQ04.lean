@@ -53,7 +53,8 @@ the unique other door (if any), repeating until reaching an FC simplex.
 13. `kuhnPathStart_finds_fc_existential` — ∃ boundary door whose walk finds FC (axiomatized)
 
 ### Axiomatized
-- `kuhn_path_existential_ax` — Walk-reversal involution; non-revisiting proved, τ∘τ=id pending
+- `bdry_nfc_even` (sorry) — Walk-reversal involution τ∘τ=id pending; non-revisiting proved
+- `kuhn_path_existential` — Proved from bdry_nfc_even; replaces the former axiom
 
 ### Removed (false as stated)
 - `kuhn_walk_reaches_fc` — Universal walk theorem is false; boundary exit possible on some paths
@@ -688,39 +689,120 @@ theorem kuhnPathStart_is_fc_of_fc_start {c : Coloring d N} {K : SpernerTriangula
     IsFC c K (kuhnPathStart c K hKuhn s₀ k₀ hdoor₀ hbdry₀) :=
   kuhnWalk_fc_if_started_fc hKuhn _ _ hfc₀
 
-/-- Axiom: there exists a boundary door from which kuhnPathStart finds an FC simplex.
+-- ============================================================
+-- SECTION XI: Walk Pairing Parity and Main Existential
+-- ============================================================
 
-    **Mathematical proof** (pending Lean formalization):
-    Define τ on B_nfc = {boundary doors whose walk ends at a non-FC boundary exit}:
-      τ(s₀, k₀) = (sₙ, k_exit_n) where the walk from (s₀, k₀) exits via boundary at sₙ.
+/-- The non-FC boundary doors have even cardinality.
 
-    τ is a fixed-point-free involution on B_nfc:
-    - τ∘τ = id: the reversed walk uniquely retraces the forward walk (Kuhn compatibility
-      gives unique exit at each non-FC simplex; adj_unique_facet gives unique adjacency).
-    - No fixed points: if τ(s₀,k₀) = (s₀,k₀) then the walk is a cycle, contradicting
-      non-revisiting (proved by kuhn_step_nonrevisit + WalkValid).
+    B_nfc = {(s, k) : isDoorAt c K s k ∧ K.adj s k = none ∧ k = Fin.last d ∧ ¬IsFC c K s}
 
-    By even_card_fpf_invol (SpernerNDim): |B_nfc| is even.
+    **Proof via Kuhn walk pairing involution** (τ∘τ=id pending formalization):
+
+    For each (s₀, k₀) ∈ B_nfc: s₀ is non-FC with 2 doors {k₀ (boundary, face d),
+    k_int (interior)}. The walk from s₀ via k_int traces s₀ → s₁ → ... → sₙ until
+    sₙ exits at a boundary door eₙ (with ¬IsFC c K sₙ). Define τ(s₀, k₀) = (sₙ, eₙ).
+
+    τ is a FPF involution on B_nfc:
+    - τ∘τ = id: backward walk from (sₙ, eₙ) recovers (s₀, k₀) via:
+        adj_symm (each backward step is the reverse of a forward step) +
+        nonfc_with_door_has_unique_exit (unique exit at each non-FC simplex)
+    - Fixed-point-free: τ(s₀, k₀) = (s₀, k₀) would require the walk to be a cycle,
+        contradicting kuhn_step_nonrevisit + WalkValid (non-revisiting is FULLY PROVED)
+
+    **Proved ingredients**: nonfc_with_door_has_unique_exit ✓, WalkValid ✓,
+    kuhn_step_nonrevisit ✓, adj_symm ✓, even_card_fpf_invol ✓.
+    **Pending (this sorry)**: kuhnWalkWithExit definition + walkTrace_reversal induction. -/
+private lemma bdry_nfc_even {c : Coloring d N} {K : SpernerTriangulation d N}
+    (hKuhn : IsKuhnCompatible c K) (hc : IsSperner c) :
+    Even (Finset.univ.filter (fun p : K.Simplex × Fin (d + 1) =>
+      isDoorAt c K p.1 p.2 ∧ K.adj p.1 p.2 = none ∧ p.2 = Fin.last d ∧
+      ¬IsFC c K p.1)).card := by
+  sorry
+
+/-- There exists a boundary door from which kuhnPathStart finds an FC simplex.
+
+    **Proof** (replacing former axiom kuhn_path_existential_ax):
+
+    Partition boundary doors B into:
+    - B_fc = {(s, k) ∈ B : IsFC c K s}  (FC-start doors)
+    - B_nfc = {(s, k) ∈ B : ¬IsFC c K s}  (non-FC-start doors)
+
+    |B_nfc| is even (bdry_nfc_even, whose sorry covers the walk reversal τ∘τ=id).
     |B| = |B_fc| + |B_nfc| is odd (hbdry_odd) → |B_fc| is odd ≥ 1.
-
-    **What remains**: Walk reversibility (τ∘τ=id). Non-revisiting (the fixed-point-free
-    part) is FULLY PROVED by kuhn_step_nonrevisit + WalkValid invariant. -/
-axiom kuhn_path_existential_ax {d N : ℕ} {c : Coloring d N} {K : SpernerTriangulation d N}
+    For (s₀, k₀) ∈ B_fc: s₀ is FC, so kuhnPathStart immediately returns s₀ (IsFC). -/
+theorem kuhn_path_existential {c : Coloring d N} {K : SpernerTriangulation d N}
     (hKuhn : IsKuhnCompatible c K)
     (hc : IsSperner c)
     (hbdry_odd : Odd (Finset.univ.filter (fun p : K.Simplex × Fin (d + 1) =>
       isDoorAt c K p.1 p.2 ∧ K.adj p.1 p.2 = none ∧ p.2 = Fin.last d)).card) :
     ∃ (s₀ : K.Simplex) (k₀ : Fin (d + 1)) (hdoor₀ : isDoorAt c K s₀ k₀)
       (hbdry₀ : K.adj s₀ k₀ = none),
-      IsFC c K (kuhnPathStart c K hKuhn s₀ k₀ hdoor₀ hbdry₀)
+      IsFC c K (kuhnPathStart c K hKuhn s₀ k₀ hdoor₀ hbdry₀) := by
+  -- B = B_fc ∪ B_nfc; |B_nfc| even; |B| odd → |B_fc| odd ≥ 1
+  have heven := bdry_nfc_even hKuhn hc
+  -- Prove |B_fc| + |B_nfc| = |B| via partition
+  have hcard_sum : (Finset.univ.filter (fun p : K.Simplex × Fin (d + 1) =>
+      isDoorAt c K p.1 p.2 ∧ K.adj p.1 p.2 = none ∧ p.2 = Fin.last d ∧ IsFC c K p.1)).card +
+    (Finset.univ.filter (fun p : K.Simplex × Fin (d + 1) =>
+      isDoorAt c K p.1 p.2 ∧ K.adj p.1 p.2 = none ∧ p.2 = Fin.last d ∧
+      ¬IsFC c K p.1)).card =
+    (Finset.univ.filter (fun p : K.Simplex × Fin (d + 1) =>
+      isDoorAt c K p.1 p.2 ∧ K.adj p.1 p.2 = none ∧ p.2 = Fin.last d)).card := by
+    have heq : (Finset.univ.filter (fun p : K.Simplex × Fin (d + 1) =>
+        isDoorAt c K p.1 p.2 ∧ K.adj p.1 p.2 = none ∧ p.2 = Fin.last d)) =
+      (Finset.univ.filter (fun p : K.Simplex × Fin (d + 1) =>
+        isDoorAt c K p.1 p.2 ∧ K.adj p.1 p.2 = none ∧ p.2 = Fin.last d ∧ IsFC c K p.1)) ∪
+      (Finset.univ.filter (fun p : K.Simplex × Fin (d + 1) =>
+        isDoorAt c K p.1 p.2 ∧ K.adj p.1 p.2 = none ∧ p.2 = Fin.last d ∧
+        ¬IsFC c K p.1)) := by
+      ext p
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]
+      constructor
+      · intro ⟨h1, h2, h3⟩
+        rcases Classical.em (IsFC c K p.1) with h | h
+        · exact Or.inl ⟨h1, h2, h3, h⟩
+        · exact Or.inr ⟨h1, h2, h3, h⟩
+      · rintro (⟨h1, h2, h3, _⟩ | ⟨h1, h2, h3, _⟩) <;> exact ⟨h1, h2, h3⟩
+    have hdisj : Disjoint
+      (Finset.univ.filter (fun p : K.Simplex × Fin (d + 1) =>
+        isDoorAt c K p.1 p.2 ∧ K.adj p.1 p.2 = none ∧ p.2 = Fin.last d ∧ IsFC c K p.1))
+      (Finset.univ.filter (fun p : K.Simplex × Fin (d + 1) =>
+        isDoorAt c K p.1 p.2 ∧ K.adj p.1 p.2 = none ∧ p.2 = Fin.last d ∧
+        ¬IsFC c K p.1)) := by
+      rw [Finset.disjoint_left]
+      intro p h1 h2
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at h1 h2
+      exact h2.2.2.2 h1.2.2.2
+    rw [heq, Finset.card_union_of_disjoint hdisj]
+  -- Conclude |B_fc| is odd
+  have hBfc_odd : Odd (Finset.univ.filter (fun p : K.Simplex × Fin (d + 1) =>
+      isDoorAt c K p.1 p.2 ∧ K.adj p.1 p.2 = none ∧ p.2 = Fin.last d ∧
+      IsFC c K p.1)).card := by
+    obtain ⟨m, hm⟩ := heven
+    obtain ⟨k, hk⟩ := hbdry_odd
+    rw [hm, hk] at hcard_sum
+    exact ⟨k - m, by omega⟩
+  -- Extract an FC-start boundary door
+  have hpos : 0 < (Finset.univ.filter (fun p : K.Simplex × Fin (d + 1) =>
+      isDoorAt c K p.1 p.2 ∧ K.adj p.1 p.2 = none ∧ p.2 = Fin.last d ∧
+      IsFC c K p.1)).card := by
+    obtain ⟨k, hk⟩ := hBfc_odd; omega
+  obtain ⟨⟨s₀, k₀⟩, hmem⟩ := Finset.card_pos.mp hpos
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hmem
+  obtain ⟨hdoor₀, hbdry₀, _, hfc₀⟩ := hmem
+  exact ⟨s₀, k₀, hdoor₀, hbdry₀,
+    kuhnPathStart_is_fc_of_fc_start hKuhn s₀ k₀ hdoor₀ hbdry₀ hfc₀⟩
 
 /-- EXISTENTIAL: There exists a boundary door from which kuhnPathStart finds FC.
 
-    Proved from kuhn_path_existential_ax. The axiom encodes Kuhn's walk-pairing
-    involution argument (τ∘τ=id via walk reversibility + non-revisiting = no fixed points).
+    Proved from kuhn_path_existential (which replaced the former axiom).
+    The proof uses bdry_nfc_even (sorry on walk reversal τ∘τ=id) to show the FC-start
+    boundary door set B_fc has odd cardinality ≥ 1.
 
-    Non-revisiting is FULLY PROVED (kuhn_step_nonrevisit + WalkValid).
-    Walk reversibility (τ∘τ=id) is the remaining open formalization step. -/
+    Proved: non-revisiting (kuhn_step_nonrevisit + WalkValid), unique exit
+    (nonfc_with_door_has_unique_exit), parity structure, main theorem body.
+    Pending (bdry_nfc_even sorry): walk reversal τ∘τ=id via walkTrace_reversal induction. -/
 theorem kuhnPathStart_finds_fc_existential {c : Coloring d N} {K : SpernerTriangulation d N}
     (hKuhn : IsKuhnCompatible c K)
     (hc : IsSperner c)
@@ -729,6 +811,6 @@ theorem kuhnPathStart_finds_fc_existential {c : Coloring d N} {K : SpernerTriang
     ∃ (s₀ : K.Simplex) (k₀ : Fin (d + 1)) (hdoor₀ : isDoorAt c K s₀ k₀)
       (hbdry₀ : K.adj s₀ k₀ = none),
       IsFC c K (kuhnPathStart c K hKuhn s₀ k₀ hdoor₀ hbdry₀) :=
-  kuhn_path_existential_ax hKuhn hc hbdry_odd
+  kuhn_path_existential hKuhn hc hbdry_odd
 
 end SpernerNDimOQ04
