@@ -89,5 +89,49 @@
       "log2_log3_rat_indep from Sec 1",
       "algebraic number definition"
     ]
+  },
+  {
+    "id": "ann-baker-four-exponentials",
+    "proofId": "algebraic-numbers-countable-oq-04",
+    "range": { "startLine": 470, "endLine": 491 },
+    "type": "insight",
+    "title": "Four Exponentials Conjecture: What Baker Leaves Open",
+    "content": "The section documents the gap between Baker's proven results and a central open problem. Baker's theorem implies the **Six Exponentials Theorem** (Lang-Ramachandra 1966): if z₁, z₂, z₃ are Q-linearly independent complex numbers and w₁, w₂ are Q-linearly independent, then at least one of the six values e^{zᵢwⱼ} is transcendental. The proof applies Baker with n=2 to the logs log(e^{z₁w₁}), log(e^{z₂w₁}) under independence.\n\nThe **Four Exponentials Conjecture** (open): the same statement holds with only 2×2 = 4 exponentials (two z's, two w's). This is NOT implied by Baker's theorem in any known way. The file axiomatizes it as `four_exponentials_conjecture` rather than proving it from `baker_homogeneous`.\n\n**Why the gap?** Baker's theorem works by showing Q̄-linear combinations of logs are nonzero. With 4 exponentials, the linear algebra of the underlying system has fewer constraints — the independence hypotheses are weaker. Known techniques (Baker auxiliary function, Siegel's lemma) require more variables to close the system. Schanuel's conjecture would imply Four Exponentials, but Schanuel is itself open.\n\nThe entry uses `four_exponentials_conjecture` to derive two further results: transcendence of 2^log3 (= 3^log2 = e^{log2·log3}) and non-algebraicity of certain period integrals.",
+    "mathContext": "Four Exponentials: if $z_1, z_2$ are $\\mathbb{Q}$-linearly independent and $w_1, w_2$ are $\\mathbb{Q}$-linearly independent, then $\\{e^{z_1 w_1}, e^{z_1 w_2}, e^{z_2 w_1}, e^{z_2 w_2}\\}$ contains at least one transcendental. Equivalently (setting $\\alpha_{ij} = e^{z_i w_j}$): $\\log \\alpha_{11}/\\log \\alpha_{12} \\neq \\log \\alpha_{21}/\\log \\alpha_{22}$, or one $\\alpha_{ij}$ is transcendental. The Six Exponentials Theorem (Baker-implied) requires a $3 \\times 2$ or $2 \\times 3$ matrix.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Four Exponentials Conjecture",
+      "Six Exponentials Theorem",
+      "Schanuel's Conjecture",
+      "Lang-Ramachandra theorem",
+      "four_exponentials_conjecture axiom"
+    ],
+    "prerequisites": [
+      "baker_homogeneous axiom",
+      "Q-linear independence",
+      "transcendence theory gaps"
+    ]
+  },
+  {
+    "id": "ann-baker-wustholz",
+    "proofId": "algebraic-numbers-countable-oq-04",
+    "range": { "startLine": 340, "endLine": 363 },
+    "type": "concept",
+    "title": "Baker-Wüstholz 1993: State-of-the-Art Quantitative Bound",
+    "content": "The `baker_wustholz_bound` axiom states the optimal quantitative lower bound for linear forms in logarithms. The bound is: log|Λ| > −C(n,d) · ∏ᵢ log(Aᵢ) · log(B), where Aᵢ are height bounds on αᵢ, B = max|βᵢ|, and C(n,d) = 18(n+1)! · n^(n+1) · (32d)^(n+2) · log(2nd).\n\n**Improvement over Baker 1966**: The original Baker bound was |Λ| > B^{-C} (polynomial in 1/B). Baker-Wüstholz gives |Λ| > exp(−C' log B) (quasi-polynomial, much sharper for large B). This improvement is practically decisive for Diophantine applications.\n\n**Applications encoded in the section**:\n- **Thue equations**: a(x)p − b(y)q = c. The number of solutions is bounded via |Λ| > exp(−C log B) → effectively computable finite bound\n- **Mordell equation**: y² = x³ + k. All integer solutions (x,y) satisfy max(|x|,|y|) < exp(C · |k|^{1+ε}) — Baker-Wüstholz makes the bound explicit\n- **Effective ABC**: Baker-Wüstholz implies a weak effective form of the abc conjecture for specific families\n- **Class number**: Goldfeld's theorem (1976) uses Baker-Wüstholz to give effective lower bounds on h(−D)\n\n**Why the formula has the form it does**: The product ∏ log(Aᵢ) comes from the Schwarz lemma argument applied to the Baker auxiliary function — each log(Aᵢ) bounds the 'complexity' of the auxiliary polynomial at the point αᵢ. The factor log(B) bounds the multiplicity of zeros. The (n+1)! factor arises from the dimension of the space of auxiliary polynomials of degree n.",
+    "mathContext": "Baker-Wüstholz 1993: $\\log|\\Lambda| > -18(n+1)! \\cdot n^{n+1} \\cdot (32d)^{n+2} \\cdot \\log(2nd) \\cdot \\prod_{i=1}^n \\log A_i \\cdot \\log B$, where $d = [\\mathbb{Q}(\\beta_1,\\ldots,\\beta_n):\\mathbb{Q}]$, $\\log A_i \\geq h(\\alpha_i)$ (absolute logarithmic Weil height), $B = \\max_i |\\beta_i|$. The absolute logarithmic height $h(\\alpha) = \\frac{1}{[\\mathbb{Q}(\\alpha):\\mathbb{Q}]} \\sum_v \\max(0, v(\\alpha))$ (product formula).",
+    "significance": "key",
+    "relatedConcepts": [
+      "baker_wustholz_bound axiom",
+      "Thue equation applications",
+      "Mordell equation",
+      "absolute logarithmic height h(α)",
+      "effective Diophantine geometry"
+    ],
+    "prerequisites": [
+      "baker_homogeneous and baker_quantitative",
+      "absolute logarithmic height",
+      "Real.log bounds"
+    ]
   }
 ]
