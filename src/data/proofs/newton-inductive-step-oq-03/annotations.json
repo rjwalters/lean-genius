@@ -1,0 +1,145 @@
+[
+  {
+    "id": "ann-newton-oq03-overview",
+    "proofId": "newton-inductive-step-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 41
+    },
+    "type": "concept",
+    "title": "Log-Concavity of Gaussian Binomial Coefficients",
+    "content": "**Gaussian binomial coefficients** $\\binom{n}{k}_q$ are q-analogs of ordinary binomial coefficients, counting k-dimensional subspaces of an n-dimensional vector space over $\\mathbb{F}_q$. For $q \\in (0,1)$, they satisfy the **log-concavity** inequality: $\\binom{n}{k+1}_q^2 \\geq \\binom{n}{k}_q \\cdot \\binom{n}{k+2}_q$. This file gives a complete Lean 4 proof with **0 sorries and 0 axioms**, using a ratio recurrence and a key q-power monotonicity inequality.",
+    "mathContext": "At $q \\to 1$, the Gaussian binomial $\\binom{n}{k}_q \\to \\binom{n}{k}$ (ordinary binomial). Log-concavity of binomial coefficients ($\\binom{n}{k}^2 \\geq \\binom{n}{k-1}\\binom{n}{k+1}$) is a classical result. The q-analog for Gaussian binomials is proved here by a direct ratio argument. The key identity: the consecutive ratio $\\binom{n}{k+1}_q / \\binom{n}{k}_q = (1-q^{n-k})/(1-q^{k+1})$ is antitone in k for $q \\in (0,1)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Gaussian binomial coefficients",
+      "q-Pochhammer products",
+      "log-concavity",
+      "unimodal sequences",
+      "finite vector space subspace counting"
+    ],
+    "prerequisites": [
+      "Ordinary binomial coefficients",
+      "q-analogs in combinatorics",
+      "Monotonicity of q^n for q ∈ (0,1)"
+    ]
+  },
+  {
+    "id": "ann-newton-oq03-gaussbinom-def",
+    "proofId": "newton-inductive-step-oq-03",
+    "range": {
+      "startLine": 56,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "qPoch and gaussBinom: q-Pochhammer and Gaussian Binomial",
+    "content": "**qPoch n q** = $\\prod_{i=1}^n (1 - q^i)$ is the q-Pochhammer product (q-analog of $n!$). **gaussBinom n k q** = $\\frac{\\prod_{i=0}^{k-1}(1-q^{n-i})}{\\text{qPoch}\\,k\\,q}$ is the Gaussian binomial coefficient. Both are `noncomputable` since they produce real numbers. The definition uses `Finset.range k` as the index set.",
+    "mathContext": "The q-Pochhammer product $[n]_q! = (1-q)(1-q^2)\\cdots(1-q^n)$ satisfies $[0]_q! = 1$ (empty product). The Gaussian binomial numerator $\\prod_{i=0}^{k-1}(1-q^{n-i})$ counts from the top: $(1-q^n)(1-q^{n-1})\\cdots(1-q^{n-k+1})$. At $q=0$: gaussBinom $n$ $k$ $0 = 1$ for all $k \\leq n$. At $q \\to 1$: recovers $\\binom{n}{k}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "q-Pochhammer product",
+      "q-factorial",
+      "Finset.prod in Lean 4",
+      "noncomputable for ℝ"
+    ],
+    "prerequisites": [
+      "Finset.range in Lean 4",
+      "Finset.prod",
+      "Real number arithmetic"
+    ]
+  },
+  {
+    "id": "ann-newton-oq03-positivity",
+    "proofId": "newton-inductive-step-oq-03",
+    "range": {
+      "startLine": 65,
+      "endLine": 83
+    },
+    "type": "technique",
+    "title": "Positivity via Finset.prod_pos",
+    "content": "**gaussBinom_pos** establishes $\\binom{n}{k}_q > 0$ for $q \\in (0,1)$ and $k \\leq n$. The proof uses `Finset.prod_pos` to show each factor $1 - q^m > 0$ for $m \\geq 1$ (since $q^m < 1$). Positivity of the denominator qPoch and numerator follows identically. The lemma `one_sub_pow_pos` is the key local helper.",
+    "mathContext": "For $q \\in (0,1)$ and $m \\geq 1$: $q^m < q^0 = 1$ by `pow_lt_one`, so $1 - q^m > 0$. The q-Pochhammer product qPoch $n$ $q = \\prod_{i=1}^n(1-q^i)$ is a product of positive terms, hence positive. The numerator of gaussBinom is similarly a product of positive terms when $k \\leq n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.prod_pos",
+      "pow_lt_one for q ∈ (0,1)",
+      "div_pos"
+    ],
+    "prerequisites": [
+      "Finset.prod_pos in Mathlib",
+      "pow_lt_one",
+      "Real.div_pos"
+    ]
+  },
+  {
+    "id": "ann-newton-oq03-ratio-recurrence",
+    "proofId": "newton-inductive-step-oq-03",
+    "range": {
+      "startLine": 89,
+      "endLine": 101
+    },
+    "type": "technique",
+    "title": "Ratio Recurrence via prod_range_succ + field_simp",
+    "content": "**gaussBinom_ratio_mul** proves $G(k+1) \\cdot (1-q^{k+1}) = G(k) \\cdot (1-q^{n-k})$ by unfolding both Finset products using `Finset.prod_range_succ`, then using `field_simp + ring` to cancel the common factor qPoch $k$ $q > 0$. This is the multiplication form of the ratio formula $\\binom{n}{k+1}_q / \\binom{n}{k}_q = (1-q^{n-k})/(1-q^{k+1})$.",
+    "mathContext": "The ratio recurrence is the q-analog of $\\binom{n}{k+1} / \\binom{n}{k} = (n-k)/(k+1)$. It expresses the key structure: the numerator gains a factor $(1-q^{n-k})$ while the denominator gains $(1-q^{k+1})$. Unfolding `Finset.prod_range_succ` on both sides simultaneously reveals the common qPoch $k$ $q$ factor which `field_simp` can cancel.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.prod_range_succ",
+      "field_simp for division cancellation",
+      "q-binomial ratio formula"
+    ],
+    "prerequisites": [
+      "Finset.prod_range_succ",
+      "field_simp",
+      "positivity of qPoch"
+    ]
+  },
+  {
+    "id": "ann-newton-oq03-key-ineq",
+    "proofId": "newton-inductive-step-oq-03",
+    "range": {
+      "startLine": 107,
+      "endLine": 117
+    },
+    "type": "technique",
+    "title": "Key q-Power Inequality: Two Applications of pow_le_pow_of_le_one",
+    "content": "**q_pow_key_ineq** proves $q^{n-k} + q^k \\geq q^n + q^{n+1}$ for $q \\in (0,1)$ and $k \\leq n$. The proof applies `pow_le_pow_of_le_one` twice: $q^{n-k} \\geq q^n$ (since $n-k \\leq n$) and $q^k \\geq q^{n+1}$ (since $k \\leq n < n+1$). Then `add_le_add` combines them. This is the arithmetically essential inequality for the log-concavity proof.",
+    "mathContext": "The inequality says: summing the two 'extreme' exponents $n-k$ and $k$ (which average to $n/2$) dominates summing $n$ and $n+1$ (which are both $\\geq n/2$ when $k \\leq n/2$, and one is ≥ and one is equal). The Chebyshev-rearrangement perspective: $q^a + q^b \\geq q^c + q^d$ when $\\{a,b\\}$ is 'more spread' than $\\{c,d\\}$ and $a+b = c+d$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pow_le_pow_of_le_one for q ∈ (0,1)",
+      "add_le_add",
+      "monotone decrease of geometric sequences"
+    ],
+    "prerequisites": [
+      "pow_le_pow_of_le_one in Mathlib",
+      "Nat.sub_le",
+      "omega for natural number arithmetic"
+    ]
+  },
+  {
+    "id": "ann-newton-oq03-log-concave",
+    "proofId": "newton-inductive-step-oq-03",
+    "range": {
+      "startLine": 154,
+      "endLine": 208
+    },
+    "type": "proof",
+    "title": "Log-Concavity via linear_combination + ratio recurrences",
+    "content": "**gaussBinom_log_concave** (the main theorem) proves $G(k+1)^2 \\geq G(k) \\cdot G(k+2)$ by: (1) applying two ratio recurrences to get $G_1 D_1 = G_0 N_0$ and $G_2 D_2 = G_1 N_1$; (2) computing via `linear_combination` that $G_1^2 D_1 D_2 - G_0 G_2 D_1 D_2 = G_0 G_1 (N_0 D_2 - N_1 D_1)$; (3) using `ratio_ineq` to get $N_1 D_1 \\leq N_0 D_2$; (4) dividing by $D_1 D_2 > 0$.",
+    "mathContext": "The algebraic core: $G_1^2 D_1 D_2 - G_0 G_2 D_1 D_2 = G_0 G_1(N_0 D_2 - N_1 D_1)$ follows from substituting the ratio recurrences. This is proved by `linear_combination G1 * D2 * hrec1 - G0 * D1 * hrec2` — a single linear combination tactic. The final step divides by $D_1 D_2 > 0$ using `field_simp` after establishing the nonnegativity of the right side.",
+    "significance": "breakthrough",
+    "relatedConcepts": [
+      "linear_combination tactic in Lean 4",
+      "ratio recurrence for Gaussian binomials",
+      "ratio_ineq (antitone step)",
+      "div_pos for final conclusion"
+    ],
+    "prerequisites": [
+      "gaussBinom_ratio_mul (two applications)",
+      "ratio_ineq (the antitone step)",
+      "gaussBinom_pos (positivity)",
+      "linear_combination tactic"
+    ]
+  }
+]
