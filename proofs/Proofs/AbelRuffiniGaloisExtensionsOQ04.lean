@@ -15,13 +15,11 @@
   `Mathlib.Order.JordanHolder` with the note "it is not entirely clear how this
   should be done." This file fills that gap.
 
-  ## Note on Sorries
+  ## Status
 
-  `sup_eq_of_isMaximal` and `second_iso` are proved.
-  `isMaximal_inf_left_of_isMaximal_sup` has 1 sorry remaining:
-  the maximality step requires transferring simplicity of (x⊔y)/y through
-  the second isomorphism to x/(x⊓y), then applying the correspondence theorem.
-  This is a HARD goal for Aristotle.
+  All three JordanHolderLattice axioms are fully proved (0 sorries, 0 axioms).
+  The Jordan-Hölder theorem is derived in one line via delegation to
+  `CompositionSeries.jordan_holder` once the instance is registered.
 -/
 
 import Mathlib.Tactic
