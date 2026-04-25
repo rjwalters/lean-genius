@@ -82,21 +82,24 @@
             "title": "Part I: Predicates",
             "startLine": 36,
             "endLine": 68,
-            "summary": "IsMaxNorm (maximal normal subgroup predicate), GroupQuotIso (quotient isomorphism with Normal evidence), le_normalizer_of_normal_in_sup lemma"
+            "summary": "IsMaxNorm (maximal normal subgroup predicate), GroupQuotIso (quotient isomorphism with Normal evidence), le_normalizer_of_normal_in_sup lemma",
+            "mathContext": "Two custom predicates are defined to bridge Lean 4's typeclass machinery with the abstract JordanHolderLattice interface. `IsMaxNorm H K` avoids direct use of `IsSimpleGroup (K ⧸ H)` because Lean requires `H.Normal` as a synthesized typeclass instance to form the quotient type — working with the predicate avoids repeated instance synthesis failures. `GroupQuotIso` carries explicit `Normal` witnesses so that `haveI` can introduce them before `rcases` destructs existential witnesses, a crucial ordering constraint in Lean 4 elaboration."
         },
         {
             "id": "sec-instance",
             "title": "Part II: JordanHolderLattice Instance",
             "startLine": 70,
             "endLine": 227,
-            "summary": "instJordanHolderLatticeSubgroup — fills Mathlib TODO. All three axioms fully proved: sup_eq_of_isMaximal (via subgroupOf_sup + maximality); isMaximal_inf_left_of_isMaximal_sup (element-wise argument for maximality step); iso_symm, iso_trans, second_iso (first iso theorem, avoids sup_comm rewrite failure)"
+            "summary": "instJordanHolderLatticeSubgroup — fills Mathlib TODO. All three axioms fully proved: sup_eq_of_isMaximal (via subgroupOf_sup + maximality); isMaximal_inf_left_of_isMaximal_sup (element-wise argument for maximality step); iso_symm, iso_trans, second_iso (first iso theorem, avoids sup_comm rewrite failure)",
+            "mathContext": "The three JordanHolderLattice axioms correspond to the three key properties used in Schreier's refinement theorem (which implies Jordan-Hölder): (1) `sup_eq_of_isMaximal` is the 'maximals generate' property — two distinct maximal normal subgroups of z together generate z; (2) `isMaximal_inf_left_of_isMaximal_sup` is the 'diamond' property — if x and y are both maximal in x⊔y, then x⊓y is maximal in both x and y; (3) `second_iso` is the factor isomorphism — (x⊔y)/x ≃* y/(x⊓y), Noether's second isomorphism theorem. Together these axioms force any two maximal chains between the same endpoints to have isomorphic factors."
         },
         {
             "id": "sec-main-theorem",
             "title": "Part III: Jordan-Hölder Theorem",
             "startLine": 229,
             "endLine": 255,
-            "summary": "jordan_holder_subgroups and jordan_holder_finite_groups — one-line delegation to CompositionSeries.jordan_holder once the JordanHolderLattice instance is provided; #check verification of exported types"
+            "summary": "jordan_holder_subgroups and jordan_holder_finite_groups — one-line delegation to CompositionSeries.jordan_holder once the JordanHolderLattice instance is provided; #check verification of exported types",
+            "mathContext": "The final theorem `jordan_holder_subgroups` states: for any group G with two composition series `s` and `t` (maximal chains 1 ◁ ... ◁ G), there exists a bijection between their index sets such that corresponding factors are isomorphic. `CompositionSeries.jordan_holder` provides this from Mathlib once the JordanHolderLattice instance is in scope. The `jordan_holder_finite_groups` variant (requiring `Fintype G`) specializes to finite groups — the primary application domain since infinite groups may lack composition series entirely."
         }
     ],
     "crossReferences": [
@@ -119,7 +122,29 @@
             "id": "inverse-galois",
             "relationship": "related",
             "description": "Inverse Galois problem: uses Galois group theory and group-theoretic structure related to composition series"
+        },
+        {
+            "id": "sylow-theorem-oq-04",
+            "relationship": "related",
+            "description": "A₅ simplicity via Sylow's theorems: A₅ is simple (no non-trivial normal subgroups) — equivalently, its only composition series is 1 ◁ A₅, a one-factor series. The Jordan-Hölder uniqueness theorem proved here guarantees that the single composition factor A₅/1 ≅ A₅ is an invariant of A₅, consistent with A₅ being the smallest non-abelian simple group."
+        },
+        {
+            "id": "abel-ruffini-oq-04-oq-02-oq-02",
+            "relationship": "related",
+            "description": "Alternating groups solvability classification (Aₙ solvable iff n ≤ 4): uses the composition series structure proved here. For n ≤ 4, the composition series of Sₙ witnesses solvability (derived series = composition series with abelian factors). For n ≥ 5, Jordan-Hölder uniqueness guarantees that the A₅ composition factor persists in any composition series of Sₙ, making Sₙ non-solvable."
+        },
+        {
+            "id": "abel-ruffini-oq-04-oq-02-oq-03",
+            "relationship": "related",
+            "description": "Finite groups of order < 60 are solvable: the threshold at |A₅| = 60 is exactly explained by Jordan-Hölder — any finite group of order < 60 has composition factors of order < 60, none of which can be A₅ (the unique simple group of order 60). The Jordan-Hölder uniqueness theorem proved here guarantees that composition factors are a group invariant, making the order-60 threshold precise."
         }
+    ],
+    "relatedProblems": [
+        { "id": "abel-ruffini-oq-04", "label": "A₅ simplicity and non-solvability chain" },
+        { "id": "abel-ruffini-oq-04-oq-02-oq-02", "label": "Alternating groups: solvable iff n ≤ 4" },
+        { "id": "sylow-theorem-oq-04", "label": "A₅ simplicity via Sylow counting" },
+        { "id": "abel-ruffini-oq-04-oq-02-oq-03", "label": "Groups of order < 60 are solvable" },
+        { "id": "abel-ruffini", "label": "Abel-Ruffini theorem (quintic insolvability)" }
     ],
     "sorries": 0
 }
