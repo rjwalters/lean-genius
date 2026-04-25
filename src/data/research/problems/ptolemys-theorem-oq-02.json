@@ -64,7 +64,8 @@
     "ptolemys-theorem",
     "ptolemys-theorem-oq-01",
     "ptolemys-theorem-oq-01-incomplete-01",
-    "ptolemys-theorem-oq-01-oq-01"
+    "ptolemys-theorem-oq-01-oq-01",
+    "ptolemys-theorem-oq-01-oq-02"
   ],
   "references": {
     "papers": [],
@@ -90,7 +91,7 @@
     {
       "path": "Proofs/PtolemysTheoremOQ01.lean",
       "filename": "PtolemysTheoremOQ01.lean",
-      "lineCount": 471,
+      "lineCount": 483,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 2,
@@ -119,6 +120,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/PtolemysTheoremOQ01OQ02.lean",
+      "filename": "PtolemysTheoremOQ01OQ02.lean",
+      "lineCount": 271,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01OQ02.lean"
     }
   ]
 }
