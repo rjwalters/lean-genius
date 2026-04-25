@@ -295,9 +295,13 @@ theorem ssytSchurFin_one_row (n m : ℕ) :
 -/
 
 /-- **Jacobi-Trudi Identity** (proved for k = 0,1; open for k ≥ 2):
-    The determinant definition equals the SSYT generating function.
+    The determinant definition equals the SSYT generating function, for partition shapes.
 
     `JacobiTrudi.schurPolynomial k sh = ssytSchurFin n k sh`
+
+    **Partition condition**: `hpart : Antitone sh` (i.e. sh(0) ≥ sh(1) ≥ … ≥ sh(k-1))
+    is required. For non-partition shapes the equality fails: e.g. shape (1,2) gives
+    `schurPolynomial = 0` (two equal rows in Jacobi-Trudi matrix) but `ssytSchurFin ≠ 0`.
 
     - k = 0: **proved** — det of 0×0 matrix = 1 = empty SSYT sum
       (`schurPolynomial_empty` + `ssytSchurFin_empty`)
@@ -307,7 +311,7 @@ theorem ssytSchurFin_one_row (n m : ℕ) :
         (1) RSK bijection: SSYTFin n k sh ↔ NI lattice path tuples
         (2) LGV: det[e(Aᵢ,Bⱼ)] = weighted NI-path-count (parent proof available)
         (3) Weight match: SSYT weight = product of path weights = hsymm entries -/
-theorem jacobi_trudi_ssyt_eq (n k : ℕ) (sh : Fin k → ℕ) :
+theorem jacobi_trudi_ssyt_eq (n k : ℕ) (sh : Fin k → ℕ) (hpart : Antitone sh) :
     JacobiTrudi.schurPolynomial (σ := Fin n) (R := R) k sh =
     ssytSchurFin (R := R) n k sh := by
   cases k with

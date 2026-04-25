@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: jacobi_trudi_ssyt_eq k=0 and k=1 proved explicitly. 1 sorry remains: k+2 rows case (RSK bijection needed)",
+    "progressSummary": "PROGRESS: jacobi_trudi_ssyt_eq k=0 and k=1 proved. Theorem statement corrected with Antitone sh partition condition. 1 sorry remains: k+2 rows case (RSK or algebraic LGV needed)",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -51,7 +51,8 @@
       "SSYTFin.weight: def (monomial product over all cells of SSYT)",
       "ssytSchurFin_one_row: proved (k=1 case: SSYTFin n 1 (fun _ => m) ≃ Sym (Fin n) m via sorted reps)",
       "jacobi_trudi_ssyt_eq: k=0 case proved (schurPolynomial_empty + ssytSchurFin_empty)",
-      "jacobi_trudi_ssyt_eq: k=1 case proved (schurPolynomial_one_row + ssytSchurFin_one_row via fin_cases)"
+      "jacobi_trudi_ssyt_eq: k=1 case proved (schurPolynomial_one_row + ssytSchurFin_one_row via fin_cases)",
+      "jacobi_trudi_ssyt_eq: added (hpart : Antitone sh) partition condition to make theorem statement mathematically correct"
     ],
     "insights": [
       "Mathlib has hsymm σ R n (complete homogeneous symmetric polynomials) in RingTheory.MvPolynomial.Symmetric.Defs — directly usable for Jacobi-Trudi matrix entries",
@@ -75,7 +76,11 @@
       "Weight match: Fintype.prod_sigma + Fin.prod_univ_one reduces sigma product; map_coe+prod_coe+map_ofFn+prod_ofFn closes the goal",
       "jacobi_trudi_ssyt_eq k=0 case proves via hsh : sh = Fin.elim0 := funext (fun i => i.elim0), then rw schurPolynomial_empty + ssytSchurFin_empty",
       "jacobi_trudi_ssyt_eq k=1 case proves via hsh via fin_cases i, then rw schurPolynomial_one_row + ssytSchurFin_one_row",
-      "Structured k-case split: cases k with | zero => | succ k => cases k with | zero => | succ k => is cleaner than induction for this theorem"
+      "Structured k-case split: cases k with | zero => | succ k => cases k with | zero => | succ k => is cleaner than induction for this theorem",
+      "Algebraic LGV (polynomial-weighted generalization of lgv_lemma_rxr) is the cleanest proof path: needs ~150 lines",
+      "Integer lgv_lemma_rxr CANNOT be lifted to polynomial weights — algebraic LGV is a separate theorem",
+      "jeu de taquin bijection for k=2: insert Q[c] into P at first-violation column c, remove from Q; ~100 lines standalone",
+      "Bug fix: jacobi_trudi_ssyt_eq requires partition condition (Antitone sh). For non-partition shape (1,2): schurPolynomial=det([[h1,h2],[h1,h2]])=0 but ssytSchurFin≠0. Added (hpart : Antitone sh) hypothesis to theorem statement."
     ],
     "mathlibGaps": [
       "No Mathlib SchurPolynomial definition — we provide one via Jacobi-Trudi formula",
@@ -83,9 +88,11 @@
       "RSK correspondence not formalized in Mathlib — needed for jacobiTrudi_lgv_proof"
     ],
     "nextSteps": [
-      "Prove jacobi_trudi_ssyt_eq (general k≥2 case): option A = RSK bijection (~300 lines), option B = algebraic transfer matrix proof",
-      "Once Docker available, run docker-build.sh to verify ssytSchurFin_one_row compiles",
-      "Consider Aristotle submission for jacobi_trudi_ssyt_eq after providing more structure"
+      "PRIORITY: Build algebraic_lgv in BallotProblemOQ03AlgebraicLGV.lean (~150 lines): det(weight_matrix) = sum NI_tuples prod path_weights over CommRing R",
+      "Then build weighted_path_count_eq_hsymm: paths from height a to b = hsymm (Fin n) R (b-a)",
+      "Then RSK bijection: SSYTFin n k sh ≃ NI-path-tuples with weight preservation (~300 lines)",
+      "Alternative: prove k=2 via jeu de taquin (~100 lines) as quick win before general case",
+      "Note: hpart hypothesis is passed through from k+2 case to algebraic LGV sub-lemmas"
     ],
     "markdown": "# Knowledge Base: LGV Lemma → Jacobi-Trudi Identity\n\n**Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01\n**Last Updated**: 2026-04-23\n**Knowledge Items**: 0\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nNewly selected. Jacobi-Trudi identity expresses Schur polynomials as determinants of\ncomplete homogeneous symmetric polynomials. The LGV lemma (in parent gallery proof)\nprovides the combinatorial proof route via non-intersecting lattice paths.\n\n---\n\n## Insights\n\n_None yet — begin with OBSERVE phase: check Mathlib for SSYT formalization._\n\n---\n\n## Dead Ends\n\n_None identified yet._\n"
   },
@@ -278,22 +285,22 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
       "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 273,
+      "lineCount": 346,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 2,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "filename": "BallotProblemOQ03OQ01OQ02.lean",
-      "lineCount": 5057,
+      "lineCount": 5418,
       "theoremCount": 64,
       "axiomCount": 0,
       "defCount": 10,
-      "sorryCount": 12,
+      "sorryCount": 10,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
     },
