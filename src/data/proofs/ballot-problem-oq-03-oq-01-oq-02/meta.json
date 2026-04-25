@@ -2,7 +2,7 @@
   "id": "ballot-problem-oq-03-oq-01-oq-02",
   "title": "Hook-Length Formula for Standard Young Tableaux via LGV",
   "slug": "ballot-problem-oq-03-oq-01-oq-02",
-  "description": "Formalizes the hook-length formula f^λ = n!/∏h(u) for Standard Young Tableaux. Fully proves the formula for single-row (1×n), single-column (n×1), hook-shape ((m+1,1)), 2-row rectangular (m×m), general 2-row [a,b], and all generalized hook shapes [a,1^b]. General formula has 4 sorries: 3 via LGV approach (RSK bijection, det factorization, main theorem) + 1 for corner induction (hook_walk_identity ≥3-row non-gHookYD case). hook_walk_identity_gHookYD proved (session 19); scope reduced to non-hook ≥3-row shapes.",
+  "description": "Formalizes the hook-length formula f^λ = n!/∏h(u) for Standard Young Tableaux. Fully proves the formula for single-row (1×n), single-column (n×1), hook-shape ((m+1,1)), 2-row rectangular (m×m), general 2-row [a,b], all generalized hook shapes [a,1^b], and all ≤2-column shapes (via transpose duality). General formula has 4 sorries: 3 via LGV approach + 1 for hook_walk_identity (≥3-row AND ≥3-col AND non-gHookYD case only).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-21",
