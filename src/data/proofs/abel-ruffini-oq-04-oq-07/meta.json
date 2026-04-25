@@ -170,6 +170,21 @@
       "targetId": "abel-ruffini-oq-04-oq-02",
       "relationship": "related",
       "description": "$S_2, S_3, S_4$ are solvable — the positive side of the threshold that explains why degrees 1–4 have radical formulas while degree 5 requires the Bring radical. The biconditional '$S_n$ is solvable iff $n \\leq 4$' from this entry, combined with the Galois bridge from `abel-ruffini`, precisely characterizes for which degrees the Bring-Jerrard approach is forced: exactly degree $\\geq 5$."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Alternating groups: $A_n$ solvable iff $n \\leq 4$ — the alternating-group version of the threshold. The axiom `bringRadical_not_in_radicals` in this file rests on the chain: the generic Bring-Jerrard quintic $y^5 + y - t$ has Galois group $S_5$ over $\\mathbb{Q}(t)$; $S_5$ is not solvable because $[S_5, S_5] = A_5$ and $A_5$ is simple and non-abelian (proved in `abel-ruffini-oq-04-oq-02-oq-02` as the threshold fact); by Galois's criterion, the roots cannot be expressed in radicals. The alternating group classification made precise that the Bring radical is the only viable 'next vocabulary' beyond degree-4 radical formulas."
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "foundational",
+      "description": "The Fundamental Theorem of Algebra guarantees that the depressed quintic and Bring-Jerrard normal form have roots in $\\mathbb{C}$, providing the complex-number setting for the polynomial definitions in this file (`quinticPoly`, `depressedQuintic`, `bringJerrardPoly` are defined over $\\mathbb{C}$). The IVT existence proof for BR in this entry works over $\\mathbb{R}$; the FTA is why the Bring-Jerrard reduction can be stated over $\\mathbb{C}$ in the axiom `bringJerrard_reduction`."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-04",
+      "relationship": "related",
+      "description": "Formalizes the Jordan-Hölder uniqueness theorem for groups — relevant to the algebraic significance section where the composition series of $S_5$ (uniquely $S_5 \\supset A_5 \\supset \\{e\\}$ with factors $A_5$ and $\\mathbb{Z}/2\\mathbb{Z}$) is invoked to explain why the Bring radical cannot be radical-expressed. Jordan-Hölder guarantees that this composition series is the unique one for $S_5$, making the non-solvability obstruction absolute and canonical."
     }
   ],
   "leanFile": {
