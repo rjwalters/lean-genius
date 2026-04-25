@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ann-mathlib-todo-context",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "context",
+    "title": "Filling a Mathlib TODO: JordanHolderLattice for Groups",
+    "content": "This file fills an explicit gap in Mathlib: the concrete instance `JordanHolderLattice (Subgroup G)`. Mathlib's `Mathlib.Order.JordanHolder` defines the abstract `JordanHolderLattice` typeclass — a set of three lattice axioms sufficient to derive the Jordan-Hölder theorem — but deliberately leaves the group-theoretic instantiation as a TODO with the note 'it is not entirely clear how this should be done.' The difficulty lies in correctly handling quotient normal subgroup typeclasses in Lean 4, where the `Normal` instance for `G ⧸ H` depends inferentially on `H.Normal`, causing type-correct rewrites to fail. The file achieves: `sup_eq_of_isMaximal` and `second_iso` fully proved; one sorry remains in `isMaximal_inf_left_of_isMaximal_sup` (the maximality transfer step).",
+    "mathContext": "The `JordanHolderLattice` typeclass requires three axioms for an ordered type $\\alpha$: (1) $\\text{IsMaximal}(x, z) \\land \\text{IsMaximal}(y, z) \\land x \\neq y \\implies x \\sqcup y = z$; (2) $\\text{IsMaximal}(x, x \\sqcup y) \\land \\text{IsMaximal}(y, x \\sqcup y) \\implies \\text{IsMaximal}(x \\sqcap y, x)$; (3) $\\text{Iso}(x, x \\sqcup y, x \\sqcap y, y)$ (the second isomorphism). These axioms abstract the essential lattice properties needed to establish that composition factor multisets are unique.",
+    "significance": "key",
+    "relatedConcepts": ["JordanHolderLattice", "composition series", "Jordan-Hölder theorem", "Mathlib formalization"],
+    "prerequisites": ["group theory", "lattice theory", "Lean 4 typeclass system"]
+  },
+  {
+    "id": "ann-ismaxnorm-def",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 43, "endLine": 53 },
+    "type": "definition",
+    "title": "IsMaxNorm: Maximal Normal Subgroup Predicate",
+    "content": "`IsMaxNorm H K` captures the group-theoretic notion of H being maximal normal in K without requiring quotient types, sidestepping Lean's typeclass inference issues for `G ⧸ H`. It is logically equivalent to `IsSimpleGroup (K ⧸ H.subgroupOf K)` by the correspondence theorem — the composition factor is simple — but avoids quotient typeclass complications. The predicate has three components: strict inclusion `H < K`, relative normality `(H.subgroupOf K).Normal` (meaning every K-conjugate of H is again in H), and a maximality condition saying any relatively-normal-in-K subgroup between H and K must equal H or K.",
+    "mathContext": "$\\text{IsMaxNorm}(H, K)$ iff $H \\lneq K$, $H \\trianglelefteq K$ (relatively), and $\\forall N.\\, H \\leq N \\leq K \\land N \\trianglelefteq K \\implies N = H \\lor N = K$. This is equivalent to $K/H$ being simple (by the correspondence theorem), i.e., $K/H$ has no non-trivial normal subgroups. The reformulation avoids the Lean issue that `G ⧸ H` requires `H.Normal` as an inferred typeclass instance.",
+    "significance": "key",
+    "relatedConcepts": ["maximal normal subgroup", "simple group", "composition factor", "correspondence theorem", "subgroupOf"],
+    "prerequisites": ["normal subgroups", "quotient groups", "simple groups"]
+  },
+  {
+    "id": "ann-groupquotiso-def",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 54, "endLine": 58 },
+    "type": "definition",
+    "title": "GroupQuotIso: Carrying Normality Evidence for Quotient Isomorphisms",
+    "content": "`GroupQuotIso` encodes the equivalence relation on composition factors required by `JordanHolderLattice`. The key design choice is making the Normal witnesses explicit in the existential rather than relying on typeclass synthesis: the quotient type `G ⧸ H` requires `H.Normal` as a typeclass instance, and Lean may fail to synthesize this automatically when the subgroup expression is complex. By carrying `hn1` and `hn2` explicitly and introducing them with `haveI`, the definition ensures that quotient types are well-formed throughout the isomorphism construction.",
+    "mathContext": "$\\text{GroupQuotIso}((H_1, K_1), (H_2, K_2))$ asserts $\\exists$ normality witnesses $\\text{hn}_1, \\text{hn}_2$ such that $K_1 / (H_1 \\cap K_1) \\cong K_2 / (H_2 \\cap K_2)$ as groups. This formalizes the claim that composition factors at two steps in (possibly different) composition series are isomorphic, which is the core content of Jordan-Hölder uniqueness.",
+    "significance": "supporting",
+    "relatedConcepts": ["quotient group", "MulEquiv", "typeclass inference", "Normal instance", "composition factors"],
+    "prerequisites": ["group isomorphisms", "quotient groups", "Lean 4 typeclass system"]
+  },
+  {
+    "id": "ann-le-normalizer-lemma",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 64, "endLine": 67 },
+    "type": "technique",
+    "title": "Normalizer Lemma: Normal-in-Sup Implies Normalizer Containment",
+    "content": "This one-line lemma `le_normalizer_of_normal_in_sup` is used repeatedly: if H is relatively normal in H⊔K, then K lies inside the normalizer N_G(H). Intuitively, normality in the join means K-conjugates of H stay in H, which is exactly the definition of K ≤ N_G(H). In Lean 4, `normal_subgroupOf_iff_le_normalizer` connects relative normality of `H.subgroupOf (H ⊔ K)` to the normalizer inequality `H ⊔ K ≤ H.normalizer`, and then transitivity with `le_sup_right` extracts the K part.",
+    "mathContext": "If $H \\trianglelefteq H \\vee K$ (relatively), then $K \\leq N_G(H)$. Proof: `normal_subgroupOf_iff_le_normalizer` gives $H \\vee K \\leq N_G(H)$, and $K \\leq H \\vee K$ (by `le_sup_right`) gives the result by transitivity. This lemma is the key ingredient connecting the three JordanHolderLattice axioms.",
+    "significance": "supporting",
+    "relatedConcepts": ["normalizer", "relative normality", "subgroupOf", "le_sup_right", "normal_subgroupOf_iff_le_normalizer"],
+    "prerequisites": ["normalizer subgroup", "normal subgroups", "lattice operations on subgroups"]
+  },
+  {
+    "id": "ann-sup-eq-of-ismaximal",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 80, "endLine": 103 },
+    "type": "concept",
+    "title": "sup_eq_of_isMaximal: Both Maximal Normal Implies Spanning Sup",
+    "content": "This is the first and most conceptually transparent of the three Jordan-Hölder lattice axioms. If x and y are both maximal normal in z and x ≠ y, then x ⊔ y = z. The proof proceeds by showing x⊔y is relatively normal in z (using `subgroupOf_sup`, which distributes subgroupOf over sup, and then `infer_instance` for the product of normals). Then x's maximality condition says x⊔y = x or x⊔y = z. The case x⊔y = x means y ≤ x, and then y's maximality says y = x (contradicting x ≠ y) or y = z (contradicting y < z). So x⊔y = z.",
+    "mathContext": "Given $x, y \\trianglelefteq z$ both maximal and $x \\neq y$: since $x \\leq x \\vee y \\leq z$ and $x \\vee y \\trianglelefteq z$ (product of normals is normal), maximality of $x$ in $z$ gives $x \\vee y = x$ or $x \\vee y = z$. If $x \\vee y = x$ then $y \\leq x$, so maximality of $y$ gives $y = x$ (contradicts $x \\neq y$) or $x = z$ (contradicts $x < z$). Hence $x \\vee y = z$. Key Mathlib lemma: `subgroupOf_sup : (A \\sqcup B).\\text{subgroupOf}\\, C = A.\\text{subgroupOf}\\, C \\sqcup B.\\text{subgroupOf}\\, C`.",
+    "significance": "key",
+    "relatedConcepts": ["subgroupOf_sup", "maximal normal subgroup", "product of normal subgroups", "lattice of subgroups"],
+    "prerequisites": ["lattice theory", "normal subgroups", "subgroup lattice operations"]
+  },
+  {
+    "id": "ann-diamond-argument",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 105, "endLine": 153 },
+    "type": "insight",
+    "title": "Diamond Argument: Transferring Maximality Through Intersection (Zassenhaus)",
+    "content": "This is the hardest of the three axioms, and the source of the one remaining sorry. Given x and y both maximal normal in x⊔y, the goal is to show x⊓y is maximal normal in x. The proof establishes: (1) x⊓y < x (if x⊓y = x then x ≤ y, so x⊔y = y, contradicting y < x⊔y); (2) normality of (x⊓y).subgroupOf x (via the normalizer lemma and `inf_subgroupOf_right`). The hard third part — maximality — lifts a candidate N between x⊓y and x to N⊔y between y and x⊔y. Maximality of y gives N⊔y = y (so N ≤ y, hence N = x⊓y) or N⊔y = x⊔y (requiring simplicity transfer through second_iso, left as sorry).",
+    "mathContext": "The Zassenhaus butterfly lemma: if $x, y \\trianglelefteq x \\vee y$ both maximal, then $x \\wedge y \\trianglelefteq x$ is maximal, with $(x \\vee y)/y \\cong x/(x \\wedge y)$. The 'diamond' refers to the lattice: $x \\wedge y < x, y < x \\vee y$ forming a rhombus with isomorphic opposite quotients. The formal argument lifts $N$ (with $x \\wedge y \\leq N \\leq x$) to $N \\vee y$ in the $(y, x \\vee y)$ interval, then applies maximality of $y$ to bifurcate: $N = x \\wedge y$ or the hard case requiring simplicity transfer.",
+    "significance": "key",
+    "relatedConcepts": ["Zassenhaus butterfly lemma", "diamond lemma", "composition series", "second isomorphism theorem", "simplicity transfer", "correspondence theorem"],
+    "prerequisites": ["lattice of subgroups", "simple groups", "second isomorphism theorem"]
+  },
+  {
+    "id": "ann-iso-symm-trans",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 155, "endLine": 167 },
+    "type": "technical",
+    "title": "GroupQuotIso as an Equivalence Relation: Symmetry and Transitivity",
+    "content": "`iso_symm` and `iso_trans` establish that `GroupQuotIso` is symmetric and transitive, as required by `JordanHolderLattice`. Both proofs pattern-match on the existential to extract Normal witnesses and equivalences, then use `MulEquiv.symm` (for symmetry) and `MulEquiv.trans` (for transitivity). The use of `Nonempty.map` for symmetry and explicit `rcases` for transitivity handles the propositional wrapping. These proofs are clean because `GroupQuotIso` was designed to carry the Normal witnesses explicitly.",
+    "mathContext": "Symmetry: $K_1/H_1 \\cong K_2/H_2 \\implies K_2/H_2 \\cong K_1/H_1$ via `MulEquiv.symm`. Transitivity: $K_1/H_1 \\cong K_2/H_2$ and $K_2/H_2 \\cong K_3/H_3$ implies $K_1/H_1 \\cong K_3/H_3$ via `MulEquiv.trans`. Together with reflexivity (from the Jordan-Hölder machinery), these make `GroupQuotIso` an equivalence relation on composition factor pairs — the abstract sense in which factors are 'the same' across composition series.",
+    "significance": "technical",
+    "relatedConcepts": ["MulEquiv.symm", "MulEquiv.trans", "equivalence relation", "Nonempty.map", "composition factors"],
+    "prerequisites": ["group isomorphisms", "Lean 4 pattern matching", "existential types"]
+  },
+  {
+    "id": "ann-second-iso-proof",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 169, "endLine": 213 },
+    "type": "technique",
+    "title": "Second Isomorphism via First Iso: Bypassing the sup_comm Rewrite Failure",
+    "content": "The third and most technically subtle axiom: `second_iso` must prove `GroupQuotIso (x, x⊔y) (x⊓y, y)`, i.e., `(x⊔y)/x ≃* y/(x⊓y)`. The natural approach — apply `quotientInfEquivProdNormalizerQuotient` then rewrite `y⊔x = x⊔y` — fails in Lean 4: `rw [sup_comm y x]` gives 'motive not type correct' because the Normal typeclass instance for the quotient type depends on the term being rewritten. The fix constructs the isomorphism directly: define φ : y →* (x⊔y) ⧸ x.subgroupOf(x⊔y) as inclusion y ↪ x⊔y composed with the quotient map, prove ker φ = (x⊓y).subgroupOf y and surjectivity, then apply `quotientKerEquivOfSurjective`.",
+    "mathContext": "Noether's second isomorphism: if $x \\trianglelefteq x \\vee y$, then $y/(x \\wedge y) \\cong (x \\vee y)/x$. Direct proof: construct $\\varphi: y \\to (x \\vee y)/x$ by $b \\mapsto bx$, with $\\ker \\varphi = x \\wedge y$ (elements of $y$ lying in $x$). Surjectivity: every coset $abx$ ($a \\in x, b \\in y$) equals $bx$ since $a$ cancels in the quotient. The first isomorphism theorem gives $y/\\ker\\varphi \\cong (x \\vee y)/x$. Taking `.symm` gives the required direction.",
+    "significance": "key",
+    "relatedConcepts": ["second isomorphism theorem", "first isomorphism theorem", "quotientKerEquivOfSurjective", "sup_comm rewrite failure", "Normal typeclass", "motive not type correct"],
+    "prerequisites": ["isomorphism theorems", "quotient groups", "kernel of homomorphism", "Lean 4 typeclass elaboration"]
+  },
+  {
+    "id": "ann-jordan-holder-main",
+    "proofId": "abel-ruffini-galois-extensions-oq-04",
+    "range": { "startLine": 219, "endLine": 241 },
+    "type": "insight",
+    "title": "Jordan-Hölder Theorem: The Power of Abstract Typeclass Instantiation",
+    "content": "The payoff: once `JordanHolderLattice (Subgroup G)` is established, the Jordan-Hölder theorem for groups is a one-liner delegating to Mathlib's abstract `CompositionSeries.jordan_holder`. This demonstrates the power of typeclass abstraction in Lean 4 — a single general proof works for groups, modules, and any structure satisfying the lattice axioms, simply by providing the appropriate instance. `jordan_holder_subgroups` asserts that any two composition series of G with the same endpoints are equivalent (same length, same composition factors up to permutation and isomorphism). `jordan_holder_finite_groups` adds the `[Finite G]` hypothesis for exposition.",
+    "mathContext": "**Jordan-Hölder Theorem**: Let $G$ be a group with two composition series with the same endpoints. Then the series have the same length $n$ and there exists a permutation $\\sigma$ such that $H_{i+1}/H_i \\cong K_{\\sigma(i)+1}/K_{\\sigma(i)}$ for all $i$. In Lean: `CompositionSeries.Equivalent s₁ s₂` asserts a bijection between steps with pairwise `Iso`-related factors. Mathlib's abstract proof uses Wielandt's (1939) elegant induction, which is cleaner than the original arguments of Jordan (1870) and Hölder (1889) and works in any JordanHolderLattice.",
+    "significance": "key",
+    "relatedConcepts": ["CompositionSeries", "CompositionSeries.Equivalent", "composition factors", "Wielandt proof", "unique factorization", "simple groups"],
+    "prerequisites": ["composition series", "Jordan-Hölder theorem", "simple groups", "finite groups"]
+  }
+]
