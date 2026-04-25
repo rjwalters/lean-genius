@@ -897,7 +897,7 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
       -- θ (invol k) = π/2 - θ k  [since (2(n-1-k)+1)π/(4n) = π/2 - (2k+1)π/(4n)]
       have hkle : k.val ≤ n - 1 := Nat.lt_succ_iff.mp k.isLt
       have hcast : ((n - 1 - k.val : ℕ) : ℝ) = (n : ℝ) - 1 - (k.val : ℝ) := by
-        rw [Nat.cast_sub hkle, Nat.cast_sub hn]
+        rw [Nat.cast_sub hkle, Nat.cast_sub hn]; norm_num
       have hθinvol : θ (invol k) = Real.pi / 2 - θ k := by
         -- (invol k).val = n-1-k.val definitionally; extract it as an explicit fact
         have hinvol_val : (invol k).val = n - 1 - k.val := rfl
@@ -917,25 +917,32 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
     · have hlt : 2 * k.val + 1 < 2 * n := by omega
       have hlt' : (2 * k.val + 1 : ℝ) < 2 * n := by exact_mod_cast hlt
       have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
-      rw [div_lt_iff (by positivity)]
+      rw [div_lt_iff₀ (by positivity)]
       nlinarith [Real.pi_pos]
   have hsin_pos : ∀ k : Fin n, 0 < Real.sin (θ k) := by
     intro k
     apply Real.sin_pos_of_pos_of_lt_pi
     · positivity
-    · have ⟨_, hφ_lt⟩ := chebyshevAngle_pos_lt_pi n hn k
-      simp only [θ]; linarith [Real.pi_pos]
+    · have hlt : 2 * k.val + 1 < 2 * n := by omega
+      have hlt' : (2 * k.val + 1 : ℝ) < 2 * n := by exact_mod_cast hlt
+      have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+      simp only [θ]
+      rw [div_lt_iff₀ (by positivity : (0 : ℝ) < 4 * n)]
+      nlinarith [Real.pi_pos]
   have hcos_pos : ∀ k : Fin n, 0 < Real.cos (θ k) := by
     intro k
     apply Real.cos_pos_of_mem_Ioo
     simp only [θ]
+    have hlt : 2 * k.val + 1 < 2 * n := by omega
+    have hlt' : (2 * k.val + 1 : ℝ) < 2 * n := by exact_mod_cast hlt
+    have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+    have hpi_pos := Real.pi_pos
     constructor
-    · linarith [Real.pi_pos]
-    · have hlt : 2 * k.val + 1 < 2 * n := by omega
-      have hlt' : (2 * k.val + 1 : ℝ) < 2 * n := by exact_mod_cast hlt
-      have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
-      rw [div_lt_div_iff (by positivity) (by positivity)]
-      nlinarith [Real.pi_pos]
+    · have hpos : (0 : ℝ) < (2 * k.val + 1 : ℝ) * Real.pi / (4 * n) := by positivity
+      linarith
+    · rw [div_lt_iff₀ (by positivity : (0 : ℝ) < 4 * n)]
+      have hmul := mul_lt_mul_of_pos_right hlt' hpi_pos
+      linarith [show (2 : ℝ) * n * Real.pi = Real.pi / 2 * (4 * n) by ring]
   -- sin(2θₖ) = (2k+1)π/(2n): the double-angle connection
   have hsin2_eq : ∀ k : Fin n,
       Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) =
@@ -962,7 +969,8 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
         intro k
         have hs := (hsin_pos k).ne'
         have hc := (hcos_pos k).ne'
-        rw [hsin2_eq k]; field_simp [hs, hc]; ring
+        rw [hsin2_eq k]; field_simp [hs, hc]
+        linarith [Real.sin_sq_add_cos_sq (θ k)]
       -- 2 * ∑ tan = ∑ tan + ∑ cot (via hS_cot) = ∑ (tan + cot)
       have heq1 : 2 * ∑ k : Fin n, Real.sin (θ k) / Real.cos (θ k) =
                   ∑ k : Fin n, Real.sin (θ k) / Real.cos (θ k) +
@@ -1070,7 +1078,11 @@ private lemma cos_pi_mul_odd_ne_one (p q : ℕ) (hp : Odd p) (hq_pos : 0 < q) :
   -- Odd p gives p = 2*m + 1, contradicting 2 | p
   obtain ⟨m, hm⟩ := hp
   have hmcast : (↑p : ℤ) = 2 * (↑m : ℤ) + 1 := by exact_mod_cast hm
-  omega  -- 2*n*q = 2*m+1 is impossible (different parities mod 2)
+  -- 2*n*q = 2*m+1 is impossible: LHS is even, RHS is odd
+  have hdvd : (2 : ℤ) ∣ (↑p : ℤ) := ⟨n * ↑q, by linarith⟩
+  rw [hmcast] at hdvd
+  obtain ⟨j, hj⟩ := hdvd
+  omega
 
 /-- **[SORRY] Harmonic sum lower bound for Chebyshev trig sum.**
 
