@@ -5407,6 +5407,373 @@ private lemma hook_walk_identity_threeRow (μ : YoungDiagram)
   -- Sum = a+b+c (polynomial identity, verifiable by ring).
   sorry
 
+-- ============================================================
+-- PART XVI: Hook Walk Identity for [a, 2, 1] Shapes (a ≥ 3)
+-- ============================================================
+/-
+  For a ≥ 3, the [a, 2, 1] Young diagram has:
+  - n = a + 3 cells
+  - Row 0: length a, Row 1: length 2, Row 2: length 1
+  - 3 corners: (0, a-1), (1, 1), (2, 0)
+
+  hook_walk_identity is proved directly via hookProd_ratio_formula:
+    R(0,a-1) = (a+2)·a·(a-2)/[(a+1)·(a-1)]
+    R(1,1)   = 3·a / [2·(a-1)]
+    R(2,0)   = 3·(a+2) / [2·(a+1)]
+    Sum      = a+3  (verified by ring)
+-/
+
+private def a21YD (a : ℕ) (ha : 3 ≤ a) : YoungDiagram where
+  cells := (Finset.range a).image (Prod.mk 0) ∪
+           (Finset.range 2).image (Prod.mk 1) ∪
+           ({(2, 0)} : Finset (ℕ × ℕ))
+  isLowerSet := by
+    intro ⟨x, y⟩ ⟨u, v⟩ huv hmem
+    simp only [Prod.mk_le_mk] at huv
+    obtain ⟨hxu, hyv⟩ := huv
+    simp only [Finset.mem_coe, Finset.mem_union, Finset.mem_image, Finset.mem_range,
+               Finset.mem_singleton, Prod.mk.injEq] at hmem ⊢
+    rcases hmem with ((⟨k, hk, rfl, rfl⟩ | ⟨k, hk, rfl, rfl⟩) | ⟨rfl, rfl⟩)
+    · -- (u,v) = (0,k), k < a; x ≤ 0, y ≤ k
+      left; left; exact ⟨y, by omega, (Nat.le_zero.mp hxu).symm, by omega⟩
+    · -- (u,v) = (1,k), k < 2; x ≤ 1, y ≤ k < 2
+      rcases Nat.eq_or_gt_of_le (Nat.zero_le x) with rfl | hxp
+      · left; left; exact ⟨y, by omega, rfl, rfl⟩
+      · left; right; exact ⟨y, by omega, by omega, rfl⟩
+    · -- (u,v) = (2,0); y = 0
+      have hy0 : y = 0 := Nat.le_zero.mp hyv
+      subst hy0
+      interval_cases x
+      · left; left; exact ⟨0, by omega, rfl, rfl⟩
+      · left; right; exact ⟨0, by omega, rfl, rfl⟩
+      · right; rfl
+
+private lemma mem_a21YD {a : ℕ} {ha : 3 ≤ a} {i j : ℕ} :
+    (i, j) ∈ a21YD a ha ↔ (i = 0 ∧ j < a) ∨ (i = 1 ∧ j < 2) ∨ (i = 2 ∧ j = 0) := by
+  simp only [a21YD, YoungDiagram.mem_mk, Finset.mem_union, Finset.mem_image,
+             Finset.mem_range, Finset.mem_singleton, Prod.mk.injEq]
+  constructor
+  · rintro ((⟨k, hk, rfl, rfl⟩ | ⟨k, hk, rfl, rfl⟩) | ⟨rfl, rfl⟩)
+    · left; exact ⟨rfl, hk⟩
+    · right; left; exact ⟨rfl, hk⟩
+    · right; right; exact ⟨rfl, rfl⟩
+  · rintro (⟨rfl, hj⟩ | ⟨rfl, hj⟩ | ⟨rfl, rfl⟩)
+    · left; left; exact ⟨j, hj, rfl, rfl⟩
+    · left; right; exact ⟨j, hj, rfl, rfl⟩
+    · right; rfl
+
+private lemma a21YD_card (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).card = a + 3 := by
+  unfold YoungDiagram.card a21YD
+  rw [Finset.card_union_of_disjoint, Finset.card_union_of_disjoint]
+  · rw [Finset.card_image_of_injective _ (fun p q h => (Prod.mk.inj h).2),
+        Finset.card_image_of_injective _ (fun p q h => (Prod.mk.inj h).2),
+        Finset.card_singleton, Finset.card_range, Finset.card_range]; omega
+  · apply Finset.disjoint_left.mpr
+    intro ⟨x, y⟩ hx hy
+    simp only [Finset.mem_image, Finset.mem_range, Prod.mk.injEq] at hx hy
+    obtain ⟨_, _, rfl, rfl⟩ := hx; simp at hy
+  · apply Finset.disjoint_left.mpr
+    intro ⟨x, y⟩ hx hy
+    simp only [Finset.mem_union, Finset.mem_image, Finset.mem_range,
+               Finset.mem_singleton, Prod.mk.injEq] at hx hy
+    rcases hx with (⟨k, _, rfl, rfl⟩ | ⟨k, _, rfl, rfl⟩)
+    · obtain ⟨rfl, rfl⟩ := hy; omega
+    · obtain ⟨rfl, rfl⟩ := hy; omega
+
+-- Row lengths
+private lemma rowLen_a21YD_zero (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).rowLen 0 = a := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]; simp [mem_a21YD]
+  · cases a with
+    | zero => omega
+    | succ a =>
+      have := YoungDiagram.mem_iff_lt_rowLen.mp
+        (mem_a21YD.mpr (Or.inl ⟨rfl, Nat.lt_succ_self a⟩))
+      omega
+
+private lemma rowLen_a21YD_one (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).rowLen 1 = 2 := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]; simp [mem_a21YD]; omega
+  · have := YoungDiagram.mem_iff_lt_rowLen.mp
+      (mem_a21YD.mpr (Or.inr (Or.inl ⟨rfl, by omega⟩)))
+    omega
+
+private lemma rowLen_a21YD_two (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).rowLen 2 = 1 := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]; simp [mem_a21YD]; omega
+  · have := YoungDiagram.mem_iff_lt_rowLen.mp
+      (mem_a21YD.mpr (Or.inr (Or.inr ⟨rfl, rfl⟩)))
+    omega
+
+private lemma rowLen_a21YD_ge_three (a : ℕ) (ha : 3 ≤ a) {i : ℕ} (hi : 3 ≤ i) :
+    (a21YD a ha).rowLen i = 0 := by
+  rw [← not_lt, ← YoungDiagram.mem_iff_lt_rowLen]
+  simp [mem_a21YD]; omega
+
+-- Column lengths
+private lemma colLen_a21YD_zero (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).colLen 0 = 3 := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]; simp [mem_a21YD]; omega
+  · have := YoungDiagram.mem_iff_lt_colLen.mp
+      (mem_a21YD.mpr (Or.inr (Or.inr ⟨rfl, rfl⟩)))
+    omega
+
+private lemma colLen_a21YD_one (a : ℕ) (ha : 3 ≤ a) : (a21YD a ha).colLen 1 = 2 := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]; simp [mem_a21YD]; omega
+  · have := YoungDiagram.mem_iff_lt_colLen.mp
+      (mem_a21YD.mpr (Or.inr (Or.inl ⟨rfl, by omega⟩)))
+    omega
+
+private lemma colLen_a21YD_mid {a : ℕ} (ha : 3 ≤ a) {j : ℕ} (hj2 : 2 ≤ j) (hja : j < a) :
+    (a21YD a ha).colLen j = 1 := by
+  apply Nat.le_antisymm
+  · rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]; simp [mem_a21YD]; omega
+  · have := YoungDiagram.mem_iff_lt_colLen.mp
+      (mem_a21YD.mpr (Or.inl ⟨rfl, hja⟩))
+    omega
+
+private lemma colLen_a21YD_ge_a {a : ℕ} (ha : 3 ≤ a) {j : ℕ} (hja : a ≤ j) :
+    (a21YD a ha).colLen j = 0 := by
+  rw [← not_lt, ← YoungDiagram.mem_iff_lt_colLen]
+  simp [mem_a21YD]; omega
+
+-- Hook lengths
+private lemma hookLength_a21YD_00 (a : ℕ) (ha : 3 ≤ a) :
+    hookLength (a21YD a ha) 0 0 = a + 2 := by
+  have hcell : (0, 0) ∈ a21YD a ha := mem_a21YD.mpr (Or.inl ⟨rfl, by omega⟩)
+  have heq := hookLength_add_eq (a21YD a ha) hcell
+  rw [rowLen_a21YD_zero, colLen_a21YD_zero] at heq; omega
+
+private lemma hookLength_a21YD_01 (a : ℕ) (ha : 3 ≤ a) :
+    hookLength (a21YD a ha) 0 1 = a := by
+  have hcell : (0, 1) ∈ a21YD a ha := mem_a21YD.mpr (Or.inl ⟨rfl, by omega⟩)
+  have heq := hookLength_add_eq (a21YD a ha) hcell
+  rw [rowLen_a21YD_zero, colLen_a21YD_one] at heq; omega
+
+private lemma hookLength_a21YD_0j {a : ℕ} (ha : 3 ≤ a) {j : ℕ} (hj2 : 2 ≤ j) (hja : j < a) :
+    hookLength (a21YD a ha) 0 j = a - j := by
+  have hcell : (0, j) ∈ a21YD a ha := mem_a21YD.mpr (Or.inl ⟨rfl, hja⟩)
+  have heq := hookLength_add_eq (a21YD a ha) hcell
+  rw [rowLen_a21YD_zero, colLen_a21YD_mid ha hj2 hja] at heq; omega
+
+private lemma hookLength_a21YD_10 (a : ℕ) (ha : 3 ≤ a) :
+    hookLength (a21YD a ha) 1 0 = 3 := by
+  have hcell : (1, 0) ∈ a21YD a ha := mem_a21YD.mpr (Or.inr (Or.inl ⟨rfl, by omega⟩))
+  have heq := hookLength_add_eq (a21YD a ha) hcell
+  rw [rowLen_a21YD_one, colLen_a21YD_zero] at heq; omega
+
+private lemma hookLength_a21YD_11 (a : ℕ) (ha : 3 ≤ a) :
+    hookLength (a21YD a ha) 1 1 = 1 := by
+  have hcell : (1, 1) ∈ a21YD a ha := mem_a21YD.mpr (Or.inr (Or.inl ⟨rfl, by omega⟩))
+  have heq := hookLength_add_eq (a21YD a ha) hcell
+  rw [rowLen_a21YD_one, colLen_a21YD_one] at heq; omega
+
+private lemma hookLength_a21YD_20 (a : ℕ) (ha : 3 ≤ a) :
+    hookLength (a21YD a ha) 2 0 = 1 := by
+  have hcell : (2, 0) ∈ a21YD a ha := mem_a21YD.mpr (Or.inr (Or.inr ⟨rfl, rfl⟩))
+  have heq := hookLength_add_eq (a21YD a ha) hcell
+  rw [rowLen_a21YD_two, colLen_a21YD_zero] at heq; omega
+
+-- Corners
+private lemma isCorner_a21YD_top (a : ℕ) (ha : 3 ≤ a) :
+    isCorner (a21YD a ha) (0, a - 1) := by
+  refine ⟨mem_a21YD.mpr (Or.inl ⟨rfl, by omega⟩), ?_, ?_⟩
+  · simp [mem_a21YD]; omega
+  · simp [mem_a21YD]; omega
+
+private lemma isCorner_a21YD_mid (a : ℕ) (ha : 3 ≤ a) :
+    isCorner (a21YD a ha) (1, 1) := by
+  refine ⟨mem_a21YD.mpr (Or.inr (Or.inl ⟨rfl, by omega⟩)), ?_, ?_⟩
+  · simp [mem_a21YD]; omega
+  · simp [mem_a21YD]; omega
+
+private lemma isCorner_a21YD_bot (a : ℕ) (ha : 3 ≤ a) :
+    isCorner (a21YD a ha) (2, 0) := by
+  refine ⟨mem_a21YD.mpr (Or.inr (Or.inr ⟨rfl, rfl⟩)), ?_, ?_⟩
+  · simp [mem_a21YD]; omega
+  · simp [mem_a21YD]; omega
+
+private lemma corners_a21YD_cases (a : ℕ) (ha : 3 ≤ a) {c : ℕ × ℕ}
+    (hc : isCorner (a21YD a ha) c) :
+    c = (0, a - 1) ∨ c = (1, 1) ∨ c = (2, 0) := by
+  obtain ⟨i, j⟩ := c
+  obtain ⟨hmem, hright, hbelow⟩ := hc
+  rcases mem_a21YD.mp hmem with ⟨hi, hj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩
+  · subst hi
+    left
+    have hja : j = a - 1 := by
+      have : ¬(j + 1 < a) := fun hlt => hright (mem_a21YD.mpr (Or.inl ⟨rfl, hlt⟩))
+      omega
+    rw [hja]
+  · subst hi
+    right; left
+    have hj1 : j = 1 := by
+      have : ¬(j + 1 < 2) := fun hlt => hright (mem_a21YD.mpr (Or.inr (Or.inl ⟨rfl, hlt⟩)))
+      omega
+    rw [hj1]
+  · subst hi; subst hj
+    right; right; rfl
+
+private lemma corners_a21YD (a : ℕ) (ha : 3 ≤ a) :
+    corners (a21YD a ha) = {(0, a - 1), (1, 1), (2, 0)} := by
+  ext ⟨i, j⟩
+  simp only [mem_corners, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+  constructor
+  · intro hc
+    rcases corners_a21YD_cases a ha hc with rfl | rfl | rfl
+    · left; exact ⟨rfl, rfl⟩
+    · right; left; exact ⟨rfl, rfl⟩
+    · right; right; exact ⟨rfl, rfl⟩
+  · rintro (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)
+    · exact isCorner_a21YD_top a ha
+    · exact isCorner_a21YD_mid a ha
+    · exact isCorner_a21YD_bot a ha
+
+-- Telescoping product: ∏_{k ∈ Ico 1 (n+1)} (k+1)/k = n+1
+private lemma tele_prod (n : ℕ) :
+    ∏ k ∈ Finset.Ico 1 (n + 1), ((k : ℚ) + 1) / (k : ℚ) = (n : ℚ) + 1 := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    have hnotin : n + 1 ∉ Finset.Ico 1 (n + 1) := by simp [Finset.mem_Ico]
+    rw [show Finset.Ico 1 (n + 1 + 1) = insert (n + 1) (Finset.Ico 1 (n + 1)) from by
+      ext k; simp [Finset.mem_Ico]; omega]
+    rw [Finset.prod_insert hnotin, ih]
+    have hpos : (0 : ℚ) < (n : ℚ) + 1 := by positivity
+    field_simp
+    push_cast; ring
+
+-- Tail arm product for corner (0, a-1): ∏_{s ∈ Ico 2 (a-1)} (a-s)/(a-s-1) = a-2
+private lemma tail_prod_a21YD (a : ℕ) (ha : 3 ≤ a) :
+    ∏ s ∈ Finset.Ico 2 (a - 1), ((a : ℚ) - s) / ((a : ℚ) - s - 1) = (a : ℚ) - 2 := by
+  -- Rewrite RHS as tele_prod(a-3)
+  have ha3_cast : (a - 3 : ℕ : ℚ) + 1 = (a : ℚ) - 2 := by
+    rw [Nat.cast_sub (by omega : 3 ≤ a)]; push_cast; ring
+  rw [← ha3_cast, ← tele_prod (a - 3)]
+  -- Bijection: s ↦ a-1-s from Ico 2 (a-1) to Ico 1 (a-3+1)
+  apply Finset.prod_bij' (fun s _ => a - 1 - s) (fun k _ => a - 1 - k)
+  · intro s hs; simp only [Finset.mem_Ico] at hs ⊢; omega
+  · intro k hk; simp only [Finset.mem_Ico] at hk ⊢; omega
+  · intro s hs; simp only [Finset.mem_Ico] at hs; omega
+  · intro k hk; simp only [Finset.mem_Ico] at hk; omega
+  · intro s hs
+    simp only [Finset.mem_Ico] at hs
+    have hle : s + 1 ≤ a := by omega
+    have hcast : (a - 1 - s : ℕ : ℚ) = (a : ℚ) - s - 1 := by
+      rw [show a - 1 - s = a - (s + 1) from by omega, Nat.cast_sub hle]
+      push_cast; ring
+    rw [hcast]; ring
+
+/-- The hook walk identity for [a, 2, 1] shapes (a ≥ 3).
+    Non-circular proof: computed directly via hookProd_ratio_formula.
+    The three corner ratios sum to a+3 by ring arithmetic. -/
+private lemma hook_walk_identity_a21YD (a : ℕ) (ha : 3 ≤ a) :
+    ∑ c ∈ (corners (a21YD a ha)).attach,
+      ((hookProd (a21YD a ha) : ℚ) /
+       (hookProd (removeCorner (a21YD a ha) c.val (mem_corners.mp c.prop)) : ℚ))
+    = ((a21YD a ha).card : ℚ) := by
+  -- Setup
+  set μ := a21YD a ha with hμ_def
+  rw [a21YD_card]
+  -- isCorner witnesses
+  have h_top := isCorner_a21YD_top a ha
+  have h_mid := isCorner_a21YD_mid a ha
+  have h_bot := isCorner_a21YD_bot a ha
+  -- Corners identification and distinctness
+  have hcorners : corners μ = {(0, a - 1), (1, 1), (2, 0)} := corners_a21YD a ha
+  have hd01 : (0, a - 1) ≠ (1, 1) := by simp [Prod.mk.injEq]
+  have hd02 : (0, a - 1) ≠ (2, 0) := by simp [Prod.mk.injEq]
+  have hd12 : (1, 1) ≠ (2, 0) := by simp [Prod.mk.injEq]
+  -- Compute each ratio via hookProd_ratio_formula
+  -- R_top: ratio at corner (0, a-1)
+  have hR_top : (hookProd μ : ℚ) / hookProd (removeCorner μ (0, a - 1) h_top) =
+      ((a : ℚ) + 2) * a * ((a : ℚ) - 2) / (((a : ℚ) + 1) * ((a : ℚ) - 1)) := by
+    rw [hookProd_ratio_formula h_top]
+    simp only [Prod.fst, Prod.snd, Finset.prod_empty, mul_one]
+    -- arm product = ∏_{s ∈ range(a-1)} h(0,s)/(h(0,s)-1)
+    -- Split: {0} ∪ {1} ∪ Ico 2 (a-1)
+    have hsplit : Finset.range (a - 1) = {0} ∪ {1} ∪ Finset.Ico 2 (a - 1) := by
+      ext k; simp [Finset.mem_Ico, Finset.mem_range]; omega
+    have hdisj1 : Disjoint ({0} : Finset ℕ) {1} := by simp
+    have hdisj2 : Disjoint ({0} ∪ {1} : Finset ℕ) (Finset.Ico 2 (a - 1)) := by
+      simp [Finset.disjoint_left, Finset.mem_Ico]; omega
+    rw [hsplit, Finset.prod_union hdisj2, Finset.prod_union hdisj1,
+        Finset.prod_singleton, Finset.prod_singleton]
+    simp only [hookLength_a21YD_00, hookLength_a21YD_01]
+    -- Rewrite tail product: convert hookLength terms to (a-s:ℚ) form, then apply tail_prod_a21YD
+    have htail : ∏ s ∈ Finset.Ico 2 (a - 1),
+        ((hookLength (a21YD a ha) 0 s : ℚ) / ((hookLength (a21YD a ha) 0 s : ℚ) - 1)) =
+        (a : ℚ) - 2 := by
+      rw [show ∏ s ∈ Finset.Ico 2 (a - 1),
+              ((hookLength (a21YD a ha) 0 s : ℚ) / ((hookLength (a21YD a ha) 0 s : ℚ) - 1)) =
+              ∏ s ∈ Finset.Ico 2 (a - 1), ((a : ℚ) - s) / ((a : ℚ) - s - 1) from
+          Finset.prod_congr rfl (fun s hs => by
+            simp only [Finset.mem_Ico] at hs
+            rw [hookLength_a21YD_0j ha (by omega) (by omega)]
+            push_cast [Nat.cast_sub (show s ≤ a by omega)])]
+      exact tail_prod_a21YD a ha
+    rw [htail]
+    have ha1 : (1 : ℚ) ≤ (a : ℚ) := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (by omega)
+    have ha2 : (1 : ℚ) ≤ (a : ℚ) - 1 := by push_cast [Nat.cast_sub (by omega : 1 ≤ a)]; linarith
+    push_cast [Nat.cast_sub (by omega : 2 ≤ a), Nat.cast_sub (by omega : 1 ≤ a)]
+    field_simp
+    ring
+  -- R_mid: ratio at corner (1, 1)
+  have hR_mid : (hookProd μ : ℚ) / hookProd (removeCorner μ (1, 1) h_mid) =
+      3 * (a : ℚ) / (2 * ((a : ℚ) - 1)) := by
+    rw [hookProd_ratio_formula h_mid]
+    simp only [Prod.fst, Prod.snd,
+               Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
+    simp only [hookLength_a21YD_10, hookLength_a21YD_01]
+    push_cast [Nat.cast_sub (by omega : 1 ≤ a)]
+    field_simp; ring
+  -- R_bot: ratio at corner (2, 0)
+  have hR_bot : (hookProd μ : ℚ) / hookProd (removeCorner μ (2, 0) h_bot) =
+      3 * ((a : ℚ) + 2) / (2 * ((a : ℚ) + 1)) := by
+    rw [hookProd_ratio_formula h_bot]
+    simp only [Prod.fst, Prod.snd, Finset.prod_empty, one_mul]
+    -- leg product = ∏_{r ∈ range 2} h(r,0)/(h(r,0)-1)
+    rw [show Finset.range 2 = {0} ∪ {1} from by ext k; simp; omega]
+    rw [Finset.prod_union (by simp), Finset.prod_singleton, Finset.prod_singleton]
+    simp only [hookLength_a21YD_00, hookLength_a21YD_10]
+    field_simp; ring
+  -- Rewrite each summand using its ratio value
+  have hterm : ∀ cx : {x // x ∈ corners μ},
+      (hookProd μ : ℚ) /
+      hookProd (removeCorner μ cx.val (mem_corners.mp cx.prop)) =
+      if cx.val = (0, a - 1) then ((a : ℚ) + 2) * a * ((a : ℚ) - 2) / (((a : ℚ) + 1) * ((a : ℚ) - 1))
+      else if cx.val = (1, 1) then 3 * (a : ℚ) / (2 * ((a : ℚ) - 1))
+      else 3 * ((a : ℚ) + 2) / (2 * ((a : ℚ) + 1)) := by
+    intro ⟨c, hcx⟩
+    rcases corners_a21YD_cases a ha (mem_corners.mp hcx) with rfl | rfl | rfl
+    · rw [removeCorner_proof_irrel _ _ (mem_corners.mp hcx) h_top, hR_top]
+      simp
+    · rw [removeCorner_proof_irrel _ _ (mem_corners.mp hcx) h_mid, hR_mid]
+      simp [show (1, 1) ≠ (0, a - 1) from by simp [Prod.mk.injEq]]
+    · rw [removeCorner_proof_irrel _ _ (mem_corners.mp hcx) h_bot, hR_bot]
+      simp [show (2, 0) ≠ (0, a - 1) from by simp [Prod.mk.injEq],
+            show (2, 0) ≠ (1, 1) from by simp [Prod.mk.injEq]]
+  simp_rw [hterm]
+  -- Convert from sum over attach to sum over corners μ, then substitute hcorners
+  rw [Finset.sum_attach]
+  rw [hcorners]
+  rw [show (({(0, a - 1), (1, 1), (2, 0)} : Finset (ℕ × ℕ)) : Finset (ℕ × ℕ)) =
+      insert (0, a - 1) (insert (1, 1) {(2, 0)}) from rfl]
+  rw [Finset.sum_insert (by simp [Prod.mk.injEq]; omega),
+      Finset.sum_insert (by simp [Prod.mk.injEq]),
+      Finset.sum_singleton]
+  -- Each term evaluates to its ratio value
+  simp only [if_true, show (0, a - 1) = (0, a - 1) from rfl,
+             show (1, 1) ≠ (0, a - 1) from by simp [Prod.mk.injEq],
+             show (2, 0) ≠ (0, a - 1) from by simp [Prod.mk.injEq],
+             show (2, 0) ≠ (1, 1) from by simp [Prod.mk.injEq],
+             ite_true, ite_false]
+  -- Sum = a+3
+  push_cast [Nat.cast_sub (by omega : 2 ≤ a), Nat.cast_sub (by omega : 1 ≤ a)]
+  field_simp
+  ring
+
 private lemma hook_walk_identity (μ : YoungDiagram) (hn : 0 < μ.card) :
     ∑ c ∈ (corners μ).attach,
       ((hookProd μ : ℚ) / (hookProd (removeCorner μ c.val (mem_corners.mp c.prop)) : ℚ))
@@ -5503,3 +5870,10 @@ theorem hook_length_formula_general (μ : YoungDiagram) :
   exact_mod_cast hook_length_formula_Q μ
 
 end HookLengthFormula
+thFormula
+thFormula
+ula_Q μ
+
+end HookLengthFormula
+thFormula
+thFormula
