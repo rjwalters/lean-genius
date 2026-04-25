@@ -102,7 +102,24 @@
       "targetId": "derangements",
       "relationship": "related",
       "description": "Root: basic derangement definitions D(n) = n! Σ(-1)^k/k! and inclusion-exclusion formula"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Transcendence of e: implicitly underpins the well-definedness of the rounding characterisation D(n) = round(n!/e). Since e is transcendental, n!/e is irrational for all n, so n!/e is never a half-integer and round(n!/e) is unambiguous. The conclusion acknowledges this in the openQuestions (the rounding never ties because e is transcendental)."
+    },
+    {
+      "targetId": "derangements-oq-02",
+      "relationship": "related",
+      "description": "Partial derangements S(n,k) = C(n,k)·D(n-k): the combinatorial identity connecting exact-k-fixed-point counts to D(n). The rounding formula D(n) ≈ n!/e from this entry combines with S(n,k) = C(n,k)·D(n-k) to give approximate formulas for partial derangement counts: S(n,k) ≈ C(n,k)·(n-k)!/e."
     }
+  ],
+  "relatedProblems": [
+    { "id": "derangements-convergence", "label": "Derangements convergence rate (parent)" },
+    { "id": "derangements-convergence-oq-01", "label": "Poisson(1) marginals: P(Xₙ=k) → e⁻¹/k!" },
+    { "id": "derangements", "label": "Derangements root (inclusion-exclusion)" },
+    { "id": "derangements-oq-02", "label": "Partial derangements: S(n,k) = C(n,k)·D(n-k)" },
+    { "id": "e-transcendental", "label": "Transcendence of e (rounding well-defined)" }
   ],
   "conclusion": {
     "summary": "Machine-verified: for all n ≥ 2, D(n) = round(n!/e). The proof extracts a strict rounding bound from the alternating-series rate estimate, showing |D(n) − n!/e| < 1/2, which uniquely characterises D(n) as the nearest integer. Zero sorries, zero axioms.",
