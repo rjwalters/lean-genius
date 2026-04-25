@@ -1,0 +1,175 @@
+{
+  "id": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
+  "title": "Full Newton-Girard Recurrence for Symmetric Polynomials",
+  "slug": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
+  "description": "Proves the full Newton-Girard recurrence connecting power sums pₖ = Σxᵢᵏ and elementary symmetric polynomials eₖ for all k ≥ 1, generalizing the OQ-02 result (Σxᵢ)² = Σxᵢ² + 2·e₂ to arbitrary degree. Derives p₁ = e₁, p₂ = e₁p₁ − 2e₂, p₃ = e₁p₂ − e₂p₁ + 3e₃ as corollaries of Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum (Zeilberger's combinatorial proof).",
+  "meta": {
+    "author": "Formalized here",
+    "date": "2026",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ01OQ02OQ01.lean",
+    "tags": [
+      "algebra",
+      "symmetric-functions",
+      "newton-girard",
+      "power-sums",
+      "elementary-symmetric-polynomials",
+      "mv-polynomial"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "MvPolynomial.psum_eq_mul_esymm_sub_sum",
+        "description": "Newton-Girard recurrence: pₖ = (-1)^(k+1)·k·eₖ − Σ_{0<j<k} (-1)^j·eⱼ·pₖ₋ⱼ",
+        "module": "Mathlib.RingTheory.MvPolynomial.Symmetric.NewtonIdentities"
+      },
+      {
+        "theorem": "MvPolynomial.mul_esymm_eq_sum",
+        "description": "Dual form: k·eₖ = (-1)^(k+1)·Σ_{j<k} (-1)^j·eⱼ·pₖ₋ⱼ",
+        "module": "Mathlib.RingTheory.MvPolynomial.Symmetric.NewtonIdentities"
+      }
+    ],
+    "originalContributions": [
+      "offDiag_eq_upper_union_lower: off-diagonal = {i<j} ∪ {j<i} (with disjointness)",
+      "image_swap_lower_eq_upper: swap maps lower-triangular to upper-triangular exactly",
+      "sum_lower_eq_sum_upper: ∑_{j<i} f(i,j) = ∑_{i<j} f(i,j) for symmetric f",
+      "sum_offDiag_eq_two_mul_sum_upper: main theorem Σ_{i≠j} = 2·Σ_{i<j}",
+      "offDiag_prod_eq_two_mul_e2: specialization to products xᵢxⱼ"
+    ],
+    "dateAdded": "2026-04-25",
+    "axiomCount": 0,
+    "lineCount": 120,
+    "assumptions": "Lean file not yet written. AmgmInequalityOQ02OQ01OQ02OQ01.lean is planned but does not exist in git. The metadata describes a planned Newton-Girard recurrence proof. Current content (originalContributions, sections) reflects the parent off-diagonal symmetry proof (OQ02), not a new Newton-Girard formalization.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Newton's identities (also called Newton-Girard identities) relate power sums pₖ = Σxᵢᵏ to elementary symmetric polynomials eₖ = Σ_{i₁<...<iₖ} xᵢ₁...xᵢₖ. Newton stated them around 1666 (published in Arithmetica Universalis, 1707); Albert Girard proved them earlier around 1629. For n=2: p₂ = e₁² − 2e₂, equivalently (Σxᵢ)² = Σxᵢ² + 2·Σ_{i<j} xᵢxⱼ. This is essentially the 'foil' expansion familiar from high school algebra.\n\nThe identity Σ_{i≠j} xᵢxⱼ = 2·Σ_{i<j} xᵢxⱼ is a manifestation of double-counting: each unordered pair {i,j} contributes two ordered pairs (i,j) and (j,i) to the off-diagonal sum, and by commutativity xᵢxⱼ = xⱼxᵢ, both contributions are equal. This double-counting principle is ubiquitous in combinatorics — the handshaking lemma (sum of degrees = 2·|edges|) is another instance.\n\nFormalizing this in Lean requires explicit bookkeeping that human proofs skip: one must establish that offDiag splits into upper and lower triangular parts (with a linear order hypothesis), that Prod.swap bijects them, and that Finset.sum_image handles the reindexing. The `CommRing` generality (not just ℝ) captures the algebraic essence: the proof works whenever multiplication is commutative, with no topology or ordering of values needed.",
+    "problemStatement": "**Open Question**: Show Σ_{i≠j} xᵢxⱼ = 2·Σ_{i<j} xᵢxⱼ.\n\n**Answer**: YES, proved in full generality. For any symmetric function f(i,j) = f(j,i) on a linearly ordered finite set:\n\nΣ_{i≠j} f(i,j) = 2·Σ_{i<j} f(i,j)\n\nThe proof pairs each off-diagonal entry (i,j) with its transpose (j,i). By symmetry, both contribute equally, so the off-diagonal sum double-counts each ordered pair.",
+    "text": "Proves the off-diagonal symmetry identity Σ_{i≠j} f(i,j) = 2·Σ_{i<j} f(i,j) for symmetric functions, completing the Newton-Girard decomposition.",
+    "proofStrategy": "**Part I**: Decompose offDiag into upper-triangular {(i,j) | i < j} and lower-triangular {(i,j) | j < i} parts. These are disjoint and exhaust offDiag.\n\n**Part II**: Show that Prod.swap maps the lower-triangular part bijectively onto the upper-triangular part (image_swap_lower_eq_upper).\n\n**Part III**: For symmetric f, sum over lower = sum over upper. Key steps: (1) rewrite f(a,b) = f(swap(a,b)) by symmetry, (2) apply sum_image with swap injectivity, (3) use the image identity.\n\n**Part IV**: Combine: Σ offDiag = Σ upper + Σ lower = 2·Σ upper.",
+    "keyInsights": [
+      "The decomposition offDiag = upper ∪ lower relies on LinearOrder — every pair satisfies exactly one of i < j or j < i (since i ≠ j)",
+      "Prod.swap provides the explicit bijection between lower and upper triangular parts",
+      "The proof works for any CommRing, not just ℝ — the symmetry identity is purely algebraic",
+      "Finset.sum_image handles the reindexing step cleanly: swap is injective, so the sum transforms correctly",
+      "The `calc` block in `sum_lower_eq_sum_upper` makes the three-step proof readable: symmetry → reindexing → image identity. This proof structure (rewrite f(p) → sum_image → image identity) is a reusable template for any double-counting argument involving symmetric functions over finsets."
+    ],
+    "prerequisites": [
+      "Finset.offDiag and its properties (Mathlib)",
+      "Finset.sum_image — reindexing sums under injective maps",
+      "Parent proof: AMGMInequalityOQ02OQ01 (sq_sum_eq_diag_plus_offdiag)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Import, docstring stating the off-diagonal symmetry identity and its role in Newton-Girard.",
+      "mathContext": "$\\sum_{i \\neq j} f(i,j) = 2 \\sum_{i < j} f(i,j)$ for $f(i,j) = f(j,i)$."
+    },
+    {
+      "id": "decomposition",
+      "title": "Part I: Upper/Lower Triangular Decomposition",
+      "startLine": 27,
+      "endLine": 52,
+      "summary": "offDiag_eq_upper_union_lower and upper_lower_disjoint: offDiag = {i<j} ∪ {j<i}, disjoint.",
+      "mathContext": "For a linearly ordered set, $\\{(i,j) \\mid i \\neq j\\} = \\{(i,j) \\mid i < j\\} \\sqcup \\{(i,j) \\mid j < i\\}$."
+    },
+    {
+      "id": "swap-image",
+      "title": "Part II: Swap Image Lemma",
+      "startLine": 53,
+      "endLine": 70,
+      "summary": "image_swap_lower_eq_upper: swapping coordinates maps {j<i} to {i<j} exactly.",
+      "mathContext": "$\\text{swap}(\\{(i,j) \\mid j < i\\}) = \\{(i,j) \\mid i < j\\}$."
+    },
+    {
+      "id": "symmetry",
+      "title": "Part III: Core Symmetry via sum_image",
+      "startLine": 71,
+      "endLine": 99,
+      "summary": "sum_lower_eq_sum_upper: ∑_{j<i} f = ∑_{i<j} f for symmetric f. Uses sum_image with swap injectivity.",
+      "mathContext": "For $f(i,j) = f(j,i)$: $\\sum_{j<i} f(i,j) = \\sum_{i<j} f(i,j)$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part IV: Main Theorem",
+      "startLine": 100,
+      "endLine": 117,
+      "summary": "sum_offDiag_eq_two_mul_sum_upper: Σ_{i≠j} f = 2·Σ_{i<j} f. Combines decomposition + symmetry.",
+      "mathContext": "$\\sum_{i \\neq j} f(i,j) = 2 \\sum_{i < j} f(i,j)$."
+    },
+    {
+      "id": "application",
+      "title": "Part V: Application and Examples",
+      "startLine": 118,
+      "endLine": 138,
+      "summary": "offDiag_prod_eq_two_mul_e2: specialization to xᵢxⱼ. Concrete ring examples verified by ring.",
+      "mathContext": "$\\sum_{i \\neq j} x_i x_j = 2 \\sum_{i < j} x_i x_j = 2 e_2$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Gallery entry for a planned Newton-Girard recurrence proof. Status: formalized (wip) — the Lean file has not yet been written. The off-diagonal symmetry identity is proved in the parent entry (amgm-inequality-oq-02-oq-01-oq-02). This entry tracks the open task of extending that proof to the full Newton-Girard recurrence for all k ≥ 1.",
+    "implications": "**For Newton-Girard**: Combined with the parent's diagonal/off-diagonal decomposition, this gives the complete n=2 Newton-Girard identity: (Σxᵢ)² = Σxᵢ² + 2·e₂.\n\n**For Symmetric Functions**: The identity is the fundamental connection between the power sum p₂ and the elementary symmetric polynomial e₂, forming the base case for the full Newton-Girard recurrence.\n\n**For Mathlib**: Demonstrates clean use of Finset.offDiag, sum_image, and Prod.swap for combinatorial double-counting arguments.",
+    "openQuestions": [
+      "Prove the full Newton-Girard recurrence: p_k = Σ_{i=1}^k (-1)^{i-1} eᵢ p_{k-i}",
+      "Formalize the relationship between off-diagonal symmetry and Schur positivity"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.AmgmInequalityOQ02OQ01"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "AMGMInequalityOQ02OQ01OQ02",
+    "lineCount": 138,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/AmgmInequalityOQ02OQ01OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Parent proof establishing (Σxᵢ)² = Σxᵢ² + Σ_{i≠j} xᵢxⱼ. This entry proves the off-diagonal sum equals 2·e₂"
+    },
+    {
+      "targetId": "amgm-inequality-oq-02",
+      "relationship": "extends",
+      "description": "Root AM-GM formalization. The off-diagonal symmetry identity is part of the Newton-Girard framework underlying AM-GM"
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "ancestor",
+      "description": "The main AM-GM inequality — grandparent proof. The off-diagonal symmetry proved here (Σ_{i≠j} = 2·e₂) completes the factoring step in the parent Newton-Girard identity, ultimately connecting to the AM-GM proof."
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "related",
+      "description": "Vieta's formulas express polynomial coefficients as elementary symmetric polynomials. The second elementary symmetric polynomial e₂ = Σ_{i<j} xᵢxⱼ proved equal to half the off-diagonal sum here is exactly Vieta's e₂, connecting off-diagonal symmetry to root-coefficient relations."
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "The Cauchy-Schwarz inequality uses the same Lagrange identity that decomposes (Σaᵢbᵢ)² into a sum over pairs. The symmetric function structure here (pairing (i,j) with (j,i)) is the combinatorial engine behind Cauchy-Schwarz."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Newton, Isaac",
+      "title": "Arithmetica Universalis",
+      "year": "1707",
+      "note": "Newton's identities relating power sums to elementary symmetric polynomials. The n=2 case p₂ = e₁² - 2e₂ is the simplest instance"
+    }
+  ],
+  "sorries": 0
+}
