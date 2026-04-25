@@ -842,7 +842,25 @@ private lemma sum_term_eq_tan_half_angle (n : ℕ) (hn : 0 < n) (k : Fin n) :
 
 /-- For the x = -1 case: the trigonometric Lebesgue sum S_n = Σ tan(φₖ/2) grows like n log n.
 
-    Using sum_term_eq_tan_half_angle and cot_ge_inv_two_mul for nodes near k = n-1. -/
+    **Proof sketch (for a future session)**:
+    Step 1: Rewrite using `Finset.sum_congr` + `sum_term_eq_tan_half_angle`:
+      S_n = Σₖ tan((2k+1)π/(4n)) = Σₖ sin((2k+1)π/(4n)) / cos((2k+1)π/(4n))
+
+    Step 2: Take the sub-sum over k = n-m,...,n-1 (last m terms, where m = ⌊√(n+1)⌋):
+      For j = n-1-k = 0,...,m-1: tan(φₖ/2) = cot((2j+1)π/(4n)) [since φₖ/2 = π/2-(2j+1)π/(4n)]
+      The complementary angle (2j+1)π/(4n) ≤ (2m-1)π/(4n) ≤ mπ/(2n) ≤ π/3 for m ≤ 2n/3
+
+    Step 3: Apply `cot_ge_inv_two_mul` to each sub-sum term:
+      cot((2j+1)π/(4n)) ≥ 2n / (π(2j+1))
+
+    Step 4: Bound the odd harmonic sum:
+      Σⱼ₌₀^{m-1} 1/(2j+1) ≥ (1/2) Σⱼ₌₁^m 1/j = (1/2) Hₘ ≥ (1/2) log(m+1)
+      [by comparison 1/(2j+1) ≥ 1/(2j+2) and `log_add_one_le_harmonic`]
+
+    Step 5: Combine: S_n ≥ (2n/π)(1/2)log(m+1) = (n/π)log(m+1)
+      With m ≥ ⌊√(n+1)⌋: log(m+1) ≥ (1/2)log(n+1) so S_n ≥ (n/(2π))log(n+1) ✓
+
+    Main implementation challenge: index arithmetic for the sub-sum bijection k ↔ j in Finset. -/
 private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
     (1 : ℝ) / (2 * Real.pi) * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) ≤
       ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
