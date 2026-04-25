@@ -72,7 +72,8 @@
   ],
   "relatedProofs": [
     "hurwitz-theorem",
-    "hurwitz-theorem-oq-03"
+    "hurwitz-theorem-oq-03",
+    "hurwitz-theorem-oq-04"
   ],
   "references": {
     "papers": [],
@@ -87,7 +88,7 @@
     {
       "path": "Proofs/HurwitzTheorem.lean",
       "filename": "HurwitzTheorem.lean",
-      "lineCount": 2028,
+      "lineCount": 2043,
       "theoremCount": 35,
       "axiomCount": 0,
       "defCount": 16,
@@ -98,11 +99,11 @@
     {
       "path": "Proofs/HurwitzTheoremOQ04.lean",
       "filename": "HurwitzTheoremOQ04.lean",
-      "lineCount": 430,
-      "theoremCount": 14,
+      "lineCount": 584,
+      "theoremCount": 16,
       "axiomCount": 5,
       "defCount": 8,
-      "sorryCount": 2,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzTheoremOQ04.lean"
     }
