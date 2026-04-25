@@ -42,8 +42,8 @@
     ],
     "dateAdded": "2026-04-22",
     "axiomCount": 0,
-    "lineCount": 779,
-    "assumptions": "0 axiom declarations. 1 sorry: kuhn_path_existential_ax (theorem body) encodes Kuhn's walk-pairing involution argument (τ∘τ=id via walk reversibility + non-revisiting). Non-revisiting is fully proved (kuhn_step_nonrevisit + WalkValid); walk reversibility is the remaining open formalization step.",
+    "lineCount": 747,
+    "assumptions": "0 axiom declarations. 1 sorry: kuhn_path_existential (theorem body) encodes Kuhn's walk-pairing involution argument (τ∘τ=id via walk reversibility + non-revisiting). Non-revisiting is fully proved (kuhn_step_nonrevisit + WalkValid); walk reversibility (~150 lines: kuhnWalkWithExit + walkTrace_reversal) is the remaining open formalization step. NOTE: the formerly attempted sub-lemma bdry_nfc_even was found to be FALSE and has been removed.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
