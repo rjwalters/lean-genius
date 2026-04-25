@@ -42,7 +42,9 @@
       "The wellFormed condition (sources strictly increasing) ensures the Gessel-Viennot involution's crossing lemma applies — without it, non-intersecting path counting via determinants would fail.",
       "For r=1, IsNonIntersecting is vacuously true: there are no pairs (i,j) with i < j in Fin 1, so every path tuple qualifies.",
       "The Lean formulation uses ℤ (not ℕ) for the equality because the Gessel-Viennot proof proceeds via signed counting of path tuples — signs arise from the permutation group action, and the involution makes all non-identity-permutation terms cancel.",
-      "The LGV lemma is the combinatorial core behind three major results: the Jacobi-Trudi identity (Schur polynomials), the Lindström theorem (acyclic networks), and the hook-length formula (standard Young tableaux counting) — all are specializations."
+      "The LGV lemma is the combinatorial core behind three major results: the Jacobi-Trudi identity (Schur polynomials), the Lindström theorem (acyclic networks), and the hook-length formula (standard Young tableaux counting) — all are specializations.",
+      "**LGV as a bridge from combinatorics to linear algebra**: The deep power of the lemma is that it converts a combinatorial problem (counting non-intersecting path systems) into a linear algebra problem (computing a determinant). This transformation is non-trivial: the determinant naturally encodes the alternating sum over permutations $\\sigma \\in S_r$, and the Gessel-Viennot involution provides a bijection that exactly pairs off the intersecting path tuples associated with each non-identity permutation, leaving only identity-permutation paths (which are precisely the non-intersecting ones).",
+      "**The architecture choice: clean statements vs. proof machinery**: This file deliberately separates the clean statement (`lgv_general`) from the proof machinery (`BallotProblemOQ03OQ02`). This separation follows the 'library design' pattern in formal mathematics: the Gessel-Viennot involution proof in `BallotProblemOQ03OQ02` is complex and hard to read, but `lgv_general` presents the clean mathematical statement as a one-liner. End-users of the LGV lemma (such as the Jacobi-Trudi and hook-length proofs) can import this file and use `lgv_general` or `nxn_lgv_corollary` without understanding the underlying involution proof."
     ],
     "prerequisites": [
       "lgv_lemma_rxr from BallotProblemOQ03OQ02: the general n×n LGV lemma",
@@ -55,8 +57,9 @@
     "summary": "General n×n LGV lemma and its concrete instantiations proved. 6 theorems, 0 sorries, 0 axioms, 125 lines.",
     "implications": "The LGV lemma gives determinantal formulas for non-intersecting lattice path counts, enabling Schur polynomial identities, RSK correspondence, and hook-length formula proofs.",
     "openQuestions": [
-      "Apply the LGV lemma to prove the Jacobi-Trudi identity: Schur polynomials as determinants of complete homogeneous symmetric polynomials",
-      "Prove the hook-length formula for rectangular standard Young tableaux via LGV"
+      "**[Partially addressed in `ballot-problem-oq-03-oq-01-oq-01-oq-01`]** Apply the LGV lemma to prove the Jacobi-Trudi identity: $s_\\lambda = \\det[h_{\\lambda_i - i + j}]$ where $h_k$ is the $k$-th complete homogeneous symmetric polynomial. The child entry begins this work — proving symmetry, base cases, two-row formulas, and hook-length evaluations — but the full SSYT generating function bijection ($k \\geq 2$ cases) requires the RSK correspondence (approximately 200-300 additional lines). The $k = 2$ case uses a jdt (jeu de taquin) bijection that is not yet formalized.",
+      "**[Partially addressed in `ballot-problem-oq-03-oq-01-oq-02`]** Prove the hook-length formula $f^\\lambda = n!/\\prod_{u \\in \\lambda} h(u)$ for all standard Young tableaux shapes via LGV. The child entry `ballot-problem-oq-03-oq-01-oq-02` addresses this for shapes with $\\leq 2$ rows or columns (single-row, single-column, hook shapes, rectangular $m \\times m$, general 2-row, all generalized hook shapes); the general case (shapes with $\\geq 3$ rows AND $\\geq 3$ columns) has 4 remaining sorries requiring an LGV-based approach plus a hook walk identity.",
+      "Generalize `nxn_lgv_corollary` to weighted lattice paths: in the weighted LGV lemma, each step has an associated weight, and $e(A,B) = \\sum_{\\text{paths}} \\prod_{\\text{steps}} w(\\text{step})$. This weighted version underlies the Cauchy identity for Schur polynomials ($\\sum_\\lambda s_\\lambda(x) s_\\lambda(y) = \\prod_{i,j}(1-x_iy_j)^{-1}$) and the Lindström theorem for acyclic directed graphs."
     ]
   },
   "leanFile": {
@@ -79,17 +82,32 @@
     {
       "targetId": "ballot-problem-oq-03-oq-01",
       "relationship": "parent",
-      "description": "LGV Lemma: Non-Intersecting Lattice Paths"
+      "description": "LGV Lemma: Non-Intersecting Lattice Paths — the 2×2 case that this entry generalizes to r×r"
     },
     {
       "targetId": "ballot-problem-oq-03-oq-02",
       "relationship": "foundational",
-      "description": "LGV Lemma: Complete n×n Formalization"
+      "description": "LGV Lemma: Complete n×n Formalization via the Gessel-Viennot sign-reversing involution — the proof this file imports as lgv_lemma_rxr"
     },
     {
       "targetId": "ballot-problem-oq-03",
       "relationship": "foundational",
-      "description": "Ballot Problem: Higher-Dimensional Paths"
+      "description": "Ballot Problem: Higher-Dimensional Paths — the root entry for the lattice path counting cluster"
+    },
+    {
+      "targetId": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Jacobi-Trudi Identity: Schur Polynomials as Determinants — directly applies the lgv_general theorem and jacobi_trudi_interpretation from this file; proves $s_\\lambda = \\det[h_{\\lambda_i - i + j}]$ using the LGV path-count matrix. The open question hinted at by `jacobi_trudi_interpretation` here is pursued there"
+    },
+    {
+      "targetId": "ballot-problem-oq-03-oq-01-oq-02",
+      "relationship": "extended-by",
+      "description": "Hook-Length Formula for Standard Young Tableaux via LGV — applies the n×n LGV lemma proved here to derive $f^\\lambda = n!/\\prod h(u)$ for shapes with $\\leq 2$ rows or columns. Uses the same nxn_lgv_corollary interface for strictly monotone source/target arrays"
+    },
+    {
+      "targetId": "ballot-problem-oq-03-oq-01-oq-04",
+      "relationship": "related",
+      "description": "Catalan Number Recurrence from the Ballot Theorem — uses the ballot path-count framework to prove the Catalan convolution $C_{n+1} = \\sum_{k=0}^n C_k C_{n-k}$ via the LGV-derived ballot sequence identity $C_n = \\text{ballotSeqCount}(n+1, n)$. Demonstrates LGV as the unifying combinatorial engine behind both Catalan and Schur polynomial identities"
     }
   ],
   "sections": [
