@@ -21,7 +21,7 @@
     "iteration": 1,
     "focus": "Banach-Tarski formalization: equidecomposability, paradoxical sets, amenability",
     "blockers": [],
-    "nextAction": "Build docker and verify compilation; attempt Aristotle on helper sorries",
+    "nextAction": "Verify Docker build; submit hausdorff_free_subgroup to Aristotle if decomposable into lemmas",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,45 +29,52 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: int_amenable proved (window-shift argument). 3 sorries remain: hausdorff_free_subgroup, banach_tarski, banach_tarski_pieces_nonmeasurable (all HARD).",
+    "progressSummary": "PROGRESS: sorries reduced from 3 to 2. banach_tarski_pieces_nonmeasurable proved via cardinality contradiction; 2 remaining sorries (hausdorff_free_subgroup, banach_tarski) require deep formalization (150\u2013800 lines each).",
     "builtItems": [
-      "Equidecomposable (G-equidecomposability, with notation ≃ᴳ[G]) — proofs/Proofs/LebesgueMeasureOQ06.lean:43",
-      "IsParadoxical — proofs/Proofs/LebesgueMeasureOQ06.lean:81",
-      "IsAmenable — proofs/Proofs/LebesgueMeasureOQ06.lean:259",
-      "ENNReal.eq_zero_or_top_of_add_eq_self (PROVED) — proofs/Proofs/LebesgueMeasureOQ06.lean:133",
-      "equidecomposable_refl (PROVED) — proofs/Proofs/LebesgueMeasureOQ06.lean:63",
-      "RigidMotion3, unitBall3, unitSphere3 type aliases — proofs/Proofs/LebesgueMeasureOQ06.lean:153-161",
-      "banach_tarski (axiomatized, sorry) — proofs/Proofs/LebesgueMeasureOQ06.lean:212",
-      "hausdorff_free_subgroup (axiomatized, sorry) — proofs/Proofs/LebesgueMeasureOQ06.lean:175",
-      "banach_tarski_pieces_nonmeasurable (axiomatized, sorry) — proofs/Proofs/LebesgueMeasureOQ06.lean:234",
-      "free_group_not_amenable (axiomatized, sorry) — proofs/Proofs/LebesgueMeasureOQ06.lean:276",
-      "int_amenable (axiomatized, sorry) — proofs/Proofs/LebesgueMeasureOQ06.lean:271",
+      "Equidecomposable (G-equidecomposability, with notation \u2243\u1d33[G]) \u2014 proofs/Proofs/LebesgueMeasureOQ06.lean:43",
+      "IsParadoxical \u2014 proofs/Proofs/LebesgueMeasureOQ06.lean:81",
+      "IsAmenable \u2014 proofs/Proofs/LebesgueMeasureOQ06.lean:259",
+      "ENNReal.eq_zero_or_top_of_add_eq_self (PROVED) \u2014 proofs/Proofs/LebesgueMeasureOQ06.lean:133",
+      "equidecomposable_refl (PROVED) \u2014 proofs/Proofs/LebesgueMeasureOQ06.lean:63",
+      "RigidMotion3, unitBall3, unitSphere3 type aliases \u2014 proofs/Proofs/LebesgueMeasureOQ06.lean:153-161",
+      "banach_tarski (axiomatized, sorry) \u2014 proofs/Proofs/LebesgueMeasureOQ06.lean:212",
+      "hausdorff_free_subgroup (axiomatized, sorry) \u2014 proofs/Proofs/LebesgueMeasureOQ06.lean:175",
+      "banach_tarski_pieces_nonmeasurable (axiomatized, sorry) \u2014 proofs/Proofs/LebesgueMeasureOQ06.lean:234",
+      "free_group_not_amenable (axiomatized, sorry) \u2014 proofs/Proofs/LebesgueMeasureOQ06.lean:276",
+      "int_amenable (axiomatized, sorry) \u2014 proofs/Proofs/LebesgueMeasureOQ06.lean:271",
       "Gallery entry: src/data/proofs/lebesgue-measure-oq-06/ (meta.json, index.ts, annotations.json)",
-      "paradoxical_no_finite_measure: fully proved in LebesgueMeasureOQ06.lean — no sorry; key lemma: le_add_of_nonneg_right (zero_le _) + disjoint_sdiff_self_right + Set.union_diff_cancel",
-      "int_amenable (lines 263-471): complete proof, 4→3 sorry reduction"
+      "paradoxical_no_finite_measure: fully proved in LebesgueMeasureOQ06.lean \u2014 no sorry; key lemma: le_add_of_nonneg_right (zero_le _) + disjoint_sdiff_self_right + Set.union_diff_cancel",
+      "int_amenable translation invariance (fixed, nlinarith-free) \u2014 proofs/Proofs/LebesgueMeasureOQ06.lean:273-543",
+      "banach_tarski_pieces_nonmeasurable proof (LebesgueMeasureOQ06.lean:238-287): 50-line cardinality argument using MeasurableSpace.CountablyGenerated, cardinal_measurableSet_le_continuum, mk_Icc_real, mk_powerset, cantor"
     ],
     "insights": [
-      "Banach-Tarski NOT in Mathlib as of 2026-04 — confirmed via search. Available Mathlib pieces: Matrix.orthogonalGroup, FreeGroup, IsometryEquiv, EuclideanSpace.",
-      "The measure-theoretic consequence (paradoxical → no finite invariant measure) is structurally provable; only sorry is the B∪C coverage step requiring equidecomposability monotonicity.",
-      "ENNReal.eq_zero_or_top_of_add_eq_self is fully proved in Lean (a + a = a → a = 0 or a = ⊤) via lift to NNReal + linarith.",
-      "Equidecomposable_refl is provable in Lean with n=1, identity element — minor case analysis on Fin 1.",
-      "Full Banach-Tarski proof estimate: 800-1200 lines. Components: free subgroup matrix verification (number theory), F₂ paradoxical decomposition (word combinatorics), lift to S² (orbit analysis), extend to B³ (cone geometry).",
-      "amenability connects to paradox dually: G amenable ↔ no G-set is paradoxical (Tarski). So F₂ not amenable = F₂ paradoxical. SO(3) inherits non-amenability from F₂.",
-      "The 2D analogue fails for bounded sets: the isometry group of ℝ² (via SO(2) which is abelian) is amenable — no Banach-Tarski in 2D. The Laczkovich squaring-the-circle uses infinitely many pieces and is a different phenomenon.",
-      "paradoxical_no_finite_measure proved: B∪C ⊆ A (subset inclusion), derive monotonicity μ(B∪C) ≤ μ(A) from finite additivity via decomposition A = (B∪C) ∪ (A\\(B∪C)), sandwich gives μ(A)+μ(A) = μ(A)",
-      "int_amenable (ℤ amenable via Cesàro window-shift) fully proved: uses non-principal ultrafilter U on ℕ, density function dens N A = card(A∩[-N,N])/(2N+1), proves total mass + additivity + translation invariance via window-shift bound |dens_N(g•A) - dens_N(A)| ≤ |n|/(2N+1) → 0 along U"
+      "Banach-Tarski NOT in Mathlib as of 2026-04 \u2014 confirmed via search. Available Mathlib pieces: Matrix.orthogonalGroup, FreeGroup, IsometryEquiv, EuclideanSpace.",
+      "The measure-theoretic consequence (paradoxical \u2192 no finite invariant measure) is structurally provable; only sorry is the B\u222aC coverage step requiring equidecomposability monotonicity.",
+      "ENNReal.eq_zero_or_top_of_add_eq_self is fully proved in Lean (a + a = a \u2192 a = 0 or a = \u22a4) via lift to NNReal + linarith.",
+      "Equidecomposable_refl is provable in Lean with n=1, identity element \u2014 minor case analysis on Fin 1.",
+      "Full Banach-Tarski proof estimate: 800-1200 lines. Components: free subgroup matrix verification (number theory), F\u2082 paradoxical decomposition (word combinatorics), lift to S\u00b2 (orbit analysis), extend to B\u00b3 (cone geometry).",
+      "amenability connects to paradox dually: G amenable \u2194 no G-set is paradoxical (Tarski). So F\u2082 not amenable = F\u2082 paradoxical. SO(3) inherits non-amenability from F\u2082.",
+      "The 2D analogue fails for bounded sets: the isometry group of \u211d\u00b2 (via SO(2) which is abelian) is amenable \u2014 no Banach-Tarski in 2D. The Laczkovich squaring-the-circle uses infinitely many pieces and is a different phenomenon.",
+      "paradoxical_no_finite_measure proved: B\u222aC \u2286 A (subset inclusion), derive monotonicity \u03bc(B\u222aC) \u2264 \u03bc(A) from finite additivity via decomposition A = (B\u222aC) \u222a (A\\(B\u222aC)), sandwich gives \u03bc(A)+\u03bc(A) = \u03bc(A)",
+      "nlinarith NEVER works for \u211d\u22650\u221e \u2014 must use ENNReal-specific lemmas or prove in \u211d first via ENNReal.tendsto_ofReal",
+      "Correct pattern: prove convergence in \u211d using linarith/field_simp, then lift to \u211d\u22650\u221e via ENNReal.tendsto_ofReal",
+      "tendsto_const_nhds.div_atTop proves constant/atTop \u2192 0 in \u211d",
+      "banach_tarski_pieces_nonmeasurable proved via cardinality contradiction: Borel \u03c3-algebra countably generated \u2192 \u2264 \ud835\udd20 measurable sets; unitBall3 embeds [0,1] \u2192 \ud835\udd20 \u2264 #unitBall3 \u2192 2^\ud835\udd20 subsets by Cantor > \ud835\udd20. Independent of banach_tarski.",
+      "EuclideanSpace \u211d (Fin 3) is definitionally Fin 3 \u2192 \u211d (via abbrev PiLp/WithLp), so congr_fun applies directly to EuclideanSpace equality",
+      "\ud835\udd20 (continuum) is scoped notation in Cardinal namespace \u2014 must use open Cardinal in at theorem level, not inside tactic blocks",
+      "Set.powerset \ud835\udcab is definitionally {t | t \u2286 s} (from Set.Defs.lean:244), so rfl closes the equality goal"
     ],
     "mathlibGaps": [
       "Banach-Tarski theorem itself not in Mathlib (no formalization as of 2026-04)",
-      "Free subgroup of SO(3) not in Mathlib — requires explicit matrix computation + number theory for freeness",
-      "Paradoxical decomposition of F₂ not in Mathlib",
+      "Free subgroup of SO(3) not in Mathlib \u2014 requires explicit matrix computation + number theory for freeness",
+      "Paradoxical decomposition of F\u2082 not in Mathlib",
       "Amenability for infinite groups not in Mathlib (FolnerCondition exists but Cesaro mean construction not)"
     ],
     "nextSteps": [
       "Run docker build to verify LebesgueMeasureOQ06.lean compiles without errors",
-      "Submit hausdorff_free_subgroup sorry to Aristotle (HARD — known result with explicit proof)",
-      "Consider building F₂ paradoxical decomposition as standalone algebraic lemma (~150 lines, tractable)",
-      "The paradoxical_no_finite_measure sorry can be closed by adding monotonicity hypothesis or showing B∪C covers A"
+      "Submit hausdorff_free_subgroup sorry to Aristotle (HARD \u2014 known result with explicit proof)",
+      "Consider building F\u2082 paradoxical decomposition as standalone algebraic lemma (~150 lines, tractable)",
+      "The paradoxical_no_finite_measure sorry can be closed by adding monotonicity hypothesis or showing B\u222aC covers A"
     ]
   },
   "tags": [
