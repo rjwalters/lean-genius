@@ -454,3 +454,54 @@ The sorry count increased by 1 (net) because:
 1. **GNW hook walk for ≥3-row non-gHookYD shapes**: ~200-300 Lean lines (probabilistic proof).
 2. **Simpler stepping stone**: prove `hook_walk_identity` for shapes with exactly 3 rows.
 3. **Archive sessions**: knowledge.md now >600 lines; archive sessions 5-18 to sessions/ subdir.
+
+---
+
+## Session 2026-04-25 (Session 20) — Transpose Duality: Hook Walk for ≤2-Column Shapes (PART XV)
+
+**Mode**: REVISIT (RICH knowledge tier, score 112)
+**Outcome**: PROGRESS — 9 new lemmas/defs (all non-circular), hook_walk_identity extended to 3 shape classes
+
+### What I Did
+
+1. Identified non-circular proof path for ≤2-column shapes via transpose duality:
+   - μ.colLen 2 = 0 → μ.transpose.rowLen 2 = 0 (via `rowLen_transpose`)
+   - `hook_length_formula_atMostTwoRows` (already proved) applies to μ.transpose
+   - Three invariances under transpose: hookProd, SYT count, cell count
+2. Built PART XV infrastructure (~180 lines, 0 new sorries):
+   - `card_transpose`: μ.transpose.card = μ.card
+   - `hookLength_transpose`: hookLength(μ,i,j) = hookLength(μ.transpose,j,i)
+   - `hookProd_transpose`: hookProd(μ) = hookProd(μ.transpose)  
+   - `sytTranspose` + `sytTranspose_injective` + `card_SYT_transpose`: bijection SYT(μ) ≃ SYT(μ.transpose)
+   - `removeCorner_atMostTwoCols`: corner removal preserves ≤2-col (mirror of atMostTwoRows)
+   - `hook_length_formula_atMostTwoCols`: HLF for ≤2-col, 0 sorries (non-circular via transpose)
+   - `hook_walk_identity_atMostTwoCols`: hook walk identity for ≤2-col (same algebra as atMostTwoRows)
+3. Updated `hook_walk_identity` dispatcher to add ≤2-col case as 3rd branch.
+4. PR: rjwalters/lean-genius#12426
+
+### Key Findings
+
+- **Transpose invariances**: All three quantities needed for hook_walk_identity — hookProd, SYT count, cell count — are invariant under Young diagram transpose. This is standard combinatorics but required explicit Lean proofs.
+- **sytTranspose bijection**: Entry at (i,j) of the transposed SYT is the original entry at (j,i). Row-strictness in μ.transpose becomes col-strictness in μ and vice versa.
+- **Non-circular proof**: `hook_length_formula_atMostTwoCols` proved via transpose (not via `hook_walk_identity`), then the hook walk identity follows by the same algebraic argument as the 2-row case.
+- **Remaining sorry scope**: Now only ≥3-row AND ≥3-col AND non-gHookYD shapes. This means ≥3 rows, ≥3 columns, and at least 2 rows with ≥3 cells (e.g., [3,2,1], [4,3,2,1]). The 2-column shapes like [2,2,2,2] and [3,2] are now covered.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (5274 → 5452 lines, PART XV added)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md` (this file)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` (knowledge updated)
+- PR: rjwalters/lean-genius#12426
+
+### Sorry Count: 4 (unchanged count, reduced scope again)
+
+- `hook_walk_identity` (line ~5373): sorry now covers only ≥3-row AND ≥3-col AND non-gHookYD shapes
+- `ni_count_eq_syt_count` (line 219): RSK bijection, FALSE as stated
+- `lgv_det_factors_as_hook_quotient` (line 235): det identity, FALSE as stated
+- `hook_length_formula` (line 245): depends on the two above (FALSE as stated)
+
+### Next Steps
+
+1. **3-row case**: Prove `hook_walk_identity` for shapes with exactly 3 rows (rowLen 3 = 0 but rowLen 2 > 0). This would require the GNW argument but restricted to 3-row shapes.
+2. **GNW hook walk for general shapes**: ~200-300 Lean lines, the probabilistic hook walk proof. The key identity: Σ_{c ∈ corners(μ)} hookProd(μ)/hookProd(μ\c) = n follows from a Markov chain analysis.
+3. **Archive old sessions**: knowledge.md is now 500+ lines; archive sessions 12-18 to sessions/.
