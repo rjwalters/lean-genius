@@ -148,9 +148,23 @@ noncomputable instance instJordanHolderLatticeSubgroup :
         left
         have hNy : N ≤ y := le_sup_left.trans (h ▸ le_refl _)
         exact le_antisymm (le_inf hN_hi hNy) hN_lo
-      · -- N ⊔ y = x ⊔ y: x/(x⊓y) ≃* (x⊔y)/y simple; N normal in x → N = x⊓y or N = x
-        -- (HARD: requires transferring simplicity through second_iso; left as sorry)
-        sorry
+      · -- N ⊔ y = x ⊔ y: element-wise argument directly gives x ≤ N, so N = x.
+        -- For any a ∈ x: a ∈ x ⊔ y = N ⊔ y, so ∃ n ∈ N, b ∈ y, n*b = a.
+        -- Then b = n⁻¹*a ∈ x (since n ∈ N ≤ x and a ∈ x) ∩ y = x⊓y ≤ N.
+        -- So a = n*b ∈ N. Hence x ≤ N, and with N ≤ x: N = x.
+        right
+        apply le_antisymm hN_hi
+        intro a haA
+        have ha_in_Ny : a ∈ N ⊔ y := by rw [h]; exact le_sup_left haA
+        rw [Subgroup.mem_sup] at ha_in_Ny
+        obtain ⟨n, hnN, b, hby, hnb_eq⟩ := ha_in_Ny
+        have hnx : n ∈ x := hN_hi hnN
+        have hbx : b ∈ x := by
+          have h_eq : b = n⁻¹ * a := by rw [← hnb_eq]; group
+          rw [h_eq]; exact x.mul_mem (x.inv_mem hnx) haA
+        have hbN : b ∈ N := hN_lo (Subgroup.mem_inf.mpr ⟨hbx, hby⟩)
+        rw [← hnb_eq]
+        exact N.mul_mem hnN hbN
 
   Iso := GroupQuotIso
 
