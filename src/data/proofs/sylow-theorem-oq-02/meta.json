@@ -133,6 +133,16 @@
       "targetId": "sylow-theorem-oq-04",
       "relationship": "application",
       "description": "Simplicity of $A_5$ via Sylow counting: another direct application of the normality criterion. The proof shows that for each prime $p \\in \\{2, 3, 5\\}$ dividing $|A_5| = 60$, the Sylow $p$-subgroup count $n_p > 1$ (i.e., no Sylow subgroup is normal), which forces $A_5$ to have no proper normal subgroups. The formula $n_p = [G : N_G(P)]$ is the mechanism: computing $n_p$ via index constraints establishes $n_p \\neq 1$."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-04",
+      "relationship": "foundational",
+      "description": "The Jordan-Hölder theorem proved in this gallery entry — that any two composition series of a finite group have the same multiset of composition factors — depends critically on the simplicity of $A_5$, which itself is proved via the Sylow counting formula $n_p = [G : N_G(P)]$ from this entry. The argument: for $A_5$ of order $60 = 2^2 \\cdot 3 \\cdot 5$, applying $n_5 \\mid 12$ and $n_5 \\equiv 1 \\pmod{5}$ forces $n_5 \\in \\{1, 6\\}$; the criterion $n_5 = 1 \\Leftrightarrow P_5 \\trianglelefteq A_5$ would contradict simplicity, so $n_5 = 6$. This makes $A_5$ the smallest non-abelian simple group and the inescapable composition factor in $S_5$'s Jordan-Hölder series $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "foundational",
+      "description": "The orbit enumeration formula $n_p = [G : N_G(P)]$ is the group-theoretic machinery underlying the simplicity of $A_5$ — the key obstruction in Abel-Ruffini's impossibility. This entry provides the foundational calculation mechanism; `abel-ruffini` uses the conclusion (A₅ is simple and non-abelian) to derive that $S_5$ has no solvable composition series, blocking radical formulas for quintic polynomials."
     }
   ],
   "leanFile": {
