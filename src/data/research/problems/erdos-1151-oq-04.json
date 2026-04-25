@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "2 sorries remain: chebyshev_trig_sum_lb (tractable, ~200 lines) and divergence_from_lebesgue_growth (fundamental gap: lim vs lim sup)",
+    "progressSummary": "PROGRESS: 5 proved helper lemmas for x=-1 case; trig_sum_lb_of_cos_eq_neg_one still sorry with detailed proof sketch",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -55,7 +55,12 @@
       "cos_rational_pi_pos_min: ∃ δ > 0 s.t. |cos(nπp/q)| ≥ δ for all n (parity argument)",
       "x_not_chebyshev_node: cos(πp/q) ≠ chebyshevNode n k for all n,k when p,q odd",
       "chebyshev_trig_sum_lb: sorry (isolated harmonic sum lower bound: S_n ≥ C₂·n·log(n+1))",
-      "chebyshev_lebesgue_lb: proved modulo chebyshev_trig_sum_lb via mul_le_mul chain (δ/n · C₂·n·log(n+1) ≤ |cos(nθ)|/n · S_n)"
+      "chebyshev_lebesgue_lb: proved modulo chebyshev_trig_sum_lb via mul_le_mul chain (δ/n · C₂·n·log(n+1) ≤ |cos(nθ)|/n · S_n)",
+      "cos_ge_half_of_le_pi_div_three (proved): cos(t) ≥ 1/2 for t ∈ [0,π/3] in Erdos1151OQ04.lean",
+      "cot_ge_inv_two_mul (proved): cot(t) ≥ 1/(2t) for t ≤ π/3 in Erdos1151OQ04.lean",
+      "sin_div_one_add_cos (proved): sin(φ)/(1+cosφ) = tan(φ/2) for φ ∈ (0,π) in Erdos1151OQ04.lean",
+      "chebyshevAngle_pos_lt_pi (proved): Chebyshev angle ∈ (0,π) in Erdos1151OQ04.lean",
+      "sum_term_eq_tan_half_angle (proved): Lebesgue term for x=-1 equals tan(φₖ/2) in Erdos1151OQ04.lean"
     ],
     "insights": [
       "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
@@ -75,14 +80,17 @@
       "Filter.tendsto_atTop_mono pattern: if f ≤ g pointwise and f → ∞ then g → ∞",
       "let binding in Lean 4 requires explicit unfolding in simp: simp only [vals, ...]",
       "chebyshev_lebesgue_growth is PROVED (not sorry) — wraps chebyshev_lebesgue_lb which assumes sorry #1",
-      "p,q both odd implies cos(pi*p/q) is strictly in (-1,1), so sin argument is nonzero. Case x=+-1 never occurs in hypotheses."
+      "p,q both odd implies cos(pi*p/q) is strictly in (-1,1), so sin argument is nonzero. Case x=+-1 never occurs in hypotheses.",
+      "x=cos(πp/q)=-1 IS possible for odd p,q: p=q=1 gives cos(π)=-1. Two-case proof required.",
+      "For x=-1: sum term sin(φₖ)/|(-1)-cos(φₖ)| = tan(φₖ/2) (NOT cot). Key: |(-1)-cos|=1+cos (abs of negative).",
+      "cot lower bound: cot(t)≥1/(2t) for t≤π/3 follows from sin(t)≤t and cos(t)≥1/2. Proved via nlinarith.",
+      "congr 1 <;> ring fails on transcendental function goals; need explicit have harg:... := by ring; rw [harg]."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "chebyshev_lebesgue_lb: harmonic sum lower bound for S_n = Σ sin(φₖ)/|cos θ - cos φₖ| ≥ C·n·log(n+1)",
-      "divergence_from_lebesgue_growth: weaken to lim sup = ∞ (Banach-Steinhaus) or find explicit construction",
-      "Attempt chebyshev_trig_sum_lb: Lipschitz + harmonic sum proof (~200 lines). sin(pi*p/q) > 0 from p,q odd ensures x in (-1,1). Nearest node k0, bound denominator via node spacing pi/n, sum j=1..n/4 terms gives (n*sin(theta)/(2pi))*log(n/4+1).",
-      "Sorry #2 gap documented: UBP/Banach-Steinhaus gives lim sup not lim. Consider weakening divergence_from_lebesgue_growth to lim sup = inf version."
+      "Prove trig_sum_lb_of_cos_eq_neg_one: implement 5-step sub-sum proof with Finset reindexing",
+      "Prove chebyshev_trig_sum_lb case 2 (x∈(-1,1)): Lipschitz bound + harmonic sum ~150 lines",
+      "For divergence_from_lebesgue_growth: weaken to lim sup = ∞ (provable by Baire/UBP)"
     ]
   },
   "tags": [
