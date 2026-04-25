@@ -251,5 +251,14 @@
     "path": "Proofs/KonigsbergOQ03.lean",
     "sorries": 0
   },
+  "relatedProblems": [
+    { "id": "konigsberg", "label": "Königsberg Bridges (parent)" },
+    { "id": "konigsberg-oq-01", "label": "Eulerian circuits: connected + all even degrees" },
+    { "id": "konigsberg-oq-02", "label": "Directed Euler paths: in-degree = out-degree" },
+    { "id": "konigsberg-oq-03-oq-02", "label": "Infinite paths: BiInfiniteWalk formalization" },
+    { "id": "konigsberg-oq-04", "label": "BEST theorem: counting Eulerian circuits" },
+    { "id": "p-vs-np", "label": "P vs NP (NP-completeness barrier for r≥3)" },
+    { "id": "ramseys-theorem", "label": "Ramsey theory for hypergraphs" }
+  ],
   "sorries": 0
 }

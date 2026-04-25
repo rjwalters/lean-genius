@@ -104,47 +104,62 @@
     ],
     "crossReferences": [
         {
-            "id": "abel-ruffini-galois-extensions",
             "relationship": "parent",
-            "description": "Parent proof defining group theory infrastructure for Abel-Ruffini"
+            "description": "Parent proof defining group theory infrastructure for Abel-Ruffini",
+            "targetId": "abel-ruffini-galois-extensions"
         },
         {
-            "id": "abel-ruffini-oq-04",
             "relationship": "sibling",
-            "description": "Abel-Ruffini OQ-04: A₅ simplicity and non-solvability results that use composition series structure"
+            "description": "Abel-Ruffini OQ-04: A₅ simplicity and non-solvability results that use composition series structure",
+            "targetId": "abel-ruffini-oq-04"
         },
         {
-            "id": "abel-ruffini",
             "relationship": "sibling",
-            "description": "Top-level Abel-Ruffini theorem: degree ≥ 5 polynomials are not solvable by radicals, which depends on the composition series structure proved here"
+            "description": "Top-level Abel-Ruffini theorem: degree ≥ 5 polynomials are not solvable by radicals, which depends on the composition series structure proved here",
+            "targetId": "abel-ruffini"
         },
         {
-            "id": "inverse-galois",
             "relationship": "related",
-            "description": "Inverse Galois problem: uses Galois group theory and group-theoretic structure related to composition series"
+            "description": "Inverse Galois problem: uses Galois group theory and group-theoretic structure related to composition series",
+            "targetId": "inverse-galois"
         },
         {
-            "id": "sylow-theorem-oq-04",
             "relationship": "related",
-            "description": "A₅ simplicity via Sylow's theorems: A₅ is simple (no non-trivial normal subgroups) — equivalently, its only composition series is 1 ◁ A₅, a one-factor series. The Jordan-Hölder uniqueness theorem proved here guarantees that the single composition factor A₅/1 ≅ A₅ is an invariant of A₅, consistent with A₅ being the smallest non-abelian simple group."
+            "description": "A₅ simplicity via Sylow's theorems: A₅ is simple (no non-trivial normal subgroups) — equivalently, its only composition series is 1 ◁ A₅, a one-factor series. The Jordan-Hölder uniqueness theorem proved here guarantees that the single composition factor A₅/1 ≅ A₅ is an invariant of A₅, consistent with A₅ being the smallest non-abelian simple group.",
+            "targetId": "sylow-theorem-oq-04"
         },
         {
-            "id": "abel-ruffini-oq-04-oq-02-oq-02",
             "relationship": "related",
-            "description": "Alternating groups solvability classification (Aₙ solvable iff n ≤ 4): uses the composition series structure proved here. For n ≤ 4, the composition series of Sₙ witnesses solvability (derived series = composition series with abelian factors). For n ≥ 5, Jordan-Hölder uniqueness guarantees that the A₅ composition factor persists in any composition series of Sₙ, making Sₙ non-solvable."
+            "description": "Alternating groups solvability classification (Aₙ solvable iff n ≤ 4): uses the composition series structure proved here. For n ≤ 4, the composition series of Sₙ witnesses solvability (derived series = composition series with abelian factors). For n ≥ 5, Jordan-Hölder uniqueness guarantees that the A₅ composition factor persists in any composition series of Sₙ, making Sₙ non-solvable.",
+            "targetId": "abel-ruffini-oq-04-oq-02-oq-02"
         },
         {
-            "id": "abel-ruffini-oq-04-oq-02-oq-03",
             "relationship": "related",
-            "description": "Finite groups of order < 60 are solvable: the threshold at |A₅| = 60 is exactly explained by Jordan-Hölder — any finite group of order < 60 has composition factors of order < 60, none of which can be A₅ (the unique simple group of order 60). The Jordan-Hölder uniqueness theorem proved here guarantees that composition factors are a group invariant, making the order-60 threshold precise."
+            "description": "Finite groups of order < 60 are solvable: the threshold at |A₅| = 60 is exactly explained by Jordan-Hölder — any finite group of order < 60 has composition factors of order < 60, none of which can be A₅ (the unique simple group of order 60). The Jordan-Hölder uniqueness theorem proved here guarantees that composition factors are a group invariant, making the order-60 threshold precise.",
+            "targetId": "abel-ruffini-oq-04-oq-02-oq-03"
         }
     ],
     "relatedProblems": [
-        { "id": "abel-ruffini-oq-04", "label": "A₅ simplicity and non-solvability chain" },
-        { "id": "abel-ruffini-oq-04-oq-02-oq-02", "label": "Alternating groups: solvable iff n ≤ 4" },
-        { "id": "sylow-theorem-oq-04", "label": "A₅ simplicity via Sylow counting" },
-        { "id": "abel-ruffini-oq-04-oq-02-oq-03", "label": "Groups of order < 60 are solvable" },
-        { "id": "abel-ruffini", "label": "Abel-Ruffini theorem (quintic insolvability)" }
+        {
+            "id": "abel-ruffini-oq-04",
+            "label": "A₅ simplicity and non-solvability chain"
+        },
+        {
+            "id": "abel-ruffini-oq-04-oq-02-oq-02",
+            "label": "Alternating groups: solvable iff n ≤ 4"
+        },
+        {
+            "id": "sylow-theorem-oq-04",
+            "label": "A₅ simplicity via Sylow counting"
+        },
+        {
+            "id": "abel-ruffini-oq-04-oq-02-oq-03",
+            "label": "Groups of order < 60 are solvable"
+        },
+        {
+            "id": "abel-ruffini",
+            "label": "Abel-Ruffini theorem (quintic insolvability)"
+        }
     ],
     "sorries": 0
 }
