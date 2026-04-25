@@ -21,7 +21,7 @@
         "dateAdded": "2026-04-24",
         "axiomCount": 0,
         "assumptions": "",
-        "lineCount": 241,
+        "lineCount": 255,
         "theoremCount": 9,
         "definitionCount": 3,
         "originalContributions": [
@@ -62,7 +62,7 @@
     },
     "leanFile": {
         "namespace": "AbelRuffiniGaloisExtensionsOQ04",
-        "lineCount": 241,
+        "lineCount": 255,
         "axiomCount": 0,
         "theoremCount": 9,
         "definitionCount": 3,
@@ -88,15 +88,15 @@
             "id": "sec-instance",
             "title": "Part II: JordanHolderLattice Instance",
             "startLine": 70,
-            "endLine": 210,
-            "summary": "instJordanHolderLatticeSubgroup — fills Mathlib TODO. sup_eq_of_isMaximal proved; isMaximal_inf_left_of_isMaximal_sup 2/3 proved (1 sorry); iso_symm, iso_trans, second_iso all proved"
+            "endLine": 227,
+            "summary": "instJordanHolderLatticeSubgroup — fills Mathlib TODO. All three axioms fully proved: sup_eq_of_isMaximal (via subgroupOf_sup + maximality); isMaximal_inf_left_of_isMaximal_sup (element-wise argument for maximality step); iso_symm, iso_trans, second_iso (first iso theorem, avoids sup_comm rewrite failure)"
         },
         {
             "id": "sec-main-theorem",
             "title": "Part III: Jordan-Hölder Theorem",
-            "startLine": 211,
-            "endLine": 241,
-            "summary": "jordan_holder_subgroups and jordan_holder_finite_groups — delegates to CompositionSeries.jordan_holder once instance is provided"
+            "startLine": 229,
+            "endLine": 255,
+            "summary": "jordan_holder_subgroups and jordan_holder_finite_groups — one-line delegation to CompositionSeries.jordan_holder once the JordanHolderLattice instance is provided; #check verification of exported types"
         }
     ],
     "crossReferences": [
@@ -108,7 +108,17 @@
         {
             "id": "abel-ruffini-oq-04",
             "relationship": "sibling",
-            "description": "Abel-Ruffini OQ-04: simplicity and solvability results"
+            "description": "Abel-Ruffini OQ-04: A₅ simplicity and non-solvability results that use composition series structure"
+        },
+        {
+            "id": "abel-ruffini",
+            "relationship": "sibling",
+            "description": "Top-level Abel-Ruffini theorem: degree ≥ 5 polynomials are not solvable by radicals, which depends on the composition series structure proved here"
+        },
+        {
+            "id": "inverse-galois",
+            "relationship": "related",
+            "description": "Inverse Galois problem: uses Galois group theory and group-theoretic structure related to composition series"
         }
     ],
     "sorries": 0
