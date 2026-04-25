@@ -18,10 +18,10 @@
       "research"
     ],
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 2,
     "axiomCount": 0,
-    "lineCount": 735,
-    "assumptions": "3 sorries: hausdorff_free_subgroup (Hausdorff 1914 — SO(3) contains F₂), banach_tarski (Banach-Tarski 1924 — main paradox, requires AC), banach_tarski_pieces_nonmeasurable (classical non-measurability corollary). Core framework fully proved including paradoxical_no_finite_measure, free_group_not_amenable, and int_amenable (ℤ amenable via Cesàro window-shift argument — fully proved).",
+    "lineCount": 783,
+    "assumptions": "2 sorries: hausdorff_free_subgroup (Hausdorff 1914 — SO(3) contains F₂), banach_tarski (Banach-Tarski 1924 — main paradox, requires AC). Core framework fully proved including paradoxical_no_finite_measure, free_group_not_amenable, int_amenable (ℤ amenable), and banach_tarski_pieces_nonmeasurable (proved via cardinality contradiction: Borel σ-algebra has ≤ 𝔠 elements, but unitBall3 ≅ [0,1] has 2^𝔠 subsets — eliminating the last corollary sorry).",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -108,7 +108,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Banach-Tarski paradox is formalized with 3 sorries and 0 axioms. The abstract framework (equidecomposability, paradoxical sets, F₂ non-amenability) is fully proved — including complete machine-checked proofs of paradoxical_no_finite_measure (proved via finite additivity monotonicity), free_group_not_amenable, and int_amenable (ℤ amenable via Cesàro window-shift argument). The 3 remaining sorry theorems represent deep established results (Hausdorff 1914, Banach-Tarski 1924) whose Lean proofs require 150–800 lines each.",
+    "summary": "The Banach-Tarski paradox is formalized with 2 sorries and 0 axioms. The abstract framework (equidecomposability, paradoxical sets, F₂ non-amenability) is fully proved — including complete machine-checked proofs of paradoxical_no_finite_measure, free_group_not_amenable, int_amenable (ℤ amenable via Cesàro window-shift), and banach_tarski_pieces_nonmeasurable (proved via cardinality contradiction: Borel σ-algebra has ≤ 𝔠 Borel sets while unitBall3 has 2^𝔠 subsets). The 2 remaining sorry theorems are deep established results (Hausdorff 1914 free subgroup, Banach-Tarski 1924 main paradox) whose Lean proofs require 150–800 lines each.",
     "openQuestions": [
       "Can Hausdorff's free subgroup theorem be fully formalized in Lean? The proof requires showing that explicit 3×3 rotation matrices $\\varphi$ (rotation by $\\arccos(1/3)$ around the $z$-axis) and $\\psi$ (rotation by $\\arccos(1/3)$ around the $x$-axis) generate a free group of rank 2 in $\\text{SO}(3)$. The algebraic argument shows that nontrivial words $w(\\varphi, \\psi)$ applied to $e_1 = (1, 0, 0)$ produce vectors with coordinates in $\\mathbb{Z}[1/3, \\sqrt{2}/3]$ that are non-zero — requiring careful case analysis on the word structure and number-theoretic properties of $\\arccos(1/3)$ (specifically that it is not a rational multiple of $\\pi$).",
       "Can the full Banach-Tarski proof be formalized in Lean 4? The most likely modular path: (1) formalize the free subgroup freeness (the sorry in `hausdorff_free_subgroup`); (2) prove the paradoxical decomposition of $F_2$ acting on itself (purely algebraic, ~100 lines); (3) lift to $S^2 \\setminus D$ via the free group action (~150 lines); (4) handle the exceptional set $D$ via a rotation of infinite order (Hilbert hotel, ~100 lines); (5) extend from $S^2$ to $B^3$ by coning and handling the center (~100 lines). Estimated total: 800–1200 lines.",
@@ -203,12 +203,12 @@
       "Mathlib"
     ],
     "namespace": "BanachTarski",
-    "lineCount": 735,
+    "lineCount": 783,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 5,
     "path": "Proofs/LebesgueMeasureOQ06.lean",
-    "sorries": 3
+    "sorries": 2
   },
-  "sorries": 3
+  "sorries": 2
 }
