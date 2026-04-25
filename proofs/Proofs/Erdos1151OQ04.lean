@@ -899,7 +899,9 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
       have hcast : ((n - 1 - k.val : ℕ) : ℝ) = (n : ℝ) - 1 - (k.val : ℝ) := by
         rw [Nat.cast_sub hkle, Nat.cast_sub hn]
       have hθinvol : θ (invol k) = Real.pi / 2 - θ k := by
-        simp only [θ, invol, Equiv.coe_fn_mk, Fin.coe_mk]
+        -- (invol k).val = n-1-k.val definitionally; extract it as an explicit fact
+        have hinvol_val : (invol k).val = n - 1 - k.val := rfl
+        simp only [θ, hinvol_val]
         rw [hcast]
         have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
         field_simp
