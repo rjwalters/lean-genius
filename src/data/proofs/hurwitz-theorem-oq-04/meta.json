@@ -20,11 +20,11 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-24",
-    "axiomCount": 5,
-    "assumptions": "5 axioms: G2_is_octonion_aut (G₂ ≅ Aut(𝕆), requires Lie group theory not yet in Mathlib), freudenthal_tits_f4/e6/e7/e8 (the four exceptional Lie algebra types from the magic square construction). All supporting lemmas (norm preservation, real-part preservation, imaginary-subspace closure) are fully proved.",
-    "lineCount": 583,
-    "theoremCount": 22,
-    "definitionCount": 11,
+    "axiomCount": 1,
+    "assumptions": "1 axiom: G2_is_octonion_aut (G₂ ≅ Aut(𝕆), requires Lie group theory not yet in Mathlib). The 4 Freudenthal-Tits dimension statements (freudenthal_tits_f4/e6/e7/e8) were de-axiomatized: they are definitional equalities proved by rfl. All supporting lemmas (norm preservation, real-part preservation, imaginary-subspace closure, derivation algebra) are fully proved.",
+    "lineCount": 730,
+    "theoremCount": 31,
+    "definitionCount": 14,
     "originalContributions": [
       "OctonionAlgHom / OctonionAut: structures for octonion algebra homomorphisms and automorphisms",
       "alg_aut_preserves_norm: automorphisms preserve the norm (proved via polarization and imaginary decomposition)",
@@ -113,13 +113,18 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib", "Proofs.HurwitzTheorem"],
-    "opens": ["HurwitzTheorem"],
+    "imports": [
+      "Mathlib",
+      "Proofs.HurwitzTheorem"
+    ],
+    "opens": [
+      "HurwitzTheorem"
+    ],
     "namespace": "HurwitzTheoremOQ04",
-    "lineCount": 583,
-    "axiomCount": 5,
-    "theoremCount": 22,
-    "definitionCount": 11,
+    "lineCount": 730,
+    "axiomCount": 1,
+    "theoremCount": 31,
+    "definitionCount": 14,
     "sorries": 0,
     "path": "Proofs/HurwitzTheoremOQ04.lean"
   },
