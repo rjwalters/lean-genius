@@ -1,5 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Combinatorics.Pigeonhole
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Data.Fintype.Card
 import Mathlib.Tactic
@@ -156,18 +157,74 @@ theorem log_typeProb_eq (n : ℕ) (hn : (n : ℝ) ≠ 0) (f : Fin k → ℕ)
       = ((n : ℝ) * ((f i : ℝ) / n)) * Real.log ((f i : ℝ) / n) := by rw [hkey]
     _ = (n : ℝ) * ((f i : ℝ) / n * Real.log ((f i : ℝ) / n)) := by ring
 
-/-- **Type Class Size Upper Bound**: |T_f| ≤ 2^{n H(f/n)}.
+/-- **Type Class Size Upper Bound**: |T_f| ≤ exp(n H(f/n)).
 
-    Proof: The sum over all sequences of probability under Q = f/n is at most 1.
-    Each sequence x ∈ T_f has p_Q(x) = ∏ Q_i^{f_i} = exp(-n H(Q)).
-    So |T_f| * exp(-n H(Q)) ≤ ∑_x p_Q(x) ≤ 1.
-    Therefore |T_f| ≤ exp(n H(Q)) = 2^{n H(Q) / log 2}.
-    [OPEN: ~30 lines using Finset.sum_le_card_nsmul] -/
+    Proof: Let Q = f/n be the empirical distribution (sums to 1).
+    For x ∈ T_f: ∏ j, Q(x_j) = ∏ i, Q(i)^{f_i} = typeProb = exp(-n H(Q)).
+    Sum over all sequences: ∑_x ∏ j, Q(x_j) = (∑ i, Q(i))^n = 1^n = 1.
+    So |T_f| * exp(-n H(Q)) ≤ ∑_x ∏ j, Q(x_j) = 1.
+    Therefore |T_f| ≤ exp(n H(Q)). -/
 theorem type_class_size_le_entropy_pow (n : ℕ) (hn : 0 < n) (f : Fin k → ℕ)
     (hf : ∑ i, f i = n) (hf_pos : ∀ i, 0 < f i) :
     ((typeClass n f hf).card : ℝ) ≤
     Real.exp ((n : ℝ) * empEntropy n (Nat.cast_pos.mpr hn).ne' f) := by
-  sorry
+  set hn' : (n : ℝ) ≠ 0 := (Nat.cast_pos.mpr hn).ne'
+  -- Q = empirical distribution f/n
+  let Q : Fin k → ℝ := fun i => (f i : ℝ) / n
+  -- Q sums to 1
+  have hQsum : ∑ i : Fin k, Q i = 1 := by
+    simp only [Q, ← Finset.sum_div, ← Nat.cast_sum, hf]
+    exact div_self hn'
+  -- Q i > 0 for all i
+  have hQpos : ∀ i, 0 < Q i := fun i =>
+    div_pos (Nat.cast_pos.mpr (hf_pos i)) (Nat.cast_pos.mpr hn)
+  -- typeProb n hn' f > 0 (product of positives)
+  have htypeProb_pos : 0 < typeProb n hn' f := by
+    simp only [typeProb]
+    exact Finset.prod_pos (fun i _ => pow_pos (hQpos i) _)
+  -- typeProb = exp(-(n * empEntropy))
+  have htypeProb_exp : typeProb n hn' f = Real.exp (-(n : ℝ) * empEntropy n hn' f) := by
+    rw [← log_typeProb_eq n hn' f (fun i => hQpos i), Real.exp_log htypeProb_pos]
+  -- For x ∈ T_f: ∏ j : Fin n, Q (x j) = typeProb
+  have hseqProb_const : ∀ x ∈ typeClass n f hf,
+      ∏ j : Fin n, Q (x j) = typeProb n hn' f := by
+    intro x hx
+    simp only [typeClass, Finset.mem_filter, Finset.mem_univ, true_and] at hx
+    -- hx : empDist n x = f
+    simp only [typeProb, Q]
+    -- Regroup positions by their alphabet value using prod_fiberwise'
+    rw [← Finset.prod_fiberwise' Finset.univ x (fun j => (f j : ℝ) / ↑n)]
+    apply Finset.prod_congr rfl
+    intro b _
+    -- ∏ a ∈ univ with x a = b, (f b / n) = (f b / n) ^ (f b)
+    rw [Finset.prod_const]
+    congr 1
+    -- (filter card) = f b; follows from empDist n x b = f b
+    change empDist n x b = f b
+    exact congr_fun hx b
+  -- ∑ x : Fin n → Fin k, ∏ j, Q (x j) = 1
+  have hsum_one : ∑ x : Fin n → Fin k, ∏ j : Fin n, Q (x j) = 1 := by
+    -- ∏ i : Fin n, ∑ j ∈ univ, Q j = ∑ x ∈ piFinset, ∏ i, Q (x i)
+    have h := Finset.prod_univ_sum (κ := fun _ : Fin n => Fin k)
+                 (fun _ => Finset.univ) (fun _ j => Q j)
+    simp only [hQsum, Finset.prod_const_one, Fintype.piFinset_univ] at h
+    simpa using h.symm
+  -- |T_f| * typeProb ≤ 1 by sum estimate
+  have h_key : ((typeClass n f hf).card : ℝ) * typeProb n hn' f ≤ 1 :=
+    calc ((typeClass n f hf).card : ℝ) * typeProb n hn' f
+        = ∑ _ ∈ typeClass n f hf, typeProb n hn' f := by
+          rw [Finset.sum_const, nsmul_eq_mul, mul_comm]
+      _ = ∑ x ∈ typeClass n f hf, ∏ j : Fin n, Q (x j) :=
+          Finset.sum_congr rfl (fun x hx => (hseqProb_const x hx).symm)
+      _ ≤ ∑ x : Fin n → Fin k, ∏ j : Fin n, Q (x j) :=
+          sum_le_univ_sum_of_nonneg (fun x =>
+            Finset.prod_nonneg (fun j _ => le_of_lt (hQpos (x j))))
+      _ = 1 := hsum_one
+  -- Conclude: |T_f| ≤ exp(n H(Q))
+  calc ((typeClass n f hf).card : ℝ)
+      ≤ 1 / typeProb n hn' f := (le_div_iff htypeProb_pos).mpr h_key
+    _ = Real.exp ((n : ℝ) * empEntropy n hn' f) := by
+        rw [htypeProb_exp, one_div, ← Real.exp_neg, neg_neg]
 
 /-- **Lower bound**: The dominant type class has size ≥ k^n / (n+1)^k.
     Since there are at most (n+1)^k distinct types and all sequences sum to k^n,
@@ -175,7 +232,55 @@ theorem type_class_size_le_entropy_pow (n : ℕ) (hn : 0 < n) (f : Fin k → ℕ
 theorem dominant_type_lower_bound (n : ℕ) :
     ∃ f : Fin k → ℕ, ∃ hf : ∑ i, f i = n,
     k ^ n / (n + 1) ^ k ≤ (typeClass n f hf).card := by
-  sorry
+  -- Trivial case: bound is 0, any type works
+  by_cases hm : k ^ n / (n + 1) ^ k = 0
+  · -- Exhibit the constant-zero sequence's type
+    let x₀ : Fin n → Fin k := fun _ => ⟨0, Nat.pos_of_ne_zero (NeZero.ne k)⟩
+    exact ⟨empDist n x₀, empDist_sum n x₀, hm ▸ Nat.zero_le _⟩
+  · -- Map sequences to Fin k → Fin (n+1) via bounded empDist
+    -- empDist n x i counts elements of Fin n, so ≤ n < n+1
+    have h_bound : ∀ (x : Fin n → Fin k) (i : Fin k), empDist n x i ≤ n := fun x i =>
+      (Finset.card_filter_le _ _).trans (by simp [Finset.card_univ, Fintype.card_fin])
+    -- Define the map F : sequences → (Fin k → Fin (n+1))
+    let F : (Fin n → Fin k) → (Fin k → Fin (n + 1)) :=
+      fun x i => ⟨empDist n x i, Nat.lt_succ_of_le (h_bound x i)⟩
+    -- Target Finset T = all functions Fin k → Fin (n+1), card = (n+1)^k
+    have hT_nonempty : (Finset.univ : Finset (Fin k → Fin (n + 1))).Nonempty :=
+      Finset.univ_nonempty
+    have hT_card : (Finset.univ : Finset (Fin k → Fin (n + 1))).card = (n + 1) ^ k := by
+      simp [Fintype.card_pi, Fintype.card_fin]
+    -- Domain card = k^n
+    have hS_card : (Finset.univ : Finset (Fin n → Fin k)).card = k ^ n := by
+      simp [Fintype.card_pi, Fintype.card_fin]
+    -- Pigeonhole bound: (n+1)^k * (k^n / (n+1)^k) ≤ k^n
+    have hpig : (Finset.univ : Finset (Fin k → Fin (n + 1))).card * (k ^ n / (n + 1) ^ k) ≤
+        (Finset.univ : Finset (Fin n → Fin k)).card := by
+      rw [hT_card, hS_card]
+      exact (mul_comm _ _).le.trans (Nat.div_mul_le_self _ _)
+    -- Apply pigeonhole: ∃ y : Fin k → Fin (n+1) with large fiber
+    obtain ⟨y, _, hy_card⟩ := Finset.exists_le_card_fiber_of_mul_le_card_of_maps_to
+      (f := F) (t := Finset.univ)
+      (fun _ _ => Finset.mem_univ _) hT_nonempty hpig
+    -- The fiber {x | F x = y} is nonempty (since bound > 0)
+    have h_pos : 0 < (Finset.univ.filter fun x : Fin n → Fin k => F x = y).card :=
+      (Nat.pos_of_ne_zero hm).trans_le hy_card
+    obtain ⟨x₀, hx₀⟩ := Finset.card_pos.mp h_pos
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx₀
+    -- From F x₀ = y, extract: empDist n x₀ = Fin.val ∘ y
+    have h_empDist_eq : empDist n x₀ = fun i => (y i).val := by
+      funext i; exact (Fin.ext_iff.mp (congr_fun hx₀ i)).symm
+    -- So ∑ i, (Fin.val ∘ y) i = n
+    have hf₀ : ∑ i : Fin k, (y i).val = n := by
+      rw [← h_empDist_eq]; exact empDist_sum n x₀
+    -- The fiber equals the type class for f₀ = Fin.val ∘ y
+    have h_eq : Finset.univ.filter (fun x : Fin n → Fin k => F x = y) =
+        typeClass n (fun i => (y i).val) hf₀ := by
+      ext x
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, typeClass, F]
+      constructor
+      · intro h; funext i; exact (Fin.ext_iff.mp (congr_fun h i)).symm
+      · intro h; funext i; exact Fin.ext (congr_fun h i).symm
+    exact ⟨fun i => (y i).val, hf₀, h_eq ▸ hy_card⟩
 
 /-!
 ## Section 3: Source Coding via Method of Types
