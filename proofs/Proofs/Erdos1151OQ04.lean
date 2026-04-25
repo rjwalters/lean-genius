@@ -865,7 +865,16 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
     (1 : ℝ) / (2 * Real.pi) * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) ≤
       ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
                    |(-1 : ℝ) - Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n))| := by
-  sorry -- Uses: S_n = Σ tan(φₖ/2), sub-sum via cot ≥ 1/(2t), then harmonic estimate
+  -- Step 1: Rewrite each term using the half-angle formula
+  have hS_eq : ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+                   |(-1 : ℝ) - Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n))| =
+               ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) /
+                   Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) :=
+    Finset.sum_congr rfl (fun k _ => sum_term_eq_tan_half_angle n hn k)
+  rw [hS_eq]
+  -- Step 2: Pair up terms: k and n-1-k give tan(A) and cot(A), sum = 2/sin(2A).
+  -- Using pairs and 2/sin(t) ≥ 2/t ≥ 4n/(π(2k+1)) gives harmonic sum bound.
+  sorry -- Main challenge: Finset reindexing for sub-sum (k ↔ n-1-k bijection)
 
 /-! ## Key Lemmas with Sorry -/
 
