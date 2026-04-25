@@ -2,7 +2,7 @@
   "id": "erdos-476-oq-05",
   "title": "Erdős #476 OQ5: Vosper's Theorem — Equality Case of Cauchy-Davenport",
   "slug": "erdos-476-oq-05",
-  "description": "Vosper's theorem (1956): if |A+B| = |A|+|B|-1 in Z/pZ with |A|,|B|≥2 and |A+B|<p, then A and B are arithmetic progressions with the same common difference d. Infrastructure fully proved: IsArithmeticProgression definition, singleton/pair AP lemmas, translation invariance, ap_of_near_periodic (backward-shift induction), and vosper_base (|A|=2 case). Full Vosper induction (1 sorry) remains open.",
+  "description": "Vosper's theorem (1956): if |A+B| = |A|+|B|-1 in Z/pZ with |A|,|B|≥2 and |A+B|<p, then A and B are arithmetic progressions with the same common difference d. Fully proved: all infrastructure, vosper_base, vosper_ap_sdiff_card, and the |B|=2 and |A|=|B|=3 sub-cases of case1_exists. One sorry remains: the |A|≥4 or |B|≥4 all-redundant contradiction (requires Kneser's theorem, not in Mathlib).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-21",
@@ -56,7 +56,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Infrastructure for Vosper's theorem fully established and mostly proved: IsArithmeticProgression defined, basic AP lemmas proved (singleton, pair, shift, cardinality), ap_of_near_periodic proved (backward-shift induction), vosper_base proved (|A|=2 case), vosper_ap_sdiff_card proved (Session 20). One sorry remains in the full Vosper induction: Case 1 existence (counting/iterative removal).",
+    "summary": "Vosper's theorem nearly complete: IsArithmeticProgression, all AP lemmas, ap_of_near_periodic, vosper_base, vosper_ap_sdiff_card all proved (0 sorries). In the full induction, case1_exists is mostly proved — |B|=2 via orbit argument, |A|=|B|=3 via counting (9 < 10). One sorry remains: |B|≥3 and (|A|≥4 or |B|≥4) all-redundant contradiction, which requires Kneser's theorem (not yet in Mathlib).",
     "implications": "Once ap_of_near_periodic is formalized (the backward-shift induction), the full Vosper theorem follows from standard induction. Vosper's theorem would then complement ZMod.cauchy_davenport in Mathlib, completing the picture of additive structure in Z/pZ.",
     "openQuestions": [
       "Formalize ap_of_near_periodic: B is an AP if |B \\ (B+d)| = 1 (needs backward-shift induction on |B|)",
