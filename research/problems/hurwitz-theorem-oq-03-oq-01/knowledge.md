@@ -230,3 +230,49 @@ The remaining sorry covers **even non-admissible n** (n = 6, 10, 12, ...):
 1. **Track Mathlib**: When Bott periodicity for Clifford algebras is formalized, sorry closes directly.
 2. **Gallery status**: Proof maximally complete — 1 sorry, 0 axioms, badge `wip`. No further progress possible without Clifford library.
 3. **Alternative**: Build Artin-Wedderburn for matrix algebras (~200 lines) as stepping stone toward Bott.
+
+---
+
+## Session 2026-04-24 (Session 5) — Final Block Confirmation
+
+**Mode**: REVISIT
+**Outcome**: BLOCKED — confirmed and documented, problem marked blocked
+
+### What I Did
+
+1. Verified Lean file state: 1 sorry at line 1937, 0 axioms (correct)
+2. Analyzed halving approach exhaustively:
+   - Halving (NSquareIdentity(n) → NSquareIdentity(n/2)) would handle n=6,10,12,14,... via reduction to no_odd_nsquare
+   - FAILS for n=16,32,64,... (these reduce to admissible n=8, no contradiction)
+   - The halving lemma itself requires a non-trivial proof (not obviously constructible from the NSquareIdentity structure)
+3. Verified Mathlib Clifford algebra files (Basic, Conjugation, BaseChange, Grading, etc.):
+   - NO representation theory present
+   - NO Bott periodicity
+   - NO Artin-Wedderburn structure theorems
+   - NO min-dimension results for Clifford representations
+4. Confirmed the block is genuine: 5 sessions, all approaches exhausted
+
+### Key Findings
+
+**P² = -I computation (for even n)**: For P = M₁M₂...M_{n-1} (product of all crossMat generators):
+- P anticommutes with 0 generators (P is central)
+- P² = -(M₂...M_{n-1})² via moving M₁ through 2k-2 generators = (-1)^{2k-2} = +1... wait need careful sign
+- For n=2k (even n): P²=(-1)^{k(2k-1)/...}: exact sign depends on k mod 4, gives volume element structure
+- This complex structure doesn't give contradiction without knowing Cl(0,n-1) structure
+
+**Halving is not sufficient**: Even if proved, it can't close n = 2^k for k ≥ 4. The sorry would remain for those n.
+
+**Trace argument limits**: All products M_J (for subsets J ⊆ {1,...,n-1}) have tr(M_J) = 0 for |J| ≥ 1 (skew-sym matrices have zero trace). No dimension contradiction from traces alone.
+
+### Files Modified
+
+- None (research and documentation only)
+
+### Conclusion
+
+BLOCKED as of 2026-04-24. Marked pool status = blocked.
+Required to close: Clifford algebra representation theory in Mathlib:
+1. Clifford algebra classification: Cl(0,2k-1) for k ≥ 3 has min rep dim > 2k
+2. Bott periodicity table: Cl(0,n+8) ≅ Cl(0,n) ⊗ M(16,ℝ)
+3. Artin-Wedderburn for real semisimple algebras
+None of these are in Mathlib as of April 2026.
