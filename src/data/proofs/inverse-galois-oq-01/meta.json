@@ -196,6 +196,11 @@
       "description": "Abel-Ruffini uses the non-solvability of $S_5$ (Part I of this file) via the Galois bridge to prove the impossibility of solving quintics by radicals. The `sn_solvable_iff` characterization proved here is the complete version of what Abel-Ruffini's Part IV only partially demonstrated ($S_0, S_1$ solvable)"
     },
     {
+      "targetId": "abel-ruffini-galois-extensions-oq-04",
+      "relationship": "complementary",
+      "description": "This file proves the complete solvability classification ($S_n$ and $A_n$ solvable iff $n \\leq 4$, $[S_5, S_5] = A_5$) — establishing the group-theoretic foundation for Abel-Ruffini. The Jordan-Hölder entry deepens this: once the composition series of $S_5$ is fixed as $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$, Jordan-Hölder uniqueness (proved in `abel-ruffini-galois-extensions-oq-04`) certifies that no alternative series exists. Together, this file establishes the solvability threshold and the JH file establishes its structural absoluteness."
+    },
+    {
       "targetId": "abel-ruffini-oq-04",
       "relationship": "related",
       "description": "Exposes the proof chain from $A_5$ simplicity through $S_5$ non-solvability. This file's Part III ($A_5$ analysis) provides the same structural results from a different angle"
