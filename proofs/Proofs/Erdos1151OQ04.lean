@@ -861,6 +861,14 @@ private lemma sum_term_eq_tan_half_angle (n : ℕ) (hn : 0 < n) (k : Fin n) :
       With m ≥ ⌊√(n+1)⌋: log(m+1) ≥ (1/2)log(n+1) so S_n ≥ (n/(2π))log(n+1) ✓
 
     Main implementation challenge: index arithmetic for the sub-sum bijection k ↔ j in Finset. -/
+
+/-- Odd harmonic sum ≥ (1/2) log(n+1): follows from 1/(2k+1) ≥ (1/2)·1/(k+1) term-by-term,
+    so Σ 1/(2k+1) ≥ (1/2)·harmonic n ≥ (1/2)·log(n+1) by `log_add_one_le_harmonic`. -/
+private lemma odd_harmonic_ge_half_log (n : ℕ) :
+    (1 : ℝ) / 2 * Real.log ((↑n : ℝ) + 1) ≤
+    ∑ k : Fin n, (1 : ℝ) / (2 * (k.val : ℝ) + 1) := by
+  sorry
+
 private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
     (1 : ℝ) / (2 * Real.pi) * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) ≤
       ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
@@ -872,9 +880,75 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
                    Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) :=
     Finset.sum_congr rfl (fun k _ => sum_term_eq_tan_half_angle n hn k)
   rw [hS_eq]
-  -- Step 2: Pair up terms: k and n-1-k give tan(A) and cot(A), sum = 2/sin(2A).
-  -- Using pairs and 2/sin(t) ≥ 2/t ≥ 4n/(π(2k+1)) gives harmonic sum bound.
-  sorry -- Main challenge: Finset reindexing for sub-sum (k ↔ n-1-k bijection)
+  set φ : Fin n → ℝ := fun k => (2 * (k.val : ℝ) + 1) * Real.pi / (4 * n) with hφ_def
+  have hS_phi : ∑ k : Fin n, Real.sin ((2 * ↑k.val + 1 : ℝ) * Real.pi / (4 * ↑n)) /
+      Real.cos ((2 * ↑k.val + 1 : ℝ) * Real.pi / (4 * ↑n)) =
+      ∑ k : Fin n, Real.sin (φ k) / Real.cos (φ k) := rfl
+  rw [hS_phi]
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+  have hpi_pos := Real.pi_pos
+  have hφ_pos : ∀ k : Fin n, 0 < φ k := fun k => by simp only [hφ_def]; positivity
+  have hφ_lt_half : ∀ k : Fin n, φ k < Real.pi / 2 := fun k => by
+    simp only [hφ_def]
+    have h' : (2 * (k.val : ℝ) + 1) < 4 * n :=
+      by exact_mod_cast show 2 * k.val + 1 < 4 * n by omega
+    rw [div_lt_div_iff (by positivity) (by norm_num)]; nlinarith
+  have hsin_pos : ∀ k : Fin n, 0 < Real.sin (φ k) := fun k =>
+    Real.sin_pos_of_pos_of_lt_pi (hφ_pos k) (by linarith [hφ_lt_half k])
+  have hcos_pos : ∀ k : Fin n, 0 < Real.cos (φ k) := fun k =>
+    Real.cos_pos_of_mem_Ioo ⟨by linarith [hφ_pos k], hφ_lt_half k⟩
+  -- Complementary angle: φ(Fin.rev k) = π/2 - φ k
+  have hrev_angle : ∀ k : Fin n, φ (Fin.rev k) = Real.pi / 2 - φ k := fun k => by
+    simp only [hφ_def, Fin.val_rev]
+    push_cast [Nat.cast_sub (show k.val ≤ n - 1 from Nat.le_pred_of_lt k.isLt),
+               Nat.cast_sub (show 1 ≤ n from hn)]
+    ring
+  -- Σ tan = Σ cot via Fin.rev bijection + complementary angle
+  have hS_rev : ∑ k : Fin n, Real.sin (φ k) / Real.cos (φ k) =
+      ∑ k : Fin n, Real.cos (φ k) / Real.sin (φ k) := by
+    conv_lhs =>
+      arg 1; ext k
+      rw [show Real.sin (φ k) / Real.cos (φ k) =
+          Real.cos (φ (Fin.rev k)) / Real.sin (φ (Fin.rev k)) from by
+            rw [hrev_angle k, Real.sin_pi_div_two_sub, Real.cos_pi_div_two_sub]]
+    simp_rw [← Fin.revPerm_apply]
+    exact Equiv.sum_comp Fin.revPerm (fun k => Real.cos (φ k) / Real.sin (φ k))
+  -- 2S ≥ Σ 1/φk: tan+cot = 1/(sin·cos) ≥ 1/φ [since sin·cos ≤ sin < φ]
+  have h2S_lb : ∑ k : Fin n, 1 / φ k ≤ 2 * ∑ k : Fin n, Real.sin (φ k) / Real.cos (φ k) := by
+    rw [hS_rev, ← Finset.sum_add_distrib, ← two_mul]
+    apply Finset.sum_le_sum; intro k _
+    rw [show Real.cos (φ k) / Real.sin (φ k) + Real.sin (φ k) / Real.cos (φ k) =
+        1 / (Real.sin (φ k) * Real.cos (φ k)) from by field_simp; ring,
+        div_le_div_iff (hφ_pos k) (mul_pos (hsin_pos k) (hcos_pos k))]
+    calc Real.sin (φ k) * Real.cos (φ k)
+        ≤ Real.sin (φ k) := by nlinarith [Real.cos_le_one (φ k), (hsin_pos k).le]
+      _ ≤ φ k := (Real.sin_lt (hφ_pos k)).le
+  -- Σ 1/φk = (4n/π) · Σ 1/(2k+1)
+  have hrecip_eq : ∑ k : Fin n, 1 / φ k =
+      4 * (↑n : ℝ) / Real.pi * ∑ k : Fin n, 1 / (2 * (k.val : ℝ) + 1) := by
+    rw [← Finset.mul_sum]; apply Finset.sum_congr rfl; intro k _
+    simp only [hφ_def]; field_simp; ring
+  -- Chain: 2S ≥ (4n/π)·T ≥ (4n/π)·(1/2)·log(n+1) ⟹ n·log(n+1) ≤ π·S
+  have hodd_harm := odd_harmonic_ge_half_log n
+  have hS_nn : 0 ≤ ∑ k : Fin n, Real.sin (φ k) / Real.cos (φ k) :=
+    Finset.sum_nonneg fun k _ => div_nonneg (hsin_pos k).le (hcos_pos k).le
+  have h_n_log_le : (↑n : ℝ) * Real.log ((↑n : ℝ) + 1) ≤
+      Real.pi * ∑ k : Fin n, Real.sin (φ k) / Real.cos (φ k) := by
+    have h_lb : 4 * (↑n : ℝ) / Real.pi * (1 / 2 * Real.log ((↑n : ℝ) + 1)) ≤
+        2 * ∑ k : Fin n, Real.sin (φ k) / Real.cos (φ k) :=
+      calc 4 * ↑n / Real.pi * (1 / 2 * Real.log (↑n + 1))
+          ≤ 4 * ↑n / Real.pi * ∑ k : Fin n, 1 / (2 * k.val + 1 : ℝ) := by
+            apply mul_le_mul_of_nonneg_left hodd_harm; positivity
+        _ = ∑ k : Fin n, 1 / φ k := by rw [hrecip_eq]
+        _ ≤ 2 * ∑ k : Fin n, Real.sin (φ k) / Real.cos (φ k) := h2S_lb
+    nlinarith [mul_le_mul_of_nonneg_left h_lb hpi_pos.le,
+               show Real.pi * (4 * (↑n : ℝ) / Real.pi * (1 / 2 * Real.log ((↑n : ℝ) + 1))) =
+                    2 * ↑n * Real.log ((↑n : ℝ) + 1) from by field_simp; ring,
+               mul_nonneg hpi_pos.le hS_nn]
+  -- Goal: (1/(2π)) n log(n+1) ≤ S. Equiv: n log(n+1) ≤ 2πS (div by 2π > 0).
+  rw [show (1 : ℝ) / (2 * Real.pi) * (↑n * Real.log (↑n + 1)) =
+      ↑n * Real.log (↑n + 1) / (2 * Real.pi) from by ring, div_le_iff (by positivity)]
+  nlinarith [mul_nonneg hpi_pos.le hS_nn]
 
 /-! ## Key Lemmas with Sorry -/
 
