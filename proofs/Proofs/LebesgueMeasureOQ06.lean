@@ -231,12 +231,60 @@ theorem banach_tarski :
     If the pieces were measurable, the countable additivity of Lebesgue measure
     would force: λ(B³) = ∑ᵢ λ(pieces i) = λ(B³) + λ(B³) = 2λ(B³),
     a contradiction since 0 < λ(B³) = (4/3)π < ∞. -/
--- AXIOMATIZED: classical consequence of banach_tarski (proof requires
--- Vitali-set style argument, ~200 lines; follows trivially from banach_tarski)
+-- Cardinality argument: if every subset of unitBall3 were measurable (Borel),
+-- the measurable sets would number ≤ 𝔠 (since the Borel σ-algebra is countably
+-- generated).  But unitBall3 ≅ [0,1] has cardinality 𝔠, so it has 2^𝔠 subsets,
+-- giving 2^𝔠 ≤ 𝔠 — contradicting Cantor's theorem.
+open Cardinal in
 theorem banach_tarski_pieces_nonmeasurable :
     ∃ (A : Set (EuclideanSpace ℝ (Fin 3))), A ⊆ unitBall3 ∧
     ¬MeasurableSet A := by
-  sorry
+  by_contra hall
+  push_neg at hall
+  -- hall : ∀ A, A ⊆ unitBall3 → MeasurableSet A
+  -- Step 1: The Borel σ-algebra on ℝ³ has cardinality ≤ 𝔠.
+  haveI : MeasurableSpace.CountablyGenerated (EuclideanSpace ℝ (Fin 3)) := inferInstance
+  have hmeas_le : #{t : Set (EuclideanSpace ℝ (Fin 3)) | MeasurableSet t} ≤ 𝔠 := by
+    set s := MeasurableSpace.countableGeneratingSet (EuclideanSpace ℝ (Fin 3))
+    have hcount : s.Countable := MeasurableSpace.countable_countableGeneratingSet
+    have hgen : generateFrom s = ‹MeasurableSpace (EuclideanSpace ℝ (Fin 3))› :=
+      MeasurableSpace.generateFrom_countableGeneratingSet
+    have hrw : ∀ t : Set (EuclideanSpace ℝ (Fin 3)),
+        @MeasurableSet _ (generateFrom s) t ↔ MeasurableSet t :=
+      fun t => by rw [hgen]
+    rw [show {t : Set (EuclideanSpace ℝ (Fin 3)) | MeasurableSet t} =
+            {t | @MeasurableSet _ (generateFrom s) t} from
+          Set.ext fun t => (hrw t).symm]
+    exact MeasurableSpace.cardinal_measurableSet_le_continuum
+      ((le_aleph0_iff_set_countable.mpr hcount).trans aleph0_le_continuum)
+  -- Step 2: Under our hypothesis, every subset of unitBall3 is measurable,
+  --         so #{A | A ⊆ unitBall3} ≤ 𝔠.
+  have hball_sub_le : #{A : Set (EuclideanSpace ℝ (Fin 3)) | A ⊆ unitBall3} ≤ 𝔠 := by
+    apply le_trans _ hmeas_le
+    apply Cardinal.mk_le_of_injective
+    exact Set.inclusion_injective (fun A hA => hall A hA)
+  -- Step 3: unitBall3 has cardinality ≥ 𝔠 (it contains a copy of [0,1] via single).
+  have hball_ge : 𝔠 ≤ #↥unitBall3 := by
+    rw [← mk_Icc_real (show (0 : ℝ) < 1 by norm_num)]
+    apply mk_le_of_injective (f := fun ⟨t, ht⟩ =>
+        ⟨EuclideanSpace.single (0 : Fin 3) t, by
+           simp only [unitBall3, Metric.mem_closedBall, dist_zero_right,
+                      EuclideanSpace.norm_single, Real.norm_eq_abs,
+                      abs_of_nonneg ht.1]
+           exact ht.2⟩)
+    intro ⟨t₁, _⟩ ⟨t₂, _⟩ h
+    simp only [Subtype.mk.injEq] at h
+    have h0 := congr_fun h (0 : Fin 3)
+    simp only [EuclideanSpace.single_apply, eq_self_iff_true, if_true] at h0
+    exact Subtype.ext h0
+  -- Step 4: By Cantor, #{A | A ⊆ unitBall3} = 2^#unitBall3 > 𝔠.
+  have hball_gt : 𝔠 < #{A : Set (EuclideanSpace ℝ (Fin 3)) | A ⊆ unitBall3} := by
+    -- 𝒫 s is definitionally {t | t ⊆ s}, so these are equal by rfl.
+    rw [show {A : Set (EuclideanSpace ℝ (Fin 3)) | A ⊆ unitBall3} = 𝒫 unitBall3 from rfl,
+        mk_powerset]
+    exact hball_ge.trans_lt (cantor _)
+  -- Contradiction: 2^𝔠 ≤ 𝔠 violates Cantor.
+  exact absurd hball_sub_le hball_gt.not_le
 
 -- ============================================================
 -- SECTION VI: Relationship to Amenability
