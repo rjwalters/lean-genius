@@ -175,12 +175,128 @@ def unitSphere3 : Set (EuclideanSpace ℝ (Fin 3)) :=
     group of rank 2.
 
     This is the key algebraic ingredient for Banach-Tarski. -/
--- AXIOMATIZED: Hausdorff 1914 (proof requires 300+ lines of rotation matrix
--- + number-theoretic argument showing irrational word images ≠ identity)
+-- PARTIAL PROOF: Rotation matrices defined and shown orthogonal.
+-- LinearIsometryEquivs constructed. Remaining sorry: freeness (orbit argument in ℤ[√2]).
 theorem hausdorff_free_subgroup :
     ∃ (φ ψ : EuclideanSpace ℝ (Fin 3) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin 3)),
     Function.Injective
       (FreeGroup.lift (fun b : Bool => if b then φ.toLinearEquiv else ψ.toLinearEquiv)) := by
+  -- Trig identity: cos θ = 1/3, sin θ = 2√2/3, where θ = arccos(1/3)
+  -- Verified: (1/3)² + (2√2/3)² = 1/9 + 8/9 = 1
+  have hcs : (1 / 3 : ℝ) ^ 2 + (2 * Real.sqrt 2 / 3) ^ 2 = 1 := by
+    have h2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+    nlinarith [h2]
+  -- φ = rotation by arccos(1/3) around the z-axis
+  let Mφ : Matrix (Fin 3) (Fin 3) ℝ :=
+    !![(1 : ℝ) / 3, -(2 * Real.sqrt 2 / 3), 0;
+       2 * Real.sqrt 2 / 3, (1 : ℝ) / 3, 0;
+       0, 0, 1]
+  -- ψ = rotation by arccos(1/3) around the x-axis
+  let Mψ : Matrix (Fin 3) (Fin 3) ℝ :=
+    !![1, 0, 0;
+       0, (1 : ℝ) / 3, -(2 * Real.sqrt 2 / 3);
+       0, 2 * Real.sqrt 2 / 3, (1 : ℝ) / 3]
+  -- Orthogonality: Mφᵀ * Mφ = 1 (rotation matrices are orthogonal)
+  -- Each entry follows from c² + s² = 1 and cs - sc = 0
+  have hφ_orth : Mφᵀ * Mφ = 1 := by
+    have hs2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+    unfold_let Mφ
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp only [Matrix.transpose_apply, Matrix.mul_apply, Matrix.one_apply,
+        Fin.sum_univ_three, Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_fin_one, Matrix.head_fin_const, Fin.isValue] <;>
+      ring_nf <;>
+      nlinarith [hs2, hcs, Real.sqrt_nonneg 2]
+  -- Mφ * Mφᵀ = 1
+  have hφ_orth' : Mφ * Mφᵀ = 1 := by
+    have hs2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+    unfold_let Mφ
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp only [Matrix.transpose_apply, Matrix.mul_apply, Matrix.one_apply,
+        Fin.sum_univ_three, Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_fin_one, Matrix.head_fin_const, Fin.isValue] <;>
+      ring_nf <;>
+      nlinarith [hs2, hcs, Real.sqrt_nonneg 2]
+  -- Mψᵀ * Mψ = 1
+  have hψ_orth : Mψᵀ * Mψ = 1 := by
+    have hs2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+    unfold_let Mψ
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp only [Matrix.transpose_apply, Matrix.mul_apply, Matrix.one_apply,
+        Fin.sum_univ_three, Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_fin_one, Matrix.head_fin_const, Fin.isValue] <;>
+      ring_nf <;>
+      nlinarith [hs2, hcs, Real.sqrt_nonneg 2]
+  -- Mψ * Mψᵀ = 1
+  have hψ_orth' : Mψ * Mψᵀ = 1 := by
+    have hs2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+    unfold_let Mψ
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp only [Matrix.transpose_apply, Matrix.mul_apply, Matrix.one_apply,
+        Fin.sum_univ_three, Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_fin_one, Matrix.head_fin_const, Fin.isValue] <;>
+      ring_nf <;>
+      nlinarith [hs2, hcs, Real.sqrt_nonneg 2]
+  -- Build LinearEquiv: toEuclideanLin M has inverse toEuclideanLin Mᵀ
+  -- Uses: toEuclideanLin (Mᵀ * M) = id when Mᵀ * M = 1
+  have hφ_comp_rl : (Matrix.toEuclideanLin Mφ).comp (Matrix.toEuclideanLin Mφᵀ) = LinearMap.id := by
+    ext x
+    simp only [LinearMap.comp_apply, LinearMap.id_apply, Matrix.toEuclideanLin_apply,
+               WithLp.ofLp_toLp, Matrix.mulVec_mulVec, hφ_orth', Matrix.one_mulVec,
+               WithLp.toLp_ofLp]
+  have hφ_comp_lr : (Matrix.toEuclideanLin Mφᵀ).comp (Matrix.toEuclideanLin Mφ) = LinearMap.id := by
+    ext x
+    simp only [LinearMap.comp_apply, LinearMap.id_apply, Matrix.toEuclideanLin_apply,
+               WithLp.ofLp_toLp, Matrix.mulVec_mulVec, hφ_orth, Matrix.one_mulVec,
+               WithLp.toLp_ofLp]
+  have hψ_comp_rl : (Matrix.toEuclideanLin Mψ).comp (Matrix.toEuclideanLin Mψᵀ) = LinearMap.id := by
+    ext x
+    simp only [LinearMap.comp_apply, LinearMap.id_apply, Matrix.toEuclideanLin_apply,
+               WithLp.ofLp_toLp, Matrix.mulVec_mulVec, hψ_orth', Matrix.one_mulVec,
+               WithLp.toLp_ofLp]
+  have hψ_comp_lr : (Matrix.toEuclideanLin Mψᵀ).comp (Matrix.toEuclideanLin Mψ) = LinearMap.id := by
+    ext x
+    simp only [LinearMap.comp_apply, LinearMap.id_apply, Matrix.toEuclideanLin_apply,
+               WithLp.ofLp_toLp, Matrix.mulVec_mulVec, hψ_orth, Matrix.one_mulVec,
+               WithLp.toLp_ofLp]
+  -- Build linear equivalences
+  let φ_lin : EuclideanSpace ℝ (Fin 3) ≃ₗ[ℝ] EuclideanSpace ℝ (Fin 3) :=
+    LinearEquiv.ofLinear (Matrix.toEuclideanLin Mφ) (Matrix.toEuclideanLin Mφᵀ)
+      hφ_comp_rl hφ_comp_lr
+  let ψ_lin : EuclideanSpace ℝ (Fin 3) ≃ₗ[ℝ] EuclideanSpace ℝ (Fin 3) :=
+    LinearEquiv.ofLinear (Matrix.toEuclideanLin Mψ) (Matrix.toEuclideanLin Mψᵀ)
+      hψ_comp_rl hψ_comp_lr
+  -- Inner product preservation: orthogonal matrices preserve ⟪·,·⟫
+  -- Key algebraic fact: (Mu)·(Mv) = u·(Mᵀ M v) = u·v when Mᵀ M = 1
+  -- φ_lin x = toEuclideanLin Mφ x definitionally (ofLinear_apply)
+  have hφ_inner : ∀ (x y : EuclideanSpace ℝ (Fin 3)), ⟪φ_lin x, φ_lin y⟫_ℝ = ⟪x, y⟫_ℝ := by
+    intro x y
+    -- Unfold φ_lin via ofLinear_apply (definitional equality)
+    show ⟪Matrix.toEuclideanLin Mφ x, Matrix.toEuclideanLin Mφ y⟫_ℝ = ⟪x, y⟫_ℝ
+    simp only [EuclideanSpace.inner_eq_star_dotProduct, Matrix.ofLp_toEuclideanLin_apply,
+               star_trivial]
+    rw [Matrix.dotProduct_mulVec, Matrix.vecMul_mulVec, hφ_orth, Matrix.vecMul_one]
+  have hψ_inner : ∀ (x y : EuclideanSpace ℝ (Fin 3)), ⟪ψ_lin x, ψ_lin y⟫_ℝ = ⟪x, y⟫_ℝ := by
+    intro x y
+    show ⟪Matrix.toEuclideanLin Mψ x, Matrix.toEuclideanLin Mψ y⟫_ℝ = ⟪x, y⟫_ℝ
+    simp only [EuclideanSpace.inner_eq_star_dotProduct, Matrix.ofLp_toEuclideanLin_apply,
+               star_trivial]
+    rw [Matrix.dotProduct_mulVec, Matrix.vecMul_mulVec, hψ_orth, Matrix.vecMul_one]
+  -- Build the linear isometric equivalences via isometryOfInner
+  let φ := LinearEquiv.isometryOfInner φ_lin hφ_inner
+  let ψ := LinearEquiv.isometryOfInner ψ_lin hψ_inner
+  -- Witness: the free group F₂ embeds via φ and ψ
+  refine ⟨φ, ψ, ?_⟩
+  -- SORRY: Freeness requires Hausdorff's orbit argument (1914):
+  -- Track orbit of e₂=(0,1,0) under reduced words in ℤ[√2].
+  -- Key invariant: for a reduced word w of length n, the vector
+  -- 3^n · w(e₂) lies in ℤ[√2]³ with a specific mod-3 pattern
+  -- that distinguishes all non-identity words from the identity.
+  -- Proof requires ~200 lines of inductive argument on reduced words.
   sorry
 
 -- ============================================================
