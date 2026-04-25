@@ -23,6 +23,50 @@
     ]
   },
   {
+    "id": "ann-divtrunc-oq03-isosculator",
+    "proofId": "divisibility-truncation-general-oq-03",
+    "range": { "startLine": 59, "endLine": 79 },
+    "type": "definition",
+    "title": "IsOsculator Predicate and Congruence Closure",
+    "content": "`IsOsculator d c` is defined as `(d : ℤ) ∣ 10 * c - 1` — d divides 10c minus 1. This is equivalent to `c ≡ 10⁻¹ (mod d)` when gcd(10,d)=1. Three structural lemmas about this predicate are proved:\n\n**osculator_shift**: `IsOsculator d c → IsOsculator d (c + d)`. Proof: `10(c+d) - 1 = (10c-1) + 10d`, so if `d | 10c-1` and `d | 10d`, then `d | 10(c+d)-1`. Uses `dvd_add` and `dvd_mul_of_dvd_right (dvd_refl d) 10`.\n\n**osculator_congr**: If `d | c'-c` and `IsOsculator d c`, then `IsOsculator d c'`. Proof: `10c'-1 = (10c-1) + 10(c'-c)`, so divisibility of both summands (via `dvd_add hc (dvd_mul_of_dvd_right heq 10)`) gives the result.\n\nThese two lemmas establish that the set of osculators is a coset: $10^{-1} + d\\mathbb{Z}$. The `osculator_congr` direction (congruence implies same class) is the key tool for later results.",
+    "mathContext": "The set $\\text{Osc}(d) = \\{c \\in \\mathbb{Z} : d \\mid 10c-1\\}$ is a coset of $d\\mathbb{Z}$: if $c_0 \\in \\text{Osc}(d)$, then $\\text{Osc}(d) = c_0 + d\\mathbb{Z}$. `osculator_shift` gives $c \\in \\text{Osc}(d) \\Rightarrow c+d \\in \\text{Osc}(d)$ (one generator direction). `osculator_congr` gives the full congruence: $c' \\equiv c \\pmod{d} \\Rightarrow (c \\in \\text{Osc}(d) \\Rightarrow c' \\in \\text{Osc}(d))$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsOsculator definition",
+      "dvd_add",
+      "dvd_mul_of_dvd_right",
+      "coset of dℤ",
+      "modular inverse"
+    ],
+    "prerequisites": [
+      "IsOsculator predicate",
+      "Lean 4 dvd lemmas",
+      "integer divisibility"
+    ]
+  },
+  {
+    "id": "ann-divtrunc-oq03-canonical",
+    "proofId": "divisibility-truncation-general-oq-03",
+    "range": { "startLine": 111, "endLine": 123 },
+    "type": "technique",
+    "title": "canonical_osculator_unique: Three-Step Divisibility Composition",
+    "content": "`canonical_osculator_unique` shows every osculator `c` satisfies `d | c - (gcdA(10,d) % d)`. The proof chains three divisibility facts:\n\n`h1`: `gcdA(10,d) % d` is an osculator (from `osculator_mod_d_is_osculator`).\n`h2`: `d | c - gcdA(10,d)` — any osculator `c` differs from the Bézout osculator by a multiple of d (from `osculator_unique_mod` applied to `c` and `bezout_is_osculator`).\n`h3`: `d | gcdA(10,d) - gcdA(10,d) % d` — the Bézout coefficient differs from its reduction by a multiple of d (from `osculator_unique_mod` applied to `bezout_is_osculator` and `h1`).\n\nCombining: `c - (gcdA % d) = (c - gcdA) + (gcdA - gcdA % d)`, and since d divides each summand, `d | c - (gcdA % d)` by `dvd_add h2 h3`. The `ring` lemma establishes the decomposition.",
+    "mathContext": "This is essentially: in the quotient $\\mathbb{Z}/d\\mathbb{Z}$, every element of the coset $\\text{Osc}(d)$ maps to the same class — the class of $\\text{gcdA}(10,d) \\bmod d$. `canonical_osculator_unique` makes this explicit without working in the quotient directly, using three applications of `osculator_unique_mod`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "canonical_osculator_unique",
+      "dvd_add",
+      "osculator_unique_mod",
+      "three-step transitivity",
+      "ring lemma"
+    ],
+    "prerequisites": [
+      "osculator_unique_mod",
+      "osculator_mod_d_is_osculator",
+      "bezout_is_osculator"
+    ]
+  },
+  {
     "id": "ann-divtrunc-oq03-uniqueness",
     "proofId": "divisibility-truncation-general-oq-03",
     "range": {
