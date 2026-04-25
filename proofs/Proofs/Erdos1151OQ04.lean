@@ -878,32 +878,81 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
 
 /-! ## Key Lemmas with Sorry -/
 
+/-- cos(πp/q) ≠ 1 when p is odd and q > 0.
+
+    Proof: By `Real.cos_eq_one_iff`, cos(θ) = 1 iff θ = 2nπ for some n : ℤ.
+    If πp/q = 2nπ then p = 2nq (clearing π and q), making p even — contradicting Odd p. -/
+private lemma cos_pi_mul_odd_ne_one (p q : ℕ) (hp : Odd p) (hq_pos : 0 < q) :
+    Real.cos ((↑p : ℝ) * Real.pi / (↑q : ℝ)) ≠ 1 := by
+  intro heq
+  rw [Real.cos_eq_one_iff] at heq
+  obtain ⟨n, hn⟩ := heq
+  -- hn : (↑n : ℝ) * (2 * π) = ↑p * π / ↑q
+  have hpi_ne : Real.pi ≠ 0 := Real.pi_pos.ne'
+  have hq_ne : (↑q : ℝ) ≠ 0 := (Nat.cast_pos.mpr hq_pos).ne'
+  -- Derive p = 2nq as reals (multiply both sides of hn by q/π)
+  have hreal : (↑p : ℝ) = 2 * (↑n : ℝ) * (↑q : ℝ) := by
+    field_simp [hpi_ne, hq_ne] at hn; linarith
+  -- Lift to ℤ: (p : ℤ) = 2 * n * q
+  have hpq_int : (↑p : ℤ) = 2 * n * (↑q : ℤ) := by exact_mod_cast hreal
+  -- Odd p gives p = 2*m + 1, contradicting 2 | p
+  obtain ⟨m, hm⟩ := hp
+  have hmcast : (↑p : ℤ) = 2 * (↑m : ℤ) + 1 := by exact_mod_cast hm
+  omega  -- 2*n*q = 2*m+1 is impossible (different parities mod 2)
+
 /-- **[SORRY] Harmonic sum lower bound for Chebyshev trig sum.**
 
     For x = cos(πp/q) with p, q odd, the trigonometric Lebesgue sum
     S_n = Σₖ sin(φₖ)/|x - cos φₖ| grows at least as fast as n · log(n+1).
 
-    **Proof strategy (2 cases)**:
+    **Proof by cases on x = -1 vs x ∈ (-1, 1)**:
 
-    **Case 1: x = -1** (when p/q is an odd integer, e.g., p = q = 1):
-    - Using sum_term_eq_tan_half_angle: S_n = Σₖ tan(φₖ/2) where φₖ = (2k+1)π/(2n)
-    - For k = n-1-j (j = 0,...,⌊n/4⌋-1): φₖ/2 = π/2 - (2j+1)π/(4n)
-    - tan(φₖ/2) = cot((2j+1)π/(4n)) ≥ 2n/(π(2j+1)) by cot_ge_inv_two_mul
-    - Sub-sum: Σⱼ₌₀^{⌊n/4⌋-1} 2n/(π(2j+1)) ≥ (n/π)·log(⌊n/4⌋+1) ≥ C·n·log(n+1)
-    - Apply: trig_sum_lb_of_cos_eq_neg_one
+    **Case 1: x = -1** (p/q is an odd integer, e.g., p = q = 1):
+    - Delegates to `trig_sum_lb_of_cos_eq_neg_one`; C₂ = 1/(2π).
 
-    **Case 2: x ∈ (-1, 1)** (when sin(πp/q) ≠ 0):
-    - Let s = |sin(πp/q)| > 0 (since x ≠ ±1 means p/q ∉ ℤ)
-    - For nodes k at distance j·π/n from nearest node k₀:
-        sin(φₖ)/|x - cos φₖ| ≥ (s/2) / (j·π/n) = s·n/(2π·j)  by Lipschitz + sin bound
-    - Summing j = 1..⌊n·s/(2π)⌋: S_n ≥ (s·n/(2π))·Hₘ ≥ (s·n/(2π))·log(⌊n·s/(2π)⌋+1)
-    - Take C₂ = s²/(4π²) -/
+    **Case 2: x ∈ (-1, 1)** (sin(πp/q) ≠ 0, since x ≠ ±1):
+    - Let s = |sin(πp/q)| > 0, θ = πp/q, and let k₀ be the nearest node to θ.
+    - Lipschitz: |x - cos φₖ| = |cos θ - cos φₖ| ≤ |θ - φₖ| (cos is 1-Lipschitz)
+    - For k = k₀ + j with |j| ≤ ns/(2π): sin(φₖ) ≥ s/2 (continuity) and
+        |θ - φₖ| ≤ (|j|+1)·π/n, so sin(φₖ)/|x - cos φₖ| ≥ sn/(2π(|j|+1))
+    - Harmonic sum: Σⱼ₌₁^m 1/(j+1) ≥ log(m+2) - 1, giving S_n ≥ (sn/(2π))·log(m+2)
+    - With m = ⌊ns/(2π)⌋: log(m+2) ≥ (1/2)·log(n+1) for n ≥ N(s)
+    - Take C₂ = s²/(8π²). (Note x ≠ 1 is proved by `cos_pi_mul_odd_ne_one`) -/
 private lemma chebyshev_trig_sum_lb (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_pos : 0 < q) :
     ∃ C₂ : ℝ, 0 < C₂ ∧ ∀ n : ℕ, 1 ≤ n →
       C₂ * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) ≤
         ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
                      |Real.cos ((↑p : ℝ) * Real.pi / ↑q) - chebyshevNode n k| := by
-  sorry  -- S_n ≥ C₂ · n · log(n+1) via Lipschitz bound + harmonic series
+  -- x ≠ 1: from Odd p (p = 2nq would be even)
+  have hx_ne_one : Real.cos ((↑p : ℝ) * Real.pi / ↑q) ≠ 1 :=
+    cos_pi_mul_odd_ne_one p q hp hq_pos
+  -- Case split: x = -1 or x ∈ (-1, 1)
+  by_cases hx : Real.cos ((↑p : ℝ) * Real.pi / ↑q) = -1
+  · -- **Case x = -1**: sum equals Σₖ sin(φₖ)/(1+cos φₖ) = Σₖ tan(φₖ/2)
+    refine ⟨1 / (2 * Real.pi), by positivity, fun n hn => ?_⟩
+    -- Rewrite each sum term: substitute hx and unfold chebyshevNode
+    have hsum_eq :
+        ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * ↑n)) /
+          |Real.cos ((↑p : ℝ) * Real.pi / ↑q) - chebyshevNode n k| =
+        ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * ↑n)) /
+          |(-1 : ℝ) - Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (2 * ↑n))| :=
+      Finset.sum_congr rfl fun k _ => by simp only [hx, chebyshevNode]
+    rw [hsum_eq]
+    exact trig_sum_lb_of_cos_eq_neg_one n hn
+  · -- **Case x ∈ (-1, 1)**: sin(πp/q)² > 0 since x ≠ ±1
+    have hx_gt : -1 < Real.cos ((↑p : ℝ) * Real.pi / ↑q) :=
+      lt_of_le_of_ne (Real.neg_one_le_cos _) (Ne.symm hx)
+    have hx_lt : Real.cos ((↑p : ℝ) * Real.pi / ↑q) < 1 :=
+      lt_of_le_of_ne (Real.cos_le_one _) hx_ne_one
+    have hsin_sq_pos : 0 < Real.sin ((↑p : ℝ) * Real.pi / ↑q) ^ 2 := by
+      have hcos_sq_lt : Real.cos ((↑p : ℝ) * Real.pi / ↑q) ^ 2 < 1 := by nlinarith
+      have := Real.sin_sq_add_cos_sq ((↑p : ℝ) * Real.pi / ↑q)
+      nlinarith
+    -- C₂ = sin²(πp/q) / (8π²) > 0
+    refine ⟨Real.sin ((↑p : ℝ) * Real.pi / ↑q) ^ 2 / (8 * Real.pi ^ 2),
+            by positivity, fun n hn => ?_⟩
+    -- Proof by Lipschitz + nearest-node + harmonic sum (see docstring above)
+    sorry
 
 /-- **Logarithmic lower bound on the Lebesgue function** (proved modulo `chebyshev_trig_sum_lb`).
 

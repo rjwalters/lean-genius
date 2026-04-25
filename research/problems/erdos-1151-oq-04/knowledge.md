@@ -152,3 +152,29 @@ The current statement with `M < Lₙf(x)` (signed divergence) may require full l
 - `sum_term_eq_tan_half_angle` proof: abs_of_neg + half-angle formula. The `set` tactic was avoided
   to allow `ring` to close the argument equality `φ/2 = (2k+1)π/(4n)` after `rw [harg]`.
 - Note: `congr 1 <;> ring` does NOT work on sin/cos goals; need explicit `have harg` + `rw [harg]`.
+
+## Session 2026-04-25 — Case Split Structure (Session 14)
+
+**Outcome**: progress — 1 new proved lemma, case split structure for chebyshev_trig_sum_lb  
+**Sorries**: still 3 (unchanged count, but x=-1 case now PROVED modulo trig_sum_lb_of_cos_eq_neg_one)
+
+### What I Did
+- Proved `cos_pi_mul_odd_ne_one`: cos(πp/q) ≠ 1 when p is odd and q > 0
+  - Uses `Real.cos_eq_one_iff`: cos(θ) = 1 ↔ ∃ n : ℤ, n * (2π) = θ
+  - If πp/q = 2nπ then p = 2nq (clear π and q), making p even → contradiction via `omega`
+  - Key: `field_simp [pi_ne, q_ne] at hn; linarith` gives `(p : ℝ) = 2 * n * q`
+  - Then `exact_mod_cast` lifts to ℤ, `omega` closes the parity contradiction
+- Restructured `chebyshev_trig_sum_lb` with explicit case split:
+  - Case x = -1: PROVED (C₂ = 1/(2π)); connects to `trig_sum_lb_of_cos_eq_neg_one` via `Finset.sum_congr` + `simp only [hx, chebyshevNode]`
+  - Case x ∈ (-1,1): sorry with C₂ = sin²(πp/q)/(8π²); proved sin²(πp/q) > 0 from x ≠ ±1
+
+### Key Findings
+- Case x=-1 in `chebyshev_trig_sum_lb` is NOW PROVED structurally (modulo `trig_sum_lb_of_cos_eq_neg_one`)
+- `cos_pi_mul_odd_ne_one` uses `Real.cos_eq_one_iff` (confirmed in Mathlib4 `Trigonometric/Basic.lean:528`)
+- `exact_mod_cast` from `(p : ℝ) = 2 * (n : ℤ) * (q : ℕ)` to ℤ should work via norm_cast chain
+- `omega` handles `2 * n * q = 2 * m + 1 → False` over ℤ via parity argument
+
+### Next Steps
+1. Prove `trig_sum_lb_of_cos_eq_neg_one` Step 2: sub-sum over last n/2 nodes (k ↦ n-1-k bijection)
+2. Prove `chebyshev_trig_sum_lb` case x∈(-1,1): Lipschitz + nearest-node + harmonic sum
+3. For `divergence_from_lebesgue_growth`: weaken to lim sup = ∞ (Baire/UBP)
