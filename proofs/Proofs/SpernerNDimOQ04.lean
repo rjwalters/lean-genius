@@ -704,21 +704,34 @@ theorem kuhnPathStart_is_fc_of_fc_start {c : Coloring d N} {K : SpernerTriangula
     |B| = |B_fc| + |B_nfc| is odd (hbdry_odd) → |B_fc| is odd ≥ 1.
 
     **What remains**: Walk reversibility (τ∘τ=id). Non-revisiting (the fixed-point-free
-    part) is FULLY PROVED by kuhn_step_nonrevisit + WalkValid invariant. -/
-axiom kuhn_path_existential_ax {d N : ℕ} {c : Coloring d N} {K : SpernerTriangulation d N}
+    part) is FULLY PROVED by kuhn_step_nonrevisit + WalkValid invariant.
+
+    Proof sketch for τ∘τ=id:
+    Given walk from (s₀, k₀) [boundary] → s₁ → ... → sₙ → exits at boundary (kₙ_exit):
+    - At sₙ: entry = kₙ, exit = kₙ_exit (boundary). IsKuhnCompatible gives ≤2 doors.
+    - At sₙ₋₁: entry = kₙ₋₁, exit was k_adj to sₙ. Reversed walk: entry = kₙ_exit,
+      unique exit at sₙ is kₙ (= K.adj.symm of the forward step), continuing backward.
+    - Full reversal: τ(sₙ, kₙ_exit) = (s₀, k₀) by induction on walk length.
+
+    The Lean formalization gap is the inductive walk reversal proof using
+    kuhn_step_nonrevisit + IsKuhnCompatible + adj_unique_facet. -/
+theorem kuhn_path_existential_ax {d N : ℕ} {c : Coloring d N} {K : SpernerTriangulation d N}
     (hKuhn : IsKuhnCompatible c K)
     (hc : IsSperner c)
     (hbdry_odd : Odd (Finset.univ.filter (fun p : K.Simplex × Fin (d + 1) =>
       isDoorAt c K p.1 p.2 ∧ K.adj p.1 p.2 = none ∧ p.2 = Fin.last d)).card) :
     ∃ (s₀ : K.Simplex) (k₀ : Fin (d + 1)) (hdoor₀ : isDoorAt c K s₀ k₀)
       (hbdry₀ : K.adj s₀ k₀ = none),
-      IsFC c K (kuhnPathStart c K hKuhn s₀ k₀ hdoor₀ hbdry₀)
+      IsFC c K (kuhnPathStart c K hKuhn s₀ k₀ hdoor₀ hbdry₀) := by
+  /- Walk-pairing involution argument (Kuhn 1968):
+     τ pairs boundary non-FC doors; τ is FPF by non-revisiting (proved).
+     τ∘τ=id follows from walk reversibility (the remaining Lean gap).
+     By even_card_fpf_invol, |B_nfc| even; |B| odd → |B_fc| ≥ 1. -/
+  sorry
 
 /-- EXISTENTIAL: There exists a boundary door from which kuhnPathStart finds FC.
 
-    Proved from kuhn_path_existential_ax. The axiom encodes Kuhn's walk-pairing
-    involution argument (τ∘τ=id via walk reversibility + non-revisiting = no fixed points).
-
+    Proved from kuhn_path_existential_ax (which carries a sorry for walk reversibility).
     Non-revisiting is FULLY PROVED (kuhn_step_nonrevisit + WalkValid).
     Walk reversibility (τ∘τ=id) is the remaining open formalization step. -/
 theorem kuhnPathStart_finds_fc_existential {c : Coloring d N} {K : SpernerTriangulation d N}

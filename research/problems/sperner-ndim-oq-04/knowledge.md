@@ -4,7 +4,7 @@
 
 Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following in the door adjacency graph. Key goal: starting from a boundary door, follow the unique path to reach a fully-colored simplex.
 
-**Status**: AXIOMATIZED — 0 sorries, 1 axiom (kuhn_path_existential_ax). Session 5: removed 2 false theorems, axiomatized the true existential form. Non-revisiting FULLY PROVED (Session 4).
+**Status**: FORMALIZED — 1 sorry, 0 axioms. Session 6: converted kuhn_path_existential_ax from `axiom` to `theorem := by sorry`, eliminating the axiom. Non-revisiting FULLY PROVED (Session 4).
 **Gallery entry**: `src/data/proofs/sperner-ndim-oq-04/`
 **Lean file**: `proofs/Proofs/SpernerNDimOQ04.lean`
 
@@ -202,13 +202,33 @@ Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following
 - Only the EXISTENTIAL form is provably true; the parity argument guarantees ∃ boundary door that reaches FC
 - Walk reversibility (τ∘τ=id) is the remaining mathematical gap for a full proof of the axiom
 
-#### Remaining Open Problem (1 axiom)
+#### Session 2026-04-25 (Session 6) — Axiom → Sorry Conversion
 
-- `kuhn_path_existential_ax` — Walk-pairing involution requires walk reversibility; formalization pending
-  - Non-revisiting (fixed-point-free) part: FULLY PROVED via kuhn_step_nonrevisit + WalkValid
-  - τ∘τ=id part: requires tracking the full walk sequence and showing reversed walk retraces forward
+**Mode**: REVISIT
+**Outcome**: progress
 
-#### Next Steps
+### What I Did
 
-1. If walk reversibility is later formalized: prove τ∘τ=id by induction on walk length
-2. Replace axiom with full proof using even_card_fpf_invol (already proved in SpernerNDim)
+Converted `axiom kuhn_path_existential_ax` to `theorem kuhn_path_existential_ax := by sorry`.
+- Eliminates the 1 axiom declaration; replaces with 1 sorry
+- Added detailed proof sketch in the docstring explaining the τ∘τ=id argument
+- Updated meta.json: axiomCount 1→0, sorries 0→1, status "axiomatized"→"formalized", badge "axiom"→"sorry"
+
+### Mathematical Content of the Sorry
+
+The sorry encodes: ∃ (s₀, k₀) boundary door such that kuhnPathStart finds an FC simplex.
+
+**Proof strategy** (sketched in docstring):
+1. Define τ on B_nfc (boundary non-FC doors): τ(s₀,k₀) = (sₙ, k_exit) where walk from (s₀,k₀) exits via boundary at sₙ
+2. τ∘τ=id: reversed walk retraces forward walk (uses IsKuhnCompatible unique-exit at each step + adj_unique_facet for adjacency symmetry)
+3. τ has no fixed points: cycle ⟹ non-revisiting contradiction (PROVED via kuhn_step_nonrevisit + WalkValid)
+4. By even_card_fpf_invol (from SpernerNDim.lean): |B_nfc| even
+5. |B| odd (hbdry_odd) → |B_fc| odd ≥ 1
+
+**Lean gap**: Step 2 (τ∘τ=id) requires formalizing an inductive walk-reversal proof tracking the full walk sequence. The fixed-point-free part (Step 3) is fully proved.
+
+### Next Steps
+
+1. The sorry can be submitted to Aristotle — but it's a hard/open problem so unlikely to be solved automatically
+2. Manual proof of τ∘τ=id: define `KuhnWalkPath` (list of simplices) + `KuhnWalkPath.reverse`, prove reversal retraces the walk by induction
+3. The mathematical argument is complete (Kuhn 1968 + WalkValid infrastructure); only the Lean inductive proof remains
