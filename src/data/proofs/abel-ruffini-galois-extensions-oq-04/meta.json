@@ -122,39 +122,59 @@
     ],
     "crossReferences": [
         {
-            "id": "abel-ruffini-galois-extensions",
+            "targetId": "abel-ruffini-galois-extensions",
             "relationship": "parent",
             "description": "Parent entry providing the Galois extension infrastructure for Abel-Ruffini. The Jordan-Hölder theorem proved here underpins the uniqueness claims about composition series of $S_5$ used in the broader Abel-Ruffini analysis"
         },
         {
-            "id": "abel-ruffini",
+            "targetId": "abel-ruffini",
             "relationship": "extends",
             "description": "Top-level Abel-Ruffini theorem. Key insight #7 in that entry cites Jordan-Hölder: 'the Jordan-Hölder theorem guarantees that the unique composition series $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$ makes the degree-5 impossibility absolute.' This file provides the formal proof of that theorem"
         },
         {
-            "id": "abel-ruffini-oq-04",
+            "targetId": "abel-ruffini-oq-04",
             "relationship": "sibling",
             "description": "Abel-Ruffini OQ-04: exposes the proof chain from $A_5$ simplicity through $S_5$ non-solvability, directly using the composition series structure that Jordan-Hölder certifies is unique"
         },
         {
-            "id": "sylow-theorems",
+            "targetId": "sylow-theorems",
             "relationship": "foundational",
             "description": "Sylow's theorems provide the structural analysis of $A_5$ (Sylow counting forces $n_5 = 6$, confirming no normal Sylow 5-subgroup, hence simplicity) — the same simplicity result that makes $A_5$ the inescapable composition factor in $S_5$'s Jordan-Hölder series"
         },
         {
-            "id": "sylow-theorem-oq-04",
+            "targetId": "sylow-theorem-oq-04",
             "relationship": "complementary",
             "description": "Constructs from scratch the Sylow-theoretic proof that $A_5$ is simple: the same fact that makes $A_5$ an indecomposable composition factor in the Jordan-Hölder series of $S_5$. Together these entries formalize both the uniqueness of the series (Jordan-Hölder) and the simplicity of its factor ($A_5$)"
         },
         {
-            "id": "inverse-galois",
+            "targetId": "inverse-galois",
             "relationship": "related",
             "description": "The Inverse Galois problem asks which finite simple groups (the building blocks identified by Jordan-Hölder) appear as Galois groups over $\\mathbb{Q}$. Jordan-Hölder is the structural foundation: it guarantees these simple groups are the indecomposable constituents of all Galois groups, making their realizability the key question"
         },
         {
-            "id": "abel-ruffini-oq-04-oq-02-oq-03",
+            "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
             "relationship": "complementary",
             "description": "Proves all finite groups of order $< 60$ are solvable. $A_5$ (order 60) is the minimal non-solvable group — equivalently, the first group to have a non-cyclic composition factor. Jordan-Hölder makes this precise: the 59 groups of smaller order all have composition series with only cyclic factors"
+        },
+        {
+            "targetId": "lagrange-theorem",
+            "relationship": "foundational",
+            "description": "Lagrange's theorem — $|H|$ divides $|G|$ for every subgroup $H \\leq G$ — underlies all index calculations in composition series. The composition factors $H_{i+1}/H_i$ have order $[H_{i+1} : H_i]$, which divides $|G|$ by Lagrange. In the Jordan-Hölder theorem for $S_5$ (order 120), the two factors $A_5$ (order 60) and $\\mathbb{Z}/2$ (order 2) have product $60 \\times 2 = 120 = |S_5|$, consistent with Lagrange. Every computation in `sup_eq_of_isMaximal` and `isMaximal_inf_left_of_isMaximal_sup` implicitly uses the lattice of subgroups organized by index, which is the group-theoretic content of Lagrange's theorem."
+        },
+        {
+            "targetId": "sylow-theorems-oq-04",
+            "relationship": "complementary",
+            "description": "Independently formalizes the simplicity of $A_5$ via conjugacy class arithmetic: the five conjugacy classes of $A_5$ have sizes $\\{1, 12, 12, 15, 20\\}$ summing to 60, and no proper subset including $\\{1\\}$ sums to a divisor of 60 — hence no proper nontrivial normal subgroup exists. This corroborates the `alternatingGroup.isSimpleGroup_five` result that makes $A_5$ the inescapable non-abelian composition factor in the Jordan-Hölder series of $S_5$, and illustrates how two independent proof paths (Sylow counting and conjugacy class arithmetic) both establish the same simplicity result."
+        },
+        {
+            "targetId": "abel-ruffini-oq-04-oq-02",
+            "relationship": "complementary",
+            "description": "Proves that $S_2, S_3, S_4$ are solvable by exhibiting their explicit composition series: $S_2 \\supset \\{e\\}$ (factor $\\mathbb{Z}/2$), $S_3 \\supset A_3 \\supset \\{e\\}$ (factors $\\mathbb{Z}/3, \\mathbb{Z}/2$), $S_4 \\supset A_4 \\supset V_4 \\supset \\langle(12)(34)\\rangle \\supset \\{e\\}$ (factors $\\mathbb{Z}/2, \\mathbb{Z}/3, \\mathbb{Z}/2, \\mathbb{Z}/2$). Jordan-Hölder guarantees these factorizations are unique, so no alternative solvable decomposition of $S_5$ can exist — the contrast between the terminating series for $n \\leq 4$ and the non-terminating series $S_5 \\supset A_5 \\supset A_5 \\supset \\cdots$ for $n = 5$ is precisely what Jordan-Hölder makes formally rigorous."
+        },
+        {
+            "targetId": "burnside-counting",
+            "relationship": "related",
+            "description": "Burnside's lemma for orbit counting uses the same group-action perspective as composition series analysis: orbits partition a set just as composition factors partition a group's complexity. More concretely, Burnside's $p^a q^b$ theorem (groups of order $p^a q^b$ are solvable) implies that groups of such orders always have composition series with only cyclic prime-order factors — a special case of Jordan-Hölder uniqueness where simplicity forces the factors to be $\\mathbb{Z}/p$. The connection to Abel-Ruffini: Burnside's theorem guarantees solvability (hence radical expressibility) for all polynomials whose Galois group has order $p^a q^b$."
         }
     ],
     "sorries": 0

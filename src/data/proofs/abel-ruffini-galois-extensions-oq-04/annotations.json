@@ -8,8 +8,8 @@
     "content": "This module header serves dual purposes. First, it describes the mathematical goal: instantiate `JordanHolderLattice (Subgroup G)` and derive the Jordan-Hölder uniqueness theorem for groups. Second, it documents a historical technical artifact: as of the time of writing, the docstring notes that `isMaximal_inf_left_of_isMaximal_sup` had 1 sorry remaining 'requiring transferring simplicity through the second isomorphism.' This sorry was subsequently resolved by the element-wise argument (see `ann-inf-max`) — the docstring was not updated but the code is fully proved. This illustrates a common pattern in formal mathematics development: docstrings describing proof strategies or difficulties become outdated when better approaches are found.",
     "mathContext": "The `JordanHolderLattice` typeclass in Mathlib (defined in `Mathlib.Order.JordanHolder`) provides an abstract framework for the Jordan-Hölder theorem: a type $\\alpha$ with a lattice structure, a predicate `IsMaximal` (analogous to 'maximal normal pair'), a relation `Iso` (isomorphism of composition factors), and three axioms. Once instantiated for `Subgroup G`, the abstract theorem `CompositionSeries.jordan_holder` gives Jordan-Hölder for groups at no extra cost. The Mathlib file has a comment 'TODO: add `JordanHolderLattice (Subgroup G)` instance' — this file provides it.",
     "significance": "context",
-    "relatedConcepts": ["JordanHolderLattice", "Mathlib contribution", "composition series", "CompositionSeries.jordan_holder"],
-    "prerequisites": ["Lean 4 typeclass system", "Mathlib library structure"]
+    "relatedConcepts": ["JordanHolderLattice", "Mathlib contribution", "composition series", "CompositionSeries.jordan_holder", "Jordan-Hölder theorem", "Schreier refinement theorem", "Birkhoff lattice theory", "abstract algebra"],
+    "prerequisites": ["Lean 4 typeclass system", "Mathlib library structure", "composition series", "maximal normal subgroups"]
   },
   {
     "id": "ann-imports",
@@ -20,8 +20,8 @@
     "content": "The proof imports four Mathlib components: `JordanHolder` (the abstract JordanHolderLattice typeclass and CompositionSeries machinery), `QuotientGroup.Basic` (quotient group construction and first isomorphism theorem), `Subgroup.Simple` (simple group definition needed for composition factor reasoning), and the parent `AbelRuffiniGaloisExtensions` file which provides the broader Abel-Ruffini framework. The `Mathlib.Tactic` import brings in the full tactic library. This minimal import footprint reflects the self-contained nature of the instance construction.",
     "mathContext": "The `JordanHolderLattice` typeclass in Mathlib abstracts the lattice-theoretic content of the Jordan-Hölder theorem: a type $\\alpha$ equipped with a notion of 'maximal' pairs and 'isomorphic' pairs of intervals, satisfying three axioms that guarantee the uniqueness result. The typeclass was designed to work uniformly for groups, modules, and other algebraic structures.",
     "significance": "context",
-    "relatedConcepts": ["JordanHolderLattice typeclass", "first isomorphism theorem", "composition series"],
-    "prerequisites": ["Lean 4 import system", "Mathlib typeclass hierarchy"]
+    "relatedConcepts": ["JordanHolderLattice typeclass", "first isomorphism theorem", "composition series", "second isomorphism theorem", "quotient group", "subgroup lattice"],
+    "prerequisites": ["Lean 4 import system", "Mathlib typeclass hierarchy", "quotient group construction", "group isomorphism theorems"]
   },
   {
     "id": "ann-ismaxnorm",
