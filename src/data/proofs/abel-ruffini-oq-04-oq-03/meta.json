@@ -206,16 +206,6 @@
       "targetId": "abel-ruffini-oq-04-oq-07",
       "relationship": "complementary",
       "description": "Bring-Jerrard reduction and the Bring radical: the constructive complement to this criterion's impossibility. While Galois's criterion (this entry) establishes that quintics with non-solvable Galois groups cannot be solved by radicals, the Bring radical provides a constructive alternative — the Bring-Jerrard form $y^5 + py + q = 0$ is solvable using BR$(t)$, the unique real root of $x^5 + x + t = 0$. Together, this entry and `abel-ruffini-oq-04-oq-07` establish the complete picture: the quintic is not solvable in the class of radical expressions, but IS solvable in the larger class of Bring-radical expressions."
-    },
-    {
-      "targetId": "inverse-galois",
-      "relationship": "related",
-      "description": "The Inverse Galois problem — which finite groups occur as Galois groups over $\\mathbb{Q}$? — is the natural complement to Galois's solvability criterion. This entry characterizes when a polynomial has a solvable Galois group (and hence has radical roots); the inverse problem asks which solvable (and non-solvable) groups are actually realizable. Shafarevich's theorem (every finite solvable group is a Galois group over $\\mathbb{Q}$) is the complete positive answer: the solvable groups whose radical expressions this criterion licenses are exactly all finite solvable groups, which Shafarevich showed are all realizable."
-    },
-    {
-      "targetId": "abel-ruffini-oq-04-oq-02-oq-02",
-      "relationship": "complementary",
-      "description": "Proves that $A_n$ is solvable iff $n \\leq 4$ — a concrete instance of the solvability classification that drives this criterion. The threshold $n = 5$ is exactly where $A_5$ (the smallest non-abelian simple group) makes $S_5$ non-solvable, so Galois's criterion forbids radical formulas for quintics with Galois group $S_5$. Conversely, for $n \\leq 4$, all $A_n$ are solvable, which (via Galois's criterion applied to degree-$\\leq 4$ polynomials whose Galois groups embed in solvable $S_4$) explains why quadratic, cubic, and quartic formulas exist."
     }
   ],
   "references": [

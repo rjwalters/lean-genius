@@ -15,6 +15,8 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
+const annotationsData = annotationsJson as { annotations: Annotation[] }
+
 export const synthesisCurvaturePtolemyProof: Proof = {
   id: meta.id,
   title: meta.title,
@@ -28,7 +30,7 @@ export const synthesisCurvaturePtolemyProof: Proof = {
   crossReferences: meta.crossReferences,
 }
 
-export const synthesisCurvaturePtolemyAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
+export const synthesisCurvaturePtolemyAnnotations: Annotation[] = annotationsData.annotations
 
 export const synthesisCurvaturePtolemyData: ProofData = {
   proof: synthesisCurvaturePtolemyProof,

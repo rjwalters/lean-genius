@@ -42,8 +42,8 @@
     ],
     "dateAdded": "2026-04-22",
     "axiomCount": 0,
-    "lineCount": 892,
-    "assumptions": "1 sorry: bdry_all_even_of_no_fc_walks — walk-reversal τ∘τ=id involution on boundary doors when all walks fail. Needs walkTrace_reversal (~100-line induction using adj_symm + nonfc_with_door_has_unique_exit). The theorem kuhn_path_existential is now a theorem (not axiom): Case 1 (∃ walk reaches FC) is fully proved via push_neg + kuhnPathStart_is_fc_of_fc_start; Case 2 (all walks fail) uses bdry_all_even_of_no_fc_walks to derive Even |B|, contradicting hbdry_odd via omega. 0 axioms.",
+    "lineCount": 764,
+    "assumptions": "1 sorry in kuhn_path_existential Case 2 (B_fc = ∅): when all boundary doors are non-FC, needs walk-pairing involution on B-B pairs to show |B-B| even, then |B-nfc| odd − |B-B| even → |B-FC| odd ≥ 1 → ∃ walk from B_nfc reaching FC. Note: bdry_nfc_even (|B_nfc| always even) was removed — it is FALSE; |B_nfc| can be odd when B-FC walks exist. Requires kuhnWalkWithExit + walkTrace_reversal induction (~100 lines). 0 axiom declarations.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -173,7 +173,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization establishes the infrastructure for Kuhn's constructive proof of n-dimensional Sperner's lemma. Fully proved: door counting, FC existence (kuhn_path_terminates via parity), and the non-revisiting invariant (kuhn_step_nonrevisit + WalkValid: walk never revisits any simplex). The main existential theorem (kuhnPathStart_finds_fc_existential) is axiomatized via kuhn_path_existential, which encodes Kuhn's cross-path parity argument. The axiom's proof sketch requires kuhnWalkWithExit + walkTrace_reversal (τ∘τ=id involution); all other ingredients are proved. 0 sorries, 1 axiom.",
+    "summary": "This formalization establishes the infrastructure for Kuhn's constructive proof of n-dimensional Sperner's lemma. Fully proved: door counting, FC existence (kuhn_path_terminates via parity), and the non-revisiting invariant (kuhn_step_nonrevisit + WalkValid: walk never revisits any simplex). 1 sorry remains in kuhn_path_existential Case 2 (B_fc = ∅): needs walk-pairing involution on B-B pairs. Note: bdry_nfc_even (|B_nfc| always even) was removed as INCORRECT — correct structure is |B_nfc| = 2·|B-B pairs| + |B-FC walks| where |B-FC walks| can be odd. The hard combinatorial core (non-revisiting) is complete.",
     "implications": "Kuhn's 1968 result is historically significant as the first polynomial-time algorithm for finding a fully-colored simplex. Path-following algorithms descended from Kuhn's work underlie Scarf's algorithm for computing approximate fixed points, the Lemke-Howson algorithm for Nash equilibrium computation, and the entire field of complementary pivot algorithms. The door-graph framework is essentially the same as the directed graph implicit in the PPAD complexity class (Papadimitriou 1994): a source vertex (boundary door) of in-degree 0 and out-degree 1, with all other vertices having in-degree = out-degree = 1. The abstract formulation using IsKuhnCompatible applies to any Sperner triangulation satisfying the degree bound, including Freudenthal triangulations and simplicial complexes arising in topological data analysis (TDA). In TDA, Sperner-colored subdivisions appear in persistent homology computations, where fully-colored simplices correspond to birth/death pairs in the barcode. The non-revisiting invariant proved here (paths in the door graph contain no cycles involving boundary vertices) is also the key property that makes all these pivot algorithms run in polynomial time.",
     "openQuestions": [
       "Can the non-revisiting invariant (the door graph component containing a boundary door is a path) be proved in Lean 4 using graph theory from Mathlib?",
@@ -247,9 +247,9 @@
       "BigOperators"
     ],
     "namespace": "SpernerNDimOQ04",
-    "lineCount": 892,
+    "lineCount": 764,
     "axiomCount": 0,
-    "theoremCount": 21,
+    "theoremCount": 20,
     "definitionCount": 8,
     "sorries": 1
   },
