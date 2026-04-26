@@ -87,8 +87,8 @@
     },
     {
       "title": "Spherical Ptolemy Equality (curvatureSin 1)",
-      "startLine": 155,
-      "endLine": 175,
+      "startLine": 133,
+      "endLine": 165,
       "description": "Restates the spherical Ptolemy equality (from PtolemysTheoremOQ01OQ02.lean) using curvatureSin 1 for concyclic unit-sphere points.",
       "summary": "Spherical Ptolemy equality via curvatureSin 1 — requires concyclicity",
       "id": "spherical-equality",
@@ -96,7 +96,7 @@
     },
     {
       "title": "Spherical Ptolemy Inequality (New)",
-      "startLine": 171,
+      "startLine": 167,
       "endLine": 229,
       "description": "Proves the spherical Ptolemy INEQUALITY for any four unit-circle points in ℂ. No concyclicity assumption needed. Proof: (1) reduce curvatureSin 1 to sin; (2) six chord-arc applications; (3) algebraic rewrite; (4) ptolemy_inequality / 4 via linarith.",
       "summary": "Spherical Ptolemy ≤ for all unit-circle points — unconditional inequality (new result)",
