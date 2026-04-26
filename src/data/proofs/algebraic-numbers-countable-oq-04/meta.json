@@ -114,31 +114,39 @@
       "id": "sec-arithmetic",
       "title": "Sec 1: Elementary Arithmetic — Irrationality of log2(3)",
       "startLine": 129,
-      "endLine": 257,
+      "endLine": 294,
       "description": "Proves 2^p ≠ 3^q for positive p, q using Nat.Prime.dvd_of_dvd_pow. Derives positivity and nonvanishing of log 2 and log 3. Proves irrationality of log2(3) = log 3 / log 2. Proves Q-linear independence of {log 2, log 3}.",
       "mathContext": "Central lemma: 2^p ≠ 3^q for p, q >= 1. If 2^p = 3^q then dvd_pow_self gives 2 | 2^p = 3^q, so Nat.Prime.dvd_of_dvd_pow gives 2 | 3, contradicted by decide. Irrationality: rational log2(3) = n/d implies 3^d = 2^n, contradiction."
     },
     {
       "id": "sec-baker-axioms",
       "title": "Sec 2: Baker Theorem Axiom Catalog",
-      "startLine": 258,
-      "endLine": 363,
+      "startLine": 295,
+      "endLine": 406,
       "description": "Three axioms: baker_homogeneous (Q-independent logs remain Q-bar-independent), baker_inhomogeneous (with constant term), baker_quantitative (explicit lower bound). Each axiom documented with mathematical justification.",
       "mathContext": "Main type: for linearly independent logs of algebraic a_i, any algebraic linear combination with not-all-zero coefficients is nonzero. Quantitative: |sum b_i log a_i| > B^{-C} for explicit C."
     },
     {
       "id": "sec-corollaries",
       "title": "Sec 3: Key Corollaries from Baker",
-      "startLine": 364,
-      "endLine": 491,
-      "description": "Corollaries: log2(3) is transcendental (Baker n=2 case), Q-bar-linear independence of {log 2, log 3}, n=1 case connecting to Gelfond-Schneider, Four Exponentials Conjecture as main open problem.",
+      "startLine": 407,
+      "endLine": 542,
+      "description": "Corollaries: log2(3) is transcendental (Baker n=2 case), Q-bar-linear independence of {log 2, log 3}, n=1 case connecting to Gelfond-Schneider.",
       "mathContext": "Transcendence of log2(3): assume beta = log2(3) algebraic. Then beta*log2 - log3 = 0 with beta, -1 algebraic and log2, log3 Q-independent. Baker says this sum is nonzero. Contradiction."
     },
     {
-      "id": "sec-baker-wustholz",
-      "title": "Sec 4: Baker-Wustholz Quantitative Theorem",
-      "startLine": 540,
+      "id": "sec-four-exponentials",
+      "title": "Sec 4: Four Exponentials Conjecture (Open Problem)",
+      "startLine": 543,
       "endLine": 589,
+      "description": "Documents the Four Exponentials Conjecture as an open problem beyond Baker's theorem. Baker proves the Six Exponentials Theorem; the gap to four exponentials remains open.",
+      "mathContext": "Four Exponentials Conjecture: if z₁,z₂ and w₁,w₂ are each ℚ-linearly independent, then at least one of e^{zᵢwⱼ} is transcendental. Baker's Six Exponentials Theorem is proved; the conjecture for four is open."
+    },
+    {
+      "id": "sec-baker-wustholz",
+      "title": "Sec 5: Baker-Wustholz Quantitative Theorem",
+      "startLine": 590,
+      "endLine": 640,
       "description": "States Baker-Wustholz 1993 theorem with explicit constant C(n,d). Documents improvement from Baker 1966 to Baker-Wustholz 1993. Applications to Thue equations, Mordell equation, S-unit equations.",
       "mathContext": "Baker-Wustholz bound: log|Lambda| > -C(n,d) * prod_i log(A_i) * log(B) where C(n,d) = 18*(n+1)! * n^{n+1} * (32d)^{n+2} * log(2nd)."
     }
