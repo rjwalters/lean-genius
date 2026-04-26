@@ -59,7 +59,7 @@
       }
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 415
+    "lineCount": 398
   },
   "overview": {
     "historicalContext": "Liouville's 1844 theorem — that algebraic irrationals resist rational approximation — has natural analogs in non-Archimedean settings. The p-adic version, developed in the 20th century alongside p-adic analysis, reveals a striking structural difference: the Archimedean property that powers the classical proof (|nonzero integer| ≥ 1) fails completely in the p-adic world. Instead, p-adic norms of integers can be arbitrarily small (p^k | n makes |n|_p ≤ p^{-k}). The fix, known as the **Archimedean Complement Lemma** |N|_p ≥ 1/|N|, replaces the Archimedean lower bound with a hybrid estimate combining both metrics. This forces the rational approximation theory to use the **naive height** H(r/s) = max(|r|, |s|) rather than just the denominator.",
@@ -174,10 +174,10 @@
     ],
     "opens": ["Polynomial"],
     "namespace": "LiouvilleTheoremOQ04",
-    "lineCount": 415,
+    "lineCount": 398,
     "axiomCount": 1,
-    "theoremCount": 12,
-    "definitionCount": 2,
+    "theoremCount": 15,
+    "definitionCount": 3,
     "path": "Proofs/LiouvilleTheoremOQ04.lean",
     "sorries": 2
   },
