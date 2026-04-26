@@ -97,6 +97,14 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Documentation and Setup",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Imports Mathlib cardinal arithmetic, continuum, real number basics, algebraic cardinality, and countable set API. Also imports the local CantorDiagonalization and AlgebraicNumbersCountable proofs. Module docstring presents the 5-section structure: cardinal facts, uncountability, no surjection, transcendental uncountability, and diagonal connection. Opens Cardinal namespace and declares AlgebraicNumbersCountableOQ02 namespace.",
+      "mathContext": "The imports establish the full cardinal hierarchy: $\\aleph_0$ (from Cardinal.Basic), $\\mathfrak{c} = 2^{\\aleph_0}$ (from Cardinal.Continuum), $\\#\\mathbb{R} = \\mathfrak{c}$ (from Cardinal.mk_real). The local import of CantorDiagonalization provides the concrete diagonal argument connecting abstract cardinal gaps to explicit non-surjections."
+    },
+    {
       "id": "cardinal-facts",
       "title": "\u00a71: Cardinality of \u211d",
       "startLine": 60,
@@ -202,6 +210,29 @@
       "targetId": "cantors-theorem-oq-01",
       "relationship": "related",
       "description": "Investigates 2^\u2135\u2080 further: |P(\u211d)| = 2^\ud835\udd20 = 2^(2^\u2135\u2080). This entry establishes \u2135\u2080 < 2^\u2135\u2080 (the gap between algebraic and transcendental). Cantor's theorem (P(X) has strictly greater cardinality than X) applied to \u211d gives another gap: 2^\u2135\u2080 < 2^(2^\u2135\u2080). OQ-01 explores this next step in the cardinal hierarchy, starting from exactly the 2^\u2135\u2080 established here."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["G. Cantor"],
+      "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "year": "1874",
+      "venue": "Journal für die reine und angewandte Mathematik 77: 258–262",
+      "note": "The landmark paper proving both that algebraic numbers are countable and that the reals are uncountable — the first demonstration that infinite sets come in different sizes. This entry formalizes the uncountability half."
+    },
+    {
+      "authors": ["G. Cantor"],
+      "title": "Über eine elementare Frage der Mannigfaltigkeitslehre",
+      "year": "1891",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung 1: 75–78",
+      "note": "Introduced the diagonal argument in its modern form (for binary sequences), generalizing the 1874 nested-intervals proof. The diagonal technique is used in this entry via Cardinal.cantor."
+    },
+    {
+      "authors": ["The mathlib Community"],
+      "title": "Mathlib4: A Unified Library of Mathematics Formalized in Lean 4",
+      "year": "2024",
+      "venue": "https://github.com/leanprover-community/mathlib4",
+      "note": "Provides Cardinal.mk_real (ℝ has cardinality continuum), Cardinal.aleph0_lt_continuum (ℵ₀ < 𝔠), Cardinal.cantor (|P(A)| > |A|), mk_le_aleph0 (countable types have cardinality ≤ ℵ₀), and Set.countable_univ_iff."
     }
   ],
   "sorries": 0,
