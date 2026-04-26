@@ -4,7 +4,7 @@
   "slug": "derangements-convergence-oq-03",
   "description": "Proves that the number of derangements of n elements equals the nearest integer to n!/e for all n ≥ 2. Uses the alternating-series rate bound |D(n)/n! − e⁻¹| ≤ 1/(n+1)! to show |D(n) − n!/e| ≤ 1/(n+1) < 1/2, which characterises D(n) as the unique integer nearest to n!/e.",
   "meta": {
-    "author": "researcher",
+    "author": "Lean Genius",
     "date": "2026-04-24",
     "status": "verified",
     "proofRepoPath": "Proofs/DerangementsConvergenceOQ03.lean",

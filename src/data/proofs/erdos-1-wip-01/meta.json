@@ -1,219 +1,200 @@
 {
   "id": "erdos-1-wip-01",
-  "title": "Powers of Two Form a Distinct Subset Sum Set",
+  "title": "Erdős #1: Structural Theory of Distinct Subset Sums",
   "slug": "erdos-1-wip-01",
-  "description": "Proves that the set {2⁰, 2¹, ..., 2^{n-1}} has distinct subset sums for every n, using binary representation uniqueness. Provides the existence theorem needed to make the minimum DSS bound function well-defined in the Erdős #1 formalization.",
+  "description": "Structural foundations for Erdős Problem #1 (Distinct Subset Sums). Proves the superincreasing extension lemma (the key construction principle), establishes that powers of 2 always yield DSS sets, proves DSS existence for any n (filling the gap in OQ03's minDSSBound), and derives elementary structural constraints: all elements must be positive, and the total sum satisfies sum(A) ≥ 2^n − 1.",
   "meta": {
-    "author": "Lean Genius Researcher, 2026",
-    "sourceUrl": "https://erdosproblems.com/1",
-    "date": "2026",
+    "author": "Lean Genius",
+    "date": "2026-04-26",
     "status": "verified",
-    "proofRepoPath": "Proofs/Erdos1Wip01.lean",
+    "proofRepoPath": "Proofs/Erdos1WIP01.lean",
     "tags": [
       "erdos",
       "additive-combinatorics",
-      "distinct-subset-sums",
-      "powers-of-two",
-      "binary-representation"
+      "subset-sums",
+      "extremal-combinatorics",
+      "structural-theory",
+      "combinatorics",
+      "number-theory"
     ],
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "None. All theorems proved from first principles using Mathlib's Finset API and strong induction.",
-    "lineCount": 187,
-    "theoremCount": 5,
+    "assumptions": "None. All results are fully proved in Lean 4 with 0 axioms and 0 sorries.",
+    "lineCount": 319,
+    "theoremCount": 12,
     "definitionCount": 0,
     "dateAdded": "2026-04-26",
-    "mathlib_version": "4.26.0",
     "originalContributions": [
-      "geom_sum_pow2: ∑_{i<n} 2^i + 1 = 2^n (geometric sum identity)",
-      "sum_pow2_lt_of_subset_range: any subset of {0,...,n-1} has power-of-2 sum < 2^n",
-      "pow2_sum_inj: subsets of {0,...,n-1} with equal power-of-2 sums are identical (binary uniqueness)",
-      "powersOfTwo_hasDistinctSubsetSums: {2^i : i < n} has distinct subset sums",
-      "dss_existence: for all n, ∃ A with |A|=n, all(a ≤ n·2^n), and DSS(A)"
+      "dss_superincreasing_extend: If A has DSS and b > sum(A), then insert b A has DSS (the core structural lemma, proved by 4-case analysis)",
+      "powers_of_two_has_dss: {1,2,4,...,2^(n-1)} has distinct subset sums for any n (inductive proof via superincreasing lemma)",
+      "dss_exists: For any n, there exists an n-element set with DSS (fills the sorry in OQ03's minDSSBound)",
+      "dss_positive_exists: For any n, there exists an n-element DSS set of positive integers bounded by 2^n",
+      "not_dss_of_mem_zero: If 0 ∈ A then A does NOT have DSS (∅ and {0} give the same sum)",
+      "dss_elements_pos: All elements of a non-empty DSS set are positive",
+      "dss_subset: Any subset of a DSS set also has DSS (hereditary property)",
+      "dss_singleton: Any singleton {a} has DSS",
+      "dss_sum_lower_bound: 2^n ≤ sum(A) + 1 for any n-element DSS set A (pigeonhole argument)",
+      "dss_sum_ge_pow_sub_one: sum(A) ≥ 2^n − 1 (corollary of sum lower bound)",
+      "minDSS_witness: Fills the sorry in OQ03's minDSSBound definition via powers-of-2 witness",
+      "sum_two_pow_lt: ∑_{i<n} 2^i < 2^n (geometric sum helper)"
     ],
-    "relatedProblems": [
-      {
-        "id": "erdos-1",
-        "relationship": "Supports: provides the existence basis for Erdős Problem #1 formalizations"
-      },
-      {
-        "id": "erdos-1-oq-03",
-        "relationship": "Fills the sorry in minDSSBound — this theorem is used as the Nat.find witness"
-      },
-      {
-        "id": "erdos-1-oq-02",
-        "relationship": "Contrasts: Dubroff–Fox–Xu achieves the near-optimal lower bound N ≥ √(2/π)·2ⁿ/√n, demonstrating how far the n·2ⁿ existence bound falls from the conjectured threshold"
-      }
-    ],
-    "mathlibDependencies": [
-      {
-        "theorem": "Finset.sum_image",
-        "description": "Rewrites sum over image set as sum over index set (used for preimage trick)",
-        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
-      },
-      {
-        "theorem": "Finset.add_sum_erase",
-        "description": "Splits sum by singling out an element: ∑ S = a + ∑ (S.erase a)",
-        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
-      },
-      {
-        "theorem": "Nat.pow_right_injective",
-        "description": "2^a = 2^b → a = b (injectivity of power function)",
-        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
-      },
-      {
-        "theorem": "Nat.le_mul_of_pos_left",
-        "description": "2^n ≤ n·2^n when n > 0 (bound on single element)",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
-      }
+    "prerequisites": [
+      "Finset basics (Lean 4 / Mathlib)",
+      "Sum computations for finite sets",
+      "Elementary number theory (powers of 2, geometric series)"
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #1** (posed 1955, Colloque sur la Théorie des Nombres, Brussels) asks: what is the minimum $N(n)$ such that some $n$-element subset of $\\{1,\\ldots,N\\}$ has all $2^n$ subset sums distinct? Erdős conjectured $N(n) \\geq c \\cdot 2^n$ for some absolute constant $c > 0$, and the Erdős-Moser conjecture refines this to $N(n) \\geq 2^{n-1}$ (i.e., the maximum element must be at least half of the total range).\n\nBefore studying $N(n)$, one needs to know DSS sets of every size exist. The powers of two $\\{1, 2, 4, \\ldots, 2^{n-1}\\}$ provide the canonical existence witness via binary representation uniqueness: distinct subsets always yield distinct sums. The powers-of-two set satisfies $N = 2^{n-1} - 1$ (max element $2^{n-1}$), which the Erdős-Moser conjecture says is essentially optimal.\n\n**Computational history**: Lunnon (1988) computed optimal DSS sets for $n \\leq 9$. Conway and Guy (1968) introduced their now-famous sequence achieving $N \\approx 0.22 \\cdot 2^n$, conjectured optimal for large $n$. Bohman (1996) proved the first nontrivial lower bound: $N(n) \\geq c \\cdot 2^n / \\sqrt{n}$ for some $c > 0$. As of 2026, the gap between the Conway-Guy upper bound $\\sim 0.22 \\cdot 2^n$ and Bohman's lower bound $\\Omega(2^n/\\sqrt{n})$ remains open.\n\nThis file proves existence (filling the `Nat.find` sorry in `Erdos1OQ03.lean`), which is the necessary foundation before the more delicate optimality questions can be addressed.",
-    "problemStatement": "For each $n \\geq 0$, prove that the $n$-element set $A = \\{2^0, 2^1, \\ldots, 2^{n-1}\\}$ has distinct subset sums — that is, no two distinct subsets of $A$ have the same sum.",
-    "text": "A 187-line formalization proving that powers of two form a distinct subset sum set for every n. The proof is in three parts: (I) auxiliary lemmas establishing the geometric sum identity and the bound on subset sums of index sets; (II) the main binary uniqueness theorem, proved by strong induction; and (III) the existence theorem providing an n-element DSS set bounded by n·2^n, which fills the sorry in Erdos1OQ03.lean.",
-    "proofStrategy": "**Part I** establishes two key lemmas by induction. `geom_sum_pow2` proves ∑_{i<n} 2^i + 1 = 2^n by induction on n. `sum_pow2_lt_of_subset_range` uses monotonicity of sums to bound any subset sum.\n\n**Part II** proves binary uniqueness (`pow2_sum_inj`) by strong induction on n. Given S, T ⊆ {0,...,n-1} with equal power-of-2 sums, there are four cases for membership of n-1: (a) both contain n-1: erase it from both sides (the 2^{n-1} contributions cancel) and apply IH; (b/c) exactly one contains n-1: the subset containing n-1 contributes ≥ 2^{n-1} to the sum, while the other contributes < 2^{n-1} by Part I — contradiction; (d) neither contains n-1: restrict to range n-1 and apply IH directly.\n\n**Part III** applies the preimage technique: given S, T ⊆ {2^i : i < n} with equal sums, define index sets S' = {i < n : 2^i ∈ S} and T' = {i < n : 2^i ∈ T}. By `Finset.sum_image`, S.sum id = S'.sum (2^·). The equality S.sum id = T.sum id then gives S'.sum (2^·) = T'.sum (2^·), so binary uniqueness gives S' = T', hence S = T.",
+    "historicalContext": "Erdős Problem #1, posed by Paul Erdős around 1931 and carrying a $500 prize, is one of the most celebrated open problems in additive combinatorics. The question: if $A \\subseteq \\{1, \\ldots, N\\}$ has $n$ elements and all $2^n$ subset sums are distinct, must $N \\geq c \\cdot 2^n$ for some absolute constant $c > 0$?\n\nThe simplest DSS example is $A_n = \\{1, 2, 4, \\ldots, 2^{n-1}\\}$ (powers of 2), for which $\\max(A_n) = 2^{n-1}$. This suggests $c = 1/2$, but Erdős conjectured $c$ could be taken close to $1/2$ (specifically $c \\to 1/(2\\sqrt{\\pi})$ asymptotically). The **Conway-Guy sequence** (1968) provides the best known upper bound: $N \\leq 0.22009 \\cdot 2^n$ for large $n$, suggesting the true constant is around $0.22$. On the lower bound side, the elementary **counting argument** gives $N \\geq (2^n - 1)/n$, and Dubroff, Fox, and Xu (2021) improved this to $N \\geq \\sqrt{2/\\pi} \\cdot 2^n / \\sqrt{n} \\approx 0.798 \\cdot 2^n / \\sqrt{n}$ using a Fourier/entropy approach.\n\nThe problem is catalogued as OEIS A005318, tracking $f(n) = $ minimum max element of any $n$-element DSS set: $f(1)=1, f(2)=2, f(3)=4, f(4)=7, f(5)=13, f(6)=24, f(7)=44, f(8)=84, f(9)=161, f(10)=322$.\n\nThis formalization (WIP-01) provides the missing structural foundations for the gallery's OQ01–OQ04 entries: the superincreasing extension lemma, the powers-of-2 construction, and the sum lower bound. These results are folklore but previously unformalized in Lean 4.",
+    "problemStatement": "If $A \\subseteq \\mathbb{N}$ is a finite set with the **distinct subset sums** (DSS) property — meaning distinct subsets always have different sums: $\\forall S, T \\subseteq A, \\sum_{s \\in S} s = \\sum_{t \\in T} t \\Rightarrow S = T$ — what structural constraints must $A$ satisfy?\n\nSpecifically:\n1. **Extension**: When can we add an element to $A$ while preserving DSS?\n2. **Canonical construction**: What is the smallest/simplest DSS set of any size $n$?\n3. **Necessary conditions**: What are the structural properties all DSS sets share?\n4. **Size-sum relationship**: How large must $\\text{sum}(A)$ be for an $n$-element DSS set?",
+    "proofStrategy": "The central tool is the **superincreasing extension lemma** (`dss_superincreasing_extend`): if $A$ has DSS and $b > \\text{sum}(A)$ with $b \\notin A$, then $A \\cup \\{b\\}$ has DSS. The proof is by 4-case analysis on which of the two equal-sum subsets $S, T \\subseteq A \\cup \\{b\\}$ contain $b$:\n\n- **Both contain $b$**: Cancel $b$ from both sums; the remaining subsets lie in $A$ and have equal sums, so DSS of $A$ gives $S \\setminus \\{b\\} = T \\setminus \\{b\\}$, hence $S = T$.\n- **$b \\in S$ only**: $\\text{sum}(S) \\geq b > \\text{sum}(A) \\geq \\text{sum}(T)$, contradicting $\\text{sum}(S) = \\text{sum}(T)$.\n- **$b \\in T$ only**: Symmetric contradiction.\n- **Neither contains $b$**: Both lie in $A$; apply DSS of $A$ directly.\n\nFrom this lemma, **powers of 2** give DSS (by induction: $2^n > \\sum_{i<n} 2^i$), and **existence for any $n$** follows immediately. The **sum lower bound** is then a pigeonhole argument: the $2^n$ subset sums of an $n$-element DSS set are distinct values in $\\{0, \\ldots, \\text{sum}(A)\\}$, forcing $2^n \\leq \\text{sum}(A) + 1$.",
     "keyInsights": [
-      "**Binary representation uniqueness**: equal power-of-2 sums imply equal index sets — the core mathematical fact, corresponding to uniqueness of binary representations",
-      "**Strong induction structure**: the four-case split (both/one/neither contain n-1) exactly mirrors the key step in uniqueness of binary representation proofs",
-      "**Preimage trick**: reducing from sums over values (S.sum id) to sums over indices (S'.sum (2^·)) via Finset.sum_image is the key bridge between the abstract DSS property and the index-level induction",
-      "**Sum bound**: sum_pow2_lt_of_subset_range gives 'any proper subset of {0,...,n-1} has power-of-2 sum < 2^n', which is the quantitative tool that rules out the cross-cases (b/c) in the induction",
-      "**n·2^n bound**: each 2^i for i < n satisfies 2^i < 2^n ≤ n·2^n (using Nat.le_mul_of_pos_left), giving a clean polynomial-times-exponential bound without case analysis on n=0",
-      "**Nat.find well-definedness**: dss_existence provides the existential witness required for Nat.find to produce a well-typed noncomputable definition of minDSSBound — without this theorem, Erdos1OQ03.lean could not define minDSSBound at all",
-      "**Gap between existence and optimality**: the n·2^n existence bound is far from optimal — the Conway-Guy sequence achieves max element ≈ 0.22·2^n and the Erdős #1 conjecture asks whether c·2^n/√n is the true threshold; formalizing existence is the prerequisite for studying tightness"
+      "**Superincreasing = DSS**: A sequence is superincreasing if each term exceeds the sum of all previous terms. The extension lemma proves that any superincreasing sequence has DSS — and conversely, all known optimal DSS sets (powers of 2, Conway-Guy) are superincreasing. This suggests that superincreasing sequences are the 'right' framework for constructing DSS sets.",
+      "**Binary representations**: The powers-of-2 set $\\{1, 2, 4, \\ldots, 2^{n-1}\\}$ has DSS because the subset sums are exactly the integers $0$ through $2^n - 1$ in binary — the subset $S$ maps to $\\sum_{i : 2^i \\in S} 2^i$, which is the binary number with 1-bits at the positions in $S$. Distinct subsets give distinct binary numbers, hence distinct sums. This reveals a deep connection between DSS and binary representation.",
+      "**0 is forbidden**: If $0 \\in A$, then $\\emptyset$ and $\\{0\\}$ are distinct subsets of $A$ with the same sum ($= 0$), violating DSS. This elementary obstruction means DSS sets over $\\mathbb{N}$ are automatically sets of positive integers — a constraint that appears trivial but is essential for the problem to be well-posed.",
+      "**Hereditary structure (independence system)**: DSS is closed downward under inclusion: every subset of a DSS set is also a DSS set. This makes DSS sets an independence system (or simplicial complex), a structure studied in matroid theory. Unlike matroids, however, DSS independence systems need not satisfy the exchange axiom.",
+      "**Pigeonhole sum bound**: The $2^n$ subset sums of an $n$-element DSS set are injected into $\\{0, 1, \\ldots, \\text{sum}(A)\\}$, giving $2^n \\leq \\text{sum}(A) + 1$. Since $\\text{sum}(A) \\leq n \\cdot \\max(A)$, this gives the counting bound $\\max(A) \\geq (2^n - 1)/n$. The powers-of-2 set achieves equality: $\\text{sum}(\\{1, 2, \\ldots, 2^{n-1}\\}) = 2^n - 1$.",
+      "**Filling OQ03's sorry**: The existence theorem `dss_exists n` fills a foundational gap in OQ03's `minDSSBound` definition, which uses `Nat.find` to extract the minimum max element of $n$-element DSS sets. Without proof that DSS sets of any size exist, `Nat.find` is undefined (a sorry). The powers-of-2 witness makes the definition computable and all OQ03 theorems unconditional.",
+      "**Conway-Guy vs. powers of 2**: The powers-of-2 construction gives $\\max(A) = 2^{n-1}$, but OEIS A005318 shows $f(n) < 2^{n-1}$ for $n \\geq 4$: e.g., $f(4) = 7 < 8 = 2^3$. The Conway-Guy sequence achieves $\\max \\approx 0.22009 \\cdot 2^n$, compared to $0.5 \\cdot 2^n$ for powers of 2. Both are superincreasing — the superincreasing lemma applies to both, but powers of 2 grow too fast to be optimal."
+    ],
+    "prerequisites": [
+      "Finset basics (Lean 4 / Mathlib)",
+      "Sum computations for finite sets",
+      "Elementary number theory (powers of 2, geometric series)"
     ]
   },
   "sections": [
     {
-      "id": "imports-setup",
-      "title": "Part I: Imports and Module Setup",
+      "id": "header",
+      "title": "Module Documentation and Imports",
       "startLine": 1,
-      "endLine": 31,
-      "summary": "Imports Proofs.Erdos1Problem (hasDistinctSubsetSums definition) and Mathlib; opens Finset namespace; declares namespace Erdos1Wip01.",
-      "mathContext": "`hasDistinctSubsetSums A` defined in Erdos1Problem: $\\forall S, T \\subseteq A,\\ \\text{sum}(S) = \\text{sum}(T) \\Rightarrow S = T$"
+      "endLine": 37,
+      "summary": "Module docstring explaining the 7-part structure, imports `Proofs.Erdos1Problem` (for `hasDistinctSubsetSums`) and `Mathlib`. References Erdős 1955, Dubroff-Fox-Xu 2021, Conway-Guy 1968, and OEIS A005318.",
+      "mathContext": "The `hasDistinctSubsetSums` predicate is defined in `Erdos1Problem`: $\\forall S, T \\subseteq A, \\text{sum}(S) = \\text{sum}(T) \\Rightarrow S = T$. All results in this file build on this definition."
     },
     {
-      "id": "quantitative-lemmas",
-      "title": "Part II: Quantitative Lemmas (Geometric Sum and Subset Bound)",
-      "startLine": 33,
-      "endLine": 58,
-      "summary": "Three lemmas: geom_sum_pow2 (∑_{i<n} 2^i + 1 = 2^n), sum_pow2_lt_of_subset_range (any subset has sum < 2^n), and subset_range_pred (bookkeeping for range shrinkage).",
-      "mathContext": "$\\sum_{i<n} 2^i + 1 = 2^n$; $S \\subseteq \\{0,\\ldots,n-1\\} \\Rightarrow \\sum_{i \\in S} 2^i < 2^n$; $n \\notin S, S \\subseteq \\{0,\\ldots,n\\} \\Rightarrow S \\subseteq \\{0,\\ldots,n-1\\}$"
+      "id": "superincreasing-lemma",
+      "title": "Part I: Superincreasing Extension Lemma",
+      "startLine": 39,
+      "endLine": 117,
+      "summary": "`dss_superincreasing_extend`: If A has DSS and b > sum(A) with b ∉ A, then insert b A has DSS. 4-case proof: both contain b (cancel b), b in S only (sum contradiction), b in T only (symmetric), neither (apply A's DSS).",
+      "mathContext": "The superincreasing condition $b > \\text{sum}(A)$ creates a 'sum gap': any subset containing $b$ has sum $> \\text{sum}(A)$, while any subset not containing $b$ has sum $\\leq \\text{sum}(A)$. This partitions subsets by their sum range, making equality-of-sums force equality of sets."
     },
     {
-      "id": "binary-uniqueness",
-      "title": "Part III: Binary Representation Uniqueness (pow2_sum_inj)",
-      "startLine": 59,
-      "endLine": 106,
-      "summary": "Proves pow2_sum_inj by strong induction: if S, T ⊆ {0,...,n-1} have equal power-of-2 sums, then S = T. Four-case split on membership of n-1.",
-      "mathContext": "$S, T \\subseteq \\{0,\\ldots,n-1\\},\\ \\sum_S 2^i = \\sum_T 2^i \\Rightarrow S = T$ — the Lean proof of binary numeral uniqueness"
+      "id": "geometric-sum",
+      "title": "Part II: Geometric Sum Bound",
+      "startLine": 119,
+      "endLine": 138,
+      "summary": "Helper lemmas: `sum_two_pow_range_add_one` (∑_{i<n} 2^i + 1 = 2^n, by induction) and `sum_two_pow_lt` (∑_{i<n} 2^i < 2^n). Private lemma supporting Part III.",
+      "mathContext": "The geometric sum identity $\\sum_{i=0}^{n-1} 2^i = 2^n - 1$ is proved in the form $\\sum + 1 = 2^n$ to avoid natural number subtraction. This verifies the superincreasing property of powers of 2: $2^n > \\sum_{i<n} 2^i$."
     },
     {
-      "id": "dss-powers",
-      "title": "Part IV: DSS Property of Powers of Two",
-      "startLine": 107,
-      "endLine": 156,
-      "summary": "Proves powersOfTwo_hasDistinctSubsetSums: {2^i : i < n} has distinct subset sums using the preimage index trick and binary uniqueness.",
-      "mathContext": "$\\forall S, T \\subseteq \\{2^0,\\ldots,2^{n-1}\\},\\ \\sum S = \\sum T \\Rightarrow S = T$ — bridge from index level to value level via Finset.sum_image"
+      "id": "powers-of-two",
+      "title": "Part III: Powers of 2 Have DSS",
+      "startLine": 140,
+      "endLine": 175,
+      "summary": "`powers_of_two_has_dss`: {2^0,...,2^(n-1)} has DSS. Induction: base (empty set), step applies `dss_superincreasing_extend` with b=2^n using `sum_two_pow_lt` and injectivity of i↦2^i.",
+      "mathContext": "The set is represented as `(Finset.range n).image (2^·)`. The injectivity of `i ↦ 2^i` (via `Nat.pow_right_injective`) ensures `2^n ∉ (range n).image (2^·)` and `card = n`."
     },
     {
       "id": "dss-existence",
-      "title": "Part V: Existence of n-Element DSS Sets (Main Theorem)",
-      "startLine": 157,
-      "endLine": 187,
-      "summary": "For any n, constructs an n-element set with all elements ≤ n·2^n and distinct subset sums. Used as Nat.find witness in minDSSBound (Erdos1OQ03.lean).",
-      "mathContext": "$\\forall n,\\ \\exists A : \\text{Finset}\\,\\mathbb{N},\\ |A| = n \\wedge (\\forall a \\in A,\\ a \\leq n \\cdot 2^n) \\wedge \\text{DSS}(A)$"
-    }
-  ],
-  "crossReferences": [
-    {
-      "targetId": "erdos-1",
-      "relationship": "supports",
-      "description": "Provides the foundational existence result for Erdős Problem #1: proves DSS sets of every size exist"
+      "title": "Part IV: DSS Existence for Any n",
+      "startLine": 177,
+      "endLine": 225,
+      "summary": "`dss_exists`: ∃ n-element DSS set with elements ≤ n*2^n. `dss_positive_exists`: ∃ n-element DSS set of positive integers with max ≤ 2^n. Both use powers-of-2 as witness. Fills OQ03's sorry.",
+      "mathContext": "The bound n*2^n in `dss_exists` is loose but sufficient for `Nat.find`. The tighter bound 2^n in `dss_positive_exists` matches the true max element 2^(n-1) < 2^n of the powers-of-2 witness."
     },
     {
-      "targetId": "erdos-1-oq-03",
-      "relationship": "fills-gap",
-      "description": "dss_existence fills the sorry in minDSSBound (Nat.find witness), making the minimum DSS bound function well-defined"
+      "id": "structural-properties",
+      "title": "Part V: Structural Properties of DSS Sets",
+      "startLine": 227,
+      "endLine": 259,
+      "summary": "Four elementary constraints: `not_dss_of_mem_zero` (0 ∈ A blocks DSS), `dss_elements_pos` (all elements positive), `dss_subset` (hereditary: B ⊆ A has DSS), `dss_singleton` (any singleton has DSS).",
+      "mathContext": "DSS sets form a downward-closed family (hereditary/independence system): $\\mathcal{F}_{DSS} = \\{A : \\text{hasDistinctSubsetSums}(A)\\}$ satisfies $A \\in \\mathcal{F}_{DSS}, B \\subseteq A \\Rightarrow B \\in \\mathcal{F}_{DSS}$."
     },
     {
-      "targetId": "erdos-1-oq-02",
-      "relationship": "contrasts",
-      "description": "Dubroff–Fox–Xu proves N ≥ √(2/π)·2ⁿ/√n (asymptotically tight lower bound), dwarfing the n·2ⁿ existence bound here — together they span the gap between existence and optimality"
+      "id": "sum-lower-bound",
+      "title": "Part VI: Sum Lower Bound via Pigeonhole",
+      "startLine": 261,
+      "endLine": 301,
+      "summary": "`dss_sum_lower_bound`: 2^n ≤ sum(A) + 1 (pigeonhole: 2^n distinct sums in {0,...,sum(A)}). `dss_sum_ge_pow_sub_one`: sum(A) ≥ 2^n − 1. Powers of 2 achieve equality.",
+      "mathContext": "The proof uses `Finset.card_image_of_injOn`, `Finset.card_powerset` (image has 2^n elements), then `Finset.card_le_card` against `Finset.range(sum+1)` (size sum+1). Combined with sum ≤ n*max gives counting bound max(A) ≥ (2^n-1)/n."
     },
     {
-      "targetId": "erdos-882",
-      "relationship": "related",
-      "description": "Both problems involve subsets where subset sums satisfy a combinatorial condition. Erdős #882 asks about subset sums without divisibility; Erdős #1 asks about distinct subset sums. Both use Finset sum arguments over ℕ and study extremal combinatorics of small subsets of {1,...,N}."
-    },
-    {
-      "targetId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
-      "relationship": "technique-shared",
-      "description": "Both entries use Finset.sum_image as a central proof tool: here for the preimage index trick (lifting DSS from value-level to index-level), and there for the Newton-Girard off-diagonal doubling argument. The reindexing pattern ∑_{x∈f(S)} g(x) = ∑_{s∈S} g(f(s)) via sum_image is a shared combinatorial technique."
+      "id": "minDSS-witness",
+      "title": "Part VII: OQ03 Fix — Existence Witness for minDSSBound",
+      "startLine": 303,
+      "endLine": 319,
+      "summary": "`minDSS_witness`: ∃ N, ∃ n-element DSS set bounded by N. One-line proof: ⟨n*2^n, dss_exists n⟩. Fills the sorry in OQ03's minDSSBound definition that Nat.find requires.",
+      "mathContext": "OQ03's `minDSSBound n = Nat.find (minDSS_exists n)` requires proof that `∃ N, ∃ A : Finset ℕ, A.card = n ∧ (∀ a ∈ A, a ≤ N) ∧ hasDistinctSubsetSums A`. This was previously a sorry; `minDSS_witness` closes it."
     }
   ],
   "conclusion": {
-    "summary": "Fully verified: {2^i : i < n} has distinct subset sums for every n, and n-element DSS sets exist with all elements bounded by n·2^n. Zero sorries, zero axioms.",
-    "implications": "This existence theorem closes the gap in Erdos1OQ03.lean, making minDSSBound a well-defined noncomputable function. It also serves as a standalone verified formalization of binary representation uniqueness in the Finset setting.",
+    "summary": "This file provides the missing structural foundations for the gallery's Erdős #1 cluster. The superincreasing extension lemma is the key combinatorial tool: it explains why the powers of 2, the Conway-Guy sequence, and all known optimal DSS constructions work. The existence theorem fills a foundational sorry in OQ03, making the `minDSSBound` definition fully unconditional. The sum lower bound gives the sharpest constraint on DSS sets achievable from pure injectivity, and the structural properties (positivity, hereditary, singleton) characterize the DSS property from first principles.\n\nAll 12 theorems are proved with 0 axioms and 0 sorries in 319 lines, organized into 7 thematic parts mirroring the logical development of the theory.",
+    "implications": "The superincreasing lemma has two implications for the Erdős conjecture:\n\n1. **Positive direction**: Any greedy construction that always adds an element exceeding the current total sum produces a DSS set. This includes both the powers-of-2 sequence ($a_k = 2^{k-1}$) and the Conway-Guy sequence ($a_k \\approx 0.22 \\cdot 2^k$). The lemma makes these constructions provably correct.\n\n2. **Optimality question**: The lemma cannot prove the Erdős conjecture because it gives a sufficient condition (superincreasing ⟹ DSS) but not a characterization. Non-superincreasing DSS sets exist: e.g., $\\{6, 9, 11, 12, 13\\}$ with max element 13 and $n=5$, which is not superincreasing but has DSS.\n\nThe sum lower bound $\\text{sum}(A) \\geq 2^n - 1$ is tight (achieved by powers of 2) and implies the counting bound. But the Erdős conjecture requires a bound on $\\max(A)$, not $\\text{sum}(A)$ — bounding $\\max$ from $\\text{sum}$ requires the additional constraint $\\text{sum}(A) \\leq n \\cdot \\max(A)$, which introduces the factor $1/n$.",
     "openQuestions": [
-      "Can the bound n·2^n be tightened? The Conway-Guy sequence achieves max element ~0.22·2^n, far smaller than n·2^n.",
-      "Can the binary uniqueness proof be generalized to other bases, giving existence for sets with k-ary representation uniqueness?",
-      "Is there a direct Lean proof that the powers-of-two set is the unique (up to scaling) set achieving the counting bound 2^n ≤ n·N + 1 with equality?"
+      "**Erdős \\$500 conjecture**: Must max(A) ≥ c · 2^n for some absolute constant c > 0? The current gallery formalizes the counting bound c ≥ 1/(n) (OQ01) and the DFX entropy bound c ≥ √(2/π)/√n (OQ02), but the conjecture of a constant c independent of n remains open.",
+      "**Optimal constant**: What is the exact asymptotic constant? The Conway-Guy sequence gives an upper bound c ≤ 0.22009. The Dubroff-Fox-Xu lower bound gives c ≥ √(2/π)/√n ≈ 0.798/√n. Can these be made to match?",
+      "**Conway-Guy optimality**: Is the Conway-Guy sequence optimal for large n? This is known for n ≤ 10 (verified computationally via OEIS A005318) but open for n ≥ 11. Is there an algebraic structure to the Conway-Guy sequence that would allow a Lean formalization of its construction?",
+      "**Non-superincreasing DSS sets**: Can the structural theory be extended to characterize all DSS sets, not just superincreasing ones? Are there combinatorial properties (beyond the sum bound and positivity) that distinguish DSS sets from non-DSS sets without using the subset-sum injectivity definition directly?"
     ]
   },
-  "mainTheorems": [
+  "crossReferences": [
     {
-      "name": "dss_existence",
-      "type": "core",
-      "description": "For any n, there exists an n-element set with all elements ≤ n·2^n and distinct subset sums",
-      "leanType": "∀ n, ∃ A : Finset ℕ, A.card = n ∧ (∀ a ∈ A, a ≤ n * 2 ^ n) ∧ hasDistinctSubsetSums A"
+      "targetId": "erdos-1",
+      "relationship": "extends",
+      "description": "The main Erdős #1 entry proves the counting bound (max(A) ≥ (2^n-1)/n) and states the problem. This WIP-01 entry provides the missing structural foundations: the superincreasing lemma, powers-of-2 construction, and sum lower bound that undergird all DSS theory."
     },
     {
-      "name": "powersOfTwo_hasDistinctSubsetSums",
-      "type": "core",
-      "description": "The set {2^i : i < n} has distinct subset sums",
-      "leanType": "hasDistinctSubsetSums ((Finset.range n).image (fun i => (2 : ℕ) ^ i))"
+      "targetId": "erdos-1-oq-02",
+      "relationship": "related",
+      "description": "OQ02 formalizes the Dubroff-Fox-Xu entropy bound (max(A) ≥ √(2/π) · 2^n / √n) via Fourier analysis and entropy inequalities. The sum lower bound proved here (sum(A) ≥ 2^n − 1) is a weaker combinatorial precursor to that analytic bound."
     },
     {
-      "name": "pow2_sum_inj",
-      "type": "supporting",
-      "description": "Binary representation uniqueness: subsets of {0,...,n-1} with equal power-of-2 sums are identical",
-      "leanType": "S ⊆ range n → T ⊆ range n → S.sum (2^·) = T.sum (2^·) → S = T"
+      "targetId": "erdos-1-oq-03",
+      "relationship": "extends",
+      "description": "OQ03 defines minDSSBound n (the minimum max element of any n-element DSS set) using Nat.find, but previously relied on a sorry for the existence witness. The `minDSS_witness` theorem in this file fills that sorry, making OQ03's minDSSBound fully unconditional."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial theorem underlies the counting argument: the 2^n subsets of an n-element set arise from the Binomial expansion (1+1)^n = ∑ C(n,k), and their distinct sums are injected into {0,...,sum(A)}. The pigeonhole bound 2^n ≤ sum(A)+1 is a direct consequence."
+    },
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Erdős Problem #28 on Sidon sets (B₂ sets: all pairwise sums distinct) shares the 'distinct sums' theme with Problem #1. Both problems ask about structured extremal sets in ℤ/ℕ where a combinatorial distinctness condition forces sparsity. The DSS property (all subset sums distinct) is strictly stronger than the Sidon condition (all pairwise sums distinct)."
     }
   ],
-  "leanFile": {
-    "imports": [
-      "Proofs.Erdos1Problem",
-      "Mathlib"
-    ],
-    "opens": [
-      "Finset"
-    ],
-    "namespace": "Erdos1Wip01",
-    "lineCount": 187,
-    "axiomCount": 0,
-    "theoremCount": 5,
-    "definitionCount": 0,
-    "path": "Proofs/Erdos1Wip01.lean",
-    "sorries": 0
-  },
-  "sorries": 0,
   "references": [
     {
-      "key": "Er65",
-      "citation": "Erdős, P., Problems and Results in Additive Number Theory, Colloque sur la Théorie des Nombres (Bruxelles, 1955), pp. 127-137.",
-      "type": "paper"
+      "authors": "Erdős, Paul",
+      "title": "Problems in additive number theory",
+      "year": "1955",
+      "venue": "Proceedings of the International Congress of Mathematicians, Amsterdam"
     },
     {
-      "key": "CG69",
-      "citation": "Conway, J.H. and Guy, R.K., Sets of Natural Numbers with Distinct Subset Sums, Notices Amer. Math. Soc. 15 (1968), p. 345.",
-      "type": "paper"
+      "authors": "Conway, John H.; Guy, Richard K.",
+      "title": "Solution of a problem of P. Erdős",
+      "year": "1968",
+      "venue": "Colloq. Math.",
+      "volume": "20",
+      "pages": "307-309",
+      "note": "Constructs the Conway-Guy sequence achieving max(A) ≤ 0.22009 · 2^n"
     },
     {
-      "key": "Lue88",
-      "citation": "Lunnon, W.F., Integer Sets with Distinct Subset Sums, Math. Comp. 50 (1988), pp. 297-320.",
-      "type": "paper"
+      "authors": "Dubroff, Quentin; Fox, Jacob; Xu, Max Wenqiang",
+      "title": "A note on the Erdős distinct subset sums problem",
+      "year": "2021",
+      "venue": "SIAM Journal on Discrete Mathematics",
+      "note": "Improves lower bound to N ≥ √(2/π) · 2^n / √n using entropy methods"
+    },
+    {
+      "authors": "OEIS",
+      "title": "Sequence A005318: f(n) = minimum max element of n-element distinct-subset-sum set",
+      "year": "ongoing",
+      "venue": "The On-Line Encyclopedia of Integer Sequences"
     }
   ]
 }

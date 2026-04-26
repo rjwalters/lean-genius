@@ -291,56 +291,98 @@ theorem ssytSchurFin_one_row (n m : ℕ) :
   simp [Multiset.map_coe, Multiset.prod_coe, List.map_ofFn, prod_ofFn]
 
 /-
-### k = 2 (Two-Row Case) — Jeu de Taquin
+### k = 2 (Two-Row Case) — Row Decomposition + Jeu de Taquin
 
-Proof strategy for ssytSchurFin n 2 sh = schurPolynomial 2 sh:
-
-(1) Row decomposition: SSYTFin n 2 [a,b] ≅ {(P,Q) : 1-row SSYT(a) × 1-row SSYT(b) | col-strict}
-    where col-strict = ∀ j < min(a,b), P(0,j) < Q(0,j).
-
-(2) Weight factorization over rows:
-      ∑_{all (P,Q) of shapes (a,b)} weight(P) * weight(Q) = h_a * h_b
-    (by ssytSchurFin_one_row applied twice, then sum over product type)
-
-(3) Jeu de taquin weight bijection (key step):
-    For b ≥ 1, define forward map on non-col-strict (P,Q) by:
-      c := min{j : P[j] ≥ Q[j]}
-      P' := P[0..c-1] ++ [Q[c]] ++ P[c..a-1]   (length a+1)
-      Q' := Q[0..c-1] ++ Q[c+1..b-1]             (length b-1)
-    This is a weight-preserving bijection
-      {non-col-strict (P,Q) of shapes (a,b)} ≃ {all (P',Q') of shapes (a+1,b-1)}
-    Consequence: ∑_{non-col-strict} weight = h_{a+1} * h_{b-1}
-
-(4) Combining (1),(2),(3):
-      ssytSchurFin n 2 [a,b]
-      = ∑_{col-strict} weight
-      = h_a * h_b - ∑_{non-col-strict} weight
-      = h_a * h_b - h_{a+1} * h_{b-1}
-      = schurPolynomial 2 [a,b]   (by schurPolynomial_two_row)
-
-Lean estimate: ~200 lines for steps (1)-(3). The bijection proof is the hard core:
-  - Row projection Equiv (row decomposition): ~80 lines
-  - Forward/inverse map + inverses proof: ~80 lines
-  - Weight preservation: ~20 lines
+Proof of ssytSchurFin n 2 sh = schurPolynomial 2 sh:
+  (1) Row decomp: SSYTFin n 2 sh ≃ col-strict RowPairs  [twoRow_equiv, sorry]
+  (2) Total row-pair weight = h_a * h_b  [rowPair_sum_weight, proved]
+  (3) Non-cs weight = h_{a+1} * h_{b-1}  [nonColStrict_sum_weight, sorry — jdt bijection]
+  (4) cs weight = total - non-cs = h_a*h_b - h_{a+1}*h_{b-1} = schurPolynomial 2 sh
 -/
 
-/-- **Two-Row Jacobi-Trudi** (open — jeu de taquin bijection ~200 lines):
-    The 2-row SSYT generating function equals the 2×2 Jacobi-Trudi determinant.
+-- Abbreviation: pair of 1-row SSYTs (rows 0 and 1 of a 2-row SSYT)
+private abbrev RowPair (n a b : ℕ) :=
+  SSYTFin n 1 (fun _ => a) × SSYTFin n 1 (fun _ => b)
 
-    Proof route: row-decompose SSYTFin n 2 sh into col-strict row-pairs, then use the
-    jeu de taquin bijection {non-col-strict pairs (a,b)} ≃ {all pairs (a+1,b-1)} to show:
-      ssytSchurFin n 2 [a,b] = h_a*h_b - h_{a+1}*h_{b-1} = schurPolynomial 2 [a,b] -/
+-- Column-strict: entry in row 0 strictly less than row 1 in each shared column
+private def IsColStrict {n a b : ℕ} (pq : RowPair n a b) : Prop :=
+  ∀ j : Fin (min a b),
+    pq.1.1 ⟨⟨0, Nat.lt_succ_self 0⟩, j.castLE (Nat.min_le_left a b)⟩ <
+    pq.2.1 ⟨⟨0, Nat.lt_succ_self 0⟩, j.castLE (Nat.min_le_right a b)⟩
+
+instance {n a b : ℕ} (pq : RowPair n a b) : Decidable (IsColStrict pq) :=
+  Fintype.decidableForallFintype
+
+-- Weight of a row pair = product of the two individual 1-row weights
+private noncomputable def RowPair.weight {n a b : ℕ} (pq : RowPair n a b) :
+    MvPolynomial (Fin n) R :=
+  pq.1.weight * pq.2.weight
+
+/-- Row decomposition: 2-row SSYT ≃ col-strict row pairs.
+    (sorry — mechanical Equiv: project T to rows 0 and 1; the SSYT conditions are preserved) -/
+private def twoRow_equiv (n : ℕ) (sh : Fin 2 → ℕ) :
+    SSYTFin n 2 sh ≃ { pq : RowPair n (sh 0) (sh 1) // IsColStrict pq } :=
+  sorry
+
+/-- Weight preserved by twoRow_equiv: T.weight = (twoRow_equiv T).1.weight.
+    (sorry — follows by Fintype.prod_sigma decomposition) -/
+private theorem twoRow_equiv_weight (n : ℕ) (sh : Fin 2 → ℕ) (T : SSYTFin n 2 sh) :
+    T.weight = (twoRow_equiv n sh T).1.weight :=
+  sorry
+
+/-- Total row-pair weight sum factors as h_a * h_b.
+    Proof: sum over product type = (sum over row 0) × (sum over row 1)
+           = ssytSchurFin n 1 [a] × ssytSchurFin n 1 [b] = h_a * h_b. -/
+private theorem rowPair_sum_weight (n a b : ℕ) :
+    ∑ pq : RowPair n a b, (pq.weight : MvPolynomial (Fin n) R) =
+    hsymm (Fin n) R a * hsymm (Fin n) R b := by
+  simp only [RowPair.weight, RowPair]
+  -- Factor ∑_{(P,Q)} P.weight * Q.weight = (∑_P P.weight) * (∑_Q Q.weight)
+  rw [Fintype.sum_prod_type]
+  simp_rw [← Finset.mul_sum]  -- inner: ∑_Q P.w*Q.w = P.w * ∑_Q Q.w
+  rw [← Finset.sum_mul]       -- outer: ∑_P P.w * (∑_Q Q.w) = (∑_P P.w) * (∑_Q Q.w)
+  -- Each factor is ssytSchurFin = h via ssytSchurFin_one_row
+  simp only [show ∑ P : SSYTFin n 1 (fun _ => a), P.weight =
+      ssytSchurFin (R := R) n 1 (fun _ => a) from rfl,
+    show ∑ Q : SSYTFin n 1 (fun _ => b), Q.weight =
+      ssytSchurFin (R := R) n 1 (fun _ => b) from rfl]
+  rw [ssytSchurFin_one_row, ssytSchurFin_one_row]
+
+/-- Non-col-strict row-pair weight sum = h_{a+1} * h_{b-1}.
+    Proof: jeu de taquin bijection {non-cs pairs (a,b)} ≃ {all pairs (a+1,b-1)} is
+    weight-preserving, so ∑_{ncs} = ∑_{all (a+1,b-1)} = h_{a+1} * h_{b-1}. (sorry) -/
+private theorem nonColStrict_sum_weight (n a b : ℕ) :
+    ∑ pq : { pq : RowPair n a b // ¬ IsColStrict pq }, (pq.1.weight : MvPolynomial (Fin n) R) =
+    hsymm (Fin n) R (a + 1) * (if 1 ≤ b then hsymm (Fin n) R (b - 1) else 0) :=
+  sorry
+
+/-- **Two-Row Jacobi-Trudi**: the 2-row SSYT generating function equals the 2×2 determinant.
+    Proof: col-strict weight = total - non-col-strict = h_a*h_b - h_{a+1}*h_{b-1}
+           = schurPolynomial 2 sh. -/
 theorem ssytSchurFin_two_row (n : ℕ) (sh : Fin 2 → ℕ) :
     ssytSchurFin (R := R) n 2 sh =
     schurPolynomial (σ := Fin n) (R := R) 2 sh := by
-  -- Key steps:
-  -- let a := sh 0, b := sh 1
-  -- (1) ssytSchurFin n 2 sh = ∑_{col-strict (P,Q)} weight(P)*weight(Q)  [row decomp]
-  -- (2) ∑_{all (P,Q)} weight(P)*weight(Q) = h_a * h_b               [ssytSchurFin_one_row ×2]
-  -- (3) ∑_{non-col-strict} weight = h_{a+1} * h_{b-1}               [jdt bijection]
-  -- (4) schurPolynomial 2 sh = h_a*h_b - h_{a+1}*h_{b-1}           [schurPolynomial_two_row]
-  -- (5) sub: ssytSchurFin n 2 sh = h_a*h_b - h_{a+1}*h_{b-1}       [from (1)-(3)]
-  sorry
+  -- Set a = sh 0, b = sh 1
+  set a := sh 0; set b := sh 1
+  -- RHS: schurPolynomial 2 sh = h_a*h_b - h_{a+1}*(if 1≤b then h_{b-1} else 0)
+  have hsh2 : sh = Fin.cons a (Fin.cons b Fin.elim0) :=
+    funext (fun i => by fin_cases i <;> rfl)
+  -- LHS: rewrite via row decomp bijection
+  have hlhs : ssytSchurFin (R := R) n 2 sh =
+      ∑ pq : { pq : RowPair n a b // IsColStrict pq },
+        (pq.1.weight : MvPolynomial (Fin n) R) := by
+    simp only [ssytSchurFin]
+    exact Fintype.sum_equiv (twoRow_equiv n sh)
+      SSYTFin.weight (fun pq => pq.1.weight) (twoRow_equiv_weight n sh)
+  -- Partition: col-strict + non-col-strict = total row-pair sum
+  have hsplit : (∑ pq : { pq : RowPair n a b // IsColStrict pq }, (pq.1.weight : MvPolynomial (Fin n) R)) +
+      (∑ pq : { pq : RowPair n a b // ¬IsColStrict pq }, (pq.1.weight : MvPolynomial (Fin n) R)) =
+      ∑ pq : RowPair n a b, pq.weight :=
+    Fintype.sum_subtype_add_sum_subtype IsColStrict RowPair.weight
+  -- Combine: cs = total - ncs = h_a*h_b - h_{a+1}*h_{b-1}
+  rw [hlhs, hsh2, schurPolynomial_two_row,
+      ← rowPair_sum_weight (R := R) n a b, ← nonColStrict_sum_weight (R := R) n a b]
+  exact eq_sub_of_add_eq hsplit
 
 /-
 ### Main Theorem: Jacobi-Trudi = SSYT Sum (Open for k ≥ 3)

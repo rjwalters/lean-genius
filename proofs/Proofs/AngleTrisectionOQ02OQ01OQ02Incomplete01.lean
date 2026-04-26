@@ -42,6 +42,8 @@ import Mathlib.FieldTheory.Minpoly.Field
 import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
 import Mathlib.GroupTheory.SpecificGroups.Cyclic
 import Mathlib.RingTheory.Polynomial.Eisenstein.Basic
+import Mathlib.RingTheory.Algebraic.Basic
+import Mathlib.RingTheory.IntegralClosure.Algebra.Basic
 import Mathlib.Tactic
 
 open Polynomial IntermediateField
@@ -87,33 +89,58 @@ theorem isConstructible_sqrt2 : IsConstructible (Real.sqrt 2 : ℂ) := by
   have h2 : IsConstructible (2 : ℂ) := by simpa using isConstructible_rat 2
   have h0 : IsConstructible (0 : ℂ) := isConstructible_zero
   have hsq : (Real.sqrt 2 : ℂ) * (Real.sqrt 2 : ℂ) = 2 := by
-    push_cast
-    rw [← Real.sqrt_mul (by norm_num : (0 : ℝ) ≤ 2)]
-    simp [Real.sqrt_mul_self (by norm_num : (0 : ℝ) ≤ 2)]
+    norm_cast
+    exact Real.mul_self_sqrt (by norm_num : (0 : ℝ) ≤ 2)
   simpa using IsConstructible.sqrt_ext (Real.sqrt 2 : ℂ) 2 0 h2 h0 hsq
 
 -- ============================================================
 -- PART 2: Key Structural Lemma (SORRY — tower degree property)
 -- ============================================================
 
-/-- **[SORRY 1/2] Constructible numbers are algebraic of 2-power degree.**
+/-- Constructible numbers are algebraic of 2-power degree.
 
     If α is constructible (under the FIXED definition), then:
     1. α is algebraic over ℚ
     2. finrank ℚ ℚ⟮α⟯ = 2^n for some n
 
-    **Proof sketch**: Induction on IsConstructible.
-    - `rational`: algebraic (minpoly ℚ = X - C q), finrank = 1 = 2^0.
-    - `sqrt_ext β a b` (β² = a): α = b + β.
-      - β satisfies X² - a over ℚ(a) → [ℚ(a,β):ℚ(a)] ≤ 2
-      - By IH on a: [ℚ(a):ℚ] = 2^j; so [ℚ(β):ℚ] | 2^(j+1)
-      - By IH on b: [ℚ(b):ℚ] = 2^k
-      - Tower: finrank ℚ ℚ⟮b+β⟯ | finrank ℚ ℚ(b,β) | 2^k * 2^(j+1) = 2^(j+k+1)
-    Key Mathlib lemmas needed: `FiniteDimensional.finrank_mul_finrank` (tower law),
-    `IntermediateField.adjoin.finrank` (finrank = minpoly degree). -/
+    **Proof**: Induction on IsConstructible.
+    - `rational` (α = algebraMap ℚ ℂ q): algebraicity from `isAlgebraic_algebraMap`.
+      finrank = 1 = 2^0 since q ∈ ⊥ implies ℚ⟮q⟯ = ⊥.
+    - `sqrt_ext` (α = b + β, β² = a):
+      · β algebraic: `IsAlgebraic.of_pow` from β^2 = a algebraic (IH on a).
+      · b + β algebraic: `IsIntegral.add` (over a field, algebraic ↔ integral).
+      · finrank: shown to divide 2^(j+k+1) via tower argument (sorry below),
+        then `Nat.dvd_prime_pow` extracts the exact power.
+
+    Remaining sorry: finrank ℚ ℚ⟮b+β⟯ ∣ 2^(j+k+1) (tower bound).
+    Tower: ℚ ⊆ ℚ⟮a⟯ (2^j) ⊆ ℚ⟮a⟯⊔ℚ⟮β⟯ (×2, β²=a∈ℚ⟮a⟯) ⊆ (...)⊔ℚ⟮b⟯ (×2^k); b+β in top. -/
 private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible α) :
-    IsAlgebraic ℚ α ∧ ∃ n : ℕ, finrank ℚ ℚ⟮α⟯ = 2 ^ n := by
-  sorry -- Tower degree induction (~120 lines)
+    IsAlgebraic ℚ α ∧ ∃ n : ℕ, Module.finrank ℚ ℚ⟮α⟯ = 2 ^ n := by
+  induction h with
+  | rational _ h_mem =>
+    obtain ⟨q, rfl⟩ := h_mem
+    refine ⟨isAlgebraic_algebraMap q, 0, ?_⟩
+    rw [pow_zero]
+    exact IntermediateField.finrank_adjoin_simple_eq_one_iff.mpr
+      (IntermediateField.mem_bot.mpr ⟨q, rfl⟩)
+  | sqrt_ext β a b _ _ hβ2 ih_a ih_b =>
+    obtain ⟨halg_a, j, _hj⟩ := ih_a
+    obtain ⟨halg_b, k, _hk⟩ := ih_b
+    -- β is algebraic: β^2 = a with a algebraic
+    have hβ_sq : β ^ 2 = a := by rw [sq]; exact hβ2
+    have halg_β : IsAlgebraic ℚ β :=
+      IsAlgebraic.of_pow (by norm_num : 0 < 2) (hβ_sq ▸ halg_a)
+    -- b + β is algebraic: sum of integrals over the field ℚ
+    have halg_bβ : IsAlgebraic ℚ (b + β) := by
+      rw [isAlgebraic_iff_isIntegral] at halg_b halg_β ⊢
+      exact halg_b.add halg_β
+    refine ⟨halg_bβ, ?_⟩
+    -- Show Module.finrank ℚ ℚ⟮b+β⟯ ∣ 2^(j+k+1), then Nat.dvd_prime_pow gives exact power
+    suffices hdvd : Module.finrank ℚ ℚ⟮(b + β)⟯ ∣ 2 ^ (j + k + 1) by
+      obtain ⟨m, _, hm⟩ := (Nat.dvd_prime_pow (by norm_num : Nat.Prime 2)).mp hdvd
+      exact ⟨m, hm⟩
+    -- [SORRY] Tower: ℚ⟮b+β⟯ ⊆ (ℚ⟮a⟯ ⊔ ℚ⟮β⟯) ⊔ ℚ⟮b⟯ with finrank | 2^j * 2 * 2^k
+    sorry
 
 -- ============================================================
 -- PART 3: Eisenstein Criterion — X³ - 2 is Irreducible
@@ -221,9 +248,11 @@ theorem not_constructible_of_bad_degree {p : ℚ[X]} (hp : Irreducible p)
   intro α hpα hcα
   -- Step 1: α algebraic, finrank ℚ ℚ⟮α⟯ = 2^n
   obtain ⟨halg, n, hn⟩ := isConstructible_algebraic_degree α hcα
-  -- Step 2: natDegree (minpoly ℚ α) = finrank ℚ ℚ⟮α⟯
-  have hmind : (minpoly ℚ α).natDegree = finrank ℚ ℚ⟮α⟯ :=
-    (IntermediateField.adjoin.finrank halg).symm
+  -- α is integral (algebraic over a field ↔ integral)
+  have hint : IsIntegral ℚ α := isAlgebraic_iff_isIntegral.mp halg
+  -- Step 2: natDegree (minpoly ℚ α) = Module.finrank ℚ ℚ⟮α⟯
+  have hmind : (minpoly ℚ α).natDegree = Module.finrank ℚ ℚ⟮α⟯ :=
+    (IntermediateField.adjoin.finrank hint).symm
   -- Step 3: minpoly ℚ α ∣ p
   have hdvd : minpoly ℚ α ∣ p := minpoly.dvd ℚ α hpα
   -- Step 4: p irreducible + minpoly ∣ p → natDegree p = 2^n
@@ -232,11 +261,13 @@ theorem not_constructible_of_bad_degree {p : ℚ[X]} (hp : Irreducible p)
   · -- minpoly ℚ α is a unit: impossible since natDegree = finrank ≥ 1 (algebraic element)
     have hunit_zero : (minpoly ℚ α).natDegree = 0 :=
       Polynomial.natDegree_eq_zero_of_isUnit h1
-    linarith [hn ▸ hunit_zero ▸ (Nat.one_le_two_pow : 1 ≤ 2^n)]
+    have h_fr_zero : Module.finrank ℚ ℚ⟮α⟯ = 0 := hmind ▸ hunit_zero
+    rw [hn] at h_fr_zero
+    exact absurd h_fr_zero (Nat.two_pow_pos n).ne'
   · -- c is a unit → natDegree p = natDegree (minpoly ℚ α) = 2^n
     apply hdeg; use n
     have hc_deg : c.natDegree = 0 := Polynomial.natDegree_eq_zero_of_isUnit h2
-    have hne : minpoly ℚ α ≠ 0 := minpoly.ne_zero halg
+    have hne : minpoly ℚ α ≠ 0 := minpoly.ne_zero hint
     have hcne : c ≠ 0 := IsUnit.ne_zero h2
     rw [hc, Polynomial.natDegree_mul hne hcne, hmind, hn, hc_deg, add_zero]
 

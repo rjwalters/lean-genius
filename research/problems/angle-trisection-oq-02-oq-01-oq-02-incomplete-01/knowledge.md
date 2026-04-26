@@ -90,3 +90,41 @@ Now:
 1. Prove `isConstructible_algebraic_degree`: ~120 lines, tower induction
 2. For `wantzel_galois_iff`: would need FTGT, keep as sorry
 3. Consider Aristotle for helper lemmas in the tower induction
+
+## Session 27 (2026-04-26) — Compile Errors Fixed; Tower Sorry Narrowed
+
+**Mode**: REVISIT (continued from Session 26)
+**Outcome**: PROGRESS — file now compiles with exactly 2 expected sorries
+
+### What I Did
+- Discovered Session 26 code had never compiled (multiple errors)
+- Fixed `isConstructible_sqrt2`: `norm_cast` + `Real.mul_self_sqrt` instead of broken `rw [← Real.sqrt_mul ...]`
+- Fixed `isConstructible_algebraic_degree`:
+  - Rational case: `IntermediateField.finrank_adjoin_simple_eq_one_iff` + `IntermediateField.mem_bot`
+  - sqrt_ext case: algebraicity proven fully (no sorry); finrank narrowed to `∣ 2^(j+k+1)` via tower (1 sorry)
+  - Used `IsAlgebraic.of_pow` for β algebraic from β²=a algebraic
+  - Used `IsIntegral.add` (via `isAlgebraic_iff_isIntegral`) for b+β algebraic
+  - Used `Nat.dvd_prime_pow` to extract exact power from divisibility
+- Fixed `not_constructible_of_bad_degree`:
+  - `Module.finrank` (fully qualified) instead of bare `finrank`
+  - `isAlgebraic_iff_isIntegral.mp halg` to get `IsIntegral` for `adjoin.finrank`
+  - `absurd h_fr_zero (Nat.two_pow_pos n).ne'` instead of broken `linarith`
+- Discovered Docker must be run from WORKTREE directory (not main repo root)
+- Build now succeeds from `.loom/worktrees/researcher-4/`
+
+### Key Insights
+- `IntermediateField.adjoin.finrank` expects `IsIntegral`, not `IsAlgebraic` — need conversion
+- `finrank` without qualification is ambiguous; always use `Module.finrank` fully qualified
+- `norm_cast` + `Real.mul_self_sqrt` is the right approach for ℝ→ℂ cast goals
+- Tower sorry reduced from "120 lines" to a single divisibility claim
+
+### Remaining Sorries (2)
+1. **Tower divisibility**: `Module.finrank ℚ ℚ⟮(b + β)⟯ ∣ 2 ^ (j + k + 1)`
+2. **`wantzel_galois_iff`**: full Galois characterization — out-of-scope
+
+### Files Modified
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean` (in worktree, PR #12712)
+
+### Next Steps
+1. Prove the tower divisibility sorry: `Module.finrank ℚ ℚ⟮b+β⟯ ∣ 2^(j+k+1)`
+   - Key: ℚ⟮b+β⟯ ≤ ℚ⟮a,β,b⟯; each adjoin step multiplies finrank by ≤ 2^k

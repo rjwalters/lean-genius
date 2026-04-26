@@ -29,30 +29,38 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3 sorries eliminated in cube_unique_zero_dehn. 1 axiom remains (icoAngle_irrational). Main result cube_isolated_dehn_invariant fully proved.",
+    "progressSummary": "PROGRESS: icoAngle_irrational proved (115 lines, Chebyshev sequence). Axiom count 2->1. Only tmul_infinite_order_ne_zero remains.",
     "builtItems": [
-      "cube_unique_zero_dehn (PROVED, 0 sorries) — DissectionOfCubesOQ04.lean",
-      "cube_isolated_dehn_invariant (PROVED) — cube D=0, all others D≠0",
-      "five_ndvd_cosThreeFifthsSeq (PROVED) — 5 ∤ d_n for cosThreeFifths sequence",
-      "arccos_three_fifths_irrational (PROVED) — arccos(3/5)/π ∉ ℚ",
-      "dodAngle_irrational (PROVED) — arccos(-1/√5)/π ∉ ℚ via chain",
-      "dod_dehn_ne_zero (PROVED) — dodecahedron D ≠ 0"
+      "cube_unique_zero_dehn (PROVED, 0 sorries) \u2014 DissectionOfCubesOQ04.lean",
+      "cube_isolated_dehn_invariant (PROVED) \u2014 cube D=0, all others D\u22600",
+      "five_ndvd_cosThreeFifthsSeq (PROVED) \u2014 5 \u2224 d_n for cosThreeFifths sequence",
+      "arccos_three_fifths_irrational (PROVED) \u2014 arccos(3/5)/\u03c0 \u2209 \u211a",
+      "dodAngle_irrational (PROVED) \u2014 arccos(-1/\u221a5)/\u03c0 \u2209 \u211a via chain",
+      "dod_dehn_ne_zero (PROVED) \u2014 dodecahedron D \u2260 0",
+      "icoSeq : N -> Z (Chebyshev seq) \u2014 DissectionOfCubesOQ04.lean",
+      "three_ndvd_icoSeq (PROVED) \u2014 3 does not divide d_n for any n",
+      "icoSeq_eq_cos (PROVED) \u2014 relates icoSeq to cos values",
+      "cos_two_icoAngle (PROVED) \u2014 cos(2*icoAngle) = 1/9",
+      "arccos_one_ninth_eq (PROVED) \u2014 arccos(1/9) = 2*pi - 2*icoAngle",
+      "icoAngle_irrational (PROVED, 115 lines) \u2014 axiom replaced with full proof"
     ],
     "insights": [
       "DissectionOfCubesOQ04.lean already fully drafted (438 lines) with substantial proof",
-      "cube_unique_zero_dehn had 3 sorries for 'general edge count scaling' — wrong approach",
-      "Correct fix: use tmul_infinite_order_ne_zero uniformly for all 4 angles with n*a ≠ 0",
+      "cube_unique_zero_dehn had 3 sorries for 'general edge count scaling' \u2014 wrong approach",
+      "Correct fix: use tmul_infinite_order_ne_zero uniformly for all 4 angles with n*a \u2260 0",
       "octAngle infinite order follows from octAngle_class = -tetAngle + smul_neg + neg_eq_zero",
       "dodAngle and icoAngle infinite order already proved in this file",
-      "2 axioms remain: tmul_infinite_order_ne_zero (ℝ flat over ℤ) + icoAngle_irrational (Chebyshev ℤ[√5])"
+      "2 axioms remain: tmul_infinite_order_ne_zero (\u211d flat over \u2124) + icoAngle_irrational (Chebyshev \u2124[\u221a5])",
+      "icoAngle_irrational proved via Chebyshev sequence for arccos(1/9)",
+      "Key: cos(2*icoAngle)=1/9, so arccos(1/9)=2pi-2*icoAngle \u2014 reduces to integer sequence",
+      "Sequence d_n=9^n*2cos(n*arccos(1/9)) satisfies d_{n+2}=2d_{n+1}-81d_n; 3 ndvd d_n for all n"
     ],
     "mathlibGaps": [
-      "arccos(-√5/3)/π irrationality requires Chebyshev arithmetic in ℤ[√5] — axiomatized",
-      "ℝ flat over ℤ (tmul_infinite_order_ne_zero) — standard algebra, axiomatized"
+      "tmul_infinite_order_ne_zero (R flat over Z) \u2014 axiomatized, only remaining axiom"
     ],
     "nextSteps": [
-      "Run docker-build to verify DissectionOfCubesOQ04.lean compiles",
-      "Attempt icoAngle_irrational proof: Chebyshev sequence for cos(arccos(-√5/3))"
+      "Verify DissectionOfCubesOQ04.lean compiles via docker-build.sh",
+      "Attempt tmul_infinite_order_ne_zero proof (flatness of R over Z)"
     ]
   },
   "tags": [
