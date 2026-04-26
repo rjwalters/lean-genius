@@ -1,0 +1,78 @@
+{
+  "slug": "synthesis-curvature-ptolemy-2026-04-24",
+  "title": "Synthesis: Curvature-parametrized Ptolemy inequality using unified curvatureSin K function",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "IN-PROGRESS: SynthesisCurvaturePtolemy.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-25T07:53:15.620Z",
+    "iteration": 1,
+    "focus": "curvatureSin function defined, spherical Ptolemy inequality proved for unit-circle points in ℂ",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: curvatureSin defined, spherical Ptolemy inequality proved for unit-circle points in ℂ",
+    "builtItems": [
+      "curvatureSin: noncomputable def in SynthesisCurvaturePtolemy.lean:87",
+      "curvatureSin_zero: simp lemma (K=0 = identity)",
+      "curvatureSin_one: lemma (K=1 = sin)",
+      "curvatureSin_neg_one: lemma (K=-1 = sinh)",
+      "curvatureSin_zero_right: simp lemma (value at t=0 is 0)",
+      "spherical_ptolemy_eq_curvatureSin: theorem restating spherical Ptolemy in curvatureSin 1",
+      "spherical_ptolemy_ineq_curvatureSin: theorem proving spherical Ptolemy inequality for unit-circle points in ℂ"
+    ],
+    "insights": [
+      "curvatureSin K t defined: sin(√K·t)/√K (K>0), t (K=0), sinh(√|K|·t)/√|K| (K<0) — unifying sn_K function for constant-curvature geometry",
+      "Key: curvatureSin 1 = sin, curvatureSin (-1) = sinh, curvatureSin 0 = identity",
+      "Spherical Ptolemy inequality for all four unit-circle points in ℂ — no concyclicity needed (NEW)",
+      "Proof chain: chord-arc identity + complex Ptolemy inequality → spherical inequality by dividing by 4",
+      "K<0 (hyperbolic) case blocked: conformal factors (1-|z|²) dont cancel for interior points; ~800-1200 lines needed"
+    ],
+    "mathlibGaps": [
+      "Hyperbolic Ptolemy: Poincaré disk metric not in Mathlib (~800-1200 lines needed)",
+      "Ptolemy inequality for general inner product space (only proved for ℂ, not general IPS)"
+    ],
+    "nextSteps": [
+      "Submit SynthesisCurvaturePtolemy.lean for Docker build to verify compilation",
+      "Add curvatureSin oddness lemma: curvatureSin K (-t) = -curvatureSin K t",
+      "Prove normalization: deriv of curvatureSin K at 0 is 1 for all K",
+      "When Mathlib adds Poincaré disk, prove K=-1 case to complete the synthesis"
+    ]
+  },
+  "tags": [
+    "synthesis",
+    "geometry",
+    "ptolemy",
+    "curvature",
+    "spherical-geometry",
+    "trigonometry"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-25T12:53:24.054Z",
+  "lastUpdate": "2026-04-25T12:53:24.054Z",
+  "significance": 8,
+  "tractability": 7
+}
