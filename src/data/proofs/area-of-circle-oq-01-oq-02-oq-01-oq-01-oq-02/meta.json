@@ -1,0 +1,118 @@
+{
+  "id": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02",
+  "title": "n=5 Maximizes Unit Ball Volume",
+  "slug": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02",
+  "description": "Proves that the unit n-ball volume ω_n = π^(n/2)/Γ(n/2+1) achieves its global maximum at n=5, where ω_5 = 8π²/15 ≈ 5.2638. The sequence increases up to n=5 then strictly decreases, with the turning point at n+2 = 2π ≈ 6.28.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Volume_of_an_n-ball#Maximum_and_minimum",
+    "date": "2026-04-26",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "analysis",
+      "gamma-function",
+      "optimization",
+      "unit-ball",
+      "dimension"
+    ],
+    "proofRepoPath": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ01OQ02.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "lineCount": 210,
+    "mathlibDependencies": [
+      {
+        "theorem": "Gamma_add_one",
+        "description": "Gamma recurrence Γ(z+1) = z·Γ(z) for the ω recurrence",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "pi_lt_d2",
+        "description": "Upper bound π < 3.15 needed for ratio < 1 at n=5",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
+      },
+      {
+        "theorem": "pi_gt_three",
+        "description": "Lower bound π > 3 for base case comparisons",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
+      }
+    ]
+  },
+  "parent": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
+  "openQuestion": "Which dimension n maximizes the volume of the unit n-ball?",
+  "overview": {
+    "historicalContext": "The volume of the unit n-ball, ω_n = π^(n/2)/Γ(n/2+1), is a fundamental quantity in high-dimensional geometry. It satisfies the two-step recurrence ω_{n+2} = (2π/(n+2))·ω_n, which shows the sequence first increases then decreases. The maximum was noted by Hermann Weyl and others; the crossover occurs at n+2 = 2π ≈ 6.28, so n=5 (giving n+2=7) is the first dimension with ratio < 1.",
+    "problemStatement": "Which natural number n maximizes ω_n = π^(n/2)/Γ(n/2+1)?",
+    "proofStrategy": "The recurrence ω_{n+2} = (2π/(n+2))·ω_n shows ω is increasing when 2π/(n+2) > 1 (i.e., n < 2π-2 ≈ 4.28) and decreasing when 2π/(n+2) < 1 (i.e., n > 4.28). Since 2π < 7, n=5 (ratio 2π/7 < 1) is the first decreasing step. The maximum at n=5 is verified by: (1) explicit comparison ω_n ≤ ω_5 for n ∈ {0,...,5} using pi_gt_three, and (2) induction via even/odd parity for n ≥ 6, bounding each subsequence by ω_6 or ω_7, both < ω_5.",
+    "keyInsights": [
+      "The turning point n+2 = 2π ≈ 6.28 lies between n=4 and n=6, making n=5 the maximizer",
+      "ω_5 = 8π²/15 ≈ 5.2638 is strictly larger than both ω_4 = π²/2 ≈ 4.935 and ω_6 = π³/6 ≈ 5.168",
+      "For n ≥ 6 even: ω_n ≤ ω_6 < ω_5; for n ≥ 7 odd: ω_n ≤ ω_7 < ω_5",
+      "Key bound: 2π < 7 (since π < 3.15), making the ratio 2π/7 < 1 for n=5",
+      "ω_5 > ω_4 requires only 16 > 15 (no π bound needed); ω_5 > ω_3 requires π > 2.5 (from π > 3)",
+      "n=5 is uniquely the global maximizer — ω_5 ≤ ω_n implies n = 5"
+    ]
+  },
+  "sections": [
+    {
+      "id": "recurrence",
+      "title": "Recurrence and Explicit Values",
+      "startLine": 43,
+      "endLine": 84,
+      "summary": "Proves ω_{n+2} = 2π/(n+2)·ω_n using Gamma_add_one, and computes ω_0=1 through ω_5=8π²/15."
+    },
+    {
+      "id": "decrease",
+      "title": "Strict Decrease for n ≥ 5",
+      "startLine": 87,
+      "endLine": 120,
+      "summary": "Proves 2π/(n+2) < 1 for n ≥ 5 (using π < 3.15 < 3.5 so 2π < 7 ≤ n+2), then that ω(n+2) < ω(n). Builds even/odd subsequence bounds."
+    },
+    {
+      "id": "maximum",
+      "title": "n=5 is the Global Maximum",
+      "startLine": 122,
+      "endLine": 180,
+      "summary": "Proves ω_n ≤ ω_5 for all n: finite cases n≤5 by explicit comparison, n≥6 by even/odd parity + monotone decrease."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Uniqueness of the Maximum",
+      "startLine": 182,
+      "endLine": 210,
+      "summary": "Proves n=5 is the unique maximizer: ω_5 ≤ ω_n implies n=5."
+    }
+  ],
+  "conclusion": {
+    "summary": "n=5 uniquely maximizes the unit ball volume ω_n = π^(n/2)/Γ(n/2+1), with maximum value 8π²/15 ≈ 5.2638. Proved with 0 sorries.",
+    "implications": "This fundamental fact of high-dimensional geometry is now formally verified: the 5-dimensional unit ball has the largest volume among all unit balls. For n > 5, the volumes decrease monotonically (within each parity class) toward 0 (the thin shell limit). The crossover is governed by 2π ≈ 6.283, between n+2=6 (where ratio=π/3 > 1) and n+2=7 (where ratio=2π/7 < 1).",
+    "openQuestions": [
+      "What is the exact supremum of ω_n over all real n > 0 (not just natural numbers)? Does the maximum over ℝ occur near n=5.257?",
+      "How does the maximizing dimension behave for balls in L^p norms? For which p does the maximum shift from n=5?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
+      "relationship": "answers-open-question",
+      "description": "Answers the question of which n maximizes ω_n, using the recurrence proved in the parent."
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-01-oq-03",
+      "relationship": "related",
+      "description": "The sibling thin-shell result shows ω_n → 0; this proof identifies where the maximum occurs before the decay."
+    }
+  ],
+  "leanFile": {
+    "namespace": "MaxBallVolume",
+    "lineCount": 210,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 1,
+    "path": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
