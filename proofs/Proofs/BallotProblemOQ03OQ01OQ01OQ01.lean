@@ -353,21 +353,39 @@ private lemma sum_all_sym_pairs (n a b : ℕ) :
   simp_rw [← Finset.mul_sum, ← Finset.sum_mul]
 
 /-- **Jeu de Taquin weight sum** (key step for two-row Jacobi-Trudi).
-    The sum of pair-weights over NON-col-strict (a,b) pairs equals h_{a+1}*h_{b-1}.
+    The sum of pair-weights over NON-col-strict (a,b) pairs equals h_{a+1}*h_{b-1},
+    valid for the partition condition b ≤ a.
 
-    Proof by constructing a weight-preserving bijection
-      φ : {non-col-strict (P: Sym n a, Q: Sym n b)} ≃ {all (P': Sym n (a+1), Q': Sym n (b-1))}
-    where c := min{j : P.sort[j] ≥ Q.sort[j]} (first column violation), and
-      P' := P.underlying + {Q.sort[c]}  (multiset-add, maintains sort since P[c-1] < Q.sort[c] ≤ P[c])
-      Q' := Q.underlying - {Q.sort[c]}  (multiset-erase)
-    Weight-preserved: wt(P)*wt(Q) = wt(P+{v})*wt(Q-{v}) by Multiset.prod_erase.
-    Surjective: every (P', Q') has a unique preimage (find the "seam" element in P'.sort). -/
-private lemma jdt_weight_sum (n a b : ℕ) :
+    IMPORTANT: The naive multiset JDT bijection (P,Q)↦(P+{v},Q-{v}) is NOT injective
+    for b ≥ 2. Example (n=2, a=2, b=2): pairs ({0,2},{1,2}) and ({0,1},{2,2}) both
+    produce ({0,1,2},{2}) under the slide. The correct proof approach by case:
+    (b=0) Trivial: ColStrictSym a 0 holds vacuously (min a 0 = 0, no j < 0), so
+          the non-col-strict subtype is empty and the sum is 0 = RHS.
+    (b=1) Direct bijection: {(P,{q}) : q ≤ min(P)} ≃ Sym n (a+1)
+          via (P,{q}) ↦ P.1 + {q}, with unique inverse P' ↦ (P'-{min P'}, {min P'}).
+          Weight preserved: wt(P)*X_q = wt(P+{q}) by Multiset.prod_cons.
+    (b≥2) Requires the ring-valued algebraic LGV lemma (extending BallotProblemOQ03OQ02
+          from ℤ-valued to ring-valued, then apply to the Jacobi-Trudi lattice config). -/
+private lemma jdt_weight_sum (n a b : ℕ) (hab : b ≤ a) :
     ∑ PQ : { PQ : Sym (Fin n) a × Sym (Fin n) b // ¬ColStrictSym a b PQ.1 PQ.2 },
       (PQ.1.1.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
       (PQ.1.2.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod =
     hsymm (Fin n) R (a + 1) * (if 1 ≤ b then hsymm (Fin n) R (b - 1) else 0) := by
-  sorry
+  rcases Nat.eq_zero_or_pos b with rfl | hb
+  · -- b = 0: RHS = h_{a+1} * 0 = 0 (since ¬(1 ≤ 0)).
+    -- LHS = 0: the subtype is empty because ColStrictSym a 0 holds vacuously for all P, Q
+    -- (the body is ∀ j < min a 0 = 0, which has no valid j).
+    simp only [if_neg (show ¬(1 ≤ 0) from by omega), mul_zero]
+    apply Finset.sum_eq_zero
+    intro ⟨⟨_, _⟩, h⟩ _
+    exfalso; apply h
+    intro j hj
+    -- hj : j < min a 0; since min a 0 = 0, this gives j < 0 which is absurd
+    omega
+  · -- b ≥ 1: open. See docstring above for the correct proof strategy by case.
+    -- b=1 is provable via the direct bijection described above (~40 lines).
+    -- b≥2 requires the ring-valued algebraic LGV (~150 lines).
+    sorry
 
 /-- Row decomposition: 2-row SSYT generating function = sum over col-strict pairs.
     The bijection φ : SSYTFin n 2 sh ≃ {(P,Q) : ColStrictSym (sh0, sh1) pairs}:
@@ -496,7 +514,7 @@ private lemma sym_pair_sum_partition (n a b : ℕ) :
     2. ∑_{col-strict} + ∑_{¬col-strict} = h_a*h_b  [sym_pair_sum_partition]
     3. ∑_{¬col-strict} = h_{a+1}*h_{b-1}         [jdt_weight_sum]
     4. ∑_{col-strict} = h_a*h_b - h_{a+1}*h_{b-1} = schurPolynomial 2 sh [algebra] -/
-theorem ssytSchurFin_two_row (n : ℕ) (sh : Fin 2 → ℕ) :
+theorem ssytSchurFin_two_row (n : ℕ) (sh : Fin 2 → ℕ) (hsh : sh 1 ≤ sh 0) :
     ssytSchurFin (R := R) n 2 sh =
     schurPolynomial (σ := Fin n) (R := R) 2 sh := by
   set a := sh 0 with ha
@@ -516,7 +534,7 @@ theorem ssytSchurFin_two_row (n : ℕ) (sh : Fin 2 → ℕ) :
   -- jdt_weight_sum:         ∑_{¬col-strict} = h_{a+1} * (if 1 ≤ b then h_{b-1} else 0)
   -- Therefore:              ∑_{col-strict} = h_a * h_b - h_{a+1} * ...
   exact eq_sub_of_add_eq
-    (jdt_weight_sum (R := R) n a b ▸ sym_pair_sum_partition (R := R) n a b)
+    (jdt_weight_sum (R := R) n a b hsh ▸ sym_pair_sum_partition (R := R) n a b)
 
 /-
 ### Main Theorem: Jacobi-Trudi = SSYT Sum (Open for k ≥ 3)
@@ -534,7 +552,7 @@ theorem ssytSchurFin_two_row (n : ℕ) (sh : Fin 2 → ℕ) :
         (1) algebraic_lgv: for ring-valued weighted DAG, det(weight_matrix) = ∑_NI ∏ weights
         (2) RSK: SSYTFin n k sh ↔ NI tuples of 1-row SSYTs (the Jacobi-Trudi LGV config)
         (3) Weight match: SSYT weight = NI-tuple weight -/
-theorem jacobi_trudi_ssyt_eq (n k : ℕ) (sh : Fin k → ℕ) :
+theorem jacobi_trudi_ssyt_eq (n k : ℕ) (sh : Fin k → ℕ) (hanti : Antitone sh) :
     JacobiTrudi.schurPolynomial (σ := Fin n) (R := R) k sh =
     ssytSchurFin (R := R) n k sh := by
   cases k with
@@ -552,8 +570,8 @@ theorem jacobi_trudi_ssyt_eq (n k : ℕ) (sh : Fin k → ℕ) :
     | succ k =>
       cases k with
       | zero =>
-        -- k = 2: two-row case, proved by jdt bijection.
-        exact (ssytSchurFin_two_row n sh).symm
+        -- k = 2: two-row case, proved by jdt bijection (partition condition: sh 1 ≤ sh 0).
+        exact (ssytSchurFin_two_row n sh (hanti (Fin.zero_le 1))).symm
       | succ k =>
         -- k ≥ 3: requires algebraic LGV + RSK (~300 lines).
         --

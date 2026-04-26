@@ -58,6 +58,48 @@ symmetric polynomials: `s_λ = det[h_{λᵢ-i+j}]`. The proof route via SSYT and
 
 ---
 
+## Session 2026-04-26 (Session 10) — Fix Theorem Correctness; Prove b=0 Case of jdt_weight_sum
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: progress — fixed three incorrect theorem statements; proved b=0 case of jdt_weight_sum
+
+### What I Did
+
+1. Discovered `jdt_weight_sum` was FALSE without partition constraint: for a=0, b=1 the subtype is empty (ColStrictSym 0 1 vacuously true) so LHS=0 but RHS=h_1≠0. Added `(hab : b ≤ a)`.
+2. Discovered the naive JDT multiset bijection is NOT injective for b≥2: n=2, a=2, b=2: pairs ({0,2},{1,2}) and ({0,1},{2,2}) both slide to ({0,1,2},{2}). Wrong approach was documented in the sorry comment.
+3. Fixed `ssytSchurFin_two_row` to require `(hsh : sh 1 ≤ sh 0)`: without this, LHS=h_1 but det=0 for shape (0,1).
+4. Fixed `jacobi_trudi_ssyt_eq` to require `(hanti : Antitone sh)`, passing `hanti (Fin.zero_le 1)` for k=2 to get `sh 1 ≤ sh 0`.
+5. **Proved b=0 case** of `jdt_weight_sum`: `simp only [if_neg (by omega), mul_zero]` + `Finset.sum_eq_zero + exfalso; apply h; intro j hj; omega` (omega closes `j < min a 0` since `min a 0 ≤ 0`).
+6. Fixed sorry comment: documented the correct b=1 bijection ({(P,{q}) : q≤min(P)} ≃ Sym n (a+1)) and identified b≥2 path as ring-valued algebraic LGV.
+
+### Key Findings
+
+- **Partition condition is essential**: `jdt_weight_sum` is mathematically false for b > a. All three outer theorems need partition constraints.
+- **Multiset JDT bijection failure**: For b≥2, the "move Q.sort[c] into P" map is not a bijection. Two different pairs can have the same first violation column and produce the same image. The non-injectivity is concrete and easy to check with small examples.
+- **b=0 proof pattern**: After `rcases ... with rfl | hb`, `exfalso; apply h; intro j hj; omega` works because `omega` handles `min a 0 ≤ 0` and derives `j < 0` → False, closing any goal.
+- **b=1 correct bijection exists**: The "non-col-strict" condition for b=1 is precisely `q ≤ min(P)`. Under this condition, `P.1 + {q}` has a unique minimum `q`, making the map invertible via `min` extraction.
+- **Ring-valued LGV for b≥2**: BallotProblemOQ03OQ02 proves LGV over ℤ (counting paths). The general `jdt_weight_sum` for b≥2 needs the same result over a CommRing with ring-valued (polynomial) edge weights.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (3 theorem statements fixed; b=0 case proved)
+
+### Sorry Count: 2 → 2 (correctness improvement, b=0 now proved)
+
+- `jdt_weight_sum (b≥1)`: b=1 provable (~40 lines); b≥2 needs ring-valued LGV
+- `jacobi_trudi_ssyt_eq k≥3`: algebraic LGV + RSK (~300 lines) — unchanged
+
+### Next Steps
+
+1. **Prove jdt_weight_sum b=1 case** (~40 lines via `Equiv.ofBijective`):
+   - Define bijection `φ : {(P : Sym n a, q : Fin n) // q ≤ min(P)} → Sym n (a+1)` as `(P, q) ↦ P.1 + {q}`
+   - Show `φ` is injective (q = min of image) and surjective (every P' has min)
+   - Show weight preserved: `(P.1 + {q}).map X).prod = (P.1.map X).prod * X q`
+   - Use `Fintype.sum_equiv` to reindex
+2. **Build ring-valued algebraic LGV** (~150 lines): Generalize `lgv_lemma_rxr` from ℤ to CommRing.
+
+---
+
 ## Session 2026-04-26 (Session 8) — ssytSchurFin_two_row Assembled from 3 Components
 
 **Mode**: REVISIT (RICH knowledge tier)
