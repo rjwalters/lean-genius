@@ -319,16 +319,66 @@ private noncomputable def RowPair.weight {n a b : ℕ} (pq : RowPair n a b) :
   pq.1.weight * pq.2.weight
 
 /-- Row decomposition: 2-row SSYT ≃ col-strict row pairs.
-    (sorry — mechanical Equiv: project T to rows 0 and 1; the SSYT conditions are preserved) -/
+    Forward: project T to its two rows as 1-row SSYTs; IsColStrict from SSYT col-strict.
+    Backward: fill row 0 from P.1 and row 1 from Q.1; SSYT conditions from row SSYTs + ColStrict. -/
 private def twoRow_equiv (n : ℕ) (sh : Fin 2 → ℕ) :
-    SSYTFin n 2 sh ≃ { pq : RowPair n (sh 0) (sh 1) // IsColStrict pq } :=
-  sorry
+    SSYTFin n 2 sh ≃ { pq : RowPair n (sh 0) (sh 1) // IsColStrict pq } where
+  toFun T :=
+    ⟨⟨⟨fun ⟨_, j⟩ => T.1 ⟨⟨0, by omega⟩, j⟩,
+       ⟨fun _ j1 j2 hlt => T.2.1 ⟨0, by omega⟩ j1 j2 hlt,
+        fun i1 i2 _ _ _ hi => absurd hi (by have := i1.isLt; have := i2.isLt; omega)⟩⟩,
+     ⟨fun ⟨_, j⟩ => T.1 ⟨⟨1, by omega⟩, j⟩,
+       ⟨fun _ j1 j2 hlt => T.2.1 ⟨1, by omega⟩ j1 j2 hlt,
+        fun i1 i2 _ _ _ hi => absurd hi (by have := i1.isLt; have := i2.isLt; omega)⟩⟩⟩,
+     fun j => by
+       -- IsColStrict: T.row0(j) < T.row1(j) for j < min(sh 0)(sh 1)
+       have := T.2.2 ⟨0, by omega⟩ ⟨1, by omega⟩
+         (j.castLE (Nat.min_le_left _ _)) (j.castLE (Nat.min_le_right _ _)) rfl (by omega)
+       convert this using 2 <;> congr 1 <;> ext <;> simp⟩
+  invFun ⟨⟨P, Q⟩, hPQ⟩ :=
+    ⟨fun ⟨i, j⟩ =>
+       match i with
+       | ⟨0, _⟩ => P.1 ⟨⟨0, by omega⟩, j⟩
+       | ⟨1, _⟩ => Q.1 ⟨⟨0, by omega⟩, j⟩
+       | ⟨k + 2, hk⟩ => absurd hk (by omega),
+     ⟨-- Row weak: inherited from P.row-weak and Q.row-weak
+      fun i j1 j2 hlt =>
+        match i with
+        | ⟨0, _⟩ => P.2.1 ⟨0, by omega⟩ j1 j2 hlt
+        | ⟨1, _⟩ => Q.2.1 ⟨0, by omega⟩ j1 j2 hlt
+        | ⟨k + 2, hk⟩ => absurd hk (by omega),
+      -- Col strict: from IsColStrict + row indices
+      fun i1 i2 j1 j2 hjeq hi12 =>
+        match i1, i2 with
+        | ⟨0, _⟩, ⟨1, _⟩ => by
+            have hjv : j1.val < Nat.min (sh 0) (sh 1) :=
+              Nat.lt_min.mpr ⟨j1.isLt, hjeq ▸ j2.isLt⟩
+            have h := hPQ ⟨j1.val, hjv⟩
+            -- h : P.1 ⟨0, castLE min_le_left j⟩ < Q.1 ⟨0, castLE min_le_right j⟩
+            -- goal: P.1 ⟨0, j1⟩ < Q.1 ⟨0, j2⟩ (same values, different Fin proofs)
+            convert h using 2 <;> congr 1 <;> ext <;> simp [hjeq]
+        | ⟨0, _⟩, ⟨0, _⟩ => absurd hi12 (irrefl _)
+        | ⟨1, _⟩, ⟨0, _⟩ => absurd hi12 (by omega)
+        | ⟨1, _⟩, ⟨1, _⟩ => absurd hi12 (irrefl _)
+        | ⟨k + 2, hk⟩, _ => absurd hk (by omega)
+        | _, ⟨k + 2, hk⟩ => absurd hk (by omega)⟩⟩
+  left_inv T := by
+    apply Subtype.ext; funext ⟨i, j⟩
+    match i with
+    | ⟨0, _⟩ => rfl
+    | ⟨1, _⟩ => rfl
+    | ⟨k + 2, hk⟩ => exact absurd hk (by omega)
+  right_inv ⟨⟨P, Q⟩, _⟩ := by
+    apply Subtype.ext; apply Prod.ext <;> apply Subtype.ext <;> funext ⟨i, j⟩
+    all_goals (have hi0 : i = (0 : Fin 1) := Fin.eq_zero i; subst hi0; rfl)
 
 /-- Weight preserved by twoRow_equiv: T.weight = (twoRow_equiv T).1.weight.
-    (sorry — follows by Fintype.prod_sigma decomposition) -/
+    Proof: split sigma-product by Fin.prod_univ_two; each half matches the 1-row weight. -/
 private theorem twoRow_equiv_weight (n : ℕ) (sh : Fin 2 → ℕ) (T : SSYTFin n 2 sh) :
-    T.weight = (twoRow_equiv n sh T).1.weight :=
-  sorry
+    T.weight = (twoRow_equiv n sh T).1.weight := by
+  simp only [SSYTFin.weight, RowPair.weight, twoRow_equiv]
+  rw [Fintype.prod_sigma, Fin.prod_univ_two]
+  simp only [Fintype.prod_sigma, Fin.prod_univ_one]
 
 /-- Total row-pair weight sum factors as h_a * h_b.
     Proof: sum over product type = (sum over row 0) × (sum over row 1)
