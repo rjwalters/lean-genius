@@ -55,7 +55,7 @@
       "Dehn-Sydler completeness theorem statement"
     ],
     "lineCount": 413,
-    "assumptions": "1 axiom: tmul_infinite_order_ne_zero (flatness of ℝ over ℤ — torsion-free over PID implies flat). Previously 6 axioms; 5 eliminated: niven_arccos_third (cross-referenced from parent file), arccos_neg_third (proved via Real.arccos_neg), and 3 placeholder axioms (dehn_preserved_by_scissors, volume_preserved_by_scissors, dehn_sydler_theorem).",
+    "assumptions": "1 axiom: tmul_infinite_order_ne_zero (flatness of ℝ over ℤ). All dihedral angle and scissors-congruence assumptions eliminated. The axiom encodes that ℝ is flat over ℤ — a standard algebraic fact (torsion-free over a Bézout domain implies flat).",
     "mathlib_version": "4.26.0",
     "wiedijkNumber": 37,
     "relatedProblems": [
@@ -193,7 +193,7 @@
     "summary": "This formalization constructs the proper algebraic Dehn invariant $D(P) \\in \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$ using Mathlib's tensor product infrastructure. The central algebraic insight — that $\\mathbb{R}$ is divisible over $\\mathbb{Z}$, so torsion elements of $\\mathbb{R}/\\pi\\mathbb{Z}$ are killed in the tensor product — gives a clean proof that rational-angle polyhedra have $D = 0$. Combined with Niven's theorem ($\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$), this resolves Hilbert's Third Problem: $D(\\text{cube}) = 0 \\neq D(\\text{tet})$. The Dehn-Sydler completeness theorem is stated as an axiom.",
     "implications": "The tensor product formulation of the Dehn invariant automatically handles the rational-angle vanishing that must be argued case-by-case in elementary treatments. This algebraic perspective generalizes: scissors congruence in higher dimensions connects to algebraic K-theory (Dupont, Sah), where the Dehn invariant lives in $K_3(\\mathbb{C})$. The formalization demonstrates that Mathlib's tensor product API is mature enough for non-trivial applications in geometric algebra.",
     "openQuestions": [
-      "Can the flatness axiom (tmul_infinite_order_ne_zero) be proved in Lean using Mathlib's flatness theory for torsion-free modules over PIDs?",
+      "Can tmul_infinite_order_ne_zero (flatness of ℝ over ℤ) be proved using Mathlib's Module.Flat? The Lean file axiomatizes this standard fact. ℝ is torsion-free over ℤ (a Bézout domain), hence flat, which would prove r⊗x≠0 when r≠0 and x has infinite order.",
       "Can Sydler's sufficiency proof (same volume + same D implies scissors congruent) be formalized, completing the Dehn-Sydler theorem?",
       "What are the complete scissors congruence invariants in $\\mathbb{R}^n$ for $n \\geq 4$? Jessen and Thorup (1978) showed that volume and Dehn invariant do NOT suffice in dimension 4.",
       "The arccos_neg_third axiom has been proved via Mathlib's Real.arccos_neg. Can the remaining flatness axiom (tmul_infinite_order_ne_zero) be proved using Mathlib's Module.Flat theory?"
