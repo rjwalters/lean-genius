@@ -43,18 +43,26 @@ the unique other door (if any), repeating until reaching an FC simplex.
 3. `nonfc_with_door_has_unique_exit` — Non-FC simplex with an entry door has a unique exit door
 4. `kuhn_step` — One step of the Kuhn algorithm
 5. `kuhn_path_terminates` — FC simplex exists (non-constructive, from parity)
-6. `kuhn_three_doors_contradiction` — Three distinct doors → contradiction with Kuhn compatibility
+6. `kuhn_three_doors_contradiction` — Three distinct doors -> contradiction with Kuhn compatibility
 7. `walkValid_init` — Initial boundary-door state satisfies WalkValid
 8. `walkValid_step` — WalkValid preserved by one Kuhn step
 9. `kuhn_step_nonrevisit` — **KEY**: under WalkValid, walk never revisits a simplex
 10. `kuhnWalk_no_immediate_back` — Immediate predecessor is not revisitable (adj_unique_facet)
 11. `kuhnWalk_first_exit_interior` — First step from boundary door is always interior
 12. `kuhnPathStart_is_fc_of_fc_start` — Walk finds FC immediately if starting simplex is FC
-13. `kuhnPathStart_finds_fc_existential` — ∃ boundary door whose walk finds FC (axiomatized)
+13. `kuhn_path_existential` — Main existential via FPF involution parity (modulo 3 axioms)
+14. `kuhnWalkOutcome_fc_implies_isfc` — Walk outcome FC implies IsFC
+15. `kuhnWalkOutcome_bdryExit_adj_none` — Boundary exit has adj = none
+16. `kuhnWalkOutcome_bdryExit_isDoor` — Boundary exit is a door
+17. `kuhnWalk_eq_outcome_simplex` — kuhnWalk equals outcome simplex
+18. `walkBdryExit_on_face_d` — Boundary exit is on face d
+19. `walkEndpointMap_of_bdryExit` — walkEndpointMap returns exit point
 
-### Axiomatized
-- `kuhn_path_existential` (sorry) — Walk-reversal involution τ∘τ=id pending; non-revisiting proved
-  NOTE: former sub-lemma `bdry_nfc_even` was FALSE (see counterexample in theorem docstring)
+### Axiomatized (3 axioms encoding walk properties)
+- `walkOutcome_reversal` — Walk from exit point returns to start (involution)
+- `walkBdryExit_ne_start` — Walk exit point != start (fixed-point-free)
+- `kuhnWalk_not_stuck` — Walk terminates definitively (FC or boundary exit)
+  NOTE: former sub-lemma `bdry_nfc_even` was FALSE (see counterexample below)
 
 ### Removed (false as stated)
 - `kuhn_walk_reaches_fc` — Universal walk theorem is false; boundary exit possible on some paths
@@ -632,7 +640,6 @@ theorem kuhn_path_terminates {c : Coloring d N} {K : SpernerTriangulation d N}
     ∃ s : K.Simplex, IsFC c K s :=
   sperner_ndim c K hc hbdry_odd
 
-/-- If the current simplex is FC, kuhnWalk returns it immediately (base case). -/
 /-- Equation lemma: kuhnWalk at FC returns current simplex (used in fc_if_started_fc). -/
 private lemma kuhnWalk_succ_eq_current_of_fc {c : Coloring d N} {K : SpernerTriangulation d N}
     (hKuhn : IsKuhnCompatible c K) (n : ℕ) (state : KuhnState d N c K)
@@ -690,68 +697,367 @@ theorem kuhnPathStart_is_fc_of_fc_start {c : Coloring d N} {K : SpernerTriangula
   kuhnWalk_fc_if_started_fc hKuhn _ _ hfc₀
 
 -- ============================================================
--- SECTION XI: Walk Pairing Parity and Main Existential
+-- SECTION XI: Walk Outcome Tracking
+-- ============================================================
+
+/-- The outcome of a Kuhn walk: either found FC or exited at boundary. -/
+inductive WalkOutcome (d N : ℕ) (K : SpernerTriangulation d N) where
+  | fc (s : K.Simplex) : WalkOutcome d N K
+  | boundaryExit (s : K.Simplex) (k : Fin (d + 1)) : WalkOutcome d N K
+  | stuck (s : K.Simplex) : WalkOutcome d N K
+
+/-- Kuhn walk with explicit outcome tracking. -/
+def kuhnWalkOutcome (c : Coloring d N) (K : SpernerTriangulation d N)
+    (hKuhn : IsKuhnCompatible c K)
+    (fuel : ℕ) (state : KuhnState d N c K) : WalkOutcome d N K :=
+  match fuel with
+  | 0 => .stuck state.current
+  | n + 1 =>
+    if IsFC c K state.current then
+      .fc state.current
+    else
+      let exit_doors := Finset.univ.filter (fun k => isDoorAt c K state.current k ∧ k ≠ state.entry)
+      if hne : exit_doors.Nonempty then
+        let k_out := exit_doors.min' hne
+        match hadj : K.adj state.current k_out with
+        | none => .boundaryExit state.current k_out
+        | some (s', k') =>
+          if hs' : s' ∈ state.visited ∪ {state.current} then
+            .stuck state.current
+          else
+            let hk_out_mem : k_out ∈ exit_doors := Finset.min'_mem _ _
+            let hdoor_out : isDoorAt c K state.current k_out :=
+              (Finset.mem_filter.mp hk_out_mem).2.1
+            let new_door : isDoorAt c K s' k' := (door_transfer hadj).mp hdoor_out
+            let new_state : KuhnState d N c K := {
+              current := s'
+              entry := k'
+              entry_is_door := new_door
+              visited := state.visited ∪ {state.current}
+              current_not_visited := hs'
+            }
+            kuhnWalkOutcome c K hKuhn n new_state
+      else
+        .stuck state.current
+
+/-- The simplex returned by kuhnWalk equals the simplex in the walk outcome. -/
+lemma kuhnWalk_eq_outcome_simplex (c : Coloring d N) (K : SpernerTriangulation d N)
+    (hKuhn : IsKuhnCompatible c K) (fuel : ℕ) (state : KuhnState d N c K) :
+    kuhnWalk c K hKuhn fuel state =
+      match kuhnWalkOutcome c K hKuhn fuel state with
+      | .fc s => s
+      | .boundaryExit s _ => s
+      | .stuck s => s := by
+  induction fuel generalizing state with
+  | zero => simp [kuhnWalk, kuhnWalkOutcome]
+  | succ n ih =>
+    simp only [kuhnWalk, kuhnWalkOutcome]
+    split
+    · rfl
+    · rename_i hnonfc
+      split
+      · rename_i hne
+        split
+        · rfl
+        · rename_i s' k' hadj
+          split
+          · rfl
+          · exact ih _
+      · rfl
+
+/-- When the walk outcome is FC, the walk simplex is FC. -/
+lemma kuhnWalkOutcome_fc_implies_isfc (c : Coloring d N) (K : SpernerTriangulation d N)
+    (hKuhn : IsKuhnCompatible c K) (fuel : ℕ) (state : KuhnState d N c K)
+    (s : K.Simplex)
+    (hout : kuhnWalkOutcome c K hKuhn fuel state = .fc s) :
+    IsFC c K s := by
+  induction fuel generalizing state with
+  | zero => simp [kuhnWalkOutcome] at hout
+  | succ n ih =>
+    simp only [kuhnWalkOutcome] at hout
+    split at hout
+    · rename_i hfc; cases hout; exact hfc
+    · split at hout
+      · split at hout
+        · exact absurd hout WalkOutcome.noConfusion
+        · split at hout
+          · exact absurd hout WalkOutcome.noConfusion
+          · exact ih _ hout
+      · exact absurd hout WalkOutcome.noConfusion
+
+/-- When the walk outcome is boundaryExit s k, K.adj s k = none. -/
+lemma kuhnWalkOutcome_bdryExit_adj_none (c : Coloring d N) (K : SpernerTriangulation d N)
+    (hKuhn : IsKuhnCompatible c K) (fuel : ℕ) (state : KuhnState d N c K)
+    (s : K.Simplex) (k : Fin (d + 1))
+    (hout : kuhnWalkOutcome c K hKuhn fuel state = .boundaryExit s k) :
+    K.adj s k = none := by
+  induction fuel generalizing state with
+  | zero => simp [kuhnWalkOutcome] at hout
+  | succ n ih =>
+    simp only [kuhnWalkOutcome] at hout
+    split at hout
+    · exact absurd hout WalkOutcome.noConfusion
+    · split at hout
+      · split at hout
+        · -- This is the boundaryExit case at this step
+          rename_i hadj_none
+          have hinj := WalkOutcome.boundaryExit.inj hout
+          obtain ⟨h1, h2⟩ := hinj; subst h1; subst h2; exact hadj_none
+        · split at hout
+          · exact absurd hout WalkOutcome.noConfusion
+          · exact ih _ hout
+      · exact absurd hout WalkOutcome.noConfusion
+
+/-- When the walk outcome is boundaryExit s k, the exit position k is a door. -/
+lemma kuhnWalkOutcome_bdryExit_isDoor (c : Coloring d N) (K : SpernerTriangulation d N)
+    (hKuhn : IsKuhnCompatible c K) (fuel : ℕ) (state : KuhnState d N c K)
+    (s : K.Simplex) (k : Fin (d + 1))
+    (hout : kuhnWalkOutcome c K hKuhn fuel state = .boundaryExit s k) :
+    isDoorAt c K s k := by
+  induction fuel generalizing state with
+  | zero => simp [kuhnWalkOutcome] at hout
+  | succ n ih =>
+    simp only [kuhnWalkOutcome] at hout
+    split at hout
+    · exact absurd hout WalkOutcome.noConfusion
+    · split at hout
+      · rename_i hne
+        split at hout
+        · have hinj := WalkOutcome.boundaryExit.inj hout
+          obtain ⟨h1, h2⟩ := hinj; subst h1; subst h2
+          exact (Finset.mem_filter.mp (Finset.min'_mem _ hne)).2.1
+        · split at hout
+          · exact absurd hout WalkOutcome.noConfusion
+          · exact ih _ hout
+      · exact absurd hout WalkOutcome.noConfusion
+
+-- ============================================================
+-- SECTION XII: Walk-Reversal Involution (Axiomatized)
+-- ============================================================
+
+/-- Walk reversal: if a walk from boundary door (s0, k0) exits at boundary door (sn, k_exit),
+    then a walk from (sn, k_exit) exits at (s0, k0).
+
+    This is the key lemma for the involution tau. The proof proceeds by induction on fuel:
+    at each step, the walk enters simplex s via entry door k_in; s is non-FC, so it has
+    a unique exit door k_out != k_in. By adj_symm the reverse walk enters s via k_out and
+    exits via k_in. By nonfc_with_door_has_unique_exit, k_in is the unique exit != k_out.
+
+    Status: Axiomatized. Requires careful WalkValid tracking through both directions. -/
+axiom walkOutcome_reversal {d N : ℕ} (c : Coloring d N) (K : SpernerTriangulation d N)
+    (hKuhn : IsKuhnCompatible c K) (hc : IsSperner c)
+    (s0 : K.Simplex) (k0 : Fin (d + 1))
+    (hdoor0 : isDoorAt c K s0 k0) (hbdry0 : K.adj s0 k0 = none)
+    (sn : K.Simplex) (k_exit : Fin (d + 1))
+    (hout : kuhnWalkOutcome c K hKuhn (Fintype.card K.Simplex)
+      { current := s0, entry := k0, entry_is_door := hdoor0,
+        visited := ∅, current_not_visited := Finset.notMem_empty _ }
+      = .boundaryExit sn k_exit) :
+    kuhnWalkOutcome c K hKuhn (Fintype.card K.Simplex)
+      { current := sn, entry := k_exit,
+        entry_is_door := kuhnWalkOutcome_bdryExit_isDoor c K hKuhn _ _ sn k_exit hout,
+        visited := ∅,
+        current_not_visited := Finset.notMem_empty _ }
+      = .boundaryExit s0 k0
+
+/-- Non-FC boundary exits are distinct from starting point.
+    The walk never revisits (kuhn_step_nonrevisit), and the walk makes at least
+    one interior step from s0 before reaching another boundary. -/
+axiom walkBdryExit_ne_start {d N : ℕ} (c : Coloring d N) (K : SpernerTriangulation d N)
+    (hKuhn : IsKuhnCompatible c K) (hc : IsSperner c)
+    (s0 : K.Simplex) (k0 : Fin (d + 1))
+    (hdoor0 : isDoorAt c K s0 k0) (hbdry0 : K.adj s0 k0 = none)
+    (sn : K.Simplex) (k_exit : Fin (d + 1))
+    (hout : kuhnWalkOutcome c K hKuhn (Fintype.card K.Simplex)
+      { current := s0, entry := k0, entry_is_door := hdoor0,
+        visited := ∅, current_not_visited := Finset.notMem_empty _ }
+      = .boundaryExit sn k_exit) :
+    (sn, k_exit) ≠ (s0, k0)
+
+-- ============================================================
+-- SECTION XIII: Walk Termination and Boundary Analysis
+-- ============================================================
+
+/-- For a boundary door, the walk outcome is either FC or boundary exit (never stuck),
+    assuming sufficient fuel and Kuhn compatibility.
+
+    With fuel = card K.Simplex and WalkValid (non-revisiting), the walk visits at most
+    card K.Simplex distinct simplices, so it terminates before fuel runs out.
+
+    Status: Axiomatized. Requires induction on fuel with WalkValid tracking. -/
+axiom kuhnWalk_not_stuck {d N : ℕ} (c : Coloring d N) (K : SpernerTriangulation d N)
+    (hKuhn : IsKuhnCompatible c K) (hc : IsSperner c)
+    (s0 : K.Simplex) (k0 : Fin (d + 1))
+    (hdoor0 : isDoorAt c K s0 k0) (hbdry0 : K.adj s0 k0 = none) :
+    (∃ s, kuhnWalkOutcome c K hKuhn (Fintype.card K.Simplex)
+      { current := s0, entry := k0, entry_is_door := hdoor0,
+        visited := ∅, current_not_visited := Finset.notMem_empty _ }
+      = .fc s) ∨
+    (∃ s k, kuhnWalkOutcome c K hKuhn (Fintype.card K.Simplex)
+      { current := s0, entry := k0, entry_is_door := hdoor0,
+        visited := ∅, current_not_visited := Finset.notMem_empty _ }
+      = .boundaryExit s k)
+
+/-- The walk from a boundary door that exits at boundary gives a boundary door
+    on face d (Fin.last d), by boundary_door_is_last_face. -/
+lemma walkBdryExit_on_face_d {c : Coloring d N} {K : SpernerTriangulation d N}
+    (hKuhn : IsKuhnCompatible c K) (hc : IsSperner c)
+    (s0 : K.Simplex) (k0 : Fin (d + 1))
+    (hdoor0 : isDoorAt c K s0 k0) (hbdry0 : K.adj s0 k0 = none)
+    (sn : K.Simplex) (k_exit : Fin (d + 1))
+    (hout : kuhnWalkOutcome c K hKuhn (Fintype.card K.Simplex)
+      { current := s0, entry := k0, entry_is_door := hdoor0,
+        visited := ∅, current_not_visited := Finset.notMem_empty _ }
+      = .boundaryExit sn k_exit) :
+    k_exit = Fin.last d :=
+  boundary_door_is_last_face c K hc sn k_exit
+    (kuhnWalkOutcome_bdryExit_isDoor c K hKuhn _ _ sn k_exit hout)
+    (kuhnWalkOutcome_bdryExit_adj_none c K hKuhn _ _ sn k_exit hout)
+
+-- ============================================================
+-- SECTION XIV: Walk Endpoint Map (Involution on Boundary Doors)
+-- ============================================================
+
+/-- The walk endpoint map: for a boundary door (s, k), run the Kuhn walk
+    and return the boundary exit point if it exits at boundary;
+    otherwise return (s, k) unchanged (identity for non-boundary or FC exits). -/
+def walkEndpointMap (c : Coloring d N) (K : SpernerTriangulation d N)
+    (hKuhn : IsKuhnCompatible c K)
+    (p : K.Simplex × Fin (d + 1)) : K.Simplex × Fin (d + 1) :=
+  if hdoor : isDoorAt c K p.1 p.2 then
+    if hbdry : K.adj p.1 p.2 = none then
+      match kuhnWalkOutcome c K hKuhn (Fintype.card K.Simplex)
+        { current := p.1, entry := p.2, entry_is_door := hdoor,
+          visited := ∅, current_not_visited := Finset.notMem_empty _ } with
+      | .boundaryExit s k => (s, k)
+      | _ => p
+    else p
+  else p
+
+/-- When the walk exits at boundary, walkEndpointMap returns the exit point. -/
+lemma walkEndpointMap_of_bdryExit {c : Coloring d N} {K : SpernerTriangulation d N}
+    (hKuhn : IsKuhnCompatible c K)
+    (s0 : K.Simplex) (k0 : Fin (d + 1))
+    (hdoor0 : isDoorAt c K s0 k0) (hbdry0 : K.adj s0 k0 = none)
+    (sn : K.Simplex) (k_exit : Fin (d + 1))
+    (hout : kuhnWalkOutcome c K hKuhn (Fintype.card K.Simplex)
+      { current := s0, entry := k0, entry_is_door := hdoor0,
+        visited := ∅, current_not_visited := Finset.notMem_empty _ }
+      = .boundaryExit sn k_exit) :
+    walkEndpointMap c K hKuhn (s0, k0) = (sn, k_exit) := by
+  simp only [walkEndpointMap, dif_pos hdoor0, dif_pos hbdry0]
+  -- The walk outcome with the proof hdoor0 matches the one in hout (proof irrelevance)
+  rw [show kuhnWalkOutcome c K hKuhn (Fintype.card K.Simplex)
+    { current := s0, entry := k0, entry_is_door := hdoor0,
+      visited := ∅, current_not_visited := Finset.notMem_empty _ }
+    = .boundaryExit sn k_exit from hout]
+
+-- ============================================================
+-- SECTION XV: Walk Pairing Parity and Main Existential
 -- ============================================================
 
 /-- There exists a boundary door from which kuhnPathStart finds an FC simplex.
 
-    **Correct proof strategy** (via walk-endpoint parity on all of B):
+    Proof by contradiction via parity:
+    - B = boundary doors on face d, |B| is odd
+    - Assume no walk from B reaches FC
+    - Then all walks exit at boundary: walkEndpointMap is a FPF involution on B
+    - even_card_fpf_invol gives |B| even, contradicting |B| odd
 
-    Let B = {(s,k) : isDoorAt ∧ K.adj s k = none ∧ k = Fin.last d} (all boundary doors).
-    Partition B = B_fc ∪ B_nfc where B_fc are FC-start doors, B_nfc non-FC-start doors.
-    |B| is odd (hbdry_odd).
-
-    Case 1: B_fc ≠ ∅.
-    Then any (s₀,k₀) ∈ B_fc satisfies IsFC c K s₀, and kuhnPathStart returns s₀ immediately
-    (kuhnPathStart_is_fc_of_fc_start).
-
-    Case 2: B_fc = ∅ (all boundary doors are non-FC-start).
-    Define τ: B_nfc → B_nfc ∪ {boundary-exit points reaching FC} as follows:
-    For (s₀,k₀) ∈ B_nfc: s₀ has boundary door k₀ (face d, adj=none) and a unique interior
-    door k_int (nonfc_with_door_has_unique_exit). Walk via k_int until exit at FC or
-    another boundary door. Define τ(s₀,k₀) = the exit point.
-
-    τ restricted to B_nfc → B_nfc is a FPF involution (τ∘τ=id via walkTrace_reversal +
-    nonfc_with_door_has_unique_exit; FPF by kuhn_step_nonrevisit). Since |B_nfc| = |B| is
-    odd, τ cannot pair all elements → ≥1 element exits to FC.
-
-    **IMPORTANT**: The formerly attempted sub-lemma `bdry_nfc_even` (claiming |B_nfc| is even)
-    is FALSE. Counterexample: d=1, N=2, abstract SpernerTriangulation with
-      s₀.vertices = (0↦v₁[coords=1], 1↦v₀[coords=0]), adj s₀ 0 = none, adj s₀ 1 = some(s₁,0)
-      s₁.vertices = (0↦v₂[coords=2], 1↦v₁[coords=1]), adj s₁ 0 = some(s₀,1), adj s₁ 1 = none
-      c(v₀)=1, c(v₁)=0, c(v₂)=0.
-    IsKuhnCompatible ✓, IsSperner ✓. s₀ is FC (colors {0,1}), s₁ is non-FC (colors {0,0}).
-    B = {(s₁,1)}, B_fc = ∅, B_nfc = {(s₁,1)}, |B_nfc| = 1 (ODD). QED counterexample.
-
-    **Proved ingredients**: nonfc_with_door_has_unique_exit ✓, WalkValid ✓,
-    kuhn_step_nonrevisit ✓, adj_symm ✓, even_card_fpf_invol ✓,
-    kuhnPathStart_is_fc_of_fc_start ✓.
-    **Pending (this sorry)**: kuhnWalkWithExit definition + walkTrace_reversal induction
-    (~150 lines to formalize τ and show τ∘τ=id on the walk trace). -/
+    Axiomatized dependencies (3 axioms):
+    - walkOutcome_reversal: walk reversal (involution)
+    - walkBdryExit_ne_start: exit != start (fixed-point-free)
+    - kuhnWalk_not_stuck: walk terminates definitively -/
 theorem kuhn_path_existential {c : Coloring d N} {K : SpernerTriangulation d N}
     (hKuhn : IsKuhnCompatible c K)
     (hc : IsSperner c)
     (hbdry_odd : Odd (Finset.univ.filter (fun p : K.Simplex × Fin (d + 1) =>
       isDoorAt c K p.1 p.2 ∧ K.adj p.1 p.2 = none ∧ p.2 = Fin.last d)).card) :
-    ∃ (s₀ : K.Simplex) (k₀ : Fin (d + 1)) (hdoor₀ : isDoorAt c K s₀ k₀)
-      (hbdry₀ : K.adj s₀ k₀ = none),
-      IsFC c K (kuhnPathStart c K hKuhn s₀ k₀ hdoor₀ hbdry₀) := by
-  sorry
+    ∃ (s0 : K.Simplex) (k0 : Fin (d + 1)) (hdoor0 : isDoorAt c K s0 k0)
+      (hbdry0 : K.adj s0 k0 = none),
+      IsFC c K (kuhnPathStart c K hKuhn s0 k0 hdoor0 hbdry0) := by
+  set B := Finset.univ.filter (fun p : K.Simplex × Fin (d + 1) =>
+    isDoorAt c K p.1 p.2 ∧ K.adj p.1 p.2 = none ∧ p.2 = Fin.last d) with hB_def
+  -- Proof by contradiction: assume no walk from B reaches FC
+  by_contra h_no_fc
+  push_neg at h_no_fc
+  -- Every walk from a boundary door exits at boundary (not FC, not stuck)
+  have h_all_bdry : ∀ (s0 : K.Simplex) (k0 : Fin (d + 1))
+      (hdoor0 : isDoorAt c K s0 k0) (hbdry0 : K.adj s0 k0 = none),
+      ∃ sn k_exit, kuhnWalkOutcome c K hKuhn (Fintype.card K.Simplex)
+        { current := s0, entry := k0, entry_is_door := hdoor0,
+          visited := ∅, current_not_visited := Finset.notMem_empty _ }
+        = .boundaryExit sn k_exit := by
+    intro s0 k0 hdoor0 hbdry0
+    rcases kuhnWalk_not_stuck c K hKuhn hc s0 k0 hdoor0 hbdry0 with
+      ⟨s_fc, hout_fc⟩ | h_bdry
+    · exfalso
+      have hfc : IsFC c K (kuhnPathStart c K hKuhn s0 k0 hdoor0 hbdry0) := by
+        unfold kuhnPathStart
+        rw [kuhnWalk_eq_outcome_simplex]
+        rw [show kuhnWalkOutcome c K hKuhn (Fintype.card K.Simplex)
+          { current := s0, entry := k0, entry_is_door := hdoor0,
+            visited := ∅, current_not_visited := Finset.notMem_empty _ } = .fc s_fc from hout_fc]
+        exact kuhnWalkOutcome_fc_implies_isfc c K hKuhn _ _ s_fc hout_fc
+      exact h_no_fc s0 k0 hdoor0 hbdry0 hfc
+    · exact h_bdry
+  -- walkEndpointMap maps B into B
+  have h_tau_mem : ∀ p ∈ B, walkEndpointMap c K hKuhn p ∈ B := by
+    intro p hp
+    obtain ⟨hdoor_p, hbdry_p, hface_p⟩ := (Finset.mem_filter.mp hp).2
+    obtain ⟨sn, k_exit, hout⟩ := h_all_bdry p.1 p.2 hdoor_p hbdry_p
+    rw [walkEndpointMap_of_bdryExit hKuhn p.1 p.2 hdoor_p hbdry_p sn k_exit hout]
+    exact Finset.mem_filter.mpr
+      ⟨Finset.mem_univ _,
+       kuhnWalkOutcome_bdryExit_isDoor c K hKuhn _ _ sn k_exit hout,
+       kuhnWalkOutcome_bdryExit_adj_none c K hKuhn _ _ sn k_exit hout,
+       walkBdryExit_on_face_d hKuhn hc p.1 p.2 hdoor_p hbdry_p sn k_exit hout⟩
+  -- walkEndpointMap is an involution on B
+  have h_tau_inv : ∀ p ∈ B, walkEndpointMap c K hKuhn (walkEndpointMap c K hKuhn p) = p := by
+    intro p hp
+    obtain ⟨hdoor_p, hbdry_p, _⟩ := (Finset.mem_filter.mp hp).2
+    obtain ⟨sn, k_exit, hout⟩ := h_all_bdry p.1 p.2 hdoor_p hbdry_p
+    have h_tau_p := walkEndpointMap_of_bdryExit hKuhn p.1 p.2 hdoor_p hbdry_p sn k_exit hout
+    rw [h_tau_p]
+    have hdoor_exit := kuhnWalkOutcome_bdryExit_isDoor c K hKuhn _ _ sn k_exit hout
+    have hbdry_exit := kuhnWalkOutcome_bdryExit_adj_none c K hKuhn _ _ sn k_exit hout
+    have hrev := walkOutcome_reversal c K hKuhn hc p.1 p.2 hdoor_p hbdry_p sn k_exit hout
+    rw [walkEndpointMap_of_bdryExit hKuhn sn k_exit hdoor_exit hbdry_exit p.1 p.2 hrev]
+  -- walkEndpointMap is fixed-point-free on B
+  have h_tau_fpf : ∀ p ∈ B, walkEndpointMap c K hKuhn p ≠ p := by
+    intro p hp
+    obtain ⟨hdoor_p, hbdry_p, _⟩ := (Finset.mem_filter.mp hp).2
+    obtain ⟨sn, k_exit, hout⟩ := h_all_bdry p.1 p.2 hdoor_p hbdry_p
+    rw [walkEndpointMap_of_bdryExit hKuhn p.1 p.2 hdoor_p hbdry_p sn k_exit hout]
+    intro heq
+    have : (sn, k_exit) = (p.1, p.2) := heq
+    exact walkBdryExit_ne_start c K hKuhn hc p.1 p.2 hdoor_p hbdry_p sn k_exit hout this
+  -- |B| is even by FPF involution
+  have hB_even : Even B.card :=
+    even_card_fpf_invol B (walkEndpointMap c K hKuhn) h_tau_inv h_tau_mem h_tau_fpf
+  -- |B| is both odd and even: contradiction
+  obtain ⟨m, hm⟩ := hB_even
+  obtain ⟨k, hk⟩ := hbdry_odd
+  omega
 
 /-- EXISTENTIAL: There exists a boundary door from which kuhnPathStart finds FC.
 
-    Delegates to kuhn_path_existential (sorry on walk-reversal τ∘τ=id).
-    Proved ingredients: non-revisiting (kuhn_step_nonrevisit + WalkValid), unique exit
-    (nonfc_with_door_has_unique_exit), kuhnPathStart_is_fc_of_fc_start.
-    Pending: kuhnWalkWithExit definition + walkTrace_reversal induction (~150 lines). -/
+    Delegates to kuhn_path_existential. The proof uses parity contradiction:
+    walkEndpointMap is a FPF involution on B (boundary doors) when no walk
+    reaches FC, giving |B| even, contradicting |B| odd.
+
+    The proof is complete modulo 3 axioms encoding walk properties:
+    - walkOutcome_reversal: walk reversal (involution)
+    - walkBdryExit_ne_start: exit != start (fixed-point-free)
+    - kuhnWalk_not_stuck: walk terminates definitively -/
 theorem kuhnPathStart_finds_fc_existential {c : Coloring d N} {K : SpernerTriangulation d N}
     (hKuhn : IsKuhnCompatible c K)
     (hc : IsSperner c)
     (hbdry_odd : Odd (Finset.univ.filter (fun p : K.Simplex × Fin (d + 1) =>
       isDoorAt c K p.1 p.2 ∧ K.adj p.1 p.2 = none ∧ p.2 = Fin.last d)).card) :
-    ∃ (s₀ : K.Simplex) (k₀ : Fin (d + 1)) (hdoor₀ : isDoorAt c K s₀ k₀)
-      (hbdry₀ : K.adj s₀ k₀ = none),
-      IsFC c K (kuhnPathStart c K hKuhn s₀ k₀ hdoor₀ hbdry₀) :=
+    ∃ (s0 : K.Simplex) (k0 : Fin (d + 1)) (hdoor0 : isDoorAt c K s0 k0)
+      (hbdry0 : K.adj s0 k0 = none),
+      IsFC c K (kuhnPathStart c K hKuhn s0 k0 hdoor0 hbdry0) :=
   kuhn_path_existential hKuhn hc hbdry_odd
 
 end SpernerNDimOQ04
