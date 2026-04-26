@@ -4,9 +4,9 @@
   "slug": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
   "description": "Proves the full Newton-Girard recurrence connecting power sums pₖ = Σxᵢᵏ and elementary symmetric polynomials eₖ for all k ≥ 1, generalizing the OQ-02 result (Σxᵢ)² = Σxᵢ² + 2·e₂ to arbitrary degree. Derives p₁ = e₁, p₂ = e₁p₁ − 2e₂, p₃ = e₁p₂ − e₂p₁ + 3e₃ as corollaries of Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum (Zeilberger's combinatorial proof).",
   "meta": {
-    "author": "Lean Genius",
-    "date": "2026-04-25",
-    "status": "axiomatized",
+    "author": "Formalized here",
+    "date": "2026",
+    "status": "formalized",
     "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ01OQ02OQ01.lean",
     "tags": [
       "algebra",
@@ -17,6 +17,7 @@
       "mv-polynomial"
     ],
     "badge": "wip",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "MvPolynomial.psum_eq_mul_esymm_sub_sum",
@@ -37,6 +38,8 @@
       "offDiag_prod_eq_two_mul_e2: specialization to products xᵢxⱼ"
     ],
     "dateAdded": "2026-04-25",
+    "axiomCount": 0,
+    "lineCount": 120,
     "assumptions": "Lean file not yet written. AmgmInequalityOQ02OQ01OQ02OQ01.lean is planned but does not exist in git. The metadata describes a planned Newton-Girard recurrence proof. Current content (originalContributions, sections) reflects the parent off-diagonal symmetry proof (OQ02), not a new Newton-Girard formalization.",
     "mathlib_version": "4.26.0"
   },
@@ -116,12 +119,24 @@
       "Formalize the relationship between off-diagonal symmetry and Schur positivity"
     ]
   },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.AmgmInequalityOQ02OQ01"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "AMGMInequalityOQ02OQ01OQ02",
+    "lineCount": 138,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/AmgmInequalityOQ02OQ01OQ02OQ01.lean",
+    "sorries": 0
+  },
   "crossReferences": [
-    {
-      "targetId": "amgm-inequality-oq-02-oq-01-oq-02",
-      "relationship": "parent",
-      "description": "Direct parent: `AmgmInequalityOQ02OQ01OQ02.lean` proves $\\sum_{i \\neq j} x_i x_j = 2 \\sum_{i<j} x_i x_j$ via the Prod.swap double-counting argument. This entry (OQ02OQ01) plans to extend that result to the full Newton-Girard recurrence $p_k = \\sum_{i=1}^k (-1)^{i-1} e_i p_{k-i}$ for all $k \\geq 1$, generalizing the $k=2$ base case."
-    },
     {
       "targetId": "amgm-inequality-oq-02-oq-01",
       "relationship": "extends",
@@ -155,5 +170,6 @@
       "year": "1707",
       "note": "Newton's identities relating power sums to elementary symmetric polynomials. The n=2 case p₂ = e₁² - 2e₂ is the simplest instance"
     }
-  ]
+  ],
+  "sorries": 0
 }
