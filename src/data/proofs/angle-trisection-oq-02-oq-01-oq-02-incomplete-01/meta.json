@@ -107,19 +107,36 @@
     "implications": "The three classical impossibility results — angle trisection, cube doubling, regular 7-gon — are now fully proved (0 axioms) in this file. The proof demonstrates that the IsConstructible definition choice is critical: existential vs explicit constructors has dramatic consequences for what can be proved by induction.",
     "openQuestions": [
       "Can wantzel_galois_iff be proved using Mathlib's IntermediateField.orderIsoOfGal and Sylow theory for 2-groups?",
-      "Does the rationality of all 'constructible' numbers under this definition reveal a gap — should the definition be strengthened to include irrational constructibles?"
+      "Does the rationality of all 'constructible' numbers under this definition reveal a gap — should the definition be strengthened to include irrational constructibles?",
+      "Can the standard tower-degree definition of IsConstructible (allowing √2, ∛(1+√2), etc.) be formalized in Lean 4 with a proof that still avoids the existential-parameter pitfall?",
+      "Is the regular 17-gon (cos(2π/17) constructible since [ℚ(cos(2π/17)):ℚ] = 8 = 2³) provable under a strengthened IsConstructible definition?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "angle-trisection-oq-02-oq-01-oq-02",
       "relationship": "completes",
-      "description": "This file completes 4 of the 5 sorries from the parent proof by redesigning IsConstructible."
+      "description": "This file completes 4 of the 5 sorries from the parent proof by redesigning IsConstructible with explicit constructor parameters. The parent's existential-parameter design blocked induction; the explicit design collapses not_constructible_of_bad_degree to a short argument via rationality."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both are Lean 4 formalizations of classical algebraic impossibility results. Abel-Ruffini (1824) proved no quintic formula exists; Wantzel (1837) proved no ruler-and-compass trisection exists. Both rely on the algebraic structure of field extensions and both inaugurated the paradigm of impossibility proofs via algebraic invariants."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "related",
+      "description": "The Galois characterization in wantzel_galois_iff (α constructible ↔ Gal(minpoly(ℚ,α)) is a 2-group) is the constructibility analog of the Abel-Ruffini solvability criterion (a polynomial is solvable by radicals ↔ its Galois group is solvable). Both connect geometric/arithmetic properties to Galois group structure."
+    },
+    {
+      "targetId": "hilbert-10",
+      "relationship": "related",
+      "description": "Both are decidability/impossibility results in different domains. The angle trisection impossibility shows certain geometric constructions are algebraically impossible; Hilbert's 10th problem (Matiyasevich 1970) shows no algorithm decides Diophantine solvability. Both are formalized using algebraic machinery in Lean 4."
     }
   ],
   "leanFile": {
     "namespace": "AngleTrisectionOQ02OQ01OQ02Incomplete01",
-    "lineCount": 257,
+    "lineCount": 260,
     "axiomCount": 0,
     "theoremCount": 18,
     "definitionCount": 3,
