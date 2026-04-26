@@ -167,6 +167,11 @@
       "targetId": "inverse-galois-oq-06",
       "relationship": "complementary",
       "description": "A₅ Realizable over ℚ — the logical complement to this entry's non-solvability theorem. This file proves $A_5$ is the minimal obstruction (simple, non-solvable), while `inverse-galois-oq-06` constructs an explicit quintic $q(x) = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$ with $\\text{Gal}(q/\\mathbb{Q}) \\cong A_5$, proving $A_5$ is realizable. Together: the obstruction $A_5$ not only blocks radical solvability but also concretely occurs as the symmetry group of algebraic roots over $\\mathbb{Q}$."
+    },
+    {
+      "targetId": "inverse-galois-oq-02",
+      "relationship": "related",
+      "description": "Mathieu Group $M_{23}$ — the only sporadic simple group not yet known to be a Galois group over $\\mathbb{Q}$. This entry classifies $S_n$ solvability via the smallest non-abelian simple group $A_5$; `inverse-galois-oq-02` explores the frontiers of the classification of finite simple groups (CFSG) by formalizing $M_{23}$: proving it is perfect ($[M_{23}, M_{23}] = M_{23}$), non-solvable, with $|M_{23}| = 2^7 \\cdot 3^2 \\cdot 5 \\cdot 7 \\cdot 11 \\cdot 23$, and not covered by Shafarevich's theorem (which applies only to solvable groups). Together, $A_5$ (the minimal non-solvable group, order 60) and $M_{23}$ (a sporadic non-solvable group, order 10,200,960) represent the two structural extremes of non-solvability that this file's classification theorem implicitly touches."
     }
   ],
   "references": [
