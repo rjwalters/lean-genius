@@ -1,0 +1,142 @@
+[
+  {
+    "id": "ann-oq05-height-def",
+    "proofId": "algebraic-numbers-countable-oq-05",
+    "range": {
+      "startLine": 46,
+      "endLine": 108
+    },
+    "type": "concept",
+    "title": "The Cantor Height Function: Bounding Degree and Coefficients",
+    "content": "The heart of Cantor's 1874 approach is the height function `cantorHeight p = p.natDegree + (range (p.natDegree + 1)).sum (fun i => (p.coeff i).natAbs)`. This single number H(p) packages all the combinatorial information needed for finiteness: bounded height means bounded degree AND bounded coefficient size. The three basic lemmas (degree_le, coeff_le, pos_of_ne_zero) are immediate arithmetic: degree and coefficient-sum are each ≤ the total height.",
+    "mathContext": "H(a₀ + a₁X + ··· + aₙXⁿ) = n + |a₀| + |a₁| + ··· + |aₙ|. The degree n appears as the first summand. The coefficient norms |aᵢ| appear as subsequent summands. Bounded total → each part is bounded. This is the key observation enabling finiteness.",
+    "significance": "high",
+    "relatedConcepts": [
+      "Polynomial.natDegree",
+      "Int.natAbs",
+      "Cantor height",
+      "bounded polynomial families"
+    ],
+    "prerequisites": [
+      "Integer polynomial arithmetic",
+      "Finset.sum bounds"
+    ]
+  },
+  {
+    "id": "ann-oq05-finiteness",
+    "proofId": "algebraic-numbers-countable-oq-05",
+    "range": {
+      "startLine": 110,
+      "endLine": 152
+    },
+    "type": "technique",
+    "title": "Injection into a Fintype: The Key Finiteness Proof",
+    "content": "The proof of `finite_polys_of_height` uses the standard Lean pattern for finiteness: inject the set into the range of a function from a `Fintype`. The Fintype chosen is `Fin(h+1) → ↥Icc(-(h:ℤ), h)` — coefficient tuples where each entry lies in [-h, h]. The injection sends p to its coefficient function `fun i => ⟨p.coeff i, _⟩`, and the auxiliary `poly_eq_fin_sum` shows p is determined by these coefficients (since degree ≤ h).",
+    "mathContext": "The Lean pattern: `Set.Finite.subset (Set.finite_range f) (fun p hp => ⟨witness, proof⟩)` where f : Fintype → Polynomial ℤ and witness : Fintype proves p ∈ range f. Here Fintype = `Fin(h+1) → ↥Icc(-h, h)` (automatically finite as a product of finite types). The injection from height-≤h polynomials into this Fintype sends each p to its coefficient tuple, using `Int.natAbs_le` to verify each coefficient lies in [-h, h].",
+    "significance": "high",
+    "relatedConcepts": [
+      "Set.Finite.subset",
+      "Set.finite_range",
+      "Fin.sum_univ_eq_sum_range",
+      "Finset.sum_ite_eq'"
+    ],
+    "prerequisites": [
+      "Set.Finite and Set.finite_range",
+      "Int.natAbs_le: |x| ≤ n ↔ -n ≤ x ∧ x ≤ n",
+      "Finset.single_le_sum for bounding individual terms"
+    ]
+  },
+  {
+    "id": "ann-oq05-strata",
+    "proofId": "algebraic-numbers-countable-oq-05",
+    "range": {
+      "startLine": 168,
+      "endLine": 242
+    },
+    "type": "technique",
+    "title": "Height Stratification: From Finite Strata to Countable Union",
+    "content": "The proof assembles three ingredients: (1) finite index type (polynomials of height ≤ h form a finite set, so the subtype {q // q ≠ 0 ∧ H(q) ≤ h} is Finite), (2) finite fibers (each polynomial has finitely many real roots from finite_real_roots), and (3) countable union (⋃ₙ finite = countable). The hardest step is `algebraic_reals_eq_iUnion_height`, which converts between rational and integer polynomial witnesses using `IsLocalization.integerNormalization`.",
+    "mathContext": "The `integerNormalization` API: given a rational polynomial q (in Polynomial ℚ) with q ≠ 0, `integerNormalization (nonZeroDivisors ℤ) q` returns an integer polynomial p ≠ 0 with the same real roots (`integerNormalization_aeval_eq_zero`). The reverse direction uses `Polynomial.aeval_map_algebraMap` for the scalar tower ℤ → ℚ → ℝ: if aeval x p = 0 for p : Polynomial ℤ, then aeval x (p.map (algebraMap ℤ ℚ)) = 0.",
+    "significance": "high",
+    "relatedConcepts": [
+      "IsLocalization.integerNormalization",
+      "IsFractionRing.integerNormalization_eq_zero_iff",
+      "Set.Finite.iUnion",
+      "Set.countable_iUnion"
+    ],
+    "prerequisites": [
+      "IsAlgebraic ℚ x: x is a root of a nonzero rational polynomial",
+      "integerNormalization for fraction rings",
+      "Polynomial.aeval_map_algebraMap (scalar tower)"
+    ]
+  },
+  {
+    "id": "ann-oq05-comparison",
+    "proofId": "algebraic-numbers-countable-oq-05",
+    "range": {
+      "startLine": 1,
+      "endLine": 44
+    },
+    "type": "concept",
+    "title": "Historical Significance: Finite vs. Countable Strata",
+    "content": "The module docstring explains the key distinction from the main gallery proof. `AlgebraicNumbersCountable.lean` stratifies by DEGREE: polynomials of degree n form a countably infinite set (countably many coefficient choices for n+1 unbounded integers). This gives a countable index set over countable strata. Cantor's original approach stratifies by HEIGHT: polynomials of height ≤ h form a FINITE set. This gives a countable index over FINITE strata, which is more constructive and historically accurate.",
+    "mathContext": "Degree stratification: polynomials of degree n ↔ leading coefficient nonzero; countably many coefficient vectors in ℤⁿ⁺¹ → countably infinite stratum. Height stratification: polynomials of height ≤ h ↔ degree ≤ h AND each |aᵢ| ≤ h → finite stratum (product of finite sets). The difference matters for constructivity: finite strata can be explicitly enumerated by a finite algorithm.",
+    "significance": "medium",
+    "relatedConcepts": [
+      "countability via degree",
+      "countability via height",
+      "constructive mathematics",
+      "Cantor 1874"
+    ],
+    "prerequisites": [
+      "Countability vs. finiteness",
+      "History of Cantor's work"
+    ]
+  },
+  {
+    "id": "ann-oq05-poly-eq-fin-sum",
+    "proofId": "algebraic-numbers-countable-oq-05",
+    "range": {
+      "startLine": 114,
+      "endLine": 128
+    },
+    "type": "technique",
+    "title": "Polynomial Reconstruction from Coefficient Tuple",
+    "content": "The auxiliary lemma `poly_eq_fin_sum` shows that any polynomial p with degree ≤ h equals its truncated Fin sum: p = ∑ i : Fin(h+1), C(p.coeff i) * X^i. This is needed for the injection in `finite_polys_of_height`: we need to show that the polynomial p equals the polynomial reconstructed from its coefficient tuple. The proof uses `Fin.sum_univ_eq_sum_range` to convert the Fin sum to a range sum, then `Finset.sum_ite_eq'` to evaluate the sum at each coefficient index.",
+    "mathContext": "The proof: (coeff n of ∑ i : Fin(h+1), C(p.coeff i) * X^i) = ∑ i : Fin(h+1), if n = i then p.coeff i else 0 = if n < h+1 then p.coeff n else 0. For n < h+1 (i.e., n ≤ h ≥ degree): this is p.coeff n. For n ≥ h+1 (i.e., n > degree): p.coeff n = 0 by Polynomial.coeff_eq_zero_of_natDegree_lt.",
+    "significance": "medium",
+    "relatedConcepts": [
+      "Fin.sum_univ_eq_sum_range",
+      "Finset.sum_ite_eq'",
+      "Polynomial.coeff_eq_zero_of_natDegree_lt",
+      "polynomial extensionality"
+    ],
+    "prerequisites": [
+      "Polynomial.ext: polynomials are equal iff all coefficients equal",
+      "Finset.sum_ite_eq': sum of indicator function equals element at index"
+    ]
+  },
+  {
+    "id": "ann-oq05-card",
+    "proofId": "algebraic-numbers-countable-oq-05",
+    "range": {
+      "startLine": 248,
+      "endLine": 266
+    },
+    "type": "concept",
+    "title": "Structural Properties: Filtration, Cardinality, Explicit Characterization",
+    "content": "The three final theorems add structure to the main countability result. `algebraicRealsOfHeight_mono` shows the strata nest: height-h ⊆ height-(h+1), making this a genuine filtration. `card_algebraic_reals_eq_aleph0` computes the cardinality using Mathlib's black-box result for countable char-0 fields. `finite_algebraicReals_bounded_height` provides an explicit predicate version, making the polynomial witnesses visible in the statement.",
+    "mathContext": "Monotonicity: Nat.le_succ_of_le upgrades the height bound h ≤ h to h ≤ h+1. Cardinality: Algebraic.cardinalMk_of_countable_of_charZero is Mathlib's general theorem that algebraic extensions of countable char-0 fields have cardinality ℵ₀. The explicit bounded-height theorem unfolds the iUnion definition to expose the ∃ p : Polynomial ℤ witnesses.",
+    "significance": "low",
+    "relatedConcepts": [
+      "filtration",
+      "Cardinal.aleph0",
+      "Algebraic.cardinalMk_of_countable_of_charZero",
+      "Set.Finite.subset"
+    ],
+    "prerequisites": [
+      "Nat.le_succ_of_le",
+      "Cardinal arithmetic"
+    ]
+  }
+]
