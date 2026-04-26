@@ -973,15 +973,14 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
     -- C: 2n/(π(2j+1)) ≥ n/(π(j+1)) since 2j+1 ≤ 2(j+1)
     have h_inv_ineq : ∀ j : Fin m,
         (n : ℝ) / (Real.pi * ((j.val : ℝ) + 1)) ≤ 2 * n / (Real.pi * (2 * j.val + 1)) :=
-      fun ⟨j, _⟩ => by
-        rw [div_le_div_iff (mul_pos hpi_pos (by positivity)) (mul_pos hpi_pos (by positivity))]
-        -- Goal: n * (π * (2j+1)) ≤ 2n * (π * (j+1))
-        -- Factor as nπ*(2j+1) ≤ nπ*(2j+2), difference nπ ≥ 0
-        have h1 : (↑n : ℝ) * (Real.pi * (2 * ↑j + 1)) = ↑n * Real.pi * (2 * ↑j + 1) := by ring
-        have h2 : 2 * ↑n * (Real.pi * (↑j + 1)) = ↑n * Real.pi * (2 * ↑j + 2) := by ring
-        rw [h1, h2]
-        apply mul_le_mul_of_nonneg_left _ (mul_nonneg hn_pos.le hpi_pos.le)
-        linarith
+      fun j => by
+        have hj_pos : (0 : ℝ) < (j.val : ℝ) + 1 := by positivity
+        have h2j_pos : (0 : ℝ) < 2 * (j.val : ℝ) + 1 := by positivity
+        apply (div_le_div_iff (mul_pos hpi_pos hj_pos) (mul_pos hpi_pos h2j_pos)).mpr
+        -- Goal: n * (π*(2j+1)) ≤ 2n * (π*(j+1)); difference = nπ ≥ 0
+        have h_diff : 2 * (n : ℝ) * (Real.pi * ((j.val : ℝ) + 1)) -
+                      (n : ℝ) * (Real.pi * (2 * (j.val : ℝ) + 1)) = (n : ℝ) * Real.pi := by ring
+        linarith [mul_nonneg hn_pos.le hpi_pos.le]
     -- D: sum of cot ≥ sum of n/(π(j+1))
     have h_sum_lb :
         ∑ j : Fin m, (n : ℝ) / (Real.pi * ((j.val : ℝ) + 1)) ≤
