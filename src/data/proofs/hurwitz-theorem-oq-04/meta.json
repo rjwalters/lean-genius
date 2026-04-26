@@ -22,9 +22,9 @@
     "dateAdded": "2026-04-24",
     "axiomCount": 1,
     "assumptions": "1 axiom: G2_der_dimension (finrank ℝ OctonionDerSubmodule = 14). Previous G2_is_octonion_aut (Nat.card OctonionAut = 14) was replaced: Nat.card of an infinite Lie group equals 0 in type theory, making it mathematically incorrect. G2_der_dimension targets the Lie algebra dimension directly. All supporting lemmas fully proved.",
-    "lineCount": 764,
-    "theoremCount": 32,
-    "definitionCount": 15,
+    "lineCount": 822,
+    "theoremCount": 35,
+    "definitionCount": 17,
     "originalContributions": [
       "OctonionAlgHom / OctonionAut: structures for octonion algebra homomorphisms and automorphisms",
       "alg_aut_preserves_norm: automorphisms preserve the norm (proved via polarization and imaginary decomposition)",
