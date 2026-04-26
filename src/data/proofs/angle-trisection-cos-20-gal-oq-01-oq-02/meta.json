@@ -21,7 +21,7 @@
     "sorries": 1,
     "axiomCount": 0,
     "lineCount": 310,
-    "assumptions": "1 sorry: irreducibility of 4X²-2X-1 over ℚ (routine, provable via rational root theorem checking all candidates ±1, ±1/2, ±1/4). All other theorems (splitting field degree 2, Galois order 2, Vieta identity, general formula consistency checks) are sorry-free.",
+    "assumptions": "1 sorry: irreducibility of 4X²-2X-1 over ℚ (routine, provable via rational root theorem checking all candidates ±1, ±1/2, ±1/4). The theorem gal_order_eq_totient_div2_general proves a tautology (x = x by rfl) as a placeholder — it does not state the actual Galois order formula due to missing IsCyclotomicExtension infrastructure. All other theorems (splitting field degree 2, Galois order 2, Vieta identity, totient consistency checks) are genuinely proved.",
     "mathlib_version": "4.26.0",
     "historicalContext": "The angle trisection impossibility proof reduces to computing Galois groups of minimal polynomials of cosines. While the cubic cases (n=7, n=9) have been formalized, the quadratic case n=5 reveals a simplification: cos(π/5) has degree 2 over ℚ, and the Galois group formula φ(2n)/2 gives the correct answer 2. The proof is simpler than the cubic cases because the second root is just β = 1/2 - α (Vieta's: sum of roots = 1/2), avoiding the complex algebraic identities needed for cubics.",
     "proofStrategy": "For n=5: prove 4X²-2X-1 has natDegree=2 (norm_num). Use the Vieta identity (4(1/2-a)²-2(1/2-a)-1 = 4a²-2a-1, proved by ring) to show the second root β = 1/2-α is in ℚ(α). Hence SplittingField = ℚ(α), finrank = 2, |Gal| = 2 via Polynomial.Gal.card_of_separable. For general formula: state as conjecture with sorry, cross-verify against n=7,9 cases."
@@ -124,7 +124,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Proves |Gal(4X²-2X-1/ℚ)| = 2 for the minimal polynomial of cos(π/5), completing the n=5 case of the φ(2n)/2 formula. The proof is simpler than the cubic cases due to Vieta's identity β=1/2-α. The general formula is stated with a sorry pending IsCyclotomicExtension infrastructure.",
+    "summary": "Proves |Gal(4X²-2X-1/ℚ)| = 2 for the minimal polynomial of cos(π/5), completing the n=5 case of the φ(2n)/2 formula. The proof is simpler than the cubic cases due to Vieta’s identity β=1/2-α. The general formula theorem gal_order_eq_totient_div2_general is stated as a tautological placeholder (proves x = x by rfl) pending IsCyclotomicExtension infrastructure — not a sorry, but equally unproved as a mathematical statement.",
     "implications": "Together with the n=7,9 cases in sibling entries, this establishes the φ(2n)/2 formula empirically for three distinct values of n. The degree-2 case (n=5) demonstrates that the formula works for the golden ratio case as well as the classical trisection cases.",
     "openQuestions": [
       "Can pCos5_irreducible be proved via mod-3 reduction (X²+X+2 has no roots mod 3, hence 4X²-2X-1 irreducible over ℚ)?",
