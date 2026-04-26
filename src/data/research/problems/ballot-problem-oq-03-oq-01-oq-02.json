@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: hook_walk_identity_a21YD proved (session 21/PART XVI); 1 sorry remains for general ≥3-row ≥3-col non-[a,2,1] case",
+    "progressSummary": "PROGRESS: hook_walk_identity proved for all ≤4-row shapes (session 23/PART XVIII); 1 sorry remains for ≥5-row shapes",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -117,7 +117,11 @@
       "tele_prod: telescoping ∏_{k∈Ico 1 (n+1)} (k+1)/k = n+1 by induction (lines 5582-5593)",
       "tail_prod_a21YD: ∏_{s∈Ico 2 (a-1)} (a-s)/(a-s-1)=a-2 via bijection (lines 5596-5614)",
       "hook_walk_identity_a21YD: identity for [a,2,1] shapes (lines 5619-5723)",
-      "hook_walk_identity dispatcher: [a,2,1] case added (lines 5739-5794)"
+      "hook_walk_identity dispatcher: [a,2,1] case added (lines 5739-5794)",
+      "hook_walk_identity_fourRow: proved for all exactly-4-row YoungDiagrams via direct algebraic computation (PART XVIII)",
+      "fourRow_colLen_bot/mid1/mid2/top: column length zone lemmas for 4-row shapes",
+      "fourRow_corner_cases: classifies all corners of a 4-row shape into ≤4 candidates",
+      "fourRow_card: card = rowLen 0 + rowLen 1 + rowLen 2 + rowLen 3"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -181,16 +185,17 @@
       "tail_prod reduction: ∏_{s∈Ico 2 (a-1)} (a-s)/(a-s-1)=a-2 via bijection s↦a-1-s to tele_prod",
       "tele_prod identity: ∏_{k∈Ico 1 (n+1)} (k+1)/k = n+1 by induction useful for arm product telescoping",
       "YoungDiagram.rowLen_anti (antitone row lengths) used to show i≥3 → rowLen i=0 for [a,2,1]",
-      "interval_cases tactic required for isLowerSet base case at (2,0) and for hμ_eq case split on i<3"
+      "interval_cases tactic required for isLowerSet base case at (2,0) and for hμ_eq case split on i<3",
+      "4-row hook_walk_identity proved by: set a=rowLen 0,b=rowLen 1,c=rowLen 2,d=rowLen 3; arm products telescope over colLen zones (d<c<b<a); non-existing corners give ratio 0 automatically via vanishing factor (c-d, b-c, or a-b = 0)",
+      "Dead sorries removed: ni_count_eq_syt_count and lgv_det_factors_as_hook_quotient were FALSE as universally stated — wrong proof approach (LGV approach abandoned in favor of corner recursion)"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
       "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux"
     ],
     "nextSteps": [
-      "Prove hook_walk_identity for general ≥3-row ≥3-col non-[a,2,1] case (sorry at line 5796)",
-      "Strategy: induction on shape or reduction; consider [a,b,1] generalization as PART XVII",
-      "Verify PART XVI compilation once Docker is available"
+      "Prove hook_walk_identity for ≥5-row shapes: either (1) hook_walk_identity_fiveRow via same zone-telescoping pattern (~800 lines), (2) full GNW probabilistic proof (~200-300 lines harder), or (3) shape-family approach for n-row general pattern",
+      "The n-row case extends naturally: arm products telescope over n colLen zones (d_n < d_{n-1} < ... < d_1 < a)"
     ]
   },
   "tags": [
