@@ -69,36 +69,52 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Header",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring summarizing the prime power case, key lemma, and proof strategy. Sets up the Mathlib import, opens Matrix and Polynomial namespaces, and introduces the field K and dimension n as variables.",
+      "mathContext": "Works over an arbitrary field $K$ with matrices in $K^{n \\times n}$ for variable $n : \\mathbb{N}$."
+    },
+    {
       "id": "definitions",
       "title": "I. Definitions",
-      "startLine": 46,
-      "endLine": 52,
+      "startLine": 45,
+      "endLine": 55,
       "summary": "Defines IsCyclicVector and IsNonderogatory, identical to WIP01 and WIP02.",
-      "mathContext": "A vector v is cyclic for M if no nonzero polynomial of degree < n annihilates v via M. A matrix is nonderogatory if its minimal polynomial equals its characteristic polynomial."
+      "mathContext": "A vector $v$ is cyclic for $M$ if no nonzero polynomial of degree $< n$ annihilates $v$ via $M$. A matrix is nonderogatory if $\\mu_M = \\chi_M$."
     },
     {
       "id": "core-lemmas",
-      "title": "II. Core Lemmas",
-      "startLine": 56,
-      "endLine": 95,
-      "summary": "Three supporting lemmas imported from WIP02: irreducible_dvd_of_annihilated (Bezout/coprimality argument), exists_mulVec_ne_zero (a nonzero matrix has a nonzero image), and aeval_ne_zero_of_lt_minpoly (polynomial of degree < deg(minpoly) evaluates to nonzero matrix).",
-      "mathContext": "The core coprimality lemma: if p is irreducible, v ≠ 0, p(M)v = 0, and r(M)v = 0, then p | r. Proof: if not, Bezout gives a*p + b*r = 1, so v = 1·v = (a*p+b*r)(M)v = 0, contradiction."
+      "title": "II. Utility Lemmas",
+      "startLine": 57,
+      "endLine": 101,
+      "summary": "Three supporting lemmas: irreducible_dvd_of_annihilated (Bezout/coprimality argument), exists_mulVec_ne_zero (a nonzero matrix has a nonzero image), and aeval_ne_zero_of_lt_minpoly (polynomial of degree < deg(minpoly) evaluates to nonzero matrix).",
+      "mathContext": "The core coprimality lemma: if $p$ is irreducible, $v \\neq 0$, $p(M)v = 0$, and $r(M)v = 0$, then $p \\mid r$. Proof: if not, Bezout gives $ap + br = 1$, so $v = (ap + br)(M)v = 0$, contradiction."
     },
     {
       "id": "key-lemma",
       "title": "III. Key Lemma — Prime Power Divisibility",
-      "startLine": 98,
-      "endLine": 156,
-      "summary": "Proves pow_irred_dvd_of_annihilated by induction on e: if p irred, p^e(M)v ≠ 0, p^(e+1)(M)v = 0, r(M)v = 0, then p^(e+1) | r.",
-      "mathContext": "Base case (e=0): p(M)v = 0 and v ≠ 0 and r(M)v = 0, so p | r by irreducible_dvd_of_annihilated. Inductive step: w = p^(e+1)(M)v ≠ 0 satisfies p(M)w = 0, so p | r. Writing r = p*r₁, u = p(M)v satisfies p^e(M)u ≠ 0 and r₁(M)u = 0, so IH gives p^(e+1) | r₁, hence p^(e+2) | r."
+      "startLine": 102,
+      "endLine": 174,
+      "summary": "Proves pow_irred_dvd_of_annihilated by strong induction on e: if p is irreducible, p^e(M)v ≠ 0, p^(e+1)(M)v = 0, and r(M)v = 0, then p^(e+1) | r. The inductive step uses the shift trick v ↦ p(M)v to descend one level in the p-adic filtration.",
+      "mathContext": "Base ($e=0$): $v \\neq 0$, $p(M)v = 0$, $r(M)v = 0 \\Rightarrow p \\mid r$. Step: $w = p^{e+1}(M)v \\neq 0$ gives $p \\mid r$; writing $r = p r_1$ and shifting to $u = p(M)v$, the IH gives $p^{e+1} \\mid r_1$, hence $p^{e+2} \\mid r$."
     },
     {
       "id": "main-theorem",
       "title": "IV. Main Theorem — Prime Power Case",
-      "startLine": 162,
-      "endLine": 235,
-      "summary": "Proves nonderogatory_pw_has_cyclic_vector: for nonderogatory M with minpoly = p^e (p monic irreducible, e ≥ 1), M has a cyclic vector over any field K.",
-      "mathContext": "Pick v with p^(e-1)(M)v ≠ 0 (possible since deg(p^(e-1)) < n = deg(minpoly) implies p^(e-1)(M) ≠ 0). Then p^e(M)v = 0. For any r with r(M)v = 0 and deg(r) < n: pow_irred_dvd_of_annihilated gives p^e | r, so deg(r) ≥ e·deg(p) = n, contradicting deg(r) < n. Hence r = 0."
+      "startLine": 176,
+      "endLine": 238,
+      "summary": "Proves nonderogatory_pw_has_cyclic_vector: for nonderogatory M with minpoly = p^e (p monic irreducible, e ≥ 1), M has a cyclic vector over any field K. Constructs the cyclic vector via degree arithmetic and the key lemma.",
+      "mathContext": "Pick $v$ with $p^{e-1}(M)v \\neq 0$. If $r(M)v = 0$ with $\\deg(r) < n$, then $p^e \\mid r$ gives $n = \\deg(p^e) \\leq \\deg(r) < n$, contradiction. So $r = 0$ and $v$ is cyclic."
+    },
+    {
+      "id": "finite-corollary",
+      "title": "V. Finite Field Corollary",
+      "startLine": 240,
+      "endLine": 253,
+      "summary": "Specializes the main theorem to finite fields, making explicit that no cardinality restriction on K is needed. This extends the earlier gallery results that required |K| > n.",
+      "mathContext": "For any finite field $\\mathbb{F}_q$ and nonderogatory $M \\in \\mathbb{F}_q^{n \\times n}$ with $\\mu_M = p^e$, $M$ has a cyclic vector — no restriction on $q$ relative to $n$."
     }
   ],
   "conclusion": {
@@ -161,6 +177,36 @@
       "targetId": "cayley-hamilton-reduction-oq-02-oq-01",
       "relationship": "related",
       "description": "Rational canonical form via companion matrices. WIP03's prime power cyclic vector is a building block for showing each primary component has companion form."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Frobenius, Ferdinand Georg",
+      "title": "Ueber lineare Substitutionen und bilineare Formen",
+      "year": "1878",
+      "venue": "Journal für die reine und angewandte Mathematik 84, 1–63",
+      "note": "Introduced elementary divisors (Elementartheiler) for matrices over polynomial rings, establishing the theory that underlies rational canonical form and the cyclic decomposition theorem"
+    },
+    {
+      "authors": "Horn, Roger A.; Johnson, Charles R.",
+      "title": "Matrix Analysis",
+      "year": "1985",
+      "venue": "Cambridge University Press, Chapter 3",
+      "note": "Standard reference for nonderogatory matrices and cyclic vectors; Section 3.3 proves the cyclic vector theorem via the PID structure theorem — the heavy machinery this formalization avoids"
+    },
+    {
+      "authors": "Hoffman, Kenneth; Kunze, Ray",
+      "title": "Linear Algebra",
+      "year": "1971",
+      "venue": "Prentice-Hall, 2nd edition, Chapters 6–7",
+      "note": "Develops the rational canonical form via the cyclic decomposition theorem for finitely generated modules over a PID; the standard textbook approach that WIP03 circumvents for the prime power case"
+    },
+    {
+      "authors": "Smith, Henry John Stephen",
+      "title": "On systems of linear indeterminate equations and congruences",
+      "year": "1861",
+      "venue": "Philosophical Transactions of the Royal Society 151, 293–326",
+      "note": "Introduced the Smith normal form for integer matrices, the precursor to the PID module decomposition theorem used in classical proofs of the cyclic vector theorem"
     }
   ],
   "sorries": 0
