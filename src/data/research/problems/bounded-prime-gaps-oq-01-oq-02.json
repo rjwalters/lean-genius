@@ -1,0 +1,195 @@
+{
+  "slug": "bounded-prime-gaps-oq-01-oq-02",
+  "title": "Prove H ≤ 12 unconditionally: this would require proving Elliott-Halberstam o...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Prove H ≤ 12 unconditionally: this would require proving Elliott-Halberstam or a variant.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-26T08:56:57.650Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "challenging",
+    "extension",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "bounded-prime-gaps",
+    "bounded-prime-gaps-oq-01",
+    "bounded-prime-gaps-oq-03",
+    "bounded-prime-gaps-oq-03-oq-01",
+    "bounded-prime-gaps-oq-03-oq-01-oq-04",
+    "bounded-prime-gaps-oq-04",
+    "bounded-prime-gaps-oq-04-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-26T08:56:57.650Z",
+  "lastUpdate": "2026-04-26T08:56:57.650Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BoundedPrimeGaps.lean",
+      "filename": "BoundedPrimeGaps.lean",
+      "lineCount": 2018,
+      "theoremCount": 125,
+      "axiomCount": 3,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGaps.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01.lean",
+      "filename": "BoundedPrimeGapsOQ01.lean",
+      "lineCount": 439,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03.lean",
+      "filename": "BoundedPrimeGapsOQ03.lean",
+      "lineCount": 280,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01.lean",
+      "lineCount": 390,
+      "theoremCount": 20,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01OQ04.lean",
+      "lineCount": 188,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ03.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ03.lean",
+      "lineCount": 175,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04.lean",
+      "filename": "BoundedPrimeGapsOQ04.lean",
+      "lineCount": 367,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01.lean",
+      "lineCount": 264,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 7,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01Aristotle.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01Aristotle.lean",
+      "lineCount": 165,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ02.lean",
+      "lineCount": 600,
+      "theoremCount": 10,
+      "axiomCount": 6,
+      "defCount": 8,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsSieve.lean",
+      "filename": "BoundedPrimeGapsSieve.lean",
+      "lineCount": 368,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsSieve.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsTPC.lean",
+      "filename": "BoundedPrimeGapsTPC.lean",
+      "lineCount": 282,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsTPC.lean"
+    }
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "slug": "fourier-series-oq-02-oq-02",
+  "title": "Fourier Coefficient Decay — fourierCoeff_sq_summable_of_holder via p-Series",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "f \\in C^\\alpha(\\mathbb{T}),\\ \\alpha > \\tfrac{1}{2} \\implies \\sum_{n \\neq 0} |\\hat{f}(n)|^2 < \\infty",
+    "plain": "Hölder continuous functions have Fourier coefficients decaying like $|n|^{-\\alpha}$. When $\\alpha > 1/2$, the series of squared coefficients converges (since $\\sum |n|^{-2\\alpha}$ is a convergent p-series with exponent $2\\alpha > 1$).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-23",
+    "iteration": 1,
+    "focus": "COMPLETED. PR #11834 created.",
+    "activeApproach": "Elementary p-series comparison (succeeded).",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: fourier-series-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThe question is whether Fourier coefficient square-summability for α-Hölder functions\ncan be proved by an elementary comparison argument (without Parseval's theorem or L² theory).\n\n**Answer: YES.** The Hölder decay bound ‖ĉ_n‖ ≤ (C/2)·(T/(2|n|))^α, when squared, gives\n‖ĉ_n‖² ≤ K/|n|^{2α} with K = (C/2)²·(T/2)^{2α}. Since α > 1/2 means 2α > 1, the\np-series ∑ 1/|n|^{2α} converges, and comparison gives the result.\n\n**Critical threshold**: α = 1/2 is exactly the boundary — at α = 1/2 the bound becomes\nO(|n|^{-1}) which leads to the harmonic series (divergent).\n\n---\n\n## Insights\n\n### Lean 4 Technical Findings (2026-04-23)\n\n1. **`Real.summable_nat_rpow_inv` needs explicit import**: NOT transitively available from\n   `Mathlib.Analysis.Fourier.AddCircle`. Must add `import Mathlib.Analysis.PSeries`.\n\n2. **`.2` vs `.mpr` on Iff**: In certain contexts, `.2` (numeric projection) works where\n   `.mpr` fails as dot notation on `Iff` theorems.\n\n3. **`Summable.mul_left` over `Summable.const_smul`**: `const_smul` requires\n   `DistribMulAction` typeclasses that don't always resolve; `mul_left` is simpler for ℝ.\n\n4. **`Nat.cast_nonneg'` vs `Nat.cast_nonneg`**: The prime version uses a more general\n   typeclass compatible with `abs_of_nonneg`. Import from `Mathlib.Data.Nat.Cast.Order.Basic`.\n\n5. **`pow_le_pow_left₀`**: Renamed from `pow_le_pow_left` in Lean 4.26.\n\n6. **`Real.rpow_mul_natCast hb α 2`**: Gives `b^(α*2) = (b^α)^2` — bridges real and\n   natural number powers without norm_cast complications.\n\n7. **`positivity` and `Fact (0 < T)`**: `positivity` doesn't auto-extract `0 < T` from\n   `[hT : Fact (0 < T)]`. Must add `have hT_pos := hT.out` explicitly.\n\n8. **`summable_int_iff_summable_nat_and_neg`**: Reduces ℤ summability to two ℕ p-series.\n\n9. **`Summable.of_norm_bounded_eventually`**: Comparison test with cofinite filter —\n   allows finite exceptions (e.g., the n=0 term where |n|=0).\n\n### Proof Architecture\n\nThe proof splits into 3 clean parts:\n- Part I: p-series over ℤ (`summable_const_div_int_rpow`)\n- Part II: squaring the decay bound (`fourierCoeff_sq_le_pseries_term`)\n- Part III: comparison test (`fourierCoeff_sq_summable_of_holder_pseries`)\n\nThe algebraic core of Part II: (T/(2|n|))^{2α} = (T/2)^{2α}/|n|^{2α} via\n`Real.div_rpow` — this lets us factor out the |n| dependence cleanly.\n\n---\n\n## Session 2026-04-23 — COMPLETED\n\n**Mode**: FRESH  \n**Outcome**: completed (main theorems 0 sorries, 1 intentional sorry for sharpness)\n\n### What I Did\n- Created `proofs/Proofs/FourierSeriesOQ02OQ02.lean` (197 lines)\n- Fixed all pre-existing build errors in `FourierSeriesOQ02Incomplete01.lean`\n- Built successfully via Docker (1 warning: 1 sorry in sharpness corollary)\n- Created `src/data/proofs/fourier-series-oq-02-oq-02/meta.json`\n- PR: rjwalters/lean-genius#11834\n\n### Key Findings\n- Elementary p-series proof is fully formalized (main results 0 sorries)\n- Sharpness theorem (harmonic series divergence) left as sorry — requires\n  `∑_{n:ℤ, n≠0} 1/|n| = ∞` which is not in Mathlib in this exact form\n- OQ-01 (Parseval route, ~15 lines) is shorter; OQ-02 (p-series, ~150 lines) is more quantitative\n\n### Files Modified\n- `proofs/Proofs/FourierSeriesOQ02OQ02.lean` (new)\n- `proofs/Proofs/FourierSeriesOQ02Incomplete01.lean` (fixed build errors)\n- `src/data/proofs/fourier-series-oq-02-oq-02/meta.json` (new)\n\n### Next Steps\n- Harmonic series divergence over ℤ (`∑_{n≠0} 1/|n| = ∞`) would complete the sharpness sorry\n- See open questions in meta.json: quantitative Fourier approximation rates for Hölder functions\n\n---\n\n## Dead Ends\n\n### `const_smul` for p-series\n`(Real.summable_nat_rpow_inv.2 hβ).const_smul K` fails with typeclass inference errors.\nUse `mul_left K` instead — same mathematical content, simpler typeclass requirements.\n\n### `simp` approach for abs rewriting in ℤ split\n`simp [Int.cast_natCast, abs_of_nonneg (Nat.cast_nonneg n)]` fails due to typeclass\nzero mismatch. Use explicit `rw` + `exact abs_of_nonneg (Nat.cast_nonneg' n)` instead.\n"
+  },
+  "tags": [
+    "analysis",
+    "fourier-series",
+    "holder-continuity",
+    "harmonic-analysis",
+    "summability",
+    "p-series"
+  ],
+  "relatedProofs": [
+    "fourier-series",
+    "fourier-series-oq-01",
+    "fourier-series-oq-02",
+    "fourier-series-oq-02-incomplete-01",
+    "fourier-series-oq-02-oq-01",
+    "fourier-series-oq-02-oq-02",
+    "fourier-series-oq-02-oq-03",
+    "fourier-series-oq-02-oq-03-oq-02",
+    "fourier-series-oq-03",
+    "fourier-series-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-25T12:53:24.185Z",
+  "lastUpdate": "2026-04-25T12:53:24.185Z",
+  "completed": "2026-04-25T12:53:24.185Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/FourierSeries.lean",
+      "filename": "FourierSeries.lean",
+      "lineCount": 452,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeries.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ01.lean",
+      "filename": "FourierSeriesOQ01.lean",
+      "lineCount": 860,
+      "theoremCount": 17,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ01.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02.lean",
+      "filename": "FourierSeriesOQ02.lean",
+      "lineCount": 487,
+      "theoremCount": 18,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02Incomplete01.lean",
+      "filename": "FourierSeriesOQ02Incomplete01.lean",
+      "lineCount": 423,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02Incomplete01.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02Incomplete01Aristotle.lean",
+      "filename": "FourierSeriesOQ02Incomplete01Aristotle.lean",
+      "lineCount": 124,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 5,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02Incomplete01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02OQ01.lean",
+      "filename": "FourierSeriesOQ02OQ01.lean",
+      "lineCount": 84,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02OQ02.lean",
+      "filename": "FourierSeriesOQ02OQ02.lean",
+      "lineCount": 227,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02OQ03.lean",
+      "filename": "FourierSeriesOQ02OQ03.lean",
+      "lineCount": 133,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02OQ03OQ02.lean",
+      "filename": "FourierSeriesOQ02OQ03OQ02.lean",
+      "lineCount": 428,
+      "theoremCount": 11,
+      "axiomCount": 3,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02OQ03OQ02Aristotle.lean",
+      "filename": "FourierSeriesOQ02OQ03OQ02Aristotle.lean",
+      "lineCount": 115,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 6,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02OQ03OQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ03.lean",
+      "filename": "FourierSeriesOQ03.lean",
+      "lineCount": 809,
+      "theoremCount": 27,
+      "axiomCount": 3,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ03.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ04.lean",
+      "filename": "FourierSeriesOQ04.lean",
+      "lineCount": 104,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ04.lean"
+    }
+  ]
+}

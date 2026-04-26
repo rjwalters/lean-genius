@@ -1,0 +1,115 @@
+{
+  "slug": "bertrands-postulate-oq-03-oq-04-oq-01",
+  "title": "Does ShortIntervalPNT(0",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Does ShortIntervalPNT(0.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-26T08:56:57.649Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "challenging",
+    "extension",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "bertrands-postulate",
+    "bertrands-postulate-oq-03",
+    "bertrands-postulate-oq-03-oq-04",
+    "bertrands-postulate-oq-03-oq-04-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-26T08:56:57.649Z",
+  "lastUpdate": "2026-04-26T08:56:57.649Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BertrandsPostulate.lean",
+      "filename": "BertrandsPostulate.lean",
+      "lineCount": 152,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulate.lean"
+    },
+    {
+      "path": "Proofs/BertrandsPostulateOQ03.lean",
+      "filename": "BertrandsPostulateOQ03.lean",
+      "lineCount": 309,
+      "theoremCount": 11,
+      "axiomCount": 3,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulateOQ03.lean"
+    },
+    {
+      "path": "Proofs/BertrandsPostulateOQ03OQ04.lean",
+      "filename": "BertrandsPostulateOQ03OQ04.lean",
+      "lineCount": 358,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulateOQ03OQ04.lean"
+    },
+    {
+      "path": "Proofs/BertrandsPostulateOQ03OQ04Aristotle.lean",
+      "filename": "BertrandsPostulateOQ03OQ04Aristotle.lean",
+      "lineCount": 125,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulateOQ03OQ04Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BertrandsPostulateOQ03OQ04OQ03.lean",
+      "filename": "BertrandsPostulateOQ03OQ04OQ03.lean",
+      "lineCount": 214,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulateOQ03OQ04OQ03.lean"
+    }
+  ]
+}

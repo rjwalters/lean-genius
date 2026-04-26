@@ -1,0 +1,371 @@
+{
+  "slug": "area-of-circle-oq-01-oq-03-oq-01-oq-03",
+  "title": "Remove Change-of-Variables Axioms via MeasureTheory",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "The isoperimetric inequality proof chain includes a sub-proof about arc-length",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-24T10:35:16+02:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: area-of-circle-oq-01-oq-03-oq-01-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n**Goal**: Eliminate 4 axiom declarations from `AreaOfCircleOQ01OQ03OQ01.lean` — the\narc-length reparametrization sub-proof of the isoperimetric inequality chain.\n\nThe 4 axioms were:\n1. `arcLengthInv_hasDerivAt` — IFT derivative: σ'(y) = 1/speed(σ(y))\n2. `arcLengthInv_contDiff` — C¹ regularity of σ\n3. `circumference_reparam_preserved` — circumference preserved under τ = σ∘(c·)\n4. `area_reparam_preserved` — area preserved under τ = σ∘(c·)\n\n---\n\n## Session 2026-04-24 (Session 1) — Prove all 4 axioms\n\n**Mode**: FRESH (new problem claim)\n**Outcome**: All 4 axioms replaced with theorem proofs (712 lines, 0 axioms, 0 sorries)\n\n### Approach: Direct Mathlib IFT + change-of-variables\n\nThe seeker suggested `MeasureTheory.integral_image_eq_integral_abs_deriv_smul`, but\nthe better approach was `intervalIntegral.integral_comp_mul_deriv'` (simpler and more\ndirectly applicable to ℝ→ℝ interval integrals).\n\n### Key Mathlib lemmas used\n\n1. **`hasStrictDerivAt_of_hasDerivAt_of_continuousAt`** (MeanValue.lean):\n   - Upgrades `HasDerivAt` to `HasStrictDerivAt` using continuity of the derivative\n   - Signature: `(hder : ∀ᶠ y in 𝓝 x, HasDerivAt f (f' y) y) (hcont : ContinuousAt f' x) → HasStrictDerivAt f (f' x) x`\n\n2. **`HasStrictDerivAt.to_local_left_inverse`** (InverseFunctionTheorem/Deriv.lean):\n   - IFT for ℝ→ℝ: if s has strict derivative d≠0 at t₀ and σ∘s = id near t₀, then σ has strict derivative 1/d at s(t₀)\n   - Signature: `(hf' : f' ≠ 0) (hg : ∀ᶠ x in 𝓝 a, g (f x) = x) → HasStrictDerivAt g f'⁻¹ (f a)`\n\n3. **`contDiff_one_iff_deriv`** (ContDiff/Basic.lean):\n   - `ContDiff 𝕜 1 f ↔ Differentiable 𝕜 f ∧ Continuous (deriv f)`\n\n4. **`Monotone.continuous_of_surjective`** (MonotoneContinuity.lean):\n   - `[DenselyOrdered β] → Monotone f → Surjective f → Continuous f`\n   - Used to prove σ is continuous from its strict monotonicity and surjectivity\n\n5. **`intervalIntegral.integral_comp_mul_deriv'`** (IntegrationByParts.lean):\n   - Change-of-variables for interval integrals: `∫_a^b (g∘f)(x)·f'(x) dx = ∫_{f(a)}^{f(b)} g(x) dx`\n   - Used for both circumference and area preservation\n\n6. **`periodic_integral_shift`** (proved in the same file):\n   - `∫_t^{t+2π} f = ∫_0^{2π} f` for 2π-periodic f\n\n### arcLengthInv_hasDerivAt proof\n\n```lean\n-- 1. arcLength has strict derivative speed(t₀) (from continuity of speed via IFT upgrade)\nhave hstrict := hasStrictDerivAt_of_hasDerivAt_of_continuousAt\n  (Filter.eventually_of_forall (arcLength_hasDerivAt γ))\n  (curveSpeed_continuous γ).continuousAt\n-- 2. σ is a local left inverse of arcLength\nhave hleft : ∀ᶠ x in 𝓝 t₀, σ (arcLength γ x) = x :=\n  Filter.eventually_of_forall (arcLengthInv_left γ hReg hL)\n-- 3. IFT gives σ has strict derivative 1/speed(σ(y)) at arcLength(t₀) = y\nhave hσ_strict := hstrict.to_local_left_inverse (ne_of_gt hspeed_pos) hleft\n```\n\n### arcLengthInv_contDiff proof\n\n```lean\n-- σ is strictly monotone → monotone → continuous (by surjectivity)\nhave hσ_mono : StrictMono σ := ...  -- via arcLength_strictMono contradiction\nhave hσ_surj : Function.Surjective σ :=\n  fun t => ⟨arcLength γ t, arcLengthInv_left γ hReg hL t⟩\nhave hσ_cont : Continuous σ := hσ_mono.monotone.continuous_of_surjective hσ_surj\n-- Then: ContDiff ℝ 1 σ ↔ Differentiable ℝ σ ∧ Continuous (deriv σ)\nrw [contDiff_one_iff_deriv]; constructor\n· exact fun y => (arcLengthInv_hasDerivAt γ hReg hL y).differentiableAt\n· simp_rw [hderiv_eq, one_div]\n  apply Continuous.inv₀ ((curveSpeed_continuous γ).comp hσ_cont) (ne of positivity)\n```\n\n### circumference_reparam_preserved proof\n\nKey: the integrand = c pointwise because:\n```\nsqrt((x'(τt)·τ'(t))² + (y'(τt)·τ'(t))²)\n= sqrt((x'² + y'²) · (1/speed(τt) · c)²)\n= curveSpeed(τt) · (1/curveSpeed(τt) · c) = c\n```\nThen `∫_0^{2π} c dt = 2πc = L`.\n\n### area_reparam_preserved proof\n\nThree-step strategy:\n1. Rewrite LHS integrand as `g(τt) · τ'(t)` using chain rule\n2. Apply `integral_comp_mul_deriv'` to get `∫_{τ(0)}^{τ(2π)} g`\n3. Since τ(0) = σ(0) and τ(2π) = σ(0) + 2π, apply `periodic_integral_shift`\n\n### Files Modified\n- `proofs/Proofs/AreaOfCircleOQ01OQ03OQ01.lean`: 517→712 lines, 4 axioms→0, 0 sorries\n\n### Current Status\n- Proof written: 0 axioms, 0 sorries (712 lines)\n- Build verification: PENDING (Docker Desktop unavailable during session)\n- The proof uses all real Mathlib lemmas verified by source inspection\n\n### Key Insight\nThe seeker suggested `MeasureTheory.integral_image_eq_integral_abs_deriv_smul`, but\n`intervalIntegral.integral_comp_mul_deriv'` is the right tool — it handles the ℝ→ℝ\ninterval integral case directly and was already available.\n\n---\n\n## Insights\n\n- **IFT approach works**: `HasStrictDerivAt.to_local_left_inverse` is the correct Lean 4\n  API for the IFT in 1D. The key upgrade step from `HasDerivAt` to `HasStrictDerivAt`\n  uses `hasStrictDerivAt_of_hasDerivAt_of_continuousAt`.\n- **Monotone continuity**: `Monotone.continuous_of_surjective` is the right tool for\n  proving global continuity of σ without needing to go through topological homeomorphism.\n- **integral_comp_mul_deriv' over integral_image lemma**: For ℝ→ℝ interval integrals,\n  `intervalIntegral.integral_comp_mul_deriv'` is simpler than measure-theoretic tools.\n- **Same periodicity proof works**: The `hg_per` proof for the area integrand follows\n  the same pattern as `curveSpeed_quasi_periodic` already proved in the file.\n\n---\n\n## Dead Ends\n\n- `MeasureTheory.integral_image_eq_integral_abs_deriv_smul`: More complex than needed\n  for ℝ→ℝ interval integrals; `integral_comp_mul_deriv'` is cleaner.\n"
+  },
+  "tags": [
+    "measure-theory",
+    "real-analysis",
+    "axiom-elimination",
+    "arc-length",
+    "reparametrization",
+    "isoperimetric"
+  ],
+  "relatedProofs": [
+    "area-of-circle",
+    "area-of-circle-oq-01",
+    "area-of-circle-oq-01-oq-02-oq-01",
+    "area-of-circle-oq-01-oq-02-oq-01-oq-01",
+    "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-01",
+    "area-of-circle-oq-01-oq-02-oq-01-oq-03",
+    "area-of-circle-oq-01-oq-02-oq-02",
+    "area-of-circle-oq-01-oq-02-oq-02-oq-01",
+    "area-of-circle-oq-01-oq-02-oq-03",
+    "area-of-circle-oq-01-oq-02-oq-03-oq-03",
+    "area-of-circle-oq-01-oq-03",
+    "area-of-circle-oq-01-oq-03-oq-01",
+    "area-of-circle-oq-02",
+    "area-of-circle-oq-02-oq-01",
+    "area-of-circle-oq-02-oq-04",
+    "area-of-circle-oq-03-oq-01",
+    "area-of-circle-oq-03-oq-02",
+    "area-of-circle-oq-03-oq-02-oq-02",
+    "area-of-circle-oq-03-oq-02-oq-02-oq-01",
+    "area-of-circle-oq-03-oq-03",
+    "area-of-circle-oq-03-oq-03-oq-02",
+    "area-of-circle-oq-05",
+    "area-of-circle-oq-05-oq-01",
+    "area-of-circle-oq-05-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-24T10:35:16+02:00",
+  "lastUpdate": "2026-04-25T12:53:24.184Z",
+  "completed": "2026-04-25T12:53:24.184Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/AreaOfCircle.lean",
+      "filename": "AreaOfCircle.lean",
+      "lineCount": 156,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircle.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ01.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ01.lean",
+      "lineCount": 291,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ01.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ01OQ01.lean",
+      "lineCount": 151,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ01OQ01.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ01OQ01OQ01.lean",
+      "lineCount": 164,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ03.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ01OQ03.lean",
+      "lineCount": 196,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ02.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ02.lean",
+      "lineCount": 83,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ02OQ01.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ02OQ01.lean",
+      "lineCount": 420,
+      "theoremCount": 11,
+      "axiomCount": 5,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ03.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ03.lean",
+      "lineCount": 218,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ03OQ03.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ03OQ03.lean",
+      "lineCount": 303,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ03.lean",
+      "filename": "AreaOfCircleOQ01OQ03.lean",
+      "lineCount": 1938,
+      "theoremCount": 52,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ03Aristotle.lean",
+      "filename": "AreaOfCircleOQ01OQ03Aristotle.lean",
+      "lineCount": 101,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03Aristotle.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ03OQ01.lean",
+      "filename": "AreaOfCircleOQ01OQ03OQ01.lean",
+      "lineCount": 713,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ03OQ02.lean",
+      "filename": "AreaOfCircleOQ01OQ03OQ02.lean",
+      "lineCount": 566,
+      "theoremCount": 15,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 8,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ02.lean",
+      "filename": "AreaOfCircleOQ02.lean",
+      "lineCount": 212,
+      "theoremCount": 16,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ02.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ02OQ01.lean",
+      "filename": "AreaOfCircleOQ02OQ01.lean",
+      "lineCount": 164,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ02OQ04.lean",
+      "filename": "AreaOfCircleOQ02OQ04.lean",
+      "lineCount": 273,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ03OQ01.lean",
+      "filename": "AreaOfCircleOQ03OQ01.lean",
+      "lineCount": 233,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ03OQ02.lean",
+      "filename": "AreaOfCircleOQ03OQ02.lean",
+      "lineCount": 103,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ03OQ02OQ02.lean",
+      "filename": "AreaOfCircleOQ03OQ02OQ02.lean",
+      "lineCount": 205,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ03OQ02OQ02OQ01.lean",
+      "filename": "AreaOfCircleOQ03OQ02OQ02OQ01.lean",
+      "lineCount": 255,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ03OQ03.lean",
+      "filename": "AreaOfCircleOQ03OQ03.lean",
+      "lineCount": 191,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ03OQ03OQ02.lean",
+      "filename": "AreaOfCircleOQ03OQ03OQ02.lean",
+      "lineCount": 190,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ05.lean",
+      "filename": "AreaOfCircleOQ05.lean",
+      "lineCount": 133,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ05OQ01.lean",
+      "filename": "AreaOfCircleOQ05OQ01.lean",
+      "lineCount": 184,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ05OQ01Aristotle.lean",
+      "filename": "AreaOfCircleOQ05OQ01Aristotle.lean",
+      "lineCount": 115,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 5,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ05OQ02.lean",
+      "filename": "AreaOfCircleOQ05OQ02.lean",
+      "lineCount": 190,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05OQ02.lean"
+    }
+  ]
+}
