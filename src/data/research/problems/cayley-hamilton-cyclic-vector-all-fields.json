@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-04-25T13:30:37+02:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Main theorem proved via helper; 1 sorry remains in exists_strongly_cyclic",
     "blockers": [],
     "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
@@ -29,18 +29,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: nonderogatory_has_cyclic_vector_any_field exists in OQ05OQ01OQ04 with 1 sorry (RCF). Blocked on Mathlib PID structure theorem.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: nonderogatory_squarefree_has_cyclic_vector proved via exists_strongly_cyclic helper; 1 targeted sorry remains (strong induction on natDegree)",
+    "builtItems": [
+      "exists_strongly_cyclic: helper theorem stated with detailed proof sketch (CayleyHamiltonMinpolyOQ05OQ01OQ04WIP02.lean:301)",
+      "nonderogatory_squarefree_has_cyclic_vector: PROVED assuming exists_strongly_cyclic (line 325) — main theorem complete",
+      "nonderogatory_squarefree_has_cyclic_vector_finite: corollary proved (line 349)"
+    ],
     "insights": [
       "nonderogatory_has_cyclic_vector_any_field already exists in CayleyHamiltonMinpolyOQ05OQ01OQ04.lean with 1 sorry (nonderogatory_similar_companion — RCF, not in Mathlib v4.26.0)",
-      "companionMatrix_cyclic_e0 proved: e₀ is always cyclic for companion matrices, field-independently. Transfer lemma also proved. Only RCF similarity step is missing."
+      "companionMatrix_cyclic_e0 proved: e₀ is always cyclic for companion matrices, field-independently. Transfer lemma also proved. Only RCF similarity step is missing.",
+      "exists_strongly_cyclic proof strategy: base case (q irred) uses v = p'(M)w where p' = minpoly/q; irreducible_dvd_of_annihilated closes strong cyclicity",
+      "exists_strongly_cyclic inductive case: q = s*t coprime (Squarefree + s irred); vs + vt strongly q-cyclic via CRT projections; vs + vt ≠ 0 via Bezout contradiction",
+      "IsCoprime s t from Squarefree q: if s|t then s²|q → IsUnit s (squarefree), but s irred → not unit. Use Prime.coprime_iff_not_dvd",
+      "Main theorem proof: obtain v from exists_strongly_cyclic with q = minpoly; r(M)v=0 → minpoly|r; deg(r)<n=deg(minpoly) → r=0 by natDegree_le_of_dvd + omega",
+      "WfDvdMonoid.exists_irreducible_factor: ∀ x ≠ 0 not unit, ∃ s irred with s|x — key API for non-irreducible inductive case"
     ],
     "mathlibGaps": [
       "Rational Canonical Form (nonderogatory → similar to companion matrix) — requires PID module structure theorem, not in Mathlib v4.26.0"
     ],
     "nextSteps": [
-      "Wait for RCF to land in Mathlib; OR build it locally (~300-500 lines using Module.Free over K[X]/(f))",
-      "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01 is actively working this same problem — do not duplicate"
+      "Prove exists_strongly_cyclic by strong induction on natDegree q (~100 lines)",
+      "Base case (q irred): use aeval_ne_zero_of_lt_minpoly + exists_mulVec_ne_zero' + irreducible_dvd_of_annihilated",
+      "Inductive case: use WfDvdMonoid.exists_irreducible_factor for s, divide q to get t, prove IsCoprime s t via Prime.coprime_iff_not_dvd + Squarefree",
+      "CRT projection for v=vs+vt: same as in nonderogatory_cyclic_of_binary_squarefree but with IH for strong cyclicity",
+      "Handle IsUnit q edge case: should not arise in practice (n > 0 → minpoly deg > 0 → divisors with q irred/non-irred also have deg > 0)"
     ],
     "markdown": "# Knowledge Base: cayley-hamilton-cyclic-vector-all-fields\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
