@@ -269,21 +269,24 @@ The proof requires connecting cos(π/n) ∈ ℝ to the cyclotomic field ℚ(ζ_{
   - Use `IsCyclotomicExtension.Gal_equiv_totient` or similar Mathlib theorem
   - Restrict to the +1 eigenspace of complex conjugation
 
-This is formalized as a sorry; the individual cases (n=5,7,9) are proved above.
+The individual cases (n=5,7,9) are proved above. The general formula is stated below
+as a tautological placeholder (not a sorry) pending IsCyclotomicExtension infrastructure.
 -/
 
-/-- **General formula (sorry)**: For n ≥ 3, the Galois group of minpoly(cos(π/n)) over ℚ
-    has order φ(2n)/2.
+/-- **General formula (tautological placeholder)**: For n ≥ 3, the Galois group of
+    minpoly(cos(π/n)) over ℚ has order φ(2n)/2.
 
     Known cases:
     - n=5: |Gal| = 2 = φ(10)/2  [proved above as cos_36_gal_card]
     - n=7: |Gal| = 3 = φ(14)/2  [proved in AngleTrisectionCos20GalOQ01]
     - n=9: |Gal| = 3 = φ(18)/2  [proved in AngleTrisectionCos20Gal]
 
-    The full proof requires IsCyclotomicExtension API for the maximal real subfield. -/
+    NOTE: The statement below is a tautology (x = x), not the actual Galois order formula.
+    The actual formula requires IsCyclotomicExtension API for the maximal real subfield.
+    See totient_formula_consistent_n5/n7/n9 for verified special cases. -/
 theorem gal_order_eq_totient_div2_general (n : ℕ) (hn : 3 ≤ n) :
-    -- The actual formula: |Gal(minpoly(cos(π/n))/ℚ)| = φ(2n)/2
-    -- Formalized here as: the totient formula is consistent with known cases
+    -- TAUTOLOGY: this is NOT the actual formula |Gal| = φ(2n)/2
+    -- The actual statement requires IsCyclotomicExtension for the maximal real subfield
     Nat.totient (2 * n) / 2 = Nat.totient (2 * n) / 2 := by
   rfl  -- Tautology placeholder; real content requires cyclotomic field formalization
 
