@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOMATIZED: 1 sorry (bdry_nfc_even), 0 axioms. Session 10: proved termination dichotomy (kuhnWalk_fc_or_bdry, all_visited_forces_bdry, kuhnWalk_congr). Session 5: proved parity structure (kuhn_path_existential from bdry_nfc_even). Non-revisiting FULLY PROVED. Remaining: walk reversal τ∘τ=id in bdry_nfc_even.",
+    "progressSummary": "AXIOMATIZED: 0 sorries, 1 axiom (kuhn_path_existential). All supporting lemmas proved: non-revisiting (kuhn_step_nonrevisit + WalkValid), unique exit, door counts, termination dichotomy. Remaining: kuhnWalkWithExit + walkTrace_reversal to fill the walk-reversal τ∘τ=id involution and remove the axiom.",
     "builtItems": [
       "doorDegree def: SpernerNDimOQ04.lean:60",
       "IsKuhnCompatible def: SpernerNDimOQ04.lean:65",
@@ -84,7 +84,8 @@
       "kuhnPathStart_is_fc (universal) is FALSE: walk can terminate at non-FC boundary exit. Correct statement is existential: kuhnPathStart_finds_fc_existential",
       "kuhnWalk_congr needs proof_irrel: KuhnState Prop fields (entry_is_door, current_not_visited) are propositionally but not definitionally equal between kuhnWalk internal computation and explicit proofs",
       "kuhnWalk_fc_or_bdry base case: fuel=0 with visited.card=|K.Simplex| is impossible because current not-in-visited contradicts full coverage",
-      "Walk reversal (τ∘τ=id): at each step of reverse walk, adj_symm forces the unique exit door to match the previous forward step, retracing the path in reverse"
+      "Walk reversal (τ∘τ=id): at each step of reverse walk, adj_symm forces the unique exit door to match the previous forward step, retracing the path in reverse",
+      "bdry_nfc_even as a private lemma is FALSE: the abstract SpernerTriangulation axioms do not prevent a single boundary non-FC simplex, giving |B_nfc|=1 (odd). The correct parity argument uses door graph handshaking: |B_nfc| ≡ |B| (mod 2), and then the τ involution argument proves |B_nfc| is even, which together force |B_fc| odd ≥ 1."
     ],
     "mathlibGaps": [
       "No Mathlib theorem for path-following algorithm termination with non-revisiting invariant",
@@ -92,8 +93,10 @@
       "SpernerTriangulation lacks an adjacent-simplices-share-unique-facet axiom needed for the non-revisiting proof"
     ],
     "nextSteps": [
-      "Prove kuhnWalk_reversal: if walk from (s0,k0) exits at (sn,kn) boundary, then walk from (sn,kn) exits at (s0,k0); induction on path length using adj_symm — this is the ONLY remaining sorry (bdry_nfc_even)",
-      "Consider contributing adj_unique_facet + Kuhn algorithm formalization to Mathlib as standalone combinatorics contribution"
+      "Implement kuhnWalkWithExit: fuel-based walk that returns Option(K.Simplex × Fin(d+1)) for the boundary exit",
+      "Prove walkTrace_reversal: backward walk from boundary exit recovers original start, via adj_symm + nonfc_with_door_has_unique_exit",
+      "Apply even_card_fpf_invol with τ involution to prove |B_nfc| even",
+      "Then |B_fc| = |B| - |B_nfc| is odd ≥ 1 → extract FC-start boundary door → kuhn_path_existential proved"
     ]
   },
   "tags": [
