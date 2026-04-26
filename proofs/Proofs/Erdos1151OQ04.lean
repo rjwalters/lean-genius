@@ -916,11 +916,12 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
       ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) /
                    Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) := by
     let g : Fin m → Fin n := fun j => ⟨n - 1 - j.val, hg_lt j⟩
-    have hg_inj : Function.Injective g := fun ⟨j, hj⟩ ⟨j', hj'⟩ h => by
+    have hg_inj : Function.Injective g := by
+      intro a b h
       simp only [g, Fin.mk.injEq] at h
-      have hjn : j < n := Nat.lt_of_lt_of_le hj hm_le_n
-      have hj'n : j' < n := Nat.lt_of_lt_of_le hj' hm_le_n
-      omega
+      have ha : a.val < n := Nat.lt_of_lt_of_le a.isLt hm_le_n
+      have hb : b.val < n := Nat.lt_of_lt_of_le b.isLt hm_le_n
+      exact Fin.ext (by omega)
     let f : Fin n → ℝ := fun k =>
       Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) /
       Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n))
