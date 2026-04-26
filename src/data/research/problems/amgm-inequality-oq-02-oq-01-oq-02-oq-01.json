@@ -1,0 +1,23 @@
+{
+  "id": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
+  "name": "Full Newton-Girard Recurrence",
+  "knowledge": {
+    "insights": [
+      "antidiagonal n for ℕ comes from HasAntidiagonal typeclass export, not Nat.antidiagonal",
+      "mem_antidiagonal : a ∈ antidiagonal n ↔ a.fst + a.snd = n is auto-simp",
+      "ext ⟨a,b⟩ + simp [mem_filter, mem_antidiagonal, Set.mem_Ioo] + omega proves filter = Finset",
+      "Named args (σ := σ) (R := R) required for implicit arg inference in term-mode Newton-Girard",
+      "ring in CommRing correctly evaluates (-1)^n for small concrete n",
+      "with notation must match Mathlib's form for exact unification"
+    ],
+    "builtItems": [
+      "psum_one_eq_esymm_one: psum σ R 1 = esymm σ R 1 (via rw [psum_one, esymm_one])",
+      "psum_two_eq: psum σ R 2 = esymm σ R 1^2 - 2*esymm σ R 2 (via antidiag filter + ring)",
+      "psum_three_eq: psum σ R 3 = esymm σ R 1*psum σ R 2 - esymm σ R 2*psum σ R 1 + 3*esymm σ R 3",
+      "newton_girard_recurrence: fixed wrapper for psum_eq_mul_esymm_sub_sum with correct signature"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "progressSummary": "COMPLETE: All 3 Newton-Girard corollaries proved, 0 sorries, 0 axioms"
+  }
+}

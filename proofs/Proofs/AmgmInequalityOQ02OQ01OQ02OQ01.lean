@@ -9,15 +9,16 @@
   for all k ≥ 1.
 
   Mathlib provides MvPolynomial.psum_eq_mul_esymm_sub_sum which states:
-    pₙ = (-1)^(n+1) · n · eₙ - Σ_{i<n-1} (-1)^i · eᵢ₊₁ · pₙ₋₁₋ᵢ
+    pₙ = (-1)^(n+1) · n · eₙ - Σ_{0<i<n} (-1)^i · eᵢ · pₙ₋ᵢ
+  (sum over antidiagonal pairs (i,j) with i+j=n, 0<i<n)
 
   Corollaries (k = 1, 2, 3):
     p₁ = e₁
     p₂ = e₁² − 2·e₂
     p₃ = e₁·p₂ − e₂·p₁ + 3·e₃
 
-  Status: WIP — sorries remain for the explicit corollary derivations.
-  Axioms: 0, Sorries: 3
+  Status: Complete — all corollaries proved via Mathlib Newton-Girard recurrence.
+  Axioms: 0, Sorries: 0
   Tags: algebra, symmetric-functions, newton-girard, power-sums, mv-polynomial
 -/
 
@@ -35,14 +36,16 @@ variable (σ : Type*) (R : Type*) [CommRing R] [Fintype σ]
 
 /-- **Newton-Girard Recurrence** (from Mathlib):
     For n ≥ 1, the power sum pₙ satisfies:
-      pₙ = (-1)^(n+1) · n · eₙ − Σ_{0≤i<n-1} (-1)^i · eᵢ₊₁ · pₙ₋₁₋ᵢ
+      pₙ = (-1)^(n+1) · n · eₙ − Σ_{0<i<n} (-1)^i · eᵢ · pₙ₋ᵢ
+    where the sum runs over antidiagonal pairs (i,j) with i+j=n and 0<i<n.
 
     This is `MvPolynomial.psum_eq_mul_esymm_sub_sum` from Mathlib. -/
-theorem newton_girard_recurrence (n : ℕ) (hn : n ≠ 0) :
+theorem newton_girard_recurrence (n : ℕ) (hn : 0 < n) :
     psum σ R n =
-      (-1) ^ (n + 1) * (n : R) * esymm σ R n -
-      ∑ i ∈ range (n - 1), (-1) ^ i * (esymm σ R (i + 1) * psum σ R (n - 1 - i)) :=
-  MvPolynomial.psum_eq_mul_esymm_sub_sum σ R n hn
+      (-1) ^ (n + 1) * (n : MvPolynomial σ R) * esymm σ R n -
+      ∑ a ∈ antidiagonal n with a.1 ∈ Set.Ioo 0 n,
+        (-1) ^ a.1 * esymm σ R a.1 * psum σ R a.2 :=
+  psum_eq_mul_esymm_sub_sum (σ := σ) (R := R) n hn
 
 -- ============================================================
 -- Corollary 1: p₁ = e₁
@@ -52,7 +55,7 @@ theorem newton_girard_recurrence (n : ℕ) (hn : n ≠ 0) :
       p₁ = e₁ -/
 theorem psum_one_eq_esymm_one :
     psum σ R 1 = esymm σ R 1 := by
-  sorry
+  rw [psum_one, esymm_one]
 
 -- ============================================================
 -- Corollary 2: p₂ = e₁² − 2·e₂
@@ -63,7 +66,14 @@ theorem psum_one_eq_esymm_one :
     Equivalently: Σ xᵢ² = (Σ xᵢ)² − 2·Σ_{i<j} xᵢxⱼ. -/
 theorem psum_two_eq :
     psum σ R 2 = esymm σ R 1 ^ 2 - 2 * esymm σ R 2 := by
-  sorry
+  have h := psum_eq_mul_esymm_sub_sum (σ := σ) (R := R) 2 two_pos
+  have hfilt : (antidiagonal 2).filter (fun a => a.1 ∈ Set.Ioo 0 2) = {(1, 1)} := by
+    ext ⟨a, b⟩
+    simp only [mem_filter, mem_antidiagonal, Set.mem_Ioo, mem_singleton, Prod.mk.injEq]
+    omega
+  rw [hfilt, sum_singleton] at h
+  rw [h, psum_one_eq_esymm_one]
+  ring
 
 -- ============================================================
 -- Corollary 3: p₃ = e₁·p₂ − e₂·p₁ + 3·e₃
@@ -74,6 +84,16 @@ theorem psum_two_eq :
 theorem psum_three_eq :
     psum σ R 3 =
       esymm σ R 1 * psum σ R 2 - esymm σ R 2 * psum σ R 1 + 3 * esymm σ R 3 := by
-  sorry
+  have h := psum_eq_mul_esymm_sub_sum (σ := σ) (R := R) 3 (by norm_num)
+  have hfilt : (antidiagonal 3).filter (fun a => a.1 ∈ Set.Ioo 0 3) =
+      {(1, 2), (2, 1)} := by
+    ext ⟨a, b⟩
+    simp only [mem_filter, mem_antidiagonal, Set.mem_Ioo, mem_insert, mem_singleton,
+               Prod.mk.injEq]
+    omega
+  rw [hfilt, sum_insert (by decide : (1, 2) ∉ ({(2, 1)} : Finset (ℕ × ℕ))),
+      sum_singleton] at h
+  rw [h]
+  ring
 
 end AMGMInequalityOQ02OQ01OQ02OQ01
