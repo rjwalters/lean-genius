@@ -124,5 +124,31 @@
       "DecidableEq",
       "elementary symmetric polynomials"
     ]
+  },
+  {
+    "id": "ann-amgm-oq201-full-context",
+    "proofId": "amgm-inequality-oq-02-oq-01",
+    "range": {
+      "startLine": 65,
+      "endLine": 88
+    },
+    "type": "insight",
+    "title": "Proof Roadmap and the Full Newton-Girard Recurrence",
+    "content": "The summary comment (lines 65-88) documents the proof architecture and identifies what this file leaves unproved: the step $\\sum_{i \\neq j} x_i x_j = 2e_2 = 2\\sum_{i < j} x_i x_j$, which requires a `LinearOrder` on the index type to pair each $(i,j)$ with $(j,i)$. This symmetry argument is completed in the child entry `amgm-inequality-oq-02-oq-01-oq-02`, which proves `sum_offDiag_eq_two_mul_sum_upper` using `Prod.swap` as a bijection from lower to upper triangular pairs.\n\nThe broader context is Newton's full p_k recurrence: $p_k = e_1 p_{k-1} - e_2 p_{k-2} + e_3 p_{k-3} - \\cdots + (-1)^{k-1} k e_k$ (for $k \\leq n$), relating power sums $p_k = \\sum x_i^k$ to elementary symmetric polynomials $e_k = \\sum_{i_1 < \\cdots < i_k} x_{i_1} \\cdots x_{i_k}$. The $k=2$ instance is $p_2 = e_1 p_1 - 2e_2 = e_1^2 - 2e_2$, which is precisely what `sq_sum_eq_diag_plus_offdiag` proves. This file thus formalizes the base case of the Newton-Girard recurrence in maximal generality (CommRing, no order required).",
+    "mathContext": "Newton's identities (Newton-Girard recurrence): $p_k - e_1 p_{k-1} + e_2 p_{k-2} - \\cdots + (-1)^{k-1} e_{k-1} p_1 + (-1)^k k e_k = 0$. For $k=2$: $p_2 - e_1 p_1 + 2e_2 = 0$, i.e., $p_2 = e_1^2 - 2e_2$. The $k=1$ case is trivial: $p_1 = e_1$. The $k=3$ case: $p_3 = e_1 p_2 - e_2 p_1 + 3e_3 = e_1^3 - 3e_1 e_2 + 3e_3$ (related to the $n=3$ AM-GM and Maclaurin's inequalities).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Newton's identities",
+      "Newton-Girard recurrence",
+      "amgm-inequality-oq-02-oq-01-oq-02",
+      "Prod.swap bijection",
+      "elementary symmetric polynomials"
+    ],
+    "prerequisites": [
+      "Newton-Girard recurrence (full generality)",
+      "elementary symmetric polynomial e_k",
+      "power sum p_k",
+      "child entry amgm-inequality-oq-02-oq-01-oq-02 for the off-diagonal step"
+    ]
   }
 ]
