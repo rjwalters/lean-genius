@@ -142,5 +142,41 @@
     "significance": "key",
     "relatedConcepts": ["heterotic string theory", "Green-Schwarz anomaly cancellation", "M-theory", "G2 holonomy manifolds", "N=8 supergravity"],
     "prerequisites": ["Hurwitz theorem", "magic square", "string theory basics", "supergravity"]
+  },
+  {
+    "id": "ann-hurwitz-oq04-der-submodule",
+    "proofId": "hurwitz-theorem-oq-04",
+    "range": { "startLine": 558, "endLine": 644 },
+    "type": "definition",
+    "title": "OctonionDerSubmodule: Der(𝕆) as Vector Subspace + G₂ Dimension Axiom",
+    "content": "OctonionDerSubmodule defines Der(𝕆) as a Submodule of End_ℝ(ℝ⁸) — the ℝ-linear maps satisfying the Leibniz rule D(ab) = D(a)·b + a·D(b) for octonion multiplication. This representation gives Der(𝕆) an inherited finite-dimensional vector space structure, enabling FiniteDimensional.finrank to measure its dimension. The axiom G2_der_dimension asserts finrank ℝ OctonionDerSubmodule = 14. Four structural lemmas follow: der_maps_unit_to_zero (D(e₀) = 0 by Leibniz applied to e₀·e₀ = e₀, giving D(e₀) = 2D(e₀) hence D(e₀) = 0), der_maps_real_part_to_zero (r·D(e₀) = 0), toLinearMap (lifts OctonionDer to End_ℝ(ℝ⁸)), and toSubmoduleMem (bridges OctonionDer structures to OctonionDerSubmodule members). This bridges the 'structure' definition of OctonionDer with the 'submodule' definition for dimension counting.",
+    "mathContext": "$\\text{Der}(\\mathbb{O}) = \\{D \\in \\text{End}_{\\mathbb{R}}(\\mathbb{R}^8) : D(ab) = D(a)b + aD(b)\\}$. Leibniz gives $D(e_0) = 0$. The axiom $\\text{finrank}_{\\mathbb{R}}(\\text{Der}(\\mathbb{O})) = 14$ identifies $\\mathfrak{der}(\\mathbb{O}) \\cong \\mathfrak{g}_2$. A constructive proof would exhibit 14 basis derivations $D_{ij}$ for $1 \\leq i < j \\leq 7$ (imaginary octonion pairs) satisfying $D_{ij}(e_k) = \\delta_{jk}e_i - \\delta_{ik}e_j$ (cross-product derivations on $\\text{Im}(\\mathbb{O}) \\cong \\mathbb{R}^7$), then prove their linear independence.",
+    "significance": "key",
+    "relatedConcepts": ["Lie algebra", "derivation algebra", "G₂", "OctonionDerSubmodule", "FiniteDimensional.finrank"],
+    "prerequisites": ["OctonionDer structure", "Submodule in Lean 4", "FiniteDimensional.finrank", "Leibniz rule"]
+  },
+  {
+    "id": "ann-hurwitz-oq04-tits-axioms",
+    "proofId": "hurwitz-theorem-oq-04",
+    "range": { "startLine": 645, "endLine": 749 },
+    "type": "theorem",
+    "title": "Freudenthal-Tits Magic Square Axioms: F₄=52, E₆=78, E₇=133, E₈=248",
+    "content": "The Freudenthal-Tits construction 𝔏(A,B) = Der(A) ⊕ (Im A ⊗ Im B) ⊕ Der(B) produces exceptional Lie algebras from pairs of normed division algebras. This section proves dimension facts (rfl): F₄=52, E₆=78, E₇=133, E₈=248. The docstring explains D₄ triality — the S₃ outer automorphism group of the D₄ Dynkin diagram (which is the unique Dynkin diagram with a 3-fold symmetry) — as the source of the magic square symmetry 𝔏(A,B) ≅ 𝔏(B,A). The construction of E₈ (dimension 248) uses a doubled version of the Tits formula to enforce the Jacobi identity. The section also proves exceptional_dims_strict_mono (14<52<78<133<248 by decide) and G2_unique_low_rank (G₂ is the unique exceptional type with rank < 4, proved by case analysis).",
+    "mathContext": "Magic square building block dimensions: $\\mathfrak{der}(\\mathbb{R})=0$, $\\mathfrak{der}(\\mathbb{C})=0$, $\\mathfrak{der}(\\mathbb{H})=\\mathfrak{su}(2)=3$, $\\mathfrak{der}(\\mathbb{O})=\\mathfrak{g}_2=14$; $\\text{Im}(\\mathbb{R})=0$, $\\text{Im}(\\mathbb{C})=1$, $\\text{Im}(\\mathbb{H})=3$, $\\text{Im}(\\mathbb{O})=7$. D₄ triality: $\\text{SO}(8)$ has an outer automorphism group $S_3$ permuting the three 8-dimensional representations (vector, spinor+, spinor−). This $S_3$ acts on the magic square rows/columns, giving $\\mathfrak{L}(A,B) \\cong \\mathfrak{L}(B,A)$. Rank of exceptional types: G₂ has rank 2, F₄ has rank 4, E₆ has rank 6, E₇ has rank 7, E₈ has rank 8 (matching the Dynkin diagram node counts).",
+    "significance": "key",
+    "relatedConcepts": ["Freudenthal-Tits construction", "D₄ triality", "magic square symmetry", "E₈", "exceptional Lie algebras"],
+    "prerequisites": ["Tits 1966", "D₄ Dynkin diagram", "ExceptionalType inductive type", "tensor product"]
+  },
+  {
+    "id": "ann-hurwitz-oq04-physics-summary",
+    "proofId": "hurwitz-theorem-oq-04",
+    "range": { "startLine": 750, "endLine": 822 },
+    "type": "context",
+    "title": "Hurwitz-Exceptional Correspondence: Why 4 Algebras Give 5 Exceptional Types",
+    "content": "The final docstring completes the correspondence: Hurwitz's 4 normed division algebras {ℝ, ℂ, ℍ, 𝕆} yield exactly 5 exceptional Lie algebras because 𝕆 appears in all 5 magic square constructions (as one factor in each of the 4 non-trivial parings, plus Der(𝕆) = G₂ itself). A hypothetical 5th normed division algebra (dimension 16 — sedenions fail to be a division algebra) would give a 6th exceptional type via the magic square. Physical applications: E₈×E₈ heterotic string theory achieves the required dim=496=2×248 for anomaly cancellation; M-theory on G₂-holonomy 7-manifolds uses the explicit Aut(𝕆)⊆O(7) result from this file; E₇(7) governs N=8 supergravity duality. The #check summary lists 30 public declarations organized by section.",
+    "mathContext": "Green-Schwarz anomaly cancellation (1984): 10D supergravity + super-Yang-Mills is anomaly-free iff $\\dim G = 496$. The two solutions: $E_8 \\times E_8$ (dim $2\\times 248 = 496$) and $\\text{SO}(32)$ (dim $\\binom{32}{2}+32 = 496$). Both correspond to consistent superstring theories. G₂ holonomy (Berger 1955, Joyce 1996): $\\text{Hol}(g) \\subseteq G_2$ iff $(M^7,g)$ admits a parallel 3-form $\\varphi \\in \\Omega^3(M)$ (the associative 3-form); this is equivalent to 11D supergravity on $\\mathbb{R}^{3,1} \\times M^7$ preserving one supercharge ($N=1$). The connection to this file: $G_2 = \\text{Aut}(\\mathbb{O}) \\subseteq O(7)$, proved via alg_aut_preserves_inner.",
+    "significance": "supporting",
+    "relatedConcepts": ["Green-Schwarz anomaly cancellation", "E₈×E₈ heterotic string", "G₂ holonomy", "N=8 supergravity", "E₇(7)"],
+    "prerequisites": ["exceptional Lie algebras", "string theory anomaly cancellation", "G₂ holonomy manifolds"]
   }
 ]
