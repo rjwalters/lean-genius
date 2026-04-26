@@ -34,5 +34,3 @@ export const synthesisCurvaturePtolemyData: ProofData = {
   proof: synthesisCurvaturePtolemyProof,
   annotations: synthesisCurvaturePtolemyAnnotations,
 }
-
-export default synthesisCurvaturePtolemyData
