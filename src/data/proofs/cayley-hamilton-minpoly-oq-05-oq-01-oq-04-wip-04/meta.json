@@ -74,7 +74,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The cyclic vector theorem for nonderogatory matrices is a cornerstone of rational canonical form theory, dating to Frobenius (1879). A matrix M over a field K is nonderogatory if minpoly(M) = charpoly(M), equivalently if K^n is a cyclic K[X]-module. The classical proof uses the structure theorem for finitely generated modules over K[X] (a PID), which was unavailable in Mathlib 4.26. WIP01 (this problem's predecessor) reduced the theorem to a precisely-stated axiom: 'nonderogatory matrices are similar to their companion matrix'. WIP02 proved the squarefree case axiom-free, and WIP03 proved the prime power case axiom-free. This file (WIP04) combines these into a complete axiom-free proof for arbitrary minpoly factored into prime powers. The key innovation is that no module-structure theorem is needed: a direct construction via Bezout projections suffices.",
+    "historicalContext": "The cyclic vector theorem for nonderogatory matrices is a cornerstone of rational canonical form theory, dating to Frobenius's 1879 paper 'Über lineare Substitutionen und bilineare Formen' in Crelle's Journal (vol. 84, pp. 1–63), where he introduced what is now called the Frobenius normal form (rational canonical form). A matrix M over a field K is nonderogatory if minpoly(M) = charpoly(M), equivalently if K^n is a cyclic K[X]-module. Eduard Weyr (1885) independently developed a dual canonical form — the Weyr canonical form — that also characterizes nonderogatory matrices as those with a single block. The 20th-century treatment, systematized by Jacobson (1953) and Hoffman–Kunze (1961, 1971), derives the cyclic vector theorem from the structure theorem for finitely generated modules over a PID. This PID module theory was unavailable in Mathlib 4.26, motivating an alternative approach. WIP01 reduced the theorem to a precisely-stated axiom ('nonderogatory matrices are similar to their companion matrix'). WIP02 proved the squarefree case axiom-free, and WIP03 proved the prime power case axiom-free. This file (WIP04) combines these into a complete axiom-free proof for arbitrary minpoly factored into prime powers. The key innovation is that no module-structure theorem is needed: a direct construction via Bezout projections suffices, yielding a proof that is arguably more elementary than the classical PID-based approach.",
     "problemStatement": "For a nonderogatory n×n matrix M over any field K whose minimal polynomial factors as ∏_{i < k} p_i^{e_i} (pairwise coprime, p_i irreducible monic, e_i ≥ 1), prove that M has a cyclic vector: a vector v such that no nonzero polynomial of degree < n annihilates v under M.",
     "proofStrategy": "Two-phase construction using primary decomposition via Bezout:\n\nPhase 1 (Primary vectors): For each i, let F_i = ∏_{j≠i} p_j^{e_j}. Since deg(p_i^{e_i-1} · F_i) < n = deg(minpoly), the matrix p_i^{e_i-1}(M) · F_i(M) is nonzero, so pick w_i with this matrix not killing w_i. Set v_i = F_i(M)w_i. By construction:\n- p_i^{e_i}(M)v_i = 0  (minpoly kills everything)\n- p_i^{e_i-1}(M)v_i ≠ 0  (by choice)\nBy WIP03's key lemma: r(M)v_i = 0 implies p_i^{e_i} | r.\n\nPhase 2 (CRT combination): Set v = ∑_i v_i. If r(M)v = 0 with deg(r) < n, use IsCoprime(p_i^{e_i}, F_i) to extract Bezout a_i · p_i^{e_i} + b_i · F_i = 1. The Bezout projection π_i = b_i(M) · F_i(M) satisfies π_i(v_i) = v_i and π_i(v_j) = 0 for j ≠ i (since p_j^{e_j} | F_i). Then r(M)v_i = π_i(r(M)v) = 0 for all i. By Phase 1: p_i^{e_i} | r for all i. By pairwise coprimality: ∏ p_i^{e_i} = minpoly | r, giving deg(r) ≥ n. Contradiction.",
     "keyInsights": [
@@ -94,6 +94,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Documentation and Imports",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Module-level documentation describing the WIP04 axiom elimination campaign: context (WIP01–WIP03 progression), the two-phase primary decomposition strategy (construct primary vectors, combine via CRT), and imports from Mathlib.",
+      "mathContext": "Documents the key strategy: given nonderogatory $M$ with $\\text{minpoly}(M) = \\prod p_i^{e_i}$, construct primary vectors $v_i = F_i(M)w_i$ where $F_i = \\prod_{j \\neq i} p_j^{e_j}$, then combine as $v = \\sum v_i$ and use Bezout projections to extract individual annihilation conditions."
+    },
     {
       "id": "definitions",
       "title": "I. Definitions",
@@ -132,7 +140,8 @@
     "implications": "The primary decomposition approach demonstrated here — constructing cyclic vectors for each prime power factor via complementary products, then combining via Bezout projections — is a general strategy that avoids needing the full PID module structure theorem. This approach could generalize to other structured linear algebra settings where primary decomposition is available but the full classification theorem is not.",
     "openQuestions": [
       "Can the factorization hypotheses (p : Fin k → K[X], e : Fin k → ℕ, ...) be eliminated by automatically factoring minpoly K M using the UFD structure of K[X]? This would give a fully general theorem from just IsNonderogatory M.",
-      "Does this primary decomposition approach generalize to modules over other PIDs (e.g., ℤ[X]-modules), or are field-specific properties essential?"
+      "Does this primary decomposition approach generalize to modules over other PIDs (e.g., ℤ[X]-modules), or are field-specific properties essential?",
+      "Can this Bezout projection technique yield the full rational canonical form (not just cyclic vector existence) by constructing an explicit change-of-basis matrix to companion form, without the PID module structure theorem?"
     ]
   },
   "leanFile": {
@@ -210,6 +219,20 @@
       "year": "1971",
       "venue": "Prentice-Hall, 2nd edition",
       "note": "Chapter 7 develops the primary decomposition theorem and rational canonical form for linear operators. The classical proof uses the structure theorem for finitely generated modules over a PID — the approach this formalization avoids via direct Bezout projection construction."
+    },
+    {
+      "authors": "Horn, Roger A.; Johnson, Charles R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Section 3.3 treats the minimal polynomial and nonderogatory matrices; Theorem 3.3.14 proves the cyclic vector characterization. The treatment via the structure theorem for finitely generated modules over K[X] (a PID) is the standard modern approach that WIP04's Bezout projection method bypasses."
+    },
+    {
+      "authors": "Jacobson, Nathan",
+      "title": "Lectures in Abstract Algebra, Vol. II: Linear Algebra",
+      "year": "1953",
+      "venue": "D. Van Nostrand Company",
+      "note": "Systematic development of canonical forms via modules over principal ideal domains. Jacobson's presentation of the primary decomposition theorem for linear operators is the archetype that Hoffman–Kunze later popularized — and the module-theoretic approach that this formalization avoids."
     }
   ],
   "sorries": 0
