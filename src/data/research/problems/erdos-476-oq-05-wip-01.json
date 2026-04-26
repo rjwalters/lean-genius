@@ -1,6 +1,6 @@
 {
   "slug": "erdos-476-oq-05-wip-01",
-  "title": "Erdős #476 OQ5 — Complete Vosper's Theorem Inductive Step",
+  "title": "Erd\u0151s #476 OQ5 \u2014 Complete Vosper's Theorem Inductive Step",
   "phase": "ACT",
   "status": "active",
   "tier": "A",
@@ -29,36 +29,40 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: |B|=2 and |A|=|B|=3 cases proved; 1 sorry for |A|>=4 or |B|>=4 (Kneser needed)",
+    "progressSummary": "BLOCKED: |B|=2 and |A|=|B|=3 cases proved; 1 sorry at line 844 (|A|>=4 or |B|>=4 all-redundant case) confirmed blocked \u2014 needs Kneser theorem or proof restructuring",
     "builtItems": [
       "case1_exists |B|=2 branch: fully proved via orbit argument (Erdos476OQ05Problem.lean ~550-609)",
-      "hredA_card lemma inline: ∀ a ∈ A, (A.erase a + B).card = A.card + B.card - 1 from CD + inclusion",
-      "hredA set equality inline: ∀ a ∈ A, A.erase a + B = A + B via Finset.eq_of_subset_of_card_le",
-      "horbit_nat by induction: a₀ + k*(b1-b2) ∈ A for all k : ℕ",
-      "hrep2 lemma: ∀ x ∈ A+B, 2 ≤ (A.filter (fun a => x-a ∈ B)).card — if r(x)=1, contradicts hredA (Erdos476OQ05Problem.lean ~781-803)",
-      "hsum_eq: ∑_x r(x) = |A|·|B| via sigma bijection (x,a) ↦ (a,x-a) (Erdos476OQ05Problem.lean ~806-829)",
-      "hineq: counting bound |A|·|B| ≥ 2(|A|+|B|-1) from hrep2 + hsum_eq (Erdos476OQ05Problem.lean ~835)",
-      "|A|=|B|=3 sub-case: 9 ≥ 10 contradiction via norm_num (Erdos476OQ05Problem.lean ~838-840)"
+      "hredA_card lemma inline: \u2200 a \u2208 A, (A.erase a + B).card = A.card + B.card - 1 from CD + inclusion",
+      "hredA set equality inline: \u2200 a \u2208 A, A.erase a + B = A + B via Finset.eq_of_subset_of_card_le",
+      "horbit_nat by induction: a\u2080 + k*(b1-b2) \u2208 A for all k : \u2115",
+      "hrep2 lemma: \u2200 x \u2208 A+B, 2 \u2264 (A.filter (fun a => x-a \u2208 B)).card \u2014 if r(x)=1, contradicts hredA (Erdos476OQ05Problem.lean ~781-803)",
+      "hsum_eq: \u2211_x r(x) = |A|\u00b7|B| via sigma bijection (x,a) \u21a6 (a,x-a) (Erdos476OQ05Problem.lean ~806-829)",
+      "hineq: counting bound |A|\u00b7|B| \u2265 2(|A|+|B|-1) from hrep2 + hsum_eq (Erdos476OQ05Problem.lean ~835)",
+      "|A|=|B|=3 sub-case: 9 \u2265 10 contradiction via norm_num (Erdos476OQ05Problem.lean ~838-840)"
     ],
     "insights": [
-      "case1_exists |B|=2 proved: orbit argument shows A closed under +(b1-b2) → |A| ≥ p (contradiction)",
+      "case1_exists |B|=2 proved: orbit argument shows A closed under +(b1-b2) \u2192 |A| \u2265 p (contradiction)",
       "Set equality A.erase(a)+B = A+B follows from: CD lower bound + inclusion upper bound + hall assumption",
       "Key pattern: Finset.eq_of_subset_of_card_le + cardinality from hredA_card proves set equality",
-      "For |B|≥3: all-redundant contradiction needs Freiman-Ruzsa or stabilizer structure theorem — genuinely hard",
-      "The orbit argument uses zmod_orbit_injective (Fin p → ZMod p injective when d≠0) already in file",
-      "r(x) ≥ 2 for all x ∈ A+B when A is all-redundant: if r(x)=1 with unique a₁, then x ∉ (A.erase a₁)+B, contradicting SET equality hredA a₁",
-      "Double counting identity: ∑_x |{a ∈ A : x-a ∈ B}| = |A|·|B| via Finset.card_bij bijection (x,a) ↦ (a,x-a)",
-      "Counting argument only closes |A|=|B|=3 (9 < 10); for |A|≥4 or |B|≥4, the bound (|A|-2)(|B|-2) ≥ 2 holds and Kneser is needed",
-      "Kneser theorem for ZMod p: NOT in Mathlib. Building it from scratch needs ~200-300 lines of additive combinatorics infrastructure"
+      "For |B|\u22653: all-redundant contradiction needs Freiman-Ruzsa or stabilizer structure theorem \u2014 genuinely hard",
+      "The orbit argument uses zmod_orbit_injective (Fin p \u2192 ZMod p injective when d\u22600) already in file",
+      "r(x) \u2265 2 for all x \u2208 A+B when A is all-redundant: if r(x)=1 with unique a\u2081, then x \u2209 (A.erase a\u2081)+B, contradicting SET equality hredA a\u2081",
+      "Double counting identity: \u2211_x |{a \u2208 A : x-a \u2208 B}| = |A|\u00b7|B| via Finset.card_bij bijection (x,a) \u21a6 (a,x-a)",
+      "Counting argument only closes |A|=|B|=3 (9 < 10); for |A|\u22654 or |B|\u22654, the bound (|A|-2)(|B|-2) \u2265 2 holds and Kneser is needed",
+      "Kneser theorem for ZMod p: NOT in Mathlib. Building it from scratch needs ~200-300 lines of additive combinatorics infrastructure",
+      "B-all-redundancy from A-all-redundancy (session 3 insight): if rep_A(x) >= 2 for all x in A+B (hrep2), then B is also all-redundant: forall b in B, A+(B\\{b})=A+B. Proof: if x not in A+(B\\{b0}), all reps use b0 -> at most 1 rep, contradicting hrep2",
+      "Orbit argument barrier (session 3): B-all-redundancy gives forall b in B, exists d in (A-A)\\{0}: b+d in B. But d varies with b for |A|>=3 \u2014 no fixed d, orbit argument fails",
+      "Tight rep=2 case (session 3): for |A|=4, |B|=3, every x in A+B has EXACTLY rep=2 (4*3=12=2*6). Bipartite graph is 3-regular/2-regular. No arithmetic contradiction found from rep=2 alone"
     ],
     "mathlibGaps": [
-      "Kneser theorem for abelian groups (needed for |A|>=4 or |B|>=4 all-redundant contradiction in Vosper induction)"
+      "Kneser theorem for abelian groups (needed for |A|>=4 or |B|>=4 all-redundant contradiction in Vosper induction)",
+      "B-all-redundancy derivation (elementary, ~15 lines): follows from hrep2 via contradiction \u2014 if x not in A+(B\\{b0}), all reps of x use b0 giving rep=1, contradicting hrep2>=2"
     ],
     "nextSteps": [
-      "Build Kneser theorem for ZMod p (~200-300 lines): since Stab(A+B) is trivial for prime order groups, |A+B| >= |A|+|B|-1 forces AP structure under full redundancy",
-      "Alternative: try elementary Freiman/Schur approach for the |A|>=4, |B|>=3 sub-case",
-      "Key constraint: for tight case |A|=4, |B|=3, each x in A+B has r(x)=2 exactly — may enable direct structural argument without Kneser",
-      "If 3+ sessions stuck on Kneser: flag as BLOCKED and release claim"
+      "B-all-redundancy can be added to main proof (~15 lines) using hrep2 already proved \u2014 easy win for future prover",
+      "Kneser build for ZMod p: since stabilizer must be {0} (prime order), Kneser reduces to CD. The structural argument needs ~200-300 lines",
+      "Alternative: polynomial method (combinatorial Nullstellensatz over ZMod p) \u2014 different infrastructure",
+      "Consider flagging as BLOCKED and moving on; 3 sessions with no progress on line 844 sorry"
     ],
     "markdown": "# Knowledge Base: erdos-476-oq-05-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
