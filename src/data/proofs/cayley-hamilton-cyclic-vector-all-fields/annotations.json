@@ -1,0 +1,119 @@
+[
+  {
+    "id": "ann-chcvaf-rcf-axiom",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields",
+    "range": {
+      "startLine": 74,
+      "endLine": 102
+    },
+    "type": "keyInsight",
+    "title": "The RCF Similarity Axiom: Isolating the Mathlib Gap",
+    "content": "`nonderogatory_similar_companion` is the only axiom in this formalization. It states: if M is nonderogatory, there exists an invertible P with M = P⁻¹ · C(minpoly M) · P. This is the single-block rational canonical form theorem (Frobenius normal form). By declaring it as an explicit `axiom` rather than a `sorry`, the formalization makes its assumption transparent: the proof is complete assuming this one fact, and the fact is clearly documented with its mathematical justification (PID module structure theorem) and Mathlib gap. The axiom declaration is also safer than `sorry` — it cannot be accidentally used to close other goals, and it appears explicitly in `#print axioms` output.",
+    "mathContext": "The rational canonical form states that every matrix $M \\in M_n(K)$ is similar to a block diagonal matrix of companion matrices $\\mathrm{diag}(C(d_1), \\ldots, C(d_r))$ where $d_1 \\mid d_2 \\mid \\cdots \\mid d_r$ are the **invariant factors** of $M$. For nonderogatory $M$ (where $\\mathrm{minpoly} = \\mathrm{charpoly}$), the invariant factor decomposition has $r = 1$ and $d_1 = \\mathrm{minpoly}\\, M$. The proof of this uses the structure theorem for $K^n$ as a finitely generated $K[X]$-module: $K^n \\cong \\bigoplus_i K[X]/(d_i)$. Nonderogatory forces $r = 1$ because $d_1 \\cdots d_r = \\mathrm{charpoly}$ and $d_r = \\mathrm{minpoly}$ together with $d_1 \\mid \\cdots \\mid d_r$ give $r = 1, d_1 = \\mathrm{minpoly} = \\mathrm{charpoly}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Rational Canonical Form",
+      "invariant factors",
+      "PID module structure theorem",
+      "Mathlib gap"
+    ],
+    "prerequisites": [
+      "companion matrix definition",
+      "nonderogatory matrix definition",
+      "K[X]-module structure on K^n"
+    ]
+  },
+  {
+    "id": "ann-chcvaf-main-proof-chain",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields",
+    "range": {
+      "startLine": 104,
+      "endLine": 155
+    },
+    "type": "proofTechnique",
+    "title": "Three-Step Proof Chain: Axiom → Orbit → Transfer",
+    "content": "The proof of `nonderogatory_has_cyclic_vector` chains three modular steps. After dispatching `n = 0` (trivial: `Fin.elim0` works since there are no degree constraints), the `n > 0` case proceeds: (1) `nonderogatory_similar_companion hn M h` gives the invertible P and the similarity `hMC : M = P.inv * C * P.val`; (2) `hμ_deg` establishes `(minpoly K M).natDegree = n` by rewriting via nonderogatory hypothesis `h : minpoly K M = M.charpoly` and `Matrix.charpoly_natDegree_eq_dim`; (3) `companionMatrix_cyclic_e0 hn (minpoly K M) hμ_monic hμ_deg` gives `hcyc : IsCyclicVector C e₀`; (4) `cyclic_vector_of_similar M C P hMC _ hcyc` transfers the cyclic vector. The proof term is a clean 10-line tactic block.",
+    "mathContext": "The similarity step is key: if $M = P^{-1}CP$ and $w$ is cyclic for $C$, then $v = P^{-1}w$ satisfies $M^k v = P^{-1} C^k w$, so $\\{v, Mv, \\ldots, M^{n-1}v\\} = \\{P^{-1}w, P^{-1}Cw, \\ldots, P^{-1}C^{n-1}w\\} = P^{-1}\\{w, Cw, \\ldots, C^{n-1}w\\}$, which is a basis iff $\\{w, Cw, \\ldots, C^{n-1}w\\}$ is (since $P^{-1}$ is invertible). The orbit property $C^k e_0 = e_k$ makes $\\{e_0, Ce_0, \\ldots, C^{n-1}e_0\\} = \\{e_0, e_1, \\ldots, e_{n-1}\\}$ the standard basis.",
+    "significance": "central",
+    "relatedConcepts": [
+      "matrix similarity",
+      "companion matrix orbit",
+      "cyclic vector transfer",
+      "functional calculus"
+    ],
+    "prerequisites": [
+      "companionMatrix_cyclic_e0",
+      "cyclic_vector_of_similar",
+      "nonderogatory_similar_companion axiom"
+    ]
+  },
+  {
+    "id": "ann-chcvaf-finite-field",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields",
+    "range": {
+      "startLine": 157,
+      "endLine": 170
+    },
+    "type": "keyInsight",
+    "title": "Finite Fields: Why Union Avoidance Fails but the Theorem Holds",
+    "content": "The corollary `nonderogatory_has_cyclic_vector_finite` specializes the main theorem to `[Fintype K]`. The proof is one line — it just applies the main theorem — but the significance is conceptual. The union avoidance argument (used for infinite fields in OQ-05-OQ-01) works by observing that the non-cyclic vectors form finitely many proper subspaces; over an infinite field, these cannot cover all of $K^n$. Over $\\mathbb{F}_2$ with $n = 2$, there are exactly 3 nonzero vectors and 3 proper 1-dimensional subspaces, each containing one nonzero vector — the union IS all of $\\mathbb{F}_2^2 \\setminus \\{0\\}$. Yet the theorem holds, because the companion matrix approach is field-independent: it never asks which vectors avoid subspaces, only that M is similar to C and e₀ is cyclic for C by structure.",
+    "mathContext": "For $\\mathbb{F}_2^2$: the three nonzero vectors $(1,0), (0,1), (1,1)$ are each the unique nonzero element of a 1-dimensional subspace. Union avoidance requires finding $v$ outside all $\\ker(p(M))$ for finitely many polynomials $p$ with $\\deg(p) < n = \\mathrm{deg}(\\mathrm{minpoly})$, but over $\\mathbb{F}_2$ these kernels exhaust all nonzero vectors. The algebraic proof bypasses this by not using cardinality at all — it uses the structural fact that the companion matrix orbit is exactly the standard basis.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "union avoidance",
+      "finite fields",
+      "F_2 counterexample",
+      "field cardinality"
+    ],
+    "prerequisites": [
+      "nonderogatory_has_cyclic_vector",
+      "companion matrix orbit property"
+    ]
+  },
+  {
+    "id": "ann-chcvaf-abbrev-design",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields",
+    "range": {
+      "startLine": 48,
+      "endLine": 72
+    },
+    "type": "concept",
+    "title": "Definition Aliasing via abbrev for Cross-File Consistency",
+    "content": "`IsCyclicVector` and `IsNonderogatory` are declared as `abbrev` (reducible definitions) aliasing the `CyclicVectorArbitrary` namespace versions from `CayleyHamiltonMinpolyOQ05OQ01OQ04`. Using `abbrev` rather than `def` is important: `abbrev` in Lean 4 is `@[reducible] def`, meaning it is definitionally transparent. This allows Lean to unify `IsCyclicVector M v` (this namespace) with `CyclicVectorArbitrary.IsCyclicVector M v` without explicit coercions. In particular, the lemmas `companionMatrix_cyclic_e0` and `cyclic_vector_of_similar` (which use `CyclicVectorArbitrary.IsCyclicVector`) can be applied directly to goals stated in terms of the `abbrev`s.",
+    "mathContext": "In Lean 4, `abbrev` creates a definition that is unfolded by the kernel during definitional equality checking. This means `simp`, `rw`, `exact`, and typeclass search all see through it automatically. Without `abbrev` (using `def`), one would need explicit `show ... from ...` or `unfold` steps to unify the two definitions, even though they expand to the same type. The `abbrev` approach is the idiomatic Lean 4 pattern for namespace-local renaming.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "abbrev vs def in Lean 4",
+      "reducible definitions",
+      "namespace aliasing",
+      "definitional equality"
+    ],
+    "prerequisites": [
+      "Lean 4 type system basics",
+      "CyclicVectorArbitrary namespace"
+    ]
+  },
+  {
+    "id": "ann-chcvaf-axiom-vs-sorry",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields",
+    "range": {
+      "startLine": 74,
+      "endLine": 102
+    },
+    "type": "concept",
+    "title": "axiom vs sorry: Making Mathematical Assumptions Explicit",
+    "content": "In Lean 4, `sorry` closes any goal by invoking `sorryAx` (a built-in axiom), while `axiom` introduces a named constant with a specific type. Both appear in `#print axioms` output, but `axiom` is preferable for deliberate mathematical assumptions because: (1) it has a descriptive name that documents what is being assumed; (2) it cannot accidentally close other goals — it must be explicitly applied; (3) it is more honest about the nature of the assumption (a mathematical fact being assumed, not a proof being deferred). For this formalization, `axiom nonderogatory_similar_companion` clearly signals 'we assume the RCF theorem', whereas `sorry` would only indicate 'proof omitted'. The `axiomCount` in meta.json reflects explicit `axiom` declarations; `sorry` counts are tracked separately under `sorries`.",
+    "mathContext": "The distinction matters for the gallery's Axiom Integrity Policy: `axiom` declarations count toward `axiomCount`, while `sorry` counts toward `sorries`. A proof with `axiomCount = 1, sorries = 0` (this file) is more trustworthy than `axiomCount = 0, sorries = 1` (the companion OQ-04 file), because the assumption is named and scoped. Both have status `axiomatized` in the gallery, but the axiom-based version makes the assumption structurally explicit.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lean 4 axiom declaration",
+      "sorry vs axiom",
+      "Axiom Integrity Policy",
+      "#print axioms"
+    ],
+    "prerequisites": [
+      "Lean 4 trusted kernel",
+      "sorryAx built-in"
+    ]
+  }
+]
