@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: File compiles; 2 sorries remain (tower divisibility + Galois characterization)",
+    "progressSummary": "PROGRESS: 1 sorry remaining (wantzel_galois_iff, out-of-scope). isConstructible_algebraic_degree fully proved via sequential tower.",
     "builtItems": [
       "isConstructible_mem_range: all constructible numbers are rational (Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:89)",
       "not_constructible_of_bad_degree: proved via rationality + minpoly.eq_X_sub_C (line 179)",
@@ -41,7 +41,10 @@
       "Fixed isConstructible_sqrt2 (norm_cast + Real.mul_self_sqrt)",
       "Fixed Module.finrank qualified name throughout not_constructible_of_bad_degree",
       "Fixed IsIntegral conversion for adjoin.finrank type mismatch",
-      "Fixed h1 case: absurd + Nat.two_pow_pos instead of broken linarith"
+      "Fixed h1 case: absurd + Nat.two_pow_pos instead of broken linarith",
+      "isConstructible_algebraic: constructible → algebraic ℚ (induction, ~17 lines) in AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:106",
+      "pow2_containing_field: sequential tower ℚ≤G_a≤G_ab≤G_ab(β) with 2-power ranks, in lean:127",
+      "isConstructible_algebraic_degree: PROVED — constructible ⟹ finrank ℚ ℚ⟮α⟯ = 2^n, in lean:212"
     ],
     "insights": [
       "IsConstructible with existential sqrt_ext blocks induction — must make a,b explicit constructor params to get proper IHs",
@@ -53,7 +56,10 @@
       "Session 26: Fixed definition removes IsConstructible β → √2 is now constructible (proved isConstructible_sqrt2)",
       "Session 26: wantzel_galois_iff was FALSE under old definition (→ direction fails: √2 has 2-group Gal but was not 'constructible'). Now TRUE under fixed definition.",
       "Session 26: not_constructible_of_bad_degree now uses isConstructible_algebraic_degree sorry + IntermediateField.adjoin.finrank for degree connection",
-      "Session 27: File compiles; tower sorry narrowed to single divisibility claim; Docker must run from worktree; Module.finrank must be fully qualified; IsIntegral needed for adjoin.finrank"
+      "Session 27: File compiles; tower sorry narrowed to single divisibility claim; Docker must run from worktree; Module.finrank must be fully qualified; IsIntegral needed for adjoin.finrank",
+      "IsAlgebraic.tower_top fails with Field synthesis error; bypass using direct IsIntegral polynomial witness instead",
+      "Module.Free.of_divisionRing has explicit K V args in Mathlib4; use inferInstance instead",
+      "Module.Finite timeout for finrank_pos fixed by: haveI hfin := adjoin.finiteDimensional hint_β before use"
     ],
     "mathlibGaps": [
       "isConstructible_algebraic_degree: tower degree induction — IsConstructible α → IsAlgebraic ℚ α ∧ ∃ n, finrank ℚ ℚ⟮α⟯ = 2^n. Needs FiniteDimensional.finrank_mul_finrank + IntermediateField tower lemmas. Estimated ~120 lines.",

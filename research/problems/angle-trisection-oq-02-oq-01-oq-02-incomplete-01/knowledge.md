@@ -170,3 +170,37 @@ The `pow2_containing_field` proof:
 ### Remaining Sorries
 1. `wantzel_galois_iff`: full Galois theory + 2-group tower characterization (500+ lines)
    → Keep as sorry, out of scope
+
+## Session 29 (2026-04-26) — Build Errors Fixed; isConstructible_algebraic_degree Fully Proved
+
+**Mode**: REVISIT (continued from Session 28)
+**Outcome**: PROGRESS — fixed 3 typeclass errors; file now builds with exactly 1 expected sorry
+
+### What I Did
+- Fixed `IsAlgebraic.tower_top` synthesis failure (`failed to synthesize Field L✝`):
+  removed `halg_β`/`halg_β_Gab`, replaced with direct `IsIntegral` from polynomial witness
+  `⟨X^2 - C⟨a, ha⟩, monic_X_pow_sub_C _ (by norm_num), hβ_root⟩`
+- Fixed `Module.Finite` timeout: added `haveI hfin := adjoin.finiteDimensional hint_β`
+- Fixed `Module.Free` timeout: `Module.Free.of_divisionRing` has explicit K V args in Mathlib4;
+  replaced with `inferInstance` (finds the instance with explicit type guidance)
+- Fixed `hd_pos`: replaced `Module.finrank_pos` with `adjoin.finrank ▸ minpoly.natDegree_pos`
+  (avoids relying on `Module.Finite` for `Nontrivial` instance lookup)
+- File now builds: `=== Build succeeded ===` with 1 sorry warning (expected)
+
+### Key Insights
+- `IsAlgebraic.tower_top` needs `Field L✝` for some implicit arg — synthesis fails for complex
+  tower types. Bypass: provide `IsIntegral` directly via polynomial witness instead of going
+  through `IsAlgebraic.tower_top`
+- `Module.Free.of_divisionRing` takes explicit `(K V : Type*)` arguments in Mathlib4 v4.26.0;
+  use `inferInstance` with explicit type annotation to avoid needing explicit args
+- `adjoin.finiteDimensional hint_β` (line 450 of IntermediateField/Adjoin/Basic.lean) gives
+  `FiniteDimensional K K⟮x⟯` — must be provided explicitly as `haveI` before using `finrank_pos`
+- `minpoly.natDegree_pos [Nontrivial B] (hx : IsIntegral A x)` (line 199 Minpoly/Basic.lean)
+  is the right lemma for positivity; doesn't require `Module.Finite`
+
+### Files Modified
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean` — 3 typeclass fixes
+- PR: rjwalters/lean-genius#12780
+
+### Remaining Sorries
+1. `wantzel_galois_iff`: full FTGT + 2-group characterization (~500 lines) — out of scope
