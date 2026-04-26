@@ -244,6 +244,16 @@ Replaced the `sorry` for `h_harm_chain` with a complete 5-step proof:
 1. `chebyshev_trig_sum_lb` — x ∈ (-1,1) Lipschitz/harmonic argument
 2. `divergence_from_lebesgue_growth` — lacunary construction / UBP gap
 
+### Build Fix (Session 2026-04-26b, follow-up)
+
+**Error**: `nlinarith [hm_pos, sq_nonneg m]` for `haux : 6*m ≤ 4*m^2+3` fails in ℕ.
+**Root cause**: Certificate needs `(m-1)^2 ≥ 0` which is available in ℤ but not directly provable by nlinarith in ℕ (natural subtraction makes `(m-1)^2` non-standard).
+**Fix**: Use ℤ cast: `nlinarith [sq_nonneg ((m:ℤ)-1)]` after `exact_mod_cast`.
+
+**Pattern to remember**: For polynomial inequalities like `4m^2-6m+3 ≥ 0`, use ℤ and `sq_nonneg (expr - c)` as the nlinarith hint. ℕ-based nlinarith cannot handle these when the certificate involves non-trivial products of hypotheses.
+
+**Also fixed**: The final `nlinarith` in `h_angle_le` (for `(2j+1)*π*3 ≤ π*(4n)`) needs explicit hint `mul_nonneg hpi_pos.le hd` since the goal involves `Real.pi` (a transcendental constant) and nlinarith needs the pre-computed product.
+
 ### Next Steps
-1. Attempt `chebyshev_trig_sum_lb`: use sin(φₖ) ≥ s/2 near k₀ + harmonic sum
+1. Attempt `chebyshev_trig_sum_lb` Case 2: use sin(φₖ) ≥ s/2 near k₀ + harmonic sum
 2. For sorry #2: weaken to lim sup = ∞ (provable by Banach-Steinhaus)
