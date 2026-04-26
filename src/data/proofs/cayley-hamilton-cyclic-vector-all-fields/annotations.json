@@ -187,5 +187,30 @@
       "Lean 4 trusted kernel",
       "sorryAx built-in"
     ]
+  },
+  {
+    "id": "ann-chcvaf-summary",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields",
+    "range": {
+      "startLine": 170,
+      "endLine": 201
+    },
+    "type": "context",
+    "title": "Section V: Axiom Inventory and Smith Normal Form Upgrade Path",
+    "content": "The closing `/-!` docstring (lines 174–197) provides a structured inventory of the file's five proved theorems and one axiom. The inventory distinguishes the two categories precisely:\n\n**Fully proved (sorry-free)**: `companionMatrix_cyclic_e0` and `cyclic_vector_of_similar` (both from `CayleyHamiltonMinpolyOQ05OQ01OQ04`), plus `nonderogatory_has_cyclic_vector`, `nonderogatory_has_cyclic_vector_finite`, and `cyclic_iff_not_killed_below_degree` (this file).\n\n**Axiom**: `nonderogatory_similar_companion` — the single-block rational canonical form. The docstring gives both the mathematical content (PID structure theorem for $K[X]$) and an engineering estimate for the upgrade path: ~800 lines for Smith normal form + ~200 lines for the RCF reduction from Smith to companion similarity.\n\nThe namespace closes at line 199 (`end CayleyHamiltonCyclicVectorAllFields`) and the `noncomputable section` closes at line 201 (`end`). This is a common pattern in Lean 4 for formalizations using real numbers or function extensionality: `noncomputable section` suppresses the 'declaration uses sorry' warning for noncomputable definitions, since the field operations on $K$ may not have decidable equality.",
+    "mathContext": "**Smith normal form upgrade**: Given the $n \\times n$ matrix $XI - M$ over $K[X]$, Smith normal form algorithms compute invertible $U(X), V(X) \\in \\mathrm{GL}_n(K[X])$ with $U(X)(XI - M)V(X) = \\mathrm{diag}(d_1(X), \\ldots, d_n(X))$ where $d_i \\mid d_{i+1}$. The $d_i$ are the **elementary divisors** of $XI - M$, and $\\prod_i d_i = \\mathrm{charpoly}(M)$ (by the determinant formula). For nonderogatory $M$: $d_i = 1$ for $i < n$ and $d_n = \\mathrm{charpoly}(M) = \\mathrm{minpoly}(M)$. This gives $XI - M \\sim \\mathrm{diag}(1, \\ldots, 1, \\mathrm{minpoly}(M))$ over $K[X]$, which by the module structure theorem for PIDs yields $K^n \\cong K[X]/(\\mathrm{minpoly}\\, M)$, i.e., $M \\sim C(\\mathrm{minpoly}\\, M)$. The key Mathlib module `Mathlib.RingTheory.PrincipalIdealDomain` already has the abstract PID structure theorem; the gap is the Smith normal form algorithm for polynomial matrices.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Smith normal form",
+      "elementary divisors",
+      "invariant factors",
+      "PID structure theorem",
+      "noncomputable section"
+    ],
+    "prerequisites": [
+      "Smith normal form for polynomial matrices",
+      "elementary divisors of XI - M",
+      "Lean 4 noncomputable section semantics"
+    ]
   }
 ]
