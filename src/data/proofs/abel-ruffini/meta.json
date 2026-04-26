@@ -479,6 +479,21 @@
       "targetId": "algebraic-numbers-countable-oq-04",
       "relationship": "related",
       "description": "Baker's theorem (1966) sits above Abel-Ruffini in the expressibility hierarchy: Abel-Ruffini shows certain algebraic numbers (quintic roots with Galois group $S_5$) escape radical expressions (group-theoretic obstruction), while Baker's theorem establishes quantitative lower bounds for linear forms in logarithms of algebraic numbers — $|b_1 \\log \\alpha_1 + \\cdots + b_n \\log \\alpha_n| > \\exp(-C(n,d) \\cdot \\log B)$ — proving these quantities are not merely non-radical but explicitly bounded away from zero. The expressibility hierarchy discussed in this entry's implications and conclusion extends to Baker: irrationality ($\\sqrt{2} \\notin \\mathbb{Q}$) $\\subset$ radical inexpressibility (Abel-Ruffini) $\\subset$ algebraic inexpressibility (Hermite-Lindemann: $e,\\pi \\notin \\overline{\\mathbb{Q}}$) $\\subset$ quantitative transcendence (Baker: explicit lower bounds for linear forms in logarithms). Baker's work, recognized with the Fields Medal (1970), is the deepest result in the transcendence hierarchy that the implications section traces, and directly implies the transcendence of $\\log_2 3$, $\\log_3 5$, and other logarithmic quantities that lie far beyond the reach of radical expressions"
+    },
+    {
+      "targetId": "angle-trisection-cos-20-gal",
+      "relationship": "related",
+      "description": "Computes the Galois group of $8X^3 - 6X - 1$ (the minimal polynomial of $\\cos(20°)$) and proves it has order 3 — a concrete Galois group computation demonstrating the same technique required to instantiate `not_solvable_by_rad_of_not_solvable_gal`. The parallel to Abel-Ruffini is direct: $\\cos(20°)$ is not constructible by compass and straightedge because $\\text{Gal}(8X^3-6X-1/\\mathbb{Q})$ has order 3 (not a power of 2), just as quintic roots with $\\text{Gal} \\cong S_5$ are not solvable by radicals because $S_5$ is not solvable. Both proofs convert a geometric/algebraic impossibility into a Galois group obstruction — the technique is the same; the obstructions differ (2-power groups for constructibility, solvable groups for radical solvability)"
+    },
+    {
+      "targetId": "angle-trisection-oq-01",
+      "relationship": "related",
+      "description": "Proves the non-constructibility criterion: a geometric degree $d$ forces non-constructibility if and only if $d$ has an odd prime factor (equivalently, $d$ is not a power of 2). This is the constructibility analogue of Abel-Ruffini's solvability criterion: $\\alpha$ is constructible iff $[\\mathbb{Q}(\\alpha):\\mathbb{Q}]$ is a power of 2, while $\\alpha$ is solvable by radicals iff $\\text{Gal}(\\text{minpoly}(\\alpha))$ is solvable. Both criteria use Galois groups to convert geometric/algebraic questions into group-theoretic conditions — the Wantzel criterion is the degree-growth special case of the general Galois solvability framework that Abel-Ruffini instantiates at degree 5"
+    },
+    {
+      "targetId": "erdos-1162",
+      "relationship": "related",
+      "description": "Addresses Erdős Problem #1162: the asymptotic count $f(n)$ of subgroups of $S_n$, proved by Pyber (1993) as $\\log f(n) \\asymp n^2$ and sharpened by Roney-Dougal-Tracey (2025) to $\\log f(n) = (\\frac{1}{16} + o(1))n^2$, with the constant $\\frac{1}{16}$ arising from elementary abelian 2-subgroups. Abel-Ruffini's obstruction concerns a specific part of this subgroup lattice: the derived series $S_5 \\supset A_5 \\supset A_5 \\supset \\cdots$ stalls because $A_5$ is simple — i.e., $A_5$ has no proper nontrivial normal subgroups, so the composition series $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$ is the unique one for $S_5$. The Roney-Dougal-Tracey result that most subgroups of $S_n$ are elementary abelian 2-subgroups (hence solvable, even nilpotent) highlights how $A_n$ and $S_n$ for $n \\geq 5$ are exceptional non-solvable outliers in the full subgroup landscape of the symmetric group"
     }
   ],
   "references": [
