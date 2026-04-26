@@ -946,6 +946,7 @@ import Proofs.Erdos1OQ03
 import Proofs.Erdos1OQ03Aristotle
 import Proofs.Erdos1OQ04
 import Proofs.Erdos1Problem
+import Proofs.Erdos1WIP01
 import Proofs.Erdos200Problem
 import Proofs.Erdos201Problem
 import Proofs.Erdos202Problem
