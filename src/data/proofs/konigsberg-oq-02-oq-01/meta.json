@@ -52,7 +52,10 @@
       "**Balance counting forces circuit closure**: The proof uses the path equation $[u] \\mathbin{++} \\mathrm{map\\ snd}(arcs) = \\mathrm{map\\ fst}(arcs) \\mathbin{++} [v_0]$. Counting occurrences of $v_0$ with the stuck condition ($fst\\text{-}count = outDeg$) and the Nodup bound ($snd\\text{-}count \\leq inDeg = outDeg$) forces $u = v_0$.",
       "**Nodup is essential**: Without the Nodup condition, repeated arcs could inflate counts and break the degree bound inequality needed for the counting argument.",
       "**path_fst_snd_eq vs circuit_fst_perm_snd**: For circuits (start = end), fst and snd multisets are equal. For paths, they differ by exactly the endpoints — the reproved path equation exploits this difference.",
-      "**Formal verification catches axiom bugs**: Attempting to prove the corrected theorem revealed that the original axiom was missing a hypothesis — a subtle error that informal mathematical intuition might overlook."
+      "**Formal verification catches axiom bugs**: Attempting to prove the corrected theorem revealed that the original axiom was missing a hypothesis — a subtle error that informal mathematical intuition might overlook.",
+      "**removeArcList preserves balance**: Removing a directed circuit C from digraph D yields a balanced residual — because circuit_fst_perm_snd ensures each vertex loses exactly one in-arc and one out-arc per circuit traversal, maintaining inDeg = outDeg.",
+      "**WF induction on arcCount**: nodup_circuit_exists_of_outDeg_pos uses Nat.lt_wfRel on the residual arcCount. Each recursive call produces a strictly smaller residual (removeArcList_arcCount), ensuring termination regardless of graph connectivity.",
+      "**walk_split_at enables circuit splicing**: Splitting a circuit W at an interior vertex u via List.take/drop produces two walks W₁ and W₂; Walk.splice then recombines them with an inserted sub-circuit, extending coverage without revisiting arcs."
     ]
   },
   "conclusion": {
@@ -123,15 +126,29 @@
       "id": "sec-walk-splice",
       "title": "Part V: Walk.splice Infrastructure",
       "startLine": 216,
-      "endLine": 370,
-      "summary": "Walk.splice (0 sorries): concatenate two walks at a shared vertex; Walk.splice_nodup; removeArcList definition; removeArcList_arcCount and removeArcList_balanced (all 0 sorries)"
+      "endLine": 286,
+      "summary": "Walk.splice (0 sorries): concatenate two walks at a shared vertex, preserving Start/End; Walk.splice_nodup proves arc-disjoint splice yields Nodup walk"
+    },
+    {
+      "id": "sec-remove-arc-list",
+      "title": "Part VI: removeArcList and Residual Subgraph",
+      "startLine": 287,
+      "endLine": 480,
+      "summary": "removeArcList definition removes an arc list from a digraph; removeArcList_arcCount (Finset.card_sdiff); removeArcList_balanced proves that removing a circuit (circuit_fst_perm_snd) preserves inDeg = outDeg balance"
     },
     {
       "id": "sec-main-theorem",
-      "title": "Part VI: Full Hierholzer Algorithm",
-      "startLine": 371,
+      "title": "Part VII: Nodup Circuit Sub-Lemmas",
+      "startLine": 481,
+      "endLine": 715,
+      "summary": "nodup_arcs_length_le, isEulerian_of_length_eq, nodup_circuit_exists_of_outDeg_pos — WF induction on residual arcCount builds Nodup circuit from any vertex with positive outDegree"
+    },
+    {
+      "id": "sec-walk-split-hierholzer",
+      "title": "Part VIII: walk_split_at and Full Hierholzer Assembly",
+      "startLine": 716,
       "endLine": 954,
-      "summary": "nodup_circuit_exists_of_outDeg_pos, walk_closed, vertex_with_unused_arc, walk_split_at, and directed_euler_circuit_sufficient_corrected — all proved with 0 sorries via WF induction on arcCount"
+      "summary": "walk_closed, vertex_with_unused_arc, walk_split_at (List.take/drop), circuit splicing machinery, and directed_euler_circuit_sufficient_corrected — final Hierholzer algorithm via WF induction on arcCount"
     }
   ],
   "crossReferences": [
