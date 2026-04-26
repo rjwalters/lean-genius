@@ -1,0 +1,66 @@
+{
+  "slug": "cayley-hamilton-cyclic-vector-all-fields",
+  "title": "Cyclic Vector Existence for Nonderogatory Matrices — RCF Approach",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{For any field } K \\text{ and nonderogatory } M \\in M_n(K),\\ \\exists\\, v \\in K^n \\text{ cyclic for } M.",
+    "plain": "A matrix M is **nonderogatory** when its minimal polynomial equals its characteristic",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-25T13:30:37+02:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: nonderogatory_has_cyclic_vector_any_field exists in OQ05OQ01OQ04 with 1 sorry (RCF). Blocked on Mathlib PID structure theorem.",
+    "builtItems": [],
+    "insights": [
+      "nonderogatory_has_cyclic_vector_any_field already exists in CayleyHamiltonMinpolyOQ05OQ01OQ04.lean with 1 sorry (nonderogatory_similar_companion — RCF, not in Mathlib v4.26.0)",
+      "companionMatrix_cyclic_e0 proved: e₀ is always cyclic for companion matrices, field-independently. Transfer lemma also proved. Only RCF similarity step is missing."
+    ],
+    "mathlibGaps": [
+      "Rational Canonical Form (nonderogatory → similar to companion matrix) — requires PID module structure theorem, not in Mathlib v4.26.0"
+    ],
+    "nextSteps": [
+      "Wait for RCF to land in Mathlib; OR build it locally (~300-500 lines using Module.Free over K[X]/(f))",
+      "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01 is actively working this same problem — do not duplicate"
+    ],
+    "markdown": "# Knowledge Base: cayley-hamilton-cyclic-vector-all-fields\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "linear-algebra",
+    "cayley-hamilton",
+    "cyclic-vector",
+    "rational-canonical-form",
+    "all-fields",
+    "minimal-polynomial"
+  ],
+  "relatedProofs": [
+    "cayley-hamilton"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-25T13:30:37+02:00",
+  "significance": 8,
+  "tractability": 6
+}
