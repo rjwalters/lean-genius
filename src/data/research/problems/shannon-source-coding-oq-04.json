@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved type_class_size_le_entropy_pow and dominant_type_lower_bound. 4→2 sorries.",
+    "progressSummary": "PROGRESS (session 3): type_class_size_eq_multinomial submitted to Aristotle (job 7303fc7f). source_coding_achievability_mot BLOCKED (needs LLN).",
     "builtItems": [
       "type_class_size_le_entropy_pow: |T_f| ≤ exp(n H(Q)) proved via prod_fiberwise' + prod_univ_sum (ShannonSourceCodingOQ04.lean:166)",
       "dominant_type_lower_bound: dominant type class ≥ k^n/(n+1)^k proved via Finset pigeonhole (ShannonSourceCodingOQ04.lean:175)"
@@ -46,7 +46,8 @@
     "nextSteps": [
       "Free disk space + submit ShannonSourceCodingOQ04Aristotle.lean to Aristotle for type_class_size_eq_multinomial",
       "If Aristotle unavailable: implement induction-on-n proof: partition T_f by x(Fin.last n), use Pascal identity",
-      "Leave source_coding_achievability_mot as OPEN (requires concentration inequalities)"
+      "Leave source_coding_achievability_mot as OPEN (requires concentration inequalities)",
+      "Check Aristotle results for project 7303fc7f-3d89-4237-834f-372d9026a17d"
     ],
     "markdown": "# Knowledge Base: shannon-source-coding-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -118,7 +119,7 @@
     {
       "path": "Proofs/ShannonSourceCodingOQ04Aristotle.lean",
       "filename": "ShannonSourceCodingOQ04Aristotle.lean",
-      "lineCount": 145,
+      "lineCount": 150,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 4,
