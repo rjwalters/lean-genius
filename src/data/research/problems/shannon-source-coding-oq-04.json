@@ -7,7 +7,7 @@
   "path": "full",
   "problemStatement": {
     "formal": "|T_Q^n| = \\binom{n}{nQ(x_1), nQ(x_2), \\ldots, nQ(x_{|\\mathcal{X}|})} \\approx 2^{nH(Q)}",
-    "plain": "The Csiszár-Körner **method of types** gives a combinatorial alternative to the standard",
+    "plain": "The Csisz\u00e1r-K\u00f6rner **method of types** gives a combinatorial alternative to the standard",
     "whyMatters": []
   },
   "knownResults": {
@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-04-25T00:00:00-07:00",
     "iteration": 2,
-    "focus": "Proved type_class_size_le_entropy_pow and dominant_type_lower_bound. 2 sorries remain.",
+    "focus": "Proved type_class_size_eq_multinomial (Aristotle induction proof integrated). 1 sorry remains: source_coding_achievability_mot (OPEN).",
     "blockers": [],
     "nextAction": "Submit type_class_size_eq_multinomial to Aristotle for proof search.",
     "attemptCounts": {
@@ -29,24 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved type_class_size_le_entropy_pow and dominant_type_lower_bound. 4→2 sorries.",
+    "progressSummary": "PROGRESS: Proved type_class_size_le_entropy_pow, dominant_type_lower_bound, type_class_size_eq_multinomial. 2\u21921 sorries. 1 remaining: source_coding_achievability_mot (OPEN, needs LLN).",
     "builtItems": [
-      "type_class_size_le_entropy_pow: |T_f| ≤ exp(n H(Q)) proved via prod_fiberwise' + prod_univ_sum (ShannonSourceCodingOQ04.lean:166)",
-      "dominant_type_lower_bound: dominant type class ≥ k^n/(n+1)^k proved via Finset pigeonhole (ShannonSourceCodingOQ04.lean:175)"
+      "type_class_size_le_entropy_pow: |T_f| \u2264 exp(n H(Q)) proved via prod_fiberwise' + prod_univ_sum (ShannonSourceCodingOQ04.lean:166)",
+      "dominant_type_lower_bound: dominant type class \u2265 k^n/(n+1)^k proved via Finset pigeonhole (ShannonSourceCodingOQ04.lean:175)",
+      "type_class_size_eq_multinomial: |T_f| = Nat.multinomial proved via induction on n (ShannonSourceCodingOQ04.lean:89)"
     ],
     "insights": [
-      "prod_fiberwise' rewrites ∏ j:Fin n, Q(x j) as ∏ i:Fin k, Q(i)^(empDist n x i) for any x — key for equating sequence probability to type probability",
+      "prod_fiberwise' rewrites \u220f j:Fin n, Q(x j) as \u220f i:Fin k, Q(i)^(empDist n x i) for any x \u2014 key for equating sequence probability to type probability",
       "prod_univ_sum (product of sums = sum over piFinset of products) gives total probability = 1 without EN NReal lifting",
-      "Finset.exists_le_card_fiber_of_mul_le_card_of_maps_to is in Mathlib.Combinatorics.Pigeonhole — NOT auto-imported via Mathlib.Tactic",
+      "Finset.exists_le_card_fiber_of_mul_le_card_of_maps_to is in Mathlib.Combinatorics.Pigeonhole \u2014 NOT auto-imported via Mathlib.Tactic",
       "Lean 4 forward reference issue: theorems defined later in file cannot be used earlier; must inline proofs"
     ],
     "mathlibGaps": [
       "Fintype.card_fiber_eq_multinomial: if it exists, could prove type_class_size_eq_multinomial directly"
     ],
     "nextSteps": [
-      "Free disk space + submit ShannonSourceCodingOQ04Aristotle.lean to Aristotle for type_class_size_eq_multinomial",
-      "If Aristotle unavailable: implement induction-on-n proof: partition T_f by x(Fin.last n), use Pascal identity",
-      "Leave source_coding_achievability_mot as OPEN (requires concentration inequalities)"
+      "source_coding_achievability_mot is OPEN \u2014 needs LLN/concentration inequalities (>1000 lines). Mark as BLOCKED.",
+      "Consider follow-up: can type_class_size_eq_multinomial be proved without grind/aesop? (clean up proof)"
     ],
     "markdown": "# Knowledge Base: shannon-source-coding-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -107,11 +107,11 @@
     {
       "path": "Proofs/ShannonSourceCodingOQ04.lean",
       "filename": "ShannonSourceCodingOQ04.lean",
-      "lineCount": 353,
+      "lineCount": 428,
       "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 2,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ04.lean"
     },

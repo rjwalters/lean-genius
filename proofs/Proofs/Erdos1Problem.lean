@@ -89,7 +89,13 @@ theorem erdos_1_lower_bound {A : Finset ℕ} {N : ℕ}
     (hDistinct : hasDistinctSubsetSums A) :
     N ≥ (2 ^ A.card - 1) / A.card := by
   have hcount := erdos_1_counting_bound hA hDistinct
-  omega
+  -- hcount : 2^n ≤ n*N + 1; need (2^n - 1)/n ≤ N
+  -- In ℕ: 2^n ≤ n*N + 1 implies 2^n - 1 ≤ n*N (omega), then use div monotonicity
+  have hcard_pos : 0 < A.card := hA_card
+  have h1 : 2 ^ A.card - 1 ≤ A.card * N := by omega
+  calc (2 ^ A.card - 1) / A.card
+      ≤ A.card * N / A.card := Nat.div_le_div_right h1
+    _ = N := Nat.mul_div_cancel_left N hcard_pos
 
 /-- The Erdős $500 conjecture: there exists an absolute constant c > 0
     such that any set with n elements and distinct subset sums has

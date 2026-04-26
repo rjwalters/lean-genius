@@ -74,8 +74,9 @@ theorem dss_superincreasing_extend {A : Finset ℕ}
     have hsum_erase : (S.erase b).sum id = (T.erase b).sum id := by
       have hS' := Finset.add_sum_erase S id hbS
       have hT' := Finset.add_sum_erase T id hbT
-      simp only [id_eq] at hS' hT'
-      linarith [heq]
+      have h1 : id b + (S.erase b).sum id = id b + (T.erase b).sum id :=
+        hS'.trans (heq.trans hT'.symm)
+      exact Nat.add_left_cancel h1
     -- By DSS of A, the erased sets are equal; reinsert b.
     have herase_eq := hDSS _ _ hSe_sub hTe_sub hsum_erase
     rw [← Finset.insert_erase hbS, ← Finset.insert_erase hbT, herase_eq]
@@ -87,7 +88,7 @@ theorem dss_superincreasing_extend {A : Finset ℕ}
       · exact absurd hx hbT
       · exact hxA
     have hb_le_S : b ≤ S.sum id :=
-      Finset.single_le_sum (fun _ _ => Nat.zero_le _) S hbS
+      Finset.single_le_sum (f := id) (fun _ _ => Nat.zero_le _) hbS
     have hT_le : T.sum id ≤ A.sum id :=
       Finset.sum_le_sum_of_subset_of_nonneg hT_sub (fun _ _ _ => Nat.zero_le _)
     linarith [heq]
@@ -99,7 +100,7 @@ theorem dss_superincreasing_extend {A : Finset ℕ}
       · exact absurd hx hbS
       · exact hxA
     have hb_le_T : b ≤ T.sum id :=
-      Finset.single_le_sum (fun _ _ => Nat.zero_le _) T hbT
+      Finset.single_le_sum (f := id) (fun _ _ => Nat.zero_le _) hbT
     have hS_le : S.sum id ≤ A.sum id :=
       Finset.sum_le_sum_of_subset_of_nonneg hS_sub (fun _ _ _ => Nat.zero_le _)
     linarith [heq]
@@ -253,10 +254,16 @@ theorem dss_subset {A B : Finset ℕ} (hDSS : hasDistinctSubsetSums A) (hBA : B 
   fun S T hS hT heq => hDSS S T (hS.trans hBA) (hT.trans hBA) heq
 
 /-- **Singleton DSS**: Any singleton {a} has distinct subset sums. -/
-theorem dss_singleton (a : ℕ) : hasDistinctSubsetSums ({a} : Finset ℕ) := by
+/- Note: `dss_singleton a` requires `a > 0`. If `a = 0`, then `∅` and `{0}` are
+   distinct subsets of `{0}` both with sum 0. -/
+theorem dss_singleton {a : ℕ} (ha : 0 < a) : hasDistinctSubsetSums ({a} : Finset ℕ) := by
   intro S T hS hT heq
   rw [Finset.subset_singleton_iff] at hS hT
-  rcases hS with rfl | rfl <;> rcases hT with rfl | rfl <;> simp_all
+  rcases hS with rfl | rfl <;> rcases hT with rfl | rfl
+  · rfl
+  · simp at heq; omega
+  · simp at heq; omega
+  · rfl
 
 /-! ═══════════════════════════════════════════════════════════════════════════
 PART VI: SUM LOWER BOUND
@@ -288,7 +295,8 @@ theorem dss_sum_lower_bound {A : Finset ℕ} (hDSS : hasDistinctSubsetSums A) :
     obtain ⟨S, hS, rfl⟩ := hx
     rw [Finset.mem_powerset] at hS
     rw [Finset.mem_range]
-    linarith [Finset.sum_le_sum_of_subset_of_nonneg hS (fun _ _ _ => Nat.zero_le _)]
+    have h := Finset.sum_le_sum_of_subset_of_nonneg (f := id) hS (fun _ _ _ => Nat.zero_le _)
+    linarith
   calc 2 ^ A.card
     = (A.powerset.image (·.sum id)).card := himg_card.symm
     _ ≤ (Finset.range (A.sum id + 1)).card := Finset.card_le_card himg_sub
@@ -298,7 +306,8 @@ theorem dss_sum_lower_bound {A : Finset ℕ} (hDSS : hasDistinctSubsetSums A) :
     (The counting bound `n · max(A) ≥ 2^n − 1` follows since `sum(A) ≤ n · max(A)`.) -/
 theorem dss_sum_ge_pow_sub_one {A : Finset ℕ} (hDSS : hasDistinctSubsetSums A) :
     2 ^ A.card - 1 ≤ A.sum id := by
-  linarith [dss_sum_lower_bound hDSS]
+  have h := dss_sum_lower_bound hDSS
+  omega
 
 /-! ═══════════════════════════════════════════════════════════════════════════
 PART VII: CONNECTION TO MINDSSBOUNDQ (OQ03 FIX)

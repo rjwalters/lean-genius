@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "Real.log_pow",
@@ -59,7 +59,8 @@
       "empEntropy_eq_shannonEntropy: empirical entropy matches Shannon entropy of normalized type (proved)",
       "log_typeProb_eq: log-probability of type class weight equals -n * H(Q) (proved)",
       "type_class_size_le_entropy_pow: |T_f| ≤ exp(n H(Q)) via probability argument (proved)",
-      "dominant_type_lower_bound: dominant type class ≥ k^n/(n+1)^k via pigeonhole (proved)"
+      "dominant_type_lower_bound: dominant type class ≥ k^n/(n+1)^k via pigeonhole (proved)",
+      "type_class_size_eq_multinomial: |T_f| = n!/∏(f_i)! proved via induction on n (proved by Aristotle, integrated session 3)"
     ],
     "assumptions": [
       "type_class_size_eq_multinomial: |T_f| = n!/∏(f_i)! (bijection proof omitted, ~60 lines)",
