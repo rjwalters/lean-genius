@@ -1,10 +1,10 @@
 {
   "id": "erdos-99",
-  "title": "Erd\u0151s Problem #99: Equilateral Triangles in Minimal Diameter Sets",
+  "title": "Erdős Problem #99: Equilateral Triangles in Minimal Diameter Sets",
   "slug": "erdos-99",
   "description": "Must n points with minimum distance 1 and minimal diameter contain a unit equilateral triangle for large n? The n=4 square is a counterexample for small n. OPEN with $100/$50 prize.",
   "meta": {
-    "author": "Erd\u0151s (conjecture), Thue (optimal packing), Bezdek-Fodor (small cases)",
+    "author": "Erdős (conjecture), Thue (optimal packing), Bezdek-Fodor (small cases)",
     "sourceUrl": "https://erdosproblems.com/99",
     "date": "",
     "status": "axiomatized",
@@ -50,27 +50,25 @@
       "IsUnitEquilateralTriangle, ContainsUnitEquilateralTriangle definitions",
       "HasMinDistanceOne, HasMinimalDiameter, IsOptimalConfiguration definitions",
       "triangularLatticePoint and TriangularLattice definitions",
-      "triangular_lattice_unit_distance and triangular_lattice_has_equilateral axioms",
-      "thue_diameter_consequence axiom: asymptotic lattice structure",
-      "case_n3, case_n4_no_equilateral axioms for small cases",
       "Erdos99Conjecture and StrongerConjecture definitions",
-      "erdos_99_summary theorem"
+      "erdos_99_summary theorem",
+      "case_n4_no_equilateral axiom for n=4 case"
     ],
     "axiomCount": 1,
     "lineCount": 179,
     "assumptions": "1 axiom: case_n4_no_equilateral. 0 sorries."
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #99 is a deceptively natural question in discrete geometry that has resisted resolution since it was posed in the 1990s ([Er94b], [Er95], [Er97e]). The problem asks whether optimal point configurations \u2014 sets of n points with minimum pairwise distance 1 that minimize the enclosing diameter \u2014 must contain unit equilateral triangles when n is large enough.\n\nThe conjecture draws on Thue's classical theorem (1910) that the densest packing of unit circles in the plane is achieved by the triangular (hexagonal) lattice, with density \u03c0/(2\u221a3) \u2248 0.9069. Since diameter-minimizing configurations must pack points efficiently, they should resemble circular regions of the triangular lattice, which is built entirely from unit equilateral triangles. Erd\u0151s went further, conjecturing that (1-o(1))n points of any optimal configuration lie exactly on the triangular lattice.\n\nRemarkably, Erd\u0151s himself seemed uncertain about the conjecture's truth. He wrote: 'I could not prove it but felt that it should not be hard. To my great surprise both B. H. Sendov and M. Simonovits doubted the truth of this conjecture.' The prize structure reinforces this uncertainty: $100 for a counterexample but only $50 for a proof. The n=4 case provides concrete evidence that small optimal configurations (a unit square) can avoid equilateral triangles entirely. Bezdek and Fodor (1999) analyzed optimal configurations for small n, finding that triangular lattice structure emerges gradually.",
-    "problemStatement": "**Problem Statement (Open)**\n\nLet $A \\subseteq \\mathbb{R}^2$ be a set of $n$ points with minimum pairwise distance $1$, chosen to minimize the diameter of $A$. For sufficiently large $n$, must $A$ contain three points forming a unit equilateral triangle?\n\n**Prize:** $100 for counterexample, $50 for proof\n\n**Known:** For $n = 4$, the unit square is optimal and contains no equilateral triangle. Erd\u0151s conjectured the stronger claim that $(1-o(1))n$ points must lie on the triangular lattice.",
+    "historicalContext": "Erdős Problem #99 is a deceptively natural question in discrete geometry that has resisted resolution since it was posed in the 1990s ([Er94b], [Er95], [Er97e]). The problem asks whether optimal point configurations — sets of n points with minimum pairwise distance 1 that minimize the enclosing diameter — must contain unit equilateral triangles when n is large enough.\n\nThe conjecture draws on Thue's classical theorem (1910) that the densest packing of unit circles in the plane is achieved by the triangular (hexagonal) lattice, with density π/(2√3) ≈ 0.9069. Since diameter-minimizing configurations must pack points efficiently, they should resemble circular regions of the triangular lattice, which is built entirely from unit equilateral triangles. Erdős went further, conjecturing that (1-o(1))n points of any optimal configuration lie exactly on the triangular lattice.\n\nRemarkably, Erdős himself seemed uncertain about the conjecture's truth. He wrote: 'I could not prove it but felt that it should not be hard. To my great surprise both B. H. Sendov and M. Simonovits doubted the truth of this conjecture.' The prize structure reinforces this uncertainty: $100 for a counterexample but only $50 for a proof. The n=4 case provides concrete evidence that small optimal configurations (a unit square) can avoid equilateral triangles entirely. Bezdek and Fodor (1999) analyzed optimal configurations for small n, finding that triangular lattice structure emerges gradually.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $A \\subseteq \\mathbb{R}^2$ be a set of $n$ points with minimum pairwise distance $1$, chosen to minimize the diameter of $A$. For sufficiently large $n$, must $A$ contain three points forming a unit equilateral triangle?\n\n**Prize:** $100 for counterexample, $50 for proof\n\n**Known:** For $n = 4$, the unit square is optimal and contains no equilateral triangle. Erdős conjectured the stronger claim that $(1-o(1))n$ points must lie on the triangular lattice.",
     "text": "Must n points with minimum distance 1 and minimal diameter contain a unit equilateral triangle for large n? The n=4 square is a counterexample for small n. OPEN with $100/$50 prize.",
-    "proofStrategy": "**Formalization Approach**\n\nThe formalization works in the Euclidean plane \u211d\u00b2 = EuclideanSpace \u211d (Fin 2), defining distance, minimum pairwise distance, and diameter for finite point sets. The key definitions capture optimal configurations (minimum distance 1, minimal diameter) and unit equilateral triangles.\n\nThe triangular lattice is constructed explicitly with basis vectors (1, 0) and (1/2, \u221a3/2). Two properties of the lattice are axiomatized: that adjacent points have unit distance, and that adjacent triples form equilateral triangles. Thue's theorem consequence \u2014 that optimal configurations resemble the lattice \u2014 is axiomatized since it requires deep results from the geometry of numbers.\n\nThe small cases n=3 (equilateral triangle forced) and n=4 (square avoids equilateral triangles) are axiomatized to capture the known boundary behavior. The summary theorem assembles the n=4 counterexample as the main concrete result.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization works in the Euclidean plane ℝ² = EuclideanSpace ℝ (Fin 2), defining distance, minimum pairwise distance, and diameter for finite point sets. The key definitions capture optimal configurations (minimum distance 1, minimal diameter) and unit equilateral triangles.\n\nThe triangular lattice is constructed explicitly with basis vectors (1, 0) and (1/2, √3/2). Two properties of the lattice are axiomatized: that adjacent points have unit distance, and that adjacent triples form equilateral triangles. Thue's theorem consequence — that optimal configurations resemble the lattice — is axiomatized since it requires deep results from the geometry of numbers.\n\nThe small cases n=3 (equilateral triangle forced) and n=4 (square avoids equilateral triangles) are axiomatized to capture the known boundary behavior. The summary theorem assembles the n=4 counterexample as the main concrete result.",
     "keyInsights": [
-      "**Prize Asymmetry:** Erd\u0151s offered $100 for a counterexample but only $50 for a proof, suggesting he suspected the conjecture might be false",
+      "**Prize Asymmetry:** Erdős offered $100 for a counterexample but only $50 for a proof, suggesting he suspected the conjecture might be false",
       "**n=4 Square:** The unit square is an optimal 4-point configuration with no equilateral triangle, showing the conjecture fails for small n",
       "**Thue's Theorem:** Optimal 2D circle packing uses the triangular lattice, so diameter-minimizing sets should resemble it asymptotically",
       "**Gap Between Global and Local:** The subtlety is that 'approximately lattice-like' does not immediately imply 'contains lattice triangles'",
-      "**Expert Doubt:** Both Sendov and Simonovits doubted the conjecture, surprising Erd\u0151s himself"
+      "**Expert Doubt:** Both Sendov and Simonovits doubted the conjecture, surprising Erdős himself"
     ],
     "prerequisites": [
       "Combinatorics (counting, extremal problems)",
@@ -105,26 +103,26 @@
     {
       "id": "triangular-lattice",
       "title": "The Triangular Lattice",
-      "summary": "triangularLatticePoint, TriangularLattice, unit distance and equilateral axioms",
+      "summary": "triangularLatticePoint, TriangularLattice definitions; lattice properties described in docstrings only",
       "startLine": 98,
       "endLine": 128,
-      "mathContext": "Axiomatized: triangularLatticePoint, TriangularLattice, unit distance and equilateral axioms"
+      "mathContext": "Mathematical content: triangularLatticePoint, TriangularLattice definitions; lattice properties described informally in docstrings only (no axiom declarations)"
     },
     {
       "id": "thue-theorem",
       "title": "Thue's Theorem and Lattice Structure",
-      "summary": "thue_diameter_consequence axiom",
+      "summary": "Thue's diameter consequence described in docstring only; no Lean declaration",
       "startLine": 129,
       "endLine": 141,
-      "mathContext": "Axiomatized: thue_diameter_consequence axiom"
+      "mathContext": "Informal sketch only: Thue's diameter consequence described in docstring; no Lean declaration exists"
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
-      "summary": "case_n3 and case_n4_no_equilateral axioms",
+      "summary": "case_n4_no_equilateral axiom (only); case_n3 is a docstring comment",
       "startLine": 142,
       "endLine": 157,
-      "mathContext": "Axiomatized: case_n3 and case_n4_no_equilateral axioms"
+      "mathContext": "Axiomatized: case_n4_no_equilateral axiom only; case_n3 is a docstring comment with no corresponding Lean declaration"
     },
     {
       "id": "main-conjecture",
@@ -136,8 +134,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #99 asks whether diameter-minimizing n-point sets with minimum distance 1 must contain unit equilateral triangles for large n. The formalization axiomatizes the triangular lattice structure, Thue's packing consequence, and the key small cases (n=3 forced, n=4 avoids). The problem remains open.",
-    "implications": "**Theoretical Significance**: **Geometric Connections**\n\n1. **Packing Theory:** Tests whether optimal packings must exhibit local triangular lattice structure\n\n**2. Global vs Local:** Asks if global optimization (diameter) forces local structure (equilateral triangles)\n\n3. **Transition Behavior:** The n=4 square shows that non-lattice optimal configurations exist for small n, raising the question of when lattice structure becomes forced\n\n4. **Higher Dimensions:** Generalizations to optimal packings in \u211d^d remain unexplored.",
+    "summary": "Erdős Problem #99 asks whether diameter-minimizing n-point sets with minimum distance 1 must contain unit equilateral triangles for large n. The formalization axiomatizes the triangular lattice structure, Thue's packing consequence, and the key small cases (n=3 forced, n=4 avoids). The problem remains open.",
+    "implications": "**Theoretical Significance**: **Geometric Connections**\n\n1. **Packing Theory:** Tests whether optimal packings must exhibit local triangular lattice structure\n\n**2. Global vs Local:** Asks if global optimization (diameter) forces local structure (equilateral triangles)\n\n3. **Transition Behavior:** The n=4 square shows that non-lattice optimal configurations exist for small n, raising the question of when lattice structure becomes forced\n\n4. **Higher Dimensions:** Generalizations to optimal packings in ℝ^d remain unexplored.",
     "openQuestions": [
       "Prove or disprove the conjecture (main problem, prize unclaimed)",
       "What is the smallest n for which equilateral triangles are forced?",
@@ -171,17 +169,17 @@
     {
       "targetId": "erdos-1084",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: discrete-geometry, open, packing"
+      "description": "Related Erdős problem sharing themes: discrete-geometry, open, packing"
     },
     {
       "targetId": "erdos-103",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: open, packing"
+      "description": "Related Erdős problem sharing themes: open, packing"
     },
     {
       "targetId": "erdos-106",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: discrete-geometry, packing"
+      "description": "Related Erdős problem sharing themes: discrete-geometry, packing"
     }
   ],
   "references": [
