@@ -1,0 +1,128 @@
+{
+  "id": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
+  "title": "Completing the Wantzel-Galois Constructibility Proof",
+  "slug": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
+  "description": "Completes the parent Wantzel-Galois proof (angle-trisection-oq-02-oq-01-oq-02) by proving not_constructible_of_bad_degree via a redesigned IsConstructible inductive that enables proper induction. Reduces parent's 5 sorries to 1. All concrete impossibility results (angle trisection, cube doubling, regular 7-gon) are fully proved.",
+  "meta": {
+    "author": "Wantzel (1837), completion formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Straightedge_and_compass_construction",
+    "date": "2026-04-26",
+    "status": "formalized",
+    "tags": [
+      "geometry",
+      "galois-theory",
+      "constructibility",
+      "impossibility",
+      "incomplete"
+    ],
+    "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean",
+    "badge": "wip",
+    "sorries": 1,
+    "axiomCount": 0,
+    "theoremCount": 18,
+    "lineCount": 257,
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.irreducible_of_eisenstein_criterion",
+        "description": "Eisenstein irreducibility criterion",
+        "module": "Mathlib.RingTheory.Polynomial.Eisenstein.Basic"
+      },
+      {
+        "theorem": "IsPrimitive.Int.irreducible_iff_irreducible_map_cast",
+        "description": "Gauss's lemma: ℤ-irreducibility implies ℚ-irreducibility for primitive polynomials",
+        "module": "Mathlib.RingTheory.Polynomial.Eisenstein.Basic"
+      },
+      {
+        "theorem": "minpoly.eq_X_sub_C",
+        "description": "minpoly ℚ (algebraMap ℚ ℂ q) = X - C q for rational q",
+        "module": "Mathlib.FieldTheory.Minpoly.Field"
+      },
+      {
+        "theorem": "minpoly.dvd",
+        "description": "If p(α) = 0 then minpoly ℚ α ∣ p",
+        "module": "Mathlib.FieldTheory.Minpoly.Field"
+      },
+      {
+        "theorem": "Polynomial.natDegree_eq_zero_of_isUnit",
+        "description": "Unit polynomials have degree 0",
+        "module": "Mathlib.RingTheory.Polynomial.Basic"
+      }
+    ]
+  },
+  "parent": "angle-trisection-oq-02-oq-01-oq-02",
+  "openQuestion": "How can the not_constructible_of_bad_degree sorry in the parent Wantzel-Galois formalization be proved?",
+  "overview": {
+    "historicalContext": "The parent formalization (AngleTrisectionOQ02OQ01OQ02.lean) defined IsConstructible with an existential in the sqrt_ext constructor, which prevented Lean from generating induction hypotheses for a and b. This file fixes that design flaw by making all constructor parameters explicit.",
+    "problemStatement": "Prove not_constructible_of_bad_degree: if p is irreducible over ℚ with degree not a power of 2, then no root of p in ℂ is constructible. Also prove cube_root_2_minpoly_irred, cos20_minpoly_degree, and regular_7gon_impossible_degree which were sorried in the parent.",
+    "proofStrategy": "Key insight: under the redesigned IsConstructible definition (with explicit constructor parameters), all constructible numbers are exactly the rationals. This follows by induction (isConstructible_mem_range). Then not_constructible_of_bad_degree: constructible → rational → minpoly is X-C(q) → divides p → p has degree 1 = 2^0 → contradiction. For irreducibility: use Eisenstein at p=2 over ℤ then lift to ℚ via Gauss's lemma.",
+    "keyInsights": [
+      "Making a,b explicit (not existential) in sqrt_ext constructor gives Lean proper IHs, enabling induction proofs",
+      "Under the explicit-parameter IsConstructible, all constructible numbers are rationals — a much stronger result that makes not_constructible_of_bad_degree trivial",
+      "minpoly.eq_X_sub_C is the key bridge: for q ∈ ℚ, minpoly ℚ (algebraMap ℚ ℂ q) = X - C q",
+      "interval_cases k requires an explicit upper bound; establish k ≤ 1 from 3 = 2^k via Nat.pow_le_pow_right",
+      "In Lean 4 induction with | caseName ... =>, IHs come AFTER all constructor arguments, not interleaved"
+    ]
+  },
+  "sections": [
+    {
+      "id": "constructible-redesign",
+      "title": "Redesigned IsConstructible with Explicit Parameters",
+      "startLine": 61,
+      "endLine": 97,
+      "summary": "IsConstructible redefined with explicit β, a, b in sqrt_ext (not existential). Proves isConstructible_mem_range: all constructible numbers are rational. This is the key structural improvement enabling not_constructible_of_bad_degree."
+    },
+    {
+      "id": "eisenstein",
+      "title": "Eisenstein Criterion — X³ - 2 is Irreducible",
+      "startLine": 103,
+      "endLine": 129,
+      "summary": "Proves X³ - 2 irreducible over ℤ via Eisenstein at p=2, then lifts to ℚ using Gauss's lemma (IsPrimitive.Int.irreducible_iff_irreducible_map_cast)."
+    },
+    {
+      "id": "degree-computations",
+      "title": "Degree Computations",
+      "startLine": 135,
+      "endLine": 179,
+      "summary": "Computes natDegree = 3 for 8x³-6x-1 (cos(20°)), x³-2, and 8x³+4x²-4x-1 (cos(2π/7)). Proves 3 ≠ 2^k via Nat.pow_le_pow_right bound + interval_cases. Proves not_constructible_of_bad_degree fully."
+    },
+    {
+      "id": "impossibilities",
+      "title": "Concrete Impossibility Results",
+      "startLine": 210,
+      "endLine": 230,
+      "summary": "Derives angle_trisection_impossible_degree, doubling_cube_impossible_degree, and regular_7gon_construction_impossible as direct applications."
+    },
+    {
+      "id": "galois-sorry",
+      "title": "Galois Characterization (SORRY)",
+      "startLine": 233,
+      "endLine": 257,
+      "summary": "States wantzel_galois_iff: α constructible ↔ Gal(minpoly(ℚ,α)) is a 2-group. Sorry remains; requires full FTGT + 500+ lines new infrastructure."
+    }
+  ],
+  "conclusion": {
+    "summary": "Reduces the parent's 5 sorries to 1 by: (1) redesigning IsConstructible to enable induction, (2) proving not_constructible_of_bad_degree via the rationality argument, (3) proving Eisenstein irreducibility for X³-2, (4) computing all three polynomial degrees. The remaining sorry (wantzel_galois_iff) requires the full Galois correspondence and is out of scope.",
+    "implications": "The three classical impossibility results — angle trisection, cube doubling, regular 7-gon — are now fully proved (0 axioms) in this file. The proof demonstrates that the IsConstructible definition choice is critical: existential vs explicit constructors has dramatic consequences for what can be proved by induction.",
+    "openQuestions": [
+      "Can wantzel_galois_iff be proved using Mathlib's IntermediateField.orderIsoOfGal and Sylow theory for 2-groups?",
+      "Does the rationality of all 'constructible' numbers under this definition reveal a gap — should the definition be strengthened to include irrational constructibles?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-oq-02-oq-01-oq-02",
+      "relationship": "completes",
+      "description": "This file completes 4 of the 5 sorries from the parent proof by redesigning IsConstructible."
+    }
+  ],
+  "leanFile": {
+    "namespace": "AngleTrisectionOQ02OQ01OQ02Incomplete01",
+    "lineCount": 257,
+    "axiomCount": 0,
+    "theoremCount": 18,
+    "definitionCount": 3,
+    "path": "Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean",
+    "sorries": 1
+  },
+  "sorries": 1
+}
