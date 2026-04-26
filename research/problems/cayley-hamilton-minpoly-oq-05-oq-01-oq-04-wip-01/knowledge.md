@@ -1,7 +1,39 @@
 # Knowledge: Complete Nonderogatory to Cyclic Vector (All Fields)
 
 **Problem**: `cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01`
-**Status**: ACT — squarefree (WIP02), prime power (WIP03), binary prime-power (WIP04) all proved axiom-free; WIP01 has 1 axiom; k-factor general case (k≥3) not yet written
+**Status**: COMPLETED — WIP04 proves the GENERAL case (any k factors, k ≥ 1) axiom-free. Build verified. PR #12973.
+
+## Session 2026-04-26 (Session 5) - WIP04: General Case (All k factors) Proved
+
+**Mode**: REVISIT
+**Outcome**: completed
+
+### What I Did
+
+- Replaced binary prime-power WIP04 with the **general case**: minpoly = ∏_{i<k} p_i^{e_i} (k pairwise coprime prime powers, any k ≥ 1)
+- Proved `nonderogatory_general_has_cyclic_vector` in `GeneralCyclicVector` namespace: 359 lines, 0 sorries, 0 axioms
+- Build verified via Docker: `./proofs/scripts/docker-build.sh Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04`
+- PR created: rjwalters/lean-genius#12973
+
+### Key Findings
+
+- **Primary decomposition eliminates PID entirely**: construct v_i = F_i(M)·w_i (F_i = complementary product ∏_{j≠i} p_j^{e_j}) — only annihilation/non-annihilation properties needed, not dim(ker) = deg(p_i^{e_i})
+- **Finset.prod_dvd_of_coprime**: closes the general case — pairwise coprime factors all dividing r implies their product divides r
+- **Matrix.mulVec_mulVec direction**: forward FOLDS nested mulVecs (A *ᵥ (B *ᵥ v) → (A*B) *ᵥ v), backward UNFOLDS; *ᵥ is right-associative
+- **Missing Mathlib lemmas**: `Finset.prod_ne_zero` does NOT exist in 4.26; use `Finset.prod_eq_zero_iff`. `Polynomial.Irreducible.natDegree_pos` does NOT exist; use `eq_one_of_monic_natDegree_zero` + `not_isUnit`
+
+### Files Modified
+
+- `proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean` (replaced with general case, 359 lines)
+- `src/data/proofs/cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04/meta.json` (updated)
+- `src/data/research/problems/cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01.json` (status COMPLETED)
+
+### Next Steps
+
+1. Integrate UFD factorization of minpoly K M to eliminate the factored-form hypothesis
+2. Open question: does primary decomposition approach generalize to modules over other PIDs?
+
+---
 
 ## Session 2026-04-26 (Session 4) - WIP04: Binary Prime-Power Case Proved
 
