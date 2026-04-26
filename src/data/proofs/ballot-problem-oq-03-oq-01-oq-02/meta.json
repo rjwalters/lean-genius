@@ -23,7 +23,7 @@
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
     "assumptions": "Four open sorries: (1) hook_length_formula (LGV approach: requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) hook_walk_identity ≥3-row non-gHookYD case (GNW or RSK, ~300 lines; at-most-2-row and all [a,1^b] cases proved; hookProd_ratio_formula fully proved session 18, hook_walk_identity_gHookYD proved session 19). hook_length_formula_general is proved modulo hook_walk_identity via Part XIV corner induction.",
-    "lineCount": 5274,
+    "lineCount": 6643,
     "theoremCount": 164,
     "definitionCount": 14,
     "originalContributions": [
@@ -89,7 +89,7 @@
       "LGV"
     ],
     "namespace": "HookLengthFormula",
-    "lineCount": 5452,
+    "lineCount": 6643,
     "axiomCount": 0,
     "sorries": 4,
     "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
