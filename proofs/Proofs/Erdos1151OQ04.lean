@@ -876,8 +876,8 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
   have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
   have hf_nn : ∀ k : Fin n, 0 ≤ Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) /
                                    Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) := by
-    intro ⟨k, hk⟩
-    have hk_cast : (k : ℝ) < n := by exact_mod_cast hk
+    intro k
+    have hk_cast : (k.val : ℝ) < n := by exact_mod_cast k.isLt
     apply div_nonneg
     · apply Real.sin_nonneg_of_nonneg_of_le_pi
       · positivity
@@ -889,7 +889,10 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
   set m := Nat.sqrt n with hm_def
   have hm_pos : 0 < m := Nat.sqrt_pos.mpr hn
   have hm_le_n : m ≤ n := Nat.sqrt_le_self n
-  have hsucc_sq : n < (m + 1) ^ 2 := Nat.lt_succ_sqrt n
+  have hsucc_sq : n < (m + 1) ^ 2 := by
+    have h := Nat.lt_succ_sqrt n
+    simp only [← hm_def, Nat.succ_eq_add_one, ← sq] at h
+    exact h
   have hg_lt : ∀ j : Fin m, n - 1 - j.val < n := fun ⟨_, hj⟩ => by omega
   -- Complementary angle: tan at index n-1-j equals cot at index j
   -- Key: (2*(n-1-j)+1)π/(4n) = π/2 - (2j+1)π/(4n)
