@@ -46,16 +46,25 @@ vertices at different positions always differ.
 
 1. `CellComplex.sperner` — proved in SpernerMathlib4.lean,
    duplicated here for self-containment.
-2. `boundary_verts_on_face` + `boundary_doors_odd` — FALSE as
-   stated; require fundamental redesign of GridSimplex/gridAdj.
+2. `boundary_doors_odd` — FALSE as stated for d=1;
+   requires fundamental redesign of GridSimplex/gridAdj.
+
+## Proved this session
+
+- `no_boundary_door_k_lt`: boundary doors cannot occur at k < d
+  (under the geometric boundary condition). Full proof, no sorry.
+- `no_boundary_doors_face_lt`: thin wrapper around the above,
+  now uses correct geometric hypothesis (not gridAdj=none).
+- Removed false `boundary_verts_on_face` theorem.
 
 ## Known design issues
 
-`boundary_verts_on_face` is FALSE: gridAdj=none at k=0 means
+`boundary_verts_on_face` was FALSE: gridAdj=none at k=0 means
 (v_d).coords miss=0, NOT ∀ j≠k, (v_j).coords k=0.
 Counterexample: d=2, N=3, s with v₀=(2,0,1), v₁=(1,1,1),
 v₂=(0,1,2), miss=0, incDir=[1,2]. gridAdj=none at k=0
 (since v₂.coords 0=0) but v₁.coords 0=1≠0.
+(Theorem removed; replaced by `no_boundary_door_k_lt`.)
 
 `boundary_doors_odd` is FALSE for d=1: each geometric edge has 2
 GridSimplex representations (miss=0 and miss=1), so boundary door
@@ -1641,72 +1650,65 @@ noncomputable def gridComplex (d N : ℕ) :
 -- SECTION VIII: Sperner Condition and Boundary Analysis
 -- ============================================================
 
-/-- On a boundary face at position k (where adj = none and
-k < d), all d vertices of the face lie on geometric face k
-of the simplex Δ_N. That is, for each vertex j ≠ k of the
-simplex, vertex j has b_k = 0.
+/-- Key parity lemma: no boundary door exists at position k when k < d.
 
-This is the key geometric fact that connects the combinatorial
-boundary (adj = none) to the geometric boundary (onFace k). -/
-theorem boundary_verts_on_face
+If all vertices j ≠ k of simplex s lie on geometric face k (i.e.,
+(s.verts j).coords k = 0 for all j ≠ k), then there is no door at
+position k.
+
+**Proof**: A door at k requires, for j = ⟨k.val, hk⟩ : Fin d,
+some vertex i ≠ k with color Fin.castSucc j = k. But all vertices
+j ≠ k lie on face k, and the Sperner condition forbids color k on
+face k. Contradiction.
+
+This is the correct replacement for the false `boundary_verts_on_face`
+theorem. The key insight: boundary doors occur ONLY at position k = d
+(the last face). The current `gridAdj` incorrectly returns `none` for
+some non-boundary facets, but this lemma works with the correct
+geometric boundary condition directly. -/
+theorem no_boundary_door_k_lt
+    (c : BaryPoint d N → Fin (d + 1))
+    (hc : IsSperner c)
     (s : GridSimplex d N) (k : Fin (d + 1))
     (hk : k.val < d)
-    (hbdry : gridAdj d N s k = none)
-    (j : Fin (d + 1)) (hjk : j ≠ k) :
-    (s.verts j).onFace k := by
-  -- NOTE: This theorem is FALSE as stated.
-  -- gridAdj d N s k = none at k=0 means (s.verts d).coords s.miss = 0,
-  -- which says the "last vertex" has zero mass in the miss direction.
-  -- This does NOT imply that all other vertices j≠k have (s.verts j).coords k = 0.
-  --
-  -- Counterexample (d=2, N=3):
-  --   s.miss = 0, s.incDir = [1, 2]
-  --   v₀ = (2, 0, 1), v₁ = (1, 1, 1), v₂ = (0, 1, 2)
-  --   k = ⟨0, _⟩  (so k.val=0 < d=2, hk satisfied)
-  --   gridAdj at k=0: calls boundaryFlip0, checks (v₂).coords s.miss = (v₂).coords 0 = 0 ✓
-  --   so gridAdj returns none (hbdry satisfied)
-  --   But for j = ⟨1, _⟩ (j ≠ k): (v₁).coords k = (v₁).coords 0 = 1 ≠ 0
-  --   so (s.verts j).onFace k fails.
-  --
-  -- Root cause: gridAdj=none at k<d signals that boundaryFlip0 found no flip target
-  -- (because the mass has been fully "used up" in the miss direction), but this does
-  -- NOT mean the simplex lies on geometric face k of Δ_N.
-  -- Fix requires redesigning gridAdj to correctly identify geometric boundary faces.
-  sorry
+    (hbdry : ∀ j : Fin (d + 1), j ≠ k → (s.verts j).onFace k) :
+    ¬ CellComplex.IsDoor c (gridComplex d N) s k := by
+  intro hdoor
+  unfold CellComplex.IsDoor at hdoor
+  simp [gridComplex] at hdoor
+  -- Use j = ⟨k.val, hk⟩ : Fin d; the door condition gives a vertex
+  -- with color Fin.castSucc ⟨k.val, hk⟩ = k (since k.val < d means
+  -- castSucc preserves the value within Fin (d+1)).
+  obtain ⟨i, hi_ne, hi_col⟩ := hdoor ⟨k.val, hk⟩
+  -- Fin.castSucc ⟨k.val, hk⟩ = k in Fin (d+1)
+  have hcast : Fin.castSucc (⟨k.val, hk⟩ : Fin d) = k := by
+    ext; simp [Fin.castSucc]
+  rw [hcast] at hi_col
+  -- s.verts i is on face k (by geometric boundary hypothesis)
+  -- Sperner forbids color k on face k
+  exact hc (s.verts i) k (hbdry i hi_ne) hi_col
 
-/-- On boundary face k, the Sperner condition prevents doors.
-If a simplex has its k-th facet on the boundary (adj = none)
-and k is NOT the "last" face, then the facet cannot be a
-door because the Sperner condition forbids color k on face k,
-but a door at position k requires colors {0,...,d-1} which
-includes k (when k < d). -/
+/-- On geometric boundary face k (k < d), the Sperner condition prevents doors.
+
+If all vertices j ≠ k of simplex s lie on geometric face k (coords[k] = 0),
+and k < d, then there is no door at position k.
+
+This is a thin wrapper around `no_boundary_door_k_lt` with the same proof,
+kept for compatibility. The key point: doors cannot occur at non-last faces
+on the geometric boundary, because color k is forbidden on face k by Sperner.
+
+NOTE: The original version of this theorem used `gridAdj d N s k = none` as
+hypothesis, but that is WEAKER than the geometric condition — gridAdj incorrectly
+returns `none` for some interior facets (cross-miss adjacency bug). The correct
+hypothesis is the geometric boundary condition used here. -/
 theorem no_boundary_doors_face_lt
     (c : BaryPoint d N → Fin (d + 1))
     (hc : IsSperner c)
     (s : GridSimplex d N) (k : Fin (d + 1))
     (hk : k.val < d)
-    (hbdry : gridAdj d N s k = none) :
-    ¬CellComplex.IsDoor c (gridComplex d N) s k := by
-  -- A door at position k requires: for each color j < d,
-  -- some vertex i ≠ k has c(verts i) = j.
-  -- In particular, for j = k (which is < d by hk),
-  -- we need some i ≠ k with c(verts i) = k.
-  -- But all vertices i ≠ k are on face k (by boundary_verts_on_face),
-  -- so the Sperner condition says c(verts i) ≠ k. Contradiction.
-  intro hdoor
-  unfold CellComplex.IsDoor at hdoor
-  simp [gridComplex] at hdoor
-  -- Get the witness for color k
-  have ⟨i, hi_ne, hi_col⟩ := hdoor ⟨k.val, hk⟩
-  -- vertex i is on face k
-  have honface := boundary_verts_on_face s k hk hbdry i hi_ne
-  -- Sperner says c(verts i) ≠ k
-  have hsperner := hc (s.verts i) k honface
-  -- But hi_col says c(verts i) = Fin.castSucc ⟨k.val, hk⟩ = k
-  have : Fin.castSucc (⟨k.val, hk⟩ : Fin d) = k := by
-    ext; simp [Fin.castSucc]
-  rw [this] at hi_col
-  exact hsperner hi_col
+    (hbdry : ∀ j : Fin (d + 1), j ≠ k → (s.verts j).onFace k) :
+    ¬CellComplex.IsDoor c (gridComplex d N) s k :=
+  no_boundary_door_k_lt c hc s k hk hbdry
 
 /-- The boundary door count for Sperner colorings is odd. -/
 theorem boundary_doors_odd (d N : ℕ) (hN : 0 < N)
