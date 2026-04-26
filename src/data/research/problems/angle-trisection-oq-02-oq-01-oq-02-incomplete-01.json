@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved not_constructible_of_bad_degree and all degree theorems. 1 sorry remains (wantzel_galois_iff — full FTGT, out of scope).",
+    "progressSummary": "SURVEYED: All concrete impossibility results proved (0 axioms). 1 sorry (wantzel_galois_iff) is false under this IsConstructible definition — BLOCKED.",
     "builtItems": [
       "isConstructible_mem_range: all constructible numbers are rational (Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:89)",
       "not_constructible_of_bad_degree: proved via rationality + minpoly.eq_X_sub_C (line 179)",
