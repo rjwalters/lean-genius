@@ -212,6 +212,31 @@
       "relationship": "related",
       "description": "Erdős #1031 (induced regular subgraphs in non-Ramsey graphs) studies universality properties of non-Ramsey graphs. Problem 1037 shows that degree diversity, unlike Ramsey deficiency, does not force structural complexity.",
       "targetId": "erdos-1031"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #1029 studies the growth rate of diagonal Ramsey numbers R(k,k), asking whether the Erdős 1947 probabilistic lower bound 2^(k/2) is sharp. The O(log n) trivial subgraph guarantee that degree diversity (Problem 1037) fails to improve is precisely this Ramsey baseline — R(k,k) ≥ 2^(k/2) implies every n-vertex graph has max(α,ω) ≥ (1/2) log₂ n, and the Cambie-Chan-Hunter construction shows degree diversity cannot do better.",
+      "targetId": "erdos-1029"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #1030 studies Ramsey number growth rates and off-diagonal bounds. Problem 1037 is about whether degree sequence structure (Chen-Erdős conditions) pushes beyond the Θ(log n) Ramsey baseline that #1030 investigates. Both ask: what combinatorial conditions on a graph force large homogeneous subsets?",
+      "targetId": "erdos-1030"
+    },
+    {
+      "relationship": "context",
+      "description": "Ramsey's theorem establishes the Θ(log n) trivial subgraph guarantee: every n-vertex graph has a clique or independent set of size ≥ (1/2) log₂ n. Problem 1037 asks whether degree diversity — each degree appearing at most twice, distinct degrees > (1/2+ε)n — forces larger trivial subgraphs than this baseline. The answer (NO, Cambie-Chan-Hunter 2025) shows Ramsey's bound is optimal even under degree diversity constraints.",
+      "targetId": "ramseys-theorem"
+    },
+    {
+      "relationship": "technique",
+      "description": "The first moment method is the engine of Erdős's 1947 proof that R(k,k) ≥ 2^(k/2): color K_n uniformly at random, compute E[#monochromatic k-cliques] = C(n,k)·2^{1-C(k,2)} < 1 for n ~ 2^{k/2}, conclude a good coloring exists. The Cambie-Chan-Hunter counterexample to Problem 1037 achieves O(log n) trivial size — exactly matching this probabilistic bound — in a structured degree-diverse graph, confirming that the first moment argument is tight.",
+      "targetId": "prob-method-expectation"
+    },
+    {
+      "relationship": "sibling",
+      "description": "Ramsey R(4,k) bounds (probabilistic method extensions) formalize the same Erdős 1947 probabilistic baseline — R(k,k) ≥ 2^(k/2) via first moment, off-diagonal bounds via nibble/alteration — that anchors Problem 1037's negative result. Together they show that the probabilistic O(log n) barrier is robust: neither diagonal Ramsey structure (R4K) nor degree diversity (#1037) easily breaks through it.",
+      "targetId": "ramsey-r4k-extensions"
     }
   ],
   "leanFile": {

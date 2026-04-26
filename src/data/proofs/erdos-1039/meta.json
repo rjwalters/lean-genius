@@ -201,13 +201,33 @@
   "crossReferences": [
     {
       "relationship": "related",
-      "description": "Erdős #1038 (sublevel sets of monic polynomials) studies the measure-theoretic properties of the same sublevel sets whose inscribed disc radius is the subject of Problem 1039.",
+      "description": "Erdős #1038 (sublevel sets of monic polynomials) studies the measure-theoretic properties of the same sublevel sets whose inscribed disc radius is the subject of Problem 1039. The KLR 2025 area bound area({|f|<1}) ≥ π/(n² log n) in #1039 is derived from the measure estimates investigated in #1038.",
       "targetId": "erdos-1038"
     },
     {
       "relationship": "related",
-      "description": "Erdős #1040 (transfinite diameter and sublevel set measure) connects to Problem 1039 through potential theory: the transfinite diameter controls the Green's function, which in turn bounds both the sublevel set measure and the inscribed disc radius.",
+      "description": "Erdős #1040 (transfinite diameter and sublevel set measure) connects to Problem 1039 through potential theory: the transfinite diameter controls the Green's function, which in turn bounds both the sublevel set measure (via Pommerenke's capacity estimates) and the inscribed disc radius ρ(f).",
       "targetId": "erdos-1040"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #1041 (paths in polynomial level sets) asks whether the sublevel set {z : |f(z)| < 1} always contains a short path of length < 2 connecting any two points. The geometry of these paths is related to the inscribed disc radius ρ(f): a large inscribed disc (ρ ≫ 1/n) would directly yield short paths within the disc.",
+      "targetId": "erdos-1041"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #1042 (connected components of polynomial lemniscates) studies how many connected components the sublevel set {z : |f(z)| < 1} can have — at most n for degree-n polynomials. The inscribed disc radius ρ(f) in Problem 1039 depends critically on whether the sublevel set has thin petals (many components, small ρ, like zⁿ-1) or one fat component (large ρ).",
+      "targetId": "erdos-1042"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #1048 (polynomial lemniscate diameter) studies the diameter of connected components of {z : |f(z)| < 1}. Problem 1039's inscribed disc radius ρ(f) and Problem 1048's diameter are complementary measures of component geometry: large diameter with small inscribed disc radius means the component is elongated (like a thin petal), while ρ(f) ~ 1/n measures flatness at lemniscate nodes.",
+      "targetId": "erdos-1048"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #1046 (lemniscate containment in a disc) shows that if {z : |f(z)| < 1} is connected, it fits in a disc of radius 2 (Pommerenke 1959). Pommerenke's 1959 containment result and his 1961 lower bound ρ(f) ≥ 1/(2en²) for Problem 1039 use the same potential-theoretic methods — Green's functions, logarithmic capacity, and the Koebe distortion theorem.",
+      "targetId": "erdos-1046"
     }
   ],
   "leanFile": {
