@@ -1,15 +1,15 @@
 {
   "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
   "title": "Complete Nonderogatory to Cyclic Vector: The General Case (All Fields)",
-  "phase": "ACT",
+  "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "theorem nonderogatory_has_cyclic_vector_any_field {K : Type*} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (h : IsNonderogatory M) : ∃ v, IsCyclicVector M v",
-    "plain": "If M is nonderogatory (minpoly = charpoly) over ANY field K (including finite fields with |K| <= n), then M has a cyclic vector v such that {v, Mv, ..., M^{n-1}v} is a basis. This is the field-independent version completing the Cayley-Hamilton minpoly research cluster.",
+    "plain": "If M ∈ Mₙ(K) is nonderogatory (minpoly = charpoly) over ANY field K (including finite fields with |K| ≤ n), then M has a cyclic vector v such that {v, Mv, …, Mⁿ⁻¹v} is a basis. This is the field-independent version completing the Cayley-Hamilton minpoly research cluster.",
     "whyMatters": [
-      "Removes the [Infinite K] hypothesis from OQ-05-OQ-01 -- the theorem holds universally",
+      "Removes the [Infinite K] hypothesis from OQ-05-OQ-01 — the theorem holds universally",
       "Resolves the last sorry in CayleyHamiltonMinpolyOQ05OQ01OQ04.lean",
       "Completes the nonderogatory/cyclic-vector thread in the Cayley-Hamilton gallery cluster",
       "Requires a proof route that avoids the full PID structure theorem (not in Mathlib)",
@@ -20,72 +20,54 @@
     "proven": [
       "aeval_conj: conjugation by invertible P commutes with polynomial evaluation aeval M",
       "cyclic_vector_of_similar: if M ~ M' and v is cyclic for M', then there is a cyclic vector for M",
-      "annihilator_dvd_minpoly: if p(M)v = 0 then minpoly K M | p",
-      "cyclic_iff_ann_eq_minpoly: v cyclic <-> ann_K[X](v) = (minpoly K M)",
-      "F2_union_covers: F2^2 is covered by 3 proper subspaces (union avoidance fails over F2)",
-      "nonderogatory_has_cyclic_vector_finite_any_size: follows from any_field (trivially)",
-      "companionMat_pow_e0: C^k e0 = ek for k < n (Krylov orbit for companion matrix)",
-      "companionMat_e0_cyclic: e0 is a cyclic vector for any companion matrix (PROVED)",
-      "cyclic_vector_similar_transfer: cyclic vectors transfer under matrix similarity (PROVED)"
+      "annihilator_dvd_minpoly: if p(M)v = 0 then minpoly K M ∣ p",
+      "cyclic_iff_ann_eq_minpoly: v cyclic ↔ ann_K[X](v) = (minpoly K M)",
+      "F2_union_covers: F₂² is covered by 3 proper subspaces (union avoidance fails over F₂)",
+      "nonderogatory_has_cyclic_vector_finite_any_size: follows from any_field (trivially)"
     ],
     "open": [
-      "nonderogatory_similar_to_companion: nonderogatory M is similar to companion(charpoly M) (needs RCF)",
-      "Rational canonical form in Mathlib: does Matrix.rationalCanonicalForm exist?"
+      "nonderogatory_has_cyclic_vector_any_field: requires PID module structure theorem or alternative",
+      "Companion matrix similarity: is M similar to companion(charpoly M) for nonderogatory M?",
+      "Rational canonical form in Mathlib: does Matrix.rationaCanonicalForm exist?"
     ],
     "goal": "Prove nonderogatory_has_cyclic_vector_any_field by finding a proof path available in Mathlib 4.26 that avoids the full cyclic decomposition theorem for f.g. modules over a PID"
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-04-26T10:00:00+02:00",
-    "iteration": 2,
-    "focus": "Companion matrix cyclic vector proved; remaining sorry is nonderogatory_similar_to_companion",
+    "phase": "OBSERVE",
+    "since": "2026-04-25T12:15:42+02:00",
+    "iteration": 1,
+    "focus": "Survey Mathlib for companion matrix similarity, primary decomposition, and cyclic module APIs",
     "blockers": [
-      "nonderogatory_similar_to_companion requires rational canonical form (not in Mathlib 4.26)",
-      "PID module structure theorem not available in Mathlib"
+      "Module.InvariantFactors / PID cyclic decomposition not in Mathlib 4.26",
+      "Matrix.isConj_companion — status unknown"
     ],
-    "nextAction": "Wait for Mathlib to add rational canonical form, or attempt direct proof via primary decomposition",
+    "nextAction": "Search Mathlib for companion matrix, rational canonical form, and cyclic module infrastructure",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: SQUAREFREE CASE PROVED AXIOM-FREE (WIP02). Binary squarefree: Bezout/CRT projections prove cyclic vector exists for minpoly=p*q. Covers all finite fields. WIP01 still needs RCF similarity axiom for full general case.",
-    "builtItems": [
-      "companionMat_pow_e0: C^k*e0 = ek for k < n (CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean)",
-      "companionMat_e0_cyclic: e0 is cyclic for any companion matrix (PROVED)",
-      "cyclic_vector_similar_transfer: cyclic vectors transfer under similarity (PROVED)",
-      "companion_orbit_eval: evaluating q(C)e0 at index natDegree(q) gives q.leadingCoeff",
-      "sum_mulVec: mulVec distributes over finite sums",
-      "irreducible_dvd_of_annihilated: If p irred + p(M)v=0 + r(M)v=0 + v!=0, then p|r (WIP02, no sorry)",
-      "bezout_proj_identity: CRT projection e=b(M)q(M) acts as identity on ker(p(M)) (WIP02, no sorry)",
-      "bezout_proj_kills: CRT projection kills vectors in ker(q(M)) (WIP02, no sorry)",
-      "nonderogatory_cyclic_of_binary_squarefree: cyclic vector exists when minpoly=p*q coprime irreds (WIP02, PROVED axiom-free)",
-      "nonderogatory_squarefree_has_cyclic_vector_finite: cyclic vector for finite fields squarefree case (WIP02, follows from general via sorry)"
-    ],
+    "progressSummary": "NEW: Selected by Seeker. Prior work (oq-05-oq-01 through incomplete-01) has proved all auxiliary lemmas; only the main sorry remains. The direct PID route is blocked; alternative routes (companion matrix, span argument) need Mathlib survey.",
+    "builtItems": [],
     "insights": [
-      "The blocking step is the PID structure theorem: K^n = K[X]/(d1) + ... + K[X]/(dr) as K[X]-modules",
-      "nonderogatory forces r=1 in the cyclic decomposition, giving K^n = K[X]/(minpoly)",
-      "cyclic_iff_ann_eq_minpoly (already proven) reduces the problem to: exists v, ann(v) = (minpoly)",
-      "companion matrix approach: if M ~ companion(charpoly), then e0 is a cyclic vector for companion, and similarity transfers it to M",
-      "SQUAREFREE CASE PROVED WITHOUT RCF: For minpoly=p*q with p,q coprime irreducibles, use Bezout/CRT projections e1=b(M)q(M), e2=a(M)p(M) to decompose V=ker(p(M))⊕ker(q(M)) without PID theorem",
-      "Key lemma irreducible_dvd_of_annihilated: If p irred and p(M),r(M) both kill v!=0, then p|r. Proof: if p!|r then Bezout gives a*p+b*r=1, apply to M*v=0+0=v, contradiction",
-      "IsCoprime.mul_dvd: p|r + q|r + IsCoprime p q implies pq|r, giving degree contradiction to prove v1+v2 is cyclic",
-      "Remaining gap precisely: only non-squarefree case (minpoly=p^e, e>=2) still needs PID; squarefree case is axiom-free",
-      "by_contra + leadingCoeff extraction cleanly isolates the zero coefficient contradiction",
-      "Modular proof structure: RCF similarity (axiom in WIP01) + cyclic e0 (proved) + similarity transfer (proved)"
+      "The blocking step is the PID structure theorem: K^n ≅ K[X]/(d1) ⊕ … ⊕ K[X]/(dr) as K[X]-modules",
+      "nonderogatory forces r=1 in the cyclic decomposition, giving K^n ≅ K[X]/(minpoly)",
+      "cyclic_iff_ann_eq_minpoly (already proven) reduces the problem to: ∃ v, ann(v) = (minpoly)",
+      "companion matrix approach: if M ~ companion(charpoly), then e1 is a cyclic vector for companion, and cyclic_vector_of_similar transfers it to M",
+      "Whether rational canonical form / companion similarity exists in Mathlib is the key unknown"
     ],
     "mathlibGaps": [
       "Module.InvariantFactors or PID cyclic decomposition theorem",
-      "Matrix.rationalCanonicalForm or Matrix.isConj_companion for nonderogatory matrices",
-      "Finrank-based argument for span of orbit: does LinearMap.span_orbit_eq_top exist?",
-      "General squarefree induction: IsCoprime p_i (prod_{j!=i} p_j) from pairwise distinct irreducibles"
+      "Matrix.rationaCanonicalForm or Matrix.isConj_companion for nonderogatory matrices",
+      "Finrank-based argument for span of orbit: does LinearMap.span_orbit_eq_top exist?"
     ],
     "nextSteps": [
-      "Complete general squarefree induction (nonderogatory_squarefree_has_cyclic_vector in WIP02): show IsCoprime p_i (product of other factors)",
-      "Non-squarefree case (minpoly=p^e): await Mathlib RCF or build primary decomposition ~800 lines",
-      "Submit nonderogatory_squarefree_has_cyclic_vector sorry to Aristotle for induction attempt"
+      "Search Mathlib for 'companion' in Matrix namespace",
+      "Search Mathlib for 'rationaCanonicalForm' or 'invariantFactors'",
+      "Check if primary decomposition approach is feasible: Module.primaryDecomposition in Mathlib",
+      "Try dimension argument: span{v, Mv, …, M^(n-1)v} has dim n iff ann(v) = (minpoly) — use rank-nullity"
     ]
   },
   "tags": [
@@ -106,8 +88,7 @@
     "cayley-hamilton-minpoly-oq-05-oq-01",
     "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
     "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
-    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-incomplete-01",
-    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01"
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-incomplete-01"
   ],
   "references": [
     "Hoffman & Kunze, Linear Algebra, Ch. 7 (Rational canonical form)",
@@ -116,12 +97,10 @@
     "Lean Zulip: 'structure theorem for modules over PID' thread"
   ],
   "started": "2026-04-25T12:15:42+02:00",
-  "lastUpdate": "2026-04-26T18:00:00+02:00",
+  "lastUpdate": "2026-04-25T12:15:42+02:00",
   "significance": 7,
-  "tractability": 7,
+  "tractability": 6,
   "leanFiles": [
-    "proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean",
-    "proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean",
-    "proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP02.lean"
+    "proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean"
   ]
 }
