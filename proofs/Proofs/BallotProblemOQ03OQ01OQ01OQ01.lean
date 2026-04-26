@@ -382,10 +382,135 @@ private lemma jdt_weight_sum (n a b : ℕ) (hab : b ≤ a) :
     intro j hj
     -- hj : j < min a 0; since min a 0 = 0, this gives j < 0 which is absurd
     omega
-  · -- b ≥ 1: open. See docstring above for the correct proof strategy by case.
-    -- b=1 is provable via the direct bijection described above (~40 lines).
-    -- b≥2 requires the ring-valued algebraic LGV (~150 lines).
-    sorry
+  · -- b ≥ 1: split on b = 1 (direct bijection) vs b ≥ 2 (ring-valued LGV needed)
+    have ha_pos : 0 < a := Nat.lt_of_lt_of_le hb hab
+    have hb1_or : b = 1 ∨ 2 ≤ b := by omega
+    rcases hb1_or with rfl | hb2
+    · /- b = 1: bijection ψ : {non-cs (P,{q}) of shapes (a,1)} ≃ Sym n (a+1)
+           via (P, {q}) ↦ P.1 + {q},  inverse P' ↦ (P'.erase(min P'), {min P'}).
+           Non-cs condition for (a,1): q₀ ≤ P.sort[0]  (the singleton is ≤ min of P).
+           Weight preserved: wt(P)*X_q = wt(P + {q}) by Multiset.map_add + prod_add. -/
+      simp only [le_refl, ↓reduceIte, Nat.sub_self]
+      -- hsymm R 0 = 1 (empty symmetric product, unique element ⟨∅,rfl⟩)
+      have h0 : hsymm (Fin n) R 0 = 1 := by
+        haveI : Unique (Sym (Fin n) 0) :=
+          ⟨⟨⟨0, rfl⟩⟩, fun s => Subtype.ext (Multiset.card_eq_zero.mp s.2)⟩
+        simp [hsymm]
+      rw [h0, mul_one, hsymm]
+      -- All elements of a Sym product are ≥ its sorted minimum
+      have sym_ge_sort0 : ∀ (P' : Sym (Fin n) (a + 1)) (x : Fin n),
+          x ∈ P'.1 → (P'.1.sort (· ≤ ·))[0]'(by rw [Multiset.length_sort, P'.2]) ≤ x :=
+        fun P' x hx => by
+          have hlen : (P'.1.sort (· ≤ ·)).length = a + 1 :=
+            (Multiset.length_sort _ P'.1).trans P'.2
+          obtain ⟨j, hj, hjx⟩ := List.mem_iff_getElem.mp ((Multiset.mem_sort _).mpr hx)
+          exact ((Multiset.pairwise_sort (· ≤ ·) P'.1).sortedLE
+            .getElem_le_getElem_of_le (by omega) (hlen ▸ hj) (Nat.zero_le j)).trans
+            (le_of_eq hjx)
+      -- Sort of singleton multiset = [q]
+      have sort_sing : ∀ q : Fin n,
+          ({q} : Multiset (Fin n)).sort (· ≤ ·) = [q] := fun q => by
+        rw [show ({q} : Multiset (Fin n)) = ↑([q] : List (Fin n)) from by simp,
+          Multiset.coe_sort]
+        exact List.mergeSort_eq_self (List.pairwise_singleton _ _)
+      -- Weight-preserving bijection ψ
+      let ψ : { PQ : Sym (Fin n) a × Sym (Fin n) 1 // ¬ColStrictSym a 1 PQ.1 PQ.2 } ≃
+              Sym (Fin n) (a + 1) :=
+        { toFun := fun ⟨⟨P, Q⟩, _⟩ =>
+              ⟨P.1 + Q.1, by simp [Multiset.card_add, P.2, Q.2]⟩
+          invFun := fun P' =>
+            let hlen : (P'.1.sort (· ≤ ·)).length = a + 1 :=
+              (Multiset.length_sort _ P'.1).trans P'.2
+            let q₀ := (P'.1.sort (· ≤ ·))[0]'(by omega)
+            have hq₀_in : q₀ ∈ P'.1 := by
+              rw [← Multiset.mem_sort (· ≤ ·)]; exact List.getElem_mem (by omega)
+            have hcard_er : (P'.1.erase q₀).card = a := by
+              rw [Multiset.card_erase_of_mem hq₀_in, P'.2]
+            ⟨(⟨P'.1.erase q₀, hcard_er⟩, ⟨{q₀}, by simp⟩),
+              -- ¬ColStrictSym: q₀ ≤ (P'.erase q₀).sort[0]
+              fun (hcs : ColStrictSym a 1 _ _) => by
+                have hlen_er : (P'.1.erase q₀).sort (· ≤ ·) |>.length = a :=
+                  (Multiset.length_sort _ _).trans hcard_er
+                have h0cs := hcs 0 (by simp only [Nat.lt_min]; exact ⟨ha_pos, Nat.lt_succ_self 0⟩)
+                simp only [Sym.val_mk', sort_sing, List.getElem_cons_zero] at h0cs
+                have h_er0_in : (P'.1.erase q₀).sort (· ≤ ·)[0]'(by omega) ∈ P'.1.erase q₀ := by
+                  rw [← Multiset.mem_sort (· ≤ ·)]; exact List.getElem_mem (by omega)
+                exact absurd (sym_ge_sort0 P' _ (Multiset.mem_of_mem_erase h_er0_in))
+                  (not_le.mpr h0cs)⟩
+          left_inv := fun ⟨⟨P, Q⟩, h_ncs⟩ => by
+            obtain ⟨q₀, hq₀⟩ := Multiset.card_eq_one.mp Q.2
+            have hP_len : (P.1.sort (· ≤ ·)).length = a :=
+              (Multiset.length_sort _ P.1).trans P.2
+            have hP_pos : 0 < (P.1.sort (· ≤ ·)).length := by omega
+            -- From non-cs: q₀ ≤ P.sort[0]
+            have hq0_le_Psort0 : q₀ ≤ (P.1.sort (· ≤ ·))[0]'hP_pos := by
+              by_contra h_lt
+              push_neg at h_lt
+              exact h_ncs fun j hj => by
+                simp only [Nat.lt_min] at hj
+                have hj0 : j = 0 := by omega
+                subst hj0
+                simp only [Sym.val_mk', hq₀, sort_sing, List.getElem_cons_zero]
+                exact h_lt
+            -- q₀ ≤ all elements of P
+            have hq0_le_P : ∀ x ∈ P.1, q₀ ≤ x := fun x hx => by
+              obtain ⟨j, hj, rfl⟩ := List.mem_iff_getElem.mp ((Multiset.mem_sort _).mpr hx)
+              exact hq0_le_Psort0.trans
+                ((Multiset.pairwise_sort (· ≤ ·) P.1).sortedLE
+                  .getElem_le_getElem_of_le hP_pos.le (hP_len ▸ hj) (Nat.zero_le j))
+            -- sort[0] of P.1 + {q₀} = q₀
+            have hPQ_pos : 0 < (P.1 + {q₀}).sort (· ≤ ·) |>.length := by
+              rw [Multiset.length_sort, Multiset.card_add, P.2, hq₀]; simp
+            have h_min_eq_q0 : (P.1 + {q₀}).sort (· ≤ ·)[0]'hPQ_pos = q₀ := by
+              apply le_antisymm
+              · -- q₀ is in the sort, sort[0] ≤ q₀ by monotonicity
+                have hq0_in : q₀ ∈ (P.1 + {q₀}).sort (· ≤ ·) := by
+                  rw [Multiset.mem_sort]; simp [Multiset.mem_add]
+                obtain ⟨j, hj, hjq⟩ := List.mem_iff_getElem.mp hq0_in
+                have hlenPQ : (P.1 + {q₀}).sort (· ≤ ·) |>.length = a + 1 := by
+                  rw [Multiset.length_sort, Multiset.card_add, P.2, hq₀]; simp
+                exact ((Multiset.pairwise_sort (· ≤ ·) (P.1 + {q₀})).sortedLE
+                  .getElem_le_getElem_of_le hPQ_pos.le (hlenPQ ▸ hj) (Nat.zero_le j)).trans
+                  (le_of_eq hjq)
+              · -- all elements of P+{q₀} are ≥ q₀, so sort[0] ≥ q₀
+                have h0_in : (P.1 + {q₀}).sort (· ≤ ·)[0]'hPQ_pos ∈ P.1 + {q₀} := by
+                  rw [← Multiset.mem_sort (· ≤ ·)]; exact List.getElem_mem hPQ_pos
+                rw [Multiset.mem_add, Multiset.mem_singleton] at h0_in
+                rcases h0_in with h | rfl
+                · exact hq0_le_P _ h
+                · exact le_refl _
+            apply Subtype.ext; apply Prod.ext <;> apply Subtype.ext
+            · -- P component: (P.1 + {q₀}).erase(sort[0]) = P.1
+              simp only [Sym.val_mk', hq₀]
+              conv_lhs =>
+                rw [show (P.1 + ({q₀} : Multiset (Fin n))).sort (· ≤ ·)[0]'hPQ_pos = q₀
+                    from h_min_eq_q0]
+              rw [show P.1 + ({q₀} : Multiset (Fin n)) = {q₀} + P.1 from add_comm _ _,
+                Multiset.erase_add_left_pos _ (Multiset.mem_singleton_self q₀)]
+              simp [Multiset.erase_cons_head]
+            · -- Q component: {sort[0]} = {q₀}
+              simp only [Sym.val_mk', hq₀]
+              show ({(P.1 + ({q₀} : Multiset (Fin n))).sort (· ≤ ·)[0]'hPQ_pos}
+                    : Multiset (Fin n)) = {q₀}
+              rw [h_min_eq_q0]
+          right_inv := fun P' => Subtype.ext (by
+            have hlen : (P'.1.sort (· ≤ ·)).length = a + 1 :=
+              (Multiset.length_sort _ P'.1).trans P'.2
+            let q₀ := (P'.1.sort (· ≤ ·))[0]'(by omega)
+            have hq₀_in : q₀ ∈ P'.1 := by
+              rw [← Multiset.mem_sort (· ≤ ·)]; exact List.getElem_mem (by omega)
+            simp only [Sym.val_mk']
+            rw [show P'.1.erase q₀ + ({q₀} : Multiset (Fin n)) = {q₀} + P'.1.erase q₀
+                from add_comm _ _, Multiset.singleton_add]
+            exact Multiset.cons_erase hq₀_in) }
+      exact Fintype.sum_equiv ψ _ _ fun ⟨⟨P, Q⟩, _⟩ => by
+        show (P.1.map X).prod * (Q.1.map X).prod = ((P.1 + Q.1).map X).prod
+        rw [Multiset.map_add, Multiset.prod_add]
+    · -- b ≥ 2: requires ring-valued algebraic LGV extending BallotProblemOQ03OQ02.
+      -- Proof: det(JT matrix) = ∑_NI-path-tuples ∏ weights (algebraic LGV),
+      -- then identify non-cs pairs with cancellable path tuples via the GV involution.
+      -- This generalizes lgv_general from ℤ to CommRing (~150 additional lines).
+      sorry
 
 /-- Row decomposition: 2-row SSYT generating function = sum over col-strict pairs.
     The bijection φ : SSYTFin n 2 sh ≃ {(P,Q) : ColStrictSym (sh0, sh1) pairs}:

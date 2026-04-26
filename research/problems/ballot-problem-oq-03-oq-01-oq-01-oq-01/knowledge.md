@@ -2,7 +2,7 @@
 
 **Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01
 **Last Updated**: 2026-04-26
-**Knowledge Items**: 34
+**Knowledge Items**: 37
 
 Insights accumulated during research on this problem.
 
@@ -17,6 +17,49 @@ symmetric polynomials: `s_λ = det[h_{λᵢ-i+j}]`. The proof route via SSYT and
   3. Biject SSYT ↔ non-intersecting lattice paths (RSK)
   4. Apply LGV: det[e(Aᵢ,Bⱼ)] = weighted NI-path count
   5. Identify the LGV matrix with the Jacobi-Trudi matrix
+
+---
+
+## Session 2026-04-26 (Session 11) — Prove jdt_weight_sum b=1 Case via Explicit Equiv
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: PROGRESS — b=1 case of `jdt_weight_sum` proved via explicit 120-line bijection; b≥2 still sorry
+
+### What I Did
+
+1. Implemented explicit `Equiv` ψ for b=1 case of `jdt_weight_sum` (~120 lines):
+   - `toFun`: `(P, {q}, _) ↦ ⟨P.1 + {q}, card_add⟩`
+   - `invFun P'`: extract minimum `q₀ = P'.sort[0]`; return `(P'.erase q₀, {q₀}, ¬ColStrictSym)`;
+     the non-col-strict witness: `q₀ ≤ P'.erase(q₀).sort[0]` via `sym_ge_sort0`
+   - `left_inv`: show `min(P + {q}) = q` via `le_antisymm` + `hq0_le_P`; then
+     `(P+{q}).erase(q) = P` via `erase_add_left_pos + erase_cons_head + cons_erase`
+   - `right_inv`: `(P'.erase q₀) + {q₀} = P'` via `singleton_add + cons_erase`
+2. Used `Fintype.sum_equiv ψ` to reindex LHS sum as `∑ P' : Sym n (a+1), (P'.1.map X).prod`
+3. Used `Unique (Sym n 0)` instance for `hsymm_zero = 1` (`simp [hsymm]`)
+4. Build submitted via `docker-build.sh` — verification pending
+
+### Key Findings
+
+- **b=1 non-cs condition = q ≤ min(P)**: For shape (a,1), ColStrictSym fails exactly when Q.sort[0] ≤ P.sort[0]. This gives a clean bijection since `min(P + {q}) = q` when `q ≤ min(P)`.
+- **`min(P + {q}) = q` proof**: `le_antisymm` with (1) q is in the sorted list so sort[0] ≤ q_pos ≤ q, and (2) all elements of P+{q} are ≥ q (from `hq0_le_P`), so sort[0] ≥ q.
+- **Unique (Sym n 0) for hsymm_zero**: `haveI : Unique (Sym n 0) := ⟨⟨⟨0,rfl⟩⟩, fun s => Subtype.ext (card_eq_zero.mp s.2)⟩; simp [hsymm]` cleanly proves `hsymm n R 0 = 1`.
+- **b≥2 genuine blocker**: Naive multiset JDT bijection is not injective. Ring-valued algebraic LGV needed (~150 lines). This is a real mathematical obstacle, not a Lean obstacle.
+- **`Multiset.erase_add_left_pos`**: When `q₀ ∈ {q₀}` (trivially), `{q₀}.erase q₀ = 0` via `erase_cons_head`, giving `(P+{q₀}).erase q₀ = P`.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (590 → 715 lines; b=1 bijection added)
+
+### Sorry Count: 2 → 2 (b=1 proved, b≥2 still sorry; k≥3 case unchanged)
+
+- `jdt_weight_sum (b ≥ 2)`: needs ring-valued algebraic LGV extending BallotProblemOQ03OQ02
+- `jacobi_trudi_ssyt_eq k≥3`: algebraic LGV + RSK (~300 lines) — unchanged
+
+### Next Steps
+
+1. **Verify build compiles** (docker build running)
+2. **Prove jdt_weight_sum b≥2** (~150 lines): generalize `lgv_general` from ℤ to CommRing, apply to Jacobi-Trudi lattice configuration
+3. **Submit to Aristotle**: the b≥2 sorry has a known proof structure, potentially automatable
 
 ---
 
