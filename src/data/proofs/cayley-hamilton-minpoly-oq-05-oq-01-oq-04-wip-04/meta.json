@@ -176,6 +176,11 @@
       "targetId": "cayley-hamilton",
       "relationship": "extends",
       "description": "The Cayley-Hamilton theorem (charpoly(M) annihilates M) is the foundation: minpoly | charpoly, so nonderogatory means minpoly = charpoly, and the cyclic vector theorem characterizes when K^n is cyclic over K[X]."
+    },
+    {
+      "targetId": "cayley-hamilton-cyclic-vector-all-fields",
+      "relationship": "supersedes",
+      "description": "The axiomatized RCF-based proof: uses an explicit axiom (nonderogatory ≅ companion matrix) to prove cyclic vectors exist over all fields. WIP04 eliminates this axiom entirely via primary decomposition, achieving the same result axiom-free for factored minimal polynomials."
     }
   ],
   "mainTheorems": [

@@ -65,6 +65,27 @@
     ]
   },
   {
+    "id": "ann-support-lemmas",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
+    "range": { "startLine": 91, "endLine": 108 },
+    "type": "technique",
+    "title": "Support Lemmas: Non-vanishing, Minimality, Commutativity",
+    "content": "Three utility lemmas that bridge between polynomial algebra and matrix action:\n\n`exists_mulVec_ne_zero`: A nonzero matrix $A$ always has a vector outside its kernel. The proof tests standard basis vectors $e_j$: if $A e_j = 0$ for all $j$, then every column of $A$ is zero, contradicting $A \\neq 0$. This lemma justifies 'choosing $w_i$' in Phase 1.\n\n`aeval_ne_zero_of_lt_minpoly`: If $p \\neq 0$ and $\\deg(p) < \\deg(\\text{minpoly}(M))$, then $p(M) \\neq 0$. Contrapositive of the minimality property: $p(M) = 0$ implies $\\text{minpoly}(M) \\mid p$, forcing $\\deg(\\text{minpoly}) \\leq \\deg(p)$. This is the key link between degree bounds and non-vanishing of polynomial evaluations.\n\n`aeval_mul_comm`: Polynomial evaluations commute — $f(M) \\cdot g(M) = g(M) \\cdot f(M)$ — since $f(M) \\cdot g(M) = (fg)(M) = (gf)(M)$. This underpins every step where Bezout projections are reordered past annihilating operators.",
+    "mathContext": "$A \\neq 0 \\Rightarrow \\exists v, Av \\neq 0$ (column rank $\\geq 1$).\n\n$p \\neq 0, \\deg(p) < \\deg(\\text{minpoly}(M)) \\Rightarrow p(M) \\neq 0$ (minimality).\n\n$f(M) g(M) = (fg)(M) = (gf)(M) = g(M) f(M)$ (ring homomorphism + commutative polynomial ring).",
+    "significance": "supporting",
+    "prerequisites": [
+      "minpoly.dvd (divisibility from annihilation)",
+      "Polynomial.natDegree_le_of_dvd",
+      "ring homomorphism properties of aeval"
+    ],
+    "relatedConcepts": [
+      "kernel of a matrix",
+      "minimality of minimal polynomial",
+      "polynomial evaluation ring homomorphism",
+      "commutativity of polynomial expressions"
+    ]
+  },
+  {
     "id": "ann-bezout-proj",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
     "range": { "startLine": 110, "endLine": 120 },
@@ -104,6 +125,26 @@
       "cyclic submodule structure",
       "Jordan block theory",
       "PID structure theorem replacement"
+    ]
+  },
+  {
+    "id": "ann-mulvec-sum",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
+    "range": { "startLine": 160, "endLine": 166 },
+    "type": "technique",
+    "title": "Matrix–Vector Linearity over Finite Sums",
+    "content": "`mulVec_finset_sum` proves that matrix–vector multiplication distributes over finite sums: $A (\\sum_{i \\in s} f(i)) = \\sum_{i \\in s} A \\cdot f(i)$. The proof is by `Finset.induction_on`, using `mulVec_zero` for the empty case and `mulVec_add` for the inductive step.\n\nThis lemma is essential for Phase 2: when $r(M)$ acts on the candidate vector $v = \\sum_i v_i$, linearity distributes the action to individual primary components, enabling the Bezout projection to isolate each $r(M) v_i$.",
+    "mathContext": "$A \\left(\\sum_{i \\in s} f(i)\\right) = \\sum_{i \\in s} A \\cdot f(i)$\n\nApplied with $A = \\text{aeval}(M, r)$ and $f(i) = v_i$:\n$r(M) \\left(\\sum_i v_i\\right) = \\sum_i r(M) v_i$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Finset.induction_on",
+      "Matrix.mulVec_add",
+      "Matrix.mulVec_zero"
+    ],
+    "relatedConcepts": [
+      "linearity of matrix multiplication",
+      "distributive law",
+      "Finset induction"
     ]
   },
   {
