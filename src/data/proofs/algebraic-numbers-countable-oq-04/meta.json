@@ -93,17 +93,34 @@
       "id": "sec-corollaries",
       "title": "Sec 3: Key Corollaries from Baker",
       "startLine": 364,
-      "endLine": 491,
+      "endLine": 542,
       "summary": "Corollaries: log2(3) is transcendental (Baker n=2 case), Q-bar-linear independence of {log 2, log 3}, n=1 case connecting to Gelfond-Schneider, Four Exponentials Conjecture as main open problem.",
       "mathContext": "Transcendence of log2(3): assume beta = log2(3) algebraic. Then beta*log2 - log3 = 0 with beta, -1 algebraic and log2, log3 Q-independent. Baker says this sum is nonzero. Contradiction."
     },
     {
       "id": "sec-baker-wustholz",
       "title": "Sec 4: Baker-Wustholz Quantitative Theorem",
-      "startLine": 540,
+      "startLine": 544,
       "endLine": 640,
       "summary": "States Baker-Wustholz 1993 theorem with explicit constant C(n,d). Documents improvement from Baker 1966 to Baker-Wustholz 1993. Applications to Thue equations, Mordell equation, S-unit equations.",
       "mathContext": "Baker-Wustholz bound: log|Lambda| > -C(n,d) * prod_i log(A_i) * log(B) where C(n,d) = 18*(n+1)! * n^{n+1} * (32d)^{n+2} * log(2nd)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "extends",
+      "description": "Parent entry: countability of algebraic numbers. Baker's theorem concerns the transcendence-theoretic properties of algebraic numbers — specifically, that logarithms of algebraic numbers maintain linear independence over Q̄."
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-02",
+      "relationship": "related",
+      "description": "Sibling: ℝ is uncountable. Together with the parent (algebraic numbers are countable), this establishes the existence of transcendental numbers. Baker's theorem gives a powerful tool for proving specific numbers are transcendental."
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-05",
+      "relationship": "related",
+      "description": "Sibling: Cantor's 1874 height function proof. Both the height function (for countability) and Baker's theorem (for transcendence) use degree-based measures of algebraic numbers."
     }
   ]
 }
