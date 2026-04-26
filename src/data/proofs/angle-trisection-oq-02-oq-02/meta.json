@@ -155,5 +155,28 @@
     "axiomCount": 1,
     "sorries": 0
   },
+  "references": [
+    {
+      "authors": ["C. F. Gauss"],
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig",
+      "note": "Section VII: Gauss proved that regular n-gons are constructible when n is a Fermat prime or a product of distinct Fermat primes times a power of 2. He famously constructed the regular 17-gon (1796), establishing the first new constructible polygon since antiquity."
+    },
+    {
+      "authors": ["P. L. Wantzel"],
+      "title": "Recherches sur les moyens de reconnaître si un problème de Géométrie peut se résoudre avec la règle et le compas",
+      "year": "1837",
+      "venue": "Journal de Mathématiques Pures et Appliquées, vol. 2, pp. 366–372",
+      "note": "Completed the Gauss-Wantzel theorem by proving the converse: a regular n-gon is constructible ONLY IF n has the required Fermat prime factorization. The criterion is: n-gon is constructible iff φ(n) is a power of 2."
+    },
+    {
+      "authors": ["M. Aigner", "G. M. Ziegler"],
+      "title": "Proofs from THE BOOK",
+      "year": "2018",
+      "venue": "Springer, 6th edition",
+      "note": "Chapter 1: includes the Gauss-Wantzel theorem and Gauss's construction of the 17-gon as a paradigmatic example of the connection between number theory and geometry."
+    }
+  ],
   "sorries": 0
 }
