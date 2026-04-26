@@ -2,7 +2,7 @@
   "id": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
   "title": "Jacobi-Trudi Identity: Schur Polynomials as Determinants of Complete Homogeneous Symmetric Polynomials",
   "slug": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
-  "description": "Defines Schur polynomials via Jacobi-Trudi formula and SSYT generating function. Proves symmetry, base cases (k=0,1), two-row formula, hook-length eval, k=1 SSYT bijection, and k=2 SSYT row-decomp bijection. Session 8: proved ssytFin_two_row_eq_sum_colstrict via explicit SSYTFin ≃ colstrict-pair Equiv; added ColStrictSym, sum_all_sym_pairs, ssytFin_row_sort_eq_ofFn. 2 sorries remain: jdt_weight_sum (JDT bijection) and jacobi_trudi_ssyt_eq k≥3 (algebraic LGV + RSK).",
+  "description": "Defines Schur polynomials via the Jacobi-Trudi determinant formula and the SSYT generating function. Proves k=0,1,2 SSYT bijections (k=2 via row-decomp Equiv + JDT partition argument). Session 9: ssytFin_two_row_eq_sum_colstrict proved (explicit bijection SSYTFin n 2 sh ≃ col-strict Sym pairs); 2 sorries remain (jdt_weight_sum, jacobi_trudi_ssyt_eq k≥3).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-24",
@@ -22,10 +22,10 @@
     "sorries": 2,
     "dateAdded": "2026-04-23",
     "axiomCount": 0,
-    "assumptions": "2 sorries: (1) jdt_weight_sum: weight-preserving JDT bijection {non-col-strict pairs (a,b)} ≃ {all pairs (a+1,b-1)}; (2) jacobi_trudi_ssyt_eq k≥3: algebraic LGV + RSK correspondence (~300 lines). k=0,1,2 cases fully proved.",
-    "lineCount": 577,
-    "theoremCount": 15,
-    "definitionCount": 9,
+    "assumptions": "2 sorries remain: (1) jdt_weight_sum — weight-preserving JDT bijection {non-col-strict (a,b)} ≃ {all (a+1,b-1)} (~80 lines); (2) jacobi_trudi_ssyt_eq k≥3 — algebraic LGV + RSK (~300 lines). ssytFin_two_row_eq_sum_colstrict proved (row-decomp bijection, no sorry). ssytSchurFin_two_row main theorem proved. k=0,1,2 proved.",
+    "lineCount": 605,
+    "theoremCount": 14,
+    "definitionCount": 8,
     "originalContributions": [
       "jacobiTrudiMatrix: the k×k matrix with entries h_{sh_i + j - i} (or 0 for negative index) — first Lean 4 Jacobi-Trudi matrix definition",
       "schurPolynomial: det(jacobiTrudiMatrix) as the primary definition of Schur polynomials in Lean 4",
@@ -78,9 +78,9 @@
       "Finset"
     ],
     "namespace": "JacobiTrudi",
-    "lineCount": 577,
+    "lineCount": 605,
     "axiomCount": 0,
-    "theoremCount": 15,
+    "theoremCount": 16,
     "definitionCount": 9,
     "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
     "sorries": 2
