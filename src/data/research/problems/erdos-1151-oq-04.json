@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "2 sorries remain: chebyshev_trig_sum_lb (tractable, ~200 lines) and divergence_from_lebesgue_growth (fundamental gap: lim vs lim sup)",
+    "progressSummary": "PROGRESS: Case 2 structure complete; 2 targeted sorries remain (hS_floor single-term, hS_harm harmonic)",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -55,7 +55,14 @@
       "cos_rational_pi_pos_min: ∃ δ > 0 s.t. |cos(nπp/q)| ≥ δ for all n (parity argument)",
       "x_not_chebyshev_node: cos(πp/q) ≠ chebyshevNode n k for all n,k when p,q odd",
       "chebyshev_trig_sum_lb: sorry (isolated harmonic sum lower bound: S_n ≥ C₂·n·log(n+1))",
-      "chebyshev_lebesgue_lb: proved modulo chebyshev_trig_sum_lb via mul_le_mul chain (δ/n · C₂·n·log(n+1) ≤ |cos(nθ)|/n · S_n)"
+      "chebyshev_lebesgue_lb: proved modulo chebyshev_trig_sum_lb via mul_le_mul chain (δ/n · C₂·n·log(n+1) ≤ |cos(nθ)|/n · S_n)",
+      "cos_ge_half_of_le_pi_div_three (proved): cos(t) ≥ 1/2 for t ∈ [0,π/3] in Erdos1151OQ04.lean",
+      "cot_ge_inv_two_mul (proved): cot(t) ≥ 1/(2t) for t ≤ π/3 in Erdos1151OQ04.lean",
+      "sin_div_one_add_cos (proved): sin(φ)/(1+cosφ) = tan(φ/2) for φ ∈ (0,π) in Erdos1151OQ04.lean",
+      "chebyshevAngle_pos_lt_pi (proved): Chebyshev angle ∈ (0,π) in Erdos1151OQ04.lean",
+      "sum_term_eq_tan_half_angle (proved): Lebesgue term for x=-1 equals tan(φₖ/2) in Erdos1151OQ04.lean",
+      "Session 25: Case 2 proof structure chebyshev_trig_sum_lb (Erdos1151OQ04.lean:1067-1200): x∈(-1,1) proof + C₂ construction",
+      "Session 25: hx_lt_1 (cos(πp/q) < 1 for odd p,q) via parity: cos=1 requires p=2kq even"
     ],
     "insights": [
       "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
@@ -75,14 +82,18 @@
       "Filter.tendsto_atTop_mono pattern: if f ≤ g pointwise and f → ∞ then g → ∞",
       "let binding in Lean 4 requires explicit unfolding in simp: simp only [vals, ...]",
       "chebyshev_lebesgue_growth is PROVED (not sorry) — wraps chebyshev_lebesgue_lb which assumes sorry #1",
-      "p,q both odd implies cos(pi*p/q) is strictly in (-1,1), so sin argument is nonzero. Case x=+-1 never occurs in hypotheses."
+      "p,q both odd implies cos(pi*p/q) is strictly in (-1,1), so sin argument is nonzero. Case x=+-1 never occurs in hypotheses.",
+      "Session 25: Proved x ∈ (-1,1) for x=cos(πp/q) with odd p,q — Real.cos_eq_one_iff parity argument",
+      "Session 25: Set up θ = arccos(x) ∈ (0,π); s = sin(θ) > 0 via Real.arccos_pos + Real.sin_pos_of_pos_of_lt_pi",
+      "Session 25: Constructed C₂ = min(s/(4π), (2/π)/(N₀*log(N₀+1))) — proved C₂ > 0 completely",
+      "Session 25: N₀ via exists_nat_gt(π²/s²); two-case split: n≥N₀ uses harmonic, n<N₀ uses S_n≥2/π",
+      "Session 25: Jordan's inequality (Real.mul_le_sin): sin(π/(2n)) ≥ 1/n → nearest-node term ≥ 2/π"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "chebyshev_lebesgue_lb: harmonic sum lower bound for S_n = Σ sin(φₖ)/|cos θ - cos φₖ| ≥ C·n·log(n+1)",
-      "divergence_from_lebesgue_growth: weaken to lim sup = ∞ (Banach-Steinhaus) or find explicit construction",
-      "Attempt chebyshev_trig_sum_lb: Lipschitz + harmonic sum proof (~200 lines). sin(pi*p/q) > 0 from p,q odd ensures x in (-1,1). Nearest node k0, bound denominator via node spacing pi/n, sum j=1..n/4 terms gives (n*sin(theta)/(2pi))*log(n/4+1).",
-      "Sorry #2 gap documented: UBP/Banach-Steinhaus gives lim sup not lim. Consider weakening divergence_from_lebesgue_growth to lim sup = inf version."
+      "Prove hS_floor: S_n≥2/π via k*=Nat.floor(n*θ/π-1/2) nearest node + Jordan's inequality",
+      "Prove hS_harm: S_n≥(s/4π)*n*log(n+1) for n≥N₀ via sqrt(n) nodes near θ (mirrors Case 1)",
+      "For divergence_from_lebesgue_growth: consider Banach-Steinhaus approach for lim sup version"
     ]
   },
   "tags": [
