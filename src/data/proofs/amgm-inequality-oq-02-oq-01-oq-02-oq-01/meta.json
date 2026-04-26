@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-25",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ01OQ02OQ01.lean",
     "tags": [
       "algebra",
@@ -16,7 +16,7 @@
       "elementary-symmetric-polynomials",
       "mv-polynomial"
     ],
-    "badge": "wip",
+    "badge": "original",
     "mathlibDependencies": [
       {
         "theorem": "MvPolynomial.psum_eq_mul_esymm_sub_sum",
@@ -37,9 +37,9 @@
       "offDiag_prod_eq_two_mul_e2: specialization to products xᵢxⱼ"
     ],
     "dateAdded": "2026-04-25",
-    "assumptions": "Lean formalization created as WIP stub. Three corollary derivations (p₁=e₁, p₂, p₃) remain as sorries; the main recurrence wraps Mathlib MvPolynomial.psum_eq_mul_esymm_sub_sum.",
+    "assumptions": "None. All three corollaries (p₁=e₁, p₂=e₁²−2e₂, p₃=e₁p₂−e₂p₁+3e₃) proved from MvPolynomial.psum_eq_mul_esymm_sub_sum via antidiagonal filter computation and ring.",
     "mathlib_version": "4.26.0",
-    "sorries": 3,
+    "sorries": 0,
     "axiomCount": 0
   },
   "overview": {
