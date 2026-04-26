@@ -150,3 +150,6 @@ difficulty: medium
 source: gallery-gap
 created: 2026-04-23T02:30:21+02:00
 ```
+
+**Significance**: 7/10
+**Tractability**: 5/10
