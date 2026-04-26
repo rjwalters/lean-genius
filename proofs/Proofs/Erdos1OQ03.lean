@@ -141,13 +141,80 @@ theorem conwayGuy_ratio_decreasing :
 noncomputable def minDSSBound (n : ℕ) : ℕ :=
   Nat.find (Erdos1WIP.minDSS_witness n)
 
-/-- **Conway-Guy Optimality Conjecture**: The Conway-Guy sequence gives
-    the exact values of f(n) for all n.
+/-- Decidability of hasDistinctSubsetSums via powerset enumeration.
+    Enables `native_decide` proofs for concrete DSS verification. -/
+instance decidableDSS (A : Finset ℕ) : Decidable (hasDistinctSubsetSums A) :=
+  decidable_of_iff
+    (∀ S ∈ A.powerset, ∀ T ∈ A.powerset, S.sum id = T.sum id → S = T)
+    ⟨fun h S T hS hT => h S (mem_powerset.mpr hS) T (mem_powerset.mpr hT),
+     fun h S hS T hT => h S (mem_powerset.mp hS) T (mem_powerset.mp hT)⟩
 
-    This is open for general n. Verified computationally for n ≤ 10
-    by Lunnon (1988) and extended further by others. -/
-axiom conwayGuy_optimal :
-    ∀ n, 1 ≤ n → n ≤ 8 → minDSSBound n = conwayGuy n
+/-- Any n-element DSS set with max ≤ N lies in {0,...,N}, so bounded
+    non-existence implies unbounded non-existence. -/
+private theorem no_dss_below {n M : ℕ}
+    (h : ¬∃ A ∈ (range (M + 1)).powerset, A.card = n ∧ hasDistinctSubsetSums A)
+    {N : ℕ} (hN : N ≤ M) :
+    ¬∃ A : Finset ℕ, A.card = n ∧ (∀ a ∈ A, a ≤ N) ∧ hasDistinctSubsetSums A := by
+  rintro ⟨A, hcard, hbound, hdss⟩
+  exact h ⟨A, mem_powerset.mpr (fun a ha =>
+    mem_range.mpr (Nat.lt_succ_of_le ((hbound a ha).trans hN))), hcard, hdss⟩
+
+/-- Prove minDSSBound n = m from explicit upper bound (witness) and
+    computational lower bound (no smaller set works). -/
+private theorem minDSSBound_eq {n m : ℕ}
+    (upper : ∃ A : Finset ℕ, A.card = n ∧ (∀ a ∈ A, a ≤ m) ∧ hasDistinctSubsetSums A)
+    (lower : ∀ k : ℕ, k < m →
+        ¬∃ A : Finset ℕ, A.card = n ∧ (∀ a ∈ A, a ≤ k) ∧ hasDistinctSubsetSums A) :
+    minDSSBound n = m := by
+  simp only [minDSSBound]
+  apply le_antisymm
+  · exact Nat.find_min' _ upper
+  · by_contra hlt; push_neg at hlt
+    exact absurd (Nat.find_spec _) (lower _ hlt)
+
+-- Computational lower bounds: no n-element DSS set in {0,...,f(n)-1}
+-- Verified by compiled native code execution of the DSS check.
+
+private theorem lower_1 :
+    ¬∃ A ∈ (range 1).powerset, A.card = 1 ∧ hasDistinctSubsetSums A := by native_decide
+private theorem lower_2 :
+    ¬∃ A ∈ (range 2).powerset, A.card = 2 ∧ hasDistinctSubsetSums A := by native_decide
+private theorem lower_3 :
+    ¬∃ A ∈ (range 4).powerset, A.card = 3 ∧ hasDistinctSubsetSums A := by native_decide
+private theorem lower_4 :
+    ¬∃ A ∈ (range 7).powerset, A.card = 4 ∧ hasDistinctSubsetSums A := by native_decide
+private theorem lower_5 :
+    ¬∃ A ∈ (range 13).powerset, A.card = 5 ∧ hasDistinctSubsetSums A := by native_decide
+
+/-- **f(1) = 1**: {1} is optimal and nothing smaller works. -/
+theorem conwayGuy_optimal_1 : minDSSBound 1 = conwayGuy 1 := by
+  show minDSSBound 1 = 1; exact minDSSBound_eq
+    ⟨{1}, by native_decide, by native_decide, by native_decide⟩
+    (fun k hk => no_dss_below lower_1 (by omega))
+
+/-- **f(2) = 2**: {1,2} is optimal. -/
+theorem conwayGuy_optimal_2 : minDSSBound 2 = conwayGuy 2 := by
+  show minDSSBound 2 = 2; exact minDSSBound_eq
+    ⟨{1, 2}, by native_decide, by native_decide, by native_decide⟩
+    (fun k hk => no_dss_below lower_2 (by omega))
+
+/-- **f(3) = 4**: {1,2,4} is optimal. -/
+theorem conwayGuy_optimal_3 : minDSSBound 3 = conwayGuy 3 := by
+  show minDSSBound 3 = 4; exact minDSSBound_eq
+    ⟨{1, 2, 4}, by native_decide, by native_decide, by native_decide⟩
+    (fun k hk => no_dss_below lower_3 (by omega))
+
+/-- **f(4) = 7**: {3,5,6,7} is optimal. First case where powers of 2 are NOT optimal. -/
+theorem conwayGuy_optimal_4 : minDSSBound 4 = conwayGuy 4 := by
+  show minDSSBound 4 = 7; exact minDSSBound_eq
+    ⟨{3, 5, 6, 7}, by native_decide, by native_decide, by native_decide⟩
+    (fun k hk => no_dss_below lower_4 (by omega))
+
+/-- **f(5) = 13**: {6,9,11,12,13} is optimal (Conway-Guy construction). -/
+theorem conwayGuy_optimal_5 : minDSSBound 5 = conwayGuy 5 := by
+  show minDSSBound 5 = 13; exact minDSSBound_eq
+    ⟨{6, 9, 11, 12, 13}, by native_decide, by native_decide, by native_decide⟩
+    (fun k hk => no_dss_below lower_5 (by omega))
 
 -- ════════════════════════════════════════════════════════════════
 -- PART VI: Growth Rate
