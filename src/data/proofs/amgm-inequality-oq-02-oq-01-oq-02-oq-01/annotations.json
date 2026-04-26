@@ -1,1 +1,68 @@
-[]
+[
+  {
+    "id": "ann-newton-girard-context",
+    "line": 1,
+    "endLine": 26,
+    "type": "historical",
+    "title": "Newton-Girard Identities: From 1629 to Lean 4",
+    "body": "The identity $p_k = e_1 p_{k-1} - e_2 p_{k-2} + \\cdots + (-1)^{k-1} k e_k$ connecting power sums $p_k = \\sum x_i^k$ to elementary symmetric polynomials $e_k = \\sum_{i_1 < \\cdots < i_k} x_{i_1} \\cdots x_{i_k}$ was discovered by Albert Girard in *Invention nouvelle en l'algèbre* (1629) and independently by Newton around 1666. Newton published them in *Arithmetica Universalis* (1707). The simplest case $p_2 = e_1^2 - 2e_2$ is the familiar expansion $(\\sum x_i)^2 = \\sum x_i^2 + 2 \\sum_{i<j} x_i x_j$, which is the algebraic core of the AM-GM inequality for two variables. This entry formalizes the step from the off-diagonal sum $\\sum_{i \\neq j} x_i x_j$ to $2e_2 = 2\\sum_{i<j} x_i x_j$, completing the $k=2$ Newton-Girard identity.",
+    "mathContext": "$p_2 = e_1^2 - 2e_2$, where $e_2 = \\sum_{i < j} x_i x_j$ and $p_2 = \\sum_i x_i^2$. The off-diagonal identity $\\sum_{i \\neq j} x_i x_j = 2e_2$ is equivalent to $p_2 = e_1^2 - 2e_2$.",
+    "significance": "Places the formalization in the 400-year history of symmetric function theory. The Newton-Girard identities are foundational to algebra, generating function theory, and the representation theory of symmetric groups.",
+    "relatedConcepts": ["symmetric-polynomials", "power-sums", "elementary-symmetric-polynomials", "am-gm-inequality"]
+  },
+  {
+    "id": "ann-offdiag-decomposition",
+    "line": 27,
+    "endLine": 52,
+    "type": "proof-step",
+    "title": "Trichotomy Argument: Linear Order Forces Upper/Lower Decomposition",
+    "body": "The theorem `offDiag_eq_upper_union_lower` splits the off-diagonal pairs $\\{(i,j) \\mid i \\neq j\\}$ into the upper-triangular part $\\{(i,j) \\mid i < j\\}$ and lower-triangular part $\\{(i,j) \\mid j < i\\}$ using `lt_or_gt_of_ne`. The key is the `LinearOrder ι` hypothesis: for any two distinct elements $i \\neq j$ in a linearly ordered type, exactly one of $i < j$ or $j < i$ holds. This is the trichotomy law. The companion theorem `upper_lower_disjoint` confirms these two parts are disjoint — using `lt_trans` and `lt_irrefl` to show $i < j$ and $j < i$ cannot both hold.\n\nIn Lean, `Finset.offDiag` is the finset $\\{(a,b) \\in s \\times s \\mid a \\neq b\\}$, and `.filter (fun p => p.1 < p.2)` selects the upper-triangular half. The `ext` tactic followed by `simp [mem_offDiag, mem_union, mem_filter]` reduces membership to logical statements about $<$ and $\\neq$.",
+    "mathContext": "$\\{(i,j) \\mid i \\neq j\\} = \\{(i,j) \\mid i < j\\} \\sqcup \\{(i,j) \\mid j < i\\}$ (disjoint union). Requires `LinearOrder ι` so that $i \\neq j \\Rightarrow (i < j) \\lor (j < i)$.",
+    "significance": "Establishes the combinatorial foundation for the double-counting argument. Without the linear order hypothesis, the off-diagonal set cannot be partitioned this cleanly.",
+    "relatedConcepts": ["linear-order", "finset-offdiag", "trichotomy", "disjoint-union"]
+  },
+  {
+    "id": "ann-swap-bijection",
+    "line": 53,
+    "endLine": 70,
+    "type": "proof-step",
+    "title": "Prod.swap as the Explicit Bijection Between Triangular Halves",
+    "body": "The theorem `image_swap_lower_eq_upper` proves that $\\text{swap}(\\{(i,j) \\mid j < i\\}) = \\{(i,j) \\mid i < j\\}$ — swapping the coordinates of every lower-triangular pair yields exactly the upper-triangular pairs. The proof uses `mem_image` with `simp` to unfold the image membership, then a `constructor` proving both directions: forward direction matches `hcd : (d, c) = (a, b)` with `cases hcd`, backward direction constructs the preimage `(b, a)` from any upper-triangular pair `(a, b)`.\n\n`Prod.swap : α × β → β × α` is defined as `fun p => (p.2, p.1)`. Injectivity of swap — needed in the next step — follows from the fact that if `swap(a₁,b₁) = swap(a₂,b₂)` then `(b₁,a₁) = (b₂,a₂)` so `a₁ = a₂` and `b₁ = b₂`.",
+    "mathContext": "$\\text{swap}: \\{(i,j) \\mid j < i\\} \\xrightarrow{\\sim} \\{(i,j) \\mid i < j\\}$, where $\\text{swap}(i,j) = (j,i)$. Bijectivity follows from swap being an involution: $\\text{swap} \\circ \\text{swap} = \\text{id}$.",
+    "significance": "Provides the explicit bijection needed for the sum reindexing. The involution structure of swap (it is its own inverse) makes injectivity immediate and avoids introducing a separate inverse map.",
+    "relatedConcepts": ["finset-image", "prod-swap", "involution", "bijection"]
+  },
+  {
+    "id": "ann-sum-symmetry",
+    "line": 71,
+    "endLine": 99,
+    "type": "proof-step",
+    "title": "sum_image Reindexing: The Core of the Double-Counting Argument",
+    "body": "The theorem `sum_lower_eq_sum_upper` is the mathematical heart of the proof: for any symmetric function $f(i,j) = f(j,i)$, the sum over lower-triangular pairs equals the sum over upper-triangular pairs. The `calc` block makes the three-step chain explicit:\n\n1. **Symmetry rewrite**: $\\sum_{j<i} f(i,j) = \\sum_{j<i} f(j,i) = \\sum_{j<i} f(\\text{swap}(i,j))$, using `sum_congr rfl (fun ⟨a,b⟩ _ => hf a b)`.\n2. **Reindexing via `sum_image`**: $\\sum_{j<i} f(\\text{swap}(i,j)) = \\sum_{p \\in \\text{image}(\\text{swap}, \\text{lower})} f(p)$, using swap's injectivity.\n3. **Image identity**: Replace `image swap lower` with `upper` using `image_swap_lower_eq_upper`.\n\nThis three-step pattern (rewrite by symmetry → `sum_image` → image identity) is a reusable template for any double-counting argument over finsets.",
+    "mathContext": "$\\sum_{(i,j): j<i} f(i,j) \\xrightarrow{f=f\\circ\\text{swap}} \\sum_{(i,j): j<i} f(\\text{swap}(i,j)) \\xrightarrow{\\text{sum\\_image}} \\sum_{p \\in \\text{swap}(\\text{lower})} f(p) \\xrightarrow{\\text{image identity}} \\sum_{(i,j): i<j} f(i,j)$.",
+    "significance": "Demonstrates `Finset.sum_image` as a clean reindexing tool. The pattern here — rewrite the summand, apply sum_image with an injectivity proof, then use a set identity — appears throughout combinatorial Lean proofs.",
+    "relatedConcepts": ["finset-sum-image", "sum-congr", "calc-blocks", "double-counting"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "line": 100,
+    "endLine": 117,
+    "type": "theorem",
+    "title": "Main Theorem: Off-Diagonal Sum = 2 × Upper-Triangular Sum",
+    "body": "The main theorem `sum_offDiag_eq_two_mul_sum_upper` combines the previous lemmas in three steps:\n1. Rewrite `offDiag` as `upper ∪ lower` via `offDiag_eq_upper_union_lower`\n2. Split the sum over the disjoint union: `sum_union (upper_lower_disjoint s)`\n3. Substitute `∑ lower = ∑ upper` via `sum_lower_eq_sum_upper`, then fold `upper + upper = 2 * upper` with `two_mul`\n\nThe result is: $\\forall f$ symmetric, $\\sum_{(i,j) \\in \\text{offDiag}} f(i,j) = 2 \\cdot \\sum_{i<j} f(i,j)$. The proof is a single `rw` chain — four lemma applications in sequence — which is characteristic of well-structured Lean proofs where each supporting lemma carries exactly one logical step.",
+    "mathContext": "$\\displaystyle\\sum_{i \\neq j} f(i,j) = \\sum_{i<j} f(i,j) + \\sum_{j<i} f(i,j) = \\sum_{i<j} f(i,j) + \\sum_{i<j} f(i,j) = 2 \\sum_{i<j} f(i,j)$.",
+    "significance": "The concise single-line proof (`rw [offDiag_eq_upper_union_lower, sum_union ..., sum_lower_eq_sum_upper ..., two_mul]`) illustrates how good lemma decomposition produces readable proofs. Each lemma name reads as a step in the mathematical argument.",
+    "relatedConcepts": ["sum-union", "finset-offdiag", "two-mul", "proof-architecture"]
+  },
+  {
+    "id": "ann-e2-application",
+    "line": 118,
+    "endLine": 138,
+    "type": "application",
+    "title": "Specialization to Products: Connecting to e₂ and Newton's Identity",
+    "body": "The theorem `offDiag_prod_eq_two_mul_e2` specializes `sum_offDiag_eq_two_mul_sum_upper` to $f(i,j) = x_i x_j$, which is symmetric because multiplication commutes in a `CommRing`. The proof is a one-liner: apply the general theorem with symmetry witnessed by `fun i j => by ring`.\n\nThe result $\\sum_{(i,j) \\in \\text{offDiag}} x_i x_j = 2 \\cdot \\sum_{i<j} x_i x_j$ directly instantiates Newton's identity at $k=2$: combined with the diagonal identity $\\sum_i x_i^2 = p_2$ and the square expansion $(\\sum x_i)^2 = p_2 + \\sum_{i \\neq j} x_i x_j$, we recover $p_2 = e_1^2 - 2e_2$.\n\nThe concrete examples at the end — `(a + b)² = a² + b² + 2ab` and the three-element case — are proved by `ring`, showing that the abstract framework captures familiar identities.",
+    "mathContext": "$\\sum_{(i,j) \\in \\text{offDiag}(s)} x_i x_j = 2 e_2(s, x)$ where $e_2(s, x) = \\sum_{i < j,\\, i,j \\in s} x_i x_j$. Combined with the diagonal: $(\\sum_{i \\in s} x_i)^2 = \\sum_{i \\in s} x_i^2 + 2e_2(s,x)$.",
+    "significance": "The `fun i j => by ring` proof of commutativity shows how Lean's `ring` tactic handles the symmetry hypothesis automatically. This is the bridge from the abstract symmetric-function framework to concrete polynomial identities.",
+    "relatedConcepts": ["elementary-symmetric-polynomials", "commutative-ring", "ring-tactic", "newton-identities"]
+  }
+]
