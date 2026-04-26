@@ -64,41 +64,6 @@ The key geometric fact: all regular solid dihedral angles except the cube (π/2)
 
 ---
 
-## Session 9 (2026-04-26)
-
-**Mode**: REVISIT
-**Outcome**: COMPLETED — proved `tmul_infinite_order_ne_zero`, eliminating last axiom; axiomCount 1→0, status→verified
-
-### What I Did
-
-1. Proved `tmul_infinite_order_ne_zero` in `DissectionOfCubesOQ02OQ02.lean` using `Module.Flat` infrastructure
-2. Key insight: ℝ is flat over ℤ because it is torsion-free over the Bézout domain ℤ
-   - Used `Module.Flat.flat_iff_torsion_eq_bot_of_isBezout`
-   - Used `Submodule.noZeroSMulDivisors_iff_torsion_eq_bot`
-   - Used `NoZeroSMulDivisors.iff_algebraMap_injective.mpr Int.cast_injective`
-3. Constructed injective linear map `f : ℤ →ₗ[ℤ] AngleQuot, n ↦ n•x`
-4. By flatness, `lTensor ℝ f` is injective — maps `r⊗1` to `r⊗x`
-5. `r⊗1 ≠ 0` via `TensorProduct.rid ℤ ℝ` (maps to r ≠ 0)
-6. Hence `r⊗x ≠ 0`
-7. Also fixed pre-existing bugs: OQ02 `simp` timeout (Nat.zero_add) and OQ02OQ02 `/--` doc comment syntax error and `arccos_neg_third` heartbeat timeout (`(-1:ℝ)/3 ≠ -(1/3)` syntactically)
-
-### Files Modified
-
-- `proofs/Proofs/DissectionOfCubesOQ02OQ02.lean` (413 → 454 lines)
-  - Replaced `axiom tmul_infinite_order_ne_zero` with full 40-line proof
-  - Fixed `/--` doc comment at line 363
-  - Fixed `arccos_neg_third` via `norm_num` preprocessing
-- `proofs/Proofs/DissectionOfCubesOQ02.lean`
-  - Fixed pre-existing `simp` timeout via `Nat.zero_add` + explicit `cos_arccos`
-- Both meta.json files updated: axiomCount 1→0, status→verified, badge→verified
-
-### Outcome
-
-- `dissection-of-cubes-oq-02-oq-02`: VERIFIED (0 axioms, 0 sorries)
-- `dissection-of-cubes-oq-04`: VERIFIED (0 axioms, 0 sorries) — depends on OQ02OQ02 which is now axiom-free
-
----
-
 ## Dead Ends
 
 - Edge-count scaling approach for `cube_unique_zero_dehn` was wrong — `tmul_infinite_order_ne_zero` is the right unifier
