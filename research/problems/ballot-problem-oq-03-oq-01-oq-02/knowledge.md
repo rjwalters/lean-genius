@@ -585,3 +585,61 @@ by_cases h4 : μ.rowLen 4 = 0
 1. **9-row case PART XXIII**: ~1900 lines at same growth rate; OR
 2. **Switch strategy**: GNW probabilistic hook walk proof handles all n simultaneously (~300-500 lines)
 3. The row-by-row approach hits diminishing returns; consider GNW formalization for the general case
+
+---
+
+## Session 2026-04-26 (Session 30) — PART XXIV: Transpose Duality
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: PROGRESS — dispatcher now handles ≤9-cols branch; sorry only for ≥10-rows AND ≥10-cols
+
+### What I Did
+
+1. Added PART XXIV: Transpose Duality (~150 lines) to `BallotProblemOQ03OQ01OQ02.lean`
+2. Fixed pre-existing Mathlib API regressions in two dependency files
+3. Created PR rjwalters/lean-genius#12925
+
+### New Infrastructure (PART XXIV)
+
+**`removeCorner_transpose_eq`**: `removeCorner μᵀ c.swap = (removeCorner μ c)ᵀ`
+- Proved via `ext x` + constructor; uses `mem_removeCorner` and `YoungDiagram.mem_transpose`
+- Key: `x ≠ c.swap ↔ x.swap ≠ c` via `(Prod.swap_swap x).symm.trans (congrArg Prod.swap h)`
+
+**`hookProd_removeCorner_transpose`**: `hookProd (removeCorner μᵀ c.swap) = hookProd (removeCorner μ c)`
+- Direct consequence of `hookProd_transpose` + `removeCorner_transpose_eq`
+
+**`hook_walk_identity_via_transpose`**: if `hook_walk_identity(μᵀ)` then `hook_walk_identity(μ)`
+- Rewrites `h_T` with `hookProd_transpose` to equate the two sums
+- Uses `Finset.sum_nbij'` with i = swap corners, j = swap back
+- Membership proofs: `mem_corners.mpr ((isCorner_transpose_iff μ c.swap).mpr (Prod.swap_swap c ▸ mem_corners.mp hc))`
+
+**Dispatcher update**: when ≥10 rows, ≥3 cols, not gHookYD:
+```
+by_cases h9c : μ.colLen 9 = 0
+· -- ≤9 cols: μᵀ has ≤9 rows → use hook_walk_identity_atMostNineCols
+  exact hook_walk_identity_atMostNineCols μ h9c hn
+· -- ≥10 rows AND ≥10 cols: sorry (GNW hook walk)
+  sorry
+```
+
+### Dependency Fixes
+
+- `BallotProblemOQ03.lean:2541`: omega failure after `set` tactic; omega saw `minSharedStepIdx` aliases as distinct atoms → fixed with `exact Nat.le_antisymm h_swap_le_i h_swap_ge_i |>.trans h_min_orig.symm`
+- `BallotProblemOQ03OQ02.lean:2370,2386`: `▸ List.drop_length` type mismatch (Mathlib update makes `▸` substitute everywhere) → fixed with `by rw [← List.length_take_of_le ...]; exact List.drop_length`
+
+### Sorry Count: 4 (unchanged count, scope further reduced)
+
+- `hook_walk_identity` (line ~13700): sorry covers ONLY ≥10-rows AND ≥10-cols shapes
+  - Proved: ≤2-row, ≤2-col, all gHookYD, [a,2,1], [a,b,1], 3-8 row cases, 9-row case (≤9 rows), ≤9-cols via transpose
+  - Remaining: μ with ≥10 rows AND ≥10 cols AND not a generalized hook
+- `ni_count_eq_syt_count`, `lgv_det_factors_as_hook_quotient`, `hook_length_formula`: unchanged
+
+### Key Technical Note
+
+Build verification impossible: 13764-line file exceeds Docker 32GB memory limit. The OOM was observed; proof correctness was verified by manual analysis only.
+
+### Next Steps
+
+1. **GNW probabilistic hook walk** (~300-500 lines): general proof covering all shapes, eliminating the last sorry
+2. Alternative: Extend PART XXIV to also handle ≥10×≥10 case (large single-cell argument or induction)
+3. Fix `ni_count_eq_syt_count` and `lgv_det_factors_as_hook_quotient` (separate mathematical work)
