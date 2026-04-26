@@ -1144,6 +1144,292 @@ private lemma boundaryFlipLast_verts_one (s : GridSimplex d N)
 -- SECTION VII: CellComplex Instance
 -- ============================================================
 
+-- Helper: GridSimplex extensionality
+private theorem GridSimplex.ext' {d N : ℕ} {s t : GridSimplex d N}
+    (hv : s.verts = t.verts) (hi : s.incDir = t.incDir)
+    (hm : s.miss = t.miss) : s = t := by
+  cases s; cases t; simp only at hv hi hm; subst hv; subst hi; subst hm; rfl
+
+-- Helper: vertex k-1 in interiorFlip is unchanged
+private lemma interiorFlip_verts_kprev (s : GridSimplex d N)
+    (k : Fin d) (hk : 0 < k.val) :
+    (s.interiorFlip k hk).1.verts ⟨k.val - 1, by omega⟩ =
+    s.verts ⟨k.val - 1, by omega⟩ :=
+  interiorFlip_verts_other s k hk ⟨k.val - 1, by omega⟩ (by simp; omega)
+
+-- Helper: new vertex at position k after double interiorFlip = original
+private lemma interiorFlip_double_vertex (s : GridSimplex d N)
+    (k : Fin d) (hk : 0 < k.val) :
+    let s' := (s.interiorFlip k hk).1
+    let k_prev : Fin d := ⟨k.val - 1, by omega⟩
+    let prev_v_idx : Fin (d + 1) := ⟨k.val - 1, by omega⟩
+    let v_prev := s.verts prev_v_idx
+    let h_miss_pos : 0 < v_prev.coords s.miss :=
+      Nat.lt_of_lt_of_le (by omega : 0 < d - prev_v_idx.val) (s.miss_coord_ge prev_v_idx)
+    let h_ne_kp : s.incDir k_prev ≠ s.miss := s.miss_ne_inc k_prev
+    v_prev.transfer (s.incDir k_prev) s.miss h_ne_kp h_miss_pos =
+    s.verts ⟨k.val, by omega⟩ := by
+  ext j
+  simp only [BaryPoint.transfer]
+  set k_prev : Fin d := ⟨k.val - 1, by omega⟩
+  by_cases hj1 : j = s.incDir k_prev
+  · simp only [hj1, ite_true]
+    have hkp := s.step_inc k_prev
+    simp only [show k_prev.castSucc = ⟨k.val - 1, by omega⟩ from Fin.ext (by simp [k_prev, Fin.castSucc]),
+               show k_prev.succ = ⟨k.val, by omega⟩ from Fin.ext (by simp [k_prev, Fin.succ]; omega)] at hkp
+    omega
+  · by_cases hj2 : j = s.miss
+    · simp only [hj1, ite_false, hj2, ite_true]
+      have hkp := s.step_dec k_prev
+      simp only [show k_prev.castSucc = ⟨k.val - 1, by omega⟩ from Fin.ext (by simp [k_prev, Fin.castSucc]),
+                 show k_prev.succ = ⟨k.val, by omega⟩ from Fin.ext (by simp [k_prev, Fin.succ]; omega)] at hkp
+      omega
+    · simp only [hj1, ite_false, hj2, ite_false]
+      have hkp := s.step_same k_prev j (fun h => hj1 h.symm) hj2
+      simp only [show k_prev.castSucc = ⟨k.val - 1, by omega⟩ from Fin.ext (by simp [k_prev, Fin.castSucc]),
+                 show k_prev.succ = ⟨k.val, by omega⟩ from Fin.ext (by simp [k_prev, Fin.succ]; omega)] at hkp
+      exact hkp.symm
+
+-- Helper: the interior flip is an involution (GridSimplex component)
+private lemma interiorFlip_invol (s : GridSimplex d N)
+    (k : Fin d) (hk : 0 < k.val) :
+    (s.interiorFlip k hk).1.interiorFlip k hk =
+    (s, (s.interiorFlip k hk).2) := by
+  set k_prev : Fin d := ⟨k.val - 1, by omega⟩
+  -- Facts about s' = (s.interiorFlip k hk).1
+  have h_s'_inck : (s.interiorFlip k hk).1.incDir k = s.incDir k_prev := by
+    simp [GridSimplex.interiorFlip, k_prev, show k ≠ k_prev from Fin.ne_of_val_ne (by simp [k_prev]; omega)]
+  have h_s'_miss : (s.interiorFlip k hk).1.miss = s.miss := by
+    simp [GridSimplex.interiorFlip]
+  have h_miss_pos : 0 < (s.verts ⟨k.val - 1, by omega⟩).coords s.miss :=
+    Nat.lt_of_lt_of_le (by omega : 0 < d - (k.val - 1)) (s.miss_coord_ge ⟨k.val - 1, by omega⟩)
+  have h_miss_pos' :
+      0 < ((s.interiorFlip k hk).1.verts ⟨k.val - 1, by omega⟩).coords
+          ((s.interiorFlip k hk).1.miss) := by
+    rw [interiorFlip_verts_kprev, h_s'_miss]; exact h_miss_pos
+  have h_ne_kp : s.incDir k_prev ≠ s.miss := s.miss_ne_inc k_prev
+  have h_ne' : (s.interiorFlip k hk).1.incDir k ≠ (s.interiorFlip k hk).1.miss := by
+    rw [h_s'_inck, h_s'_miss]; exact h_ne_kp
+  -- Second flip returns (s, ⟨k.val, _⟩)
+  simp only [Prod.mk.injEq]
+  refine ⟨GridSimplex.ext' ?_ ?_ ?_, by simp [GridSimplex.interiorFlip]⟩
+  · -- verts equality
+    funext j
+    simp only [GridSimplex.interiorFlip]
+    by_cases hjk : j = ⟨k.val, by omega⟩
+    · -- At position k: new_v' = s.verts ⟨k.val, _⟩
+      simp only [hjk, ite_true]
+      -- v_prev' = s'.verts ⟨k.val-1, _⟩ = s.verts ⟨k.val-1, _⟩
+      -- incDir' k = s'.incDir k = s.incDir k_prev
+      -- miss' = s'.miss = s.miss
+      -- So new_v' = v_prev.transfer (s.incDir k_prev) s.miss = s.verts ⟨k.val, _⟩
+      have key := @interiorFlip_double_vertex d N s k hk
+      simp only at key
+      convert key using 2
+      · exact interiorFlip_verts_kprev s k hk
+      · exact h_s'_inck
+      · exact h_s'_miss
+    · -- At other positions: s'.verts j = s.verts j
+      simp only [hjk, ite_false]
+      simp only [GridSimplex.interiorFlip, hjk, ite_false]
+  · -- incDir equality: double swap is identity
+    funext j
+    simp only [GridSimplex.interiorFlip]
+    by_cases hj1 : j = k_prev
+    · -- j = k_prev: s'.incDir k = s.incDir k_prev = s.incDir j
+      simp only [hj1, ite_true]
+      simp only [GridSimplex.interiorFlip]
+      simp [k_prev]
+    · simp only [hj1, ite_false]
+      by_cases hj2 : j = k
+      · -- j = k: s'.incDir k_prev = s.incDir k = s.incDir j
+        simp only [hj2, ite_true]
+        simp only [GridSimplex.interiorFlip]
+        have hkk : k ≠ k_prev := Fin.ne_of_val_ne (by simp [k_prev]; omega)
+        simp [k_prev, hkk]
+      · -- j ≠ k_prev, k: s'.incDir j = s.incDir j
+        simp only [hj2, ite_false]
+        simp only [GridSimplex.interiorFlip, hj1, hj2, ite_false]
+  · -- miss equality
+    simp [GridSimplex.interiorFlip]
+
+-- Helper: new_v from boundaryFlip0 applied backward by boundaryFlipLast
+private lemma boundaryFlip0_new_v_inv (s : GridSimplex d N)
+    (hd : d ≠ 0)
+    (h_pos : 0 < (s.verts ⟨d, Nat.lt_succ_iff.mpr le_rfl⟩).coords s.miss) :
+    let hd_pos : 0 < d := Nat.pos_of_ne_zero hd
+    let inc0 := s.incDir ⟨0, hd_pos⟩
+    let h_ne : inc0 ≠ s.miss := s.miss_ne_inc ⟨0, hd_pos⟩
+    let new_v := (s.verts ⟨d, Nat.lt_succ_iff.mpr le_rfl⟩).transfer inc0 s.miss h_ne h_pos
+    -- v0' for the second flip is s.verts 1
+    -- last_inc' for the second flip is inc0
+    -- new_v' = s.verts(1).transfer s.miss inc0 = s.verts 0
+    let h_pos' : 0 < (s.verts ⟨1, by omega⟩).coords inc0 := by
+      have := s.step_inc ⟨0, hd_pos⟩
+      simp [Fin.castSucc, Fin.succ] at this; omega
+    (s.verts ⟨1, by omega⟩).transfer s.miss inc0 (Ne.symm h_ne) h_pos' = s.verts 0 := by
+  simp only
+  ext j
+  simp only [BaryPoint.transfer]
+  have hd_pos : 0 < d := Nat.pos_of_ne_zero hd
+  set inc0 := s.incDir ⟨0, hd_pos⟩
+  have h_ne : inc0 ≠ s.miss := s.miss_ne_inc ⟨0, hd_pos⟩
+  by_cases hj1 : j = s.miss
+  · simp only [hj1, ite_true, show j ≠ inc0 from by rw [hj1]; exact Ne.symm h_ne, ite_false]
+    have := s.step_inc ⟨0, hd_pos⟩
+    simp [Fin.castSucc, Fin.succ] at this
+    have hd2 := s.step_dec ⟨0, hd_pos⟩
+    simp [Fin.castSucc, Fin.succ] at hd2
+    omega
+  · by_cases hj2 : j = inc0
+    · simp only [hj2, ite_true, show ¬(j = s.miss) from by rw [hj2]; exact h_ne, ite_false]
+      have := s.step_inc ⟨0, hd_pos⟩
+      simp [Fin.castSucc, Fin.succ] at this; omega
+    · simp only [hj1, ite_false, hj2, ite_false]
+      have := s.step_same ⟨0, hd_pos⟩ j hj2 hj1
+      simp [Fin.castSucc, Fin.succ] at this; exact this.symm
+
+-- Helper: boundaryFlip0 and boundaryFlipLast are inverses
+private lemma boundaryFlip0_invol (s : GridSimplex d N)
+    (s' : GridSimplex d N) (k' : Fin (d + 1))
+    (h : s.boundaryFlip0 = some (s', k')) :
+    s'.boundaryFlipLast = some (s, (⟨0, Nat.zero_lt_succ d⟩ : Fin (d + 1))) := by
+  simp only [GridSimplex.boundaryFlip0] at h
+  split_ifs at h with h_pos hd
+  · simp only [Option.some.injEq, Prod.mk.injEq] at h
+    obtain ⟨hs', _⟩ := h; subst hs'
+    have hd_pos : 0 < d := Nat.pos_of_ne_zero hd
+    set inc0 := s.incDir ⟨0, hd_pos⟩
+    set last_v := s.verts ⟨d, Nat.lt_succ_iff.mpr le_rfl⟩
+    have h_ne : inc0 ≠ s.miss := s.miss_ne_inc ⟨0, hd_pos⟩
+    set new_v := last_v.transfer inc0 s.miss h_ne h_pos
+    -- s' has verts j = if j.val < d then s.verts ⟨j+1, _⟩ else new_v
+    -- s' has incDir j = if j.val+1 < d then s.incDir ⟨j+1, _⟩ else inc0
+    -- s' has miss = s.miss
+    -- For boundaryFlipLast on s':
+    --   last_inc' = s'.incDir ⟨d-1, _⟩ = inc0 (since (d-1)+1 = d, not < d)
+    --   v0' = s'.verts 0 = s.verts ⟨1, _⟩ (since 0 < d)
+    --   h_pos' : 0 < (s.verts 1).coords inc0 (from step_inc 0)
+    have h_pos' : 0 < (s.verts ⟨1, by omega⟩).coords inc0 := by
+      have := s.step_inc ⟨0, hd_pos⟩; simp [Fin.castSucc, Fin.succ] at this; omega
+    -- Prove s'.boundaryFlipLast = some (s, ⟨0, _⟩)
+    have new_v'_eq := boundaryFlip0_new_v_inv s hd h_pos
+    simp only [GridSimplex.boundaryFlipLast, if_neg hd]
+    -- last_inc' in s' is inc0
+    have hs'_inc_last : (fun j : Fin d =>
+        if h : j.val + 1 < d then s.incDir ⟨j.val + 1, h⟩
+        else inc0) ⟨d - 1, by omega⟩ = inc0 := by
+      simp [show ¬(d - 1 + 1 < d) from by omega]
+    rw [hs'_inc_last]
+    -- v0' in s' is s.verts 1
+    have hs'_v0 : (fun j : Fin (d + 1) =>
+        if h : j.val < d then s.verts ⟨j.val + 1, by omega⟩
+        else new_v) ⟨0, by omega⟩ = s.verts ⟨1, by omega⟩ := by
+      simp [hd_pos]
+    rw [hs'_v0, if_pos h_pos']
+    simp only [Option.some.injEq, Prod.mk.injEq]
+    refine ⟨GridSimplex.ext' ?_ ?_ ?_, rfl⟩
+    · -- verts of result = s.verts
+      funext j
+      simp only
+      by_cases hj0 : j.val = 0
+      · simp only [show j.val = 0 = True from eq_true hj0, ite_true]
+        exact (new_v'_eq.trans (by congr 1; ext; exact hj0.symm))
+      · simp only [show j.val = 0 = False from eq_false hj0, ite_false]
+        -- s'.verts ⟨j-1, _⟩ = s.verts ⟨(j-1)+1, _⟩ = s.verts j
+        have hlt : j.val - 1 < d := by omega
+        simp only [show (j.val - 1 < d) = True from eq_true hlt, dite_true]
+        congr 1; ext; omega
+    · -- incDir of result = s.incDir
+      funext j
+      simp only
+      by_cases hj0 : j.val = 0
+      · simp only [show j.val = 0 = True from eq_true hj0, ite_true]
+        congr 1; ext; exact hj0.symm
+      · simp only [show j.val = 0 = False from eq_false hj0, ite_false]
+        -- s'.incDir ⟨j-1, _⟩ = if (j-1)+1 < d then s.incDir ⟨j, _⟩ else inc0
+        -- Since j : Fin d and j.val ≥ 1, j.val-1+1 = j.val < d
+        have hjlt : j.val - 1 + 1 < d := by omega
+        simp only [show (j.val - 1 + 1 < d) = True from eq_true hjlt, dite_true]
+        congr 1; ext; omega
+    · -- miss of result = s.miss
+      rfl
+  · simp at h
+
+private lemma boundaryFlipLast_invol (s : GridSimplex d N)
+    (s' : GridSimplex d N) (k' : Fin (d + 1))
+    (h : s.boundaryFlipLast = some (s', k')) :
+    s'.boundaryFlip0 = some (s, (⟨d, Nat.lt_succ_iff.mpr le_rfl⟩ : Fin (d + 1))) := by
+  simp only [GridSimplex.boundaryFlipLast] at h
+  split_ifs at h with hd h_pos
+  · simp only [Option.some.injEq, Prod.mk.injEq] at h
+    obtain ⟨hs', _⟩ := h; subst hs'
+    have hd_pos : 0 < d := Nat.pos_of_ne_zero hd
+    set last_inc := s.incDir ⟨d - 1, by omega⟩
+    set v0 := s.verts 0
+    have h_ne : last_inc ≠ s.miss := s.miss_ne_inc ⟨d - 1, by omega⟩
+    set new_v := v0.transfer s.miss last_inc (Ne.symm h_ne) h_pos
+    -- s' has verts j = if j.val = 0 then new_v else s.verts ⟨j-1, _⟩
+    -- s' has incDir j = if j.val = 0 then last_inc else s.incDir ⟨j-1, _⟩
+    -- s' has miss = s.miss
+    -- For boundaryFlip0 on s':
+    --   last_v' = s'.verts d = s.verts ⟨d-1, _⟩ (since d ≠ 0)
+    --   inc0' = s'.incDir ⟨0, _⟩ = last_inc
+    --   h_pos' : 0 < (s.verts ⟨d-1, _⟩).coords s.miss
+    have h_pos' : 0 < (s.verts ⟨d - 1, by omega⟩).coords s.miss := by
+      have := s.miss_coord_ge ⟨d - 1, by omega⟩; simp at this; omega
+    -- new_v'' = s.verts(d-1).transfer last_inc s.miss = s.verts d
+    have new_v''_eq : (s.verts ⟨d - 1, by omega⟩).transfer last_inc s.miss h_ne h_pos' =
+        s.verts ⟨d, Nat.lt_succ_iff.mpr le_rfl⟩ := by
+      ext j; simp only [BaryPoint.transfer]
+      set k₀ : Fin d := ⟨d - 1, by omega⟩
+      by_cases hj1 : j = last_inc
+      · simp only [hj1, ite_true]
+        have := s.step_inc k₀
+        simp [k₀, Fin.castSucc, Fin.succ, show k₀.val = d - 1 from rfl] at this; omega
+      · by_cases hj2 : j = s.miss
+        · simp only [hj1, ite_false, hj2, ite_true]
+          have := s.step_dec k₀
+          simp [k₀, Fin.castSucc, Fin.succ] at this; omega
+        · simp only [hj1, ite_false, hj2, ite_false]
+          have := s.step_same k₀ j hj1 hj2
+          simp [k₀, Fin.castSucc, Fin.succ] at this; exact this.symm
+    simp only [GridSimplex.boundaryFlip0]
+    -- last_v' = s'.verts d = s.verts ⟨d-1, _⟩
+    have hs'_lastv : (fun j : Fin (d + 1) =>
+        if j.val = 0 then new_v else s.verts ⟨j.val - 1, by omega⟩)
+        ⟨d, Nat.lt_succ_iff.mpr le_rfl⟩ = s.verts ⟨d - 1, by omega⟩ := by
+      simp [show ¬(d = 0) from hd]
+    rw [hs'_lastv, if_pos h_pos']
+    -- inc0' = s'.incDir ⟨0, _⟩ = last_inc
+    have hs'_inc0 : (fun j : Fin d =>
+        if j.val = 0 then last_inc
+        else s.incDir ⟨j.val - 1, by omega⟩) ⟨0, hd_pos⟩ = last_inc := by
+      simp
+    -- hd condition for boundaryFlip0 on s': d ≠ 0 is hd
+    simp only [if_pos h_pos', if_neg hd, hs'_inc0]
+    simp only [Option.some.injEq, Prod.mk.injEq]
+    refine ⟨GridSimplex.ext' ?_ ?_ ?_, rfl⟩
+    · funext j; simp only
+      by_cases hjd : j.val < d
+      · simp only [show (j.val < d) = True from eq_true hjd, dite_true]
+        simp only [show ¬(j.val + 1 = 0) from by omega, ite_false]
+        congr 1; ext; omega
+      · simp only [show (j.val < d) = False from eq_false hjd, dite_false]
+        exact (new_v''_eq.trans (by congr 1; ext; omega))
+    · funext j; simp only
+      by_cases hjd : j.val + 1 < d
+      · simp only [show (j.val + 1 < d) = True from eq_true hjd, dite_true]
+        simp only [show ¬(j.val + 1 = 0) from by omega, ite_false]
+        congr 1; ext; omega
+      · simp only [show (j.val + 1 < d) = False from eq_false hjd, dite_false]
+        have hj_last : j.val = d - 1 := by omega
+        simp only [show (j.val = 0) = False from by simp [hj_last]; omega, ite_false]
+        congr 1; ext; omega
+    · rfl
+  · simp at h
+  · simp at h
+
 /-- Adjacency is symmetric: if s is adjacent to s' through
 facet k, then s' is adjacent to s through facet k'. -/
 theorem gridAdj_symm (s : GridSimplex d N)
@@ -1151,7 +1437,52 @@ theorem gridAdj_symm (s : GridSimplex d N)
     (k' : Fin (d + 1))
     (h : gridAdj d N s k = some (s', k')) :
     gridAdj d N s' k' = some (s, k) := by
-  sorry
+  simp only [gridAdj] at h
+  split_ifs at h with hk0 hkd
+  · -- k.val = 0: boundaryFlip0
+    -- Extract d ≠ 0 and k' = ⟨d, _⟩ from h
+    have hd : d ≠ 0 := by
+      simp only [GridSimplex.boundaryFlip0] at h
+      split_ifs at h with hp hd <;> simp_all
+    have hk'_eq : k' = ⟨d, Nat.lt_succ_iff.mpr le_rfl⟩ := by
+      simp only [GridSimplex.boundaryFlip0] at h
+      split_ifs at h with hp hd' <;> simp_all [Option.some.injEq, Prod.mk.injEq]
+    have hk_eq : k = ⟨0, by omega⟩ := Fin.ext hk0
+    rw [hk'_eq]
+    simp only [gridAdj, show ¬(d = 0) from hd, show d ≠ 0 from hd, ite_false,
+               show (d : ℕ) = d from rfl, ite_true]
+    rw [← hk_eq]
+    exact boundaryFlip0_invol s s' k' h
+  · -- k.val = d: boundaryFlipLast
+    have hd : d ≠ 0 := by
+      simp only [GridSimplex.boundaryFlipLast] at h
+      split_ifs at h with hd hp <;> simp_all
+    have hk'_eq : k' = ⟨0, Nat.zero_lt_succ d⟩ := by
+      simp only [GridSimplex.boundaryFlipLast] at h
+      split_ifs at h with hd' hp <;> simp_all [Option.some.injEq, Prod.mk.injEq]
+    have hk_eq : k = ⟨d, Nat.lt_succ_iff.mpr le_rfl⟩ := Fin.ext hkd
+    rw [hk'_eq]
+    simp only [gridAdj, show (0 : ℕ) = 0 from rfl, ite_true]
+    rw [← hk_eq]
+    exact boundaryFlipLast_invol s s' k' h
+  · -- Interior: 0 < k.val < d
+    have hklt : k.val < d := by omega
+    have hkpos : 0 < k.val := by omega
+    let step : Fin d := ⟨k.val, hklt⟩
+    simp only [Option.some.injEq, Prod.mk.injEq] at h
+    obtain ⟨hs', hk'eq⟩ := h
+    subst hs'
+    have hk'_val : k'.val = k.val := by
+      rw [← hk'eq]; simp [GridSimplex.interiorFlip]
+    have hk'_ne0 : ¬k'.val = 0 := by omega
+    have hk'_ned : ¬k'.val = d := by omega
+    simp only [gridAdj, hk'_ne0, hk'_ned, ite_false]
+    have hinvol := interiorFlip_invol s step hkpos
+    simp only [Prod.mk.injEq] at hinvol
+    simp only [Option.some.injEq, Prod.mk.injEq]
+    refine ⟨hinvol.1, ?_⟩
+    rw [← hk'eq]
+    simp [GridSimplex.interiorFlip, hinvol.2]
 
 /-- Adjacent cells share the codimension-1 face. -/
 theorem gridAdj_vertex (s : GridSimplex d N)
@@ -1160,7 +1491,73 @@ theorem gridAdj_vertex (s : GridSimplex d N)
     (h : gridAdj d N s k = some (s', k')) :
     (univ.erase k).image s.verts =
     (univ.erase k').image s'.verts := by
-  sorry
+  simp only [gridAdj] at h
+  split_ifs at h with hk0 hkd
+  · -- k.val = 0, k' = ⟨d, _⟩
+    simp only [GridSimplex.boundaryFlip0] at h
+    split_ifs at h with h_pos hd
+    · simp only [Option.some.injEq, Prod.mk.injEq] at h
+      obtain ⟨hs', hk'eq⟩ := h; subst hs'
+      rw [Fin.ext hk0, hk'eq.symm]
+      have hd_pos : 0 < d := Nat.pos_of_ne_zero hd
+      ext v
+      simp only [mem_image, mem_erase, mem_univ, true_and]
+      constructor
+      · rintro ⟨j, hjk, rfl⟩
+        have hj_pos : 0 < j.val := Nat.pos_of_ne_zero (fun h0 => hjk (Fin.ext h0))
+        refine ⟨⟨j.val - 1, by omega⟩, ?_, ?_⟩
+        · intro heq; simp [Fin.ext_iff] at heq; omega
+        · have hlt : j.val - 1 < d := by omega
+          simp only [GridSimplex.boundaryFlip0, h_pos, if_neg hd, hlt, dite_true]
+          congr 1; ext; omega
+      · rintro ⟨j', hj'd, rfl⟩
+        have hj'_lt : j'.val < d := Nat.lt_of_le_of_ne (Nat.lt_succ_iff.mp j'.isLt)
+          (fun h => hj'd (Fin.ext (by omega)))
+        refine ⟨⟨j'.val + 1, by omega⟩, ?_, ?_⟩
+        · intro heq; simp [Fin.ext_iff] at heq
+        · simp only [GridSimplex.boundaryFlip0, h_pos, if_neg hd, hj'_lt, dite_true]
+          congr 1; ext; simp
+    · simp at h
+  · -- k.val = d, k' = 0
+    simp only [GridSimplex.boundaryFlipLast] at h
+    split_ifs at h with hd h_pos
+    · simp only [Option.some.injEq, Prod.mk.injEq] at h
+      obtain ⟨hs', hk'eq⟩ := h; subst hs'
+      rw [Fin.ext hkd, hk'eq.symm]
+      have hd_pos : 0 < d := Nat.pos_of_ne_zero hd
+      ext v
+      simp only [mem_image, mem_erase, mem_univ, true_and]
+      constructor
+      · rintro ⟨j, hjk, rfl⟩
+        have hj_ltd : j.val < d := Nat.lt_of_le_of_ne (Nat.lt_succ_iff.mp j.isLt)
+          (fun h => hjk (Fin.ext h))
+        refine ⟨⟨j.val + 1, by omega⟩, ?_, ?_⟩
+        · intro heq; simp [Fin.ext_iff] at heq
+        · simp only [GridSimplex.boundaryFlipLast, if_neg hd, if_pos h_pos]
+          simp only [show ¬(j.val + 1 = 0) from by omega, ite_false]
+          congr 1; ext; simp
+      · rintro ⟨j', hj'0, rfl⟩
+        have hj'_pos : 0 < j'.val := Nat.pos_of_ne_zero
+          (fun h0 => hj'0 (Fin.ext h0))
+        refine ⟨⟨j'.val - 1, by omega⟩, ?_, ?_⟩
+        · intro heq; simp [Fin.ext_iff] at heq; omega
+        · simp only [GridSimplex.boundaryFlipLast, if_neg hd, if_pos h_pos]
+          simp only [show (j'.val - 1 + 1 = 0) = False from by simp; omega, ite_false]
+          congr 1; ext; omega
+    · simp at h
+    · simp at h
+  · -- Interior: k = k', images agree on erase k
+    have hklt : k.val < d := by omega
+    have hkpos : 0 < k.val := by omega
+    let step : Fin d := ⟨k.val, hklt⟩
+    simp only [Option.some.injEq, Prod.mk.injEq] at h
+    obtain ⟨hs', hk'eq⟩ := h; subst hs'
+    have hk'_eq : k = k' := Fin.ext (by rw [← hk'eq]; simp [GridSimplex.interiorFlip])
+    rw [← hk'_eq]
+    apply Finset.image_congr
+    intro j hj
+    exact (interiorFlip_verts_other s step hkpos j
+      (fun heq => (Finset.mem_erase.mp hj).1 (Fin.ext heq))).symm
 
 /-- Adjacent cells are distinct. -/
 theorem gridAdj_ne (s : GridSimplex d N)
