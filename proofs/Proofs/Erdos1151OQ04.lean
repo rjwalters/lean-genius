@@ -974,8 +974,14 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
     have h_inv_ineq : ∀ j : Fin m,
         (n : ℝ) / (Real.pi * ((j.val : ℝ) + 1)) ≤ 2 * n / (Real.pi * (2 * j.val + 1)) :=
       fun ⟨j, _⟩ => by
-        rw [div_le_div_iff (by positivity) (by positivity)]
-        nlinarith
+        rw [div_le_div_iff (mul_pos hpi_pos (by positivity)) (mul_pos hpi_pos (by positivity))]
+        -- Goal: n * (π * (2j+1)) ≤ 2n * (π * (j+1))
+        -- Factor as nπ*(2j+1) ≤ nπ*(2j+2), difference nπ ≥ 0
+        have h1 : (↑n : ℝ) * (Real.pi * (2 * ↑j + 1)) = ↑n * Real.pi * (2 * ↑j + 1) := by ring
+        have h2 : 2 * ↑n * (Real.pi * (↑j + 1)) = ↑n * Real.pi * (2 * ↑j + 2) := by ring
+        rw [h1, h2]
+        apply mul_le_mul_of_nonneg_left _ (mul_nonneg hn_pos.le hpi_pos.le)
+        linarith
     -- D: sum of cot ≥ sum of n/(π(j+1))
     have h_sum_lb :
         ∑ j : Fin m, (n : ℝ) / (Real.pi * ((j.val : ℝ) + 1)) ≤
@@ -998,7 +1004,13 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
         simp only [harmonic_eq_sum_Icc, Rat.cast_sum, Rat.cast_inv, Rat.cast_natCast]
         -- Goal: ∑ d ∈ Finset.Icc 1 m, (d : ℝ)⁻¹ = ∑ j : Fin m, (j.val + 1 : ℝ)⁻¹
         have hIcc : Finset.Icc 1 m = (Finset.range m).image (· + 1) := by
-          ext d; simp [Finset.mem_Icc, Finset.mem_range, Finset.mem_image]; omega
+          ext d
+          simp only [Finset.mem_Icc, Finset.mem_range, Finset.mem_image]
+          constructor
+          · intro ⟨h1, h2⟩
+            exact ⟨d - 1, by omega, by omega⟩
+          · rintro ⟨k, hk, rfl⟩
+            omega
         rw [hIcc, Finset.sum_image (fun a _ b _ h => by omega)]
         rw [← Fin.sum_univ_eq_sum_range (fun i => ((i + 1 : ℕ) : ℝ)⁻¹) m]
         congr 1; ext ⟨j, _⟩; push_cast; ring
