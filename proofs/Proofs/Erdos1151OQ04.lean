@@ -1057,7 +1057,18 @@ private lemma chebyshev_trig_sum_lb (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_po
       C₂ * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) ≤
         ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
                      |Real.cos ((↑p : ℝ) * Real.pi / ↑q) - chebyshevNode n k| := by
-  sorry  -- S_n ≥ C₂ · n · log(n+1) via Lipschitz bound + harmonic series
+  set x := Real.cos ((↑p : ℝ) * Real.pi / ↑q) with hx_def
+  -- Case split: x = -1 (e.g., p = q) vs x ∈ (-1, 1)
+  by_cases hx_neg : x = -1
+  · -- Case 1: x = -1 → use trig_sum_lb_of_cos_eq_neg_one
+    refine ⟨1 / (2 * Real.pi), by positivity, fun n hn => ?_⟩
+    simp only [hx_neg, chebyshevNode]
+    exact trig_sum_lb_of_cos_eq_neg_one n (by omega)
+  · -- Case 2: x ∈ (-1, 1) → use Lipschitz bound + harmonic sum
+    -- s = |sin(πp/q)| > 0 since |x| < 1 means sin(πp/q) ≠ 0
+    -- Key: sin(φₖ) ≥ s/2 for nodes near θ = arccos(x), and |x - cos φₖ| ≤ jπ/n for k = k₀+j
+    -- This gives S_n ≥ (s·n/(2π)) · H_m ≥ C₂ · n · log(n+1)
+    sorry  -- Case 2: x ∈ (-1,1), needs Lipschitz bound + harmonic series
 
 /-- **Logarithmic lower bound on the Lebesgue function** (proved modulo `chebyshev_trig_sum_lb`).
 
