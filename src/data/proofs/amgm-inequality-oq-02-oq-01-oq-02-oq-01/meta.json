@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-25",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ01OQ02OQ01.lean",
     "tags": [
       "algebra",
@@ -16,7 +16,7 @@
       "elementary-symmetric-polynomials",
       "mv-polynomial"
     ],
-    "badge": "wip",
+    "badge": "original",
     "mathlibDependencies": [
       {
         "theorem": "MvPolynomial.psum_eq_mul_esymm_sub_sum",
@@ -37,9 +37,9 @@
       "offDiag_prod_eq_two_mul_e2: specialization to products xᵢxⱼ"
     ],
     "dateAdded": "2026-04-25",
-    "assumptions": "Lean formalization created as WIP stub. Three corollary derivations (p₁=e₁, p₂, p₃) remain as sorries; the main recurrence wraps Mathlib MvPolynomial.psum_eq_mul_esymm_sub_sum.",
+    "assumptions": "None. All three Newton-Girard corollaries (p1=e1, p2=e1^2-2e2, p3=e1*p2-e2*p1+3e3) proved directly from Mathlib MvPolynomial.psum_eq_mul_esymm_sub_sum via antidiagonal filter evaluation and linear_combination.",
     "mathlib_version": "4.26.0",
-    "sorries": 3,
+    "sorries": 0,
     "axiomCount": 0
   },
   "overview": {
@@ -53,7 +53,7 @@
       "The proof works for any CommRing, not just ℝ — the symmetry identity is purely algebraic",
       "Finset.sum_image handles the reindexing step cleanly: swap is injective, so the sum transforms correctly",
       "The `calc` block in `sum_lower_eq_sum_upper` makes the three-step proof readable: symmetry → reindexing → image identity. This proof structure (rewrite f(p) → sum_image → image identity) is a reusable template for any double-counting argument involving symmetric functions over finsets.",
-      "**WIP context**: 3 sorries remain in corollary derivations (p₁=e₁, p₂, p₃ as corollaries of `MvPolynomial.psum_eq_mul_esymm_sub_sum`). The main off-diagonal symmetry proof is complete; the remaining sorries are in converting the abstract Mathlib recurrence to concrete small-k specializations. These are expected to be closable by `ring`/`simp` after correctly handling the `Fin`-indexed Mathlib multivariate polynomial conventions.",
+      "All three corollaries (k=1,2,3) are proved by evaluating the antidiagonal filter for each k (yielding empty, {(1,1)}, or {(1,2),(2,1)}), then closing the resulting algebra with `linear_combination`. No `ring`/`simp` suffices alone because the expressions involve `(-1)^n` exponents and `Nat.cast` coefficients in `MvPolynomial sigma R`.",
       "**Change-of-basis significance**: Newton-Girard is the change-of-basis matrix between the power sum basis $\\{p_k\\}$ and the elementary symmetric basis $\\{e_k\\}$ of the ring of symmetric functions $\\Lambda$. The matrix entries are given by the recurrence coefficients, which are integers — making Newton-Girard a statement about the integrality of this change of basis. This integrality is fundamental: it means that every symmetric polynomial with integer coefficients in $e_k$ has integer $p_k$-coefficients, and vice versa (up to division by k!)."
     ],
     "prerequisites": [
@@ -113,10 +113,9 @@
     }
   ],
   "conclusion": {
-    "summary": "Gallery entry for a planned Newton-Girard recurrence proof. Status: formalized (wip) — the Lean file has not yet been written. The off-diagonal symmetry identity is proved in the parent entry (amgm-inequality-oq-02-oq-01-oq-02). This entry tracks the open task of extending that proof to the full Newton-Girard recurrence for all k ≥ 1.",
+    "summary": "Verified Newton-Girard recurrence corollaries for k=1,2,3. All three power-sum/elementary-symmetric identities (p1=e1, p2=e1^2-2e2, p3=e1*p2-e2*p1+3e3) are proved directly from Mathlib's psum_eq_mul_esymm_sub_sum via antidiagonal filter evaluation and linear_combination. The main recurrence wrapper is also provided.",
     "implications": "**For Newton-Girard**: Combined with the parent's diagonal/off-diagonal decomposition, this gives the complete n=2 Newton-Girard identity: (Σxᵢ)² = Σxᵢ² + 2·e₂.\n\n**For Symmetric Functions**: The identity is the fundamental connection between the power sum p₂ and the elementary symmetric polynomial e₂, forming the base case for the full Newton-Girard recurrence.\n\n**For Mathlib**: Demonstrates clean use of Finset.offDiag, sum_image, and Prod.swap for combinatorial double-counting arguments.",
     "openQuestions": [
-      "Close the 3 remaining sorries in the corollary derivations (p₁=e₁, p₂, p₃) by correctly instantiating `MvPolynomial.psum_eq_mul_esymm_sub_sum` for small k and converting the abstract `MvPolynomial` statement to the concrete `Finset.sum` form used in the parent entries. The main challenge is matching the `Fin n`-indexed Mathlib multivariate polynomials with the user-facing finset-indexed power sums.",
       "Prove the full Newton-Girard recurrence for all k: $p_k = \\sum_{i=1}^k (-1)^{i-1} e_i p_{k-i}$ — using `MvPolynomial.psum_eq_mul_esymm_sub_sum` as the core, but setting up a clean inductive framework so all k cases follow uniformly.",
       "Formalize the change-of-basis between the power sum and elementary symmetric bases of $\\Lambda_n$ (the ring of symmetric polynomials in n variables): express $e_k$ in terms of $p_1, \\ldots, p_k$ and vice versa, showing the transition matrix is integral with determinant $\\pm 1$ (over $\\mathbb{Q}$, not $\\mathbb{Z}$, due to the $k!$ denominators in the $e_k \\to p$ direction).",
       "Formalize Schur positivity: the Schur functions $s_\\lambda$ (another basis of $\\Lambda$) can be written as non-negative integer combinations of products of elementary symmetric polynomials $e_\\lambda$. Newton-Girard connects this to the representation theory of $GL(n)$ — the Schur function $s_\\lambda$ is the character of the irreducible $GL(n)$-representation $V_\\lambda$, and $e_k = s_{(1^k)}$ is the character of the $k$-th exterior power.",
