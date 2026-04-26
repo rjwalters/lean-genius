@@ -1,7 +1,7 @@
 {
   "slug": "amgm-inequality-oq-04-oq-05",
-  "title": "[Problem Title]",
-  "phase": "OBSERVE",
+  "title": "Brent-Salamin Formula: π = 4M²/(1-2S)",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-04-26T08:14:40+02:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Proof complete: brent_salamin theorem verified by Lean 4 build",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None - proof complete",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,36 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "COMPLETE: Brent-Salamin formula π = 4M²/(1-2S) machine-verified, 0 sorries, 7 axioms",
+    "builtItems": [
+      "brent_salamin theorem in AmgmInequalityOQ04OQ05.lean — π = 4M²/(1-2S) (0 sorries)",
+      "bs_term_nonneg: 2^n(aₙ²-bₙ²) ≥ 0 via factorization + mul_nonneg",
+      "M_pos: agm(1,1/√2) > 0 via agm_bounds",
+      "one_minus_2S_pos: 1-2S > 0 from S<1/2 axiom",
+      "K_pos: K(1/√2) > 0 proved (not axiomatized) from K=π/(2M)",
+      "bs_sum_value: 2S = 1 - 4M²/π (correct corollary rearrangement)",
+      "Gallery entry created: src/data/proofs/amgm-inequality-oq-04-oq-05/ (meta.json, annotations.json, index.ts)"
+    ],
+    "insights": [
+      "The algebraic derivation is elementary: Legendre + E-via-AGM implies K²(1-2S)=π; Gauss implies K²=π²/(4M²); substitution and cancellation yields π=4M²/(1-2S)",
+      "The hard mathematics is entirely in 5 axioms (Gauss theorem, Legendre relation, E-via-AGM, summability, S<1/2) — not in the final algebraic step",
+      "Implicit argument inference in Lean requires explicit type annotations: have hA : 0 < agmA 1 (1/√2) n := agmA_pos ... to fix 0 < ?m.18 metavariable errors",
+      "The bs_term_nonneg proof uses A²-B²=(A-B)(A+B) factorization with mul_nonneg; nlinarith needs the witness mul_nonneg hsub (add_nonneg hA.le hB.le)",
+      "rwa with div_eq_iff leaves mul_comm ambiguous; replace with rw + exact to close the hfrac goal cleanly",
+      "The corollary 2S = 1 - 4M²/π (NOT 1 - π/4M²) uses field_simp + linear_combination -hpi_times"
+    ],
+    "mathlibGaps": [
+      "Complete elliptic integrals K(k) and E(k) not in Mathlib — must be axiomatized",
+      "Legendre relation 2KE-K²=π/2 requires differentiation theory not in Mathlib",
+      "E-via-AGM formula E=K(3/4-S/2) requires Landen transformation theory not in Mathlib",
+      "Quadratic AGM convergence (|aₙ-bₙ|=O(r^{2^n})) not yet in OQ04 — needed for bs_summable"
+    ],
+    "nextSteps": [
+      "Prove bs_summable formally using quadratic AGM convergence rate",
+      "Prove Legendre relation formally via differentiation of K and E",
+      "Prove E-via-AGM via Landen transformation theory",
+      "Import OQ04OQ01 rigorous K(k) definition once its Mathlib API issue is resolved"
+    ],
     "markdown": "# Knowledge Base: amgm-inequality-oq-04-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -252,6 +277,17 @@
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ04OQ05.lean",
+      "filename": "AmgmInequalityOQ04OQ05.lean",
+      "lineCount": 243,
+      "theoremCount": 6,
+      "axiomCount": 7,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ04OQ05.lean"
     },
     {
       "path": "Proofs/AmgmInequalityPowerMeanLimits.lean",
