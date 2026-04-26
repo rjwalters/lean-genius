@@ -3,6 +3,7 @@ Copyright (c) 2026 RJ Walters. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: RJ Walters
 -/
+import Mathlib.Data.Finset.Sort
 import Proofs.SpernerMathlib4
 
 /-
@@ -754,8 +755,8 @@ lemma AbstractSimplicialData.adjFn_symm
       simp [AbstractSimplicialData.vertexEnum, ht_eq_s]
     -- Vertex at idx is not in faceOf s' hs' k' = faceOf s hs k
     have h_nmem : D.vertexEnum s hs idx ∉ D.faceOf s hs k := by
-      have := D.vertexEnum_findOppositeIdx_not_mem hne_erase.choose ht' _ hf' hfc'
-      rwa [hface_eq, hve] at this
+      have h0 := D.vertexEnum_findOppositeIdx_not_mem hne_erase.choose ht' _ hf' hfc'
+      rw [hve] at h0; rwa [hface_eq] at h0
     exact (D.vertexEnum_not_mem_faceOf_iff s hs idx k).mp h_nmem
   exact h_idx_eq _ _ _
 
@@ -772,17 +773,7 @@ noncomputable def AbstractSimplicialData.toTriangulation
   cellDecEq := inferInstance
   cellFintype := Finset.Subtype.fintype D.topSimplices
   vertex := fun ⟨s, hs⟩ k => D.vertexEnum s hs k
-  vertex_injective := by
-    intro ⟨s, hs⟩ i j hij
-    have hnd : (s.sort (· ≤ ·)).Nodup := s.sort_nodup (· ≤ ·)
-    set L := s.sort (· ≤ ·) with hL_def
-    set i' : Fin L.length := i.cast (by rw [hL_def, Finset.length_sort]; exact (D.card_eq s hs).symm)
-    set j' : Fin L.length := j.cast (by rw [hL_def, Finset.length_sort]; exact (D.card_eq s hs).symm)
-    have hi'j' : L.get i' = L.get j' := hij
-    have key : (i' : ℕ) = (j' : ℕ) := by
-      rw [List.nodup_iff_injective_get] at hnd
-      exact Fin.val_eq_of_eq (hnd hi'j')
-    exact Fin.ext key
+  vertex_injective := fun ⟨s, hs⟩ => D.vertexEnum_injective s hs
   adj := D.adjFn
   adj_symm := by
     intro ⟨s, hs⟩ k ⟨s', hs'⟩ k' hadj
