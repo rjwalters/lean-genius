@@ -111,6 +111,21 @@
       "targetId": "sum-of-kth-powers",
       "relationship": "related",
       "description": "Power sums p_k = ∑ xᵢ^k are the unnormalized building blocks of power means: M_k = (∑ wᵢzᵢ^k)^(1/k) = (p_k/n)^(1/k) for equal weights. Power sum identities (Newton-Girard) relate p_k to elementary symmetric polynomials, connecting this power mean formalization to the Maclaurin chain in amgm-inequality-oq-02"
+    },
+    {
+      "targetId": "amgm-inequality-oq-03-oq-02-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Extended Power Mean Monotonicity (OQ-03-OQ-02-OQ-01-OQ-01) unifies the three separate cases proved here — same-sign positive (M_r ≤ M_s for 0 < r ≤ s), same-sign negative (M_r ≤ M_s for r ≤ s < 0 via duality), and the HM ≤ GM crossing — into a single theorem `power_mean_monotone_unified`. This entry proves the cases individually; OQ-03-OQ-02-OQ-01-OQ-01 assembles them into one statement covering all r ≤ s."
+    },
+    {
+      "targetId": "amgm-inequality-oq-03-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "Power Mean Limits (OQ-03-OQ-03-OQ-01) proves the extreme cases of the power mean chain left open here: lim_{r→+∞} M_r = max(z) and lim_{r→-∞} M_r = min(z) via `Filter.Tendsto`. This formalizes the endpoints of the interpolation HM ≤ GM ≤ AM ≤ ... ≤ max that this entry begins, completing the picture from minimum to maximum."
+    },
+    {
+      "targetId": "amgm-inequality-oq-03-oq-04",
+      "relationship": "extended-by",
+      "description": "Rényi Entropy and Power Mean Monotonicity (OQ-03-OQ-04) proves the equivalence between power mean monotonicity M_r ≤ M_s and Rényi entropy monotonicity H_β ≤ H_α (α ≤ β). The connection sketched in the shannon-entropy cross-reference here is made precise: H_α = (1/(1-α)) log M_{α-1}(p), so power mean monotonicity is information-theoretic monotonicity in disguise. OQ-03-OQ-04 bridges the inequality and entropy libraries."
     }
   ],
   "overview": {
