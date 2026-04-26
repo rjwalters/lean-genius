@@ -309,6 +309,76 @@ theorem nonderogatory_has_cyclic_vector_finite_any_size [Fintype K]
   nonderogatory_has_cyclic_vector_any_field M h
 
 -- ============================================================
+-- SECTION IV.6: Irreducible Minpoly Case (Sorry-Free)
+-- ============================================================
+
+/-- Over ANY field K (including finite fields), if M is nonderogatory and
+    the minimal polynomial μ = minpoly K M is IRREDUCIBLE, then EVERY
+    nonzero vector is cyclic.
+
+    Proof (no sorry, works over all fields):
+    Take any v ≠ 0 and p with deg(p) < n and p(M)v = 0.
+    Let d = gcd(p, μ). By Bezout, d(M)v = 0 (annihilator_dvd_minpoly).
+    Since d | μ and μ is irreducible: either IsUnit d or d ~ μ.
+    • Unit case: d = C c (nonzero constant) → (aeval M d)v = c•v = 0 → v = 0. Contradiction.
+    • Associate case: μ | d | p → deg(p) ≥ deg(μ) = n, contradicting deg(p) < n → p = 0. -/
+theorem every_nonzero_cyclic_of_irred_minpoly
+    (M : Matrix (Fin n) (Fin n) K)
+    (h : IsNonderogatory M) (hirr : Irreducible (minpoly K M))
+    (v : Fin n → K) (hv : v ≠ 0) : IsCyclicVector M v := by
+  intro p hp hann
+  set μ := minpoly K M with hμ_def
+  set d := EuclideanDomain.gcd p μ with hd_def
+  have hd_ann : (aeval M d).mulVec v = 0 := annihilator_dvd_minpoly M v p hann
+  have hd_dvd : d ∣ μ := EuclideanDomain.gcd_dvd_right p μ
+  obtain ⟨q, hq⟩ := hd_dvd
+  rcases hirr.isUnit_or_isUnit hq with hd_unit | hq_unit
+  · -- Case 1: d is a unit polynomial → d(M) = c • I → c • v = 0 → v = 0, contradiction
+    exfalso
+    -- In K[X], units are nonzero constants: d = C ↑c for some c : Kˣ
+    obtain ⟨c, hc⟩ := Polynomial.isUnit_iff.mp hd_unit
+    -- (aeval M (C ↑c)).mulVec v = ↑c • v
+    have heval_smul : (aeval M d).mulVec v = ↑c • v := by
+      rw [← hc, Polynomial.aeval_C, Algebra.algebraMap_eq_smul_one,
+          Matrix.smul_mulVec, Matrix.one_mulVec]
+    -- ↑c • v = 0 with ↑c ≠ 0 forces v = 0
+    rw [heval_smul] at hd_ann
+    exact hv (smul_eq_zero.mp hd_ann |>.resolve_left (Units.ne_zero c))
+  · -- Case 2: q is a unit → d ~ μ → μ | d | p → p = 0
+    obtain ⟨u, hu⟩ := hq_unit
+    -- From μ = d * q = d * ↑u, derive d = μ * ↑u⁻¹
+    have hdu : d * ↑u = μ := by rw [← hu]; exact hq.symm
+    have hd_eq : d = μ * ↑u⁻¹ := by
+      have h1 : d = d * (↑u * ↑u⁻¹) := by rw [Units.mul_inv, mul_one]
+      rw [← mul_assoc, hdu] at h1; exact h1
+    -- μ | d (via the associate relation)
+    have hμ_dvd_d : μ ∣ d := ⟨↑u⁻¹, hd_eq⟩
+    -- d | p (gcd divides first argument) → μ | p
+    have hd_dvd_p : d ∣ p := EuclideanDomain.gcd_dvd_left p μ
+    have hμ_dvd_p : μ ∣ p := dvd_trans hμ_dvd_d hd_dvd_p
+    -- p = 0 or deg(μ) ≤ deg(p), but deg(p) < n = deg(μ)
+    rcases eq_or_ne p 0 with rfl | hp_ne
+    · rfl
+    · exfalso
+      have hμ_deg : μ.natDegree = n := by
+        rw [hμ_def, h, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]
+      exact absurd (Polynomial.natDegree_le_of_dvd hμ_dvd_p hp_ne) (by omega)
+
+/-- Corollary: When minpoly K M is irreducible, nonderogatory M has a cyclic vector.
+    This case is proved WITHOUT any sorry — no Rational Canonical Form needed.
+    The proof holds over all fields, including finite fields with |K| ≤ n. -/
+theorem nonderogatory_has_cyclic_vector_irred_minpoly
+    (M : Matrix (Fin n) (Fin n) K)
+    (h : IsNonderogatory M) (hirr : Irreducible (minpoly K M)) :
+    ∃ v, IsCyclicVector M v := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · exact ⟨Fin.elim0, fun p hp _ => by omega⟩
+  -- e₀ = Pi.single 0 1 is a nonzero vector (n ≥ 1)
+  refine ⟨Pi.single (0 : Fin n) 1, every_nonzero_cyclic_of_irred_minpoly M h hirr _ ?_⟩
+  intro h0
+  exact one_ne_zero (congr_fun h0 ⟨0, hn⟩ |>.symm.trans (by simp [Pi.single_apply]))
+
+-- ============================================================
 -- SECTION V: Counterexample to Union Avoidance over Small Fields
 -- ============================================================
 
@@ -350,6 +420,11 @@ vector argument. The remaining sorry is isolated to exactly the RCF similarity s
 - `aeval_conj`: Conjugation commutes with polynomial evaluation (inductive proof)
 - `cyclic_vector_of_similar`: Cyclic vectors transfer under similarity
 - `F2_union_covers`: Counterexample showing union avoidance fails over F₂
+- `every_nonzero_cyclic_of_irred_minpoly`: Every nonzero v is cyclic when minpoly irreducible (no sorry)
+- `nonderogatory_has_cyclic_vector_irred_minpoly`: Cyclic vector exists when minpoly irreducible (no sorry)
+
+**Remaining sorry**: `nonderogatory_similar_companion` (RCF similarity, used by main theorem).
+**Sorry-free subcase**: irreducible minpoly case is fully proved without RCF.
 -/
 
 end CyclicVectorArbitrary
