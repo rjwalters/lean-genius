@@ -196,14 +196,24 @@
   },
   "crossReferences": [
     {
-      "targetId": "ramseys-theorem",
-      "relationship": "related",
-      "description": "Related extremal combinatorics result"
+      "targetId": "wilsons-theorem",
+      "relationship": "foundational",
+      "description": "Wilson's theorem ((p-1)! ≡ -1 mod p) is a direct ingredient: it forces (p-1)! + a^{p-1} ≡ -1 + 1 = 0 (mod p) when p ∤ a, ensuring divisibility by p. The classification of solutions reduces to asking how high the p-adic valuation v_p((p-1)! + a^{p-1}) = k can be — Wilson is the starting point for this p-adic analysis."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's generalization of Fermat's little theorem (a^{φ(n)} ≡ 1 mod n) specializes to a^{p-1} ≡ 1 (mod p) for primes p. This means (p-1)! + a^{p-1} ≡ (p-1)! + 1 (mod p), and Wilson gives (p-1)! ≡ -1 (mod p), so the sum is ≡ 0 (mod p). Both Wilson and Fermat-Euler are essential for the modular arithmetic foundation of Problem 405."
+    },
+    {
+      "targetId": "erdos-728-factorial-divisibility",
+      "relationship": "sibling",
+      "description": "Erdős #728 (factorial divisibility) is a sibling problem in the factorial + power number theory family. Both #405 and #728 study when expressions involving factorials satisfy strong divisibility conditions — #728 asks when n! | a^{n!}-1, while #405 asks when (p-1)! + a^{p-1} = p^k. Both use p-adic valuation methods and Fermat-Euler congruences."
     },
     {
       "targetId": "erdos-1001",
       "relationship": "related",
-      "description": "Fellow Erdős problem"
+      "description": "Erdős #1001 (Diophantine approximation density) is a fellow Erdős number theory problem. Problem #405 and #1001 both use Baker's method (linear forms in logarithms) — #405 uses Baker bounds on |log(p-1)! - k log p| to show that solutions must be finite, connecting Diophantine approximation to factorial growth rates."
     }
   ],
   "sorries": 0
