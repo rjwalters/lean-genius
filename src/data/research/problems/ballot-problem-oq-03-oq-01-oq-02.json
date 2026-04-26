@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: hook_walk_identity proved for ≤2-row, ≤2-col, gHookYD, 3-row, 4-row. File 7274 lines. Sorry only at ≥5-row shapes.",
+    "progressSummary": "PROGRESS: hook_walk_identity proved for ≤2-row, gHookYD, ≤2-col, 3-row, 4-row, 5-row. Only ≥6-row shapes remain (1 sorry). PART XIX adds 835 lines. 4 total sorries: 3 LGV approach + 1 hook_walk_identity ≥6-row.",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -121,7 +121,8 @@
       "hook_walk_identity_fourRow: proves ∑_c hookProd(μ)/hookProd(μ\\c)=|μ| for all 4-row shapes [a,b,c,d] in BallotProblemOQ03OQ01OQ02.lean:~6650",
       "fourRow_colLen_*: column length lemmas for 4 zones in 4-row shapes",
       "fourRow_hookLen_row*: hook length lemmas for rows 0-3 in all zones",
-      "fourRow_arm_row*: arm product ratio lemmas using telescoping products"
+      "fourRow_arm_row*: arm product ratio lemmas using telescoping products",
+      "hook_walk_identity_fiveRow: proved for all exactly-5-row shapes (rowLen 5=0, rowLen 4>0). Uses fiveRow_colLen_* (4 lemmas), fiveRow_hookLen_* (15 lemmas), fiveRow_arm_row* (5 lemmas), fiveRow_corner_* (3 lemmas). BallotProblemOQ03OQ01OQ02.lean:7762"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -187,16 +188,17 @@
       "YoungDiagram.rowLen_anti (antitone row lengths) used to show i≥3 → rowLen i=0 for [a,2,1]",
       "interval_cases tactic required for isLowerSet base case at (2,0) and for hμ_eq case split on i<3",
       "4-row hook walk identity: R₃+R₂+R₁+R₀=a+b+c+d closes via field_simp;ring after telescoping",
-      "hook_walk_identity sorry scope: now covers only ≥5-row shapes (rowLen 4 ≠ 0); all other cases proved"
+      "hook_walk_identity sorry scope: now covers only ≥5-row shapes (rowLen 4 ≠ 0); all other cases proved",
+      "PART XIX: hook_walk_identity proved for exactly-5-row shapes [a,b,c,d,e] via direct hookProd_ratio_formula computation + field_simp;ring (~835 lines). Pattern extends PART XVIII to 5 rows with 4 column zones [0,e), [e,d), [d,c), [c,b) and 15 hook length lemmas"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
       "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux"
     ],
     "nextSteps": [
-      "PART XIX: extend to 5-row shapes (~300 lines, same algebraic pattern)",
-      "GNW general proof (~300 lines) covers all remaining shapes at once",
-      "Docker build verification of PART XVIII compilation"
+      "Extend to 6-row shapes (PART XX, ~1000 lines same pattern) OR attempt general inductive proof",
+      "The row-by-row approach becomes increasingly verbose; consider abstracting to n-row via a general arm_product formula",
+      "GNW probabilistic proof (~300 lines) would cover all cases at once but requires Markov chain formalization"
     ]
   },
   "tags": [
