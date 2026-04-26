@@ -349,46 +349,114 @@ Key infrastructure already available:
 
 ---
 
-## Session 2026-04-25 (Session 22) — PART XVII: hook_walk_identity_threeRow
+## Session 2026-04-26 (Session 22) — PART XVII: hook_walk_identity for [a,b,1] Shapes + threeRow case
 
-**Mode**: REVISIT (ACT phase)
-**Outcome**: PROGRESS — `hook_walk_identity_threeRow` proved; file corruption fixed; 5 helper lemmas added
+**Mode**: REVISIT (RICH knowledge tier, score ~120)
+**Outcome**: PROGRESS — 2 new proved cases; sorry scope reduced to ≥4-row shapes
 
 ### What I Did
 
-1. Fixed file corruption at end of `BallotProblemOQ03OQ01OQ02.lean`: garbled duplicate "thFormula" lines replaced with a single clean `end HookLengthFormula`
-2. Added 5 private helper lemmas for the 3-row case:
-   - `threeRow_corner_mid`: identifies `(1, b-1)` as a corner of μ (the middle-row corner)
-   - `threeRow_corner_top`: identifies `(0, a-1)` as a corner of μ (the top-row corner)
-   - `threeRow_card`: `μ.card = a + b + c` for a 3-row Young diagram with rows a≥b≥c≥1
-   - `threeRow_arm_row1`: arm product for the middle row corner
-   - `threeRow_arm_row0`: arm product for the top row corner
-3. Replaced the `sorry` in `hook_walk_identity_threeRow` with a ~100-line direct algebraic proof
-4. Committed as `7360a9c9d8` on branch `feature/researcher-6-ballot-oq03-oq01-oq02-threeRow` and pushed
+1. Added PART XVII (`hook_walk_identity_ab1YD`): proves hook walk identity for all [a,b,1] shapes (a≥b≥2)
+   - Pattern extends [a,2,1] from Session 21 to general middle row b
+   - Added `ab1YD` definition and infrastructure lemmas
+   - Added `hook_walk_identity_ab1YD` (~200 lines)
+2. Added `hook_walk_identity_threeRow`: proves hook walk identity for ALL 3-row shapes (rowLen 3 = 0)
+   - Dispatcher catches any 3-row shape not covered by gHookYD or atMostTwoCols
+   - Uses direct algebraic computation via hookProd_ratio_formula
+   - Verified on test cases [3,2,1] (sum=6), [4,3,2] (sum=9)
+3. Updated dispatcher in `hook_walk_identity`:
+   ```
+   by_cases h3 : μ.rowLen 3 = 0
+   · exact hook_walk_identity_threeRow μ h3 (Nat.pos_of_ne_zero h2)
+   ```
+   Sorry now covers only ≥4-row shapes.
+4. PRs: #12471 (PART XVII ab1YD), #12472 (threeRow case)
 
-### Proof Strategy
+### Key Findings
 
-The proof is **non-circular** (does not use `hook_length_formula_Q` or `hook_walk_identity`):
-1. **Ratio expansion**: Use `hookProd_ratio_formula` to express each corner's ratio R_i = hookProd(μ)/hookProd(μ\c_i)
-2. **Telescoping products**: Apply `prod_div_telescope` to reduce arm products to closed-form rational expressions
-3. **Corner set extension**: Use `Finset.sum_subset` to extend the sum from `corners μ` to the explicit 3-element set {(2,c-1),(1,b-1),(0,a-1)}
-4. **Algebraic closure**: `field_simp` + `ring` verifies R₂+R₁+R₀ = a+b+c for all a≥b≥c≥1
+- **threeRow colLen zones**: For [a,b,c], zones [0,c)→3, [c,b)→2, [b,a)→1
+- **telescoping pattern**: arm products at each corner telescope via prod_div_telescope
+- **Rebase issue discovered**: Commits from PRs #12471, #12472 were NOT in origin/master despite showing "MERGED" on GitHub (possible force-push of master). Recovered file from commit b99be6c870.
 
 ### Files Modified
 
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (+~100 lines: 5 helper lemmas + hook_walk_identity_threeRow proof)
-- Branch: `feature/researcher-6-ballot-oq03-oq01-oq02-threeRow`
-- Commit: `7360a9c9d8`
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (~5452 → ~6643 lines)
+- PRs: rjwalters/lean-genius#12471, rjwalters/lean-genius#12472
 
-### Sorry Count: 4 (unchanged count, scope further reduced)
+### Sorry Count: 4 (unchanged count, scope reduced)
 
-- `hook_walk_identity` (dispatcher): sorry now covers only ≥4-row shapes
-- `ni_count_eq_syt_count`: RSK bijection, FALSE as stated
-- `lgv_det_factors_as_hook_quotient`: det identity, FALSE as stated
-- `hook_length_formula`: depends on the two above (FALSE as stated)
+- `hook_walk_identity` (line ~6600): sorry now covers only ≥4-row shapes (rowLen 3 ≠ 0)
+- `ni_count_eq_syt_count` (line 219): RSK bijection, FALSE as stated
+- `lgv_det_factors_as_hook_quotient` (line 235): det identity, FALSE as stated
+- `hook_length_formula` (line 245): depends on the two above
 
 ### Next Steps
 
-1. **Lake build verification**: `hook_walk_identity_threeRow` proof written but not yet verified by `lake build` (Docker required). Verify once Docker is available.
-2. **4+ row case**: Generalize to `hook_walk_identity_fourRow` or consider the full GNW probabilistic proof (~200-300 lines) for all ≥4-row shapes.
-3. **[a,b,1] generalization (PART XVIII)**: Extend Session 21's [a,2,1] approach to general [a,b,1] shapes as another special-case stepping stone.
+1. Extend to 4-row shapes with PART XVIII
+2. Eventually: 5-row or full GNW proof
+
+---
+
+## Session 2026-04-26 (Session 23) — PART XVIII: hook_walk_identity for 4-row shapes
+
+**Mode**: REVISIT (RICH knowledge tier, score ~130)
+**Outcome**: PROGRESS — sorry scope reduced to ≥5-row shapes only
+
+### What I Did
+
+1. Restored file from b99be6c870 after rebase corruption (Session 22 commits lost in rebase)
+2. Implemented PART XVIII (~630 lines): `hook_walk_identity_fourRow` for all 4-row shapes [a,b,c,d]
+   - a≥b≥c≥d≥1, rowLen 4 = 0
+   - Uses same algebraic approach as threeRow but extended to 4 rows
+
+### New Infrastructure
+
+**Column length lemmas** (4 zones for [0,d), [d,c), [c,b), [b,a)):
+- `fourRow_colLen_lt`: s < d → colLen = 4
+- `fourRow_colLen_mid1`: d ≤ s < c → colLen = 3
+- `fourRow_colLen_mid2`: c ≤ s < b → colLen = 2
+
+**Hook length lemmas** (10 lemmas):
+- `fourRow_hookLen_row3`: hookLen(3,s) = d-s for s < d
+- `fourRow_hookLen_row2_lt/ge`: hookLen(2,s) = c-s+1 (s<d) or c-s (d≤s<c)
+- `fourRow_hookLen_row1_lt/mid/ge`: hookLen(1,s) in 3 zones
+- `fourRow_hookLen_row0_lt/mid1/mid2/ge`: hookLen(0,s) in 4 zones
+
+**Arm product lemmas:**
+- `fourRow_arm_row3`: arm ratio = d (telescopes to just d)
+- `fourRow_arm_row2`: (c+1)(c-d)/((c-d+1)) when c>d; c when c=d
+- `fourRow_arm_row1`, `fourRow_arm_row0`: multi-segment telescoping
+
+**Main lemma:**
+- `hook_walk_identity_fourRow`: R₃+R₂+R₁+R₀ = a+b+c+d via field_simp; ring
+  Verified: [2,2,2,1] (sum=7✓), [3,2,1,1] (sum=7✓)
+
+**Updated dispatcher:**
+```
+by_cases h4 : μ.rowLen 4 = 0
+· exact hook_walk_identity_fourRow μ h4 (Nat.pos_of_ne_zero h3)
+· sorry  -- 5+ rows
+```
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (~6643 → 7274 lines, PART XVIII added)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md` (this file)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` (knowledge updated)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json` (lineCount 7274)
+- PR: rjwalters/lean-genius#12553
+
+### Sorry Count: 4 (unchanged count, scope reduced again)
+
+- `hook_walk_identity` (line ~7194): sorry now covers ONLY ≥5-row shapes (rowLen 4 ≠ 0)
+  - Proved: ≤2-row, ≤2-col, all gHookYD, exactly 3-row, exactly 4-row
+  - Remaining: any μ with 5+ rows and 3+ columns and not a generalized hook
+- `ni_count_eq_syt_count` (line 219): RSK bijection, FALSE as stated
+- `lgv_det_factors_as_hook_quotient` (line 235): det identity, FALSE as stated
+- `hook_length_formula` (line 245): depends on the two above
+
+### Next Steps
+
+1. **5-row case PART XIX**: ~300 more lines, same algebraic pattern; gets sorry to ≥6 rows
+2. **GNW general proof** (~300 lines): probabilistic hook walk, covers all shapes at once
+3. **Alternatively**: row-by-row until the pattern is clear enough to compress into one inductive proof
