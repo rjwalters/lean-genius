@@ -1049,15 +1049,27 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
     -- ≥ (n/π) · (1/2) · log(n+1) = (1/(2π)) · n · log(n+1)
     have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
     have hm_pos : 0 < n / 2 := by omega
-    -- Step A: Convert to Finset.range and bound by sub-sum
-    -- Full sum ≥ sub-sum over k with (n+1)/2 ≤ k < n (dropped terms are nonneg)
-    -- Step B: Each sub-sum term ≥ 2n/(π(2(n-k)-1)) by tan_half_angle_cot_lb
-    -- Step C: Reindex sub-sum = (2n/π)·Σ_{j<n/2} 1/(2j+1) by sub_sum_eq_odd_harmonic
-    -- Step D: ≥ (2n/π)·(1/2)·log(n/2+1) by odd_harmonic_sum_lb
-    -- Step E: ≥ (1/(2π))·n·log(n+1) since (n/2+1)² ≥ n+1 for n ≥ 2
-    -- Proof assembles these steps via calc chain.
-    -- The Fin n → Finset.range conversion and sub-sum extraction are the key technical steps.
-    sorry -- Assembling steps A-E: needs Fin↔range conversion + calc chain
+    -- Step E: Log comparison: (1/2)·log(n+1) ≤ log(n/2+1) since (n/2+1)² ≥ n+1 for n ≥ 2
+    have hLogComp : (1 : ℝ) / 2 * Real.log ((↑n : ℝ) + 1) ≤
+                    Real.log ((↑(n / 2) : ℝ) + 1) := by
+      have hsq : (↑n : ℝ) + 1 ≤ ((↑(n / 2) : ℝ) + 1) ^ 2 := by
+        have : (n / 2 + 1) * (n / 2 + 1) ≥ n + 1 := by omega
+        have h : (↑((n / 2 + 1) * (n / 2 + 1)) : ℝ) ≥ ↑(n + 1) := Nat.cast_le.mpr this
+        push_cast at h ⊢; nlinarith
+      calc (1 : ℝ) / 2 * Real.log ((↑n : ℝ) + 1)
+          ≤ 1 / 2 * Real.log (((↑(n / 2) : ℝ) + 1) ^ 2) := by
+            apply mul_le_mul_of_nonneg_left _ (by positivity)
+            exact Real.log_le_log (by positivity) hsq
+        _ = 1 / 2 * (2 * Real.log ((↑(n / 2) : ℝ) + 1)) := by
+            rw [Real.log_pow]; push_cast; ring
+        _ = Real.log ((↑(n / 2) : ℝ) + 1) := by ring
+    -- Step D: Odd harmonic bound
+    have hHarmonic := odd_harmonic_sum_lb (n / 2) hm_pos
+    -- Step A: Full Fin n sum ≥ filtered sub-sum (nonneg terms dropped)
+    -- Steps B+C: Sub-sum of cot bounds = (2n/π) · odd harmonic sum
+    -- Combined via Fin n → Finset.range conversion + sub_sum_eq_odd_harmonic
+    -- This is the key assembly step connecting Fin n filtering to Finset.range reindexing
+    sorry -- Assembly: Fin n sub-sum bound via cot_lb → (2n/π)·Σ 1/(2j+1) → target
 
 /-! ## Key Lemmas with Sorry -/
 
