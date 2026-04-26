@@ -123,6 +123,16 @@
       "targetId": "area-of-circle-oq-05",
       "relationship": "related",
       "description": "OQ-05 connects Gaussian integral to circle area; the n-ball volume formula involves the same π via Gamma function"
+    },
+    {
+      "targetId": "area-of-circle-oq-02-oq-01",
+      "relationship": "child",
+      "description": "Child entry: proves the nball_volume_scaling axiom from this file by establishing the EuclideanSpace/PiLp measure isomorphism — converting this conditional result to a fully verified theorem"
+    },
+    {
+      "targetId": "area-of-circle-oq-02-oq-04",
+      "relationship": "child",
+      "description": "Child entry: proves Vol(Bⁿ) → 0 as n → ∞ using Stirling's approximation — the asymptotic counterpart to the finite-n computations here"
     }
   ],
   "sorries": 0
