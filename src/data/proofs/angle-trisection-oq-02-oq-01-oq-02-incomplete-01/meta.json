@@ -90,15 +90,15 @@
     {
       "id": "impossibilities",
       "title": "Concrete Impossibility Results",
-      "startLine": 210,
-      "endLine": 230,
+      "startLine": 261,
+      "endLine": 279,
       "summary": "Derives angle_trisection_impossible_degree, doubling_cube_impossible_degree, and regular_7gon_construction_impossible as direct applications."
     },
     {
       "id": "galois-sorry",
       "title": "Galois Characterization (SORRY)",
-      "startLine": 233,
-      "endLine": 257,
+      "startLine": 280,
+      "endLine": 306,
       "summary": "States wantzel_galois_iff: α constructible ↔ Gal(minpoly(ℚ,α)) is a 2-group. Sorry remains; requires full FTGT + 500+ lines new infrastructure."
     }
   ],
