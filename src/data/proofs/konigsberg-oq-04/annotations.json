@@ -142,6 +142,31 @@
     ]
   },
   {
+    "id": "ann-k3-circuit-arbs",
+    "proofId": "konigsberg-oq-04",
+    "range": {
+      "startLine": 155,
+      "endLine": 211
+    },
+    "type": "definition",
+    "title": "K3 Eulerian Circuit and Three Explicit Arborescences",
+    "content": "Defines the Eulerian circuit $A \\to B \\to A \\to C \\to B \\to C \\to A$ in the complete bidirectional $K_3$ and constructs three in-arborescences rooted at $A$, each encoding a different spanning tree of $K_3$:\n\n- **Arb1**: $B \\mapsto A, C \\mapsto A$ — both non-root vertices go directly to the root\n- **Arb2**: $B \\mapsto A, C \\mapsto B$ — C reaches root via B (a directed path $C \\to B \\to A$)\n- **Arb3**: $B \\mapsto C, C \\mapsto A$ — B reaches root via C (a directed path $B \\to C \\to A$)\n\nThe distinctness theorem proves the three parent functions are pairwise unequal by comparing their values at $B$ or $C$. These three arborescences are the inputs to the BEST formula: $t_A(K_3) = 3$, giving the count $d^+(A) \\cdot t_A \\cdot \\prod (d^+(v)-1)! = 2 \\cdot 3 \\cdot 1 = 6$.",
+    "mathContext": "The three arborescences correspond to the three spanning trees of $K_3$ directed toward root $A$: $\\{B \\to A, C \\to A\\}$, $\\{B \\to A, C \\to B\\}$, $\\{B \\to C, C \\to A\\}$. In general, the Matrix Tree Theorem counts these as $\\det(\\hat{L}_w)$ where $\\hat{L}_w$ is the reduced directed Laplacian with row and column for $w$ deleted. For $K_3$: $\\hat{L}_A = \\begin{pmatrix} 2 & -1 \\\\ -1 & 2 \\end{pmatrix}$, $\\det = 4 - 1 = 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "directed spanning tree",
+      "Matrix Tree Theorem",
+      "directed Laplacian",
+      "in-arborescence",
+      "BEST theorem"
+    ],
+    "prerequisites": [
+      "Arborescence",
+      "Function.iterate",
+      "k3Digraph definition"
+    ]
+  },
+  {
     "id": "ann-k3-arb-complete",
     "proofId": "konigsberg-oq-04",
     "range": {
