@@ -73,36 +73,44 @@
   },
   "sections": [
     {
+      "id": "imports-header",
+      "title": "Imports and Module Context",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Imports from SophieGermain (the parent), SophieGermainOQ02 (the distribution entry), and Mathlib. The module docstring explains Selberg's parity obstruction, Hardy-Littlewood predictions, Brun's theorem, and what is formalized: equivalences, 25 examples, and conditional consequences under SGC.",
+      "mathContext": "Key imported items: `IsSophieGermainPrime`, `SophieGermainConjecture` axiom, `safe_prime_mod_twelve` (mod-12 structure theorem), 10 parent examples. The parity obstruction: sieves cannot certify $\\Omega(n) = 1$ simultaneously for $n$ and $f(n)$, blocking all current lower-bound approaches."
+    },
+    {
       "id": "safe-prime-conjecture",
-      "title": "The Safe Prime Conjecture",
+      "title": "I. The Safe Prime Conjecture",
       "startLine": 52,
-      "endLine": 55,
-      "summary": "Defines the Safe Prime Conjecture: for every N, there exists a safe prime q > N. This is the 'dual' form of SGC via the p ↔ 2p+1 bijection.",
-      "mathContext": "$\\text{SafePrimeConjecture} := \\forall N, \\exists q > N,\\; \\text{IsSafePrime}(q)$, where $\\text{IsSafePrime}(q) := \\text{Prime}(q) \\wedge q \\equiv 1 \\pmod{2} \\wedge \\text{Prime}((q-1)/2)$."
+      "endLine": 60,
+      "summary": "Defines SafePrimeConjecture: for every N, there exists a safe prime q > N. This is the 'dual' form of SGC via the p ↔ 2p+1 bijection — the key equivalence proved later in this file.",
+      "mathContext": "$\\text{SafePrimeConjecture} := \\forall N, \\exists q > N,\\; \\text{IsSafePrime}(q)$. Cryptographic context: safe primes $q = 2p+1$ are used in Diffie-Hellman because $(\\mathbb{Z}/q\\mathbb{Z})^*$ has order $2p$, resisting Pohlig-Hellman subgroup attacks."
     },
     {
       "id": "examples",
-      "title": "Extended Verified Examples",
-      "startLine": 59,
-      "endLine": 92,
-      "summary": "Adds 15 Sophie Germain primes beyond the parent's 10, reaching 25 total. Each is verified by Lean's decide tactic: both p and 2p+1 are checked to be prime by certified computation.",
-      "mathContext": "New examples: $p \\in \\{113, 131, 173, 191, 233, 239, 251, 281, 293, 359, 419, 431, 443, 491, 509\\}$, with corresponding safe primes $\\{227, 263, 347, 383, 467, 479, 503, 563, 587, 719, 839, 863, 887, 983, 1019\\}$, all prime."
+      "title": "II. Extended Verified Examples (25 Total)",
+      "startLine": 62,
+      "endLine": 98,
+      "summary": "Adds 15 Sophie Germain primes beyond the parent's 10, reaching 25 total. Each is proved by `constructor <;> decide` — Lean's certified primality check. The exists_twentyfive_sg_primes theorem packages all 25 in a single conjunction.",
+      "mathContext": "New examples: $p \\in \\{113, 131, 173, 191, 233, 239, 251, 281, 293, 359, 419, 431, 443, 491, 509\\}$, all satisfying Prime($p$) $\\wedge$ Prime($2p+1$) by `decide`. The full verified set: $\\{2,3,5,11,23,29,41,53,83,89,113,131,173,191,233,239,251,281,293,359,419,431,443,491,509\\}$."
     },
     {
       "id": "equivalences",
-      "title": "Equivalent Formulations",
-      "startLine": 94,
-      "endLine": 152,
-      "summary": "Four equivalent forms of the Sophie Germain Conjecture: the original unbounded form, the no-max condition, the safe prime conjecture, and an unfolded prime pair form.",
-      "mathContext": "$\\text{SGC} \\iff \\neg(\\exists M, \\forall p \\text{ SG}, p \\leq M) \\iff \\text{SafePrimeConjecture} \\iff (\\forall N, \\exists p > N,\\; \\text{Prime}(p) \\wedge \\text{Prime}(2p+1))$."
+      "title": "III. Equivalent Formulations of SGC",
+      "startLine": 100,
+      "endLine": 167,
+      "summary": "Proves four equivalent forms of SGC: unbounded (no-max), safe prime conjecture, and prime-pairs unfolding. Two arithmetic helpers (half_two_mul_add_one, two_mul_half_pred_add_one) support the bijection proofs. The key direction (SafePrime → SGC) requests q > 2N+1 to ensure p = (q-1)/2 > N.",
+      "mathContext": "$\\text{SGC} \\iff \\neg(\\exists M, \\forall p \\text{ SG}, p \\leq M) \\iff \\text{SafePrimeConjecture} \\iff (\\forall N, \\exists p > N,\\; \\text{Prime}(p) \\wedge \\text{Prime}(2p+1))$. Backward direction: request $q > 2N+1$ so $p = (q-1)/2 > N$; uses `Nat.div_le_div_right` for the bound."
     },
     {
       "id": "conditional",
-      "title": "Conditional Consequences Under SGC",
-      "startLine": 155,
-      "endLine": 183,
-      "summary": "Three results that follow from the SGC axiom: infinitely many safe primes, infinitely many primes ≡ 11 (mod 12), and the no-finite-cover property.",
-      "mathContext": "Under SGC: $\\forall N, \\exists q > N,\\; \\text{IsSafePrime}(q)$; $\\forall N, \\exists q > N,\\; \\text{Prime}(q) \\wedge q \\equiv 11 \\pmod{12}$; $\\forall S : \\text{Finset}\\; \\mathbb{N}, \\exists p \\text{ SG}, p \\notin S$."
+      "title": "IV. Conditional Consequences Under the SGC Axiom",
+      "startLine": 169,
+      "endLine": 196,
+      "summary": "Three theorems conditional on the SGC axiom: infinite safe primes (1-line via sgc_implies_safe_prime_conjecture), infinite primes ≡ 11 (mod 12) (uses max(N,3) to satisfy safe_prime_mod_twelve's hypothesis), and no-finite-cover (Finset.sup upper-bound argument).",
+      "mathContext": "Under $\\text{sophie\\_germain\\_conjecture}$: (1) $\\forall N, \\exists q > N$ safe prime; (2) $\\forall N, \\exists q > N$ with $q \\equiv 11 \\pmod{12}$; (3) $\\forall S \\subseteq_{\\text{fin}} \\mathbb{N}, \\exists p \\text{ SG}, p \\notin S$. Key: `Finset.le_sup (f := id)` gives $p \\leq \\sup S$, contradicting $p > \\sup S$ from SGC."
     }
   ],
   "conclusion": {
