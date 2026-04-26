@@ -2,7 +2,7 @@
   "id": "ballot-problem-oq-03-oq-01-oq-02",
   "title": "Hook-Length Formula for Standard Young Tableaux via LGV",
   "slug": "ballot-problem-oq-03-oq-01-oq-02",
-  "description": "Formalizes the hook-length formula f^λ = n!/∏h(u) for Standard Young Tableaux. Fully proves the formula for single-row (1×n), single-column (n×1), hook-shape ((m+1,1)), 2-row rectangular (m×m), general 2-row [a,b], all generalized hook shapes [a,1^b], and all ≤2-column shapes (via transpose duality). General formula has 4 sorries: 3 via LGV approach + 1 for hook_walk_identity (≥3-row AND ≥3-col AND non-gHookYD case only).",
+  "description": "Formalizes the hook-length formula f^λ = n!/∏h(u) for Standard Young Tableaux. Proves: 1-row, 1-col, hook shapes, 2-rect, general 2-row, all gHookYD [a,1^b], ≤2-col (transpose duality), exactly 3-row, exactly 4-row. General formula has 4 sorries: 3 via LGV approach + 1 for hook_walk_identity (≥5-row shapes only).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-21",
@@ -22,8 +22,8 @@
     "sorries": 4,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "Four open sorries: (1) hook_length_formula (LGV approach: requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) hook_walk_identity ≥3-row non-gHookYD case (GNW or RSK, ~300 lines; at-most-2-row and all [a,1^b] cases proved; hookProd_ratio_formula fully proved session 18, hook_walk_identity_gHookYD proved session 19). hook_length_formula_general is proved modulo hook_walk_identity via Part XIV corner induction.",
-    "lineCount": 5274,
+    "assumptions": "Four open sorries: (1) hook_length_formula (LGV approach: requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) hook_walk_identity ≥5-row case (GNW or RSK, ~300 lines; at-most-2-row, gHookYD, ≤2-col, exactly-3-row, exactly-4-row all proved). hook_length_formula_general is proved modulo hook_walk_identity via corner induction.",
+    "lineCount": 7274,
     "theoremCount": 164,
     "definitionCount": 14,
     "originalContributions": [
