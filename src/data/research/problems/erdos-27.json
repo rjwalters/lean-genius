@@ -41,14 +41,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "SURVEY: 9 sorries all deep research results. Provable structural parts done. Next: axiomatize, then prove derived results.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "File has 9 sorries: all represent deep research results (FFKPY, Bloom-Briggs, etc.)",
+      "Provable parts already done: perfect_is_zero_almost, conjecture_dichotomy, naturalDensity_eq_inv, naturalDensity_vanishes",
+      "All deep sorries should be axioms: ffkpy_main_theorem, bbmst_bound, averaging_bound, growing_C_works, sufficient_C_works",
+      "product_bounded_below is the most tractable sorry: needs log estimates for harmonic sums over [N,CN]",
+      "erdos_27_disproved should chain from axiomatized ffkpy + product_bounded_below"
+    ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Read Erdos27Problem.lean to map 12 sorry locations",
-      "Check which 5 are Aristotle-ready targets",
-      "Survey Mathlib for natural density and ArithmeticFunction support"
+      "Convert deep results to axioms, prove erdos_27_disproved from them",
+      "Prove product_bounded_below via harmonic sum estimates"
     ],
     "markdown": "# Knowledge Base: erdos-27\n\nInsights accumulated during research on Erdős #27: Almost Covering Systems.\n\n---\n\n## Problem Understanding\n\nProblem SOLVED (NO) by FFKPY. Lean formalization has 12 sorries in Erdos27Problem.lean.\nAristo companion (Erdos27Aristotle.lean) has 5 routine targets.\n\n---\n\n## Insights\n\n[To be filled during OBSERVE/ORIENT phases]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
