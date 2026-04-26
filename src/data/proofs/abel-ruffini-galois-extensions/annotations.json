@@ -164,8 +164,8 @@
     },
     "type": "insight",
     "title": "Klein Four-Group and A₄ Solvability",
-    "content": "A₄ is proved solvable via the Klein four-group $V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\}$. The Lean proof defines $V_4$ as the set of elements $x$ in $A_4$ satisfying $x^2 = e$, proves $V_4 \\trianglelefteq A_4$ (by `native_decide`), and uses the short exact sequence $1 \\to V_4 \\to A_4 \\to A_4/V_4 \\to 1$. Both $V_4 \\cong \\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$ (abelian) and $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (cyclic) are solvable. This construction is the only way to prove $A_4$ solvable — $A_4$ itself is non-abelian.",
-    "mathContext": "$V_4 = \\{x \\in A_4 : x^2 = e\\} \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$ (Klein four-group — all even permutations of order $\\leq 2$). $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$. Solvability chain: $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$, with abelian factors $V_4/\\{e\\} \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$, $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$, $S_4/A_4 \\cong \\mathbb{Z}/2\\mathbb{Z}$. The Lean proof defines $V_4$ as `{x | x.1 * x.1 = 1}` in `alternatingGroup (Fin 4)` and verifies normality via `native_decide`.",
+    "content": "A₄ is proved solvable via the Klein four-group $V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\}$. The Lean proof defines $V_4$ as the set of elements $x$ in $A_4$ satisfying $x^2 = e$, proves $V_4 \\trianglelefteq A_4$ (by `native_decide`), and uses the short exact sequence $1 \\to V_4 \\to A_4 \\to A_4/V_4 \\to 1$. Both $V_4 \\cong \\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$ (abelian) and $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (cyclic) are solvable. This construction is the only way to prove $A_4$ solvable — $A_4$ itself is non-abelian.\n\n**Connection to the derived series**: The composition series $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$ coincides exactly with the derived (commutator) series of $S_4$: $S_4^{(1)} = [S_4, S_4] = A_4$, $S_4^{(2)} = [A_4, A_4] = V_4$, $S_4^{(3)} = [V_4, V_4] = \\{e\\}$. This means $S_4$ has **derived length 3**: it takes exactly 3 commutator steps to reach the trivial group. This is the deepest solvable case — among symmetric groups, $S_4$ has the longest derived series. The derived length 3 corresponds to 3 nested levels of root extraction in Cardano's quartic formula.",
+    "mathContext": "$V_4 = \\{x \\in A_4 : x^2 = e\\} \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$ (Klein four-group — all even permutations of order $\\leq 2$). $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$. Derived series of $S_4$: $S_4 \\supset A_4 = [S_4,S_4] \\supset V_4 = [A_4,A_4] \\supset \\{e\\} = [V_4,V_4]$. Solvability chain (composition series): $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$, with abelian factors $V_4/\\{e\\} \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$, $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$, $S_4/A_4 \\cong \\mathbb{Z}/2\\mathbb{Z}$. The Lean proof defines $V_4$ as `{x | x.1 * x.1 = 1}` in `alternatingGroup (Fin 4)` and verifies normality via `native_decide`.",
     "significance": "key",
     "relatedConcepts": [
       "Klein four-group",
@@ -239,13 +239,13 @@
     "id": "arg-a5-simple",
     "proofId": "abel-ruffini-galois-extensions",
     "range": {
-      "startLine": 191,
-      "endLine": 198
+      "startLine": 185,
+      "endLine": 199
     },
     "type": "insight",
-    "title": "A₅ is Simple: The Minimal Obstruction",
-    "content": "A₅ is the smallest non-abelian simple group ($|A_5| = 60$). Its simplicity is the root obstruction to S₅'s non-solvability: a solvable group has a composition series with abelian factors, but A₅ is simple and non-abelian, so it cannot appear in any such series. Lean invokes `alternatingGroup.isSimpleGroup_five` from Mathlib. The simplicity of A₅ was proved by Galois himself in 1832 and is the centerpiece of the unsolvability proof.",
-    "mathContext": "$A_5$ is simple: the only normal subgroups are $\\{e\\}$ and $A_5$ itself. $|A_5| = 60 = 5!/2$. In the composition series of $S_5$: $\\{e\\} \\trianglelefteq A_5 \\trianglelefteq S_5$, where $A_5/\\{e\\} \\cong A_5$ is simple and non-abelian. A group is solvable iff all composition factors are cyclic of prime order. Remarkably, $A_5$ carries three exceptional isomorphisms: $A_5 \\cong \\text{PSL}(2,4) \\cong \\text{PSL}(2,5) \\cong I$, where $I$ is the icosahedral rotation group (60 orientation-preserving symmetries of the regular icosahedron). These identify $A_5$ as the first member of the $\\text{PSL}(2,q)$ family of finite simple groups (simple for prime powers $q \\geq 4$). The next is $\\text{PSL}(2,7) \\cong GL_3(\\mathbb{F}_2)$ of order 168.",
+    "title": "A₅ is Simple and Has Order 60: The Minimal Obstruction",
+    "content": "Part III (lines 185–199) establishes two facts about $A_5$ that together make it the minimal obstruction to solvability.\n\n**`a5_simple`** (lines 191–193): $A_5$ is the smallest non-abelian simple group. Its simplicity is the root obstruction to $S_5$'s non-solvability: a solvable group has a composition series with abelian factors, but $A_5$ is simple and non-abelian, so it cannot appear in any such series. Lean invokes `alternatingGroup.isSimpleGroup_five` from Mathlib. The simplicity of $A_5$ was proved by Galois himself in 1832 and is the centerpiece of the unsolvability proof.\n\n**`card_a5`** (lines 195–197): $|A_5| = 60 = 5!/2$, verified by `decide`. This order is not just a number — it is the **minimum possible order of a non-abelian simple group**. The Feit-Thompson theorem (1963) implies every finite group of odd order is solvable, so any non-abelian simple group must have even order. Among groups of even order $< 60$, all are solvable (every such group has a prime composition factor or is a $p$-group). This makes $A_5$ the unique simple non-abelian group of minimum order, establishing it as the unavoidable obstruction at the exact boundary $n = 4$.",
+    "mathContext": "$A_5$ is simple: the only normal subgroups are $\\{e\\}$ and $A_5$ itself. $|A_5| = 60 = 5!/2$. In the composition series of $S_5$: $\\{e\\} \\trianglelefteq A_5 \\trianglelefteq S_5$, where $A_5/\\{e\\} \\cong A_5$ is simple and non-abelian. A group is solvable iff all composition factors are cyclic of prime order (equivalently, iff the derived series reaches $\\{e\\}$). Remarkably, $A_5$ carries three exceptional isomorphisms: $A_5 \\cong \\text{PSL}(2,4) \\cong \\text{PSL}(2,5) \\cong I$, where $I$ is the icosahedral rotation group (60 orientation-preserving symmetries of the regular icosahedron). These identify $A_5$ as the first member of the $\\text{PSL}(2,q)$ family of finite simple groups (simple for prime powers $q \\geq 4$). The `decide` tactic verifies $|A_5| = 60$ by exhaustive fintype enumeration — a concrete computational confirmation of the algebraic identity $|A_n| = n!/2$.",
     "significance": "key",
     "relatedConcepts": [
       "simple group",
@@ -256,13 +256,17 @@
       "non-abelian simple group",
       "PSL(2,5)",
       "icosahedral symmetry group",
-      "classification of finite simple groups"
+      "classification of finite simple groups",
+      "Feit-Thompson theorem",
+      "card_a5"
     ],
     "prerequisites": [
       "simple groups",
       "composition series",
       "Jordan-Hölder theorem",
-      "alternating group"
+      "alternating group",
+      "Fintype.card",
+      "decide tactic"
     ]
   },
   {

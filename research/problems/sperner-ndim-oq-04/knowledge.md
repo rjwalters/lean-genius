@@ -252,3 +252,48 @@ Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following
 
 1. Implement kuhnWalkWithExit + walkTrace_reversal to fill bdry_nfc_even sorry
 2. Then proof is complete (0 axioms, 0 sorries)
+
+---
+
+## Session 2026-04-26 (Session 7) — Discover bdry_nfc_even is FALSE; Fix Proof Structure
+
+**Mode**: REVISIT
+**Outcome**: mathematical correction — removed false lemma, proof restructured correctly
+
+### What I Did
+
+1. Re-analyzed `bdry_nfc_even` (|B_nfc| always even) that Session 6 introduced as a sorry
+2. Constructed counter-example: triangulation with |B| = 1, B = B_nfc, walk reaches interior FC → |B_nfc| = 1 (odd)
+3. Determined `bdry_nfc_even` is MATHEMATICALLY FALSE — removed it entirely
+4. Identified the correct parity structure: |B_nfc| = 2·|B-B pairs| + |B-FC walks|
+5. Rewrote `kuhn_path_existential` with correct case split:
+   - Case 1 (B_fc ≠ ∅): extract s₀ from B_fc directly → proved
+   - Case 2 (B_fc = ∅): |B_nfc| = |B| odd; B-B pairs even (involution); |B-FC| = odd − even ≥ 1 → sorry
+6. Updated module header and docstrings throughout
+
+### Key Findings
+
+- **bdry_nfc_even is FALSE**: |B_nfc| can be odd. Counter-example: |B|=1, B=B_nfc, single walk from the one boundary non-FC door reaches an interior FC simplex. |B_nfc| = 1 (odd), contradicting even.
+- **Correct parity decomposition**: B-B walks (walk from B_nfc exits at another B_nfc element) form involution pairs → |B-B pairs| even. B-FC walks (walk from B_nfc reaches interior FC) can be any count. So |B_nfc| = 2·|B-B| + |B-FC|, which has same parity as |B-FC|.
+- **Case 2 proof strategy**: When B_fc = ∅ and |B| odd: |B_nfc| = |B| odd; B-B pairs even; |B-FC walks| = odd − even = odd ≥ 1. So ∃ walk from B_nfc reaching interior FC simplex.
+- **Case 2 pending work**: Need `kuhnWalkWithExit` (fuel-based walk returning exit or FC) and `walkTrace_reversal` (induction showing reversed walk is valid). ~100 lines of Lean. The math is clear; only formalization remains.
+- **Session 6 proof was wrong**: `kuhn_path_existential` in Session 6 was proved from `bdry_nfc_even` which is false. Session 7 replaces it with the correct structure.
+
+### Files Modified
+
+- `proofs/Proofs/SpernerNdimOQ04.lean` (816→764 lines; removed bdry_nfc_even; restructured kuhn_path_existential)
+- `src/data/proofs/sperner-ndim-oq-04/meta.json` (lineCount 816→764; updated assumptions)
+- `src/data/research/problems/sperner-ndim-oq-04.json` (updated progressSummary, builtItems, insights, nextSteps)
+- `research/problems/sperner-ndim-oq-04/knowledge.md` (this file: added Session 7)
+
+### Remaining Sorries (1)
+
+1. `kuhn_path_existential` Case 2 — B_fc = ∅; needs walk-pairing involution on B-B pairs + |B-FC| ≥ 1 extraction
+
+### Next Steps
+
+1. Define `kuhnWalkWithExit`: fuel-based walk returning `Sum (Simplex × Fin) Simplex` (boundary-exit or FC-exit)
+2. Prove `walkTrace_reversal`: induction showing backward walk from trace endpoint reaches trace start
+3. Define involution τ on B-B pairs and prove τ∘τ = id via walkTrace_reversal + unique exit
+4. Apply `even_card_fpf_invol` to get |B-B pairs| even
+5. Fill Case 2 sorry: |B_nfc| odd − |B-B| even → |B-FC| ≥ 1 → ∃ FC reachable from B_nfc

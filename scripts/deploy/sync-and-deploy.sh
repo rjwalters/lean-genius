@@ -652,7 +652,9 @@ deploy_website() {
     safe_commit_msg=$(git log -1 --format="%s" 2>/dev/null | LC_ALL=C tr -cd '[:print:]' | cut -c1-100 || echo "deploy $commit_hash")
 
     print_info "Running wrangler pages deploy (commit: $commit_hash)..."
-    if wrangler pages deploy dist --project-name=lean-genius --branch=main --commit-dirty=true --commit-hash="$commit_hash" --commit-message="$safe_commit_msg" 2>&1 | tail -10; then
+    # UV_THREADPOOL_SIZE=32 prevents DNS resolution failures (ENOTFOUND) during
+    # parallel bulk uploads on macOS with Node 25 + wrangler 4.x
+    if UV_THREADPOOL_SIZE=32 wrangler pages deploy dist --project-name=lean-genius --branch=main --commit-dirty=true --commit-hash="$commit_hash" --commit-message="$safe_commit_msg" 2>&1 | tail -10; then
         print_success "Deployment completed"
 
         # Prune old deployments, keeping only the latest N

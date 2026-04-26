@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOMATIZED: 0 sorries, 1 axiom (kuhn_path_existential_ax). Session 5: removed 2 false theorems (kuhn_walk_reaches_fc, kuhnPathStart_is_fc); axiomatized kuhnPathStart_finds_fc_existential (true but requires walk reversibility τ∘τ=id). Non-revisiting FULLY PROVED (Session 4, kuhn_step_nonrevisit + WalkValid). Walk reversibility remains as mathematical gap in axiom.",
+    "progressSummary": "SORRY (1): kuhn_path_existential Case 2 — B_fc = ∅, needs walk-pairing involution on B-B pairs. Session 7: discovered bdry_nfc_even (|B_nfc| always even) is MATHEMATICALLY FALSE; removed it; replaced kuhn_path_existential proof with correct case split. Session 6: removed axiom, proved kuhn_path_existential from bdry_nfc_even. Non-revisiting FULLY PROVED (Session 4). Correct parity: |B_nfc| = 2·|B-B| + |B-FC|; Case 1 (B_fc ≠ ∅) proved; Case 2 needs ~100 lines (kuhnWalkWithExit + walkTrace_reversal).",
     "builtItems": [
       "doorDegree def: SpernerNDimOQ04.lean:60",
       "IsKuhnCompatible def: SpernerNDimOQ04.lean:65",
@@ -54,9 +54,12 @@
       "kuhn_step_nonrevisit (PROVED): KEY non-revisiting theorem — under WalkValid, walk never revisits any simplex — SpernerNDimOQ04.lean:447",
       "walkValid_step (PROVED): WalkValid preserved by one Kuhn step — SpernerNDimOQ04.lean:529",
       "kuhn_path_existential_ax (AXIOM, Session 5): Kuhn walk finds FC from some boundary door — SpernerNDimOQ04.lean:708",
-      "kuhnPathStart_finds_fc_existential (PROVED from axiom, Session 5): eliminates sorry, uses kuhn_path_existential_ax — SpernerNDimOQ04.lean:724",
+      "kuhnPathStart_finds_fc_existential (PROVED from kuhn_path_existential, Session 6): uses kuhn_path_existential — SpernerNDimOQ04.lean",
+      "kuhn_path_existential Case 1 (PROVED, Session 7): when B_fc ≠ ∅, direct extraction from B_fc",
+      "kuhn_path_existential Case 2 (SORRY, Session 7): when B_fc = ∅, needs walk-pairing on B-B pairs",
       "REMOVED kuhn_walk_reaches_fc (Session 5): theorem was FALSE — universal walk correctness is false for some paths",
-      "REMOVED kuhnPathStart_is_fc (Session 5): theorem was FALSE — not all boundary doors reach FC"
+      "REMOVED kuhnPathStart_is_fc (Session 5): theorem was FALSE — not all boundary doors reach FC",
+      "REMOVED bdry_nfc_even (Session 7): lemma was MATHEMATICALLY FALSE — |B_nfc| can be odd when B-FC walks exist"
     ],
     "insights": [
       "IsKuhnCompatible (door degree ≤ 2) combined with abstract_door_parity gives exact door counts: 1 for FC, 0 or 2 for non-FC",
@@ -77,7 +80,9 @@
       "Non-revisiting proof structure: for visited s, use (1) kuhnWalk_no_immediate_back for predecessor case; (2) 3-door contradiction (kuhn_three_doors_contradiction) for non-predecessor case; distinctness from adj_unique_facet + current ∉ visited",
       "WalkValid invariant: tracks (k_in, k_out) per visited simplex + predecessor identification. exit_to_chain splits into predecessor-case and non-predecessor-case. This enables adj_unique_facet to fire correctly for both k_back ≠ k_out_s and k_back ≠ k_in_s",
       "walk-pairing argument for kuhnPathStart_finds_fc_existential: define τ on non-FC-terminating boundary doors. τ is fixed-point-free involution (walk reversibility). even_card_fpf_invol gives |non-FC bdry doors| even. Odd - even = odd ≥ 1 FC bdry door. Uses non-revisiting (now proved) + walk reversibility (pending)",
-      "kuhnPathStart_is_fc (universal) is FALSE: walk can terminate at non-FC boundary exit. Correct statement is existential: kuhnPathStart_finds_fc_existential"
+      "kuhnPathStart_is_fc (universal) is FALSE: walk can terminate at non-FC boundary exit. Correct statement is existential: kuhnPathStart_finds_fc_existential",
+      "bdry_nfc_even (|B_nfc| always even) is MATHEMATICALLY FALSE (Session 7): counter-example: triangulation with |B|=1, B=B_nfc, walk reaches interior FC → |B_nfc|=1 (odd). Correct structure: |B_nfc| = 2·|B-B pairs| + |B-FC walks|, where |B-FC walks| can be odd.",
+      "Correct parity argument for Case 2 (Session 7): when B_fc=∅ and hbdry_odd: |B_nfc|=|B| odd; B-B walks are even (involution τ restricted to B-B pairs); |B-FC walks| = odd − even = odd ≥ 1 → ∃ walk from B_nfc reaching FC."
     ],
     "mathlibGaps": [
       "No Mathlib theorem for path-following algorithm termination with non-revisiting invariant",
@@ -86,7 +91,7 @@
     ],
     "nextSteps": [
       "If walk reversibility is later formalized: prove τ∘τ=id by tracking the full walk sequence (sₙ path + unique exit at each non-FC simplex) and showing reversed walk retraces forward walk",
-      "Once walk reversibility is proved, replace kuhn_path_existential_ax with a full proof using even_card_fpf_invol",
+      "Implement kuhnWalkWithExit + walkTrace_reversal to fill kuhn_path_existential Case 2 sorry (~100 lines); proof then complete with 0 axioms, 0 sorries",
       "Consider contributing adj_unique_facet + Kuhn algorithm formalization to Mathlib as standalone combinatorics contribution"
     ]
   },
@@ -107,18 +112,18 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.382Z",
-  "lastUpdate": "2026-04-24T00:00:00.000Z",
+  "lastUpdate": "2026-04-26T00:00:00.000Z",
   "significance": 8,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/SpernerNDimOQ04.lean",
       "filename": "SpernerNDimOQ04.lean",
-      "lineCount": 734,
-      "theoremCount": 13,
-      "axiomCount": 1,
-      "defCount": 6,
-      "sorryCount": 0,
+      "lineCount": 764,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerNDimOQ04.lean"
     }

@@ -1,37 +1,32 @@
 {
-  "id": "amgm-inequality-oq-02-oq-01-oq-02",
-  "title": "Off-Diagonal Symmetry in Symmetric Functions",
-  "slug": "amgm-inequality-oq-02-oq-01-oq-02",
-  "description": "Proves the off-diagonal symmetry identity: for a symmetric function f(i,j) = f(j,i), the sum over off-diagonal pairs Σ_{i≠j} f(i,j) = 2·Σ_{i<j} f(i,j). Applied to products xᵢxⱼ, this gives Σ_{i≠j} xᵢxⱼ = 2·e₂ where e₂ = Σ_{i<j} xᵢxⱼ is the second elementary symmetric polynomial, completing the Newton-Girard decomposition (Σxᵢ)² = Σxᵢ² + 2·e₂.",
+  "id": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
+  "title": "Full Newton-Girard Recurrence for Symmetric Polynomials",
+  "slug": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
+  "description": "Proves the full Newton-Girard recurrence connecting power sums pₖ = Σxᵢᵏ and elementary symmetric polynomials eₖ for all k ≥ 1, generalizing the OQ-02 result (Σxᵢ)² = Σxᵢ² + 2·e₂ to arbitrary degree. Derives p₁ = e₁, p₂ = e₁p₁ − 2e₂, p₃ = e₁p₂ − e₂p₁ + 3e₃ as corollaries of Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum (Zeilberger's combinatorial proof).",
   "meta": {
     "author": "Lean Genius",
-    "date": "2026-04-13",
-    "status": "verified",
-    "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ01OQ02.lean",
+    "date": "2026-04-25",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ01OQ02OQ01.lean",
     "tags": [
       "algebra",
       "symmetric-functions",
-      "combinatorics",
       "newton-girard",
-      "elementary-symmetric-polynomials"
+      "power-sums",
+      "elementary-symmetric-polynomials",
+      "mv-polynomial"
     ],
-    "badge": "original",
-    "sorries": 0,
+    "badge": "wip",
     "mathlibDependencies": [
       {
-        "theorem": "Finset.offDiag",
-        "description": "The set of off-diagonal pairs {(i,j) | i ∈ s ∧ j ∈ s ∧ i ≠ j}",
-        "module": "Mathlib.Data.Finset.Card"
+        "theorem": "MvPolynomial.psum_eq_mul_esymm_sub_sum",
+        "description": "Newton-Girard recurrence: pₖ = (-1)^(k+1)·k·eₖ − Σ_{0<j<k} (-1)^j·eⱼ·pₖ₋ⱼ",
+        "module": "Mathlib.RingTheory.MvPolynomial.Symmetric.NewtonIdentities"
       },
       {
-        "theorem": "Finset.sum_image",
-        "description": "∑ x ∈ s.image g, f x = ∑ x ∈ s, f (g x) when g is injective",
-        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
-      },
-      {
-        "theorem": "Finset.sum_union",
-        "description": "∑ over disjoint union = sum of sums",
-        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+        "theorem": "MvPolynomial.mul_esymm_eq_sum",
+        "description": "Dual form: k·eₖ = (-1)^(k+1)·Σ_{j<k} (-1)^j·eⱼ·pₖ₋ⱼ",
+        "module": "Mathlib.RingTheory.MvPolynomial.Symmetric.NewtonIdentities"
       }
     ],
     "originalContributions": [
@@ -41,10 +36,8 @@
       "sum_offDiag_eq_two_mul_sum_upper: main theorem Σ_{i≠j} = 2·Σ_{i<j}",
       "offDiag_prod_eq_two_mul_e2: specialization to products xᵢxⱼ"
     ],
-    "dateAdded": "2026-04-13",
-    "axiomCount": 0,
-    "lineCount": 138,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "dateAdded": "2026-04-25",
+    "assumptions": "Lean file not yet written. AmgmInequalityOQ02OQ01OQ02OQ01.lean is planned but does not exist in git. The metadata describes a planned Newton-Girard recurrence proof. Current content (originalContributions, sections) reflects the parent off-diagonal symmetry proof (OQ02), not a new Newton-Girard formalization.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -116,35 +109,18 @@
     }
   ],
   "conclusion": {
-    "summary": "The off-diagonal symmetry identity Σ_{i≠j} f(i,j) = 2·Σ_{i<j} f(i,j) is proved in full generality for any symmetric function over a linearly ordered finite set with values in a commutative ring. All 6 theorems compile with 0 sorries and 0 axioms.",
+    "summary": "Gallery entry for a planned Newton-Girard recurrence proof. Status: formalized (wip) — the Lean file has not yet been written. The off-diagonal symmetry identity is proved in the parent entry (amgm-inequality-oq-02-oq-01-oq-02). This entry tracks the open task of extending that proof to the full Newton-Girard recurrence for all k ≥ 1.",
     "implications": "**For Newton-Girard**: Combined with the parent's diagonal/off-diagonal decomposition, this gives the complete n=2 Newton-Girard identity: (Σxᵢ)² = Σxᵢ² + 2·e₂.\n\n**For Symmetric Functions**: The identity is the fundamental connection between the power sum p₂ and the elementary symmetric polynomial e₂, forming the base case for the full Newton-Girard recurrence.\n\n**For Mathlib**: Demonstrates clean use of Finset.offDiag, sum_image, and Prod.swap for combinatorial double-counting arguments.",
     "openQuestions": [
       "Prove the full Newton-Girard recurrence: p_k = Σ_{i=1}^k (-1)^{i-1} eᵢ p_{k-i}",
       "Formalize the relationship between off-diagonal symmetry and Schur positivity"
     ]
   },
-  "leanFile": {
-    "imports": [
-      "Mathlib",
-      "Proofs.AmgmInequalityOQ02OQ01"
-    ],
-    "opens": [
-      "Finset",
-      "BigOperators"
-    ],
-    "namespace": "AMGMInequalityOQ02OQ01OQ02",
-    "lineCount": 138,
-    "axiomCount": 0,
-    "theoremCount": 6,
-    "definitionCount": 0,
-    "path": "Proofs/AmgmInequalityOQ02OQ01OQ02.lean",
-    "sorries": 0
-  },
   "crossReferences": [
     {
-      "targetId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
-      "relationship": "child",
-      "description": "Planned extension: Full Newton-Girard recurrence $p_k = \\sum_{i=1}^k (-1)^{i-1} e_i p_{k-i}$ for all $k \\geq 1$. This entry proves the $k=2$ base case $\\sum_{i \\neq j} x_i x_j = 2e_2$; the child tracks generalization to all $k$ using Mathlib's `MvPolynomial.psum_eq_mul_esymm_sub_sum` (Zeilberger's combinatorial proof of Newton's identities)."
+      "targetId": "amgm-inequality-oq-02-oq-01-oq-02",
+      "relationship": "parent",
+      "description": "Direct parent: `AmgmInequalityOQ02OQ01OQ02.lean` proves $\\sum_{i \\neq j} x_i x_j = 2 \\sum_{i<j} x_i x_j$ via the Prod.swap double-counting argument. This entry (OQ02OQ01) plans to extend that result to the full Newton-Girard recurrence $p_k = \\sum_{i=1}^k (-1)^{i-1} e_i p_{k-i}$ for all $k \\geq 1$, generalizing the $k=2$ base case."
     },
     {
       "targetId": "amgm-inequality-oq-02-oq-01",
@@ -179,6 +155,5 @@
       "year": "1707",
       "note": "Newton's identities relating power sums to elementary symmetric polynomials. The n=2 case p₂ = e₁² - 2e₂ is the simplest instance"
     }
-  ],
-  "sorries": 0
+  ]
 }

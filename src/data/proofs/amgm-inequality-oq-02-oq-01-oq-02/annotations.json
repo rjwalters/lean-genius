@@ -107,6 +107,33 @@
     ]
   },
   {
+    "id": "ann-double-counting-template",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 71,
+      "endLine": 117
+    },
+    "type": "insight",
+    "title": "Double-Counting Template: Rewrite → sum_image → Set Identity",
+    "content": "The proof of `sum_lower_eq_sum_upper` + `sum_offDiag_eq_two_mul_sum_upper` encodes a reusable **double-counting pattern** for symmetric functions over finsets in Lean. The pattern has four steps:\n\n1. **Decompose** the target set into two halves (here: upper and lower triangular parts) via a membership argument using `LinearOrder`.\n2. **Exhibit the bijection** between the halves as a `Finset.image` operation on an involution (here: `Prod.swap`).\n3. **Reindex the sum**: rewrite the summand to factor through the bijection, then apply `Finset.sum_image` with an injectivity proof.\n4. **Combine** via `Finset.sum_union` (disjointness required) and `two_mul`.\n\nThis template applies whenever: (a) the index set has a natural involution, (b) the summand is invariant under the involution. Common instances beyond this proof: the handshaking lemma (edges counted twice by summing degrees), symmetry of multinomial coefficients, counting involutions in permutation groups.",
+    "mathContext": "General pattern: if $S = A \\sqcup B$ with bijection $\\sigma: A \\to B$ and $f(\\sigma(x)) = f(x)$ for all $x \\in A$, then $\\sum_{x \\in S} f(x) = 2 \\sum_{x \\in A} f(x)$. Lean encoding: `Finset.sum_union` + `Finset.sum_image` + `sum_congr`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "double-counting",
+      "Finset.sum_image",
+      "Finset.sum_union",
+      "involution",
+      "Prod.swap",
+      "handshaking-lemma",
+      "symmetry"
+    ],
+    "prerequisites": [
+      "Finset.sum_image (Mathlib)",
+      "Finset.sum_union (Mathlib)",
+      "involution injectivity"
+    ]
+  },
+  {
     "id": "ann-application",
     "proofId": "amgm-inequality-oq-02-oq-01-oq-02",
     "range": {
