@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-25",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ01OQ02OQ01.lean",
     "tags": [
       "algebra",
@@ -17,7 +17,6 @@
       "mv-polynomial"
     ],
     "badge": "wip",
-    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "MvPolynomial.psum_eq_mul_esymm_sub_sum",
@@ -38,8 +37,6 @@
       "offDiag_prod_eq_two_mul_e2: specialization to products xᵢxⱼ"
     ],
     "dateAdded": "2026-04-25",
-    "axiomCount": 0,
-    "lineCount": 120,
     "assumptions": "Lean file not yet written. AmgmInequalityOQ02OQ01OQ02OQ01.lean is planned but does not exist in git. The metadata describes a planned Newton-Girard recurrence proof. Current content (originalContributions, sections) reflects the parent off-diagonal symmetry proof (OQ02), not a new Newton-Girard formalization.",
     "mathlib_version": "4.26.0"
   },
@@ -118,23 +115,6 @@
       "Prove the full Newton-Girard recurrence: p_k = Σ_{i=1}^k (-1)^{i-1} eᵢ p_{k-i}",
       "Formalize the relationship between off-diagonal symmetry and Schur positivity"
     ]
-  },
-  "leanFile": {
-    "imports": [
-      "Mathlib",
-      "Proofs.AmgmInequalityOQ02OQ01"
-    ],
-    "opens": [
-      "Finset",
-      "BigOperators"
-    ],
-    "namespace": "AMGMInequalityOQ02OQ01OQ02",
-    "lineCount": 138,
-    "axiomCount": 0,
-    "theoremCount": 6,
-    "definitionCount": 0,
-    "path": "Proofs/AmgmInequalityOQ02OQ01OQ02OQ01.lean",
-    "sorries": 0
   },
   "crossReferences": [
     {
