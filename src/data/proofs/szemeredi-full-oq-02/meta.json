@@ -49,11 +49,13 @@
     "text": "Proves the density formulation of Szemerédi's theorem: k-AP-free sets have vanishing density. The key novelty is the Filter.Tendsto / IsLittleO formulation (not just ε-N₀). k=3 uses Mathlib's Roth theorem; k≥4 is axiomatized.",
     "proofStrategy": "The main proof `szemeredi_vanishing_density` proceeds via Metric.tendsto_atTop:\n1. For any ε > 0, apply ap_free_density_bound from SzemerediTheorem to get N₀ with: for N ≥ N₀, any k-AP-free A ⊆ range N has |A| < ε/2 * N\n2. For N ≥ max N₀ 1 (ensuring N > 0), derive |A_N|/N < ε by dividing both sides by N\n\nThe k=3 IsLittleO statement uses isLittleO_iff_tendsto to convert the Tendsto result to IsLittleO form, using that (A 0).card = 0 when A 0 ⊆ range 0 = ∅.",
     "keyInsights": [
-      "Mathlib already has rothNumberNat_isLittleO_id — the o(N) density statement for k=3 as an IsLittleO. This file connects our custom IsAPFree predicate to this Mathlib result.",
-      "The ap_free_density_bound from SzemerediTheorem.lean (ε-N₀ form) implies Filter.Tendsto (asymptotic form) — the conversion requires N > 0 to divide, handled by max N₀ 1.",
+      "Mathlib already has rothNumberNat_isLittleO_id — the o(N) density statement for k=3 as an IsLittleO. This file connects our custom IsAPFree predicate to this Mathlib result via a Tendsto-to-IsLittleO bridge.",
+      "The ap_free_density_bound from SzemerediTheorem.lean (ε-N₀ form) implies Filter.Tendsto (asymptotic form) — the conversion requires N > 0 to divide, handled by taking N ≥ max N₀ 1 as the threshold.",
       "IsLittleO and Filter.Tendsto are equivalent for nonneg sequences with nonzero denominator, via isLittleO_iff_tendsto. The zero case (N=0) is trivial: A ⊆ range 0 = ∅ so |A|=0.",
-      "Gowers' quantitative result (k-AP-free ⟹ Gowers U^{k-1} norm → 0) is strictly stronger than the density statement, but requires Gowers norm infrastructure not yet in Mathlib 4.",
-      "The axiom boundary: k=1,2 trivial, k=3 proved via Roth/Corners in Mathlib, k≥4 axiomatized. This single axiom (szemeredi_k_ge_4) is the only mathematical assumption."
+      "Gowers' quantitative result (k-AP-free ⟹ ‖𝟏_A‖_{U^{k-1}} → 0) is strictly stronger than the density statement — it implies o(N) since ‖𝟏_A‖_{U^{k-1}} ≥ (|A|/N)^{2^{k-2}} — but requires ~1000 lines of Gowers norm infrastructure not yet in Mathlib 4.26.",
+      "The axiom boundary: k=1,2 trivial, k=3 proved via Roth/Corners in Mathlib, k≥4 axiomatized. This single axiom (szemeredi_k_ge_4) encodes hypergraph regularity, and the Lean 4 formalization is structurally honest about this dependency.",
+      "The density formulation is the 'quantitative face' of Szemerédi's theorem: the classical statement ('sets with positive upper density contain k-APs') is contrapositive to 'k-AP-free sets have density → 0'. Formulating this as a Filter.Tendsto gives a mathematically richer statement than ε-N₀ bounds.",
+      "The ε/2 factor in `ap_free_density_bound k hk (ε/2)` handles the asymmetry between ε-N₀ bounds and open balls: the ε-N₀ form gives |A|/N < ε/2 < ε, but only when N > 0; the max N₀ 1 threshold simultaneously ensures N ≥ N₀ (for the density bound) and N ≥ 1 (for division)."
     ],
     "prerequisites": [
       "Szemerédi theorem and AP definitions (SzemerediTheorem.lean)",
@@ -116,12 +118,32 @@
     {
       "targetId": "szemeredi-theorem",
       "relationship": "extends",
-      "description": "Builds on SzemerediTheorem.lean's ap_free_density_bound (ε-N₀ form) to derive the Filter.Tendsto/IsLittleO asymptotic form"
+      "description": "Builds on SzemerediTheorem.lean's ap_free_density_bound (ε-N₀ form) to derive the Filter.Tendsto/IsLittleO asymptotic form — the key bridge from quantitative to asymptotic"
     },
     {
       "targetId": "szemeredi-full-oq-01",
       "relationship": "related",
-      "description": "The Furstenberg ergodic approach to Szemerédi — an alternative proof route with different infrastructure needs"
+      "description": "The Furstenberg ergodic approach to Szemerédi — an alternative proof route connecting arithmetic progressions to measure-preserving systems and recurrence, with entirely different infrastructure needs"
+    },
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "foundational",
+      "description": "Roth's 1953 theorem: k=3 AP-free subsets of {1,...,N} have |A| = o(N). This is the k=3 case of Szemerédi; the file uses Mathlib's `rothNumberNat_isLittleO_id` as the direct formalization"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "Szemerédi's regularity lemma — the key technical tool in Szemerédi's original 1975 proof. Provides the graph-theoretic infrastructure that the k≥4 case (axiomatized here) ultimately rests on"
+    },
+    {
+      "targetId": "szemeredi-core",
+      "relationship": "parent",
+      "description": "The core Szemerédi theorem formalization; this entry provides the density/asymptotics reformulation as a complementary presentation"
+    },
+    {
+      "targetId": "szemeredi-counting",
+      "relationship": "related",
+      "description": "The AP counting lemma — quantifies the number of k-APs in a set, complementing the density vanishing statement in this entry"
     }
   ],
   "conclusion": {
