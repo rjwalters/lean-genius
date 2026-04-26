@@ -180,6 +180,11 @@
       "targetId": "ptolemys-theorem-oq-01-oq-01",
       "relationship": "sibling",
       "description": "Ptolemy Converse for unit-circle points: equality characterizes cyclic order. The spherical Ptolemy theorem proved here extends the forward direction (cyclic → Ptolemy equality) to the sphere; this OQ-01-OQ-01 sibling entry proves the converse (Ptolemy equality → cyclic order) for S¹ ⊂ S². Together they characterize concyclicity on the sphere: the Ptolemy equality holds if and only if the four points lie on a common great circle arc in a given order."
+    },
+    {
+      "targetId": "synthesis-curvature-ptolemy",
+      "relationship": "related",
+      "description": "synthesis-curvature-ptolemy proves spherical Ptolemy via the curvatureSin K unification framework with K=1, while this entry proves the same result via the chord-arc identity ‖u-v‖ = 2·sin(d_S(u,v)/2) in the unit sphere S² embedded in ℝ³. Both handle K=1 (spherical); synthesis-curvature-ptolemy additionally conjectures the K=-1 (hyperbolic) case via cosh identities. The synthesis survey in this entry's hyperbolic section directly motivates synthesis-curvature-ptolemy's curvatureSin K = sn_κ abstraction."
     }
   ],
   "references": [
