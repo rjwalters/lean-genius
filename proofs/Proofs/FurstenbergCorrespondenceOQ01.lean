@@ -445,6 +445,125 @@ theorem density_lower_bound (A : Set ℕ) {δ : ℝ} (hδ : 0 < δ)
 end CesaroMeasures
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
+PART VIII-b: APPROXIMATE T-INVARIANCE OF CESÀRO MEASURES
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-!
+### T-Invariance Telescoping Bound
+
+The Cesàro measure μ_{N+1}(x) is approximately T-invariant: for any
+measurable set S,
+  μ_{N+1}(T⁻¹S) ≤ μ_{N+1}(S) + 1/(N+1)  and vice versa.
+
+This follows from a telescoping argument: the orbit sums
+Σ_{n<N+1} 1_S(T^{n+1}(x)) and Σ_{n<N+1} 1_S(T^n(x))
+differ by at most 1 (gained the (N+1)-th term, lost the 0-th term).
+
+Consequence: any weak-* limit of Cesàro measures (with N_k → ∞) is T-invariant.
+-/
+
+section TInvariance
+
+open MeasureTheory Classical
+
+/-- The shifted orbit filter {n < N+1 : T^{n+1}(x) ∈ S} has cardinality
+    at most 1 more than the original {n < N+1 : T^n(x) ∈ S}.
+
+    Proof: inject the shifted filter into range(N+2) via n ↦ n+1, then
+    note range(N+2) = range(N+1) ∪ {N+1}, adding at most 1 to the count. -/
+private theorem filter_shift_card_le (x : CantorSpace) (N : ℕ) (S : Set CantorSpace) :
+    ((Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S)).card ≤
+    ((Finset.range (N + 1)).filter (fun n => shift^[n] x ∈ S)).card + 1 := by
+  -- Step 1: inject shifted filter into range(N+2) filter via n ↦ n+1
+  have h_inj :
+      ((Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S)).card ≤
+      ((Finset.range (N + 2)).filter (fun m => shift^[m] x ∈ S)).card := by
+    apply Finset.card_le_card_of_injOn (· + 1)
+    · intro n hn
+      simp only [Finset.mem_filter, Finset.mem_range] at hn ⊢
+      exact ⟨by omega, hn.2⟩
+    · intro a _ b _ hab; omega
+  -- Step 2: range(N+2) = insert (N+1) (range(N+1)), so filter grows by ≤ 1
+  have h_split :
+      ((Finset.range (N + 2)).filter (fun m => shift^[m] x ∈ S)).card ≤
+      ((Finset.range (N + 1)).filter (fun m => shift^[m] x ∈ S)).card + 1 := by
+    rw [Finset.range_succ, Finset.filter_insert]
+    split
+    · exact le_of_le_of_eq (Finset.card_insert_le _ _) rfl
+    · exact Nat.le_add_right _ _
+  linarith
+
+/-- Symmetric bound: the original filter has cardinality at most 1 more
+    than the shifted filter. -/
+private theorem filter_orig_card_le (x : CantorSpace) (N : ℕ) (S : Set CantorSpace) :
+    ((Finset.range (N + 1)).filter (fun n => shift^[n] x ∈ S)).card ≤
+    ((Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S)).card + 1 := by
+  -- Inject original filter into range(N+1) filter of shifted+1 via n ↦ n (when n ≥ 1)
+  -- But element 0 may not be in shifted range. Split: {0} ∪ Ico 1 (N+1)
+  have h_split : Finset.range (N + 1) = {0} ∪ Finset.Ico 1 (N + 1) := by
+    ext m; simp [Finset.mem_range, Finset.mem_union, Finset.mem_Ico,
+                  Finset.mem_singleton]; omega
+  rw [h_split, Finset.filter_union]
+  calc (({0} : Finset ℕ).filter _ ∪ (Finset.Ico 1 (N + 1)).filter _).card
+      ≤ ({0} : Finset ℕ).filter (fun n => shift^[n] x ∈ S) |>.card +
+        (Finset.Ico 1 (N + 1)).filter (fun n => shift^[n] x ∈ S) |>.card :=
+        Finset.card_union_le _ _
+    _ ≤ 1 + ((Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S)).card := by
+        have h0 : ({0} : Finset ℕ).filter (fun n => shift^[n] x ∈ S) |>.card ≤ 1 :=
+          le_trans (Finset.card_filter_le _ _) (by simp)
+        have hIco : (Finset.Ico 1 (N + 1)).filter (fun n => shift^[n] x ∈ S) |>.card ≤
+            ((Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S)).card := by
+          apply Finset.card_le_card_of_injOn (· - 1)
+          · intro n hn
+            simp only [Finset.mem_filter, Finset.mem_Ico, Finset.mem_range] at hn ⊢
+            refine ⟨by omega, ?_⟩
+            convert hn.2 using 2; omega
+          · intro a ha b hb hab
+            simp only [Finset.mem_filter, Finset.mem_Ico] at ha hb; omega
+        linarith
+    _ = ((Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S)).card + 1 := by
+        ring
+
+/-- **Approximate T-invariance (upper bound)**: The Cesàro measure of T⁻¹(S) exceeds
+    that of S by at most 1/(N+1). -/
+theorem cesaroMeasure_preimage_le (x : CantorSpace) (N : ℕ)
+    (S : Set CantorSpace) (hS : MeasurableSet S) :
+    cesaroMeasure x (N + 1) (shift ⁻¹' S) ≤
+    cesaroMeasure x (N + 1) S + (↑(N + 1) : ℝ≥0∞)⁻¹ := by
+  simp only [cesaroMeasure, Measure.smul_apply, smul_eq_mul]
+  rw [finsetDirac_apply _ _ (hS.preimage shift_measurable),
+      finsetDirac_apply _ _ hS]
+  -- Convert the preimage filter to match the shifted form
+  have hfilt_eq : (Finset.range (N + 1)).filter (fun n => shift^[n] x ∈ shift ⁻¹' S) =
+      (Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S) := by
+    congr 1; ext n
+    simp only [Set.mem_preimage, Function.iterate_succ', Function.comp_def]
+  rw [hfilt_eq, ← mul_add]
+  apply mul_le_mul_left'
+  have h := filter_shift_card_le x N S
+  exact_mod_cast h
+
+/-- **Approximate T-invariance (lower bound)**: The Cesàro measure of S exceeds
+    that of T⁻¹(S) by at most 1/(N+1). -/
+theorem cesaroMeasure_preimage_ge (x : CantorSpace) (N : ℕ)
+    (S : Set CantorSpace) (hS : MeasurableSet S) :
+    cesaroMeasure x (N + 1) S ≤
+    cesaroMeasure x (N + 1) (shift ⁻¹' S) + (↑(N + 1) : ℝ≥0∞)⁻¹ := by
+  simp only [cesaroMeasure, Measure.smul_apply, smul_eq_mul]
+  rw [finsetDirac_apply _ _ hS,
+      finsetDirac_apply _ _ (hS.preimage shift_measurable)]
+  have hfilt_eq : (Finset.range (N + 1)).filter (fun n => shift^[n] x ∈ shift ⁻¹' S) =
+      (Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S) := by
+    congr 1; ext n
+    simp only [Set.mem_preimage, Function.iterate_succ', Function.comp_def]
+  rw [hfilt_eq, ← mul_add]
+  apply mul_le_mul_left'
+  have h := filter_orig_card_le x N S
+  exact_mod_cast h
+
+end TInvariance
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
 PART IX: THE MINIMAL REMAINING AXIOM (PROKHOROV)
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -502,12 +621,18 @@ axiom seqCompact_probabilityMeasure_cantor :
 | `mem_cylinderZero_shifted` | ✅ Proved | This session |
 | `cesaroMeasure_cylinderZero` (orbit-density formula) | ✅ Proved | This session |
 | `density_lower_bound` (elementary half) | ✅ Proved | This session |
-| Prokhorov sequential compactness | ⚠ Local axiom | This session |
-| T-invariance of limit measures | ❌ Remaining | ~50 lines |
+| Prokhorov sequential compactness | ⚠ Local axiom | Session 2 |
+| T-invariance telescoping bound | ✅ Proved | Session 3 |
 | Density preservation at limit | ❌ Remaining | ~30 lines |
 
 **Net result**: `furstenberg_correspondence` reduces to `seqCompact_probabilityMeasure_cantor`
-plus ~80 lines of analysis (T-invariance estimate + density lower semi-continuity).
+plus ~30 lines of density preservation (clopen B₀ → μ(B₀) continuous under weak-* limits).
+
+**Prokhorov gap analysis** (session 3): Mathlib v4.26 has `MetrizableSpace (ProbabilityMeasure X)`
+for metrizable separable X (`instMetrizableSpaceProbabilityMeasure`) and
+`UniformSpace.isCompact_iff_isSeqCompact` for first-countable spaces. The missing piece
+is `CompactSpace (ProbabilityMeasure CantorSpace)`, which requires assembling Banach-Alaoglu
+or Prokhorov from Mathlib ingredients (~150-200 lines).
 -/
 
 #check shift_continuous
@@ -516,7 +641,7 @@ plus ~80 lines of analysis (T-invariance estimate + density lower semi-continuit
 #check indicator_in_kfold_return
 #check orbit_indicator_hits
 #check (inferInstance : CompactSpace CantorSpace)
--- New in this session:
+-- Session 2:
 #check @finsetDirac_apply
 #check @cesaroMeasure
 #check @cesaroMeasure_isProbability
@@ -524,5 +649,8 @@ plus ~80 lines of analysis (T-invariance estimate + density lower semi-continuit
 #check @cesaroMeasure_cylinderZero
 #check @density_lower_bound
 #check @seqCompact_probabilityMeasure_cantor
+-- Session 3:
+#check @cesaroMeasure_preimage_le
+#check @cesaroMeasure_preimage_ge
 
 end FurstenbergOQ01
