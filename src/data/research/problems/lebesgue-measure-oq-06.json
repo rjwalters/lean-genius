@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: Session 17 added complete Hausdorff orbit invariant infrastructure (~200 lines). Remaining sorry orbit_ne is a targeted connection bridge (real↔integer action). Transition lemma proofs are correctness-tested by mathematical verification. File: 1136 lines, 2 sorries (orbit_ne + banach_tarski).",
+    "progressSummary": "ACT: hausdorff_free_subgroup PROVED (Session 5, 2026-04-26). Full Hausdorff 1914 orbit argument in Lean: labelState automaton, bridge_single (48 cases), bridge (list induction), lift_eval (FreeGroup induction), contradiction via not_anyInv_pow3_e2Int. File: 1154 lines, 2 sorries (banach_tarski + int_amenable).",
     "builtItems": [
       "Equidecomposable (G-equidecomposability, with notation ≃ᴳ[G]) — proofs/Proofs/LebesgueMeasureOQ06.lean:43",
       "IsParadoxical — proofs/Proofs/LebesgueMeasureOQ06.lean:81",
@@ -51,7 +51,12 @@
       "12 valid transition lemmas: trans_phi_from_phi/psi/psi_inv, trans_phi_inv_from_phi_inv/psi/psi_inv, trans_psi_from_phi/phi_inv/psi, trans_psi_inv_from_phi/phi_inv/psi_inv (LebesgueMeasureOQ06.lean:294-357)",
       "4 base case lemmas: base_phi/phi_inv/psi/psi_inv (LebesgueMeasureOQ06.lean:358-383)",
       "e2Int_no_inv: identity does not satisfy anyInv — distinguishes non-trivial words (LebesgueMeasureOQ06.lean:274-285)",
-      "Injectivity argument: from orbit_ne sorry → w₁⁻¹w₂ ≠ 1 → liftF(w₁⁻¹w₂)=1 → (liftF w₁⁻¹w₂)e₂=e₂ contradicts orbit_ne (LebesgueMeasureOQ06.lean:524-556)"
+      "Injectivity argument: from orbit_ne → w₁⁻¹w₂ ≠ 1 → liftF(w₁⁻¹w₂)=1 → (liftF w₁⁻¹w₂)e₂=e₂ contradicts orbit_ne (LebesgueMeasureOQ06.lean:796-808)",
+      "hausdorff_free_subgroup (PROVED, Session 5) — LebesgueMeasureOQ06.lean:576-808: complete Hausdorff 1914 orbit argument using labelState automaton + bridge lemmas",
+      "bridge_single lemma (PROVED): 48-case proof (4 generators × 3 coordinates) by fin_cases+simp+nlinarith — LebesgueMeasureOQ06.lean:711-725",
+      "bridge lemma (PROVED): list induction connecting evalWord ℤ[√2]³ to 3^n * evalReal — LebesgueMeasureOQ06.lean:728-748",
+      "lift_eval lemma (PROVED): FreeGroup.mk action = evalReal fold — LebesgueMeasureOQ06.lean:751-772",
+      "not_anyInv_pow3_e2Int (PROVED): contradiction for 3^n * e2Int via omega on mod-3 — LebesgueMeasureOQ06.lean:546-563"
     ],
     "insights": [
       "Banach-Tarski NOT in Mathlib as of 2026-04 — confirmed via search. Available Mathlib pieces: Matrix.orthogonalGroup, FreeGroup, IsometryEquiv, EuclideanSpace.",
@@ -78,9 +83,8 @@
       "Amenability for infinite groups not in Mathlib (FolnerCondition exists but Cesaro mean construction not)"
     ],
     "nextSteps": [
-      "Prove orbit_ne sorry: for any w ≠ 1, (liftF w) e₂ ≠ e₂. Requires: (1) connection bridge decode(evalInt w e2Int) = 3^n * (liftF w) e₂ by induction on FreeGroup.toList; (2) for non-empty words evalInt w e2Int satisfies anyInv (by valid transition lemmas); (3) anyInv contradicts 3^n * e₂_int for n≥1 since e2Int_no_inv",
-      "Alternative orbit_ne strategy: define evalInt via FreeGroup.lift on ℤ[√2]³ endomorphisms, prove anyInv preserved by induction on FreeGroup structure",
-      "Correct Zsqrtd simp lemma names: Zsqrtd.mul_re, Zsqrtd.mul_im, Zsqrtd.add_re, Zsqrtd.add_im should exist in Mathlib — verify via Docker build"
+      "Prove int_amenable via ultrafilter Cesàro mean (~100 lines): U = Ultrafilter.of Filter.atTop, dens N A = |A ∩ [-N,N]| / (2N+1), μ A = U.lim (dens · A). Translation invariance: |dens N (g·A) - dens N A| ≤ 2|n|/(2N+1) → 0 along U",
+      "banach_tarski requires ~800 lines: paradoxical F₂ decomposition + Hausdorff paradox extension + AC; properly axiomatized as sorry"
     ]
   },
   "tags": [

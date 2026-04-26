@@ -547,3 +547,59 @@ directly gives `i = j` for `i j : Fin 1` without needing any extra hypotheses.
    - Prove connection: `decode(evalInt w e2Int)` = `3^n * (liftF w) e₂` (induction on word length)
    - Combine: anyInv contradicts 3^n * e₂ for n≥1 via `e2Int_no_inv`
 2. Run Docker build when available to verify the 12 transition lemmas compile
+
+---
+
+## Session 2026-04-26 (Session 18) — hausdorff_free_subgroup PROVED
+
+**Mode**: REVISIT
+**Outcome**: MAJOR PROGRESS — `hausdorff_free_subgroup` fully proved (0 sorries), 2 sorries remain
+
+### What I Did
+
+1. **Replaced Chain' / API sorry approach** with `FreeGroup.isReduced_cons_cons` — cleaner API that directly
+   provides: `isReduced_cons_cons.mp hred : (letter.1 = head.1 → letter.2 = head.2) ∧ IsReduced (head :: tail)`
+   - No need for `List.Chain'` extraction lemmas or `imp_of_mem_imp`
+   - Rewrote `evalWord_labeledInv` using `labelState` (labeled invariant for first letter)
+   - `labelState_step` handles transitions using `FreeGroup.isReduced_cons_cons` reducedness condition
+
+2. **Completed the `bridge_single` lemma**: 48-case proof (4 generators × 3 coordinates),
+   all by `fin_cases` + `simp` + `nlinarith [Real.sq_sqrt]`
+
+3. **Proved `bridge` lemma**: by list induction, connects `evalWord` in ℤ[√2]³ to
+   `3^n * evalReal` (real action). Uses `bridge_single` at each cons step.
+
+4. **Proved `lift_eval` lemma**: induction showing FreeGroup.lift action = evalReal fold.
+   Key: `FreeGroup.mk (g :: rest) = FreeGroup.mk [g] * FreeGroup.mk rest` + `map_mul` + `LinearEquiv.mul_apply`
+
+5. **Closed the orbit_ne proof**:
+   - `enc`: `evalWord l e2Int = fun i => 3^n • e2Int i` via `zsqrtd2ToReal_inj` + bridge
+   - `not_anyInv_pow3_e2Int n hn (enc ▸ hinv)`: contradiction via omega on mod-3 invariant
+
+6. **Proved injectivity from orbit_ne**:
+   - w₁ ≠ w₂ → w₁⁻¹ * w₂ ≠ 1 → `liftF(w₁⁻¹w₂)e₂ = e₂` contradicts `orbit_ne`
+   - `set_option maxHeartbeats 0` needed for the large proof
+
+### Key Findings
+
+- `FreeGroup.isReduced_cons_cons : IsReduced (a :: b :: l) ↔ (a.1 = b.1 → a.2 = b.2) ∧ IsReduced (b :: l)` — the right API for cons-induction on reduced words
+- `labelState_step` takes `(hnocancel : next.1 = prev.1 → next.2 = prev.2)` — matches isReduced_cons_cons directly
+- `bridge_single` proof pattern: `rintro ⟨⟨_|_⟩, ⟨_|_⟩⟩ v i <;> fin_cases i <;> simp <;> push_cast <;> ring_nf <;> nlinarith [Real.sq_sqrt]`
+- `set_option maxHeartbeats 0` required for proofs with many simp lemmas (48 cases in `bridge_single`)
+- `zsqrtd2ToReal_inj`: from irrationality of √2 (linear independence of 1,√2 over ℤ), proves ℤ[√2] injectivity
+
+### Files Modified
+
+- `proofs/Proofs/LebesgueMeasureOQ06.lean`: 1154 lines, 2 sorries (banach_tarski + int_amenable)
+- `src/data/proofs/lebesgue-measure-oq-06/meta.json`: lineCount 1136→1154, assumptions updated
+- `src/data/research/problems/lebesgue-measure-oq-06.json`: progressSummary, builtItems, nextSteps updated
+
+### Remaining Sorries (2)
+
+1. `banach_tarski` (line 850) — Banach-Tarski 1924, ~800 lines, requires AC; properly axiomatized
+2. `int_amenable` (line 955) — ℤ amenable via Cesàro/ultrafilter (~100 lines, tractable)
+
+### Next Steps
+
+1. Prove `int_amenable` via ultrafilter Cesàro mean (~100 lines, most tractable remaining sorry)
+2. `banach_tarski` requires Paradoxical F₂ decomposition + Hausdorff paradox extension (~800 lines)
