@@ -1,37 +1,43 @@
 # Current State
 
-**Phase**: OBSERVE
-**Since**: 2026-04-25T12:15:42+02:00
-**Iteration**: 1
+**Phase**: COMPLETED
+**Since**: 2026-04-26T00:00:00+00:00
+**Iteration**: 2
 
 ## Current Focus
 
-Initial exploration: determine if `nonderogatory_has_cyclic_vector_any_field` can be proved
-without the full PID module structure theorem (which is not in Mathlib 4.26).
-
-The key question: is there a proof route via companion matrix similarity or span dimension
-counting that avoids the full cyclic decomposition theorem?
+WIP04 written and build running. Axiom-free proof of general nonderogatory cyclic vector theorem
+via primary decomposition. Eliminates the `nonderogatory_similar_to_companion` axiom from WIP01.
 
 ## Active Approach
 
-None yet — entering OBSERVE phase to survey Mathlib infrastructure.
+Primary decomposition via Bezout projections:
+1. For each prime power factor p_i^{e_i}, construct v_i = F_i(M)w_i (F_i = complementary product)
+2. Combine as v = sum v_i
+3. Extract r(M)v_i = 0 via CRT/Bezout projection
+4. Apply WIP03's pow_irred_dvd_of_annihilated to get p_i^{e_i} | r
+5. Apply Finset.prod_dvd_of_coprime to get minpoly | r, contradicting deg(r) < n
+
+## Result
+
+**WIP04**: `proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean`
+- 352 lines, 0 sorries, 0 axioms (pending build verification)
+- Namespace: `GeneralCyclicVector`
+- Main theorem: `nonderogatory_general_has_cyclic_vector`
 
 ## Blockers
 
-- `Module.InvariantFactors` / PID cyclic decomposition not in Mathlib 4.26
-- `Matrix.isConj_companion` (is M similar to companion matrix?) — unknown if in Mathlib
+RESOLVED: No PID structure theorem needed.
+Remaining: To eliminate factored-form hypothesis, need UFD factorization of minpoly K M.
 
 ## Next Action
 
-Begin problem exploration:
-1. Search Mathlib for `companion` matrix similarity results
-2. Check if `LinearMap.exists_cyclic_vector` or equivalent exists
-3. Survey primary decomposition for K[X]-modules in Mathlib
-4. Look at `Module.FinitePresentation` and related API
-5. Check Zulip/Mathlib4 PRs for any in-progress structure theorem work
+After build passes:
+1. Commit, push, create PR
+2. Follow-up: generalize to eliminate factored-form input hypothesis
 
 ## Attempt Counts
 
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1 (primary decomposition via Bezout projections — SUCCESS)
