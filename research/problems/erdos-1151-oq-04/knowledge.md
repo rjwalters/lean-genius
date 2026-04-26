@@ -245,5 +245,59 @@ Replaced the `sorry` for `h_harm_chain` with a complete 5-step proof:
 2. `divergence_from_lebesgue_growth` — lacunary construction / UBP gap
 
 ### Next Steps
-1. Attempt `chebyshev_trig_sum_lb`: use sin(φₖ) ≥ s/2 near k₀ + harmonic sum
+1. Attempt `chebyshev_trig_sum_lb` Case 2 (full strategy below)
 2. For sorry #2: weaken to lim sup = ∞ (provable by Banach-Steinhaus)
+
+---
+
+## Session 2026-04-26c — Case 2 Strategy Analysis (no code changes)
+
+**Outcome**: documented only — ~150 line proof outlined, too large for single session
+
+### Case 2 of chebyshev_trig_sum_lb: Full Strategy
+
+**Goal**: x = cos(πp/q) ∈ (-1,1), show ∃ C₂ > 0, ∀ n ≥ 1, C₂·n·log(n+1) ≤ Σₖ sin(φₖ)/|x - cos φₖ|
+
+**Setup** (~30 lines):
+- `hx_ne_one`: cos(πp/q) ≠ 1 — parity argument: if p·1/q = 2n then p = 2nq (even), contradicts p odd
+- `hx_lb`: -1 < x — from hx_neg: cos(πp/q) ≠ -1 and cos ≥ -1
+- `θ'` := arccos(x) ∈ (0, π) — `Real.arccos_pos.mpr hx_ub` and `Real.arccos_lt_pi.mpr hx_lb`
+- `s` := sin(θ') > 0 — `Real.sin_pos_of_pos_of_lt_pi hθ'_pos hθ'_lt_pi`
+- **Key Mathlib**: `Real.abs_cos_sub_cos_le : |cos x - cos y| ≤ |x - y|` (from Trigonometric/Bounds.lean)
+- **Key Mathlib**: `Real.abs_sin_sub_sin_le : |sin x - sin y| ≤ |x - y|`
+
+**Nearest node** (~20 lines):
+- k₀ := min (n-1) (Nat.floor (n * θ' / π))
+- `hnearest : |θ' - φₖ₀| ≤ π/(2n)` — from k₀ ≤ nθ'/π < k₀+1 gives |nθ'/π - k₀ - 1/2| ≤ 1/2
+
+**Harmonic sum** (~80 lines):
+- Take C₂ = s²/(8π²). Set m₀ = Nat.floor(n*s/(4π)).
+- For n ≤ N₀ = ⌈4πe^4/s⌉: Use nearest-node term alone.
+  - `sin(φₖ₀)` ≥ s - π/(2n) ≥ s/2 for n ≥ π/s (Lipschitz of sin + hnearest)
+  - `|x - cos φₖ₀|` ≤ π/(2n) (from hnearest + abs_cos_sub_cos_le)
+  - Term(k₀) ≥ (s/2)·2n/π = sn/π ≥ (s²/(8π²))·n·log(n+1) for log(n+1) ≤ 4π/s
+- For n > N₀ (m₀ ≥ 1): harmonic sub-sum over j = 1,...,m₀ terms at k₀+j
+  - sin(φₖ₀₊ⱼ) ≥ s/2: from |φₖ₀₊ⱼ - θ'| ≤ (j+1/2)π/n ≤ m₀·π/n + π/(2n) ≤ s/2 (by m₀ ≤ ns/(4π))
+    so |sin(φₖ₀₊ⱼ) - s| ≤ s/2, hence sin(φₖ₀₊ⱼ) ≥ s/2
+  - |x - cos φₖ₀₊ⱼ| ≤ (j+1/2)π/n (Lipschitz from |θ' - φₖ₀₊ⱼ| ≤ (j+1/2)π/n)
+  - Term(k₀+j) ≥ (s/2)/((j+1/2)π/n) ≥ sn/(π(2j+1))
+  - Sub-sum ≥ sn/π · Σⱼ₌₁^{m₀} 1/(2j+1) ≥ sn/(2π) · log(m₀+1) ≥ sn/(2π) · log(ns/(4π))
+  - log(ns/(4π)) ≥ (1/2)log(n+1) for n ≥ (4π/s)^2 (follows from n ≥ N₀)
+  - Net: Sₙ ≥ s²n/(4π²) · (1/2)log(n+1) ≥ (s²/(8π²))·n·log(n+1) ✓
+
+**Key proof tools needed**:
+- `Nat.floor_le`, `Nat.lt_floor_add_one` (floor arithmetic)
+- `Real.abs_cos_sub_cos_le`, `Real.abs_sin_sub_sin_le` (Lipschitz bounds)
+- `Real.sin_pos_of_pos_of_lt_pi` (positivity)
+- `Finset.sum_le_sum` (sum monotonicity)
+- `log_add_one_le_harmonic` + harmonic cast (same as h_harm_chain in Case 1)
+- The two-case split on n relative to N₀ = ⌈4πe^4/s⌉
+
+**Estimated complexity**: ~150 lines. The pattern is similar to `trig_sum_lb_of_cos_eq_neg_one`
+but requires an additional case split on n and more delicate floor arithmetic.
+
+### Next Steps
+
+1. Implement the nearest-node setup (30 lines, straightforward)
+2. Implement the harmonic sub-sum for large n using the pattern from h_harm_chain (80 lines)
+3. Handle the small-n case with nearest-node single term (40 lines)

@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "2 sorries remain: chebyshev_trig_sum_lb (tractable, ~200 lines) and divergence_from_lebesgue_growth (fundamental gap: lim vs lim sup)",
+    "progressSummary": "2 sorries remain: chebyshev_trig_sum_lb Case 2 (~150 lines, strategy fully documented) and divergence_from_lebesgue_growth (UBP gap or lacunary construction)",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -75,14 +75,14 @@
       "Filter.tendsto_atTop_mono pattern: if f ≤ g pointwise and f → ∞ then g → ∞",
       "let binding in Lean 4 requires explicit unfolding in simp: simp only [vals, ...]",
       "chebyshev_lebesgue_growth is PROVED (not sorry) — wraps chebyshev_lebesgue_lb which assumes sorry #1",
-      "p,q both odd implies cos(pi*p/q) is strictly in (-1,1), so sin argument is nonzero. Case x=+-1 never occurs in hypotheses."
+      "p,q both odd implies cos(pi*p/q) is strictly in (-1,1), so sin argument is nonzero. Case x=+-1 never occurs in hypotheses.",
+      "Case 2 proof strategy for chebyshev_trig_sum_lb: set θ'=arccos(x)∈(0,π), s=sin(θ')>0, k₀=nearest-node=min(n-1,⌊nθ'/π⌋), |θ'-φₖ₀|≤π/(2n) from floor arithmetic; two-case split: small n uses single term ≥ sn/π; large n uses harmonic sub-sum for j=1..m₀=⌊ns/(4π)⌋, term ≥ sn/(π(2j+1)), sum ≥ sn/(2π)·log(ns/(4π))",
+      "Key Mathlib for Case 2: Real.abs_cos_sub_cos_le (Lipschitz cos), Real.abs_sin_sub_sin_le (Lipschitz sin), Nat.floor_le + Nat.lt_floor_add_one (floor bounds) — all available in Lean4 Mathlib"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "chebyshev_lebesgue_lb: harmonic sum lower bound for S_n = Σ sin(φₖ)/|cos θ - cos φₖ| ≥ C·n·log(n+1)",
-      "divergence_from_lebesgue_growth: weaken to lim sup = ∞ (Banach-Steinhaus) or find explicit construction",
-      "Attempt chebyshev_trig_sum_lb: Lipschitz + harmonic sum proof (~200 lines). sin(pi*p/q) > 0 from p,q odd ensures x in (-1,1). Nearest node k0, bound denominator via node spacing pi/n, sum j=1..n/4 terms gives (n*sin(theta)/(2pi))*log(n/4+1).",
-      "Sorry #2 gap documented: UBP/Banach-Steinhaus gives lim sup not lim. Consider weakening divergence_from_lebesgue_growth to lim sup = inf version."
+      "Implement Case 2 of chebyshev_trig_sum_lb (~150 lines): setup 30 lines (arccos/sin), nearest node 20 lines (floor arith), harmonic sum 80 lines (similar to h_harm_chain), small-n case 40 lines",
+      "divergence_from_lebesgue_growth: weaken sorry to lim sup = ∞ version (provable by Banach-Steinhaus/Baire); current statement (full sequence → +∞) may require lacunary construction (~300 lines)"
     ]
   },
   "tags": [
