@@ -114,5 +114,31 @@
       "choose_descFactorial",
       "Nat.descFactorial recursion"
     ]
+  },
+  {
+    "id": "ann-asoq01-polynomial-basis",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "insight",
+    "title": "Falling Factorials as a Polynomial Basis: Umbral Calculus and Discrete Derivatives",
+    "content": "The falling factorial identity $\\binom{n}{k} \\cdot k! = n^{\\underline{k}}$ sits at the intersection of combinatorics and discrete calculus. In umbral calculus (Rota-Taylor, 1994), the falling factorial polynomials $\\{n^{\\underline{0}}, n^{\\underline{1}}, n^{\\underline{2}}, \\ldots\\}$ play the same role as the monomial basis $\\{1, n, n^2, \\ldots\\}$ in ordinary calculus — but they are the natural basis for **ℤ-valued polynomials on ℤ**: every function $f: \\mathbb{N} \\to \\mathbb{Z}$ that is a polynomial of degree $d$ has a unique representation $f(n) = \\sum_{k=0}^d c_k \\binom{n}{k}$ with $c_k \\in \\mathbb{Z}$.\n\nThe **discrete derivative** $\\Delta f(n) = f(n+1) - f(n)$ satisfies $\\Delta(n^{\\underline{k}}) = k \\cdot n^{\\underline{k-1}}$, the exact discrete analog of $\\frac{d}{dn}(n^k) = k \\cdot n^{k-1}$. This connects the descending factorial identity to the umbral calculus framework: the main theorem `choose_descFactorial` is the integrality certificate, while the divisibility theorem `factorial_dvd_descFactorial` states that $k! \\mid n^{\\underline{k}}$ — exactly that each basis polynomial $\\binom{n}{k} = n^{\\underline{k}}/k!$ takes integer values on integers.",
+    "mathContext": "The falling factorial basis: every polynomial $f \\in \\mathbb{Z}[n]$ has a unique representation $f(n) = \\sum_k c_k \\binom{n}{k}$ with $c_k = \\Delta^k f(0) \\in \\mathbb{Z}$, where $\\Delta^k$ is the $k$-th iterated forward difference. The key formula $\\Delta(n^{\\underline{k}}) = k \\cdot n^{\\underline{k-1}}$ and the integral formula $\\sum_{j=0}^{n-1} j^{\\underline{k}} = \\frac{n^{\\underline{k+1}}}{k+1}$ are the discrete analogs of differentiation and integration.",
+    "significance": "key",
+    "relatedConcepts": [
+      "umbral calculus",
+      "discrete derivative",
+      "falling factorial polynomial basis",
+      "integer-valued polynomials",
+      "Rota-Taylor umbral calculus",
+      "Vandermonde convolution"
+    ],
+    "prerequisites": [
+      "choose_descFactorial (main identity)",
+      "factorial_dvd_descFactorial (integrality)",
+      "discrete calculus basics"
+    ]
   }
 ]
