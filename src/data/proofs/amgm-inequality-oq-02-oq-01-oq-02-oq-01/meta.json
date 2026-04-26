@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-25",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ01OQ02OQ01.lean",
     "tags": [
       "algebra",
@@ -16,7 +16,7 @@
       "elementary-symmetric-polynomials",
       "mv-polynomial"
     ],
-    "badge": "wip",
+    "badge": "mathlib",
     "mathlibDependencies": [
       {
         "theorem": "MvPolynomial.psum_eq_mul_esymm_sub_sum",
@@ -30,14 +30,12 @@
       }
     ],
     "originalContributions": [
-      "offDiag_eq_upper_union_lower: off-diagonal = {i<j} ∪ {j<i} (with disjointness)",
-      "image_swap_lower_eq_upper: swap maps lower-triangular to upper-triangular exactly",
-      "sum_lower_eq_sum_upper: ∑_{j<i} f(i,j) = ∑_{i<j} f(i,j) for symmetric f",
-      "sum_offDiag_eq_two_mul_sum_upper: main theorem Σ_{i≠j} = 2·Σ_{i<j}",
-      "offDiag_prod_eq_two_mul_e2: specialization to products xᵢxⱼ"
+      "psum_one_eq_esymm_one: p₁ = e₁, bridging Mathlib's psum_one and esymm_one",
+      "psum_two_eq: p₂ = e₁² − 2·e₂, instantiating psum_eq_mul_esymm_sub_sum at k=2 with explicit antidiagonal filter computation",
+      "psum_three_eq: p₃ = e₁·p₂ − e₂·p₁ + 3·e₃, instantiating psum_eq_mul_esymm_sub_sum at k=3 with two-element antidiagonal"
     ],
     "dateAdded": "2026-04-25",
-    "assumptions": "Lean file not yet written. AmgmInequalityOQ02OQ01OQ02OQ01.lean is planned but does not exist in git. The metadata describes a planned Newton-Girard recurrence proof. Current content (originalContributions, sections) reflects the parent off-diagonal symmetry proof (OQ02), not a new Newton-Girard formalization.",
+    "assumptions": "Core results obtained via Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum and MvPolynomial.psum_one/esymm_one. The three corollaries (k=1,2,3) are derived from these Mathlib theorems. 0 sorries, 0 axiom declarations.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
