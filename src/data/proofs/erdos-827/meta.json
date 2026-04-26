@@ -53,7 +53,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 275,
-    "assumptions": "4 axioms: minimalNk (function), minimalNk_valid, minimalNk_sharp, martinez_roldan_pensado. Proved: nk_three (from sharp + vacuous AllDistinctCircumradii for 3-sets), nk_monotone (from valid+sharp+subset argument), nk_ge_k (from valid+parabola GP construction)."
+    "assumptions": "4 axioms: minimalNk (function), minimalNk_valid, minimalNk_sharp, martinez_roldan_pensado. Proved: nk_ge_k (from valid+parabola GP construction), nk_three (from ge_k+sharp+vacuous AllDistinctCircumradii for 3-sets), nk_monotone (from valid+sharp+subset argument)."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #827: Distinct Circumradii in General Position**\n\nErdős posed this problem in 1975, asking a Ramsey-type question in discrete geometry: how many points in general position are needed to guarantee a $k$-element subset where all $\\binom{k}{3}$ triples have distinct circumradii? This is a geometric analog of classical Ramsey problems — instead of coloring edges, we seek 'rainbow' configurations where all circumradii are distinct.\n\n**General Position:** The 'no three collinear' assumption ensures every triple determines a unique circumscribed circle with a well-defined radius. Without this, degenerate triples could have infinite circumradius, making the problem ill-defined.\n\n**Erdős's Error (1978):** Erdős claimed a bound of $n_k \\leq k + 2\\binom{k-1}{2}\\binom{k-1}{3} = \\Theta(k^6)$, but the proof contained errors. The argument used a greedy/Ramsey approach to select points with increasingly constrained circumradii, but incorrectly counted the number of constraints.\n\n**Correction by Martinez-Roldán-Pensado:** They salvaged the approach, correcting the counting argument to establish $n_k \\ll k^9$. The increased exponent (9 vs 6) reflects the need to account for more complex interactions between triples.\n\n**The Gap:** The trivial lower bound $n_k \\geq k$ (need at least $k$ points for a $k$-subset) leaves a gap of 8 orders of magnitude in the exponent. Determining the true growth rate — is it closer to $k$, $k^2$, or $k^9$? — is the central open question.\n\n**Connection to Distinct Distances:** This problem is spiritually related to Erdős's 1946 distinct distances problem (how many distinct distances must $n$ points determine?), solved by Guth-Katz (2015). Both ask about the 'diversity' of geometric measurements from point configurations.",
@@ -78,42 +78,63 @@
       "title": "Header and Imports",
       "summary": "Problem documentation referencing Erdős (1975, 1978) and Martinez-Roldán-Pensado; imports Real, Finset, and Tactic",
       "startLine": 1,
-      "endLine": 20
+      "endLine": 26
     },
     {
       "id": "general-position",
       "title": "Points in General Position",
       "summary": "Defines Point as ℝ × ℝ, distSq (squared Euclidean distance), and GeneralPosition (no three collinear via cross-product test)",
-      "startLine": 21,
-      "endLine": 35
+      "startLine": 28,
+      "endLine": 41
     },
     {
       "id": "circumradius",
       "title": "Circumradius",
       "summary": "Defines circumRadiusSq via R² = a²b²c²/(4·Area²) and AllDistinctCircumradii requiring all triple pairs to have different radii",
-      "startLine": 36,
-      "endLine": 56
+      "startLine": 43,
+      "endLine": 62
     },
     {
       "id": "minimal-nk",
       "title": "The Minimal Number n_k",
       "summary": "NkExists (threshold existence), minimalNk axiomatized with validity (minimalNk_valid) and sharpness (minimalNk_sharp)",
-      "startLine": 57,
-      "endLine": 79
-    },
-    {
-      "id": "main-problem",
-      "title": "Main Problem",
-      "summary": "ErdosProblem827: n_k exists for all k ≥ 3",
-      "startLine": 80,
+      "startLine": 64,
       "endLine": 85
     },
     {
-      "id": "bounds",
-      "title": "Known Bounds and Properties",
-      "summary": "MartinezBound (n_k ≤ Ck⁹), erdosClaimedBound (incorrect k⁶), nk_three = 3, nk_monotone, nk_ge_k",
-      "startLine": 86,
-      "endLine": 111
+      "id": "main-problem-and-bounds",
+      "title": "Main Problem and Known Bounds",
+      "summary": "ErdosProblem827 existence statement, MartinezBound (n_k ≤ Ck⁹), erdosClaimedBound (incorrect k⁶), martinez_roldan_pensado axiom",
+      "startLine": 87,
+      "endLine": 105
+    },
+    {
+      "id": "parabola-construction",
+      "title": "Parabola GP Construction",
+      "summary": "Points on y = x² are in general position: parabolaPoint, parabolaSet, parabolaSet_gp (collinearity determinant factors as (a-c)(b-c)(b-a) ≠ 0 for distinct a,b,c). Proves nk_ge_k: the trivial lower bound k ≤ n_k via parabola + validity contradiction.",
+      "startLine": 107,
+      "endLine": 163
+    },
+    {
+      "id": "trivial-cases",
+      "title": "Trivial Cases",
+      "summary": "Proves allDistinctCircumradii_of_card_three (vacuously true for 3-element sets) and nk_three = 3 (from nk_ge_k + minimalNk_sharp + vacuous ADC).",
+      "startLine": 165,
+      "endLine": 212
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity",
+      "summary": "Proves nk_monotone: k₁ ≤ k₂ → n_{k₁} ≤ n_{k₂} via sharpness + validity + subset heredity.",
+      "startLine": 214,
+      "endLine": 237
+    },
+    {
+      "id": "structural-properties",
+      "title": "Structural Properties",
+      "summary": "Utility theorems: distSq_comm, distSq_self, distSq_nonneg, distSq_eq_zero_iff, generalPosition_subset, allDistinctCircumradii_subset (heredity), and nkExists_of_axioms.",
+      "startLine": 239,
+      "endLine": 279
     }
   ],
   "conclusion": {
@@ -135,7 +156,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 275,
+    "lineCount": 279,
     "axiomCount": 4,
     "theoremCount": 14,
     "definitionCount": 11,
