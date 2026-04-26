@@ -1,0 +1,74 @@
+[
+  {
+    "id": "baker-header",
+    "proofId": "algebraic-numbers-countable-oq-04",
+    "range": { "startLine": 1, "endLine": 128 },
+    "type": "context",
+    "title": "Baker's Theorem: Historical Context and Proof Architecture",
+    "content": "A comprehensive module header documenting Baker's 1966 theorem on linear independence of logarithms. The documentation traces the chain of transcendence results from Hermite (1873, $e$ transcendental) through Lindemann (1882, $\\pi$), Gelfond-Schneider (1934, $\\alpha^\\beta$), to Baker's full generalization (1966, Fields Medal 1970). Eight Mathlib imports provide real logarithms, algebraic number infrastructure, linear independence, and irrationality predicates. The file is organized into four parts: (I) elementary arithmetic, (II) Baker axioms, (III) corollaries, (IV) open problems and quantitative bounds.",
+    "mathContext": "Baker's key result: if $\\log \\alpha_1, \\ldots, \\log \\alpha_n$ are $\\mathbb{Q}$-linearly independent (for positive algebraic $\\alpha_i$), then for any algebraic $\\beta_1, \\ldots, \\beta_n$ not all zero, $\\sum \\beta_i \\log \\alpha_i \\neq 0$. This upgrades rational independence to algebraic independence of logarithms.",
+    "significance": "context",
+    "relatedConcepts": ["Baker's theorem", "transcendence theory", "Hermite-Lindemann", "Gelfond-Schneider", "Fields Medal"],
+    "prerequisites": ["real analysis", "algebraic number theory", "linear independence"]
+  },
+  {
+    "id": "baker-irrationality",
+    "proofId": "algebraic-numbers-countable-oq-04",
+    "range": { "startLine": 129, "endLine": 257 },
+    "type": "insight",
+    "title": "Elementary Arithmetic: Irrationality of log₂(3) and ℚ-Independence",
+    "content": "Part I proves the $\\mathbb{Q}$-linear independence of $\\{\\log 2, \\log 3\\}$ without any transcendence theory — using only unique factorization.\n\n**Core lemma** `two_pow_ne_three_pow` (line 153): $2^p \\neq 3^q$ for $p, q \\geq 1$. If $2^p = 3^q$, then $2 \\mid 3^q$, so `Nat.Prime.dvd_of_dvd_pow` gives $2 \\mid 3$, contradiction. This is the arithmetic heart.\n\n**Irrationality** `log2_3_irrational`: If $\\log_2 3 = n/d \\in \\mathbb{Q}$, then $3^d = 2^n$, contradicting `two_pow_ne_three_pow`. The proof uses `Real.rpow_natCast` and `Real.rpow_intCast` to connect real logarithms to natural number powers.\n\n**ℚ-independence** `log2_log3_rat_indep`: Uses `Fintype.linearIndependent_iff` — if $c_0 \\log 2 + c_1 \\log 3 = 0$ with rational $c_i$, show both $c_i = 0$ by deriving $\\log 3 / \\log 2 \\in \\mathbb{Q}$, contradicting irrationality.",
+    "mathContext": "Unique factorization: $2^p = 3^q$ is impossible since $\\text{ord}_2(2^p) = p > 0$ but $\\text{ord}_2(3^q) = 0$. Irrationality: $\\log_2 3 = p/q \\Rightarrow 2^p = 3^q$, contradiction. $\\mathbb{Q}$-independence: $c_0 \\log 2 + c_1 \\log 3 = 0$ with $c_1 \\neq 0$ gives $\\log 3/\\log 2 = -c_0/c_1 \\in \\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": ["unique factorization", "irrationality", "linear independence over ℚ", "Nat.Prime.dvd_of_dvd_pow"],
+    "prerequisites": ["prime factorization", "real logarithms", "linear independence"]
+  },
+  {
+    "id": "baker-axioms",
+    "proofId": "algebraic-numbers-countable-oq-04",
+    "range": { "startLine": 258, "endLine": 363 },
+    "type": "definition",
+    "title": "Baker's Theorem: Three Axiomatized Forms",
+    "content": "Three axioms encode Baker's theorem at increasing strength:\n\n1. **`baker_homogeneous`** (line ~300): The qualitative homogeneous form. For $\\mathbb{Q}$-independent $\\log \\alpha_i$ and algebraic $\\beta_i$ not all zero: $\\sum \\beta_i \\log \\alpha_i \\neq 0$.\n\n2. **`baker_inhomogeneous`** (line ~340): Adds a constant term $\\beta_0$. If $1, \\log \\alpha_1, \\ldots, \\log \\alpha_n$ are $\\mathbb{Q}$-independent, then $\\beta_0 + \\sum \\beta_i \\log \\alpha_i \\neq 0$ for algebraic $\\beta_i$ not all zero.\n\n3. **`baker_quantitative`** (line ~388): Effective lower bound. For integer coefficients $b_i$ with $\\max|b_i| \\leq B$: $|\\sum b_i \\log \\alpha_i| > B^{-C}$ when the sum is nonzero.\n\nAll three are `axiom` declarations rather than `sorry` — reflecting that the full proof requires Siegel's lemma, Baker's auxiliary function construction, extrapolation, and the Schwarz lemma, none of which are in Mathlib.",
+    "mathContext": "Baker's three forms: (1) homogeneous $\\sum \\beta_i \\log \\alpha_i \\neq 0$, (2) inhomogeneous $\\beta_0 + \\sum \\beta_i \\log \\alpha_i \\neq 0$, (3) quantitative $|\\sum b_i \\log \\alpha_i| > B^{-C}$. The analytic proof machinery (Siegel's lemma + auxiliary function + extrapolation + Schwarz) is axiomatized away.",
+    "significance": "key",
+    "relatedConcepts": ["axiom declaration", "linear forms in logarithms", "effective bounds", "Siegel's lemma", "auxiliary function"],
+    "prerequisites": ["IsAlgebraic", "LinearIndependent", "real logarithms", "Fin-indexed sums"]
+  },
+  {
+    "id": "baker-corollaries",
+    "proofId": "algebraic-numbers-countable-oq-04",
+    "range": { "startLine": 364, "endLine": 542 },
+    "type": "insight",
+    "title": "Corollaries: Transcendence of log₂(3), Gelfond-Schneider, Q̄-Independence",
+    "content": "Three key corollaries derived from the Baker axiom:\n\n**`log2_3_transcendental`** (~line 420): If $\\beta = \\log_2 3$ were algebraic, then $\\beta \\cdot \\log 2 - 1 \\cdot \\log 3 = 0$ with algebraic coefficients and $\\mathbb{Q}$-independent logs, contradicting `baker_homogeneous`. This upgrades the elementary irrationality to full transcendence.\n\n**`log2_log3_alg_indep`** (~line 460): $\\{\\log 2, \\log 3\\}$ are $\\bar{\\mathbb{Q}}$-linearly independent. Direct application of `baker_homogeneous` with $n=2$, using `log2_log3_rat_indep` for the $\\mathbb{Q}$-independence hypothesis.\n\n**`baker_n1_log_independence`** (line 517): The $n=1$ case of Baker: for algebraic $\\alpha > 0, \\alpha \\neq 1$ and nonzero algebraic $\\beta$, $\\beta \\cdot \\log \\alpha \\neq 0$. This is essentially a weak form of Gelfond-Schneider. The proof constructs a singleton $\\mathbb{Q}$-independent set $\\{\\log \\alpha\\}$ (nonzero since $\\alpha \\neq 1$) and applies `baker_homogeneous`.",
+    "mathContext": "Transcendence of $\\log_2 3$: assume $\\beta = \\log 3/\\log 2$ algebraic, then $\\beta \\log 2 - \\log 3 = 0$ with $\\{\\log 2, \\log 3\\}$ $\\mathbb{Q}$-independent. Baker says nonzero. Contradiction. $n=1$ case: $\\{\\log \\alpha\\}$ is $\\mathbb{Q}$-independent iff $\\log \\alpha \\neq 0$ iff $\\alpha \\neq 1$.",
+    "significance": "key",
+    "relatedConcepts": ["transcendence", "Gelfond-Schneider", "Q̄-linear independence", "baker_homogeneous application"],
+    "prerequisites": ["log2_log3_rat_indep", "baker_homogeneous axiom", "IsAlgebraic"]
+  },
+  {
+    "id": "baker-four-exp",
+    "proofId": "algebraic-numbers-countable-oq-04",
+    "range": { "startLine": 544, "endLine": 598 },
+    "type": "context",
+    "title": "Four Exponentials Conjecture: The Central Open Problem",
+    "content": "Part IV documents the Four Exponentials Conjecture — the main open problem that Baker's theorem does NOT resolve.\n\n**Statement**: If $z_1, z_2$ are $\\mathbb{Q}$-linearly independent complex numbers and $w_1, w_2$ are $\\mathbb{Q}$-linearly independent, then at least one of $e^{z_1 w_1}, e^{z_1 w_2}, e^{z_2 w_1}, e^{z_2 w_2}$ is transcendental.\n\nBaker proves the **Six Exponentials Theorem** (three $z$'s, two $w$'s), but the gap from 6 to 4 is fundamental and remains open. The conjecture would follow from Schanuel's Conjecture (the grand unifying conjecture in transcendence theory).\n\nThis section contains no formal Lean statements — it serves as mathematical documentation connecting Baker's theorem to the frontier of transcendence theory.",
+    "mathContext": "The $2 \\times 2$ Four Exponentials Conjecture sits between the proved Six Exponentials Theorem ($3 \\times 2$ or $2 \\times 3$) and the conjectured Strong Four Exponentials Conjecture. Schanuel's Conjecture implies all of these.",
+    "significance": "context",
+    "relatedConcepts": ["Four Exponentials Conjecture", "Six Exponentials Theorem", "Schanuel's Conjecture"],
+    "prerequisites": ["Baker's theorem", "transcendence theory"]
+  },
+  {
+    "id": "baker-wustholz",
+    "proofId": "algebraic-numbers-countable-oq-04",
+    "range": { "startLine": 600, "endLine": 638 },
+    "type": "definition",
+    "title": "Baker-Wüstholz 1993: State-of-the-Art Effective Lower Bounds",
+    "content": "The final axiom `baker_wustholz_bound` (line 620) states the Baker-Wüstholz 1993 theorem — the state-of-the-art quantitative bound for linear forms in logarithms.\n\nFor $\\Lambda = \\sum b_i \\log \\alpha_i \\neq 0$ with integer coefficients $|b_i| \\leq B$ and algebraic $\\alpha_i$ of degree $\\leq d$ with logarithmic heights bounded by $\\log A_i$:\n\n$$\\log|\\Lambda| > -C(n,d) \\cdot \\prod_{i=1}^n \\log A_i \\cdot \\log B$$\n\nwhere $C(n,d) = 18(n+1)! \\cdot n^{n+1} \\cdot (32d)^{n+2} \\cdot \\log(2nd)$.\n\nThe key improvement over Baker's 1966 bound: the exponent of $\\log B$ drops from $n+1$ to $1$. This makes the bound practically useful for Diophantine applications — solving Thue equations, Mordell equations, and computing class numbers.",
+    "mathContext": "$\\log|\\Lambda| > -C(n,d) \\prod \\log A_i \\cdot \\log B$ with $C(n,d) = 18(n+1)! n^{n+1} (32d)^{n+2} \\log(2nd)$. Baker 1966: $\\log B$ replaced by $\\log^{n+1} B$. Baker-Wüstholz 1993: linear in $\\log B$. This is the version used in computational number theory.",
+    "significance": "key",
+    "relatedConcepts": ["effective lower bounds", "Baker-Wüstholz theorem", "logarithmic height", "Thue equations", "Mordell equation"],
+    "prerequisites": ["baker_quantitative", "algebraic number height", "minpoly degree"]
+  }
+]

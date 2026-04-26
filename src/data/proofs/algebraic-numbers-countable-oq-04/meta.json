@@ -98,12 +98,20 @@
       "mathContext": "Transcendence of log2(3): assume beta = log2(3) algebraic. Then beta*log2 - log3 = 0 with beta, -1 algebraic and log2, log3 Q-independent. Baker says this sum is nonzero. Contradiction."
     },
     {
+      "id": "sec-four-exponentials",
+      "title": "Sec 4: Four Exponentials Conjecture (Open Problem)",
+      "startLine": 492,
+      "endLine": 598,
+      "summary": "Documents the Four Exponentials Conjecture — the central open problem Baker's theorem does NOT resolve. Baker proves the Six Exponentials Theorem (3×2), but the 2×2 case remains open. Connects to Schanuel's Conjecture.",
+      "mathContext": "Four Exponentials Conjecture: if z₁, z₂ are Q-independent and w₁, w₂ are Q-independent, at least one of e^{z_i w_j} is transcendental."
+    },
+    {
       "id": "sec-baker-wustholz",
-      "title": "Sec 4: Baker-Wustholz Quantitative Theorem",
-      "startLine": 540,
-      "endLine": 589,
-      "description": "States Baker-Wustholz 1993 theorem with explicit constant C(n,d). Documents improvement from Baker 1966 to Baker-Wustholz 1993. Applications to Thue equations, Mordell equation, S-unit equations.",
-      "mathContext": "Baker-Wustholz bound: log|Lambda| > -C(n,d) * prod_i log(A_i) * log(B) where C(n,d) = 18*(n+1)! * n^{n+1} * (32d)^{n+2} * log(2nd)."
+      "title": "Sec 5: Baker-Wüstholz Quantitative Theorem (1993)",
+      "startLine": 600,
+      "endLine": 638,
+      "summary": "States Baker-Wüstholz 1993 theorem with explicit constant C(n,d). Key improvement: exponent of log B drops from n+1 to 1. Applications to Thue equations, Mordell equation, class number bounds.",
+      "mathContext": "Baker-Wüstholz bound: log|Λ| > -C(n,d) · ∏ log(A_i) · log(B) where C(n,d) = 18(n+1)! n^{n+1} (32d)^{n+2} log(2nd)."
     }
   ]
 }
