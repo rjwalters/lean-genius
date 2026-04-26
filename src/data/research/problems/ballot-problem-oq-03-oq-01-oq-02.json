@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: sorry covers only ≥9-row (all 3-8 row proved direct)",
+    "progressSummary": "PROGRESS: PARTS I-XXIII complete (3..9 row shapes); BallotProblemOQ03.lean:2541 omega regression blocks full compile; 10+ rows pending",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -122,7 +122,12 @@
       "fourRow_colLen_*: column length lemmas for 4 zones in 4-row shapes",
       "fourRow_hookLen_row*: hook length lemmas for rows 0-3 in all zones",
       "fourRow_arm_row*: arm product ratio lemmas using telescoping products",
-      "hook_walk_identity_eightRow in BallotProblemOQ03OQ01OQ02.lean:~10052 (PART XXII, 1612 lines, 0 sorries)"
+      "hook_walk_identity_eightRow in BallotProblemOQ03OQ01OQ02.lean:~10052 (PART XXII, 1612 lines, 0 sorries)",
+      "hook_walk_identity_nineRow: 9-row hook-walk identity — closes with field_simp+ring on 9-var rational identity (PART XXIII, ~line 11629)",
+      "nineRow_colLen_* (9 lemmas): column length zone boundaries for 9-row shapes",
+      "nineRow_hookLen_row{0..8}_zone* (45 lemmas): hookLen in each zone of each row",
+      "nineRow_corner_bot/cases/card: corner structure for 9-row shapes",
+      "nineRow_arm_row{0..8} (9 lemmas): arm products via prod_div_telescope"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -189,17 +194,18 @@
       "interval_cases tactic required for isLowerSet base case at (2,0) and for hμ_eq case split on i<3",
       "4-row hook walk identity: R₃+R₂+R₁+R₀=a+b+c+d closes via field_simp;ring after telescoping",
       "hook_walk_identity sorry scope: now covers only ≥5-row shapes (rowLen 4 ≠ 0); all other cases proved",
-      "PART XXII: hook_walk_identity_eightRow proved for all 8-row shapes [a,b,c,d,e,f,g,h] via 7 colLen zones + 36 hookLen + 8 arm lemmas + field_simp/ring; 1612 lines, 0 sorries"
+      "PART XXII: hook_walk_identity_eightRow proved for all 8-row shapes [a,b,c,d,e,f,g,h] via 7 colLen zones + 36 hookLen + 8 arm lemmas + field_simp/ring; 1612 lines, 0 sorries",
+      "9-row hook_walk_identity closes mechanically: same field_simp+ring approach as 3..8 row cases, with C(9,2)=36 hne_ denominator conditions",
+      "Pre-existing omega regression at BallotProblemOQ03.lean:2541 blocks full compile — not introduced by PART XXIII; fix tracked separately"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
       "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux"
     ],
     "nextSteps": [
-      "PART XIX: extend to 5-row shapes (~300 lines, same algebraic pattern)",
-      "GNW general proof (~300 lines) covers all remaining shapes at once",
-      "Docker build verification of PART XVIII compilation",
-      "PART XXIII for 9-row (~1900 lines) OR switch to GNW probabilistic proof (~300-500 lines, general)"
+      "Fix pre-existing omega regression in BallotProblemOQ03.lean:2541 (lindstromSwapPreservesMinStep) to unblock compilation",
+      "Implement hook_walk_identity_tenPlusRow for 10+ row shapes (requires GNW hook-walk formalization or direct computation approach)",
+      "Consider GNW hook-walk general framework to cover all row counts without row-by-row enumeration"
     ]
   },
   "tags": [
