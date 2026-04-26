@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: ssytSchurFin_two_row assembly proved (eq_sub_of_add_eq + JDT + partition). 3 sorries remain: jdt_weight_sum (~80 lines), ssytFin_two_row_eq_sum_colstrict (~60 lines), k≥3 (algebraic LGV).",
+    "progressSummary": "PROGRESS: ssytFin_two_row_eq_sum_colstrict proved (full bijection Equiv); 2 sorries remain: jdt_weight_sum (~80 lines LGV involution) and k≥3 (algebraic LGV + RSK ~300 lines)",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -58,7 +58,8 @@
       "sym_pair_sum_partition: proved (Fintype.sum_subtype_add_sum_subtype splits full pair-sum into col-strict + non-col-strict = h_a * h_b)",
       "ssytSchurFin_two_row: assembly proof complete (eq_sub_of_add_eq + jdt_weight_sum + sym_pair_sum_partition); 2 focused sorries remain",
       "jdt_weight_sum: stated (sorry) — JDT bijection gives ∑_{non-col-strict} weight = h_{a+1} * h_{b-1}",
-      "ssytFin_two_row_eq_sum_colstrict: stated (sorry) — SSYT k=2 bijects to col-strict pair sum"
+      "ssytFin_two_row_eq_sum_colstrict: stated (sorry) — SSYT k=2 bijects to col-strict pair sum",
+      "ssytFin_two_row_eq_sum_colstrict: proved (not sorry) — explicit Equiv with toFun/invFun using Multiset.sort + List.getElem_ofFn + Multiset.sort_eq"
     ],
     "insights": [
       "Mathlib has hsymm σ R n (complete homogeneous symmetric polynomials) in RingTheory.MvPolynomial.Symmetric.Defs — directly usable for Jacobi-Trudi matrix entries",
@@ -88,7 +89,8 @@
       "jeu de taquin bijection for k=2: insert Q[c] into P at first-violation column c, remove from Q; ~100 lines standalone",
       "Fintype.sum_subtype_add_sum_subtype splits ∑ f over a type into ∑_{p x} f + ∑_{¬p x} f = ∑ f — key for partition identity",
       "eq_sub_of_add_eq (ring lemma: a + b = c → a = c - b) enables assembling ssytSchurFin_two_row from partition + JDT identities",
-      "ColStrictSym: column-strict on Sym pairs defined via sorted representatives (Finset.sort); avoids SSYT structural noise for the JDT step"
+      "ColStrictSym: column-strict on Sym pairs defined via sorted representatives (Finset.sort); avoids SSYT structural noise for the JDT step",
+      "ssytFin_two_row_eq_sum_colstrict proved (Session 9): full ~80-line bijection Equiv between SSYTFin n 2 sh and col-strict Sym pairs, using fin_cases i for row-weak inv direction"
     ],
     "mathlibGaps": [
       "No Mathlib SchurPolynomial definition — we provide one via Jacobi-Trudi formula",
@@ -96,10 +98,9 @@
       "RSK correspondence not formalized in Mathlib — needed for jacobiTrudi_lgv_proof"
     ],
     "nextSteps": [
-      "PRIORITY A: Prove ssytFin_two_row_eq_sum_colstrict (~60 lines): bijection SSYTFin n 2 sh ≃ col-strict (Sym a × Sym b) pairs via row projection",
-      "PRIORITY B: Prove jdt_weight_sum (~80 lines): JDT bijection {non-col-strict (a,b)} ≃ {all (a+1,b-1)}, weight preserved",
-      "PRIORITY C: k≥3 via algebraic LGV (~150 lines) or submit to Aristotle after jdt+row-decomp complete",
-      "Fintype.sum_subtype_add_sum_subtype is the key partition lemma — already used in sym_pair_sum_partition"
+      "Prove jdt_weight_sum: need LGV-style involution (not naive first-violation JDT). Involution must preserve P.1+Q.1 combined multiset; naive first-violation is not injective (counterexample: n=3,a=b=2: {1,2},{0,1} and {0,2},{1,1} both map to same image).",
+      "For jdt_weight_sum involution: pair non-col-strict (P,Q) with all-(a+1,b-1) Sym pairs via signing argument (LGV intersecting-path swap). This preserves the combined multiset sorted descendingly.",
+      "General k≥3: RSK correspondence SSYT ↔ NI lattice path tuples then weight matching with hsymm products (~300 lines)"
     ],
     "markdown": "# Knowledge Base: LGV Lemma → Jacobi-Trudi Identity\n\n**Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01\n**Last Updated**: 2026-04-23\n**Knowledge Items**: 0\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nNewly selected. Jacobi-Trudi identity expresses Schur polynomials as determinants of\ncomplete homogeneous symmetric polynomials. The LGV lemma (in parent gallery proof)\nprovides the combinatorial proof route via non-intersecting lattice paths.\n\n---\n\n## Insights\n\n_None yet — begin with OBSERVE phase: check Mathlib for SSYT formalization._\n\n---\n\n## Dead Ends\n\n_None identified yet._\n"
   },

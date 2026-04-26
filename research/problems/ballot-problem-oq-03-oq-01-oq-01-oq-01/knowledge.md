@@ -1,8 +1,8 @@
 # Knowledge Base: LGV Lemma → Jacobi-Trudi Identity
 
 **Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01
-**Last Updated**: 2026-04-25
-**Knowledge Items**: 26
+**Last Updated**: 2026-04-26
+**Knowledge Items**: 34
 
 Insights accumulated during research on this problem.
 
@@ -17,6 +17,44 @@ symmetric polynomials: `s_λ = det[h_{λᵢ-i+j}]`. The proof route via SSYT and
   3. Biject SSYT ↔ non-intersecting lattice paths (RSK)
   4. Apply LGV: det[e(Aᵢ,Bⱼ)] = weighted NI-path count
   5. Identify the LGV matrix with the Jacobi-Trudi matrix
+
+---
+
+## Session 2026-04-26 (Session 9) — ssytFin_two_row_eq_sum_colstrict Proved (Full Bijection)
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: progress — `ssytFin_two_row_eq_sum_colstrict` proved with explicit `Equiv`; 3→2 sorries
+
+### What I Did
+
+1. Proved `ssytFin_two_row_eq_sum_colstrict` (~80 lines): explicit `Equiv` between `SSYTFin n 2 sh`
+   and `{ PQ : Sym (Fin n) a × Sym (Fin n) b // ColStrictSym a b PQ.1 PQ.2 }`
+2. `toFun`: pack rows 0,1 into Sym via `List.ofFn`; col-strict condition from SSYT `col_strict`
+3. `invFun`: unpack via `Multiset.sort` sorted representatives; `fin_cases i` for row-weak proof
+4. `left_inv`: roundtrip through `row_sort` (rows already sorted via `List.mergeSort_eq_self`)
+5. `right_inv`: `Multiset.sort_eq` reconstructs original multiset from sorted list
+6. Fixed `split_ifs` → `fin_cases i` in `invFun` row-weak direction (fin_cases substitutes i=0,1)
+
+### Key Findings
+
+- **Mathlib lemmas used**: `List.sortedLE_ofFn_iff`, `Multiset.pairwise_sort`, `Multiset.sort_eq`,
+  `List.mergeSort_eq_self`, `Fintype.sum_equiv`, `Fin.prod_univ_two`
+- **fin_cases vs split_ifs**: for dependent if-then-else `if _h : i = 0`, `fin_cases i` is better
+  than `split_ifs` because it substitutes into the type of `j1`, `j2 : Fin (sh i)`
+- **JDT non-injectivity**: naive "first violation, move Q[c] to P" bijection for `jdt_weight_sum`
+  is NOT injective. Counterexample: n=3, a=b=2: ({1,2},{0,1}) and ({0,2},{1,1}) both map to
+  the same image. The correct involution must preserve `P.1+Q.1` (like LGV intersecting-path swap)
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (457 → 572 lines, 3 → 2 sorries)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-01-oq-01/meta.json` (sorries 3→2, lineCount→572)
+
+### Next Steps
+
+- `jdt_weight_sum`: implement LGV-style involution that preserves `P.1+Q.1` combined multiset;
+  sign pairs by first violation position — this requires signed-path argument not simple greedy
+- General k≥3: RSK correspondence (~300 lines); long-term work
 
 ---
 
