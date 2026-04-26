@@ -49,17 +49,10 @@
     "originalContributions": [
       "Definition of Powerful (squarefull) predicate",
       "Definition of PowerfulAlt (a²b³ characterization)",
-      "Axiom powerful_iff_alt (equivalence of definitions)",
-      "Axiom squareIntervalSet and specification",
-      "Function h counting powerful numbers in intervals",
-      "Examples: 1, 4, 8, 9, 36, 72 are powerful; 6, 12 are not",
+      "Axiom h : ℕ → ℕ (function counting powerful numbers in intervals)",
       "Axiom erdos_942_conjecture (the main open question)",
-      "Axiom h_unbounded (limsup h(n) = infinity)",
-      "Density axioms: HasDensity, delta, density_sum_one",
-      "Axiom de_koninck_luca_lower (lower bound infinitely often)",
-      "Powerful number properties: multiplication closure, squares, cubes",
-      "Asymptotic count of powerful numbers up to N",
-      "Small examples: h(1)=1, h(2)=2, h(3)=1"
+      "Axiom erdos_942_open (conjecture remains undecidable)",
+      "Theorem erdos_942_status (derived from erdos_942_open)"
     ],
     "axiomCount": 3,
     "lineCount": 144,
@@ -132,16 +125,16 @@
       "title": "Known Result: limsup h(n) = infinity",
       "startLine": 120,
       "endLine": 132,
-      "summary": "h_unbounded axiom with proof sketch.",
-      "mathContext": "h(n) is unbounded: limsup h(n) = infinity. But uniform lower bound unknown."
+      "summary": "Commentary on the unboundedness of h(n). No formal axiom in file.",
+      "mathContext": "h(n) is unbounded: limsup h(n) = infinity. Discussed in comments; no h_unbounded axiom is present in the Lean file."
     },
     {
       "id": "density",
       "title": "Known Result: Density of h(n) = l",
       "startLine": 133,
       "endLine": 144,
-      "summary": "HasDensity, delta, density_sum_one, density_h_eq_1 axioms.",
-      "mathContext": "Density of {n : h(n) = k} exists for each k, and sum delta_k = 1."
+      "summary": "Commentary on density theory for h(n). No formal axioms in file.",
+      "mathContext": "Density of {n : h(n) = k} exists for each k and sum delta_k = 1. Discussed in comments; no HasDensity, delta, or density_sum_one axioms are present in the Lean file."
     }
   ],
   "conclusion": {
