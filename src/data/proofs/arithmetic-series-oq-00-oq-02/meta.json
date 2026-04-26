@@ -46,25 +46,43 @@
   },
   "sections": [
     {
-      "id": "counterexample",
-      "title": "Counterexample at n=2",
-      "startLine": 33,
-      "endLine": 50,
-      "summary": "Proves LHS=13 ≠ RHS=9 at n=2 using `decide`. Also shows the identity holds at n=1 and fails again at n=3 (58 ≠ 36)."
+      "id": "module-header",
+      "title": "Module Header: Mathematical Derivation",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "File header with full algebraic derivation of the correct closed form: ∑(2k-1)k² = 2∑k³ - ∑k² = n(n+1)(3n²+n-1)/6. Motivates the subtraction-free ℤ formulation for the Lean proof.",
+      "mathContext": "The derivation uses $\\sum(2k-1)k^2 = 2\\sum k^3 - \\sum k^2$ and the known closed forms for both sums. The ℤ formulation avoids ℕ subtraction issues."
     },
     {
-      "id": "closed-form",
-      "title": "Correct Closed Form",
+      "id": "counterexample",
+      "title": "I. Counterexample at n=2",
+      "startLine": 33,
+      "endLine": 50,
+      "summary": "Proves LHS=13 ≠ RHS=9 at n=2 using `decide`. Also shows the identity holds at n=1 and fails again at n=3 (58 ≠ 36).",
+      "mathContext": "$n=2$: LHS $= 1 + 12 = 13 \\neq (1+2)^2 = 9$. The n=1 case holds (both sides = 1), explaining initial plausibility."
+    },
+    {
+      "id": "closed-form-induction",
+      "title": "II. Correct Closed Form (Inductive Proof)",
       "startLine": 53,
+      "endLine": 71,
+      "summary": "Proves 6∑(2k-1)k² + n(n+1) = n²(n+1)(3n+1) by induction via sum_range_succ + nlinarith with ring-proved witness.",
+      "mathContext": "Inductive step: $n^2(n+1)(3n+1) + 6(2n+1)(n+1)^2 + (n+1)(n+2) - n(n+1) = (n+1)^2(n+2)(3n+4)$, proved by ring."
+    },
+    {
+      "id": "spot-checks",
+      "title": "III. Spot Checks n=1,2,3,4",
+      "startLine": 72,
       "endLine": 93,
-      "summary": "Proves 6∑(2k-1)k² + n(n+1) = n²(n+1)(3n+1) by induction. Spot-checks at n=1,2,3,4 by decide."
+      "summary": "Verifies closed form at n=1,2,3,4 by decide. Independent sanity check of the inductive proof using Ico 1 (n+1) formulation."
     },
     {
       "id": "nicomachus-contrast",
-      "title": "Contrast with Nicomachus",
+      "title": "IV. Contrast with Nicomachus",
       "startLine": 96,
       "endLine": 116,
-      "summary": "Restates Nicomachus 4∑k³ = (n(n+1))² and shows ∑k³ ≠ ∑(2k-1)k² for n≥2."
+      "summary": "Proves Nicomachus 4∑k³ = (n(n+1))² and gap formula ∑k³ - ∑(2k-1)k² = ∑k²(1-k) < 0 for n≥2.",
+      "mathContext": "Gap: $\\sum k^3 - \\sum(2k-1)k^2 = \\sum k^2(1-k) \\leq 0$. The conjectured sum strictly exceeds $(\\sum k)^2$ for $n \\geq 2$."
     }
   ],
   "conclusion": {
