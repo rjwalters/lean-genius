@@ -39,7 +39,9 @@
       "The Composition type provides a clean interface between combinatorics (piAntidiag) and probability (PMF support), bundling the sum constraint and zero-outside conditions into a single Lean structure",
       "ENNReal arithmetic is the main technical hurdle: no subtraction, division requires careful handling of ∞, and lifting the real-valued multinomial theorem to ℝ≥0∞ requires coordinating Nat.cast, ENNReal.coe, and tsum identities",
       "The Fintype instance for Composition is the key prerequisite for PMF.mk — it's provable via a finiteness argument (each counts(i) ≤ n, finitely many indices) but requires ~50 lines of Finset manipulation using piAntidiag as the underlying set",
-      "Negative covariance Cov(Xᵢ,Xⱼ) = -npᵢpⱼ reflects the conservation law ∑Xᵢ = n: the multinomial is concentrated on a hyperplane, so components cannot fluctuate independently"
+      "Negative covariance Cov(Xᵢ,Xⱼ) = -npᵢpⱼ reflects the conservation law ∑Xᵢ = n: the multinomial is concentrated on a hyperplane, so components cannot fluctuate independently",
+      "The sorry architecture is pedagogically honest: each sorry precisely documents its mathematical content and proof sketch (~100 lines each for marginal and covariance), making the file a complete blueprint even before full formalization. The sibling entries binomial-theorem-oq-02-oq-01-oq-02 and binomial-theorem-oq-02-oq-01-oq-03 fill exactly the marginal and covariance sorries respectively.",
+      "The `rfl` proof for `multinomialPMF_apply` illustrates Lean's definitional equality: `PMF.instFunLike` makes `(P : PMF α) a` definitionally equal to `P.1 a`, so the 'proof' is zero-cost. This pattern — defining a function and immediately getting `f a = ...` by `rfl` — is characteristic of well-chosen Lean abstractions where the computation is baked into the definition."
     ],
     "prerequisites": [
       "Multinomial distribution (parent)",
@@ -110,14 +112,38 @@
       "targetId": "binomial-theorem-oq-02-oq-01",
       "relationship": "answers-question",
       "description": "Answers OQ-01: 'Can the multinomial PMF be integrated into Mathlib's PMF framework?'"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01-oq-02",
+      "relationship": "extended-by",
+      "description": "Proves the multinomial_marginal_binomial sorry in this file: fully verifies that fixing k(i) = m and summing remaining compositions gives exactly C(n,m)·p(i)^m·(1-p(i))^(n-m), the binomial PMF formula"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01-oq-03",
+      "relationship": "extended-by",
+      "description": "Proves the multinomial_covariance sorry in this file: fully verifies Cov(Xi,Xj) = -n·pi·pj for i≠j via E[XiXj] = n(n-1)pi·pj and the constraint ∑Xi = n"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02",
+      "relationship": "foundational",
+      "description": "Provides the multinomial theorem identity (∑ pi)^n = ∑ C(n;k) ∏ pi^ki that this file uses as the PMF normalization proof — the deep connection between the multinomial theorem and probability normalization"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-04",
+      "relationship": "foundational",
+      "description": "Proves the multinomial theorem by induction on |s|, providing the algebraic identity underlying the ENNReal normalization lift in this file's multinomialPMF_sum_eq_one"
     }
   ],
   "conclusion": {
     "summary": "YES, the multinomial PMF can be integrated into Mathlib's PMF framework. The construction path is clear: Composition type → ENNReal normalization → PMF.mk → properties.",
     "implications": "A complete implementation would be a valuable Mathlib contribution, enabling verified statistical reasoning about multinomial experiments.",
     "openQuestions": [
-      "Can the Fintype instance for Composition be proved efficiently using piAntidiag?",
-      "Can the entropy of the multinomial distribution be formalized?"
+      "Can the Fintype instance for Composition be proved efficiently using piAntidiag? The strategy is `Fintype.ofEquiv (s.piAntidiag n) equiv_fn` where `equiv_fn : Composition α s n ≃ s.piAntidiag n` maps `c.counts` to the antidiagonal entry; proving this bijection requires ~50 lines.",
+      "Can the entropy of the multinomial distribution be formalized? $H(X_1,\\ldots,X_r) = -\\sum_k P(X=k) \\log P(X=k)$ — the joint entropy of the multinomial. Key challenge: expressing the multinomial entropy in terms of the Shannon entropy $H(p_1,\\ldots,p_r)$ and $n$.",
+      "[Resolved by binomial-theorem-oq-02-oq-01-oq-02] The marginal binomial theorem sorry required ~100 lines fixing k(i) = m and applying the (k-1)-dimensional multinomial theorem to remaining components. Now fully proved with 0 axioms and 0 sorries.",
+      "[Resolved by binomial-theorem-oq-02-oq-01-oq-03] The covariance sorry required computing E[XiXj] = n(n-1)pi·pj by fixing two coordinates and applying the multinomial theorem for n-2 remaining trials. Now fully proved.",
+      "Is there a cleaner proof of the ENNReal normalization that avoids explicit Nat.cast/ENNReal.coe bridging? Mathlib's `Finset.sum_pow_eq_sum_piAntidiag` works over commutative semirings — can it be instantiated directly for ENNReal rather than lifting from ℝ?",
+      "Can the multinomial PMF be contributed to Mathlib as `PMF.multinomial`? The estimated scope is 200-300 lines. Prior art: `PMF.binomial` does not yet exist in Mathlib4; this file would be the first PMF instance for a discrete multivariate distribution in the library."
     ]
   },
   "leanFile": {
