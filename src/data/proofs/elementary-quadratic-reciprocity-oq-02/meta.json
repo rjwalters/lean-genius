@@ -74,7 +74,22 @@
     {
       "targetId": "elementary-quadratic-reciprocity",
       "relationship": "extends",
-      "description": "Eisenstein proof of QR; this file provides a complementary Gauss sum proof architecture"
+      "description": "Parent entry: Eisenstein's geometric proof of QR via lattice point counting. Where Eisenstein counts points below the line y = qx/p, the Gauss sum approach here uses the algebraic structure of ℤ[ζ_p] (the cyclotomic ring). Both are among Gauss's 8 proofs; this entry provides the skeleton of Proofs VI and VII alongside the Eisenstein approach"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-01",
+      "relationship": "complementary",
+      "description": "Zolotarev's 1872 permutation-sign proof of QR: the Legendre symbol (a/p) equals the signature of the permutation x ↦ ax on ℤ/pℤ. This is the third independent QR proof in the gallery (alongside Eisenstein and Gauss sums here). All three yield the same formula; the connection diagram — Eisenstein (geometric), Zolotarev (algebraic/permutation), Gauss (analytic/cyclotomic) — illustrates the depth of QR across different mathematical frameworks"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "Primitive roots mod p (generators of the cyclic group (ℤ/pℤ)*) are foundational to both the Legendre symbol and Gauss sums. The Legendre symbol (a/p) = a^((p-1)/2) mod p (Euler's criterion) is proved using the existence of a primitive root g: if a = g^k, then (a/p) = 1 iff k is even. Gauss sum evaluation also uses the fact that (ℤ/pℤ)* is cyclic of order p-1, enabling the character orthogonality argument behind τ² = χ(-1)·p"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-03",
+      "relationship": "extended-by",
+      "description": "Extends QR from prime moduli (Legendre symbol) to composite odd moduli (Jacobi symbol). The Gauss sum approach here for primes generalizes: Jacobi sums are products of Gauss sums, and the QR for Jacobi symbols follows from the multiplicativity of Gauss sums over prime factors. The τ² = χ(-1)·p evaluation axiomatized here is the prime-modulus instance of the general Jacobi sum product formula"
     }
   ],
   "sections": [
