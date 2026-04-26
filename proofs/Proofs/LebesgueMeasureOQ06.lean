@@ -167,6 +167,224 @@ def unitSphere3 : Set (EuclideanSpace ℝ (Fin 3)) :=
 -- SECTION IV: Free Subgroup of SO(3)
 -- ============================================================
 
+-- Private infrastructure: integer orbit argument for Hausdorff's theorem.
+-- We track the orbit of e₂ = (0,1,0) in ℤ[√2]³, scaled by 3^n after n steps.
+-- The key: each scaled integer action corresponds to (1/3)*(real matrix)*3.
+
+-- Scaled integer actions: scaledActL(v) = (3 * M_L) * v in ℤ[√2]³
+-- where M_L is the rotation matrix for generator L.
+-- Using decidable equality on Fin 3 indices via Vector3 components.
+private def scaledActPhi (v : Fin 3 → Zsqrtd 2) : Fin 3 → Zsqrtd 2 :=
+  ![v 0 + ⟨0, -2⟩ * v 1,   -- x' = x - 2√2·y
+    ⟨0, 2⟩ * v 0 + v 1,     -- y' = 2√2·x + y
+    ⟨3, 0⟩ * v 2]            -- z' = 3z
+
+private def scaledActPhiInv (v : Fin 3 → Zsqrtd 2) : Fin 3 → Zsqrtd 2 :=
+  ![v 0 + ⟨0, 2⟩ * v 1,
+    ⟨0, -2⟩ * v 0 + v 1,
+    ⟨3, 0⟩ * v 2]
+
+private def scaledActPsi (v : Fin 3 → Zsqrtd 2) : Fin 3 → Zsqrtd 2 :=
+  ![⟨3, 0⟩ * v 0,
+    v 1 + ⟨0, -2⟩ * v 2,
+    ⟨0, 2⟩ * v 1 + v 2]
+
+private def scaledActPsiInv (v : Fin 3 → Zsqrtd 2) : Fin 3 → Zsqrtd 2 :=
+  ![⟨3, 0⟩ * v 0,
+    v 1 + ⟨0, 2⟩ * v 2,
+    ⟨0, -2⟩ * v 1 + v 2]
+
+-- The starting vector e₂ = (0,1,0) encoded in ℤ[√2]³
+private def e2Int : Fin 3 → Zsqrtd 2 := ![⟨0, 0⟩, ⟨1, 0⟩, ⟨0, 0⟩]
+
+-- Index-reduction simp lemmas (used in transition lemma proofs)
+@[simp] private lemma scaledActPhi_0 (v : Fin 3 → Zsqrtd 2) :
+    scaledActPhi v 0 = v 0 + ⟨0, -2⟩ * v 1 := by
+  simp [scaledActPhi, Matrix.cons_val_zero]
+@[simp] private lemma scaledActPhi_1 (v : Fin 3 → Zsqrtd 2) :
+    scaledActPhi v 1 = ⟨0, 2⟩ * v 0 + v 1 := by
+  simp [scaledActPhi, Matrix.cons_val_one, Matrix.head_cons]
+@[simp] private lemma scaledActPhi_2 (v : Fin 3 → Zsqrtd 2) :
+    scaledActPhi v 2 = ⟨3, 0⟩ * v 2 := by
+  simp [scaledActPhi, show (2 : Fin 3) = ⟨2, by norm_num⟩ from rfl,
+        Matrix.cons_val_succ, Matrix.cons_val_one, Matrix.head_cons]
+
+@[simp] private lemma scaledActPhiInv_0 (v : Fin 3 → Zsqrtd 2) :
+    scaledActPhiInv v 0 = v 0 + ⟨0, 2⟩ * v 1 := by
+  simp [scaledActPhiInv, Matrix.cons_val_zero]
+@[simp] private lemma scaledActPhiInv_1 (v : Fin 3 → Zsqrtd 2) :
+    scaledActPhiInv v 1 = ⟨0, -2⟩ * v 0 + v 1 := by
+  simp [scaledActPhiInv, Matrix.cons_val_one, Matrix.head_cons]
+@[simp] private lemma scaledActPhiInv_2 (v : Fin 3 → Zsqrtd 2) :
+    scaledActPhiInv v 2 = ⟨3, 0⟩ * v 2 := by
+  simp [scaledActPhiInv, show (2 : Fin 3) = ⟨2, by norm_num⟩ from rfl,
+        Matrix.cons_val_succ, Matrix.cons_val_one, Matrix.head_cons]
+
+@[simp] private lemma scaledActPsi_0 (v : Fin 3 → Zsqrtd 2) :
+    scaledActPsi v 0 = ⟨3, 0⟩ * v 0 := by
+  simp [scaledActPsi, Matrix.cons_val_zero]
+@[simp] private lemma scaledActPsi_1 (v : Fin 3 → Zsqrtd 2) :
+    scaledActPsi v 1 = v 1 + ⟨0, -2⟩ * v 2 := by
+  simp [scaledActPsi, Matrix.cons_val_one, Matrix.head_cons]
+@[simp] private lemma scaledActPsi_2 (v : Fin 3 → Zsqrtd 2) :
+    scaledActPsi v 2 = ⟨0, 2⟩ * v 1 + v 2 := by
+  simp [scaledActPsi, show (2 : Fin 3) = ⟨2, by norm_num⟩ from rfl,
+        Matrix.cons_val_succ, Matrix.cons_val_one, Matrix.head_cons]
+
+@[simp] private lemma scaledActPsiInv_0 (v : Fin 3 → Zsqrtd 2) :
+    scaledActPsiInv v 0 = ⟨3, 0⟩ * v 0 := by
+  simp [scaledActPsiInv, Matrix.cons_val_zero]
+@[simp] private lemma scaledActPsiInv_1 (v : Fin 3 → Zsqrtd 2) :
+    scaledActPsiInv v 1 = v 1 + ⟨0, 2⟩ * v 2 := by
+  simp [scaledActPsiInv, Matrix.cons_val_one, Matrix.head_cons]
+@[simp] private lemma scaledActPsiInv_2 (v : Fin 3 → Zsqrtd 2) :
+    scaledActPsiInv v 2 = ⟨0, -2⟩ * v 1 + v 2 := by
+  simp [scaledActPsiInv, show (2 : Fin 3) = ⟨2, by norm_num⟩ from rfl,
+        Matrix.cons_val_succ, Matrix.cons_val_one, Matrix.head_cons]
+
+-- Mod-3 orbit invariants: for a reduced word ending in generator L,
+-- the scaled orbit 3^n·w(e₂) satisfies inv_L (all arithmetic mod 3).
+private def inv_phi (v : Fin 3 → Zsqrtd 2) : Prop :=
+  (v 0).re % 3 = 0 ∧ (v 0).im % 3 ≠ 0 ∧
+  ((v 0).im - (v 1).re) % 3 = 0 ∧
+  (v 1).im % 3 = 0 ∧ (v 2).re % 3 = 0 ∧ (v 2).im % 3 = 0
+
+private def inv_phi_inv (v : Fin 3 → Zsqrtd 2) : Prop :=
+  (v 0).re % 3 = 0 ∧ (v 0).im % 3 ≠ 0 ∧
+  ((v 0).im + (v 1).re) % 3 = 0 ∧
+  (v 1).im % 3 = 0 ∧ (v 2).re % 3 = 0 ∧ (v 2).im % 3 = 0
+
+private def inv_psi (v : Fin 3 → Zsqrtd 2) : Prop :=
+  (v 0).re % 3 = 0 ∧ (v 0).im % 3 = 0 ∧
+  (v 1).re % 3 ≠ 0 ∧ (v 1).im % 3 = 0 ∧
+  (v 2).re % 3 = 0 ∧ (v 2).im % 3 ≠ 0 ∧
+  ((v 2).im + (v 1).re) % 3 = 0
+
+private def inv_psi_inv (v : Fin 3 → Zsqrtd 2) : Prop :=
+  (v 0).re % 3 = 0 ∧ (v 0).im % 3 = 0 ∧
+  (v 1).re % 3 ≠ 0 ∧ (v 1).im % 3 = 0 ∧
+  (v 2).re % 3 = 0 ∧ (v 2).im % 3 ≠ 0 ∧
+  ((v 2).im - (v 1).re) % 3 = 0
+
+-- Shorthand for "v satisfies at least one of the four invariants"
+private def anyInv (v : Fin 3 → Zsqrtd 2) : Prop :=
+  inv_phi v ∨ inv_phi_inv v ∨ inv_psi v ∨ inv_psi_inv v
+
+-- The identity does not satisfy anyInv (e2Int has y.re = 1 ≢ 0 mod 3, x.im = 0 ≡ 0)
+private lemma e2Int_no_inv : ¬ anyInv e2Int := by
+  simp only [anyInv, inv_phi, inv_phi_inv, inv_psi, inv_psi_inv, e2Int,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+             Matrix.head_fin_const, Zsqrtd.re, Zsqrtd.im]
+  norm_num
+
+-- *** Valid transition lemmas (12 of 16 transitions in the orbit automaton) ***
+-- The 4 forbidden transitions (phi after phi_inv, phi_inv after phi,
+-- psi after psi_inv, psi_inv after psi) are excluded by reducedness.
+-- Proof pattern: unfold all definitions, apply Zsqrtd arithmetic simp, then omega.
+
+-- Shared simp set for all transition lemma proofs
+private macro "zsqrtd_simp" : tactic =>
+  `(tactic| simp only [Zsqrtd.mul_re, Zsqrtd.mul_im, Zsqrtd.add_re, Zsqrtd.add_im,
+              scaledActPhi_0, scaledActPhi_1, scaledActPhi_2,
+              scaledActPhiInv_0, scaledActPhiInv_1, scaledActPhiInv_2,
+              scaledActPsi_0, scaledActPsi_1, scaledActPsi_2,
+              scaledActPsiInv_0, scaledActPsiInv_1, scaledActPsiInv_2])
+
+-- Apply phi: valid from inv_phi, inv_psi, inv_psi_inv (NOT from inv_phi_inv)
+private lemma trans_phi_from_phi {v} (h : inv_phi v) : inv_phi (scaledActPhi v) := by
+  simp only [inv_phi] at h ⊢; zsqrtd_simp
+  obtain ⟨hxr, hxi, hxy, hyi, hzr, hzi⟩ := h
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> omega
+
+private lemma trans_phi_from_psi {v} (h : inv_psi v) : inv_phi (scaledActPhi v) := by
+  simp only [inv_phi, inv_psi] at h ⊢; zsqrtd_simp
+  obtain ⟨hxr, hxi, hyr, hyi, hzr, hzi, hzy⟩ := h
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> omega
+
+private lemma trans_phi_from_psi_inv {v} (h : inv_psi_inv v) : inv_phi (scaledActPhi v) := by
+  simp only [inv_phi, inv_psi_inv] at h ⊢; zsqrtd_simp
+  obtain ⟨hxr, hxi, hyr, hyi, hzr, hzi, hzy⟩ := h
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> omega
+
+-- Apply phi_inv: valid from inv_phi_inv, inv_psi, inv_psi_inv (NOT from inv_phi)
+private lemma trans_phi_inv_from_phi_inv {v} (h : inv_phi_inv v) : inv_phi_inv (scaledActPhiInv v) := by
+  simp only [inv_phi_inv] at h ⊢; zsqrtd_simp
+  obtain ⟨hxr, hxi, hxy, hyi, hzr, hzi⟩ := h
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> omega
+
+private lemma trans_phi_inv_from_psi {v} (h : inv_psi v) : inv_phi_inv (scaledActPhiInv v) := by
+  simp only [inv_phi_inv, inv_psi] at h ⊢; zsqrtd_simp
+  obtain ⟨hxr, hxi, hyr, hyi, hzr, hzi, hzy⟩ := h
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> omega
+
+private lemma trans_phi_inv_from_psi_inv {v} (h : inv_psi_inv v) : inv_phi_inv (scaledActPhiInv v) := by
+  simp only [inv_phi_inv, inv_psi_inv] at h ⊢; zsqrtd_simp
+  obtain ⟨hxr, hxi, hyr, hyi, hzr, hzi, hzy⟩ := h
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> omega
+
+-- Apply psi: valid from inv_phi, inv_phi_inv, inv_psi (NOT from inv_psi_inv)
+private lemma trans_psi_from_phi {v} (h : inv_phi v) : inv_psi (scaledActPsi v) := by
+  simp only [inv_psi, inv_phi] at h ⊢; zsqrtd_simp
+  obtain ⟨hxr, hxi, hxy, hyi, hzr, hzi⟩ := h
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> omega
+
+private lemma trans_psi_from_phi_inv {v} (h : inv_phi_inv v) : inv_psi (scaledActPsi v) := by
+  simp only [inv_psi, inv_phi_inv] at h ⊢; zsqrtd_simp
+  obtain ⟨hxr, hxi, hxy, hyi, hzr, hzi⟩ := h
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> omega
+
+private lemma trans_psi_from_psi {v} (h : inv_psi v) : inv_psi (scaledActPsi v) := by
+  simp only [inv_psi] at h ⊢; zsqrtd_simp
+  obtain ⟨hxr, hxi, hyr, hyi, hzr, hzi, hzy⟩ := h
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> omega
+
+-- Apply psi_inv: valid from inv_phi, inv_phi_inv, inv_psi_inv (NOT from inv_psi)
+private lemma trans_psi_inv_from_phi {v} (h : inv_phi v) : inv_psi_inv (scaledActPsiInv v) := by
+  simp only [inv_psi_inv, inv_phi] at h ⊢; zsqrtd_simp
+  obtain ⟨hxr, hxi, hxy, hyi, hzr, hzi⟩ := h
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> omega
+
+private lemma trans_psi_inv_from_phi_inv {v} (h : inv_phi_inv v) : inv_psi_inv (scaledActPsiInv v) := by
+  simp only [inv_psi_inv, inv_phi_inv] at h ⊢; zsqrtd_simp
+  obtain ⟨hxr, hxi, hxy, hyi, hzr, hzi⟩ := h
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> omega
+
+private lemma trans_psi_inv_from_psi_inv {v} (h : inv_psi_inv v) : inv_psi_inv (scaledActPsiInv v) := by
+  simp only [inv_psi_inv] at h ⊢; zsqrtd_simp
+  obtain ⟨hxr, hxi, hyr, hyi, hzr, hzi, hzy⟩ := h
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> omega
+
+-- Base cases: applying each generator to e2Int satisfies the corresponding invariant
+private lemma base_phi : inv_phi (scaledActPhi e2Int) := by
+  simp only [inv_phi, e2Int, Matrix.cons_val_zero, Matrix.cons_val_one,
+             Matrix.head_cons, Matrix.head_fin_const]
+  zsqrtd_simp
+  norm_num
+
+private lemma base_phi_inv : inv_phi_inv (scaledActPhiInv e2Int) := by
+  simp only [inv_phi_inv, e2Int, Matrix.cons_val_zero, Matrix.cons_val_one,
+             Matrix.head_cons, Matrix.head_fin_const]
+  zsqrtd_simp
+  norm_num
+
+private lemma base_psi : inv_psi (scaledActPsi e2Int) := by
+  simp only [inv_psi, e2Int, Matrix.cons_val_zero, Matrix.cons_val_one,
+             Matrix.head_cons, Matrix.head_fin_const]
+  zsqrtd_simp
+  norm_num
+
+private lemma base_psi_inv : inv_psi_inv (scaledActPsiInv e2Int) := by
+  simp only [inv_psi_inv, e2Int, Matrix.cons_val_zero, Matrix.cons_val_one,
+             Matrix.head_cons, Matrix.head_fin_const]
+  zsqrtd_simp
+  norm_num
+
+-- The orbit induction for proving orbit_ne uses these 12 valid transitions.
+-- The forbidden 4 transitions don't appear in reduced words.
+-- Full induction: on FreeGroup.toList, showing each letter step preserves the
+-- appropriate inv_L invariant (where L is the new last letter), relying on
+-- reducedness to exclude the 4 forbidden (self-cancelling) transitions.
+
 /-- **Hausdorff's Theorem** (1914): The rotation group SO(3) contains a free
     subgroup of rank 2.
 
@@ -291,13 +509,32 @@ theorem hausdorff_free_subgroup :
   let ψ := LinearEquiv.isometryOfInner ψ_lin hψ_inner
   -- Witness: the free group F₂ embeds via φ and ψ
   refine ⟨φ, ψ, ?_⟩
-  -- SORRY: Freeness requires Hausdorff's orbit argument (1914):
-  -- Track orbit of e₂=(0,1,0) under reduced words in ℤ[√2].
-  -- Key invariant: for a reduced word w of length n, the vector
-  -- 3^n · w(e₂) lies in ℤ[√2]³ with a specific mod-3 pattern
-  -- that distinguishes all non-identity words from the identity.
-  -- Proof requires ~200 lines of inductive argument on reduced words.
-  sorry
+  -- Freeness via Hausdorff's orbit argument (1914).
+  -- For injectivity we show: any non-identity word w maps e₂ ≠ e₂.
+  -- The integer orbit in ℤ[√2]³ certifies this via the mod-3 invariant.
+  -- e₂ = (0,1,0) as the test vector
+  let e₂ : EuclideanSpace ℝ (Fin 3) := EuclideanSpace.single (1 : Fin 3) 1
+  set liftF := FreeGroup.lift (fun b : Bool => if b then φ.toLinearEquiv else ψ.toLinearEquiv)
+  -- SORRY (connection bridge): proved by induction on word length.
+  -- For each reduced word w of length n, decode(evalInt w e2Int) = 3^n * (liftF w) e₂.
+  -- anyInv ensures evalInt w e2Int ≠ encode(3^n * e₂) for n ≥ 1.
+  -- Hence (liftF w) e₂ ≠ e₂ for all w ≠ 1.
+  have orbit_ne : ∀ (w : FreeGroup Bool), w ≠ 1 → (liftF w) e₂ ≠ e₂ := by
+    sorry
+  -- Injectivity from the orbit witness
+  intro w₁ w₂ hw
+  by_contra hne
+  -- w₁⁻¹ * w₂ is non-identity (since w₁ ≠ w₂)
+  have hne1 : w₁⁻¹ * w₂ ≠ 1 := by
+    intro heq
+    exact hne (inv_mul_eq_one.mp heq).symm
+  -- liftF (w₁⁻¹ * w₂) is the identity linear equiv (since liftF w₁ = liftF w₂)
+  have hmap1 : liftF (w₁⁻¹ * w₂) = 1 := by
+    simp only [map_mul, map_inv, ← hw, inv_mul_cancel]
+  -- Applying it to e₂ gives e₂
+  have heq : (liftF (w₁⁻¹ * w₂)) e₂ = e₂ := by
+    rw [hmap1]; simp
+  exact orbit_ne (w₁⁻¹ * w₂) hne1 heq
 
 -- ============================================================
 -- SECTION V: The Main Theorem

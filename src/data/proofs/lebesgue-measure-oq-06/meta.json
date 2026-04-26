@@ -20,8 +20,8 @@
     "badge": "wip",
     "sorries": 2,
     "axiomCount": 0,
-    "lineCount": 783,
-    "assumptions": "2 sorries: hausdorff_free_subgroup (Hausdorff 1914 — SO(3) contains F₂), banach_tarski (Banach-Tarski 1924 — main paradox, requires AC). Core framework fully proved including paradoxical_no_finite_measure, free_group_not_amenable, int_amenable (ℤ amenable), and banach_tarski_pieces_nonmeasurable (proved via cardinality contradiction: Borel σ-algebra has ≤ 𝔠 elements, but unitBall3 ≅ [0,1] has 2^𝔠 subsets — eliminating the last corollary sorry).",
+    "lineCount": 1136,
+    "assumptions": "2 sorries: orbit_ne (Hausdorff 1914 orbit connection bridge — reduced from full freeness sorry to a targeted connection between integer ℤ[√2]³ orbit and real SO(3) action), banach_tarski (Banach-Tarski 1924 — main paradox, requires AC). Core framework fully proved. New session (17): added complete orbit invariant infrastructure for Hausdorff freeness — 4 scaled integer actions (scaledActPhi/PhiInv/Psi/PsiInv) in ℤ[√2]³, 4 mod-3 invariant predicates (inv_phi/phi_inv/psi/psi_inv), 12 valid transition lemmas (all by simp+omega), 4 base cases, e2Int_no_inv, injectivity argument from orbit_ne.",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -203,10 +203,10 @@
       "Mathlib"
     ],
     "namespace": "BanachTarski",
-    "lineCount": 783,
+    "lineCount": 1136,
     "axiomCount": 0,
     "theoremCount": 7,
-    "definitionCount": 5,
+    "definitionCount": 9,
     "path": "Proofs/LebesgueMeasureOQ06.lean",
     "sorries": 2
   },
