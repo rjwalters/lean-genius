@@ -356,10 +356,54 @@ Both Part 1 and Part 2 are Mathlib-ready. All remaining work is USER ACTION:
 
 ---
 
+---
+
+## Session 2026-04-26 (Session 12) - Prove no_boundary_door_k_lt (3 → 2 sorries)
+
+**Mode**: REVISIT
+**Outcome**: PROGRESS — proved `no_boundary_door_k_lt`, fixed `no_boundary_doors_face_lt` (3 → 2 sorries)
+
+### What I Did
+
+1. Identified: `boundary_verts_on_face` was FALSE and blocking compilation cleanly
+2. Replaced it with `no_boundary_door_k_lt` — fully proved, no sorry
+3. Fixed `no_boundary_doors_face_lt` to use geometric hypothesis (delegates to above)
+4. Updated module docstring to reflect 2 remaining sorries
+5. Committed and created PR #12686
+
+### Key Insight: Geometric Boundary Condition Directly Implies No Door
+
+A door at position k < d requires a vertex i ≠ k with `c(s.verts i) = k`.
+But if all vertices j ≠ k lie on geometric face k (coords[k]=0), the Sperner
+condition forbids color k on face k. Contradiction → no door at k.
+
+Proof uses `Fin.castSucc ⟨k.val, hk⟩ = k` in Fin(d+1) to convert the door's
+color witness to the exact color forbidden by Sperner.
+
+### Remaining Sorries (2)
+
+1. `CellComplex.sperner` (line ~158) — intentional, proved in SpernerMathlib4.lean
+2. `boundary_doors_odd` (line ~1756) — requires canonical-orientation redesign
+
+### Files Modified
+
+- `proofs/Proofs/SpernerGrid.lean` (3 → 2 sorries, PR #12686)
+
+### Next Steps
+
+1. **[USER ACTION]** Refresh Mathlib fork + submit Part 1 PR to mathlib4
+2. **[USER ACTION]** Comment on mathlib4#25231 pointing to Part 2
+3. Fix `boundary_doors_odd`: restrict GridSimplex to canonical orientations
+   (miss = ⟨d, _⟩) and redesign proof via induction on d (~300-500L)
+
+---
+
 ## Dead Ends
 
 - `FixedPointFree.lean` (GroupTheory) — about group automorphisms, not Finsets
 - `SimpleGraph.IsMatching.even_card` — about graph matching, too much overhead
 - No direct `Finset.even_card_of_involutive` exists in Mathlib
 - `boundary_verts_on_face` proof attempt: theorem is FALSE (counterexample: d=1 N=2, S1)
-- `no_boundary_doors_face_lt` (proved): also mathematically wrong, uses unprovable sorry
+  → Removed; replaced by `no_boundary_door_k_lt` with correct geometric hypothesis
+- `no_boundary_doors_face_lt` was using unprovable sorry via `boundary_verts_on_face`
+  → Fixed: now uses geometric boundary condition and delegates to `no_boundary_door_k_lt`
