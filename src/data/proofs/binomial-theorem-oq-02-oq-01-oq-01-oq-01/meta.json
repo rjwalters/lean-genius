@@ -112,5 +112,35 @@
       "question": "Can the marginal distribution theorem (multinomial_marginal_binomial) be proved with the bijection + existing piAntidiag-based marginal lemmas?",
       "status": "open"
     }
+  ],
+  "conclusion": {
+    "summary": "Proves the `Fintype` instance for `Composition α s n` in 2 lines via a bijection with `↥(s.piAntidiag n)`, resolving the sorry from `BinomialTheoremOQ02OQ01OQ01.lean`. The key observation is that `Finset.mem_piAntidiag` precisely encodes both conditions of `Composition` (sum = n, support ⊆ s), making the bijection a definitional triviality. The proof is 15 lines total — far shorter than the parent's estimate of ~50 lines. Also resolves `dice_six_rolls_all_different` via `native_decide`.",
+    "implications": "The `Fintype` instance enables the multinomial PMF to be stated as a Mathlib `PMF`: the support type `Composition α s n` is now provably finite, allowing `Finset.sum` over it. The `sum_composition_eq_piAntidiag_sum` bridge lemma connects the Composition-indexed sum to `piAntidiag`, enabling application of Mathlib's `Finset.sum_pow_eq_sum_piAntidiag` (the multinomial theorem). Together these are the building blocks for a complete Lean 4 formalization of the multinomial distribution as a `PMF`.",
+    "openQuestions": [
+      "Can `multinomialPMF_sum_eq_one` (the normalization $\\sum_f p^f = 1$ over all compositions $f$ of $n$) be proved by combining `sum_composition_eq_piAntidiag_sum` with `Finset.sum_pow_eq_sum_piAntidiag`? This would directly use the multinomial theorem: $\\sum_{k \\in s.\\text{piAntidiag}\\, n} \\binom{n}{k} \\prod_{i} p_i^{k_i} = (\\sum_i p_i)^n = 1$ when $p$ is a probability vector.",
+      "Can the marginal distribution theorem (multinomial marginalized to a subset is again multinomial) be formalized using the existing `piAntidiag`-based infrastructure in Mathlib?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry `BinomialTheoremOQ02OQ01OQ01` defines the `Composition` type and the multinomial PMF structure but leaves the `Fintype` instance as a sorry. This entry resolves that sorry with a 2-line proof via the piAntidiag bijection."
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Grandparent entry building the multinomial PMF. The `Fintype` instance proved here is required to state and compute expectations over the multinomial distribution support."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The classical binomial theorem $(x+y)^n = \\sum_{k=0}^n \\binom{n}{k} x^k y^{n-k}$ is a special case of the multinomial theorem with two terms. This entry's `Composition` type, restricted to $|s| = 2$, recovers the binomial coefficient setup."
+    },
+    {
+      "targetId": "binomial-theorem-oq-02",
+      "relationship": "sibling",
+      "description": "The multinomial distribution OQ-02 chain. This entry resolves a sub-question about Fintype infrastructure needed to formalize the full multinomial PMF in Lean 4."
+    }
   ]
 }
