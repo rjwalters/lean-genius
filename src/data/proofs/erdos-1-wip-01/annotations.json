@@ -1,110 +1,184 @@
 [
   {
-    "id": "ann-erdos-1-wip-01-geom-sum",
+    "id": "ann-header",
     "proofId": "erdos-1-wip-01",
-    "range": { "startLine": 37, "endLine": 42 },
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "concept",
+    "title": "Module Overview: Structural Theory of DSS Sets",
+    "content": "This file provides the constructive foundations for Erdős Problem #1, organized into seven parts:\n\n- **Part I**: Superincreasing extension lemma — the core combinatorial tool\n- **Part II**: Geometric sum bound — ∑₍ᵢ<ₙ₎ 2ⁱ < 2ⁿ (helper for Part III)\n- **Part III**: Powers of 2 have DSS — inductive proof via Part I\n- **Part IV**: DSS existence — constructive witness for any n\n- **Part V**: Structural properties — positivity, monotone subset, singleton\n- **Part VI**: Sum lower bound — pigeonhole gives sum(A) ≥ 2ⁿ − 1\n- **Part VII**: OQ03 fix — fills the `sorry` in `minDSSBound`\n\nThe file imports `Erdos1Problem` (which defines `hasDistinctSubsetSums`) and `Mathlib`. All results have 0 axioms and 0 sorries — a complete, self-contained structural theory.",
+    "mathContext": "A finite set $A \\subseteq \\mathbb{N}$ has **distinct subset sums** (DSS) if all $2^{|A|}$ subset sums are distinct: $\\forall S, T \\subseteq A,\\; \\sum_{s \\in S} s = \\sum_{t \\in T} t \\Rightarrow S = T$.\n\nErdős (1931, \\$500 prize): Must any $n$-element DSS set $A \\subseteq \\{1, \\ldots, N\\}$ satisfy $N \\geq c \\cdot 2^n$ for some absolute constant $c > 0$? Known: $N \\geq \\sqrt{2/\\pi} \\cdot 2^n / \\sqrt{n}$ (Dubroff-Fox-Xu 2021), and the Conway-Guy sequence achieves $N \\leq 0.22009 \\cdot 2^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "distinct subset sums",
+      "Erdős Problem #1",
+      "superincreasing sequences",
+      "additive combinatorics",
+      "extremal set theory"
+    ],
+    "prerequisites": [
+      "Finset in Lean 4 / Mathlib",
+      "basic number theory (powers of 2)",
+      "combinatorics (subsets, injectivity)"
+    ]
+  },
+  {
+    "id": "ann-superincreasing-lemma",
+    "proofId": "erdos-1-wip-01",
+    "range": { "startLine": 46, "endLine": 117 },
+    "type": "theorem",
+    "title": "Superincreasing Extension Lemma: The Constructive Core",
+    "content": "**Theorem** (`dss_superincreasing_extend`): If `A` has DSS and `b > sum(A)` with `b ∉ A`, then `insert b A` has DSS.\n\nThis is the most important theorem in the file — it is the combinatorial engine behind all DSS constructions. A sequence is **superincreasing** if each term exceeds the sum of all previous terms; this lemma shows that any superincreasing extension preserves DSS.\n\nThe proof has four cases on whether `b` belongs to each of the two subsets `S, T ⊆ insert b A` with equal sums:\n1. **Both contain b**: erase `b` from both, sums still equal (by `add_sum_erase`), apply DSS of `A`.\n2. **b ∈ S only**: `sum(S) ≥ b > sum(A) ≥ sum(T)`, contradiction with `sum(S) = sum(T)`.\n3. **b ∈ T only**: symmetric contradiction.\n4. **Neither contains b**: both subsets lie in `A`, apply DSS of `A` directly.\n\nThe key inequality in cases 2–3 uses `Finset.single_le_sum` (every element is bounded by the total sum) and `Finset.sum_le_sum_of_subset_of_nonneg` (subset sum ≤ total sum).",
+    "mathContext": "Formally: if $b > \\sum_{a \\in A} a$ and $b \\notin A$, then for any $S, T \\subseteq A \\cup \\{b\\}$ with $\\sum_{s \\in S} s = \\sum_{t \\in T} t$, we have $S = T$.\n\nThe sum inequality chain in case 2: $b \\leq \\sum_{s \\in S} s = \\sum_{t \\in T} t \\leq \\sum_{a \\in A} a < b$, contradiction. The strict inequality $\\sum_A < b$ is exactly the superincreasing hypothesis.\n\nThis lemma generalizes: any sequence $a_1 < a_2 < \\cdots < a_n$ satisfying $a_k > a_1 + a_2 + \\cdots + a_{k-1}$ for all $k$ has DSS. The powers of 2 are the simplest example: $2^k > 2^0 + 2^1 + \\cdots + 2^{k-1} = 2^k - 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "superincreasing sequence",
+      "Finset.single_le_sum",
+      "Finset.sum_le_sum_of_subset_of_nonneg",
+      "case analysis",
+      "Conway-Guy sequence"
+    ],
+    "prerequisites": [
+      "hasDistinctSubsetSums definition",
+      "Finset.add_sum_erase",
+      "Finset.mem_insert",
+      "Finset.ne_of_mem_erase"
+    ]
+  },
+  {
+    "id": "ann-geometric-sum",
+    "proofId": "erdos-1-wip-01",
+    "range": { "startLine": 126, "endLine": 138 },
     "type": "technique",
-    "title": "Geometric Sum Identity",
-    "content": "The lemma `geom_sum_pow2` establishes $\\sum_{i=0}^{n-1} 2^i + 1 = 2^n$ by induction on $n$. The base case ($n=0$) is trivially $0 + 1 = 1$. For the inductive step, `Finset.sum_range_succ` unfolds the sum to include the $n$-th term, and `pow_succ` rewrites $2^{n+1} = 2 \\cdot 2^n$, after which `omega` closes the arithmetic. This is a quantitative companion to the geometric series formula, specialized to powers of 2.",
-    "mathContext": "$\\sum_{i=0}^{n-1} 2^i = 2^n - 1$; equivalently $\\sum_{i<n} 2^i + 1 = 2^n$",
+    "title": "Geometric Sum Identity and Strict Bound",
+    "content": "`sum_two_pow_range_add_one`: The identity $\\sum_{i=0}^{n-1} 2^i + 1 = 2^n$ proved by induction.\n\n`sum_two_pow_lt`: The strict bound $\\sum_{i=0}^{n-1} 2^i < 2^n$ follows immediately.\n\nBoth lemmas are marked `private` or `lemma` (not full `theorem`) since they serve as helpers for `powers_of_two_has_dss`. The induction in `sum_two_pow_range_add_one` matches the structure of `Finset.range`: the `succ` case adds the `n`th term `2^n` and uses `pow_succ` to rewrite `2^(n+1) = 2 · 2^n`, then `linarith` closes the goal from the induction hypothesis $\\sum_{i<n} 2^i + 1 = 2^n$.",
+    "mathContext": "$\\sum_{i=0}^{n-1} 2^i = 2^n - 1$ (geometric sum formula, special case $r = 2$).\n\nIn Lean, this is split into the addition form $\\sum + 1 = 2^n$ to avoid natural number subtraction. The strict bound $\\sum_{i<n} 2^i < 2^n$ is what the superincreasing check needs: at step $n$, the new element $2^n$ must exceed the sum of all previous elements $\\{2^0, \\ldots, 2^{n-1}\\}$.",
     "significance": "supporting",
-    "relatedConcepts": ["geometric series", "binary representation", "strong induction"],
-    "prerequisites": ["Finset.sum_range_succ", "natural number arithmetic"]
+    "relatedConcepts": [
+      "geometric series",
+      "Finset.sum_range_succ",
+      "pow_succ",
+      "natural number induction",
+      "linarith tactic"
+    ],
+    "prerequisites": [
+      "Finset.range",
+      "geometric sum formula",
+      "natural number arithmetic"
+    ]
   },
   {
-    "id": "ann-erdos-1-wip-01-sum-bound",
+    "id": "ann-powers-of-two",
     "proofId": "erdos-1-wip-01",
-    "range": { "startLine": 44, "endLine": 50 },
-    "type": "technique",
-    "title": "Subset Sum Bound: Key Quantitative Lemma",
-    "content": "The lemma `sum_pow2_lt_of_subset_range` proves that any subset $S \\subseteq \\{0, \\ldots, n-1\\}$ satisfies $\\sum_{i \\in S} 2^i < 2^n$. The proof uses `Finset.sum_le_sum_of_subset_of_nonneg` to bound $S$'s sum by the full range sum, then `linarith` with the geometric identity. This strict inequality is the tool that makes the cross-cases in the induction contradictory: if one subset contains $n-1$ and the other does not, their sums land on opposite sides of $2^{n-1}$.",
-    "mathContext": "For $S \\subseteq \\{0,\\ldots,n-1\\}$: $\\sum_{i \\in S} 2^i \\leq \\sum_{i<n} 2^i = 2^n - 1 < 2^n$",
+    "range": { "startLine": 155, "endLine": 175 },
+    "type": "theorem",
+    "title": "Powers of 2 Have Distinct Subset Sums",
+    "content": "**Theorem** (`powers_of_two_has_dss`): The set $\\{2^0, 2^1, \\ldots, 2^{n-1}\\}$ has distinct subset sums for any $n$.\n\nProof by induction on $n$:\n- **Base** ($n = 0$): the empty set trivially has DSS (vacuously satisfied).\n- **Step** ($n \\to n+1$): The set is `{2^0,...,2^(n-1)} ∪ {2^n}`. We apply `dss_superincreasing_extend` with `b = 2^n`, using:\n  - The IH: the smaller set has DSS.\n  - `sum_two_pow_lt`: `2^n > ∑_{i<n} 2^i`, confirming the superincreasing condition.\n  - `Nat.pow_right_injective`: `2^n ∉ {2^0,...,2^(n-1)}` since the map `i ↦ 2^i` is injective and `n ∉ range n`.\n\nThe set is represented as `(Finset.range n).image (2^·)`. The sum equality `sum (image (2^·) (range n)) = ∑_{i ∈ range n} 2^i` uses `Finset.sum_image` with the injectivity of `i ↦ 2^i`.",
+    "mathContext": "The set $A_n = \\{1, 2, 4, \\ldots, 2^{n-1}\\}$ satisfies DSS because it is superincreasing: $2^k = 2^0 + 2^1 + \\cdots + 2^{k-1} + 1 > \\sum_{i<k} 2^i$. Explicitly, any $S \\subseteq A_n$ has $\\sum_{s \\in S} s = \\sum_{i: 2^i \\in S} 2^i$, and the map $S \\mapsto \\sum s$ is exactly the binary representation of the characteristic vector of $S$ in $A_n$ — distinct because binary representations are unique.\n\nThis gives the canonical DSS witness: $A_n$ has $n$ elements, all $2^n$ subset sums are distinct (they are the binary representations $0$ through $2^n - 1$), and $\\max(A_n) = 2^{n-1}$.",
     "significance": "key",
-    "relatedConcepts": ["monotonicity of sums", "strict inequality", "binary representation uniqueness"],
-    "prerequisites": ["Finset.sum_le_sum_of_subset_of_nonneg", "geom_sum_pow2"]
+    "relatedConcepts": [
+      "binary representation",
+      "superincreasing sequence",
+      "Finset.sum_image",
+      "Nat.pow_right_injective",
+      "inductive proof"
+    ],
+    "prerequisites": [
+      "dss_superincreasing_extend",
+      "sum_two_pow_lt",
+      "Finset.image",
+      "Finset.range"
+    ]
   },
   {
-    "id": "ann-erdos-1-wip-01-subset-pred",
+    "id": "ann-dss-existence",
     "proofId": "erdos-1-wip-01",
-    "range": { "startLine": 52, "endLine": 58 },
-    "type": "technique",
-    "title": "Range Shrinkage: Restricting Subsets When Largest Element Is Absent",
-    "content": "`subset_range_pred` is a small bookkeeping lemma: if $S \\subseteq \\{0,\\ldots,n\\}$ and $n \\notin S$, then $S \\subseteq \\{0,\\ldots,n-1\\}$. The proof is straightforward: any $x \\in S$ satisfies $x < n+1$, but $x \\neq n$ (since $n \\notin S$), so $x < n$. `omega` closes this from the two facts. This lemma appears in all four branches of the `pow2_sum_inj` induction, enabling restriction to the smaller range for the inductive hypothesis.",
-    "mathContext": "$S \\subseteq \\{0,\\ldots,n\\} \\wedge n \\notin S \\Rightarrow S \\subseteq \\{0,\\ldots,n-1\\}$",
-    "significance": "technical",
-    "relatedConcepts": ["Finset membership", "range shrinkage", "inductive step bookkeeping"],
-    "prerequisites": ["Finset.mem_range", "omega tactic"]
+    "range": { "startLine": 191, "endLine": 225 },
+    "type": "theorem",
+    "title": "DSS Existence: Constructive Witnesses for Any n",
+    "content": "Two existence theorems use the powers-of-2 construction as a canonical witness:\n\n**`dss_exists`**: For any $n$, there exists a set $A$ with $|A| = n$, all elements $\\leq n \\cdot 2^n$, and DSS. The witness is $A = \\{2^0, \\ldots, 2^{n-1}\\}$. The bound $n \\cdot 2^n$ is loose (the actual max is $2^{n-1}$) but sufficient for OQ03's `Nat.find`.\n\n**`dss_positive_exists`**: A sharper version with all elements $> 0$ and $\\leq 2^n$. The tighter bound follows from $2^{i-1} < 2^n$ for $i < n$, and positivity from `positivity` tactic applied to `2^i`.\n\nThese fill the `sorry` in OQ03's `minDSSBound` definition, which requires `∃ N, ∃ A, |A| = n ∧ ∀ a ∈ A, a ≤ N ∧ hasDistinctSubsetSums A` to make `Nat.find` applicable.",
+    "mathContext": "The existence of DSS sets of any size is non-trivial from first principles but immediate from the superincreasing lemma: the recursion $A_0 = \\emptyset$, $A_{k+1} = A_k \\cup \\{2^k\\}$ produces $A_n = \\{1, 2, 4, \\ldots, 2^{n-1}\\}$.\n\nExact values (OEIS A005318): $f(n) = \\min\\{\\max(A) : |A| = n, \\text{DSS}\\}$:\n$f(1)=1, f(2)=2, f(3)=4, f(4)=7, f(5)=13, f(6)=24, f(7)=44, f(8)=84$.\nNotice $f(4) = 7 < 8 = 2^3$, showing powers of 2 are not optimal. The Conway-Guy sequence achieves $f(n) \\approx 0.22009 \\cdot 2^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.find",
+      "existential witness",
+      "OEIS A005318",
+      "Conway-Guy sequence",
+      "minDSSBound"
+    ],
+    "prerequisites": [
+      "powers_of_two_has_dss",
+      "Finset.card_image_of_injective",
+      "Nat.pow_right_injective",
+      "positivity tactic"
+    ]
   },
   {
-    "id": "ann-erdos-1-wip-01-pow2-sum-inj-both",
+    "id": "ann-structural-properties",
     "proofId": "erdos-1-wip-01",
-    "range": { "startLine": 60, "endLine": 106 },
+    "range": { "startLine": 233, "endLine": 259 },
     "type": "insight",
-    "title": "Binary Uniqueness by Strong Induction: Four-Case Analysis",
-    "content": "This is the mathematical heart of the proof. `pow2_sum_inj` establishes that if $S, T \\subseteq \\{0,\\ldots,n-1\\}$ satisfy $\\sum_{i \\in S} 2^i = \\sum_{i \\in T} 2^i$, then $S = T$. The proof proceeds by strong induction on $n$, splitting on whether $n-1$ belongs to $S$ and $T$ independently.\n\n**Case (both contain $n-1$)**: `Finset.add_sum_erase` separates out the $2^{n-1}$ contribution from each sum. Canceling it gives equal sums over $S \\setminus \\{n-1\\}$ and $T \\setminus \\{n-1\\}$, and the IH closes.\n\n**Case ($n-1 \\in S$, $n-1 \\notin T$)**: `Finset.single_le_sum` gives $\\sum_S 2^i \\geq 2^{n-1}$, while `sum_pow2_lt_of_subset_range` gives $\\sum_T 2^i < 2^{n-1}$ — contradiction by `omega`.\n\n**Case ($n-1 \\notin S$, $n-1 \\in T$)**: symmetric.\n\n**Case (neither contains $n-1$)**: `subset_range_pred` shrinks both to $\\{0,\\ldots,n-2\\}$ and IH closes directly.",
-    "mathContext": "$S, T \\subseteq \\{0,\\ldots,n-1\\},\\ \\sum_S 2^i = \\sum_T 2^i \\Rightarrow S = T$",
+    "title": "Structural Constraints: Positivity, Monotonicity, Singletons",
+    "content": "Four structural properties that any DSS set must satisfy:\n\n**`not_dss_of_mem_zero`**: If $0 \\in A$ then $A$ does not have DSS — because $\\emptyset$ and $\\{0\\}$ are distinct subsets with the same sum 0. The Lean proof uses `simp` to evaluate the sums of the two subsets.\n\n**`dss_elements_pos`**: All elements of a non-empty DSS set are positive. Follows by contrapositive from `not_dss_of_mem_zero`: if some element is 0, the set has no DSS.\n\n**`dss_subset`**: Any subset $B \\subseteq A$ of a DSS set also has DSS. Proved in one line: `fun S T hS hT heq => hDSS S T (hS.trans hBA) (hT.trans hBA) heq`. This is the **monotone/hereditary** property — DSS is closed downward under inclusion.\n\n**`dss_singleton`**: Any singleton $\\{a\\}$ has DSS. The proof uses `Finset.subset_singleton_iff` to case-split on whether $S = \\emptyset$ or $S = \\{a\\}$.\n\nTogether, these show DSS sets form a **downward-closed family** (matroid-like structure): every subset of a DSS set is also a DSS set.",
+    "mathContext": "The positivity constraint $A \\subseteq \\mathbb{N}_{>0}$ is automatic in the $\\{1, 2, 4, \\ldots\\}$ construction but must be verified for arbitrary DSS sets.\n\nThe hereditary property means DSS sets form an **independence system** (or simplicial complex): $\\mathcal{F}_{DSS} = \\{A : \\text{hasDistinctSubsetSums}(A)\\}$ is closed under subsets. In matroid theory, this is one of the axioms of an independence system; DSS sets satisfy it trivially.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "hereditary set system",
+      "independence system",
+      "simplicial complex",
+      "Finset.subset_singleton_iff",
+      "matroid theory"
+    ],
+    "prerequisites": [
+      "hasDistinctSubsetSums definition",
+      "Finset.empty_subset",
+      "Finset.singleton_subset_iff",
+      "not_dss_of_mem_zero"
+    ]
+  },
+  {
+    "id": "ann-sum-lower-bound",
+    "proofId": "erdos-1-wip-01",
+    "range": { "startLine": 273, "endLine": 301 },
+    "type": "theorem",
+    "title": "Sum Lower Bound: Pigeonhole Argument",
+    "content": "**Theorem** (`dss_sum_lower_bound`): If $A$ has $n$ elements with DSS, then $\\text{sum}(A) + 1 \\geq 2^n$.\n\nProof via pigeonhole:\n1. The subset-sum map $S \\mapsto \\text{sum}(S)$ is **injective** on $\\mathcal{P}(A)$ by the DSS hypothesis. This is captured as `Set.InjOn` on `A.powerset`.\n2. The **image** of this map has size $2^n = |\\mathcal{P}(A)|$ (by `Finset.card_image_of_injOn` and `Finset.card_powerset`).\n3. All $2^n$ sums lie in $\\{0, 1, \\ldots, \\text{sum}(A)\\}$ — there are at most $\\text{sum}(A) + 1$ possible values.\n4. By $2^n \\leq \\text{sum}(A) + 1$.\n\n**Corollary** (`dss_sum_ge_pow_sub_one`): $\\text{sum}(A) \\geq 2^n - 1$.\n\nThis bound is tight: the powers-of-2 set achieves $\\text{sum}(\\{1, 2, 4, \\ldots, 2^{n-1}\\}) = 2^n - 1$.",
+    "mathContext": "The sum bound is a **global** constraint: $\\sum_{a \\in A} a \\geq 2^n - 1$. Since $\\sum_A \\leq n \\cdot \\max(A)$, this gives $\\max(A) \\geq (2^n - 1)/n$ — the **counting bound** proved in the main `erdos-1` entry.\n\nFormally, the pigeonhole argument is:\n$$2^n = |\\mathcal{P}(A)| = |\\{\\sigma(S) : S \\subseteq A\\}| \\leq |\\{0, 1, \\ldots, \\sigma(A)\\}| = \\sigma(A) + 1$$\nwhere $\\sigma(S) = \\sum_{s \\in S} s$. The last inequality is because distinct sums all lie in the range $[0, \\sigma(A)]$.\n\nThe Lean proof uses `Finset.card_le_card` to compare image cardinality with range cardinality, and `Finset.sum_le_sum_of_subset_of_nonneg` to bound each subset sum by the total sum.",
     "significance": "key",
-    "relatedConcepts": ["binary representation uniqueness", "strong induction", "Finset.add_sum_erase"],
-    "prerequisites": ["sum_pow2_lt_of_subset_range", "subset_range_pred", "Finset.single_le_sum"]
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "injective function",
+      "Set.InjOn",
+      "Finset.card_image_of_injOn",
+      "counting bound",
+      "Finset.card_powerset"
+    ],
+    "prerequisites": [
+      "hasDistinctSubsetSums",
+      "Finset.powerset",
+      "Finset.card_le_card",
+      "Finset.sum_le_sum_of_subset_of_nonneg"
+    ]
   },
   {
-    "id": "ann-erdos-1-wip-01-preimage-trick",
+    "id": "ann-minDSS-witness",
     "proofId": "erdos-1-wip-01",
-    "range": { "startLine": 111, "endLine": 156 },
-    "type": "technique",
-    "title": "Preimage Index Trick: Lifting DSS to the Value Level",
-    "content": "The theorem `powersOfTwo_hasDistinctSubsetSums` proves that $A = \\{2^0, 2^1, \\ldots, 2^{n-1}\\}$ has distinct subset sums. The challenge is that the DSS property lives at the *value* level (sums of actual elements like 1, 2, 4, …), while `pow2_sum_inj` works at the *index* level (sums of $2^i$ for indices $i$). The bridge is the **preimage index trick**:\n\n1. Given $S, T \\subseteq A$ with equal sums, define index preimages $S' = \\{i < n : 2^i \\in S\\}$ and $T' = \\{i < n : 2^i \\in T\\}$.\n2. Show $S = S'.\\text{image}(2^{\\cdot})$ and $T = T'.\\text{image}(2^{\\cdot})$.\n3. Use `Finset.sum_image` (with injectivity of $2^{\\cdot}$) to convert: $\\text{sum}(S) = S'.\\text{sum}(2^{\\cdot})$.\n4. Apply `pow2_sum_inj` to get $S' = T'$, hence $S = T$.\n\nThis pattern — lifting a value-level property to an index-level property via a preimage — recurs throughout combinatorics formalizations.",
-    "mathContext": "$S \\subseteq A,\\ S' = \\{i < n : 2^i \\in S\\} \\Rightarrow S.\\text{sum}(\\text{id}) = S'.\\text{sum}(2^{\\cdot})$ via `Finset.sum_image`",
-    "significance": "key",
-    "relatedConcepts": ["Finset.sum_image", "preimage", "injectivity", "additive combinatorics"],
-    "prerequisites": ["pow2_sum_inj", "Finset.filter", "Nat.pow_right_injective"]
-  },
-  {
-    "id": "ann-erdos-1-wip-01-injectivity",
-    "proofId": "erdos-1-wip-01",
-    "range": { "startLine": 141, "endLine": 150 },
-    "type": "definition",
-    "title": "Injectivity of the Powering Map",
-    "content": "`Nat.pow_right_injective` asserts that if $b > 1$, then $b^a = b^b \\Rightarrow a = b$. Here it justifies that the map $i \\mapsto 2^i$ is injective on natural numbers, which in turn justifies `Finset.sum_image`: the sum over an image equals the sum over the preimage when the map is injective on that set. This injectivity is also what guarantees $|\\{2^i : i < n\\}| = n$ in `dss_existence`.",
-    "mathContext": "$2^a = 2^b \\Rightarrow a = b$ (for $a, b \\in \\mathbb{N}$); i.e., $i \\mapsto 2^i$ is injective on $\\mathbb{N}$",
-    "significance": "technical",
-    "relatedConcepts": ["Nat.pow_right_injective", "Finset.sum_image", "Finset.card_image_of_injective"],
-    "prerequisites": ["natural number exponential", "injectivity"]
-  },
-  {
-    "id": "ann-erdos-1-wip-01-dss-existence",
-    "proofId": "erdos-1-wip-01",
-    "range": { "startLine": 162, "endLine": 187 },
+    "range": { "startLine": 314, "endLine": 317 },
     "type": "insight",
-    "title": "Existence Theorem: Filling the minDSSBound Sorry",
-    "content": "The theorem `dss_existence` is the payoff: for every $n$, there exists an $n$-element set $A \\subseteq \\mathbb{N}$ with all elements $\\leq n \\cdot 2^n$ and with distinct subset sums. The construction is $A = \\{2^i : i < n\\}$.\n\nThe proof has three obligations handled by `refine`:\n1. **Cardinality**: `Finset.card_image_of_injective` + injectivity of $2^{\\cdot}$ + `Finset.card_range` give $|A| = n$.\n2. **Bound**: For each $i < n$, we have $2^i < 2^n \\leq n \\cdot 2^n$ (the second step uses `Nat.le_mul_of_pos_left` with $n > 0$, and `linarith` closes).\n3. **DSS**: `powersOfTwo_hasDistinctSubsetSums n` provides the distinct subset sum property.\n\nThis theorem is directly used as the `Nat.find` witness in `Erdos1OQ03.lean`, making `minDSSBound` — the minimum $N$ for an $n$-element DSS set — a well-defined noncomputable function.",
-    "mathContext": "$\\forall n,\\ \\exists A : \\text{Finset}\\, \\mathbb{N},\\ |A| = n \\wedge (\\forall a \\in A,\\ a \\leq n \\cdot 2^n) \\wedge \\text{DSS}(A)$",
-    "significance": "key",
-    "relatedConcepts": ["Nat.find", "distinct subset sums", "Erdős Problem #1", "Conway-Guy sequence"],
-    "prerequisites": ["powersOfTwo_hasDistinctSubsetSums", "Finset.card_image_of_injective", "Nat.le_mul_of_pos_left"]
-  },
-  {
-    "id": "ann-erdos-1-wip-01-four-cases",
-    "proofId": "erdos-1-wip-01",
-    "range": { "startLine": 75, "endLine": 106 },
-    "type": "technique",
-    "title": "Four-Case Structure of the Binary Induction Step",
-    "content": "The inductive step of `pow2_sum_inj` uses `by_cases hnS : n ∈ S <;> by_cases hnT : n ∈ T` to create four branches, exactly mirroring the four cases in uniqueness of binary representation proofs:\n\n1. **n ∈ S, n ∈ T** (both): `Finset.add_sum_erase` factors out $2^n$ from each sum, the two $2^n$ terms cancel from the equal-sum hypothesis (by `omega`), and the IH is applied to the erased sets.\n2. **n ∈ S, n ∉ T** (S only): `Finset.single_le_sum` gives $\\sum_S \\geq 2^n$, while `sum_pow2_lt_of_subset_range` restricted via `subset_range_pred` gives $\\sum_T < 2^n$. Combined with `heq : \\sum_S = \\sum_T`, `omega` derives a contradiction.\n3. **n ∉ S, n ∈ T** (T only): symmetric to case 2.\n4. **n ∉ S, n ∉ T** (neither): `subset_range_pred` shrinks both subsets to `range n` and the IH closes directly.\n\nThis exhaustive case analysis is the complete proof skeleton — no continuations, no auxiliary goals remain after the four branches close.",
-    "mathContext": "Case split: $n\\in S$ vs $n\\notin S$ crossed with $n\\in T$ vs $n\\notin T$. Key tools: $\\text{add\\_sum\\_erase}$: $\\sum_S = 2^n + \\sum_{S\\setminus\\{n\\}}$; $\\text{single\\_le\\_sum}$: $n\\in S\\Rightarrow 2^n\\leq\\sum_S$; $\\text{sum\\_pow2\\_lt}$: $n\\notin T\\Rightarrow\\sum_T<2^n$. Contradiction in cross-case: $2^n\\leq\\sum_S=\\sum_T<2^n$.",
-    "significance": "key",
-    "relatedConcepts": ["Finset.add_sum_erase", "Finset.single_le_sum", "binary representation", "strong induction"],
-    "prerequisites": ["sum_pow2_lt_of_subset_range", "subset_range_pred", "Nat.succ induction in Lean 4"]
-  },
-  {
-    "id": "ann-erdos-1-wip-01-imports",
-    "proofId": "erdos-1-wip-01",
-    "range": { "startLine": 1, "endLine": 31 },
-    "type": "context",
-    "title": "Module Setup: Importing the Erdős #1 Problem Definition",
-    "content": "The file imports `Proofs.Erdos1Problem`, which defines the `hasDistinctSubsetSums` predicate used throughout. It also imports all of Mathlib for access to `Finset` APIs, arithmetic lemmas, and `Nat.pow_right_injective`. Opening `Finset` avoids the need to prefix `Finset.range`, `Finset.filter`, etc. The `namespace Erdos1Wip01` groups all definitions under a single namespace, preventing name collisions with other Erdős #1 companion files.",
-    "mathContext": "`hasDistinctSubsetSums A` is defined in `Erdos1Problem` as: $\\forall S, T \\subseteq A,\\ S.\\text{sum}(\\text{id}) = T.\\text{sum}(\\text{id}) \\Rightarrow S = T$",
-    "significance": "context",
-    "relatedConcepts": ["Lean 4 imports", "Mathlib", "namespace", "hasDistinctSubsetSums"],
-    "prerequisites": ["Lean 4 module system", "Proofs.Erdos1Problem"]
+    "title": "OQ03 Fix: Filling the Existential Sorry",
+    "content": "**`minDSS_witness`**: For any $n$, there exists $N$ and an $n$-element DSS set bounded by $N$. The proof is a one-liner: `⟨n * 2 ^ n, dss_exists n⟩`.\n\nThis fills the `sorry` in OQ03's `minDSSBound` definition, which uses `Nat.find` on the proposition `∃ N, ∃ A : Finset ℕ, A.card = n ∧ (∀ a ∈ A, a ≤ N) ∧ hasDistinctSubsetSums A`. The `Nat.find` tactic requires proof that this proposition is satisfiable — that's exactly what `minDSS_witness` provides.\n\nThe bound `N = n * 2^n` is generous (the actual minimum `f(n)` from OEIS A005318 is much smaller), but it is the simplest closed-form bound directly derivable from the powers-of-2 construction.",
+    "mathContext": "The `Nat.find` combinator in Lean extracts the minimal natural number satisfying a decidable predicate. For `minDSSBound n`, the predicate is `P(N) := ∃ A, |A| = n ∧ (∀ a ∈ A, a ≤ N) ∧ hasDistinctSubsetSums A`. Without a proof that $\\exists N, P(N)$, the definition of `minDSSBound` is stuck on a `sorry`.\n\n`minDSS_witness n` proves $\\exists N, P(N)$ by providing the witness $N = n \\cdot 2^n$ with $A = \\{2^0, \\ldots, 2^{n-1}\\}$. Once this sorry is filled, all theorems in OQ03 depending on `minDSSBound` become unconditionally proved.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.find",
+      "minDSSBound",
+      "sorry elimination",
+      "existential witness",
+      "OEIS A005318"
+    ],
+    "prerequisites": [
+      "dss_exists",
+      "Nat.find and Classical.choice",
+      "decidable proposition"
+    ]
   }
 ]
