@@ -53,56 +53,64 @@
       "title": "Composition: Support Type of Multinomial",
       "startLine": 36,
       "endLine": 53,
-      "summary": "Defines Composition as a structure bundling a count function, a sum constraint, and zero-outside condition. Fintype instance left sorry."
+      "summary": "Defines Composition as a structure bundling a count function, a sum constraint, and zero-outside condition. Fintype instance left sorry.",
+      "mathContext": "The support of the multinomial$(n, p)$ on alphabet $s$ is $\\{k : s \\to \\mathbb{N} \\mid \\sum_{i\\in s} k(i) = n\\} = \\text{piAntidiag}(s,n)$. The `Composition` structure wraps this as a `Fintype` required by Lean's `PMF` typeclass."
     },
     {
       "id": "sec-pmf-val",
       "title": "Multinomial PMF Value Function",
       "startLine": 55,
       "endLine": 66,
-      "summary": "Defines multinomialPMFVal in ENNReal: the multinomial coefficient times the product of probability powers."
+      "summary": "Defines multinomialPMFVal in ENNReal: the multinomial coefficient times the product of probability powers.",
+      "mathContext": "$\\text{multinomialPMFVal}(k) = \\binom{n}{k_1,\\ldots,k_r} \\cdot \\prod_{i\\in s} p_i^{k_i} \\in \\mathbb{R}_{\\geq 0}^\\infty$. The `Nat.multinomial s k.counts` is the multinomial coefficient $\\frac{n!}{\\prod k_i!}$."
     },
     {
       "id": "sec-normalization",
       "title": "Normalization from the Multinomial Theorem",
       "startLine": 68,
       "endLine": 99,
-      "summary": "Proves sum of multinomial PMF values equals 1 (sorry). Constructs multinomialPMF via PMF.mk using normalization proof."
+      "summary": "Proves sum of multinomial PMF values equals 1 (sorry). Constructs multinomialPMF via PMF.mk using normalization proof.",
+      "mathContext": "$\\sum_{k \\in \\text{Composition}(s,n)} \\binom{n}{k} \\prod_{i} p_i^{k_i} = \\left(\\sum_{i\\in s} p_i\\right)^n = 1$ when $\\sum p_i = 1$. This is the multinomial theorem in $\\mathbb{R}_{\\geq 0}^\\infty$, lifted from `Finset.sum_pow_eq_sum_piAntidiag`."
     },
     {
       "id": "sec-pmf-properties",
       "title": "PMF Properties: Apply and Support",
       "startLine": 101,
       "endLine": 119,
-      "summary": "multinomialPMF_apply (proved by rfl) and multinomialPMF_support (sorry: product nonzero iff factors nonzero)."
+      "summary": "multinomialPMF_apply (proved by rfl) and multinomialPMF_support (sorry: product nonzero iff factors nonzero).",
+      "mathContext": "`multinomialPMF_apply` holds by `rfl` since `PMF.instFunLike` makes `P k` definitionally equal to `P.1 k`. Support: $P(X=k) \\neq 0 \\iff \\forall i\\in s, k_i \\neq 0 \\Rightarrow p_i \\neq 0$."
     },
     {
       "id": "sec-marginal-binomial",
       "title": "Marginal Distribution: Multinomial → Binomial",
       "startLine": 121,
       "endLine": 142,
-      "summary": "multinomial_marginal_binomial (sorry): fixing k(i) = m and summing over remaining components gives the binomial PMF formula C(n,m)·p(i)^m·(1-p(i))^(n-m)."
+      "summary": "multinomial_marginal_binomial (sorry): fixing k(i) = m and summing over remaining components gives the binomial PMF formula C(n,m)·p(i)^m·(1-p(i))^(n-m).",
+      "mathContext": "$P(X_i = m) = \\binom{n}{m} p_i^m (1-p_i)^{n-m}$. The inner sum over remaining categories equals $(1-p_i)^{n-m}$ by the $(|s|-1)$-dimensional multinomial theorem applied to $\\{p_j : j\\neq i\\}$, which sum to $1-p_i$."
     },
     {
       "id": "sec-moments",
       "title": "Mean and Covariance",
       "startLine": 144,
       "endLine": 168,
-      "summary": "multinomial_mean (E[Xᵢ] = n·pᵢ, sorry) and multinomial_covariance (Cov(Xᵢ,Xⱼ) = -n·pᵢ·pⱼ, sorry). Both use piAntidiag sum manipulation."
+      "summary": "multinomial_mean (E[Xᵢ] = n·pᵢ, sorry) and multinomial_covariance (Cov(Xᵢ,Xⱼ) = -n·pᵢ·pⱼ, sorry). Both use piAntidiag sum manipulation.",
+      "mathContext": "$E[X_i] = np_i$. $\\text{Cov}(X_i, X_j) = E[X_iX_j] - E[X_i]E[X_j] = n(n-1)p_ip_j - n^2p_ip_j = -np_ip_j < 0$. Negative covariance reflects the constraint $\\sum X_i = n$: components cannot fluctuate independently."
     },
     {
       "id": "sec-feasibility",
       "title": "Feasibility Analysis for Mathlib Contribution",
       "startLine": 170,
       "endLine": 202,
-      "summary": "Documents what is available in Mathlib and what needs to be built. Estimates ~200-300 lines for complete contribution. Answer: YES, integration is feasible."
+      "summary": "Documents what is available in Mathlib and what needs to be built. Estimates ~200-300 lines for complete contribution. Answer: YES, integration is feasible.",
+      "mathContext": "Mathlib already has `PMF` (tsum normalization), `Nat.multinomial`, `Finset.sum_pow_eq_sum_piAntidiag` (multinomial theorem), and `ENNReal` arithmetic. The gap is the `Fintype` instance for `Composition` (~50 lines) and the ENNReal lift of the multinomial theorem (~30 lines)."
     },
     {
       "id": "sec-concrete-example",
       "title": "Concrete Example: Dice Roll",
       "startLine": 204,
       "endLine": 215,
-      "summary": "Example: rolling a fair die 6 times, probability of seeing each face exactly once = 6!/(1!^6) · (1/6)^6 = 720/46656."
+      "summary": "Example: rolling a fair die 6 times, probability of seeing each face exactly once = 6!/(1!^6) · (1/6)^6 = 720/46656.",
+      "mathContext": "$P(\\text{all distinct in 6 rolls}) = \\frac{6!}{1!^6}\\cdot\\left(\\frac{1}{6}\\right)^6 = \\frac{720}{46656} = \\frac{5}{324} \\approx 1.54\\%$. The theorem checks $\\text{multinomial}(\\{0,\\ldots,5\\}, \\mathbf{1}) = 6!$ (multinomial with all counts 1 equals $n!$)."
     }
   ],
   "crossReferences": [
@@ -116,8 +124,9 @@
     "summary": "YES, the multinomial PMF can be integrated into Mathlib's PMF framework. The construction path is clear: Composition type → ENNReal normalization → PMF.mk → properties.",
     "implications": "A complete implementation would be a valuable Mathlib contribution, enabling verified statistical reasoning about multinomial experiments.",
     "openQuestions": [
-      "Can the Fintype instance for Composition be proved efficiently using piAntidiag?",
-      "Can the entropy of the multinomial distribution be formalized?"
+      "Can the Fintype instance for Composition be proved efficiently via Fintype.ofEquiv from Finset.piAntidiag?",
+      "Can the entropy H(X) = -∑ k P(X=k) log P(X=k) of the multinomial be formalized using Mathlib's MeasureTheory.entropy framework?",
+      "Can the multinomial CLT be stated in Lean: does (Xᵢ - npᵢ)/√(npᵢ(1-pᵢ)) converge in distribution to N(0,1) for each coordinate as n → ∞?"
     ]
   },
   "leanFile": {
