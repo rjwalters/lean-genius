@@ -252,3 +252,120 @@ Formalize Kuhn's (1968) constructive proof of Sperner's lemma via path-following
 
 1. Implement kuhnWalkWithExit + walkTrace_reversal to fill bdry_nfc_even sorry
 2. Then proof is complete (0 axioms, 0 sorries)
+
+---
+
+## Session 2026-04-26 (Session 7) — bdry_nfc_even Mathematical Analysis
+
+**Mode**: REVISIT
+**Outcome**: blocked — deep mathematical analysis of the remaining sorry
+
+### What I Did
+
+1. Read the full `SpernerNDimOQ04.lean` file (816 lines) and analyzed `bdry_nfc_even` at line 721
+2. Performed deep mathematical analysis of why the sorry is hard
+3. Identified the key parity gap and documented it
+
+### Key Findings
+
+- **`bdry_nfc_even` states**: `Even |B_nfc|` where B_nfc = {(s,k) | isDoorAt ∧ K.adj=none ∧ k=last d ∧ ¬IsFC}
+- **The parity identity from global counting**:
+  - `sperner_parity` gives `|FC| ≡ |B_boundary|` (mod 2) where B_boundary = {(s,k) | isDoorAt ∧ K.adj=none ∧ k=last d}
+  - B_boundary = B_fc ∪ B_nfc (disjoint), so `|B_fc| + |B_nfc| = |B_boundary|`
+  - `|B_fc| + |B_nfc| ≡ |FC|` (mod 2) — but this DOESN'T directly give Even |B_nfc|
+- **Why the involution strategy fails abstractly**:
+  - A naive τ: B_nfc → B_nfc via "follow the walk" is NOT well-defined globally
+  - Walks from B_nfc elements can terminate at either B_nfc elements OR at FC interior simplices
+  - The τ pairing only works for walks that pair with OTHER B_nfc elements
+  - Walks reaching FC interior simplices contribute ≡ |FC interior| (mod 2) to the count
+- **The honest proof path**: Requires `walkTrace_reversal` (~50-100 lines of inductive proof):
+  1. Define `kuhnWalkWithExit`: fuel-based walk returning `Option (Simplex × Fin(d+1))` for exit
+  2. Prove `walkTrace_reversal`: if walk (s,k) → (s', k') over n steps, then walk (s',k') → (s,k)
+  3. Show B_nfc splits into: pair-to-B_nfc (even, via τ) + walk-to-FC-interior (pairs with FC)
+  4. Use |FC interior| = |FC| - |B_fc| and parity argument to close
+- **Status: BLOCKED** — 7 sessions on this sorry; mathematical gap is genuine (~100 lines needed)
+- **Mathlib relevant**: `Finset.even_card_iff_exists_invOn` or similar could help once τ is defined
+
+### Assessment
+
+This sorry has been open for 7 sessions. The remaining gap is NOT a simple Lean tactic issue —
+it requires defining `kuhnWalkWithExit` + proving `walkTrace_reversal` by induction on walk
+length. That's ~80-100 lines of proof engineering beyond what's been done. This is a genuine
+mathematical/engineering gap; the problem is not stuck on formalization of a known result.
+
+### Files Modified
+
+None (analysis only)
+
+### Next Steps
+
+1. Build `kuhnWalkWithExit` (fuel-based, returns boundary exit or None)
+2. Prove `walkTrace_reversal` by induction: backward walk reverses forward walk
+3. Use `walkTrace_reversal` + `even_card_fpf_invol` to fill `bdry_nfc_even`
+4. Total work estimate: ~100 lines; recommend fresh session focused only on this
+
+---
+
+## Session 2026-04-26 (Session 8) — bdry_nfc_even → bdry_all_even_of_no_fc_walks
+
+**Mode**: REVISIT
+**Outcome**: major progress — heq_step sorry eliminated, proof restructured around correct lemma
+
+### What I Did
+
+1. Diagnosed that `bdry_nfc_even` (in worktree's 816-line file) is MATHEMATICALLY FALSE — counterexample:
+   FC simplex with interior door adjacent to non-FC simplex with 1 boundary door → |B_nfc| = 1 (odd)
+2. Replaced the worktree file with the committed main repo version (892 lines) which had the correct structure
+3. Added three major sections before the main sorry:
+   - `kuhnWalk_result_not_in_initial_visited` — proved by induction (~40 lines)
+   - `kuhnPath_reversal` — sorry'd (the walk reversal theorem)
+   - `bdry_all_even_of_no_fc_walks` — restructured with FPF involution proof
+
+4. Fixed the `heq_step` sorry in the FPF proof:
+   - Old approach: tried to identify kuhnWalk's exit door as k_int (from nonfc_with_door_has_unique_exit) via broken hk_int_eq proof using `le_refl _ |>.le`
+   - New approach: set k_out := exit_doors.min' hne directly (mirroring kuhnWalk_fc_or_bdry pattern), prove k_out is interior via kuhnWalk_first_exit_interior, get hadj_step from K.adj p.1 k_out, then conv_lhs + kuhnWalk_congr
+
+5. Updated `bdry_all_even_of_no_fc_walks` to use correct `hfail` hypothesis
+
+### Key Findings
+
+- **CRITICAL**: `bdry_nfc_even` is FALSE — the correct lemma is `bdry_all_even_of_no_fc_walks` with `hfail` hypothesis
+- **kuhnWalk_result_not_in_initial_visited**: proved by induction on fuel; each non-recursive branch returns current (∉ visited); recursive branch adds current to visited, so s₀ is in new visited
+- **heq_step fix**: don't try to prove exit_doors.min' = k_int; instead set k_out := exit_doors.min' hne and use k_out directly in conv_lhs simp
+- **kuhnPath_reversal proof strategy** (needed for τ∘τ=id):
+  - Strong induction on WalkValid fuel n
+  - For n=0: impossible (state.visited.card = Fintype.card K.Simplex would contradict current_not_visited)
+  - For n+1: last step via adj_symm from pred_spec gives s_prev; apply IH to sub-path
+  - Tools: K.adj_symm, nonfc_with_door_has_unique_exit, WalkValid.pred_spec
+  - Difficulty: IH applies to reverse walk from sₙ with BOUNDARY entry, but sub-walk from s_{n-1} has INTERIOR entry → needs fully general "middle walk reversal" IH
+  - Estimated: ~120-150 lines of WalkValid-based induction
+
+### Files Modified
+
+- `proofs/Proofs/SpernerNDimOQ04.lean` (major additions: +170 lines total)
+  - Added kuhnWalk_result_not_in_initial_visited (proved, ~40 lines)
+  - Added kuhnPath_reversal (sorry'd, ~15 lines + docstring)
+  - Replaced bdry_nfc_even with bdry_all_even_of_no_fc_walks (correct hypothesis)
+  - Fixed heq_step sorry in FPF proof (conv_lhs pattern, no sorry)
+
+### Current State
+
+- **0 axioms** (same as before)
+- **1 sorry remaining**: `kuhnPath_reversal` — walk reversal theorem (τ∘τ=id)
+- **All other proof goals in bdry_all_even_of_no_fc_walks**: PROVED
+  - Membership (τ p ∈ B): proved via kuhnWalk_fc_or_bdry + boundary_door_is_last_face
+  - FPF (τ p ≠ p): proved via kuhnWalk_result_not_in_initial_visited + heq_step (conv_lhs)
+  - Involution (τ∘τ=id): sorry'd via kuhnPath_reversal
+
+### Next Steps
+
+1. Prove `kuhnPath_reversal` by strong induction on WalkValid fuel:
+   - Step 1: pred_spec gives predecessor s_pred at the forward walk's last step
+   - Step 2: adj_symm shows K.adj sₙ state.entry = some(s_pred, k_exit)
+   - Step 3: unique exit at sₙ (entry=Fin.last d) = state.entry (the predecessor face)
+   - Step 4: Reverse walk takes one step to s_pred; IH applied to sub-walk from s_pred
+   - Challenge: IH needs generalized entry parameter (not just Fin.last d)
+2. General reversal lemma (stronger IH):
+   - `∀ forward walk ending at sₙ with boundary exit gₙ, reverse walk from (sₙ, gₙ) returns to s₀`
+   - Induction on path length n; base case n=0 impossible; step by adj_symm + uniqueness
+3. Commit, push, update PR
