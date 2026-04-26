@@ -160,6 +160,26 @@
       "targetId": "sylow-theorem",
       "relationship": "foundational",
       "description": "Sylow's theorems give the structure of p-subgroups of S_n; the dominance of 2-subgroups in the count connects to Sylow 2-subgroups"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem constrains subgroup orders to divide n!; foundational for any counting argument over subgroups of S_n."
+    },
+    {
+      "targetId": "erdos-1160",
+      "relationship": "related",
+      "description": "Erdős #1160 asks whether g(n) (groups of order n) is maximized at powers of 2 — a closely related counting problem where 2-groups also dominate. Together they suggest 2-power group structures are extremal in multiple counting problems."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-02",
+      "relationship": "related",
+      "description": "The open question 'What is the analogous result for alternating groups A_n?' connects to A_n solvability: the subgroup counting problem for A_n is linked to the fact that A_n is simple for n ≥ 5, restricting which subgroups can appear."
+    },
+    {
+      "targetId": "arithmetic-series-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Gaussian binomial coefficients [k/j]_q = |Gr(j,k)(F_q)| count subspaces of (F_q)^k. The subgroup count of (ℤ/2ℤ)^k involves the q=2 case: [k/j]_2 counts index-2^j subgroups of (ℤ/2ℤ)^k, directly feeding the 1/16 constant derivation."
     }
   ],
   "references": [
