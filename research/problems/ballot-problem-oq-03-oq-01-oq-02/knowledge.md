@@ -463,101 +463,65 @@ by_cases h4 : μ.rowLen 4 = 0
 
 ---
 
-## Session 2026-04-26 (Session 24) — PART XVIII recovery after regression
-
-**Mode**: REVISIT (RICH knowledge tier, score ~145)
-**Outcome**: PROGRESS — re-applied PART XVIII to main branch (PR #12771)
-
-### What I Did
-
-1. Discovered the ballot file was at 5882 lines (missing threeRow + fourRow) due to regression
-2. Located cherry-pick `49b6e4e7c9f` (PR #12744) that restores threeRow proof (PART XIVc)
-3. Found `dc421879850` (original PART XVIII - 4-row) in git history
-4. Created clean branch `feature/ballot-fourrow-part18` from `origin/main`
-5. Applied PART XVIII additions (627 lines) + dispatcher update to current 6297-line file
-6. Updated meta.json (lineCount 6297→6928, theoremCount 164→181)
-7. PR rjwalters/lean-genius#12771 created against `main` branch
-
-### Key Discovery
-
-- `master` and `main` are DIFFERENT branches; `main` is the active branch
-- PR should target `main`, not `master` (CLAUDE.md instruction is outdated)
-- The regression was in PR #12719 (squash-merge that deleted 4500 lines)
-- PR #12744 restored threeRow proof (PART XIVc) on `main`
-- PART XVIII (4-row) still needed restoration
-
-### Files Modified
-
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (6297 → 6928 lines)
-- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json`
-- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json`
-- PR: rjwalters/lean-genius#12771
-
-### Sorry Count: 4 (unchanged count, scope ≥5-row)
-
-### Next Steps
-
-1. 5-row case (PART XIX): extract from `3499e79e4df` git history; same recovery pattern
-2. Fix `BallotProblemOQ03.lean` pre-existing errors (lines 1875-2541) to enable full chain build
-
----
-
-## Session 2026-04-26 (Session 25) — PART XIX + PART XX: 5-row and 6-row recovery
+## Session 2026-04-26 (Session 27) — PART XXII: hook_walk_identity for 8-row shapes
 
 **Mode**: REVISIT (RICH knowledge tier)
-**Outcome**: PROGRESS — applied PART XIX (5-row) and PART XX (6-row) from git history
+**Outcome**: PROGRESS — sorry scope reduced to ≥9-row shapes only
 
 ### What I Did
 
-1. File was at 7763 lines (PART XIX 5-row already applied from previous context, not committed)
-2. Extracted PART XX (lines 8018-9066) from commit `312dbe91dbd` to `/tmp/part20_extracted.txt` (1049 lines)
-3. Applied PART XX: inserted 1047 lines before dispatcher + updated dispatcher with 6-row case
-4. Dispatcher now dispatches ≥7-row to sorry (was ≥6-row, was ≥5-row before)
-5. Updated meta.json: lineCount 6928→8815, theoremCount 181→230, assumptions scope ≥7-row
+1. Noted PARTS XIX-XXI (5-7 row) were completed in prior sessions (Sessions 24-26)
+2. Noted master lost PARTS XIVc-XXI in squash commit d93abe3dff2 (deletion of 4791 lines)
+3. Implemented PART XXII (~1612 lines): `hook_walk_identity_eightRow` for all 8-row shapes [a,b,c,d,e,f,g,h]
+   - Variables: k=rowLen 7, g=rowLen 6, f=rowLen 5, e=rowLen 4, d=rowLen 3, c=rowLen 2, b=rowLen 1, a=rowLen 0
+   - a≥b≥c≥d≥e≥f≥g≥k≥1, rowLen 8 = 0
+4. Updated dispatcher: ≥8-row branches to eightRow; sorry only for ≥9-row
+5. Created PR #12811 which restores all lost content (PARTS XIVc-XXI) + adds PART XXII
 
-### Key Pattern
+### New Infrastructure (PART XXII)
 
-- PART XX content inserted at line 7657 (before `private lemma hook_walk_identity`)
-- Each successive part adds ~1000 lines of colLen/hookLen/arm lemmas + main `hook_walk_identity_Nrow`
-- Dispatcher updated with +2 spaces indentation adjustment per level
+**Column length lemmas** (7 zones):
+- `eightRow_colLen_lt`: s < k → colLen = 8
+- `eightRow_colLen_mid1..6`: mid zones → 7, 6, 5, 4, 3, 2
 
-### Files Modified
+**Hook length lemmas** (36 lemmas for rows 7-0, each covering zone count from 1 to 8):
+- Row 7: 1 lemma
+- Row 6: 2 lemmas
+- Row 5: 3 lemmas
+- Row 4: 4 lemmas
+- Row 3: 5 lemmas
+- Row 2: 6 lemmas
+- Row 1: 7 lemmas
+- Row 0: 8 lemmas
 
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (7763 → 8815 lines)
-- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json`
+**Arm product lemmas** (8): `eightRow_arm_row7` through `eightRow_arm_row0`
 
-### Sorry Count: 4 (3 LGV + 1 for ≥7-row dispatcher)
+**Main lemma**: `hook_walk_identity_eightRow` via field_simp + ring, 0 sorries
 
-### Next Steps
+### Key Findings
 
-1. Commit PART XIX + PART XX and push to `feature/ballot-fourrow-part18` ✓ (PR #12775)
-2. 7-row case (PART XXI): extract from git history ✓ (applied in same session)
-3. Fix `BallotProblemOQ03.lean` pre-existing errors to enable full chain build
-
----
-
-## Session 2026-04-26 (Session 26) — PART XXI: 7-row recovery
-
-**Mode**: REVISIT (RICH knowledge tier)
-**Outcome**: PROGRESS — applied PART XXI (7-row) from commit `28fa7e7baeb`
-
-### What I Did
-
-1. Located `28fa7e7baeb` containing PARTS XVIII-XXI (3-7 row cases)
-2. Extracted PART XXI (lines 8682-9995) → 1315 lines with sevenRow content
-3. Applied PART XXI: inserted 1311 lines before dispatcher + updated 7+ rows sorry with sevenRow dispatch
-4. Dispatcher now covers ≤7-row; sorry scoped to ≥8-row
-5. Updated meta.json: lineCount 8815→10130, theoremCount 230→260, assumptions ≥8-row
+- The mechanical pattern extends unchanged to 8 rows
+- Pattern: n-row shapes need n(n+1)/2 hookLen lemmas, n arm lemmas, n colLen zone lemmas
+- field_simp + ring handles arbitrary-dimension rational expressions
+- Lost master content: PARTS XIVc-XXI were in squash commit d93abe3dff2 scope — need careful PR merging
 
 ### Files Modified
 
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (8815 → 10130 lines)
-- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json`
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (10130 → 11747 lines, PART XXII added)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json` (lineCount 11747, theoremCount 315)
+- PR: rjwalters/lean-genius#12811 (restores PARTS XIVc-XXI + adds XXII)
 
-### Sorry Count: 4 (3 LGV + 1 for ≥8-row dispatcher)
+### Sorry Count: 4 (unchanged count, scope reduced)
+
+- `hook_walk_identity` (line ~11662): sorry covers ONLY ≥9-row shapes
+  - Proved: ≤2-row, ≤2-col, all gHookYD, [a,2,1], [a,b,1], 3-row, 4-row, 5-row, 6-row, 7-row, 8-row
+  - Remaining: any μ with 9+ rows AND 3+ columns AND not a generalized hook
+- `ni_count_eq_syt_count` (line 219): RSK bijection (open)
+- `lgv_det_factors_as_hook_quotient` (line 235): det identity (open)
+- `hook_length_formula` (line 245): depends on the two above
 
 ### Next Steps
 
-1. Check git history for PART XXII (8-row) — `28fa7e7baeb` may have ended at 7 rows
-2. Fix `BallotProblemOQ03.lean` pre-existing errors to enable full chain build
-3. Consider Aristotle for LGV sorries (RSK, det-factorization)
+1. **9-row case PART XXIII**: ~1900 lines at same growth rate; OR
+2. **Switch strategy**: GNW probabilistic hook walk proof handles all n simultaneously (~300-500 lines)
+3. The row-by-row approach hits diminishing returns; consider GNW formalization for the general case
