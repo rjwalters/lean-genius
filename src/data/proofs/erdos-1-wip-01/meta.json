@@ -35,14 +35,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1 (1931, $500 prize) asks whether any set of n positive integers with all 2^n subset sums distinct must have maximum element ≥ c · 2^n. The current gallery formalizes the counting bound (OQ01), the DFX entropy framework (OQ02), the Conway-Guy sequence (OQ03), and extremal sets (OQ04). This WIP extension adds the foundational structural theory that underlies all these results.",
+    "historicalContext": "Erdős Problem #1 (1931, $500 prize) asks whether any set of n positive integers with all 2^n subset sums distinct (a DSS set) must have maximum element ≥ c · 2^n for some absolute constant c > 0. The problem remained open for decades; the best known upper bound c ≤ 0.22009 comes from the Conway-Guy sequence (1968). The counting lower bound max(A) ≥ 2^(n-1)/n was proved by Erdős and Moser; the DFX information-theoretic bound (Dubroff-Fox-Xu, 2021) improves the constant by a log factor.\n\nThe superincreasing extension lemma at the heart of this file is classical: it is the reason the powers-of-2 set {1, 2, 4, ..., 2^(n-1)} has DSS (proved by induction). All greedy DSS constructions follow this pattern. The gallery formalizes the counting bound (OQ01), DFX entropy framework (OQ02), Conway-Guy sequence (OQ03), and extremal sets (OQ04). This WIP file adds the structural foundations that underlie all those results.",
     "problemStatement": "If A ⊆ ℕ has the distinct subset sums property (∀ S T ⊆ A, sum(S) = sum(T) → S = T), what structural constraints must A satisfy? In particular:\n1. When can we extend A while preserving DSS?\n2. What is the canonical construction giving DSS sets of any size?\n3. What are the necessary conditions on elements?",
     "proofStrategy": "The central tool is the **superincreasing extension lemma**: if A has DSS and b > sum(A), then A ∪ {b} has DSS. The proof is by case analysis on whether b is in each of the two subsets:\n- Both contain b: subtract b from both sums, apply DSS of A.\n- b in one but not the other: the sum with b is > sum(A), while the sum without is ≤ sum(A). Contradiction.\n- Neither contains b: both subsets lie in A; apply DSS of A directly.\n\nFrom this lemma, powers of 2 give DSS (by induction: 2^n > ∑_{i<n} 2^i), and existence for any n follows immediately.",
     "keyInsights": [
       "The superincreasing extension lemma is the constructive core of all known DSS constructions. Both the Conway-Guy sequence and the powers-of-2 sequence are superincreasing, which is why they have DSS.",
       "0 cannot be in a DSS set: ∅ and {0} would both have sum 0 but be distinct subsets. This forces all elements positive.",
       "The sum lower bound sum(A) ≥ 2^n − 1 (for n-element DSS A) is derived from the injective pigeonhole argument: 2^n subset sums in [0, sum(A)] forces 2^n ≤ sum(A) + 1.",
-      "The DSS monotone property (any subset of a DSS set has DSS) means the problem has a hereditary structure — the DSS 'language' is an antichain under inclusion."
+      "The DSS monotone property (any subset of a DSS set has DSS) means the problem has a hereditary structure — the DSS 'language' is an antichain under inclusion.",
+      "The dss_exists theorem fills the sorry in OQ03's minDSSBound definition, which uses Nat.find to find the minimum element bound. Lean's Nat.find requires a proof of existence as input; dss_positive_exists provides exactly this witness, making the entire OQ03 construction well-founded."
     ],
     "prerequisites": [
       "Finset basics (Lean 4 / Mathlib)",
