@@ -100,6 +100,22 @@
       "endLine": 583,
       "summary": "Introduces ExceptionalType inductive type for G₂,F₄,E₆,E₇,E₈ with dimensions (14,52,78,133,248) and ranks (2,4,6,7,8). Axiomatizes G2_is_octonion_aut (G₂=Aut(𝕆)) and freudenthal_tits_f4/e6/e7/e8. Proves exceptional_dims_strict_mono, G2_unique_low_rank, E8_is_largest, magic_square_corners_distinct, exceptional_chain by decidability. Closes with the Hurwitz-exceptional correspondence explaining why exactly 5 exceptional types exist.",
       "mathContext": "G₂ has dimension 14 = dim(SO(7)) − 7 = 21 − 7 (Aut(𝕆) acts on Im(𝕆)≅ℝ⁷ and is constrained by the cross-product structure). The Freudenthal-Tits magic square: 𝔏(A,B) = Der(A) ⊕ (ImA⊗ImB) ⊕ Der(B). Corners: 𝔏(𝕆,ℝ)=F₄(52), 𝔏(𝕆,ℂ)=E₆(78), 𝔏(𝕆,ℍ)=E₇(133), 𝔏(𝕆,𝕆)=E₈(248)."
+    },
+    {
+      "id": "derivation-submodule-magic-square",
+      "title": "§IV-c to V: Derivation Algebra as Submodule + Freudenthal-Tits Axioms",
+      "startLine": 558,
+      "endLine": 697,
+      "summary": "Defines OctonionDerSubmodule as a Submodule of End_ℝ(ℝ⁸) to give Der(𝕆) an inherited vector space structure. Axiomatizes G2_der_dimension (finrank = 14). Proves derivation structural properties: der_maps_unit_to_zero, der_maps_real_part_to_zero, toLinearMap, mem_der_submodule. Then states the Freudenthal-Tits magic square: freudenthal_tits_f4/e6/e7/e8 (dimension facts, 52/78/133/248).",
+      "mathContext": "Der(𝕆) as a Submodule of $\\text{End}_\\mathbb{R}(\\mathbb{R}^8)$: the set of $\\mathbb{R}$-linear maps $D: \\mathbb{R}^8 \\to \\mathbb{R}^8$ satisfying the Leibniz rule $D(ab) = D(a)\\cdot b + a\\cdot D(b)$ for octonion multiplication. Axiom `G2_der_dimension`: $\\text{finrank}_\\mathbb{R}(\\text{Der}(\\mathbb{O})) = 14$ (the dimension of $\\mathfrak{g}_2$). Tits construction: $\\mathfrak{L}(A,B) = \\mathfrak{der}(A) \\oplus (\\text{Im}A \\otimes \\text{Im}B) \\oplus \\mathfrak{der}(B)$ with $\\dim\\mathfrak{L}(\\mathbb{O},\\mathbb{O}) = 14 + 49 + 14 + \\text{extra} = 248$."
+    },
+    {
+      "id": "physical-applications-summary",
+      "title": "§VII: Hurwitz-Exceptional Correspondence and Physical Applications",
+      "startLine": 750,
+      "endLine": 822,
+      "summary": "Docstring explaining why Hurwitz's 4 normed division algebras yield exactly 5 exceptional Lie algebras: G₂=Der(𝕆), F₄=𝔏(𝕆,ℝ), E₆=𝔏(𝕆,ℂ), E₇=𝔏(𝕆,ℍ), E₈=𝔏(𝕆,𝕆). Physical applications: E₈×E₈ heterotic string theory (anomaly cancellation, dim=496), M-theory compactification on G₂ manifolds, E₇(7) symmetry of N=8 supergravity. #check summary of all 30 public declarations.",
+      "mathContext": "E₈×E₈ heterotic string theory: the unique anomaly-free 10D string theory requires $\\text{dim}(G) = 496$ — satisfied by $E_8 \\times E_8$ with $2 \\times 248 = 496$ and $\\text{SO}(32)$ with $\\frac{32\\cdot 31}{2} = 496$. G₂ holonomy: a Riemannian 7-manifold $(M^7, g)$ with holonomy $G_2$ (i.e., the holonomy group $\\subseteq G_2 \\subset \\text{SO}(7)$) admits a parallel spinor, giving $N=1$ supersymmetry in 4D M-theory compactification. These physical applications arise precisely because $G_2 = \\text{Aut}(\\mathbb{O}) \\subseteq \\text{O}(7)$, proved in this file."
     }
   ],
   "conclusion": {
