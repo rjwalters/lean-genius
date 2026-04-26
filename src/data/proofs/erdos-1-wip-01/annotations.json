@@ -84,6 +84,18 @@
     "prerequisites": ["powersOfTwo_hasDistinctSubsetSums", "Finset.card_image_of_injective", "Nat.le_mul_of_pos_left"]
   },
   {
+    "id": "ann-erdos-1-wip-01-four-cases",
+    "proofId": "erdos-1-wip-01",
+    "range": { "startLine": 75, "endLine": 106 },
+    "type": "technique",
+    "title": "Four-Case Structure of the Binary Induction Step",
+    "content": "The inductive step of `pow2_sum_inj` uses `by_cases hnS : n ∈ S <;> by_cases hnT : n ∈ T` to create four branches, exactly mirroring the four cases in uniqueness of binary representation proofs:\n\n1. **n ∈ S, n ∈ T** (both): `Finset.add_sum_erase` factors out $2^n$ from each sum, the two $2^n$ terms cancel from the equal-sum hypothesis (by `omega`), and the IH is applied to the erased sets.\n2. **n ∈ S, n ∉ T** (S only): `Finset.single_le_sum` gives $\\sum_S \\geq 2^n$, while `sum_pow2_lt_of_subset_range` restricted via `subset_range_pred` gives $\\sum_T < 2^n$. Combined with `heq : \\sum_S = \\sum_T`, `omega` derives a contradiction.\n3. **n ∉ S, n ∈ T** (T only): symmetric to case 2.\n4. **n ∉ S, n ∉ T** (neither): `subset_range_pred` shrinks both subsets to `range n` and the IH closes directly.\n\nThis exhaustive case analysis is the complete proof skeleton — no continuations, no auxiliary goals remain after the four branches close.",
+    "mathContext": "Case split: $n\\in S$ vs $n\\notin S$ crossed with $n\\in T$ vs $n\\notin T$. Key tools: $\\text{add\\_sum\\_erase}$: $\\sum_S = 2^n + \\sum_{S\\setminus\\{n\\}}$; $\\text{single\\_le\\_sum}$: $n\\in S\\Rightarrow 2^n\\leq\\sum_S$; $\\text{sum\\_pow2\\_lt}$: $n\\notin T\\Rightarrow\\sum_T<2^n$. Contradiction in cross-case: $2^n\\leq\\sum_S=\\sum_T<2^n$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.add_sum_erase", "Finset.single_le_sum", "binary representation", "strong induction"],
+    "prerequisites": ["sum_pow2_lt_of_subset_range", "subset_range_pred", "Nat.succ induction in Lean 4"]
+  },
+  {
     "id": "ann-erdos-1-wip-01-imports",
     "proofId": "erdos-1-wip-01",
     "range": { "startLine": 1, "endLine": 31 },
