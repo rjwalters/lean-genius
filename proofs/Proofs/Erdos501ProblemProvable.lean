@@ -70,11 +70,31 @@ def HasInfiniteIndependent (A : SetFamily) : Prop :=
 
 /- ## Part III: Erdős-Hajnal Theorem (1960) -/
 
+/-- Product measure existence: n distinct reals with no mutual conflicts.
+    See Erdos501Problem.lean for the detailed proof sketch. -/
+lemma exists_independent_tuple (A : SetFamily) (hA : BoundedOuterMeasureFamily A)
+    (n : ℕ) :
+    ∃ f : Fin n → ℝ, Function.Injective f ∧
+      ∀ i j : Fin n, i ≠ j → f i ∉ A (f j) := by
+  match n with
+  | 0 => exact ⟨Fin.elim0, Function.injective_of_subsingleton _, fun i => Fin.elim0 i⟩
+  | 1 => exact ⟨fun _ => 0, Function.injective_of_subsingleton _,
+                 fun i j h => absurd (Subsingleton.elim i j) h⟩
+  | n + 2 => sorry
+
 /-- Erdős-Hajnal (1960): For any bounded outer measure family,
     arbitrarily large finite independent sets exist. -/
 theorem erdos_hajnal_finite (A : SetFamily) (hA : BoundedOuterMeasureFamily A) :
     ∀ n : ℕ, IsIndependentOfSize A n := by
-  sorry
+  intro n
+  obtain ⟨f, hInj, hNoConflict⟩ := exists_independent_tuple A hA n
+  refine ⟨Finset.image f Finset.univ, ?_, ?_⟩
+  · rw [Finset.card_image_of_injective _ hInj, Finset.card_univ, Fintype.card_fin]
+  · intro x hx y hy hxy
+    simp only [Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.mem_range] at hx hy
+    obtain ⟨i, rfl⟩ := hx
+    obtain ⟨j, rfl⟩ := hy
+    exact hNoConflict i j (fun h => hxy (congrArg f h))
 
 /-- Corollary: Independent pairs always exist. -/
 theorem independent_pair_exists (A : SetFamily) (hA : BoundedOuterMeasureFamily A) :
