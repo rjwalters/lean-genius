@@ -67,11 +67,11 @@
   "sections": [
     {
       "id": "imports",
-      "title": "Imports and Setup",
+      "title": "Imports, Namespace, and Opens",
       "startLine": 1,
-      "endLine": 34,
-      "summary": "Module documentation and imports: `Corner.Roth` (for rothNumberNat_isLittleO_id), `AP.Three.Defs`, `Tactic`, and `Proofs.SzemerediTheorem` (for ap_free_density_bound). Opens `Szemeredi Asymptotics Filter`.",
-      "mathContext": "The key import chain: Corner.Roth transitively provides IsLittleO infrastructure. SzemerediTheorem provides ap_free_density_bound (ε-N₀ density bound for all k)."
+      "endLine": 35,
+      "summary": "Module documentation and imports: `Corner.Roth` (for rothNumberNat_isLittleO_id), `AP.Three.Defs`, `Tactic`, and `Proofs.SzemerediTheorem` (for ap_free_density_bound). Namespace `SzemerediDensity`. Opens `Szemeredi` (for IsAPFree), `Asymptotics` (for IsLittleO), `Filter` (for atTop/nhds).",
+      "mathContext": "The key import chain: Corner.Roth transitively provides IsLittleO infrastructure. `open Szemeredi Asymptotics Filter` brings `IsAPFree`, `IsLittleO`, and `Filter.atTop`/`nhds` into scope without qualification — critical for the Filter.Tendsto and IsLittleO theorem statements."
     },
     {
       "id": "vanishing-density",
@@ -144,6 +144,11 @@
       "targetId": "szemeredi-counting",
       "relationship": "related",
       "description": "The AP counting lemma — quantifies the number of k-APs in a set, complementing the density vanishing statement in this entry"
+    },
+    {
+      "targetId": "furstenberg-correspondence",
+      "relationship": "related",
+      "description": "The Furstenberg correspondence principle — translates the combinatorial density statement of Szemerédi's theorem into a measure-theoretic recurrence problem. The density formulation proved here (k-AP-free sets have |A|/N → 0) is the negation of the condition triggering recurrence under Furstenberg's correspondence: positive upper density implies return times."
     }
   ],
   "conclusion": {
