@@ -2,11 +2,11 @@
   "id": "erdos-476-oq-05",
   "title": "Erdős #476 OQ5: Vosper's Theorem — Equality Case of Cauchy-Davenport",
   "slug": "erdos-476-oq-05",
-  "description": "Vosper's theorem (1956): if |A+B| = |A|+|B|-1 in Z/pZ with |A|,|B|≥2 and |A+B|<p, then A and B are arithmetic progressions with the same common difference d. Fully proved: all infrastructure, vosper_base, vosper_ap_sdiff_card, and the |B|=2 and |A|=|B|=3 sub-cases of case1_exists. One sorry remains: the |A|≥4 or |B|≥4 all-redundant contradiction (requires Kneser's theorem, not in Mathlib).",
+  "description": "Vosper's theorem (1956): if |A+B| = |A|+|B|-1 in Z/pZ with |A|,|B|≥2 and |A+B|<p, then A and B are arithmetic progressions with the same common difference d. AXIOMATIZED: all infrastructure proved; one axiom covers the large-case existence step requiring Dyson e-transform (~200 lines; deferred).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-21",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos476OQ05Problem.lean",
     "tags": [
       "additive-combinatorics",
@@ -17,12 +17,12 @@
       "vosper-theorem",
       "zmod"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "dateAdded": "2026-04-21",
-    "axiomCount": 0,
-    "assumptions": "1 sorry in vosper theorem: [SORRY 1/2] Case 1 existence (counting argument for removing an element from A). [SORRY 2/2] AP extension has been resolved: vosper_ap_sdiff_card is now fully proved (Session 20). ap_of_near_periodic (backward-shift induction) and vosper_base (|A|=2 case) are also fully proved. Infrastructure all proved with 0 sorries.",
-    "lineCount": 874,
+    "axiomCount": 1,
+    "assumptions": "1 axiom (vosper_case1_exists_large): covers the large-case existence step in Vosper's theorem induction (|A|≥4 or |B|≥4). Proof strategy uses Dyson e-transform; deferred to future session. All other lemmas (ap_of_near_periodic, vosper_base, vosper_ap_sdiff_card) fully proved.",
+    "lineCount": 885,
     "theoremCount": 8,
     "definitionCount": 1,
     "originalContributions": [
@@ -33,14 +33,14 @@
       "shift_card_eq: |B.image (·+d)| = |B| via add_right_injective (proved, 0 sorries)",
       "ap_of_near_periodic: B is AP if |B\\(B+d)|=1 (proved — backward-shift induction)",
       "vosper_base: Vosper for |A|=2 (proved — uses ap_of_near_periodic)",
-      "vosper: full Vosper theorem (1 sorry — Case 1 existence in induction on |A|; AP extension proved via vosper_ap_sdiff_card in Session 20)"
+      "vosper: full Vosper theorem (0 sorries, 1 axiom — vosper_case1_exists_large covers the |A|≥4 or |B|≥4 all-redundant case; |B|=2 and |A|=|B|=3 sub-cases fully proved)"
     ]
   },
   "overview": {
     "historicalContext": "The Cauchy-Davenport theorem was proved by Augustin-Louis Cauchy in 1813 for prime p and independently rediscovered by Harold Davenport in 1935. It gives the sharp lower bound |A+B| ≥ min(p, |A|+|B|-1) for subsets A, B of Z/pZ. Forty years later, A.G. Vosper (1956) asked: when is this bound tight? His answer — that equality forces both A and B to be arithmetic progressions with the same common difference — became the prototype for 'inverse problems' in additive combinatorics. The paradigm of asking 'what structure forces an extremal bound?' has since generated the Freiman-Ruzsa theorem, the Plünnecke-Ruzsa inequality, and the Green-Tao theorem on arithmetic progressions in the primes. Nathanson's 1996 monograph 'Additive Number Theory: Inverse Problems and the Geometry of Sumsets' gave an influential presentation of Vosper's result as §2.4, cementing its place as a textbook theorem in the subject.",
     "problemStatement": "Let p be prime, A,B ⊆ Z/pZ with |A|,|B| ≥ 2 and |A+B| = |A|+|B|-1 < p. Prove that there exists d ≠ 0 in Z/pZ and starting points a, b such that A = {a, a+d, ..., a+(|A|-1)d} and B = {b, b+d, ..., b+(|B|-1)d}.",
     "text": "The proof strategy uses the Cauchy-Davenport theorem from Mathlib (`ZMod.cauchy_davenport`) as a key tool. For 2-element A = {a, a+d}: the sumset decomposes as A+B = (a+B) ∪ (a+d+B), and equality |A+B| = |B|+1 forces |B ∩ (d+B)| = |B|-1, i.e., B and its d-shift differ in exactly one element. The key sublemma `ap_of_near_periodic` then shows this near-periodicity forces B to be an AP with difference d. The full induction on |A| removes elements one at a time, applying the base case, and then verifying that the removed element extends the AP structure.",
-    "proofStrategy": "Infrastructure: define IsArithmeticProgression A a d := A = (range |A|).image (fun i => a + i*d). Key sublemma: |B \\ (B+d)| = 1 ⟹ B is AP (backward-shift argument: every b ≠ b_max satisfies b-d ∈ B, forcing B to be exhausted by the sequence b_max, b_max+d, ...). Base case |A|=2 uses inclusion-exclusion to compute |B ∩ (d+B)| from |A+B|. Full Vosper: induction on |A|+|B| using Cauchy-Davenport to ensure the reduced problem also achieves equality.",
+    "proofStrategy": "Infrastructure: define IsArithmeticProgression A a d := A = (range |A|).image (fun i => a + i*d). Key sublemma: |B \\ (B+d)| = 1 ⟹ B is AP (backward-shift argument: every b ≠ b_max satisfies b-d ∈ B, forcing B to be exhausted by the sequence b_max, b_max+d, ...). Base case |A|=2 uses inclusion-exclusion to compute |B ∩ (d+B)| from |A+B|. Full Vosper: induction on |A|+|B| using Cauchy-Davenport to ensure the reduced problem also achieves equality. One axiom (vosper_case1_exists_large) captures the |A|≥4 or |B|≥4 sub-case of the existence step, which requires Dyson e-transform techniques.",
     "keyInsights": [
       "Mathlib has ZMod.cauchy_davenport (the counting theorem) — Vosper is the missing structural complement",
       "IsArithmeticProgression as A = image of range(|A|) avoids size constraints in the definition",
@@ -56,12 +56,11 @@
     ]
   },
   "conclusion": {
-    "summary": "Vosper's theorem nearly complete: IsArithmeticProgression, all AP lemmas, ap_of_near_periodic, vosper_base, vosper_ap_sdiff_card all proved (0 sorries). In the full induction, case1_exists is mostly proved — |B|=2 via orbit argument, |A|=|B|=3 via counting (9 < 10). One sorry remains: |B|≥3 and (|A|≥4 or |B|≥4) all-redundant contradiction, which requires Kneser's theorem (not yet in Mathlib).",
-    "implications": "Once ap_of_near_periodic is formalized (the backward-shift induction), the full Vosper theorem follows from standard induction. Vosper's theorem would then complement ZMod.cauchy_davenport in Mathlib, completing the picture of additive structure in Z/pZ.",
+    "summary": "Vosper's theorem axiomatized: IsArithmeticProgression, all AP lemmas, ap_of_near_periodic, vosper_base, vosper_ap_sdiff_card all proved (0 sorries). In the full induction, case1_exists is proved for |B|=2 (orbit argument) and |A|=|B|=3 (counting: 9 < 10). One axiom (vosper_case1_exists_large) covers the |B|≥3 and (|A|≥4 or |B|≥4) all-redundant contradiction, which requires Dyson e-transform/Kneser techniques (~200 lines; deferred). 0 sorries, 1 axiom.",
+    "implications": "With vosper_case1_exists_large axiomatized, the full Vosper theorem is machine-checked modulo this one stated assumption. Vosper's theorem complements ZMod.cauchy_davenport in Mathlib, completing the picture of additive structure in Z/pZ. The remaining axiom is a well-understood mathematical fact whose Lean proof is a future target.",
     "openQuestions": [
-      "Formalize ap_of_near_periodic: B is an AP if |B \\ (B+d)| = 1 (needs backward-shift induction on |B|)",
+      "Prove vosper_case1_exists_large: formalize the Dyson e-transform argument for the |A|≥4 or |B|≥4 all-redundant contradiction (~200 lines)",
       "Extend Vosper to the case |A|=1 or |B|=1 (trivial but needs separate statement)",
-      "Prove the full Vosper theorem with the inductive step on |A|",
       "Generalize to other groups: Vosper has analogs in other settings (e.g., non-prime orders with different extremal sets)"
     ]
   },
@@ -82,46 +81,46 @@
       "id": "header-imports",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 47,
-      "summary": "Proof strategy overview, references (Vosper 1956, Nathanson 1996, Mathlib), imports CauchyDavenport. Opens Finset, Function, Pointwise namespaces."
+      "endLine": 51,
+      "summary": "Proof strategy overview, references (Vosper 1956, Nathanson 1996, Mathlib), imports CauchyDavenport. Axiom vosper_case1_exists_large declared. Opens Finset, Function, Pointwise namespaces."
     },
     {
       "id": "ap-definition",
       "title": "IsArithmeticProgression Definition",
-      "startLine": 48,
-      "endLine": 58,
+      "startLine": 52,
+      "endLine": 68,
       "summary": "Defines IsArithmeticProgression A a d as A = image of range(|A|) under i ↦ a + i·d. Image-of-range formulation avoids explicit size constraints."
     },
     {
       "id": "ap-infrastructure",
       "title": "AP Infrastructure: Four Proved Lemmas",
-      "startLine": 59,
-      "endLine": 105,
+      "startLine": 69,
+      "endLine": 117,
       "summary": "shift_card_eq (|B+d| = |B|), isAP_singleton, isAP_pair (uses interval_cases), isAP_shift (uses Finset.image_image + ring). All 0 sorries."
     },
     {
       "id": "near-periodic-lemma",
       "title": "Key Sublemma: Near-Periodicity Forces AP",
-      "startLine": 106,
-      "endLine": 127,
+      "startLine": 118,
+      "endLine": 139,
       "summary": "ap_of_near_periodic: |B \\ (B+d)| = 1 ∧ d≠0 ∧ |B|<p → B is AP with difference d. Fully proved via backward-shift induction on |B| using well-founded recursion."
     },
     {
       "id": "vosper-theorem",
       "title": "Vosper's Theorem: Base Case and Full Induction",
-      "startLine": 128,
-      "endLine": 165,
-      "summary": "vosper_base (|A|=2, inclusion-exclusion → ap_of_near_periodic, fully proved), vosper_ap_sdiff_card (AP extension, fully proved — Session 20), vosper (strong induction on |A|, 1 sorry: Case 1 existence). vosper_base and vosper_ap_sdiff_card now proved; one specific sub-goal in the induction remains open."
+      "startLine": 140,
+      "endLine": 177,
+      "summary": "vosper_base (|A|=2, inclusion-exclusion → ap_of_near_periodic, fully proved), vosper_ap_sdiff_card (AP extension, fully proved — Session 20), vosper (strong induction on |A|, 0 sorries, 1 axiom: vosper_case1_exists_large handles the |A|≥4 or |B|≥4 case)."
     }
   ],
   "leanFile": {
     "namespace": "Erdos476OQ05",
-    "lineCount": 874,
-    "axiomCount": 0,
+    "lineCount": 885,
+    "axiomCount": 1,
     "theoremCount": 8,
     "definitionCount": 1,
     "path": "Proofs/Erdos476OQ05Problem.lean",
-    "sorries": 1
+    "sorries": 0
   },
-  "sorries": 1
+  "sorries": 0
 }
