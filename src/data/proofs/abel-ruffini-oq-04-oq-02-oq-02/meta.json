@@ -88,40 +88,40 @@
       "id": "header",
       "title": "Documentation and Imports",
       "startLine": 1,
-      "endLine": 44,
-      "summary": "Module docstring with classification table, key argument, and references. Imports Mathlib.GroupTheory.Solvable and Mathlib.GroupTheory.SpecificGroups.Alternating."
+      "endLine": 53,
+      "summary": "Module docstring with classification table, key argument, and references. Imports Mathlib.GroupTheory.Solvable and Mathlib.GroupTheory.SpecificGroups.Alternating. set_option linter flags, open Equiv, and namespace declaration."
     },
     {
       "id": "small-cases",
       "title": "Small Alternating Groups Are Solvable (n ≤ 4)",
-      "startLine": 52,
-      "endLine": 77,
-      "summary": "Proves A₀ through A₄ are solvable. A₀, A₁, A₂ by inferInstance; A₃ by isSolvable_of_comm + decide; A₄ by subgroup solvability from S₄.",
-      "mathContext": "$A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (abelian). $A_4 \\leq S_4$ and $S_4$ is solvable."
+      "startLine": 55,
+      "endLine": 80,
+      "summary": "Proves A₀ through A₄ are solvable. A₀, A₁, A₂ by inferInstance; A₃ by isSolvable_of_comm + decide; A₄ by subgroup solvability from S₄ (derived length 3 via native_decide).",
+      "mathContext": "$A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (abelian). $A_4 \\leq S_4$ and $S_4$ is solvable (derived length 3: $S_4^{(3)} = \\{e\\}$ verified by native_decide)."
     },
     {
       "id": "large-cases",
       "title": "Large Alternating Groups Are Not Solvable (n ≥ 5)",
-      "startLine": 79,
-      "endLine": 103,
-      "summary": "Proves A_n not solvable for n ≥ 5 via the exact sequence argument: solvable A_n → solvable S_n → contradiction with Equiv.Perm.not_solvable.",
-      "mathContext": "Exact sequence $1 \\to A_n \\to S_n \\to \\mathbb{Z}^\\times \\to 1$ and solvability extension."
+      "startLine": 82,
+      "endLine": 109,
+      "summary": "Proves A_n not solvable for n ≥ 5. Private lemma sn_solvable_of_an_solvable uses the sign exact sequence 1 → Aₙ → Sₙ → ℤˣ → 1 and solvable_of_ker_le_range. Private lemma sn_not_solvable delegates to Equiv.Perm.not_solvable. Public theorem an_not_solvable_of_ge_five combines them by contradiction.",
+      "mathContext": "Exact sequence $1 \\to A_n \\to S_n \\xrightarrow{\\text{sign}} \\{\\pm 1\\} \\to 1$ and solvability extension. If $A_n$ solvable and $\\{\\pm 1\\} \\cong \\mathbb{Z}/2\\mathbb{Z}$ solvable, then $S_n$ solvable — but $S_n$ is not solvable for $n \\geq 5$."
     },
     {
       "id": "classification",
       "title": "The Complete Classification",
-      "startLine": 105,
-      "endLine": 125,
-      "summary": "alternating_solvable_iff: IsSolvable (alternatingGroup (Fin n)) ↔ n ≤ 4. Complete bidirectional proof.",
-      "mathContext": "$A_n$ solvable $\\iff n \\leq 4$."
+      "startLine": 111,
+      "endLine": 138,
+      "summary": "alternating_solvable_iff: IsSolvable (alternatingGroup (Fin n)) ↔ n ≤ 4. Forward direction: contradiction via an_not_solvable_of_ge_five. Backward direction: interval_cases n enumerates 0–4, each discharged by the small-case theorems.",
+      "mathContext": "$A_n$ solvable $\\iff n \\leq 4$. Proof by interval_cases (backward) and by_contra + omega (forward)."
     },
     {
       "id": "corollaries",
       "title": "Corollaries and Sharp Threshold",
-      "startLine": 127,
-      "endLine": 155,
-      "summary": "Named instances for A₅ and A₆ non-solvability. Convenience lemmas alternating_solvable_of_le_four and alternating_not_solvable_of_ge_five. sharp_threshold witnesses that A₄ is solvable but A₅ is not.",
-      "mathContext": "The exact threshold: $A_4$ solvable, $A_5$ not."
+      "startLine": 140,
+      "endLine": 167,
+      "summary": "Named instances for A₅ and A₆ non-solvability. Convenience lemmas alternating_solvable_of_le_four and alternating_not_solvable_of_ge_five. sharp_threshold witnesses that A₄ is solvable but A₅ is not. Closes namespace AbelRuffiniOQ04OQ02OQ02.",
+      "mathContext": "The exact threshold: $A_4$ solvable (via Klein four-group chain $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4$), $A_5$ not (simplest non-abelian simple group, order 60)."
     }
   ],
   "conclusion": {
