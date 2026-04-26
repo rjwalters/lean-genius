@@ -23,7 +23,7 @@
     "lineCount": 338
   },
   "overview": {
-    "historicalContext": "The BEST theorem (de Bruijn, van Aardenne-Ehrenfest, Smith, Tutte, 1951) gives an exact formula for counting directed Eulerian circuits in a connected balanced digraph. The name is an acronym of the four mathematicians. The theorem combines two deep results: the Matrix Tree Theorem (Kirchhoff, 1847) for counting arborescences, and a bijective argument relating Eulerian circuits to pairs of (arborescence, permutation of non-last arcs). The theorem is remarkable for revealing a polynomial-time algorithm for directed Eulerian circuit counting, while the undirected analog was later shown to be #P-complete by Brightwell and Winkler (2005) — one of the sharpest known gaps between directed and undirected graph algorithms.",
+    "historicalContext": "The BEST theorem (de Bruijn, van Aardenne-Ehrenfest, Smith, Tutte, 1951) gives an exact formula for counting directed Eulerian circuits in a connected balanced digraph. The acronym honors the four collaborators: de Bruijn (B), van Aardenne-Ehrenfest (E — Tatyana van Aardenne-Ehrenfest, who independently arrived at the result), Smith (S — Cedric Smith, graph theorist), and Tutte (T — Sir William Tutte, best known for the Four Color Theorem and Tutte's theorem on perfect matchings). The theorem combines two deep results: Kirchhoff's Matrix Tree Theorem (1847) for counting arborescences via determinants of the directed Laplacian, and a bijective argument relating Eulerian circuits to pairs of (arborescence, permutation of non-last arcs).\n\nAn unexpected and beautiful application of the BEST theorem is the exact counting of de Bruijn sequences. A de Bruijn sequence of order $n$ is a cyclic binary string of length $2^n$ in which every $n$-bit string appears as a substring exactly once. In 1946, de Bruijn proved that the number of distinct binary de Bruijn sequences of order $n$ is $2^{2^{n-1}-n}$. This formula follows directly from the BEST theorem applied to the de Bruijn digraph $D_n$: vertices are $(n-1)$-bit strings, arcs are $n$-bit strings, and each Eulerian circuit in $D_n$ corresponds bijectively to a distinct de Bruijn sequence. The BEST theorem thus converts the combinatorial problem of sequence counting into a matrix determinant computation.\n\nThe theorem is remarkable for revealing a polynomial-time algorithm for directed Eulerian circuit counting, while the undirected analog was later shown to be #P-complete by Brightwell and Winkler (2005) — one of the sharpest known gaps between directed and undirected graph algorithms.",
     "problemStatement": "Formalize the BEST theorem framework: define Eulerian circuits and arborescences for directed graphs, state the counting formula $\\text{ec}(D,w) = d^+(w) \\cdot t_w \\cdot \\prod_v (d^+(v)-1)!$, and verify it on concrete examples.",
     "proofStrategy": "The formalization axiomatizes the BEST theorem (whose full proof requires the Matrix Tree Theorem) and builds around it: (1) define Eulerian circuits as closed walks using every arc exactly once; (2) define arborescences via a parent function with reachability to root; (3) verify the formula on $C_3$ (expected count 1) and bidirectional $K_3$ (expected count 6); (4) formalize the complexity gap between decision (polynomial via balance check) and counting.",
     "keyInsights": [
@@ -84,7 +84,32 @@
     {
       "targetId": "konigsberg",
       "relationship": "extends",
-      "description": "Root: Königsberg bridge problem and Euler's theorem on existence of Eulerian paths"
+      "description": "Root: Königsberg bridge problem and Euler's theorem on existence of Eulerian paths — the balance condition formalized there is exactly the hypothesis that BEST requires"
+    },
+    {
+      "targetId": "konigsberg-oq-01",
+      "relationship": "complementary",
+      "description": "Proves Eulerian circuit existence and non-existence for concrete graph families ($C_4$, $C_5$, $K_4$). The balance-check decision procedure formalized in this entry's complexity section directly applies to those concrete graphs — but BEST goes further and counts how many circuits exist, not just whether they exist"
+    },
+    {
+      "targetId": "konigsberg-oq-02",
+      "relationship": "complementary",
+      "description": "Proves the directed Euler theorem: a digraph has an Eulerian circuit iff every vertex has in-degree = out-degree (balance), and an Eulerian path iff exactly one vertex has out-degree minus in-degree = 1. This is the existence criterion that BEST's hypothesis requires — and which the complexity section of this entry formalizes as an $O(|V|)$ decidable check"
+    },
+    {
+      "targetId": "konigsberg-oq-02-oq-01",
+      "relationship": "complementary",
+      "description": "Hierholzer's algorithm: given existence is guaranteed by the balance condition, Hierholzer's algorithm constructs an Eulerian circuit in linear time. This entry counts circuits; Hierholzer constructs one. Together they address the full algorithmic picture: existence (konigsberg-oq-02), construction (konigsberg-oq-02-oq-01), counting (this entry)"
+    },
+    {
+      "targetId": "konigsberg-oq-03",
+      "relationship": "complementary",
+      "description": "Generalizes Euler circuits to $r$-uniform hypergraphs (NP-complete for $r \\geq 3$) and infinite graphs (Erdős-Grünwald-Weiszfeld). The BEST theorem applies only to directed finite balanced graphs — these extensions explore what happens when those constraints are relaxed"
+    },
+    {
+      "targetId": "burnside-counting",
+      "relationship": "related",
+      "description": "Burnside's orbit-counting lemma (number of orbits = average fixed points) is another exact combinatorial counting formula. Both BEST and Burnside convert counting problems into algebraic computations: BEST uses the Matrix Tree Theorem determinant, Burnside uses group-action fixed-point sums. Both reveal surprising polynomial-time structure in counting problems that seem exponential at first glance"
     }
   ],
   "leanFile": {
