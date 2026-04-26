@@ -547,3 +547,66 @@ directly gives `i = j` for `i j : Fin 1` without needing any extra hypotheses.
    - Prove connection: `decode(evalInt w e2Int)` = `3^n * (liftF w) e₂` (induction on word length)
    - Combine: anyInv contradicts 3^n * e₂ for n≥1 via `e2Int_no_inv`
 2. Run Docker build when available to verify the 12 transition lemmas compile
+
+---
+
+## Session 2026-04-26 (Session 18) — orbit_ne Proof Structured
+
+**Mode**: REVISIT
+**Outcome**: progress — `orbit_ne` single sorry replaced with structured 2-sorry proof
+
+### What I Did
+
+1. **Defined `evalWord` via `List.foldr`** (non-recursive, no `let`-recursion issues):
+   ```lean
+   let evalWord := List.foldr
+     (fun ltr v =>
+       if ltr.1 then (if ltr.2 then scaledActPhi else scaledActPhiInv) v
+                else (if ltr.2 then scaledActPsi else scaledActPsiInv) v)
+     e2Int
+   ```
+   Convention: `(b=true, isPos=true)=φ`, `(true,false)=φ⁻¹`, `(false,true)=ψ`, `(false,false)=ψ⁻¹`.
+   `evalWord l = 3^|l| * (liftF (mk l)) e₂` as a vector in ℤ[√2]³.
+
+2. **Stated `anyInv_preserved`** (sorry, labeled with proof sketch):
+   - Claim: `∀ l, FreeGroup.IsReduced l → l ≠ [] → anyInv (evalWord l)`
+   - Proof strategy: induction on l; base cases = `base_phi/phi_inv/psi/psi_inv`;
+     inductive step uses 12 valid transition lemmas; reducedness excludes 4 forbidden transitions.
+
+3. **Stated `key`** (sorry, labeled with connection bridge + conclusion):
+   - Claim: `∀ l, FreeGroup.IsReduced l → l ≠ [] → (liftF (FreeGroup.mk l)) e₂ ≠ e₂`
+   - Bridge: `∀ i, (evalWord l i).re + (evalWord l i).im * √2 = 3^|l| * ((liftF (mk l)) e₂) i`
+   - Proved by induction on l: each `scaledActL` ↔ `3 * M_L` on real vectors
+   - Conclusion: `anyInv(evalWord l)` + bridge + `¬anyInv(3^n * e2Int)` (for n≥1) → contradiction
+
+4. **Proved the body of `orbit_ne`** (no sorry):
+   - `hne`: `w.toWord ≠ []` from `w ≠ 1` via `FreeGroup.toWord_injective`
+   - `hmk`: `FreeGroup.mk w.toWord = w` via `FreeGroup.toWord_mk` + `isReduced_iff_reduce_eq`
+   - `rw [← hmk]; exact key w.toWord FreeGroup.isReduced_toWord hne`
+
+### Key Findings
+
+- `List.foldr` avoids recursive `let` in tactic mode; semantics match recursive evalWord definition
+- `FreeGroup.toWord_one : (1 : FreeGroup Bool).toWord = []` — use `.symm` with `.trans` for hne
+- `FreeGroup.isReduced_iff_reduce_eq` gives `FreeGroup.reduce w.toWord = w.toWord` from `isReduced_toWord`
+- The `key` sorry is a single sorry covering both the connection bridge induction AND the conclusion
+- `anyInv_preserved` sorry is purely combinatorial (12 transitions + reducedness); no real analysis
+
+### Files Modified
+
+- `proofs/Proofs/LebesgueMeasureOQ06.lean`: 1136→1179 lines (orbit_ne 1 sorry → 2 structured sorrys)
+- `src/data/proofs/lebesgue-measure-oq-06/meta.json`: lineCount 1136→1179, sorries 2→3
+
+### Remaining Sorrys (3, but more structured)
+
+1. `anyInv_preserved` — list induction; 4 base cases + 12 transitions + reducedness exclusion
+2. `key` — connection bridge (evalWord ↔ 3^n * real orbit) + anyInv/no-inv contradiction
+3. `banach_tarski` — full theorem (~800 lines, AC required)
+
+### Next Steps
+
+1. Prove `anyInv_preserved`: list induction with explicit `rcases` on head letter × anyInv disjunction
+   - The main challenge: connecting `FreeGroup.IsReduced` to head-letter constraints for forbidden transitions
+   - Consider proving a `last_letter` lemma: `inv_phi v → ¬ inv_phi_inv v` (distinguish phi/phi_inv states)
+2. Prove `key` connection bridge: induction on l proving component-wise equality for each scaledActL
+3. Run Docker build to verify infrastructure compiles
