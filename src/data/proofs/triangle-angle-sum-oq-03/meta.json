@@ -51,7 +51,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Euclidean angle function `EuclideanGeometry.angle p₁ p₂ p₃` measures the angle at vertex p₂ between directions to p₁ and p₃. It is defined via `InnerProductGeometry.angle`, which uses `arccos(⟨u,v⟩/(‖u‖·‖v‖))`. When a direction vector is zero (i.e., when a non-vertex arg equals the vertex), the inner product ratio is 0/0 = 0 by Lean's convention, so `arccos(0) = π/2`.\n\nThis convention was chosen by Mathlib for analytic cleanliness — the function is defined everywhere without case analysis. The consequence is a beautiful and somewhat surprising theorem: the angle sum formula extends far beyond its original non-degenerate domain.",
+    "historicalContext": "Euclid proved the triangle angle sum theorem in Book I, Proposition 32 of the *Elements* (c. 300 BCE): the interior angles of a triangle sum to two right angles. This was a cornerstone of Euclidean geometry and its failure in non-Euclidean settings — where the sum exceeds $\\pi$ on a sphere and falls short in hyperbolic geometry — became the defining diagnostic for these geometries in the 19th century. Legendre attempted to prove the Parallel Postulate using this theorem; Gauss and Bolyai–Lobachevsky independently showed it was independent.\n\nIn formal mathematics, angle functions must handle degenerate inputs gracefully. The Mathlib definition `EuclideanGeometry.angle p₁ p₂ p₃` measures the angle at vertex $p_2$ between directions to $p_1$ and $p_3$. It is defined via `InnerProductGeometry.angle`, using $\\arccos(\\langle u,v\\rangle / (\\|u\\| \\cdot \\|v\\|))$. When a direction vector is zero (i.e., when a non-vertex argument equals the vertex), the inner product ratio is $0/0 = 0$ by Lean's convention, so $\\arccos(0) = \\pi/2$.\n\nThis junk-value convention was chosen by Mathlib for analytic cleanliness — the function is defined everywhere without case analysis. The consequence is a beautiful and somewhat surprising theorem discovered during systematic exploration: the angle sum formula extends far beyond its original non-degenerate domain, and the Mathlib theorem `angle_add_angle_add_angle_eq_pi` has a weaker hypothesis than previously documented (only $p_2 \\neq p_1$ is needed, not both $p_2 \\neq p_1$ and $p_3 \\neq p_1$).",
     "problemStatement": "**OQ-03**: What happens to the triangle angle sum formula `∠ p₁ p₂ p₃ + ∠ p₂ p₃ p₁ + ∠ p₃ p₁ p₂ = π` when the non-degeneracy conditions `p₂ ≠ p₁` and `p₃ ≠ p₁` fail?\n\n**Surprising answer**: The formula holds unless ALL THREE points are equal.\n\nFurther: the Mathlib theorem `angle_add_angle_add_angle_eq_pi` only requires `p₂ ≠ p₁` — the hypothesis `p₃ ≠ p₁` was never needed.",
     "proofStrategy": "**Key insight**: `EuclideanGeometry.angle_add_angle_add_angle_eq_pi` has signature `(p₃ : P) (h : p₂ ≠ p₁)` — only ONE non-degeneracy condition.\n\n**Case split**: The only truly exceptional case is `p₂ = p₁` (not covered by Mathlib):\n1. If `p₃ ≠ p₁`: use `angle_self_left/right/of_ne` to compute angles as π/2, 0, π/2 → sum = π\n2. If `p₃ = p₁` (all three equal): all angles = π/2 → sum = 3π/2\n\n**Main theorem**: `angle sum = π ↔ ¬(p₂ = p₁ ∧ p₃ = p₁)`",
     "keyInsights": [
@@ -125,7 +125,22 @@
     {
       "targetId": "triangle-angle-sum",
       "relationship": "extends",
-      "description": "The parent entry proves the standard angle sum formula with two non-degeneracy conditions; this OQ-03 reveals one is redundant and analyzes the degenerate cases"
+      "description": "The parent entry proves the standard angle sum formula with two non-degeneracy conditions; this OQ-03 reveals one is redundant and analyzes the degenerate cases."
+    },
+    {
+      "targetId": "triangle-angle-sum-oq-01",
+      "relationship": "complementary",
+      "description": "OQ-01 proves the converse direction: if every triangle has angle sum $\\pi$, then the Parallel Postulate holds. Together with this OQ-03 (which shows the sum is $\\pi$ iff not all three points coincide), they give a complete picture of the relationship between angle sums and Euclidean geometry."
+    },
+    {
+      "targetId": "triangle-angle-sum-oq-02",
+      "relationship": "complementary",
+      "description": "OQ-02 formalizes the Gauss-Bonnet theorem — the generalization to curved surfaces where the angle sum deviation from $\\pi$ equals the integral of Gaussian curvature. The degenerate case analysis in OQ-03 (sum = $3\\pi/2$ for coincident points) is complementary: it studies the $\\pi/2$ junk-value convention rather than curvature."
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "complementary",
+      "description": "The law of cosines generalizes the Pythagorean theorem to non-right triangles, with angle sum = $\\pi$ as a fundamental constraint. Understanding degenerate configurations (as in this OQ-03) clarifies when the law of cosines still applies."
     }
   ],
   "mainTheorems": [
