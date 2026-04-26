@@ -62,7 +62,7 @@
   {
     "id": "ann-main-theorem",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-    "range": { "startLine": 204, "endLine": 394 },
+    "range": { "startLine": 204, "endLine": 402 },
     "type": "theorem",
     "title": "Main Theorem: nonderogatory_bipow_has_cyclic_vector",
     "content": "The main theorem proves existence of a cyclic vector for nonderogatory M with minpoly = p^a * q^b. The proof has five phases:\n\n1. **Setup**: Handle the trivial n=0 case. Establish degree facts and coprimality of powers.\n2. **Construct v1**: Find w1 with (p^{a-1}*q^b)(M)*w1 != 0 (by aeval_ne_zero_of_lt_minpoly). Set v1 = q^b(M)*w1. Then p^{a-1}(M)*v1 != 0 and p^a(M)*v1 = 0.\n3. **Construct v2**: Similarly, find w2 and set v2 = p^a(M)*w2 with q^{b-1}(M)*v2 != 0 and q^b(M)*v2 = 0.\n4. **Prove v = v1 + v2 is cyclic**: For any r with r(M)*(v1+v2) = 0, use CRT projections to extract r(M)*v1 = 0 and r(M)*v2 = 0 separately. Apply pow_irred_dvd_of_annihilated to get p^a | r and q^b | r. By IsCoprime.mul_dvd, p^a*q^b | r.\n5. **Degree contradiction**: deg(p^a*q^b) = n <= deg(r), but deg(r) < n, so r = 0.",
@@ -70,5 +70,17 @@
     "significance": "key",
     "relatedConcepts": ["cyclic vector existence", "degree contradiction", "IsCoprime.mul_dvd", "nonderogatory matrix"],
     "prerequisites": ["IsCoprime.pow_pow", "pow_irred_dvd_of_annihilated", "bezout_proj_identity", "bezout_proj_kills"]
+  },
+  {
+    "id": "ann-corollary-finite",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
+    "range": { "startLine": 404, "endLine": 417 },
+    "type": "insight",
+    "title": "Corollary: Explicit Finite Field Instance",
+    "content": "The corollary `nonderogatory_bipow_has_cyclic_vector_finite` adds a `[Fintype K]` instance to make the finite field applicability explicit. This is a direct specialization of the main theorem — no additional proof is needed because the main theorem already works over *any* field K. The corollary exists to highlight that this proof, unlike the classical union-avoidance argument (which requires |K| > n or |K| = ∞), handles fields as small as GF(2). Over GF(2), a 10×10 matrix has only 1024 vectors, so measure-theoretic or probabilistic arguments are meaningless — but this algebraic CRT-based proof still applies.",
+    "mathContext": "Over $\\mathbb{F}_2$, the classical argument 'the set of non-cyclic vectors has measure zero' fails since $|\\mathbb{F}_2^n| = 2^n$ is finite. Union-avoidance ($|K| > n$ needed to avoid $n$ hyperplanes) also fails for small fields. The CRT approach avoids both issues entirely.",
+    "significance": "context",
+    "relatedConcepts": ["finite field", "union-avoidance", "GF(2)", "constructive algebra"],
+    "prerequisites": ["nonderogatory_bipow_has_cyclic_vector", "Fintype"]
   }
 ]
