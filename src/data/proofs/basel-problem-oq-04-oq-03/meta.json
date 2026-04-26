@@ -77,58 +77,74 @@
     {
       "id": "definitions",
       "title": "The Coprime Pair Count",
-      "startLine": 60,
-      "endLine": 65,
-      "summary": "Defines countCoprimePairs(N) = |{(m,n) ∈ [1,N]² : gcd(m,n)=1}| using Finset filtering.",
+      "startLine": 63,
+      "endLine": 70,
+      "summary": "Defines countCoprimePairs(N) = |{(m,n) ∈ [1,N]² : gcd(m,n)=1}| using Finset filtering on the Cartesian product Icc 1 N ×ˢ Icc 1 N.",
       "mathContext": "The natural density of coprime pairs is $\\lim_{N\\to\\infty} |\\{(m,n)\\in[N]^2 : \\gcd(m,n)=1\\}|/N^2$."
     },
     {
       "id": "mobius-inversion",
       "title": "Möbius Inversion Foundation",
-      "startLine": 68,
-      "endLine": 115,
+      "startLine": 73,
+      "endLine": 124,
       "summary": "Proves Σ_{d|n} μ(d) = 1_{n=1} from moebius_mul_coe_zeta, and derives the coprimality detector 1_{gcd(m,n)=1} = Σ_{d|gcd(m,n)} μ(d).",
       "mathContext": "$\\sum_{d|n} \\mu(d) = [n=1]$ — the fundamental Möbius inversion identity. Applied to $n = \\gcd(m,n)$, it detects coprimality: $[\\gcd(m,n)=1] = \\sum_{d|\\gcd(m,n)} \\mu(d)$."
     },
     {
       "id": "counting-multiples",
       "title": "Counting Multiples and Divisible Pairs",
-      "startLine": 118,
+      "startLine": 127,
       "endLine": 165,
-      "summary": "Proves |{m∈[N] : d|m}| = ⌊N/d⌋ and |{(m,n)∈[N]² : d|m, d|n}| = ⌊N/d⌋². Key building blocks for the Möbius decomposition.",
-      "mathContext": "The count of multiples of $d$ in $[1,N]$ is $\\lfloor N/d \\rfloor$. This implies the count of $d$-divisible pairs is $\\lfloor N/d \\rfloor^2$."
+      "summary": "Proves |{m∈[N] : d|m}| = ⌊N/d⌋ (card_multiples) and |{(m,n)∈[N]² : d|m, d|n}| = ⌊N/d⌋² (card_pairs_divisible). Key building blocks for the Möbius decomposition.",
+      "mathContext": "The count of multiples of $d$ in $[1,N]$ is $\\lfloor N/d \\rfloor$. Independence of divisibility conditions gives $|\\{(m,n): d|m, d|n\\}| = \\lfloor N/d \\rfloor^2$."
     },
     {
       "id": "mobius-decomposition",
       "title": "The Möbius Decomposition Identity",
       "startLine": 168,
-      "endLine": 215,
+      "endLine": 206,
       "summary": "States countCoprimePairs(N) = Σ_{d≤N} μ(d)⌊N/d⌋². The proof is complete except for one sorry: the finite sum exchange (finite Fubini argument). All other steps use previously proved lemmas.",
       "mathContext": "$|\\{(m,n)\\in[N]^2:\\gcd(m,n)=1\\}| = \\sum_{d=1}^N \\mu(d)\\lfloor N/d\\rfloor^2$ — the central combinatorial identity. The sum exchange counts triples $(m,n,d)$ with $1\\le m,n\\le N$ and $d|\\gcd(m,n)$."
     },
     {
       "id": "analytic-axioms",
       "title": "Analytic Axioms (Dirichlet Series and Density Convergence)",
-      "startLine": 218,
-      "endLine": 260,
+      "startLine": 209,
+      "endLine": 245,
       "summary": "Two axioms: (1) HasSum of μ(d)/d² equals 6/π² (Dirichlet series L(μ,2) = 1/ζ(2)); (2) the density convergence theorem (uses dominated convergence with dominator 1/d²).",
       "mathContext": "$\\sum_{d=1}^\\infty \\mu(d)/d^2 = 1/\\zeta(2) = 6/\\pi^2$. Axiomatized because the bridge from the algebraic identity $(\\mu*\\zeta)(n) = 1_{n=1}$ to the analytic HasSum statement requires L-series machinery not yet formalized for $\\mathbb{Z}$-valued arithmetic functions."
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem and Properties",
-      "startLine": 262,
-      "endLine": 305,
-      "summary": "The density limit theorem, positivity, bounds (3/8 < 6/π² < 2/3), and connection to the Basel constant.",
+      "title": "Main Theorem: Cesàro 1885",
+      "startLine": 248,
+      "endLine": 261,
+      "summary": "The density limit theorem: lim_{N→∞} countCoprimePairs(N)/N² = 6/π². Proved by applying the coprime_pair_density_limit axiom directly.",
       "mathContext": "$\\lim_{N\\to\\infty} |\\{(m,n)\\in[N]^2:\\gcd(m,n)=1\\}|/N^2 = 6/\\pi^2 = 1/\\zeta(2) \\approx 0.6079$."
+    },
+    {
+      "id": "properties",
+      "title": "Density Properties and Bounds",
+      "startLine": 265,
+      "endLine": 294,
+      "summary": "Proves the density 6/π² is positive, less than 1, in (0,1), and equals 1/ζ(2). Bounds 3/8 < 6/π² < 2/3 via π > 3 and π < 4.",
+      "mathContext": "$0 < 6/\\pi^2 < 1$ and $3/8 < 6/\\pi^2 < 2/3$. The bounds follow from $3 < \\pi < 4$, squaring to get $9 < \\pi^2 < 16$, then $6/16 = 3/8$ and $6/9 = 2/3$."
     },
     {
       "id": "verification",
       "title": "Small Case Verification",
-      "startLine": 306,
-      "endLine": 355,
-      "summary": "Native_decide verification for N=1,2,3,4,5,10 confirming countCoprimePairs gives 1,3,7,13,21,63.",
+      "startLine": 299,
+      "endLine": 326,
+      "summary": "Native_decide verification for N=1,2,3,4,5,10 confirming countCoprimePairs gives 1,3,7,13,21,63. Densities converge toward 6/π² ≈ 0.608 from above.",
       "mathContext": "Empirical: $N=1: 1/1=1.0$, $N=10: 63/100=0.63$. The density converges to $6/\\pi^2\\approx 0.608$ from above."
+    },
+    {
+      "id": "euler-product",
+      "title": "Euler Product Connection and tsum Identity",
+      "startLine": 330,
+      "endLine": 346,
+      "summary": "Connects 6/π² = ∏_p(1-1/p²) via the Euler product (proved in BaselProblemOQ04). Derives tsum_moebius_div_sq as a corollary of the HasSum axiom.",
+      "mathContext": "$6/\\pi^2 = \\prod_p (1-1/p^2) = 1/\\zeta(2)$. Probabilistic interpretation: events $p\\nmid\\gcd(m,n)$ are independent over primes by CRT, so $\\Pr[\\gcd(m,n)=1] = \\prod_p(1-1/p^2)$."
     }
   ],
   "conclusion": {
