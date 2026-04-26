@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Tower sorry structured into 5-step proof (A-E), 2 targeted sub-sorries remain + wantzel out-of-scope",
+    "progressSummary": "CURRENT STATE (post-revert): 1 sorry (wantzel_galois_iff, FALSE under current IsConstructible def). Sessions 26-28 work was reverted. File is functionally complete for concrete impossibility results but IsConstructible definition is intentionally minimal (constructibles=rationals). wantzel_galois_iff needs IsConstructible redesign + ~500L Galois theory.",
     "builtItems": [
       "isConstructible_mem_range: all constructible numbers are rational (Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:89)",
       "not_constructible_of_bad_degree: proved via rationality + minpoly.eq_X_sub_C (line 179)",
@@ -64,10 +64,10 @@
       "wantzel_galois_iff: requires full FTGT + 2-group structure, estimated 500+ lines — not in Mathlib"
     ],
     "nextSteps": [
-      "Prove hβ_dvd: set up Algebra (↥ℚ⟮a⟯) (↥ℚ⟮β⟯) from ha_le_β, apply tower law, bound [ℚ⟮β⟯:ℚ⟮a⟯] ≤ 2 via minpoly of β over ℚ⟮a⟯",
-      "Prove hjoin_dvd: needs stronger IH — reformulate isConstructible_algebraic_degree with stronger statement about extensions",
-      "Alternative for hjoin_dvd: convert to QuadraticTower approach from AngleTrisectionOQ02OQ04OQ01.lean",
-      "wantzel_galois_iff remains out-of-scope (500+ lines)"
+      "Option A: Create Incomplete02.lean re-applying Sessions 26-28 fix with hβ_dvd proved (~150L)",
+      "Option B: Prove sqrt2_constructible_tower in OQ04OQ01.lean (~25L, self-contained)",
+      "Accept current state as-is (1 sorry permanently out-of-scope under current def)",
+      "wantzel_galois_iff under current def: permanently out-of-scope"
     ]
   },
   "tags": [
