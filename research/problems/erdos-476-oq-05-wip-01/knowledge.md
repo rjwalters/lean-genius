@@ -104,6 +104,60 @@ theorems. Recommend Aristotle submission as first approach.
 
 ---
 
+## Session 2026-04-26 (Session 3) — Deep Analysis of Remaining Sorry
+
+**Mode**: REVISIT
+**Outcome**: blocked (deeper analysis completed)
+
+### What I Did
+
+- Traced the sole sorry at line 844 in detail (|A|≥4 or |B|≥4 "all a redundant" case)
+- Tried multiple contradiction approaches:
+  1. Counting: hineq gives (|A|-2)(|B|-2) ≥ 2 which is SATISFIED for |A|≥4,|B|≥3 — no contradiction
+  2. Symmetry: proved all-b-redundant follows from all-a-redundant — but gives same r(x)≥2 info
+  3. Involution: exact double-coverage (r(x)=2 for all x) only forces even |A|*|B|, not False
+  4. Orbit argument generalization: requires unique d (works for |B|=2), fails for |B|≥3 (multiple choices)
+
+### Key Insight: Why Sorry Is Blocked
+
+The "all a redundant" case for |A|≥4, |B|≥3 is CONSISTENT with the counting constraints.
+Example analysis shows the case CAN'T happen (Vosper's theorem proves it), but proving this
+requires the equality characterization of Cauchy-Davenport — which IS Vosper's theorem. Circular.
+
+The correct proof needs one of:
+- **Kneser-equality theorem** (~500 lines): show tight Cauchy-Davenport forces AP structure
+- **Freiman-Ruzsa structure theorem** (even harder): reduces to same issue  
+- **Different induction** on |A|+|B| with explicit case splits per (|A|, |B|) value
+
+### New Proof Idea (Untested)
+
+Symmetry lemma `hredB`: all-a-redundant ⟹ all-b-redundant (A + B.erase b = A+B ∀ b∈B).
+Proof: for x = a+b with b "bad": hredA gives x ∈ (A.erase a)+B, so ∃ a'≠a, b''∈B: x=a'+b''.
+If b''=b: a'=a, contradiction. So b''≠b. ✓ (10-15 lines in Lean)
+
+But hredB gives same r(x)≥2 information as hredA — no new contradiction.
+
+### Updated Sorry Classification
+
+**HARD → BLOCKED**: Requires ~500+ lines of the Cauchy-Davenport equality theorem. No elementary
+shortcut found after exhaustive analysis. Flag as BLOCKED, move to other problems.
+
+### Files NOT Modified (analysis only)
+
+- `proofs/Proofs/Erdos476OQ05Problem.lean` — sorry at line 844 unchanged
+
+### Next Steps
+
+1. BLOCKED: the sorry at line 844 requires the equality case of Cauchy-Davenport (~500 lines)
+2. If a future researcher has Kneser-equality available, this sorry closes immediately
+3. Consider submitting to Aristotle with expanded helper lemmas as companion file
+
+---
+
 ## Dead Ends
 
-[Approaches known not to work will be documented here]
+- **Counting only** (hineq): Only contradicts |A|=|B|=3 case. Fails for |A|≥4 or |B|≥4.
+- **Symmetry** (hredB): all-b-redundant follows from all-a-redundant but gives same info.
+- **Orbit argument** (|B|≥3): fails because difference d is not unique when |B|≥3.
+- **Involution parity** (r(x)=2 exactly): |A|*|B| even but that's consistent, not False.
+- **Inductive approach to "all redundant"**: requires applying Vosper itself, circular.

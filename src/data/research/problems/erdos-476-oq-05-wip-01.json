@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: |B|=2 and |A|=|B|=3 cases proved; 1 sorry for |A|>=4 or |B|>=4 (Kneser needed)",
+    "progressSummary": "BLOCKED: sorry at line 844 (|A|≥4,|B|≥3 all-a-redundant case) requires ~500 lines Cauchy-Davenport equality theorem. Counting, symmetry, orbit, involution approaches all exhausted. No elementary shortcut.",
     "builtItems": [
       "case1_exists |B|=2 branch: fully proved via orbit argument (Erdos476OQ05Problem.lean ~550-609)",
       "hredA_card lemma inline: ∀ a ∈ A, (A.erase a + B).card = A.card + B.card - 1 from CD + inclusion",
@@ -49,16 +49,21 @@
       "r(x) ≥ 2 for all x ∈ A+B when A is all-redundant: if r(x)=1 with unique a₁, then x ∉ (A.erase a₁)+B, contradicting SET equality hredA a₁",
       "Double counting identity: ∑_x |{a ∈ A : x-a ∈ B}| = |A|·|B| via Finset.card_bij bijection (x,a) ↦ (a,x-a)",
       "Counting argument only closes |A|=|B|=3 (9 < 10); for |A|≥4 or |B|≥4, the bound (|A|-2)(|B|-2) ≥ 2 holds and Kneser is needed",
-      "Kneser theorem for ZMod p: NOT in Mathlib. Building it from scratch needs ~200-300 lines of additive combinatorics infrastructure"
+      "Kneser theorem for ZMod p: NOT in Mathlib. Building it from scratch needs ~200-300 lines of additive combinatorics infrastructure",
+      "sorry at line 844 is BLOCKED: (|A|-2)(|B|-2)≥2 is SATISFIED for |A|≥4,|B|≥3 — counting gives no contradiction",
+      "Symmetry: all-a-redundant ⟹ all-b-redundant (A+B.erase b = A+B) — provable in ~15 lines but gives same r(x)≥2 info",
+      "Orbit argument fails for |B|≥3 because difference d is not uniquely determined",
+      "Involution parity (r(x)=2 for all x case): |A|*|B| must be even but 12=3*4 is even — no contradiction",
+      "Circular dependency: proving all-a-redundant impossible requires Cauchy-Davenport equality theorem = Vosper itself"
     ],
     "mathlibGaps": [
-      "Kneser theorem for abelian groups (needed for |A|>=4 or |B|>=4 all-redundant contradiction in Vosper induction)"
+      "Kneser theorem for abelian groups (needed for |A|>=4 or |B|>=4 all-redundant contradiction in Vosper induction)",
+      "Cauchy-Davenport EQUALITY characterization (Vosper 1956): |A+B|=|A|+|B|-1 iff APs — not in Mathlib, ~500 lines"
     ],
     "nextSteps": [
-      "Build Kneser theorem for ZMod p (~200-300 lines): since Stab(A+B) is trivial for prime order groups, |A+B| >= |A|+|B|-1 forces AP structure under full redundancy",
-      "Alternative: try elementary Freiman/Schur approach for the |A|>=4, |B|>=3 sub-case",
-      "Key constraint: for tight case |A|=4, |B|=3, each x in A+B has r(x)=2 exactly — may enable direct structural argument without Kneser",
-      "If 3+ sessions stuck on Kneser: flag as BLOCKED and release claim"
+      "BLOCKED: sorry at line 844 requires ~500 lines Cauchy-Davenport equality theorem",
+      "If Kneser-equality becomes available in Mathlib, sorry closes immediately",
+      "Alternative: try completely different induction on |A|+|B| (not documented path yet)"
     ],
     "markdown": "# Knowledge Base: erdos-476-oq-05-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

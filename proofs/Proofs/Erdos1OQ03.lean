@@ -135,11 +135,122 @@ theorem conwayGuy_ratio_decreasing :
 -- PART V: The Optimality Conjecture
 -- ════════════════════════════════════════════════════════════════
 
+/-! ### Helper lemmas: powers of 2 form a DSS set -/
+
+private lemma pow2_not_mem_range_image (n : ℕ) :
+    2 ^ n ∉ (Finset.range n).image (2 ^ · : ℕ → ℕ) := by
+  simp only [Finset.mem_image, Finset.mem_range]
+  rintro ⟨k, hk, hpow⟩
+  have hinj : k = n := Nat.pow_right_injective (by norm_num : 2 ≤ 2) hpow
+  omega
+
+private lemma pow2_image_sum_eq (n : ℕ) :
+    ((Finset.range n).image (2 ^ · : ℕ → ℕ)).sum id = 2 ^ n - 1 := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [Finset.range_succ, Finset.image_insert,
+        Finset.sum_insert (pow2_not_mem_range_image n), ih]
+    simp only [id]
+    have h1 : 1 ≤ 2 ^ n := Nat.one_le_two_pow
+    have h2 : 2 ^ (n + 1) = 2 ^ n + 2 ^ n := by ring
+    omega
+
+private lemma pow2_subset_sum_lt (n : ℕ) (S : Finset ℕ)
+    (hS : S ⊆ (Finset.range n).image (2 ^ · : ℕ → ℕ)) :
+    S.sum id < 2 ^ n :=
+  calc S.sum id
+      ≤ ((Finset.range n).image (2 ^ · : ℕ → ℕ)).sum id :=
+        Finset.sum_le_sum_of_subset_of_nonneg hS (fun _ _ _ => Nat.zero_le _)
+    _ = 2 ^ n - 1 := pow2_image_sum_eq n
+    _ < 2 ^ n := Nat.sub_lt Nat.one_le_two_pow Nat.one_pos
+
+/-- The set of powers of 2 has distinct subset sums: binary representations are unique. -/
+private lemma pow2_dss (n : ℕ) :
+    hasDistinctSubsetSums ((Finset.range n).image (2 ^ · : ℕ → ℕ)) := by
+  induction n with
+  | zero =>
+    intro S T hS hT _
+    simp only [Finset.range_zero, Finset.image_empty, Finset.subset_empty] at hS hT
+    rw [hS, hT]
+  | succ n ih =>
+    intro S T hS hT heq
+    rw [Finset.range_succ, Finset.image_insert] at hS hT
+    by_cases hSn : 2 ^ n ∈ S <;> by_cases hTn : 2 ^ n ∈ T
+    · -- Both contain 2^n: cancel it and apply IH
+      have hS' : S.erase (2 ^ n) ⊆ (Finset.range n).image (2 ^ ·) := fun x hx => by
+        rw [Finset.mem_erase] at hx
+        exact (Finset.mem_insert.mp (hS hx.2)).resolve_left hx.1
+      have hT' : T.erase (2 ^ n) ⊆ (Finset.range n).image (2 ^ ·) := fun x hx => by
+        rw [Finset.mem_erase] at hx
+        exact (Finset.mem_insert.mp (hT hx.2)).resolve_left hx.1
+      have heq' : (S.erase (2 ^ n)).sum id = (T.erase (2 ^ n)).sum id := by
+        have h1 : S.sum id = 2 ^ n + (S.erase (2 ^ n)).sum id := by
+          nth_rw 1 [← Finset.insert_erase hSn,
+            Finset.sum_insert (Finset.not_mem_erase _ _)]
+          simp [id]
+        have h2 : T.sum id = 2 ^ n + (T.erase (2 ^ n)).sum id := by
+          nth_rw 1 [← Finset.insert_erase hTn,
+            Finset.sum_insert (Finset.not_mem_erase _ _)]
+          simp [id]
+        omega
+      have hers := ih (S.erase (2 ^ n)) (T.erase (2 ^ n)) hS' hT' heq'
+      calc S = insert (2 ^ n) (S.erase (2 ^ n)) := (Finset.insert_erase hSn).symm
+        _ = insert (2 ^ n) (T.erase (2 ^ n)) := by rw [hers]
+        _ = T := Finset.insert_erase hTn
+    · -- 2^n ∈ S, 2^n ∉ T: sum contradiction
+      exfalso
+      have hT' : T ⊆ (Finset.range n).image (2 ^ ·) := fun x hx =>
+        (Finset.mem_insert.mp (hT hx)).resolve_left (fun h => hTn (h ▸ hx))
+      have hTlt : T.sum id < 2 ^ n := pow2_subset_sum_lt n T hT'
+      have hSge : S.sum id ≥ 2 ^ n := by
+        have h1 : S.sum id = 2 ^ n + (S.erase (2 ^ n)).sum id := by
+          nth_rw 1 [← Finset.insert_erase hSn,
+            Finset.sum_insert (Finset.not_mem_erase _ _)]
+          simp [id]
+        omega
+      omega
+    · -- 2^n ∉ S, 2^n ∈ T: symmetric contradiction
+      exfalso
+      have hS' : S ⊆ (Finset.range n).image (2 ^ ·) := fun x hx =>
+        (Finset.mem_insert.mp (hS hx)).resolve_left (fun h => hSn (h ▸ hx))
+      have hSlt : S.sum id < 2 ^ n := pow2_subset_sum_lt n S hS'
+      have hTge : T.sum id ≥ 2 ^ n := by
+        have h2 : T.sum id = 2 ^ n + (T.erase (2 ^ n)).sum id := by
+          nth_rw 1 [← Finset.insert_erase hTn,
+            Finset.sum_insert (Finset.not_mem_erase _ _)]
+          simp [id]
+        omega
+      omega
+    · -- Neither contains 2^n: apply IH directly
+      apply ih
+      · exact fun x hx =>
+          (Finset.mem_insert.mp (hS hx)).resolve_left (fun h => hSn (h ▸ hx))
+      · exact fun x hx =>
+          (Finset.mem_insert.mp (hT hx)).resolve_left (fun h => hTn (h ▸ hx))
+      · exact heq
+
+private lemma exists_dss_set (n : ℕ) : ∃ A : Finset ℕ,
+    A.card = n ∧ (∀ a ∈ A, a ≤ n * 2 ^ n) ∧ hasDistinctSubsetSums A := by
+  refine ⟨(Finset.range n).image (2 ^ · : ℕ → ℕ), ?_, ?_, ?_⟩
+  · rw [Finset.card_image_of_injective _
+          (Nat.pow_right_injective (by norm_num : 2 ≤ 2)),
+        Finset.card_range]
+  · intro a ha
+    simp only [Finset.mem_image, Finset.mem_range] at ha
+    obtain ⟨k, hk, rfl⟩ := ha
+    have h1 : 2 ^ k < 2 ^ n := Nat.pow_lt_pow_right (by norm_num : 1 < 2) hk
+    have hn : 1 ≤ n := by omega
+    have h2 : 2 ^ n ≤ n * 2 ^ n := le_mul_of_one_le_left (Nat.zero_le _) hn
+    linarith
+  · exact pow2_dss n
+
 /-- **f(n)**: The minimum N such that some n-element subset of {1,...,N}
     has distinct subset sums. This is the function Erdős asks about. -/
 noncomputable def minDSSBound (n : ℕ) : ℕ :=
-  Nat.find (⟨n * 2^n, sorry⟩ : ∃ N, ∃ A : Finset ℕ,
-    A.card = n ∧ (∀ a ∈ A, a ≤ N) ∧ hasDistinctSubsetSums A)
+  @Nat.find (fun N => ∃ A : Finset ℕ, A.card = n ∧ (∀ a ∈ A, a ≤ N) ∧ hasDistinctSubsetSums A)
+    (Classical.decPred _)
+    ⟨n * 2 ^ n, exists_dss_set n⟩
 
 /-- **Conway-Guy Optimality Conjecture**: The Conway-Guy sequence gives
     the exact values of f(n) for all n.
@@ -161,9 +272,9 @@ axiom conwayGuy_optimal :
 
     Lunnon (1988) verified this for small n.
 
-    We verify: f(n) ≤ 0.33 · 2^n for n ≤ 8 (crude upper bound). -/
+    We verify: f(n) ≤ 2^(n-1) for n ≤ 8, i.e., f(n)/2^n ≤ 0.5. -/
 theorem conwayGuy_exponential_bound :
-    ∀ k, 1 ≤ k → k ≤ 8 → 3 * conwayGuy k ≤ 2 ^ k := by
+    ∀ k, 1 ≤ k → k ≤ 8 → 2 * conwayGuy k ≤ 2 ^ k := by
   intro k hk hle
   interval_cases k <;> simp [conwayGuy]
 
@@ -178,5 +289,3 @@ theorem conwayGuy_at_most_doubles :
     ∀ k, 1 ≤ k → k ≤ 7 → conwayGuy (k + 1) ≤ 2 * conwayGuy k := by
   intro k hk hle
   interval_cases k <;> simp [conwayGuy]
-
-end Erdos1OQ03
