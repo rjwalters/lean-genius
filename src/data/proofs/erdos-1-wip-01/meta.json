@@ -1,0 +1,62 @@
+{
+  "id": "erdos-1-wip-01",
+  "title": "Erdős #1: Structural Theory of Distinct Subset Sums",
+  "slug": "erdos-1-wip-01",
+  "description": "Structural foundations for Erdős Problem #1 (Distinct Subset Sums). Proves the superincreasing extension lemma (the key construction principle), establishes that powers of 2 always yield DSS sets, proves DSS existence for any n (filling the gap in OQ03's minDSSBound), and derives elementary structural constraints: all elements must be positive, and the total sum satisfies sum(A) ≥ 2^n − 1.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-26",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1WIP01.lean",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "subset-sums",
+      "extremal-combinatorics",
+      "structural-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All results are fully proved in Lean 4.",
+    "lineCount": 220,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "dateAdded": "2026-04-26",
+    "originalContributions": [
+      "dss_superincreasing_extend: If A has DSS and b > sum(A), then insert b A has DSS (the key structural lemma)",
+      "powers_of_two_has_dss: {1,2,4,...,2^(n-1)} has distinct subset sums for any n (inductive proof via superincreasing)",
+      "dss_exists: For any n, there exists an n-element set with DSS (existential witness for minDSSBound)",
+      "not_dss_of_mem_zero: If 0 ∈ A, then A does NOT have DSS (∅ and {0} give same sum)",
+      "dss_elements_pos: All elements of a DSS nonempty set are positive",
+      "dss_subset: Any subset of a DSS set also has DSS (monotone property)",
+      "dss_sum_lower_bound: sum(A) + 1 ≥ 2^n for any n-element DSS set A",
+      "minDSS_witness: Fills the sorry in OQ03's minDSSBound definition"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1 (1931, $500 prize) asks whether any set of n positive integers with all 2^n subset sums distinct must have maximum element ≥ c · 2^n. The current gallery formalizes the counting bound (OQ01), the DFX entropy framework (OQ02), the Conway-Guy sequence (OQ03), and extremal sets (OQ04). This WIP extension adds the foundational structural theory that underlies all these results.",
+    "problemStatement": "If A ⊆ ℕ has the distinct subset sums property (∀ S T ⊆ A, sum(S) = sum(T) → S = T), what structural constraints must A satisfy? In particular:\n1. When can we extend A while preserving DSS?\n2. What is the canonical construction giving DSS sets of any size?\n3. What are the necessary conditions on elements?",
+    "proofStrategy": "The central tool is the **superincreasing extension lemma**: if A has DSS and b > sum(A), then A ∪ {b} has DSS. The proof is by case analysis on whether b is in each of the two subsets:\n- Both contain b: subtract b from both sums, apply DSS of A.\n- b in one but not the other: the sum with b is > sum(A), while the sum without is ≤ sum(A). Contradiction.\n- Neither contains b: both subsets lie in A; apply DSS of A directly.\n\nFrom this lemma, powers of 2 give DSS (by induction: 2^n > ∑_{i<n} 2^i), and existence for any n follows immediately.",
+    "keyInsights": [
+      "The superincreasing extension lemma is the constructive core of all known DSS constructions. Both the Conway-Guy sequence and the powers-of-2 sequence are superincreasing, which is why they have DSS.",
+      "0 cannot be in a DSS set: ∅ and {0} would both have sum 0 but be distinct subsets. This forces all elements positive.",
+      "The sum lower bound sum(A) ≥ 2^n − 1 (for n-element DSS A) is derived from the injective pigeonhole argument: 2^n subset sums in [0, sum(A)] forces 2^n ≤ sum(A) + 1.",
+      "The DSS monotone property (any subset of a DSS set has DSS) means the problem has a hereditary structure — the DSS 'language' is an antichain under inclusion."
+    ],
+    "prerequisites": [
+      "Finset basics (Lean 4 / Mathlib)",
+      "Sum computations for finite sets",
+      "Elementary number theory (powers of 2)"
+    ]
+  },
+  "conclusion": {
+    "summary": "This file provides the structural foundations for Erdős Problem #1: the superincreasing extension lemma (the construction principle behind all known DSS sets), the powers-of-2 DSS construction (proved by induction), existence of DSS sets for any n (filling the sorry in OQ03), positivity of elements, and the global sum lower bound. All results have 0 sorries and 0 axioms.",
+    "implications": "The superincreasing lemma gives a recursive DSS construction: start with A = {} and repeatedly add any element larger than the current sum. This shows DSS sets are not 'rare' — they can be built greedily. The powers-of-2 construction is the smallest such greedy sequence. The Conway-Guy sequence (OQ03) is a more efficient greedy strategy that nearly achieves the conjectured optimal constant c = 1/(2π^{1/2}) ≈ 0.28.",
+    "openQuestions": [
+      "Erdős $500 conjecture: must max(A) ≥ c · 2^n for some absolute c > 0?",
+      "What is the exact constant c? Upper bound c ≤ 0.22009 (Conway-Guy 1968).",
+      "Is the Conway-Guy sequence optimal? (Open for n > 10)"
+    ]
+  }
+}
