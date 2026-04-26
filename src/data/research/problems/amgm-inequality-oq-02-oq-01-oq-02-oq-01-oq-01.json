@@ -29,11 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: k=4,5 Newton-Girard proved (0 sorries, 0 axioms). Dual forms also derived. Gallery entry created at src/data/proofs/amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-01/",
+    "builtItems": [
+      "psum_four_eq in AmgmInequalityOQ02OQ01OQ02OQ01OQ01.lean: p₄ = e₁p₃ − e₂p₂ + e₃p₁ − 4e₄",
+      "psum_five_eq in AmgmInequalityOQ02OQ01OQ02OQ01OQ01.lean: p₅ = e₁p₄ − e₂p₃ + e₃p₂ − e₄p₁ + 5e₅",
+      "esymm_four_from_psum: 4e₄ = e₃p₁ − e₂p₂ + e₁p₃ − p₄ (dual form)",
+      "esymm_five_from_psum: 5e₅ = e₄p₁ − e₃p₂ + e₂p₃ − e₁p₄ + p₅ (dual form)"
+    ],
+    "insights": [
+      "Newton-Girard k=4: p₄ = e₁p₃ − e₂p₂ + e₃p₁ − 4e₄, proved via antidiagonal {(1,3),(2,2),(3,1)} + ring",
+      "Newton-Girard k=5: p₅ = e₁p₄ − e₂p₃ + e₃p₂ − e₄p₁ + 5e₅, proved via antidiagonal {(1,4),(2,3),(3,2),(4,1)} + ring",
+      "Dual forms: 4e₄ and 5e₅ expressible in power sums via linear_combination (works over any CommRing)",
+      "k=5 filter proof requires explicit constructor for 4-element antidiagonal",
+      "Antidiagonal template scales to any k; pattern: apply psum_eq_mul_esymm_sub_sum, filter via omega, expand via sum_insert, close with ring"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove general Newton-Girard for all k as inductive theorem (each k currently requires separate antidiagonal computation)",
+      "Connect Newton-Girard to MacMahon symmetric functions and plethystic substitution"
+    ]
   },
   "tags": [
     "challenging",
