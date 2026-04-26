@@ -2329,6 +2329,8 @@ import Proofs.PtolemysTheorem
 import Proofs.PtolemysTheoremOQ01
 import Proofs.PtolemysTheoremOQ01Incomplete01
 import Proofs.PtolemysTheoremOQ01OQ01
+import Proofs.PtolemysTheoremOQ01OQ02
+import Proofs.SynthesisCurvaturePtolemy
 import Proofs.PuiseuxTheorem
 import Proofs.PuiseuxTheoremOQ02
 import Proofs.PvsNP
