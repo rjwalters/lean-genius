@@ -1,7 +1,7 @@
 {
   "slug": "algebraic-numbers-countable-oq-05",
   "title": "Algebraic Numbers Countable: Cantor Height Function Proof (1874)",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "C",
   "path": "fast",
@@ -29,11 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE (session 1): Gallery entry created for existing 0-sorry Lean proof. Cantor height function formalized with finite strata (not just countable). All 12 theorems verified.",
+    "builtItems": [
+      "src/data/proofs/algebraic-numbers-countable-oq-05/meta.json — full gallery entry with overview, sections, cross-references",
+      "src/data/proofs/algebraic-numbers-countable-oq-05/annotations.json — 6 annotations",
+      "src/data/proofs/algebraic-numbers-countable-oq-05/index.ts — TypeScript export",
+      "proofs/Proofs.lean — added missing OQ04 and OQ05 imports"
+    ],
+    "insights": [
+      "cantorHeight H(p) = deg(p) + sum|ai| gives finite strata — stronger than degree stratification which gives countable strata",
+      "Key injection: height-≤h polys embed into Fin(h+1) → Icc(-h,h) via coefficient tuple — a Fintype",
+      "algebraic_reals_eq_iUnion_height uses IsLocalization.integerNormalization to clear denominators from ℚ to ℤ polynomials",
+      "Both OQ04 and OQ05 Lean files were missing from proofs/Proofs.lean imports"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "COMPLETED — no further work needed. Proof is fully verified."
+    ],
     "markdown": "# Knowledge Base: algebraic-numbers-countable-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
