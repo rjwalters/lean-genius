@@ -947,13 +947,19 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
       fun ⟨_, _⟩ => by positivity
     have h_angle_le : ∀ j : Fin m, (2 * j.val + 1 : ℝ) * Real.pi / (4 * n) ≤ Real.pi / 3 := by
       intro ⟨j, hj⟩
-      -- Need 3*(2j+1) ≤ 4n. Since j+1 ≤ m and 4m² ≤ 4n, suffices 6m-3 ≤ 4m²
-      have h3 : 3 * (2 * j + 1) ≤ 4 * n := by
-        have haux : 6 * m ≤ 4 * m ^ 2 + 3 := by nlinarith [hm_pos, sq_nonneg m]
-        nlinarith [hm_sq]
+      -- Need 3*(2j+1) ≤ 4n in ℤ (avoid ℕ subtraction issues in nlinarith)
+      have h3 : (3 : ℤ) * (2 * j + 1) ≤ 4 * n := by
+        have hj' : (j : ℤ) + 1 ≤ m := by exact_mod_cast hj
+        have hm_sq' : (m : ℤ) ^ 2 ≤ n := by exact_mod_cast hm_sq
+        have hm1 : (1 : ℤ) ≤ m := by exact_mod_cast hm_pos
+        -- Certificate: 4n-(6j+3) = 4*(n-m²) + (4m²-6m+3) + 6*(m-j-1) ≥ 0
+        -- 4m²-6m+3 = 4*(m-1)²+2*(m-1)+1 ≥ 0 via sq_nonneg (m-1)
+        nlinarith [sq_nonneg ((m : ℤ) - 1)]
       have h3' : (3 : ℝ) * (2 * (j : ℝ) + 1) ≤ 4 * (n : ℝ) := by exact_mod_cast h3
       rw [div_le_div_iff (by positivity) (by norm_num)]
-      nlinarith
+      -- Goal: (2j+1)*π*3 ≤ π*(4n); factor as π*(4n-3*(2j+1)) ≥ 0
+      have hd : (0 : ℝ) ≤ 4 * n - 3 * (2 * (j : ℝ) + 1) := by linarith [h3']
+      nlinarith [mul_nonneg hpi_pos.le hd]
     -- B: each cot term ≥ 2n/(π(2j+1))
     have h_cot_lb : ∀ j : Fin m,
         (2 : ℝ) * n / (Real.pi * (2 * j.val + 1)) ≤
