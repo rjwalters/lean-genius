@@ -134,6 +134,29 @@
       "description": "Galois's solvability criterion: a root is expressible by radicals iff its Galois group is solvable. This entry proves $|\\text{Gal}(8X^3-6X-1/\\mathbb{Q})| = 3 \\Rightarrow \\text{Gal} \\cong \\mathbb{Z}/3\\mathbb{Z}$, which is abelian hence solvable. By the solvability criterion, $\\cos(20°)$ IS expressible by radicals (Cardano applies) — the angle trisection impossibility is about the stronger requirement of compass-and-straightedge constructibility (towers of degree-2 extensions), not radical expressibility."
     }
   ],
+  "references": [
+    {
+      "authors": ["P. L. Wantzel"],
+      "title": "Recherches sur les moyens de reconnaître si un problème de Géométrie peut se résoudre avec la règle et le compas",
+      "year": "1837",
+      "venue": "Journal de Mathématiques Pures et Appliquées, vol. 2, pp. 366–372",
+      "note": "First rigorous proof that angle trisection and cube doubling are impossible with compass and straightedge, by showing the relevant minimal polynomials have degree not a power of 2. This entry formalizes the key step: |Gal(minpoly(cos 20°)/ℚ)| = 3, so [ℚ(cos 20°):ℚ] = 3, which is not a power of 2."
+    },
+    {
+      "authors": ["I. Stewart"],
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "Chapman & Hall/CRC, 4th edition",
+      "note": "Chapter 17: compass-and-straightedge constructibility via Galois theory. The computation of |Gal(8X³−6X−1/ℚ)| = 3 (this entry) is the standard example showing that trisecting 60° requires a degree-3 extension, which cannot arise from iterated quadratic extensions."
+    },
+    {
+      "authors": ["R. Courant", "H. Robbins"],
+      "title": "What is Mathematics?",
+      "year": "1941",
+      "venue": "Oxford University Press (revised by I. Stewart, 1996)",
+      "note": "Section III.3: classical construction problems. Accessible exposition of why angle trisection is impossible, connecting the geometric constraint (compass-and-straightedge = degree-2 towers) to the algebraic obstruction (cos 20° has degree 3 over ℚ)."
+    }
+  ],
   "leanFile": {
     "lineCount": 474,
     "path": "Proofs/AngleTrisectionCos20Gal.lean",
