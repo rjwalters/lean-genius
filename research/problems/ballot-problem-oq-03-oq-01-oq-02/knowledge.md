@@ -460,3 +460,104 @@ by_cases h4 : μ.rowLen 4 = 0
 1. **5-row case PART XIX**: ~300 more lines, same algebraic pattern; gets sorry to ≥6 rows
 2. **GNW general proof** (~300 lines): probabilistic hook walk, covers all shapes at once
 3. **Alternatively**: row-by-row until the pattern is clear enough to compress into one inductive proof
+
+---
+
+## Session 2026-04-26 (Session 24) — PART XVIII recovery after regression
+
+**Mode**: REVISIT (RICH knowledge tier, score ~145)
+**Outcome**: PROGRESS — re-applied PART XVIII to main branch (PR #12771)
+
+### What I Did
+
+1. Discovered the ballot file was at 5882 lines (missing threeRow + fourRow) due to regression
+2. Located cherry-pick `49b6e4e7c9f` (PR #12744) that restores threeRow proof (PART XIVc)
+3. Found `dc421879850` (original PART XVIII - 4-row) in git history
+4. Created clean branch `feature/ballot-fourrow-part18` from `origin/main`
+5. Applied PART XVIII additions (627 lines) + dispatcher update to current 6297-line file
+6. Updated meta.json (lineCount 6297→6928, theoremCount 164→181)
+7. PR rjwalters/lean-genius#12771 created against `main` branch
+
+### Key Discovery
+
+- `master` and `main` are DIFFERENT branches; `main` is the active branch
+- PR should target `main`, not `master` (CLAUDE.md instruction is outdated)
+- The regression was in PR #12719 (squash-merge that deleted 4500 lines)
+- PR #12744 restored threeRow proof (PART XIVc) on `main`
+- PART XVIII (4-row) still needed restoration
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (6297 → 6928 lines)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json`
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json`
+- PR: rjwalters/lean-genius#12771
+
+### Sorry Count: 4 (unchanged count, scope ≥5-row)
+
+### Next Steps
+
+1. 5-row case (PART XIX): extract from `3499e79e4df` git history; same recovery pattern
+2. Fix `BallotProblemOQ03.lean` pre-existing errors (lines 1875-2541) to enable full chain build
+
+---
+
+## Session 2026-04-26 (Session 25) — PART XIX + PART XX: 5-row and 6-row recovery
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: PROGRESS — applied PART XIX (5-row) and PART XX (6-row) from git history
+
+### What I Did
+
+1. File was at 7763 lines (PART XIX 5-row already applied from previous context, not committed)
+2. Extracted PART XX (lines 8018-9066) from commit `312dbe91dbd` to `/tmp/part20_extracted.txt` (1049 lines)
+3. Applied PART XX: inserted 1047 lines before dispatcher + updated dispatcher with 6-row case
+4. Dispatcher now dispatches ≥7-row to sorry (was ≥6-row, was ≥5-row before)
+5. Updated meta.json: lineCount 6928→8815, theoremCount 181→230, assumptions scope ≥7-row
+
+### Key Pattern
+
+- PART XX content inserted at line 7657 (before `private lemma hook_walk_identity`)
+- Each successive part adds ~1000 lines of colLen/hookLen/arm lemmas + main `hook_walk_identity_Nrow`
+- Dispatcher updated with +2 spaces indentation adjustment per level
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (7763 → 8815 lines)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json`
+
+### Sorry Count: 4 (3 LGV + 1 for ≥7-row dispatcher)
+
+### Next Steps
+
+1. Commit PART XIX + PART XX and push to `feature/ballot-fourrow-part18` ✓ (PR #12775)
+2. 7-row case (PART XXI): extract from git history ✓ (applied in same session)
+3. Fix `BallotProblemOQ03.lean` pre-existing errors to enable full chain build
+
+---
+
+## Session 2026-04-26 (Session 26) — PART XXI: 7-row recovery
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: PROGRESS — applied PART XXI (7-row) from commit `28fa7e7baeb`
+
+### What I Did
+
+1. Located `28fa7e7baeb` containing PARTS XVIII-XXI (3-7 row cases)
+2. Extracted PART XXI (lines 8682-9995) → 1315 lines with sevenRow content
+3. Applied PART XXI: inserted 1311 lines before dispatcher + updated 7+ rows sorry with sevenRow dispatch
+4. Dispatcher now covers ≤7-row; sorry scoped to ≥8-row
+5. Updated meta.json: lineCount 8815→10130, theoremCount 230→260, assumptions ≥8-row
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (8815 → 10130 lines)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json`
+
+### Sorry Count: 4 (3 LGV + 1 for ≥8-row dispatcher)
+
+### Next Steps
+
+1. Check git history for PART XXII (8-row) — `28fa7e7baeb` may have ended at 7 rows
+2. Fix `BallotProblemOQ03.lean` pre-existing errors to enable full chain build
+3. Consider Aristotle for LGV sorries (RSK, det-factorization)

@@ -1,0 +1,95 @@
+{
+  "slug": "sqrt2-minpoly-oq-02",
+  "title": "Minimal Polynomial of k-th Roots: minpoly ℚ (n^(1/k)) = X^k - n via Eisenstein",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Generalize the existing `Sqrt2Minpoly` gallery proof to show that for any natural numbers",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-22T21:55:56.657Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: sqrt2-minpoly-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nGeneralize `Sqrt2Minpoly` (gallery: minpoly ℚ √2 = X² - 2) to show that for any\nnatural numbers n, k ≥ 2 satisfying the Eisenstein condition (a prime p | n with p^k ∤ n),\nthe minimal polynomial of n^(1/k) over ℚ is X^k - n.\n\nKey ingredients:\n- `Polynomial.irreducible_of_eisenstein_criterion` in Mathlib\n- `minpoly.eq_of_irreducible_of_monic` to conclude minimality\n- `Real.rpow` for n^(1/k) and `aeval` evaluation to zero\n\n---\n\n## Session 2026-04-23 (Session 1) - Complete Proof File Created\n\n**Mode**: FRESH\n**Outcome**: completed\n\n### What I Did\n- Found that `CubeRoot2IrrationalOQ03` already contains `minpoly_nthRoot_eq`\n- Created dedicated `proofs/Proofs/Sqrt2MinpolyOQ02.lean` (202 lines, 0 sorries, 0 axioms)\n- Added: squarefree corollary, degree theorems, non-perfect-power criterion, 12 concrete examples\n- Updated meta.json: proofRepoPath → `Proofs/Sqrt2MinpolyOQ02.lean`, mainTheorems namespace\n\n### Key Findings\n- `Nat.squarefree_iff_prime_squarefree` + `rwa [sq]` closes the squarefree → Eisenstein condition gap\n- `(minpoly_nthRoot_eq k m p hk hp hdvd hndvd hm).symm` converts X^k-m=minpoly to minpoly=X^k-m\n- All new theorems are 1-2 line wrappers delegating to CubeRoot2IrrationalOQ03 infrastructure\n\n---\n\n## Insights\n\n- The `CubeRoot2IrrationalOQ03` file is the right dependency for sqrt2-minpoly-oq-02\n- Squarefree corollary via `Nat.squarefree_iff_prime_squarefree` → `rwa [sq]` for ¬ p^2 ∣ m\n\n---\n\n## Dead Ends\n\n- Irrationality theorem attempt removed: `Rat.minpoly_eq_X_sub_C` approach was risky;\n  irrationality follows trivially from degree = k ≥ 2 but not needed for gallery\n"
+  },
+  "tags": [
+    "seeker-selected",
+    "algebraic-number-theory",
+    "minimal-polynomial",
+    "eisenstein",
+    "radical-extensions"
+  ],
+  "relatedProofs": [
+    "sqrt2-minpoly",
+    "sqrt2-minpoly-oq-01",
+    "sqrt2-minpoly-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-25T12:53:24.124Z",
+  "lastUpdate": "2026-04-25T12:53:24.205Z",
+  "significance": 7,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/Sqrt2Minpoly.lean",
+      "filename": "Sqrt2Minpoly.lean",
+      "lineCount": 141,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2Minpoly.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ01.lean",
+      "filename": "Sqrt2MinpolyOQ01.lean",
+      "lineCount": 253,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ02.lean",
+      "filename": "Sqrt2MinpolyOQ02.lean",
+      "lineCount": 203,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ02.lean"
+    }
+  ]
+}

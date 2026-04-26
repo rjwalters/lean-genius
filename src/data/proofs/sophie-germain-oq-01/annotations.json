@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ann-sg-oq01-header",
+    "proofId": "sophie-germain-oq-01",
+    "range": { "startLine": 7, "endLine": 51 },
+    "type": "context",
+    "title": "An Open Question at the Frontier of Sieve Theory",
+    "content": "The module header sets out precisely what is known and unknown. The Sophie Germain prime conjecture is open not just in practice but in principle — Selberg's parity obstruction (1950s) shows that elementary sieves cannot distinguish between numbers with an even vs. odd number of prime factors, which is exactly the structural barrier to proving 'p and 2p+1 are simultaneously prime'. The Hardy-Littlewood prediction π_SG(x) ~ 2C₂·x/(ln x)² is well-supported by computation but inaccessible by proof.",
+    "mathContext": "Selberg's parity barrier: sieves filter by divisibility, but primality requires $\\Omega(n) = 1$ (exactly one prime factor). Sieve methods cannot control the parity of $\\Omega$, so they cannot prove lower bounds of the form 'infinitely many $n$ with both $n$ and $f(n)$ prime.' This is why both the twin prime conjecture and SGC remain open despite extensive sieve-theoretic progress.",
+    "significance": "context",
+    "relatedConcepts": ["Selberg parity obstruction", "Hardy-Littlewood conjecture", "Brun's theorem", "sieve methods"],
+    "prerequisites": ["analytic number theory", "sieve theory basics", "Sophie Germain's FLT theorem"]
+  },
+  {
+    "id": "ann-sg-oq01-safe-prime-def",
+    "proofId": "sophie-germain-oq-01",
+    "range": { "startLine": 57, "endLine": 60 },
+    "type": "definition",
+    "title": "The Safe Prime Conjecture: Dual Formulation",
+    "content": "SafePrimeConjecture states: for every N, there exists a safe prime q > N. A safe prime q is prime with (q-1)/2 also prime — exactly the image of a Sophie Germain prime p under the map p ↦ 2p+1. The name 'safe prime' comes from cryptography: safe primes q are used in Diffie-Hellman key exchange because the discrete logarithm problem modulo q (with order q-1 = 2p) is hard even for index-calculus attacks.",
+    "mathContext": "$\\text{SafePrimeConjecture} := \\forall N, \\exists q > N,\\; \\text{IsSafePrime}(q)$. The bijection $p \\leftrightarrow 2p+1$ between Sophie Germain primes and safe primes gives: SGC $\\iff$ SafePrimeConjecture. Cryptographic use: if $q = 2p+1$ is a safe prime, the group $(\\mathbb{Z}/q\\mathbb{Z})^*$ has order $q-1 = 2p$, which makes the discrete log problem hard for Pohlig-Hellman attacks.",
+    "significance": "key",
+    "relatedConcepts": ["safe primes", "Diffie-Hellman", "discrete logarithm", "cryptographic applications of number theory"],
+    "prerequisites": ["IsSophieGermainPrime from parent", "IsSafePrime definition", "group theory basics"]
+  },
+  {
+    "id": "ann-sg-oq01-examples",
+    "proofId": "sophie-germain-oq-01",
+    "range": { "startLine": 62, "endLine": 98 },
+    "type": "technique",
+    "title": "Certified Computation: 25 Verified SG Primes via decide",
+    "content": "Each of the 15 new SG prime theorems is proved by `constructor <;> decide`. The `decide` tactic performs certified trial division: Lean's kernel checks that both p and 2p+1 are prime by computing primality via the decidable instance on Nat.Prime. This is more than a computation — it is a machine-verified mathematical proof. The `exists_twentyfive_sg_primes` theorem packages all 25 into a single conjunction using angle-bracket syntax for And introduction.",
+    "mathContext": "The 15 new primes: $p \\in \\{113, 131, 173, 191, 233, 239, 251, 281, 293, 359, 419, 431, 443, 491, 509\\}$. Their safe prime companions: $\\{227, 263, 347, 383, 467, 479, 503, 563, 587, 719, 839, 863, 887, 983, 1019\\}$, each verified prime. Note 509 is not followed by 521 (521 is prime but $2 \\cdot 521 + 1 = 1043 = 1043$... not prime); the next SG prime is 593.",
+    "significance": "supporting",
+    "relatedConcepts": ["decide tactic", "certified computation", "Nat.Prime decidability", "prime tables"],
+    "prerequisites": ["IsSophieGermainPrime", "decide tactic in Lean 4", "constructor tactic"]
+  },
+  {
+    "id": "ann-sg-oq01-unbounded",
+    "proofId": "sophie-germain-oq-01",
+    "range": { "startLine": 102, "endLine": 115 },
+    "type": "insight",
+    "title": "Infinitude = No Upper Bound: The No-Max Equivalence",
+    "content": "The theorem sgc_iff_unbounded proves that SGC (∀ N, ∃ p > N SG prime) is equivalent to ¬∃ M such that all SG primes are ≤ M. This is logically obvious but worth proving formally: the classical '∞ many' is captured by 'unbounded above'. The proof uses push_neg to convert the negation and omega for arithmetic bounds. Both directions use the same witness: a SG prime that exceeds either N or the proposed bound M.",
+    "mathContext": "$\\text{SGC} \\iff \\neg\\exists M,\\, \\forall p \\text{ SG},\\, p \\leq M$. Proof ($\\Rightarrow$): given bound $M$, SGC gives $p > M$ SG, contradicting $p \\leq M$. Proof ($\\Leftarrow$): for any $N$, ¬(bounded) gives a SG prime not bounded by $N$, i.e., some $p$ SG with $p > N$ (using `push_neg`).",
+    "significance": "key",
+    "relatedConcepts": ["push_neg", "omega tactic", "unbounded set", "constructive infinitude"],
+    "prerequisites": ["SophieGermainConjecture from parent", "push_neg tactic", "omega tactic"]
+  },
+  {
+    "id": "ann-sg-oq01-bijection-forward",
+    "proofId": "sophie-germain-oq-01",
+    "range": { "startLine": 126, "endLine": 134 },
+    "type": "technique",
+    "title": "SGC → SafePrimeConjecture: The Forward Map p ↦ 2p+1",
+    "content": "The theorem sgc_implies_safe_prime_conjecture implements the forward direction of the bijection. Given a SG prime p > N, the safe prime 2p+1 > N witnesses the safe prime conjecture for N. The helper half_two_mul_add_one (which proves (2p+1-1)/2 = p) is needed to confirm that the recovered SG prime from 2p+1 is indeed p, not some other computation artifact. The `refine ⟨..., ?_⟩` pattern introduces the constructor while leaving arithmetic goals for omega.",
+    "mathContext": "Forward direction: given $p > N$ with $p$ and $2p+1$ prime (i.e., $p$ is an SG prime), we exhibit $q = 2p+1 > 2N+1 > N$ as a safe prime. The safe prime condition requires: $q$ prime ✓, $q$ odd ($2p+1$ is odd for $p \\geq 1$) ✓, $(q-1)/2 = p$ prime ✓. The helper $\\frac{(2p+1)-1}{2} = p$ makes the last step formal.",
+    "significance": "key",
+    "relatedConcepts": ["IsSafePrime", "natural number arithmetic", "half_two_mul_add_one lemma"],
+    "prerequisites": ["sgc_implies_safe_prime_conjecture", "IsSafePrime definition", "omega"]
+  },
+  {
+    "id": "ann-sg-oq01-bijection-backward",
+    "proofId": "sophie-germain-oq-01",
+    "range": { "startLine": 136, "endLine": 160 },
+    "type": "technique",
+    "title": "SafePrimeConjecture → SGC: The Backward Map q ↦ (q-1)/2",
+    "content": "The backward direction is the harder one because we need to request a safe prime q > 2N+1 (not just q > N) to ensure p = (q-1)/2 > N. The key arithmetic chain: q ≥ 2N+3 (odd prime > 2N+1) → q-1 ≥ 2N+2 → (q-1)/2 ≥ N+1 > N. The helper two_mul_half_pred_add_one recovers 2·((q-1)/2)+1 = q from the oddness condition (q % 2 = 1), ensuring the SG condition 2p+1 = q is prime.",
+    "mathContext": "Backward: given safe prime $q > 2N+1$, let $p = (q-1)/2$. Since $q \\geq 2N+3$: $p = (q-1)/2 \\geq (2N+2)/2 = N+1 > N$. Also $p$ prime (from IsSafePrime), and $2p+1 = q$ prime. Chain: `Nat.div_le_div_right` for $(2N+2)/2 \\leq (q-1)/2$, and `two_mul_half_pred_add_one` for $2 \\cdot ((q-1)/2) + 1 = q$ (using oddness $q \\bmod 2 = 1$).",
+    "significance": "key",
+    "relatedConcepts": ["two_mul_half_pred_add_one", "Nat.div_le_div_right", "omega", "SophieGermainConjecture"],
+    "prerequisites": ["SafePrimeConjecture", "Nat.Prime divisibility", "integer division arithmetic"]
+  },
+  {
+    "id": "ann-sg-oq01-prime-pairs",
+    "proofId": "sophie-germain-oq-01",
+    "range": { "startLine": 162, "endLine": 168 },
+    "type": "insight",
+    "title": "sgc_iff_prime_pairs: Unfolding IsSophieGermainPrime",
+    "content": "The theorem sgc_iff_prime_pairs proves SGC is equivalent to: for all N, there exists p > N with both p and 2p+1 prime. This is simply the unfolded definition of IsSophieGermainPrime — the proof is `simp only [SophieGermainConjecture, IsSophieGermainPrime]`. The value is pedagogical: it makes the combinatorial content explicit without the definitional layer. This form is closest to the informal statement 'arbitrarily large prime pairs (p, 2p+1)'.",
+    "mathContext": "$\\text{SGC} \\iff \\forall N, \\exists p > N,\\; \\text{Prime}(p) \\wedge \\text{Prime}(2p+1)$. The simp lemma just unfolds `IsSophieGermainPrime p := Nat.Prime p ∧ Nat.Prime (2p+1)`. Compare with twin prime conjecture: $\\forall N, \\exists p > N,\\; \\text{Prime}(p) \\wedge \\text{Prime}(p+2)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["IsSophieGermainPrime unfolding", "simp tactic", "twin prime conjecture analogy"],
+    "prerequisites": ["SophieGermainConjecture", "IsSophieGermainPrime definition"]
+  },
+  {
+    "id": "ann-sg-oq01-infinite-safe",
+    "proofId": "sophie-germain-oq-01",
+    "range": { "startLine": 171, "endLine": 174 },
+    "type": "insight",
+    "title": "Conditional: Infinitely Many Safe Primes Under SGC",
+    "content": "The theorem infinite_safe_primes is a direct consequence of sgc_implies_safe_prime_conjecture and the axiom sophie_germain_conjecture. This is the cleanest conditional: it names the consequence ('safe primes are infinite') and its proof is a one-liner combining the equivalence with the axiom. The pattern here — axiom + equivalence → named consequence — is how conditional results are structured in the file.",
+    "mathContext": "Under the axiom $\\text{sophie\\_germain\\_conjecture}: \\text{SGC}$: $$\\forall N, \\exists q > N,\\; \\text{IsSafePrime}(q)$$ Proof: apply `sgc_implies_safe_prime_conjecture` to `sophie_germain_conjecture` then to $N$. One line.",
+    "significance": "supporting",
+    "relatedConcepts": ["sophie_germain_conjecture axiom", "safe primes", "conditional theorem"],
+    "prerequisites": ["sgc_implies_safe_prime_conjecture", "sophie_germain_conjecture axiom"]
+  },
+  {
+    "id": "ann-sg-oq01-mod-twelve",
+    "proofId": "sophie-germain-oq-01",
+    "range": { "startLine": 176, "endLine": 184 },
+    "type": "insight",
+    "title": "Conditional: Infinitely Many Primes ≡ 11 (mod 12)",
+    "content": "Under SGC, there are infinitely many primes congruent to 11 modulo 12. The proof uses the parent's safe_prime_mod_twelve theorem: for SG primes p > 3, the safe prime 2p+1 satisfies 2p+1 ≡ 11 (mod 12). By requesting a SG prime p > max(N, 3), we ensure both p > N and p > 3. The modular arithmetic insight: for p > 3 a SG prime, p ≡ 5 (mod 6) (from the parent's mod-6 theorem), so 2p+1 ≡ 11 (mod 12). This is a conditional Dirichlet-type result.",
+    "mathContext": "Key: for $p > 3$ an SG prime, $p \\equiv 5 \\pmod{6}$ (mod-6 structure theorem), so $2p \\equiv 10 \\pmod{12}$ and $2p+1 \\equiv 11 \\pmod{12}$. Using `max N 3` ensures both $p > N$ (for existence) and $p > 3$ (for `safe_prime_mod_twelve`). This gives a conditional version of Dirichlet's theorem: under SGC, the arithmetic progression $11 + 12k$ contains infinitely many primes.",
+    "significance": "key",
+    "relatedConcepts": ["Dirichlet's theorem", "mod-12 structure", "safe_prime_mod_twelve from parent", "Nat.le_max"],
+    "prerequisites": ["safe_prime_mod_twelve from SophieGermain", "Nat.le_max_left/right", "sophie_germain_conjecture axiom"]
+  },
+  {
+    "id": "ann-sg-oq01-no-finite-cover",
+    "proofId": "sophie-germain-oq-01",
+    "range": { "startLine": 186, "endLine": 195 },
+    "type": "technique",
+    "title": "No Finite Cover: Finset.sup Trick",
+    "content": "The theorem no_finite_cover proves that no finite set S covers all SG primes. The elegant proof uses Finset.sup id S (the maximum element of S, or 0 if empty) as the bound: SGC gives a SG prime p exceeding this maximum. If p ∈ S, then p ≤ Finset.sup id S (by Finset.le_sup), contradicting p > Finset.sup. The `Finset.le_sup (f := id)` pattern is the standard way to extract the upper-bound property. This is the 'combinatorial infinitude' formulation.",
+    "mathContext": "For any $S \\subseteq_{\\text{fin}} \\mathbb{N}$: let $M = \\text{sup}_{\\text{fin}} S = \\max(S)$ (or 0 if $S = \\emptyset$). SGC gives $p > M$ SG. If $p \\in S$, then $p \\leq \\sup S = M$, contradiction. The key lemma: `Finset.le_sup (f := id) hp_mem : p ≤ S.sup id`. Then `omega` closes from `hp_gt : p > S.sup id` and this inequality.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sup", "Finset.le_sup", "combinatorial infinitude", "contradiction pattern"],
+    "prerequisites": ["Finset.le_sup from Mathlib", "sophie_germain_conjecture axiom", "omega"]
+  }
+]

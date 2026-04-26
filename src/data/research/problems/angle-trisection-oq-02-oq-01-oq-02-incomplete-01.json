@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 1 sorry remaining (wantzel_galois_iff, out-of-scope). isConstructible_algebraic_degree fully proved via sequential tower.",
+    "progressSummary": "PROGRESS: Tower sorry structured into 5-step proof (A-E), 2 targeted sub-sorries remain + wantzel out-of-scope",
     "builtItems": [
       "isConstructible_mem_range: all constructible numbers are rational (Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:89)",
       "not_constructible_of_bad_degree: proved via rationality + minpoly.eq_X_sub_C (line 179)",
@@ -42,9 +42,7 @@
       "Fixed Module.finrank qualified name throughout not_constructible_of_bad_degree",
       "Fixed IsIntegral conversion for adjoin.finrank type mismatch",
       "Fixed h1 case: absurd + Nat.two_pow_pos instead of broken linarith",
-      "isConstructible_algebraic: constructible → algebraic ℚ (induction, ~17 lines) in AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:106",
-      "pow2_containing_field: sequential tower ℚ≤G_a≤G_ab≤G_ab(β) with 2-power ranks, in lean:127",
-      "isConstructible_algebraic_degree: PROVED — constructible ⟹ finrank ℚ ℚ⟮α⟯ = 2^n, in lean:212"
+      "Session 28: Steps A-B proven: a∈ℚ⟮β⟯ via mul_mem, ℚ⟮a⟯≤ℚ⟮β⟯ via adjoin_simple_le_iff, b+β∈join, ℚ⟮b+β⟯≤join"
     ],
     "insights": [
       "IsConstructible with existential sqrt_ext blocks induction — must make a,b explicit constructor params to get proper IHs",
@@ -57,18 +55,19 @@
       "Session 26: wantzel_galois_iff was FALSE under old definition (→ direction fails: √2 has 2-group Gal but was not 'constructible'). Now TRUE under fixed definition.",
       "Session 26: not_constructible_of_bad_degree now uses isConstructible_algebraic_degree sorry + IntermediateField.adjoin.finrank for degree connection",
       "Session 27: File compiles; tower sorry narrowed to single divisibility claim; Docker must run from worktree; Module.finrank must be fully qualified; IsIntegral needed for adjoin.finrank",
-      "IsAlgebraic.tower_top fails with Field synthesis error; bypass using direct IsIntegral polynomial witness instead",
-      "Module.Free.of_divisionRing has explicit K V args in Mathlib4; use inferInstance instead",
-      "Module.Finite timeout for finrank_pos fixed by: haveI hfin := adjoin.finiteDimensional hint_β before use"
+      "Session 28: Structured the tower sorry into 5 steps (A-E): a∈ℚ⟮β⟯, ℚ⟮a⟯≤ℚ⟮β⟯, b+β∈join, ℚ⟮b+β⟯≤join, tower-dvd chain",
+      "Session 28: Tower sorry has 2 remaining targeted sorries: hβ_dvd (finrank_β ∣ 2^(j+1)) and hjoin_dvd (finrank_join ∣ 2^(j+k+1))",
+      "Session 28: Key gap identified: hjoin_dvd needs STRONGER IH — not just finrank ℚ ℚ⟮b⟯ = 2^k, but for any K/ℚ, finrank K K⟮b⟯ divides a power of 2"
     ],
     "mathlibGaps": [
       "isConstructible_algebraic_degree: tower degree induction — IsConstructible α → IsAlgebraic ℚ α ∧ ∃ n, finrank ℚ ℚ⟮α⟯ = 2^n. Needs FiniteDimensional.finrank_mul_finrank + IntermediateField tower lemmas. Estimated ~120 lines.",
       "wantzel_galois_iff: requires full FTGT + 2-group structure, estimated 500+ lines — not in Mathlib"
     ],
     "nextSteps": [
-      "Prove tower divisibility: Module.finrank ℚ ℚ⟮b+β⟯ ∣ 2^(j+k+1)",
-      "Key lemmas: IntermediateField.adjoin.finrank, finrank of degree-2 adjoin",
-      "wantzel_galois_iff is out-of-scope (500+ lines)"
+      "Prove hβ_dvd: set up Algebra (↥ℚ⟮a⟯) (↥ℚ⟮β⟯) from ha_le_β, apply tower law, bound [ℚ⟮β⟯:ℚ⟮a⟯] ≤ 2 via minpoly of β over ℚ⟮a⟯",
+      "Prove hjoin_dvd: needs stronger IH — reformulate isConstructible_algebraic_degree with stronger statement about extensions",
+      "Alternative for hjoin_dvd: convert to QuadraticTower approach from AngleTrisectionOQ02OQ04OQ01.lean",
+      "wantzel_galois_iff remains out-of-scope (500+ lines)"
     ]
   },
   "tags": [
