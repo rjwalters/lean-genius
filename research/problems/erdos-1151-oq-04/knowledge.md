@@ -257,3 +257,58 @@ Replaced the `sorry` for `h_harm_chain` with a complete 5-step proof:
 ### Next Steps
 1. Attempt `chebyshev_trig_sum_lb` Case 2: use sin(φₖ) ≥ s/2 near k₀ + harmonic sum
 2. For sorry #2: weaken to lim sup = ∞ (provable by Banach-Steinhaus)
+
+## Session 2026-04-26c — Build Fixed, PR #12590 Verified
+
+**Outcome**: build succeeds — 0 errors, exactly 2 sorry warnings (lines 1089, 1178)
+**Sorries changed**: 2 (unchanged) — all build errors fixed
+
+### What I Did
+
+Fixed 7 distinct build failures that surfaced as cached artifacts were cleared:
+
+1. **`hg_inj` double-coercion omega failure** (line 919):
+   `fun ⟨j, hj⟩ ⟨j', hj'⟩ h =>` creates `↑↑⟨j, hj⟩` as a separate omega atom from `j`.
+   Fix: `intro a b h` with `a b : Fin m`, using `a.isLt`/`b.isLt` and `Fin.ext (by omega)`.
+
+2. **`hf_nn` division bounds** (line 887):
+   Even with `intro k` (not destructuring), `<;> nlinarith [Real.pi_pos]` can't close both division goals.
+   Fix: explicit `rw [div_le_iff₀ ...]` / `rw [div_lt_div_iff₀ ...]` + `linarith [mul_pos Real.pi_pos h_gap]`.
+   Key: provide product hint `π*(4n - (2k+1)*c) > 0` so linarith sees the linear consequence.
+
+3. **`hsucc_sq` type mismatch** (line 892):
+   `Nat.lt_succ_sqrt n : n < n.sqrt.succ * n.sqrt.succ` but goal expects `n < (m+1)^2`.
+   Fix: `simp only [← hm_def, Nat.succ_eq_add_one, ← sq] at h; exact h`.
+   Key: `← sq` rewrites `a*a → a^2` in the hypothesis.
+
+4. **`div_le_div_iff` / `div_le_iff` / `div_lt_div_iff`** (lines 765, 886, 896):
+   These identifiers don't exist; Mathlib uses the `₀`-suffixed versions.
+   Fix: `div_le_div_iff₀`, `div_le_iff₀`, `div_lt_div_iff₀`.
+   Note: `div_lt_iff₀` was already correct (line 811 had no error).
+
+5. **Stale `ring` after `field_simp`** (line 802, `sin_div_one_add_cos`):
+   `field_simp [h2cos_ne, hcos_half_pos.ne']` fully closed the goal; `ring` found no goals.
+   Fix: remove `ring`.
+
+6. **`chebyshevAngle_pos_lt_pi` nlinarith** (line 814):
+   `nlinarith` without hints can't prove `(2k+1)*π < π*(2n)` — needs `π > 0`.
+   Fix: `nlinarith [Real.pi_pos]`.
+
+### Key Patterns for Future Sessions
+
+- **Double-coercion in omega/linarith**: Destructuring `⟨j, hj⟩` creates `↑↑⟨j, hj⟩` which omega treats
+  as different from `j`. Use `intro a` (not `intro ⟨a, ha⟩`) and access `.val`/`.isLt`/`.val_lt`.
+
+- **Division inequalities with transcendental π**: nlinarith can't handle `a*π/b < c*π/d` without hints.
+  Strategy: `rw [div_lt_div_iff₀ ...]` to clear denominators, then provide `mul_pos Real.pi_pos h_gap`
+  as a hint, where `h_gap : 0 < (numerator difference)` is proved by linarith from casting bounds.
+
+- **Mathlib naming**: When a div/mul lemma fails, try appending `₀` (confirmed: `div_le_div_iff₀`,
+  `div_le_iff₀`, `div_lt_div_iff₀`, `div_lt_iff₀`).
+
+- **`field_simp` may close goals**: Always check if `ring` after `field_simp` is still needed.
+
+### Remaining Sorries (2)
+
+1. **`chebyshev_trig_sum_lb` Case 2** (~line 1089): x ∈ (-1,1), Lipschitz/harmonic argument
+2. **`divergence_from_lebesgue_growth`** (~line 1178): lacunary construction / UBP gap
