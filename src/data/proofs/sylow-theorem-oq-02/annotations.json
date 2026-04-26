@@ -115,5 +115,29 @@
       "Subgroup index",
       "Sylow subgroup normality"
     ]
+  },
+  {
+    "id": "ann-oq02-count-congruence",
+    "proofId": "sylow-theorem-oq-02",
+    "range": {
+      "startLine": 166,
+      "endLine": 204
+    },
+    "type": "insight",
+    "title": "Count Congruence: n_p ≡ 1 (mod p)",
+    "content": "`sylow_count_congr_one` proves the third Sylow theorem in index form: $n_p \\equiv 1 \\pmod{p}$. The Lean proof delegates directly to Mathlib's `card_sylow_modEq_one`, which uses a different orbit argument — $P$ acts on the set $\\text{Sylow}_p(G)$ by conjugation, and $P$ fixes only itself (since $P$ normalizes $Q \\in \\text{Sylow}_p(G)$ iff $P \\leq N_G(Q)$ iff $PQ$ is a $p$-subgroup iff $P = Q$ when $P$ is Sylow). The fixed points under the $P$-action are exactly $\\{P\\}$, so orbit sizes are either 1 (for $P$ itself) or $p^k > 1$ (for other Sylow subgroups), giving $n_p \\equiv 1 \\pmod{p}$.\n\nThe summary comment in lines 181–204 provides a table of all 9 main results with their Mathlib backing: `Sylow.orbit_eq_top`, `Sylow.card_eq_index_normalizer`, `Sylow.equivQuotientNormalizer`, `Sylow.card_dvd_index`, `Subgroup.normalizer_eq_top_iff`, `Sylow.smul_eq_of_normal`, and `card_sylow_modEq_one`.",
+    "mathContext": "The $P$-action argument: $P \\leq G$ acts on $\\text{Sylow}_p(G)$ by conjugation. A fixed point $Q$ satisfies $gQg^{-1} = Q$ for all $g \\in P$, i.e., $P \\leq N_G(Q)$, so $PQ$ is a subgroup of $G$. Since $P$ is Sylow, $|PQ| = |P| \\cdot |Q| / |P \\cap Q|$ is a power of $p$ bounded by $|G|$, forcing $P = Q$. Thus the unique $P$-fixed point is $P$ itself, so $n_p = 1 + (\\text{sum of orbit sizes} \\geq p) \\equiv 1 \\pmod{p}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "card_sylow_modEq_one",
+      "fixed-point counting",
+      "p-group action",
+      "Burnside's lemma"
+    ],
+    "prerequisites": [
+      "p-group action on Sylow subgroups",
+      "orbit size divisibility",
+      "Sylow's third theorem"
+    ]
   }
 ]

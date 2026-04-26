@@ -284,6 +284,16 @@
       "targetId": "lagrange-theorem",
       "relationship": "foundational",
       "description": "The tower law $[L:F] = [L:K] \\cdot [K:F]$ (a consequence of Lagrange's theorem) drives the key computation: $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = [\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\cos(2\\pi/n))] \\cdot [\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}]$, yielding $[\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}] = \\varphi(n)/2$"
+    },
+    {
+      "targetId": "angle-trisection-cos-20-gal",
+      "relationship": "application",
+      "description": "Specific application of the Gauss-Wantzel non-constructibility direction: the regular 18-gon is NOT constructible (this file proves it, since $18 = 2 \\cdot 3^2$ and $3^2$ is not a Fermat prime), equivalently $\\cos(20°) = \\cos(2\\pi/18)$ is not constructible. The companion entry `angle-trisection-cos-20-gal` provides the Galois group calculation $|\\text{Gal}(8X^3-6X-1/\\mathbb{Q})| = 3$ that underlies the OQ-02 machinery for this specific case."
+    },
+    {
+      "targetId": "angle-trisection-oq-01",
+      "relationship": "related",
+      "description": "OQ-01 proves the necessary degree criterion (constructible $\\Rightarrow$ degree divides $2^n$); this file provides the full Gauss-Wantzel theorem including the explicit totient criterion. Together they form a complete hierarchy: OQ-01 (degree necessary condition) $\\subset$ OQ-02 (Galois 2-group biconditional) $\\supset$ OQ-02-OQ-03 (explicit $\\varphi(n) = 2^k$ characterization for regular polygons)."
     }
   ],
   "conclusion": {

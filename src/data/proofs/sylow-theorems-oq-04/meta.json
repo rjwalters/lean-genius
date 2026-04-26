@@ -133,6 +133,11 @@
       "description": "The simplicity and non-solvability of A₅ is the key ingredient for the unsolvability of the general quintic by radicals"
     },
     {
+      "targetId": "abel-ruffini-galois-extensions-oq-04",
+      "relationship": "foundational",
+      "description": "The conjugacy class proof of $A_5$ simplicity provided here is the key fact that makes $A_5$ the indecomposable composition factor in $S_5$'s Jordan-Hölder series. The `JordanHolderLattice` instance in `abel-ruffini-galois-extensions-oq-04` proves uniqueness: every composition series of $S_5$ must contain $A_5$ as a factor. This entry (conjugacy classes) and `sylow-theorem-oq-04` (Sylow counting) both prove $A_5$ simplicity from scratch via complementary methods — together they provide the elementary foundation for the abstract uniqueness result."
+    },
+    {
       "targetId": "lagrange-theorem",
       "relationship": "uses",
       "description": "Lagrange's theorem constrains normal subgroup orders to divisors of 60, combined with Sylow counting to rule them out"

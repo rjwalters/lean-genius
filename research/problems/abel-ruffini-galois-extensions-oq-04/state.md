@@ -1,25 +1,24 @@
 # Research State: abel-ruffini-galois-extensions-oq-04
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-04-24T08:49:14+02:00
+**Since**: 2026-04-24T18:59:42+02:00
 **Iteration**: 1
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Close maximality sorry in isMaximal_inf_left_of_isMaximal_sup.
 
 ## Active Approach
-None yet.
+JordanHolderLattice instance: 5/6 fields proved. Transfer simplicity of (x⊔y)/y to x/(x⊓y) via second_iso MulEquiv.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Blockers
-None.
+isMaximal_inf_left_of_isMaximal_sup maximality: requires IsSimpleGroup transfer through MulEquiv. HARD for Aristotle.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+Submit maximality sorry to Aristotle. If Aristotle proves it, integrate. Otherwise try IsSimpleGroup.of_mulEquiv approach manually.

@@ -164,6 +164,11 @@
       "description": "Sylow subgroups provide structural information complementing the solvability analysis central to Abel-Ruffini"
     },
     {
+      "targetId": "abel-ruffini-galois-extensions-oq-04",
+      "relationship": "foundational",
+      "description": "Sylow's theorem III — the congruence $n_p \\equiv 1 \\pmod{p}$ and divisibility constraint $n_p \\mid |G|/p^k$ — is the key tool used to prove that $A_5$ (order $60 = 2^2 \\cdot 3 \\cdot 5$) has no proper nontrivial normal subgroups. For each prime: $n_5 \\mid 12$ and $n_5 \\equiv 1 \\pmod 5$ force $n_5 \\in \\{1,6\\}$; $n_5 = 1$ would make $P_5 \\trianglelefteq A_5$ (contradicting simplicity). The simplicity of $A_5$ is exactly what makes it the indecomposable composition factor in $S_5$'s Jordan-Hölder series — proved formally in `abel-ruffini-galois-extensions-oq-04`."
+    },
+    {
       "targetId": "fundamental-arithmetic",
       "relationship": "foundational",
       "description": "Unique prime factorization of |G| determines the Sylow subgroup structure via Sylow's theorems"

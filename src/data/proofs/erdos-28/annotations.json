@@ -235,53 +235,53 @@
     ]
   },
   {
-    "id": "erdos-fuchs",
+    "id": "grekos-axiom",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 225,
-      "endLine": 233
+      "startLine": 228,
+      "endLine": 231
     },
-    "type": "concept",
-    "title": "Erdős–Fuchs Theorem (1956)",
-    "content": "The Erdős–Fuchs theorem shows the cumulative representation count $\\sum_{n \\leq N} r_A(n)$ cannot be approximated by a linear function $cN$ with error $o(N^{1/4} / \\sqrt{\\log N})$. This is a fluctuation result: the partial sums of $r_A(n)$ must oscillate. However, it does NOT imply the Erdős–Turán conjecture — the fluctuations could come from occasional large values with $r_A(n)$ still bounded.",
-    "mathContext": "$\\nexists \\, c > 0$ such that $\\sum_{n \\leq N} r_A(n) = cN + o\\left(\\frac{N^{1/4}}{\\sqrt{\\log N}}\\right)$. The exponent $1/4$ is sharp (Montgomery–Vaughan, 1990). This is an **Omega result**: $\\sum r_A(n) - cN = \\Omega(N^{1/4} / \\sqrt{\\log N})$.",
+    "type": "theorem",
+    "title": "Axiom: Grekos et al. (2003) — r_A(n) ≥ 6 Infinitely Often",
+    "content": "The first quantitative partial result toward the Erdős–Turán conjecture: for any asymptotic basis $A$ of order 2, the representation function $r_A(n) \\geq 6$ for infinitely many $n$. This is axiomatized rather than proved because the underlying argument uses Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$ and Parseval-type estimates that are not yet in Mathlib.\n\nThe key gap illustrated: the conjecture requires $r_A(n) \\to \\infty$ pointwise, while Grekos et al. show only that $r_A(n)$ occasionally reaches 6. Even if $r_A(n) \\leq 7$ for all $n$, the Erdős–Turán conjecture would be false. The Erdős–Fuchs theorem (1956) shows the *cumulative sum* $\\sum_{n \\leq N} r_A(n)$ must oscillate with amplitude $\\Omega(N^{1/4}/\\sqrt{\\log N})$, but this fluctuation could come from rare large values without the pointwise limsup being infinite.",
+    "mathContext": "$\\forall A \\subseteq \\mathbb{N},\\; \\text{IsAsymptoticBasis}(A) \\Rightarrow \\forall M,\\; \\exists n > M,\\; r_A(n) \\geq 6$. The proof uses exponential sum estimates: write $r_A(n) = \\sum_{a \\in A \\cap [0,n]} \\mathbf{1}_{n-a \\in A}$ and apply Parseval's theorem to the generating function $f(\\theta) = \\sum_{a \\in A} e^{2\\pi i a \\theta}$; the basis condition forces $\\|f\\|_2^2$ to be large, giving the lower bound via a pigeonhole argument.",
     "significance": "key",
     "relatedConcepts": [
+      "Erdős–Turán conjecture",
       "Erdős–Fuchs theorem",
-      "oscillation theorems",
-      "circle method",
-      "Montgomery–Vaughan improvement"
+      "exponential sums",
+      "Parseval's theorem",
+      "borwein_lower_bound"
     ],
     "prerequisites": [
-      "repFunction",
-      "IsAsymptoticBasis2",
-      "asymptotic notation",
-      "Finset.sum"
+      "repFunc",
+      "IsAsymptoticBasis",
+      "Fourier analysis on integers"
     ]
   },
   {
-    "id": "average-rep",
+    "id": "borwein-axiom",
     "proofId": "erdos-28",
     "range": {
-      "startLine": 225,
-      "endLine": 233
+      "startLine": 232,
+      "endLine": 234
     },
-    "type": "concept",
-    "title": "Average Representation Unbounded (Halberstam–Roth)",
-    "content": "For a basis of order 2, the average representation $\\frac{1}{N}\\sum_{n \\leq N} r_A(n) \\to \\infty$ as $N \\to \\infty$. This follows because $A + A$ covers all large integers, so the sum grows like $N$, but the representation function concentrates differently than a uniform distribution. Crucially, this does NOT prove $\\limsup r_A(n) = \\infty$ — the average could diverge even if individual values are bounded (e.g., if the average is pulled up by a bounded function applied to more and more terms).",
-    "mathContext": "$\\frac{1}{N+1} \\sum_{n=0}^{N} r_A(n) \\to \\infty$ as $N \\to \\infty$. More precisely, if $A + A \\supseteq \\{N_0, N_0+1, \\ldots\\}$, then $\\sum_{n \\leq N} r_A(n) \\geq N - N_0$ for $N \\geq N_0$, so the average is at least $\\sim 1$. But actually the sum grows faster because of multiplicities, making the average tend to $\\infty$.",
-    "significance": "supporting",
+    "type": "theorem",
+    "title": "Axiom: Borwein et al. (2006) — r_A(n) ≥ 8 Infinitely Often",
+    "content": "The current best quantitative lower bound: for any asymptotic basis $A$, $r_A(n) \\geq 8$ for infinitely many $n$. This improved the Grekos et al. (2003) bound of 6 using more refined exponential sum estimates. The axiom is stated universally: for any asymptotic basis $A$ and any threshold $M$, there exists $n > M$ with $r_A(n) \\geq 8$.\n\nThe gap between 'at least 8 infinitely often' and 'unbounded' is the fundamental difficulty: a basis could conceivably have $r_A(n) \\leq 9$ for all $n$ — this is consistent with the Borwein bound but would refute the Erdős–Turán conjecture. No such bounded-representation basis is known to exist, and the conjecture asserts none do.",
+    "mathContext": "$\\forall A \\subseteq \\mathbb{N},\\; \\text{IsAsymptoticBasis}(A) \\Rightarrow \\forall M,\\; \\exists n > M,\\; r_A(n) \\geq 8$. The improvement from 6 to 8 uses the identity $\\sum_{n} r_A(n)^2 = |\\{(a,b,c,d) \\in A^4 : a+b = c+d\\}|$ (additive energy $E(A,A)$) combined with Cauchy–Schwarz on the basis covering condition. The conjectured true answer is $\\limsup r_A(n) = \\infty$; no finite bound $r_A(n) \\geq k$ (however large $k$) would suffice to prove this.",
+    "significance": "key",
     "relatedConcepts": [
-      "Cesàro mean",
-      "divergence of averages",
-      "Halberstam–Roth",
-      "additive bases density"
+      "additive energy",
+      "Cauchy-Schwarz inequality",
+      "exponential sums",
+      "grekos_lower_bound",
+      "Erdős–Turán conjecture"
     ],
     "prerequisites": [
-      "repFunction",
-      "IsAsymptoticBasis2",
-      "Filter.Tendsto",
-      "atTop"
+      "repFunc",
+      "IsAsymptoticBasis",
+      "additive combinatorics"
     ]
   },
   {

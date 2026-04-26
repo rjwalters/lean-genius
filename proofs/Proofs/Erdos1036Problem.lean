@@ -159,6 +159,41 @@ theorem optimalConstant_le_one (c : ℝ) (hc : c > 0) : optimalConstant c ≤ 1 
     exact_mod_cast Fintype.card_pos (α := Finset V)
   · exact optimalConstant_set_le_one c hc
 
+/- ## Placeholder Artifact: optimalConstant = 1 -/
+
+/-- General cast lemma: with the placeholder definition, numInducedSubgraphClasses
+    casts to (2:ℝ)^|V| for any V. (Generalizes numISC_cast_fin to all fintype V.) -/
+private lemma numISC_cast_gen (V : Type) [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) :
+    (numInducedSubgraphClasses G : ℝ) = (2 : ℝ) ^ (Fintype.card V : ℕ) := by
+  unfold numInducedSubgraphClasses
+  rw [Fintype.card_finset]
+  norm_cast
+
+/-- **Placeholder collapse**: With the current placeholder definition of
+    numInducedSubgraphClasses (counting subsets, not isomorphism classes),
+    optimalConstant c = 1 for all c > 0.
+
+    Proof: Since numISC G = 2^n for ALL graphs G, every c' ≤ 1 satisfies the
+    optimality condition (2^n ≥ 2^(c'n) iff c' ≤ 1). In particular, 1 itself
+    is in the set, so sSup ≥ 1. Combined with optimalConstant_le_one gives = 1.
+
+    CONSEQUENCE: optimalConstantAtRandom holds trivially. The true question
+    (what is the optimal constant for the CORRECT isomorphism-class count?)
+    requires replacing the placeholder with the quotient construction. -/
+theorem optimalConstant_eq_one_placeholder (c : ℝ) (hc : c > 0) :
+    optimalConstant c = 1 := by
+  apply le_antisymm (optimalConstant_le_one c hc)
+  unfold optimalConstant
+  apply le_csSup ⟨1, optimalConstant_set_le_one c hc⟩
+  -- Prove 1 ∈ the optimality set: numISC G ≥ 2^(1·n) for all non-Ramsey G
+  intro V _ _ G _
+  rw [one_mul]
+  have h : (numInducedSubgraphClasses G : ℝ) = (2 : ℝ) ^ (Fintype.card V : ℕ) :=
+    numISC_cast_gen V G
+  rw [h, ← Real.rpow_natCast]
+  exact le_refl _
+
 /- ## Random Graph Comparison -/
 
 /-- For the specific case c = 2/log 2 (random graph threshold), the optimal
@@ -166,6 +201,13 @@ theorem optimalConstant_le_one (c : ℝ) (hc : c > 0) : optimalConstant c ≤ 1 
     subgraphs. This open proposition is part of oq-01. -/
 def optimalConstantAtRandom : Prop :=
   optimalConstant (2 / log 2) = 1
+
+/-- optimalConstantAtRandom holds with the current placeholder definition.
+    (Follows from optimalConstant_eq_one_placeholder since 2/log 2 > 0.) -/
+theorem optimalConstantAtRandom_holds : optimalConstantAtRandom := by
+  unfold optimalConstantAtRandom
+  exact optimalConstant_eq_one_placeholder _
+    (div_pos (by norm_num) (Real.log_pos (by norm_num : (1:ℝ) < 2)))
 
 /- ## Complement Symmetry -/
 
