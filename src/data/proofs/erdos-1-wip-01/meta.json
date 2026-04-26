@@ -1,0 +1,165 @@
+{
+  "id": "erdos-1-wip-01",
+  "title": "Powers of Two Form a Distinct Subset Sum Set",
+  "slug": "erdos-1-wip-01",
+  "description": "Proves that the set {2⁰, 2¹, ..., 2^{n-1}} has distinct subset sums for every n, using binary representation uniqueness. Provides the existence theorem needed to make the minimum DSS bound function well-defined in the Erdős #1 formalization.",
+  "meta": {
+    "author": "Lean Genius Researcher, 2026",
+    "sourceUrl": "https://erdosproblems.com/1",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1Wip01.lean",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "distinct-subset-sums",
+      "powers-of-two",
+      "binary-representation"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All theorems proved from first principles using Mathlib's Finset API and strong induction.",
+    "lineCount": 187,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "dateAdded": "2026-04-26",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "geom_sum_pow2: ∑_{i<n} 2^i + 1 = 2^n (geometric sum identity)",
+      "sum_pow2_lt_of_subset_range: any subset of {0,...,n-1} has power-of-2 sum < 2^n",
+      "pow2_sum_inj: subsets of {0,...,n-1} with equal power-of-2 sums are identical (binary uniqueness)",
+      "powersOfTwo_hasDistinctSubsetSums: {2^i : i < n} has distinct subset sums",
+      "dss_existence: for all n, ∃ A with |A|=n, all(a ≤ n·2^n), and DSS(A)"
+    ],
+    "relatedProblems": [
+      {
+        "id": "erdos-1",
+        "relationship": "Supports: provides the existence basis for Erdős Problem #1 formalizations"
+      },
+      {
+        "id": "erdos-1-oq-03",
+        "relationship": "Fills the sorry in minDSSBound — this theorem is used as the Nat.find witness"
+      }
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_image",
+        "description": "Rewrites sum over image set as sum over index set (used for preimage trick)",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.add_sum_erase",
+        "description": "Splits sum by singling out an element: ∑ S = a + ∑ (S.erase a)",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Nat.pow_right_injective",
+        "description": "2^a = 2^b → a = b (injectivity of power function)",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "Nat.le_mul_of_pos_left",
+        "description": "2^n ≤ n·2^n when n > 0 (bound on single element)",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #1** asks for the minimum $N$ such that some $n$-element subset of $\\{1,\\ldots,N\\}$ has all $2^n$ subset sums distinct. Before bounding $N$ from below or above, one must know such sets exist at all. The powers of two $\\{1, 2, 4, \\ldots, 2^{n-1}\\}$ provide the canonical existence witness: each natural number has a unique binary representation, so no two distinct subsets can share the same sum.\n\nThis existence result is foundational for the formalization: the Lean definition of `minDSSBound(n)` (the minimum $N$) uses `Nat.find`, which requires an explicit witness to justify well-definedness. The file `Erdos1OQ03.lean` (Conway-Guy construction) references this existence theorem as its `Nat.find` input.",
+    "problemStatement": "For each $n \\geq 0$, prove that the $n$-element set $A = \\{2^0, 2^1, \\ldots, 2^{n-1}\\}$ has distinct subset sums — that is, no two distinct subsets of $A$ have the same sum.",
+    "text": "A 187-line formalization proving that powers of two form a distinct subset sum set for every n. The proof is in three parts: (I) auxiliary lemmas establishing the geometric sum identity and the bound on subset sums of index sets; (II) the main binary uniqueness theorem, proved by strong induction; and (III) the existence theorem providing an n-element DSS set bounded by n·2^n, which fills the sorry in Erdos1OQ03.lean.",
+    "proofStrategy": "**Part I** establishes two key lemmas by induction. `geom_sum_pow2` proves ∑_{i<n} 2^i + 1 = 2^n by induction on n. `sum_pow2_lt_of_subset_range` uses monotonicity of sums to bound any subset sum.\n\n**Part II** proves binary uniqueness (`pow2_sum_inj`) by strong induction on n. Given S, T ⊆ {0,...,n-1} with equal power-of-2 sums, there are four cases for membership of n-1: (a) both contain n-1: erase it from both sides (the 2^{n-1} contributions cancel) and apply IH; (b/c) exactly one contains n-1: the subset containing n-1 contributes ≥ 2^{n-1} to the sum, while the other contributes < 2^{n-1} by Part I — contradiction; (d) neither contains n-1: restrict to range n-1 and apply IH directly.\n\n**Part III** applies the preimage technique: given S, T ⊆ {2^i : i < n} with equal sums, define index sets S' = {i < n : 2^i ∈ S} and T' = {i < n : 2^i ∈ T}. By `Finset.sum_image`, S.sum id = S'.sum (2^·). The equality S.sum id = T.sum id then gives S'.sum (2^·) = T'.sum (2^·), so binary uniqueness gives S' = T', hence S = T.",
+    "keyInsights": [
+      "**Binary representation uniqueness**: equal power-of-2 sums imply equal index sets — the core mathematical fact, corresponding to uniqueness of binary representations",
+      "**Strong induction structure**: the four-case split (both/one/neither contain n-1) exactly mirrors the key step in uniqueness of binary representation proofs",
+      "**Preimage trick**: reducing from sums over values (S.sum id) to sums over indices (S'.sum (2^·)) via Finset.sum_image is the key bridge between the abstract DSS property and the index-level induction",
+      "**Sum bound**: sum_pow2_lt_of_subset_range gives 'any proper subset of {0,...,n-1} has power-of-2 sum < 2^n', which is the quantitative tool that rules out the cross-cases (b/c) in the induction",
+      "**n·2^n bound**: each 2^i for i < n satisfies 2^i < 2^n ≤ n·2^n (using Nat.le_mul_of_pos_left), giving a clean polynomial-times-exponential bound without case analysis on n=0"
+    ]
+  },
+  "sections": [
+    {
+      "id": "auxiliary-lemmas",
+      "title": "Auxiliary Lemmas for Binary Injectivity",
+      "startLine": 33,
+      "endLine": 106,
+      "summary": "Three supporting lemmas: geometric sum identity, subset sum bound, and binary representation uniqueness by strong induction.",
+      "mathContext": "$\\sum_{i<n} 2^i + 1 = 2^n$; any $S \\subseteq \\{0,\\ldots,n-1\\}$ has $\\sum_{i \\in S} 2^i < 2^n$; $S, T \\subseteq \\{0,\\ldots,n-1\\}$, $\\sum_S 2^i = \\sum_T 2^i \\Rightarrow S = T$"
+    },
+    {
+      "id": "dss-powers",
+      "title": "The DSS Property of Powers of Two",
+      "startLine": 107,
+      "endLine": 156,
+      "summary": "Proves that {2^i : i < n} has distinct subset sums using the preimage index trick and binary uniqueness.",
+      "mathContext": "$\\forall S, T \\subseteq \\{2^0,\\ldots,2^{n-1}\\},\\ \\sum S = \\sum T \\Rightarrow S = T$"
+    },
+    {
+      "id": "dss-existence",
+      "title": "Existence of n-Element DSS Sets (Main Theorem)",
+      "startLine": 158,
+      "endLine": 187,
+      "summary": "For any n, constructs an n-element set with all elements ≤ n·2^n and distinct subset sums. Used as Nat.find witness in minDSSBound.",
+      "mathContext": "$\\forall n,\\ \\exists A,\\ |A|=n \\wedge (\\forall a \\in A,\\ a \\leq n \\cdot 2^n) \\wedge \\text{DSS}(A)$"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "supports",
+      "description": "Provides the foundational existence result for Erdős Problem #1: proves DSS sets of every size exist"
+    },
+    {
+      "targetId": "erdos-1-oq-03",
+      "relationship": "fills-gap",
+      "description": "dss_existence fills the sorry in minDSSBound (Nat.find witness), making the minimum DSS bound function well-defined"
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified: {2^i : i < n} has distinct subset sums for every n, and n-element DSS sets exist with all elements bounded by n·2^n. Zero sorries, zero axioms.",
+    "implications": "This existence theorem closes the gap in Erdos1OQ03.lean, making minDSSBound a well-defined noncomputable function. It also serves as a standalone verified formalization of binary representation uniqueness in the Finset setting.",
+    "openQuestions": [
+      "Can the bound n·2^n be tightened? The Conway-Guy sequence achieves max element ~0.22·2^n, far smaller than n·2^n.",
+      "Can the binary uniqueness proof be generalized to other bases, giving existence for sets with k-ary representation uniqueness?",
+      "Is there a direct Lean proof that the powers-of-two set is the unique (up to scaling) set achieving the counting bound 2^n ≤ n·N + 1 with equality?"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "dss_existence",
+      "type": "core",
+      "description": "For any n, there exists an n-element set with all elements ≤ n·2^n and distinct subset sums",
+      "leanType": "∀ n, ∃ A : Finset ℕ, A.card = n ∧ (∀ a ∈ A, a ≤ n * 2 ^ n) ∧ hasDistinctSubsetSums A"
+    },
+    {
+      "name": "powersOfTwo_hasDistinctSubsetSums",
+      "type": "core",
+      "description": "The set {2^i : i < n} has distinct subset sums",
+      "leanType": "hasDistinctSubsetSums ((Finset.range n).image (fun i => (2 : ℕ) ^ i))"
+    },
+    {
+      "name": "pow2_sum_inj",
+      "type": "supporting",
+      "description": "Binary representation uniqueness: subsets of {0,...,n-1} with equal power-of-2 sums are identical",
+      "leanType": "S ⊆ range n → T ⊆ range n → S.sum (2^·) = T.sum (2^·) → S = T"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos1Problem",
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1Wip01",
+    "lineCount": 187,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos1Wip01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
