@@ -17,13 +17,13 @@
       "anticoncentration_bound: axiom from Berry-Esseen",
       "dfx_lower_bound: statement (sorry)",
       "f_one: f(1)=1 small case",
-      "Gallery entry: src/data/proofs/erdos-1-oq-02/"
+      "Gallery entry: src/data/proofs/erdos-1-oq-02/",
+      "dfx_lower_bound proved via Cauchy-Schwarz + sqrt manipulation (Erdos1OQ02.lean:145)"
     ],
-    "progressSummary": "PROGRESS: Algebraic framework built (variance bounds proved). Anticoncentration axiomatized. Assembly and Cauchy-Schwarz have sorries.",
+    "progressSummary": "COMPLETED: DFX lower bound (dfx_lower_bound) fully proved. 0 sorries, 1 axiom (anticoncentration/Berry-Esseen). Cauchy-Schwarz + sqrt manipulation complete the real analysis chain.",
     "nextSteps": [
-      "Prove Cauchy-Schwarz for finite sums (induction on Finset)",
-      "Prove dfx_lower_bound from anticoncentration + variance bounds",
-      "Build probability infrastructure in Mathlib to eliminate anticoncentration axiom"
+      "Prove anticoncentration_bound axiom (needs Berry-Esseen in Mathlib)",
+      "Consider contributing anticoncentration lemma to Mathlib probability"
     ]
   },
   "leanFiles": [

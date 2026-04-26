@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Created Erdos1OQ03.lean (~193 lines, 0A, 1S). Proved DSS for Conway-Guy optimal sets n=2..5 via decidable powerset reformulation. Established upper bounds f(n) ≤ OEIS A005318 values. Proved conjecture for n=1,2. One sorry: binary representation uniqueness.",
+    "progressSummary": "COMPLETED: 0 sorries. pow2_dss (inductive binary representation uniqueness) proved. minDSSBound well-founded using exists_dss_set. All sorry-free.",
     "builtItems": [
       "dss_iff_powerset: decidable reformulation of DSS",
       "dss_12, dss_124, dss_3567, dss_69111213: DSS for Conway-Guy optimal sets",
@@ -51,7 +51,10 @@
       "cgSeq: Conway-Guy sequence definition (OEIS A005318)",
       "conwayGuyConjecture: formal conjecture statement",
       "conway_guy_n1, conway_guy_n2: conjecture for n=1,2",
-      "Gallery data: meta.json, index.ts, annotations.json"
+      "Gallery data: meta.json, index.ts, annotations.json",
+      "pow2_dss: powers of 2 have DSS by induction on n (Erdos1OQ03.lean)",
+      "exists_dss_set: existence of n-element DSS with max ≤ n*2^n (Erdos1OQ03.lean)",
+      "minDSSBound: well-founded, no sorry (uses exists_dss_set)"
     ],
     "insights": [
       "DSS can be made decidable by quantifying over A.powerset instead of all Finset ℕ",

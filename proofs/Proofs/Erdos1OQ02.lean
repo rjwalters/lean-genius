@@ -124,21 +124,95 @@ axiom anticoncentration_bound (A : Finset ℕ) (hDSS : hasDistinctSubsetSums A)
     (2 : ℝ) ^ A.card ≤
       Real.sqrt (2 / π) * (↑(A.sum id) + 1) * 2 / Real.sqrt ↑(A.sum (fun a => a ^ 2))
 
-/-- **DFX Lower Bound Statement**: If A ⊆ {1,...,N} has n ≥ 1 elements with
-    distinct subset sums, then:
+/-- **DFX Lower Bound Statement**: If A ⊆ {1,...,N} has n ≥ 1 positive elements with
+    distinct subset sums and N ≥ 2, then:
       N ≥ 2ⁿ / (√(2/π) · 2 · √n)
 
-    Which simplifies to: N ≥ √(π/2) · 2ⁿ / (2√n) = √(π/8) · 2ⁿ/√n.
+    Which simplifies to: N ≥ √(π/8) · 2ⁿ/√n (constant ≈ 0.6267).
+    The full DFX result is N ≥ √(2/π) · 2ⁿ/√n ≈ 0.7979 · 2ⁿ/√n.
 
-    The exact constant is √(2/π) ≈ 0.7979, giving N ≥ 0.3989 · 2ⁿ/√n.
+    **Hypotheses**: `hA_pos` (all elements positive) and `hN` (N ≥ 2) are required.
+    The statement is FALSE for n=1, N=1: LHS = 2 but RHS = 2√(2/π) ≈ 1.596.
+    With N ≥ 2 and positive elements, sum ≥ n ≥ 1, so (sum+1)/sum ≤ 2 ≤ N,
+    enabling the key step `(sum+1)/sqrt(sum_sq) ≤ sqrt(n)*N`.
 
-    Note: The full DFX result is N ≥ √(2/π) · 2ⁿ/√n with a more careful
-    analysis. Our formalization gives a slightly weaker constant. -/
+    **Proof strategy**:
+    1. `anticoncentration_bound`: 2^n ≤ √(2/π)·(sum+1)·2/√sum_sq
+    2. Cauchy-Schwarz: sum² ≤ n·sum_sq, so √sum_sq ≥ sum/√n
+    3. Hence: (sum+1)/√sum_sq ≤ (sum+1)·√n/sum
+    4. Key: (sum+1)/sum = 1 + 1/sum ≤ 2 ≤ N (since sum ≥ n ≥ 1, N ≥ 2)
+    5. Therefore: 2^n ≤ √(2/π)·2·√n·N = √(2/π)·2·n·N/√n -/
 theorem dfx_lower_bound (A : Finset ℕ) (N : ℕ)
     (hDSS : hasDistinctSubsetSums A) (hA : ∀ a ∈ A, a ≤ N)
-    (hpos : 0 < A.card) (hN : 0 < N) :
+    (hpos : 0 < A.card) (hN : 2 ≤ N)
+    (hA_pos : ∀ a ∈ A, 0 < a) :
     (2 : ℝ) ^ A.card ≤ Real.sqrt (2 / π) * 2 * ↑(A.card) * ↑N / Real.sqrt ↑(A.card) := by
-  sorry  -- Requires combining anticoncentration_bound with sum/variance bounds
+  -- Abbreviate key quantities
+  set n := (A.card : ℝ)
+  set S := (A.sum id : ℝ)
+  set Q := (A.sum (fun a => a ^ 2) : ℝ)
+  -- Step 1: anticoncentration bound
+  have h_ac : (2 : ℝ) ^ A.card ≤ Real.sqrt (2 / π) * (S + 1) * 2 / Real.sqrt Q :=
+    anticoncentration_bound A hDSS hpos
+  -- Step 2: Q > 0 (at least one positive element squared)
+  have hQ_pos : 0 < Q := by
+    apply Finset.sum_pos
+    · intro a ha; exact_mod_cast Nat.pos_pow_of_pos 2 (hA_pos a ha)
+    · exact Finset.card_pos.mp hpos
+  have hQ_sqrt_pos : 0 < Real.sqrt Q := Real.sqrt_pos.mpr hQ_pos
+  -- Step 3: S ≥ n (each element ≥ 1, so S = sum(A) ≥ card(A) = n)
+  have hS_ge_n : n ≤ S := by
+    have : A.card ≤ A.sum id := by
+      calc A.card = A.sum (fun _ => 1) := by simp [Finset.sum_const]
+        _ ≤ A.sum id := Finset.sum_le_sum (fun a ha => hA_pos a ha)
+    exact_mod_cast this
+  -- Step 4: Cauchy-Schwarz: S² ≤ n * Q (cast from Nat)
+  have h_cauchy_nat := sum_sq_cauchy_schwarz A
+  have h_cauchy : S ^ 2 ≤ n * Q := by exact_mod_cast h_cauchy_nat
+  -- Step 5: n > 0 and sqrt(n) > 0
+  have hn_pos : 0 < n := by exact_mod_cast hpos
+  have hn_sqrt_pos : 0 < Real.sqrt n := Real.sqrt_pos.mpr hn_pos
+  -- n ≥ 1 and S ≥ 1 (since S ≥ n ≥ 1)
+  have hn_ge1 : (1 : ℝ) ≤ n := by
+    have h : 1 ≤ A.card := hpos
+    exact_mod_cast h
+  have hS_pos : (0 : ℝ) < S := lt_of_lt_of_le hn_pos hS_ge_n
+  have hS_ge1 : (1 : ℝ) ≤ S := le_trans hn_ge1 hS_ge_n
+  have hNr_ge2 : (2 : ℝ) ≤ ↑N := by exact_mod_cast hN
+  -- S ≤ √n * √Q (from S² ≤ n*Q by Cauchy-Schwarz)
+  have hS_le : S ≤ Real.sqrt n * Real.sqrt Q := by
+    rw [← Real.sqrt_mul hn_pos.le Q, ← Real.sqrt_sq hS_pos.le]
+    exact Real.sqrt_le_sqrt h_cauchy
+  -- Key bound: S + 1 ≤ √n * ↑N * √Q
+  -- Proof: S + 1 ≤ N * S ≤ N * (√n * √Q) = √n * N * √Q
+  have hS1_bound : S + 1 ≤ Real.sqrt n * ↑N * Real.sqrt Q := by
+    have hNS : S + 1 ≤ (N : ℝ) * S := by nlinarith
+    calc S + 1 ≤ (N : ℝ) * S := hNS
+      _ ≤ (N : ℝ) * (Real.sqrt n * Real.sqrt Q) :=
+            mul_le_mul_of_nonneg_left hS_le (by positivity)
+      _ = Real.sqrt n * ↑N * Real.sqrt Q := by ring
+  -- √(2/π) * 2 > 0
+  have hpi2_pos : (0 : ℝ) < Real.sqrt (2 / π) * 2 := by positivity
+  -- Rewrite RHS: √(2/π) * 2 * n * N / √n = √(2/π) * 2 * √n * N
+  -- (using n = √n * √n, so n / √n = √n)
+  have hRHS : Real.sqrt (2 / π) * 2 * n * ↑N / Real.sqrt n =
+              Real.sqrt (2 / π) * 2 * Real.sqrt n * ↑N := by
+    rw [show n = Real.sqrt n * Real.sqrt n from (Real.mul_self_sqrt hn_pos.le).symm]
+    field_simp [hn_sqrt_pos.ne']
+    ring
+  rw [hRHS]
+  -- Chain: 2^A.card ≤ √(2/π)*(S+1)*2/√Q ≤ √(2/π)*2*√n*N
+  calc (2 : ℝ) ^ A.card
+      ≤ Real.sqrt (2 / π) * (S + 1) * 2 / Real.sqrt Q := h_ac
+    _ ≤ Real.sqrt (2 / π) * 2 * Real.sqrt n * ↑N := by
+        rw [div_le_iff hQ_sqrt_pos]
+        -- Goal: √(2/π) * (S+1) * 2 ≤ √(2/π) * 2 * √n * N * √Q
+        -- Factor out √(2/π)*2, use hS1_bound: S+1 ≤ √n*N*√Q
+        calc Real.sqrt (2 / π) * (S + 1) * 2
+            = Real.sqrt (2 / π) * 2 * (S + 1) := by ring
+          _ ≤ Real.sqrt (2 / π) * 2 * (Real.sqrt n * ↑N * Real.sqrt Q) :=
+                mul_le_mul_of_nonneg_left hS1_bound hpi2_pos.le
+          _ = Real.sqrt (2 / π) * 2 * Real.sqrt n * ↑N * Real.sqrt Q := by ring
 
 /-! ## Part III: Comparison with Basic Bound
 
@@ -182,13 +256,13 @@ theorem f_two_max : ∃ (A : Finset ℕ), A.card = 2 ∧ A.sup id = 2 := by
 
 The DFX framework is formalized with:
 - 1 axiom (anticoncentration bound from Berry–Esseen)
-- 1 sorry (the full bound assembly, needs real analysis)
+- 0 sorries (dfx_lower_bound fully proved)
 - Variance bounds and Cauchy–Schwarz (proved)
 - Small case verifications (proved)
 
 The axiom isolates the probability theory (Berry–Esseen theorem) that
 requires Mathlib probability infrastructure. The algebraic framework
-(variance bounds, Cauchy–Schwarz) is fully proved.
+(variance bounds, Cauchy–Schwarz, sqrt manipulation) is fully proved.
 -/
 
 end Erdos1OQ02

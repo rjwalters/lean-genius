@@ -1,7 +1,7 @@
 {
   "slug": "szemeredi-full-oq-01",
   "title": "Szemerédi Theorem: Furstenberg Ergodic-Theoretic Proof Formalization",
-  "phase": "NEW",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "S",
   "path": "full",
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ORIENT",
     "since": "2026-04-22T13:03:46.383Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,11 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "ORIENT: Survey complete (Session 1, 2026-04-26). FurstenbergCorrespondence.lean exists with k=2 proved. Two axioms block full proof: furstenberg_correspondence (~500 lines) and multiple_recurrence_ge3 (~2000+ lines, blocked).",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "insights": [
+      "FurstenbergCorrespondence.lean already exists with szemeredi_k2_ergodic proved via Poincaré recurrence",
+      "k=2 case works today: MeasurePreserving.conservative gives Poincaré recurrence in Mathlib",
+      "furstenberg_correspondence needs Cesàro averages + Prokhorov theorem (~500 lines); borderline BUILD",
+      "multiple_recurrence_ge3 needs ergodic decomposition + compact extension/weak mixing (~2000+ lines); BLOCKED",
+      "Van der Waerden theorem could be proved combinatorially (~300 lines) as infrastructure for k≥3"
+    ],
+    "mathlibGaps": [
+      "Prokhorov theorem / weak-* compactness for probability measures on Polish spaces",
+      "Cesàro averages of probability measures for shift system construction",
+      "Ergodic decomposition theorem (reduce to ergodic components)",
+      "Compact extension / weak mixing tower structure for m.p. systems"
+    ],
+    "nextSteps": [
+      "Check Mathlib 2025/2026 for Prokhorov theorem or ergodic decomposition additions",
+      "If Prokhorov available, build furstenberg_correspondence in dedicated session",
+      "Consider proving Van der Waerden combinatorially as standalone infrastructure"
+    ]
   },
   "tags": [
     "combinatorics",
