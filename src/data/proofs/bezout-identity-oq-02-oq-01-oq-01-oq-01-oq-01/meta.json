@@ -133,7 +133,7 @@
       "id": "sec-main",
       "title": "Main Theorems",
       "startLine": 152,
-      "endLine": 199,
+      "endLine": 192,
       "summary": "I_not_principal, not_isPrincipalIdealRing, exists_non_principal_ideal, ufd_not_pir_distinction."
     }
   ],
@@ -141,17 +141,17 @@
     {
       "targetId": "bezout-identity-oq-02-oq-01-oq-01-oq-01",
       "relationship": "parent",
-      "description": "ℤ[X,Y] is a UFD (the complementary positive result)"
+      "description": "The complementary positive result: ℤ[X,Y] IS a UFD (by Gauss's lemma applied inductively). This entry establishes the other half: UFD does NOT imply PID. Together they witness the strict inclusion PID ⊊ UFD."
     },
     {
       "targetId": "bezout-identity-oq-02-oq-01-oq-01",
       "relationship": "grandparent",
-      "description": "ℤ[X] is a UFD (Gauss's lemma)"
+      "description": "ℤ[X] is a UFD via Gauss's lemma (R UFD → R[X] UFD). The same ideal (2,X) that witnesses ℤ[X] is not a PID is reused here for ℤ[X,Y], demonstrating the same PID failure persists under variable extension."
     },
     {
       "targetId": "bezout-identity",
       "relationship": "foundational",
-      "description": "Bézout's Identity"
+      "description": "Bézout's Identity holds in all PIDs: gcd(a,b) = sa + tb for integers s,t. The failure of ℤ[X,Y] to be a PID means Bézout's identity does NOT hold for general polynomial pairs — specifically, gcd(2, X) = 1 but no polynomial combination 2f + Xg = 1 exists in ℤ[X,Y]."
     }
   ],
   "conclusion": {
