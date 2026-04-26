@@ -141,6 +141,16 @@
       "targetId": "erdos-1-oq-02",
       "relationship": "contrasts",
       "description": "Dubroff–Fox–Xu proves N ≥ √(2/π)·2ⁿ/√n (asymptotically tight lower bound), dwarfing the n·2ⁿ existence bound here — together they span the gap between existence and optimality"
+    },
+    {
+      "targetId": "erdos-882",
+      "relationship": "related",
+      "description": "Both problems involve subsets where subset sums satisfy a combinatorial condition. Erdős #882 asks about subset sums without divisibility; Erdős #1 asks about distinct subset sums. Both use Finset sum arguments over ℕ and study extremal combinatorics of small subsets of {1,...,N}."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
+      "relationship": "technique-shared",
+      "description": "Both entries use Finset.sum_image as a central proof tool: here for the preimage index trick (lifting DSS from value-level to index-level), and there for the Newton-Girard off-diagonal doubling argument. The reindexing pattern ∑_{x∈f(S)} g(x) = ∑_{s∈S} g(f(s)) via sum_image is a shared combinatorial technique."
     }
   ],
   "conclusion": {
