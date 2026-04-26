@@ -78,6 +78,18 @@ lemma all_redundant_contradiction_B2 (A B : Finset (ZMod p))
   obtain ⟨ b₁, b₂, hb₁, hb₂, hne ⟩ := Finset.card_eq_two.mp hB;
   simp_all +decide [ Finset.sum_add_distrib ]
 
+/-- Orbit injectivity in ZMod p: k ↦ x₀ + k*d is injective on Fin p when d ≠ 0. -/
+private lemma zmod_orbit_inj {x₀ d : ZMod p} (hd : d ≠ 0) :
+    Function.Injective (fun k : Fin p => x₀ + (k : ZMod p) * d) := by
+  intro ⟨j₁, hj₁⟩ ⟨j₂, hj₂⟩ heq
+  simp only at heq
+  have hmul : (j₁ : ZMod p) * d = (j₂ : ZMod p) * d := add_left_cancel heq
+  have h_eq : (j₁ : ZMod p) = (j₂ : ZMod p) := mul_right_cancel₀ hd hmul
+  ext
+  have hval := congrArg ZMod.val h_eq
+  simp only [ZMod.val_natCast, Nat.mod_eq_of_lt hj₁, Nat.mod_eq_of_lt hj₂] at hval
+  omega
+
 /-
 **Position Analysis**: When AP₁ (start s₁, length n, diff d) and AP₂ (start s₂, length m, diff d)
 satisfy (AP₁ \ AP₂).card = 1 with n ≤ m and n + m ≤ p, then:
@@ -148,10 +160,108 @@ lemma case1_exists (A B : Finset (ZMod p))
     obtain ⟨a₀, ha₀A, hcase1⟩ :=
       non_redundant_b_gives_a A B b hbB (by omega) hB h (by omega) hcard
     exact absurd hcase1 (by have := hredA a₀ ha₀A; omega)
-  -- Both A and B are fully redundant. Derive contradiction via counting.
-  -- Key: each x ∈ A+B has ≥ 2 distinct A-components, giving |A|·|B| ≥ 2·|A+B|.
-  -- This requires: (|A|-2)·(|B|-2) ≥ 2, which fails for small |A|,|B|.
-  -- Use all_redundant_contradiction_B2 for |B|=2, and counting for |B|=3 with |A|=3.
-  sorry
+  -- Set-equality from card-equality
+  have hredA_eq : ∀ a ∈ A, A.erase a + B = A + B := fun a haA =>
+    Finset.eq_of_subset_of_card_le
+      (Finset.add_subset_add_right (Finset.erase_subset _ _))
+      (h.trans (hredA a haA).symm).le
+  -- Case on B.card
+  by_cases hB2 : B.card = 2
+  · -- |B| = 2: orbit argument — A is closed under b₁-b₂, orbit of size p contradicts |A|<p
+    have hA_lt_p : A.card < p := by omega
+    obtain ⟨b₁, b₂, hne_b, hB_eq⟩ := Finset.card_eq_two.mp hB2
+    have hb₁B : b₁ ∈ B := by rw [hB_eq]; exact Finset.mem_insert_self b₁ _
+    have hd : b₁ - b₂ ≠ 0 := sub_ne_zero.mpr hne_b
+    have hclosed : ∀ a ∈ A, a + (b₁ - b₂) ∈ A := by
+      intro a haA
+      have hmem : a + b₁ ∈ A.erase a + B := by
+        rw [hredA_eq a haA]; exact Finset.mem_add.mpr ⟨a, haA, b₁, hb₁B, rfl⟩
+      obtain ⟨a', ha'er, b', hb'B, heq⟩ := Finset.mem_add.mp hmem
+      rw [Finset.mem_erase] at ha'er
+      rw [hB_eq, Finset.mem_insert, Finset.mem_singleton] at hb'B
+      rcases hb'B with rfl | rfl
+      · exact absurd (add_right_cancel heq) ha'er.1
+      · have ha'_val : a' = a + (b₁ - b₂) := by linear_combination heq
+        rw [← ha'_val]; exact ha'er.2
+    obtain ⟨a₀, ha₀A⟩ := Finset.card_pos.mp (by omega : 0 < A.card)
+    have horbit_nat : ∀ k : ℕ, a₀ + (k : ZMod p) * (b₁ - b₂) ∈ A := by
+      intro k
+      induction k with
+      | zero => simpa using ha₀A
+      | succ n ih =>
+        have := hclosed _ ih
+        convert this using 1
+        push_cast; ring
+    have horbit : ∀ k : Fin p, a₀ + (k : ZMod p) * (b₁ - b₂) ∈ A :=
+      fun k => horbit_nat k.val
+    have himg_card : (Finset.univ.image (fun k : Fin p =>
+        a₀ + (k : ZMod p) * (b₁ - b₂))).card = p := by
+      rw [Finset.card_image_of_injective _ (zmod_orbit_inj hd),
+          Finset.card_univ, Fintype.card_fin]
+    have himg_sub : (Finset.univ.image (fun k : Fin p =>
+        a₀ + (k : ZMod p) * (b₁ - b₂))) ⊆ A :=
+      fun _ hx => by obtain ⟨j, _, rfl⟩ := Finset.mem_image.mp hx; exact horbit j
+    linarith [Finset.card_le_card himg_sub]
+  · -- |B| ≥ 3: double counting argument
+    have hB3 : 3 ≤ B.card := by omega
+    -- Each x ∈ A+B has ≥ 2 A-representations (any a that uniquely represents x contradicts hredA)
+    have hrep2 : ∀ x ∈ A + B, 2 ≤ (A.filter (fun a => x - a ∈ B)).card := by
+      intro x hx
+      by_contra hlt2
+      push_neg at hlt2
+      have hpos : 0 < (A.filter (fun a => x - a ∈ B)).card := by
+        obtain ⟨a, haA, b, hbB, hxab⟩ := Finset.mem_add.mp hx
+        exact Finset.card_pos.mpr ⟨a, Finset.mem_filter.mpr
+          ⟨haA, show x - a ∈ B by rw [show x - a = b from (eq_sub_of_add_eq hxab).symm]; exact hbB⟩⟩
+      have hcard1 : (A.filter (fun a => x - a ∈ B)).card = 1 := by omega
+      obtain ⟨a₁, ha₁⟩ := Finset.card_eq_one.mp hcard1
+      have ha₁A : a₁ ∈ A := (Finset.mem_filter.mp (ha₁ ▸ Finset.mem_singleton_self a₁)).1
+      have hxnotin : x ∉ A.erase a₁ + B := by
+        intro hcontra
+        obtain ⟨a', ha'er, b', hb'B, hsum'⟩ := Finset.mem_add.mp hcontra
+        rw [Finset.mem_erase] at ha'er
+        have ha'filt : a' ∈ A.filter (fun a => x - a ∈ B) :=
+          Finset.mem_filter.mpr ⟨ha'er.2, (eq_sub_of_add_eq hsum') ▸ hb'B⟩
+        rw [ha₁] at ha'filt
+        exact ha'er.1 (Finset.mem_singleton.mp ha'filt)
+      exact hxnotin (hredA_eq a₁ ha₁A ▸ hx)
+    -- ∑_{x ∈ A+B} r(x) = |A|·|B| by double counting (bijection with A×B)
+    have hsum_eq : ∑ x ∈ A + B, (A.filter (fun a => x - a ∈ B)).card = A.card * B.card := by
+      rw [← Finset.card_sigma, ← Finset.card_product]
+      apply Finset.card_bij (fun xa _ => (xa.2, xa.1 - xa.2))
+      · intro ⟨x, a⟩ hmem
+        simp only [Finset.mem_sigma, Finset.mem_filter] at hmem
+        exact Finset.mem_product.mpr ⟨hmem.2.1, hmem.2.2⟩
+      · intro ⟨x₁, a₁⟩ _ ⟨x₂, a₂⟩ _ heq
+        simp only [Prod.mk.injEq] at heq
+        obtain ⟨ha, hd⟩ := heq; obtain rfl := ha
+        have h1 : x₁ = x₂ := by
+          have := congr_arg (· + a₁) hd; simp only [sub_add_cancel] at this; exact this
+        simp [h1]
+      · intro (a, b) hmem
+        rw [Finset.mem_product] at hmem
+        obtain ⟨haA, hbB⟩ := hmem
+        exact ⟨⟨a + b, a⟩,
+          Finset.mem_sigma.mpr ⟨Finset.mem_add.mpr ⟨a, haA, b, hbB, rfl⟩,
+            Finset.mem_filter.mpr ⟨haA, show a + b - a ∈ B by convert hbB using 1; ring⟩⟩,
+          Prod.ext rfl (show a + b - a = b by ring)⟩
+    have hlb : 2 * (A + B).card ≤ ∑ x ∈ A + B, (A.filter (fun a => x - a ∈ B)).card :=
+      calc 2 * (A + B).card = ∑ _ ∈ A + B, 2 := by simp [Finset.sum_const, mul_comm]
+        _ ≤ _ := Finset.sum_le_sum hrep2
+    -- (|A|-2)(|B|-2) ≥ 2
+    have hineq : 2 * (A.card + B.card - 1) ≤ A.card * B.card := by
+      have := hsum_eq ▸ h ▸ hlb; omega
+    -- Case |A|=3, |B|=3: 2*(3+3-1)=10 ≤ 3*3=9 is false → contradiction
+    by_cases hAB3 : A.card = 3 ∧ B.card = 3
+    · obtain ⟨hA3eq, hB3eq⟩ := hAB3
+      rw [hA3eq, hB3eq] at hineq; norm_num at hineq
+    · -- |A|≥4 or |B|≥4: (|A|-2)(|B|-2) ≥ 2, consistent with hineq.
+      -- The counting argument is exhausted. Need Kneser's theorem (not in Mathlib) or
+      -- a structural argument using Z/pZ having no proper non-trivial subgroups.
+      -- The key fact: from hredA + hredB, both A and B are "translation-closed" in a
+      -- union sense: ∀ a ∈ A, ∃ d ∈ (B-B)\{0}: a+d ∈ A. For |B|=2, d is unique →
+      -- A is closed under a single translation → orbit of size p. For |B|≥3, multiple
+      -- choices of d make the orbit argument fail without additional prime-group structure.
+      sorry -- [HARD] Requires Kneser's theorem or complete restructuring of Vosper proof
 
 end Erdos476OQ05Aristotle
