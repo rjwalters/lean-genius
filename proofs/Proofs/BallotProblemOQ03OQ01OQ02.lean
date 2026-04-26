@@ -13513,6 +13513,148 @@ private lemma hook_walk_identity_nineRow (μ : YoungDiagram)
               hne_cd1, hne_bd2, hne_ad3, hne_bc1, hne_ac2, hne_ab1]
   ring
 
+/-! ## PART XXIV: Transpose Duality — hook_walk_identity for ≤9-column Young diagrams
+
+For any Young diagram μ with ≤9 columns (colLen 9 = 0), its transpose μᵀ has ≤9 rows (rowLen 9 = 0).
+Since hook_walk_identity is proved for all ≤9-row shapes (PARTS XIV–XXIII), we derive it for μ
+from μᵀ via the bijection c ↦ c.swap on corners.
+
+This reduces the remaining sorry from {≥10 rows, ≥3 cols} to {≥10 rows, ≥10 cols}. -/
+
+-- A. Extract the cells-transpose identity as a reusable lemma
+private lemma cells_transpose_eq_image_swap (μ : YoungDiagram) :
+    μ.transpose.cells = μ.cells.image Prod.swap := by
+  ext ⟨i, j⟩
+  simp only [YoungDiagram.mem_cells, YoungDiagram.mem_transpose, Finset.mem_image, Prod.exists]
+  exact ⟨fun h => ⟨j, i, h, rfl⟩, fun ⟨a, b, hab, heq⟩ => by
+    simp only [Prod.mk.injEq] at heq; obtain ⟨rfl, rfl⟩ := heq; exact hab⟩
+
+-- B. isCorner is transpose-symmetric: isCorner μᵀ c ↔ isCorner μ c.swap
+private lemma isCorner_transpose_iff (μ : YoungDiagram) (c : ℕ × ℕ) :
+    isCorner μ.transpose c ↔ isCorner μ c.swap := by
+  simp only [isCorner, YoungDiagram.mem_transpose, Prod.swap_fst, Prod.swap_snd]
+  constructor
+  · rintro ⟨hmem, h1, h2⟩
+    exact ⟨hmem,
+           fun h => h1 (YoungDiagram.mem_transpose.mpr h),
+           fun h => h2 (YoungDiagram.mem_transpose.mpr h)⟩
+  · rintro ⟨hmem, h1, h2⟩
+    exact ⟨hmem,
+           fun h => h1 (YoungDiagram.mem_transpose.mp h),
+           fun h => h2 (YoungDiagram.mem_transpose.mp h)⟩
+
+-- C. corners μᵀ = (corners μ).image Prod.swap
+private lemma corners_image_swap (μ : YoungDiagram) :
+    corners μ.transpose = (corners μ).image Prod.swap := by
+  ext c
+  simp only [mem_corners, Finset.mem_image]
+  constructor
+  · intro hc
+    exact ⟨c.swap, (isCorner_transpose_iff μ c.swap).mp (Prod.swap_swap c ▸ hc),
+           Prod.swap_swap c⟩
+  · rintro ⟨d, hd, rfl⟩
+    exact (isCorner_transpose_iff μ d).mpr hd
+
+-- D. removeCorner μᵀ c.swap = (removeCorner μ c).transpose (as YoungDiagrams)
+private lemma removeCorner_transpose_eq (μ : YoungDiagram) (c : ℕ × ℕ) (hc : isCorner μ c) :
+    removeCorner μ.transpose c.swap ((isCorner_transpose_iff μ c.swap).mpr (by rwa [Prod.swap_swap])) =
+    (removeCorner μ c hc).transpose := by
+  ext x
+  constructor
+  · intro hx
+    rw [mem_removeCorner] at hx
+    rw [YoungDiagram.mem_transpose, mem_removeCorner]
+    exact ⟨YoungDiagram.mem_transpose.mp hx.1,
+           fun h => hx.2 ((Prod.swap_swap x).symm.trans (congrArg Prod.swap h))⟩
+  · intro hx
+    rw [YoungDiagram.mem_transpose, mem_removeCorner] at hx
+    rw [mem_removeCorner]
+    exact ⟨YoungDiagram.mem_transpose.mpr hx.1,
+           fun h => hx.2 ((congrArg Prod.swap h).trans (Prod.swap_swap c))⟩
+
+-- E. hookProd is the same for removeCorner μᵀ c.swap and removeCorner μ c
+private lemma hookProd_removeCorner_transpose (μ : YoungDiagram) (c : ℕ × ℕ) (hc : isCorner μ c) :
+    hookProd (removeCorner μ.transpose c.swap
+      ((isCorner_transpose_iff μ c.swap).mpr (by rwa [Prod.swap_swap]))) =
+    hookProd (removeCorner μ c hc) := by
+  rw [removeCorner_transpose_eq μ c hc]
+  exact (hookProd_transpose _).symm
+
+-- F. hook_walk_identity for μ follows from hook_walk_identity for μᵀ
+--    Key: sum over corners μ reindexed via c ↦ c.swap to sum over corners μᵀ
+private lemma hook_walk_identity_via_transpose (μ : YoungDiagram)
+    (h_T : ∑ c ∈ (corners μ.transpose).attach,
+        ((hookProd μ.transpose : ℚ) / hookProd (removeCorner μ.transpose c.val (mem_corners.mp c.prop)))
+      = (μ.card : ℚ)) :
+    ∑ c ∈ (corners μ).attach,
+        ((hookProd μ : ℚ) / hookProd (removeCorner μ c.val (mem_corners.mp c.prop)))
+      = (μ.card : ℚ) := by
+  rw [hookProd_transpose] at h_T
+  -- h_T: ∑ c ∈ (corners μᵀ).attach, hookProd μ / hookProd(removeCorner μᵀ c) = μ.card
+  -- Goal: ∑ c ∈ (corners μ).attach, hookProd μ / hookProd(removeCorner μ c) = μ.card
+  calc ∑ c ∈ (corners μ).attach,
+          ((hookProd μ : ℚ) / hookProd (removeCorner μ c.val (mem_corners.mp c.prop)))
+      -- Reindex: c ↦ c.swap bijection on corners
+      = ∑ d ∈ (corners μ.transpose).attach,
+          ((hookProd μ : ℚ) / hookProd (removeCorner μ.transpose d.val (mem_corners.mp d.prop))) := by
+        -- Use bijection i: corners μ → corners μᵀ, c ↦ c.swap
+        apply Finset.sum_nbij'
+            (fun ⟨c, hc⟩ => ⟨c.swap,
+                mem_corners.mpr ((isCorner_transpose_iff μ c.swap).mpr
+                  (Prod.swap_swap c ▸ mem_corners.mp hc))⟩)
+            (fun ⟨d, hd⟩ => ⟨d.swap,
+                mem_corners.mpr ((isCorner_transpose_iff μ d).mp (mem_corners.mp hd))⟩)
+        · intro _ _; exact Finset.mem_attach _ _
+        · intro _ _; exact Finset.mem_attach _ _
+        · intro _ _; exact Subtype.ext (Prod.swap_swap _)
+        · intro _ _; exact Subtype.ext (Prod.swap_swap _)
+        · intro ⟨c, hc⟩ _
+          -- f(c) = hookProd μ / hookProd(removeCorner μ c)
+          -- g(c.swap) = hookProd μ / hookProd(removeCorner μᵀ c.swap)
+          -- These are equal by hookProd_removeCorner_transpose
+          congr 1
+          exact (hookProd_removeCorner_transpose μ c (mem_corners.mp hc)).symm
+    _ = (μ.card : ℚ) := h_T
+
+-- G. Dispatcher for ≤9-row shapes (consolidating PARTS XIV-XXIII for μ.transpose use)
+private lemma hook_walk_identity_le9rows (μ : YoungDiagram) (h9 : μ.rowLen 9 = 0)
+    (hpos : 0 < μ.card) :
+    ∑ c ∈ (corners μ).attach,
+      ((hookProd μ : ℚ) / hookProd (removeCorner μ c.val (mem_corners.mp c.prop)))
+    = (μ.card : ℚ) := by
+  by_cases h2 : μ.rowLen 2 = 0
+  · exact hook_walk_identity_atMostTwoRows μ h2 hpos
+  · by_cases hghook : ∃ (a b : ℕ) (ha : 0 < a) (hb : 0 < b), μ = gHookYD a b ha
+    · obtain ⟨a, b, ha, hb, rfl⟩ := hghook
+      exact hook_walk_identity_gHookYD a b ha hb
+    · by_cases h2c : μ.colLen 2 = 0
+      · exact hook_walk_identity_atMostTwoCols μ h2c hpos
+      · by_cases h3 : μ.rowLen 3 = 0
+        · exact hook_walk_identity_threeRow μ h3 (Nat.pos_of_ne_zero h2)
+        · by_cases h4 : μ.rowLen 4 = 0
+          · exact hook_walk_identity_fourRow μ h4 (Nat.pos_of_ne_zero h3)
+          · by_cases h5 : μ.rowLen 5 = 0
+            · exact hook_walk_identity_fiveRow μ h5 (Nat.pos_of_ne_zero h4)
+            · by_cases h6 : μ.rowLen 6 = 0
+              · exact hook_walk_identity_sixRow μ h6 (Nat.pos_of_ne_zero h5)
+              · by_cases h7 : μ.rowLen 7 = 0
+                · exact hook_walk_identity_sevenRow μ h7 (Nat.pos_of_ne_zero h6)
+                · by_cases h8 : μ.rowLen 8 = 0
+                  · exact hook_walk_identity_eightRow μ h8 (Nat.pos_of_ne_zero h7)
+                  · exact hook_walk_identity_nineRow μ h9 (Nat.pos_of_ne_zero h8)
+
+-- H. hook_walk_identity for ≤9-column shapes (via transpose to ≤9-row)
+private lemma hook_walk_identity_atMostNineCols (μ : YoungDiagram) (h9c : μ.colLen 9 = 0)
+    (hpos : 0 < μ.card) :
+    ∑ c ∈ (corners μ).attach,
+      ((hookProd μ : ℚ) / hookProd (removeCorner μ c.val (mem_corners.mp c.prop)))
+    = (μ.card : ℚ) := by
+  apply hook_walk_identity_via_transpose
+  -- μᵀ has ≤9 rows
+  have h9t : μ.transpose.rowLen 9 = 0 := by rw [YoungDiagram.rowLen_transpose]; exact h9c
+  have hpost : 0 < μ.transpose.card := by rwa [card_transpose]
+  exact hook_walk_identity_le9rows μ.transpose h9t hpost
+
 private lemma hook_walk_identity (μ : YoungDiagram) (hn : 0 < μ.card) :
     ∑ c ∈ (corners μ).attach,
       ((hookProd μ : ℚ) / (hookProd (removeCorner μ c.val (mem_corners.mp c.prop)) : ℚ))
@@ -13555,8 +13697,12 @@ private lemma hook_walk_identity (μ : YoungDiagram) (hn : 0 < μ.card) :
                     by_cases h9 : μ.rowLen 9 = 0
                     · -- Exactly 9 rows: use direct computation via hookProd_ratio_formula
                       exact hook_walk_identity_nineRow μ h9 (Nat.pos_of_ne_zero h8)
-                    · -- 10+ rows, ≥3 cols, non-gHookYD: requires GNW hook walk (still open)
-                      sorry
+                    · -- 10+ rows, ≥3 cols, non-gHookYD: use transpose duality if ≤9 cols
+                      by_cases h9c : μ.colLen 9 = 0
+                      · -- ≤9 cols: μᵀ has ≤9 rows → use hook_walk_identity_atMostNineCols
+                        exact hook_walk_identity_atMostNineCols μ h9c hn
+                      · -- ≥10 rows AND ≥10 cols: requires GNW hook walk (still open)
+                        sorry
 
 /-- The general hook-length formula in ℚ, proved by well-founded recursion on μ.card.
     Uses card_SYT_corner_step (Part XIII) + hook_walk_identity. -/

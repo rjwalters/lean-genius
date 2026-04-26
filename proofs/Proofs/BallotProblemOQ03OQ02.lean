@@ -2366,8 +2366,8 @@ private theorem gvCanon_self_inverse {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.we
             List.take_zero, List.append_nil, List.take_take, Nat.min_self]
       have h2 : ((t.2 cj).val.take kj ++ (t.2 ci).val.drop ki).drop kj =
                 (t.2 ci).val.drop ki := by
-        have hkj_drop : ((t.2 cj).val.take kj).drop kj = [] :=
-          (List.length_take_of_le hkj_le) ▸ List.drop_length
+        have hkj_drop : ((t.2 cj).val.take kj).drop kj = [] := by
+          rw [← List.length_take_of_le hkj_le]; exact List.drop_length
         rw [List.drop_append, List.length_take_of_le hkj_le, Nat.sub_self,
             List.drop_zero, hkj_drop, List.nil_append]
       rw [h1, h2, List.take_append_drop]
@@ -2382,8 +2382,8 @@ private theorem gvCanon_self_inverse {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.we
               List.take_zero, List.append_nil, List.take_take, Nat.min_self]
         have h2 : ((t.2 ci).val.take ki ++ (t.2 cj).val.drop kj).drop ki =
                   (t.2 cj).val.drop kj := by
-          have hki_drop : ((t.2 ci).val.take ki).drop ki = [] :=
-            (List.length_take_of_le hki_le) ▸ List.drop_length
+          have hki_drop : ((t.2 ci).val.take ki).drop ki = [] := by
+            rw [← List.length_take_of_le hki_le]; exact List.drop_length
           rw [List.drop_append, List.length_take_of_le hki_le, Nat.sub_self,
               List.drop_zero, hki_drop, List.nil_append]
         rw [h1, h2, List.take_append_drop]
