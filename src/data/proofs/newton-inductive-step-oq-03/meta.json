@@ -152,6 +152,16 @@
       "targetId": "binomial-theorem",
       "relationship": "related",
       "description": "The classical binomial theorem $\\sum_{k=0}^n \\binom{n}{k} x^k y^{n-k}$ generalizes to the q-binomial theorem $\\prod_{k=0}^{n-1}(1+q^k x) = \\sum_{k=0}^n \\binom{n}{k}_q q^{k(k-1)/2} x^k$, connecting Gaussian binomials to the broader structure of q-series. Log-concavity of $\\binom{n}{k}_q$ implies unimodality of these q-binomial polynomials."
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "Log-concavity G1² ≥ G0·G2 is the multiplicative form of the AM-GM inequality: G1 ≥ √(G0·G2) says the middle term exceeds the geometric mean of its neighbors. The AM-GM inequality states the same for constant sequences; log-concavity states it locally for each consecutive triple in the sequence, making it a generalization of AM-GM to sequences."
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "The Cauchy-Schwarz inequality (∑aᵢbᵢ)² ≤ (∑aᵢ²)(∑bᵢ²) is a sibling of log-concavity: both are special cases of the Alexandrov-Fenchel inequalities for mixed volumes. The log-concavity condition bₖ² ≥ bₖ₋₁·bₖ₊₁ for the sequence of Gaussian binomials is structurally parallel to Cauchy-Schwarz applied to consecutive terms."
     }
   ]
 }
