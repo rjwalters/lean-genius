@@ -204,8 +204,65 @@ The current statement with `M < Lₙf(x)` (signed divergence) may require full l
 - `Nat.cast_sub hn` with `hn : 0 < n` works as `1 ≤ n` in ℕ (definitionally equal)
 - `div_le_div_iff` cross-multiplies `a/c ≤ b/d` to `a*d ≤ b*c`
 
+Replaced the `sorry` for `h_harm_chain` with a complete 5-step proof:
+
+**A. Angle bound**: `(2j+1)π/(4n) ≤ π/3` for j < m = √n.
+   - Key: `3*(2j+1) ≤ 4n`. Follows from j+1 ≤ m, m^2 ≤ n (`Nat.sqrt_le' n`), and 4m^2-6m+3 > 0 always.
+   - Proof: `have haux : 6*m ≤ 4*m^2 + 3 := by nlinarith [hm_pos, sq_nonneg m]; nlinarith [hm_sq]`
+
+**B. Cot lower bound**: `cos(t_j)/sin(t_j) ≥ 2n/(π(2j+1))` from `cot_ge_inv_two_mul`.
+   - Identity: `2n/(π(2j+1)) = 1/(2 * (2j+1)π/(4n))`. After `rw [h_eq]; exact hcot`. ✓
+
+**C. Inv inequality**: `2n/(π(2j+1)) ≥ n/(π(j+1))` since 2j+1 ≤ 2j+2. `nlinarith`. ✓
+
+**D/E. Sum and factoring**: `Σ cot ≥ Σ n/(π(j+1)) = (n/π) * Σ (j+1)⁻¹`. ✓
+
+**F. Harmonic cast**: `(harmonic m : ℝ) = ∑ j : Fin m, (j+1 : ℝ)⁻¹`:
+   - `simp only [harmonic_eq_sum_Icc, Rat.cast_sum, Rat.cast_inv, Rat.cast_natCast]`
+   - `Finset.Icc 1 m = (range m).image (·+1)` (by `omega`)
+   - `← Fin.sum_univ_eq_sum_range` + `push_cast; ring`
+
+**G. Log bound**: `log(m+1) ≥ (1/2)log(n+1)` from n+1 ≤ (m+1)^2 (`hsucc_sq`) + `Real.log_pow`.
+
+### Key Mathlib Lemma Names Confirmed
+
+- `Nat.sqrt_le' n : Nat.sqrt n ^ 2 ≤ n` ✓
+- `Nat.lt_succ_sqrt n : n < (Nat.sqrt n + 1) ^ 2` ✓
+- `log_add_one_le_harmonic n : Real.log ↑(n+1) ≤ harmonic n` (no namespace prefix needed) ✓
+- `harmonic_eq_sum_Icc : harmonic n = ∑ i ∈ Finset.Icc 1 n, (↑i)⁻¹` ✓
+- `Fin.sum_univ_eq_sum_range f n : ∑ i : Fin n, f i = ∑ i ∈ Finset.range n, f i` ✓
+
+### Remaining Sorries (3→2 focused)
+
+1. `chebyshev_trig_sum_lb` Case 2: monolithic sorry → 2 focused sub-sorries (Session 25):
+   a. `hS_floor`: S_n ≥ 2/π via nearest-node + Jordan's inequality
+   b. `hS_harm`: S_n ≥ (s/4π)*n*log(n+1) for n ≥ N₀ (harmonic sub-sum, mirrors Case 1)
+2. `divergence_from_lebesgue_growth` — lacunary construction / UBP gap
+
 ### Next Steps
-1. Verify Docker build of `trig_sum_lb_of_cos_eq_neg_one` proof (commit cfa326a462)
-2. If errors: most likely in `hθinvol` (simp unfolding) or `h_harm_eq` (ℚ→ℝ cast via `simp only [harmonic]`)
-3. Prove `chebyshev_trig_sum_lb` case x∈(-1,1): Lipschitz + nearest-node + harmonic sum
-4. For sorry #2: weaken to lim sup = ∞ (Baire/UBP)
+1. Prove `hS_floor`: ~50 lines, k*=Nat.floor(n*θ/π-1/2) + pigeonhole + Jordan's
+2. Prove `hS_harm`: ~150 lines, adapt Case 1 (trig_sum_lb_of_cos_eq_neg_one) with θ-centered nodes
+3. For sorry #2: weaken to lim sup = ∞ (provable by Banach-Steinhaus)
+
+## Session 2026-04-26 (Session 25) — Case 2 structure for chebyshev_trig_sum_lb
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: PROGRESS — monolithic Case 2 sorry → structured proof with 2 focused sub-sorries
+
+### What I Did
+- Proved x > -1 (neg_one_le_cos + hx_neg ≠ -1)
+- Proved x < 1: cos(πp/q) = 1 → p = 2kq even, contradicts odd p (Real.cos_eq_one_iff)
+- Set up θ = arccos(x) ∈ (0,π): Real.arccos_pos.mpr hx_lt_1, Real.arccos_eq_pi for upper bound
+- s = sin(θ) > 0 via Real.sin_pos_of_pos_of_lt_pi
+- Found N₀ via exists_nat_gt(π²/s²), proved N₀ > 0
+- Constructed C₂ = min(s/(4π), (2/π)/(N₀*log(N₀+1))), proved C₂ > 0 completely
+- Case split: n ≥ N₀ uses hS_harm; n < N₀ uses hS_floor with monotonicity bound
+
+### Key Insights
+- Jordan's inequality (Real.mul_le_sin): 2/π * x ≤ sin x for x ∈ [0,π/2]
+  → sin(π/(2n)) ≥ 1/n → nearest node term ≥ (1/n)/(π/(2n)) = 2/π
+- Two-part C₂ argument handles ALL n ≥ 1 uniformly without computing N₀ explicitly
+- div_mul_cancel₀ cleanly resolves N₀*log(N₀+1) cancellation
+
+### Files Modified
+- `proofs/Proofs/Erdos1151OQ04.lean`: lines 1067-1200 (86 new lines replacing 1 sorry)

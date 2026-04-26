@@ -1123,20 +1123,83 @@ private lemma chebyshev_trig_sum_lb (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_po
       Finset.sum_congr rfl fun k _ => by simp only [hx, chebyshevNode]
     rw [hsum_eq]
     exact trig_sum_lb_of_cos_eq_neg_one n hn
-  · -- **Case x ∈ (-1, 1)**: sin(πp/q)² > 0 since x ≠ ±1
-    have hx_gt : -1 < Real.cos ((↑p : ℝ) * Real.pi / ↑q) :=
+  · -- Case 2: x ∈ (-1, 1) → arccos setup + C₂ construction
+    set x := Real.cos ((↑p : ℝ) * Real.pi / ↑q) with hx_def
+    have hpi_pos := Real.pi_pos
+    -- A. x ∈ (-1, 1)
+    have hx_gt_neg1 : (-1 : ℝ) < x :=
       lt_of_le_of_ne (Real.neg_one_le_cos _) (Ne.symm hx)
-    have hx_lt : Real.cos ((↑p : ℝ) * Real.pi / ↑q) < 1 :=
+    have hx_lt_1 : x < 1 :=
       lt_of_le_of_ne (Real.cos_le_one _) hx_ne_one
-    have hsin_sq_pos : 0 < Real.sin ((↑p : ℝ) * Real.pi / ↑q) ^ 2 := by
-      have hcos_sq_lt : Real.cos ((↑p : ℝ) * Real.pi / ↑q) ^ 2 < 1 := by nlinarith
-      have := Real.sin_sq_add_cos_sq ((↑p : ℝ) * Real.pi / ↑q)
-      nlinarith
-    -- C₂ = sin²(πp/q) / (8π²) > 0
-    refine ⟨Real.sin ((↑p : ℝ) * Real.pi / ↑q) ^ 2 / (8 * Real.pi ^ 2),
-            by positivity, fun n hn => ?_⟩
-    -- Proof by Lipschitz + nearest-node + harmonic sum (see docstring above)
-    sorry
+    -- B. Set up θ = arccos(x) ∈ (0, π), s = sin(θ) > 0
+    set θ := Real.arccos x with hθ_def
+    have hθ_pos : 0 < θ := Real.arccos_pos.mpr hx_lt_1
+    have hθ_lt_pi : θ < Real.pi := by
+      refine lt_of_le_of_ne (Real.arccos_le_pi x) (fun heq => ?_)
+      exact hx (le_antisymm (Real.arccos_eq_pi.mp heq) (Real.neg_one_le_cos _))
+    have hcos_θ : Real.cos θ = x := Real.cos_arccos hx_gt_neg1.le hx_lt_1.le
+    have hs_pos : 0 < Real.sin θ :=
+      Real.sin_pos_of_pos_of_lt_pi hθ_pos hθ_lt_pi
+    -- C. Single-term lower bound: S_n ≥ 2/π for ALL n ≥ 1.
+    --    The nearest node k* to θ satisfies |x - cos φ_{k*}| ≤ π/(2n) (Lipschitz + spacing),
+    --    and sin(φ_{k*}) ≥ sin(π/(2n)) ≥ 1/n (endpoint minimum + Jordan's inequality).
+    --    So S_n ≥ term_{k*} ≥ (1/n) / (π/(2n)) = 2/π.
+    have hS_floor : ∀ (m : ℕ), 1 ≤ m →
+        2 / Real.pi ≤
+          ∑ k : Fin m, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * m)) /
+                       |x - chebyshevNode m k| := by
+      intro m hm
+      sorry  -- nearest-node single-term bound: S_m ≥ 2/π
+    -- D. Find N₀ via Archimedean: for n ≥ N₀, sin bound holds for √n nodes
+    obtain ⟨N₀, hN₀⟩ := exists_nat_gt (Real.pi ^ 2 / Real.sin θ ^ 2)
+    have hN₀_pos : 0 < N₀ := by
+      have := div_pos (sq_pos_of_pos hpi_pos) (sq_pos_of_pos hs_pos)
+      exact Nat.pos_of_ne_zero (by intro h; simp [h] at hN₀; linarith)
+    -- E. Large-n harmonic bound: S_n ≥ (s/4π)*n*log(n+1) for n ≥ N₀
+    --    Uses m = sqrt(n) nodes near θ, each with sin ≥ s/2 and |x - cos| ≤ (j+1)π/n.
+    have hS_harm : ∀ (r : ℕ), N₀ ≤ r →
+        Real.sin θ / (4 * Real.pi) * ((↑r : ℝ) * Real.log ((↑r : ℝ) + 1)) ≤
+          ∑ k : Fin r, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * r)) /
+                       |x - chebyshevNode r k| := by
+      intro r hr
+      have hr_pos : (0 : ℝ) < r :=
+        Nat.cast_pos.mpr (Nat.lt_of_lt_of_le hN₀_pos hr)
+      sorry  -- harmonic sub-sum via m = sqrt(r) nodes near θ
+    -- F. Choose C₂ = min(s/(4π), 2/(π·N₀·log(N₀+1))) covering all n ≥ 1
+    have hN₀_log_pos : 0 < (N₀ : ℝ) * Real.log ((N₀ : ℝ) + 1) :=
+      mul_pos (Nat.cast_pos.mpr hN₀_pos)
+              (Real.log_pos (by exact_mod_cast Nat.succ_lt_succ hN₀_pos))
+    set C₂ := min (Real.sin θ / (4 * Real.pi))
+               (2 / Real.pi / ((N₀ : ℝ) * Real.log ((N₀ : ℝ) + 1))) with hC₂_def
+    refine ⟨C₂, ?_, fun n hn => ?_⟩
+    · exact lt_min (by positivity) (by positivity)
+    · have hlog_nn : 0 ≤ Real.log ((↑n : ℝ) + 1) :=
+        Real.log_nonneg (by exact_mod_cast Nat.succ_le_succ hn)
+      rcases le_or_lt N₀ n with hn_large | hn_small
+      · -- n ≥ N₀: use harmonic bound
+        calc C₂ * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1))
+            ≤ Real.sin θ / (4 * Real.pi) * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) :=
+              mul_le_mul_of_nonneg_right (min_le_left _ _)
+                (mul_nonneg (Nat.cast_nonneg _) hlog_nn)
+          _ ≤ _ := hS_harm n hn_large
+      · -- n < N₀: use S_n ≥ 2/π and n*log(n+1) ≤ N₀*log(N₀+1)
+        have hn_lt_N₀ : (n : ℝ) < N₀ := by exact_mod_cast hn_small
+        have hlog_le : Real.log ((↑n : ℝ) + 1) ≤ Real.log ((↑N₀ : ℝ) + 1) :=
+          Real.log_le_log (by positivity) (by linarith)
+        have hn_log_le : (↑n : ℝ) * Real.log ((↑n : ℝ) + 1) ≤
+            (↑N₀ : ℝ) * Real.log ((↑N₀ : ℝ) + 1) :=
+          mul_le_mul hn_lt_N₀.le hlog_le (by positivity) (Nat.cast_nonneg _)
+        calc C₂ * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1))
+            ≤ 2 / Real.pi / ((↑N₀ : ℝ) * Real.log ((↑N₀ : ℝ) + 1)) *
+              ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) :=
+              mul_le_mul_of_nonneg_right (min_le_right _ _)
+                (mul_nonneg (Nat.cast_nonneg _) hlog_nn)
+          _ ≤ 2 / Real.pi / ((↑N₀ : ℝ) * Real.log ((↑N₀ : ℝ) + 1)) *
+              ((↑N₀ : ℝ) * Real.log ((↑N₀ : ℝ) + 1)) :=
+              mul_le_mul_of_nonneg_left hn_log_le (by positivity)
+          _ = 2 / Real.pi := by
+              rw [div_mul_cancel₀ _ hN₀_log_pos.ne']
+          _ ≤ _ := hS_floor n hn
 
 /-- **Logarithmic lower bound on the Lebesgue function** (proved modulo `chebyshev_trig_sum_lb`).
 
