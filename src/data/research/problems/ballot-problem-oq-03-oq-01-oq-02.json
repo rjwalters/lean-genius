@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: hook_walk_identity_a21YD proved (session 21/PART XVI); 1 sorry remains for general ≥3-row ≥3-col non-[a,2,1] case",
+    "progressSummary": "hook_walk_identity proved for ≤2-row, gHookYD, ≤2-col, 3-row, 4-row, 5-row, 6-row. Only 7+ rows remain (1 sorry)",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -117,7 +117,10 @@
       "tele_prod: telescoping ∏_{k∈Ico 1 (n+1)} (k+1)/k = n+1 by induction (lines 5582-5593)",
       "tail_prod_a21YD: ∏_{s∈Ico 2 (a-1)} (a-s)/(a-s-1)=a-2 via bijection (lines 5596-5614)",
       "hook_walk_identity_a21YD: identity for [a,2,1] shapes (lines 5619-5723)",
-      "hook_walk_identity dispatcher: [a,2,1] case added (lines 5739-5794)"
+      "hook_walk_identity dispatcher: [a,2,1] case added (lines 5739-5794)",
+      "hook_walk_identity_fourRow: 4-row identity proved (PART XVIII, 2026-04-26)",
+      "hook_walk_identity_fiveRow: 5-row identity proved (PART XIX, 2026-04-26)",
+      "hook_walk_identity_sixRow: 6-row identity proved (PART XX, 2026-04-26)"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
