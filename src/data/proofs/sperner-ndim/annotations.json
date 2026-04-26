@@ -1,229 +1,738 @@
 [
   {
-    "id": "ann-spn-vertex",
+    "id": "ann-spn-roadmap",
     "proofId": "sperner-ndim",
-    "range": {
-      "startLine": 49,
-      "endLine": 68
-    },
-    "type": "concept",
-    "title": "Vertex: Grid Points of the Standard d-Simplex",
-    "content": "**Vertex d N** represents grid points in the standard $d$-simplex subdivided with parameter $N$. A grid point has $d$ explicit Cartesian coordinates $x_0, \\ldots, x_{d-1} \\in \\mathbb{N}$ satisfying $\\sum_{i} x_i \\leq N$. The implicit $d$-th barycentric coordinate is $x_d = N - \\sum x_i \\geq 0$. The `@[ext]` attribute enables extensionality: two vertices are equal iff their coordinate arrays agree.",
-    "mathContext": "The standard $d$-simplex $\\Delta^d$ is parameterized as $\\{(\\lambda_0, \\ldots, \\lambda_d) \\in \\mathbb{R}^{d+1} : \\lambda_i \\geq 0, \\sum \\lambda_i = 1\\}$. The grid with parameter $N$ is $\\{(n_0, \\ldots, n_d) : n_i \\in \\mathbb{N}_0, \\sum n_i = N\\}$, giving $\\binom{N+d}{d}$ grid points. Here the last coordinate is implicit: $n_d = N - \\sum_{i=0}^{d-1} n_i$. The `Fintype` instance (lines 59\u201368) constructs an equivalence with $\\{f : \\text{Fin}(d) \\to \\text{Fin}(N+1) : \\sum (f\\ i) \\leq N\\}$, making `Vertex d N` a finite type for all $(d, N)$.",
+    "range": { "startLine": 3, "endLine": 23 },
+    "type": "insight",
+    "title": "Proof Roadmap: The House-Rooms-Doors Story",
+    "content": "Here is the entire proof as a narrative.\n\nImagine a house (the $d$-simplex) divided into rooms (sub-simplices). Each room has $d+1$ walls, and some walls have **doors** -- openings colored with all but one paint color. The outside boundary also has doors.\n\nThe argument proceeds in three acts:\n\n**Act 1 -- Per-room counting** (Sections V-VI): Each room either has all $d+1$ colors on its vertices (\"fully colored\" / FC) and contributes exactly **1 door**, or it is missing a color and contributes **0 or 2 doors**. So the total door count across all rooms has the same parity as the FC count.\n\n**Act 2 -- Interior cancellation** (Section VII): Every interior door is shared by exactly two rooms. The adjacency map $\\text{adj}$ is a fixed-point-free involution on interior doors, so they pair up perfectly and contribute an **even** number. Think of this as a gauge cancellation: interior contributions cancel in pairs.\n\n**Act 3 -- Boundary survival** (Sections VIII-IX): The Sperner boundary condition (like a Dirichlet boundary condition) kills all boundary doors except those on face $d$. So:\n$$|\\text{FC}| \\equiv |\\text{boundary doors on face } d| \\pmod{2}$$\nIf the right side is odd, at least one FC simplex must exist. QED.",
+    "mathContext": "This proof architecture follows Cohen (1967) and Henle-Kleinberg's combinatorial approach. The key insight is that counting doors (facets carrying all colors $\\{0,\\ldots,d-1\\}$) is a double-counting / parity argument: each door is counted once from each adjacent room, so interior doors cancel. The Sperner condition then ensures only face-$d$ boundary doors survive. The proof is purely combinatorial -- no topology, no Brouwer, no fixed-point theory needed.",
+    "significance": "critical",
+    "relatedConcepts": ["double counting", "parity argument", "Sperner's lemma", "simplicial complex", "door counting proof"],
+    "prerequisites": ["basic combinatorics", "modular arithmetic mod 2"]
+  },
+  {
+    "id": "ann-spn-heartbeats",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 25, "endLine": 26 },
+    "type": "warning",
+    "title": "maxHeartbeats: Why 3.2M When Mathlib Allows 200K",
+    "content": "The `set_option maxHeartbeats 3200000` directive gives Lean's kernel **16x** the default budget (200,000 heartbeats) for type-checking each definition. This proof needs it because:\n\n1. **Heavy `Finset` manipulation**: operations like `Finset.filter`, `Finset.card_biUnion`, and `Finset.sum_congr` trigger deep unification through Mathlib's algebraic hierarchy.\n2. **Decidability search**: Lean must synthesize `Decidable` instances for nested quantifiers over `Fin` types, which cascades through many typeclass instances.\n3. **The `omega` tactic**: solves natural-number arithmetic goals but can be expensive on goals with many hypotheses.\n\n**Mathlib contribution obstacle**: Mathlib enforces a strict 200K heartbeat limit. To upstream this proof, you would need to refactor heavy proofs into smaller helper lemmas, replace `simp` calls with targeted `rw` chains, and avoid `omega` on large contexts. This is a significant engineering effort separate from the mathematics.",
     "significance": "supporting",
-    "relatedConcepts": [
-      "barycentric coordinates",
-      "standard d-simplex",
-      "grid triangulation parameter N",
-      "Fintype instance for finite combinatorics",
-      "Freudenthal triangulation grid"
-    ],
-    "prerequisites": [
-      "Barycentric coordinates on the simplex",
-      "Lean 4 structure with @[ext]",
-      "Fintype.ofEquiv for finite type instances"
-    ]
+    "relatedConcepts": ["Lean 4 kernel performance", "Mathlib style guidelines", "typeclass synthesis"],
+    "prerequisites": ["Lean 4 elaboration model"]
   },
   {
-    "id": "ann-spn-triangulation",
+    "id": "ann-spn-linter",
     "proofId": "sperner-ndim",
-    "range": {
-      "startLine": 99,
-      "endLine": 121
-    },
-    "type": "concept",
-    "title": "SpernerTriangulation: Abstract Triangulation with Adjacency Axioms",
-    "content": "**SpernerTriangulation d N** is the abstract triangulation type capturing exactly the combinatorial structure needed for the door-counting proof. A simplex type `Simplex` (with `DecidableEq` and `Fintype` instances) comes with a vertex assignment `vertices : Simplex \u2192 Fin(d+1) \u2192 Vertex d N` (injective per simplex) and an adjacency map `adj : Simplex \u2192 Fin(d+1) \u2192 Option(Simplex \u00d7 Fin(d+1))`. The five axioms \u2014 **adj_symm** (symmetric), **adj_vertices** (shared vertex image), **adj_ne** (distinct simplices), **adj_unique_facet** (unique facet adjacency), **boundary_face** (unmatched facets on boundary) \u2014 are precisely what the proof needs, and nothing more.",
-    "mathContext": "Each simplex has $d+1$ vertices; facets are $(d-1)$-faces identified by the dropped vertex index $k \\in \\{0,\\ldots,d\\}$. Interior facets pair up: $\\text{adj}(s,k) = (s',k')$ iff $(s,k)$ and $(s',k')$ share the same $(d-1)$-face. **adj_symm**: $\\text{adj}(s,k) = (s',k') \\Rightarrow \\text{adj}(s',k') = (s,k)$. **adj_vertices**: $\\{v_s(j) : j \\neq k\\} = \\{v_{s'}(j) : j \\neq k'\\}$ (the shared $(d-1)$-face has the same vertex set from both sides). **adj_ne**: $s \\neq s'$ (no self-adjacency). **adj_unique_facet**: two facets of the same simplex cannot be adjacent to the same neighbor. **boundary_face**: if $\\text{adj}(s,k) = \\text{none}$, all non-$k$ vertices of $s$ lie on face $k$ of the simplex. The abstract approach means the proof applies to any concrete triangulation satisfying these axioms: Freudenthal, Kuhn, or a future Mathlib standard.",
-    "significance": "key",
-    "relatedConcepts": [
-      "abstract triangulation",
-      "adjacency involution",
-      "Freudenthal triangulation",
-      "Kuhn triangulation",
-      "facet pairing",
-      "boundary identification"
-    ],
-    "prerequisites": [
-      "Simplicial complexes and facets",
-      "Lean 4 structure with bundled instances",
-      "Option type for partial maps"
-    ]
+    "range": { "startLine": 25, "endLine": 25 },
+    "type": "warning",
+    "title": "Disabling the Unused Variables Linter",
+    "content": "The `set_option linter.unusedVariables false` silences warnings about variables that are introduced but not directly referenced. In a proof-heavy file like this, intermediate hypotheses are often introduced by tactics like `obtain` or `have` and consumed implicitly by `omega` or `simp`. The linter would produce dozens of false positives. In production Mathlib code, you would instead use `_` prefixes for genuinely unused variables.",
+    "significance": "supporting"
   },
   {
-    "id": "ann-spn-isfc-door",
+    "id": "ann-spn-zmod2-helper",
     "proofId": "sperner-ndim",
-    "range": {
-      "startLine": 130,
-      "endLine": 146
-    },
+    "range": { "startLine": 36, "endLine": 39 },
+    "type": "lemma",
+    "title": "odd_of_zmod2_one: Converting Mod-2 Arithmetic to Oddness",
+    "content": "This helper bridges two representations of parity:\n- **ZMod 2 world**: casting $m$ to $\\mathbb{Z}/2\\mathbb{Z}$ and checking if it equals $1$\n- **Nat.Odd world**: $\\exists k, m = 2k + 1$\n\nThe proof uses `ZMod.val_natCast` to extract the concrete value of $(m \\mod 2)$ from the $\\mathbb{Z}/2\\mathbb{Z}$ representation, then `Nat.odd_iff` to convert.\n\n**Physics analogy**: This is like converting between a spin-$\\frac{1}{2}$ eigenvalue ($\\pm 1$) and a parity quantum number (even/odd). Same information, different representations -- and you need a dictionary to go between them.",
+    "significance": "supporting",
+    "relatedConcepts": ["ZMod 2", "Nat.Odd", "parity representations"],
+    "prerequisites": ["ZMod.val_natCast", "Nat.odd_iff"]
+  },
+  {
+    "id": "ann-spn-vertex-struct",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 45, "endLine": 52 },
     "type": "definition",
-    "title": "IsFC and isDoorAt: The Counting Units for the Parity Argument",
-    "content": "**IsFC c K s** (fully colored): the coloring is surjective on simplex $s$'s vertices \u2014 $c \\circ \\text{vertices}_s : \\text{Fin}(d+1) \\to \\text{Fin}(d+1)$ is surjective, meaning all $d+1$ colors appear. **isDoorAt c K s k** (door at position $k$): removing vertex $k$, the remaining $d$ vertices carry all colors $\\{0, \\ldots, d-1\\}$. Formally, $\\forall j < d, \\exists i \\neq k : c(v_{s,i}) = j$. Both predicates are decidable, enabling `Finset.filter` over all simplices and positions.",
-    "mathContext": "Each **FC simplex** has exactly 1 door (the unique position $k_0$ where the repeated color maps to $d$ \u2014 removing it gives a bijection onto $\\{0,\\ldots,d-1\\}$). Each **non-FC simplex** has 0 or 2 doors. This is the key fact proved by `abstract_door_parity`: $\\sum_s |\\text{doors}(s)| \\equiv |FC| \\pmod{2}$. The door definition uses `Fin.castSucc` to embed $j < d$ into $\\text{Fin}(d+1)$, since colors range over $\\{0,\\ldots,d\\}$ but door condition checks coverage of $\\{0,\\ldots,d-1\\}$.",
+    "title": "Vertex: Grid Points as Occupation Numbers",
+    "content": "A `Vertex d N` is a point in the triangulated $d$-simplex. It stores $d$ natural-number coordinates $(x_0, \\ldots, x_{d-1})$ with $\\sum x_i \\leq N$. The implicit last coordinate is $x_d = N - \\sum x_i$.\n\n**Physics analogy**: Think of these as **occupation numbers** in a system of $d$ quantum states with total particle number at most $N$. The constraint $\\sum x_i \\leq N$ is exactly the particle-number conservation law -- the \"leftover\" particles occupy the implicit $(d+1)$-th state.\n\nThe `@[ext]` attribute auto-generates an extensionality lemma: two vertices are equal iff their coordinate functions agree pointwise. This is essential because Lean needs proof that structural equality matches mathematical equality.",
+    "mathContext": "These are the integer points of the standard $d$-simplex $\\Delta^d = \\{\\lambda \\in \\mathbb{R}^{d+1}_{\\geq 0} : \\sum \\lambda_i = 1\\}$ scaled by $N$. The grid has $\\binom{N+d}{d}$ points. The Freudenthal triangulation connects nearby grid points into $d$-simplices.",
     "significance": "key",
-    "relatedConcepts": [
-      "fully-colored simplex",
-      "door counting argument",
-      "surjectivity and parity",
-      "Decidable predicates for filter",
-      "Cohen 1967 door proof"
-    ],
-    "prerequisites": [
-      "Function.Surjective for FC definition",
-      "Fin.castSucc for color embedding",
-      "Decidable instances for Finset.filter"
-    ]
+    "relatedConcepts": ["barycentric coordinates", "standard simplex", "occupation numbers"],
+    "prerequisites": ["Fin d as an index type", "Lean 4 structures"]
   },
   {
-    "id": "ann-spn-invol-parity",
+    "id": "ann-spn-deceq-tactic",
     "proofId": "sperner-ndim",
-    "range": {
-      "startLine": 152,
-      "endLine": 199
-    },
-    "type": "theorem",
-    "title": "even_card_fpf_invol: Fixed-Point-Free Involutions Yield Even Sets",
-    "content": "**even_card_fpf_invol**: If $f : S \\to S$ is a fixed-point-free involution on a finite set $S$ (i.e., $f(f(x)) = x$, $f(x) \\in S$, $f(x) \\neq x$ for all $x \\in S$), then $|S|$ is even. Proved by **strong induction** on $|S|$: pick $x \\in S$, pair with $y = f(x) \\neq x$, remove both to get $S' = S \\setminus \\{x, y\\}$, verify $f$ restricts to a fixed-point-free involution on $S'$, apply induction, and conclude $|S| = |S'| + 2$.",
-    "mathContext": "The proof uses `Finset.strongInduction`. The restriction to $S'$: if $a \\in S'$, then $f(a) \\neq x$ (else $f(f(a)) = f(x) = y$, so $a = y \\notin S'$) and $f(a) \\neq y$ (else $f(f(a)) = f(y) = x$, so $a = x \\notin S'$). The cardinality identity $|S| = |S'| + 2$ uses `Finset.card_erase_of_mem` twice. This abstract lemma is the key engine for `interior_doors_even`: the adjacency map $\\text{adjMap}$ is a fixed-point-free involution on interior doors (using `adj_symm` for involution and `adj_ne` for fixed-point-free), so the number of interior doors is even.",
-    "significance": "key",
-    "relatedConcepts": [
-      "fixed-point-free involution",
-      "orbit pairing",
-      "strong induction on Finset",
-      "parity argument",
-      "Burnside's lemma"
-    ],
-    "prerequisites": [
-      "Finset.strongInduction for Finset",
-      "Finset.card_erase_of_mem",
-      "involution and fixed-point-free concepts"
-    ]
+    "range": { "startLine": 53, "endLine": 57 },
+    "type": "tactic",
+    "title": "DecidableEq by Case Split on Coordinates",
+    "content": "This instance tells Lean that vertex equality is **decidable** -- given two vertices, there is an algorithm to determine if they are equal.\n\nThe proof uses three tactics:\n- `intro a b` -- introduce the two vertices to compare\n- `by_cases h : a.coords = b.coords` -- split into \"coordinates equal\" vs \"coordinates differ\"\n- `isTrue (Vertex.ext h)` / `isFalse (...)` -- construct the decision\n\nWhy is this needed? Lean's type theory distinguishes between *propositions* (things that may or may not be true) and *decisions* (algorithms that compute the truth value). Many operations on `Finset` require `DecidableEq` -- you cannot filter a set by equality without knowing how to check equality. This is a computability constraint, not a mathematical one.",
+    "significance": "supporting",
+    "relatedConcepts": ["DecidableEq", "Prop vs Bool", "constructive logic"],
+    "prerequisites": ["Lean 4 typeclass system", "by_cases tactic"]
   },
   {
-    "id": "ann-spn-abstract-door",
+    "id": "ann-spn-fintype",
     "proofId": "sperner-ndim",
-    "range": {
-      "startLine": 323,
-      "endLine": 394
-    },
-    "type": "theorem",
-    "title": "abstract_door_parity: Per-Simplex Door Count Has Same Parity as Surjectivity",
-    "content": "**abstract_door_parity**: For any $f : \\{0,\\ldots,d\\} \\to \\{0,\\ldots,d\\}$, the number of door positions $k$ (where removing index $k$, remaining values cover $\\{0,\\ldots,d-1\\}$) has parity 1 if $f$ is surjective, 0 otherwise. This is the fundamental per-simplex fact: **FC simplices contribute 1 door (odd), non-FC simplices contribute 0 or 2 doors (even)**.",
-    "mathContext": "Four cases: (1) **$f$ surjective**: unique $k_0$ with $f(k_0) = d$; removing $k_0$ leaves a bijection onto $\\{0,\\ldots,d-1\\}$ \u2014 exactly 1 door. (2) **$d$ not in image**: all $d+1$ values land in $\\{0,\\ldots,d-1\\}$, some color appears twice, impossible to eliminate \u2014 0 doors. (3) **All values $< d$, $f$ not surjective on $\\{0,\\ldots,d-1\\}$**: some $j_0$ never appears \u2014 0 doors. (4) **All values $< d$, $g : \\text{Fin}(d+1) \\to \\text{Fin}(d)$ surjective**: by `door_parity_all_small`, exactly 2 doors (the two positions mapping to the repeated color $c_0$, which appears exactly twice). The helper `door_parity_all_small` (line 207) proves: if $d+1$ values in $\\{0,\\ldots,d-1\\}$ are all covered, exactly one color has count 2 (excess count $= 1$), giving exactly 2 door positions.",
+    "range": { "startLine": 59, "endLine": 68 },
+    "type": "definition",
+    "title": "Fintype Instance: Why Finiteness Matters",
+    "content": "This instance proves that `Vertex d N` is a **finite type** -- it has finitely many elements and Lean can enumerate them all.\n\nThe proof constructs an explicit equivalence (`Equiv`):\n$$\\text{Vertex}(d, N) \\cong \\{f : \\text{Fin}(d) \\to \\text{Fin}(N+1) \\mid \\sum_i f(i) \\leq N\\}$$\n\nThe four fields of the `Equiv` are: (1) forward map, (2) inverse map, (3) left-inverse proof, (4) right-inverse proof. Then `Fintype.ofEquiv` transfers finiteness from the right side (a subtype of functions between finite types, which Mathlib already knows is finite).\n\n**Why it matters**: Without `Fintype`, you cannot use `Finset.univ` to enumerate all vertices, cannot use `Finset.filter` to count colored vertices, and cannot do any of the cardinality arguments that drive the entire proof. Finiteness is the license to count.",
+    "mathContext": "The bound $f(i) \\leq N$ for each coordinate comes from $\\sum f(i) \\leq N$ and non-negativity of natural numbers. The `Finset.single_le_sum` lemma provides the key inequality: any single term is at most the sum.",
     "significance": "key",
-    "relatedConcepts": [
-      "surjectivity vs door count",
-      "case analysis on coloring type",
-      "door_parity_all_small lemma",
-      "per-simplex parity",
-      "fully-colored simplex characterization"
-    ],
-    "prerequisites": [
-      "door_parity_all_small for the all-small case",
-      "Function.Surjective and Finite.injective_iff_surjective",
-      "Finset.card_eq_two for identifying pairs"
-    ]
+    "relatedConcepts": ["Fintype", "Equiv", "Fintype.ofEquiv", "cardinality arguments"],
+    "prerequisites": ["Lean 4 Equiv type", "Fintype typeclass"]
   },
   {
-    "id": "ann-spn-interior-even",
+    "id": "ann-spn-coloring",
     "proofId": "sperner-ndim",
-    "range": {
-      "startLine": 429,
-      "endLine": 471
-    },
-    "type": "theorem",
-    "title": "interior_doors_even: Interior Doors Pair Up Under the Adjacency Involution",
-    "content": "**interior_doors_even**: The number of interior door pairs $(s, k)$ \u2014 those satisfying `isDoorAt` AND $\\text{adj}(s,k) \\neq \\text{none}$ \u2014 is even. The proof shows `adjMap` (which maps $(s,k)$ to its adjacent $(s', k')$ when interior) is a **fixed-point-free involution** on the set of interior doors, then applies `even_card_fpf_invol`.",
-    "mathContext": "Three conditions for `even_card_fpf_invol`: (1) **Involution**: $\\text{adjMap}(\\text{adjMap}(s,k)) = (s,k)$ follows from `adj_symm` \u2014 if $\\text{adj}(s,k) = (s',k')$ then $\\text{adj}(s',k') = (s,k)$. (2) **Closure**: $\\text{adjMap}(s,k) = (s',k')$ is an interior door by `door_transfer` (line 420) \u2014 adjacent facets share door status because `adj_vertices` gives them identical $(d-1)$-vertex sets. (3) **Fixed-point-free**: $\\text{adjMap}(s,k) \\neq (s,k)$ by `adj_ne` (adjacent simplices are distinct, so $s' \\neq s$). The **door_transfer** lemma is the crucial bridge: it shows `isDoorAt` depends only on the vertex set of the shared facet, not on which simplex we view it from.",
+    "range": { "startLine": 71, "endLine": 71 },
+    "type": "definition",
+    "title": "Coloring: A Function from Vertices to Colors",
+    "content": "A `Coloring d N` is simply a function `Vertex d N -> Fin (d + 1)` -- it assigns one of $d+1$ colors (labeled $0, 1, \\ldots, d$) to each grid vertex.\n\nThis is a type *alias*, not a structure. There are no constraints on the coloring itself -- the Sperner boundary condition is a separate predicate (`IsSperner`). This clean separation means theorems about arbitrary colorings (like `abstract_door_parity`) can be stated without mentioning Sperner at all.",
+    "significance": "supporting",
+    "relatedConcepts": ["graph coloring", "Sperner labeling"],
+    "prerequisites": ["Fin as a color set"]
+  },
+  {
+    "id": "ann-spn-onface",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 73, "endLine": 78 },
+    "type": "definition",
+    "title": "onFace: Geometric Boundary Identification",
+    "content": "A vertex $v$ is **on face $k$** of the simplex if its $k$-th barycentric coordinate is zero:\n- For $k < d$: the Cartesian coordinate $x_k = 0$\n- For $k = d$: the implicit coordinate $N - \\sum x_i = 0$, i.e., $\\sum x_i = N$\n\n**Geometric picture**: The standard $d$-simplex has $d+1$ faces, each obtained by setting one barycentric coordinate to zero. Face $k$ is the face **opposite** vertex $k$ -- it contains all the other vertices but not vertex $k$ itself.\n\n**Physics analogy**: Think of each face as a **boundary wall** of a $d$-dimensional domain. The face condition $x_k = 0$ is exactly a **Dirichlet boundary** in the $k$-th direction -- the field vanishes at the wall.\n\nThe `dif_then_else` pattern (`if h : k < d then ... else ...`) provides the proof `h` to the then-branch, which needs it to construct `Fin d` from `k`.",
+    "mathContext": "Face $k$ of $\\Delta^d$ is itself a $(d-1)$-simplex. The face opposite vertex $k$ is $\\{\\lambda \\in \\Delta^d : \\lambda_k = 0\\}$. The Sperner condition will forbid color $k$ on face $k$.",
     "significance": "key",
-    "relatedConcepts": [
-      "interior facet pairing",
-      "adjacency involution",
-      "door_transfer lemma",
-      "even_card_fpf_invol application",
-      "fixed-point-free involution"
-    ],
-    "prerequisites": [
-      "adjMap definition at line 394",
-      "door_transfer using adj_vertices",
-      "even_card_fpf_invol at line 147"
-    ]
+    "relatedConcepts": ["simplex faces", "barycentric coordinates", "Dirichlet boundary conditions"],
+    "prerequisites": ["standard simplex geometry", "dependent if-then-else in Lean"]
+  },
+  {
+    "id": "ann-spn-decidable-onface",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 80, "endLine": 82 },
+    "type": "tactic",
+    "title": "Decidable onFace: Making Boundary Tests Computable",
+    "content": "This instance proves that `onFace v k` is decidable -- given a vertex and a face index, we can algorithmically determine whether the vertex lies on that face.\n\nThe proof is elegant: `unfold onFace` expands the definition, `split` handles the two cases ($k < d$ and $k = d$), and in both cases the goal reduces to decidability of `_ = _` on natural numbers, which Lean already knows (`inferInstanceAs`).\n\nThis is needed because `IsSperner` quantifies over `onFace`, and we need to be able to filter finsets by the Sperner condition.",
+    "significance": "supporting",
+    "relatedConcepts": ["Decidable instances", "split tactic"],
+    "prerequisites": ["Decidable typeclass"]
+  },
+  {
+    "id": "ann-spn-issperner",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 84, "endLine": 87 },
+    "type": "definition",
+    "title": "IsSperner: THE Key Boundary Condition",
+    "content": "A coloring $c$ is **Sperner** if: on face $k$, color $k$ is **forbidden**.\n$$\\text{IsSperner}(c) \\iff \\forall v, k : \\text{onFace}(v, k) \\implies c(v) \\neq k$$\n\nIn words: a vertex lying on the face *opposite* vertex $k$ cannot be painted with color $k$. This is the condition that makes the whole proof work -- without it, boundary doors could appear on any face, and the parity argument would collapse.\n\n**Physics analogy**: The Sperner condition is a **Dirichlet boundary condition for the coloring field**. On the boundary wall where coordinate $k$ vanishes, the color value $k$ is forbidden -- just as a Dirichlet BC forces a field to vanish at the boundary.\n\n**Why it matters**: The entire proof reduces to showing that FC count has the same parity as boundary doors on face $d$. The Sperner condition is what kills boundary doors on all other faces ($k < d$), leaving only face $d$ to contribute.",
+    "mathContext": "Sperner's original 1928 condition: label each vertex of a triangulated simplex with a vertex label, such that each vertex on a face of the original simplex receives a label from that face. Our formulation is equivalent: \"color $k$ forbidden on face $k$\" means any vertex on face $k$ must have a color from $\\{0,\\ldots,d\\} \\setminus \\{k\\}$, which are exactly the vertex labels of face $k$.",
+    "significance": "critical",
+    "relatedConcepts": ["Sperner's condition", "boundary conditions", "KKM lemma"],
+    "prerequisites": ["onFace definition", "simplex face structure"]
+  },
+  {
+    "id": "ann-spn-triangulation-overview",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 93, "endLine": 98 },
+    "type": "insight",
+    "title": "Why Abstract? Decoupling Geometry from Combinatorics",
+    "content": "The proof is formalized against an *abstract* triangulation interface rather than a concrete triangulation (like Freudenthal or Kuhn). This is a deliberate design choice with three benefits:\n\n1. **Modularity**: Anyone can instantiate `SpernerTriangulation` with their favorite concrete triangulation and immediately inherit the full Sperner parity theorem.\n2. **Mathlib-readiness**: Mathlib's simplicial complex library is still evolving. An abstract interface avoids coupling to unstable API.\n3. **Clarity**: The proof reveals exactly which properties of the triangulation are actually *used* -- the five axioms are necessary and sufficient. No hidden geometric assumptions.\n\nThis is the software engineering principle of **programming to an interface, not an implementation**, applied to formal mathematics.",
+    "significance": "key",
+    "relatedConcepts": ["abstract interfaces", "Mathlib design patterns", "modularity in formalization"],
+    "prerequisites": ["simplicial complexes"]
+  },
+  {
+    "id": "ann-spn-triangulation-fields",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 99, "endLine": 118 },
+    "type": "definition",
+    "title": "SpernerTriangulation: The Five Axioms",
+    "content": "The `SpernerTriangulation d N` structure bundles a simplex type with five axioms. Here is what each axiom says and why the proof needs it:\n\n1. **adj_symm** (line 106): If room A sees room B through a wall, then B sees A through the same wall. Needed for: the adjacency map is an *involution* (interior door pairing).\n\n2. **adj_vertices** (lines 107-109): Adjacent rooms share the same set of vertices on their common wall. Needed for: `door_transfer` -- if one side of a wall is a door, so is the other.\n\n3. **adj_ne** (line 110): Adjacent rooms are distinct ($s \\neq s'$). Needed for: the adjacency involution is *fixed-point-free* (no room is adjacent to itself).\n\n4. **adj_unique_facet** (lines 111-116): Two walls of the same room cannot both lead to the same neighbor. Needed for: uniqueness arguments in path-following (Kuhn's algorithm). Not strictly needed for the parity result but important for constructive versions.\n\n5. **boundary_face** (lines 117-118): If a wall has no neighbor (it is on the boundary), then all vertices of that wall lie on the corresponding face of the big simplex. Needed for: `no_boundary_doors_face_lt` -- connecting the Sperner condition to boundary door elimination.",
+    "mathContext": "These axioms are satisfied by all standard triangulations: Freudenthal, Kuhn, barycentric subdivision, and any simplicial complex that is a triangulation of $\\Delta^d$. The `adj` map encodes the dual graph of the triangulation restricted to $(d-1)$-faces.",
+    "significance": "key",
+    "relatedConcepts": ["simplicial complex axioms", "dual graph", "facet adjacency"],
+    "prerequisites": ["Option type for partial maps", "simplicial complexes"]
+  },
+  {
+    "id": "ann-spn-isfc-def",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 130, "endLine": 131 },
+    "type": "definition",
+    "title": "IsFC: Fully Colored = Surjective Coloring",
+    "content": "A simplex $s$ is **fully colored** (FC) if the composition $c \\circ \\text{vertices}_s : \\text{Fin}(d+1) \\to \\text{Fin}(d+1)$ is **surjective** -- every color appears at least once among the $d+1$ vertices.\n\nSince the domain and codomain are the same finite set $\\text{Fin}(d+1)$, surjectivity is equivalent to injectivity (bijectivity). This means each color appears *exactly once*. FC simplices are the \"rainbow\" simplices -- every color represented exactly once.\n\nThese are what Sperner's lemma guarantees the existence of.",
+    "significance": "key",
+    "relatedConcepts": ["surjectivity", "fully colored simplex", "rainbow simplex"],
+    "prerequisites": ["Function.Surjective"]
+  },
+  {
+    "id": "ann-spn-isdoor-def",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 134, "endLine": 137 },
+    "type": "definition",
+    "title": "isDoorAt: The Door Metaphor",
+    "content": "A facet $(s, k)$ is a **door** if, after removing vertex $k$, the remaining $d$ vertices carry all $d$ \"small\" colors $\\{0, 1, \\ldots, d-1\\}$.\n\n**The door metaphor**: Imagine each $d$-simplex as a room with $d+1$ walls. Wall $k$ is the facet obtained by dropping vertex $k$. A wall is a \"door\" if the colors on it form a complete set $\\{0, \\ldots, d-1\\}$. You can walk through doors from room to room.\n\nFormally: `isDoorAt c K s k` iff $\\forall j < d, \\exists i \\neq k : c(v_{s,i}) = j$. The color $d$ is *not* required -- only colors $0$ through $d-1$ must appear.\n\nThe use of `Fin.castSucc j` embeds $j : \\text{Fin}(d)$ into $\\text{Fin}(d+1)$, since colors live in the larger type.",
+    "significance": "key",
+    "relatedConcepts": ["facet", "door counting", "Fin.castSucc embedding"],
+    "prerequisites": ["Fin.castSucc"]
+  },
+  {
+    "id": "ann-spn-door-insight",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 134, "endLine": 137 },
+    "type": "insight",
+    "title": "Why Doors? The Double-Counting Engine",
+    "content": "The door concept is the engine of the entire proof. Here is the key insight:\n\n**Each FC simplex has exactly 1 door.** If all $d+1$ colors appear (FC), then exactly one vertex has color $d$. Removing that vertex leaves colors $\\{0,\\ldots,d-1\\}$ -- one door. Removing any other vertex loses a color from $\\{0,\\ldots,d-1\\}$ -- not a door.\n\n**Each non-FC simplex has 0 or 2 doors.** If not all colors appear, the analysis splits into subcases, but the door count is always even.\n\nSo: $\\sum_s |\\text{doors}(s)| \\equiv |\\text{FC}| \\pmod{2}$. But each interior door is shared by two rooms, contributing 2 to the sum. So interior doors cancel, and only boundary doors determine the parity of $|\\text{FC}|$.",
+    "significance": "critical",
+    "relatedConcepts": ["double counting", "parity", "Euler characteristic"],
+    "prerequisites": ["pigeonhole principle"]
+  },
+  {
+    "id": "ann-spn-decidable-instances",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 139, "endLine": 146 },
+    "type": "tactic",
+    "title": "Decidable Instances for IsFC and isDoorAt",
+    "content": "These instances make `IsFC` and `isDoorAt` computationally decidable, which is required for `Finset.filter`.\n\nThe proofs are remarkably short: `unfold` the definition, then `exact inferInstance`. This works because:\n- `IsFC` unfolds to `Function.Surjective (c . K.vertices s)`, and Lean can infer decidability of surjectivity between finite types.\n- `isDoorAt` unfolds to a universal quantifier over `Fin d` with existential quantifiers inside, and Lean can decide bounded quantifiers over finite types automatically.\n\nWithout these instances, you could not write `Finset.univ.filter (fun s => IsFC c K s)` -- Lean would refuse to compile because it cannot verify that the filter predicate is computable.",
+    "significance": "supporting",
+    "relatedConcepts": ["Decidable", "Finset.filter", "inferInstance"],
+    "prerequisites": ["typeclass inference"]
+  },
+  {
+    "id": "ann-spn-fpf-invol-statement",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 152, "endLine": 158 },
+    "type": "theorem",
+    "title": "even_card_fpf_invol: Fixed-Point-Free Involutions Pair Elements",
+    "content": "**Statement**: If $f : S \\to S$ satisfies:\n- $f(f(x)) = x$ for all $x \\in S$ (involution)\n- $f(x) \\in S$ for all $x \\in S$ (closure)\n- $f(x) \\neq x$ for all $x \\in S$ (no fixed points)\n\nthen $|S|$ is even.\n\n**Physics analogy**: This is **charge conjugation pairing**. If every particle in a set has a distinct antiparticle also in the set (with $C^2 = 1$ and no self-conjugate particles), then the set has even size -- particles come in conjugate pairs.\n\nThis abstract lemma is the mathematical core that powers `interior_doors_even`: the adjacency map is the \"charge conjugation\" that pairs interior doors.",
+    "mathContext": "The result is elementary but surprisingly fiddly to formalize because you need to remove two elements from a finset and show the involution restricts cleanly. The proof uses strong induction on finset cardinality.",
+    "significance": "key",
+    "relatedConcepts": ["involution", "orbit-stabilizer", "charge conjugation"],
+    "prerequisites": ["Finset.strongInduction"]
+  },
+  {
+    "id": "ann-spn-strong-induction",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 159, "endLine": 162 },
+    "type": "tactic",
+    "title": "Strong Induction and the Base Case",
+    "content": "The proof uses `Finset.strongInduction` -- induction on finset cardinality where the inductive hypothesis is available for *all* strictly smaller finsets, not just the predecessor.\n\n- `induction S using Finset.strongInduction` introduces the strong induction principle\n- `| H S ih =>` names the inductive case (with `ih` giving the hypothesis for all $S' \\subsetneq S$)\n- `by_cases hempty : S = \\emptyset` handles the base case: the empty set trivially has even cardinality (0 is even)\n\nStrong induction is necessary here because we remove *two* elements at once ($x$ and $f(x)$), so the cardinality drops by 2, not 1. Ordinary induction would not give us the hypothesis for $|S| - 2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["strong induction", "well-founded recursion", "Finset.strongInduction"],
+    "prerequisites": ["induction principles in Lean"]
+  },
+  {
+    "id": "ann-spn-pairing-step",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 163, "endLine": 178 },
+    "type": "insight",
+    "title": "The Pairing Step: Pick x, Set y = f(x), Remove Both",
+    "content": "This is the heart of the involution parity proof:\n\n1. `obtain <x, hx> := nonempty_of_ne_empty hempty` -- pick any $x \\in S$\n2. `set y := f x` -- define $y = f(x)$\n3. `have hxy : x \\neq y` -- $x \\neq y$ because $f$ has no fixed points\n4. `set S' := (S.erase y).erase x` -- remove both $x$ and $y$\n5. Prove $|S| = |S'| + 2$ using `card_erase_of_mem` twice\n\nThe key card-counting step uses `omega` to combine:\n- $|S \\setminus \\{y\\}| = |S| - 1$ (since $y \\in S$)\n- $|S'| = |S \\setminus \\{y\\}| - 1$ (since $x \\in S \\setminus \\{y\\}$)\n- Therefore $|S| = |S'| + 2$\n\nThen by induction $|S'|$ is even, so $|S| = |S'| + 2$ is even. The `even.add` combinator handles $\\text{Even}(n) \\implies \\text{Even}(n + 2)$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.erase", "cardinality arithmetic", "set and obtain tactics"],
+    "prerequisites": ["Finset.card_erase_of_mem"]
+  },
+  {
+    "id": "ann-spn-restrict-to-S-prime",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 180, "endLine": 199 },
+    "type": "tactic",
+    "title": "Restricting f to S': Why f(a) Avoids x and y",
+    "content": "The most delicate part: showing $f$ maps $S'$ to $S'$. For $a \\in S' = S \\setminus \\{x, y\\}$, we need $f(a) \\notin \\{x, y\\}$:\n\n**$f(a) \\neq x$**: Suppose $f(a) = x$. Then $f(f(a)) = f(x) = y$. But $f(f(a)) = a$ (involution). So $a = y$, contradicting $a \\notin \\{y\\}$.\n\n**$f(a) \\neq y$**: Suppose $f(a) = y = f(x)$. Then $f(f(a)) = f(f(x)) = x$. But $f(f(a)) = a$ (involution). So $a = x$, contradicting $a \\notin \\{x\\}$.\n\nThis is a clean **orbit argument**: the orbit of $x$ under $f$ is $\\{x, y\\}$, and since $f$ is an involution, no element outside this orbit can map into it.\n\nThe `rw [h] at hinv_a` tactic substitutes the assumption ($f(a) = x$ or $f(a) = y$) into the involution equation $f(f(a)) = a$ to derive the contradiction.",
+    "significance": "supporting",
+    "relatedConcepts": ["orbit of an involution", "restriction of functions", "proof by contradiction"],
+    "prerequisites": ["involution property", "Finset.mem_erase"]
+  },
+  {
+    "id": "ann-spn-door-parity-all-small",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 207, "endLine": 210 },
+    "type": "theorem",
+    "title": "door_parity_all_small: When d+1 Pigeons Fill d Holes",
+    "content": "**Statement**: If $f : \\text{Fin}(d+1) \\to \\text{Fin}(d)$ is surjective (all $d$ colors appear among $d+1$ values), then the number of \"good removal positions\" is **exactly 2** (hence even).\n\nThis is the **pigeonhole principle in action**: $d+1$ values mapping onto $d$ targets means exactly one target is hit twice, and the two positions that hit it are the two doors.\n\n**Physics analogy**: If you have $d+1$ particles in $d$ energy levels (all levels occupied), exactly one level has a doubly-occupied state. The two particles in that level are your two doors.",
+    "mathContext": "The excess sum $\\sum_c (|f^{-1}(c)| - 1) = (d+1) - d = 1$ forces exactly one color $c_0$ to have $|f^{-1}(c_0)| = 2$ and all others to have $|f^{-1}(c)| = 1$. The two doors are the two preimages of $c_0$.",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole principle", "fiber cardinality", "surjection from Fin(d+1) to Fin(d)"],
+    "prerequisites": ["Finset.card_biUnion", "pigeonhole principle"]
+  },
+  {
+    "id": "ann-spn-excess-sum",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 229, "endLine": 238 },
+    "type": "insight",
+    "title": "Excess Sum = 1: The Pigeonhole Equation",
+    "content": "The key equation: $\\sum_{c=0}^{d-1} (|f^{-1}(c)| - 1) = 1$.\n\nSince $|f^{-1}(c)| \\geq 1$ for all $c$ (surjectivity), each term is non-negative. The total sum of fiber sizes is $\\sum |f^{-1}(c)| = d + 1$ (every element lands somewhere), so the excess is $(d+1) - d = 1$.\n\nThe proof computes this via `Finset.sum_add_distrib` (split sum of $(n-1) + 1$ into sum of $(n-1)$ plus sum of $1$'s) and the fiber-union identity `htotal` which shows $\\bigsqcup_c f^{-1}(c) = \\text{Fin}(d+1)$. The `omega` tactic handles the final arithmetic.\n\nThis is the quantitative heart of the pigeonhole argument: not just \"some fiber has $\\geq 2$ elements\" but \"the total excess is exactly 1, so exactly one fiber has one extra element.\"",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.sum_add_distrib", "fiber decomposition", "pigeonhole quantitative form"],
+    "prerequisites": ["Finset.card_biUnion for disjoint unions"]
+  },
+  {
+    "id": "ann-spn-find-doubly-used",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 239, "endLine": 272 },
+    "type": "tactic",
+    "title": "Finding the Doubly-Used Color",
+    "content": "From the excess sum = 1, we extract the unique doubly-used color $c_0$:\n\n1. **Existence**: If no color had excess $> 0$, the sum would be 0, contradicting excess = 1 (line 243-246).\n2. **$|f^{-1}(c_0)| = 2$**: If the excess were $\\geq 2$, then $c_0$ alone would contribute $\\geq 2$ to the sum, but the total is 1 (lines 249-256).\n3. **Uniqueness**: Any other color $c \\neq c_0$ with $|f^{-1}(c)| \\geq 2$ would add another $\\geq 1$ to the excess, making the sum $\\geq 2$. The proof bounds $\\sum F \\geq F(c_0) + F(c) \\geq 1 + 1 = 2 > 1$ using `Finset.sum_pair` (lines 257-272).\n\nThe heavy use of `omega` here solves the natural-number inequalities automatically. The `let F` binding names the excess function to make the proof readable.",
+    "significance": "supporting",
+    "relatedConcepts": ["uniqueness arguments", "Finset.single_le_sum", "omega tactic"],
+    "prerequisites": ["Finset.sum_le_sum_of_subset"]
+  },
+  {
+    "id": "ann-spn-door-set-k1-k2",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 282, "endLine": 318 },
+    "type": "tactic",
+    "title": "Door Set = {k1, k2}: Identifying the Two Doors",
+    "content": "The proof shows the set of door positions is exactly $\\{k_1, k_2\\}$ -- the two preimages of the doubly-used color $c_0$.\n\n**Forward direction** (lines 288-303): If $k$ is a door, then removing $k$ still covers all colors $\\{0,\\ldots,d-1\\}$. In particular, color $f(k)$ must be covered by some $i \\neq k$. If $f(k) \\neq c_0$, then $f(k)$ has only one preimage (uniqueness from the excess argument), so the only preimage is $k$ itself -- impossible since $i \\neq k$ also maps to $f(k)$. So $f(k) = c_0$, meaning $k \\in \\{k_1, k_2\\}$.\n\n**Reverse direction** (lines 304-318): If $k = k_1$, then $f(k_1) = c_0$, and any color $j \\neq c_0$ has a unique preimage $\\neq k_1$ (since $f(k_1) = c_0 \\neq j$). For $j = c_0$, use $k_2$ as witness. Symmetric argument for $k = k_2$.\n\nFinally, `Finset.card_pair hne12` gives $|\\{k_1, k_2\\}| = 2$, which is even.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.card_eq_two", "Finset.card_pair"],
+    "prerequisites": ["Finset.card_eq_one for unique preimage"]
+  },
+  {
+    "id": "ann-spn-abstract-door-statement",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 323, "endLine": 327 },
+    "type": "theorem",
+    "title": "abstract_door_parity: The Per-Simplex Parity Master Theorem",
+    "content": "**Statement**: For any function $f : \\text{Fin}(d+1) \\to \\text{Fin}(d+1)$, the number of door positions modulo 2 equals 1 if $f$ is surjective, 0 otherwise.\n\nThis captures the key fact: **FC simplices contribute 1 door (odd), non-FC simplices contribute 0 or 2 doors (even)**.\n\nThe proof splits into four cases based on whether $f$ is surjective and whether color $d$ appears in the image.",
+    "mathContext": "This is the fundamental per-simplex counting lemma. When applied with $f = c \\circ \\text{vertices}_s$, it gives the door count parity for each simplex $s$. Summing over all simplices and taking mod 2 gives the FC parity theorem.",
+    "significance": "key",
+    "relatedConcepts": ["surjectivity detection", "case analysis on image"],
+    "prerequisites": ["door_parity_all_small"]
+  },
+  {
+    "id": "ann-spn-case1-surjective",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 328, "endLine": 351 },
+    "type": "tactic",
+    "title": "Case 1: f Surjective -- Exactly 1 Door",
+    "content": "When $f$ is surjective (FC simplex), the proof finds exactly one door:\n\n1. Since $f : \\text{Fin}(d+1) \\to \\text{Fin}(d+1)$ is surjective between equal finite types, it is also **injective** (`Finite.injective_iff_surjective`).\n2. There exists a unique $k_0$ with $f(k_0) = d$ (the vertex carrying the \"extra\" color).\n3. The door set is exactly $\\{k_0\\}$:\n   - $k_0$ is a door: removing it, the remaining $d$ values biject onto $\\{0,\\ldots,d-1\\}$.\n   - No other $k$ is a door: if $k \\neq k_0$ then $f(k) \\neq d$, so $f(k) \\in \\{0,\\ldots,d-1\\}$. The door at $k$ would require another index mapping to $f(k)$, but injectivity prevents that.\n\nThe result: $|\\text{doors}| = 1$, which is odd. $1 \\% 2 = 1$ matches `if True then 1`.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finite.injective_iff_surjective", "bijection between equal finite types"],
+    "prerequisites": ["injectivity-surjectivity equivalence for finite types"]
+  },
+  {
+    "id": "ann-spn-cases2-4-nonsurj",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 352, "endLine": 393 },
+    "type": "tactic",
+    "title": "Cases 2-4: f Not Surjective -- 0 or 2 Doors",
+    "content": "When $f$ is not surjective (non-FC simplex), three subcases arise:\n\n**Case 2** (line 353): Color $d$ is in the image but some color $j_0 < d$ is missing. Then no removal can produce all of $\\{0,\\ldots,d-1\\}$ -- 0 doors.\n\n**Case 3** (line 385): Color $d$ is *not* in the image, but the restricted map $g : \\text{Fin}(d+1) \\to \\text{Fin}(d)$ is not surjective. Same conclusion: some color never appears, so 0 doors.\n\n**Case 4** (line 372): Color $d$ is not in the image, and $g$ *is* surjective. This is the interesting case: $d+1$ values all land in $\\{0,\\ldots,d-1\\}$ and cover every target. By `door_parity_all_small`, exactly 2 doors.\n\nIn all cases the door count is even: $0 \\% 2 = 0$ and $2 \\% 2 = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["case analysis", "image of a function"],
+    "prerequisites": ["door_parity_all_small for Case 4"]
+  },
+  {
+    "id": "ann-spn-adjmap",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 399, "endLine": 404 },
+    "type": "definition",
+    "title": "adjMap: The Adjacency Involution",
+    "content": "The adjacency map sends a facet $(s, k)$ to its neighbor $(s', k')$ if one exists, or to itself if the facet is on the boundary.\n\nThis is a total function (no `Option`) obtained by \"defaulting\" boundary facets to themselves. On interior facets, it is a fixed-point-free involution. On boundary facets, it is the identity (a fixed point).\n\nThe `match` expression pattern-matches on `K.adj p.1 p.2`: if `some (s', k')`, return the neighbor; if `none`, return `p` itself.\n\n**Physics analogy**: Think of `adjMap` as a **reflection operator** on the space of facets. Interior facets get reflected to their partner across the shared wall. Boundary facets are \"reflected back\" to themselves -- like a mirror at the edge of the domain.",
+    "significance": "supporting",
+    "relatedConcepts": ["involution", "reflection operator", "Option.getD"],
+    "prerequisites": ["pattern matching on Option"]
+  },
+  {
+    "id": "ann-spn-door-transfer",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 407, "endLine": 425 },
+    "type": "lemma",
+    "title": "door_transfer: Adjacent Facets Share Door Status",
+    "content": "If facets $(s, k)$ and $(s', k')$ are adjacent (share a $(d-1)$-face), then one is a door iff the other is. The proof:\n\n1. `adj_vertices` gives us that the vertex sets $\\{v_s(i) : i \\neq k\\}$ and $\\{v_{s'}(i) : i \\neq k'\\}$ are equal.\n2. The door condition only depends on the colors of these vertices.\n3. So if colors $\\{0,\\ldots,d-1\\}$ all appear on one side, they all appear on the other.\n\nThe helper `door_transfer_one_dir` proves one direction: given the vertex set equality and a door on $(s,k)$, construct a door on $(s',k')$ by finding each required color among the shared vertices.\n\n**Insight**: This is why the adjacency axiom `adj_vertices` exists -- it is precisely the condition needed to transfer the door predicate across shared walls.",
+    "significance": "key",
+    "relatedConcepts": ["shared facet", "vertex set equality", "predicate transfer"],
+    "prerequisites": ["adj_vertices axiom", "Finset.mem_image"]
+  },
+  {
+    "id": "ann-spn-interior-doors-even",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 427, "endLine": 431 },
+    "type": "theorem",
+    "title": "interior_doors_even: The Gauge Cancellation Theorem",
+    "content": "**Statement**: The set of interior door pairs $\\{(s, k) : \\text{isDoor}(s,k) \\wedge \\text{adj}(s,k) \\neq \\text{none}\\}$ has **even cardinality**.\n\n**Physics analogy**: This is **gauge cancellation**. Each interior door connects two rooms. If you walk from room A through a door into room B, that is the same door seen from both sides. The adjacency involution pairs these views, so they cancel in the parity count. Only boundary doors -- those with no partner on the other side -- can contribute odd parity.\n\nThe proof applies `even_card_fpf_invol` with $f = \\text{adjMap}$, verifying three properties:\n1. Involution (from `adj_symm`)\n2. Closure (from `door_transfer`)\n3. Fixed-point-free (from `adj_ne`)",
+    "mathContext": "This is the topological core of the argument: interior $(d-1)$-faces pair up in any triangulation. The even-count result is analogous to Stokes' theorem: interior contributions cancel, leaving only the boundary.",
+    "significance": "critical",
+    "relatedConcepts": ["gauge cancellation", "interior pairing", "Stokes' theorem analogy"],
+    "prerequisites": ["even_card_fpf_invol", "adjMap", "door_transfer"]
+  },
+  {
+    "id": "ann-spn-involution-proof",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 435, "endLine": 445 },
+    "type": "tactic",
+    "title": "Proving adjMap is an Involution",
+    "content": "The involution proof: $\\text{adjMap}(\\text{adjMap}(s,k)) = (s,k)$ for interior doors.\n\nTactic walkthrough:\n1. Extract from the filter: `(_, hadj_ne) := hp` gives `isDoorAt` and `adj \\neq none`\n2. Case split on `K.adj p.1 p.2` -- the `none` case is impossible (contradicts `hadj_ne`)\n3. In the `some (s', k')` case: `K.adj_symm` gives `adj(s', k') = some (s, k)`\n4. `simp only [adjMap, hadj_eq, hadj_back]` unfolds both applications of `adjMap` and substitutes the adjacency equations, reducing the goal to `(s, k) = (s, k)`\n\nThe key line is `K.adj_symm p.1 p.2 s' k' hadj_eq` which says: if going from $(s,k)$ leads to $(s',k')$, then going from $(s',k')$ leads back to $(s,k)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["adj_symm axiom", "involution verification"],
+    "prerequisites": ["pattern matching on Option"]
+  },
+  {
+    "id": "ann-spn-fpf-proof",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 459, "endLine": 470 },
+    "type": "tactic",
+    "title": "Proving adjMap is Fixed-Point-Free",
+    "content": "The fixed-point-free proof: $\\text{adjMap}(s,k) \\neq (s,k)$ for interior doors.\n\n1. Extract `hadj_ne` from the filter (adj is not none)\n2. Case split: `none` is impossible; in `some (s', k')` case:\n3. Unfold `adjMap`: need to show $(s', k') \\neq (s, k)$\n4. Assume for contradiction `heq : (s', k') = (s, k)`, then `congr_arg Prod.fst heq` gives $s' = s$\n5. But `K.adj_ne` says adjacent simplices are distinct: $s \\neq s'$. Contradiction.\n\nThe `adj_ne` axiom is used *only here* in the entire proof. This is why it exists in the `SpernerTriangulation` structure -- without it, the adjacency map could have fixed points, and the even-cardinality argument would fail.",
+    "significance": "supporting",
+    "relatedConcepts": ["adj_ne axiom", "fixed-point-free verification"],
+    "prerequisites": ["Prod.fst projection"]
   },
   {
     "id": "ann-spn-no-bdry-doors",
     "proofId": "sperner-ndim",
-    "range": {
-      "startLine": 479,
-      "endLine": 506
-    },
+    "range": { "startLine": 479, "endLine": 493 },
     "type": "theorem",
-    "title": "no_boundary_doors_face_lt: Sperner Kills All Non-Face-d Boundary Doors",
-    "content": "**no_boundary_doors_face_lt**: For a Sperner coloring $c$ and a boundary facet on face $k < d$ (i.e., $\\text{adj}(s,k) = \\text{none}$), there is no door at position $k$. The proof: a door at $k < d$ requires color $k$ to appear among the non-$k$ vertices. But `boundary_face` says all non-$k$ vertices lie on face $k$ of the simplex, and the Sperner condition forbids color $k$ on face $k$. Contradiction. **Corollary** (boundary_door_is_last_face, line 491): every boundary door has $k = d$.",
-    "mathContext": "The Sperner condition `IsSperner c` is: $\\forall v, k : \\text{onFace}(v, k) \\Rightarrow c(v) \\neq k$. The door condition at $k < d$ requires $\\exists i \\neq k : c(v_{s,i}) = k$ (color $k$ appears). The `boundary_face` axiom gives $\\text{onFace}(v_{s,j}, k)$ for all $j \\neq k$ when $\\text{adj}(s,k) = \\text{none}$. So every candidate witness $i \\neq k$ has $v_{s,i}$ on face $k$, where Sperner forbids color $k$. The Lean proof uses `Fin.ext rfl` to show $\\text{castSucc}\\langle k, h_k \\rangle = k$ as a Fin element, connecting the door condition's color target to the Sperner condition's face index.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Sperner boundary condition",
-      "boundary_face axiom",
-      "IsSperner predicate",
-      "onFace definition",
-      "Sperner coloring motivation"
-    ],
-    "prerequisites": [
-      "IsSperner at line 86",
-      "onFace definition at line 76",
-      "boundary_face axiom of SpernerTriangulation"
-    ]
+    "title": "no_boundary_doors_face_lt: Sperner Kills Boundary Doors",
+    "content": "**Statement**: For a Sperner coloring and a boundary facet on face $k < d$, there is **no door** at position $k$.\n\nThis is where the Sperner condition does its work. The proof is a beautiful contradiction:\n\n1. Assume there IS a door at boundary position $k$ (for contradiction)\n2. The door condition requires color $k$ to appear among the non-$k$ vertices: $\\exists i \\neq k : c(v_{s,i}) = k$\n3. But `boundary_face` says all non-$k$ vertices lie on face $k$ of the big simplex\n4. The Sperner condition says: on face $k$, color $k$ is forbidden\n5. Contradiction: vertex $v_{s,i}$ is on face $k$ (step 3) but has color $k$ (step 2)\n\n**Physics analogy**: The Sperner condition is a Dirichlet BC that \"zeroes out\" color $k$ on face $k$. A door requires color $k$ to be nonzero. BC kills the door.",
+    "mathContext": "The technical subtlety: the door condition uses `Fin.castSucc <k, hk>` to embed $k < d$ into $\\text{Fin}(d+1)$, which happens to equal $k$ as a `Fin` element. The proof needs `Fin.ext rfl` to establish this identity.",
+    "significance": "critical",
+    "relatedConcepts": ["Sperner condition in action", "boundary_face axiom", "proof by contradiction"],
+    "prerequisites": ["IsSperner", "boundary_face", "onFace"]
   },
   {
-    "id": "ann-spn-parity-theorem",
+    "id": "ann-spn-contradiction-insight",
     "proofId": "sperner-ndim",
-    "range": {
-      "startLine": 601,
-      "endLine": 642
-    },
-    "type": "theorem",
-    "title": "sperner_parity: The Sperner Parity Theorem",
-    "content": "**sperner_parity**: The number of fully-colored simplices has the same parity as the number of boundary doors on face $d$: $$|FC| \\equiv |\\{(s,k) : \\text{door}(s,k) \\wedge \\text{adj}=\\text{none} \\wedge k = d\\}| \\pmod{2}.$$ This is the **main quantitative result** of the file \u2014 Sperner's lemma (existence of an FC simplex) follows when the boundary count is odd.",
-    "mathContext": "The `calc` proof chain (lines 626\u2013642): $$|FC| \\equiv \\sum_s |\\text{doors}(s)| \\equiv |\\text{all doors}| \\equiv |\\text{interior}| + |\\text{boundary}| \\equiv |\\text{boundary on face }d| \\pmod{2}$$ Step (1): `per_simplex_door_parity` (each FC contributes 1, non-FC contributes even). Step (2): `card_doors_eq_sum` (product counting: total doors = sum of per-simplex doors). Step (3): `doors_partition` (interior $\\cup$ boundary, disjoint). Step (4): $|\\text{interior}|$ even from `interior_doors_even`, using `hm` to write $|\\text{interior}| = m + m$. Step (5): `boundary_doors_eq_face_d` (Sperner kills all boundary doors except on face $d$). The `sum_mod_congr` helper (line 533) handles the sum-mod manipulation in step (1).",
-    "significance": "key",
-    "relatedConcepts": [
-      "door counting double-counting parity",
-      "per_simplex_door_parity",
-      "interior_doors_even",
-      "boundary analysis",
-      "calc block proof strategy"
-    ],
-    "prerequisites": [
-      "all preceding lemmas in the file",
-      "Nat.add_mod and omega for modular arithmetic",
-      "sum_mod_congr helper lemma"
-    ]
+    "range": { "startLine": 483, "endLine": 493 },
+    "type": "insight",
+    "title": "The Sperner-Meets-Boundary Contradiction",
+    "content": "This is the **aha moment** of the boundary analysis. Two facts collide:\n\n- **Door says**: \"Color $k$ MUST appear on the shared wall\" (door condition)\n- **Sperner says**: \"Color $k$ CANNOT appear on face $k$\" (boundary condition)\n- **Boundary says**: \"The shared wall IS on face $k$\" (boundary_face axiom)\n\nMUST + CANNOT = contradiction. No boundary door can exist on face $k < d$.\n\nBut notice the escape hatch: face $d$ is defined by $\\sum x_i = N$, not by any single coordinate being zero. The Sperner condition at face $d$ forbids color $d$. But a door only requires colors $\\{0,\\ldots,d-1\\}$ -- it never asks for color $d$! So the Sperner condition on face $d$ does NOT kill doors there. This is why face $d$ boundary doors survive.",
+    "significance": "critical",
+    "relatedConcepts": ["why face d is special", "door condition vs Sperner condition"],
+    "prerequisites": ["isDoorAt uses Fin.castSucc (colors 0..d-1 only)"]
   },
   {
-    "id": "ann-spn-main",
+    "id": "ann-spn-bdry-door-last-face",
     "proofId": "sperner-ndim",
-    "range": {
-      "startLine": 654,
-      "endLine": 667
-    },
+    "range": { "startLine": 497, "endLine": 506 },
     "type": "theorem",
-    "title": "sperner_ndim: n-Dimensional Sperner's Lemma",
-    "content": "**sperner_ndim**: For any abstract triangulation $K$ and Sperner coloring $c$, if the number of boundary doors on face $d$ is odd, then a fully-colored simplex exists. The proof is three lines: odd boundary doors $\\Rightarrow |FC| \\equiv 1 \\pmod{2}$ (by `sperner_parity`) $\\Rightarrow |FC| \\geq 1$ $\\Rightarrow$ FC simplex exists. The **boundary-odd hypothesis** is the inductive input: for concrete triangulations, dischargeable by induction on $d$ (base case $d=0$: trivially FC).",
-    "mathContext": "The theorem takes `hbdry : Odd (|boundary doors on face d|)` as a hypothesis rather than proving it, cleanly separating the abstract parity proof from the triangulation-specific inductive argument. In practice: for the Freudenthal triangulation, the boundary face $d$ restriction is a lower-dimensional Freudenthal triangulation, and boundary door oddness follows by induction. The abstraction is suitable for **Mathlib contribution** (mathlib4#25231): any library that constructs a `SpernerTriangulation` instance immediately inherits the Sperner parity theorem for free. **Kuhn's path-following (1960)** makes the proof constructive: starting at any boundary door on face $d$, follow the unique opposite door inside each simplex to reach an FC simplex. In Lean, `Finset.card_pos` converts the odd (hence nonzero) cardinality to nonemptiness.",
+    "title": "boundary_door_is_last_face: All Boundary Doors Live on Face d",
+    "content": "**Corollary**: Every boundary door has position $k = d$ (the last face).\n\nThe proof: assume $k \\neq d$, then $k < d$ (since $k \\in \\text{Fin}(d+1)$ and $k \\neq d$ forces $k < d$). Apply `no_boundary_doors_face_lt` to get a contradiction.\n\nThe `by_contra` + `Nat.lt_or_eq_of_le` pattern extracts $k < d$ from $k \\leq d$ and $k \\neq d$. The `Fin.ext h` converts a value-level equality to a `Fin`-level equality.\n\nThis corollary is the bridge to the parity theorem: since only face-$d$ boundary doors exist, the total boundary door count equals the face-$d$ boundary door count.",
     "significance": "key",
-    "relatedConcepts": [
-      "Sperner's lemma n-dimensional",
-      "boundary-door-oddness inductive hypothesis",
-      "Brouwer fixed point theorem",
-      "PPAD complexity",
-      "constructive path-following proof (Kuhn 1960)",
-      "Mathlib contribution mathlib4#25231"
-    ],
-    "prerequisites": [
-      "sperner_parity at line 595",
-      "Nat.odd_iff for modular oddness",
-      "Finset.card_pos for nonemptiness from cardinality"
-    ]
+    "relatedConcepts": ["Fin.last d", "boundary door classification"],
+    "prerequisites": ["no_boundary_doors_face_lt"]
+  },
+  {
+    "id": "ann-spn-per-simplex-door-parity",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 514, "endLine": 529 },
+    "type": "lemma",
+    "title": "per_simplex_door_parity: Connecting Door Count to FC Status",
+    "content": "This lemma applies `abstract_door_parity` to each individual simplex $s$:\n$$|\\{k : \\text{isDoor}(s,k)\\}| \\% 2 = \\begin{cases} 1 & \\text{if IsFC}(s) \\\\ 0 & \\text{otherwise}\\end{cases}$$\n\nThe proof instantiates `abstract_door_parity` with $f = c \\circ \\text{vertices}_s$ and shows:\n1. The filter predicate for doors matches (definitional equality via `rfl`)\n2. `IsFC c K s` is the same as surjectivity of $c \\circ \\text{vertices}_s$ (definitional equality)\n\nThe `convert h using 2` tactic handles the minor mismatch between Decidable instances -- the filter sets are equal but use different decidability proofs.",
+    "significance": "supporting",
+    "relatedConcepts": ["abstract_door_parity instantiation", "convert tactic"],
+    "prerequisites": ["abstract_door_parity"]
+  },
+  {
+    "id": "ann-spn-sum-mod-congr",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 531, "endLine": 542 },
+    "type": "lemma",
+    "title": "sum_mod_congr: Parity Distributes Over Sums",
+    "content": "A helper lemma: if $a_i \\equiv b_i \\pmod{2}$ for all $i \\in S$, then $\\sum a_i \\equiv \\sum b_i \\pmod{2}$.\n\nProved by induction on the finset $S$ using `Finset.cons_induction`:\n- **Base**: empty sum, both sides are 0\n- **Step**: $(a_x + \\sum_{s} a_i) \\% 2 = (b_x + \\sum_{s} b_i) \\% 2$ follows from $a_x \\% 2 = b_x \\% 2$ and the inductive hypothesis, resolved by `omega`\n\nThis is needed because the main parity argument sums per-simplex door counts and needs to replace each with its FC indicator (0 or 1) modulo 2.",
+    "significance": "supporting",
+    "relatedConcepts": ["modular arithmetic", "Finset.cons_induction"],
+    "prerequisites": ["Finset induction", "omega tactic"]
+  },
+  {
+    "id": "ann-spn-card-doors-eq-sum",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 544, "endLine": 562 },
+    "type": "lemma",
+    "title": "card_doors_eq_sum: Product Counting (Total = Sum of Per-Simplex)",
+    "content": "The total number of door pairs equals the sum of per-simplex door counts:\n$$|\\{(s,k) : \\text{isDoor}(s,k)\\}| = \\sum_s |\\{k : \\text{isDoor}(s,k)\\}|$$\n\nThis is **product counting** (or \"double counting by rows\"): the set of door pairs $(s,k)$ in $\\text{Simplex} \\times \\text{Fin}(d+1)$ decomposes by its first coordinate.\n\nThe proof converts both sides to sums of indicator functions using `Finset.sum_ite`, then uses `Fintype.sum_prod_type'` to decompose the product-type sum into an iterated sum.\n\n**Physics analogy**: This is like computing the total energy of a system by summing the energy of each subsystem -- partition function factorization.",
+    "significance": "supporting",
+    "relatedConcepts": ["double counting", "product type decomposition", "indicator functions"],
+    "prerequisites": ["Fintype.sum_prod_type'", "Finset.sum_ite"]
+  },
+  {
+    "id": "ann-spn-doors-partition",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 564, "endLine": 582 },
+    "type": "lemma",
+    "title": "doors_partition: Interior + Boundary = Total",
+    "content": "Door pairs split cleanly into interior doors (adj $\\neq$ none) and boundary doors (adj = none):\n$$|\\text{all doors}| = |\\text{interior doors}| + |\\text{boundary doors}|$$\n\nThe proof uses `Finset.card_union_of_disjoint`:\n1. Show the union equals the full door set (each door is either interior or boundary, by `by_cases` on `adj = none`)\n2. Show disjointness: no door can be both interior ($\\neq$ none) and boundary ($=$ none)\n\nThis decomposition is the setup for the final parity argument: interior doors are even (by `interior_doors_even`), so the total has the same parity as the boundary doors.",
+    "significance": "supporting",
+    "relatedConcepts": ["disjoint union", "Finset.card_union_of_disjoint"],
+    "prerequisites": ["Finset.disjoint_left"]
+  },
+  {
+    "id": "ann-spn-bdry-doors-eq-face-d",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 585, "endLine": 595 },
+    "type": "lemma",
+    "title": "boundary_doors_eq_face_d: Sperner Reduces Boundary to Face d",
+    "content": "For Sperner colorings, the set of boundary doors equals the set of boundary doors on face $d$:\n$$\\{(s,k) : \\text{door} \\wedge \\text{bdry}\\} = \\{(s,k) : \\text{door} \\wedge \\text{bdry} \\wedge k = d\\}$$\n\nThe proof adds the condition $k = d$ using `boundary_door_is_last_face` (which showed all boundary doors have $k = d$). The forward direction adds the $k = d$ constraint; the reverse direction drops it.\n\nThis is the payoff of the boundary analysis: the Sperner condition has eliminated all boundary doors except those on face $d$, simplifying the final parity equation.",
+    "significance": "supporting",
+    "relatedConcepts": ["boundary_door_is_last_face", "set equality by ext"],
+    "prerequisites": ["boundary_door_is_last_face"]
+  },
+  {
+    "id": "ann-spn-parity-insight",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 597, "endLine": 604 },
+    "type": "insight",
+    "title": "Why Parity is the Right Tool",
+    "content": "The proof does not count FC simplices exactly -- it only tracks their count modulo 2. This is both a feature and a limitation:\n\n**Feature**: Parity arguments are robust. They do not require knowing the exact triangulation, only the axioms. Adding or removing pairs of FC simplices does not change the parity.\n\n**Limitation**: Parity only tells you the count is odd (hence $\\geq 1$). Stronger versions of Sperner's lemma give exact lower bounds or constructive paths.\n\n**Physics analogy**: This is like using a **topological invariant** (the winding number, or the Euler characteristic). You do not need to know the exact geometry -- only the topology matters. Parity mod 2 is the simplest such invariant, and it suffices to prove existence.\n\nThe statement `sperner_parity` is actually stronger than `sperner_ndim`: it gives the exact parity, not just existence. It is the quantitative backbone.",
+    "significance": "key",
+    "relatedConcepts": ["topological invariant", "mod-2 degree", "Euler characteristic"],
+    "prerequisites": ["modular arithmetic"]
+  },
+  {
+    "id": "ann-spn-parity-statement",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 601, "endLine": 604 },
+    "type": "theorem",
+    "title": "sperner_parity: FC Count Shares Parity with Boundary Doors",
+    "content": "**The Sperner Parity Theorem**:\n$$|\\{s : \\text{IsFC}(s)\\}| \\equiv |\\{(s,k) : \\text{isDoor}(s,k) \\wedge \\text{adj}(s,k) = \\text{none} \\wedge k = d\\}| \\pmod{2}$$\n\nThe number of fully-colored simplices has the same parity as the number of boundary doors on face $d$.\n\nThis is the **main quantitative result** of the entire file. The final theorem `sperner_ndim` is a trivial corollary: if the right side is odd, the left side is odd, hence nonzero, hence an FC simplex exists.",
+    "mathContext": "This parity identity is the $d$-dimensional generalization of the 1-dimensional observation: in a sequence of colored intervals on $[0,1]$, the number of color changes has the same parity as the boundary color difference. The proof generalizes this to arbitrary dimension via the door-counting double-counting argument.",
+    "significance": "critical",
+    "relatedConcepts": ["Sperner parity theorem", "FC count", "boundary door count"],
+    "prerequisites": ["all preceding lemmas"]
+  },
+  {
+    "id": "ann-spn-calc-ingredients",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 605, "endLine": 624 },
+    "type": "tactic",
+    "title": "Setting Up the calc Chain: Seven Ingredients",
+    "content": "Before the `calc` chain, the proof gathers seven key facts:\n\n1. `hper` -- per-simplex door parity (each FC contributes 1 mod 2, non-FC contributes 0)\n2. `hsum` -- sum of per-simplex door counts $\\equiv$ sum of FC indicators (mod 2), via `sum_mod_congr`\n3. `hfc_sum` -- sum of FC indicators = $|\\text{FC set}|$ (indicator sum = filter cardinality)\n4. `hdoor_sum` -- sum of per-simplex door counts = total door count (product counting)\n5. `hpart` -- total doors = interior doors + boundary doors (partition)\n6. `heven` / `hm` -- interior door count is even, written as $m + m$\n7. `hbdry_eq` -- boundary doors = boundary doors on face $d$ (Sperner kills the rest)\n\nEach `have` introduces a named hypothesis. The `obtain <m, hm> := heven` destructs the `Even` witness into $|\\text{interior}| = m + m$. This explicit arithmetic form is needed for the `omega`-style reasoning in the calc chain.",
+    "significance": "supporting",
+    "relatedConcepts": ["have tactic", "obtain tactic", "proof organization"],
+    "prerequisites": ["all preceding lemmas"]
+  },
+  {
+    "id": "ann-spn-calc-chain",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 626, "endLine": 641 },
+    "type": "tactic",
+    "title": "The calc Chain: Five Steps of Parity Yoga",
+    "content": "The `calc` block chains five equalities modulo 2:\n\n$$|\\text{FC}| \\% 2$$\n$$= \\left(\\sum_s \\mathbb{1}_{\\text{FC}}(s)\\right) \\% 2 \\quad \\text{(indicator sum)}$$\n$$= \\left(\\sum_s |\\text{doors}(s)|\\right) \\% 2 \\quad \\text{(per-simplex parity)}$$\n$$= |\\text{all doors}| \\% 2 \\quad \\text{(product counting)}$$\n$$= (|\\text{interior}| + |\\text{boundary}|) \\% 2 \\quad \\text{(partition)}$$\n$$= |\\text{boundary}| \\% 2 \\quad \\text{(drop even interior)}$$\n$$= |\\text{bdry on face } d| \\% 2 \\quad \\text{(Sperner kills rest)}$$\n\nThe `calc` tactic in Lean lets you write a chain of `=` steps, each justified by a tactic after `:= by`. This is one of Lean's most readable proof styles -- it mirrors how you would write the argument on a blackboard.",
+    "mathContext": "Each step is justified by one of the seven ingredients gathered above. The chain structure makes the logic transparent: start from what you want to relate ($|\\text{FC}|$), transform through intermediate quantities, arrive at what you know about ($|\\text{bdry on face } d|$).",
+    "significance": "critical",
+    "relatedConcepts": ["calc tactic", "chained equalities", "blackboard-style proofs"],
+    "prerequisites": ["calc syntax in Lean 4"]
+  },
+  {
+    "id": "ann-spn-drop-even",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 636, "endLine": 638 },
+    "type": "tactic",
+    "title": "Dropping the Even Interior Term",
+    "content": "The crucial step: $(|\\text{interior}| + |\\text{boundary}|) \\% 2 = |\\text{boundary}| \\% 2$.\n\nSince $|\\text{interior}| = m + m$ (from `heven`), we have:\n$$(m + m + |\\text{boundary}|) \\% 2 = |\\text{boundary}| \\% 2$$\n\nThe proof:\n1. `rw [hm]` -- substitute $|\\text{interior}| = m + m$\n2. `Nat.add_mod` -- split $(a + b) \\% n = ((a \\% n) + (b \\% n)) \\% n$\n3. `show (m + m) % 2 = 0 from by omega` -- $2m \\% 2 = 0$\n4. `Nat.zero_add` + `Nat.mod_mod_of_dvd` -- cleanup\n\nThe `exact <1, rfl>` at the end provides the divisibility witness: $2 \\mid 2$ via $2 = 2 \\times 1$.\n\n**Physics analogy**: This is the **gauge cancellation step** -- the even interior contribution is pure gauge and drops out, leaving only the gauge-invariant boundary term.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.add_mod", "even number mod 2", "gauge cancellation"],
+    "prerequisites": ["Nat.add_mod", "Nat.mod_mod_of_dvd"]
+  },
+  {
+    "id": "ann-spn-main-docstring",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 647, "endLine": 656 },
+    "type": "insight",
+    "title": "The Boundary-Odd Hypothesis: What is NOT Proved Here",
+    "content": "The main theorem takes the oddness of boundary doors on face $d$ as a **hypothesis** (`hbdry : Odd ...`). This is a deliberate design choice.\n\nIn a concrete triangulation, this hypothesis is discharged by **induction on dimension**: the restriction of the triangulation to face $d$ is a $(d-1)$-dimensional triangulation, and its boundary doors are boundary doors of the original on face $d$. The base case $d = 0$ is trivial (1 simplex = 1 boundary door).\n\nBy making this a hypothesis, the abstract theorem is **reusable**: any triangulation that can establish boundary-door-oddness gets Sperner's lemma for free, without re-proving the parity machinery.\n\n**Warning**: This means the theorem as stated does NOT by itself prove Sperner's lemma -- you need a concrete triangulation AND the inductive boundary-oddness argument. The file proves the hard part; the easy part (concrete instantiation) is deferred.",
+    "significance": "key",
+    "relatedConcepts": ["induction on dimension", "abstract vs concrete", "hypothesis management"],
+    "prerequisites": ["mathematical induction"]
+  },
+  {
+    "id": "ann-spn-main-theorem",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 654, "endLine": 667 },
+    "type": "theorem",
+    "title": "sperner_ndim: The Main Theorem in 10 Lines",
+    "content": "**n-Dimensional Sperner's Lemma**: Given an abstract triangulation $K$, a Sperner coloring $c$, and the hypothesis that boundary doors on face $d$ are odd, there exists a fully-colored simplex.\n\nThe proof is remarkably short -- all the work was done in `sperner_parity`:\n\n1. `hparity := sperner_parity c K hc` -- $|\\text{FC}| \\% 2 = |\\text{bdry doors on face } d| \\% 2$\n2. `Nat.odd_iff` + `hparity` -- boundary doors odd $\\implies$ FC count odd\n3. `obtain <k, hk> := hodd; omega` -- odd $\\implies$ positive\n4. `Finset.card_pos.mp hpos` -- positive cardinality $\\implies$ nonempty filter\n5. Extract witness from the filter\n\nThe `omega` tactic handles: if $n = 2k + 1$ then $n > 0$. The `Finset.card_pos` lemma converts $0 < |S|$ to $\\exists x \\in S$.",
+    "mathContext": "This completes the abstract Sperner's lemma. For the classical theorem (every Sperner-colored triangulation of $\\Delta^d$ has an FC simplex), instantiate with a Freudenthal or Kuhn triangulation and prove boundary-door-oddness by induction on $d$. The theorem directly implies the Brouwer fixed-point theorem via a standard limit argument.",
+    "significance": "critical",
+    "relatedConcepts": ["Sperner's lemma", "Brouwer fixed-point theorem", "PPAD complexity class", "constructive existence"],
+    "prerequisites": ["sperner_parity", "Nat.odd_iff", "Finset.card_pos"]
+  },
+  {
+    "id": "ann-spn-namespace",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 28, "endLine": 30 },
+    "type": "concept",
+    "title": "Namespace and Imports",
+    "content": "The proof lives in the `SpernerNDim` namespace, keeping all definitions (like `Vertex`, `Coloring`, `IsFC`) from polluting the global scope.\n\n`open Finset BigOperators` brings `Finset.univ`, `Finset.filter`, `Finset.card`, etc. into scope without the `Finset.` prefix. `BigOperators` enables the $\\sum$ notation (`\\sum i, f i` desugars to `Finset.sum Finset.univ f`).\n\nThe single import `import Mathlib` imports the entire Mathlib library. This is convenient but slow -- a production Mathlib contribution would use targeted imports like `import Mathlib.Data.Finset.Card`.",
+    "significance": "supporting",
+    "relatedConcepts": ["Lean 4 namespaces", "open declarations", "Mathlib imports"],
+    "prerequisites": ["Lean 4 module system"]
+  },
+  {
+    "id": "ann-spn-variable-section",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 127, "endLine": 128 },
+    "type": "concept",
+    "title": "Implicit Variables: d and N",
+    "content": "The `variable {d N : \\mathbb{N}}` declaration makes the dimension $d$ and grid parameter $N$ **implicit arguments** to all subsequent definitions and theorems in this section. Lean will infer their values from context.\n\nThis avoids writing `(d N : Nat)` on every definition. When you see `IsFC c K s`, Lean infers $d$ and $N$ from the types of $c$ (a `Coloring d N`) and $K$ (a `SpernerTriangulation d N`).\n\nThe curly braces `{}` mean \"implicit\" -- the caller does not provide these arguments explicitly. Lean figures them out by unification.",
+    "significance": "supporting",
+    "relatedConcepts": ["implicit arguments", "variable command", "type inference"],
+    "prerequisites": ["Lean 4 implicit arguments"]
+  },
+  {
+    "id": "ann-spn-attr-instance",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 120, "endLine": 121 },
+    "type": "tactic",
+    "title": "Attribute Instance: Exposing Bundled Typeclasses",
+    "content": "The `attribute [instance]` commands expose the `DecidableEq` and `Fintype` instances that were bundled inside the `SpernerTriangulation` structure.\n\nWithout these lines, Lean would not automatically find that `K.Simplex` has decidable equality or is a finite type, even though the structure *contains* these proofs. The `attribute [instance]` makes them available to typeclass search globally.\n\nThis is a common Lean pattern when a structure bundles instances: you need to explicitly register them. An alternative is to use `[Fintype K.Simplex]` parameters everywhere, but that is verbose.",
+    "significance": "supporting",
+    "relatedConcepts": ["attribute command", "typeclass instance registration"],
+    "prerequisites": ["Lean 4 typeclass system"]
+  },
+  {
+    "id": "ann-spn-adj-unique-facet",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 111, "endLine": 116 },
+    "type": "definition",
+    "title": "adj_unique_facet: No Two Walls Lead to the Same Room",
+    "content": "This axiom says: if two facets of simplex $s$ are both adjacent to the same neighbor $s'$, they must be the same facet ($k_1 = k_2$).\n\nGeometrically: two $d$-simplices share at most one common $(d-1)$-face. You cannot have room A sharing two different walls with room B -- that would mean A and B share too many vertices and would have to be the same simplex.\n\nThis axiom is not strictly needed for the parity theorem, but it is essential for **Kuhn's constructive path-following algorithm**: when you enter a room through one door, the unique-facet property guarantees you exit through at most one other door, ensuring the path does not branch.",
+    "significance": "supporting",
+    "relatedConcepts": ["simplicial complex non-degeneracy", "Kuhn path-following"],
+    "prerequisites": ["simplicial complex geometry"]
+  },
+  {
+    "id": "ann-spn-boundary-face-axiom",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 117, "endLine": 118 },
+    "type": "definition",
+    "title": "boundary_face: Unmatched Walls Lie on the Boundary",
+    "content": "If a facet $(s, k)$ has no neighbor (`adj s k = none`), then all vertices of $s$ *except* vertex $k$ lie on face $k$ of the big simplex.\n\nThis axiom connects the abstract triangulation's boundary to the geometric boundary of $\\Delta^d$. It is used exactly once: in `no_boundary_doors_face_lt`, where it provides the `onFace` hypotheses needed to invoke the Sperner condition.\n\n**Geometric intuition**: An unmatched wall of a room must be part of the outer wall of the house. The outer wall of the house at position $k$ is face $k$ of the simplex. So all vertices on that wall lie on face $k$.",
+    "significance": "key",
+    "relatedConcepts": ["boundary of triangulation", "geometric boundary", "onFace"],
+    "prerequisites": ["onFace definition"]
+  },
+  {
+    "id": "ann-spn-by-contra-pattern",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 482, "endLine": 493 },
+    "type": "tactic",
+    "title": "The by_contra + obtain + exact Pattern",
+    "content": "This proof uses a common Lean 4 pattern for proofs by contradiction:\n\n1. `intro hdoor` -- assume the negated conclusion (there IS a door)\n2. Extract witnesses from `hdoor` using `have <i, hi_ne, hi_eq> := hdoor ...`\n3. Build the contradiction from two incompatible facts\n4. `exact hc ... honface hcolor` -- apply the Sperner condition to produce `False`\n\nThe `exact` at the end works because `hc` has type `IsSperner c`, which unfolds to `\\forall v k, onFace v k -> c v \\neq k`. Applying it to the vertex `K.vertices s i`, face `k`, proof `honface : onFace (K.vertices s i) k`, yields `c (K.vertices s i) \\neq k`. But `hcolor` says `c (K.vertices s i) = k`. So `exact hc ... honface hcolor` produces `False` from `\\neq` applied to `=`.\n\nNote: the theorem statement is `\\neg isDoorAt ...`, which unfolds to `isDoorAt ... -> False`. That is why `intro hdoor` gives us the door assumption.",
+    "significance": "supporting",
+    "relatedConcepts": ["proof by contradiction", "intro tactic", "exact tactic"],
+    "prerequisites": ["negation as implication to False in Lean"]
+  },
+  {
+    "id": "ann-spn-section-structure",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 32, "endLine": 34 },
+    "type": "concept",
+    "title": "Section Organization: 10 Sections Following the Proof Architecture",
+    "content": "The file is organized into 10 clearly labeled sections matching the proof architecture in the docstring:\n\n- **I** (ZMod 2 helpers) -- utility lemma\n- **II** (Grid points, colorings) -- data types\n- **III** (Abstract triangulation) -- the interface\n- **IV** (Door/FC definitions) -- the counting predicates\n- **V** (Involution parity) -- the abstract pairing lemma\n- **VI** (Abstract door parity) -- per-simplex counting\n- **VII** (Interior pairing) -- interior doors cancel\n- **VIII** (Boundary analysis) -- Sperner kills non-face-$d$ doors\n- **IX** (Parity theorem) -- the main equation\n- **X** (Main theorem) -- Sperner's lemma\n\nThis organization follows the **dependency order**: each section only uses results from earlier sections. This makes the proof modular and each section independently verifiable.",
+    "significance": "supporting",
+    "relatedConcepts": ["proof organization", "dependency ordering", "modular proofs"],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-spn-ext-attribute",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 48, "endLine": 48 },
+    "type": "tactic",
+    "title": "The @[ext] Attribute: Extensionality for Free",
+    "content": "The `@[ext]` attribute on the `Vertex` structure automatically generates an extensionality lemma:\n```\nVertex.ext : a.coords = b.coords -> a = b\n```\n\nThis means: to prove two vertices are equal, it suffices to prove their coordinate functions are equal. Without `@[ext]`, you would need to manually construct equality proofs that also account for the `valid` field (the constraint $\\sum x_i \\leq N$). But since `valid` is a `Prop` (a proof, not data), any two proofs of it are equal by proof irrelevance, so only `coords` matters.\n\nThe `ext` *tactic* also uses this: when the goal is `a = b` for an `@[ext]`-tagged type, `ext` reduces it to `a.coords = b.coords`.",
+    "significance": "supporting",
+    "relatedConcepts": ["extensionality", "proof irrelevance", "ext tactic"],
+    "prerequisites": ["Lean 4 attributes", "proof irrelevance for Prop"]
+  },
+  {
+    "id": "ann-spn-private-keyword",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 36, "endLine": 36 },
+    "type": "concept",
+    "title": "Private Lemmas: Internal Implementation Details",
+    "content": "The `private` keyword on `odd_of_zmod2_one`, `door_parity_all_small`, `adjMap`, `door_transfer_one_dir`, and several other lemmas means they are not exported from the `SpernerNDim` namespace. They are implementation details that support the public theorems.\n\nThis is good software engineering: the public API is just the key theorems (`even_card_fpf_invol`, `abstract_door_parity`, `interior_doors_even`, `no_boundary_doors_face_lt`, `boundary_door_is_last_face`, `sperner_parity`, `sperner_ndim`). Helper lemmas that are specific to this proof and unlikely to be reused are kept private.\n\nIn Mathlib, the convention is slightly different: helper lemmas are often public but placed in appropriate namespaces. For a Mathlib contribution, you would remove `private` and organize helpers into `Sperner.Door`, `Sperner.Parity`, etc.",
+    "significance": "supporting",
+    "relatedConcepts": ["API design in Lean", "Mathlib naming conventions"],
+    "prerequisites": ["Lean 4 visibility modifiers"]
+  },
+  {
+    "id": "ann-spn-omega-tactic",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 178, "endLine": 178 },
+    "type": "tactic",
+    "title": "omega: The Natural Number Arithmetic Workhorse",
+    "content": "The `omega` tactic appears throughout this proof (lines 178, 238, 256, 272, 542, 637, 665). It solves goals in **linear arithmetic over natural numbers and integers** -- equalities and inequalities involving `+`, `-`, `*` by constants, and comparisons.\n\nExamples of what `omega` solves:\n- `S.card >= 1 -> (S.erase y).card >= 1 -> S.card = ((S.erase y).erase x).card + 2`\n- `(m + m) % 2 = 0`\n- `n = 2 * k + 1 -> 0 < n`\n\nWhat `omega` cannot do: anything involving multiplication of variables, or reasoning about structures beyond linear arithmetic. For those, you need `ring`, `nlinarith`, or manual reasoning.\n\n**Tip for Mathlib contributors**: `omega` is fast and encouraged in Mathlib. It replaces long chains of `linarith` and `norm_num` for pure integer/natural arithmetic goals.",
+    "significance": "supporting",
+    "relatedConcepts": ["omega tactic", "linear arithmetic", "linarith", "norm_num"],
+    "prerequisites": ["Presburger arithmetic"]
+  },
+  {
+    "id": "ann-spn-simp-tactic",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 237, "endLine": 237 },
+    "type": "tactic",
+    "title": "simp: Simplification with Lemma Database",
+    "content": "The `simp` tactic applies a database of rewrite rules to simplify the goal. In this proof, `simp only [...]` is used with explicit lemma names to control which rules fire.\n\nKey uses in this file:\n- `simp [S']` -- unfold the local definition `S'` (line 171)\n- `simp only [Finset.mem_filter, Finset.mem_univ, true_and]` -- simplify filter membership (line 287)\n- `simp [g]` -- unfold the local function `g` (line 382)\n\nThe `simp only` variant is preferred over bare `simp` in Mathlib because it is **reproducible**: bare `simp` can break when new simp lemmas are added to the library, but `simp only` with explicit lemmas is stable.\n\n**Warning**: `simp` can be slow on large goals. If `maxHeartbeats` is a concern, replace `simp` with targeted `rw` calls.",
+    "significance": "supporting",
+    "relatedConcepts": ["simp tactic", "simp only", "rewriting"],
+    "prerequisites": ["Lean 4 tactic mode"]
+  },
+  {
+    "id": "ann-spn-finset-filter-pattern",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 430, "endLine": 431 },
+    "type": "concept",
+    "title": "The Finset.filter Pattern: Counting by Filtering",
+    "content": "Throughout this proof, sets are represented as `Finset.univ.filter P` -- take all elements of a finite type, keep those satisfying predicate $P$.\n\nFor example:\n- FC simplices: `Finset.univ.filter (fun s => IsFC c K s)`\n- Interior doors: `Finset.univ.filter (fun p => isDoorAt c K p.1 p.2 && adj p.1 p.2 != none)`\n- Door positions in a simplex: `Finset.univ.filter (fun k => isDoorAt c K s k)`\n\nThis pattern requires `Decidable P` (hence all the decidability instances). The cardinality `Finset.card` gives the count.\n\n**Tip**: In Lean 4, `Finset.univ` requires a `Fintype` instance. That is why the `Fintype` instance for `Vertex` and the bundled `Fintype` in `SpernerTriangulation` are essential infrastructure.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.filter", "Finset.univ", "decidable predicates", "counting"],
+    "prerequisites": ["Fintype", "Decidable"]
+  },
+  {
+    "id": "ann-spn-convert-tactic",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 529, "endLine": 529 },
+    "type": "tactic",
+    "title": "convert: When Goals Almost Match",
+    "content": "The `convert h using 2` tactic on line 529 is used when the goal and the hypothesis `h` have the same structure but differ in some subterms.\n\n`convert h using n` tries to match the goal with `h` up to depth `n` in the expression tree, generating new subgoals for the mismatched parts. Here, the goal and `h` are the same modular arithmetic statement but with different `Decidable` instances for the filter predicates.\n\nThe `using 2` means \"match to depth 2\" -- match the outer `% 2 = ` structure and the `if ... then 1 else 0` structure, leaving the inner `Decidable` mismatch as a subgoal that Lean resolves automatically.\n\n**When to use convert vs rw**: Use `rw` when you have an exact equality to substitute. Use `convert` when the terms are \"morally equal\" but differ in irrelevant details like typeclass instances or universe levels.",
+    "significance": "supporting",
+    "relatedConcepts": ["convert tactic", "definitional equality", "Decidable instance mismatch"],
+    "prerequisites": ["Lean 4 tactic basics"]
+  },
+  {
+    "id": "ann-spn-obtain-tactic",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 163, "endLine": 163 },
+    "type": "tactic",
+    "title": "obtain: Destructuring Existential Witnesses",
+    "content": "The `obtain` tactic appears 15+ times in this file. It destructs existential statements and sigma types into their components.\n\nExamples:\n- `obtain <x, hx> := Finset.nonempty_of_ne_empty hempty` -- extract an element from a nonempty set\n- `obtain <c0, hc0_eq, hc0_rest> := ...` -- extract the doubly-used color with its two properties\n- `obtain <k, hk> := hodd` -- extract the witness from `Odd n` (i.e., $n = 2k + 1$)\n\n`obtain` is syntactic sugar for `rcases` with automatic `intro`. The angle-bracket pattern matching makes complex destructions readable.\n\n**Tip**: `obtain` is one of the most-used tactics in Mathlib proofs. Master the pattern syntax: `<a, b, c>` for nested pairs, `<a | b>` for disjunctions, `<a, ha>` for sigma types.",
+    "significance": "supporting",
+    "relatedConcepts": ["obtain tactic", "rcases", "pattern matching"],
+    "prerequisites": ["existential types in Lean"]
+  },
+  {
+    "id": "ann-spn-set-tactic",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 165, "endLine": 167 },
+    "type": "tactic",
+    "title": "set: Naming Intermediate Expressions",
+    "content": "The `set y := f x with hy_def` tactic introduces a local definition `y` for the expression `f x`, and optionally names the definitional equality `hy_def : y = f x`.\n\nThis is used throughout the proof to name intermediate values:\n- `set y := f x` (line 165) -- the involution partner\n- `set S' := (S.erase y).erase x` (line 167) -- the reduced set\n- `set S := Finset.univ.filter ...` (line 432) -- the interior door set\n\n`set` differs from `let` in that it also substitutes the expression in the goal and all hypotheses. After `set y := f x`, every occurrence of `f x` in the context becomes `y`.\n\nThe `with hy_def` clause is important: it gives you a hypothesis you can `rw` with to unfold the definition when needed.",
+    "significance": "supporting",
+    "relatedConcepts": ["set tactic", "let tactic", "local definitions"],
+    "prerequisites": ["Lean 4 tactic mode"]
+  },
+  {
+    "id": "ann-spn-push-neg",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 244, "endLine": 244 },
+    "type": "tactic",
+    "title": "push_neg: Pushing Negations Inward",
+    "content": "The `push_neg` tactic transforms negations of quantified statements into their duals:\n- $\\neg \\forall x, P(x)$ becomes $\\exists x, \\neg P(x)$\n- $\\neg \\exists x, P(x)$ becomes $\\forall x, \\neg P(x)$\n- $\\neg (a < b)$ becomes $b \\leq a$\n\nUsed at lines 244, 356, 364, 386, 391 in this proof. It is essential for working with `by_contra` -- after assuming the negation of the goal, `push_neg` transforms it into a usable positive statement.\n\nExample from line 244: after `by_contra hall`, the hypothesis is $\\neg \\exists c_0 \\in \\text{univ}, 0 < \\ldots$. After `push_neg`, it becomes $\\forall c, c \\in \\text{univ} \\to \\ldots \\leq 0$, which is much easier to work with.",
+    "significance": "supporting",
+    "relatedConcepts": ["push_neg tactic", "De Morgan's laws", "by_contra"],
+    "prerequisites": ["classical logic", "negation of quantifiers"]
+  },
+  {
+    "id": "ann-spn-big-picture-flow",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 395, "endLine": 398 },
+    "type": "insight",
+    "title": "Section VII: Where Everything Comes Together",
+    "content": "Sections VII and VIII are where the abstract machinery meets the geometry. Up to this point:\n\n- Section V gave us the abstract even-cardinality lemma (for any FPF involution)\n- Section VI gave us the per-simplex door count (1 for FC, 0 or 2 otherwise)\n\nNow Section VII constructs the *specific* FPF involution (the adjacency map on interior doors) and applies the abstract lemma. Section VIII uses the *specific* Sperner condition to kill boundary doors on faces $k < d$.\n\nThe proof architecture separates the **abstract** (Sections V-VI: pure combinatorics, no geometry) from the **concrete** (Sections VII-VIII: triangulation structure and boundary conditions). This is what makes the proof modular and suitable for Mathlib.",
+    "significance": "key",
+    "relatedConcepts": ["abstract vs concrete", "proof modularity"],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-spn-end-namespace",
+    "proofId": "sperner-ndim",
+    "range": { "startLine": 669, "endLine": 669 },
+    "type": "concept",
+    "title": "Closing the Namespace",
+    "content": "`end SpernerNDim` closes the namespace opened at line 28. After this line, all definitions are accessed as `SpernerNDim.Vertex`, `SpernerNDim.sperner_ndim`, etc.\n\nThe namespace scope is important: `variable {d N : \\mathbb{N}}` at line 127 only applies within the namespace. The `private` lemmas are not accessible outside it.\n\nThis is the last line of the file -- 669 lines total, from import to QED.",
+    "significance": "supporting"
   }
 ]
