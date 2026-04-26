@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-companion-preamble",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "context",
+    "title": "Module Header: Decomposing the PID Sorry into Proved + Axiom",
+    "content": "The module comment sets the proof strategy and explains what is new relative to `CayleyHamiltonMinpolyOQ05OQ01OQ04.lean`. That parent file had a `sorry` annotated 'requires PID structure theorem' — a vague gap that cannot be discharged without knowing its precise form. This file breaks the gap into two sharply separated pieces:\n\n**Proved**: e0 is a cyclic vector for `companionMat(p)` when p is monic of degree n. This is a concrete computational fact that requires only matrix multiplication and induction — no module theory, no field extensions.\n\n**Axiomatized**: A nonderogatory matrix M is similar to `companionMat(charpoly M)`. This is the classical equivalence that requires rational canonical form, which in turn requires the PID structure theorem for finitely generated K[X]-modules. This is unavailable in Mathlib 4.26.\n\nThe `namespace CompanionCyclicVector` scopes all definitions, and `attribute [local instance] Classical.propDecidable` enables classical reasoning throughout (needed for the `by_contra` in the cyclicity proof).",
+    "mathContext": "A matrix $M \\in M_n(K)$ is nonderogatory iff $\\text{minpoly}_K(M) = \\text{charpoly}(M)$. Equivalently, $M$ is nonderogatory iff it is similar to its companion matrix $C(\\chi_M)$. The companion matrix of $p = X^n + a_{n-1}X^{n-1} + \\cdots + a_0$ has 1s on the subdiagonal and $(-a_0, \\ldots, -a_{n-1})^T$ as the last column. Cyclicity: $v$ is cyclic for $M$ iff $\\{v, Mv, \\ldots, M^{n-1}v\\}$ spans $K^n$, equivalently iff no nonzero $q$ with $\\deg q < n$ annihilates $v$.",
+    "significance": "key",
+    "relatedConcepts": ["rational-canonical-form", "PID-structure-theorem", "sorry-elimination", "axiom-decomposition", "nonderogatory-matrix"],
+    "prerequisites": ["CayleyHamiltonMinpolyOQ05OQ01OQ04", "Matrix.charpoly", "minpoly"]
+  },
+  {
+    "id": "ann-krylov-orbit",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+    "range": { "startLine": 52, "endLine": 106 },
+    "type": "theorem",
+    "title": "Krylov Orbit: C^k e0 = ek for the Companion Matrix",
+    "content": "The core construction is the local `companionMat` definition and the orbit theorem `companionMat_pow_e0`. The companion matrix has a specific sparsity structure — 1s on the subdiagonal (`i.val = j.val + 1`) and negated polynomial coefficients in the last column (`j.val + 1 = n`) — captured by the three-branch `if` definition.\n\nThe orbit theorem is proved by induction on k. The base case (k=0) follows from `pow_zero` and `one_mulVec`. The inductive step uses two lemmas: `companionMat_mulVec_basis` shows that multiplying `ej` by the companion matrix gives `e_{j+1}` (for j < n−1), and `pow_succ` decomposes C^{k+1} = C^k · C. The combination gives C^k e0 = e_k → C^{k+1} e0 = C(e_k) = e_{k+1}.\n\nThe `companionMat_mulVec_basis` lemma is a matrix-vector computation: it rewrites `companionMat p *ᵥ (Pi.single j 1)` using `Fintype.sum_eq_single` to collapse the sum to one term, then uses the `companionMat_subdiag` helper to evaluate the matrix entry.",
+    "mathContext": "Companion matrix sparsity: $C(p)_{ij} = \\mathbb{1}[i = j+1,\\, j+1 < n] - p_i \\cdot \\mathbb{1}[j+1 = n]$. Krylov orbit: $C^k e_0 = e_k$ for $k < n$. Proof: $C e_0 = e_1$ (subdiagonal shifts basis vector 0 to 1), $C^2 e_0 = C e_1 = e_2$, ..., by induction. After $n$ steps, $C^n e_0$ wraps around via the last column (the characteristic polynomial relation $\\chi_M(C) = 0$ identifies $C^n e_0$ with a linear combination of $e_0, \\ldots, e_{n-1}$).",
+    "significance": "key",
+    "relatedConcepts": ["krylov-subspace", "companion-matrix", "basis-shift", "pow_succ", "Pi.single", "mulVec"],
+    "prerequisites": ["Matrix.mulVec", "Fintype.sum_eq_single", "pow_succ"]
+  },
+  {
+    "id": "ann-orbit-eval",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+    "range": { "startLine": 111, "endLine": 158 },
+    "type": "technique",
+    "title": "Leading Coefficient Extraction via Orbit Evaluation",
+    "content": "Two technical lemmas prepare the cyclicity proof:\n\n**`sum_mulVec`**: Proves `(∑ fi) *ᵥ v = ∑ (fi *ᵥ v)` by induction on the finset. This is needed because `aeval C q` is expressed as `∑_{k∈support} coeff_k · C^k`, and distributing `mulVec` over this sum is not automatic. The proof uses `Finset.induction_on` with base `Matrix.zero_mulVec` and step `Matrix.add_mulVec`.\n\n**`companion_orbit_eval`**: The key computational lemma. For a nonzero q with `deg q < n`, evaluating `(aeval C q) *ᵥ e0` at index `natDegree q` gives `q.leadingCoeff`. The proof:\n1. Rewrites `aeval C q` as `∑_{k∈support} q.coeff k · C^k` using `eval₂_eq_sum`.\n2. Distributes `mulVec` via `sum_mulVec`.\n3. Replaces `(C^k *ᵥ e0)` with `Pi.single k 1` (valid since k ≤ natDegree q < n).\n4. Evaluates at index `natDegree q`: the only nonzero term is k = natDegree q, giving `q.coeff(natDegree q) = q.leadingCoeff`.\n\nThe step `Finset.sum_eq_single q.natDegree` collapses the sum to a single term by showing all other terms vanish.",
+    "mathContext": "For $C = \\text{companionMat}(p)$ and nonzero $q$ with $\\deg q < n$: $(q(C) \\cdot e_0)_{\\deg q} = q_{\\deg q} = \\text{lc}(q)$. This follows from $C^k e_0 = e_k$ and $q(C) = \\sum_{k \\in \\text{supp}(q)} q_k C^k$. Evaluating at index $\\deg q$ extracts only the $k = \\deg q$ term.",
+    "significance": "supporting",
+    "relatedConcepts": ["aeval", "eval₂_eq_sum", "leadingCoeff", "Finset.sum_eq_single", "Pi.single_apply"],
+    "prerequisites": ["sum_mulVec", "companionMat_pow_e0", "Polynomial.le_natDegree_of_mem_supp"]
+  },
+  {
+    "id": "ann-e0-cyclic-theorem",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+    "range": { "startLine": 162, "endLine": 181 },
+    "type": "theorem",
+    "title": "Main Proved Result: e0 is Cyclic for the Companion Matrix",
+    "content": "The theorem `companionMat_e0_cyclic` is the central new contribution of the file: fully proved with 0 axioms and 0 sorries. The statement: for any monic p of degree n (with n > 0), the standard basis vector `Pi.single 0 1` is a cyclic vector for `companionMat p`.\n\nThe proof is by `by_contra`: assuming q ≠ 0 and q(C) *ᵥ e0 = 0 and deg q < n, derive q.leadingCoeff = 0, contradicting `leadingCoeff_ne_zero`. The key steps:\n1. `Polynomial.leadingCoeff_ne_zero.mpr hq_ne`: extracts `q.leadingCoeff ≠ 0` from q ≠ 0.\n2. `congr_fun hann ⟨q.natDegree, hq⟩`: evaluates the hypothesis q(C) *ᵥ e0 = 0 at index natDegree q.\n3. `companion_orbit_eval p q hq hq_ne`: this equals q.leadingCoeff, contradicting step 1.\n\nThis proof is clean: the contradiction arises purely from the orbit structure, with no dimension or rank arguments needed. It works over any field K.",
+    "mathContext": "Proof: suppose $q(C)e_0 = 0$ with $q \\neq 0$ and $\\deg q < n$. Evaluating at index $\\deg q$: $0 = (q(C)e_0)_{\\deg q} = \\text{lc}(q) \\neq 0$. Contradiction. The proof works over any field $K$ (no characteristic assumption needed).",
+    "significance": "key",
+    "relatedConcepts": ["IsCyclicVector", "by_contra", "companion_orbit_eval", "leadingCoeff_ne_zero", "Krylov-sequence"],
+    "prerequisites": ["companion_orbit_eval", "Polynomial.leadingCoeff_ne_zero", "IsCyclicVector definition"]
+  },
+  {
+    "id": "ann-similarity-transfer",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+    "range": { "startLine": 186, "endLine": 291 },
+    "type": "theorem",
+    "title": "Similarity Transfer + Axiom + Main Theorem Assembly",
+    "content": "**`cyclic_vector_similar_transfer`** (proved): If M = P⁻¹NP and v is cyclic for N, then P⁻¹v is cyclic for M. The proof uses the conjugation formula `aeval M q = P⁻¹ (aeval N q) P`, proved by induction on q using `map_add` and `aeval_monomial`, plus the power conjugation `(P⁻¹NP)^m = P⁻¹ N^m P` (proved by induction using `P.val * P.inv = 1`). With this, the hypothesis `(P⁻¹ aeval N q P) *ᵥ (P⁻¹v) = 0` simplifies to `aeval N q *ᵥ v = 0` by left-multiplying by P.val.\n\n**`nonderogatory_similar_to_companion`** (axiom): A nonderogatory M is similar to `companionMat(charpoly M)`. This requires rational canonical form, equivalent to the PID structure theorem for f.g. K[X]-modules (not in Mathlib 4.26).\n\n**`nonderogatory_has_cyclic_vector_any_field`** (proved modulo axiom): Assembles the three pieces. The n=0 case is handled by `Fin.elim0` (there are no Fin 0 vectors to worry about). For n > 0, the chain is: companion has e0 cyclic (Section IV) + M similar to companion (axiom) + transfer (Section V) → M has a cyclic vector.",
+    "mathContext": "Conjugation formula: $(P^{-1}NP)^m = P^{-1}N^m P$, so $q(P^{-1}NP) = P^{-1} q(N) P$ for any polynomial $q$. If $q(N)v = 0$ and $w = P^{-1}v$, then $q(M)w = P^{-1}q(N)(Pw) = 0$. The nonderogatory similarity axiom: $M$ nonderogatory $\\Rightarrow \\exists P \\in GL_n(K),\\; M = P^{-1} C(\\chi_M) P$.",
+    "significance": "key",
+    "relatedConcepts": ["aeval_conj", "conjugation-formula", "rational-canonical-form", "Units.val_inv", "nonderogatory_similar_to_companion", "Fin.elim0"],
+    "prerequisites": ["cyclic_vector_similar_transfer", "companionMat_e0_cyclic", "nonderogatory_similar_to_companion", "charpoly_monic"]
+  }
+]
