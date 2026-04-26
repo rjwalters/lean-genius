@@ -77,7 +77,42 @@
     {
       "targetId": "ramseys-theorem",
       "relationship": "extends",
-      "description": "Base Ramsey theorem; R4K extensions focus on the off-diagonal case and probabilistic bounds"
+      "description": "Base Ramsey theorem: the guarantee that R(r,s) is finite. This file provides the quantitative bounds — the binomial upper R(r,s) ≤ C(r+s-2,r-1) and the Erdős 1947 probabilistic lower R(k,k) ≥ 2^(k/2) — refining the existence statement into explicit growth rates."
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "technique",
+      "description": "The first moment method (E[X] < 1 → good coloring exists) is the direct engine of Erdős's 1947 lower bound R(k,k) ≥ 2^(k/2): color edges of K_n uniformly at random, compute E[#monochromatic k-cliques] = C(n,k)·2^{1-C(k,2)} < 1 for n ~ 2^{k/2}. This is the archetypal first-moment argument in combinatorics."
+    },
+    {
+      "targetId": "prob-method-lovasz-local",
+      "relationship": "related",
+      "description": "The Lovász Local Lemma (LLL) is listed as a key open problem for formalizing R(4,k): the nibble method and Rödl nibble used in Kim's R(3,k) = Ω(k²/log k) bound rely on LLL variants. Formalizing LLL in Lean 4 would unlock a new wave of Ramsey lower bounds."
+    },
+    {
+      "targetId": "prob-method-alteration",
+      "relationship": "technique",
+      "description": "The alteration/deletion method — start with a random construction, then remove elements that violate the desired property — underlies many Ramsey lower bound arguments. The random coloring deletion argument (remove vertices from monochromatic cliques) gives tighter bounds than pure first-moment."
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "The second moment method (Var[X] / E[X]² → 0 implies X > 0 a.s.) is used in sharp threshold results for Ramsey properties in random graphs G(n,p). While the diagonal Ramsey R(k,k) uses first moment, the threshold for the Ramsey property in G(n,p) requires second moment analysis."
+    },
+    {
+      "targetId": "erdos-szekeres",
+      "relationship": "related",
+      "description": "Erdős and Szekeres (1935) proved R(r,s) ≤ C(r+s-2,r-1), the binomial upper bound formalized here as `ramseyUpperBound`. This bound, derived from the Pascal triangle recursion R(r,s) ≤ R(r-1,s) + R(r,s-1), was the first quantitative upper bound and remains the standard textbook bound."
+    },
+    {
+      "targetId": "ramseys-theorem-oq-04",
+      "relationship": "sibling",
+      "description": "Sibling OQ exploring Ramsey multiplicity and the Ramsey multiplicity conjecture — how many monochromatic copies of K_k appear in optimal colorings of K_n. Complements the size bounds here with structural questions about the density of monochromatic subgraphs."
+    },
+    {
+      "targetId": "randomized-maxcut",
+      "relationship": "related",
+      "description": "MaxCut via random assignment (cut ≥ |E|/2 expected) and the probabilistic method for Ramsey bounds both demonstrate the power of 'non-constructive' existence: color randomly, compute expectation, conclude a good coloring exists. Both are instances where the randomized argument is far simpler than any explicit construction."
     }
   ],
   "sections": [
