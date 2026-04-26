@@ -2565,6 +2565,7 @@ import Proofs.TriangularReciprocalGeneralized
 import Proofs.TriangularReciprocalsFigurate
 import Proofs.TwinPrimes
 import Proofs.UnitDistanceHN7
+import Proofs.UnitDistanceHN7Aristotle
 import Proofs.UnitDistanceIndependence
 import Proofs.VietasFormulas
 import Proofs.VietasFormulasOQ02
