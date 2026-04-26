@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-24",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/HurwitzTheoremOQ04.lean",
     "tags": [
       "algebra",
@@ -17,11 +17,11 @@
       "freudenthal-tits",
       "advanced"
     ],
-    "badge": "axiom",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 2,
     "dateAdded": "2026-04-24",
-    "axiomCount": 1,
-    "assumptions": "1 axiom: G2_der_dimension (finrank ℝ OctonionDerSubmodule = 14). Previous G2_is_octonion_aut (Nat.card OctonionAut = 14) was replaced: Nat.card of an infinite Lie group equals 0 in type theory, making it mathematically incorrect. G2_der_dimension targets the Lie algebra dimension directly. All supporting lemmas fully proved.",
+    "axiomCount": 0,
+    "assumptions": "2 sorries remaining: (1) algebraic extraction from ev=0 in derEval14_injective helper (requires ~50 lines of Leibniz constraint derivations); (2) linear independence of derBasis14 (14×14 evaluation matrix determinant). G2_der_dimension is now a theorem with proof structure, no longer an axiom. All other lemmas fully proved.",
     "lineCount": 822,
     "theoremCount": 35,
     "definitionCount": 17,
@@ -138,10 +138,10 @@
     ],
     "namespace": "HurwitzTheoremOQ04",
     "lineCount": 822,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 40,
     "definitionCount": 15,
-    "sorries": 0,
+    "sorries": 2,
     "path": "Proofs/HurwitzTheoremOQ04.lean"
   },
   "crossReferences": [
@@ -156,5 +156,5 @@
       "description": "Sibling open question: n-square identities and normed division algebras"
     }
   ],
-  "sorries": 0
+  "sorries": 2
 }
