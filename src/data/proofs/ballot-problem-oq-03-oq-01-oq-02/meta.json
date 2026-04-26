@@ -22,7 +22,7 @@
     "sorries": 4,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "Four open sorries: (1) hook_length_formula (LGV approach: requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) hook_walk_identity ≥6-row case (GNW or RSK; at-most-2-row, gHookYD, ≤2-col, exactly-3-row, exactly-4-row, exactly-5-row all proved). hook_length_formula_general is proved modulo hook_walk_identity via corner induction.",
+    "assumptions": "Four open sorries: (1) hook_length_formula (LGV approach: requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) hook_walk_identity for 6+ rows (GNW or RSK, ~300 lines; 3-row case proved via hook_walk_identity_threeRow; 4-row case proved via hook_walk_identity_fourRow; 5-row case proved via hook_walk_identity_fiveRow; gHookYD case proved). hook_length_formula_general is proved modulo hook_walk_identity via Part XIV corner induction.",
     "lineCount": 8109,
     "theoremCount": 164,
     "definitionCount": 14,
