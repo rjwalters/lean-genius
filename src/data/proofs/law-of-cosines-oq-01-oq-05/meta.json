@@ -42,7 +42,8 @@
       "The K→0 limit is the most subtle case. For K>0: cs_K(r) = cos(√K·r) → 1 - K·r²/2 + O(K²), and sn_K(r) = sin(√K·r)/√K → r + O(K). Substituting into the unified formula and keeping leading-order terms gives 1-K·c²/2 ≈ (1-K·a²/2)(1-K·b²/2) + K·a·b·cos(C), which at order K gives c²=a²+b²-2ab·cos(C). Proved in euclidean_limit_holds via explicit exp and cosh/sinh Taylor expansion bounds.",
       "The algebraic equivalences for K≠0 show that the unified formula at curvature K is exactly the spherical law at sides √K·a, √K·b, √K·c (for K>0) or the hyperbolic law at sides √(-K)·a, √(-K)·b, √(-K)·c (for K<0). This is the geometric content: a sphere of radius R=1/√K has curvature K, so the law of cosines on that sphere is the unified formula.",
       "The piecewise definition of cs_K and sn_K in Lean requires careful use of field_simp and simp_only with explicit norm_num proofs of conditions like ¬(-1>0) and (-1<0). The calc chain approach for the key algebra lemmas (K·(x/√K)·(y/√K)=x·y) is cleaner than ring-based approaches because field_simp can close the first step outright.",
-      "The structure UnifiedTriangle K axiomatizes a triangle in K-geometry via its law field. This is analogous to how LawOfCosinesOQ03 axiomatizes hyperbolic triangles. The recovery theorems show that any K=1 unified triangle satisfies the spherical law and vice versa — the structure captures exactly the right mathematical content."
+      "The structure UnifiedTriangle K axiomatizes a triangle in K-geometry via its law field. This is analogous to how LawOfCosinesOQ03 axiomatizes hyperbolic triangles. The recovery theorems show that any K=1 unified triangle satisfies the spherical law and vice versa — the structure captures exactly the right mathematical content.",
+      "euclidean_limit_holds is fully proved (0 sorries) via a 280-line three-case Taylor bound: the K>0 case uses Real.abs_sin_le_abs and Real.one_sub_sq_div_two_le_cos, while K<0 requires the private cosh_K_bound and cosh_double_K_bound helper lemmas"
     ],
     "prerequisites": [
       "Circular trigonometry: Real.cos, Real.sin, Real.sin_sq_add_cos_sq",
@@ -91,6 +92,41 @@
       "endLine": 314,
       "summary": "Proves the unified formula for K>0 is equivalent to the spherical law at sides √K·a, √K·b, √K·c, and for K<0 is equivalent to the hyperbolic law at sides √(-K)·a, etc.",
       "mathContext": "For $K>0$: $K\\cdot(\\sin(\\sqrt{K}\\cdot a)/\\sqrt{K})\\cdot(\\sin(\\sqrt{K}\\cdot b)/\\sqrt{K}) = \\sin(\\sqrt{K}\\cdot a)\\cdot\\sin(\\sqrt{K}\\cdot b)$ by the algebra lemma $K\\cdot(x/\\sqrt{K})\\cdot(y/\\sqrt{K})=x\\cdot y$. Then linear_combination h * cos(C) closes the iff. This gives the geometric interpretation: the unified law on a sphere of curvature K is the spherical law at angle-distance coordinates."
+    },
+    {
+      "id": "special-values-parity",
+      "title": "Special Values and Parity Properties",
+      "startLine": 87,
+      "endLine": 148,
+      "summary": "simp lemmas compute cs_K and sn_K at K=0,±1 using explicit norm_num conditions. Parity theorems: curvatureCos_neg (even) and curvatureSin_neg (odd) follow from cos/cosh even and sin/sinh odd. All proved by simp/split_ifs/ring."
+    },
+    {
+      "id": "algebra-lemmas",
+      "title": "Key Algebra Lemmas: K·(x/√K)·(y/√K) = ±x·y",
+      "startLine": 149,
+      "endLine": 181,
+      "summary": "Two private lemmas K_mul_div_sqrt_sq_pos (K>0) and K_mul_div_sqrt_sq_neg (K<0) prove the algebraic identity that makes equivalence proofs work. The sign difference (xy vs -xy) is the algebraic origin of the minus sign in the hyperbolic law. Both proved by field_simp + rw + calc."
+    },
+    {
+      "id": "triangle-structure",
+      "title": "UnifiedTriangle Structure",
+      "startLine": 218,
+      "endLine": 260,
+      "summary": "UnifiedTriangle K packages sides a,b,c > 0, angle C ∈ (0,π), and the law field. Recovery theorems (K=±1 ↔ classical laws) are simp + linarith. unified_law_of_cosines extracts the structure's law field."
+    },
+    {
+      "id": "scaling-euclidean-setup",
+      "title": "Scaling Consistency and Euclidean Limit Helpers",
+      "startLine": 317,
+      "endLine": 391,
+      "summary": "Scaling: cs_K(r) = cs_1(√K·r) for K>0 by direct simp. Euclidean limit helpers: exp_sub_one_le_mul_exp, cosh_sub_one_le, cosh_K_bound, cosh_double_K_bound bound error terms via Real.cosh_le_exp_half_sq and exponential monotonicity."
+    },
+    {
+      "id": "euclidean-limit-proof",
+      "title": "euclidean_limit_holds: Full Taylor Bound Proof",
+      "startLine": 392,
+      "endLine": 693,
+      "summary": "Fully proved (0 sorries) 280-line proof of K→0 limit. For K>0: |sin(√K·r)| ≤ √K·|r| and 1-cos(√K·r) ≤ K·r²/2 give |expr| ≤ K·M_pos. For K<0: cosh/sinh bounds from helper lemmas give |expr| ≤ -K·M_neg. For K=0: exact zero. Combined: δ=min(1,ε/M) with M=M_pos+M_neg."
     }
   ],
   "conclusion": {
