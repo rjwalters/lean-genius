@@ -14,14 +14,14 @@
   {
     "id": "ann-ng-setup",
     "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
-    "range": { "startLine": 19, "endLine": 28 },
+    "range": { "startLine": 24, "endLine": 30 },
     "type": "concept",
-    "title": "Generality: Any CommRing over Any Fintype",
-    "content": "The variable declaration fixes a CommRing R and a Fintype σ, giving the Newton-Girard corollaries in full algebraic generality. All three theorems hold over any commutative ring — not just ℝ or ℚ — with coefficients indexed by any finite type σ. This is more general than the classical statement (which usually specializes to ℝ[x₁,...,xₙ]) and is directly applicable in Mathlib's MvPolynomial framework. The ring tactic closes each final algebraic step because the arithmetic identities are pure commutative ring equations.",
-    "mathContext": "$R$ is any commutative ring, $\\sigma$ is any finite type (index set). The power sum $p_k = \\sum_{i : \\sigma} X_i^k \\in \\text{MvPolynomial}(\\sigma, R)$ and $e_k = \\text{esymm}(\\sigma, R, k)$ are elements of `MvPolynomial σ R`. The identity $p_2 = e_1^2 - 2e_2$ is a polynomial identity with integer coefficients, hence valid over any ring.",
+    "title": "Namespace, Opens, and Variable: Full Algebraic Generality",
+    "content": "Lines 24-30 set up the ambient context for all three theorems:\n\n- `namespace AMGMInequalityOQ02OQ01OQ02OQ01` — scopes the theorems to avoid name conflicts\n- `open MvPolynomial Finset BigOperators Set` — brings `psum`, `esymm`, `∑`, `antidiagonal`, `Ioo` into scope without qualification\n- `variable (σ : Type*) (R : Type*) [CommRing R] [Fintype σ]` — universally quantifies over any commutative ring R and any finite index type σ\n\nThe `variable` declaration makes all three Newton-Girard corollaries hold over any commutative ring — not just ℝ or ℚ — with coefficients indexed by any finite type σ. This is more general than the classical statement (usually specialized to ℝ[x₁,...,xₙ]) and directly applicable in Mathlib's MvPolynomial framework. The `ring` tactic closes each final step because the arithmetic identities are polynomial identities with integer coefficients, valid over any ring.",
+    "mathContext": "$R$ is any commutative ring, $\\sigma$ is any finite type (index set). The power sum $p_k = \\sum_{i : \\sigma} X_i^k \\in \\text{MvPolynomial}(\\sigma, R)$ and $e_k = \\text{esymm}(\\sigma, R, k)$ are elements of `MvPolynomial σ R`. The identity $p_2 = e_1^2 - 2e_2$ is a polynomial identity with integer coefficients (in $\\mathbb{Z}[e_1, e_2]$), hence valid over any commutative ring by base change. `BigOperators` enables the $\\sum$ notation.",
     "significance": "supporting",
-    "relatedConcepts": ["CommRing", "Fintype", "MvPolynomial", "type class generality"],
-    "prerequisites": ["Lean 4 type classes", "MvPolynomial σ R"]
+    "relatedConcepts": ["CommRing", "Fintype", "MvPolynomial", "type-class-generality", "namespace", "open-statement", "BigOperators"],
+    "prerequisites": ["Lean 4 type classes", "MvPolynomial σ R", "namespace keyword", "open keyword", "variable keyword"]
   },
   {
     "id": "ann-ng-k1",

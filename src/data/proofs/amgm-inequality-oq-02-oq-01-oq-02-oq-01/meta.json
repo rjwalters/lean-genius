@@ -53,7 +53,8 @@
       "The antidiagonal filter computation uses omega to verify membership conditions, making the combinatorial bookkeeping fully automatic",
       "psum_one_eq_esymm_one bridges two Mathlib lemmas (psum_one and esymm_one) that each separately state p₁ = Σ X i = e₁",
       "All three corollaries work over any CommRing, not just ℝ — the algebraic structure is the only requirement",
-      "The ring tactic closes each corollary after the antidiagonal is fully expanded, separating the combinatorial filtering from the algebraic simplification"
+      "The ring tactic closes each corollary after the antidiagonal is fully expanded, separating the combinatorial filtering from the algebraic simplification",
+      "The three-tactic pipeline — omega for antidiagonal arithmetic, sum_insert/sum_singleton for finite sum expansion, ring for polynomial identity — is a separable and composable proof strategy: each tactic handles exactly one layer of the proof (number theory → combinatorics → algebra)"
     ],
     "prerequisites": [
       "MvPolynomial.psum_eq_mul_esymm_sub_sum — general Newton-Girard recurrence (Mathlib)",
