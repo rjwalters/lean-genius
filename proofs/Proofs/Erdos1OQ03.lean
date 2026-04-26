@@ -21,6 +21,7 @@
 -/
 
 import Proofs.Erdos1Problem
+import Proofs.Erdos1Wip01
 import Mathlib
 
 open Finset
@@ -138,7 +139,7 @@ theorem conwayGuy_ratio_decreasing :
 /-- **f(n)**: The minimum N such that some n-element subset of {1,...,N}
     has distinct subset sums. This is the function Erdős asks about. -/
 noncomputable def minDSSBound (n : ℕ) : ℕ :=
-  Nat.find (⟨n * 2^n, sorry⟩ : ∃ N, ∃ A : Finset ℕ,
+  Nat.find (⟨n * 2^n, Erdos1Wip01.dss_existence n⟩ : ∃ N, ∃ A : Finset ℕ,
     A.card = n ∧ (∀ a ∈ A, a ≤ N) ∧ hasDistinctSubsetSums A)
 
 /-- **Conway-Guy Optimality Conjecture**: The Conway-Guy sequence gives
