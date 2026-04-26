@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: hook_walk_identity proved for ≤2-row, ≤2-col, gHookYD, 3-row, 4-row. File 7274 lines. Sorry only at ≥5-row shapes.",
+    "progressSummary": "PROGRESS: hook_walk_identity proven for ≤7 rows (3+5+7 row cases recovered from merge conflict). Only 8+ row case remains (sorry).",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -121,7 +121,8 @@
       "hook_walk_identity_fourRow: proves ∑_c hookProd(μ)/hookProd(μ\\c)=|μ| for all 4-row shapes [a,b,c,d] in BallotProblemOQ03OQ01OQ02.lean:~6650",
       "fourRow_colLen_*: column length lemmas for 4 zones in 4-row shapes",
       "fourRow_hookLen_row*: hook length lemmas for rows 0-3 in all zones",
-      "fourRow_arm_row*: arm product ratio lemmas using telescoping products"
+      "fourRow_arm_row*: arm product ratio lemmas using telescoping products",
+      "Recovered hook_walk_identity_threeRow (PART XIVc), hook_walk_identity_fourRow (PART XVIII), hook_walk_identity_fiveRow (PART XIX), hook_walk_identity_sixRow (PART XX), hook_walk_identity_sevenRow (PART XXI) from commit 5781bae4c58"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -187,16 +188,17 @@
       "YoungDiagram.rowLen_anti (antitone row lengths) used to show i≥3 → rowLen i=0 for [a,2,1]",
       "interval_cases tactic required for isLowerSet base case at (2,0) and for hμ_eq case split on i<3",
       "4-row hook walk identity: R₃+R₂+R₁+R₀=a+b+c+d closes via field_simp;ring after telescoping",
-      "hook_walk_identity sorry scope: now covers only ≥5-row shapes (rowLen 4 ≠ 0); all other cases proved"
+      "hook_walk_identity sorry scope: now covers only ≥5-row shapes (rowLen 4 ≠ 0); all other cases proved",
+      "Merge conflict in PR #12712 deleted PARTS XVIII-XXI (4-7 row cases) from the file — always check file line count after squash merges touching this file"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
       "StandardYoungTableau enumeration — check Mathlib.Combinatorics.YoungTableaux"
     ],
     "nextSteps": [
-      "PART XIX: extend to 5-row shapes (~300 lines, same algebraic pattern)",
       "GNW general proof (~300 lines) covers all remaining shapes at once",
-      "Docker build verification of PART XVIII compilation"
+      "Docker build verification of PART XVIII compilation",
+      "GNW probabilistic hook walk proof (~300 lines): covers all shapes at once, eliminating the 8+ row sorry"
     ]
   },
   "tags": [

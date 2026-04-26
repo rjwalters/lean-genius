@@ -460,3 +460,52 @@ by_cases h4 : μ.rowLen 4 = 0
 1. **5-row case PART XIX**: ~300 more lines, same algebraic pattern; gets sorry to ≥6 rows
 2. **GNW general proof** (~300 lines): probabilistic hook walk, covers all shapes at once
 3. **Alternatively**: row-by-row until the pattern is clear enough to compress into one inductive proof
+
+## Session 2026-04-26 (Session 19) — Recover 5-7 Row Cases (PARTS XIX-XXI) from Merge Conflict
+
+**Mode**: REVISIT (RICH knowledge tier, score 142)
+**Outcome**: PROGRESS — recovered 3785 lines of work lost in merge conflict #12712
+
+### What I Did
+
+1. Investigated why file had only 5882 lines (should have had 10444 from PR #12694)
+2. Found that PR #12712 (angle-trisection fix) caused a merge conflict resolution that
+   accidentally deleted PARTS XVIII-XXI (4-7 row cases, 4562 lines) from the file
+3. Extracted the lost content from commit `5781bae4c58` (the PR #12694 merge commit)
+4. Rebuilt the file inserting:
+   - PART XIVc (3-row, 482 lines) with `hook_walk_identity_threeRow`
+   - PART XVIII (4-row, ~447 lines) `hook_walk_identity_fourRow`
+   - PART XIX (5-row, ~587 lines) `hook_walk_identity_fiveRow`
+   - PART XX (6-row, ~712 lines) `hook_walk_identity_sixRow`
+   - PART XXI (7-row, ~929 lines) `hook_walk_identity_sevenRow`
+5. Updated dispatcher to cover ≤2-row, gHookYD, ≤2-col, 3-row, 4-row, 5-row, 6-row, 7-row
+6. Sorry scope now only covers ≥8-row, ≥3-col, non-gHookYD shapes
+
+### Key Findings
+
+- **Merge conflict culprit**: PR #12712 squash commit had 5018 lines deleted from this file
+  in a bad merge conflict resolution (commit `d93abe3dff2`)
+- **Recovery approach**: `git show 5781bae4c58:proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean`
+  preserved the full 10444-line file at the moment of PR #12694 merge
+- **Dispatcher strategy**: Using ≤2-col BEFORE row-count dispatch gives better coverage for
+  ≤2-col shapes with 8+ rows
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (5882 → 10109 lines)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json` (lineCount 10109)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md` (this file)
+
+### Sorry Count: 4 (unchanged count, scope reduced to ≥8 rows)
+
+- `hook_walk_identity` (~line 9994): sorry covers ONLY ≥8-row, ≥3-col, non-gHookYD shapes
+  - Proved: ≤2-row, ≤2-col, all gHookYD, exactly 3-row through 7-row
+  - Remaining: any μ with 8+ rows, 3+ columns, not a generalized hook
+- `ni_count_eq_syt_count`: RSK bijection (LGV route, open)
+- `lgv_det_factors_as_hook_quotient`: det identity (LGV route, open)
+- `hook_length_formula`: depends on the two above (LGV route, open)
+
+### Next Steps
+
+1. **GNW general proof (~300 lines)**: probabilistic hook walk, covers all shapes at once
+2. **8-row case**: ~1100 lines, same mechanical pattern if not using GNW
