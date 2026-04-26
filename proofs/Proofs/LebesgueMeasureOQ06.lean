@@ -272,10 +272,7 @@ private def anyInv (v : Fin 3 → Zsqrtd 2) : Prop :=
 
 -- The identity does not satisfy anyInv (e2Int has y.re = 1 ≢ 0 mod 3, x.im = 0 ≡ 0)
 private lemma e2Int_no_inv : ¬ anyInv e2Int := by
-  simp only [anyInv, inv_phi, inv_phi_inv, inv_psi, inv_psi_inv, e2Int,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-             Matrix.head_fin_const, Zsqrtd.re, Zsqrtd.im]
-  norm_num
+  simp [anyInv, inv_phi, inv_phi_inv, inv_psi, inv_psi_inv, e2Int]
 
 -- *** Valid transition lemmas (12 of 16 transitions in the orbit automaton) ***
 -- The 4 forbidden transitions (phi after phi_inv, phi_inv after phi,
@@ -283,7 +280,7 @@ private lemma e2Int_no_inv : ¬ anyInv e2Int := by
 -- Proof pattern: unfold all definitions, apply Zsqrtd arithmetic simp, then omega.
 
 -- Shared simp set for all transition lemma proofs
-private macro "zsqrtd_simp" : tactic =>
+macro "zsqrtd_simp" : tactic =>
   `(tactic| simp only [Zsqrtd.mul_re, Zsqrtd.mul_im, Zsqrtd.add_re, Zsqrtd.add_im,
               scaledActPhi_0, scaledActPhi_1, scaledActPhi_2,
               scaledActPhiInv_0, scaledActPhiInv_1, scaledActPhiInv_2,
@@ -368,16 +365,16 @@ private lemma base_phi_inv : inv_phi_inv (scaledActPhiInv e2Int) := by
   norm_num
 
 private lemma base_psi : inv_psi (scaledActPsi e2Int) := by
-  simp only [inv_psi, e2Int, Matrix.cons_val_zero, Matrix.cons_val_one,
-             Matrix.head_cons, Matrix.head_fin_const]
-  zsqrtd_simp
-  norm_num
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+    simp [inv_psi, scaledActPsi, e2Int, Zsqrtd.mul_re, Zsqrtd.mul_im,
+          Zsqrtd.add_re, Zsqrtd.add_im] <;>
+    norm_num
 
 private lemma base_psi_inv : inv_psi_inv (scaledActPsiInv e2Int) := by
-  simp only [inv_psi_inv, e2Int, Matrix.cons_val_zero, Matrix.cons_val_one,
-             Matrix.head_cons, Matrix.head_fin_const]
-  zsqrtd_simp
-  norm_num
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+    simp [inv_psi_inv, scaledActPsiInv, e2Int, Zsqrtd.mul_re, Zsqrtd.mul_im,
+          Zsqrtd.add_re, Zsqrtd.add_im] <;>
+    norm_num
 
 -- The orbit induction for proving orbit_ne uses these 12 valid transitions.
 -- The forbidden 4 transitions don't appear in reduced words.
@@ -444,7 +441,7 @@ private lemma labeledInv_step (cur prev : Bool × Bool) (v : Fin 3 → Zsqrtd 2)
     | exact trans_psi_inv_from_phi hprev
     | exact trans_psi_inv_from_phi_inv hprev
     | exact trans_psi_inv_from_psi_inv hprev
-    | (exfalso; apply hnocancel; exact ⟨rfl, by decide⟩)
+    | (simp_all)
 
 -- anyInv follows from labeledInv
 private lemma anyInv_of_labeledInv {g : Bool × Bool} {v : Fin 3 → Zsqrtd 2}
@@ -456,12 +453,22 @@ private lemma anyInv_of_labeledInv {g : Bool × Bool} {v : Fin 3 → Zsqrtd 2}
   · exact Or.inr (Or.inr (Or.inl h))
   · exact Or.inr (Or.inr (Or.inr h))
 
+-- Helper: getLast! is a member of getLast? for any nonempty list.
+-- Proved by induction using the cons-cons reduction lemmas.
+private lemma getLast!_mem_getLast? {l : List (Bool × Bool)} (h : l ≠ []) :
+    l.getLast! ∈ l.getLast? := by
+  induction l with
+  | nil => exact absurd rfl h
+  | cons a t ih =>
+    cases t with
+    | nil => simp
+    | cons b t' =>
+      have hne : b :: t' ≠ [] := List.cons_ne_nil b t'
+      simp only [List.getLast!, List.getLast?]
+      exact ih hne
+
 -- Auxiliary: the stronger "last-letter labeled invariant" holds for nonempty reduced words.
 -- Proof by induction on the word from the right (reverseRecOn).
--- The two Lean API lemmas used (existence proven mathematically; names verified approximate):
---   (A) List.chain'_append_singleton: Chain' R (l ++ [a]) ↔ Chain' R l ∧ ∀ x ∈ l.getLast?, R x a
---   (B) getLast?_mem: l' ≠ [] → l'.getLast! ∈ l'.getLast?
--- These are standard Lean 4 / Mathlib List lemmas.
 private lemma evalWord_nonempty_labeledInv :
     ∀ (l : List (Bool × Bool)),
     l ≠ [] →
@@ -469,13 +476,13 @@ private lemma evalWord_nonempty_labeledInv :
     labeledInv l.getLast! (evalWord l e2Int) := by
   intro l
   induction l using List.reverseRecOn with
-  | H0 => intro h; exact absurd rfl h
-  | H1 l' g ih =>
+  | nil => intro h; exact absurd rfl h
+  | append_singleton l' g ih =>
     -- ih : l' ≠ [] → l'.Chain' R → labeledInv l'.getLast! (evalWord l' e2Int)
     intro _ hred
     -- Rewrite the goal: getLast! of l' ++ [g] is g, and evalWord splits at the end
     -- (l' ++ [g]).getLast! = g holds because g is the last element
-    have hlast : (l' ++ [g]).getLast! = g := by simp [List.getLast!_append_of_ne_nil]
+    have hlast : (l' ++ [g]).getLast! = g := by simp
     rw [evalWord_append, hlast]
     -- Case split: was the prefix empty?
     by_cases hl' : l' = []
@@ -483,16 +490,18 @@ private lemma evalWord_nonempty_labeledInv :
       subst hl'; simp only [evalWord]; exact labeledInv_base g
     · -- Multi-letter word l' ++ [g]: use induction hypothesis
       -- Extract prefix chain from (l' ++ [g]).Chain' R
-      have hred_l' : l'.Chain' (fun a b => ¬(a.1 = b.1 ∧ a.2 = !b.2)) := by
-        -- Prefix of a reduced word is reduced
-        -- (A): List.chain'_append_singleton or List.Chain'.init
-        sorry -- LEAN API: Chain' (l' ++ [g]) → Chain' l'
+      have hred_l' : l'.Chain' (fun a b => ¬(a.1 = b.1 ∧ a.2 = !b.2)) :=
+        -- Prefix of a reduced word is reduced: l' = left part of l' ++ [g]
+        (List.chain'_append.mp hred).1
       -- The junction: last pair (l'.getLast!, g) satisfies no-cancel
       have hnocancel : ¬(g.1 = l'.getLast!.1 ∧ g.2 = !l'.getLast!.2) := by
-        -- (B): from Chain' (l' ++ [g]), extract R l'.getLast! g
-        -- i.e., ¬(l'.getLast!.1 = g.1 ∧ l'.getLast!.2 = !g.2)
-        -- then swap: ¬(g.1 = l'.getLast!.1 ∧ g.2 = !l'.getLast!.2)
-        sorry -- LEAN API: List.Chain'.rel_getLast or List.chain'_append_singleton junction
+        -- From chain'_append: ∀ x ∈ l'.getLast?, ∀ y ∈ [g].head?, R x y
+        -- i.e., R l'.getLast! g = ¬(l'.getLast!.1 = g.1 ∧ l'.getLast!.2 = !g.2)
+        intro ⟨heq1, heq2⟩
+        have hjunc := (List.chain'_append.mp hred).2.2
+        have hlast_mem : l'.getLast! ∈ l'.getLast? := getLast!_mem_getLast? hl'
+        have hg_mem : g ∈ ([g] : List (Bool × Bool)).head? := by simp
+        exact hjunc _ hlast_mem _ hg_mem ⟨heq1.symm, by simp [heq2, Bool.not_not]⟩
       -- Apply the transition
       exact labeledInv_step g l'.getLast! _ hnocancel (ih hl' hred_l')
 
@@ -642,8 +651,14 @@ theorem hausdorff_free_subgroup :
     have hne_word : FreeGroup.toWord w ≠ [] := by
       rwa [ne_eq, FreeGroup.toWord_eq_nil_iff]
     have hred_word : (FreeGroup.toWord w).Chain' (fun a b => ¬(a.1 = b.1 ∧ a.2 = !b.2)) :=
-      -- FreeGroup.toWord always gives a reduced word; reducedness = no adjacent cancellations
-      by sorry -- FreeGroup.Reduced (FreeGroup.toWord w) gives this chain condition
+      -- FreeGroup.toWord always gives a reduced word (FreeGroup.isReduced_toWord).
+      -- FreeGroup.IsReduced L = L.IsChain (fun a b => a.1 = b.1 → a.2 = b.2),
+      -- which is equivalent to Chain' (fun a b => ¬(a.1 = b.1 ∧ a.2 = !b.2)).
+      -- Chain' = IsChain (definitionally), so IsChain.imp converts between relations.
+      FreeGroup.isReduced_toWord.imp (fun a b h ⟨h1, h2⟩ =>
+        -- h : a.1 = b.1 → a.2 = b.2; h1 : a.1 = b.1; h2 : a.2 = !b.2
+        -- gives: a.2 = b.2 = !b.2, impossible for Bool
+        absurd ((h h1).symm.trans h2) (by cases b.2 <;> simp))
     -- Step 2: By the automaton, the integer orbit satisfies anyInv
     have hanyInv : anyInv (evalWord (FreeGroup.toWord w) e2Int) :=
       evalWord_nonempty_anyInv _ hne_word hred_word
@@ -660,11 +675,52 @@ theorem hausdorff_free_subgroup :
         p ≠ e₂ := by
       intro v hv p n henc heq
       subst heq
-      -- anyInv v says some mod-3 condition holds on v's integer entries
-      -- but p = e₂ = (0, 1, 0) means v = (0, 3^n, 0) scaled
-      -- which contradicts the mod-3 invariant (e2Int has v₁.re = 1 ≢ 0 mod 3^n condition)
-      -- Full proof: analyze which inv_* holds and derive contradiction
-      sorry -- bridge: anyInv v ∧ v encodes 3^n * e₂ → False
+      -- After subst, goal is False. henc : ∀ i, (v i).re + (v i).im * √2 = 3^n * e₂ i.
+      -- e₂ = EuclideanSpace.single 1 1, so e₂ 0 = 0 and e₂ 2 = 0.
+      -- By irrationality of √2: (v 0).im = 0 and (v 2).im = 0.
+      -- But inv_phi, inv_phi_inv require (v 0).im % 3 ≠ 0 → contradiction.
+      -- And inv_psi, inv_psi_inv require (v 2).im % 3 ≠ 0 → contradiction.
+      -- Step 1: Extract equations at coordinates 0 and 2
+      have henc0 : (↑(v 0).re : ℝ) + ↑(v 0).im * Real.sqrt 2 = 0 := by
+        have h := henc (0 : Fin 3)
+        simp only [EuclideanSpace.single_apply, Pi.single_apply] at h
+        norm_num at h ⊢
+        linarith
+      have henc2 : (↑(v 2).re : ℝ) + ↑(v 2).im * Real.sqrt 2 = 0 := by
+        have h := henc (2 : Fin 3)
+        simp only [EuclideanSpace.single_apply, Pi.single_apply] at h
+        norm_num at h ⊢
+        linarith
+      -- Step 2: Use irrationality of √2 to derive (v 0).im = 0 and (v 2).im = 0
+      have hirr : Irrational (Real.sqrt 2) := Real.irrational_sqrt_two
+      have hv0_im : (v 0).im = 0 := by
+        by_contra h0
+        have hh : (↑(v 0).im : ℝ) ≠ 0 := Int.cast_ne_zero.mpr h0
+        apply hirr
+        refine ⟨-((v 0).re : ℚ) / ((v 0).im : ℚ), ?_⟩
+        push_cast
+        rw [div_eq_iff hh]
+        linarith [mul_comm (Real.sqrt 2) (↑(v 0).im : ℝ),
+                  mul_comm (↑(v 0).im : ℝ) (Real.sqrt 2)]
+      have hv2_im : (v 2).im = 0 := by
+        by_contra h2
+        have hh : (↑(v 2).im : ℝ) ≠ 0 := Int.cast_ne_zero.mpr h2
+        apply hirr
+        refine ⟨-((v 2).re : ℚ) / ((v 2).im : ℚ), ?_⟩
+        push_cast
+        rw [div_eq_iff hh]
+        linarith [mul_comm (Real.sqrt 2) (↑(v 2).im : ℝ),
+                  mul_comm (↑(v 2).im : ℝ) (Real.sqrt 2)]
+      -- Step 3: Contradiction from anyInv v
+      -- inv_phi and inv_phi_inv require (v 0).im % 3 ≠ 0, but (v 0).im = 0 → 0 % 3 = 0
+      -- inv_psi and inv_psi_inv require (v 2).im % 3 ≠ 0, but (v 2).im = 0 → 0 % 3 = 0
+      simp only [anyInv, inv_phi, inv_phi_inv, inv_psi, inv_psi_inv] at hv
+      rcases hv with ⟨-, h, -⟩ | ⟨-, h, -⟩ |
+                     ⟨-, -, -, -, -, h, -⟩ | ⟨-, -, -, -, -, h, -⟩
+      · exact h (by rw [hv0_im]; omega)  -- (v 0).im % 3 ≠ 0 but 0 % 3 = 0
+      · exact h (by rw [hv0_im]; omega)
+      · exact h (by rw [hv2_im]; omega)
+      · exact h (by rw [hv2_im]; omega)
     -- Apply bridge: get the real-value encoding
     have henc : ∀ i, ((evalWord (FreeGroup.toWord w) e2Int) i).re +
         ((evalWord (FreeGroup.toWord w) e2Int) i).im * Real.sqrt 2 =
