@@ -8,14 +8,14 @@
     },
     "type": "concept",
     "title": "Power Mean Family Overview",
-    "content": "The module header introduces the power mean $M_r$ for a tuple of positive reals. The definition distinguishes two cases: the standard formula for $r \\neq 0$ and the geometric mean (via product) as the $r = 0$ limit. This two-case definition is the classical choice, since $\\left(\\frac{\\sum x_i^r}{n}\\right)^{1/r}$ does not have a finite limit at $r = 0$ without reinterpretation — the correct limit is the geometric mean by L'Hôpital or log-continuity. Opening `Finset` gives access to `∑`, `∏`, `sup`, and `inf` over finite index types.",
+    "content": "The module header introduces the power mean $M_r$ for a tuple of positive reals. The definition distinguishes two cases: the standard formula for $r \\neq 0$ and the geometric mean (via product) as the $r = 0$ limit. This two-case definition is the classical choice, since $\\left(\\frac{\\sum x_i^r}{n}\\right)^{1/r}$ does not have a finite limit at $r = 0$ without reinterpretation \u2014 the correct limit is the geometric mean by L'H\u00f4pital or log-continuity. Opening `Finset` gives access to `\u2211`, `\u220f`, `sup`, and `inf` over finite index types.",
     "mathContext": "$M_r(x) = \\begin{cases}\\left(\\frac{1}{n}\\sum_{i=1}^n x_i^r\\right)^{1/r} & r \\neq 0 \\\\ \\left(\\prod_{i=1}^n x_i\\right)^{1/n} & r = 0\\end{cases}$",
     "significance": "supporting",
     "relatedConcepts": [
       "geometric mean",
       "arithmetic mean",
       "harmonic mean",
-      "L'Hôpital's rule"
+      "L'H\u00f4pital's rule"
     ],
     "prerequisites": [
       "real analysis",
@@ -32,7 +32,7 @@
     },
     "type": "definition",
     "title": "The powerMean Function",
-    "content": "The `powerMean` function is declared `noncomputable` because Lean's kernel cannot evaluate `Real.rpow` (real exponentiation with real exponents) algorithmically — it is defined via the exponential and logarithm, which live outside the computable fragment. The type signature is fully general: any `Fintype ι` (finite index type) with values `x : ι → ℝ` and exponent `r : ℝ`. The `if r = 0` branch uses `∏ i, x i` raised to the power `(card ι)⁻¹`, implementing the geometric mean. The else branch computes `(∑ i, (x i)^r / card ι)^(1/r)` using the power mean formula.",
+    "content": "The `powerMean` function is declared `noncomputable` because Lean's kernel cannot evaluate `Real.rpow` (real exponentiation with real exponents) algorithmically \u2014 it is defined via the exponential and logarithm, which live outside the computable fragment. The type signature is fully general: any `Fintype \u03b9` (finite index type) with values `x : \u03b9 \u2192 \u211d` and exponent `r : \u211d`. The `if r = 0` branch uses `\u220f i, x i` raised to the power `(card \u03b9)\u207b\u00b9`, implementing the geometric mean. The else branch computes `(\u2211 i, (x i)^r / card \u03b9)^(1/r)` using the power mean formula.",
     "mathContext": "$M_r(x_1,\\ldots,x_n) = \\left(\\frac{x_1^r + \\cdots + x_n^r}{n}\\right)^{1/r}$, with $M_0 = (x_1 \\cdots x_n)^{1/n}$",
     "significance": "key",
     "relatedConcepts": [
@@ -55,7 +55,7 @@
       "endLine": 40
     },
     "type": "insight",
-    "title": "Limit as r → +∞: Dominance of the Maximum",
+    "title": "Limit as r \u2192 +\u221e: Dominance of the Maximum",
     "content": "The proof sketch uses a squeeze argument. Let $M = \\max_i x_i$. Then $M^r \\leq \\sum_i x_i^r \\leq n \\cdot M^r$, so $M = (M^r)^{1/r} \\leq M_r \\leq (n \\cdot M^r)^{1/r} = n^{1/r} \\cdot M$. Since $n^{1/r} = e^{\\frac{\\ln n}{r}} \\to e^0 = 1$ as $r \\to +\\infty$, the squeeze theorem gives $M_r \\to M = \\max_i x_i$. Formalizing this in Lean requires `Real.tendsto_rpow_atTop` or similar, plus monotonicity of $x \\mapsto x^{1/r}$.",
     "mathContext": "$\\max_i x_i \\leq M_r \\leq n^{1/r} \\cdot \\max_i x_i \\xrightarrow{r\\to+\\infty} \\max_i x_i$",
     "significance": "key",
@@ -63,7 +63,11 @@
       "squeeze theorem",
       "L^p norm convergence",
       "dominated convergence",
-      "max function"
+      "max function",
+      "max-norm limit",
+      "dominant term",
+      "filter tendsto",
+      "sup norm convergence"
     ],
     "prerequisites": [
       "real analysis",
@@ -79,7 +83,7 @@
       "endLine": 42
     },
     "type": "insight",
-    "title": "Limit as r → -∞: Duality with Min",
+    "title": "Limit as r \u2192 -\u221e: Duality with Min",
     "content": "The sketch invokes the elegant duality $M_{-r}(x) = 1/M_r(1/x)$, which follows from: $M_{-r}(x) = \\left(\\frac{\\sum x_i^{-r}}{n}\\right)^{-1/r} = \\left(\\frac{\\sum (x_i^{-1})^r}{n}\\right)^{-1/r} = \\left(M_r(1/x)^r\\right)^{-1/r} = 1/M_r(1/x)$. Applying the $r \\to +\\infty$ limit: $M_{-r}(x) \\to 1/\\max_i(1/x_i) = \\min_i x_i$. This duality mirrors the relationship $\\min x_i = 1/\\max_i(1/x_i)$ for positive reals.",
     "mathContext": "$M_{-r}(x) = \\dfrac{1}{M_r(1/x)} \\xrightarrow{r\\to+\\infty} \\dfrac{1}{\\max_i(1/x_i)} = \\min_i x_i$",
     "significance": "key",
@@ -87,11 +91,14 @@
       "harmonic-arithmetic duality",
       "reciprocal means",
       "min-max duality",
-      "Hölder conjugate"
+      "H\u00f6lder conjugate",
+      "min-norm limit",
+      "inf norm convergence",
+      "reciprocal order reversal"
     ],
     "prerequisites": [
       "power mean definition",
-      "limit at +∞ case",
+      "limit at +\u221e case",
       "positive reals"
     ]
   },
@@ -111,7 +118,7 @@
       "Jensen's inequality",
       "convex functions",
       "AM-GM inequality",
-      "Hölder's inequality"
+      "H\u00f6lder's inequality"
     ],
     "prerequisites": [
       "Jensen's inequality",
@@ -127,7 +134,7 @@
       "endLine": 52
     },
     "type": "concept",
-    "title": "Arithmetic Mean as M₁",
+    "title": "Arithmetic Mean as M\u2081",
     "content": "This theorem instantiates the power mean at $r = 1$ for two positive reals encoded as `![a, b]` (a `Fin 2`-indexed vector). The expected result is $(a+b)/2$. The proof unfolds `powerMean`, dispatches the $r \\neq 0$ branch with `if_neg one_ne_zero`, then uses `Fin.sum_univ_two` to reduce the finset sum to $a^1 + b^1$. The `simp only` call normalizes `Matrix.cons` accessors and applies `rpow_one` to simplify $a^1 = a$, $b^1 = b$. Finally, `norm_num` closes the remaining arithmetic. The proof is complete with 0 sorries.",
     "mathContext": "$M_1(a,b) = \\left(\\frac{a^1 + b^1}{2}\\right)^{1/1} = \\frac{a+b}{2}$",
     "significance": "supporting",
@@ -135,7 +142,11 @@
       "arithmetic mean",
       "Fin 2 indexing",
       "Mathlib Finset.sum",
-      "simp normalization"
+      "simp normalization",
+      "arithmetic mean as sum/count",
+      "M_1 special case",
+      "Finset.sum normalization",
+      "weight-1 mean"
     ],
     "prerequisites": [
       "Lean 4 vector notation",
@@ -151,15 +162,19 @@
       "endLine": 65
     },
     "type": "concept",
-    "title": "Harmonic Mean as M₋₁",
-    "content": "The harmonic mean $H = 2ab/(a+b)$ arises as $M_{-1}(a,b)$. To see this: $M_{-1}(a,b) = \\left(\\frac{a^{-1}+b^{-1}}{2}\\right)^{-1} = \\left(\\frac{a+b}{2ab}\\right)^{-1} = \\frac{2ab}{a+b}$. This is precisely the reciprocal of the arithmetic mean of the reciprocals, making precise the classical formula $H = n / \\sum (1/x_i)$. The proof handles $r = -1$ by showing $(-1:ℝ) \\neq 0$ with `norm_num`, then applies `rpow_neg_one` three times. The `field_simp` tactic clears fractions and `ring` closes the algebraic identity. Complete with 0 sorries.",
+    "title": "Harmonic Mean as M\u208b\u2081",
+    "content": "The harmonic mean $H = 2ab/(a+b)$ arises as $M_{-1}(a,b)$. To see this: $M_{-1}(a,b) = \\left(\\frac{a^{-1}+b^{-1}}{2}\\right)^{-1} = \\left(\\frac{a+b}{2ab}\\right)^{-1} = \\frac{2ab}{a+b}$. This is precisely the reciprocal of the arithmetic mean of the reciprocals, making precise the classical formula $H = n / \\sum (1/x_i)$. The proof handles $r = -1$ by showing $(-1:\u211d) \\neq 0$ with `norm_num`, then applies `rpow_neg_one` three times. The `field_simp` tactic clears fractions and `ring` closes the algebraic identity. Complete with 0 sorries.",
     "mathContext": "$M_{-1}(a,b) = \\left(\\frac{a^{-1}+b^{-1}}{2}\\right)^{-1} = \\frac{2ab}{a+b}$",
     "significance": "supporting",
     "relatedConcepts": [
       "harmonic mean",
       "reciprocal mean",
       "AM-HM inequality",
-      "Real.rpow with negative exponents"
+      "Real.rpow with negative exponents",
+      "harmonic mean as reciprocal of arithmetic mean of reciprocals",
+      "M_{-1} special case",
+      "reciprocal transformation",
+      "resistor parallel rule"
     ],
     "prerequisites": [
       "harmonic mean formula",
