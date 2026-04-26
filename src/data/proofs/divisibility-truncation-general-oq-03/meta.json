@@ -118,6 +118,16 @@
       "targetId": "fermat-little-theorem",
       "relationship": "related",
       "description": "For prime d with 10 as a primitive root, the osculator c = 10^{-1} ≡ 10^{d-2} (mod d) by Fermat's little theorem. The period of 1/d's decimal expansion equals ord_d(10). These connections situate the osculator in the broader theory of multiplicative orders mod primes."
+    },
+    {
+      "targetId": "divisibility-rules",
+      "relationship": "generalizes",
+      "description": "canonical_divisibility_test subsumes the concrete divisibility rules for 2, 3, 5, 7, 11, 13, etc. proved in the comprehensive collection. The alternating digit sum rule for 11 (osculator −1) and the last-digit rule for 7 are both special cases of the one-liner d | n ↔ d | ⌊n/10⌋ + gcdA(10,d)·(n%10)."
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "related",
+      "description": "The digit-sum rule for 3 is the osculator=1 special case: gcdA(10,3)=1, so canonical_divisibility_test gives 3 | n ↔ 3 | ⌊n/10⌋ + (n%10). Iterating this telescopes to the full digit sum, showing the classical rule is an instance of the truncation pipeline."
     }
   ],
   "leanFile": {
