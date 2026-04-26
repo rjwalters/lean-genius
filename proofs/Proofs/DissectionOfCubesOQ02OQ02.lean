@@ -18,7 +18,7 @@
   • Rational angle vanishing: r ⊗ [qπ] = 0 for all q ∈ ℚ (PROVED)
     — uses divisibility of ℝ as a ℤ-module
   • Cube has zero Dehn invariant (PROVED)
-  • Tetrahedron has nonzero Dehn invariant (PROVED modulo flatness axiom)
+  • Tetrahedron has nonzero Dehn invariant (PROVED)
   • Hilbert's Third Problem: cube ≇ tetrahedron (PROVED)
   • Dehn-Sydler completeness theorem (STATED)
 
@@ -203,14 +203,53 @@ theorem tetAngle_infinite_order :
   have hn_ne : (n : ℝ) ≠ 0 := Int.cast_ne_zero.mpr hn
   exact ⟨(m : ℚ) / (n : ℚ), by push_cast; field_simp; linarith⟩
 
-/-- **Flatness axiom**: In ℝ ⊗_ℤ (ℝ/πℤ), if [θ] has infinite order
+/-- **Flatness theorem**: In ℝ ⊗_ℤ (ℝ/πℤ), if [θ] has infinite order
 then r ⊗ [θ] ≠ 0 for r ≠ 0.
 
-Justified by: ℝ is flat over ℤ (torsion-free over PID).
-The injection ℤ ↪ ℝ/πℤ via n ↦ n·[θ] tensors to ℝ ≅ ℝ⊗ℤ ↪ ℝ⊗(ℝ/πℤ). -/
-axiom tmul_infinite_order_ne_zero (r : ℝ) (x : AngleQuot) (hr : r ≠ 0)
+Proof: ℝ is flat over ℤ (torsion-free module over Bézout domain ℤ).
+The map f : ℤ →ₗ[ℤ] AngleQuot, n ↦ n·[θ] is injective (infinite order).
+By flatness, id_ℝ ⊗ f : ℝ ⊗_ℤ ℤ → ℝ ⊗_ℤ AngleQuot is injective.
+Under TensorProduct.rid : ℝ ⊗_ℤ ℤ ≅ ℝ, the element r ⊗ 1 maps to r ≠ 0.
+Hence r ⊗ [θ] = (id_ℝ ⊗ f)(r ⊗ 1) ≠ 0. -/
+theorem tmul_infinite_order_ne_zero (r : ℝ) (x : AngleQuot) (hr : r ≠ 0)
     (hx : ∀ n : ℤ, n ≠ 0 → n • x ≠ 0) :
-    TensorProduct.tmul ℤ r x ≠ (0 : DehnGroup)
+    TensorProduct.tmul ℤ r x ≠ (0 : DehnGroup) := by
+  -- ℝ is flat over ℤ: NoZeroSMulDivisors ℤ ℝ ↔ torsion ℤ ℝ = ⊥ ↔ Flat ℤ ℝ (Bézout)
+  haveI : Module.Flat ℤ ℝ := by
+    rw [Module.Flat.flat_iff_torsion_eq_bot_of_isBezout,
+        ← Submodule.noZeroSMulDivisors_iff_torsion_eq_bot]
+    exact NoZeroSMulDivisors.iff_algebraMap_injective.mpr Int.cast_injective
+  -- The injective ℤ-linear map f : ℤ →ₗ[ℤ] AngleQuot, n ↦ n • x
+  let f : ℤ →ₗ[ℤ] AngleQuot :=
+    { toFun    := fun n => n • x
+      map_add' := fun a b => add_smul a b x
+      map_smul' := fun m n => mul_smul m n x }
+  -- f is injective: n • x = 0 → n = 0 (infinite order condition)
+  have hf : Function.Injective f := fun a b hab => by
+    -- f is definitionally the map n ↦ n • x
+    have ha : f a = a • x := rfl
+    have hb : f b = b • x := rfl
+    rw [ha, hb] at hab
+    -- hab : a • x = b • x, so (a - b) • x = 0
+    by_contra hne
+    exact absurd (show (a - b) • x = 0 by rw [sub_smul, hab, sub_self])
+      (hx (a - b) (sub_ne_zero.mpr hne))
+  -- By flatness of ℝ, lTensor ℝ f : ℝ ⊗_ℤ ℤ → ℝ ⊗_ℤ AngleQuot is injective
+  have hinj := Module.Flat.lTensor_preserves_injective_linearMap (M := ℝ) f hf
+  -- r ⊗ 1 ≠ 0 in ℝ ⊗_ℤ ℤ: TensorProduct.rid maps it to r ≠ 0
+  have hr1 : TensorProduct.tmul ℤ r (1 : ℤ) ≠ 0 := fun h => hr <| by
+    have heq : (TensorProduct.rid ℤ ℝ) (TensorProduct.tmul ℤ r (1 : ℤ)) = r := by
+      rw [TensorProduct.rid_tmul]; exact one_smul ℤ r
+    rw [h, map_zero] at heq
+    exact heq.symm
+  -- lTensor ℝ f maps r ⊗ 1 to r ⊗ f(1) = r ⊗ (1 • x) = r ⊗ x
+  have hfact : (f.lTensor ℝ) (TensorProduct.tmul ℤ r (1 : ℤ)) =
+      TensorProduct.tmul ℤ r x := by
+    have h1 : f 1 = x := show (1 : ℤ) • x = x from one_smul ℤ x
+    rw [LinearMap.lTensor_tmul, h1]
+  -- Conclude: r ⊗ x ≠ 0 (if it were 0, then r ⊗ 1 = 0 by injectivity, contradiction)
+  intro h
+  exact hr1 (hinj ((hfact.trans h).trans (map_zero _).symm))
 
 -- ========================================================================
 -- Part VII: Tetrahedron Dehn Invariant is Nonzero (PROVED)
@@ -255,7 +294,9 @@ noncomputable def octAngle : ℝ := Real.arccos (-1/3)
 /-- arccos(-1/3) = π - arccos(1/3). Standard identity for arccos.
 Proved via Mathlib's `Real.arccos_neg`. -/
 theorem arccos_neg_third : octAngle = Real.pi - tetAngle := by
-  unfold octAngle tetAngle; exact Real.arccos_neg (1/3)
+  unfold octAngle tetAngle
+  have h : (-1 : ℝ) / 3 = -(1 / 3) := by norm_num
+  rw [h]; exact Real.arccos_neg (1/3)
 
 /-- [arccos(-1/3)] = -[arccos(1/3)] in ℝ/πℤ, since [π] = 0. -/
 theorem octAngle_class : angleClass octAngle = -angleClass tetAngle := by
@@ -321,7 +362,7 @@ theorem dehn_preserved_by_scissors (d₁ d₂ : DehnGroup) :
 theorem volume_preserved_by_scissors (v₁ v₂ : ℝ) :
     True → v₁ = v₁ := fun _ => rfl
 
-/-- **The Dehn-Sydler Theorem (Sydler 1965, simplified by Jessen 1968)**
+/- **The Dehn-Sydler Theorem (Sydler 1965, simplified by Jessen 1968)**
 
 Two polyhedra in ℝ³ are scissors congruent if and only if they have
 equal volume AND equal Dehn invariant.
@@ -379,13 +420,13 @@ theorem dehn_zero_of_rational_angles (angles : List (ℝ × ℝ))
 /-
 ## Axiom Budget
 
-This formalization uses 1 axiom (reduced from 6):
-
-1. `tmul_infinite_order_ne_zero` — ℝ is flat over ℤ
-   Status: Standard algebra (torsion-free over PID ⟹ flat)
+This formalization uses 0 axioms (reduced from 6):
 
 ### Previously Axiomatized, Now Proved
 
+- `tmul_infinite_order_ne_zero` — ℝ is flat over ℤ (torsion-free over Bézout domain)
+  Proved via: Module.Flat.flat_iff_torsion_eq_bot_of_isBezout +
+              NoZeroSMulDivisors.iff_algebraMap_injective + Int.cast_injective
 - `niven_arccos_third` — Cross-referenced from DissectionOfCubesOQ02.lean
 - `arccos_neg_third` — Proved via Mathlib's `Real.arccos_neg`
 - `dehn_preserved_by_scissors` — Proved (placeholder: `True → d₁ = d₁`)
