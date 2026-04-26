@@ -29,13 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (session 11): Mathlib PR files READY (maxHeartbeats 200000, 0 sorries, granular imports). SpernerGrid.lean BLOCKED: boundary_verts_on_face and boundary_doors_odd are FALSE as stated (oriented simplices give even door count). Fix requires canonical orientation restriction.",
+    "progressSummary": "PROGRESS (session 6): Proved gridAdj_symm and gridAdj_vertex (5 → 3 sorries). Discovered boundary_verts_on_face and boundary_doors_odd are FALSE as stated; documented with counterexamples. Requires GridSimplex/gridAdj redesign.",
     "builtItems": [
       "SpernerMathlib4Opt.lean: optimized proof proposal for even_card_of_fpf_invol using sum_involution (research/problems/sperner-ndim-oq-05/lean/)",
       "even_card_of_fpf_invol: 53-line strongInduction proof replaced with 11-line sum_involution proof in SpernerMathlib4.lean",
       "boundaryFlip0.step_same: proved (SpernerGrid.lean:868-903, 2 sorries → 0)",
       "boundaryFlipLast.step_same: proved (SpernerGrid.lean:1011-1046, 2 sorries → 0)",
-      "gridAdj_ne: proved in SpernerGrid.lean (1 sorry removed, 6 → 5 remaining)"
+      "gridAdj_ne: proved in SpernerGrid.lean (1 sorry removed, 6 → 5 remaining)",
+      "gridAdj_symm: proved in SpernerGrid.lean using boundaryFlip0_invol, boundaryFlipLast_invol (5 → 4 sorries)",
+      "gridAdj_vertex: proved in SpernerGrid.lean by case analysis on k value (4 → 3 sorries)",
+      "gridAdj_ne additional: proved (3 sorries remain: CellComplex.sperner ref + boundary_verts_on_face + boundary_doors_odd)"
     ],
     "insights": [
       "All gallery files (SpernerMathlib4, SpernerSimplicialInstance, etc.) have 0 sorries — mathematical work complete",
@@ -59,21 +62,23 @@
       "split_ifs auto-closes h:none=some contradictions — only 1 bullet needed per split_ifs in helper lemmas",
       "j_step.castSucc.val syntactically ≠ j_step.val even though equal — need simp [Fin.castSucc] before omega in hlv proofs",
       "gridAdj_ne proved via 3-case split: boundary cases use verts_injective; interior case uses inc_injective + interiorFlip_incDir_kprev",
-      "boundary_verts_on_face is MATHEMATICALLY WRONG: counterexample d=1 N=2, S1={verts(0)=(1,1),verts(1)=(2,0)}, gridAdj(k=0)=none but (2,0).coords(0)=2≠0",
-      "Root cause: GridSimplex includes both orientations of each geometric simplex. gridComplex d=1 N=2 has 4 cells (each edge twice). Boundary door count=2 (EVEN), not odd.",
-      "boundary_doors_odd is FALSE for oriented gridComplex — needs canonical orientations (miss=⟨d,_⟩) restriction to give odd count",
-      "no_boundary_doors_face_lt (proved) is also wrong: uses sorry-based boundary_verts_on_face. (S1,0) IS a door at k=0<d with adj=none.",
-      "Fix: restrict GridSimplex to canonical orientations (miss=⟨d,_⟩). With canonical simplices each geometric simplex appears once and boundary door count is ODD.",
-      "Mathlib PR files are FULLY READY: SpernerMathlib4.lean (0 sorries, maxHeartbeats 200000, granular imports) + SpernerSimplicialInstance.lean (0 sorries, maxHeartbeats 200000) — PRs #11316 #11470 #11521 #11625 completed this work"
+      "boundary_verts_on_face is FALSE: gridAdj=none at k=0 means (v_d).coords miss=0, NOT ∀j≠k, (v_j).coords k=0. Counterexample: d=2, N=3, miss=0, incDir=[1,2], v₀=(2,0,1), v₁=(1,1,1), v₂=(0,1,2). gridAdj=none at k=0 but v₁.coords 0=1≠0.",
+      "boundary_doors_odd is FALSE for d=1: each geometric edge has 2 GridSimplex representations (miss=0 and miss=1), doubling boundary door count to 2 (even). gridAdj misses cross-miss adjacencies.",
+      "sperner_grid requires N≥d for non-empty complex, not just N>0. For d=2, N=1: gridComplex 2 1 is empty, making ∃ s, IsPanchromatic false.",
+      "Root cause: gridAdj treats 'boundaryFlip returns none' as 'geometric boundary', but this is wrong when the adjacent simplex exists with a different miss direction. Redesign required.",
+      "gridAdj_symm proved using: boundaryFlip0_invol, boundaryFlipLast_invol, interiorFlip_invol + interiorFlip symmetry argument",
+      "gridAdj_vertex proved by case split: k=0 uses boundaryFlip0 vertex property, k=d uses boundaryFlipLast vertex property, 0<k<d uses interiorFlip vertex property"
     ],
-    "mathlibGaps": [
-      "GridSimplex structure admits both orientations of each geometric simplex — needs canonical orientation constraint (miss=⟨d,_⟩) for SpernerGrid parity argument to work"
-    ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "[USER ACTION] Refresh rjwalters/mathlib4:sperner-abstract-parity with current SpernerMathlib4.lean (200K heartbeats, granular imports)",
-      "[USER ACTION] Submit Part 1 PR to mathlib4 (SpernerMathlib4.lean, 732 lines, 0 sorries)",
-      "[USER ACTION] Comment on mathlib4#25231 pointing Dillies to SpernerSimplicialInstance.lean as Part 2",
-      "NEW RESEARCH: Fix SpernerGrid.lean by restricting to canonical orientations (miss=⟨d,_⟩) and redesigning boundary_doors_odd proof via induction on d (~300-500 lines)"
+      "[USER ACTION] Post comment on mathlib4#25231 pointing Dillies to SpernerSimplicialInstance.lean as Part 2",
+      "Test granular imports via Docker build for SpernerMathlib4.lean",
+      "Profile SpernerSimplicialInstance.lean with set_option profiler true to find expensive proofs",
+      "Reduce SpernerSimplicialInstance heartbeats to ≤ 800000 for Mathlib PR",
+      "Submit Part 1 (SpernerMathlib4) PR to mathlib4 as initial contribution, Part 2 as follow-up",
+      "REDESIGN NEEDED: Fix gridAdj to correctly identify geometric boundary faces (detect cross-miss neighbors), or use canonical form to eliminate double-counting of geometric simplices",
+      "For boundary_doors_odd fix: either (a) change Cell type to use canonical GridSimplex rep (unique miss direction per geometric simplex), or (b) use quotient type to identify equivalent representations",
+      "Fix sperner_grid hypothesis: change hN : 0 < N to hN : d ≤ N to ensure non-empty complex"
     ],
     "markdown": "# Knowledge Base: sperner-ndim-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -95,7 +100,7 @@
     "mathlib": []
   },
   "started": "2026-04-14T21:25:05.895Z",
-  "lastUpdate": "2026-04-22T09:00:00-07:00",
+  "lastUpdate": "2026-04-26T12:00:00-07:00",
   "significance": 8,
   "tractability": 5
 }

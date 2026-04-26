@@ -46,8 +46,29 @@ vertices at different positions always differ.
 
 1. `CellComplex.sperner` — proved in SpernerMathlib4.lean,
    duplicated here for self-containment.
-2. `boundary_doors_odd` — hard: induction on dimension,
-   constructing (d-1)-dim boundary triangulation.
+2. `boundary_verts_on_face` + `boundary_doors_odd` — FALSE as
+   stated; require fundamental redesign of GridSimplex/gridAdj.
+
+## Known design issues
+
+`boundary_verts_on_face` is FALSE: gridAdj=none at k=0 means
+(v_d).coords miss=0, NOT ∀ j≠k, (v_j).coords k=0.
+Counterexample: d=2, N=3, s with v₀=(2,0,1), v₁=(1,1,1),
+v₂=(0,1,2), miss=0, incDir=[1,2]. gridAdj=none at k=0
+(since v₂.coords 0=0) but v₁.coords 0=1≠0.
+
+`boundary_doors_odd` is FALSE for d=1: each geometric edge has 2
+GridSimplex representations (miss=0 and miss=1), so boundary door
+count is always 2 (even). Root cause: gridAdj misses cross-miss
+adjacencies — the adjacent simplex with a different miss direction.
+
+`sperner_grid` requires N≥d for the complex to be non-empty, but
+the hypothesis only says N>0. For d=2, N=1: the complex is empty.
+
+Root cause: GridSimplex/gridAdj treats "can't do boundary flip" as
+"geometric boundary", which is wrong when the adjacent simplex has
+a different miss direction. Correct formulation requires redesigning
+GridSimplex to track cross-miss neighbors, or restricting to d=0.
 
 ## References
 
@@ -1633,6 +1654,24 @@ theorem boundary_verts_on_face
     (hbdry : gridAdj d N s k = none)
     (j : Fin (d + 1)) (hjk : j ≠ k) :
     (s.verts j).onFace k := by
+  -- NOTE: This theorem is FALSE as stated.
+  -- gridAdj d N s k = none at k=0 means (s.verts d).coords s.miss = 0,
+  -- which says the "last vertex" has zero mass in the miss direction.
+  -- This does NOT imply that all other vertices j≠k have (s.verts j).coords k = 0.
+  --
+  -- Counterexample (d=2, N=3):
+  --   s.miss = 0, s.incDir = [1, 2]
+  --   v₀ = (2, 0, 1), v₁ = (1, 1, 1), v₂ = (0, 1, 2)
+  --   k = ⟨0, _⟩  (so k.val=0 < d=2, hk satisfied)
+  --   gridAdj at k=0: calls boundaryFlip0, checks (v₂).coords s.miss = (v₂).coords 0 = 0 ✓
+  --   so gridAdj returns none (hbdry satisfied)
+  --   But for j = ⟨1, _⟩ (j ≠ k): (v₁).coords k = (v₁).coords 0 = 1 ≠ 0
+  --   so (s.verts j).onFace k fails.
+  --
+  -- Root cause: gridAdj=none at k<d signals that boundaryFlip0 found no flip target
+  -- (because the mass has been fully "used up" in the miss direction), but this does
+  -- NOT mean the simplex lies on geometric face k of Δ_N.
+  -- Fix requires redesigning gridAdj to correctly identify geometric boundary faces.
   sorry
 
 /-- On boundary face k, the Sperner condition prevents doors.
@@ -1680,6 +1719,38 @@ theorem boundary_doors_odd (d N : ℕ) (hN : 0 < N)
           p.1 p.2 ∧
         (gridComplex d N).adj p.1 p.2 =
           none)).card := by
+  -- NOTE: This theorem is FALSE for d=1, making it unprovable without redesign.
+  --
+  -- Counterexample (d=1, N=1):
+  --   BaryPoint 1 1 has two elements: (1,0) and (0,1).
+  --   GridSimplex 1 1 has two cells:
+  --     S₁: miss=0, incDir=[1], v₀=(1,0), v₁=(0,1)   [the edge from (1,0) to (0,1)]
+  --     S₂: miss=1, incDir=[0], v₀=(0,1), v₁=(1,0)   [the SAME edge, reversed]
+  --   Both S₁ and S₂ represent the same geometric edge, but are distinct GridSimplex cells.
+  --
+  --   For any Sperner coloring c: IsSperner forces c(1,0)=0 (since (1,0).coords 1=0)
+  --   and c(0,1)=1 (since (0,1).coords 0=0).
+  --   - S₁ at k=⟨1,_⟩: gridAdj=none (k=d, calls boundaryFlipLast;
+  --     (v₀).coords (incDir ⟨0,_⟩) = (1,0).coords 1 = 0, so returns none).
+  --     Colors {c(v₀)}={0} = {color 0} ✓ → door! Boundary door count += 1.
+  --   - S₂ at k=⟨0,_⟩: gridAdj=none (k=0, calls boundaryFlip0;
+  --     (v₁).coords miss = (1,0).coords 1 = 0, so returns none).
+  --     Colors {c(v₁)}={0} = {color 0} ✓ → door! Boundary door count += 1.
+  --   Total boundary doors = 2 (EVEN). Odd ⟨2, ...⟩ is false.
+  --
+  -- Root cause: The Freudenthal triangulation has d! simplices per unit hypercube.
+  -- For d=1, each geometric edge has 2 GridSimplex representations (miss=0 and miss=1).
+  -- This double-counting makes boundary door counts even.
+  -- For d≥2, each geometric simplex has exactly one valid (miss, incDir) chain, so
+  -- no double-counting — but boundary_verts_on_face (which this depends on) is also false.
+  --
+  -- Additional issue: sperner_grid requires N≥d for a non-empty complex (not just N>0).
+  -- For d=2, N=1: gridComplex 2 1 is empty (no valid GridSimplex exists), making
+  -- ∃ s, IsPanchromatic ... trivially false.
+  --
+  -- Fix requires: redesigning GridSimplex and gridAdj to correctly handle cross-miss
+  -- adjacencies, so each geometric simplex appears exactly once (or fixing the
+  -- double-counting by quotient/canonical form selection).
   sorry
 
 -- ============================================================
