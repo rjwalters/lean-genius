@@ -70,7 +70,8 @@
       "IsCoprime(p, q) lifts to IsCoprime(p^a, q^b) via Mathlib's IsCoprime.pow_pow, so the Bezout identity and CRT projections work for prime powers, not just primes.",
       "The key construction is v1 = q^b(M)*w1 where w1 is chosen so that (p^(a-1)*q^b)(M)*w1 != 0. This gives p^(a-1)(M)*v1 != 0 while p^a(M)*v1 = 0 (since minpoly kills everything). The prime power lemma then bootstraps this to p^a | r for any annihilator r.",
       "The CRT projections e1 = t(M)*q^b(M) and e2 = s(M)*p^a(M) act as identity on the respective primary components and kill the other, exactly as in the squarefree case. The commutativity of polynomial evaluation in M is the only algebraic fact needed.",
-      "The degree contradiction closes the proof: p^a*q^b | r forces deg(p^a*q^b) = n <= deg(r), but deg(r) < n by hypothesis."
+      "The degree contradiction closes the proof: p^a*q^b | r forces deg(p^a*q^b) = n <= deg(r), but deg(r) < n by hypothesis.",
+      "The proof works over any field — including small finite fields like GF(2) — because it uses only the CRT/Bezout identity in K[X] and polynomial divisibility. Classical proofs using union-avoidance (showing |K| > n suffices to avoid finitely many hyperplanes) or measure-theoretic arguments (cyclic vectors are generic) both fail over small finite fields."
     ]
   },
   "sections": [
@@ -113,6 +114,14 @@
       "endLine": 394,
       "summary": "Proves nonderogatory_bipow_has_cyclic_vector: the main binary prime power cyclic vector theorem. Constructs v1, v2 in primary components, shows v1+v2 is cyclic via CRT projections and prime power divisibility.",
       "mathContext": "For minpoly = p^a * q^b with p, q coprime irreducibles: (1) lift coprimality to powers; (2) construct primary vectors v1, v2 with correct annihilation properties; (3) show v1+v2 is cyclic by extracting r(M)*vi = 0 via CRT projections, then applying prime power divisibility to get p^a | r and q^b | r, giving p^a*q^b | r and a degree contradiction."
+    },
+    {
+      "id": "corollary-finite",
+      "title": "VI. Corollary: Finite Field Specialization",
+      "startLine": 404,
+      "endLine": 417,
+      "summary": "Explicit corollary adding [Fintype K] to highlight that the proof works over all finite fields, including GF(2). This is a direct application of the main theorem with no additional argument.",
+      "mathContext": "The corollary nonderogatory_bipow_has_cyclic_vector_finite adds the Fintype K instance, emphasizing that no infinite-field assumption is needed — unlike the classical union-avoidance approach."
     }
   ],
   "conclusion": {
@@ -155,6 +164,16 @@
       "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
       "relationship": "related",
       "description": "Grandparent: nonderogatory cyclic vector for infinite fields. WIP04 works over all fields including finite."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
+      "relationship": "extends",
+      "description": "Sibling WIP03: single prime power case (minpoly = p^e). WIP04 reuses its pow_irred_dvd_of_annihilated lemma and extends it to two prime power factors via CRT."
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "uses",
+      "description": "Cayley-Hamilton theorem: used implicitly via minpoly.aeval (minpoly(M) evaluates to zero) and the nonderogatory condition minpoly = charpoly."
     }
   ],
   "sorries": 0
