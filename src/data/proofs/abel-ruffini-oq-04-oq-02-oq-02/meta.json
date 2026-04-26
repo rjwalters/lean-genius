@@ -87,11 +87,11 @@
   "sections": [
     {
       "id": "header",
-      "title": "Documentation and Imports",
+      "title": "Documentation, Imports, and Setup",
       "startLine": 1,
-      "endLine": 44,
-      "summary": "Module docstring with classification table, key argument, and references. Imports Mathlib.GroupTheory.Solvable and Mathlib.GroupTheory.SpecificGroups.Alternating.",
-      "mathContext": "The classification $A_n$ solvable $\\Leftrightarrow n \\leq 4$ mirrors the $S_n$ threshold exactly because $A_n$ is the kernel of the sign homomorphism $S_n \\to \\{\\pm 1\\}$: if $A_n$ were solvable for $n \\geq 5$, the solvability extension theorem would give $S_n$ solvable, contradicting `Equiv.Perm.not_solvable`. The threshold is driven by $A_5$ (order 60) being the smallest non-abelian simple group — equivalently, the first alternating group whose derived series stalls."
+      "endLine": 53,
+      "summary": "Module docstring with classification table, key argument, and references. Imports Mathlib.GroupTheory.Solvable and Mathlib.GroupTheory.SpecificGroups.Alternating. Sets linter options (unusedVariables, unusedTactic) and maxHeartbeats 1600000 for longer proofs. Opens Equiv and declares namespace AbelRuffiniOQ04OQ02OQ02.",
+      "mathContext": "The classification $A_n$ solvable $\\Leftrightarrow n \\leq 4$ mirrors the $S_n$ threshold exactly because $A_n$ is the kernel of the sign homomorphism $S_n \\to \\{\\pm 1\\}$: if $A_n$ were solvable for $n \\geq 5$, the solvability extension theorem would give $S_n$ solvable, contradicting `Equiv.Perm.not_solvable`. The threshold is driven by $A_5$ (order 60) being the smallest non-abelian simple group — equivalently, the first alternating group whose derived series stalls. The `maxHeartbeats 1600000` setting (4× the default 400000) is needed because the `decide` tactic used for `a3_solvable` must enumerate $A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ exhaustively."
     },
     {
       "id": "small-cases",
@@ -119,11 +119,11 @@
     },
     {
       "id": "corollaries",
-      "title": "Corollaries and Sharp Threshold",
+      "title": "Corollaries, Sharp Threshold, and Namespace Close",
       "startLine": 127,
-      "endLine": 155,
-      "summary": "Named instances for A₅ and A₆ non-solvability. Convenience lemmas alternating_solvable_of_le_four and alternating_not_solvable_of_ge_five. sharp_threshold witnesses that A₄ is solvable but A₅ is not.",
-      "mathContext": "The exact threshold: $A_4$ solvable, $A_5$ not."
+      "endLine": 167,
+      "summary": "Named instances for A₅ and A₆ non-solvability (a5_not_solvable, a6_not_solvable). Convenience lemmas alternating_solvable_of_le_four (wrapping classification) and alternating_not_solvable_of_ge_five. sharp_threshold packages the biconditional witness: A₄ IS solvable and A₅ is NOT solvable. Closes namespace AbelRuffiniOQ04OQ02OQ02.",
+      "mathContext": "The exact threshold: $A_4$ solvable, $A_5$ not. The `sharp_threshold` lemma packages both directions as a single conjunction $\\langle a4\\_solvable, a5\\_not\\_solvable \\rangle : \\text{IsSolvable}(A_4) \\land \\neg\\text{IsSolvable}(A_5)$, making the boundary case directly accessible. This is the alternating-group analogue of the symmetric-group threshold in `abel-ruffini-oq-04-oq-02`."
     }
   ],
   "conclusion": {
