@@ -1,1 +1,150 @@
-[]
+[
+  {
+    "id": "ann-sfoo2-header",
+    "proofId": "szemeredi-full-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "context",
+    "title": "Module Overview: Density Formulation and Proof Stratification by k",
+    "content": "The opening docstring introduces the **density formulation** of Szemerédi's theorem: instead of the qualitative statement ('k-AP-free sets with positive upper density are impossible'), the density form quantifies the bound — k-AP-free sets must have density tending to zero. The module docstring explicitly stratifies the proof by k: k=1,2 are trivial, k=3 is proved via Mathlib's Roth theorem, and k≥4 is axiomatized. This stratification reflects the actual state of Mathlib 4.26 and makes the single axiom (`szemeredi_k_ge_4`) explicit rather than hiding it. The imports bring in three components: `Corner.Roth` for `rothNumberNat_isLittleO_id`, `AP.Three.Defs` for 3-AP definitions, and `Proofs.SzemerediTheorem` for `ap_free_density_bound` (the ε-N₀ density bound proved there). The `open Szemeredi Asymptotics Filter` enables concise dot-notation for the three main namespaces used.",
+    "mathContext": "The qualitative Szemerédi theorem (1975): if $A \\subseteq \\mathbb{Z}$ has positive upper Banach density $\\limsup_{N \\to \\infty} |A \\cap [N]| / N > 0$, then $A$ contains a $k$-AP for every $k$. The density (contrapositive) form: if $A_N \\subseteq \\{0, \\ldots, N-1\\}$ is $k$-AP-free for all $N$, then $|A_N| / N \\to 0$. This is formalized using `Filter.Tendsto` rather than $\\limsup$ because Mathlib's topology library is organized around filters: $\\mathrm{tendsto}(f, \\mathrm{atTop}, \\mathrm{nhds}\\, 0)$ means exactly $\\forall \\varepsilon > 0,\\ \\exists N_0,\\ \\forall N \\geq N_0,\\ |f(N) - 0| < \\varepsilon$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Filter.Tendsto",
+      "IsLittleO",
+      "density formulation",
+      "proof stratification by k",
+      "ap_free_density_bound"
+    ],
+    "prerequisites": [
+      "qualitative vs density form of Szemerédi's theorem",
+      "Lean 4 Filter.atTop and nhds",
+      "Mathlib Corner.Roth module"
+    ]
+  },
+  {
+    "id": "ann-sfoo2-vanishing-density",
+    "proofId": "szemeredi-full-oq-02",
+    "range": {
+      "startLine": 43,
+      "endLine": 63
+    },
+    "type": "technique",
+    "title": "Filter.Tendsto Proof: From ε-N₀ Bound to Asymptotic Statement",
+    "content": "`szemeredi_vanishing_density` converts the ε-N₀ density bound from `SzemerediTheorem.lean` into the `Filter.Tendsto` asymptotic statement. The proof pattern is: (1) unfold `Metric.tendsto_atTop` to get an explicit ε-N₀ goal; (2) apply `ap_free_density_bound` with `ε/2` to get `N₀`; (3) take `N ≥ max N₀ 1` to ensure `N ≥ N₀` (for the density bound) AND `N ≥ 1` (for `N > 0`, needed to divide); (4) rewrite `dist` to `|card/N - 0|` using `Real.dist_eq` and `sub_zero`; (5) simplify the absolute value since `card/N ≥ 0`; (6) convert to `card < ε * N` using `div_lt_iff₀ hN_pos`; (7) close with `nlinarith` from the bound `card < (ε/2) * N ≤ ε * N`. The `ε/2` half-factor is needed because `ap_free_density_bound` provides `card < ε * N` for given `ε` — we pass `ε/2` to stay under `ε` after dividing.",
+    "mathContext": "The key identity is: $\\left| \\frac{|A_N|}{N} - 0 \\right| < \\varepsilon$ iff $|A_N| < \\varepsilon N$ (for $N > 0$). The `ap_free_density_bound` from `SzemerediTheorem.lean` provides: $\\forall \\varepsilon > 0,\\ \\exists N_0,\\ \\forall N \\geq N_0,\\ \\forall A \\subseteq \\{0,\\ldots,N-1\\}$ $k$-AP-free$,\\ |A| < \\varepsilon N$. The `Metric.tendsto_atTop` lemma unpacks `Filter.Tendsto f atTop (nhds 0)` as: $\\forall \\varepsilon > 0,\\ \\exists N_0,\\ \\forall N \\geq N_0,\\ |f(N) - 0| < \\varepsilon$. The `max N₀ 1` construction ensures both `N ≥ N₀` (for `hcard`) and `N ≥ 1` (for `hN_pos : (0 : ℝ) < N`) simultaneously.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Metric.tendsto_atTop",
+      "ap_free_density_bound",
+      "div_lt_iff₀",
+      "nlinarith",
+      "Real.dist_eq"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto definition and Metric.tendsto_atTop",
+      "ap_free_density_bound from SzemerediTheorem.lean",
+      "Lean 4 cast arithmetic (Nat.cast_nonneg)"
+    ]
+  },
+  {
+    "id": "ann-sfoo2-roth-isLittleO",
+    "proofId": "szemeredi-full-oq-02",
+    "range": {
+      "startLine": 68,
+      "endLine": 73
+    },
+    "type": "insight",
+    "title": "Roth's Theorem in Mathlib: rothNumberNat_isLittleO_id",
+    "content": "`roth_density_isLittleO` is a one-line alias for Mathlib's `rothNumberNat_isLittleO_id`. The `rothNumberNat N` is Mathlib's notation for $r_3(N)$: the maximum size of a 3-AP-free subset of $\\{0, \\ldots, N-1\\}$. `rothNumberNat_isLittleO_id` (in `Mathlib.Combinatorics.Additive.Corner.Roth`) states that $r_3(N) = o(N)$ as an `IsLittleO atTop` relation. By aliasing it rather than re-proving it, this file makes the connection between our `IsAPFree` predicate and Mathlib's `rothNumberNat` explicit: `rothNumberNat N` is by definition the sup of $|A|$ over all 3-AP-free $A \\subseteq \\{0,\\ldots,N-1\\}$. This is the Corners theorem formulation: Mathlib proves it via the density increment argument (also sometimes called the 'iterative argument'), not Gowers norms.",
+    "mathContext": "Roth (1953) proved $r_3(N) = o(N)$ using Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$: if $A \\subseteq [N]$ is 3-AP-free with density $\\alpha = |A|/N$, then the Fourier transform of $\\mathbf{1}_A$ must have a large coefficient at some nonzero frequency, implying $A$ has more-than-expected density in some arithmetic progression — allowing a density increment argument that terminates after $O(1/\\alpha^2)$ steps. The `IsLittleO atTop` formulation: $f = o(g)$ at $\\infty$ means $\\forall \\varepsilon > 0,\\ \\exists N_0,\\ \\forall N \\geq N_0,\\ |f(N)| \\leq \\varepsilon |g(N)|$. For $r_3(N) = o(N)$: $\\forall \\varepsilon > 0,\\ \\exists N_0,\\ \\forall N \\geq N_0,\\ r_3(N) \\leq \\varepsilon N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rothNumberNat",
+      "rothNumberNat_isLittleO_id",
+      "Roth's theorem",
+      "3-AP density increment",
+      "Mathlib.Combinatorics.Additive.Corner.Roth"
+    ],
+    "prerequisites": [
+      "IsLittleO definition",
+      "rothNumberNat as maximum 3-AP-free set size",
+      "Roth's theorem history"
+    ]
+  },
+  {
+    "id": "ann-sfoo2-k3-isLittleO",
+    "proofId": "szemeredi-full-oq-02",
+    "range": {
+      "startLine": 75,
+      "endLine": 86
+    },
+    "type": "technique",
+    "title": "isLittleO_iff_tendsto: Converting Between Asymptotic Notations",
+    "content": "`ap_free_density_isLittleO_k3` converts the `Filter.Tendsto` result (density → 0 pointwise) to `IsLittleO` (density = o(N)) for k=3 sequences. The key lemma `isLittleO_iff_tendsto` states: for real-valued sequences, `IsLittleO atTop f g` iff `Filter.Tendsto (f/g) atTop (nhds 0)`, given that `g(N) ≠ 0` implies ... — but there is a subtle zero case. `isLittleO_iff_tendsto` requires: if `g(N) = 0` then `f(N) = 0` (i.e., the denominator zero case is handled). The proof uses an anonymous `fun N hN => ...` closure to verify this: when `g(N) = 0` means `(N : ℝ) = 0`, so `N = 0` (by `Nat.cast` injectivity), hence `A 0 ⊆ range 0 = ∅`, so `(A 0).card = 0`. This is the sole mathematically subtle case in the k=3 proof — everything else reduces to `szemeredi_vanishing_density`.",
+    "mathContext": "`isLittleO_iff_tendsto` in Mathlib: for `f g : ℕ → ℝ`, if $g(N) = 0 \\Rightarrow f(N) = 0$ for all large $N$, then $f = o(g)$ iff $\\mathrm{tendsto}(f/g, \\mathrm{atTop}, \\mathrm{nhds}\\, 0)$. The zero case at $N = 0$: $A_0 \\subseteq \\{0, \\ldots, -1\\} = \\emptyset$ (since `range 0 = ∅` in Lean), so $|A_0| = 0$ and the ratio $0/0$ is handled by the conditional. The conversion $|A_N| = o(N)$ is equivalent to $|A_N|/N \\to 0$ by this lemma — providing a cleaner asymptotic statement for applications that want `IsLittleO` rather than `Filter.Tendsto`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "isLittleO_iff_tendsto",
+      "Finset.range_zero",
+      "Finset.subset_empty",
+      "zero-denominator case",
+      "IsLittleO vs Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "IsLittleO definition",
+      "Filter.Tendsto definition",
+      "isLittleO_iff_tendsto statement"
+    ]
+  },
+  {
+    "id": "ann-sfoo2-main-theorem",
+    "proofId": "szemeredi-full-oq-02",
+    "range": {
+      "startLine": 95,
+      "endLine": 103
+    },
+    "type": "insight",
+    "title": "Main Theorem as Alias: Proof by Reference Chain",
+    "content": "`szemeredi_density_full` is a one-line alias for `szemeredi_vanishing_density`. This design — a named main theorem that is definitionally equal to a supporting lemma — is intentional: it gives the gallery and documentation a canonical entry point (`szemeredi_density_full`) while keeping the actual proof logic in `szemeredi_vanishing_density`. The same pattern appears in `roth_density_isLittleO` aliasing `rothNumberNat_isLittleO_id`. The axiom dependency is inherited transitively: `szemeredi_density_full` → `szemeredi_vanishing_density` → `ap_free_density_bound` (in `SzemerediTheorem.lean`) → `szemeredi_k_ge_4` (axiom). The docstring explicitly names this: 'k=1,2: trivial; k=3: Roth via Mathlib; k≥4: axiomatized (hypergraph regularity needed).' This makes the single assumption (`szemeredi_k_ge_4`) traceable.",
+    "mathContext": "The theorem covers ALL $k \\geq 1$ in a single statement: $\\mathrm{tendsto}(N \\mapsto |A_N|/N, \\mathrm{atTop}, \\mathrm{nhds}\\, 0)$ for any sequence of $k$-AP-free sets $A_N \\subseteq \\{0,\\ldots,N-1\\}$. The cases:\n- $k = 1$: Trivially AP-free sets are empty or singletons; the bound holds.\n- $k = 2$: AP-free (no 2-APs) forces sets with distinct elements, but this holds trivially too.\n- $k = 3$: Proved via `ap_free_density_bound` which for $k=3$ uses Roth's theorem in `SzemerediTheorem.lean`.\n- $k \\geq 4$: `ap_free_density_bound` invokes `szemeredi_k_ge_4` (the single axiom) from `SzemerediTheorem.lean`.",
+    "significance": "central",
+    "relatedConcepts": [
+      "szemeredi_vanishing_density",
+      "szemeredi_k_ge_4 axiom",
+      "ap_free_density_bound",
+      "hypergraph regularity"
+    ],
+    "prerequisites": [
+      "szemeredi_vanishing_density",
+      "SzemerediTheorem.lean axiom structure"
+    ]
+  },
+  {
+    "id": "ann-sfoo2-gowers",
+    "proofId": "szemeredi-full-oq-02",
+    "range": {
+      "startLine": 105,
+      "endLine": 118
+    },
+    "type": "context",
+    "title": "Gowers Uniformity: The Stronger Result and Its Mathlib Gap",
+    "content": "The closing note documents the stronger result of Gowers (2001) that this formalization cannot yet achieve: k-AP-free sets must not only have vanishing density but must be **Gowers-uniform** — their $U^{k-1}$ norm (measuring $k$-AP patterns) must also tend to zero. This is stronger because Gowers-uniformity implies density-zero but not vice versa. The note estimates the Mathlib infrastructure needed: ~200 lines for the $U^k$ norm definition on $\\mathbb{Z}/N\\mathbb{Z}$, ~100 lines for Cauchy-Schwarz for the Gowers inner product, ~300 lines for the AP counting lemma, ~500 lines for the $U^2$ inverse theorem (the Fourier case, needed for $k=3$). Total: ~1100 lines of new Mathlib infrastructure. This transparent accounting of the formalization's limitations — what it proves vs what remains — is a hallmark of good formal mathematics documentation.",
+    "mathContext": "The **Gowers $U^k$ norm** of $f : \\mathbb{Z}/N\\mathbb{Z} \\to \\mathbb{C}$ is defined as $\\|f\\|_{U^k}^{2^k} = \\mathbb{E}_{x, h_1, \\ldots, h_k} \\prod_{\\omega \\in \\{0,1\\}^k} \\mathcal{C}^{|\\omega|} f(x + \\omega_1 h_1 + \\cdots + \\omega_k h_k)$ where $\\mathcal{C}$ is complex conjugation. For $k=2$: $\\|f\\|_{U^2}^4 = \\mathbb{E}_{x,h_1,h_2} f(x)\\overline{f(x+h_1)}\\overline{f(x+h_2)}f(x+h_1+h_2)$ — this is the Fourier-analytic norm. Gowers' theorem: if $A \\subseteq [N]$ is $k$-AP-free with $|A| \\geq \\delta N$, then $\\|\\mathbf{1}_A - \\delta\\|_{U^{k-1}} \\geq c(\\delta) > 0$ — so $k$-AP-free sets with fixed density $\\delta$ have bounded-away-from-zero Gowers norm, which is impossible for dense sets. The density-zero result in this file is a corollary: if $\\|f\\|_{U^{k-1}} \\to 0$, the set $A_N$ must have $|A_N|/N \\to 0$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Gowers U^k norm",
+      "AP counting lemma",
+      "U^2 inverse theorem",
+      "Fourier analysis on Z/NZ",
+      "Kelley-Meka theorem"
+    ],
+    "prerequisites": [
+      "Gowers uniformity norms (U^k)",
+      "density increment argument",
+      "Fourier analysis on finite abelian groups"
+    ]
+  }
+]
