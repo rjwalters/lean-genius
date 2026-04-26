@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-25",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ01OQ02OQ01.lean",
     "tags": [
       "algebra",
@@ -37,8 +37,10 @@
       "offDiag_prod_eq_two_mul_e2: specialization to products xᵢxⱼ"
     ],
     "dateAdded": "2026-04-25",
-    "assumptions": "Lean file not yet written. AmgmInequalityOQ02OQ01OQ02OQ01.lean is planned but does not exist in git. The metadata describes a planned Newton-Girard recurrence proof. Current content (originalContributions, sections) reflects the parent off-diagonal symmetry proof (OQ02), not a new Newton-Girard formalization.",
-    "mathlib_version": "4.26.0"
+    "assumptions": "Lean formalization created as WIP stub. Three corollary derivations (p₁=e₁, p₂, p₃) remain as sorries; the main recurrence wraps Mathlib MvPolynomial.psum_eq_mul_esymm_sub_sum.",
+    "mathlib_version": "4.26.0",
+    "sorries": 3,
+    "axiomCount": 0
   },
   "overview": {
     "historicalContext": "Newton's identities (also called Newton-Girard identities) relate power sums pₖ = Σxᵢᵏ to elementary symmetric polynomials eₖ = Σ_{i₁<...<iₖ} xᵢ₁...xᵢₖ. Newton stated them around 1666 (published in Arithmetica Universalis, 1707); Albert Girard proved them earlier around 1629. For n=2: p₂ = e₁² − 2e₂, equivalently (Σxᵢ)² = Σxᵢ² + 2·Σ_{i<j} xᵢxⱼ. This is essentially the 'foil' expansion familiar from high school algebra.\n\nThe identity Σ_{i≠j} xᵢxⱼ = 2·Σ_{i<j} xᵢxⱼ is a manifestation of double-counting: each unordered pair {i,j} contributes two ordered pairs (i,j) and (j,i) to the off-diagonal sum, and by commutativity xᵢxⱼ = xⱼxᵢ, both contributions are equal. This double-counting principle is ubiquitous in combinatorics — the handshaking lemma (sum of degrees = 2·|edges|) is another instance.\n\nFormalizing this in Lean requires explicit bookkeeping that human proofs skip: one must establish that offDiag splits into upper and lower triangular parts (with a linear order hypothesis), that Prod.swap bijects them, and that Finset.sum_image handles the reindexing. The `CommRing` generality (not just ℝ) captures the algebraic essence: the proof works whenever multiplication is commutative, with no topology or ordering of values needed.",
