@@ -30,7 +30,7 @@
     "dateAdded": "2026-03-30",
     "axiomCount": 3,
     "lineCount": 665,
-    "assumptions": "3 axioms: feuerbach_3d_fails_general (Feuerbach tangency fails for general tetrahedra — counterexample), edge_midpoints_on_sphere (edge midpoints of orthocentric tetrahedra lie on the 24-point sphere), face_centroids_on_sphere (face centroids lie on the 24-point sphere). The 2 circumcenter axioms (existence and equidistance) were proved in code via Cramer's rule. 5 sorries for the main Feuerbach tangency theorems (insphere + 4 exspheres).",
+    "assumptions": "3 axioms: feuerbach_3d_fails_general (Feuerbach tangency fails for general tetrahedra \u2014 counterexample), edge_midpoints_on_sphere (edge midpoints of orthocentric tetrahedra lie on the 24-point sphere), face_centroids_on_sphere (face centroids lie on the 24-point sphere). The 2 circumcenter axioms (existence and equidistance) were proved in code via Cramer's rule. 5 sorries for the main Feuerbach tangency theorems (insphere + 4 exspheres).",
     "originalContributions": [
       "Complete 3D coordinate geometry infrastructure for tetrahedra in Lean 4",
       "Formalization of orthocentric tetrahedra with proof that third perpendicularity follows from first two",
@@ -45,10 +45,10 @@
     "text": "For an orthocentric tetrahedron (opposite edges perpendicular), the twenty-four-point sphere is internally tangent to the insphere and externally tangent to all four exspheres",
     "proofStrategy": "Coordinate geometry in R^3. Define tetrahedra, orthocentric condition, insphere/exspheres, and the twenty-four-point sphere (center = midpoint of circumcenter and Monge point, radius = R/3). The orthocentric condition ensures the Monge point coincides with the orthocenter.",
     "keyInsights": [
-      "The 3D Feuerbach theorem requires the orthocentric hypothesis — it fails for general tetrahedra",
+      "The 3D Feuerbach theorem requires the orthocentric hypothesis \u2014 it fails for general tetrahedra",
       "The twenty-four-point sphere has radius R/3 (vs R/2 for the nine-point circle in 2D)",
       "The Monge point is the 3D analogue of the orthocenter; for orthocentric tetrahedra they coincide",
-      "Only 2 of the 3 orthogonality conditions need be imposed — the third follows algebraically",
+      "Only 2 of the 3 orthogonality conditions need be imposed \u2014 the third follows algebraically",
       "The twenty-four-point sphere passes through 6 edge midpoints, 4 face centroids, and more"
     ],
     "prerequisites": [
@@ -73,7 +73,7 @@
       "startLine": 92,
       "endLine": 120,
       "summary": "Non-degenerate tetrahedron with four vertices and positive volume condition via scalar triple product.",
-      "mathContext": "The non-degeneracy condition uses det(B-A, C-A, D-A) ≠ 0, ensuring the four vertices are non-coplanar."
+      "mathContext": "The non-degeneracy condition uses det(B-A, C-A, D-A) \u2260 0, ensuring the four vertices are non-coplanar."
     },
     {
       "id": "orthocentric",
@@ -81,7 +81,7 @@
       "startLine": 148,
       "endLine": 176,
       "summary": "Definition of orthocentric tetrahedra and proof that the third perpendicularity condition follows from the first two.",
-      "mathContext": "An orthocentric tetrahedron has AB ⊥ CD and AC ⊥ BD. We prove AD ⊥ BC follows by algebraic manipulation of the dot product. This is the key structural condition for the 3D Feuerbach theorem."
+      "mathContext": "An orthocentric tetrahedron has AB \u22a5 CD and AC \u22a5 BD. We prove AD \u22a5 BC follows by algebraic manipulation of the dot product. This is the key structural condition for the 3D Feuerbach theorem."
     },
     {
       "id": "special-points",
@@ -97,7 +97,7 @@
       "startLine": 240,
       "endLine": 305,
       "summary": "Definitions of incenter, inradius, four excenters, and four exradii using face-area-weighted coordinates.",
-      "mathContext": "The incenter is the face-area-weighted average of vertices: I = (S_A·A + S_B·B + S_C·C + S_D·D) / S. The inradius is r = 3V/S. Excenters use negative weights."
+      "mathContext": "The incenter is the face-area-weighted average of vertices: I = (S_A\u00b7A + S_B\u00b7B + S_C\u00b7C + S_D\u00b7D) / S. The inradius is r = 3V/S. Excenters use negative weights."
     },
     {
       "id": "twenty-four-point-sphere",
@@ -139,7 +139,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The 3D analogue of Feuerbach's theorem states that for orthocentric tetrahedra, the twenty-four-point sphere is tangent to the insphere and all four exspheres. This requires the orthocentric hypothesis — it fails for general tetrahedra.",
+    "summary": "The 3D analogue of Feuerbach's theorem states that for orthocentric tetrahedra, the twenty-four-point sphere is tangent to the insphere and all four exspheres. This requires the orthocentric hypothesis \u2014 it fails for general tetrahedra.",
     "implications": "The formalization reveals how the 2D-to-3D generalization introduces essential new structure: the orthocentric condition, the Monge point replacing the orthocenter, and the twenty-four-point sphere replacing the nine-point circle with radius R/3 instead of R/2.",
     "openQuestions": [
       "Can the 3D Feuerbach theorem be extended to isogonal tetrahedra (a broader class than orthocentric)?",
@@ -158,7 +158,7 @@
     "namespace": "FeuerbachsTheoremOQ02",
     "lineCount": 665,
     "axiomCount": 3,
-    "theoremCount": 10,
+    "theoremCount": 20,
     "substantiveTheoremCount": 6,
     "duplicateTheorems": 0,
     "definitionCount": 35,
@@ -170,25 +170,25 @@
       "name": "feuerbach_3d_theorem",
       "type": "core",
       "description": "The complete 3D Feuerbach theorem for orthocentric tetrahedra",
-      "leanType": "(T : OrthocentricTetrahedron) → spheresInternallyTangent ... ∧ spheresExternallyTangent ... (×4)"
+      "leanType": "(T : OrthocentricTetrahedron) \u2192 spheresInternallyTangent ... \u2227 spheresExternallyTangent ... (\u00d74)"
     },
     {
       "name": "orthocentric_third_perp",
       "type": "core",
       "description": "Third orthogonality condition follows from first two (proved by nlinarith)",
-      "leanType": "(T : OrthocentricTetrahedron) → dot3 (vec3 T.A T.D) (vec3 T.B T.C) = 0"
+      "leanType": "(T : OrthocentricTetrahedron) \u2192 dot3 (vec3 T.A T.D) (vec3 T.B T.C) = 0"
     },
     {
       "name": "centroid_on_euler_line",
       "type": "supporting",
       "description": "3D Euler line: centroid divides circumcenter-Monge point in ratio 3:1",
-      "leanType": "(T : Tetrahedron) → T.centroid = ((3 * O + M) / 4)"
+      "leanType": "(T : Tetrahedron) \u2192 T.centroid = ((3 * O + M) / 4)"
     },
     {
       "name": "volume_eq_inradius_surfaceArea",
       "type": "supporting",
-      "description": "Volume = inradius × surface area / 3",
-      "leanType": "(T : Tetrahedron) → (hS : T.surfaceArea > 0) → T.volume = T.inradius * T.surfaceArea / 3"
+      "description": "Volume = inradius \u00d7 surface area / 3",
+      "leanType": "(T : Tetrahedron) \u2192 (hS : T.surfaceArea > 0) \u2192 T.volume = T.inradius * T.surfaceArea / 3"
     }
   ],
   "sorries": 5

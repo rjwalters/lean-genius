@@ -1,8 +1,8 @@
 {
   "id": "taylor-theorem-oq-02",
-  "title": "Taylor Series Convergence for Analytic Functions — The Remainder Vanishes",
+  "title": "Taylor Series Convergence for Analytic Functions \u2014 The Remainder Vanishes",
   "slug": "taylor-theorem-oq-02",
-  "description": "Answers the open question: for analytic functions, does the Taylor remainder Rₙ(x) → 0? YES — for any function with a convergent power series at x₀, the Taylor series converges to f(x₀ + y) for all y in the ball of analyticity. This gives a structural explanation covering all analytic functions, complementing the ad hoc exponential convergence proof in oq-03.",
+  "description": "Answers the open question: for analytic functions, does the Taylor remainder R\u2099(x) \u2192 0? YES \u2014 for any function with a convergent power series at x\u2080, the Taylor series converges to f(x\u2080 + y) for all y in the ball of analyticity. This gives a structural explanation covering all analytic functions, complementing the ad hoc exponential convergence proof in oq-03.",
   "meta": {
     "author": "Taylor (1715); formalized in Lean 4 / Mathlib 4",
     "date": "1715",
@@ -26,52 +26,52 @@
     "mathlibDependencies": [
       {
         "theorem": "HasFPowerSeriesOnBall.iteratedFDeriv_eq_sum_of_completeSpace",
-        "description": "The n-th iterated Fréchet derivative equals the sum over permutations of the power series coefficient",
+        "description": "The n-th iterated Fr\u00e9chet derivative equals the sum over permutations of the power series coefficient",
         "module": "Mathlib.Analysis.Analytic.IteratedFDeriv"
       },
       {
         "theorem": "HasFPowerSeriesAt.hasSum",
-        "description": "If f has a power series at x₀, then the series HasSum to f(x₀ + y) for y in the radius",
+        "description": "If f has a power series at x\u2080, then the series HasSum to f(x\u2080 + y) for y in the radius",
         "module": "Mathlib.Analysis.Analytic.Basic"
       },
       {
         "theorem": "iteratedDeriv_eq_iteratedFDeriv",
-        "description": "The 1D iterated derivative equals the iterated Fréchet derivative applied to all-ones vector",
+        "description": "The 1D iterated derivative equals the iterated Fr\u00e9chet derivative applied to all-ones vector",
         "module": "Mathlib.Analysis.Calculus.IteratedDeriv.Defs"
       },
       {
         "theorem": "ContinuousMultilinearMap.map_smul_univ",
-        "description": "Multilinear maps factor scalar multiplication: m(c·v₁,...,c·vₙ) = cⁿ · m(v₁,...,vₙ)",
+        "description": "Multilinear maps factor scalar multiplication: m(c\u00b7v\u2081,...,c\u00b7v\u2099) = c\u207f \u00b7 m(v\u2081,...,v\u2099)",
         "module": "Mathlib.Topology.Algebra.Module.Multilinear.Basic"
       }
     ],
     "originalContributions": [
-      "Proved multilinear_eval_const: p n (y,...,y) = yⁿ · p n (1,...,1) from ContinuousMultilinearMap.map_smul_univ",
-      "Proved fps_coeff_eq_taylor_coeff: p n (1,...,1) = iteratedDeriv n f x₀ / n! using iteratedFDeriv_eq_sum_of_completeSpace and Fintype.card_perm",
-      "Derived fps_eval_eq_taylor_term: the key bridge p n (y,...,y) = (∂ⁿf/∂xⁿ)(x₀)/n! · yⁿ",
+      "Proved multilinear_eval_const: p n (y,...,y) = y\u207f \u00b7 p n (1,...,1) from ContinuousMultilinearMap.map_smul_univ",
+      "Proved fps_coeff_eq_taylor_coeff: p n (1,...,1) = iteratedDeriv n f x\u2080 / n! using iteratedFDeriv_eq_sum_of_completeSpace and Fintype.card_perm",
+      "Derived fps_eval_eq_taylor_term: the key bridge p n (y,...,y) = (\u2202\u207ff/\u2202x\u207f)(x\u2080)/n! \u00b7 y\u207f",
       "Proved taylor_hasSum_of_hasFPS: structural convergence theorem for all analytic functions",
-      "Proved taylor_remainder_tendsto_zero: Rₙ → 0 in ball of analyticity",
+      "Proved taylor_remainder_tendsto_zero: R\u2099 \u2192 0 in ball of analyticity",
       "Proved analyticAt_taylor_convergence: existential form for AnalyticAt hypothesis"
     ],
     "dateAdded": "2026-04-12"
   },
   "overview": {
-    "historicalContext": "Brook Taylor (1685–1731) published his theorem in 1715 in *Methodus Incrementorum*, showing that smooth functions can be approximated by polynomials with an explicit remainder. Colin Maclaurin (1742) popularized the special case expanded at 0, which now bears his name. The theorem as stated guarantees only an *asymptotic* expansion: the remainder $R_n(h) = O(h^n)$ as $h \\to 0$, which does NOT imply $R_n \\to 0$ as $n \\to \\infty$.\n\nAugustin-Louis Cauchy (1821) exhibited the now-famous counterexample $f(x) = e^{-1/x^2}$ (extended by $f(0)=0$): every derivative at 0 is zero, so the Taylor series at 0 is identically 0, yet $f(x) > 0$ for $x \\neq 0$. This showed that $C^\\infty$ smoothness is insufficient for Taylor series convergence to the function — a strictly stronger condition is needed.\n\nThe correct condition is **analyticity**: Weierstrass (1870s) established that a real function is analytic if and only if it is locally representable by a convergent power series. In modern Lean/Mathlib terms, this is `AnalyticAt \\mathbb{R} f x_0` — the existence of a formal multilinear series (FPS) $p$ with $f(x_0 + y) = \\sum_n p_n(y, \\ldots, y)$ for $y$ in a ball.\n\nThis proof file answers the open question: does Mathlib's `HasFPowerSeriesAt` machinery produce the classical Taylor series in terms of `iteratedDeriv`? The answer is yes, via a bridge lemma connecting the multilinear FPS evaluation to the scalar $\\partial^n f(x_0)/n! \\cdot y^n$ form.",
-    "problemStatement": "**Open Question (taylor-theorem-oq-02)**: For analytic functions, does the Taylor remainder Rₙ(x) → 0 as n → ∞?\n\nSpecifically, if f is analytic at x₀ (has a convergent power series), does:\n  f(x₀ + y) − Σ_{k<n} (∂ᵏf/∂xᵏ)(x₀)/k! · yᵏ → 0  as n → ∞?\n\n**Answer: YES** — the Taylor series converges to f in the entire ball of analyticity.",
-    "text": "The proof bridges two representations of the same function:\n1. **Power series**: HasSum (fun n => p n (fun _ => y)) (f (x₀+y)) — from HasFPowerSeriesAt.hasSum\n2. **Taylor series**: HasSum (fun n => iteratedDeriv n f x₀ / n! · yⁿ) (f (x₀+y)) — the goal\n\nThe bridge lemma shows p n (fun _ => y) = iteratedDeriv n f x₀ / n! · yⁿ, combining multilinearity (yⁿ factor) with the FPS-derivative connection (the n! denominator from Fintype.card_perm = n!).",
-    "proofStrategy": "**Three-lemma architecture:**\n\n1. **Multilinearity** (`multilinear_eval_const`): `ContinuousMultilinearMap.map_smul_univ` with cᵢ = y, vᵢ = 1 gives m(y,...,y) = (∏ᵢ y) · m(1,...,1) = yⁿ · m(1,...,1).\n\n2. **FPS-Derivative Bridge** (`fps_coeff_eq_taylor_coeff`): `HasFPowerSeriesOnBall.iteratedFDeriv_eq_sum_of_completeSpace` gives iteratedFDeriv ℝ n f x₀ (fun _ => 1) = Σ_{σ ∈ Perm(Fin n)} p n (fun _ => 1). For constant v = 1, all n! permutation terms equal p n (1,...,1), so the sum = n! · p n (1,...,1). Combined with iteratedDeriv_eq_iteratedFDeriv, this gives p n (1,...,1) = iteratedDeriv n f x₀ / n!.\n\n3. **Main convergence** (`taylor_hasSum_of_hasFPS`): Compose steps 1 and 2, then rewrite the known HasSum via HasSum.congr.",
+    "historicalContext": "Brook Taylor (1685\u20131731) published his theorem in 1715 in *Methodus Incrementorum*, showing that smooth functions can be approximated by polynomials with an explicit remainder. Colin Maclaurin (1742) popularized the special case expanded at 0, which now bears his name. The theorem as stated guarantees only an *asymptotic* expansion: the remainder $R_n(h) = O(h^n)$ as $h \\to 0$, which does NOT imply $R_n \\to 0$ as $n \\to \\infty$.\n\nAugustin-Louis Cauchy (1821) exhibited the now-famous counterexample $f(x) = e^{-1/x^2}$ (extended by $f(0)=0$): every derivative at 0 is zero, so the Taylor series at 0 is identically 0, yet $f(x) > 0$ for $x \\neq 0$. This showed that $C^\\infty$ smoothness is insufficient for Taylor series convergence to the function \u2014 a strictly stronger condition is needed.\n\nThe correct condition is **analyticity**: Weierstrass (1870s) established that a real function is analytic if and only if it is locally representable by a convergent power series. In modern Lean/Mathlib terms, this is `AnalyticAt \\mathbb{R} f x_0` \u2014 the existence of a formal multilinear series (FPS) $p$ with $f(x_0 + y) = \\sum_n p_n(y, \\ldots, y)$ for $y$ in a ball.\n\nThis proof file answers the open question: does Mathlib's `HasFPowerSeriesAt` machinery produce the classical Taylor series in terms of `iteratedDeriv`? The answer is yes, via a bridge lemma connecting the multilinear FPS evaluation to the scalar $\\partial^n f(x_0)/n! \\cdot y^n$ form.",
+    "problemStatement": "**Open Question (taylor-theorem-oq-02)**: For analytic functions, does the Taylor remainder R\u2099(x) \u2192 0 as n \u2192 \u221e?\n\nSpecifically, if f is analytic at x\u2080 (has a convergent power series), does:\n  f(x\u2080 + y) \u2212 \u03a3_{k<n} (\u2202\u1d4ff/\u2202x\u1d4f)(x\u2080)/k! \u00b7 y\u1d4f \u2192 0  as n \u2192 \u221e?\n\n**Answer: YES** \u2014 the Taylor series converges to f in the entire ball of analyticity.",
+    "text": "The proof bridges two representations of the same function:\n1. **Power series**: HasSum (fun n => p n (fun _ => y)) (f (x\u2080+y)) \u2014 from HasFPowerSeriesAt.hasSum\n2. **Taylor series**: HasSum (fun n => iteratedDeriv n f x\u2080 / n! \u00b7 y\u207f) (f (x\u2080+y)) \u2014 the goal\n\nThe bridge lemma shows p n (fun _ => y) = iteratedDeriv n f x\u2080 / n! \u00b7 y\u207f, combining multilinearity (y\u207f factor) with the FPS-derivative connection (the n! denominator from Fintype.card_perm = n!).",
+    "proofStrategy": "**Three-lemma architecture:**\n\n1. **Multilinearity** (`multilinear_eval_const`): `ContinuousMultilinearMap.map_smul_univ` with c\u1d62 = y, v\u1d62 = 1 gives m(y,...,y) = (\u220f\u1d62 y) \u00b7 m(1,...,1) = y\u207f \u00b7 m(1,...,1).\n\n2. **FPS-Derivative Bridge** (`fps_coeff_eq_taylor_coeff`): `HasFPowerSeriesOnBall.iteratedFDeriv_eq_sum_of_completeSpace` gives iteratedFDeriv \u211d n f x\u2080 (fun _ => 1) = \u03a3_{\u03c3 \u2208 Perm(Fin n)} p n (fun _ => 1). For constant v = 1, all n! permutation terms equal p n (1,...,1), so the sum = n! \u00b7 p n (1,...,1). Combined with iteratedDeriv_eq_iteratedFDeriv, this gives p n (1,...,1) = iteratedDeriv n f x\u2080 / n!.\n\n3. **Main convergence** (`taylor_hasSum_of_hasFPS`): Compose steps 1 and 2, then rewrite the known HasSum via HasSum.congr.",
     "keyInsights": [
-      "The key insight is that analyticity (HasFPowerSeriesAt) implies Taylor convergence — this is essentially the *definition* of analyticity, but the proof requires connecting the multilinear FPS coefficients to the classical scalar iterated derivatives.",
-      "The permutation sum formula iteratedFDeriv = Σ_{σ} p n (v ∘ σ) for constant vectors v = (1,...,1) collapses to n! · p n (1,...,1) because all n! permutations of a constant vector give the same result.",
-      "The factor n! is crucial: it cancels the denominator in the Taylor series formula, connecting the 'bare' FPS coefficient p n (1,...,1) to the classical form iteratedDeriv n f x₀ / n!.",
-      "The smooth Cauchy example (exp(-1/x²)) shows the sharp boundary: smoothness is NOT sufficient for Taylor convergence; analyticity is both necessary and sufficient.",
+      "The key insight is that analyticity (HasFPowerSeriesAt) implies Taylor convergence \u2014 this is essentially the *definition* of analyticity, but the proof requires connecting the multilinear FPS coefficients to the classical scalar iterated derivatives.",
+      "The permutation sum formula iteratedFDeriv = \u03a3_{\u03c3} p n (v \u2218 \u03c3) for constant vectors v = (1,...,1) collapses to n! \u00b7 p n (1,...,1) because all n! permutations of a constant vector give the same result.",
+      "The factor n! is crucial: it cancels the denominator in the Taylor series formula, connecting the 'bare' FPS coefficient p n (1,...,1) to the classical form iteratedDeriv n f x\u2080 / n!.",
+      "The smooth Cauchy example (exp(-1/x\u00b2)) shows the sharp boundary: smoothness is NOT sufficient for Taylor convergence; analyticity is both necessary and sufficient.",
       "This proof gives a structural explanation covering ALL analytic functions, while the companion oq-03 gives an ad hoc proof specific to the exponential function."
     ],
     "prerequisites": [
       "Taylor's theorem (smooth version, gallery proof taylor-theorem)",
       "HasFPowerSeriesAt and HasFPowerSeriesOnBall (Mathlib.Analysis.Analytic.Basic)",
       "ContinuousMultilinearMap and FormalMultilinearSeries",
-      "iteratedFDeriv vs iteratedDeriv: the Fréchet vs classical distinction in 1D"
+      "iteratedFDeriv vs iteratedDeriv: the Fr\u00e9chet vs classical distinction in 1D"
     ]
   },
   "sections": [
@@ -80,7 +80,7 @@
       "title": "Preamble: OQ-02 Setup and Proof Architecture",
       "startLine": 1,
       "endLine": 55,
-      "summary": "Module docstring defining OQ-02 (does Taylor remainder vanish for analytic f?), the two-representation challenge (FPS vs Taylor series), and how the three-lemma bridge resolves it. Establishes contrast with smooth/C∞ case via Cauchy's exp(-1/x²) counterexample.",
+      "summary": "Module docstring defining OQ-02 (does Taylor remainder vanish for analytic f?), the two-representation challenge (FPS vs Taylor series), and how the three-lemma bridge resolves it. Establishes contrast with smooth/C\u221e case via Cauchy's exp(-1/x\u00b2) counterexample.",
       "mathContext": "OQ-02 asks: if $f$ has `HasFPowerSeriesAt f p x_0`, does $\\sum_{k<n} \\frac{\\partial^k f}{\\partial x^k}(x_0)/k! \\cdot y^k \\to f(x_0 + y)$? The preamble frames this as a bridge: Mathlib gives `HasSum (p_n(y,\\ldots,y))` but the gallery expects `HasSum (\\partial^n f/n! \\cdot y^n)`. The two are equal term-by-term via multilinearity + the permutation-sum formula."
     },
     {
@@ -88,16 +88,16 @@
       "title": "Section 1: Multilinearity in 1D",
       "startLine": 57,
       "endLine": 73,
-      "summary": "multilinear_eval_const: p n (y,...,y) = yⁿ · p n (1,...,1)",
-      "mathContext": "A continuous multilinear map m : ℝⁿ → ℝ satisfies m(y,...,y) = yⁿ · m(1,...,1) by the multilinearity axiom. In Mathlib, this follows from `ContinuousMultilinearMap.map_smul_univ` with all scalars equal to y and all vectors equal to 1."
+      "summary": "multilinear_eval_const: p n (y,...,y) = y\u207f \u00b7 p n (1,...,1)",
+      "mathContext": "A continuous multilinear map m : \u211d\u207f \u2192 \u211d satisfies m(y,...,y) = y\u207f \u00b7 m(1,...,1) by the multilinearity axiom. In Mathlib, this follows from `ContinuousMultilinearMap.map_smul_univ` with all scalars equal to y and all vectors equal to 1."
     },
     {
       "id": "fps-derivative-bridge",
       "title": "Section 2: The FPS-Derivative Bridge",
       "startLine": 75,
       "endLine": 122,
-      "summary": "fps_coeff_eq_taylor_coeff: p n (1,...,1) = iteratedDeriv n f x₀ / n!",
-      "mathContext": "The iterated Fréchet derivative of an analytic function equals the symmetrized power series coefficient: iteratedFDeriv ℝ n f x₀ v = Σ_{σ ∈ Perm(Fin n)} p n (v ∘ σ). For constant v = (1,...,1), all n! terms equal p n (1,...,1), giving iteratedFDeriv = n! · p n (1,...,1). Since iteratedDeriv n f x₀ = iteratedFDeriv ℝ n f x₀ (fun _ => 1) in 1D, we get p n (1,...,1) = iteratedDeriv n f x₀ / n!."
+      "summary": "fps_coeff_eq_taylor_coeff: p n (1,...,1) = iteratedDeriv n f x\u2080 / n!",
+      "mathContext": "The iterated Fr\u00e9chet derivative of an analytic function equals the symmetrized power series coefficient: iteratedFDeriv \u211d n f x\u2080 v = \u03a3_{\u03c3 \u2208 Perm(Fin n)} p n (v \u2218 \u03c3). For constant v = (1,...,1), all n! terms equal p n (1,...,1), giving iteratedFDeriv = n! \u00b7 p n (1,...,1). Since iteratedDeriv n f x\u2080 = iteratedFDeriv \u211d n f x\u2080 (fun _ => 1) in 1D, we get p n (1,...,1) = iteratedDeriv n f x\u2080 / n!."
     },
     {
       "id": "convergence-theorems",
@@ -105,7 +105,7 @@
       "startLine": 124,
       "endLine": 175,
       "summary": "taylor_hasSum_of_hasFPS, taylor_tendsto_of_hasFPS, taylor_remainder_tendsto_zero, taylor_tsum_eq",
-      "mathContext": "The convergence theorems follow by combining the bridge lemma with HasFPowerSeriesAt.hasSum. The remainder theorem Rₙ → 0 follows from tendsto_const_nhds.sub applied to the partial sum convergence."
+      "mathContext": "The convergence theorems follow by combining the bridge lemma with HasFPowerSeriesAt.hasSum. The remainder theorem R\u2099 \u2192 0 follows from tendsto_const_nhds.sub applied to the partial sum convergence."
     },
     {
       "id": "analyticAt-versions",
@@ -117,23 +117,23 @@
     }
   ],
   "conclusion": {
-    "summary": "For analytic functions — those with convergent power series — the Taylor series converges to the function in the entire ball of analyticity. The proof bridges Mathlib's multilinear FPS representation and the classical scalar Taylor series via the permutation sum formula for iterated Fréchet derivatives.",
+    "summary": "For analytic functions \u2014 those with convergent power series \u2014 the Taylor series converges to the function in the entire ball of analyticity. The proof bridges Mathlib's multilinear FPS representation and the classical scalar Taylor series via the permutation sum formula for iterated Fr\u00e9chet derivatives.",
     "implications": "This result gives a structural explanation for Taylor convergence: analyticity is precisely the condition that makes Taylor series convergent. It covers all analytic functions at once (polynomials, exp, sin, cos, rational functions away from poles, etc.), while the companion oq-03 only handles exp via ad hoc derivative bounds. The sharp contrast with the smooth Cauchy example highlights the necessity of analyticity.",
     "openQuestions": [
-      "Can we formalize the sharp characterization: f is analytic at x₀ IF AND ONLY IF the Taylor series converges to f in some neighborhood? (The ← direction is what this proof gives; the → direction requires proving HasFPowerSeriesAt from the Taylor convergence hypothesis.)",
-      "Can we extend to complex analytic functions (ℂ → ℂ) and prove the same convergence theorem for complex power series?"
+      "Can we formalize the sharp characterization: f is analytic at x\u2080 IF AND ONLY IF the Taylor series converges to f in some neighborhood? (The \u2190 direction is what this proof gives; the \u2192 direction requires proving HasFPowerSeriesAt from the Taylor convergence hypothesis.)",
+      "Can we extend to complex analytic functions (\u2102 \u2192 \u2102) and prove the same convergence theorem for complex power series?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "taylor-theorem",
       "relationship": "extends",
-      "description": "Parent: Taylor's theorem for smooth functions — the O(hⁿ) remainder bound that does not imply convergence"
+      "description": "Parent: Taylor's theorem for smooth functions \u2014 the O(h\u207f) remainder bound that does not imply convergence"
     },
     {
       "targetId": "taylor-theorem-oq-03",
       "relationship": "related",
-      "description": "Companion: exponential Taylor convergence via ad hoc derivative bounds — a special case of this structural result"
+      "description": "Companion: exponential Taylor convergence via ad hoc derivative bounds \u2014 a special case of this structural result"
     }
   ],
   "leanFile": {
@@ -149,38 +149,38 @@
     "namespace": "TaylorAnalytic",
     "lineCount": 218,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 0,
     "mainTheorems": [
       {
         "name": "multilinear_eval_const",
         "type": "supporting",
-        "description": "p n (y,...,y) = yⁿ · p n (1,...,1) for any continuous multilinear map",
-        "leanType": "(m : ContinuousMultilinearMap ℝ (fun _ : Fin n => ℝ) ℝ) → (y : ℝ) → m (fun _ => y) = y ^ n * m (fun _ => 1)"
+        "description": "p n (y,...,y) = y\u207f \u00b7 p n (1,...,1) for any continuous multilinear map",
+        "leanType": "(m : ContinuousMultilinearMap \u211d (fun _ : Fin n => \u211d) \u211d) \u2192 (y : \u211d) \u2192 m (fun _ => y) = y ^ n * m (fun _ => 1)"
       },
       {
         "name": "fps_coeff_eq_taylor_coeff",
         "type": "key",
         "description": "FPS coefficient at all-ones = iterated derivative / n!",
-        "leanType": "(h : HasFPowerSeriesAt f p x₀) → (n : ℕ) → p n (fun _ => 1) = iteratedDeriv n f x₀ / n!"
+        "leanType": "(h : HasFPowerSeriesAt f p x\u2080) \u2192 (n : \u2115) \u2192 p n (fun _ => 1) = iteratedDeriv n f x\u2080 / n!"
       },
       {
         "name": "fps_eval_eq_taylor_term",
         "type": "key",
-        "description": "p n (y,...,y) = (∂ⁿf/∂xⁿ)(x₀)/n! · yⁿ — the bridge lemma",
-        "leanType": "(h : HasFPowerSeriesAt f p x₀) → (n : ℕ) → (y : ℝ) → p n (fun _ => y) = iteratedDeriv n f x₀ / n! * y ^ n"
+        "description": "p n (y,...,y) = (\u2202\u207ff/\u2202x\u207f)(x\u2080)/n! \u00b7 y\u207f \u2014 the bridge lemma",
+        "leanType": "(h : HasFPowerSeriesAt f p x\u2080) \u2192 (n : \u2115) \u2192 (y : \u211d) \u2192 p n (fun _ => y) = iteratedDeriv n f x\u2080 / n! * y ^ n"
       },
       {
         "name": "taylor_hasSum_of_hasFPS",
         "type": "core",
-        "description": "Taylor series HasSum to f(x₀ + y) for analytic f",
-        "leanType": "(h : HasFPowerSeriesAt f p x₀) → y ∈ EMetric.ball 0 p.radius → HasSum (fun n => iteratedDeriv n f x₀ / n! * y ^ n) (f (x₀ + y))"
+        "description": "Taylor series HasSum to f(x\u2080 + y) for analytic f",
+        "leanType": "(h : HasFPowerSeriesAt f p x\u2080) \u2192 y \u2208 EMetric.ball 0 p.radius \u2192 HasSum (fun n => iteratedDeriv n f x\u2080 / n! * y ^ n) (f (x\u2080 + y))"
       },
       {
         "name": "taylor_remainder_tendsto_zero",
         "type": "core",
-        "description": "Taylor remainder Rₙ → 0 for analytic functions (OQ-02 answer)",
-        "leanType": "(h : HasFPowerSeriesAt f p x₀) → y ∈ EMetric.ball 0 p.radius → Tendsto (fun n => f (x₀ + y) - Σ_{k<n} iteratedDeriv k f x₀ / k! * y ^ k) atTop (nhds 0)"
+        "description": "Taylor remainder R\u2099 \u2192 0 for analytic functions (OQ-02 answer)",
+        "leanType": "(h : HasFPowerSeriesAt f p x\u2080) \u2192 y \u2208 EMetric.ball 0 p.radius \u2192 Tendsto (fun n => f (x\u2080 + y) - \u03a3_{k<n} iteratedDeriv k f x\u2080 / k! * y ^ k) atTop (nhds 0)"
       }
     ],
     "path": "Proofs/TaylorTheoremOQ02.lean",
@@ -190,38 +190,38 @@
     {
       "name": "multilinear_eval_const",
       "type": "supporting",
-      "description": "p n (y,...,y) = yⁿ · p n (1,...,1) for any continuous multilinear map",
-      "leanType": "(m : ContinuousMultilinearMap ℝ (fun _ : Fin n => ℝ) ℝ) → (y : ℝ) → m (fun _ => y) = y ^ n * m (fun _ => 1)"
+      "description": "p n (y,...,y) = y\u207f \u00b7 p n (1,...,1) for any continuous multilinear map",
+      "leanType": "(m : ContinuousMultilinearMap \u211d (fun _ : Fin n => \u211d) \u211d) \u2192 (y : \u211d) \u2192 m (fun _ => y) = y ^ n * m (fun _ => 1)"
     },
     {
       "name": "fps_coeff_eq_taylor_coeff",
       "type": "key",
       "description": "FPS coefficient at all-ones = iterated derivative / n!",
-      "leanType": "(h : HasFPowerSeriesAt f p x₀) → (n : ℕ) → p n (fun _ => 1) = iteratedDeriv n f x₀ / n!"
+      "leanType": "(h : HasFPowerSeriesAt f p x\u2080) \u2192 (n : \u2115) \u2192 p n (fun _ => 1) = iteratedDeriv n f x\u2080 / n!"
     },
     {
       "name": "fps_eval_eq_taylor_term",
       "type": "key",
-      "description": "p n (y,...,y) = (∂ⁿf/∂xⁿ)(x₀)/n! · yⁿ — the bridge lemma",
-      "leanType": "(h : HasFPowerSeriesAt f p x₀) → (n : ℕ) → (y : ℝ) → p n (fun _ => y) = iteratedDeriv n f x₀ / n! * y ^ n"
+      "description": "p n (y,...,y) = (\u2202\u207ff/\u2202x\u207f)(x\u2080)/n! \u00b7 y\u207f \u2014 the bridge lemma",
+      "leanType": "(h : HasFPowerSeriesAt f p x\u2080) \u2192 (n : \u2115) \u2192 (y : \u211d) \u2192 p n (fun _ => y) = iteratedDeriv n f x\u2080 / n! * y ^ n"
     },
     {
       "name": "taylor_hasSum_of_hasFPS",
       "type": "core",
-      "description": "Taylor series HasSum to f(x₀ + y) for analytic f",
-      "leanType": "(h : HasFPowerSeriesAt f p x₀) → y ∈ EMetric.ball 0 p.radius → HasSum (fun n => iteratedDeriv n f x₀ / n! * y ^ n) (f (x₀ + y))"
+      "description": "Taylor series HasSum to f(x\u2080 + y) for analytic f",
+      "leanType": "(h : HasFPowerSeriesAt f p x\u2080) \u2192 y \u2208 EMetric.ball 0 p.radius \u2192 HasSum (fun n => iteratedDeriv n f x\u2080 / n! * y ^ n) (f (x\u2080 + y))"
     },
     {
       "name": "taylor_remainder_tendsto_zero",
       "type": "core",
-      "description": "Taylor remainder Rₙ → 0 for analytic functions (OQ-02 main answer)",
-      "leanType": "(h : HasFPowerSeriesAt f p x₀) → y ∈ EMetric.ball 0 p.radius → Tendsto (fun n => f (x₀ + y) - Σ_{k<n} iteratedDeriv k f x₀ / k! * y ^ k) atTop (nhds 0)"
+      "description": "Taylor remainder R\u2099 \u2192 0 for analytic functions (OQ-02 main answer)",
+      "leanType": "(h : HasFPowerSeriesAt f p x\u2080) \u2192 y \u2208 EMetric.ball 0 p.radius \u2192 Tendsto (fun n => f (x\u2080 + y) - \u03a3_{k<n} iteratedDeriv k f x\u2080 / k! * y ^ k) atTop (nhds 0)"
     },
     {
       "name": "analyticAt_taylor_convergence",
       "type": "supporting",
-      "description": "Existential form: every analytic function at x₀ has a power series with convergent Taylor expansion",
-      "leanType": "(hf : AnalyticAt ℝ f x₀) → ∃ p, 0 < p.radius ∧ ∀ y ∈ EMetric.ball 0 p.radius, HasSum (fun n => iteratedDeriv n f x₀ / n! * y ^ n) (f (x₀ + y))"
+      "description": "Existential form: every analytic function at x\u2080 has a power series with convergent Taylor expansion",
+      "leanType": "(hf : AnalyticAt \u211d f x\u2080) \u2192 \u2203 p, 0 < p.radius \u2227 \u2200 y \u2208 EMetric.ball 0 p.radius, HasSum (fun n => iteratedDeriv n f x\u2080 / n! * y ^ n) (f (x\u2080 + y))"
     }
   ],
   "references": [
@@ -236,7 +236,7 @@
       "authors": "Krantz, Steven G.; Parks, Harold R.",
       "title": "A Primer of Real Analytic Functions",
       "year": "2002",
-      "venue": "Birkhäuser, 2nd edition",
+      "venue": "Birkh\u00e4user, 2nd edition",
       "note": "Standard reference for analytic functions and Taylor convergence; Chapter 1 covers the basic theory"
     },
     {

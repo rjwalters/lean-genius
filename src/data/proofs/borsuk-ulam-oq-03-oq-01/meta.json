@@ -190,7 +190,7 @@
     "namespace": "BorsukUlamOQ03OQ01",
     "lineCount": 1163,
     "axiomCount": 1,
-    "theoremCount": 46,
+    "theoremCount": 47,
     "definitionCount": 4,
     "path": "Proofs/BorsukUlamOQ03OQ01.lean",
     "sorries": 0
@@ -230,12 +230,12 @@
     {
       "targetId": "intermediate-value-theorem",
       "relationship": "foundational",
-      "description": "The continuous IVT is the analytic foundation for circle Borsuk-Ulam proved here: g(0) and g(π) have opposite signs, so IVT gives θ with g(θ)=0, i.e., an antipodal agreement point on S¹"
+      "description": "The continuous IVT is the analytic foundation for circle Borsuk-Ulam proved here: g(0) and g(\u03c0) have opposite signs, so IVT gives \u03b8 with g(\u03b8)=0, i.e., an antipodal agreement point on S\u00b9"
     },
     {
       "targetId": "borsuk-ulam",
       "relationship": "ancestor",
-      "description": "The root Borsuk-Ulam formalization — this entry provides the 1D combinatorial infrastructure (Tucker's lemma, discrete IVT) that forms the base case for inductive approaches to the full n-dimensional theorem"
+      "description": "The root Borsuk-Ulam formalization \u2014 this entry provides the 1D combinatorial infrastructure (Tucker's lemma, discrete IVT) that forms the base case for inductive approaches to the full n-dimensional theorem"
     }
   ],
   "sorries": 0

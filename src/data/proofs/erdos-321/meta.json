@@ -1,8 +1,8 @@
 {
   "id": "erdos-321",
-  "title": "Erdős Problem #321: Distinct Subset Sums of Unit Fractions",
+  "title": "Erd\u0151s Problem #321: Distinct Subset Sums of Unit Fractions",
   "slug": "erdos-321",
-  "description": "Let R(N) be the max size of A ⊆ {1,...,N} with all reciprocal subset sums distinct. Bleicher–Erdős: R(N) = Θ(N/log N) up to iterated log factors. The precise correction is open.",
+  "description": "Let R(N) be the max size of A \u2286 {1,...,N} with all reciprocal subset sums distinct. Bleicher\u2013Erd\u0151s: R(N) = \u0398(N/log N) up to iterated log factors. The precise correction is open.",
   "meta": {
     "erdosNumber": 321,
     "status": "axiomatized",
@@ -18,7 +18,7 @@
     "sourceUrl": "https://erdosproblems.com/321",
     "erdosUrl": "https://erdosproblems.com/321",
     "axiomCount": 2,
-    "assumptions": "2 axioms: bleicher_erdos_lower (R(N) ≥ N/log N, Bleicher–Erdős 1975) and bleicher_erdos_upper (R(N) ≤ C·(N/log N)·log log N, 1976). Open problem — precise asymptotic of R(N) remains unknown.",
+    "assumptions": "2 axioms: bleicher_erdos_lower (R(N) \u2265 N/log N, Bleicher\u2013Erd\u0151s 1975) and bleicher_erdos_upper (R(N) \u2264 C\u00b7(N/log N)\u00b7log log N, 1976). Open problem \u2014 precise asymptotic of R(N) remains unknown.",
     "badge": "axiom",
     "proofRepoPath": "Proofs/Erdos321Problem.lean",
     "mathlib_version": "4.26.0",
@@ -36,17 +36,17 @@
       }
     ],
     "originalContributions": [
-      "Formal framework for distinct reciprocal subset sums: HasDistinctReciprocalSums over ℚ (exact arithmetic) and R(N) via Finset.sup",
-      "Proved equivalence of two subset sum formulations (distinct subsets ↔ injective map)",
+      "Formal framework for distinct reciprocal subset sums: HasDistinctReciprocalSums over \u211a (exact arithmetic) and R(N) via Finset.sup",
+      "Proved equivalence of two subset sum formulations (distinct subsets \u2194 injective map)",
       "Proved hereditary property: subsets of sets with distinct reciprocal sums inherit distinctness",
       "Proved conjecture holds trivially for A = {1,...,N} (erdos_321_asymptotics)",
-      "Connected Bleicher–Erdős bounds to Egyptian fraction theory and greedy algorithms"
+      "Connected Bleicher\u2013Erd\u0151s bounds to Egyptian fraction theory and greedy algorithms"
     ],
     "prerequisites": [
       "Combinatorial number theory (subset sums, extremal problems)",
       "Egyptian fractions and unit fractions",
       "Prime number theorem (for lcm estimates)",
-      "Asymptotic notation (Θ, O, Ω)"
+      "Asymptotic notation (\u0398, O, \u03a9)"
     ]
   },
   "sections": [
@@ -84,15 +84,15 @@
     },
     {
       "id": "known-bounds",
-      "title": "Bleicher-Erdős Bounds (Axiomatized)",
+      "title": "Bleicher-Erd\u0151s Bounds (Axiomatized)",
       "startLine": 136,
       "endLine": 155,
-      "summary": "Three doc-comment descriptions of the known bounds: lower bound $R(N) \\geq N/\\log N$ (Bleicher-Erdős 1975, constructive via prime factorization), upper bound $R(N) \\leq C \\cdot (N/\\log N) \\cdot \\log\\log N$ (1976, counting argument via $\\text{lcm}(1,\\ldots,N)$), and combined $\\Theta(N/\\log N)$ statement.",
+      "summary": "Three doc-comment descriptions of the known bounds: lower bound $R(N) \\geq N/\\log N$ (Bleicher-Erd\u0151s 1975, constructive via prime factorization), upper bound $R(N) \\leq C \\cdot (N/\\log N) \\cdot \\log\\log N$ (1976, counting argument via $\\text{lcm}(1,\\ldots,N)$), and combined $\\Theta(N/\\log N)$ statement.",
       "mathContext": "$c_1 \\cdot \\frac{N}{\\log N} \\leq R(N) \\leq c_2 \\cdot \\frac{N \\log\\log N}{\\log N}$. The gap is one iterated logarithm factor."
     },
     {
       "id": "main-conjecture",
-      "title": "Erdős Problem #321: Exact Asymptotics (OPEN)",
+      "title": "Erd\u0151s Problem #321: Exact Asymptotics (OPEN)",
       "startLine": 143,
       "endLine": 155,
       "summary": "States the main problem: determine the exact asymptotic behavior of $R(N)$. The formal theorem `erdos_321_asymptotics` is tautological (take $f = R$, proved by `rfl`). The real open problem is finding an explicit closed-form for the iterated log correction.",
@@ -100,56 +100,56 @@
     }
   ],
   "overview": {
-    "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p.43), building on work by Michael Bleicher and Erdős from the mid-1970s. Bleicher and Erdős published matching bounds in two papers: a lower bound in 'Denominators of unit fractions' (J. London Math. Soc., 1975) using a constructive argument based on prime factorization properties, and an upper bound in 'Denominators of unit fractions II' (Illinois J. Math., 1976) using a counting argument comparing $2^{|A|}$ with $\\text{lcm}(1, \\ldots, N)$. The problem sits at the intersection of additive combinatorics, Egyptian fraction theory (dating back to ancient Egypt's Rhind Papyrus, c. 1650 BCE), and the study of harmonic sums. The iterated logarithm gap between the bounds — essentially a single factor of $\\log_r N$ — has resisted closure for 50 years, making it one of the most precisely bounded yet unresolved problems in combinatorial number theory.",
+    "historicalContext": "Paul Erd\u0151s and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p.43), building on work by Michael Bleicher and Erd\u0151s from the mid-1970s. Bleicher and Erd\u0151s published matching bounds in two papers: a lower bound in 'Denominators of unit fractions' (J. London Math. Soc., 1975) using a constructive argument based on prime factorization properties, and an upper bound in 'Denominators of unit fractions II' (Illinois J. Math., 1976) using a counting argument comparing $2^{|A|}$ with $\\text{lcm}(1, \\ldots, N)$. The problem sits at the intersection of additive combinatorics, Egyptian fraction theory (dating back to ancient Egypt's Rhind Papyrus, c. 1650 BCE), and the study of harmonic sums. The iterated logarithm gap between the bounds \u2014 essentially a single factor of $\\log_r N$ \u2014 has resisted closure for 50 years, making it one of the most precisely bounded yet unresolved problems in combinatorial number theory.",
     "problemStatement": "Let $R(N) = \\max\\{|A| : A \\subseteq \\{1, \\ldots, N\\}, \\text{ all reciprocal subset sums } \\sum_{n \\in S} 1/n \\text{ distinct}\\}$. Determine $R(N)$ asymptotically. Current bounds: $(N/\\log N) \\cdot \\prod \\log_i N \\leq R(N) \\leq (1/\\log 2) \\cdot \\log_r N \\cdot (N/\\log N) \\cdot \\prod \\log_i N$.",
-    "text": "A 170-line formalization of Erdős Problem #321 that builds the framework for studying $R(N)$, the maximum size of $A \\subseteq \\{1, \\ldots, N\\}$ with all $2^{|A|}$ reciprocal subset sums $\\sum_{a \\in S} 1/a$ distinct. Defines `HasDistinctReciprocalSums` over $\\mathbb{Q}$ (exact arithmetic, avoiding floating-point issues) and `maxDistinctReciprocal` via `Finset.sup` over the filtered powerset. The 2 axioms encode the Bleicher–Erdős bounds: lower $R(N) \\geq N/\\log N$ (constructive, 1975), upper $R(N) \\leq C \\cdot (N/\\log N) \\cdot \\log\\log N$ (counting, 1976), and their combination $R(N) = \\Theta(N/\\log N)$. The 6 proved theorems establish structural properties: equivalence of formulations, hereditary closure, singleton and pair cases, and the trivial verification for $A = \\{1, \\ldots, N\\}$.",
-    "proofStrategy": "We define `HasDistinctReciprocalSums` over $\\mathbb{Q}$ (exact arithmetic) and $R(N)$ via `Finset.sup` over the powerset. The Bleicher–Erdős bounds are axiomatized in simplified form: the lower bound as $R(N) \\geq N/\\log N$ and the upper bound as $R(N) \\leq C \\cdot (N/\\log N) \\cdot \\log\\log N$. The combined $\\Theta(N/\\log N)$ statement captures the main term. Observations on Egyptian fractions and greedy constructions are included as comments.",
+    "text": "A 170-line formalization of Erd\u0151s Problem #321 that builds the framework for studying $R(N)$, the maximum size of $A \\subseteq \\{1, \\ldots, N\\}$ with all $2^{|A|}$ reciprocal subset sums $\\sum_{a \\in S} 1/a$ distinct. Defines `HasDistinctReciprocalSums` over $\\mathbb{Q}$ (exact arithmetic, avoiding floating-point issues) and `maxDistinctReciprocal` via `Finset.sup` over the filtered powerset. The 2 axioms encode the Bleicher\u2013Erd\u0151s bounds: lower $R(N) \\geq N/\\log N$ (constructive, 1975), upper $R(N) \\leq C \\cdot (N/\\log N) \\cdot \\log\\log N$ (counting, 1976), and their combination $R(N) = \\Theta(N/\\log N)$. The 6 proved theorems establish structural properties: equivalence of formulations, hereditary closure, singleton and pair cases, and the trivial verification for $A = \\{1, \\ldots, N\\}$.",
+    "proofStrategy": "We define `HasDistinctReciprocalSums` over $\\mathbb{Q}$ (exact arithmetic) and $R(N)$ via `Finset.sup` over the powerset. The Bleicher\u2013Erd\u0151s bounds are axiomatized in simplified form: the lower bound as $R(N) \\geq N/\\log N$ and the upper bound as $R(N) \\leq C \\cdot (N/\\log N) \\cdot \\log\\log N$. The combined $\\Theta(N/\\log N)$ statement captures the main term. Observations on Egyptian fractions and greedy constructions are included as comments.",
     "keyInsights": [
-      "**Main term is $N/\\log N$**: Both bounds agree on this leading factor — the open question is entirely about the slowly-varying iterated logarithm correction, making this one of the most precisely bounded yet unresolved extremal problems",
-      "**Lower bound via prime factorization**: Bleicher–Erdős select integers $n \\leq N$ whose prime factorizations ensure reciprocal subset sums separate, using the unique factorization of $\\text{lcm}(1, \\ldots, N)$ into prime powers",
-      "**Upper bound via counting**: There are $2^{|A|}$ subsets but only $\\text{lcm}(1, \\ldots, N) \\approx e^N$ possible distinct values for $\\sum 1/n$, giving $|A| \\leq \\log_2(\\text{lcm}(1, \\ldots, N)) \\approx N/\\log 2$ — refined with prime number theorem estimates",
-      "**Egyptian fraction roots**: The problem connects to ancient mathematics — the Rhind Papyrus (1650 BCE) contains Egyptian fraction tables, and the question of which denominators can coexist with unique partial sums is a modern formalization of this tradition",
+      "**Main term is $N/\\log N$**: Both bounds agree on this leading factor \u2014 the open question is entirely about the slowly-varying iterated logarithm correction, making this one of the most precisely bounded yet unresolved extremal problems",
+      "**Lower bound via prime factorization**: Bleicher\u2013Erd\u0151s select integers $n \\leq N$ whose prime factorizations ensure reciprocal subset sums separate, using the unique factorization of $\\text{lcm}(1, \\ldots, N)$ into prime powers",
+      "**Upper bound via counting**: There are $2^{|A|}$ subsets but only $\\text{lcm}(1, \\ldots, N) \\approx e^N$ possible distinct values for $\\sum 1/n$, giving $|A| \\leq \\log_2(\\text{lcm}(1, \\ldots, N)) \\approx N/\\log 2$ \u2014 refined with prime number theorem estimates",
+      "**Egyptian fraction roots**: The problem connects to ancient mathematics \u2014 the Rhind Papyrus (1650 BCE) contains Egyptian fraction tables, and the question of which denominators can coexist with unique partial sums is a modern formalization of this tradition",
       "**Gap is exactly one iterated log**: The difference between upper and lower bounds is the factor $\\log_r N$ at the deepest level of iterated logarithm. Closing this gap requires understanding whether the construction or the counting argument is tighter",
-      "**Rational arithmetic avoids precision issues**: The formalization computes subset sums over $\\mathbb{Q}$ (not $\\mathbb{R}$), making equality $\\sum 1/S = \\sum 1/T$ decidable and exact. This is essential because the distinctness condition is defined by *equality* of sums, not approximate closeness — floating-point or real-valued representations would introduce undecidability. The `Classical.DecidablePred` instance enables filtering the powerset by the `HasDistinctReciprocalSums` predicate"
+      "**Rational arithmetic avoids precision issues**: The formalization computes subset sums over $\\mathbb{Q}$ (not $\\mathbb{R}$), making equality $\\sum 1/S = \\sum 1/T$ decidable and exact. This is essential because the distinctness condition is defined by *equality* of sums, not approximate closeness \u2014 floating-point or real-valued representations would introduce undecidability. The `Classical.DecidablePred` instance enables filtering the powerset by the `HasDistinctReciprocalSums` predicate"
     ],
     "prerequisites": [
       "Combinatorial number theory (subset sums, extremal problems)",
       "Egyptian fractions and unit fractions",
       "Prime number theorem (for lcm estimates)",
-      "Asymptotic notation (Θ, O, Ω)"
+      "Asymptotic notation (\u0398, O, \u03a9)"
     ]
   },
   "conclusion": {
-    "summary": "This 170-line formalization captures Erdős Problem #321: what is the maximum size $R(N)$ of a subset $A \\subseteq \\{1, \\ldots, N\\}$ such that all $2^{|A|}$ subset sums $\\sum_{a \\in S} 1/a$ are distinct? The answer is $R(N) = \\Theta(N/\\log N)$ up to iterated logarithm factors, with the precise gap — a single $\\log\\log N$ factor between the Bleicher lower bound and the Erdős-Freud-Hegyvári upper bound — remaining one of the most precisely bounded yet unresolved asymptotic questions in number theory. The formalization axiomatizes 3 results (the Bleicher lower bound, the upper bound, and their combination), defines the distinct subset sum predicate over rational-valued partial sums, and proves structural properties connecting to Egyptian fraction theory. The key tension: the lower bound constructs sets greedily from harmonic series segments, while the upper bound uses a pigeonhole argument on the $2^{|A|}$ distinct sums within a bounded interval — closing the gap requires understanding how greedy constructions interact with the arithmetic of unit fractions.",
+    "summary": "This 170-line formalization captures Erd\u0151s Problem #321: what is the maximum size $R(N)$ of a subset $A \\subseteq \\{1, \\ldots, N\\}$ such that all $2^{|A|}$ subset sums $\\sum_{a \\in S} 1/a$ are distinct? The answer is $R(N) = \\Theta(N/\\log N)$ up to iterated logarithm factors, with the precise gap \u2014 a single $\\log\\log N$ factor between the Bleicher lower bound and the Erd\u0151s-Freud-Hegyv\u00e1ri upper bound \u2014 remaining one of the most precisely bounded yet unresolved asymptotic questions in number theory. The formalization axiomatizes 3 results (the Bleicher lower bound, the upper bound, and their combination), defines the distinct subset sum predicate over rational-valued partial sums, and proves structural properties connecting to Egyptian fraction theory. The key tension: the lower bound constructs sets greedily from harmonic series segments, while the upper bound uses a pigeonhole argument on the $2^{|A|}$ distinct sums within a bounded interval \u2014 closing the gap requires understanding how greedy constructions interact with the arithmetic of unit fractions.",
     "implications": "Resolving the precise asymptotics of $R(N)$ would advance the theory of Egyptian fractions, clarify the relationship between prime factorization structure and subset sum distinctness, and potentially yield new techniques for bounding extremal quantities defined via subset sums. The answer would also have algorithmic implications for constructing optimal sets with distinct partial harmonic sums.",
     "openQuestions": [
       "Is $R(N) \\sim c \\cdot N/\\log N$ for some explicit constant $c$, or do iterated logarithm factors persist in the true asymptotics?",
-      "Can the Bleicher–Erdős lower bound construction be improved by a more sophisticated selection criterion based on smooth numbers or $B$-smooth integers?",
+      "Can the Bleicher\u2013Erd\u0151s lower bound construction be improved by a more sophisticated selection criterion based on smooth numbers or $B$-smooth integers?",
       "Does the counting argument (upper bound) have slack, or is $\\text{lcm}(1, \\ldots, N)$ the true bottleneck for distinct reciprocal sums?",
       "What are the exact values of $R(N)$ for moderate $N$ (e.g., $N \\leq 1000$), and do they suggest a specific asymptotic form?"
     ]
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "L'Enseignement Mathématique, Monographie No. 28, Genève",
+      "venue": "L'Enseignement Math\u00e9matique, Monographie No. 28, Gen\u00e8ve",
       "note": "Problem statement on p. 43, in the context of Egyptian fraction theory and extremal problems on subset sums"
     },
     {
-      "authors": "Bleicher, Michael N.; Erdős, Paul",
+      "authors": "Bleicher, Michael N.; Erd\u0151s, Paul",
       "title": "Denominators of unit fractions",
       "year": "1975",
-      "venue": "Journal of the London Mathematical Society, vol. 11, pp. 65–77",
-      "note": "Proved the lower bound R(N) ≥ c·N/log N via a constructive argument selecting integers whose prime factorizations ensure reciprocal subset sums separate"
+      "venue": "Journal of the London Mathematical Society, vol. 11, pp. 65\u201377",
+      "note": "Proved the lower bound R(N) \u2265 c\u00b7N/log N via a constructive argument selecting integers whose prime factorizations ensure reciprocal subset sums separate"
     },
     {
-      "authors": "Bleicher, Michael N.; Erdős, Paul",
+      "authors": "Bleicher, Michael N.; Erd\u0151s, Paul",
       "title": "Denominators of unit fractions II",
       "year": "1976",
-      "venue": "Illinois Journal of Mathematics, vol. 20, pp. 598–613",
-      "note": "Proved the upper bound R(N) ≤ C·(N/log N)·log log N via a counting argument: 2^|A| distinct sums must fit within the range [0, H_N] with denominator dividing lcm(1,...,N)"
+      "venue": "Illinois Journal of Mathematics, vol. 20, pp. 598\u2013613",
+      "note": "Proved the upper bound R(N) \u2264 C\u00b7(N/log N)\u00b7log log N via a counting argument: 2^|A| distinct sums must fit within the range [0, H_N] with denominator dividing lcm(1,...,N)"
     },
     {
       "authors": "Guy, Richard K.",
@@ -162,7 +162,7 @@
   "leanFile": {
     "lineCount": 174,
     "axiomCount": 2,
-    "theoremCount": 7,
+    "theoremCount": 8,
     "definitionCount": 3,
     "imports": [
       "Mathlib.Data.Finset.Basic",
@@ -177,7 +177,7 @@
       {
         "name": "hasDistinctReciprocalSums_iff",
         "type": "equivalence",
-        "description": "Two formulations of distinct reciprocal subset sums are equivalent: explicit distinctness ↔ injective formulation"
+        "description": "Two formulations of distinct reciprocal subset sums are equivalent: explicit distinctness \u2194 injective formulation"
       },
       {
         "name": "HasDistinctReciprocalSums.subset",
@@ -187,12 +187,12 @@
       {
         "name": "pair_hasDistinctReciprocalSums",
         "type": "original",
-        "description": "For 1 ≤ m < n, {m,n} has all 4 reciprocal subset sums distinct via strict chain 0 < 1/n < 1/m < 1/m+1/n"
+        "description": "For 1 \u2264 m < n, {m,n} has all 4 reciprocal subset sums distinct via strict chain 0 < 1/n < 1/m < 1/m+1/n"
       },
       {
         "name": "erdos_321_asymptotics",
         "type": "tautology",
-        "description": "Tautological existence: ∃ f, R(N) = f(N), proved by rfl — the real content is the axiomatized Bleicher–Erdős bounds"
+        "description": "Tautological existence: \u2203 f, R(N) = f(N), proved by rfl \u2014 the real content is the axiomatized Bleicher\u2013Erd\u0151s bounds"
       }
     ],
     "path": "Proofs/Erdos321Problem.lean",
@@ -202,20 +202,20 @@
     {
       "name": "pair_hasDistinctReciprocalSums",
       "type": "original",
-      "description": "For 1 ≤ m < n, the pair {m,n} has all 4 reciprocal subset sums distinct",
-      "leanType": "(m n : ℕ) → m ≥ 1 → n ≥ 1 → m < n → HasDistinctReciprocalSums {m, n}"
+      "description": "For 1 \u2264 m < n, the pair {m,n} has all 4 reciprocal subset sums distinct",
+      "leanType": "(m n : \u2115) \u2192 m \u2265 1 \u2192 n \u2265 1 \u2192 m < n \u2192 HasDistinctReciprocalSums {m, n}"
     },
     {
       "name": "HasDistinctReciprocalSums.subset",
       "type": "original",
       "description": "Hereditary property: subsets of sets with distinct reciprocal sums inherit the property",
-      "leanType": "HasDistinctReciprocalSums A → B ⊆ A → HasDistinctReciprocalSums B"
+      "leanType": "HasDistinctReciprocalSums A \u2192 B \u2286 A \u2192 HasDistinctReciprocalSums B"
     },
     {
       "name": "hasDistinctReciprocalSums_iff",
       "type": "equivalence",
       "description": "Two formulations of distinct reciprocal subset sums are equivalent",
-      "leanType": "(A : Finset ℕ) → HasDistinctReciprocalSums A ↔ HasDistinctReciprocalSums' A"
+      "leanType": "(A : Finset \u2115) \u2192 HasDistinctReciprocalSums A \u2194 HasDistinctReciprocalSums' A"
     }
   ],
   "crossReferences": [
@@ -227,42 +227,42 @@
     {
       "targetId": "erdos-148",
       "relationship": "related",
-      "description": "Problem #148 asks for bounds on the number of representations of rationals as sums of distinct unit fractions — the counting side of the Egyptian fraction theory that Problem #321 studies from the extremal (maximum set size) perspective"
+      "description": "Problem #148 asks for bounds on the number of representations of rationals as sums of distinct unit fractions \u2014 the counting side of the Egyptian fraction theory that Problem #321 studies from the extremal (maximum set size) perspective"
     },
     {
       "targetId": "erdos-300",
       "relationship": "related",
-      "description": "Problem #300 studies subset sums of unit fractions with prescribed denominator sets — shares the $\\sum 1/n$ framework and the tension between density and distinctness that drives the Bleicher–Erdős bounds"
+      "description": "Problem #300 studies subset sums of unit fractions with prescribed denominator sets \u2014 shares the $\\sum 1/n$ framework and the tension between density and distinctness that drives the Bleicher\u2013Erd\u0151s bounds"
     },
     {
       "targetId": "erdos-313",
       "relationship": "related",
-      "description": "Problem #313 asks about the density of sets avoiding coincident unit fraction sums — the complementary (avoidance) perspective to Problem #321's goal of maximizing sets with distinct sums"
+      "description": "Problem #313 asks about the density of sets avoiding coincident unit fraction sums \u2014 the complementary (avoidance) perspective to Problem #321's goal of maximizing sets with distinct sums"
     },
     {
       "targetId": "erdos-1",
       "relationship": "related",
-      "description": "Problem #1 (distinct subset sums) asks the integer analogue: maximize $|A| \\subseteq [N]$ with all $\\sum_{a \\in S} a$ distinct. The answer is $\\sim \\log_2 N$, far smaller than $R(N) \\sim N/\\log N$ — reciprocal sums are more spread out, allowing larger sets"
+      "description": "Problem #1 (distinct subset sums) asks the integer analogue: maximize $|A| \\subseteq [N]$ with all $\\sum_{a \\in S} a$ distinct. The answer is $\\sim \\log_2 N$, far smaller than $R(N) \\sim N/\\log N$ \u2014 reciprocal sums are more spread out, allowing larger sets"
     },
     {
       "targetId": "erdos-28",
       "relationship": "related",
-      "description": "Problem #28 (Erdős–Turán conjecture on bases) also studies representation counts for sumsets, though for $A + A$ rather than $\\sum 1/a$. Both concern the fundamental question of how representations must grow with density"
+      "description": "Problem #28 (Erd\u0151s\u2013Tur\u00e1n conjecture on bases) also studies representation counts for sumsets, though for $A + A$ rather than $\\sum 1/a$. Both concern the fundamental question of how representations must grow with density"
     },
     {
       "targetId": "erdos-340-greedy-sidon",
       "relationship": "related",
-      "description": "Sidon sets (no two pairs have the same sum $a + b$) are the additive analogue of distinct subset sums. Problem #340's greedy Sidon construction parallels the Bleicher–Erdős lower bound construction: both build extremal sets greedily while maintaining a distinctness invariant, with the rate of growth constrained by the available 'room' in the target space"
+      "description": "Sidon sets (no two pairs have the same sum $a + b$) are the additive analogue of distinct subset sums. Problem #340's greedy Sidon construction parallels the Bleicher\u2013Erd\u0151s lower bound construction: both build extremal sets greedily while maintaining a distinctness invariant, with the rate of growth constrained by the available 'room' in the target space"
     },
     {
       "targetId": "harmonic-divergence",
       "relationship": "foundational",
-      "description": "The divergence of the harmonic series $\\sum 1/n = \\infty$ ensures that $R(N) \\to \\infty$: as the harmonic sum $H_N \\sim \\log N$ grows, there is increasingly more 'room' for distinct reciprocal subset sums. The Bleicher–Erdős bounds are calibrated against $H_N$ — the lower bound construction exploits the spread of the harmonic series, while the upper bound uses $\\text{lcm}(1,\\ldots,N) \\approx e^N$ to count how many distinct rational values fit in $[0, H_N]$"
+      "description": "The divergence of the harmonic series $\\sum 1/n = \\infty$ ensures that $R(N) \\to \\infty$: as the harmonic sum $H_N \\sim \\log N$ grows, there is increasingly more 'room' for distinct reciprocal subset sums. The Bleicher\u2013Erd\u0151s bounds are calibrated against $H_N$ \u2014 the lower bound construction exploits the spread of the harmonic series, while the upper bound uses $\\text{lcm}(1,\\ldots,N) \\approx e^N$ to count how many distinct rational values fit in $[0, H_N]$"
     },
     {
       "targetId": "prime-number-theorem",
       "relationship": "foundational",
-      "description": "The prime number theorem ($\\pi(N) \\sim N/\\log N$) underpins both Bleicher–Erdős bounds: the lower bound construction selects integers based on prime factorization properties, while the upper bound uses $\\text{lcm}(1,\\ldots,N) = e^{\\psi(N)} \\approx e^N$ (where $\\psi(N) \\sim N$ by PNT) to count how many distinct rational values can serve as reciprocal subset sums"
+      "description": "The prime number theorem ($\\pi(N) \\sim N/\\log N$) underpins both Bleicher\u2013Erd\u0151s bounds: the lower bound construction selects integers based on prime factorization properties, while the upper bound uses $\\text{lcm}(1,\\ldots,N) = e^{\\psi(N)} \\approx e^N$ (where $\\psi(N) \\sim N$ by PNT) to count how many distinct rational values can serve as reciprocal subset sums"
     }
   ],
   "sorries": 0

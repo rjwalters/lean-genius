@@ -47,7 +47,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Companion matrices have been a cornerstone of linear algebra since the 19th century, appearing naturally in the theory of eigenvalues (Cayley, Weierstrass) and the rational canonical form (Frobenius, 1879). The nonderogatory property — that the minimal polynomial equals the characteristic polynomial — was identified as the condition for a matrix to have a single invariant factor, making K^n a cyclic module over K[X]. The equivalence 'nonderogatory ↔ similar to companion matrix' is the central theorem of rational canonical form theory, but its proof requires the structure theorem for finitely generated modules over K[X], a principal ideal domain. Unlike the Jordan canonical form (valid only over algebraically closed fields), the rational canonical form works over any field. Despite its classical status, the PID structure theorem for K[X]-modules had not been formalized in Mathlib as of version 4.26. The parent file CayleyHamiltonMinpolyOQ05OQ01OQ04.lean attempts the general theorem via the module-theoretic route but carries a sorry at the key step. This WIP file pursues a companion-matrix-first strategy: the Krylov orbit C^k e0 = e_k is a concrete, purely computational fact about matrix powers that can be verified without any abstract module theory, providing an unconditional proof of the companion matrix half.",
+    "historicalContext": "Companion matrices have been a cornerstone of linear algebra since the 19th century, appearing naturally in the theory of eigenvalues (Cayley, Weierstrass) and the rational canonical form (Frobenius, 1879). The nonderogatory property \u2014 that the minimal polynomial equals the characteristic polynomial \u2014 was identified as the condition for a matrix to have a single invariant factor, making K^n a cyclic module over K[X]. The equivalence 'nonderogatory \u2194 similar to companion matrix' is the central theorem of rational canonical form theory, but its proof requires the structure theorem for finitely generated modules over K[X], a principal ideal domain. Unlike the Jordan canonical form (valid only over algebraically closed fields), the rational canonical form works over any field. Despite its classical status, the PID structure theorem for K[X]-modules had not been formalized in Mathlib as of version 4.26. The parent file CayleyHamiltonMinpolyOQ05OQ01OQ04.lean attempts the general theorem via the module-theoretic route but carries a sorry at the key step. This WIP file pursues a companion-matrix-first strategy: the Krylov orbit C^k e0 = e_k is a concrete, purely computational fact about matrix powers that can be verified without any abstract module theory, providing an unconditional proof of the companion matrix half.",
     "problemStatement": "Reduce the sorry in the general nonderogatory cyclic vector theorem to a precisely-stated axiom. The original sorry was vague ('requires PID structure theorem'). This file proves the companion matrix half and isolates the remaining gap as: 'nonderogatory M is similar to companion(charpoly M)'.",
     "proofStrategy": "Three-step decomposition: (1) PROVE that e0 is cyclic for companionMat(p) when p is monic of degree n, via the orbit argument: C^k e0 = e_k for k < n, so evaluating q(C)e0 at index natDegree(q) gives q.leadingCoeff, which is nonzero for q != 0. (2) STATE as axiom that nonderogatory M is similar to companionMat(charpoly M). (3) PROVE the similarity transfer theorem: if M = P^{-1}NP and v is cyclic for N, then P^{-1}v is cyclic for M. Combining (1)+(2)+(3) gives the main theorem.",
     "keyInsights": [
@@ -96,7 +96,7 @@
       "title": "V. Similarity Transfer",
       "startLine": 162,
       "endLine": 233,
-      "summary": "Proves cyclic_vector_similar_transfer (conjugation formula q(P⁻¹NP) = P⁻¹q(N)P via polynomial induction) and states nonderogatory_similar_to_companion as an axiom.",
+      "summary": "Proves cyclic_vector_similar_transfer (conjugation formula q(P\u207b\u00b9NP) = P\u207b\u00b9q(N)P via polynomial induction) and states nonderogatory_similar_to_companion as an axiom.",
       "mathContext": "If M = P^{-1}NP, then aeval M q = P^{-1} (aeval N q) P by the conjugation formula, so q(M)(P^{-1}v) = P^{-1}(q(N)v). The axiom states that nonderogatory M is similar to companion(charpoly M), capturing the rational canonical form gap."
     },
     {
@@ -129,7 +129,7 @@
     "namespace": "CompanionCyclicVector",
     "lineCount": 290,
     "axiomCount": 1,
-    "theoremCount": 5,
+    "theoremCount": 11,
     "definitionCount": 2,
     "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean",
     "sorries": 0

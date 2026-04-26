@@ -1,8 +1,8 @@
 {
   "id": "arithmetic-series-oq-00",
-  "title": "Nicomachus's Theorem — Sum of Cubes = Square of Triangular Number",
+  "title": "Nicomachus's Theorem \u2014 Sum of Cubes = Square of Triangular Number",
   "slug": "arithmetic-series-oq-00",
-  "description": "The sum of the first n perfect cubes equals the square of the n-th triangular number: ∑_{k=1}^n k³ = (n(n+1)/2)² = (∑_{k=1}^n k)². A beautiful classical identity discovered by Nicomachus of Gerasa around 100 CE, proved here by induction in both ℚ and ℕ.",
+  "description": "The sum of the first n perfect cubes equals the square of the n-th triangular number: \u2211_{k=1}^n k\u00b3 = (n(n+1)/2)\u00b2 = (\u2211_{k=1}^n k)\u00b2. A beautiful classical identity discovered by Nicomachus of Gerasa around 100 CE, proved here by induction in both \u211a and \u2115.",
   "meta": {
     "author": "Nicomachus of Gerasa (c. 100 CE); formalized in Lean 4",
     "date": "c. 100 CE",
@@ -26,22 +26,22 @@
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum_Ico_succ_top",
-        "description": "Splits ∑_{k∈Ico a (b+1)} into ∑_{k∈Ico a b} + f(b), used in inductive step",
+        "description": "Splits \u2211_{k\u2208Ico a (b+1)} into \u2211_{k\u2208Ico a b} + f(b), used in inductive step",
         "module": "Mathlib.Algebra.BigOperators.Intervals"
       }
     ],
     "dateAdded": "2026-04-12"
   },
   "overview": {
-    "historicalContext": "Nicomachus of Gerasa (c. 60–120 CE) was a neo-Pythagorean philosopher and mathematician from Gerasa (modern Jerash, Jordan). In his *Introductio Arithmetica* (c. 100 CE), he described a remarkable visual pattern: the cubes 1, 8, 27, 64, 125, ... can be represented as L-shaped *gnomons* that fit together to form perfect squares. Specifically, the n-th cube is the sum of n consecutive odd numbers, and these gnomons arrange around a growing square whose side equals the n-th triangular number.\n\nThe identity ∑k³ = (∑k)² states that the same numbers {1, 2, ..., n} yield the same result whether you cube them and add, or add them and square. This coincidence between two very different operations on the same sequence is what makes the theorem remarkable.\n\nThe result was rediscovered many times in different cultures. It appears in Indian mathematics in the work of Aryabhata (499 CE) and Brahmagupta (628 CE). In medieval Europe, it was known through translations of Boethius's *De Arithmetica* (c. 500 CE), which was itself a Latin adaptation of Nicomachus.\n\nThe visual proof — sometimes called the *staircase proof* or *gnomon proof* — is one of the oldest known proofs without words: arrange n layers of cubes in a staircase, and the total forms a square of side 1+2+...+n.",
-    "problemStatement": "**Open Question (arithmetic-series-oq-00)**: Can we formalize Nicomachus's identity, which states that the sum of the first n perfect cubes equals the square of the n-th triangular number?\n\n$$\\sum_{k=1}^{n} k^3 = \\left(\\frac{n(n+1)}{2}\\right)^2 = T_n^2$$\n\nEquivalently, the sum of cubes equals the square of the sum:\n$$\\sum_{k=1}^{n} k^3 = \\left(\\sum_{k=1}^{n} k\\right)^2$$\n\n**Answer: YES** — proved by induction in this file.",
-    "text": "A focused 128-line formalization of Nicomachus's theorem in three equivalent forms:\n\n1. **Over ℚ** (`sum_cubes_eq_triangular_sq`): ∑k³ = (n(n+1)/2)² — proved by induction with `push_cast; linarith`.\n2. **Beautiful form** (`sum_cubes_eq_sq_sum`): ∑k³ = (∑k)² — follows immediately from the Gauss sum.\n3. **Over ℕ, division-free** (`sum_cubes_mul_four`): 4 × ∑k³ = (n(n+1))² — proved by induction with `ring`.\n\nThe algebraic heart is `nicomachus_step`: `(n(n+1)/2)² + (n+1)³ = ((n+1)(n+2)/2)²`, proved by `ring`. Concrete values for n=1,2,3,4,10 are verified by `native_decide`.",
-    "proofStrategy": "**Main proof (`sum_cubes_eq_triangular_sq`)**: Induction on n.\n\n- **Base case** (n=0): The empty sum ∑_{k∈Ico 1 1} k³ = 0 = (0·1/2)² = 0. Closed by `simp`.\n\n- **Inductive step**: Assume ∑_{k=1}^{n} k³ = (n(n+1)/2)². Must show ∑_{k=1}^{n+1} k³ = ((n+1)(n+2)/2)².\n\n  Apply `Finset.sum_Ico_succ_top` to split the sum:\n  $$\\sum_{k=1}^{n+1} k^3 = \\sum_{k=1}^{n} k^3 + (n+1)^3$$\n  \n  After `push_cast` (coerce ℕ → ℚ), `linarith` closes the goal using the induction hypothesis and the ring identity:\n  $$(n(n+1)/2)^2 + (n+1)^3 = ((n+1)(n+2)/2)^2$$\n  \n  which expands to n⁴ + 6n³ + 13n² + 12n + 4 = n⁴ + 6n³ + 13n² + 12n + 4.\n\n**ℕ version (`sum_cubes_mul_four`)**: Same structure but `4 × ∑k³ = (n(n+1))²`. The inductive step needs `ring` (not `linarith`) since the identity is degree 4.",
+    "historicalContext": "Nicomachus of Gerasa (c. 60\u2013120 CE) was a neo-Pythagorean philosopher and mathematician from Gerasa (modern Jerash, Jordan). In his *Introductio Arithmetica* (c. 100 CE), he described a remarkable visual pattern: the cubes 1, 8, 27, 64, 125, ... can be represented as L-shaped *gnomons* that fit together to form perfect squares. Specifically, the n-th cube is the sum of n consecutive odd numbers, and these gnomons arrange around a growing square whose side equals the n-th triangular number.\n\nThe identity \u2211k\u00b3 = (\u2211k)\u00b2 states that the same numbers {1, 2, ..., n} yield the same result whether you cube them and add, or add them and square. This coincidence between two very different operations on the same sequence is what makes the theorem remarkable.\n\nThe result was rediscovered many times in different cultures. It appears in Indian mathematics in the work of Aryabhata (499 CE) and Brahmagupta (628 CE). In medieval Europe, it was known through translations of Boethius's *De Arithmetica* (c. 500 CE), which was itself a Latin adaptation of Nicomachus.\n\nThe visual proof \u2014 sometimes called the *staircase proof* or *gnomon proof* \u2014 is one of the oldest known proofs without words: arrange n layers of cubes in a staircase, and the total forms a square of side 1+2+...+n.",
+    "problemStatement": "**Open Question (arithmetic-series-oq-00)**: Can we formalize Nicomachus's identity, which states that the sum of the first n perfect cubes equals the square of the n-th triangular number?\n\n$$\\sum_{k=1}^{n} k^3 = \\left(\\frac{n(n+1)}{2}\\right)^2 = T_n^2$$\n\nEquivalently, the sum of cubes equals the square of the sum:\n$$\\sum_{k=1}^{n} k^3 = \\left(\\sum_{k=1}^{n} k\\right)^2$$\n\n**Answer: YES** \u2014 proved by induction in this file.",
+    "text": "A focused 128-line formalization of Nicomachus's theorem in three equivalent forms:\n\n1. **Over \u211a** (`sum_cubes_eq_triangular_sq`): \u2211k\u00b3 = (n(n+1)/2)\u00b2 \u2014 proved by induction with `push_cast; linarith`.\n2. **Beautiful form** (`sum_cubes_eq_sq_sum`): \u2211k\u00b3 = (\u2211k)\u00b2 \u2014 follows immediately from the Gauss sum.\n3. **Over \u2115, division-free** (`sum_cubes_mul_four`): 4 \u00d7 \u2211k\u00b3 = (n(n+1))\u00b2 \u2014 proved by induction with `ring`.\n\nThe algebraic heart is `nicomachus_step`: `(n(n+1)/2)\u00b2 + (n+1)\u00b3 = ((n+1)(n+2)/2)\u00b2`, proved by `ring`. Concrete values for n=1,2,3,4,10 are verified by `native_decide`.",
+    "proofStrategy": "**Main proof (`sum_cubes_eq_triangular_sq`)**: Induction on n.\n\n- **Base case** (n=0): The empty sum \u2211_{k\u2208Ico 1 1} k\u00b3 = 0 = (0\u00b71/2)\u00b2 = 0. Closed by `simp`.\n\n- **Inductive step**: Assume \u2211_{k=1}^{n} k\u00b3 = (n(n+1)/2)\u00b2. Must show \u2211_{k=1}^{n+1} k\u00b3 = ((n+1)(n+2)/2)\u00b2.\n\n  Apply `Finset.sum_Ico_succ_top` to split the sum:\n  $$\\sum_{k=1}^{n+1} k^3 = \\sum_{k=1}^{n} k^3 + (n+1)^3$$\n  \n  After `push_cast` (coerce \u2115 \u2192 \u211a), `linarith` closes the goal using the induction hypothesis and the ring identity:\n  $$(n(n+1)/2)^2 + (n+1)^3 = ((n+1)(n+2)/2)^2$$\n  \n  which expands to n\u2074 + 6n\u00b3 + 13n\u00b2 + 12n + 4 = n\u2074 + 6n\u00b3 + 13n\u00b2 + 12n + 4.\n\n**\u2115 version (`sum_cubes_mul_four`)**: Same structure but `4 \u00d7 \u2211k\u00b3 = (n(n+1))\u00b2`. The inductive step needs `ring` (not `linarith`) since the identity is degree 4.",
     "keyInsights": [
-      "The theorem has two equivalent formulations: ∑k³ = (n(n+1)/2)² and ∑k³ = (∑k)². The second is arguably more beautiful since the same sequence {1,...,n} appears on both sides.",
-      "Over ℚ, `linarith` closes the inductive step after `push_cast` because the key identity (n(n+1)/2)² + (n+1)³ = ((n+1)(n+2)/2)² is a degree-4 polynomial identity that `linarith` can verify.",
-      "The division-free form `4 × ∑k³ = (n(n+1))²` avoids natural number division and the inductive step is closed by `ring` in ℕ (commutative semiring).",
-      "The algebraic identity `nicomachus_step` isolates the key inductive step: (n(n+1)/2)² + (n+1)³ = ((n+1)(n+2)/2)², proved by `ring` over ℚ.",
+      "The theorem has two equivalent formulations: \u2211k\u00b3 = (n(n+1)/2)\u00b2 and \u2211k\u00b3 = (\u2211k)\u00b2. The second is arguably more beautiful since the same sequence {1,...,n} appears on both sides.",
+      "Over \u211a, `linarith` closes the inductive step after `push_cast` because the key identity (n(n+1)/2)\u00b2 + (n+1)\u00b3 = ((n+1)(n+2)/2)\u00b2 is a degree-4 polynomial identity that `linarith` can verify.",
+      "The division-free form `4 \u00d7 \u2211k\u00b3 = (n(n+1))\u00b2` avoids natural number division and the inductive step is closed by `ring` in \u2115 (commutative semiring).",
+      "The algebraic identity `nicomachus_step` isolates the key inductive step: (n(n+1)/2)\u00b2 + (n+1)\u00b3 = ((n+1)(n+2)/2)\u00b2, proved by `ring` over \u211a.",
       "Nicomachus's theorem is a special case of Faulhaber's formula (p=3), proved in the companion file ArithmeticSeriesOQ04.lean. This file gives a more elementary, focused treatment."
     ],
     "prerequisites": [
@@ -61,18 +61,18 @@
     },
     {
       "id": "main-theorem-Q",
-      "title": "Part I: Main Theorem over ℚ",
+      "title": "Part I: Main Theorem over \u211a",
       "startLine": 49,
       "endLine": 68,
-      "summary": "sum_cubes_eq_triangular_sq: ∑_{k=1}^n k³ = (n(n+1)/2)² over ℚ, by induction + push_cast + linarith.",
+      "summary": "sum_cubes_eq_triangular_sq: \u2211_{k=1}^n k\u00b3 = (n(n+1)/2)\u00b2 over \u211a, by induction + push_cast + linarith.",
       "mathContext": "$$\\sum_{k=1}^{n} k^3 = \\left(\\frac{n(n+1)}{2}\\right)^2 = T_n^2$$\n\nThe n-th triangular number $T_n = \\frac{n(n+1)}{2} = 1 + 2 + \\cdots + n$ equals the side of the square whose area equals the sum of the first n cubes."
     },
     {
       "id": "beautiful-form",
-      "title": "Part II: The Beautiful Form ∑k³ = (∑k)²",
+      "title": "Part II: The Beautiful Form \u2211k\u00b3 = (\u2211k)\u00b2",
       "startLine": 69,
       "endLine": 91,
-      "summary": "gauss_sum_rat: ∑_{k=1}^n k = n(n+1)/2. sum_cubes_eq_sq_sum: ∑k³ = (∑k)².",
+      "summary": "gauss_sum_rat: \u2211_{k=1}^n k = n(n+1)/2. sum_cubes_eq_sq_sum: \u2211k\u00b3 = (\u2211k)\u00b2.",
       "mathContext": "The most elegant formulation: the sum of the first n cubes equals the square of the sum of the first n integers. Both sides involve only the set {1, 2, ..., n}, but computed in completely different ways."
     },
     {
@@ -80,7 +80,7 @@
       "title": "Part III: Natural Number Version (Division-Free)",
       "startLine": 92,
       "endLine": 107,
-      "summary": "sum_cubes_mul_four: 4 × ∑k³ = (n(n+1))² in ℕ, by induction + ring.",
+      "summary": "sum_cubes_mul_four: 4 \u00d7 \u2211k\u00b3 = (n(n+1))\u00b2 in \u2115, by induction + ring.",
       "mathContext": "The division-free form avoids natural number division issues. Since $2 \\mid n(n+1)$ always holds, the classical form $\\sum k^3 = (n(n+1)/2)^2$ follows from multiplying out. The inductive step $(n(n+1))^2 + 4(n+1)^3 = ((n+1)(n+2))^2$ is a polynomial identity closed by `ring`."
     },
     {
@@ -88,7 +88,7 @@
       "title": "Part IV: The Key Algebraic Identity",
       "startLine": 108,
       "endLine": 118,
-      "summary": "nicomachus_step: (n(n+1)/2)² + (n+1)³ = ((n+1)(n+2)/2)², proved by ring.",
+      "summary": "nicomachus_step: (n(n+1)/2)\u00b2 + (n+1)\u00b3 = ((n+1)(n+2)/2)\u00b2, proved by ring.",
       "mathContext": "This is the heart of the induction: each step adds $(n+1)^3$ to the sum, and the triangular square advances from $T_n^2$ to $T_{n+1}^2$. The identity $(n(n+1)/2)^2 + (n+1)^3 = ((n+1)(n+2)/2)^2$ expands to $n^4 + 6n^3 + 13n^2 + 12n + 4$ on both sides."
     },
     {
@@ -101,18 +101,18 @@
     }
   ],
   "conclusion": {
-    "summary": "Nicomachus's theorem — that the sum of the first n cubes equals the square of the n-th triangular number — is proved here in three equivalent forms by induction. The proof is elementary: only Finset sum splitting and ring arithmetic are needed. 0 sorries, 0 axioms.",
-    "implications": "Nicomachus's theorem bridges figurate numbers (triangular) and power sums (cubes). It is a special case of Faulhaber's formula for p=3, but its elementary induction proof needs no Bernoulli numbers. The identity ∑k³ = (∑k)² is one of the most visually striking in elementary number theory, with a beautiful geometric proof via gnomon decomposition.",
+    "summary": "Nicomachus's theorem \u2014 that the sum of the first n cubes equals the square of the n-th triangular number \u2014 is proved here in three equivalent forms by induction. The proof is elementary: only Finset sum splitting and ring arithmetic are needed. 0 sorries, 0 axioms.",
+    "implications": "Nicomachus's theorem bridges figurate numbers (triangular) and power sums (cubes). It is a special case of Faulhaber's formula for p=3, but its elementary induction proof needs no Bernoulli numbers. The identity \u2211k\u00b3 = (\u2211k)\u00b2 is one of the most visually striking in elementary number theory, with a beautiful geometric proof via gnomon decomposition.",
     "openQuestions": [
-      "Is there a bijective proof in Lean? (Construct an explicit bijection between n³ objects and the 'staircase square' region of area T_n².)",
-      "Can we prove the weighted generalization: ∑_{k=1}^n (2k-1)·k² = (∑_{k=1}^n k)²?"
+      "Is there a bijective proof in Lean? (Construct an explicit bijection between n\u00b3 objects and the 'staircase square' region of area T_n\u00b2.)",
+      "Can we prove the weighted generalization: \u2211_{k=1}^n (2k-1)\u00b7k\u00b2 = (\u2211_{k=1}^n k)\u00b2?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "arithmetic-series",
       "relationship": "extends",
-      "description": "Parent: proves Gauss's formula ∑k = n(n+1)/2, the triangular numbers used here"
+      "description": "Parent: proves Gauss's formula \u2211k = n(n+1)/2, the triangular numbers used here"
     },
     {
       "targetId": "arithmetic-series-oq-04",
@@ -133,26 +133,26 @@
     "namespace": "NicomachusTheorem",
     "lineCount": 160,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 11,
     "definitionCount": 0,
     "mainTheorems": [
       {
         "name": "sum_cubes_eq_triangular_sq",
         "type": "core",
-        "description": "Nicomachus's theorem: ∑_{k=1}^n k³ = (n(n+1)/2)²",
-        "leanType": "(n : ℕ) → (∑ k ∈ Ico 1 (n+1), (k:ℚ)^3) = (n*(n+1)/2)^2"
+        "description": "Nicomachus's theorem: \u2211_{k=1}^n k\u00b3 = (n(n+1)/2)\u00b2",
+        "leanType": "(n : \u2115) \u2192 (\u2211 k \u2208 Ico 1 (n+1), (k:\u211a)^3) = (n*(n+1)/2)^2"
       },
       {
         "name": "sum_cubes_eq_sq_sum",
         "type": "key",
         "description": "Beautiful form: sum of cubes equals square of sum",
-        "leanType": "(n : ℕ) → (∑ k ∈ Ico 1 (n+1), (k:ℚ)^3) = (∑ k ∈ Ico 1 (n+1), (k:ℚ))^2"
+        "leanType": "(n : \u2115) \u2192 (\u2211 k \u2208 Ico 1 (n+1), (k:\u211a)^3) = (\u2211 k \u2208 Ico 1 (n+1), (k:\u211a))^2"
       },
       {
         "name": "sum_cubes_mul_four",
         "type": "key",
-        "description": "Division-free ℕ form: 4 × ∑k³ = (n(n+1))²",
-        "leanType": "(n : ℕ) → 4 * ∑ k ∈ Ico 1 (n+1), k^3 = (n*(n+1))^2"
+        "description": "Division-free \u2115 form: 4 \u00d7 \u2211k\u00b3 = (n(n+1))\u00b2",
+        "leanType": "(n : \u2115) \u2192 4 * \u2211 k \u2208 Ico 1 (n+1), k^3 = (n*(n+1))^2"
       }
     ],
     "path": "Proofs/ArithmeticSeriesOQ00.lean",
@@ -162,26 +162,26 @@
     {
       "name": "sum_cubes_eq_triangular_sq",
       "type": "core",
-      "description": "Nicomachus's theorem: ∑_{k=1}^n k³ = (n(n+1)/2)²",
-      "leanType": "(n : ℕ) → (∑ k ∈ Ico 1 (n+1), (k:ℚ)^3) = (n*(n+1)/2)^2"
+      "description": "Nicomachus's theorem: \u2211_{k=1}^n k\u00b3 = (n(n+1)/2)\u00b2",
+      "leanType": "(n : \u2115) \u2192 (\u2211 k \u2208 Ico 1 (n+1), (k:\u211a)^3) = (n*(n+1)/2)^2"
     },
     {
       "name": "sum_cubes_eq_sq_sum",
       "type": "key",
       "description": "Sum of cubes equals square of sum of first n integers",
-      "leanType": "(n : ℕ) → (∑ k ∈ Ico 1 (n+1), (k:ℚ)^3) = (∑ k ∈ Ico 1 (n+1), (k:ℚ))^2"
+      "leanType": "(n : \u2115) \u2192 (\u2211 k \u2208 Ico 1 (n+1), (k:\u211a)^3) = (\u2211 k \u2208 Ico 1 (n+1), (k:\u211a))^2"
     },
     {
       "name": "sum_cubes_mul_four",
       "type": "key",
-      "description": "Division-free form: 4 × ∑k³ = (n(n+1))² in ℕ",
-      "leanType": "(n : ℕ) → 4 * ∑ k ∈ Ico 1 (n+1), k^3 = (n*(n+1))^2"
+      "description": "Division-free form: 4 \u00d7 \u2211k\u00b3 = (n(n+1))\u00b2 in \u2115",
+      "leanType": "(n : \u2115) \u2192 4 * \u2211 k \u2208 Ico 1 (n+1), k^3 = (n*(n+1))^2"
     },
     {
       "name": "nicomachus_step",
       "type": "supporting",
-      "description": "Key algebraic identity: (n(n+1)/2)² + (n+1)³ = ((n+1)(n+2)/2)²",
-      "leanType": "(n : ℚ) → (n*(n+1)/2)^2 + (n+1)^3 = ((n+1)*(n+2)/2)^2"
+      "description": "Key algebraic identity: (n(n+1)/2)\u00b2 + (n+1)\u00b3 = ((n+1)(n+2)/2)\u00b2",
+      "leanType": "(n : \u211a) \u2192 (n*(n+1)/2)^2 + (n+1)^3 = ((n+1)*(n+2)/2)^2"
     }
   ],
   "references": [
@@ -204,7 +204,7 @@
       "title": "The Book of Numbers",
       "year": "1996",
       "venue": "Springer-Verlag",
-      "note": "Chapter 2 gives a beautiful visual proof via triangular arrangements; pages 58–60"
+      "note": "Chapter 2 gives a beautiful visual proof via triangular arrangements; pages 58\u201360"
     }
   ],
   "sorries": 0

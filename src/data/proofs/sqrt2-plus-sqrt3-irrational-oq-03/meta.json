@@ -1,8 +1,8 @@
 {
   "id": "sqrt2-plus-sqrt3-irrational-oq-03",
-  "title": "Minimal Polynomial of √2 + √3",
+  "title": "Minimal Polynomial of \u221a2 + \u221a3",
   "slug": "sqrt2-plus-sqrt3-irrational-oq-03",
-  "description": "Proves the minimal polynomial of α = √2+√3 over ℚ is X⁴ − 10X² + 1. Establishes: f(α)=0 by direct computation (α²=5+2√6, α⁴=49+20√6), f is monic, and f is irreducible over ℚ via Gauss's lemma (irreducibility over ℤ[X]: no integer roots + coefficient analysis eliminates quadratic factors). Concludes [ℚ(√2+√3):ℚ] = 4. 0 sorries, 0 axioms.",
+  "description": "Proves the minimal polynomial of \u03b1 = \u221a2+\u221a3 over \u211a is X\u2074 \u2212 10X\u00b2 + 1. Establishes: f(\u03b1)=0 by direct computation (\u03b1\u00b2=5+2\u221a6, \u03b1\u2074=49+20\u221a6), f is monic, and f is irreducible over \u211a via Gauss's lemma (irreducibility over \u2124[X]: no integer roots + coefficient analysis eliminates quadratic factors). Concludes [\u211a(\u221a2+\u221a3):\u211a] = 4. 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-22",
@@ -19,52 +19,52 @@
     "sorries": 0,
     "dateAdded": "2026-04-22",
     "axiomCount": 0,
-    "assumptions": "None. Fully proved: 0 sorries, 0 axioms. Irreducibility is proved over ℤ[X] via case analysis, then transferred to ℚ[X] via Gauss's lemma (Mathlib's IsPrimitive.Int.irreducible_iff_irreducible_map_cast).",
+    "assumptions": "None. Fully proved: 0 sorries, 0 axioms. Irreducibility is proved over \u2124[X] via case analysis, then transferred to \u211a[X] via Gauss's lemma (Mathlib's IsPrimitive.Int.irreducible_iff_irreducible_map_cast).",
     "lineCount": 403,
     "theoremCount": 5,
     "definitionCount": 0,
     "originalContributions": [
-      "aeval_sqrt2_plus_sqrt3: f(√2+√3)=0, proved by step-by-step computation (α²=5+2√6, α⁴=49+20√6)",
-      "minpoly_sqrt2_plus_sqrt3: minpoly ℚ (√2+√3) = X⁴−10X²+1, via eq_of_irreducible_of_monic",
-      "adjoin_sqrt2_plus_sqrt3_finrank: [ℚ(√2+√3):ℚ] = 4",
-      "f_monic: X⁴−10X²+1 is monic (leading coefficient = 1)",
-      "sqrt2_plus_sqrt3_isIntegral: √2+√3 is algebraic over ℚ"
+      "aeval_sqrt2_plus_sqrt3: f(\u221a2+\u221a3)=0, proved by step-by-step computation (\u03b1\u00b2=5+2\u221a6, \u03b1\u2074=49+20\u221a6)",
+      "minpoly_sqrt2_plus_sqrt3: minpoly \u211a (\u221a2+\u221a3) = X\u2074\u221210X\u00b2+1, via eq_of_irreducible_of_monic",
+      "adjoin_sqrt2_plus_sqrt3_finrank: [\u211a(\u221a2+\u221a3):\u211a] = 4",
+      "f_monic: X\u2074\u221210X\u00b2+1 is monic (leading coefficient = 1)",
+      "sqrt2_plus_sqrt3_isIntegral: \u221a2+\u221a3 is algebraic over \u211a"
     ]
   },
   "overview": {
-    "historicalContext": "The minimal polynomial of $\\sqrt{2}+\\sqrt{3}$ over $\\mathbb{Q}$ is a classical result in algebraic number theory. While the irrationality of $\\sqrt{2}+\\sqrt{3}$ follows from a squaring argument (proved in the parent gallery entry), the deeper question asks: what is the exact degree of this algebraic number? The answer — degree 4 with minimal polynomial $x^4 - 10x^2 + 1$ — was certainly known to 19th-century algebraists and follows easily from Galois theory: the splitting field of $x^4-10x^2+1$ over $\\mathbb{Q}$ is $\\mathbb{Q}(\\sqrt{2},\\sqrt{3})$, which has degree 4 over $\\mathbb{Q}$ by the tower law and the fact that $\\sqrt{3} \\notin \\mathbb{Q}(\\sqrt{2})$. The Galois group is the Klein 4-group $\\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$ — in particular, $x^4-10x^2+1$ factors mod every prime (explaining why Eisenstein's criterion fails), but remains irreducible over $\\mathbb{Q}$.",
-    "problemStatement": "Prove that the minimal polynomial of α = √2 + √3 ∈ ℝ over ℚ is f(X) = X⁴ − 10X² + 1.",
-    "text": "The proof proceeds in three stages. First, direct computation establishes f(α) = 0: since α² = (√2+√3)² = 5+2√6 and α⁴ = (5+2√6)² = 49+20√6, we get f(α) = 49+20√6 − 10(5+2√6) + 1 = 0, with the √6 terms cancelling. Second, f is irreducible over ℚ: the rational root theorem limits candidates to ±1, both of which satisfy f(±1) = −8 ≠ 0; and equating coefficients in a hypothetical factorization f = (X²+aX+b)(X²−aX+d) leads to a system with no rational solutions in all cases (the discriminant or required square roots are always irrational). Third, since f is monic, irreducible, and has α as a root, Mathlib's `minpoly.eq_of_irreducible_of_monic` gives minpoly ℚ α = f, and the degree formula yields [ℚ(√2+√3):ℚ] = 4.",
-    "proofStrategy": "Three components: (1) Root check via step-by-step algebra: prove α²=5+2√6 from sq_sqrt, then α⁴=49+20√6 by squaring again, close with linarith. (2) Irreducibility over ℤ[X]: (a) no integer roots via f_no_int_root (integer root theorem + interval_cases), (b) no quadratic factors via coefficient analysis (discriminant 96 irrational, a²∈{8,12} non-square), then transfer to ℚ[X] via Gauss's lemma. (3) Apply minpoly.eq_of_irreducible_of_monic with the irreducibility and root check.",
+    "historicalContext": "The minimal polynomial of $\\sqrt{2}+\\sqrt{3}$ over $\\mathbb{Q}$ is a classical result in algebraic number theory. While the irrationality of $\\sqrt{2}+\\sqrt{3}$ follows from a squaring argument (proved in the parent gallery entry), the deeper question asks: what is the exact degree of this algebraic number? The answer \u2014 degree 4 with minimal polynomial $x^4 - 10x^2 + 1$ \u2014 was certainly known to 19th-century algebraists and follows easily from Galois theory: the splitting field of $x^4-10x^2+1$ over $\\mathbb{Q}$ is $\\mathbb{Q}(\\sqrt{2},\\sqrt{3})$, which has degree 4 over $\\mathbb{Q}$ by the tower law and the fact that $\\sqrt{3} \\notin \\mathbb{Q}(\\sqrt{2})$. The Galois group is the Klein 4-group $\\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$ \u2014 in particular, $x^4-10x^2+1$ factors mod every prime (explaining why Eisenstein's criterion fails), but remains irreducible over $\\mathbb{Q}$.",
+    "problemStatement": "Prove that the minimal polynomial of \u03b1 = \u221a2 + \u221a3 \u2208 \u211d over \u211a is f(X) = X\u2074 \u2212 10X\u00b2 + 1.",
+    "text": "The proof proceeds in three stages. First, direct computation establishes f(\u03b1) = 0: since \u03b1\u00b2 = (\u221a2+\u221a3)\u00b2 = 5+2\u221a6 and \u03b1\u2074 = (5+2\u221a6)\u00b2 = 49+20\u221a6, we get f(\u03b1) = 49+20\u221a6 \u2212 10(5+2\u221a6) + 1 = 0, with the \u221a6 terms cancelling. Second, f is irreducible over \u211a: the rational root theorem limits candidates to \u00b11, both of which satisfy f(\u00b11) = \u22128 \u2260 0; and equating coefficients in a hypothetical factorization f = (X\u00b2+aX+b)(X\u00b2\u2212aX+d) leads to a system with no rational solutions in all cases (the discriminant or required square roots are always irrational). Third, since f is monic, irreducible, and has \u03b1 as a root, Mathlib's `minpoly.eq_of_irreducible_of_monic` gives minpoly \u211a \u03b1 = f, and the degree formula yields [\u211a(\u221a2+\u221a3):\u211a] = 4.",
+    "proofStrategy": "Three components: (1) Root check via step-by-step algebra: prove \u03b1\u00b2=5+2\u221a6 from sq_sqrt, then \u03b1\u2074=49+20\u221a6 by squaring again, close with linarith. (2) Irreducibility over \u2124[X]: (a) no integer roots via f_no_int_root (integer root theorem + interval_cases), (b) no quadratic factors via coefficient analysis (discriminant 96 irrational, a\u00b2\u2208{8,12} non-square), then transfer to \u211a[X] via Gauss's lemma. (3) Apply minpoly.eq_of_irreducible_of_monic with the irreducibility and root check.",
     "keyInsights": [
-      "The key cancellation: α²=5+2√6 and α⁴=49+20√6, so f(α)=49+20√6−50−20√6+1=0. The √6 terms cancel exactly, making this a 'lucky' polynomial root.",
-      "The Galois group of x⁴−10x²+1 over ℚ is the Klein 4-group V₄ = {e, σ, τ, στ} where σ(√2)=−√2 and τ(√3)=−√3. This implies the polynomial factors mod every prime p — there is no prime for which it stays irreducible mod p — which is why Eisenstein and mod-p irreducibility tests all fail. The polynomial is 'invisibly irreducible' over ℚ.",
-      "Irreducibility proof structure: degree 4 over a field ⟹ irreducible iff no roots AND no quadratic factors. The quadratic factor case requires solving a 4×4 coefficient system, which always produces irrational solutions: discriminant 96 (= 4·24, with √24 ∉ ℚ) or required a² ∈ {8, 12} (both non-square).",
-      "The tower law confirms [ℚ(√2+√3):ℚ] = 4: since √2+√3 generates the same field as ℚ(√2,√3) (because √2 = ((√2+√3)²-5)/2 · ... , see Galois theory), and [ℚ(√2,√3):ℚ] = [ℚ(√2,√3):ℚ(√2)]·[ℚ(√2):ℚ] = 2·2 = 4.",
-      "Connection to the parent proof: the parent (`sqrt2-plus-sqrt3-irrational`) proved irrationality via the squaring trick (reducing to √6 ∉ ℚ). This proof gives the stronger statement: not only is √2+√3 ∉ ℚ, but it has degree exactly 4 — it cannot be expressed as any rational combination of square roots of rational numbers."
+      "The key cancellation: \u03b1\u00b2=5+2\u221a6 and \u03b1\u2074=49+20\u221a6, so f(\u03b1)=49+20\u221a6\u221250\u221220\u221a6+1=0. The \u221a6 terms cancel exactly, making this a 'lucky' polynomial root.",
+      "The Galois group of x\u2074\u221210x\u00b2+1 over \u211a is the Klein 4-group V\u2084 = {e, \u03c3, \u03c4, \u03c3\u03c4} where \u03c3(\u221a2)=\u2212\u221a2 and \u03c4(\u221a3)=\u2212\u221a3. This implies the polynomial factors mod every prime p \u2014 there is no prime for which it stays irreducible mod p \u2014 which is why Eisenstein and mod-p irreducibility tests all fail. The polynomial is 'invisibly irreducible' over \u211a.",
+      "Irreducibility proof structure: degree 4 over a field \u27f9 irreducible iff no roots AND no quadratic factors. The quadratic factor case requires solving a 4\u00d74 coefficient system, which always produces irrational solutions: discriminant 96 (= 4\u00b724, with \u221a24 \u2209 \u211a) or required a\u00b2 \u2208 {8, 12} (both non-square).",
+      "The tower law confirms [\u211a(\u221a2+\u221a3):\u211a] = 4: since \u221a2+\u221a3 generates the same field as \u211a(\u221a2,\u221a3) (because \u221a2 = ((\u221a2+\u221a3)\u00b2-5)/2 \u00b7 ... , see Galois theory), and [\u211a(\u221a2,\u221a3):\u211a] = [\u211a(\u221a2,\u221a3):\u211a(\u221a2)]\u00b7[\u211a(\u221a2):\u211a] = 2\u00b72 = 4.",
+      "Connection to the parent proof: the parent (`sqrt2-plus-sqrt3-irrational`) proved irrationality via the squaring trick (reducing to \u221a6 \u2209 \u211a). This proof gives the stronger statement: not only is \u221a2+\u221a3 \u2209 \u211a, but it has degree exactly 4 \u2014 it cannot be expressed as any rational combination of square roots of rational numbers."
     ],
     "prerequisites": [
       "Polynomial.aeval: evaluation homomorphism for polynomials",
       "minpoly.eq_of_irreducible_of_monic: characterization of minimal polynomials",
-      "Real.sq_sqrt: (√r)² = r for r ≥ 0",
+      "Real.sq_sqrt: (\u221ar)\u00b2 = r for r \u2265 0",
       "IntermediateField.adjoin.finrank: field extension degree via minimal polynomial"
     ]
   },
   "conclusion": {
-    "summary": "Fully verified (0 sorries, 0 axioms): minpoly ℚ (√2+√3) = X⁴−10X²+1 and [ℚ(√2+√3):ℚ]=4. Irreducibility proved over ℤ[X] via integer root theorem + quadratic factor coefficient analysis, then transferred to ℚ[X] by Gauss's lemma. 5 main theorems, ~400 lines.",
-    "implications": "The degree-4 result shows √2+√3 is a primitive element of the biquadratic extension ℚ(√2,√3)/ℚ. Combined with the explicit minimal polynomial, this enables computation of the full Galois group (Klein 4-group) and explains why the polynomial factors mod every prime despite being irreducible over ℚ.",
+    "summary": "Fully verified (0 sorries, 0 axioms): minpoly \u211a (\u221a2+\u221a3) = X\u2074\u221210X\u00b2+1 and [\u211a(\u221a2+\u221a3):\u211a]=4. Irreducibility proved over \u2124[X] via integer root theorem + quadratic factor coefficient analysis, then transferred to \u211a[X] by Gauss's lemma. 5 main theorems, ~400 lines.",
+    "implications": "The degree-4 result shows \u221a2+\u221a3 is a primitive element of the biquadratic extension \u211a(\u221a2,\u221a3)/\u211a. Combined with the explicit minimal polynomial, this enables computation of the full Galois group (Klein 4-group) and explains why the polynomial factors mod every prime despite being irreducible over \u211a.",
     "openQuestions": [
-      "Generalize the irreducibility proof to parametric X⁴ - (a+b+2√(ab))X² + (a-b)² for squarefree a,b.",
-      "Prove √2+√3 generates ℚ(√2,√3): show √2 and √3 can be recovered from √2+√3 alone.",
-      "Generalize: compute minpoly ℚ (√a+√b) for arbitrary squarefree positive integers a, b with distinct prime factors.",
-      "Compute minpoly ℚ (√2+√3+√5): expected degree 8, polynomial (x²-5)²(x²-2)(x²-3)(x²-6)... requires 3-variable case."
+      "Generalize the irreducibility proof to parametric X\u2074 - (a+b+2\u221a(ab))X\u00b2 + (a-b)\u00b2 for squarefree a,b.",
+      "Prove \u221a2+\u221a3 generates \u211a(\u221a2,\u221a3): show \u221a2 and \u221a3 can be recovered from \u221a2+\u221a3 alone.",
+      "Generalize: compute minpoly \u211a (\u221aa+\u221ab) for arbitrary squarefree positive integers a, b with distinct prime factors.",
+      "Compute minpoly \u211a (\u221a2+\u221a3+\u221a5): expected degree 8, polynomial (x\u00b2-5)\u00b2(x\u00b2-2)(x\u00b2-3)(x\u00b2-6)... requires 3-variable case."
     ]
   },
   "leanFile": {
     "namespace": "Sqrt2PlusSqrt3IrrationalOQ03",
     "lineCount": 403,
     "axiomCount": 0,
-    "theoremCount": 5,
+    "theoremCount": 8,
     "definitionCount": 0,
     "path": "Proofs/Sqrt2PlusSqrt3IrrationalOQ03.lean",
     "sorries": 0
@@ -73,54 +73,54 @@
     {
       "targetId": "sqrt2-plus-sqrt3-irrational",
       "relationship": "extends",
-      "description": "Parent proof establishing √2+√3 ∉ ℚ via the squaring trick. This proof gives the stronger result: √2+√3 has degree exactly 4 over ℚ."
+      "description": "Parent proof establishing \u221a2+\u221a3 \u2209 \u211a via the squaring trick. This proof gives the stronger result: \u221a2+\u221a3 has degree exactly 4 over \u211a."
     },
     {
       "targetId": "sqrt2-minpoly",
       "relationship": "related",
-      "description": "Minimal polynomial of √2 over ℚ is X²−2 (degree 2). The techniques are similar: Eisenstein for X²−2, rational root + quadratic factor analysis for X⁴−10X²+1."
+      "description": "Minimal polynomial of \u221a2 over \u211a is X\u00b2\u22122 (degree 2). The techniques are similar: Eisenstein for X\u00b2\u22122, rational root + quadratic factor analysis for X\u2074\u221210X\u00b2+1."
     },
     {
       "targetId": "algebraic-numbers-countable",
       "relationship": "related",
-      "description": "Algebraic numbers over ℚ are countable: √2+√3 has degree 4, minimal polynomial X⁴−10X²+1, and generates the biquadratic extension ℚ(√2,√3)."
+      "description": "Algebraic numbers over \u211a are countable: \u221a2+\u221a3 has degree 4, minimal polynomial X\u2074\u221210X\u00b2+1, and generates the biquadratic extension \u211a(\u221a2,\u221a3)."
     }
   ],
   "sections": [
     {
       "id": "sec-root-witness",
-      "title": "Root Witness: f(√2+√3) = 0",
+      "title": "Root Witness: f(\u221a2+\u221a3) = 0",
       "startLine": 38,
       "endLine": 74,
-      "summary": "aeval_sqrt2_plus_sqrt3: Polynomial.aeval (√2+√3) (X⁴−10X²+1) = 0. Proved step by step: h2=(√2)²=2, h3=(√3)²=3, hsq=(√2+√3)²=5+2√6, h23sq=(√2·√3)²=6, h4=(√2+√3)⁴=49+20√6, then linarith closes."
+      "summary": "aeval_sqrt2_plus_sqrt3: Polynomial.aeval (\u221a2+\u221a3) (X\u2074\u221210X\u00b2+1) = 0. Proved step by step: h2=(\u221a2)\u00b2=2, h3=(\u221a3)\u00b2=3, hsq=(\u221a2+\u221a3)\u00b2=5+2\u221a6, h23sq=(\u221a2\u00b7\u221a3)\u00b2=6, h4=(\u221a2+\u221a3)\u2074=49+20\u221a6, then linarith closes."
     },
     {
       "id": "sec-monic",
       "title": "Monic Polynomial",
       "startLine": 76,
       "endLine": 99,
-      "summary": "f_monic: (X⁴−10X²+1).Monic. Proved via natDegree computation: natDegree(10X²)≤2<4=natDegree(X⁴), then natDegree_sub_eq_left and natDegree_add_eq_left establish natDegree=4, and coeff simp gives leading coeff = 1."
+      "summary": "f_monic: (X\u2074\u221210X\u00b2+1).Monic. Proved via natDegree computation: natDegree(10X\u00b2)\u22642<4=natDegree(X\u2074), then natDegree_sub_eq_left and natDegree_add_eq_left establish natDegree=4, and coeff simp gives leading coeff = 1."
     },
     {
       "id": "sec-irreducible",
-      "title": "Irreducibility over ℚ (via Gauss's Lemma)",
+      "title": "Irreducibility over \u211a (via Gauss's Lemma)",
       "startLine": 101,
       "endLine": 300,
-      "summary": "irred_f: Irreducible (X⁴−10X²+1 : ℚ[X]). Proved via ℤ[X] first: f_no_int_root eliminates degree-1 factors by integer root theorem; degree-2 factor coefficient analysis yields contradiction (discriminant 96 irrational); degree-3 reduces to degree-1 by symmetry. Transfer to ℚ[X] via Gauss's lemma (IsPrimitive.Int.irreducible_iff_irreducible_map_cast). 0 sorries."
+      "summary": "irred_f: Irreducible (X\u2074\u221210X\u00b2+1 : \u211a[X]). Proved via \u2124[X] first: f_no_int_root eliminates degree-1 factors by integer root theorem; degree-2 factor coefficient analysis yields contradiction (discriminant 96 irrational); degree-3 reduces to degree-1 by symmetry. Transfer to \u211a[X] via Gauss's lemma (IsPrimitive.Int.irreducible_iff_irreducible_map_cast). 0 sorries."
     },
     {
       "id": "sec-minpoly",
       "title": "Main Theorem: Minimal Polynomial",
       "startLine": 123,
       "endLine": 131,
-      "summary": "minpoly_sqrt2_plus_sqrt3: minpoly ℚ (√2+√3) = X⁴−10X²+1. One-line proof via minpoly.eq_of_irreducible_of_monic combining irred_f, aeval_sqrt2_plus_sqrt3, and f_monic."
+      "summary": "minpoly_sqrt2_plus_sqrt3: minpoly \u211a (\u221a2+\u221a3) = X\u2074\u221210X\u00b2+1. One-line proof via minpoly.eq_of_irreducible_of_monic combining irred_f, aeval_sqrt2_plus_sqrt3, and f_monic."
     },
     {
       "id": "sec-consequences",
       "title": "Field Extension Degree and Irrationality",
       "startLine": 133,
       "endLine": 147,
-      "summary": "adjoin_sqrt2_plus_sqrt3_finrank: [ℚ(√2+√3):ℚ]=4 via adjoin.finrank and natDegree computation. sqrt2_plus_sqrt3_irrational: fully proved by direct algebra — if √2+√3=q then (q²-5)/2=√6, contradicting irrationality of √6."
+      "summary": "adjoin_sqrt2_plus_sqrt3_finrank: [\u211a(\u221a2+\u221a3):\u211a]=4 via adjoin.finrank and natDegree computation. sqrt2_plus_sqrt3_irrational: fully proved by direct algebra \u2014 if \u221a2+\u221a3=q then (q\u00b2-5)/2=\u221a6, contradicting irrationality of \u221a6."
     }
   ],
   "sorries": 0

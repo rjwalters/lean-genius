@@ -49,7 +49,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The binomial coefficient formula has roots in multiple ancient civilizations. In China, Yang Hui's triangle (1261 CE) displayed the same pattern now known as Pascal's triangle in the West. The Persian mathematician Al-Karaji (953–1029 CE) and Omar Khayyam (1048–1131) studied binomial expansions, and Pingala's Meru-prastaara from ancient India (around 200 BCE) encoded the same combinatorial structure in a different form.\n\nBlaise Pascal's 1654 treatise 'Traité du Triangle Arithmétique' gave the first systematic Western treatment, proving the recurrence C(n+1,k+1) = C(n,k) + C(n,k+1) and connecting the triangle to combinatorics, probability, and the binomial theorem. The factorial formula n!/(k!(n-k)!) emerged as the algebraic expression of the combinatorial count, with the divisibility n!/(k!(n-k)!) ∈ ℕ being a non-trivial fact requiring proof.\n\nIn modern mathematics, binomial coefficients appear throughout combinatorics (subset counting, multinomials), algebra (polynomial identities, generating functions), number theory (Lucas's theorem mod p, Kummer's theorem), and analysis (integral formulas for the Beta function, Vandermonde's identity). The Lean formalization as Wiedijk #58 uses Mathlib's `Nat.choose_eq_factorial_div_factorial` and `Finset.powersetCard` to connect the algebraic formula to the combinatorial interpretation.",
+    "historicalContext": "The binomial coefficient formula has roots in multiple ancient civilizations. In China, Yang Hui's triangle (1261 CE) displayed the same pattern now known as Pascal's triangle in the West. The Persian mathematician Al-Karaji (953\u20131029 CE) and Omar Khayyam (1048\u20131131) studied binomial expansions, and Pingala's Meru-prastaara from ancient India (around 200 BCE) encoded the same combinatorial structure in a different form.\n\nBlaise Pascal's 1654 treatise 'Trait\u00e9 du Triangle Arithm\u00e9tique' gave the first systematic Western treatment, proving the recurrence C(n+1,k+1) = C(n,k) + C(n,k+1) and connecting the triangle to combinatorics, probability, and the binomial theorem. The factorial formula n!/(k!(n-k)!) emerged as the algebraic expression of the combinatorial count, with the divisibility n!/(k!(n-k)!) \u2208 \u2115 being a non-trivial fact requiring proof.\n\nIn modern mathematics, binomial coefficients appear throughout combinatorics (subset counting, multinomials), algebra (polynomial identities, generating functions), number theory (Lucas's theorem mod p, Kummer's theorem), and analysis (integral formulas for the Beta function, Vandermonde's identity). The Lean formalization as Wiedijk #58 uses Mathlib's `Nat.choose_eq_factorial_div_factorial` and `Finset.powersetCard` to connect the algebraic formula to the combinatorial interpretation.",
     "problemStatement": "**Theorem (Wiedijk #58)**: The number of ways to choose k elements from n elements is:\n\n$$C(n,k) = \\binom{n}{k} = \\frac{n!}{k!(n-k)!}$$\n\nThis formula counts the number of k-element subsets of an n-element set.",
     "text": "The number of ways to choose k elements from a set of n elements is C(n,k) = n! / (k!(n-k)!). This fundamental formula in combinatorics counts the number of k-element subsets of an n-element set.",
     "proofStrategy": "**Factorial Interpretation:**\n\nWhen selecting k items from n:\n1. There are n! ways to arrange all n items\n2. We divide by k! because the order of selected items doesn't matter\n3. We divide by (n-k)! because the order of unselected items doesn't matter\n\nThis gives n! / (k! * (n-k)!).\n\n**Mathlib Approach:**\nThe formalization uses `Nat.choose_eq_factorial_div_factorial` which directly proves the factorial formula, combined with `Nat.factorial_mul_factorial_dvd_factorial` to ensure exact division.",
@@ -58,7 +58,7 @@
       "Pascal's identity C(n+1, k+1) = C(n, k) + C(n, k+1) enables efficient computation",
       "Symmetry C(n,k) = C(n, n-k) reflects that choosing k is equivalent to choosing n-k to exclude",
       "The binomial coefficient is always a natural number despite involving division",
-      "The generating function (1+x)^n = ∑_k C(n,k) x^k connects binomial coefficients to polynomial algebra, and Vandermonde's identity ∑_j C(m,j)C(n,k-j) = C(m+n,k) encodes convolution of subset counts — making C(n,k) a bridge between combinatorics and generating function calculus"
+      "The generating function (1+x)^n = \u2211_k C(n,k) x^k connects binomial coefficients to polynomial algebra, and Vandermonde's identity \u2211_j C(m,j)C(n,k-j) = C(m+n,k) encodes convolution of subset counts \u2014 making C(n,k) a bridge between combinatorics and generating function calculus"
     ],
     "prerequisites": [
       "Factorial function and its basic properties",
@@ -127,7 +127,7 @@
     "namespace": "CombinationsFormula",
     "lineCount": 400,
     "axiomCount": 0,
-    "theoremCount": 25,
+    "theoremCount": 26,
     "definitionCount": 2,
     "path": "Proofs/CombinationsFormula.lean",
     "sorries": 0
@@ -136,43 +136,43 @@
     {
       "targetId": "binomial-theorem",
       "relationship": "foundational",
-      "description": "The binomial theorem (x+y)^n = Σ C(n,k) x^k y^{n-k} directly uses the combinations formula — C(n,k) are exactly the expansion coefficients"
+      "description": "The binomial theorem (x+y)^n = \u03a3 C(n,k) x^k y^{n-k} directly uses the combinations formula \u2014 C(n,k) are exactly the expansion coefficients"
     },
     {
       "targetId": "derangements",
       "relationship": "related",
-      "description": "The derangement formula D_n = n! Σ (-1)^k/k! uses C(n,k) via inclusion-exclusion — binomial coefficients count the subsets whose fixed points are excluded"
+      "description": "The derangement formula D_n = n! \u03a3 (-1)^k/k! uses C(n,k) via inclusion-exclusion \u2014 binomial coefficients count the subsets whose fixed points are excluded"
     },
     {
       "targetId": "bertrands-postulate",
       "relationship": "related",
-      "description": "Erdős's proof analyzes the prime factorization of C(2n,n), the central binomial coefficient — the combinations formula gives the factorial representation that enables this analysis"
+      "description": "Erd\u0151s's proof analyzes the prime factorization of C(2n,n), the central binomial coefficient \u2014 the combinations formula gives the factorial representation that enables this analysis"
     },
     {
       "targetId": "inclusion-exclusion",
       "relationship": "related",
-      "description": "The inclusion-exclusion principle counts elements in unions of sets by alternating sums of intersection sizes, which are themselves counted by C(n,k). The derangement formula D_n = n! Σ(-1)^k/k! is inclusion-exclusion applied to permutations with C(n,k) selecting which positions are fixed"
+      "description": "The inclusion-exclusion principle counts elements in unions of sets by alternating sums of intersection sizes, which are themselves counted by C(n,k). The derangement formula D_n = n! \u03a3(-1)^k/k! is inclusion-exclusion applied to permutations with C(n,k) selecting which positions are fixed"
     },
     {
       "targetId": "stirling-formula",
       "relationship": "related",
-      "description": "Stirling's approximation n! ~ √(2πn)(n/e)^n gives asymptotic estimates for C(n,k) — most importantly, C(n, n/2) ~ 2^n/√(πn/2) for the central binomial coefficient, which governs random walk return probabilities and entropy"
+      "description": "Stirling's approximation n! ~ \u221a(2\u03c0n)(n/e)^n gives asymptotic estimates for C(n,k) \u2014 most importantly, C(n, n/2) ~ 2^n/\u221a(\u03c0n/2) for the central binomial coefficient, which governs random walk return probabilities and entropy"
     },
     {
       "targetId": "ramseys-theorem",
       "relationship": "used-by",
-      "description": "Ramsey theory bounds like R(k,k) ≤ C(2k-2, k-1) use binomial coefficients directly. The combinations formula converts these into factorial expressions for asymptotic analysis via Stirling's formula"
+      "description": "Ramsey theory bounds like R(k,k) \u2264 C(2k-2, k-1) use binomial coefficients directly. The combinations formula converts these into factorial expressions for asymptotic analysis via Stirling's formula"
     },
     {
       "targetId": "prob-method-lovasz-local",
       "relationship": "used-by",
-      "description": "The Lovász Local Lemma and many probabilistic method arguments use C(n,k) to count configurations — the k-SAT application bounds clause dependencies using binomial coefficient estimates"
+      "description": "The Lov\u00e1sz Local Lemma and many probabilistic method arguments use C(n,k) to count configurations \u2014 the k-SAT application bounds clause dependencies using binomial coefficient estimates"
     }
   ],
   "references": [
     {
       "authors": "Pascal, Blaise",
-      "title": "Traité du triangle arithmétique",
+      "title": "Trait\u00e9 du triangle arithm\u00e9tique",
       "year": "1665",
       "venue": "Paris (published posthumously)",
       "note": "Systematic study of binomial coefficients and their combinatorial properties"

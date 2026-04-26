@@ -42,16 +42,16 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "This proof is attributed to Hippasus of Metapontum (~500 BCE), a member of the Pythagorean school who discovered that the diagonal of a unit square cannot be expressed as a ratio of integers. According to legend, Hippasus was thrown overboard while at sea for revealing this truth, which shook the Pythagorean doctrine that 'all is number' — meaning rational number.\n\nThe Greeks called such lengths *incommensurable* with the side: no common unit of measurement can divide both exactly. The result appears formally in Euclid's *Elements* Book X (c. 300 BCE). Theaetetus (~400 BCE) extended it, proving √n is irrational for any non-perfect-square n.\n\nThe proof exemplifies *infinite descent*: assuming √2 = a/b in lowest terms forces both a and b to be even, contradicting 'lowest terms'. This parity argument became a template replicated across number theory — the same structure proves √p irrational for any prime p.",
+    "historicalContext": "This proof is attributed to Hippasus of Metapontum (~500 BCE), a member of the Pythagorean school who discovered that the diagonal of a unit square cannot be expressed as a ratio of integers. According to legend, Hippasus was thrown overboard while at sea for revealing this truth, which shook the Pythagorean doctrine that 'all is number' \u2014 meaning rational number.\n\nThe Greeks called such lengths *incommensurable* with the side: no common unit of measurement can divide both exactly. The result appears formally in Euclid's *Elements* Book X (c. 300 BCE). Theaetetus (~400 BCE) extended it, proving \u221an is irrational for any non-perfect-square n.\n\nThe proof exemplifies *infinite descent*: assuming \u221a2 = a/b in lowest terms forces both a and b to be even, contradicting 'lowest terms'. This parity argument became a template replicated across number theory \u2014 the same structure proves \u221ap irrational for any prime p.",
     "problemStatement": "**Theorem**: There are no natural numbers a, b with b > 0 such that a^2 = 2 * b^2 and gcd(a,b) = 1.\n\nThis is equivalent to saying sqrt(2) is irrational, since if sqrt(2) = a/b in lowest terms, then a^2 = 2b^2.",
     "text": "A complete proof that sqrt(2) is irrational built from first principles, demonstrating the classical proof by contradiction with even/odd analysis.",
     "proofStrategy": "**The Classic Proof by Contradiction**:\n\n1. Assume sqrt(2) = a/b where a, b are coprime\n2. Then 2b^2 = a^2, so a^2 is even\n3. Therefore a is even (key lemma!), say a = 2k\n4. Substituting: 2b^2 = 4k^2, so b^2 = 2k^2\n5. Therefore b^2 is even, so b is even\n6. But both a and b even contradicts gcd(a,b) = 1!",
     "keyInsights": [
-      "The key lemma is: if n^2 is even, then n is even — proved by contrapositive: if n is odd (n = 2k+1), then n² = 4k² + 4k + 1 is also odd, so the implication holds by contraposition",
+      "The key lemma is: if n^2 is even, then n is even \u2014 proved by contrapositive: if n is odd (n = 2k+1), then n\u00b2 = 4k\u00b2 + 4k + 1 is also odd, so the implication holds by contraposition",
       "Even/odd definitions and all parity lemmas are built from scratch using only existential witnesses, showing the full proof architecture hidden inside Mathlib's one-liner `exact irrational_sqrt_two`",
-      "The proof uses infinite descent implicitly: assuming a/b in lowest terms leads to 2|a and 2|b, so a/2 and b/2 give a 'smaller' representation — repeating this descent has no finite stopping point unless no such a/b exists",
-      "The contrapositive technique generalizes directly to √p for any prime p: replace 'divisible by 2' with 'divisible by p', and the same argument shows p|a² → p|a (using the prime property), then p|b — contradiction with coprimality",
-      "This ~200-line pedagogical proof illustrates the trade-off in formalization: Mathlib's one-liner `exact irrational_sqrt_two` hides real number construction, the square root definition, and the actual irrationality argument — this file makes all of that structure explicit"
+      "The proof uses infinite descent implicitly: assuming a/b in lowest terms leads to 2|a and 2|b, so a/2 and b/2 give a 'smaller' representation \u2014 repeating this descent has no finite stopping point unless no such a/b exists",
+      "The contrapositive technique generalizes directly to \u221ap for any prime p: replace 'divisible by 2' with 'divisible by p', and the same argument shows p|a\u00b2 \u2192 p|a (using the prime property), then p|b \u2014 contradiction with coprimality",
+      "This ~200-line pedagogical proof illustrates the trade-off in formalization: Mathlib's one-liner `exact irrational_sqrt_two` hides real number construction, the square root definition, and the actual irrationality argument \u2014 this file makes all of that structure explicit"
     ],
     "prerequisites": [
       "Axiomatic real analysis (ordered field axioms, completeness)",
@@ -117,7 +117,7 @@
     "namespace": "Sqrt2FromAxioms",
     "lineCount": 235,
     "axiomCount": 0,
-    "theoremCount": 14,
+    "theoremCount": 15,
     "definitionCount": 3,
     "path": "Proofs/Sqrt2IrrationalFromAxioms.lean",
     "sorries": 0
@@ -126,12 +126,12 @@
     {
       "targetId": "sqrt2-irrational",
       "relationship": "related",
-      "description": "The standard formalization of $\\sqrt{2}$ irrationality using Mathlib — this entry proves the same result from first principles without Mathlib, making every axiom explicit"
+      "description": "The standard formalization of $\\sqrt{2}$ irrationality using Mathlib \u2014 this entry proves the same result from first principles without Mathlib, making every axiom explicit"
     },
     {
       "targetId": "infinitude-primes",
       "relationship": "foundational",
-      "description": "Both are classical number-theoretic results proved from basic properties of integers — the infinitude of primes and irrationality of $\\sqrt{2}$ are the foundational examples of proof by contradiction in number theory"
+      "description": "Both are classical number-theoretic results proved from basic properties of integers \u2014 the infinitude of primes and irrationality of $\\sqrt{2}$ are the foundational examples of proof by contradiction in number theory"
     },
     {
       "targetId": "mathematical-induction",
@@ -151,7 +151,7 @@
     {
       "targetId": "nth-root-irrational",
       "relationship": "extends",
-      "description": "Generalizes the $\\sqrt{2}$ irrationality proof to $\\sqrt[n]{m}$ for non-perfect-$n$th-powers $m$ — the same parity/divisibility argument extends using unique prime factorization"
+      "description": "Generalizes the $\\sqrt{2}$ irrationality proof to $\\sqrt[n]{m}$ for non-perfect-$n$th-powers $m$ \u2014 the same parity/divisibility argument extends using unique prime factorization"
     },
     {
       "targetId": "fundamental-arithmetic",
@@ -161,12 +161,12 @@
     {
       "targetId": "pythagorean-theorem",
       "relationship": "related",
-      "description": "The Pythagorean theorem $a^2 + b^2 = c^2$ on a unit right triangle gives $c = \\sqrt{2}$, the original geometric motivation for studying its irrationality — Hippasus discovered incommensurability through this diagonal"
+      "description": "The Pythagorean theorem $a^2 + b^2 = c^2$ on a unit right triangle gives $c = \\sqrt{2}$, the original geometric motivation for studying its irrationality \u2014 Hippasus discovered incommensurability through this diagonal"
     },
     {
       "targetId": "pi-transcendental",
       "relationship": "related",
-      "description": "Both $\\sqrt{2}$ (irrational but algebraic) and $\\pi$ (transcendental) lie outside $\\mathbb{Q}$, but $\\pi$'s transcendence is far stronger — comparing these proofs illustrates the hierarchy: rational $\\subset$ algebraic $\\subset$ real"
+      "description": "Both $\\sqrt{2}$ (irrational but algebraic) and $\\pi$ (transcendental) lie outside $\\mathbb{Q}$, but $\\pi$'s transcendence is far stronger \u2014 comparing these proofs illustrates the hierarchy: rational $\\subset$ algebraic $\\subset$ real"
     }
   ],
   "references": [
@@ -175,7 +175,7 @@
       "title": "An Introduction to the Theory of Numbers",
       "year": "2008",
       "venue": "Oxford University Press, 6th edition",
-      "note": "The classic proof of irrationality of √2 from the unique factorization of integers"
+      "note": "The classic proof of irrationality of \u221a2 from the unique factorization of integers"
     }
   ],
   "mainTheorems": [

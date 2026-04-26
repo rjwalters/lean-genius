@@ -1,8 +1,8 @@
 {
   "id": "inverse-galois-oq-06",
-  "title": "Inverse Galois OQ-06: A₅ is Realizable over ℚ",
+  "title": "Inverse Galois OQ-06: A\u2085 is Realizable over \u211a",
   "slug": "inverse-galois-oq-06",
-  "description": "Proves that the alternating group A₅ (order 60, the smallest non-solvable simple group) is realizable as a Galois group over ℚ, using the polynomial q(x) = x⁵-5x⁴+10x³-10x²+25x-5. Irreducibility via Eisenstein at p=5, Galois group identified via Sylow theory and S₅ subgroup analysis. 1 axiom for Dedekind's theorem application.",
+  "description": "Proves that the alternating group A\u2085 (order 60, the smallest non-solvable simple group) is realizable as a Galois group over \u211a, using the polynomial q(x) = x\u2075-5x\u2074+10x\u00b3-10x\u00b2+25x-5. Irreducibility via Eisenstein at p=5, Galois group identified via Sylow theory and S\u2085 subgroup analysis. 1 axiom for Dedekind's theorem application.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-02",
@@ -20,27 +20,27 @@
     "sorries": 0,
     "dateAdded": "2026-04-02",
     "axiomCount": 1,
-    "assumptions": "1 axiom: three_dvd_gal_card — 3 divides |Gal(q/ℚ)|. This follows from Dedekind's theorem applied to q mod 7 (which factors as (1-cycle)(1-cycle)(3-cycle)), implying the Galois group contains an element of order divisible by 3. Axiomatized because Mathlib lacks Dedekind's theorem for polynomial Galois groups.",
+    "assumptions": "1 axiom: three_dvd_gal_card \u2014 3 divides |Gal(q/\u211a)|. This follows from Dedekind's theorem applied to q mod 7 (which factors as (1-cycle)(1-cycle)(3-cycle)), implying the Galois group contains an element of order divisible by 3. Axiomatized because Mathlib lacks Dedekind's theorem for polynomial Galois groups.",
     "lineCount": 2067,
     "theoremCount": 65,
     "definitionCount": 7,
     "originalContributions": [
-      "q: the polynomial x⁵-5x⁴+10x³-10x²+25x-5 (translate of x⁵+20x+16)",
-      "q_eisenstein: q satisfies Eisenstein's criterion at p=5 (PROVED, hence irreducible over ℚ)",
-      "perm_fin5_order5_order3_not_commute: order-5 and order-3 elements in S₅ don't commute (native_decide)",
-      "no_subgroup_order_15: no subgroup of S₅ has order 15 (Sylow + max element order)",
-      "no_subgroup_order_30: no subgroup of S₅ has order 30 (A₅ simplicity)",
-      "gal_card_dvd_60: |Gal(q)| divides 60 (Gal(q) ≤ A₅ from perfect square discriminant)",
-      "gal_card_dvd_5_and_3: 5·3 | |Gal(q)| (k=5 from irreducibility, 3 from axiom)",
-      "gal_card_ge_15: |Gal(q)| ≥ 15",
-      "a5_is_galois_group: Gal(q/ℚ) ≅ A₅ — the main theorem",
-      "inverse_galois_a5: A₅ is a Galois group over ℚ (corollary)",
-      "Supporting group theory: orders in S₅, Sylow subgroup arguments, no_order_15, no_order_30"
+      "q: the polynomial x\u2075-5x\u2074+10x\u00b3-10x\u00b2+25x-5 (translate of x\u2075+20x+16)",
+      "q_eisenstein: q satisfies Eisenstein's criterion at p=5 (PROVED, hence irreducible over \u211a)",
+      "perm_fin5_order5_order3_not_commute: order-5 and order-3 elements in S\u2085 don't commute (native_decide)",
+      "no_subgroup_order_15: no subgroup of S\u2085 has order 15 (Sylow + max element order)",
+      "no_subgroup_order_30: no subgroup of S\u2085 has order 30 (A\u2085 simplicity)",
+      "gal_card_dvd_60: |Gal(q)| divides 60 (Gal(q) \u2264 A\u2085 from perfect square discriminant)",
+      "gal_card_dvd_5_and_3: 5\u00b73 | |Gal(q)| (k=5 from irreducibility, 3 from axiom)",
+      "gal_card_ge_15: |Gal(q)| \u2265 15",
+      "a5_is_galois_group: Gal(q/\u211a) \u2245 A\u2085 \u2014 the main theorem",
+      "inverse_galois_a5: A\u2085 is a Galois group over \u211a (corollary)",
+      "Supporting group theory: orders in S\u2085, Sylow subgroup arguments, no_order_15, no_order_30"
     ],
     "relatedProblems": [
       {
         "id": "abel-ruffini-oq-04-oq-01",
-        "relationship": "Complementary: the sister S₅ computation using the same Eisenstein+Sylow toolkit over the same field"
+        "relationship": "Complementary: the sister S\u2085 computation using the same Eisenstein+Sylow toolkit over the same field"
       },
       {
         "id": "inverse-galois",
@@ -48,38 +48,38 @@
       },
       {
         "id": "inverse-galois-oq-01",
-        "relationship": "Sibling: D₄ and F₂₀ realizations in the same problem family"
+        "relationship": "Sibling: D\u2084 and F\u2082\u2080 realizations in the same problem family"
       }
     ]
   },
   "overview": {
-    "historicalContext": "The Inverse Galois Problem (IGP) asks: is every finite group realizable as a Galois group over ℚ? Évariste Galois (1832) founded the theory; Hilbert (1892) posed the inverse problem explicitly via his irreducibility theorem. Igor Shafarevich (1954) proved all solvable groups are realizable — the landmark theorem of the 20th century on the problem. The smallest group not covered by Shafarevich is A₅ (order 60), the unique simple non-solvable group of order ≤ 60. Felix Klein (1884) showed A₅ ≅ PSL(2,5) and that icosahedral equations (degree-60 resolvents of the icosahedron's symmetry group) have Galois group A₅. The polynomial x⁵+20x+16 is a classical example whose Galois group is A₅ — it appears in Klein's work on the quintic. The linear translate x⁵−5x⁴+10x³−10x²+25x−5 is used here to make Eisenstein's criterion at p=5 applicable. A₅'s realizability over ℚ is also related to its connection with the regular icosahedron: A₅ is the rotation group of the icosahedron, studied by Brioschi (1858) and Gordan (1878) before Galois theory fully clarified the picture.",
-    "problemStatement": "Prove that A₅ ≅ Gal(q/ℚ) for the polynomial q(x) = x⁵-5x⁴+10x³-10x²+25x-5, and hence A₅ is realizable as a Galois group over ℚ.",
-    "text": "The proof has three main steps: (1) q is irreducible over ℚ by Eisenstein's criterion at p=5 (all non-leading coefficients are divisible by 5, the constant term -5 is not divisible by 25). (2) Gal(q) ≤ A₅: since disc(q) = 32000² is a perfect square, the discriminant square root is rational, so all permutations in Gal(q) are even — meaning Gal(q) ≤ A₅ (viewed as a transitive subgroup of S₅). (3) Gal(q) = A₅: since q is irreducible of degree 5, Gal(q) contains a 5-cycle. The axiom three_dvd_gal_card gives 3 | |Gal(q)|. By group theory, the only transitive subgroup of A₅ with order divisible by 5 and 3 and |H| ≤ 60 is A₅ itself.",
-    "proofStrategy": "Eisenstein at p=5 is checked directly: coefficients -5,25,-10,10,-5 are all divisible by 5, the constant -5 is not divisible by 25. The discriminant is 32000² (verified by native_decide). The group theory uses Sylow arguments: no_subgroup_order_15 (proved via Sylow + max element order in S₅ = 6) and no_subgroup_order_30 (proved via A₅ simplicity — a subgroup of index 2 would be normal). These eliminate all proper transitive subgroups of A₅, forcing Gal(q) = A₅.",
+    "historicalContext": "The Inverse Galois Problem (IGP) asks: is every finite group realizable as a Galois group over \u211a? \u00c9variste Galois (1832) founded the theory; Hilbert (1892) posed the inverse problem explicitly via his irreducibility theorem. Igor Shafarevich (1954) proved all solvable groups are realizable \u2014 the landmark theorem of the 20th century on the problem. The smallest group not covered by Shafarevich is A\u2085 (order 60), the unique simple non-solvable group of order \u2264 60. Felix Klein (1884) showed A\u2085 \u2245 PSL(2,5) and that icosahedral equations (degree-60 resolvents of the icosahedron's symmetry group) have Galois group A\u2085. The polynomial x\u2075+20x+16 is a classical example whose Galois group is A\u2085 \u2014 it appears in Klein's work on the quintic. The linear translate x\u2075\u22125x\u2074+10x\u00b3\u221210x\u00b2+25x\u22125 is used here to make Eisenstein's criterion at p=5 applicable. A\u2085's realizability over \u211a is also related to its connection with the regular icosahedron: A\u2085 is the rotation group of the icosahedron, studied by Brioschi (1858) and Gordan (1878) before Galois theory fully clarified the picture.",
+    "problemStatement": "Prove that A\u2085 \u2245 Gal(q/\u211a) for the polynomial q(x) = x\u2075-5x\u2074+10x\u00b3-10x\u00b2+25x-5, and hence A\u2085 is realizable as a Galois group over \u211a.",
+    "text": "The proof has three main steps: (1) q is irreducible over \u211a by Eisenstein's criterion at p=5 (all non-leading coefficients are divisible by 5, the constant term -5 is not divisible by 25). (2) Gal(q) \u2264 A\u2085: since disc(q) = 32000\u00b2 is a perfect square, the discriminant square root is rational, so all permutations in Gal(q) are even \u2014 meaning Gal(q) \u2264 A\u2085 (viewed as a transitive subgroup of S\u2085). (3) Gal(q) = A\u2085: since q is irreducible of degree 5, Gal(q) contains a 5-cycle. The axiom three_dvd_gal_card gives 3 | |Gal(q)|. By group theory, the only transitive subgroup of A\u2085 with order divisible by 5 and 3 and |H| \u2264 60 is A\u2085 itself.",
+    "proofStrategy": "Eisenstein at p=5 is checked directly: coefficients -5,25,-10,10,-5 are all divisible by 5, the constant -5 is not divisible by 25. The discriminant is 32000\u00b2 (verified by native_decide). The group theory uses Sylow arguments: no_subgroup_order_15 (proved via Sylow + max element order in S\u2085 = 6) and no_subgroup_order_30 (proved via A\u2085 simplicity \u2014 a subgroup of index 2 would be normal). These eliminate all proper transitive subgroups of A\u2085, forcing Gal(q) = A\u2085.",
     "keyInsights": [
-      "The polynomial q is a linear translate of x⁵+20x+16 chosen so that Eisenstein's criterion at p=5 applies directly — demonstrating how polynomial engineering enables clean irreducibility proofs.",
-      "The perfect square discriminant disc(q) = 32000² is the bridge between arithmetic (properties of q) and group theory (parity of Gal): the Vandermonde product Δ lies in ℚ, forcing every Galois automorphism to be an even permutation.",
-      "The Sylow elimination argument is elegant: a hypothetical subgroup of order 15 would force elements of orders 3 and 5 to commute (unique Sylow subgroups normal ⟹ disjoint normal subgroups commute), but S₅ has no such commuting pair — verified computationally over all 14,400 pairs.",
-      "The simplicity of A₅ does double duty: it eliminates order-30 subgroups (no index-2 subgroup) AND explains the non-solvability (simple non-abelian groups are never solvable).",
-      "The index-2 characterization of A₅ in S₅ converts cardinality (|Gal| = 60 = |S₅|/2) directly into a precise isomorphism Gal ≅ A₅ via Mathlib's uniqueness theorem.",
-      "The single remaining axiom (Dedekind at p=7) is well-evidenced but not yet in Mathlib: q mod 7 factors as (degree-1)(degree-1)(degree-3), verified computationally — the missing piece is formal Dedekind's theorem."
+      "The polynomial q is a linear translate of x\u2075+20x+16 chosen so that Eisenstein's criterion at p=5 applies directly \u2014 demonstrating how polynomial engineering enables clean irreducibility proofs.",
+      "The perfect square discriminant disc(q) = 32000\u00b2 is the bridge between arithmetic (properties of q) and group theory (parity of Gal): the Vandermonde product \u0394 lies in \u211a, forcing every Galois automorphism to be an even permutation.",
+      "The Sylow elimination argument is elegant: a hypothetical subgroup of order 15 would force elements of orders 3 and 5 to commute (unique Sylow subgroups normal \u27f9 disjoint normal subgroups commute), but S\u2085 has no such commuting pair \u2014 verified computationally over all 14,400 pairs.",
+      "The simplicity of A\u2085 does double duty: it eliminates order-30 subgroups (no index-2 subgroup) AND explains the non-solvability (simple non-abelian groups are never solvable).",
+      "The index-2 characterization of A\u2085 in S\u2085 converts cardinality (|Gal| = 60 = |S\u2085|/2) directly into a precise isomorphism Gal \u2245 A\u2085 via Mathlib's uniqueness theorem.",
+      "The single remaining axiom (Dedekind at p=7) is well-evidenced but not yet in Mathlib: q mod 7 factors as (degree-1)(degree-1)(degree-3), verified computationally \u2014 the missing piece is formal Dedekind's theorem."
     ],
     "prerequisites": [
       "Galois theory: Galois groups, discriminants, Eisenstein criterion",
-      "Group theory: A₅, S₅, Sylow theorems, simple groups",
+      "Group theory: A\u2085, S\u2085, Sylow theorems, simple groups",
       "Polynomial rings: Mathlib's Polynomial.Gal",
       "Finite group computations: native_decide for Perm(Fin 5)"
     ]
   },
   "conclusion": {
-    "summary": "This formalization proves Gal(q/ℚ) ≅ A₅ for q(x) = x⁵ − 5x⁴ + 10x³ − 10x² + 25x − 5, with exactly one axiom: `three_dvd_gal_card` (Dedekind's theorem mod 7). Starting from 5 axioms, the formalization was systematically reduced to 1 by proving the discriminant bound via the Vandermonde chain and replacing the structural axioms with Sylow theory. This is the first non-solvable group formally realized as a Galois group over ℚ in this library.",
-    "implications": "This result marks the boundary between solvable and non-solvable algebra in the formalization. The Vandermonde discriminant technique developed here (proving |Gal| | 60 without axioms via complex embedding and Sophie Germain identity) is reusable for other polynomial Galois group computations. The non-solvability proof connects directly to the Abel-Ruffini theorem: q is not solvable by radicals, providing a concrete quintic witnessing this over ℚ.",
+    "summary": "This formalization proves Gal(q/\u211a) \u2245 A\u2085 for q(x) = x\u2075 \u2212 5x\u2074 + 10x\u00b3 \u2212 10x\u00b2 + 25x \u2212 5, with exactly one axiom: `three_dvd_gal_card` (Dedekind's theorem mod 7). Starting from 5 axioms, the formalization was systematically reduced to 1 by proving the discriminant bound via the Vandermonde chain and replacing the structural axioms with Sylow theory. This is the first non-solvable group formally realized as a Galois group over \u211a in this library.",
+    "implications": "This result marks the boundary between solvable and non-solvable algebra in the formalization. The Vandermonde discriminant technique developed here (proving |Gal| | 60 without axioms via complex embedding and Sophie Germain identity) is reusable for other polynomial Galois group computations. The non-solvability proof connects directly to the Abel-Ruffini theorem: q is not solvable by radicals, providing a concrete quintic witnessing this over \u211a.",
     "openQuestions": [
-      "Formalize Dedekind's theorem (mod-p factorization ↦ cycle types in Gal) in Mathlib, eliminating the last axiom three_dvd_gal_card and making this entry fully verified.",
-      "Realize PSL(2,7) (order 168, the second smallest non-abelian simple group) over ℚ using the polynomial x⁷ − 7x + 3.",
-      "Formalize Shafarevich's theorem: every finite solvable group is realizable as a Galois group over ℚ.",
-      "Investigate the Noether problem: does A₅ have a generic polynomial (one whose specializations give all A₅-extensions)?",
+      "Formalize Dedekind's theorem (mod-p factorization \u21a6 cycle types in Gal) in Mathlib, eliminating the last axiom three_dvd_gal_card and making this entry fully verified.",
+      "Realize PSL(2,7) (order 168, the second smallest non-abelian simple group) over \u211a using the polynomial x\u2077 \u2212 7x + 3.",
+      "Formalize Shafarevich's theorem: every finite solvable group is realizable as a Galois group over \u211a.",
+      "Investigate the Noether problem: does A\u2085 have a generic polynomial (one whose specializations give all A\u2085-extensions)?",
       "Develop a general computational framework for proving Gal(f) = G, generalizing the Eisenstein + discriminant + Sylow strategy."
     ]
   },
@@ -87,7 +87,7 @@
     "namespace": "InverseGaloisA5",
     "lineCount": 2067,
     "axiomCount": 1,
-    "theoremCount": 84,
+    "theoremCount": 85,
     "definitionCount": 7,
     "path": "Proofs/InverseGaloisA5.lean",
     "sorries": 0
@@ -96,17 +96,17 @@
     {
       "targetId": "inverse-galois",
       "relationship": "extends",
-      "description": "Base inverse Galois entry (S₃ realization); A₅ is the first non-solvable realization"
+      "description": "Base inverse Galois entry (S\u2083 realization); A\u2085 is the first non-solvable realization"
     },
     {
       "targetId": "inverse-galois-oq-01",
       "relationship": "related",
-      "description": "OQ-01 covers D₄ and F₂₀ realizations; OQ-06 extends to the non-solvable case"
+      "description": "OQ-01 covers D\u2084 and F\u2082\u2080 realizations; OQ-06 extends to the non-solvable case"
     },
     {
       "targetId": "abel-ruffini",
       "relationship": "related",
-      "description": "Abel-Ruffini theorem shows degree-5 polynomials need non-solvable Galois groups; A₅ is the example"
+      "description": "Abel-Ruffini theorem shows degree-5 polynomials need non-solvable Galois groups; A\u2085 is the example"
     },
     {
       "targetId": "abel-ruffini-oq-04-oq-01",
@@ -126,79 +126,79 @@
     {
       "targetId": "abel-ruffini-galois-extensions",
       "relationship": "foundational",
-      "description": "Houses the systematic solvability classification and $A_5$ simplicity results that underpin this proof: the theorem that $S_n$ is solvable iff $n \\leq 4$ (making $A_5$ non-solvable), non-commutativity witnesses for $A_5$, and the group order verifications. The `gal_card_dvd_60` step in this proof (showing $\\text{Gal}(q) \\leq A_5$ because the discriminant is a perfect square) implicitly relies on $A_5$ being the unique index-2 subgroup of $S_5$ — a fact that `abel-ruffini-galois-extensions` formalizes."
+      "description": "Houses the systematic solvability classification and $A_5$ simplicity results that underpin this proof: the theorem that $S_n$ is solvable iff $n \\leq 4$ (making $A_5$ non-solvable), non-commutativity witnesses for $A_5$, and the group order verifications. The `gal_card_dvd_60` step in this proof (showing $\\text{Gal}(q) \\leq A_5$ because the discriminant is a perfect square) implicitly relies on $A_5$ being the unique index-2 subgroup of $S_5$ \u2014 a fact that `abel-ruffini-galois-extensions` formalizes."
     }
   ],
   "sections": [
     {
       "id": "computational-preamble",
-      "title": "Computational Preamble: S₅ Element Orders",
+      "title": "Computational Preamble: S\u2085 Element Orders",
       "startLine": 53,
       "endLine": 66,
-      "summary": "Two native_decide lemmas verified over all 14,400 pairs in S₅: no order-5 element commutes with any order-3 element, and no S₅ element has order 15. Used later in Sylow theory arguments."
+      "summary": "Two native_decide lemmas verified over all 14,400 pairs in S\u2085: no order-5 element commutes with any order-3 element, and no S\u2085 element has order 15. Used later in Sylow theory arguments."
     },
     {
       "id": "part-i-polynomial",
       "title": "Part I: The Witness Polynomial q",
       "startLine": 85,
       "endLine": 87,
-      "summary": "Defines q(x) = x⁵ − 5x⁴ + 10x³ − 10x² + 25x − 5 over ℚ, the linear translate of x⁵ + 20x + 16 chosen for Eisenstein at p=5."
+      "summary": "Defines q(x) = x\u2075 \u2212 5x\u2074 + 10x\u00b3 \u2212 10x\u00b2 + 25x \u2212 5 over \u211a, the linear translate of x\u2075 + 20x + 16 chosen for Eisenstein at p=5."
     },
     {
       "id": "part-ii-irreducibility",
       "title": "Part II: Irreducibility via Eisenstein's Criterion",
       "startLine": 135,
       "endLine": 173,
-      "summary": "Proves q irreducible over ℚ: first over ℤ using Eisenstein at ideal (5), then transfers to ℚ via Gauss's lemma (monic → primitive → ℤ-irreducible ⟹ ℚ-irreducible)."
+      "summary": "Proves q irreducible over \u211a: first over \u2124 using Eisenstein at ideal (5), then transfers to \u211a via Gauss's lemma (monic \u2192 primitive \u2192 \u2124-irreducible \u27f9 \u211a-irreducible)."
     },
     {
       "id": "part-iii-iv-galois-bounds",
-      "title": "Parts III–IV: Basic Structure and Galois Group Bounds",
+      "title": "Parts III\u2013IV: Basic Structure and Galois Group Bounds",
       "startLine": 207,
       "endLine": 318,
-      "summary": "Establishes natDegree 5, monic, separable, 5 distinct roots. Bounds |Gal|: 5 | |Gal| (irreducible prime degree), |Gal| | 120 (embedding in S₅). Introduces axiom three_dvd_gal_card and documents eliminated axiom history."
+      "summary": "Establishes natDegree 5, monic, separable, 5 distinct roots. Bounds |Gal|: 5 | |Gal| (irreducible prime degree), |Gal| | 120 (embedding in S\u2085). Introduces axiom three_dvd_gal_card and documents eliminated axiom history."
     },
     {
       "id": "part-iva-sylow",
       "title": "Part IV-A: Sylow Elimination of Orders 15 and 30",
       "startLine": 329,
       "endLine": 552,
-      "summary": "Proves no S₅ subgroup has order 15 (Sylow + non-commutativity) or 30 (A₅ simplicity). Combined with 15 | |Gal| | 60, forces |Gal| = 60."
+      "summary": "Proves no S\u2085 subgroup has order 15 (Sylow + non-commutativity) or 30 (A\u2085 simplicity). Combined with 15 | |Gal| | 60, forces |Gal| = 60."
     },
     {
       "id": "part-v-xii-infrastructure",
       "title": "Parts V & XII: Galois Map and Mod-7 Evidence",
       "startLine": 883,
       "endLine": 959,
-      "summary": "Defines galToPerm5 (Gal → S₅) and galSign. Verifies mod-7 factorization evidence and resolvent sextic — both supporting three_dvd_gal_card without formally proving Dedekind's theorem."
+      "summary": "Defines galToPerm5 (Gal \u2192 S\u2085) and galSign. Verifies mod-7 factorization evidence and resolvent sextic \u2014 both supporting three_dvd_gal_card without formally proving Dedekind's theorem."
     },
     {
       "id": "part-xiii-xv-vandermonde",
-      "title": "Parts XIII–XV: Vandermonde Framework and Discriminant",
+      "title": "Parts XIII\u2013XV: Vandermonde Framework and Discriminant",
       "startLine": 996,
       "endLine": 1897,
-      "summary": "Major technical section. Proves Δ² = disc(q) = 32000² via complex embedding + Sophie Germain identity. Shows all Galois automorphisms are even permutations. Concludes |Gal| | 60 axiom-free."
+      "summary": "Major technical section. Proves \u0394\u00b2 = disc(q) = 32000\u00b2 via complex embedding + Sophie Germain identity. Shows all Galois automorphisms are even permutations. Concludes |Gal| | 60 axiom-free."
     },
     {
       "id": "part-xv-cardinality",
-      "title": "Part XV: |Gal(q/ℚ)| = 60",
+      "title": "Part XV: |Gal(q/\u211a)| = 60",
       "startLine": 1912,
       "endLine": 1954,
-      "summary": "Pins down |Gal| = 60 from gal_card_dvd_60_proved + three_dvd_gal_card + Sylow elimination. Splitting field has ℚ-dimension 60."
+      "summary": "Pins down |Gal| = 60 from gal_card_dvd_60_proved + three_dvd_gal_card + Sylow elimination. Splitting field has \u211a-dimension 60."
     },
     {
       "id": "part-xvi-isomorphism",
-      "title": "Part XVI: Gal(q/ℚ) ≅ A₅",
+      "title": "Part XVI: Gal(q/\u211a) \u2245 A\u2085",
       "startLine": 1976,
       "endLine": 2025,
-      "summary": "Injects Gal into S₅, shows image has index 2, applies Mathlib uniqueness of index-2 subgroup to conclude Gal ≅ A₅."
+      "summary": "Injects Gal into S\u2085, shows image has index 2, applies Mathlib uniqueness of index-2 subgroup to conclude Gal \u2245 A\u2085."
     },
     {
       "id": "part-xvii-non-solvable",
-      "title": "Part XVII: Non-Solvability — Beyond Shafarevich",
+      "title": "Part XVII: Non-Solvability \u2014 Beyond Shafarevich",
       "startLine": 2035,
       "endLine": 2067,
-      "summary": "Proves Gal(q) not solvable via A₅'s non-solvability and the isomorphism. First non-solvable realization in the library."
+      "summary": "Proves Gal(q) not solvable via A\u2085's non-solvability and the isomorphism. First non-solvable realization in the library."
     }
   ],
   "sorries": 0

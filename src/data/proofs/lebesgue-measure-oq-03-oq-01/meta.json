@@ -2,7 +2,7 @@
   "id": "lebesgue-measure-oq-03-oq-01",
   "title": "No Translation-Invariant Measure in Infinite Dimensions",
   "slug": "lebesgue-measure-oq-03-oq-01",
-  "description": "Proves that no nonzero translation-invariant σ-finite Borel measure exists on an infinite-dimensional separable Hilbert space. The orthonormal separation argument: infinitely many disjoint equal-measure balls inside a bounded region force each ball's measure to 0.",
+  "description": "Proves that no nonzero translation-invariant \u03c3-finite Borel measure exists on an infinite-dimensional separable Hilbert space. The orthonormal separation argument: infinitely many disjoint equal-measure balls inside a bounded region force each ball's measure to 0.",
   "meta": {
     "author": "Gross (1967), Wiener",
     "date": "2026",
@@ -23,61 +23,61 @@
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "Pairwise disjoint balls for orthonormal families (proved)",
-      "Counting lemma: infinitely many equal-measure disjoint sets in finite-measure set → measure 0 (proved)",
+      "Counting lemma: infinitely many equal-measure disjoint sets in finite-measure set \u2192 measure 0 (proved)",
       "Translation invariance implies equal ball measures (proved)",
-      "Main impossibility: translation-invariant measure with finite bounded sets → all balls measure 0 (proved)",
+      "Main impossibility: translation-invariant measure with finite bounded sets \u2192 all balls measure 0 (proved)",
       "Corollary: extends to arbitrary center (proved)",
-      "Small balls: μ(B(y, r)) = 0 for r ≤ 1/3, any center y (proved)",
-      "Parametric: μ(B(0, δ)) = 0 for any 0 < δ < √2/2 with μ(B(0, 1+δ)) < ∞ (proved)"
+      "Small balls: \u03bc(B(y, r)) = 0 for r \u2264 1/3, any center y (proved)",
+      "Parametric: \u03bc(B(0, \u03b4)) = 0 for any 0 < \u03b4 < \u221a2/2 with \u03bc(B(0, 1+\u03b4)) < \u221e (proved)"
     ]
   },
   "overview": {
-    "historicalContext": "The impossibility of constructing a translation-invariant, $\\sigma$-finite measure on infinite-dimensional spaces was recognized as a fundamental obstacle in functional analysis by the mid-20th century. Norbert Wiener's construction of Brownian motion (1923) implicitly required measures on function spaces, but Wiener measure is not translation-invariant — shifting a Brownian path changes its law. Leonard Gross's 1967 paper 'Abstract Wiener Spaces' gave the definitive framework: Gaussian measures live naturally on the Banach completion of a Hilbert space, not on the Hilbert space itself. The impossibility proof in this formalization — using orthonormal separation to pack infinitely many equal-measure disjoint balls into a bounded region — is the standard argument appearing in textbooks by Reed-Simon, Brezis, and others. It demonstrates a fundamental dichotomy: $\\mathbb{R}^n$ admits Lebesgue measure because finite-dimensional balls have finite packing density, but infinite-dimensional spaces do not.",
-    "problemStatement": "Can a nonzero translation-invariant σ-finite Borel measure exist on an infinite-dimensional separable Hilbert space? **No.** Given an orthonormal sequence $\\{e_n\\}$, the balls $B(e_n, 1/3)$ are pairwise disjoint (since $\\|e_n - e_m\\| = \\sqrt{2} > 2/3$), all contained in $B(0, 4/3)$, and all have equal measure by translation invariance. Since $\\mu(B(0, 4/3)) < \\infty$, each ball has measure 0. By translation invariance, every ball has measure 0, so $\\mu = 0$.",
-    "text": "Formalizes the full impossibility argument in Lean 4. Proves: orthonormal family separation (√2), pairwise disjoint balls, containment in bounded region, the key counting lemma (∞ equal-measure disjoint sets in finite set → measure 0), translation-invariant balls have equal measure, and the main theorem combining all ingredients.",
-    "proofStrategy": "1. Prove orthonormal_family_dist: any two distinct members of an orthonormal family are √2 apart. 2. Prove orthonormal_balls_pairwise_disjoint: balls of radius 1/3 are pairwise disjoint. 3. Prove orthonormal_ball_subset_bounded: each ball is in B(0, 4/3). 4. Prove measure_eq_zero_of_disjoint_infinite: the key counting lemma via ENNReal.tsum_const_eq_top_of_ne_zero. 5. Prove translation_invariant_balls_eq: translation invariance gives equal ball measures. 6. Combine all for no_translation_invariant_measure.",
+    "historicalContext": "The impossibility of constructing a translation-invariant, $\\sigma$-finite measure on infinite-dimensional spaces was recognized as a fundamental obstacle in functional analysis by the mid-20th century. Norbert Wiener's construction of Brownian motion (1923) implicitly required measures on function spaces, but Wiener measure is not translation-invariant \u2014 shifting a Brownian path changes its law. Leonard Gross's 1967 paper 'Abstract Wiener Spaces' gave the definitive framework: Gaussian measures live naturally on the Banach completion of a Hilbert space, not on the Hilbert space itself. The impossibility proof in this formalization \u2014 using orthonormal separation to pack infinitely many equal-measure disjoint balls into a bounded region \u2014 is the standard argument appearing in textbooks by Reed-Simon, Brezis, and others. It demonstrates a fundamental dichotomy: $\\mathbb{R}^n$ admits Lebesgue measure because finite-dimensional balls have finite packing density, but infinite-dimensional spaces do not.",
+    "problemStatement": "Can a nonzero translation-invariant \u03c3-finite Borel measure exist on an infinite-dimensional separable Hilbert space? **No.** Given an orthonormal sequence $\\{e_n\\}$, the balls $B(e_n, 1/3)$ are pairwise disjoint (since $\\|e_n - e_m\\| = \\sqrt{2} > 2/3$), all contained in $B(0, 4/3)$, and all have equal measure by translation invariance. Since $\\mu(B(0, 4/3)) < \\infty$, each ball has measure 0. By translation invariance, every ball has measure 0, so $\\mu = 0$.",
+    "text": "Formalizes the full impossibility argument in Lean 4. Proves: orthonormal family separation (\u221a2), pairwise disjoint balls, containment in bounded region, the key counting lemma (\u221e equal-measure disjoint sets in finite set \u2192 measure 0), translation-invariant balls have equal measure, and the main theorem combining all ingredients.",
+    "proofStrategy": "1. Prove orthonormal_family_dist: any two distinct members of an orthonormal family are \u221a2 apart. 2. Prove orthonormal_balls_pairwise_disjoint: balls of radius 1/3 are pairwise disjoint. 3. Prove orthonormal_ball_subset_bounded: each ball is in B(0, 4/3). 4. Prove measure_eq_zero_of_disjoint_infinite: the key counting lemma via ENNReal.tsum_const_eq_top_of_ne_zero. 5. Prove translation_invariant_balls_eq: translation invariance gives equal ball measures. 6. Combine all for no_translation_invariant_measure.",
     "keyInsights": [
-      "The counting lemma is the heart: if ∑_{n=0}^∞ c = ⊤ for c > 0 (a constant series), but the union of disjoint sets has finite measure, then c = 0. This uses ENNReal.tsum_const_eq_top_of_ne_zero from Mathlib.",
-      "The orthonormal separation √2 > 2/3 is crucial but the exact threshold is unimportant — any radius r < √2/2 works. We use r = 1/3 for concreteness.",
-      "The containment B(eₙ, 1/3) ⊆ B(0, 4/3) follows from triangle inequality and ‖eₙ‖ = 1.",
-      "Translation invariance means μ(A + v) = μ(A), which makes all balls of a given radius have the same measure. Combined with the counting lemma, this forces μ(B(x, 1/3)) = 0 for all x.",
-      "The argument is purely geometric and works for any infinite-dimensional space admitting an orthonormal sequence — no special structure beyond inner product space is needed."
+      "The counting lemma is the heart: if \u2211_{n=0}^\u221e c = \u22a4 for c > 0 (a constant series), but the union of disjoint sets has finite measure, then c = 0. This uses ENNReal.tsum_const_eq_top_of_ne_zero from Mathlib.",
+      "The orthonormal separation \u221a2 > 2/3 is crucial but the exact threshold is unimportant \u2014 any radius r < \u221a2/2 works. We use r = 1/3 for concreteness.",
+      "The containment B(e\u2099, 1/3) \u2286 B(0, 4/3) follows from triangle inequality and \u2016e\u2099\u2016 = 1.",
+      "Translation invariance means \u03bc(A + v) = \u03bc(A), which makes all balls of a given radius have the same measure. Combined with the counting lemma, this forces \u03bc(B(x, 1/3)) = 0 for all x.",
+      "The argument is purely geometric and works for any infinite-dimensional space admitting an orthonormal sequence \u2014 no special structure beyond inner product space is needed."
     ],
     "prerequisites": [
       "Inner product spaces and orthonormality (Mathlib.Analysis.InnerProductSpace)",
       "Metric spaces and balls (Mathlib.Topology.MetricSpace)",
-      "Measure theory and σ-finiteness (Mathlib.MeasureTheory.Measure)",
+      "Measure theory and \u03c3-finiteness (Mathlib.MeasureTheory.Measure)",
       "Extended non-negative reals (Mathlib.Topology.Algebra.InfiniteSum)"
     ]
   },
   "sections": [
     {
       "id": "separation",
-      "title": "§1: Orthonormal Separation",
+      "title": "\u00a71: Orthonormal Separation",
       "startLine": 30,
       "endLine": 66,
-      "summary": "Proves orthonormal vectors are √2 apart and balls of radius 1/3 are disjoint.",
+      "summary": "Proves orthonormal vectors are \u221a2 apart and balls of radius 1/3 are disjoint.",
       "mathContext": "For orthonormal $e_i, e_j$ with $i \\neq j$: $\\|e_i - e_j\\|^2 = \\|e_i\\|^2 - 2\\langle e_i, e_j\\rangle + \\|e_j\\|^2 = 2$. Since $\\sqrt{2} > 2/3$, balls $B(e_i, 1/3) \\cap B(e_j, 1/3) = \\emptyset$."
     },
     {
       "id": "disjoint-balls",
-      "title": "§2: Pairwise Disjoint Ball Family",
+      "title": "\u00a72: Pairwise Disjoint Ball Family",
       "startLine": 68,
       "endLine": 82,
-      "summary": "Lifts the pairwise separation to a full Pairwise Disjoint statement for the ball family indexed by ℕ.",
+      "summary": "Lifts the pairwise separation to a full Pairwise Disjoint statement for the ball family indexed by \u2115.",
       "mathContext": "The family $\\{B(e_n, 1/3)\\}_{n \\in \\mathbb{N}}$ is pairwise disjoint: for $i \\neq j$, $\\|e_i - e_j\\| = \\sqrt{2} > 2 \\cdot 1/3$."
     },
     {
       "id": "bounded",
-      "title": "§3: Containment in Bounded Region",
+      "title": "\u00a73: Containment in Bounded Region",
       "startLine": 84,
       "endLine": 97,
-      "summary": "Each ball B(eₙ, 1/3) ⊆ B(0, 4/3) via triangle inequality.",
+      "summary": "Each ball B(e\u2099, 1/3) \u2286 B(0, 4/3) via triangle inequality.",
       "mathContext": "For $x \\in B(e_n, 1/3)$: $\\|x\\| \\leq \\|x - e_n\\| + \\|e_n\\| < 1/3 + 1 = 4/3$."
     },
     {
       "id": "counting",
-      "title": "§4: Counting Lemma and Infrastructure",
+      "title": "\u00a74: Counting Lemma and Infrastructure",
       "startLine": 99,
       "endLine": 175,
       "summary": "The key measure-theoretic lemmas: translation-invariant definition, equal ball measures, OrthoSeq structure, ball containment, and pairwise disjoint balls from orthonormal separation.",
@@ -85,25 +85,25 @@
     },
     {
       "id": "main-theorem",
-      "title": "§5: Main Impossibility Theorem and Corollary",
+      "title": "\u00a75: Main Impossibility Theorem and Corollary",
       "startLine": 176,
       "endLine": 213,
-      "summary": "no_invariant_locally_finite_ball assembles all ingredients to prove μ(B(0, 1/3)) = 0. Corollary: μ(B(y, 1/3)) = 0 for any center y.",
+      "summary": "no_invariant_locally_finite_ball assembles all ingredients to prove \u03bc(B(0, 1/3)) = 0. Corollary: \u03bc(B(y, 1/3)) = 0 for any center y.",
       "mathContext": "$\\mu(B(0, 1/3)) = 0$ follows from zero_measure_of_infinite_disjoint applied to the orthonormal ball family. Corollary: $\\mu(B(y, 1/3)) = \\mu(B(0, 1/3)) = 0$ for all $y \\in H$ by translation invariance."
     },
     {
       "id": "small-balls-parametric",
-      "title": "§6–7: Small Balls and Parametric Extension",
+      "title": "\u00a76\u20137: Small Balls and Parametric Extension",
       "startLine": 215,
       "endLine": 281,
-      "summary": "Extends impossibility: μ(B(y, r)) = 0 for any r ≤ 1/3 (monotone containment), and parametrically μ(B(0, δ)) = 0 for any 0 < δ < √2/2.",
+      "summary": "Extends impossibility: \u03bc(B(y, r)) = 0 for any r \u2264 1/3 (monotone containment), and parametrically \u03bc(B(0, \u03b4)) = 0 for any 0 < \u03b4 < \u221a2/2.",
       "mathContext": "Part VI: $B(y, r) \\subseteq B(y, 1/3)$ for $r \\leq 1/3$, so $\\mu(B(y, r)) \\leq \\mu(B(y, 1/3)) = 0$. Part VII: any $\\delta$ with $2\\delta < \\sqrt{2}$ makes the orthonormal balls $B(e_n, \\delta)$ pairwise disjoint and contained in $B(0, 1+\\delta)$, with the same counting argument giving $\\mu(B(0,\\delta)) = 0$."
     }
   ],
   "conclusion": {
-    "summary": "No nonzero translation-invariant σ-finite Borel measure exists on an infinite-dimensional Hilbert space. The proof combines orthonormal separation (√2), pairwise disjoint balls, bounded containment, the counting lemma for infinite equal-measure families, and translation invariance. Fully proved for balls of radius 1/3 and extended parametrically to all radii 0 < δ < √2/2.",
+    "summary": "No nonzero translation-invariant \u03c3-finite Borel measure exists on an infinite-dimensional Hilbert space. The proof combines orthonormal separation (\u221a2), pairwise disjoint balls, bounded containment, the counting lemma for infinite equal-measure families, and translation invariance. Fully proved for balls of radius 1/3 and extended parametrically to all radii 0 < \u03b4 < \u221a2/2.",
     "openQuestions": [
-      "Can this be strengthened to show μ = 0 as a measure (not just zero on balls)? Needs countable covering of open sets (Lindelöf property).",
+      "Can this be strengthened to show \u03bc = 0 as a measure (not just zero on balls)? Needs countable covering of open sets (Lindel\u00f6f property).",
       "Can Gaussian measures on abstract Wiener spaces be formalized as the constructive replacement?"
     ],
     "implications": "This result explains why infinite-dimensional analysis requires fundamentally different measure theory. Gaussian measures (Wiener, path integrals) replace Lebesgue measure, living on Banach completions rather than Hilbert spaces."
@@ -135,7 +135,7 @@
     "namespace": "LebesgueMeasureOQ03OQ01",
     "lineCount": 282,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 0,
     "path": "Proofs/LebesgueMeasureOQ03OQ01.lean",
     "sorries": 0

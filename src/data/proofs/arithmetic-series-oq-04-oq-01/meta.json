@@ -125,32 +125,32 @@
     "namespace": "ArithmeticSeriesOQ04OQ01",
     "lineCount": 305,
     "axiomCount": 0,
-    "theoremCount": 18,
+    "theoremCount": 19,
     "definitionCount": 1,
     "mainTheorems": [
       {
         "name": "sum_powers_four",
         "type": "core",
         "description": "Sum of fourth powers: n(n+1)(2n+1)(3n^2+3n-1)/30",
-        "leanType": "(n : ℕ) → ∑ k ∈ Ico 1 (n+1), (k:ℚ)^4 = n*(n+1)*(2*n+1)*(3*n^2+3*n-1)/30"
+        "leanType": "(n : \u2115) \u2192 \u2211 k \u2208 Ico 1 (n+1), (k:\u211a)^4 = n*(n+1)*(2*n+1)*(3*n^2+3*n-1)/30"
       },
       {
         "name": "sum_powers_five",
         "type": "core",
         "description": "Sum of fifth powers: n^2(n+1)^2(2n^2+2n-1)/12",
-        "leanType": "(n : ℕ) → ∑ k ∈ Ico 1 (n+1), (k:ℚ)^5 = n^2*(n+1)^2*(2*n^2+2*n-1)/12"
+        "leanType": "(n : \u2115) \u2192 \u2211 k \u2208 Ico 1 (n+1), (k:\u211a)^5 = n^2*(n+1)^2*(2*n^2+2*n-1)/12"
       },
       {
         "name": "sum_pow_five_eq_triangular",
         "type": "key",
         "description": "Faulhaber structure: sum k^5 = T(n)^2 * (4T(n)-1)/3",
-        "leanType": "(n : ℕ) → ∑ k ∈ Ico 1 (n+1), (k:ℚ)^5 = T n ^ 2 * (4 * T n - 1) / 3"
+        "leanType": "(n : \u2115) \u2192 \u2211 k \u2208 Ico 1 (n+1), (k:\u211a)^5 = T n ^ 2 * (4 * T n - 1) / 3"
       },
       {
         "name": "sum_pow_three_eq_triangular_sq",
         "type": "key",
         "description": "Nicomachus: sum k^3 = T(n)^2",
-        "leanType": "(n : ℕ) → ∑ k ∈ Ico 1 (n+1), (k:ℚ)^3 = T n ^ 2"
+        "leanType": "(n : \u2115) \u2192 \u2211 k \u2208 Ico 1 (n+1), (k:\u211a)^3 = T n ^ 2"
       }
     ],
     "path": "Proofs/ArithmeticSeriesOQ04OQ01.lean",
@@ -161,25 +161,25 @@
       "name": "sum_powers_four",
       "type": "core",
       "description": "Sum of fourth powers formula",
-      "leanType": "(n : ℕ) → (∑ k ∈ Ico 1 (n+1), (k:ℚ)^4) = n*(n+1)*(2*n+1)*(3*n^2+3*n-1)/30"
+      "leanType": "(n : \u2115) \u2192 (\u2211 k \u2208 Ico 1 (n+1), (k:\u211a)^4) = n*(n+1)*(2*n+1)*(3*n^2+3*n-1)/30"
     },
     {
       "name": "sum_powers_five",
       "type": "core",
       "description": "Sum of fifth powers formula",
-      "leanType": "(n : ℕ) → (∑ k ∈ Ico 1 (n+1), (k:ℚ)^5) = n^2*(n+1)^2*(2*n^2+2*n-1)/12"
+      "leanType": "(n : \u2115) \u2192 (\u2211 k \u2208 Ico 1 (n+1), (k:\u211a)^5) = n^2*(n+1)^2*(2*n^2+2*n-1)/12"
     },
     {
       "name": "sum_powers_six",
       "type": "core",
       "description": "Sum of sixth powers formula",
-      "leanType": "(n : ℕ) → (∑ k ∈ Ico 1 (n+1), (k:ℚ)^6) = n*(n+1)*(2*n+1)*(3*n^4+6*n^3-3*n+1)/42"
+      "leanType": "(n : \u2115) \u2192 (\u2211 k \u2208 Ico 1 (n+1), (k:\u211a)^6) = n*(n+1)*(2*n+1)*(3*n^4+6*n^3-3*n+1)/42"
     },
     {
       "name": "sum_pow_five_eq_triangular",
       "type": "key",
       "description": "Faulhaber structure for p=5: sum k^5 = T(n)^2(4T(n)-1)/3",
-      "leanType": "(n : ℕ) → (∑ k ∈ Ico 1 (n+1), (k:ℚ)^5) = T n ^ 2 * (4 * T n - 1) / 3"
+      "leanType": "(n : \u2115) \u2192 (\u2211 k \u2208 Ico 1 (n+1), (k:\u211a)^5) = T n ^ 2 * (4 * T n - 1) / 3"
     }
   ],
   "references": [

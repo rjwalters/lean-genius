@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/409",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "assumptions": "None. All results are fully proved. 19 theorems including: iterate_decreasing, iteration_terminates, iteration_reaches_prime_in (F(n) ≤ n−2), iteration_reaches_prime_half (F(n) ≤ n/2), sigma_prime_fixed (σ(p)−1=p), sigma_composite_growth (σ(n)−1>n for composite), one_iteration_infinite, and more. Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "None. All results are fully proved. 19 theorems including: iterate_decreasing, iteration_terminates, iteration_reaches_prime_in (F(n) \u2264 n\u22122), iteration_reaches_prime_half (F(n) \u2264 n/2), sigma_prime_fixed (\u03c3(p)\u22121=p), sigma_composite_growth (\u03c3(n)\u22121>n for composite), one_iteration_infinite, and more. Open conjecture; supporting lemmas fully verified.",
     "lineCount": 424,
     "mathlib_version": "4.26.0",
     "theoremCount": 19
@@ -147,7 +147,7 @@
     "namespace": null,
     "lineCount": 424,
     "axiomCount": 0,
-    "theoremCount": 15,
+    "theoremCount": 18,
     "definitionCount": 3,
     "path": "Proofs/Erdos409Problem.lean",
     "sorries": 0
@@ -156,17 +156,17 @@
     {
       "targetId": "erdos-412",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: dynamical-systems, iteration, number-theory"
+      "description": "Related Erd\u0151s problem sharing themes: dynamical-systems, iteration, number-theory"
     },
     {
       "targetId": "erdos-1059",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: number-theory, primes"
+      "description": "Related Erd\u0151s problem sharing themes: number-theory, primes"
     },
     {
       "targetId": "erdos-1113",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: number-theory, primes"
+      "description": "Related Erd\u0151s problem sharing themes: number-theory, primes"
     }
   ],
   "sorries": 0
