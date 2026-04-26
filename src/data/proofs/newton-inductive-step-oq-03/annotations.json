@@ -118,30 +118,6 @@
     ]
   },
   {
-    "id": "ann-newton-oq03-ratio-antitone",
-    "proofId": "newton-inductive-step-oq-03",
-    "range": {
-      "startLine": 119,
-      "endLine": 149
-    },
-    "type": "technique",
-    "title": "Ratio Antitone via Algebraic Identity + q-Power Inequality",
-    "content": "**ratio_ineq** proves $(1-q^{n-k})(1-q^k) \\leq (1-q^{n-k+1})(1-q^{k+1})$, establishing that the consecutive ratio $G(k+1)/G(k) = (1-q^{n-k})/(1-q^{k+1})$ is *antitone* (decreasing) in $k$. The key tool is the helper `expand_ratio_diff`, a pure ring identity, combined with `q_pow_key_ineq`. Setting $A = q^{n-k}$ and $B = q^k$, the identity $(1-Aq)(1-Bq) - (1-A)(1-B) = (1-q)(A+B-AB-ABq)$ transforms the ratio inequality into showing $(1-q)(q^{n-k}+q^k-q^n-q^{n+1}) \\geq 0$, which follows immediately from $1-q > 0$ and the key q-power inequality.",
-    "mathContext": "The algebraic factorization $(1-Aq)(1-Bq)-(1-A)(1-B) = (1-q)(A+B-AB-ABq)$ with $A=q^{n-k}$, $B=q^k$, $AB=q^n$, $ABq=q^{n+1}$ reduces the ratio inequality to $q^{n-k}+q^k \\geq q^n+q^{n+1}$ — exactly `q_pow_key_ineq`. This factorization technique, expressing a difference of products as a single product of a simpler sum, is a standard tool in q-series and combinatorics. The Lean proof uses `linarith` after unfolding both the ring identity and the key inequality.",
-    "significance": "key",
-    "relatedConcepts": [
-      "q-series algebraic identities",
-      "antitone sequences and log-concavity",
-      "Lean 4 linarith tactic",
-      "Chebyshev rearrangement inequality"
-    ],
-    "prerequisites": [
-      "q_pow_key_ineq (lines 107-117)",
-      "expand_ratio_diff ring lemma",
-      "linarith for linear arithmetic over ℝ"
-    ]
-  },
-  {
     "id": "ann-newton-oq03-log-concave",
     "proofId": "newton-inductive-step-oq-03",
     "range": {
@@ -164,31 +140,6 @@
       "ratio_ineq (the antitone step)",
       "gaussBinom_pos (positivity)",
       "linear_combination tactic"
-    ]
-  },
-  {
-    "id": "ann-newton-oq03-summary",
-    "proofId": "newton-inductive-step-oq-03",
-    "range": {
-      "startLine": 209,
-      "endLine": 231
-    },
-    "type": "insight",
-    "title": "Proof Architecture Summary: Five Theorems, Zero Axioms",
-    "content": "The final `linarith` at line 209 closes `gaussBinom_log_concave` by discharging `G1^2 ≥ G0·G2` from the chain `0 ≤ (G1^2 − G0·G2)·(D1·D2)` and `D1·D2 > 0`. The single tactic closes what amounts to a positivity argument after all the algebraic and analytic work has been staged by the surrounding lemmas.\n\nThe summary table (lines 211-223) documents the complete proof architecture as a human-readable reference table:\n\n| Theorem | Key ingredient | Status |\n|---------|---------------|--------|\n| `gaussBinom_pos` | `Finset.prod_pos` | proved |\n| `gaussBinom_ratio_mul` | `prod_range_succ` + field_simp | proved |\n| `q_pow_key_ineq` | `pow_le_pow_of_le_one` × 2 | proved |\n| `ratio_ineq` | `expand_ratio_diff` + key_ineq | proved |\n| `gaussBinom_log_concave` | ratio recurrence × 2 + ratio_ineq | proved |\n\nEach row traces one proof obligation to its decisive Mathlib ingredient. The table shows the proof has a strict dependency chain: positivity feeds the ratio recurrence, the key q-power inequality feeds ratio_ineq, and ratio_ineq (the cross-inequality N0·D2 ≥ N1·D1) is the pivotal step that separates the log-concavity proof into tractable sub-goals.\n\nThe `#check` block (lines 225-229) verifies the five theorems are accessible as first-class Lean library functions. Unlike the summary table (a documentation comment), the `#check` calls are executable — they will fail at compile time if any theorem has the wrong name or type. This pattern doubles as a lightweight regression test: the `#check` block guards against accidental renaming or type changes.\n\nThe module closes with `end QNewton`, scoping all definitions inside the `QNewton` namespace to avoid name collisions with other Mathlib results about binomial coefficients.",
-    "mathContext": "The final step of `gaussBinom_log_concave` uses:\n$$0 \\le (G_1^2 - G_0 G_2) \\cdot (D_1 D_2) \\quad \\text{and} \\quad D_1 D_2 > 0 \\implies G_1^2 \\ge G_0 G_2$$\nThis is just `le_div_iff` (or equivalently `mul_nonneg` + positivity) — the analytic content is entirely in the earlier lemmas.\n\nThe five theorems together prove: for $q \\in (0,1)$ and $k+2 \\le n$,\n$$\\binom{n}{k+1}_q^2 \\ge \\binom{n}{k}_q \\cdot \\binom{n}{k+2}_q$$\nwhere $\\binom{n}{k}_q = \\prod_{i=0}^{k-1} \\frac{1-q^{n-i}}{1-q^{i+1}}$ is the Gaussian binomial coefficient. Log-concavity means the sequence $\\binom{n}{0}_q, \\binom{n}{1}_q, \\ldots, \\binom{n}{n}_q$ is unimodal — it increases up to the middle term and decreases thereafter. At $q=1$ this recovers the classical unimodality of Pascal's triangle.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "linarith for positivity argument",
-      "summary table as documentation",
-      "#check as lightweight regression test",
-      "QNewton namespace",
-      "unimodality of Gaussian binomials"
-    ],
-    "prerequisites": [
-      "gaussBinom_log_concave (all prior lemmas)",
-      "Lean 4 #check command",
-      "namespace scoping in Lean 4"
     ]
   }
 ]

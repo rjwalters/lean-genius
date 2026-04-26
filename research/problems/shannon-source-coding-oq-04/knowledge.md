@@ -134,31 +134,3 @@ cannot be used in `dominant_type_lower_bound` (Section 2). Fix: inline the proof
    `bash research/scripts/aristotle-submit.sh proofs/Proofs/ShannonSourceCodingOQ04Aristotle.lean shannon-source-coding-oq-04 "Session 2: type_class_size_eq_multinomial"`
 2. If Aristotle fails/unavailable: implement induction proof manually (~100 lines, see strategy above)
 3. `source_coding_achievability_mot` remains OPEN (needs LLN infrastructure)
-
----
-
-## Session 2026-04-26 (Session 3) — Aristotle Submission
-
-**Mode**: REVISIT
-**Outcome**: SUBMITTED — type_class_size_eq_multinomial sent to Aristotle
-
-### What I Did
-
-1. Submitted `ShannonSourceCodingOQ04Aristotle.lean` to Aristotle (project ID: 7303fc7f-3d89-4237-834f-372d9026a17d)
-2. Verified `source_coding_achievability_mot` is OPEN — needs LLN/concentration inequalities
-
-### Key Findings
-
-- Aristotle is the right tool for `type_class_size_eq_multinomial` (HARD known theorem)
-- `source_coding_achievability_mot` requires LLN to show dominant type's empEntropy → H(p) as n → ∞
-- Mathlib lacks LLN for discrete distributions; this sorry will remain OPEN
-- Both proof strategies (induction on n, permutation quotient) documented in companion file
-
-### Files Modified
-
-- `research/aristotle-jobs.json` (added Aristotle job entry)
-
-### Next Steps
-
-1. Check Aristotle results for project 7303fc7f-3d89-4237-834f-372d9026a17d
-2. `source_coding_achievability_mot` blocked pending LLN in Mathlib

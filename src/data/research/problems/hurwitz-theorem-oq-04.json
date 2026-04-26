@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 14 explicit derivations with Leibniz rule PROVED. axiom G2_der_dimension remains for finrank=14.",
+    "progressSummary": "PROGRESS: 0 sorries, 1 axiom (corrected from Nat.card to finrank). OctonionDerSubmodule added.",
     "builtItems": [
       "ExceptionalType inductive type (G2/F4/E6/E7/E8) with dim/rank — HurwitzTheoremOQ04.lean",
       "OctonionAlgHom structure + OctonionAut — HurwitzTheoremOQ04.lean",
@@ -46,10 +46,7 @@
       "eightMul_sub_left/right: eightMul bilinear over subtraction",
       "commDer (proved): commutator of derivations is a derivation — key Lie algebra result",
       "commDer_antisymm, commDer_jacobi: Der(𝕆) is a Lie algebra under [·,·]",
-      "OctonionDerSubmodule (2026-04-26): Der(𝕆) as Submodule ℝ (End_ℝ(ℝ⁸)) — PART IV-c of HurwitzTheoremOQ04.lean",
-      "octDer0..octDer13: 14 explicit ℝ-linear derivations proved — HurwitzTheoremOQ04.lean PART VIII-a",
-      "octDer0_mem..octDer13_mem: all 14 membership proofs in OctonionDerSubmodule (Leibniz rule verified by ring) — HurwitzTheoremOQ04.lean PART VIII-b",
-      "octDerElems: Fin 14 → OctonionDerSubmodule bundling all 14 witnesses — HurwitzTheoremOQ04.lean:970"
+      "OctonionDerSubmodule (2026-04-26): Der(𝕆) as Submodule ℝ (End_ℝ(ℝ⁸)) — PART IV-c of HurwitzTheoremOQ04.lean"
     ],
     "insights": [
       "G₂ = Aut(𝕆): The exceptional Lie group G₂ (dim 14, rank 2) is the automorphism group of the octonions. The 14 dimensions come from SO(7) (dim 21) minus the 7 constraints from preserving the octonion cross product.",
@@ -63,9 +60,7 @@
       "eightMul unit proof pattern: simp(config:={decide:=true})[ite_true,ite_false] evaluates if (0:Fin 8)=j for concrete j. Plain simp[stdBasis] insufficient — need decide mode for Fin equality.",
       "freudenthal_tits_f4/e6/e7/e8 de-axiomatized (2026-04-25): these 4 axioms were just ExceptionalType.dim = literal, provable by rfl. Axiom count reduced from 5 to 1.",
       "G2_is_octonion_aut had type-theoretic flaw: Nat.card of an infinite group = 0 in Lean. Replaced with G2_der_dimension: finrank ℝ OctonionDerSubmodule = 14.",
-      "OctonionDerSubmodule as Submodule ℝ (LinearMap) inherits finite-dimensional vector space structure automatically.",
-      "14 derivations proved 2026-04-26: fin_cases k <;> simp [eightMul, Pi.add_apply] <;> ring works for all 8 components of each derivation. Key: simp unfolds eightMul and Pi operations, ring closes the algebraic identity.",
-      "Evaluation matrix E is 14×14 with det=1: E[i][i]=1 for all i, E[8][1]=-1. Evaluating octDerK on standard basis vectors recovers an identity-like matrix, proving linear independence."
+      "OctonionDerSubmodule as Submodule ℝ (LinearMap) inherits finite-dimensional vector space structure automatically."
     ],
     "mathlibGaps": [
       "Lie groups not in Mathlib as of 2026-04 — blocks formal G₂ = Aut(𝕆) proof",
@@ -73,10 +68,9 @@
       "Derivation algebra of non-associative algebras not in Mathlib"
     ],
     "nextSteps": [
-      "Prove octDer_linearIndependent via eval matrix E (det=1): use Fin.linearIndependent_iff and Matrix.det_fin_two etc.",
-      "Prove Module.finrank ℝ OctonionDerSubmodule ≥ 14 from linear independence",
-      "Prove ≤ 14 upper bound via constraint matrix rank",
-      "Eliminate G2_der_dimension axiom entirely"
+      "Exhibit 14 explicit derivations D_{ij} for 1<=i<j<=7 to PROVE G2_der_dimension",
+      "Prove linear independence via 14x14 matrix computation",
+      "Archive old sessions"
     ]
   },
   "tags": [
@@ -115,11 +109,11 @@
     {
       "path": "Proofs/HurwitzTheoremOQ04.lean",
       "filename": "HurwitzTheoremOQ04.lean",
-      "lineCount": 1010,
-      "theoremCount": 37,
+      "lineCount": 737,
+      "theoremCount": 23,
       "axiomCount": 1,
-      "defCount": 40,
-      "sorryCount": 0,
+      "defCount": 12,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzTheoremOQ04.lean"
     }
