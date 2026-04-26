@@ -375,7 +375,34 @@ private lemma jdt_weight_sum (n a b : ℕ) (hba : b ≤ a) :
       (PQ.1.1.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
       (PQ.1.2.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod =
     hsymm (Fin n) R (a + 1) * (if 1 ≤ b then hsymm (Fin n) R (b - 1) else 0) := by
-  sorry
+  by_cases hb : 1 ≤ b
+  · -- b ≥ 1: JDT bijection
+    simp only [if_pos hb]
+    rw [← sum_all_sym_pairs n (a + 1) (b - 1)]
+    -- Need: weight-preserving bijection
+    --   {non-col-strict (a,b) pairs} ≃ {all (a+1, b-1) pairs}
+    -- Forward map: find first violation c in ColStrictSym, let v = Q.sort[c],
+    --   then P' = Sym.cons v P, Q' = Sym.erase Q v
+    -- Inverse map: find the "seam" element in P'.sort to move back to Q'
+    -- Weight preserved by Multiset.prod_cons + Multiset.prod_erase
+    sorry
+  · -- b = 0: ColStrictSym a 0 P Q is vacuously true (quantifies over Fin (min a 0) = Fin 0)
+    -- So ¬ColStrictSym = False, the subtype is empty, and the sum equals 0
+    push_neg at hb
+    have hb0 : b = 0 := by omega
+    subst hb0
+    -- RHS simplifies: if 1 ≤ 0 then ... else 0 = 0, so h_{a+1} * 0 = 0
+    have hrhs : hsymm (Fin n) R (a + 1) * (if 1 ≤ 0 then hsymm (Fin n) R (0 - 1) else 0) = 0 :=
+      by simp
+    rw [hrhs]
+    -- LHS: every element of the subtype derives False (ColStrictSym a 0 P Q is vacuously true)
+    apply Finset.sum_eq_zero
+    rintro ⟨⟨P, Q⟩, hPQ⟩ -
+    exfalso
+    apply hPQ
+    intro j
+    -- j : Fin (min a 0), and min a 0 = 0, so j.isLt : j.val < 0, which is absurd
+    exact absurd j.isLt (by omega)
 
 /-- Row decomposition: 2-row SSYT generating function = sum over col-strict pairs.
     The bijection φ : SSYTFin n 2 sh ≃ {(P,Q) : ColStrictSym (sh0, sh1) pairs}:
