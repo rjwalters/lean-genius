@@ -298,18 +298,200 @@ theorem nonderogatory_cyclic_of_binary_squarefree
     - Strong cyclicity: apply CRT projections (as in `nonderogatory_cyclic_of_binary_squarefree`)
       to extract r(M)vs = 0 and r(M)vt = 0; then s|r and t|r by IH;
       finally IsCoprime.mul_dvd gives q = s·t | r. -/
+-- Helper: in K[X] (K a field), non-unit non-zero polynomials have positive natDegree.
+-- Proof: units are exactly nonzero constants (natDegree = 0). Contrapositive.
+private lemma natDegree_pos_of_ne_zero_not_isUnit {p : K[X]} (hp : p ≠ 0)
+    (hpu : ¬IsUnit p) : 0 < p.natDegree := by
+  by_contra h
+  push_neg at h
+  apply hpu
+  have hd : p.natDegree = 0 := Nat.le_zero.mp h
+  have hconst : p = Polynomial.C (p.coeff 0) := by
+    ext k
+    simp only [Polynomial.coeff_C]
+    rcases Nat.eq_zero_or_pos k with rfl | hk
+    · simp
+    · rw [if_neg (by omega)]
+      exact Polynomial.coeff_eq_zero_of_natDegree_lt (hd ▸ hk)
+  have hc_ne : p.coeff 0 ≠ 0 := by
+    intro heq; apply hp; rw [hconst, heq, map_zero]
+  rw [hconst]
+  exact (Polynomial.isUnit_C).mpr (IsUnit.mk0 _ hc_ne)
+
 private theorem exists_strongly_cyclic
     (M : Matrix (Fin n) (Fin n) K) (h_nd : IsNonderogatory M) :
-    ∀ (d : ℕ) (q : K[X]), q.natDegree ≤ d → Squarefree q → q ∣ minpoly K M →
+    ∀ (d : ℕ) (q : K[X]), q.natDegree ≤ d → 0 < q.natDegree → Squarefree q → q ∣ minpoly K M →
     ∃ v : Fin n → K, v ≠ 0 ∧ (aeval M q).mulVec v = 0 ∧
       ∀ r : K[X], (aeval M r).mulVec v = 0 → q ∣ r := by
-  sorry
-  -- Proof uses: irreducible_dvd_of_annihilated, bezout_proj_identity/kills,
-  --   aeval_mul_comm_poly, exists_mulVec_ne_zero', aeval_ne_zero_of_lt_minpoly.
-  -- Termination: natDegree s < natDegree q and natDegree t < natDegree q
-  --   (since s, t both non-units when q not irreducible, not unit).
-  -- IsCoprime s t from: s prime (irred in K[X] = UFD) and s ∤ t
-  --   (if s | t then s² | q, contradicting Squarefree q via hq_sf s ⟨r, _⟩).
+  intro d
+  induction d with
+  | zero =>
+    intro q hle hpos
+    exact absurd hle (by omega)
+  | succ d ih =>
+    intro q hle hpos hq_sf hq_dvd
+    -- q ≠ 0 (degree > 0 implies nonzero)
+    have hq_ne : q ≠ 0 := fun h => by subst h; simp at hpos
+    -- ¬IsUnit q (degree > 0, units have degree 0 over a field)
+    have hq_nu : ¬IsUnit q := by
+      intro hu
+      -- Units in K[X] have natDegree 0
+      have hdeg : q.natDegree = 0 := by
+        obtain ⟨u, hu_val⟩ := hu
+        -- q * q⁻¹ = 1, so natDeg q + natDeg q⁻¹ = 0
+        have hinv_mul : q * (↑u⁻¹ : K[X]) = 1 := by
+          have : (u : K[X]) * ((u⁻¹ : K[X]ˣ) : K[X]) = 1 := Units.mul_inv u
+          rwa [hu_val] at this
+        have hinv_ne : (↑u⁻¹ : K[X]) ≠ 0 := by
+          intro h; rw [h, mul_zero] at hinv_mul; exact one_ne_zero hinv_mul.symm
+        have key := Polynomial.natDegree_mul hq_ne hinv_ne
+        rw [hinv_mul, Polynomial.natDegree_one] at key; omega
+      omega
+    -- Dispatch on irreducibility of q
+    by_cases hq_irr : Irreducible q
+    · -- ══════════════════════════════════════════
+      -- IRREDUCIBLE BASE CASE
+      -- ══════════════════════════════════════════
+      -- Write minpoly K M = q * r' (since q ∣ minpoly K M)
+      obtain ⟨r', hr'_eq⟩ := hq_dvd
+      -- r' ≠ 0 (minpoly K M ≠ 0 and q ≠ 0)
+      have hr'_ne : r' ≠ 0 := by
+        intro h
+        have hzero : minpoly K M = 0 := by rw [hr'_eq, h, mul_zero]
+        have hne : minpoly K M ≠ 0 := by rw [h_nd]; exact (Matrix.charpoly_monic M).ne_zero
+        exact hne hzero
+      -- deg r' < deg (minpoly K M) (since deg q ≥ 1)
+      have hr'_lt : r'.natDegree < (minpoly K M).natDegree := by
+        rw [hr'_eq, Polynomial.natDegree_mul hq_ne hr'_ne]; omega
+      -- aeval M r' ≠ 0 (by minimality of minpoly)
+      have hr'_mat_ne := aeval_ne_zero_of_lt_minpoly hr'_ne hr'_lt
+      -- Find w with r'(M)w ≠ 0
+      obtain ⟨w, hw⟩ := exists_mulVec_ne_zero' hr'_mat_ne
+      -- v = r'(M)w is the strongly cyclic vector
+      refine ⟨(aeval M r').mulVec w, hw, ?_, ?_⟩
+      · -- q(M)v = q(M)r'(M)w = (q*r')(M)w = minpoly(M)w = 0
+        rw [Matrix.mulVec_mulVec, ← map_mul, ← hr'_eq]
+        simp [minpoly.aeval]
+      · -- Strong cyclicity: r(M)v = 0 → q ∣ r
+        intro r hrv
+        -- q(M)v = 0 (proved above) and r(M)v = 0, v ≠ 0, q irred → q ∣ r
+        exact irreducible_dvd_of_annihilated hq_irr hw
+          (by rw [Matrix.mulVec_mulVec, ← map_mul, ← hr'_eq]; simp [minpoly.aeval])
+          hrv
+    · -- ══════════════════════════════════════════
+      -- REDUCIBLE INDUCTIVE CASE
+      -- ══════════════════════════════════════════
+      -- Get irreducible factor s ∣ q
+      obtain ⟨s, hs_irr, hs_dvd_q⟩ := WfDvdMonoid.exists_irreducible_factor hq_nu hq_ne
+      obtain ⟨t, ht_eq⟩ := hs_dvd_q  -- q = s * t
+      have hs_ne : s ≠ 0 := hs_irr.ne_zero
+      have hs_nu : ¬IsUnit s := hs_irr.not_isUnit
+      -- t ≠ 0
+      have ht_ne : t ≠ 0 := right_ne_zero_of_mul (by rw [← ht_eq]; exact hq_ne)
+      -- t is not a unit (otherwise q ∼ s would be irreducible, contradicting ¬Irreducible q)
+      have ht_nu : ¬IsUnit t := by
+        intro hu
+        apply hq_irr; rw [ht_eq]
+        -- q = s * t with t a unit → Associated s (s * t) → Irreducible (s * t)
+        exact (Associated.irreducible_iff ⟨hu.choose, by rw [hu.choose_spec]⟩).mp hs_irr
+      -- s.natDegree > 0 (s is not a unit and s ≠ 0)
+      have hs_pos : 0 < s.natDegree := natDegree_pos_of_ne_zero_not_isUnit hs_ne hs_nu
+      -- t.natDegree > 0 (t is not a unit and t ≠ 0)
+      have ht_pos : 0 < t.natDegree := natDegree_pos_of_ne_zero_not_isUnit ht_ne ht_nu
+      -- Degree equation: natDegree q = natDegree s + natDegree t
+      have hdeg : q.natDegree = s.natDegree + t.natDegree := by
+        rw [ht_eq, Polynomial.natDegree_mul hs_ne ht_ne]
+      -- s.natDegree < q.natDegree and t.natDegree < q.natDegree
+      have hs_lt : s.natDegree < q.natDegree := by omega
+      have ht_lt : t.natDegree < q.natDegree := by omega
+      -- Degrees ≤ d (for IH application)
+      have hs_le_d : s.natDegree ≤ d := Nat.lt_succ_iff.mp (lt_of_lt_of_le hs_lt hle)
+      have ht_le_d : t.natDegree ≤ d := Nat.lt_succ_iff.mp (lt_of_lt_of_le ht_lt hle)
+      -- ¬(s ∣ t): if s ∣ t then s^2 ∣ q, contradicting Squarefree q
+      have hs_ndvd_t : ¬s ∣ t := by
+        intro ⟨u, hu⟩
+        exact hs_nu (hq_sf s ⟨u, by rw [ht_eq, hu]; ring⟩)
+      -- IsCoprime s t (s is prime in K[X] = UFD, and s ∤ t)
+      have hcop : IsCoprime s t :=
+        (UniqueFactorizationMonoid.irreducible_iff_prime.mp hs_irr).coprime_iff_not_dvd.mpr hs_ndvd_t
+      obtain ⟨a, b, hab⟩ := hcop
+      -- Squarefree s (from Squarefree (s*t))
+      have hs_sf : Squarefree s := fun u ⟨c, huc⟩ =>
+        hq_sf u ⟨c * t, by rw [ht_eq, huc]; ring⟩
+      -- Squarefree t
+      have ht_sf : Squarefree t := fun u ⟨c, huc⟩ =>
+        hq_sf u ⟨s * c, by rw [ht_eq, huc]; ring⟩
+      -- s ∣ minpoly K M
+      have hs_dvd_q' : s ∣ q := ⟨t, ht_eq⟩
+      have hs_dvd_min : s ∣ minpoly K M := hs_dvd_q'.trans hq_dvd
+      -- t ∣ minpoly K M
+      have ht_dvd_q : t ∣ q := ⟨s, by rw [ht_eq, mul_comm]⟩
+      have ht_dvd_min : t ∣ minpoly K M := ht_dvd_q.trans hq_dvd
+      -- IH: get vs (s-strongly cyclic in ker(s(M)))
+      obtain ⟨vs, hvs_ne, hsvs, hvs_strong⟩ := ih s hs_le_d hs_pos hs_sf hs_dvd_min
+      -- IH: get vt (t-strongly cyclic in ker(t(M)))
+      obtain ⟨vt, hvt_ne, htvt, hvt_strong⟩ := ih t ht_le_d ht_pos ht_sf ht_dvd_min
+      -- v = vs + vt is the strongly q-cyclic vector
+      refine ⟨vs + vt, ?_, ?_, ?_⟩
+      · -- v ≠ 0: if vs + vt = 0 then vs = -vt, so s(M)vt = 0.
+        --   Then Bezout: (aeval M b * aeval M t).mulVec vt = vt and = 0. Contradiction.
+        intro hv_zero
+        -- s(M)vt = 0: from vs = -vt and s(M)vs = 0
+        have hsvt : (aeval M s).mulVec vt = 0 := by
+          have heq : vs = -vt := by
+            have := add_eq_zero_iff_eq_neg.mp hv_zero; exact this
+          have : (aeval M s).mulVec vs = 0 := hsvs
+          rw [heq] at this
+          simp only [Matrix.mulVec_neg, neg_eq_zero] at this
+          exact this
+        -- Bezout: b(M)t(M) is identity on ker(s(M)) and zero on ker(t(M))
+        have hbez : (aeval M b * aeval M t).mulVec vt = vt :=
+          bezout_proj_identity hab hsvt
+        have hkill : (aeval M b * aeval M t).mulVec vt = 0 :=
+          bezout_proj_kills htvt
+        exact hvt_ne (by rw [← hbez, hkill])
+      · -- q(M)v = (s*t)(M)(vs+vt) = 0
+        have hqs_vs : (aeval M s * aeval M t).mulVec vs = 0 := by
+          rw [aeval_mul_comm_poly, ← Matrix.mulVec_mulVec, hsvs, Matrix.mulVec_zero]
+        have hqt_vt : (aeval M s * aeval M t).mulVec vt = 0 := by
+          rw [← Matrix.mulVec_mulVec, htvt, Matrix.mulVec_zero]
+        simp only [ht_eq, map_mul, Matrix.mulVec_add, hqs_vs, hqt_vt, add_zero]
+      · -- Strong q-cyclicity: r(M)v = 0 → q = s*t ∣ r
+        intro r hrv
+        -- Show s ∣ r via Bezout projection e₁ = b(M)t(M)
+        have hs_r : s ∣ r := hvs_strong r (by
+          have h_app : (aeval M b * aeval M t).mulVec
+              ((aeval M r).mulVec (vs + vt)) = 0 := by
+            rw [hrv, Matrix.mulVec_zero]
+          have h_comm : aeval M b * aeval M t * aeval M r =
+              aeval M r * (aeval M b * aeval M t) := by
+            rw [show aeval M b * aeval M t = aeval M (b * t) from (map_mul _ _ _).symm,
+                aeval_mul_comm_poly (b * t) r, ← map_mul]
+          rw [Matrix.mulVec_mulVec, h_comm, ← Matrix.mulVec_mulVec,
+              Matrix.mulVec_add,
+              bezout_proj_identity hab hsvs,
+              bezout_proj_kills htvt, add_zero] at h_app
+          exact h_app)
+        -- Show t ∣ r via Bezout projection e₂ = a(M)s(M)
+        have ht_r : t ∣ r := hvt_strong r (by
+          have h_app : (aeval M a * aeval M s).mulVec
+              ((aeval M r).mulVec (vs + vt)) = 0 := by
+            rw [hrv, Matrix.mulVec_zero]
+          have h_comm : aeval M a * aeval M s * aeval M r =
+              aeval M r * (aeval M a * aeval M s) := by
+            rw [show aeval M a * aeval M s = aeval M (a * s) from (map_mul _ _ _).symm,
+                aeval_mul_comm_poly (a * s) r, ← map_mul]
+          -- e₂ kills vs: a(M)s(M)vs = a(M)*0 = 0
+          have he2_vs : (aeval M a * aeval M s).mulVec vs = 0 := by
+            rw [← Matrix.mulVec_mulVec, hsvs, Matrix.mulVec_zero]
+          -- e₂ is identity on vt: a*s + b*t = 1, t(M)vt = 0 → a(M)s(M)vt = vt
+          have he2_vt : (aeval M a * aeval M s).mulVec vt = vt :=
+            bezout_proj_identity (show b * t + a * s = 1 from by rw [add_comm]; exact hab) htvt
+          rw [Matrix.mulVec_mulVec, h_comm, ← Matrix.mulVec_mulVec,
+              Matrix.mulVec_add, he2_vs, he2_vt, zero_add] at h_app
+          exact h_app)
+        -- s*t ∣ r from IsCoprime s t
+        rw [ht_eq]; exact IsCoprime.mul_dvd ⟨a, b, hab⟩ hs_r ht_r
 
 /-- **Main Theorem (General Squarefree Case)**:
     Over ANY field K, nonderogatory matrices with squarefree characteristic
@@ -334,7 +516,7 @@ theorem nonderogatory_squarefree_has_cyclic_vector
     rw [h_nd, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]
   -- Get a strongly cyclic vector for the full minpoly M
   obtain ⟨v, hv_ne, -, hv_strong⟩ :=
-    exists_strongly_cyclic M h_nd (minpoly K M).natDegree (minpoly K M) le_rfl h_sf (dvd_refl _)
+    exists_strongly_cyclic M h_nd (minpoly K M).natDegree (minpoly K M) le_rfl (by omega) h_sf (dvd_refl _)
   -- v is a cyclic vector: r(M)v = 0 and deg(r) < n → r = 0
   refine ⟨v, fun r hr hann => ?_⟩
   -- Strong cyclicity gives: minpoly M ∣ r
