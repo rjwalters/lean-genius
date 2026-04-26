@@ -205,6 +205,70 @@ theorem f_gap_lower_bound {n : ℕ} (hn : 1 ≤ n) :
         omega
 
 /-
+## Part IV-b: Mersenne Divisibility and Tau Bounds
+
+Key structural property: divisors of k inject into divisors of 2^k - 1
+via d ↦ 2^d - 1, giving τ(2^k - 1) ≥ τ(k). This connects the growth
+of f to the divisor summatory function Σ τ(k).
+-/
+
+/-- If a ∣ b then (2^a - 1) ∣ (2^b - 1). Mersenne divisibility. -/
+theorem mersenne_dvd {a b : ℕ} (h : a ∣ b) : (2 ^ a - 1) ∣ (2 ^ b - 1) := by
+  obtain ⟨m, rfl⟩ := h
+  induction m with
+  | zero => simp
+  | succ m ih =>
+    rw [mul_succ, pow_add]
+    have h2a : 1 ≤ 2 ^ a := Nat.one_le_pow _ 2 (by norm_num)
+    have h2am : 1 ≤ 2 ^ (a * m) := Nat.one_le_pow _ 2 (by norm_num)
+    have h_prod : 1 ≤ 2 ^ (a * m) * 2 ^ a := by rw [← pow_add]; exact Nat.one_le_pow _ 2 (by norm_num)
+    -- Identity: x*y - 1 = x*(y-1) + (x-1) for x,y �� 1
+    have key : 2 ^ (a * m) * 2 ^ a - 1 =
+        2 ^ (a * m) * (2 ^ a - 1) + (2 ^ (a * m) - 1) := by
+      zify [h2a, h2am, h_prod]; ring
+    rw [key]
+    exact Nat.dvd_add (dvd_mul_left _ _) ih
+
+/-- The map d ↦ 2^d - 1 is injective on positive naturals. -/
+private theorem mersenne_injective {a b : ℕ} (ha : 0 < a) (hb : 0 < b)
+    (h : 2 ^ a - 1 = 2 ^ b - 1) : a = b := by
+  have h2a : 1 ≤ 2 ^ a := Nat.one_le_pow _ 2 (by norm_num)
+  have h2b : 1 ≤ 2 ^ b := Nat.one_le_pow _ 2 (by norm_num)
+  have heq : 2 ^ a = 2 ^ b := by omega
+  by_contra h_ne
+  rcases lt_or_gt_of_ne h_ne with h_lt | h_gt
+  · exact absurd heq (Nat.pow_lt_pow_right (by norm_num : 1 < 2) h_lt).ne
+  · exact absurd heq (Nat.pow_lt_pow_right (by norm_num : 1 < 2) h_gt).ne'
+
+/-- τ(2^k - 1) ≥ τ(k): divisors of k inject into divisors of 2^k - 1
+    via the map d ↦ 2^d - 1. -/
+theorem tau_mersenne_ge_tau {k : ℕ} (hk : 1 ≤ k) : tau k ≤ tau (2 ^ k - 1) := by
+  unfold tau
+  apply Finset.card_le_card_of_injOn (fun d => 2 ^ d - 1)
+  · -- The map sends k.divisors into (2^k - 1).divisors
+    intro d hd
+    rw [Nat.mem_divisors] at hd ⊢
+    refine ⟨mersenne_dvd hd.1, ?_⟩
+    have : 2 ≤ 2 ^ k := by
+      calc 2 = 2 ^ 1 := by norm_num
+        _ ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) hk
+    omega
+  · -- The map is injective on k.divisors
+    intro a ha b hb hab
+    rw [Finset.mem_coe, Nat.mem_divisors] at ha hb
+    exact mersenne_injective (Nat.pos_of_dvd_of_pos ha.1 (by omega))
+                              (Nat.pos_of_dvd_of_pos hb.1 (by omega)) hab
+
+/-- f(n) ≥ Σ_{k=1}^n τ(k): the Mersenne tau bound applied term by term.
+    Since Σ_{k=1}^n τ(k) ~ n log n (Dirichlet), this gives f(n) ≫ n log n. -/
+theorem f_divisor_sum_lower (n : ℕ) :
+    ∑ k ∈ Finset.Icc 1 n, tau k ≤ f n := by
+  unfold f
+  apply Finset.sum_le_sum
+  intro k hk
+  exact tau_mersenne_ge_tau (Finset.mem_Icc.mp hk).1
+
+/-
 ## Part V: The Ratio f(2n)/f(n)
 -/
 
