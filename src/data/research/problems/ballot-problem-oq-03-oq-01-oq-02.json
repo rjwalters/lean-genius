@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: hook_walk_identity proved for ≤2-row, ≤2-col, gHookYD, 3-row, 4-row. File 7274 lines. Sorry only at ≥5-row shapes.",
+    "progressSummary": "PROGRESS: sorry covers only ≥9-row (all 3-8 row proved direct)",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -121,7 +121,8 @@
       "hook_walk_identity_fourRow: proves ∑_c hookProd(μ)/hookProd(μ\\c)=|μ| for all 4-row shapes [a,b,c,d] in BallotProblemOQ03OQ01OQ02.lean:~6650",
       "fourRow_colLen_*: column length lemmas for 4 zones in 4-row shapes",
       "fourRow_hookLen_row*: hook length lemmas for rows 0-3 in all zones",
-      "fourRow_arm_row*: arm product ratio lemmas using telescoping products"
+      "fourRow_arm_row*: arm product ratio lemmas using telescoping products",
+      "hook_walk_identity_eightRow in BallotProblemOQ03OQ01OQ02.lean:~10052 (PART XXII, 1612 lines, 0 sorries)"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -187,7 +188,8 @@
       "YoungDiagram.rowLen_anti (antitone row lengths) used to show i≥3 → rowLen i=0 for [a,2,1]",
       "interval_cases tactic required for isLowerSet base case at (2,0) and for hμ_eq case split on i<3",
       "4-row hook walk identity: R₃+R₂+R₁+R₀=a+b+c+d closes via field_simp;ring after telescoping",
-      "hook_walk_identity sorry scope: now covers only ≥5-row shapes (rowLen 4 ≠ 0); all other cases proved"
+      "hook_walk_identity sorry scope: now covers only ≥5-row shapes (rowLen 4 ≠ 0); all other cases proved",
+      "PART XXII: hook_walk_identity_eightRow proved for all 8-row shapes [a,b,c,d,e,f,g,h] via 7 colLen zones + 36 hookLen + 8 arm lemmas + field_simp/ring; 1612 lines, 0 sorries"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
@@ -196,7 +198,8 @@
     "nextSteps": [
       "PART XIX: extend to 5-row shapes (~300 lines, same algebraic pattern)",
       "GNW general proof (~300 lines) covers all remaining shapes at once",
-      "Docker build verification of PART XVIII compilation"
+      "Docker build verification of PART XVIII compilation",
+      "PART XXIII for 9-row (~1900 lines) OR switch to GNW probabilistic proof (~300-500 lines, general)"
     ]
   },
   "tags": [

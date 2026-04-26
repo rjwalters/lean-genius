@@ -460,3 +460,68 @@ by_cases h4 : μ.rowLen 4 = 0
 1. **5-row case PART XIX**: ~300 more lines, same algebraic pattern; gets sorry to ≥6 rows
 2. **GNW general proof** (~300 lines): probabilistic hook walk, covers all shapes at once
 3. **Alternatively**: row-by-row until the pattern is clear enough to compress into one inductive proof
+
+---
+
+## Session 2026-04-26 (Session 27) — PART XXII: hook_walk_identity for 8-row shapes
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: PROGRESS — sorry scope reduced to ≥9-row shapes only
+
+### What I Did
+
+1. Noted PARTS XIX-XXI (5-7 row) were completed in prior sessions (Sessions 24-26)
+2. Noted master lost PARTS XIVc-XXI in squash commit d93abe3dff2 (deletion of 4791 lines)
+3. Implemented PART XXII (~1612 lines): `hook_walk_identity_eightRow` for all 8-row shapes [a,b,c,d,e,f,g,h]
+   - Variables: k=rowLen 7, g=rowLen 6, f=rowLen 5, e=rowLen 4, d=rowLen 3, c=rowLen 2, b=rowLen 1, a=rowLen 0
+   - a≥b≥c≥d≥e≥f≥g≥k≥1, rowLen 8 = 0
+4. Updated dispatcher: ≥8-row branches to eightRow; sorry only for ≥9-row
+5. Created PR #12811 which restores all lost content (PARTS XIVc-XXI) + adds PART XXII
+
+### New Infrastructure (PART XXII)
+
+**Column length lemmas** (7 zones):
+- `eightRow_colLen_lt`: s < k → colLen = 8
+- `eightRow_colLen_mid1..6`: mid zones → 7, 6, 5, 4, 3, 2
+
+**Hook length lemmas** (36 lemmas for rows 7-0, each covering zone count from 1 to 8):
+- Row 7: 1 lemma
+- Row 6: 2 lemmas
+- Row 5: 3 lemmas
+- Row 4: 4 lemmas
+- Row 3: 5 lemmas
+- Row 2: 6 lemmas
+- Row 1: 7 lemmas
+- Row 0: 8 lemmas
+
+**Arm product lemmas** (8): `eightRow_arm_row7` through `eightRow_arm_row0`
+
+**Main lemma**: `hook_walk_identity_eightRow` via field_simp + ring, 0 sorries
+
+### Key Findings
+
+- The mechanical pattern extends unchanged to 8 rows
+- Pattern: n-row shapes need n(n+1)/2 hookLen lemmas, n arm lemmas, n colLen zone lemmas
+- field_simp + ring handles arbitrary-dimension rational expressions
+- Lost master content: PARTS XIVc-XXI were in squash commit d93abe3dff2 scope — need careful PR merging
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (10130 → 11747 lines, PART XXII added)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json` (lineCount 11747, theoremCount 315)
+- PR: rjwalters/lean-genius#12811 (restores PARTS XIVc-XXI + adds XXII)
+
+### Sorry Count: 4 (unchanged count, scope reduced)
+
+- `hook_walk_identity` (line ~11662): sorry covers ONLY ≥9-row shapes
+  - Proved: ≤2-row, ≤2-col, all gHookYD, [a,2,1], [a,b,1], 3-row, 4-row, 5-row, 6-row, 7-row, 8-row
+  - Remaining: any μ with 9+ rows AND 3+ columns AND not a generalized hook
+- `ni_count_eq_syt_count` (line 219): RSK bijection (open)
+- `lgv_det_factors_as_hook_quotient` (line 235): det identity (open)
+- `hook_length_formula` (line 245): depends on the two above
+
+### Next Steps
+
+1. **9-row case PART XXIII**: ~1900 lines at same growth rate; OR
+2. **Switch strategy**: GNW probabilistic hook walk proof handles all n simultaneously (~300-500 lines)
+3. The row-by-row approach hits diminishing returns; consider GNW formalization for the general case
