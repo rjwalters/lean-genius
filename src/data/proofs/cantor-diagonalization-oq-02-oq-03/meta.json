@@ -69,9 +69,29 @@
   },
   "crossReferences": [
     {
+      "targetId": "cantor-diagonalization-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry: the ℵ₁ case of the ordinal diagonal argument — any countable enumeration of countable ordinals has a countable supremum, so there exists an uncountable ordinal. This entry generalizes that argument from κ = ℵ₁ to all regular uncountable cardinals κ: regular_sup_bounded and regular_no_surjection instantiate at ℵ₁ via Part IV (aleph1_diagonal), exactly recovering the parent's main theorem"
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Root entry: Cantor's 1891 diagonal argument that ℝ is uncountable — no enumeration of binary sequences can be surjective because the diagonal sequence differs from every entry. The ordinal diagonal here is structurally identical: given a family f_i of ordinals below κ.ord, the 'diagonal ordinal' (sup_i f_i) + 1 differs from every f_i, and regularity ensures it is still below κ.ord. Both are instances of the abstract principle: a suitable notion of 'exceeds all previous entries' constructs a missing element"
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "related",
+      "description": "Cantor's theorem (|A| < |2^A| for all sets A) uses the powerset diagonal: the set {x : x ∉ f(x)} witnesses non-surjectivity of any f: A → ℙ(A). The ordinal diagonal here generalizes a different instance — it uses the successor ordinal (sup+1) as the diagonal witness. Both are 'diagonal arguments': construct an object that beats the entire indexed family. The cardinal generalization in this entry and Cantor's theorem together illustrate the two main flavors of diagonal argument in set theory"
+    },
+    {
+      "targetId": "mathematical-induction-oq-01",
+      "relationship": "foundational",
+      "description": "Transfinite induction and ordinal arithmetic (from Lean's WellFounded infrastructure) underlie the `Ordinal.iSup_lt_ord` theorem used as the core lemma here. The zero/successor/limit trichotomy for ordinals — central to ordinal proofs in Mathlib — is exercised in this entry's `card_succ_lt_of_lt_infinite` and `ord_succ_lt` lemmas, which prove that successor operations on ordinals/cardinals below a regular κ stay below κ"
+    },
+    {
       "targetId": "denumerability-rationals-oq-02",
       "relationship": "related",
-      "description": "Both use diagonal/back-and-forth arguments in set theory; ℚ characterization uses countable case, this uses regular cardinal generalization"
+      "description": "Both use diagonal/back-and-forth arguments in set theory; the rationals characterization uses the countable case of the diagonal, while this entry uses the regular cardinal generalization"
     }
   ],
   "sections": [
