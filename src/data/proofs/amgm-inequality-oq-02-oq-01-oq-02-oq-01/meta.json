@@ -39,111 +39,97 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Newton's identities (also called Newton-Girard identities) relate power sums pₖ = Σxᵢᵏ to elementary symmetric polynomials eₖ = Σ_{i₁<...<iₖ} xᵢ₁...xᵢₖ. Newton stated them around 1666 (published in Arithmetica Universalis, 1707); Albert Girard proved them earlier around 1629. For n=2: p₂ = e₁² − 2e₂, equivalently (Σxᵢ)² = Σxᵢ² + 2·Σ_{i<j} xᵢxⱼ. This is essentially the 'foil' expansion familiar from high school algebra.\n\nThe identity Σ_{i≠j} xᵢxⱼ = 2·Σ_{i<j} xᵢxⱼ is a manifestation of double-counting: each unordered pair {i,j} contributes two ordered pairs (i,j) and (j,i) to the off-diagonal sum, and by commutativity xᵢxⱼ = xⱼxᵢ, both contributions are equal. This double-counting principle is ubiquitous in combinatorics — the handshaking lemma (sum of degrees = 2·|edges|) is another instance.\n\nFormalizing this in Lean requires explicit bookkeeping that human proofs skip: one must establish that offDiag splits into upper and lower triangular parts (with a linear order hypothesis), that Prod.swap bijects them, and that Finset.sum_image handles the reindexing. The `CommRing` generality (not just ℝ) captures the algebraic essence: the proof works whenever multiplication is commutative, with no topology or ordering of values needed.",
-    "problemStatement": "**Open Question**: Show Σ_{i≠j} xᵢxⱼ = 2·Σ_{i<j} xᵢxⱼ.\n\n**Answer**: YES, proved in full generality. For any symmetric function f(i,j) = f(j,i) on a linearly ordered finite set:\n\nΣ_{i≠j} f(i,j) = 2·Σ_{i<j} f(i,j)\n\nThe proof pairs each off-diagonal entry (i,j) with its transpose (j,i). By symmetry, both contribute equally, so the off-diagonal sum double-counts each ordered pair.",
-    "text": "Proves the off-diagonal symmetry identity Σ_{i≠j} f(i,j) = 2·Σ_{i<j} f(i,j) for symmetric functions, completing the Newton-Girard decomposition.",
-    "proofStrategy": "**Part I**: Decompose offDiag into upper-triangular {(i,j) | i < j} and lower-triangular {(i,j) | j < i} parts. These are disjoint and exhaust offDiag.\n\n**Part II**: Show that Prod.swap maps the lower-triangular part bijectively onto the upper-triangular part (image_swap_lower_eq_upper).\n\n**Part III**: For symmetric f, sum over lower = sum over upper. Key steps: (1) rewrite f(a,b) = f(swap(a,b)) by symmetry, (2) apply sum_image with swap injectivity, (3) use the image identity.\n\n**Part IV**: Combine: Σ offDiag = Σ upper + Σ lower = 2·Σ upper.",
+    "historicalContext": "Newton's identities (also called Newton-Girard identities) relate power sums pₖ = Σxᵢᵏ to elementary symmetric polynomials eₖ = Σ_{i₁<...<iₖ} xᵢ₁...xᵢₖ. Newton stated them around 1666 (published in Arithmetica Universalis, 1707); Albert Girard proved them earlier around 1629.\n\nThe general recurrence is: k·eₖ = Σ_{j=1}^k (-1)^{j-1} eₖ₋ⱼ·pⱼ (or equivalently pₖ = (-1)^{k+1}·k·eₖ − Σ_{0<j<k} (-1)^j·eⱼ·pₖ₋ⱼ). The first three cases are: p₁ = e₁, p₂ = e₁² − 2e₂, p₃ = e₁p₂ − e₂p₁ + 3e₃. These are foundational in symmetric function theory and appear throughout algebraic combinatorics, invariant theory, and number theory.\n\nMathlib 4 formalizes the general Newton-Girard recurrence via MvPolynomial.psum_eq_mul_esymm_sub_sum. This file derives the k=1,2,3 corollaries explicitly, with the antidiagonal computation made fully concrete.",
+    "problemStatement": "**Open Question**: Prove the Newton-Girard recurrence: for all k ≥ 1, the power sum pₖ = Σxᵢᵏ satisfies\n\npₖ = (-1)^{k+1}·k·eₖ − Σ_{0<j<k} (-1)^j·eⱼ·pₖ₋ⱼ\n\nwhere eₖ = Σ_{i₁<...<iₖ} xᵢ₁·...·xᵢₖ is the k-th elementary symmetric polynomial.\n\n**Answer**: Proved via Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum. Three corollaries are derived explicitly: p₁ = e₁, p₂ = e₁² − 2e₂, p₃ = e₁p₂ − e₂p₁ + 3e₃.",
+    "text": "Derives three Newton-Girard corollaries (k=1,2,3) from Mathlib's general recurrence theorem MvPolynomial.psum_eq_mul_esymm_sub_sum. Each corollary is obtained by instantiating the recurrence at the specific degree and computing the resulting antidiagonal filter explicitly, then closing with ring.",
+    "proofStrategy": "**Corollary 1 (k=1)**: p₁ = e₁ follows directly by transitivity from Mathlib's `psum_one` (p₁ = Σ X i) and `esymm_one` (e₁ = Σ X i).\n\n**Corollary 2 (k=2)**: Apply `psum_eq_mul_esymm_sub_sum` at k=2. The antidiagonal filter {(a,b) | a+b=2, 0<a<2} = {(1,1)}. This gives p₂ = −2e₂ + e₁·p₁ = e₁² − 2e₂, closed by ring after substituting p₁ = e₁.\n\n**Corollary 3 (k=3)**: Apply `psum_eq_mul_esymm_sub_sum` at k=3. The antidiagonal filter {(a,b) | a+b=3, 0<a<3} = {(1,2),(2,1)}. This gives p₃ = 3e₃ + e₁·p₂ − e₂·p₁, closed by ring.",
     "keyInsights": [
-      "The decomposition offDiag = upper ∪ lower relies on LinearOrder — every pair satisfies exactly one of i < j or j < i (since i ≠ j)",
-      "Prod.swap provides the explicit bijection between lower and upper triangular parts",
-      "The proof works for any CommRing, not just ℝ — the symmetry identity is purely algebraic",
-      "Finset.sum_image handles the reindexing step cleanly: swap is injective, so the sum transforms correctly",
-      "The `calc` block in `sum_lower_eq_sum_upper` makes the three-step proof readable: symmetry → reindexing → image identity. This proof structure (rewrite f(p) → sum_image → image identity) is a reusable template for any double-counting argument involving symmetric functions over finsets."
+      "Mathlib's psum_eq_mul_esymm_sub_sum provides the full recurrence; this file reduces it to explicit antidiagonal computations at k=2,3",
+      "The antidiagonal filter computation uses omega to verify membership conditions, making the combinatorial bookkeeping fully automatic",
+      "psum_one_eq_esymm_one bridges two Mathlib lemmas (psum_one and esymm_one) that each separately state p₁ = Σ X i = e₁",
+      "All three corollaries work over any CommRing, not just ℝ — the algebraic structure is the only requirement",
+      "The ring tactic closes each corollary after the antidiagonal is fully expanded, separating the combinatorial filtering from the algebraic simplification"
     ],
     "prerequisites": [
-      "Finset.offDiag and its properties (Mathlib)",
-      "Finset.sum_image — reindexing sums under injective maps",
-      "Parent proof: AMGMInequalityOQ02OQ01 (sq_sum_eq_diag_plus_offdiag)"
+      "MvPolynomial.psum_eq_mul_esymm_sub_sum — general Newton-Girard recurrence (Mathlib)",
+      "MvPolynomial.psum_one and esymm_one — base cases (Mathlib)",
+      "Finset.antidiagonal and filter — antidiagonal computation infrastructure (Mathlib)",
+      "Parent proof: AmgmInequalityOQ02OQ01OQ02 (off-diagonal symmetry Σ_{i≠j} = 2·e₂)"
     ]
   },
   "sections": [
     {
       "id": "header",
-      "title": "Problem Statement",
+      "title": "Module Header",
       "startLine": 1,
-      "endLine": 26,
-      "summary": "Import, docstring stating the off-diagonal symmetry identity and its role in Newton-Girard.",
-      "mathContext": "$\\sum_{i \\neq j} f(i,j) = 2 \\sum_{i < j} f(i,j)$ for $f(i,j) = f(j,i)$."
+      "endLine": 28,
+      "summary": "Docstring stating the Newton-Girard recurrence and the three corollaries to be derived. Imports Mathlib and opens MvPolynomial, Finset, BigOperators.",
+      "mathContext": "Newton-Girard recurrence: $p_k = (-1)^{k+1} k e_k - \\sum_{0 < j < k} (-1)^j e_j p_{k-j}$."
     },
     {
-      "id": "decomposition",
-      "title": "Part I: Upper/Lower Triangular Decomposition",
-      "startLine": 27,
-      "endLine": 52,
-      "summary": "offDiag_eq_upper_union_lower and upper_lower_disjoint: offDiag = {i<j} ∪ {j<i}, disjoint.",
-      "mathContext": "For a linearly ordered set, $\\{(i,j) \\mid i \\neq j\\} = \\{(i,j) \\mid i < j\\} \\sqcup \\{(i,j) \\mid j < i\\}$."
+      "id": "corollary-1",
+      "title": "Corollary 1: p₁ = e₁",
+      "startLine": 32,
+      "endLine": 42,
+      "summary": "psum_one_eq_esymm_one: bridges Mathlib's psum_one and esymm_one by transitivity. Both lemmas state that the respective quantity equals Σ X i.",
+      "mathContext": "$p_1 = \\sum_i X_i = e_1$."
     },
     {
-      "id": "swap-image",
-      "title": "Part II: Swap Image Lemma",
-      "startLine": 53,
-      "endLine": 70,
-      "summary": "image_swap_lower_eq_upper: swapping coordinates maps {j<i} to {i<j} exactly.",
-      "mathContext": "$\\text{swap}(\\{(i,j) \\mid j < i\\}) = \\{(i,j) \\mid i < j\\}$."
+      "id": "corollary-2",
+      "title": "Corollary 2: p₂ = e₁² − 2e₂",
+      "startLine": 46,
+      "endLine": 65,
+      "summary": "psum_two_eq: applies psum_eq_mul_esymm_sub_sum at k=2. Antidiagonal filter {(a,b) | a+b=2, 0<a<2} = {(1,1)} computed via omega. Result closed by ring.",
+      "mathContext": "$p_2 = e_1^2 - 2e_2$, i.e., $\\sum x_i^2 = (\\sum x_i)^2 - 2\\sum_{i<j} x_i x_j$."
     },
     {
-      "id": "symmetry",
-      "title": "Part III: Core Symmetry via sum_image",
-      "startLine": 71,
-      "endLine": 99,
-      "summary": "sum_lower_eq_sum_upper: ∑_{j<i} f = ∑_{i<j} f for symmetric f. Uses sum_image with swap injectivity.",
-      "mathContext": "For $f(i,j) = f(j,i)$: $\\sum_{j<i} f(i,j) = \\sum_{i<j} f(i,j)$."
-    },
-    {
-      "id": "main-theorem",
-      "title": "Part IV: Main Theorem",
-      "startLine": 100,
-      "endLine": 117,
-      "summary": "sum_offDiag_eq_two_mul_sum_upper: Σ_{i≠j} f = 2·Σ_{i<j} f. Combines decomposition + symmetry.",
-      "mathContext": "$\\sum_{i \\neq j} f(i,j) = 2 \\sum_{i < j} f(i,j)$."
-    },
-    {
-      "id": "application",
-      "title": "Part V: Application and Examples",
-      "startLine": 118,
-      "endLine": 138,
-      "summary": "offDiag_prod_eq_two_mul_e2: specialization to xᵢxⱼ. Concrete ring examples verified by ring.",
-      "mathContext": "$\\sum_{i \\neq j} x_i x_j = 2 \\sum_{i < j} x_i x_j = 2 e_2$."
+      "id": "corollary-3",
+      "title": "Corollary 3: p₃ = e₁p₂ − e₂p₁ + 3e₃",
+      "startLine": 69,
+      "endLine": 91,
+      "summary": "psum_three_eq: applies psum_eq_mul_esymm_sub_sum at k=3. Antidiagonal filter {(a,b) | a+b=3, 0<a<3} = {(1,2),(2,1)} computed via omega. Sum_insert separates the two terms, closed by ring.",
+      "mathContext": "$p_3 = e_1 p_2 - e_2 p_1 + 3e_3$."
     }
   ],
   "conclusion": {
-    "summary": "Gallery entry for a planned Newton-Girard recurrence proof. Status: formalized (wip) — the Lean file has not yet been written. The off-diagonal symmetry identity is proved in the parent entry (amgm-inequality-oq-02-oq-01-oq-02). This entry tracks the open task of extending that proof to the full Newton-Girard recurrence for all k ≥ 1.",
-    "implications": "**For Newton-Girard**: Combined with the parent's diagonal/off-diagonal decomposition, this gives the complete n=2 Newton-Girard identity: (Σxᵢ)² = Σxᵢ² + 2·e₂.\n\n**For Symmetric Functions**: The identity is the fundamental connection between the power sum p₂ and the elementary symmetric polynomial e₂, forming the base case for the full Newton-Girard recurrence.\n\n**For Mathlib**: Demonstrates clean use of Finset.offDiag, sum_image, and Prod.swap for combinatorial double-counting arguments.",
+    "summary": "Derives three Newton-Girard corollaries (k=1,2,3) from Mathlib's general recurrence. All theorems are machine-verified with 0 sorries and 0 axiom declarations. The core results rely on Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum; original contributions are the explicit antidiagonal instantiations at k=2,3 and the bridging lemma psum_one_eq_esymm_one.",
+    "implications": "**For Newton-Girard**: The three corollaries (p₁=e₁, p₂=e₁²−2e₂, p₃=e₁p₂−e₂p₁+3e₃) are the foundational cases used in symmetric function theory and algebraic combinatorics.\n\n**For Symmetric Functions**: Combined with the parent's diagonal/off-diagonal decomposition, the k=2 corollary completes the Newton-Girard identity: (Σxᵢ)² = Σxᵢ² + 2·e₂.\n\n**For Mathlib Integration**: Demonstrates the pattern for instantiating the general psum_eq_mul_esymm_sub_sum recurrence at specific degrees using antidiagonal filters and omega, usable as a template for higher k.",
     "openQuestions": [
-      "Prove the full Newton-Girard recurrence: p_k = Σ_{i=1}^k (-1)^{i-1} eᵢ p_{k-i}",
-      "Formalize the relationship between off-diagonal symmetry and Schur positivity"
+      "Extend to k=4,5,... using the same antidiagonal template",
+      "Formalize the relationship between Newton-Girard and Schur positivity",
+      "Prove the general recurrence inductively without Mathlib, as an independent verification"
     ]
   },
   "crossReferences": [
     {
       "targetId": "amgm-inequality-oq-02-oq-01-oq-02",
       "relationship": "parent",
-      "description": "Direct parent: `AmgmInequalityOQ02OQ01OQ02.lean` proves $\\sum_{i \\neq j} x_i x_j = 2 \\sum_{i<j} x_i x_j$ via the Prod.swap double-counting argument. This entry (OQ02OQ01) plans to extend that result to the full Newton-Girard recurrence $p_k = \\sum_{i=1}^k (-1)^{i-1} e_i p_{k-i}$ for all $k \\geq 1$, generalizing the $k=2$ base case."
+      "description": "Direct parent: `AmgmInequalityOQ02OQ01OQ02.lean` proves the off-diagonal symmetry identity $\\sum_{i \\neq j} x_i x_j = 2 \\sum_{i<j} x_i x_j$ via Prod.swap double-counting. This entry (OQ02OQ01) derives the Newton-Girard recurrences p₁=e₁, p₂=e₁²−2e₂, p₃=e₁p₂−e₂p₁+3e₃ from Mathlib's general formula."
     },
     {
       "targetId": "amgm-inequality-oq-02-oq-01",
       "relationship": "extends",
-      "description": "Parent proof establishing (Σxᵢ)² = Σxᵢ² + Σ_{i≠j} xᵢxⱼ. This entry proves the off-diagonal sum equals 2·e₂"
+      "description": "Parent proof establishing (Σxᵢ)² = Σxᵢ² + Σ_{i≠j} xᵢxⱼ. Combined with this entry's k=2 corollary (p₂ = e₁² − 2e₂), this completes the Newton-Girard decomposition."
     },
     {
       "targetId": "amgm-inequality-oq-02",
       "relationship": "extends",
-      "description": "Root AM-GM formalization. The off-diagonal symmetry identity is part of the Newton-Girard framework underlying AM-GM"
+      "description": "Root AM-GM formalization. The Newton-Girard recurrences proved here are part of the symmetric function framework underlying AM-GM."
     },
     {
       "targetId": "amgm-inequality",
       "relationship": "ancestor",
-      "description": "The main AM-GM inequality — grandparent proof. The off-diagonal symmetry proved here (Σ_{i≠j} = 2·e₂) completes the factoring step in the parent Newton-Girard identity, ultimately connecting to the AM-GM proof."
+      "description": "The main AM-GM inequality — grandparent proof. The Newton-Girard recurrences connect power sums to elementary symmetric polynomials, which form the algebraic backbone of the AM-GM inequality."
     },
     {
       "targetId": "vietas-formulas",
       "relationship": "related",
-      "description": "Vieta's formulas express polynomial coefficients as elementary symmetric polynomials. The second elementary symmetric polynomial e₂ = Σ_{i<j} xᵢxⱼ proved equal to half the off-diagonal sum here is exactly Vieta's e₂, connecting off-diagonal symmetry to root-coefficient relations."
+      "description": "Vieta's formulas express polynomial coefficients as elementary symmetric polynomials. The eₖ appearing in the Newton-Girard recurrences proved here are exactly Vieta's elementary symmetric polynomials, connecting power sums to root-coefficient relations."
     },
     {
       "targetId": "cauchy-schwarz",
       "relationship": "related",
-      "description": "The Cauchy-Schwarz inequality uses the same Lagrange identity that decomposes (Σaᵢbᵢ)² into a sum over pairs. The symmetric function structure here (pairing (i,j) with (j,i)) is the combinatorial engine behind Cauchy-Schwarz."
+      "description": "The Cauchy-Schwarz inequality involves the Lagrange identity, which can be expressed in terms of power sums p₂ and the elementary symmetric polynomial e₂. The Newton-Girard identity p₂ = e₁² − 2e₂ proved here is the algebraic link."
     }
   ],
   "references": [
@@ -151,7 +137,7 @@
       "authors": "Newton, Isaac",
       "title": "Arithmetica Universalis",
       "year": "1707",
-      "note": "Newton's identities relating power sums to elementary symmetric polynomials. The n=2 case p₂ = e₁² - 2e₂ is the simplest instance"
+      "note": "Newton's identities relating power sums to elementary symmetric polynomials. The n=2 case p₂ = e₁² - 2e₂ and n=3 case p₃ = e₁p₂ - e₂p₁ + 3e₃ are proved explicitly here."
     }
   ]
 }
