@@ -23,12 +23,12 @@
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.roots_countP_pos_le_signVariations",
-        "description": "Descartes upper bound: positive root count ≤ sign variations",
+        "description": "Descartes upper bound: positive root count \u2264 sign variations",
         "module": "Mathlib.Algebra.Polynomial.RuleOfSigns"
       },
       {
         "theorem": "Polynomial.succ_signVariations_le_X_sub_C_mul",
-        "description": "Multiplication by (X - r) with r > 0 adds ≥ 1 sign variation",
+        "description": "Multiplication by (X - r) with r > 0 adds \u2265 1 sign variation",
         "module": "Mathlib.Algebra.Polynomial.RuleOfSigns"
       },
       {
@@ -64,20 +64,20 @@
     "wiedijkNumber": 100,
     "axiomCount": 0,
     "lineCount": 495,
-    "assumptions": "None — fully verified with 0 axioms and 0 sorries",
+    "assumptions": "None \u2014 fully verified with 0 axioms and 0 sorries",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "René Descartes stated his rule of signs in *La Géométrie* (1637), the appendix to the *Discours de la méthode* that founded analytic geometry. The rule bounds the number of positive real roots of a polynomial by the number of sign changes in its coefficient sequence. Descartes gave no proof — he stated the result as evident. The first rigorous proof was given by Carl Friedrich Gauss (1828) using Rolle's theorem: between consecutive roots of $p$, the derivative $p'$ has a root, so the number of roots of $p$ is bounded by the number of sign changes in the coefficients of $p'$, which equals the number of sign changes of $p$ minus 1.\n\nSandy Grabiner published a remarkable alternative proof in the *American Mathematical Monthly* (1999), showing the rule can be proved without Rolle's theorem or any calculus beyond the Intermediate Value Theorem. The key insight is purely algebraic: when a polynomial $p(x)$ is factored as $p(x) = (x - r)q(x)$ with $r > 0$, the sign variation count of $p$'s coefficients exceeds that of $q$'s by at least 1. This enables a clean induction on the number of positive roots. Grabiner's approach is more elementary and constructive than the Rolle-based proof, making it particularly suitable for formalization in Lean 4.",
-    "problemStatement": "**Open Question (OQ-04)**: Can the algebraic proof of Descartes' Rule of Signs — using only polynomial division and induction, without Rolle's theorem — be formalized in Lean 4?\n\n**Answer**: Yes. This file provides a complete formalization following Grabiner's method, with 0 axioms and 0 sorries. The proof demonstrates that the purely algebraic approach (polynomial factoring + IVT) is a viable alternative to the analytic approach (Rolle's theorem + differentiation).",
-    "text": "This formalization proves Descartes' Rule of Signs via the algebraic method of Grabiner (1999). The key innovation is replacing Rolle's theorem with a direct analysis of how polynomial coefficients transform under multiplication by a positive-root linear factor (X - r).\n\nThe proof has three main components:\n1. The Grabiner Multiplication Lemma: V((X-r)·q) ≥ V(q) + 1 for r > 0\n2. The Endpoint Sign Lemma: a polynomial with no positive roots has even sign variations\n3. The Inductive Assembly: factor out positive roots one at a time, tracking sign variations\n\nThe only analytic ingredient is the Intermediate Value Theorem, used once to show that if a polynomial has no positive roots, its constant term and leading coefficient must have the same sign.",
-    "proofStrategy": "**Step 1: Coefficient Transformation**\nWhen p = (X - r)·q with r > 0, the constant term of p is -r·q(0), which has opposite sign to q(0). This forces at least one new sign variation.\n\n**Step 2: Combinatorial Parity (eraseLead induction)**\nFor p with p(0) ≠ 0, the parity of V(p) equals 0 if sign(p(0)) = sign(leading coeff), and 1 otherwise. Proved by induction on support cardinality using the eraseLead recursive formula.\n\n**Step 3: IVT for Base Case**\nIf p has no positive roots and p(0) ≠ 0, then sign(p(0)) = sign(leading coeff). By contrapositive: if they differed, IVT would give a positive root.\n\n**Step 4: Grabiner Induction**\nBy strong induction on degree: if p has a positive root r, write p = (X-r)·s. By IH, V(s) - countP(s) is even. Since V(p) and V(s) have different parities (the signs flip at coeff 0 but agree at leading coeff), and countP(p) = countP(s) + 1, we get V(p) - countP(p) is even.",
+    "historicalContext": "Ren\u00e9 Descartes stated his rule of signs in *La G\u00e9om\u00e9trie* (1637), the appendix to the *Discours de la m\u00e9thode* that founded analytic geometry. The rule bounds the number of positive real roots of a polynomial by the number of sign changes in its coefficient sequence. Descartes gave no proof \u2014 he stated the result as evident. The first rigorous proof was given by Carl Friedrich Gauss (1828) using Rolle's theorem: between consecutive roots of $p$, the derivative $p'$ has a root, so the number of roots of $p$ is bounded by the number of sign changes in the coefficients of $p'$, which equals the number of sign changes of $p$ minus 1.\n\nSandy Grabiner published a remarkable alternative proof in the *American Mathematical Monthly* (1999), showing the rule can be proved without Rolle's theorem or any calculus beyond the Intermediate Value Theorem. The key insight is purely algebraic: when a polynomial $p(x)$ is factored as $p(x) = (x - r)q(x)$ with $r > 0$, the sign variation count of $p$'s coefficients exceeds that of $q$'s by at least 1. This enables a clean induction on the number of positive roots. Grabiner's approach is more elementary and constructive than the Rolle-based proof, making it particularly suitable for formalization in Lean 4.",
+    "problemStatement": "**Open Question (OQ-04)**: Can the algebraic proof of Descartes' Rule of Signs \u2014 using only polynomial division and induction, without Rolle's theorem \u2014 be formalized in Lean 4?\n\n**Answer**: Yes. This file provides a complete formalization following Grabiner's method, with 0 axioms and 0 sorries. The proof demonstrates that the purely algebraic approach (polynomial factoring + IVT) is a viable alternative to the analytic approach (Rolle's theorem + differentiation).",
+    "text": "This formalization proves Descartes' Rule of Signs via the algebraic method of Grabiner (1999). The key innovation is replacing Rolle's theorem with a direct analysis of how polynomial coefficients transform under multiplication by a positive-root linear factor (X - r).\n\nThe proof has three main components:\n1. The Grabiner Multiplication Lemma: V((X-r)\u00b7q) \u2265 V(q) + 1 for r > 0\n2. The Endpoint Sign Lemma: a polynomial with no positive roots has even sign variations\n3. The Inductive Assembly: factor out positive roots one at a time, tracking sign variations\n\nThe only analytic ingredient is the Intermediate Value Theorem, used once to show that if a polynomial has no positive roots, its constant term and leading coefficient must have the same sign.",
+    "proofStrategy": "**Step 1: Coefficient Transformation**\nWhen p = (X - r)\u00b7q with r > 0, the constant term of p is -r\u00b7q(0), which has opposite sign to q(0). This forces at least one new sign variation.\n\n**Step 2: Combinatorial Parity (eraseLead induction)**\nFor p with p(0) \u2260 0, the parity of V(p) equals 0 if sign(p(0)) = sign(leading coeff), and 1 otherwise. Proved by induction on support cardinality using the eraseLead recursive formula.\n\n**Step 3: IVT for Base Case**\nIf p has no positive roots and p(0) \u2260 0, then sign(p(0)) = sign(leading coeff). By contrapositive: if they differed, IVT would give a positive root.\n\n**Step 4: Grabiner Induction**\nBy strong induction on degree: if p has a positive root r, write p = (X-r)\u00b7s. By IH, V(s) - countP(s) is even. Since V(p) and V(s) have different parities (the signs flip at coeff 0 but agree at leading coeff), and countP(p) = countP(s) + 1, we get V(p) - countP(p) is even.",
     "keyInsights": [
-      "Grabiner's algebraic proof shows Rolle's theorem is NOT necessary for Descartes' Rule: polynomial factoring p = (x-r₁)···(x-rₖ)·s and the key sign flip (-r·b₀ vs b₀) replaces the classical derivative analysis entirely.",
-      "The coefficient transformation lemma is the algebraic heart: when p = (x-r)·q with r > 0, the constant term of p is -r·q₀, which has opposite sign to q₀. This forces V(p) ≥ V(q) + 1, enabling induction on root count.",
-      "Sign variation parity (V(p) ≡ 0 or 1 mod 2 according to whether sign(p₀) = sign(leading coeff)) is a purely combinatorial fact, proved by induction on support.card using the eraseLead recursive formula — no analysis required.",
-      "IVT is the sole analytic ingredient: if sign(p₀) ≠ sign(leading coeff), then for large R the polynomial changes sign on [0,R], giving a positive root by IVT. This is the only place where continuity of polynomials is used.",
-      "The two inductive strategies — induction on root count via factoring (Grabiner) vs. induction on degree via differentiation (Rolle) — give dual proofs of the same result. Grabiner's approach yields a more constructive picture: each positive root factored out can be explicitly tracked.",
+      "Grabiner's algebraic proof shows Rolle's theorem is NOT necessary for Descartes' Rule: polynomial factoring p = (x-r\u2081)\u00b7\u00b7\u00b7(x-r\u2096)\u00b7s and the key sign flip (-r\u00b7b\u2080 vs b\u2080) replaces the classical derivative analysis entirely.",
+      "The coefficient transformation lemma is the algebraic heart: when p = (x-r)\u00b7q with r > 0, the constant term of p is -r\u00b7q\u2080, which has opposite sign to q\u2080. This forces V(p) \u2265 V(q) + 1, enabling induction on root count.",
+      "Sign variation parity (V(p) \u2261 0 or 1 mod 2 according to whether sign(p\u2080) = sign(leading coeff)) is a purely combinatorial fact, proved by induction on support.card using the eraseLead recursive formula \u2014 no analysis required.",
+      "IVT is the sole analytic ingredient: if sign(p\u2080) \u2260 sign(leading coeff), then for large R the polynomial changes sign on [0,R], giving a positive root by IVT. This is the only place where continuity of polynomials is used.",
+      "The two inductive strategies \u2014 induction on root count via factoring (Grabiner) vs. induction on degree via differentiation (Rolle) \u2014 give dual proofs of the same result. Grabiner's approach yields a more constructive picture: each positive root factored out can be explicitly tracked.",
       "The Lean formalization separates the proof into four cleanly independent components: (1) coefficient recurrence, (2) Grabiner's lemma from Mathlib, (3) parity by eraseLead induction, (4) IVT base case. Each can be understood and verified independently."
     ],
     "prerequisites": [
@@ -117,7 +117,7 @@
       "startLine": 180,
       "endLine": 296,
       "summary": "If p has no positive roots, then p(0) and the leading coefficient have the same sign.",
-      "mathContext": "If $\\text{sign}(p(0)) \\neq \\text{sign}(a_n)$, then IVT on $[0, R]$ for large $R$ produces a positive root — contradiction. This is the sole analytic ingredient."
+      "mathContext": "If $\\text{sign}(p(0)) \\neq \\text{sign}(a_n)$, then IVT on $[0, R]$ for large $R$ produces a positive root \u2014 contradiction. This is the sole analytic ingredient."
     },
     {
       "id": "parity-proof",
@@ -138,7 +138,7 @@
   ],
   "conclusion": {
     "summary": "This formalization answers Open Question OQ-04 affirmatively: the algebraic proof of Descartes' Rule of Signs (Grabiner 1999) can be fully formalized in Lean 4 with 0 axioms and 0 sorries. The proof avoids Rolle's theorem entirely, using only polynomial factoring, coefficient analysis, and the Intermediate Value Theorem.",
-    "implications": "**1. Proof Diversity**: Two independent proof paths (algebraic and analytic) for the same result, each with different strengths.\n\n**2. Minimality**: The algebraic proof uses strictly less analysis (IVT only, no derivatives) than the classical proof.\n\n**3. Constructive Insight**: The factoring approach is more algorithmic — it describes how to decompose a polynomial and track sign changes step by step.\n\n**4. Pedagogical Value**: Demonstrates that 'algebraic' vs 'analytic' proof distinctions are formalizably meaningful in Lean.",
+    "implications": "**1. Proof Diversity**: Two independent proof paths (algebraic and analytic) for the same result, each with different strengths.\n\n**2. Minimality**: The algebraic proof uses strictly less analysis (IVT only, no derivatives) than the classical proof.\n\n**3. Constructive Insight**: The factoring approach is more algorithmic \u2014 it describes how to decompose a polynomial and track sign changes step by step.\n\n**4. Pedagogical Value**: Demonstrates that 'algebraic' vs 'analytic' proof distinctions are formalizably meaningful in Lean.",
     "openQuestions": [
       "Can the IVT step be eliminated entirely, giving a purely algebraic proof? This would require an algebraic proof that polynomials with no positive roots have even sign variations.",
       "Can the Grabiner method be extended to prove Budan's theorem (root counting in intervals) algebraically?",
@@ -169,7 +169,7 @@
     {
       "targetId": "intermediate-value-theorem",
       "relationship": "foundational",
-      "description": "IVT is the sole analytic ingredient in the algebraic proof — used to show that polynomials with no positive roots have matching endpoint signs."
+      "description": "IVT is the sole analytic ingredient in the algebraic proof \u2014 used to show that polynomials with no positive roots have matching endpoint signs."
     }
   ],
   "leanFile": {
@@ -191,7 +191,7 @@
     "namespace": "DescartesAlgebraic",
     "lineCount": 495,
     "axiomCount": 0,
-    "theoremCount": 22,
+    "theoremCount": 23,
     "definitionCount": 0,
     "path": "Proofs/DescartesRuleOfSignsOQ04.lean",
     "sorries": 0
@@ -202,7 +202,7 @@
       "url": "https://en.wikipedia.org/wiki/Descartes%27_rule_of_signs"
     },
     {
-      "text": "Descartes, R. (1637). La Géométrie. Leiden (appendix to Discours de la méthode). Original statement of the rule of signs.",
+      "text": "Descartes, R. (1637). La G\u00e9om\u00e9trie. Leiden (appendix to Discours de la m\u00e9thode). Original statement of the rule of signs.",
       "url": "https://en.wikipedia.org/wiki/La_G%C3%A9om%C3%A9trie"
     },
     {
@@ -214,14 +214,14 @@
     {
       "name": "descartes_full_algebraic",
       "type": "core",
-      "description": "Descartes' Rule via Grabiner's algebraic method: ∃ k, countP + 2k = signVariations",
-      "leanType": "∀ p ≠ 0, ∃ k : ℕ, p.roots.countP (0 < ·) + 2 * k = p.signVariations"
+      "description": "Descartes' Rule via Grabiner's algebraic method: \u2203 k, countP + 2k = signVariations",
+      "leanType": "\u2200 p \u2260 0, \u2203 k : \u2115, p.roots.countP (0 < \u00b7) + 2 * k = p.signVariations"
     },
     {
       "name": "grabiner_multiplication_lemma",
       "type": "core",
-      "description": "Key lemma: multiplying by (X - r) with r > 0 adds ≥ 1 sign variation",
-      "leanType": "q.signVariations + 1 ≤ ((X - C r) * q).signVariations"
+      "description": "Key lemma: multiplying by (X - r) with r > 0 adds \u2265 1 sign variation",
+      "leanType": "q.signVariations + 1 \u2264 ((X - C r) * q).signVariations"
     },
     {
       "name": "sv_parity_from_signs",
@@ -233,7 +233,7 @@
       "name": "no_pos_roots_same_sign",
       "type": "supporting",
       "description": "No positive roots implies same-sign endpoints (IVT-based)",
-      "leanType": "countP = 0 → sign(coeff 0) = sign(leadingCoeff)"
+      "leanType": "countP = 0 \u2192 sign(coeff 0) = sign(leadingCoeff)"
     }
   ],
   "sorries": 0

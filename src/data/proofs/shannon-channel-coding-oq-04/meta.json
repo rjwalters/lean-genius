@@ -2,7 +2,7 @@
   "id": "shannon-channel-coding-oq-04",
   "title": "Binary Entropy Function: Properties and Concavity",
   "slug": "shannon-channel-coding-oq-04",
-  "description": "Formalizes the binary entropy function h(p) = -p ln p - (1-p) ln(1-p) with full proofs of boundary values, symmetry, non-negativity, maximum at p=1/2 (= ln 2 nats = 1 bit), the sharp upper bound h(p) ≤ ln 2 via binary Gibbs inequality, the zero-characterization h(p)=0 iff p∈{0,1}, and concavity on [0,1] from Mathlib's convexity of x·log(x).",
+  "description": "Formalizes the binary entropy function h(p) = -p ln p - (1-p) ln(1-p) with full proofs of boundary values, symmetry, non-negativity, maximum at p=1/2 (= ln 2 nats = 1 bit), the sharp upper bound h(p) \u2264 ln 2 via binary Gibbs inequality, the zero-characterization h(p)=0 iff p\u2208{0,1}, and concavity on [0,1] from Mathlib's convexity of x\u00b7log(x).",
   "meta": {
     "author": "Claude Shannon (1948), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Binary_entropy_function",
@@ -22,27 +22,27 @@
     "mathlibDependencies": [
       {
         "theorem": "Real.log_le_sub_one_of_pos",
-        "description": "log(x) ≤ x - 1 for x > 0, the fundamental inequality underlying Gibbs/KL non-negativity",
+        "description": "log(x) \u2264 x - 1 for x > 0, the fundamental inequality underlying Gibbs/KL non-negativity",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       },
       {
         "theorem": "Real.log_nonpos",
-        "description": "log(x) ≤ 0 for 0 ≤ x ≤ 1, used for entropy non-negativity",
+        "description": "log(x) \u2264 0 for 0 \u2264 x \u2264 1, used for entropy non-negativity",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       },
       {
         "theorem": "Real.log_inv",
-        "description": "log(x⁻¹) = -log(x), used for h(1/2) = log 2",
+        "description": "log(x\u207b\u00b9) = -log(x), used for h(1/2) = log 2",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       },
       {
         "theorem": "convexOn_mul_log",
-        "description": "x·log(x) is convex on [0,∞), the key ingredient for binary entropy concavity",
+        "description": "x\u00b7log(x) is convex on [0,\u221e), the key ingredient for binary entropy concavity",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.NNReal"
       }
     ],
     "originalContributions": [
-      "Binary entropy definition h(p) using natural log with 0·log(0)=0 convention via Mathlib's Real.log 0 = 0",
+      "Binary entropy definition h(p) using natural log with 0\u00b7log(0)=0 convention via Mathlib's Real.log 0 = 0",
       "h_le_log_two: sharp upper bound via binary Gibbs inequality (KL divergence against uniform)",
       "h_eq_zero_iff: characterization of zero entropy as deterministic distributions",
       "h_concaveOn: concavity on [0,1] from Mathlib's convexOn_mul_log applied twice (at p and 1-p)",
@@ -54,21 +54,21 @@
     "lineCount": 224,
     "prerequisites": [
       "Real logarithm and its properties (Mathlib)",
-      "Convexity of x·log(x) on [0,∞) (Mathlib)",
+      "Convexity of x\u00b7log(x) on [0,\u221e) (Mathlib)",
       "Basic real analysis inequalities"
     ],
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The binary entropy function h(p) = -p log p - (1-p) log(1-p) is arguably the single most important function in information theory. It measures the uncertainty (entropy) of a binary random variable with probability p of being 1. Shannon introduced it in 1948 as a special case of his general entropy formula, and it appears throughout coding theory: in the channel capacity of the binary symmetric channel (C = 1 - h(p)), in Fano's inequality, and in the sphere-packing bound.\n\nDespite its simplicity, the binary entropy function encodes deep mathematical content: its concavity reflects the fundamental principle that mixing distributions increases uncertainty, while its maximum at p = 1/2 captures the intuition that a fair coin is maximally unpredictable. The upper bound h(p) ≤ log 2 (= 1 bit) is a special case of the maximum entropy principle.",
+    "historicalContext": "The binary entropy function h(p) = -p log p - (1-p) log(1-p) is arguably the single most important function in information theory. It measures the uncertainty (entropy) of a binary random variable with probability p of being 1. Shannon introduced it in 1948 as a special case of his general entropy formula, and it appears throughout coding theory: in the channel capacity of the binary symmetric channel (C = 1 - h(p)), in Fano's inequality, and in the sphere-packing bound.\n\nDespite its simplicity, the binary entropy function encodes deep mathematical content: its concavity reflects the fundamental principle that mixing distributions increases uncertainty, while its maximum at p = 1/2 captures the intuition that a fair coin is maximally unpredictable. The upper bound h(p) \u2264 log 2 (= 1 bit) is a special case of the maximum entropy principle.",
     "problemStatement": "Define the binary entropy function $h(p) = -(p \\ln p + (1-p) \\ln(1-p))$ using natural logarithm with the convention $0 \\cdot \\ln 0 = 0$, and prove its fundamental properties:\n\n1. **Boundary values**: $h(0) = h(1) = 0$\n2. **Symmetry**: $h(p) = h(1-p)$\n3. **Non-negativity**: $h(p) \\geq 0$ for $p \\in [0,1]$\n4. **Maximum**: $h(1/2) = \\ln 2$\n5. **Upper bound**: $h(p) \\leq \\ln 2$ for all $p \\in [0,1]$\n6. **Characterization**: $h(p) = 0$ if and only if $p \\in \\{0, 1\\}$\n7. **Concavity**: $h$ is concave on $[0,1]$",
-    "proofStrategy": "The formalization develops seven properties of binary entropy in increasing depth:\n\n1. **Boundary values** follow from Real.log 0 = 0 and Real.log 1 = 0 in Mathlib.\n\n2. **Symmetry** is a pure ring identity: swapping p and 1-p.\n\n3. **Value at 1/2** uses Real.log_inv to compute log(1/2) = -log(2).\n\n4. **Non-negativity** decomposes h(p) into two terms, each non-positive by mul_nonpos_of_nonneg_of_nonpos applied to p > 0 and log(p) ≤ 0.\n\n5. **Upper bound** uses the binary Gibbs inequality: KL(Bernoulli(p) || Uniform) ≥ 0. The kernel is Mathlib's log(x) ≤ x-1, applied with reference measure q = 1/2 for both p and 1-p. Adding the two inequalities gives log 2 + (p·log p + (1-p)·log(1-p)) ≥ 0.\n\n6. **Zero characterization** shows that 0 < p < 1 forces both p·log(p) < 0 and (1-p)·log(1-p) < 0 (strictly), using log_lt_log for strict log monotonicity.\n\n7. **Concavity** uses Mathlib's convexOn_mul_log (x·log(x) is convex on [0,∞)) applied twice: once at the points x,y and once at 1-x, 1-y. The identity a(1-x)+b(1-y) = 1-(ax+by) connects the two applications.",
+    "proofStrategy": "The formalization develops seven properties of binary entropy in increasing depth:\n\n1. **Boundary values** follow from Real.log 0 = 0 and Real.log 1 = 0 in Mathlib.\n\n2. **Symmetry** is a pure ring identity: swapping p and 1-p.\n\n3. **Value at 1/2** uses Real.log_inv to compute log(1/2) = -log(2).\n\n4. **Non-negativity** decomposes h(p) into two terms, each non-positive by mul_nonpos_of_nonneg_of_nonpos applied to p > 0 and log(p) \u2264 0.\n\n5. **Upper bound** uses the binary Gibbs inequality: KL(Bernoulli(p) || Uniform) \u2265 0. The kernel is Mathlib's log(x) \u2264 x-1, applied with reference measure q = 1/2 for both p and 1-p. Adding the two inequalities gives log 2 + (p\u00b7log p + (1-p)\u00b7log(1-p)) \u2265 0.\n\n6. **Zero characterization** shows that 0 < p < 1 forces both p\u00b7log(p) < 0 and (1-p)\u00b7log(1-p) < 0 (strictly), using log_lt_log for strict log monotonicity.\n\n7. **Concavity** uses Mathlib's convexOn_mul_log (x\u00b7log(x) is convex on [0,\u221e)) applied twice: once at the points x,y and once at 1-x, 1-y. The identity a(1-x)+b(1-y) = 1-(ax+by) connects the two applications.",
     "keyInsights": [
-      "The 0·log(0) = 0 convention is automatic in Lean via Mathlib's Real.log 0 = 0, avoiding the need for conditional definitions",
-      "The upper bound h(p) ≤ log 2 is equivalent to KL divergence non-negativity for binary distributions against uniform — the log(x) ≤ x-1 inequality is the universal tool",
-      "Concavity decomposes into two applications of convexity of x·log(x), one for each 'leg' of h(p) = f(p) + f(1-p) where f(x) = -x·log(x), connected by the affine identity on weights",
-      "The zero characterization h(p)=0 iff p∈{0,1} uses strict log monotonicity to upgrade the non-negativity proof: the same sign argument that gives ≤ 0 becomes < 0 in the interior, forcing both terms to be simultaneously zero only at the boundary",
-      "The symmetry h(p) = h(1-p) is proved purely by ring arithmetic with no analysis, reflecting that entropy depends only on the multiset of probabilities — relabeling outcomes cannot change information content"
+      "The 0\u00b7log(0) = 0 convention is automatic in Lean via Mathlib's Real.log 0 = 0, avoiding the need for conditional definitions",
+      "The upper bound h(p) \u2264 log 2 is equivalent to KL divergence non-negativity for binary distributions against uniform \u2014 the log(x) \u2264 x-1 inequality is the universal tool",
+      "Concavity decomposes into two applications of convexity of x\u00b7log(x), one for each 'leg' of h(p) = f(p) + f(1-p) where f(x) = -x\u00b7log(x), connected by the affine identity on weights",
+      "The zero characterization h(p)=0 iff p\u2208{0,1} uses strict log monotonicity to upgrade the non-negativity proof: the same sign argument that gives \u2264 0 becomes < 0 in the interior, forcing both terms to be simultaneously zero only at the boundary",
+      "The symmetry h(p) = h(1-p) is proved purely by ring arithmetic with no analysis, reflecting that entropy depends only on the multiset of probabilities \u2014 relabeling outcomes cannot change information content"
     ],
     "prerequisites": [
       "Real analysis (continuity, differentiability, concavity)",
@@ -82,7 +82,7 @@
       "title": "Binary Entropy Definition",
       "startLine": 29,
       "endLine": 37,
-      "summary": "Defines binary entropy h(p) = -(p·log p + (1-p)·log(1-p)) using natural logarithm, plus the base-2 variant hBits(p) = h(p)/ln(2).",
+      "summary": "Defines binary entropy h(p) = -(p\u00b7log p + (1-p)\u00b7log(1-p)) using natural logarithm, plus the base-2 variant hBits(p) = h(p)/ln(2).",
       "mathContext": "$h(p) = -(p \\ln p + (1-p) \\ln(1-p))$, $h_2(p) = h(p)/\\ln 2$"
     },
     {
@@ -114,7 +114,7 @@
       "title": "Non-negativity",
       "startLine": 74,
       "endLine": 95,
-      "summary": "Proves h(p) ≥ 0 for p ∈ [0,1]. Each term p·log(p) ≤ 0 since p ≥ 0 and log(p) ≤ 0 for p ≤ 1.",
+      "summary": "Proves h(p) \u2265 0 for p \u2208 [0,1]. Each term p\u00b7log(p) \u2264 0 since p \u2265 0 and log(p) \u2264 0 for p \u2264 1.",
       "mathContext": "$h(p) \\geq 0$ for $p \\in [0,1]$"
     },
     {
@@ -122,7 +122,7 @@
       "title": "Upper Bound via Binary Gibbs Inequality",
       "startLine": 96,
       "endLine": 147,
-      "summary": "Proves h(p) ≤ ln 2 via the binary Gibbs inequality. The KL term bound p·log(p/q) ≥ p-q (from log(x) ≤ x-1) is applied with q = 1/2 for both p and 1-p. Adding gives log 2 + (p·log p + (1-p)·log(1-p)) ≥ 0.",
+      "summary": "Proves h(p) \u2264 ln 2 via the binary Gibbs inequality. The KL term bound p\u00b7log(p/q) \u2265 p-q (from log(x) \u2264 x-1) is applied with q = 1/2 for both p and 1-p. Adding gives log 2 + (p\u00b7log p + (1-p)\u00b7log(1-p)) \u2265 0.",
       "mathContext": "$h(p) \\leq \\ln 2$ for all $p \\in [0,1]$, equivalently $h_2(p) \\leq 1$ bit"
     },
     {
@@ -138,7 +138,7 @@
       "title": "Concavity on [0,1]",
       "startLine": 185,
       "endLine": 224,
-      "summary": "Proves ConcaveOn ℝ (Set.Icc 0 1) h directly from Mathlib's convexOn_mul_log. Applies convexity of x·log(x) at points (x,y) and (1-x, 1-y), uses the affine identity a(1-x)+b(1-y) = 1-(ax+by), then adds and negates.",
+      "summary": "Proves ConcaveOn \u211d (Set.Icc 0 1) h directly from Mathlib's convexOn_mul_log. Applies convexity of x\u00b7log(x) at points (x,y) and (1-x, 1-y), uses the affine identity a(1-x)+b(1-y) = 1-(ax+by), then adds and negates.",
       "mathContext": "$h$ is concave on $[0,1]$: $h(tp + (1-t)q) \\geq t \\cdot h(p) + (1-t) \\cdot h(q)$"
     }
   ],
@@ -161,11 +161,11 @@
   ],
   "conclusion": {
     "summary": "Complete formalization of the binary entropy function with all seven fundamental properties machine-checked: boundary values, symmetry, non-negativity, maximum value, sharp upper bound, zero characterization, and concavity. Zero sorries, zero axioms, 224 lines.",
-    "implications": "This formalization provides:\n\n**1. Foundation for Channel Coding**: Binary entropy is the key function in BSC capacity C = 1 - h(p), now formalized with all necessary properties for future channel coding proofs.\n\n**2. Gibbs Inequality Pattern**: The upper bound proof via KL(p || uniform) ≥ 0 demonstrates the binary Gibbs inequality technique, reusable for other entropy bounds.\n\n**3. Concavity Framework**: The concavity proof via composition with Mathlib's convexOn_mul_log establishes a reusable pattern: any entropy functional of the form Σ f(pᵢ) inherits concavity from the convexity of the 'neg-entropy' function.",
+    "implications": "This formalization provides:\n\n**1. Foundation for Channel Coding**: Binary entropy is the key function in BSC capacity C = 1 - h(p), now formalized with all necessary properties for future channel coding proofs.\n\n**2. Gibbs Inequality Pattern**: The upper bound proof via KL(p || uniform) \u2265 0 demonstrates the binary Gibbs inequality technique, reusable for other entropy bounds.\n\n**3. Concavity Framework**: The concavity proof via composition with Mathlib's convexOn_mul_log establishes a reusable pattern: any entropy functional of the form \u03a3 f(p\u1d62) inherits concavity from the convexity of the 'neg-entropy' function.",
     "openQuestions": [
       "Can the binary entropy bounds be sharpened to prove strict concavity (strict inequality for 0 < t < 1)?",
       "Can the derivative h'(p) = log((1-p)/p) be formalized to prove strict monotonicity on (0,1/2)?",
-      "Does extending to the multivariate entropy function H(p₁,...,pₙ) = -Σ pᵢ log pᵢ preserve all properties via the same convexOn_mul_log approach?"
+      "Does extending to the multivariate entropy function H(p\u2081,...,p\u2099) = -\u03a3 p\u1d62 log p\u1d62 preserve all properties via the same convexOn_mul_log approach?"
     ]
   },
   "leanFile": {
@@ -178,7 +178,7 @@
     "namespace": "InformationTheory.BinaryEntropy",
     "lineCount": 224,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 12,
     "definitionCount": 2,
     "path": "Proofs/ShannonChannelCodingOQ04.lean",
     "sorries": 0

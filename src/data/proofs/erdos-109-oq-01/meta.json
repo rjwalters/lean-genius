@@ -1,8 +1,8 @@
 {
   "id": "erdos-109-oq-01",
-  "title": "Erdős Sumset Conjecture: Gap Conditions and IP Sets",
+  "title": "Erd\u0151s Sumset Conjecture: Gap Conditions and IP Sets",
   "slug": "erdos-109-oq-01",
-  "description": "Explores gap conditions in the Erdős sumset conjecture (B+C subset of A). Defines syndetic, thick, piecewise syndetic sets. States gap-controlled sumset decomposition, syndetic sumset question, and connection to IP sets and Hindman's theorem.",
+  "description": "Explores gap conditions in the Erd\u0151s sumset conjecture (B+C subset of A). Defines syndetic, thick, piecewise syndetic sets. States gap-controlled sumset decomposition, syndetic sumset question, and connection to IP sets and Hindman's theorem.",
   "meta": {
     "author": "Lean Genius",
     "sourceUrl": "https://erdosproblems.com/109",
@@ -20,7 +20,7 @@
     "sorries": 0,
     "dateAdded": "2026-04-12",
     "axiomCount": 3,
-    "assumptions": "3 axioms: (1) posUpperDensity_piecewiseSyndetic — piecewise syndeticity from positive density (pigeonhole argument not yet in Mathlib); (2) hindman_theorem — Hindman (1974) via idempotent ultrafilters; (3) posUpperDensity_ipStar — Furstenberg-Katznelson IP Szemerédi theorem (1985). Previously stated as sorries; converted to axiom declarations reflecting their status as deep results assumed without Lean proof.",
+    "assumptions": "3 axioms: (1) posUpperDensity_piecewiseSyndetic \u2014 piecewise syndeticity from positive density (pigeonhole argument not yet in Mathlib); (2) hindman_theorem \u2014 Hindman (1974) via idempotent ultrafilters; (3) posUpperDensity_ipStar \u2014 Furstenberg-Katznelson IP Szemer\u00e9di theorem (1985). Previously stated as sorries; converted to axiom declarations reflecting their status as deep results assumed without Lean proof.",
     "lineCount": 473,
     "theoremCount": 7,
     "definitionCount": 10,
@@ -37,12 +37,12 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Erdős sumset conjecture (Problem #109) asked whether every set $A \\subseteq \\mathbb{N}$ with positive upper density contains a sumset $B + C$ with both $B$ and $C$ infinite. This was proved by Moreira, Richter, and Robertson in 2019 using ergodic-theoretic methods — specifically, the Furstenberg correspondence principle and measure-preserving dynamical systems. Their proof actually showed something stronger: $B$ can have arbitrarily prescribed gaps. This open question explores what further gap control is possible. The concept of syndetic sets (bounded gaps) goes back to Gottschalk and Hedlund's work on topological dynamics (1955), while Hindman's theorem on IP sets (1974) is one of the deepest results in Ramsey theory, originally proved by a massive combinatorial argument and later reproved by Furstenberg and Katznelson (1985) using ultrafilter methods. The interplay between density conditions, gap conditions, and partition regularity (IP/IP*) lies at the heart of modern additive combinatorics.",
-    "problemStatement": "Given $A \\subseteq \\mathbb{N}$ with positive upper density, can the infinite sets $B, C$ in the sumset decomposition $B + C \\subseteq A$ be chosen with specific gap conditions? In particular: (1) Can $B$ be chosen with gaps controlled by an arbitrary function $f$? (YES — Moreira-Richter-Robertson) (2) Can $B$ be chosen to be syndetic (bounded gaps)? (OPEN — likely false)",
-    "proofStrategy": "The formalization first defines the hierarchy of gap conditions — syndetic (bounded gaps), thick (arbitrarily long runs), and piecewise syndetic (their intersection) — then states two conjectures: the gap-controlled version (proved by MRR) and the syndetic version (open). The connection to Hindman's theorem is formalized by defining IP sets (all finite sums from an infinite sequence), axiomatizing Hindman's theorem, and proving that IP sets contain infinite sumsets $B + C$ by splitting the generating sequence into odd- and even-indexed subsequences.",
+    "historicalContext": "The Erd\u0151s sumset conjecture (Problem #109) asked whether every set $A \\subseteq \\mathbb{N}$ with positive upper density contains a sumset $B + C$ with both $B$ and $C$ infinite. This was proved by Moreira, Richter, and Robertson in 2019 using ergodic-theoretic methods \u2014 specifically, the Furstenberg correspondence principle and measure-preserving dynamical systems. Their proof actually showed something stronger: $B$ can have arbitrarily prescribed gaps. This open question explores what further gap control is possible. The concept of syndetic sets (bounded gaps) goes back to Gottschalk and Hedlund's work on topological dynamics (1955), while Hindman's theorem on IP sets (1974) is one of the deepest results in Ramsey theory, originally proved by a massive combinatorial argument and later reproved by Furstenberg and Katznelson (1985) using ultrafilter methods. The interplay between density conditions, gap conditions, and partition regularity (IP/IP*) lies at the heart of modern additive combinatorics.",
+    "problemStatement": "Given $A \\subseteq \\mathbb{N}$ with positive upper density, can the infinite sets $B, C$ in the sumset decomposition $B + C \\subseteq A$ be chosen with specific gap conditions? In particular: (1) Can $B$ be chosen with gaps controlled by an arbitrary function $f$? (YES \u2014 Moreira-Richter-Robertson) (2) Can $B$ be chosen to be syndetic (bounded gaps)? (OPEN \u2014 likely false)",
+    "proofStrategy": "The formalization first defines the hierarchy of gap conditions \u2014 syndetic (bounded gaps), thick (arbitrarily long runs), and piecewise syndetic (their intersection) \u2014 then states two conjectures: the gap-controlled version (proved by MRR) and the syndetic version (open). The connection to Hindman's theorem is formalized by defining IP sets (all finite sums from an infinite sequence), axiomatizing Hindman's theorem, and proving that IP sets contain infinite sumsets $B + C$ by splitting the generating sequence into odd- and even-indexed subsequences.",
     "keyInsights": [
-      "The odd/even index splitting of an IP set's generating sequence yields two disjoint sub-IP sets whose sumset lands back in the original — this is the constructive core of the ip_set_sumset_structure proof",
-      "Gap-controlled sumset decomposition (arbitrary gap function) is provably true (MRR 2019), but asking for syndetic $B$ (bounded gaps) is likely too strong — the gaps in $A$ itself constrain the gaps in $B$",
+      "The odd/even index splitting of an IP set's generating sequence yields two disjoint sub-IP sets whose sumset lands back in the original \u2014 this is the constructive core of the ip_set_sumset_structure proof",
+      "Gap-controlled sumset decomposition (arbitrary gap function) is provably true (MRR 2019), but asking for syndetic $B$ (bounded gaps) is likely too strong \u2014 the gaps in $A$ itself constrain the gaps in $B$",
       "Positive density does NOT imply containing an IP set: $\\{n : n \\not\\equiv 0 \\pmod{3}\\}$ has density $2/3$ but no IP subset, since any IP set must contain elements summing to a multiple of 3. The correct relationship is IP* (intersecting every IP set)",
       "The hierarchy syndetic $\\subset$ piecewise syndetic $\\subset$ positive density provides increasingly fine structural information, each with different implications for sumset decomposition",
       "Hindman's theorem (axiomatized here) is essential: it bridges finite colorings and infinite combinatorial structure, providing the IP sets that connect density to sumset structure"
@@ -61,14 +61,14 @@
       "title": "Gap Condition Definitions",
       "startLine": 42,
       "endLine": 78,
-      "summary": "Defines the gap condition hierarchy: IsSyndetic (bounded gaps), IsThick (arbitrarily long runs), IsPiecewiseSyndetic (contains intersection of syndetic and thick — corrected from original too-strong definition). Proves syndetic sets are infinite and states (with sorry) that positive density implies piecewise syndetic."
+      "summary": "Defines the gap condition hierarchy: IsSyndetic (bounded gaps), IsThick (arbitrarily long runs), IsPiecewiseSyndetic (contains intersection of syndetic and thick \u2014 corrected from original too-strong definition). Proves syndetic sets are infinite and states (with sorry) that positive density implies piecewise syndetic."
     },
     {
       "id": "sumset-gap-strengthening",
       "title": "Gap-Controlled Sumset Conjectures",
       "startLine": 80,
       "endLine": 115,
-      "summary": "States the gap-controlled sumset conjecture (proved by MRR: arbitrary gap function f) and the open syndetic sumset question (can B have bounded gaps?). Proves sumset_density_constraint (upperDensity C ≤ upperDensity A) via decomposition into shift invariance and monotonicity helper lemmas."
+      "summary": "States the gap-controlled sumset conjecture (proved by MRR: arbitrary gap function f) and the open syndetic sumset question (can B have bounded gaps?). Proves sumset_density_constraint (upperDensity C \u2264 upperDensity A) via decomposition into shift invariance and monotonicity helper lemmas."
     },
     {
       "id": "ip-sets-hindman",
@@ -86,19 +86,19 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization maps the landscape of gap-condition strengthenings of the Erdős sumset conjecture. The gap-controlled version (arbitrary gap function) is stated as proved by MRR, while the syndetic version remains open. The connection to IP sets via Hindman's theorem is formalized, with the key constructive result that IP sets contain infinite sumsets proved by odd/even index splitting. A mathematical correction removes the false claim that positive density implies IP membership, replacing it with the correct IP* relationship.",
-    "implications": "The interplay between density, gap conditions, and Hindman-type partition regularity reveals deep structural constraints on sets of positive density. The IP set connection suggests that proving the syndetic sumset question requires understanding how density interacts with the algebraic structure of $\\beta\\mathbb{N}$ (the Stone-Čech compactification), where IP sets correspond to idempotent ultrafilters. The sumset density constraint is now structurally proved via clean decomposition into shift invariance and monotonicity. The remaining sorries involve either standard real analysis (shift invariance, monotonicity of upper density) or deep ergodic theory (IP Szemerédi, density→PS).",
+    "summary": "This formalization maps the landscape of gap-condition strengthenings of the Erd\u0151s sumset conjecture. The gap-controlled version (arbitrary gap function) is stated as proved by MRR, while the syndetic version remains open. The connection to IP sets via Hindman's theorem is formalized, with the key constructive result that IP sets contain infinite sumsets proved by odd/even index splitting. A mathematical correction removes the false claim that positive density implies IP membership, replacing it with the correct IP* relationship.",
+    "implications": "The interplay between density, gap conditions, and Hindman-type partition regularity reveals deep structural constraints on sets of positive density. The IP set connection suggests that proving the syndetic sumset question requires understanding how density interacts with the algebraic structure of $\\beta\\mathbb{N}$ (the Stone-\u010cech compactification), where IP sets correspond to idempotent ultrafilters. The sumset density constraint is now structurally proved via clean decomposition into shift invariance and monotonicity. The remaining sorries involve either standard real analysis (shift invariance, monotonicity of upper density) or deep ergodic theory (IP Szemer\u00e9di, density\u2192PS).",
     "openQuestions": [
-      "Is the syndetic sumset question true or false? If A has positive density, can B + C ⊆ A always be found with B syndetic?",
-      "Can the density constraint (upperDensity C ≤ upperDensity A given B + C ⊆ A and B syndetic) be proved from Mathlib primitives without the full ergodic machinery?",
-      "Can posUpperDensity_ipStar (positive density implies IP*) be proved directly from Hindman's theorem, or does it require the full Furstenberg-Katznelson IP Szemerédi theorem?"
+      "Is the syndetic sumset question true or false? If A has positive density, can B + C \u2286 A always be found with B syndetic?",
+      "Can the density constraint (upperDensity C \u2264 upperDensity A given B + C \u2286 A and B syndetic) be proved from Mathlib primitives without the full ergodic machinery?",
+      "Can posUpperDensity_ipStar (positive density implies IP*) be proved directly from Hindman's theorem, or does it require the full Furstenberg-Katznelson IP Szemer\u00e9di theorem?"
     ]
   },
   "leanFile": {
     "namespace": "Erdos109OQ01",
     "lineCount": 473,
     "axiomCount": 3,
-    "theoremCount": 7,
+    "theoremCount": 8,
     "definitionCount": 10,
     "path": "Proofs/Erdos109OQ01.lean",
     "sorries": 0

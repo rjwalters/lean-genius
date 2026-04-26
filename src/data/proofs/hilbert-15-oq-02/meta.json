@@ -20,7 +20,7 @@
     "sorries": 0,
     "axiomCount": 3,
     "lineCount": 506,
-    "assumptions": "Three complexity-theoretic theorems (lr_saturation_theorem, lr_positivity_in_P, lr_counting_sharp_P_complete) prove `True` as explicit placeholders — the complexity theory formalism is not available in Lean/Mathlib. The 2-row LR coefficient computation (lrCoeff2) and full Gr(2,4) multiplication table are fully verified via native_decide.",
+    "assumptions": "Three complexity-theoretic theorems (lr_saturation_theorem, lr_positivity_in_P, lr_counting_sharp_P_complete) prove `True` as explicit placeholders \u2014 the complexity theory formalism is not available in Lean/Mathlib. The 2-row LR coefficient computation (lrCoeff2) and full Gr(2,4) multiplication table are fully verified via native_decide.",
     "dateAdded": "2026-04-12",
     "mathlib_version": "4.26.0"
   },
@@ -33,12 +33,12 @@
       "The nontrivial zero sigma_2 * sigma_11 = 0 arises from conflicting constraints: column condition forces k2 = 0 but range forces k2 >= 1",
       "Gr(2,4) is multiplicity-free: all LR coefficients in {0,1}, verified by native_decide over 216 triples",
       "The P vs #P gap for LR coefficients is one of the sharpest complexity separations in combinatorics",
-      "Commutativity c^ν_{λ,μ} = c^ν_{μ,λ} is proved directly from the algorithmic definition by showing the five deciding conditions are symmetric under λ ↔ μ; the Pieri converse shows that c^ν_{(k,0),μ} = 1 characterizes exactly the horizontal strips"
+      "Commutativity c^\u03bd_{\u03bb,\u03bc} = c^\u03bd_{\u03bc,\u03bb} is proved directly from the algorithmic definition by showing the five deciding conditions are symmetric under \u03bb \u2194 \u03bc; the Pieri converse shows that c^\u03bd_{(k,0),\u03bc} = 1 characterizes exactly the horizontal strips"
     ]
   },
   "conclusion": {
     "summary": "This file provides a fully verified, decidable computation of Littlewood-Richardson coefficients for 2-row partitions, confirming all structure constants of the Chow ring A*(Gr(2,4)) and establishing the general multiplicity-free property for all Gr(2,n) via a structural proof that requires no enumeration.",
-    "implications": "The formalization demonstrates that the LR rule — while #P-complete in general — reduces to constant-time computation for the 2-row case: at most five decidable comparisons determine any coefficient. The Pieri formula, commutativity, and the full Gr(2,4) multiplication table are verified machine-checked theorems. The sharp P vs #P complexity dichotomy is documented with precise references to Knutson-Tao (1999) and Narayanan (2006), making this entry a self-contained reference for the computational complexity of Schubert calculus.",
+    "implications": "The formalization demonstrates that the LR rule \u2014 while #P-complete in general \u2014 reduces to constant-time computation for the 2-row case: at most five decidable comparisons determine any coefficient. The Pieri formula, commutativity, and the full Gr(2,4) multiplication table are verified machine-checked theorems. The sharp P vs #P complexity dichotomy is documented with precise references to Knutson-Tao (1999) and Narayanan (2006), making this entry a self-contained reference for the computational complexity of Schubert calculus.",
     "openQuestions": [
       "Can the decidable 2-row LR computation be extended to 3-row partitions in Lean, and can Narayanan's #P-hardness reduction be formally verified once complexity theory is available in Mathlib?",
       "Is there a Lean formalization of the Knutson-Tao honeycomb model that would upgrade lr_saturation_theorem from a vacuous placeholder to a genuine machine-checked theorem?",
@@ -104,7 +104,7 @@
     "namespace": "LRComplexity",
     "lineCount": 506,
     "axiomCount": 0,
-    "theoremCount": 17,
+    "theoremCount": 25,
     "definitionCount": 3,
     "path": "Proofs/Hilbert15OQ02.lean",
     "sorries": 0
@@ -114,19 +114,19 @@
       "name": "gr24_multiplicity_free",
       "type": "core",
       "description": "All Gr(2,4) LR coefficients are 0 or 1 (multiplicity-free)",
-      "leanType": "∀ ν ∈ gr24_classes, ∀ λ ∈ gr24_classes, ∀ μ ∈ gr24_classes, lrCoeff2 ν λ μ ≤ 1"
+      "leanType": "\u2200 \u03bd \u2208 gr24_classes, \u2200 \u03bb \u2208 gr24_classes, \u2200 \u03bc \u2208 gr24_classes, lrCoeff2 \u03bd \u03bb \u03bc \u2264 1"
     },
     {
       "name": "lr_sigma2_sigma11_zero",
       "type": "core",
       "description": "The nontrivial zero: sigma_2 * sigma_11 = 0 in A*(Gr(2,4))",
-      "leanType": "lrCoeff2 ⟨2,2,_⟩ ⟨2,0,_⟩ ⟨1,1,_⟩ = 0"
+      "leanType": "lrCoeff2 \u27e82,2,_\u27e9 \u27e82,0,_\u27e9 \u27e81,1,_\u27e9 = 0"
     },
     {
       "name": "lr_value_depends_on_shape",
       "type": "supporting",
       "description": "LR coefficient depends on partition shape, not just size",
-      "leanType": "∃ ν λ₁ λ₂ μ, λ₁.size = λ₂.size ∧ lrCoeff2 ν λ₁ μ ≠ lrCoeff2 ν λ₂ μ"
+      "leanType": "\u2203 \u03bd \u03bb\u2081 \u03bb\u2082 \u03bc, \u03bb\u2081.size = \u03bb\u2082.size \u2227 lrCoeff2 \u03bd \u03bb\u2081 \u03bc \u2260 lrCoeff2 \u03bd \u03bb\u2082 \u03bc"
     }
   ],
   "sorries": 0

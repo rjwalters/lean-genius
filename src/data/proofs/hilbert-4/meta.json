@@ -148,10 +148,10 @@
   ],
   "conclusion": {
     "summary": "Hilbert's 4th Problem is solved by Busemann's classification: projective metrics where straight lines are geodesics are exactly Minkowski metrics, Hilbert metrics, and Funk-type metrics.",
-    "implications": "**1. Finsler geometry**: Busemann's characterization is foundational to Finsler geometry, which studies manifolds equipped with a norm on each tangent space (not necessarily arising from an inner product). Minkowski metrics — norms on $\\mathbb{R}^n$ — are the flat models of Finsler spaces, just as Euclidean spaces are flat Riemannian spaces. Hilbert's 4th problem thus classifies the flat Finsler geometries where geodesics are straight lines.\n\n**2. Convex geometry and optimization**: Hilbert metrics on convex bodies are fundamental to optimization: Birkhoff (1957) showed that the Hilbert metric on the positive cone makes Perron-Frobenius iteration a contraction, proving convergence of power methods. Thompson's metric (a symmetrized Hilbert metric) is used in nonlinear Perron-Frobenius theory and mathematical biology.\n\n**3. Foundations of geometry**: Hilbert's 4th problem sits at the heart of the axiomatic approach to geometry. Hamel's 1903 contribution showed that in 2D, Desarguesian projective metrics are exactly Minkowski metrics — connecting the metric question to the projective axioms. This links Hilbert's 4th to the broader question of which axiom systems determine which geometries.\n\n**4. Non-Euclidean geometry**: Hilbert metrics on convex domains generalize the Klein model of hyperbolic geometry (which is the Hilbert metric on an ellipsoid). The classification in Hilbert's 4th thus provides a unifying framework for Euclidean, hyperbolic, and Minkowski geometries as special cases of projective metrics.",
+    "implications": "**1. Finsler geometry**: Busemann's characterization is foundational to Finsler geometry, which studies manifolds equipped with a norm on each tangent space (not necessarily arising from an inner product). Minkowski metrics \u2014 norms on $\\mathbb{R}^n$ \u2014 are the flat models of Finsler spaces, just as Euclidean spaces are flat Riemannian spaces. Hilbert's 4th problem thus classifies the flat Finsler geometries where geodesics are straight lines.\n\n**2. Convex geometry and optimization**: Hilbert metrics on convex bodies are fundamental to optimization: Birkhoff (1957) showed that the Hilbert metric on the positive cone makes Perron-Frobenius iteration a contraction, proving convergence of power methods. Thompson's metric (a symmetrized Hilbert metric) is used in nonlinear Perron-Frobenius theory and mathematical biology.\n\n**3. Foundations of geometry**: Hilbert's 4th problem sits at the heart of the axiomatic approach to geometry. Hamel's 1903 contribution showed that in 2D, Desarguesian projective metrics are exactly Minkowski metrics \u2014 connecting the metric question to the projective axioms. This links Hilbert's 4th to the broader question of which axiom systems determine which geometries.\n\n**4. Non-Euclidean geometry**: Hilbert metrics on convex domains generalize the Klein model of hyperbolic geometry (which is the Hilbert metric on an ellipsoid). The classification in Hilbert's 4th thus provides a unifying framework for Euclidean, hyperbolic, and Minkowski geometries as special cases of projective metrics.",
     "openQuestions": [
       "What regularity conditions on the convex body $K$ are necessary for Busemann's classification? Does the result extend to non-smooth or non-strictly-convex domains, where the Hilbert metric may degenerate?",
-      "Can the Álvarez Paiva-Fernandes characterization of projective Finsler metrics via symplectic geometry (using the Crofton formula and valuation theory) be formalized in Lean?",
+      "Can the \u00c1lvarez Paiva-Fernandes characterization of projective Finsler metrics via symplectic geometry (using the Crofton formula and valuation theory) be formalized in Lean?",
       "How does the theory extend to infinite-dimensional Banach spaces? Thompson's metric on cones in Banach spaces generalizes the finite-dimensional Hilbert metric, but the classification of projective metrics is open in infinite dimensions",
       "Can the connection between Hilbert metrics and Perron-Frobenius theory be formalized, showing that the contraction mapping theorem in the Hilbert metric implies the convergence of power iteration for positive matrices?"
     ]
@@ -172,7 +172,7 @@
     "namespace": "Hilbert4Geodesics",
     "lineCount": 459,
     "axiomCount": 5,
-    "theoremCount": 2,
+    "theoremCount": 3,
     "definitionCount": 13,
     "path": "Proofs/Hilbert4Geodesics.lean",
     "sorries": 0
@@ -182,7 +182,7 @@
       "authors": "Hilbert, David",
       "title": "Mathematische Probleme",
       "year": "1900",
-      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Göttingen, 253–297",
+      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu G\u00f6ttingen, 253\u2013297",
       "note": "The original lecture listing 23 problems that would shape 20th century mathematics"
     },
     {
@@ -190,13 +190,13 @@
       "title": "The Geometry of Geodesics",
       "year": "1955",
       "venue": "Academic Press",
-      "note": "Systematic study of metric spaces where geodesics are unique — the class of geometries Hilbert's 4th problem asks to characterize"
+      "note": "Systematic study of metric spaces where geodesics are unique \u2014 the class of geometries Hilbert's 4th problem asks to characterize"
     },
     {
       "authors": "Hamel, Georg",
-      "title": "Über die Geometrien, in denen die Geraden die Kürzesten sind",
+      "title": "\u00dcber die Geometrien, in denen die Geraden die K\u00fcrzesten sind",
       "year": "1903",
-      "venue": "Mathematische Annalen 57, 231–264",
+      "venue": "Mathematische Annalen 57, 231\u2013264",
       "note": "First substantial progress on Hilbert's 4th problem: characterized Desarguesian projective metrics in the plane as exactly Minkowski metrics"
     },
     {
@@ -207,11 +207,11 @@
       "note": "Complete solution of Hilbert's 4th problem in all dimensions, classifying all projective metrics where geodesics are straight lines"
     },
     {
-      "authors": "Álvarez Paiva, Juan Carlos; Fernandes, E.",
+      "authors": "\u00c1lvarez Paiva, Juan Carlos; Fernandes, E.",
       "title": "What is a Crofton formula?",
       "year": "2005",
-      "venue": "Mathematische Notizen 278(13), 1582–1600",
-      "note": "Modern characterization of projective Finsler metrics via symplectic geometry and the Crofton formula — referenced in the open questions"
+      "venue": "Mathematische Notizen 278(13), 1582\u20131600",
+      "note": "Modern characterization of projective Finsler metrics via symplectic geometry and the Crofton formula \u2014 referenced in the open questions"
     }
   ],
   "mainTheorems": [

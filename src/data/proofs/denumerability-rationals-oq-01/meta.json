@@ -1,10 +1,10 @@
 {
   "id": "denumerability-rationals-oq-01",
-  "title": "The Cardinality Gap: ℚ, ℝ, and the Continuum Hypothesis",
+  "title": "The Cardinality Gap: \u211a, \u211d, and the Continuum Hypothesis",
   "slug": "denumerability-rationals-oq-01",
-  "description": "Starting from the denumerability of ℚ (|ℚ| = ℵ₀), this proof establishes |ℝ| = 𝔠 = 2^ℵ₀, the Dedekind cut connection |𝒫(ℚ)| = 𝔠, and formalizes the Continuum Hypothesis as the question of what cardinals lie between |ℚ| and |ℝ|. CH is proved equivalent to the gap condition and its independence from ZFC is axiomatized via Gödel and Cohen.",
+  "description": "Starting from the denumerability of \u211a (|\u211a| = \u2135\u2080), this proof establishes |\u211d| = \ud835\udd20 = 2^\u2135\u2080, the Dedekind cut connection |\ud835\udcab(\u211a)| = \ud835\udd20, and formalizes the Continuum Hypothesis as the question of what cardinals lie between |\u211a| and |\u211d|. CH is proved equivalent to the gap condition and its independence from ZFC is axiomatized via G\u00f6del and Cohen.",
   "meta": {
-    "author": "Georg Cantor / Kurt Gödel / Paul Cohen",
+    "author": "Georg Cantor / Kurt G\u00f6del / Paul Cohen",
     "date": "2026",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/DenumerabilityRationalsOQ01.lean",
@@ -21,64 +21,64 @@
     "sorries": 0,
     "axiomCount": 2,
     "lineCount": 270,
-    "assumptions": "2 axioms capturing Gödel-Cohen independence: `godel_ch_consistent_with_ZFC` (CH holds in L) and `cohen_not_ch_consistent_with_ZFC` (¬CH holds in forcing extensions). All cardinality results (Parts 1–5) are fully proved from Mathlib without axioms.",
+    "assumptions": "2 axioms capturing G\u00f6del-Cohen independence: `godel_ch_consistent_with_ZFC` (CH holds in L) and `cohen_not_ch_consistent_with_ZFC` (\u00acCH holds in forcing extensions). All cardinality results (Parts 1\u20135) are fully proved from Mathlib without axioms.",
     "mathlibDependencies": [
       {
         "theorem": "Cardinal.mk_denumerable",
-        "description": "For any Denumerable type α, #α = ℵ₀",
+        "description": "For any Denumerable type \u03b1, #\u03b1 = \u2135\u2080",
         "module": "Mathlib.Logic.Denumerable"
       },
       {
         "theorem": "Cardinal.mk_real",
-        "description": "#ℝ = 𝔠 = 2^ℵ₀ (cardinality of the continuum)",
+        "description": "#\u211d = \ud835\udd20 = 2^\u2135\u2080 (cardinality of the continuum)",
         "module": "Mathlib.SetTheory.Cardinal.Continuum"
       },
       {
         "theorem": "Cardinal.aleph0_lt_continuum",
-        "description": "ℵ₀ < 𝔠 (Cantor's theorem for the continuum)",
+        "description": "\u2135\u2080 < \ud835\udd20 (Cantor's theorem for the continuum)",
         "module": "Mathlib.SetTheory.Cardinal.Continuum"
       },
       {
         "theorem": "Cardinal.mk_set",
-        "description": "#(Set α) = 2^#α (power set cardinality formula)",
+        "description": "#(Set \u03b1) = 2^#\u03b1 (power set cardinality formula)",
         "module": "Mathlib.SetTheory.Cardinal.Basic"
       },
       {
         "theorem": "Cardinal.two_power_aleph0",
-        "description": "2^ℵ₀ = 𝔠 (defining property of the continuum)",
+        "description": "2^\u2135\u2080 = \ud835\udd20 (defining property of the continuum)",
         "module": "Mathlib.SetTheory.Cardinal.Continuum"
       },
       {
         "theorem": "Cardinal.aleph_one_le_continuum",
-        "description": "ℵ₁ ≤ 𝔠 (smallest uncountable cardinal ≤ continuum)",
+        "description": "\u2135\u2081 \u2264 \ud835\udd20 (smallest uncountable cardinal \u2264 continuum)",
         "module": "Mathlib.SetTheory.Cardinal.Ordinal"
       },
       {
         "theorem": "Cardinal.aleph_succ",
-        "description": "Cardinal.aleph (succ α) = Order.succ (Cardinal.aleph α)",
+        "description": "Cardinal.aleph (succ \u03b1) = Order.succ (Cardinal.aleph \u03b1)",
         "module": "Mathlib.SetTheory.Cardinal.Ordinal"
       }
     ],
     "dateAdded": "2026-04-06",
     "mathlib_version": "4.26.0",
     "originalContributions": [
-      "Formalization of CH as the cardinality gap condition connecting |ℚ| to |ℝ|",
-      "Proof that |𝒫(ℚ)| = 𝔠 (Dedekind cut connection)",
-      "CH ↔ no intermediate cardinal (complete equivalence proof)",
-      "CH implications: only ℵ₀ and 𝔠 among infinite cardinals ≤ 𝔠",
-      "Axiomatized Gödel-Cohen independence result"
+      "Formalization of CH as the cardinality gap condition connecting |\u211a| to |\u211d|",
+      "Proof that |\ud835\udcab(\u211a)| = \ud835\udd20 (Dedekind cut connection)",
+      "CH \u2194 no intermediate cardinal (complete equivalence proof)",
+      "CH implications: only \u2135\u2080 and \ud835\udd20 among infinite cardinals \u2264 \ud835\udd20",
+      "Axiomatized G\u00f6del-Cohen independence result"
     ]
   },
   "overview": {
-    "historicalContext": "When Cantor proved in 1874 that $\\mathbb{Q}$ is countable and $\\mathbb{R}$ is not, he immediately asked: is there a set $S$ with $|\\mathbb{Q}| < |S| < |\\mathbb{R}|$? He conjectured not — this became the Continuum Hypothesis (CH), and Hilbert listed it as his first problem in 1900. The resolution took decades: Gödel (1940) showed CH is consistent with ZFC by constructing the model $V = L$ (the constructible universe), and Cohen (1963) showed $\\neg$CH is also consistent by inventing the forcing technique. This earned Cohen the Fields Medal in 1966 and established CH as the paradigmatic example of an independent statement. The proof here formalizes the key cardinality facts in Lean 4 and axiomatizes the independence result.",
+    "historicalContext": "When Cantor proved in 1874 that $\\mathbb{Q}$ is countable and $\\mathbb{R}$ is not, he immediately asked: is there a set $S$ with $|\\mathbb{Q}| < |S| < |\\mathbb{R}|$? He conjectured not \u2014 this became the Continuum Hypothesis (CH), and Hilbert listed it as his first problem in 1900. The resolution took decades: G\u00f6del (1940) showed CH is consistent with ZFC by constructing the model $V = L$ (the constructible universe), and Cohen (1963) showed $\\neg$CH is also consistent by inventing the forcing technique. This earned Cohen the Fields Medal in 1966 and established CH as the paradigmatic example of an independent statement. The proof here formalizes the key cardinality facts in Lean 4 and axiomatizes the independence result.",
     "problemStatement": "The denumerability of $\\mathbb{Q}$ establishes $|\\mathbb{Q}| = \\aleph_0$. Since $\\mathbb{R}$ is uncountable, $|\\mathbb{R}| = \\mathfrak{c} = 2^{\\aleph_0} > \\aleph_0 = |\\mathbb{Q}|$. The Continuum Hypothesis (CH) asks: **is there a cardinal $\\kappa$ with $|\\mathbb{Q}| < \\kappa < |\\mathbb{R}|$?** CH asserts the answer is no: $\\mathfrak{c} = \\aleph_1$. This is independent of ZFC.",
-    "proofStrategy": "The proof proceeds in seven parts. Part 1 establishes the cardinality positions of $\\mathbb{Q}$ and $\\mathbb{R}$ using Mathlib's `Cardinal.mk_denumerable` and `Cardinal.mk_real`. Part 2 proves the Dedekind cut connection: $|\\mathcal{P}(\\mathbb{Q})| = \\mathfrak{c}$, showing that even though $\\mathbb{Q}$ is countable, the power set of $\\mathbb{Q}$ (which parametrizes Dedekind cuts) has the full cardinality of the continuum. Part 3 establishes aleph-hierarchy bounds: $\\aleph_0 < \\mathfrak{c}$ (Cantor) and $\\aleph_1 \\leq \\mathfrak{c}$ (since $\\aleph_1$ is the successor of $\\aleph_0$ in the cardinal order, and the successor is at most $\\mathfrak{c}$). Part 4 defines the Continuum Hypothesis in two equivalent formulations: $\\mathfrak{c} = \\aleph_1$ and $\\neg\\exists\\kappa, \\aleph_0 < \\kappa < \\mathfrak{c}$. Part 5 proves these are equivalent via the successor characterization of $\\aleph_1$. Parts 6–7 develop CH implications and axiomatize the Gödel-Cohen independence result.",
+    "proofStrategy": "The proof proceeds in seven parts. Part 1 establishes the cardinality positions of $\\mathbb{Q}$ and $\\mathbb{R}$ using Mathlib's `Cardinal.mk_denumerable` and `Cardinal.mk_real`. Part 2 proves the Dedekind cut connection: $|\\mathcal{P}(\\mathbb{Q})| = \\mathfrak{c}$, showing that even though $\\mathbb{Q}$ is countable, the power set of $\\mathbb{Q}$ (which parametrizes Dedekind cuts) has the full cardinality of the continuum. Part 3 establishes aleph-hierarchy bounds: $\\aleph_0 < \\mathfrak{c}$ (Cantor) and $\\aleph_1 \\leq \\mathfrak{c}$ (since $\\aleph_1$ is the successor of $\\aleph_0$ in the cardinal order, and the successor is at most $\\mathfrak{c}$). Part 4 defines the Continuum Hypothesis in two equivalent formulations: $\\mathfrak{c} = \\aleph_1$ and $\\neg\\exists\\kappa, \\aleph_0 < \\kappa < \\mathfrak{c}$. Part 5 proves these are equivalent via the successor characterization of $\\aleph_1$. Parts 6\u20137 develop CH implications and axiomatize the G\u00f6del-Cohen independence result.",
     "keyInsights": [
       "The denumerability of $\\mathbb{Q}$ (proved in the parent file) directly motivates CH: once we know $|\\mathbb{Q}| = \\aleph_0$, the natural question is whether there is anything between $\\aleph_0$ and $|\\mathbb{R}|$.",
-      "The Dedekind cut construction provides a striking illustration: $\\mathbb{Q}$ is countable, but $\\mathcal{P}(\\mathbb{Q})$ — which indexes Dedekind cuts — has cardinality $\\mathfrak{c}$. The 'size explosion' from a countable set to the continuum happens at the power set level.",
+      "The Dedekind cut construction provides a striking illustration: $\\mathbb{Q}$ is countable, but $\\mathcal{P}(\\mathbb{Q})$ \u2014 which indexes Dedekind cuts \u2014 has cardinality $\\mathfrak{c}$. The 'size explosion' from a countable set to the continuum happens at the power set level.",
       "CH is equivalent to saying $\\aleph_1 = \\mathfrak{c}$, i.e., the successor of $\\aleph_0$ in the cardinal order equals the continuum. ZFC can prove $\\aleph_1 \\leq \\mathfrak{c}$ but not equality or strict inequality.",
       "The forward direction of the equivalence proof uses a key property of successor cardinals: $\\kappa < \\text{succ}(\\aleph_0) = \\aleph_1$ implies $\\kappa \\leq \\aleph_0$. Under CH ($\\mathfrak{c} = \\aleph_1$), any $\\kappa < \\mathfrak{c}$ satisfies $\\kappa \\leq \\aleph_0$, leaving no room for an intermediate cardinal.",
-      "The independence result (2 axioms capturing Gödel and Cohen) is mathematically necessary: no Lean proof without additional axioms can decide CH, since ZFC is the foundation and CH is genuinely independent of it."
+      "The independence result (2 axioms capturing G\u00f6del and Cohen) is mathematically necessary: no Lean proof without additional axioms can decide CH, since ZFC is the foundation and CH is genuinely independent of it."
     ]
   },
   "sections": [
@@ -87,14 +87,14 @@
       "title": "Module Documentation and Imports",
       "startLine": 1,
       "endLine": 68,
-      "summary": "Documents the seven-part proof structure, the connection from denumerability of ℚ to the Continuum Hypothesis, and the Gödel-Cohen independence result. Imports Mathlib's cardinal arithmetic, continuum, and ordinal infrastructure."
+      "summary": "Documents the seven-part proof structure, the connection from denumerability of \u211a to the Continuum Hypothesis, and the G\u00f6del-Cohen independence result. Imports Mathlib's cardinal arithmetic, continuum, and ordinal infrastructure."
     },
     {
       "id": "part-1-cardinality",
-      "title": "Part 1: Cardinality of ℚ and ℝ",
+      "title": "Part 1: Cardinality of \u211a and \u211d",
       "startLine": 69,
       "endLine": 88,
-      "summary": "Establishes |ℚ| = ℵ₀ (from Mathlib's Denumerable instance), |ℝ| = 𝔠 (from Cardinal.mk_real), and the cardinality gap |ℚ| < |ℝ|.",
+      "summary": "Establishes |\u211a| = \u2135\u2080 (from Mathlib's Denumerable instance), |\u211d| = \ud835\udd20 (from Cardinal.mk_real), and the cardinality gap |\u211a| < |\u211d|.",
       "mathContext": "$|\\mathbb{Q}| = \\aleph_0$ (via Denumerable), $|\\mathbb{R}| = \\mathfrak{c} = 2^{\\aleph_0}$ (via mk_real), and $\\aleph_0 < \\mathfrak{c}$ (Cantor)."
     },
     {
@@ -102,7 +102,7 @@
       "title": "Part 2: The Dedekind Cut Connection",
       "startLine": 91,
       "endLine": 115,
-      "summary": "Proves |𝒫(ℚ)| = 𝔠 using Cardinal.mk_set and the continuum formula 2^ℵ₀ = 𝔠. Corollary: |𝒫(ℚ)| = |ℝ|, reflecting the Dedekind cut bijection.",
+      "summary": "Proves |\ud835\udcab(\u211a)| = \ud835\udd20 using Cardinal.mk_set and the continuum formula 2^\u2135\u2080 = \ud835\udd20. Corollary: |\ud835\udcab(\u211a)| = |\u211d|, reflecting the Dedekind cut bijection.",
       "mathContext": "$|\\mathcal{P}(\\mathbb{Q})| = 2^{|\\mathbb{Q}|} = 2^{\\aleph_0} = \\mathfrak{c} = |\\mathbb{R}|$."
     },
     {
@@ -110,51 +110,51 @@
       "title": "Part 3: The Cardinality Gap and Aleph Hierarchy",
       "startLine": 118,
       "endLine": 143,
-      "summary": "Proves ℵ₀ < 𝔠 (Cantor), ℵ₁ ≤ 𝔠 (ZFC bound), and ℵ₀ < ℵ₁ (smallest uncountable cardinal), establishing the aleph-hierarchy framework."
+      "summary": "Proves \u2135\u2080 < \ud835\udd20 (Cantor), \u2135\u2081 \u2264 \ud835\udd20 (ZFC bound), and \u2135\u2080 < \u2135\u2081 (smallest uncountable cardinal), establishing the aleph-hierarchy framework."
     },
     {
       "id": "part-4-ch-definition",
       "title": "Part 4: The Continuum Hypothesis",
       "startLine": 146,
       "endLine": 158,
-      "summary": "Defines ContinuumHypothesis (𝔠 = ℵ₁) and CH_gap (no cardinal between ℵ₀ and 𝔠), the two standard formulations."
+      "summary": "Defines ContinuumHypothesis (\ud835\udd20 = \u2135\u2081) and CH_gap (no cardinal between \u2135\u2080 and \ud835\udd20), the two standard formulations."
     },
     {
       "id": "part-5-equivalence",
       "title": "Part 5: CH Equivalence",
       "startLine": 161,
       "endLine": 191,
-      "summary": "Proves ContinuumHypothesis ↔ CH_gap via the successor characterization of ℵ₁ = Order.succ ℵ₀."
+      "summary": "Proves ContinuumHypothesis \u2194 CH_gap via the successor characterization of \u2135\u2081 = Order.succ \u2135\u2080."
     },
     {
       "id": "part-6-implications",
       "title": "Part 6: Implications of CH",
       "startLine": 194,
       "endLine": 228,
-      "summary": "Under CH: only ℵ₀ and 𝔠 among infinite cardinals ≤ 𝔠; ℵ₁ = 𝔠. Under ¬CH: ℵ₁ < 𝔠 (at least one intermediate exists)."
+      "summary": "Under CH: only \u2135\u2080 and \ud835\udd20 among infinite cardinals \u2264 \ud835\udd20; \u2135\u2081 = \ud835\udd20. Under \u00acCH: \u2135\u2081 < \ud835\udd20 (at least one intermediate exists)."
     },
     {
       "id": "part-7-independence",
       "title": "Part 7: Independence Result",
       "startLine": 231,
       "endLine": 260,
-      "summary": "Axiomatizes Gödel (1940) and Cohen (1963) independence: both CH and ¬CH are consistent with ZFC. Summary theorem collects all ZFC-provable facts."
+      "summary": "Axiomatizes G\u00f6del (1940) and Cohen (1963) independence: both CH and \u00acCH are consistent with ZFC. Summary theorem collects all ZFC-provable facts."
     }
   ],
   "conclusion": {
     "summary": "The proof establishes a complete ZFC cardinality framework connecting the denumerability of $\\mathbb{Q}$ to the Continuum Hypothesis: $|\\mathbb{Q}| = \\aleph_0 < |\\mathbb{R}| = \\mathfrak{c} = 2^{\\aleph_0}$, with $|\\mathcal{P}(\\mathbb{Q})| = \\mathfrak{c}$ bridging them. CH ($\\mathfrak{c} = \\aleph_1$) is proved equivalent to the gap condition, and its independence is axiomatized. 0 sorries; 2 axioms for the independence result.",
-    "implications": "This completes the cardinality analysis of the rational-real relationship. The Dedekind cut connection ($|\\mathcal{P}(\\mathbb{Q})| = \\mathfrak{c}$) shows that the 'size leap' from $\\mathbb{Q}$ to $\\mathbb{R}$ is exactly a power set operation — going from $\\aleph_0$ to $2^{\\aleph_0}$. Whether this leap is 'atomic' (CH: directly to $\\aleph_1$) or has intermediate steps (¬CH) cannot be determined in ZFC alone.",
+    "implications": "This completes the cardinality analysis of the rational-real relationship. The Dedekind cut connection ($|\\mathcal{P}(\\mathbb{Q})| = \\mathfrak{c}$) shows that the 'size leap' from $\\mathbb{Q}$ to $\\mathbb{R}$ is exactly a power set operation \u2014 going from $\\aleph_0$ to $2^{\\aleph_0}$. Whether this leap is 'atomic' (CH: directly to $\\aleph_1$) or has intermediate steps (\u00acCH) cannot be determined in ZFC alone.",
     "openQuestions": [
-      "Under the Proper Forcing Axiom (PFA), can we formalize in Lean that 𝔠 = ℵ₂? PFA implies ¬CH and pins the continuum at ℵ₂ specifically.",
-      "Can the Gödel-Cohen independence be formalized constructively in Lean? Full forcing requires developing a large machinery (generic filters, names, the forcing relation) — a multi-thousand-line project.",
-      "Easton's theorem shows that for regular cardinals, 2^ℵ_α can be 'almost anything' compatible with König's theorem. Can Easton's constraints be formalized in Lean?"
+      "Under the Proper Forcing Axiom (PFA), can we formalize in Lean that \ud835\udd20 = \u2135\u2082? PFA implies \u00acCH and pins the continuum at \u2135\u2082 specifically.",
+      "Can the G\u00f6del-Cohen independence be formalized constructively in Lean? Full forcing requires developing a large machinery (generic filters, names, the forcing relation) \u2014 a multi-thousand-line project.",
+      "Easton's theorem shows that for regular cardinals, 2^\u2135_\u03b1 can be 'almost anything' compatible with K\u00f6nig's theorem. Can Easton's constraints be formalized in Lean?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "denumerability-rationals",
       "relationship": "parent-problem",
-      "description": "The parent proof establishes |ℚ| = ℵ₀; this proof extends to ask what lies between |ℚ| and |ℝ|."
+      "description": "The parent proof establishes |\u211a| = \u2135\u2080; this proof extends to ask what lies between |\u211a| and |\u211d|."
     },
     {
       "targetId": "continuum-hypothesis",
@@ -164,17 +164,17 @@
     {
       "targetId": "cantor-diagonalization",
       "relationship": "related",
-      "description": "Cantor diagonalization proves |ℝ| > |ℕ|, establishing the cardinality gap this proof explores."
+      "description": "Cantor diagonalization proves |\u211d| > |\u2115|, establishing the cardinality gap this proof explores."
     },
     {
       "targetId": "denumerability-rationals-oq-02",
       "relationship": "sibling",
-      "description": "Cantor's characterization of ℚ as the unique countable dense linear order."
+      "description": "Cantor's characterization of \u211a as the unique countable dense linear order."
     },
     {
       "targetId": "denumerability-rationals-oq-04",
       "relationship": "sibling",
-      "description": "Constructive denumerability of algebraic numbers — another cardinality result in the countable hierarchy."
+      "description": "Constructive denumerability of algebraic numbers \u2014 another cardinality result in the countable hierarchy."
     }
   ],
   "leanFile": {
@@ -189,7 +189,7 @@
     "namespace": "DenumerabilityRationalsOQ01",
     "lineCount": 270,
     "axiomCount": 2,
-    "theoremCount": 14,
+    "theoremCount": 15,
     "definitionCount": 2,
     "path": "Proofs/DenumerabilityRationalsOQ01.lean",
     "sorries": 0

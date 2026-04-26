@@ -2,7 +2,7 @@
   "id": "chinese-remainder-non-coprime-oq-03-oq-02",
   "title": "GCD-LCM Distributive Law for Euclidean Domains",
   "slug": "chinese-remainder-non-coprime-oq-03-oq-02",
-  "description": "Standalone formalization of the GCD-LCM distributive law: gcd(lcm(a,b), c) is associated to lcm(gcd(a,c), gcd(b,c)) in any Euclidean domain, and exactly equal in ℕ. Extracted and generalized from the 3-moduli CRT proof. 6 theorems, 0 axioms, 379 lines.",
+  "description": "Standalone formalization of the GCD-LCM distributive law: gcd(lcm(a,b), c) is associated to lcm(gcd(a,c), gcd(b,c)) in any Euclidean domain, and exactly equal in \u2115. Extracted and generalized from the 3-moduli CRT proof. 6 theorems, 0 axioms, 379 lines.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-12",
@@ -21,34 +21,34 @@
     "sorries": 0,
     "dateAdded": "2026-04-12",
     "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified using Bézout's identity in EuclideanDomain.",
+    "assumptions": "None. Fully machine-verified using B\u00e9zout's identity in EuclideanDomain.",
     "lineCount": 378,
     "theoremCount": 6,
     "definitionCount": 0,
     "originalContributions": [
-      "lcm_gcd_dvd_gcd_lcm: lcm(gcd(a,c), gcd(b,c)) ∣ gcd(lcm(a,b), c) in any EuclideanDomain",
-      "gcd_lcm_dvd_lcm_gcd: gcd(lcm(a,b), c) ∣ lcm(gcd(a,c), gcd(b,c)) via Bézout factoring",
+      "lcm_gcd_dvd_gcd_lcm: lcm(gcd(a,c), gcd(b,c)) \u2223 gcd(lcm(a,b), c) in any EuclideanDomain",
+      "gcd_lcm_dvd_lcm_gcd: gcd(lcm(a,b), c) \u2223 lcm(gcd(a,c), gcd(b,c)) via B\u00e9zout factoring",
       "gcd_lcm_associated: the full distributive law as an Associated equality in EuclideanDomains",
       "lcm_gcd_associated: symmetric form of the distributive law",
       "nat_gcd_lcm_distrib: exact equality Nat.gcd (Nat.lcm a b) c = Nat.lcm (Nat.gcd a c) (Nat.gcd b c)",
-      "crt_gcd_lcm_condition: connection to CRT — distributive law as the key compatibility condition"
+      "crt_gcd_lcm_condition: connection to CRT \u2014 distributive law as the key compatibility condition"
     ]
   },
   "overview": {
-    "historicalContext": "The GCD-LCM distributive law is a classical identity in elementary number theory, going back to Birkhoff's 1935 lattice theory. The identity gcd(lcm(a,b), c) = lcm(gcd(a,c), gcd(b,c)) characterizes the divisibility lattice of integers as a distributive lattice. For positive integers, this is immediate from the prime factorization: each prime exponent satisfies min(max(vₚ(a), vₚ(b)), vₚ(c)) = max(min(vₚ(a), vₚ(c)), min(vₚ(b), vₚ(c))). However, in a general Euclidean domain where prime factorizations may not exist or may not be unique, the proof requires Bézout's identity and careful coprime factoring. This standalone formalization fills the gap left by Mathlib 4.26, which has gcd/lcm lemmas but no direct gcd_lcm_distrib theorem for EuclideanDomains.",
-    "problemStatement": "In a Euclidean domain R, prove that gcd(lcm(a,b), c) and lcm(gcd(a,c), gcd(b,c)) are associated (equal up to a unit). For ℕ specifically, prove they are exactly equal.",
-    "text": "The GCD-LCM distributive law has two equivalent forms:\n1. `gcd(lcm(a,b), c) = lcm(gcd(a,c), gcd(b,c))` (gcd distributes over lcm)\n2. `lcm(gcd(a,b), c) = gcd(lcm(a,c), lcm(b,c))` (lcm distributes over gcd)\n\nThis file formalizes form (1). The **easy direction** (lcm(gcd(a,c), gcd(b,c)) ∣ gcd(lcm(a,b), c)) follows from simple lattice reasoning: gcd(a,c) ∣ a ∣ lcm(a,b) and gcd(a,c) ∣ c, so gcd(a,c) ∣ gcd(lcm(a,b),c), and similarly for gcd(b,c).\n\nThe **hard direction** (gcd(lcm(a,b), c) ∣ lcm(gcd(a,c), gcd(b,c))) requires Bézout's identity. Let g=gcd(a,b), write a=g·α, b=g·β where α,β are coprime. Let d=gcd(g,c), write g=d·g', c=d·c' where g',c' are coprime. Write M=lcm(gcd(a,c),gcd(b,c)) using Bézout for gcd(a,c) and gcd(b,c). By subtracting two Bézout representations, factor out c' using IsCoprime g' c', then factor out β using IsCoprime α β, to express M = m·(g·α·β) + T·c. Since gcd(lcm(a,b),c) divides both g·α·β (as a common multiple of a and b) and c, it divides M.",
-    "proofStrategy": "Easy direction: chain of dvd lemmas (gcd_dvd_left, dvd_lcm_left, lcm_dvd). Hard direction: Bézout factoring with two nested IsCoprime instances. ℕ case: Nat.dvd_antisymm from two ℕ-specific divisibility lemmas. The CRT connection theorem: lcm_dvd combining two gcd-divisibility chains.",
+    "historicalContext": "The GCD-LCM distributive law is a classical identity in elementary number theory, going back to Birkhoff's 1935 lattice theory. The identity gcd(lcm(a,b), c) = lcm(gcd(a,c), gcd(b,c)) characterizes the divisibility lattice of integers as a distributive lattice. For positive integers, this is immediate from the prime factorization: each prime exponent satisfies min(max(v\u209a(a), v\u209a(b)), v\u209a(c)) = max(min(v\u209a(a), v\u209a(c)), min(v\u209a(b), v\u209a(c))). However, in a general Euclidean domain where prime factorizations may not exist or may not be unique, the proof requires B\u00e9zout's identity and careful coprime factoring. This standalone formalization fills the gap left by Mathlib 4.26, which has gcd/lcm lemmas but no direct gcd_lcm_distrib theorem for EuclideanDomains.",
+    "problemStatement": "In a Euclidean domain R, prove that gcd(lcm(a,b), c) and lcm(gcd(a,c), gcd(b,c)) are associated (equal up to a unit). For \u2115 specifically, prove they are exactly equal.",
+    "text": "The GCD-LCM distributive law has two equivalent forms:\n1. `gcd(lcm(a,b), c) = lcm(gcd(a,c), gcd(b,c))` (gcd distributes over lcm)\n2. `lcm(gcd(a,b), c) = gcd(lcm(a,c), lcm(b,c))` (lcm distributes over gcd)\n\nThis file formalizes form (1). The **easy direction** (lcm(gcd(a,c), gcd(b,c)) \u2223 gcd(lcm(a,b), c)) follows from simple lattice reasoning: gcd(a,c) \u2223 a \u2223 lcm(a,b) and gcd(a,c) \u2223 c, so gcd(a,c) \u2223 gcd(lcm(a,b),c), and similarly for gcd(b,c).\n\nThe **hard direction** (gcd(lcm(a,b), c) \u2223 lcm(gcd(a,c), gcd(b,c))) requires B\u00e9zout's identity. Let g=gcd(a,b), write a=g\u00b7\u03b1, b=g\u00b7\u03b2 where \u03b1,\u03b2 are coprime. Let d=gcd(g,c), write g=d\u00b7g', c=d\u00b7c' where g',c' are coprime. Write M=lcm(gcd(a,c),gcd(b,c)) using B\u00e9zout for gcd(a,c) and gcd(b,c). By subtracting two B\u00e9zout representations, factor out c' using IsCoprime g' c', then factor out \u03b2 using IsCoprime \u03b1 \u03b2, to express M = m\u00b7(g\u00b7\u03b1\u00b7\u03b2) + T\u00b7c. Since gcd(lcm(a,b),c) divides both g\u00b7\u03b1\u00b7\u03b2 (as a common multiple of a and b) and c, it divides M.",
+    "proofStrategy": "Easy direction: chain of dvd lemmas (gcd_dvd_left, dvd_lcm_left, lcm_dvd). Hard direction: B\u00e9zout factoring with two nested IsCoprime instances. \u2115 case: Nat.dvd_antisymm from two \u2115-specific divisibility lemmas. The CRT connection theorem: lcm_dvd combining two gcd-divisibility chains.",
     "keyInsights": [
-      "The easy direction is pure lattice reasoning: gcd(a,c) ∣ a ∣ lcm(a,b) and gcd(a,c) ∣ c gives gcd(a,c) ∣ gcd(lcm(a,b),c), and lcm_dvd finishes.",
-      "The hard direction requires two Bézout applications: one to factor gcd(a,b) = g, giving a=g·α, b=g·β with IsCoprime α β; one to factor gcd(g,c) = d, giving g=d·g', c=d·c' with IsCoprime g' c'.",
-      "The Bézout trick: write M twice as a linear combination (via gcd representations), subtract to get g·(r₁α−r₂β) = (s₂−s₁)·c, then cancel d to get g'·(r₁α−r₂β) = (s₂−s₁)·c'.",
-      "IsCoprime g' c' gives c' ∣ (r₁α−r₂β); IsCoprime α β gives β ∣ (r₁−p_b·c'·w); together they yield M = m·(g·α·β) + T·c.",
-      "For ℕ, Nat.dvd_antisymm converts two divisibility directions to exact equality — no issue with units since ℕ has only the trivial unit.",
-      "The CRT connection: the distributive law is precisely what makes the 3-moduli CRT reduce to pairwise conditions — gcd(lcm(m₁,m₂),m₃) = lcm(gcd(m₁,m₃),gcd(m₂,m₃)) converts the 2-step condition to pairwise ones."
+      "The easy direction is pure lattice reasoning: gcd(a,c) \u2223 a \u2223 lcm(a,b) and gcd(a,c) \u2223 c gives gcd(a,c) \u2223 gcd(lcm(a,b),c), and lcm_dvd finishes.",
+      "The hard direction requires two B\u00e9zout applications: one to factor gcd(a,b) = g, giving a=g\u00b7\u03b1, b=g\u00b7\u03b2 with IsCoprime \u03b1 \u03b2; one to factor gcd(g,c) = d, giving g=d\u00b7g', c=d\u00b7c' with IsCoprime g' c'.",
+      "The B\u00e9zout trick: write M twice as a linear combination (via gcd representations), subtract to get g\u00b7(r\u2081\u03b1\u2212r\u2082\u03b2) = (s\u2082\u2212s\u2081)\u00b7c, then cancel d to get g'\u00b7(r\u2081\u03b1\u2212r\u2082\u03b2) = (s\u2082\u2212s\u2081)\u00b7c'.",
+      "IsCoprime g' c' gives c' \u2223 (r\u2081\u03b1\u2212r\u2082\u03b2); IsCoprime \u03b1 \u03b2 gives \u03b2 \u2223 (r\u2081\u2212p_b\u00b7c'\u00b7w); together they yield M = m\u00b7(g\u00b7\u03b1\u00b7\u03b2) + T\u00b7c.",
+      "For \u2115, Nat.dvd_antisymm converts two divisibility directions to exact equality \u2014 no issue with units since \u2115 has only the trivial unit.",
+      "The CRT connection: the distributive law is precisely what makes the 3-moduli CRT reduce to pairwise conditions \u2014 gcd(lcm(m\u2081,m\u2082),m\u2083) = lcm(gcd(m\u2081,m\u2083),gcd(m\u2082,m\u2083)) converts the 2-step condition to pairwise ones."
     ],
     "prerequisites": [
-      "Euclidean domains: EuclideanDomain typeclass, gcd, lcm, Bézout's identity",
+      "Euclidean domains: EuclideanDomain typeclass, gcd, lcm, B\u00e9zout's identity",
       "IsCoprime in Lean 4 / Mathlib",
       "Associated elements in commutative rings",
       "Nat.gcd, Nat.lcm, Nat.dvd_antisymm",
@@ -56,11 +56,11 @@
     ]
   },
   "conclusion": {
-    "summary": "GCD-LCM distributive law formalized as a standalone theorem for Euclidean domains. 6 public theorems (including both divisibility directions, the Associated equality, exact equality for ℕ, and the CRT connection), 379 lines, 0 sorries, 0 axioms. Fills a gap in Mathlib 4.26.",
-    "implications": "This standalone formalization makes the GCD-LCM distributive law available as a reusable lemma. The parent proof (ChineseRemainderNonCoprimeOQ03) embedded this law in 185 lines; this file exposes it cleanly with documentation. The ℕ case (nat_gcd_lcm_distrib) is directly applicable in number-theoretic computations. The EuclideanDomain version (gcd_lcm_associated) applies in polynomial rings, Gaussian integers, and Eisenstein integers.",
+    "summary": "GCD-LCM distributive law formalized as a standalone theorem for Euclidean domains. 6 public theorems (including both divisibility directions, the Associated equality, exact equality for \u2115, and the CRT connection), 379 lines, 0 sorries, 0 axioms. Fills a gap in Mathlib 4.26.",
+    "implications": "This standalone formalization makes the GCD-LCM distributive law available as a reusable lemma. The parent proof (ChineseRemainderNonCoprimeOQ03) embedded this law in 185 lines; this file exposes it cleanly with documentation. The \u2115 case (nat_gcd_lcm_distrib) is directly applicable in number-theoretic computations. The EuclideanDomain version (gcd_lcm_associated) applies in polynomial rings, Gaussian integers, and Eisenstein integers.",
     "openQuestions": [
       "Formalize the dual law: lcm(gcd(a,b), c) = gcd(lcm(a,c), lcm(b,c)) (lcm distributes over gcd)",
-      "Generalize: the n-variable distributive law gcd(lcm(a₁,...,aₙ), c) = lcm(gcd(a₁,c),...,gcd(aₙ,c))",
+      "Generalize: the n-variable distributive law gcd(lcm(a\u2081,...,a\u2099), c) = lcm(gcd(a\u2081,c),...,gcd(a\u2099,c))",
       "Submit nat_gcd_lcm_distrib to Mathlib as a standalone lemma (currently missing in Mathlib 4.26)",
       "Formalize: the divisibility lattice of a UFD is distributive (via prime factorizations)"
     ]
@@ -69,7 +69,7 @@
     "namespace": "ChineseRemainderNonCoprimeOQ03OQ02",
     "lineCount": 378,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 10,
     "definitionCount": 0,
     "path": "Proofs/ChineseRemainderNonCoprimeOQ03OQ02.lean",
     "sorries": 0
@@ -99,32 +99,32 @@
       "title": "Part I: Easy Direction",
       "startLine": 59,
       "endLine": 79,
-      "summary": "lcm_gcd_dvd_gcd_lcm: lcm(gcd(a,c), gcd(b,c)) ∣ gcd(lcm(a,b), c). Pure lattice reasoning: gcd(a,c) ∣ a ∣ lcm(a,b) and gcd(a,c) ∣ c, so gcd(a,c) ∣ gcd(lcm(a,b),c), and same for gcd(b,c). Then lcm_dvd finishes."
+      "summary": "lcm_gcd_dvd_gcd_lcm: lcm(gcd(a,c), gcd(b,c)) \u2223 gcd(lcm(a,b), c). Pure lattice reasoning: gcd(a,c) \u2223 a \u2223 lcm(a,b) and gcd(a,c) \u2223 c, so gcd(a,c) \u2223 gcd(lcm(a,b),c), and same for gcd(b,c). Then lcm_dvd finishes."
     },
     {
       "id": "sec-helpers",
       "title": "Part II: Helper Lemmas",
       "startLine": 81,
       "endLine": 113,
-      "summary": "Three private lemmas: lcm_dvd_mul (lcm(a,b) ∣ a·b), gcd_lcm_dvd_mul (gcd(lcm(a,b),c) ∣ a·b by transitivity), gcd_lcm_dvd_prod_gcd (gcd(lcm(a,b),c) ∣ gcd(a,c)·gcd(b,c) via Bézout product expansion)."
+      "summary": "Three private lemmas: lcm_dvd_mul (lcm(a,b) \u2223 a\u00b7b), gcd_lcm_dvd_mul (gcd(lcm(a,b),c) \u2223 a\u00b7b by transitivity), gcd_lcm_dvd_prod_gcd (gcd(lcm(a,b),c) \u2223 gcd(a,c)\u00b7gcd(b,c) via B\u00e9zout product expansion)."
     },
     {
       "id": "sec-hard",
-      "title": "Part III: Hard Direction (Bézout Factoring)",
+      "title": "Part III: Hard Direction (B\u00e9zout Factoring)",
       "startLine": 115,
       "endLine": 277,
-      "summary": "gcd_lcm_dvd_lcm_gcd: gcd(lcm(a,b),c) ∣ lcm(gcd(a,c),gcd(b,c)). 160-line Bézout argument: factor g=gcd(a,b), write a=g·α, b=g·β (IsCoprime α β); factor d=gcd(g,c), write g=d·g', c=d·c' (IsCoprime g' c'); express M twice via Bézout; subtract; cancel d; use IsCoprime g' c' to get c' ∣ (r₁α−r₂β); use IsCoprime α β to factor β from r₁; decompose M = m·(g·α·β) + T·c."
+      "summary": "gcd_lcm_dvd_lcm_gcd: gcd(lcm(a,b),c) \u2223 lcm(gcd(a,c),gcd(b,c)). 160-line B\u00e9zout argument: factor g=gcd(a,b), write a=g\u00b7\u03b1, b=g\u00b7\u03b2 (IsCoprime \u03b1 \u03b2); factor d=gcd(g,c), write g=d\u00b7g', c=d\u00b7c' (IsCoprime g' c'); express M twice via B\u00e9zout; subtract; cancel d; use IsCoprime g' c' to get c' \u2223 (r\u2081\u03b1\u2212r\u2082\u03b2); use IsCoprime \u03b1 \u03b2 to factor \u03b2 from r\u2081; decompose M = m\u00b7(g\u00b7\u03b1\u00b7\u03b2) + T\u00b7c."
     },
     {
       "id": "sec-associated",
       "title": "Part IV: The Full Distributive Law",
       "startLine": 279,
       "endLine": 296,
-      "summary": "gcd_lcm_associated: Associated gcd(lcm(a,b),c) lcm(gcd(a,c),gcd(b,c)) — the full law as an Associated equality, combining both divisibility directions via associated_of_dvd_dvd. lcm_gcd_associated: the symmetric form."
+      "summary": "gcd_lcm_associated: Associated gcd(lcm(a,b),c) lcm(gcd(a,c),gcd(b,c)) \u2014 the full law as an Associated equality, combining both divisibility directions via associated_of_dvd_dvd. lcm_gcd_associated: the symmetric form."
     },
     {
       "id": "sec-nat",
-      "title": "Part V: Exact Equality for ℕ",
+      "title": "Part V: Exact Equality for \u2115",
       "startLine": 298,
       "endLine": 325,
       "summary": "nat_gcd_lcm_distrib: Nat.gcd (Nat.lcm a b) c = Nat.lcm (Nat.gcd a c) (Nat.gcd b c). Uses Nat.dvd_antisymm with Nat-specific gcd/lcm lemmas. Avoids the EuclideanDomain API (which gives Associated not equality) in favor of the simpler Nat API."
@@ -141,7 +141,7 @@
       "title": "Part VII: Connection to CRT",
       "startLine": 346,
       "endLine": 377,
-      "summary": "crt_gcd_lcm_condition: if x₀ satisfies m₁∣(x₀-a₁) and m₂∣(x₀-a₂), and pairwise gcd conditions hold for m₃, then lcm(gcd(m₁,m₃),gcd(m₂,m₃)) ∣ (x₀-a₃). This is the compatibility condition for adding a third modulus in the non-coprime CRT."
+      "summary": "crt_gcd_lcm_condition: if x\u2080 satisfies m\u2081\u2223(x\u2080-a\u2081) and m\u2082\u2223(x\u2080-a\u2082), and pairwise gcd conditions hold for m\u2083, then lcm(gcd(m\u2081,m\u2083),gcd(m\u2082,m\u2083)) \u2223 (x\u2080-a\u2083). This is the compatibility condition for adding a third modulus in the non-coprime CRT."
     }
   ],
   "sorries": 0

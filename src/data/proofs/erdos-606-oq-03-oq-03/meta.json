@@ -43,16 +43,16 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "James Joseph Sylvester posed the problem in 1893 in the Educational Times: must every finite non-collinear point set have a line through exactly two of its points? No solution appeared for nearly 50 years until Tibor Gallai (born Tibor Grünwald) proved it in 1944 using a topological argument. L.M. Kelly published his celebrated one-paragraph proof in 1948 in the American Mathematical Monthly, using a purely extremal argument that has become a staple of combinatorial geometry courses. The theorem occupies a central place in incidence geometry, with deep connections to the Hesse configuration (the unique non-realizable arrangement over $\\mathbb{R}$ but realizable over $\\mathbb{C}$) and to the Green-Tao theorem (2013), which establishes that $n$ non-collinear points determine at least $n/2$ ordinary lines for sufficiently large $n$. The Sylvester-Gallai theorem fails over $\\mathbb{C}$: the inflection points of a smooth cubic curve provide a counterexample.",
+    "historicalContext": "James Joseph Sylvester posed the problem in 1893 in the Educational Times: must every finite non-collinear point set have a line through exactly two of its points? No solution appeared for nearly 50 years until Tibor Gallai (born Tibor Gr\u00fcnwald) proved it in 1944 using a topological argument. L.M. Kelly published his celebrated one-paragraph proof in 1948 in the American Mathematical Monthly, using a purely extremal argument that has become a staple of combinatorial geometry courses. The theorem occupies a central place in incidence geometry, with deep connections to the Hesse configuration (the unique non-realizable arrangement over $\\mathbb{R}$ but realizable over $\\mathbb{C}$) and to the Green-Tao theorem (2013), which establishes that $n$ non-collinear points determine at least $n/2$ ordinary lines for sufficiently large $n$. The Sylvester-Gallai theorem fails over $\\mathbb{C}$: the inflection points of a smooth cubic curve provide a counterexample.",
     "problemStatement": "For any finite set of $\\geq 3$ points in $\\mathbb{R}^2$, not all on one line, prove there exists a line through exactly 2 of the points.",
     "text": "Formalizes Sylvester-Gallai via Kelly's elegant minimum-distance proof.",
     "proofStrategy": "Kelly's proof: (1) Among all pairs (point $p$, line $\\ell$ through $\\geq 2$ points) with $p \\notin \\ell$, choose the pair minimizing $d(p, \\ell)$. (2) If $\\ell$ has $\\geq 3$ points, coordinate geometry shows we can find a strictly closer pair. (3) Contradiction, so $\\ell$ has exactly 2 points.",
     "keyInsights": [
-      "Kelly's proof is purely extremal: minimize $d(p, \\ell)$ over all (point, line) pairs, then show $\\ge 3$ collinear points on $\\ell$ yields a strictly closer pair, contradicting minimality. No topology, no projective duality—just the well-ordering of finite sets.",
+      "Kelly's proof is purely extremal: minimize $d(p, \\ell)$ over all (point, line) pairs, then show $\\ge 3$ collinear points on $\\ell$ yields a strictly closer pair, contradicting minimality. No topology, no projective duality\u2014just the well-ordering of finite sets.",
       "The coordinate calculation is the proof's only non-trivial step: placing the foot at the origin with $\\ell$ along the $x$-axis, $d(a, \\overline{pc}) = h(\\gamma-\\alpha)/\\sqrt{h^2+\\gamma^2} < h$ because $\\alpha(\\alpha-2\\gamma) \\le 0$ when $0 \\le \\alpha \\le \\gamma$.",
       "The formalization separates the geometric inequality (axiomatized as `kelly_distance_lemma`) from the combinatorial setup (the sorry in `sylvester_gallai`), cleanly identifying the two proof obligations.",
       "The Sylvester-Gallai theorem fails over $\\mathbb{C}$: the 9 inflection points of a smooth cubic curve satisfy every line through 2 of them passing through a third. This failure highlights the essential role of the real ordered field in Kelly's argument ($h^2 > 0$).",
-      "Sylvester-Gallai is the qualitative foundation for Beck's theorem (1983): either $\\geq n/C$ points are collinear, or the points determine $\\geq n^2/C$ distinct lines — there is no 'middle ground' in line determination"
+      "Sylvester-Gallai is the qualitative foundation for Beck's theorem (1983): either $\\geq n/C$ points are collinear, or the points determine $\\geq n^2/C$ distinct lines \u2014 there is no 'middle ground' in line determination"
     ],
     "prerequisites": [
       "Basic plane geometry",
@@ -73,7 +73,7 @@
       "title": "Basic Geometry: Points, Collinearity, Lemmas",
       "startLine": 39,
       "endLine": 73,
-      "summary": "Defines Point as ℝ × ℝ, Collinear via parametric lines (c - a = t(b - a)), and proves two lemmas: collinear_self_left (t = 0) and collinear_comm (t ↦ 1-t with degenerate case handling).",
+      "summary": "Defines Point as \u211d \u00d7 \u211d, Collinear via parametric lines (c - a = t(b - a)), and proves two lemmas: collinear_self_left (t = 0) and collinear_comm (t \u21a6 1-t with degenerate case handling).",
       "mathContext": "Collinearity: $c$ lies on line $\\overline{ab}$ iff $\\exists t \\in \\mathbb{R}: c = a + t(b-a)$. Equivalently, the cross product $(b-a) \\times (c-a) = 0$."
     },
     {
@@ -110,24 +110,24 @@
     {
       "targetId": "erdos-606",
       "relationship": "related",
-      "description": "Grandparent: counting distinct lines from $n$ points — Sylvester-Gallai guarantees at least one ordinary line among them"
+      "description": "Grandparent: counting distinct lines from $n$ points \u2014 Sylvester-Gallai guarantees at least one ordinary line among them"
     },
     {
       "targetId": "erdos-607",
       "relationship": "related",
-      "description": "Companion Erdős problem on incidence geometry — related combinatorial geometry questions about point-line configurations"
+      "description": "Companion Erd\u0151s problem on incidence geometry \u2014 related combinatorial geometry questions about point-line configurations"
     },
     {
       "targetId": "desargues-theorem-oq-02",
       "relationship": "related",
-      "description": "Desargues' theorem — another classical result in incidence/projective geometry with formal treatment"
+      "description": "Desargues' theorem \u2014 another classical result in incidence/projective geometry with formal treatment"
     }
   ],
   "conclusion": {
     "summary": "Fully verifies the Sylvester-Gallai theorem via Kelly's 1948 extremal argument. Zero axioms, zero sorries. kelly_distance_lemma proved by 6-case coordinate geometry; sylvester_gallai proved by Finset minimum extraction.",
     "implications": "This formalization provides a clean Lean 4 foundation for the Sylvester-Gallai theorem, one of the central results in combinatorial geometry. The modular separation of the geometric inequality from the extremal setup means the axiom can be eliminated independently (it is a candidate for Aristotle proof search). Once complete, it enables formal work toward the Green-Tao ordinary lines theorem ($\\ge n/2$ ordinary lines for large $n$) and Beck's theorem on point-line incidences.",
     "openQuestions": [
-      "Complete the coordinate calculation in kelly_distance_lemma — a candidate for Aristotle automated proof search",
+      "Complete the coordinate calculation in kelly_distance_lemma \u2014 a candidate for Aristotle automated proof search",
       "Prove the extremal argument setup in sylvester_gallai: show that the minimum over the finite set of (point, line) distance pairs exists",
       "Formalize the Green-Tao ordinary lines theorem: $n$ non-collinear points determine at least $n/2$ ordinary lines for $n$ sufficiently large",
       "Extend to the higher-dimensional Sylvester-Gallai theorem: $n$ points in $\\mathbb{R}^d$ not on a hyperplane determine an ordinary hyperplane",
@@ -147,7 +147,7 @@
     "namespace": "SylvesterGallai",
     "lineCount": 508,
     "axiomCount": 0,
-    "theoremCount": 3,
+    "theoremCount": 6,
     "definitionCount": 5,
     "path": "Proofs/Erdos606OQ03OQ03.lean",
     "sorries": 0

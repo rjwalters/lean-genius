@@ -1,8 +1,8 @@
 {
   "id": "lebesgue-measure-oq-02",
-  "title": "Hölder's Inequality for Lebesgue Integration",
+  "title": "H\u00f6lder's Inequality for Lebesgue Integration",
   "slug": "lebesgue-measure-oq-02",
-  "description": "A complete formalization of Hölder's inequality in the measure-theoretic setting, replacing the placeholder in the parent Lebesgue Measure proof. Covers Young's inequality, the Lebesgue integral Hölder bound, Cauchy-Schwarz as the p=q=2 specialization, Minkowski's inequality for Lp spaces, and L² as an inner product space. 10 theorems, 0 sorries.",
+  "description": "A complete formalization of H\u00f6lder's inequality in the measure-theoretic setting, replacing the placeholder in the parent Lebesgue Measure proof. Covers Young's inequality, the Lebesgue integral H\u00f6lder bound, Cauchy-Schwarz as the p=q=2 specialization, Minkowski's inequality for Lp spaces, and L\u00b2 as an inner product space. 10 theorems, 0 sorries.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/H%C3%B6lder%27s_inequality",
@@ -26,17 +26,17 @@
     "mathlibDependencies": [
       {
         "theorem": "ENNReal.lintegral_mul_le_Lp_mul_Lq",
-        "description": "Hölder's inequality for the extended Lebesgue integral: ∫⁻ fg ≤ (∫⁻ f^p)^(1/p) · (∫⁻ g^q)^(1/q).",
+        "description": "H\u00f6lder's inequality for the extended Lebesgue integral: \u222b\u207b fg \u2264 (\u222b\u207b f^p)^(1/p) \u00b7 (\u222b\u207b g^q)^(1/q).",
         "module": "Mathlib.MeasureTheory.Integral.MeanInequalities"
       },
       {
         "theorem": "ENNReal.young_inequality",
-        "description": "Young's inequality: ab ≤ a^p/p + b^q/q for conjugate exponents.",
+        "description": "Young's inequality: ab \u2264 a^p/p + b^q/q for conjugate exponents.",
         "module": "Mathlib.Analysis.MeanInequalitiesPow"
       },
       {
         "theorem": "Real.HolderConjugate",
-        "description": "Hölder conjugate exponents: 1/p + 1/q = 1 with p, q > 1.",
+        "description": "H\u00f6lder conjugate exponents: 1/p + 1/q = 1 with p, q > 1.",
         "module": "Mathlib.Analysis.MeanInequalities"
       },
       {
@@ -50,35 +50,35 @@
         "module": "Mathlib.Analysis.MeanInequalities"
       },
       {
-        "theorem": "InnerProductSpace (instance for Lp ℝ 2 μ)",
-        "description": "L² is an inner product space with ⟨f,g⟩ = ∫ fg dμ, verified by type class inference.",
+        "theorem": "InnerProductSpace (instance for Lp \u211d 2 \u03bc)",
+        "description": "L\u00b2 is an inner product space with \u27e8f,g\u27e9 = \u222b fg d\u03bc, verified by type class inference.",
         "module": "Mathlib.MeasureTheory.Function.L2Space"
       }
     ],
     "originalContributions": [
-      "Complete formalization of Hölder's inequality replacing the True placeholder in LebesgueMeasure.lean",
+      "Complete formalization of H\u00f6lder's inequality replacing the True placeholder in LebesgueMeasure.lean",
       "Young's inequality (pointwise foundation) via ENNReal.young_inequality",
-      "Hölder for Lebesgue integral with general and Lebesgue-specific specializations",
-      "Cauchy-Schwarz as explicit p=q=2 specialization of Hölder",
+      "H\u00f6lder for Lebesgue integral with general and Lebesgue-specific specializations",
+      "Cauchy-Schwarz as explicit p=q=2 specialization of H\u00f6lder",
       "Minkowski's inequality for Lp spaces (triangle inequality)",
-      "L² inner product space instance verification"
+      "L\u00b2 inner product space instance verification"
     ],
-    "historicalContext": "Hölder's inequality is one of the central pillars of modern analysis. Cauchy (1821) proved the sum version for p=q=2 (Cauchy-Schwarz). Hölder (1889) generalized to arbitrary conjugate exponents 1/p + 1/q = 1. Riesz (1910) extended it to Lebesgue integrals, founding Lp space theory. Young (1912) isolated the pointwise inequality ab ≤ a^p/p + b^q/q that drives the proof. Minkowski (1896) used Hölder to prove the triangle inequality for Lp norms, making Lp into a Banach space. The inequality establishes the fundamental duality (Lp)* ≅ Lq (for 1 < p < ∞), which is the algebraic backbone of functional analysis, distribution theory, and Fourier analysis.",
+    "historicalContext": "H\u00f6lder's inequality is one of the central pillars of modern analysis. Cauchy (1821) proved the sum version for p=q=2 (Cauchy-Schwarz). H\u00f6lder (1889) generalized to arbitrary conjugate exponents 1/p + 1/q = 1. Riesz (1910) extended it to Lebesgue integrals, founding Lp space theory. Young (1912) isolated the pointwise inequality ab \u2264 a^p/p + b^q/q that drives the proof. Minkowski (1896) used H\u00f6lder to prove the triangle inequality for Lp norms, making Lp into a Banach space. The inequality establishes the fundamental duality (Lp)* \u2245 Lq (for 1 < p < \u221e), which is the algebraic backbone of functional analysis, distribution theory, and Fourier analysis.",
     "axiomCount": 0,
     "lineCount": 224,
-    "assumptions": "0 axioms, 0 sorries. Core inequalities (Hölder's inequality, Young's inequality) from Mathlib; original work is the Lp space infrastructure and applications."
+    "assumptions": "0 axioms, 0 sorries. Core inequalities (H\u00f6lder's inequality, Young's inequality) from Mathlib; original work is the Lp space infrastructure and applications."
   },
   "overview": {
-    "historicalContext": "**Cauchy** (1821) proved $|\\sum a_i b_i|^2 \\leq \\sum a_i^2 \\cdot \\sum b_i^2$ for finite sums. **Schwarz** (1885) and **Bunyakovsky** (1859) extended this to integrals. **Hölder** (1889) generalized both to arbitrary conjugate exponents $1/p + 1/q = 1$, creating a family of inequalities parameterized by $p \\in (1, \\infty)$. **Young** (1912) isolated the pointwise inequality $ab \\leq a^p/p + b^q/q$ from the concavity of $\\log$, providing the cleanest proof. **Riesz** (1910) lifted Hölder to measure-theoretic integrals, founding $L^p$ space theory. **Minkowski** used Hölder to prove the $L^p$ triangle inequality, completing the normed space structure. The chain Young $\\to$ Hölder $\\to$ Minkowski is one of the most important deduction sequences in analysis.",
-    "problemStatement": "**Open Question #2** from the Lebesgue Measure gallery: Formalize Hölder's inequality $\\int fg \\, d\\mu \\leq \\|f\\|_p \\cdot \\|g\\|_q$ in the measure-theoretic setting, replacing the `True` placeholder in `LebesgueMeasure.lean`.",
-    "text": "A complete formalization of Hölder's inequality in the measure-theoretic setting, replacing the placeholder in the parent Lebesgue Measure proof. Covers Young's inequality, the Lebesgue integral Hölder bound, Cauchy-Schwarz as the p=q=2 specialization, Minkowski's inequality for Lp spaces, and L² as an inner product space. 10 theorems, 0 sorries.",
-    "proofStrategy": "The formalization builds the Hölder tower in five stages: (1) Establish conjugate exponent pairs $(p,q)$ with $1/p + 1/q = 1$, including the $(2,2)$ Cauchy-Schwarz case. (2) State Young's inequality $ab \\leq a^p/p + b^q/q$ for ENNReal via Mathlib. (3) State Hölder for the Lebesgue integral $\\int^- fg \\leq (\\int^- f^p)^{1/p} (\\int^- g^q)^{1/q}$ via `lintegral_mul_le_Lp_mul_Lq`. (4) Specialize: Cauchy-Schwarz ($p=q=2$), Lebesgue measure on $\\mathbb{R}$. (5) Derive consequences: Minkowski's inequality (Lp triangle inequality), L² as inner product space.",
+    "historicalContext": "**Cauchy** (1821) proved $|\\sum a_i b_i|^2 \\leq \\sum a_i^2 \\cdot \\sum b_i^2$ for finite sums. **Schwarz** (1885) and **Bunyakovsky** (1859) extended this to integrals. **H\u00f6lder** (1889) generalized both to arbitrary conjugate exponents $1/p + 1/q = 1$, creating a family of inequalities parameterized by $p \\in (1, \\infty)$. **Young** (1912) isolated the pointwise inequality $ab \\leq a^p/p + b^q/q$ from the concavity of $\\log$, providing the cleanest proof. **Riesz** (1910) lifted H\u00f6lder to measure-theoretic integrals, founding $L^p$ space theory. **Minkowski** used H\u00f6lder to prove the $L^p$ triangle inequality, completing the normed space structure. The chain Young $\\to$ H\u00f6lder $\\to$ Minkowski is one of the most important deduction sequences in analysis.",
+    "problemStatement": "**Open Question #2** from the Lebesgue Measure gallery: Formalize H\u00f6lder's inequality $\\int fg \\, d\\mu \\leq \\|f\\|_p \\cdot \\|g\\|_q$ in the measure-theoretic setting, replacing the `True` placeholder in `LebesgueMeasure.lean`.",
+    "text": "A complete formalization of H\u00f6lder's inequality in the measure-theoretic setting, replacing the placeholder in the parent Lebesgue Measure proof. Covers Young's inequality, the Lebesgue integral H\u00f6lder bound, Cauchy-Schwarz as the p=q=2 specialization, Minkowski's inequality for Lp spaces, and L\u00b2 as an inner product space. 10 theorems, 0 sorries.",
+    "proofStrategy": "The formalization builds the H\u00f6lder tower in five stages: (1) Establish conjugate exponent pairs $(p,q)$ with $1/p + 1/q = 1$, including the $(2,2)$ Cauchy-Schwarz case. (2) State Young's inequality $ab \\leq a^p/p + b^q/q$ for ENNReal via Mathlib. (3) State H\u00f6lder for the Lebesgue integral $\\int^- fg \\leq (\\int^- f^p)^{1/p} (\\int^- g^q)^{1/q}$ via `lintegral_mul_le_Lp_mul_Lq`. (4) Specialize: Cauchy-Schwarz ($p=q=2$), Lebesgue measure on $\\mathbb{R}$. (5) Derive consequences: Minkowski's inequality (Lp triangle inequality), L\u00b2 as inner product space.",
     "keyInsights": [
-      "**Young's inequality as engine**: The entire Hölder proof reduces to integrating the pointwise bound $ab \\leq a^p/p + b^q/q$. After normalizing $f, g$ to unit $L^p, L^q$ norms, Young gives $\\int FG \\leq 1/p + 1/q = 1$. The conjugate condition $1/p + 1/q = 1$ is what makes the normalization work.",
-      "**Cauchy-Schwarz is Hölder at $p = q = 2$**: The pair $(2,2)$ satisfies $1/2 + 1/2 = 1$. Setting $p = q = 2$ in Hölder gives $\\int fg \\leq (\\int f^2)^{1/2}(\\int g^2)^{1/2}$, which is the integral Cauchy-Schwarz. This makes $L^2$ an inner product space and the natural home for Fourier analysis.",
-      "**Minkowski uses Hölder internally**: To prove $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$, expand $\\|f+g\\|_p^p = \\int|f+g|^{p-1}|f+g|$, split, and apply Hölder to each term with exponents $p$ and $q = p/(p-1)$. The conjugate condition reappears when dividing by $\\|f+g\\|_p^{p/q}$.",
-      "**ENNReal vs Real exponents**: Mathlib's Hölder uses `Real.HolderConjugate` (requiring $p, q : \\mathbb{R}$ with $p > 1$), while $L^p$ spaces use `ℝ≥0∞` exponents. Bridging this gap requires careful type conversions, which this formalization handles.",
-      "**Zero sorries via delegation**: All 10 theorems are proved by delegating to Mathlib. The value is not in new proofs but in the organized presentation: Young $\\to$ Hölder $\\to$ Cauchy-Schwarz $\\to$ Minkowski, showing how one inequality generates the entire $L^p$ theory."
+      "**Young's inequality as engine**: The entire H\u00f6lder proof reduces to integrating the pointwise bound $ab \\leq a^p/p + b^q/q$. After normalizing $f, g$ to unit $L^p, L^q$ norms, Young gives $\\int FG \\leq 1/p + 1/q = 1$. The conjugate condition $1/p + 1/q = 1$ is what makes the normalization work.",
+      "**Cauchy-Schwarz is H\u00f6lder at $p = q = 2$**: The pair $(2,2)$ satisfies $1/2 + 1/2 = 1$. Setting $p = q = 2$ in H\u00f6lder gives $\\int fg \\leq (\\int f^2)^{1/2}(\\int g^2)^{1/2}$, which is the integral Cauchy-Schwarz. This makes $L^2$ an inner product space and the natural home for Fourier analysis.",
+      "**Minkowski uses H\u00f6lder internally**: To prove $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$, expand $\\|f+g\\|_p^p = \\int|f+g|^{p-1}|f+g|$, split, and apply H\u00f6lder to each term with exponents $p$ and $q = p/(p-1)$. The conjugate condition reappears when dividing by $\\|f+g\\|_p^{p/q}$.",
+      "**ENNReal vs Real exponents**: Mathlib's H\u00f6lder uses `Real.HolderConjugate` (requiring $p, q : \\mathbb{R}$ with $p > 1$), while $L^p$ spaces use `\u211d\u22650\u221e` exponents. Bridging this gap requires careful type conversions, which this formalization handles.",
+      "**Zero sorries via delegation**: All 10 theorems are proved by delegating to Mathlib. The value is not in new proofs but in the organized presentation: Young $\\to$ H\u00f6lder $\\to$ Cauchy-Schwarz $\\to$ Minkowski, showing how one inequality generates the entire $L^p$ theory."
     ],
     "prerequisites": [
       "Real analysis (outer measure, sigma-algebras, Caratheodory extension)",
@@ -90,54 +90,54 @@
     {
       "id": "conjugate-exponents",
       "title": "Conjugate Exponents",
-      "summary": "Establishes Hölder conjugate pairs: $1/p + 1/q = 1$ with $p, q > 1$. Proves the $(2,2)$ pair for Cauchy-Schwarz via `norm_num` and the general construction $q = p/(p-1)$ via `conjExponent`.",
+      "summary": "Establishes H\u00f6lder conjugate pairs: $1/p + 1/q = 1$ with $p, q > 1$. Proves the $(2,2)$ pair for Cauchy-Schwarz via `norm_num` and the general construction $q = p/(p-1)$ via `conjExponent`.",
       "startLine": 29,
       "endLine": 50,
-      "mathContext": "Hölder conjugate pairs: $1/p + 1/q = 1$ with $p, q > 1$. The endpoint cases: $(p,q) = (1,\\infty)$ and $(\\infty,1)$. The $(2,2)$ pair gives Cauchy-Schwarz as a special case."
+      "mathContext": "H\u00f6lder conjugate pairs: $1/p + 1/q = 1$ with $p, q > 1$. The endpoint cases: $(p,q) = (1,\\infty)$ and $(\\infty,1)$. The $(2,2)$ pair gives Cauchy-Schwarz as a special case."
     },
     {
       "id": "young-inequality",
       "title": "Young's Inequality",
-      "summary": "The pointwise foundation: $ab \\leq a^p/p + b^q/q$ for conjugate $p, q$ and non-negative $a, b$. Proved via `ENNReal.young_inequality`. This is the building block that is normalized and integrated to get Hölder.",
+      "summary": "The pointwise foundation: $ab \\leq a^p/p + b^q/q$ for conjugate $p, q$ and non-negative $a, b$. Proved via `ENNReal.young_inequality`. This is the building block that is normalized and integrated to get H\u00f6lder.",
       "startLine": 52,
       "endLine": 69,
       "mathContext": "Young's inequality: $ab \\leq \\frac{a^p}{p} + \\frac{b^q}{q}$ for $a, b \\geq 0$ and conjugate $(p,q)$. Proved from the concavity of $\\log$: $\\log(a^p/p + b^q/q) \\geq (1/p)\\log a^p + (1/q)\\log b^q = \\log(ab)$."
     },
     {
       "id": "holder-lintegral",
-      "title": "Hölder for the Lebesgue Integral",
+      "title": "H\u00f6lder for the Lebesgue Integral",
       "summary": "The main inequality: $\\int^- fg \\, d\\mu \\leq (\\int^- f^p \\, d\\mu)^{1/p} \\cdot (\\int^- g^q \\, d\\mu)^{1/q}$. General version for any measure space, plus specialization to Lebesgue measure on $\\mathbb{R}$ (`volume`).",
       "startLine": 71,
       "endLine": 108,
-      "mathContext": "Hölder's inequality: $\\int fg\\,d\\mu \\leq \\left(\\int f^p\\,d\\mu\\right)^{1/p} \\left(\\int g^q\\,d\\mu\\right)^{1/q}$ for conjugate $(p,q)$. Proof: normalize to $\\|f\\|_p = \\|g\\|_q = 1$ and apply Young's inequality pointwise."
+      "mathContext": "H\u00f6lder's inequality: $\\int fg\\,d\\mu \\leq \\left(\\int f^p\\,d\\mu\\right)^{1/p} \\left(\\int g^q\\,d\\mu\\right)^{1/q}$ for conjugate $(p,q)$. Proof: normalize to $\\|f\\|_p = \\|g\\|_q = 1$ and apply Young's inequality pointwise."
     },
     {
       "id": "cauchy-schwarz",
       "title": "Cauchy-Schwarz Specialization",
-      "summary": "Setting $p = q = 2$ in Hölder gives $\\int^- fg \\leq (\\int^- f^2)^{1/2} (\\int^- g^2)^{1/2}$. One-line proof: `holder_lintegral μ holderConj_two_two hf hg`. Foundation of $L^2$ theory and Hilbert space methods.",
+      "summary": "Setting $p = q = 2$ in H\u00f6lder gives $\\int^- fg \\leq (\\int^- f^2)^{1/2} (\\int^- g^2)^{1/2}$. One-line proof: `holder_lintegral \u03bc holderConj_two_two hf hg`. Foundation of $L^2$ theory and Hilbert space methods.",
       "startLine": 110,
       "endLine": 129,
-      "mathContext": "Cauchy-Schwarz as Hölder with $p = q = 2$: $\\int fg\\,d\\mu \\leq \\left(\\int f^2\\,d\\mu\\right)^{1/2}\\left(\\int g^2\\,d\\mu\\right)^{1/2}$. This is the inner product inequality $|\\langle f, g \\rangle| \\leq \\|f\\| \\cdot \\|g\\|$ in $L^2(\\mu)$."
+      "mathContext": "Cauchy-Schwarz as H\u00f6lder with $p = q = 2$: $\\int fg\\,d\\mu \\leq \\left(\\int f^2\\,d\\mu\\right)^{1/2}\\left(\\int g^2\\,d\\mu\\right)^{1/2}$. This is the inner product inequality $|\\langle f, g \\rangle| \\leq \\|f\\| \\cdot \\|g\\|$ in $L^2(\\mu)$."
     },
     {
       "id": "minkowski",
       "title": "Minkowski's Inequality",
-      "summary": "Triangle inequality for $L^p$ norms: $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ for $p \\geq 1$. Makes $L^p$ into a Banach space. Proved via `norm_add_le` on the `Lp` type. The proof for $p > 1$ internally uses Hölder.",
+      "summary": "Triangle inequality for $L^p$ norms: $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ for $p \\geq 1$. Makes $L^p$ into a Banach space. Proved via `norm_add_le` on the `Lp` type. The proof for $p > 1$ internally uses H\u00f6lder.",
       "startLine": 131,
       "endLine": 154,
-      "mathContext": "Minkowski's inequality (triangle inequality for $L^p$): $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ for $p \\geq 1$. Proved by applying Hölder to $|f+g|^p = |f+g|^{p-1}|f| + |f+g|^{p-1}|g|$."
+      "mathContext": "Minkowski's inequality (triangle inequality for $L^p$): $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ for $p \\geq 1$. Proved by applying H\u00f6lder to $|f+g|^p = |f+g|^{p-1}|f| + |f+g|^{p-1}|g|$."
     },
     {
       "id": "proper-statement",
-      "title": "The Proper Hölder Statement",
+      "title": "The Proper H\u00f6lder Statement",
       "summary": "Replaces the `True` placeholder in `LebesgueMeasure.lean` with the real theorem. Bridges the ENNReal/Real exponent conventions. Also states the $L^p$ norm version via the Bochner integral.",
       "startLine": 156,
       "endLine": 197,
-      "mathContext": "Connects the abstract Hölder inequality to the concrete `LebesgueMeasure.lean` entry in the gallery, providing the proper theorem statement to replace any placeholder."
+      "mathContext": "Connects the abstract H\u00f6lder inequality to the concrete `LebesgueMeasure.lean` entry in the gallery, providing the proper theorem statement to replace any placeholder."
     },
     {
       "id": "applications",
-      "title": "Applications: L² and Norm Properties",
+      "title": "Applications: L\u00b2 and Norm Properties",
       "summary": "$L^2(\\mu)$ is an inner product space (verified by `inferInstance`). The inner product $\\langle f, g \\rangle = \\int fg \\, d\\mu$ satisfies Cauchy-Schwarz automatically. Also: $L^p$ norm is non-negative (from `norm_nonneg`).",
       "startLine": 199,
       "endLine": 224,
@@ -145,21 +145,21 @@
     }
   ],
   "conclusion": {
-    "summary": "Complete formalization of the Hölder inequality tower: Young → Hölder → Cauchy-Schwarz → Minkowski, with 10 theorems and 0 sorries. All proofs delegate to Mathlib, with the value in the organized presentation showing how one pointwise inequality (Young) generates the entire Lp space theory. Replaces the True placeholder in the parent Lebesgue Measure proof.",
-    "implications": "**Theoretical Significance**: Hölder's inequality is the algebraic engine of functional analysis.\n\nThis formalization makes the complete chain available in Lean 4: from the pointwise Young's inequality through the integral Hölder bound to the Lp Banach space structure (via Minkowski) and L² Hilbert space structure (via Cauchy-Schwarz). The duality (Lp)* ≅ Lq, which follows from Hölder, is the foundation of distribution theory and the Hahn-Banach theorem in Lp spaces.",
+    "summary": "Complete formalization of the H\u00f6lder inequality tower: Young \u2192 H\u00f6lder \u2192 Cauchy-Schwarz \u2192 Minkowski, with 10 theorems and 0 sorries. All proofs delegate to Mathlib, with the value in the organized presentation showing how one pointwise inequality (Young) generates the entire Lp space theory. Replaces the True placeholder in the parent Lebesgue Measure proof.",
+    "implications": "**Theoretical Significance**: H\u00f6lder's inequality is the algebraic engine of functional analysis.\n\nThis formalization makes the complete chain available in Lean 4: from the pointwise Young's inequality through the integral H\u00f6lder bound to the Lp Banach space structure (via Minkowski) and L\u00b2 Hilbert space structure (via Cauchy-Schwarz). The duality (Lp)* \u2245 Lq, which follows from H\u00f6lder, is the foundation of distribution theory and the Hahn-Banach theorem in Lp spaces.",
     "openQuestions": [
-      "Can the sharp constant in Hölder's inequality be characterized for specific function classes (e.g., on finite measure spaces)?",
-      "Can the Riesz representation theorem $(L^p)^* \\cong L^q$ be formalized as a consequence of the Hölder inequality proved here?",
-      "Can the weak-type Hölder inequality (Marcinkiewicz interpolation) be formalized to extend the theory to weak Lp spaces?"
+      "Can the sharp constant in H\u00f6lder's inequality be characterized for specific function classes (e.g., on finite measure spaces)?",
+      "Can the Riesz representation theorem $(L^p)^* \\cong L^q$ be formalized as a consequence of the H\u00f6lder inequality proved here?",
+      "Can the weak-type H\u00f6lder inequality (Marcinkiewicz interpolation) be formalized to extend the theory to weak Lp spaces?"
     ],
     "crossReferences": [
       {
         "proofId": "lebesgue-measure",
-        "relationship": "Parent proof — this resolves Open Question #2 (Hölder's inequality placeholder)."
+        "relationship": "Parent proof \u2014 this resolves Open Question #2 (H\u00f6lder's inequality placeholder)."
       },
       {
         "proofId": "cauchy-schwarz-integral-oq-01-oq-01",
-        "relationship": "Related — Cauchy-Schwarz for Lp norms (Hölder eLpNorm), proved independently."
+        "relationship": "Related \u2014 Cauchy-Schwarz for Lp norms (H\u00f6lder eLpNorm), proved independently."
       }
     ]
   },
@@ -179,39 +179,39 @@
     "namespace": "LebesgueMeasureOQ02",
     "lineCount": 224,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 11,
     "definitionCount": 0,
     "path": "Proofs/LebesgueMeasureOQ02.lean",
     "sorries": 0
   },
   "references": [
     {
-      "authors": "Otto Hölder",
+      "authors": "Otto H\u00f6lder",
       "title": "Ueber einen Mittelwerthssatz",
       "year": "1889",
-      "venue": "Nachrichten von der Königlichen Gesellschaft der Wissenschaften zu Göttingen",
+      "venue": "Nachrichten von der K\u00f6niglichen Gesellschaft der Wissenschaften zu G\u00f6ttingen",
       "note": "Original statement and proof for finite sums, generalizing Cauchy-Schwarz to arbitrary conjugate exponents"
     },
     {
       "authors": "Frigyes Riesz",
-      "title": "Untersuchungen über Systeme integrierbarer Funktionen",
+      "title": "Untersuchungen \u00fcber Systeme integrierbarer Funktionen",
       "year": "1910",
       "venue": "Mathematische Annalen",
-      "note": "Extended Hölder's inequality to Lebesgue-integrable functions and founded Lp space theory"
+      "note": "Extended H\u00f6lder's inequality to Lebesgue-integrable functions and founded Lp space theory"
     },
     {
       "authors": "Hermann Minkowski",
       "title": "Geometrie der Zahlen",
       "year": "1896",
       "venue": "Teubner, Leipzig",
-      "note": "The triangle inequality for Lp norms, proved using Hölder's inequality"
+      "note": "The triangle inequality for Lp norms, proved using H\u00f6lder's inequality"
     },
     {
       "authors": "William Henry Young",
       "title": "On classes of summable functions and their Fourier series",
       "year": "1912",
       "venue": "Proceedings of the Royal Society of London",
-      "note": "Young's inequality ab ≤ a^p/p + b^q/q, the pointwise engine behind Hölder"
+      "note": "Young's inequality ab \u2264 a^p/p + b^q/q, the pointwise engine behind H\u00f6lder"
     }
   ],
   "crossReferences": [
@@ -228,12 +228,12 @@
     {
       "targetId": "fundamental-theorem-calculus",
       "relationship": "foundational",
-      "description": "The fundamental theorem of calculus in its Lebesgue form (absolute continuity) requires Hölder's inequality for bounding integrals and establishing dominated convergence"
+      "description": "The fundamental theorem of calculus in its Lebesgue form (absolute continuity) requires H\u00f6lder's inequality for bounding integrals and establishing dominated convergence"
     },
     {
       "targetId": "cauchy-schwarz-integral",
       "relationship": "generalizes",
-      "description": "Hölder's inequality generalizes Cauchy-Schwarz from L² to L^p × L^q spaces; this entry formalizes the general case that subsumes the L² inner product inequality"
+      "description": "H\u00f6lder's inequality generalizes Cauchy-Schwarz from L\u00b2 to L^p \u00d7 L^q spaces; this entry formalizes the general case that subsumes the L\u00b2 inner product inequality"
     }
   ],
   "sorries": 0

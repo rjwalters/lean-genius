@@ -2,7 +2,7 @@
   "id": "yang-mills-transfer-matrix-oq-01",
   "title": "Yang-Mills Transfer Matrix OQ-01: Infinite-Volume Mass Gap",
   "slug": "yang-mills-transfer-matrix-oq-01",
-  "description": "Formalizes the question of whether the Yang-Mills mass gap survives the infinite-volume limit (L → ∞). Proves the gap is exactly L-independent in the strong coupling regime — a rigorous partial positive answer. Axiomatizes the general case (Seiler 1982).",
+  "description": "Formalizes the question of whether the Yang-Mills mass gap survives the infinite-volume limit (L \u2192 \u221e). Proves the gap is exactly L-independent in the strong coupling regime \u2014 a rigorous partial positive answer. Axiomatizes the general case (Seiler 1982).",
   "meta": {
     "proofRepoPath": "Proofs/YangMillsTransferMatrixOQ01.lean",
     "author": "Formalized in Lean 4 (Mathlib)",
@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "1 explicit axiom: strong_coupling_infinite_volume_gap (conditionally proved by Seiler 1982 cluster expansion for β < β_c). The axiom formalizes that for any strong coupling lattice YM family, the mass gap is uniformly bounded below in L. The main positive results (Parts II–IV) are fully proved with 0 axioms: the L-independence of the strong coupling gap and the SU(2)/SU(3) concrete bounds.",
+    "assumptions": "1 explicit axiom: strong_coupling_infinite_volume_gap (conditionally proved by Seiler 1982 cluster expansion for \u03b2 < \u03b2_c). The axiom formalizes that for any strong coupling lattice YM family, the mass gap is uniformly bounded below in L. The main positive results (Parts II\u2013IV) are fully proved with 0 axioms: the L-independence of the strong coupling gap and the SU(2)/SU(3) concrete bounds.",
     "lineCount": 510,
     "mathlibDependencies": [
       {
@@ -43,25 +43,25 @@
     "originalContributions": [
       "Precise Lean formalization of the infinite-volume mass gap question (HasUniformMassGap)",
       "Proved: strong coupling mass gap is exactly L-independent (strong_coupling_gap_L_independent)",
-      "Proved: uniform lower bound ε = a·g²·C₂/2 > 0 holds for all volumes L (strong_coupling_uniform_bound)",
-      "Proved: SU(2) gap = 3a·g²/8 uniformly for all L (su2_strong_coupling_uniform_bound)",
-      "Proved: SU(3) gap = 2a·g²/3 uniformly for all L (su3_strong_coupling_uniform_bound)",
+      "Proved: uniform lower bound \u03b5 = a\u00b7g\u00b2\u00b7C\u2082/2 > 0 holds for all volumes L (strong_coupling_uniform_bound)",
+      "Proved: SU(2) gap = 3a\u00b7g\u00b2/8 uniformly for all L (su2_strong_coupling_uniform_bound)",
+      "Proved: SU(3) gap = 2a\u00b7g\u00b2/3 uniformly for all L (su3_strong_coupling_uniform_bound)",
       "Axiomatized: Seiler (1982) cluster expansion result for general strong coupling families"
     ],
     "dateAdded": "2026-04-24",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The Yang-Mills transfer matrix mass gap at finite volume is a theorem: Δ_L = log(λ₀(L)/λ₁(L))/a > 0 for all L, by the Perron-Frobenius theorem. The deeper question is whether this gap remains bounded away from zero as L → ∞. In the strong coupling regime (large g²), Seiler (1982) proved the gap survives the infinite-volume limit using polymer expansion techniques. The general weak-coupling case, including the continuum limit a → 0, is the Clay Millennium Prize problem. This formalization proves the strong coupling L-independence exactly and axiomatizes the Seiler result.",
-    "problemStatement": "Given a lattice Yang-Mills theory parameterized by gauge group SU(N), coupling g², and lattice spacing a, does the finite-volume mass gap Δ_L = log(λ₀(L)/λ₁(L))/a satisfy inf_{L≥1} Δ_L > 0?",
-    "text": "The infinite-volume mass gap question asks whether the spectral gap of the Yang-Mills transfer matrix at volume L remains bounded below by a positive constant as L → ∞. This file proves that in the strong coupling approximation — where eigenvalues are determined by representation theory rather than volume — the gap is EXACTLY L-independent: Δ_L = a·g²·C₂(fund)/2 for all L. This is a rigorous partial positive answer. The strong coupling gap is a·g²·(3/4)/2 = 3ag²/8 for SU(2) and a·g²·(4/3)/2 = 2ag²/3 for SU(3). The general coupling case is axiomatized via the Seiler (1982) cluster expansion theorem.",
-    "proofStrategy": "Part II proves the finite-volume gap is always positive (standard). Part III constructs the strong coupling PF data explicitly: λ₀ = 1 (trivial rep), λ₁ = exp(-ag²C₂/2) (fundamental rep). Since these eigenvalues have no L dependence, the gap formula Δ = -log(λ₁/λ₀) = ag²C₂/2 is manifestly L-independent. The key theorem strong_coupling_gap_L_independent then follows immediately. The uniform bound strong_coupling_uniform_bound is a direct corollary with ε = ag²C₂/2.",
+    "historicalContext": "The Yang-Mills transfer matrix mass gap at finite volume is a theorem: \u0394_L = log(\u03bb\u2080(L)/\u03bb\u2081(L))/a > 0 for all L, by the Perron-Frobenius theorem. The deeper question is whether this gap remains bounded away from zero as L \u2192 \u221e. In the strong coupling regime (large g\u00b2), Seiler (1982) proved the gap survives the infinite-volume limit using polymer expansion techniques. The general weak-coupling case, including the continuum limit a \u2192 0, is the Clay Millennium Prize problem. This formalization proves the strong coupling L-independence exactly and axiomatizes the Seiler result.",
+    "problemStatement": "Given a lattice Yang-Mills theory parameterized by gauge group SU(N), coupling g\u00b2, and lattice spacing a, does the finite-volume mass gap \u0394_L = log(\u03bb\u2080(L)/\u03bb\u2081(L))/a satisfy inf_{L\u22651} \u0394_L > 0?",
+    "text": "The infinite-volume mass gap question asks whether the spectral gap of the Yang-Mills transfer matrix at volume L remains bounded below by a positive constant as L \u2192 \u221e. This file proves that in the strong coupling approximation \u2014 where eigenvalues are determined by representation theory rather than volume \u2014 the gap is EXACTLY L-independent: \u0394_L = a\u00b7g\u00b2\u00b7C\u2082(fund)/2 for all L. This is a rigorous partial positive answer. The strong coupling gap is a\u00b7g\u00b2\u00b7(3/4)/2 = 3ag\u00b2/8 for SU(2) and a\u00b7g\u00b2\u00b7(4/3)/2 = 2ag\u00b2/3 for SU(3). The general coupling case is axiomatized via the Seiler (1982) cluster expansion theorem.",
+    "proofStrategy": "Part II proves the finite-volume gap is always positive (standard). Part III constructs the strong coupling PF data explicitly: \u03bb\u2080 = 1 (trivial rep), \u03bb\u2081 = exp(-ag\u00b2C\u2082/2) (fundamental rep). Since these eigenvalues have no L dependence, the gap formula \u0394 = -log(\u03bb\u2081/\u03bb\u2080) = ag\u00b2C\u2082/2 is manifestly L-independent. The key theorem strong_coupling_gap_L_independent then follows immediately. The uniform bound strong_coupling_uniform_bound is a direct corollary with \u03b5 = ag\u00b2C\u2082/2.",
     "keyInsights": [
       "In strong coupling, eigenvalues are determined by representation theory, not by volume L",
-      "The gap Δ = a·g²·C₂(fund)/2 is an EXACT formula independent of L — not just a lower bound",
+      "The gap \u0394 = a\u00b7g\u00b2\u00b7C\u2082(fund)/2 is an EXACT formula independent of L \u2014 not just a lower bound",
       "The physical explanation: strong coupling confines dynamics within single plaquettes; inter-plaquette correlations are exponentially suppressed regardless of L",
-      "For SU(N): C₂(fund) = (N²-1)/(2N), so SU(2) gives 3/4 and SU(3) gives 4/3",
-      "The gap INCREASES without bound as g² → ∞ (deep strong coupling) — unambiguous mass generation",
+      "For SU(N): C\u2082(fund) = (N\u00b2-1)/(2N), so SU(2) gives 3/4 and SU(3) gives 4/3",
+      "The gap INCREASES without bound as g\u00b2 \u2192 \u221e (deep strong coupling) \u2014 unambiguous mass generation",
       "The Millennium Prize question concerns whether this gap survives to weak coupling and the continuum limit"
     ],
     "prerequisites": [
@@ -75,23 +75,23 @@
     {
       "id": "setup",
       "title": "Part I: Finite-Volume Setup",
-      "summary": "Defines FiniteVolumePFData (eigenvalue data for volume L) and finiteVolumeMassGap Δ_L = log(λ₀/λ₁).",
+      "summary": "Defines FiniteVolumePFData (eigenvalue data for volume L) and finiteVolumeMassGap \u0394_L = log(\u03bb\u2080/\u03bb\u2081).",
       "startLine": 65,
       "endLine": 90,
-      "mathContext": "The transfer matrix $T_L$ for a lattice gauge theory on a $d$-dimensional hypercubic lattice of spatial size $L$ acts on the Hilbert space $\\mathcal{H}_L = L^2(G^{d \\cdot L^d}, d\\mu_{\\mathrm{Haar}})$. By the Perron-Frobenius theorem applied to $T_L$ (which is a positive operator by reflection positivity), it has a unique largest eigenvalue $\\lambda_0(L)$ corresponding to the vacuum state and a second largest eigenvalue $\\lambda_1(L)$ corresponding to the lightest excitation. The `FiniteVolumePFData L` structure abstracts exactly these two eigenvalues: `lambda_0 : ℝ` (h0_pos : > 0), `lambda_1 : ℝ` (h1_pos : > 0), and `h_gap : lambda_0 > lambda_1`. The finite-volume mass gap $\\Delta_L = \\log(\\lambda_0(L)/\\lambda_1(L))/a$ (in physical units) measures the energy of the lightest particle excitation; in temporal lattice units ($a=1$) it equals `finiteVolumeMassGap L pf = Real.log (pf.lambda_0 / pf.lambda_1)`. The open question is whether $\\inf_{L \\geq 1} \\Delta_L > 0$."
+      "mathContext": "The transfer matrix $T_L$ for a lattice gauge theory on a $d$-dimensional hypercubic lattice of spatial size $L$ acts on the Hilbert space $\\mathcal{H}_L = L^2(G^{d \\cdot L^d}, d\\mu_{\\mathrm{Haar}})$. By the Perron-Frobenius theorem applied to $T_L$ (which is a positive operator by reflection positivity), it has a unique largest eigenvalue $\\lambda_0(L)$ corresponding to the vacuum state and a second largest eigenvalue $\\lambda_1(L)$ corresponding to the lightest excitation. The `FiniteVolumePFData L` structure abstracts exactly these two eigenvalues: `lambda_0 : \u211d` (h0_pos : > 0), `lambda_1 : \u211d` (h1_pos : > 0), and `h_gap : lambda_0 > lambda_1`. The finite-volume mass gap $\\Delta_L = \\log(\\lambda_0(L)/\\lambda_1(L))/a$ (in physical units) measures the energy of the lightest particle excitation; in temporal lattice units ($a=1$) it equals `finiteVolumeMassGap L pf = Real.log (pf.lambda_0 / pf.lambda_1)`. The open question is whether $\\inf_{L \\geq 1} \\Delta_L > 0$."
     },
     {
       "id": "finite-volume-gap",
       "title": "Part II: Finite-Volume Gap is Always Positive",
-      "summary": "Proves finiteVolumeMassGap_pos (Δ_L > 0 for all L) from λ₀ > λ₁ > 0 via log monotonicity. Self-contained, no axioms.",
+      "summary": "Proves finiteVolumeMassGap_pos (\u0394_L > 0 for all L) from \u03bb\u2080 > \u03bb\u2081 > 0 via log monotonicity. Self-contained, no axioms.",
       "startLine": 91,
       "endLine": 130,
       "mathContext": "The finite-volume gap positivity is unconditional: since $\\lambda_0 > \\lambda_1 > 0$, we have $\\lambda_0/\\lambda_1 > 1$, so $\\Delta_L = \\log(\\lambda_0/\\lambda_1) > 0$ by `Real.log_pos`. Three lemmas characterize the gap: `finiteVolumeMassGap_pos` (proved via `apply Real.log_pos; exact (one_lt_div pf.h1_pos).mpr pf.h_gap`), `mass_gap_from_log_ratio` (the gap equals $-\\log(\\lambda_1/\\lambda_0)$ via `Real.log_div` and a `ring`), and `eigenvalue_ratio_lt_one` (the ratio $r = \\lambda_1/\\lambda_0 < 1$ by `div_lt_one`). The alternative formula $\\Delta_L = -\\log r$ clarifies the infinite-volume limit scenario: if $r(L) \\to 1^-$ as $L \\to \\infty$ (eigenvalues converge), then $\\Delta_L \\to 0$ and the gap closes. The mass gap conjecture states this does NOT happen for Yang-Mills: $r(L)$ stays bounded away from 1 uniformly in $L$."
     },
     {
       "id": "strong-coupling-lindependence",
-      "title": "Part III: Strong Coupling — L-Independent Mass Gap (Key Results)",
-      "summary": "Constructs strongCouplingPFData with λ₀=1, λ₁=exp(-ag²C₂/2) for any L. Proves the gap formula, L-independence, uniform bound, and SU(2)/SU(3) concrete values.",
+      "title": "Part III: Strong Coupling \u2014 L-Independent Mass Gap (Key Results)",
+      "summary": "Constructs strongCouplingPFData with \u03bb\u2080=1, \u03bb\u2081=exp(-ag\u00b2C\u2082/2) for any L. Proves the gap formula, L-independence, uniform bound, and SU(2)/SU(3) concrete values.",
       "startLine": 131,
       "endLine": 340,
       "mathContext": "In the strong coupling limit ($g^2 \\to \\infty$), the transfer matrix is dominated by the electric term $T \\approx e^{-aH_E}$ where $H_E = \\frac{g^2}{2}\\sum_{\\ell} E_\\ell^2$ is the color-electric energy. The eigenstates of $H_E$ are group representation multiplets: the vacuum (trivial representation, $C_2 = 0$) has energy 0 and eigenvalue $\\lambda_0 = 1$; the fundamental representation (Casimir $C_2(\\mathrm{fund}) = (N^2-1)/(2N)$) has energy $ag^2 C_2/2$ and eigenvalue $\\lambda_1 = e^{-ag^2 C_2/2}$. Critically, these eigenvalues are purely representation-theoretic and carry NO dependence on the spatial volume $L$. The `StrongCouplingParams` structure packages $(N, g^2, a, C_2)$ with positivity hypotheses. `strongCouplingPFData sc L hL` provides valid `FiniteVolumePFData L` with $\\lambda_0 = 1$ and $\\lambda_1 = \\mathrm{strongCouplingRatio}$ for any $L \\geq 1$. The key chain: `strong_coupling_gap_at_volume` shows $\\Delta_L = ag^2 C_2/2$ exactly; `strong_coupling_gap_L_independent` derives $\\Delta_{L_1} = \\Delta_{L_2}$ for all $L_1, L_2$; `strong_coupling_uniform_bound` gives $\\exists \\varepsilon > 0, \\forall L, \\Delta_L \\geq \\varepsilon$ with $\\varepsilon = ag^2 C_2/2$. Concrete SU(2) and SU(3) values: $C_2 = 3/4$ gives $\\Delta = 3ag^2/8$; $C_2 = 4/3$ gives $\\Delta = 2ag^2/3$. Both are proved by `ring`."
@@ -99,14 +99,14 @@
     {
       "id": "volume-scaling",
       "title": "Part IV: Volume Scaling Analysis",
-      "summary": "Defines VolumeFamilyPFData and HasUniformMassGap. Proves gap_nondecreasing_from_ratio_condition: if λ₁(L) is non-increasing in L, the gap is non-decreasing.",
+      "summary": "Defines VolumeFamilyPFData and HasUniformMassGap. Proves gap_nondecreasing_from_ratio_condition: if \u03bb\u2081(L) is non-increasing in L, the gap is non-decreasing.",
       "startLine": 341,
       "endLine": 430,
-      "mathContext": "`VolumeFamilyPFData` packages a family $\\{T_L\\}_{L \\geq 1}$ as a function $L \\mapsto \\mathrm{FiniteVolumePFData}\\,L$, and `HasUniformMassGap family ε` asserts $\\varepsilon > 0$ is a lower bound for every $\\Delta_L$ in the family. The theorem `gap_nondecreasing_from_ratio_condition` captures a general monotonicity: if the eigenvalue ratio $r(L) = \\lambda_1(L)/\\lambda_0(L)$ is non-increasing in $L$ (physically: as volume grows, the excited state decays faster relative to the vacuum), then $\\Delta_L = -\\log(r(L))$ is non-decreasing. This follows since $\\log$ is monotone and $r$ non-increasing implies $-\\log(r)$ non-decreasing. The strong coupling family satisfies this trivially: $r(L) = e^{-ag^2 C_2/2}$ is constant in $L$, so both conditions hold with equality. The weak coupling regime requires non-perturbative control of $r(L)$ as $L \\to \\infty$ — the difficulty of the Millennium Prize problem."
+      "mathContext": "`VolumeFamilyPFData` packages a family $\\{T_L\\}_{L \\geq 1}$ as a function $L \\mapsto \\mathrm{FiniteVolumePFData}\\,L$, and `HasUniformMassGap family \u03b5` asserts $\\varepsilon > 0$ is a lower bound for every $\\Delta_L$ in the family. The theorem `gap_nondecreasing_from_ratio_condition` captures a general monotonicity: if the eigenvalue ratio $r(L) = \\lambda_1(L)/\\lambda_0(L)$ is non-increasing in $L$ (physically: as volume grows, the excited state decays faster relative to the vacuum), then $\\Delta_L = -\\log(r(L))$ is non-decreasing. This follows since $\\log$ is monotone and $r$ non-increasing implies $-\\log(r)$ non-decreasing. The strong coupling family satisfies this trivially: $r(L) = e^{-ag^2 C_2/2}$ is constant in $L$, so both conditions hold with equality. The weak coupling regime requires non-perturbative control of $r(L)$ as $L \\to \\infty$ \u2014 the difficulty of the Millennium Prize problem."
     },
     {
       "id": "open-question",
-      "title": "Part V: Open Question — General Coupling (Axiomatized)",
+      "title": "Part V: Open Question \u2014 General Coupling (Axiomatized)",
       "summary": "Defines InfiniteVolumeMassGapProblem. Axiomatizes strong_coupling_infinite_volume_gap (Seiler 1982). States the open problem for all couplings.",
       "startLine": 431,
       "endLine": 510,
@@ -114,24 +114,24 @@
     }
   ],
   "conclusion": {
-    "summary": "The strong coupling infinite-volume mass gap is proved: the gap is exactly a·g²·C₂/2 for all volumes L, with SU(2) value 3ag²/8 and SU(3) value 2ag²/3. The general coupling case is axiomatized via Seiler (1982). The full Millennium Prize problem (weak coupling + continuum limit) remains open.",
+    "summary": "The strong coupling infinite-volume mass gap is proved: the gap is exactly a\u00b7g\u00b2\u00b7C\u2082/2 for all volumes L, with SU(2) value 3ag\u00b2/8 and SU(3) value 2ag\u00b2/3. The general coupling case is axiomatized via Seiler (1982). The full Millennium Prize problem (weak coupling + continuum limit) remains open.",
     "openQuestions": [
-      "Does the mass gap survive the weak coupling regime (g² small)?",
+      "Does the mass gap survive the weak coupling regime (g\u00b2 small)?",
       "Is there a phase transition between strong and weak coupling where the gap closes?",
-      "Can the Seiler cluster expansion bound be made uniform in a as a → 0?",
-      "Does the gap depend analytically on g² for all couplings?"
+      "Can the Seiler cluster expansion bound be made uniform in a as a \u2192 0?",
+      "Does the gap depend analytically on g\u00b2 for all couplings?"
     ],
-    "implications": "Establishes a rigorous partial positive answer to OQ-01: the infinite-volume mass gap EXISTS and is computable in the strong coupling regime. The gap is not merely a finite-volume artifact — it persists for all L with the explicit value a·g²·C₂(fund)/2."
+    "implications": "Establishes a rigorous partial positive answer to OQ-01: the infinite-volume mass gap EXISTS and is computable in the strong coupling regime. The gap is not merely a finite-volume artifact \u2014 it persists for all L with the explicit value a\u00b7g\u00b2\u00b7C\u2082(fund)/2."
   },
   "crossReferences": [
     {
       "relationship": "extends",
-      "description": "OQ-01 from the transfer matrix proof: does the finite-volume mass gap Δ_L survive L → ∞?",
+      "description": "OQ-01 from the transfer matrix proof: does the finite-volume mass gap \u0394_L survive L \u2192 \u221e?",
       "proofId": "yang-mills-transfer-matrix"
     },
     {
       "relationship": "related",
-      "description": "The continuum limit OQ: does the gap survive a → 0? Both OQs together constitute the Millennium Prize problem.",
+      "description": "The continuum limit OQ: does the gap survive a \u2192 0? Both OQs together constitute the Millennium Prize problem.",
       "proofId": "yang-mills-lattice-oq-01"
     }
   ],
@@ -139,7 +139,7 @@
     "lineCount": 510,
     "structureCount": 6,
     "axiomCount": 1,
-    "theoremCount": 18,
+    "theoremCount": 19,
     "lemmaCount": 0,
     "defCount": 7,
     "imports": [
@@ -183,7 +183,7 @@
       "key": "BFS79",
       "authors": [
         "D. Brydges",
-        "J. Fröhlich",
+        "J. Fr\u00f6hlich",
         "E. Seiler"
       ],
       "title": "On the Construction of Quantized Gauge Fields I",
@@ -209,25 +209,25 @@
     {
       "name": "strong_coupling_gap_L_independent",
       "type": "core",
-      "description": "The strong coupling mass gap has identical value at every volume L: Δ_{L₁} = Δ_{L₂} = a·g²·C₂/2",
-      "leanType": "finiteVolumeMassGap L₁ pf₁ = finiteVolumeMassGap L₂ pf₂"
+      "description": "The strong coupling mass gap has identical value at every volume L: \u0394_{L\u2081} = \u0394_{L\u2082} = a\u00b7g\u00b2\u00b7C\u2082/2",
+      "leanType": "finiteVolumeMassGap L\u2081 pf\u2081 = finiteVolumeMassGap L\u2082 pf\u2082"
     },
     {
       "name": "strong_coupling_uniform_bound",
       "type": "core",
-      "description": "Uniform lower bound: ∃ ε > 0, ∀ L, Δ_L ≥ ε in strong coupling",
-      "leanType": "∃ ε > 0, ∀ L hL, finiteVolumeMassGap L (strongCouplingPFData sc L hL) ≥ ε"
+      "description": "Uniform lower bound: \u2203 \u03b5 > 0, \u2200 L, \u0394_L \u2265 \u03b5 in strong coupling",
+      "leanType": "\u2203 \u03b5 > 0, \u2200 L hL, finiteVolumeMassGap L (strongCouplingPFData sc L hL) \u2265 \u03b5"
     },
     {
       "name": "su2_strong_coupling_uniform_bound",
       "type": "concrete",
-      "description": "SU(2): Δ_L = 3ag²/8 for all L",
+      "description": "SU(2): \u0394_L = 3ag\u00b2/8 for all L",
       "leanType": "finiteVolumeMassGap L _ = 3 * a * g_sq / 8"
     },
     {
       "name": "su3_strong_coupling_uniform_bound",
       "type": "concrete",
-      "description": "SU(3): Δ_L = 2ag²/3 for all L",
+      "description": "SU(3): \u0394_L = 2ag\u00b2/3 for all L",
       "leanType": "finiteVolumeMassGap L _ = 2 * a * g_sq / 3"
     }
   ],

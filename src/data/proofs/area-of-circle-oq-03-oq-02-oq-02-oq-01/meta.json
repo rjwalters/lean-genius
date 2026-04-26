@@ -1,8 +1,8 @@
 {
   "id": "area-of-circle-oq-03-oq-02-oq-02-oq-01",
-  "title": "Generalized Dalzell Integral: π > 47171/15015",
+  "title": "Generalized Dalzell Integral: \u03c0 > 47171/15015",
   "slug": "area-of-circle-oq-03-oq-02-oq-02-oq-01",
-  "description": "Proves that π > 47171/15015 ≈ 3.14156 using the n=2 Dalzell integral ∫₀¹ x⁸(1-x)⁸/(1+x²) dx = 4π - 188684/15015. Combined with the n=1 result π < 22/7, establishes the two-sided rational sandwich 47171/15015 < π < 22/7.",
+  "description": "Proves that \u03c0 > 47171/15015 \u2248 3.14156 using the n=2 Dalzell integral \u222b\u2080\u00b9 x\u2078(1-x)\u2078/(1+x\u00b2) dx = 4\u03c0 - 188684/15015. Combined with the n=1 result \u03c0 < 22/7, establishes the two-sided rational sandwich 47171/15015 < \u03c0 < 22/7.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-12",
@@ -24,44 +24,44 @@
     "theoremCount": 12,
     "definitionCount": 2,
     "originalContributions": [
-      "dalzell2_polynomial_identity: x⁸(1-x)⁸ = (1+x²)·Q(x) + 16 (remainder +16, opposite sign from n=1)",
-      "dalzell2_integral: ∫₀¹ x⁸(1-x)⁸/(1+x²) dx = 4π - 188684/15015",
-      "pi_gt_lower_bound: π > 47171/15015 ≈ 3.14156...",
-      "pi_rational_sandwich: 47171/15015 < π < 22/7 (two-sided rational bound)"
+      "dalzell2_polynomial_identity: x\u2078(1-x)\u2078 = (1+x\u00b2)\u00b7Q(x) + 16 (remainder +16, opposite sign from n=1)",
+      "dalzell2_integral: \u222b\u2080\u00b9 x\u2078(1-x)\u2078/(1+x\u00b2) dx = 4\u03c0 - 188684/15015",
+      "pi_gt_lower_bound: \u03c0 > 47171/15015 \u2248 3.14156...",
+      "pi_rational_sandwich: 47171/15015 < \u03c0 < 22/7 (two-sided rational bound)"
     ]
   },
   "overview": {
-    "historicalContext": "Dalzell (1944) proved that ∫₀¹ x⁴(1-x)⁴/(1+x²) dx = 22/7 - π, giving a clean proof that π < 22/7. The generalized Dalzell integrals ∫₀¹ x^(4n)(1-x)^(4n)/(1+x²) dx for n ≥ 1 provide a sequence of increasingly tight rational bounds on π. The n=1 case gives an upper bound (remainder = -4, flipped sign means 22/7 > π). The n=2 case gives a lower bound (remainder = +16, reversed inequality means π > 47171/15015).\n\nThe key algebraic insight is that x^(4n)(1-x)^(4n)|_{x=i} = i^(4n)(1-i)^(4n) = 1·(1-i)^(4n). For n=1: (1-i)^4 = -4, remainder = -4. For n=2: (1-i)^8 = 16, remainder = +16. The sign alternates, giving alternating upper/lower bounds that converge to π.",
-    "problemStatement": "Can the generalized Dalzell integral ∫₀¹ x^(4n)(1-x)^(4n)/(1+x²) dx be used to derive sharper rational bounds on π? Specifically, what does the n=2 case give?",
-    "text": "**Answer**: Yes. The n=2 Dalzell integral gives:\n\n  ∫₀¹ x⁸(1-x)⁸/(1+x²) dx = 4π - 188684/15015\n\nSince the integrand is nonneg on [0,1] and strictly positive on (0,1), the integral is strictly positive:\n\n  4π - 188684/15015 > 0 ⟹ π > 47171/15015 ≈ 3.14156...\n\nCombined with the n=1 bound π < 22/7 ≈ 3.14286, we get the two-sided rational sandwich:\n\n  **47171/15015 < π < 22/7**\n\nThe key identity is x⁸(1-x)⁸ = (1+x²)·Q(x) + 16, where Q is the degree-14 polynomial x¹⁴ - 8x¹³ + 27x¹² - 48x¹¹ + 43x¹⁰ - 8x⁹ - 15x⁸ + 16x⁶ - 16x⁴ + 16x² - 16. The remainder +16 (vs -4 for n=1) flips the direction of the inequality.",
-    "proofStrategy": "1. Prove the polynomial identity x⁸(1-x)⁸ = (1+x²)·Q(x) + 16 by `ring`. 2. Decompose the integrand: x⁸(1-x)⁸/(1+x²) = Q(x) + 16/(1+x²). 3. Define antiderivative F₂(x) = x¹⁵/15 - 4x¹⁴/7 + 27x¹³/13 - 4x¹² + 43x¹¹/11 - 4x¹⁰/5 - 5x⁹/3 + 16x⁷/7 - 16x⁵/5 + 16x³/3 - 16x + 16·arctan(x). 4. Prove HasDerivAt F₂ = decomposed integrand using term-by-term derivatives and HasDerivAt chains. 5. Apply FTC: ∫₀¹ = F₂(1) - F₂(0) = (4π - 188684/15015) - 0. 6. Conclude from positivity of integral that π > 47171/15015.",
+    "historicalContext": "Dalzell (1944) proved that \u222b\u2080\u00b9 x\u2074(1-x)\u2074/(1+x\u00b2) dx = 22/7 - \u03c0, giving a clean proof that \u03c0 < 22/7. The generalized Dalzell integrals \u222b\u2080\u00b9 x^(4n)(1-x)^(4n)/(1+x\u00b2) dx for n \u2265 1 provide a sequence of increasingly tight rational bounds on \u03c0. The n=1 case gives an upper bound (remainder = -4, flipped sign means 22/7 > \u03c0). The n=2 case gives a lower bound (remainder = +16, reversed inequality means \u03c0 > 47171/15015).\n\nThe key algebraic insight is that x^(4n)(1-x)^(4n)|_{x=i} = i^(4n)(1-i)^(4n) = 1\u00b7(1-i)^(4n). For n=1: (1-i)^4 = -4, remainder = -4. For n=2: (1-i)^8 = 16, remainder = +16. The sign alternates, giving alternating upper/lower bounds that converge to \u03c0.",
+    "problemStatement": "Can the generalized Dalzell integral \u222b\u2080\u00b9 x^(4n)(1-x)^(4n)/(1+x\u00b2) dx be used to derive sharper rational bounds on \u03c0? Specifically, what does the n=2 case give?",
+    "text": "**Answer**: Yes. The n=2 Dalzell integral gives:\n\n  \u222b\u2080\u00b9 x\u2078(1-x)\u2078/(1+x\u00b2) dx = 4\u03c0 - 188684/15015\n\nSince the integrand is nonneg on [0,1] and strictly positive on (0,1), the integral is strictly positive:\n\n  4\u03c0 - 188684/15015 > 0 \u27f9 \u03c0 > 47171/15015 \u2248 3.14156...\n\nCombined with the n=1 bound \u03c0 < 22/7 \u2248 3.14286, we get the two-sided rational sandwich:\n\n  **47171/15015 < \u03c0 < 22/7**\n\nThe key identity is x\u2078(1-x)\u2078 = (1+x\u00b2)\u00b7Q(x) + 16, where Q is the degree-14 polynomial x\u00b9\u2074 - 8x\u00b9\u00b3 + 27x\u00b9\u00b2 - 48x\u00b9\u00b9 + 43x\u00b9\u2070 - 8x\u2079 - 15x\u2078 + 16x\u2076 - 16x\u2074 + 16x\u00b2 - 16. The remainder +16 (vs -4 for n=1) flips the direction of the inequality.",
+    "proofStrategy": "1. Prove the polynomial identity x\u2078(1-x)\u2078 = (1+x\u00b2)\u00b7Q(x) + 16 by `ring`. 2. Decompose the integrand: x\u2078(1-x)\u2078/(1+x\u00b2) = Q(x) + 16/(1+x\u00b2). 3. Define antiderivative F\u2082(x) = x\u00b9\u2075/15 - 4x\u00b9\u2074/7 + 27x\u00b9\u00b3/13 - 4x\u00b9\u00b2 + 43x\u00b9\u00b9/11 - 4x\u00b9\u2070/5 - 5x\u2079/3 + 16x\u2077/7 - 16x\u2075/5 + 16x\u00b3/3 - 16x + 16\u00b7arctan(x). 4. Prove HasDerivAt F\u2082 = decomposed integrand using term-by-term derivatives and HasDerivAt chains. 5. Apply FTC: \u222b\u2080\u00b9 = F\u2082(1) - F\u2082(0) = (4\u03c0 - 188684/15015) - 0. 6. Conclude from positivity of integral that \u03c0 > 47171/15015.",
     "keyInsights": [
-      "The remainder when dividing x^(4n)(1-x)^(4n) by (1+x²) alternates in sign: n=1 gives -4, n=2 gives +16. This is because (1-i)^(4n)|_{x=i} = (1-i)^(4n), and (1-i)^4 = -4, (1-i)^8 = 16.",
-      "The remainder sign determines the direction of the bound: negative remainder → π < q (upper bound), positive remainder → π > q (lower bound).",
-      "The antiderivative F₂ integrates the full decomposed form Q(x) + 16/(1+x²), with F₂(0) = 0 and F₂(1) = -188684/15015 + 4π (after arctan_one = π/4).",
-      "The two bounds together: 47171/15015 ≈ 3.14156 < π < 22/7 ≈ 3.14286, giving π to 4 correct decimal places.",
-      "The Dalzell sequence converges: as n → ∞, ∫₀¹ x^(4n)(1-x)^(4n)/(1+x²) dx → 0 since max{x^(4n)(1-x)^(4n)} → 0, giving arbitrarily tight rational bounds on π."
+      "The remainder when dividing x^(4n)(1-x)^(4n) by (1+x\u00b2) alternates in sign: n=1 gives -4, n=2 gives +16. This is because (1-i)^(4n)|_{x=i} = (1-i)^(4n), and (1-i)^4 = -4, (1-i)^8 = 16.",
+      "The remainder sign determines the direction of the bound: negative remainder \u2192 \u03c0 < q (upper bound), positive remainder \u2192 \u03c0 > q (lower bound).",
+      "The antiderivative F\u2082 integrates the full decomposed form Q(x) + 16/(1+x\u00b2), with F\u2082(0) = 0 and F\u2082(1) = -188684/15015 + 4\u03c0 (after arctan_one = \u03c0/4).",
+      "The two bounds together: 47171/15015 \u2248 3.14156 < \u03c0 < 22/7 \u2248 3.14286, giving \u03c0 to 4 correct decimal places.",
+      "The Dalzell sequence converges: as n \u2192 \u221e, \u222b\u2080\u00b9 x^(4n)(1-x)^(4n)/(1+x\u00b2) dx \u2192 0 since max{x^(4n)(1-x)^(4n)} \u2192 0, giving arbitrarily tight rational bounds on \u03c0."
     ],
     "prerequisites": [
       "Real analysis: HasDerivAt, intervalIntegral, arctan_one",
       "Mathlib: integral_pos, integral_eq_sub_of_hasDerivAt",
-      "Parent proof: AreaOfCircleOQ03OQ02OQ02 (π < 22/7)"
+      "Parent proof: AreaOfCircleOQ03OQ02OQ02 (\u03c0 < 22/7)"
     ]
   },
   "conclusion": {
-    "summary": "The n=2 Dalzell integral proves π > 47171/15015. Combined with the n=1 bound π < 22/7 (from the parent proof), we obtain the two-sided rational sandwich 47171/15015 < π < 22/7, locating π to 4 correct decimal places using only rational arithmetic and calculus.",
-    "implications": "The Dalzell integral sequence provides a purely analytic (no number theory) method for computing rational bounds on π. Each pair (n=2k-1, n=2k) gives an upper and lower bound converging to π. This is an elementary alternative to the Leibniz/Gregory formula and Machin-type formulas for computing π to arbitrary precision.",
+    "summary": "The n=2 Dalzell integral proves \u03c0 > 47171/15015. Combined with the n=1 bound \u03c0 < 22/7 (from the parent proof), we obtain the two-sided rational sandwich 47171/15015 < \u03c0 < 22/7, locating \u03c0 to 4 correct decimal places using only rational arithmetic and calculus.",
+    "implications": "The Dalzell integral sequence provides a purely analytic (no number theory) method for computing rational bounds on \u03c0. Each pair (n=2k-1, n=2k) gives an upper and lower bound converging to \u03c0. This is an elementary alternative to the Leibniz/Gregory formula and Machin-type formulas for computing \u03c0 to arbitrary precision.",
     "openQuestions": [
-      "Can the n=3 Dalzell integral be evaluated? The remainder when dividing x¹²(1-x)¹²  by (1+x²) is (1-i)^12 = (-2i)^6/(-2i)^0... let me compute: (1-i)^4 = -4, (1-i)^8 = 16, (1-i)^12 = (1-i)^8 · (1-i)^4 = 16 · (-4) = -64. So n=3 gives remainder -64 and an upper bound π < q₃ for some rational q₃ < 22/7.",
-      "Can the general formula ∫₀¹ x^(4n)(1-x)^(4n)/(1+x²) dx = aₙπ - bₙ be derived in Lean for all n, where aₙ and bₙ are explicit rationals? This would require induction on the polynomial long division.",
-      "Can this approach extend to ∫₀¹ x^m(1-x)^n/(1+x²) dx for general m, n, giving a complete theory of integral representations of π?"
+      "Can the n=3 Dalzell integral be evaluated? The remainder when dividing x\u00b9\u00b2(1-x)\u00b9\u00b2  by (1+x\u00b2) is (1-i)^12 = (-2i)^6/(-2i)^0... let me compute: (1-i)^4 = -4, (1-i)^8 = 16, (1-i)^12 = (1-i)^8 \u00b7 (1-i)^4 = 16 \u00b7 (-4) = -64. So n=3 gives remainder -64 and an upper bound \u03c0 < q\u2083 for some rational q\u2083 < 22/7.",
+      "Can the general formula \u222b\u2080\u00b9 x^(4n)(1-x)^(4n)/(1+x\u00b2) dx = a\u2099\u03c0 - b\u2099 be derived in Lean for all n, where a\u2099 and b\u2099 are explicit rationals? This would require induction on the polynomial long division.",
+      "Can this approach extend to \u222b\u2080\u00b9 x^m(1-x)^n/(1+x\u00b2) dx for general m, n, giving a complete theory of integral representations of \u03c0?"
     ]
   },
   "leanFile": {
     "namespace": "AreaOfCircleOQ03OQ02OQ02OQ01",
     "lineCount": 254,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 15,
     "definitionCount": 2,
     "path": "Proofs/AreaOfCircleOQ03OQ02OQ02OQ01.lean",
     "sorries": 0
@@ -70,7 +70,7 @@
     {
       "targetId": "area-of-circle-oq-03-oq-02-oq-02",
       "relationship": "extends",
-      "description": "Parent proof: proves π < 22/7 via n=1 Dalzell integral; this proof provides the complementary lower bound"
+      "description": "Parent proof: proves \u03c0 < 22/7 via n=1 Dalzell integral; this proof provides the complementary lower bound"
     },
     {
       "targetId": "area-of-circle-oq-03-oq-02",
@@ -84,42 +84,42 @@
       "title": "Part I: Polynomial Identity",
       "startLine": 41,
       "endLine": 65,
-      "summary": "Proves x⁸(1-x)⁸ = (1+x²)·Q(x) + 16 by `ring`. The remainder +16 (vs -4 for n=1) is the key difference that flips the bound direction."
+      "summary": "Proves x\u2078(1-x)\u2078 = (1+x\u00b2)\u00b7Q(x) + 16 by `ring`. The remainder +16 (vs -4 for n=1) is the key difference that flips the bound direction."
     },
     {
       "id": "sec-positivity",
       "title": "Part II: Positivity of the Integrand",
       "startLine": 67,
       "endLine": 86,
-      "summary": "Shows x⁸(1-x)⁸/(1+x²) ≥ 0 on [0,1] and > 0 on (0,1). Required for applying integral_pos."
+      "summary": "Shows x\u2078(1-x)\u2078/(1+x\u00b2) \u2265 0 on [0,1] and > 0 on (0,1). Required for applying integral_pos."
     },
     {
       "id": "sec-antideriv",
       "title": "Part III: Antiderivative via FTC",
       "startLine": 88,
       "endLine": 172,
-      "summary": "Defines F₂ and proves F₂'= decomposed integrand using term-by-term HasDerivAt chain. F₂(0)=0, F₂(1)=4π-188684/15015. FTC gives the integral value."
+      "summary": "Defines F\u2082 and proves F\u2082'= decomposed integrand using term-by-term HasDerivAt chain. F\u2082(0)=0, F\u2082(1)=4\u03c0-188684/15015. FTC gives the integral value."
     },
     {
       "id": "sec-integral",
       "title": "Part IV: Integral Identity",
       "startLine": 174,
       "endLine": 195,
-      "summary": "Proves ∫₀¹ x⁸(1-x)⁸/(1+x²) dx = 4π - 188684/15015 by combining the antiderivative FTC with integrand decomposition."
+      "summary": "Proves \u222b\u2080\u00b9 x\u2078(1-x)\u2078/(1+x\u00b2) dx = 4\u03c0 - 188684/15015 by combining the antiderivative FTC with integrand decomposition."
     },
     {
       "id": "sec-bound",
-      "title": "Part V: Lower Bound on π",
+      "title": "Part V: Lower Bound on \u03c0",
       "startLine": 197,
       "endLine": 213,
-      "summary": "Derives π > 47171/15015 from positivity of the integral. Uses integral_pos for strictness."
+      "summary": "Derives \u03c0 > 47171/15015 from positivity of the integral. Uses integral_pos for strictness."
     },
     {
       "id": "sec-sandwich",
       "title": "Part VI: Two-Sided Rational Sandwich",
       "startLine": 215,
       "endLine": 250,
-      "summary": "Combines n=1 (π < 22/7) and n=2 (π > 47171/15015) bounds to give 47171/15015 < π < 22/7."
+      "summary": "Combines n=1 (\u03c0 < 22/7) and n=2 (\u03c0 > 47171/15015) bounds to give 47171/15015 < \u03c0 < 22/7."
     }
   ],
   "sorries": 0

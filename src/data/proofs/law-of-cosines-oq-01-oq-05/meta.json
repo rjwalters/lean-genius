@@ -2,7 +2,7 @@
   "id": "law-of-cosines-oq-01-oq-05",
   "title": "Unified Curvature-Parametrized Law of Cosines",
   "slug": "law-of-cosines-oq-01-oq-05",
-  "description": "Unifies the Euclidean, spherical, and hyperbolic laws of cosines into a single curvature-parametrized formula: cs_K(c) = cs_K(a)·cs_K(b) + K·sn_K(a)·sn_K(b)·cos(C), where K ∈ ℝ is the constant sectional curvature. Defines curvature-parametrized trig functions cs_K and sn_K, proves the unified Pythagorean identity cs_K²+K·sn_K²=1 for all K, and recovers the classical laws at K=±1.",
+  "description": "Unifies the Euclidean, spherical, and hyperbolic laws of cosines into a single curvature-parametrized formula: cs_K(c) = cs_K(a)\u00b7cs_K(b) + K\u00b7sn_K(a)\u00b7sn_K(b)\u00b7cos(C), where K \u2208 \u211d is the constant sectional curvature. Defines curvature-parametrized trig functions cs_K and sn_K, proves the unified Pythagorean identity cs_K\u00b2+K\u00b7sn_K\u00b2=1 for all K, and recovers the classical laws at K=\u00b11.",
   "meta": {
     "author": "Researcher-10 (lean-genius)",
     "date": "2026",
@@ -21,28 +21,28 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 693,
-    "assumptions": "None. All results fully proved from Mathlib: euclidean_limit_holds completed with explicit K→0 Taylor expansion bounds.",
+    "assumptions": "None. All results fully proved from Mathlib: euclidean_limit_holds completed with explicit K\u21920 Taylor expansion bounds.",
     "dateAdded": "2026-04-21",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "Curvature-parametrized trig functions cs_K, sn_K unifying spherical and hyperbolic cases",
-      "Unified Pythagorean identity cs_K(r)² + K·sn_K(r)² = 1 for all K ∈ ℝ (fully proved)",
+      "Unified Pythagorean identity cs_K(r)\u00b2 + K\u00b7sn_K(r)\u00b2 = 1 for all K \u2208 \u211d (fully proved)",
       "UnifiedTriangle structure with law field encoding the unified law for K-geometry",
       "Recovery theorems: K=1 gives spherical law, K=-1 gives hyperbolic law",
-      "Algebraic equivalences: unified formula ↔ scaled spherical/hyperbolic laws for all K≠0"
+      "Algebraic equivalences: unified formula \u2194 scaled spherical/hyperbolic laws for all K\u22600"
     ]
   },
   "overview": {
-    "historicalContext": "The question of whether the Euclidean, spherical, and hyperbolic laws of cosines can be unified into a single formula has been understood geometrically since the 19th century, with the development of non-Euclidean geometry by Lobachevsky, Bolyai, and later Riemann. The key insight is that constant-curvature spaces admit a unified trigonometry parametrized by the sectional curvature K. For K > 0 (spherical), the natural trigonometric functions are circular; for K < 0 (hyperbolic), they are hyperbolic; and for K = 0 (Euclidean), the functions degenerate to their linear/constant limits. This parametric approach was formalized in the context of Riemannian geometry by Killing, Clifford, and others. The unified law cs_K(c) = cs_K(a)·cs_K(b) + K·sn_K(a)·sn_K(b)·cos(C) appears in modern treatments of Riemannian geometry, differential geometry textbooks (e.g., Thurston), and is closely related to the Jacobi equation for geodesic deviation. The Lean formalization presented here gives a purely algebraic treatment: defining cs_K and sn_K as piecewise functions of K and proving key identities from Mathlib's existing circular and hyperbolic trigonometry.",
+    "historicalContext": "The question of whether the Euclidean, spherical, and hyperbolic laws of cosines can be unified into a single formula has been understood geometrically since the 19th century, with the development of non-Euclidean geometry by Lobachevsky, Bolyai, and later Riemann. The key insight is that constant-curvature spaces admit a unified trigonometry parametrized by the sectional curvature K. For K > 0 (spherical), the natural trigonometric functions are circular; for K < 0 (hyperbolic), they are hyperbolic; and for K = 0 (Euclidean), the functions degenerate to their linear/constant limits. This parametric approach was formalized in the context of Riemannian geometry by Killing, Clifford, and others. The unified law cs_K(c) = cs_K(a)\u00b7cs_K(b) + K\u00b7sn_K(a)\u00b7sn_K(b)\u00b7cos(C) appears in modern treatments of Riemannian geometry, differential geometry textbooks (e.g., Thurston), and is closely related to the Jacobi equation for geodesic deviation. The Lean formalization presented here gives a purely algebraic treatment: defining cs_K and sn_K as piecewise functions of K and proving key identities from Mathlib's existing circular and hyperbolic trigonometry.",
     "problemStatement": "Define curvature-parametrized trigonometric functions $\\text{cs}_K(r)$ and $\\text{sn}_K(r)$ for $K \\in \\mathbb{R}$:\n\n$$\\text{cs}_K(r) = \\begin{cases} \\cos(\\sqrt{K}\\cdot r) & K > 0 \\\\ \\cosh(\\sqrt{-K}\\cdot r) & K < 0 \\\\ 1 & K = 0 \\end{cases}, \\quad \\text{sn}_K(r) = \\begin{cases} \\sin(\\sqrt{K}\\cdot r)/\\sqrt{K} & K > 0 \\\\ \\sinh(\\sqrt{-K}\\cdot r)/\\sqrt{-K} & K < 0 \\\\ r & K = 0 \\end{cases}$$\n\nProve the **unified law of cosines** for a triangle in a space of constant curvature $K$:\n$$\\text{cs}_K(c) = \\text{cs}_K(a)\\cdot\\text{cs}_K(b) + K\\cdot\\text{sn}_K(a)\\cdot\\text{sn}_K(b)\\cdot\\cos(C)$$\n\nThis unifies:\n- $K=1$: $\\cos(c) = \\cos(a)\\cos(b) + \\sin(a)\\sin(b)\\cos(C)$ (spherical)\n- $K=-1$: $\\cosh(c) = \\cosh(a)\\cosh(b) - \\sinh(a)\\sinh(b)\\cos(C)$ (hyperbolic)\n- $K\\to 0$: $c^2 = a^2 + b^2 - 2ab\\cos(C)$ (Euclidean, in the limit)",
-    "text": "Defines cs_K and sn_K as piecewise Lean functions, proves the unified Pythagorean identity cs_K²+K·sn_K²=1, and recovers the classical laws at K=±1 via algebraic identities.",
-    "proofStrategy": "1. Piecewise definitions: curvatureCos and curvatureSin use if-then-else on the sign of K, reducing to cos/cosh and sin/sinh respectively. 2. Pythagorean identity: rcases lt_trichotomy K 0 splits into three cases; K<0 uses Real.cosh_sq_sub_sinh_sq; K>0 uses Real.sin_sq_add_cos_sq; K=0 is immediate. 3. Key algebra: K·(x/√K)·(y/√K)=x·y (K>0) and K·(x/√(-K))·(y/√(-K))=-(x·y) (K<0) proved by calc chains with field_simp. 4. Recovery theorems: simp_only unfolds the piecewise definitions at K=±1; linarith closes from the structure law field. 5. Algebraic equivalences: simp_only + linear_combination with the key algebra lemmas prove K>0 and K<0 equivalences in both directions.",
+    "text": "Defines cs_K and sn_K as piecewise Lean functions, proves the unified Pythagorean identity cs_K\u00b2+K\u00b7sn_K\u00b2=1, and recovers the classical laws at K=\u00b11 via algebraic identities.",
+    "proofStrategy": "1. Piecewise definitions: curvatureCos and curvatureSin use if-then-else on the sign of K, reducing to cos/cosh and sin/sinh respectively. 2. Pythagorean identity: rcases lt_trichotomy K 0 splits into three cases; K<0 uses Real.cosh_sq_sub_sinh_sq; K>0 uses Real.sin_sq_add_cos_sq; K=0 is immediate. 3. Key algebra: K\u00b7(x/\u221aK)\u00b7(y/\u221aK)=x\u00b7y (K>0) and K\u00b7(x/\u221a(-K))\u00b7(y/\u221a(-K))=-(x\u00b7y) (K<0) proved by calc chains with field_simp. 4. Recovery theorems: simp_only unfolds the piecewise definitions at K=\u00b11; linarith closes from the structure law field. 5. Algebraic equivalences: simp_only + linear_combination with the key algebra lemmas prove K>0 and K<0 equivalences in both directions.",
     "keyInsights": [
-      "The unified Pythagorean identity cs_K(r)² + K·sn_K(r)² = 1 encodes simultaneously cos²+sin²=1 (K=1), cosh²-sinh²=1 (K=-1), and 1+0=1 (K=0). The factor K changes the sign from + to - when K=-1, giving the hyperbolic identity. This is the algebraic heart of the unification.",
-      "The K→0 limit is the most subtle case. For K>0: cs_K(r) = cos(√K·r) → 1 - K·r²/2 + O(K²), and sn_K(r) = sin(√K·r)/√K → r + O(K). Substituting into the unified formula and keeping leading-order terms gives 1-K·c²/2 ≈ (1-K·a²/2)(1-K·b²/2) + K·a·b·cos(C), which at order K gives c²=a²+b²-2ab·cos(C). Proved in euclidean_limit_holds via explicit exp and cosh/sinh Taylor expansion bounds.",
-      "The algebraic equivalences for K≠0 show that the unified formula at curvature K is exactly the spherical law at sides √K·a, √K·b, √K·c (for K>0) or the hyperbolic law at sides √(-K)·a, √(-K)·b, √(-K)·c (for K<0). This is the geometric content: a sphere of radius R=1/√K has curvature K, so the law of cosines on that sphere is the unified formula.",
-      "The piecewise definition of cs_K and sn_K in Lean requires careful use of field_simp and simp_only with explicit norm_num proofs of conditions like ¬(-1>0) and (-1<0). The calc chain approach for the key algebra lemmas (K·(x/√K)·(y/√K)=x·y) is cleaner than ring-based approaches because field_simp can close the first step outright.",
-      "The structure UnifiedTriangle K axiomatizes a triangle in K-geometry via its law field. This is analogous to how LawOfCosinesOQ03 axiomatizes hyperbolic triangles. The recovery theorems show that any K=1 unified triangle satisfies the spherical law and vice versa — the structure captures exactly the right mathematical content.",
+      "The unified Pythagorean identity cs_K(r)\u00b2 + K\u00b7sn_K(r)\u00b2 = 1 encodes simultaneously cos\u00b2+sin\u00b2=1 (K=1), cosh\u00b2-sinh\u00b2=1 (K=-1), and 1+0=1 (K=0). The factor K changes the sign from + to - when K=-1, giving the hyperbolic identity. This is the algebraic heart of the unification.",
+      "The K\u21920 limit is the most subtle case. For K>0: cs_K(r) = cos(\u221aK\u00b7r) \u2192 1 - K\u00b7r\u00b2/2 + O(K\u00b2), and sn_K(r) = sin(\u221aK\u00b7r)/\u221aK \u2192 r + O(K). Substituting into the unified formula and keeping leading-order terms gives 1-K\u00b7c\u00b2/2 \u2248 (1-K\u00b7a\u00b2/2)(1-K\u00b7b\u00b2/2) + K\u00b7a\u00b7b\u00b7cos(C), which at order K gives c\u00b2=a\u00b2+b\u00b2-2ab\u00b7cos(C). Proved in euclidean_limit_holds via explicit exp and cosh/sinh Taylor expansion bounds.",
+      "The algebraic equivalences for K\u22600 show that the unified formula at curvature K is exactly the spherical law at sides \u221aK\u00b7a, \u221aK\u00b7b, \u221aK\u00b7c (for K>0) or the hyperbolic law at sides \u221a(-K)\u00b7a, \u221a(-K)\u00b7b, \u221a(-K)\u00b7c (for K<0). This is the geometric content: a sphere of radius R=1/\u221aK has curvature K, so the law of cosines on that sphere is the unified formula.",
+      "The piecewise definition of cs_K and sn_K in Lean requires careful use of field_simp and simp_only with explicit norm_num proofs of conditions like \u00ac(-1>0) and (-1<0). The calc chain approach for the key algebra lemmas (K\u00b7(x/\u221aK)\u00b7(y/\u221aK)=x\u00b7y) is cleaner than ring-based approaches because field_simp can close the first step outright.",
+      "The structure UnifiedTriangle K axiomatizes a triangle in K-geometry via its law field. This is analogous to how LawOfCosinesOQ03 axiomatizes hyperbolic triangles. The recovery theorems show that any K=1 unified triangle satisfies the spherical law and vice versa \u2014 the structure captures exactly the right mathematical content.",
       "euclidean_limit_holds is fully proved (0 sorries) via a 280-line three-case Taylor bound: the K>0 case uses Real.abs_sin_le_abs and Real.one_sub_sq_div_two_le_cos, while K<0 requires the private cosh_K_bound and cosh_double_K_bound helper lemmas"
     ],
     "prerequisites": [
@@ -58,15 +58,15 @@
       "title": "Curvature-Parametrized Trig Functions",
       "startLine": 62,
       "endLine": 86,
-      "summary": "Defines curvatureCos K r = cos(√K·r) for K>0, cosh(√(-K)·r) for K<0, 1 for K=0; and curvatureSin K r = sin(√K·r)/√K for K>0, sinh(√(-K)·r)/√(-K) for K<0, r for K=0.",
-      "mathContext": "The definitions use Lean's if-then-else: $\\text{curvatureCos}(K,r) = \\text{if } K>0 \\text{ then } \\cos(\\sqrt{K}\\cdot r) \\text{ else if } K<0 \\text{ then } \\cosh(\\sqrt{-K}\\cdot r) \\text{ else } 1$. These recover the standard functions at K=±1 via simp lemmas using $\\sqrt{1}=1$."
+      "summary": "Defines curvatureCos K r = cos(\u221aK\u00b7r) for K>0, cosh(\u221a(-K)\u00b7r) for K<0, 1 for K=0; and curvatureSin K r = sin(\u221aK\u00b7r)/\u221aK for K>0, sinh(\u221a(-K)\u00b7r)/\u221a(-K) for K<0, r for K=0.",
+      "mathContext": "The definitions use Lean's if-then-else: $\\text{curvatureCos}(K,r) = \\text{if } K>0 \\text{ then } \\cos(\\sqrt{K}\\cdot r) \\text{ else if } K<0 \\text{ then } \\cosh(\\sqrt{-K}\\cdot r) \\text{ else } 1$. These recover the standard functions at K=\u00b11 via simp lemmas using $\\sqrt{1}=1$."
     },
     {
       "id": "pythagorean",
       "title": "Unified Pythagorean Identity",
       "startLine": 183,
       "endLine": 217,
-      "summary": "curvaturePythagorean: cs_K(r)² + K·sn_K(r)² = 1 for all K, r ∈ ℝ. Proved by case analysis on sign of K.",
+      "summary": "curvaturePythagorean: cs_K(r)\u00b2 + K\u00b7sn_K(r)\u00b2 = 1 for all K, r \u2208 \u211d. Proved by case analysis on sign of K.",
       "mathContext": "For $K<0$: $\\cosh^2(\\sqrt{-K}\\cdot r) + K\\cdot(\\sinh(\\sqrt{-K}\\cdot r)/\\sqrt{-K})^2 = \\cosh^2-\\sinh^2=1$ since $K/(\\sqrt{-K})^2 = -1$. For $K>0$: $\\cos^2(\\sqrt{K}\\cdot r) + K\\cdot(\\sin(\\sqrt{K}\\cdot r)/\\sqrt{K})^2 = \\cos^2+\\sin^2=1$ since $K/K=1$. For $K=0$: $1+0=1$."
     },
     {
@@ -74,7 +74,7 @@
       "title": "Unified Triangle Structure",
       "startLine": 222,
       "endLine": 241,
-      "summary": "UnifiedTriangle K encodes a triangle in constant-curvature-K space satisfying the unified law. Fields: sides a, b, c > 0 and angle C ∈ (0, π).",
+      "summary": "UnifiedTriangle K encodes a triangle in constant-curvature-K space satisfying the unified law. Fields: sides a, b, c > 0 and angle C \u2208 (0, \u03c0).",
       "mathContext": "The structure UnifiedTriangle K packages a triangle with the law $\\text{cs}_K(c) = \\text{cs}_K(a)\\cdot\\text{cs}_K(b) + K\\cdot\\text{sn}_K(a)\\cdot\\text{sn}_K(b)\\cdot\\cos(C)$ as a field. This axiomatizes K-geometry triangles without building the full Riemannian geometry machinery."
     },
     {
@@ -90,7 +90,7 @@
       "title": "Algebraic Equivalences",
       "startLine": 278,
       "endLine": 314,
-      "summary": "Proves the unified formula for K>0 is equivalent to the spherical law at sides √K·a, √K·b, √K·c, and for K<0 is equivalent to the hyperbolic law at sides √(-K)·a, etc.",
+      "summary": "Proves the unified formula for K>0 is equivalent to the spherical law at sides \u221aK\u00b7a, \u221aK\u00b7b, \u221aK\u00b7c, and for K<0 is equivalent to the hyperbolic law at sides \u221a(-K)\u00b7a, etc.",
       "mathContext": "For $K>0$: $K\\cdot(\\sin(\\sqrt{K}\\cdot a)/\\sqrt{K})\\cdot(\\sin(\\sqrt{K}\\cdot b)/\\sqrt{K}) = \\sin(\\sqrt{K}\\cdot a)\\cdot\\sin(\\sqrt{K}\\cdot b)$ by the algebra lemma $K\\cdot(x/\\sqrt{K})\\cdot(y/\\sqrt{K})=x\\cdot y$. Then linear_combination h * cos(C) closes the iff. This gives the geometric interpretation: the unified law on a sphere of curvature K is the spherical law at angle-distance coordinates."
     },
     {
@@ -98,11 +98,11 @@
       "title": "Special Values and Parity Properties",
       "startLine": 87,
       "endLine": 148,
-      "summary": "simp lemmas compute cs_K and sn_K at K=0,±1 using explicit norm_num conditions. Parity theorems: curvatureCos_neg (even) and curvatureSin_neg (odd) follow from cos/cosh even and sin/sinh odd. All proved by simp/split_ifs/ring."
+      "summary": "simp lemmas compute cs_K and sn_K at K=0,\u00b11 using explicit norm_num conditions. Parity theorems: curvatureCos_neg (even) and curvatureSin_neg (odd) follow from cos/cosh even and sin/sinh odd. All proved by simp/split_ifs/ring."
     },
     {
       "id": "algebra-lemmas",
-      "title": "Key Algebra Lemmas: K·(x/√K)·(y/√K) = ±x·y",
+      "title": "Key Algebra Lemmas: K\u00b7(x/\u221aK)\u00b7(y/\u221aK) = \u00b1x\u00b7y",
       "startLine": 149,
       "endLine": 181,
       "summary": "Two private lemmas K_mul_div_sqrt_sq_pos (K>0) and K_mul_div_sqrt_sq_neg (K<0) prove the algebraic identity that makes equivalence proofs work. The sign difference (xy vs -xy) is the algebraic origin of the minus sign in the hyperbolic law. Both proved by field_simp + rw + calc."
@@ -112,29 +112,29 @@
       "title": "UnifiedTriangle Structure",
       "startLine": 218,
       "endLine": 260,
-      "summary": "UnifiedTriangle K packages sides a,b,c > 0, angle C ∈ (0,π), and the law field. Recovery theorems (K=±1 ↔ classical laws) are simp + linarith. unified_law_of_cosines extracts the structure's law field."
+      "summary": "UnifiedTriangle K packages sides a,b,c > 0, angle C \u2208 (0,\u03c0), and the law field. Recovery theorems (K=\u00b11 \u2194 classical laws) are simp + linarith. unified_law_of_cosines extracts the structure's law field."
     },
     {
       "id": "scaling-euclidean-setup",
       "title": "Scaling Consistency and Euclidean Limit Helpers",
       "startLine": 317,
       "endLine": 391,
-      "summary": "Scaling: cs_K(r) = cs_1(√K·r) for K>0 by direct simp. Euclidean limit helpers: exp_sub_one_le_mul_exp, cosh_sub_one_le, cosh_K_bound, cosh_double_K_bound bound error terms via Real.cosh_le_exp_half_sq and exponential monotonicity."
+      "summary": "Scaling: cs_K(r) = cs_1(\u221aK\u00b7r) for K>0 by direct simp. Euclidean limit helpers: exp_sub_one_le_mul_exp, cosh_sub_one_le, cosh_K_bound, cosh_double_K_bound bound error terms via Real.cosh_le_exp_half_sq and exponential monotonicity."
     },
     {
       "id": "euclidean-limit-proof",
       "title": "euclidean_limit_holds: Full Taylor Bound Proof",
       "startLine": 392,
       "endLine": 693,
-      "summary": "Fully proved (0 sorries) 280-line proof of K→0 limit. For K>0: |sin(√K·r)| ≤ √K·|r| and 1-cos(√K·r) ≤ K·r²/2 give |expr| ≤ K·M_pos. For K<0: cosh/sinh bounds from helper lemmas give |expr| ≤ -K·M_neg. For K=0: exact zero. Combined: δ=min(1,ε/M) with M=M_pos+M_neg."
+      "summary": "Fully proved (0 sorries) 280-line proof of K\u21920 limit. For K>0: |sin(\u221aK\u00b7r)| \u2264 \u221aK\u00b7|r| and 1-cos(\u221aK\u00b7r) \u2264 K\u00b7r\u00b2/2 give |expr| \u2264 K\u00b7M_pos. For K<0: cosh/sinh bounds from helper lemmas give |expr| \u2264 -K\u00b7M_neg. For K=0: exact zero. Combined: \u03b4=min(1,\u03b5/M) with M=M_pos+M_neg."
     }
   ],
   "conclusion": {
-    "summary": "The Lean formalization successfully unifies the Euclidean, spherical, and hyperbolic laws of cosines through curvature-parametrized trigonometric functions cs_K and sn_K. All results are fully formalized with 0 sorries, including the K→0 Euclidean limit (euclidean_limit_holds) proved via explicit Taylor expansion bounds.",
+    "summary": "The Lean formalization successfully unifies the Euclidean, spherical, and hyperbolic laws of cosines through curvature-parametrized trigonometric functions cs_K and sn_K. All results are fully formalized with 0 sorries, including the K\u21920 Euclidean limit (euclidean_limit_holds) proved via explicit Taylor expansion bounds.",
     "openQuestions": [
-      "Can the Euclidean limit euclidean_limit_holds be proved by formalizing the Taylor expansion of cos(√K·r) and sin(√K·r)/√K at K=0 in Mathlib?",
+      "Can the Euclidean limit euclidean_limit_holds be proved by formalizing the Taylor expansion of cos(\u221aK\u00b7r) and sin(\u221aK\u00b7r)/\u221aK at K=0 in Mathlib?",
       "Can the unified law be proved for actual geometric models (spheres, hyperbolic spaces) rather than axiomatized via structure fields? This would require Lean 4 differential geometry infrastructure.",
-      "The Gauss-Bonnet theorem for constant-curvature surfaces relates angle sum to curvature: A+B+C = π + K·Area. Can this be unified and formalized analogously?"
+      "The Gauss-Bonnet theorem for constant-curvature surfaces relates angle sum to curvature: A+B+C = \u03c0 + K\u00b7Area. Can this be unified and formalized analogously?"
     ],
     "implications": "The curvature-parametrized unification demonstrates how a single algebraic framework captures three apparently different geometries. The sign change from + to - in the hyperbolic law (cosh(c)=cosh(a)cosh(b) - sinh(a)sinh(b)cos(C)) is automatically encoded by the factor K when K=-1, making the unification explicit. This approach can extend to the law of sines and other spherical/hyperbolic identities."
   },
@@ -191,7 +191,7 @@
     "namespace": "UnifiedLawOfCosines",
     "lineCount": 693,
     "axiomCount": 0,
-    "theoremCount": 20,
+    "theoremCount": 28,
     "definitionCount": 2,
     "path": "Proofs/LawOfCosinesOQ05.lean",
     "sorries": 0

@@ -2,7 +2,7 @@
   "id": "divisibility-by-3-oq-03-oq-02",
   "title": "Base-Parametrized Digital Root dr_b(n)",
   "slug": "divisibility-by-3-oq-03-oq-02",
-  "description": "Generalizes the digital root from base 10 to arbitrary base b ≥ 2. Proves the closed-form formula dr_b(n) = 1 + ((n-1) mod (b-1)), idempotence, divisibility criteria, multiplicativity, and specializations to base 10 (casting out nines) and base 2.",
+  "description": "Generalizes the digital root from base 10 to arbitrary base b \u2265 2. Proves the closed-form formula dr_b(n) = 1 + ((n-1) mod (b-1)), idempotence, divisibility criteria, multiplicativity, and specializations to base 10 (casting out nines) and base 2.",
   "meta": {
     "status": "verified",
     "proofRepoPath": "Proofs/DivisibilityBy3OQ03OQ02.lean",
@@ -24,12 +24,12 @@
     "mathlibDependencies": [
       {
         "theorem": "Nat.modEq_digits_sum",
-        "description": "n ≡ (digits b n).sum (mod d) when b ≡ 1 (mod d)",
+        "description": "n \u2261 (digits b n).sum (mod d) when b \u2261 1 (mod d)",
         "module": "Mathlib.Data.Nat.Digits"
       },
       {
         "theorem": "Nat.dvd_iff_dvd_digits_sum",
-        "description": "d | n iff d | (digits b n).sum when b ≡ 1 (mod d)",
+        "description": "d | n iff d | (digits b n).sum when b \u2261 1 (mod d)",
         "module": "Mathlib.Data.Nat.Digits"
       },
       {
@@ -41,14 +41,14 @@
     "originalContributions": [
       "Base-parametrized digital root definition and closed form (proved)",
       "Range, fixed point, and idempotence properties (proved)",
-      "Congruence: dr_b(n) ≡ n mod (b-1) (proved)",
+      "Congruence: dr_b(n) \u2261 n mod (b-1) (proved)",
       "Divisibility by (b-1) and factor divisibility rule (proved)",
       "Concrete examples in hex (base 16), octal (base 8), and base 7 (proved)"
     ]
   },
   "parent": "divisibility-by-3-oq-03",
   "openQuestion": "Can Lean 4 formalize a base-parametrized version of the digital root, generalizing the base-10 results to arbitrary base b?",
-  "significance": "This formalization reveals the universal algebraic structure behind digital roots: for any base b ≥ 3, the digital root dr_b(n) depends only on n mod (b-1), because b ≡ 1 (mod b-1). This single congruence explains casting out nines (b=10), casting out sevens in octal (b=8), and every other base's analog. The formalization uses Mathlib's Nat.modEq_digits_sum as the bridge between digit sums and modular arithmetic.",
+  "significance": "This formalization reveals the universal algebraic structure behind digital roots: for any base b \u2265 3, the digital root dr_b(n) depends only on n mod (b-1), because b \u2261 1 (mod b-1). This single congruence explains casting out nines (b=10), casting out sevens in octal (b=8), and every other base's analog. The formalization uses Mathlib's Nat.modEq_digits_sum as the bridge between digit sums and modular arithmetic.",
   "overview": {
     "historicalContext": "The digital root -- the single digit obtained by repeatedly summing a number's digits -- has been used as a divisibility check since at least the 12th century, when it appeared in Fibonacci's *Liber Abaci* (1202) under the name *casting out nines*. The technique was known to Arabic and Indian mathematicians even earlier; al-Khwarizmi described it in his 9th-century treatise on Hindu-Arabic numerals.\n\nThe generalization to arbitrary bases reveals that the digital root is not a peculiarity of base 10, but a consequence of the fundamental fact that $b \\equiv 1 \\pmod{b-1}$ for any base $b$. This means $b^k \\equiv 1 \\pmod{b-1}$, so $n = \\sum_i d_i b^i \\equiv \\sum_i d_i \\pmod{b-1}$ -- the digit sum preserves residues modulo $b-1$.\n\nThe closed-form formula $\\text{dr}_b(n) = 1 + ((n-1) \\bmod (b-1))$ for $n > 0$ was known informally but rarely stated precisely. It maps $\\{1, 2, \\ldots, b-1\\}$ cyclically through the residues, with the adjustment ensuring $\\text{dr}_b(b-1) = b-1$ rather than 0.\n\nIn computer science, the digital root in base $2^k$ (binary, hex, octal) is computed by simple bitmasking, and the factor divisibility rule explains why casting out 15s works in hexadecimal and casting out 7s works in octal -- both are instances of the general principle that divisors of $b-1$ can be tested via digit sums.",
     "problemStatement": "**Definition**: For base $b \\geq 2$ and $n \\in \\mathbb{N}$:\n$$\\text{dr}_b(n) = \\begin{cases} 0 & \\text{if } n = 0 \\\\ 1 + ((n-1) \\bmod (b-1)) & \\text{if } n > 0 \\end{cases}$$\n\n**Prove**:\n1. Range: $1 \\leq \\text{dr}_b(n) \\leq b-1$ for $n > 0$\n2. Fixed point: $\\text{dr}_b(n) = n$ for $1 \\leq n \\leq b-1$\n3. Idempotence: $\\text{dr}_b(\\text{dr}_b(n)) = \\text{dr}_b(n)$\n4. Congruence: $n \\equiv \\text{dr}_b(n) \\pmod{b-1}$\n5. Divisibility: $(b-1) \\mid n \\iff \\text{dr}_b(n) = b-1$ (for $n > 0$)\n6. Factor rule: $d \\mid (b-1) \\Rightarrow (d \\mid n \\iff d \\mid \\text{digitSum}_b(n))$",
@@ -156,7 +156,7 @@
       "title": "An Introduction to the Theory of Numbers",
       "year": "1979",
       "venue": "Oxford University Press, 5th edition",
-      "note": "Section 9.9 discusses digital roots and the general congruence n ≡ (digit sum) mod (b-1). The factor divisibility rule is implicit in the treatment of divisibility tests."
+      "note": "Section 9.9 discusses digital roots and the general congruence n \u2261 (digit sum) mod (b-1). The factor divisibility rule is implicit in the treatment of divisibility tests."
     },
     {
       "authors": "Hare, Kevin; Laishram, Shanta; Stoll, Thomas",
@@ -177,7 +177,7 @@
     "namespace": "DigitalRootBase",
     "lineCount": 211,
     "axiomCount": 0,
-    "theoremCount": 19,
+    "theoremCount": 21,
     "definitionCount": 1,
     "sorries": 0,
     "path": "Proofs/DivisibilityBy3OQ03OQ02.lean"

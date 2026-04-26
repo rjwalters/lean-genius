@@ -1,8 +1,8 @@
 {
   "id": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03",
-  "title": "ℤ[√-2] as a Euclidean Domain: Inert Prime Classification",
+  "title": "\u2124[\u221a-2] as a Euclidean Domain: Inert Prime Classification",
   "slug": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03",
-  "description": "Generalizes the inert prime technique from ℤ[i] to ℤ[√-2]. Proves ℤ[√-2] is a Euclidean domain (rounding error bounded by 3/4 < 1) and classifies inert primes: p is prime in ℤ[√-2] iff p ≡ 5 or 7 (mod 8), the condition (-2/p) = -1.",
+  "description": "Generalizes the inert prime technique from \u2124[i] to \u2124[\u221a-2]. Proves \u2124[\u221a-2] is a Euclidean domain (rounding error bounded by 3/4 < 1) and classifies inert primes: p is prime in \u2124[\u221a-2] iff p \u2261 5 or 7 (mod 8), the condition (-2/p) = -1.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-12",
@@ -24,24 +24,24 @@
     "theoremCount": 16,
     "definitionCount": 3,
     "originalContributions": [
-      "norm_pos_of_ne_zero: N(z) > 0 for z ≠ 0 in ℤ[√-2] (key for Euclidean algorithm)",
-      "normSq_div_sub_div_lt_one: rounding error has normSq ≤ 3/4 < 1 (tighter than ℤ[i]'s 1/2)",
-      "EuclideanDomain instance for ℤ[√-2] = Zsqrtd(-2)",
-      "inert_prime_neg2: p ≡ 5 or 7 (mod 8) → p prime in ℤ[√-2]",
-      "no_sum_form_mod8: a² + 2b² mod 8 ∈ {0,1,2,3,4,6} (not 5 or 7)"
+      "norm_pos_of_ne_zero: N(z) > 0 for z \u2260 0 in \u2124[\u221a-2] (key for Euclidean algorithm)",
+      "normSq_div_sub_div_lt_one: rounding error has normSq \u2264 3/4 < 1 (tighter than \u2124[i]'s 1/2)",
+      "EuclideanDomain instance for \u2124[\u221a-2] = Zsqrtd(-2)",
+      "inert_prime_neg2: p \u2261 5 or 7 (mod 8) \u2192 p prime in \u2124[\u221a-2]",
+      "no_sum_form_mod8: a\u00b2 + 2b\u00b2 mod 8 \u2208 {0,1,2,3,4,6} (not 5 or 7)"
     ]
   },
   "overview": {
-    "historicalContext": "The ring ℤ[√-2] is one of the five imaginary quadratic rings that are Euclidean domains (the others being ℤ[i], ℤ[√-3], ℤ[√-7], ℤ[√-11]). Its Euclidean property was established classically by Dedekind and is proved here via the 3/4 norm bound: for any α, β ∈ ℤ[√-2] with β ≠ 0, there exists q such that N(α - βq) ≤ (3/4)N(β). This bound, with 3/4 < 1, is tight — the minimum factor across all five Euclidean quadratic rings ranges from 1/2 (ℤ[i]) to 11/16 (ℤ[√-11]). The inert prime classification follows from the theory of the Legendre symbol: (-2/p) = (-1/p)·(2/p) = -1 iff p ≡ 5 or 7 (mod 8). Primes inert in ℤ[√-2] remain prime there — they generate prime ideals — while split primes factor into conjugate elements, connecting to the class group of ℚ(√-2).",
-    "problemStatement": "Can the inert prime technique used for ℤ[i] (classifying primes p ≡ 3 mod 4) be generalized to ℤ[√-2]?",
-    "text": "**Answer**: Yes. For ℤ[√-2]:\n\n1. **Euclidean Domain**: The norm N(a+b√-2) = a²+2b² is a Euclidean function. The rounding error in the division algorithm satisfies δ₁² + 2δ₂² ≤ (1/2)² + 2(1/2)² = 3/4 < 1 (compared to ℤ[i]'s 1/4 + 1/4 = 1/2 < 1).\n\n2. **Inert Prime Classification**: A rational prime p is prime in ℤ[√-2] iff p ≡ 5 or 7 (mod 8). This is the condition (-2/p) = -1 for the Legendre symbol.\n\n**The mod-8 impossibility**: If N(a) = p, then a₀² + 2b₀² ≡ p (mod 8). Since squares mod 8 are {0,1,4}, the possible values of a²+2b² mod 8 are {0,1,2,3,4,6} — never 5 or 7.",
-    "proofStrategy": "1. Prove N(z) > 0 for z ≠ 0 (since N = a²+2b² ≥ 0 and = 0 only for z=0). 2. Embed ℤ[√-2] into ℂ via √-2 ↦ i√2. 3. Show the error ε = (exact quotient) - (rounded quotient) satisfies normSq(ε) ≤ 3/4 < 1 using |δα|,|δβ| ≤ 1/2. 4. Derive EuclideanDomain → UFD. 5. In a UFD, irreducible = prime. 6. Show p ≡ 5 or 7 (mod 8) is irreducible by the mod-8 impossibility argument.",
+    "historicalContext": "The ring \u2124[\u221a-2] is one of the five imaginary quadratic rings that are Euclidean domains (the others being \u2124[i], \u2124[\u221a-3], \u2124[\u221a-7], \u2124[\u221a-11]). Its Euclidean property was established classically by Dedekind and is proved here via the 3/4 norm bound: for any \u03b1, \u03b2 \u2208 \u2124[\u221a-2] with \u03b2 \u2260 0, there exists q such that N(\u03b1 - \u03b2q) \u2264 (3/4)N(\u03b2). This bound, with 3/4 < 1, is tight \u2014 the minimum factor across all five Euclidean quadratic rings ranges from 1/2 (\u2124[i]) to 11/16 (\u2124[\u221a-11]). The inert prime classification follows from the theory of the Legendre symbol: (-2/p) = (-1/p)\u00b7(2/p) = -1 iff p \u2261 5 or 7 (mod 8). Primes inert in \u2124[\u221a-2] remain prime there \u2014 they generate prime ideals \u2014 while split primes factor into conjugate elements, connecting to the class group of \u211a(\u221a-2).",
+    "problemStatement": "Can the inert prime technique used for \u2124[i] (classifying primes p \u2261 3 mod 4) be generalized to \u2124[\u221a-2]?",
+    "text": "**Answer**: Yes. For \u2124[\u221a-2]:\n\n1. **Euclidean Domain**: The norm N(a+b\u221a-2) = a\u00b2+2b\u00b2 is a Euclidean function. The rounding error in the division algorithm satisfies \u03b4\u2081\u00b2 + 2\u03b4\u2082\u00b2 \u2264 (1/2)\u00b2 + 2(1/2)\u00b2 = 3/4 < 1 (compared to \u2124[i]'s 1/4 + 1/4 = 1/2 < 1).\n\n2. **Inert Prime Classification**: A rational prime p is prime in \u2124[\u221a-2] iff p \u2261 5 or 7 (mod 8). This is the condition (-2/p) = -1 for the Legendre symbol.\n\n**The mod-8 impossibility**: If N(a) = p, then a\u2080\u00b2 + 2b\u2080\u00b2 \u2261 p (mod 8). Since squares mod 8 are {0,1,4}, the possible values of a\u00b2+2b\u00b2 mod 8 are {0,1,2,3,4,6} \u2014 never 5 or 7.",
+    "proofStrategy": "1. Prove N(z) > 0 for z \u2260 0 (since N = a\u00b2+2b\u00b2 \u2265 0 and = 0 only for z=0). 2. Embed \u2124[\u221a-2] into \u2102 via \u221a-2 \u21a6 i\u221a2. 3. Show the error \u03b5 = (exact quotient) - (rounded quotient) satisfies normSq(\u03b5) \u2264 3/4 < 1 using |\u03b4\u03b1|,|\u03b4\u03b2| \u2264 1/2. 4. Derive EuclideanDomain \u2192 UFD. 5. In a UFD, irreducible = prime. 6. Show p \u2261 5 or 7 (mod 8) is irreducible by the mod-8 impossibility argument.",
     "keyInsights": [
-      "The Euclidean bound for ℤ[√-2] is 3/4 (not 1/2 as in ℤ[i]) because the imaginary part scales by √2 in the complex embedding, giving normSq(δα + √2·δβ·I) = δα² + 2δβ².",
-      "The inert prime condition p ≡ 5 or 7 (mod 8) corresponds to (-2/p) = -1, preventing p from being a norm in ℤ[√-2].",
+      "The Euclidean bound for \u2124[\u221a-2] is 3/4 (not 1/2 as in \u2124[i]) because the imaginary part scales by \u221a2 in the complex embedding, giving normSq(\u03b4\u03b1 + \u221a2\u00b7\u03b4\u03b2\u00b7I) = \u03b4\u03b1\u00b2 + 2\u03b4\u03b2\u00b2.",
+      "The inert prime condition p \u2261 5 or 7 (mod 8) corresponds to (-2/p) = -1, preventing p from being a norm in \u2124[\u221a-2].",
       "The `decide` tactic can verify `no_sum_form_mod8` by exhaustive check of ZMod 8 (64 cases).",
-      "The proof structure mirrors BezoutIdentityOQ02OQ01OQ02OQ02 (Gaussian integers) almost exactly, with norm a²+2b² replacing a²+b² and mod 8 replacing mod 4.",
-      "3 splits (3 = (1+√-2)(1-√-2)), 2 ramifies (2 = -(√-2)²), and 5,7 are inert — exemplifying all three behaviors."
+      "The proof structure mirrors BezoutIdentityOQ02OQ01OQ02OQ02 (Gaussian integers) almost exactly, with norm a\u00b2+2b\u00b2 replacing a\u00b2+b\u00b2 and mod 8 replacing mod 4.",
+      "3 splits (3 = (1+\u221a-2)(1-\u221a-2)), 2 ramifies (2 = -(\u221a-2)\u00b2), and 5,7 are inert \u2014 exemplifying all three behaviors."
     ],
     "prerequisites": [
       "BezoutIdentityOQ02OQ01OQ02OQ02: Gaussian integers inert prime classification",
@@ -50,19 +50,19 @@
     ]
   },
   "conclusion": {
-    "summary": "ℤ[√-2] is a Euclidean domain with the 3/4 rounding bound, and rational primes p ≡ 5 or 7 (mod 8) are inert (prime) in this ring. This generalizes the ℤ[i] inert prime classification (p ≡ 3 mod 4) to a new ring.",
-    "implications": "The technique generalizes to all five Euclidean imaginary quadratic rings. Each has its own Euclidean bound and inert prime condition determined by the Legendre symbol. The unified framework is: p is inert in ℤ[√d] iff d is not a square mod p.",
+    "summary": "\u2124[\u221a-2] is a Euclidean domain with the 3/4 rounding bound, and rational primes p \u2261 5 or 7 (mod 8) are inert (prime) in this ring. This generalizes the \u2124[i] inert prime classification (p \u2261 3 mod 4) to a new ring.",
+    "implications": "The technique generalizes to all five Euclidean imaginary quadratic rings. Each has its own Euclidean bound and inert prime condition determined by the Legendre symbol. The unified framework is: p is inert in \u2124[\u221ad] iff d is not a square mod p.",
     "openQuestions": [
-      "Can this be further generalized to ℤ[√-3], ℤ[√-7], and ℤ[√-11] (the other Euclidean imaginary quadratic rings)? These would require the ring of integers ℤ[ω] for d = -3 and similar.",
-      "Can we formalize the full prime classification in ℤ[√-2] (not just the inert direction): characterizing split primes (p ≡ 1 or 3 mod 8) and ramified primes (p = 2)?",
-      "Can the Euclidean domain proof be generalized to a parameterized family Zsqrtd(d) for d ∈ {-1,-2,-3,-7,-11} with a uniform bound?"
+      "Can this be further generalized to \u2124[\u221a-3], \u2124[\u221a-7], and \u2124[\u221a-11] (the other Euclidean imaginary quadratic rings)? These would require the ring of integers \u2124[\u03c9] for d = -3 and similar.",
+      "Can we formalize the full prime classification in \u2124[\u221a-2] (not just the inert direction): characterizing split primes (p \u2261 1 or 3 mod 8) and ramified primes (p = 2)?",
+      "Can the Euclidean domain proof be generalized to a parameterized family Zsqrtd(d) for d \u2208 {-1,-2,-3,-7,-11} with a uniform bound?"
     ]
   },
   "leanFile": {
     "namespace": "ZSqrtNegTwo",
     "lineCount": 323,
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 20,
     "definitionCount": 3,
     "path": "Proofs/BezoutIdentityOQ02OQ01OQ02OQ02OQ03.lean",
     "sorries": 0
@@ -71,7 +71,7 @@
     {
       "targetId": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
       "relationship": "extends",
-      "description": "Parent proof: Gaussian integers ℤ[i] inert prime classification (p ≡ 3 mod 4)"
+      "description": "Parent proof: Gaussian integers \u2124[i] inert prime classification (p \u2261 3 mod 4)"
     }
   ],
   "sections": [
@@ -80,14 +80,14 @@
       "title": "Part I: Basic Norm Properties",
       "startLine": 38,
       "endLine": 65,
-      "summary": "Norm N(a+b√-2) = a²+2b² is nonneg, positive for nonzero elements, and the formula. natAbs connection for EuclideanDomain."
+      "summary": "Norm N(a+b\u221a-2) = a\u00b2+2b\u00b2 is nonneg, positive for nonzero elements, and the formula. natAbs connection for EuclideanDomain."
     },
     {
       "id": "sec-embedding",
       "title": "Part II: Complex Embedding",
       "startLine": 66,
       "endLine": 101,
-      "summary": "toComplex : ℤ[√-2] →+* ℂ via √-2 ↦ i√2. Injective. Norm equals Complex.normSq ∘ toComplex."
+      "summary": "toComplex : \u2124[\u221a-2] \u2192+* \u2102 via \u221a-2 \u21a6 i\u221a2. Injective. Norm equals Complex.normSq \u2218 toComplex."
     },
     {
       "id": "sec-division",
@@ -101,7 +101,7 @@
       "title": "Part IV: 3/4 Norm Bound",
       "startLine": 121,
       "endLine": 206,
-      "summary": "Key bound: normSq(error) ≤ 3/4 < 1. Error = δα + √2·δβ·I with |δα|,|δβ| ≤ 1/2. normSq = δα²+2δβ² ≤ 3/4. Derives norm_mod_lt and norm_mod_lt_natAbs."
+      "summary": "Key bound: normSq(error) \u2264 3/4 < 1. Error = \u03b4\u03b1 + \u221a2\u00b7\u03b4\u03b2\u00b7I with |\u03b4\u03b1|,|\u03b4\u03b2| \u2264 1/2. normSq = \u03b4\u03b1\u00b2+2\u03b4\u03b2\u00b2 \u2264 3/4. Derives norm_mod_lt and norm_mod_lt_natAbs."
     },
     {
       "id": "sec-euclidean",
@@ -115,7 +115,7 @@
       "title": "Part VI: Inert Prime Classification",
       "startLine": 234,
       "endLine": 323,
-      "summary": "no_sum_form_mod8 (decide, 64-case check), inert_prime_neg2 for p ≡ 5 or 7 (mod 8), concrete examples 5 and 7. Also three_splits (3 = (1+√-2)(1-√-2)) and two_ramifies (2 = -(√-2)²)."
+      "summary": "no_sum_form_mod8 (decide, 64-case check), inert_prime_neg2 for p \u2261 5 or 7 (mod 8), concrete examples 5 and 7. Also three_splits (3 = (1+\u221a-2)(1-\u221a-2)) and two_ramifies (2 = -(\u221a-2)\u00b2)."
     }
   ],
   "sorries": 0

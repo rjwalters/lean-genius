@@ -21,12 +21,12 @@
     "mathlibDependencies": [
       {
         "theorem": "TensorProduct",
-        "description": "Tensor product construction for the Dehn invariant space ℝ ⊗ (ℝ/πℚ)",
+        "description": "Tensor product construction for the Dehn invariant space \u211d \u2297 (\u211d/\u03c0\u211a)",
         "module": "Mathlib.LinearAlgebra.TensorProduct.Basic"
       },
       {
         "theorem": "Real.pi",
-        "description": "The constant π, used in dihedral angle calculations and rational-multiple tests",
+        "description": "The constant \u03c0, used in dihedral angle calculations and rational-multiple tests",
         "module": "Mathlib.Data.Real.Pi.Bounds"
       },
       {
@@ -48,10 +48,10 @@
     "originalContributions": [
       "Edge and Polyhedron structures with positive lengths and bounded dihedral angles",
       "DehnElement structure with simplified tensor product representation",
-      "isRationalMultipleOfPi predicate: ∃ p q : ℤ, q ≠ 0 ∧ θ·q = p·π",
+      "isRationalMultipleOfPi predicate: \u2203 p q : \u2124, q \u2260 0 \u2227 \u03b8\u00b7q = p\u00b7\u03c0",
       "dehnInvariant function mapping polyhedra to DehnElement",
-      "Fully proved cube_angle_is_rational_pi: π/2 ∈ πℚ via ring",
-      "Fully proved cube_dehn_invariant_is_zero for any cube with π/2 angles",
+      "Fully proved cube_angle_is_rational_pi: \u03c0/2 \u2208 \u03c0\u211a via ring",
+      "Fully proved cube_dehn_invariant_is_zero for any cube with \u03c0/2 angles",
       "Fully proved tetrahedron_dehn_invariant_nonzero via contradiction with Niven's theorem",
       "Fully proved hilbert3_cube_tetrahedron_not_scissors_congruent (the main result)",
       "Fully proved different_dehn_not_scissors_congruent (contrapositive)",
@@ -64,12 +64,12 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Hilbert's 3rd Problem was posed at the Second International Congress of Mathematicians in Paris on August 8, 1900. Hilbert asked whether Euclid's theory of volumes for polyhedra — which relied on an infinite process (Cavalieri's principle or exhaustion) — could be replaced by purely finitary dissection arguments, as was possible in 2D via the Bolyai-Gerwien theorem (1833).\n\nMax Dehn (1878–1952), Hilbert's own doctoral student, solved the problem in the same year — making it the first of Hilbert's 23 problems to be completely resolved. Dehn introduced a new algebraic invariant $D(P) \\in \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Q})$ that is preserved under scissors congruence but distinguishes the cube from the regular tetrahedron. The key insight: the dihedral angle of a cube ($\\pi/2$) is a rational multiple of $\\pi$, while the tetrahedron's angle ($\\arccos(1/3)$) is not — a fact that follows from Niven's theorem on rational values of trigonometric functions.\n\nThe story continued: in 1965, Jean-Pierre Sydler proved the converse — volume and Dehn invariant completely classify scissors congruence in $\\mathbb{R}^3$. In the 1980s, Dupont and Sah discovered deep connections between the scissors congruence group $\\mathcal{P}(\\mathbb{R}^3)$ and algebraic K-theory ($K_3(\\mathbb{C})$), linking elementary geometry to modern abstract algebra. In dimensions $\\geq 4$, the classification remains open.",
+    "historicalContext": "Hilbert's 3rd Problem was posed at the Second International Congress of Mathematicians in Paris on August 8, 1900. Hilbert asked whether Euclid's theory of volumes for polyhedra \u2014 which relied on an infinite process (Cavalieri's principle or exhaustion) \u2014 could be replaced by purely finitary dissection arguments, as was possible in 2D via the Bolyai-Gerwien theorem (1833).\n\nMax Dehn (1878\u20131952), Hilbert's own doctoral student, solved the problem in the same year \u2014 making it the first of Hilbert's 23 problems to be completely resolved. Dehn introduced a new algebraic invariant $D(P) \\in \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Q})$ that is preserved under scissors congruence but distinguishes the cube from the regular tetrahedron. The key insight: the dihedral angle of a cube ($\\pi/2$) is a rational multiple of $\\pi$, while the tetrahedron's angle ($\\arccos(1/3)$) is not \u2014 a fact that follows from Niven's theorem on rational values of trigonometric functions.\n\nThe story continued: in 1965, Jean-Pierre Sydler proved the converse \u2014 volume and Dehn invariant completely classify scissors congruence in $\\mathbb{R}^3$. In the 1980s, Dupont and Sah discovered deep connections between the scissors congruence group $\\mathcal{P}(\\mathbb{R}^3)$ and algebraic K-theory ($K_3(\\mathbb{C})$), linking elementary geometry to modern abstract algebra. In dimensions $\\geq 4$, the classification remains open.",
     "problemStatement": "**Hilbert's 3rd Problem (1900)**: Given two polyhedra of equal volume, can one always be cut into finitely many polyhedral pieces that can be reassembled (by rigid motions) into the other?\n\n**Answer (Dehn 1900)**: NO! The Dehn invariant $D(P) = \\sum_e \\ell(e) \\otimes [\\theta(e)] \\in \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Q})$ provides an obstruction: $D(\\text{cube}) = 0$ but $D(\\text{regular tetrahedron}) \\neq 0$.",
     "text": "The Dehn invariant proves that a cube and regular tetrahedron of equal volume are NOT scissors congruent, answering Hilbert's 3rd Problem.",
     "proofStrategy": "The formalization defines `Polyhedron` as a `Finset Edge` with dihedral angles, and constructs the Dehn invariant via a simplified `DehnElement` representation (list of $(\\ell, \\theta)$ pairs). The zero condition checks whether all angles are rational multiples of $\\pi$.\n\nThe proof proceeds in three stages: (1) Show $D(\\text{cube}) = 0$ by proving $\\pi/2 \\in \\pi\\mathbb{Q}$ (fully proved via `ring`). (2) Show $D(\\text{tet}) \\neq 0$ by axiomatizing Niven's theorem ($\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$) and deriving a contradiction from the assumption $D(\\text{tet}) = 0$. (3) Combine via the contrapositive of Dehn's invariance theorem. The main theorem `hilbert3_cube_tetrahedron_not_scissors_congruent` is fully proved from axioms.",
     "keyInsights": [
-      "**The tensor product captures the obstruction**: $\\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Q})$ is the precisely right algebraic structure — edge lengths tensor with angle classes modulo $\\pi\\mathbb{Q}$. An angle $\\theta$ contributes zero iff $\\theta/\\pi$ is rational.",
+      "**The tensor product captures the obstruction**: $\\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Q})$ is the precisely right algebraic structure \u2014 edge lengths tensor with angle classes modulo $\\pi\\mathbb{Q}$. An angle $\\theta$ contributes zero iff $\\theta/\\pi$ is rational.",
       "**Cutting creates canceling pairs**: When a plane cuts a polyhedron, new edges appear with dihedral angles $\\theta$ and $\\pi - \\theta$. Their contributions $\\ell \\otimes [\\theta] + \\ell \\otimes [\\pi - \\theta] = \\ell \\otimes [\\pi] = 0$ cancel in $\\mathbb{R}/\\pi\\mathbb{Q}$.",
       "**Niven's theorem is the key number-theoretic input**: If $\\cos(q\\pi)$ is rational for rational $q$, then $\\cos(q\\pi) \\in \\{0, \\pm 1/2, \\pm 1\\}$. Since $\\cos(\\arccos(1/3)) = 1/3$ is not in this set, $\\arccos(1/3)/\\pi$ is irrational.",
       "**2D vs 3D is the dramatic contrast**: In 2D, all polygon angles become multiples of $\\pi$ under dissection (the 'Dehn invariant' is trivially zero), so only area matters (Bolyai-Gerwien). In 3D, irrational-multiple-of-$\\pi$ dihedral angles create non-trivial obstructions.",
@@ -86,7 +86,7 @@
       "title": "Part 1: Polyhedra Definitions",
       "startLine": 75,
       "endLine": 102,
-      "summary": "Defines `Edge` (with positive `length : ℝ`) and `Polyhedron` (a `Finset Edge` with `dihedralAngle : Edge → ℝ` in $(0, 2\\pi)$). Models polyhedra by their combinatorial edge-angle data.",
+      "summary": "Defines `Edge` (with positive `length : \u211d`) and `Polyhedron` (a `Finset Edge` with `dihedralAngle : Edge \u2192 \u211d` in $(0, 2\\pi)$). Models polyhedra by their combinatorial edge-angle data.",
       "mathContext": "Defines `Edge` (with positive `length : $\\mathbb{R}$`) and `Polyhedron` (a `Finset Edge` with `dihedralAngle : Edge $\\to$ $\\mathbb{R}$` in $(0, 2\\$\\pi$)$). Models polyhedra by their combinatorial edge-angle data."
     },
     {
@@ -115,7 +115,7 @@
     },
     {
       "id": "cube",
-      "title": "Part 5: The Cube — D = 0",
+      "title": "Part 5: The Cube \u2014 D = 0",
       "startLine": 234,
       "endLine": 280,
       "summary": "**Fully proved**: `cube_angle_is_rational_pi` ($\\pi/2 \\in \\pi\\mathbb{Q}$ via `use 1, 2; ring`) and `cube_dehn_invariant_is_zero` (all cube angles are $\\pi/2$, hence trivial in $\\mathbb{R}/\\pi\\mathbb{Q}$). Uses `List.mem_map` and `Finset.mem_toList`.",
@@ -123,7 +123,7 @@
     },
     {
       "id": "tetrahedron",
-      "title": "Part 6: Regular Tetrahedron — D ≠ 0",
+      "title": "Part 6: Regular Tetrahedron \u2014 D \u2260 0",
       "startLine": 281,
       "endLine": 329,
       "summary": "Axiom `tetrahedron_angle_not_rational_pi` (Niven's theorem: $\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$). **Fully proved** `tetrahedron_dehn_invariant_nonzero` by contradiction: if zero, every edge angle is rational-multiple-of-$\\pi$, contradicting Niven.",
@@ -147,7 +147,7 @@
     },
     {
       "id": "bolyai-gerwien",
-      "title": "Part 9: 2D Contrast — Bolyai-Gerwien",
+      "title": "Part 9: 2D Contrast \u2014 Bolyai-Gerwien",
       "startLine": 402,
       "endLine": 470,
       "summary": "Defines `Polygon` with positive `area`. Axiom `bolyai_gerwien_theorem`: equal area implies 2D scissors congruence. **Fully proved** `dimension_contrast` combining the 2D result with the 3D counterexample.",
@@ -166,17 +166,17 @@
     "summary": "Hilbert's 3rd Problem is resolved by the Dehn invariant: a cube and regular tetrahedron of equal volume cannot be scissors congruent because $D(\\text{cube}) = 0$ while $D(\\text{tetrahedron}) \\neq 0$. The main theorem and several supporting results are fully proved in Lean 4 from 7 axioms (Dehn invariance, Niven's theorem, Sydler's theorem, Bolyai-Gerwien). The formalization covers the full narrative from the 2D/3D contrast to K-theory connections.",
     "implications": "**Theoretical Significance**: This was the first Hilbert problem solved and introduced algebraic invariants into geometry.\n\nThe Dehn invariant connects to algebraic K-theory via the Bloch group: the scissors congruence group $\\mathcal{P}(\\mathbb{R}^3)$ maps to $K_3^{\\text{ind}}(\\mathbb{C})$. Sydler's completeness theorem (1965) shows volume and Dehn invariant classify scissors congruence in $\\mathbb{R}^3$, but the classification in higher dimensions remains open.",
     "openQuestions": [
-      "What are the scissors congruence groups in dimensions ≥ 4, and what additional invariants are needed?",
+      "What are the scissors congruence groups in dimensions \u2265 4, and what additional invariants are needed?",
       "Can Sydler's completeness theorem be formalized in Lean using Mathlib's tensor product machinery?",
       "How does the Dehn invariant connect to the Bloch group and $K_3(\\mathbb{C})$ in a formal setting?",
-      "Can the axiomatized Niven's theorem (arccos(1/3)/π is irrational) be proved from Mathlib's transcendence theory?"
+      "Can the axiomatized Niven's theorem (arccos(1/3)/\u03c0 is irrational) be proved from Mathlib's transcendence theory?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "euler-polyhedral-formula",
       "relationship": "foundational",
-      "description": "Euler's polyhedral formula V − E + F = 2 provides the combinatorial foundation for polyhedra. The Dehn invariant uses edge data from the same combinatorial structure."
+      "description": "Euler's polyhedral formula V \u2212 E + F = 2 provides the combinatorial foundation for polyhedra. The Dehn invariant uses edge data from the same combinatorial structure."
     },
     {
       "targetId": "hilbert-10",
@@ -202,7 +202,7 @@
     "namespace": "Hilbert3",
     "lineCount": 514,
     "axiomCount": 5,
-    "theoremCount": 7,
+    "theoremCount": 9,
     "definitionCount": 10,
     "path": "Proofs/Hilbert3ScissorsCongruence.lean",
     "sorries": 0
@@ -212,15 +212,15 @@
       "authors": "Hilbert, David",
       "title": "Mathematische Probleme",
       "year": "1900",
-      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Göttingen, 253–297",
+      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu G\u00f6ttingen, 253\u2013297",
       "note": "The original lecture listing 23 problems that would shape 20th century mathematics"
     },
     {
       "authors": "Dehn, Max",
-      "title": "Über den Rauminhalt",
+      "title": "\u00dcber den Rauminhalt",
       "year": "1900",
-      "venue": "Mathematische Annalen 55, 465–478",
-      "note": "First solution to a Hilbert problem — proved via the Dehn invariant that a regular tetrahedron cannot be cut and reassembled into a cube"
+      "venue": "Mathematische Annalen 55, 465\u2013478",
+      "note": "First solution to a Hilbert problem \u2014 proved via the Dehn invariant that a regular tetrahedron cannot be cut and reassembled into a cube"
     }
   ],
   "mainTheorems": [
