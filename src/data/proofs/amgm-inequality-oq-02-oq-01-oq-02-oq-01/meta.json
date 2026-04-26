@@ -63,12 +63,20 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Module Header: Newton-Girard Setup",
+      "id": "module-docstring",
+      "title": "Module Docstring: Mathematical Overview",
       "startLine": 1,
+      "endLine": 22,
+      "summary": "Module docstring states the problem context: Newton-Girard identities connecting power sums pₖ = Σ xᵢᵏ and elementary symmetric polynomials eₖ. States the core Mathlib lemma (MvPolynomial.psum_eq_mul_esymm_sub_sum) and the three concrete corollaries to be proved: p₁=e₁, p₂=e₁²−2e₂, p₃=e₁p₂−e₂p₁+3e₃. Status annotation: PROVED with 0 axioms and 0 sorries.",
+      "mathContext": "The general recurrence: $p_n = (-1)^{n+1} \\cdot n \\cdot e_n - \\sum_{a \\in (\\text{antidiag}\\, n), 0 < a_1 < n} (-1)^{a_1} e_{a_1} p_{a_2}$. This module derives the $n=1,2,3$ cases."
+    },
+    {
+      "id": "lean-preamble",
+      "title": "Lean Preamble: Imports, Namespace, and Variable Declaration",
+      "startLine": 23,
       "endLine": 31,
-      "summary": "Module docstring states the Newton-Girard recurrence and the three corollaries to be proved (k=1,2,3). Imports Mathlib, opens MvPolynomial, Finset, BigOperators, Set. Declares variable (σ : Type*) (R : Type*) [CommRing R] [Fintype σ] — the general setting of multivariate polynomials over a commutative ring.",
-      "mathContext": "Setting: $\\sigma$ is a finite type (index set), $R$ a commutative ring. Power sums $p_k = \\text{psum}\\, \\sigma\\, R\\, k$ and elementary symmetric polynomials $e_k = \\text{esymm}\\, \\sigma\\, R\\, k$ are defined in `Mathlib.RingTheory.MvPolynomial.Symmetric`."
+      "summary": "Imports Mathlib (pulling in MvPolynomial, Finset, BigOperators). Opens MvPolynomial, Finset, BigOperators, Set for unqualified access. Declares the ambient mathematical context via `variable (σ : Type*) (R : Type*) [CommRing R] [Fintype σ]` — all theorems below hold for any finite index type σ and commutative ring R.",
+      "mathContext": "Setting: $\\sigma$ is a finite type (index set), $R$ a commutative ring. Power sums $p_k = \\text{psum}\\, \\sigma\\, R\\, k : \\text{MvPolynomial}\\, \\sigma\\, R$ and elementary symmetric polynomials $e_k = \\text{esymm}\\, \\sigma\\, R\\, k : \\text{MvPolynomial}\\, \\sigma\\, R$ are defined in `Mathlib.RingTheory.MvPolynomial.Symmetric`."
     },
     {
       "id": "corollary-k1",
