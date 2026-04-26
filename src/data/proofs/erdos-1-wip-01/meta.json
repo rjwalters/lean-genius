@@ -75,7 +75,9 @@
       "**Strong induction structure**: the four-case split (both/one/neither contain n-1) exactly mirrors the key step in uniqueness of binary representation proofs",
       "**Preimage trick**: reducing from sums over values (S.sum id) to sums over indices (S'.sum (2^·)) via Finset.sum_image is the key bridge between the abstract DSS property and the index-level induction",
       "**Sum bound**: sum_pow2_lt_of_subset_range gives 'any proper subset of {0,...,n-1} has power-of-2 sum < 2^n', which is the quantitative tool that rules out the cross-cases (b/c) in the induction",
-      "**n·2^n bound**: each 2^i for i < n satisfies 2^i < 2^n ≤ n·2^n (using Nat.le_mul_of_pos_left), giving a clean polynomial-times-exponential bound without case analysis on n=0"
+      "**n·2^n bound**: each 2^i for i < n satisfies 2^i < 2^n ≤ n·2^n (using Nat.le_mul_of_pos_left), giving a clean polynomial-times-exponential bound without case analysis on n=0",
+      "**Nat.find well-definedness**: dss_existence provides the existential witness required for Nat.find to produce a well-typed noncomputable definition of minDSSBound — without this theorem, Erdos1OQ03.lean could not define minDSSBound at all",
+      "**Gap between existence and optimality**: the n·2^n existence bound is far from optimal — the Conway-Guy sequence achieves max element ≈ 0.22·2^n and the Erdős #1 conjecture asks whether c·2^n/√n is the true threshold; formalizing existence is the prerequisite for studying tightness"
     ]
   },
   "sections": [
@@ -161,5 +163,22 @@
     "path": "Proofs/Erdos1Wip01.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "key": "Er65",
+      "citation": "Erdős, P., Problems and Results in Additive Number Theory, Colloque sur la Théorie des Nombres (Bruxelles, 1955), pp. 127-137.",
+      "type": "paper"
+    },
+    {
+      "key": "CG69",
+      "citation": "Conway, J.H. and Guy, R.K., Sets of Natural Numbers with Distinct Subset Sums, Notices Amer. Math. Soc. 15 (1968), p. 345.",
+      "type": "paper"
+    },
+    {
+      "key": "Lue88",
+      "citation": "Lunnon, W.F., Integer Sets with Distinct Subset Sums, Math. Comp. 50 (1988), pp. 297-320.",
+      "type": "paper"
+    }
+  ]
 }
