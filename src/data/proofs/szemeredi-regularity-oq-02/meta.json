@@ -58,7 +58,9 @@
       "Szemerédi's stepBound n = n·4^n grows tower-type over iterations, while FK's 4^(1/ε²) bound is singly exponential — this quantitative gap is explicit in the formalization",
       "The converse (FK ⟹ Szemerédi) fails: a cut-approximation partition need not be ε-regular; the FK condition is strictly weaker",
       "The factor-of-2 in the main theorem (ε-regular ⟹ 2ε-cut-approx) is sharp: it arises from bounding both e(A,B) and d|A||B| each by ε|P||Q| in the small-set case, and cannot be reduced to 1 with this proof strategy",
-      "FK regularity is algorithmically favorable: Frieze-Kannan (1999) showed it can be computed in polynomial time O(n^{2+1/ε²}), whereas Szemerédi regularity requires exponential time in the worst case (Alon et al. 2007); for graph approximation and property testing, FK often suffices"
+      "FK regularity is algorithmically favorable: Frieze-Kannan (1999) showed it can be computed in polynomial time O(n^{2+1/ε²}), whereas Szemerédi regularity requires exponential time in the worst case (Alon et al. 2007); for graph approximation and property testing, FK often suffices",
+      "**Graphon theory: FK as finite-graph cut-metric approximation**: The FK cut-approximation condition is precisely the discrete version of approximation in the cut metric on graphons. A graphon is a bounded symmetric measurable function $W: [0,1]^2 \\to [0,1]$; its cut norm is $\\|W\\|_\\square = \\sup_{S,T \\subseteq [0,1]} |\\int_{S\\times T} W|$. The FK condition $\\|W_G - W_P\\|_\\square \\leq \\varepsilon$ (where $W_G$ is the graphon of $G$ and $W_P$ the step-function graphon of partition $P$) is exactly what this file formalizes (in the finite-graph language as $|e(A,B) - \\text{predicted}| \\leq \\varepsilon n^2$). The Lovász-Szegedy (2007) compactness theorem for graphons — every sequence of dense graphs has a convergent subsequence in cut metric — is the analytic analog of the FK regularity lemma's existence guarantee. The Szemerédi ⟹ FK implication proved here is the finite-graph avatar of the graphon compactness fact: if a graph satisfies the strong (Szemerédi) condition, it automatically satisfies the weak (FK/cut-metric) condition, just as convergence of Szemerédi-type partitions implies convergence in cut metric.",
+      "**The cut norm is NP-hard to compute exactly, but FK gives a PTAS**: Computing the cut norm $\\|W_G\\|_\\square = \\max_{A,B \\subseteq V} |e(A,B)|/n^2$ exactly is equivalent to MAX-CUT, which is NP-hard. The FK regularity partition sidesteps this: on a FK-regular partition $P$ with $k$ parts, the cut norm is approximated by $\\max_{i,j} d(P_i,P_j) \\pm \\varepsilon$, which requires only $k^2 = O(4^{2/\\varepsilon^2})$ comparisons. Frieze and Kannan (1999) used this to design polynomial-time approximation schemes for MAX-CUT and MAX-BISECTION on dense graphs (constant average degree $\\Omega(n)$): find an FK partition, evaluate the optimization over partition classes, and the error is bounded by the cut-approximation quality $2\\varepsilon n^2$. This application justifies the entire FK regularity framework as a bridge from NP-hard combinatorial optimization to polynomial-time approximation."
     ],
     "prerequisites": [
       "Szemerédi regularity lemma and ε-regular pairs (SzemerediRegularity.lean)",
@@ -173,6 +175,11 @@
       "targetId": "erdos-417",
       "relationship": "related",
       "description": "Erdős problem #417 on graph ramsey multiplicity. The Szemerédi regularity machinery — including FK regularity — is a standard tool for analyzing graph density and subgraph counts in dense graphs, precisely the setting of graph Ramsey multiplicity problems."
+    },
+    {
+      "targetId": "szemeredi-hypergraph-core-oq-01",
+      "relationship": "related",
+      "description": "Hypergraph regularity sub-entry proving bounds for k-uniform hypergraphs. The FK vs. Szemerédi gap is even more extreme for hypergraphs: the hypergraph Szemerédi regularity lemma requires iterated tower bounds (tower of towers), while the Chung-Frankl-Rödl weak hypergraph regularity analog of FK gives only singly or doubly exponential bounds. This entry's methodology (global cut-approximation is weaker than per-part regularity) extends naturally to the hypergraph setting."
     }
   ],
   "leanFile": {
