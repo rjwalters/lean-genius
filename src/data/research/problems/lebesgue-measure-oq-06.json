@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: Automaton infrastructure built (transition lemmas + base cases + induction skeleton); orbit_ne decomposed into 3 concrete sub-sorries. banach_tarski remains axiomatized.",
+    "progressSummary": "ACT: Automaton infrastructure fully compiled (0 sorries in lines 1-517). Remaining: bridge lemma (line 728) + banach_tarski axiomatized (line 785).",
     "builtItems": [
       "Equidecomposable (G-equidecomposability, with notation ≃ᴳ[G]) — proofs/Proofs/LebesgueMeasureOQ06.lean:43",
       "IsParadoxical — proofs/Proofs/LebesgueMeasureOQ06.lean:81",
@@ -51,9 +51,10 @@
       "labeledInv_base: 4 base cases proved (0 sorries) :418",
       "labeledInv_step: 12 valid transitions + 4 forbidden cases (0 sorries) :426",
       "anyInv_of_labeledInv: corollary (0 sorries) :450",
-      "evalWord_nonempty_labeledInv: automaton induction (2 API sorries) :465",
       "evalWord_nonempty_anyInv: main automaton theorem :499",
-      "orbit_ne: structured proof replacing big sorry :639"
+      "orbit_ne: structured proof replacing big sorry :639",
+      "evalWord_nonempty_labeledInv: automaton induction (0 sorries) — fixed e2Int_no_inv, base_psi, base_psi_inv, hnocancel proofs :465",
+      "getLast!_mem_getLast?: helper lemma (induction, 0 sorries) connecting getLast! to getLast? for nonempty lists :473"
     ],
     "insights": [
       "Banach-Tarski NOT in Mathlib as of 2026-04 — confirmed via search. Available Mathlib pieces: Matrix.orthogonalGroup, FreeGroup, IsometryEquiv, EuclideanSpace.",
@@ -73,7 +74,8 @@
       "Set.powerset 𝒫 is definitionally {t | t ⊆ s} (from Set.Defs.lean:244), so rfl closes the equality goal",
       "Automaton invariant (anyInv) is preserved by all 12 valid transitions and violated by e2Int, giving the orbit separation",
       "The orbit_ne sorry decomposes into 3 sub-sorries: (a) FreeGroup.Reduced->Chain trivial, (b) anyInv+encoding contradiction ~20 lines via sqrt2 irrationality, (c) integer-real bridge ~60 lines induction on toWord",
-      "labeledInv tracks the SPECIFIC last-generator invariant, which is needed for the no-cancel step in the induction"
+      "labeledInv tracks the SPECIFIC last-generator invariant, which is needed for the no-cancel step in the induction",
+      "Automaton section (lines 1-517) is now fully sorry-free. Key fixes: (1) full simp beats simp only + dsimp + norm_num for Zsqrtd projections; (2) refine-split + simp per conjunct works for multi-conjunct goals; (3) custom induction on getLast! vs getLast? avoids missing API; (4) direct application of chain_append junction avoids simp on head?_nil"
     ],
     "mathlibGaps": [
       "Banach-Tarski theorem itself not in Mathlib (no formalization as of 2026-04)",
@@ -82,10 +84,9 @@
       "Amenability for infinite groups not in Mathlib (FolnerCondition exists but Cesaro mean construction not)"
     ],
     "nextSteps": [
-      "Fix 2 List.Chain API sorries in evalWord_nonempty_labeledInv using List.chain_append or List.Chain.prefix",
-      "Prove bridge sorry (4): anyInv v + encoding -> False using Real.irrational_sqrt_two (~20 lines)",
-      "Prove henc bridge sorry (5): evalWord (toWord w) e2Int = 3^n * encode(liftF w e2) using induction on toWord with scaledAct = 3 * M_L (~60 lines)",
-      "Prove hred_word (sorry 3): FreeGroup.toWord_reduced gives Reduced, convert to Chain via Reduced_iff or List.chain_of_reduced"
+      "Prove bridge sorry (line 728): evalWord (toWord w) e2Int scaled by 3^n = liftF w applied to e2 — induction on toWord length with scaledAct = 3 * M_L",
+      "Prove hred_word (sorry in orbit_ne): FreeGroup.toWord_reduced gives Reduced, convert to Chain",
+      "banach_tarski (line 785) remains axiomatized — full proof requires F2 paradoxical decomposition + SO(3) orbit lift"
     ]
   },
   "tags": [
