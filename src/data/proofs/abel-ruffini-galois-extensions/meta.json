@@ -2,7 +2,7 @@
   "id": "abel-ruffini-galois-extensions",
   "title": "Abel-Ruffini Galois Theory Extensions",
   "slug": "abel-ruffini-galois-extensions",
-  "description": "Extends the Abel-Ruffini formalization with the complete solvability classification of symmetric groups. Proves S₀–S₄ are solvable, S_n is solvable if and only if n ≤ 4, A₅ is simple (the key obstruction), and non-commutativity witnesses for S₃, S₄, S₅, A₄, A₅. Verifies group orders |S₇|=5040, |A₈|=20160. 59 theorems, 0 definitions, 0 axioms.",
+  "description": "Extends the Abel-Ruffini formalization with the complete solvability classification of symmetric groups. Proves S₀–S₄ are solvable, S_n is solvable if and only if n ≤ 4, A₅ is simple (the key obstruction), and non-commutativity witnesses for S₃, S₄, S₅, A₄, A₅. Verifies group orders |S₇|=5040, |A₈|=20160. 59 theorems, 1 definition, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -22,7 +22,7 @@
     "assumptions": "None. Fully machine-verified using Mathlib's solvability infrastructure.",
     "lineCount": 534,
     "theoremCount": 59,
-    "definitionCount": 0,
+    "definitionCount": 1,
     "mathlibDependencies": [
       {
         "theorem": "Equiv.Perm.not_solvable",
@@ -92,7 +92,7 @@
     "lineCount": 534,
     "axiomCount": 0,
     "theoremCount": 59,
-    "definitionCount": 0,
+    "definitionCount": 1,
     "path": "Proofs/AbelRuffiniGaloisExtensions.lean",
     "sorries": 0
   },
