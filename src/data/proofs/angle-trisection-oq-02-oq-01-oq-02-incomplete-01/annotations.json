@@ -24,10 +24,22 @@
     "prerequisites": ["Lean 4 inductive types", "algebraMap", "structural induction"]
   },
   {
+    "id": "ann-incomplete01-constructible-definition",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
+    "range": { "startLine": 76, "endLine": 96 },
+    "type": "definition",
+    "title": "IsConstructible Inductive Type — Two Explicit Constructors",
+    "content": "The redesigned `IsConstructible : ℂ → Prop` has two constructors. `rational`: any `α ∈ Set.range (algebraMap ℚ ℂ)` is constructible (every rational, as embedded in ℂ). `sqrt_ext`: given explicit `β a b : ℂ` with `IsConstructible β`, `IsConstructible a`, `IsConstructible b`, and `β * β = a`, the sum `b + β` is constructible. Three immediate corollaries follow: `isConstructible_rat q` (any rational `q : ℚ` is constructible via the embedding), `isConstructible_zero`, and `isConstructible_one`. These are proved in one line each using `rational` with explicit witnesses.",
+    "mathContext": "The key difference from the parent file: `sqrt_ext` takes `β`, `a`, `b` as explicit term arguments (not `∃ a b : ℂ, ...`). In Lean 4 structural induction, the cases pattern is `| sqrt_ext β a b hβ ha hb hβ² => ...`. Lean automatically generates induction hypotheses `ihβ : IsConstructible β → ...`, `iha : IsConstructible a → ...`, `ihb : IsConstructible b → ...`. With the existential version, only `ihβ` would be generated, blocking the proof of `isConstructible_mem_range`.",
+    "significance": "key",
+    "relatedConcepts": ["inductive Prop", "IsConstructible.rational", "IsConstructible.sqrt_ext", "algebraMap ℚ ℂ", "structural induction IH generation"],
+    "prerequisites": ["Lean 4 inductive types", "Set.range", "algebraMap"]
+  },
+  {
     "id": "ann-incomplete01-rationality",
     "proofId": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
     "range": { "startLine": 83, "endLine": 97 },
-    "type": "theorem",
+    "type": "insight",
     "title": "Key Structural Lemma: All Constructible Numbers Are Rational",
     "content": "This is the central lemma that unlocks everything else. Under the redesigned `IsConstructible`, **every constructible number is rational**: `∀ α : ℂ, IsConstructible α → α ∈ Set.range (algebraMap ℚ ℂ)`. The proof is by structural induction. In the `rational` case this is trivial. In the `sqrt_ext` case, the induction hypotheses for $\\beta$ and $b$ give rational witnesses $q_\\beta$ and $q_b$, so $b + \\beta = q_b + q_\\beta \\in \\mathbb{Q}$. Note: this result reveals that the redesigned `IsConstructible` is actually *too restrictive* — it only captures rationals, not all geometric constructibles. This is discussed in the open questions.",
     "mathContext": "This lemma says: under this formalization, $\\text{Constructible}(\\mathbb{C}) \\subseteq \\mathbb{Q}$. Combined with `isConstructible_rat`, we get $\\text{Constructible}(\\mathbb{C}) = \\mathbb{Q}$ exactly. The proof uses `obtain ⟨qβ, hqβ⟩ := ihβ` to extract rational witnesses and `map_add` to combine them: $\\mathrm{algebraMap}(q_b + q_\\beta) = \\mathrm{algebraMap}(q_b) + \\mathrm{algebraMap}(q_\\beta) = b + \\beta$.",
@@ -62,7 +74,7 @@
   {
     "id": "ann-incomplete01-bad-degree",
     "proofId": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
-    "range": { "startLine": 188, "endLine": 223 },
+    "range": { "startLine": 226, "endLine": 260 },
     "type": "theorem",
     "title": "Non-constructibility from Degree Criterion",
     "content": "This is the main theorem of the file: `not_constructible_of_bad_degree`. If $p \\in \\mathbb{Q}[X]$ is irreducible and $\\deg(p)$ is not a power of 2, then no root of $p$ in $\\mathbb{C}$ is constructible. The proof chains together three key steps: (1) by `isConstructible_mem_range`, any constructible root $\\alpha$ must satisfy $\\alpha = \\mathrm{algebraMap}\\, q$ for some $q \\in \\mathbb{Q}$; (2) by `minpoly.dvd`, since $p(\\alpha) = 0$ and the minimal polynomial of $q$ over $\\mathbb{Q}$ is $X - q$, we get $(X - q) \\mid p$; (3) since $p$ is irreducible and $X - q$ is non-unit (degree 1), $p$ must be associate to $X - q$ (degree 1 = $2^0$), contradicting the assumption.",
@@ -74,7 +86,7 @@
   {
     "id": "ann-incomplete01-impossibilities",
     "proofId": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
-    "range": { "startLine": 228, "endLine": 238 },
+    "range": { "startLine": 265, "endLine": 278 },
     "type": "insight",
     "title": "Three Classical Impossibility Results — Fully Proved",
     "content": "With `not_constructible_of_bad_degree` in hand, the three classical impossibility results follow immediately as one-line corollaries. `angle_trisection_impossible_degree` and `doubling_cube_impossible_degree` and `regular_7gon_construction_impossible` all reduce to `cos20_degree_not_pow_two`, `three_not_pow_two`, and `regular_7gon_impossible_degree` respectively — all proved in the previous section. These are the three famous problems of antiquity: trisecting an arbitrary angle (specifically 60°, which requires $\\cos 20° = $ root of $8x^3 - 6x - 1$), doubling the cube (requires $\\sqrt[3]{2}$), and constructing the regular heptagon.",
@@ -86,7 +98,7 @@
   {
     "id": "ann-incomplete01-galois-sorry",
     "proofId": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
-    "range": { "startLine": 244, "endLine": 260 },
+    "range": { "startLine": 284, "endLine": 306 },
     "type": "insight",
     "title": "Remaining Sorry: Wantzel-Galois Equivalence",
     "content": "The single remaining `sorry` is `wantzel_galois_iff`: $\\alpha$ is constructible if and only if the Galois group $\\mathrm{Gal}(\\mathrm{minpoly}(\\mathbb{Q}, \\alpha) / \\mathbb{Q})$ is a 2-group. This is the deep direction of Wantzel's theorem — it characterizes *all* constructible numbers, not just shows specific ones are non-constructible. Proving it requires the full Fundamental Theorem of Galois Theory, a characterization of 2-power degree extensions as towers of quadratics, and connecting those towers to the constructibility definition. The docstring estimates 500+ lines of new infrastructure, making it out of scope for this file.",
