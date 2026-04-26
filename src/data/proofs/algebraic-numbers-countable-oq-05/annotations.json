@@ -117,6 +117,31 @@
     ]
   },
   {
+    "id": "ann-oq05-finite-roots",
+    "proofId": "algebraic-numbers-countable-oq-05",
+    "range": {
+      "startLine": 154,
+      "endLine": 166
+    },
+    "type": "technique",
+    "title": "Finite Real Roots: Polynomial.setOf_isRoot_finite",
+    "content": "`finite_real_roots` establishes that each nonzero integer polynomial has finitely many real roots — the second pillar of the height stratification argument. The proof maps the integer polynomial to a real polynomial via `algebraMap ℤ ℝ` (the natural ring homomorphism), applies Mathlib's `Polynomial.setOf_isRoot_finite` (finitely many roots for a nonzero polynomial over ℝ), then converts between `IsRoot` and `aeval = 0` formulations via `simp`.\n\nThis is mathematically trivial (degree n ⟹ ≤ n roots by the fundamental theorem of algebra), but the Lean proof must navigate the type tower: the polynomial lives in `Polynomial ℤ` while roots live in `ℝ`. The `map (algebraMap ℤ ℝ)` step handles the coercion, and `Polynomial.map_ne_zero` shows the image is still nonzero.",
+    "mathContext": "A nonzero polynomial p ∈ ℤ[X] of degree n has at most n real roots (in ℝ). Lean: `Polynomial.setOf_isRoot_finite` for `p.map (algebraMap ℤ ℝ)`, nonzero by `Polynomial.map_ne_zero`. Convert between `IsRoot` (p evaluated at x equals 0) and `aeval x p = 0` (evaluation via algebra map).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Polynomial.setOf_isRoot_finite",
+      "Polynomial.map_ne_zero",
+      "algebraMap ℤ ℝ",
+      "Polynomial.IsRoot vs aeval",
+      "fundamental theorem of algebra"
+    ],
+    "prerequisites": [
+      "Polynomial.setOf_isRoot_finite (Mathlib)",
+      "Ring homomorphism ℤ → ℝ",
+      "Polynomial.aeval_def"
+    ]
+  },
+  {
     "id": "ann-oq05-card",
     "proofId": "algebraic-numbers-countable-oq-05",
     "range": {
@@ -137,6 +162,29 @@
     "prerequisites": [
       "Nat.le_succ_of_le",
       "Cardinal arithmetic"
+    ]
+  },
+  {
+    "id": "ann-oq05-summary",
+    "proofId": "algebraic-numbers-countable-oq-05",
+    "range": {
+      "startLine": 267,
+      "endLine": 296
+    },
+    "type": "context",
+    "title": "Proof Summary: 0 Sorries, 0 Axioms, Key Mathlib Dependencies",
+    "content": "The closing docstring summarizes the five-section structure and sorry-free status. Key Mathlib lemmas: `setOf_isRoot_finite` (finitely many polynomial roots, §4), `integerNormalization_aeval_eq_zero` (clearing rational denominators for the algebraic → height-stratum direction, §5-7), `Finset.single_le_sum` (bounding individual sum terms in `cantorHeight_coeff_le`), `Fin.sum_univ_eq_sum_range` + `sum_ite_eq'` (coefficient reconstruction in `poly_eq_fin_sum`, §3), and `Int.natAbs_le` (connecting `|x| ≤ n` to `Icc` membership for the Fintype injection, §3). The dependency list shows that while the mathematics is elementary, formalization requires navigating ℤ → ℚ → ℝ type coercions, Mathlib's Finset API, and IsLocalization infrastructure.",
+    "mathContext": "12 theorems, 2 definitions, 0 sorries, 0 axioms. The core mathematics uses high-school algebra (bounded sums, polynomial roots, finite products) but requires intermediate Mathlib infrastructure: IsLocalization for fraction rings, Finset sum APIs, and type tower coercions.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "integerNormalization for fraction rings",
+      "Finset.single_le_sum",
+      "Int.natAbs_le",
+      "IsFractionRing"
+    ],
+    "prerequisites": [
+      "Lean 4 Finset API",
+      "IsLocalization for fraction rings"
     ]
   }
 ]

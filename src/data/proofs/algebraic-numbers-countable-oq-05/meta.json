@@ -116,32 +116,24 @@
   },
   "crossReferences": [
     {
-      "id": "xref-parent",
-      "proofId": "algebraic-numbers-countable",
-      "relationship": "parent",
-      "description": "The main gallery proof of algebraic number countability. Uses degree stratification (countably infinite strata) rather than height stratification (finite strata).",
-      "relevance": "This proof is Cantor's original approach; the parent uses a more modern Mathlib-friendly approach. Together they illustrate two complementary methods."
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "extends",
+      "description": "The main gallery proof of algebraic number countability. Uses degree stratification (countably infinite strata) rather than height stratification (finite strata). This proof is Cantor's original 1874 approach — finite strata via the height function — while the parent uses a more modern Mathlib-friendly degree-based approach. Together they illustrate two complementary methods: the height approach is more constructive (finite strata can be enumerated in finite time), the degree approach is simpler for Lean formalization."
     },
     {
-      "id": "xref-oq02",
-      "proofId": "algebraic-numbers-countable-oq-02",
-      "relationship": "sibling",
-      "description": "ℝ is uncountable via Cantor's diagonal argument. Together with this proof, forms the complete 1874 Cantor picture: algebraic numbers are countable, real numbers are not.",
-      "relevance": "The countability of algebraic numbers (this proof) and uncountability of reals (OQ02) together imply the existence of transcendental numbers — without exhibiting a single one."
+      "targetId": "algebraic-numbers-countable-oq-02",
+      "relationship": "related",
+      "description": "ℝ is uncountable via Cantor's diagonal argument. Together with this proof, forms the complete 1874 Cantor picture: algebraic numbers are countable, real numbers are not. The countability proved here and the uncountability of reals (OQ02) together imply the existence of transcendental numbers — without exhibiting a single one. This is Cantor's original 1874 existence argument for transcendentals, preceding Liouville's explicit construction."
     },
     {
-      "id": "xref-oq04",
-      "proofId": "algebraic-numbers-countable-oq-04",
-      "relationship": "sibling",
-      "description": "Baker's theorem on linear independence of logarithms. Concerns specific algebraic numbers and their transcendence properties.",
-      "relevance": "Baker's theorem operates on the very numbers whose countability we prove here. The height function appears in Baker's proof via Siegel's lemma."
+      "targetId": "algebraic-numbers-countable-oq-04",
+      "relationship": "related",
+      "description": "Baker's theorem on linear independence of logarithms of algebraic numbers. While this entry proves all algebraic numbers are countable (set-theoretic cardinality), Baker's theorem characterizes which specific algebraic combinations are transcendental (analytic/algebraic independence). The height function in this entry and the Siegel's lemma in Baker's proof both count integer polynomial solutions — the height bounds in this proof and the coefficient bounds in Siegel's lemma are the same combinatorial idea applied to different problems."
     },
     {
-      "id": "xref-oq02-oq02",
-      "proofId": "algebraic-numbers-countable-oq-02-oq-02",
-      "relationship": "sibling",
-      "description": "Cantor-Bernstein-Schroeder theorem, foundational for comparing infinite cardinalities.",
-      "relevance": "Provides the infrastructure for cardinal arithmetic used in card_algebraic_reals_eq_aleph0."
+      "targetId": "algebraic-numbers-countable-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Cantor-Bernstein-Schroeder theorem, foundational for comparing infinite cardinalities. Provides the infrastructure for cardinal arithmetic used in `card_algebraic_reals_eq_aleph0` — showing the algebraic reals have the same cardinality as ℕ (ℵ₀). CBS shows two sets are equicardinal if each injects into the other; here we use it implicitly via Mathlib's `Algebraic.cardinalMk_of_countable_of_charZero`."
     }
   ],
   "leanFile": {
