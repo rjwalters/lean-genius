@@ -43,7 +43,27 @@
     {
       "targetId": "arithmetic-series-oq-02",
       "relationship": "extends",
-      "description": "Imports simplicial number definition and shows it equals face counts of simplices"
+      "description": "Parent entry: defines simplicial numbers S_k(n) = C(n+k,k) via the hockey stick identity ∑_{i=0}^n S_k(i) = S_{k+1}(n). The current entry imports this definition and shows that S_{j+1}(k-j) equals the face count f_j(Δ^k) = C(k+1, j+1), connecting the number-theoretic hockey stick to the combinatorial topology of simplices"
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "related",
+      "description": "Both entries prove Euler characteristic formulas via alternating face sums. Euler's polyhedral formula V-E+F=2 for convex polyhedra corresponds to χ = 1 for the simplex Δ^k (proved here via Int.alternating_sum_range_choose_of_ne from Mathlib). The sign pattern ∑(-1)^j C(k+1, j+1) = 0 is the same algebraic identity underlying both results, with the polyhedral case adding one dimension for the outer face"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial theorem ∑_{i=0}^n C(n,i) = 2^n (via Nat.sum_range_choose) is the key identity for computing the total face count 2^{k+1} - 1 of Δ^k: summing f_j(Δ^k) = C(k+1, j+1) over j gives ∑_{j=0}^k C(k+1,j+1) = 2^{k+1} - 1 (excluding the empty face). Every combinatorial verification in this file — the triangle {3,3,1} and tetrahedron {4,6,4,1} f-vectors — reduces to binomial coefficient arithmetic"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The formula C(n,k) = n!/(k!(n-k)!) is the direct computational content of this entry: the face count f_j(Δ^k) = C(k+1,j+1) and the simplicial number S_{j+1}(k-j) = C(k+1,j+1) are both binomial coefficients, and their equality is a reindexing identity. The Lean proofs reduce to `Nat.choose` lemmas, making the combinations formula the algebraic foundation of the simplicial f-vector theory"
+    },
+    {
+      "targetId": "arithmetic-series-oq-02-oq-02",
+      "relationship": "related",
+      "description": "The 2D hockey stick identity sums products of simplicial numbers over triangular regions: ∑_{j=0}^n S_a(j)·S_b(n-j) = S_{a+b+1}(n). The face count formula f_j(Δ^k) = C(k+1,j+1) = S_{j+1}(k-j) shows that products of simplicial numbers correspond geometrically to counting pairs of faces in different dimensions, connecting the algebraic 2D hockey stick to the bigraded face structure of products of simplices"
     }
   ],
   "sections": [
