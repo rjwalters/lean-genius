@@ -42,7 +42,7 @@
     ],
     "dateAdded": "2026-04-22",
     "axiomCount": 1,
-    "lineCount": 878,
+    "lineCount": 877,
     "assumptions": "1 axiom: kuhn_path_existential — Kuhn's cross-path parity argument that a walk from some boundary door reaches an FC simplex. The walk-reversal involution τ∘τ=id (which would promote this to a theorem) requires kuhnWalkWithExit + walkTrace_reversal induction, not yet formalized. All other supporting lemmas are proved: non-revisiting (kuhn_step_nonrevisit + WalkValid), unique exit (nonfc_with_door_has_unique_exit), door counts, termination dichotomy. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
@@ -247,7 +247,7 @@
       "BigOperators"
     ],
     "namespace": "SpernerNDimOQ04",
-    "lineCount": 878,
+    "lineCount": 877,
     "axiomCount": 1,
     "theoremCount": 20,
     "definitionCount": 8,
