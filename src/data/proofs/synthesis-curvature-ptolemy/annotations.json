@@ -1,84 +1,98 @@
-{
-  "annotations": [
-    {
-      "id": "scp-module-header",
-      "proofId": "synthesis-curvature-ptolemy",
-      "range": { "startLine": 1, "endLine": 65 },
-      "type": "concept",
-      "title": "Module Overview: Unifying Ptolemy Across Three Geometries",
-      "content": "This file introduces the `curvatureSin K` function, which is the unifying object behind Ptolemy-type theorems in all three constant-curvature geometries. The core observation is that the Ptolemy theorem — in spherical, Euclidean, and hyperbolic geometry — always has the same algebraic form, but with different transcendental functions replacing the ordinary chord lengths. By packaging these three functions into a single definition parametrised by the curvature K, the theorem becomes a schema: one statement with one proof outline, valid for all K.\n\nThe six results proved are numbered explicitly in the docstring (lines 33-40). Items 1-4 are basic properties of curvatureSin. Items 5-6 are the Ptolemy results: the EQUALITY (for concyclic points, K=1), and the INEQUALITY (for all unit-circle points in ℂ, K=1). The inequality is the key new contribution — it has no concyclicity condition.",
-      "mathContext": "In classical non-Euclidean geometry, the Ptolemy equality for constant curvature K takes the form: `sn_K(d(a,c)/2)·sn_K(d(b,d)/2) = sn_K(d(a,b)/2)·sn_K(d(c,d)/2) + sn_K(d(a,d)/2)·sn_K(d(b,c)/2)` where `sn_K` is the Jacobi sn function at curvature K. This file implements `sn_K` as `curvatureSin K`, restricted to the real line (no elliptic modulus). The Euclidean case (K=0) recovers ordinary Ptolemy: `(ac/2)·(bd/2) = (ab/2)·(cd/2) + (ad/2)·(bc/2)`, i.e., `ac·bd = ab·cd + ad·bc`, the standard chord form.",
-      "significance": "critical"
-    },
-    {
-      "id": "scp-curvaturesin-def",
-      "proofId": "synthesis-curvature-ptolemy",
-      "range": { "startLine": 75, "endLine": 91 },
-      "type": "definition",
-      "title": "curvatureSin K t: Three-Case Definition via If-Then-Else",
-      "content": "The definition uses nested `if-then-else` on the sign of K:\n\n```\ncurvatureSin K t :=\n  if K = 0 then t\n  else if 0 < K then sin(√K · t) / √K\n  else sinh(√(-K) · t) / √(-K)\n```\n\nThe `noncomputable` keyword is required because `Real.sin`, `Real.sinh`, and `Real.sqrt` are noncomputable in Lean 4's kernel. The three branches exactly match the classical `sn_K` function from constant-curvature geometry. Crucially, the K=0 branch returns `t` (the identity), which is the L'Hôpital limit of `sin(√K·t)/√K` as K→0 (both numerator and denominator → 0, ratio → t).",
-      "mathContext": "The continuity of K ↦ curvatureSin K t at K=0 is mathematically clear from L'Hôpital: `lim_{K→0} sin(√K·t)/√K = lim_{K→0} (cos(√K·t)·t/(2√K))/(1/(2√K)) = lim cos(√K·t)·t = t`. The Lean definition chooses the K=0 value explicitly rather than proving continuity. The argument `Real.sqrt K` for K>0 is the principal square root (always ≥ 0), and `Real.sqrt (-K)` for K<0 is well-defined because -K>0 in that branch.",
-      "significance": "critical"
-    },
-    {
-      "id": "scp-zero-identity",
-      "proofId": "synthesis-curvature-ptolemy",
-      "range": { "startLine": 96, "endLine": 130 },
-      "type": "lemma",
-      "title": "Basic Properties: K=0 is the Identity, K=±1 Give sin and sinh",
-      "content": "Four key lemmas pin down the behavior of curvatureSin:\n\n1. `curvatureSin_zero`: The K=0 case is the identity — this is a `@[simp]` lemma, immediately dispatched by `simp [curvatureSin]`.\n2. `curvatureSin_one`: The K=1 case gives `Real.sin`. Proof: √1=1, 1·t=t, t/1=t. Done by `rw` + `div_one`.\n3. `curvatureSin_neg_one`: The K=-1 case gives `Real.sinh`. Proof: √(-(-1))=√1=1, then same reduction.\n4. `curvatureSin_zero_right`: For any K, curvatureSin K 0 = 0 — all three branches give 0 at t=0 (`sin 0 = 0`, `t = 0`, `sinh 0 = 0`).\n\nThe `curvatureSin_pos` and `curvatureSin_neg` helper lemmas (lines 102-110) rewrite the definition in the respective half-domains and are used internally to prove the two special-value theorems.",
-      "mathContext": "The vanishing at t=0 (`curvatureSin_zero_right`) and the normalization `(d/dt)(curvatureSin K t)|_{t=0} = 1` (not proved here) are characteristic of the sn_K function. The derivative is: for K>0, `d/dt[sin(√K·t)/√K] = cos(√K·t)`, which is 1 at t=0. For K<0, `d/dt[sinh(√(-K)·t)/√(-K)] = cosh(√(-K)·t)`, which is also 1 at t=0. This uniform normalization is why sn_K is the 'right' parametrisation for comparing across geometries.",
-      "significance": "key"
-    },
-    {
-      "id": "scp-spherical-equality",
-      "proofId": "synthesis-curvature-ptolemy",
-      "range": { "startLine": 138, "endLine": 165 },
-      "type": "theorem",
-      "title": "Spherical Ptolemy Equality: Restatement in curvatureSin Language",
-      "content": "The theorem `spherical_ptolemy_eq_curvatureSin` re-expresses the spherical Ptolemy equality (already proved in `PtolemysTheoremOQ01OQ02.lean`) using curvatureSin 1 notation. The proof is essentially one line:\n\n```lean\nsimp only [curvatureSin_one]\nexact SphericalPtolemy.spherical_ptolemy h_cosph h_apc h_bpd ha hb hc hd\n```\n\nThe first line rewrites `curvatureSin 1` to `sin` everywhere, and the second line delegates to the existing spherical Ptolemy theorem. The hypotheses carry the full geometric data: `Cospherical` (all four points on a common sphere), two crossing-diagonal conditions (`∠ a p c = π`, `∠ b p d = π`), and four unit-norm conditions.\n\n**Key point**: This theorem requires concyclicity. Without it, only an inequality holds — proved next.",
-      "mathContext": "The hypotheses `∠ a p c = π` and `∠ b p d = π` encode that p lies on the geodesic arc from a to c and from b to d — i.e., p is the intersection of the two diagonals. This is the standard inscribed-quadrilateral condition in spherical geometry. `Cospherical` asserts that all four points lie on a common sphere (great circle or otherwise). Together, these are the direct analogues of the Euclidean 'concyclic' condition in `ptolemy_inequality`'s equality case.",
-      "significance": "key"
-    },
-    {
-      "id": "scp-inequality-new-result",
-      "proofId": "synthesis-curvature-ptolemy",
-      "range": { "startLine": 171, "endLine": 198 },
-      "type": "theorem",
-      "title": "spherical_ptolemy_ineq_curvatureSin: The Key New Contribution",
-      "content": "The theorem statement deserves careful reading:\n\n```lean\ntheorem spherical_ptolemy_ineq_curvatureSin (z₁ z₂ z₃ z₄ : ℂ)\n    (h1 : ‖z₁‖ = 1) (h2 : ‖z₂‖ = 1) (h3 : ‖z₃‖ = 1) (h4 : ‖z₄‖ = 1) :\n    curvatureSin 1 (arccos (⟪z₁, z₃⟫_ℝ) / 2) * curvatureSin 1 (arccos (⟪z₂, z₄⟫_ℝ) / 2) ≤\n    curvatureSin 1 (arccos (⟪z₁, z₂⟫_ℝ) / 2) * curvatureSin 1 (arccos (⟪z₃, z₄⟫_ℝ) / 2) +\n    curvatureSin 1 (arccos (⟪z₂, z₃⟫_ℝ) / 2) * curvatureSin 1 (arccos (⟪z₁, z₄⟫_ℝ) / 2)\n```\n\nThe only hypotheses are the four unit-norm conditions — there is no Cospherical hypothesis, no crossing-diagonal hypothesis, no concyclicity requirement whatsoever. This is the spherical Ptolemy INEQUALITY for arbitrary quadrilaterals on the unit circle in ℂ.\n\nThe equality case is governed by the four points being concyclic (inscribed in a common great circle in the appropriate ordering), which is when `spherical_ptolemy_eq_curvatureSin` applies.",
-      "mathContext": "The contrast with the Euclidean setting is instructive. In the Euclidean plane, `ptolemy_inequality` (from `PtolemysComplexProof.lean`) states `|z₁-z₃|·|z₂-z₄| ≤ |z₁-z₂|·|z₃-z₄| + |z₂-z₃|·|z₁-z₄|` for any four complex numbers — no unit-norm assumption needed. Here, the unit-norm assumption is required because `arccos(⟨z,w⟩/2)` is the spherical metric (geodesic arc distance) only between unit-norm points. For non-unit points, the expression `arccos(⟨z,w⟩)` may be undefined or meaningless geometrically. So the spherical inequality applies to the unit circle specifically, while the complex Ptolemy inequality is universal.",
-      "significance": "critical"
-    },
-    {
-      "id": "scp-chord-arc-substitution",
-      "proofId": "synthesis-curvature-ptolemy",
-      "range": { "startLine": 199, "endLine": 229 },
-      "type": "tactic",
-      "title": "Proof of the Inequality: Chord-Arc Substitution + Scaling",
-      "content": "The proof of `spherical_ptolemy_ineq_curvatureSin` is a four-step calculation:\n\n**Step 1** (lines 200-211): Apply `SphericalPtolemy.unit_sphere_chord_via_sin` to each of the six pairs. This gives six equations of the form `‖zᵢ - zⱼ‖ = 2·sin(arccos(⟪zᵢ,zⱼ⟫)/2)`.\n\n**Step 2** (lines 213-218): Solve each for the sin value: `sin(arccos(⟪zᵢ,zⱼ⟫)/2) = ‖zᵢ - zⱼ‖/2`. (Each follows by `linarith` from the previous step.)\n\n**Step 3** (line 220): Rewrite the goal using these six equations. The goal is now purely in terms of norm differences: `‖z₁-z₃‖/2·‖z₂-z₄‖/2 ≤ ‖z₁-z₂‖/2·‖z₃-z₄‖/2 + ‖z₂-z₃‖/2·‖z₁-z₄‖/2`.\n\n**Step 4** (lines 223-229): Apply `ptolemy_inequality` to get `‖z₁-z₃‖·‖z₂-z₄‖ ≤ ‖z₁-z₂‖·‖z₃-z₄‖ + ‖z₂-z₃‖·‖z₁-z₄‖`, then divide by 4 (encoded as `ring` rewriting + `linarith`).",
-      "mathContext": "The norm expression `‖z‖` for `z : ℂ` uses the complex norm, which equals `√(z.re² + z.im²)`. When z lies on the unit circle (‖z‖=1), the inner product `⟪zᵢ, zⱼ⟫_ℝ` is the real inner product of ℂ viewed as ℝ², which equals `(zᵢ·conj(zⱼ)).re = Re(zᵢ·conj(zⱼ))`. The chord-arc identity `‖zᵢ - zⱼ‖ = 2sin(d/2)` where d = arccos⟨zᵢ,zⱼ⟩ is the spherical analogue of the Euclidean chord-length formula `2R·sin(θ/2)` on a circle of radius R=1. The division by 4 at the end arises because the inequality is homogeneous of degree 2 in the norms, and 1/2·1/2 = 1/4.",
-      "significance": "key"
-    },
-    {
-      "id": "scp-hyperbolic-conjecture",
-      "proofId": "synthesis-curvature-ptolemy",
-      "range": { "startLine": 231, "endLine": 257 },
-      "type": "insight",
-      "title": "Hyperbolic Case: What Would Be Needed",
-      "content": "The file ends with a detailed comment explaining why the K=-1 case is not proved. The conjecture statement would be:\n\n`sinh(d_H(z₁,z₃)/2)·sinh(d_H(z₂,z₄)/2) = sinh(d_H(z₁,z₂)/2)·sinh(d_H(z₃,z₄)/2) + sinh(d_H(z₁,z₄)/2)·sinh(d_H(z₂,z₃)/2)`\n\nfor concyclic points in the Poincaré disk. The key identity needed is:\n\n`sinh(d_H(z,w)/2) = |z - w| / √((1-|z|²)(1-|w|²))`\n\nThe conformal factors `1-|z|²` appear in the hyperbolic chord-arc identity (unlike the spherical case where they cancel because `1-‖z‖² = 0` for ‖z‖=1). The three infrastructure gaps are quantified: ~300 lines for the Poincaré metric structure, ~400-500 for Möbius isometries, ~200 for circle-to-circle correspondence.\n\nThis honest accounting of what is proved vs. conjectured is a strength of the formalization approach.",
-      "mathContext": "The hyperbolic distance in the Poincaré disk model is `d_H(z,w) = 2·arctanh(|φ_z(w)|)` where `φ_z(w) = (w-z)/(1-z̄w)` is the Möbius automorphism moving z to the origin. The half-distance formula `sinh(d_H(z,w)/2) = |z-w|/√((1-|z|²)(1-|w|²))` arises from this. For concyclic hyperbolic points (points on a common hypercircle or horocircle), the conformal factors do NOT cancel as they do for the spherical unit circle — they require careful handling via the Möbius isometry framework. This is the technical obstruction that makes the K=-1 case genuinely harder than the K=1 case.",
-      "significance": "supporting"
-    },
-    {
-      "id": "scp-import-architecture",
-      "proofId": "synthesis-curvature-ptolemy",
-      "range": { "startLine": 1, "endLine": 5 },
-      "type": "concept",
-      "title": "Import Structure: Building on Two Parent Proofs",
-      "content": "The five imports reveal the dependency structure:\n\n1. `Proofs.PtolemysComplexProof` — provides `ptolemy_inequality` (complex Ptolemy ≤)\n2. `Proofs.PtolemysTheoremOQ01OQ02` — provides `SphericalPtolemy.spherical_ptolemy` (equality) and `SphericalPtolemy.unit_sphere_chord_via_sin` (chord-arc)\n3. `Mathlib.Analysis.Complex.Trigonometric` — provides `Real.sinh` and complex trigonometry\n4. `Mathlib.Analysis.InnerProductSpace.Basic` — provides inner product `⟪·,·⟫_ℝ` for the real IPS structure on ℂ\n5. `Mathlib.Tactic` — standard tactic infrastructure\n\nThe proof is a synthesis of two gallery proofs (PtolemysComplexProof and PtolemysTheoremOQ01OQ02), demonstrating how gallery entries can serve as stepping stones for more general results.",
-      "mathContext": "The real inner product space structure on ℂ (from `InnerProductSpace.Basic`) treats ℂ as ℝ² with inner product `⟪z,w⟫_ℝ = Re(z·conj(w)) = z.re·w.re + z.im·w.im`. This is the correct inner product for `unit_sphere_chord_via_sin` to apply — the theorem is stated for a general real inner product space V with the standard norm, and ℂ with this inner product is exactly such a space (with the identification |z|² = ⟪z,z⟫_ℝ).",
-      "significance": "supporting"
-    }
-  ]
-}
+[
+  {
+    "id": "scp-import-architecture",
+    "proofId": "synthesis-curvature-ptolemy",
+    "range": { "startLine": 1, "endLine": 5 },
+    "type": "concept",
+    "title": "Import Structure: Building on Two Parent Proofs",
+    "content": "The five imports reveal the dependency structure: PtolemysComplexProof provides ptolemy_inequality (complex Ptolemy ≤); PtolemysTheoremOQ01OQ02 provides SphericalPtolemy.spherical_ptolemy (equality) and unit_sphere_chord_via_sin (chord-arc); Mathlib.Analysis.Complex.Trigonometric provides Real.sinh; InnerProductSpace.Basic provides the real inner product structure on ℂ; Mathlib.Tactic provides standard tactics. The proof is a synthesis of two gallery proofs, demonstrating how gallery entries can serve as stepping stones for more general results.",
+    "mathContext": "The real inner product space structure on $\\mathbb{C}$ treats it as $\\mathbb{R}^2$ with $\\langle z,w\\rangle_{\\mathbb{R}} = \\text{Re}(z\\cdot\\overline{w}) = z.\\text{re}\\cdot w.\\text{re} + z.\\text{im}\\cdot w.\\text{im}$. This is the correct inner product for `unit_sphere_chord_via_sin`, which is stated for a general real IPS V with the standard norm.",
+    "significance": "supporting",
+    "relatedConcepts": ["ptolemy_inequality", "chord-arc identity", "PtolemysComplexProof", "PtolemysTheoremOQ01OQ02"],
+    "prerequisites": ["complex analysis", "inner product spaces", "Lean 4 import system"]
+  },
+  {
+    "id": "scp-module-header",
+    "proofId": "synthesis-curvature-ptolemy",
+    "range": { "startLine": 7, "endLine": 65 },
+    "type": "concept",
+    "title": "Module Overview: Unifying Ptolemy Across Three Geometries",
+    "content": "This file introduces the curvatureSin K function, the unifying object behind Ptolemy-type theorems in all three constant-curvature geometries. The core observation is that the Ptolemy theorem — in spherical, Euclidean, and hyperbolic geometry — always has the same algebraic form, but with different transcendental functions replacing chord lengths. By packaging these three functions into a single definition parametrised by K, the theorem becomes a schema valid for all K. The six results proved (items 1-4: basic properties; items 5-6: equality and inequality) are listed explicitly. The inequality (item 6) is the key new contribution: it requires no concyclicity condition.",
+    "mathContext": "The unified Ptolemy equality: $\\text{curvatureSin}_K(d_{ac}/2)\\cdot\\text{curvatureSin}_K(d_{bd}/2) = \\text{curvatureSin}_K(d_{ab}/2)\\cdot\\text{curvatureSin}_K(d_{cd}/2) + \\text{curvatureSin}_K(d_{ad}/2)\\cdot\\text{curvatureSin}_K(d_{bc}/2)$ holds for cyclic quadrilaterals in $K$-geometry. For $K=1$: $\\sin$; for $K=0$: identity; for $K=-1$: $\\sinh$.",
+    "significance": "key",
+    "relatedConcepts": ["constant-curvature geometry", "Ptolemy theorem", "spherical geometry", "hyperbolic geometry"],
+    "prerequisites": ["Riemannian geometry", "geodesic distance", "non-Euclidean geometry"]
+  },
+  {
+    "id": "scp-curvaturesin-def",
+    "proofId": "synthesis-curvature-ptolemy",
+    "range": { "startLine": 75, "endLine": 91 },
+    "type": "definition",
+    "title": "curvatureSin K t: Three-Case Definition via If-Then-Else",
+    "content": "The definition uses nested if-then-else on the sign of K: if K=0 return t; else if 0<K return sin(√K·t)/√K; else return sinh(√(-K)·t)/√(-K). The noncomputable keyword is required because Real.sin, Real.sinh, and Real.sqrt are noncomputable in Lean 4's kernel. The three branches exactly match the classical sn_K function. The K=0 branch returns t (the identity), which is the L'Hôpital limit of sin(√K·t)/√K as K→0.",
+    "mathContext": "L'Hôpital: $\\lim_{K\\to 0} \\frac{\\sin(\\sqrt{K}\\,t)}{\\sqrt{K}} = \\lim_{K\\to 0} \\frac{\\cos(\\sqrt{K}\\,t)\\cdot t/(2\\sqrt{K})}{1/(2\\sqrt{K})} = t$. The normalization $\\text{curvatureSin}_K'(0)=1$ holds for all $K$: for $K>0$, $\\frac{d}{dt}\\frac{\\sin(\\sqrt{K}\\,t)}{\\sqrt{K}}\\big|_{t=0} = \\cos(0) = 1$.",
+    "significance": "critical",
+    "relatedConcepts": ["sn_K function", "L'Hôpital rule", "noncomputable definition", "comparison geometry"],
+    "prerequisites": ["real analysis", "Lean 4 noncomputable", "Real.sqrt"]
+  },
+  {
+    "id": "scp-zero-identity",
+    "proofId": "synthesis-curvature-ptolemy",
+    "range": { "startLine": 96, "endLine": 130 },
+    "type": "lemma",
+    "title": "Basic Properties: K=0 is the Identity, K=±1 Give sin and sinh",
+    "content": "Four lemmas pin down the behavior of curvatureSin: (1) curvatureSin_zero: K=0 is the identity (@[simp], proved by simp [curvatureSin]). (2) curvatureSin_one: K=1 gives Real.sin — √1=1, 1·t=t, t/1=t. (3) curvatureSin_neg_one: K=-1 gives Real.sinh — √(-(-1))=√1=1, then same reduction. (4) curvatureSin_zero_right: curvatureSin K 0 = 0 for any K — all three branches give 0. Helper lemmas curvatureSin_pos and curvatureSin_neg (lines 102-110) are used internally.",
+    "mathContext": "Uniform normalization: $\\frac{d}{dt}\\text{curvatureSin}_K(t)\\big|_{t=0} = 1$ for all $K$ (not proved here but motivates the formula). For $K>0$: derivative is $\\cos(\\sqrt{K}\\,t)$, which is 1 at $t=0$. For $K<0$: derivative is $\\cosh(\\sqrt{-K}\\,t)$, which is 1 at $t=0$. This normalization is why $\\text{sn}_K$ is the 'right' comparison function across geometries.",
+    "significance": "key",
+    "relatedConcepts": ["simp lemma", "curvatureSin_one", "curvatureSin_neg_one", "split_ifs tactic"],
+    "prerequisites": ["Real.sqrt_one", "Real.sin_zero", "Real.sinh_zero", "Lean 4 simp"]
+  },
+  {
+    "id": "scp-spherical-equality",
+    "proofId": "synthesis-curvature-ptolemy",
+    "range": { "startLine": 138, "endLine": 165 },
+    "type": "theorem",
+    "title": "Spherical Ptolemy Equality: Restatement in curvatureSin Language",
+    "content": "The theorem spherical_ptolemy_eq_curvatureSin re-expresses the spherical Ptolemy equality (proved in PtolemysTheoremOQ01OQ02.lean) using curvatureSin 1 notation. The proof is two lines: simp only [curvatureSin_one] rewrites curvatureSin 1 to sin everywhere, then exact SphericalPtolemy.spherical_ptolemy delegates to the existing theorem. Hypotheses: Cospherical (four points on a common sphere), two crossing-diagonal conditions (∠ a p c = π, ∠ b p d = π), and four unit-norm conditions. This theorem REQUIRES concyclicity.",
+    "mathContext": "For concyclic points on $S^n$ with $d_{ij} = \\arccos(\\langle a_i, a_j\\rangle)$: $\\sin\\frac{d_{ac}}{2}\\cdot\\sin\\frac{d_{bd}}{2} = \\sin\\frac{d_{ab}}{2}\\cdot\\sin\\frac{d_{cd}}{2} + \\sin\\frac{d_{ad}}{2}\\cdot\\sin\\frac{d_{bc}}{2}$. The conditions $\\angle\\,apc = \\pi$ and $\\angle\\,bpd = \\pi$ encode that $p$ is the diagonal intersection — the spherical inscribed-quadrilateral condition.",
+    "significance": "key",
+    "relatedConcepts": ["Cospherical", "spherical geodesic distance", "ptolemys-theorem-oq-01-oq-02", "concyclic quadrilateral"],
+    "prerequisites": ["inner product spaces", "EuclideanGeometry.angle", "SphericalPtolemy.spherical_ptolemy"]
+  },
+  {
+    "id": "scp-inequality-new-result",
+    "proofId": "synthesis-curvature-ptolemy",
+    "range": { "startLine": 171, "endLine": 198 },
+    "type": "theorem",
+    "title": "The Key New Result: Unconditional Spherical Ptolemy Inequality",
+    "content": "The main new theorem: for any four unit-circle points z₁,z₂,z₃,z₄ ∈ ℂ with ‖z_i‖=1 (NO concyclicity assumption), the Ptolemy inequality holds. The only hypotheses are the four unit-norm conditions. This is strictly stronger in scope than the equality theorem. The equality case is governed by the four points being concyclic in cyclic order. The spherical inequality is the counterpart of the complex Ptolemy inequality (ptolemy_inequality), which holds for ALL four complex numbers without any unit-norm requirement.",
+    "mathContext": "For any $z_1,z_2,z_3,z_4 \\in S^1 \\subset \\mathbb{C}$: $\\sin\\frac{d_{13}}{2}\\cdot\\sin\\frac{d_{24}}{2} \\leq \\sin\\frac{d_{12}}{2}\\cdot\\sin\\frac{d_{34}}{2} + \\sin\\frac{d_{23}}{2}\\cdot\\sin\\frac{d_{14}}{2}$, where $d_{ij} = \\arccos(\\langle z_i,z_j\\rangle_{\\mathbb{R}})$. Equality iff four points are concyclic in cyclic order.",
+    "significance": "critical",
+    "relatedConcepts": ["Ptolemy inequality", "unit circle", "spherical arc distance", "ptolemys-complex-proof"],
+    "prerequisites": ["complex inner product", "unit circle geometry", "ptolemy_inequality"]
+  },
+  {
+    "id": "scp-chord-arc-substitution",
+    "proofId": "synthesis-curvature-ptolemy",
+    "range": { "startLine": 199, "endLine": 229 },
+    "type": "tactic",
+    "title": "Proof: Chord-Arc Substitution + Scaling by 1/4",
+    "content": "The proof is a four-step calculation. Step 1 (lines 200-211): Apply unit_sphere_chord_via_sin to each of the six pairs, giving ‖zᵢ-zⱼ‖ = 2·sin(arccos(⟨zᵢ,zⱼ⟩)/2). Step 2 (lines 213-218): Invert by linarith to get sin(arccos(⟨zᵢ,zⱼ⟩)/2) = ‖zᵢ-zⱼ‖/2. Step 3 (line 220): Rewrite the goal — all sin values become half-norms. Step 4 (lines 223-229): Apply ptolemy_inequality and scale by 1/4 via ring + linarith.",
+    "mathContext": "After Steps 1-3, the goal becomes: $\\frac{\\|z_1-z_3\\|}{2}\\cdot\\frac{\\|z_2-z_4\\|}{2} \\leq \\frac{\\|z_1-z_2\\|}{2}\\cdot\\frac{\\|z_3-z_4\\|}{2} + \\frac{\\|z_2-z_3\\|}{2}\\cdot\\frac{\\|z_1-z_4\\|}{2}$. The algebraic identity $(a/2)(b/2) = ab/4$ converts this to ptolemy_inequality divided by 4.",
+    "significance": "key",
+    "relatedConcepts": ["unit_sphere_chord_via_sin", "ptolemy_inequality", "ring tactic", "linarith"],
+    "prerequisites": ["chord-arc identity", "Lean 4 linarith", "ring tactic"]
+  },
+  {
+    "id": "scp-hyperbolic-conjecture",
+    "proofId": "synthesis-curvature-ptolemy",
+    "range": { "startLine": 235, "endLine": 257 },
+    "type": "insight",
+    "title": "Hyperbolic Case: Infrastructure Roadmap",
+    "content": "The K=-1 hyperbolic Ptolemy theorem is stated as a conjecture with a precise infrastructure estimate: (1) Poincaré disk metric (~300 lines), (2) Möbius transformations as isometries (~400-500 lines), (3) hyperbolic circles + conformal factor cancellation (~200 lines). The key identity needed is sinh(d_H(z,w)/2) = |z-w|/√((1-|z|²)(1-|w|²)), which replaces the spherical chord-arc identity. Unlike the spherical case, the conformal denominators (1-|z|²) do NOT cancel for general disk points — they cancel only for points on a common hyperbolic circle, making the K=-1 case genuinely harder.",
+    "mathContext": "Poincaré disk metric: $d_H(z,w) = 2\\,\\text{arctanh}\\left|\\frac{z-w}{1-\\bar{w}z}\\right|$. Half-distance formula: $\\sinh\\frac{d_H(z,w)}{2} = \\frac{|z-w|}{\\sqrt{(1-|z|^2)(1-|w|^2)}}$. For concyclic hyperbolic points, the hyperbolic Ptolemy equality: $\\sinh\\frac{d_H(z_1,z_3)}{2}\\cdot\\sinh\\frac{d_H(z_2,z_4)}{2} = \\sinh\\frac{d_H(z_1,z_2)}{2}\\cdot\\sinh\\frac{d_H(z_3,z_4)}{2} + \\sinh\\frac{d_H(z_1,z_4)}{2}\\cdot\\sinh\\frac{d_H(z_2,z_3)}{2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Poincaré disk", "Möbius transformations", "hyperbolic isometries", "conformal factor"],
+    "prerequisites": ["hyperbolic geometry", "Möbius transformations", "Mathlib infrastructure"]
+  }
+]

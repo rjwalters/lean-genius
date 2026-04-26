@@ -88,15 +88,24 @@
     {
       "title": "Spherical Ptolemy Inequality (New)",
       "startLine": 178,
-      "endLine": 240,
+      "endLine": 229,
       "description": "Proves the spherical Ptolemy INEQUALITY for any four unit-circle points in ℂ. No concyclicity assumption needed. Proof: chord-arc + complex Ptolemy inequality / 4.",
       "summary": "Spherical Ptolemy ≤ for all unit-circle points — unconditional inequality",
       "id": "spherical-inequality",
       "mathContext": "For any z₁,z₂,z₃,z₄ on the unit circle in ℂ (‖z_i‖=1), not necessarily concyclic: sin(d_ac/2)·sin(d_bd/2) ≤ sin(d_ab/2)·sin(d_cd/2) + sin(d_bc/2)·sin(d_ad/2). Proof: chord-arc gives ‖z_i-z_j‖ = 2·sin(d_ij/2), so sin(d_ij/2) = ‖z_i-z_j‖/2. The inequality becomes (‖z₁-z₃‖/2)·(‖z₂-z₄‖/2) ≤ ..., which is ptolemy_inequality divided by 4."
+    },
+    {
+      "title": "Hyperbolic Case Conjecture",
+      "startLine": 231,
+      "endLine": 257,
+      "description": "Documents the K=-1 hyperbolic Ptolemy theorem as a conjecture, with a precise estimate of the Mathlib infrastructure needed: ~300 lines for Poincaré disk metric, ~400-500 for Möbius isometries, ~200 for circle-to-circle correspondence.",
+      "summary": "Hyperbolic Ptolemy (K=-1): blocked by missing Poincaré disk infrastructure (~800-1200 lines)",
+      "id": "hyperbolic-conjecture",
+      "mathContext": "Key identity needed: $\\sinh(d_H(z,w)/2) = |z-w|/\\sqrt{(1-|z|^2)(1-|w|^2)}$, replacing the spherical chord-arc identity. The conformal factors $(1-|z|^2)$ cancel for unit-circle points (spherical case) but not for general Poincaré disk points (hyperbolic case)."
     }
   ],
   "overview": {
-    "historicalContext": "The sn_K function appears in the work of Beardon and Minda (2007) on Schwarz-Pick lemmas and in general treatments of constant-curvature geometry. The unified Ptolemy theorem — that Ptolemy equality holds for cyclic quadrilaterals in ALL constant-curvature geometries with sn_K replacing the Euclidean metric — is a classical result of non-Euclidean geometry.",
+    "historicalContext": "Ptolemy's theorem dates to Claudius Ptolemy's Almagest (~150 CE), where it was used to compute chord tables for astronomical calculations. For over 1500 years the result remained purely Euclidean. The extension to spherical and hyperbolic geometry emerged in the 19th century as Gauss, Bolyai, and Lobachevsky developed non-Euclidean geometry. The sn_K function that unifies sin (K>0), identity (K=0), and sinh (K<0) appears in Alan Beardon and David Minda's 2007 work on Schwarz-Pick lemmas in complex analysis, and is well-known in the constant-curvature geometry literature. The unified Ptolemy theorem — that Ptolemy equality holds for cyclic quadrilaterals in ALL constant-curvature geometries with sn_K replacing the Euclidean chord metric — is a classical result connecting spherical, Euclidean, and hyperbolic geometry in one algebraic schema.",
     "problemStatement": "Define curvatureSin K t = sin(√K·t)/√K (K>0), t (K=0), sinh(√|K|·t)/√|K| (K<0). Prove that (1) curvatureSin 1 = sin and curvatureSin (-1) = sinh; (2) the spherical Ptolemy theorem holds in curvatureSin 1 language; (3) the spherical Ptolemy INEQUALITY holds for all unit-circle points in ℂ.",
     "text": "This synthesis file unifies the trigonometric functions of constant-curvature geometry into the curvatureSin K function, and shows how Ptolemy-type results fit into this unified framework. The key new result is the spherical Ptolemy inequality for non-cyclic quadrilaterals.",
     "proofStrategy": "For the spherical inequality: (1) reduce to sin via curvatureSin_one, (2) apply chord-arc identity to express sin values as half-norms, (3) the inequality reduces to the complex Ptolemy inequality divided by 4.",
@@ -104,7 +113,8 @@
       "The curvatureSin K function unifies sin (K=1), identity (K=0), and sinh (K=-1) in a single definition, making the Ptolemy equality a theorem schema over all constant-curvature geometries.",
       "The Ptolemy INEQUALITY (≤) holds unconditionally for four points in spherical geometry, while the EQUALITY requires the concyclicity condition. This mirrors the Euclidean case where ptolemy_inequality (≤) holds for all four complex numbers.",
       "The proof strategy 'complex Ptolemy inequality divided by 4' is enabled by the chord-arc identity ‖z-w‖ = 2·sin(d(z,w)/2) for unit-circle points, which converts norms into curvatureSin 1 values.",
-      "The K<0 (hyperbolic) case is blocked by the absence of Poincaré disk metric infrastructure in Mathlib. The conformal factors (1-|z|²) that appear in the hyperbolic chord-arc identity do not cancel for general interior points, unlike the spherical case."
+      "The K<0 (hyperbolic) case is blocked by the absence of Poincaré disk metric infrastructure in Mathlib. The conformal factors (1-|z|²) that appear in the hyperbolic chord-arc identity do not cancel for general interior points, unlike the spherical case.",
+      "The normalization curvatureSin_K'(0) = 1 for all K (provable but not proved in this file) is what makes the Ptolemy equality hold in the same algebraic form across all curvatures — without this normalization, scaling factors would differ between geometries and the unified theorem would not be a schema."
     ],
     "prerequisites": [
       "curvatureSin function definition and its three cases",
