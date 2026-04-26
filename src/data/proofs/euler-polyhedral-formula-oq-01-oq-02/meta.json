@@ -99,7 +99,32 @@
     {
       "targetId": "euler-polyhedral-formula-oq-01",
       "relationship": "extends",
-      "description": "Addresses 4CT question from Euler formula context"
+      "description": "Parent entry: raises the 4CT as an open question in the Euler formula context. The current entry surveys the feasibility of formalizing the 4CT in Lean 4, identifying planar graph infrastructure (needed to even state the theorem formally) as the primary missing ingredient"
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "foundational",
+      "description": "Euler's formula $V - E + F = 2$ is the cornerstone of planar graph theory: it implies $E \\leq 3V - 6$ for planar graphs, which in turn implies every planar graph has a vertex of degree $\\leq 5$ — the key ingredient for both the Five and Four Color theorems. This entry's feasibility assessment identifies planar graph theory (including Euler's formula) as the first required Mathlib infrastructure component (~6K lines)"
+    },
+    {
+      "targetId": "euler-polyhedral-formula-oq-01-oq-01",
+      "relationship": "complementary",
+      "description": "Formalizes the Five Color Theorem — the natural intermediate milestone identified in this entry's strategy. The five-color proof uses Kempe chains and requires only Euler's formula (every planar graph has a vertex of degree ≤ 5), avoiding the full reducibility apparatus of the 4CT. This entry identifies ~2000 lines for the Five Color Theorem; OQ-01-OQ-01 provides the actual formalization"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "extends",
+      "description": "The main gallery entry for the Four Color Theorem: Gonthier's formalized proof in Coq (2005, ~60K lines). The current entry is a survey assessing whether that Coq proof can be re-formalized in Lean 4, estimating ~43K lines and identifying native_decide as a potential replacement for the ~12K-line computational configuration-checking kernel"
+    },
+    {
+      "targetId": "four-color-theorem-oq-01",
+      "relationship": "complementary",
+      "description": "Investigates whether the 4CT can be proved without computer assistance (a human-readable proof). This entry surveys the computer-assisted route (Gonthier's formalization); OQ-01 explores the alternative of a conceptual proof via Kempe chain obstructions. Together they frame the key question: can the 4CT be made 'human-understandable' or is computer assistance intrinsic to its proof?"
+    },
+    {
+      "targetId": "four-color-theorem-oq-02",
+      "relationship": "complementary",
+      "description": "Formalizes the theory of minimal unavoidable reducible configuration sets: the historical progression from Appel-Haken's 1476 configurations to RSST's 633. This entry's feasibility table estimates ~15K lines for the configuration catalog, making OQ-02's configuration theory the largest component of a Lean 4 re-formalization. The minimum-size open question (can the configuration set be reduced below 633?) is the frontline research question"
     }
   ],
   "sorries": 0
