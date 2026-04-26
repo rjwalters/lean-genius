@@ -106,5 +106,17 @@
     "significance": "supporting",
     "prerequisites": ["Poincaré disk model", "Möbius transformations", "hyperbolic geodesic distance", "conformal factors"],
     "relatedConcepts": ["hyperbolic geometry", "Poincaré disk", "curvatureSin (-1)", "Möbius group", "conformal geometry"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "synthesis-curvature-ptolemy",
+    "range": { "startLine": 259, "endLine": 270 },
+    "type": "context",
+    "title": "Public API: Seven Exported Names",
+    "content": "The `#check` commands at the end of the file enumerate the seven names that constitute the public API of this module:\n\n- **`curvatureSin`**: the noncomputable definition, polymorphic over ℝ\n- **`curvatureSin_zero`**: simp lemma `curvatureSin 0 t = t`\n- **`curvatureSin_one`**: rewrite lemma `curvatureSin 1 t = sin t`\n- **`curvatureSin_neg_one`**: rewrite lemma `curvatureSin (-1) t = sinh t`\n- **`curvatureSin_zero_right`**: simp lemma `curvatureSin K 0 = 0`\n- **`spherical_ptolemy_eq_curvatureSin`**: the spherical Ptolemy equality, with concyclicity hypotheses\n- **`spherical_ptolemy_ineq_curvatureSin`**: the spherical Ptolemy inequality, unconditional\n\nThis minimal API is designed for importability: future files proving K-geometry results can `import Proofs.SynthesisCurvaturePtolemy` and immediately use `simp [curvatureSin_one]` to reduce K=1 statements to standard Mathlib `Real.sin` theorems.",
+    "mathContext": "In Lean 4, `#check` at the module level is a documentation and verification device — it confirms that each name is in scope, has the expected type, and is fully proved. The implicit argument `@` (as in `@curvatureSin`) forces display of all implicit arguments, making the types fully explicit. The 7 `#check` lines serve as a module interface specification: 1 definition + 4 special-case lemmas (K=0, K=1, K=-1, t=0) + 2 Ptolemy theorems (equality, inequality).",
+    "significance": "context",
+    "prerequisites": ["Lean 4 #check command", "implicit arguments", "noncomputable definitions"],
+    "relatedConcepts": ["module interface", "simp lemmas", "rewrite lemmas", "Lean 4 documentation"]
   }
 ]

@@ -52,7 +52,7 @@
     ],
     "dateAdded": "2026-04-26",
     "axiomCount": 0,
-    "lineCount": 210,
+    "lineCount": 270,
     "assumptions": "0 axioms. 0 sorries. All results are fully machine-verified. The hyperbolic Ptolemy theorem (K<0) is stated as a conjecture in comments only — it is NOT claimed as a theorem in this file.",
     "mathlib_version": "4.26.0",
     "parentProof": "ptolemys-theorem-oq-01-oq-02"
@@ -87,12 +87,21 @@
     },
     {
       "title": "Spherical Ptolemy Inequality (New)",
-      "startLine": 178,
-      "endLine": 240,
+      "startLine": 167,
+      "endLine": 258,
       "description": "Proves the spherical Ptolemy INEQUALITY for any four unit-circle points in ℂ. No concyclicity assumption needed. Proof: chord-arc + complex Ptolemy inequality / 4.",
       "summary": "Spherical Ptolemy ≤ for all unit-circle points — unconditional inequality",
       "id": "spherical-inequality",
       "mathContext": "For any z₁,z₂,z₃,z₄ on the unit circle in ℂ (‖z_i‖=1), not necessarily concyclic: sin(d_ac/2)·sin(d_bd/2) ≤ sin(d_ab/2)·sin(d_cd/2) + sin(d_bc/2)·sin(d_ad/2). Proof: chord-arc gives ‖z_i-z_j‖ = 2·sin(d_ij/2), so sin(d_ij/2) = ‖z_i-z_j‖/2. The inequality becomes (‖z₁-z₃‖/2)·(‖z₂-z₄‖/2) ≤ ..., which is ptolemy_inequality divided by 4."
+    },
+    {
+      "title": "Summary: All Exported Names",
+      "startLine": 259,
+      "endLine": 270,
+      "description": "Lists all definitions and theorems exported from this file via #check: curvatureSin, curvatureSin_zero, curvatureSin_one, curvatureSin_neg_one, curvatureSin_zero_right, spherical_ptolemy_eq_curvatureSin, spherical_ptolemy_ineq_curvatureSin.",
+      "summary": "Public API: 1 def + 4 lemmas + 2 theorems",
+      "id": "summary",
+      "mathContext": "The 7 exported names form the curvatureSin API: the definition itself, four special-case lemmas (K=0, K=1, K=-1, t=0), and the two Ptolemy theorems (equality with concyclicity, inequality without). This compact API makes the file importable as a reusable layer in future constant-curvature geometry formalizations."
     }
   ],
   "overview": {
@@ -193,7 +202,7 @@
       "EuclideanGeometry"
     ],
     "namespace": null,
-    "lineCount": 210,
+    "lineCount": 270,
     "axiomCount": 0,
     "theoremCount": 7,
     "sorries": 0,
