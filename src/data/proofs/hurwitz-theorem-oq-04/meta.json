@@ -18,13 +18,13 @@
       "advanced"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 2,
     "dateAdded": "2026-04-24",
-    "axiomCount": 1,
-    "assumptions": "1 axiom: G2_der_dimension (finrank ℝ OctonionDerSubmodule = 14). Previous G2_is_octonion_aut (Nat.card OctonionAut = 14) was replaced: Nat.card of an infinite Lie group equals 0 in type theory, making it mathematically incorrect. G2_der_dimension targets the Lie algebra dimension directly. All supporting lemmas fully proved.",
-    "lineCount": 822,
-    "theoremCount": 35,
-    "definitionCount": 17,
+    "axiomCount": 0,
+    "assumptions": "0 axiom declarations; 2 sorries in private helper lemmas (derEval14_injective, derBasis14_linearIndependent). G2_der_dimension (finrank ℝ Der(𝕆) = 14) depends on these sorry'd lemmas.",
+    "lineCount": 1052,
+    "theoremCount": 27,
+    "definitionCount": 34,
     "originalContributions": [
       "OctonionAlgHom / OctonionAut: structures for octonion algebra homomorphisms and automorphisms",
       "alg_aut_preserves_norm: automorphisms preserve the norm (proved via polarization and imaginary decomposition)",
@@ -137,11 +137,11 @@
       "HurwitzTheorem"
     ],
     "namespace": "HurwitzTheoremOQ04",
-    "lineCount": 822,
-    "axiomCount": 1,
-    "theoremCount": 40,
-    "definitionCount": 15,
-    "sorries": 0,
+    "lineCount": 1052,
+    "axiomCount": 0,
+    "theoremCount": 27,
+    "definitionCount": 34,
+    "sorries": 2,
     "path": "Proofs/HurwitzTheoremOQ04.lean"
   },
   "crossReferences": [
@@ -156,5 +156,5 @@
       "description": "Sibling open question: n-square identities and normed division algebras"
     }
   ],
-  "sorries": 0
+  "sorries": 2
 }
