@@ -22,6 +22,9 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 253,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "dateAdded": "2026-04-26",
     "assumptions": "None. Fully axiom-free.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -53,7 +56,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The cyclic vector theorem for nonderogatory matrices is a cornerstone of rational canonical form theory. A matrix M is nonderogatory if its minimal polynomial equals its characteristic polynomial — equivalently, K^n is a cyclic K[X]-module. The prime power case (minpoly = p^e for irreducible p) is the building block for the general theorem via the primary decomposition. While the general theorem requires the PID structure theorem for K[X]-modules (not yet in Mathlib 4.26), the prime power case admits an elementary inductive proof. WIP02 (squarefree case) and WIP03 (prime power case) together cover the two structural cases of the general theorem. A WIP01 companion handles the full theorem with one axiom (similarity to companion matrix). The prime power result here is the more surprising of the two: while the squarefree case follows from a Bezout/CRT argument, the prime power case requires a subtle inductive divisibility argument that avoids any module structure theorem.",
+    "historicalContext": "The cyclic vector theorem for nonderogatory matrices is a cornerstone of rational canonical form theory, tracing back to Frobenius's 1878 work on the 'Elementartheiler' (elementary divisors) of matrices over polynomial rings. A matrix M is nonderogatory if its minimal polynomial equals its characteristic polynomial — equivalently, K^n is a cyclic K[X]-module. The classification of finitely generated modules over PIDs, developed by Smith (1861) and later refined by Frobenius and Weierstrass, gives the standard proof: factor the characteristic polynomial into prime powers, decompose K^n into primary components, and show each component is cyclic. However, the PID structure theorem is substantial machinery not yet available in Mathlib 4.26. This formalization takes a different approach: it proves the prime power case directly by induction on the exponent, using only the UFD property of K[X] (for Bézout's identity) and basic degree arithmetic. The key lemma `pow_irred_dvd_of_annihilated` is reminiscent of p-adic valuation arguments in algebraic number theory — it extracts divisibility information from iterated annihilation conditions without invoking the full module decomposition. WIP02 (squarefree case) and WIP03 (prime power case) together cover the two structural pillars of the general theorem. The prime power result is the more surprising: while the squarefree case follows from a Chinese Remainder Theorem argument, the prime power case requires a subtle descent argument that avoids any module structure theorem entirely.",
     "problemStatement": "For a nonderogatory n×n matrix M over any field K whose minimal polynomial equals p^e (p monic irreducible, e ≥ 1), prove that M has a cyclic vector: a vector v such that no nonzero polynomial of degree < n annihilates v via M.",
     "proofStrategy": "The key insight is the lemma pow_irred_dvd_of_annihilated (proved by strong induction on e): if p is irreducible, p^e(M)v ≠ 0, p^(e+1)(M)v = 0, and r(M)v = 0, then p^(e+1) divides r. The main theorem then follows: (1) Since deg(p^(e-1)) < n = deg(minpoly), p^(e-1)(M) ≠ 0, so we can pick v with p^(e-1)(M)v ≠ 0. (2) p^e(M)v = 0 since the minimal polynomial kills K^n. (3) If r(M)v = 0 with deg(r) < n = deg(p^e), then p^e | r, forcing deg(r) ≥ deg(p^e) = n, a contradiction. Inductive step of the key lemma: given p^(e+1)(M)v ≠ 0, let w = p^(e+1)(M)v. Then p(M)w = 0 and r(M)w = 0, so p | r. Writing r = p*r₁, apply the IH to u = p(M)v: p^e(M)u = p^(e+1)(M)v ≠ 0 and r₁(M)u = 0, giving p^(e+1) | r₁. Hence p^(e+2) | r.",
     "keyInsights": [
@@ -99,11 +102,12 @@
     }
   ],
   "conclusion": {
-    "summary": "This file provides an axiom-free Lean proof of the prime power case of the nonderogatory cyclic vector theorem. Together with WIP02 (squarefree case), it covers both structural cases. WIP01 handles the full theorem via one axiom (rational canonical form). Once Mathlib adds the PID structure theorem, WIP01 becomes axiom-free and this prime power case is subsumed.",
-    "implications": "The inductive key lemma pow_irred_dvd_of_annihilated is the core new contribution: it shows that an elementary divisibility argument by induction replaces the PID structure theorem for the prime power case. This approach generalizes to other situations where one needs to extract divisibility information from iterated annihilation conditions.",
+    "summary": "This file provides an axiom-free Lean 4 proof of the prime power case of the nonderogatory cyclic vector theorem, valid over any field K with no cardinality restriction. The key lemma `pow_irred_dvd_of_annihilated` replaces the PID structure theorem with an elementary induction on the prime power exponent, using only Bézout's identity in K[X] and polynomial evaluation commutativity. Together with WIP02 (squarefree case), this covers both structural pillars of the general theorem.",
+    "implications": "The inductive key lemma `pow_irred_dvd_of_annihilated` is the core new contribution: it demonstrates that an elementary divisibility descent replaces the PID structure theorem for the prime power case. The 'shift trick' ($v \\mapsto p(M)v$ decreases the filtration level) is a general technique applicable to other iterated annihilation problems in module theory. This approach provides a fully constructive path to rational canonical form for the prime power case, without requiring the existence of a Smith normal form or module decomposition.",
     "openQuestions": [
-      "Can WIP02 (squarefree) and WIP03 (prime power) be combined into a general WIP04 that handles arbitrary nonderogatory matrices without axioms, using a direct argument instead of the full PID structure theorem?",
-      "The prime power case proved here covers fields K of any characteristic. Does the proof simplify when char(K) = 0 or when K is algebraically closed?"
+      "Can WIP02 (squarefree) and WIP03 (prime power) be combined into a general WIP04 that handles arbitrary nonderogatory matrices without axioms, using a direct CRT + prime power argument instead of the full PID structure theorem?",
+      "The prime power case proved here covers fields K of any characteristic. Does the proof simplify when char(K) = 0 or when K is algebraically closed (so that irreducible p must be linear)?",
+      "Can the key lemma be generalized to non-matrix settings — e.g., cyclic vectors for endomorphisms of infinite-dimensional spaces, or modules over other PIDs besides K[X]?"
     ]
   },
   "leanFile": {
@@ -137,6 +141,26 @@
       "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-02",
       "relationship": "companion",
       "description": "WIP02: squarefree case (axiom-free). WIP03 is the complementary prime power case. Together they cover all structural cases of the general theorem."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
+      "relationship": "related",
+      "description": "Nonderogatory cyclic vector for infinite fields (axiom-free). WIP03 extends coverage to ALL fields including finite fields with no cardinality restriction."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Finite field version requiring |K| > n. WIP03 removes the cardinality constraint entirely for the prime power case."
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "uses",
+      "description": "The Cayley-Hamilton theorem provides charpoly_natDegree_eq_dim and the fact that minpoly divides charpoly, both used in the degree arithmetic."
+    },
+    {
+      "targetId": "cayley-hamilton-reduction-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Rational canonical form via companion matrices. WIP03's prime power cyclic vector is a building block for showing each primary component has companion form."
     }
   ],
   "sorries": 0
