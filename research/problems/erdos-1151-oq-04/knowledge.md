@@ -200,6 +200,50 @@ only one sorry remaining (`h_harm_chain`). Proved inline:
 **Key Mathlib gap**: Need `(Nat.sqrt n)^2 ≤ n` — likely `Nat.sqrt_le'` or similar (exact name TBD).
 
 ### Next Steps
-1. Find correct Lean4 Mathlib name for `(Nat.sqrt n)^2 ≤ n` (try `Nat.sqrt_le'`, `Nat.le_sqrt`)
-2. Prove `h_harm_chain` via the 5-step strategy above
-3. After that, sorry #0 closed; 2 remaining (chebyshev_trig_sum_lb + divergence_from_lebesgue_growth)
+~~1. Find correct Lean4 Mathlib name for `(Nat.sqrt n)^2 ≤ n` (try `Nat.sqrt_le'`, `Nat.le_sqrt`)~~
+~~2. Prove `h_harm_chain` via the 5-step strategy above~~
+→ COMPLETED in Session 2026-04-26b (see below)
+
+## Session 2026-04-26b — h_harm_chain Proved
+
+**Outcome**: progress — sorry count 3 → 2  
+**Sorries closed**: `h_harm_chain` inside `trig_sum_lb_of_cos_eq_neg_one`
+
+### What I Did
+
+Replaced the `sorry` for `h_harm_chain` with a complete 5-step proof:
+
+**A. Angle bound**: `(2j+1)π/(4n) ≤ π/3` for j < m = √n.
+   - Key: `3*(2j+1) ≤ 4n`. Follows from j+1 ≤ m, m^2 ≤ n (`Nat.sqrt_le' n`), and 4m^2-6m+3 > 0 always.
+   - Proof: `have haux : 6*m ≤ 4*m^2 + 3 := by nlinarith [hm_pos, sq_nonneg m]; nlinarith [hm_sq]`
+
+**B. Cot lower bound**: `cos(t_j)/sin(t_j) ≥ 2n/(π(2j+1))` from `cot_ge_inv_two_mul`.
+   - Identity: `2n/(π(2j+1)) = 1/(2 * (2j+1)π/(4n))`. After `rw [h_eq]; exact hcot`. ✓
+
+**C. Inv inequality**: `2n/(π(2j+1)) ≥ n/(π(j+1))` since 2j+1 ≤ 2j+2. `nlinarith`. ✓
+
+**D/E. Sum and factoring**: `Σ cot ≥ Σ n/(π(j+1)) = (n/π) * Σ (j+1)⁻¹`. ✓
+
+**F. Harmonic cast**: `(harmonic m : ℝ) = ∑ j : Fin m, (j+1 : ℝ)⁻¹`:
+   - `simp only [harmonic_eq_sum_Icc, Rat.cast_sum, Rat.cast_inv, Rat.cast_natCast]`
+   - `Finset.Icc 1 m = (range m).image (·+1)` (by `omega`)
+   - `← Fin.sum_univ_eq_sum_range` + `push_cast; ring`
+
+**G. Log bound**: `log(m+1) ≥ (1/2)log(n+1)` from n+1 ≤ (m+1)^2 (`hsucc_sq`) + `Real.log_pow`.
+
+### Key Mathlib Lemma Names Confirmed
+
+- `Nat.sqrt_le' n : Nat.sqrt n ^ 2 ≤ n` ✓
+- `Nat.lt_succ_sqrt n : n < (Nat.sqrt n + 1) ^ 2` ✓
+- `log_add_one_le_harmonic n : Real.log ↑(n+1) ≤ harmonic n` (no namespace prefix needed) ✓
+- `harmonic_eq_sum_Icc : harmonic n = ∑ i ∈ Finset.Icc 1 n, (↑i)⁻¹` ✓
+- `Fin.sum_univ_eq_sum_range f n : ∑ i : Fin n, f i = ∑ i ∈ Finset.range n, f i` ✓
+
+### Remaining Sorries (2)
+
+1. `chebyshev_trig_sum_lb` — x ∈ (-1,1) Lipschitz/harmonic argument
+2. `divergence_from_lebesgue_growth` — lacunary construction / UBP gap
+
+### Next Steps
+1. Attempt `chebyshev_trig_sum_lb`: use sin(φₖ) ≥ s/2 near k₀ + harmonic sum
+2. For sorry #2: weaken to lim sup = ∞ (provable by Banach-Steinhaus)
