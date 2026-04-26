@@ -1,0 +1,92 @@
+{
+  "slug": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
+  "title": "Complete proof of Wantzel-Galois Constructibility from Mathlib Galois Theory",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in geometry: Complete proof of Wantzel-Galois Constructibility from Mathlib Galois Theory.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-26T00:00:00Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: File compiles; 2 sorries remain (tower divisibility + Galois characterization)",
+    "builtItems": [
+      "isConstructible_mem_range: all constructible numbers are rational (Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:89)",
+      "not_constructible_of_bad_degree: proved via rationality + minpoly.eq_X_sub_C (line 179)",
+      "cube_root_2_minpoly_irred: Eisenstein criterion at p=2 via ℤ→ℚ Gauss lemma (line 123)",
+      "cos20_minpoly_degree, cube_root_2_degree, regular_7gon_poly_degree: natDegree = 3 computations (lines 135-145)",
+      "three_ne_two_pow: 3 ≠ 2^k helper lemma using Nat.pow_le_pow_right + interval_cases (line 154)",
+      "Session 26: isConstructible_sqrt2 — proves √2 constructible under fixed definition (AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:83)",
+      "Session 26: Fixed IsConstructible definition — sqrt_ext removes IsConstructible β precondition (line 63-65)",
+      "Fixed isConstructible_sqrt2 (norm_cast + Real.mul_self_sqrt)",
+      "Fixed Module.finrank qualified name throughout not_constructible_of_bad_degree",
+      "Fixed IsIntegral conversion for adjoin.finrank type mismatch",
+      "Fixed h1 case: absurd + Nat.two_pow_pos instead of broken linarith"
+    ],
+    "insights": [
+      "IsConstructible with existential sqrt_ext blocks induction — must make a,b explicit constructor params to get proper IHs",
+      "Under explicit-parameter redesign, constructible numbers are provably exactly the rationals (isConstructible_mem_range)",
+      "not_constructible_of_bad_degree proof chain: constructible→rational via isConstructible_mem_range, then minpoly.eq_X_sub_C + minpoly.dvd, then irreducibility degree argument",
+      "interval_cases k requires explicit upper bound on k; must prove k ≤ 1 before calling it for 3 = 2^k cases",
+      "Lean 4 induction with | case ... => places all constructor args first, then all IHs at end: β a b hβ ha hb hβsq ihβ iha ihb (NOT interleaved)",
+      "Session 26: Old sqrt_ext required IsConstructible β as precondition → all constructible numbers were rational (wrong!)",
+      "Session 26: Fixed definition removes IsConstructible β → √2 is now constructible (proved isConstructible_sqrt2)",
+      "Session 26: wantzel_galois_iff was FALSE under old definition (→ direction fails: √2 has 2-group Gal but was not 'constructible'). Now TRUE under fixed definition.",
+      "Session 26: not_constructible_of_bad_degree now uses isConstructible_algebraic_degree sorry + IntermediateField.adjoin.finrank for degree connection",
+      "Session 27: File compiles; tower sorry narrowed to single divisibility claim; Docker must run from worktree; Module.finrank must be fully qualified; IsIntegral needed for adjoin.finrank"
+    ],
+    "mathlibGaps": [
+      "isConstructible_algebraic_degree: tower degree induction — IsConstructible α → IsAlgebraic ℚ α ∧ ∃ n, finrank ℚ ℚ⟮α⟯ = 2^n. Needs FiniteDimensional.finrank_mul_finrank + IntermediateField tower lemmas. Estimated ~120 lines.",
+      "wantzel_galois_iff: requires full FTGT + 2-group structure, estimated 500+ lines — not in Mathlib"
+    ],
+    "nextSteps": [
+      "Prove tower divisibility: Module.finrank ℚ ℚ⟮b+β⟯ ∣ 2^(j+k+1)",
+      "Key lemmas: IntermediateField.adjoin.finrank, finrank of degree-2 adjoin",
+      "wantzel_galois_iff is out-of-scope (500+ lines)"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "galois-theory",
+    "constructibility",
+    "impossibility",
+    "incomplete",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "angle-trisection",
+    "angle-trisection-oq-02",
+    "angle-trisection-oq-02-oq-01",
+    "angle-trisection-oq-02-oq-01-oq-02",
+    "angle-trisection-oq-02-oq-01-oq-02-incomplete-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-25T12:53:24.052Z",
+  "lastUpdate": "2026-04-25T12:53:24.052Z",
+  "significance": 7,
+  "tractability": 6
+}
