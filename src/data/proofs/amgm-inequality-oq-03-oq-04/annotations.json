@@ -7,15 +7,15 @@
       "endLine": 51
     },
     "type": "insight",
-    "title": "Overview: Rényi Entropy and Power Means Are the Same",
-    "content": "The header explains the central insight: the weighted power mean M_r(p,p) (with a probability distribution serving as both weights and values) is increasing in r if and only if Rényi entropy H_α(p) is decreasing in α. These are not separate facts — they are the same statement in different notation, connected by the identity H_α(p) = −log(M_{α−1}(p,p)).\n\nThe mathematical proof of the identity is laid out explicitly: M_{α-1}(p,p) = (Σ pᵢ·pᵢ^(α-1))^(1/(α-1)) = (Σ pᵢ^α)^(1/(α-1)), so log(M_{α-1}) = (1/(α-1))·log(Σ pᵢ^α), and negating gives H_α = −log(M_{α-1}).",
+    "title": "Overview: R\u00e9nyi Entropy and Power Means Are the Same",
+    "content": "The header explains the central insight: the weighted power mean M_r(p,p) (with a probability distribution serving as both weights and values) is increasing in r if and only if R\u00e9nyi entropy H_\u03b1(p) is decreasing in \u03b1. These are not separate facts \u2014 they are the same statement in different notation, connected by the identity H_\u03b1(p) = \u2212log(M_{\u03b1\u22121}(p,p)).\n\nThe mathematical proof of the identity is laid out explicitly: M_{\u03b1-1}(p,p) = (\u03a3 p\u1d62\u00b7p\u1d62^(\u03b1-1))^(1/(\u03b1-1)) = (\u03a3 p\u1d62^\u03b1)^(1/(\u03b1-1)), so log(M_{\u03b1-1}) = (1/(\u03b1-1))\u00b7log(\u03a3 p\u1d62^\u03b1), and negating gives H_\u03b1 = \u2212log(M_{\u03b1-1}).",
     "mathContext": "$H_\\alpha(p) = \\frac{1}{1-\\alpha}\\log\\sum_i p_i^\\alpha$; $M_r(p,p) = \\left(\\sum_i p_i \\cdot p_i^r\\right)^{1/r}$; identity: $H_\\alpha(p) = -\\log M_{\\alpha-1}(p,p)$",
     "significance": "key",
     "relatedConcepts": [
-      "Rényi entropy",
+      "R\u00e9nyi entropy",
       "power means",
       "information theory",
-      "Hardy-Littlewood-Pólya"
+      "Hardy-Littlewood-P\u00f3lya"
     ],
     "prerequisites": [
       "probability distributions",
@@ -30,14 +30,18 @@
       "endLine": 71
     },
     "type": "definition",
-    "title": "Rényi Entropy and Self-Power Mean Definitions",
-    "content": "Two noncomputable definitions in namespace RenyiPowerMean:\n\n`renyiEntropy s p α hα` = (1/(1-α)) * log(Σ_{i∈s} pᵢ^α), requiring α ≠ 1 (the α=1 limit gives Shannon entropy but needs L'Hôpital).\n\n`selfPowerMean s p r hr` = (Σ_{i∈s} pᵢ·pᵢ^r)^(1/r), requiring r ≠ 0. This is the power mean M_r(p,p) where p serves as both weights and values — the 'self-power mean' of the distribution.",
-    "mathContext": "Both definitions are parametric in the index type ι, finite set s, and function p : ι → ℝ. The `noncomputable` annotation is needed because Real.log and Real.rpow involve classical logic.",
+    "title": "R\u00e9nyi Entropy and Self-Power Mean Definitions",
+    "content": "Two noncomputable definitions in namespace RenyiPowerMean:\n\n`renyiEntropy s p \u03b1 h\u03b1` = (1/(1-\u03b1)) * log(\u03a3_{i\u2208s} p\u1d62^\u03b1), requiring \u03b1 \u2260 1 (the \u03b1=1 limit gives Shannon entropy but needs L'H\u00f4pital).\n\n`selfPowerMean s p r hr` = (\u03a3_{i\u2208s} p\u1d62\u00b7p\u1d62^r)^(1/r), requiring r \u2260 0. This is the power mean M_r(p,p) where p serves as both weights and values \u2014 the 'self-power mean' of the distribution.",
+    "mathContext": "Both definitions are parametric in the index type \u03b9, finite set s, and function p : \u03b9 \u2192 \u211d. The `noncomputable` annotation is needed because Real.log and Real.rpow involve classical logic.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Rényi entropy",
+      "R\u00e9nyi entropy",
       "self-power mean",
-      "noncomputable definitions"
+      "noncomputable definitions",
+      "R\u00e9nyi parameter space",
+      "probability simplex",
+      "collision entropy",
+      "min-entropy"
     ],
     "prerequisites": [
       "Finset sum",
@@ -52,13 +56,17 @@
       "endLine": 90
     },
     "type": "concept",
-    "title": "Key Algebraic Identity: Σ pᵢ·pᵢ^(α-1) = Σ pᵢ^α",
-    "content": "The private lemma `mul_rpow_pred` proves x·x^(α-1) = x^α for x > 0 by rewriting x = x^1 and applying `Real.rpow_add` to get x^1 · x^(α-1) = x^(1+(α-1)) = x^α.\n\nThe theorem `renyi_sum_eq_powerMean_sum` lifts this pointwise identity to Finset sums via `Finset.sum_congr`. This is the algebraic bridge between the selfPowerMean sum (Σ pᵢ·pᵢ^(α-1)) and the renyiEntropy sum (Σ pᵢ^α).",
-    "mathContext": "$x \\cdot x^{\\alpha-1} = x^{1+(\\alpha-1)} = x^\\alpha$ by `Real.rpow_add` (valid for $x > 0$). This requires positivity — the identity fails for $x = 0$ when $\\alpha - 1 < 0$.",
+    "title": "Key Algebraic Identity: \u03a3 p\u1d62\u00b7p\u1d62^(\u03b1-1) = \u03a3 p\u1d62^\u03b1",
+    "content": "The private lemma `mul_rpow_pred` proves x\u00b7x^(\u03b1-1) = x^\u03b1 for x > 0 by rewriting x = x^1 and applying `Real.rpow_add` to get x^1 \u00b7 x^(\u03b1-1) = x^(1+(\u03b1-1)) = x^\u03b1.\n\nThe theorem `renyi_sum_eq_powerMean_sum` lifts this pointwise identity to Finset sums via `Finset.sum_congr`. This is the algebraic bridge between the selfPowerMean sum (\u03a3 p\u1d62\u00b7p\u1d62^(\u03b1-1)) and the renyiEntropy sum (\u03a3 p\u1d62^\u03b1).",
+    "mathContext": "$x \\cdot x^{\\alpha-1} = x^{1+(\\alpha-1)} = x^\\alpha$ by `Real.rpow_add` (valid for $x > 0$). This requires positivity \u2014 the identity fails for $x = 0$ when $\\alpha - 1 < 0$.",
     "significance": "key",
     "relatedConcepts": [
       "rpow_add",
-      "Finset.sum_congr"
+      "Finset.sum_congr",
+      "power mean algebra",
+      "log-sum inequality",
+      "R\u00e9nyi cross-entropy",
+      "exponent identity rpow_mul"
     ],
     "prerequisites": [
       "Real.rpow_add",
@@ -74,13 +82,17 @@
     },
     "type": "concept",
     "title": "Positivity Lemmas: Foundation for Logarithm Arguments",
-    "content": "Two private lemmas establish positivity prerequisites needed before applying `Real.log_rpow` and `Real.log_le_log`:\n\n`renyi_sum_pos`: The Rényi sum Σ pᵢ^α is strictly positive for any positive distribution p on a nonempty finset s and any α. Proved via `Finset.sum_pos` with `Real.rpow_pos_of_pos` at each term.\n\n`selfPowerMean_pos`: The self-power mean M_r(p,p) > 0 for positive p on nonempty s and r ≠ 0. Proved by unfolding the definition — the base (Σ pᵢ·pᵢ^r) is rewritten to Σ pᵢ^(r+1) via `renyi_sum_eq_powerMean_sum`, then positivity follows from `renyi_sum_pos` and `Real.rpow_pos_of_pos`.\n\nThese lemmas are `private` because they are purely technical — their role is to supply positivity witnesses to the logarithm lemmas that require `0 < x` as a hypothesis.",
-    "mathContext": "Positivity of the Rényi sum: $\\sum_{i \\in s} p_i^\\alpha > 0$ when $p_i > 0$ and $s \\neq \\emptyset$, since each $p_i^\\alpha > 0$. Positivity of the self-power mean: $M_r(p,p) = (\\sum p_i^{r+1})^{1/r} > 0$ by `Real.rpow_pos_of_pos` applied to a positive base.",
+    "content": "Two private lemmas establish positivity prerequisites needed before applying `Real.log_rpow` and `Real.log_le_log`:\n\n`renyi_sum_pos`: The R\u00e9nyi sum \u03a3 p\u1d62^\u03b1 is strictly positive for any positive distribution p on a nonempty finset s and any \u03b1. Proved via `Finset.sum_pos` with `Real.rpow_pos_of_pos` at each term.\n\n`selfPowerMean_pos`: The self-power mean M_r(p,p) > 0 for positive p on nonempty s and r \u2260 0. Proved by unfolding the definition \u2014 the base (\u03a3 p\u1d62\u00b7p\u1d62^r) is rewritten to \u03a3 p\u1d62^(r+1) via `renyi_sum_eq_powerMean_sum`, then positivity follows from `renyi_sum_pos` and `Real.rpow_pos_of_pos`.\n\nThese lemmas are `private` because they are purely technical \u2014 their role is to supply positivity witnesses to the logarithm lemmas that require `0 < x` as a hypothesis.",
+    "mathContext": "Positivity of the R\u00e9nyi sum: $\\sum_{i \\in s} p_i^\\alpha > 0$ when $p_i > 0$ and $s \\neq \\emptyset$, since each $p_i^\\alpha > 0$. Positivity of the self-power mean: $M_r(p,p) = (\\sum p_i^{r+1})^{1/r} > 0$ by `Real.rpow_pos_of_pos` applied to a positive base.",
     "significance": "supporting",
     "relatedConcepts": [
       "Real.rpow_pos_of_pos",
       "Finset.sum_pos",
-      "logarithm domain"
+      "logarithm domain",
+      "positivity of rpow",
+      "sum of positive powers",
+      "strict monotonicity condition",
+      "weight normalization"
     ],
     "prerequisites": [
       "renyi_sum_eq_powerMean_sum",
@@ -95,8 +107,8 @@
       "endLine": 134
     },
     "type": "theorem",
-    "title": "Main Identity: H_α(p) = −log(M_{α−1}(p,p))",
-    "content": "The proof of `renyi_eq_neg_log_powerMean` has three steps:\n\n1. Replace Σ pᵢ·pᵢ^(α-1) with Σ pᵢ^α using `renyi_sum_eq_powerMean_sum`.\n2. Apply `Real.log_rpow` to get log((Σ pᵢ^α)^(1/(α-1))) = (1/(α-1))·log(Σ pᵢ^α). This requires positivity of the sum, which we get from `renyi_sum_pos`.\n3. Simplify the arithmetic: (1/(1-α))·L = −(1/(α-1))·L, which `field_simp` + `ring` handles.\n\nThe result is that unfolding definitions and applying these three steps closes the goal.",
+    "title": "Main Identity: H_\u03b1(p) = \u2212log(M_{\u03b1\u22121}(p,p))",
+    "content": "The proof of `renyi_eq_neg_log_powerMean` has three steps:\n\n1. Replace \u03a3 p\u1d62\u00b7p\u1d62^(\u03b1-1) with \u03a3 p\u1d62^\u03b1 using `renyi_sum_eq_powerMean_sum`.\n2. Apply `Real.log_rpow` to get log((\u03a3 p\u1d62^\u03b1)^(1/(\u03b1-1))) = (1/(\u03b1-1))\u00b7log(\u03a3 p\u1d62^\u03b1). This requires positivity of the sum, which we get from `renyi_sum_pos`.\n3. Simplify the arithmetic: (1/(1-\u03b1))\u00b7L = \u2212(1/(\u03b1-1))\u00b7L, which `field_simp` + `ring` handles.\n\nThe result is that unfolding definitions and applying these three steps closes the goal.",
     "mathContext": "$\\log M_{\\alpha-1}(p,p) = \\log\\left((\\sum p_i^\\alpha)^{1/(\\alpha-1)}\\right) = \\frac{1}{\\alpha-1}\\log\\sum p_i^\\alpha = -\\frac{1}{1-\\alpha}\\log\\sum p_i^\\alpha = -H_\\alpha(p)$",
     "significance": "key",
     "relatedConcepts": [
@@ -118,7 +130,7 @@
     },
     "type": "theorem",
     "title": "Biconditional Equivalence of Monotonicity",
-    "content": "Three theorems establish the biconditional:\n\n`renyi_decreasing_of_powerMean_increasing` (M→H): Assume M_r ≤ M_s for r ≤ s. For α ≤ β, apply M_{α-1} ≤ M_{β-1}, take logs (log is monotone), negate (neg_le_neg). Combined with the identity, H_β ≤ H_α.\n\n`powerMean_increasing_of_renyi_decreasing` (H→M): Assume H_α ≤ H_β for α ≤ β. Set α = r+1, β = t+1. The hypothesis gives H_{t+1} ≤ H_{r+1}, i.e., −log(M_t) ≤ −log(M_r). Flip to log(M_r) ≤ log(M_t). Use exp/log round-trip (exp_log, exp_le_exp) to conclude M_r ≤ M_t.\n\n`renyi_monotone_iff_powerMean_monotone`: The biconditional packages both directions.",
+    "content": "Three theorems establish the biconditional:\n\n`renyi_decreasing_of_powerMean_increasing` (M\u2192H): Assume M_r \u2264 M_s for r \u2264 s. For \u03b1 \u2264 \u03b2, apply M_{\u03b1-1} \u2264 M_{\u03b2-1}, take logs (log is monotone), negate (neg_le_neg). Combined with the identity, H_\u03b2 \u2264 H_\u03b1.\n\n`powerMean_increasing_of_renyi_decreasing` (H\u2192M): Assume H_\u03b1 \u2264 H_\u03b2 for \u03b1 \u2264 \u03b2. Set \u03b1 = r+1, \u03b2 = t+1. The hypothesis gives H_{t+1} \u2264 H_{r+1}, i.e., \u2212log(M_t) \u2264 \u2212log(M_r). Flip to log(M_r) \u2264 log(M_t). Use exp/log round-trip (exp_log, exp_le_exp) to conclude M_r \u2264 M_t.\n\n`renyi_monotone_iff_powerMean_monotone`: The biconditional packages both directions.",
     "mathContext": "The exp/log round-trip: $M_r = \\exp(\\log M_r) \\leq \\exp(\\log M_t) = M_t$ since exp is monotone. This uses `Real.exp_log` (requiring positivity) and `Real.exp_le_exp`.",
     "significance": "key",
     "relatedConcepts": [
@@ -140,12 +152,12 @@
       "endLine": 209
     },
     "type": "insight",
-    "title": "Rényi Entropy Monotonicity as a Corollary of Power Mean Monotonicity",
-    "content": "The main theorem `renyi_entropy_antitone` proves that α ↦ H_α(p) is antitone (decreasing) by leveraging the core identity H_α = −log(M_{α−1}(p,p)) and the power mean monotonicity M_r ≤ M_s for r ≤ s. The Lean proof chain: (1) if α ≤ β then α−1 ≤ β−1; (2) M_{α−1}(p,p) ≤ M_{β−1}(p,p) by power mean monotonicity; (3) −log is antitone (since log is monotone); (4) H_α = −log M_{α−1} ≥ −log M_{β−1} = H_β. Lean's `antitone_log` or `Real.log_le_log` handles step (3).",
-    "mathContext": "$H_\\alpha \\ge H_\\beta$ for $\\alpha \\le \\beta$: the Rényi entropy family is decreasing in the order parameter $\\alpha$. At $\\alpha \\to 1$: $H_1(p) = -\\sum_i p_i \\log p_i$ (Shannon entropy, maximum). At $\\alpha \\to \\infty$: $H_\\infty(p) = -\\log \\max_i p_i$ (min-entropy, minimum). The antitone structure makes $H_1 \\ge H_2 \\ge H_\\infty$, giving a chain of information-theoretic measures ordered by 'sparsity sensitivity'.",
+    "title": "R\u00e9nyi Entropy Monotonicity as a Corollary of Power Mean Monotonicity",
+    "content": "The main theorem `renyi_entropy_antitone` proves that \u03b1 \u21a6 H_\u03b1(p) is antitone (decreasing) by leveraging the core identity H_\u03b1 = \u2212log(M_{\u03b1\u22121}(p,p)) and the power mean monotonicity M_r \u2264 M_s for r \u2264 s. The Lean proof chain: (1) if \u03b1 \u2264 \u03b2 then \u03b1\u22121 \u2264 \u03b2\u22121; (2) M_{\u03b1\u22121}(p,p) \u2264 M_{\u03b2\u22121}(p,p) by power mean monotonicity; (3) \u2212log is antitone (since log is monotone); (4) H_\u03b1 = \u2212log M_{\u03b1\u22121} \u2265 \u2212log M_{\u03b2\u22121} = H_\u03b2. Lean's `antitone_log` or `Real.log_le_log` handles step (3).",
+    "mathContext": "$H_\\alpha \\ge H_\\beta$ for $\\alpha \\le \\beta$: the R\u00e9nyi entropy family is decreasing in the order parameter $\\alpha$. At $\\alpha \\to 1$: $H_1(p) = -\\sum_i p_i \\log p_i$ (Shannon entropy, maximum). At $\\alpha \\to \\infty$: $H_\\infty(p) = -\\log \\max_i p_i$ (min-entropy, minimum). The antitone structure makes $H_1 \\ge H_2 \\ge H_\\infty$, giving a chain of information-theoretic measures ordered by 'sparsity sensitivity'.",
     "significance": "key",
     "relatedConcepts": [
-      "Rényi entropy antitone",
+      "R\u00e9nyi entropy antitone",
       "Shannon entropy",
       "min-entropy",
       "information theory inequalities"
@@ -164,14 +176,17 @@
       "endLine": 232
     },
     "type": "concept",
-    "title": "Collision Entropy: H_2(p) = −log(Σ pᵢ²)",
-    "content": "Two corollaries apply the main identity to α = 2:\n\n`renyi_two_eq_neg_log_collision`: H_2(p) = −log(Σ pᵢ²). The sum Σ pᵢ² is the collision probability — the probability that two independent samples from p agree. So H_2 measures the log-information content of collision events.\n\n`renyi_two_eq_neg_log_self_mean`: H_2(p) = −log(M_1(p,p)) — the negative log of the arithmetic self-mean. This follows directly from `renyi_eq_neg_log_powerMean` with α = 2.",
+    "title": "Collision Entropy: H_2(p) = \u2212log(\u03a3 p\u1d62\u00b2)",
+    "content": "Two corollaries apply the main identity to \u03b1 = 2:\n\n`renyi_two_eq_neg_log_collision`: H_2(p) = \u2212log(\u03a3 p\u1d62\u00b2). The sum \u03a3 p\u1d62\u00b2 is the collision probability \u2014 the probability that two independent samples from p agree. So H_2 measures the log-information content of collision events.\n\n`renyi_two_eq_neg_log_self_mean`: H_2(p) = \u2212log(M_1(p,p)) \u2014 the negative log of the arithmetic self-mean. This follows directly from `renyi_eq_neg_log_powerMean` with \u03b1 = 2.",
     "mathContext": "At $\\alpha = 2$: $H_2(p) = \\frac{1}{1-2}\\log\\sum p_i^2 = -\\log\\sum p_i^2$. Since $M_{2-1}(p,p) = M_1(p,p) = \\sum_i p_i \\cdot p_i^1 = \\sum_i p_i^2$ (arithmetic self-mean), we get $H_2 = -\\log M_1(p,p)$.",
     "significance": "supporting",
     "relatedConcepts": [
       "collision probability",
-      "Rényi entropy α=2",
-      "arithmetic mean"
+      "R\u00e9nyi entropy \u03b1=2",
+      "arithmetic mean",
+      "R\u00e9nyi \u03b1=2 entropy",
+      "birthday paradox probability",
+      "random coincidence rate"
     ],
     "prerequisites": [
       "renyi_eq_neg_log_powerMean"
