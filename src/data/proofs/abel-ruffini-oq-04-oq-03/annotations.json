@@ -10,7 +10,7 @@
     "title": "Module Documentation: What Is Proved vs Axiomatized",
     "content": "The module documentation is unusually transparent about the asymmetry in formalization: the forward direction of Galois's criterion is fully machine-checked via Mathlib, while the reverse direction is explicitly axiomatized with a detailed explanation of why.\n\nThis is an exemplary approach for a gallery entry at the Mathlib frontier: rather than hiding the gap with vague language or using `sorry`, the file states the axiom clearly (`axiom solvableGal_implies_solvableByRad`) and documents exactly what mathematical ingredient is missing (Kummer theory for cyclic extensions). A reader can see at a glance what is proved and what is assumed.\n\nThe three cited references (Galois 1831, Lang 2002, Mathlib) trace the mathematical lineage: from the original memoir through the standard modern treatment to the machine-checked partial result. The ✅/❌ notation in the module doc provides an immediate visual summary of provability status, a pattern worth adopting for other axiomatized gallery entries.",
     "mathContext": "The asymmetry: $\\text{IsSolvableByRad}\\,F\\,\\alpha \\Rightarrow \\text{IsSolvable}(q.\\text{Gal})$ is proved via Mathlib's radical tower filtration (each step $K_i \\to K_i(\\sqrt[n]{a})$ contributes a cyclic quotient to the Galois group). The reverse $\\text{IsSolvable}(q.\\text{Gal}) \\Rightarrow \\text{IsSolvableByRad}\\,F\\,\\alpha$ requires Kummer's theorem: a cyclic degree-$p$ extension of $K$ (where $K \\ni \\zeta_p$) equals $K(\\sqrt[p]{\\beta})$ for some $\\beta \\in K$. Without this, one cannot convert a composition series $1 = G_k \\trianglelefteq \\cdots \\trianglelefteq G_0 = \\text{Gal}(q)$ into a radical tower.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "axiom vs sorry in Lean",
       "Mathlib frontier",
@@ -90,7 +90,9 @@
       "radical tower",
       "cyclic extension",
       "solvable group",
-      "IsSolvableByRad"
+      "IsSolvableByRad",
+      "abel-ruffini",
+      "abel-ruffini-oq-04"
     ],
     "prerequisites": [
       "Galois correspondence",
@@ -102,7 +104,7 @@
     "id": "ann-contrapositive",
     "proofId": "abel-ruffini-oq-04-oq-03",
     "range": {
-      "startLine": 70,
+      "startLine": 69,
       "endLine": 76
     },
     "type": "insight",
@@ -232,7 +234,9 @@
       "Klein four-group",
       "A4",
       "Cardano's formula",
-      "Ferrari's formula"
+      "Ferrari's formula",
+      "solution-of-cubic",
+      "general-quartic"
     ],
     "prerequisites": [
       "symmetric group",
@@ -257,7 +261,9 @@
       "S₅ non-solvability",
       "A₅ simplicity",
       "derived series",
-      "abel-ruffini-oq-04-oq-07"
+      "abel-ruffini-oq-04-oq-07",
+      "abel-ruffini-oq-04-oq-01",
+      "abel-ruffini"
     ],
     "prerequisites": [
       "Galois criterion",
