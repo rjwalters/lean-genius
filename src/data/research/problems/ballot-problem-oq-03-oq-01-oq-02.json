@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: PARTS I-XXIII complete (3..9 row shapes); BallotProblemOQ03.lean:2541 omega regression blocks full compile; 10+ rows pending",
+    "progressSummary": "PROGRESS: 10-row case proved (PART XXVI, 2215 lines). Sorry narrowed to ≥11×≥11. All shapes with min(rows,cols)≤10 now covered.",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -127,7 +127,10 @@
       "nineRow_colLen_* (9 lemmas): column length zone boundaries for 9-row shapes",
       "nineRow_hookLen_row{0..8}_zone* (45 lemmas): hookLen in each zone of each row",
       "nineRow_corner_bot/cases/card: corner structure for 9-row shapes",
-      "nineRow_arm_row{0..8} (9 lemmas): arm products via prod_div_telescope"
+      "nineRow_arm_row{0..8} (9 lemmas): arm products via prod_div_telescope",
+      "hook_walk_identity_tenRow: hook walk identity for all exactly-10-row Young diagrams, 2215 lines (PART XXVI)",
+      "hook_walk_identity_le10rows: dispatcher for ≤10-row shapes consolidating PARTS XIV-XXVI",
+      "hook_walk_identity_atMostTenCols: ≤10-col shapes proved via transpose to ≤10-row"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -196,7 +199,9 @@
       "hook_walk_identity sorry scope: now covers only ≥5-row shapes (rowLen 4 ≠ 0); all other cases proved",
       "PART XXII: hook_walk_identity_eightRow proved for all 8-row shapes [a,b,c,d,e,f,g,h] via 7 colLen zones + 36 hookLen + 8 arm lemmas + field_simp/ring; 1612 lines, 0 sorries",
       "9-row hook_walk_identity closes mechanically: same field_simp+ring approach as 3..8 row cases, with C(9,2)=36 hne_ denominator conditions",
-      "Pre-existing omega regression at BallotProblemOQ03.lean:2541 blocks full compile — not introduced by PART XXIII; fix tracked separately"
+      "Pre-existing omega regression at BallotProblemOQ03.lean:2541 blocks full compile — not introduced by PART XXIII; fix tracked separately",
+      "10-row mechanical proof: The N-row zone-analysis pattern scales to N=10 with 2215 lines (9 colLen zones, 55 hookLen lemmas, 10 arm products, field_simp+ring with 45 non-zero witnesses)",
+      "Sorry scope narrowed: hook_walk_identity sorry now requires ≥11 rows AND ≥11 cols (down from ≥10×≥10), covering all shapes with min(rows,cols) ≤ 10"
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
@@ -205,7 +210,8 @@
     "nextSteps": [
       "Fix pre-existing omega regression in BallotProblemOQ03.lean:2541 (lindstromSwapPreservesMinStep) to unblock compilation",
       "Implement hook_walk_identity_tenPlusRow for 10+ row shapes (requires GNW hook-walk formalization or direct computation approach)",
-      "Consider GNW hook-walk general framework to cover all row counts without row-by-row enumeration"
+      "Consider GNW hook-walk general framework to cover all row counts without row-by-row enumeration",
+      "PART XXVII (11-row case): ~2300 lines, narrows sorry to ≥12×≥12"
     ]
   },
   "tags": [
