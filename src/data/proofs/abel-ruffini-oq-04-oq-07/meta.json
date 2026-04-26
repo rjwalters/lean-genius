@@ -54,6 +54,12 @@
       "The IVT bound ±(|t|+1) works for all t because (|t|+1)⁵ ≥ 0 dominates the |t| needed to ensure a sign change, regardless of whether t is positive or negative",
       "The Bring radical is an odd function (BR(-t) = -BR(t)) reflecting the odd symmetry of f(x) = x⁵+x; this follows from the uniqueness theorem applied to -BR(t) as a root of x⁵+x+(-t)=0",
       "Bring (1786) discovered this reduction 46 years before Galois's group theory (1832) and 38 years before Abel's impossibility proof (1824). He worked without any concept of group or Galois group — the reduction is a purely algebraic manipulation. This historical gap is mathematically significant: the Bring-Jerrard form reduces the quintic to its simplest parametric shape, which then becomes the exact input needed for Galois's argument that $S_5$ is not solvable. The two results are conceptually complementary even though they were discovered decades apart."
+    ],
+    "prerequisites": [
+      "Polynomial algebra over fields",
+      "Intermediate value theorem for continuous functions",
+      "Strict monotonicity and ordered rings",
+      "Galois theory and radical extensions (for context, not used in proofs)"
     ]
   },
   "sections": [
@@ -185,6 +191,50 @@
       "targetId": "abel-ruffini-galois-extensions-oq-04",
       "relationship": "related",
       "description": "Formalizes the Jordan-Hölder uniqueness theorem for groups — relevant to the algebraic significance section where the composition series of $S_5$ (uniquely $S_5 \\supset A_5 \\supset \\{e\\}$ with factors $A_5$ and $\\mathbb{Z}/2\\mathbb{Z}$) is invoked to explain why the Bring radical cannot be radical-expressed. Jordan-Hölder guarantees that this composition series is the unique one for $S_5$, making the non-solvability obstruction absolute and canonical."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["E. S. Bring"],
+      "title": "Meletemata quaedam mathematica circa transformationem aequationum algebraicarum",
+      "year": "1786",
+      "venue": "Lund University doctoral dissertation",
+      "note": "First showed that any quintic can be reduced to the form x⁵ + px + q via Tschirnhaus transformations. Bring worked 38 years before Abel's impossibility proof and 46 years before Galois's group theory — entirely by algebraic manipulation."
+    },
+    {
+      "authors": ["G. B. Jerrard"],
+      "title": "An Essay on the Resolution of Equations",
+      "year": "1859",
+      "venue": "Taylor and Francis, London",
+      "note": "Independently rediscovered and popularized Bring's reduction. Jerrard's 1834 paper first brought the result to wider attention, though Bring's priority was later established by Hermite."
+    },
+    {
+      "authors": ["C. Hermite"],
+      "title": "Sur la résolution de l'équation du cinquième degré",
+      "year": "1858",
+      "venue": "Comptes rendus de l'Académie des Sciences, vol. 46, pp. 508–515",
+      "note": "Solved the general quintic using elliptic modular functions after reduction to Bring-Jerrard form. Showed the Bring radical can be expressed via the modular j-function, establishing the first 'transcendental' quintic solution."
+    },
+    {
+      "authors": ["F. Klein"],
+      "title": "Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade",
+      "year": "1884",
+      "venue": "Teubner, Leipzig (English translation: Lectures on the Icosahedron, 1888)",
+      "note": "Connected the quintic to the symmetries of the icosahedron (rotation group ≅ A₅) and solved it via theta functions. Showed the Bring radical BR(t) can be expressed as a hypergeometric function ₂F₁(1/5, 2/5; 1; t)."
+    },
+    {
+      "authors": ["R. B. King"],
+      "title": "Beyond the Quartic Equation",
+      "year": "1996",
+      "venue": "Birkhäuser, Boston",
+      "note": "Modern treatment of the Bring-Jerrard reduction, icosahedral equation, and the complete transcendental solution of the quintic. Develops the connection between the Bring radical, hypergeometric functions, and Klein's icosahedral theory."
+    },
+    {
+      "authors": ["P. Pesic"],
+      "title": "Abel's Proof: An Essay on the Sources and Meaning of Mathematical Unsolvability",
+      "year": "2003",
+      "venue": "MIT Press",
+      "note": "Accessible account of the journey from Renaissance algebra through Abel and Galois, placing the Bring-Jerrard reduction in the historical context of the quintic's impossibility and its subsequent 'beyond-radicals' solutions."
     }
   ],
   "leanFile": {
