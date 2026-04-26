@@ -2,7 +2,7 @@
   "id": "ballot-problem-oq-03-oq-01-oq-02",
   "title": "Hook-Length Formula for Standard Young Tableaux via LGV",
   "slug": "ballot-problem-oq-03-oq-01-oq-02",
-  "description": "Formalizes the hook-length formula f^\u03bb = n!/\u220fh(u) for Standard Young Tableaux. Proves: 1-row, 1-col, hook shapes, 2-rect, general 2-row, all gHookYD [a,1^b], \u22642-col (transpose duality), exactly 3-row ALL [a,b,c] shapes, exactly 4-row ALL [a,b,c,d] shapes (PART XVIII), exactly 5-row ALL [a,b,c,d,e] shapes (PART XIX), exactly 6-row ALL [a,b,c,d,e,f] shapes (PART XX), exactly 7-row ALL [a,b,c,d,e,f,g] shapes (PART XXI), exactly 8-row ALL [a,b,c,d,e,f,g,h] shapes (PART XXII). General formula has 4 sorries: 3 via LGV approach + 1 for hook_walk_identity (\u22659-row, \u22653-col, non-gHookYD).",
+  "description": "Formalizes the hook-length formula f^λ = n!/∏h(u) for Standard Young Tableaux. Proves: 1-row, 1-col, hook shapes, 2-rect, general 2-row, all gHookYD [a,1^b], ≤2-col (transpose duality), exactly 3-row ALL [a,b,c] shapes, exactly 4-row ALL [a,b,c,d] shapes (PART XVIII), exactly 5-row ALL [a,b,c,d,e] shapes (PART XIX), exactly 6-row ALL [a,b,c,d,e,f] shapes (PART XX), exactly 7-row ALL [a,b,c,d,e,f,g] shapes (PART XXI), exactly 8-row ALL [a,b,c,d,e,f,g,h] shapes (PART XXII), exactly 9-row ALL [a,b,c,d,e,f,g,h,i] shapes (PART XXIII). General formula has 4 sorries: 3 via LGV approach + 1 for hook_walk_identity (≥10-row, ≥3-col, non-gHookYD).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-21",
@@ -22,61 +22,62 @@
     "sorries": 4,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "Four open sorries: (1) hook_length_formula (LGV approach: requires SYT\u2194NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) hook_walk_identity \u22659-row non-gHookYD \u22653-col case (GNW probabilistic proof; at-most-2-row, gHookYD, \u22642-col, exactly-3-row, exactly-4-row, exactly-5-row, exactly-6-row, exactly-7-row, exactly-8-row ALL proved). hook_length_formula_general is proved modulo hook_walk_identity via corner induction.",
-    "lineCount": 11747,
-    "theoremCount": 315,
+    "assumptions": "Four open sorries: (1) hook_length_formula (LGV approach: requires SYT↔NI bijection + det factorization), (2) ni_count_eq_syt_count (Fomin/Viennot/RSK correspondence), (3) lgv_det_factors_as_hook_quotient (det factorization identity), (4) hook_walk_identity ≥9-row non-gHookYD ≥3-col case (GNW probabilistic proof; at-most-2-row, gHookYD, ≤2-col, exactly-3-row, exactly-4-row, exactly-5-row, exactly-6-row, exactly-7-row, exactly-9-row ALL proved). hook_length_formula_general is proved modulo hook_walk_identity via corner induction.",
+    "lineCount": 13638,
+    "theoremCount": 464,
     "definitionCount": 14,
     "originalContributions": [
       "hookLength: hook length at cell (i,j) = armLen + legLen + 1 using YoungDiagram.rowLen and colLen",
-      "hookLength_pos: hook lengths are always positive (arm + leg + 1 \u2265 1) \u2014 unconditional",
+      "hookLength_pos: hook lengths are always positive (arm + leg + 1 ≥ 1) — unconditional",
       "hookProd: product of all hook lengths over YoungDiagram cells",
       "StandardYoungTableau: formal structure for SYT with row/column strict conditions",
-      "hook_length_formula_one_row: f^(1\u00d7n) = 1 (direct, 0 sorries)",
-      "hook_length_formula_one_col: f^(n\u00d71) = 1 (direct, 0 sorries)",
-      "hook_length_formula_hook_shape: f^(m+1,1) = (m+1) \u00d7 (m+2) \u00d7 m! (bijection with Fin(m+1), 0 sorries)",
-      "card_SYT_twoRectYD: card(SYT(m\u00d7m)) = Cn m via Lindstrom reflection bijection (0 sorries)",
-      "hook_length_formula_two_rect: Cn(m) \u00d7 (m+1)! \u00d7 m! = (2m)! (proved, 0 sorries)",
-      "twoRowYD: general 2-row Young diagram [a,b] for a\u2265b",
-      "hookProd_twoRowYD: hookProd([a,b]) = (a+1).descFactorial b \u00d7 (a-b)! \u00d7 b! (proved, 0 sorries)",
-      "two_row_hook_identity: numerical identity ballotSeqCount(a+1,b) \u00d7 hookProd = (a+b)! (proved, 0 sorries)",
+      "hook_length_formula_one_row: f^(1×n) = 1 (direct, 0 sorries)",
+      "hook_length_formula_one_col: f^(n×1) = 1 (direct, 0 sorries)",
+      "hook_length_formula_hook_shape: f^(m+1,1) = (m+1) × (m+2) × m! (bijection with Fin(m+1), 0 sorries)",
+      "card_SYT_twoRectYD: card(SYT(m×m)) = Cn m via Lindstrom reflection bijection (0 sorries)",
+      "hook_length_formula_two_rect: Cn(m) × (m+1)! × m! = (2m)! (proved, 0 sorries)",
+      "twoRowYD: general 2-row Young diagram [a,b] for a≥b",
+      "hookProd_twoRowYD: hookProd([a,b]) = (a+1).descFactorial b × (a-b)! × b! (proved, 0 sorries)",
+      "two_row_hook_identity: numerical identity ballotSeqCount(a+1,b) × hookProd = (a+b)! (proved, 0 sorries)",
       "hook_length_formula_two_row_gen: formula for general 2-row [a,b] (1 sorry: card_SYT_twoRowYD)",
       "Numerical verification: hook-length formula proved for (2,1), (2,2), (3,1), (3,2), (3,2,1), (4,3,2,1), (3,3), (4,4) shapes",
       "hook_length_formula_gHookYD: HLF for all generalized hook shapes [a, 1^b] (card = C(a+b-1,b), proved via double induction + inline bijection, 0 sorries)",
-      "hookProd_ratio_formula: hookProd(\u03bc)/hookProd(\u03bc\\c) equals product over arm \u00d7 product over leg (1 sorry: ~50 lines Finset.prod_union decomposition)",
-      "hook_walk_identity: sum over corners c of hookProd(\u03bc)/hookProd(\u03bc\\c) = \u03bc.card \u2014 at-most-2-row case proved; \u22653-row case has 1 sorry (~300 lines GNW/RSK)",
+      "hookProd_ratio_formula: hookProd(μ)/hookProd(μ\\c) equals product over arm × product over leg (1 sorry: ~50 lines Finset.prod_union decomposition)",
+      "hook_walk_identity: sum over corners c of hookProd(μ)/hookProd(μ\\c) = μ.card — at-most-2-row case proved; ≥3-row case has 1 sorry (~300 lines GNW/RSK)",
       "hook_length_formula_general: HLF for all Young diagrams via corner induction (proved modulo hook_walk_identity, 0 sorries in the theorem itself)",
-      "corners_gHookYD_cases: characterizes all corners of [a,1^b] as either (0,a-1) with a\u22652 or (b,0) (proved, 0 sorries, session 19)",
-      "hook_walk_identity_gHookYD: hook walk identity \u03a3_c hookProd/hookProd(\u03bc\\c)=|\u03bc| proved for all [a,1^b] with b\u22651, non-circular via hook_length_formula_gHookYD (session 19)",
-      "hook_walk_identity_eightRow: hook walk identity proved for ALL exactly-8-row Young diagrams [a,b,c,d,e,f,g,h] via 7 colLen zones, 36 hookLen lemmas, 8 arm product lemmas, field_simp+ring; 1612 lines, 0 sorries (PART XXII)"
+      "corners_gHookYD_cases: characterizes all corners of [a,1^b] as either (0,a-1) with a≥2 or (b,0) (proved, 0 sorries, session 19)",
+      "hook_walk_identity_gHookYD: hook walk identity Σ_c hookProd/hookProd(μ\\c)=|μ| proved for all [a,1^b] with b≥1, non-circular via hook_length_formula_gHookYD (session 19)",
+      "hook_walk_identity_eightRow: hook walk identity proved for ALL exactly-8-row Young diagrams [a,b,c,d,e,f,g,h] via 7 colLen zones, 36 hookLen lemmas, 8 arm product lemmas, field_simp+ring; 1612 lines, 0 sorries (PART XXII)",
+      "hook_walk_identity_nineRow: hook walk identity proved for ALL exactly-9-row Young diagrams [a,b,c,d,e,f,g,h,i] via colLen zones, hookLen lemmas, arm product lemmas, field_simp+ring; 0 sorries (PART XXIII)"
     ]
   },
   "overview": {
-    "historicalContext": "The hook-length formula (Frame-Robinson-Thrall 1954) states f^\u03bb = n!/\u220fh(u) where h(u) = arm(u) + leg(u) + 1 is the hook length at cell u of the Young diagram \u03bb. This is one of the most celebrated formulas in algebraic combinatorics, connecting enumerative combinatorics with representation theory (f^\u03bb = dim Specht module S^\u03bb). The Lindstr\u00f6m-Gessel-Viennot (LGV) approach provides a determinantal proof: SYT of shape \u03bb biject with non-intersecting lattice path systems, and the LGV determinant factors as the hook product. This file extends the Lean 4 LGV infrastructure from BallotProblemOQ03OQ02 toward a complete formalization of the hook-length formula.",
-    "problemStatement": "Given the complete n\u00d7n LGV infrastructure in BallotProblemOQ03OQ02.lean, prove the hook-length formula f^\u03bb = n!/\u220f_{u\u2208\u03bb}h(u) using: (1) the bijection between SYT(\u03bb) and non-intersecting lattice path tuples with LGV source/target encoding, and (2) the algebraic identity showing the LGV determinant equals n!/\u220fh(u).",
-    "text": "This file builds the formal mathematical infrastructure for the hook-length formula. The key definitions are: (1) hookLength \u03bc i j = (rowLen i - j - 1) + (colLen j - i - 1) + 1 (arm + leg + 1) using Mathlib's YoungDiagram API; (2) hookProd \u03bc = \u220f_{c \u2208 \u03bc.cells} hookLength \u03bc c.1 c.2; (3) StandardYoungTableau \u03bc as a structure with strict row/column monotonicity conditions. The LGV encoding uses weakly-increasing row lengths \u03c3 (reversed partition), sources(k) = k, targets(k) = \u03c3(k) + k. Numerical verification via norm_num confirms the formula for all shapes up to size 10.",
-    "proofStrategy": "Two-step approach: (Step 1) Bijection between StandardYoungTableau \u03bc and the NI-path count niTupleCount(youngLGVConfig r \u03c3 h\u03c3 m hm) via the Fomin growth diagram bijection (ni_count_eq_syt_count, open). (Step 2) Algebraic identity det[C(m + \u03c3\u2c7c + j - i, m)] = \u03bc.card! / hookProd \u03bc (lgv_det_factors_as_hook_quotient, open \u2014 Vandermonde-type for rectangular, Frame-Robinson-Thrall for general). Both combine with lgv_lemma_rxr to give the main theorem hook_length_formula.",
+    "historicalContext": "The hook-length formula (Frame-Robinson-Thrall 1954) states f^λ = n!/∏h(u) where h(u) = arm(u) + leg(u) + 1 is the hook length at cell u of the Young diagram λ. This is one of the most celebrated formulas in algebraic combinatorics, connecting enumerative combinatorics with representation theory (f^λ = dim Specht module S^λ). The Lindström-Gessel-Viennot (LGV) approach provides a determinantal proof: SYT of shape λ biject with non-intersecting lattice path systems, and the LGV determinant factors as the hook product. This file extends the Lean 4 LGV infrastructure from BallotProblemOQ03OQ02 toward a complete formalization of the hook-length formula.",
+    "problemStatement": "Given the complete n×n LGV infrastructure in BallotProblemOQ03OQ02.lean, prove the hook-length formula f^λ = n!/∏_{u∈λ}h(u) using: (1) the bijection between SYT(λ) and non-intersecting lattice path tuples with LGV source/target encoding, and (2) the algebraic identity showing the LGV determinant equals n!/∏h(u).",
+    "text": "This file builds the formal mathematical infrastructure for the hook-length formula. The key definitions are: (1) hookLength μ i j = (rowLen i - j - 1) + (colLen j - i - 1) + 1 (arm + leg + 1) using Mathlib's YoungDiagram API; (2) hookProd μ = ∏_{c ∈ μ.cells} hookLength μ c.1 c.2; (3) StandardYoungTableau μ as a structure with strict row/column monotonicity conditions. The LGV encoding uses weakly-increasing row lengths σ (reversed partition), sources(k) = k, targets(k) = σ(k) + k. Numerical verification via norm_num confirms the formula for all shapes up to size 10.",
+    "proofStrategy": "Two-step approach: (Step 1) Bijection between StandardYoungTableau μ and the NI-path count niTupleCount(youngLGVConfig r σ hσ m hm) via the Fomin growth diagram bijection (ni_count_eq_syt_count, open). (Step 2) Algebraic identity det[C(m + σⱼ + j - i, m)] = μ.card! / hookProd μ (lgv_det_factors_as_hook_quotient, open — Vandermonde-type for rectangular, Frame-Robinson-Thrall for general). Both combine with lgv_lemma_rxr to give the main theorem hook_length_formula.",
     "keyInsights": [
-      "hookLength is always positive (arm + leg + 1 \u2265 1) regardless of whether (i,j) is in \u03bc \u2014 unconditional positivity from the definition",
-      "The LGV encoding requires \u03c3 weakly INCREASING (reversed partition order) to ensure targets(k) = \u03c3(k)+k is strictly monotone",
-      "The LGV wellFormed condition needs \u03c3(0) \u2265 r-1 (minimum target \u2265 maximum source): \u03c3(0) is the smallest row length",
-      "Numerical verification: for (2,1): 3!/(3\u00d71\u00d71) = 2 \u2713; for (3,2,1): 6!/(5\u00d73\u00d71\u00d73\u00d71\u00d71) = 16 \u2713",
+      "hookLength is always positive (arm + leg + 1 ≥ 1) regardless of whether (i,j) is in μ — unconditional positivity from the definition",
+      "The LGV encoding requires σ weakly INCREASING (reversed partition order) to ensure targets(k) = σ(k)+k is strictly monotone",
+      "The LGV wellFormed condition needs σ(0) ≥ r-1 (minimum target ≥ maximum source): σ(0) is the smallest row length",
+      "Numerical verification: for (2,1): 3!/(3×1×1) = 2 ✓; for (3,2,1): 6!/(5×3×1×3×1×1) = 16 ✓",
       "The two open lemmas (NI bijection + det factorization) are HARD (known mathematics, ~200 lines each)",
-      "hookProd_empty: empty diagram \u2192 hook product 1 (empty product), connecting to n!=1 for n=0"
+      "hookProd_empty: empty diagram → hook product 1 (empty product), connecting to n!=1 for n=0"
     ],
     "prerequisites": [
-      "lgv_lemma_rxr from BallotProblemOQ03OQ02: the general n\u00d7n LGV determinant formula",
+      "lgv_lemma_rxr from BallotProblemOQ03OQ02: the general n×n LGV determinant formula",
       "YoungDiagram (Mathlib): cells, rowLen, colLen with mem_iff_lt_rowLen and mem_iff_lt_colLen",
       "LGVConfig: sources, targets, strictMono, source_le_target, wellFormed",
       "Frame-Robinson-Thrall 1954: original hook-length formula paper"
     ]
   },
   "conclusion": {
-    "summary": "Hook-length formula fully proved for five infinite families: 1\u00d7n (direct), n\u00d71 (direct), hook-shape (m+1,1) (bijection), 2\u00d7m rect (Lindstrom reflection), and general 2-row [a,b] (conditional on ballot bijection, 1 sorry). hookProd for [a,b] = (a+1).descFactorial(b) \u00d7 (a-b)! \u00d7 b! proved with 0 sorries. Part XIV adds hook_length_formula_general as the primary result, proved via corner induction modulo hook_walk_identity. Total: 5 sorries (3 LGV path + 2 corner induction: hookProd_ratio_formula + hook_walk_identity \u22653-row).",
-    "implications": "A complete formalization would be the first Lean 4 proof of the hook-length formula, a milestone in formal combinatorics. The LGV approach connects our existing ballot problem proofs to representation theory via the Specht module dimension formula f^\u03bb = dim S^\u03bb.",
+    "summary": "Hook-length formula fully proved for five infinite families: 1×n (direct), n×1 (direct), hook-shape (m+1,1) (bijection), 2×m rect (Lindstrom reflection), and general 2-row [a,b] (conditional on ballot bijection, 1 sorry). hookProd for [a,b] = (a+1).descFactorial(b) × (a-b)! × b! proved with 0 sorries. Part XIV adds hook_length_formula_general as the primary result, proved via corner induction modulo hook_walk_identity. Total: 5 sorries (3 LGV path + 2 corner induction: hookProd_ratio_formula + hook_walk_identity ≥3-row).",
+    "implications": "A complete formalization would be the first Lean 4 proof of the hook-length formula, a milestone in formal combinatorics. The LGV approach connects our existing ballot problem proofs to representation theory via the Specht module dimension formula f^λ = dim S^λ.",
     "openQuestions": [
-      "Formalize the SYT \u2194 NI bijection via Fomin's growth diagrams or the RSK correspondence (~200 lines)",
-      "Prove the det factorization det[C(m+\u03c3\u2c7c+j-i,m)] = n!/hookProd for general partitions via a Vandermonde-type identity",
-      "Add Fintype instance for StandardYoungTableau via column-reading bijection with Fin \u03bc.card permutations"
+      "Formalize the SYT ↔ NI bijection via Fomin's growth diagrams or the RSK correspondence (~200 lines)",
+      "Prove the det factorization det[C(m+σⱼ+j-i,m)] = n!/hookProd for general partitions via a Vandermonde-type identity",
+      "Add Fintype instance for StandardYoungTableau via column-reading bijection with Fin μ.card permutations"
     ]
   },
   "leanFile": {
@@ -90,27 +91,27 @@
       "LGV"
     ],
     "namespace": "HookLengthFormula",
-    "lineCount": 11747,
+    "lineCount": 13638,
     "axiomCount": 0,
     "sorries": 4,
     "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
-    "theoremCount": 315,
+    "theoremCount": 464,
     "definitionCount": 14
   },
   "crossReferences": [
     {
       "id": "ballot-problem-oq-03-oq-01",
-      "title": "LGV Lemma 2\u00d72",
+      "title": "LGV Lemma 2×2",
       "relationship": "foundational"
     },
     {
       "id": "ballot-problem-oq-03-oq-02",
-      "title": "LGV Lemma n\u00d7n",
+      "title": "LGV Lemma n×n",
       "relationship": "foundational"
     },
     {
       "id": "ballot-problem-oq-03-oq-01-oq-01",
-      "title": "General n\u00d7n LGV (restatement)",
+      "title": "General n×n LGV (restatement)",
       "relationship": "sibling"
     },
     {
@@ -125,16 +126,16 @@
       "title": "Part I: Hook Length Infrastructure",
       "startLine": 38,
       "endLine": 80,
-      "summary": "Defines armLen, legLen, hookLength. Proves hookLength_pos (always > 0) and hookLength_add_eq (avoids \u2115 subtraction).",
-      "mathContext": "hookLength \u03bc i j = (rowLen i - j - 1) + (colLen j - i - 1) + 1. Positivity: arm+leg+1 \u2265 1 always. For (i,j) \u2208 \u03bc: j < rowLen i and i < colLen j."
+      "summary": "Defines armLen, legLen, hookLength. Proves hookLength_pos (always > 0) and hookLength_add_eq (avoids ℕ subtraction).",
+      "mathContext": "hookLength μ i j = (rowLen i - j - 1) + (colLen j - i - 1) + 1. Positivity: arm+leg+1 ≥ 1 always. For (i,j) ∈ μ: j < rowLen i and i < colLen j."
     },
     {
       "id": "sec-hook-prod",
       "title": "Part II: Hook Product",
       "startLine": 85,
       "endLine": 105,
-      "summary": "Defines hookProd as \u220f over \u03bc.cells. Proves hookProd_pos and hookProd_empty = 1.",
-      "mathContext": "hookProd \u03bc = \u220f_{c \u2208 \u03bc.cells} hookLength \u03bc c.1 c.2. Positivity via Finset.prod_pos. hookProd \u22a5 = 1 by cells_bot + prod_empty."
+      "summary": "Defines hookProd as ∏ over μ.cells. Proves hookProd_pos and hookProd_empty = 1.",
+      "mathContext": "hookProd μ = ∏_{c ∈ μ.cells} hookLength μ c.1 c.2. Positivity via Finset.prod_pos. hookProd ⊥ = 1 by cells_bot + prod_empty."
     },
     {
       "id": "sec-syt",
@@ -142,23 +143,23 @@
       "startLine": 110,
       "endLine": 140,
       "summary": "Defines StandardYoungTableau structure with entry function, entry_zero, entry_range, entry_injOn, row_strict, col_strict.",
-      "mathContext": "SYT condition: entries in {1,...,|\u03bc|}, bijective on \u03bc, strictly increasing along rows and columns. Unlike SemistandardYoungTableau in Mathlib (weakly increasing rows), SYT requires STRICT row increasing."
+      "mathContext": "SYT condition: entries in {1,...,|μ|}, bijective on μ, strictly increasing along rows and columns. Unlike SemistandardYoungTableau in Mathlib (weakly increasing rows), SYT requires STRICT row increasing."
     },
     {
       "id": "sec-lgv-config",
       "title": "Part IV: LGV Configuration",
       "startLine": 145,
       "endLine": 175,
-      "summary": "Defines youngLGVConfig with sources(k)=k, targets(k)=\u03c3(k)+k for weakly increasing \u03c3. Proves wellFormed under \u03c3(0) \u2265 r-1.",
-      "mathContext": "targets_strictMono: \u03c3 monotone + i < j \u2192 \u03c3(i)+i < \u03c3(j)+j. wellFormed: uses Fin.zero_le j for \u03c3(0) \u2264 \u03c3(j)."
+      "summary": "Defines youngLGVConfig with sources(k)=k, targets(k)=σ(k)+k for weakly increasing σ. Proves wellFormed under σ(0) ≥ r-1.",
+      "mathContext": "targets_strictMono: σ monotone + i < j → σ(i)+i < σ(j)+j. wellFormed: uses Fin.zero_le j for σ(0) ≤ σ(j)."
     },
     {
       "id": "sec-main-theorem",
       "title": "Parts V-VI: Main Theorems",
       "startLine": 180,
       "endLine": 210,
-      "summary": "hook_length_formula_2row_rect (proved via OQ03OQ03), hook_length_formula (sorry), ni_count_eq_syt_count (sorry), lgv_det_factors_as_hook_quotient (sorry), card_SYT_twoRectYD (sorry \u2014 SYT count for 2-row rect = C_m).",
-      "mathContext": "Main theorem: card(SYT(\u03bc)) \u00d7 hookProd \u03bc = \u03bc.card!. The two sorry components require ~200 lines each."
+      "summary": "hook_length_formula_2row_rect (proved via OQ03OQ03), hook_length_formula (sorry), ni_count_eq_syt_count (sorry), lgv_det_factors_as_hook_quotient (sorry), card_SYT_twoRectYD (sorry — SYT count for 2-row rect = C_m).",
+      "mathContext": "Main theorem: card(SYT(μ)) × hookProd μ = μ.card!. The two sorry components require ~200 lines each."
     },
     {
       "id": "sec-numerical",
@@ -166,15 +167,15 @@
       "startLine": 215,
       "endLine": 240,
       "summary": "Proves hook-length formula for 8 specific shapes via norm_num.",
-      "mathContext": "Verified: (2,1)\u21922, (2,2)\u21922, (3,1)\u21923, (3,2)\u21925, (3,2,1)\u219216, (4,3,2,1)\u21921440, (3,3)\u21925 (C\u2083), (4,4)\u219214 (C\u2084)."
+      "mathContext": "Verified: (2,1)→2, (2,2)→2, (3,1)→3, (3,2)→5, (3,2,1)→16, (4,3,2,1)→1440, (3,3)→5 (C₃), (4,4)→14 (C₄)."
     },
     {
       "id": "sec-corner-induction",
       "title": "Part XIV: hook_length_formula_general via Corner Induction",
       "startLine": 4600,
       "endLine": 4725,
-      "summary": "Proves hook_length_formula_general by well-founded induction on \u03bc.card, using card_SYT_corner_step (Part XIII) + hook_walk_identity (2 sorries: hookProd_ratio_formula + \u22653-row case). hook_length_formula_Q is the \u211a version proved by WF induction.",
-      "mathContext": "hook_walk_identity: \u03a3_c hookProd(\u03bc)/hookProd(\u03bc\\c) = \u03bc.card. The main theorem reduces to hook_length_formula_Q via exact_mod_cast."
+      "summary": "Proves hook_length_formula_general by well-founded induction on μ.card, using card_SYT_corner_step (Part XIII) + hook_walk_identity (2 sorries: hookProd_ratio_formula + ≥3-row case). hook_length_formula_Q is the ℚ version proved by WF induction.",
+      "mathContext": "hook_walk_identity: Σ_c hookProd(μ)/hookProd(μ\\c) = μ.card. The main theorem reduces to hook_length_formula_Q via exact_mod_cast."
     }
   ],
   "sorries": 4
