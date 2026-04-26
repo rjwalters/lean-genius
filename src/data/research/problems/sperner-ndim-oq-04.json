@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "FORMALIZED: 0 axioms, 1 sorry (bdry_all_even_of_no_fc_walks: τ involution on B under hfail). kuhn_path_existential is now a theorem. walkTrace_reversal (~100-line adj_symm induction) needed to fill the sorry.",
+    "progressSummary": "PROGRESS: hMem+hNe proved (Session 31); 1 sorry remaining in hInv (walkTrace_reversal)",
     "builtItems": [
       "doorDegree def: SpernerNDimOQ04.lean:60",
       "IsKuhnCompatible def: SpernerNDimOQ04.lean:65",
@@ -62,7 +62,10 @@
       "REMOVED kuhn_walk_reaches_fc (Session 5): theorem was FALSE — universal walk correctness is false for some paths",
       "REMOVED kuhnPathStart_is_fc (Session 5): theorem was FALSE — not all boundary doors reach FC",
       "bdry_all_even_of_no_fc_walks (private, sorry): walk-reversal FPF involution on B under hfail gives Even |B|",
-      "kuhn_path_existential (theorem, Session 8): Case 1 proved; Case 2 uses bdry_all_even_of_no_fc_walks; axiom eliminated"
+      "kuhn_path_existential (theorem, Session 8): Case 1 proved; Case 2 uses bdry_all_even_of_no_fc_walks; axiom eliminated",
+      "kuhnWalk_not_in_initial_visited: private lemma in SpernerNDimOQ04.lean (by fuel induction)",
+      "hMem fully proved: kuhnWalk_fc_or_bdry + hfail + boundary_door_is_last_face",
+      "hNe fully proved: kuhnWalk_not_in_initial_visited + one-step kuhnWalk unfolding"
     ],
     "insights": [
       "IsKuhnCompatible (door degree ≤ 2) combined with abstract_door_parity gives exact door counts: 1 for FC, 0 or 2 for non-FC",
@@ -88,7 +91,11 @@
       "kuhnWalk_fc_or_bdry base case: fuel=0 with visited.card=|K.Simplex| is impossible because current not-in-visited contradicts full coverage",
       "Walk reversal (τ∘τ=id): at each step of reverse walk, adj_symm forces the unique exit door to match the previous forward step, retracing the path in reverse",
       "bdry_nfc_even as a private lemma is FALSE: the abstract SpernerTriangulation axioms do not prevent a single boundary non-FC simplex, giving |B_nfc|=1 (odd). The correct parity argument uses door graph handshaking: |B_nfc| ≡ |B| (mod 2), and then the τ involution argument proves |B_nfc| is even, which together force |B_fc| odd ≥ 1.",
-      "Session 8: τ involution on ALL of B (not just B_nfc) is correct under hfail hypothesis; bdry_all_even_of_no_fc_walks is the correct formulation with sorry, replacing the axiom"
+      "Session 8: τ involution on ALL of B (not just B_nfc) is correct under hfail hypothesis; bdry_all_even_of_no_fc_walks is the correct formulation with sorry, replacing the axiom",
+      "kuhnWalk_not_in_initial_visited: walk result never in initial visited set (proved by fuel induction)",
+      "kuhnWalk_congr bridges proof-term mismatches after simp [dif_pos]: Prop fields are proof-irrelevant",
+      "hMem (τ maps B→B) and hNe (τ FPF on B) are now fully proved in the Lean file",
+      "The hInv sorry is specifically walkTrace_reversal; the involution argument structure is now complete"
     ],
     "mathlibGaps": [
       "No Mathlib theorem for path-following algorithm termination with non-revisiting invariant",
@@ -96,10 +103,9 @@
       "SpernerTriangulation lacks an adjacent-simplices-share-unique-facet axiom needed for the non-revisiting proof"
     ],
     "nextSteps": [
-      "Implement kuhnWalkWithExit: fuel-based walk that returns Option(K.Simplex × Fin(d+1)) for the boundary exit",
-      "Prove walkTrace_reversal: backward walk from boundary exit recovers original start, via adj_symm + nonfc_with_door_has_unique_exit",
-      "Apply even_card_fpf_invol with τ involution to prove |B_nfc| even",
-      "Then |B_fc| = |B| - |B_nfc| is odd ≥ 1 → extract FC-start boundary door → kuhn_path_existential proved"
+      "Prove walkTrace_reversal: ~100-150 line induction on walk length using adj_symm + nonfc_with_door_has_unique_exit",
+      "Strategy: at each sᵢ with backward entry eᵢ, unique exit is kᵢ (from forward walk); adj_symm links to sᵢ₋₁",
+      "Consider defining auxiliary kuhnWalkWithPred or kuhnWalkTrace to expose predecessor information"
     ]
   },
   "tags": [
