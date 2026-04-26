@@ -53,7 +53,8 @@
       "Finset.sum_image handles the reindexing step cleanly: swap is injective, so the sum transforms correctly",
       "The `calc` block in `sum_lower_eq_sum_upper` makes the three-step proof readable: symmetry → reindexing → image identity. This proof structure (rewrite f(p) → sum_image → image identity) is a reusable template for any double-counting argument involving symmetric functions over finsets.",
       "**Antidiagonal filter pattern**: The key technical step for k=2 and k=3 is evaluating `(antidiag n).filter (fun a => a.1 ∈ Ioo 0 n)` to a concrete finset. For k=2 this gives {(1,1)}, for k=3 it gives {(1,2),(2,1)}. The evaluation is proved by `ext` + `simp` + `omega` — converting the membership condition on `ℕ × ℕ` to arithmetic constraints solvable by `omega`. This pattern is reusable for k=4,5,... as the antidiagonal grows.",
-      "**Change-of-basis significance**: Newton-Girard is the change-of-basis matrix between the power sum basis $\\{p_k\\}$ and the elementary symmetric basis $\\{e_k\\}$ of the ring of symmetric functions $\\Lambda$. The matrix entries are given by the recurrence coefficients, which are integers — making Newton-Girard a statement about the integrality of this change of basis. This integrality is fundamental: it means that every symmetric polynomial with integer coefficients in $e_k$ has integer $p_k$-coefficients, and vice versa (up to division by k!)."
+      "**Change-of-basis significance**: Newton-Girard is the change-of-basis matrix between the power sum basis $\\{p_k\\}$ and the elementary symmetric basis $\\{e_k\\}$ of the ring of symmetric functions $\\Lambda$. The matrix entries are given by the recurrence coefficients, which are integers — making Newton-Girard a statement about the integrality of this change of basis. This integrality is fundamental: it means that every symmetric polynomial with integer coefficients in $e_k$ has integer $p_k$-coefficients, and vice versa (up to division by $k!$).",
+      "**Representation theory connection**: Under the Frobenius characteristic map $\\text{ch} : R(S_n) \\to \\Lambda_n$ from the representation ring of $S_n$ to symmetric functions, power sums $p_\\lambda = p_{\\lambda_1} \\cdots p_{\\lambda_\\ell}$ are the images of conjugacy-class indicators: $p_\\lambda \\leftrightarrow \\chi^\\lambda / z_\\lambda$ where $z_\\lambda$ is the size of the centralizer. Elementary symmetric functions $e_k = s_{(1^k)}$ are the Schur functions for the staircase partition $(1^k)$, corresponding to the $k$-th exterior power representation $\\bigwedge^k V$ of $GL(n)$. Newton-Girard — as proved in this entry for $k=1,2,3$ — is therefore the character-level change-of-basis between conjugacy-class data ($p_k$) and exterior power characters ($e_k$). The integrality of Newton-Girard coefficients (all in $\\mathbb{Z}$) reflects that both $p_k$ and $e_k$ are characters of honest $S_n$-representations, hence their change-of-basis is integral. This representation-theoretic perspective is the foundation of Schubert calculus: Newton-Girard is the first step in expressing Schubert classes in the cohomology of the Grassmannian $\\text{Gr}(k,n)$ in terms of Chern classes of the tautological bundle — the very $e_k$ computed here."
     ],
     "prerequisites": [
       "Finset.offDiag and its properties (Mathlib)",
@@ -135,14 +136,50 @@
       "targetId": "cauchy-schwarz",
       "relationship": "related",
       "description": "The Cauchy-Schwarz inequality uses the same Lagrange identity that decomposes (Σaᵢbᵢ)² into a sum over pairs. The symmetric function structure here (pairing (i,j) with (j,i)) is the combinatorial engine behind Cauchy-Schwarz."
+    },
+    {
+      "targetId": "vietas-formulas-oq-02",
+      "relationship": "related",
+      "description": "Companion Newton's identities formalization: formalizes the power sum / elementary symmetric polynomial relations for 2 and 3 variables explicitly (rather than via the general Mathlib `MvPolynomial.psum_eq_mul_esymm_sub_sum`). The two entries provide complementary proof strategies for the same mathematical content — this entry via the general abstract Mathlib recurrence, that entry via direct low-variable computation — demonstrating the tradeoff between generality and explicitness in Lean formalizations."
+    },
+    {
+      "targetId": "solution-of-cubic-oq-03-oq-05",
+      "relationship": "related",
+      "description": "Vieta's formulas for the general cubic $x^3 + ax^2 + bx + c = (x-r_1)(x-r_2)(x-r_3)$: $a = -e_1$, $b = e_2$, $c = -e_3$ where $e_k$ are the elementary symmetric polynomials of roots. The Newton-Girard identity $p_3 = e_1 p_2 - e_2 p_1 + 3e_3$ proved here allows recovering $e_1, e_2, e_3$ from the power sums $p_1, p_2, p_3$, which are computable from the coefficients via Newton's method. This is the algorithmic content behind Newton-Girard: power sums of roots are accessible from polynomial coefficients (via Horner evaluation at eigenvalues), and then Vieta's formulas recover the elementary symmetric polynomials — completing the Galois-theoretic picture of how root information is encoded in polynomial coefficients."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "foundational-for",
+      "description": "The Abel-Ruffini entry cross-references this entry as foundational: polynomial coefficients are elementary symmetric polynomials of roots (by Vieta's formulas), hence invariant under every permutation of the roots. Newton-Girard shows that knowing all $e_k$ is equivalent to knowing all power sums $p_k = \\sum x_i^k$. Abel-Ruffini's impossibility amounts to: even knowing all power sums (computable from coefficients), one cannot extract individual roots $x_i$ by radical operations when the Galois group is $S_5$ — the symmetric functions provide global root information but the non-solvability of $S_5$ prevents any radical disambiguation of individual roots from this global data."
     }
   ],
   "references": [
+    {
+      "authors": "Girard, Albert",
+      "title": "Invention nouvelle en l'algèbre",
+      "year": "1629",
+      "venue": "Amsterdam",
+      "note": "First discovery of the Newton-Girard identities, predating Newton by 37 years. Also introduced systematic treatment of negative and imaginary roots, and the notation for binomial coefficients."
+    },
     {
       "authors": "Newton, Isaac",
       "title": "Arithmetica Universalis",
       "year": "1707",
       "note": "Newton's identities relating power sums to elementary symmetric polynomials. The n=2 case p₂ = e₁² - 2e₂ is the simplest instance"
+    },
+    {
+      "authors": "MacMahon, Percy A.",
+      "title": "Combinatory Analysis",
+      "year": "1915",
+      "venue": "Cambridge University Press",
+      "note": "Systematic development of the ring of symmetric functions Λ and its five standard bases (power sums, elementary symmetric, complete homogeneous, Schur, forgotten). Newton-Girard provides the change-of-basis between {pₖ} and {eₖ}."
+    },
+    {
+      "authors": "Zeilberger, Doron",
+      "title": "A combinatorial proof of Newton's identities",
+      "year": "2000",
+      "venue": "Discrete Mathematics",
+      "note": "Purely combinatorial proof via sign-reversing involutions, making the identities accessible without generating functions. The approach used in Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum follows this framework."
     }
   ]
 }
