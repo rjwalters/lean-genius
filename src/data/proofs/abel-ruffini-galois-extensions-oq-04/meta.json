@@ -122,7 +122,7 @@
             "id": "sec-main-theorem",
             "title": "Part V: Jordan-Hölder Theorem",
             "startLine": 229,
-            "endLine": 255,
+            "endLine": 234,
             "summary": "`jordan_holder_subgroups` and `jordan_holder_finite_groups`: one-line delegations to `CompositionSeries.jordan_holder` once the JordanHolderLattice instance is provided. `#check` statements verify the exported types. These theorems become available automatically — the entire power of the abstract Jordan-Hölder machinery applies to groups at no additional proof cost.",
             "mathContext": "Jordan-Hölder uniqueness: any two composition series of a finite group have the same length and the same multiset of simple composition factors up to permutation and isomorphism. For $S_5$: the unique series is $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$ with factors $A_5$ (simple, order 60) and $\\mathbb{Z}/2\\mathbb{Z}$. Jordan-Hölder guarantees no alternative decomposition avoids the non-abelian $A_5$ factor, making the Abel-Ruffini degree-5 threshold absolute."
         }
