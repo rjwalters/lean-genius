@@ -75,7 +75,8 @@
       "The key reduction — $A_n$ solvable $\\Rightarrow S_n$ solvable — is proved via the sign exact sequence $1 \\to A_n \\to S_n \\xrightarrow{\\text{sign}} \\{\\pm 1\\} \\to 1$. By `solvable_of_ker_le_range`: if the kernel ($A_n$, by hypothesis) and the quotient ($\\{\\pm 1\\} \\cong \\mathbb{Z}/2\\mathbb{Z}$, abelian) are solvable, then $S_n$ is solvable. This contrapositive is the proof backbone for the $n \\geq 5$ direction.",
       "The Lean proof strategy is a textbook instance of proof by contradiction combined with a reduction chain: assume $A_n$ solvable → (reduction via sign sequence) → $S_n$ solvable → (Mathlib lemma) → contradiction. This modular structure separates the group-theoretic content from the computational verification.",
       "`A_4` solvability in Lean uses `inferInstance`: Lean's typeclass machinery automatically derives `IsSolvable (alternatingGroup (Fin 4))` from `IsSolvable (Perm (Fin 4))` (since $A_4 \\leq S_4$ and subgroups of solvable groups are solvable). The one non-automatic step is establishing $S_4$ solvability via `native_decide` on the derived series.",
-      "The composition series $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$ has the remarkable property that it simultaneously explains three facts: $A_4$ is solvable (factors $V_4/\\{e\\} \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$, $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$, abelian), $A_4$ is the largest alternating group without a subgroup of index 2 (since $V_4$ has no index-2 subgroup), and quartic equations but not quintic equations have radical solutions. This single chain is the algebraic heart of why $n=4$ is the exact threshold."
+      "The composition series $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$ has the remarkable property that it simultaneously explains three facts: $A_4$ is solvable (factors $V_4/\\{e\\} \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$, $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$, abelian), $A_4$ is the largest alternating group without a subgroup of index 2 (since $V_4$ has no index-2 subgroup), and quartic equations but not quintic equations have radical solutions. This single chain is the algebraic heart of why $n=4$ is the exact threshold.",
+      "**Feit-Thompson consistency check**: The Feit-Thompson theorem (1963, 255 pages) proves every finite group of odd order is solvable. This is consistent with $A_n$ non-solvability for $n \\geq 5$: for $n \\geq 3$, $|A_n| = n!/2 \\geq 3$, which is always even (since $n! \\geq 6$ for $n \\geq 3$). So $A_n$ for $n \\geq 3$ has even order, and the Feit-Thompson theorem (which only covers odd orders) says nothing about them — the separate non-solvability proof here is necessary. This entry's result is also the starting point of the Classification of Finite Simple Groups (CFSG): the simplicity of $A_5$ is the first entry in the alternating family $A_n$ ($n \\geq 5$) in the CFSG, which also classifies 16 families of groups of Lie type and 26 sporadic groups."
     ],
     "prerequisites": [
       "Group theory: solvable groups, derived series, simple groups",
@@ -89,7 +90,8 @@
       "title": "Documentation and Imports",
       "startLine": 1,
       "endLine": 44,
-      "summary": "Module docstring with classification table, key argument, and references. Imports Mathlib.GroupTheory.Solvable and Mathlib.GroupTheory.SpecificGroups.Alternating."
+      "summary": "Module docstring with classification table, key argument, and references. Imports Mathlib.GroupTheory.Solvable and Mathlib.GroupTheory.SpecificGroups.Alternating.",
+      "mathContext": "The classification $A_n$ solvable $\\Leftrightarrow n \\leq 4$ mirrors the $S_n$ threshold exactly because $A_n$ is the kernel of the sign homomorphism $S_n \\to \\{\\pm 1\\}$: if $A_n$ were solvable for $n \\geq 5$, the solvability extension theorem would give $S_n$ solvable, contradicting `Equiv.Perm.not_solvable`. The threshold is driven by $A_5$ (order 60) being the smallest non-abelian simple group — equivalently, the first alternating group whose derived series stalls."
     },
     {
       "id": "small-cases",
@@ -191,60 +193,106 @@
       "targetId": "abel-ruffini-oq-04-oq-03",
       "relationship": "complementary",
       "description": "Galois's full solvability criterion: a root is solvable by radicals $\\iff$ its Galois group is solvable. This entry classifies which alternating groups are solvable; `abel-ruffini-oq-04-oq-03` provides the group-theoretic ↔ radical link that makes this classification relevant to polynomial equations."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
+      "relationship": "complementary",
+      "description": "Proves all finite groups of order $< 60$ are solvable, making $A_5$ (order 60) the minimal non-solvable group. This is the dual perspective to the current entry's classification: `alternating_solvable_iff` shows the sharp boundary at $n = 5$ from the alternating group side, while this entry shows the boundary from the order-60 side. Together they pinpoint $A_5$ as the exact obstruction: every alternating group of order $< 60$ (i.e., $A_n$ for $n \\leq 4$) is solvable."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-04",
+      "relationship": "foundational",
+      "description": "Provides the Jordan-Hölder uniqueness theorem for groups (filling a Mathlib TODO). The implications section of the current entry uses Jordan-Hölder to explain why the composition series of $A_4$ ($A_4 \\supset V_4 \\supset \\{e\\}$) is unique — guaranteeing that the abelian factors $V_4 \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$ and $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$ are the canonical description of $A_4$'s structure. The analogous uniqueness for $A_5$'s trivial composition series $A_5 \\supset \\{e\\}$ is what makes its non-solvability absolute."
+    },
+    {
+      "targetId": "inverse-galois-oq-01",
+      "relationship": "related",
+      "description": "Classifies which groups occur as Galois groups over $\\mathbb{Q}$ at the non-solvable frontier. The current entry's `alternating_solvable_iff` theorem draws the line: $A_n$ for $n \\leq 4$ (solvable) corresponds to Galois groups that permit radical solutions, while $A_n$ for $n \\geq 5$ (non-solvable) falls outside the radical framework. The Inverse Galois problem asks whether every finite group — including all non-solvable $A_n$ — is realizable as a Galois group over $\\mathbb{Q}$."
+    },
+    {
+      "targetId": "sylow-theorem-oq-04",
+      "relationship": "complementary",
+      "description": "Constructs the Sylow-theoretic proof that $A_5$ (order $60 = 2^2 \\cdot 3 \\cdot 5$) is simple by exhaustive Sylow counting: $n_2 = 5$, $n_3 = 10$, $n_5 = 6$ — no Sylow subgroup is normal, hence no proper normal subgroup exists. The simplicity of $A_5$ proved here is exactly the fact that makes the non-solvability in `an_not_solvable_of_ge_five` unavoidable. Together these entries provide a complete formal path from group-order arithmetic (Sylow) to solvability impossibility (Abel-Ruffini)."
+    },
+    {
+      "targetId": "sylow-theorems-oq-04",
+      "relationship": "complementary",
+      "description": "An independent Sylow-based proof that $A_5$ is simple via conjugacy class arithmetic: the five conjugacy classes of $A_5$ have sizes $\\{1, 12, 12, 15, 20\\}$ summing to 60, and no proper subset including $\\{1\\}$ produces a divisor of 60 except 1 and 60 themselves. This algebraic independence proof complements the Sylow-counting approach in `sylow-theorem-oq-04`, both establishing the key simplicity fact that drives $A_n$ non-solvability for $n \\geq 5$ in this entry."
+    },
+    {
+      "targetId": "inverse-galois-oq-06",
+      "relationship": "complementary",
+      "description": "Proves $A_5 \\cong \\text{Gal}(x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5/\\mathbb{Q})$ via Eisenstein at $p=5$ and Sylow theory. Since $A_5$ is non-solvable (directly proved in this entry via `a5_not_solvable`), applying the Abel-Ruffini bridge (`not_solvable_by_rad_of_not_solvable_gal`) yields a concrete quintic whose roots are not expressible by radicals. This provides a direct application of the current entry's main theorem: the non-solvability of $A_5$ is not merely abstract — it witnesses an explicit irreducible quintic with roots beyond the reach of radicals."
     }
   ],
   "references": [
     {
-      "authors": ["É. Galois"],
+      "authors": [
+        "É. Galois"
+      ],
       "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
       "year": "1846",
       "venue": "Journal de Mathématiques Pures et Appliquées (published posthumously)",
       "note": "The foundational paper: polynomial solvable by radicals iff Galois group is solvable. Galois proved A₅ is simple and identified it as the obstruction to quintic solvability."
     },
     {
-      "authors": ["C. Jordan"],
+      "authors": [
+        "C. Jordan"
+      ],
       "title": "Traité des substitutions et des équations algébriques",
       "year": "1870",
       "venue": "Gauthier-Villars, Paris",
       "note": "First systematic study of composition series for alternating and symmetric groups. Jordan proved Aₙ is simple for n ≥ 5 and studied the complete solvability structure."
     },
     {
-      "authors": ["O. Hölder"],
+      "authors": [
+        "O. Hölder"
+      ],
       "title": "Zurückführung einer beliebigen algebraischen Gleichung auf eine Kette von Gleichungen",
       "year": "1889",
       "venue": "Mathematische Annalen 34: 26–56",
       "note": "Proved the Jordan-Hölder theorem in its modern form: the composition factors of a finite group are unique up to order and isomorphism, establishing the foundation for solvability theory."
     },
     {
-      "authors": ["I. Stewart"],
+      "authors": [
+        "I. Stewart"
+      ],
       "title": "Galois Theory",
       "year": "2015",
       "venue": "Chapman and Hall/CRC, 4th edition",
       "note": "Chapters 12-13: complete proof that Sₙ (and Aₙ) are solvable iff n ≤ 4, including the Klein four-group construction and A₅ simplicity argument."
     },
     {
-      "authors": ["J. J. Rotman"],
+      "authors": [
+        "J. J. Rotman"
+      ],
       "title": "An Introduction to the Theory of Groups",
       "year": "1995",
       "venue": "Springer GTM 148, 4th edition",
       "note": "Chapter 5: solvable groups, derived series, composition series, Jordan-Hölder theorem. Chapter 9: alternating groups Aₙ and their simplicity for n ≥ 5."
     },
     {
-      "authors": ["T. W. Hungerford"],
+      "authors": [
+        "T. W. Hungerford"
+      ],
       "title": "Algebra",
       "year": "1974",
       "venue": "Graduate Texts in Mathematics, Springer",
       "note": "Section II.7: alternating groups; II.8: solvability classification and Galois connections"
     },
     {
-      "authors": ["S. Lang"],
+      "authors": [
+        "S. Lang"
+      ],
       "title": "Algebra",
       "year": "2002",
       "venue": "Graduate Texts in Mathematics, Springer (3rd ed.)",
       "note": "Section I.8: solvable groups and the derived series; Chapter VI: Galois theory and solvability by radicals"
     },
     {
-      "authors": ["The Mathlib Community"],
+      "authors": [
+        "The Mathlib Community"
+      ],
       "title": "Mathlib4: A Unified Library of Mathematics Formalized in Lean 4",
       "year": "2024",
       "venue": "https://github.com/leanprover-community/mathlib4",
