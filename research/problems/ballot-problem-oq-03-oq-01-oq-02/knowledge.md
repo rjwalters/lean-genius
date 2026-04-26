@@ -499,3 +499,37 @@ by_cases h4 : μ.rowLen 4 = 0
 
 1. 5-row case (PART XIX): extract from `3499e79e4df` git history; same recovery pattern
 2. Fix `BallotProblemOQ03.lean` pre-existing errors (lines 1875-2541) to enable full chain build
+
+---
+
+## Session 2026-04-26 (Session 25) — PART XIX + PART XX: 5-row and 6-row recovery
+
+**Mode**: REVISIT (RICH knowledge tier)
+**Outcome**: PROGRESS — applied PART XIX (5-row) and PART XX (6-row) from git history
+
+### What I Did
+
+1. File was at 7763 lines (PART XIX 5-row already applied from previous context, not committed)
+2. Extracted PART XX (lines 8018-9066) from commit `312dbe91dbd` to `/tmp/part20_extracted.txt` (1049 lines)
+3. Applied PART XX: inserted 1047 lines before dispatcher + updated dispatcher with 6-row case
+4. Dispatcher now dispatches ≥7-row to sorry (was ≥6-row, was ≥5-row before)
+5. Updated meta.json: lineCount 6928→8815, theoremCount 181→230, assumptions scope ≥7-row
+
+### Key Pattern
+
+- PART XX content inserted at line 7657 (before `private lemma hook_walk_identity`)
+- Each successive part adds ~1000 lines of colLen/hookLen/arm lemmas + main `hook_walk_identity_Nrow`
+- Dispatcher updated with +2 spaces indentation adjustment per level
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (7763 → 8815 lines)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json`
+
+### Sorry Count: 4 (3 LGV + 1 for ≥7-row dispatcher)
+
+### Next Steps
+
+1. Commit PART XIX + PART XX and push to `feature/ballot-fourrow-part18`
+2. 7-row case (PART XXI): extract from git history if available
+3. Fix `BallotProblemOQ03.lean` pre-existing errors to enable full chain build
