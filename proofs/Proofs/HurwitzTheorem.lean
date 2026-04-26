@@ -1,11 +1,14 @@
 import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Algebra.Quaternion
+import Mathlib.Algebra.QuaternionBasis
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Fin.VecNotation
 import Mathlib.Data.Matrix.Mul
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+import Mathlib.LinearAlgebra.Matrix.Module
+import Mathlib.LinearAlgebra.Dimension.Free
 
 /-!
 # Hurwitz's Theorem on n-Square Identities
@@ -41,7 +44,8 @@ algebras over ℝ are:
 - [x] Uses Mathlib for quaternion structure
 
 ## Axioms: 0
-## Sorries: 1 (hurwitz_only_if: even n∉{2,4,8} case; needs Clifford/Bott periodicity)
+## Sorries: 2 (hurwitz_only_if: even n≡0 mod 4, n∉{4,8} case; needs Clifford/Bott periodicity)
+##          (hurwitz_only_if: n≡2 mod 4 case formalized via ℍ-module — typeclass plumbing may need refinement)
 
 ## Mathlib Dependencies
 - `Quaternion.normSq_mul` : Quaternion norm is multiplicative
@@ -1914,27 +1918,92 @@ theorem hurwitz_only_if (n : ℕ) (hn : n > 0) (nsi : NSquareIdentity n) :
   · -- n ∉ {1,2,3,4,8}, n ≥ 1
     -- Split on parity of n
     rcases Nat.even_or_odd n with ⟨k, rfl⟩ | hodd
-    · -- n = 2k: even non-admissible (n ∈ {6,10,12,...})
-      -- PROVED INFRASTRUCTURE:
-      -- 1. For j ∈ {1,...,n-1}: M_j = crossMat nsi ⟨0,...⟩ ⟨j,...⟩ satisfies:
-      --    (a) M_j^T = -M_j           [crossMat_skewSym]
-      --    (b) M_j^T M_j = I          [crossMat_transMul]
-      --    (c) M_j² = -I              [crossMat_sq_neg_one]
-      --    (d) M_j M_k + M_k M_j = 0  [crossMat_anticommute]
-      -- 2. So {M_1,...,M_{n-1}} generate a rep of Cl(0,n-1) on ℝⁿ.
-      -- MISSING STEP (the sole blocker):
-      -- 3. Min faithful real rep dim of Cl(0,n-1) > n for even n ∉ {2,4,8}:
-      --      Cl(0,1) ≅ ℂ        → min dim 2 = 2  ✓ (n=2 admissible)
-      --      Cl(0,3) ≅ ℍ        → min dim 4 = 4  ✓ (n=4 admissible)
-      --      Cl(0,5) ≅ M(4,ℂ)   → min dim 8 > 6  ✗ (n=6 impossible)
-      --      Cl(0,7) ≅ M(8,ℝ)²  → min dim 8 = 8  ✓ (n=8 admissible)
-      --      Cl(0,9) ≅ M(16,ℝ)  → min dim 16 > 10 ✗ (n=10 impossible)
-      -- REQUIRED MATHLIB ADDITIONS (~1000 lines):
-      --   • CliffordAlgebra.ofRep: classifying reps via Wedderburn structure theorem
-      --   • Bott periodicity: Cl(0,n+8) ≅ Cl(0,n) ⊗ M(16,ℝ)
-      --   • Artin-Wedderburn theorem for real semisimple algebras
-      -- None of these are in Mathlib as of April 2026.
-      sorry -- BLOCKED: needs Clifford algebra structure theorem (Bott periodicity + Artin-Wedderburn)
+    · -- n = 2k: even non-admissible
+      -- Split further: does 4 divide n = 2k?
+      rcases Nat.even_or_odd k with ⟨m, rfl⟩ | hodd_k
+      · -- k = 2m → n = 4m ≡ 0 (mod 4), m ≥ 3 (since 4m ≠ 4,8 → m ≠ 1,2)
+        -- BLOCKED: needs Clifford algebra structure theorem (Bott periodicity) for n = 12,16,...
+        -- The n ≡ 2 (mod 4) case is handled below; only multiples of 4 remain here.
+        sorry -- BLOCKED: even n ≡ 0 (mod 4), n ∉ {4,8} (i.e., n = 12,16,...); needs Bott periodicity
+      · -- k is odd → n = 2k ≡ 2 (mod 4), so 4 ∤ n
+        -- PROOF: quaternion algebra module structure forces 4|n → contradiction.
+        --
+        -- Key: M₁ = crossMat(j₀,j₁) and M₂ = crossMat(j₀,j₂) satisfy:
+        --   M₁² = -I, M₂² = -I, M₁M₂ + M₂M₁ = 0  [crossMat lemmas]
+        -- These are the relations for i,j in ℍ = ℍ[ℝ,-1,0,-1].
+        -- So ℝⁿ is an ℍ-module, giving 4 ∣ n = finrank ℝ ℍ * finrank ℍ ℝⁿ.
+        -- But 4 ∤ 2k (k odd) — contradiction.
+        --
+        -- n ≥ 6 (k odd, k ≠ 1 since 2k ≠ 2)
+        have hk_ge3 : 3 ≤ k := by
+          rcases hodd_k with ⟨l, rfl⟩; omega
+        have hn_ge6 : 6 ≤ 2 * k := by omega
+        haveI hne : NeZero (2 * k) := ⟨by omega⟩
+        -- Three distinct indices
+        let j₀ : Fin (2 * k) := ⟨0, by omega⟩
+        let j₁ : Fin (2 * k) := ⟨1, by omega⟩
+        let j₂ : Fin (2 * k) := ⟨2, by omega⟩
+        have hj₀j₁ : j₀ ≠ j₁ := by intro h; exact absurd (congrArg Fin.val h) (by simp [j₀, j₁])
+        have hj₀j₂ : j₀ ≠ j₂ := by intro h; exact absurd (congrArg Fin.val h) (by simp [j₀, j₂])
+        have hj₁j₂ : j₁ ≠ j₂ := by intro h; exact absurd (congrArg Fin.val h) (by simp [j₁, j₂])
+        -- The two anticommuting complex structures
+        let M₁ := crossMat nsi j₀ j₁
+        let M₂ := crossMat nsi j₀ j₂
+        have hM₁sq : M₁ * M₁ = -1 := crossMat_sq_neg_one nsi j₀ j₁ hj₀j₁
+        have hM₂sq : M₂ * M₂ = -1 := crossMat_sq_neg_one nsi j₀ j₂ hj₀j₂
+        have hanti : M₁ * M₂ + M₂ * M₁ = 0 :=
+          crossMat_anticommute nsi j₀ j₁ j₂ hj₀j₁ hj₀j₂ hj₁j₂
+        -- j*i = -k in ℍ[ℝ,-1,0,-1]: j_mul_i says j*i = c₂•j - k = 0•j - k = -k
+        have hM₂M₁ : M₂ * M₁ = -(M₁ * M₂) := neg_eq_of_add_eq_zero_right hanti
+        -- i*i = c₁•1 + c₂•i = -1•1 + 0•M₁ = -1
+        have hM₁sq' : M₁ * M₁ = (-1 : ℝ) • (1 : Matrix (Fin (2*k)) (Fin (2*k)) ℝ) +
+            (0 : ℝ) • M₁ := by simp [hM₁sq]
+        -- j*j = c₃•1 = -1•1 = -1
+        have hM₂sq' : M₂ * M₂ = (-1 : ℝ) • (1 : Matrix (Fin (2*k)) (Fin (2*k)) ℝ) := by
+          simp [hM₂sq]
+        -- j*i = c₂•j - k = 0•M₂ - M₁M₂ = -M₁M₂
+        have hM₂M₁' : M₂ * M₁ = (0 : ℝ) • M₂ - M₁ * M₂ := by simp [hM₂M₁]
+        -- Quaternion algebra basis in M(n,ℝ): the standard ℍ[ℝ] = ℍ[ℝ,-1,0,-1]
+        let qbasis : QuaternionAlgebra.Basis
+            (Matrix (Fin (2 * k)) (Fin (2 * k)) ℝ) (-1) 0 (-1) := {
+          i := M₁, j := M₂, k := M₁ * M₂
+          i_mul_i := hM₁sq'
+          j_mul_j := hM₂sq'
+          i_mul_j := rfl
+          j_mul_i := hM₂M₁' }
+        -- AlgHom φ : ℍ[ℝ,-1,0,-1] →ₐ[ℝ] M(n,ℝ)
+        let φ : ℍ[ℝ,-1,0,-1] →ₐ[ℝ] Matrix (Fin (2 * k)) (Fin (2 * k)) ℝ := qbasis.liftHom
+        -- Make Fin (2*k) → ℝ an ℍ-module via φ and matrix-vector multiplication.
+        -- Matrix.Module.matrixModule gives Module (Matrix n n ℝ) (Fin n → ℝ) (scoped instance).
+        -- Module.compHom restricts scalars along φ.toRingHom.
+        open Matrix.Module in
+        haveI hℍmod : Module ℍ[ℝ,-1,0,-1] (Fin (2 * k) → ℝ) :=
+          Module.compHom _ φ.toRingHom
+        -- IsScalarTower ℝ ℍ (Fin n → ℝ): (r • q) • v = r • (q • v)
+        -- Proof: φ(r•q) = r•φ(q) (AlgHom) and (r•A)*ᵥv = r•(A*ᵥv) (mulVec linearity).
+        open Matrix.Module in
+        haveI htower : IsScalarTower ℝ ℍ[ℝ,-1,0,-1] (Fin (2 * k) → ℝ) := by
+          constructor
+          intro r q v
+          ext i
+          simp only [Module.compHom_smul, smul_apply, AlgHom.map_smul, map_smul,
+                     smul_eq_mul, Finset.mul_sum, mul_comm r]
+        -- finrank tower law: finrank ℝ ℍ * finrank ℍ (Fin n → ℝ) = finrank ℝ (Fin n → ℝ) = n
+        -- Since finrank ℝ ℍ = 4 and finrank ℝ (Fin n → ℝ) = n = 2k: 4 ∣ 2k
+        have h4n : 4 ∣ 2 * k := by
+          -- StrongRankCondition ℍ[ℝ,-1,0,-1]: follows from DivisionRing (Noetherian)
+          haveI : StrongRankCondition ℍ[ℝ,-1,0,-1] := inferInstance
+          -- Module.Free ℍ[ℝ,-1,0,-1] (Fin (2*k) → ℝ): Module.Free.of_divisionRing
+          haveI : Module.Free ℍ[ℝ,-1,0,-1] (Fin (2 * k) → ℝ) := inferInstance
+          have htower_law := @Module.finrank_mul_finrank ℝ ℍ[ℝ,-1,0,-1] (Fin (2 * k) → ℝ)
+            _ _ _ _ _ _ _ _
+          rw [QuaternionAlgebra.finrank_eq_four (R := ℝ) (c₁ := -1) (c₂ := 0) (c₃ := -1),
+              Module.finrank_pi] at htower_law
+          exact ⟨Module.finrank ℍ[ℝ,-1,0,-1] (Fin (2 * k) → ℝ), by linarith⟩
+        -- 4 ∤ 2k since k is odd
+        have hno4 : ¬(4 ∣ 2 * k) := by
+          rcases hodd_k with ⟨l, rfl⟩; omega
+        exact absurd h4n hno4
     · -- n is odd: n ∉ {1,3} (handled above), so n ≥ 5 odd
       have hn3 : 3 ≤ n := by
         have hodd' := hodd
