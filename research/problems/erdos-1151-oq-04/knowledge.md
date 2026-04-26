@@ -152,3 +152,54 @@ The current statement with `M < Lₙf(x)` (signed divergence) may require full l
 - `sum_term_eq_tan_half_angle` proof: abs_of_neg + half-angle formula. The `set` tactic was avoided
   to allow `ring` to close the argument equality `φ/2 = (2k+1)π/(4n)` after `rw [harg]`.
 - Note: `congr 1 <;> ring` does NOT work on sin/cos goals; need explicit `have harg` + `rw [harg]`.
+
+## Session 2026-04-26 — Proof Structure for trig_sum_lb_of_cos_eq_neg_one
+
+**Outcome**: progress — `trig_sum_lb_of_cos_eq_neg_one` partially structured (4 components proved inline)
+**Sorry count**: 3 (unchanged), but sorry #0 now has most structure in place
+
+### What I Did
+
+Replaced the single `sorry` in `trig_sum_lb_of_cos_eq_neg_one` with a structured proof that has
+only one sorry remaining (`h_harm_chain`). Proved inline:
+
+1. **`hf_nn`** (nonnegativity): All tan terms ≥ 0 since angles in (0, π/2). Uses
+   `Real.sin_nonneg_of_nonneg_of_le_pi` and `Real.cos_pos_of_mem_Ioo`. ✓
+
+2. **`h_comp`** (complementary angle identity): For j : Fin m (m = Nat.sqrt n), the index
+   n-1-j gives angle (2*(n-1-j)+1)π/(4n) = π/2 - (2j+1)π/(4n). Uses `Nat.cast_sub` for
+   the nat subtraction cast, then `Real.sin_pi_div_two_sub` and `Real.cos_pi_div_two_sub`. ✓
+
+3. **`h_sub_le`** (sub-sum ≤ full sum): Injection j ↦ ⟨n-1-j, ...⟩ maps Fin m → Fin n
+   injectively. Uses `Finset.sum_image` + `Finset.sum_le_sum_of_subset_of_nonneg`. ✓
+
+4. **Calc chain**: lb ≤ cot-sum (h_harm_chain sorry) = tan-sub-sum (h_comp) ≤ full-sum (h_sub_le). ✓
+
+### Key Findings
+
+- **Nat subtraction cast**: `rw [show n-1-j = n-(j+1) from by omega]; push_cast [Nat.cast_sub h1]; ring`
+  correctly handles `(n-1-j : ℕ) : ℝ = n - j - 1` by rewriting to avoid double subtraction.
+- **Sub-sum via injection**: `Finset.sum_image (fun j _ j' _ h => hg_inj h)` + `Finset.sum_le_sum_of_subset_of_nonneg`
+  gives the correct sub-sum inequality.
+- **Complementary angle**: After proving `harg`, a single `rw [harg, sin_pi_div_two_sub, cos_pi_div_two_sub]`
+  closes the equality.
+
+### Remaining Sorry (`h_harm_chain`)
+
+**Goal**: (1/(2π))*n*log(n+1) ≤ Σ_{j<√n} cos((2j+1)π/(4n)) / sin((2j+1)π/(4n))
+
+**Strategy** (documented in inline comments):
+1. Each term cot((2j+1)π/(4n)) ≥ 2n/(π(2j+1)) by `cot_ge_inv_two_mul`
+   - Angle bound: (2j+1)π/(4n) ≤ π/3 needs (Nat.sqrt n)^2 ≤ n (needs Mathlib lemma name for this)
+   - Then 3*(2j+1) ≤ 4n follows from 6j-3 ≤ 4m^2 ≤ 4n (quadratic m^2 ≤ n: always positive)
+2. Σ_{j<m} 2n/(π(2j+1)) ≥ (n/π)*harmonic(m) (since 1/(2j+1) ≥ (1/2)/(j+1))
+3. harmonic(m) ≥ log(m+1) from `log_add_one_le_harmonic` (Mathlib)
+4. log(m+1) ≥ (1/2)*log(n+1) since (m+1)^2 ≥ n+1 from `Nat.lt_succ_sqrt n : n < (m+1)^2`
+5. Net: ≥ (n/π)*(1/2)*log(n+1) = (1/(2π))*n*log(n+1) ✓
+
+**Key Mathlib gap**: Need `(Nat.sqrt n)^2 ≤ n` — likely `Nat.sqrt_le'` or similar (exact name TBD).
+
+### Next Steps
+1. Find correct Lean4 Mathlib name for `(Nat.sqrt n)^2 ≤ n` (try `Nat.sqrt_le'`, `Nat.le_sqrt`)
+2. Prove `h_harm_chain` via the 5-step strategy above
+3. After that, sorry #0 closed; 2 remaining (chebyshev_trig_sum_lb + divergence_from_lebesgue_growth)
