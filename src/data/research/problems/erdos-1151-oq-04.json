@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "2 sorries remain: chebyshev_trig_sum_lb Case 2 (~150 lines, strategy fully documented) and divergence_from_lebesgue_growth (UBP gap or lacunary construction)",
+    "progressSummary": "2 sorries remain: Case 2 of chebyshev_trig_sum_lb (~150 lines, Lipschitz helpers proved) and divergence_from_lebesgue_growth (OPEN/UBP gap). Build compiles cleanly 2026-04-26d.",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -55,7 +55,9 @@
       "cos_rational_pi_pos_min: ∃ δ > 0 s.t. |cos(nπp/q)| ≥ δ for all n (parity argument)",
       "x_not_chebyshev_node: cos(πp/q) ≠ chebyshevNode n k for all n,k when p,q odd",
       "chebyshev_trig_sum_lb: sorry (isolated harmonic sum lower bound: S_n ≥ C₂·n·log(n+1))",
-      "chebyshev_lebesgue_lb: proved modulo chebyshev_trig_sum_lb via mul_le_mul chain (δ/n · C₂·n·log(n+1) ≤ |cos(nθ)|/n · S_n)"
+      "chebyshev_lebesgue_lb: proved modulo chebyshev_trig_sum_lb via mul_le_mul chain (δ/n · C₂·n·log(n+1) ≤ |cos(nθ)|/n · S_n)",
+      "abs_sin_le_abs: |sin t| <= |t| for all t in R -- Erdos1151OQ04.lean:842",
+      "abs_cos_sub_cos_le: |cos a - cos b| <= |a - b| (1-Lipschitz) -- Erdos1151OQ04.lean:859"
     ],
     "insights": [
       "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
@@ -77,12 +79,17 @@
       "chebyshev_lebesgue_growth is PROVED (not sorry) — wraps chebyshev_lebesgue_lb which assumes sorry #1",
       "p,q both odd implies cos(pi*p/q) is strictly in (-1,1), so sin argument is nonzero. Case x=+-1 never occurs in hypotheses.",
       "Case 2 proof strategy for chebyshev_trig_sum_lb: set θ'=arccos(x)∈(0,π), s=sin(θ')>0, k₀=nearest-node=min(n-1,⌊nθ'/π⌋), |θ'-φₖ₀|≤π/(2n) from floor arithmetic; two-case split: small n uses single term ≥ sn/π; large n uses harmonic sub-sum for j=1..m₀=⌊ns/(4π)⌋, term ≥ sn/(π(2j+1)), sum ≥ sn/(2π)·log(ns/(4π))",
-      "Key Mathlib for Case 2: Real.abs_cos_sub_cos_le (Lipschitz cos), Real.abs_sin_sub_sin_le (Lipschitz sin), Nat.floor_le + Nat.lt_floor_add_one (floor bounds) — all available in Lean4 Mathlib"
+      "Key Mathlib for Case 2: Real.abs_cos_sub_cos_le (Lipschitz cos), Real.abs_sin_sub_sin_le (Lipschitz sin), Nat.floor_le + Nat.lt_floor_add_one (floor bounds) — all available in Lean4 Mathlib",
+      "abs_cos_sub_cos_le built locally; Mathlib has cos_sub_cos formula but not the 1-Lipschitz conclusion",
+      "linear_combination trick: introduce m=k*q as existential to avoid omega seeing nonlinear p=2*k*q",
+      "Fin.ext + intro a b h avoids atom-splitting where omega sees unlocked Fin components differently",
+      "Mathlib v4.26.0 API: div_le_div_iff renamed to div_le_div_iff0; Nat.lt_succ_sqrt renamed to Nat.lt_succ_sqrt-prime",
+      "Build clean 2026-04-26d: all API errors fixed, exactly 2 sorries remain in main file"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Implement Case 2 of chebyshev_trig_sum_lb (~150 lines): setup 30 lines (arccos/sin), nearest node 20 lines (floor arith), harmonic sum 80 lines (similar to h_harm_chain), small-n case 40 lines",
-      "divergence_from_lebesgue_growth: weaken sorry to lim sup = ∞ version (provable by Banach-Steinhaus/Baire); current statement (full sequence → +∞) may require lacunary construction (~300 lines)"
+      "Implement Case 2 of chebyshev_trig_sum_lb: setup(30)+nearest-node(20)+harmonic-sum(80)+small-n(40) lines; abs_cos_sub_cos_le and abs_sin_le_abs are already proved",
+      "For divergence_from_lebesgue_growth: weaken to lim sup statement (Banach-Steinhaus); current signed divergence needs lacunary construction (~300 lines)"
     ]
   },
   "tags": [
@@ -113,11 +120,11 @@
     {
       "path": "Proofs/Erdos1151OQ04.lean",
       "filename": "Erdos1151OQ04.lean",
-      "lineCount": 1001,
+      "lineCount": 1263,
       "theoremCount": 29,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 5,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1151OQ04.lean"
     },

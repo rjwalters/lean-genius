@@ -301,3 +301,55 @@ but requires an additional case split on n and more delicate floor arithmetic.
 1. Implement the nearest-node setup (30 lines, straightforward)
 2. Implement the harmonic sub-sum for large n using the pattern from h_harm_chain (80 lines)
 3. Handle the small-n case with nearest-node single term (40 lines)
+
+## Session 2026-04-26d — API Fixes + Helper Lemmas + Compilation Clean
+
+**Outcome**: progress — build now compiles cleanly with exactly 2 sorries remaining  
+**Sorries changed**: 2 (unchanged count, but all prior compilation errors fixed)
+
+### What I Did
+
+1. **Fixed Mathlib v4.26.0 API breakage** (6 locations):
+   - `div_le_div_iff` → `div_le_div_iff₀` (3 occurrences in cot_ge_inv_two_mul, h_angle_le, h_inv_ineq)
+   - `Nat.lt_succ_sqrt` → `Nat.lt_succ_sqrt'`
+   - Removed trailing `ring` after `field_simp` in sin_div_one_add_cos (field_simp now closes goal)
+   - Added `[Real.pi_pos]` hint to `nlinarith` in chebyshevAngle_pos_lt_pi
+
+2. **Proved `abs_sin_le_abs`** (|sin t| ≤ |t| for all t ∈ ℝ):
+   - Piecewise: t ∈ [0,π] → sin_le; |t| > π → |sin| ≤ 1 ≤ |t| via nlinarith + Real.one_le_pi_div_two
+   - Negative t via sin_nonpos_of_nonpos_of_neg_pi_le + sin_neg symmetry
+
+3. **Proved `abs_cos_sub_cos_le`** (|cos a - cos b| ≤ |a - b|, 1-Lipschitz):
+   - Uses Real.cos_sub_cos product formula, then abs_sin_le_abs for one factor and |sin| ≤ 1 for the other
+   - nlinarith closes via 2 · 1 · (|a-b|/2) = |a-b|
+
+4. **Improved Case 2 of `chebyshev_trig_sum_lb`**:
+   - Proved `hx_ne_one`: cos(πp/q) ≠ 1 since p odd. Key technique: `linear_combination hpZ` to
+     introduce m = k*q as a linear variable so omega sees p = 2m (not nonlinear p = 2kq)
+   - Proved `hσ_pos`: σ = sin(arccos x) > 0 via Real.sin_arccos + sqrt_pos_of_pos + nlinarith (x²<1)
+   - Fixed `hg_inj`: replaced fun ⟨j,hj⟩ ⟨j',hj'⟩ destructuring with intro a b h + Fin.ext to
+     avoid atom-splitting issue where omega sees ↑↑⟨j,hj⟩ ≠ ↑j
+   - Fixed `hIcc`: replaced simp+omega with explicit constructor+rintro proof
+
+5. **Build result**: All previously failing errors resolved. Clean compile with 2 sorries:
+   - Line 1170: `chebyshev_trig_sum_lb` Case 2 main estimate
+   - Line 1248: `divergence_from_lebesgue_growth`
+
+### Key Techniques
+
+- **linear_combination for nonlinear omega**: When omega needs `p = 2*m` but only has `p = 2*k*q`
+  (nonlinear), introduce `m = k*q` as a single integer via `obtain ⟨m, hm⟩ : ∃ m : ℤ, p = 2*m := ⟨k*q, by linear_combination hpZ⟩`
+- **Fin.ext instead of fun ⟨j,hj⟩ destructuring**: For injective goals on Fin, use `intro a b h; apply Fin.ext`
+  then add `ha_lt := Nat.lt_of_lt_of_le a.isLt hm_le_n` to give omega all needed bounds
+- **abs_cos_sub_cos_le built locally**: Mathlib's Real.cos_sub_cos is available but the 1-Lipschitz
+  conclusion needs manual assembly via abs_sin_le_abs (also proved locally)
+
+### Remaining Sorries (2)
+
+1. `chebyshev_trig_sum_lb` Case 2: nearest-node + harmonic sub-sum (~150 lines, strategy in 2026-04-26c)
+2. `divergence_from_lebesgue_growth`: lacunary construction / UBP gap (OPEN mathematical issue)
+
+### Next Steps
+
+1. Attempt Case 2 of chebyshev_trig_sum_lb following the 2026-04-26c strategy
+2. Key building blocks are now in place: abs_cos_sub_cos_le, abs_sin_le_abs, log_add_one_le_harmonic
