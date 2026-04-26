@@ -129,7 +129,22 @@
     {
       "targetId": "divisibility-by-3",
       "relationship": "extends",
-      "description": "Extends the divisibility by 3 rule with efficient digital root computation"
+      "description": "Parent entry: the digit sum divisibility rule for 3 (n is divisible by 3 iff its digit sum is divisible by 3), proved via 10 ≡ 1 (mod 3). This entry extends that rule to the full digital root: the efficient O(1) closed form dr(n) = 1 + ((n-1) mod 9), idempotency, divisibility by 9, and the additive/multiplicative homomorphism properties that make digital root a ring homomorphism ℤ/9ℤ → {1,...,9}"
+    },
+    {
+      "targetId": "divisibility-by-3-oq-03-oq-02",
+      "relationship": "extended-by",
+      "description": "Generalizes the digital root formula from base 10 to arbitrary base b ≥ 2: dr_b(n) = 1 + ((n-1) mod (b-1)). The base-10 formula dr(n) = 1 + ((n-1) mod 9) proved here is the b=10 instance of that generalization. The key congruence n ≡ digitSum_b(n) (mod b-1) holds in every base because b ≡ 1 (mod b-1)"
+    },
+    {
+      "targetId": "divisibility-rules",
+      "relationship": "related",
+      "description": "A comprehensive collection of formal divisibility rules: last-k-digits for powers of 2 and 5, alternating digit sum for 11, and others. The digital root here specializes to divisibility by 3 and 9: digitalRoot_div3 (3 | n ↔ 3 | dr(n)) and digitalRoot_div9 (9 | n ↔ dr(n) = 9) are the base-10 instances of the general digit-sum divisibility framework formalized in the comprehensive collection"
+    },
+    {
+      "targetId": "divisibility-by-three-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Formalizes repunit divisibility via the multiplicative order of 10: d | R(k) iff ord_d(10) | k. The digital root's key congruence n ≡ digitSum(n) (mod 9) uses the special case that ord_9(10) = 1 (since 10 ≡ 1 mod 9, so the order is 1). More generally, the digit-sum rule for any modulus m is controlled by the order of the base modulo m, connecting digital root theory to the multiplicative order framework"
     }
   ],
   "leanFile": {
