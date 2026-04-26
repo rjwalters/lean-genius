@@ -1,0 +1,215 @@
+[
+  {
+    "id": "ltoq04-module-header",
+    "proofId": "liouville-theorem-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 53
+    },
+    "type": "context",
+    "title": "P-adic Liouville: Strategy and Archimedean Complement",
+    "content": "The classical Liouville theorem (Wiedijk #18) rests on the Archimedean property: any nonzero integer satisfies $|n| \\geq 1$. This gives an immediate lower bound for $|f(p/q)|$ when $f \\in \\mathbb{Z}[X]$ — clearing denominators produces $q^d \\cdot f(p/q) \\in \\mathbb{Z} \\setminus \\{0\\}$, so $|q^d \\cdot f(p/q)| \\geq 1$, hence $|f(p/q)| \\geq 1/|q|^d$.\n\nIn the p-adic world, this argument fails: the p-adic norm of a nonzero integer can be arbitrarily small (if $p^k \\mid n$, then $|n|_p = p^{-k}$). The **Archimedean Complement Lemma** is the fix: for nonzero $n \\in \\mathbb{N}$, writing $n = p^v \\cdot m$ with $\\gcd(m, p) = 1$ gives $|n|_p = p^{-v}$ and $n \\geq p^v$ (since $m \\geq 1$), so:\n$$|n|_p = p^{-v} \\geq \\frac{1}{n}$$\nThis replaces the Archimedean lower bound $|n| \\geq 1$ with the product inequality $|n|_p \\cdot |n| \\geq 1$: what one metric loses, the other compensates.\n\nThe six Mathlib imports provide: classical Liouville infrastructure (`Liouville.Basic`), p-adic norm API (`PadicNorm`), the p-adic number field $\\mathbb{Q}_p$ (`PadicNumbers`), valuation machinery (`PadicVal.Basic`), algebraic number typeclasses (`Algebraic.Basic`), and polynomial evaluation (`Polynomial.Eval.Defs`).",
+    "mathContext": "The Archimedean Complement Lemma: $|N|_p \\cdot |N|_{\\infty} \\geq 1$ for $N \\in \\mathbb{Z} \\setminus \\{0\\}$. Proof: $N = p^v \\cdot m$ ($\\gcd(m,p)=1$) $\\Rightarrow |N|_p = p^{-v}$ and $|N|_{\\infty} \\geq p^v$. In Lean: `padicNorm p n ≥ 1/n` for nonzero $n : \\mathbb{N}$. This is the non-Archimedean analog of $|n|_{\\infty} \\geq 1$ — rather than a uniform lower bound, we get a reciprocal bound that involves both the p-adic and Archimedean norms simultaneously.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Archimedean property",
+      "p-adic norm",
+      "padicValNat",
+      "ultrametric inequality",
+      "product formula"
+    ],
+    "prerequisites": [
+      "Classical Liouville theorem (parent entry)",
+      "p-adic valuation: v_p(n) = largest k with p^k | n",
+      "p-adic norm: |n|_p = p^{-v_p(n)}",
+      "Archimedean Complement Lemma"
+    ]
+  },
+  {
+    "id": "ltoq04-archimedean-complement-proof",
+    "proofId": "liouville-theorem-oq-04",
+    "range": {
+      "startLine": 62,
+      "endLine": 120
+    },
+    "type": "insight",
+    "title": "Archimedean Complement Lemma: Formal Proof via pow_padicValNat_dvd",
+    "content": "Three theorems establish the core bound:\n\n**`padicNorm_nat_ge_inv`** (lines 70–90): Proves $n^{-1} \\leq \\text{padicNorm}\\, p\\, n$ for nonzero $n : \\mathbb{N}$. The four-step proof:\n1. Rewrite `padicNorm p n = p^(-padicValNat p n)` using `padicNorm.eq_zpow_of_nonzero` + `padicValRat.of_nat`\n2. Apply Mathlib's `pow_padicValNat_dvd`: $p^{v_p(n)} \\mid n$\n3. Conclude $p^{v_p(n)} \\leq n$ via `Nat.le_of_dvd` (since $n > 0$)\n4. Apply `one_div_le_one_div_of_le` to get $1/n \\leq 1/p^{v_p(n)} = \\text{padicNorm}\\, p\\, n$\n\n**`padicNorm_int_ge_inv`** (lines 94–109): Extends to integers $z : \\mathbb{Z}$ by case-splitting on `Int.natAbs_eq z` (either $z = \\pm z.\\text{natAbs}$) and using `padicNorm.neg` for the negative case.\n\n**`padicNorm_nat_mul_self_ge_one`** (lines 112–120): Reformulates as $1 \\leq |n|_p \\cdot n$, the product-formula form of the complement lemma. Proof: multiply the lower bound $1/n \\leq |n|_p$ by $n > 0$, then use `inv_mul_cancel₀`.",
+    "mathContext": "The key Mathlib lemma is `pow_padicValNat_dvd`: $p^{v_p(n)} \\mid n$ for $n \\in \\mathbb{N}$. Combined with $n \\geq p^{v_p(n)}$ (from divisibility + positivity) and $\\text{padicNorm}\\, p\\, n = p^{-v_p(n)}$, we get: $\\frac{1}{n} \\leq \\frac{1}{p^{v_p(n)}} = \\text{padicNorm}\\, p\\, n$. The equality case $\\text{padicNorm}\\, p\\, n = 1/n$ occurs exactly when $n = p^k$ for some $k \\geq 0$: then $v_p(n) = k$ and $n = p^k = p^{v_p(n)}$, so the inequality is tight.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pow_padicValNat_dvd",
+      "padicNorm.eq_zpow_of_nonzero",
+      "padicValRat.of_nat",
+      "one_div_le_one_div_of_le",
+      "Nat.le_of_dvd",
+      "Int.natAbs_eq",
+      "padicNorm.neg"
+    ],
+    "prerequisites": [
+      "p-adic valuation padicValNat",
+      "padicNorm.eq_zpow_of_nonzero",
+      "pow_padicValNat_dvd (Mathlib)",
+      "ordered field arithmetic in ℚ"
+    ]
+  },
+  {
+    "id": "ltoq04-complete-bounds",
+    "proofId": "liouville-theorem-oq-04",
+    "range": {
+      "startLine": 122,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "Complete Bounds: 1/n ≤ padicNorm p n ≤ 1 for All Nonzero Naturals",
+    "content": "Part II isolates the Archimedean Complement Lemma as a standalone clean statement and combines it with Mathlib's built-in upper bound.\n\n**`archimedean_complement`** (line 138): Pure alias for `padicNorm_nat_ge_inv`, providing a canonically named reference to the lower bound $1/n \\leq |n|_p$.\n\n**`padicNorm_int_le_one`** (line 143): The upper bound $|n|_p \\leq 1$ for all $n : \\mathbb{N}$ — a direct application of Mathlib's `padicNorm.of_nat`. This reflects the non-Archimedean property: integers have p-adic norm at most 1 (they lie in the valuation ring $\\mathbb{Z}_p$).\n\n**`padicNorm_nat_bounds`** (lines 146–148): Combines both into a single conjunction: for nonzero $n$, $1/n \\leq |n|_p \\leq 1$. This **interval shrinks as $n$ grows**: as $n \\to \\infty$, the lower bound $1/n \\to 0$ while the upper bound stays at 1. The equality $|n|_p = 1/n$ is achieved precisely at $n = p^k$, while $|n|_p = 1$ is achieved when $\\gcd(n, p) = 1$ (coprime to $p$). Between these extremes, $|n|_p$ takes values $p^{-k}$ for $0 \\leq k \\leq v_p(n)$.",
+    "mathContext": "For $n : \\mathbb{N}$, $n \\neq 0$: $\\frac{1}{n} \\leq |n|_p \\leq 1$. Upper bound: $n \\in \\mathbb{Z}_p$ (the p-adic integers), so $|n|_p \\leq 1$ always. Lower bound: the complement lemma. The interval $[1/n, 1]$ is tight: $|n|_p = 1$ iff $p \\nmid n$; $|n|_p = 1/n$ iff $n = p^k$. For example: $|6|_2 = 1/2 \\in [1/6, 1]$, $|7|_3 = 1 \\in [1/7, 1]$, $|25|_5 = 1/25 \\in [1/25, 1]$ (equality).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "padicNorm.of_nat",
+      "p-adic integers Z_p",
+      "valuation ring",
+      "non-Archimedean norm",
+      "padicNorm.of_nat"
+    ],
+    "prerequisites": [
+      "padicNorm_nat_ge_inv",
+      "padicNorm.of_nat (Mathlib upper bound)",
+      "p-adic integers as the unit ball"
+    ]
+  },
+  {
+    "id": "ltoq04-height-definition",
+    "proofId": "liouville-theorem-oq-04",
+    "range": {
+      "startLine": 150,
+      "endLine": 183
+    },
+    "type": "definition",
+    "title": "Naive Height and the Polynomial Evaluation Bound (sorry)",
+    "content": "Part III introduces the **naive height** and states the polynomial evaluation bound that is the technical heart of the p-adic Liouville theorem.\n\n**`naiveHeight`** (lines 156–157): For a rational $x = a/b$ (in lowest terms), the naive height is $H(x) = \\max(|a|, b)$. The `noncomputable` marker reflects that Lean cannot computationally evaluate this for arbitrary rationals — it requires the rational's internal representation. **`naiveHeight_pos`** (lines 160–162): $H(x) \\geq 1$ always, since the denominator satisfies $b \\geq 1$.\n\n**`intPairHeight`** (line 165): The height of an integer pair $(r, s)$ as $\\max(|r|, |s|)$ — the version used in the main theorem statement where $r, s$ are not necessarily coprime.\n\n**`padicNorm_poly_eval_bound`** (lines 177–183, sorry): For $f \\in \\mathbb{Z}[X]$ irreducible of degree $d$ and $r/s \\in \\mathbb{Q}$ not a root of $f$:\n$$|f(r/s)|_p \\geq \\frac{C_f}{\\max(|r|, |s|)^d}$$\nwhere $C_f > 0$ depends only on $f$'s coefficients. The proof outline in the comment explains three steps: (1) $s^d \\cdot f(r/s) \\in \\mathbb{Z}$ and is nonzero; (2) the Archimedean Complement Lemma gives $|f(r/s)|_p \\geq |s^d \\cdot f(r/s)|_p$; (3) bounding the integer $|s^d \\cdot f(r/s)|$ by $C_f \\cdot H^d$. The sorry is classified as HARD — an Aristotle candidate.",
+    "mathContext": "$H(r/s) = \\max(|r|, |s|)$ for $(r, s) \\in \\mathbb{Z}^2$, $s \\neq 0$. The key bound: $s^d \\cdot f(r/s) \\in \\mathbb{Z} \\setminus \\{0\\}$ (clearing denominators) $\\Rightarrow |f(r/s)|_p = |s^d \\cdot f(r/s)|_p \\cdot |s|_p^{-d}$. Since $|s|_p \\leq 1$, we have $|f(r/s)|_p \\geq |s^d \\cdot f(r/s)|_p \\geq 1/|s^d \\cdot f(r/s)| \\geq 1/(C_f \\cdot H^d)$. **Why height, not denominator?** The p-adic norm $|r/s|_p = p^{v_p(r) - v_p(s)}$ depends on $v_p(r)$ as well — if $p \\mid r$, then $|r/s|_p = p^{v_p(r)-v_p(s)}$ is different from $|1/s|_p = p^{-v_p(s)}$. So the numerator $r$ cannot be ignored in p-adic approximation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "naiveHeight",
+      "intPairHeight",
+      "denominator vs height",
+      "p-adic norm of rational",
+      "polynomial evaluation",
+      "Aristotle candidate"
+    ],
+    "prerequisites": [
+      "rational number representation in Lean (Rat.num, Rat.den)",
+      "polynomial evaluation over ℚ",
+      "padicNorm on ℚ (via algebraMap)",
+      "Archimedean Complement Lemma (Part I)"
+    ]
+  },
+  {
+    "id": "ltoq04-padic-liouville-def",
+    "proofId": "liouville-theorem-oq-04",
+    "range": {
+      "startLine": 185,
+      "endLine": 209
+    },
+    "type": "definition",
+    "title": "P-adic Liouville Numbers: Height vs Denominator in the p-adic World",
+    "content": "**`IsPadicLiouville`** (lines 201–204): A p-adic number $\\beta \\in \\mathbb{Q}_p$ is p-adically Liouville if for every $n : \\mathbb{N}$, there exist coprime integers $r, s$ with $s \\neq 0$ such that:\n$$\\|\\beta - r/s\\|_p < \\frac{1}{\\max(|r|, |s|)^n}$$\nThe comment explains why height replaces denominator: in the p-adic world, $v_p(r/s) = v_p(r) - v_p(s)$ depends on *both* numerator and denominator, so approximation quality cannot be measured by $|s|$ alone. The height $\\max(|r|, |s|)$ incorporates both and matches what appears naturally in the polynomial evaluation bound.\n\n**`isPadicLiouville_forall`** (lines 207–209): A utility lemma dropping the coprimality condition (just extracting $r, s$ with the approximation bound), useful for applying the condition without managing `Int.gcd`. The proof is a one-line deconstruction: `fun n => let ⟨r, s, hs, _, happrox⟩ := h n; ⟨r, s, hs, happrox⟩`.\n\n**Relation to classical definition**: The classical Liouville condition uses $|\\alpha - p/q| < 1/q^n$. The p-adic version uses height $H = \\max(|r|, |s|)$ instead of denominator $|s|$. Since $H \\geq |s|$ always, the p-adic condition $1/H^n < 1/|s|^n$ is *more restrictive* — a p-adically Liouville number must be approximated faster than classically Liouville. This reflects the fundamental difference: p-adic closeness also depends on the numerator.",
+    "mathContext": "$\\beta \\in \\mathbb{Q}_p$ is p-adically Liouville iff $\\forall n, \\exists r, s \\in \\mathbb{Z}, s \\neq 0, \\gcd(r,s) = 1,\\, \\|\\beta - r/s\\|_p < 1/\\max(|r|,|s|)^n$. Key type note: the norm $\\|\\cdot\\|$ here is the p-adic norm on $\\mathbb{Q}_p$ (the completion), not `padicNorm` on $\\mathbb{Q}$. The embedding $\\mathbb{Q} \\hookrightarrow \\mathbb{Q}_p$ sends $r/s \\mapsto (r : \\mathbb{Q}_p) / s$, and the norms are compatible: $\\|r/s\\|_p = |r/s|_p$ for $r/s \\in \\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsPadicLiouville",
+      "naive height vs denominator",
+      "ℚ_[p] (p-adic completion)",
+      "classical Liouville condition",
+      "coprimality condition",
+      "ultrametric inequality"
+    ],
+    "prerequisites": [
+      "ℚ_[p] as the p-adic completion of ℚ",
+      "p-adic norm ‖·‖ on ℚ_[p]",
+      "embedding ℚ → ℚ_[p]",
+      "classical Liouville condition"
+    ]
+  },
+  {
+    "id": "ltoq04-main-theorem",
+    "proofId": "liouville-theorem-oq-04",
+    "range": {
+      "startLine": 211,
+      "endLine": 259
+    },
+    "type": "insight",
+    "title": "Main Theorem: P-adic Algebraic Numbers Are Not P-adic Liouville",
+    "content": "Part V contains the axiomatized core and the main theorem.\n\n**`padic_liouville_estimate`** (lines 234–238, axiom): The essential lower bound — if $\\alpha \\in \\mathbb{Q}_p$ is algebraic with minimal polynomial $f \\in \\mathbb{Z}[X]$ of degree $d$, then:\n$$\\|\\alpha - r/s\\|_p \\geq \\frac{C_\\alpha}{\\max(|r|, |s|)^d}$$\nfor some $C_\\alpha > 0$ depending only on $\\alpha$. The proof outline (lines 224–232) explains the Taylor expansion strategy: $f(r/s) = (r/s - \\alpha) \\cdot g(r/s, \\alpha)$ over $\\mathbb{Q}_p$ (using $f(\\alpha) = 0$), so $\\|f(r/s)\\|_p = \\|r/s - \\alpha\\|_p \\cdot \\|g(r/s, \\alpha)\\|_p$. The non-Archimedean bound on $g$ and the polynomial evaluation bound on $f$ together give the estimate. This axiom requires the **Taylor expansion in $\\mathbb{Q}_p$** — the key infrastructure gap.\n\n**`padic_algebraic_not_liouville`** (lines 245–259, sorry): The main theorem: algebraic $\\alpha \\in \\mathbb{Q}_p$ cannot be p-adically Liouville. The proof strategy uses the axiom to get $\\|\\alpha - r/s\\|_p \\geq C/H^d$, then takes $n = d + 1$ in the Liouville condition to get $\\|\\alpha - r/s\\|_p < 1/H^{d+1}$. For large $H$: $C/H^d \\leq \\|\\cdot\\|_p < 1/H^{d+1} = 1/(H \\cdot H^d)$, so $C \\leq 1/H$ — contradicted by taking $H > 1/C$. The sorry marks the step of constructing such $r/s$ with height $H \\geq \\lceil 1/C \\rceil$.",
+    "mathContext": "The proof gap (sorry): given $C > 0$ from the axiom, the Liouville condition guarantees $r/s$ with $\\|\\alpha - r/s\\|_p < 1/H^{d+1}$ for all $H$. To derive a contradiction, we need $H \\geq \\lceil 1/C \\rceil$. This requires showing the Liouville approximations can be taken with height at least any given bound — a quantitative form of the Liouville condition that the current `IsPadicLiouville` definition ensures (since it quantifies over all $n$, including large $n$, and for each $n$ gives $r, s$ with `‖α - r/s‖_p < 1/H^n ≤ 1/H`). Formalizing this in Lean requires extracting the height lower bound from the approximation quality bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "padic_liouville_estimate (axiom)",
+      "IsPadicLiouville",
+      "Taylor expansion in ℚ_[p]",
+      "ultrametric inequality",
+      "algebraic numbers over ℚ",
+      "minimal polynomial"
+    ],
+    "prerequisites": [
+      "IsPadicLiouville definition",
+      "padicNorm_poly_eval_bound (Part III)",
+      "p-adic Taylor expansion (requires ℚ_[p] analysis)",
+      "algebraMap ℤ → ℚ_[p]"
+    ]
+  },
+  {
+    "id": "ltoq04-analogs-comparison",
+    "proofId": "liouville-theorem-oq-04",
+    "range": {
+      "startLine": 261,
+      "endLine": 322
+    },
+    "type": "context",
+    "title": "Structural Universality: Function Field Analog and Classical Comparison",
+    "content": "Parts VI and VII are discussion docstrings explaining the universal structure of the p-adic Liouville argument and its relationship to the classical real case.\n\n**Function field analog** (lines 261–292): The identical proof strategy works over function fields $\\mathbb{F}_q(t)$ with the $t$-adic absolute value $|\\cdot|_t = q^{-v_t(\\cdot)}$. The function-field Archimedean Complement Lemma reads $|P|_t \\geq q^{-\\deg(P)}$ for nonzero $P \\in \\mathbb{F}_q[t]$: since $P = t^{v_t(P)} \\cdot Q$ with $Q$ coprime to $t$, we have $v_t(P) \\leq \\deg(P)$, so $|P|_t = q^{-v_t(P)} \\geq q^{-\\deg(P)} = 1/q^{\\deg(P)}$. The structural parallel: polynomial degree over $\\mathbb{F}_q[t]$ plays the role of Archimedean absolute value over $\\mathbb{Z}$.\n\n**Classical comparison** (lines 294–322): The fundamental divergence between real and p-adic Liouville theory:\n- **Real**: $|f(r/q)| \\geq 1/|q|^d$ — the denominator alone controls approximation quality, because the Archimedean lower bound $|N| \\geq 1$ applies directly.\n- **P-adic**: $|f(r/s)|_p \\geq 1/(C_f \\cdot \\max(|r|, |s|)^d)$ — height controls because the Archimedean Complement Lemma introduces the numerator.\n- **Consequence**: The p-adic Liouville condition is *harder* to satisfy than the classical one. There exist classically Liouville numbers that fail to be p-adically Liouville for any prime $p$.",
+    "mathContext": "Function field analog: Over $\\mathbb{F}_q(t)$, the ring $\\mathbb{F}_q[t]$ of polynomials plays the role of $\\mathbb{Z}$. The 'Archimedean norm' of $P \\in \\mathbb{F}_q[t]$ is $q^{\\deg P}$; the 't-adic norm' is $q^{-v_t(P)}$. The complement lemma: $q^{-v_t(P)} \\cdot q^{\\deg P} \\geq 1$ (since $v_t(P) \\leq \\deg P$). The same proof gives: algebraic elements of $\\mathbb{F}_q[[t]]$ (power series, the function-field analog of $\\mathbb{Q}_p$) are not $t$-adically Liouville. Classical vs p-adic: height $H(r/s) = \\max(|r|,|s|) \\geq |s|$ always, so $1/H^n \\leq 1/|s|^n$ — p-adic Liouville approximations must be faster than classical ones.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "function field F_q(t)",
+      "t-adic valuation",
+      "polynomial degree as norm",
+      "structural universality of valuation theory",
+      "classical Liouville condition",
+      "naive height vs denominator"
+    ],
+    "prerequisites": [
+      "non-Archimedean valued fields",
+      "function fields F_q(t)",
+      "classical Liouville theorem",
+      "height functions in Diophantine approximation"
+    ]
+  },
+  {
+    "id": "ltoq04-examples",
+    "proofId": "liouville-theorem-oq-04",
+    "range": {
+      "startLine": 324,
+      "endLine": 398
+    },
+    "type": "concept",
+    "title": "Concrete Verifications and Sorry Inventory",
+    "content": "Part VIII provides five verified examples demonstrating the Archimedean Complement Lemma bounds. Each is a direct application of `padicNorm_nat_ge_inv`.\n\n**`example_2_6`**: $1/6 \\leq |6|_2 = 1/2$ — since $2 \\mid 6$ but $4 \\nmid 6$, the 2-adic valuation $v_2(6) = 1$, so $|6|_2 = 2^{-1} = 1/2 \\geq 1/6$.\n\n**`example_5_25`**: $1/25 \\leq |25|_5 = 1/25$ — **equality case**: $25 = 5^2$, so $v_5(25) = 2$ and $|25|_5 = 5^{-2} = 1/25 = 1/n$. This is the tight case $n = p^k$.\n\n**`example_3_7`**: $1/7 \\leq |7|_3 = 1$ — since $3 \\nmid 7$ (7 is coprime to 3), $v_3(7) = 0$ and $|7|_3 = 1$. This is the other extreme: $|n|_p = 1$ when $n$ is coprime to $p$.\n\n**`example_upper_bound`** and **`example_2_12_bounds`**: The combined bounds $1/12 \\leq |12|_2 \\leq 1$ — note $|12|_2 = |4 \\cdot 3|_2 = |4|_2 = 1/4$ (exact value), consistent with the bounds.\n\nPart IX documents the sorry inventory: 1 OPEN axiom (`padic_liouville_estimate`, Taylor expansion in $\\mathbb{Q}_p$) and 1 HARD sorry (`padic_algebraic_not_liouville`, formal contradiction step for large height). The HARD sorry for `padicNorm_poly_eval_bound` makes it an Aristotle candidate — the proof steps are fully outlined and involve finite Lean arithmetic manipulations.",
+    "mathContext": "Three distinct p-adic norm patterns in the examples: (1) $p \\mid n$ but $p^2 \\nmid n$: $|n|_p = 1/p$ (e.g., $|6|_2 = 1/2$). (2) $n = p^k$: $|n|_p = 1/n$ (equality, e.g., $|25|_5 = 1/25$). (3) $p \\nmid n$: $|n|_p = 1$ (e.g., $|7|_3 = 1$). For $n = 12 = 2^2 \\cdot 3$: $v_2(12) = 2$, so $|12|_2 = 1/4$ (not 1/12, not 1/2 — the bound is not tight). The examples together illustrate the full range of the complement lemma: from equality (tight) to factor-of-$n$ gap.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "padicNorm_nat_ge_inv",
+      "p-adic valuation of composite numbers",
+      "equality case n = p^k",
+      "coprime case |n|_p = 1",
+      "Aristotle candidate classification"
+    ],
+    "prerequisites": [
+      "p-adic valuation computation",
+      "decide/norm_num tactics",
+      "padicNorm.of_nat (upper bound)",
+      "padicNorm_nat_bounds"
+    ]
+  }
+]

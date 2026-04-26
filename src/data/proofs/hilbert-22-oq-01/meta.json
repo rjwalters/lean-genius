@@ -24,19 +24,19 @@
     "originalContributions": [
       "Kodaira dimension as classification invariant",
       "Enriques-Kodaira surface classification",
-      "Analogy table: 1D uniformization → higher-dim Kodaira"
+      "Analogy table: 1D uniformization \u2192 higher-dim Kodaira"
     ]
   },
   "overview": {
-    "historicalContext": "The uniformization theorem — proved independently by Poincaré and Koebe in 1907 — gives a complete classification of simply connected Riemann surfaces: every one is biholomorphic to the sphere S², the complex plane ℂ, or the unit disk 𝔻. This trichotomy corresponds to positive, zero, and negative curvature. In higher dimensions, no single theorem achieves a comparable classification. The Kodaira dimension κ(X) — introduced by Kunihiko Kodaira in a landmark series of papers (1960–1969) — provides the right invariant: it measures the growth rate of pluricanonical sections and takes values in {-∞, 0, 1, ..., dim X}. For complex surfaces (dim 2), Kodaira completed the Enriques classification into 8 topological-algebraic classes. In 1977, Shing-Tung Yau proved the Calabi conjecture (Fields Medal 1982), establishing existence of Kähler-Einstein metrics on manifolds with non-positive first Chern class — the higher-dimensional 'hyperbolic metric' analogue. Shoshichi Kobayashi introduced his eponymous hyperbolicity in 1967 as the direct generalization of the 'hyperbolic type' in uniformization: a manifold is Kobayashi hyperbolic if every entire holomorphic curve is constant. The Lang conjecture (1986) predicts that manifolds of general type (κ = dim) are Kobayashi hyperbolic.",
+    "historicalContext": "The uniformization theorem \u2014 proved independently by Poincar\u00e9 and Koebe in 1907 \u2014 gives a complete classification of simply connected Riemann surfaces: every one is biholomorphic to the sphere S\u00b2, the complex plane \u2102, or the unit disk \ud835\udd3b. This trichotomy corresponds to positive, zero, and negative curvature. In higher dimensions, no single theorem achieves a comparable classification. The Kodaira dimension \u03ba(X) \u2014 introduced by Kunihiko Kodaira in a landmark series of papers (1960\u20131969) \u2014 provides the right invariant: it measures the growth rate of pluricanonical sections and takes values in {-\u221e, 0, 1, ..., dim X}. For complex surfaces (dim 2), Kodaira completed the Enriques classification into 8 topological-algebraic classes. In 1977, Shing-Tung Yau proved the Calabi conjecture (Fields Medal 1982), establishing existence of K\u00e4hler-Einstein metrics on manifolds with non-positive first Chern class \u2014 the higher-dimensional 'hyperbolic metric' analogue. Shoshichi Kobayashi introduced his eponymous hyperbolicity in 1967 as the direct generalization of the 'hyperbolic type' in uniformization: a manifold is Kobayashi hyperbolic if every entire holomorphic curve is constant. The Lang conjecture (1986) predicts that manifolds of general type (\u03ba = dim) are Kobayashi hyperbolic.",
     "problemStatement": "How does the uniformization theorem generalize to higher-dimensional complex manifolds? Specifically: what replaces the trichotomy $\\{S^2, \\mathbb{C}, \\mathbb{D}\\}$ in dimension $n \\ge 2$, and is there a finite classification of simply connected complex manifolds?",
-    "proofStrategy": "Formal exploration via three constructs: (1) `KodairaDimension` inductive type encoding {-∞, finite k} with explicit Riemann-surface map; (2) `SurfaceClass` + `surfaceKodaira` encoding the 8-class Enriques-Kodaira surface classification; (3) `IsKobayashiHyperbolic` definition via Brody's theorem criterion. One theorem (`model_spaces_dim_one`) proves that dimension 1 has exactly 3 model spaces. The analogy table in the docstring makes the uniformization dictionary machine-readable.",
+    "proofStrategy": "Formal exploration via three constructs: (1) `KodairaDimension` inductive type encoding {-\u221e, finite k} with explicit Riemann-surface map; (2) `SurfaceClass` + `surfaceKodaira` encoding the 8-class Enriques-Kodaira surface classification; (3) `IsKobayashiHyperbolic` definition via Brody's theorem criterion. One theorem (`model_spaces_dim_one`) proves that dimension 1 has exactly 3 model spaces. The analogy table in the docstring makes the uniformization dictionary machine-readable.",
     "keyInsights": [
-      "The uniformization trichotomy {S², ℂ, 𝔻} maps precisely to Kodaira dimensions {-∞, 0, 1=dim}: the same geometric trichotomy (spherical/parabolic/hyperbolic) is indexed by the canonical bundle's growth rate in higher dimensions",
-      "In dimension 2, the Enriques-Kodaira classification achieves a complete finite list of 8 surface classes — the only dimension > 1 where this is possible; in dimension ≥ 3, no comparable classification exists",
-      "Yau's theorem (Calabi conjecture proof) establishes the unique Kähler-Einstein metric on manifolds with c₁ ≤ 0, playing the role of the Poincaré metric for the 'negative curvature' regime",
-      "Kobayashi hyperbolicity, formalized here via Brody's criterion (entire functions must be constant), is the correct higher-dimensional analogue of the hyperbolic type: the disk 𝔻 is Kobayashi hyperbolic; ℂ is not",
-      "The contrast between dim 1 (exactly 3 simply connected models, proved by decision procedure) and dim ≥ 2 (infinitely many) captures the fundamental difficulty: compactness + simple connectedness no longer pin down the space"
+      "The uniformization trichotomy {S\u00b2, \u2102, \ud835\udd3b} maps precisely to Kodaira dimensions {-\u221e, 0, 1=dim}: the same geometric trichotomy (spherical/parabolic/hyperbolic) is indexed by the canonical bundle's growth rate in higher dimensions",
+      "In dimension 2, the Enriques-Kodaira classification achieves a complete finite list of 8 surface classes \u2014 the only dimension > 1 where this is possible; in dimension \u2265 3, no comparable classification exists",
+      "Yau's theorem (Calabi conjecture proof) establishes the unique K\u00e4hler-Einstein metric on manifolds with c\u2081 \u2264 0, playing the role of the Poincar\u00e9 metric for the 'negative curvature' regime",
+      "Kobayashi hyperbolicity, formalized here via Brody's criterion (entire functions must be constant), is the correct higher-dimensional analogue of the hyperbolic type: the disk \ud835\udd3b is Kobayashi hyperbolic; \u2102 is not",
+      "The contrast between dim 1 (exactly 3 simply connected models, proved by decision procedure) and dim \u2265 2 (infinitely many) captures the fundamental difficulty: compactness + simple connectedness no longer pin down the space"
     ]
   },
   "sections": [
@@ -46,15 +46,15 @@
       "startLine": 1,
       "endLine": 26,
       "summary": "Imports all of Mathlib; docblock describing the four frameworks (Kodaira-Enriques, Yau's theorem, Kobayashi hyperbolicity, Minimal Model Program) for higher-dimensional uniformization; opens Hilbert22OQ01 namespace.",
-      "mathContext": "The docblock frames the research problem: the 1D uniformization trichotomy $\\{S^2, \\mathbb{C}, \\mathbb{D}\\}$ corresponds to $(\\kappa = -\\infty, \\kappa = 0, \\kappa = 1)$ by Kodaira dimension. Dimension 2: Enriques-Kodaira gives exactly 8 classes. Dimension $\\ge 3$: infinite classification via Mori theory and birational geometry. Yau's 1977 theorem (Calabi conjecture proof) provides Kähler-Einstein metrics for $c_1 \\le 0$, the higher-dimensional Poincaré metric analogue."
+      "mathContext": "The docblock frames the research problem: the 1D uniformization trichotomy $\\{S^2, \\mathbb{C}, \\mathbb{D}\\}$ corresponds to $(\\kappa = -\\infty, \\kappa = 0, \\kappa = 1)$ by Kodaira dimension. Dimension 2: Enriques-Kodaira gives exactly 8 classes. Dimension $\\ge 3$: infinite classification via Mori theory and birational geometry. Yau's 1977 theorem (Calabi conjecture proof) provides K\u00e4hler-Einstein metrics for $c_1 \\le 0$, the higher-dimensional Poincar\u00e9 metric analogue."
     },
     {
       "id": "kodaira",
       "title": "Kodaira Dimension",
       "startLine": 28,
       "endLine": 55,
-      "summary": "Defines `KodairaDimension` as {-∞, finite k} and maps the 1D uniformization trichotomy {S², ℂ, 𝔻} to Kodaira dimensions {-∞, 0, 1}.",
-      "mathContext": "\\texttt{KodairaDimension} has two constructors: \\texttt{negInfty} ($\\kappa = -\\infty$, rational/ruled) and \\texttt{finite k} ($\\kappa = k$, general). The function \\texttt{riemann\\_surface\\_kodaira : Fin 3 → KodairaDimension} maps: 0 $\\mapsto$ \\texttt{negInfty} ($S^2$), 1 $\\mapsto$ \\texttt{finite 0} ($\\mathbb{C}$), 2 $\\mapsto$ \\texttt{finite 1} ($\\mathbb{D}$). This encodes the heuristic: $\\kappa = -\\infty$ is 'positive curvature' (rational), $\\kappa = 0$ is 'flat' (Calabi-Yau/abelian), $\\kappa = \\dim$ is 'negative curvature' (general type/hyperbolic)."
+      "summary": "Defines `KodairaDimension` as {-\u221e, finite k} and maps the 1D uniformization trichotomy {S\u00b2, \u2102, \ud835\udd3b} to Kodaira dimensions {-\u221e, 0, 1}.",
+      "mathContext": "\\texttt{KodairaDimension} has two constructors: \\texttt{negInfty} ($\\kappa = -\\infty$, rational/ruled) and \\texttt{finite k} ($\\kappa = k$, general). The function \\texttt{riemann\\_surface\\_kodaira : Fin 3 \u2192 KodairaDimension} maps: 0 $\\mapsto$ \\texttt{negInfty} ($S^2$), 1 $\\mapsto$ \\texttt{finite 0} ($\\mathbb{C}$), 2 $\\mapsto$ \\texttt{finite 1} ($\\mathbb{D}$). This encodes the heuristic: $\\kappa = -\\infty$ is 'positive curvature' (rational), $\\kappa = 0$ is 'flat' (Calabi-Yau/abelian), $\\kappa = \\dim$ is 'negative curvature' (general type/hyperbolic)."
     },
     {
       "id": "surfaces",
@@ -62,7 +62,7 @@
       "startLine": 57,
       "endLine": 82,
       "summary": "Encodes the 8-class Enriques-Kodaira classification of compact complex surfaces with `SurfaceClass` and assigns each class its Kodaira dimension via `surfaceKodaira`.",
-      "mathContext": "The 8 surface classes: $\\kappa = -\\infty$: \\texttt{rational}, \\texttt{ruled}; $\\kappa = 0$: \\texttt{K3}, \\texttt{Enriques}, \\texttt{abelian}, \\texttt{hyperelliptic}; $\\kappa = 1$: \\texttt{elliptic}; $\\kappa = 2$: \\texttt{generalType}. The \\texttt{surfaceKodaira} function is a total match expression with 8 cases. This is the unique complete classification of compact complex manifolds in dimension $> 1$ — in dimension $\\ge 3$ no analogous finite list exists."
+      "mathContext": "The 8 surface classes: $\\kappa = -\\infty$: \\texttt{rational}, \\texttt{ruled}; $\\kappa = 0$: \\texttt{K3}, \\texttt{Enriques}, \\texttt{abelian}, \\texttt{hyperelliptic}; $\\kappa = 1$: \\texttt{elliptic}; $\\kappa = 2$: \\texttt{generalType}. The \\texttt{surfaceKodaira} function is a total match expression with 8 cases. This is the unique complete classification of compact complex manifolds in dimension $> 1$ \u2014 in dimension $\\ge 3$ no analogous finite list exists."
     },
     {
       "id": "yau-kobayashi",
@@ -76,15 +76,15 @@
       "title": "Model Spaces and Dimension Comparison",
       "startLine": 130,
       "endLine": 155,
-      "summary": "Proves `model_spaces_dim_one`: exactly 3 simply connected models in dimension 1 (by decide), contrasting with the infinitely many in dimension ≥ 2."
+      "summary": "Proves `model_spaces_dim_one`: exactly 3 simply connected models in dimension 1 (by decide), contrasting with the infinitely many in dimension \u2265 2."
     }
   ],
   "conclusion": {
-    "summary": "This formalization explores higher-dimensional uniformization through three lenses: the Kodaira dimension invariant (with its surface classification), Yau's Kähler-Einstein theorem, and Kobayashi hyperbolicity. The single verifiable theorem — that dimension 1 has exactly 3 model spaces — encodes the fundamental finiteness that fails in higher dimensions.",
-    "implications": "The Kodaira–Kobayashi–Yau framework underpins the modern birational classification program (Mori theory, minimal model program). Yau's theorem has been generalized by Aubin-Yau for c₁ < 0 and by Chen-Donaldson-Sun (2015) for Fano manifolds (c₁ > 0) under a K-stability condition, resolving the Yau-Tian-Donaldson conjecture. The Kobayashi hyperbolicity of moduli spaces connects to arithmetic questions via the Bombieri-Lang conjecture: hyperbolic varieties should have few rational points over number fields.",
+    "summary": "This formalization explores higher-dimensional uniformization through three lenses: the Kodaira dimension invariant (with its surface classification), Yau's K\u00e4hler-Einstein theorem, and Kobayashi hyperbolicity. The single verifiable theorem \u2014 that dimension 1 has exactly 3 model spaces \u2014 encodes the fundamental finiteness that fails in higher dimensions.",
+    "implications": "The Kodaira\u2013Kobayashi\u2013Yau framework underpins the modern birational classification program (Mori theory, minimal model program). Yau's theorem has been generalized by Aubin-Yau for c\u2081 < 0 and by Chen-Donaldson-Sun (2015) for Fano manifolds (c\u2081 > 0) under a K-stability condition, resolving the Yau-Tian-Donaldson conjecture. The Kobayashi hyperbolicity of moduli spaces connects to arithmetic questions via the Bombieri-Lang conjecture: hyperbolic varieties should have few rational points over number fields.",
     "openQuestions": [
-      "Lang conjecture (1986): is every smooth projective variety of general type (κ = dim) Kobayashi hyperbolic? Open for dim ≥ 2.",
-      "Does the minimal model program terminate in all dimensions? (Existence of minimal models proved by Birkar-Cascini-Hacon-McKernan 2010; termination of flips still open in dim ≥ 5.)",
+      "Lang conjecture (1986): is every smooth projective variety of general type (\u03ba = dim) Kobayashi hyperbolic? Open for dim \u2265 2.",
+      "Does the minimal model program terminate in all dimensions? (Existence of minimal models proved by Birkar-Cascini-Hacon-McKernan 2010; termination of flips still open in dim \u2265 5.)",
       "Can the Kobayashi pseudometric be constructed and its properties proved in Lean 4 / Mathlib, enabling machine-verified proofs of Picard-type theorems for complex manifolds?"
     ]
   },
@@ -92,12 +92,12 @@
     {
       "targetId": "hilbert-22",
       "relationship": "extends",
-      "description": "Parent problem: the Koebe-Poincaré uniformization theorem for Riemann surfaces (dim 1); this entry explores how that trichotomy generalizes to higher dimensions via Kodaira dimension"
+      "description": "Parent problem: the Koebe-Poincar\u00e9 uniformization theorem for Riemann surfaces (dim 1); this entry explores how that trichotomy generalizes to higher dimensions via Kodaira dimension"
     },
     {
       "targetId": "hilbert-11",
       "relationship": "related",
-      "description": "Hilbert's 11th problem on quadratic forms over algebraic number fields; like uniformization, it concerns classification of geometric objects — quadratic forms rather than complex manifolds — by invariants"
+      "description": "Hilbert's 11th problem on quadratic forms over algebraic number fields; like uniformization, it concerns classification of geometric objects \u2014 quadratic forms rather than complex manifolds \u2014 by invariants"
     }
   ],
   "leanFile": {
@@ -107,7 +107,7 @@
     "namespace": "Hilbert22OQ01",
     "lineCount": 155,
     "axiomCount": 0,
-    "theoremCount": 1,
+    "theoremCount": 2,
     "definitionCount": 6,
     "path": "Proofs/Hilbert22OQ01.lean",
     "sorries": 0

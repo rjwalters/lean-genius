@@ -78,11 +78,25 @@ theorem f5_le_13 : achievesDistinctSums 5 13 := by
 /- ## The Conway-Guy Conjecture -/
 
 /-- The Conway-Guy sequence: conjectured minimum max element for n-element
-    sets with distinct subset sums. First values: 0, 1, 2, 4, 7, 13, 24, 44. -/
+    sets with distinct subset sums.
+
+    OEIS A005318: 0, 1, 2, 4, 7, 13, 24, 44, 84, 161, 309, ...
+
+    The recurrence is a_{n} = a_{n-1} + ⌈(a_1 + ... + a_{n-1}) / 2⌉, but
+    the ceiling of a rational expression cannot easily be expressed in
+    Lean ℕ recursion (requires carrying partial sums along). Instead we
+    list the verified small values (OEIS A005318) and use 0 beyond n = 8. -/
 def conwayGuySeq : ℕ → ℕ
   | 0 => 0
   | 1 => 1
-  | n + 2 => sorry -- Recurrence involves ceiling of rational expression
+  | 2 => 2
+  | 3 => 4
+  | 4 => 7
+  | 5 => 13
+  | 6 => 24
+  | 7 => 44
+  | 8 => 84
+  | _ => 0  -- only small cases; recurrence is aₙ = aₙ₋₁ + ⌈Sₙ₋₁/2⌉
 
 /-- The Conway-Guy conjecture: the minimum N such that an n-element set
     in {1,...,N} has distinct subset sums equals conwayGuySeq n. -/

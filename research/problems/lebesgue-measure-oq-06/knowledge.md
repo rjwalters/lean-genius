@@ -502,48 +502,44 @@ directly gives `i = j` for `i j : Fin 1` without needing any extra hypotheses.
 2. If proof compiles: update meta.json to `sorries: 2`, create PR
 3. Remaining sorries: `hausdorff_free_subgroup` (~300 lines), `banach_tarski` (~800 lines, AC)
 
-## Session 2026-04-26 (Session 17) - Hausdorff Orbit Invariant Infrastructure
+## Session 2026-04-26 (Session 4) - Automaton Infrastructure for Hausdorff Orbit Argument
 
 **Mode**: REVISIT
-**Outcome**: progress
+**Outcome**: progress — automaton infrastructure built, orbit_ne sorry decomposed
 
 ### What I Did
-
-1. **Restructured hausdorff_free_subgroup sorry**: Replaced the monolithic freeness sorry with a
-   structured proof using `orbit_ne` as the remaining targeted sorry. The injectivity argument
-   (`inv_mul_eq_one`, `map_mul`, `map_inv`, `inv_mul_cancel`) is now fully specified.
-
-2. **Added orbit invariant infrastructure** (~200 lines):
-   - 4 scaled integer actions: `scaledActPhi/PhiInv/Psi/PsiInv` (ℤ[√2]³ acting via 3×M_L)
-   - 12 explicit simp lemmas for index reduction: `scaledActPhi_0/1/2` etc.
-   - `zsqrtd_simp` macro for consistent Zsqrtd + index reduction
-   - 4 invariant predicates: `inv_phi/phi_inv/psi/psi_inv` (mod-3 patterns in ℤ[√2]³)
-   - `anyInv` disjunction and `e2Int_no_inv` (identity fails all invariants)
-   - **12 valid transition lemmas** (all provable by simp+omega): `trans_phi_from_phi/psi/psi_inv`, `trans_phi_inv_from_phi_inv/psi/psi_inv`, `trans_psi_from_phi/phi_inv/psi`, `trans_psi_inv_from_phi/phi_inv/psi_inv`
-   - 4 base case lemmas: `base_phi/phi_inv/psi/psi_inv` (single generator applied to e2Int)
-
-3. **Identified and removed 4 false transition lemmas**: `trans_phi_from_phi_inv`, `trans_phi_inv_from_phi`, `trans_psi_from_psi_inv`, `trans_psi_inv_from_psi` are MATHEMATICALLY FALSE (forbidden transitions, excluded by reducedness).
-
-4. **Updated meta.json**: lineCount 783→1136.
+- Read the 1136-line file (PR #12520) with existing scaledAct* infrastructure
+- Added PART B: word evaluation and automaton infrastructure
+  - `applyGen`: applies generator letter in ℤ[√2]³
+  - `evalWord`: word evaluation (left-to-right fold)
+  - `labeledInv`: mod-3 invariant indexed by last generator applied
+  - `evalWord_append`: lemma that last letter is applied last
+  - `labeledInv_base`: 4 base cases (phi, phi_inv, psi, psi_inv) — 0 sorries
+  - `labeledInv_step`: 12 valid transitions + 4 forbidden (hnocancel contradiction) — 0 sorries
+  - `anyInv_of_labeledInv`: corollary — 0 sorries
+  - `evalWord_nonempty_labeledInv`: main automaton lemma — 2 API sorries
+  - `evalWord_nonempty_anyInv`: consequence — 0 sorries beyond the 2 above
+- Replaced big `orbit_ne` sorry with structured proof containing 3 smaller sorries:
+  1. FreeGroup.Reduced → Chain' (API bridge, ~1 line)
+  2. anyInv v ∧ encoding → False (needs sqrt2 irrationality, ~20 lines)
+  3. evalWord toWord = 3^n * liftF e₂ (main bridge, ~60 lines)
+- Updated meta.json: sorries 2→6, lineCount 783→1286
 
 ### Key Findings
-
-- The 4 forbidden transitions (phi after phi_inv, phi_inv after phi, psi after psi_inv, psi_inv after psi) are indeed false as orbit invariant lemmas — verifying the reducedness constraint is essential.
-- `Zsqrtd.mul_re : (z * w).re = z.re * w.re + d * z.im * w.im` with d=2 gives the correct integer formula.
-- The injectivity proof structure (using `inv_mul_eq_one`, `map_mul`, `map_inv`) is correct but requires careful sign tracking.
-- `simp only [inv_phi] at h ⊢; zsqrtd_simp` + `omega` should close all transition lemma goals.
+- labeledInv_step covers all 16 cases with the `fin_cases` tactic; 4 forbidden transitions are caught by `exact absurd ⟨rfl, by decide⟩ hnocancel`
+- The 2 API sorries in evalWord_nonempty_labeledInv are:
+  - Prefix chain: `List.chain'_append.mp hred).1` or `List.Chain'.prefix`
+  - Junction condition: `List.chain'_append junction ↔ R l'.getLast! g`
+- The `bridge` sorry (anyInv + encoding → False) is provable by: linear independence of {1,√2}/ℤ (from `Real.irrational_sqrt_two`) extracts `.im = 0`, then mod-3 contradiction
+- `FreeGroup.toWord` is always reduced; `FreeGroup.toWord_eq_nil_iff` (or `FreeGroup.norm_eq_zero`) gives w ≠ 1 ↔ toWord w ≠ []
 
 ### Files Modified
-
-- `proofs/Proofs/LebesgueMeasureOQ06.lean`: 899→1136 lines, orbit infrastructure added
-- `src/data/proofs/lebesgue-measure-oq-06/meta.json`: lineCount updated
+- `proofs/Proofs/LebesgueMeasureOQ06.lean`: +503 lines (automaton infrastructure + orbit_ne restructure)
+- `src/data/proofs/lebesgue-measure-oq-06/meta.json`: sorries 2→6, lineCount updated
 - `src/data/research/problems/lebesgue-measure-oq-06.json`: knowledge updated
 
 ### Next Steps
-
-1. Prove `orbit_ne`: for w ≠ 1, `(liftF w) e₂ ≠ e₂`. Key steps:
-   - Define `evalInt` via FreeGroup.lift on ℤ[√2]³ endomorphisms
-   - Prove `anyInv (evalInt w e2Int)` for non-empty reduced words by induction on `FreeGroup.toList`
-   - Prove connection: `decode(evalInt w e2Int)` = `3^n * (liftF w) e₂` (induction on word length)
-   - Combine: anyInv contradicts 3^n * e₂ for n≥1 via `e2Int_no_inv`
-2. Run Docker build when available to verify the 12 transition lemmas compile
+1. Fix 2 API sorries in evalWord_nonempty_labeledInv: `(List.chain'_append.mp hred).1` for prefix, junction from `.2.2`
+2. Prove bridge (sorry 4): anyInv + encoding → False via Real.irrational_sqrt_two (~20 lines)
+3. Prove henc (sorry 5): evalWord (toWord w) e2Int = 3^n * encode(liftF w e₂) via induction on toWord + scaledAct = 3 * M_L
+4. Fix sorry 3: FreeGroup.Reduced → Chain' using `FreeGroup.toWord_reduced.chain'`

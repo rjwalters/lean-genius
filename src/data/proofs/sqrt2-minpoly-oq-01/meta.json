@@ -52,7 +52,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Eisenstein irreducibility criterion (1850) and Gauss's lemma provide a powerful toolkit for proving that polynomials of the form X^n - m are irreducible over ℚ. The case n=2, m=2 gives the classical result that minpoly ℚ (√2) = X² - 2, which is the prototype for all quadratic extensions.\n\nThis generalization shows that the same Eisenstein argument works for minpoly ℚ (√n) = X² - n whenever n has a prime factor p with p | n but p² ∤ n. This covers all squarefree n ≥ 2 and many composite numbers like 12, 20, 45, etc.",
+    "historicalContext": "The theory of minimal polynomials and algebraic degree is foundational to algebraic number theory, developed through the 19th century. The Eisenstein irreducibility criterion (1850), proved by Gotthold Eisenstein and generalized by Theodor Schönemann, provides a sufficient condition for irreducibility: if $p | a_0, \\ldots, a_{n-1}$ but $p^2 \\nmid a_0$ and $p \\nmid a_n$, then the polynomial $a_n X^n + \\cdots + a_0$ is irreducible over $\\mathbb{Q}$. For $X^2 - m$, Eisenstein applies at any prime $p$ with $p | m$ but $p^2 \\nmid m$.\n\nThe classical application gives $\\text{minpoly}_{\\mathbb{Q}}(\\sqrt{2}) = X^2 - 2$: since $2 | 2$ but $4 \\nmid 2$, Eisenstein at $p=2$ makes $X^2 - 2$ irreducible over $\\mathbb{Q}$. This is one of the fundamental results taught in every algebraic number theory course. The generalization to all squarefree $n \\geq 2$ is immediate from the same criterion.\n\nHowever, Eisenstein fails for $n = 8 = 2^3$ (since $4 | 8$), $n = 27 = 3^3$ (since $9 | 27$), and more generally for any $n$ that is a perfect prime power $p^k$ with $k \\geq 2$ and $k$ even. Yet $\\sqrt{8}$, $\\sqrt{27}$, $\\sqrt{32}$ are all still irrational (they equal $2\\sqrt{2}$, $3\\sqrt{3}$, $4\\sqrt{2}$ respectively), and their minimal polynomials are $X^2 - 8$, $X^2 - 27$, $X^2 - 32$. Part VII of this file proves the general theorem $\\text{minpoly}_{\\mathbb{Q}}(\\sqrt{n}) = X^2 - n$ for all $n$ with $\\lnot\\text{IsSquare}(n)$ using an irrationality-and-degree argument rather than Eisenstein.",
     "problemStatement": "For which natural numbers n does `minpoly ℚ (Real.sqrt n) = X² - n`?\n\n**Answer**: Whenever n has a prime factor p with p | n but p² ∤ n (the Eisenstein condition at p). This includes:\n- All squarefree n ≥ 2\n- Numbers like n = 12 (p=3), n = 20 (p=5), n = 45 (p=5), ...",
     "proofStrategy": "1. **Bridge representations**: `Real.sqrt n = n ^ (1/2 : ℝ)` via `Real.sqrt_eq_rpow`.\n2. **Apply general theorem**: `CubeRoot2IrrationalOQ03.minpoly_nthRoot_eq 2 n p` gives `X² - n = minpoly ℚ (n^(1/2))` when p | n and p² ∤ n.\n3. **Squarefree case**: Extract a squarefree prime factor via `Nat.squarefree_iff_prime_squarefree` and `Nat.exists_prime_and_dvd`.",
     "keyInsights": [
@@ -108,9 +108,17 @@
       "id": "examples",
       "title": "Part VI: Concrete Examples",
       "startLine": 102,
-      "endLine": 136,
-      "summary": "Eight explicit minimal polynomial theorems: √2, √3, √5, √6, √7, √10, √12, √20.",
+      "endLine": 131,
+      "summary": "Eight explicit minimal polynomial theorems: √2, √3, √5, √6, √7, √10, √12, √20. Each proved by applying the squarefree factor main theorem.",
       "mathContext": "Each proof: `minpoly_sqrt_of_sqfree_factor n p (by norm_num) ...`. Note √12 uses p=3 (not p=2 since 4|12), √20 uses p=5 (not p=2 since 4|20)."
+    },
+    {
+      "id": "general-case",
+      "title": "Part VII: General Case — All Non-Perfect-Square n",
+      "startLine": 132,
+      "endLine": 252,
+      "summary": "The central result: minpoly_sqrt_of_not_sq proves minpoly ℚ (√n) = X² - n for ALL ¬IsSquare n. Uses irrationality (irrational_nrt_of_notint_nrt) to establish deg ≥ 2, divisibility to establish deg ≤ 2, then equality of two monic degree-2 polynomials. Part VII corollaries cover √8, √27, √32 — the Eisenstein-failing cases.",
+      "mathContext": "Strategy: (1) $\\sqrt{n}$ irrational $\\Rightarrow$ $\\deg(\\text{minpoly}) \\geq 2$ (degree-1 would force $\\sqrt{n} \\in \\mathbb{Q}$). (2) $\\text{minpoly} \\mid X^2 - n$ (by `minpoly.dvd`) $\\Rightarrow$ $\\deg \\leq 2$. (3) Both monic degree-2 with $\\text{minpoly} \\mid X^2 - n$ and equal degrees $\\Rightarrow$ $\\text{minpoly} = X^2 - n$."
     }
   ],
   "conclusion": {
@@ -175,7 +183,7 @@
     "namespace": "Sqrt2MinpolyOQ01",
     "lineCount": 252,
     "axiomCount": 0,
-    "theoremCount": 17,
+    "theoremCount": 20,
     "definitionCount": 0,
     "sorries": 0,
     "path": "Proofs/Sqrt2MinpolyOQ01.lean"

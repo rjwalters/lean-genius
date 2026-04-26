@@ -1,0 +1,159 @@
+[
+  {
+    "id": "btoq02oq01oq01oq01-header",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
+    "type": "context",
+    "title": "Module Header: Resolving the Fintype Sorry via piAntidiag Bijection",
+    "content": "This file answers the open question from `BinomialTheoremOQ02OQ01OQ01.lean`: can the `Fintype` instance for the `Composition` type be proved efficiently using `piAntidiag`? The answer is yes — in approximately 15 lines, far fewer than the parent's estimate of ~50 lines.\n\nThe **key insight** is that `Finset.mem_piAntidiag` exactly characterizes the membership conditions for `Composition`: a function $f : \\alpha \\to \\mathbb{N}$ lies in `s.piAntidiag n` if and only if $\\sum_{i \\in s} f(i) = n$ and $f(i) \\neq 0 \\Rightarrow i \\in s$ (equivalently, $i \\notin s \\Rightarrow f(i) = 0$). These are precisely the `sum_eq` and `counts_outside` fields of `Composition`, making the bijection trivial.\n\nThe import `Mathlib.Data.Nat.Choose.Multinomial` provides `piAntidiag` and `mem_piAntidiag`; `Mathlib.Tactic` provides the automation needed for the proofs.",
+    "mathContext": "The `Composition` type is the support type for the multinomial distribution: for $n$ trials with outcome space $s$, a composition assigns a nonnegative integer to each element of $s$, summing to $n$. The **piAntidiag** (anti-diagonal) $s.\\text{piAntidiag}\\, n$ is the `Finset` of all functions $f : \\alpha \\to \\mathbb{N}$ summing to $n$ on $s$ with support in $s$: $\\{f : \\alpha \\to \\mathbb{N} \\mid \\sum_{i \\in s} f(i) = n,\\, f(i) \\neq 0 \\Rightarrow i \\in s\\}$. The bijection `Composition α s n ≃ ↥(s.piAntidiag n)` is therefore definitionally trivial.",
+    "significance": "context",
+    "relatedConcepts": [
+      "piAntidiag",
+      "Finset.mem_piAntidiag",
+      "Fintype instance",
+      "multinomial distribution support",
+      "stars-and-bars"
+    ],
+    "prerequisites": [
+      "Lean 4 structures and typeclasses",
+      "Finset in Mathlib",
+      "multinomial distribution",
+      "parent entry BinomialTheoremOQ02OQ01OQ01"
+    ]
+  },
+  {
+    "id": "btoq02oq01oq01oq01-composition-struct",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 34,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Composition Structure and Extensionality",
+    "content": "**`Composition α s n`** (lines 41–47): A structure with three fields:\n- `counts : α → ℕ` — the count function recording how many times each outcome occurred\n- `sum_eq : ∑ i ∈ s, counts i = n` — total counts sum to $n$\n- `counts_outside : ∀ a, a ∉ s → counts a = 0` — counts are zero outside the outcome space $s$\n\nThis is precisely the support type for the **multinomial distribution**: in $n$ independent trials each with outcomes from $s$, a composition records how many times each outcome in $s$ occurred. The multinomial probability of a composition $f$ is $\\binom{n}{f_1, \\ldots, f_k} \\cdot \\prod_{i \\in s} p_i^{f_i}$ where $k = |s|$.\n\n**`Composition.ext_counts`** (lines 54–59): Extensionality — two compositions are equal if their `counts` functions agree. The proof `subst h; rfl` works because the other two fields (`sum_eq` and `counts_outside`) are `Prop`-valued: once the `counts` function is substituted, Lean's definitional proof irrelevance makes the propositions definitionally equal. This is a nice example of how `Prop` fields in Lean 4 structures cost nothing in proof obligations once the `counts` agree.",
+    "mathContext": "The `Composition` structure is the Lean 4 encoding of a weak composition (or composition with zeros) of $n$: an assignment $f : s \\to \\mathbb{N}$ with $\\sum_{i \\in s} f(i) = n$. The number of such compositions is the **stars-and-bars** count $\\binom{n + k - 1}{k - 1}$ where $k = |s|$ — the same as the number of ways to distribute $n$ identical balls into $k$ distinct bins. Via `card_composition`, this equals `(s.piAntidiag n).card`, and Mathlib's `Finset.card_piAntidiag` then gives $\\binom{n + k - 1}{k - 1}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "weak composition",
+      "stars-and-bars",
+      "multinomial distribution",
+      "proof irrelevance",
+      "Prop fields in Lean structures"
+    ],
+    "prerequisites": [
+      "Lean 4 structure syntax",
+      "Prop vs Type in Lean 4",
+      "definitional proof irrelevance",
+      "multinomial coefficient"
+    ]
+  },
+  {
+    "id": "btoq02oq01oq01oq01-bijection",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 61,
+      "endLine": 88
+    },
+    "type": "insight",
+    "title": "Core Bijection: Composition ≃ ↥(piAntidiag) via Contrapositive",
+    "content": "The bijection `compositionEquiv α s n : Composition α s n ≃ ↥(s.piAntidiag n)` is the mathematical heart of the file. The key is that the two conditions diverge only in logical form:\n\n- **Composition** uses `counts_outside : ∀ a, a ∉ s → counts a = 0` (universal implication)\n- **piAntidiag** uses `∀ i, f i ≠ 0 → i ∈ s` (contrapositive form)\n\nThe forward map (lines 71–75) converts `counts_outside` to the piAntidiag condition by **contrapositive**: if `counts i ≠ 0`, then by contrapositive of `counts_outside`, `i ∈ s`. In Lean: `fun i hi => by_contra fun h => hi (c.counts_outside i h)` — a double negation elimination.\n\nThe backward map (lines 77–83) converts the piAntidiag condition back using `by_contra`: to show `counts a = 0` when `a ∉ s`, assume `counts a ≠ 0` by contradiction, then the piAntidiag condition gives `a ∈ s`, contradicting `a ∉ s`.\n\nBoth `left_inv` and `right_inv` are trivial: `Composition.ext_counts rfl` (the counts function is unchanged) and `Subtype.ext rfl` (the underlying function is unchanged). The entire bijection is essentially a **propositional repackaging** — no actual computation is involved.",
+    "mathContext": "The logical equivalence: $a \\notin s \\Rightarrow f(a) = 0$ iff $f(a) \\neq 0 \\Rightarrow a \\in s$ (contrapositive). Both are encodings of the statement 'support of $f$ is contained in $s$'. The `Equiv` type in Lean 4 requires four components: `toFun`, `invFun`, `left_inv` (toFun ∘ invFun = id), `right_inv` (invFun ∘ toFun = id). The bijection is a retract: the underlying function $f = \\text{counts}$ is preserved by both maps, so the inverse and forward maps are truly inverse to each other at the data level.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.mem_piAntidiag",
+      "Equiv in Lean 4",
+      "contrapositive",
+      "by_contra",
+      "Subtype.ext",
+      "Composition.ext_counts"
+    ],
+    "prerequisites": [
+      "Equiv type in Lean 4",
+      "Finset.mem_piAntidiag API",
+      "by_contra and contrapositive in Lean 4",
+      "Subtype.ext"
+    ]
+  },
+  {
+    "id": "btoq02oq01oq01oq01-fintype",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 90,
+      "endLine": 121
+    },
+    "type": "insight",
+    "title": "Fintype Instance and Cardinality: 2-Line Resolution of the sorry",
+    "content": "**`instFintypeComposition`** (lines 102–104): The main theorem — a 2-line proof:\n```lean\ninstance instFintypeComposition (α : Type*) [DecidableEq α] (s : Finset α) (n : ℕ) :\n    Fintype (Composition α s n) :=\n  Fintype.ofEquiv ↥(s.piAntidiag n) (compositionEquiv α s n).symm\n```\n`↥(s.piAntidiag n)` is a `Fintype` automatically because `s.piAntidiag n` is a `Finset` — coercions to the subtype `↥(· : Finset _)` are automatically `Fintype` in Mathlib. `Fintype.ofEquiv` then transfers the `Fintype` structure across the equivalence (reversed via `.symm`).\n\n**`card_composition`** (lines 113–115): $|\\text{Composition}\\, \\alpha\\, s\\, n| = |s.\\text{piAntidiag}\\, n|$. Proved by `Fintype.card_congr` (the bijection preserves cardinality) + `Fintype.card_coe` (cardinality of a subtype from a Finset is the Finset's cardinality).\n\n**`card_composition_zero`** (lines 118–121): There is exactly one composition of 0 — all counts are 0. Proved using `simp [Finset.piAntidiag_zero]`, which evaluates `piAntidiag s 0 = {0}` (the single function mapping everything to 0).\n\nThis proof resolves the `sorry` from the parent entry `BinomialTheoremOQ02OQ01OQ01.lean`. The parent estimated ~50 lines; the actual proof is 15 lines total (including definitions).",
+    "mathContext": "`Fintype.ofEquiv (β : Type*) (e : α ≃ β) [Fintype β] : Fintype α` — constructs a `Fintype` for $\\alpha$ given a bijection $\\alpha \\simeq \\beta$ with $\\beta$ a `Fintype`. The `card_composition` result, combined with Mathlib's `Finset.card_piAntidiag : (s.piAntidiag n).card = (n + s.card - 1).choose (s.card - 1)` (stars-and-bars), gives $|\\text{Composition}\\, \\alpha\\, s\\, n| = \\binom{n + k - 1}{k - 1}$ where $k = |s|$. This is the multinomial distribution's support cardinality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fintype.ofEquiv",
+      "Fintype.card_congr",
+      "Fintype.card_coe",
+      "Finset.piAntidiag_zero",
+      "stars-and-bars formula",
+      "Finset subtype Fintype instance"
+    ],
+    "prerequisites": [
+      "Fintype typeclass in Mathlib",
+      "Fintype.ofEquiv",
+      "Finset.card_piAntidiag (stars-and-bars)",
+      "Fintype.card_congr"
+    ]
+  },
+  {
+    "id": "btoq02oq01oq01oq01-examples",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 123,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Concrete Computations and the Dice Example",
+    "content": "Three concrete results verified by `native_decide`:\n\n**Compositions of 2 into Fin 2 parts**: `|Fin 2 piAntidiag 2| = 3` — the three weak compositions of 2 into 2 parts: $(0,2), (1,1), (2,0)$. These correspond to the multinomial outcomes in 2 coin flips: both heads, one each, both tails.\n\n**Compositions of 2 into Fin 3 parts**: `|Fin 3 piAntidiag 2| = 6` — the six compositions $(2,0,0), (0,2,0), (0,0,2), (1,1,0), (1,0,1), (0,1,1)$. By the stars-and-bars formula: $\\binom{2+3-1}{3-1} = \\binom{4}{2} = 6$. ✓\n\n**`dice_six_rolls_all_different`** (lines 134–137): $\\text{Nat.multinomial}(\\{0,1,2,3,4,5\\}, \\lambda\\_ \\Rightarrow 1) \\cdot 1 = 6!$. The multinomial coefficient $\\binom{6}{1,1,1,1,1,1} = \\frac{6!}{1! \\cdot 1! \\cdot 1! \\cdot 1! \\cdot 1! \\cdot 1!} = 720 = 6!$. This resolves the `dice_six_rolls_all_different` sorry from the parent entry, confirming that 6 distinct dice values (0 through 5) each appearing exactly once gives a multinomial coefficient of $6!$.",
+    "mathContext": "Stars-and-bars: the number of weak compositions of $n$ into $k$ parts is $\\binom{n+k-1}{k-1}$. For $n=2, k=2$: $\\binom{3}{1}=3$. For $n=2, k=3$: $\\binom{4}{2}=6$. The multinomial coefficient $\\binom{n}{n_1,\\ldots,n_k} = n!/(n_1! \\cdots n_k!)$. For all $n_i = 1$, $n = k$: $\\binom{k}{1,\\ldots,1} = k!/1^k = k!$. The `native_decide` tactic compiles to OCaml and evaluates these fintype computations concretely.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "stars-and-bars",
+      "multinomial coefficient",
+      "native_decide",
+      "Nat.multinomial",
+      "piAntidiag cardinality"
+    ],
+    "prerequisites": [
+      "stars-and-bars combinatorial formula",
+      "multinomial coefficient",
+      "native_decide for fintype computations"
+    ]
+  },
+  {
+    "id": "btoq02oq01oq01oq01-sum-transfer",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 139,
+      "endLine": 185
+    },
+    "type": "technique",
+    "title": "Sum Transfer via Bijection: Bridge to the Multinomial Theorem",
+    "content": "**`sum_composition_eq_piAntidiag_sum`** (lines 145–153): Any sum $\\sum_{c : \\text{Composition}} f(c.\\text{counts})$ over compositions can be rewritten as $\\sum_{k \\in s.\\text{piAntidiag}\\, n} f(k)$ over the finite set. The proof uses `Finset.sum_coe_sort` to convert the fintype sum to a Finset sum over the coercion, then `Fintype.sum_equiv` to apply the bijection.\n\nThis is the **key tool** for applying Mathlib's multinomial theorem `Finset.sum_pow_eq_sum_piAntidiag`:\n$$\\left(\\sum_{i \\in s} x_i\\right)^n = \\sum_{k \\in s.\\text{piAntidiag}\\, n} \\binom{n}{k} \\cdot \\prod_{i \\in s} x_i^{k(i)}$$\nWith `sum_composition_eq_piAntidiag_sum`, the right-hand side can be rewritten as a sum over `Composition α s n`, giving the Lean-native form of the multinomial theorem for the `Composition` type.\n\nThe module summary (lines 156–185) documents all 7 results, their proof efficiency (2 lines for the instance, ~10 for the bijection vs the parent's estimate of ~50), and the relationship to the parent entry `BinomialTheoremOQ02OQ01OQ01.lean`.",
+    "mathContext": "`Fintype.sum_equiv (e : α ≃ β) (f : α → M) (g : β → M) (h : ∀ x, f x = g (e x)) : ∑ x, f x = ∑ x, g x` — transfers sums along equivalences. Here `e = compositionEquiv` and `h : ∀ c, f c.counts = f (compositionEquiv c).1` holds by `rfl` since the bijection preserves the underlying function. The multinomial theorem `Finset.sum_pow_eq_sum_piAntidiag` is Mathlib's formalization of $(\\sum_{i \\in s} x_i)^n = \\sum_{f \\in s.\\text{piAntidiag}\\, n} \\binom{n}{f} \\prod_{i \\in s} x_i^{f(i)}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fintype.sum_equiv",
+      "Finset.sum_coe_sort",
+      "Finset.sum_pow_eq_sum_piAntidiag",
+      "multinomial theorem",
+      "sum transfer via bijection"
+    ],
+    "prerequisites": [
+      "Fintype.sum_equiv",
+      "Finset.sum_coe_sort",
+      "multinomial theorem (Finset.sum_pow_eq_sum_piAntidiag)",
+      "AddCommMonoid"
+    ]
+  }
+]

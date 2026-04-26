@@ -48,7 +48,7 @@
   "overview": {
     "historicalContext": "Lagrange's four squares theorem was proved by Joseph-Louis Lagrange in 1770, building on earlier work by Euler. The result answered a question that had puzzled mathematicians since antiquity: Diophantus had noted around 250 CE that certain numbers seemed to require many squares.\n\nThe deeper story involves one of mathematics' greatest coincidences: Euler discovered the four-square identity in 1748, showing that the product of two sums-of-four-squares is itself a sum of four squares. Nearly a century later, Hamilton discovered quaternions in 1843. The four-square identity IS quaternion multiplication! The norm of a product equals the product of norms.\n\nThis explains WHY four squares work when three don't: quaternions form a division algebra, but there is no 3-dimensional division algebra (proved by Frobenius in 1877). The algebraic structure that makes four squares work simply doesn't exist for three.\n\nAs one reviewer put it: \"The four squares theorem is astounding, it says something utterly profound about the universe... that's what binds the galaxies together.\"",
     "problemStatement": "Theorem (Lagrange, 1770): Every natural number n can be written as the sum of four squares:\n\n$$n = a^2 + b^2 + c^2 + d^2$$\n\nfor some non-negative integers a, b, c, d.\n\nKey contrast: While every number is a sum of four squares, NOT every number is a sum of three squares. Numbers of the form $4^k(8m + 7)$ (such as 7, 15, 23, 28, ...) require all four squares.",
-    "text": "A 398-line axiomatized formalization of Lagrange's Four Squares Theorem (Wiedijk #19) with 9 axioms encoding the deep number-theoretic content. The core statement `four_squares` asserts $\\forall n \\in \\mathbb{N}, \\exists a\\,b\\,c\\,d \\in \\mathbb{Z},\\; n = a^2 + b^2 + c^2 + d^2$, wrapping Mathlib's `Nat.sum_four_squares`. Euler's four-square identity — showing that sums-of-four-squares are closed under multiplication — is the algebraic heart, equivalent to the multiplicativity of the quaternion norm $|q_1 q_2|^2 = |q_1|^2 |q_2|^2$. The formalization includes the three-squares obstruction ($4^a(8b+7)$ cannot be represented as a sum of three squares), Jacobi's exact formula $r_4(n) = 8 \\sum_{4 \\nmid d | n} d$ for the number of representations, and connections to the Hurwitz quaternion order. Commentary explains why four squares succeeds where three fails: the quaternions $\\mathbb{H}$ form a division algebra, but no 3-dimensional normed division algebra exists (Hurwitz's 1, 2, 4, 8 theorem).",
+    "text": "A 398-line axiomatized formalization of Lagrange's Four Squares Theorem (Wiedijk #19) with 9 axioms encoding the deep number-theoretic content. The core statement `four_squares` asserts $\\forall n \\in \\mathbb{N}, \\exists a\\,b\\,c\\,d \\in \\mathbb{Z},\\; n = a^2 + b^2 + c^2 + d^2$, wrapping Mathlib's `Nat.sum_four_squares`. Euler's four-square identity \u2014 showing that sums-of-four-squares are closed under multiplication \u2014 is the algebraic heart, equivalent to the multiplicativity of the quaternion norm $|q_1 q_2|^2 = |q_1|^2 |q_2|^2$. The formalization includes the three-squares obstruction ($4^a(8b+7)$ cannot be represented as a sum of three squares), Jacobi's exact formula $r_4(n) = 8 \\sum_{4 \\nmid d | n} d$ for the number of representations, and connections to the Hurwitz quaternion order. Commentary explains why four squares succeeds where three fails: the quaternions $\\mathbb{H}$ form a division algebra, but no 3-dimensional normed division algebra exists (Hurwitz's 1, 2, 4, 8 theorem).",
     "proofStrategy": "The proof uses Euler's four-square identity and a descent argument:\n\n1. **Euler's Identity**: Show that $(a^2 + b^2 + c^2 + d^2)(x^2 + y^2 + z^2 + w^2) = A^2 + B^2 + C^2 + D^2$ where A, B, C, D are explicit bilinear combinations. This means we only need to prove the theorem for primes.\n\n2. **Primes**: For each prime p, find some multiple mp (with m < p) that is a sum of four squares. This uses properties of quadratic residues.\n\n3. **Descent**: If m > 1, show we can find a smaller multiple. This is the technical heart of the proof.\n\n4. **Conclusion**: By descent, m = 1, so p itself is a sum of four squares.\n\n5. **Extension**: Use Euler's identity to extend from primes to all naturals via unique factorization.",
     "keyInsights": [
       "**Quaternion connection**: Euler's four-square identity IS quaternion multiplication: $|q_1 \\cdot q_2|^2 = |q_1|^2 \\cdot |q_2|^2$. This was discovered 95 years before Hamilton's quaternions (1843).",
@@ -119,10 +119,10 @@
     "summary": "Lagrange's four squares theorem is one of the most beautiful results in number theory, revealing a deep connection between arithmetic and algebra. The proof's reliance on Euler's identity - which is secretly quaternion multiplication - explains why four squares succeed where three fail.\n\nThis formalization uses Mathlib's complete proof of the theorem, while providing pedagogical annotations that highlight the quaternion connection and the significance of the result.",
     "implications": "The four squares theorem has far-reaching implications:\n\n**1. Quaternion Theory**\nThe theorem is intimately connected to Hamilton's quaternions. Euler's identity is the statement that quaternion norm is multiplicative.\n\n**2. Division Algebras**\nThe success of four squares and failure of three reflects Frobenius's theorem: the only finite-dimensional associative division algebras over the reals are R (1D), C (2D), and H (4D).\n\n**3. Modular Forms**\nModern proofs use theta functions and modular forms, connecting to the Langlands program.\n\n**4. Cryptography**\nQuaternion arithmetic has applications in computer graphics and cryptographic protocols.",
     "openQuestions": [
-      "Formalize Rabin-Shallit's algorithm (1986) for computing four-square representations in polynomial time — it uses random modular square roots and runs in $O(\\log^2 n)$ expected time",
-      "Formalize Jacobi's four-square theorem: the number of representations $r_4(n) = 8 \\sum_{4 \\nmid d | n} d$ — connecting representation counts to divisor sums and theta functions $\\theta(q)^4$",
-      "Prove Waring's problem for fourth powers: every sufficiently large integer is a sum of at most 19 fourth powers ($g(4) = 19$, proved by Balasubramanian-Deshouillers-Dress 1986) — extending Lagrange from squares to higher powers",
-      "Formalize the three-square theorem (Legendre/Gauss): $n = a^2 + b^2 + c^2$ iff $n \\neq 4^a(8b+7)$ — the precise characterization of which integers need four squares vs three"
+      "Formalize Rabin-Shallit's algorithm (1986) for computing four-square representations in polynomial time \u2014 it uses random modular square roots and runs in $O(\\log^2 n)$ expected time",
+      "Formalize Jacobi's four-square theorem: the number of representations $r_4(n) = 8 \\sum_{4 \\nmid d | n} d$ \u2014 connecting representation counts to divisor sums and theta functions $\\theta(q)^4$",
+      "Prove Waring's problem for fourth powers: every sufficiently large integer is a sum of at most 19 fourth powers ($g(4) = 19$, proved by Balasubramanian-Deshouillers-Dress 1986) \u2014 extending Lagrange from squares to higher powers",
+      "Formalize the three-square theorem (Legendre/Gauss): $n = a^2 + b^2 + c^2$ iff $n \\neq 4^a(8b+7)$ \u2014 the precise characterization of which integers need four squares vs three"
     ]
   },
   "crossReferences": [
@@ -139,7 +139,7 @@
     {
       "targetId": "hurwitz-theorem",
       "relationship": "related",
-      "description": "Hurwitz's 1898 theorem on composition algebras explains why sum-of-squares identities exist only for 1, 2, 4, and 8 squares, connected to the normed division algebras $\\mathbb{R}, \\mathbb{C}, \\mathbb{H}, \\mathbb{O}$ — Euler's four-square identity is the quaternion norm being multiplicative"
+      "description": "Hurwitz's 1898 theorem on composition algebras explains why sum-of-squares identities exist only for 1, 2, 4, and 8 squares, connected to the normed division algebras $\\mathbb{R}, \\mathbb{C}, \\mathbb{H}, \\mathbb{O}$ \u2014 Euler's four-square identity is the quaternion norm being multiplicative"
     },
     {
       "targetId": "fundamental-arithmetic",
@@ -154,7 +154,7 @@
     {
       "targetId": "pythagorean-triples",
       "relationship": "complementary",
-      "description": "Pythagorean triples solve $a^2 + b^2 = c^2$ — the two-variable sum-of-squares equation. Lagrange's theorem concerns the representation $n = a^2 + b^2 + c^2 + d^2$ — the four-variable version. Both connect to the norm equations of number rings: $\\mathbb{Z}[i]$ for two squares (Pythagorean), $\\mathbb{H}$ for four squares (Lagrange)"
+      "description": "Pythagorean triples solve $a^2 + b^2 = c^2$ \u2014 the two-variable sum-of-squares equation. Lagrange's theorem concerns the representation $n = a^2 + b^2 + c^2 + d^2$ \u2014 the four-variable version. Both connect to the norm equations of number rings: $\\mathbb{Z}[i]$ for two squares (Pythagorean), $\\mathbb{H}$ for four squares (Lagrange)"
     },
     {
       "targetId": "chinese-remainder-non-coprime",
@@ -171,7 +171,7 @@
     "namespace": "LagrangeFourSquares",
     "lineCount": 417,
     "axiomCount": 5,
-    "theoremCount": 15,
+    "theoremCount": 18,
     "definitionCount": 8,
     "path": "Proofs/LagrangeFourSquares.lean",
     "sorries": 0
@@ -179,10 +179,10 @@
   "references": [
     {
       "authors": "Lagrange, Joseph-Louis",
-      "title": "Démonstration d'un théorème d'arithmétique",
+      "title": "D\u00e9monstration d'un th\u00e9or\u00e8me d'arithm\u00e9tique",
       "year": "1770",
-      "venue": "Nouveaux Mémoires de l'Académie Royale des Sciences et Belles-Lettres de Berlin, 123–133",
-      "note": "First proof that every positive integer is a sum of four squares — completing a conjecture of Bachet (1621) and Fermat"
+      "venue": "Nouveaux M\u00e9moires de l'Acad\u00e9mie Royale des Sciences et Belles-Lettres de Berlin, 123\u2013133",
+      "note": "First proof that every positive integer is a sum of four squares \u2014 completing a conjecture of Bachet (1621) and Fermat"
     },
     {
       "authors": "Hardy, G.H.; Wright, E.M.",
@@ -195,8 +195,8 @@
       "authors": "Jacobi, Carl Gustav Jacob",
       "title": "Fundamenta nova theoriae functionum ellipticarum",
       "year": "1829",
-      "venue": "Königsberg",
-      "note": "Contains Jacobi's four-square theorem giving the exact number of representations r₄(n) = 8∑(d|n, 4∤d) d via theta functions — a foundational result connecting number theory to modular forms"
+      "venue": "K\u00f6nigsberg",
+      "note": "Contains Jacobi's four-square theorem giving the exact number of representations r\u2084(n) = 8\u2211(d|n, 4\u2224d) d via theta functions \u2014 a foundational result connecting number theory to modular forms"
     },
     {
       "authors": "Conway, John H.; Sloane, Neil J.A.",

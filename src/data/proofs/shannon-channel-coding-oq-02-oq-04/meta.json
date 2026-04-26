@@ -2,7 +2,7 @@
   "id": "shannon-channel-coding-oq-02-oq-04",
   "title": "Symmetric Channel Capacity: Generalization Beyond BSC",
   "slug": "shannon-channel-coding-oq-02-oq-04",
-  "description": "Generalizes the BSC capacity proof to arbitrary symmetric channels. Proves that for a channel where all rows have the same entropy sum C and uniform input produces uniform output (doubly balanced), the capacity equals log|β| + C = log|β| - H(row). Recovers the BSC result as a special case.",
+  "description": "Generalizes the BSC capacity proof to arbitrary symmetric channels. Proves that for a channel where all rows have the same entropy sum C and uniform input produces uniform output (doubly balanced), the capacity equals log|\u03b2| + C = log|\u03b2| - H(row). Recovers the BSC result as a special case.",
   "meta": {
     "author": "Claude Shannon (1948), formalized in Lean 4",
     "date": "1948",
@@ -25,26 +25,26 @@
     "definitionCount": 1,
     "originalContributions": [
       "uniformDist: uniform distribution on any nonempty Fintype as an InputDist",
-      "entropy_uniform_fintype: H(uniform on α) = log|α| (generalizes entropy_uniform_bool)",
+      "entropy_uniform_fintype: H(uniform on \u03b1) = log|\u03b1| (generalizes entropy_uniform_bool)",
       "sym_conditional_output_entropy: H(Y|X) = -C for row-symmetric channels, any input distribution",
-      "sym_uniform_ymarg: doubly balanced + uniform input → uniform output",
-      "sym_uniform_mi: achievability MI = log|β| + C for uniform input",
-      "sym_mi_le: converse MI ≤ log|β| + C for all inputs (via chain rule)",
-      "sym_channel_capacity: capacity = log|β| + C (main theorem)",
+      "sym_uniform_ymarg: doubly balanced + uniform input \u2192 uniform output",
+      "sym_uniform_mi: achievability MI = log|\u03b2| + C for uniform input",
+      "sym_mi_le: converse MI \u2264 log|\u03b2| + C for all inputs (via chain rule)",
+      "sym_channel_capacity: capacity = log|\u03b2| + C (main theorem)",
       "BSC verification: bsc_row_symmetric, bsc_doubly_balanced, bsc_capacity_from_symmetric"
     ]
   },
   "overview": {
-    "historicalContext": "Shannon (1948) identified symmetric channels as a natural class for which the capacity formula has a closed form. A channel is symmetric (in the relevant sense) when all rows of the transition matrix are permutations of each other (ensuring H(Y|X) is constant) and all columns are proportional (ensuring uniform input maximizes H(Y)). Shannon showed the capacity is C = log|β| - H(row), achieved by the uniform input distribution. The BSC is the simplest example: α = β = {0,1}, rows [p, 1-p] and [1-p, p], giving C = log 2 - h(p).",
-    "problemStatement": "**Symmetric Channel Capacity**: For a DMChannel W : α → β where:\n(1) Row symmetry: ∃ C, ∀ x, ∑_y W(x,y)·log(W(x,y)) = C\n(2) Doubly balanced: ∀ y, ∑_x W(x,y) = |α|/|β|\n(3) Positive: W(x,y) > 0 for all x, y\n\nThe channel capacity equals $C(W) = \\log|\\beta| + C = \\log|\\beta| - H(\\text{row})$.",
-    "text": "**Answer**: The capacity formula `channelCapacity ch = log|β| + C` holds for symmetric channels satisfying the three conditions.\n\n**Proof structure**:\n1. **Achievability**: Uniform input gives H(Y) = log|β| (by doubly balanced condition) and H(Y|X) = -C (by row symmetry). So MI(uniform) = H(Y) - H(Y|X) = log|β| + C.\n\n2. **Converse**: For any input distribution, MI = H(Y) - H(Y|X) = H(Y) + C ≤ log|β| + C (since H(Y) ≤ log|β|).\n\n3. **Capacity**: The supremum equals the maximum achieved value log|β| + C.\n\n**BSC recovery**: Setting α = β = Bool, C = p·log(p) + (1-p)·log(1-p) = -h(p), we recover C(BSC(p)) = log 2 - h(p).",
-    "proofStrategy": "1. Prove H(Y|X) = -C for any input distribution using the row symmetry hypothesis.\n   Key step: each conditional entropy term simplifies to inp.p(x)·(ch.W(x,y)·log(ch.W(x,y))), and summing over x gives C.\n2. Prove uniform input → uniform output via the doubly balanced condition.\n3. Compute MI(uniform) = H(Y) - H(Y|X) = log|β| - (-C) = log|β| + C.\n4. Bound MI ≤ log|β| + C for all inputs via the chain rule and entropy maximality.\n5. Conclude capacity = log|β| + C.",
+    "historicalContext": "Shannon (1948) identified symmetric channels as a natural class for which the capacity formula has a closed form. A channel is symmetric (in the relevant sense) when all rows of the transition matrix are permutations of each other (ensuring H(Y|X) is constant) and all columns are proportional (ensuring uniform input maximizes H(Y)). Shannon showed the capacity is C = log|\u03b2| - H(row), achieved by the uniform input distribution. The BSC is the simplest example: \u03b1 = \u03b2 = {0,1}, rows [p, 1-p] and [1-p, p], giving C = log 2 - h(p).",
+    "problemStatement": "**Symmetric Channel Capacity**: For a DMChannel W : \u03b1 \u2192 \u03b2 where:\n(1) Row symmetry: \u2203 C, \u2200 x, \u2211_y W(x,y)\u00b7log(W(x,y)) = C\n(2) Doubly balanced: \u2200 y, \u2211_x W(x,y) = |\u03b1|/|\u03b2|\n(3) Positive: W(x,y) > 0 for all x, y\n\nThe channel capacity equals $C(W) = \\log|\\beta| + C = \\log|\\beta| - H(\\text{row})$.",
+    "text": "**Answer**: The capacity formula `channelCapacity ch = log|\u03b2| + C` holds for symmetric channels satisfying the three conditions.\n\n**Proof structure**:\n1. **Achievability**: Uniform input gives H(Y) = log|\u03b2| (by doubly balanced condition) and H(Y|X) = -C (by row symmetry). So MI(uniform) = H(Y) - H(Y|X) = log|\u03b2| + C.\n\n2. **Converse**: For any input distribution, MI = H(Y) - H(Y|X) = H(Y) + C \u2264 log|\u03b2| + C (since H(Y) \u2264 log|\u03b2|).\n\n3. **Capacity**: The supremum equals the maximum achieved value log|\u03b2| + C.\n\n**BSC recovery**: Setting \u03b1 = \u03b2 = Bool, C = p\u00b7log(p) + (1-p)\u00b7log(1-p) = -h(p), we recover C(BSC(p)) = log 2 - h(p).",
+    "proofStrategy": "1. Prove H(Y|X) = -C for any input distribution using the row symmetry hypothesis.\n   Key step: each conditional entropy term simplifies to inp.p(x)\u00b7(ch.W(x,y)\u00b7log(ch.W(x,y))), and summing over x gives C.\n2. Prove uniform input \u2192 uniform output via the doubly balanced condition.\n3. Compute MI(uniform) = H(Y) - H(Y|X) = log|\u03b2| - (-C) = log|\u03b2| + C.\n4. Bound MI \u2264 log|\u03b2| + C for all inputs via the chain rule and entropy maximality.\n5. Conclude capacity = log|\u03b2| + C.",
     "keyInsights": [
       "H(Y|X) = -C holds for ALL input distributions (not just positive ones), because zero-probability input terms contribute 0 to the conditional entropy.",
-      "The row symmetry condition is minimal: it only requires that all rows have the same entropy sum C = ∑_y W(x,y)·log(W(x,y)), not that rows are permutations of each other.",
-      "The doubly balanced condition ∑_x W(x,y) = |α|/|β| ensures uniform input → uniform output, giving H(Y) = log|β|.",
-      "BSC is doubly stochastic (column sums = 1 = |Bool|/|Bool|), satisfying the doubly balanced condition with |α|/|β| = 2/2 = 1.",
-      "The capacity formula log|β| + C generalizes to BSC as log 2 + (p·log p + (1-p)·log(1-p)) = log 2 - h(p)."
+      "The row symmetry condition is minimal: it only requires that all rows have the same entropy sum C = \u2211_y W(x,y)\u00b7log(W(x,y)), not that rows are permutations of each other.",
+      "The doubly balanced condition \u2211_x W(x,y) = |\u03b1|/|\u03b2| ensures uniform input \u2192 uniform output, giving H(Y) = log|\u03b2|.",
+      "BSC is doubly stochastic (column sums = 1 = |Bool|/|Bool|), satisfying the doubly balanced condition with |\u03b1|/|\u03b2| = 2/2 = 1.",
+      "The capacity formula log|\u03b2| + C generalizes to BSC as log 2 + (p\u00b7log p + (1-p)\u00b7log(1-p)) = log 2 - h(p)."
     ],
     "prerequisites": [
       "BSC Capacity Proof (ShannonChannelCodingOQ02): parent proof providing the chain rule and BSC infrastructure",
@@ -65,14 +65,14 @@
       "title": "Uniform Distribution on General Fintype",
       "startLine": 61,
       "endLine": 73,
-      "summary": "uniformDist: InputDist with p(x) = 1/|α| for all x. Proves positivity."
+      "summary": "uniformDist: InputDist with p(x) = 1/|\u03b1| for all x. Proves positivity."
     },
     {
       "id": "uniform-entropy",
-      "title": "Entropy of Uniform Distribution = log|α|",
+      "title": "Entropy of Uniform Distribution = log|\u03b1|",
       "startLine": 75,
       "endLine": 89,
-      "summary": "entropy_uniform_fintype: H(uniform on α) = log|α|. Generalizes entropy_uniform_bool from the BSC proof."
+      "summary": "entropy_uniform_fintype: H(uniform on \u03b1) = log|\u03b1|. Generalizes entropy_uniform_bool from the BSC proof."
     },
     {
       "id": "conditional-entropy",
@@ -83,31 +83,31 @@
     },
     {
       "id": "uniform-ymarg",
-      "title": "Doubly Balanced: Uniform → Uniform Output",
+      "title": "Doubly Balanced: Uniform \u2192 Uniform Output",
       "startLine": 129,
       "endLine": 141,
-      "summary": "sym_uniform_ymarg: Doubly balanced condition implies uniform input gives 1/|β| output marginal."
+      "summary": "sym_uniform_ymarg: Doubly balanced condition implies uniform input gives 1/|\u03b2| output marginal."
     },
     {
       "id": "achievability",
-      "title": "Achievability: Uniform MI = log|β| + C",
+      "title": "Achievability: Uniform MI = log|\u03b2| + C",
       "startLine": 143,
       "endLine": 168,
-      "summary": "sym_uniform_mi: The uniform input distribution achieves mutual information = log|β| + C."
+      "summary": "sym_uniform_mi: The uniform input distribution achieves mutual information = log|\u03b2| + C."
     },
     {
       "id": "converse",
-      "title": "Converse: All MI ≤ log|β| + C",
+      "title": "Converse: All MI \u2264 log|\u03b2| + C",
       "startLine": 170,
       "endLine": 190,
-      "summary": "sym_mi_le: For all input distributions, MI ≤ log|β| + C via chain rule + entropy bound."
+      "summary": "sym_mi_le: For all input distributions, MI \u2264 log|\u03b2| + C via chain rule + entropy bound."
     },
     {
       "id": "capacity",
       "title": "Symmetric Channel Capacity Theorem",
       "startLine": 192,
       "endLine": 220,
-      "summary": "sym_channel_capacity: capacity = log|β| + C. Follows from achievability and converse."
+      "summary": "sym_channel_capacity: capacity = log|\u03b2| + C. Follows from achievability and converse."
     },
     {
       "id": "bsc-verification",
@@ -118,12 +118,12 @@
     }
   ],
   "conclusion": {
-    "summary": "The symmetric channel capacity formula C(W) = log|β| - H(row) is proved from first principles for channels satisfying row symmetry and the doubly balanced condition. The BSC is verified as a special case, recovering log 2 - h(p). This closes OQ 4 from the BSC capacity proof.",
+    "summary": "The symmetric channel capacity formula C(W) = log|\u03b2| - H(row) is proved from first principles for channels satisfying row symmetry and the doubly balanced condition. The BSC is verified as a special case, recovering log 2 - h(p). This closes OQ 4 from the BSC capacity proof.",
     "implications": "The proof demonstrates that the key structural properties of BSC (constant row entropy and doubly balanced columns) are the mathematical essence behind the capacity formula, not the binary alphabet. The same technique applies to q-ary symmetric channels, erasure channels over larger alphabets, and other structured channels.",
     "openQuestions": [
       "Remove the positivity assumption W(x,y) > 0: can the theorem extend to channels with zero-probability transitions?",
       "Extend to the general case without the doubly balanced condition: characterize capacity for channels where only row symmetry holds.",
-      "Formalize the q-ary symmetric channel (|α| = |β| = q, each off-diagonal entry = p/(q-1)) as a concrete example of the general theorem.",
+      "Formalize the q-ary symmetric channel (|\u03b1| = |\u03b2| = q, each off-diagonal entry = p/(q-1)) as a concrete example of the general theorem.",
       "Connect to the Blahut-Arimoto algorithm: show it converges to the uniform distribution for symmetric channels."
     ]
   },
@@ -142,8 +142,8 @@
   "leanFile": {
     "namespace": "InformationTheory.ChannelCoding.SymmetricCapacity",
     "lineCount": 248,
-    "axiomCount": 4,
-    "theoremCount": 8,
+    "axiomCount": 0,
+    "theoremCount": 11,
     "definitionCount": 1,
     "path": "Proofs/ShannonChannelCodingOQ02OQ04.lean",
     "sorries": 0

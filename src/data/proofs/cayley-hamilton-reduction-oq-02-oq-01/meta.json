@@ -62,42 +62,48 @@
       "title": "Part 1: Companion Matrix Definition",
       "startLine": 59,
       "endLine": 81,
-      "summary": "Defines `companionMatrix p : Matrix (Fin d) (Fin d) F` entry-by-entry: 1s on the subdiagonal, negated polynomial coefficients in the last column, 0 elsewhere."
+      "summary": "Defines `companionMatrix p : Matrix (Fin d) (Fin d) F` entry-by-entry: 1s on the subdiagonal, negated polynomial coefficients in the last column, 0 elsewhere.",
+      "mathContext": "For monic $p = X^d + a_{d-1}X^{d-1} + \\cdots + a_0$, the companion matrix $C(p) \\in M_d(F)$ has: $C_{i+1,i} = 1$ (subdiagonal), $C_{i,d-1} = -a_i$ (last column), $C_{ij} = 0$ otherwise. This matches the matrix of $X$-multiplication on $F[X]/(p)$ in the basis $\\{1, X, X^2, \\ldots, X^{d-1}\\}$."
     },
     {
       "id": "entry-lemmas",
       "title": "Part 2: Basic Entry Properties",
       "startLine": 82,
       "endLine": 108,
-      "summary": "Three lemmas characterizing the three entry types: `companionMatrix_subdiag` (subdiagonal = 1), `companionMatrix_last_col` (last column = −coeff), `companionMatrix_zero` (elsewhere = 0)."
+      "summary": "Three lemmas characterizing the three entry types: `companionMatrix_subdiag` (subdiagonal = 1), `companionMatrix_last_col` (last column = −coeff), `companionMatrix_zero` (elsewhere = 0).",
+      "mathContext": "Each entry is a direct `if-then-else` on the indices. The proofs use `Matrix.ext` + `simp` with the definition. The `companion_col_action` lemma derives the column action: $C(p) \\cdot e_i = e_{i+1}$ for $i < d-1$ and $C(p) \\cdot e_{d-1} = -\\sum_{k<d} a_k e_k$. This is the key fact for the orbit argument."
     },
     {
       "id": "orbit",
       "title": "Part 3: Orbit of Standard Basis Vectors",
       "startLine": 110,
       "endLine": 168,
-      "summary": "Proves C(p)ᵏ·e₀ = eₖ for k < d by induction using the column action lemmas. The orbit {e₀, ..., e_{d-1}} equals the standard basis."
+      "summary": "Proves C(p)ᵏ·e₀ = eₖ for k < d by induction using the column action lemmas. The orbit {e₀, ..., e_{d-1}} equals the standard basis.",
+      "mathContext": "The induction: base case $C^0 e_0 = e_0$; step $C^{k+1} e_0 = C \\cdot (C^k e_0) = C \\cdot e_k = e_{k+1}$ (using the subdiagonal action for $k < d-1$). This confirms the isomorphism $F^d \\cong F[X]/(p)$ as $F[X]$-modules, with $e_k \\leftrightarrow X^k \\bmod p$."
     },
     {
       "id": "key-theorems",
       "title": "Part 3b: Annihilation, Charpoly, Minpoly",
       "startLine": 170,
       "endLine": 211,
-      "summary": "Three theorems stated with sorry: p(C(p)) = 0 (orbit annihilation), charpoly(C(p)) = p (from minpoly = p), minpoly(C(p)) = p (orbit independence). All supporting infrastructure is proved."
+      "summary": "Three core theorems: p(C(p)) = 0 (orbit annihilation), charpoly(C(p)) = p (from minpoly = p), minpoly(C(p)) = p (orbit independence). All proved with 0 sorries.",
+      "mathContext": "Annihilation ($p(C) = 0$): using the orbit, $p(C) \\cdot e_0 = (C^d + a_{d-1}C^{d-1} + \\cdots + a_0) \\cdot e_0 = e_d + \\sum a_k e_k$. The last-column action gives $e_d = C^{d-1} \\cdot e_{d-1} = -\\sum a_k e_k$ (the last column entry), so $p(C) \\cdot e_0 = 0$. Since $e_0$ generates all of $F^d$ under $C$, $p(C) = 0$."
     },
     {
       "id": "linear-case",
       "title": "Part 4: Linear Polynomial Base Case",
       "startLine": 213,
       "endLine": 225,
-      "summary": "Proves C(x−c) = [c] for the 1×1 companion matrix, connecting companion blocks to eigenvalues."
+      "summary": "Proves C(x−c) = [c] for the 1×1 companion matrix, connecting companion blocks to eigenvalues.",
+      "mathContext": "For $p = X - c$ (degree 1), $C(p)$ is the $1 \\times 1$ matrix $[c]$. The companion matrix of a linear factor is thus exactly the eigenvalue, confirming that the Jordan block with eigenvalue $c$ is $C(X-c) = [c]$ in the degree-1 case."
     },
     {
       "id": "rcf-roadmap",
       "title": "Part 5: Full RCF Roadmap",
       "startLine": 226,
       "endLine": 259,
-      "summary": "Documents the ~1800-line gap to a complete Lean formalization of the rational canonical form: SNF (~800), companion (~200), block assembly (~300), uniqueness (~200)."
+      "summary": "Documents the ~1800-line gap to a complete Lean formalization of the rational canonical form: SNF (~800), companion (~200), block assembly (~300), uniqueness (~200).",
+      "mathContext": "The complete RCF theorem requires: (1) Smith Normal Form for $F[X]$-matrices (Euclidean domain algorithm, ~800 lines); (2) companion block diagonalization from SNF invariant factors (~200 lines); (3) similarity proof assembling the block structure (~300 lines); (4) uniqueness of invariant factors (~200 lines). Completed formalizations exist in Coq (Cano-Dénès 2012) and Isabelle (Divasón-Thiemann 2016)."
     }
   ],
   "conclusion": {
@@ -128,13 +134,29 @@
   ],
   "crossReferences": [
     {
-      "relationship": "Extends parent with concrete companion matrix construction",
-      "sharedConcepts": [
-        "companion-matrix",
-        "minimal-polynomial",
-        "characteristic-polynomial"
-      ],
-      "targetId": "cayley-hamilton-reduction-oq-02"
+      "targetId": "cayley-hamilton-reduction-oq-02",
+      "relationship": "extends",
+      "description": "Extends the parent OQ-02 (which proves the Cayley-Hamilton theorem for 2×2 matrices) with the general companion matrix construction and its orbit properties."
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "The Cayley-Hamilton theorem states that every matrix satisfies its characteristic polynomial. The companion matrix gives the canonical proof: C(p) is annihilated by p (proved here via the orbit argument), and similarity reduces the general case to C(charpoly M)."
+    },
+    {
+      "targetId": "cayley-hamilton-cyclic-vector-all-fields",
+      "relationship": "used-by",
+      "description": "The All-Fields cyclic vector theorem (OQ-05 chain) directly imports this file and uses `companionMatrix` plus the orbit result C(p)^k·e₀ = eₖ to prove e₀ is a cyclic vector for companion matrices — the first step in the RCF similarity argument."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
+      "relationship": "used-by",
+      "description": "The infinite-field cyclic vector theorem (union avoidance approach) also uses companion matrices and the nonderogatory characterization minpoly = charpoly, which this file establishes for C(p)."
+    },
+    {
+      "targetId": "cayley-hamilton-reduction-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling entry in the reduction series: OQ-01 proves the Cayley-Hamilton theorem for block upper triangular matrices via the trace formula. Together with this OQ-02-OQ-01, they form the infrastructure for the rational canonical form."
     }
   ],
   "sorries": 0,
@@ -157,7 +179,7 @@
     "namespace": "CayleyHamiltonReductionOQ02OQ01",
     "lineCount": 396,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 18,
     "definitionCount": 1,
     "sorries": 0,
     "path": "Proofs/CayleyHamiltonReductionOQ02OQ01.lean"

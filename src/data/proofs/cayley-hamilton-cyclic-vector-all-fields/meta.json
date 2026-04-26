@@ -1,0 +1,182 @@
+{
+  "id": "cayley-hamilton-cyclic-vector-all-fields",
+  "title": "Nonderogatory → Cyclic Vector: All Fields (Axiomatized RCF)",
+  "slug": "cayley-hamilton-cyclic-vector-all-fields",
+  "description": "Every nonderogatory matrix over ANY field (including finite fields F_q with q ≤ n) has a cyclic vector. Proved via the Rational Canonical Form similarity theorem (stated as an explicit axiom) plus two verified lemmas: the orbit property of companion matrices and similarity invariance of cyclic vectors.",
+  "meta": {
+    "author": "Classical linear algebra (F.G. Frobenius, 1878)",
+    "sourceUrl": "",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/CayleyHamiltonCyclicVectorAllFields.lean",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "cyclic-vector",
+      "rational-canonical-form",
+      "companion-matrix",
+      "finite-fields",
+      "minimal-polynomial"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 201,
+    "assumptions": "1 axiom: nonderogatory_similar_companion (RCF similarity theorem — every nonderogatory matrix is similar to its companion matrix). Requires the structure theorem for f.g. modules over K[X], not yet in Mathlib 4. All other lemmas are fully proved.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "minpoly.monic",
+        "description": "Minimal polynomial is monic",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "Matrix.charpoly_natDegree_eq_dim",
+        "description": "Characteristic polynomial has degree = matrix dimension",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "Matrix.isIntegral",
+        "description": "Matrices are integral over their base field",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Axiom: nonderogatory_similar_companion — explicit, documented statement of the RCF similarity gap",
+      "Main theorem: nonderogatory_has_cyclic_vector (0 sorries, 1 axiom)",
+      "Corollary: nonderogatory_has_cyclic_vector_finite for any finite field",
+      "Corollary: cyclic_iff_not_killed_below_degree equivalence",
+      "Clean proof architecture isolating the one Mathlib gap"
+    ],
+    "dateAdded": "2026-04-26"
+  },
+  "overview": {
+    "historicalContext": "The cyclic vector theorem lies at the intersection of two major 19th-century programs: the canonical form theory for linear operators and the module theory of rings. **Camille Jordan** (1870) established the Jordan normal form, decomposing complex matrices into Jordan blocks — a decomposition that requires all eigenvalues to lie in the base field. Jordan's theory was restricted to algebraically closed fields like $\\mathbb{C}$. **Ferdinand Georg Frobenius** (1878), in his landmark paper *Über lineare Substitutionen und bilineare Formen*, overcame this restriction by introducing the **rational canonical form** (now also called Frobenius normal form): every matrix over an arbitrary field is similar to a block-diagonal matrix of companion matrices $\\mathrm{diag}(C(d_1), \\ldots, C(d_r))$, where $d_1 \\mid \\cdots \\mid d_r$ are the **invariant factors** — computed from the matrix's characteristic polynomial via the PID $K[X]$ without reference to eigenvalues. This makes the theory valid over $\\mathbb{Q}$, $\\mathbb{F}_p$, and any field.\n\nA matrix $M \\in M_n(K)$ is **nonderogatory** when its minimal polynomial equals its characteristic polynomial; a vector $v$ is **cyclic** for $M$ when $\\{v, Mv, \\ldots, M^{n-1}v\\}$ is a basis. The cyclic vector theorem — nonderogatory $\\Rightarrow$ cyclic — holds over ALL fields. The modern module-theoretic proof, developed through **Emmy Noether's** 1929 work on the structure theorem for finitely generated modules over PIDs, shows that nonderogatory forces $K^n \\cong K[X]/(\\mathrm{minpoly}\\, M)$ as a $K[X]$-module, making cyclicity immediate. **H.J.S. Smith** (1861) gave the first constructive approach via Smith normal form for polynomial matrices, providing an algorithm for computing invariant factors. This formalization captures the theory via an explicit axiom for the PID structure theorem — the single Mathlib gap — and fully verifies the main theorem from it.",
+    "problemStatement": "For any field $K$ and any nonderogatory matrix $M \\in M_n(K)$, prove there exists a cyclic vector $v \\in K^n$ — a vector such that $\\{v, Mv, \\ldots, M^{n-1}v\\}$ is a basis for $K^n$.",
+    "proofStrategy": "The proof uses three building blocks: (1) the RCF similarity axiom states that every nonderogatory $M$ is similar to its companion matrix $C(\\mathrm{minpoly}\\, M)$, i.e., $M = P^{-1} C P$ for some invertible $P$; (2) the orbit lemma (proved in `CayleyHamiltonMinpolyOQ05OQ01OQ04`) shows $e_0$ is cyclic for $C(p)$ because $C(p)^k \\cdot e_0 = e_k$ for all $k < n$; (3) the similarity invariance lemma (also proved) transfers the cyclic vector: if $w$ is cyclic for $N$ and $M = P^{-1}NP$, then $P^{-1}w$ is cyclic for $M$. Combining: $M \\sim C(\\mathrm{minpoly}\\, M)$ via $P$, $e_0$ is cyclic for $C$, so $P^{-1} e_0$ is cyclic for $M$. The proof never invokes field cardinality, working over arbitrary $K$.",
+    "keyInsights": [
+      "The union avoidance argument (used in `cayley-hamilton-minpoly-oq-05-oq-01` for infinite fields) is a cardinality argument that fails over $\\mathbb{F}_2$ when $n = 2$: all 3 nonzero vectors of $\\mathbb{F}_2^2$ are covered by 3 proper subspaces. Yet the theorem still holds — the RCF similarity approach is purely algebraic and works over any field.",
+      "The companion matrix $C(p)$ has a built-in cyclic vector: $e_0 = (1, 0, \\ldots, 0)^T$. The orbit $\\{e_0, C(p)e_0, C(p)^2 e_0, \\ldots\\} = \\{e_0, e_1, e_2, \\ldots\\}$ is simply the standard basis. This is proved in `companionMatrix_cyclic_e0` without any hypothesis on the base field.",
+      "The single axiom `nonderogatory_similar_companion` isolates the one Mathlib gap: the structure theorem for f.g. modules over a PID (K[X]). The axiom is mathematically equivalent to the rational canonical form for nonderogatory matrices. Once Mathlib gains this infrastructure (~800 lines of Smith normal form for polynomial matrices), the axiom can be replaced by a proof.",
+      "The proof chain has minimal dependencies: `nonderogatory_similar_companion` (axiom) → `companionMatrix_cyclic_e0` (proved, uses orbit) → `cyclic_vector_of_similar` (proved, uses AlgHom) → main theorem. Each step is clean and independently verifiable.",
+      "**The $K[X]$-module interpretation of cyclicity**: Giving $K^n$ the $K[X]$-module structure where $X$ acts as $M$, cyclicity of $v$ means exactly that $v$ generates $K^n$ as a $K[X]$-module: $K[X] \\cdot v = K^n$. For nonderogatory $M$, this generator exists because $K^n \\cong K[X]/(\\mathrm{minpoly}\\, M)$ as $K[X]$-modules — the image of $1$ under this isomorphism is the cyclic generator. The companion matrix $C(p)$ makes this structure concrete: acting on $K[X]/(p)$ via $X$, the class $\\bar{1}$ satisfies $X^k \\cdot \\bar{1} = \\bar{X^k}$, recovering exactly the orbit property $C(p)^k e_0 = e_k$ that makes $e_0$ cyclic. The axiom `nonderogatory_similar_companion` is precisely the statement that this $K[X]$-module isomorphism exists — the single gap until Mathlib formalizes the PID structure theorem for $K[X]$."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "§ I. Definitions",
+      "startLine": 48,
+      "endLine": 72,
+      "summary": "Defines `IsCyclicVector` and `IsNonderogatory` as abbreviations for the definitions in `CyclicVectorArbitrary`, ensuring consistency with the parent OQ-04 formalization.",
+      "mathContext": "A vector $v \\in K^n$ is cyclic for $M$ when $\\{v, Mv, \\ldots, M^{n-1}v\\}$ is linearly independent (equivalently, no nonzero polynomial of degree $< n$ annihilates both $M$ and $v$). A matrix is nonderogatory when $\\mathrm{minpoly}_K(M) = \\mathrm{charpoly}(M)$, both of degree $n$."
+    },
+    {
+      "id": "rcf-axiom",
+      "title": "§ II. The RCF Similarity Axiom",
+      "startLine": 74,
+      "endLine": 102,
+      "summary": "Axiom: every nonderogatory matrix M is similar to C(minpoly M). Documented with the mathematical justification (PID module structure theorem) and the Mathlib gap.",
+      "mathContext": "For nonderogatory $M$: $K^n$ as a $K[X]$-module (where $X$ acts as $M$) is cyclic, i.e., $K^n \\cong K[X]/(\\mathrm{minpoly}\\, M)$. The change-of-basis matrix $P$ is the map sending the standard basis $\\{e_k\\}$ to the cyclic basis $\\{C^k e_0\\}$. The general RCF theorem states $M \\sim \\mathrm{diag}(C(d_1), \\ldots, C(d_r))$ where $d_1 \\mid \\cdots \\mid d_r$ are the invariant factors; nonderogatory forces $r = 1$, $d_1 = \\mathrm{minpoly}\\, M$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "§ III. Main Theorem",
+      "startLine": 104,
+      "endLine": 155,
+      "summary": "Proves nonderogatory_has_cyclic_vector (0 sorries, uses the axiom + two proved lemmas). Dispatches n=0, then chains: RCF axiom → minpoly degree → companionMatrix_cyclic_e0 → cyclic_vector_of_similar.",
+      "mathContext": "Proof: (1) Axiom gives $P$ with $M = P^{-1} C(\\mu) P$ where $\\mu = \\mathrm{minpoly}\\, M$. (2) Since $M$ is nonderogatory, $\\mu = \\chi_M$ has degree $n$. (3) `companionMatrix_cyclic_e0` gives $e_0$ cyclic for $C(\\mu)$. (4) `cyclic_vector_of_similar` transfers: $v = P^{-1} e_0$ is cyclic for $M$."
+    },
+    {
+      "id": "corollaries",
+      "title": "§ IV. Corollaries",
+      "startLine": 143,
+      "endLine": 169,
+      "summary": "Two corollaries: nonderogatory_has_cyclic_vector_finite (lines 149-153, specializes to [Fintype K] in one line) and cyclic_iff_not_killed_below_degree (lines 157-169, polynomial annihilator reformulation).",
+      "mathContext": "The finite field corollary specializes the main theorem to finite fields, demonstrating that the result holds even when $|K| \\leq n$ — the regime where union avoidance fails. Its proof is a single application of the main theorem, demonstrating the architectural cleanliness: no field cardinality assumption was ever used. The equivalence corollary `v$ is cyclic iff $\\forall p \\neq 0$ with $\\deg(p) < n$, $p(M)v \\neq 0`$ restates cyclicity via polynomial non-annihilation — a condition checkable without constructing a full basis."
+    },
+    {
+      "id": "summary-block",
+      "title": "§ V. Proof Summary",
+      "startLine": 170,
+      "endLine": 199,
+      "summary": "Closing /-! docstring enumerating all proved results, the single axiom (nonderogatory_similar_companion), and the upgrade path to a fully axiom-free proof (~800 lines for Smith normal form + ~200 for the RCF reduction).",
+      "mathContext": "The upgrade path targets the Smith normal form for polynomial matrices: if $M(X) \\in M_n(K[X])$ then there exist invertible $U, V$ over $K[X]$ with $UM(X)V = \\mathrm{diag}(d_1, \\ldots, d_r, 0, \\ldots)$ where $d_i \\mid d_{i+1}$ (elementary divisors). Applied to the characteristic matrix $(XI - M)$, the Smith form gives the invariant factors, and nonderogatory forces exactly one factor $d_1 = \\mathrm{minpoly}\\, M$, directly yielding the RCF similarity."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves the cyclic vector theorem for all fields via an explicit axiomatization of the Rational Canonical Form. With axiomCount = 1 and sorries = 0, it gives a complete, modular proof that cleanly isolates the one Mathlib gap: the structure theorem for f.g. modules over K[X].",
+    "implications": "The RCF similarity axiom is the key bridge between the companion matrix approach (which has a built-in cyclic vector by construction) and arbitrary nonderogatory matrices. Once Mathlib formalizes the PID structure theorem or the full rational canonical form, this axiom can be replaced, giving a complete, axiom-free proof of the cyclic vector theorem for all fields.",
+    "openQuestions": [
+      "Can the PID structure theorem for f.g. modules over K[X] be formalized in Mathlib? This is the single remaining gap. Smith normal form for polynomial matrices would suffice (~800 lines estimated).",
+      "Is there an elementary proof of nonderogatory_similar_companion that avoids the full PID structure theorem? The companion matrix orbit property might allow a direct construction of P without the general invariant factor decomposition.",
+      "Can the Aristotle proof search system find a proof of nonderogatory_similar_companion? The theorem is hard (requires PID structure theory), but Aristotle might find an elementary constructive path."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.Algebra.Polynomial.Div",
+      "Mathlib.FieldTheory.Minpoly.Basic",
+      "Mathlib.FieldTheory.Minpoly.Field",
+      "Mathlib.Tactic",
+      "Proofs.CayleyHamiltonReductionOQ02OQ01",
+      "Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04"
+    ],
+    "opens": ["Matrix", "Polynomial"],
+    "namespace": "CayleyHamiltonCyclicVectorAllFields",
+    "lineCount": 201,
+    "axiomCount": 1,
+    "theoremCount": 3,
+    "definitionCount": 2,
+    "path": "Proofs/CayleyHamiltonCyclicVectorAllFields.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
+      "relationship": "extends",
+      "description": "Converse: nonderogatory ← cyclic (proved for infinite fields using union avoidance). This file proves the opposite direction for ALL fields via the RCF similarity axiom, bypassing cardinality arguments entirely."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
+      "relationship": "companion",
+      "description": "Alternative approach using module theory with sorry. This file uses the axiom approach, giving 0 sorries and explicit axiom declaration — contrasting proof architectures for the same theorem."
+    },
+    {
+      "targetId": "cayley-hamilton-reduction-oq-02-oq-01",
+      "relationship": "uses",
+      "description": "Companion matrix definition and orbit lemma C(p)^k · e₀ = eₖ. The two proved supporting lemmas live in CayleyHamiltonMinpolyOQ05OQ01OQ04 which imports this file."
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "The Cayley-Hamilton theorem (M satisfies its own characteristic polynomial) is the starting point of the entire series. This file builds on the charpoly infrastructure (Matrix.charpoly_natDegree_eq_dim) established there."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05",
+      "relationship": "part-of",
+      "description": "The parent open question series on the minimal polynomial characterization of nonderogatory matrices. This All-Fields result completes the series by removing the |K| > n restriction from OQ-01."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "CayleyHamiltonCyclicVectorAllFields.nonderogatory_has_cyclic_vector",
+      "statement": "∀ (M : Matrix (Fin n) (Fin n) K), IsNonderogatory M → ∃ v, IsCyclicVector M v",
+      "description": "Main theorem: every nonderogatory matrix over ANY field has a cyclic vector. Uses 1 axiom (RCF similarity), 0 sorries."
+    },
+    {
+      "name": "CayleyHamiltonCyclicVectorAllFields.nonderogatory_has_cyclic_vector_finite",
+      "statement": "∀ [Fintype K] (M : Matrix (Fin n) (Fin n) K), IsNonderogatory M → ∃ v, IsCyclicVector M v",
+      "description": "Specializes to finite fields F_q where q ≤ n, covering the regime where union avoidance fails."
+    },
+    {
+      "name": "CayleyHamiltonCyclicVectorAllFields.cyclic_iff_not_killed_below_degree",
+      "statement": "IsNonderogatory M → (IsCyclicVector M v ↔ ∀ p : K[X], p ≠ 0 → p.natDegree < n → ¬(aeval M p).mulVec v = 0)",
+      "description": "Polynomial annihilator characterization: cyclic iff not killed by any nonzero polynomial of degree < n."
+    }
+  ],
+  "sorries": 0
+}

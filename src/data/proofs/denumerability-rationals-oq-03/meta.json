@@ -2,7 +2,7 @@
   "id": "denumerability-rationals-oq-03",
   "title": "Stern-Brocot Tree Encoding of Rationals",
   "slug": "denumerability-rationals-oq-03",
-  "description": "Formalizes the Stern-Brocot tree as a state machine and proves coprimality, positivity, ordering, and injectivity — all driven by a single determinant invariant. Known to list every positive rational exactly once in lowest terms (surjectivity is future work; injectivity and coprimality proved here).",
+  "description": "Formalizes the Stern-Brocot tree as a state machine and proves coprimality, positivity, ordering, and injectivity \u2014 all driven by a single determinant invariant. Known to list every positive rational exactly once in lowest terms (surjectivity is future work; injectivity and coprimality proved here).",
   "meta": {
     "author": "Stern (1858), Brocot (1861)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Stern%E2%80%93Brocot_tree",
@@ -38,7 +38,7 @@
       },
       {
         "theorem": "Int.natCast_dvd_natCast",
-        "description": "Bridge between ℕ and ℤ divisibility for the Bezout-style argument",
+        "description": "Bridge between \u2115 and \u2124 divisibility for the Bezout-style argument",
         "module": "Mathlib.Data.Int.Lemmas"
       },
       {
@@ -53,7 +53,7 @@
       "coprime_of_det_one: automatic coprimality from the determinant invariant via Bezout identity",
       "num_pos_path / den_pos_path: positivity of all tree nodes by structural induction",
       "mediant_strictly_between: ordering proof la/lb < mediant < ra/rb",
-      "value_between_ancestors: BST invariant — all descendant values lie strictly between the ancestor bounds",
+      "value_between_ancestors: BST invariant \u2014 all descendant values lie strictly between the ancestor bounds",
       "eval_injective: different paths yield different states (injectivity), via BST ordering and monotonicity",
       "toRat_pos: every tree node represents a positive rational",
       "7 concrete verification examples for first 3 tree levels"
@@ -91,7 +91,7 @@
     {
       "targetId": "cantor-diagonalization",
       "relationship": "contrasts",
-      "description": "Cantor showed the reals are uncountable; this entry shows the rationals ARE countable, using a constructive tree enumeration rather than a bijection with ℕ"
+      "description": "Cantor showed the reals are uncountable; this entry shows the rationals ARE countable, using a constructive tree enumeration rather than a bijection with \u2115"
     },
     {
       "targetId": "gcd-algorithm",
@@ -101,7 +101,7 @@
     {
       "targetId": "sqrt2-irrational",
       "relationship": "related",
-      "description": "The Stern-Brocot path to $\\sqrt{2}$ is the infinite periodic sequence $LRLRLRLR\\ldots$ (corresponding to the continued fraction $[1; 2, 2, 2, \\ldots]$). Its irrationality means the path never terminates — providing a tree-theoretic proof that $\\sqrt{2} \\notin \\mathbb{Q}$"
+      "description": "The Stern-Brocot path to $\\sqrt{2}$ is the infinite periodic sequence $LRLRLRLR\\ldots$ (corresponding to the continued fraction $[1; 2, 2, 2, \\ldots]$). Its irrationality means the path never terminates \u2014 providing a tree-theoretic proof that $\\sqrt{2} \\notin \\mathbb{Q}$"
     },
     {
       "targetId": "chinese-remainder-non-coprime-oq-04",
@@ -115,7 +115,7 @@
       "title": "Basic Definitions",
       "startLine": 38,
       "endLine": 95,
-      "summary": "Defines Dir (L/R directions), Path (list of directions), State (navigation state with four ℕ components), and the eval/evalPath navigation functions.",
+      "summary": "Defines Dir (L/R directions), Path (list of directions), State (navigation state with four \u2115 components), and the eval/evalPath navigation functions.",
       "mathContext": "State = $(\\frac{la}{lb}, \\frac{ra}{rb})$, current node = mediant $\\frac{la+ra}{lb+rb}$. Left: $ra \\gets la+ra, rb \\gets lb+rb$. Right: $la \\gets la+ra, lb \\gets lb+rb$."
     },
     {
@@ -152,7 +152,7 @@
     },
     {
       "id": "ordering",
-      "title": "Ordering — The Tree is Sorted",
+      "title": "Ordering \u2014 The Tree is Sorted",
       "startLine": 217,
       "endLine": 227,
       "summary": "Proves mediant_strictly_between: the mediant lies strictly between the left and right ancestors, in cross-multiplication form.",
@@ -171,17 +171,17 @@
       "title": "Concrete Examples",
       "startLine": 490,
       "endLine": 600,
-      "summary": "Seven verified examples confirming the first 3 levels: [] → 1/1, [L] → 1/2, [R] → 2/1, [L,L] → 1/3, [L,R] → 2/3, [R,L] → 3/2, [R,R] → 3/1.",
+      "summary": "Seven verified examples confirming the first 3 levels: [] \u2192 1/1, [L] \u2192 1/2, [R] \u2192 2/1, [L,L] \u2192 1/3, [L,R] \u2192 2/3, [R,L] \u2192 3/2, [R,R] \u2192 3/1.",
       "mathContext": "Level 0: $1/1$. Level 1: $1/2, 2/1$. Level 2: $1/3, 2/3, 3/2, 3/1$. All verified by computation."
     }
   ],
   "conclusion": {
     "summary": "The Stern-Brocot tree is fully formalized as a state-machine navigation system with 30 theorems in 600 lines, with 0 sorries and 0 axioms. All key properties are machine-checked: the determinant invariant (ra*lb - la*rb = 1 at all nodes), automatic coprimality, positivity, ordering, the BST ancestor-bound invariant, and injectivity (different paths yield different rationals). The formalization demonstrates that the Stern-Brocot encoding provides a mathematically richer alternative to Cantor's pairing function for enumerating the rationals.",
-    "implications": "**1. Continued fractions**: The Stern-Brocot tree path to a rational $p/q$ directly encodes its continued fraction expansion: the run-length encoding $L^{a_0} R^{a_1} L^{a_2} \\cdots$ corresponds to $[a_0; a_1, a_2, \\ldots]$. This makes the Stern-Brocot tree the canonical geometric representation of continued fractions.\n\n**2. Farey sequences and mediant arithmetic**: The mediant $\\frac{a+c}{b+d}$ of $\\frac{a}{b}$ and $\\frac{c}{d}$ is the fundamental operation of the Stern-Brocot tree. Farey sequences $F_n$ are the fractions in lowest terms with denominator $\\leq n$, and consecutive Farey fractions are always Stern-Brocot neighbors with $|ad - bc| = 1$.\n\n**3. The Euclidean algorithm**: Surjectivity of the Stern-Brocot tree (every positive rational appears) follows from the Euclidean algorithm: to find $p/q$, repeatedly compare with the current mediant, going left if $p/q$ is smaller and right if larger. The process terminates because the determinant invariant $ra \\cdot lb - la \\cdot rb = 1$ implies the denominators grow, giving a descent.\n\n**4. Clock and calendar algorithms**: The Stern-Brocot tree is used in practice for best rational approximation with bounded denominator — the algorithm for finding the 'simplest' fraction in an interval. This is applied in clock generation (finding PLL ratios), calendar design (leap year rules), and gear ratios in mechanical engineering.",
+    "implications": "**1. Continued fractions**: The Stern-Brocot tree path to a rational $p/q$ directly encodes its continued fraction expansion: the run-length encoding $L^{a_0} R^{a_1} L^{a_2} \\cdots$ corresponds to $[a_0; a_1, a_2, \\ldots]$. This makes the Stern-Brocot tree the canonical geometric representation of continued fractions.\n\n**2. Farey sequences and mediant arithmetic**: The mediant $\\frac{a+c}{b+d}$ of $\\frac{a}{b}$ and $\\frac{c}{d}$ is the fundamental operation of the Stern-Brocot tree. Farey sequences $F_n$ are the fractions in lowest terms with denominator $\\leq n$, and consecutive Farey fractions are always Stern-Brocot neighbors with $|ad - bc| = 1$.\n\n**3. The Euclidean algorithm**: Surjectivity of the Stern-Brocot tree (every positive rational appears) follows from the Euclidean algorithm: to find $p/q$, repeatedly compare with the current mediant, going left if $p/q$ is smaller and right if larger. The process terminates because the determinant invariant $ra \\cdot lb - la \\cdot rb = 1$ implies the denominators grow, giving a descent.\n\n**4. Clock and calendar algorithms**: The Stern-Brocot tree is used in practice for best rational approximation with bounded denominator \u2014 the algorithm for finding the 'simplest' fraction in an interval. This is applied in clock generation (finding PLL ratios), calendar design (leap year rules), and gear ratios in mechanical engineering.",
     "openQuestions": [
       "Prove surjectivity: every positive rational appears somewhere in the tree, via the Euclidean algorithm connection.",
       "Formalize the continued fraction correspondence: run-length encoding of Stern-Brocot paths equals continued fraction coefficients.",
-      "Establish the full bijection between binary words (or ℕ via BFS ordering) and ℚ⁺."
+      "Establish the full bijection between binary words (or \u2115 via BFS ordering) and \u211a\u207a."
     ]
   },
   "leanFile": {
@@ -194,7 +194,7 @@
     "namespace": "SternBrocot",
     "lineCount": 600,
     "axiomCount": 0,
-    "theoremCount": 30,
+    "theoremCount": 31,
     "definitionCount": 12,
     "path": "Proofs/DenumerabilityRationalsOQ03.lean",
     "sorries": 0
@@ -202,16 +202,16 @@
   "references": [
     {
       "authors": "Stern, Moritz Abraham",
-      "title": "Über eine zahlentheoretische Funktion",
+      "title": "\u00dcber eine zahlentheoretische Funktion",
       "year": "1858",
-      "venue": "Journal für die reine und angewandte Mathematik, 55, pp. 193-220",
+      "venue": "Journal f\u00fcr die reine und angewandte Mathematik, 55, pp. 193-220",
       "note": "Introduced the diatomic series (Stern's sequence) which enumerates rationals via a binary tree structure"
     },
     {
       "authors": "Brocot, Achille",
-      "title": "Calcul des rouages par approximation, nouvelle méthode",
+      "title": "Calcul des rouages par approximation, nouvelle m\u00e9thode",
       "year": "1861",
-      "venue": "Revue Chronométrique, 3, pp. 186-194",
+      "venue": "Revue Chronom\u00e9trique, 3, pp. 186-194",
       "note": "Independently discovered the same tree structure for approximating gear ratios in clockmaking"
     },
     {

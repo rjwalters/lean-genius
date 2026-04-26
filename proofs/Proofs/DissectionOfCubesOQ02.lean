@@ -149,10 +149,10 @@ theorem nivenSeq_eq_cos (k : ℕ) :
   induction n with
   | zero =>
     refine ⟨by simp [nivenSeq, Real.cos_zero], ?_⟩
-    simp only [nivenSeq_one, Nat.cast_one, pow_one]
-    rw [show (1 : ℝ) * Real.arccos (1/3) = Real.arccos (1/3) from one_mul _,
+    have h1 : (nivenSeq 1 : ℝ) = 2 := by norm_num [nivenSeq]
+    simp only [Nat.zero_add, pow_one, Nat.cast_one, one_mul, h1,
       Real.cos_arccos (by norm_num : (-1 : ℝ) ≤ 1/3) (by norm_num : (1/3 : ℝ) ≤ 1)]
-    push_cast; ring
+    norm_num
   | succ m ih =>
     refine ⟨ih.2, ?_⟩
     have hrec : (nivenSeq (m + 2) : ℝ) =

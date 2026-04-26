@@ -14,7 +14,7 @@
   {
     "id": "ann-ideal-definition",
     "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 40, "endLine": 52 },
+    "range": { "startLine": 40, "endLine": 56 },
     "type": "definition",
     "title": "The Witness Ideal I = (2, X₀)",
     "content": "Three definitions set up the witness: gen2 = C 2 (the constant polynomial 2), genX = X (0 : Fin 2) (the first variable X₀), and I = Ideal.span {gen2, genX} (the ideal they generate). This ideal is the canonical witness that ℤ[X,Y] is not a PIR — the same ideal (2, X) witnesses the same fact in ℤ[X].",
@@ -36,21 +36,9 @@
     "prerequisites": ["ring homomorphisms", "Ideal.mem_span_pair"]
   },
   {
-    "id": "ann-step2-overview",
-    "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 76, "endLine": 81 },
-    "type": "concept",
-    "title": "Step 2 Strategy: Why totalDegree_mul_of_isDomain?",
-    "content": "The docstring introduces the key challenge: to prove $I$ is not principal, we assume $I = \\langle f \\rangle$ and derive a contradiction. The contradiction comes in two substeps: (1) $f \\mid C 2$ forces $f$ to be a constant polynomial, and (2) $C c \\mid X_0$ with $c$ an integer forces $c = \\pm 1$, making $f$ a unit. The delicate point is why totalDegree_mul_of_isDomain (EXACT equality) is needed rather than just an inequality: we need $\\deg(f) + \\deg(g) = \\deg(fg) = 0$, which forces $\\deg(f) = 0$ over $\\mathbb{N}$. An inequality $\\deg(fg) \\leq \\deg(f) + \\deg(g) = 0$ would also suffice, but Lean's Mathlib provides the exact equality as a standalone lemma for domains.",
-    "mathContext": "In a general commutative ring, $\\deg_{\\text{tot}}(fg) \\leq \\deg_{\\text{tot}}(f) + \\deg_{\\text{tot}}(g)$ holds but can be strict (e.g., in $\\mathbb{Z}/4\\mathbb{Z}[X]$, $2X \\cdot 2X = 0$ has degree $-\\infty$ while $2X$ has degree 1). Over an integral domain (NoZeroDivisors), equality holds because the leading term of $fg$ is the product of the leading terms of $f$ and $g$, which is nonzero. The specific Mathlib lemma `MvPolynomial.totalDegree_mul_of_isDomain` encodes this for multivariate polynomials, and its EXACT equality form is essential to close the $\\mathbb{N}$-valued arithmetic with `omega`.",
-    "significance": "technical",
-    "relatedConcepts": ["totalDegree_mul_of_isDomain", "NoZeroDivisors", "integral domain", "leading term"],
-    "prerequisites": ["polynomial degree theory", "integral domains"]
-  },
-  {
     "id": "ann-degree-zero",
     "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 82, "endLine": 103 },
+    "range": { "startLine": 77, "endLine": 103 },
     "type": "technique",
     "title": "Step 2a: Total Degree Argument",
     "content": "The private lemma dvd_gen2_totalDeg_zero is the heart of the non-principality proof. It uses MvPolynomial.totalDegree_mul_of_isDomain, which gives the EXACT equality totalDegree(f*g) = totalDegree(f) + totalDegree(g) when f ≠ 0 and g ≠ 0 over an integral domain. Since totalDegree(C 2) = 0, both f and g must have degree 0. This step crucially depends on ℤ being a domain (NoZeroDivisors).",
@@ -86,11 +74,11 @@
   {
     "id": "ann-not-principal",
     "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 146, "endLine": 168 },
+    "range": { "startLine": 142, "endLine": 168 },
     "type": "insight",
     "title": "Assembly: I is Not Principal",
-    "content": "I_not_principal assembles the three steps into a contradiction. Assuming I = ⟨f⟩ (principal), since gen2 ∈ I and genX ∈ I we get f | gen2 and f | genX. Step 2 gives f = C c with c | 2; step 3 gives c is a unit; step 4 lifts to C c being a unit, so ⟨C c⟩ = ⊤ by Ideal.span_singleton_eq_top, contradicting I ≠ ⊤.",
-    "mathContext": "Formally: if $I = \\langle f \\rangle$ then $f \\mid 2$ and $f \\mid X_0$ in $\\mathbb{Z}[X,Y]$. From $f \\mid 2$: $f = C(c)$ with $c \\mid 2$. From $C(c) \\mid X_0$: $c$ is a unit, so $C(c)$ is a unit. But then $\\langle C(c) \\rangle = \\mathbb{Z}[X,Y]$, i.e., $I = \\top$, contradicting $1 \\notin I$.",
+    "content": "`I_not_principal` assembles the three steps into a contradiction. Assuming $I = \\langle f \\rangle$ (principal), since gen2 ∈ I and genX ∈ I we get $f \\mid 2$ and $f \\mid X_0$. Step 2 gives $f = C(c)$ with $c \\mid 2$; step 3 gives $c$ is a unit in $\\mathbb{Z}$; step 4 lifts to $C(c)$ being a unit in $\\mathbb{Z}[X,Y]$, so $\\langle C(c) \\rangle = \\top$ by `Ideal.span_singleton_eq_top`, contradicting $I \\neq \\top$.\n\nThis proof structure — properness via a ring hom, non-principality via degree + coefficient extraction — generalizes: for any UFD $R$ that is not a field and any irreducible $p \\in R$, the ideal $(p, X) \\subset R[X]$ is a proper non-principal ideal, proving $R[X]$ is not a PID. In particular, for any prime $q$ and $n \\geq 1$, the ideal $(q, X_1) \\subset R[X_1,\\ldots,X_n]$ witnesses the same failure.",
+    "mathContext": "Formally: if $I = \\langle f \\rangle$ then $f \\mid 2$ and $f \\mid X_0$ in $\\mathbb{Z}[X,Y]$. From $f \\mid 2$: $f = C(c)$ with $c \\mid 2$. From $C(c) \\mid X_0$: $c$ is a unit, so $C(c)$ is a unit. But then $\\langle C(c) \\rangle = \\mathbb{Z}[X,Y]$, i.e., $I = \\top$, contradicting $1 \\notin I$.\n\nAlternative perspective: $(2, X_0)$ is a maximal ideal because $\\mathbb{Z}[X,Y]/(2, X_0) \\cong \\mathbb{Z}/2\\mathbb{Z}$, a field. In a PID, every maximal ideal is principal. Since $(2, X_0)$ is maximal but not principal, $\\mathbb{Z}[X,Y]$ is not a PID.",
     "significance": "key",
     "relatedConcepts": ["Submodule.IsPrincipal", "Ideal.span_singleton_eq_top", "proof by contradiction"],
     "prerequisites": ["principal ideals", "ideal theory"]

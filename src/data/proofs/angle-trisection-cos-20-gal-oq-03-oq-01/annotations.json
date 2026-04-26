@@ -48,6 +48,30 @@
     ]
   },
   {
+    "id": "ann-at-cos72-gal-02b-poly-setup",
+    "proofId": "angle-trisection-cos-20-gal-oq-03-oq-01",
+    "range": {
+      "startLine": 58,
+      "endLine": 78
+    },
+    "type": "definition",
+    "title": "§2: Polynomial p = 4X²+2X−1 Setup",
+    "content": "Lines 58–78 define the polynomial `p = 4X²+2X−1` as a private abbreviation and establish three basic properties needed for the Eisenstein irreducibility argument:\n\n- `p_ne_zero`: p ≠ 0, proved by evaluating p at 0: p(0) = −1 ≠ 0.\n- `p_natDegree`: natDegree(p) = 2, proved by `compute_degree!`.\n- `p_degree_ne_zero`: degree(p) ≠ 0, used in the splitting field construction to ensure a non-constant polynomial.\n\nThe `private noncomputable abbrev` declaration makes `p` a transparent notation for `4 * X^2 + 2 * X - C 1` in ℚ[X], allowing `simp` and `ring` to unfold it. The noncomputability stems from the field structure on ℚ.",
+    "mathContext": "$p = 4X^2 + 2X - 1 \\in \\mathbb{Q}[X]$. Properties: $p(0) = -1 \\neq 0$ (non-zero), $\\deg p = 2$ (natDegree = 2), $\\deg p \\neq 0$ (not a constant). The discriminant of $p$ is $\\Delta = b^2 - 4ac = 4 - 4(4)(-1) = 4 + 16 = 20$, which is not a perfect square in $\\mathbb{Q}$ — confirming no rational roots via the rational root theorem (candidates $\\pm 1, \\pm 1/2, \\pm 1/4$ all fail).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Polynomial.natDegree",
+      "compute_degree! tactic",
+      "noncomputable abbrev",
+      "polynomial evaluation"
+    ],
+    "prerequisites": [
+      "Polynomial.natDegree_X",
+      "Polynomial.eval_zero",
+      "WithBot arithmetic"
+    ]
+  },
+  {
     "id": "ann-at-cos72-gal-03-eisenstein",
     "proofId": "angle-trisection-cos-20-gal-oq-03-oq-01",
     "range": {

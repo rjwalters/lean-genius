@@ -1,0 +1,146 @@
+{
+  "id": "binomial-theorem-oq-02-oq-01-oq-01-oq-01",
+  "title": "Fintype Instance for Composition via piAntidiag",
+  "slug": "binomial-theorem-oq-02-oq-01-oq-01-oq-01",
+  "description": "Proves the Fintype instance for the Composition type using a bijection with piAntidiag, resolving the sorry from BinomialTheoremOQ02OQ01OQ01",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "date": "2026-04-26",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "multinomial",
+      "fintype",
+      "piAntidiag",
+      "composition",
+      "probability"
+    ],
+    "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ01.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-04-26",
+    "axiomCount": 0,
+    "lineCount": 185,
+    "assumptions": "No axioms, no sorries. Uses native_decide for computational verifications.",
+    "originalContributions": [
+      "Composition.ext_counts: extensionality via counts field using proof irrelevance",
+      "compositionEquiv: explicit bijection Composition α s n ≃ ↥(s.piAntidiag n)",
+      "instFintypeComposition: Fintype instance in 2 lines via Fintype.ofEquiv",
+      "card_composition: cardinality formula via the bijection",
+      "card_composition_zero: unique composition of 0",
+      "dice_six_rolls_all_different: multinomial({0..5}, 1) * 1 = 6!",
+      "sum_composition_eq_piAntidiag_sum: sum transfer via the equivalence"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The multinomial distribution requires a Fintype instance for its support type (Composition n k) to construct a Mathlib PMF (probability mass function). Composition n k is the type of ways to write n as an ordered sum of k positive naturals — the classical 'compositions' counted by the stars and bars formula C(n-1, k-1). A Fintype instance is needed to enumerate all compositions and compute the PMF denominator.\n\nThe `piAntidiag` construction in Mathlib provides a finset of functions f : ι → ℕ summing to n with support ⊆ s. The question 'Can the Fintype instance for Composition be proved efficiently using piAntidiag?' was posed as an open question from BinomialTheoremOQ02OQ01OQ01. The key insight is that `Finset.mem_piAntidiag` characterises exactly the conditions in the Composition structure (function support and total sum), making the bijection immediate rather than requiring a custom inductive construction.",
+    "problemStatement": "Can the Fintype instance for Composition be proved efficiently using piAntidiag?",
+    "text": "The Fintype instance for Composition follows in 2 lines from a bijection with ↥(s.piAntidiag n), where Finset.mem_piAntidiag precisely characterises the Composition conditions.",
+    "proofStrategy": "Construct the bijection compositionEquiv : Composition α s n ≃ ↥(s.piAntidiag n) using the logical equivalence between counts_outside (∀ a ∉ s, f a = 0) and piAntidiag's support condition (∀ i, f i ≠ 0 → i ∈ s). Apply Fintype.ofEquiv to transfer the Fintype structure from ↥(piAntidiag) to Composition.",
+    "keyInsights": [
+      "Finset.mem_piAntidiag states: f ∈ s.piAntidiag n ↔ (∑ i ∈ s, f i = n) ∧ (∀ i, f i ≠ 0 → i ∈ s) — precisely the Composition conditions (up to logical equivalence)",
+      "The counts_outside condition (∀ a ∉ s → f a = 0) and the piAntidiag support condition (∀ i, f i ≠ 0 → i ∈ s) are logically equivalent via contrapositive",
+      "Lean 4's definitional proof irrelevance closes Composition.ext_counts by rfl after subst, since Prop-valued fields are definitionally equal when they have the same type",
+      "The bijection's right_inv closes by Subtype.ext rfl — the value component is identical and the membership proof is a Prop",
+      "The actual proof is 15 lines, well under the ~50 line estimate in BinomialTheoremOQ02OQ01OQ01"
+    ],
+    "prerequisites": [
+      "Multinomial PMF Integration (parent)",
+      "Mathlib: Finset.piAntidiag, Finset.mem_piAntidiag",
+      "Mathlib: Fintype.ofEquiv, Fintype.sum_equiv"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-composition",
+      "title": "Composition Structure",
+      "startLine": 35,
+      "endLine": 50,
+      "summary": "Defines Composition α s n: a function f : α → ℕ summing to n on s with zero support outside s."
+    },
+    {
+      "id": "sec-ext",
+      "title": "Extensionality",
+      "startLine": 52,
+      "endLine": 65,
+      "summary": "Composition.ext_counts proves two Compositions are equal iff their counts functions agree. Uses definitional proof irrelevance for Prop fields."
+    },
+    {
+      "id": "sec-bijection",
+      "title": "Core Bijection with piAntidiag",
+      "startLine": 67,
+      "endLine": 95,
+      "summary": "compositionEquiv establishes Composition α s n ≃ ↥(s.piAntidiag n). Forward map uses contrapositive of counts_outside; backward map uses by_contra."
+    },
+    {
+      "id": "sec-fintype",
+      "title": "Fintype Instance (Main Result)",
+      "startLine": 97,
+      "endLine": 110,
+      "summary": "instFintypeComposition: 2-line proof via Fintype.ofEquiv applied to compositionEquiv.symm. Resolves the sorry from BinomialTheoremOQ02OQ01OQ01."
+    },
+    {
+      "id": "sec-cardinality",
+      "title": "Cardinality",
+      "startLine": 112,
+      "endLine": 130,
+      "summary": "card_composition: |Composition α s n| = |s.piAntidiag n|. card_composition_zero: unique composition of 0."
+    },
+    {
+      "id": "sec-examples",
+      "title": "Concrete Computations",
+      "startLine": 132,
+      "endLine": 155,
+      "summary": "Verifies: 3 compositions of 2 into Fin 2 parts, 6 into Fin 3 parts, dice multinomial = 6!."
+    },
+    {
+      "id": "sec-sum-transfer",
+      "title": "Sum Transfer via Bijection",
+      "startLine": 157,
+      "endLine": 170,
+      "summary": "sum_composition_eq_piAntidiag_sum: any sum over Composition can be rewritten as a sum over piAntidiag. Key for applying the multinomial theorem."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Can the ENNReal normalization theorem (multinomialPMF_sum_eq_one) be proved using sum_composition_eq_piAntidiag_sum and the multinomial theorem Finset.sum_pow_eq_sum_piAntidiag?",
+      "status": "open"
+    },
+    {
+      "id": "oq-02",
+      "question": "Can the marginal distribution theorem (multinomial_marginal_binomial) be proved with the bijection + existing piAntidiag-based marginal lemmas?",
+      "status": "open"
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves the `Fintype` instance for `Composition α s n` in 2 lines via a bijection with `↥(s.piAntidiag n)`, resolving the sorry from `BinomialTheoremOQ02OQ01OQ01.lean`. The key observation is that `Finset.mem_piAntidiag` precisely encodes both conditions of `Composition` (sum = n, support ⊆ s), making the bijection a definitional triviality. The proof is 15 lines total — far shorter than the parent's estimate of ~50 lines. Also resolves `dice_six_rolls_all_different` via `native_decide`.",
+    "implications": "The `Fintype` instance enables the multinomial PMF to be stated as a Mathlib `PMF`: the support type `Composition α s n` is now provably finite, allowing `Finset.sum` over it. The `sum_composition_eq_piAntidiag_sum` bridge lemma connects the Composition-indexed sum to `piAntidiag`, enabling application of Mathlib's `Finset.sum_pow_eq_sum_piAntidiag` (the multinomial theorem). Together these are the building blocks for a complete Lean 4 formalization of the multinomial distribution as a `PMF`.",
+    "openQuestions": [
+      "Can `multinomialPMF_sum_eq_one` (the normalization $\\sum_f p^f = 1$ over all compositions $f$ of $n$) be proved by combining `sum_composition_eq_piAntidiag_sum` with `Finset.sum_pow_eq_sum_piAntidiag`? This would directly use the multinomial theorem: $\\sum_{k \\in s.\\text{piAntidiag}\\, n} \\binom{n}{k} \\prod_{i} p_i^{k_i} = (\\sum_i p_i)^n = 1$ when $p$ is a probability vector.",
+      "Can the marginal distribution theorem (multinomial marginalized to a subset is again multinomial) be formalized using the existing `piAntidiag`-based infrastructure in Mathlib?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry `BinomialTheoremOQ02OQ01OQ01` defines the `Composition` type and the multinomial PMF structure but leaves the `Fintype` instance as a sorry. This entry resolves that sorry with a 2-line proof via the piAntidiag bijection."
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Grandparent entry building the multinomial PMF. The `Fintype` instance proved here is required to state and compute expectations over the multinomial distribution support."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The classical binomial theorem $(x+y)^n = \\sum_{k=0}^n \\binom{n}{k} x^k y^{n-k}$ is a special case of the multinomial theorem with two terms. This entry's `Composition` type, restricted to $|s| = 2$, recovers the binomial coefficient setup."
+    },
+    {
+      "targetId": "binomial-theorem-oq-02",
+      "relationship": "sibling",
+      "description": "The multinomial distribution OQ-02 chain. This entry resolves a sub-question about Fintype infrastructure needed to formalize the full multinomial PMF in Lean 4."
+    }
+  ]
+}

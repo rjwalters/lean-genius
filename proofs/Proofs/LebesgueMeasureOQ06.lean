@@ -35,7 +35,7 @@ set_option linter.unusedVariables false
 namespace BanachTarski
 
 open Set MeasureTheory
-open scoped Pointwise ENNReal
+open scoped Pointwise ENNReal Matrix
 
 variable {α : Type*}
 
@@ -272,10 +272,7 @@ private def anyInv (v : Fin 3 → Zsqrtd 2) : Prop :=
 
 -- The identity does not satisfy anyInv (e2Int has y.re = 1 ≢ 0 mod 3, x.im = 0 ≡ 0)
 private lemma e2Int_no_inv : ¬ anyInv e2Int := by
-  simp only [anyInv, inv_phi, inv_phi_inv, inv_psi, inv_psi_inv, e2Int,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-             Matrix.head_fin_const, Zsqrtd.re, Zsqrtd.im]
-  norm_num
+  simp [anyInv, inv_phi, inv_phi_inv, inv_psi, inv_psi_inv, e2Int]
 
 -- *** Valid transition lemmas (12 of 16 transitions in the orbit automaton) ***
 -- The 4 forbidden transitions (phi after phi_inv, phi_inv after phi,
@@ -283,7 +280,7 @@ private lemma e2Int_no_inv : ¬ anyInv e2Int := by
 -- Proof pattern: unfold all definitions, apply Zsqrtd arithmetic simp, then omega.
 
 -- Shared simp set for all transition lemma proofs
-private macro "zsqrtd_simp" : tactic =>
+macro "zsqrtd_simp" : tactic =>
   `(tactic| simp only [Zsqrtd.mul_re, Zsqrtd.mul_im, Zsqrtd.add_re, Zsqrtd.add_im,
               scaledActPhi_0, scaledActPhi_1, scaledActPhi_2,
               scaledActPhiInv_0, scaledActPhiInv_1, scaledActPhiInv_2,
@@ -368,22 +365,152 @@ private lemma base_phi_inv : inv_phi_inv (scaledActPhiInv e2Int) := by
   norm_num
 
 private lemma base_psi : inv_psi (scaledActPsi e2Int) := by
-  simp only [inv_psi, e2Int, Matrix.cons_val_zero, Matrix.cons_val_one,
-             Matrix.head_cons, Matrix.head_fin_const]
-  zsqrtd_simp
-  norm_num
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+    simp [inv_psi, scaledActPsi, e2Int, Zsqrtd.mul_re, Zsqrtd.mul_im,
+          Zsqrtd.add_re, Zsqrtd.add_im] <;>
+    norm_num
 
 private lemma base_psi_inv : inv_psi_inv (scaledActPsiInv e2Int) := by
-  simp only [inv_psi_inv, e2Int, Matrix.cons_val_zero, Matrix.cons_val_one,
-             Matrix.head_cons, Matrix.head_fin_const]
-  zsqrtd_simp
-  norm_num
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+    simp [inv_psi_inv, scaledActPsiInv, e2Int, Zsqrtd.mul_re, Zsqrtd.mul_im,
+          Zsqrtd.add_re, Zsqrtd.add_im] <;>
+    norm_num
 
 -- The orbit induction for proving orbit_ne uses these 12 valid transitions.
 -- The forbidden 4 transitions don't appear in reduced words.
 -- Full induction: on FreeGroup.toList, showing each letter step preserves the
 -- appropriate inv_L invariant (where L is the new last letter), relying on
 -- reducedness to exclude the 4 forbidden (self-cancelling) transitions.
+
+-- *** PART B: Word evaluation and automaton infrastructure ***
+
+-- Apply one generator letter to an integer-orbit vector
+private def applyGen : Bool × Bool → (Fin 3 → Zsqrtd 2) → Fin 3 → Zsqrtd 2
+  | (true, true), v => scaledActPhi v
+  | (true, false), v => scaledActPhiInv v
+  | (false, true), v => scaledActPsi v
+  | (false, false), v => scaledActPsiInv v
+
+-- Evaluate a word left-to-right: evalWord [l₁,l₂,...,lₙ] v = lₙ(l₂(l₁(v)))
+private def evalWord : List (Bool × Bool) → (Fin 3 → Zsqrtd 2) → Fin 3 → Zsqrtd 2
+  | [], v => v
+  | x :: xs, v => evalWord xs (applyGen x v)
+
+-- The invariant each last-applied generator establishes
+private def labeledInv : Bool × Bool → (Fin 3 → Zsqrtd 2) → Prop
+  | (true, true), v => inv_phi v
+  | (true, false), v => inv_phi_inv v
+  | (false, true), v => inv_psi v
+  | (false, false), v => inv_psi_inv v
+
+-- evalWord(l ++ [g]) v = applyGen g (evalWord l v): the last letter is applied last
+private lemma evalWord_append (l : List (Bool × Bool)) (g : Bool × Bool)
+    (v : Fin 3 → Zsqrtd 2) :
+    evalWord (l ++ [g]) v = applyGen g (evalWord l v) := by
+  induction l generalizing v with
+  | nil => simp [evalWord]
+  | cons h t ih => simp only [List.cons_append, evalWord]; exact ih _
+
+-- Base: single application to e2Int satisfies the generator's invariant
+private lemma labeledInv_base (g : Bool × Bool) : labeledInv g (applyGen g e2Int) := by
+  rcases g with ⟨b, s⟩
+  fin_cases b <;> fin_cases s <;>
+    simp only [applyGen, labeledInv] <;>
+    first | exact base_phi | exact base_phi_inv | exact base_psi | exact base_psi_inv
+
+-- Valid transition: if prev established its invariant and cur doesn't cancel prev,
+-- then cur establishes its invariant after being applied
+private lemma labeledInv_step (cur prev : Bool × Bool) (v : Fin 3 → Zsqrtd 2)
+    (hnocancel : ¬(cur.1 = prev.1 ∧ cur.2 = !prev.2))
+    (hprev : labeledInv prev v) : labeledInv cur (applyGen cur v) := by
+  rcases cur with ⟨cb, cs⟩; rcases prev with ⟨pb, ps⟩
+  -- 16 cases; 4 are forbidden (hnocancel gives contradiction), 12 use transition lemmas
+  fin_cases cb <;> fin_cases cs <;> fin_cases pb <;> fin_cases ps <;>
+    simp only [applyGen, labeledInv, Bool.not_false, Bool.not_true,
+               Bool.false_eq_true, Bool.true_eq_false, not_and] at * <;>
+    first
+    | exact trans_phi_from_phi hprev
+    | exact trans_phi_from_psi hprev
+    | exact trans_phi_from_psi_inv hprev
+    | exact trans_phi_inv_from_phi_inv hprev
+    | exact trans_phi_inv_from_psi hprev
+    | exact trans_phi_inv_from_psi_inv hprev
+    | exact trans_psi_from_phi hprev
+    | exact trans_psi_from_phi_inv hprev
+    | exact trans_psi_from_psi hprev
+    | exact trans_psi_inv_from_phi hprev
+    | exact trans_psi_inv_from_phi_inv hprev
+    | exact trans_psi_inv_from_psi_inv hprev
+    | (simp_all)
+
+-- anyInv follows from labeledInv
+private lemma anyInv_of_labeledInv {g : Bool × Bool} {v : Fin 3 → Zsqrtd 2}
+    (h : labeledInv g v) : anyInv v := by
+  rcases g with ⟨b, s⟩
+  fin_cases b <;> fin_cases s <;> simp only [labeledInv] at h
+  · exact Or.inl h
+  · exact Or.inr (Or.inl h)
+  · exact Or.inr (Or.inr (Or.inl h))
+  · exact Or.inr (Or.inr (Or.inr h))
+
+-- Helper: getLast! is a member of getLast? for any nonempty list.
+-- Proved by induction using the cons-cons reduction lemmas.
+private lemma getLast!_mem_getLast? {l : List (Bool × Bool)} (h : l ≠ []) :
+    l.getLast! ∈ l.getLast? := by
+  induction l with
+  | nil => exact absurd rfl h
+  | cons a t ih =>
+    cases t with
+    | nil => simp
+    | cons b t' =>
+      have hne : b :: t' ≠ [] := List.cons_ne_nil b t'
+      simp only [List.getLast!, List.getLast?]
+      exact ih hne
+
+-- Auxiliary: the stronger "last-letter labeled invariant" holds for nonempty reduced words.
+-- Proof by induction on the word from the right (reverseRecOn).
+private lemma evalWord_nonempty_labeledInv :
+    ∀ (l : List (Bool × Bool)),
+    l ≠ [] →
+    l.Chain' (fun a b => ¬(a.1 = b.1 ∧ a.2 = !b.2)) →
+    labeledInv l.getLast! (evalWord l e2Int) := by
+  intro l
+  induction l using List.reverseRecOn with
+  | nil => intro h; exact absurd rfl h
+  | append_singleton l' g ih =>
+    -- ih : l' ≠ [] → l'.Chain' R → labeledInv l'.getLast! (evalWord l' e2Int)
+    intro _ hred
+    -- Rewrite the goal: getLast! of l' ++ [g] is g, and evalWord splits at the end
+    -- (l' ++ [g]).getLast! = g holds because g is the last element
+    have hlast : (l' ++ [g]).getLast! = g := by simp
+    rw [evalWord_append, hlast]
+    -- Case split: was the prefix empty?
+    by_cases hl' : l' = []
+    · -- Single-letter word [g]: apply base case directly
+      subst hl'; simp only [evalWord]; exact labeledInv_base g
+    · -- Multi-letter word l' ++ [g]: use induction hypothesis
+      -- Extract prefix chain from (l' ++ [g]).Chain' R
+      have hred_l' : l'.Chain' (fun a b => ¬(a.1 = b.1 ∧ a.2 = !b.2)) :=
+        -- Prefix of a reduced word is reduced: l' = left part of l' ++ [g]
+        (List.chain'_append.mp hred).1
+      -- The junction: last pair (l'.getLast!, g) satisfies no-cancel
+      have hnocancel : ¬(g.1 = l'.getLast!.1 ∧ g.2 = !l'.getLast!.2) := by
+        -- From chain'_append: ∀ x ∈ l'.getLast?, ∀ y ∈ [g].head?, R x y
+        -- i.e., R l'.getLast! g = ¬(l'.getLast!.1 = g.1 ∧ l'.getLast!.2 = !g.2)
+        intro ⟨heq1, heq2⟩
+        have hjunc := (List.chain'_append.mp hred).2.2
+        have hlast_mem : l'.getLast! ∈ l'.getLast? := getLast!_mem_getLast? hl'
+        have hg_mem : g ∈ ([g] : List (Bool × Bool)).head? := by simp
+        exact hjunc _ hlast_mem _ hg_mem ⟨heq1.symm, by simp [heq2, Bool.not_not]⟩
+      -- Apply the transition
+      exact labeledInv_step g l'.getLast! _ hnocancel (ih hl' hred_l')
+
+-- Key automaton lemma: any nonempty reduced word applied to e2Int satisfies anyInv.
+private lemma evalWord_nonempty_anyInv (l : List (Bool × Bool))
+    (hne : l ≠ [])
+    (hred : l.Chain' (fun a b => ¬(a.1 = b.1 ∧ a.2 = !b.2))) :
+    anyInv (evalWord l e2Int) :=
+  anyInv_of_labeledInv (evalWord_nonempty_labeledInv l hne hred)
 
 /-- **Hausdorff's Theorem** (1914): The rotation group SO(3) contains a free
     subgroup of rank 2.
@@ -394,7 +521,7 @@ private lemma base_psi_inv : inv_psi_inv (scaledActPsiInv e2Int) := by
 
     This is the key algebraic ingredient for Banach-Tarski. -/
 -- PARTIAL PROOF: Rotation matrices defined and shown orthogonal.
--- LinearIsometryEquivs constructed. Remaining sorry: freeness (orbit argument in ℤ[√2]).
+-- LinearIsometryEquivs constructed. orbit_ne proved via inductive encoding in ℤ[√2].
 theorem hausdorff_free_subgroup :
     ∃ (φ ψ : EuclideanSpace ℝ (Fin 3) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin 3)),
     Function.Injective
@@ -515,12 +642,177 @@ theorem hausdorff_free_subgroup :
   -- e₂ = (0,1,0) as the test vector
   let e₂ : EuclideanSpace ℝ (Fin 3) := EuclideanSpace.single (1 : Fin 3) 1
   set liftF := FreeGroup.lift (fun b : Bool => if b then φ.toLinearEquiv else ψ.toLinearEquiv)
-  -- SORRY (connection bridge): proved by induction on word length.
-  -- For each reduced word w of length n, decode(evalInt w e2Int) = 3^n * (liftF w) e₂.
-  -- anyInv ensures evalInt w e2Int ≠ encode(3^n * e₂) for n ≥ 1.
-  -- Hence (liftF w) e₂ ≠ e₂ for all w ≠ 1.
+  -- The automaton invariant is proved in evalWord_nonempty_anyInv above.
+  -- The remaining step is a bridge: evalWord (FreeGroup.toWord w) e2Int encodes
+  -- 3^n * (liftF w) e₂ in ℤ[√2]³. The anyInv condition then forces (liftF w) e₂ ≠ e₂.
   have orbit_ne : ∀ (w : FreeGroup Bool), w ≠ 1 → (liftF w) e₂ ≠ e₂ := by
-    sorry
+    intro w hw
+    -- Step 1: w ≠ 1 → FreeGroup.toWord w is nonempty and reduced
+    have hne_word : FreeGroup.toWord w ≠ [] := by
+      rwa [ne_eq, FreeGroup.toWord_eq_nil_iff]
+    have hred_word : (FreeGroup.toWord w).Chain' (fun a b => ¬(a.1 = b.1 ∧ a.2 = !b.2)) :=
+      FreeGroup.isReduced_toWord.imp (fun a b h ⟨h1, h2⟩ =>
+        absurd ((h h1).symm.trans h2) (by cases b.2 <;> simp))
+    -- Use the REVERSED word for evalWord: evalWord reverses composition order,
+    -- so evalWord l.reverse e2Int encodes 3^n * (liftF (mk l)) e₂.
+    -- The reversed word is also nonempty and reduced (reducedness is symmetric).
+    have hne_rev : (FreeGroup.toWord w).reverse ≠ [] := by
+      simp [hne_word]
+    have hred_rev : (FreeGroup.toWord w).reverse.Chain' (fun a b => ¬(a.1 = b.1 ∧ a.2 = !b.2)) := by
+      rw [List.chain'_reverse]
+      exact hred_word.imp (fun a b h ⟨h1, h2⟩ => h ⟨h1.symm, by
+        cases a.2 <;> cases b.2 <;> simp_all⟩)
+    -- Step 2: By the automaton, the reversed integer orbit satisfies anyInv
+    have hanyInv : anyInv (evalWord (FreeGroup.toWord w).reverse e2Int) :=
+      evalWord_nonempty_anyInv _ hne_rev hred_rev
+    -- Step 3: Bridge — the integer orbit encodes 3^n * (liftF w) e₂
+    have bridge : ∀ (v : Fin 3 → Zsqrtd 2),
+        anyInv v →
+        ∀ (p : EuclideanSpace ℝ (Fin 3)) (n : ℕ),
+        (∀ i, (v i).re + (v i).im * Real.sqrt 2 = (3 : ℝ)^n * p i) →
+        p ≠ e₂ := by
+      intro v hv p n henc heq
+      subst heq
+      have henc0 : (↑(v 0).re : ℝ) + ↑(v 0).im * Real.sqrt 2 = 0 := by
+        have h := henc (0 : Fin 3)
+        simp only [EuclideanSpace.single_apply, Pi.single_apply] at h
+        norm_num at h ⊢
+        linarith
+      have henc2 : (↑(v 2).re : ℝ) + ↑(v 2).im * Real.sqrt 2 = 0 := by
+        have h := henc (2 : Fin 3)
+        simp only [EuclideanSpace.single_apply, Pi.single_apply] at h
+        norm_num at h ⊢
+        linarith
+      have hirr : Irrational (Real.sqrt 2) := Real.irrational_sqrt_two
+      have hv0_im : (v 0).im = 0 := by
+        by_contra h0
+        have hh : (↑(v 0).im : ℝ) ≠ 0 := Int.cast_ne_zero.mpr h0
+        apply hirr
+        refine ⟨-((v 0).re : ℚ) / ((v 0).im : ℚ), ?_⟩
+        push_cast
+        rw [div_eq_iff hh]
+        linarith [mul_comm (Real.sqrt 2) (↑(v 0).im : ℝ),
+                  mul_comm (↑(v 0).im : ℝ) (Real.sqrt 2)]
+      have hv2_im : (v 2).im = 0 := by
+        by_contra h2
+        have hh : (↑(v 2).im : ℝ) ≠ 0 := Int.cast_ne_zero.mpr h2
+        apply hirr
+        refine ⟨-((v 2).re : ℚ) / ((v 2).im : ℚ), ?_⟩
+        push_cast
+        rw [div_eq_iff hh]
+        linarith [mul_comm (Real.sqrt 2) (↑(v 2).im : ℝ),
+                  mul_comm (↑(v 2).im : ℝ) (Real.sqrt 2)]
+      simp only [anyInv, inv_phi, inv_phi_inv, inv_psi, inv_psi_inv] at hv
+      rcases hv with ⟨-, h, -⟩ | ⟨-, h, -⟩ |
+                     ⟨-, -, -, -, -, h, -⟩ | ⟨-, -, -, -, -, h, -⟩
+      · exact h (by rw [hv0_im]; omega)
+      · exact h (by rw [hv0_im]; omega)
+      · exact h (by rw [hv2_im]; omega)
+      · exact h (by rw [hv2_im]; omega)
+    -- Step 4: Encoding lemma — evalWord l v encodes 3^(n+l.length) * liftF(mk l.reverse)(p)
+    -- when decode(v, i) = 3^n * p(i). Proved by induction on l.
+    -- Key algebraic fact: each applyGen(g, v) decodes to 3 * M_g(decode(v)).
+    -- Composition order: evalWord applies leftmost letter first (innermost),
+    -- while liftF(mk l) applies leftmost letter last (outermost).
+    -- So evalWord l v encodes liftF(mk l.reverse), i.e., reversed composition.
+    have hs2 : Real.sqrt 2 * Real.sqrt 2 = 2 := Real.mul_self_sqrt (by norm_num)
+    -- applyGen(g, v) decoded = 3 * (real rotation for g)(decoded v)
+    have applyGen_decode : ∀ (g : Bool × Bool) (v : Fin 3 → Zsqrtd 2) (i : Fin 3),
+        ((applyGen g v i).re : ℝ) + ((applyGen g v i).im : ℝ) * Real.sqrt 2 =
+        3 * (if g.2 then (if g.1 then (φ_lin : EuclideanSpace ℝ (Fin 3) →ₗ[ℝ] _)
+                                 else (ψ_lin : EuclideanSpace ℝ (Fin 3) →ₗ[ℝ] _))
+                    else (if g.1 then (φ_lin.symm : EuclideanSpace ℝ (Fin 3) →ₗ[ℝ] _)
+                                 else (ψ_lin.symm : EuclideanSpace ℝ (Fin 3) →ₗ[ℝ] _)))
+            (fun j => ((v j).re : ℝ) + ((v j).im : ℝ) * Real.sqrt 2) i := by
+      rcases g with ⟨b, s⟩
+      fin_cases b <;> fin_cases s <;> fin_cases i <;>
+        simp only [applyGen, Bool.true_eq_false, Bool.false_eq_true, ite_true, ite_false,
+                   scaledActPhi_0, scaledActPhi_1, scaledActPhi_2,
+                   scaledActPhiInv_0, scaledActPhiInv_1, scaledActPhiInv_2,
+                   scaledActPsi_0, scaledActPsi_1, scaledActPsi_2,
+                   scaledActPsiInv_0, scaledActPsiInv_1, scaledActPsiInv_2,
+                   Zsqrtd.mul_re, Zsqrtd.mul_im, Zsqrtd.add_re, Zsqrtd.add_im,
+                   φ_lin, ψ_lin, LinearEquiv.ofLinear_apply, LinearEquiv.ofLinear_symm_apply,
+                   Matrix.toEuclideanLin_apply, WithLp.ofLp_toLp,
+                   Matrix.mulVec, Matrix.dotProduct, Fin.sum_univ_three] <;>
+        unfold_let Mφ Mψ <;>
+        simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+                   Matrix.head_fin_const, Matrix.cons_val_fin_one,
+                   Matrix.transpose_apply, Matrix.of_apply] <;>
+        push_cast <;>
+        nlinarith [hs2, Real.sqrt_nonneg 2,
+                   mul_comm (Real.sqrt 2) ((v 0).im : ℝ),
+                   mul_comm (Real.sqrt 2) ((v 1).im : ℝ),
+                   mul_comm (Real.sqrt 2) ((v 2).im : ℝ)]
+    -- General encoding induction:
+    -- evalWord l v decodes to 3^(n+l.length) * liftF(mk l.reverse) p
+    -- when decode(v) = 3^n * p component-wise.
+    have enc_ind : ∀ (l : List (Bool × Bool)) (v : Fin 3 → Zsqrtd 2)
+        (p : EuclideanSpace ℝ (Fin 3)) (n : ℕ),
+        (∀ i, ((v i).re : ℝ) + ((v i).im : ℝ) * Real.sqrt 2 = 3^n * p i) →
+        ∀ i, ((evalWord l v i).re : ℝ) + ((evalWord l v i).im : ℝ) * Real.sqrt 2 =
+        3^(n + l.length) * (liftF (FreeGroup.mk l.reverse)) p i := by
+      intro l
+      induction l with
+      | nil =>
+        intro v p n hv i
+        simp only [evalWord, List.length_nil, Nat.add_zero, List.reverse_nil,
+                   FreeGroup.lift_mk, List.map_nil, List.prod_nil, map_one,
+                   LinearEquiv.one_apply]
+        exact hv i
+      | cons a as ih =>
+        intro v p n hv i
+        simp only [evalWord, List.length_cons, List.reverse_cons]
+        -- The linear map for generator a
+        let Ma : EuclideanSpace ℝ (Fin 3) →ₗ[ℝ] EuclideanSpace ℝ (Fin 3) :=
+          if a.2 then (if a.1 then (φ_lin : EuclideanSpace ℝ (Fin 3) →ₗ[ℝ] _)
+                               else (ψ_lin : EuclideanSpace ℝ (Fin 3) →ₗ[ℝ] _))
+                 else (if a.1 then (φ_lin.symm : EuclideanSpace ℝ (Fin 3) →ₗ[ℝ] _)
+                               else (ψ_lin.symm : EuclideanSpace ℝ (Fin 3) →ₗ[ℝ] _))
+        -- decode(applyGen a v) = 3^(n+1) * Ma(p) component-wise
+        have hv' : ∀ j, ((applyGen a v j).re : ℝ) + ((applyGen a v j).im : ℝ) * Real.sqrt 2 =
+            3^(n + 1) * Ma p j := by
+          intro j
+          rw [applyGen_decode a v j]
+          -- applyGen_decode gives: 3 * Ma(decode v) j
+          -- decode v = 3^n * p by hv
+          -- Ma is linear: Ma(3^n * p) = 3^n * Ma(p)
+          have hdec : (fun k => ((v k).re : ℝ) + ((v k).im : ℝ) * Real.sqrt 2) = 3^n • p := by
+            funext k; rw [Pi.smul_apply, smul_eq_mul]; exact hv k
+          rw [hdec]
+          simp only [LinearMap.map_smul_of_tower, Pi.smul_apply, smul_eq_mul,
+                     pow_succ]
+          ring
+        -- Apply induction hypothesis for the tail
+        have step := ih (applyGen a v) (Ma p) (n + 1) hv' i
+        rw [step]
+        -- Connect liftF(mk (as.reverse ++ [a])) to Ma ∘ liftF(mk as.reverse)
+        congr 1
+        · -- Exponents: (n+1) + |as| = n + (|as|+1)
+          omega
+        · -- liftF(mk (as.reverse ++ [a])) p = liftF(mk as.reverse) (Ma p)
+          rw [← FreeGroup.mul_mk, map_mul]
+          simp only [FreeGroup.lift_mk, List.map_singleton, List.prod_singleton]
+          simp only [Ma]
+          rcases a with ⟨b, s⟩
+          fin_cases b <;> fin_cases s <;>
+            simp [cond, LinearEquiv.mul_apply]
+    -- Apply enc_ind with l = (toWord w).reverse, n = 0, p = e₂, v = e2Int
+    have henc : ∀ i, ((evalWord (FreeGroup.toWord w).reverse e2Int i).re : ℝ) +
+        ((evalWord (FreeGroup.toWord w).reverse e2Int i).im : ℝ) * Real.sqrt 2 =
+        (3 : ℝ)^(FreeGroup.toWord w).length * ((liftF w) e₂ i) := by
+      have hmk : liftF w = liftF (FreeGroup.mk (FreeGroup.toWord w)) :=
+        by rw [FreeGroup.mk_toWord]
+      rw [hmk]
+      have hbase : ∀ i, ((e2Int i).re : ℝ) + ((e2Int i).im : ℝ) * Real.sqrt 2 = 3^0 * e₂ i := by
+        intro i
+        fin_cases i <;>
+          simp [e2Int, e₂, EuclideanSpace.single_apply, Pi.single_apply,
+                Zsqrtd.re, Zsqrtd.im]
+      have step := enc_ind (FreeGroup.toWord w).reverse e2Int e₂ 0 hbase
+      simp only [Nat.zero_add, List.length_reverse, List.reverse_reverse] at step
+      exact step
+    exact bridge _ hanyInv _ _ henc
   -- Injectivity from the orbit witness
   intro w₁ w₂ hw
   by_contra hne

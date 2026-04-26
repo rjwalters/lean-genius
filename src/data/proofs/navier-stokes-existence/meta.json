@@ -166,7 +166,7 @@
       "summary": "Parts XX-XXI: Energy conservation above 1/3 Holder, anomalous dissipation (zeroth law of turbulence).",
       "startLine": 3696,
       "endLine": 4177,
-      "mathContext": "Onsager: $u \\in C^{0,\\alpha}$ with $\\alpha > 1/3$ $\\Rightarrow$ energy conserved. $\\alpha < 1/3$: non-uniqueness via convex integration (Buckmaster-De Lellis-Székelyhidi-Vicol)."
+      "mathContext": "Onsager: $u \\in C^{0,\\alpha}$ with $\\alpha > 1/3$ $\\Rightarrow$ energy conserved. $\\alpha < 1/3$: non-uniqueness via convex integration (Buckmaster-De Lellis-Sz\u00e9kelyhidi-Vicol)."
     },
     {
       "id": "regularity-scaling",
@@ -219,7 +219,7 @@
   ],
   "conclusion": {
     "summary": "This is the largest proof formalization in the gallery: 20,000+ lines, 1200+ definitions/theorems, 0 sorries, across 110 parts. It provides a complete 2D Navier-Stokes proof and conditional 3D regularity (via NSAxioms structure with 5 assumptions), plus comprehensive coverage of modern NS theory including global attractors, determining modes, and exact turbulence results (Kolmogorov 4/5 law).",
-    "implications": "**Theoretical Significance**: **Mathematical Significance**\n\n1. **2D Completeness**: The 2D global existence proof is fully verified without any axioms, formalizing Ladyzhenskaya's classical result.\n**2. 3D Architecture**: The conditional 3D result demonstrates how the Millennium Problem reduces to excluding two types of singularity (via NSAxioms structure with 5 assumptions).\n3. **Theory Coverage**: 110 parts serve as a comprehensive formal reference for modern NS theory: Leray-Hopf, Serrin, CKN, BKM, Fujita-Kato, Koch-Tataru, Onsager, convex integration, global attractors, determining modes, Kolmogorov exact laws, stochastic NS, MHD, and more.\n4. **Finite-Dimensional Dynamics**: Part CIX formalizes that NS dynamics is eventually determined by finitely many modes (dim(A) ≤ cG^{2/3}), connecting infinite-dimensional PDE theory to finite-dimensional dynamical systems.",
+    "implications": "**Theoretical Significance**: **Mathematical Significance**\n\n1. **2D Completeness**: The 2D global existence proof is fully verified without any axioms, formalizing Ladyzhenskaya's classical result.\n**2. 3D Architecture**: The conditional 3D result demonstrates how the Millennium Problem reduces to excluding two types of singularity (via NSAxioms structure with 5 assumptions).\n3. **Theory Coverage**: 110 parts serve as a comprehensive formal reference for modern NS theory: Leray-Hopf, Serrin, CKN, BKM, Fujita-Kato, Koch-Tataru, Onsager, convex integration, global attractors, determining modes, Kolmogorov exact laws, stochastic NS, MHD, and more.\n4. **Finite-Dimensional Dynamics**: Part CIX formalizes that NS dynamics is eventually determined by finitely many modes (dim(A) \u2264 cG^{2/3}), connecting infinite-dimensional PDE theory to finite-dimensional dynamical systems.",
     "openQuestions": [
       "Can the NSAxioms hypotheses be proved from first principles to resolve the Millennium Problem?",
       "Can the CKN partial regularity be extended to show the singular set is empty?",
@@ -265,8 +265,8 @@
     ],
     "namespace": "NavierStokesRegularity",
     "lineCount": 21111,
-    "axiomCount": 5,
-    "theoremCount": 845,
+    "axiomCount": 0,
+    "theoremCount": 846,
     "definitionCount": 104,
     "path": "Proofs/NavierStokes.lean",
     "sorries": 0
@@ -276,8 +276,8 @@
       "authors": "Leray, Jean",
       "title": "Sur le mouvement d'un liquide visqueux emplissant l'espace",
       "year": "1934",
-      "venue": "Acta Mathematica 63, 193–248",
-      "note": "Proved existence of weak solutions (Leray solutions) to the Navier-Stokes equations — global existence in 3D with possible singularities"
+      "venue": "Acta Mathematica 63, 193\u2013248",
+      "note": "Proved existence of weak solutions (Leray solutions) to the Navier-Stokes equations \u2014 global existence in 3D with possible singularities"
     },
     {
       "authors": "Temam, Roger",
@@ -291,32 +291,32 @@
     {
       "targetId": "navier-stokes",
       "relationship": "complementary",
-      "description": "The main Navier-Stokes formalization defines the equations and basic properties, while this entry focuses specifically on the Millennium Prize existence and smoothness question — whether smooth solutions exist globally in 3D"
+      "description": "The main Navier-Stokes formalization defines the equations and basic properties, while this entry focuses specifically on the Millennium Prize existence and smoothness question \u2014 whether smooth solutions exist globally in 3D"
     },
     {
       "targetId": "yang-mills",
       "relationship": "thematic",
-      "description": "Both are Clay Millennium Prize problems concerning PDEs from physics: Navier-Stokes asks about fluid dynamics regularity, while Yang-Mills asks about existence of a mass gap in quantum gauge theory — both remain open"
+      "description": "Both are Clay Millennium Prize problems concerning PDEs from physics: Navier-Stokes asks about fluid dynamics regularity, while Yang-Mills asks about existence of a mass gap in quantum gauge theory \u2014 both remain open"
     },
     {
       "targetId": "poincare-conjecture",
       "relationship": "thematic",
-      "description": "Both are (former) Millennium Prize problems: Poincare was resolved by Perelman (2003) using Ricci flow (a PDE technique), while Navier-Stokes remains open — Ricci flow shares the nonlinear PDE regularity challenges of Navier-Stokes"
+      "description": "Both are (former) Millennium Prize problems: Poincare was resolved by Perelman (2003) using Ricci flow (a PDE technique), while Navier-Stokes remains open \u2014 Ricci flow shares the nonlinear PDE regularity challenges of Navier-Stokes"
     },
     {
       "targetId": "hilbert-19",
       "relationship": "related",
-      "description": "Hilbert's 19th (regularity of variational minimizers) was resolved by De Giorgi-Nash for elliptic PDEs. Navier-Stokes regularity is the analogous open question for parabolic-hyperbolic Navier-Stokes — the methods overlap but the Navier-Stokes nonlinearity poses additional obstacles"
+      "description": "Hilbert's 19th (regularity of variational minimizers) was resolved by De Giorgi-Nash for elliptic PDEs. Navier-Stokes regularity is the analogous open question for parabolic-hyperbolic Navier-Stokes \u2014 the methods overlap but the Navier-Stokes nonlinearity poses additional obstacles"
     },
     {
       "targetId": "hilbert-20",
       "relationship": "related",
-      "description": "Hilbert's 20th (boundary value problem existence) was resolved via Lax-Milgram for elliptic PDEs. Navier-Stokes existence is the analogous question for incompressible fluid equations — Leray's weak solutions exist but global regularity is unknown"
+      "description": "Hilbert's 20th (boundary value problem existence) was resolved via Lax-Milgram for elliptic PDEs. Navier-Stokes existence is the analogous question for incompressible fluid equations \u2014 Leray's weak solutions exist but global regularity is unknown"
     },
     {
       "targetId": "birch-swinnerton-dyer",
       "relationship": "thematic",
-      "description": "Both are unsolved Clay Millennium Prize problems: BSD concerns L-functions of elliptic curves, while Navier-Stokes concerns fluid dynamics — both represent frontier challenges in their respective fields"
+      "description": "Both are unsolved Clay Millennium Prize problems: BSD concerns L-functions of elliptic curves, while Navier-Stokes concerns fluid dynamics \u2014 both represent frontier challenges in their respective fields"
     }
   ],
   "mainTheorems": [

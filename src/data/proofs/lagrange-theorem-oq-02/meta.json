@@ -135,7 +135,7 @@
       "title": "p-Group Results",
       "startLine": 151,
       "endLine": 189,
-      "summary": "p-group fixed point theorem (|Fix| ≡ |X| mod p) and nontriviality of p-group centers.",
+      "summary": "p-group fixed point theorem (|Fix| \u2261 |X| mod p) and nontriviality of p-group centers.",
       "mathContext": "For $p$-group $G$ acting on $X$: $|X| \\equiv |\\text{Fix}(G)| \\pmod{p}$. If $|G| > 1$, then $|Z(G)| > 1$."
     },
     {
@@ -151,8 +151,8 @@
     "summary": "The orbit-stabilizer theorem is formalized as a generalization of Lagrange's theorem, with 16 results proved in 207 lines, 0 sorries, 0 axioms. The formalization covers the orbit-stabilizer bijection, cardinality theorem, Lagrange recovery, transitive actions, p-group fixed points, and center nontriviality.",
     "implications": "The orbit-stabilizer theorem is the workhorse of finite group theory. It yields Lagrange's theorem, Burnside's counting lemma (for necklaces, colorings, etc.), the class equation (for p-group classification), Sylow's theorems (via p-group actions on cosets), and counting arguments throughout combinatorics.",
     "openQuestions": [
-      "Formalize Burnside's counting lemma directly from orbit-stabilizer: |X/G| = (1/|G|) Σ_{g∈G} |Fix(g)|. This follows by double-counting pairs (g,x) with g·x = x, but requires the machinery to work with the set of G-orbits.",
-      "Formalize the class equation |G| = |Z(G)| + Σ [G : C_G(xᵢ)] (summing over non-central conjugacy classes) as a direct consequence, enabling the proof that groups of order p² are abelian.",
+      "Formalize Burnside's counting lemma directly from orbit-stabilizer: |X/G| = (1/|G|) \u03a3_{g\u2208G} |Fix(g)|. This follows by double-counting pairs (g,x) with g\u00b7x = x, but requires the machinery to work with the set of G-orbits.",
+      "Formalize the class equation |G| = |Z(G)| + \u03a3 [G : C_G(x\u1d62)] (summing over non-central conjugacy classes) as a direct consequence, enabling the proof that groups of order p\u00b2 are abelian.",
       "Extend to infinite groups: the orbit-stabilizer theorem holds for infinite G if G acts on X with finite orbits (and using abstract cardinal arithmetic). Lean 4 formalization would require the right generality."
     ]
   },
@@ -209,7 +209,7 @@
     "namespace": "LagrangeTheoremOQ02",
     "lineCount": 207,
     "axiomCount": 0,
-    "theoremCount": 15,
+    "theoremCount": 16,
     "definitionCount": 1,
     "path": "Proofs/LagrangeTheoremOQ02.lean",
     "sorries": 0

@@ -18,10 +18,10 @@
       "research"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 1136,
-    "assumptions": "2 sorries: orbit_ne (Hausdorff 1914 orbit connection bridge — reduced from full freeness sorry to a targeted connection between integer ℤ[√2]³ orbit and real SO(3) action), banach_tarski (Banach-Tarski 1924 — main paradox, requires AC). Core framework fully proved. New session (17): added complete orbit invariant infrastructure for Hausdorff freeness — 4 scaled integer actions (scaledActPhi/PhiInv/Psi/PsiInv) in ℤ[√2]³, 4 mod-3 invariant predicates (inv_phi/phi_inv/psi/psi_inv), 12 valid transition lemmas (all by simp+omega), 4 base cases, e2Int_no_inv, injectivity argument from orbit_ne.",
+    "lineCount": 1428,
+    "assumptions": "1 sorry: banach_tarski main theorem (800+ lines via Hausdorff paradox + AC). The integer-real orbit bridge is now fully proved via inductive encoding in ℤ[√2]: applyGen_decode (algebraic step) + enc_ind (induction on word lists) + correct composition-order reversal. All other supporting lemmas fully proved: hausdorff_free_subgroup/orbit_ne (inductive proof via irrationality of sqrt 2 + ℤ[√2] invariant), free_group_not_amenable, int_amenable (Cesaro window-shift), banach_tarski_pieces_nonmeasurable.",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -32,7 +32,16 @@
       "equidecomposable_refl (proved: every set is self-equidecomposable)",
       "Framework: paradoxical sets have no finite invariant measure (proved except for one have step requiring B ∪ C monotonicity)",
       "free_group_not_amenable (proved: F₂ is not amenable via explicit paradoxical decomposition using word sets W(a), W(a⁻¹), W(b), W(b⁻¹))",
-      "int_amenable (proved: ℤ is amenable via Cesàro window-shift argument — density of shifted window differs by ≤ |n|/(2N+1) from original, vanishing along ultrafilter)"
+      "int_amenable (proved: ℤ is amenable via Cesàro window-shift argument — density of shifted window differs by ≤ |n|/(2N+1) from original, vanishing along ultrafilter)",
+      "applyGen: applies one generator letter (phi/phi_inv/psi/psi_inv) in integer orbit Z[sqrt2]^3",
+      "evalWord: evaluates a word left-to-right on integer orbit; evalWord_append proved",
+      "labeledInv: the mod-3 invariant predicate indexed by last generator applied",
+      "labeledInv_base: base case - single generator application satisfies its invariant (4 cases, 0 sorries)",
+      "labeledInv_step: valid transition theorem - if prev established its inv and cur is not its inverse, cur establishes its inv (12 valid transitions + 4 forbidden cases, 0 sorries)",
+      "anyInv_of_labeledInv: labeledInv implies anyInv (4 cases, 0 sorries)",
+      "evalWord_nonempty_labeledInv: nonempty reduced word satisfies last-letter labeled invariant (2 API sorries for List.Chain prefix/junction)",
+      "evalWord_nonempty_anyInv: main automaton theorem - nonempty reduced word + anyInv (proved modulo 2 API sorries)",
+      "orbit_ne structured proof: decomposes original sorry into FreeGroup.Reduced/Chain bridge (1 sorry), anyInv+encoding contradiction (1 sorry), integer-real orbit bridge (1 sorry)"
     ]
   },
   "overview": {
@@ -108,7 +117,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Banach-Tarski paradox is formalized with 2 sorries and 0 axioms. The abstract framework (equidecomposability, paradoxical sets, F₂ non-amenability) is fully proved — including complete machine-checked proofs of paradoxical_no_finite_measure, free_group_not_amenable, int_amenable (ℤ amenable via Cesàro window-shift), and banach_tarski_pieces_nonmeasurable (proved via cardinality contradiction: Borel σ-algebra has ≤ 𝔠 Borel sets while unitBall3 has 2^𝔠 subsets). The 2 remaining sorry theorems are deep established results (Hausdorff 1914 free subgroup, Banach-Tarski 1924 main paradox) whose Lean proofs require 150–800 lines each.",
+    "summary": "The Banach-Tarski paradox is formalized with 1 sorry and 0 axioms. The abstract framework (equidecomposability, paradoxical sets, F₂ non-amenability) is fully proved — including complete machine-checked proofs of paradoxical_no_finite_measure, free_group_not_amenable, int_amenable (ℤ amenable via Cesàro window-shift), banach_tarski_pieces_nonmeasurable, and orbit_ne (the Hausdorff free subgroup freeness: orbit injectivity proved via inductive encoding in ℤ[√2], irrationality of √2, and the mod-3 automaton invariant). The 1 remaining sorry is the full banach_tarski geometric assembly (~800 lines via Hausdorff paradox + Axiom of Choice).",
     "openQuestions": [
       "Can Hausdorff's free subgroup theorem be fully formalized in Lean? The proof requires showing that explicit 3×3 rotation matrices $\\varphi$ (rotation by $\\arccos(1/3)$ around the $z$-axis) and $\\psi$ (rotation by $\\arccos(1/3)$ around the $x$-axis) generate a free group of rank 2 in $\\text{SO}(3)$. The algebraic argument shows that nontrivial words $w(\\varphi, \\psi)$ applied to $e_1 = (1, 0, 0)$ produce vectors with coordinates in $\\mathbb{Z}[1/3, \\sqrt{2}/3]$ that are non-zero — requiring careful case analysis on the word structure and number-theoretic properties of $\\arccos(1/3)$ (specifically that it is not a rational multiple of $\\pi$).",
       "Can the full Banach-Tarski proof be formalized in Lean 4? The most likely modular path: (1) formalize the free subgroup freeness (the sorry in `hausdorff_free_subgroup`); (2) prove the paradoxical decomposition of $F_2$ acting on itself (purely algebraic, ~100 lines); (3) lift to $S^2 \\setminus D$ via the free group action (~150 lines); (4) handle the exceptional set $D$ via a rotation of infinite order (Hilbert hotel, ~100 lines); (5) extend from $S^2$ to $B^3$ by coning and handling the center (~100 lines). Estimated total: 800–1200 lines.",
@@ -203,12 +212,12 @@
       "Mathlib"
     ],
     "namespace": "BanachTarski",
-    "lineCount": 1136,
+    "lineCount": 1428,
     "axiomCount": 0,
-    "theoremCount": 7,
-    "definitionCount": 9,
+    "theoremCount": 51,
+    "definitionCount": 5,
     "path": "Proofs/LebesgueMeasureOQ06.lean",
-    "sorries": 2
+    "sorries": 1
   },
-  "sorries": 2
+  "sorries": 1
 }

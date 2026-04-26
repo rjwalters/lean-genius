@@ -2,7 +2,7 @@
   "id": "cramers-rule-oq-01-oq-02",
   "title": "Quasideterminant Theory: Non-Commutative Analogue of Determinants",
   "slug": "cramers-rule-oq-01-oq-02",
-  "description": "Complete quasideterminant theory for 2×2 matrices over division rings. Defines all four quasideterminants (Gelfand-Retakh), proves commutative reduction to classical determinants, alternate pivoting for non-commutative Cramer's rule, Schur complement matrix inversion, row/column scaling identities, and special cases for triangular matrices.",
+  "description": "Complete quasideterminant theory for 2\u00d72 matrices over division rings. Defines all four quasideterminants (Gelfand-Retakh), proves commutative reduction to classical determinants, alternate pivoting for non-commutative Cramer's rule, Schur complement matrix inversion, row/column scaling identities, and special cases for triangular matrices.",
   "meta": {
     "author": "Lean Genius",
     "sourceUrl": "https://en.wikipedia.org/wiki/Quasideterminant",
@@ -23,11 +23,11 @@
     "lineCount": 462,
     "assumptions": "None. Fully verified over any DivisionRing D (non-commutative results) and Field F (commutative reductions).",
     "originalContributions": [
-      "Defined all four 2×2 quasideterminants: qdet00, qdet01, qdet10, qdet11",
+      "Defined all four 2\u00d72 quasideterminants: qdet00, qdet01, qdet10, qdet11",
       "Proved complete commutative reduction: all four quasideterminants relate to det(A)",
       "Proved alternate Cramer's rule (nc_cramers_rule_alt) via qdet11 pivoting on a00",
       "Proved kernel triviality and uniqueness for the alternate pivoting",
-      "Defined Schur complement inverse (schurInv) for 2×2 matrices",
+      "Defined Schur complement inverse (schurInv) for 2\u00d72 matrices",
       "Proved diagonal entries of A * schurInv(A) (mul_schurInv_00, mul_schurInv_10)",
       "Proved row/column scaling identities for quasideterminants",
       "Proved transpose duality in the commutative case",
@@ -40,19 +40,19 @@
   "sections": [
     {
       "id": "four-quasideterminants",
-      "title": "The Four 2×2 Quasideterminants",
+      "title": "The Four 2\u00d72 Quasideterminants",
       "startLine": 46,
       "endLine": 81,
-      "summary": "Defines the complete set of four quasideterminants for a 2×2 matrix over a division ring: qdet00 = a - b·d⁻¹·c, qdet01 = b - a·c⁻¹·d, qdet10 = c - d·b⁻¹·a, qdet11 = d - c·a⁻¹·b.",
-      "mathContext": "Each quasideterminant is the Schur complement of one entry. An n×n matrix has n² quasideterminants — the 2×2 case has four, one per entry position. Unlike the single classical determinant, each quasideterminant uses a specific entry as pivot."
+      "summary": "Defines the complete set of four quasideterminants for a 2\u00d72 matrix over a division ring: qdet00 = a - b\u00b7d\u207b\u00b9\u00b7c, qdet01 = b - a\u00b7c\u207b\u00b9\u00b7d, qdet10 = c - d\u00b7b\u207b\u00b9\u00b7a, qdet11 = d - c\u00b7a\u207b\u00b9\u00b7b.",
+      "mathContext": "Each quasideterminant is the Schur complement of one entry. An n\u00d7n matrix has n\u00b2 quasideterminants \u2014 the 2\u00d72 case has four, one per entry position. Unlike the single classical determinant, each quasideterminant uses a specific entry as pivot."
     },
     {
       "id": "commutative-reduction",
       "title": "Commutative Reduction",
       "startLine": 83,
       "endLine": 126,
-      "summary": "Proves four commutative reduction formulas connecting quasideterminants to the classical determinant over a field F: |A|00·a11 = det(A), a00·|A|11 = det(A), |A|01·a10 = -det(A), a11·|A|10 = -det(A).",
-      "mathContext": "Over a commutative field, |A|ij = ±det(A)/a_{kl} where (k,l) is the complementary entry. The sign depends on parity: diagonal quasideterminants give +det, off-diagonal give -det."
+      "summary": "Proves four commutative reduction formulas connecting quasideterminants to the classical determinant over a field F: |A|00\u00b7a11 = det(A), a00\u00b7|A|11 = det(A), |A|01\u00b7a10 = -det(A), a11\u00b7|A|10 = -det(A).",
+      "mathContext": "Over a commutative field, |A|ij = \u00b1det(A)/a_{kl} where (k,l) is the complementary entry. The sign depends on parity: diagonal quasideterminants give +det, off-diagonal give -det."
     },
     {
       "id": "triangular-cases",
@@ -67,60 +67,60 @@
       "title": "Row and Column Scaling",
       "startLine": 174,
       "endLine": 205,
-      "summary": "Proves scaling identities: left-scaling row 0 by λ scales |A|00 from the left, right-scaling column 0 by λ scales |A|00 from the right.",
-      "mathContext": "Quasideterminants are left-linear in their row and right-linear in their column. In a non-commutative ring, left and right scaling are distinct operations — this is a key difference from classical determinants."
+      "summary": "Proves scaling identities: left-scaling row 0 by \u03bb scales |A|00 from the left, right-scaling column 0 by \u03bb scales |A|00 from the right.",
+      "mathContext": "Quasideterminants are left-linear in their row and right-linear in their column. In a non-commutative ring, left and right scaling are distinct operations \u2014 this is a key difference from classical determinants."
     },
     {
       "id": "alternate-pivoting",
       "title": "Alternate Pivoting via qdet11",
       "startLine": 207,
       "endLine": 310,
-      "summary": "Defines ncSolveAlt: the Cramer solution pivoting on a00 instead of a11. Proves correctness (nc_cramers_rule_alt), kernel triviality, and uniqueness. Together with OQ-03, this covers all invertible 2×2 matrices over division rings.",
-      "mathContext": "The standard Cramer formula requires a11 ≠ 0. The alternate uses a00 ≠ 0 instead: x1 = |A|11⁻¹·(b1 - a10·a00⁻¹·b0), x0 = a00⁻¹·(b0 - a01·x1). Every invertible 2×2 matrix has at least one nonzero diagonal entry, so one of the two pivoting strategies always applies."
+      "summary": "Defines ncSolveAlt: the Cramer solution pivoting on a00 instead of a11. Proves correctness (nc_cramers_rule_alt), kernel triviality, and uniqueness. Together with OQ-03, this covers all invertible 2\u00d72 matrices over division rings.",
+      "mathContext": "The standard Cramer formula requires a11 \u2260 0. The alternate uses a00 \u2260 0 instead: x1 = |A|11\u207b\u00b9\u00b7(b1 - a10\u00b7a00\u207b\u00b9\u00b7b0), x0 = a00\u207b\u00b9\u00b7(b0 - a01\u00b7x1). Every invertible 2\u00d72 matrix has at least one nonzero diagonal entry, so one of the two pivoting strategies always applies."
     },
     {
       "id": "schur-inverse",
       "title": "Matrix Inversion via Schur Complement",
       "startLine": 312,
       "endLine": 368,
-      "summary": "Defines the explicit Schur complement inverse formula for 2×2 matrices and proves two entries of A·schurInv(A) = I: the (0,0) entry equals 1 and the (1,0) entry equals 0.",
-      "mathContext": "The Schur complement inversion formula: A⁻¹ = [[q⁻¹, -q⁻¹·b·d���¹], [-d⁻¹·c·q⁻¹, d⁻¹+d⁻¹·c·q⁻¹·b·d⁻¹]] where q = |A|00. This is the fundamental algorithm for 2×2 block matrix inversion, here specialized to scalar entries."
+      "summary": "Defines the explicit Schur complement inverse formula for 2\u00d72 matrices and proves two entries of A\u00b7schurInv(A) = I: the (0,0) entry equals 1 and the (1,0) entry equals 0.",
+      "mathContext": "The Schur complement inversion formula: A\u207b\u00b9 = [[q\u207b\u00b9, -q\u207b\u00b9\u00b7b\u00b7d\ufffd\ufffd\ufffd\u00b9], [-d\u207b\u00b9\u00b7c\u00b7q\u207b\u00b9, d\u207b\u00b9+d\u207b\u00b9\u00b7c\u00b7q\u207b\u00b9\u00b7b\u00b7d\u207b\u00b9]] where q = |A|00. This is the fundamental algorithm for 2\u00d72 block matrix inversion, here specialized to scalar entries."
     },
     {
       "id": "product-identities",
       "title": "Quasideterminant Product Identities",
       "startLine": 404,
       "endLine": 462,
-      "summary": "Proves that over a commutative field, quasideterminants equal det(A)/entry, and the proportionality relation |A|00·a11 = a00·|A|11 (both equal det(A)).",
-      "mathContext": "In the commutative case: |A|00 = det(A)·a11⁻¹ and |A|11 = det(A)·a00⁻¹. This means the ratio of quasideterminants is |A|00/|A|11 = a00/a11, showing they differ by a 'coordinate change' factor."
+      "summary": "Proves that over a commutative field, quasideterminants equal det(A)/entry, and the proportionality relation |A|00\u00b7a11 = a00\u00b7|A|11 (both equal det(A)).",
+      "mathContext": "In the commutative case: |A|00 = det(A)\u00b7a11\u207b\u00b9 and |A|11 = det(A)\u00b7a00\u207b\u00b9. This means the ratio of quasideterminants is |A|00/|A|11 = a00/a11, showing they differ by a 'coordinate change' factor."
     }
   ],
   "overview": {
-    "historicalContext": "Israel Gelfand and Vladimir Retakh introduced quasideterminants in their 1991 paper in *Functional Analysis and its Applications*, motivated by the problem of extending determinantal methods to non-commutative settings such as quaternionic linear algebra and quantum groups. The classical determinant, defined as an alternating sum over permutations, fundamentally requires commutativity — $a_{11}a_{22} - a_{12}a_{21}$ depends on the order of multiplication when the entries don't commute. Gelfand and Retakh's insight was to replace the single determinant with $n^2$ quasideterminants, one per entry of an $n \\times n$ matrix, each defined as a Schur complement. For a $2 \\times 2$ matrix $\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$, the quasideterminant with pivot at position $(0,0)$ is $|A|_{00} = a - bd^{-1}c$, requiring only $d \\neq 0$.\n\nThe Schur complement itself was introduced by Issai Schur (1917) for block matrix factorization in the commutative case, but its non-commutative version is well-defined and powers the entire quasideterminant theory. Gelfand, Gelfand, Retakh, and Wilson (2005) wrote a comprehensive survey establishing quasideterminants as a fundamental tool in non-commutative algebra, with applications to free algebras, quantum groups, and non-commutative symmetric functions. This Lean formalization develops the complete $2 \\times 2$ theory: all four quasideterminants, commutative reductions to the classical determinant, dual pivoting strategies for Cramer's rule, and the Schur complement matrix inverse.",
+    "historicalContext": "Israel Gelfand and Vladimir Retakh introduced quasideterminants in their 1991 paper in *Functional Analysis and its Applications*, motivated by the problem of extending determinantal methods to non-commutative settings such as quaternionic linear algebra and quantum groups. The classical determinant, defined as an alternating sum over permutations, fundamentally requires commutativity \u2014 $a_{11}a_{22} - a_{12}a_{21}$ depends on the order of multiplication when the entries don't commute. Gelfand and Retakh's insight was to replace the single determinant with $n^2$ quasideterminants, one per entry of an $n \\times n$ matrix, each defined as a Schur complement. For a $2 \\times 2$ matrix $\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$, the quasideterminant with pivot at position $(0,0)$ is $|A|_{00} = a - bd^{-1}c$, requiring only $d \\neq 0$.\n\nThe Schur complement itself was introduced by Issai Schur (1917) for block matrix factorization in the commutative case, but its non-commutative version is well-defined and powers the entire quasideterminant theory. Gelfand, Gelfand, Retakh, and Wilson (2005) wrote a comprehensive survey establishing quasideterminants as a fundamental tool in non-commutative algebra, with applications to free algebras, quantum groups, and non-commutative symmetric functions. This Lean formalization develops the complete $2 \\times 2$ theory: all four quasideterminants, commutative reductions to the classical determinant, dual pivoting strategies for Cramer's rule, and the Schur complement matrix inverse.",
     "problemStatement": "Is there a non-commutative analogue of determinants and Cramer's Rule using quasideterminants?",
-    "text": "A comprehensive formalization of quasideterminant theory for 2×2 matrices over division rings, extending the basic non-commutative Cramer's rule (OQ-03) with the full algebraic framework. The file defines all four quasideterminants (vs. OQ-03's two), proves complete commutative reductions, introduces alternate pivoting for complete coverage of invertible matrices, defines the Schur complement matrix inverse, and establishes scaling and proportionality identities. All 26 theorems are fully verified with 0 sorries and 0 axioms.",
+    "text": "A comprehensive formalization of quasideterminant theory for 2\u00d72 matrices over division rings, extending the basic non-commutative Cramer's rule (OQ-03) with the full algebraic framework. The file defines all four quasideterminants (vs. OQ-03's two), proves complete commutative reductions, introduces alternate pivoting for complete coverage of invertible matrices, defines the Schur complement matrix inverse, and establishes scaling and proportionality identities. All 26 theorems are fully verified with 0 sorries and 0 axioms.",
     "proofStrategy": "Define quasideterminants as Schur complements. Prove commutative reductions via field_simp. Prove alternate Cramer's rule by mirroring OQ-03's back-substitution with swapped pivot. Prove Schur inverse entries by factoring out quasideterminant and canceling. All proofs use only DivisionRing (non-commutative) or Field (commutative) typeclasses.",
     "keyInsights": [
-      "A 2×2 matrix has four quasideterminants — one per entry, each using the diagonal complement as pivot",
+      "A 2\u00d72 matrix has four quasideterminants \u2014 one per entry, each using the diagonal complement as pivot",
       "Diagonal quasideterminants give +det, off-diagonal give -det in the commutative case",
-      "The two pivoting strategies (a11 ≠ 0 via qdet00, a00 ≠ 0 via qdet11) together cover all invertible 2×2 matrices",
-      "Quasideterminants are left-linear in their row and right-linear in their column — a key non-commutative distinction",
-      "The Schur complement inverse formula is the 2×2 case of the general block matrix inversion lemma"
+      "The two pivoting strategies (a11 \u2260 0 via qdet00, a00 \u2260 0 via qdet11) together cover all invertible 2\u00d72 matrices",
+      "Quasideterminants are left-linear in their row and right-linear in their column \u2014 a key non-commutative distinction",
+      "The Schur complement inverse formula is the 2\u00d72 case of the general block matrix inversion lemma"
     ],
     "prerequisites": [
       "Division rings: rings where every nonzero element has a multiplicative inverse (e.g., quaternions)",
-      "Schur complement: A - B·D⁻¹·C for block matrices",
+      "Schur complement: A - B\u00b7D\u207b\u00b9\u00b7C for block matrices",
       "Classical Cramer's rule and determinants"
     ]
   },
   "conclusion": {
-    "summary": "Quasideterminant theory provides a complete non-commutative framework for 2×2 linear algebra: all four Gelfand-Retakh quasideterminants, full commutative reduction, dual pivoting strategies, Schur complement inversion, and algebraic identities. 0 sorries, 0 axioms.",
+    "summary": "Quasideterminant theory provides a complete non-commutative framework for 2\u00d72 linear algebra: all four Gelfand-Retakh quasideterminants, full commutative reduction, dual pivoting strategies, Schur complement inversion, and algebraic identities. 0 sorries, 0 axioms.",
     "implications": "This formalization demonstrates that the Gelfand-Retakh quasideterminant is the correct non-commutative analogue of the determinant, with applications to quaternionic systems, quantum groups, and block matrix algorithms.",
     "openQuestions": [
-      "Can the theory extend to 3×3 and n×n matrices using recursive quasideterminants?",
+      "Can the theory extend to 3\u00d73 and n\u00d7n matrices using recursive quasideterminants?",
       "What is the non-commutative analogue of the Cayley-Hamilton theorem via quasideterminants?",
       "Can the Schur complement inverse proof be completed for all four entries (currently 2/4 verified)?",
-      "Does the quasideterminant inversion identity |A|00⁻¹ = a⁻¹ + a⁻¹·b·|A|11⁻¹·c·a⁻¹ hold and can it be formalized?"
+      "Does the quasideterminant inversion identity |A|00\u207b\u00b9 = a\u207b\u00b9 + a\u207b\u00b9\u00b7b\u00b7|A|11\u207b\u00b9\u00b7c\u00b7a\u207b\u00b9 hold and can it be formalized?"
     ]
   },
   "crossReferences": [
@@ -156,7 +156,7 @@
     "namespace": "CramersRuleOQ01OQ02",
     "lineCount": 462,
     "axiomCount": 0,
-    "theoremCount": 26,
+    "theoremCount": 32,
     "definitionCount": 6,
     "path": "Proofs/CramersRuleOQ01OQ02.lean",
     "sorries": 0
@@ -171,7 +171,7 @@
       "url": "https://en.wikipedia.org/wiki/Quasideterminant"
     },
     {
-      "text": "Schur, I. (1917). Über Potenzreihen, die im Innern des Einheitskreises beschränkt sind. J. Reine Angew. Math. 147, 205-232.",
+      "text": "Schur, I. (1917). \u00dcber Potenzreihen, die im Innern des Einheitskreises beschr\u00e4nkt sind. J. Reine Angew. Math. 147, 205-232.",
       "url": "https://en.wikipedia.org/wiki/Schur_complement"
     }
   ],

@@ -123,5 +123,86 @@
       "startLine": 595,
       "endLine": 616
     }
+  },
+  {
+    "id": "ann-verification-multinomial",
+    "proofId": "lagrange-four-squares-oq-02",
+    "lineStart": 116,
+    "lineEnd": 187,
+    "range": {
+      "startLine": 116,
+      "endLine": 187
+    },
+    "type": "concept",
+    "title": "Verification, Multinomial Coefficients, and Type Family Setup",
+    "content": "**Part 3 — Enumeration Verification** (116-143): `native_decide` theorems validate typeCount and totalFromEnum for n=0..10 (and later n=11..16 in Part 9). E.g., `totalFromEnum_6 : totalFromEnum 6 = 96` verifies the single type (0,1,1,2) contributes 96 = 12·8. These checkable computations ground the abstract theory.\n\n**Part 4 — Direct Multinomial** (144-162): `multinomial (mults : List ℕ) : ℕ = 24 / (mults.map Nat.factorial).prod` defines 4!/∏mᵢ! directly from a multiplicity list. Five key values: `multinomial [4] = 1` (all-equal), `multinomial [3,1] = 4` (trivial), `multinomial [2,2] = 6` (two-pair), `multinomial [2,1,1] = 12` (two-equal-one-distinct), `multinomial [1,1,1,1] = 24` (all-distinct). All by `native_decide`.\n\n**Part 5 setup** (163-190): Section header announces the general type family approach: `contribution = signFactor × permutations` where sign depends only on nonzero count (provable by simp) and permutations are verified computationally for a canonical instance then transferred by `congr`.",
+    "mathContext": "The multinomial $4!/(m_1!m_2!\\cdots) = 24/\\prod m_i!$ counts distinct orderings of the 4-tuple. Combined with $2^k$ sign choices (k = nonzero count), the total contribution is $24 \\cdot 2^k / \\prod m_i!$. The five partition patterns of 4 — $[4]$, $[3,1]$, $[2,2]$, $[2,1,1]$, $[1,1,1,1]$ — correspond to the 5 distinct multiplicity structures, giving contributions $1 \\cdot 2^k$, $4 \\cdot 2^k$, $6 \\cdot 2^k$, $12 \\cdot 2^k$, $24 \\cdot 2^k$ for appropriate k.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "multinomial coefficients",
+      "native_decide",
+      "List monad enumeration",
+      "r₄(n) verification"
+    ],
+    "prerequisites": [
+      "enumTypes from Part 2",
+      "Nat.factorial in Mathlib",
+      "native_decide for decidable evaluation"
+    ]
+  },
+  {
+    "id": "ann-structural-bounds-sign-factors",
+    "proofId": "lagrange-four-squares-oq-02",
+    "lineStart": 231,
+    "lineEnd": 340,
+    "range": {
+      "startLine": 231,
+      "endLine": 340
+    },
+    "type": "concept",
+    "title": "Structural Bounds, Sign Factor Theory, and Zero-Pattern Lemmas",
+    "content": "**Part 6 — Structural bounds** (231-258): Four upper bounds proved by `split`/`omega`/`norm_num`:\n- `nonzeroCount_le_four`: ≤ 4 (split 4 cases by entry ≠ 0)\n- `signFactor_le_sixteen`: ≤ 16 = 2⁴ (monotonicity of pow)\n- `permutations_le_twentyfour`: ≤ 24 = 4! (Nat.div_le_self)\n- `contribution_le_384`: ≤ 384 = 24 × 16 (Nat.mul_le_mul)\n\n**Part 7 — Sign factor by case** (261-277): Five theorems: nonzeroCount = k → signFactor = 2^k, for k=0,1,2,3,4. All by `simp [RepType.signFactor, h]`.\n\n**Part 8 — Zero pattern** (280-291): Sorting constraints imply leftward propagation: a₃=0 → a₁=a₂=0; a₂=0 → a₁=0.\n\n**Part 9-11** (293-338): Extended verification (typeCount/totalFromEnum for n=11..16), extremal type `allDistinctType (1,2,3,4)` with contribution 384 (= max), and perfect square analysis (non-trivial contributions for n=4,9,16).",
+    "mathContext": "The bound 384 = |S₄ × (ℤ/2)⁴| is the maximum orbit size (trivial stabilizer). Upper bounds: $4!/1 = 24$ for permutations (when all entries distinct), $2^4 = 16$ for sign factors (when all entries nonzero). The zero-pattern lemmas reflect that in a sorted 4-tuple $(a_1 \\leq a_2 \\leq a_3 \\leq a_4)$, zeros accumulate on the left: $a_k = 0 \\Rightarrow a_1 = \\cdots = a_{k-1} = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "structural bounds",
+      "signFactor theory",
+      "zero propagation in sorted tuples",
+      "extremal types"
+    ],
+    "prerequisites": [
+      "RepType.nonzeroCount, signFactor, permutations, contribution",
+      "Nat.pow_le_pow_right",
+      "sorted tuple constraints"
+    ]
+  },
+  {
+    "id": "ann-type-family-general-theorems",
+    "proofId": "lagrange-four-squares-oq-02",
+    "lineStart": 340,
+    "lineEnd": 555,
+    "range": {
+      "startLine": 340,
+      "endLine": 555
+    },
+    "type": "insight",
+    "title": "Six General Type Family Theorems: Universal Contribution Values",
+    "content": "Parts 12-17 (340-555) prove general theorems for all six type families, establishing that the contribution value depends only on the symmetry type (equality/zero pattern), not the specific values:\n\n| Type | Pattern | Contribution | Proof signature |\n|------|---------|-------------|------------------|\n| allEqualType(k) | (k,k,k,k) | 16 | permutations match canonical; sign = 16 |\n| threeEqualType(k) | (0,k,k,k) | 32 | permutations [1,3] match; sign = 8 |\n| twoPairType(a,b) | (a,a,b,b) | 96 | permutations [2,2] = 6; sign = 16 |\n| twoEqualType(k) | (0,0,k,k) | 24 | permutations [2,2] = 6; sign = 4 |\n| twoNonzeroDistinct(a,b) | (0,0,a,b) | 48 | permutations [2,1,1] = 12; sign = 4 |\n| trivialType(k) | (0,0,0,k) | 8 | permutations [3,1] = 4; sign = 2 |\n\n**Proof pattern** (same for all six): (1) Verify canonical instance by `native_decide`. (2) Show `permutations` match by `unfold + congr 1 + simp [List.dedup, List.count, ...]` with hypotheses about ≠ relations. (3) Show `signFactor` matches via the nonzeroCount theorem. (4) Combine with `linarith`.\n\n**Part 17** (523-555): Lower bounds for n > 0: `a₄_pos_of_n_pos` (the largest entry is positive), `nonzeroCount_pos_of_n_pos` (≥ 1 nonzero entry), `signFactor_ge_two_of_n_pos` (sign factor ≥ 2).",
+    "mathContext": "Each theorem has form: $\\forall$ valid parameters, `[familyType params].contribution = C`. The key: `congr 1` reduces permutation count equality to showing the dedup/count list structure matches — independent of actual values, depending only on which entries are equal. For `twoPairType(a,b)` with $a \\neq b$: dedup of $[a,a,b,b]$ = $[a,b]$, counts = $[2,2]$, giving multinomial = 6. For `allEqualType(k)`: dedup = $[k]$, count = $[4]$, multinomial = 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "allEqualType_contribution",
+      "threeEqualType_contribution",
+      "twoPairType_contribution",
+      "twoEqualType_contribution",
+      "twoNonzeroDistinct_contribution",
+      "trivialType_contribution"
+    ],
+    "prerequisites": [
+      "List.dedup in Lean 4",
+      "List.count in Lean 4",
+      "congr 1 for structural equality",
+      "native_decide canonical verification"
+    ]
   }
 ]

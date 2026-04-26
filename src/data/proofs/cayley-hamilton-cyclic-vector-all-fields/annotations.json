@@ -1,0 +1,216 @@
+[
+  {
+    "id": "ann-chcvaf-header",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields",
+    "range": {
+      "startLine": 1,
+      "endLine": 47
+    },
+    "type": "concept",
+    "title": "Module Header: Three-Step Proof Architecture and Mathlib Gap",
+    "content": "The module docstring lays out the full proof architecture before any Lean code appears. It names three building blocks: (1) the axiom `nonderogatory_similar_companion` (M ~ C(minpoly M), stated but not proved — the Mathlib gap); (2) `companionMatrix_cyclic_e0` (e₀ is cyclic for C(p), proved in CayleyHamiltonMinpolyOQ05OQ01OQ04 via the orbit C(p)^k · e₀ = eₖ); and (3) `cyclic_vector_of_similar` (cyclic vectors transfer under similarity, proved in the same file). The fourth point is the main theorem combining all three. This upfront blueprint is a design pattern for axiomatized formalizations: declare all assumptions explicitly, prove what you can, and clearly demarcate the boundary between verified and assumed content. The `Status: axiomatized (1 axiom, 0 sorries)` tag in the docstring directly matches the gallery's `badge: axiom` classification.",
+    "mathContext": "The proof architecture encodes the logical dependency graph: main theorem depends on (1) + (2) + (3); (2) and (3) depend only on Mathlib; (1) depends on the PID structure theorem for $K[X]$-modules (the Mathlib gap). This layering means any future Mathlib addition of the PID structure theorem would allow replacing the axiom with a proof, upgrading the entry from `axiomatized` to `verified` without any other changes. The imports (lines 41-49) show the two proof files this depends on: `CayleyHamiltonReductionOQ02OQ01` for companion matrix definitions and `CayleyHamiltonMinpolyOQ05OQ01OQ04` for the proved supporting lemmas.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiomatized proof architecture",
+      "companion matrix orbit C(p)^k · e₀ = eₖ",
+      "cyclic vector transfer under similarity",
+      "Mathlib gap: PID structure theorem"
+    ],
+    "prerequisites": [
+      "rational canonical form overview",
+      "Lean 4 module docstrings and imports"
+    ]
+  },
+  {
+    "id": "ann-chcvaf-rcf-axiom",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields",
+    "range": {
+      "startLine": 74,
+      "endLine": 102
+    },
+    "type": "keyInsight",
+    "title": "The RCF Similarity Axiom: Isolating the Mathlib Gap",
+    "content": "`nonderogatory_similar_companion` is the only axiom in this formalization. It states: if M is nonderogatory, there exists an invertible P with M = P⁻¹ · C(minpoly M) · P. This is the single-block rational canonical form theorem (Frobenius normal form). By declaring it as an explicit `axiom` rather than a `sorry`, the formalization makes its assumption transparent: the proof is complete assuming this one fact, and the fact is clearly documented with its mathematical justification (PID module structure theorem) and Mathlib gap. The axiom declaration is also safer than `sorry` — it cannot be accidentally used to close other goals, and it appears explicitly in `#print axioms` output.",
+    "mathContext": "The rational canonical form states that every matrix $M \\in M_n(K)$ is similar to a block diagonal matrix of companion matrices $\\mathrm{diag}(C(d_1), \\ldots, C(d_r))$ where $d_1 \\mid d_2 \\mid \\cdots \\mid d_r$ are the **invariant factors** of $M$. For nonderogatory $M$ (where $\\mathrm{minpoly} = \\mathrm{charpoly}$), the invariant factor decomposition has $r = 1$ and $d_1 = \\mathrm{minpoly}\\, M$. The proof of this uses the structure theorem for $K^n$ as a finitely generated $K[X]$-module: $K^n \\cong \\bigoplus_i K[X]/(d_i)$. Nonderogatory forces $r = 1$ because $d_1 \\cdots d_r = \\mathrm{charpoly}$ and $d_r = \\mathrm{minpoly}$ together with $d_1 \\mid \\cdots \\mid d_r$ give $r = 1, d_1 = \\mathrm{minpoly} = \\mathrm{charpoly}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Rational Canonical Form",
+      "invariant factors",
+      "PID module structure theorem",
+      "Mathlib gap"
+    ],
+    "prerequisites": [
+      "companion matrix definition",
+      "nonderogatory matrix definition",
+      "K[X]-module structure on K^n"
+    ]
+  },
+  {
+    "id": "ann-chcvaf-main-proof-chain",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields",
+    "range": {
+      "startLine": 104,
+      "endLine": 155
+    },
+    "type": "proofTechnique",
+    "title": "Three-Step Proof Chain: Axiom → Orbit → Transfer",
+    "content": "The proof of `nonderogatory_has_cyclic_vector` chains three modular steps. After dispatching `n = 0` (trivial: `Fin.elim0` works since there are no degree constraints), the `n > 0` case proceeds: (1) `nonderogatory_similar_companion hn M h` gives the invertible P and the similarity `hMC : M = P.inv * C * P.val`; (2) `hμ_deg` establishes `(minpoly K M).natDegree = n` by rewriting via nonderogatory hypothesis `h : minpoly K M = M.charpoly` and `Matrix.charpoly_natDegree_eq_dim`; (3) `companionMatrix_cyclic_e0 hn (minpoly K M) hμ_monic hμ_deg` gives `hcyc : IsCyclicVector C e₀`; (4) `cyclic_vector_of_similar M C P hMC _ hcyc` transfers the cyclic vector. The proof term is a clean 10-line tactic block.",
+    "mathContext": "The similarity step is key: if $M = P^{-1}CP$ and $w$ is cyclic for $C$, then $v = P^{-1}w$ satisfies $M^k v = P^{-1} C^k w$, so $\\{v, Mv, \\ldots, M^{n-1}v\\} = \\{P^{-1}w, P^{-1}Cw, \\ldots, P^{-1}C^{n-1}w\\} = P^{-1}\\{w, Cw, \\ldots, C^{n-1}w\\}$, which is a basis iff $\\{w, Cw, \\ldots, C^{n-1}w\\}$ is (since $P^{-1}$ is invertible). The orbit property $C^k e_0 = e_k$ makes $\\{e_0, Ce_0, \\ldots, C^{n-1}e_0\\} = \\{e_0, e_1, \\ldots, e_{n-1}\\}$ the standard basis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "matrix similarity",
+      "companion matrix orbit",
+      "cyclic vector transfer",
+      "functional calculus"
+    ],
+    "prerequisites": [
+      "companionMatrix_cyclic_e0",
+      "cyclic_vector_of_similar",
+      "nonderogatory_similar_companion axiom"
+    ]
+  },
+  {
+    "id": "ann-chcvaf-finite-field",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields",
+    "range": {
+      "startLine": 157,
+      "endLine": 170
+    },
+    "type": "keyInsight",
+    "title": "Finite Fields: Why Union Avoidance Fails but the Theorem Holds",
+    "content": "The corollary `nonderogatory_has_cyclic_vector_finite` specializes the main theorem to `[Fintype K]`. The proof is one line — it just applies the main theorem — but the significance is conceptual. The union avoidance argument (used for infinite fields in OQ-05-OQ-01) works by observing that the non-cyclic vectors form finitely many proper subspaces; over an infinite field, these cannot cover all of $K^n$. Over $\\mathbb{F}_2$ with $n = 2$, there are exactly 3 nonzero vectors and 3 proper 1-dimensional subspaces, each containing one nonzero vector — the union IS all of $\\mathbb{F}_2^2 \\setminus \\{0\\}$. Yet the theorem holds, because the companion matrix approach is field-independent: it never asks which vectors avoid subspaces, only that M is similar to C and e₀ is cyclic for C by structure.",
+    "mathContext": "For $\\mathbb{F}_2^2$: the three nonzero vectors $(1,0), (0,1), (1,1)$ are each the unique nonzero element of a 1-dimensional subspace. Union avoidance requires finding $v$ outside all $\\ker(p(M))$ for finitely many polynomials $p$ with $\\deg(p) < n = \\mathrm{deg}(\\mathrm{minpoly})$, but over $\\mathbb{F}_2$ these kernels exhaust all nonzero vectors. The algebraic proof bypasses this by not using cardinality at all — it uses the structural fact that the companion matrix orbit is exactly the standard basis.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "union avoidance",
+      "finite fields",
+      "F_2 counterexample",
+      "field cardinality"
+    ],
+    "prerequisites": [
+      "nonderogatory_has_cyclic_vector",
+      "companion matrix orbit property"
+    ]
+  },
+  {
+    "id": "ann-chcvaf-cyclic-characterization",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields",
+    "range": {
+      "startLine": 155,
+      "endLine": 169
+    },
+    "type": "insight",
+    "title": "Polynomial Annihilator Characterization of Cyclic Vectors",
+    "content": "`cyclic_iff_not_killed_below_degree` gives the polynomial annihilator characterization: v is cyclic for M iff no nonzero polynomial p of degree < n kills v under M (i.e., `(aeval M p).mulVec v ≠ 0`). The proof is purely logical — it unfolds `IsCyclicVector` and `CyclicVectorArbitrary.IsCyclicVector` via `simp only`, then splits into two implications closed by direct application of the hypothesis. No matrix computation is needed, because this is essentially unfolding the definition: `IsCyclicVector` IS the annihilator condition, and the corollary just restates it using the `aeval M` notation. The nonderogatory hypothesis `h : IsNonderogatory M` appears in the signature but is not used in the proof body — it is present to make the intended context (nonderogatory matrices) explicit to the reader.",
+    "mathContext": "Formally: $v$ is cyclic for $M$ iff $\\ker(p(M) \\cdot -) \\not\\ni v$ for all nonzero $p$ with $\\deg(p) < n$. Since $M$ is nonderogatory, $\\deg(\\mathrm{minpoly}) = n$, so the bound $\\deg(p) < n$ is exactly the bound needed to avoid the minimal polynomial. Any linear dependence $\\sum_{k < n} c_k M^k v = 0$ would give such a polynomial $p = \\sum c_k X^k$ with $p(M)v = 0$, so the condition is equivalent to $\\{v, Mv, \\ldots, M^{n-1}v\\}$ being linearly independent — i.e., a basis of $K^n$ (by dimension count).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "aeval (polynomial evaluation at a matrix)",
+      "mulVec (matrix-vector multiplication)",
+      "annihilator ideal",
+      "CyclicVectorArbitrary.IsCyclicVector"
+    ],
+    "prerequisites": [
+      "polynomial evaluation in Lean 4 via aeval",
+      "K[X]-module structure on K^n",
+      "linear independence via dimension"
+    ]
+  },
+  {
+    "id": "ann-chcvaf-abbrev-design",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields",
+    "range": {
+      "startLine": 48,
+      "endLine": 72
+    },
+    "type": "concept",
+    "title": "Definition Aliasing via abbrev for Cross-File Consistency",
+    "content": "`IsCyclicVector` and `IsNonderogatory` are declared as `abbrev` (reducible definitions) aliasing the `CyclicVectorArbitrary` namespace versions from `CayleyHamiltonMinpolyOQ05OQ01OQ04`. Using `abbrev` rather than `def` is important: `abbrev` in Lean 4 is `@[reducible] def`, meaning it is definitionally transparent. This allows Lean to unify `IsCyclicVector M v` (this namespace) with `CyclicVectorArbitrary.IsCyclicVector M v` without explicit coercions. In particular, the lemmas `companionMatrix_cyclic_e0` and `cyclic_vector_of_similar` (which use `CyclicVectorArbitrary.IsCyclicVector`) can be applied directly to goals stated in terms of the `abbrev`s.",
+    "mathContext": "In Lean 4, `abbrev` creates a definition that is unfolded by the kernel during definitional equality checking. This means `simp`, `rw`, `exact`, and typeclass search all see through it automatically. Without `abbrev` (using `def`), one would need explicit `show ... from ...` or `unfold` steps to unify the two definitions, even though they expand to the same type. The `abbrev` approach is the idiomatic Lean 4 pattern for namespace-local renaming.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "abbrev vs def in Lean 4",
+      "reducible definitions",
+      "namespace aliasing",
+      "definitional equality"
+    ],
+    "prerequisites": [
+      "Lean 4 type system basics",
+      "CyclicVectorArbitrary namespace"
+    ]
+  },
+  {
+    "id": "ann-chcvaf-section-v-summary",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields",
+    "range": {
+      "startLine": 170,
+      "endLine": 199
+    },
+    "type": "insight",
+    "title": "Section V: Summary — Axiom Inventory and Upgrade Path",
+    "content": "The closing /-! docstring (SECTION V) provides a complete summary of the formalization's logical status in three parts. (1) **What is fully proved (sorry-free)**: all five named results — `companionMatrix_cyclic_e0`, `cyclic_vector_of_similar`, `nonderogatory_has_cyclic_vector`, `nonderogatory_has_cyclic_vector_finite`, `cyclic_iff_not_killed_below_degree` — are listed with their sources. (2) **The one axiom**: `nonderogatory_similar_companion` is named precisely with its mathematical content (single-block RCF / Frobenius normal form) and its Mathlib dependency (PID structure theorem for K[X]-modules). (3) **Upgrade path**: quantitative estimate (~800 lines for Smith normal form + ~200 for the RCF reduction) gives a concrete target for future Mathlib development.\n\nThis self-documenting pattern — a closing summary that explicitly enumerates assumptions and open work — is characteristic of high-quality axiomatized formalizations. It allows a reader to audit the proof at a glance without running `#print axioms`.",
+    "mathContext": "Smith normal form for polynomial matrices $M \\in M_n(K[X])$: there exist invertible matrices $U, V$ (over $K[X]$) such that $UMV = \\mathrm{diag}(d_1, \\ldots, d_r, 0, \\ldots)$ where $d_i \\mid d_{i+1}$ (the Smith normal form). Applied to the presentation matrix of the $K[X]$-module $K^n$, this gives the invariant factor decomposition $K^n \\cong \\bigoplus_i K[X]/(d_i)$ — the PID structure theorem. For a nonderogatory matrix, the Smith form of the characteristic matrix $(XI - M)$ has exactly one invariant factor $d_1 = \\mathrm{minpoly}\\, M = \\mathrm{charpoly}\\, M$, directly giving the RCF similarity. Estimated 800 lines captures: Smith algorithm implementation (~400), elementary divisor theory (~200), RCF similarity reduction (~200).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Smith normal form",
+      "invariant factors",
+      "PID structure theorem",
+      "#print axioms",
+      "upgrade path from axiomatized to verified"
+    ],
+    "prerequisites": [
+      "Smith normal form for polynomial matrices",
+      "Elementary divisors and invariant factors",
+      "K[X]-module theory"
+    ]
+  },
+  {
+    "id": "ann-chcvaf-axiom-vs-sorry",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields",
+    "range": {
+      "startLine": 74,
+      "endLine": 102
+    },
+    "type": "concept",
+    "title": "axiom vs sorry: Making Mathematical Assumptions Explicit",
+    "content": "In Lean 4, `sorry` closes any goal by invoking `sorryAx` (a built-in axiom), while `axiom` introduces a named constant with a specific type. Both appear in `#print axioms` output, but `axiom` is preferable for deliberate mathematical assumptions because: (1) it has a descriptive name that documents what is being assumed; (2) it cannot accidentally close other goals — it must be explicitly applied; (3) it is more honest about the nature of the assumption (a mathematical fact being assumed, not a proof being deferred). For this formalization, `axiom nonderogatory_similar_companion` clearly signals 'we assume the RCF theorem', whereas `sorry` would only indicate 'proof omitted'. The `axiomCount` in meta.json reflects explicit `axiom` declarations; `sorry` counts are tracked separately under `sorries`.",
+    "mathContext": "The distinction matters for the gallery's Axiom Integrity Policy: `axiom` declarations count toward `axiomCount`, while `sorry` counts toward `sorries`. A proof with `axiomCount = 1, sorries = 0` (this file) is more trustworthy than `axiomCount = 0, sorries = 1` (the companion OQ-04 file), because the assumption is named and scoped. Both have status `axiomatized` in the gallery, but the axiom-based version makes the assumption structurally explicit.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lean 4 axiom declaration",
+      "sorry vs axiom",
+      "Axiom Integrity Policy",
+      "#print axioms"
+    ],
+    "prerequisites": [
+      "Lean 4 trusted kernel",
+      "sorryAx built-in"
+    ]
+  },
+  {
+    "id": "ann-chcvaf-summary",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields",
+    "range": {
+      "startLine": 170,
+      "endLine": 201
+    },
+    "type": "context",
+    "title": "Section V: Axiom Inventory and Smith Normal Form Upgrade Path",
+    "content": "The closing `/-!` docstring (lines 174–197) provides a structured inventory of the file's five proved theorems and one axiom. The inventory distinguishes the two categories precisely:\n\n**Fully proved (sorry-free)**: `companionMatrix_cyclic_e0` and `cyclic_vector_of_similar` (both from `CayleyHamiltonMinpolyOQ05OQ01OQ04`), plus `nonderogatory_has_cyclic_vector`, `nonderogatory_has_cyclic_vector_finite`, and `cyclic_iff_not_killed_below_degree` (this file).\n\n**Axiom**: `nonderogatory_similar_companion` — the single-block rational canonical form. The docstring gives both the mathematical content (PID structure theorem for $K[X]$) and an engineering estimate for the upgrade path: ~800 lines for Smith normal form + ~200 lines for the RCF reduction from Smith to companion similarity.\n\nThe namespace closes at line 199 (`end CayleyHamiltonCyclicVectorAllFields`) and the `noncomputable section` closes at line 201 (`end`). This is a common pattern in Lean 4 for formalizations using real numbers or function extensionality: `noncomputable section` suppresses the 'declaration uses sorry' warning for noncomputable definitions, since the field operations on $K$ may not have decidable equality.",
+    "mathContext": "**Smith normal form upgrade**: Given the $n \\times n$ matrix $XI - M$ over $K[X]$, Smith normal form algorithms compute invertible $U(X), V(X) \\in \\mathrm{GL}_n(K[X])$ with $U(X)(XI - M)V(X) = \\mathrm{diag}(d_1(X), \\ldots, d_n(X))$ where $d_i \\mid d_{i+1}$. The $d_i$ are the **elementary divisors** of $XI - M$, and $\\prod_i d_i = \\mathrm{charpoly}(M)$ (by the determinant formula). For nonderogatory $M$: $d_i = 1$ for $i < n$ and $d_n = \\mathrm{charpoly}(M) = \\mathrm{minpoly}(M)$. This gives $XI - M \\sim \\mathrm{diag}(1, \\ldots, 1, \\mathrm{minpoly}(M))$ over $K[X]$, which by the module structure theorem for PIDs yields $K^n \\cong K[X]/(\\mathrm{minpoly}\\, M)$, i.e., $M \\sim C(\\mathrm{minpoly}\\, M)$. The key Mathlib module `Mathlib.RingTheory.PrincipalIdealDomain` already has the abstract PID structure theorem; the gap is the Smith normal form algorithm for polynomial matrices.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Smith normal form",
+      "elementary divisors",
+      "invariant factors",
+      "PID structure theorem",
+      "noncomputable section"
+    ],
+    "prerequisites": [
+      "Smith normal form for polynomial matrices",
+      "elementary divisors of XI - M",
+      "Lean 4 noncomputable section semantics"
+    ]
+  }
+]

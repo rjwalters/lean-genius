@@ -144,3 +144,6 @@ source: gallery-gap
 parent_oq: szemeredi-hypergraph-core/oq-02
 created: 2026-04-23
 ```
+
+**Significance**: 8/10
+**Tractability**: 5/10

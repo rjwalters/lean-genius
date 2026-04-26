@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
+    "range": { "startLine": 1, "endLine": 51 },
+    "type": "concept",
+    "title": "Binary Prime Power Cyclic Vector Theorem: Strategy and Coverage",
+    "content": "The module header outlines the proof strategy for the binary prime power case of the nonderogatory cyclic vector theorem. Given M with minpoly = p^a * q^b (p, q distinct monic irreducibles), the proof constructs a cyclic vector by:\n\n1. Lifting coprimality: IsCoprime(p, q) -> IsCoprime(p^a, q^b)\n2. Bezout identity: s*p^a + t*q^b = 1\n3. Constructing primary vectors v1, v2 with controlled annihilation properties\n4. Showing v = v1 + v2 is cyclic via CRT projections + prime power divisibility + degree contradiction\n\nTogether with WIP02 (squarefree) and WIP03 (single prime power), this covers all minpolys with at most 2 irreducible factors. The general case follows by induction on the number of factors.",
+    "mathContext": "For nonderogatory $M$ with $\\text{minpoly}(M) = p^a q^b$ where $\\gcd(p, q) = 1$: the CRT decomposition $K[X]/(p^a q^b) \\cong K[X]/(p^a) \\times K[X]/(q^b)$ induces a direct sum $K^n = \\ker(p^a(M)) \\oplus \\ker(q^b(M))$. The cyclic vector is $v = v_1 + v_2$ where $v_i$ generates a maximal cyclic submodule in the $i$-th primary component.",
+    "significance": "key",
+    "relatedConcepts": ["Chinese Remainder Theorem", "primary decomposition", "Bezout identity", "nonderogatory matrix"],
+    "prerequisites": ["WIP02: squarefree binary case", "WIP03: single prime power case", "IsCoprime.pow_pow"]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
+    "range": { "startLine": 54, "endLine": 64 },
+    "type": "definition",
+    "title": "IsCyclicVector and IsNonderogatory: Consistent Definitions",
+    "content": "Two definitions consistent with sibling WIP files:\n\n- **IsCyclicVector M v**: no nonzero polynomial of degree < n annihilates v. This is equivalent to saying that {v, Mv, M^2v, ..., M^{n-1}v} spans K^n.\n- **IsNonderogatory M**: the minimal polynomial equals the characteristic polynomial (minpoly K M = M.charpoly). Equivalently, each eigenvalue's geometric multiplicity is 1.",
+    "mathContext": "$v$ is cyclic for $M$ iff $\\forall p \\in K[X],\\; \\deg(p) < n \\implies p(M)v = 0 \\implies p = 0$. $M$ is nonderogatory iff $\\text{minpoly}(M) = \\text{charpoly}(M)$, which by Cayley-Hamilton means $\\deg(\\text{minpoly}(M)) = n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["cyclic subspace", "minimal polynomial", "characteristic polynomial", "geometric multiplicity"],
+    "prerequisites": ["Polynomial.aeval", "Matrix.charpoly", "minpoly"]
+  },
+  {
+    "id": "ann-utility-lemmas",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
+    "range": { "startLine": 66, "endLine": 111 },
+    "type": "technique",
+    "title": "Utility Lemmas: Bezout Divisibility and Polynomial Evaluation",
+    "content": "Four core lemmas shared with WIP02/WIP03:\n\n1. **irreducible_dvd_of_annihilated**: If p is irreducible, v != 0, p(M)v = 0, and r(M)v = 0, then p | r. Proof: Bezout gives s*p + t*r = 1, so v = (s(M)*p(M) + t(M)*r(M))*v = 0, contradicting v != 0 unless p | r.\n2. **exists_mulVec_ne_zero**: A nonzero matrix has a vector outside its kernel.\n3. **aeval_ne_zero_of_lt_minpoly**: A nonzero polynomial of degree < deg(minpoly) evaluates to a nonzero matrix at M.\n4. **aeval_mul_comm_poly**: Polynomial evaluations at M commute: (p*q)(M) = p(M)*q(M) = q(M)*p(M).",
+    "mathContext": "The Bezout argument in `irreducible_dvd_of_annihilated` is the core algebraic technique: $\\gcd(p, r) \\neq 1$ when both $p(M)v = 0$ and $r(M)v = 0$ for $v \\neq 0$, because Bezout's identity $sp + tr = 1$ would give $v = 1 \\cdot v = (s(M)p(M) + t(M)r(M))v = 0$. Since $p$ is irreducible, $\\gcd(p, r) = p$, so $p \\mid r$.",
+    "significance": "key",
+    "relatedConcepts": ["Bezout identity", "irreducible polynomial", "kernel", "polynomial evaluation commutativity"],
+    "prerequisites": ["IsCoprime", "Irreducible", "Matrix.mulVec", "Polynomial.aeval"]
+  },
+  {
+    "id": "ann-prime-power-div",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
+    "range": { "startLine": 116, "endLine": 176 },
+    "type": "theorem",
+    "title": "Prime Power Divisibility: Induction from WIP03",
+    "content": "The theorem `pow_irred_dvd_of_annihilated` (from WIP03) is the key inductive lemma: if p is irreducible, p^e(M)*v != 0, p^(e+1)(M)*v = 0, and r(M)*v = 0, then p^(e+1) | r.\n\nThe induction is on e:\n- **Base (e=0)**: v != 0, p(M)*v = 0, r(M)*v = 0 -> p | r by irreducible_dvd_of_annihilated.\n- **Step (e -> e+1)**: p^(e+1)(M)*v != 0, p^(e+2)(M)*v = 0. Set w = p(M)*v. Then p^e(M)*w = p^(e+1)(M)*v != 0 and p^(e+1)(M)*w = p^(e+2)(M)*v = 0. By IH, p^(e+1) | r', where r' = r/p (from base case giving p | r). So p^(e+2) | r.",
+    "mathContext": "The induction bootstraps the base-case Bezout argument across all powers: $p^{e}(M)v \\neq 0 \\wedge p^{e+1}(M)v = 0 \\wedge r(M)v = 0 \\implies p^{e+1} \\mid r$. This replaces the PID structure theorem's primary decomposition with a direct polynomial argument.",
+    "significance": "key",
+    "relatedConcepts": ["strong induction", "primary decomposition", "PID structure theorem alternative"],
+    "prerequisites": ["irreducible_dvd_of_annihilated", "polynomial divisibility", "induction"]
+  },
+  {
+    "id": "ann-crt-projections",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
+    "range": { "startLine": 181, "endLine": 202 },
+    "type": "technique",
+    "title": "CRT Projection Lemmas: Idempotent Decomposition",
+    "content": "Two CRT projection lemmas from WIP02:\n\n1. **bezout_proj_identity**: For coprime p, q with Bezout identity s*p + t*q = 1, the projection t(M)*q(M) acts as identity on ker(p(M)): if p(M)*v = 0, then t(M)*q(M)*v = v.\n2. **bezout_proj_kills**: The same projection kills the other component: q(M)*v = 0 implies t(M)*q(M)*v = 0.\n\nThese form a complete system of orthogonal idempotents: e1 = t(M)*q(M) and e2 = s(M)*p(M) satisfy e1 + e2 = 1, e1*e2 = 0, e1^2 = e1, e2^2 = e2.",
+    "mathContext": "The CRT projections are the $K[X]$-module analogue of the Chinese Remainder isomorphism $K[X]/(pq) \\cong K[X]/(p) \\times K[X]/(q)$. For $v \\in \\ker(p(M))$: $v = (sp + tq)(M)v = t(M)q(M)v$ since $sp(M)v = s(M) \\cdot 0 = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Chinese Remainder Theorem", "idempotent projections", "primary decomposition", "Bezout identity"],
+    "prerequisites": ["IsCoprime", "Bezout coefficients", "polynomial evaluation"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
+    "range": { "startLine": 204, "endLine": 402 },
+    "type": "theorem",
+    "title": "Main Theorem: nonderogatory_bipow_has_cyclic_vector",
+    "content": "The main theorem proves existence of a cyclic vector for nonderogatory M with minpoly = p^a * q^b. The proof has five phases:\n\n1. **Setup**: Handle the trivial n=0 case. Establish degree facts and coprimality of powers.\n2. **Construct v1**: Find w1 with (p^{a-1}*q^b)(M)*w1 != 0 (by aeval_ne_zero_of_lt_minpoly). Set v1 = q^b(M)*w1. Then p^{a-1}(M)*v1 != 0 and p^a(M)*v1 = 0.\n3. **Construct v2**: Similarly, find w2 and set v2 = p^a(M)*w2 with q^{b-1}(M)*v2 != 0 and q^b(M)*v2 = 0.\n4. **Prove v = v1 + v2 is cyclic**: For any r with r(M)*(v1+v2) = 0, use CRT projections to extract r(M)*v1 = 0 and r(M)*v2 = 0 separately. Apply pow_irred_dvd_of_annihilated to get p^a | r and q^b | r. By IsCoprime.mul_dvd, p^a*q^b | r.\n5. **Degree contradiction**: deg(p^a*q^b) = n <= deg(r), but deg(r) < n, so r = 0.",
+    "mathContext": "The degree contradiction: $\\deg(p^a q^b) = a \\cdot \\deg(p) + b \\cdot \\deg(q) = \\deg(\\text{minpoly}(M)) = n$. If $p^a q^b \\mid r$ and $r \\neq 0$, then $n \\leq \\deg(r)$. But $r$ is assumed to have $\\deg(r) < n$. Therefore $r = 0$, proving $v$ is cyclic.",
+    "significance": "key",
+    "relatedConcepts": ["cyclic vector existence", "degree contradiction", "IsCoprime.mul_dvd", "nonderogatory matrix"],
+    "prerequisites": ["IsCoprime.pow_pow", "pow_irred_dvd_of_annihilated", "bezout_proj_identity", "bezout_proj_kills"]
+  },
+  {
+    "id": "ann-corollary-finite",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
+    "range": { "startLine": 404, "endLine": 417 },
+    "type": "insight",
+    "title": "Corollary: Explicit Finite Field Instance",
+    "content": "The corollary `nonderogatory_bipow_has_cyclic_vector_finite` adds a `[Fintype K]` instance to make the finite field applicability explicit. This is a direct specialization of the main theorem — no additional proof is needed because the main theorem already works over *any* field K. The corollary exists to highlight that this proof, unlike the classical union-avoidance argument (which requires |K| > n or |K| = ∞), handles fields as small as GF(2). Over GF(2), a 10×10 matrix has only 1024 vectors, so measure-theoretic or probabilistic arguments are meaningless — but this algebraic CRT-based proof still applies.",
+    "mathContext": "Over $\\mathbb{F}_2$, the classical argument 'the set of non-cyclic vectors has measure zero' fails since $|\\mathbb{F}_2^n| = 2^n$ is finite. Union-avoidance ($|K| > n$ needed to avoid $n$ hyperplanes) also fails for small fields. The CRT approach avoids both issues entirely.",
+    "significance": "context",
+    "relatedConcepts": ["finite field", "union-avoidance", "GF(2)", "constructive algebra"],
+    "prerequisites": ["nonderogatory_bipow_has_cyclic_vector", "Fintype"]
+  }
+]

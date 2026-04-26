@@ -311,3 +311,96 @@ equivalent formulations (handshaking + τ involution).
    starting from s₀ via its interior door
 3. Prove τ∘τ=id via adj_symm + nonfc_with_door_has_unique_exit + kuhn_step_nonrevisit (no-cycle)
 4. Apply even_card_fpf_invol to get |B_nfc| even, then |B_fc| = |B| - |B_nfc| odd ≥ 1
+
+---
+
+## Session 2026-04-26 (Session 8) — Axiom → Theorem (1 sorry)
+
+**Mode**: REVISIT
+**Outcome**: progress — axiom eliminated, 1 sorry introduced (more honest representation)
+
+### What I Did
+
+1. Recognized τ involution argument is correct when applied to ALL of B under hfail
+2. Under hfail (∀ walks fail): τ(s₀,k₀) = boundary exit of walk from (s₀,k₀) is well-defined for ALL of B
+3. τ is FPF involution on B (not just B_nfc): kuhnWalk_first_exit_interior + WalkValid → sₙ ≠ s₀
+4. Replaced `axiom kuhn_path_existential` with `theorem kuhn_path_existential := by`
+5. Proved Case 1 (∃ walk reaches FC): push_neg + extract witness → direct
+6. Proved Case 2 (all walks fail): bdry_all_even_of_no_fc_walks (sorry) gives Even |B| → omega contradiction
+7. Updated meta.json: axiomCount 1→0, sorryCount 0→1, badge "axiom"→"wip", status "axiomatized"→"formalized"
+
+### Key Findings
+
+- Session 7 error was: bdry_nfc_even is false because it was stated without `hfail` hypothesis
+- Correct approach: under `hfail` (all walks fail), τ maps ALL of B to B, not just B_nfc
+  Because: every (s₀,k₀) ∈ B with hfail[s₀,k₀] has walk ending at boundary (not FC)
+- This is why axiom → sorry works: the sorry's context includes `hfail` which is the key constraint
+- bdry_all_even_of_no_fc_walks is NOT trivially false: it has the `hfail` extra hypothesis
+
+### Mathematical Insight
+
+The correct τ involution domain is B (ALL boundary doors) under the assumption hfail, not B_nfc:
+- Under hfail: ∀ (s₀,k₀) ∈ B, walk from (s₀,k₀) doesn't reach FC → exits at boundary (sₙ,kₙ) ∈ B
+- τ: B → B is FPF involution (by WalkValid non-revisiting + walk reversal)
+- even_card_fpf_invol → Even |B| → contradicts hbdry_odd via omega
+- Result: hfail is impossible → ∃ (s₀,k₀) ∈ B such that walk reaches FC
+
+### Files Modified
+
+- `proofs/Proofs/SpernerNDimOQ04.lean` (axiom → theorem, +bdry_all_even_of_no_fc_walks private lemma)
+- `src/data/proofs/sperner-ndim-oq-04/meta.json` (axiomCount 1→0, sorryCount 0→1)
+- `research/problems/sperner-ndim-oq-04/knowledge.md` (this file)
+
+### Next Steps
+
+1. Implement walkTrace_reversal: induction on walk length, adj_symm at each step
+   - State: given walk from (s₀,k₀) → (s₁,k₁) → ... → (sₙ,kₙ), walk from (sₙ,kₙ) → (s₀,k₀)
+   - Key tool: K.adj sᵢ k_exit = some(sᵢ₊₁, k_entry) → K.adj sᵢ₊₁ k_entry = some(sᵢ, k_exit)
+   - Unique exit (nonfc_with_door_has_unique_exit) ensures determinism at each step
+2. Use walkTrace_reversal to prove τ∘τ=id in bdry_all_even_of_no_fc_walks
+3. Apply even_card_fpf_invol → Even |B| → done (0 axioms, 0 sorries)
+
+---
+
+## Session 2026-04-26 (Session 31) — Prove hMem + hNe (2 sorries → 1)
+
+**Mode**: REVISIT
+**Outcome**: progress — hMem and hNe fully proved; hInv reduced from 2 sorries to 1
+
+### What I Did
+
+1. Added `kuhnWalk_not_in_initial_visited` private lemma (by fuel induction, same pattern as kuhnWalk_fc_or_bdry)
+   - States: kuhnWalk result ∉ initial visited set
+   - Used in hNe to derive contradiction from heq_s : kuhnPathStart p.1 = p.1
+2. Proved **hMem** (τ maps B → B):
+   - kuhnWalk_fc_or_bdry + hfail → boundary exit exists (not FC)
+   - boundary_door_is_last_face → k_exit = Fin.last d → (sₙ, Fin.last d) ∈ B
+3. Proved **hNe** (τ is FPF on B):
+   - hfail + kuhnPathStart_is_fc_of_fc_start → p.1 not FC → walk takes ≥1 step
+   - After step 1: state₁.visited = {p.1}, kuhnWalk (card-1) state₁ ∉ {p.1}
+   - heq_walk links kuhnPathStart to kuhnWalk (card-1) state₁ → contradiction
+4. Restructured hInv to prove `hτp_in_B` inline (same argument as hMem):
+   - Use kuhnWalk_congr to handle proof-term mismatches from simp/dif_pos
+   - Extract hdoor_n, hbdry_n from hτp_in_B via Finset.mem_filter.mp
+   - Reduce both τ applications via simp [dif_pos] + conv_lhs kuhnWalk_congr rewrites
+5. Committed: PR rjwalters/lean-genius#12949
+
+### Key Findings
+
+- kuhnWalk_congr is essential for bridging proof-term mismatches after simp [dif_pos]: two KuhnState values with same data fields (current, entry, visited) but different Prop fields give the same kuhnWalk result (via proof_irrel internally)
+- The hMem and hNe proofs are now fully verified in the Lean file (no sorries)
+- The remaining sorry is precisely walkTrace_reversal: needs induction tracking the walk trace
+
+### Files Modified
+
+- `proofs/Proofs/SpernerNDimOQ04.lean` (+256 lines: kuhnWalk_not_in_initial_visited, hMem, hNe proved; hInv restructured with 1 sorry)
+
+### Next Steps
+
+1. **walkTrace_reversal** (~100-150 lines): prove by induction on walk length
+   - Define auxiliary "walk trace" data or use strong induction on visited set size
+   - At each step: sᵢ has exactly 2 doors {kᵢ, eᵢ} by Kuhn compat + non-FC
+   - Backward entry eᵢ → unique exit kᵢ (by nonfc_with_door_has_unique_exit uniqueness)
+   - K.adj sᵢ kᵢ = some(sᵢ₋₁, eᵢ₋₁) by adj_symm from forward walk adjacency
+   - Induction reverses n steps to reach s₀ with boundary exit k₀ = Fin.last d
+2. Once walkTrace_reversal done: 0 sorries, proof complete

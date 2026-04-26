@@ -19,6 +19,8 @@ import Proofs.AlgebraicNumbersCountableAristotle
 import Proofs.AlgebraicNumbersCountableOQ02
 import Proofs.AlgebraicNumbersCountableOQ02OQ02
 import Proofs.AlgebraicNumbersCountableOQ02OQ02OQ01
+import Proofs.AlgebraicNumbersCountableOQ04
+import Proofs.AlgebraicNumbersCountableOQ05
 import Proofs.AmgmInequalityOQ02
 import Proofs.AmgmInequalityOQ02Aristotle
 import Proofs.AmgmInequalityOQ02Defs
@@ -334,6 +336,8 @@ import Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ01
 import Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ02
 import Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ03
 import Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04
+import Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01
+import Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04WIP02
 import Proofs.CayleyHamiltonMinpolyOQ05OQ02
 import Proofs.CayleyHamiltonOQ01
 import Proofs.CayleyHamiltonOQ01OQ01
@@ -827,7 +831,6 @@ import Proofs.Erdos1181Problem
 import Proofs.Erdos1182Problem
 import Proofs.Erdos1183Problem
 import Proofs.Erdos118Problem
-import Proofs.Erdos1196Aristotle
 import Proofs.Erdos1196Problem
 import Proofs.Erdos119Problem
 import Proofs.Erdos11Problem
@@ -945,6 +948,7 @@ import Proofs.Erdos1OQ03
 import Proofs.Erdos1OQ03Aristotle
 import Proofs.Erdos1OQ04
 import Proofs.Erdos1Problem
+import Proofs.Erdos1WIP01
 import Proofs.Erdos200Problem
 import Proofs.Erdos201Problem
 import Proofs.Erdos202Problem
@@ -2326,12 +2330,12 @@ import Proofs.ProductOfSegmentsOfChords
 import Proofs.ProductOfSegmentsOfChordsOQ01
 import Proofs.PtolemysComplexProof
 import Proofs.PtolemysComplexProofOQ01
+import Proofs.PtolemysComplexProofOQ02
 import Proofs.PtolemysTheorem
 import Proofs.PtolemysTheoremOQ01
 import Proofs.PtolemysTheoremOQ01Incomplete01
 import Proofs.PtolemysTheoremOQ01OQ01
 import Proofs.PtolemysTheoremOQ01OQ02
-import Proofs.SynthesisCurvaturePtolemy
 import Proofs.PuiseuxTheorem
 import Proofs.PuiseuxTheoremOQ02
 import Proofs.PvsNP
@@ -2451,6 +2455,7 @@ import Proofs.SylowTheoremOQ01
 import Proofs.SylowTheoremOQ02
 import Proofs.SylowTheoremOQ02Orbit
 import Proofs.SylowTheoremOQ04
+import Proofs.SynthesisCurvaturePtolemy
 import Proofs.SzemerediCore
 import Proofs.SzemerediCoreOQ01
 import Proofs.SzemerediCoreOQ01Aristotle
@@ -2560,6 +2565,7 @@ import Proofs.TriangularReciprocalGeneralized
 import Proofs.TriangularReciprocalsFigurate
 import Proofs.TwinPrimes
 import Proofs.UnitDistanceHN7
+import Proofs.UnitDistanceHN7Aristotle
 import Proofs.UnitDistanceIndependence
 import Proofs.VietasFormulas
 import Proofs.VietasFormulasOQ02

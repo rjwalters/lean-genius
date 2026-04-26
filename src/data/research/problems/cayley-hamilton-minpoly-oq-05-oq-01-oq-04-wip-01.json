@@ -1,7 +1,7 @@
 {
   "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
   "title": "Complete Nonderogatory to Cyclic Vector: The General Case (All Fields)",
-  "phase": "ACT",
+  "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -49,12 +49,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: companionMatrix_cyclic_e0 proved (no sorry). Main theorem modularized: only nonderogatory_similar_companion (RCF) remains as sorry. PR #12510.",
+    "progressSummary": "PROGRESS: WIP04 proves binary prime-power case axiom-free (421 lines). WIP02 squarefree + WIP03 prime-power + WIP04 binary prime-power all done. WIP01 has 1 axiom (rational canonical form). k-factor (k≥3) is next.",
     "builtItems": [
-      "sum_mulVec_dist: mulVec distributes over Finset sums (CayleyHamiltonMinpolyOQ05OQ01OQ04.lean)",
-      "aeval_eq_range_sum: aeval as sum over range(natDegree+1) (CayleyHamiltonMinpolyOQ05OQ01OQ04.lean)",
-      "companionMatrix_cyclic_e0: e0 is cyclic for C(p), proved via orbit lemma, NO SORRY (CayleyHamiltonMinpolyOQ05OQ01OQ04.lean:226)",
-      "nonderogatory_similar_companion: M~C(minpoly M), sorry=RCF theorem (CayleyHamiltonMinpolyOQ05OQ01OQ04.lean:269)"
+      "WIP04 nonderogatory_bipow_has_cyclic_vector: binary p^a*q^b case proved axiom-free (421 lines, CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean)"
     ],
     "insights": [
       "The blocking step is the PID structure theorem: K^n ≅ K[X]/(d1) ⊕ … ⊕ K[X]/(dr) as K[X]-modules",
@@ -62,9 +59,9 @@
       "cyclic_iff_ann_eq_minpoly (already proven) reduces the problem to: ∃ v, ann(v) = (minpoly)",
       "companion matrix approach: if M ~ companion(charpoly), then e1 is a cyclic vector for companion, and cyclic_vector_of_similar transfers it to M",
       "Whether rational canonical form / companion similarity exists in Mathlib is the key unknown",
-      "companionMatrix_cyclic_e0 is provable by orbit argument: C(p)^k*e0=ek then evaluate at natDegree position",
-      "by_contra + leadingCoeff extraction cleanly isolates the zero coefficient contradiction",
-      "Modular proof structure: RCF similarity (sorry) + cyclic e0 (proved) + similarity transfer (proved)"
+      "Binary prime-power case: IsCoprime.pow_pow + pow_irred_dvd_of_annihilated + CRT projections = complete proof without PID",
+      "Construction: v₁ = q^b(M)·w₁ where (p^(a-1)*q^b)(M)·w₁≠0 gives the primary cyclic vector for the p^a component",
+      "IsCoprime.mul_dvd combines p^a|r and q^b|r into p^a*q^b|r for the degree contradiction"
     ],
     "mathlibGaps": [
       "Module.InvariantFactors or PID cyclic decomposition theorem",
@@ -72,10 +69,8 @@
       "Finrank-based argument for span of orbit: does LinearMap.span_orbit_eq_top exist?"
     ],
     "nextSteps": [
-      "Prove nonderogatory_similar_companion: needs PID module structure / RCF theorem",
-      "Check if Mathlib LinearAlgebra.RationalCanonicalForm or similar exists (search v4.26+)",
-      "Alternative: build minimal PID structure theorem ~500 lines (V cyclic iff ann ideal principal)",
-      "Consider: can we avoid full RCF by using Module.AEval + annihilator directly?"
+      "Generalize WIP04 to k≥3 factors by induction on number of prime power factors",
+      "Check Mathlib 4.27+ for rational canonical form (would close WIP01 axiom)"
     ]
   },
   "tags": [
@@ -96,7 +91,8 @@
     "cayley-hamilton-minpoly-oq-05-oq-01",
     "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
     "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
-    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-incomplete-01"
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-incomplete-01",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01"
   ],
   "references": [
     "Hoffman & Kunze, Linear Algebra, Ch. 7 (Rational canonical form)",

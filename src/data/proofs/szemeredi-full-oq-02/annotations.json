@@ -1,0 +1,141 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "szemeredi-full-oq-02",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "concept",
+    "title": "Density Formulation of Szemerédi's Theorem: Filter.Tendsto and IsLittleO",
+    "content": "The docstring establishes the distinction between Szemerédi's theorem in its classical qualitative form ('k-AP-free sets cannot have positive upper density') and this file's density formulation ('k-AP-free set sequences have |A_N|/N → 0'). These are contrapositively equivalent: positive upper density implies the set contains arbitrarily long APs, and conversely, the absence of k-APs forces the density to vanish.\n\nThis file introduces two formal asymptotic frameworks:\n1. **`Filter.Tendsto`**: `Filter.Tendsto (fun N => |A N|/N) atTop (nhds 0)` — the sequence of density ratios converges to 0\n2. **`IsLittleO`**: `(fun N => |A N|) =o[atTop] (fun N => N)` — the set cardinalities are asymptotically smaller than N\n\nThe key import `Proofs.SzemerediTheorem` provides `ap_free_density_bound`: an ε-N₀ bound saying for any ε > 0 there exists N₀ such that for N ≥ N₀, any k-AP-free set in {0,...,N-1} has cardinality < ε·N. This quantitative form is converted to the asymptotic Filter.Tendsto form in `szemeredi_vanishing_density`.",
+    "mathContext": "Classical form: $\\text{udim}(A) > 0 \\Rightarrow A$ contains k-AP.\nDensity form (this file): $A_N \\text{ k-AP-free} \\Rightarrow |A_N|/N \\to 0$.\nFormal version: $\\text{Filter.Tendsto}\\;(N \\mapsto |A_N|/N)\\;\\text{atTop}\\;(\\text{nhds}\\;0)$.\nEquivalent: $|A_N| = o(N)$ as $N \\to \\infty$ (IsLittleO form).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Filter.Tendsto",
+      "IsLittleO",
+      "upper density",
+      "ap_free_density_bound",
+      "Szemerédi theorem"
+    ],
+    "prerequisites": [
+      "Mathlib.Combinatorics.Additive.Corner.Roth",
+      "SzemerediTheorem.lean (ap_free_density_bound)",
+      "Filter.atTop and nhds in Mathlib topology"
+    ]
+  },
+  {
+    "id": "ann-vanishing-density",
+    "proofId": "szemeredi-full-oq-02",
+    "range": { "startLine": 36, "endLine": 63 },
+    "type": "technique",
+    "title": "szemeredi_vanishing_density: ε-N₀ to Filter.Tendsto Conversion",
+    "content": "**Theorem** `szemeredi_vanishing_density`: For any k ≥ 1, any sequence of sets A_N ⊆ {0,...,N-1} where each A_N is k-AP-free satisfies `Filter.Tendsto (fun N => |A N|/N) atTop (nhds 0)`.\n\nThe proof uses `Metric.tendsto_atTop` to unfold the Tendsto definition into: for every ε > 0, there exists N₀ such that for N ≥ N₀, |A_N|/N is within ε of 0. The conversion steps:\n\n1. **Get N₀** via `ap_free_density_bound k hk (ε/2)` — yields N₀ with: for N ≥ N₀, any k-AP-free A ⊆ range N has |A| < (ε/2)·N\n2. **Take threshold `max N₀ 1`** to ensure N > 0 (needed for division)\n3. **Verify**: `|A N|/N < ε` follows by `div_lt_iff₀ hN_pos` (rewriting division) and `nlinarith` (from |A N| < (ε/2)·N and N ≥ 1)\n\nThe subtlety is that division by N requires N > 0, handled by `le_max_right N₀ 1` ensuring N ≥ 1. The `nlinarith` tactic closes the arithmetic goal from the hypothesis `|A N| < (ε/2)·N`.\n\nThis theorem covers all k ≥ 1 but delegates to `ap_free_density_bound` which in turn uses the axiom `szemeredi_k_ge_4` for k ≥ 4.",
+    "mathContext": "Goal after `Metric.tendsto_atTop` and `intro ε hε`:\n$$\\exists N_0,\\; \\forall N \\geq N_0,\\; \\left|\\frac{|A_N|}{N} - 0\\right| < \\varepsilon$$\nFrom `ap_free_density_bound`: $\\exists N_0,\\; \\forall N \\geq N_0,\\; |A_N| < \\frac{\\varepsilon}{2} N$.\nDeriving the goal: $\\frac{|A_N|}{N} = \\frac{|A_N|}{N} < \\frac{\\varepsilon/2 \\cdot N}{N} = \\frac{\\varepsilon}{2} < \\varepsilon$ (for N > 0).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Metric.tendsto_atTop",
+      "ap_free_density_bound",
+      "div_lt_iff₀",
+      "nlinarith",
+      "IsAPFree",
+      "Finset.range"
+    ],
+    "prerequisites": [
+      "ap_free_density_bound from SzemerediTheorem.lean",
+      "Metric.tendsto_atTop (Mathlib.Topology.MetricSpace)",
+      "div_lt_iff₀ for positive denominators"
+    ]
+  },
+  {
+    "id": "ann-roth-k3",
+    "proofId": "szemeredi-full-oq-02",
+    "range": { "startLine": 64, "endLine": 97 },
+    "type": "concept",
+    "title": "k=3 via Roth's Theorem: rothNumberNat and IsLittleO Bridge",
+    "content": "Two theorems for the k=3 case:\n\n**`roth_density_isLittleO`** (lines 68-73): A direct alias for Mathlib's `rothNumberNat_isLittleO_id`. The `rothNumberNat N` is Mathlib's function for the maximum size of a 3-AP-free subset of {0,...,N-1}. The statement `IsLittleO atTop (fun N => rothNumberNat N) (fun N => N)` says that this maximum grows slower than N.\n\n**`ap_free_density_isLittleO_k3`** (lines 75-86): Converts the Tendsto result from `szemeredi_vanishing_density` (for k=3) into an IsLittleO statement for specific 3-AP-free sequences. The conversion uses `isLittleO_iff_tendsto`, which states that `f =o g` iff `Tendsto (f/g) atTop 0` (under the condition that `g(x) = 0 ⟹ f(x) = 0`, which holds here because A 0 ⊆ range 0 = ∅).\n\nThe zero case `N = 0` requires special handling: `range 0 = ∅`, so `A 0 ⊆ ∅` forces `A 0 = ∅`, giving `(A 0).card = 0`.",
+    "mathContext": "Mathlib's Roth theorem: $\\text{rothNumberNat}(N) = o(N)$ as $N \\to \\infty$.\nFor any 3-AP-free sequence $A_N \\subseteq \\{0,\\ldots,N-1\\}$: $|A_N| \\leq \\text{rothNumberNat}(N)$, so $|A_N| = o(N)$.\n`isLittleO_iff_tendsto`: $f = o(g)$ iff $f/g \\to 0$ (when $g(x) = 0 \\Rightarrow f(x) = 0$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "rothNumberNat",
+      "rothNumberNat_isLittleO_id",
+      "isLittleO_iff_tendsto",
+      "Finset.range_zero",
+      "Finset.subset_empty",
+      "Roth's theorem"
+    ],
+    "prerequisites": [
+      "Mathlib.Combinatorics.Additive.Corner.Roth",
+      "IsLittleO and Asymptotics (Mathlib.Analysis.Asymptotics)",
+      "isLittleO_iff_tendsto"
+    ]
+  },
+  {
+    "id": "ann-sfoo2-density-full",
+    "proofId": "szemeredi-full-oq-02",
+    "range": {
+      "startLine": 95,
+      "endLine": 103
+    },
+    "type": "insight",
+    "title": "szemeredi_density_full: Canonical Alias and k-Stratification",
+    "content": "`szemeredi_density_full` is a one-line alias for `szemeredi_vanishing_density`. This canonical naming pattern — a gallery-facing main theorem that is definitionally equal to a supporting lemma — separates the proof logic from the named result. The docstring explicitly stratifies by k: 'k=1,2: trivial; k=3: Roth via Mathlib; k≥4: axiomatized'. This stratification is mathematically accurate and honest about the formalization's state. The single axiom `szemeredi_k_ge_4` (from `SzemerediTheorem.lean`) is inherited by transitivity: `szemeredi_density_full` → `szemeredi_vanishing_density` → `ap_free_density_bound` → `szemeredi_k_ge_4`. Unlike using `sorry`, the axiom declaration makes this dependency auditable via `#print axioms szemeredi_density_full`.",
+    "mathContext": "The theorem covers all $k \\geq 1$ in one statement: $|A_N|/N \\to 0$ for any sequence of $k$-AP-free sets $A_N \\subseteq \\{0,\\ldots,N-1\\}$. The $k$-stratification reflects the actual proof sources: $k=3$ uses the Corners theorem ($r_3(N) = o(N)$, i.e., `rothNumberNat_isLittleO_id`); $k \\geq 4$ uses the axiom `szemeredi_k_ge_4` encoding hypergraph regularity (Gowers 2001, formalized separately). The $k=1,2$ cases are trivial: $k=1$ APs are single elements (any set is 1-AP-free), and $k=2$ APs are pairs with equal spacing (trivially satisfied for sets).",
+    "significance": "key",
+    "relatedConcepts": [
+      "szemeredi_vanishing_density",
+      "szemeredi_k_ge_4 axiom",
+      "canonical naming pattern",
+      "ap_free_density_bound",
+      "#print axioms"
+    ],
+    "prerequisites": [
+      "szemeredi_vanishing_density",
+      "SzemerediTheorem.lean axiom structure",
+      "k-AP-free definition"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "szemeredi-full-oq-02",
+    "range": { "startLine": 88, "endLine": 118 },
+    "type": "insight",
+    "title": "Full Density Theorem and the Gowers U^k Norm Gap",
+    "content": "**`szemeredi_density_full`** (lines 95-103): A clean alias for `szemeredi_vanishing_density` — the assembly point for the full Szemerédi density theorem. The theorem has the same signature but serves as the gallery-facing statement.\n\nThe concluding note (lines 105-116) quantifies the infrastructure gap to the Gowers uniformity formulation. Gowers (2001) proved a strictly stronger result: k-AP-free sets $A \\subseteq \\{0,...,N-1\\}$ satisfy $\\|\\mathbf{1}_A\\|_{U^{k-1}} \\to 0$, where $\\|\\cdot\\|_{U^k}$ is the Gowers uniformity norm. This implies the density-zero statement (since $\\|\\mathbf{1}_A\\|_{U^{k-1}} \\geq (|A|/N)^{2^{k-1}}$), but requires ~1000 lines of Gowers norm infrastructure not in Mathlib 4.26.\n\nThe Gowers $U^k$ norm of a function $f : \\mathbb{Z}/N\\mathbb{Z} \\to \\mathbb{C}$ is defined by:\n$\\|f\\|_{U^k}^{2^k} = \\mathbb{E}_{x,h_1,\\ldots,h_k} \\prod_{\\varepsilon \\in \\{0,1\\}^k} \\mathcal{C}^{|\\varepsilon|} f(x + \\varepsilon_1 h_1 + \\cdots + \\varepsilon_k h_k)$\nwhere $\\mathcal{C}$ is complex conjugation and $\\varepsilon = (\\varepsilon_1,\\ldots,\\varepsilon_k)$. The $U^2$ norm equals the $L^4$ norm of the Fourier transform.",
+    "mathContext": "Gowers (2001): k-AP-free $A \\subseteq [N] \\Rightarrow \\|\\mathbf{1}_A\\|_{U^{k-1}} \\to 0$.\nDensity bound as a consequence: since $\\|\\mathbf{1}_A\\|_{U^{k-1}} \\geq (|A|/N)^{2^{k-2}}$, we get $|A|/N \\to 0$.\nGowers $U^2$ norm: $\\|f\\|_{U^2}^4 = \\sum_{\\xi} |\\hat{f}(\\xi)|^4$ (Fourier characterization for $\\mathbb{Z}/N\\mathbb{Z}$).\nKelley-Meka (2023) k=3 quantitative bound: $|A| \\leq N \\cdot \\exp(-c(\\log N)^{1/12})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gowers uniformity norms",
+      "szemeredi_density_full",
+      "Kelley-Meka bound",
+      "U^k norm infrastructure",
+      "Green-Tao theorem",
+      "Furstenberg correspondence"
+    ],
+    "prerequisites": [
+      "szemeredi_vanishing_density",
+      "Gowers U^k norms (not in Mathlib 4.26)",
+      "AP counting lemma"
+    ]
+  },
+  {
+    "id": "ann-density-full-axiom",
+    "proofId": "szemeredi-full-oq-02",
+    "range": { "startLine": 95, "endLine": 103 },
+    "type": "insight",
+    "title": "szemeredi_density_full: Axiom Transparency at the Assembly Point",
+    "content": "**Theorem** `szemeredi_density_full` is a one-line alias for `szemeredi_vanishing_density` — its body is simply `szemeredi_vanishing_density k hk A hA_sub hA_free`. The theorem exists as a named assembly point for the full Szemerédi density result, collating the three cases (k=1,2 trivial; k=3 Mathlib; k≥4 axiom) under a single clean name.\n\nThis design is pedagogically important: the proof is definitionally transparent about where the axiom enters. Any user who asks `#check @szemeredi_density_full` will see the statement is unconditional (∀ k ≥ 1), but `#print axioms szemeredi_density_full` reveals the dependency tree bottoming out at `szemeredi_k_ge_4` (the hypergraph regularity axiom from SzemerediTheorem.lean). The CLAUDE.md **Axiom Integrity Policy** requires that `axiomCount: 1` accurately reflects this — and it does.\n\nThe choice to route through `szemeredi_vanishing_density` rather than making `szemeredi_density_full` the primary theorem reflects a design principle: the ε-N₀ → Tendsto conversion logic lives in exactly one place, and the 'full' theorem is just its canonical public name. This prevents duplication of the `Metric.tendsto_atTop` unfolding logic.",
+    "mathContext": "The theorem statement: $\\forall k \\geq 1,\\; A : \\mathbb{N} \\to \\text{Finset}\\,\\mathbb{N}$ with $A_N \\subseteq \\{0,\\ldots,N-1\\}$ and each $A_N$ k-AP-free $\\Rightarrow$ `Filter.Tendsto` $(N \\mapsto |A_N|/N)$ `atTop` $(\\text{nhds}\\,0)$.\n\nAxiom footprint (from `#print axioms`):\n- `szemeredi_k_ge_4` — the single axiom, stating that for $k \\geq 4$ and any $\\varepsilon > 0$, k-AP-free sets in $[N]$ have cardinality $< \\varepsilon N$ for large enough $N$.\n- All other dependencies are Mathlib theorems or kernel axioms (propext, funext, choice).",
+    "significance": "key",
+    "relatedConcepts": [
+      "szemeredi_vanishing_density",
+      "szemeredi_k_ge_4 axiom",
+      "hypergraph regularity",
+      "Axiom Integrity Policy",
+      "Filter.Tendsto",
+      "#print axioms transparency"
+    ],
+    "prerequisites": [
+      "szemeredi_vanishing_density",
+      "szemeredi_k_ge_4 from SzemerediTheorem.lean",
+      "Lean 4 axiom footprint (#print axioms)"
+    ]
+  }
+]

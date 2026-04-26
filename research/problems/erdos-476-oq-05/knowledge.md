@@ -165,3 +165,40 @@ Key Mathlib lemma available: `Finset.card_eq_sum_card_fiberwise` (BigOperators/G
 1. Check Aristotle results for project a5594e66
 2. If Aristotle succeeds on case1_exists: integrate, then 0 sorries
 3. If Aristotle fails: attempt double-counting argument (|A|=|B|=3 case is provable)
+
+## Session 2026-04-26 (Session 6) — Analysis of |A|≥4, |B|≥3 Blocker
+
+**Mode**: REVISIT (RICH knowledge, score 31)
+**Outcome**: BLOCKED — deeper analysis of final sorry confirms need for Kneser's theorem
+
+### What I Did
+
+1. Checked Mathlib for Vosper/Kneser: not present
+2. Analyzed the sorry at line 844 in `Erdos476OQ05Problem.lean`:
+   - The "all redundant" assumption gives: ∀ a ∈ A, ∀ b ∈ B, ∃ b' ∈ B\{b}: a+(b-b') ∈ A
+   - The counting argument: |A||B| ≥ 2(|A|+|B|-1)
+   - For |A|=|B|=3: contradiction (proved) ✓
+   - For |A|=4, |B|=3 (or symmetric): equality 12 ≥ 12; every x has r(x)=2 exactly. No contradiction from counting alone.
+   - For |A|≥4, |B|≥4: counting consistent, deeper structure needed
+
+3. Attempted construction of non-redundant a₀ for boundary cases: no elementary path found without Kneser
+
+### Mathematical Blocker
+
+The sorry needs: in Z/pZ with |A|≥4, |B|≥3, if all elements are "redundant" AND |A+B|=|A|+|B|-1 < p, then False.
+
+The counting argument is exhausted at (|A|-2)(|B|-2) ≥ 2. The boundary case (|A|=4,|B|=3) has r(x)=2 exactly for all x ∈ A+B ("perfect 2-cover by translates of B"), which is an extremely special structure but not immediately a contradiction in Z/pZ without Kneser.
+
+**3+ sessions stuck on same sorry → BLOCKED per research policy.**
+
+### Current Status: BLOCKED
+
+- Main file: 1 sorry at line 844 (Case 1 existence for |A|≥4/|B|≥3 case)
+- Aristotle companion: 1 sorry (case1_exists, same math)
+- Aristotle cannot help (OPEN mathematics, not a known-provable formalization gap)
+
+### Next Steps (for future sessions)
+
+1. **Novel argument for (4,3) case** (~50 lines?): r(x)=2 exactly + Z/pZ structure
+2. **Fourier analysis proof of Vosper** (~200 lines): uses characters of Z/pZ, more tractable
+3. **Kneser for Z/pZ** is just Cauchy-Davenport (H={0}), so doesn't directly help

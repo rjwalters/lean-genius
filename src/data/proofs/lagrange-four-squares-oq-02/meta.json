@@ -49,7 +49,9 @@
       "The proof technique for 'general type theorems' is: (1) verify the contribution for a specific canonical instance ($k=1$ or $a=1,b=2$) by `native_decide`; (2) show permutations depend only on the equality-pattern (not the values), so `congr 1; simp [List.dedup, List.count, hne]`; (3) sign factor depends only on nonzero count via `simp [RepType.signFactor, nonzeroCount_lemma]`. This avoids induction on $k$ entirely.",
       "The complete contribution value set is $\\{1, 8, 16, 24, 32, 48, 64, 96, 192, 384\\}$ — all divisors of $384 = 4! \\times 2^4 = |S_4 \\times (\\mathbb{Z}/2\\mathbb{Z})^4|$. Each value arises from a specific (multiplicity pattern, nonzero count) combination. The value 1 arises only from $(0,0,0,0)$ (which represents $n=0$, the unique trivial type with $k=0$).",
       "The decidable enumeration `enumTypes n` uses list comprehension monad: it iterates over all $0 \\leq a_1 \\leq a_2 \\leq a_3 \\leq a_4 \\leq n$ and filters by $a_1^2+a_2^2+a_3^2+a_4^2 = n$. The function `totalFromEnum n = sum of tupleContribution over enumTypes n` is verified by `native_decide` to match known $r_4(n)$ values for $n \\leq 16$.",
-      "The orbit-stabilizer structure: for sorted type $(a_1,a_2,a_3,a_4)$, the stabilizer in $S_4 \\times (\\mathbb{Z}/2)^4$ consists of (permutations fixing the sorted tuple) × (sign flips fixing zero entries). For trivial $(0,0,0,k)$: stabilizer $= S_3 \\times (\\mathbb{Z}/2)^3 = 6 \\times 8 = 48$, giving orbit $384/48 = 8$. For all-equal $(k,k,k,k)$: stabilizer $= S_4 = 24$ (no sign freedom since $k \\neq 0$), giving $384/24 = 16$."
+      "The orbit-stabilizer structure: for sorted type $(a_1,a_2,a_3,a_4)$, the stabilizer in $S_4 \\times (\\mathbb{Z}/2)^4$ consists of (permutations fixing the sorted tuple) × (sign flips fixing zero entries). For trivial $(0,0,0,k)$: stabilizer $= S_3 \\times (\\mathbb{Z}/2)^3 = 6 \\times 8 = 48$, giving orbit $384/48 = 8$. For all-equal $(k,k,k,k)$: stabilizer $= S_4 = 24$ (no sign freedom since $k \\neq 0$), giving $384/24 = 16$.",
+      "The universal general type theorems (trivialType_contribution, allEqualType_contribution, etc.) prove contribution is constant over all valid parameters using the pattern: native_decide for a canonical instance + congr/simp to transfer via List.dedup structure equality",
+      "The sign factor 2^k (k = nonzero count) and permutation count 4!/∏mᵢ! are independently determined — their product gives the contribution, and this factorization enables the parametric proofs"
     ],
     "prerequisites": [
       "Lagrange's Four-Square Theorem: every n is a sum of 4 squares",
@@ -141,6 +143,20 @@
       "startLine": 329,
       "endLine": 340,
       "summary": "For perfect squares n = k², analyzes the nontrivial contribution (total minus the trivial type): for n=4: 24-8=16 (from allEqualType); for n=9: 104-8=96 (nontrivial types); for n=16: 24-8=16 (allEqualType). These numerical checks verify the interplay between trivial and nontrivial type contributions to the known r₄(n) values."
+    },
+    {
+      "id": "sec-nonzero-bounds",
+      "title": "Nonzero Count Lower Bounds for n > 0",
+      "startLine": 523,
+      "endLine": 556,
+      "summary": "a₄_pos_of_n_pos, nonzeroCount_pos_of_n_pos, signFactor_ge_two_of_n_pos. For any n>0, the sorted tuple has at least one nonzero entry (the largest), giving sign factor ≥ 2. Proved by contradiction using the sum constraint sum_eq."
+    },
+    {
+      "id": "sec-summary",
+      "title": "Proof Summary and Mathematical Insights",
+      "startLine": 617,
+      "endLine": 651,
+      "summary": "Summary table of 12 theorem categories (general theorems, multinomial theory, type enumeration, verification, structural bounds, sign factor theory, zero pattern theory, symmetry analysis, perfect squares, contribution table, orbit-stabilizer). 10 key mathematical insights enumerated."
     }
   ],
   "sorries": 0

@@ -137,28 +137,37 @@ cannot be used in `dominant_type_lower_bound` (Section 2). Fix: inline the proof
 
 ---
 
-## Session 2026-04-26 (Session 3) — Aristotle Submission
+## Session 2026-04-26 (Session 3) — Integrated Aristotle Proof of type_class_size_eq_multinomial
 
 **Mode**: REVISIT
-**Outcome**: SUBMITTED — type_class_size_eq_multinomial sent to Aristotle
+**Outcome**: PROGRESS — 2 → 1 sorries
 
 ### What I Did
 
-1. Submitted `ShannonSourceCodingOQ04Aristotle.lean` to Aristotle (project ID: 7303fc7f-3d89-4237-834f-372d9026a17d)
-2. Verified `source_coding_achievability_mot` is OPEN — needs LLN/concentration inequalities
+1. Found that Aristotle had already proved `type_class_size_eq_multinomial` in the companion
+   file (PR #12842, merged to master), but the proof was NOT yet integrated into the main file
+2. Adapted the Aristotle proof (induction on n, Pascal identity) from the companion file
+   (`typeClass'`/`empDist'`) to the main file (`typeClass`/`empDist`)
+3. Changed imports from specific Mathlib modules to `import Mathlib` for full compatibility
+4. Fixed Lean 4 coercion direction: `.symm` removed from `Fin.ext_iff.mp (congr_fun hx₀ i)`
+5. Fixed `h_eq` proof in `dominant_type_lower_bound` using `simp [typeClass, empDist, F, funext_iff, Fin.ext_iff]`
+6. Build confirmed: only `source_coding_achievability_mot` sorry remains (OPEN problem)
 
-### Key Findings
+### Key Insight
 
-- Aristotle is the right tool for `type_class_size_eq_multinomial` (HARD known theorem)
-- `source_coding_achievability_mot` requires LLN to show dominant type's empEntropy → H(p) as n → ∞
-- Mathlib lacks LLN for discrete distributions; this sorry will remain OPEN
-- Both proof strategies (induction on n, permutation quotient) documented in companion file
+The Aristotle proof uses induction on block length n:
+- Partition T_f by last element x(Fin.last n), using `Fin.snoc` as bijection
+- Apply Pascal-like identity: |T_{n+1,f}| = ∑_{v:f(v)>0} |T_{n,f[v↦f(v)-1]}|
+- Induction hypothesis gives each term = multinomial(f[v↦f(v)-1])
+- Sum equals multinomial(f) by factorial algebra
 
 ### Files Modified
 
-- `research/aristotle-jobs.json` (added Aristotle job entry)
+- `proofs/Proofs/ShannonSourceCodingOQ04.lean` (352 → 428 lines, 2 → 1 sorries)
+- `src/data/proofs/shannon-source-coding-oq-04/meta.json` (sorries 2→1, lineCount updated)
+- `src/data/research/problems/shannon-source-coding-oq-04.json` (knowledge updated)
 
-### Next Steps
+### Remaining Work
 
-1. Check Aristotle results for project 7303fc7f-3d89-4237-834f-372d9026a17d
-2. `source_coding_achievability_mot` blocked pending LLN in Mathlib
+- `source_coding_achievability_mot` (OPEN): requires LLN/concentration inequalities.
+  Not tractable without significant infrastructure (>1000 lines). Classify as BLOCKED.

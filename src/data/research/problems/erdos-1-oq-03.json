@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Created Erdos1OQ03.lean (~193 lines, 0A, 1S). Proved DSS for Conway-Guy optimal sets n=2..5 via decidable powerset reformulation. Established upper bounds f(n) ≤ OEIS A005318 values. Proved conjecture for n=1,2. One sorry: binary representation uniqueness.",
+    "progressSummary": "COMPLETED: 0 sorries. pow2_dss (inductive binary representation uniqueness) proved. minDSSBound well-founded using exists_dss_set. All sorry-free.",
     "builtItems": [
       "dss_iff_powerset: decidable reformulation of DSS",
       "dss_12, dss_124, dss_3567, dss_69111213: DSS for Conway-Guy optimal sets",
@@ -51,7 +51,10 @@
       "cgSeq: Conway-Guy sequence definition (OEIS A005318)",
       "conwayGuyConjecture: formal conjecture statement",
       "conway_guy_n1, conway_guy_n2: conjecture for n=1,2",
-      "Gallery data: meta.json, index.ts, annotations.json"
+      "Gallery data: meta.json, index.ts, annotations.json",
+      "pow2_dss: powers of 2 have DSS by induction on n (Erdos1OQ03.lean)",
+      "exists_dss_set: existence of n-element DSS with max ≤ n*2^n (Erdos1OQ03.lean)",
+      "minDSSBound: well-founded, no sorry (uses exists_dss_set)"
     ],
     "insights": [
       "DSS can be made decidable by quantifying over A.powerset instead of all Finset ℕ",
@@ -77,6 +80,7 @@
     "erdos-1",
     "erdos-1-oq-02",
     "erdos-1-oq-03",
+    "erdos-1-wip-01",
     "erdos-10",
     "erdos-10-oq-01",
     "erdos-100",
@@ -756,9 +760,9 @@
     {
       "path": "Proofs/Erdos1008OQ04.lean",
       "filename": "Erdos1008OQ04.lean",
-      "lineCount": 137,
-      "theoremCount": 2,
-      "axiomCount": 1,
+      "lineCount": 146,
+      "theoremCount": 1,
+      "axiomCount": 2,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
@@ -3977,6 +3981,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos118Problem.lean"
     },
     {
+      "path": "Proofs/Erdos1196Aristotle.lean",
+      "filename": "Erdos1196Aristotle.lean",
+      "lineCount": 44,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1196Aristotle.lean"
+    },
+    {
       "path": "Proofs/Erdos1196Problem.lean",
       "filename": "Erdos1196Problem.lean",
       "lineCount": 364,
@@ -5226,7 +5241,7 @@
       "theoremCount": 12,
       "axiomCount": 1,
       "defCount": 3,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1OQ03.lean"
     },
@@ -5262,6 +5277,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1WIP01.lean",
+      "filename": "Erdos1WIP01.lean",
+      "lineCount": 320,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1WIP01.lean"
     }
   ]
 }

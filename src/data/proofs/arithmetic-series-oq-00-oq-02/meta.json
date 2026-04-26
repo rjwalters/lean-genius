@@ -1,0 +1,113 @@
+{
+  "id": "arithmetic-series-oq-00-oq-02",
+  "title": "Weighted Generalization of Nicomachus — Counterexample and Correct Formula",
+  "slug": "arithmetic-series-oq-00-oq-02",
+  "description": "Answers the open question from ArithmeticSeriesOQ00: the conjectured identity ∑(2k-1)k² = (∑k)² is FALSE for n ≥ 2. Proves a counterexample at n=2 (LHS=13, RHS=9) and establishes the correct closed form 6∑(2k-1)k² + n(n+1) = n²(n+1)(3n+1).",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Nicomachus%27s_theorem",
+    "date": "2026-04-26",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "number-theory",
+      "closed-form",
+      "counterexample",
+      "arithmetic-series",
+      "nicomachus"
+    ],
+    "proofRepoPath": "Proofs/ArithmeticSeriesOQ00OQ02.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "lineCount": 120,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "Split last element from range sum for induction",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ]
+  },
+  "parent": "arithmetic-series-oq-00",
+  "openQuestion": "Can we prove the weighted generalization: ∑_{k=1}^n (2k-1)·k² = (∑_{k=1}^n k)²?",
+  "overview": {
+    "historicalContext": "Nicomachus's theorem (c. 100 CE) states that 1³ + 2³ + ⋯ + n³ = (1 + 2 + ⋯ + n)², giving a beautiful identity between sums of cubes and the square of the triangular number. The open question asks whether a weighted version holds: replacing k³ by (2k-1)·k² (the k-th odd number times k²).\n\nThe identity (2k-1)·k² reduces to k³ only when 2k-1 = k, i.e., k = 1. For k ≥ 2, the weight (2k-1)k² > k³, making the weighted sum grow faster. Thus the conjectured equality must fail eventually — and it already fails at n=2.",
+    "problemStatement": "Is ∑_{k=1}^n (2k-1)·k² = (∑_{k=1}^n k)² for all natural numbers n?",
+    "proofStrategy": "Counterexample at n=2: compute LHS = 1·1² + 3·2² = 1 + 12 = 13 and RHS = (1+2)² = 9. Both are natural number computations, closed by `decide`. For the correct formula, induction on n using `sum_range_succ` with the inductive step closed by `nlinarith` and a ring-proved polynomial identity.",
+    "keyInsights": [
+      "The identity holds at n=1 (both sides = 1), suggesting plausibility; n=2 is the minimal counterexample",
+      "The correct formula: 6·∑(2k-1)k² + n(n+1) = n²(n+1)(3n+1), equivalently ∑(2k-1)k² = n(n+1)(3n²+n-1)/6",
+      "Derived from: ∑(2k-1)k² = 2∑k³ - ∑k² = 2(n(n+1)/2)² - n(n+1)(2n+1)/6 = n(n+1)(3n²+n-1)/6",
+      "Nicomachus's theorem ∑k³ = (∑k)² remains true; the weighted version with (2k-1)k² instead of k³ is strictly larger for n≥2",
+      "The inductive step identity: n²(n+1)(3n+1) + 6(2n+1)(n+1)² + (n+1)(n+2) - n(n+1) = (n+1)²(n+2)(3n+4), proved by ring"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header: Mathematical Derivation",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "File header with full algebraic derivation of the correct closed form: ∑(2k-1)k² = 2∑k³ - ∑k² = n(n+1)(3n²+n-1)/6. Motivates the subtraction-free ℤ formulation for the Lean proof.",
+      "mathContext": "The derivation uses $\\sum(2k-1)k^2 = 2\\sum k^3 - \\sum k^2$ and the known closed forms for both sums. The ℤ formulation avoids ℕ subtraction issues."
+    },
+    {
+      "id": "counterexample",
+      "title": "I. Counterexample at n=2",
+      "startLine": 33,
+      "endLine": 50,
+      "summary": "Proves LHS=13 ≠ RHS=9 at n=2 using `decide`. Also shows the identity holds at n=1 and fails again at n=3 (58 ≠ 36).",
+      "mathContext": "$n=2$: LHS $= 1 + 12 = 13 \\neq (1+2)^2 = 9$. The n=1 case holds (both sides = 1), explaining initial plausibility."
+    },
+    {
+      "id": "closed-form-induction",
+      "title": "II. Correct Closed Form (Inductive Proof)",
+      "startLine": 53,
+      "endLine": 71,
+      "summary": "Proves 6∑(2k-1)k² + n(n+1) = n²(n+1)(3n+1) by induction via sum_range_succ + nlinarith with ring-proved witness.",
+      "mathContext": "Inductive step: $n^2(n+1)(3n+1) + 6(2n+1)(n+1)^2 + (n+1)(n+2) - n(n+1) = (n+1)^2(n+2)(3n+4)$, proved by ring."
+    },
+    {
+      "id": "spot-checks",
+      "title": "III. Spot Checks n=1,2,3,4",
+      "startLine": 72,
+      "endLine": 93,
+      "summary": "Verifies closed form at n=1,2,3,4 by decide. Independent sanity check of the inductive proof using Ico 1 (n+1) formulation."
+    },
+    {
+      "id": "nicomachus-contrast",
+      "title": "IV. Contrast with Nicomachus",
+      "startLine": 96,
+      "endLine": 116,
+      "summary": "Proves Nicomachus 4∑k³ = (n(n+1))² and gap formula ∑k³ - ∑(2k-1)k² = ∑k²(1-k) < 0 for n≥2.",
+      "mathContext": "Gap: $\\sum k^3 - \\sum(2k-1)k^2 = \\sum k^2(1-k) \\leq 0$. The conjectured sum strictly exceeds $(\\sum k)^2$ for $n \\geq 2$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The conjectured identity is false for all n ≥ 2. The correct formula 6∑(2k-1)k² + n(n+1) = n²(n+1)(3n+1) is proved by induction with 0 sorries.",
+    "implications": "The open question is definitively answered: the weighted generalization with weight (2k-1) does not produce the triangular square. The correct Nicomachus identity uses k³ (not (2k-1)k²) as summands. The difference ∑k³ - ∑(2k-1)k² = ∑k²(1-k) is negative for n≥2.",
+    "openQuestions": [
+      "Is there a weight w(k) other than k² such that ∑w(k)·(2k-1) = (∑k)²? (This would require w(k) = k, giving the trivially true 2∑k² - ∑(2k-1) = ∑(1) = n, not (∑k)².)",
+      "Can the Nicomachus identity be generalized to power sums: ∑_{k=1}^n k^r = f(n,r) for some pattern?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "arithmetic-series-oq-00",
+      "relationship": "answers-open-question",
+      "description": "Directly answers the second open question of ArithmeticSeriesOQ00: the weighted generalization ∑(2k-1)k² = (∑k)² is FALSE."
+    }
+  ],
+  "leanFile": {
+    "namespace": "ArithmeticSeriesOQ00OQ02",
+    "lineCount": 120,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "path": "Proofs/ArithmeticSeriesOQ00OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

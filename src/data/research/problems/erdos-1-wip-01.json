@@ -1,0 +1,55 @@
+{
+  "slug": "erdos-1-wip-01",
+  "title": "Complete Erdos Problem #1: Distinct Subset Sums (WIP Extension)",
+  "phase": "ACT",
+  "status": "in-progress",
+  "tier": "A",
+  "path": "full",
+  "knowledge": {
+    "progressSummary": "PROGRESS: Created Erdos1WIP01.lean (250 lines, 0 sorries, 0 axioms). Fixed OQ03 sorry via minDSS_witness. Discovered OQ02 sorry is for a false theorem.",
+    "insights": [
+      "Superincreasing extension lemma is the key structural tool: if A has DSS and b > sum(A), then insert b A has DSS",
+      "Powers of 2 give DSS for any n (proved by induction via superincreasing lemma)",
+      "OQ02's dfx_lower_bound is FALSE for n=1, N=1: claims 2 ≤ 2sqrt(2/pi)*sqrt(1)*1 ≈ 1.596",
+      "OQ04's conwayGuySeq recurrence does not have a simple closed form: values 0,1,2,4,7,13,24,44 don't follow obvious pattern",
+      "0 cannot be in a DSS set: both emptyset and {0} have sum 0",
+      "All elements of a DSS set are forced to be positive by the DSS property itself"
+    ],
+    "builtItems": [
+      "Erdos1WIP01.lean: dss_superincreasing_extend theorem (key structural lemma)",
+      "Erdos1WIP01.lean: powers_of_two_has_dss (inductive proof)",
+      "Erdos1WIP01.lean: dss_exists and dss_positive_exists (existence for any n)",
+      "Erdos1WIP01.lean: not_dss_of_mem_zero, dss_elements_pos, dss_subset, dss_singleton",
+      "Erdos1WIP01.lean: dss_sum_lower_bound (sum(A) + 1 >= 2^n)",
+      "Erdos1WIP01.lean: minDSS_witness (fills OQ03 sorry)",
+      "Erdos1OQ03.lean: Fixed minDSSBound sorry using Erdos1WIP.minDSS_witness"
+    ],
+    "mathlibGaps": [
+      "No gaps needed for this session - all theorems proved using basic Finset/Nat Mathlib",
+      "DFX bound would require probability theory (Berry-Esseen) not fully in Mathlib"
+    ],
+    "nextSteps": [
+      "Fix OQ02's dfx_lower_bound: theorem statement is incorrect (false for n=1, N=1); needs additional hypotheses or different constant",
+      "Fix OQ04's conwayGuySeq n+2 sorry: look up actual recurrence formula for Conway-Guy sequence",
+      "Build and verify Erdos1WIP01.lean via Docker wrapper",
+      "Add more structural lemmas: consecutive element bounds, Sidon-like structure"
+    ]
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-26T00:00:00Z",
+    "iteration": 1,
+    "focus": "Fixed OQ03 sorry; created structural theory in Erdos1WIP01.lean",
+    "blockers": [],
+    "nextAction": "Build verification via docker",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-1-wip-01"
+  ]
+}

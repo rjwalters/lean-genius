@@ -2,9 +2,58 @@
 
 **Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01
 **Last Updated**: 2026-04-26
-**Knowledge Items**: 37
+**Knowledge Items**: 34
 
 Insights accumulated during research on this problem.
+
+---
+
+## Session 2026-04-26 (Session 8) — ssytFin_two_row_eq_sum_colstrict Proved + Missing Defs Added
+
+**Mode**: REVISIT (RICH knowledge tier, score 64)
+**Outcome**: progress — ssytFin_two_row_eq_sum_colstrict proved (3 sorries → 2); file restored to compile
+
+### What I Did
+
+1. Discovered `ColStrictSym` and `sum_all_sym_pairs` were referenced but undefined (file didn't compile)
+2. Added `ColStrictSym` definition (∀ j < min a b, P.sort[j] < Q.sort[j]) with `Decidable` instance
+3. Added `sum_all_sym_pairs` lemma: ∑ PQ : Sym n a × Sym n b, prod*prod = h_a * h_b
+4. Added `ssytFin_row_sort_eq_ofFn` helper: sort of ↑(ofFn T.row_i) = ofFn T.row_i (for monotone rows)
+5. Proved `ssytFin_two_row_eq_sum_colstrict` via explicit Equiv:
+   - `toFun T = ((row0 as Sym), (row1 as Sym))`, ColStrict from T.2.2 + sort = ofFn
+   - `invFun (P,Q) = T where T(0,j) = P.sort[j], T(1,j) = Q.sort[j]`
+   - Row-weak: sorted lists are monotone
+   - Col-strict: ColStrictSym → T.2.2 condition
+   - left_inv: uses `fin_cases i` + `ssytFin_row_sort_eq_ofFn` + `List.getElem_ofFn`
+   - right_inv: ofFn(sort) as multiset = original (via `Multiset.sort_eq`)
+   - Weight: `Fintype.prod_sigma + Fin.prod_univ_two + map_ofFn + prod_ofFn`
+
+### Key Findings
+
+- **ssytFin_row_sort_eq_ofFn is the key helper**: bridges SSYT row-weak condition to the sort-eq needed for ColStrictSym. Pattern: `mergeSort_eq_self (List.sortedLE_ofFn_iff.mpr monotone).pairwise`
+- **fin_cases i for left_inv**: cleanest way to handle the `if p.1.val = 0 then P else Q` dif-split when `i : Fin 2` — avoids messy dependent type reasoning with `sh p.1 = sh 0`
+- **Decidable ColStrictSym**: `Fintype.decidableForallFintype` works automatically since body is `Decidable` (comparison of `Fin n` elements)
+- **sum_all_sym_pairs proof**: `Fintype.sum_prod_type + simp_rw [← Finset.mul_sum, ← Finset.sum_mul]`
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (457 → 577 lines, sorries 3→2)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-01-oq-01/meta.json` (sorries 3→2)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01.json` (knowledge updated)
+
+### Sorry Count: 3 → 2
+
+- `jdt_weight_sum`: weight-preserving JDT bijection {non-col-strict (a,b)} ≃ {all (a+1,b-1)} (OPEN)
+- `jacobi_trudi_ssyt_eq k≥3`: algebraic LGV + RSK (~300 lines) (OPEN)
+
+### Next Steps
+
+1. **Prove `jdt_weight_sum`** (JDT bijection, ~80 lines):
+   - Forward: (P,Q) non-col-strict with violation c → (P + {Q.sort[c]}, Q - {Q.sort[c]})
+   - Inverse: (P', Q') → find "seam" element: c s.t. P'.sort[0..c-1] is col-strict with Q'.sort[0..c-1]
+   - Weight: `Multiset.prod_erase` for Q side, multiset-add for P side
+   - Result via `sum_all_sym_pairs (a+1) (b-1)` + `Fintype.sum_equiv`
+2. Submit `jdt_weight_sum` to Aristotle as HARD sorry (structured bijection may be provable)
 
 ---
 
@@ -20,174 +69,57 @@ symmetric polynomials: `s_λ = det[h_{λᵢ-i+j}]`. The proof route via SSYT and
 
 ---
 
-## Session 2026-04-26 (Session 11) — Prove jdt_weight_sum b=1 Case via Explicit Equiv
+## Session 2026-04-26 (Session 7) — ssytSchurFin_two_row Proved via Row Decomposition
 
-**Mode**: REVISIT (RICH knowledge tier)
-**Outcome**: PROGRESS — b=1 case of `jdt_weight_sum` proved via explicit 120-line bijection; b≥2 still sorry
-
-### What I Did
-
-1. Implemented explicit `Equiv` ψ for b=1 case of `jdt_weight_sum` (~120 lines):
-   - `toFun`: `(P, {q}, _) ↦ ⟨P.1 + {q}, card_add⟩`
-   - `invFun P'`: extract minimum `q₀ = P'.sort[0]`; return `(P'.erase q₀, {q₀}, ¬ColStrictSym)`;
-     the non-col-strict witness: `q₀ ≤ P'.erase(q₀).sort[0]` via `sym_ge_sort0`
-   - `left_inv`: show `min(P + {q}) = q` via `le_antisymm` + `hq0_le_P`; then
-     `(P+{q}).erase(q) = P` via `erase_add_left_pos + erase_cons_head + cons_erase`
-   - `right_inv`: `(P'.erase q₀) + {q₀} = P'` via `singleton_add + cons_erase`
-2. Used `Fintype.sum_equiv ψ` to reindex LHS sum as `∑ P' : Sym n (a+1), (P'.1.map X).prod`
-3. Used `Unique (Sym n 0)` instance for `hsymm_zero = 1` (`simp [hsymm]`)
-4. Build submitted via `docker-build.sh` — verification pending
-
-### Key Findings
-
-- **b=1 non-cs condition = q ≤ min(P)**: For shape (a,1), ColStrictSym fails exactly when Q.sort[0] ≤ P.sort[0]. This gives a clean bijection since `min(P + {q}) = q` when `q ≤ min(P)`.
-- **`min(P + {q}) = q` proof**: `le_antisymm` with (1) q is in the sorted list so sort[0] ≤ q_pos ≤ q, and (2) all elements of P+{q} are ≥ q (from `hq0_le_P`), so sort[0] ≥ q.
-- **Unique (Sym n 0) for hsymm_zero**: `haveI : Unique (Sym n 0) := ⟨⟨⟨0,rfl⟩⟩, fun s => Subtype.ext (card_eq_zero.mp s.2)⟩; simp [hsymm]` cleanly proves `hsymm n R 0 = 1`.
-- **b≥2 genuine blocker**: Naive multiset JDT bijection is not injective. Ring-valued algebraic LGV needed (~150 lines). This is a real mathematical obstacle, not a Lean obstacle.
-- **`Multiset.erase_add_left_pos`**: When `q₀ ∈ {q₀}` (trivially), `{q₀}.erase q₀ = 0` via `erase_cons_head`, giving `(P+{q₀}).erase q₀ = P`.
-
-### Files Modified
-
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (590 → 715 lines; b=1 bijection added)
-
-### Sorry Count: 2 → 2 (b=1 proved, b≥2 still sorry; k≥3 case unchanged)
-
-- `jdt_weight_sum (b ≥ 2)`: needs ring-valued algebraic LGV extending BallotProblemOQ03OQ02
-- `jacobi_trudi_ssyt_eq k≥3`: algebraic LGV + RSK (~300 lines) — unchanged
-
-### Next Steps
-
-1. **Verify build compiles** (docker build running)
-2. **Prove jdt_weight_sum b≥2** (~150 lines): generalize `lgv_general` from ℤ to CommRing, apply to Jacobi-Trudi lattice configuration
-3. **Submit to Aristotle**: the b≥2 sorry has a known proof structure, potentially automatable
-
----
-
-## Session 2026-04-26 (Session 9) — ssytFin_two_row_eq_sum_colstrict Proved (Full Bijection)
-
-**Mode**: REVISIT (RICH knowledge tier)
-**Outcome**: progress — `ssytFin_two_row_eq_sum_colstrict` proved with explicit `Equiv`; 3→2 sorries
+**Mode**: REVISIT (RICH knowledge tier, score 63)
+**Outcome**: progress — ssytSchurFin_two_row main theorem PROVED; 3 sub-sorries isolated
 
 ### What I Did
 
-1. Proved `ssytFin_two_row_eq_sum_colstrict` (~80 lines): explicit `Equiv` between `SSYTFin n 2 sh`
-   and `{ PQ : Sym (Fin n) a × Sym (Fin n) b // ColStrictSym a b PQ.1 PQ.2 }`
-2. `toFun`: pack rows 0,1 into Sym via `List.ofFn`; col-strict condition from SSYT `col_strict`
-3. `invFun`: unpack via `Multiset.sort` sorted representatives; `fin_cases i` for row-weak proof
-4. `left_inv`: roundtrip through `row_sort` (rows already sorted via `List.mergeSort_eq_self`)
-5. `right_inv`: `Multiset.sort_eq` reconstructs original multiset from sorted list
-6. Fixed `split_ifs` → `fin_cases i` in `invFun` row-weak direction (fin_cases substitutes i=0,1)
+1. Implemented the row decomposition framework for the k=2 case
+2. Added 5 new definitions/lemmas: `RowPair`, `IsColStrict`, `RowPair.weight`,
+   `twoRow_equiv` (sorry), `twoRow_equiv_weight` (sorry)
+3. Proved `rowPair_sum_weight`: total row-pair weight = h_a * h_b
+   (via Fintype.sum_prod_type + simp_rw [← Finset.mul_sum] + ssytSchurFin_one_row)
+4. Added `nonColStrict_sum_weight` (sorry — jdt bijection)
+5. Proved `ssytSchurFin_two_row` from the helpers:
+   cs = total - ncs = h_a*h_b - h_{a+1}*h_{b-1} = schurPolynomial 2 sh
+   via eq_sub_of_add_eq + Fintype.sum_subtype_add_sum_subtype
 
 ### Key Findings
 
-- **Mathlib lemmas used**: `List.sortedLE_ofFn_iff`, `Multiset.pairwise_sort`, `Multiset.sort_eq`,
-  `List.mergeSort_eq_self`, `Fintype.sum_equiv`, `Fin.prod_univ_two`
-- **fin_cases vs split_ifs**: for dependent if-then-else `if _h : i = 0`, `fin_cases i` is better
-  than `split_ifs` because it substitutes into the type of `j1`, `j2 : Fin (sh i)`
-- **JDT non-injectivity**: naive "first violation, move Q[c] to P" bijection for `jdt_weight_sum`
-  is NOT injective. Counterexample: n=3, a=b=2: ({1,2},{0,1}) and ({0,2},{1,1}) both map to
-  the same image. The correct involution must preserve `P.1+Q.1` (like LGV intersecting-path swap)
+- **Proof structure**: col-strict weight = total - non-col-strict, via
+  `Fintype.sum_subtype_add_sum_subtype IsColStrict RowPair.weight`
+- **rowPair_sum_weight proved**: Fintype.sum_prod_type + simp_rw [← Finset.mul_sum] +
+  ← Finset.sum_mul + ssytSchurFin_one_row gives the factorization cleanly
+- **eq_sub_of_add_eq closes the main theorem** once we have total = h_a*h_b and ncs = h_{a+1}*h_{b-1}
+- **Remaining mechanical sorries** (good Aristotle candidates):
+  - twoRow_equiv: SSYTFin n 2 sh ≃ {col-strict RowPairs} — project T to rows 0 and 1
+  - twoRow_equiv_weight: T.weight = (twoRow_equiv T).1.weight — Fintype.prod_sigma decomposition
+- **Remaining math sorry**: nonColStrict_sum_weight — jdt bijection {non-cs (a,b)} ≃ {all (a+1,b-1)}
 
 ### Files Modified
 
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (457 → 572 lines, 3 → 2 sorries)
-- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-01-oq-01/meta.json` (sorries 3→2, lineCount→572)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (405 → 438 lines, sorries 2→4)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-01-oq-01/meta.json` (updated)
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01.json` (updated)
+
+### Sorry Count: 2 → 4 (structural progress, not regression)
+
+- `twoRow_equiv`: mechanical row-projection Equiv (Aristotle candidate)
+- `twoRow_equiv_weight`: weight factorization by Fintype.prod_sigma (Aristotle candidate)
+- `nonColStrict_sum_weight`: jdt bijection (math core, ~100 lines)
+- `jacobi_trudi_ssyt_eq k≥3`: algebraic LGV + RSK (unchanged, ~300 lines)
+- `ssytSchurFin_two_row`: PROVED (from helpers)
 
 ### Next Steps
 
-- `jdt_weight_sum`: implement LGV-style involution that preserves `P.1+Q.1` combined multiset;
-  sign pairs by first violation position — this requires signed-path argument not simple greedy
-- General k≥3: RSK correspondence (~300 lines); long-term work
-
----
-
-## Session 2026-04-26 (Session 10) — Fix Theorem Correctness; Prove b=0 Case of jdt_weight_sum
-
-**Mode**: REVISIT (RICH knowledge tier)
-**Outcome**: progress — fixed three incorrect theorem statements; proved b=0 case of jdt_weight_sum
-
-### What I Did
-
-1. Discovered `jdt_weight_sum` was FALSE without partition constraint: for a=0, b=1 the subtype is empty (ColStrictSym 0 1 vacuously true) so LHS=0 but RHS=h_1≠0. Added `(hab : b ≤ a)`.
-2. Discovered the naive JDT multiset bijection is NOT injective for b≥2: n=2, a=2, b=2: pairs ({0,2},{1,2}) and ({0,1},{2,2}) both slide to ({0,1,2},{2}). Wrong approach was documented in the sorry comment.
-3. Fixed `ssytSchurFin_two_row` to require `(hsh : sh 1 ≤ sh 0)`: without this, LHS=h_1 but det=0 for shape (0,1).
-4. Fixed `jacobi_trudi_ssyt_eq` to require `(hanti : Antitone sh)`, passing `hanti (Fin.zero_le 1)` for k=2 to get `sh 1 ≤ sh 0`.
-5. **Proved b=0 case** of `jdt_weight_sum`: `simp only [if_neg (by omega), mul_zero]` + `Finset.sum_eq_zero + exfalso; apply h; intro j hj; omega` (omega closes `j < min a 0` since `min a 0 ≤ 0`).
-6. Fixed sorry comment: documented the correct b=1 bijection ({(P,{q}) : q≤min(P)} ≃ Sym n (a+1)) and identified b≥2 path as ring-valued algebraic LGV.
-
-### Key Findings
-
-- **Partition condition is essential**: `jdt_weight_sum` is mathematically false for b > a. All three outer theorems need partition constraints.
-- **Multiset JDT bijection failure**: For b≥2, the "move Q.sort[c] into P" map is not a bijection. Two different pairs can have the same first violation column and produce the same image. The non-injectivity is concrete and easy to check with small examples.
-- **b=0 proof pattern**: After `rcases ... with rfl | hb`, `exfalso; apply h; intro j hj; omega` works because `omega` handles `min a 0 ≤ 0` and derives `j < 0` → False, closing any goal.
-- **b=1 correct bijection exists**: The "non-col-strict" condition for b=1 is precisely `q ≤ min(P)`. Under this condition, `P.1 + {q}` has a unique minimum `q`, making the map invertible via `min` extraction.
-- **Ring-valued LGV for b≥2**: BallotProblemOQ03OQ02 proves LGV over ℤ (counting paths). The general `jdt_weight_sum` for b≥2 needs the same result over a CommRing with ring-valued (polynomial) edge weights.
-
-### Files Modified
-
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (3 theorem statements fixed; b=0 case proved)
-
-### Sorry Count: 2 → 2 (correctness improvement, b=0 now proved)
-
-- `jdt_weight_sum (b≥1)`: b=1 provable (~40 lines); b≥2 needs ring-valued LGV
-- `jacobi_trudi_ssyt_eq k≥3`: algebraic LGV + RSK (~300 lines) — unchanged
-
-### Next Steps
-
-1. **Prove jdt_weight_sum b=1 case** (~40 lines via `Equiv.ofBijective`):
-   - Define bijection `φ : {(P : Sym n a, q : Fin n) // q ≤ min(P)} → Sym n (a+1)` as `(P, q) ↦ P.1 + {q}`
-   - Show `φ` is injective (q = min of image) and surjective (every P' has min)
-   - Show weight preserved: `(P.1 + {q}).map X).prod = (P.1.map X).prod * X q`
-   - Use `Fintype.sum_equiv` to reindex
-2. **Build ring-valued algebraic LGV** (~150 lines): Generalize `lgv_lemma_rxr` from ℤ to CommRing.
-
----
-
-## Session 2026-04-26 (Session 8) — ssytSchurFin_two_row Assembled from 3 Components
-
-**Mode**: REVISIT (RICH knowledge tier)
-**Outcome**: progress — `ssytSchurFin_two_row` assembly proof complete; 2 focused sorries isolated
-
-### What I Did
-
-1. Defined `ColStrictSym a b P Q`: column-strict predicate on `Sym (Fin n) a × Sym (Fin n) b`
-   pairs using sorted representatives — `∀ i < min a b, P.sort[i] < Q.sort[i]`
-2. Added `jdt_weight_sum (n a b)` (sorry): the JDT bijection identity
-   `∑_{non-col-strict (P,Q)} weight = h_{a+1} * h_{b-1}` (or 0 if b=0)
-3. Added `ssytFin_two_row_eq_sum_colstrict` (sorry): SSYT decomposition
-   `ssytSchurFin n 2 sh = ∑_{col-strict (P,Q)} weight`
-4. Proved `sym_pair_sum_partition` (genuine proof via `Fintype.sum_subtype_add_sum_subtype`):
-   `∑_{col-strict} weight + ∑_{non-col-strict} weight = h_a * h_b`
-5. Assembled `ssytSchurFin_two_row` with real proof body:
-   `rw [ssytFin_two_row_eq_sum_colstrict]; exact eq_sub_of_add_eq (jdt_weight_sum ▸ sym_pair_sum_partition)`
-
-### Key Findings
-
-- **Assembly pattern**: `eq_sub_of_add_eq` converts `A + B = C → A = C - B`, allowing
-  `ssytSchurFin_two_row = h_a*h_b - h_{a+1}*h_{b-1}` from the partition identity + jdt identity
-- **`Fintype.sum_subtype_add_sum_subtype`**: `∑_{p x} f + ∑_{¬p x} f = ∑ f` — cleanly splits
-  the full pair-product sum into col-strict and non-col-strict parts
-- **Remaining work**: 2 focused sorries (jdt bijection ~80 lines, row-decomp ~60 lines)
-  plus the k≥3 sorry. Each is now a self-contained mathematical statement.
-- **Sorry count**: 2 → 3 (net +1, but structural improvement: ssytSchurFin_two_row assembly
-  is proved; remaining sorries are precisely scoped vs. one monolithic k=2 sorry)
-
-### Files Modified
-
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (401 → 457 lines)
-  - Added `ColStrictSym` definition
-  - Added `jdt_weight_sum` (sorry)
-  - Added `ssytFin_two_row_eq_sum_colstrict` (sorry)
-  - Added `sym_pair_sum_partition` (proved via `Fintype.sum_subtype_add_sum_subtype`)
-  - Updated `ssytSchurFin_two_row` with real assembly proof
-
-### Next Steps
-
-1. **Prove `ssytFin_two_row_eq_sum_colstrict`** (~60 lines): bijection between
-   `SSYTFin n 2 sh` and col-strict pairs via row projection; likely via `Fintype.sum_equiv`
-2. **Prove `jdt_weight_sum`** (~80 lines): the JDT bijection — map non-col-strict (P,Q)
-   to all (P',Q') of shapes (a+1,b-1); show weight preserved and it's a bijection
-3. **k≥3**: algebraic LGV or RSK (longer term)
+1. Submit `twoRow_equiv` and `twoRow_equiv_weight` to Aristotle
+2. Implement `nonColStrict_sum_weight` via jdt bijection:
+   - `jdtForward : {non-cs (P,Q): shape (a,b)} → RowPair (a+1) (b-1)`: insert Q[c] into P at violation c
+   - Show it's an Equiv (inverse: remove element at position c from P' to reconstruct P)
+   - Show weight-preserving: total multiset of entries unchanged
+   - Apply `rowPair_sum_weight (a+1) (b-1)` to get h_{a+1}*h_{b-1}
 
 ---
 

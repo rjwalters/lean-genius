@@ -2,7 +2,7 @@
   "id": "abel-ruffini-galois-extensions",
   "title": "Abel-Ruffini Galois Theory Extensions",
   "slug": "abel-ruffini-galois-extensions",
-  "description": "Extends the Abel-Ruffini formalization with the complete solvability classification of symmetric groups. Proves S₀–S₄ are solvable, S_n is solvable if and only if n ≤ 4, A₅ is simple (the key obstruction), and non-commutativity witnesses for S₃, S₄, S₅, A₄, A₅. Verifies group orders |S₇|=5040, |A₈|=20160. 59 theorems, 0 definitions, 0 axioms.",
+  "description": "Extends the Abel-Ruffini formalization with the complete solvability classification of symmetric groups. Proves S₀–S₄ are solvable, S_n is solvable if and only if n ≤ 4, A₅ is simple (the key obstruction), and non-commutativity witnesses for S₃, S₄, S₅, A₄, A₅. Verifies group orders |S₇|=5040, |A₈|=20160. 59 theorems, 1 definition, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -22,7 +22,7 @@
     "assumptions": "None. Fully machine-verified using Mathlib's solvability infrastructure.",
     "lineCount": 534,
     "theoremCount": 59,
-    "definitionCount": 0,
+    "definitionCount": 1,
     "mathlibDependencies": [
       {
         "theorem": "Equiv.Perm.not_solvable",
@@ -67,20 +67,24 @@
       "**Derived length and radical depth**: The derived (commutator) series of $S_4$ is $S_4 \\supset A_4 = [S_4,S_4] \\supset V_4 = [A_4,A_4] \\supset \\{e\\} = [V_4,V_4]$, giving $S_4$ a derived length of 3 — it takes exactly 3 commutator steps to reach the trivial group. Among all solvable symmetric groups, $S_4$ has the **maximum derived length**: $S_2$ has derived length 1, $S_3$ has derived length 2 (since $[S_3,S_3] = A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ and $[A_3,A_3] = \\{e\\}$). This derived length directly encodes the **nesting depth of Cardano-Ferrari formulas**: each level of the derived series corresponds to one tower of root extractions. The quartic formula requires 3 nested radical layers (cube root inside a square root inside another square root), matching the derived length of $S_4$. $S_5$, being non-solvable, would require infinitely many such layers — an impossibility that is exactly Abel-Ruffini."
     ],
     "prerequisites": [
-      "Group theory: solvable groups, normal subgroups, composition series",
-      "Symmetric groups: permutations, alternating groups, sign homomorphism",
-      "Galois theory: Galois group, radical extensions"
+      "Group theory: solvable groups, normal subgroups, composition series, and the solvability extension theorem (kernel solvable + quotient solvable $\\Rightarrow$ domain solvable)",
+      "Symmetric groups $S_n = \\text{Equiv.Perm}(\\text{Fin } n)$: permutations, alternating groups $A_n = \\ker(\\text{sgn})$, and the sign homomorphism $\\text{sgn}: S_n \\to \\{\\pm 1\\}$",
+      "Galois theory: Galois group, radical extensions, Kummer theory; specifically that $\\alpha$ is solvable by radicals iff $\\text{Gal}(f_\\alpha/F)$ is solvable",
+      "Lean 4 / Mathlib typeclasses: `IsSolvable`, `IsSimpleGroup`, `IsGalois` — solvability and simplicity are typeclass predicates whose instances Lean derives automatically via `inferInstance`",
+      "Decision procedures in Lean 4: `decide` (kernel evaluator, suitable for groups with $\\leq 720$ elements) vs `native_decide` (compiles to OCaml, required for $|S_7| = 5040$ and $|S_8| = 40320$)",
+      "Klein four-group $V_4 \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$: the unique normal subgroup of $A_4$ giving the composition series $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$ with abelian factors"
     ]
   },
   "conclusion": {
-    "summary": "Complete solvability classification: S_n solvable ↔ n ≤ 4. A_n solvable ↔ n ≤ 4. Non-commutativity witnesses. Group order verifications up to S₈. 59 theorems, 534 lines, 0 axioms.",
+    "summary": "Proves the complete group-theoretic backbone of Abel-Ruffini: $S_n$ is solvable $\\iff n \\leq 4$ and $A_n$ is solvable $\\iff n \\leq 4$ — the precise reason why polynomial equations of degree $\\leq 4$ are solvable by radicals but degree 5 is not. The key obstruction is $A_5$: the smallest non-abelian simple group ($|A_5| = 60$), whose simplicity forces any composition series of $S_5$ to include $A_5$ as an insoluble factor, blocking the abelian-factor chain that solvability requires. The 59 theorems across 15 sections — including non-commutativity witnesses, group order computations, sign-kernel identity, and Galois connection formalization — form a self-contained, axiom-free ($0$ axioms, $0$ sorries) reference implementation of the complete solvability classification in Lean 4 using Mathlib.",
     "implications": "1. **Closure of a 300-year quest**: The biconditional $S_n$ solvable $\\iff n \\leq 4$ definitively explains why Cardano's cubic and Ferrari's quartic formulas exist but no analogous quintic formula can exist — the Galois groups $S_3, S_4$ have composition series with abelian factors, while $S_5$ does not because $A_5$ is simple and non-abelian.\n\n2. **Entry point to the classification of finite simple groups**: $A_5$ (order 60) is the smallest non-abelian simple group and the first entry in the monumental Classification of Finite Simple Groups (CFSG, completed 2004, ~10,000 pages). The solvability boundary at $n = 4$ is precisely where the first non-abelian simple composition factor appears: the composition series $\\{e\\} \\trianglelefteq A_5 \\trianglelefteq S_5$ has the non-abelian simple factor $A_5/\\{e\\} \\cong A_5$, while $S_5/A_5 \\cong \\mathbb{Z}/2\\mathbb{Z}$ is abelian — the obstruction is $A_5$ itself as a composition factor, not the top quotient.\n\n3. **Differential Galois theory (Picard-Vessiot)**: The identical solvability obstruction governs linear ODEs with rational coefficients. A homogeneous linear ODE $L(y) = 0$ is solvable by quadrature (iterated integration, exponential, algebraic operations) if and only if its differential Galois group — a linear algebraic group — is solvable. This Picard-Vessiot theory is the ODE analogue of classical Galois theory.\n\n4. **Feit-Thompson theorem connection**: Every finite group of odd order is solvable (Feit-Thompson 1963, 255 pages — the largest single theorem in group theory at the time). This is consistent with $A_5$ being non-solvable only when $|A_5| = 60$ is even; all odd-order symmetric groups ($n \\leq 2$, orders 1 and 2) are trivially solvable. Feit-Thompson thus implies no odd-order group can contain $A_5$ as a composition factor.\n\n5. **Algorithmic Galois theory**: Given $f \\in \\mathbb{Q}[x]$, computing $\\text{Gal}(f/\\mathbb{Q})$ as a permutation group is now algorithmic — implemented in GAP, Magma, and PARI/GP. This transforms Abel-Ruffini from a theoretical impossibility to a decidable criterion: a polynomial is solvable by radicals iff its computed Galois group is solvable (verifiable by computing the derived series).\n\n6. **Shafarevich's theorem on solvable Galois groups**: Every finite solvable group occurs as $\\text{Gal}(K/\\mathbb{Q})$ for some number field $K$ (Shafarevich 1954). This perfectly complements the Abel-Ruffini classification: for the solvable side ($n \\leq 4$), every $S_n$ and $A_n$ is realizable over $\\mathbb{Q}$ by the Hilbert irreducibility theorem; for the non-solvable side, $S_n$ ($n \\geq 5$) still occurs over $\\mathbb{Q}$ but cannot be the Galois group of any radical extension.\n\n7. **Lean formalization efficiency**: 59 theorems in 534 lines with 0 axioms demonstrates how Mathlib's `IsSolvable` typeclass infrastructure makes the main biconditional nearly mechanical — the forward direction requires only `interval_cases n <;> infer_instance` (5 lines) once the base cases are established. This is a benchmark for how good foundational library investment pays off for algebraic formalization.",
     "openQuestions": [
       "Formalize explicit quintic unsolvability for generic families: the companion entry `abel-ruffini-oq-04-oq-01` already proves $x^5 - 4x + 2$ has Galois group $S_5$ (hence unsolvable by radicals). The deeper open question is proving that *generic* degree-5 polynomials over $\\mathbb{Q}(t_1, \\ldots, t_5)$ (with independent transcendental coefficients) have Galois group $S_5$, formalizing that 'almost all' quintics are unsolvable rather than just specific instances",
       "Prove the Galois correspondence theorem (subfields ↔ subgroups) — the bijection between intermediate fields of a Galois extension and subgroups of the Galois group",
       "Formalize that A_n is simple for n ≥ 5 directly from the triple transposition argument (any normal subgroup containing a 3-cycle must equal A_n)",
       "State and prove the Jordan-Hölder uniqueness theorem in Lean: the composition factors of any finite group are unique up to permutation and isomorphism — this would make the $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$ chain provably the unique solvability witness",
-      "Can Shafarevich's theorem (every finite solvable group is a Galois group over $\\mathbb{Q}$) be stated in Lean as a companion to this file's classification? The statement would require formalizing algebraic number fields and the Galois correspondence"
+      "Can Shafarevich's theorem (every finite solvable group is a Galois group over $\\mathbb{Q}$) be stated in Lean as a companion to this file's classification? The statement would require formalizing algebraic number fields and the Galois correspondence",
+      "**Primitive solvable permutation groups**: While this file proves $S_n$ is non-solvable for $n \\geq 5$, it leaves open the characterization of the *maximal solvable subgroups* of $S_n$. For prime degree $p$, Galois proved that the only primitive solvable permutation groups of degree $p$ are the affine groups $\\mathrm{AGL}(1, p) = (\\mathbb{Z}/p\\mathbb{Z}) \\rtimes (\\mathbb{Z}/p\\mathbb{Z})^\\times$ of order $p(p-1)$. Formalizing this in Lean would provide the quantitative complement to the qualitative threshold proved here: the maximal solvable transitive subgroup of $S_p$ has order $p(p-1)$, while $S_p$ has order $p!$ — so the ratio $p!/[p(p-1)] = (p-2)!$ grows with $p$, measuring precisely how 'far' from solvability $S_p$ is for large primes. The affine groups $\\mathrm{AGL}(1,p)$ are Frobenius groups and appear in algebraic number theory as Galois groups of splitting fields of irreducible polynomials of prime degree that factor as a product of a $p$-cycle and a transposition."
     ]
   },
   "leanFile": {
@@ -88,7 +92,7 @@
     "lineCount": 534,
     "axiomCount": 0,
     "theoremCount": 59,
-    "definitionCount": 0,
+    "definitionCount": 1,
     "path": "Proofs/AbelRuffiniGaloisExtensions.lean",
     "sorries": 0
   },

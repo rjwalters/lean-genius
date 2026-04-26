@@ -510,167 +510,13 @@ axiom seqCompact_probabilityMeasure_cantor :
 plus ~80 lines of analysis (T-invariance estimate + density lower semi-continuity).
 -/
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
-PART X: T-INVARIANCE OF LIMIT MEASURES
-═══════════════════════════════════════════════════════════════════════════════ -/
-
-section TInvariance
-
-/-- The pushforward of the N-step Cesàro measure at x under shift equals
-    the N-step Cesàro measure at shift x.
-
-    Proof: T_*(μ_{x,N}) = (1/N) Σ_{n<N} (Measure.dirac (T^{n+1} x))
-                        = (1/N) Σ_{n<N} (Measure.dirac (T^n (Tx))) = μ_{Tx,N}. -/
-theorem cesaroMeasure_map_shift (x : CantorSpace) (N : ℕ) (hN : 0 < N) :
-    (cesaroMeasure x N).map shift = cesaroMeasure (shift x) N := by
-  cases N with
-  | zero => exact absurd hN (lt_irrefl _)
-  | succ N =>
-    -- Prove equality by evaluating both sides on arbitrary measurable sets
-    apply Measure.ext
-    intro s hs
-    simp only [cesaroMeasure, Measure.map_apply shift_measurable hs, Measure.smul_apply]
-    congr 1
-    -- Both sums reduce to |{n < N+1 : shift^[n+1] x ∈ s}| via finsetDirac_apply
-    rw [finsetDirac_apply _ (fun n => shift^[n] x) (shift_measurable hs)]
-    rw [finsetDirac_apply _ (fun n => shift^[n] (shift x)) hs]
-    -- Filter sets are equal: shift^[n] x ∈ shift⁻¹' s ↔ shift^[n] (shift x) ∈ s
-    -- (both ↔ shift^[n+1] x ∈ s via iterate_succ_apply and iterate_succ_apply')
-    norm_cast
-    congr 1
-    apply Finset.filter_congr
-    intro n _
-    -- Goal: shift^[n] x ∈ shift⁻¹' s ↔ shift^[n] (shift x) ∈ s
-    -- LHS ↔ shift(shift^[n] x) ∈ s [by mem_preimage] ↔ shift^[n+1] x ∈ s [← iterate_succ_apply']
-    -- RHS ↔ shift^[n+1] x ∈ s [← iterate_succ_apply]
-    -- Both reduce to shift^[n+1] x ∈ s
-    simp only [Set.mem_preimage, ← Function.iterate_succ_apply',
-               ← Function.iterate_succ_apply]
-
-/-- **Local Axiom (T-invariance)**: Any weak-* limit of Cesàro measures
-    along a sequence N_k → ∞ is shift-invariant.
-
-    Mathematical justification:
-    - `cesaroMeasure_map_shift`: T_*(μ_{x_k, N_k}) = μ_{T x_k, N_k}.
-    - For any bounded continuous f, the Cesàro telescoping identity gives:
-        |∫f dT_*(μ_{x,N}) - ∫f dμ_{x,N}| = (1/N)|f(T^N x) - f(x)| ≤ 2‖f‖_∞/N → 0.
-    - Since T is continuous, T_*(μ_k) → T_*(μ). Combined with the vanishing gap,
-      T_*(μ) = μ.
-    Formalization gap: ~60 lines using `Measure.integral_map`,
-    `ContinuousLinearMap.tendsto_of_bounded` and `tendsto_nhds_unique`. -/
-axiom shift_invariant_of_limit
-    {x_seq : ℕ → CantorSpace} {N_seq : ℕ → ℕ}
-    (hN : ∀ k, 0 < N_seq k)
-    (hN_infty : Filter.Tendsto N_seq Filter.atTop Filter.atTop)
-    {μ : ProbabilityMeasure CantorSpace}
-    (htend : Filter.Tendsto
-        (fun k => (⟨cesaroMeasure (x_seq k) (N_seq k),
-            cesaroMeasure_isProbability (x_seq k) (N_seq k) (hN k)⟩ :
-            ProbabilityMeasure CantorSpace))
-        Filter.atTop (nhds μ)) :
-    MeasurePreserving shift (μ : Measure CantorSpace) (μ : Measure CantorSpace)
-
-end TInvariance
-
-/-! ═══════════════════════════════════════════════════════════════════════════════
-PART XI: DENSITY PRESERVATION AT THE LIMIT
-═══════════════════════════════════════════════════════════════════════════════ -/
-
-section DensityAtLimit
-
-/-- If μ_k → μ weak-* and each μ_k(B₀) ≥ δ, then μ(B₀) ≥ δ.
-
-    Proof: cylinderZero is closed (clopen in Cantor space).
-    Portmanteau theorem for closed sets F: limsup_k μ_k(F) ≤ μ(F).
-    Since all μ_k(cylinderZero) ≥ δ, we have limsup ≥ δ, so μ(cylinderZero) ≥ δ.
-
-    Formalization: use `ProbabilityMeasure.limsup_measure_closed_le_of_tendsto` or
-    `Filter.Tendsto.limsup_le_of_le` composed with Portmanteau. -/
-theorem density_preserved_at_limit
-    (μ_seq : ℕ → ProbabilityMeasure CantorSpace)
-    {μ : ProbabilityMeasure CantorSpace}
-    (htend : Filter.Tendsto μ_seq Filter.atTop (nhds μ))
-    {δ : ℝ} (hδ : 0 < δ)
-    (hbound : ∀ k, ENNReal.ofReal δ ≤ (μ_seq k : Measure CantorSpace) cylinderZero) :
-    ENNReal.ofReal δ ≤ (μ : Measure CantorSpace) cylinderZero := by
-  sorry
-  -- Portmanteau for closed sets: limsup_k μ_k(cylinderZero) ≤ μ(cylinderZero).
-  -- Since μ_k(cylinderZero) ≥ δ, limsup ≥ δ, hence μ(cylinderZero) ≥ δ.
-
-end DensityAtLimit
-
-/-! ═══════════════════════════════════════════════════════════════════════════════
-PART XII: FURSTENBERG CORRESPONDENCE ASSEMBLY
-═══════════════════════════════════════════════════════════════════════════════ -/
-
-section FurstenbergAssembly
-
-/-- **Furstenberg Correspondence Principle** (assembly).
-
-    Given A ⊆ ℕ with upper Banach density ≥ δ > 0, there exists a
-    T-invariant probability measure μ on CantorSpace with μ(B₀) ≥ δ.
-
-    Assembly steps:
-    1. For each k, `density_lower_bound A hδ hd (k+1)` gives (aₖ, Nₖ) with
-       Nₖ ≥ k+1 and cesaroMeasure(shift^[aₖ] 1_A, Nₖ)(B₀) ≥ δ.
-    2. `seqCompact_probabilityMeasure_cantor`: extract subsequence → μ.
-    3. `shift_invariant_of_limit`: μ is T-invariant.
-    4. `density_preserved_at_limit`: μ(B₀) ≥ δ. -/
-theorem furstenberg_correspondence (A : Set ℕ) (δ : ℝ) (hδ : 0 < δ)
-    (hd : HasUpperDensityGe A δ) :
-    ∃ μ : ProbabilityMeasure CantorSpace,
-      ENNReal.ofReal δ ≤ (μ : Measure CantorSpace) cylinderZero ∧
-      MeasurePreserving shift (μ : Measure CantorSpace) (μ : Measure CantorSpace) := by
-  -- Step 1: Build a sequence of witnesses via density_lower_bound
-  -- For each k, obtain (a_k, N_k) with N_k ≥ k+1 and measure bound ≥ δ
-  have hwitness : ∀ k : ℕ, ∃ a N : ℕ, N ≥ k + 1 ∧
-      ENNReal.ofReal δ ≤
-        cesaroMeasure (shift^[a] (setIndicator A)) N cylinderZero :=
-    fun k => density_lower_bound A hδ hd (k + 1)
-  -- Extract canonical witnesses
-  let a_seq : ℕ → ℕ := fun k => (hwitness k).choose
-  let N_seq : ℕ → ℕ := fun k => (hwitness k).choose_spec.choose
-  have hN_ge : ∀ k, k + 1 ≤ N_seq k :=
-    fun k => (hwitness k).choose_spec.choose_spec.1
-  have hN_pos : ∀ k, 0 < N_seq k :=
-    fun k => Nat.lt_of_lt_of_le Nat.zero_lt_one (hN_ge k)
-  have hN_infty : Filter.Tendsto N_seq Filter.atTop Filter.atTop :=
-    Filter.tendsto_atTop_atTop.mpr fun b =>
-      ⟨b, fun k hk => le_trans (by omega) (hN_ge k)⟩
-  have hdensity : ∀ k,
-      ENNReal.ofReal δ ≤ cesaroMeasure (shift^[a_seq k] (setIndicator A)) (N_seq k) cylinderZero :=
-    fun k => (hwitness k).choose_spec.choose_spec.2
-  -- Form the Cesàro probability measures
-  let μ_seq : ℕ → ProbabilityMeasure CantorSpace := fun k =>
-    ⟨cesaroMeasure (shift^[a_seq k] (setIndicator A)) (N_seq k),
-     cesaroMeasure_isProbability _ _ (hN_pos k)⟩
-  -- Step 2: Prokhorov compactness — extract convergent subsequence
-  obtain ⟨φ, hφ_mono, μ, hμ_tend⟩ := seqCompact_probabilityMeasure_cantor μ_seq
-  -- Step 3: The limit measure is T-invariant
-  have hTinv : MeasurePreserving shift (μ : Measure CantorSpace) (μ : Measure CantorSpace) :=
-    shift_invariant_of_limit
-      (x_seq := fun k => shift^[a_seq (φ k)] (setIndicator A))
-      (N_seq := fun k => N_seq (φ k))
-      (fun k => hN_pos (φ k))
-      (hN_infty.comp hφ_mono.tendsto_atTop)
-      hμ_tend
-  -- Step 4: Density preserved along subsequence → limit
-  have hdensity_lim : ENNReal.ofReal δ ≤ (μ : Measure CantorSpace) cylinderZero :=
-    density_preserved_at_limit
-      (μ_seq := fun k => μ_seq (φ k))
-      hμ_tend hδ
-      (fun k => hdensity (φ k))
-  exact ⟨μ, hdensity_lim, hTinv⟩
-
-end FurstenbergAssembly
-
 #check shift_continuous
 #check shift_measurable
 #check cylinderZero_measurableSet
 #check indicator_in_kfold_return
 #check orbit_indicator_hits
 #check (inferInstance : CompactSpace CantorSpace)
--- Parts V-IX:
+-- New in this session:
 #check @finsetDirac_apply
 #check @cesaroMeasure
 #check @cesaroMeasure_isProbability
@@ -678,10 +524,5 @@ end FurstenbergAssembly
 #check @cesaroMeasure_cylinderZero
 #check @density_lower_bound
 #check @seqCompact_probabilityMeasure_cantor
--- Parts X-XII:
-#check @cesaroMeasure_map_shift
-#check @shift_invariant_of_limit
-#check @density_preserved_at_limit
-#check @furstenberg_correspondence
 
 end FurstenbergOQ01

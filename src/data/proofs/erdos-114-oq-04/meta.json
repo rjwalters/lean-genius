@@ -2,11 +2,11 @@
   "id": "erdos-114-oq-04",
   "title": "Verifying Lemniscate Axioms via Mathlib Complex Analysis",
   "slug": "erdos-114-oq-04",
-  "description": "Assesses which axioms from Erdős #114 can be eliminated using Mathlib. Defines lemniscate sets properly using Polynomial.eval and complex norm (‖·‖), proves basic set-theoretic properties, and classifies axiom eliminability.",
+  "description": "Assesses which axioms from Erd\u0151s #114 can be eliminated using Mathlib. Defines lemniscate sets properly using Polynomial.eval and complex norm (\u2016\u00b7\u2016), proves basic set-theoretic properties, and classifies axiom eliminability.",
   "meta": {
     "author": "Lean Genius Research Agent",
     "sourceUrl": "https://erdosproblems.com/114",
-    "date": "1958 (Erdős; formalized 2026)",
+    "date": "1958 (Erd\u0151s; formalized 2026)",
     "status": "axiomatized",
     "tags": [
       "complex-analysis",
@@ -25,12 +25,12 @@
       },
       {
         "theorem": "norm_eq_zero / norm_nonneg",
-        "description": "Norm properties on ℂ",
+        "description": "Norm properties on \u2102",
         "module": "Mathlib.Analysis.Complex.Basic"
       }
     ],
     "originalContributions": [
-      "lemniscateSet: proper definition using Polynomial.eval and ‖·‖",
+      "lemniscateSet: proper definition using Polynomial.eval and \u2016\u00b7\u2016",
       "Basic properties: empty for r<0, zero-set at r=0, preimage characterization",
       "z^n-1 polynomial with eval theorem and lemniscate characterization",
       "Membership results: roots of unity off lemniscate, zero on lemniscate",
@@ -44,17 +44,17 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Lemniscate curves — level sets $\\{z \\in \\mathbb{C} : |p(z)| = r\\}$ of complex polynomials — were studied classically by Jacob Bernoulli (1694), who described the figure-eight curve $|z^2 - 1| = 1$. In their 1958 paper 'Metric properties of polynomials' (J. d'Analyse Math. 6), Erdős, Herzog, and Piranian studied the arc length of the unit lemniscate $\\{z : |p(z)| = 1\\}$ for monic degree-$n$ polynomials, asking whether $z^n - 1$ maximizes this arc length. Danchenko proved in 1967 that the arc length of $\\{|p(z)| = 1\\}$ is at most $2\\pi n$ for any monic degree-$n$ polynomial, providing an upper bound. The exact maximum and the conjecture that $z^n - 1$ is extremal remain open. This open question assesses what fraction of the Lean formalization of Erdős #114 can use Mathlib's existing complex analysis infrastructure versus requiring new axioms.",
-    "problemStatement": "Can the axiomatized results of Erdős #114 (lemniscate length positivity, Danchenko bound $\\ell(p) \\le 2\\pi n$, Gamma-function formula for $|z^n-1|=1$) be verified using Mathlib's complex analysis library?",
+    "historicalContext": "Lemniscate curves \u2014 level sets $\\{z \\in \\mathbb{C} : |p(z)| = r\\}$ of complex polynomials \u2014 were studied classically by Jacob Bernoulli (1694), who described the figure-eight curve $|z^2 - 1| = 1$. In their 1958 paper 'Metric properties of polynomials' (J. d'Analyse Math. 6), Erd\u0151s, Herzog, and Piranian studied the arc length of the unit lemniscate $\\{z : |p(z)| = 1\\}$ for monic degree-$n$ polynomials, asking whether $z^n - 1$ maximizes this arc length. Danchenko proved in 1967 that the arc length of $\\{|p(z)| = 1\\}$ is at most $2\\pi n$ for any monic degree-$n$ polynomial, providing an upper bound. The exact maximum and the conjecture that $z^n - 1$ is extremal remain open. This open question assesses what fraction of the Lean formalization of Erd\u0151s #114 can use Mathlib's existing complex analysis infrastructure versus requiring new axioms.",
+    "problemStatement": "Can the axiomatized results of Erd\u0151s #114 (lemniscate length positivity, Danchenko bound $\\ell(p) \\le 2\\pi n$, Gamma-function formula for $|z^n-1|=1$) be verified using Mathlib's complex analysis library?",
     "text": "Defines lemniscate sets properly, proves basic properties, assesses axiom eliminability.",
-    "proofStrategy": "The approach is constructive: replace axioms with proper definitions where Mathlib already provides the necessary infrastructure. `lemniscateSet p r = {z : ‖p.eval z‖ = r}` uses only `Polynomial.eval` (evaluation) and the complex norm `‖·‖`. Basic set-theoretic properties (emptiness for r < 0, zero set at r = 0, preimage characterization) are proved from `norm_nonneg` and `norm_eq_zero`. The `danchenko_bound` axiom is retained as a placeholder proving `True` — marking the gap for Cauchy integral estimates without making a false mathematical claim.",
+    "proofStrategy": "The approach is constructive: replace axioms with proper definitions where Mathlib already provides the necessary infrastructure. `lemniscateSet p r = {z : \u2016p.eval z\u2016 = r}` uses only `Polynomial.eval` (evaluation) and the complex norm `\u2016\u00b7\u2016`. Basic set-theoretic properties (emptiness for r < 0, zero set at r = 0, preimage characterization) are proved from `norm_nonneg` and `norm_eq_zero`. The `danchenko_bound` axiom is retained as a placeholder proving `True` \u2014 marking the gap for Cauchy integral estimates without making a false mathematical claim.",
     "keyInsights": [
-      "Lemniscate sets $\\{z : \\|p(z)\\| = r\\}$ are definable axiom-free in Lean 4 using only `Polynomial.eval` and the complex norm `‖·‖` — no arc length or complex integration needed for the set definition itself",
+      "Lemniscate sets $\\{z : \\|p(z)\\| = r\\}$ are definable axiom-free in Lean 4 using only `Polynomial.eval` and the complex norm `\u2016\u00b7\u2016` \u2014 no arc length or complex integration needed for the set definition itself",
       "The distinction between lemniscate SETS (0 axioms, fully proved) and lemniscate LENGTHS (1 axiom, because Mathlib lacks complex curve integration) reveals the precise boundary of Mathlib's current complex analysis capabilities",
-      "The `danchenko_bound` axiom is a placeholder proving `True`, not a real mathematical assumption — it marks a formalization gap without falsely claiming the bound as an axiom of the mathematical system",
-      "Roots of unity $\\zeta^n = 1$ are OUTSIDE the unit lemniscate of $z^n - 1$ (since $\\|\\zeta^n - 1\\| = \\|0\\| = 0 \\ne 1$), while $z = 0$ is ON it (since $\\|0^n - 1\\| = \\|{-1}\\| = 1$) — this illustrates how the lemniscate captures algebraic structure",
+      "The `danchenko_bound` axiom is a placeholder proving `True`, not a real mathematical assumption \u2014 it marks a formalization gap without falsely claiming the bound as an axiom of the mathematical system",
+      "Roots of unity $\\zeta^n = 1$ are OUTSIDE the unit lemniscate of $z^n - 1$ (since $\\|\\zeta^n - 1\\| = \\|0\\| = 0 \\ne 1$), while $z = 0$ is ON it (since $\\|0^n - 1\\| = \\|{-1}\\| = 1$) \u2014 this illustrates how the lemniscate captures algebraic structure",
       "The $n=2$ case gives the classical Bernoulli lemniscate $\\{z : |z^2-1| = 1\\}$, the figure-eight curve studied since 1694. The $n=1$ case gives the unit circle centered at 1: $\\{z : |z-1|=1\\}$, showing the family interpolates between familiar curves",
-      "The Gamma formula for the arc length of $\\{|z^n-1|=1\\}$ is $2n \\cdot \\Gamma(1/n)^2 / \\Gamma(2/n)$, which Mathlib is in principle equipped to verify using `Real.Gamma` — this represents the most tractable remaining axiom elimination"
+      "The Gamma formula for the arc length of $\\{|z^n-1|=1\\}$ is $2n \\cdot \\Gamma(1/n)^2 / \\Gamma(2/n)$, which Mathlib is in principle equipped to verify using `Real.Gamma` \u2014 this represents the most tractable remaining axiom elimination"
     ]
   },
   "sections": [
@@ -70,28 +70,28 @@
       "title": "Part 1: Lemniscate Sets via Complex Norm",
       "startLine": 29,
       "endLine": 65,
-      "summary": "Defines IsMonicDegN (p.Monic ∧ p.natDegree = n), lemniscateSet p r = {z : ‖p.eval z‖ = r}, and unitLemniscate p = lemniscateSet p 1. Proves three basic properties: zero level set is the root set (via norm_eq_zero), negative level sets are empty (via norm_nonneg + linarith), and the lemniscate is a preimage of {r}."
+      "summary": "Defines IsMonicDegN (p.Monic \u2227 p.natDegree = n), lemniscateSet p r = {z : \u2016p.eval z\u2016 = r}, and unitLemniscate p = lemniscateSet p 1. Proves three basic properties: zero level set is the root set (via norm_eq_zero), negative level sets are empty (via norm_nonneg + linarith), and the lemniscate is a preimage of {r}."
     },
     {
       "id": "zn-minus-1",
       "title": "Part 2: The Polynomial z^n - 1",
       "startLine": 66,
       "endLine": 97,
-      "summary": "Defines znMinus1 n = X^n - C 1 in Mathlib's polynomial representation, proves eval_znMinus1 (eval at z = z^n - 1 by simp), characterizes the unit lemniscate as {z : ‖z^n-1‖ = 1}, proves roots of unity are NOT on it (hζ : ζ^n=1 → ‖0‖=0≠1), and proves z=0 IS on it (‖0^n-1‖=‖-1‖=1 via zero_pow)."
+      "summary": "Defines znMinus1 n = X^n - C 1 in Mathlib's polynomial representation, proves eval_znMinus1 (eval at z = z^n - 1 by simp), characterizes the unit lemniscate as {z : \u2016z^n-1\u2016 = 1}, proves roots of unity are NOT on it (h\u03b6 : \u03b6^n=1 \u2192 \u20160\u2016=0\u22601), and proves z=0 IS on it (\u20160^n-1\u2016=\u2016-1\u2016=1 via zero_pow)."
     },
     {
       "id": "concrete-examples",
       "title": "Part 3: Specific Lemniscate Examples",
       "startLine": 99,
       "endLine": 113,
-      "summary": "lemniscate_degree_zero shows the n=0 unit lemniscate is empty (z^0-1=0, ‖0‖=0≠1). lemniscate_n1 identifies the n=1 lemniscate as {z:|z-1|=1} (unit circle at 1). lemniscate_n2 identifies the n=2 lemniscate as {z:|z²-1|=1} (the classical Bernoulli lemniscate)."
+      "summary": "lemniscate_degree_zero shows the n=0 unit lemniscate is empty (z^0-1=0, \u20160\u2016=0\u22601). lemniscate_n1 identifies the n=1 lemniscate as {z:|z-1|=1} (unit circle at 1). lemniscate_n2 identifies the n=2 lemniscate as {z:|z\u00b2-1|=1} (the classical Bernoulli lemniscate)."
     },
     {
       "id": "axiom-eliminability",
       "title": "Part 4: Axiom Eliminability Assessment",
       "startLine": 115,
       "endLine": 143,
-      "summary": "A docstring section classifying each axiom from the parent file: lemniscateLength and maxLemniscateLength cannot be eliminated (no Mathlib curve integration for ℂ), Danchenko bound is potentially eliminable via Cauchy integrals, Gamma formula is potentially eliminable using Real.Gamma. danchenko_bound is axiomatized as a placeholder proving True."
+      "summary": "A docstring section classifying each axiom from the parent file: lemniscateLength and maxLemniscateLength cannot be eliminated (no Mathlib curve integration for \u2102), Danchenko bound is potentially eliminable via Cauchy integrals, Gamma formula is potentially eliminable using Real.Gamma. danchenko_bound is axiomatized as a placeholder proving True."
     },
     {
       "id": "summary-checks",
@@ -103,11 +103,11 @@
   ],
   "conclusion": {
     "summary": "Partial success on axiom elimination: the lemniscate SET definition is completely axiom-free using Mathlib's polynomial evaluation and complex norm infrastructure. Arc length and the Danchenko bound remain beyond current Mathlib capabilities. The 1 remaining axiom (danchenko_bound) is a vacuous placeholder.",
-    "implications": "This assessment reveals the current frontier of Mathlib's complex analysis: pointwise polynomial evaluation and norm computations are well-supported, but complex curve integration (needed for arc length) is not yet available. As Mathlib's integration theory for complex curves develops — following the pattern of real line integrals — the remaining gap can be closed. The formalization also demonstrates a best practice: using `axiom ... : True` as a placeholder marks formalization gaps without polluting the mathematical content with false assumptions.",
+    "implications": "This assessment reveals the current frontier of Mathlib's complex analysis: pointwise polynomial evaluation and norm computations are well-supported, but complex curve integration (needed for arc length) is not yet available. As Mathlib's integration theory for complex curves develops \u2014 following the pattern of real line integrals \u2014 the remaining gap can be closed. The formalization also demonstrates a best practice: using `axiom ... : True` as a placeholder marks formalization gaps without polluting the mathematical content with false assumptions.",
     "openQuestions": [
       "Mathlib is actively developing complex integration infrastructure (e.g., `Complex.circleIntegral`). Once complex curve integration is formalized, can `lemniscateLength` be defined as the arc length integral of the curve $\\{z : |p(z)| = r\\}$, making `lemniscateLength_pos` and `maxLemniscateLength` provable theorems?",
       "The Gamma formula for the arc length of $\\{|z^n-1|=1\\}$ is $2n \\cdot \\Gamma(1/n)^2 / \\Gamma(2/n)$. Since Mathlib has `Real.Gamma`, can this formula be verified by a change-of-variables argument using the Beta-Gamma identity $B(a,b) = \\Gamma(a)\\Gamma(b)/\\Gamma(a+b)$?",
-      "The main conjecture of Erdős #114 — that $z^n-1$ maximizes the arc length among monic degree-$n$ polynomials — remains unproved. Is there a variational or symmetry-based argument that could be formalized in Lean 4?"
+      "The main conjecture of Erd\u0151s #114 \u2014 that $z^n-1$ maximizes the arc length among monic degree-$n$ polynomials \u2014 remains unproved. Is there a variational or symmetry-based argument that could be formalized in Lean 4?"
     ]
   },
   "crossReferences": [
@@ -126,18 +126,18 @@
     ],
     "namespace": "Erdos114OQ04",
     "lineCount": 177,
-    "axiomCount": 1,
-    "theoremCount": 10,
+    "axiomCount": 0,
+    "theoremCount": 11,
     "definitionCount": 5,
     "path": "Proofs/Erdos114OQ04Problem.lean",
     "sorries": 0
   },
   "references": [
     {
-      "authors": "Erdős, Herzog, Piranian",
+      "authors": "Erd\u0151s, Herzog, Piranian",
       "title": "Metric properties of polynomials",
       "year": "1958",
-      "venue": "Journal d'Analyse Mathématique 6, pp. 125-148"
+      "venue": "Journal d'Analyse Math\u00e9matique 6, pp. 125-148"
     }
   ],
   "sorries": 0

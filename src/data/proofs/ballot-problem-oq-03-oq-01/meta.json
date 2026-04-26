@@ -49,7 +49,10 @@
       "disjoint interval argument: if paths are non-intersecting, their visited y-ranges in each column are disjoint (intervals don't overlap)",
       "Lindström involution: swapping at the first crossing point gives an involution on intersecting pairs, proving the determinant formula",
       "swapAtPoint involutivity: swapping twice recovers the original pair — proved by showing the new first crossing point equals the original",
-      "LGV formula follows: |NI pairs| = |all pairs| - |intersecting pairs| = e(A₁,B₁)e(A₂,B₂) - |involution pairs with wrong targets| = determinant"
+      "LGV formula follows: |NI pairs| = |all pairs| - |intersecting pairs| = e(A₁,B₁)e(A₂,B₂) - |involution pairs with wrong targets| = determinant",
+      "**nonIntersecting_entry_order is the single-step induction engine**: the Crossing Lemma is just this lemma applied m times. The proof of entry_order itself uses a sharp disjoint interval argument — the midpoint of l₂'s column range falls inside l₁'s column range if the order inverts.",
+      "**pathSplitEquiv encodes Pascal structurally**: the equivalence pathType (m+1) (n+1) ≃ pathType m (n+1) ⊕ pathType (m+1) n directly reflects Pascal's identity at the type level, making path_count_eq_choose a clean double induction with no ad hoc enumeration.",
+      "**canonSharedPoint is the crux of Lindström injectivity**: the key property is that minSharedStepIdx is preserved under swapAtPoint — both the forward and backward images share the same canonical point. This makes the two injections mutually inverse without needing to track the full path structure."
     ],
     "prerequisites": [
       "Combinatorics: binomial coefficients, lattice paths, inclusion-exclusion",
@@ -134,6 +137,30 @@
       "endLine": 2878,
       "summary": "Proves lgv_lemma_2x2: |NI pairs| = det[e(Aᵢ,Bⱼ)]. Three cases: equal starts, equal ends, general (strict). General case: complement counting + Lindström involution + algebra. Corollary lgvDet_nonneg: determinant is non-negative since it equals a count.",
       "mathContext": "|NI| = e(A₁,B₁)e(A₂,B₂) - e(A₁,B₂)e(A₂,B₁). Proof: ni_complement_count' gives |NI| = total - |Int|; lindstrom_involution gives |Int| = crossed total; algebra via omega + zify + ring gives the determinant formula."
+    },
+    {
+      "id": "column-range-ni",
+      "title": "Part II-III: Column Range Geometry and NonIntersecting",
+      "startLine": 169,
+      "endLine": 256,
+      "summary": "Defines colYRange (y-interval at column x), finalRange (endpoint column range), and NonIntersecting (pairwise disjoint column ranges). Proves northSteps_append, northBeforeEast_le_northSteps, and the key nonIntersecting_entry_order lemma.",
+      "mathContext": "$\\text{colYRange}(l, y_0, x) = [y_0 + e(l,x), y_0 + e(l,x+1)]$. Non-intersection: all column intervals disjoint. Entry order preservation: NI + $y_1 + e_1(k) < y_2 + e_2(k)$ $\\Rightarrow$ $y_1 + e_1(k+1) < y_2 + e_2(k+1)$ by disjoint interval argument."
+    },
+    {
+      "id": "path-split-pascal",
+      "title": "Part V: pathSplitEquiv and Pascal Induction",
+      "startLine": 299,
+      "endLine": 419,
+      "summary": "Constructs pathSplitEquiv: pathType (m+1) (n+1) ≃ pathType m (n+1) ⊕ pathType (m+1) n by case-splitting on first step. Proves path_count_eq_choose: |pathType m n| = C(m+n,m) by double induction, using Fintype.card_congr + Fintype.card_sum + Pascal (Nat.choose_succ_succ').",
+      "mathContext": "Equivalence: first-step split gives $|P(m+1,n+1)| = |P(m,n+1)| + |P(m+1,n)|$. Base cases: single-path sets (replicate n true / replicate m false). Pascal: $\\binom{m+1+n+1}{m+1} = \\binom{m+n+1}{m} + \\binom{m+n+1}{m+1}$."
+    },
+    {
+      "id": "swap-preservation",
+      "title": "Part XII-XXIII: swapAtPoint Step Count Preservation and Dual Injections",
+      "startLine": 1755,
+      "endLine": 2839,
+      "summary": "Proves swapAtPoint preserves East count (m) and changes North count to n₂+(a₂-a₁). Develops visitedPoints, sharedPoints, minSharedStepIdx, canonSharedPoint infrastructure. Proves lindstromForward and lindstromBackward are mutually inverse, establishing the full Lindström involution.",
+      "mathContext": "North count after swap: $(p.2 - a_1) + n_2 - (p.2 - a_2) = n_2 + (a_2 - a_1)$. Canon point: minimum step-index shared point. Dual injections: forward and backward both map via swapAtPoint at canonSharedPoint; the shared point is preserved under swapping (key identity: minSharedStepIdx Q = minSharedStepIdx (swap Q))."
     }
   ],
   "sorries": 0

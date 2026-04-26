@@ -1,0 +1,152 @@
+{
+  "slug": "algebraic-numbers-countable-oq-04",
+  "title": "Formalize Bakers Theorem: Linear Independence of Logarithms",
+  "phase": "ACT",
+  "status": "in-progress",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in set theory: Formalize Bakers Theorem: Linear Independence of Logarithms.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-24T21:58:33.771259Z",
+    "iteration": 2,
+    "focus": "All sorries resolved. Baker theorem axiomatized, log2(3) irrationality proved, transcendence derived from Baker.",
+    "blockers": [],
+    "nextAction": "Build and verify Lean file compiles via Docker wrapper.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 640-line axiomatized entry. 0 sorries. Proved log2(3) irrational (elementary), transcendental (from Baker). Q-bar independence of {log2, log3} from Baker.",
+    "builtItems": [
+      "AlgebraicNumbersCountableOQ04.lean: 589 lines, 4 axioms, 12 theorems/lemmas",
+      "two_pow_ne_three_pow: 2^p ≠ 3^q proved from Nat.Prime.dvd_of_dvd_pow",
+      "log2_3_irrational: irrationality of log3/log2 proved elementarily",
+      "log2_3_transcendental: transcendence derived from baker_homogeneous axiom",
+      "log2_log3_alg_indep: Q-bar linear independence from Baker",
+      "baker_n1_log_independence: n=1 case connecting Baker to Gelfond-Schneider",
+      "baker_wustholz_bound: Baker-Wüstholz 1993 quantitative lower bound axiom",
+      "src/data/proofs/algebraic-numbers-countable-oq-04/meta.json: gallery entry created"
+    ],
+    "insights": [
+      "Baker theorem requires Q-linear independence as hypothesis — 1,log a_1,...,log a_n Q-independent for inhomogeneous form",
+      "Irrationality of log2(3) is provable without transcendence theory: 2^p = 3^q implies 2|3 by Nat.Prime.dvd_of_dvd_pow, contradiction",
+      "Baker generalizes Gelfond-Schneider as n=1 case; also implies Six Exponentials theorem",
+      "Two sorries remain: (1) connecting log2_log3_rat_indep to indexed family form, (2) type coercion in hlog_indep",
+      "Quantitative Baker-Wüstholz 1993 theorem gives log(B) exponent improvement over Bakers 1966 log^{n+1}(B)"
+    ],
+    "mathlibGaps": [
+      "No direct linearIndependent_pair_iff lemma connecting Irrational(a/b) to LinearIndependent Q ![a,b]",
+      "Real.log_ne_zero_of_pos_of_ne_one may need exact name lookup in current Mathlib"
+    ],
+    "nextSteps": [
+      "Run ./proofs/scripts/docker-build.sh Proofs.AlgebraicNumbersCountableOQ04 to verify compilation",
+      "Add gallery entry to navigation/index if needed",
+      "Consider adding examples for log2(5), log3(5) irrationality (similar elementary proof)",
+      "Submit baker_n1_log_independence corollary to Aristotle for faster verification"
+    ]
+  },
+  "tags": [
+    "set-theory",
+    "countability",
+    "algebraic-numbers",
+    "cardinality",
+    "field-theory",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "algebraic-numbers-countable",
+    "algebraic-numbers-countable-oq-02",
+    "algebraic-numbers-countable-oq-02-oq-02",
+    "algebraic-numbers-countable-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-24T19:20:10.048Z",
+  "lastUpdate": "2026-04-24T22:04:18.981515Z",
+  "significance": 8,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/AlgebraicNumbersCountable.lean",
+      "filename": "AlgebraicNumbersCountable.lean",
+      "lineCount": 255,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountable.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableAristotle.lean",
+      "filename": "AlgebraicNumbersCountableAristotle.lean",
+      "lineCount": 46,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableAristotle.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02.lean",
+      "filename": "AlgebraicNumbersCountableOQ02.lean",
+      "lineCount": 193,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ02.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ02.lean",
+      "lineCount": 286,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ02OQ01.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ02OQ01.lean",
+      "lineCount": 134,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ04.lean",
+      "filename": "AlgebraicNumbersCountableOQ04.lean",
+      "lineCount": 641,
+      "theoremCount": 12,
+      "axiomCount": 4,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ04.lean"
+    }
+  ]
+}

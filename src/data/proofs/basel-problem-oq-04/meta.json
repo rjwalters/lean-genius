@@ -129,6 +129,31 @@
       "proofId": "basel-problem",
       "relationship": "parent",
       "description": "Parent: the Basel sum ∑ 1/n² = π²/6"
+    },
+    {
+      "targetId": "geometric-series-oq-03",
+      "relationship": "related",
+      "description": "Companion entry formalizing the Euler product ∏_p (1-p⁻ˢ)⁻¹ = ζ(s) via the geometric series expansion (1-p⁻ˢ)⁻¹ = ∑_k p⁻ˢᵏ and unique factorization — the same mathematical argument underlying this proof."
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational-for",
+      "description": "Unique prime factorization is the key ingredient enabling Euler's product identity: every integer has a unique factorization, so ∏_p ∑_k p⁻ˢᵏ = ∑_n n⁻ˢ with each n appearing exactly once."
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "generalization",
+      "description": "Dirichlet's theorem on primes in progressions uses L-functions L(s,χ) = ∏_p (1-χ(p)p⁻ˢ)⁻¹ — the direct generalization of the Euler product twisted by a Dirichlet character χ."
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "At s=1, the Euler product ∏_p (1-p⁻¹)⁻¹ = ζ(1) diverges (harmonic series), establishing ∑ 1/p = ∞ and proving infinitely many primes. The current proof at s=2 is the convergent counterpart, where the product value π²/6 encodes the coprimality density 6/π²."
+    },
+    {
+      "targetId": "euler-totient-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Euler's totient product formula φ(n)/n = ∏_{p|n} (1-1/p) is a finite multiplicative analogue of the Euler product. The infinite product ∏_p (1-1/p²) = 6/π² appearing here is the probabilistic form of the same multiplicative structure."
     }
   ],
   "sorries": 0,

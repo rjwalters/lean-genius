@@ -22,12 +22,12 @@
     "mathlibDependencies": [
       {
         "theorem": "Real.cos_pos_of_mem_Ioo",
-        "description": "Cosine is positive on (-π/2, π/2)",
+        "description": "Cosine is positive on (-\u03c0/2, \u03c0/2)",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       },
       {
         "theorem": "Real.sin_pos_of_pos_of_lt_pi",
-        "description": "Sine is positive on (0, π)",
+        "description": "Sine is positive on (0, \u03c0)",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       }
     ],
@@ -36,8 +36,8 @@
       "Axiom-free proof of OST for linear martingale (previously axiomized)",
       "Biased gambler's ruin structure with odds ratio formulation",
       "Proof that unfavorable games have strictly sub-unity win probability",
-      "Exponential decay rate cos(π/N) ∈ (0,1) for ruin time distribution",
-      "Complete AM-GM bound on expected ruin time: E[T] ≤ N²/4",
+      "Exponential decay rate cos(\u03c0/N) \u2208 (0,1) for ruin time distribution",
+      "Complete AM-GM bound on expected ruin time: E[T] \u2264 N\u00b2/4",
       "Harmonic property of expected ruin time (discrete Laplacian)"
     ],
     "dateAdded": "2026-03-11",
@@ -54,15 +54,15 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The Gambler's Ruin problem is one of the oldest problems in probability theory, dating to correspondence between Pascal and Fermat in 1654. The modern treatment uses martingale theory developed by Doob (1953). The Optional Stopping Theorem provides the key tool: by applying it to the identity martingale X_n and the quadratic martingale X_n² - n, one extracts both ruin probabilities and expected ruin times. The biased case was analyzed by Feller (1968) using the exponential martingale r^X_n where r = q/p.",
-    "problemStatement": "**Open Question**: What can we prove about the distribution of ruin times in the Gambler's Ruin problem?\n\n**Answer**: For a symmetric random walk with absorbing barriers at 0 and N, starting at k:\n1. P(reach N) = k/N, P(reach 0) = (N-k)/N\n2. E[T] = k(N-k) (quadratic in N)\n3. P(T > t) ~ C·cos(π/N)^t (exponential decay)\n\nFor biased walks (p ≠ 1/2), the odds ratio r = q/p governs everything: P(win) = (1-r^k)/(1-r^N).",
+    "historicalContext": "The Gambler's Ruin problem is one of the oldest problems in probability theory, dating to correspondence between Pascal and Fermat in 1654. The modern treatment uses martingale theory developed by Doob (1953). The Optional Stopping Theorem provides the key tool: by applying it to the identity martingale X_n and the quadratic martingale X_n\u00b2 - n, one extracts both ruin probabilities and expected ruin times. The biased case was analyzed by Feller (1968) using the exponential martingale r^X_n where r = q/p.",
+    "problemStatement": "**Open Question**: What can we prove about the distribution of ruin times in the Gambler's Ruin problem?\n\n**Answer**: For a symmetric random walk with absorbing barriers at 0 and N, starting at k:\n1. P(reach N) = k/N, P(reach 0) = (N-k)/N\n2. E[T] = k(N-k) (quadratic in N)\n3. P(T > t) ~ C\u00b7cos(\u03c0/N)^t (exponential decay)\n\nFor biased walks (p \u2260 1/2), the odds ratio r = q/p governs everything: P(win) = (1-r^k)/(1-r^N).",
     "text": "Complete analysis of ruin probabilities, expected ruin times, and exponential decay of ruin time distribution via the Optional Stopping Theorem, with extension to biased random walks.",
-    "proofStrategy": "Apply the Optional Stopping Theorem to different martingales:\n- **Linear martingale** X_n: gives ruin probabilities P(win) = k/N\n- **Quadratic martingale** X_n² - n: gives E[T] = k(N-k)\n- **Exponential martingale** r^(X_n): gives biased ruin probabilities\n\nThe exponential decay rate comes from the spectral analysis of the transition matrix: the dominant eigenvalue is cos(π/N), proved to lie in (0,1) for N ≥ 3.",
+    "proofStrategy": "Apply the Optional Stopping Theorem to different martingales:\n- **Linear martingale** X_n: gives ruin probabilities P(win) = k/N\n- **Quadratic martingale** X_n\u00b2 - n: gives E[T] = k(N-k)\n- **Exponential martingale** r^(X_n): gives biased ruin probabilities\n\nThe exponential decay rate comes from the spectral analysis of the transition matrix: the dominant eigenvalue is cos(\u03c0/N), proved to lie in (0,1) for N \u2265 3.",
     "keyInsights": [
-      "All axioms from the previous version were eliminated by proving them directly from definitions: k/N + (N-k)/N = 1 and (k/N)·N = k are pure algebra",
+      "All axioms from the previous version were eliminated by proving them directly from definitions: k/N + (N-k)/N = 1 and (k/N)\u00b7N = k are pure algebra",
       "The biased random walk introduces the odds ratio r = q/p as the fundamental parameter. When p < 1/2 (unfavorable), r > 1, and the gambler's win probability is exponentially small in N",
-      "The ruin time distribution has exponential tails governed by cos(π/N). For large N, this is approximately 1 - π²/(2N²), so the decay is very slow",
-      "Expected ruin time k(N-k) ≤ N²/4 (AM-GM), with equality when starting at the midpoint k = N/2. The poor gambler (k=1) faces linear expected time N-1",
+      "The ruin time distribution has exponential tails governed by cos(\u03c0/N). For large N, this is approximately 1 - \u03c0\u00b2/(2N\u00b2), so the decay is very slow",
+      "Expected ruin time k(N-k) \u2264 N\u00b2/4 (AM-GM), with equality when starting at the midpoint k = N/2. The poor gambler (k=1) faces linear expected time N-1",
       "The harmonic property E[T|k] = 1 + (E[T|k-1] + E[T|k+1])/2 connects ruin times to discrete harmonic functions and potential theory"
     ],
     "prerequisites": [
@@ -93,7 +93,7 @@
       "title": "Expected Ruin Time (Quadratic Martingale)",
       "startLine": 143,
       "endLine": 184,
-      "summary": "E[T] = k(N-k) via the quadratic martingale X²-n. AM-GM bound: E[T] ≤ N²/4.",
+      "summary": "E[T] = k(N-k) via the quadratic martingale X\u00b2-n. AM-GM bound: E[T] \u2264 N\u00b2/4.",
       "mathContext": "$E[X_T^2] = kN$ (from quadratic OST). $E[T] = kN - k^2 = k(N-k) \\leq N^2/4$ by AM-GM."
     },
     {
@@ -106,10 +106,10 @@
     },
     {
       "id": "biased-walk",
-      "title": "Biased Random Walk (p ≠ 1/2)",
+      "title": "Biased Random Walk (p \u2260 1/2)",
       "startLine": 310,
       "endLine": 416,
-      "summary": "BiasedGamblersRuin structure with odds ratio r = q/p. Ruin probability (1-r^k)/(1-r^N) when r ≠ 1. Proves sum-to-1, favorable (r<1) and unfavorable (r>1) cases.",
+      "summary": "BiasedGamblersRuin structure with odds ratio r = q/p. Ruin probability (1-r^k)/(1-r^N) when r \u2260 1. Proves sum-to-1, favorable (r<1) and unfavorable (r>1) cases.",
       "mathContext": "$r = q/p$. $P(\\text{win}) = (1-r^k)/(1-r^N)$. When $p < 1/2$: $r > 1$ and $P(\\text{win}) < 1$."
     },
     {
@@ -117,7 +117,7 @@
       "title": "Exponential Decay of Ruin Time",
       "startLine": 417,
       "endLine": 632,
-      "summary": "The dominant eigenvalue cos(π/N) governs exponential tail decay. Proved 0 < cos(π/N) < 1 for N ≥ 3.",
+      "summary": "The dominant eigenvalue cos(\u03c0/N) governs exponential tail decay. Proved 0 < cos(\u03c0/N) < 1 for N \u2265 3.",
       "mathContext": "$P(T > t) \\sim C \\cdot \\cos(\\pi/N)^t$. Proved $\\cos(\\pi/N) \\in (0,1)$ via trigonometric identities."
     }
   ],
@@ -162,7 +162,7 @@
     "namespace": "FairGamesOQ01",
     "lineCount": 632,
     "axiomCount": 0,
-    "theoremCount": 49,
+    "theoremCount": 50,
     "definitionCount": 12,
     "path": "Proofs/FairGamesTheoremOQ01.lean",
     "sorries": 0

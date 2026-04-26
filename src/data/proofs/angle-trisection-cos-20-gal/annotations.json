@@ -172,5 +172,65 @@
       "Nat.card_eq_fintype_card",
       "Polynomial.Gal.card_of_separable"
     ]
+  },
+  {
+    "id": "ann-cos20-poly-setup",
+    "proofId": "angle-trisection-cos-20-gal",
+    "range": { "startLine": 64, "endLine": 110 },
+    "type": "technical",
+    "title": "Polynomial p Definition, Basic Properties, and Eisenstein Shift Setup",
+    "content": "Lines 64\u2013110 define the central objects and their basic properties. The abbreviation `p : \u211a[X] := 8 * X ^ 3 - 6 * X - C 1` uses `private noncomputable abbrev` \u2014 `noncomputable` because \u211a[X] is a noncomputable type (Lean can\u2019t compute with real/rational field elements at compile time), and `abbrev` so that Lean\u2019s elaborator transparently unfolds it during type-checking. The three helper lemmas `p_ne_zero`, `p_natDegree`, and `p_degree_ne_zero` establish degree-3 properties used repeatedly downstream. `p_natDegree` uses `norm_num` with degree computation lemmas rather than direct `decide` because the polynomial coefficients are rationals.\n\nThe Eisenstein shift `q_eis_int : \u2124[X] := X^3 - C 6 * X^2 + C 9 * X - C 3` is defined over \u2124 (integers), not \u211a, so that Eisenstein\u2019s criterion \u2014 which requires divisibility by a prime ideal in a domain \u2014 can be stated over \u2124. Its monic property is established via explicit `leadingCoeff` computation using `simp` with coefficient lemmas.",
+    "mathContext": "$p = 8X^3 - 6X - 1 \\in \\mathbb{Q}[X]$, $\\deg(p) = 3$. The Eisenstein shift: $q = X^3 - 6X^2 + 9X - 3 \\in \\mathbb{Z}[X]$. Key relationship: $q(2X+2) = 8X^3 - 6X - 1 = p$ (verified in `q_comp_eq_p`).",
+    "significance": "technical",
+    "relatedConcepts": ["noncomputable", "Polynomial.natDegree", "Eisenstein criterion setup", "\u2124[X] vs \u211a[X]"],
+    "prerequisites": ["Polynomial definitions in Mathlib", "natDegree computation lemmas", "CommRing structure"]
+  },
+  {
+    "id": "ann-cos20-gauss",
+    "proofId": "angle-trisection-cos-20-gal",
+    "range": { "startLine": 150, "endLine": 169 },
+    "type": "technique",
+    "title": "Gauss\u2019s Lemma: Lifting Irreducibility from \u2124 to \u211a, and the Substitution Equation",
+    "content": "After proving `q_eis_int_irreducible` (q irreducible over \u2124), this section does two things. First, `q_eis_rat_irreducible` lifts irreducibility to \u211a via `IsPrimitive.Int.irreducible_iff_irreducible_map_cast` \u2014 this is Mathlib\u2019s formalization of Gauss\u2019s lemma: a primitive polynomial (here, monic) that is irreducible over \u2124 is irreducible over \u211a. The proof requires manually showing that `q_eis_rat` equals the \u2124\u2192\u211a cast of `q_eis_int` via `Polynomial.map`, since the two definitions look syntactically different despite being equal.\n\nSecond, `q_comp_eq_p` verifies the central algebraic identity $q(2X+2) = p$ using `Polynomial.funext` (extensionality for polynomials by evaluation) followed by `ring`. This approach avoids fiddly coefficient-by-coefficient bookkeeping: instead, Lean reduces equality of polynomials to equality of their evaluations at an arbitrary rational, and `ring` closes the resulting identity.",
+    "mathContext": "Gauss\u2019s lemma: $f \\in \\mathbb{Z}[X]$ primitive (monic) and irreducible over $\\mathbb{Z}$ $\\Rightarrow$ $f$ irreducible over $\\mathbb{Q}$. The substitution identity: $q(2X+2) = (2X+2)^3 - 6(2X+2)^2 + 9(2X+2) - 3 = 8X^3 - 6X - 1 = p$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Gauss\u2019s lemma", "IsPrimitive.Int.irreducible_iff_irreducible_map_cast", "Polynomial.funext", "Polynomial.map"],
+    "prerequisites": ["q_eis_int_irreducible", "q_eis_int_monic", "Polynomial.map_cast"]
+  },
+  {
+    "id": "ann-cos20-root-extraction",
+    "proofId": "angle-trisection-cos-20-gal",
+    "range": { "startLine": 239, "endLine": 289 },
+    "type": "technique",
+    "title": "Root Extraction in the Splitting Field: From Abstract Existence to Concrete \u03b1",
+    "content": "The splitting field of p over \u211a contains all roots of p by definition, but Lean\u2019s `SplittingField` type is abstract \u2014 roots don\u2019t come with names. This section extracts a concrete root. `p_map_degree_ne` verifies the mapped polynomial has non-zero degree (needed for `rootOfSplits`). Then `root_in_sf := rootOfSplits (SplittingField.splits p) p_map_degree_ne` gives a concrete element \u03b1 \u2208 SplittingField(p) satisfying p(\u03b1) = 0.\n\nWith \u03b1 in hand, `root_is_root` and `root_eq_zero` establish `8\u03b1\u00b3 \u2212 6\u03b1 \u2212 1 = 0` by connecting `aeval` (algebra map evaluation) with `p_eval_eq`. Then `beta_is_root` and `gamma_is_root` apply the ring identities from Part I (root_image_beta, root_image_gamma) to verify that \u03b2 = 2\u03b1\u00b2\u2212\u03b1\u22121 and \u03b3 = 1\u22122\u03b1\u00b2 are also roots. This sets up the key conclusion: all three roots of p are polynomial expressions in \u03b1.",
+    "mathContext": "$\\alpha = \\text{rootOfSplits}(p) \\in \\text{SplittingField}(p)$, satisfying $8\\alpha^3 - 6\\alpha - 1 = 0$. Then $\\beta = 2\\alpha^2 - \\alpha - 1$ and $\\gamma = 1 - 2\\alpha^2$ are also roots, so $\\{\\alpha, \\beta, \\gamma\\} \\subseteq \\mathbb{Q}(\\alpha)$.",
+    "significance": "key",
+    "relatedConcepts": ["rootOfSplits", "Polynomial.aeval", "SplittingField.splits", "root_image_beta"],
+    "prerequisites": ["p_irreducible", "p_separable", "root_image_beta", "root_image_gamma"]
+  },
+  {
+    "id": "ann-cos20-minpoly-adjoin",
+    "proofId": "angle-trisection-cos-20-gal",
+    "range": { "startLine": 313, "endLine": 395 },
+    "type": "technique",
+    "title": "Minimal Polynomial, Adjoin Membership, and Factored Form",
+    "content": "This section establishes [\u211a(\u03b1):\u211a] = 3 and that \u03b2, \u03b3 \u2208 \u211a(\u03b1). `minpoly_natDegree` shows the minimal polynomial of \u03b1 has degree 3 by a squeeze argument: minpoly(\u03b1) divides p (since p(\u03b1)=0), so deg(minpoly) \u2264 3; and p divides minpoly(\u03b1) (by irreducibility of both \u2014 any irreducible polynomial with a given root is associate to the minimal polynomial), so deg(minpoly) \u2265 3. Then `adjoin_finrank` uses `IntermediateField.adjoin.finrank` to compute [\u211a(\u03b1):\u211a] = deg(minpoly(\u03b1)) = 3.\n\n`beta_in_adjoin` and `gamma_in_adjoin` prove \u03b2 = 2\u03b1\u00b2\u2212\u03b1\u22121 and \u03b3 = 1\u22122\u03b1\u00b2 lie in \u211a(\u03b1) by explicit membership: \u211a(\u03b1) is closed under addition, subtraction, and multiplication, and \u03b1 \u2208 \u211a(\u03b1) by `mem_adjoin_simple_self`.\n\n`factored_eval_eq` proves the factored form 8a\u00b3-6a-1 = 8(a-\u03b1)(a-\u03b2)(a-\u03b3) as a pure ring identity (using `ring` after reducing to showing the difference is 0 via a key multiplication identity).",
+    "mathContext": "$[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\deg(\\text{minpoly}_{\\mathbb{Q}}(\\alpha)) = 3$. The factored form: $8a^3 - 6a - 1 = 8(a-\\alpha)(a-(2\\alpha^2-\\alpha-1))(a-(1-2\\alpha^2))$, a ring identity. Since $\\{\\alpha,\\beta,\\gamma\\} \\subseteq \\mathbb{Q}(\\alpha)$, we get $\\mathbb{Q}(\\alpha) = \\text{SplittingField}(p)$.",
+    "significance": "key",
+    "relatedConcepts": ["minpoly.dvd", "IntermediateField.adjoin.finrank", "mem_adjoin_simple_self", "factored form"],
+    "prerequisites": ["root_in_sf", "root_eq_zero", "p_irreducible", "IntermediateField.adjoin"]
+  },
+  {
+    "id": "ann-cos20-splitting-finrank",
+    "proofId": "angle-trisection-cos-20-gal",
+    "range": { "startLine": 446, "endLine": 461 },
+    "type": "theorem",
+    "title": "splitting_finrank: [SplittingField(p):\u211a] = 3",
+    "content": "The public theorem `splitting_finrank` assembles the two key results: `adjoin_root_eq_top` (\u211a(\u03b1) = SplittingField as intermediate fields) and `adjoin_finrank` ([\u211a(\u03b1):\u211a] = 3). The proof uses `LinearEquiv.finrank_eq` to transfer the finrank from \u211a(\u03b1) to SplittingField \u2014 the `topEquiv` isomorphism between the top intermediate field and the splitting field itself gives the needed linear equivalence. This is technically subtle: Lean distinguishes between the abstract SplittingField type and the intermediate field \u22a4 inside it, and this theorem bridges the two views.\n\nWith splitting_finrank in hand, `cos20_gal_card` follows in two lines: `Polynomial.Gal.card_of_separable` gives |Gal(p)| = [SplittingField:\u211a], and splitting_finrank gives [SplittingField:\u211a] = 3.",
+    "mathContext": "$[\\text{SplittingField}(p):\\mathbb{Q}] = [\\mathbb{Q}(\\alpha):\\mathbb{Q}] = 3$, using $\\mathbb{Q}(\\alpha) = \\text{SplittingField}(p)$ (from adjoin_root_eq_top) and $\\text{IntermediateField.topEquiv}$ to transfer the finrank. Hence $|\\text{Gal}(p/\\mathbb{Q})| = 3$.",
+    "significance": "key",
+    "relatedConcepts": ["LinearEquiv.finrank_eq", "IntermediateField.topEquiv", "adjoin_root_eq_top", "Polynomial.Gal.card_of_separable"],
+    "prerequisites": ["adjoin_finrank", "adjoin_root_eq_top", "splitting_finrank"]
   }
 ]

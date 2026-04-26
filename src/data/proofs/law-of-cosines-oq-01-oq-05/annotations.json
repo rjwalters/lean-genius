@@ -100,10 +100,12 @@
       "endLine": 343
     },
     "type": "theorem",
-    "title": "Euclidean Limit (K → 0) — Sorry Remaining",
-    "content": "euclidean_limit_holds states that as K→0, the unified formula with parameters a,b,c,cosC converges to zero provided c²=a²+b²-2ab·cosC (the Euclidean law). This is formulated as a continuity statement: for all ε>0, there exists δ>0 such that |K|<δ implies the unified formula evaluates near 0. The proof requires Taylor expansion analysis and is left as a sorry.",
+    "title": "Euclidean Limit (K → 0) — Fully Proved via Taylor Bounds",
+    "content": [
+      "`euclidean_limit_holds` (lines 392-670, **fully proved with 0 sorries**) states: if c²=a²+b²-2ab·cosC, then for all ε>0 there exists δ>0 such that |K|<δ implies |unified_formula(K)| < ε. The proof is a 280-line three-case analysis:\n\n**K>0**: |sin(√K·r)| ≤ √K·|r| and 1-cos(√K·r) ≤ K·r²/2 give |expression| ≤ K·M_pos ≤ |K|·M < ε.\n\n**K<0**: `cosh_K_bound` and `cosh_double_K_bound` (private helper lemmas at 346-385) bound cosh-1 and sinh² via exponential growth. AM-GM gives |sinh(u·a)·sinh(u·b)| ≤ -K·(...). The full bound gives |expression| ≤ -K·M_neg ≤ |K|·M < ε.\n\n**K=0**: expression is exactly 0 < ε.\n\nThe δ = min(1, ε/M) where M = M_pos + M_neg with explicit constants."
+    ],
     "mathContext": "The Taylor expansion: $\\text{cs}_K(r) = \\cos(\\sqrt{K}r) = 1 - \\frac{K r^2}{2} + O(K^2)$ and $\\text{sn}_K(r) = \\frac{\\sin(\\sqrt{K}r)}{\\sqrt{K}} = r - \\frac{K r^3}{6} + O(K^2)$. Substituting: $\\text{cs}_K(c) - (\\text{cs}_K(a)\\text{cs}_K(b) + K\\cdot\\text{sn}_K(a)\\text{sn}_K(b)\\cos(C)) = (1-Kc^2/2) - (1-Ka^2/2)(1-Kb^2/2) - K\\cdot a\\cdot b\\cdot\\cos(C) + O(K^2) = Kc^2/2 - K(a^2+b^2)/2 + K\\cdot ab\\cos(C) + O(K^2) = K(c^2-a^2-b^2+2ab\\cos(C))/2 + O(K^2) = 0 + O(K^2)$ using the Euclidean law. So the expression is $O(K^2)$ and the $\\delta = \\sqrt{\\epsilon/M}$ for appropriate constant $M$ would work.",
-    "significance": "supporting",
+    "significance": "key",
     "relatedConcepts": [
       "Taylor expansion",
       "K→0 limit",
@@ -113,6 +115,81 @@
       "cos(x) Taylor series near 0",
       "sin(x)/x → 1 as x→0",
       "Mathlib real analysis infrastructure"
+    ]
+  },
+  {
+    "id": "ann-special-values-algebra",
+    "proofId": "law-of-cosines-oq-01-oq-05",
+    "range": {
+      "startLine": 87,
+      "endLine": 181
+    },
+    "type": "concept",
+    "title": "Special Values, Parity, and Key Algebra Lemmas",
+    "content": "Three groups of supporting lemmas (lines 87-181):\n\n**Part II — Special values** (87-130): `@[simp]` lemmas compute cs_K and sn_K at K=±1 and K=0. `curvatureCos_neg_one` uses `simp only` with explicit norm_num proofs for conditions like `¬(-1 > 0)` and `(-1 < 0)`. `curvatureCos_at_zero` and `curvatureSin_at_zero` use `split_ifs with h1 h2` to handle all three cases.\n\n**Part III — Parity** (131-148): `curvatureCos_neg` (even: cs_K(-r) = cs_K(r)) and `curvatureSin_neg` (odd: sn_K(-r) = -sn_K(r)) follow from `mul_neg` and the corresponding parity of cos/cosh and sin/sinh.\n\n**Part IV — Key algebra lemmas** (149-181): Two `private lemma`s that are the algebraic engine for equivalence proofs:\n- `K_mul_div_sqrt_sq_pos`: K·(x/√K)·(y/√K) = x·y for K>0. Proved by `field_simp` then `rw [sq_sqrt, mul_div_cancel_left₀]`.\n- `K_mul_div_sqrt_sq_neg`: K·(x/√(-K))·(y/√(-K)) = -(x·y) for K<0. Proved by `div_neg, mul_div_cancel_left₀`.\nThese two lemmas resolve the sign difference between spherical and hyperbolic laws algebraically.",
+    "mathContext": "Parity: in all three cases, $\\text{cs}_K(-r) = \\text{cs}_K(r)$ and $\\text{sn}_K(-r) = -\\text{sn}_K(r)$ follow from the parity of cos, cosh (even) and sin, sinh (odd). The algebra: $K \\cdot (x/\\sqrt{K}) \\cdot (y/\\sqrt{K}) = K \\cdot xy/K = xy$ for $K>0$, and $K \\cdot (x/\\sqrt{-K}) \\cdot (y/\\sqrt{-K}) = K \\cdot xy/(-K) = -xy$ for $K<0$. The sign flip is exactly what makes the unified formula recover the minus sign in the hyperbolic law.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "curvatureCos_neg_one",
+      "curvatureSin_neg_one",
+      "K_mul_div_sqrt_sq_pos",
+      "K_mul_div_sqrt_sq_neg",
+      "simp lemmas for unfolding"
+    ],
+    "prerequisites": [
+      "Real.cos_neg, Real.cosh_neg (parity)",
+      "Real.sq_sqrt, mul_div_cancel_left₀",
+      "field_simp for algebraic simplification"
+    ]
+  },
+  {
+    "id": "ann-unified-triangle-structure",
+    "proofId": "law-of-cosines-oq-01-oq-05",
+    "range": {
+      "startLine": 218,
+      "endLine": 259
+    },
+    "type": "definition",
+    "title": "UnifiedTriangle Structure: Axiomatizing K-Geometry Triangles",
+    "content": "`UnifiedTriangle (K : ℝ)` (lines 226-237) is a Lean structure encoding a triangle in a space of constant sectional curvature K. Fields:\n- `a, b, c : ℝ` — side lengths (all positive via `ha`, `hb`, `hc`)\n- `C : ℝ` — angle opposite to c (constrained: `0 < C < π`)\n- `law` — the unified formula as a field: `cs_K(c) = cs_K(a)·cs_K(b) + K·sn_K(a)·sn_K(b)·cos(C)`\n\nThe structure axiomatizes triangles at the formula level, without building the actual Riemannian geometry. The theorem `unified_law_of_cosines` (lines 239-242) extracts the `law` field — a trivial one-liner `t.law`.\n\n**Recovery theorems** (248-276): `spherical_recovery_K1` and `hyperbolic_recovery_Kneg1` show that classical-form hypotheses imply the K=±1 unified formula. `unified_K_neg1_gives_hyperbolic` and `unified_K1_gives_spherical` go the other direction: a UnifiedTriangle at K=±1 satisfies the classical law. These are all `simp [cs_K_one/neg_one] + linarith`.",
+    "mathContext": "The `law` field is a proposition (a proof that the formula holds), not data. A structure field of type `Prop` acts as an axiom about the triangle's geometry. This design means any tuple (a, b, c, C) satisfying the unified formula `cs_K(c) = cs_K(a)cs_K(b) + K·sn_K(a)sn_K(b)cos(C)` can be wrapped in `UnifiedTriangle K`. The structure does not require a, b, c to satisfy triangle inequalities beyond positivity and C ∈ (0,π).",
+    "significance": "key",
+    "relatedConcepts": [
+      "UnifiedTriangle",
+      "unified_law_of_cosines",
+      "structure as axiom",
+      "recovery theorems",
+      "spherical_recovery_K1"
+    ],
+    "prerequisites": [
+      "Lean 4 structures",
+      "Real.pi",
+      "curvatureCos, curvatureSin definitions"
+    ]
+  },
+  {
+    "id": "ann-euclidean-proof-structure",
+    "proofId": "law-of-cosines-oq-01-oq-05",
+    "range": {
+      "startLine": 317,
+      "endLine": 338
+    },
+    "type": "concept",
+    "title": "Scaling Consistency and Euclidean Limit Setup",
+    "content": "**Scaling consistency** (317-330): `curvature_family_consistency_pos` proves cs_K(r) = cs_1(√K·r) for K>0 — i.e., K-geometry is unit-sphere geometry at scale 1/√K. Similarly, `curvature_sin_family_consistency_pos` proves sn_K(r) = sn_1(√K·r)/√K. Both are proved by `simp [curvatureCos, hK]` — the definitions unfold directly.\n\n**Euclidean limit helper lemmas** (338-385): Three private helper lemmas bound the error terms in the Taylor expansion:\n- `exp_sub_one_le_mul_exp (t)`: exp(t)-1 ≤ t·exp(t). Proved from `Real.add_one_le_exp`.\n- `cosh_sub_one_le (x)`: cosh(x)-1 ≤ (x²/2)·exp(x²/2). Uses `Real.cosh_le_exp_half_sq`.\n- `cosh_K_bound {K u}`: cosh(u·x)-1 ≤ -K·(x²/2·exp(x²/2)) when u²=-K. Applies `cosh_sub_one_le` and bounds exp(-K·x²/2) ≤ exp(x²/2) via monotonicity.\n- `cosh_double_K_bound {K u}`: cosh(2·u·x)-1 ≤ -K·2·(x²·exp(2x²)). Handles the double-angle bound needed for sinh² = (cosh(2x)-1)/2.",
+    "mathContext": "The scaling identity $\\text{cs}_K(r) = \\cos(\\sqrt{K} \\cdot r)$ for $K>0$ is immediate from the definition when $K>0$. For the Euclidean limit, the key inequalities are: (1) $\\cos(x) \\geq 1 - x^2/2$ (from `Real.one_sub_sq_div_two_le_cos`), giving $1-\\cos(\\sqrt{K}r) \\leq Kr^2/2$; (2) $|\\sin(x)| \\leq |x|$ (from `Real.abs_sin_le_abs`). These give the K>0 bound. For K<0, `Real.cosh_le_exp_half_sq` gives the cosh bound.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "curvature_family_consistency_pos",
+      "cosh_K_bound",
+      "Real.cosh_le_exp_half_sq",
+      "Real.one_sub_sq_div_two_le_cos",
+      "Real.abs_sin_le_abs"
+    ],
+    "prerequisites": [
+      "Real.cosh_le_exp_half_sq in Mathlib",
+      "Real.add_one_le_exp (e^x ≥ 1+x)",
+      "Real.one_sub_sq_div_two_le_cos"
     ]
   }
 ]

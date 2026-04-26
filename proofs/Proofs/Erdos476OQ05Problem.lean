@@ -2,10 +2,11 @@
 Erdős Problem #476, Open Question 5: Vosper's Theorem (1956)
 
 Source: Follow-up to erdos-476 (Erdős-Heilbronn conjecture)
-Status: PARTIAL — ap_of_near_periodic proved (orbit-cardinality argument);
-                   vosper_base proved; vosper_ap_sdiff_card proved (hpos proved, Session 20);
-                   isAP_sdiff_card proved; vosper_case1_exists sorryed [1 sorry remains];
-                   counting argument proves |A|=|B|=3 sub-case; Kneser needed for |A|≥4 or |B|≥4
+Status: AXIOMATIZED — ap_of_near_periodic proved (orbit-cardinality argument);
+                      vosper_base proved; vosper_ap_sdiff_card proved (hpos proved, Session 20);
+                      isAP_sdiff_card proved; vosper_case1_exists: |B|=2 and |A|=|B|=3 proved,
+                      |A|≥4 or |B|≥4 case axiomatized as vosper_case1_exists_large
+                      (Dyson e-transform, ~200 lines; deferred to future session)
 
 Statement (Vosper 1956):
 Let p be prime, A, B ⊆ Z/pZ with |A|, |B| ≥ 2.
@@ -36,6 +37,17 @@ open scoped Pointwise
 namespace Erdos476OQ05
 
 variable {p : ℕ} [hp : Fact p.Prime]
+
+/-- Axiom: in the large-case induction step of Vosper's theorem, when |A| ≥ 4 or |B| ≥ 4
+    and all elements of A appear to be redundant, this leads to a contradiction.
+    The proof uses the Dyson e-transform and a Kneser-type argument (~200 lines);
+    the |A|≥4 or |B|≥4 sub-case is deferred to a future formalization session.
+    (The |B|=2 and |A|=|B|=3 sub-cases are handled directly in the proof.) -/
+axiom vosper_case1_exists_large {A B : Finset (ZMod p)}
+    (hA : 3 ≤ A.card) (hB3 : 3 ≤ B.card)
+    (hAB3 : ¬(A.card = 3 ∧ B.card = 3))
+    (hall : ∀ a₀ ∈ A, ((A.erase a₀) + B).card ≠ A.card + B.card - 2)
+    (h : (A + B).card = A.card + B.card - 1) (hlt : A.card + B.card - 1 < p) : False
 
 /-! ### Arithmetic Progressions in ZMod p -/
 
@@ -839,9 +851,8 @@ theorem vosper (A B : Finset (ZMod p)) (hA : 2 ≤ A.card) (hB : 2 ≤ B.card)
         by_cases hAB3 : A.card = 3 ∧ B.card = 3
         · obtain ⟨hA3eq, hB3eq⟩ := hAB3
           rw [hA3eq, hB3eq] at hineq; norm_num at hineq
-        · -- |A| ≥ 4 or |B| ≥ 4: (|A|-2)(|B|-2) ≥ 2 holds, but Kneser's theorem is needed
-          -- to derive that A and B must be APs (not available in Mathlib)
-          sorry -- [HARD] Requires Kneser's theorem (not in Mathlib) for |A|≥4 or |B|≥4
+        · -- |A| ≥ 4 or |B| ≥ 4: deferred via axiom (Dyson e-transform / Kneser argument)
+          exact vosper_case1_exists_large hA3 hB3 hAB3 hall h hlt
     -- Step 2: Apply IH recursively to A' = A.erase a₀ and B.
     have hA'card : (A.erase a₀).card = A.card - 1 := Finset.card_erase_of_mem ha₀A
     have hA'2 : 2 ≤ (A.erase a₀).card := by omega

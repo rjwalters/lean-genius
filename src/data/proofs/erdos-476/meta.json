@@ -1,8 +1,8 @@
 {
   "id": "erdos-476",
-  "title": "Erdős Problem #476: The Erdős-Heilbronn Conjecture",
+  "title": "Erd\u0151s Problem #476: The Erd\u0151s-Heilbronn Conjecture",
   "slug": "erdos-476",
-  "description": "For A ⊆ 𝔽ₚ, is |A +̂ A| ≥ min(2|A| - 3, p) where A +̂ A denotes sums of distinct pairs? YES, proved by da Silva-Hamidoune (1994).",
+  "description": "For A \u2286 \ud835\udd3d\u209a, is |A +\u0302 A| \u2265 min(2|A| - 3, p) where A +\u0302 A denotes sums of distinct pairs? YES, proved by da Silva-Hamidoune (1994).",
   "meta": {
     "author": "da Silva-Hamidoune (1994)",
     "sourceUrl": "https://erdosproblems.com/476",
@@ -41,13 +41,13 @@
       }
     ],
     "originalContributions": [
-      "restrictedSumset definition: sums of distinct pairs A +̂ A",
+      "restrictedSumset definition: sums of distinct pairs A +\u0302 A",
       "sumset definition: ordinary sumset A + A",
-      "restrictedSumset_subset_sumset theorem: A +̂ A ⊆ A + A",
-      "restrictedSumset_singleton theorem: {a} +̂ {a} = ∅",
-      "erdos_heilbronn_bound axiom: |A +̂ A| ≥ min(2|A| - 3, p)",
+      "restrictedSumset_subset_sumset theorem: A +\u0302 A \u2286 A + A",
+      "restrictedSumset_singleton theorem: {a} +\u0302 {a} = \u2205",
+      "erdos_heilbronn_bound axiom: |A +\u0302 A| \u2265 min(2|A| - 3, p)",
       "erdos_476 theorem: the main result",
-      "arithmeticProgression definition: APs in 𝔽ₚ",
+      "arithmeticProgression definition: APs in \ud835\udd3d\u209a",
       "AP_restrictedSumset theorem: APs achieve the bound exactly (fully proved)",
       "AP_achieves_bound theorem: APs minimize the restricted sumset (fully proved)",
       "card_two_case theorem: |A| = 2 case (fully proved)",
@@ -56,19 +56,19 @@
     ],
     "axiomCount": 1,
     "lineCount": 384,
-    "assumptions": "1 axiom: erdos_heilbronn_bound (the Erdős-Heilbronn bound). All other results (AP_restrictedSumset, AP_achieves_bound, card_two_case, etc.) are fully proved theorems. 0 sorries."
+    "assumptions": "1 axiom: erdos_heilbronn_bound (the Erd\u0151s-Heilbronn bound). All other results (AP_restrictedSumset, AP_achieves_bound, card_two_case, etc.) are fully proved theorems. 0 sorries."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #476: The Erdős-Heilbronn Conjecture**\n\nThis classic conjecture in additive combinatorics concerns restricted sumsets in finite fields.\n\n**Key History:**\n- Erdős-Heilbronn (1964): Conjectured the bound |A +̂ A| ≥ min(2|A| - 3, p)\n- da Silva-Hamidoune (1994): Proved using exterior algebra (Grassmann derivatives)\n- Alon-Nathanson-Ruzsa (1995): Alternative proof via polynomial method\n\n**Mathematical Setting:**\nThe restricted sumset A +̂ A contains only sums a + b where a ≠ b, excluding diagonal elements 2a. This seemingly small change from ordinary sumsets leads to deep mathematics.",
+    "historicalContext": "**Erd\u0151s Problem #476: The Erd\u0151s-Heilbronn Conjecture**\n\nThis classic conjecture in additive combinatorics concerns restricted sumsets in finite fields.\n\n**Key History:**\n- Erd\u0151s-Heilbronn (1964): Conjectured the bound |A +\u0302 A| \u2265 min(2|A| - 3, p)\n- da Silva-Hamidoune (1994): Proved using exterior algebra (Grassmann derivatives)\n- Alon-Nathanson-Ruzsa (1995): Alternative proof via polynomial method\n\n**Mathematical Setting:**\nThe restricted sumset A +\u0302 A contains only sums a + b where a \u2260 b, excluding diagonal elements 2a. This seemingly small change from ordinary sumsets leads to deep mathematics.",
     "problemStatement": "**Problem Statement (Proved)**\n\nLet $A \\subseteq \\mathbb{F}_p$ be a subset of the finite field with $p$ elements. Define the **restricted sumset**:\n$$A \\hat{+} A = \\{a + b : a \\neq b \\in A\\}$$\n\nIs it true that $|A \\hat{+} A| \\geq \\min(2|A| - 3, p)$?\n\n**Answer: YES**\n\nda Silva and Hamidoune (1994) proved this using exterior algebra. The bound is tight - arithmetic progressions achieve exactly $2|A| - 3$ elements.",
-    "text": "For A ⊆ 𝔽ₚ, is |A +̂ A| ≥ min(2|A| - 3, p) where A +̂ A denotes sums of distinct pairs? YES, proved by da Silva-Hamidoune (1994).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Restricted Sumsets:** Define A +̂ A as sums of distinct pairs\n\n2. **Basic Properties:** Show A +̂ A ⊆ A + A, singleton case gives empty set\n\n3. **Main Axiom:** The Erdős-Heilbronn bound as an axiom (proof is sophisticated)\n\n4. **Tightness:** Arithmetic progressions achieve the exact bound\n\n5. **Comparison:** Relate to Cauchy-Davenport (ordinary sumsets)\n\n6. **Generalization:** r-fold restricted sums with bound r|A| - r² + 1",
+    "text": "For A \u2286 \ud835\udd3d\u209a, is |A +\u0302 A| \u2265 min(2|A| - 3, p) where A +\u0302 A denotes sums of distinct pairs? YES, proved by da Silva-Hamidoune (1994).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Restricted Sumsets:** Define A +\u0302 A as sums of distinct pairs\n\n2. **Basic Properties:** Show A +\u0302 A \u2286 A + A, singleton case gives empty set\n\n3. **Main Axiom:** The Erd\u0151s-Heilbronn bound as an axiom (proof is sophisticated)\n\n4. **Tightness:** Arithmetic progressions achieve the exact bound\n\n5. **Comparison:** Relate to Cauchy-Davenport (ordinary sumsets)\n\n6. **Generalization:** r-fold restricted sums with bound r|A| - r\u00b2 + 1",
     "keyInsights": [
       "**Restricted vs Ordinary:** Excluding diagonal sums costs exactly 2 elements in the bound (2|A| - 3 vs 2|A| - 1)",
       "**Exterior Algebra:** The original proof uses Grassmann derivatives - linear algebra in disguise",
       "**Polynomial Method:** Alon's Combinatorial Nullstellensatz provides an elegant alternative proof",
       "**Tight Bound:** Arithmetic progressions show the bound cannot be improved",
-      "**Generalization:** Extends to sums of r distinct elements with bound r|A| - r² + 1"
+      "**Generalization:** Extends to sums of r distinct elements with bound r|A| - r\u00b2 + 1"
     ],
     "prerequisites": [
       "Number theory fundamentals",
@@ -79,10 +79,10 @@
     {
       "id": "restricted-sumsets",
       "title": "Restricted Sumsets",
-      "summary": "Definition of A +̂ A and ordinary sumset A + A",
+      "summary": "Definition of A +\u0302 A and ordinary sumset A + A",
       "startLine": 42,
       "endLine": 67,
-      "mathContext": "Formal definition: Definition of A +̂ A and ordinary sumset A + A"
+      "mathContext": "Formal definition: Definition of A +\u0302 A and ordinary sumset A + A"
     },
     {
       "id": "basic-properties",
@@ -94,7 +94,7 @@
     },
     {
       "id": "main-bound",
-      "title": "The Erdős-Heilbronn Bound",
+      "title": "The Erd\u0151s-Heilbronn Bound",
       "summary": "erdos_heilbronn_bound axiom and erdos_476 theorem",
       "startLine": 97,
       "endLine": 120,
@@ -135,10 +135,10 @@
     {
       "id": "generalization",
       "title": "Generalization to r-Sums",
-      "summary": "r-fold restricted sumsets with bound r|A| - r² + 1",
+      "summary": "r-fold restricted sumsets with bound r|A| - r\u00b2 + 1",
       "startLine": 224,
       "endLine": 246,
-      "mathContext": "Bound: r-fold restricted sumsets with bound r|A| - r² + 1"
+      "mathContext": "Bound: r-fold restricted sumsets with bound r|A| - r\u00b2 + 1"
     },
     {
       "id": "examples",
@@ -158,7 +158,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #476, the Erdős-Heilbronn conjecture, asked whether |A +̂ A| ≥ min(2|A| - 3, p) for subsets A of finite fields. Da Silva and Hamidoune proved this in 1994 using exterior algebra, with an alternative proof by Alon-Nathanson-Ruzsa using the polynomial method. The bound is tight, achieved by arithmetic progressions.",
+    "summary": "Erd\u0151s Problem #476, the Erd\u0151s-Heilbronn conjecture, asked whether |A +\u0302 A| \u2265 min(2|A| - 3, p) for subsets A of finite fields. Da Silva and Hamidoune proved this in 1994 using exterior algebra, with an alternative proof by Alon-Nathanson-Ruzsa using the polynomial method. The bound is tight, achieved by arithmetic progressions.",
     "implications": "**Additive Combinatorics Connections**\n\n1. **Sumset Theory:** Fundamental result about restricted sumsets in finite fields\n\n**2. Polynomial Method:** Showcases power of Combinatorial Nullstellensatz\n\n**3. Exterior Algebra:** Connects combinatorics to advanced algebra\n\n4. **Cauchy-Davenport Extension:** Refines classical sumset bounds\n\n5. **r-fold Generalization:** Extends to sums of any number of distinct elements.",
     "openQuestions": [
       "Optimal bounds for restricted sumsets in other groups",
@@ -182,7 +182,7 @@
     "namespace": "Erdos476",
     "lineCount": 384,
     "axiomCount": 1,
-    "theoremCount": 9,
+    "theoremCount": 10,
     "definitionCount": 4,
     "path": "Proofs/Erdos476Problem.lean",
     "sorries": 0
@@ -191,17 +191,17 @@
     {
       "targetId": "erdos-484",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved, sumsets"
+      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, solved, sumsets"
     },
     {
       "targetId": "erdos-785",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved, sumsets"
+      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, solved, sumsets"
     },
     {
       "targetId": "erdos-806",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved, sumsets"
+      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, solved, sumsets"
     }
   ],
   "sorries": 0

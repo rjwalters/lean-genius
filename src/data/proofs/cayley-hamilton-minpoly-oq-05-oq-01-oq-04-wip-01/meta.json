@@ -1,0 +1,150 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+  "title": "Nonderogatory to Cyclic Vector: Companion Matrix Approach",
+  "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+  "description": "Proves e0 is a cyclic vector for the companion matrix of any monic polynomial via the Krylov orbit argument, and reduces the general nonderogatory cyclic vector theorem to the precisely-stated axiom that nonderogatory matrices are similar to their companion matrices.",
+  "meta": {
+    "author": "Classical linear algebra (companion matrix theory)",
+    "sourceUrl": "",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean",
+    "tags": [
+      "linear-algebra",
+      "minimal-polynomial",
+      "cyclic-vector",
+      "nonderogatory",
+      "companion-matrix",
+      "wip"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 290,
+    "assumptions": "1 axiom: nonderogatory_similar_to_companion (nonderogatory matrix is similar to its companion matrix; requires rational canonical form / PID structure theorem, not yet in Mathlib 4.26).",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.charpoly_natDegree_eq_dim",
+        "description": "Characteristic polynomial has degree n = Fintype.card (Fin n)",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "charpoly_monic",
+        "description": "The characteristic polynomial of a matrix is monic",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "Polynomial.leadingCoeff_ne_zero",
+        "description": "Leading coefficient is nonzero iff polynomial is nonzero",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Lemmas"
+      },
+      {
+        "theorem": "Polynomial.le_natDegree_of_mem_supp",
+        "description": "Support elements are bounded by natDegree",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Definitions"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Companion matrices have been a cornerstone of linear algebra since the 19th century, appearing naturally in the theory of eigenvalues (Cayley, Weierstrass) and the rational canonical form (Frobenius, 1879). The nonderogatory property \u2014 that the minimal polynomial equals the characteristic polynomial \u2014 was identified as the condition for a matrix to have a single invariant factor, making K^n a cyclic module over K[X]. The equivalence 'nonderogatory \u2194 similar to companion matrix' is the central theorem of rational canonical form theory, but its proof requires the structure theorem for finitely generated modules over K[X], a principal ideal domain. Unlike the Jordan canonical form (valid only over algebraically closed fields), the rational canonical form works over any field. Despite its classical status, the PID structure theorem for K[X]-modules had not been formalized in Mathlib as of version 4.26. The parent file CayleyHamiltonMinpolyOQ05OQ01OQ04.lean attempts the general theorem via the module-theoretic route but carries a sorry at the key step. This WIP file pursues a companion-matrix-first strategy: the Krylov orbit C^k e0 = e_k is a concrete, purely computational fact about matrix powers that can be verified without any abstract module theory, providing an unconditional proof of the companion matrix half.",
+    "problemStatement": "Reduce the sorry in the general nonderogatory cyclic vector theorem to a precisely-stated axiom. The original sorry was vague ('requires PID structure theorem'). This file proves the companion matrix half and isolates the remaining gap as: 'nonderogatory M is similar to companion(charpoly M)'.",
+    "proofStrategy": "Three-step decomposition: (1) PROVE that e0 is cyclic for companionMat(p) when p is monic of degree n, via the orbit argument: C^k e0 = e_k for k < n, so evaluating q(C)e0 at index natDegree(q) gives q.leadingCoeff, which is nonzero for q != 0. (2) STATE as axiom that nonderogatory M is similar to companionMat(charpoly M). (3) PROVE the similarity transfer theorem: if M = P^{-1}NP and v is cyclic for N, then P^{-1}v is cyclic for M. Combining (1)+(2)+(3) gives the main theorem.",
+    "keyInsights": [
+      "The orbit structure C^k e0 = e_k for k < n is the key constructive fact. It follows by induction: the subdiagonal of the companion matrix shifts basis vectors forward.",
+      "The leading coefficient extraction trick: if q(C)e0 = 0 and deg(q) < n, then evaluating at the natDegree(q)-th coordinate gives q.leadingCoeff = 0, contradicting q != 0. This avoids any dimension/rank argument.",
+      "The similarity transfer is proved by showing aeval commutes with conjugation: aeval(P^{-1}NP)(q) = P^{-1} aeval(N)(q) P. This is the same algebraic fact as aeval_conj in the parent file.",
+      "The remaining axiom (nonderogatory_similar_to_companion) is the classical theorem that nonderogatory matrices have a single invariant factor, hence are similar to their companion matrix. This requires the rational canonical form, which requires the PID structure theorem for K[X]-modules.",
+      "Once Mathlib adds rational canonical form or the PID module structure theorem, the axiom can be replaced with a proof, making the entire file verified with 0 axioms and 0 sorries."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "I. Definitions",
+      "startLine": 38,
+      "endLine": 47,
+      "summary": "Defines IsCyclicVector and IsNonderogatory, consistent with the parent OQ-05-OQ-01-OQ-04 file.",
+      "mathContext": "A vector v is cyclic for M if no nonzero polynomial of degree < n annihilates v via M. A matrix is nonderogatory if its minimal polynomial equals its characteristic polynomial."
+    },
+    {
+      "id": "companion-matrix",
+      "title": "II. Local Companion Matrix",
+      "startLine": 52,
+      "endLine": 99,
+      "summary": "Defines companionMat(p) and proves the Krylov orbit theorem: C^k e0 = e_k for k < n.",
+      "mathContext": "The companion matrix of a monic degree-n polynomial p has 1s on the subdiagonal, negated coefficients in the last column, and 0s elsewhere. Its powers shift the standard basis: C^k e0 = e_k."
+    },
+    {
+      "id": "computation-lemmas",
+      "title": "III. Key Computation Lemmas",
+      "startLine": 104,
+      "endLine": 137,
+      "summary": "Proves sum_mulVec (distribution of mulVec over sums) and companion_orbit_eval (evaluating q(C)e0 at index natDegree(q) gives q.leadingCoeff).",
+      "mathContext": "The sum distribution lemma allows expanding aeval C q as a sum over the support of q. The orbit evaluation lemma is the key technical step: it shows evaluating q(C)e0 at coordinate natDegree(q) extracts the leading coefficient."
+    },
+    {
+      "id": "main-cyclic",
+      "title": "IV. Main Result: e0 is Cyclic",
+      "startLine": 142,
+      "endLine": 157,
+      "summary": "Proves companionMat_e0_cyclic: e0 is a cyclic vector for companionMat(p) when p is monic of degree n. This is the main new verified result.",
+      "mathContext": "If q(C)e0 = 0 and deg(q) < n, then evaluating at index natDegree(q) gives q.leadingCoeff = 0, so q = 0. This is the contrapositive: cyclicity follows because no nonzero low-degree polynomial can annihilate e0."
+    },
+    {
+      "id": "similarity-transfer",
+      "title": "V. Similarity Transfer",
+      "startLine": 162,
+      "endLine": 233,
+      "summary": "Proves cyclic_vector_similar_transfer (conjugation formula q(P\u207b\u00b9NP) = P\u207b\u00b9q(N)P via polynomial induction) and states nonderogatory_similar_to_companion as an axiom.",
+      "mathContext": "If M = P^{-1}NP, then aeval M q = P^{-1} (aeval N q) P by the conjugation formula, so q(M)(P^{-1}v) = P^{-1}(q(N)v). The axiom states that nonderogatory M is similar to companion(charpoly M), capturing the rational canonical form gap."
+    },
+    {
+      "id": "main-theorem",
+      "title": "VI. Main Theorem and Corollary",
+      "startLine": 248,
+      "endLine": 290,
+      "summary": "Proves nonderogatory_has_cyclic_vector_any_field (over any field) and the corollary for finite fields by combining: companion cyclic vector (proved), similarity (axiom), and transfer (proved).",
+      "mathContext": "For n > 0: companionMat(charpoly M) has e0 as a cyclic vector (Section IV); M is similar to it (axiom); similarity transfers cyclic vectors (Section V). Therefore M has a cyclic vector. The finite-field corollary removes the [Infinite K] hypothesis from the parent file's approach."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file makes concrete progress on the nonderogatory cyclic vector theorem. The companion matrix cyclic vector (companionMat_e0_cyclic) is fully proved via the Krylov orbit argument. The remaining sorry is precisely stated as an axiom: nonderogatory matrices are similar to their companion matrices. This decomposes the original vague sorry into a proved part and a precisely-located mathematical gap.",
+    "implications": "The orbit argument C^k e0 = e_k is now formally verified in Lean 4, establishing a concrete constructive fact about companion matrices. The similarity transfer theorem is also verified. The only remaining mathematical content is the rational canonical form / PID structure theorem, which is a known Mathlib gap. This decomposition makes the remaining work modular: once the similarity axiom is proved, the entire chain completes automatically.",
+    "openQuestions": [
+      "Can nonderogatory_similar_to_companion be proved using existing Mathlib infrastructure (e.g., primary decomposition for finitely generated modules)?",
+      "When will Mathlib add the rational canonical form or the PID module structure theorem?",
+      "Can a direct proof via the Cayley-Hamilton theorem avoid the rational canonical form entirely? (M annihilated by charpoly + nonderogatory forces minpoly = charpoly, but getting a cyclic vector from this requires the similarity.)"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial",
+      "BigOperators"
+    ],
+    "namespace": "CompanionCyclicVector",
+    "lineCount": 290,
+    "axiomCount": 1,
+    "theoremCount": 11,
+    "definitionCount": 2,
+    "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
+      "relationship": "extends",
+      "description": "Parent: the general nonderogatory cyclic vector theorem with PID-based sorry. This WIP01 decomposes that sorry into a proved companion result and a precisely-stated similarity axiom."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
+      "relationship": "related",
+      "description": "Grandparent: nonderogatory cyclic vector for infinite fields. This WIP01 provides the companion matrix approach that works over all fields."
+    }
+  ],
+  "sorries": 0
+}

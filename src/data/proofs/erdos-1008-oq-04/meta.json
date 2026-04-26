@@ -28,18 +28,19 @@
     "originalContributions": [
       "IsKstFree: K_{s,t}-freeness definition",
       "kst_subgraph_theorem: CFS generalization (AXIOM)",
+      "kst_exponent_optimal: exponent optimality via Zarankiewicz construction (AXIOM)",
       "c4_from_kst: C4 case as K_{2,2} corollary (PROVED)"
     ],
     "dateAdded": "2026-04-12",
-    "axiomCount": 1,
-    "lineCount": 136,
+    "axiomCount": 2,
+    "lineCount": 145,
     "prerequisites": [
       "Extremal graph theory",
       "Kővári-Sós-Turán theorem",
       "Complete bipartite graphs",
       "Probabilistic method (for proof)"
     ],
-    "assumptions": "1 axiom: kst_subgraph_theorem (K_{s,t}-free subgraph existence with Ω(m^{1-1/s}) edges, Conlon-Fox-Sudakov 2014, requiring the probabilistic method).",
+    "assumptions": "2 axioms: kst_subgraph_theorem (K_{s,t}-free subgraph existence with Ω(m^{1-1/s}) edges, Conlon-Fox-Sudakov 2014) and kst_exponent_optimal (exponent 1-1/s is tight via Zarankiewicz construction, finite projective plane incidence graphs).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -88,7 +89,7 @@
       "title": "Exponent Optimality",
       "startLine": 72,
       "endLine": 81,
-      "summary": "Axiomatizes that the exponent $1 - 1/s$ is optimal via Zarankiewicz-type constructions. Currently a placeholder (`True`), noting that algebraic constructions in finite geometry provide matching lower bounds."
+      "summary": "Axiomatizes that the exponent 1 − 1/s is optimal via Zarankiewicz algebraic constructions (incidence graphs of finite projective planes). Formally states existence of dense K_{s,s}-free graphs with Ω(n^{2-1/s}) edges."
     },
     {
       "id": "c4-corollary",
@@ -123,7 +124,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the $K_{s,t}$ generalization of Erdős 1008 with 2 axioms (CFS existence theorem and exponent optimality) and 1 proved corollary recovering the $C_4 = K_{2,2}$ case. The formalization highlights the subtle exponent discrepancy between the general $K_{s,t}$ bound ($1 - 1/s$) and the specific $C_4$ bound ($2/3$), which arises from the CFS degeneracy refinement.",
+    "summary": "Formalizes the K_{s,t} generalization of Erdős 1008 with 2 axioms (CFS existence theorem and exponent optimality via Zarankiewicz) and 1 proved corollary recovering the C₄ = K_{2,2} case. The formalization highlights the subtle exponent discrepancy between the general K_{s,t} bound (1 − 1/s) and the specific C₄ bound (2/3), which arises from the CFS degeneracy refinement.",
     "implications": "Reveals that the Kővári-Sós-Turán exponent $1/s$ governs a fundamental dichotomy in extremal graph theory: it determines both the maximum edge density of $K_{s,t}$-free graphs (the Zarankiewicz problem) and the minimum size of $K_{s,t}$-free subgraphs in arbitrary dense graphs. The gap between $1 - 1/s$ and the refined degeneracy exponent suggests further structural invariants beyond bipartite completeness are at play.",
     "openQuestions": [
       "Can the $K_{s,t}$ result be extended to non-bipartite forbidden subgraphs $H$, with exponent depending on the Turán exponent of $H$?",
@@ -142,8 +143,8 @@
       "Finset"
     ],
     "namespace": "Erdos1008OQ04",
-    "lineCount": 136,
-    "axiomCount": 1,
+    "lineCount": 145,
+    "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 1,
     "path": "Proofs/Erdos1008OQ04.lean",
@@ -171,6 +172,11 @@
       "name": "kst_subgraph_theorem",
       "type": "axiom",
       "description": "K_{s,t}-free subgraph with Ω(m^{1-1/s}) edges exists"
+    },
+    {
+      "name": "kst_exponent_optimal",
+      "type": "axiom",
+      "description": "Exponent 1-1/s is tight: dense K_{s,s}-free graphs exist via Zarankiewicz construction"
     },
     {
       "name": "c4_from_kst",

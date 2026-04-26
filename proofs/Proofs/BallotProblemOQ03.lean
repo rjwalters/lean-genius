@@ -2538,7 +2538,7 @@ private theorem minSharedStepIdx_preserved (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
     rw [← hcp_def] at h_bound
     omega
   -- Combine: minSwap = i = minOrig
-  omega
+  exact Nat.le_antisymm h_swap_le_i h_swap_ge_i |>.trans h_min_orig.symm
 
 /-- The forward map is injective. This follows because:
     1. canonSharedPoint is preserved by swap (the min step index property)

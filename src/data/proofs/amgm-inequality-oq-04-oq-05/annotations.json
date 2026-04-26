@@ -1,0 +1,82 @@
+[
+  {
+    "id": "ann-bs-preamble",
+    "proofId": "amgm-inequality-oq-04-oq-05",
+    "range": { "startLine": 1, "endLine": 65 },
+    "type": "concept",
+    "title": "Module Preamble: Full Algebraic Derivation of the Brent-Salamin Formula",
+    "content": "The module docstring (lines 1-54) gives the complete mathematical derivation before any Lean code appears. It presents the three ingredients — Gauss's AGM theorem ($M = \\pi/(2K)$), Legendre's relation ($2KE - K^2 = \\pi/2$ for the lemniscate case), and the E-via-AGM formula ($E = K(3/4 - S/2)$) — and shows explicitly how they combine: substituting the E formula into Legendre gives $K^2(1-2S) = \\pi$; substituting Gauss gives $K^2 = \\pi^2/(4M^2)$; combining yields $\\pi = 4M^2/(1-2S)$. The `## Status` checklist (lines 40-48) documents which steps are axiomatized and which are proved, providing a transparent accounting of the 5 analytic axioms. This is the blueprint pattern for large axiomatized formalizations: the derivation is fully legible in comments, and the Lean code implements exactly what the math says.",
+    "mathContext": "The E-via-AGM derivation in the preamble (lines 28-31) uses: $E/K = 1 - \\sum_{n=0}^{\\infty} 2^{n-1} c_n^2$ where $c_n^2 = a_n^2 - b_n^2$. The $n=0$ term contributes $2^{-1} \\cdot c_0^2 = (1/2)/2 = 1/4$ (since $c_0 = a_0 - b_0 = 1 - 1/\\sqrt{2}$ and $c_0^2 = 1/2$ after normalization); the $n \\geq 1$ terms contribute $S/2$. So $E/K = 1 - 1/4 - S/2 = 3/4 - S/2$, giving $E = K(3/4 - S/2)$. The lemniscate condition for Legendre's relation is $(1/\\sqrt{2})^2 + (1/\\sqrt{2})^2 = 1/2 + 1/2 = 1$, confirming $k = k' = 1/\\sqrt{2}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Legendre's relation for elliptic integrals",
+      "Gauss AGM theorem",
+      "Landen transformation",
+      "lemniscate constant"
+    ],
+    "prerequisites": [
+      "complete elliptic integrals K(k) and E(k)",
+      "arithmetic-geometric mean and convergence"
+    ]
+  },
+  {
+    "id": "ann-agm-setup",
+    "proofId": "amgm-inequality-oq-04-oq-05",
+    "range": { "startLine": 67, "endLine": 91 },
+    "type": "definition",
+    "title": "AGM Sequences and Limit M",
+    "content": "bs_a and bs_b are the AGM sequences starting from (1, 1/√2), defined by delegating to AgmInequalityOQ04.agmA and agmB. M = agm(1, 1/√2) is the common limit. The positivity lemmas b₀_pos and b₀_le_one verify the hypotheses needed for the OQ04 AGM convergence lemmas. M_pos follows from the AGM sandwich: M ∈ [b₀, a₀] = [1/√2, 1], so M > 0.",
+    "mathContext": "For $a_0 = 1$, $b_0 = 1/\\sqrt{2}$: $a_{n+1} = (a_n + b_n)/2$, $b_{n+1} = \\sqrt{a_n b_n}$. $M = \\text{agm}(1, 1/\\sqrt{2}) = \\lim_{n\\to\\infty} a_n = \\lim_{n\\to\\infty} b_n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["AGM iteration", "arithmetic-geometric mean", "noncomputable def"],
+    "prerequisites": ["AmgmInequalityOQ04: agmA, agmB, agm, agm_bounds"]
+  },
+  {
+    "id": "ann-bs-series",
+    "proofId": "amgm-inequality-oq-04-oq-05",
+    "range": { "startLine": 97, "endLine": 127 },
+    "type": "definition",
+    "title": "Brent-Salamin Series S = Σ 2^n(aₙ²-bₙ²)",
+    "content": "bs_term n = 2^n·(aₙ² - bₙ²). The term nonnegativity proof uses the factorization A² - B² = (A-B)(A+B): since aₙ ≥ bₙ ≥ 0, both factors are nonneg, so the product is nonneg. The proof uses explicit type annotations on hA and hB to help Lean's implicit argument inference for agmA_pos and agmB_pos. S = Σ_{n≥1} 2^n(aₙ²-bₙ²) is the series from n=1. Axiom S_lt_half is a conservative bound: numerically S ≈ 0.0429.",
+    "mathContext": "$S = \\sum_{n=1}^{\\infty} 2^n(a_n^2 - b_n^2)$. Term nonnegativity: $2^n(a_n^2 - b_n^2) = 2^n(a_n - b_n)(a_n + b_n) \\geq 0$ since $a_n \\geq b_n \\geq 0$.",
+    "significance": "key",
+    "relatedConcepts": ["series summability", "Summable in Mathlib", "tsum", "quadratic AGM convergence"],
+    "prerequisites": ["agmB_le_agmA: bₙ ≤ aₙ", "agmA_pos, agmB_pos: positivity", "Summable, tsum"]
+  },
+  {
+    "id": "ann-elliptic-axioms",
+    "proofId": "amgm-inequality-oq-04-oq-05",
+    "range": { "startLine": 132, "endLine": 174 },
+    "type": "theorem",
+    "title": "Elliptic Integral Axioms: K, E, Gauss, Legendre, E-via-AGM",
+    "content": "Five axioms capture the analytic content: (1) ellipticK : ℝ → ℝ — the complete elliptic integral K(k) = ∫₀^{π/2} dθ/√(1-k²sin²θ), not yet in Mathlib. (2) ellipticE : ℝ → ℝ — the second kind E(k) = ∫₀^{π/2} √(1-k²sin²θ)dθ. (3) K_eq_pi_div_2M : K(1/√2) = π/(2M) — Gauss's AGM theorem for k=1/√2. (4) legendre_relation : 2KE - K² = π/2 — Legendre's relation for k=k'=1/√2. (5) ellipticE_agm : E = K·(3/4 - S/2) — the E-via-AGM formula from Landen transformations. K_pos is proved (not axiomatized): K = π/(2M) > 0 since π,M > 0.",
+    "mathContext": "Gauss's theorem: $M(1,1/\\sqrt{2}) = \\pi/(2K(1/\\sqrt{2}))$. Legendre: $2K \\cdot E - K^2 = \\pi/2$ (for $k=1/\\sqrt{2}$). Landen: $E/K = 1 - 1/4 - S/2 = 3/4 - S/2$.",
+    "significance": "key",
+    "relatedConcepts": ["complete elliptic integrals", "Gauss AGM theorem", "Legendre relation", "Landen transformation"],
+    "prerequisites": ["Real.pi_pos", "M_pos (from § 1)"]
+  },
+  {
+    "id": "ann-brent-salamin",
+    "proofId": "amgm-inequality-oq-04-oq-05",
+    "range": { "startLine": 188, "endLine": 219 },
+    "type": "theorem",
+    "title": "brent_salamin: π = 4M² / (1 - 2S)",
+    "content": "The main theorem. Three-step proof: Step 1 — substitute E = K(3/4-S/2) into Legendre's relation 2KE - K² = π/2. The ring identity 2K·(K·(3/4-S/2)) - K² = K²(1/2-S) simplifies to K²(1-2S) = π. Step 2 — Gauss's theorem K = π/(2M) gives K² = π²/(4M²) by ring. Step 3 — substituting gives π²(1-2S)/(4M²) = π, then rw [div_mul_eq_mul_div, div_eq_iff] clears the denominator to π²(1-2S) = π·4M², and mul_left_cancel₀ cancels π (using hpi.ne') to get π(1-2S) = 4M², i.e., π = 4M²/(1-2S).",
+    "mathContext": "$K^2(1-2S) = \\pi$ (from Legendre + Landen). $K^2 = \\pi^2/(4M^2)$ (from Gauss). Substituting: $\\pi^2(1-2S)/(4M^2) = \\pi$. Cancel $\\pi$: $\\pi = 4M^2/(1-2S)$.",
+    "significance": "main",
+    "relatedConcepts": ["Brent-Salamin algorithm", "Legendre relation", "Gauss AGM theorem", "mul_left_cancel₀"],
+    "prerequisites": ["All axioms from § 3", "M_pos, one_minus_2S_pos, Real.pi_pos"]
+  },
+  {
+    "id": "ann-bs-corollary",
+    "proofId": "amgm-inequality-oq-04-oq-05",
+    "range": { "startLine": 222, "endLine": 234 },
+    "type": "theorem",
+    "title": "bs_sum_value: 2S = 1 - 4M²/π",
+    "content": "Corollary rearranging the Brent-Salamin formula. From brent_salamin, apply eq_div_iff to get π(1-2S) = 4M². Then field_simp [hpi.ne'] clears the π denominator in the goal 2S = 1 - 4M²/π, and linear_combination -hpi_times closes the goal by verifying the polynomial identity holds.",
+    "mathContext": "From $\\pi = 4M^2/(1-2S)$: $\\pi(1-2S) = 4M^2$, so $2S\\pi = \\pi - 4M^2$, giving $2S = 1 - 4M^2/\\pi$.",
+    "significance": "supporting",
+    "relatedConcepts": ["linear_combination tactic", "field_simp", "eq_div_iff"],
+    "prerequisites": ["brent_salamin", "Real.pi_pos", "M_pos"]
+  }
+]

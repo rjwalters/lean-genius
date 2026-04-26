@@ -55,7 +55,9 @@
       "Parity argument: n = k(k-1)+1 is odd, so n-1 is even \u2014 this forces f to have even degree",
       "Mod-p argument for s|k: any prime p|s gives p|k and p|k-s\u00b2 = 1, contradiction",
       "dvd_sq_add_one_imp_one is the key number theory lemma: s|s\u00b2+1 \u27f9 s|1 \u27f9 s=1",
-      "The characteristic polynomial approach is more elementary than spectral methods and fully formalizable in Lean 4"
+      "The characteristic polynomial approach is more elementary than spectral methods and fully formalizable in Lean 4",
+      "**Non-Regularity via A\u00b3 Commutativity**: `nonadj_same_degree` uses a clever trick: associativity $A \\cdot A^2 = A^2 \\cdot A$ combined with $A^2 = (k-1)I+J$ gives two expressions for $(A^3)_{uv}$ when $u,v$ are non-adjacent: $\\deg(u)$ from one order, $\\deg(v)$ from the other. Hence $\\deg(u) = \\deg(v)$ for any non-adjacent pair. This is the key structural result eliminating the second axiom (friendship_has_universal_or_regular) from the base file.",
+      "**Bipartite Degree-Class Obstruction**: `friendship_regular_of_no_universal` proves regularity by contradiction via degree classes. If degree classes $S_1 = \\{v : \\deg v = d_1\\}$ and $S_2 = \\{v : \\deg v = d_2\\}$ with $d_1 \\neq d_2$ both have $\\geq 2$ elements, then every element of $S_1$ is adjacent to every element of $S_2$ (by `diff_degree_implies_adj`). Any two elements of $S_2$ then have all of $S_1$ as common neighbors, but the friendship property demands exactly 1 common neighbor. This is a direct graph-theoretic contradiction, establishing that at most one degree class can have $\\geq 2$ elements, forcing regularity."
     ],
     "prerequisites": [
       "Graph theory: simple graphs, adjacency, degree, friendship graphs",
@@ -78,7 +80,7 @@
     "namespace": "FriendshipTheoremOQ01",
     "lineCount": 2276,
     "axiomCount": 0,
-    "theoremCount": 74,
+    "theoremCount": 84,
     "definitionCount": 3,
     "path": "Proofs/FriendshipTheoremOQ01.lean",
     "sorries": 0
@@ -102,34 +104,88 @@
   ],
   "sections": [
     {
+      "id": "imports-header",
+      "title": "Imports and Module Overview",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Nine Mathlib imports covering SimpleGraph, adjacency matrices, characteristic polynomials, and tactics. The module docstring outlines the six-part proof architecture: UCN extraction, A\u00b2 identity, counting, number theory, spectral framework, and characteristic polynomial machinery."
+    },
+    {
       "id": "ucn-infrastructure",
       "title": "Unique Common Neighbor and Partition",
+      "startLine": 59,
+      "endLine": 295,
       "summary": "Extracts ucn via Set.ncard_eq_one, proves ucn is an involution on N(u) (partner swapping), and establishes the partition V\\{u} = \u2294_{v\u2208N(u)} (N(v)\\{u}). The counting identity n-1 = \u03a3 (deg(v)-1) and n = k(k-1)+1 follow."
     },
     {
       "id": "number-theory-core",
       "title": "Core Number Theory: s | s\u00b2+1 \u27f9 s = 1",
+      "startLine": 302,
+      "endLine": 320,
       "summary": "dvd_sq_add_one_imp_one is proved by lifting to \u2124: s(c-s)=1 forces s=1 via nlinarith. This lemma is the final step in the chain k-1=s\u00b2, s|k, s|s\u00b2+1 \u27f9 s=1 \u27f9 k=2."
+    },
+    {
+      "id": "spectral-framework-summary",
+      "title": "Spectral Framework: Axiom Elimination and Adjacency Infrastructure",
+      "startLine": 321,
+      "endLine": 492,
+      "summary": "Part VI announces the spectral axiom has been eliminated. Part VII is a 20-entry theorem table. Parts VIII-IX prove adjMatrix_trace_zero (tr(A)=0), adjMatrix_sq_off_diag ((A\u00b2)\u1d62\u2c7c=1 for i\u2260j), adjMatrix_sq_diag ((A\u00b2)\u1d62\u1d62=k). A #check block confirms all Part I-V results are accessible."
     },
     {
       "id": "adjacency-matrix",
       "title": "Adjacency Matrix Identity A\u00b2 = (k-1)I + J",
-      "summary": "The friendship condition gives (A\u00b2)\u1d62\u2c7c = 1 for i\u2260j (unique common neighbor) and (A\u00b2)\u1d62\u1d62 = k (regularity). The functional equation (A-kI)(A\u00b2-(k-1)I) = 0 follows from AJ = kJ."
+      "startLine": 493,
+      "endLine": 710,
+      "summary": "The friendship condition gives (A\u00b2)\u1d62\u2c7c = 1 for i\u2260j (unique common neighbor) and (A\u00b2)\u1d62\u1d62 = k (regularity). The functional equation (A-kI)(A\u00b2-(k-1)I) = 0 follows from AJ = kJ. Includes onesMatrix definition, adjMatrix_mulVec_ones, and helper lemmas."
+    },
+    {
+      "id": "onesmatrix-charpoly-infra",
+      "title": "onesMatrix Algebra, Annihilating Polynomial, and Charpoly Factor Theorem",
+      "startLine": 711,
+      "endLine": 1023,
+      "summary": "Three layers: (1) onesMatrix_sq (J\u00b2=nJ), trace_adjMatrix_sq (tr(A\u00b2)=nk); (2) annihilating_polynomial wraps (A-kI)(A\u00b2-(k-1)I)=0 as Polynomial.aeval; (3) det_eq_zero_of_kernel (adjugate argument), adjMatrix_charpoly_eval_k, X_sub_k_dvd_adjMatrix_charpoly, charpoly_subleading_coeff_zero."
     },
     {
       "id": "determinant-identity",
       "title": "Weinstein-Aronszajn: det(I-tJ) = 1-nt",
+      "startLine": 1024,
+      "endLine": 1160,
       "summary": "Proved via Matrix.det_one_sub_mul_comm with a rank-1 factorization J = AB. The generalized version over any CommRing enables the characteristic polynomial computation over \u2124[X]."
+    },
+    {
+      "id": "det-scalar-sub-onesmatrix",
+      "title": "det(cI - J) = c^{n-1}(c-n): Key Determinant Identity",
+      "startLine": 1161,
+      "endLine": 1267,
+      "summary": "det_scalar_sub_onesMatrix proves det(cI-J)=c^{n-1}(c-n) over \u2124: for c\u22600 lift to \u211a and use Weinstein-Aronszajn; for c=0 use det(J)=0 (J has rank 1). Polynomial version via Polynomial.funext lifts to \u2124[X]."
     },
     {
       "id": "charpoly-product",
       "title": "Characteristic Polynomial Product Identity",
+      "startLine": 1268,
+      "endLine": 1530,
       "summary": "If charpoly(A) = (X-k)\u00b7f, then f(x)\u00b7f(-x) = (x\u00b2-(k-1))^{n-1}. Proved via Polynomial.funext by evaluating det(mI-A)\u00b7det(-mI-A) using A\u00b2=(k-1)I+J and Weinstein-Aronszajn."
+    },
+    {
+      "id": "ufd-factorization-lemma",
+      "title": "UFD Factorization Lemma: monic_factor_of_symmetric_irreducible_pow",
+      "startLine": 1531,
+      "endLine": 1616,
+      "summary": "If p is irreducible, monic, and symmetric (p(-X)=p), and f is monic with f\u00b7f(-X)=p^{2m}, then f=p^m. Inductive proof: primality of p forces p|f (the symmetry hypothesis handles p|f(-X)); then f=p\u00b7f\u2081 and IH applies."
     },
     {
       "id": "ufd-assembly",
       "title": "UFD Factorization and Final k=2 Proof",
-      "summary": "UFD analysis of \u2124[X] forces k-1 to be a perfect square s\u00b2. A mod-p argument gives s|k. Since k=s\u00b2+1, s|s\u00b2+1 \u27f9 s=1 \u27f9 k=2. The main theorems (n=3, universal vertex) follow immediately."
+      "startLine": 1617,
+      "endLine": 1869,
+      "summary": "k_sub_one_is_perfect_square: if k-1 not a perfect square, UFD lemma forces f=(X\u00b2-(k-1))^{(n-1)/2} with zero odd-degree coefficients, contradicting the nonzero X^{n-2} coefficient. sqrt_k_sub_one_dvd_k: s|k via mod-p. Assembly: s|s\u00b2+1 \u27f9 s=1 \u27f9 k=2."
+    },
+    {
+      "id": "matrix-symmetry-nonregularity",
+      "title": "Part XVIII-XIX: Matrix Symmetry and Non-Regularity Proof",
+      "startLine": 1870,
+      "endLine": 2276,
+      "summary": "Part XVIII: adjMatrix_symmetric (A=A\u1d40), JA=AJ=kJ commutativity, friendship_card_ge_three. Part XIX: nonadj_same_degree (from A\u00b3 associativity), friendship_regular_of_no_universal (degree-class bipartite structure contradicts friendship), and concluding axiom-free Friendship Theorem theorems."
     }
   ],
   "sorries": 0

@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-divtrunc-oq03-header",
+    "proofId": "divisibility-truncation-general-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 40
+    },
+    "type": "context",
+    "title": "Module Header: Osculator = Bézout Coefficient = CF Convergent",
+    "content": "The module header explains the three-way equivalence at the heart of this proof: the divisibility osculator for d (the integer c with d | 10c−1), the Bézout coefficient gcdA(10,d), and the denominator of the last convergent in the continued fraction expansion of 10/d are all the same object. The imports bring in `Mathlib.Tactic`, `Mathlib.Data.Int.GCD` (for `Nat.gcd_eq_gcd_ab` and `Nat.gcdA`/`Nat.gcdB`), `Mathlib.RingTheory.Coprime.Lemmas` (for `IsCoprime.dvd_of_dvd_mul_left`), and `Proofs.DivisibilityTruncationGeneralOQ01` (for `unified_osculator`, which provides the abstract divisibility equivalence d|n ↔ d|⌊n/10⌋+c·(n%10)). The namespace `DivisibilityTruncationGeneralOQ03` isolates the module, and `open UnifiedOsculator` brings the OQ-01 definitions into scope.",
+    "mathContext": "The CF/Euclidean duality: Euclid's algorithm for gcd(10,d) proceeds by dividing $r_0 = 10$, $r_1 = d$, $r_2 = r_0 \\bmod r_1$, etc. Each quotient $q_k = \\lfloor r_{k-1}/r_k \\rfloor$ is a CF partial quotient for $10/d$. The final Bézout coefficients $(a, b)$ with $10a + db = 1$ are the numerator/denominator of the last CF convergent. In particular, $a = \\text{gcdA}(10,d)$ is the osculator modulo $d$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Nat.gcd_eq_gcd_ab",
+      "Nat.gcdA",
+      "continued fraction expansion",
+      "Euclidean algorithm",
+      "UnifiedOsculator"
+    ],
+    "prerequisites": [
+      "Bézout's identity for integers",
+      "DivisibilityTruncationGeneralOQ01 (unified_osculator)"
+    ]
+  },
+  {
     "id": "ann-divtrunc-oq03-bezout-osculator",
     "proofId": "divisibility-truncation-general-oq-03",
     "range": {
@@ -43,6 +67,31 @@
       "IsCoprime in Mathlib",
       "Divisibility and coprimality",
       "Nat.Coprime.symm"
+    ]
+  },
+  {
+    "id": "ann-divtrunc-oq03-cf-docstring",
+    "proofId": "divisibility-truncation-general-oq-03",
+    "range": {
+      "startLine": 124,
+      "endLine": 142
+    },
+    "type": "context",
+    "title": "Part IV: CF Connection — Conceptual Documentation",
+    "content": "Lines 124–142 are a documentation block explaining why the proof is simpler than originally planned. The CF connection (Euclidean quotients = CF partial quotients, Bézout coefficients = CF convergent numerator/denominator) is informative but not proof-essential for the specific claim in `cf_bezout_correspondence`. That claim asks only: ∃ n ∈ ℕ with n < d and d | 10n−1. This is a pure existence statement that follows from: (1) gcdA(10,d) is an osculator (Bézout), (2) gcdA(10,d) % d ∈ [0,d) (emod), (3) gcdA(10,d) % d is still an osculator (osculator_congr). The CF construction — which would produce the same n as the last convergent denominator — adds only conceptual structure, not proof content.",
+    "mathContext": "The extended GCD algorithm and CF algorithm for $10/d$ are the same: $q_k = \\lfloor r_{k-1}/r_k \\rfloor$ appears both as an Euclidean quotient and a CF partial quotient, and the final $(a, b)$ with $10a + db = 1$ equals the last convergent $(p/q)$ with $p = a$ and $q = -b$ (up to sign). The osculator is the denominator $q$, confirming the CF framing. But Lean's `GenContFract` formalism requires significant setup, while the Bézout + emod path is 20 lines.",
+    "significance": "context",
+    "relatedConcepts": [
+      "GenContFract (Mathlib)",
+      "CF convergents",
+      "Euclidean algorithm",
+      "Bézout coefficients",
+      "osculator as convergent"
+    ],
+    "prerequisites": [
+      "Euclidean/CF algorithm duality",
+      "osculator_mod_d_is_osculator",
+      "Int.emod properties"
     ]
   },
   {
@@ -157,6 +206,29 @@
     "prerequisites": [
       "Divisibility truncation rule",
       "norm_num for arithmetic"
+    ]
+  },
+  {
+    "id": "ann-divtrunc-oq03-summary",
+    "proofId": "divisibility-truncation-general-oq-03",
+    "range": {
+      "startLine": 203,
+      "endLine": 221
+    },
+    "type": "context",
+    "title": "Part VI Summary: d=17 Osculator and Canonical Pipeline",
+    "content": "`osculator_seventeen` (c=−5, lines 206-207): 7·(−5)−1 = −51 = −3·17, verified by `norm_num`. This completes the five concrete osculators: 7↔−2, 11↔−1, 13↔4, 17↔−5, 19↔2. The final theorem `canonical_divisibility_test` (lines 211-213) is a one-line proof: it simply calls `bezout_osculator_rule d n hcop`, delegating everything to Part I. This demonstrates the layered architecture: Part I proves the full pipeline, and the summary theorem is a zero-cost alias. The three `#check` statements (lines 215-217) serve as self-verification — they confirm the module exports the three key theorems with their expected types, and Lean will flag them as errors if the types were wrong.",
+    "mathContext": "The d=17 case: $\\text{gcdA}(10, 17) = -5$ (since $10 \\cdot (-5) + 17 \\cdot 3 = -50 + 51 = 1$). The osculator $c = -5$ gives the divisibility test: $17 \\mid n \\iff 17 \\mid \\lfloor n/10 \\rfloor - 5 \\cdot (n \\bmod 10)$. For example: $17 \\mid 51 \\iff 17 \\mid 5 - 5 \\cdot 1 = 0$ ✓. The positive representative is $17 - 5 = 12$: $17 \\mid n \\iff 17 \\mid \\lfloor n/10 \\rfloor + 12 \\cdot (n \\bmod 10)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "canonical_divisibility_test",
+      "#check in Lean 4",
+      "bezout_osculator_rule",
+      "norm_num"
+    ],
+    "prerequisites": [
+      "bezout_osculator_rule (Part I)",
+      "Lean 4 #check for type verification"
     ]
   }
 ]

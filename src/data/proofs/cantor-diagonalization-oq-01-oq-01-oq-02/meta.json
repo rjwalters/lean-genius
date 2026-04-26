@@ -1,10 +1,10 @@
 {
   "id": "cantor-diagonalization-oq-01-oq-01-oq-02",
-  "title": "König's Cofinality Constraint from Mathlib API",
+  "title": "K\u00f6nig's Cofinality Constraint from Mathlib API",
   "slug": "cantor-diagonalization-oq-01-oq-01-oq-02",
-  "description": "Proves cf(2^aleph_0) > aleph_0 from Mathlib's Cardinal.lt_power_cof, replacing the axiomatized version. The key is (2^aleph_0)^aleph_0 = 2^aleph_0 combined with König's inequality.",
+  "description": "Proves cf(2^aleph_0) > aleph_0 from Mathlib's Cardinal.lt_power_cof, replacing the axiomatized version. The key is (2^aleph_0)^aleph_0 = 2^aleph_0 combined with K\u00f6nig's inequality.",
   "meta": {
-    "author": "König (1905), formalized in Lean 4 with Mathlib",
+    "author": "K\u00f6nig (1905), formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/K%C3%B6nig%27s_theorem_(set_theory)",
     "date": "1905",
     "status": "verified",
@@ -22,17 +22,17 @@
     "mathlibDependencies": [
       {
         "theorem": "Cardinal.lt_power_cof",
-        "description": "König's inequality: κ < κ^cf(κ) for infinite κ",
+        "description": "K\u00f6nig's inequality: \u03ba < \u03ba^cf(\u03ba) for infinite \u03ba",
         "module": "Mathlib.SetTheory.Cardinal.Cofinality"
       },
       {
         "theorem": "Cardinal.sum_lt_prod",
-        "description": "König's sum-product inequality",
+        "description": "K\u00f6nig's sum-product inequality",
         "module": "Mathlib.SetTheory.Cardinal.Cofinality"
       },
       {
         "theorem": "Cardinal.aleph0_mul_aleph0",
-        "description": "ℵ₀ · ℵ₀ = ℵ₀",
+        "description": "\u2135\u2080 \u00b7 \u2135\u2080 = \u2135\u2080",
         "module": "Mathlib.SetTheory.Cardinal.Basic"
       }
     ],
@@ -40,71 +40,71 @@
     "assumptions": []
   },
   "parent": "cantor-diagonalization-oq-01-oq-01",
-  "openQuestion": "Can König's constraint cf(2^ℵ₀) > ℵ₀ be proved from Mathlib's cofinality API rather than stated axiomatically?",
-  "significance": "Eliminates an axiom from the parent formalization. König's cofinality constraint is the strongest ZFC-provable restriction on the continuum: it rules out 2^ℵ₀ = ℵ_ω and any other cardinal with countable cofinality. Combined with Easton's theorem, it gives the complete characterization of possible values.",
+  "openQuestion": "Can K\u00f6nig's constraint cf(2^\u2135\u2080) > \u2135\u2080 be proved from Mathlib's cofinality API rather than stated axiomatically?",
+  "significance": "Eliminates an axiom from the parent formalization. K\u00f6nig's cofinality constraint is the strongest ZFC-provable restriction on the continuum: it rules out 2^\u2135\u2080 = \u2135_\u03c9 and any other cardinal with countable cofinality. Combined with Easton's theorem, it gives the complete characterization of possible values.",
   "overview": {
-    "historicalContext": "Julius König proved his cofinality inequality in 1905, showing that the continuum cannot be expressed as a countable supremum of smaller cardinals. This was one of the earliest ZFC-provable constraints on the size of the continuum, predating even the precise formulation of ZFC. Kurt Gödel (1940) and Paul Cohen (1963) showed the Continuum Hypothesis is independent of ZFC, but König's constraint survives as a genuine theorem. William Easton (1970) proved the converse: König's constraint is the ONLY restriction ZFC imposes on the continuum — for any regular cardinal $\\kappa \\geq \\aleph_1$, there is a model of ZFC with $2^{\\aleph_0} = \\kappa$. This file proves König's constraint from Mathlib's `Cardinal.lt_cof_power`, eliminating an axiom from the parent formalization and giving the complete picture of what ZFC says about the continuum.",
-    "problemStatement": "Can König's constraint $\\text{cf}(2^{\\aleph_0}) > \\aleph_0$ be proved from Mathlib's cofinality API (`Cardinal.lt_cof_power`), replacing the axiomatized version in the parent file? Can we additionally characterize which alephs are permitted and which are excluded as values of the continuum?",
-    "proofStrategy": "The proof proceeds in four parts: (1) apply `Cardinal.lt_cof_power` directly to get the core König constraint in one line; (2) compute cofinalities of specific alephs (successor alephs are regular, $\\text{cf}(\\aleph_\\omega) = \\aleph_0$); (3) derive excluded values via contradiction (if $2^{\\aleph_0} = \\kappa$ with $\\text{cf}(\\kappa) \\leq \\aleph_0$, then König is violated); (4) verify permitted values (regular cardinals $\\kappa > \\aleph_0$ satisfy König because $\\text{cf}(\\kappa) = \\kappa > \\aleph_0$).",
+    "historicalContext": "Julius K\u00f6nig proved his cofinality inequality in 1905, showing that the continuum cannot be expressed as a countable supremum of smaller cardinals. This was one of the earliest ZFC-provable constraints on the size of the continuum, predating even the precise formulation of ZFC. Kurt G\u00f6del (1940) and Paul Cohen (1963) showed the Continuum Hypothesis is independent of ZFC, but K\u00f6nig's constraint survives as a genuine theorem. William Easton (1970) proved the converse: K\u00f6nig's constraint is the ONLY restriction ZFC imposes on the continuum \u2014 for any regular cardinal $\\kappa \\geq \\aleph_1$, there is a model of ZFC with $2^{\\aleph_0} = \\kappa$. This file proves K\u00f6nig's constraint from Mathlib's `Cardinal.lt_cof_power`, eliminating an axiom from the parent formalization and giving the complete picture of what ZFC says about the continuum.",
+    "problemStatement": "Can K\u00f6nig's constraint $\\text{cf}(2^{\\aleph_0}) > \\aleph_0$ be proved from Mathlib's cofinality API (`Cardinal.lt_cof_power`), replacing the axiomatized version in the parent file? Can we additionally characterize which alephs are permitted and which are excluded as values of the continuum?",
+    "proofStrategy": "The proof proceeds in four parts: (1) apply `Cardinal.lt_cof_power` directly to get the core K\u00f6nig constraint in one line; (2) compute cofinalities of specific alephs (successor alephs are regular, $\\text{cf}(\\aleph_\\omega) = \\aleph_0$); (3) derive excluded values via contradiction (if $2^{\\aleph_0} = \\kappa$ with $\\text{cf}(\\kappa) \\leq \\aleph_0$, then K\u00f6nig is violated); (4) verify permitted values (regular cardinals $\\kappa > \\aleph_0$ satisfy K\u00f6nig because $\\text{cf}(\\kappa) = \\kappa > \\aleph_0$).",
     "keyInsights": [
-      "König's constraint follows from Mathlib in one line: `Cardinal.lt_cof_power le_rfl (by norm_num)` — what was axiomatized in the parent is a theorem",
-      "The excluded values are precisely the cardinals with countable cofinality: $\\aleph_\\omega$, $\\aleph_{\\omega \\cdot 2}$, $\\aleph_{\\omega^2}$, etc. — these are the limit alephs indexed by ordinals of countable cofinality",
+      "K\u00f6nig's constraint follows from Mathlib in one line: `Cardinal.lt_cof_power le_rfl (by norm_num)` \u2014 what was axiomatized in the parent is a theorem",
+      "The excluded values are precisely the cardinals with countable cofinality: $\\aleph_\\omega$, $\\aleph_{\\omega \\cdot 2}$, $\\aleph_{\\omega^2}$, etc. \u2014 these are the limit alephs indexed by ordinals of countable cofinality",
       "The permitted values are all regular uncountable cardinals: $\\aleph_1$ (CH), $\\aleph_2$ (PFA), every successor aleph $\\aleph_{\\alpha+1}$, and large regular limit cardinals like weakly inaccessible cardinals",
-      "König + Easton together give the complete ZFC characterization: $2^{\\aleph_0}$ can be exactly any regular $\\kappa \\geq \\aleph_1$, and nothing else — a rare case of a complete independence result",
-      "The `lt_irrefl` proof pattern for excluded values is elegant: substitute the hypothesis into König to get $\\aleph_0 < \\aleph_0$, which is absurd"
+      "K\u00f6nig + Easton together give the complete ZFC characterization: $2^{\\aleph_0}$ can be exactly any regular $\\kappa \\geq \\aleph_1$, and nothing else \u2014 a rare case of a complete independence result",
+      "The `lt_irrefl` proof pattern for excluded values is elegant: substitute the hypothesis into K\u00f6nig to get $\\aleph_0 < \\aleph_0$, which is absurd"
     ]
   },
   "sections": [
     {
       "id": "konig-core",
-      "title": "König's Cofinality Constraint",
+      "title": "K\u00f6nig's Cofinality Constraint",
       "startLine": 54,
       "endLine": 75,
-      "summary": "Proves cf(2^ℵ₀) > ℵ₀ from Mathlib's Cardinal.lt_cof_power in one line. Also proves the general form for arbitrary bases κ > 1."
+      "summary": "Proves cf(2^\u2135\u2080) > \u2135\u2080 from Mathlib's Cardinal.lt_cof_power in one line. Also proves the general form for arbitrary bases \u03ba > 1."
     },
     {
       "id": "cofinality-computations",
       "title": "Cofinality Computations for Specific Alephs",
       "startLine": 77,
       "endLine": 117,
-      "summary": "Proves ℵ₁ and ℵ₂ are regular, all successor alephs are regular, and cf(ℵ_ω) = ℵ₀ (making ℵ_ω singular)."
+      "summary": "Proves \u2135\u2081 and \u2135\u2082 are regular, all successor alephs are regular, and cf(\u2135_\u03c9) = \u2135\u2080 (making \u2135_\u03c9 singular)."
     },
     {
       "id": "excluded-values",
       "title": "Excluded Values",
       "startLine": 119,
       "endLine": 147,
-      "summary": "Proves 2^ℵ₀ ≠ ℵ_ω and 2^ℵ₀ ≠ any cardinal with cofinality ≤ ℵ₀, via contradiction with König."
+      "summary": "Proves 2^\u2135\u2080 \u2260 \u2135_\u03c9 and 2^\u2135\u2080 \u2260 any cardinal with cofinality \u2264 \u2135\u2080, via contradiction with K\u00f6nig."
     },
     {
       "id": "permitted-values",
       "title": "Permitted Values",
       "startLine": 149,
       "endLine": 188,
-      "summary": "Shows all regular uncountable cardinals satisfy König. Verifies ℵ₁, ℵ₂, and all successor alephs ℵ_{α+1} as permitted values."
+      "summary": "Shows all regular uncountable cardinals satisfy K\u00f6nig. Verifies \u2135\u2081, \u2135\u2082, and all successor alephs \u2135_{\u03b1+1} as permitted values."
     },
     {
       "id": "complete-picture",
       "title": "The Complete ZFC Picture",
       "startLine": 190,
       "endLine": 240,
-      "summary": "Packages both ZFC constraints (ℵ₁ ≤ 2^ℵ₀ and cf(2^ℵ₀) > ℵ₀) and proves ℵ_ω is the first excluded value."
+      "summary": "Packages both ZFC constraints (\u2135\u2081 \u2264 2^\u2135\u2080 and cf(2^\u2135\u2080) > \u2135\u2080) and proves \u2135_\u03c9 is the first excluded value."
     }
   ],
   "conclusion": {
-    "summary": "This fully verified formalization (0 axioms, 0 sorries) proves König's cofinality constraint from Mathlib and gives the complete ZFC characterization of possible values for the continuum. The core result is a one-line proof from `Cardinal.lt_cof_power`, eliminating the axiom from the parent file. The formalization then classifies alephs as permitted (regular, like $\\aleph_1, \\aleph_2, \\aleph_{\\alpha+1}$) or excluded (singular with countable cofinality, like $\\aleph_\\omega$).",
+    "summary": "This fully verified formalization (0 axioms, 0 sorries) proves K\u00f6nig's cofinality constraint from Mathlib and gives the complete ZFC characterization of possible values for the continuum. The core result is a one-line proof from `Cardinal.lt_cof_power`, eliminating the axiom from the parent file. The formalization then classifies alephs as permitted (regular, like $\\aleph_1, \\aleph_2, \\aleph_{\\alpha+1}$) or excluded (singular with countable cofinality, like $\\aleph_\\omega$).",
     "implications": "Combined with Easton's theorem (not formalized, as it requires forcing), this gives a complete independence result: ZFC constrains $2^{\\aleph_0}$ to be a regular uncountable cardinal, and every such cardinal is consistent. This is one of the cleanest applications of Mathlib's cardinal arithmetic API, demonstrating that deep set-theoretic results can be expressed concisely in Lean 4.",
     "openQuestions": [
-      "Can Easton's theorem (consistency of 2^ℵ₀ = κ for regular κ ≥ ℵ₁) be formalized in Lean, or does it inherently require a meta-theoretic forcing construction?",
+      "Can Easton's theorem (consistency of 2^\u2135\u2080 = \u03ba for regular \u03ba \u2265 \u2135\u2081) be formalized in Lean, or does it inherently require a meta-theoretic forcing construction?",
       "Can the singular cardinal hypothesis (SCH) and its independence be formalized using Mathlib's pcf theory infrastructure?",
-      "Can the formalization handle the generalized continuum function 2^ℵ_α for all α, classifying the full Easton spectrum?"
+      "Can the formalization handle the generalized continuum function 2^\u2135_\u03b1 for all \u03b1, classifying the full Easton spectrum?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "cantor-diagonalization-oq-01-oq-01",
       "relationship": "extends",
-      "description": "Eliminates the König axiom from the parent formalization"
+      "description": "Eliminates the K\u00f6nig axiom from the parent formalization"
     },
     {
       "targetId": "cantor-diagonalization",
@@ -116,7 +116,7 @@
     "namespace": "CantorDiagOQ01OQ01OQ02",
     "lineCount": 255,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 16,
     "definitionCount": 0,
     "path": "Proofs/CantorDiagonalizationOQ01OQ01OQ02.lean",
     "sorries": 0

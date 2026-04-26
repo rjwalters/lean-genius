@@ -18,7 +18,7 @@
       "wiedijk-100",
       "research"
     ],
-    "badge": "original",
+    "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
     "dateAdded": "2026-03-25",
@@ -52,10 +52,11 @@
       "tet_dehn_ne_zero: tetrahedron Dehn invariant is nonzero (arccos(1/3)/π irrational)",
       "hilbert_third_problem: D(cube) ≠ D(tetrahedron)",
       "octAngle_class: [arccos(-1/3)] = -[arccos(1/3)] in ℝ/πℤ",
-      "Dehn-Sydler completeness theorem statement"
+      "Dehn-Sydler completeness theorem statement",
+      "tmul_infinite_order_ne_zero: proved via Module.Flat (ℝ flat over ℤ as Bézout + NoZeroSMulDivisors) — lTensor ℝ f injective for injective f : ℤ →ₗ AngleQuot"
     ],
-    "lineCount": 413,
-    "assumptions": "0 axioms. tmul_infinite_order_ne_zero is now a proved theorem using Module.Flat ℤ ℝ (flatness from IsBezout ℤ via EuclideanDomain and NoZeroSMulDivisors ℤ ℝ via CharZero). Previously reduced from 6 axioms to 1 (5 eliminated); final axiom now proved via lTensor injectivity under flatness.",
+    "lineCount": 454,
+    "assumptions": "0 axioms. All assumptions eliminated. tmul_infinite_order_ne_zero proved via Module.Flat: ℝ is flat over ℤ (Bézout domain + NoZeroSMulDivisors ℤ ℝ), so lTensor ℝ f is injective for any injective f : ℤ →ₗ[ℤ] AngleQuot, giving r⊗x≠0 when r≠0 and x has infinite order. Previously 6 axioms; all eliminated across sessions.",
     "mathlib_version": "4.26.0",
     "wiedijkNumber": 37,
     "relatedProblems": [
@@ -193,10 +194,9 @@
     "summary": "This formalization constructs the proper algebraic Dehn invariant $D(P) \\in \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$ using Mathlib's tensor product infrastructure. The central algebraic insight — that $\\mathbb{R}$ is divisible over $\\mathbb{Z}$, so torsion elements of $\\mathbb{R}/\\pi\\mathbb{Z}$ are killed in the tensor product — gives a clean proof that rational-angle polyhedra have $D = 0$. Combined with Niven's theorem ($\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$), this resolves Hilbert's Third Problem: $D(\\text{cube}) = 0 \\neq D(\\text{tet})$. The Dehn-Sydler completeness theorem is stated as an axiom.",
     "implications": "The tensor product formulation of the Dehn invariant automatically handles the rational-angle vanishing that must be argued case-by-case in elementary treatments. This algebraic perspective generalizes: scissors congruence in higher dimensions connects to algebraic K-theory (Dupont, Sah), where the Dehn invariant lives in $K_3(\\mathbb{C})$. The formalization demonstrates that Mathlib's tensor product API is mature enough for non-trivial applications in geometric algebra.",
     "openQuestions": [
-      "Can the flatness axiom (tmul_infinite_order_ne_zero) be proved in Lean using Mathlib's flatness theory for torsion-free modules over PIDs?",
+      "RESOLVED: The flatness axiom (tmul_infinite_order_ne_zero) was proved in Lean using Module.Flat, Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, and NoZeroSMulDivisors.iff_algebraMap_injective.",
       "Can Sydler's sufficiency proof (same volume + same D implies scissors congruent) be formalized, completing the Dehn-Sydler theorem?",
-      "What are the complete scissors congruence invariants in $\\mathbb{R}^n$ for $n \\geq 4$? Jessen and Thorup (1978) showed that volume and Dehn invariant do NOT suffice in dimension 4.",
-      "The arccos_neg_third axiom has been proved via Mathlib's Real.arccos_neg. Can the remaining flatness axiom (tmul_infinite_order_ne_zero) be proved using Mathlib's Module.Flat theory?"
+      "What are the complete scissors congruence invariants in $\\mathbb{R}^n$ for $n \\geq 4$? Jessen and Thorup (1978) showed that volume and Dehn invariant do NOT suffice in dimension 4."
     ]
   },
   "crossReferences": [
@@ -250,9 +250,9 @@
       "Real"
     ],
     "namespace": "DehnSydler",
-    "lineCount": 413,
+    "lineCount": 454,
     "axiomCount": 0,
-    "theoremCount": 23,
+    "theoremCount": 24,
     "definitionCount": 5,
     "mainTheorems": [
       {

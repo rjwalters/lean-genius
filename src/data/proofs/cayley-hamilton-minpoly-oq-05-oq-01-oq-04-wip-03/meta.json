@@ -1,0 +1,167 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
+  "title": "Nonderogatory to Cyclic Vector: Prime Power Case (All Fields)",
+  "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
+  "description": "Proves the cyclic vector theorem for nonderogatory matrices whose minimal polynomial is a prime power p^e (p irreducible monic, e ≥ 1), over any field K. The proof is axiom-free, using an induction on the exponent e via a new divisibility lemma.",
+  "meta": {
+    "author": "Classical linear algebra (cyclic decomposition)",
+    "sourceUrl": "",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP03.lean",
+    "tags": [
+      "linear-algebra",
+      "minimal-polynomial",
+      "cyclic-vector",
+      "nonderogatory",
+      "prime-power",
+      "induction",
+      "wip"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 253,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "dateAdded": "2026-04-26",
+    "assumptions": "None. Fully axiom-free.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.charpoly_natDegree_eq_dim",
+        "description": "Characteristic polynomial has degree n = Fintype.card (Fin n)",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "UniqueFactorizationMonoid.irreducible_iff_prime",
+        "description": "In a UFD, irreducible iff prime",
+        "module": "Mathlib.RingTheory.UniqueFactorizationDomain"
+      },
+      {
+        "theorem": "Prime.coprime_iff_not_dvd",
+        "description": "A prime p is coprime to r iff p does not divide r",
+        "module": "Mathlib.Algebra.Prime.Basic"
+      },
+      {
+        "theorem": "Polynomial.natDegree_pow",
+        "description": "Degree of p^e is e * deg(p)",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Definitions"
+      },
+      {
+        "theorem": "minpoly.dvd",
+        "description": "If p(M) = 0 then minpoly(M) divides p",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The cyclic vector theorem for nonderogatory matrices is a cornerstone of rational canonical form theory, tracing back to Frobenius's 1878 work on the 'Elementartheiler' (elementary divisors) of matrices over polynomial rings. A matrix M is nonderogatory if its minimal polynomial equals its characteristic polynomial — equivalently, K^n is a cyclic K[X]-module. The classification of finitely generated modules over PIDs, developed by Smith (1861) and later refined by Frobenius and Weierstrass, gives the standard proof: factor the characteristic polynomial into prime powers, decompose K^n into primary components, and show each component is cyclic. However, the PID structure theorem is substantial machinery not yet available in Mathlib 4.26. This formalization takes a different approach: it proves the prime power case directly by induction on the exponent, using only the UFD property of K[X] (for Bézout's identity) and basic degree arithmetic. The key lemma `pow_irred_dvd_of_annihilated` is reminiscent of p-adic valuation arguments in algebraic number theory — it extracts divisibility information from iterated annihilation conditions without invoking the full module decomposition. WIP02 (squarefree case) and WIP03 (prime power case) together cover the two structural pillars of the general theorem. The prime power result is the more surprising: while the squarefree case follows from a Chinese Remainder Theorem argument, the prime power case requires a subtle descent argument that avoids any module structure theorem entirely.",
+    "problemStatement": "For a nonderogatory n×n matrix M over any field K whose minimal polynomial equals p^e (p monic irreducible, e ≥ 1), prove that M has a cyclic vector: a vector v such that no nonzero polynomial of degree < n annihilates v via M.",
+    "proofStrategy": "The key insight is the lemma pow_irred_dvd_of_annihilated (proved by strong induction on e): if p is irreducible, p^e(M)v ≠ 0, p^(e+1)(M)v = 0, and r(M)v = 0, then p^(e+1) divides r. The main theorem then follows: (1) Since deg(p^(e-1)) < n = deg(minpoly), p^(e-1)(M) ≠ 0, so we can pick v with p^(e-1)(M)v ≠ 0. (2) p^e(M)v = 0 since the minimal polynomial kills K^n. (3) If r(M)v = 0 with deg(r) < n = deg(p^e), then p^e | r, forcing deg(r) ≥ deg(p^e) = n, a contradiction. Inductive step of the key lemma: given p^(e+1)(M)v ≠ 0, let w = p^(e+1)(M)v. Then p(M)w = 0 and r(M)w = 0, so p | r. Writing r = p*r₁, apply the IH to u = p(M)v: p^e(M)u = p^(e+1)(M)v ≠ 0 and r₁(M)u = 0, giving p^(e+1) | r₁. Hence p^(e+2) | r.",
+    "keyInsights": [
+      "The inductive key lemma pow_irred_dvd_of_annihilated is the entire mathematical content: it replaces the PID structure theorem with an elementary divisibility argument specific to the prime power case.",
+      "The shift trick: applying p(M) to v moves from 'level e' to 'level e-1', letting the induction hypothesis fire on u = p(M)v with polynomial r₁ = r/p.",
+      "The Bezout/coprimality argument (irreducible_dvd_of_annihilated from WIP02) is reused as the base case and the p-divisibility step, avoiding code duplication.",
+      "Commutativity of polynomial evaluation: r(M)(p^k(M)v) = p^k(M)(r(M)v) because polynomials in M commute. This is used repeatedly in the mulVec calculations.",
+      "Degree counting closes the proof cleanly: p^e | r with deg(r) < deg(p^e) = n forces r = 0, directly giving the cyclic vector condition."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "I. Definitions",
+      "startLine": 46,
+      "endLine": 52,
+      "summary": "Defines IsCyclicVector and IsNonderogatory, identical to WIP01 and WIP02.",
+      "mathContext": "A vector v is cyclic for M if no nonzero polynomial of degree < n annihilates v via M. A matrix is nonderogatory if its minimal polynomial equals its characteristic polynomial."
+    },
+    {
+      "id": "core-lemmas",
+      "title": "II. Core Lemmas",
+      "startLine": 56,
+      "endLine": 95,
+      "summary": "Three supporting lemmas imported from WIP02: irreducible_dvd_of_annihilated (Bezout/coprimality argument), exists_mulVec_ne_zero (a nonzero matrix has a nonzero image), and aeval_ne_zero_of_lt_minpoly (polynomial of degree < deg(minpoly) evaluates to nonzero matrix).",
+      "mathContext": "The core coprimality lemma: if p is irreducible, v ≠ 0, p(M)v = 0, and r(M)v = 0, then p | r. Proof: if not, Bezout gives a*p + b*r = 1, so v = 1·v = (a*p+b*r)(M)v = 0, contradiction."
+    },
+    {
+      "id": "key-lemma",
+      "title": "III. Key Lemma — Prime Power Divisibility",
+      "startLine": 98,
+      "endLine": 156,
+      "summary": "Proves pow_irred_dvd_of_annihilated by induction on e: if p irred, p^e(M)v ≠ 0, p^(e+1)(M)v = 0, r(M)v = 0, then p^(e+1) | r.",
+      "mathContext": "Base case (e=0): p(M)v = 0 and v ≠ 0 and r(M)v = 0, so p | r by irreducible_dvd_of_annihilated. Inductive step: w = p^(e+1)(M)v ≠ 0 satisfies p(M)w = 0, so p | r. Writing r = p*r₁, u = p(M)v satisfies p^e(M)u ≠ 0 and r₁(M)u = 0, so IH gives p^(e+1) | r₁, hence p^(e+2) | r."
+    },
+    {
+      "id": "main-theorem",
+      "title": "IV. Main Theorem — Prime Power Case",
+      "startLine": 162,
+      "endLine": 235,
+      "summary": "Proves nonderogatory_pw_has_cyclic_vector: for nonderogatory M with minpoly = p^e (p monic irreducible, e ≥ 1), M has a cyclic vector over any field K.",
+      "mathContext": "Pick v with p^(e-1)(M)v ≠ 0 (possible since deg(p^(e-1)) < n = deg(minpoly) implies p^(e-1)(M) ≠ 0). Then p^e(M)v = 0. For any r with r(M)v = 0 and deg(r) < n: pow_irred_dvd_of_annihilated gives p^e | r, so deg(r) ≥ e·deg(p) = n, contradicting deg(r) < n. Hence r = 0."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file provides an axiom-free Lean 4 proof of the prime power case of the nonderogatory cyclic vector theorem, valid over any field K with no cardinality restriction. The key lemma `pow_irred_dvd_of_annihilated` replaces the PID structure theorem with an elementary induction on the prime power exponent, using only Bézout's identity in K[X] and polynomial evaluation commutativity. Together with WIP02 (squarefree case), this covers both structural pillars of the general theorem.",
+    "implications": "The inductive key lemma `pow_irred_dvd_of_annihilated` is the core new contribution: it demonstrates that an elementary divisibility descent replaces the PID structure theorem for the prime power case. The 'shift trick' ($v \\mapsto p(M)v$ decreases the filtration level) is a general technique applicable to other iterated annihilation problems in module theory. This approach provides a fully constructive path to rational canonical form for the prime power case, without requiring the existence of a Smith normal form or module decomposition.",
+    "openQuestions": [
+      "Can WIP02 (squarefree) and WIP03 (prime power) be combined into a general WIP04 that handles arbitrary nonderogatory matrices without axioms, using a direct CRT + prime power argument instead of the full PID structure theorem?",
+      "The prime power case proved here covers fields K of any characteristic. Does the proof simplify when char(K) = 0 or when K is algebraically closed (so that irreducible p must be linear)?",
+      "Can the key lemma be generalized to non-matrix settings — e.g., cyclic vectors for endomorphisms of infinite-dimensional spaces, or modules over other PIDs besides K[X]?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial"
+    ],
+    "namespace": "PrimePowerCyclicVector",
+    "lineCount": 253,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
+      "relationship": "extends",
+      "description": "Parent: the general nonderogatory cyclic vector theorem (sorry-bearing). WIP03 proves the prime power sub-case axiom-free."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+      "relationship": "related",
+      "description": "WIP01: full theorem with 1 axiom (rational canonical form). WIP03 provides the prime power case that WIP01 handles implicitly."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-02",
+      "relationship": "companion",
+      "description": "WIP02: squarefree case (axiom-free). WIP03 is the complementary prime power case. Together they cover all structural cases of the general theorem."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
+      "relationship": "related",
+      "description": "Nonderogatory cyclic vector for infinite fields (axiom-free). WIP03 extends coverage to ALL fields including finite fields with no cardinality restriction."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Finite field version requiring |K| > n. WIP03 removes the cardinality constraint entirely for the prime power case."
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "uses",
+      "description": "The Cayley-Hamilton theorem provides charpoly_natDegree_eq_dim and the fact that minpoly divides charpoly, both used in the degree arithmetic."
+    },
+    {
+      "targetId": "cayley-hamilton-reduction-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Rational canonical form via companion matrices. WIP03's prime power cyclic vector is a building block for showing each primary component has companion form."
+    }
+  ],
+  "sorries": 0
+}

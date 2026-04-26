@@ -1,0 +1,214 @@
+{
+  "id": "sophie-germain-oq-01",
+  "title": "Are There Infinitely Many Sophie Germain Primes?",
+  "slug": "sophie-germain-oq-01",
+  "description": "Formalizes the open question of whether Sophie Germain primes (primes p where 2p+1 is also prime) are infinite. Proves equivalences with the safe prime conjecture, extends the verified example base to 25 primes, and derives conditional consequences under the Sophie Germain Conjecture axiom.",
+  "meta": {
+    "author": "Lean Genius Research Agent",
+    "date": "c. 2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/SophieGermainOQ01.lean",
+    "tags": [
+      "number-theory",
+      "primes",
+      "sophie-germain",
+      "open-problem",
+      "sieve-theory",
+      "conjecture"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 196,
+    "theoremCount": 24,
+    "definitionCount": 1,
+    "assumptions": "1 axiom: `sophie_germain_conjecture` (inherited from parent, states the unproved Sophie Germain prime conjecture).",
+    "dateAdded": "2026-04-26",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.le_sup",
+        "description": "Upper bound property of Finset.sup, used for no-finite-cover theorem",
+        "module": "Mathlib.Data.Finset.Lattice"
+      },
+      {
+        "theorem": "Nat.div_le_div_right",
+        "description": "Monotonicity of natural number division",
+        "module": "Mathlib.Data.Nat.Defs"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of the Safe Prime Conjecture and proof of equivalence with SGC",
+      "No-max reformulation: SGC ↔ no natural number bounds all SG primes",
+      "15 additional verified Sophie Germain primes (113 through 509), extending parent's 10 to 25",
+      "Conditional: under SGC, infinitely many primes ≡ 11 (mod 12)",
+      "Conditional: under SGC, no finite set contains all Sophie Germain primes"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "parent": "sophie-germain",
+  "openQuestion": "Are there infinitely many Sophie Germain primes?",
+  "significance": "The Sophie Germain prime conjecture is one of the central unsolved problems in multiplicative number theory, directly analogous to the twin prime conjecture. Sophie Germain's original motivation — connecting these primes to Fermat's Last Theorem (Case I) — makes their infinitude both historically significant and mathematically deep. Current methods (sieve theory) cannot establish any unconditional lower bound beyond the finitely many known examples.",
+  "overview": {
+    "historicalContext": "Sophie Germain (1776–1831) introduced these primes while working on Fermat's Last Theorem. She proved that if $p$ is an odd Sophie Germain prime (both $p$ and $2p+1$ prime), then any Fermat equation $x^p + y^p = z^p$ must satisfy $p \\mid xyz$ — eliminating the case where $p$ divides none of $x, y, z$. This was the first general result on Fermat's Last Theorem since Euler's proof for $n=3$.\n\nThe question of infinitude was never resolved. Hardy and Littlewood (1923) made the first quantitative prediction: their Conjecture B (a special case of what later became the Bateman-Horn conjecture) predicts $\\pi_{SG}(x) \\sim 2C_2 x / (\\ln x)^2$ where $C_2 \\approx 0.6602$ is the twin prime constant. Computational evidence matches this prediction closely: for $x = 10^{10}$, the ratio is within 1% of 1.\n\nThe current state of the art offers no unconditional lower bound. Brun's theorem (1919) shows the series $\\sum_{p \\text{ SG}} 1/p$ converges, placing Sophie Germain primes in the same 'sparse' category as twin primes. The Selberg sieve gives the upper bound $\\pi_{SG}(x) = O(x / (\\ln x)^2)$, matching the Hardy-Littlewood prediction in order. But proving infinitude requires a lower bound, which lies entirely beyond current methods.",
+    "problemStatement": "**Question**: Is the set of Sophie Germain primes — primes $p$ for which $2p+1$ is also prime — infinite?\n\n**Formal statement**: $\\forall N : \\mathbb{N}, \\exists p : \\mathbb{N},\\; p > N \\wedge \\text{Prime}(p) \\wedge \\text{Prime}(2p+1)$\n\nEquivalently: the safe prime conjecture ($\\forall N, \\exists q > N$ with $q$ and $(q-1)/2$ both prime).\n\nKnown Sophie Germain primes begin: 2, 3, 5, 11, 23, 29, 41, 53, 83, 89, 113, 131, 173, 191, 233, 239, 251, 281, 293, 359, 419, 431, 443, 491, 509, …\n\nThe largest known Sophie Germain prime (as of 2024) has over 2 million digits.",
+    "proofStrategy": "Since the conjecture is open, we cannot prove the main statement. Instead, we:\n\n**Step 1 — Equivalent reformulations**: Prove that SGC (Sophie Germain Conjecture) is equivalent to:\n- The safe prime conjecture (primes $q$ where $(q-1)/2$ is also prime)\n- The no-max condition (no finite bound suffices)\n- A concrete prime pair statement: $\\forall N, \\exists p > N$ with $p$ and $2p+1$ prime\n\nThe key bijection: $p \\mapsto 2p+1$ maps SG primes to safe primes monotonically. Given a SG prime $p > N$, the safe prime $2p+1 > N$. Given a safe prime $q > 2N+1$, the prime $p = (q-1)/2 > N$ is a SG prime.\n\n**Step 2 — Extend the example base**: Verify 15 additional SG primes by computation (using Lean's `decide` tactic, which performs certified trial division). This establishes at least 25 verified examples.\n\n**Step 3 — Conditional consequences**: Assuming the SGC axiom from the parent file, derive:\n- Infinitude of safe primes (direct from SGC via the bijection)\n- Infinitude of primes $\\equiv 11 \\pmod{12}$ (using the safe prime mod-12 structure theorem)\n- No finite set covers all SG primes (using Finset.sup to find a larger prime)",
+    "keyInsights": [
+      "The Sophie Germain conjecture and safe prime conjecture are equivalent via the monotone bijection p ↔ 2p+1. Proving one would immediately prove the other. This equivalence is not merely structural — it means any computational or theoretical breakthrough on safe primes directly resolves the SG conjecture.",
+      "The no-max formulation — SGC ↔ ¬∃M, ∀p SG, p ≤ M — cleanly characterizes infinitude without reference to cardinality or topology. This is the constructive statement used in practice: for any claimed bound M, SGC supplies a SG prime exceeding M.",
+      "The parity barrier (Selberg 1950s) is the fundamental obstacle: sieve methods cannot distinguish between numbers with even vs. odd number of prime factors. Proving 'p and 2p+1 are simultaneously prime' requires controlling both parities, which lies outside the reach of classical sieves.",
+      "Brun's theorem provides a weak consolation: ∑_{p SG} 1/p < ∞. This means SG primes are sparse, but the convergence is consistent with both finitely and infinitely many — it just means there aren't too many. Compare: ∑ 1/p² converges trivially (finite), and ∑_{p prime} 1/p diverges (Euler), but ∑_{p SG} 1/p sits in between.",
+      "The connection to FLT: Sophie Germain's theorem says each SG prime p gives a free FLT result (Case I holds for exponent p). The infinitude of SG primes would give infinitely many such exponents, each proved by an elementary modular arithmetic argument. This was the original motivation and remains historically significant."
+    ],
+    "prerequisites": [
+      "Sophie Germain primes and safe primes (parent entry)",
+      "Modular arithmetic and residue classes",
+      "Sieve theory (qualitative understanding)",
+      "Fermat's Last Theorem (historical context)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-header",
+      "title": "Imports and Module Context",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Imports from SophieGermain (the parent), SophieGermainOQ02 (the distribution entry), and Mathlib. The module docstring explains Selberg's parity obstruction, Hardy-Littlewood predictions, Brun's theorem, and what is formalized: equivalences, 25 examples, and conditional consequences under SGC.",
+      "mathContext": "Key imported items: `IsSophieGermainPrime`, `SophieGermainConjecture` axiom, `safe_prime_mod_twelve` (mod-12 structure theorem), 10 parent examples. The parity obstruction: sieves cannot certify $\\Omega(n) = 1$ simultaneously for $n$ and $f(n)$, blocking all current lower-bound approaches."
+    },
+    {
+      "id": "safe-prime-conjecture",
+      "title": "I. The Safe Prime Conjecture",
+      "startLine": 52,
+      "endLine": 60,
+      "summary": "Defines SafePrimeConjecture: for every N, there exists a safe prime q > N. This is the 'dual' form of SGC via the p ↔ 2p+1 bijection — the key equivalence proved later in this file.",
+      "mathContext": "$\\text{SafePrimeConjecture} := \\forall N, \\exists q > N,\\; \\text{IsSafePrime}(q)$. Cryptographic context: safe primes $q = 2p+1$ are used in Diffie-Hellman because $(\\mathbb{Z}/q\\mathbb{Z})^*$ has order $2p$, resisting Pohlig-Hellman subgroup attacks."
+    },
+    {
+      "id": "examples",
+      "title": "II. Extended Verified Examples (25 Total)",
+      "startLine": 62,
+      "endLine": 98,
+      "summary": "Adds 15 Sophie Germain primes beyond the parent's 10, reaching 25 total. Each is proved by `constructor <;> decide` — Lean's certified primality check. The exists_twentyfive_sg_primes theorem packages all 25 in a single conjunction.",
+      "mathContext": "New examples: $p \\in \\{113, 131, 173, 191, 233, 239, 251, 281, 293, 359, 419, 431, 443, 491, 509\\}$, all satisfying Prime($p$) $\\wedge$ Prime($2p+1$) by `decide`. The full verified set: $\\{2,3,5,11,23,29,41,53,83,89,113,131,173,191,233,239,251,281,293,359,419,431,443,491,509\\}$."
+    },
+    {
+      "id": "equivalences",
+      "title": "III. Equivalent Formulations of SGC",
+      "startLine": 100,
+      "endLine": 167,
+      "summary": "Proves four equivalent forms of SGC: unbounded (no-max), safe prime conjecture, and prime-pairs unfolding. Two arithmetic helpers (half_two_mul_add_one, two_mul_half_pred_add_one) support the bijection proofs. The key direction (SafePrime → SGC) requests q > 2N+1 to ensure p = (q-1)/2 > N.",
+      "mathContext": "$\\text{SGC} \\iff \\neg(\\exists M, \\forall p \\text{ SG}, p \\leq M) \\iff \\text{SafePrimeConjecture} \\iff (\\forall N, \\exists p > N,\\; \\text{Prime}(p) \\wedge \\text{Prime}(2p+1))$. Backward direction: request $q > 2N+1$ so $p = (q-1)/2 > N$; uses `Nat.div_le_div_right` for the bound."
+    },
+    {
+      "id": "conditional",
+      "title": "IV. Conditional Consequences Under the SGC Axiom",
+      "startLine": 169,
+      "endLine": 196,
+      "summary": "Three theorems conditional on the SGC axiom: infinite safe primes (1-line via sgc_implies_safe_prime_conjecture), infinite primes ≡ 11 (mod 12) (uses max(N,3) to satisfy safe_prime_mod_twelve's hypothesis), and no-finite-cover (Finset.sup upper-bound argument).",
+      "mathContext": "Under $\\text{sophie\\_germain\\_conjecture}$: (1) $\\forall N, \\exists q > N$ safe prime; (2) $\\forall N, \\exists q > N$ with $q \\equiv 11 \\pmod{12}$; (3) $\\forall S \\subseteq_{\\text{fin}} \\mathbb{N}, \\exists p \\text{ SG}, p \\notin S$. Key: `Finset.le_sup (f := id)` gives $p \\leq \\sup S$, contradicting $p > \\sup S$ from SGC."
+    }
+  ],
+  "conclusion": {
+    "summary": "The infinitude of Sophie Germain primes remains one of the central open problems in multiplicative number theory. This formalization establishes the equivalent reformulations of the conjecture, extends the verified example base to 25, and derives the conditional consequences that follow from the conjecture's axiomatization. The parity barrier prevents any current approach from establishing the required lower bound.",
+    "implications": "**Cryptographic Stakes**: Safe primes — the direct companions of Sophie Germain primes — are used in Diffie-Hellman key exchange and discrete logarithm-based cryptography. The infinitude of safe primes (equivalent to SGC) would guarantee that cryptographically secure parameters exist at every bit-length.\n\n**Sieve Theory**: SGC exemplifies the limits of the Selberg sieve. Proving it would require either a fundamentally new sieve technique or a completely different approach (e.g., via algebraic geometry or $L$-functions).\n\n**Fermat's Last Theorem**: Each Sophie Germain prime gives a FLT Case I result by Germain's theorem. The conjecture would produce infinitely many such elementary FLT certificates, each provable by a three-line modular arithmetic argument.",
+    "openQuestions": [
+      "Prove unconditionally that infinitely many Sophie Germain primes exist (the main conjecture — currently out of reach of known methods).",
+      "Formalize Brun's theorem for Sophie Germain primes: ∑_{p SG} 1/p < ∞. This is the strongest known unconditional result about their sparsity.",
+      "Formalize an upper bound π_SG(x) = O(x / (ln x)²) from the Selberg or Brun sieve, which matches the Hardy-Littlewood prediction up to a constant factor.",
+      "Formalize Sophie Germain's theorem: if p is an odd Sophie Germain prime and x^p + y^p = z^p, then p ∣ xyz (Case I of FLT holds for exponent p)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "sophie-germain",
+      "relationship": "extends",
+      "description": "Imports the Sophie Germain prime definition, the conjecture axiom, structural theorems (mod 6, mod 12), and 10 verified examples from the parent entry."
+    },
+    {
+      "targetId": "sophie-germain-oq-02",
+      "relationship": "related",
+      "description": "The distribution entry establishes the counting function π_SG and its properties; this entry focuses on the infinitude question and equivalent reformulations."
+    },
+    {
+      "targetId": "twin-primes-special",
+      "relationship": "analogous",
+      "description": "Twin prime conjecture (∞ many (p, p+2) pairs) and SGC (∞ many (p, 2p+1) pairs) face identical barriers and share the twin prime constant C₂ in their Hardy-Littlewood predictions."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "contrast",
+      "description": "Euclid's proof of prime infinitude is elementary (3 lines). Adding one structured condition — 2p+1 also prime — transforms an solved problem into a completely open one."
+    },
+    {
+      "targetId": "weak-goldbach",
+      "relationship": "related",
+      "description": "Both SGC and Goldbach's conjecture concern simultaneous prime conditions on related numbers. Helfgott's proof of Weak Goldbach (2013) used circle method + sieve, a technique type that may eventually inform SGC approaches."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hardy, G. H.; Littlewood, J. E.",
+      "title": "Some Problems of 'Partitio Numerorum' III: On the Expression of a Number as a Sum of Primes",
+      "year": "1923",
+      "venue": "Acta Mathematica, 44, pp. 1–70",
+      "note": "Conjecture B predicts π_SG(x) ~ 2C₂ · x/(ln x)². The foundational quantitative paper for Sophie Germain prime distribution."
+    },
+    {
+      "authors": "Brun, Viggo",
+      "title": "La série 1/5+1/7+1/11+1/13+... est convergente ou finie",
+      "year": "1919",
+      "venue": "Bulletin des sciences mathématiques (2) 43, pp. 100–104, 124–128",
+      "note": "Proves the twin prime constant (Brun's constant) is finite; analogous result holds for Sophie Germain primes."
+    },
+    {
+      "authors": "Laubenbacher, Reinhard; Pengelley, David",
+      "title": "Voici ce que j'ai trouvé: Sophie Germain's grand plan to prove Fermat's Last Theorem",
+      "year": "2010",
+      "venue": "Historia Mathematica 37(4), pp. 641–692",
+      "note": "Reveals the full scope of Germain's program: she intended Sophie Germain primes to provide infinitely many exponents where FLT Case I holds, as part of a broader (ultimately unsuccessful) strategy."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sgc_iff_safe_prime_conjecture",
+      "type": "equivalence",
+      "description": "Sophie Germain Conjecture ↔ Safe Prime Conjecture",
+      "leanType": "SophieGermainConjecture ↔ SafePrimeConjecture"
+    },
+    {
+      "name": "sgc_iff_unbounded",
+      "type": "equivalence",
+      "description": "SGC ↔ no finite upper bound on Sophie Germain primes",
+      "leanType": "SophieGermainConjecture ↔ ¬ ∃ M : ℕ, ∀ p : ℕ, IsSophieGermainPrime p → p ≤ M"
+    },
+    {
+      "name": "exists_twentyfive_sg_primes",
+      "type": "verified",
+      "description": "At least 25 Sophie Germain primes exist (certified by computation)",
+      "leanType": "IsSophieGermainPrime 2 ∧ ... ∧ IsSophieGermainPrime 509"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.SophieGermain",
+      "Proofs.SophieGermainOQ02",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Lattice",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["SophieGermain"],
+    "namespace": "SophieGermainOQ01",
+    "lineCount": 196,
+    "axiomCount": 1,
+    "theoremCount": 24,
+    "definitionCount": 1,
+    "sorries": 0,
+    "path": "Proofs/SophieGermainOQ01.lean"
+  },
+  "sorries": 0
+}

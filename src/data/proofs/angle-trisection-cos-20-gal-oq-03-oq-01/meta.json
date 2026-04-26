@@ -67,7 +67,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The minimal polynomial of cos(2π/5) = cos(72°) is 4X²+2X−1. This can be derived from the 5th cyclotomic polynomial Φ₅(X) = X⁴+X³+X²+X+1 by substituting X = e^{2πi/5}: the real part gives cos(2π/5) + cos(4π/5) = −1/2 and cos(2π/5)·cos(4π/5) = −1/4 (by Vieta's formulas applied to the degree-2 real subpolynomial). Clearing denominators: 4α²+2α−1=0. The regular pentagon (5-gon) IS constructible (Gauss 1801) precisely because [ℚ(cos(72°)):ℚ] = 2, which is a power of 2. This formalization establishes the simplest non-trivial instance of |Gal(ℚ(cos(2π/p))/ℚ)| = (p−1)/2 for prime p (here p=5, giving (5−1)/2 = 2).",
+    "historicalContext": "The minimal polynomial of cos(2π/5) = cos(72°) is 4X²+2X−1, derived from the 5th cyclotomic polynomial Φ₅(X) = X⁴+X³+X²+X+1: substituting X = e^{2πi/5} and taking real parts gives cos(2π/5) + cos(4π/5) = −1/2 and cos(2π/5)·cos(4π/5) = −1/4 (Vieta's formulas on the degree-2 real subpolynomial). Clearing denominators yields 4α²+2α−1=0.\n\nThe constructibility of the regular pentagon is ancient: Euclid's *Elements* Book IV gives an explicit ruler-and-compass construction (Proposition 11). But WHY it is constructible — and what distinguishes the pentagon from the heptagon — was first explained algebraically by Carl Friedrich Gauss in 1801. In *Disquisitiones Arithmeticae* §365–366, Gauss proved the extraordinary result that the regular 17-gon (heptadecagon) is constructible by ruler and compass, after 2,000 years of apparent impossibility. His general criterion: a regular n-gon is constructible if and only if n = 2^a · p₁ · p₂ · ··· · pₖ where each pᵢ is a distinct Fermat prime (of the form 2^{2^m}+1). For n = p prime: the p-gon is constructible iff p = 2^{2^m}+1 is a Fermat prime. The regular pentagon (p=5=2^{2^1}+1) is constructible; the regular heptagon (p=7, not a Fermat prime) is not.\n\nThe impossibility of angle trisection was settled by Pierre Wantzel in 1837: to trisect a general angle of 60°, one would need cos(20°) to be constructible, but [ℚ(cos(20°)):ℚ] = 3 (not a power of 2), so it is impossible. Wantzel's proof used the same degree criterion that Gauss had employed positively. This formalization establishes the degree-2 base case: |Gal(4X²+2X−1/ℚ)| = 2 confirms [ℚ(cos(72°)):ℚ] = 2 = 2¹, making the regular pentagon constructible — the algebraic explanation of Euclid's 2,300-year-old construction.",
     "problemStatement": "Prove that $|\\mathrm{Gal}(4X^2+2X-1 / \\mathbb{Q})| = 2$. The polynomial $4X^2+2X-1$ is the minimal polynomial of $\\cos(72°) = \\cos(2\\pi/5)$ over $\\mathbb{Q}$, with roots $\\cos(72°)$ and $\\cos(144°) = \\cos(4\\pi/5)$.",
     "proofStrategy": "**Step 1 — Irreducibility** (§2): The shifted polynomial $q = 4X^2+10X+5$ (via $X \\mapsto X+1$) satisfies Eisenstein at $p=5$: $5 \\nmid 4$ (leading), $5 \\mid 10$ and $5 \\mid 5$ (lower coeffs), $25 \\nmid 5$ (constant). By Gauss's lemma (primitivity since $\\gcd(4,5)=1$), $q$ is irreducible over $\\mathbb{Q}$. Since $p = q(X-1)$ and $X \\mapsto X-1$ is invertible, irreducibility transfers.\n\n**Step 2 — Second root in ℚ(α)** (§3): Ring identity shows $\\beta = -2\\alpha^2 - 2\\alpha$ satisfies $4\\beta^2+2\\beta-1=0$. Algebraic certificate: $4(-2a^2-2a)^2+2(-2a^2-2a)-1 = (4a^2+6a+1)(4a^2+2a-1)$.\n\n**Step 3 — Splitting field degree** (§4): Factored form $4a^2+2a-1 = 4(a-\\alpha)(a+2\\alpha^2+2\\alpha)$ shows all roots in $\\mathbb{Q}(\\alpha)$. Hence $[\\text{SF}:\\mathbb{Q}] = [\\mathbb{Q}(\\alpha):\\mathbb{Q}] = 2$.\n\n**Step 4 — Main theorem** (§5): $|\\mathrm{Gal}| = [\\text{SF}:\\mathbb{Q}] = 2$ by separability.",
     "keyInsights": [
@@ -75,7 +75,10 @@
       "The second root formula β=−2α²−2α avoids fractions: from 4α²=1−2α, we get β=−(1−2α)/2−2α=−1/2−α−2α... actually β=−2α²−2α is the clean ring-arithmetic version without dividing by 2.",
       "The factored form identity 4a²+2a−1−4(a−α)(a+2α²+2α) = (4α²+2α−1)(−2a+2α+1) is the key algebraic certificate: when α is a root, this vanishes, proving the factored form.",
       "This is the degree-2 instance of the general pattern: for prime p, Gal(ℚ(cos(2π/p))/ℚ) ≅ ℤ/((p−1)/2)ℤ. The p=5 case gives ℤ/2ℤ, the p=7 case (AngleTrisectionCos20GalOQ01) gives ℤ/3ℤ.",
-      "Constructibility via Gauss's criterion: [ℚ(cos(72°)):ℚ] = 2 is a power of 2, so cos(72°) is constructible by ruler and compass, and the regular pentagon is constructible. This is the algebraic explanation of the classical Greek construction of the regular pentagon, discovered by Gauss in 1801 (Disquisitiones Arithmeticae §366). In contrast, cos(40°) has [ℚ(cos(40°)):ℚ] = 3 (not a power of 2), so 60° cannot be trisected."
+      "Constructibility via Gauss's criterion: [ℚ(cos(72°)):ℚ] = 2 is a power of 2, so cos(72°) is constructible by ruler and compass, and the regular pentagon is constructible. This is the algebraic explanation of the classical Greek construction of the regular pentagon, discovered by Gauss in 1801 (Disquisitiones Arithmeticae §366). In contrast, cos(40°) has [ℚ(cos(40°)):ℚ] = 3 (not a power of 2), so 60° cannot be trisected.",
+      "The Galois group ℤ/2ℤ has a unique non-trivial element: the automorphism σ defined by σ(cos 72°) = cos 144°. This is the complex conjugation on ℚ(cos 72°) — since both roots are real, σ is the reflection that swaps the two conjugate roots. The group ℤ/2ℤ ≅ {id, σ} captures the full symmetry of the polynomial's roots over ℚ.",
+      "The Fermat prime connection: the regular p-gon (p prime) is constructible iff p is a Fermat prime (p = 2^{2^m}+1). The known Fermat primes are 3, 5, 17, 257, 65537. The Galois group of the real subfield ℚ(cos(2π/p)) over ℚ has order (p−1)/2. For Fermat primes: (3−1)/2=1, (5−1)/2=2, (17−1)/2=8, (257−1)/2=128, (65537−1)/2=32768 — all powers of 2. This entry verifies the p=5 case: (5−1)/2=2=2¹.",
+      "The discriminant criterion identifies the Eisenstein prime: disc(4X²+2X−1) = 4+16 = 20 = 4·5. The discriminant is NOT a perfect square (√20 is irrational), confirming no rational root exists and hence the polynomial is irreducible over ℚ by direct inspection. The Eisenstein prime p=5 in the proof is exactly the prime factor of the discriminant that does not divide the leading coefficient 4."
     ],
     "prerequisites": [
       "AngleTrisectionCos20GalOQ03 (Proofs/AngleTrisectionCos20GalOQ03.lean): degree-3 version for 8X³−6X+1 (cos(40°))",
@@ -128,33 +131,58 @@
   ],
   "conclusion": {
     "summary": "This formalization proves |Gal(4X²+2X−1/ℚ)| = 2, completing the Galois group computation for the minimal polynomial of cos(72°) = cos(2π/5). The proof uses the Eisenstein criterion on the shifted polynomial 4X²+10X+5 (prime 5), Gauss's lemma for the ℤ→ℚ transfer, and the key algebraic identity showing both roots lie in ℚ(α). 0 sorries, 0 axioms.",
-    "implications": "This is the degree-2 base case of the family |Gal(ℚ(cos(2π/p))/ℚ)| = (p−1)/2 for prime p. Together with the degree-3 cases (p=7 in AngleTrisectionCos20GalOQ01, p=9 in AngleTrisectionCos20GalOQ03), it demonstrates the pattern and establishes that the regular pentagon is constructible (degree 2 = 2¹ divides a power of 2).",
+    "implications": "This is the degree-2 base case of the family |Gal(ℚ(cos(2π/p))/ℚ)| = (p−1)/2 for prime p. Together with the degree-3 cases (p=7 in AngleTrisectionCos20GalOQ01, p=9 in AngleTrisectionCos20GalOQ03), it demonstrates the Fermat prime criterion for polygon constructibility: the regular p-gon is constructible iff (p−1)/2 is a power of 2, i.e., p is a Fermat prime.\n\nKnown Fermat primes: 3, 5, 17, 257, 65537 — and these are the only known Fermat primes. The gallery entry proves the p=5 case, establishing |Gal|=2=2¹. The p=17 case gives |Gal|=8=2³ (Gauss's celebrated construction of the regular 17-gon, first proved in 1796 at age 18). Whether there are infinitely many Fermat primes remains one of the most famous open problems in number theory.\n\nThe proof's Eisenstein strategy generalizes: for prime p, the minimal polynomial of cos(2π/p) can be obtained from the real part of Φₚ(X) = (X^p−1)/(X−1), and the relevant Eisenstein prime is always p itself. The shift X ↦ X+1 on the cos-minimal polynomial corresponds to the substitution α ↦ α+1 in the algebraic expression for cos(2π/p).",
     "openQuestions": [
-      "Can the shift-then-Eisenstein technique be automated for all cyclotomic-derived polynomials?",
-      "What is the general formula for the Eisenstein prime when shifting cos(2π/p) minimal polynomials?",
-      "Can we prove the constructibility of the regular 5-gon from cos72_gal_card in Lean 4?"
+      "Can the shift-then-Eisenstein technique be automated for all cyclotomic-derived polynomials? The pattern suggests the Eisenstein prime is always the same prime p used in cos(2π/p), but a general Lean 4 proof would require parameterizing over all primes.",
+      "Can we prove the constructibility of the regular 5-gon from cos72_gal_card in Lean 4? This would require formalizing Gauss's constructibility criterion (a real algebraic number is constructible iff its minimal polynomial has degree a power of 2) — the gallery entry `angle-trisection-oq-02` axiomatizes this criterion; instantiating it for cos(72°) would complete the chain.",
+      "Is there a Lean 4 proof that 5 is the only prime p ≤ 100 with (p−1)/2 a power of 2? This would require checking p ∈ {3, 5, 7, 11, ..., 97} — all straightforward but tedious. The general statement (only Fermat primes satisfy this) would require number-theoretic input beyond decidability."
     ]
   },
   "crossReferences": [
     {
       "targetId": "angle-trisection-cos-20-gal-oq-03",
       "relationship": "parent",
-      "description": "Degree-3 version (cos(40°)), same proof structure with Eisenstein at p=3"
+      "description": "Degree-3 version (cos(40°) = cos(2π/9)), same Eisenstein-shift proof structure with Eisenstein at p=3 on the shifted polynomial 8X³+18X²+12X+1. Gives |Gal|=3 — the 9-gon is NOT constructible because 3 is not a power of 2."
     },
     {
       "targetId": "angle-trisection-cos-20-gal-oq-01",
       "relationship": "sibling",
-      "description": "Degree-3 case for cos(π/7) with Eisenstein at p=7"
+      "description": "Degree-3 case for cos(π/7) minimal polynomial 8X³−4X²−4X+1 with |Gal|=3. Proves the regular 7-gon (heptagon) is not constructible — p=7 is not a Fermat prime, (7−1)/2=3 is not a power of 2."
+    },
+    {
+      "targetId": "angle-trisection-cos-20-gal",
+      "relationship": "sibling",
+      "description": "The p=9 (cos(20°)) entry with |Gal|=3, proving the direct impossibility of trisecting 60°. The same Eisenstein technique is applied to 8X³−6X−1 at p=3."
+    },
+    {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "foundational",
+      "description": "Wantzel-Galois constructibility criterion: α is constructible iff Gal(minpoly(α)) is a 2-group. This is the formal theorem this entry instantiates: |Gal(4X²+2X−1/ℚ)| = 2 is a power of 2, so cos(72°) is constructible and the regular pentagon can be drawn by ruler and compass."
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-01",
+      "relationship": "foundational",
+      "description": "Proves natDegree divides |Gal| for all irreducible polynomials (generalizing Mathlib's prime-degree-only result), and derives that 2-group Galois groups force degree to be a power of 2. This entry uses the prime-degree special case (`Polynomial.Gal.prime_degree_dvd_card`) for deg p = 2."
     },
     {
       "targetId": "angle-trisection",
       "relationship": "related",
-      "description": "Angle trisection impossibility results using Galois degree arguments"
+      "description": "The main angle trisection impossibility entry. This entry establishes the POSITIVE side — the pentagon IS constructible — while angle-trisection establishes the impossibility for trisecting 60°."
     },
     {
       "targetId": "inverse-galois",
       "relationship": "related",
-      "description": "The inverse Galois problem — ℤ/2ℤ is realized here as Gal(cos(72°) minpoly/ℚ)"
+      "description": "The inverse Galois problem — ℤ/2ℤ is realized here as Gal(4X²+2X−1/ℚ). Every abelian group appears as a Galois group over ℚ (Kronecker-Weber), so ℤ/2ℤ in particular is realized by this degree-2 polynomial."
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "foundational",
+      "description": "Vieta's formulas are used in the historicalContext derivation: from Φ₅(e^{2πi/5})=0 and the real part, cos(2π/5)+cos(4π/5) = −1/2 (sum of roots) and cos(2π/5)·cos(4π/5) = −1/4 (product of roots), yielding the minimal polynomial 4X²+2X−1 by clearing denominators."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "complementary",
+      "description": "Abel-Ruffini shows the general quintic is NOT solvable by radicals (Galois group S₅ is not solvable). This entry shows the regular pentagon IS constructible (Gal(cos(72°) minpoly) = ℤ/2ℤ is a 2-group). Together they illustrate the two sides of Galois theory: impossibility (S₅ too large) and possibility (ℤ/2ℤ a power of 2)."
     }
   ],
   "references": [
@@ -163,14 +191,35 @@
       "title": "Algebra, Revised Third Edition",
       "year": "2002",
       "venue": "Springer",
-      "note": "Chapter VI on Galois theory and Chapter V on algebraic extensions"
+      "note": "Chapter VI on Galois theory and Chapter V on algebraic extensions. The Galois group computation for cyclotomic polynomials and the constructibility criterion are in §14."
     },
     {
       "authors": "Gauss, Carl Friedrich",
       "title": "Disquisitiones Arithmeticae",
       "year": "1801",
-      "venue": "Leipzig",
-      "note": "Article 366: constructibility of the regular pentagon via cyclotomic fields"
+      "venue": "Leipzig (English translation by Arthur A. Clarke, Springer, 1986)",
+      "note": "Articles 335–366: the theory of cyclotomic polynomials and constructibility. Article 365 proves the 17-gon is constructible (Gauss's famous result at age 18); Article 366 gives the general criterion for regular p-gons. The regular pentagon's constructibility follows from p=5 being a Fermat prime."
+    },
+    {
+      "authors": "Wantzel, Pierre Laurent",
+      "title": "Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas",
+      "year": "1837",
+      "venue": "Journal de Mathématiques Pures et Appliquées, vol. 2, pp. 366–372",
+      "note": "First rigorous proof of the impossibility of angle trisection and cube duplication. Wantzel proved that a length is constructible iff its minimal polynomial over ℚ has degree a power of 2, establishing the degree criterion used contrapositively in the angle-trisection entries."
+    },
+    {
+      "authors": "Stewart, Ian",
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "Chapman & Hall/CRC, 4th edition",
+      "note": "Chapters 16–17 on geometric constructions and Galois groups. Proves the constructibility criterion and applies it to regular polygons and angle trisection. The treatment of Fermat primes and polygon constructibility follows Gauss's approach."
+    },
+    {
+      "authors": "Cox, David A.",
+      "title": "Galois Theory",
+      "year": "2012",
+      "venue": "John Wiley & Sons, 2nd edition",
+      "note": "Chapter 10 on geometric constructions; Chapter 11 on cyclotomic extensions. Derives the minimal polynomial of cos(2π/p) from Φₚ and proves the Fermat prime criterion for polygon constructibility. The Eisenstein-shift technique for proving irreducibility of real subfield polynomials is treated in detail."
     }
   ],
   "sorries": 0,
@@ -186,7 +235,7 @@
     "namespace": "AngleTrisectionCos20GalOQ03OQ01",
     "lineCount": 462,
     "axiomCount": 0,
-    "theoremCount": 5,
+    "theoremCount": 28,
     "definitionCount": 0,
     "sorries": 0,
     "path": "Proofs/AngleTrisectionCos20GalOQ03OQ01.lean"

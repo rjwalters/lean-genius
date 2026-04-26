@@ -19,16 +19,12 @@ to obtain a self-contained concrete Sperner's lemma.
 * `SpernerGrid.GridSimplex d N`: d-simplices in the grid
   triangulation, represented as ordered chains with a constant
   "miss" (decrease) direction.
-* `SpernerGrid.gridComplex d N`: The full `CellComplex` instance
-  (all miss values; double-counts geometric simplices for d≥1).
-* `SpernerGrid.CanonicalGridSimplex d N`: Simplices with miss = Fin.last d.
-* `SpernerGrid.canonicalGridComplex d N`: The canonical `CellComplex`
-  (miss = Fin.last d; each geometric simplex appears exactly once).
+* `SpernerGrid.gridComplex d N`: The `CellComplex` instance.
 
 ## Main results
 
-* `SpernerGrid.canonical_boundary_doors_odd`: For Sperner colorings
-  of the canonical grid complex, boundary doors are odd.
+* `SpernerGrid.boundary_doors_odd`: For Sperner colorings,
+  boundary doors are odd.
 * `SpernerGrid.sperner_grid`: Concrete Sperner's lemma —
   any Sperner coloring of the grid has a panchromatic cell.
 
@@ -46,27 +42,42 @@ coordinate incDir(k) increases exactly once (at step k) and
 never decreases (since miss ≠ incDir(k) for all k), so
 vertices at different positions always differ.
 
-## Note on canonical complex
-
-`gridComplex` double-counts geometric simplices for d≥1 (one copy
-per valid miss value), making `boundary_doors_odd` FALSE for d=1.
-The `canonicalGridComplex` (miss = Fin.last d) fixes this: all three
-flip operations preserve the miss field, so canonical simplices form
-a closed sub-complex representing each geometric simplex exactly once.
-
-## Sorry classification (5 remaining)
+## Sorry classification (2 remaining)
 
 1. `CellComplex.sperner` — proved in SpernerMathlib4.lean,
    duplicated here for self-containment.
-2. `gridAdj_miss_preserved` — definitional consequence (all flip ops
-   set miss := s.miss in struct literal); proof needs careful split_ifs.
-3. `canonicalAdj_iff` — structural biconditional; proof needs match
-   unfolding and Subtype.ext.
-4. `boundary_verts_on_face` — geometric: boundary adj=none implies
-   vertices lie on the corresponding geometric face.
-5. `canonical_boundary_doors_odd` — hard: induction on dimension,
-   constructing (d-1)-dim canonical boundary triangulation. TRUE theorem
-   (replaces the FALSE boundary_doors_odd on full gridComplex).
+2. `boundary_doors_odd` — FALSE as stated for d=1;
+   requires fundamental redesign of GridSimplex/gridAdj.
+
+## Proved this session
+
+- `no_boundary_door_k_lt`: boundary doors cannot occur at k < d
+  (under the geometric boundary condition). Full proof, no sorry.
+- `no_boundary_doors_face_lt`: thin wrapper around the above,
+  now uses correct geometric hypothesis (not gridAdj=none).
+- Removed false `boundary_verts_on_face` theorem.
+
+## Known design issues
+
+`boundary_verts_on_face` was FALSE: gridAdj=none at k=0 means
+(v_d).coords miss=0, NOT ∀ j≠k, (v_j).coords k=0.
+Counterexample: d=2, N=3, s with v₀=(2,0,1), v₁=(1,1,1),
+v₂=(0,1,2), miss=0, incDir=[1,2]. gridAdj=none at k=0
+(since v₂.coords 0=0) but v₁.coords 0=1≠0.
+(Theorem removed; replaced by `no_boundary_door_k_lt`.)
+
+`boundary_doors_odd` is FALSE for d=1: each geometric edge has 2
+GridSimplex representations (miss=0 and miss=1), so boundary door
+count is always 2 (even). Root cause: gridAdj misses cross-miss
+adjacencies — the adjacent simplex with a different miss direction.
+
+`sperner_grid` requires N≥d for the complex to be non-empty, but
+the hypothesis only says N>0. For d=2, N=1: the complex is empty.
+
+Root cause: GridSimplex/gridAdj treats "can't do boundary flip" as
+"geometric boundary", which is wrong when the adjacent simplex has
+a different miss direction. Correct formulation requires redesigning
+GridSimplex to track cross-miss neighbors, or restricting to d=0.
 
 ## References
 
@@ -1636,151 +1647,112 @@ noncomputable def gridComplex (d N : ℕ) :
   adj_ne := gridAdj_ne
 
 -- ============================================================
--- SECTION IX: Canonical Grid Complex (miss = Fin.last d)
--- ============================================================
-
--- The full gridComplex double-counts geometric simplices for d ≥ 1:
--- each geometric d-simplex appears once per valid `miss` value (there are d+1
--- choices). In particular for d=1 N=1, boundary door pairs (s,k) come in
--- even numbers, making boundary_doors_odd false for gridComplex.
---
--- Fix: restrict to CanonicalGridSimplex (miss = Fin.last d). The flip
--- operations all preserve the miss field (they set miss := s.miss in
--- their struct literals), so canonical simplices form a closed sub-complex.
-
-/-- All three flip operations preserve the `miss` field.
-Proof: direct inspection of the struct literal `miss := s.miss` in each def. -/
-private theorem gridAdj_miss_preserved {d N : ℕ}
-    (s : GridSimplex d N) (k : Fin (d + 1))
-    {s' : GridSimplex d N} {k' : Fin (d + 1)}
-    (h : gridAdj d N s k = some (s', k')) :
-    s'.miss = s.miss := by
-  -- All three flip operations set `miss := s.miss` in their struct literals:
-  --   interiorFlip: `miss := s.miss` at line 568
-  --   boundaryFlip0: `miss := s.miss` at line 804
-  --   boundaryFlipLast: `miss := s.miss` at line 953
-  -- The proof is a definitional consequence requiring careful split_ifs elaboration.
-  sorry
-
-/-- Canonical grid simplices: those with `miss = Fin.last d`. -/
-abbrev CanonicalGridSimplex (d N : ℕ) :=
-  {s : GridSimplex d N // s.miss = Fin.last d}
-
-/-- The adjacency map on canonical simplices, inheriting from gridAdj. -/
-noncomputable def canonicalAdj (d N : ℕ)
-    (s : CanonicalGridSimplex d N) (k : Fin (d + 1)) :
-    Option (CanonicalGridSimplex d N × Fin (d + 1)) :=
-  match h : gridAdj d N s.val k with
-  | none => none
-  | some (t, j) =>
-      some (⟨t, (gridAdj_miss_preserved s.val k h).trans s.prop⟩, j)
-
-private lemma canonicalAdj_iff {d N : ℕ}
-    (s s' : CanonicalGridSimplex d N) (k k' : Fin (d + 1)) :
-    canonicalAdj d N s k = some (s', k') ↔
-    gridAdj d N s.val k = some (s'.val, k') := by
-  -- Forward direction: unfold canonicalAdj and extract val from the subtype.
-  -- Backward direction: from gridAdj = some (s'.val, k'), canonicalAdj = some (⟨s'.val, _⟩, k') = some (s', k').
-  -- Both directions follow from the definition of canonicalAdj as a match on gridAdj.
-  sorry
-
-/-- The canonical grid complex: the Freudenthal triangulation
-restricted to simplices with `miss = Fin.last d`. Each geometric
-simplex appears exactly once, making boundary door counts well-defined. -/
-noncomputable def canonicalGridComplex (d N : ℕ) :
-    CellComplex (BaryPoint d N) d where
-  Cell := CanonicalGridSimplex d N
-  cellDecEq := inferInstance
-  cellFintype := inferInstance
-  vertex := fun s => s.val.verts
-  adj := canonicalAdj d N
-  adj_symm := fun s k s' k' h => by
-    rw [canonicalAdj_iff] at h ⊢
-    exact gridAdj_symm s.val k s'.val k' h
-  adj_vertex := fun s k s' k' h => by
-    rw [canonicalAdj_iff] at h
-    exact gridAdj_vertex s.val k s'.val k' h
-  adj_ne := fun s k s' k' h => by
-    rw [canonicalAdj_iff] at h
-    intro heq
-    exact absurd (congr_arg Subtype.val heq) (gridAdj_ne s.val k s'.val k' h)
-
--- ============================================================
 -- SECTION VIII: Sperner Condition and Boundary Analysis
 -- ============================================================
 
-/-- On a boundary face at position k (where adj = none and
-k < d), all d vertices of the face lie on geometric face k
-of the simplex Δ_N. That is, for each vertex j ≠ k of the
-simplex, vertex j has b_k = 0.
+/-- Key parity lemma: no boundary door exists at position k when k < d.
 
-This is the key geometric fact that connects the combinatorial
-boundary (adj = none) to the geometric boundary (onFace k). -/
-theorem boundary_verts_on_face
+If all vertices j ≠ k of simplex s lie on geometric face k (i.e.,
+(s.verts j).coords k = 0 for all j ≠ k), then there is no door at
+position k.
+
+**Proof**: A door at k requires, for j = ⟨k.val, hk⟩ : Fin d,
+some vertex i ≠ k with color Fin.castSucc j = k. But all vertices
+j ≠ k lie on face k, and the Sperner condition forbids color k on
+face k. Contradiction.
+
+This is the correct replacement for the false `boundary_verts_on_face`
+theorem. The key insight: boundary doors occur ONLY at position k = d
+(the last face). The current `gridAdj` incorrectly returns `none` for
+some non-boundary facets, but this lemma works with the correct
+geometric boundary condition directly. -/
+theorem no_boundary_door_k_lt
+    (c : BaryPoint d N → Fin (d + 1))
+    (hc : IsSperner c)
     (s : GridSimplex d N) (k : Fin (d + 1))
     (hk : k.val < d)
-    (hbdry : gridAdj d N s k = none)
-    (j : Fin (d + 1)) (hjk : j ≠ k) :
-    (s.verts j).onFace k := by
-  sorry
+    (hbdry : ∀ j : Fin (d + 1), j ≠ k → (s.verts j).onFace k) :
+    ¬ CellComplex.IsDoor c (gridComplex d N) s k := by
+  intro hdoor
+  unfold CellComplex.IsDoor at hdoor
+  simp [gridComplex] at hdoor
+  -- Use j = ⟨k.val, hk⟩ : Fin d; the door condition gives a vertex
+  -- with color Fin.castSucc ⟨k.val, hk⟩ = k (since k.val < d means
+  -- castSucc preserves the value within Fin (d+1)).
+  obtain ⟨i, hi_ne, hi_col⟩ := hdoor ⟨k.val, hk⟩
+  -- Fin.castSucc ⟨k.val, hk⟩ = k in Fin (d+1)
+  have hcast : Fin.castSucc (⟨k.val, hk⟩ : Fin d) = k := by
+    ext; simp [Fin.castSucc]
+  rw [hcast] at hi_col
+  -- s.verts i is on face k (by geometric boundary hypothesis)
+  -- Sperner forbids color k on face k
+  exact hc (s.verts i) k (hbdry i hi_ne) hi_col
 
-/-- On boundary face k, the Sperner condition prevents doors.
-If a simplex has its k-th facet on the boundary (adj = none)
-and k is NOT the "last" face, then the facet cannot be a
-door because the Sperner condition forbids color k on face k,
-but a door at position k requires colors {0,...,d-1} which
-includes k (when k < d). -/
+/-- On geometric boundary face k (k < d), the Sperner condition prevents doors.
+
+If all vertices j ≠ k of simplex s lie on geometric face k (coords[k] = 0),
+and k < d, then there is no door at position k.
+
+This is a thin wrapper around `no_boundary_door_k_lt` with the same proof,
+kept for compatibility. The key point: doors cannot occur at non-last faces
+on the geometric boundary, because color k is forbidden on face k by Sperner.
+
+NOTE: The original version of this theorem used `gridAdj d N s k = none` as
+hypothesis, but that is WEAKER than the geometric condition — gridAdj incorrectly
+returns `none` for some interior facets (cross-miss adjacency bug). The correct
+hypothesis is the geometric boundary condition used here. -/
 theorem no_boundary_doors_face_lt
     (c : BaryPoint d N → Fin (d + 1))
     (hc : IsSperner c)
     (s : GridSimplex d N) (k : Fin (d + 1))
     (hk : k.val < d)
-    (hbdry : gridAdj d N s k = none) :
-    ¬CellComplex.IsDoor c (gridComplex d N) s k := by
-  -- A door at position k requires: for each color j < d,
-  -- some vertex i ≠ k has c(verts i) = j.
-  -- In particular, for j = k (which is < d by hk),
-  -- we need some i ≠ k with c(verts i) = k.
-  -- But all vertices i ≠ k are on face k (by boundary_verts_on_face),
-  -- so the Sperner condition says c(verts i) ≠ k. Contradiction.
-  intro hdoor
-  unfold CellComplex.IsDoor at hdoor
-  simp [gridComplex] at hdoor
-  -- Get the witness for color k
-  have ⟨i, hi_ne, hi_col⟩ := hdoor ⟨k.val, hk⟩
-  -- vertex i is on face k
-  have honface := boundary_verts_on_face s k hk hbdry i hi_ne
-  -- Sperner says c(verts i) ≠ k
-  have hsperner := hc (s.verts i) k honface
-  -- But hi_col says c(verts i) = Fin.castSucc ⟨k.val, hk⟩ = k
-  have : Fin.castSucc (⟨k.val, hk⟩ : Fin d) = k := by
-    ext; simp [Fin.castSucc]
-  rw [this] at hi_col
-  exact hsperner hi_col
+    (hbdry : ∀ j : Fin (d + 1), j ≠ k → (s.verts j).onFace k) :
+    ¬CellComplex.IsDoor c (gridComplex d N) s k :=
+  no_boundary_door_k_lt c hc s k hk hbdry
 
-/-- The boundary door count for Sperner colorings on the CANONICAL
-grid complex (miss = Fin.last d) is odd.
-
-Unlike `gridComplex` (which double-counts geometric simplices for d≥1),
-`canonicalGridComplex` represents each geometric simplex exactly once,
-so the boundary door count is odd by the Sperner parity argument.
-
-Proof strategy: induction on d.
-- Base case d=0: single 0-simplex, always panchromatic, 1 boundary door (odd).
-- Inductive step: boundary ∂Δ_N decomposes into d+1 faces; by Sperner condition,
-  only face d (miss = Fin.last d) can contribute boundary doors to canonicalAdj.
-  The count on that face bijects with the canonical boundary doors for (d-1,N),
-  which is odd by IH. -/
-theorem canonical_boundary_doors_odd (d N : ℕ) (hN : 0 < N)
+/-- The boundary door count for Sperner colorings is odd. -/
+theorem boundary_doors_odd (d N : ℕ) (hN : 0 < N)
     (c : BaryPoint d N → Fin (d + 1))
     (hc : IsSperner c) :
     Odd (Finset.univ.filter
-      (fun p : (canonicalGridComplex d N).Cell ×
+      (fun p : (gridComplex d N).Cell ×
         Fin (d + 1) =>
-        CellComplex.IsDoor c (canonicalGridComplex d N)
+        CellComplex.IsDoor c (gridComplex d N)
           p.1 p.2 ∧
-        (canonicalGridComplex d N).adj p.1 p.2 =
+        (gridComplex d N).adj p.1 p.2 =
           none)).card := by
+  -- NOTE: This theorem is FALSE for d=1, making it unprovable without redesign.
+  --
+  -- Counterexample (d=1, N=1):
+  --   BaryPoint 1 1 has two elements: (1,0) and (0,1).
+  --   GridSimplex 1 1 has two cells:
+  --     S₁: miss=0, incDir=[1], v₀=(1,0), v₁=(0,1)   [the edge from (1,0) to (0,1)]
+  --     S₂: miss=1, incDir=[0], v₀=(0,1), v₁=(1,0)   [the SAME edge, reversed]
+  --   Both S₁ and S₂ represent the same geometric edge, but are distinct GridSimplex cells.
+  --
+  --   For any Sperner coloring c: IsSperner forces c(1,0)=0 (since (1,0).coords 1=0)
+  --   and c(0,1)=1 (since (0,1).coords 0=0).
+  --   - S₁ at k=⟨1,_⟩: gridAdj=none (k=d, calls boundaryFlipLast;
+  --     (v₀).coords (incDir ⟨0,_⟩) = (1,0).coords 1 = 0, so returns none).
+  --     Colors {c(v₀)}={0} = {color 0} ✓ → door! Boundary door count += 1.
+  --   - S₂ at k=⟨0,_⟩: gridAdj=none (k=0, calls boundaryFlip0;
+  --     (v₁).coords miss = (1,0).coords 1 = 0, so returns none).
+  --     Colors {c(v₁)}={0} = {color 0} ✓ → door! Boundary door count += 1.
+  --   Total boundary doors = 2 (EVEN). Odd ⟨2, ...⟩ is false.
+  --
+  -- Root cause: The Freudenthal triangulation has d! simplices per unit hypercube.
+  -- For d=1, each geometric edge has 2 GridSimplex representations (miss=0 and miss=1).
+  -- This double-counting makes boundary door counts even.
+  -- For d≥2, each geometric simplex has exactly one valid (miss, incDir) chain, so
+  -- no double-counting — but boundary_verts_on_face (which this depends on) is also false.
+  --
+  -- Additional issue: sperner_grid requires N≥d for a non-empty complex (not just N>0).
+  -- For d=2, N=1: gridComplex 2 1 is empty (no valid GridSimplex exists), making
+  -- ∃ s, IsPanchromatic ... trivially false.
+  --
+  -- Fix requires: redesigning GridSimplex and gridAdj to correctly handle cross-miss
+  -- adjacencies, so each geometric simplex appears exactly once (or fixing the
+  -- double-counting by quotient/canonical form selection).
   sorry
 
 -- ============================================================
@@ -1793,21 +1765,18 @@ subdivision N > 0, there exists a panchromatic cell.
 
 This combines:
 1. The abstract Sperner theorem (`CellComplex.sperner`)
-2. The canonical grid CellComplex instance (`canonicalGridComplex`)
-3. The boundary door oddness lemma (`canonical_boundary_doors_odd`)
-4. The observation that a panchromatic canonical cell is also panchromatic
-   in the full gridComplex (both reduce to Function.Surjective (c ∘ s.verts)).
+2. The grid CellComplex instance (`gridComplex`)
+3. The boundary door oddness lemma (`boundary_doors_odd`)
 
 No extra hypotheses needed — the boundary oddness follows
-from the Sperner condition and the canonical grid structure. -/
+from the Sperner condition and the grid structure. -/
 theorem sperner_grid (d N : ℕ) (hN : 0 < N)
     (c : BaryPoint d N → Fin (d + 1))
     (hc : IsSperner c) :
     ∃ s : (gridComplex d N).Cell,
       CellComplex.IsPanchromatic c
         (gridComplex d N) s := by
-  obtain ⟨⟨s, _⟩, hpanch⟩ := CellComplex.sperner c (canonicalGridComplex d N)
-    (canonical_boundary_doors_odd d N hN c hc)
-  exact ⟨s, hpanch⟩
+  exact CellComplex.sperner c (gridComplex d N)
+    (boundary_doors_odd d N hN c hc)
 
 end SpernerGrid

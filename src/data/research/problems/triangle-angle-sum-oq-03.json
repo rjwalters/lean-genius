@@ -1,7 +1,7 @@
 {
   "slug": "triangle-angle-sum-oq-03",
   "title": "Triangle Angle Sum: Mathlib Angle Function Degenerate Cases",
-  "phase": "NEW",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "fast",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-04-22T13:03:46.506Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Proof complete: 0 sorries, 0 axioms. Degenerate case analysis fully characterized.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — proof complete.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,9 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: 0 sorries, 0 axioms. Complete degenerate case characterization: angle sum = π ↔ ¬(p₂=p₁ ∧ p₃=p₁). The standard gallery triangle_angle_sum required p₃≠p₁ unnecessarily — only p₂≠p₁ suffices. Unique exception: all three points equal → sum = 3π/2.",
+    "builtItems": [
+      "triangle_angle_sum_one_cond: angle sum = π whenever p₂ ≠ p₁, for ANY p₃ (TriangleAngleSumOQ03.lean:61)",
+      "triangle_angle_sum_p2_eq_p1: p₂=p₁, p₃≠p₁ → sum = π via angle_self_left/right/of_ne (TriangleAngleSumOQ03.lean:71)",
+      "triangle_angle_sum_fully_degenerate: p₂=p₁, p₃=p₁ → sum = 3π/2 (TriangleAngleSumOQ03.lean:84)",
+      "triangle_angle_sum_iff_not_fully_degenerate: sum = π ↔ ¬(p₂=p₁ ∧ p₃=p₁) (biconditional, TriangleAngleSumOQ03.lean:104)",
+      "triangle_angle_sum_unconditional: sum = if p₂=p₁ ∧ p₃=p₁ then 3π/2 else π, no hypotheses (TriangleAngleSumOQ03.lean:120)"
+    ],
+    "insights": [
+      "Mathlib angle_add_angle_add_angle_eq_pi only requires p₂ ≠ p₁ — the hypothesis p₃ ≠ p₁ in the gallery proof was redundant",
+      "Degenerate Mathlib convention: angle(p, p, q) = π/2 (arccos(0/0) = π/2) — mathematically coherent but geometrically surprising",
+      "The only exceptional case is all three points equal; sum = 3π/2 = three right angles each equal to π/2",
+      "open Classical is load-bearing: by_cases on Prop requires Classical.em to avoid DecidableEq P typeclass",
+      "Oriented angle degenerate cases (oangle) are trivial — angles become 0 — so no interesting analog of this theorem for signed angles"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -54,7 +66,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.506Z",
-  "lastUpdate": "2026-04-22T13:03:46.506Z",
+  "lastUpdate": "2026-04-26T18:30:00+02:00",
   "significance": 6,
   "tractability": 7,
   "leanFiles": [

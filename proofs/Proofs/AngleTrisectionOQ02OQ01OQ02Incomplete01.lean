@@ -2,35 +2,46 @@
 Completing the Wantzel-Galois Constructibility Proof
 Open Question: angle-trisection-oq-02-oq-01-oq-02-incomplete-01
 
-The parent file AngleTrisectionOQ02OQ01OQ02.lean had 5 sorries:
-  1. not_constructible_of_bad_degree  — tower degree theory (PROVED HERE)
-  2. cube_root_2_minpoly_irred        — Eisenstein at p=2 (PROVED HERE)
-  3. cos20_minpoly_degree             — natDegree computation (PROVED HERE)
-  4. regular_7gon_impossible_degree   — degree ≠ 2^k (PROVED HERE)
-  5. wantzel_galois_iff               — full Galois correspondence (STILL SORRY)
+## Definition Fix (Session 26 — restored in Session 29)
 
-## Progress: 5 → 1 sorries
+The original `sqrt_ext` constructor required `IsConstructible β` as a precondition,
+making constructible numbers exactly the rationals. This was mathematically wrong
+(√2 should be constructible) and made `wantzel_galois_iff` false.
 
-The key difficulty with the parent proof was that `IsConstructible` hid `a` and `b`
-inside an existential in `sqrt_ext`, preventing Lean from generating IHs for them.
+**Fixed definition**: `sqrt_ext` no longer requires `IsConstructible β`. The square root β
+of a constructible number a is constructible (along with any b + β for constructible b).
 
-This file redesigns `IsConstructible` so `a` and `b` are explicit constructor parameters.
-This enables the proof of `isConstructible_mem_range` (all constructible numbers are
-rational), which then makes `not_constructible_of_bad_degree` straightforward.
+Under the fixed definition:
+- √2 IS constructible (a = 2 rational, b = 0, β = √2, β² = 2 ✓)
+- `isConstructible_mem_range` is no longer provable (correct!)
+- `wantzel_galois_iff` is now a TRUE statement (not false as before)
 
-## Key Insight: Proof of not_constructible_of_bad_degree
+## History
 
-Under the redesigned definition, constructible numbers are exactly rationals.
-So: if α is constructible and p(α)=0 for irreducible p, then α = q ∈ ℚ, and
-minpoly ℚ q = X - C q divides p. Since p is irreducible and X - C q is non-unit,
-p is associate to X - C q (degree 1 = 2^0). Contradicts ¬ DegreePowerOfTwo p.
+This file reduces the parent (AngleTrisectionOQ02OQ01OQ02.lean, 5 sorries) to fewer.
 
-## Remaining Sorry
+Sessions 26-27: Fixed IsConstructible definition + structured tower sorry.
+Session 28: Structured the single tower sorry into 5-step proof (Steps A-E).
+Session 29: Restored sessions 26-28 work (accidentally reverted in PR #12782).
+           Also improved not_constructible_of_bad_degree to use Dvd (not Eq).
 
-5. wantzel_galois_iff: Requires full Galois correspondence + 2-group structure.
+## Remaining Sorries
+
+1. `hβ_dvd` (Step C): finrank ℚ ℚ⟮β⟯ ∣ 2^(j+1)
+   Proof plan: ℚ⟮a⟯ ≤ ℚ⟮β⟯, tower law gives finrank_β = [ℚ⟮β⟯:ℚ⟮a⟯] * 2^j.
+   β satisfies X²-a over ℚ⟮a⟯ → [ℚ⟮β⟯:ℚ⟮a⟯] ≤ 2 → [ℚ⟮β⟯:ℚ⟮a⟯] ∣ 2 → finrank_β ∣ 2^(j+1).
+   Needs: Algebra (↥ℚ⟮a⟯) (↥ℚ⟮β⟯) from ha_le_β, and simple extension fact
+   Module.finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ = natDegree (minpoly ↥ℚ⟮a⟯ β) (β generates ℚ⟮β⟯ over ℚ⟮a⟯).
+
+2. `hjoin_dvd` (Step D): finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+k+1)
+   Proof plan: tower via ℚ⟮β⟯ gives finrank_join = [join:ℚ⟮β⟯] * finrank_β.
+   Need [join:ℚ⟮β⟯] ∣ 2^k. This requires STRONGER IH for b: not just finrank ℚ ℚ⟮b⟯ ∣ 2^k,
+   but "for any K/ℚ, finrank K K⟮b⟯ divides a power of 2". Current IH is too weak.
+
+3. `wantzel_galois_iff` (out-of-scope): Requires full Galois correspondence + 2-group structure.
    Estimated: 500+ lines of new Galois theory infrastructure. Out of scope.
 
-## Status: 1 sorry, 0 axioms
+## Status: 3 sorries (2 targeted tower + 1 out-of-scope Galois), 0 axioms
 -/
 
 import Mathlib.FieldTheory.Galois.Basic
@@ -38,6 +49,8 @@ import Mathlib.FieldTheory.Minpoly.Field
 import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
 import Mathlib.GroupTheory.SpecificGroups.Cyclic
 import Mathlib.RingTheory.Polynomial.Eisenstein.Basic
+import Mathlib.RingTheory.Algebraic.Basic
+import Mathlib.RingTheory.IntegralClosure.Algebra.Basic
 import Mathlib.Tactic
 
 open Polynomial IntermediateField
@@ -45,23 +58,25 @@ open Polynomial IntermediateField
 namespace AngleTrisectionOQ02OQ01OQ02Incomplete01
 
 -- ============================================================
--- PART 1: Constructible Number Framework (Redesigned)
+-- PART 1: Constructible Number Framework (Fixed Definition)
 -- ============================================================
 
 /-- An element of ℂ is **constructible** if reachable by a tower of quadratic
     extensions starting from ℚ.
 
-    **Key design change from parent file**: `a` and `b` are now explicit constructor
-    parameters in `sqrt_ext` (not hidden inside an existential). This gives Lean
-    proper inductive hypotheses for all three (β, a, b), enabling the proof of
-    `isConstructible_mem_range`.
+    **Key design change from earlier version**: `sqrt_ext` no longer requires
+    `IsConstructible β`. Instead, β is any complex number satisfying β² = a
+    for some constructible a. This is the mathematically correct definition:
+    square roots of constructible numbers are constructible.
 
-    Under this definition, constructible numbers are exactly the rationals
-    (see `isConstructible_mem_range`). -/
+    Under the old definition (with `IsConstructible β` as a precondition),
+    all constructible numbers were rational — making `wantzel_galois_iff` false.
+    Under this corrected definition, e.g. √2 is constructible. -/
 inductive IsConstructible : ℂ → Prop where
   | rational : ∀ α : ℂ, α ∈ Set.range (algebraMap ℚ ℂ) → IsConstructible α
   | sqrt_ext : ∀ (β a b : ℂ),
-      IsConstructible β → IsConstructible a → IsConstructible b →
+      -- Note: NO IsConstructible β requirement (the key fix)
+      IsConstructible a → IsConstructible b →
       β * β = a → IsConstructible (b + β)
 
 /-- Rational numbers are constructible. -/
@@ -76,25 +91,105 @@ theorem isConstructible_zero : IsConstructible (0 : ℂ) := by
 theorem isConstructible_one : IsConstructible (1 : ℂ) := by
   simpa using isConstructible_rat 1
 
+/-- √2 is constructible (demonstrates the fixed definition works correctly). -/
+theorem isConstructible_sqrt2 : IsConstructible (Real.sqrt 2 : ℂ) := by
+  have h2 : IsConstructible (2 : ℂ) := by simpa using isConstructible_rat 2
+  have h0 : IsConstructible (0 : ℂ) := isConstructible_zero
+  have hsq : (Real.sqrt 2 : ℂ) * (Real.sqrt 2 : ℂ) = 2 := by
+    norm_cast
+    exact Real.mul_self_sqrt (by norm_num : (0 : ℝ) ≤ 2)
+  simpa using IsConstructible.sqrt_ext (Real.sqrt 2 : ℂ) 2 0 h2 h0 hsq
+
 -- ============================================================
--- PART 2: Key Structural Lemma
+-- PART 2: Key Structural Lemma (SORRY — tower degree property)
 -- ============================================================
 
-/-- **All constructible complex numbers are rational.**
+/-- Constructible numbers are algebraic of 2-power degree.
 
-    By induction on the constructibility derivation:
-    - `rational`: already in ℚ.
-    - `sqrt_ext β a b`: α = b + β with β, b ∈ ℚ (IH on β and b, now available
-      since they are explicit constructor parameters). So α = qb + qβ ∈ ℚ. -/
-theorem isConstructible_mem_range :
-    ∀ α : ℂ, IsConstructible α → α ∈ Set.range (algebraMap ℚ ℂ) := by
-  intro α h
+    If α is constructible (under the FIXED definition), then:
+    1. α is algebraic over ℚ
+    2. finrank ℚ ℚ⟮α⟯ divides 2^n for some n
+
+    **Proof**: Induction on IsConstructible.
+    - `rational` (α = algebraMap ℚ ℂ q): algebraicity from `isAlgebraic_algebraMap`.
+      finrank = 1 = 2^0 since q ∈ ⊥ implies ℚ⟮q⟯ = ⊥.
+    - `sqrt_ext` (α = b + β, β² = a):
+      · β algebraic: `IsAlgebraic.of_pow` from β^2 = a algebraic (IH on a).
+      · b + β algebraic: `IsIntegral.add` (over a field, algebraic ↔ integral).
+      · finrank: shown to divide 2^(j+k+1) via tower argument.
+
+    Remaining sorries:
+    - Step C: finrank ℚ ℚ⟮β⟯ ∣ 2^(j+1) (tower via ℚ⟮a⟯, β satisfies X²-a over ℚ⟮a⟯)
+    - Step D: finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+k+1) (needs stronger IH for b) -/
+private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible α) :
+    IsAlgebraic ℚ α ∧ ∃ n : ℕ, Module.finrank ℚ ℚ⟮α⟯ ∣ 2 ^ n := by
   induction h with
-  | rational _ h => exact h
-  | sqrt_ext β a b hβ ha hb hβsq ihβ iha ihb =>
-    obtain ⟨qβ, hqβ⟩ := ihβ
-    obtain ⟨qb, hqb⟩ := ihb
-    exact ⟨qb + qβ, by simp [map_add, hqβ, hqb]⟩
+  | rational _ h_mem =>
+    obtain ⟨q, rfl⟩ := h_mem
+    refine ⟨isAlgebraic_algebraMap q, 0, ?_⟩
+    rw [pow_zero]
+    rw [IntermediateField.finrank_adjoin_simple_eq_one_iff.mpr
+      (IntermediateField.mem_bot.mpr ⟨q, rfl⟩)]
+  | sqrt_ext β a b _ _ hβ2 ih_a ih_b =>
+    obtain ⟨halg_a, j, hj_dvd⟩ := ih_a
+    obtain ⟨halg_b, k, hk_dvd⟩ := ih_b
+    -- β is algebraic: β^2 = a with a algebraic
+    have hβ_sq : β ^ 2 = a := by rw [sq]; exact hβ2
+    have halg_β : IsAlgebraic ℚ β :=
+      IsAlgebraic.of_pow (by norm_num : 0 < 2) (hβ_sq ▸ halg_a)
+    -- b + β is algebraic: sum of integrals over the field ℚ
+    have halg_bβ : IsAlgebraic ℚ (b + β) := by
+      rw [isAlgebraic_iff_isIntegral] at halg_b halg_β ⊢
+      exact halg_b.add halg_β
+    refine ⟨halg_bβ, ?_⟩
+    -- Show Module.finrank ℚ ℚ⟮b+β⟯ ∣ 2^(j+k+1)
+    use j + k + 1
+    -- Step A: β² = a → a ∈ ℚ⟮β⟯, so ℚ⟮a⟯ ≤ ℚ⟮β⟯
+    have ha_in_β : a ∈ (ℚ⟮β⟯ : IntermediateField ℚ ℂ) := by
+      rw [← hβ2]
+      exact mul_mem (mem_adjoin_simple_self ℚ β) (mem_adjoin_simple_self ℚ β)
+    have ha_le_β : (ℚ⟮a⟯ : IntermediateField ℚ ℂ) ≤ ℚ⟮β⟯ :=
+      adjoin_simple_le_iff.mpr ha_in_β
+    -- Step B: b + β ∈ ℚ⟮b⟯ ⊔ ℚ⟮β⟯, hence ℚ⟮b+β⟯ ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯
+    have hmem : b + β ∈ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯ : IntermediateField ℚ ℂ) :=
+      add_mem (mem_sup_left (mem_adjoin_simple_self ℚ b))
+              (mem_sup_right (mem_adjoin_simple_self ℚ β))
+    have hle : (ℚ⟮(b + β)⟯ : IntermediateField ℚ ℂ) ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯ :=
+      adjoin_simple_le_iff.mpr hmem
+    -- Step C (sorry): finrank ℚ ℚ⟮β⟯ ∣ 2^(j+1)
+    -- Proof plan: set up Algebra ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ via ha_le_β.
+    --   Tower law: finrank ℚ ℚ⟮β⟯ = finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ * finrank ℚ ℚ⟮a⟯
+    --   Since finrank ℚ ℚ⟮a⟯ ∣ 2^j (IH), it suffices to show finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2.
+    --   Key: β satisfies X²-a over ↥ℚ⟮a⟯ (since β²=a ∈ ℚ⟮a⟯), so
+    --   minpoly ↥ℚ⟮a⟯ β ∣ X²-a, hence natDegree(minpoly) ≤ 2.
+    --   And finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ = natDegree(minpoly ↥ℚ⟮a⟯ β) since ℚ⟮β⟯ is
+    --   the simple extension of ↥ℚ⟮a⟯ by β (β generates ℚ⟮β⟯ over the larger ↥ℚ⟮a⟯).
+    --   Hence finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2, giving finrank ℚ ℚ⟮β⟯ ∣ 2 * 2^j = 2^(j+1).
+    have hβ_dvd : Module.finrank ℚ ↥(ℚ⟮β⟯) ∣ 2 ^ (j + 1) := by
+      sorry
+    -- Step D (sorry): finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+k+1)
+    -- Proof plan: tower through ℚ⟮β⟯:
+    --   finrank_join = finrank ↥ℚ⟮β⟯ ↥(join) * finrank ℚ ↥ℚ⟮β⟯
+    --   Need: finrank ↥ℚ⟮β⟯ ↥(join) ∣ 2^k
+    --   This is finrank ↥ℚ⟮β⟯ ↥ℚ⟮β⟯⟮b⟯ ∣ 2^k (since join = ℚ⟮β⟯ adjoin b).
+    --   REQUIRES STRONGER IH on b: not just finrank ℚ ℚ⟮b⟯ ∣ 2^k, but
+    --   ∀ (K : IntermediateField ℚ ℂ) with finrank ℚ K ∣ 2^m, finrank ↥K ↥(K⟮b⟯) ∣ 2^k.
+    --   Current IH (hk_dvd) is too weak — it only gives finrank ℚ ℚ⟮b⟯ ∣ 2^k.
+    have hjoin_dvd : Module.finrank ℚ ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2 ^ (j + k + 1) := by
+      sorry
+    -- Step E: finrank ℚ ℚ⟮b+β⟯ ∣ finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) via tower law
+    -- ℚ⟮b+β⟯ ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯ (hle) gives:
+    --   finrank_join = finrank ↥ℚ⟮b+β⟯ ↥(join) * finrank ℚ ℚ⟮b+β⟯
+    have hdvd_le : Module.finrank ℚ ↥(ℚ⟮b + β⟯) ∣
+        Module.finrank ℚ ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) := by
+      haveI hAlg : Algebra ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) :=
+        (IntermediateField.inclusion hle).toAlgebra
+      haveI hST : IsScalarTower ℚ ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) :=
+        IsScalarTower.of_algebraMap_eq (fun r =>
+          Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
+      exact ⟨Module.finrank ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯),
+             (Module.finrank_mul_finrank ℚ ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯)).symm⟩
+    exact hdvd_le.trans hjoin_dvd
 
 -- ============================================================
 -- PART 3: Eisenstein Criterion — X³ - 2 is Irreducible
@@ -182,44 +277,50 @@ theorem regular_7gon_impossible_degree :
   exact three_ne_two_pow k hk
 
 -- ============================================================
--- PART 6: Non-constructibility (PROVED via rationality)
+-- PART 6: Non-constructibility (via degree sorry)
 -- ============================================================
 
 /-- **Non-constructibility from degree criterion.**
     If p is irreducible over ℚ and deg(p) is not a power of 2,
-    then no root of p in ℂ is (IsConstructible-)constructible.
+    then no root of p in ℂ is constructible.
 
-    **Proof**:
-    1. By `isConstructible_mem_range`: α constructible → α = algebraMap ℚ ℂ q.
-    2. `minpoly.eq_X_sub_C ℂ q`: minpoly ℚ (algebraMap ℚ ℂ q) = X - C q.
-    3. `minpoly.dvd`: since p(α) = 0, (X - C q) ∣ p.
-    4. p irreducible and X - C q non-unit: c is a unit, so natDegree p = 1 = 2^0.
-       Contradicts ¬ DegreePowerOfTwo p. -/
+    **Proof** (using `isConstructible_algebraic_degree`):
+    1. α constructible → α algebraic, finrank ℚ ℚ⟮α⟯ ∣ 2^n for some n.
+    2. finrank ℚ ℚ⟮α⟯ = natDegree (minpoly ℚ α) (by `IntermediateField.adjoin.finrank`).
+    3. minpoly ℚ α ∣ p (by `minpoly.dvd`).
+    4. p irreducible + minpoly ∣ p → p associate to minpoly (c unit)
+       → natDegree p = natDegree (minpoly) ∣ 2^n. Contradicts ¬ DegreePowerOfTwo p. -/
 theorem not_constructible_of_bad_degree {p : ℚ[X]} (hp : Irreducible p)
     (hdeg : ¬ DegreePowerOfTwo p) :
     ∀ α : ℂ, Polynomial.aeval α p = 0 →
     ¬ IsConstructible α := by
   intro α hpα hcα
-  -- Step 1: α constructible → α = algebraMap ℚ ℂ q
-  obtain ⟨q, rfl⟩ := isConstructible_mem_range α hcα
-  -- Step 2: (X - C q) ∣ p via minpoly
-  have hdvd : (X - C q : ℚ[X]) ∣ p := by
-    have := minpoly.dvd ℚ (algebraMap ℚ ℂ q) hpα
-    rwa [minpoly.eq_X_sub_C ℂ q] at this
-  -- Step 3: p irreducible → natDegree p = 1 = 2^0
+  -- Step 1: α algebraic, finrank ℚ ℚ⟮α⟯ ∣ 2^n for some n
+  obtain ⟨halg, n, hn_dvd⟩ := isConstructible_algebraic_degree α hcα
+  -- α is integral (algebraic over a field ↔ integral)
+  have hint : IsIntegral ℚ α := isAlgebraic_iff_isIntegral.mp halg
+  -- Step 2: natDegree (minpoly ℚ α) = Module.finrank ℚ ℚ⟮α⟯
+  have hmind : (minpoly ℚ α).natDegree = Module.finrank ℚ ℚ⟮α⟯ :=
+    (IntermediateField.adjoin.finrank hint).symm
+  -- Step 3: minpoly ℚ α ∣ p
+  have hdvd : minpoly ℚ α ∣ p := minpoly.dvd ℚ α hpα
+  -- Step 4: p irreducible + minpoly ∣ p → natDegree p = 2^m for some m
   obtain ⟨c, hc⟩ := hdvd
   rcases hp.isUnit_or_isUnit hc with h1 | h2
-  · -- X - C q is a unit: impossible since natDegree = 1 > 0
-    have : (X - C q : ℚ[X]).natDegree = 1 := natDegree_X_sub_C q
-    have hunit_zero : ∀ f : ℚ[X], IsUnit f → f.natDegree = 0 :=
-      fun f hf => Polynomial.natDegree_eq_zero_of_isUnit hf
-    linarith [hunit_zero _ h1]
-  · -- c is a unit → natDegree p = 1 = 2^0
-    apply hdeg; use 0; simp only [pow_zero]
+  · -- minpoly ℚ α is a unit: get natDegree = 0 → finrank = 0, contradiction with 2^n
+    have hunit_zero : (minpoly ℚ α).natDegree = 0 :=
+      Polynomial.natDegree_eq_zero_of_isUnit h1
+    have h_fr_zero : Module.finrank ℚ ℚ⟮α⟯ = 0 := hmind ▸ hunit_zero
+    rw [h_fr_zero] at hn_dvd
+    exact absurd (Nat.eq_zero_of_dvd_of_lt hn_dvd (Nat.two_pow_pos n)) one_ne_zero
+  · -- c is a unit → natDegree p = natDegree (minpoly ℚ α) ∣ 2^n
+    apply hdeg
     have hc_deg : c.natDegree = 0 := Polynomial.natDegree_eq_zero_of_isUnit h2
-    have hne : (X - C q : ℚ[X]) ≠ 0 := X_sub_C_ne_zero q
+    have hne : minpoly ℚ α ≠ 0 := minpoly.ne_zero hint
     have hcne : c ≠ 0 := IsUnit.ne_zero h2
-    rw [hc, Polynomial.natDegree_mul hne hcne, natDegree_X_sub_C, hc_deg, add_zero]
+    rw [hc, Polynomial.natDegree_mul hne hcne, hmind, hc_deg, add_zero] at hn_dvd
+    obtain ⟨m, _, hm_eq⟩ := (Nat.dvd_prime_pow (by norm_num : Nat.Prime 2)).mp hn_dvd
+    exact ⟨m, hm_eq⟩
 
 -- ============================================================
 -- PART 7: Concrete Impossibility Results (PROVED)
@@ -245,16 +346,21 @@ theorem regular_7gon_construction_impossible :
 def IsTwoGroup (G : Type*) [Group G] [Fintype G] : Prop :=
   ∃ k : ℕ, Fintype.card G = 2 ^ k
 
-/-- **[SORRY 1/1] Wantzel-Galois Theorem**: α constructible ↔ Gal(minpoly(ℚ,α)) is a 2-group.
+/-- **[SORRY 3/3] Wantzel-Galois Theorem**: α constructible ↔ Gal(minpoly(ℚ,α)) is a 2-group.
 
-    Requires a richer constructibility definition plus:
+    Under the FIXED IsConstructible definition, this is a TRUE statement. Previously
+    (old definition with IsConstructible β precondition), it was FALSE since constructible
+    meant rational, making the ← direction fail (e.g., X² - 2 has 2-group Gal but √2
+    is not rational, hence "not constructible" under the old definition).
+
+    Proof requires:
     1. Full Fundamental Theorem of Galois Theory (FTGT)
     2. 2-power degree extensions ↔ towers of quadratics
     3. Connection between constructibility and such towers
-    Estimated: 500+ lines. Out of scope for this session. -/
+    Estimated: 500+ lines. Out of scope. -/
 theorem wantzel_galois_iff {p : ℚ[X]} (hp : Irreducible p) (α : ℂ)
     (hα : Polynomial.aeval α p = 0) :
     IsConstructible α ↔ IsTwoGroup p.Gal := by
-  sorry
+  sorry -- TRUE under fixed definition; requires FTGT + tower characterization
 
 end AngleTrisectionOQ02OQ01OQ02Incomplete01

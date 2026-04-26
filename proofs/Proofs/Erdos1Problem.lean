@@ -89,7 +89,13 @@ theorem erdos_1_lower_bound {A : Finset ℕ} {N : ℕ}
     (hDistinct : hasDistinctSubsetSums A) :
     N ≥ (2 ^ A.card - 1) / A.card := by
   have hcount := erdos_1_counting_bound hA hDistinct
-  omega
+  -- hcount : 2^A.card ≤ A.card * N + 1
+  -- omega can't prove division inequality directly; use Nat lemmas
+  have hpos : 0 < A.card := by omega
+  have hge : 2 ^ A.card - 1 ≤ A.card * N := by omega
+  calc (2 ^ A.card - 1) / A.card
+      ≤ (A.card * N) / A.card := Nat.div_le_div_right hge
+    _ = N := Nat.mul_div_cancel_left N hpos
 
 /-- The Erdős $500 conjecture: there exists an absolute constant c > 0
     such that any set with n elements and distinct subset sums has
