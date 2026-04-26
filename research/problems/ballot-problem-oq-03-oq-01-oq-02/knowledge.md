@@ -460,3 +460,42 @@ by_cases h4 : μ.rowLen 4 = 0
 1. **5-row case PART XIX**: ~300 more lines, same algebraic pattern; gets sorry to ≥6 rows
 2. **GNW general proof** (~300 lines): probabilistic hook walk, covers all shapes at once
 3. **Alternatively**: row-by-row until the pattern is clear enough to compress into one inductive proof
+
+---
+
+## Session 2026-04-26 (Session 24) — PART XVIII recovery after regression
+
+**Mode**: REVISIT (RICH knowledge tier, score ~145)
+**Outcome**: PROGRESS — re-applied PART XVIII to main branch (PR #12771)
+
+### What I Did
+
+1. Discovered the ballot file was at 5882 lines (missing threeRow + fourRow) due to regression
+2. Located cherry-pick `49b6e4e7c9f` (PR #12744) that restores threeRow proof (PART XIVc)
+3. Found `dc421879850` (original PART XVIII - 4-row) in git history
+4. Created clean branch `feature/ballot-fourrow-part18` from `origin/main`
+5. Applied PART XVIII additions (627 lines) + dispatcher update to current 6297-line file
+6. Updated meta.json (lineCount 6297→6928, theoremCount 164→181)
+7. PR rjwalters/lean-genius#12771 created against `main` branch
+
+### Key Discovery
+
+- `master` and `main` are DIFFERENT branches; `main` is the active branch
+- PR should target `main`, not `master` (CLAUDE.md instruction is outdated)
+- The regression was in PR #12719 (squash-merge that deleted 4500 lines)
+- PR #12744 restored threeRow proof (PART XIVc) on `main`
+- PART XVIII (4-row) still needed restoration
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean` (6297 → 6928 lines)
+- `src/data/proofs/ballot-problem-oq-03-oq-01-oq-02/meta.json`
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json`
+- PR: rjwalters/lean-genius#12771
+
+### Sorry Count: 4 (unchanged count, scope ≥5-row)
+
+### Next Steps
+
+1. 5-row case (PART XIX): extract from `3499e79e4df` git history; same recovery pattern
+2. Fix `BallotProblemOQ03.lean` pre-existing errors (lines 1875-2541) to enable full chain build
