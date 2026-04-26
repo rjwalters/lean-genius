@@ -19,10 +19,51 @@
     "sorries": 0,
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified.",
+    "assumptions": "None. Fully machine-verified with 0 axioms, 0 sorries. All 18 theorems proved from Mathlib infrastructure (Algebraic.countable, cardinalMk_of_countable_of_charZero, Set.Countable.mono, Set.countable_iUnion) with no custom axioms or structure-encoded assumptions. The 4 definitions (algebraicRealsOfBoundedDegree, algebraicComplexOfBoundedDegree, algebraicRealsOfDegree, algebraicComplexOfDegree) are noncomputable due to minpoly's use of Classical.choice.",
     "lineCount": 254,
     "theoremCount": 18,
     "definitionCount": 4,
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/AlgebraicCard.html",
+    "mathlibDependencies": [
+      {
+        "theorem": "Algebraic.countable",
+        "description": "Algebraic elements over a countable commutative ring form a countable set",
+        "module": "Mathlib.Algebra.AlgebraicCard"
+      },
+      {
+        "theorem": "Algebraic.cardinalMk_of_countable_of_charZero",
+        "description": "Algebraic elements over a countable field of characteristic zero have cardinality aleph0",
+        "module": "Mathlib.Algebra.AlgebraicCard"
+      },
+      {
+        "theorem": "isAlgebraic_algebraMap",
+        "description": "Elements mapped from the coefficient ring are algebraic",
+        "module": "Mathlib.RingTheory.Algebraic.Basic"
+      },
+      {
+        "theorem": "Set.countable_iUnion",
+        "description": "Countable union of countable sets is countable",
+        "module": "Mathlib.Data.Set.Countable"
+      }
+    ],
+    "relatedProblems": [
+      {
+        "id": "algebraic-numbers-countable-oq-02",
+        "relationship": "Companion: Cantor's diagonal argument that R is uncountable -- the other half of the 1874 paper"
+      },
+      {
+        "id": "algebraic-numbers-countable-oq-02-oq-02",
+        "relationship": "Cantor's original nested intervals proof that R is uncountable"
+      },
+      {
+        "id": "algebraic-numbers-countable-oq-04",
+        "relationship": "Sub-entry extending the algebraic numbers countability result"
+      },
+      {
+        "id": "algebraic-numbers-countable-oq-05",
+        "relationship": "Sub-entry extending the algebraic numbers countability result"
+      }
+    ],
     "originalContributions": [
       "algebraicRealsOfBoundedDegree and algebraicComplexOfBoundedDegree: sets of algebraic numbers with minimal polynomial degree \u2264 d",
       "algebraicRealsOfDegree and algebraicComplexOfDegree: stratification by exact minimal polynomial degree",
@@ -37,6 +78,7 @@
   "overview": {
     "historicalContext": "Georg Cantor proved the countability of algebraic numbers in 1874, in his landmark paper '\u00dcber eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen' (On a Property of the Collection of All Real Algebraic Numbers). This is the very same paper where he proved that the real numbers are uncountable \u2014 the first result of its kind, establishing that there are different 'sizes' of infinity.\n\nThe pair of results \u2014 algebraic numbers are countable (\u2135\u2080), real numbers are uncountable (2^\u2135\u2080) \u2014 had a profound philosophical consequence: almost all real numbers (in the sense of cardinality) are transcendental. Yet at the time Cantor wrote, only e (Hermite, 1873) was known to be transcendental. The existence of 'most' real numbers being transcendental was established before any systematic method for identifying them.\n\nCantor's original proof used an elegant 'height' function for polynomials: h(a\u2080 + a\u2081x + ... + a\u2099x\u207f) = n + |a\u2080| + |a\u2081| + ... + |a\u2099| (total of degree and absolute values of coefficients). For each height H, there are finitely many polynomials, each with finitely many roots. Ordering by height and enumerating roots within each height gives a bijection to \u2115.\n\nThe modern proof uses the equivalent degree stratification: for each degree d, there are countably many polynomials over \u211a of degree d (since \u211a^{d+1} is countable), each with at most d roots. The union over all d \u2208 \u2115 is countable by the countable union of countable sets theorem.",
     "problemStatement": "An **algebraic number** (over \u211a) is a complex number that is a root of some nonzero polynomial with rational coefficients. The **degree** of an algebraic number is the degree of its minimal polynomial over \u211a.\n\n**Theorem** (Cantor, 1874): The set of algebraic real numbers {x \u2208 \u211d | IsAlgebraic \u211a x} is countable and has cardinality \u2135\u2080.\n\nThe formalization also proves: (1) countability of algebraic complex numbers, (2) countability of each degree stratum separately, (3) cardinality equality |algebraic reals| = |\u211a| = \u2135\u2080 despite algebraic \u228b \u211a.",
+    "text": "A 254-line formalization of Cantor's 1874 countability theorem for algebraic numbers, comprising 18 theorems and 4 definitions with zero sorries and zero axioms. The core results delegate to Mathlib: `algebraic_reals_countable` applies `Algebraic.countable` in one line, and `card_algebraic_reals_eq_aleph0` applies `cardinalMk_of_countable_of_charZero` for the exact cardinality $\\aleph_0$. The original contributions build a degree stratification: `algebraicRealsOfBoundedDegree d` (degree $\\leq d$) and `algebraicRealsOfDegree d` (degree $= d$) define two nested families, each proved countable via `Set.Countable.mono`. The decomposition `algebraic_reals_eq_iUnion_degree` writes $\\{x \\in \\mathbb{R} \\mid \\text{IsAlgebraic}\\,\\mathbb{Q}\\,x\\} = \\bigcup_d \\text{algebraicRealsOfDegree}\\,d$, and `algebraic_reals_countable_via_strata` applies `Set.countable_iUnion` to give an alternative proof. Structural results include `rat_algebraic_degree_one` (rationals embed as degree-1 via `isAlgebraic_algebraMap`), `bounded_degree_monotone` (filtration $B_0 \\subseteq B_1 \\subseteq \\cdots$), and `card_algebraic_eq_card_rat` ($|\\text{algebraic reals}| = |\\mathbb{Q}|$, both $\\aleph_0$).",
     "proofStrategy": "The formalization proceeds in two ways:\n\n1. **Direct (Mathlib delegation)**: Apply `Algebraic.countable \u211a \u211d` \u2014 Mathlib proves that algebraic elements over any countable commutative ring form a countable set. Since \u211a is countable (it is `Denumerable`, meaning it has a bijection with \u2115), this gives algebraic_reals_countable in one line. The cardinality \u2135\u2080 follows from `Algebraic.cardinalMk_of_countable_of_charZero \u211a \u211d`.\n\n2. **Via degree stratification (original)**: Define `algebraicRealsOfDegree d = {x | IsAlgebraic \u211a x \u2227 natDegree(minpoly \u211a x) = d}`. Each stratum is a subset of all algebraic numbers (which are countable), so it is countable. Use `algebraic_reals_eq_iUnion_degree` to write the algebraic numbers as \u22c3 d, algebraicRealsOfDegree d, and `Set.countable_iUnion algebraicRealsOfDegree_countable` (countable union of countable sets) to conclude.\n\nThe stratification also provides two nested structures: `algebraicRealsOfBoundedDegree d = {x | IsAlgebraic \u211a x \u2227 natDegree \u2264 d}` (inclusive up to d) and `algebraicRealsOfDegree d` (exactly d). These form a filtration: algebraicRealsOfBoundedDegree d \u2286 algebraicRealsOfBoundedDegree (d+1) and \u22c3 algebraicRealsOfBoundedDegree d = all algebraic numbers.",
     "keyInsights": [
       "The degree stratification reveals the internal structure: algebraic numbers are a countable union of countable layers, each determined by minimal polynomial degree. The full set decomposes as \u22c3_{d\u2208\u2115} {x | IsAlgebraic \u211a x \u2227 natDegree(minpoly \u211a x) = d}, and Set.countable_iUnion applies since each layer is a subset of all algebraic numbers.",
@@ -225,10 +267,84 @@
     }
   ],
   "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.AlgebraicCard",
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.FieldTheory.Minpoly.Basic",
+      "Mathlib.Data.Set.Countable",
+      "Mathlib.Data.Rat.Denumerable",
+      "Mathlib.Logic.Denumerable",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Polynomial", "Cardinal"],
+    "namespace": "AlgebraicNumbersCountable",
     "lineCount": 254,
     "path": "Proofs/AlgebraicNumbersCountable.lean",
     "axiomCount": 0,
+    "theoremCount": 18,
+    "substantiveTheoremCount": 6,
+    "trivialSpecializations": 12,
+    "definitionCount": 4,
+    "mainTheorems": [
+      {
+        "name": "algebraic_reals_countable",
+        "type": "delegation",
+        "description": "The algebraic real numbers are countable",
+        "leanType": "Set.Countable {x : \u211d | IsAlgebraic \u211a x}"
+      },
+      {
+        "name": "card_algebraic_reals_eq_aleph0",
+        "type": "delegation",
+        "description": "Cardinality of algebraic reals equals aleph0",
+        "leanType": "Cardinal.mk {x : \u211d // IsAlgebraic \u211a x} = Cardinal.aleph0"
+      },
+      {
+        "name": "algebraic_reals_eq_iUnion_degree",
+        "type": "original",
+        "description": "Algebraic reals decompose as union of degree strata",
+        "leanType": "{x : \u211d | IsAlgebraic \u211a x} = \u22c3 d : \u2115, algebraicRealsOfDegree d"
+      },
+      {
+        "name": "algebraic_reals_countable_via_strata",
+        "type": "original",
+        "description": "Alternative countability proof via degree stratification",
+        "leanType": "Set.Countable {x : \u211d | IsAlgebraic \u211a x}"
+      },
+      {
+        "name": "card_algebraic_eq_card_rat",
+        "type": "original",
+        "description": "Algebraic reals and rationals have the same cardinality",
+        "leanType": "Cardinal.mk {x : \u211d // IsAlgebraic \u211a x} = Cardinal.mk \u211a"
+      },
+      {
+        "name": "algebraic_reals_eq_iUnion_bounded",
+        "type": "original",
+        "description": "Algebraic reals are the exhaustive union of bounded-degree sets",
+        "leanType": "{x : \u211d | IsAlgebraic \u211a x} = \u22c3 d : \u2115, algebraicRealsOfBoundedDegree d"
+      }
+    ],
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "algebraic_reals_countable",
+      "type": "core",
+      "description": "The set of algebraic real numbers {x : \u211d | IsAlgebraic \u211a x} is countable (Cantor 1874)",
+      "leanType": "Set.Countable {x : \u211d | IsAlgebraic \u211a x}"
+    },
+    {
+      "name": "card_algebraic_reals_eq_aleph0",
+      "type": "core",
+      "description": "The algebraic reals have cardinality exactly aleph0 (countably infinite, not finite)",
+      "leanType": "Cardinal.mk {x : \u211d // IsAlgebraic \u211a x} = Cardinal.aleph0"
+    },
+    {
+      "name": "algebraic_reals_eq_iUnion_degree",
+      "type": "key",
+      "description": "Algebraic reals decompose as countable union of degree strata",
+      "leanType": "{x : \u211d | IsAlgebraic \u211a x} = \u22c3 d : \u2115, algebraicRealsOfDegree d"
+    }
+  ],
   "sorries": 0
 }
