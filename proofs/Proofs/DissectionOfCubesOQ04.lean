@@ -281,23 +281,144 @@ theorem dod_dehn_ne_zero (a : ℝ) (ha : a > 0) :
 The regular icosahedron has 20 triangular faces, 12 vertices, 30 edges.
 Its dihedral angle is arccos(-√5/3) ≈ 138.19°.
 
-Irrationality of arccos(-√5/3)/π: analogous to the dodecahedron argument
-but requires Chebyshev arithmetic in ℤ[√5]. Deferred for now.
+## Irrationality of arccos(-√5/3)/π
+
+Key identity: cos(2·arccos(-√5/3)) = 2(5/9) - 1 = 1/9.
+So 2·icoAngle ∈ (π, 2π) with cos = 1/9, hence arccos(1/9) = 2π - 2·icoAngle.
+
+Define icoSeq: d_0 = 2, d_1 = 2, d_{n+2} = 2·d_{n+1} - 81·d_n.
+Then d_n = 9^n · 2cos(n·arccos(1/9)) (Chebyshev).
+Mod-3: d_{n+2} ≡ 2·d_{n+1} (mod 3), so 3 ∤ d_n for all n.
+
+If icoAngle/π = p/q, then cos(q·arccos(1/9)) = cos(2q·icoAngle) = cos(2pπ) = 1,
+so d_q = 9^q · 2 = 2·9^q, giving 3 | d_q. Contradiction.
 -/
 
 /-- The regular icosahedron's dihedral angle.
     (20 triangular faces, 30 edges, dihedral angle ≈ 138.19°) -/
 noncomputable def icoAngle : ℝ := Real.arccos (-Real.sqrt 5 / 3)
 
-/-- The icosahedron's dihedral angle arccos(-√5/3) is an irrational
-multiple of π.
+/-- Integer sequence for arccos(1/9)/π irrationality.
+    d_0 = 2, d_1 = 2, d_{n+2} = 2·d_{n+1} - 81·d_n.
+    Key: d_n = 9^n · 2cos(n · arccos(1/9)). -/
+private def icoSeq : ℕ → ℤ
+  | 0     => 2
+  | 1     => 2
+  | (n+2) => 2 * icoSeq (n+1) - 81 * icoSeq n
 
-Justification: The irrationality follows from a Chebyshev sequence
-argument. For cos θ = -√5/3, the sequence e_n = 3^n · (√5)^{n mod 2}
-· 2cos(nθ) satisfies an integer recurrence with coefficient 3.
-A mod-3 argument shows 3 ∤ e_n, while rationality of θ/π would
-force 3^q | e_q. Proof deferred due to ℤ[√5] arithmetic complexity. -/
-axiom icoAngle_irrational : ¬∃ q : ℚ, icoAngle = q * Real.pi
+@[simp] private theorem icoSeq_zero : icoSeq 0 = 2 := rfl
+@[simp] private theorem icoSeq_one  : icoSeq 1 = 2 := rfl
+private theorem icoSeq_succ (n : ℕ) :
+    icoSeq (n+2) = 2 * icoSeq (n+1) - 81 * icoSeq n := rfl
+
+/-- 3 does not divide icoSeq k for any k.
+Proof: d_{n+2} ≡ 2·d_{n+1} (mod 3) since 81 ≡ 0 (mod 3).
+Base: d_0 = d_1 = 2, both nonzero mod 3. -/
+private theorem three_ndvd_icoSeq : ∀ k : ℕ, ¬((3 : ℤ) ∣ icoSeq k) := by
+  suffices h : ∀ k : ℕ,
+      ¬((3 : ℤ) ∣ icoSeq k) ∧ ¬((3 : ℤ) ∣ icoSeq (k+1)) from fun k => (h k).1
+  intro k
+  induction k with
+  | zero => exact ⟨by norm_num [icoSeq], by norm_num [icoSeq]⟩
+  | succ n ih =>
+    refine ⟨ih.2, ?_⟩
+    rw [icoSeq_succ]
+    intro ⟨c, hc⟩
+    have h81 : (3 : ℤ) ∣ 81 * icoSeq n := ⟨27 * icoSeq n, by ring⟩
+    have h2dvd : (3 : ℤ) ∣ 2 * icoSeq (n+1) := ⟨c + 27 * icoSeq n, by omega⟩
+    have hprime : Prime (3 : ℤ) := by norm_num
+    rcases hprime.dvd_or_dvd h2dvd with h32 | h3n
+    · exact absurd h32 (by norm_num)
+    · exact ih.2 h3n
+
+/-- Key trig relation: icoSeq n = 9^n · 2cos(n · arccos(1/9)). -/
+private theorem icoSeq_eq_cos (k : ℕ) :
+    (icoSeq k : ℝ) = (9 : ℝ)^k * (2 * cos (↑k * arccos (1/9))) := by
+  suffices h : ∀ n : ℕ,
+    (icoSeq n : ℝ) = (9 : ℝ)^n * (2 * cos (↑n * arccos (1/9))) ∧
+    (icoSeq (n+1) : ℝ) = (9 : ℝ)^(n+1) * (2 * cos (↑(n+1) * arccos (1/9)))
+    from (h k).1
+  intro n
+  induction n with
+  | zero =>
+    refine ⟨by simp [icoSeq, cos_zero], ?_⟩
+    simp only [icoSeq_one, Nat.cast_one, pow_one, one_mul]
+    rw [cos_arccos (by norm_num : (-1:ℝ) ≤ 1/9) (by norm_num : (1/9:ℝ) ≤ 1)]
+    norm_num
+  | succ m ih =>
+    refine ⟨ih.2, ?_⟩
+    have hrec : (icoSeq (m+2) : ℝ) = 2 * (icoSeq (m+1) : ℝ) - 81 * (icoSeq m : ℝ) := by
+      simp only [icoSeq_succ]; push_cast; ring
+    rw [hrec, ih.2, ih.1, cos_step,
+        cos_arccos (by norm_num : (-1:ℝ) ≤ 1/9) (by norm_num : (1/9:ℝ) ≤ 1)]
+    push_cast; ring
+
+/-- cos(2·icoAngle) = 1/9: the double-angle computation. -/
+private lemma cos_two_icoAngle : cos (2 * icoAngle) = 1/9 := by
+  have h5 : Real.sqrt 5 * Real.sqrt 5 = 5 := Real.mul_self_sqrt (by norm_num)
+  have hspos : (0 : ℝ) ≤ Real.sqrt 5 := Real.sqrt_nonneg 5
+  have hslt3 : Real.sqrt 5 ≤ 3 := by nlinarith
+  rw [cos_two_mul, icoAngle,
+      cos_arccos (by nlinarith : (-1:ℝ) ≤ -Real.sqrt 5 / 3)
+                 (by nlinarith : -Real.sqrt 5 / 3 ≤ 1)]
+  nlinarith
+
+/-- arccos(1/9) = 2π - 2·icoAngle (both have cosine 1/9 and lie in [0,π]). -/
+private lemma arccos_one_ninth_eq : arccos (1/9 : ℝ) = 2 * pi - 2 * icoAngle := by
+  have hico_range : pi/2 < icoAngle ∧ icoAngle < pi := by
+    have h5 : Real.sqrt 5 * Real.sqrt 5 = 5 := Real.mul_self_sqrt (by norm_num)
+    have hspos : (0 : ℝ) < Real.sqrt 5 := Real.sqrt_pos.mpr (by norm_num)
+    have hslt3 : Real.sqrt 5 < 3 := by nlinarith
+    constructor
+    · -- icoAngle = arccos(-√5/3) > arccos(0) = π/2 (arccos decreasing, -√5/3 < 0)
+      rw [icoAngle, ← arccos_zero]
+      -- arccos_lt_arccos : -1 ≤ x → x < y → y ≤ 1 → arccos y < arccos x
+      -- with x = -√5/3, y = 0: arccos 0 < arccos(-√5/3)
+      exact arccos_lt_arccos (by nlinarith) (by nlinarith) (by norm_num)
+    · -- icoAngle = arccos(-√5/3) < arccos(-1) = π (arccos decreasing, -1 < -√5/3)
+      rw [icoAngle, ← arccos_neg_one]
+      -- with x = -1, y = -√5/3: arccos(-√5/3) < arccos(-1)
+      exact arccos_lt_arccos (by norm_num) (by nlinarith) (by nlinarith)
+  have hrange_lo : (0 : ℝ) ≤ 2 * pi - 2 * icoAngle := by linarith [hico_range.2, pi_pos]
+  have hrange_hi : 2 * pi - 2 * icoAngle ≤ pi := by linarith [hico_range.1]
+  rw [← arccos_cos hrange_lo hrange_hi]
+  congr 1
+  rw [show 2 * pi - 2 * icoAngle = -(2 * icoAngle) + 2 * pi from by ring]
+  rw [cos_add_two_pi, cos_neg]
+  exact cos_two_icoAngle
+
+/-- The icosahedron's dihedral angle arccos(-√5/3) is an irrational multiple of π.
+
+Proof via Chebyshev sequence icoSeq (d_0=2, d_1=2, d_{n+2}=2d_{n+1}-81d_n):
+- d_n = 9^n·2cos(n·arccos(1/9)), and arccos(1/9) = 2π - 2·icoAngle
+- If icoAngle/π = p/q, then cos(q·arccos(1/9)) = cos(-2q·icoAngle) = 1
+- So d_q = 2·9^q, giving 3 | d_q. But 3 ∤ d_n for all n. Contradiction. -/
+theorem icoAngle_irrational : ¬∃ q : ℚ, icoAngle = q * pi := by
+  intro ⟨q, hq⟩
+  have hb_pos : 0 < q.den := q.pos
+  -- From icoAngle = (q.num/q.den)·π: q.den·icoAngle = q.num·π
+  have hmul : (q.den : ℝ) * icoAngle = (q.num : ℝ) * pi := by
+    rw [hq]; push_cast; rw [Rat.cast_def]; field_simp
+  -- arccos(1/9) = 2π - 2·icoAngle, so q.den·arccos(1/9) = q.den·(2π - 2·icoAngle)
+  --            = 2·q.den·π - 2·q.num·π = 2π(q.den - q.num)
+  have hcos_eq : cos ((↑q.den : ℝ) * arccos (1/9)) = 1 := by
+    rw [arccos_one_ninth_eq]
+    have heq : (↑q.den : ℝ) * (2 * pi - 2 * icoAngle) =
+        ((q.den : ℤ) - q.num) * (2 * pi) := by
+      push_cast; linarith [hmul]
+    rw [show (↑q.den : ℝ) * (2 * pi - 2 * icoAngle) = ((q.den : ℤ) - q.num) * (2 * pi) from heq]
+    exact cos_int_mul_two_pi _
+  -- From icoSeq_eq_cos: icoSeq(q.den) = 9^q.den · 2 · 1 = 2·9^q.den
+  have hseq := icoSeq_eq_cos q.den
+  rw [hcos_eq] at hseq
+  have hval : icoSeq q.den = 2 * (9 : ℤ)^q.den := by
+    have h : (icoSeq q.den : ℝ) = ↑(2 * (9 : ℤ)^q.den) := by
+      rw [hseq]; push_cast; ring
+    exact_mod_cast h
+  -- 3 | 2·9^q.den (since 3 | 9 | 9^q.den for q.den ≥ 1)
+  have h3dvd : (3 : ℤ) ∣ 2 * (9 : ℤ)^q.den :=
+    dvd_mul_of_dvd_right ((by norm_num : (3:ℤ) ∣ 9).trans (dvd_pow_self 9 hb_pos.ne')) 2
+  exact three_ndvd_icoSeq q.den (hval ▸ h3dvd)
 
 /-- [icoAngle] has infinite order in ℝ/πℤ. -/
 theorem icoAngle_infinite_order :
@@ -396,16 +517,20 @@ theorem cube_unique_zero_dehn (a : ℝ) (ha : a > 0) :
 /-
 ## Axiom Budget
 
-### New axioms introduced in this file: 1
-1. `icoAngle_irrational` — arccos(-√5/3)/π irrational
+### New axioms introduced in this file: 0
+(icoAngle_irrational is now PROVED via Chebyshev sequence for arccos(1/9))
 
 ### Inherited axioms (from OQ02OQ02): 1
 1. `tmul_infinite_order_ne_zero` — ℝ flat over ℤ
 
-### Total axiom count: 2
+### Total axiom count: 1 (reduced from 2)
 
 ### New theorems proved (0 sorries):
-- `five_ndvd_cosThreeFifthsSeq` — 5 ∤ d_n for the new sequence
+- `icoSeq` + `three_ndvd_icoSeq` + `icoSeq_eq_cos` — Chebyshev for arccos(1/9)
+- `cos_two_icoAngle` — cos(2·icoAngle) = 1/9
+- `arccos_one_ninth_eq` — arccos(1/9) = 2π - 2·icoAngle
+- `icoAngle_irrational` — arccos(-√5/3)/π ∉ ℚ (PROVED, was axiom)
+- `five_ndvd_cosThreeFifthsSeq` — 5 ∤ d_n for the arccos(3/5) sequence
 - `cosThreeFifthsSeq_eq_cos` — cos relation for d_n
 - `arccos_three_fifths_irrational` — arccos(3/5)/π ∉ ℚ
 - `two_arccos_sqrt5_eq` — 2·arccos(1/√5) = arccos(-3/5)
@@ -413,7 +538,7 @@ theorem cube_unique_zero_dehn (a : ℝ) (ha : a > 0) :
 - `dodAngle_irrational` — arccos(-1/√5)/π ∉ ℚ
 - `dodAngle_infinite_order` — [arccos(-1/√5)] has infinite order
 - `dod_dehn_ne_zero` — D(dodecahedron) ≠ 0
-- `icoAngle_infinite_order` — [arccos(-√5/3)] has infinite order (via axiom)
+- `icoAngle_infinite_order` — [arccos(-√5/3)] has infinite order
 - `ico_dehn_ne_zero` — D(icosahedron) ≠ 0
 - `cube_isolated_dehn_invariant` — Complete classification table
 

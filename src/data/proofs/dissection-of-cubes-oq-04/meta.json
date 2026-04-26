@@ -2,7 +2,7 @@
   "id": "dissection-of-cubes-oq-04",
   "title": "Dehn Invariants for Platonic Solids: Cube Isolation",
   "slug": "dissection-of-cubes-oq-04",
-  "description": "Proves that among the five Platonic solids, only the cube has zero Dehn invariant. New result: arccos(1/√5)/π is irrational (dodecahedron dihedral angle), proved via a Chebyshev integer sequence argument. The cube cannot be obtained by scissors congruence from any other Platonic solid.",
+  "description": "Proves that among the five Platonic solids, only the cube has zero Dehn invariant. New results: arccos(1/\u221a5)/\u03c0 irrational (dodecahedron dihedral angle) and arccos(-\u221a5/3)/\u03c0 irrational (icosahedron dihedral angle), both proved via Chebyshev integer sequence arguments. The cube cannot be obtained by scissors congruence from any other Platonic solid.",
   "meta": {
     "author": "Lean Genius",
     "sourceUrl": "https://en.wikipedia.org/wiki/Dehn_invariant",
@@ -21,59 +21,65 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-22",
-    "axiomCount": 2,
-    "assumptions": "2 axioms: 1. tmul_infinite_order_ne_zero (from OQ02OQ02): ℝ is flat over ℤ — needed to show nonzero tensor products. 2. icoAngle_irrational: arccos(-√5/3)/π is irrational (icosahedron dihedral angle) — proof requires Chebyshev arithmetic in ℤ[√5], deferred. All sorries are now proved (edge count scaling lemmas closed in research session).",
-    "lineCount": 432,
+    "axiomCount": 1,
+    "assumptions": "1 axiom: tmul_infinite_order_ne_zero (from OQ02OQ02): \u211d is flat over \u2124 \u2014 needed to show nonzero tensor products. Previously axiomatized icoAngle_irrational (arccos(-\u221a5/3)/\u03c0 irrational) is now PROVED via Chebyshev integer sequence for arccos(1/9).",
+    "lineCount": 557,
     "theoremCount": 15,
     "definitionCount": 4,
     "mathlibDependencies": [
       {
         "theorem": "Real.arccos_le_pi_div_two",
-        "description": "arccos x ≤ π/2 iff x ≥ 0",
+        "description": "arccos x \u2264 \u03c0/2 iff x \u2265 0",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse"
       },
       {
         "theorem": "Real.arccos_cos",
-        "description": "arccos(cos(x)) = x for x ∈ [0,π]",
+        "description": "arccos(cos(x)) = x for x \u2208 [0,\u03c0]",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse"
       },
       {
         "theorem": "Real.arccos_neg",
-        "description": "arccos(-x) = π - arccos(x)",
+        "description": "arccos(-x) = \u03c0 - arccos(x)",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse"
       },
       {
         "theorem": "Prime.dvd_of_dvd_pow",
-        "description": "p prime, p | a^n → p | a",
+        "description": "p prime, p | a^n \u2192 p | a",
         "module": "Mathlib.Algebra.Prime.Basic"
       }
     ],
     "originalContributions": [
-      "cosThreeFifthsSeq: new integer sequence d_n = 5^n · 2cos(n·arccos(3/5)) with recurrence d_{n+2} = 6d_{n+1} - 25d_n",
-      "five_ndvd_cosThreeFifthsSeq: 5 ∤ d_n for all n — proved by mod-5 argument identical in structure to nivenSeq/3 proof",
-      "arccos_three_fifths_irrational: arccos(3/5)/π ∉ ℚ — new irrationality result",
-      "two_arccos_sqrt5_eq: 2·arccos(1/√5) = arccos(-3/5) — half-angle identity via cos computation",
-      "arccos_sqrt5_irrational: arccos(1/√5)/π ∉ ℚ — derived from arccos(3/5) irrationality",
-      "dodAngle_irrational: arccos(-1/√5)/π ∉ ℚ — dodecahedron dihedral angle",
-      "dod_dehn_ne_zero: D(dodecahedron) ≠ 0 — new nonzero Dehn invariant result",
-      "cube_isolated_dehn_invariant: complete 5-solid classification table (cube isolated)"
+      "cosThreeFifthsSeq: new integer sequence d_n = 5^n \u00b7 2cos(n\u00b7arccos(3/5)) with recurrence d_{n+2} = 6d_{n+1} - 25d_n",
+      "five_ndvd_cosThreeFifthsSeq: 5 \u2224 d_n for all n \u2014 proved by mod-5 argument identical in structure to nivenSeq/3 proof",
+      "arccos_three_fifths_irrational: arccos(3/5)/\u03c0 \u2209 \u211a \u2014 new irrationality result",
+      "two_arccos_sqrt5_eq: 2\u00b7arccos(1/\u221a5) = arccos(-3/5) \u2014 half-angle identity via cos computation",
+      "arccos_sqrt5_irrational: arccos(1/\u221a5)/\u03c0 \u2209 \u211a \u2014 derived from arccos(3/5) irrationality",
+      "dodAngle_irrational: arccos(-1/\u221a5)/\u03c0 \u2209 \u211a \u2014 dodecahedron dihedral angle",
+      "dod_dehn_ne_zero: D(dodecahedron) \u2260 0 \u2014 new nonzero Dehn invariant result",
+      "cube_isolated_dehn_invariant: complete 5-solid classification table (cube isolated)",
+      "icoSeq: integer sequence d_n with d_0=2, d_1=2, d_{n+2}=2d_{n+1}-81d_n (Chebyshev for arccos(1/9))",
+      "three_ndvd_icoSeq: 3 does not divide d_n for any n \u2014 proved by mod-3 induction",
+      "icoSeq_eq_cos: (icoSeq n : \u211d) = 9^n \u00b7 2cos(n\u00b7arccos(1/9)) \u2014 Chebyshev cosine identity",
+      "cos_two_icoAngle: cos(2\u00b7icoAngle) = 1/9 \u2014 double-angle formula evaluation",
+      "arccos_one_ninth_eq: arccos(1/9) = 2\u03c0 - 2\u00b7icoAngle \u2014 range analysis via arccos_lt_arccos",
+      "icoAngle_irrational: arccos(-\u221a5/3)/\u03c0 \u2209 \u211a \u2014 115-line proof replacing prior axiom"
     ]
   },
   "overview": {
-    "historicalContext": "Hilbert's Third Problem (1900) asked whether two polyhedra of equal volume are always scissors congruent. Max Dehn answered NO the same year by introducing the Dehn invariant D(P) ∈ ℝ ⊗_ℤ (ℝ/πℤ) — a sum of edge-length ⊗ [dihedral-angle] terms preserved under cutting. A polyhedron with all rational-multiple-of-π dihedral angles has D = 0; one with even a single irrational angle has D ≠ 0. The cube has 12 edges all at π/2, giving D = 0. The other Platonic solids have irrational dihedral angles: arccos(1/3) (tetrahedron), arccos(-1/3) (octahedron), arccos(-1/√5) (dodecahedron), arccos(-√5/3) (icosahedron). The irrationalities of arccos(1/3)/π and arccos(-1/3)/π were proved in OQ02/OQ02OQ02. This file proves arccos(-1/√5)/π irrational (new) and classifies all five Platonic solids.",
-    "problemStatement": "Among the five Platonic solids, which pairs can be scissors congruent? Using the Dehn invariant as an obstruction, prove that the cube has a strictly different Dehn invariant from all other Platonic solids — specifically that the cube is the unique Platonic solid with D = 0.",
-    "text": "The Dehn invariant D(P) = Σ_e len(e) ⊗ [θ(e)] in ℝ ⊗_ℤ (ℝ/πℤ) is preserved under scissors congruence. If all dihedral angles are rational multiples of π, then [θ(e)] = 0 in ℝ/πℤ, so D = 0. The cube has all dihedral angles = π/2, giving D = 0. For the other Platonic solids, we must show the dihedral angles are irrational multiples of π. For the dodecahedron (arccos(-1/√5)): since arccos(-1/√5) = π - arccos(1/√5) and 2·arccos(1/√5) = π - arccos(3/5), it suffices to prove arccos(3/5)/π ∉ ℚ. This follows from a Chebyshev sequence argument: define d_n = 5^n · 2cos(n·arccos(3/5)) with recurrence d_{n+2} = 6d_{n+1} - 25d_n (integers!), prove 5 ∤ d_n, and observe that rationality of arccos(3/5)/π would force 5 | d_{q.den}.",
-    "proofStrategy": "Step 1: Build the integer sequence cosThreeFifthsSeq (analogous to nivenSeq in OQ02) and prove 5 ∤ d_n using the same mod-prime argument: d_{n+2} ≡ d_{n+1} (mod 5), so non-divisibility propagates. Step 2: Prove the cosine relation d_n = 5^n · 2cos(n·arccos(3/5)) by strong induction using the Chebyshev addition formula. Step 3: Derive irrationality of arccos(3/5)/π by contradiction (if rational p/q, then d_q = ±2·5^q, forcing 5 | d_q). Step 4: Propagate to arccos(-1/√5) via the half-angle identity 2·arccos(1/√5) = arccos(-3/5) and arccos(-x) = π - arccos(x). Step 5: Apply DehnSydler infrastructure (from OQ02OQ02) to conclude D(dodecahedron) ≠ 0.",
+    "historicalContext": "Hilbert's Third Problem (1900) asked whether two polyhedra of equal volume are always scissors congruent. Max Dehn answered NO the same year by introducing the Dehn invariant D(P) \u2208 \u211d \u2297_\u2124 (\u211d/\u03c0\u2124) \u2014 a sum of edge-length \u2297 [dihedral-angle] terms preserved under cutting. A polyhedron with all rational-multiple-of-\u03c0 dihedral angles has D = 0; one with even a single irrational angle has D \u2260 0. The cube has 12 edges all at \u03c0/2, giving D = 0. The other Platonic solids have irrational dihedral angles: arccos(1/3) (tetrahedron), arccos(-1/3) (octahedron), arccos(-1/\u221a5) (dodecahedron), arccos(-\u221a5/3) (icosahedron). The irrationalities of arccos(1/3)/\u03c0 and arccos(-1/3)/\u03c0 were proved in OQ02/OQ02OQ02. This file proves arccos(-1/\u221a5)/\u03c0 irrational (new) and classifies all five Platonic solids.",
+    "problemStatement": "Among the five Platonic solids, which pairs can be scissors congruent? Using the Dehn invariant as an obstruction, prove that the cube has a strictly different Dehn invariant from all other Platonic solids \u2014 specifically that the cube is the unique Platonic solid with D = 0.",
+    "text": "The Dehn invariant D(P) = \u03a3_e len(e) \u2297 [\u03b8(e)] in \u211d \u2297_\u2124 (\u211d/\u03c0\u2124) is preserved under scissors congruence. If all dihedral angles are rational multiples of \u03c0, then [\u03b8(e)] = 0 in \u211d/\u03c0\u2124, so D = 0. The cube has all dihedral angles = \u03c0/2, giving D = 0. For the other Platonic solids, we must show the dihedral angles are irrational multiples of \u03c0. For the dodecahedron (arccos(-1/\u221a5)): since arccos(-1/\u221a5) = \u03c0 - arccos(1/\u221a5) and 2\u00b7arccos(1/\u221a5) = \u03c0 - arccos(3/5), it suffices to prove arccos(3/5)/\u03c0 \u2209 \u211a. This follows from a Chebyshev sequence argument: define d_n = 5^n \u00b7 2cos(n\u00b7arccos(3/5)) with recurrence d_{n+2} = 6d_{n+1} - 25d_n (integers!), prove 5 \u2224 d_n, and observe that rationality of arccos(3/5)/\u03c0 would force 5 | d_{q.den}.",
+    "proofStrategy": "Step 1: Build the integer sequence cosThreeFifthsSeq (analogous to nivenSeq in OQ02) and prove 5 \u2224 d_n using the same mod-prime argument: d_{n+2} \u2261 d_{n+1} (mod 5), so non-divisibility propagates. Step 2: Prove the cosine relation d_n = 5^n \u00b7 2cos(n\u00b7arccos(3/5)) by strong induction using the Chebyshev addition formula. Step 3: Derive irrationality of arccos(3/5)/\u03c0 by contradiction (if rational p/q, then d_q = \u00b12\u00b75^q, forcing 5 | d_q). Step 4: Propagate to arccos(-1/\u221a5) via the half-angle identity 2\u00b7arccos(1/\u221a5) = arccos(-3/5) and arccos(-x) = \u03c0 - arccos(x). Step 5: Apply DehnSydler infrastructure (from OQ02OQ02) to conclude D(dodecahedron) \u2260 0.",
     "keyInsights": [
-      "The Chebyshev argument for arccos(3/5)/π ∉ ℚ is structurally identical to Niven's proof for arccos(1/3)/π ∉ ℚ (used in OQ02). The sequence d_n = 5^n · 2cos(n·arccos(3/5)) satisfies d_{n+2} = 6d_{n+1} - 25d_n — a recurrence with integer coefficients — because 2·cos(arccos(3/5)) = 6/5 makes 5^n factor out all denominators.",
-      "The mod-5 divisibility argument works because the recurrence d_{n+2} = 6d_{n+1} - 25d_n reduces mod 5 to d_{n+2} ≡ d_{n+1} (mod 5). Since d_0 = 2 ≢ 0 and d_1 = 6 ≢ 0 (mod 5), all d_n are coprime to 5.",
-      "The half-angle identity 2·arccos(1/√5) = arccos(-3/5) is proved rigorously by computing cos(2·arccos(1/√5)) = -3/5 and using that arccos_cos identifies the unique value in [0,π] with that cosine. The range condition 2·arccos(1/√5) ≤ π follows from arccos(1/√5) ≤ π/2 (which holds because 1/√5 ≥ 0).",
-      "The dodecahedron and tetrahedron/octahedron have provably different Dehn invariants (not just nonzero), but showing this directly would require comparing the angle classes [arccos(-1/√5)] and [arccos(1/3)] in ℝ/πℤ — an additional algebraic independence question not addressed here.",
-      "The icosahedron axiom (icoAngle_irrational) is the only deferred result. It follows from a Chebyshev argument in ℤ[√5]: for cos θ = -√5/3, define a sequence with recurrence involving ℤ[√5] coefficients. The structure is the same as the dodecahedron case but the arithmetic is in a quadratic number field."
+      "The Chebyshev argument for arccos(3/5)/\u03c0 \u2209 \u211a is structurally identical to Niven's proof for arccos(1/3)/\u03c0 \u2209 \u211a (used in OQ02). The sequence d_n = 5^n \u00b7 2cos(n\u00b7arccos(3/5)) satisfies d_{n+2} = 6d_{n+1} - 25d_n \u2014 a recurrence with integer coefficients \u2014 because 2\u00b7cos(arccos(3/5)) = 6/5 makes 5^n factor out all denominators.",
+      "The mod-5 divisibility argument works because the recurrence d_{n+2} = 6d_{n+1} - 25d_n reduces mod 5 to d_{n+2} \u2261 d_{n+1} (mod 5). Since d_0 = 2 \u2262 0 and d_1 = 6 \u2262 0 (mod 5), all d_n are coprime to 5.",
+      "The half-angle identity 2\u00b7arccos(1/\u221a5) = arccos(-3/5) is proved rigorously by computing cos(2\u00b7arccos(1/\u221a5)) = -3/5 and using that arccos_cos identifies the unique value in [0,\u03c0] with that cosine. The range condition 2\u00b7arccos(1/\u221a5) \u2264 \u03c0 follows from arccos(1/\u221a5) \u2264 \u03c0/2 (which holds because 1/\u221a5 \u2265 0).",
+      "The dodecahedron and tetrahedron/octahedron have provably different Dehn invariants (not just nonzero), but showing this directly would require comparing the angle classes [arccos(-1/\u221a5)] and [arccos(1/3)] in \u211d/\u03c0\u2124 \u2014 an additional algebraic independence question not addressed here.",
+      "The icosahedron axiom (icoAngle_irrational) is the only deferred result. It follows from a Chebyshev argument in \u2124[\u221a5]: for cos \u03b8 = -\u221a5/3, define a sequence with recurrence involving \u2124[\u221a5] coefficients. The structure is the same as the dodecahedron case but the arithmetic is in a quadratic number field."
     ],
     "prerequisites": [
-      "DissectionOfCubesOQ02OQ02.lean: Dehn invariant group ℝ ⊗_ℤ (ℝ/πℤ), cube/tetrahedron/octahedron results",
-      "DissectionOfCubesOQ02.lean: Niven's theorem for arccos(1/3)/π, Chebyshev recurrence technique",
+      "DissectionOfCubesOQ02OQ02.lean: Dehn invariant group \u211d \u2297_\u2124 (\u211d/\u03c0\u2124), cube/tetrahedron/octahedron results",
+      "DissectionOfCubesOQ02.lean: Niven's theorem for arccos(1/3)/\u03c0, Chebyshev recurrence technique",
       "Real.arccos_neg, Real.arccos_cos, Real.arccos_le_pi_div_two (Mathlib)",
       "Prime.dvd_of_dvd_pow and divisibility arithmetic (Mathlib)"
     ]
@@ -84,7 +90,7 @@
       "title": "Part I: Chebyshev Sequence for arccos(3/5)",
       "startLine": 60,
       "endLine": 165,
-      "description": "Defines cosThreeFifthsSeq with recurrence d_{n+2} = 6d_{n+1} - 25d_n and proves two key properties: 5 ∤ d_n for all n, and d_n = 5^n · 2cos(n · arccos(3/5)).",
+      "description": "Defines cosThreeFifthsSeq with recurrence d_{n+2} = 6d_{n+1} - 25d_n and proves two key properties: 5 \u2224 d_n for all n, and d_n = 5^n \u00b7 2cos(n \u00b7 arccos(3/5)).",
       "theorems": [
         "cosThreeFifthsSeq",
         "five_ndvd_cosThreeFifthsSeq",
@@ -97,7 +103,7 @@
       "title": "Part II: Dodecahedron Angle Irrationality Chain",
       "startLine": 166,
       "endLine": 255,
-      "description": "Proves arccos(1/√5)/π and arccos(-1/√5)/π are irrational via the half-angle identity 2·arccos(1/√5) = arccos(-3/5) = π - arccos(3/5).",
+      "description": "Proves arccos(1/\u221a5)/\u03c0 and arccos(-1/\u221a5)/\u03c0 are irrational via the half-angle identity 2\u00b7arccos(1/\u221a5) = arccos(-3/5) = \u03c0 - arccos(3/5).",
       "theorems": [
         "two_arccos_sqrt5_eq",
         "arccos_sqrt5_irrational",
@@ -120,7 +126,7 @@
       "title": "Part IV: Icosahedron",
       "startLine": 301,
       "endLine": 355,
-      "description": "Axiomatizes icoAngle_irrational for arccos(-√5/3)/π and derives the icosahedron's nonzero Dehn invariant.",
+      "description": "Axiomatizes icoAngle_irrational for arccos(-\u221a5/3)/\u03c0 and derives the icosahedron's nonzero Dehn invariant.",
       "theorems": [
         "icoAngle_infinite_order",
         "ico_dehn_ne_zero"
@@ -140,10 +146,10 @@
   ],
   "conclusion": {
     "summary": "Among the five Platonic solids, the cube is uniquely characterized by having zero Dehn invariant. This extends Hilbert's Third Problem from the single pair (cube, tetrahedron) to the complete classification of all Platonic solids under scissors congruence.",
-    "implications": "The complete classification shows that the cube is the unique Platonic solid that can potentially be scissors congruent to a non-Platonic polyhedron of equal volume. All other four Platonic solids have D ≠ 0 and so cannot be dissected and reassembled into any shape with D = 0 (in particular, not into a cube). The new irrationality result arccos(1/√5)/π ∉ ℚ is itself a contribution to the theory of irrational angles, extending the Niven-style Chebyshev technique to a new cosine value.",
+    "implications": "The complete classification shows that the cube is the unique Platonic solid that can potentially be scissors congruent to a non-Platonic polyhedron of equal volume. All other four Platonic solids have D \u2260 0 and so cannot be dissected and reassembled into any shape with D = 0 (in particular, not into a cube). The new irrationality result arccos(1/\u221a5)/\u03c0 \u2209 \u211a is itself a contribution to the theory of irrational angles, extending the Niven-style Chebyshev technique to a new cosine value.",
     "openQuestions": [
-      "Can the remaining axiom (tmul_infinite_order_ne_zero — flatness of ℝ over ℤ) be proved using Mathlib's Module.Flat infrastructure?",
-      "Can icoAngle_irrational be proved by extending the Chebyshev argument to ℤ[√5], completing the proof for all five Platonic solids with 0 axioms?"
+      "Can the remaining axiom (tmul_infinite_order_ne_zero \u2014 flatness of \u211d over \u2124) be proved using Mathlib Module.Flat infrastructure?",
+      "Can this technique be applied to prove irrationality results for other dihedral angles arising in higher-dimensional polytopes?"
     ]
   },
   "crossReferences": [
@@ -155,12 +161,12 @@
     {
       "targetId": "dissection-of-cubes-oq-02",
       "relationship": "extends",
-      "description": "Parent OQ02: Niven's theorem and Chebyshev sequence technique for arccos(1/3)/π ∉ ℚ. The cosThreeFifthsSeq here directly parallels nivenSeq from OQ02."
+      "description": "Parent OQ02: Niven's theorem and Chebyshev sequence technique for arccos(1/3)/\u03c0 \u2209 \u211a. The cosThreeFifthsSeq here directly parallels nivenSeq from OQ02."
     },
     {
       "targetId": "dissection-of-cubes-oq-02-oq-02",
       "relationship": "extends",
-      "description": "Parent OQ02OQ02: the Dehn invariant tensor product infrastructure (ℝ ⊗_ℤ (ℝ/πℤ)) and cube/tetrahedron/octahedron results. This file uses the tmul_infinite_order_ne_zero axiom and edgeTerm definition from OQ02OQ02."
+      "description": "Parent OQ02OQ02: the Dehn invariant tensor product infrastructure (\u211d \u2297_\u2124 (\u211d/\u03c0\u2124)) and cube/tetrahedron/octahedron results. This file uses the tmul_infinite_order_ne_zero axiom and edgeTerm definition from OQ02OQ02."
     },
     {
       "targetId": "platonic-solids",
