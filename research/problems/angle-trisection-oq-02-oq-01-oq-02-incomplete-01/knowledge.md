@@ -170,3 +170,31 @@ and bound on minpoly degree of β over ℚ⟮a⟯.
 1. Prove `hβ_dvd` (Step C): algebra instance setup + minpoly degree bound ≤ 2
 2. For `hjoin_dvd` (Step D): either strengthen IH or convert to QuadraticTower approach
 3. `wantzel_galois_iff` remains out-of-scope
+
+## Session 29 (2026-04-26) — Restore Accidental Revert; Improve Proof Structure
+
+**Mode**: REVISIT (continued from Session 28)
+**Outcome**: PROGRESS — re-applied sessions 26-28 fix; improved not_constructible_of_bad_degree
+
+### Root Cause of Revert
+Commit `72ed399f304` ("feat(erdos-1-wip-01)") accidentally reverted `Incomplete01.lean` back
+to the original broken state (306 lines, 1 FALSE sorry). The commit was bundling ballot/erdos
+work and incidentally restored an old file version. This was unintentional.
+
+### What I Did
+- Re-applied the IsConstructible definition fix (removed `IsConstructible β` from `sqrt_ext`)
+- Restored `isConstructible_sqrt2` (√2 IS constructible under fixed definition)
+- Restored `isConstructible_algebraic_degree` (private lemma with 2 targeted sorries)
+- Restored Steps A-E structure in isConstructible_algebraic_degree
+- Improved `not_constructible_of_bad_degree` to use Dvd-based conclusion
+- Updated meta.json: sorries 1→3 (3 TRUE: hβ_dvd + hjoin_dvd + wantzel), lineCount 306→366
+
+### Files Modified
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean`
+- `src/data/proofs/angle-trisection-oq-02-oq-01-oq-02-incomplete-01/meta.json`
+- `src/data/research/problems/angle-trisection-oq-02-oq-01-oq-02-incomplete-01.json`
+
+### Next Steps
+1. Prove `hβ_dvd`: key Mathlib glue needed is `Module.finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ = natDegree (minpoly ↥ℚ⟮a⟯ β)` (β generates ℚ⟮β⟯ over ℚ⟮a⟯)
+2. For `hjoin_dvd`: reformulate with stronger IH: `∀K/ℚ, finrank K K⟮b⟯ ∣ 2^k`
+3. `wantzel_galois_iff` remains out-of-scope
