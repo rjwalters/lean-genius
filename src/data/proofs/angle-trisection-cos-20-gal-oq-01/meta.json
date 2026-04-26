@@ -50,7 +50,9 @@
         "description": "If p is irreducible and deg p is prime, then deg p divides |Gal|",
         "module": "Mathlib.FieldTheory.Galois.Basic"
       }
-    ]
+    ],
+    "historicalContext": "The heptagon (7-gon) was one of the classical impossibility problems: it cannot be constructed with compass and straightedge, a result ultimately explained by Galois theory. The minimal polynomial of cos(π/7) is 8X³−4X²−4X+1, with roots cos(π/7), cos(3π/7), cos(5π/7). Like the cos(20°) case (the minimal polynomial of which was treated in the parent entry), this polynomial is a cubic with Galois group ℤ/3ℤ over ℚ, hence solvable by radicals but not constructible. The key distinction is the irreducibility argument: whereas the cos(20°) polynomial factors via p=2 under the Eisenstein substitution, this polynomial uses Eisenstein at p=7 via the substitution Y = 2X−1, yielding r(Y) = Y³−7Y²+14Y−7, which is Eisenstein at 7. Gauss proved in his Disquisitiones Arithmeticae (1801) that the regular n-gon is constructible iff φ(n) is a power of 2 (i.e., n is a product of distinct Fermat primes and a power of 2). Since φ(7) = 6, the heptagon is not constructible.",
+    "proofStrategy": "The proof mirrors AngleTrisectionCos20Gal in structure. §1 expresses the roots of 8X³−4X²−4X+1 in terms of α = cos(π/7) using the identities cos(3π/7) = 1−2α²+α and cos(5π/7) = 2α²−α−1 (derived from triple-angle and sum formulas). §2 proves irreducibility via Eisenstein at p=7: under Y = 2X−1, the polynomial becomes r(Y) = Y³−7Y²+14Y−7 which satisfies Eisenstein at 7. §§3–4 show the splitting field is ℚ(α) by verifying all three roots lie in ℚ(α), hence [ℚ(α):ℚ] = 3 by irreducibility. §5 concludes |Gal| = 3 since the extension is separable and Galois."
   },
   "overview": {
     "historicalContext": "The Galois group computation for cos(π/7) is a classical exercise in algebraic number theory, first implicit in Gauss's 1801 *Disquisitiones Arithmeticae* where he characterized constructible regular polygons. The regular heptagon (7-gon) is not constructible by straightedge and compass because [ℚ(cos(2π/7)):ℚ] = 3, which is not a power of 2 — precisely the fact this proof establishes. The minimal polynomial 8X³−4X²−4X+1 arises from the 14th cyclotomic field: cos(π/7) = (ζ₁₄ + ζ₁₄⁻¹)/2 where ζ₁₄ = e^{2πi/14}, and the maximal real subfield ℚ(ζ₁₄)⁺ = ℚ(cos(π/7)) has degree φ(14)/2 = 3 over ℚ. The three roots cos(π/7), cos(3π/7), cos(5π/7) form a single Galois orbit under the automorphism α ↦ 1−2α² (corresponding to ζ₁₄ ↦ ζ₁₄⁵), giving the cyclic Galois group ℤ/3ℤ. This computation is a key example in the theory of totally real abelian extensions.",
@@ -145,6 +147,21 @@
       "targetId": "inverse-galois",
       "relationship": "related",
       "description": "The inverse Galois problem — ℤ/3ℤ is realized here as Gal(cos(π/7) minpoly/ℚ)"
+    },
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "related",
+      "description": "The solution-of-cubic entry gives the general Cardano formula for cubic polynomials. Since 8X³−4X²−4X+1 has a solvable Galois group (ℤ/3ℤ), its roots can in principle be expressed by radicals via Cardano’s formula, though the irreducible casus irreducibilis requires cube roots of complex numbers even when all roots are real (as here for cos(π/7), cos(3π/7), cos(5π/7) ∈ ℝ)."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-03",
+      "relationship": "related",
+      "description": "Galois’s solvability criterion (abel-ruffini-oq-04-oq-03) asserts that a polynomial is solvable by radicals iff its Galois group is solvable. This entry instantiates the solvable direction: since |Gal(8X³−4X²−4X+1/ℚ)| = 3 (ℤ/3ℤ is solvable), the polynomial is solvable by radicals."
+    },
+    {
+      "targetId": "angle-trisection-cos-20-gal-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling entry treating another angle whose minimal polynomial is a cubic with Galois group ℤ/3ℤ. Together with the current entry and the parent (cos(20°)), these form a family of Galois group computations for trigonometric minimal polynomials, illustrating the pattern at different angles."
     }
   ],
   "sorries": 0,
