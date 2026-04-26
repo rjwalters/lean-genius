@@ -383,7 +383,40 @@ theorem source_coding_achievability_mot
     -- The dominant type class is covered by 2^{code_length} codewords
     ∃ f : Fin k → ℕ, ∃ hf : ∑ i, f i = n,
     (typeClass n f hf).card ≤ 2 ^ code_length := by
-  sorry
+  -- Note: δ is unused in the conclusion — this is weaker than the true source coding
+  -- theorem (which requires covering probability ≥ 1-δ). Proved via degenerate type.
+  intro δ _
+  refine ⟨0, fun n _ => ⟨0, ?_, ?_⟩⟩
+  · -- (0 : ℝ) ≤ ↑n * shannonEntropy p + ↑n * ε, since H(p) ≥ 0 and ε > 0
+    have h_entropy_nonneg : 0 ≤ shannonEntropy p := by
+      unfold shannonEntropy; rw [neg_nonneg]
+      apply Finset.sum_nonpos; intro i _
+      rw [if_neg (hp_pos i).ne']
+      have hle : p i ≤ 1 := by
+        linarith [Finset.single_le_sum (fun j _ => (hp_pos j).le) (Finset.mem_univ i)]
+      exact mul_nonpos_of_nonneg_of_nonpos (hp_pos i).le
+        (Real.log_nonpos (hp_pos i).le hle)
+    push_cast
+    have h1 : (0 : ℝ) ≤ n := Nat.cast_nonneg n
+    nlinarith [mul_nonneg h1 h_entropy_nonneg, mul_nonneg h1 hε.le]
+  · -- ∃ f, ∃ hf, |T_f| ≤ 2^0 = 1 (degenerate type: constant-zero sequence)
+    simp only [pow_zero]
+    have hf_sum : ∑ i : Fin k,
+        Function.update (0 : Fin k → ℕ) (0 : Fin k) n i = n := by
+      simp [Function.update_apply, Finset.sum_ite_eq']
+    refine ⟨_, hf_sum, Finset.card_le_one.mpr fun a ha b hb => ?_⟩
+    simp only [typeClass, Finset.mem_filter, Finset.mem_univ, true_and] at ha hb
+    funext j
+    have key : ∀ x : Fin n → Fin k,
+        empDist n x = Function.update (0 : Fin k → ℕ) (0 : Fin k) n →
+        x j = (0 : Fin k) := by
+      intro x hx
+      have h0 : (Finset.univ.filter fun l : Fin n => x l = (0 : Fin k)).card = n := by
+        have := congr_fun hx (0 : Fin k)
+        simp [empDist] at this; exact this
+      exact (Finset.mem_filter.mp ((Finset.eq_univ_iff_forall.mp
+        (Finset.eq_univ_of_card _ (h0.trans (Fintype.card_fin n).symm))) j)).2
+    exact (key a ha).trans (key b hb).symm
 
 /-!
 ## Section 4: Auxiliary Combinatorial Facts
