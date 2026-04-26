@@ -52,47 +52,68 @@
     ],
     "dateAdded": "2026-04-26",
     "axiomCount": 0,
-    "lineCount": 210,
+    "lineCount": 270,
     "assumptions": "0 axioms. 0 sorries. All results are fully machine-verified. The hyperbolic Ptolemy theorem (K<0) is stated as a conjecture in comments only — it is NOT claimed as a theorem in this file.",
     "mathlib_version": "4.26.0",
     "parentProof": "ptolemys-theorem-oq-01-oq-02"
   },
   "sections": [
     {
-      "title": "curvatureSin Definition",
-      "startLine": 87,
-      "endLine": 91,
-      "description": "Defines curvatureSin K t as sin(√K·t)/√K for K>0, t for K=0, sinh(√|K|·t)/√|K| for K<0.",
-      "summary": "curvatureSin K t: unified trigonometric function for κ-geometry",
+      "id": "module-docstring",
+      "title": "Module Docstring: Unified Ptolemy Overview",
+      "startLine": 1,
+      "endLine": 65,
+      "description": "File header and module docstring describing the curvatureSin K function, the six results proved, the proof chain for the key spherical inequality, and why the hyperbolic case (K=-1) remains a conjecture.",
+      "summary": "Module overview: curvatureSin unifies sin/id/sinh; spherical Ptolemy inequality is the key new result"
+    },
+    {
       "id": "curvaturesin-def",
-      "mathContext": "The `sn_K` function from constant-curvature geometry: `sn_K(t) = sin(√K·t)/√K` for positive curvature K, `sn_0(t) = t` for zero curvature, `sn_K(t) = sinh(√|K|·t)/√|K|` for negative curvature. In the limit K→0, sin(√K·t)/√K → t (L'Hôpital). The K=1 case gives sin, the K=-1 case gives sinh."
+      "title": "Part 1: curvatureSin Definition",
+      "startLine": 74,
+      "endLine": 91,
+      "description": "Defines curvatureSin K t as a noncomputable three-way if-then-else: t (K=0), sin(√K·t)/√K (K>0), sinh(√(-K)·t)/√(-K) (K<0).",
+      "summary": "curvatureSin K t: unified trigonometric function for κ-geometry",
+      "mathContext": "The sn_K function from constant-curvature geometry. In the limit K→0, sin(√K·t)/√K → t (L'Hôpital). The K=1 case gives sin, the K=-1 case gives sinh."
     },
     {
-      "title": "Basic Properties",
-      "startLine": 96,
-      "endLine": 130,
-      "description": "Proves curvatureSin_zero (K=0 identity), curvatureSin_one (K=1 gives sin), curvatureSin_neg_one (K=-1 gives sinh), curvatureSin_zero_right (always 0 at t=0).",
-      "summary": "curvatureSin 0=id, 1=sin, -1=sinh, always 0 at t=0",
       "id": "basic-props",
-      "mathContext": "For K=1: sin(√1·t)/√1 = sin(1·t)/1 = sin(t). For K=-1: sinh(√1·t)/√1 = sinh(t). The K=0 case is the definition. All three geometries satisfy sn_K(0) = 0."
+      "title": "Part 2: Basic Properties",
+      "startLine": 94,
+      "endLine": 130,
+      "description": "Proves curvatureSin_zero (K=0: identity), curvatureSin_pos/neg (general formulas), curvatureSin_one (K=1 gives sin), curvatureSin_neg_one (K=-1 gives sinh), curvatureSin_zero_right (always 0 at t=0).",
+      "summary": "curvatureSin 0=id, 1=sin, -1=sinh, always 0 at t=0"
     },
     {
-      "title": "Spherical Ptolemy Equality (curvatureSin 1)",
-      "startLine": 155,
-      "endLine": 175,
-      "description": "Restates the spherical Ptolemy equality (from PtolemysTheoremOQ01OQ02.lean) using curvatureSin 1 for concyclic unit-sphere points.",
-      "summary": "Spherical Ptolemy equality via curvatureSin 1 — requires concyclicity",
       "id": "spherical-equality",
-      "mathContext": "For four concyclic unit-sphere points a,b,c,d with diagonals crossing at p, curvatureSin 1 (d(a,c)/2)·curvatureSin 1 (d(b,d)/2) = curvatureSin 1 (d(a,b)/2)·curvatureSin 1 (d(c,d)/2) + curvatureSin 1 (d(a,d)/2)·curvatureSin 1 (d(b,c)/2). Follows directly from spherical_ptolemy since curvatureSin 1 = sin."
+      "title": "Part 3: Spherical Ptolemy Equality (curvatureSin 1)",
+      "startLine": 132,
+      "endLine": 165,
+      "description": "Declares variable block for abstract real inner product space V. Restates the spherical Ptolemy equality using curvatureSin 1 for concyclic unit-sphere points. Two-line proof: simp [curvatureSin_one] then exact SphericalPtolemy.spherical_ptolemy.",
+      "summary": "Spherical Ptolemy equality via curvatureSin 1 — requires concyclicity; one-line proof by delegation"
     },
     {
-      "title": "Spherical Ptolemy Inequality (New)",
-      "startLine": 178,
-      "endLine": 240,
-      "description": "Proves the spherical Ptolemy INEQUALITY for any four unit-circle points in ℂ. No concyclicity assumption needed. Proof: chord-arc + complex Ptolemy inequality / 4.",
-      "summary": "Spherical Ptolemy ≤ for all unit-circle points — unconditional inequality",
       "id": "spherical-inequality",
-      "mathContext": "For any z₁,z₂,z₃,z₄ on the unit circle in ℂ (‖z_i‖=1), not necessarily concyclic: sin(d_ac/2)·sin(d_bd/2) ≤ sin(d_ab/2)·sin(d_cd/2) + sin(d_bc/2)·sin(d_ad/2). Proof: chord-arc gives ‖z_i-z_j‖ = 2·sin(d_ij/2), so sin(d_ij/2) = ‖z_i-z_j‖/2. The inequality becomes (‖z₁-z₃‖/2)·(‖z₂-z₄‖/2) ≤ ..., which is ptolemy_inequality divided by 4."
+      "title": "Part 4: Spherical Ptolemy Inequality (New)",
+      "startLine": 167,
+      "endLine": 229,
+      "description": "Proves the spherical Ptolemy INEQUALITY for any four unit-circle points in ℂ. No concyclicity needed. Proof chain: curvatureSin_one + chord-arc identity (six have statements) + ptolemy_inequality / 4 via ring+linarith.",
+      "summary": "Spherical Ptolemy inequality for all unit-circle points — unconditional, no concyclicity"
+    },
+    {
+      "id": "hyperbolic-conjecture",
+      "title": "Part 5: Hyperbolic Case (Conjecture, Comments Only)",
+      "startLine": 231,
+      "endLine": 257,
+      "description": "Comments describing the hyperbolic Ptolemy conjecture (K=-1 case), the blocking identity sinh(d_H(z,w)/2) = |z-w|/√((1-|z|²)(1-|w|²)), and the ~800-1200 lines of Poincaré disk infrastructure needed.",
+      "summary": "Hyperbolic Ptolemy conjecture: blocked by missing Poincaré disk metric infrastructure in Mathlib"
+    },
+    {
+      "id": "summary",
+      "title": "Summary: #check Statements",
+      "startLine": 259,
+      "endLine": 270,
+      "description": "Seven #check commands verifying that curvatureSin, its five lemmas, and both Ptolemy theorems have the expected polymorphic types.",
+      "summary": "Type-checking summary: all definitions and theorems pass Lean's type checker"
     }
   ],
   "overview": {
@@ -104,7 +125,9 @@
       "The curvatureSin K function unifies sin (K=1), identity (K=0), and sinh (K=-1) in a single definition, making the Ptolemy equality a theorem schema over all constant-curvature geometries.",
       "The Ptolemy INEQUALITY (≤) holds unconditionally for four points in spherical geometry, while the EQUALITY requires the concyclicity condition. This mirrors the Euclidean case where ptolemy_inequality (≤) holds for all four complex numbers.",
       "The proof strategy 'complex Ptolemy inequality divided by 4' is enabled by the chord-arc identity ‖z-w‖ = 2·sin(d(z,w)/2) for unit-circle points, which converts norms into curvatureSin 1 values.",
-      "The K<0 (hyperbolic) case is blocked by the absence of Poincaré disk metric infrastructure in Mathlib. The conformal factors (1-|z|²) that appear in the hyperbolic chord-arc identity do not cancel for general interior points, unlike the spherical case."
+      "The K<0 (hyperbolic) case is blocked by the absence of Poincaré disk metric infrastructure in Mathlib. The conformal factors (1-|z|²) that appear in the hyperbolic chord-arc identity do not cancel for general interior points, unlike the spherical case.",
+      "The six-have proof pattern in spherical_ptolemy_ineq_curvatureSin (applying chord-arc to each pair, then rearranging via linarith) makes the proof highly readable — each step corresponds to a conceptual transformation, and ring+linarith handles the final algebraic scaling by 1/4.",
+      "The equality theorem works for any sphere in an abstract real inner product space V, while the inequality is specific to the unit circle in ℂ — the complex structure of ℂ is used implicitly via ptolemy_inequality."
     ],
     "prerequisites": [
       "curvatureSin function definition and its three cases",
@@ -163,7 +186,7 @@
       "EuclideanGeometry"
     ],
     "namespace": null,
-    "lineCount": 210,
+    "lineCount": 270,
     "axiomCount": 0,
     "theoremCount": 7,
     "sorries": 0,
