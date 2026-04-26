@@ -1,0 +1,222 @@
+{
+  "id": "liouville-theorem-oq-04",
+  "title": "P-adic Liouville Theorem: The Archimedean Complement Lemma",
+  "slug": "liouville-theorem-oq-04",
+  "description": "Extension of Liouville's approximation theorem to the p-adic setting. Proves the key Archimedean Complement Lemma: padicNorm p n ≥ 1/n for nonzero naturals. Defines p-adic Liouville numbers using height max(|r|,|s|) and axiomatizes the main theorem that p-adic algebraic numbers are not p-adically Liouville.",
+  "meta": {
+    "author": "lean-genius research agent",
+    "sourceUrl": "https://mathworld.wolfram.com/p-adicNumber.html",
+    "date": "2026",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/LiouvilleTheoremOQ04.lean",
+    "tags": [
+      "number-theory",
+      "p-adic",
+      "transcendental",
+      "approximation",
+      "diophantine",
+      "liouville",
+      "ultrametric"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "axiomCount": 1,
+    "assumptions": "1 OPEN axiom: padic_liouville_estimate — the p-adic Liouville lower bound requires Taylor expansion in ℚ_[p], continuity in the p-adic ultrametric topology, and compatibility of padicNorm (on ℚ) with the ‖·‖ norm on ℚ_[p]. 1 HARD sorry: padicNorm_poly_eval_bound (polynomial evaluation + integer bound chain). 1 HARD sorry: padic_algebraic_not_liouville contradiction step (requires showing Liouville approximations exist with height ≥ 1/C).",
+    "dateAdded": "2026-04-26",
+    "mathlibDependencies": [
+      {
+        "theorem": "pow_padicValNat_dvd",
+        "description": "p^(padicValNat p n) divides n — the key Mathlib theorem enabling the Archimedean Complement Lemma",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal.Basic"
+      },
+      {
+        "theorem": "padicNorm.eq_zpow_of_nonzero",
+        "description": "padicNorm p x = p^(-padicValRat p x) for nonzero x",
+        "module": "Mathlib.NumberTheory.Padics.PadicNorm"
+      },
+      {
+        "theorem": "padicNorm.of_nat",
+        "description": "padicNorm p n ≤ 1 for any natural number n",
+        "module": "Mathlib.NumberTheory.Padics.PadicNorm"
+      },
+      {
+        "theorem": "padicValRat.of_nat",
+        "description": "padicValRat p n = padicValNat p n for natural n",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Proof of the Archimedean Complement Lemma: padicNorm p n ≥ 1/n via pow_padicValNat_dvd + one_div_le_one_div_of_le",
+      "P-adic Liouville number definition using height max(|r|,|s|) instead of denominator alone",
+      "Explanation of why height must replace denominator: v_p(r/s) = v_p(r) - v_p(s) depends on both r and s",
+      "Function field analog discussion: same argument works over F_q[[t]] with t-adic absolute value",
+      "Concrete verified examples: padicNorm 2 6 = 1/2 ≥ 1/6, padicNorm 5 25 = 1/25 (equality!), padicNorm 3 7 = 1 ≥ 1/7"
+    ],
+    "relatedProblems": [
+      {
+        "id": "liouville-theorem",
+        "relationship": "Extends the classical real Liouville theorem to the p-adic setting; key difference is height vs denominator"
+      }
+    ],
+    "mathlib_version": "4.26.0",
+    "lineCount": 415
+  },
+  "overview": {
+    "historicalContext": "Liouville's 1844 theorem — that algebraic irrationals resist rational approximation — has natural analogs in non-Archimedean settings. The p-adic version, developed in the 20th century alongside p-adic analysis, reveals a striking structural difference: the Archimedean property that powers the classical proof (|nonzero integer| ≥ 1) fails completely in the p-adic world. Instead, p-adic norms of integers can be arbitrarily small (p^k | n makes |n|_p ≤ p^{-k}). The fix, known as the **Archimedean Complement Lemma** |N|_p ≥ 1/|N|, replaces the Archimedean lower bound with a hybrid estimate combining both metrics. This forces the rational approximation theory to use the **naive height** H(r/s) = max(|r|, |s|) rather than just the denominator.",
+    "problemStatement": "**P-adic Liouville Theorem**: If α ∈ ℚ_[p] is algebraic of degree d over ℚ, then there exists C > 0 such that for all r, s ∈ ℤ with s ≠ 0:\n\n  ‖α - r/s‖_p ≥ C / max(|r|, |s|)^d\n\n**Archimedean Complement Lemma** (proved): For any nonzero n : ℕ and prime p:\n\n  padicNorm p n ≥ 1/n\n\nThis is equivalent to: the product `|n|_p · |n|` (p-adic norm times Archimedean norm) satisfies `|n|_p · |n| ≥ 1`. In other words, what one metric loses, the other compensates.",
+    "text": "The p-adic Liouville theorem extends rational approximation theory to p-adic numbers, with the key insight that height (not denominator) controls approximation quality in the p-adic setting.",
+    "proofStrategy": "**Step 1** (proved): Archimedean Complement Lemma. For n : ℕ nonzero, p^(v_p(n)) | n by `pow_padicValNat_dvd`, so n ≥ p^(v_p(n)), hence padicNorm p n = p^(-v_p(n)) = 1/p^(v_p(n)) ≥ 1/n.\n\n**Step 2** (sorry): Polynomial evaluation bound. For f ∈ ℤ[X] irreducible of degree d and r/s ∈ ℚ not a root: combining step 1 with the fact that s^d·f(r/s) is a nonzero integer bounded by C_f·H(r/s)^d gives |f(r/s)|_p ≥ 1/(C_f·H^d).\n\n**Step 3** (axiom): Taylor expansion in ℚ_[p]. Write f(r/s) = (r/s - α)·h(r/s) over ℚ_[p] using f(α) = 0. The non-Archimedean property bounds h, giving ‖α - r/s‖_p ≥ C/H^d.",
+    "keyInsights": [
+      "The Archimedean Complement Lemma: |N|_p · |N| ≥ 1 for nonzero integer N — p-adic and Archimedean norms are complementary",
+      "Height H(r/s) = max(|r|, |s|) must replace denominator s because p-adic valuation of r/s depends on BOTH r and s",
+      "The equality case padicNorm 5 25 = 1/25 occurs exactly when n = p^k (all p-adic content, no coprime part)",
+      "Same argument works over function fields F_q(t) with t-adic absolute value — a structural universality",
+      "The p-adic Liouville condition is HARDER to satisfy than the real one: height grows faster than denominator"
+    ],
+    "prerequisites": [
+      "p-adic numbers and the p-adic norm (padicNorm in Mathlib)",
+      "p-adic valuation (padicValNat, padicValRat)",
+      "Basic number theory (divisibility, prime factorization)",
+      "Classical Liouville theorem (parent entry liouville-theorem)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "integer-bound",
+      "title": "The Key Integer Bound",
+      "startLine": 62,
+      "endLine": 134,
+      "summary": "Proves padicNorm p n ≥ 1/n for nonzero natural n — the Archimedean Complement Lemma. Three lemmas: the natural number version (padicNorm_nat_ge_inv), the integer version (padicNorm_int_ge_inv), and a corollary (padicNorm_nat_mul_self_ge_one).",
+      "mathContext": "Key proof: n = p^v · m with m coprime to p → p^v | n → n ≥ p^v → padicNorm p n = p^{-v} ≥ 1/n. Uses `pow_padicValNat_dvd` (Mathlib) + `one_div_le_one_div_of_le`."
+    },
+    {
+      "id": "archimedean-complement",
+      "title": "The Archimedean Complement Lemma",
+      "startLine": 117,
+      "endLine": 145,
+      "summary": "Clean statement of the main inequality with the upper bound padicNorm p n ≤ 1 (from Mathlib's padicNorm.of_nat), giving complete bounds 1/n ≤ padicNorm p n ≤ 1.",
+      "mathContext": "Combined bounds: the p-adic norm of a nonzero natural n lies in [1/n, 1]. This interval shrinks as n grows, but equality 1/n = padicNorm p n holds exactly when n = p^k."
+    },
+    {
+      "id": "poly-eval-bound",
+      "title": "Polynomial Evaluation Bound",
+      "startLine": 151,
+      "endLine": 180,
+      "summary": "Statement and sorry for the bound |f(r/s)|_p ≥ C / H(r/s)^d. The proof outline is documented: s^d·f(r/s) ∈ ℤ, the Archimedean Complement Lemma gives |f(r/s)|_p ≥ |s^d·f(r/s)|_p, and the integer bound gives the height estimate.",
+      "mathContext": "For f ∈ ℤ[X] of degree d: the rational evaluation f̄(r/s) (where f̄ = f.map(ℤ→ℚ)) satisfies |f̄(r/s)|_p ≥ C / max(|r|,|s|)^d. Classification: HARD sorry, Aristotle candidate."
+    },
+    {
+      "id": "padic-liouville-def",
+      "title": "P-adic Liouville Condition",
+      "startLine": 184,
+      "endLine": 207,
+      "summary": "Definition of IsPadicLiouville using height max(|r|,|s|) with mathematical justification for why height replaces denominator in the p-adic setting.",
+      "mathContext": "α ∈ ℚ_[p] is p-adically Liouville if ∀ n, ∃ r/s with ‖α - r/s‖_p < 1/H^n where H = max(|r|,|s|). The height appears because v_p(r/s) = v_p(r) - v_p(s) involves both r and s."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem and Axiom",
+      "startLine": 212,
+      "endLine": 268,
+      "summary": "The axiom padic_liouville_estimate (the core p-adic estimate requiring ℚ_[p] Taylor expansion) and the main theorem padic_algebraic_not_liouville showing p-adic algebraic numbers are not p-adically Liouville.",
+      "mathContext": "The main theorem: if α is algebraic of degree d with ‖α - r/s‖_p ≥ C/H^d (axiom) but also ‖α - r/s‖_p < 1/H^(d+1) for all n (Liouville condition), then C·H < 1 — contradicted by taking H → ∞."
+    },
+    {
+      "id": "function-field",
+      "title": "Function Field Analog",
+      "startLine": 273,
+      "endLine": 302,
+      "summary": "Discussion of the F_q(t) analog: the same proof works with the t-adic absolute value, with deg(P) replacing v_p(P/P') and q^{deg} replacing p^v.",
+      "mathContext": "Over F_q(t), the Archimedean Complement Lemma becomes |P|_t ≥ q^{-deg(P)} for nonzero P ∈ F_q[t]. This is the same proof with polynomial degree playing the role of p-adic valuation."
+    },
+    {
+      "id": "comparison",
+      "title": "Comparison with Classical Case",
+      "startLine": 304,
+      "endLine": 331,
+      "summary": "Side-by-side comparison of the real and p-adic Liouville theorems explaining why height replaces denominator and what this implies for the strength of the p-adic Liouville condition.",
+      "mathContext": "Real: |α - p/q| ≥ c/|q|^d (denominator bound). P-adic: ‖α - r/s‖_p ≥ c/max(|r|,|s|)^d (height bound). The p-adic Liouville condition is harder to satisfy because H ≥ |s|."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 337,
+      "endLine": 368,
+      "summary": "Five verified examples demonstrating the bounds: (2,6), (5,25) [equality case], (3,7) [coprime case], combined bounds for (2,12).",
+      "mathContext": "padicNorm 2 6 = 1/2 (since 2 | 6 but 4 ∤ 6); padicNorm 5 25 = 1/25 (equality: 25 = 5^2); padicNorm 3 7 = 1 (3 ∤ 7). All verified without sorry."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "extends",
+      "description": "Extends the classical Liouville theorem (Wiedijk #18) to the p-adic setting; the Archimedean Complement Lemma replaces |integer| ≥ 1"
+    }
+  ],
+  "conclusion": {
+    "summary": "The Archimedean Complement Lemma padicNorm p n ≥ 1/n is proved in Lean 4 without sorry, establishing the core bridge between the p-adic and Archimedean metrics. The remaining two sorries are HARD (polynomial evaluation bound) and one OPEN axiom (p-adic Taylor expansion in ℚ_[p]).",
+    "implications": "The p-adic Liouville theorem belongs to a family of results showing that the ultrametric property of p-adic norms does not fundamentally change the transcendence theory — algebraic numbers remain resistant to efficient rational approximation. The height function appears naturally because the p-adic norm of a ratio r/s depends symmetrically on both numerator and denominator.",
+    "openQuestions": [
+      "Can the padicNorm_poly_eval_bound sorry be eliminated? This requires formalizing: (1) s^d·f̄(r/s) is an integer, (2) its Archimedean norm is ≤ C_f·H^d, (3) applying the Archimedean Complement Lemma.",
+      "Can the padic_liouville_estimate axiom be proved? This requires: Taylor factorization f(x) = (x-α)·g(x,α) over ℚ_[p], continuity bounds for g in the ultrametric topology.",
+      "Is there a purely p-adic proof avoiding the Archimedean Complement Lemma (i.e., working entirely within ℚ_[p] without comparing to |·|)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Transcendental.Liouville.Basic",
+      "Mathlib.NumberTheory.Padics.PadicNorm",
+      "Mathlib.NumberTheory.Padics.PadicNumbers",
+      "Mathlib.NumberTheory.Padics.PadicVal.Basic",
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Algebra.Polynomial.Eval.Defs",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Polynomial"],
+    "namespace": "LiouvilleTheoremOQ04",
+    "lineCount": 415,
+    "axiomCount": 1,
+    "theoremCount": 12,
+    "definitionCount": 2,
+    "path": "Proofs/LiouvilleTheoremOQ04.lean",
+    "sorries": 2
+  },
+  "references": [
+    {
+      "authors": "Gouvêa, Fernando Q.",
+      "title": "p-adic Numbers: An Introduction",
+      "year": "2003",
+      "venue": "Springer Universitext (2nd edition)",
+      "note": "Standard reference for p-adic Liouville theorem and related approximation theory"
+    },
+    {
+      "authors": "Mahler, Kurt",
+      "title": "p-adic Numbers and Their Functions",
+      "year": "1981",
+      "venue": "Cambridge Tracts in Mathematics 76, Cambridge University Press",
+      "note": "Foundational treatment of p-adic analysis including approximation theory"
+    },
+    {
+      "authors": "Robert, Alain M.",
+      "title": "A Course in p-adic Analysis",
+      "year": "2000",
+      "venue": "Graduate Texts in Mathematics 198, Springer",
+      "note": "Rigorous development of p-adic analysis with transcendence theory"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "padicNorm_nat_ge_inv",
+      "type": "core",
+      "description": "Archimedean Complement Lemma: padicNorm p n ≥ 1/n for nonzero n : ℕ",
+      "leanType": "(n : ℕ) → n ≠ 0 → (n : ℚ)⁻¹ ≤ padicNorm p n"
+    },
+    {
+      "name": "padic_algebraic_not_liouville",
+      "type": "main",
+      "description": "P-adic algebraic numbers are not p-adically Liouville (uses axiom padic_liouville_estimate)",
+      "leanType": "(α : ℚ_[p]) → f : ℤ[X] → f.eval α = 0 → 1 ≤ f.natDegree → IsPadicLiouville p α → False"
+    }
+  ],
+  "sorries": 2
+}
