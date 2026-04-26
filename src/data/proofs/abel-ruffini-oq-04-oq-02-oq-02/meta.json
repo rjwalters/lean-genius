@@ -88,38 +88,38 @@
       "id": "header",
       "title": "Documentation and Imports",
       "startLine": 1,
-      "endLine": 44,
+      "endLine": 53,
       "summary": "Module docstring with classification table, key argument, and references. Imports Mathlib.GroupTheory.Solvable and Mathlib.GroupTheory.SpecificGroups.Alternating."
     },
     {
       "id": "small-cases",
       "title": "Small Alternating Groups Are Solvable (n ≤ 4)",
-      "startLine": 52,
-      "endLine": 77,
+      "startLine": 55,
+      "endLine": 80,
       "summary": "Proves A₀ through A₄ are solvable. A₀, A₁, A₂ by inferInstance; A₃ by isSolvable_of_comm + decide; A₄ by subgroup solvability from S₄.",
       "mathContext": "$A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (abelian). $A_4 \\leq S_4$ and $S_4$ is solvable."
     },
     {
       "id": "large-cases",
       "title": "Large Alternating Groups Are Not Solvable (n ≥ 5)",
-      "startLine": 79,
-      "endLine": 103,
+      "startLine": 82,
+      "endLine": 109,
       "summary": "Proves A_n not solvable for n ≥ 5 via the exact sequence argument: solvable A_n → solvable S_n → contradiction with Equiv.Perm.not_solvable.",
       "mathContext": "Exact sequence $1 \\to A_n \\to S_n \\to \\mathbb{Z}^\\times \\to 1$ and solvability extension."
     },
     {
       "id": "classification",
       "title": "The Complete Classification",
-      "startLine": 105,
-      "endLine": 125,
+      "startLine": 111,
+      "endLine": 138,
       "summary": "alternating_solvable_iff: IsSolvable (alternatingGroup (Fin n)) ↔ n ≤ 4. Complete bidirectional proof.",
       "mathContext": "$A_n$ solvable $\\iff n \\leq 4$."
     },
     {
       "id": "corollaries",
       "title": "Corollaries and Sharp Threshold",
-      "startLine": 127,
-      "endLine": 155,
+      "startLine": 140,
+      "endLine": 167,
       "summary": "Named instances for A₅ and A₆ non-solvability. Convenience lemmas alternating_solvable_of_le_four and alternating_not_solvable_of_ge_five. sharp_threshold witnesses that A₄ is solvable but A₅ is not.",
       "mathContext": "The exact threshold: $A_4$ solvable, $A_5$ not."
     }
@@ -191,6 +191,16 @@
       "targetId": "abel-ruffini-oq-04-oq-03",
       "relationship": "complementary",
       "description": "Galois's full solvability criterion: a root is solvable by radicals $\\iff$ its Galois group is solvable. This entry classifies which alternating groups are solvable; `abel-ruffini-oq-04-oq-03` provides the group-theoretic ↔ radical link that makes this classification relevant to polynomial equations."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-04",
+      "relationship": "complementary",
+      "description": "Proves the Jordan-Hölder uniqueness theorem for groups by instantiating `JordanHolderLattice (Subgroup G)`. Jordan-Hölder certifies that the composition series of $A_4$ ($\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4$) and of $A_n$ for $n \\geq 5$ (with $A_n$ itself as the sole non-trivial factor) are unique invariants — making the solvability classification here an intrinsic structural fact, not an artifact of a particular decomposition choice."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
+      "relationship": "complementary",
+      "description": "Proves all finite groups of order $< 60$ are solvable. The threshold at 60 = $|A_5|$ is the group-theoretic complement to this entry's result: $A_5$ (order 60) is the smallest non-solvable alternating group, and simultaneously the smallest non-solvable finite group overall. Together the two entries show that the degree-5 Abel-Ruffini threshold and the order-60 solvability threshold are manifestations of the same fact about $A_5$."
     }
   ],
   "references": [
