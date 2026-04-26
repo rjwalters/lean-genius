@@ -15,7 +15,7 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-export const algebraicNumbersCountableOQ04Proof: Proof = {
+export const algebraicNumbersCountableOq04Proof: Proof = {
   id: meta.id,
   title: meta.title,
   slug: meta.slug,
@@ -28,9 +28,9 @@ export const algebraicNumbersCountableOQ04Proof: Proof = {
   crossReferences: meta.crossReferences,
 }
 
-export const algebraicNumbersCountableOQ04Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
+export const algebraicNumbersCountableOq04Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
-export const algebraicNumbersCountableOQ04Data: ProofData = {
-  proof: algebraicNumbersCountableOQ04Proof,
-  annotations: algebraicNumbersCountableOQ04Annotations,
+export const algebraicNumbersCountableOq04Data: ProofData = {
+  proof: algebraicNumbersCountableOq04Proof,
+  annotations: algebraicNumbersCountableOq04Annotations,
 }
