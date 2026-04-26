@@ -36,18 +36,6 @@
     "prerequisites": ["ring homomorphisms", "Ideal.mem_span_pair"]
   },
   {
-    "id": "ann-step2-overview",
-    "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 76, "endLine": 81 },
-    "type": "concept",
-    "title": "Step 2 Strategy: Why totalDegree_mul_of_isDomain?",
-    "content": "The docstring introduces the key challenge: to prove $I$ is not principal, we assume $I = \\langle f \\rangle$ and derive a contradiction. The contradiction comes in two substeps: (1) $f \\mid C 2$ forces $f$ to be a constant polynomial, and (2) $C c \\mid X_0$ with $c$ an integer forces $c = \\pm 1$, making $f$ a unit. The delicate point is why totalDegree_mul_of_isDomain (EXACT equality) is needed rather than just an inequality: we need $\\deg(f) + \\deg(g) = \\deg(fg) = 0$, which forces $\\deg(f) = 0$ over $\\mathbb{N}$. An inequality $\\deg(fg) \\leq \\deg(f) + \\deg(g) = 0$ would also suffice, but Lean's Mathlib provides the exact equality as a standalone lemma for domains.",
-    "mathContext": "In a general commutative ring, $\\deg_{\\text{tot}}(fg) \\leq \\deg_{\\text{tot}}(f) + \\deg_{\\text{tot}}(g)$ holds but can be strict (e.g., in $\\mathbb{Z}/4\\mathbb{Z}[X]$, $2X \\cdot 2X = 0$ has degree $-\\infty$ while $2X$ has degree 1). Over an integral domain (NoZeroDivisors), equality holds because the leading term of $fg$ is the product of the leading terms of $f$ and $g$, which is nonzero. The specific Mathlib lemma `MvPolynomial.totalDegree_mul_of_isDomain` encodes this for multivariate polynomials, and its EXACT equality form is essential to close the $\\mathbb{N}$-valued arithmetic with `omega`.",
-    "significance": "technical",
-    "relatedConcepts": ["totalDegree_mul_of_isDomain", "NoZeroDivisors", "integral domain", "leading term"],
-    "prerequisites": ["polynomial degree theory", "integral domains"]
-  },
-  {
     "id": "ann-degree-zero",
     "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01",
     "range": { "startLine": 82, "endLine": 103 },

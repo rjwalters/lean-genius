@@ -1,9 +1,9 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import sourceRaw from '../../../../proofs/Proofs/SynthesisCurvaturePtolemy.lean?raw'
 
-const meta = metaJson as unknown as {
+// Type assertion for JSON import
+const meta = metaJson as {
   id: string
   title: string
   slug: string
@@ -15,22 +15,23 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-export const synthesisCurvaturePtolemyProof: Proof = {
+// Import the Lean source file
+const leanSource = () => import('../../../../proofs/Proofs/SynthesisCurvaturePtolemy.lean?raw')
+
+const annotationsData = annotationsJson as { annotations: Annotation[] }
+
+export const proof: ProofData = {
   id: meta.id,
   title: meta.title,
   slug: meta.slug,
   description: meta.description,
   meta: meta.meta,
   sections: meta.sections,
-  source: sourceRaw,
   overview: meta.overview,
   conclusion: meta.conclusion,
   crossReferences: meta.crossReferences,
+  annotations: annotationsData.annotations,
+  leanSource,
 }
 
-export const synthesisCurvaturePtolemyAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
-
-export const synthesisCurvaturePtolemyData: ProofData = {
-  proof: synthesisCurvaturePtolemyProof,
-  annotations: synthesisCurvaturePtolemyAnnotations,
-}
+export default proof

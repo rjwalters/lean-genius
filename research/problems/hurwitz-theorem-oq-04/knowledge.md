@@ -6,7 +6,7 @@ Formalize the connection between Hurwitz's theorem (exactly 4 normed division al
 1. G₂ = Aut(𝕆)
 2. Freudenthal-Tits magic square: 𝔏(A,B) = Der(A)⊕(ImA⊗ImB)⊕Der(B)
 
-File: `proofs/Proofs/HurwitzTheoremOQ04.lean` (~730 lines)
+File: `proofs/Proofs/HurwitzTheoremOQ04.lean` (~430 lines)
 
 ---
 
@@ -82,165 +82,59 @@ For a true proof:
 
 ---
 
-## Session 2026-04-25 (Session 4) — De-axiomatize + Der(𝕆) Lie Algebra
+## Session 2026-04-24 (Session 2) — Prove alg_aut_preserves_norm and real_part_preserved
 
-**Mode**: REVISIT (RICH knowledge tier, score 24)
-**Outcome**: PROGRESS — 4 axioms removed (rfl), OctonionDer Lie algebra formalized (0 sorries)
+**Mode**: REVISIT
+**Outcome**: progress — eliminated 2 sorries (alg_aut_preserves_norm, real_part_preserved)
 
 ### What I Did
 
-1. **De-axiomatized 4 trivial axioms**: `freudenthal_tits_f4/e6/e7/e8` were `axiom X.dim = N`
-   where `X.dim` is DEFINED as `N`. These are just `rfl` — changed from `axiom` to `theorem ... := rfl`.
-   Axiom count: 5 → 1 (only `G2_is_octonion_aut` remains as genuine axiom).
+Added `phi_unit_eq_unit` (proved via invertibility of φ + eightMul_left_unit):
+- φ(e₀) is a left identity (via surjectivity: φ(e₀)·y = φ(e₀)·φ(φ⁻¹(y)) = φ(e₀·φ⁻¹(y)) = y)
+- Only element that is a left identity in a unital algebra = the unit → φ(e₀) = e₀
 
-2. **Added PART IV-b: Der(𝕆)** (~140 lines, 0 sorries):
-   - `eightMul_add_left/right/smul_left/right`: bilinearity helpers extracted from eightSquareIdentity
-   - `OctonionDer` structure: ℝ-linear maps with Leibniz rule D(ab) = D(a)b + aD(b)
-   - `zeroDer`: zero map is a derivation (0 sorries, proved by `fin_cases i; simp [eightMul]; ring`)
-   - `addDer`: sum of two derivations (0 sorries, proved by `rw [D₁.leibniz, D₂.leibniz]; abel`)
-   - `smulDer`: scalar multiple of a derivation (0 sorries, proved by bilinearity rewrites)
-   - `eightMul_sub_left/right`: subtraction linearity (proved via add + smul)
-   - `commDer`: [D₁,D₂] is a derivation (0 sorries, proved via h1/h2 expansions + abel)
-   - `commDer_self_eq_zero`: [D,D] = 0 (0 sorries)
-   - `commDer_antisymm`: [D₁,D₂] = -[D₂,D₁] (0 sorries)
-   - `commDer_jacobi`: [[D₁,D₂],D₃] + [[D₂,D₃],D₁] + [[D₃,D₁],D₂] = 0 (0 sorries, `ring`)
+Added `imag_sq_eq_neg_norm`: For pure imaginary y (y 0 = 0), eightMul y y = -(normSq y)·e₀
 
-### Key Findings
+Added `phi_imag_props`: For pure imaginary y, φ(y) is pure imaginary with same norm
+- Step 1: φ(y)² = -(normSq y)·e₀ (via map_mul + imag_sq_eq_neg_norm)
+- Step 2: normSq(φ(y))² = (normSq y)² via 8-square identity
+- Step 3: normSq(φ(y)) = normSq(y) since both nonneg
+- Step 4: (φ(y)) 0 = 0 from component 0 of φ(y)²
 
-- **4 axioms were trivially true**: The `freudenthal_tits_*` axioms just said `dim = dim`. No
-  mathematical content. The real mathematical claim (𝔏(𝕆,A) = ExceptionalType) is NOT formalized.
-- **commDer.leibniz proof structure**: The key is to expand D₁(D₂(ab)) and D₂(D₁(ab)) separately
-  using `h1`, `h2`, then use `eightMul_sub_left/right` for subtraction bilinearity, then `abel`.
-  The cross-terms D₂(a)D₁(b) and D₁(a)D₂(b) cancel.
-- **commDer_jacobi by ring**: After unfolding `commDer`, the Jacobi identity becomes an abelian
-  group equation `ring` closes directly.
-- **Lie algebra of Der(𝕆)**: Formalized: Der(𝕆) is closed under commutator [·,·], antisymmetric,
-  satisfies Jacobi. This is the Lie algebra 𝔤₂ = Der(𝕆) at the algebraic level.
-
-### Files Modified
-
-- `proofs/Proofs/HurwitzTheoremOQ04.lean` (583 → 730 lines; PART IV-b added, preamble updated)
-- `src/data/proofs/hurwitz-theorem-oq-04/meta.json` (axiomCount 5 → 1, lineCount 730, theoremCount 31)
-- `src/data/research/problems/hurwitz-theorem-oq-04.json` (knowledge updated)
-
-### Axiom Count: 5 → 1
-
-- ~~freudenthal_tits_f4~~ → `theorem freudenthal_tits_f4 := rfl` ✓
-- ~~freudenthal_tits_e6~~ → `theorem freudenthal_tits_e6 := rfl` ✓
-- ~~freudenthal_tits_e7~~ → `theorem freudenthal_tits_e7 := rfl` ✓
-- ~~freudenthal_tits_e8~~ → `theorem freudenthal_tits_e8 := rfl` ✓
-- `G2_is_octonion_aut`: UNCHANGED (genuinely needs Lie group theory)
-
-### Next Steps
-
-1. **Exhibit 14 explicit derivations** of 𝕆: The space Der(𝕆) has dim 14. We could exhibit
-   specific derivations via cross-product operators L_a,R_b — e.g., D_{ij}(x) = eₙ*(eᵢx)-eᵢ*(eⱼx)
-   for specific basis pairs. ~100 lines.
-2. **Archive sessions 1-3**: Move to sessions/ subdirectory (knowledge.md now >100 lines).
-3. **G2_is_octonion_aut**: Still axiom. Proving it formally requires Lie group theory not in Mathlib.
-   Could reformulate it as a dim(Der(𝕆)) = 14 statement once explicit derivations are exhibited.
+From these, proved `alg_aut_preserves_norm` (decompose a = r·e₀ + w, apply phi_imag_props)
+and `real_part_preserved` (follows from phi_unit_eq_unit + decomposition).
 
 ---
 
-## Session 2026-04-26 (Session 5) — Axiom Correction + OctonionDerSubmodule
+## Session 2026-04-24 (Session 3 - researcher-7) — Prove alg_aut_preserves_inner, imag_closed_under_aut
 
-**Mode**: REVISIT (RICH knowledge tier, score 31)
-**Outcome**: PROGRESS — axiom replaced with mathematically correct formulation
-
-### What I Did
-
-1. **Fixed mathematically incorrect axiom**: `G2_is_octonion_aut : G2.dim = Nat.card OctonionAut`
-   asserts `14 = Nat.card OctonionAut`. Since OctonionAut is infinite (G₂ is a continuous
-   Lie group), `Nat.card OctonionAut = 0` in Lean. The axiom was effectively `14 = 0`.
-   Replaced with `G2_der_dimension : finrank ℝ OctonionDerSubmodule = G2.dim` — mathematically
-   correct statement about the Lie ALGEBRA dimension.
-
-2. **Added PART IV-c: OctonionDerSubmodule** (~30 lines, 0 sorries):
-   - `eightMul_zero_left/right`: zero · b = 0 and a · 0 = 0 (private lemmas)
-   - `OctonionDerSubmodule`: Der(𝕆) as a `Submodule ℝ ((Fin 8 → ℝ) →ₗ[ℝ] (Fin 8 → ℝ))`
-   - Membership: zero_mem (trivial), add_mem (bilinearity + abel), smul_mem (bilinearity)
-   - `G2_der_dimension`: axiom finrank ℝ OctonionDerSubmodule = 14
-
-### Key Findings
-
-- **Nat.card vs finrank**: `Nat.card` of an infinite type returns 0. `FiniteDimensional.finrank`
-  is the right tool for Lie algebra dimension, requiring Module + FiniteDimensional instances.
-- **Submodule approach**: Der(𝕆) as a `Submodule ℝ (LinMap)` automatically inherits all
-  module structure from the ambient finite-dimensional End_ℝ(ℝ⁸) (dim 64).
-- **Previous formulation was inconsistent**: If Lean ever proves `Infinite OctonionAut`,
-  the old axiom `14 = 0` would give `False`. The new axiom avoids this.
-
-### Files Modified
-
-- `proofs/Proofs/HurwitzTheoremOQ04.lean` (736 → 764 lines; PART IV-c added, axiom fixed)
-- `src/data/research/problems/hurwitz-theorem-oq-04.json` (knowledge updated)
-- `src/data/proofs/hurwitz-theorem-oq-04/meta.json` (lineCount, theoremCount, assumptions)
-
-### Next Steps
-
-1. **Exhibit 14 derivations**: D_{ij}(x) for 1 ≤ i < j ≤ 7 to PROVE G2_der_dimension
-2. **Linear independence**: 14×14 matrix argument (decide-based)
-3. **Archive sessions 1-4** to sessions/ directory
-
----
-
-## Session 2026-04-26 (Session 6) — 14 Explicit G₂ Derivations with Leibniz Rule
-
-**Mode**: REVISIT (RICH knowledge tier, score 33)
-**Outcome**: PROGRESS — 14 derivations defined and all 14 membership proofs verified
+**Mode**: REVISIT
+**Outcome**: progress — 2 new theorems added (unlocked by alg_aut_preserves_norm)
 
 ### What I Did
 
-1. **Defined 14 explicit ℝ-linear maps** (octDer0..octDer13), each acting as a derivation of 𝕆:
-   - Each defined as `(Fin 8 → ℝ) →ₗ[ℝ] (Fin 8 → ℝ)` with explicit formula on standard basis
-   - `map_add'` and `map_smul'` proofs: `funext k; fin_cases k <;> simp [...] <;> ring`
+Added `alg_aut_preserves_inner`: Aut(𝕆) preserves the inner product.
+- Proof: `innerProd x y = (normSq(x+y) - normSq x - normSq y) / 2` (polarization)
+- Using `alg_aut_preserves_norm` for each norm term + linearity (`map_add`)
+- Clean: `simp only [innerProd_eq_normSq]; rw [← φ.map_add]; rewrite norm terms`
 
-2. **Proved all 14 membership conditions** (octDer0_mem..octDer13_mem):
-   - Each: `intro a b; funext k; fin_cases k <;> simp [eightMul, Pi.add_apply] <;> ring`
-   - All compile successfully (PART VIII-b, lines 700s-870)
-   - `maxHeartbeats 16000000` needed for each
+Added `imag_closed_under_aut`: φ maps Im(𝕆) to Im(𝕆) (public wrapper for private `phi_imag_props`).
+- Direct: `(phi_imag_props φ x hx).1`
 
-3. **Bundled as octDerElems**: `Fin 14 → OctonionDerSubmodule` (noncomputable)
+These two together formalize "Aut(𝕆) ⊆ O(7)" in the sense that:
+- φ fixes real part (real_part_preserved)
+- φ maps Im(𝕆) to Im(𝕆) (imag_closed_under_aut)
+- φ preserves norm on Im(𝕆) (from alg_aut_preserves_norm + imag_closed_under_aut)
+- φ preserves inner product on Im(𝕆) (from alg_aut_preserves_inner)
 
-4. **Restored axiom G2_der_dimension**: The finrank=14 claim kept as axiom; the 14 derivations prove ≥14
+### Sorry Status
 
-### Derivation Formulas
-
-```
-D_0(x) = ![0, 0, -x5, x4, -x3, x2, 0, 0]     (acts on Im(ℍ) ⊂ 𝕆)
-D_1(x) = ![0, 0, -x4, -x5, x2, x3, 0, 0]
-D_2(x) = ![0, 0, x3, -x2, -x5, x4, 0, 0]
-D_3(x) = ![0, -x6, 0, -x4, x3, 0, x1, 0]
-...
-D_13(x) = ![0, 0, -x3, x2, 0, 0, -x7, x6]    (couples e6,e7 pair)
-```
-
-These span 𝔤₂ as a subspace of 𝔰𝔬(7) ⊂ End(Im(𝕆)).
-
-### Key Technical Findings
-
-- **Proof pattern for Leibniz**: `fin_cases k <;> simp [eightMul, Pi.add_apply] <;> ring`
-  - `fin_cases k` splits into 8 cases (k = 0..7)
-  - `simp [eightMul]` unfolds the multiplication formula
-  - `Pi.add_apply` handles `(a + b) k = a k + b k`
-  - `ring` closes all remaining algebraic identities
-  - Works for ALL 14 derivations without modification
-  
-- **Noncomputable octDerElems**: The `![ ... ]` vector literal with noncomputable elements requires `noncomputable` on the def
-
-- **Evaluation matrix**: E[k][j] = (octDerK (stdBasis j)) k gives a 14×14 matrix with det=1, proving linear independence of the 14 derivations.
-
-- **Pre-existing build issues**: PARTS I-V have errors (Matrix.cons_val_* API changes in v4.26.0). My PART VIII additions at lines 600+ compile correctly per Docker build info messages at lines 1010-1028.
-
-### Files Modified
-
-- `proofs/Proofs/HurwitzTheoremOQ04.lean` (764 → 1010 lines; PART VIII added)
-- `src/data/research/problems/hurwitz-theorem-oq-04.json` (knowledge updated)
-- PR rjwalters/lean-genius#12591
+0 sorries, 5 axioms (unchanged):
+1. `G2_is_octonion_aut`: G₂ = Aut(𝕆) (dim = 14)
+2-5. `freudenthal_tits_f4/e6/e7/e8`: magic square exceptional types
 
 ### Next Steps
 
-1. **Prove octDer_linearIndependent**: Use `Fintype.linearIndependent_iff` and evaluation matrix E
-2. **Prove finrank ≥ 14** from linear independence  
-3. **Prove finrank ≤ 14**: 35 constraints on Im(𝕆), constraint matrix rank = 35, leaves codimension = 64-35 = 29... hmm, need to recalculate. Der(𝕆) ⊂ 𝔰𝔬(7) ⊂ End(Im(𝕆)) (dim 21), and G₂ ⊂ SO(7) has codimension 7 in SO(7).
-4. **Fix PARTS I-V errors**: Matrix.cons_val_two/three may have been renamed in v4.26.0
+1. Define `Der(𝕆)` as the space of derivations and attempt to show its dimension is 14
+2. If Lean gets Lie group theory, replace `G2_is_octonion_aut` axiom with proof
+3. Could formalize the 7-dim cross product preservation constraint (~100 lines)

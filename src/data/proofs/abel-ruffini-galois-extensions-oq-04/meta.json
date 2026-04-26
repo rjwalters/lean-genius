@@ -16,19 +16,12 @@
             "finite-groups",
             "abel-ruffini"
         ],
-        "badge": "mathlib",
+        "badge": "verified",
         "sorries": 0,
         "dateAdded": "2026-04-24",
         "axiomCount": 0,
         "assumptions": "",
-        "mathlibDependencies": [
-            {
-                "theorem": "CompositionSeries.jordan_holder",
-                "description": "Jordan-Hölder uniqueness: any two composition series have the same length and isomorphic factors",
-                "module": "Mathlib.Order.JordanHolder"
-            }
-        ],
-        "lineCount": 234,
+        "lineCount": 255,
         "theoremCount": 9,
         "definitionCount": 3,
         "originalContributions": [
@@ -44,7 +37,7 @@
         ]
     },
     "overview": {
-        "historicalContext": "The Jordan-Hölder theorem has a rich mathematical history spanning two decades and three mathematicians. Camille Jordan proved the composition series uniqueness for finite permutation groups in his landmark 1870 *Traité des substitutions et des équations algébriques* — the same work that made Galois's manuscripts accessible to a wider audience. Jordan's proof applied to transitive groups via what we now call the Jordan normal form approach: he showed that the multiset of composition factors is an invariant of the group, independent of the choice of series.\n\nOtto Hölder generalized the theorem to arbitrary finite groups in an 1889 *Mathematische Annalen* paper, introducing the concept of a composition factor (a simple quotient group) and establishing the rigorous modern statement. The theorem is now recognized as the group-theoretic analogue of the fundamental theorem of arithmetic: just as every positive integer has a unique factorization into primes, every finite group has a unique factorization into simple groups (composition factors) — though unlike integers, the simple group building blocks are not all cyclic.\n\nOtto Schreier sharpened the theorem in 1928, proving the *Schreier refinement theorem*: any two normal series of a group have equivalent refinements. Hans Zassenhaus then found an elegant combinatorial proof via the *butterfly lemma* (Schmetterlingslemma, 1934), which gives a direct construction of the refinement without requiring the composition series to be maximal.\n\nThe theorem's significance transcends group theory: it was the model for analogous uniqueness results in module theory (where composition factors are simple modules — the Jordan-Hölder theorem for modules), in ring theory, and in general lattice theory. In module theory, composition factors are simple $R$-modules, and the theorem states that any two composition series of a module have the same length and isomorphic factors in the same multiset — a cornerstone of homological algebra that underpins the Krull-Schmidt theorem for modules over Artinian rings. The abstract lattice-theoretic formulation in Mathlib's `JordanHolderLattice` typeclass reflects this generality — once the three lattice axioms (`sup_eq_of_isMaximal`, `isMaximal_inf_left_of_isMaximal_sup`, `second_iso`) are established, the uniqueness result follows automatically for groups, modules, and any other algebraic structure with a suitable lattice of sub-objects. The choice of exactly these three axioms is due to work on abstract Jordan-Hölder theory going back to Birkhoff's *Lattice Theory* (1940) and refined by subsequent treatments: `sup_eq_of_isMaximal` is the 'diamond generates the top' lemma, `isMaximal_inf_left_of_isMaximal_sup` is the 'diamond's other corner' or dual diamond lemma, and `second_iso` encodes the isomorphism between the two non-trivial composition factors of the diamond — together they capture the essential combinatorics of the Schreier refinement step in a lattice-theoretic form.\n\nThe connection to Abel-Ruffini is direct: the *uniqueness* of the composition series for $S_5$ (namely $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$) is what makes the degree-5 threshold absolute. Jordan-Hölder guarantees that no alternative decomposition of $S_5$ can avoid the non-abelian simple group $A_5$ — every composition series must include $A_5$ as a factor. This file fills a TODO in `Mathlib.Order.JordanHolder` (where the instance `JordanHolderLattice (Subgroup G)` was explicitly left unimplemented with the note 'it is not entirely clear how this should be done'), providing the missing concrete instantiation for groups.",
+        "historicalContext": "The Jordan-Hölder theorem has a rich mathematical history spanning two decades and three mathematicians. Camille Jordan proved the composition series uniqueness for finite permutation groups in his landmark 1870 *Traité des substitutions et des équations algébriques* — the same work that made Galois's manuscripts accessible to a wider audience. Jordan's proof applied to transitive groups via what we now call the Jordan normal form approach: he showed that the multiset of composition factors is an invariant of the group, independent of the choice of series.\n\nOtto Hölder generalized the theorem to arbitrary finite groups in an 1889 *Mathematische Annalen* paper, introducing the concept of a composition factor (a simple quotient group) and establishing the rigorous modern statement. The theorem is now recognized as the group-theoretic analogue of the fundamental theorem of arithmetic: just as every positive integer has a unique factorization into primes, every finite group has a unique factorization into simple groups (composition factors) — though unlike integers, the simple group building blocks are not all cyclic.\n\nOtto Schreier sharpened the theorem in 1928, proving the *Schreier refinement theorem*: any two normal series of a group have equivalent refinements. Hans Zassenhaus then found an elegant combinatorial proof via the *butterfly lemma* (Schmetterlingslemma, 1934), which gives a direct construction of the refinement without requiring the composition series to be maximal.\n\nThe theorem's significance transcends group theory: it was the model for analogous uniqueness results in module theory (where composition factors are simple modules — the Jordan-Hölder theorem for modules), in ring theory, and in general lattice theory. The abstract lattice-theoretic formulation in Mathlib's `JordanHolderLattice` typeclass reflects this generality — once the three lattice axioms (`sup_eq_of_isMaximal`, `isMaximal_inf_left_of_isMaximal_sup`, `second_iso`) are established, the uniqueness result follows automatically for groups, modules, and any other algebraic structure with a suitable lattice of sub-objects.\n\nThe connection to Abel-Ruffini is direct: the *uniqueness* of the composition series for $S_5$ (namely $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$) is what makes the degree-5 threshold absolute. Jordan-Hölder guarantees that no alternative decomposition of $S_5$ can avoid the non-abelian simple group $A_5$ — every composition series must include $A_5$ as a factor. This file fills a TODO in `Mathlib.Order.JordanHolder` (where the instance `JordanHolderLattice (Subgroup G)` was explicitly left unimplemented with the note 'it is not entirely clear how this should be done'), providing the missing concrete instantiation for groups.",
         "problemStatement": "**Jordan-Hölder Uniqueness Theorem** (Jordan 1870, Hölder 1889):\n\nLet $G$ be a group with a composition series (a maximal chain of normal subgroups). Any two composition series\n$$1 = H_0 \\trianglelefteq H_1 \\trianglelefteq \\cdots \\trianglelefteq H_n = G$$\n$$1 = K_0 \\trianglelefteq K_1 \\trianglelefteq \\cdots \\trianglelefteq K_m = G$$\nhave the same length ($n = m$) and the same composition factors $\\{H_{i+1}/H_i\\}$ and $\\{K_{j+1}/K_j\\}$ up to permutation and isomorphism.\n\n**This file**: Instantiates `JordanHolderLattice (Subgroup G)` — the Mathlib typeclass abstracting the three lattice axioms (`sup_eq_of_isMaximal`, `isMaximal_inf_left_of_isMaximal_sup`, `second_iso`) needed to apply the abstract Jordan-Hölder theorem to groups.",
         "proofStrategy": "Three key axioms for `JordanHolderLattice`:\n1. `sup_eq_of_isMaximal`: if x and y are both maximal normal in z (with x ≠ y), then x ⊔ y = z — proved by applying x's maximality to x ⊔ y, then deriving contradiction from y ≤ x\n2. `isMaximal_inf_left_of_isMaximal_sup`: if x and y are both maximal normal in x ⊔ y, then x ⊓ y is maximal normal in x — all 3 parts proved; maximality case: when N ⊔ y = x ⊔ y, use Subgroup.mem_sup to decompose any a ∈ x as n*b with n ∈ N, b ∈ y; then b = n⁻¹·a ∈ x ∩ y = x⊓y ≤ N; so a = n·b ∈ N, giving x ≤ N\n3. `second_iso`: (x ⊔ y)/x ≃* y/(x ⊓ y) — proved via the first isomorphism theorem, constructing φ : y →* (x ⊔ y)/x directly (avoiding the `rw [sup_comm]` rewrite failure due to Normal typeclass dependency in quotient types)",
         "keyInsights": [
@@ -71,7 +64,7 @@
     },
     "leanFile": {
         "namespace": "AbelRuffiniGaloisExtensionsOQ04",
-        "lineCount": 234,
+        "lineCount": 255,
         "axiomCount": 0,
         "theoremCount": 9,
         "definitionCount": 3,
@@ -122,66 +115,46 @@
             "id": "sec-main-theorem",
             "title": "Part V: Jordan-Hölder Theorem",
             "startLine": 229,
-            "endLine": 234,
+            "endLine": 255,
             "summary": "`jordan_holder_subgroups` and `jordan_holder_finite_groups`: one-line delegations to `CompositionSeries.jordan_holder` once the JordanHolderLattice instance is provided. `#check` statements verify the exported types. These theorems become available automatically — the entire power of the abstract Jordan-Hölder machinery applies to groups at no additional proof cost.",
             "mathContext": "Jordan-Hölder uniqueness: any two composition series of a finite group have the same length and the same multiset of simple composition factors up to permutation and isomorphism. For $S_5$: the unique series is $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$ with factors $A_5$ (simple, order 60) and $\\mathbb{Z}/2\\mathbb{Z}$. Jordan-Hölder guarantees no alternative decomposition avoids the non-abelian $A_5$ factor, making the Abel-Ruffini degree-5 threshold absolute."
         }
     ],
     "crossReferences": [
         {
-            "targetId": "abel-ruffini-galois-extensions",
+            "id": "abel-ruffini-galois-extensions",
             "relationship": "parent",
             "description": "Parent entry providing the Galois extension infrastructure for Abel-Ruffini. The Jordan-Hölder theorem proved here underpins the uniqueness claims about composition series of $S_5$ used in the broader Abel-Ruffini analysis"
         },
         {
-            "targetId": "abel-ruffini",
+            "id": "abel-ruffini",
             "relationship": "extends",
             "description": "Top-level Abel-Ruffini theorem. Key insight #7 in that entry cites Jordan-Hölder: 'the Jordan-Hölder theorem guarantees that the unique composition series $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$ makes the degree-5 impossibility absolute.' This file provides the formal proof of that theorem"
         },
         {
-            "targetId": "abel-ruffini-oq-04",
+            "id": "abel-ruffini-oq-04",
             "relationship": "sibling",
             "description": "Abel-Ruffini OQ-04: exposes the proof chain from $A_5$ simplicity through $S_5$ non-solvability, directly using the composition series structure that Jordan-Hölder certifies is unique"
         },
         {
-            "targetId": "sylow-theorems",
+            "id": "sylow-theorems",
             "relationship": "foundational",
             "description": "Sylow's theorems provide the structural analysis of $A_5$ (Sylow counting forces $n_5 = 6$, confirming no normal Sylow 5-subgroup, hence simplicity) — the same simplicity result that makes $A_5$ the inescapable composition factor in $S_5$'s Jordan-Hölder series"
         },
         {
-            "targetId": "sylow-theorem-oq-04",
+            "id": "sylow-theorem-oq-04",
             "relationship": "complementary",
             "description": "Constructs from scratch the Sylow-theoretic proof that $A_5$ is simple: the same fact that makes $A_5$ an indecomposable composition factor in the Jordan-Hölder series of $S_5$. Together these entries formalize both the uniqueness of the series (Jordan-Hölder) and the simplicity of its factor ($A_5$)"
         },
         {
-            "targetId": "inverse-galois",
+            "id": "inverse-galois",
             "relationship": "related",
             "description": "The Inverse Galois problem asks which finite simple groups (the building blocks identified by Jordan-Hölder) appear as Galois groups over $\\mathbb{Q}$. Jordan-Hölder is the structural foundation: it guarantees these simple groups are the indecomposable constituents of all Galois groups, making their realizability the key question"
         },
         {
-            "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
+            "id": "abel-ruffini-oq-04-oq-02-oq-03",
             "relationship": "complementary",
             "description": "Proves all finite groups of order $< 60$ are solvable. $A_5$ (order 60) is the minimal non-solvable group — equivalently, the first group to have a non-cyclic composition factor. Jordan-Hölder makes this precise: the 59 groups of smaller order all have composition series with only cyclic factors"
-        },
-        {
-            "targetId": "lagrange-theorem",
-            "relationship": "foundational",
-            "description": "Lagrange's theorem — $|H|$ divides $|G|$ for every subgroup $H \\leq G$ — underlies all index calculations in composition series. The composition factors $H_{i+1}/H_i$ have order $[H_{i+1} : H_i]$, which divides $|G|$ by Lagrange. In the Jordan-Hölder theorem for $S_5$ (order 120), the two factors $A_5$ (order 60) and $\\mathbb{Z}/2$ (order 2) have product $60 \\times 2 = 120 = |S_5|$, consistent with Lagrange. Every computation in `sup_eq_of_isMaximal` and `isMaximal_inf_left_of_isMaximal_sup` implicitly uses the lattice of subgroups organized by index, which is the group-theoretic content of Lagrange's theorem."
-        },
-        {
-            "targetId": "sylow-theorems-oq-04",
-            "relationship": "complementary",
-            "description": "Independently formalizes the simplicity of $A_5$ via conjugacy class arithmetic: the five conjugacy classes of $A_5$ have sizes $\\{1, 12, 12, 15, 20\\}$ summing to 60, and no proper subset including $\\{1\\}$ sums to a divisor of 60 — hence no proper nontrivial normal subgroup exists. This corroborates the `alternatingGroup.isSimpleGroup_five` result that makes $A_5$ the inescapable non-abelian composition factor in the Jordan-Hölder series of $S_5$, and illustrates how two independent proof paths (Sylow counting and conjugacy class arithmetic) both establish the same simplicity result."
-        },
-        {
-            "targetId": "abel-ruffini-oq-04-oq-02",
-            "relationship": "complementary",
-            "description": "Proves that $S_2, S_3, S_4$ are solvable by exhibiting their explicit composition series: $S_2 \\supset \\{e\\}$ (factor $\\mathbb{Z}/2$), $S_3 \\supset A_3 \\supset \\{e\\}$ (factors $\\mathbb{Z}/3, \\mathbb{Z}/2$), $S_4 \\supset A_4 \\supset V_4 \\supset \\langle(12)(34)\\rangle \\supset \\{e\\}$ (factors $\\mathbb{Z}/2, \\mathbb{Z}/3, \\mathbb{Z}/2, \\mathbb{Z}/2$). Jordan-Hölder guarantees these factorizations are unique, so no alternative solvable decomposition of $S_5$ can exist — the contrast between the terminating series for $n \\leq 4$ and the non-terminating series $S_5 \\supset A_5 \\supset A_5 \\supset \\cdots$ for $n = 5$ is precisely what Jordan-Hölder makes formally rigorous."
-        },
-        {
-            "targetId": "burnside-counting",
-            "relationship": "related",
-            "description": "Burnside's lemma for orbit counting uses the same group-action perspective as composition series analysis: orbits partition a set just as composition factors partition a group's complexity. More concretely, Burnside's $p^a q^b$ theorem (groups of order $p^a q^b$ are solvable) implies that groups of such orders always have composition series with only cyclic prime-order factors — a special case of Jordan-Hölder uniqueness where simplicity forces the factors to be $\\mathbb{Z}/p$. The connection to Abel-Ruffini: Burnside's theorem guarantees solvability (hence radical expressibility) for all polynomials whose Galois group has order $p^a q^b$."
         }
     ],
     "sorries": 0

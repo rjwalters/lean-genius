@@ -153,56 +153,63 @@ The current statement with `M < Lₙf(x)` (signed divergence) may require full l
   to allow `ring` to close the argument equality `φ/2 = (2k+1)π/(4n)` after `rw [harg]`.
 - Note: `congr 1 <;> ring` does NOT work on sin/cos goals; need explicit `have harg` + `rw [harg]`.
 
-## Session 2026-04-25 — Case Split Structure (Session 14)
+## Session 2026-04-26 — Proof Structure for trig_sum_lb_of_cos_eq_neg_one
 
-**Outcome**: progress — 1 new proved lemma, case split structure for chebyshev_trig_sum_lb  
-**Sorries**: still 3 (unchanged count, but x=-1 case now PROVED modulo trig_sum_lb_of_cos_eq_neg_one)
+**Outcome**: progress — `trig_sum_lb_of_cos_eq_neg_one` partially structured (4 components proved inline)
+**Sorry count**: 3 (unchanged), but sorry #0 now has most structure in place
 
 ### What I Did
-- Proved `cos_pi_mul_odd_ne_one`: cos(πp/q) ≠ 1 when p is odd and q > 0
-  - Uses `Real.cos_eq_one_iff`: cos(θ) = 1 ↔ ∃ n : ℤ, n * (2π) = θ
-  - If πp/q = 2nπ then p = 2nq (clear π and q), making p even → contradiction via `omega`
-  - Key: `field_simp [pi_ne, q_ne] at hn; linarith` gives `(p : ℝ) = 2 * n * q`
-  - Then `exact_mod_cast` lifts to ℤ, `omega` closes the parity contradiction
-- Restructured `chebyshev_trig_sum_lb` with explicit case split:
-  - Case x = -1: PROVED (C₂ = 1/(2π)); connects to `trig_sum_lb_of_cos_eq_neg_one` via `Finset.sum_congr` + `simp only [hx, chebyshevNode]`
-  - Case x ∈ (-1,1): sorry with C₂ = sin²(πp/q)/(8π²); proved sin²(πp/q) > 0 from x ≠ ±1
+
+Replaced the single `sorry` in `trig_sum_lb_of_cos_eq_neg_one` with a structured proof that has
+only one sorry remaining (`h_harm_chain`). Proved inline:
+
+1. **`hf_nn`** (nonnegativity): All tan terms ≥ 0 since angles in (0, π/2). Uses
+   `Real.sin_nonneg_of_nonneg_of_le_pi` and `Real.cos_pos_of_mem_Ioo`. ✓
+
+2. **`h_comp`** (complementary angle identity): For j : Fin m (m = Nat.sqrt n), the index
+   n-1-j gives angle (2*(n-1-j)+1)π/(4n) = π/2 - (2j+1)π/(4n). Uses `Nat.cast_sub` for
+   the nat subtraction cast, then `Real.sin_pi_div_two_sub` and `Real.cos_pi_div_two_sub`. ✓
+
+3. **`h_sub_le`** (sub-sum ≤ full sum): Injection j ↦ ⟨n-1-j, ...⟩ maps Fin m → Fin n
+   injectively. Uses `Finset.sum_image` + `Finset.sum_le_sum_of_subset_of_nonneg`. ✓
+
+4. **Calc chain**: lb ≤ cot-sum (h_harm_chain sorry) = tan-sub-sum (h_comp) ≤ full-sum (h_sub_le). ✓
 
 ### Key Findings
-- Case x=-1 in `chebyshev_trig_sum_lb` is NOW PROVED structurally (modulo `trig_sum_lb_of_cos_eq_neg_one`)
-- `cos_pi_mul_odd_ne_one` uses `Real.cos_eq_one_iff` (confirmed in Mathlib4 `Trigonometric/Basic.lean:528`)
-- `exact_mod_cast` from `(p : ℝ) = 2 * (n : ℤ) * (q : ℕ)` to ℤ should work via norm_cast chain
-- `omega` handles `2 * n * q = 2 * m + 1 → False` over ℤ via parity argument
+
+- **Nat subtraction cast**: `rw [show n-1-j = n-(j+1) from by omega]; push_cast [Nat.cast_sub h1]; ring`
+  correctly handles `(n-1-j : ℕ) : ℝ = n - j - 1` by rewriting to avoid double subtraction.
+- **Sub-sum via injection**: `Finset.sum_image (fun j _ j' _ h => hg_inj h)` + `Finset.sum_le_sum_of_subset_of_nonneg`
+  gives the correct sub-sum inequality.
+- **Complementary angle**: After proving `harg`, a single `rw [harg, sin_pi_div_two_sub, cos_pi_div_two_sub]`
+  closes the equality.
+
+### Remaining Sorry (`h_harm_chain`)
+
+**Goal**: (1/(2π))*n*log(n+1) ≤ Σ_{j<√n} cos((2j+1)π/(4n)) / sin((2j+1)π/(4n))
+
+**Strategy** (documented in inline comments):
+1. Each term cot((2j+1)π/(4n)) ≥ 2n/(π(2j+1)) by `cot_ge_inv_two_mul`
+   - Angle bound: (2j+1)π/(4n) ≤ π/3 needs (Nat.sqrt n)^2 ≤ n (needs Mathlib lemma name for this)
+   - Then 3*(2j+1) ≤ 4n follows from 6j-3 ≤ 4m^2 ≤ 4n (quadratic m^2 ≤ n: always positive)
+2. Σ_{j<m} 2n/(π(2j+1)) ≥ (n/π)*harmonic(m) (since 1/(2j+1) ≥ (1/2)/(j+1))
+3. harmonic(m) ≥ log(m+1) from `log_add_one_le_harmonic` (Mathlib)
+4. log(m+1) ≥ (1/2)*log(n+1) since (m+1)^2 ≥ n+1 from `Nat.lt_succ_sqrt n : n < (m+1)^2`
+5. Net: ≥ (n/π)*(1/2)*log(n+1) = (1/(2π))*n*log(n+1) ✓
+
+**Key Mathlib gap**: Need `(Nat.sqrt n)^2 ≤ n` — likely `Nat.sqrt_le'` or similar (exact name TBD).
 
 ### Next Steps
-1. Prove `trig_sum_lb_of_cos_eq_neg_one` Step 2: sub-sum over last n/2 nodes (k ↦ n-1-k bijection)
-2. Prove `chebyshev_trig_sum_lb` case x∈(-1,1): Lipschitz + nearest-node + harmonic sum
-3. For `divergence_from_lebesgue_growth`: weaken to lim sup = ∞ (Baire/UBP)
+~~1. Find correct Lean4 Mathlib name for `(Nat.sqrt n)^2 ≤ n` (try `Nat.sqrt_le'`, `Nat.le_sqrt`)~~
+~~2. Prove `h_harm_chain` via the 5-step strategy above~~
+→ COMPLETED in Session 2026-04-26b (see below)
 
-## Session 2026-04-25 — Full Proof Attempt for trig_sum_lb_of_cos_eq_neg_one (Session 15)
+## Session 2026-04-26b — h_harm_chain Proved
 
-**Outcome**: progress — ~170-line proof attempt replaces sorry (pending Docker build verification)
-**Sorries**: 3 → 2 (if proof compiles)
+**Outcome**: progress — sorry count 3 → 2  
+**Sorries closed**: `h_harm_chain` inside `trig_sum_lb_of_cos_eq_neg_one`
 
 ### What I Did
-- Wrote full proof of `trig_sum_lb_of_cos_eq_neg_one`:
-  - **hS_cot** (∑tan = ∑cot): involution k↦n-1-k via `Equiv.sum_comp`, complementary angle
-    θ(n-1-k) = π/2 - θ(k) proved via `rw [Nat.cast_sub hkle, Nat.cast_sub hn]` + `field_simp; ring`
-    Then `Real.cos_pi_div_two_sub` + `Real.sin_pi_div_two_sub` swap sin↔cos
-  - **h2S** (2*∑tan = ∑2/sin): `linarith [hS_cot]` gives 2*S = S + ∑cot; `← Finset.sum_add_distrib`
-    combines; `field_simp; ring` proves tan+cot = 2/sin via double-angle `hsin2_eq`
-  - **hS_inv_sin** (∑tan = ∑1/sin): `h2S_rw` (2*∑1/sin = ∑2/sin via `Finset.mul_sum`) + `linarith`
-  - **hodd_harm_lb** ((1/2)*harmonic_n ≤ ∑1/(2k+1)): prove in ℚ first (avoid ℚ→ℝ cast issues),
-    then lift to ℝ via `exact_mod_cast`. Each term: (1/2)/(k+1) ≤ 1/(2k+1) by `div_le_div_iff`
-  - **hS_log_lb**: chains log(n+1) ≤ harmonic_n (`log_add_one_le_harmonic`) → ≤ 2*∑1/(2k+1) → ≤ ∑1/sin
-
-### Key Lean Techniques Discovered
-- **Bug fix**: `rw [two_mul, ← hS_cot, ← Finset.sum_add_distrib]` is wrong (← hS_cot finds no ∑cot match).
-  Correct: `linarith [hS_cot]` for equality derivation from ∑tan = ∑cot, then `← Finset.sum_add_distrib`
-- **ℚ→ℝ harmonic cast**: Prove equality in ℚ first (`simp only [harmonic]; rw [← Finset.sum_fin_eq_sum_range]; congr 1; ext k; push_cast; ring`), then `exact_mod_cast` lifts to ℝ
-- **hS_inv_sin equality**: From `2*∑tan = ∑2/sin` and `2*∑1/sin = ∑2/sin`, derive `∑tan = ∑1/sin` via `linarith` (equality from two linear equalities is linear arithmetic)
-- `Nat.cast_sub hn` with `hn : 0 < n` works as `1 ≤ n` in ℕ (definitionally equal)
-- `div_le_div_iff` cross-multiplies `a/c ≤ b/d` to `a*d ≤ b*c`
 
 Replaced the `sorry` for `h_harm_chain` with a complete 5-step proof:
 
@@ -232,37 +239,76 @@ Replaced the `sorry` for `h_harm_chain` with a complete 5-step proof:
 - `harmonic_eq_sum_Icc : harmonic n = ∑ i ∈ Finset.Icc 1 n, (↑i)⁻¹` ✓
 - `Fin.sum_univ_eq_sum_range f n : ∑ i : Fin n, f i = ∑ i ∈ Finset.range n, f i` ✓
 
-### Remaining Sorries (3→2 focused)
+### Remaining Sorries (2)
 
-1. `chebyshev_trig_sum_lb` Case 2: monolithic sorry → 2 focused sub-sorries (Session 25):
-   a. `hS_floor`: S_n ≥ 2/π via nearest-node + Jordan's inequality
-   b. `hS_harm`: S_n ≥ (s/4π)*n*log(n+1) for n ≥ N₀ (harmonic sub-sum, mirrors Case 1)
+1. `chebyshev_trig_sum_lb` — x ∈ (-1,1) Lipschitz/harmonic argument
 2. `divergence_from_lebesgue_growth` — lacunary construction / UBP gap
 
+### Build Fix (Session 2026-04-26b, follow-up)
+
+**Error**: `nlinarith [hm_pos, sq_nonneg m]` for `haux : 6*m ≤ 4*m^2+3` fails in ℕ.
+**Root cause**: Certificate needs `(m-1)^2 ≥ 0` which is available in ℤ but not directly provable by nlinarith in ℕ (natural subtraction makes `(m-1)^2` non-standard).
+**Fix**: Use ℤ cast: `nlinarith [sq_nonneg ((m:ℤ)-1)]` after `exact_mod_cast`.
+
+**Pattern to remember**: For polynomial inequalities like `4m^2-6m+3 ≥ 0`, use ℤ and `sq_nonneg (expr - c)` as the nlinarith hint. ℕ-based nlinarith cannot handle these when the certificate involves non-trivial products of hypotheses.
+
+**Also fixed**: The final `nlinarith` in `h_angle_le` (for `(2j+1)*π*3 ≤ π*(4n)`) needs explicit hint `mul_nonneg hpi_pos.le hd` since the goal involves `Real.pi` (a transcendental constant) and nlinarith needs the pre-computed product.
+
 ### Next Steps
-1. Prove `hS_floor`: ~50 lines, k*=Nat.floor(n*θ/π-1/2) + pigeonhole + Jordan's
-2. Prove `hS_harm`: ~150 lines, adapt Case 1 (trig_sum_lb_of_cos_eq_neg_one) with θ-centered nodes
-3. For sorry #2: weaken to lim sup = ∞ (provable by Banach-Steinhaus)
+1. Attempt `chebyshev_trig_sum_lb` Case 2: use sin(φₖ) ≥ s/2 near k₀ + harmonic sum
+2. For sorry #2: weaken to lim sup = ∞ (provable by Banach-Steinhaus)
 
-## Session 2026-04-26 (Session 25) — Case 2 structure for chebyshev_trig_sum_lb
+## Session 2026-04-26c — Build Fixed, PR #12590 Verified
 
-**Mode**: REVISIT (RICH knowledge tier)
-**Outcome**: PROGRESS — monolithic Case 2 sorry → structured proof with 2 focused sub-sorries
+**Outcome**: build succeeds — 0 errors, exactly 2 sorry warnings (lines 1089, 1178)
+**Sorries changed**: 2 (unchanged) — all build errors fixed
 
 ### What I Did
-- Proved x > -1 (neg_one_le_cos + hx_neg ≠ -1)
-- Proved x < 1: cos(πp/q) = 1 → p = 2kq even, contradicts odd p (Real.cos_eq_one_iff)
-- Set up θ = arccos(x) ∈ (0,π): Real.arccos_pos.mpr hx_lt_1, Real.arccos_eq_pi for upper bound
-- s = sin(θ) > 0 via Real.sin_pos_of_pos_of_lt_pi
-- Found N₀ via exists_nat_gt(π²/s²), proved N₀ > 0
-- Constructed C₂ = min(s/(4π), (2/π)/(N₀*log(N₀+1))), proved C₂ > 0 completely
-- Case split: n ≥ N₀ uses hS_harm; n < N₀ uses hS_floor with monotonicity bound
 
-### Key Insights
-- Jordan's inequality (Real.mul_le_sin): 2/π * x ≤ sin x for x ∈ [0,π/2]
-  → sin(π/(2n)) ≥ 1/n → nearest node term ≥ (1/n)/(π/(2n)) = 2/π
-- Two-part C₂ argument handles ALL n ≥ 1 uniformly without computing N₀ explicitly
-- div_mul_cancel₀ cleanly resolves N₀*log(N₀+1) cancellation
+Fixed 7 distinct build failures that surfaced as cached artifacts were cleared:
 
-### Files Modified
-- `proofs/Proofs/Erdos1151OQ04.lean`: lines 1067-1200 (86 new lines replacing 1 sorry)
+1. **`hg_inj` double-coercion omega failure** (line 919):
+   `fun ⟨j, hj⟩ ⟨j', hj'⟩ h =>` creates `↑↑⟨j, hj⟩` as a separate omega atom from `j`.
+   Fix: `intro a b h` with `a b : Fin m`, using `a.isLt`/`b.isLt` and `Fin.ext (by omega)`.
+
+2. **`hf_nn` division bounds** (line 887):
+   Even with `intro k` (not destructuring), `<;> nlinarith [Real.pi_pos]` can't close both division goals.
+   Fix: explicit `rw [div_le_iff₀ ...]` / `rw [div_lt_div_iff₀ ...]` + `linarith [mul_pos Real.pi_pos h_gap]`.
+   Key: provide product hint `π*(4n - (2k+1)*c) > 0` so linarith sees the linear consequence.
+
+3. **`hsucc_sq` type mismatch** (line 892):
+   `Nat.lt_succ_sqrt n : n < n.sqrt.succ * n.sqrt.succ` but goal expects `n < (m+1)^2`.
+   Fix: `simp only [← hm_def, Nat.succ_eq_add_one, ← sq] at h; exact h`.
+   Key: `← sq` rewrites `a*a → a^2` in the hypothesis.
+
+4. **`div_le_div_iff` / `div_le_iff` / `div_lt_div_iff`** (lines 765, 886, 896):
+   These identifiers don't exist; Mathlib uses the `₀`-suffixed versions.
+   Fix: `div_le_div_iff₀`, `div_le_iff₀`, `div_lt_div_iff₀`.
+   Note: `div_lt_iff₀` was already correct (line 811 had no error).
+
+5. **Stale `ring` after `field_simp`** (line 802, `sin_div_one_add_cos`):
+   `field_simp [h2cos_ne, hcos_half_pos.ne']` fully closed the goal; `ring` found no goals.
+   Fix: remove `ring`.
+
+6. **`chebyshevAngle_pos_lt_pi` nlinarith** (line 814):
+   `nlinarith` without hints can't prove `(2k+1)*π < π*(2n)` — needs `π > 0`.
+   Fix: `nlinarith [Real.pi_pos]`.
+
+### Key Patterns for Future Sessions
+
+- **Double-coercion in omega/linarith**: Destructuring `⟨j, hj⟩` creates `↑↑⟨j, hj⟩` which omega treats
+  as different from `j`. Use `intro a` (not `intro ⟨a, ha⟩`) and access `.val`/`.isLt`/`.val_lt`.
+
+- **Division inequalities with transcendental π**: nlinarith can't handle `a*π/b < c*π/d` without hints.
+  Strategy: `rw [div_lt_div_iff₀ ...]` to clear denominators, then provide `mul_pos Real.pi_pos h_gap`
+  as a hint, where `h_gap : 0 < (numerator difference)` is proved by linarith from casting bounds.
+
+- **Mathlib naming**: When a div/mul lemma fails, try appending `₀` (confirmed: `div_le_div_iff₀`,
+  `div_le_iff₀`, `div_lt_div_iff₀`, `div_lt_iff₀`).
+
+- **`field_simp` may close goals**: Always check if `ring` after `field_simp` is still needed.
+
+### Remaining Sorries (2)
+
+1. **`chebyshev_trig_sum_lb` Case 2** (~line 1089): x ∈ (-1,1), Lipschitz/harmonic argument
+2. **`divergence_from_lebesgue_growth`** (~line 1178): lacunary construction / UBP gap

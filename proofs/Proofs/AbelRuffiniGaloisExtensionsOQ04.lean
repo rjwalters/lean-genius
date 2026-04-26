@@ -15,12 +15,13 @@
   `Mathlib.Order.JordanHolder` with the note "it is not entirely clear how this
   should be done." This file fills that gap.
 
-  ## Proof Status
+  ## Note on Sorries
 
-  All three `JordanHolderLattice` axioms are fully proved (0 sorries):
-  - `sup_eq_of_isMaximal`: proved via subgroupOf_sup + maximality argument
-  - `isMaximal_inf_left_of_isMaximal_sup`: proved via element-wise decomposition (Subgroup.mem_sup)
-  - `second_iso`: proved via first isomorphism theorem (avoids sup_comm rewrite failure)
+  `sup_eq_of_isMaximal` and `second_iso` are proved.
+  `isMaximal_inf_left_of_isMaximal_sup` has 1 sorry remaining:
+  the maximality step requires transferring simplicity of (x⊔y)/y through
+  the second isomorphism to x/(x⊓y), then applying the correspondence theorem.
+  This is a HARD goal for Aristotle.
 -/
 
 import Mathlib.Tactic
@@ -77,10 +78,16 @@ noncomputable instance instJordanHolderLatticeSubgroup :
   lt_of_isMaximal := fun h => h.1
 
   sup_eq_of_isMaximal := by
-    /- Proof: x, y both maximal normal in z (with x ≠ y).
-       Strategy: apply x's maximality to x⊔y (which is normal in z via subgroupOf_sup),
-       getting x⊔y = x or x⊔y = z. The first case gives y ≤ x, then y's maximality
-       applied to x in z gives a contradiction with x ≠ y or x not maximal. -/
+    /- Proof sketch (sorry'd):
+       x, y both maximal normal in z (with x ≠ y).
+       • Both relatively normal in z → x⊔y relatively normal in z
+         (product of normal subgroups is normal)
+       • x ≤ x⊔y ≤ z; image of x⊔y in z/x is normal in z/x
+       • z/x is "simple" (from IsMaxNorm x z): the only normal subgroups of z
+         between x and z are x and z; hence x⊔y = x or x⊔y = z
+       • x⊔y = x ⟹ y ≤ x ⟹ y/x is trivial ⟹ x is in between y and z, but y
+         maximal in z — contradicts x ≠ y both maximal.
+       • Therefore x⊔y = z. -/
     intro x y z hxz hyz hne
     have hx_le_z : x ≤ z := hxz.1.le
     have hy_le_z : y ≤ z := hyz.1.le
@@ -96,10 +103,14 @@ noncomputable instance instJordanHolderLatticeSubgroup :
     · exact h
 
   isMaximal_inf_left_of_isMaximal_sup := by
-    /- Proof: x, y both maximal normal in x⊔y. Want: x⊓y maximal normal in x.
-       Three parts: (1) x⊓y < x via inf_le_left + contradiction; (2) normality via
-       inf_subgroupOf_right; (3) maximality via element-wise argument — for N⊔y = x⊔y,
-       any a ∈ x decomposes as n*b with n ∈ N ≤ x, b ∈ y∩x = x⊓y ≤ N, so a ∈ N. -/
+    /- Proof sketch (sorry'd):
+       x, y both maximal normal in x⊔y. Want: x⊓y maximal normal in x.
+       • IsMaxNorm y (x⊔y) → y relatively normal in x⊔y
+         → x ≤ x⊔y ≤ y.normalizer → (y.subgroupOf x).Normal
+         → (using inf_subgroupOf_right): ((x⊓y).subgroupOf x).Normal. ✓
+       • x⊓y < x: if x⊓y = x then x ≤ y → x⊔y = y, contradicts y < x⊔y. ✓
+       • Simplicity of x/(x⊓y): by second_iso, (x⊔y)/y ≃* x/(x⊓y).
+         Transfer simplicity of (x⊔y)/y (from IsMaxNorm y (x⊔y)) to x/(x⊓y). ✓ -/
     intro x y hx hy
     refine ⟨?_, ?_, ?_⟩
     · -- x ⊓ y < x
@@ -170,11 +181,21 @@ noncomputable instance instJordanHolderLatticeSubgroup :
     rcases f with ⟨e1⟩; rcases g with ⟨e2⟩; exact ⟨e1.trans e2⟩
 
   second_iso := by
-    /- Proof: (x ⊔ y) ⧸ x ≃* y ⧸ (x ⊓ y) via Noether's second isomorphism.
-       Key insight: construct φ : y →* (x ⊔ y) ⧸ x directly as mk' ∘ inclusion,
-       avoiding rw [sup_comm] which fails due to Normal typeclass dependency.
-       ker φ = (x ⊓ y).subgroupOf y; φ surjective by decomposing elements of x ⊔ y.
-       Apply quotientKerEquivOfSurjective to get the isomorphism. -/
+    /- Proof sketch (sorry'd due to Lean 4 "motive not type correct" rewrite issue):
+       Want: GroupQuotIso (x, x ⊔ y) (x ⊓ y, y)
+         = ∃ hn1 hn2, Nonempty ((x ⊔ y) ⧸ x.subgroupOf (x ⊔ y) ≃* y ⧸ (x ⊓ y).subgroupOf y)
+       Strategy:
+       1. hn_sup : (x.subgroupOf (x ⊔ y)).Normal  from  hx.2.1
+       2. hle : y ≤ x.normalizer  from  le_normalizer_of_normal_in_sup hn_sup
+       3. hn_inf : ((x ⊓ y).subgroupOf y).Normal  via  inf_subgroupOf_right + hle
+       4. Noether: quotientInfEquivProdNormalizerQuotient y x hle gives
+            y ⧸ x.subgroupOf y ≃* (y ⊔ x) ⧸ x.subgroupOf (y ⊔ x)
+          After .symm: (y ⊔ x) ⧸ x.subgroupOf (y ⊔ x) ≃* y ⧸ x.subgroupOf y
+       5. Transport along sup_comm (y ⊔ x = x ⊔ y) and inf_subgroupOf_right.
+       Blocked: rw [sup_comm y x] at key fails — "motive not type correct"
+         because quotient type ↥_ ⧸ x.subgroupOf _ has Normal instance
+         depending on the rewritten term; rw cannot abstract this.
+       Fix needed: use MulEquiv.subgroupCongr or direct Quotient.congr construction. -/
     intro x y hx
     have hn_sup : (x.subgroupOf (x ⊔ y)).Normal := hx.2.1
     have hle : y ≤ x.normalizer := le_normalizer_of_normal_in_sup hn_sup

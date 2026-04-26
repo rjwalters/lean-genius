@@ -18,10 +18,10 @@
       "research"
     ],
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 2,
     "axiomCount": 0,
-    "lineCount": 1179,
-    "assumptions": "3 sorries: anyInv_preserved (list induction on reduced words — 4 base cases + 12 transition lemmas cover all valid steps, reducedness excludes 4 forbidden transitions), key (connection bridge: evalWord l = 3^|l| * (liftF (mk l)) e₂ in ℤ[√2]³ + conclusion that non-empty reduced word gives (liftF w) e₂ ≠ e₂), banach_tarski (Banach-Tarski 1924 — main paradox, requires AC). Session 18: structured orbit_ne into evalWord definition + anyInv_preserved induction + key connection bridge, replacing single opaque sorry with 2 clearly-labeled sorrys whose proof structure and dependencies are fully documented. Core framework fully proved.",
+    "lineCount": 783,
+    "assumptions": "2 sorries: hausdorff_free_subgroup (Hausdorff 1914 — SO(3) contains F₂), banach_tarski (Banach-Tarski 1924 — main paradox, requires AC). Core framework fully proved including paradoxical_no_finite_measure, free_group_not_amenable, int_amenable (ℤ amenable), and banach_tarski_pieces_nonmeasurable (proved via cardinality contradiction: Borel σ-algebra has ≤ 𝔠 elements, but unitBall3 ≅ [0,1] has 2^𝔠 subsets — eliminating the last corollary sorry).",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -203,12 +203,12 @@
       "Mathlib"
     ],
     "namespace": "BanachTarski",
-    "lineCount": 1179,
+    "lineCount": 783,
     "axiomCount": 0,
     "theoremCount": 7,
-    "definitionCount": 9,
+    "definitionCount": 5,
     "path": "Proofs/LebesgueMeasureOQ06.lean",
-    "sorries": 3
+    "sorries": 2
   },
-  "sorries": 3
+  "sorries": 2
 }

@@ -64,43 +64,6 @@
       "**Baker-Wüstholz without the Six Exponentials framework**: The Baker-Wüstholz 1993 proof introduces a new approach via the multiplicity estimates of Wüstholz. Formalizing this approach might yield better bounds with less analytic machinery."
     ]
   },
-  "crossReferences": [
-    {
-      "targetId": "algebraic-numbers-countable",
-      "relationship": "parent",
-      "description": "The parent entry establishing countability of algebraic numbers. Baker's theorem is an open question branching from this foundational result — it characterizes when algebraic logarithms can satisfy linear relations."
-    },
-    {
-      "targetId": "e-transcendental",
-      "relationship": "related",
-      "description": "Hermite's 1873 proof that $e$ is transcendental is the n=0 case (or the foundation) of the Baker hierarchy. Baker's theorem generalizes the transcendence of $e = e^1 = e^{\\log e}$ to arbitrary linear forms in logarithms."
-    },
-    {
-      "targetId": "gelfond-schneider",
-      "relationship": "related",
-      "description": "The Gelfond-Schneider theorem (Hilbert's 7th problem, 1934) is the $n=1$ special case of Baker's theorem: $\\alpha^\\beta$ is transcendental for algebraic $\\alpha \\neq 0, 1$ and irrational algebraic $\\beta$. Baker's proof with $n=1$ recovers Gelfond-Schneider — `baker_n1_log_independence` makes this explicit in the file."
-    },
-    {
-      "targetId": "hermite-lindemann",
-      "relationship": "related",
-      "description": "The Hermite-Lindemann theorem ($e^\\alpha$ is transcendental for nonzero algebraic $\\alpha$) is equivalent to the $n=1$ case of Baker's inhomogeneous form: $\\beta_0 + \\beta_1 \\log \\alpha \\neq 0$ for algebraic $\\beta_0, \\beta_1$ not both zero. Baker's theorem is the full generalization to arbitrary $n$ and any system of logarithms."
-    },
-    {
-      "targetId": "algebraic-numbers-countable-oq-02",
-      "relationship": "sibling",
-      "description": "Sibling OQ proving the uncountability of $\\mathbb{R}$ and the transcendence of 'most' real numbers (in measure). Baker's theorem provides a specific mechanism: $\\mathbb{Q}$-independent logarithms of algebraic numbers are transcendental, instantiating the abstract generic transcendence of the OQ-02 result."
-    },
-    {
-      "targetId": "sqrt2-irrational",
-      "relationship": "foundational",
-      "description": "The irrationality of $\\sqrt{2}$ is the prototype for the elementary irrationality arguments in this file — specifically `log2_3_irrational`, which uses unique factorization ($2^p \\neq 3^q$) in the same spirit as the proof that $\\sqrt{2} \\notin \\mathbb{Q}$ uses unique factorization ($2 \\nmid n^2$ for odd $n$)."
-    },
-    {
-      "targetId": "kroneckers-jugendtraum",
-      "relationship": "related",
-      "description": "Kronecker-Weber theorem: every abelian extension of $\\mathbb{Q}$ is cyclotomic. Baker's theorem is used in explicit class field theory: the Baker-Stark theorem uses linear forms in logarithms to show that $\\mathbb{Q}(\\sqrt{-d})$ has class number 1 only for $d \\in \\{1, 2, 3, 7, 11, 19, 43, 67, 163\\}$, and is connected to the Kronecker Jugendtraum via the theory of complex multiplication."
-    }
-  ],
   "sections": [
     {
       "id": "sec-header",
@@ -114,39 +77,31 @@
       "id": "sec-arithmetic",
       "title": "Sec 1: Elementary Arithmetic — Irrationality of log2(3)",
       "startLine": 129,
-      "endLine": 294,
+      "endLine": 257,
       "description": "Proves 2^p ≠ 3^q for positive p, q using Nat.Prime.dvd_of_dvd_pow. Derives positivity and nonvanishing of log 2 and log 3. Proves irrationality of log2(3) = log 3 / log 2. Proves Q-linear independence of {log 2, log 3}.",
       "mathContext": "Central lemma: 2^p ≠ 3^q for p, q >= 1. If 2^p = 3^q then dvd_pow_self gives 2 | 2^p = 3^q, so Nat.Prime.dvd_of_dvd_pow gives 2 | 3, contradicted by decide. Irrationality: rational log2(3) = n/d implies 3^d = 2^n, contradiction."
     },
     {
       "id": "sec-baker-axioms",
       "title": "Sec 2: Baker Theorem Axiom Catalog",
-      "startLine": 295,
-      "endLine": 406,
+      "startLine": 258,
+      "endLine": 363,
       "description": "Three axioms: baker_homogeneous (Q-independent logs remain Q-bar-independent), baker_inhomogeneous (with constant term), baker_quantitative (explicit lower bound). Each axiom documented with mathematical justification.",
       "mathContext": "Main type: for linearly independent logs of algebraic a_i, any algebraic linear combination with not-all-zero coefficients is nonzero. Quantitative: |sum b_i log a_i| > B^{-C} for explicit C."
     },
     {
       "id": "sec-corollaries",
       "title": "Sec 3: Key Corollaries from Baker",
-      "startLine": 407,
-      "endLine": 542,
-      "description": "Corollaries: log2(3) is transcendental (Baker n=2 case), Q-bar-linear independence of {log 2, log 3}, n=1 case connecting to Gelfond-Schneider.",
+      "startLine": 364,
+      "endLine": 491,
+      "description": "Corollaries: log2(3) is transcendental (Baker n=2 case), Q-bar-linear independence of {log 2, log 3}, n=1 case connecting to Gelfond-Schneider, Four Exponentials Conjecture as main open problem.",
       "mathContext": "Transcendence of log2(3): assume beta = log2(3) algebraic. Then beta*log2 - log3 = 0 with beta, -1 algebraic and log2, log3 Q-independent. Baker says this sum is nonzero. Contradiction."
     },
     {
-      "id": "sec-four-exponentials",
-      "title": "Sec 4: Four Exponentials Conjecture (Open Problem)",
-      "startLine": 543,
-      "endLine": 589,
-      "description": "Documents the Four Exponentials Conjecture as an open problem beyond Baker's theorem. Baker proves the Six Exponentials Theorem; the gap to four exponentials remains open.",
-      "mathContext": "Four Exponentials Conjecture: if z₁,z₂ and w₁,w₂ are each ℚ-linearly independent, then at least one of e^{zᵢwⱼ} is transcendental. Baker's Six Exponentials Theorem is proved; the conjecture for four is open."
-    },
-    {
       "id": "sec-baker-wustholz",
-      "title": "Sec 5: Baker-Wustholz Quantitative Theorem",
-      "startLine": 590,
-      "endLine": 640,
+      "title": "Sec 4: Baker-Wustholz Quantitative Theorem",
+      "startLine": 540,
+      "endLine": 589,
       "description": "States Baker-Wustholz 1993 theorem with explicit constant C(n,d). Documents improvement from Baker 1966 to Baker-Wustholz 1993. Applications to Thue equations, Mordell equation, S-unit equations.",
       "mathContext": "Baker-Wustholz bound: log|Lambda| > -C(n,d) * prod_i log(A_i) * log(B) where C(n,d) = 18*(n+1)! * n^{n+1} * (32d)^{n+2} * log(2nd)."
     }

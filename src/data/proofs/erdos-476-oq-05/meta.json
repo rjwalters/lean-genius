@@ -46,9 +46,7 @@
       "IsArithmeticProgression as A = image of range(|A|) avoids size constraints in the definition",
       "Key sublemma ap_of_near_periodic: |B \\ (B+d)| ≤ 1 ↔ B is an AP (for |B| < p and d ≠ 0 in Z/pZ)",
       "Injectivity of (·+d) in ZMod p follows from add_right_injective via AddRightCancelMonoid instance",
-      "The |A|=2 case: |A+B| = 2|B| - |B ∩ (d+B)| = |B|+1 forces |B ∩ (d+B)| = |B|-1",
-      "ap_of_near_periodic is fully proved via an orbit-cardinality argument: if b₀+k*d ∉ B, a p-element orbit lands in B\\{b₀,...,b₀+(k-1)*d} ⊆ B, contradicting |B|<p",
-      "The only remaining sorry requires Kneser's theorem for |A|≥4 or |B|≥4 in the all-redundant case; the double-counting argument (|A|·|B| ≥ 2(|A|+|B|-1)) resolves the smaller cases"
+      "The |A|=2 case: |A+B| = 2|B| - |B ∩ (d+B)| = |B|+1 forces |B ∩ (d+B)| = |B|-1"
     ],
     "prerequisites": [
       "ZMod.cauchy_davenport: Mathlib.Combinatorics.Additive.CauchyDavenport",
@@ -58,7 +56,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Vosper's theorem nearly complete: all infrastructure (IsArithmeticProgression, AP lemmas), ap_of_near_periodic, vosper_base, and vosper_ap_sdiff_card are fully proved (0 sorries). The full induction in vosper has 1 sorry for the case |A|≥4 or |B|≥4 with all elements redundant — this requires Kneser's theorem, not yet in Mathlib.",
+    "summary": "Vosper's theorem nearly complete: IsArithmeticProgression, all AP lemmas, ap_of_near_periodic, vosper_base, vosper_ap_sdiff_card all proved (0 sorries). In the full induction, case1_exists is mostly proved — |B|=2 via orbit argument, |A|=|B|=3 via counting (9 < 10). One sorry remains: |B|≥3 and (|A|≥4 or |B|≥4) all-redundant contradiction, which requires Kneser's theorem (not yet in Mathlib).",
     "implications": "Once ap_of_near_periodic is formalized (the backward-shift induction), the full Vosper theorem follows from standard induction. Vosper's theorem would then complement ZMod.cauchy_davenport in Mathlib, completing the picture of additive structure in Z/pZ.",
     "openQuestions": [
       "Formalize ap_of_near_periodic: B is an AP if |B \\ (B+d)| = 1 (needs backward-shift induction on |B|)",
@@ -114,27 +112,6 @@
       "startLine": 128,
       "endLine": 165,
       "summary": "vosper_base (|A|=2, inclusion-exclusion → ap_of_near_periodic, fully proved), vosper_ap_sdiff_card (AP extension, fully proved — Session 20), vosper (strong induction on |A|, 1 sorry: Case 1 existence). vosper_base and vosper_ap_sdiff_card now proved; one specific sub-goal in the induction remains open."
-    },
-    {
-      "id": "vosper-ap-sdiff-card",
-      "title": "vosper_ap_sdiff_card: AP Extension Lemma (Fully Proved)",
-      "startLine": 190,
-      "endLine": 474,
-      "summary": "The 275-line AP extension lemma for the inductive step. Given A' and B are APs with common difference d and |(A'+B)| achieves equality, shows |A\\(A+d)| = 1. Phases: (1) both A'+B and {a₀}+B are APs via isAP_sum; (2) inclusion-exclusion gives |{a₀}+B\\(A'+B)| = 1; (3) position analysis (3 cases: first, last, interior missing element) with interior case resolved by linear-combination showing (|A'|+|B|)·d = 0, impossible since < p; (4) explicit AP construction for each case."
-    },
-    {
-      "id": "ap-near-periodic-full-proof",
-      "title": "ap_of_near_periodic: Orbit-Cardinality Proof (Fully Proved)",
-      "startLine": 475,
-      "endLine": 627,
-      "summary": "Full proof of the key sublemma: |B\\(B+d)|=1 with d≠0 and |B|<p implies B is an AP. Strategy: strong induction shows b₀+k*d ∈ B for all k < |B|. The induction failure case is contradicted by an orbit argument: T={b₀,...,b₀+(k-1)*d}⊆B and B\\T closed under (·-d), forcing p distinct elements in B\\T⊆B via zmod_orbit_injective — contradicting |B|<p."
-    },
-    {
-      "id": "vosper-full-proof",
-      "title": "Vosper Base Case (Proved) and Full Theorem (1 Kneser Sorry)",
-      "startLine": 628,
-      "endLine": 874,
-      "summary": "vosper_base (lines 630-691): fully proved via inclusion-exclusion identity (a+B)∩(b+B) = (B∩B.image(·+d)).image(·+a) and ap_of_near_periodic. vosper (lines 693-873): strong induction; three sub-cases for redundancy-contradiction: |B|=2 (orbit forces |A|≥p), |A|=|B|=3 (numeric check 9<10), and |A|≥4 or |B|≥4 (1 sorry — requires Kneser's theorem). The inductive extension uses vosper_ap_sdiff_card + ap_of_near_periodic."
     }
   ],
   "leanFile": {
