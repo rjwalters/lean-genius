@@ -87,7 +87,22 @@
     {
       "targetId": "erdos-1118",
       "relationship": "parent-problem",
-      "description": "The parent proof covers Erdős 1118 in one variable, with Camera-Gol'dberg's solved criterion. This OQ extends the question to several complex variables."
+      "description": "The parent proof covers Erdős 1118 in one variable, with Camera-Gol'dberg's solved criterion $\\int_0^\\infty \\frac{r}{\\log\\log M(r)} dr < \\infty$. This OQ extends the question to several complex variables, where $M(r)$ is replaced by pluripotential-theoretic objects and the geometry is governed by pseudoconvexity"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "foundational",
+      "description": "The superlevel set problem asks whether $|E_f(c)|_{2n} < \\infty$, where $|\\cdot|_{2n}$ is $(2n)$-dimensional Lebesgue measure on $\\mathbb{C}^n \\cong \\mathbb{R}^{2n}$. The Lebesgue measure theory formalized in that entry provides the underlying notion of 'finite area' that Erdős 1118 and its SCV generalization study. In SCV, the measure of a set in $\\mathbb{C}^n \\cong \\mathbb{R}^{2n}$ involves the same Lebesgue machinery but with real dimension $2n$ instead of 2"
+    },
+    {
+      "targetId": "greens-theorem",
+      "relationship": "foundational",
+      "description": "Green's theorem (and its generalization via Stokes' theorem) is foundational to complex analysis in several variables. The $\\bar\\partial$-operator central to SCV theory satisfies $\\bar\\partial^2 = 0$ by Stokes; the $L^2$-estimates for $\\bar\\partial$ (Hörmander's theorem) — which determine when pseudoconvex domains support global holomorphic functions — are proved via Green-type integration by parts in $\\mathbb{C}^n$. The pseudoconvexity of $\\{|f| \\leq c\\}$ mentioned in this entry's keyInsights is precisely the condition that guarantees the $\\bar\\partial$-problem is solvable on that domain"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA guarantees that $\\mathbb{C}$ is algebraically closed: every polynomial $p \\in \\mathbb{C}[X]$ has a root. The SCV problem in this entry concerns entire functions $f: \\mathbb{C}^n \\to \\mathbb{C}$ — the infinite-dimensional analogue of polynomials. While FTA concerns algebraic closure, Hartogs' theorem (mentioned in this entry) is the SCV analogue of existence: it shows holomorphic functions in $\\mathbb{C}^n$ ($n \\geq 2$) always extend across compact singularities, a fact with no 1D counterpart (one-variable meromorphic functions can have isolated poles)"
     }
   ],
   "leanFile": {
