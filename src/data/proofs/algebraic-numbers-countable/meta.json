@@ -79,7 +79,7 @@
       "startLine": 72,
       "endLine": 101,
       "description": "Four one-line theorems delegating to Mathlib: `algebraic_reals_countable` (Algebraic.countable \u211a \u211d), `algebraic_complex_countable` (Algebraic.countable \u211a \u2102), `card_algebraic_reals_eq_aleph0` (cardinalMk_of_countable_of_charZero \u211a \u211d), `card_algebraic_complex_eq_aleph0` (cardinalMk_of_countable_of_charZero \u211a \u2102). The cardinality results are strictly stronger than countability: they prove |algebraic reals| = \u2135\u2080 (countably infinite), ruling out finite algebraic number sets. The char_zero condition on \u211d and \u2102 ensures the field is of characteristic 0, needed for Mathlib's API.",
-      "mathContext": "$\\texttt{Algebraic.countable}\\ \\mathbb{Q}\\ \\mathbb{R}$: Mathlib's general theorem that algebraic elements over a countable commutative ring form a countable set. Here $\\mathbb{Q}$ is $\\texttt{Denumerable}$ — has an explicit bijection with $\\mathbb{N}$ — which makes it countable as a ring. $\\texttt{cardinalMk\\_of\\_countable\\_of\\_charZero}\\ \\mathbb{Q}\\ \\mathbb{R}$: strengthens countable to the exact cardinality $\\aleph_0$ (ruling out finite algebraic sets). The $\\texttt{CharZero}$ typeclass on $\\mathbb{R}$ and $\\mathbb{C}$ ensures $\\operatorname{char}(\\mathbb{R}) = 0$, preventing pathological behavior in the cardinality computation (e.g., finite fields in characteristic $p$ have finite algebraic closures)."
+      "mathContext": "$\\texttt{Algebraic.countable}\\ \\mathbb{Q}\\ \\mathbb{R}$: Mathlib's general theorem that algebraic elements over a countable commutative ring form a countable set. Here $\\mathbb{Q}$ is $\\texttt{Denumerable}$ \u2014 has an explicit bijection with $\\mathbb{N}$ \u2014 which makes it countable as a ring. $\\texttt{cardinalMk\\_of\\_countable\\_of\\_charZero}\\ \\mathbb{Q}\\ \\mathbb{R}$: strengthens countable to the exact cardinality $\\aleph_0$ (ruling out finite algebraic sets). The $\\texttt{CharZero}$ typeclass on $\\mathbb{R}$ and $\\mathbb{C}$ ensures $\\operatorname{char}(\\mathbb{R}) = 0$, preventing pathological behavior in the cardinality computation (e.g., finite fields in characteristic $p$ have finite algebraic closures)."
     },
     {
       "id": "sec-algebraic-bounded",
@@ -103,7 +103,7 @@
       "startLine": 167,
       "endLine": 201,
       "description": "Proves `algebraic_reals_eq_iUnion_degree`: {x : \u211d | IsAlgebraic \u211a x} = \u22c3 d : \u2115, algebraicRealsOfDegree d. Proof by ext x, simp, constructor: (\u2192) given IsAlgebraic x, use d = natDegree(minpoly \u211a x) and rfl; (\u2190) extract IsAlgebraic from the existential. Analogous for complex numbers. `algebraic_reals_countable_via_strata`: alternative proof by rewriting via the union and applying Set.countable_iUnion algebraicRealsOfDegree_countable (countable union of countable sets). This demonstrates the stratification is not just a structural description but a valid proof technique.",
-      "mathContext": "$\\texttt{algebraic\\_reals\\_eq\\_iUnion\\_degree}$: $\\text{Alg}(\\mathbb{R}) = \\bigcup_{d \\in \\mathbb{N}} \\texttt{algebraicRealsOfDegree}\\ d$. The witness for each $x$ is $d := (\\texttt{minpoly}\\ \\mathbb{Q}\\ x).\\texttt{natDegree}$ with $\\texttt{rfl}$. $\\texttt{Set.countable\\_iUnion}$: a $\\mathbb{N}$-indexed union of countable sets is countable — this is the Lean encoding of $|\\mathbb{N} \\times \\mathbb{N}| = |\\mathbb{N}|$ (Cantor pairing function). The alternative proof $\\texttt{algebraic\\_reals\\_countable\\_via\\_strata}$ demonstrates that the stratification is mathematically substantive: it gives an independent route to the same conclusion, bypassing the direct Mathlib delegation in $\\S1$."
+      "mathContext": "$\\texttt{algebraic\\_reals\\_eq\\_iUnion\\_degree}$: $\\text{Alg}(\\mathbb{R}) = \\bigcup_{d \\in \\mathbb{N}} \\texttt{algebraicRealsOfDegree}\\ d$. The witness for each $x$ is $d := (\\texttt{minpoly}\\ \\mathbb{Q}\\ x).\\texttt{natDegree}$ with $\\texttt{rfl}$. $\\texttt{Set.countable\\_iUnion}$: a $\\mathbb{N}$-indexed union of countable sets is countable \u2014 this is the Lean encoding of $|\\mathbb{N} \\times \\mathbb{N}| = |\\mathbb{N}|$ (Cantor pairing function). The alternative proof $\\texttt{algebraic\\_reals\\_countable\\_via\\_strata}$ demonstrates that the stratification is mathematically substantive: it gives an independent route to the same conclusion, bypassing the direct Mathlib delegation in $\\S1$."
     },
     {
       "id": "sec-algebraic-degree1",
@@ -181,17 +181,27 @@
     {
       "targetId": "abel-ruffini-oq-04-oq-03",
       "relationship": "complementary",
-      "description": "Galois's solvability criterion: a root of an irreducible polynomial is expressible by radicals iff its Galois group is solvable. Every algebraic number is a root of some polynomial, but only those whose Galois groups are solvable admit radical expressions. This entry proves all algebraic numbers are 'countably many'; Galois's criterion classifies which ones are 'radically expressible' — a strict countable subcollection (algebraic numbers of degree $\\leq 4$ whose Galois groups are solvable) within the countable algebraic numbers."
+      "description": "Galois's solvability criterion: a root of an irreducible polynomial is expressible by radicals iff its Galois group is solvable. Every algebraic number is a root of some polynomial, but only those whose Galois groups are solvable admit radical expressions. This entry proves all algebraic numbers are 'countably many'; Galois's criterion classifies which ones are 'radically expressible' \u2014 a strict countable subcollection (algebraic numbers of degree $\\leq 4$ whose Galois groups are solvable) within the countable algebraic numbers."
     },
     {
       "targetId": "fundamental-theorem-algebra",
       "relationship": "foundational",
-      "description": "The Fundamental Theorem of Algebra guarantees that every non-zero polynomial $p \\in \\mathbb{C}[X]$ of degree $n$ has exactly $n$ complex roots (counted with multiplicity). Since each algebraic number is a root of some polynomial, FTA is the reason the algebraic numbers are 'well-defined' as a set — every polynomial contributes finitely many algebraic numbers. This entry then shows the resulting infinite union over all polynomials is still countable."
+      "description": "The Fundamental Theorem of Algebra guarantees that every non-zero polynomial $p \\in \\mathbb{C}[X]$ of degree $n$ has exactly $n$ complex roots (counted with multiplicity). Since each algebraic number is a root of some polynomial, FTA is the reason the algebraic numbers are 'well-defined' as a set \u2014 every polynomial contributes finitely many algebraic numbers. This entry then shows the resulting infinite union over all polynomials is still countable."
     },
     {
       "targetId": "nth-root-irrational",
       "relationship": "complementary",
-      "description": "Irrationality of $n$-th roots: $\\sqrt[n]{m}$ is irrational when $m$ is not a perfect $n$-th power. These are specific examples of algebraic numbers (roots of $X^n - m$) that are not rational — showing the algebraic numbers strictly contain the rationals. This entry counts all algebraic numbers in bulk; the irrationality results exhibit specific members of the algebraic-but-not-rational portion."
+      "description": "Irrationality of $n$-th roots: $\\sqrt[n]{m}$ is irrational when $m$ is not a perfect $n$-th power. These are specific examples of algebraic numbers (roots of $X^n - m$) that are not rational \u2014 showing the algebraic numbers strictly contain the rationals. This entry counts all algebraic numbers in bulk; the irrationality results exhibit specific members of the algebraic-but-not-rational portion."
+    },
+    {
+      "targetId": "cantors-theorem-oq-01",
+      "relationship": "related",
+      "description": "Investigates |P(\u211d)| = 2^\u2135\u2081 and the question of whether there is a cardinal strictly between \u2135\u2080 and 2^\u2135\u2080 (the Continuum Hypothesis). This entry establishes that |Alg(\u211d)| = \u2135\u2080 and |\u211d| = 2^\u2135\u2080, creating the strict inequality \u2135\u2080 < 2^\u2135\u2080. The cardinality of P(\u211d) = 2^(2^\u2135\u2080) continues the cardinal hierarchy beyond the transcendental gap established here."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-02",
+      "relationship": "related",
+      "description": "Studies the cardinality of \u03c9\u2081, the first uncountable ordinal: |\u03c9\u2081| = \u2135\u2081. Countability of algebraic numbers (this entry) contributes to the Cantor cardinal hierarchy: \u2135\u2080 = |\u2115| = |\u211a| = |Alg(\u211d)| < |\u211d| = 2^\u2135\u2080. Whether \u2135\u2081 = 2^\u2135\u2080 (the Continuum Hypothesis, independent of ZFC) is the central question connecting this entry's strict countability result to the ordinal cardinality studied in OQ-02."
     }
   ],
   "references": [
