@@ -18,13 +18,13 @@
       "advanced"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 2,
     "dateAdded": "2026-04-24",
-    "axiomCount": 1,
-    "assumptions": "1 axiom: G2_der_dimension (finrank ℝ OctonionDerSubmodule = 14). Previous G2_is_octonion_aut (Nat.card OctonionAut = 14) was replaced: Nat.card of an infinite Lie group equals 0 in type theory, making it mathematically incorrect. G2_der_dimension targets the Lie algebra dimension directly. All supporting lemmas fully proved.",
-    "lineCount": 822,
-    "theoremCount": 35,
-    "definitionCount": 17,
+    "axiomCount": 0,
+    "assumptions": "2 sorries: (1) derEval14_injective — algebraic extraction showing the evaluation map ev: Der(𝕆) → ℝ¹⁴ is injective (requires ~50 lines of Leibniz constraint applications); (2) derBasis14_linearIndependent — the 14 constructed derivation basis elements are linearly independent (requires a 14×14 determinant argument). Previously held as axiom G2_der_dimension; converted to a theorem with proof structure in PR #12984.",
+    "lineCount": 1052,
+    "theoremCount": 57,
+    "definitionCount": 19,
     "originalContributions": [
       "OctonionAlgHom / OctonionAut: structures for octonion algebra homomorphisms and automorphisms",
       "alg_aut_preserves_norm: automorphisms preserve the norm (proved via polarization and imaginary decomposition)",
@@ -41,7 +41,7 @@
   "overview": {
     "historicalContext": "Hurwitz's theorem (1898) establishes that normed division algebras over ℝ exist only in dimensions 1, 2, 4, and 8 — corresponding to ℝ, ℂ, ℍ, and 𝕆. This result has profound implications beyond algebra: the four normed division algebras are intimately connected to the five exceptional simple Lie algebras through the Freudenthal-Tits magic square (1954–1966). The connection was suspected by Élie Cartan as early as 1914, when he identified G₂ as the automorphism group of the octonions. Hans Freudenthal (1954) and Jacques Tits (1966) systematized this into a unified construction: from any two normed division algebras A, B, one builds a Lie algebra 𝔏(A, B) = Der(A) ⊕ (Im A ⊗ Im B) ⊕ Der(B), and the resulting 4×4 table (the 'magic square') produces all five exceptional simple Lie algebras: G₂, F₄, E₆, E₇, E₈. The word 'magic' refers to the surprising symmetry 𝔏(A, B) ≅ 𝔏(B, A), despite the construction not obviously being symmetric.",
     "problemStatement": "Show that Aut(𝕆) ⊆ O(7) — the automorphism group of the octonions acts by isometries on the 7-dimensional imaginary subspace Im(𝕆) — and axiomatize the identification G₂ = Aut(𝕆) along with the four exceptional Lie algebras F₄, E₆, E₇, E₈ arising from the Freudenthal-Tits magic square.",
-    "text": "Formalizes the connection between the four normed division algebras and the five exceptional Lie algebras. Proves Aut(𝕆) ⊆ O(7) with 0 sorries, axiomatizes G₂ = Aut(𝕆) and the magic square exceptional types F₄, E₆, E₇, E₈.",
+    "text": "Formalizes the connection between the four normed division algebras and the five exceptional Lie algebras. Proves Aut(𝕆) ⊆ O(7) (automorphism norm/inner-product preservation fully proved), and reduces G₂ = Aut(𝕆) to 2 remaining sorries in the derivation algebra dimension proof. Axiomatizes the magic square exceptional types F₄, E₆, E₇, E₈.",
     "proofStrategy": "The formalization introduces OctonionAlgHom and OctonionAut structures for algebra homomorphisms and invertible automorphisms. Key lemmas proved: (1) any automorphism φ fixes the unit element e₀ (via the left-identity uniqueness argument); (2) pure imaginary elements y (y[0]=0) satisfy y² = −normSq(y)·e₀; (3) phi_imag_props: automorphisms preserve imaginary elements and their norms; (4) alg_aut_preserves_norm follows by decomposing x = r·e₀ + w (pure imaginary w) and using orthogonality; (5) polarization gives inner product preservation. The exceptional Lie algebra part uses an ExceptionalType inductive type with dimension and rank functions, and proves structural properties (strict ordering, G₂ uniqueness, E₈ maximality) by decidability.",
     "keyInsights": [
       "**φ fixes e₀**: Any algebra automorphism must fix the unit element. The elegant proof: φ(e₀) acts as a left identity for all y (since φ is surjective and e₀ is a left identity), and a left identity in an algebra with a right identity must equal the right identity.",
@@ -119,7 +119,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization establishes the bridge between Hurwitz's four normed division algebras and the five exceptional Lie algebras. The key proved result is that Aut(𝕆) ⊆ O(7): octonion automorphisms preserve norms, real parts, inner products, and the imaginary subspace — all proved without sorries using algebraic decomposition. The five exceptional Lie algebras (G₂, F₄, E₆, E₇, E₈) are axiomatized via G₂=Aut(𝕆) and the Freudenthal-Tits magic square, with structural properties proved by decidability.",
+    "summary": "This formalization establishes the bridge between Hurwitz's four normed division algebras and the five exceptional Lie algebras. The key proved result is that Aut(𝕆) ⊆ O(7): octonion automorphisms preserve norms, real parts, inner products, and the imaginary subspace — all proved using algebraic decomposition. The derivation algebra dimension (finrank Der(𝕆) = 14) has a proof structure in place with 2 remaining sorries (evaluation map injectivity and basis linear independence). The five exceptional Lie algebras (G₂, F₄, E₆, E₇, E₈) are axiomatized via G₂=Aut(𝕆) and the Freudenthal-Tits magic square, with structural properties proved by decidability.",
     "implications": "The formalization demonstrates that Hurwitz's theorem (n∈{1,2,4,8}) constrains not just composition algebras but the entire exceptional structure of simple Lie algebras: the 4 normed division algebras yield exactly 5 exceptional types. Removing the 16-dimensional case eliminates the possibility of a 6th exceptional Lie algebra. Physical applications include E₈×E₈ heterotic string theory (anomaly cancellation: dim=2×248=496) and M-theory compactification on G₂ manifolds.",
     "openQuestions": [
       "Prove G₂ ≅ Aut(𝕆) formally in Lean: requires Lie group theory (compact simple groups, root systems) not yet in Mathlib as of 2026-04.",
@@ -137,11 +137,11 @@
       "HurwitzTheorem"
     ],
     "namespace": "HurwitzTheoremOQ04",
-    "lineCount": 822,
-    "axiomCount": 1,
-    "theoremCount": 40,
-    "definitionCount": 15,
-    "sorries": 0,
+    "lineCount": 1052,
+    "axiomCount": 0,
+    "theoremCount": 57,
+    "definitionCount": 19,
+    "sorries": 2,
     "path": "Proofs/HurwitzTheoremOQ04.lean"
   },
   "crossReferences": [
@@ -156,5 +156,5 @@
       "description": "Sibling open question: n-square identities and normed division algebras"
     }
   ],
-  "sorries": 0
+  "sorries": 2
 }
