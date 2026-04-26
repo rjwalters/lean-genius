@@ -1,213 +1,86 @@
 [
   {
-    "id": "ann-module-doc",
+    "id": "ann-header",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-    "range": { "startLine": 1, "endLine": 54 },
+    "range": { "startLine": 1, "endLine": 51 },
     "type": "concept",
-    "title": "Module Overview: Primary Decomposition Approach",
-    "content": "This file proves the cyclic vector theorem for all nonderogatory matrices over any field $K$, fully axiom-free. A matrix $M$ is nonderogatory when $\\text{minpoly}(M) = \\text{charpoly}(M)$, equivalently when $K^n$ is a cyclic $K[X]$-module under $M$.\n\nThe proof constructs the cyclic vector explicitly via primary decomposition and Bezout projections, without appealing to the PID structure theorem for modules over $K[X]$. This is the fourth iteration (WIP04) in an axiom-elimination campaign: WIP01 used a rational canonical form axiom, WIP02 handled the squarefree case, WIP03 handled the prime power case, and WIP04 combines them for arbitrary factored minimal polynomials.",
-    "mathContext": "Given $\\text{minpoly}(M) = \\prod_{i=1}^{k} p_i^{e_i}$ with pairwise coprime irreducible $p_i$, construct $v = \\sum_i F_i(M) w_i$ where $F_i = \\prod_{j \\neq i} p_j^{e_j}$. Then $r(M)v = 0$ with $\\deg(r) < n$ implies $p_i^{e_i} \\mid r$ for all $i$ (via Bezout projection isolation), hence $\\text{minpoly}(M) \\mid r$, contradiction.",
+    "title": "Binary Prime Power Cyclic Vector Theorem: Strategy and Coverage",
+    "content": "The module header outlines the proof strategy for the binary prime power case of the nonderogatory cyclic vector theorem. Given M with minpoly = p^a * q^b (p, q distinct monic irreducibles), the proof constructs a cyclic vector by:\n\n1. Lifting coprimality: IsCoprime(p, q) -> IsCoprime(p^a, q^b)\n2. Bezout identity: s*p^a + t*q^b = 1\n3. Constructing primary vectors v1, v2 with controlled annihilation properties\n4. Showing v = v1 + v2 is cyclic via CRT projections + prime power divisibility + degree contradiction\n\nTogether with WIP02 (squarefree) and WIP03 (single prime power), this covers all minpolys with at most 2 irreducible factors. The general case follows by induction on the number of factors.",
+    "mathContext": "For nonderogatory $M$ with $\\text{minpoly}(M) = p^a q^b$ where $\\gcd(p, q) = 1$: the CRT decomposition $K[X]/(p^a q^b) \\cong K[X]/(p^a) \\times K[X]/(q^b)$ induces a direct sum $K^n = \\ker(p^a(M)) \\oplus \\ker(q^b(M))$. The cyclic vector is $v = v_1 + v_2$ where $v_i$ generates a maximal cyclic submodule in the $i$-th primary component.",
     "significance": "key",
-    "prerequisites": [
-      "linear algebra over fields",
-      "minimal and characteristic polynomials",
-      "primary decomposition of polynomial modules",
-      "Chinese Remainder Theorem for polynomials"
-    ],
-    "relatedConcepts": [
-      "nonderogatory matrix",
-      "cyclic vector",
-      "primary decomposition",
-      "Bezout identity",
-      "rational canonical form"
-    ]
+    "relatedConcepts": ["Chinese Remainder Theorem", "primary decomposition", "Bezout identity", "nonderogatory matrix"],
+    "prerequisites": ["WIP02: squarefree binary case", "WIP03: single prime power case", "IsCoprime.pow_pow"]
   },
   {
     "id": "ann-definitions",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-    "range": { "startLine": 56, "endLine": 66 },
+    "range": { "startLine": 54, "endLine": 64 },
     "type": "definition",
-    "title": "IsCyclicVector and IsNonderogatory",
-    "content": "`IsCyclicVector M v` asserts that no nonzero polynomial of degree $< n$ annihilates $v$ under $M$: for all $p \\in K[X]$ with $\\deg(p) < n$, if $p(M)v = 0$ then $p = 0$. This is equivalent to saying $\\{v, Mv, M^2v, \\ldots, M^{n-1}v\\}$ is a basis of $K^n$.\n\n`IsNonderogatory M` asserts $\\text{minpoly}(M) = \\text{charpoly}(M)$. Since $\\text{minpoly} \\mid \\text{charpoly}$ always, this means $\\deg(\\text{minpoly}) = n$. Nonderogatory matrices are exactly those whose rational canonical form is a single companion matrix block.",
-    "mathContext": "$v$ is cyclic $\\Leftrightarrow$ $\\text{Ann}_{K[X]}(v) = (\\text{minpoly}(M))$ and $\\deg(\\text{minpoly}(M)) = n$.\n\n$M$ is nonderogatory $\\Leftrightarrow$ $\\text{minpoly}(M) = \\text{charpoly}(M)$ $\\Leftrightarrow$ each eigenvalue's geometric multiplicity equals 1 $\\Leftrightarrow$ $M$ has a single invariant factor $\\Leftrightarrow$ the rational canonical form is one companion block.",
+    "title": "IsCyclicVector and IsNonderogatory: Consistent Definitions",
+    "content": "Two definitions consistent with sibling WIP files:\n\n- **IsCyclicVector M v**: no nonzero polynomial of degree < n annihilates v. This is equivalent to saying that {v, Mv, M^2v, ..., M^{n-1}v} spans K^n.\n- **IsNonderogatory M**: the minimal polynomial equals the characteristic polynomial (minpoly K M = M.charpoly). Equivalently, each eigenvalue's geometric multiplicity is 1.",
+    "mathContext": "$v$ is cyclic for $M$ iff $\\forall p \\in K[X],\\; \\deg(p) < n \\implies p(M)v = 0 \\implies p = 0$. $M$ is nonderogatory iff $\\text{minpoly}(M) = \\text{charpoly}(M)$, which by Cayley-Hamilton means $\\deg(\\text{minpoly}(M)) = n$.",
     "significance": "supporting",
-    "prerequisites": [
-      "minimal polynomial",
-      "characteristic polynomial",
-      "polynomial evaluation on matrices (aeval)"
-    ],
-    "relatedConcepts": [
-      "cyclic module",
-      "companion matrix",
-      "invariant factors",
-      "rational canonical form"
-    ]
+    "relatedConcepts": ["cyclic subspace", "minimal polynomial", "characteristic polynomial", "geometric multiplicity"],
+    "prerequisites": ["Polynomial.aeval", "Matrix.charpoly", "minpoly"]
   },
   {
-    "id": "ann-irreducible-dvd",
+    "id": "ann-utility-lemmas",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-    "range": { "startLine": 72, "endLine": 89 },
+    "range": { "startLine": 66, "endLine": 111 },
     "type": "technique",
-    "title": "Irreducible Divisibility via Bezout",
-    "content": "`irreducible_dvd_of_annihilated` proves: if $p$ is irreducible, $v \\neq 0$, $p(M)v = 0$, and $r(M)v = 0$, then $p \\mid r$. The proof is by contradiction: if $p \\nmid r$, then since $p$ is prime in the UFD $K[X]$, we get $\\gcd(p, r) = 1$. The Bezout identity $ap + br = 1$ yields $(a(M) \\cdot p(M) + b(M) \\cdot r(M))v = v$, but the left side is $0 + 0 = 0$, contradicting $v \\neq 0$.\n\nThis is the base case engine for `pow_irred_dvd_of_annihilated`.",
-    "mathContext": "$p$ irreducible in $K[X]$ (a UFD) $\\Rightarrow$ $p$ prime $\\Rightarrow$ $p \\nmid r \\Rightarrow \\gcd(p, r) = 1 \\Rightarrow \\exists a, b: ap + br = 1$.\n\nApplying $\\text{aeval}(M)$: $a(M)p(M) + b(M)r(M) = I_n$.\n\nMultiply by $v$: $a(M) \\cdot 0 + b(M) \\cdot 0 = v \\Rightarrow v = 0$. Contradiction.",
+    "title": "Utility Lemmas: Bezout Divisibility and Polynomial Evaluation",
+    "content": "Four core lemmas shared with WIP02/WIP03:\n\n1. **irreducible_dvd_of_annihilated**: If p is irreducible, v != 0, p(M)v = 0, and r(M)v = 0, then p | r. Proof: Bezout gives s*p + t*r = 1, so v = (s(M)*p(M) + t(M)*r(M))*v = 0, contradicting v != 0 unless p | r.\n2. **exists_mulVec_ne_zero**: A nonzero matrix has a vector outside its kernel.\n3. **aeval_ne_zero_of_lt_minpoly**: A nonzero polynomial of degree < deg(minpoly) evaluates to a nonzero matrix at M.\n4. **aeval_mul_comm_poly**: Polynomial evaluations at M commute: (p*q)(M) = p(M)*q(M) = q(M)*p(M).",
+    "mathContext": "The Bezout argument in `irreducible_dvd_of_annihilated` is the core algebraic technique: $\\gcd(p, r) \\neq 1$ when both $p(M)v = 0$ and $r(M)v = 0$ for $v \\neq 0$, because Bezout's identity $sp + tr = 1$ would give $v = 1 \\cdot v = (s(M)p(M) + t(M)r(M))v = 0$. Since $p$ is irreducible, $\\gcd(p, r) = p$, so $p \\mid r$.",
     "significance": "key",
-    "prerequisites": [
-      "UFD structure of K[X]",
-      "irreducible implies prime in UFD",
-      "Bezout identity for coprime polynomials"
-    ],
-    "relatedConcepts": [
-      "coprimality",
-      "Bezout's identity",
-      "unique factorization domain",
-      "prime element"
-    ]
+    "relatedConcepts": ["Bezout identity", "irreducible polynomial", "kernel", "polynomial evaluation commutativity"],
+    "prerequisites": ["IsCoprime", "Irreducible", "Matrix.mulVec", "Polynomial.aeval"]
   },
   {
-    "id": "ann-support-lemmas",
+    "id": "ann-prime-power-div",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-    "range": { "startLine": 91, "endLine": 108 },
-    "type": "technique",
-    "title": "Support Lemmas: Non-vanishing, Minimality, Commutativity",
-    "content": "Three utility lemmas that bridge between polynomial algebra and matrix action:\n\n`exists_mulVec_ne_zero`: A nonzero matrix $A$ always has a vector outside its kernel. The proof tests standard basis vectors $e_j$: if $A e_j = 0$ for all $j$, then every column of $A$ is zero, contradicting $A \\neq 0$. This lemma justifies 'choosing $w_i$' in Phase 1.\n\n`aeval_ne_zero_of_lt_minpoly`: If $p \\neq 0$ and $\\deg(p) < \\deg(\\text{minpoly}(M))$, then $p(M) \\neq 0$. Contrapositive of the minimality property: $p(M) = 0$ implies $\\text{minpoly}(M) \\mid p$, forcing $\\deg(\\text{minpoly}) \\leq \\deg(p)$. This is the key link between degree bounds and non-vanishing of polynomial evaluations.\n\n`aeval_mul_comm`: Polynomial evaluations commute — $f(M) \\cdot g(M) = g(M) \\cdot f(M)$ — since $f(M) \\cdot g(M) = (fg)(M) = (gf)(M)$. This underpins every step where Bezout projections are reordered past annihilating operators.",
-    "mathContext": "$A \\neq 0 \\Rightarrow \\exists v, Av \\neq 0$ (column rank $\\geq 1$).\n\n$p \\neq 0, \\deg(p) < \\deg(\\text{minpoly}(M)) \\Rightarrow p(M) \\neq 0$ (minimality).\n\n$f(M) g(M) = (fg)(M) = (gf)(M) = g(M) f(M)$ (ring homomorphism + commutative polynomial ring).",
-    "significance": "supporting",
-    "prerequisites": [
-      "minpoly.dvd (divisibility from annihilation)",
-      "Polynomial.natDegree_le_of_dvd",
-      "ring homomorphism properties of aeval"
-    ],
-    "relatedConcepts": [
-      "kernel of a matrix",
-      "minimality of minimal polynomial",
-      "polynomial evaluation ring homomorphism",
-      "commutativity of polynomial expressions"
-    ]
-  },
-  {
-    "id": "ann-bezout-proj",
-    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-    "range": { "startLine": 110, "endLine": 120 },
-    "type": "technique",
-    "title": "CRT Projection Identity",
-    "content": "`bezout_proj_identity` proves the Chinese Remainder Theorem projection property: if $ap + bq = 1$ and $p(M)v = 0$, then $(b \\cdot q)(M)v = v$. The Bezout identity $a(M)p(M) + b(M)q(M) = I$ applied to $v$ gives $a(M) \\cdot 0 + b(M)q(M)v = v$.\n\nThis lemma is the linchpin of Phase 2: the operator $\\pi_i = b_i(M) \\cdot F_i(M)$ acts as the identity on the primary component $v_i$ and kills all other components $v_j$ ($j \\neq i$), enabling extraction of individual annihilation conditions from the combined vector.",
-    "mathContext": "Given $a p_i^{e_i} + b_i F_i = 1$ (coprimality of $p_i^{e_i}$ and $F_i = \\prod_{j \\neq i} p_j^{e_j}$):\n\n$\\pi_i := b_i(M) \\cdot F_i(M)$ satisfies:\n- $\\pi_i(v_i) = v_i$ (since $p_i^{e_i}(M)v_i = 0$)\n- $\\pi_i(v_j) = 0$ for $j \\neq i$ (since $p_j^{e_j} \\mid F_i$ and $p_j^{e_j}(M)v_j = 0$)\n\nThis is the polynomial analog of orthogonal idempotent decomposition $I = \\sum_i \\pi_i$.",
+    "range": { "startLine": 116, "endLine": 176 },
+    "type": "theorem",
+    "title": "Prime Power Divisibility: Induction from WIP03",
+    "content": "The theorem `pow_irred_dvd_of_annihilated` (from WIP03) is the key inductive lemma: if p is irreducible, p^e(M)*v != 0, p^(e+1)(M)*v = 0, and r(M)*v = 0, then p^(e+1) | r.\n\nThe induction is on e:\n- **Base (e=0)**: v != 0, p(M)*v = 0, r(M)*v = 0 -> p | r by irreducible_dvd_of_annihilated.\n- **Step (e -> e+1)**: p^(e+1)(M)*v != 0, p^(e+2)(M)*v = 0. Set w = p(M)*v. Then p^e(M)*w = p^(e+1)(M)*v != 0 and p^(e+1)(M)*w = p^(e+2)(M)*v = 0. By IH, p^(e+1) | r', where r' = r/p (from base case giving p | r). So p^(e+2) | r.",
+    "mathContext": "The induction bootstraps the base-case Bezout argument across all powers: $p^{e}(M)v \\neq 0 \\wedge p^{e+1}(M)v = 0 \\wedge r(M)v = 0 \\implies p^{e+1} \\mid r$. This replaces the PID structure theorem's primary decomposition with a direct polynomial argument.",
     "significance": "key",
-    "prerequisites": [
-      "Chinese Remainder Theorem",
-      "Bezout identity",
-      "polynomial evaluation commutes"
-    ],
-    "relatedConcepts": [
-      "idempotent decomposition",
-      "CRT for polynomial rings",
-      "primary decomposition projection",
-      "orthogonal projectors"
-    ]
+    "relatedConcepts": ["strong induction", "primary decomposition", "PID structure theorem alternative"],
+    "prerequisites": ["irreducible_dvd_of_annihilated", "polynomial divisibility", "induction"]
   },
   {
-    "id": "ann-pow-irred-dvd",
+    "id": "ann-crt-projections",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-    "range": { "startLine": 122, "endLine": 158 },
+    "range": { "startLine": 181, "endLine": 202 },
     "type": "technique",
-    "title": "Prime Power Divisibility Engine (Induction)",
-    "content": "`pow_irred_dvd_of_annihilated` is the core engine from WIP03: if $p$ is irreducible, $p^e(M)v \\neq 0$, $p^{e+1}(M)v = 0$, and $r(M)v = 0$, then $p^{e+1} \\mid r$.\n\nThe proof proceeds by strong induction on $e$:\n- **Base case** ($e = 0$): We have $v \\neq 0$, $p(M)v = 0$, and $r(M)v = 0$, so `irreducible_dvd_of_annihilated` gives $p \\mid r$.\n- **Inductive step** ($e = e'+1$): Set $w = p^{e'+1}(M)v$. Since $p(M)w = p^{e'+2}(M)v = 0$ and $r(M)w = 0$ (by commutativity), `irreducible_dvd_of_annihilated` gives $p \\mid r$, say $r = p \\cdot r_1$. Now set $u = p(M)v$: we have $p^{e'}(M)u \\neq 0$, $p^{e'+1}(M)u = 0$, and $r_1(M)u = 0$ (since $r_1(M) \\cdot p(M)v = r(M)v = 0$). By IH: $p^{e'+1} \\mid r_1$, so $p^{e'+2} \\mid r$.\n\nThis replaces the PID structure theorem for the prime power case with an elementary argument.",
-    "mathContext": "The induction peels off one factor of $p$ at a time:\n\n$r(M)v = 0 \\xrightarrow{\\text{base}} p \\mid r \\xrightarrow{r = pr_1} r_1(M)(pv) = 0 \\xrightarrow{\\text{IH}} p^{e} \\mid r_1 \\Rightarrow p^{e+1} \\mid r$.\n\nThe vector $u = p(M)v$ has the property $p^e(M)u \\neq 0$ and $p^{e+1}(M)u = 0$, maintaining the inductive hypothesis with exponent reduced by 1.",
+    "title": "CRT Projection Lemmas: Idempotent Decomposition",
+    "content": "Two CRT projection lemmas from WIP02:\n\n1. **bezout_proj_identity**: For coprime p, q with Bezout identity s*p + t*q = 1, the projection t(M)*q(M) acts as identity on ker(p(M)): if p(M)*v = 0, then t(M)*q(M)*v = v.\n2. **bezout_proj_kills**: The same projection kills the other component: q(M)*v = 0 implies t(M)*q(M)*v = 0.\n\nThese form a complete system of orthogonal idempotents: e1 = t(M)*q(M) and e2 = s(M)*p(M) satisfy e1 + e2 = 1, e1*e2 = 0, e1^2 = e1, e2^2 = e2.",
+    "mathContext": "The CRT projections are the $K[X]$-module analogue of the Chinese Remainder isomorphism $K[X]/(pq) \\cong K[X]/(p) \\times K[X]/(q)$. For $v \\in \\ker(p(M))$: $v = (sp + tq)(M)v = t(M)q(M)v$ since $sp(M)v = s(M) \\cdot 0 = 0$.",
     "significance": "key",
-    "prerequisites": [
-      "irreducible_dvd_of_annihilated",
-      "strong induction",
-      "polynomial commutativity for matrix evaluation"
-    ],
-    "relatedConcepts": [
-      "primary decomposition",
-      "cyclic submodule structure",
-      "Jordan block theory",
-      "PID structure theorem replacement"
-    ]
+    "relatedConcepts": ["Chinese Remainder Theorem", "idempotent projections", "primary decomposition", "Bezout identity"],
+    "prerequisites": ["IsCoprime", "Bezout coefficients", "polynomial evaluation"]
   },
   {
-    "id": "ann-mulvec-sum",
+    "id": "ann-main-theorem",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-    "range": { "startLine": 160, "endLine": 166 },
-    "type": "technique",
-    "title": "Matrix–Vector Linearity over Finite Sums",
-    "content": "`mulVec_finset_sum` proves that matrix–vector multiplication distributes over finite sums: $A (\\sum_{i \\in s} f(i)) = \\sum_{i \\in s} A \\cdot f(i)$. The proof is by `Finset.induction_on`, using `mulVec_zero` for the empty case and `mulVec_add` for the inductive step.\n\nThis lemma is essential for Phase 2: when $r(M)$ acts on the candidate vector $v = \\sum_i v_i$, linearity distributes the action to individual primary components, enabling the Bezout projection to isolate each $r(M) v_i$.",
-    "mathContext": "$A \\left(\\sum_{i \\in s} f(i)\\right) = \\sum_{i \\in s} A \\cdot f(i)$\n\nApplied with $A = \\text{aeval}(M, r)$ and $f(i) = v_i$:\n$r(M) \\left(\\sum_i v_i\\right) = \\sum_i r(M) v_i$.",
-    "significance": "supporting",
-    "prerequisites": [
-      "Finset.induction_on",
-      "Matrix.mulVec_add",
-      "Matrix.mulVec_zero"
-    ],
-    "relatedConcepts": [
-      "linearity of matrix multiplication",
-      "distributive law",
-      "Finset induction"
-    ]
-  },
-  {
-    "id": "ann-main-thm-setup",
-    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-    "range": { "startLine": 172, "endLine": 248 },
-    "type": "concept",
-    "title": "Phase 1: Primary Vector Construction",
-    "content": "The main theorem `nonderogatory_general_has_cyclic_vector` begins by constructing primary vectors $v_i = F_i(M) w_i$ for each prime power factor $p_i^{e_i}$ of $\\text{minpoly}(M)$.\n\nThe setup establishes:\n1. $\\deg(\\text{minpoly}) = n$ (from nonderogatory + charpoly degree)\n2. Complementary products $F_i = \\prod_{j \\neq i} p_j^{e_j}$\n3. Degree bound: $\\deg(p_i^{e_i - 1} \\cdot F_i) < n$ (since multiplying by $p_i$ brings it to exactly $n$)\n4. Non-vanishing: $p_i^{e_i-1}(M) \\cdot F_i(M) \\neq 0$ (by minimality of minpoly)\n5. Choice of $w_i$: a vector not killed by this nonzero matrix\n6. Primary properties: $p_i^{e_i}(M)v_i = 0$ and $p_i^{e_i-1}(M)v_i \\neq 0$\n\nThe degree-counting argument (lines 209-226) is subtle: $\\deg(p_i^{e_i-1} \\cdot F_i \\cdot p_i) = n$ and `natDegree_mul` converts this into a linear inequality that `omega` resolves.",
-    "mathContext": "$F_i = \\prod_{j \\neq i} p_j^{e_j}$, so $p_i^{e_i} \\cdot F_i = \\text{minpoly}(M)$.\n\n$\\deg(p_i^{e_i-1} \\cdot F_i) = \\deg(\\text{minpoly}) - \\deg(p_i) = n - \\deg(p_i) < n$.\n\nSince $\\text{minpoly}(M)$ is minimal, any polynomial of lower degree evaluating to 0 must be the zero polynomial. Therefore $p_i^{e_i-1}(M) \\cdot F_i(M) \\neq 0$ as a matrix, so there exists $w_i$ with $(p_i^{e_i-1} \\cdot F_i)(M) w_i \\neq 0$.",
+    "range": { "startLine": 204, "endLine": 402 },
+    "type": "theorem",
+    "title": "Main Theorem: nonderogatory_bipow_has_cyclic_vector",
+    "content": "The main theorem proves existence of a cyclic vector for nonderogatory M with minpoly = p^a * q^b. The proof has five phases:\n\n1. **Setup**: Handle the trivial n=0 case. Establish degree facts and coprimality of powers.\n2. **Construct v1**: Find w1 with (p^{a-1}*q^b)(M)*w1 != 0 (by aeval_ne_zero_of_lt_minpoly). Set v1 = q^b(M)*w1. Then p^{a-1}(M)*v1 != 0 and p^a(M)*v1 = 0.\n3. **Construct v2**: Similarly, find w2 and set v2 = p^a(M)*w2 with q^{b-1}(M)*v2 != 0 and q^b(M)*v2 = 0.\n4. **Prove v = v1 + v2 is cyclic**: For any r with r(M)*(v1+v2) = 0, use CRT projections to extract r(M)*v1 = 0 and r(M)*v2 = 0 separately. Apply pow_irred_dvd_of_annihilated to get p^a | r and q^b | r. By IsCoprime.mul_dvd, p^a*q^b | r.\n5. **Degree contradiction**: deg(p^a*q^b) = n <= deg(r), but deg(r) < n, so r = 0.",
+    "mathContext": "The degree contradiction: $\\deg(p^a q^b) = a \\cdot \\deg(p) + b \\cdot \\deg(q) = \\deg(\\text{minpoly}(M)) = n$. If $p^a q^b \\mid r$ and $r \\neq 0$, then $n \\leq \\deg(r)$. But $r$ is assumed to have $\\deg(r) < n$. Therefore $r = 0$, proving $v$ is cyclic.",
     "significance": "key",
-    "prerequisites": [
-      "nonderogatory definition",
-      "degree of products",
-      "minimality of minpoly"
-    ],
-    "relatedConcepts": [
-      "complementary product",
-      "primary component",
-      "Finset.mul_prod_erase",
-      "polynomial degree arithmetic"
-    ]
+    "relatedConcepts": ["cyclic vector existence", "degree contradiction", "IsCoprime.mul_dvd", "nonderogatory matrix"],
+    "prerequisites": ["IsCoprime.pow_pow", "pow_irred_dvd_of_annihilated", "bezout_proj_identity", "bezout_proj_kills"]
   },
   {
-    "id": "ann-main-thm-crt",
+    "id": "ann-corollary-finite",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-    "range": { "startLine": 249, "endLine": 327 },
+    "range": { "startLine": 404, "endLine": 417 },
     "type": "insight",
-    "title": "Phase 2: CRT Combination and Proof Completion",
-    "content": "Phase 2 combines the primary vectors as $v = \\sum_i v_i$ and proves $v$ is cyclic. The argument proceeds:\n\n1. **Bezout projection isolation** (lines 277-308): Suppose $r(M)v = 0$ with $\\deg(r) < n$. For each $i$, the Bezout projection $\\pi_i = b_i(M) \\cdot F_i(M)$ satisfies $\\pi_i(v_i) = v_i$ and $\\pi_i(v_j) = 0$ for $j \\neq i$. Crucially, $\\pi_i$ commutes with $r(M)$ (both are polynomials in $M$), so:\n$$r(M)v_i = \\pi_i(r(M)v) = \\pi_i(0) = 0$$\n\n2. **Prime power divisibility** (lines 309-319): By `pow_irred_dvd_of_annihilated`, $r(M)v_i = 0$ implies $p_i^{e_i} \\mid r$ for each $i$.\n\n3. **Coprimality to product divisibility** (lines 320-327): `Finset.prod_dvd_of_coprime` assembles the pairwise coprime divisibilities into $\\prod_i p_i^{e_i} \\mid r$, i.e., $\\text{minpoly}(M) \\mid r$. Since $\\deg(\\text{minpoly}) = n > \\deg(r)$, $r$ must be 0.\n\nThe polynomial commutativity step (lines 293-296) is essential: $r(M) \\cdot \\pi_i = \\pi_i \\cdot r(M)$ holds because both are polynomials in $M$ and polynomials commute.",
-    "mathContext": "The proof chain:\n$$r(M)v = 0 \\xrightarrow{\\pi_i} r(M)v_i = 0 \\xrightarrow{\\text{WIP03}} p_i^{e_i} \\mid r \\quad \\forall i \\xrightarrow{\\text{CRT}} \\prod p_i^{e_i} \\mid r \\xrightarrow{\\deg} \\deg(r) \\geq n$$\nContradiction with $\\deg(r) < n$, so $r = 0$.",
-    "significance": "key",
-    "prerequisites": [
-      "bezout_proj_identity",
-      "pow_irred_dvd_of_annihilated",
-      "Finset.prod_dvd_of_coprime",
-      "polynomial commutativity"
-    ],
-    "relatedConcepts": [
-      "Chinese Remainder Theorem",
-      "idempotent decomposition",
-      "pairwise coprimality",
-      "degree contradiction"
-    ]
-  },
-  {
-    "id": "ann-commentary",
-    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-    "range": { "startLine": 329, "endLine": 359 },
-    "type": "context",
-    "title": "Completeness and Supersession",
-    "content": "The commentary explains that WIP04 proves the cyclic vector theorem axiom-free for matrices with *factored* minimal polynomial. To obtain the fully general theorem (from just `IsNonderogatory M`), one additional step is needed: factor $\\text{minpoly}(M)$ using the UFD structure of $K[X]$ (available via Mathlib's `UniqueFactorizationMonoid`).\n\nThe key technical insight is that the primary decomposition approach avoids the PID module structure theorem entirely. Classical proofs use $K^n \\cong K[X]/(p_1^{e_1}) \\oplus \\cdots \\oplus K[X]/(p_k^{e_k})$ (the primary decomposition of the $K[X]$-module $K^n$), but this formalization never needs the dimension of primary subspaces — only annihilation and non-annihilation properties of carefully chosen vectors.\n\nWIP04 fully supersedes WIP01, which relied on a `nonderogatory_similar_to_companion` axiom.",
-    "mathContext": "Remaining step: $\\text{minpoly}(M) \\in K[X]$ (a UFD) factors uniquely as $\\prod p_i^{e_i}$ with $p_i$ irreducible. Mathlib's `UniqueFactorizationMonoid` provides this factorization, but connecting it to the hypotheses of `nonderogatory_general_has_cyclic_vector` (pairwise coprimality, exponent positivity) requires additional glue code.",
-    "significance": "supporting",
-    "prerequisites": [
-      "unique factorization in K[X]",
-      "PID structure theorem for modules"
-    ],
-    "relatedConcepts": [
-      "UniqueFactorizationMonoid",
-      "rational canonical form",
-      "companion matrix",
-      "module structure theorem"
-    ]
+    "title": "Corollary: Explicit Finite Field Instance",
+    "content": "The corollary `nonderogatory_bipow_has_cyclic_vector_finite` adds a `[Fintype K]` instance to make the finite field applicability explicit. This is a direct specialization of the main theorem — no additional proof is needed because the main theorem already works over *any* field K. The corollary exists to highlight that this proof, unlike the classical union-avoidance argument (which requires |K| > n or |K| = ∞), handles fields as small as GF(2). Over GF(2), a 10×10 matrix has only 1024 vectors, so measure-theoretic or probabilistic arguments are meaningless — but this algebraic CRT-based proof still applies.",
+    "mathContext": "Over $\\mathbb{F}_2$, the classical argument 'the set of non-cyclic vectors has measure zero' fails since $|\\mathbb{F}_2^n| = 2^n$ is finite. Union-avoidance ($|K| > n$ needed to avoid $n$ hyperplanes) also fails for small fields. The CRT approach avoids both issues entirely.",
+    "significance": "context",
+    "relatedConcepts": ["finite field", "union-avoidance", "GF(2)", "constructive algebra"],
+    "prerequisites": ["nonderogatory_bipow_has_cyclic_vector", "Fintype"]
   }
 ]
