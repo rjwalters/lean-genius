@@ -19,7 +19,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "None. All results are fully proved in Lean 4.",
-    "lineCount": 220,
+    "lineCount": 319,
     "theoremCount": 12,
     "definitionCount": 0,
     "dateAdded": "2026-04-26",
@@ -50,6 +50,94 @@
       "Elementary number theory (powers of 2)"
     ]
   },
+  "sections": [
+    {
+      "id": "imports-header",
+      "title": "Imports and Header",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "File header describing the seven structural results, references to Erdős (1955), Dubroff-Fox-Xu (2021), Conway-Guy (1968), and OEIS A005318. Imports Proofs.Erdos1Problem (the hasDistinctSubsetSums predicate) and opens Finset namespace."
+    },
+    {
+      "id": "superincreasing-lemma",
+      "title": "Part I: Superincreasing Extension Lemma",
+      "startLine": 39,
+      "endLine": 118,
+      "summary": "dss_superincreasing_extend: if A has DSS and b > sum(A) with b ∉ A, then insert b A has DSS. Proved by four-way case split on b ∈ S, b ∈ T. The combinatorial core underlying all known DSS constructions."
+    },
+    {
+      "id": "geometric-sum",
+      "title": "Part II: Geometric Sum Bound",
+      "startLine": 119,
+      "endLine": 138,
+      "summary": "sum_two_pow_range_add_one (private): ∑_{i<n} 2^i + 1 = 2^n by induction. sum_two_pow_lt: ∑_{i<n} 2^i < 2^n by linarith. Provides the superincreasing property for powers of 2.",
+      "mathContext": "$\\sum_{i=0}^{n-1} 2^i = 2^n - 1$, proved by induction, providing the strict bound $2^n > \\sum_{i=0}^{n-1} 2^i$ needed for the superincreasing extension step."
+    },
+    {
+      "id": "powers-of-two-dss",
+      "title": "Part III: Powers of 2 Give DSS",
+      "startLine": 140,
+      "endLine": 176,
+      "summary": "powers_of_two_has_dss: {2^0, 2^1, …, 2^(n-1)} has distinct subset sums for any n. Proved by induction via dss_superincreasing_extend. Uses Finset.sum_image with injectivity of i ↦ 2^i.",
+      "mathContext": "The set $\\{1, 2, 4, \\ldots, 2^{n-1}\\}$ represents the $n$-bit binary numbers: its $2^n$ subsets have sums $0, 1, \\ldots, 2^n - 1$, all distinct."
+    },
+    {
+      "id": "dss-existence",
+      "title": "Part IV: DSS Existence for Any n",
+      "startLine": 177,
+      "endLine": 226,
+      "summary": "dss_exists: ∃ A with |A| = n, all elements ≤ n·2^n, and DSS. dss_positive_exists: ∃ A with |A| = n, all elements positive and ≤ 2^n, and DSS. Both use the powers-of-2 witness. Fills the sorry in OQ03's minDSSBound."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Part V: Structural Properties",
+      "startLine": 227,
+      "endLine": 259,
+      "summary": "not_dss_of_mem_zero: 0 ∈ A destroys DSS (∅ and {0} have same sum). dss_elements_pos: all elements of a DSS set are positive. dss_subset: hereditary property — any subset of a DSS set has DSS. dss_singleton: any singleton has DSS."
+    },
+    {
+      "id": "sum-lower-bound",
+      "title": "Part VI: Sum Lower Bound",
+      "startLine": 261,
+      "endLine": 301,
+      "summary": "dss_sum_lower_bound: 2^n ≤ sum(A) + 1 for any n-element DSS set A (by pigeonhole on the 2^n distinct subset sums in [0, sum(A)]). dss_sum_ge_pow_sub_one: sum(A) ≥ 2^n − 1 as corollary.",
+      "mathContext": "The $2^n$ distinct subset sums lie in $\\{0, \\ldots, \\sum(A)\\}$, forcing $2^n \\leq \\sum(A) + 1$ by injectivity counting. This global bound implies $\\max(A) \\geq (2^n-1)/n$."
+    },
+    {
+      "id": "mindssboundq-fix",
+      "title": "Part VII: Connection to OQ03 minDSSBound",
+      "startLine": 303,
+      "endLine": 319,
+      "summary": "minDSS_witness: ∃ N, ∃ A, |A| = n ∧ (∀ a ∈ A, a ≤ N) ∧ DSS(A). One-liner delegating to dss_exists. Fills the sorry that blocked OQ03's Nat.find-based minDSSBound definition."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "extends",
+      "description": "The main Erdős Problem #1 gallery entry — this WIP file provides structural foundations that support the OQ01–OQ04 sub-entries"
+    },
+    {
+      "targetId": "erdos-1-oq-01",
+      "relationship": "related",
+      "description": "OQ01 proves the counting lower bound max(A) ≥ 2^(n-1)/n via pigeonhole — the same argument that this file generalizes to the global sum lower bound sum(A) ≥ 2^n − 1"
+    },
+    {
+      "targetId": "erdos-1-oq-02",
+      "relationship": "related",
+      "description": "OQ02's DFX entropy framework (Dubroff-Fox-Xu 2021) uses information-theoretic methods to improve the constant in the lower bound — complementing this file's elementary pigeonhole approach"
+    },
+    {
+      "targetId": "erdos-1-oq-03",
+      "relationship": "foundational",
+      "description": "OQ03 defines minDSSBound using Nat.find, which requires the existential witness now provided by dss_exists / minDSS_witness in this file — directly filling OQ03's sorry"
+    },
+    {
+      "targetId": "erdos-1-oq-04",
+      "relationship": "related",
+      "description": "OQ04 studies extremal DSS sets (those achieving the minimum max element) — the structural constraints proved here (positivity, sum lower bound) are necessary conditions for extremality"
+    }
+  ],
   "conclusion": {
     "summary": "This file provides the structural foundations for Erdős Problem #1: the superincreasing extension lemma (the construction principle behind all known DSS sets), the powers-of-2 DSS construction (proved by induction), existence of DSS sets for any n (filling the sorry in OQ03), positivity of elements, and the global sum lower bound. All results have 0 sorries and 0 axioms.",
     "implications": "The superincreasing lemma gives a recursive DSS construction: start with A = {} and repeatedly add any element larger than the current sum. This shows DSS sets are not 'rare' — they can be built greedily. The powers-of-2 construction is the smallest such greedy sequence. The Conway-Guy sequence (OQ03) is a more efficient greedy strategy that nearly achieves the conjectured optimal constant c = 1/(2π^{1/2}) ≈ 0.28.",
