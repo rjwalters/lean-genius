@@ -23,7 +23,7 @@
     "dateAdded": "2026-04-23",
     "axiomCount": 0,
     "assumptions": "3 sorries: (1) jdt_weight_sum (private: JDT involution weight sum for 2-row case); (2) ssytFin_two_row_eq_sum_colstrict (private: row decomposition bijection for k=2 SSYT, ~200 lines combined); (3) jacobi_trudi_ssyt_eq k\u22653 via algebraic LGV + RSK (~300 lines). Note: ssytSchurFin_two_row is proved but depends on these sorry'd helpers. k=0 and k=1 cases proved explicitly.",
-    "lineCount": 405,
+    "lineCount": 457,
     "theoremCount": 11,
     "definitionCount": 5,
     "originalContributions": [
@@ -78,7 +78,7 @@
       "Finset"
     ],
     "namespace": "JacobiTrudi",
-    "lineCount": 405,
+    "lineCount": 457,
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 5,
