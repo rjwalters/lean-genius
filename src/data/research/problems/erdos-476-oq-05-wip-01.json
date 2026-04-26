@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: |B|=2 and |A|=|B|=3 cases proved; 1 sorry for |A|>=4 or |B|>=4 (Kneser needed)",
+    "progressSummary": "PROGRESS: |B|=2 and |A|=|B|=3 cases proved; 1 sorry for |A|>=4 or |B|>=4. Deep analysis: counting insufficient, Dyson e-transform is correct approach.",
     "builtItems": [
       "case1_exists |B|=2 branch: fully proved via orbit argument (Erdos476OQ05Problem.lean ~550-609)",
       "hredA_card lemma inline: ∀ a ∈ A, (A.erase a + B).card = A.card + B.card - 1 from CD + inclusion",
@@ -49,16 +49,20 @@
       "r(x) ≥ 2 for all x ∈ A+B when A is all-redundant: if r(x)=1 with unique a₁, then x ∉ (A.erase a₁)+B, contradicting SET equality hredA a₁",
       "Double counting identity: ∑_x |{a ∈ A : x-a ∈ B}| = |A|·|B| via Finset.card_bij bijection (x,a) ↦ (a,x-a)",
       "Counting argument only closes |A|=|B|=3 (9 < 10); for |A|≥4 or |B|≥4, the bound (|A|-2)(|B|-2) ≥ 2 holds and Kneser is needed",
-      "Kneser theorem for ZMod p: NOT in Mathlib. Building it from scratch needs ~200-300 lines of additive combinatorics infrastructure"
+      "Kneser theorem for ZMod p: NOT in Mathlib. Building it from scratch needs ~200-300 lines of additive combinatorics infrastructure",
+      "A-redundancy (all a: (A\\{a})+B=A+B) ⟺ r(x)>=2 for all x ⟺ B-redundancy: swapping cannot help",
+      "Dyson e-transform: A->A∪(B+t), B->B∩(A-t) preserves |A|+|B| and CD equality; reduces |B| strictly",
+      "Kneser for ZMod p is circular: equality case of Kneser in prime-order groups IS Vosper theorem",
+      "For |A|=4,|B|=3: r(x)=2 exactly, overlap sum=6 over 6 pairs; counting allows all overlaps=1",
+      "B closed under shift d in ZMod p => Stab(B) contains d => |B|=p (contradiction for |B|<p)"
     ],
     "mathlibGaps": [
       "Kneser theorem for abelian groups (needed for |A|>=4 or |B|>=4 all-redundant contradiction in Vosper induction)"
     ],
     "nextSteps": [
-      "Build Kneser theorem for ZMod p (~200-300 lines): since Stab(A+B) is trivial for prime order groups, |A+B| >= |A|+|B|-1 forces AP structure under full redundancy",
-      "Alternative: try elementary Freiman/Schur approach for the |A|>=4, |B|>=3 sub-case",
-      "Key constraint: for tight case |A|=4, |B|=3, each x in A+B has r(x)=2 exactly — may enable direct structural argument without Kneser",
-      "If 3+ sessions stuck on Kneser: flag as BLOCKED and release claim"
+      "Implement Dyson e-transform: pick t=a2-a1, define A'=A∪(B+t), B'=B∩(A-t); |B'|<|B| since B closed under -t forces |B|=p",
+      "Restructure induction to termination_by A.card+B.card or add separate e-transform recursion",
+      "Alternative: prove e-transform as standalone lemma with own well-founded recursion on |B|"
     ],
     "markdown": "# Knowledge Base: erdos-476-oq-05-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
