@@ -35,6 +35,11 @@
       "psum_three_eq: p₃ = e₁·p₂ − e₂·p₁ + 3·e₃, instantiating psum_eq_mul_esymm_sub_sum at k=3 with two-element antidiagonal"
     ],
     "dateAdded": "2026-04-25",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 91,
+    "theoremCount": 3,
+    "definitionCount": 0,
     "assumptions": "Core results obtained via Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum and MvPolynomial.psum_one/esymm_one. The three corollaries (k=1,2,3) are derived from these Mathlib theorems. 0 sorries, 0 axiom declarations.",
     "mathlib_version": "4.26.0"
   },
