@@ -210,39 +210,32 @@
   ],
   "references": [
     {
-      "authors": ["I. Stewart"],
+      "authors": "Stewart, Ian",
       "title": "Galois Theory",
       "year": "2015",
       "venue": "CRC Press, 4th edition",
       "note": "Chapters 9-12: solvability by radicals, Galois's criterion, and the classical proof of Abel-Ruffini as a corollary"
     },
     {
-      "authors": ["D. A. Cox"],
+      "authors": "Cox, David A.",
       "title": "Galois Theory",
       "year": "2012",
       "venue": "Wiley, 2nd edition",
       "note": "Theorem 13.4.3 (Galois criterion), Theorem 13.1.1 (forward direction), Section 13.4 (Kummer theory for cyclic extensions)"
     },
     {
-      "authors": ["S. Lang"],
+      "authors": "Lang, Serge",
       "title": "Algebra",
       "year": "2002",
       "venue": "Graduate Texts in Mathematics 211, Springer, 3rd revised edition",
       "note": "Chapter VI §7-§9: Galois's solvability criterion, Kummer extensions, and the complete proof of both directions"
     },
     {
-      "authors": ["É. Galois"],
+      "authors": "Galois, Évariste",
       "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
       "year": "1846",
       "venue": "Journal de mathématiques pures et appliquées (posthumous, ed. Liouville), vol. 11, pp. 381-444",
       "note": "Original memoir presenting the criterion; written 1831, submitted to the Paris Academy, published posthumously 14 years after Galois's death"
-    },
-    {
-      "authors": ["The mathlib Community"],
-      "title": "Mathlib4: A Unified Library of Mathematics Formalized in Lean 4",
-      "year": "2024",
-      "venue": "https://github.com/leanprover-community/mathlib4",
-      "note": "Provides solvableByRad.isSolvable' (forward direction of Galois's criterion), IsSolvable typeclass, and Polynomial.Gal (Galois group construction). The axiomatized reverse direction identifies Kummer theory for cyclic extensions as the principal Mathlib gap."
     }
   ],
   "sorries": 0
