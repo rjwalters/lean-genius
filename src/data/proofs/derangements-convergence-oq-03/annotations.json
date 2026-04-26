@@ -123,6 +123,31 @@
     ]
   },
   {
+    "id": "ann-dcoq03-transcendence-connection",
+    "proofId": "derangements-convergence-oq-03",
+    "range": {
+      "startLine": 53,
+      "endLine": 88
+    },
+    "type": "insight",
+    "title": "Why the Rounding Never Ties: A Hidden Transcendence Argument",
+    "content": "The proof establishes |D(n) − n!/e| < 1/2, concluding D(n) = round(n!/e). But for `round` to be well-defined as a function ℝ → ℤ, there must be no tie: when x is a half-integer (x ∈ (1/2)ℤ), round(x) is ambiguous (conventionally rounded to even, or to +∞). The proof implicitly relies on n!/e never being a half-integer — equivalently, that 2·n!/e is never an integer, i.e., e ∉ 2·n!/ℤ for any n ≥ 0.\n\nThis is a consequence of the transcendence of e (Hermite, 1873): since e is transcendental, it satisfies no algebraic equation over ℚ. In particular, 2n!·e ≠ m for any integers m, n ≥ 1, because that would give e = m/(2n!) ∈ ℚ, contradicting irrationality (a weaker consequence of transcendence already proved by Euler 1737). Lean does not need to formally invoke this fact in the 88-line proof — the strict inequality |D(n) − n!/e| < 1/2 is proved directly — but it is the mathematical reason that `round` is unambiguous here.\n\nIn Lean's Mathlib, `round` for real numbers handles ties via `round_half_add_one_div_two` (rounding half-integers to the nearest even integer). The proof avoids this subtlety entirely by establishing the strict bound 1/(n+1) < 1/2, which shows the tie case never arises for n ≥ 2.",
+    "mathContext": "Transcendence of $e$: For every nonzero polynomial $P \\in \\mathbb{Q}[X]$, $P(e) \\neq 0$ (Hermite 1873). In particular, $e \\notin \\mathbb{Q}$, so $n!/e \\notin \\mathbb{Q}$ for all $n \\geq 1$ (since $n! \\in \\mathbb{Z}^+$ and $\\mathbb{Q}$ is closed under multiplication by rationals). Since $1/2 \\in \\mathbb{Q}$, $n!/e$ can never be a half-integer. The gallery entry `e-transcendental` formalizes the full transcendence proof; irrationality of $e$ is a weaker but sufficient consequence.",
+    "significance": "context",
+    "relatedConcepts": [
+      "e-transcendental",
+      "transcendence of e",
+      "Hermite 1873",
+      "round half-integer",
+      "irrationality"
+    ],
+    "prerequisites": [
+      "Hermite's theorem on transcendence of e",
+      "Irrationality of e (Euler 1737)",
+      "Lean's round function behavior at half-integers"
+    ]
+  },
+  {
     "id": "ann-dcoq03-alternating-series",
     "proofId": "derangements-convergence-oq-03",
     "range": {
