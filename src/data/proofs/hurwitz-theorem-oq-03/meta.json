@@ -23,7 +23,7 @@
     "axiomCount": 0,
     "assumptions": "1 sorry: hurwitz_only_if — if an n-square identity exists, then n ∈ {1,2,4,8} (n=3 case proved; n∉{1,2,3,4,8} cases pending Clifford/Radon-Hurwitz argument). The converse (identities exist for n ∈ {1,2,4,8}) is fully proved. No axiom declarations.",
     "lineCount": 2042,
-    "theoremCount": 32,
+    "theoremCount": 45,
     "definitionCount": 15,
     "originalContributions": [
       "NSquareIdentity: structure for bilinear n-square composition identities",
@@ -69,7 +69,7 @@
     "namespace": "HurwitzTheorem",
     "lineCount": 2042,
     "axiomCount": 0,
-    "theoremCount": 33,
+    "theoremCount": 45,
     "definitionCount": 15,
     "path": "Proofs/HurwitzTheorem.lean",
     "sorries": 1
